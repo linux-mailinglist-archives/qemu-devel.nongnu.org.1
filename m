@@ -2,105 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFDF6736430
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 09:14:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0662F736452
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 09:20:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBVYh-0001w3-C5; Tue, 20 Jun 2023 03:13:47 -0400
+	id 1qBVdJ-0004L8-24; Tue, 20 Jun 2023 03:18:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fbarrat@linux.ibm.com>)
- id 1qBVYM-0001q4-Cy; Tue, 20 Jun 2023 03:13:33 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1qBVdE-0004KN-HH
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 03:18:28 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fbarrat@linux.ibm.com>)
- id 1qBVYI-0004n1-Ne; Tue, 20 Jun 2023 03:13:24 -0400
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 35K77wvf015446; Tue, 20 Jun 2023 07:13:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=S0MHy0zQd+uoHhikSYkWwxXlHmjnAem1dnJeYF9W078=;
- b=FRrhUy0jwCjEgj3K27eqpMyV6zwcWA/cp698DUbR3og4TmdSiGpq+f3FnKXwT/h50tIz
- TOgQrOiFK3OumOQOPFBsuuFAPb7tXGUPf28gxP8fSXkNs+GMEbSxZhNYosiDcc4zsYG1
- /o0iL7dtUkYMuZl0e3Z4GQwT2T1PaQXeZQ8EUzUvYYF4+x2JXf5KS7GIs47j9pF1mdwX
- 8nCwAkNT7nYUmB37slXBqUYs5TsM64tycuKrA76S1TQr62n0i5ON8HpZlcADlpelry9x
- eMKRytvTWp7WSfa3tcSn29Z92nZvOwD8GQXJAfC56i91jZ8jLr2N8HNEGF9vZPfYErSw NQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rb755rtca-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 20 Jun 2023 07:13:16 +0000
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 35K78LQG019733;
- Tue, 20 Jun 2023 07:12:40 GMT
-Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.72])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rb755rsnk-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 20 Jun 2023 07:12:40 +0000
-Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
- by ppma06fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 35K40FMp031759;
- Tue, 20 Jun 2023 07:11:53 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
- by ppma06fra.de.ibm.com (PPS) with ESMTPS id 3r943e1egd-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 20 Jun 2023 07:11:52 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com
- [10.20.54.106])
- by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 35K7Bo3g9634556
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 20 Jun 2023 07:11:50 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 805D920040;
- Tue, 20 Jun 2023 07:11:50 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 388AA2004B;
- Tue, 20 Jun 2023 07:11:50 +0000 (GMT)
-Received: from [9.101.4.34] (unknown [9.101.4.34])
- by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Tue, 20 Jun 2023 07:11:50 +0000 (GMT)
-Message-ID: <3775436e-70ed-a9e2-92a1-95bdfcf52a26@linux.ibm.com>
-Date: Tue, 20 Jun 2023 09:11:50 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.1
-Subject: Re: [PATCH 3/9] MAINTAINERS: Add reviewer for XIVE
-Content-Language: en-US
-To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>, qemu-ppc@nongnu.org,
- Daniel Henrique Barboza <danielhb413@gmail.com>
-Cc: qemu-devel@nongnu.org
-References: <20230620055911.187065-1-clg@kaod.org>
- <20230620055911.187065-4-clg@kaod.org>
-From: Frederic Barrat <fbarrat@linux.ibm.com>
-In-Reply-To: <20230620055911.187065-4-clg@kaod.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: fhR1I_LNfRzkBk8HkAD87UfBeNjtqSO-
-X-Proofpoint-ORIG-GUID: OHpBasW8TerAviYFSJHsSaCVwhhya9pD
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1qBVdC-0006GC-Nt
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 03:18:28 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1687245504;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=wx6OtQTzdSiC1EUBAQtfYo+awyRfge7HDnOsUegRGlo=;
+ b=h3QP1UTo0bn63xiZJb98SBCbKdoGdW+w9XcD64Y6aicfhC1Tn+yj/9Uu8PLJ+wlyDRKuP4
+ 3IjMHx/5O7zmvT44W3/L26Q7Ac1lSPQTdFMBG6kbtW1pRav3rgqLFcNArZqlomc2PzU/xj
+ 6Uoq8DbhtRCi1IVkAfWjJ3pnMPbACs8=
+Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com
+ [209.85.215.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-382-nsFbXBaGOSi7UxWDGfkPgw-1; Tue, 20 Jun 2023 03:18:21 -0400
+X-MC-Unique: nsFbXBaGOSi7UxWDGfkPgw-1
+Received: by mail-pg1-f199.google.com with SMTP id
+ 41be03b00d2f7-5538f216c7aso943828a12.0
+ for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 00:18:20 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1687245500; x=1689837500;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=wx6OtQTzdSiC1EUBAQtfYo+awyRfge7HDnOsUegRGlo=;
+ b=jlsKJw5PVMvgm3GssLILRIdDD79lY8Zdp93yYXdFYXJb2ZA/eWDrnSwsrJnnAMm1iI
+ GoB9UWWgCXua5nQ3vI9g6yZft/+wbMh4AQ8RxtiNPt8puJpnpihSY+XaLpBoYUc5hFDk
+ y9wansRM6dOlAHgGzV7nFO9got7Y0qwXGmYn064/Gs3osoUXzLS3IC86I0M2VZv3yrjs
+ hfN94JbkRZZBBUCQ7BIGeCLgA8e+pnXpXZz+aUMFCY+EMAAk7dwkkPWwa0ln4T6CnI1n
+ j25TS6/sTtJvTrKvVnYHNdF4swm0qkeTxR+Ns6JjZfZzkXSMB5g7HcCCSLEZTwTjCAJq
+ x2Ew==
+X-Gm-Message-State: AC+VfDzbPWmCOfK8LDJBQII1MZWW3K6Ty7i+bQsqmIjB0SL6ZiBY/EuH
+ FqLllc6P/NGO9pfeFhMLdXYgN9Mt7OqWxpfJ4E1vNuarYuNYPRLMsETawQUYcxAAP78TNaKCs6n
+ qqAqEFY9gviz74yc=
+X-Received: by 2002:a05:6a20:3d85:b0:118:a48:8977 with SMTP id
+ s5-20020a056a203d8500b001180a488977mr8992337pzi.3.1687245499926; 
+ Tue, 20 Jun 2023 00:18:19 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4AQgOsORLwFCZpDrqW9VRAaun31SmfCtYitGqonoEtfib21lpOXLsngflfttD22QTwKJLTuA==
+X-Received: by 2002:a05:6a20:3d85:b0:118:a48:8977 with SMTP id
+ s5-20020a056a203d8500b001180a488977mr8992321pzi.3.1687245499480; 
+ Tue, 20 Jun 2023 00:18:19 -0700 (PDT)
+Received: from localhost.localdomain ([116.72.143.94])
+ by smtp.googlemail.com with ESMTPSA id
+ io20-20020a17090312d400b001ac38343438sm903669plb.176.2023.06.20.00.18.16
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 20 Jun 2023 00:18:18 -0700 (PDT)
+From: Ani Sinha <anisinha@redhat.com>
+To: "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Cc: Ani Sinha <anisinha@redhat.com>, jusual@redhat.com, imammedo@redhat.com,
+ qemu-devel@nongnu.org
+Subject: [PATCH v4] hw/pci: enforce use of slot only slot 0 when devices have
+ an upstream PCIE port
+Date: Tue, 20 Jun 2023 12:48:05 +0530
+Message-Id: <20230620071805.4400-1-anisinha@redhat.com>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-06-20_04,2023-06-16_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 suspectscore=0
- bulkscore=0 priorityscore=1501 mlxscore=0 malwarescore=0 spamscore=0
- mlxlogscore=999 clxscore=1015 lowpriorityscore=0 impostorscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2305260000 definitions=main-2306200062
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=fbarrat@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -116,34 +99,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+When a device has an upstream PCIE port, we can only use slot 0. Non-zero slots
+are invalid. This change ensures that we throw an error if the user
+tries to hotplug a device with an upstream PCIE port to a non-zero slot.
 
+CC: jusual@redhat.com
+CC: imammedo@redhat.com
+Resolves: https://bugzilla.redhat.com/show_bug.cgi?id=2128929
+Signed-off-by: Ani Sinha <anisinha@redhat.com>
+---
+ hw/pci/pci.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-On 20/06/2023 07:59, Cédric Le Goater wrote:
-> Fred discusses frequently with the IBM HW designers, he is fluent in
-> XIVE logic, add him as a reviewer.
-> 
-> Cc: Frédéric Barrat <fbarrat@linux.ibm.com>
-> Signed-off-by: Cédric Le Goater <clg@kaod.org>
-> ---
+changelog:
+v2: addressed issue with multifunction pcie root ports. Should allow
+hotplug on functions other than function 0.
+v3: improved commit message.
+v4: improve commit message and code comments further. Some more
+improvements might come in v5. No claims made here that this is
+the final one :-)
 
-Acked-by: Frederic Barrat <fbarrat@linux.ibm.com>
+diff --git a/hw/pci/pci.c b/hw/pci/pci.c
+index bf38905b7d..30ce6a78cb 100644
+--- a/hw/pci/pci.c
++++ b/hw/pci/pci.c
+@@ -64,6 +64,7 @@ bool pci_available = true;
+ static char *pcibus_get_dev_path(DeviceState *dev);
+ static char *pcibus_get_fw_dev_path(DeviceState *dev);
+ static void pcibus_reset(BusState *qbus);
++static bool pcie_has_upstream_port(PCIDevice *dev);
+ 
+ static Property pci_props[] = {
+     DEFINE_PROP_PCI_DEVFN("addr", PCIDevice, devfn, -1),
+@@ -1182,6 +1183,11 @@ static PCIDevice *do_pci_register_device(PCIDevice *pci_dev,
+     } else if (dev->hotplugged &&
+                !pci_is_vf(pci_dev) &&
+                pci_get_function_0(pci_dev)) {
++        /*
++         * populating function 0 triggers a bus scan from the guest that
++         * exposes other non-zero functions. Hence we need to ensure that
++         * function 0 wasn't added yet.
++         */
+         error_setg(errp, "PCI: slot %d function 0 already occupied by %s,"
+                    " new func %s cannot be exposed to guest.",
+                    PCI_SLOT(pci_get_function_0(pci_dev)->devfn),
+@@ -1189,6 +1195,18 @@ static PCIDevice *do_pci_register_device(PCIDevice *pci_dev,
+                    name);
+ 
+        return NULL;
++    } else if (dev->hotplugged &&
++               !pci_is_vf(pci_dev) &&
++               pcie_has_upstream_port(pci_dev) && PCI_SLOT(devfn)) {
++        /*
++         * If the device has an upstream PCIE port, like a pcie root port,
++         * we only support functions on slot 0.
++         */
++        error_setg(errp, "PCI: slot %d is not valid for %s,"
++                   " only functions on slot 0 is supported for devices"
++                   " with an upstream PCIE port.",
++                   PCI_SLOT(devfn), name);
++        return NULL;
+     }
+ 
+     pci_dev->devfn = devfn;
+-- 
+2.39.1
 
-   Fred
-
-
->   MAINTAINERS | 1 +
->   1 file changed, 1 insertion(+)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 90fb83c4cb58..2e8c715eaca4 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -2445,6 +2445,7 @@ T: git https://github.com/philmd/qemu.git fw_cfg-next
->   
->   XIVE
->   M: Cédric Le Goater <clg@kaod.org>
-> +R: Frédéric Barrat <fbarrat@linux.ibm.com>
->   L: qemu-ppc@nongnu.org
->   S: Odd Fixes
->   F: hw/*/*xive*
 
