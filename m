@@ -2,85 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0343973753E
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 21:46:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1090E737457
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 20:34:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBhJJ-0000Tl-0A; Tue, 20 Jun 2023 15:46:41 -0400
+	id 1qBg9w-0004ZL-K3; Tue, 20 Jun 2023 14:32:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jupham125@gmail.com>)
- id 1qBf7o-0004c3-Tk
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 13:26:40 -0400
-Received: from mail-yw1-x1129.google.com ([2607:f8b0:4864:20::1129])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <jupham125@gmail.com>)
- id 1qBf7n-0006jF-DB
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 13:26:40 -0400
-Received: by mail-yw1-x1129.google.com with SMTP id
- 00721157ae682-5707b429540so62321737b3.1
- for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 10:26:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1687281998; x=1689873998;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=4bMCmETV5A3RE3Y5AD1rHTVY6vGqDtmQP66Im/JEggA=;
- b=gDFBR4RHmuOhFl0zAKSW/YdHa+4P3awfbEylJDwusaDIY85UFvDLY/tz68yUx65RBX
- R28q+pnm2RIUNWuMX0W3/mgO69hSHo3BFQP4vBuszuEtuXtXv9oazcjnZMrlhUKwm8X7
- yyIMv6fSasCsKWsbWRAj0B/dlQb1R3Vzx6ZKTvAzt5sBPhZPcc1tKDcNtjOlwLuss8k/
- 4US8q4b3RE1J/8EYgFIrfFmQjcGDe/zdXmKeXB//ADqkVuINn7gpFl+7DSKGnOCjd+3h
- 7ilSxeJu7N4TheFvtsrd7Y7MNA9vGkk7DQNGQ4ZCoH/iatDdzMoUABr7v68ARDKLWb2j
- evDQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687281998; x=1689873998;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=4bMCmETV5A3RE3Y5AD1rHTVY6vGqDtmQP66Im/JEggA=;
- b=GYBt4d5LSUzQ7APVW4YEdiTEfjvNDXY/1xUe7gcGKH6W38HW4cvnUB9tlfZq3XwuyW
- PAdO5QxUQH9geREmBVlS//FNMipPLaCSOYRbbVfGnYniogqZtrm8WD/bolqWjZxisa/1
- EKg8JBU3gdHuWdeXA+R8TNYc24ADczR8t8LBWid8uypt7KfDbT8YsFSuuVQYwy/r0pl5
- cb5hxi/1Am+Q3XgHWIWVr9ZyB++sEky9sVn+TBY6/xXtsxyAXS7Ccsz4Q01mXJnolDXc
- M2ARrNhfflnC9YirTyGCE2yzoFtAzN1f4ipA7k1JOkq40Y1xMdbn+tALuvbXDGmMk6e5
- nTYA==
-X-Gm-Message-State: AC+VfDyaX21nwDwVdvxUnpU1VoAcY2c4CCSP1Si+txlR2QFA46oPrTwF
- dp4EK/tQyInTzHb1m5nrH/kbCkDDOpWn/w==
-X-Google-Smtp-Source: ACHHUZ7cU55hy5Cb37BJ9iPrgAmJK5V5Rqisz43YU2ciSAZoqwyKKwB4+WRqY0bOxGK9i+BEe6e6MQ==
-X-Received: by 2002:a0d:d947:0:b0:56c:fd14:a6f2 with SMTP id
- b68-20020a0dd947000000b0056cfd14a6f2mr15247962ywe.8.1687281998081; 
- Tue, 20 Jun 2023 10:26:38 -0700 (PDT)
-Received: from joel-Precision-7920-Tower.. ([24.53.71.1])
- by smtp.gmail.com with ESMTPSA id
- e65-20020a0dc244000000b0056cffe97a11sm604604ywd.13.2023.06.20.10.26.37
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 20 Jun 2023 10:26:37 -0700 (PDT)
-From: Joel Upham <jupham125@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: Joel Upham <jupham125@gmail.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qBg9g-0004Y5-RS
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 14:32:42 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qBg9f-0000nx-F8
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 14:32:40 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1687285958;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=x11f5g11vdxrx0fJe129Gy7Hy7yhV926S3geMwzS4Vo=;
+ b=fLLznuHaC+6z4K2m8pbPQsogXyTZw4/Gd4Ub5pcpXMKGvHu9cCRHlnR98vdliztzLNYMCD
+ eQzPRlBepZxPASOBHcSJY5MMU73HSsUzTgJPBY/91ok56CJNZzZk23UzRcJrL3DnTAFJfW
+ +j+tSol4mT+5Xrr8RXD0Xk4cwFucyn0=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-605-TD-aCi_1PXOqe0ivHOYN2w-1; Tue, 20 Jun 2023 14:32:33 -0400
+X-MC-Unique: TD-aCi_1PXOqe0ivHOYN2w-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id F2FE81C08965;
+ Tue, 20 Jun 2023 18:32:29 +0000 (UTC)
+Received: from redhat.com (unknown [10.39.194.119])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 2A2529E9C;
+ Tue, 20 Jun 2023 18:32:28 +0000 (UTC)
+Date: Tue, 20 Jun 2023 20:32:27 +0200
+From: Kevin Wolf <kwolf@redhat.com>
+To: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: Alexander Graf <graf@amazon.com>, qemu-devel@nongnu.org,
+ qemu-block@nongnu.org, qemu-arm@nongnu.org,
+ Cameron Esfahani <dirty@apple.com>,
+ Roman Bolshakov <r.bolshakov@yadro.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>
-Subject: [PATCH v1 23/23] s3 support: enabling s3 with q35
-Date: Tue, 20 Jun 2023 13:24:57 -0400
-Message-Id: <109921db6ea7bfbb46130cbd3734f41068d38fe5.1687278381.git.jupham125@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <cover.1687278381.git.jupham125@gmail.com>
-References: <cover.1687278381.git.jupham125@gmail.com>
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>
+Subject: Re: [PATCH 05/12] hw/virtio: Add support for apple virtio-blk
+Message-ID: <ZJHwu+YWmNKCtpfa@redhat.com>
+References: <20230614224038.86148-1-graf>
+ <20230614225626.97734-1-graf@amazon.com>
+ <20230620143537.GD2625194@fedora>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1129;
- envelope-from=jupham125@gmail.com; helo=mail-yw1-x1129.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="TzgUut/zgvatE2El"
+Content-Disposition: inline
+In-Reply-To: <20230620143537.GD2625194@fedora>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Tue, 20 Jun 2023 15:45:55 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,75 +85,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Resetting pci devices after s3 causes guest freezes, as xen usually
-likes to handle resetting devices.
 
+--TzgUut/zgvatE2El
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Joel Upham <jupham125@gmail.com>
----
- hw/acpi/ich9.c    | 12 ++++++++----
- hw/pci-host/q35.c |  3 ++-
- 2 files changed, 10 insertions(+), 5 deletions(-)
+Am 20.06.2023 um 16:35 hat Stefan Hajnoczi geschrieben:
+> On Wed, Jun 14, 2023 at 10:56:22PM +0000, Alexander Graf wrote:
+> > diff --git a/hw/block/virtio-blk.c b/hw/block/virtio-blk.c
+> > index 39e7f23fab..76b85bb3cb 100644
+> > --- a/hw/block/virtio-blk.c
+> > +++ b/hw/block/virtio-blk.c
+> > @@ -1120,6 +1120,20 @@ static int virtio_blk_handle_request(VirtIOBlock=
+Req *req, MultiReqBuffer *mrb)
+> > =20
+> >          break;
+> >      }
+> > +    case VIRTIO_BLK_T_APPLE1:
+> > +    {
+> > +        if (s->conf.x_apple_type) {
+> > +            /* Only valid on Apple Virtio */
+> > +            char buf[iov_size(in_iov, in_num)];
+>=20
+> I'm concerned that a variable-sized stack buffer could be abused by a
+> malicious guest. Even if it's harmless in the Apple use case, someone
+> else might copy this approach and use it where it creates a security
+> problem. Please either implement iov_memset() or allocate the temporary
+> buffer using bdrv_blockalign() (and free it with qemu_vfree()).
+>=20
+> > +            memset(buf, 0, sizeof(buf));
+> > +            iov_from_buf(in_iov, in_num, 0, buf, sizeof(buf));
+> > +            virtio_blk_req_complete(req, VIRTIO_BLK_S_OK);
 
-diff --git a/hw/acpi/ich9.c b/hw/acpi/ich9.c
-index 1c236be1c7..234706a191 100644
---- a/hw/acpi/ich9.c
-+++ b/hw/acpi/ich9.c
-@@ -143,7 +143,8 @@ static int ich9_pm_post_load(void *opaque, int version_id)
- {
-     ICH9LPCPMRegs *pm = opaque;
-     uint32_t pm_io_base = pm->pm_io_base;
--    pm->pm_io_base = 0;
-+    if (!xen_enabled())
-+        pm->pm_io_base = 0;
-     ich9_pm_iospace_update(pm, pm_io_base);
-     return 0;
- }
-@@ -274,7 +275,10 @@ static void pm_reset(void *opaque)
-     acpi_pm1_evt_reset(&pm->acpi_regs);
-     acpi_pm1_cnt_reset(&pm->acpi_regs);
-     acpi_pm_tmr_reset(&pm->acpi_regs);
--    acpi_gpe_reset(&pm->acpi_regs);
-+    /* Noticed guest freezing in xen when this was reset after S3. */
-+    if (!xen_enabled()) {
-+        acpi_gpe_reset(&pm->acpi_regs);
-+    }
- 
-     pm->smi_en = 0;
-     if (!pm->smm_enabled) {
-@@ -322,7 +326,7 @@ void ich9_pm_init(PCIDevice *lpc_pci, ICH9LPCPMRegs *pm, qemu_irq sci_irq)
-         acpi_pm_tco_init(&pm->tco_regs, &pm->io);
-     }
- 
--    if (pm->acpi_pci_hotplug.use_acpi_hotplug_bridge) {
-+    if (pm->acpi_pci_hotplug.use_acpi_hotplug_bridge || xen_enabled()) {
-         acpi_pcihp_init(OBJECT(lpc_pci),
-                         &pm->acpi_pci_hotplug,
-                         pci_get_bus(lpc_pci),
-@@ -345,7 +349,7 @@ void ich9_pm_init(PCIDevice *lpc_pci, ICH9LPCPMRegs *pm, qemu_irq sci_irq)
-     legacy_acpi_cpu_hotplug_init(pci_address_space_io(lpc_pci),
-         OBJECT(lpc_pci), &pm->gpe_cpu, ICH9_CPU_HOTPLUG_IO_BASE);
- 
--    if (pm->acpi_memory_hotplug.is_enabled) {
-+    if (pm->acpi_memory_hotplug.is_enabled || xen_enabled()) {
-         acpi_memory_hotplug_init(pci_address_space_io(lpc_pci), OBJECT(lpc_pci),
-                                  &pm->acpi_memory_hotplug,
-                                  ACPI_MEMORY_HOTPLUG_BASE);
-diff --git a/hw/pci-host/q35.c b/hw/pci-host/q35.c
-index 1fe4e5a5c9..5891839ce9 100644
---- a/hw/pci-host/q35.c
-+++ b/hw/pci-host/q35.c
-@@ -580,7 +580,8 @@ static void mch_reset(DeviceState *qdev)
-     d->config[MCH_HOST_BRIDGE_F_SMBASE] = 0;
-     d->wmask[MCH_HOST_BRIDGE_F_SMBASE] = 0xff;
- 
--    mch_update(mch);
-+    if (!xen_enabled())
-+        mch_update(mch);
- }
- 
- static void mch_realize(PCIDevice *d, Error **errp)
--- 
-2.34.1
+Good point, even more so when iov_memset() should do the job with
+simpler code.
+
+Kevin
+
+--TzgUut/zgvatE2El
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEE3D3rFZqa+V09dFb+fwmycsiPL9YFAmSR8LoACgkQfwmycsiP
+L9aIng//QRDMiPXkpxaA5mcUxnG1DuPIXXjBXRbxu2EU2R67sjNsUX9BYbK13152
+t/y7e7zAg+nzfrUc/PG3fd/FS1MkMOeoJOLM3sVVKf3NXEPomNFOnCy/hcdjQ1so
+B/l08Ma98moNs00G/JXyXO39YtxbmMMmaqR/aWYVht0VJ2CR6X5894/J20vyUyAZ
+TTFJi8IHV3hIknW6E7eCzQ0m3RFf8HNzzOtvIxxuzxkZh5h+W6HxAeysnKhcy8xj
+QzG5gPYAjU+1kd1+vDfLmPLbqUdh2WG3+9pEFw5PElHLh+4UkAkCFOS7uiKRBf/g
+2U9Xbc+VV5sMVcOt0wBFtIRYQSjHQJJemNQdRg5GL30OTeb4LHjYi02lyoJZu4Wa
+bY/2YlHEy1gL9AAa9Uw3xM06e/bnE22BnaBawHxtLqTTf5S3ZeTcTR1BKYnrrYO/
+RXLeDWTM+bb2XtLN7mMhcDXlxDtvMc9InMmWOsOnIB+M7qe8MRbhNrECiZ9Fp5br
+LjRScZn7qfuYN2f26Fm7SO4W0xkN7uRdV90qfUXuEpDAamH+AkS5ejVUAUhwc634
+R4hSTAPN630CbT1RU69VWJH2VbN84c427AGGKA3pO1zg9VNfFyxpJYVjOldsMZeE
+oc99QXRmcij1GWmfwn5m0OdhqgzIteAwrnVN1s+U5IRC+ZhYEB8=
+=ZyLf
+-----END PGP SIGNATURE-----
+
+--TzgUut/zgvatE2El--
 
 
