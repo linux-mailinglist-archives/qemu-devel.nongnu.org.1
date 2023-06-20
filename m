@@ -2,98 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1843973642F
+	by mail.lfdr.de (Postfix) with ESMTPS id BFDF6736430
 	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 09:14:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBVXS-0001QR-VT; Tue, 20 Jun 2023 03:12:30 -0400
+	id 1qBVYh-0001w3-C5; Tue, 20 Jun 2023 03:13:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <fbarrat@linux.ibm.com>)
- id 1qBVWn-0001PG-16; Tue, 20 Jun 2023 03:11:55 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ id 1qBVYM-0001q4-Cy; Tue, 20 Jun 2023 03:13:33 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <fbarrat@linux.ibm.com>)
- id 1qBVWl-0004eM-Aw; Tue, 20 Jun 2023 03:11:48 -0400
-Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
+ id 1qBVYI-0004n1-Ne; Tue, 20 Jun 2023 03:13:24 -0400
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 35K7APX0011952; Tue, 20 Jun 2023 07:11:35 GMT
+ 35K77wvf015446; Tue, 20 Jun 2023 07:13:17 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=+gDGEE5KRHuxcwuKpkjUXRwl6G86U/RqBt6F3a7DFm0=;
- b=fxCDsha3YX50v2zMMP1XwH2wpOtid5OatA8NbEzvEu4c8UAxPT0QVqaUP5cOIK6r3ZQw
- 1NDGB8oC6ALtSqmB0LqGUwuKQGK9fv7T/trqIYNZaOD+KaT76vbL7FbDaX3Ejx/cV5YE
- L4pCYCHh17C1pM68iaQP2qbfJ1m3iaX+KoObZCZpQqiU47Jk/cTJ7RybRCD8W1ibMeGL
- Lg8NBBz6IKDRsSTk8VrUI+J5KKeFLzZfRts+eR5IPCWaRo+fqCjrtKfcFxAO6PH3JyjQ
- Alr4BpqSbuV8LUANjvswq3gYIs8Yk87jXGvu3BgaxBIOO+a5RVfiB6tMjXlKHUPWL/m9 kw== 
+ subject : to : cc : references : from : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=S0MHy0zQd+uoHhikSYkWwxXlHmjnAem1dnJeYF9W078=;
+ b=FRrhUy0jwCjEgj3K27eqpMyV6zwcWA/cp698DUbR3og4TmdSiGpq+f3FnKXwT/h50tIz
+ TOgQrOiFK3OumOQOPFBsuuFAPb7tXGUPf28gxP8fSXkNs+GMEbSxZhNYosiDcc4zsYG1
+ /o0iL7dtUkYMuZl0e3Z4GQwT2T1PaQXeZQ8EUzUvYYF4+x2JXf5KS7GIs47j9pF1mdwX
+ 8nCwAkNT7nYUmB37slXBqUYs5TsM64tycuKrA76S1TQr62n0i5ON8HpZlcADlpelry9x
+ eMKRytvTWp7WSfa3tcSn29Z92nZvOwD8GQXJAfC56i91jZ8jLr2N8HNEGF9vZPfYErSw NQ== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rb79n09m3-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rb755rtca-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 20 Jun 2023 07:11:34 +0000
-Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 35K7Ae9H012779;
- Tue, 20 Jun 2023 07:11:34 GMT
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.99])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rb79n09fk-1
+ Tue, 20 Jun 2023 07:13:16 +0000
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 35K78LQG019733;
+ Tue, 20 Jun 2023 07:12:40 GMT
+Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.72])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rb755rsnk-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 20 Jun 2023 07:11:34 +0000
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
- by ppma04ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 35K5pYWU030800;
- Tue, 20 Jun 2023 07:11:29 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
- by ppma04ams.nl.ibm.com (PPS) with ESMTPS id 3r94f59wfe-1
+ Tue, 20 Jun 2023 07:12:40 +0000
+Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
+ by ppma06fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 35K40FMp031759;
+ Tue, 20 Jun 2023 07:11:53 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+ by ppma06fra.de.ibm.com (PPS) with ESMTPS id 3r943e1egd-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 20 Jun 2023 07:11:29 +0000
+ Tue, 20 Jun 2023 07:11:52 +0000
 Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com
  [10.20.54.106])
- by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 35K7BRID60424450
+ by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 35K7Bo3g9634556
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 20 Jun 2023 07:11:27 GMT
+ Tue, 20 Jun 2023 07:11:50 GMT
 Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7CB4F20043;
- Tue, 20 Jun 2023 07:11:27 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 805D920040;
+ Tue, 20 Jun 2023 07:11:50 +0000 (GMT)
 Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3A13D20040;
- Tue, 20 Jun 2023 07:11:27 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 388AA2004B;
+ Tue, 20 Jun 2023 07:11:50 +0000 (GMT)
 Received: from [9.101.4.34] (unknown [9.101.4.34])
  by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Tue, 20 Jun 2023 07:11:27 +0000 (GMT)
-Message-ID: <2cd42421-bf24-32ec-4e5c-e96682c46686@linux.ibm.com>
-Date: Tue, 20 Jun 2023 09:11:26 +0200
-MIME-Version: 1.0
+ Tue, 20 Jun 2023 07:11:50 +0000 (GMT)
+Message-ID: <3775436e-70ed-a9e2-92a1-95bdfcf52a26@linux.ibm.com>
+Date: Tue, 20 Jun 2023 09:11:50 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.1
-Subject: Re: [PATCH 1/9] MAINTAINERS: Add reviewers for PowerNV baremetal
- emulation
+Subject: Re: [PATCH 3/9] MAINTAINERS: Add reviewer for XIVE
+Content-Language: en-US
 To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>, qemu-ppc@nongnu.org,
  Daniel Henrique Barboza <danielhb413@gmail.com>
-Cc: qemu-devel@nongnu.org, Nicholas Piggin <npiggin@gmail.com>
+Cc: qemu-devel@nongnu.org
 References: <20230620055911.187065-1-clg@kaod.org>
- <20230620055911.187065-2-clg@kaod.org>
-Content-Language: en-US
+ <20230620055911.187065-4-clg@kaod.org>
 From: Frederic Barrat <fbarrat@linux.ibm.com>
-In-Reply-To: <20230620055911.187065-2-clg@kaod.org>
+In-Reply-To: <20230620055911.187065-4-clg@kaod.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: FoOXJrKcAGvjiK7LoQ1WyfIPqzL-OAR9
-X-Proofpoint-GUID: 1-ZhWfn__ElPQJPymJPUd3uTcWOu56Io
+X-Proofpoint-GUID: fhR1I_LNfRzkBk8HkAD87UfBeNjtqSO-
+X-Proofpoint-ORIG-GUID: OHpBasW8TerAviYFSJHsSaCVwhhya9pD
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
  definitions=2023-06-20_04,2023-06-16_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 malwarescore=0
- suspectscore=0 phishscore=0 adultscore=0 spamscore=0 bulkscore=0
- priorityscore=1501 lowpriorityscore=0 mlxlogscore=874 impostorscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ adultscore=0 suspectscore=0
+ bulkscore=0 priorityscore=1501 mlxscore=0 malwarescore=0 spamscore=0
+ mlxlogscore=999 clxscore=1015 lowpriorityscore=0 impostorscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2305260000 definitions=main-2306200062
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=fbarrat@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=fbarrat@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -119,35 +119,31 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 On 20/06/2023 07:59, Cédric Le Goater wrote:
-> Fred and Nick have been hacking baremetal POWER systems (OPAL) for
-> many years. They use and modify the QEMU models regularly. Add them as
-> PowerNV reviewers.
+> Fred discusses frequently with the IBM HW designers, he is fluent in
+> XIVE logic, add him as a reviewer.
 > 
 > Cc: Frédéric Barrat <fbarrat@linux.ibm.com>
-> Cc: Nicholas Piggin <npiggin@gmail.com>
 > Signed-off-by: Cédric Le Goater <clg@kaod.org>
 > ---
-
 
 Acked-by: Frederic Barrat <fbarrat@linux.ibm.com>
 
    Fred
 
 
->   MAINTAINERS | 2 ++
->   1 file changed, 2 insertions(+)
+>   MAINTAINERS | 1 +
+>   1 file changed, 1 insertion(+)
 > 
 > diff --git a/MAINTAINERS b/MAINTAINERS
-> index 88b5a7ee0a79..e6f3dade2230 100644
+> index 90fb83c4cb58..2e8c715eaca4 100644
 > --- a/MAINTAINERS
 > +++ b/MAINTAINERS
-> @@ -1448,6 +1448,8 @@ F: tests/avocado/ppc_pseries.py
+> @@ -2445,6 +2445,7 @@ T: git https://github.com/philmd/qemu.git fw_cfg-next
 >   
->   PowerNV (Non-Virtualized)
+>   XIVE
 >   M: Cédric Le Goater <clg@kaod.org>
 > +R: Frédéric Barrat <fbarrat@linux.ibm.com>
-> +R: Nicholas Piggin <npiggin@gmail.com>
 >   L: qemu-ppc@nongnu.org
 >   S: Odd Fixes
->   F: docs/system/ppc/powernv.rst
+>   F: hw/*/*xive*
 
