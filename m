@@ -2,41 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2717873680A
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 11:42:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A4F77736800
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 11:41:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBXom-00073E-G9; Tue, 20 Jun 2023 05:38:32 -0400
+	id 1qBXop-00074K-68; Tue, 20 Jun 2023 05:38:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1qBXoh-00071Y-4N
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 05:38:27 -0400
+ id 1qBXoi-00072D-Ie
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 05:38:31 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1qBXod-0006Fe-CK
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 05:38:26 -0400
+ (envelope-from <gaosong@loongson.cn>) id 1qBXod-0006Gk-I3
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 05:38:28 -0400
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8AxnOqJc5FkhiUHAA--.14482S3;
+ by gateway (Coremail) with SMTP id _____8BxLuuJc5FkiSUHAA--.14913S3;
  Tue, 20 Jun 2023 17:38:17 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
  by localhost.localdomain (Coremail) with SMTP id
- AQAAf8BxduSGc5FkzIQhAA--.28394S5; 
- Tue, 20 Jun 2023 17:38:16 +0800 (CST)
+ AQAAf8BxduSGc5FkzIQhAA--.28394S6; 
+ Tue, 20 Jun 2023 17:38:17 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org
-Subject: [PATCH v1 03/46] target/loongarch: Add CHECK_ASXE maccro for check
- LASX enable
-Date: Tue, 20 Jun 2023 17:37:31 +0800
-Message-Id: <20230620093814.123650-4-gaosong@loongson.cn>
+Subject: [PATCH v1 04/46] target/loongarch: Implement xvadd/xvsub
+Date: Tue, 20 Jun 2023 17:37:32 +0800
+Message-Id: <20230620093814.123650-5-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20230620093814.123650-1-gaosong@loongson.cn>
 References: <20230620093814.123650-1-gaosong@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8BxduSGc5FkzIQhAA--.28394S5
+X-CM-TRANSID: AQAAf8BxduSGc5FkzIQhAA--.28394S6
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -63,71 +62,189 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+This patch includes:
+- XVADD.{B/H/W/D/Q};
+- XVSUB.{B/H/W/D/Q}.
+
 Signed-off-by: Song Gao <gaosong@loongson.cn>
 ---
- target/loongarch/cpu.c                       |  2 ++
- target/loongarch/cpu.h                       |  2 ++
- target/loongarch/insn_trans/trans_lasx.c.inc | 10 ++++++++++
- 3 files changed, 14 insertions(+)
+ target/loongarch/disas.c                     | 23 ++++++++
+ target/loongarch/insn_trans/trans_lasx.c.inc | 59 ++++++++++++++++++++
+ target/loongarch/insns.decode                | 23 ++++++++
+ target/loongarch/translate.c                 | 17 ++++++
+ 4 files changed, 122 insertions(+)
 
-diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
-index 5037cfc02c..c9f9cbb19d 100644
---- a/target/loongarch/cpu.c
-+++ b/target/loongarch/cpu.c
-@@ -54,6 +54,7 @@ static const char * const excp_names[] = {
-     [EXCCODE_DBP] = "Debug breakpoint",
-     [EXCCODE_BCE] = "Bound Check Exception",
-     [EXCCODE_SXD] = "128 bit vector instructions Disable exception",
-+    [EXCCODE_ASXD] = "256 bit vector instructions Disable exception",
- };
- 
- const char *loongarch_exception_name(int32_t exception)
-@@ -189,6 +190,7 @@ static void loongarch_cpu_do_interrupt(CPUState *cs)
-     case EXCCODE_FPD:
-     case EXCCODE_FPE:
-     case EXCCODE_SXD:
-+    case EXCCODE_ASXD:
-         env->CSR_BADV = env->pc;
-         QEMU_FALLTHROUGH;
-     case EXCCODE_BCE:
-diff --git a/target/loongarch/cpu.h b/target/loongarch/cpu.h
-index 347950b4d0..6e8d247ae0 100644
---- a/target/loongarch/cpu.h
-+++ b/target/loongarch/cpu.h
-@@ -440,6 +440,7 @@ static inline int cpu_mmu_index(CPULoongArchState *env, bool ifetch)
- #define HW_FLAGS_CRMD_PG    R_CSR_CRMD_PG_MASK   /* 0x10 */
- #define HW_FLAGS_EUEN_FPE   0x04
- #define HW_FLAGS_EUEN_SXE   0x08
-+#define HW_FLAGS_EUEN_ASXE  0x10
- 
- static inline void cpu_get_tb_cpu_state(CPULoongArchState *env,
-                                         target_ulong *pc,
-@@ -451,6 +452,7 @@ static inline void cpu_get_tb_cpu_state(CPULoongArchState *env,
-     *flags = env->CSR_CRMD & (R_CSR_CRMD_PLV_MASK | R_CSR_CRMD_PG_MASK);
-     *flags |= FIELD_EX64(env->CSR_EUEN, CSR_EUEN, FPE) * HW_FLAGS_EUEN_FPE;
-     *flags |= FIELD_EX64(env->CSR_EUEN, CSR_EUEN, SXE) * HW_FLAGS_EUEN_SXE;
-+    *flags |= FIELD_EX64(env->CSR_EUEN, CSR_EUEN, ASXE) * HW_FLAGS_EUEN_ASXE;
- }
- 
- void loongarch_cpu_list(void);
+diff --git a/target/loongarch/disas.c b/target/loongarch/disas.c
+index 5c402d944d..696f78c491 100644
+--- a/target/loongarch/disas.c
++++ b/target/loongarch/disas.c
+@@ -1695,3 +1695,26 @@ INSN_LSX(vstelm_d,         vr_ii)
+ INSN_LSX(vstelm_w,         vr_ii)
+ INSN_LSX(vstelm_h,         vr_ii)
+ INSN_LSX(vstelm_b,         vr_ii)
++
++#define INSN_LASX(insn, type)                               \
++static bool trans_##insn(DisasContext *ctx, arg_##type * a) \
++{                                                           \
++    output_##type(ctx, a, #insn);                           \
++    return true;                                            \
++}
++
++static void output_xxx(DisasContext *ctx, arg_xxx * a, const char *mnemonic)
++{
++    output(ctx, mnemonic, "x%d, x%d, x%d", a->xd, a->xj, a->xk);
++}
++
++INSN_LASX(xvadd_b,           xxx)
++INSN_LASX(xvadd_h,           xxx)
++INSN_LASX(xvadd_w,           xxx)
++INSN_LASX(xvadd_d,           xxx)
++INSN_LASX(xvadd_q,           xxx)
++INSN_LASX(xvsub_b,           xxx)
++INSN_LASX(xvsub_h,           xxx)
++INSN_LASX(xvsub_w,           xxx)
++INSN_LASX(xvsub_d,           xxx)
++INSN_LASX(xvsub_q,           xxx)
 diff --git a/target/loongarch/insn_trans/trans_lasx.c.inc b/target/loongarch/insn_trans/trans_lasx.c.inc
-index 56a9839255..75a77f5dce 100644
+index 75a77f5dce..c918522f96 100644
 --- a/target/loongarch/insn_trans/trans_lasx.c.inc
 +++ b/target/loongarch/insn_trans/trans_lasx.c.inc
-@@ -4,3 +4,13 @@
-  * Copyright (c) 2023 Loongson Technology Corporation Limited
-  */
+@@ -14,3 +14,62 @@
+ #else
+ #define CHECK_ASXE
+ #endif
++
++static bool gvec_xxx(DisasContext *ctx, arg_xxx *a, MemOp mop,
++                     void (*func)(unsigned, uint32_t, uint32_t,
++                                  uint32_t, uint32_t, uint32_t))
++{
++    uint32_t xd_ofs, xj_ofs, xk_ofs;
++
++    CHECK_ASXE;
++
++    xd_ofs = vec_full_offset(a->xd);
++    xj_ofs = vec_full_offset(a->xj);
++    xk_ofs = vec_full_offset(a->xk);
++
++    func(mop, xd_ofs, xj_ofs, xk_ofs, 32, ctx->vl / 8);
++    return true;
++}
++
++TRANS(xvadd_b, gvec_xxx, MO_8, tcg_gen_gvec_add)
++TRANS(xvadd_h, gvec_xxx, MO_16, tcg_gen_gvec_add)
++TRANS(xvadd_w, gvec_xxx, MO_32, tcg_gen_gvec_add)
++TRANS(xvadd_d, gvec_xxx, MO_64, tcg_gen_gvec_add)
++
++#define XVADDSUB_Q(NAME)                                        \
++static bool trans_xv## NAME ##_q(DisasContext *ctx, arg_xxx *a) \
++{                                                               \
++    TCGv_i64 rh, rl, ah, al, bh, bl;                            \
++    int i;                                                      \
++                                                                \
++    CHECK_ASXE;                                                 \
++                                                                \
++    rh = tcg_temp_new_i64();                                    \
++    rl = tcg_temp_new_i64();                                    \
++    ah = tcg_temp_new_i64();                                    \
++    al = tcg_temp_new_i64();                                    \
++    bh = tcg_temp_new_i64();                                    \
++    bl = tcg_temp_new_i64();                                    \
++                                                                \
++    for (i = 0; i < 2; i++) {                                   \
++        get_xreg64(ah, a->xj, 1 + i * 2);                       \
++        get_xreg64(al, a->xj, 0 + i * 2);                       \
++        get_xreg64(bh, a->xk, 1 + i * 2);                       \
++        get_xreg64(bl, a->xk, 0 + i * 2);                       \
++                                                                \
++        tcg_gen_## NAME ##2_i64(rl, rh, al, ah, bl, bh);        \
++                                                                \
++        set_xreg64(rh, a->xd, 1 + i * 2);                       \
++        set_xreg64(rl, a->xd, 0 + i * 2);                       \
++   }                                                            \
++                                                                \
++    return true;                                                \
++}
++
++XVADDSUB_Q(add)
++XVADDSUB_Q(sub)
++
++TRANS(xvsub_b, gvec_xxx, MO_8, tcg_gen_gvec_sub)
++TRANS(xvsub_h, gvec_xxx, MO_16, tcg_gen_gvec_sub)
++TRANS(xvsub_w, gvec_xxx, MO_32, tcg_gen_gvec_sub)
++TRANS(xvsub_d, gvec_xxx, MO_64, tcg_gen_gvec_sub)
+diff --git a/target/loongarch/insns.decode b/target/loongarch/insns.decode
+index c9c3bc2c73..bac1903975 100644
+--- a/target/loongarch/insns.decode
++++ b/target/loongarch/insns.decode
+@@ -1296,3 +1296,26 @@ vstelm_d         0011 00010001 0 . ........ ..... .....   @vr_i8i1
+ vstelm_w         0011 00010010 .. ........ ..... .....    @vr_i8i2
+ vstelm_h         0011 0001010 ... ........ ..... .....    @vr_i8i3
+ vstelm_b         0011 000110 .... ........ ..... .....    @vr_i8i4
++
++#
++# LASX Argument sets
++#
++
++&xxx          xd xj xk
++
++#
++# LASX Formats
++#
++
++@xxx                .... ........ ..... xk:5 xj:5 xd:5    &xxx
++
++xvadd_b          0111 01000000 10100 ..... ..... .....    @xxx
++xvadd_h          0111 01000000 10101 ..... ..... .....    @xxx
++xvadd_w          0111 01000000 10110 ..... ..... .....    @xxx
++xvadd_d          0111 01000000 10111 ..... ..... .....    @xxx
++xvadd_q          0111 01010010 11010 ..... ..... .....    @xxx
++xvsub_b          0111 01000000 11000 ..... ..... .....    @xxx
++xvsub_h          0111 01000000 11001 ..... ..... .....    @xxx
++xvsub_w          0111 01000000 11010 ..... ..... .....    @xxx
++xvsub_d          0111 01000000 11011 ..... ..... .....    @xxx
++xvsub_q          0111 01010010 11011 ..... ..... .....    @xxx
+diff --git a/target/loongarch/translate.c b/target/loongarch/translate.c
+index 6bf2d726d6..5300e14815 100644
+--- a/target/loongarch/translate.c
++++ b/target/loongarch/translate.c
+@@ -18,6 +18,7 @@
+ #include "fpu/softfloat.h"
+ #include "translate.h"
+ #include "internals.h"
++#include "vec.h"
  
-+#ifndef CONFIG_USER_ONLY
-+#define CHECK_ASXE do { \
-+    if ((ctx->base.tb->flags & HW_FLAGS_EUEN_ASXE) == 0) { \
-+        generate_exception(ctx, EXCCODE_ASXD); \
-+        return true; \
-+    } \
-+} while (0)
-+#else
-+#define CHECK_ASXE
-+#endif
+ /* Global register indices */
+ TCGv cpu_gpr[32], cpu_pc;
+@@ -48,6 +49,18 @@ static inline void set_vreg64(TCGv_i64 src, int regno, int index)
+                    offsetof(CPULoongArchState, fpr[regno].vreg.D(index)));
+ }
+ 
++static inline void get_xreg64(TCGv_i64 dest, int regno, int index)
++{
++    tcg_gen_ld_i64(dest, cpu_env,
++                   offsetof(CPULoongArchState, fpr[regno].xreg.XD(index)));
++}
++
++static inline void set_xreg64(TCGv_i64 src, int regno, int index)
++{
++    tcg_gen_st_i64(src, cpu_env,
++                   offsetof(CPULoongArchState, fpr[regno].xreg.XD(index)));
++}
++
+ static inline int plus_1(DisasContext *ctx, int x)
+ {
+     return x + 1;
+@@ -119,6 +132,10 @@ static void loongarch_tr_init_disas_context(DisasContextBase *dcbase,
+         ctx->vl = LSX_LEN;
+     }
+ 
++    if (FIELD_EX64(env->cpucfg[2], CPUCFG2, LASX)) {
++        ctx->vl = LASX_LEN;
++    }
++
+     ctx->zero = tcg_constant_tl(0);
+ }
+ 
 -- 
 2.39.1
 
