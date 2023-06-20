@@ -2,40 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6FC4736827
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 11:44:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6513F7367FF
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 11:40:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBXon-00073z-63; Tue, 20 Jun 2023 05:38:33 -0400
+	id 1qBXop-00074a-Du; Tue, 20 Jun 2023 05:38:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1qBXoh-00071r-Db
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 05:38:27 -0400
+ id 1qBXoi-00072F-Qp
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 05:38:31 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1qBXod-0006HE-Eg
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 05:38:27 -0400
+ (envelope-from <gaosong@loongson.cn>) id 1qBXoe-0006HG-J4
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 05:38:28 -0400
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8Ax0OiKc5FkjCUHAA--.12762S3;
+ by gateway (Coremail) with SMTP id _____8DxCeqKc5FkjiUHAA--.14722S3;
  Tue, 20 Jun 2023 17:38:18 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
  by localhost.localdomain (Coremail) with SMTP id
- AQAAf8BxduSGc5FkzIQhAA--.28394S8; 
- Tue, 20 Jun 2023 17:38:17 +0800 (CST)
+ AQAAf8BxduSGc5FkzIQhAA--.28394S9; 
+ Tue, 20 Jun 2023 17:38:18 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org
-Subject: [PATCH v1 06/46] target/loongarch: Implement xvaddi/xvsubi
-Date: Tue, 20 Jun 2023 17:37:34 +0800
-Message-Id: <20230620093814.123650-7-gaosong@loongson.cn>
+Subject: [PATCH v1 07/46] target/loongarch: Implement xvneg
+Date: Tue, 20 Jun 2023 17:37:35 +0800
+Message-Id: <20230620093814.123650-8-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20230620093814.123650-1-gaosong@loongson.cn>
 References: <20230620093814.123650-1-gaosong@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8BxduSGc5FkzIQhAA--.28394S8
+X-CM-TRANSID: AQAAf8BxduSGc5FkzIQhAA--.28394S9
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -63,59 +63,54 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 This patch includes:
-- XVADDI.{B/H/W/D}U;
-- XVSUBI.{B/H/W/D}U.
+- XVNEG.{B/H/W/D}.
 
 Signed-off-by: Song Gao <gaosong@loongson.cn>
 ---
- target/loongarch/disas.c                     | 14 ++++++++
- target/loongarch/insn_trans/trans_lasx.c.inc | 37 ++++++++++++++++++++
- target/loongarch/insns.decode                | 12 ++++++-
- 3 files changed, 62 insertions(+), 1 deletion(-)
+ target/loongarch/disas.c                     | 10 ++++++++++
+ target/loongarch/insn_trans/trans_lasx.c.inc | 20 ++++++++++++++++++++
+ target/loongarch/insns.decode                |  7 +++++++
+ 3 files changed, 37 insertions(+)
 
 diff --git a/target/loongarch/disas.c b/target/loongarch/disas.c
-index 78e1fd19ac..7b84766fa8 100644
+index 7b84766fa8..eefd16e3f1 100644
 --- a/target/loongarch/disas.c
 +++ b/target/loongarch/disas.c
-@@ -1708,6 +1708,11 @@ static void output_xxx(DisasContext *ctx, arg_xxx * a, const char *mnemonic)
-     output(ctx, mnemonic, "x%d, x%d, x%d", a->xd, a->xj, a->xk);
+@@ -1713,6 +1713,11 @@ static void output_xx_i(DisasContext *ctx, arg_xx_i *a, const char *mnemonic)
+     output(ctx, mnemonic, "x%d, x%d, 0x%x", a->xd, a->xj, a->imm);
  }
  
-+static void output_xx_i(DisasContext *ctx, arg_xx_i *a, const char *mnemonic)
++static void output_xx(DisasContext *ctx, arg_xx *a, const char *mnemonic)
 +{
-+    output(ctx, mnemonic, "x%d, x%d, 0x%x", a->xd, a->xj, a->imm);
++    output(ctx, mnemonic, "x%d, x%d", a->xd, a->xj);
 +}
 +
  static void output_xr(DisasContext *ctx, arg_xr *a, const char *mnemonic)
  {
      output(ctx, mnemonic, "x%d, r%d", a->xd, a->rj);
-@@ -1724,6 +1729,15 @@ INSN_LASX(xvsub_w,           xxx)
- INSN_LASX(xvsub_d,           xxx)
- INSN_LASX(xvsub_q,           xxx)
+@@ -1738,6 +1743,11 @@ INSN_LASX(xvsubi_hu,         xx_i)
+ INSN_LASX(xvsubi_wu,         xx_i)
+ INSN_LASX(xvsubi_du,         xx_i)
  
-+INSN_LASX(xvaddi_bu,         xx_i)
-+INSN_LASX(xvaddi_hu,         xx_i)
-+INSN_LASX(xvaddi_wu,         xx_i)
-+INSN_LASX(xvaddi_du,         xx_i)
-+INSN_LASX(xvsubi_bu,         xx_i)
-+INSN_LASX(xvsubi_hu,         xx_i)
-+INSN_LASX(xvsubi_wu,         xx_i)
-+INSN_LASX(xvsubi_du,         xx_i)
++INSN_LASX(xvneg_b,           xx)
++INSN_LASX(xvneg_h,           xx)
++INSN_LASX(xvneg_w,           xx)
++INSN_LASX(xvneg_d,           xx)
 +
  INSN_LASX(xvreplgr2vr_b,     xr)
  INSN_LASX(xvreplgr2vr_h,     xr)
  INSN_LASX(xvreplgr2vr_w,     xr)
 diff --git a/target/loongarch/insn_trans/trans_lasx.c.inc b/target/loongarch/insn_trans/trans_lasx.c.inc
-index d394a4f40a..a42e92f930 100644
+index a42e92f930..cea944c3ba 100644
 --- a/target/loongarch/insn_trans/trans_lasx.c.inc
 +++ b/target/loongarch/insn_trans/trans_lasx.c.inc
-@@ -31,6 +31,34 @@ static bool gvec_xxx(DisasContext *ctx, arg_xxx *a, MemOp mop,
+@@ -59,6 +59,21 @@ static bool gvec_xsubi(DisasContext *ctx, arg_xx_i *a, MemOp mop)
      return true;
  }
  
-+static bool gvec_xx_i(DisasContext *ctx, arg_xx_i *a, MemOp mop,
-+                      void (*func)(unsigned, uint32_t, uint32_t,
-+                                   int64_t, uint32_t, uint32_t))
++static bool gvec_xx(DisasContext *ctx, arg_xx *a, MemOp mop,
++                    void (*func)(unsigned, uint32_t, uint32_t,
++                                 uint32_t, uint32_t))
 +{
 +    uint32_t xd_ofs, xj_ofs;
 +
@@ -124,75 +119,53 @@ index d394a4f40a..a42e92f930 100644
 +    xd_ofs = vec_full_offset(a->xd);
 +    xj_ofs = vec_full_offset(a->xj);
 +
-+    func(mop, xd_ofs, xj_ofs, a->imm , 32, ctx->vl / 8);
-+    return true;
-+}
-+
-+static bool gvec_xsubi(DisasContext *ctx, arg_xx_i *a, MemOp mop)
-+{
-+    uint32_t xd_ofs, xj_ofs;
-+
-+    CHECK_ASXE;
-+
-+    xd_ofs = vec_full_offset(a->xd);
-+    xj_ofs = vec_full_offset(a->xj);
-+
-+    tcg_gen_gvec_addi(mop, xd_ofs, xj_ofs, -a->imm, 32, ctx->vl / 8);
++    func(mop, xd_ofs, xj_ofs, 32, ctx->vl / 8);
 +    return true;
 +}
 +
  TRANS(xvadd_b, gvec_xxx, MO_8, tcg_gen_gvec_add)
  TRANS(xvadd_h, gvec_xxx, MO_16, tcg_gen_gvec_add)
  TRANS(xvadd_w, gvec_xxx, MO_32, tcg_gen_gvec_add)
-@@ -74,6 +102,15 @@ TRANS(xvsub_h, gvec_xxx, MO_16, tcg_gen_gvec_sub)
- TRANS(xvsub_w, gvec_xxx, MO_32, tcg_gen_gvec_sub)
- TRANS(xvsub_d, gvec_xxx, MO_64, tcg_gen_gvec_sub)
+@@ -111,6 +126,11 @@ TRANS(xvsubi_hu, gvec_xsubi, MO_16)
+ TRANS(xvsubi_wu, gvec_xsubi, MO_32)
+ TRANS(xvsubi_du, gvec_xsubi, MO_64)
  
-+TRANS(xvaddi_bu, gvec_xx_i, MO_8, tcg_gen_gvec_addi)
-+TRANS(xvaddi_hu, gvec_xx_i, MO_16, tcg_gen_gvec_addi)
-+TRANS(xvaddi_wu, gvec_xx_i, MO_32, tcg_gen_gvec_addi)
-+TRANS(xvaddi_du, gvec_xx_i, MO_64, tcg_gen_gvec_addi)
-+TRANS(xvsubi_bu, gvec_xsubi, MO_8)
-+TRANS(xvsubi_hu, gvec_xsubi, MO_16)
-+TRANS(xvsubi_wu, gvec_xsubi, MO_32)
-+TRANS(xvsubi_du, gvec_xsubi, MO_64)
++TRANS(xvneg_b, gvec_xx, MO_8, tcg_gen_gvec_neg)
++TRANS(xvneg_h, gvec_xx, MO_16, tcg_gen_gvec_neg)
++TRANS(xvneg_w, gvec_xx, MO_32, tcg_gen_gvec_neg)
++TRANS(xvneg_d, gvec_xx, MO_64, tcg_gen_gvec_neg)
 +
  static bool gvec_dupx(DisasContext *ctx, arg_xr *a, MemOp mop)
  {
      TCGv src = gpr_src(ctx, a->rj, EXT_NONE);
 diff --git a/target/loongarch/insns.decode b/target/loongarch/insns.decode
-index 2eab7f6a98..0bed748216 100644
+index 0bed748216..78452c622c 100644
 --- a/target/loongarch/insns.decode
 +++ b/target/loongarch/insns.decode
-@@ -1303,7 +1303,7 @@ vstelm_b         0011 000110 .... ........ ..... .....    @vr_i8i4
+@@ -1301,6 +1301,7 @@ vstelm_b         0011 000110 .... ........ ..... .....    @vr_i8i4
+ # LASX Argument sets
+ #
  
++&xx           xd xj
  &xxx          xd xj xk
  &xr           xd rj
--
-+&xx_i         xd xj imm
- 
- #
+ &xx_i         xd xj imm
+@@ -1309,6 +1310,7 @@ vstelm_b         0011 000110 .... ........ ..... .....    @vr_i8i4
  # LASX Formats
-@@ -1311,6 +1311,7 @@ vstelm_b         0011 000110 .... ........ ..... .....    @vr_i8i4
+ #
  
++@xx                .... ........ ..... ..... xj:5 xd:5    &xx
  @xxx                .... ........ ..... xk:5 xj:5 xd:5    &xxx
  @xr                .... ........ ..... ..... rj:5 xd:5    &xr
-+@xx_ui5            .... ........ ..... imm:5 xj:5 xd:5    &xx_i
+ @xx_ui5            .... ........ ..... imm:5 xj:5 xd:5    &xx_i
+@@ -1333,6 +1335,11 @@ xvsubi_hu        0111 01101000 11001 ..... ..... .....    @xx_ui5
+ xvsubi_wu        0111 01101000 11010 ..... ..... .....    @xx_ui5
+ xvsubi_du        0111 01101000 11011 ..... ..... .....    @xx_ui5
  
- xvadd_b          0111 01000000 10100 ..... ..... .....    @xxx
- xvadd_h          0111 01000000 10101 ..... ..... .....    @xxx
-@@ -1323,6 +1324,15 @@ xvsub_w          0111 01000000 11010 ..... ..... .....    @xxx
- xvsub_d          0111 01000000 11011 ..... ..... .....    @xxx
- xvsub_q          0111 01010010 11011 ..... ..... .....    @xxx
- 
-+xvaddi_bu        0111 01101000 10100 ..... ..... .....    @xx_ui5
-+xvaddi_hu        0111 01101000 10101 ..... ..... .....    @xx_ui5
-+xvaddi_wu        0111 01101000 10110 ..... ..... .....    @xx_ui5
-+xvaddi_du        0111 01101000 10111 ..... ..... .....    @xx_ui5
-+xvsubi_bu        0111 01101000 11000 ..... ..... .....    @xx_ui5
-+xvsubi_hu        0111 01101000 11001 ..... ..... .....    @xx_ui5
-+xvsubi_wu        0111 01101000 11010 ..... ..... .....    @xx_ui5
-+xvsubi_du        0111 01101000 11011 ..... ..... .....    @xx_ui5
++xvneg_b          0111 01101001 11000 01100 ..... .....    @xx
++xvneg_h          0111 01101001 11000 01101 ..... .....    @xx
++xvneg_w          0111 01101001 11000 01110 ..... .....    @xx
++xvneg_d          0111 01101001 11000 01111 ..... .....    @xx
 +
  xvreplgr2vr_b    0111 01101001 11110 00000 ..... .....    @xr
  xvreplgr2vr_h    0111 01101001 11110 00001 ..... .....    @xr
