@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3E12737546
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 21:47:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 253F9737543
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 21:47:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBhIm-0008UI-Lj; Tue, 20 Jun 2023 15:46:09 -0400
+	id 1qBhIc-0008M4-4J; Tue, 20 Jun 2023 15:45:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jupham125@gmail.com>)
- id 1qBf7W-0004FS-1P
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 13:26:22 -0400
-Received: from mail-yb1-xb2d.google.com ([2607:f8b0:4864:20::b2d])
+ id 1qBf7X-0004Fj-G4
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 13:26:24 -0400
+Received: from mail-yw1-x112b.google.com ([2607:f8b0:4864:20::112b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <jupham125@gmail.com>)
- id 1qBf7S-0006bS-J1
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 13:26:21 -0400
-Received: by mail-yb1-xb2d.google.com with SMTP id
- 3f1490d57ef6-bf5f41a87ceso1824307276.1
- for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 10:26:14 -0700 (PDT)
+ id 1qBf7T-0006bW-6L
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 13:26:23 -0400
+Received: by mail-yw1-x112b.google.com with SMTP id
+ 00721157ae682-5704ddda6dfso56333047b3.1
+ for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 10:26:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1687281973; x=1689873973;
+ d=gmail.com; s=20221208; t=1687281975; x=1689873975;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=LEqoX2AjLX1PvGaIbFaWG2CMKLGJZqfTIlTMaOcN4vw=;
- b=syngMxkIZTeaQp9EqDCXblsZMbin0jsNke7dSjaot9xphnUmSuAruqjdyZe2WoweR3
- eH3f1NX9hHczy6+4cCHq6/IvVWjiWN90p0y8rp4ZLL6+B6jbVkJDavnPNLdcDi0Dvsy0
- GE88YUqM8DFZxDlftNsQp3Gcd2G3Q7VTV+HkrymeuvD2SjJpuHSV7W6isdnwiNQAnpbM
- l1sFy6VCqaTSSUiaqaeqTHMNKZC3TX3/pKRDESIrsX6VUJCPqDB0rGSJutFzEW+1FDYO
- mX2KmAlrMDsAn96lm/5k8KIKcHRj61qU1g/swUa5rHHKp57FAUtvjaBQ0q+0JXrryVWZ
- I9PA==
+ bh=5oficzjs5xcBYSHcpYrMTcfh+AwyMWQx/k5j2kJ4DGo=;
+ b=O2gmxwgPbbW0ycNLE6VtVZ2j4XzYDPo99Wh8EBMogWPXV+Kpoo9l2hXiGgJTL+3UWy
+ AV3HvB2nSQNIdHMZ3w/fcuOS3koy85JWsyMEA7Yff+X+tkkHnwQAUrI+P7vHfcJew7Ug
+ Xm/I3seDw2cBPzJ85DqXi1QSKXudjAHLntTZvTgkwyQs8QodwBBGFOhFsBa9wdc+0HRV
+ HC+t05bwvGK34OqN7tNbN9nZ4fHb12xARVgPdXFx+ua4ql/xGu5zg7kk2qyn2rHk3n0l
+ 9IaX5IlOAWeqfzqzljQHBqfCYEO5CzgHpqTA/ZiuAQed4J4/mx+PjRPgfZHTOe0RL5mE
+ DujQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687281973; x=1689873973;
+ d=1e100.net; s=20221208; t=1687281975; x=1689873975;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=LEqoX2AjLX1PvGaIbFaWG2CMKLGJZqfTIlTMaOcN4vw=;
- b=Hyb4E/EjcMYDm8TDFjSShsMzhZswSy1GH5jS3mD1HPEZrKo+TvzljeKfPw0X1NTOxR
- BFrCjwNdf/Y0ai9H8Zd8zbJZO5suRll+FPRZrjEqI26ImE2+Q5Quf9O1IzlXSBbkcAle
- dNLWRGfkiVYJp2U/RUAI61+Cve6rWClBiEOqci2ujiiEZz0S6HSsrpzq1sXM2h80lhvg
- yEksnuNnL+kOsi2cMBSLeElzT3mlWmL1TzRgYgqyVsWnn6TmviBr9WYEQLSgDC1BVk1Y
- /elF1PxXCCbXAIB6ycwfnyh1EkTeMdBXy/b011iwCLvxefP11GK1ZzZr6lcN5MFuZ31o
- ShKg==
-X-Gm-Message-State: AC+VfDye1oS5hSLDNvxFeIk5ZYWyyTc9PfuuSDI82nvdhL6dcrMAImS4
- w3I3Oe+EnjSK4c6NWSEMceXypc2Qtd2AsQ==
-X-Google-Smtp-Source: ACHHUZ7kcV+4jXM1nvoQ+9LnCTBkDnjZwwW17Mts+DPH57RjuKWgSyke9VCfEcmOzSYeFt76ut4FPg==
-X-Received: by 2002:a81:7dd5:0:b0:56f:fa56:4c32 with SMTP id
- y204-20020a817dd5000000b0056ffa564c32mr9995963ywc.52.1687281973507; 
- Tue, 20 Jun 2023 10:26:13 -0700 (PDT)
+ bh=5oficzjs5xcBYSHcpYrMTcfh+AwyMWQx/k5j2kJ4DGo=;
+ b=iXDz3MYxXIGDWJrxPosLs7EwFup8qSqyrYZmNorqEywdAVcJdPwh+2a51WHJt5U8v/
+ zv5I6TAP7U1K3kZw9UndldgekSfrKoCgK1djh3X0acIOdTY/zbgVQ+k/FVeVIyrwOraN
+ LviZma5NGtdDv6kqlBWXPes/ClXQgMiVXpEHCm3ru8utjR6/oC1wqO3Z5upE/0P+YRzt
+ cgCNV2/oICQF3xT8hM5yRMNUeoMFjyR9yDWol74/VLbwQutFrKl7GJGiAYU/rYMZbyld
+ 0zm18+pdiJd5ORlzduxlnFtJa7Roxb4zJ95kccn++oiijQYwmLp/O/hB32ajBvVIQdFv
+ qJyw==
+X-Gm-Message-State: AC+VfDwZWlS92ejjozTjrjkwd+3s4a0X5aUQxuplTNGw3Xk1JIsxv5Yb
+ TsQhJbrmssqnNAznnTPyBokhua4vDn1bXQ==
+X-Google-Smtp-Source: ACHHUZ6XnSFKFEmZ4JRuuQ8RG5O/zfoeupAWUrMFLcGCPcnHuHkd+hGqCOhfxRag80J/Ukwvt5V6wQ==
+X-Received: by 2002:a81:6ac6:0:b0:56d:ccf:19a9 with SMTP id
+ f189-20020a816ac6000000b0056d0ccf19a9mr16316679ywc.34.1687281975343; 
+ Tue, 20 Jun 2023 10:26:15 -0700 (PDT)
 Received: from joel-Precision-7920-Tower.. ([24.53.71.1])
  by smtp.gmail.com with ESMTPSA id
- e65-20020a0dc244000000b0056cffe97a11sm604604ywd.13.2023.06.20.10.26.12
+ e65-20020a0dc244000000b0056cffe97a11sm604604ywd.13.2023.06.20.10.26.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 20 Jun 2023 10:26:13 -0700 (PDT)
+ Tue, 20 Jun 2023 10:26:15 -0700 (PDT)
 From: Joel Upham <jupham125@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Joel Upham <jupham125@gmail.com>,
  Stefano Stabellini <sstabellini@kernel.org>,
  Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
  xen-devel@lists.xenproject.org (open list:X86 Xen CPUs)
-Subject: [PATCH v1 09/23] xen/pt: Xen PCIe passthrough support for Q35: bypass
- PCIe topology check
-Date: Tue, 20 Jun 2023 13:24:43 -0400
-Message-Id: <dd9298e51628b998e48f800e06c1953233b7efe0.1687278381.git.jupham125@gmail.com>
+Subject: [PATCH v1 10/23] xen/pt: add support for PCIe Extended Capabilities
+ and larger config space
+Date: Tue, 20 Jun 2023 13:24:44 -0400
+Message-Id: <775c2acb6ac819990e28d881167fcdfcd58b9886.1687278381.git.jupham125@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <cover.1687278381.git.jupham125@gmail.com>
 References: <cover.1687278381.git.jupham125@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b2d;
- envelope-from=jupham125@gmail.com; helo=mail-yb1-xb2d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::112b;
+ envelope-from=jupham125@gmail.com; helo=mail-yw1-x112b.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -82,7 +82,7 @@ X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Tue, 20 Jun 2023 15:45:54 -0400
+X-Mailman-Approved-At: Tue, 20 Jun 2023 15:45:55 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,186 +97,269 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Compared to legacy i440 system, there are certain difficulties while
-passing through PCIe devices to guest OSes like Windows 7 and above
-on platforms with native support of PCIe bus (in our case Q35). This
-problem is not applicable to older OSes like Windows XP -- PCIe
-passthrough on such OSes can be used normally as these OSes have
-no support for PCIe-specific features and treat all PCIe devices as legacy
-PCI ones.
+This patch provides basic facilities for PCIe Extended Capabilities and
+support for controlled (via s->pcie_enabled_dev flag) access to PCIe
+config space (>256).
 
-The problem manifests itself as "Code 10" error for a passed thru PCIe
-device in Windows Device Manager (along with exclamation mark on it). The
-device with such error do not function no matter the fact that Windows
-successfully booted while actually using this device, ex. as a primary VGA
-card with VBE features, LFB, etc. working properly during boot time.
-It doesn't matter which PCI class the device have -- the problem is common
-to GPUs, NIC cards, USB controllers, etc. In the same time, all these
-devices can be passed thru successfully using i440 emulation on same
-Windows 7+ OSes.
+PCIe Extended Capabilities make use of 16-bit capability ID. Also,
+a capability size might exceed 8-bit width. So as the very first step
+we need to increase type size for grp_id, grp_size, etc -- they were
+limited to 8-bit.
 
-The actual root cause of the problem lies in the fact that Windows kernel
-(PnP manager particularly) while processing StartDevice IRP refuses
-to continue to start the device and control flow actually doesn't even
-reach the IRP handler in the device driver at all. The real reason for
-this typically does not appear at the time PnP manager tries to start the
-device, but happens much earlier -- during the Windows boot stage, while
-enumerating devices on a PCI/PCIe bus in the Windows pci.sys driver. There
-is a set of checks for every discovered device on the PCIe bus. Failing
-some of them leads to marking the discovered PCIe device as 'invalid'
-by setting the flag. Later on, StartDevice attempt will fail due to this
-flag, finally resulting in Code 10 error.
+The only troublesome issue with PCIe Extended Capability IDs is that their
+value range is actually same as for basic PCI capabilities.
+Eg. capability ID 3 means VPD Capability for PCI and at the same time
+Device Serial Number Capability for PCIe Extended caps. This adds a bit of
+inconvenience.
 
-The actual check in pci.sys which results in the PCIe device being marked
-as 'invalid' in our case is a validation of upstream PCIe bus hierarchy
-to which passed through device belongs. Basically, pci.sys checks if the
-PCIe device has parent devices, such as PCIe Root Port or upstream PCIe
-switch. In our case the PCIe device has no parents and resides on bus
-0 without eg. corresponding Root Port.
+In order to distinguish between two sets of same capability IDs, the patch
+introduces a set of macros to mark a capability ID as PCIe Extended one
+(or check if it is basic/extended + get a raw ID value):
+- PCIE_EXT_CAP_ID(cap_id)
+- IS_PCIE_EXT_CAP_ID(grp_id)
+- GET_PCIE_EXT_CAP_ID(grp_id)
 
-Therefore, in order to resolve this problem in a architecturally correct
-way, we need to introduce to Xen some support of at least trivial non-flat
-PCI bus hierarchy. In very simplest case - just one virtual Root Port,
-on secondary bus of which all physical functions of the real passed thru
-device will reside, eg. GPU and its HDAudio function.
+Here is how it's used:
+    /* Intel IGD Opregion group */
+    {
+        .grp_id      = XEN_PCI_INTEL_OPREGION,  /* no change */
+        .grp_type    = XEN_PT_GRP_TYPE_EMU,
+        .grp_size    = 0x4,
+        .size_init   = xen_pt_reg_grp_size_init,
+        .emu_regs    = xen_pt_emu_reg_igd_opregion,
+    },
+    /* Vendor-specific Extended Capability reg group */
+    {
+        .grp_id      = PCIE_EXT_CAP_ID(PCI_EXT_CAP_ID_VNDR),
+        .grp_type    = XEN_PT_GRP_TYPE_EMU,
+        .grp_size    = 0xFF,
+        .size_init   = xen_pt_ext_cap_vendor_size_init,
+        .emu_regs    = xen_pt_ext_cap_emu_reg_vendor,
+    },
+By using the PCIE_EXT_CAP_ID() macro it is possible to reuse existing
+header files with already defined PCIe Extended Capability ID values.
 
-This solution is not hard to implement technically, but there are multiple
-affecting limitations present in Xen (many related to each other)
-currently:
-
-- in many places the code is limited to use bus 0 only. This applicable
-  to both hypervisor and supplemental modules like hvmloader. This
-  limitation is enforced on API level -- many functions and interfaces
-  allow to specify only devfn argument while bus 0 being implied.
-
-- lot of code assumes Type0 PCI config space layout only, while we need
-  to handle Type1 PCI devices as well
-
-- currently there no way to assign to a guest domain even a simplest
-  linked hierarchy of passed thru PCI devices. In some cases we might need
-  to passthrough a real PCIe Switch/Root Port with his downstream child
-  devices.
-
-- in a similar way Xen/hvmloader lacks the concept of IO/MMIO space
-  nesting. Both code which does MMIO hole sizing and code which allocates
-  BARs to MMIO hole have no idea of MMIO ranges nesting and their relations.
-  In case of virtual Root Port we have basically an emulated PCI-PCI bridge
-  with some parts of its MMIO range used for real MMIO ranges of passed
-  through device(s).
-
-So, adding to Xen multiple PCI buses support will require a bit of effort
-and discussions regarding the actual design of the feature.  Nevertheless,
-this task is crucial for PCI/GPU passthrough features of Xen to work
-properly.
-
-To summarize, we need to implement following things in the future:
-1) Get rid of PCI bus 0 limitation everywhere. This could've been
-  a simplest of subtasks but in reality this will require to change
-  interfaces as well - AFAIR even adding a PCI device via QMP only allows
-  to specify a device slot while we need to have some way to place the
-  device on an arbitrary bus.
-
-2) Fully or partially emulated PCI-PCI bridge which will provide
-  a secondary bus for PCIe device placement - there might be a possibility
-  to reuse some existing emulation QEMU provides. This also includes Type1
-  devices support.
-  The task will become more complicated if there arise necessity, for
-  example, to control the PCIe link for a passed through PCIe device. As PT
-  device reset is mandatory in most cases, there might be a chance
-  to encounter a situation when we need to retrain the PCIe link to restore
-  PCIe link speed after the reset. In this case there will be a need
-  to selectively translate accesses to certain registers of emulated PCIe
-  Switch/Root Port to the corresponding physical upstream PCIe
-  Switch/RootPort. This will require some interaction with Dom0, hopefully
-  extending xen-pciback will be enough.
-
-3) The concept of I/O and MMIO ranges nesting, for tasks like sizing MMIO
-  hole or PCI BAR allocation. This one should be pretty simple.
-
-The actual implementation still is a matter to discuss of course.
-
-In the meantime there can be used a very simple workaround which allows
-to bypass pci.sys limitation for PCIe topology check - there exist one
-good exception to "must have upstream PCIe parent" rule of pci.sys. It's
-chipset-integrated devices. How pci.sys can tell if it deals with
-a chipset built-in device? It checks one of PCI Express Capability fields
-in the device PCI conf space. For chipset built-in devices this field will
-state "root complex integrated device" while in our  case for a normal
-passed thru PCIe device there will be a "PCIe endpoint" type. So that's
-what the workaround does - it intercepts reading of this particular field
-for passed through devices and returns the "root complex integrated
-device" value for PCIe endpoints. This makes pci.sys happy and allows
-Windows 7 and above to use PT device on PCIe-capable system normally.
-So far no negative side effects were encountered while using this
-approach, so it's a good temporary solution until multiple PCI bus support
-will be added to Xen.
+find_cap_offset() receive capabily ID and checks if it's an Extended one
+by using IS_PCIE_EXT_CAP_ID(cap) macro, passing the real capabiliy
+ID value to either xen_host_pci_find_next_ext_cap
+or xen_host_pci_find_next_cap.
 
 Signed-off-by: Alexey Gerasimenko <x1917x@xxxxxxxxx>
 Signed-off-by: Joel Upham <jupham125@gmail.com>
 ---
- hw/xen/xen_pt_config_init.c | 49 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 49 insertions(+)
+ hw/xen/xen_pt.c             | 10 ++++-
+ hw/xen/xen_pt.h             | 13 ++++--
+ hw/xen/xen_pt_config_init.c | 90 ++++++++++++++++++++++++++-----------
+ 3 files changed, 83 insertions(+), 30 deletions(-)
 
+diff --git a/hw/xen/xen_pt.c b/hw/xen/xen_pt.c
+index 65c5516ef4..f757978800 100644
+--- a/hw/xen/xen_pt.c
++++ b/hw/xen/xen_pt.c
+@@ -96,8 +96,16 @@ void xen_pt_log(const PCIDevice *d, const char *f, ...)
+ 
+ static int xen_pt_pci_config_access_check(PCIDevice *d, uint32_t addr, int len)
+ {
++    XenPCIPassthroughState *s = XEN_PT_DEVICE(d);
+     /* check offset range */
+-    if (addr > 0xFF) {
++    if (s->pcie_enabled_dev) {
++        if (addr >= PCIE_CONFIG_SPACE_SIZE) {
++            XEN_PT_ERR(d, "Failed to access register with offset "
++                          "exceeding 0xFFF. (addr: 0x%02x, len: %d)\n",
++                          addr, len);
++            return -1;
++        }
++    } else if (addr >= PCI_CONFIG_SPACE_SIZE) {
+         XEN_PT_ERR(d, "Failed to access register with offset exceeding 0xFF. "
+                    "(addr: 0x%02x, len: %d)\n", addr, len);
+         return -1;
+diff --git a/hw/xen/xen_pt.h b/hw/xen/xen_pt.h
+index 1c9cd6b615..eb062be3f4 100644
+--- a/hw/xen/xen_pt.h
++++ b/hw/xen/xen_pt.h
+@@ -33,6 +33,11 @@ void xen_pt_log(const PCIDevice *d, const char *f, ...) G_GNUC_PRINTF(2, 3);
+ /* Helper */
+ #define XEN_PFN(x) ((x) >> XC_PAGE_SHIFT)
+ 
++/* Macro's for PCIe Extended Capabilities */
++#define PCIE_EXT_CAP_ID(cap_id)     ((cap_id) | (1U << 16))
++#define IS_PCIE_EXT_CAP_ID(grp_id)  ((grp_id) & (1U << 16))
++#define GET_PCIE_EXT_CAP_ID(grp_id) ((grp_id) & 0xFFFF)
++
+ typedef const struct XenPTRegInfo XenPTRegInfo;
+ typedef struct XenPTReg XenPTReg;
+ 
+@@ -174,13 +179,13 @@ typedef const struct XenPTRegGroupInfo XenPTRegGroupInfo;
+ /* emul reg group size initialize method */
+ typedef int (*xen_pt_reg_size_init_fn)
+     (XenPCIPassthroughState *, XenPTRegGroupInfo *,
+-     uint32_t base_offset, uint8_t *size);
++     uint32_t base_offset, uint32_t *size);
+ 
+ /* emulated register group information */
+ struct XenPTRegGroupInfo {
+-    uint8_t grp_id;
++    uint32_t grp_id;
+     XenPTRegisterGroupType grp_type;
+-    uint8_t grp_size;
++    uint32_t grp_size;
+     xen_pt_reg_size_init_fn size_init;
+     XenPTRegInfo *emu_regs;
+ };
+@@ -190,7 +195,7 @@ typedef struct XenPTRegGroup {
+     QLIST_ENTRY(XenPTRegGroup) entries;
+     XenPTRegGroupInfo *reg_grp;
+     uint32_t base_offset;
+-    uint8_t size;
++    uint32_t size;
+     QLIST_HEAD(, XenPTReg) reg_tbl_list;
+ } XenPTRegGroup;
+ 
 diff --git a/hw/xen/xen_pt_config_init.c b/hw/xen/xen_pt_config_init.c
-index 47c8482f32..757a035aad 100644
+index 757a035aad..34ed9c25c5 100644
 --- a/hw/xen/xen_pt_config_init.c
 +++ b/hw/xen/xen_pt_config_init.c
-@@ -907,6 +907,55 @@ static int xen_pt_linkctrl2_reg_init(XenPCIPassthroughState *s,
+@@ -32,28 +32,40 @@ static int xen_pt_ptr_reg_init(XenPCIPassthroughState *s, XenPTRegInfo *reg,
+ /* helper */
+ 
+ /* A return value of 1 means the capability should NOT be exposed to guest. */
+-static int xen_pt_hide_dev_cap(const XenHostPCIDevice *d, uint8_t grp_id)
++static int xen_pt_hide_dev_cap(const XenHostPCIDevice *d, uint32_t grp_id)
+ {
+-    switch (grp_id) {
+-    case PCI_CAP_ID_EXP:
+-        /* The PCI Express Capability Structure of the VF of Intel 82599 10GbE
+-         * Controller looks trivial, e.g., the PCI Express Capabilities
+-         * Register is 0. We should not try to expose it to guest.
+-         *
+-         * The datasheet is available at
+-         * http://download.intel.com/design/network/datashts/82599_datasheet.pdf
+-         *
+-         * See 'Table 9.7. VF PCIe Configuration Space' of the datasheet, the
+-         * PCI Express Capability Structure of the VF of Intel 82599 10GbE
+-         * Controller looks trivial, e.g., the PCI Express Capabilities
+-         * Register is 0, so the Capability Version is 0 and
+-         * xen_pt_pcie_size_init() would fail.
+-         */
+-        if (d->vendor_id == PCI_VENDOR_ID_INTEL &&
+-            d->device_id == PCI_DEVICE_ID_INTEL_82599_SFP_VF) {
+-            return 1;
++    if (IS_PCIE_EXT_CAP_ID(grp_id)) {
++        switch (GET_PCIE_EXT_CAP_ID(grp_id)) {
++            /* Here can be added device-specific filtering
++             * for PCIe Extended capabilities (those with offset >= 0x100).
++             * This is simply a placeholder as no filtering needed for now.
++             */
++        default:
++            break;
++        }
++    } else {
++        /* basic PCI capability */
++        switch (grp_id) {
++        case PCI_CAP_ID_EXP:
++            /* The PCI Express Capability Structure of the VF of Intel 82599 10GbE
++             * Controller looks trivial, e.g., the PCI Express Capabilities
++             * Register is 0. We should not try to expose it to guest.
++             *
++             * The datasheet is available at
++             * http://download.intel.com/design/network/datashts/82599_datasheet.pdf
++             *
++             * See 'Table 9.7. VF PCIe Configuration Space' of the datasheet, the
++             * PCI Express Capability Structure of the VF of Intel 82599 10GbE
++             * Controller looks trivial, e.g., the PCI Express Capabilities
++             * Register is 0, so the Capability Version is 0 and
++             * xen_pt_pcie_size_init() would fail.
++             */
++            if (d->vendor_id == PCI_VENDOR_ID_INTEL &&
++                d->device_id == PCI_DEVICE_ID_INTEL_82599_SFP_VF) {
++                return 1;
++            }
++            break;
+         }
+-        break;
+     }
+     return 0;
+ }
+@@ -1615,7 +1627,7 @@ static XenPTRegInfo xen_pt_emu_reg_igd_opregion[] = {
+ 
+ static int xen_pt_reg_grp_size_init(XenPCIPassthroughState *s,
+                                     const XenPTRegGroupInfo *grp_reg,
+-                                    uint32_t base_offset, uint8_t *size)
++                                    uint32_t base_offset, uint32_t *size)
+ {
+     *size = grp_reg->grp_size;
+     return 0;
+@@ -1623,14 +1635,22 @@ static int xen_pt_reg_grp_size_init(XenPCIPassthroughState *s,
+ /* get Vendor Specific Capability Structure register group size */
+ static int xen_pt_vendor_size_init(XenPCIPassthroughState *s,
+                                    const XenPTRegGroupInfo *grp_reg,
+-                                   uint32_t base_offset, uint8_t *size)
++                                   uint32_t base_offset, uint32_t *size)
++{
++    uint8_t sz = 0;
++    int ret = xen_host_pci_get_byte(&s->real_device, base_offset + 0x02, &sz);
++
++    *size = sz;
++    return ret;
++}
++
+ {
+     return xen_host_pci_get_byte(&s->real_device, base_offset + 0x02, size);
+ }
+ /* get PCI Express Capability Structure register group size */
+ static int xen_pt_pcie_size_init(XenPCIPassthroughState *s,
+                                  const XenPTRegGroupInfo *grp_reg,
+-                                 uint32_t base_offset, uint8_t *size)
++                                 uint32_t base_offset, uint32_t *size)
+ {
+     PCIDevice *d = PCI_DEVICE(s);
+     uint8_t version = get_pcie_capability_version(s);
+@@ -1702,7 +1722,7 @@ static int xen_pt_pcie_size_init(XenPCIPassthroughState *s,
+ /* get MSI Capability Structure register group size */
+ static int xen_pt_msi_size_init(XenPCIPassthroughState *s,
+                                 const XenPTRegGroupInfo *grp_reg,
+-                                uint32_t base_offset, uint8_t *size)
++                                uint32_t base_offset, uint32_t *size)
+ {
+     uint16_t msg_ctrl = 0;
+     uint8_t msi_size = 0xa;
+@@ -1730,7 +1750,7 @@ static int xen_pt_msi_size_init(XenPCIPassthroughState *s,
+ /* get MSI-X Capability Structure register group size */
+ static int xen_pt_msix_size_init(XenPCIPassthroughState *s,
+                                  const XenPTRegGroupInfo *grp_reg,
+-                                 uint32_t base_offset, uint8_t *size)
++                                 uint32_t base_offset, uint32_t *size)
+ {
+     int rc = 0;
+ 
+@@ -1953,6 +1973,26 @@ static uint8_t find_cap_offset(XenPCIPassthroughState *s, uint8_t cap)
      return 0;
  }
  
-+/* initialize PCI Express Capabilities register */
-+static int xen_pt_pcie_capabilities_reg_init(XenPCIPassthroughState *s,
-+                                             XenPTRegInfo *reg,
-+                                             uint32_t real_offset,
-+                                             uint32_t *data)
++/*************
++ * Main
++ */
++
++static uint32_t find_cap_offset(XenPCIPassthroughState *s, uint32_t cap)
 +{
-+    uint8_t dev_type = get_pcie_device_type(s);
-+    uint16_t reg_field;
++    uint32_t retval = 0;
 +
-+    if (xen_host_pci_get_word(&s->real_device,
-+                             real_offset - reg->offset + PCI_EXP_FLAGS,
-+                             &reg_field)) {
-+        XEN_PT_ERR(&s->dev, "Error reading PCIe Capabilities reg\n");
-+        *data = 0;
-+        return 0;
++    if (IS_PCIE_EXT_CAP_ID(cap)) {
++        if (s->pcie_enabled_dev) {
++            retval = xen_host_pci_find_next_ext_cap(&s->real_device, 0,
++                                                    GET_PCIE_EXT_CAP_ID(cap));
++        }
++
++    } else {
++        retval = xen_host_pci_find_next_cap(&s->real_device, 0, cap);
 +    }
-+    /*
-+     * Q35 workaround for Win7+ pci.sys PCIe topology check.
-+     * As our PT device currently located on a bus 0, fake the
-+     * device/port type field to the "Root Complex integrated device"
-+     * value to bypass the check
-+     */
-+    switch (dev_type) {
-+    case PCI_EXP_TYPE_ENDPOINT:
-+    case PCI_EXP_TYPE_LEG_END:
-+        XEN_PT_LOG(&s->dev, "Original PCIe Capabilities reg is 0x%04X\n",
-+            reg_field);
-+        reg_field &= ~PCI_EXP_FLAGS_TYPE;
-+        reg_field |= ((PCI_EXP_TYPE_RC_END /*9*/ << 4) & PCI_EXP_FLAGS_TYPE);
-+        XEN_PT_LOG(&s->dev, "Q35 PCIe topology check workaround: "
-+                   "faking Capabilities reg to 0x%04X\n", reg_field);
-+        break;
-+
-+    case PCI_EXP_TYPE_ROOT_PORT:
-+    case PCI_EXP_TYPE_UPSTREAM:
-+    case PCI_EXP_TYPE_DOWNSTREAM:
-+    case PCI_EXP_TYPE_PCI_BRIDGE:
-+    case PCI_EXP_TYPE_PCIE_BRIDGE:
-+    case PCI_EXP_TYPE_RC_END:
-+    case PCI_EXP_TYPE_RC_EC:
-+    default:
-+        /* do nothing, return as is */
-+        break;
-+    }
-+
-+    *data = reg_field;
-+    return 0;
++    return retval;
 +}
 +
- /* PCI Express Capability Structure reg static information table */
- static XenPTRegInfo xen_pt_emu_reg_pcie[] = {
-     /* Next Pointer reg */
+ static void xen_pt_config_reg_init(XenPCIPassthroughState *s,
+                                    XenPTRegGroup *reg_grp, XenPTRegInfo *reg,
+                                    Error **errp)
 -- 
 2.34.1
 
