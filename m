@@ -2,25 +2,25 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44EA1737565
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 21:51:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB99D737567
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 21:52:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBhOD-0000cq-Mk; Tue, 20 Jun 2023 15:51:45 -0400
+	id 1qBhOB-0000Np-5P; Tue, 20 Jun 2023 15:51:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <lvivier@redhat.com>)
- id 1qBhO8-0000C8-FJ
+ id 1qBhO8-0000C7-El
  for qemu-devel@nongnu.org; Tue, 20 Jun 2023 15:51:40 -0400
-Received: from mout.kundenserver.de ([212.227.17.24])
+Received: from mout.kundenserver.de ([217.72.192.75])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <lvivier@redhat.com>)
- id 1qBhO2-0002ks-Kd
+ id 1qBhO2-0002kt-FS
  for qemu-devel@nongnu.org; Tue, 20 Jun 2023 15:51:36 -0400
 Received: from lenovo-t14s ([37.171.229.63]) by mrelayeu.kundenserver.de
  (mreue107 [212.227.15.183]) with ESMTPSA (Nemesis) id
- 1MbjBo-1pfOpj2WPG-00dIAw; Tue, 20 Jun 2023 21:50:58 +0200
+ 1MybX9-1ptVk61r4P-00yy3R; Tue, 20 Jun 2023 21:50:59 +0200
 From: Laurent Vivier <lvivier@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: peter.maydell@linaro.org, Stefan Berger <stefanb@linux.vnet.ibm.com>,
@@ -29,29 +29,30 @@ Cc: peter.maydell@linaro.org, Stefan Berger <stefanb@linux.vnet.ibm.com>,
  Paolo Bonzini <pbonzini@redhat.com>, marcandre.lureau@redhat.com,
  eric.auger@redhat.com, Peter Xu <peterx@redhat.com>,
  Laurent Vivier <lvivier@redhat.com>
-Subject: [PATCH 0/2] vhost-vdpa: skip TPM CRB memory section
-Date: Tue, 20 Jun 2023 21:50:52 +0200
-Message-ID: <20230620195054.23929-1-lvivier@redhat.com>
+Subject: [PATCH 1/2] memory: introduce memory_region_init_ram_protected()
+Date: Tue, 20 Jun 2023 21:50:53 +0200
+Message-ID: <20230620195054.23929-2-lvivier@redhat.com>
 X-Mailer: git-send-email 2.41.0
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <20230620195054.23929-1-lvivier@redhat.com>
+References: <20230620195054.23929-1-lvivier@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:2isbiNmmuOsyLH8ff9LWWCE1YNBWQC0k4MEulQcEizl6TWAFnEU
- 7dbA/8MvwCPxrv21L5hUXW1HkTq1hBRt0n/DF7mdjCrj4gwB/GaEmp6kMwdD2eOFCWBiCl1
- BJI/O+wEY1L3MXYEw8Uo9piYCDpwQffL/ZYMI88N8pT9fc8aEk+Zz+AuwYi18hkKHvSqLSz
- 7WsHVAVwTb5DcnVCxa1Cg==
-UI-OutboundReport: notjunk:1;M01:P0:IcPsdrjQouU=;2KKWZ1S1Q3y8yQku6QtbEoNxs7J
- za4rp5811a8wpeI2y6dANtAUjZyqMuXdBNpezQRLbDEiHdTFgmuww1oXTJpAMLm2M2MH5cZf6
- jvMl64NPqE8x9794JP5l804MOom/zpsNtkDDAW2UMhC5ga3qJhABTyCyNO9JhCHE60ZNejOcb
- 104EZf6tdseod251CaHyk98qa8Td/7x6AZYRjWBPaDtNNHvArF0jaMPU4CdOsN/OrN5rlkcUT
- lyJ8BjJfDcctbzQm5Wgqg78Kv5DgCQh2tBCRrQeyOp51+B4WrBaMdjY/QjDpMkq5uailrYpsC
- VZgzp0PCljizQK0QJxXQoOpyKa3m+1Cn2wMkS62XnR86z+uCaZQEjAjlQhP/wxEur72sHUKMG
- vQRKA/khBcGlUbxsi6Vv3pCgd6BAucLvHT58HyzIRO2pt7/WXhyLp3ppmqh70He6Z8LY8uOLo
- wD5yqa+CcPz4UNa4EjwqL5ZJ0ADyNhZ2yWPMyby85SSmJwVT9huLBnQn9dRe3Kd4azNEdonxJ
- 9Mpy9HnQ5L5SkhcIuy01ONh5iQL+6bmMWzQxcDyTKBUvJYJW6DtSWM3MJMeRxu7CekuA5DmA5
- 2FaEW1tCOQlAUiuuw6D9iI79ADOoOdyo4yqNRx5GignKR5tjWwyvqalVR/8663mPEbisA1HZB
- IHfO91CAwmkefBwR8wu5HMuQpZxxTRpwv6qbkpcHIA==
-Received-SPF: permerror client-ip=212.227.17.24;
+Content-Transfer-Encoding: 8bit
+X-Provags-ID: V03:K1:EJVtUpoY47Tr7eMNH5B198kRra5rIHZHGEi7gfSMIKUJ8lU0x7R
+ uvEQJsgCr+6pMhJEL7j7LchcbjZTRw0j4pnpcOm6NDouC8XlmpjA4JSQaCxwRef64uo7Qpj
+ zrAIX/2wW6RkloU+rDjpVCtA/EEyzybsxaJuJX7i1lMwp8P0ejHky4qFHeL96VKLpgmn/ma
+ DBhS1LOGhMP1MT/AwGbYg==
+UI-OutboundReport: notjunk:1;M01:P0:JM4QiIPumpA=;BeQSXh/bX+qcGjDQXYIp8BZXdTr
+ S6dXU0odj8WncqxGeKp+/vwabvO6ZaZBphzjAqJm7osHMi0Gfec/HfTxgGX76KaI/p9g0M50y
+ vhMv17daYLYE/4AU7lrcTFU9ptdu7OqDO/b1YgRpFSEjJdQMUGZT0D0DgYbq3N1+zqF8JzREI
+ yaL+A/N4DPGwXfwZ0poI4CislwItV8Xi6MsDI2oq97e0voNXLU+AzLprZUzKc1pQL8BHw8Zy3
+ Q1fHFZIaISZlVmAF5bIO7/rXXSy4EqlxwCDYFmDKTSlW+j59F7KfBZqcYzCSoR/PGxvyj3DVk
+ 595JKpX3cbIuwba3SL3Pz2/P3zLGmveunC9JGa8H4drtnB3ubS5+FTGiD4qr4e+HPhyxg1Vsy
+ m49JNw3OlE/pJmsffAoZ/CJ7mYSG7OYzd0BjWu/w80z8EtsqgJ7p3LsFPcRIslgnNuUhBzpH1
+ oy1kMKX7/rnCmQteSBYSKCVavzNvze3NpIYlSuRvvaaz7MkI8cHfl0YRBkqsVKn5LRmO/ztrA
+ Y/hn3K8TkYqfsIPzjSZqUkQIW+HJho8W/V4ifnR0cIhAPUeLvRazu5dmdSQp1YscnmSm5evuK
+ GoE1kc77d83R3aZAwvfauMPjZqwipIiaSKJ1YR7TzoiSsWfkBGMzBpEgtCS0O7PJ/k4btMMRg
+ Go3Z4rJOzz7S3l/It3rI7RRQb/wCIFJ5NFOZQVguHQ==
+Received-SPF: permerror client-ip=217.72.192.75;
  envelope-from=lvivier@redhat.com; helo=mout.kundenserver.de
 X-Spam_score_int: -18
 X-Spam_score: -1.9
@@ -75,45 +76,144 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-An error is reported for vhost-vdpa case:=0D
-qemu-kvm: vhost_vdpa_listener_region_add received unaligned region=0D
-=0D
-Marc-Andr=C3=A9 has proposed a fix to this problem by skipping=0D
-the memory region owned by the TPM CRB but it seems more generic=0D
-to skip not DMA-able memory.=0D
-=0D
-We have a memory flag for that, RAM_PROTECTED.=0D
-=0D
-This series expands the memory API to provide a way to initialize=0D
-a "protected" memory region and use it with the TPM CRB object.=0D
-=0D
-For the previous discussions, see=0D
-=0D
-https://lists.nongnu.org/archive/html/qemu-devel/2022-11/msg03670.html=0D
-=0D
-and from Eric for VFIO:=0D
-=0D
-https://lore.kernel.org/all/20220506132510.1847942-1-eric.auger@redhat.com/=
-=0D
-https://lore.kernel.org/all/20220524091405.416256-1-eric.auger@redhat.com/=
-=0D
-=0D
-Bug: https://bugzilla.redhat.com/show_bug.cgi?id=3D2141965=0D
-=0D
-Thanks,=0D
-Laurent=0D
-=0D
-Laurent Vivier (2):=0D
-  memory: introduce memory_region_init_ram_protected()=0D
-  tpm_crb: mark memory as protected=0D
-=0D
- hw/tpm/tpm_crb.c      |  2 +-=0D
- include/exec/memory.h | 33 +++++++++++++++++++++++++++++++++=0D
- softmmu/memory.c      | 33 +++++++++++++++++++++++++++------=0D
- softmmu/physmem.c     |  4 ++--=0D
- 4 files changed, 63 insertions(+), 9 deletions(-)=0D
-=0D
--- =0D
-2.41.0=0D
-=0D
+Commit 56918a126a ("memory: Add RAM_PROTECTED flag to skip IOMMU mappings")
+has introduced the RAM_PROTECTED flag to denote "protected" memory.
+
+This flags is only used with qemu_ram_alloc_from_fd() for now.
+
+To be able to register memory region with this flag, define
+memory_region_init_ram_protected() and declare the flag as valid in
+qemu_ram_alloc_internal() and qemu_ram_alloc().
+
+Signed-off-by: Laurent Vivier <lvivier@redhat.com>
+---
+ include/exec/memory.h | 33 +++++++++++++++++++++++++++++++++
+ softmmu/memory.c      | 33 +++++++++++++++++++++++++++------
+ softmmu/physmem.c     |  4 ++--
+ 3 files changed, 62 insertions(+), 8 deletions(-)
+
+diff --git a/include/exec/memory.h b/include/exec/memory.h
+index 47c2e0221c35..d8760015c381 100644
+--- a/include/exec/memory.h
++++ b/include/exec/memory.h
+@@ -1520,6 +1520,39 @@ void memory_region_init_iommu(void *_iommu_mr,
+                               const char *name,
+                               uint64_t size);
+ 
++/**
++ * memory_region_init_ram_protected - Initialize RAM memory region.  Accesses
++ *                                    into the region will modify memory
++ *                                    directly.
++ *
++ * The memory is created with the RAM_PROTECTED flag, for memory that
++ * looks and acts like RAM but inaccessible via normal mechanisms,
++ * including DMA.
++ *
++ * @mr: the #MemoryRegion to be initialized
++ * @owner: the object that tracks the region's reference count (must be
++ *         TYPE_DEVICE or a subclass of TYPE_DEVICE, or NULL)
++ * @name: name of the memory region
++ * @size: size of the region in bytes
++ * @errp: pointer to Error*, to store an error if it happens.
++ *
++ * This function allocates RAM for a board model or device, and
++ * arranges for it to be migrated (by calling vmstate_register_ram()
++ * if @owner is a DeviceState, or vmstate_register_ram_global() if
++ * @owner is NULL).
++ *
++ * TODO: Currently we restrict @owner to being either NULL (for
++ * global RAM regions with no owner) or devices, so that we can
++ * give the RAM block a unique name for migration purposes.
++ * We should lift this restriction and allow arbitrary Objects.
++ * If you pass a non-NULL non-device @owner then we will assert.
++ */
++void memory_region_init_ram_protected(MemoryRegion *mr,
++                                      Object *owner,
++                                      const char *name,
++                                      uint64_t size,
++                                      Error **errp);
++
+ /**
+  * memory_region_init_ram - Initialize RAM memory region.  Accesses into the
+  *                          region will modify memory directly.
+diff --git a/softmmu/memory.c b/softmmu/memory.c
+index 7d9494ce7028..952c87277353 100644
+--- a/softmmu/memory.c
++++ b/softmmu/memory.c
+@@ -3551,16 +3551,18 @@ void mtree_info(bool flatview, bool dispatch_tree, bool owner, bool disabled)
+     }
+ }
+ 
+-void memory_region_init_ram(MemoryRegion *mr,
+-                            Object *owner,
+-                            const char *name,
+-                            uint64_t size,
+-                            Error **errp)
++static void memory_region_init_ram_flags(MemoryRegion *mr,
++                                         Object *owner,
++                                         const char *name,
++                                         uint64_t size,
++                                         uint32_t ram_flags,
++                                         Error **errp)
+ {
+     DeviceState *owner_dev;
+     Error *err = NULL;
+ 
+-    memory_region_init_ram_nomigrate(mr, owner, name, size, &err);
++    memory_region_init_ram_flags_nomigrate(mr, owner, name, size, ram_flags,
++                                           &err);
+     if (err) {
+         error_propagate(errp, err);
+         return;
+@@ -3575,6 +3577,25 @@ void memory_region_init_ram(MemoryRegion *mr,
+     vmstate_register_ram(mr, owner_dev);
+ }
+ 
++void memory_region_init_ram_protected(MemoryRegion *mr,
++                                      Object *owner,
++                                      const char *name,
++                                      uint64_t size,
++                                      Error **errp)
++{
++        memory_region_init_ram_flags(mr, owner, name, size, RAM_PROTECTED,
++                                     errp);
++}
++
++void memory_region_init_ram(MemoryRegion *mr,
++                            Object *owner,
++                            const char *name,
++                            uint64_t size,
++                            Error **errp)
++{
++        memory_region_init_ram_flags(mr, owner, name, size, 0, errp);
++}
++
+ void memory_region_init_rom(MemoryRegion *mr,
+                             Object *owner,
+                             const char *name,
+diff --git a/softmmu/physmem.c b/softmmu/physmem.c
+index 6bdd944fe880..bf66c81e7255 100644
+--- a/softmmu/physmem.c
++++ b/softmmu/physmem.c
+@@ -1978,7 +1978,7 @@ RAMBlock *qemu_ram_alloc_internal(ram_addr_t size, ram_addr_t max_size,
+     Error *local_err = NULL;
+ 
+     assert((ram_flags & ~(RAM_SHARED | RAM_RESIZEABLE | RAM_PREALLOC |
+-                          RAM_NORESERVE)) == 0);
++                          RAM_NORESERVE | RAM_PROTECTED)) == 0);
+     assert(!host ^ (ram_flags & RAM_PREALLOC));
+ 
+     size = HOST_PAGE_ALIGN(size);
+@@ -2012,7 +2012,7 @@ RAMBlock *qemu_ram_alloc_from_ptr(ram_addr_t size, void *host,
+ RAMBlock *qemu_ram_alloc(ram_addr_t size, uint32_t ram_flags,
+                          MemoryRegion *mr, Error **errp)
+ {
+-    assert((ram_flags & ~(RAM_SHARED | RAM_NORESERVE)) == 0);
++    assert((ram_flags & ~(RAM_SHARED | RAM_NORESERVE | RAM_PROTECTED)) == 0);
+     return qemu_ram_alloc_internal(size, size, NULL, NULL, ram_flags, mr, errp);
+ }
+ 
+-- 
+2.41.0
+
 
