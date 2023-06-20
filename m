@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F8CB736614
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 10:27:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6515E736613
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 10:27:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBWhC-0003tS-EO; Tue, 20 Jun 2023 04:26:38 -0400
+	id 1qBWhC-0003tP-8N; Tue, 20 Jun 2023 04:26:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qBWh8-0003r1-1k
+ id 1qBWh8-0003rJ-AY
  for qemu-devel@nongnu.org; Tue, 20 Jun 2023 04:26:34 -0400
-Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
+Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qBWh5-0006AV-CH
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 04:26:33 -0400
-Received: by mail-ed1-x535.google.com with SMTP id
- 4fb4d7f45d1cf-514ab6cb529so10479517a12.1
- for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 01:26:30 -0700 (PDT)
+ id 1qBWh6-0006Av-HJ
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 04:26:34 -0400
+Received: by mail-ej1-x62e.google.com with SMTP id
+ a640c23a62f3a-988883b0d8fso354092766b.1
+ for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 01:26:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687249590; x=1689841590;
+ d=linaro.org; s=google; t=1687249591; x=1689841591;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=5qAxKzsGv/w4NXHL6fX7FdhMDg3IBfNx3EYgkWhvKP4=;
- b=VGKG0O8pre/I4yNWijrwPgO2j5w1xtE3IEQZEJTUX0yqxN7eDT69EPObvmYPnQvqu+
- OvT/MO1foRohWSTXKFTq6jnQt/4jgeacmQeO8FT7VI8yaOc0MSVq1GuiTyM5KQgQtR99
- utZNGwqfSdcOpsyVANFPlNQdqf3jhy1nhOfWvfFwRsv6XOm0fZyR0qGXzx0AY02s80A7
- Obc4352r/r21RPQl942YK8YAyGzj5YHR0b5bvhm4huo1fdYiHD86Tg0rAU2QQAN43gkb
- T9Psg0VejMOHG/5Em+9/jaxQkSSKOT6qxP7A99lokkqBdQA4kpXbBoynxRKjJTIUy3Sy
- 7Xxg==
+ bh=TSMjgdnc7KTNApiM9DYxdqyr8twYlwTyuST8ZOwwTSA=;
+ b=kqNrTkMYWGCxu9lWQbNNtjQLYZsVA01a3RyVYe5qnBr2W8V9I9RUUBvN/bvDjEE09/
+ FtVNLXoqPAje1319qm5zatzImXAHzeYeCHjnH0afdAuNQLpyryG/Cx3f8L0J/c4G7xRw
+ PJDHHCPnC/PPTIBSfRyIb+fUH1JxLSayu/VwEpKRcuV2bJw2+AoVOhT1Lr/Cu6IOcwoQ
+ pZT71eoZasAySymOUBpbFt/2d4NisTmVi7gNjP1Xs55PHEJd7jsLanc5KpFiSmgonPPx
+ axZT6UjkKTsocWgGxq/GKtmASCKXaVHEYpDzAvCDcCJGiFZtJdyhfwBhDWZTjaswuwCE
+ 7j0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687249590; x=1689841590;
+ d=1e100.net; s=20221208; t=1687249591; x=1689841591;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=5qAxKzsGv/w4NXHL6fX7FdhMDg3IBfNx3EYgkWhvKP4=;
- b=ZfLux42emQcVvDigDL2iS3Lx9LoHVOR2HEVCl7f9vsT11BACD7N0KWfywnSevgAJA1
- w09wuWFpp1S5wf2b++vpFuHRX/4a1Hag7LEm7sSZmZ7xbdDdI+x1Tt787I7XtO2Jn5Vj
- S56Qk3qQQpzGUUt27s7LQIAzGGqbvr0QZoanoqPVXvGtkFG8qAmcaUF0czknqGKi5i6X
- 1FVFedXlRZPKFvl43X4oF0EC3JXQrv3eQhmaoCJreVAsWIvE7QOmZNiGURAmrFicFBL3
- 3E4wXeO5gpcUd8J11riLXcltDgXoBle7xU7Oqw13nhspstY+GkKQvUSWa82nFPBcMt+g
- k+fw==
-X-Gm-Message-State: AC+VfDwVdi/FPTS1vVTLmZUTawVA4PXwW9uLNmnIeM4KEuwvHGp2ikxo
- T97hRgkXTEncVYcX03rP99AZGvxGqFecr2Yn+0Ejc/Sr
-X-Google-Smtp-Source: ACHHUZ5asGYWLPOtR/jkuoalGwnmnhf+e0wJ/MUkSeuO5y+OPKrqEmTxMWB1gFka5bPJF4dN4xi95A==
-X-Received: by 2002:a17:907:7ba0:b0:989:4b:e69e with SMTP id
- ne32-20020a1709077ba000b00989004be69emr2430933ejc.4.1687249589975; 
- Tue, 20 Jun 2023 01:26:29 -0700 (PDT)
+ bh=TSMjgdnc7KTNApiM9DYxdqyr8twYlwTyuST8ZOwwTSA=;
+ b=GLZyqS0MLAN1vyhfqYxnrY4J/SHYAPBD+xdgF3TRTdQCAq4hY1iP6qQ92aPMhRv0ry
+ OVj8uVnKoSGwlHZwIbEet/CR/hdHFjuCBSp1XYYzCEK13INAWjRlmZnl8/gL2lymrRFE
+ Ypd54q5Cx+vcbnyCoPCrDMla4Yqb6oJ+u0inLKthShP8rgAEeC+QOkpBLBt3lzNLzjQ4
+ MUStSfOnPf3kV75k84/YbmVZoJxMjc8jvwWKDFMyWD/ksxupz+1DOSb6C9DTrCXJprui
+ 6rAVIZQW2VX250vFhIDx0GYi1iLP0E4PYhuQDrRTuynOqY4l5+EtUnso10iebBOlyXcU
+ uR9A==
+X-Gm-Message-State: AC+VfDy52+f4H1IEKkyagJvn2tG/I9zVQ1VL1ZXFb0okkjmTQYVaka4d
+ tkDgYpDSYUACuzcFrXFq0o+wpBpI0KeMLBzfodduiKxf
+X-Google-Smtp-Source: ACHHUZ5c4naReBt6m2zGF+KylFYgE0yybhIcwVCmI5VsFq2x5Wjh1m+HqwTZswQJuuNRMqxexuvpWQ==
+X-Received: by 2002:a17:907:2da4:b0:988:806c:62da with SMTP id
+ gt36-20020a1709072da400b00988806c62damr5896584ejc.58.1687249591027; 
+ Tue, 20 Jun 2023 01:26:31 -0700 (PDT)
 Received: from stoup.lan ([176.176.183.29]) by smtp.gmail.com with ESMTPSA id
- z19-20020a170906669300b00977c7566ccbsm935901ejo.164.2023.06.20.01.26.29
+ z19-20020a170906669300b00977c7566ccbsm935901ejo.164.2023.06.20.01.26.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 20 Jun 2023 01:26:29 -0700 (PDT)
+ Tue, 20 Jun 2023 01:26:30 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 15/16] exec/cpu-defs: Check for SOFTMMU instead of !USER_ONLY
-Date: Tue, 20 Jun 2023 10:26:10 +0200
-Message-Id: <20230620082611.770620-16-richard.henderson@linaro.org>
+Subject: [PULL 16/16] cputlb: Restrict SavedIOTLB to system emulation
+Date: Tue, 20 Jun 2023 10:26:11 +0200
+Message-Id: <20230620082611.770620-17-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230620082611.770620-1-richard.henderson@linaro.org>
 References: <20230620082611.770620-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::535;
- envelope-from=richard.henderson@linaro.org; helo=mail-ed1-x535.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ej1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,64 +93,44 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-We want to check the softmmu tlb availability, not
-if we are targetting system emulation. Besides, this
-code could be used by user emulation in the future.
+Commit 2f3a57ee47 ("cputlb: ensure we save the IOTLB data in
+case of reset") added the SavedIOTLB structure -- which is
+system emulation specific -- in the generic CPUState structure.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20230605230216.17202-1-philmd@linaro.org>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-Id: <20221216215519.5522-3-philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/exec/cpu-defs.h | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ include/hw/core/cpu.h | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/include/exec/cpu-defs.h b/include/exec/cpu-defs.h
-index 0d418a0384..4cb77c8dec 100644
---- a/include/exec/cpu-defs.h
-+++ b/include/exec/cpu-defs.h
-@@ -60,7 +60,7 @@
-  */
- #define NB_MMU_MODES 16
+diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
+index 4871ad85f0..ee8d6b40b3 100644
+--- a/include/hw/core/cpu.h
++++ b/include/hw/core/cpu.h
+@@ -226,7 +226,7 @@ struct CPUWatchpoint {
+     QTAILQ_ENTRY(CPUWatchpoint) entry;
+ };
  
--#if !defined(CONFIG_USER_ONLY) && defined(CONFIG_TCG)
-+#if defined(CONFIG_SOFTMMU) && defined(CONFIG_TCG)
- #include "exec/tlb-common.h"
- 
- /* use a fully associative victim tlb of 8 entries */
-@@ -89,9 +89,9 @@
- #  endif
- # endif
- 
--#endif  /* !CONFIG_USER_ONLY && CONFIG_TCG */
-+#endif /* CONFIG_SOFTMMU && CONFIG_TCG */
- 
--#if !defined(CONFIG_USER_ONLY)
-+#if defined(CONFIG_SOFTMMU)
+-#ifdef CONFIG_PLUGIN
++#if defined(CONFIG_PLUGIN) && !defined(CONFIG_USER_ONLY)
  /*
-  * The full TLB entry, which is not accessed by generated TCG code,
-  * so the layout is not as critical as that of CPUTLBEntry. This is
-@@ -133,9 +133,9 @@ typedef struct CPUTLBEntryFull {
-     TARGET_PAGE_ENTRY_EXTRA
- #endif
- } CPUTLBEntryFull;
--#endif  /* !CONFIG_USER_ONLY */
-+#endif /* CONFIG_SOFTMMU */
+  * For plugins we sometime need to save the resolved iotlb data before
+  * the memory regions get moved around  by io_writex.
+@@ -410,9 +410,11 @@ struct CPUState {
  
--#if !defined(CONFIG_USER_ONLY) && defined(CONFIG_TCG)
-+#if defined(CONFIG_SOFTMMU) && defined(CONFIG_TCG)
- /*
-  * Data elements that are per MMU mode, minus the bits accessed by
-  * the TCG fast path.
-@@ -201,7 +201,7 @@ typedef struct CPUTLB {
+ #ifdef CONFIG_PLUGIN
+     GArray *plugin_mem_cbs;
++#if !defined(CONFIG_USER_ONLY)
+     /* saved iotlb data from io_writex */
+     SavedIOTLB saved_iotlb;
+-#endif
++#endif /* !CONFIG_USER_ONLY */
++#endif /* CONFIG_PLUGIN */
  
- typedef struct CPUTLB { } CPUTLB;
- 
--#endif  /* !CONFIG_USER_ONLY && CONFIG_TCG */
-+#endif /* CONFIG_SOFTMMU && CONFIG_TCG */
- 
- /*
-  * This structure must be placed in ArchCPU immediately
+     /* TODO Move common fields from CPUArchState here. */
+     int cpu_index;
 -- 
 2.34.1
 
