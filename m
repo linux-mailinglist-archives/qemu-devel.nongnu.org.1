@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45E1C736F86
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 16:59:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02420736FBA
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 17:04:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBcpN-00043Z-GI; Tue, 20 Jun 2023 10:59:29 -0400
+	id 1qBctx-0005Gj-GV; Tue, 20 Jun 2023 11:04:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qBcpM-00043L-50
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 10:59:28 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qBctu-0005AR-Q9
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 11:04:10 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qBcpK-0003PV-K2
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 10:59:27 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qBctm-0004OC-Ou
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 11:04:05 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687273165;
+ s=mimecast20190719; t=1687273432;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=UZJONrqidLnOTueOvFeGToI3spE8nHde+390MtE+xsE=;
- b=UAJg9sF3u1POgKOkM681X8gUXoOVM1ZagU0Gvcbt7u7rih51u1I56Tb1TGNCImtl9jdmoy
- AGzMriPyrLUKcrUfWVXJPzwh5OucSzeoXy2ri7ZtkLqhO3ImY3mvS+9vj7Nm6CFzACji3z
- zpjV1DRPxQe7mI75qPCmwE37iMy7K+A=
-Received: from mail-vs1-f70.google.com (mail-vs1-f70.google.com
- [209.85.217.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=tsUYuK4U9SfU5Zbs82EMJXCV2g42Ze4O7HVR8wBEv4M=;
+ b=YHWaiFkHiqQ3668TAJfxEaO/hPfwNex+yYZ12vp+YIKeAjFJ1x/lgSxL62S8DwBlnUQSsC
+ tlk6ZE9uKsWtfOPWS3qC8MbgxgRk0wNPPqe8ViWLkGYVTvoAH2etymozvjXzEp3o5+vyJT
+ hgCo/Z1yxMNYCHq41erxiMkD6+/6sLQ=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-498-k6uPm4iXOMK9FTLXcPWAVg-1; Tue, 20 Jun 2023 10:59:23 -0400
-X-MC-Unique: k6uPm4iXOMK9FTLXcPWAVg-1
-Received: by mail-vs1-f70.google.com with SMTP id
- ada2fe7eead31-43f4bbb836fso84270137.0
- for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 07:59:22 -0700 (PDT)
+ us-mta-618-iXRKzvWHPH-FTAkByidD_A-1; Tue, 20 Jun 2023 11:02:56 -0400
+X-MC-Unique: iXRKzvWHPH-FTAkByidD_A-1
+Received: by mail-qv1-f69.google.com with SMTP id
+ 6a1803df08f44-62ff893f03bso11593626d6.0
+ for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 08:02:41 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687273162; x=1689865162;
+ d=1e100.net; s=20221208; t=1687273360; x=1689865360;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=UZJONrqidLnOTueOvFeGToI3spE8nHde+390MtE+xsE=;
- b=TrKp41GhM105Q4KGlaBuvRduJmobdTew0zmWb56494Y3yc//HmzrdImPxcWnbT/iU8
- h0NN43TilOIS9e25qJVxRykO0v0ubRJEVijbPzHXRatzr7abA7iONNAQuGmfAF2+jAmG
- fsTyozZpzXCPPPNVVeO7lKtOTs6YUbDlNaOrbO4H4Uh0kinL0YIraXk4U4w2wchvMZi6
- 4DywuoZeprc6fLsnE6FsHssy19/W2JfTlx4uOUpzJGn6rKJBhRmfstlHOeKlgGTok3iT
- 7j3arOagd8CRpsFBy1OubTfGYG8uytnTfPW2r3C9aZDS7H2bNTpkWqruuBU4ISpG1YJ7
- NHXA==
-X-Gm-Message-State: AC+VfDyaHcDOGSnSOwDv2QTPAWwSl3cIEe1T6s21xRiqgBD49fePFytk
- O5dyD1lRORuS0nOp+R0PKkUrlqnjBLd/UzE8oc7+AwYwtveSdEl85SdwL3qKWy85mTdazmhg6/p
- sAgRPGU+irpokDME=
-X-Received: by 2002:a05:6102:3382:b0:440:ab53:9cb3 with SMTP id
- i2-20020a056102338200b00440ab539cb3mr2793879vsh.2.1687273161899; 
- Tue, 20 Jun 2023 07:59:21 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ77y4Hd1b864T4SBjQaT7p/7IU5fu02Z4Za8aWapXXWs9ZQueSjkl6sI/Ycnph2M9pjOpPMvw==
-X-Received: by 2002:a05:6102:3382:b0:440:ab53:9cb3 with SMTP id
- i2-20020a056102338200b00440ab539cb3mr2793861vsh.2.1687273161565; 
- Tue, 20 Jun 2023 07:59:21 -0700 (PDT)
+ bh=tsUYuK4U9SfU5Zbs82EMJXCV2g42Ze4O7HVR8wBEv4M=;
+ b=QVtU2XChJv63nZ9VO4b2cWNFGMvi577MFYqQmzIAHc+MwHEAPtVpMbmzx6vNWHmn/f
+ cwdMjE6c4QCCWMbsoBp9ynLlXzIohUUYmoL6QEUWNRbElU+L0H2bHIW6aSWzIXsygySH
+ NUnGi7m95VNILVJcLzVi7/mAWXgLdQfbo5UGaCwUvX3eEXgC7YonFbarBsJw8v/FxVbU
+ liK1jFyZiJayz8sa2h3F5rrzztiogYojRDjeL3zCSgQ77l5wjmVRKQ8FsPShwv4ww9eD
+ ecWRhV/rOgMXopnOCmygnxGv1sLcexIkjz1uptYwIPj6i2wWyzxzaiAO6E2fJhfCPEF3
+ vSFQ==
+X-Gm-Message-State: AC+VfDyqOf7EXkz41eodJGmVeyx/36+On93R9hwAywR5K8yUoQSwu0f7
+ 0hB8nnGicRUWAWSeFHUkLKMYTNRL7W0PoeknvuNwK3f4m1gRIexZH1+F67YieWRuQq9O8Ge+6Kl
+ qPVRjBz1FCk14GJE=
+X-Received: by 2002:a05:6214:4111:b0:62a:cc88:1d44 with SMTP id
+ kc17-20020a056214411100b0062acc881d44mr15538257qvb.4.1687273360627; 
+ Tue, 20 Jun 2023 08:02:40 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6V7uyCjsYewb5UtTWnCqfBn5GUflC53XiTKDCeWj6JaYr0GzaMcSWBrWeWeYrkOsiGhtrk8w==
+X-Received: by 2002:a05:6214:4111:b0:62a:cc88:1d44 with SMTP id
+ kc17-20020a056214411100b0062acc881d44mr15538227qvb.4.1687273360229; 
+ Tue, 20 Jun 2023 08:02:40 -0700 (PDT)
 Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
  [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- t8-20020a0ce2c8000000b0062dd56e3821sm1311925qvl.62.2023.06.20.07.59.20
+ d22-20020a0caa16000000b00631eaf8b9e5sm1305814qvb.138.2023.06.20.08.02.39
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 20 Jun 2023 07:59:21 -0700 (PDT)
-Date: Tue, 20 Jun 2023 10:59:19 -0400
+ Tue, 20 Jun 2023 08:02:39 -0700 (PDT)
+Date: Tue, 20 Jun 2023 11:02:38 -0400
 From: Peter Xu <peterx@redhat.com>
 To: Juan Quintela <quintela@redhat.com>
 Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
@@ -68,15 +68,14 @@ Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>,
  Leonardo Bras <leobras@redhat.com>
-Subject: Re: [PATCH 02/42] migration-test: Make ignore_stderr regular with
- other options
-Message-ID: <ZJG+x0iHS46dLqSB@x1n>
+Subject: Re: [PATCH 03/42] migration-test: simplify shmem_opts handling
+Message-ID: <ZJG/jqmk1hHwzXpJ@x1n>
 References: <20230608224943.3877-1-quintela@redhat.com>
- <20230608224943.3877-3-quintela@redhat.com>
+ <20230608224943.3877-4-quintela@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230608224943.3877-3-quintela@redhat.com>
+In-Reply-To: <20230608224943.3877-4-quintela@redhat.com>
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -102,59 +101,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Jun 09, 2023 at 12:49:03AM +0200, Juan Quintela wrote:
+On Fri, Jun 09, 2023 at 12:49:04AM +0200, Juan Quintela wrote:
 > Signed-off-by: Juan Quintela <quintela@redhat.com>
 > ---
->  tests/qtest/migration-test.c | 10 ++++------
->  1 file changed, 4 insertions(+), 6 deletions(-)
+>  tests/qtest/migration-test.c | 9 ++++-----
+>  1 file changed, 4 insertions(+), 5 deletions(-)
 > 
 > diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-> index c5e0c69c6b..73b2f01427 100644
+> index 73b2f01427..95ccc9bce7 100644
 > --- a/tests/qtest/migration-test.c
 > +++ b/tests/qtest/migration-test.c
-> @@ -602,7 +602,7 @@ static int test_migrate_start(QTestState **from, QTestState **to,
->      g_autofree gchar *arch_target = NULL;
->      g_autofree gchar *cmd_source = NULL;
->      g_autofree gchar *cmd_target = NULL;
-> -    const gchar *ignore_stderr;
-> +    const gchar *ignore_stderr = NULL;
->      g_autofree char *bootpath = NULL;
->      g_autofree char *shmem_opts = NULL;
->      g_autofree char *shmem_path = NULL;
-> @@ -672,10 +672,7 @@ static int test_migrate_start(QTestState **from, QTestState **to,
->           * IO redirection does not work, so don't bother adding IO redirection
->           * to the command line.
->           */
-> -        ignore_stderr = "";
-
-Personally maybe I won't bother with such a patch as a whole.. but if we do
-want to, we could also remove "#else" here and move comment above it.
-
->  #endif
+> @@ -681,9 +681,6 @@ static int test_migrate_start(QTestState **from, QTestState **to,
+>              "-object memory-backend-file,id=mem0,size=%s"
+>              ",mem-path=%s,share=on -numa node,memdev=mem0",
+>              memory_size, shmem_path);
 > -    } else {
-> -        ignore_stderr = "";
+> -        shmem_path = NULL;
+> -        shmem_opts = g_strdup("");
 >      }
 >  
->      if (args->use_shmem) {
-> @@ -701,7 +698,8 @@ static int test_migrate_start(QTestState **from, QTestState **to,
+>      cmd_source = g_strdup_printf("-accel kvm%s -accel tcg%s%s "
+> @@ -696,7 +693,8 @@ static int test_migrate_start(QTestState **from, QTestState **to,
+>                                   machine_opts ? " -machine " : "",
+>                                   machine_opts ? machine_opts : "",
 >                                   memory_size, tmpfs,
->                                   arch_source, shmem_opts,
+> -                                 arch_source, shmem_opts,
+> +                                 arch_source,
+> +                                 shmem_opts ? shmem_opts : "",
 >                                   args->opts_source ? args->opts_source : "",
-> -                                 ignore_stderr);
-> +                                 ignore_stderr ? ignore_stderr : "");
-> +
->      if (!args->only_target) {
->          *from = qtest_init(cmd_source);
->          qtest_qmp_set_event_callback(*from,
-> @@ -722,7 +720,7 @@ static int test_migrate_start(QTestState **from, QTestState **to,
+>                                   ignore_stderr ? ignore_stderr : "");
+>  
+> @@ -718,7 +716,8 @@ static int test_migrate_start(QTestState **from, QTestState **to,
+>                                   machine_opts ? " -machine " : "",
+>                                   machine_opts ? machine_opts : "",
 >                                   memory_size, tmpfs, uri,
->                                   arch_target, shmem_opts,
+> -                                 arch_target, shmem_opts,
+> +                                 arch_target,
+> +                                 shmem_opts ? shmem_opts : "",
+
+Isn't this adding duplications instead?
+
+Meanwhile, shmem_opts right now is auto-free.  If we do this we don't need
+it to be auto-free anymore..
+
 >                                   args->opts_target ? args->opts_target : "",
-> -                                 ignore_stderr);
-> +                                 ignore_stderr ? ignore_stderr : "");
+>                                   ignore_stderr ? ignore_stderr : "");
 >      *to = qtest_init(cmd_target);
->      qtest_qmp_set_event_callback(*to,
->                                   migrate_watch_for_resume,
 > -- 
 > 2.40.1
 > 
