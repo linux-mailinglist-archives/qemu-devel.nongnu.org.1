@@ -2,84 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF56173752C
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 21:37:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B49A737538
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 21:44:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBh92-0003Ue-99; Tue, 20 Jun 2023 15:36:04 -0400
+	id 1qBhFl-0004p6-CI; Tue, 20 Jun 2023 15:43:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qBh8u-0003Tz-Qf
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 15:35:57 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qBhFY-0004oe-Pu
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 15:42:49 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qBh8q-00052w-C1
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 15:35:56 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qBhFU-0000Yh-Q4
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 15:42:47 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687289750;
+ s=mimecast20190719; t=1687290162;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=3teOPTqD/QpAWChY+neKZwUqLEUp64/PIHHc5ah/5go=;
- b=KjZhiNxI8GEeqoCjwDR/isQB13hjY7f8FfjvST/P9TFRBdVg+xy+4b/PkdOGCXEg2J1RAs
- FV67eGXfJmxwC7tCD1M4YJ/yPR5tG5UJKSMGlUf+KD7M22bhbhQfgP1BOR4ASEXWZ/f7R4
- SzA+kM1X4dugjP5u52fJ+Lu7/5mr9b4=
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
- [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=EkAePTr8A0Bbm4IQRiLssqvdCdh9/GKBcKXM4/UMnOo=;
+ b=DqdWBSi0rxXlnL7lNG5Ed0iJhc7YpMITWz5fzJ2rHaCGAl4JC9Ts24b6Bm/CCzpXg1CWQp
+ qpSb0+sv1pdQJWJ+bkZ8rfgwlGr1YUTUYRhoSrfnAq68tj+cvO95DrAW4vmzhSYLD7Arek
+ xc0zk/oYqq5NoLhZl8L0LQ6VshxiG/o=
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
+ [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-57-rfnbyehuMB-1JT-bW4FB0A-1; Tue, 20 Jun 2023 15:35:49 -0400
-X-MC-Unique: rfnbyehuMB-1JT-bW4FB0A-1
-Received: by mail-qk1-f197.google.com with SMTP id
- af79cd13be357-74faf5008bbso116341585a.0
- for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 12:35:48 -0700 (PDT)
+ us-mta-169-gqopydWmPh-C2KF3atJf-g-1; Tue, 20 Jun 2023 15:42:37 -0400
+X-MC-Unique: gqopydWmPh-C2KF3atJf-g-1
+Received: by mail-qk1-f199.google.com with SMTP id
+ af79cd13be357-7625940fbf3so49250085a.0
+ for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 12:42:31 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687289748; x=1689881748;
+ d=1e100.net; s=20221208; t=1687290151; x=1689882151;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=3teOPTqD/QpAWChY+neKZwUqLEUp64/PIHHc5ah/5go=;
- b=l0qvf3/2Efv6Px0ZeAgxlQwZppoVjkYSmuDkoyE79hjWBRl7JJvskMf9m010E2Bpga
- n22YmP8QzcOIKaco6jITYYzQAwEm736I0pw17LA9g5CII3PJc2KdyIiXRgsyUMlnmSpp
- Moq87F8jng883JVmNRjOBVnzxD/WM/UBzWSAibLWaSJFJL7OOU72XcLrvU2nc+O+LBBv
- BM+erXFuaLxah7zV7Hi9rID8fMH7YfV+F58R6u7vkhXdux/bBtGgfbn8siTRHDvv8Tpq
- BeeuEVHLYRtEhWMNezlP6M8xYd6My0dfYLgnWPEZ85KA6UU+b1/zb3bEXjIgtfCwWokt
- YkIw==
-X-Gm-Message-State: AC+VfDyTbdQ74nLgnBsycoZZVVNLq/jDz0/gq8pfWNePLA4kQrknUrNi
- ZxJXZQWxHH4+Rc+js4LDsItdlOrgBBd63fT+TEMtoIPy8wfxpwt0SAYZ8QDsznndAJY1XlC5Pfd
- fnW4T2w8XxWPuggk=
-X-Received: by 2002:a05:620a:46a2:b0:75e:ba30:8ccc with SMTP id
- bq34-20020a05620a46a200b0075eba308cccmr17037652qkb.1.1687289747660; 
- Tue, 20 Jun 2023 12:35:47 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ61WZLvODRCTEAPlHxE7iufvoRVMGkGDNoeiavUhbWdJSbwYFac+mpc1YHnHClpsr5Zl+F1gA==
-X-Received: by 2002:a05:620a:46a2:b0:75e:ba30:8ccc with SMTP id
- bq34-20020a05620a46a200b0075eba308cccmr17037630qkb.1.1687289747317; 
- Tue, 20 Jun 2023 12:35:47 -0700 (PDT)
+ bh=EkAePTr8A0Bbm4IQRiLssqvdCdh9/GKBcKXM4/UMnOo=;
+ b=HP3H97zAptPjtgR6lQvnlvR+PudwfxADIvZpqjKi5Y1OIRUtGQyPgIxQ398Pjjvzba
+ N39ibergrjzk7gMadIdzrcdP0TNBCWP6fPGUZb+QUCEiK/Ak+oVoy7hRiL8rq9egOa4k
+ 8HbMZlhxqe5sjh6nKH2U+4RCunLJSD5mWGYZcKMmmfJoYo8vTaKfgWFTLfWjpr7QQ44r
+ Op25jpt4Pev+KfjjQzwtKGPs4URaXRo/xudQCJ+NGF1rA3St1OU0oHp6dvLU0qVgV0RU
+ YBLb/LjwoiIqPAAvST5eOoJdTqaDeNgBNio6EFYAbyTl1JZ47cYStS6nJ+qG3cfset5h
+ kx5A==
+X-Gm-Message-State: AC+VfDyoLLP0BHwLkHgE8UnQ1Trkod9V8ZXwNWb/tUQMP3nsqZNM1F33
+ 7j67SkFh9yOT86ElW4JaY/VsD2BsBJ2O3IcfV3MTb/au31EJC8rtESPuHIiTWixlgXVQXOqm/e+
+ YnfjuUGaPZ+dB3f4=
+X-Received: by 2002:a05:620a:2889:b0:75b:23a1:82a4 with SMTP id
+ j9-20020a05620a288900b0075b23a182a4mr16086155qkp.5.1687290151278; 
+ Tue, 20 Jun 2023 12:42:31 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6myeOIekDxvgBssbWvVWOYkKFIimTqTBs+csJ2Coz5M79U/jY+6rEt5zlUBJXY46Be0Gb2bw==
+X-Received: by 2002:a05:620a:2889:b0:75b:23a1:82a4 with SMTP id
+ j9-20020a05620a288900b0075b23a182a4mr16086140qkp.5.1687290150987; 
+ Tue, 20 Jun 2023 12:42:30 -0700 (PDT)
 Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
  [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- s16-20020a05620a031000b007606a26988dsm1425482qkm.73.2023.06.20.12.35.46
+ pc21-20020a05620a841500b0075ca4cd03d4sm1445406qkn.64.2023.06.20.12.42.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 20 Jun 2023 12:35:46 -0700 (PDT)
-Date: Tue, 20 Jun 2023 15:35:45 -0400
+ Tue, 20 Jun 2023 12:42:30 -0700 (PDT)
+Date: Tue, 20 Jun 2023 15:42:29 -0400
 From: Peter Xu <peterx@redhat.com>
-To: Steven Sistare <steven.sistare@oracle.com>
-Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>,
- "Daniel P. Berrange" <berrange@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Fabiano Rosas <farosas@suse.de>
-Subject: Re: [PATCH V2] migration: file URI
-Message-ID: <ZJH/kfygyRaYWHom@x1n>
-References: <1686163139-256654-1-git-send-email-steven.sistare@oracle.com>
- <ZIdnj7Hr1L3iDVUG@x1n>
- <bddfc088-268b-2d9b-7a28-6345b8bfa2e7@oracle.com>
- <ZId4LggDVgxbtGTn@x1n> <877cs6ujtu.fsf@suse.de>
- <ZInhvxq9YgoM9ykZ@x1n> <874jn9vs9x.fsf@suse.de>
- <ZIoJFoBlkS5WFOyZ@x1n> <87cz1wzsnf.fsf@suse.de>
- <5d158448-4c11-21b9-5e41-e7d57c1b2c7c@oracle.com>
+To: Laurent Vivier <lvivier@redhat.com>
+Cc: Juan Quintela <quintela@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>,
+ Leonardo Bras <leobras@redhat.com>
+Subject: Re: [PATCH 01/42] migration-test: Be consistent for ppc
+Message-ID: <ZJIBJWejPqh7hJpi@x1n>
+References: <20230608224943.3877-1-quintela@redhat.com>
+ <20230608224943.3877-2-quintela@redhat.com> <ZJG9utW5qi04ZM7s@x1n>
+ <43fe7106-78c0-c431-aab6-395158f131e8@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <5d158448-4c11-21b9-5e41-e7d57c1b2c7c@oracle.com>
+In-Reply-To: <43fe7106-78c0-c431-aab6-395158f131e8@redhat.com>
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -104,71 +101,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jun 20, 2023 at 02:36:58PM -0400, Steven Sistare wrote:
-> On 6/15/2023 10:50 AM, Fabiano Rosas wrote:
-> > Peter Xu <peterx@redhat.com> writes:
+On Tue, Jun 20, 2023 at 09:27:17PM +0200, Laurent Vivier wrote:
+> On 6/20/23 16:54, Peter Xu wrote:
+> > On Fri, Jun 09, 2023 at 12:49:02AM +0200, Juan Quintela wrote:
+> > > It makes no sense that we don't have the same configuration on both sides.
 > > 
-> >> On Wed, Jun 14, 2023 at 02:59:54PM -0300, Fabiano Rosas wrote:
-> >>> In this message Daniel mentions virDomainSnapshotXXX which would benefit
-> >>> from using the same "file" migration, but being done live:
-> >>>
-> >>> https://lore.kernel.org/r/ZD7MRGQ+4QsDBtKR@redhat.com
-> >>>
-> >>> And from your response here:
-> >>>  https://lore.kernel.org/r/ZEA759BSs75ldW6Y@x1n
-> >>>
-> >>> I had understood that having a new SUSPEND cap to decide whether to do
-> >>> it live or non-live would be enough to cover all use-cases.
-> >>
-> >> Oh, I probably lost some of the contexts there, sorry about that - so it's
-> >> about not being able to live snapshot on !LINUX worlds properly, am I
-> >> right?
-> >>
-> > 
-> > Right, so that gives us for now a reasonable use-case for keeping live
-> > migration behavior possible with "file:".
-> > 
-> >> In the ideal world where we can always synchronously tracking guest pages
-> >> (like what we do with userfaultfd wr-protections on modern Linux), the
-> >> !SUSPEND case should always be covered by CAP_BACKGROUND_SNAPSHOT already
-> >> in a more performant way.  IOW, !SUSPEND seems to be not useful to Linux,
-> >> because whenever we want to set !SUSPEND we should just use BG_SNAPSHOT.
-> >>
-> > 
-> > I agree.
-> > 
-> >> But I think indeed the live snapshot support is not good enough. Even on
-> >> Linux, it lacks different memory type supports, multi-process support, and
-> >> also no-go on very old kernels.  So I assume the fallback makes sense, and
-> >> then we can't always rely on that.
-> >>
-> >> Then I agree we can keep "file:" the same as others like proposed here, but
-> >> I'd like to double check with all of us so we're on the same page..
-> > 
-> > +1
-> > 
-> >> And maybe we should mention some discussions into commit message or
-> >> comments where proper in the code, so we can track what has happened
-> >> easier.
-> >>
-> > 
-> > I'll add some words where appropriate in my series as well. A v2 is
-> > already overdue with all the refactorings that have happened in the
-> > migration code.
+> > I hope Laurent can see this one out of 40s.
 > 
-> Peter, should one of us proceed to submit the file URI as a stand-alone patch, 
-> since we both need it, and it has some value on its own? 
-> 
-> My version adds a watch on the incoming channel so we do not block monitor commands. 
-> It also adds tracepoints like the other URI's.
-> 
-> Fabiano's version adds a nice unit test.  
-> 
-> Maybe we should submit a small series with both.
+> I had some luck...
 
-I fully agree.  I didn't check the details, but if we know the shared bits
-it'll be great if we arrange it before-hand, and then it might also be the
-best too for all sides.  Thanks for raising this.
+:-D
+
+> 
+> > 
+> > Makes sense to me, but does it mean that the devices are not matching
+> > before on ppc?  Confused how did it work then..
+> 
+> I agree we need the -nodefaults on both sides.
+> 
+> It has been introduced by
+> fc71e3e562b7 ("tests/migration: Speed up the test on ppc64") (Thomas)
+> 
+> I think it works because destination side doesn't check for what is missing.
+
+Oh!  Makes sense.. just notice this (fact). Then no fixes needed either.
+
+> 
+> Reviewed-by: Laurent Vivier <lvivier@redhat.com>
+
+Thanks, Laurent!
 
 -- 
 Peter Xu
