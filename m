@@ -2,73 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A67E9736807
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 11:42:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F61673682F
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 11:44:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBXql-0004pP-Bw; Tue, 20 Jun 2023 05:40:35 -0400
+	id 1qBXri-0000bL-6m; Tue, 20 Jun 2023 05:41:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qBXqi-0004cc-6h; Tue, 20 Jun 2023 05:40:32 -0400
-Received: from mail-pg1-x52c.google.com ([2607:f8b0:4864:20::52c])
+ id 1qBXrf-0000N0-7O; Tue, 20 Jun 2023 05:41:31 -0400
+Received: from mail-pj1-x1035.google.com ([2607:f8b0:4864:20::1035])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qBXqg-0006xx-06; Tue, 20 Jun 2023 05:40:31 -0400
-Received: by mail-pg1-x52c.google.com with SMTP id
- 41be03b00d2f7-53fbf2c42bfso3679729a12.3; 
- Tue, 20 Jun 2023 02:40:29 -0700 (PDT)
+ id 1qBXrd-0007Bg-Fo; Tue, 20 Jun 2023 05:41:30 -0400
+Received: by mail-pj1-x1035.google.com with SMTP id
+ 98e67ed59e1d1-25e83254ff5so2897742a91.1; 
+ Tue, 20 Jun 2023 02:41:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1687254028; x=1689846028;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
+ d=gmail.com; s=20221208; t=1687254087; x=1689846087;
+ h=in-reply-to:references:cc:to:from:subject:message-id:date
  :content-transfer-encoding:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=gqXYeh6xJrw67BdKU4KInuTz93iOW33J1ks271D8C/0=;
- b=pcogaFymxeXe9+rqkZ4t+6BkzFkEptKcgDkETgkRGzI/elV6zBq+VAnwUhcT38R4Pc
- KRTTddQ9fGLKgwmlEt3WVKpHlocY3FWROpi/ObqSMnnyxPFKUEnog1k0EXm7AAQFtk4f
- MnM3/1UlsNrjvvlU+Ax09Gf8Yd6q9N/YQ29mciz0YWfSjcnpdez44V5HqBDOBmXF83TX
- LE1IccOZtu4biBlXuBXiaINB2yS6rQPcGJYxsyCW5NEz+vXTmXi63XEcptPDvs9r4xMB
- +X8D3EdOMXAA+7khPg3u0Kz/9e6RHLJgKs6K0vjWk7eSngCNoLWI5z5k3YSqS1LgZM/c
- 1UWQ==
+ bh=FZmz/Ic++bv42p52NE50sHDdATvyhhRmbkgBYqr9yZw=;
+ b=YeOPFQV5dTn7PiiMa/7GVo1lpz3DQ+enTQiHvGlLNfg9pMFLT5sp7wtHONMXsmaqAM
+ o6Wo5OpbMpo8bKB0V2tCQktf6AeoMQuv/4Xx6dLqPFU55ydd0oTlLuCLwVioipPzufoc
+ 55k9dvB7hxhraVHVVjZSbzvWXaZ21TfaNDXpciXXaAnY2+o6FFGMW8cUAv62/yhudu/7
+ o/di3S3H7RpRSwvtTDHo2Huh/0Eqfw28b0XCwp2HCfP7SfAPoq6SshG/yEdW5DmwKcu+
+ JntWWsc0/lvKYMPMZa27QLfzgBqzDe/Gt3ec3381duwmo12JbK93eaHfYt9UUhN+5Qfe
+ xpew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687254028; x=1689846028;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
+ d=1e100.net; s=20221208; t=1687254087; x=1689846087;
+ h=in-reply-to:references:cc:to:from:subject:message-id:date
  :content-transfer-encoding:mime-version:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=gqXYeh6xJrw67BdKU4KInuTz93iOW33J1ks271D8C/0=;
- b=CsO48JMDYE1n2vIiDf/XcET4lt79I6SZfe/tytU1HqTvHcnv4vmUJLGm7J7/Cg9qgl
- ayXYXq0S89tQHWTRvy7hYGH0DfVY1ByGrZTSpwefYz2QiBAKNLgbwQVQWtWNQcSnZbxu
- fXMDf3OAunPm7FKnFfSvPoAZHnzKjySDZFATHQJvffUIgurpvqnsYNENDPmU7u1llFAC
- ws7K6t4XJuwZc+zDL6ckXZ83EXGt0/CTJJU3Iwi+x8qiuh/HQ4jSmARtuNg9+JCAG9EI
- NDlCypBOzMbnJV3A+SCa/LHd5u6OFoa4ztgi21Mi/F2fF2BY4qqVr7cSTR3ZWMHJT+Un
- 3KRg==
-X-Gm-Message-State: AC+VfDyhYjrIQc+1ZPZh+xul4eNNXAprOveSeT1QviBgsIndI96HGGRS
- VO862MJDg06pNfm34b/HJyQ=
-X-Google-Smtp-Source: ACHHUZ6W2Y3L2jCYRi7Y4hkpRps3N+Rt32UCQOyvrxoOjQDRpurJGlhsQc1/JO8wB2AtkA2ehe+erQ==
-X-Received: by 2002:a05:6a20:54a2:b0:10f:d1d4:40d4 with SMTP id
- i34-20020a056a2054a200b0010fd1d440d4mr15443793pzk.14.1687254027832; 
- Tue, 20 Jun 2023 02:40:27 -0700 (PDT)
+ bh=FZmz/Ic++bv42p52NE50sHDdATvyhhRmbkgBYqr9yZw=;
+ b=Avugl4sS85du97wBxGb06N+OmLSeTKdRgBhxEgEIahk3PfqfRTpmu/UKIRViXiUAOu
+ b+Cop7LM0ZHbF8hUOsmYL0RTiiG/yHaoVuWJDoqEl+n23wdqVzQY87oTfY0VjgttUPvW
+ N1XcPuGeASb7XZmvnmkRMvS+QGEdtYjsC1QzKm/J+w1hS6YXZyE3jvEiIrNdqeqCDlnW
+ FdSKZuZSOXR3ksAYkh3/3Eqak+3nYneluOajbyWqsov/OANQFRoF8rq7+7D+lB0ZQe0b
+ xrdV8zmIYefju9gCGA6YyO/8JuFbslHx1h4DWdyAR52D7QL1DEhpe6E73SUSNpudkBzw
+ 6hpA==
+X-Gm-Message-State: AC+VfDwtSXz/NA7BLqIN8ggPtvWRzzl/8hA678W7khfl6TAiMYShj+cr
+ xPYsHnu7FTyoXfFTjfDpB5g=
+X-Google-Smtp-Source: ACHHUZ6ACLJ0wEbPVIcqUKmCs2KSfzUoAM8jzVEbVJit+0MlZE0XFbOedtU3330Ga0eyLR5e+giucw==
+X-Received: by 2002:a17:90a:6688:b0:25b:e310:ca6 with SMTP id
+ m8-20020a17090a668800b0025be3100ca6mr24197023pjj.9.1687254087411; 
+ Tue, 20 Jun 2023 02:41:27 -0700 (PDT)
 Received: from localhost ([124.170.190.103]) by smtp.gmail.com with ESMTPSA id
- u21-20020a62ed15000000b00660d80087a0sm968719pfh.199.2023.06.20.02.40.25
+ jb18-20020a170903259200b001b552309aedsm1206826plb.192.2023.06.20.02.41.24
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 20 Jun 2023 02:40:27 -0700 (PDT)
+ Tue, 20 Jun 2023 02:41:27 -0700 (PDT)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 20 Jun 2023 19:40:23 +1000
-Message-Id: <CTHDMTMTG72L.17YSIOWBD8RMD@wheely>
-Cc: <qemu-devel@nongnu.org>
-Subject: Re: [PATCH 2/9] MAINTAINERS: Add reviewer for PowerPC TCG CPUs
+Date: Tue, 20 Jun 2023 19:41:22 +1000
+Message-Id: <CTHDNKZRX1TT.2HBN6USDIKCU4@wheely>
+Subject: Re: [PATCH 4/4] spapr: Allow up to 8 threads SMT on POWER8 and newer
 From: "Nicholas Piggin" <npiggin@gmail.com>
-To: =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, <qemu-ppc@nongnu.org>,
- "Daniel Henrique Barboza" <danielhb413@gmail.com>
+To: "Harsh Prateek Bora" <harshpb@linux.ibm.com>, <qemu-ppc@nongnu.org>
+Cc: <qemu-devel@nongnu.org>, "Daniel Henrique Barboza"
+ <dbarboza@ventanamicro.com>, =?utf-8?q?C=C3=A9dric_Le_Goater?=
+ <clg@kaod.org>
 X-Mailer: aerc 0.14.0
-References: <20230620055911.187065-1-clg@kaod.org>
- <20230620055911.187065-3-clg@kaod.org>
-In-Reply-To: <20230620055911.187065-3-clg@kaod.org>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52c;
- envelope-from=npiggin@gmail.com; helo=mail-pg1-x52c.google.com
+References: <20230605112323.179259-1-npiggin@gmail.com>
+ <20230605112323.179259-5-npiggin@gmail.com>
+ <374c620b-abc2-a5a0-6cdf-cbc0294137f3@linux.ibm.com>
+In-Reply-To: <374c620b-abc2-a5a0-6cdf-cbc0294137f3@linux.ibm.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1035;
+ envelope-from=npiggin@gmail.com; helo=mail-pj1-x1035.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,32 +93,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue Jun 20, 2023 at 3:59 PM AEST, C=C3=A9dric Le Goater wrote:
-> Nick has great knowledge of the PowerPC CPUs, software and hardware.
-> Add him as a reviewer on CPU TCG modeling.
-
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
-
+On Tue Jun 20, 2023 at 7:27 PM AEST, Harsh Prateek Bora wrote:
 >
-> Cc: Nicholas Piggin <npiggin@gmail.com>
-> Signed-off-by: C=C3=A9dric Le Goater <clg@kaod.org>
-> ---
->  MAINTAINERS | 1 +
->  1 file changed, 1 insertion(+)
 >
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index e6f3dade2230..90fb83c4cb58 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -302,6 +302,7 @@ M: Daniel Henrique Barboza <danielhb413@gmail.com>
->  R: C=C3=A9dric Le Goater <clg@kaod.org>
->  R: David Gibson <david@gibson.dropbear.id.au>
->  R: Greg Kurz <groug@kaod.org>
-> +R: Nicholas Piggin <npiggin@gmail.com>
->  L: qemu-ppc@nongnu.org
->  S: Odd Fixes
->  F: target/ppc/
-> --=20
-> 2.41.0
+> On 6/5/23 16:53, Nicholas Piggin wrote:
+> > PPC TCG now supports multi-threaded CPU configuration for non-hyperviso=
+r
+> > state. This requires PIR and TIR be set, because that's how sibling thr=
+ead
+> > matching is done.
+> >=20
+> > spapr's nested-HV capability does not currently coexist with SMT. This
+> > is quite analogous to LPAR-per-core mode on real hardware which also
+> > does not support KVM.
+> >=20
+> > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> > ---
+> >   hw/ppc/spapr.c          | 16 ++++++++++++----
+> >   hw/ppc/spapr_caps.c     | 14 ++++++++++++++
+> >   hw/ppc/spapr_cpu_core.c |  7 +++++--
+> >   3 files changed, 31 insertions(+), 6 deletions(-)
+> >=20
+> > diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
+> > index dcb7f1c70a..deb8b507e3 100644
+> > --- a/hw/ppc/spapr.c
+> > +++ b/hw/ppc/spapr.c
+> > @@ -2524,10 +2524,18 @@ static void spapr_set_vsmt_mode(SpaprMachineSta=
+te *spapr, Error **errp)
+> >       int ret;
+> >       unsigned int smp_threads =3D ms->smp.threads;
+> >  =20
+> > -    if (!kvm_enabled() && (smp_threads > 1)) {
+> > -        error_setg(errp, "TCG cannot support more than 1 thread/core "
+> > -                   "on a pseries machine");
+> > -        return;
+> > +    if (!kvm_enabled()) {
+>
+> Can we make it a check for tcg_enabled() which would be more appropriate=
+=20
+> or as Cedric suggested, may be include this one along with your series:
+>
+> https://lore.kernel.org/qemu-devel/20230620074802.86898-1-philmd@linaro.o=
+rg/
 
+Good point, I'll keep it in mind.
+
+Thanks,
+Nick
 
