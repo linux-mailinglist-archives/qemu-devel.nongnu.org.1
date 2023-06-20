@@ -2,71 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E933736CD0
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 15:14:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D821736CDC
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 15:16:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBbBE-0002QE-N9; Tue, 20 Jun 2023 09:13:57 -0400
+	id 1qBbD6-0003fb-8B; Tue, 20 Jun 2023 09:15:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qBbAq-0002MN-3q; Tue, 20 Jun 2023 09:13:39 -0400
-Received: from mail-pg1-x534.google.com ([2607:f8b0:4864:20::534])
+ id 1qBbCq-0003Yj-Re; Tue, 20 Jun 2023 09:15:39 -0400
+Received: from mail-pj1-x1035.google.com ([2607:f8b0:4864:20::1035])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qBbAo-0000XQ-IZ; Tue, 20 Jun 2023 09:13:31 -0400
-Received: by mail-pg1-x534.google.com with SMTP id
- 41be03b00d2f7-54fb23ff7d3so2205915a12.0; 
- Tue, 20 Jun 2023 06:13:29 -0700 (PDT)
+ id 1qBbCm-00015g-Kh; Tue, 20 Jun 2023 09:15:33 -0400
+Received: by mail-pj1-x1035.google.com with SMTP id
+ 98e67ed59e1d1-25eb817b92fso2016089a91.3; 
+ Tue, 20 Jun 2023 06:15:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1687266808; x=1689858808;
+ d=gmail.com; s=20221208; t=1687266930; x=1689858930;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=A2Ryqj2jihkuku8uREInvaCHeFWX9x4zXtyu+izeImA=;
- b=rb3GiyvGRXCioJeoLpoCoLet0b10I/shyQ+sIk50qYVLEA5xbqnOni70PPoAzWfI7R
- cDnjmGJ48gwTEfGZF+IvN2vzhqrNvhxNu3IbAryqDmaxfGRvg1K206vq9clpE+Zy+4Vt
- woGksn7HYjKW5sqQlP6qBSKaKOk1RO6wMcpdx0Jy2OtUT2M08fs5iZ2/RsFWZPO0vOth
- F/QS5LASOyGajBWZzPPA5e/pB9dZQBBDuCyGyU9q/ENDOln9ZywfftgWtXibk92GyhAa
- d1hFG7UqrE2MHBw8tMCESpfMqSkmy9RpTvl6lfj7IOOTiA9Qm2+MJlV+5ZcNhSMOlLX9
- RlBg==
+ bh=DbdL4TjRIf7QQwhWq8z2PckkRpte8dSen0gz0QPkWhA=;
+ b=bV/kC677hVaSVzetTymkULyWhPF53gOTdbJqKtqDcYv6JYgLp3iHLuGZ9JIR5/Vq94
+ a3XXgK3jIWIK+d+Erq8evSnNmr2kS4lg8XHRGwaJ1jd/lHcxMim83TbDS3FkdqVdSULm
+ hQ+VczIcayZ8F1LX6OJC0n/UpogE/Ihb2Fi3RP8Wd89MNgCYxf9bmLUMXrdDrfte8FQc
+ dlwdnVhsJlrJFNNK3mcUZElcUy4usygFomYrhh4Mns/RlC1Nkb4AOJ5HKLHYBBf6xXy9
+ s/92hwmWR9u+7SKLRRxpp1hZn3oocIff+Hk1ygEPs/+MzmUX2QADdZLT4Z91GLw3dqST
+ veJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687266808; x=1689858808;
+ d=1e100.net; s=20221208; t=1687266930; x=1689858930;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=A2Ryqj2jihkuku8uREInvaCHeFWX9x4zXtyu+izeImA=;
- b=lx39d0tYVT8XwBAUjm1cAh+/zGdRou4qdBoHokSW8TdDE2daDF4Rfl7yb+ou/r0Cp7
- 6SiNmLn5fJS+OwlPaUT+KUvW3N6Z01kt0qWroyGz0+4LO7f/YRZaxZVn6j2mNQV/fo01
- qkPRkHcvbqmBvlQPl4fjq+jcSjWBvHLOEQQDs4yNYhsdDCAet6h+Z9ZSuYrmqvOw5/qT
- TYy+h+IJe5wSnFp5aM0Vuc0ce5PnzsCSMewNzSSiN/YKz83Q8JTOQkEy3dmDQwJhf5uj
- IbgtKBjMRC2gfP+Kx6ibSCGpR7agLMWU0ToKmTOjGJ2DKgpiYPZv53rat7oviUNh25p8
- /FHQ==
-X-Gm-Message-State: AC+VfDyU6UDDBrVwIO92/tmw/FnDf6jD/0Wp4vbcU874Ctoa1MxaIIfY
- cuut/ojianYI3JwrtvYNkgudLloJ3Ig=
-X-Google-Smtp-Source: ACHHUZ6YwmaLkYP6tG/l+mzdk6cN2Qgsrn/SH+exkMfOl3lwpwFOzcjFFphPdTm7sfJukiCCcyJBrw==
-X-Received: by 2002:a17:903:11c7:b0:1ae:7631:7fa9 with SMTP id
- q7-20020a17090311c700b001ae76317fa9mr8791403plh.37.1687266808338; 
- Tue, 20 Jun 2023 06:13:28 -0700 (PDT)
+ bh=DbdL4TjRIf7QQwhWq8z2PckkRpte8dSen0gz0QPkWhA=;
+ b=DkozxiFDycN54M6yk0lAYGukfO3+J95Pjy3e1x/RZTRzUaBYcs3QLgzaR8U2CzJ5RW
+ G9peqNvamt+xdLqe1bHuwB8v0XMSrD1xunDILoUa5pGRepSMLbKvQBGuJYR0qdLbd4BL
+ X5lUByeaO2heeBv5wsZsjnZBxVwPOjZyWVfdMRkoHth/2UKqZz2IaQj/gQDjpuiafY/E
+ r1TBpZBJcUBJRVT6KRvGMHb11LYNlNmiGb6c5fpuH7srJSkl46ylvz7SY6FXJR11MCOk
+ mV7cHJgv+RtkzmFES/ZVfHVExM7lvAZGm3tg0t9i46QZCe/bhP7y7g5M/SeIW22Pas1H
+ uPeQ==
+X-Gm-Message-State: AC+VfDxLft0jH+2qvt26pl497uH30MLktW89YLlVZNjhIX/5YRn/mZrH
+ AGK6TUOvHCOuZfPKge5za4gySAYB9iI=
+X-Google-Smtp-Source: ACHHUZ4UIq8J5mHl49DMtQ7Cqkm5ZrPwCNGHLIkMbrrwC/a47Gm4PJ+g2tkmDUqgY+cDUckyLue5CQ==
+X-Received: by 2002:a17:90a:8812:b0:256:857f:823d with SMTP id
+ s18-20020a17090a881200b00256857f823dmr6612027pjn.48.1687266930420; 
+ Tue, 20 Jun 2023 06:15:30 -0700 (PDT)
 Received: from wheely.local0.net ([124.170.190.103])
  by smtp.gmail.com with ESMTPSA id
- jo10-20020a170903054a00b001a183ade911sm1611325plb.56.2023.06.20.06.13.25
+ l4-20020a17090aec0400b0025c2c398d33sm1491004pjy.39.2023.06.20.06.15.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 20 Jun 2023 06:13:28 -0700 (PDT)
+ Tue, 20 Jun 2023 06:15:30 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org,
  Harsh Prateek Bora <harshpb@linux.ibm.com>,
  Daniel Henrique Barboza <danielhb413@gmail.com>
-Subject: [PATCH] target/ppc: Add ISA v3.1 LEV indication in SRR1 for system
- call interrupts
-Date: Tue, 20 Jun 2023 23:13:21 +1000
-Message-Id: <20230620131321.169261-1-npiggin@gmail.com>
+Subject: [PATCH] target/ppc: Better CTRL SPR implementation
+Date: Tue, 20 Jun 2023 23:15:23 +1000
+Message-Id: <20230620131523.169340-1-npiggin@gmail.com>
 X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::534;
- envelope-from=npiggin@gmail.com; helo=mail-pg1-x534.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1035;
+ envelope-from=npiggin@gmail.com; helo=mail-pj1-x1035.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,36 +88,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-System call interrupts in ISA v3.1 CPUs add a LEV indication in SRR1
-that corresponds with the LEV field of the instruction that caused the
-interrupt.
+The CTRL register is able to write the bit in the RUN field, which gets
+reflected into the TS field which is read-only and contains the state of
+the RUN field for all threads in the core.
+
+TCG does not implement SMT, so the correct implementation just requires
+mirroring the RUN bit into the first bit of the TS field.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
-This is unchanged, just taken out of the bigger series since it is
-independent.
+This is also unchanged from last posting except improved changelog.
+The pseries TCG SMT patches depend on this one, but it is good to go
+by itself too (this is what CTRL appears like to hardware KVM guest).
 
 Thanks,
 Nick
 
- target/ppc/excp_helper.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ target/ppc/translate.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
-index 77bfc18734..c7550fea13 100644
---- a/target/ppc/excp_helper.c
-+++ b/target/ppc/excp_helper.c
-@@ -1591,6 +1591,10 @@ static void powerpc_excp_books(PowerPCCPU *cpu, int excp)
-             vhc->hypercall(cpu->vhyp, cpu);
-             return;
-         }
-+        if (env->insns_flags2 & PPC2_ISA310) {
-+            /* ISAv3.1 puts LEV into SRR1 */
-+            msr |= lev << 20;
-+        }
-         if (lev == 1) {
-             new_msr |= (target_ulong)MSR_HVB;
-         }
+diff --git a/target/ppc/translate.c b/target/ppc/translate.c
+index b591f2e496..1ade063616 100644
+--- a/target/ppc/translate.c
++++ b/target/ppc/translate.c
+@@ -418,7 +418,14 @@ void spr_write_generic32(DisasContext *ctx, int sprn, int gprn)
+ 
+ void spr_write_CTRL(DisasContext *ctx, int sprn, int gprn)
+ {
+-    spr_write_generic32(ctx, sprn, gprn);
++    /* This does not implement >1 thread */
++    TCGv t0 = tcg_temp_new();
++    TCGv t1 = tcg_temp_new();
++    tcg_gen_extract_tl(t0, cpu_gpr[gprn], 0, 1); /* Extract RUN field */
++    tcg_gen_shli_tl(t1, t0, 8); /* Duplicate the bit in TS */
++    tcg_gen_or_tl(t1, t1, t0);
++    gen_store_spr(sprn, t1);
++    spr_store_dump_spr(sprn);
+ 
+     /*
+      * SPR_CTRL writes must force a new translation block,
 -- 
 2.40.1
 
