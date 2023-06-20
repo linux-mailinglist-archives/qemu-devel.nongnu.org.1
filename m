@@ -2,64 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52588736F0F
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 16:48:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F415736F53
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 16:56:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBcea-0008DD-IP; Tue, 20 Jun 2023 10:48:20 -0400
+	id 1qBclH-0002G2-7I; Tue, 20 Jun 2023 10:55:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <groug@kaod.org>) id 1qBceY-0008BA-MB
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 10:48:18 -0400
-Received: from 6.mo548.mail-out.ovh.net ([188.165.58.48])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qBclF-0002Fm-E3
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 10:55:13 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <groug@kaod.org>) id 1qBceV-0000QE-Qd
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 10:48:17 -0400
-Received: from mxplan5.mail.ovh.net (unknown [10.108.4.66])
- by mo548.mail-out.ovh.net (Postfix) with ESMTPS id 3A74320C63;
- Tue, 20 Jun 2023 14:48:05 +0000 (UTC)
-Received: from kaod.org (37.59.142.95) by DAG6EX1.mxp5.local (172.16.2.51)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Tue, 20 Jun
- 2023 16:48:04 +0200
-Authentication-Results: garm.ovh; auth=pass
- (GARM-95G0016a6684ad-52af-482e-b21c-949cbc4df826,
- 26134D463BE26AE7AD6874E45E6C9094DBC59A6F) smtp.auth=groug@kaod.org
-X-OVh-ClientIp: 78.197.208.248
-Date: Tue, 20 Jun 2023 16:48:03 +0200
-From: Greg Kurz <groug@kaod.org>
-To: Claudio Fontana <cfontana@suse.de>
-CC: Philippe =?UTF-8?B?TWF0aGlldS1EYXVkw6k=?= <philmd@linaro.org>,
- <qemu-devel@nongnu.org>, Harsh Prateek Bora <harshpb@linux.ibm.com>,
- =?UTF-8?B?Q8OpZHJpYw==?= Le Goater <clg@kaod.org>, Daniel Henrique Barboza
- <danielhb413@gmail.com>, David Gibson <david@gibson.dropbear.id.au>,
- <qemu-ppc@nongnu.org>
-Subject: Re: [PATCH] hw/ppc/spapr: Test whether TCG is enabled with
- tcg_enabled()
-Message-ID: <20230620164803.0aa623e6@bahia>
-In-Reply-To: <eb064809-7253-899a-97d1-635eb652b7fd@suse.de>
-References: <20230620074802.86898-1-philmd@linaro.org>
- <eb064809-7253-899a-97d1-635eb652b7fd@suse.de>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qBclE-000248-07
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 10:55:13 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1687272899;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=N0vcTkq3hhD8raDcSoY9kEwoGWptQCEnJkfNRj5GiDw=;
+ b=NL5+nuRJ36V2Id8ENYv7fSNrTwiWnyLaUuBBHtRFn9z6lMeEgq73HD2ZIGcdL5h+WUwgn/
+ 5gTzPB+d1P2q75zZ65r4L/r0/I7DTF62II6ByaXwydYpAe7/WMAliVb+HxNQKhRmC1h1x2
+ RR8QIacK7VmGG8re2QDLo2qZ++/t33s=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-378-zEVfgQ51PCaS4ILtnTSobA-1; Tue, 20 Jun 2023 10:54:52 -0400
+X-MC-Unique: zEVfgQ51PCaS4ILtnTSobA-1
+Received: by mail-qk1-f200.google.com with SMTP id
+ af79cd13be357-76077669a5aso123840285a.0
+ for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 07:54:52 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1687272892; x=1689864892;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=N0vcTkq3hhD8raDcSoY9kEwoGWptQCEnJkfNRj5GiDw=;
+ b=LXoXGgOvEW0dmZmOCHTyHxNBBKaps7UsnMuf1p2fInd9SK+ofu5j+l0sJ/2Gk8sMOM
+ VefoKyPG3uEORylY+QXN1ty1jz+BUdPk5cJCOrD+lrSmuGuDmwKSFkQ72H3MW7yH4ueh
+ tHfM69o80Yfa1sqrS+G+a/FX/2G+DhciPnZ3AwGRWvxf6IfqsgZelBy2nPss6agubWyv
+ jpnCChUsy18keXFKnFie+kBpn+eK0+pA5yc+bt9uR1+kXZrEM0MD2SYmuk5HyK8TPguz
+ fwLCwsFRW37QjtomzxBJr7NB66qeQBTNuJGQ1Qj+JgRDD/RnITrJkFZfeCRJdCzBvGpE
+ xTpQ==
+X-Gm-Message-State: AC+VfDxMpyvLGbPBWufDiRsvJX34uJoXggUPa35G8qJwpCYIktExhlFY
+ IWzz/Ds6kUKHyBHSnC7e2UwRV8zjptjKqG9Gbe19eHYSHs9nvBwN9dXo41eLtvd+mH0xCfbJ9dW
+ 1mtEo7A0z9aZEmDQ=
+X-Received: by 2002:a05:620a:2784:b0:763:a511:48b9 with SMTP id
+ g4-20020a05620a278400b00763a51148b9mr4107534qkp.1.1687272892029; 
+ Tue, 20 Jun 2023 07:54:52 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4uhNE8hlGv+UoW88v85cald0c+ltwQ+FRmOoxS83uOlDgfSCc3q7B7U2LVsxNU2urX0+xagg==
+X-Received: by 2002:a05:620a:2784:b0:763:a511:48b9 with SMTP id
+ g4-20020a05620a278400b00763a51148b9mr4107516qkp.1.1687272891722; 
+ Tue, 20 Jun 2023 07:54:51 -0700 (PDT)
+Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
+ [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
+ t26-20020a05620a005a00b0075ecdc937ffsm1204840qkt.41.2023.06.20.07.54.50
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 20 Jun 2023 07:54:51 -0700 (PDT)
+Date: Tue, 20 Jun 2023 10:54:50 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Juan Quintela <quintela@redhat.com>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>,
+ Leonardo Bras <leobras@redhat.com>
+Subject: Re: [PATCH 01/42] migration-test: Be consistent for ppc
+Message-ID: <ZJG9utW5qi04ZM7s@x1n>
+References: <20230608224943.3877-1-quintela@redhat.com>
+ <20230608224943.3877-2-quintela@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Originating-IP: [37.59.142.95]
-X-ClientProxiedBy: DAG7EX2.mxp5.local (172.16.2.62) To DAG6EX1.mxp5.local
- (172.16.2.51)
-X-Ovh-Tracer-GUID: 8ef3f157-9a5c-4747-af7a-53b11a992838
-X-Ovh-Tracer-Id: 13557242256497678700
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvhedrgeefhedgheelucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkjghfofggtgfgihesthhqredtredtjeenucfhrhhomhepifhrvghgucfmuhhriicuoehgrhhouhhgsehkrghougdrohhrgheqnecuggftrfgrthhtvghrnhepueeuieejtdelleeutdfhteejffeiteffueevffeffeetvdeifeeujefgudegteeunecukfhppeduvdejrddtrddtrddupdefjedrheelrddugedvrdelhedpjeekrdduleejrddvtdekrddvgeeknecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepuddvjedrtddrtddruddpmhgrihhlfhhrohhmpeeoghhrohhugheskhgrohgurdhorhhgqedpnhgspghrtghpthhtohepuddprhgtphhtthhopegtfhhonhhtrghnrgesshhushgvrdguvgdpphhhihhlmhgusehlihhnrghrohdrohhrghdpqhgvmhhuqdguvghvvghlsehnohhnghhnuhdrohhrghdphhgrrhhshhhpsgeslhhinhhugidrihgsmhdrtghomhdpuggrnhhivghlhhgsgedufeesghhmrghilhdrtghomhdpuggrvhhiugesghhisghsohhnrdgurhhophgsvggrrhdrihgurdgruhdpqhgvmhhuqdhpphgtsehnohhnghhnuhdrohhrghdptghlgheskhgrohgurdhorhhgpdfovfetjfhoshhtpe
- hmohehgeekpdhmohguvgepshhmthhpohhuth
-Received-SPF: pass client-ip=188.165.58.48; envelope-from=groug@kaod.org;
- helo=6.mo548.mail-out.ovh.net
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230608224943.3877-2-quintela@redhat.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -77,67 +101,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 20 Jun 2023 09:55:49 +0200
-Claudio Fontana <cfontana@suse.de> wrote:
+On Fri, Jun 09, 2023 at 12:49:02AM +0200, Juan Quintela wrote:
+> It makes no sense that we don't have the same configuration on both sides.
 
-> On 6/20/23 09:48, Philippe Mathieu-Daud=C3=A9 wrote:
-> > Although the PPC target only supports the TCG and KVM
-> > accelerators, QEMU supports more. We can no assume that
-> > '!kvm =3D=3D tcg', so test for the correct accelerator. This
-> > also eases code review, because here we don't care about
-> > KVM, we really want to test for TCG.
-> >=20
-> > Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
->=20
-> I don't remember anymore, but what about qtest ? It is usually the forgot=
-ten case in these kind of tests... so much complexity :-)
->=20
+I hope Laurent can see this one out of 40s.
 
-This check was added with TCG in mind because it is a known limitation.
-I don't see any reason to prevent qtest from being used with the rest
-of this function though.
+Makes sense to me, but does it mean that the devices are not matching
+before on ppc?  Confused how did it work then..
 
-> Ciao,
->=20
-> Claudio
->=20
->=20
-> > ---
-> >  hw/ppc/spapr.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >=20
-> > diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-> > index dcb7f1c70a..c4b666587b 100644
-> > --- a/hw/ppc/spapr.c
-> > +++ b/hw/ppc/spapr.c
-> > @@ -2524,7 +2524,7 @@ static void spapr_set_vsmt_mode(SpaprMachineState=
- *spapr, Error **errp)
-> >      int ret;
-> >      unsigned int smp_threads =3D ms->smp.threads;
-> > =20
-> > -    if (!kvm_enabled() && (smp_threads > 1)) {
-> > +    if (tcg_enabled() && (smp_threads > 1)) {
+> 
+> Signed-off-by: Juan Quintela <quintela@redhat.com>
+> ---
+>  tests/qtest/migration-test.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
+> index b0c355bbd9..c5e0c69c6b 100644
+> --- a/tests/qtest/migration-test.c
+> +++ b/tests/qtest/migration-test.c
+> @@ -646,7 +646,7 @@ static int test_migrate_start(QTestState **from, QTestState **to,
+>                                        "'nvramrc=hex .\" _\" begin %x %x "
+>                                        "do i c@ 1 + i c! 1000 +loop .\" B\" 0 "
+>                                        "until'", end_address, start_address);
+> -        arch_target = g_strdup("");
+> +        arch_target = g_strdup("-nodefaults");
+>      } else if (strcmp(arch, "aarch64") == 0) {
+>          init_bootfile(bootpath, aarch64_kernel, sizeof(aarch64_kernel));
+>          machine_opts = "virt,gic-version=max";
+> -- 
+> 2.40.1
+> 
 
-Bonjour Philippe,
+-- 
+Peter Xu
 
-Please drop the unneeded parens in the second check.
-
-With this fixed,
-
-Reviewed-by: Greg Kurz <groug@kaod.org>
-
-Cheers,
-
---
-Greg
-
-> >          error_setg(errp, "TCG cannot support more than 1 thread/core "
-> >                     "on a pseries machine");
-> >          return;
->=20
-
-
-
---=20
-Greg
 
