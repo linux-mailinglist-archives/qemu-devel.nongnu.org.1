@@ -2,79 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A92A2737135
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 18:12:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DBFF737158
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 18:21:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBdwP-0004T2-0K; Tue, 20 Jun 2023 12:10:49 -0400
+	id 1qBe5r-0000PU-CC; Tue, 20 Jun 2023 12:20:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qBdwM-0004SY-6p
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 12:10:46 -0400
-Received: from mail-lj1-x236.google.com ([2a00:1450:4864:20::236])
+ id 1qBe5p-0000Oj-8A
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 12:20:33 -0400
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qBdwJ-0001wi-U8
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 12:10:45 -0400
-Received: by mail-lj1-x236.google.com with SMTP id
- 38308e7fff4ca-2b45bc83f26so67391051fa.0
- for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 09:10:42 -0700 (PDT)
+ id 1qBe5j-00050y-TR
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 12:20:32 -0400
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-3f9b37cd58bso19579825e9.0
+ for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 09:20:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687277440; x=1689869440;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=PEBN3GeZ0q/lnRHGNlqQesmmMSmKZ/lR81pA/GvGWic=;
- b=jZwueKXO9X/qi99I8NhgWJ6QrUe8NpIbrvDRuUnWatQ7aCkMe28IiajYHKT0pwjiut
- OHAeWVV03bAuWAUEiq6NOGDAINa5XOisa8xGncuZehRtFpu9OGFLOAoragkvaSJc96um
- XQhZxZWVEZhoY8P52l+rSRPyvvYVhR8gN3RrldU5wdplmv0zQNCEEI9i8StRGgDenFA9
- 9Hlme5HE6LSfJJZlVeH0vHcI0WonLwpFftb0sN7XpZHcJCS3cIe2R1i5Ooh+wXALOwbQ
- vJIOHHke1bc9m9JFg3IZerEl5EAmP2SKn+MYscM5gOywnHf4bERXzOPyvgukYutU9cvv
- 34BQ==
+ d=linaro.org; s=google; t=1687278026; x=1689870026;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=2jNanxy9DKkZnidqmoGWGTJx5cQVfzXmYG+LVV4faIw=;
+ b=w5zYNA31mQIxjH0P3Z04seIIOs/h8X3torhdjcbKeJZehGZqvGocPU2xZIEAF3iwE2
+ K/LgzAuyK4tCnLjVFN1JCXG1xRz9l6Ag482lId4ehb78D+tMBFFZNVvnJS+k/TkkE0Lb
+ lkrhppifW1+1iCFmC5UJZWVdySt2lKSMrpCLOQfa+LB1/ZhzJB797twEL5yx7GnPj1gi
+ 2O+q7YwM+6Psd4c9X6S7g8C3ZQF3t4bdMoyjTuvvwARLpPlAm7eBiJXq3aTA+64OkvAN
+ mMYRV2MxCoy3SnpqwKqaBYcluhQp91D5UYYQNR7DQm8bmwcYidALtU7CnCR6+mk4mRgj
+ YVWw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687277440; x=1689869440;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=PEBN3GeZ0q/lnRHGNlqQesmmMSmKZ/lR81pA/GvGWic=;
- b=WXXBoA/2tHdgAKPzq70yuKRGtAFWGG4RnRZ5FNbqn14sFYiaecGMUzeGaWV/rsW2al
- KLbr78KZoSEWxRAgDYifUHJVdXhBbmNNPojt9nh2f3PJHaI5hw72tBxsp8cNmHmwruKR
- QUpuNphKBfE8vZ2rSqgNbcKEjzk32AeBWZprMifmbYJCX1zxFdLj1cIiscAsfaGYQzhC
- 1C3tsIpLyMro1PGbzd1UeH1f02C3WHt2gQT6LlgxSfbiKNUaNOY5+R0unZXMAUr3YviQ
- +/Z7f3xA9fXyQR5EUcs4qEJR4nwn2HAjD2hCQxga/ChrWagq4QRKjsPd14kNQsYYzvSd
- 0V/w==
-X-Gm-Message-State: AC+VfDxKxhsL1OM4CuyD/Vqtq3tQCCu3JQ2QT+rAqTAuOfLiYy7j6baG
- 6VPcTU76Qte3y8qV7LREVrfbKU8JSsaSnAtG+OqYPA==
-X-Google-Smtp-Source: ACHHUZ7RAcmNlB6CM+oE3zNob6asFCPxK805CwMhSkUjkogqDHIYIVw4xkkqs0XKshpNFro9XshSQk8ilfZiG0xjaZk=
-X-Received: by 2002:a2e:8696:0:b0:2b5:68ad:291b with SMTP id
- l22-20020a2e8696000000b002b568ad291bmr1759179lji.39.1687277439830; Tue, 20
- Jun 2023 09:10:39 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230620150335.814005-1-alex.bennee@linaro.org>
- <CAFEAcA9jWuxVVb-+rbv4dEF+0_P1+5z7Z6HQajGv5Jg3yje11g@mail.gmail.com>
- <87bkhai1p4.fsf@linaro.org> <bcafa996-128a-d25c-f35a-115b26498710@linaro.org>
-In-Reply-To: <bcafa996-128a-d25c-f35a-115b26498710@linaro.org>
+ d=1e100.net; s=20221208; t=1687278026; x=1689870026;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=2jNanxy9DKkZnidqmoGWGTJx5cQVfzXmYG+LVV4faIw=;
+ b=jYt6aP0AZyPRomLczxvOcY8gV22fhcycrGdOxLZpXPkrSZ+KEYMyoywYC0YkA8GhzS
+ ukZ6Z628fkqsdNYj1MUUfJ63q4+g3o3axOIxZpmfdT9D7/kavUZX7hnZ6eu/eOTP04xO
+ fKvksu2ZchvOKSnsdlEwC0BwjDfagFUPoUygD4HcXwNG+ZrsWbmtRslxcfLFMRrfDXYd
+ Dqx7Zedz81N/5YT6/lmlL0Wzk7YybLBt1MzbS81yfWc4lb7eeVI18Lg2O0X0ngEVSyWp
+ ljTTywQOZ+attmajiVROjfTHCstbFh8xPNzg8iNFpzz2A5UqM/tOIYpgSszvFRdGcE2N
+ VMAA==
+X-Gm-Message-State: AC+VfDxxp6yKrZuzx48IEsq8eaeniKmpnBl3Y+OMri1nTk4mpX4x1UTV
+ LKVJb46CNnpHsj3nKLNFUVySEpQJLkadYDRDwR8=
+X-Google-Smtp-Source: ACHHUZ7a/LjC6vaL1IoQ+hYbOUGFNIQ269/6ZNGNiTakflDStsnnG0KyR51UYA6OhQRWmVMff6BU2A==
+X-Received: by 2002:adf:fc4c:0:b0:309:33c4:52e1 with SMTP id
+ e12-20020adffc4c000000b0030933c452e1mr8377718wrs.64.1687278026149; 
+ Tue, 20 Jun 2023 09:20:26 -0700 (PDT)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ by smtp.gmail.com with ESMTPSA id
+ k10-20020adff5ca000000b0030ae87bd3e3sm2355743wrp.18.2023.06.20.09.20.25
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 20 Jun 2023 09:20:25 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 20 Jun 2023 17:10:29 +0100
-Message-ID: <CAFEAcA_ViU=Wcwhzj7fsiBP0YHcKEdyuBJ3F0QZh5LxDU8qiLw@mail.gmail.com>
-Subject: Re: [RFC PATCH] qemu-keymap: properly check return from
- xkb_keymap_mod_get_index
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::236;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x236.google.com
+To: qemu-devel@nongnu.org
+Cc: qemu-stable@nongnu.org,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Gerd Hoffmann <kraxel@redhat.com>
+Subject: [PATCH] pc-bios/keymaps: Use the official xkb name for Arabic layout,
+ not the legacy synonym
+Date: Tue, 20 Jun 2023 17:20:24 +0100
+Message-Id: <20230620162024.1132013-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,60 +92,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 20 Jun 2023 at 16:55, Richard Henderson
-<richard.henderson@linaro.org> wrote:
->
-> On 6/20/23 17:37, Alex Benn=C3=A9e wrote:
-> > ar maybe? it only got flagged in clang-system once fedora was updated (=
-I
-> > assume with better sanitizers):
-> >
-> >    [2773/3696] Generating pc-bios/keymaps/ar with a custom command
-> >    FAILED: pc-bios/keymaps/ar
-> >    /builds/stsquad/qemu/build/qemu-keymap -f pc-bios/keymaps/ar -l ar
-> >    ../qemu-keymap.c:223:16: runtime error: shift exponent 4294967295 is=
- too large for 32-bit type 'int'
-> >    SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior ../qemu-keym=
-ap.c:223:16 in
-> >    [2774/3696] Generating pc-bios/edk2-x86_64-code.fd with a custom com=
-mand (wrapped by meson to capture output)
-> >    [2775/3696] Generating pc-bios/edk2-x86_64-secure-code.fd with a cus=
-tom command (wrapped by meson to capture output)
-> >    ninja: build stopped: subcommand failed.
-> >    make: *** [Makefile:153: run-ninja] Error 1
-> >
-> > https://gitlab.com/stsquad/qemu/-/jobs/4500683186#L3957
->
-> Related:
->
-> https://gitlab.com/qemu-project/qemu/-/issues/1709
-> https://gitlab.com/qemu-project/qemu/-/issues/1712
->
-> which note that keymaps/ar has changed to keymaps/ara in xkeyboard-config=
- from 2.38 to 2.39.
+The xkb official name for the Arabic keyboard layout is 'ara'.
+However xkb has for at least the past 15 years also permitted it to
+be named via the legacy synonym 'ar'.  In xkeyboard-config 2.39 this
+synoynm was removed, which breaks compilation of QEMU:
 
-On Ubuntu I have xkb-data 2.33.1, but that already has
-/usr/share/X11/xkb/symbols/ara, not ar.   Asking qemu-keymap
-for either 'ar' or 'ara' works. So this is not so much
-that the filename has changed in 2.39, but merely that
-xkb has stopped accepting a legacy compatibility synonym.
-The upstream change is:
-https://gitlab.freedesktop.org/xkeyboard-config/xkeyboard-config/-/commit/4=
-70ad2cd8fea84d7210377161d86b31999bb5ea6
+FAILED: pc-bios/keymaps/ar
+/home/fred/qemu-git/src/qemu/build-full/qemu-keymap -f pc-bios/keymaps/ar -l ar
+xkbcommon: ERROR: Couldn't find file "symbols/ar" in include paths
+xkbcommon: ERROR: 1 include paths searched:
+xkbcommon: ERROR: 	/usr/share/X11/xkb
+xkbcommon: ERROR: 3 include paths could not be added:
+xkbcommon: ERROR: 	/home/fred/.config/xkb
+xkbcommon: ERROR: 	/home/fred/.xkb
+xkbcommon: ERROR: 	/etc/xkb
+xkbcommon: ERROR: Abandoning symbols file "(unnamed)"
+xkbcommon: ERROR: Failed to compile xkb_symbols
+xkbcommon: ERROR: Failed to compile keymap
 
-So the easy fix I think is to change the line in
-pc-bios/keymaps/meson.build from
-  'ar': '-l ar',
-to
-  'ar': '-l ara',
+The upstream xkeyboard-config change removing the compat
+mapping is:
+https://gitlab.freedesktop.org/xkeyboard-config/xkeyboard-config/-/commit/470ad2cd8fea84d7210377161d86b31999bb5ea6
 
-As the commit message notes, 'ara' has been the standard
-xkb name upstream for over 15 years, so this won't break
-our build on older versions of the xkb data.
+Make QEMU always ask for the 'ara' xkb layout, which should work on
+both older and newer xkeyboard-config.  We leave the QEMU name for
+this keyboard layout as 'ar'; it is not the only one where our name
+for it deviates from the xkb standard name.
 
-(In theory we could also rename the pcbios keymap name,
-but that seems like unnecessary effort.)
+Cc: qemu-stable@nongnu.org
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1709
+---
+ pc-bios/keymaps/meson.build | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-thanks
--- PMM
+diff --git a/pc-bios/keymaps/meson.build b/pc-bios/keymaps/meson.build
+index bff30833137..0bd8ce00775 100644
+--- a/pc-bios/keymaps/meson.build
++++ b/pc-bios/keymaps/meson.build
+@@ -1,5 +1,5 @@
+ keymaps = {
+-  'ar': '-l ar',
++  'ar': '-l ara',
+   'bepo': '-l fr -v dvorak',
+   'cz': '-l cz',
+   'da': '-l dk',
+-- 
+2.34.1
+
 
