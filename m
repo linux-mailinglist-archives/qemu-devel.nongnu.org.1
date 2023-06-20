@@ -2,82 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7E10736F0B
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 16:47:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 52588736F0F
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 16:48:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBcdt-0007SN-LM; Tue, 20 Jun 2023 10:47:37 -0400
+	id 1qBcea-0008DD-IP; Tue, 20 Jun 2023 10:48:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qBcdr-0007Rv-3I
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 10:47:35 -0400
-Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qBcdp-0000MJ-Iq
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 10:47:34 -0400
-Received: by mail-ej1-x62f.google.com with SMTP id
- a640c23a62f3a-9881b9d8cbdso589018366b.1
- for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 07:47:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687272451; x=1689864451;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Js052Fw3gqeRmxwqLZmPRf6l53QXe8esLD+k1uAI8yE=;
- b=WHvvhYPb4ALwoeeq1afnihZP/B9y6h+InKOV4bSKoK7wwlGkUC8+xSG3u2lIDSwYAn
- U2g3wgxUnYhVLJFrlEjeC5sF0zck6sP1/vMoG5t6qMHOOEhh3FmobicIuQpxk45ObaKL
- oP9hfjTjQ4a6ocrYvdEIqzs3b7sTBbP8nYcfnKRIsjKdzz25dflOjdb3XZQhwfgXakNc
- SvBn5ym3LmRB4CYWqQnGl9iS7tj5ez6b+deTPBk9mGLNyLw62qIWIzGiwbV3uuBzLOLU
- EP0Xa9Ps1wWo60eH80XJ/DFkhx2Bf607NvPaJx3RObvZWux7H3Aa2SKuYOR+dXdZOm10
- lGbw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687272451; x=1689864451;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Js052Fw3gqeRmxwqLZmPRf6l53QXe8esLD+k1uAI8yE=;
- b=iDYV0looCKrf9g7LGIZvrUCvCsBEa2bB0GtkQh976jkq2IY5qO8xX0UKe09XYQcSRR
- TGvhycEaks5UkfektPB1FaYdNipjG0SwOOksQy446Nt4t0T35462IEJWAbsCayNxg4NK
- khubeGDrNzPtB4w2+yKx3OYIjnG6dK1nYHsh7ZKRUqwL5DPG6BZBUkXCDtxI4NEywRzM
- Ww4Ytz6lRkwAcJP+DA91zsyAm84wkvQFTQPyGrMy8CBX2uqc8G5Dzg1d82DkmUWv6bnh
- V/mui6ULw3Pcp4ygbZ0++bwtsyfB/30flpIBXfjhwiSwHgNP9qeBBoLPRi/hNvxyT4dO
- m09A==
-X-Gm-Message-State: AC+VfDzsxW8Mj2ZiH2vVftxY9oGaAzW/501hu/Bhx6gAUc9Z7b7XCljS
- XwJk7aaQFT7O6USlHGb2SDtRag==
-X-Google-Smtp-Source: ACHHUZ5n599PBQhDc6ApA/XsAsb/cjnZ7FGa9x+8pNNFFyChqoLkDnrulntm01Pj/mvjmcSTruLfSg==
-X-Received: by 2002:a17:907:9624:b0:987:9852:603a with SMTP id
- gb36-20020a170907962400b009879852603amr10244926ejc.26.1687272451408; 
- Tue, 20 Jun 2023 07:47:31 -0700 (PDT)
-Received: from [192.168.69.115] ([176.176.183.29])
- by smtp.gmail.com with ESMTPSA id
- w5-20020a1709061f0500b00973ca837a68sm1534687ejj.217.2023.06.20.07.47.30
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 20 Jun 2023 07:47:31 -0700 (PDT)
-Message-ID: <7b778d89-edbb-3de2-ca1e-43b326f4406c@linaro.org>
-Date: Tue, 20 Jun 2023 16:47:29 +0200
+ (Exim 4.90_1) (envelope-from <groug@kaod.org>) id 1qBceY-0008BA-MB
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 10:48:18 -0400
+Received: from 6.mo548.mail-out.ovh.net ([188.165.58.48])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <groug@kaod.org>) id 1qBceV-0000QE-Qd
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 10:48:17 -0400
+Received: from mxplan5.mail.ovh.net (unknown [10.108.4.66])
+ by mo548.mail-out.ovh.net (Postfix) with ESMTPS id 3A74320C63;
+ Tue, 20 Jun 2023 14:48:05 +0000 (UTC)
+Received: from kaod.org (37.59.142.95) by DAG6EX1.mxp5.local (172.16.2.51)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Tue, 20 Jun
+ 2023 16:48:04 +0200
+Authentication-Results: garm.ovh; auth=pass
+ (GARM-95G0016a6684ad-52af-482e-b21c-949cbc4df826,
+ 26134D463BE26AE7AD6874E45E6C9094DBC59A6F) smtp.auth=groug@kaod.org
+X-OVh-ClientIp: 78.197.208.248
+Date: Tue, 20 Jun 2023 16:48:03 +0200
+From: Greg Kurz <groug@kaod.org>
+To: Claudio Fontana <cfontana@suse.de>
+CC: Philippe =?UTF-8?B?TWF0aGlldS1EYXVkw6k=?= <philmd@linaro.org>,
+ <qemu-devel@nongnu.org>, Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ =?UTF-8?B?Q8OpZHJpYw==?= Le Goater <clg@kaod.org>, Daniel Henrique Barboza
+ <danielhb413@gmail.com>, David Gibson <david@gibson.dropbear.id.au>,
+ <qemu-ppc@nongnu.org>
+Subject: Re: [PATCH] hw/ppc/spapr: Test whether TCG is enabled with
+ tcg_enabled()
+Message-ID: <20230620164803.0aa623e6@bahia>
+In-Reply-To: <eb064809-7253-899a-97d1-635eb652b7fd@suse.de>
+References: <20230620074802.86898-1-philmd@linaro.org>
+ <eb064809-7253-899a-97d1-635eb652b7fd@suse.de>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.12.0
-Subject: Re: [PATCH v3 1/5] target/microblaze: Define TCG_GUEST_DEFAULT_MO
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: Alistair Francis <alistair.francis@wdc.com>,
- "Edgar E . Iglesias" <edgar.iglesias@gmail.com>
-References: <20230619142333.429028-1-richard.henderson@linaro.org>
- <20230619142333.429028-2-richard.henderson@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230619142333.429028-2-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62f.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Originating-IP: [37.59.142.95]
+X-ClientProxiedBy: DAG7EX2.mxp5.local (172.16.2.62) To DAG6EX1.mxp5.local
+ (172.16.2.51)
+X-Ovh-Tracer-GUID: 8ef3f157-9a5c-4747-af7a-53b11a992838
+X-Ovh-Tracer-Id: 13557242256497678700
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvhedrgeefhedgheelucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkjghfofggtgfgihesthhqredtredtjeenucfhrhhomhepifhrvghgucfmuhhriicuoehgrhhouhhgsehkrghougdrohhrgheqnecuggftrfgrthhtvghrnhepueeuieejtdelleeutdfhteejffeiteffueevffeffeetvdeifeeujefgudegteeunecukfhppeduvdejrddtrddtrddupdefjedrheelrddugedvrdelhedpjeekrdduleejrddvtdekrddvgeeknecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepuddvjedrtddrtddruddpmhgrihhlfhhrohhmpeeoghhrohhugheskhgrohgurdhorhhgqedpnhgspghrtghpthhtohepuddprhgtphhtthhopegtfhhonhhtrghnrgesshhushgvrdguvgdpphhhihhlmhgusehlihhnrghrohdrohhrghdpqhgvmhhuqdguvghvvghlsehnohhnghhnuhdrohhrghdphhgrrhhshhhpsgeslhhinhhugidrihgsmhdrtghomhdpuggrnhhivghlhhgsgedufeesghhmrghilhdrtghomhdpuggrvhhiugesghhisghsohhnrdgurhhophgsvggrrhdrihgurdgruhdpqhgvmhhuqdhpphgtsehnohhnghhnuhdrohhrghdptghlgheskhgrohgurdhorhhgpdfovfetjfhoshhtpe
+ hmohehgeekpdhmohguvgepshhmthhpohhuth
+Received-SPF: pass client-ip=188.165.58.48; envelope-from=groug@kaod.org;
+ helo=6.mo548.mail-out.ovh.net
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,22 +77,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 19/6/23 16:23, Richard Henderson wrote:
-> The microblaze architecture does not reorder instructions.
-> While there is an MBAR wait-for-data-access instruction,
-> this concerns synchronizing with DMA.
-> 
-> This should have been defined when enabling MTTCG.
-> 
-> Cc: Alistair Francis <alistair.francis@wdc.com>
-> Cc: Edgar E. Iglesias <edgar.iglesias@gmail.com>
-> Fixes: d449561b130 ("configure: microblaze: Enable mttcg")
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->   target/microblaze/cpu.h | 3 +++
->   1 file changed, 3 insertions(+)
+On Tue, 20 Jun 2023 09:55:49 +0200
+Claudio Fontana <cfontana@suse.de> wrote:
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> On 6/20/23 09:48, Philippe Mathieu-Daud=C3=A9 wrote:
+> > Although the PPC target only supports the TCG and KVM
+> > accelerators, QEMU supports more. We can no assume that
+> > '!kvm =3D=3D tcg', so test for the correct accelerator. This
+> > also eases code review, because here we don't care about
+> > KVM, we really want to test for TCG.
+> >=20
+> > Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+>=20
+> I don't remember anymore, but what about qtest ? It is usually the forgot=
+ten case in these kind of tests... so much complexity :-)
+>=20
+
+This check was added with TCG in mind because it is a known limitation.
+I don't see any reason to prevent qtest from being used with the rest
+of this function though.
+
+> Ciao,
+>=20
+> Claudio
+>=20
+>=20
+> > ---
+> >  hw/ppc/spapr.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >=20
+> > diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
+> > index dcb7f1c70a..c4b666587b 100644
+> > --- a/hw/ppc/spapr.c
+> > +++ b/hw/ppc/spapr.c
+> > @@ -2524,7 +2524,7 @@ static void spapr_set_vsmt_mode(SpaprMachineState=
+ *spapr, Error **errp)
+> >      int ret;
+> >      unsigned int smp_threads =3D ms->smp.threads;
+> > =20
+> > -    if (!kvm_enabled() && (smp_threads > 1)) {
+> > +    if (tcg_enabled() && (smp_threads > 1)) {
+
+Bonjour Philippe,
+
+Please drop the unneeded parens in the second check.
+
+With this fixed,
+
+Reviewed-by: Greg Kurz <groug@kaod.org>
+
+Cheers,
+
+--
+Greg
+
+> >          error_setg(errp, "TCG cannot support more than 1 thread/core "
+> >                     "on a pseries machine");
+> >          return;
+>=20
 
 
+
+--=20
+Greg
 
