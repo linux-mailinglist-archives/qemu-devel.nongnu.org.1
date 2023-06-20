@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEE7E73702A
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 17:18:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D86D73703B
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 17:19:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBd6P-0003TZ-2S; Tue, 20 Jun 2023 11:17:05 -0400
+	id 1qBd6O-0003TK-Gm; Tue, 20 Jun 2023 11:17:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qBd6E-0003Qk-ON
+ id 1qBd6E-0003Pl-3K
  for qemu-devel@nongnu.org; Tue, 20 Jun 2023 11:16:54 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qBd6C-0007QR-R3
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 11:16:54 -0400
+ id 1qBd6C-0007Q8-4L
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 11:16:53 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687274212;
+ s=mimecast20190719; t=1687274211;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=HcBQc1puzC4MySckJJoVaqhICno4U4WYu+JKOwxCJT4=;
- b=Hf739BLa1UFHKvTo+E87zQGlc6HzlmDKHnjUJ1q1ZyVK9Xyls7zR8O9qlOVEdBnkhZCe+B
- w4kCkqSYTmp4HAuItzxHDeSKId7MGy39bvO+RCHdvEjTPvMzgGhfKN3VhWGlBkmDK+t3TI
- ghOTL/1qxyUVH94GYfvx1kX5lLHe7sc=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=I3Ol5b5iKH3J6dMVfSqD+k03rVm2RMmAKOxLd5QGS24=;
+ b=U7v4uI3DHBgGh8Cq8x14QqXADIfOI5CQPJylbgkyXTfSwZRf8SgOlCszfuZrRGPUth0aTd
+ hbxTWHvVGI8Pk5GTKufb7PANEP7fo3Mwm/pjJBkhnGm31hBtYGRLzJCW0NPSuRr9t7Qg2w
+ 9ua9yTiGwHY5HandD0CfSN0o9ZCz67Y=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-45-eHi-ZG_bOdWALbZU80mthA-1; Tue, 20 Jun 2023 11:16:50 -0400
-X-MC-Unique: eHi-ZG_bOdWALbZU80mthA-1
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-987accb96dbso232440166b.2
- for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 08:16:45 -0700 (PDT)
+ us-mta-99-pNzObSJ7Pbqnj6fX69Cdsw-1; Tue, 20 Jun 2023 11:16:48 -0400
+X-MC-Unique: pNzObSJ7Pbqnj6fX69Cdsw-1
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-9885a936d01so221664666b.0
+ for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 08:16:46 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687274204; x=1689866204;
+ d=1e100.net; s=20221208; t=1687274205; x=1689866205;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=HcBQc1puzC4MySckJJoVaqhICno4U4WYu+JKOwxCJT4=;
- b=bpW9+2OsVITzw50W62BI4scnlvWT4C3dYA8h3qt42jlbvnbu4hqk87ZUHWErHf2xPS
- e2WzzGg6HPerk9IqpEPqL8V5XB91e/224uh+98sN9VNi/56HhHYLXXTjSJ8NBd17ZdW5
- SlB3TbALbQiBeXG41/dCVvJQ1cbtUFHW0Fsz26aNKVgPMVSGX1W+5tAaucMxkiu8BZSl
- 1mdKnKEdZSmov96GymvXyQgc6BpKvI3WT2C9wSJC/je04MatYpYQIAluPxOqwLXBMURW
- va/4EXa5PicfT6AEE8G/XZffK/GFnD+VvJrQ5opSCpahMg0Z+oc6WIe58pnfeiUrUchI
- QzOA==
-X-Gm-Message-State: AC+VfDx8BCWpJdUHrz0zSawq33wukyiJorJeCq/qtJMdGkm+8q2DfMFW
- ilM5wAsuEALp9g+YA6MlKt6LT9NJEb6FB/oLuSbyiEkVxQUIAuSavr3ppPH5PO2cvdHzz3gi1rf
- E+PrLZzWlychD5zEvtRqWBRcSl8reEtr+qPKe8RGxBn05nvpOd6l+edsMevs59t/hdZ9AdbWxHT
- U=
-X-Received: by 2002:a17:906:9748:b0:989:d9d:d901 with SMTP id
- o8-20020a170906974800b009890d9dd901mr2604489ejy.53.1687274203902; 
- Tue, 20 Jun 2023 08:16:43 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7GyzS8iqnPGEP8QkXqJgqDOR+/BiP0Ay1IlzfNffOtd6WdNJFrEfAnoAYhJxetPOKXMdx3BQ==
-X-Received: by 2002:a17:906:9748:b0:989:d9d:d901 with SMTP id
- o8-20020a170906974800b009890d9dd901mr2604468ejy.53.1687274203501; 
- Tue, 20 Jun 2023 08:16:43 -0700 (PDT)
+ bh=I3Ol5b5iKH3J6dMVfSqD+k03rVm2RMmAKOxLd5QGS24=;
+ b=ZRuuKkUVG2WIMqqeY2SZOE0q5F8gUyB3ZgtTKpSBOEOqcl5GfW3Ogyqmh08+Nq4ySV
+ 06XtwXR7+csO/6jZnmtonwn36PTWPgjuQbRxJjCYO7raWwu3RXtVg+TNt1WAN7bFdfZU
+ HdM9nY/He/lY2gJIRwXnfmCgpFdebpSv8YL04Rp7y1tBw3kR4RlW5Cn7uG+AmGglYWr5
+ oiLi34E0AeNHxN/gYEvbu8wawJhqzFRoRp4XhyBL124ksbMpjtFx3xITGIuf8t3l3vk3
+ 1hLmLIclzY7uGTkQB94eDCIulfLBxSs5yp+WeOZybbui5rpvYBFkwgzfTPV0DTten9bp
+ kVew==
+X-Gm-Message-State: AC+VfDzfTp79kDcfI+wsXRvWrfrsS/MtJQKWOmSpge+Oj8Ufn+qP/bYy
+ TB7sMJNxdirwUOk8ac6jJVUrt69dvapjK49oTAuxufZ0USKCfFnmt01+I4gyXAhcB/Vl5Hiali+
+ rt8o7uKKwK0jaVIH3CAcfWDXmG1M7ebjk9dXO3A+hhff0qadY0mxVU4tF8c32x8a4jZmCkF3MDZ
+ I=
+X-Received: by 2002:a17:906:58ce:b0:988:ffb9:b944 with SMTP id
+ e14-20020a17090658ce00b00988ffb9b944mr3177126ejs.29.1687274205348; 
+ Tue, 20 Jun 2023 08:16:45 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5coLYDxszaHpIc0oz1izN2HA5uKySr+qWFcDgA+kNZUMC3MpqauZ98bMchSlhBcXydl+oZfg==
+X-Received: by 2002:a17:906:58ce:b0:988:ffb9:b944 with SMTP id
+ e14-20020a17090658ce00b00988ffb9b944mr3177113ejs.29.1687274205046; 
+ Tue, 20 Jun 2023 08:16:45 -0700 (PDT)
 Received: from [192.168.1.72] ([2001:b07:add:ec09:c399:bc87:7b6c:fb2a])
  by smtp.gmail.com with ESMTPSA id
- bq26-20020a170906d0da00b0096f5b48fe43sm1570873ejb.47.2023.06.20.08.16.42
+ q13-20020a170906360d00b009827b97c89csm1519265ejb.102.2023.06.20.08.16.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 20 Jun 2023 08:16:43 -0700 (PDT)
+ Tue, 20 Jun 2023 08:16:44 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org
-Subject: [PATCH v2 04/10] target/i386: TCG supports XSAVEERPTR
-Date: Tue, 20 Jun 2023 17:16:28 +0200
-Message-Id: <20230620151634.21053-5-pbonzini@redhat.com>
+Subject: [PATCH v2 05/10] target/i386: TCG supports WBNOINVD
+Date: Tue, 20 Jun 2023 17:16:29 +0200
+Message-Id: <20230620151634.21053-6-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230620151634.21053-1-pbonzini@redhat.com>
 References: <20230620151634.21053-1-pbonzini@redhat.com>
@@ -100,36 +100,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-XSAVEERPTR is actually a fix for an errata; TCG does not have the issue.
+WBNOINVD is the same as INVD or WBINVD as far as TCG is concerned,
+since there is no cache in TCG and therefore no invalidation side effect
+in WBNOINVD.
+
+With respect to SVM emulation, processors that do not support WBNOINVD
+will ignore the prefix and treat it as WBINVD, while those that support
+it will generate exactly the same vmexit.
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/cpu.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ target/i386/cpu.c           | 3 ++-
+ target/i386/tcg/translate.c | 2 +-
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index fc4246223d4..bce0cb73e85 100644
+index bce0cb73e85..695e01582bf 100644
 --- a/target/i386/cpu.c
 +++ b/target/i386/cpu.c
-@@ -678,6 +678,8 @@ void x86_cpu_vendor_words2str(char *dst, uint32_t vendor1,
+@@ -678,7 +678,8 @@ void x86_cpu_vendor_words2str(char *dst, uint32_t vendor1,
  #define TCG_SGX_12_0_EBX_FEATURES 0
  #define TCG_SGX_12_1_EAX_FEATURES 0
  
-+#define TCG_8000_0008_EBX  CPUID_8000_0008_EBX_XSAVEERPTR
-+
+-#define TCG_8000_0008_EBX  CPUID_8000_0008_EBX_XSAVEERPTR
++#define TCG_8000_0008_EBX  (CPUID_8000_0008_EBX_XSAVEERPTR | \
++          CPUID_8000_0008_EBX_WBNOINVD)
+ 
  FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
      [FEAT_1_EDX] = {
-         .type = CPUID_FEATURE_WORD,
-@@ -939,7 +941,7 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
-             "amd-psfd", NULL, NULL, NULL,
-         },
-         .cpuid = { .eax = 0x80000008, .reg = R_EBX, },
--        .tcg_features = 0,
-+        .tcg_features = TCG_8000_0008_EBX,
-         .unmigratable_flags = 0,
-     },
-     [FEAT_8000_0021_EAX] = {
+diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
+index 0ef4d98ce79..89df7bb528a 100644
+--- a/target/i386/tcg/translate.c
++++ b/target/i386/tcg/translate.c
+@@ -6117,7 +6117,7 @@ static bool disas_insn(DisasContext *s, CPUState *cpu)
+         break;
+ 
+     case 0x108: /* invd */
+-    case 0x109: /* wbinvd */
++    case 0x109: /* wbinvd; wbnoinvd with REPZ prefix */
+         if (check_cpl0(s)) {
+             gen_svm_check_intercept(s, (b & 1) ? SVM_EXIT_WBINVD : SVM_EXIT_INVD);
+             /* nothing to do */
 -- 
 2.40.1
 
