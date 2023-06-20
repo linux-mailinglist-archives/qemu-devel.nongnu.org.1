@@ -2,185 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AAB873735A
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 19:57:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 77D2B737360
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 19:59:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBfbx-00023x-5J; Tue, 20 Jun 2023 13:57:49 -0400
+	id 1qBfdS-0003kD-UL; Tue, 20 Jun 2023 13:59:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dongwon.kim@intel.com>)
- id 1qBfbu-0001zH-OJ
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 13:57:46 -0400
-Received: from mga11.intel.com ([192.55.52.93])
+ (Exim 4.90_1) (envelope-from
+ <BATV+288f744f4c934e53f325+7240+infradead.org+dwmw2@casper.srs.infradead.org>)
+ id 1qBfdQ-0003k4-LP
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 13:59:20 -0400
+Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dongwon.kim@intel.com>)
- id 1qBfbs-0006K0-3P
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 13:57:46 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1687283864; x=1718819864;
- h=message-id:date:subject:to:cc:references:from:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=zfhxFR+u9DXtsylv8N1rbQmLpUbuDP/eX/s4PpmdRrY=;
- b=RV5R7ODW/enoA/4VE9xWiUdALN+uhPihrUnZ9nr6ugUEWUrpTtw0/nth
- pTyBBr2mLkvazY/cKOv3c4eMrONRf+cmAA+Wv7r0kn3NaANRGnIoLh1Et
- rY8EQUVDAgh3bsOzV5cbpAneaDQ+F5wriSn/xA5H+93TDpKxq3P756Sz+
- gcgUtCt0yuKG0HznGTnq+YZ+AyL07iD1T1y+qCEx2ZsNauYr3twep9ID+
- TwEsNWeyvllDzqlVS3PgJkSoWS4kmdUIkduGt7vPVLna7wIqnfCII9uLt
- dieHMJrYL/T9TVU/kGb6pn2lZzqGcRF1I3o7HwpV2E0WX5vZLI/KDwh/h A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10747"; a="357433892"
-X-IronPort-AV: E=Sophos;i="6.00,257,1681196400"; d="scan'208";a="357433892"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
- by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Jun 2023 10:57:40 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10747"; a="784175624"
-X-IronPort-AV: E=Sophos;i="6.00,257,1681196400"; d="scan'208";a="784175624"
-Received: from fmsmsx603.amr.corp.intel.com ([10.18.126.83])
- by fmsmga004.fm.intel.com with ESMTP; 20 Jun 2023 10:57:40 -0700
-Received: from fmsmsx611.amr.corp.intel.com (10.18.126.91) by
- fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23; Tue, 20 Jun 2023 10:57:39 -0700
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx611.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23; Tue, 20 Jun 2023 10:57:39 -0700
-Received: from fmsedg602.ED.cps.intel.com (10.1.192.136) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23 via Frontend Transport; Tue, 20 Jun 2023 10:57:39 -0700
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (104.47.66.47) by
- edgegateway.intel.com (192.55.55.71) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.23; Tue, 20 Jun 2023 10:57:39 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=obvy90PGtClivngwXVZNUS1TIF40NhnkGbwTmgsKsl14K8jgMe4cRqJiZkYTGXaeToX2fKNxJu0oF2EGW7B1sO2grJHWWWxtr+qVQ+fxV8icgx55pQ9tenjhVcm+S5XRd9a076AFcocgUHstdQYC7QkFQkdelybpymJCh7WfiaiKfxxSSN6K9FaRn8erpR5q8YyzmcovcYAeFbyiR1imL9IU4pFA0rbFuDzb6JTl0o14rxw5HKc2njf29tchbdrfdNRM5oF3ShB9DRuGEMycyYt4JPCcUtn925BQrXAMY8elDBPdhnI10HQvWRadb4/5kc7JrMCrJ1IBPS3c5exMtA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=OlA7FfOuzu0kwMR4LXeLlfNWat6nZWOtwSG4jxrJlwE=;
- b=lBEYe0rPwp5VC/C6Psw9+ScalE9/EM/+gJAFogS39l7Vn0mX0GV4uswrqBRHQxf+6KYCeYESrMoYFZ80b+1Vkv5+12nwLcyDzCJJiZHZP8p1uUCLul2NDhBSP9DKp9Ph6SF2PCS2t8WKbjoNoqqtNKGDHuu65wAou7hMBBNvV9H25SaN5DXTJKKX9xZ4S7CIhhq0ijXwU0+Nd7tLCeWb/WQH5O17EvLUocEi6j4vGVy7TEnaW0UPVRvVYBYiKL0JDmxJ6UPg0X+UgMGOFns9t3+mlNhYFmeu5c6H+FzquMYTl/Dr+zz25BEOVndNInXTEcfEV80nch5R7zkzdwulMw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH8PR11MB6879.namprd11.prod.outlook.com (2603:10b6:510:229::22)
- by DM6PR11MB4609.namprd11.prod.outlook.com (2603:10b6:5:28f::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6521.21; Tue, 20 Jun
- 2023 17:57:36 +0000
-Received: from PH8PR11MB6879.namprd11.prod.outlook.com
- ([fe80::b33c:de68:eacf:e9c4]) by PH8PR11MB6879.namprd11.prod.outlook.com
- ([fe80::b33c:de68:eacf:e9c4%3]) with mapi id 15.20.6500.036; Tue, 20 Jun 2023
- 17:57:36 +0000
-Message-ID: <3aa645b0-ca8d-f292-fb60-46d3e35ace14@intel.com>
-Date: Tue, 20 Jun 2023 10:57:33 -0700
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [QEMU PATCH 1/1] virtgpu: do not destroy resources when guest
- suspend
-Content-Language: en-US
-To: Robert Beckett <bob.beckett@collabora.com>, Gerd Hoffmann
- <kraxel@redhat.com>, "Chen, Jiqian" <Jiqian.Chen@amd.com>
-CC: =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@gmail.com>, "Damien
- Hedde" <damien.hedde@greensocs.com>, "Michael S . Tsirkin" <mst@redhat.com>,
- Stefano Stabellini <sstabellini@kernel.org>, Anthony PERARD
- <anthony.perard@citrix.com>, =?UTF-8?Q?Roger_Pau_Monn=c3=a9?=
- <roger.pau@citrix.com>, Jan Beulich <jbeulich@suse.com>, "Dr . David Alan
- Gilbert" <dgilbert@redhat.com>, "qemu-devel@nongnu.org"
- <qemu-devel@nongnu.org>, "xen-devel@lists.xenproject.org"
- <xen-devel@lists.xenproject.org>, "Deucher, Alexander"
- <Alexander.Deucher@amd.com>, "Koenig, Christian" <Christian.Koenig@amd.com>,
- "Hildebrand, Stewart" <Stewart.Hildebrand@amd.com>, Xenia Ragiadakou
- <burzalodowa@gmail.com>, "Huang, Honglei1" <Honglei1.Huang@amd.com>, "Zhang,
- Julia" <Julia.Zhang@amd.com>, "Huang, Ray" <Ray.Huang@amd.com>
-References: <20230608025655.1674357-1-Jiqian.Chen@amd.com>
- <20230608025655.1674357-2-Jiqian.Chen@amd.com>
- <CAJ+F1CKjTW7zycr2xAW0x+d_7CEy+LxWur2Tqp2dvsb=PoJ5Dw@mail.gmail.com>
- <q2rpqbg5b4bqxb7oayclzgbf5fplofm3dmxgmpmskjf4mcfzpn@peeiuxwkqxbb>
- <BL1PR12MB58491E2E13F959365AA3F594E75CA@BL1PR12MB5849.namprd12.prod.outlook.com>
- <lgan3p6wqmxht5fpduh5nvg3f5m5n636k7zrrealnu2lilghhh@qlbvgu3l4apw>
- <2164ff79-aa09-d959-cc61-c7a2a21db5e3@collabora.com>
-From: "Kim, Dongwon" <dongwon.kim@intel.com>
-In-Reply-To: <2164ff79-aa09-d959-cc61-c7a2a21db5e3@collabora.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SJ0PR13CA0092.namprd13.prod.outlook.com
- (2603:10b6:a03:2c5::7) To PH8PR11MB6879.namprd11.prod.outlook.com
- (2603:10b6:510:229::22)
+ (Exim 4.90_1) (envelope-from
+ <BATV+288f744f4c934e53f325+7240+infradead.org+dwmw2@casper.srs.infradead.org>)
+ id 1qBfd4-0006VH-Pm
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 13:59:10 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
+ In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=P0rw6j/526CasCXlDjY88i1DcnH89PB7+0min8yStY8=; b=ZpLlOTsOcbygS6lck1zF0UH1KD
+ 7SjmlMugZb9keYTZLWbAHAqdyc2E862zUAcmk3+QRKEnmpQeVatOJ8mhnaG5Gt2x2Yn0M02uue5Th
+ eIHFDzbUgdBN8bZy+AlB5tNskU5tWsvKjVrcqflIRVmYovUwlOYGVk8iWCDVZdI6x6nKfuPcy8ep3
+ rrM8p+0rswr4dpkm2UyLJegesLxB1x/us6NAXpNBKo8LF71YJ2L0tGViZHEM0p/Vu/04l11PjnKmE
+ 1WU0SlNUj2AQ1/iIqNm/l/GYS8+eGQNUScPm+d8vW1rsc2DPjhPDkpIUXhHTG+KbkhsVX2cqNlVdY
+ TspDN2Tw==;
+Received: from [2001:8b0:10b:5:f26b:798c:7de3:5106]
+ (helo=u3832b3a9db3152.ant.amazon.com)
+ by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+ id 1qBfd2-00DNGy-1q; Tue, 20 Jun 2023 17:58:56 +0000
+Message-ID: <20076888f6bdf06a65aafc5cf954260965d45b97.camel@infradead.org>
+Subject: [PATCH] hw/xen: Clarify (lack of) error handling in
+ transaction_commit()
+From: David Woodhouse <dwmw2@infradead.org>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, Paul Durrant
+ <paul@xen.org>, Joao Martins <joao.m.martins@oracle.com>, Ankur Arora
+ <ankur.a.arora@oracle.com>, Stefano Stabellini <sstabellini@kernel.org>, 
+ vikram.garhwal@amd.com, Anthony Perard <anthony.perard@citrix.com>, 
+ xen-devel@lists.xenproject.org, Juan Quintela <quintela@redhat.com>, "Dr .
+ David Alan Gilbert" <dgilbert@redhat.com>
+Date: Tue, 20 Jun 2023 18:58:55 +0100
+In-Reply-To: <CAFEAcA--FqeioUdPb9sr5fEy3q0H0swcp+rbGxoNbhgMkYdC+A@mail.gmail.com>
+References: <20230307182707.2298618-1-dwmw2@infradead.org>
+ <20230307182707.2298618-6-dwmw2@infradead.org>
+ <CAFEAcA9gzJGMqsEY5TuNmb74RskgUTMW+XcqGV53n3SsKyVVXg@mail.gmail.com>
+ <CAFEAcA9aFv5c4S=Pyf3dMU-v9FnNJqWTQ7ZbiDQLTjh8Qou71g@mail.gmail.com>
+ <CAFEAcA--FqeioUdPb9sr5fEy3q0H0swcp+rbGxoNbhgMkYdC+A@mail.gmail.com>
+Content-Type: multipart/signed; micalg="sha-256";
+ protocol="application/pkcs7-signature"; 
+ boundary="=-WKeoCu8f39FjIHVazDdn"
+User-Agent: Evolution 3.44.4-0ubuntu1 
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR11MB6879:EE_|DM6PR11MB4609:EE_
-X-MS-Office365-Filtering-Correlation-Id: bfdf4b58-790b-4a10-051c-08db71b7d465
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: YEL0wTHAHmaET/pjqboXbYlOcYvAPzd/bT3LvDl2OupFnHiq1l5A39Wd49DyUsOUtjWS1SViN5Hp9hb9YUoLRC80t5CZMxwKAdkTth0awgdhTxY0civ2F+M1sCS+lwOr4Lg2AuSPHdrwmxqoY8usCSQUNobgtHdNT3ec6hjSZ2ml9S0GQoIpHUpJbeH+suEeMIxALm6Bk6TxUQ2UuK1+ONQAt2X+5tMGdzzWi6Z8P3JT9L1bUvEcEs89AR83L4fWaNtsogp1b5Z3zEqexRJtlVYgm1+z7NDrr6EMvgaAc5MDW/HOCKdC6Lt3UToubUaF+cZXws3uOKl/RTXi/dvrw75I0VOU8Co+iAYfv5j/2fcx1s/iZK+RpPj2Ys0/BcTKnFAW7VPFDiN6koVNyHxCSbjgyBdA90dNubxFeahfIxWcHt8QxWCBoR/tliT8pD5XMjawdAH58eWU+7EGIm3gLsbdeqZ8alDXDUozqFWE4qLRny5XwTsDNroN1kZgSSsNkRH85nMGJmXkAHFljP3MnSA3pNMHLkpnV97se1Z2kMXTJYQTdPwDfpSZLa1V1tz+IcPP5mGKAYgspcxaahU65scZc1mu1WnkntUHQPbR4FWUKHhhnCqFw8X1WLvB6Naxza1cnM8qfRrUrdVyBCWh8A==
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:PH8PR11MB6879.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230028)(396003)(136003)(376002)(346002)(366004)(39860400002)(451199021)(31686004)(53546011)(36756003)(5660300002)(7416002)(66476007)(8936002)(8676002)(41300700001)(86362001)(66556008)(38100700002)(316002)(31696002)(82960400001)(4326008)(66946007)(6486002)(6512007)(26005)(6506007)(186003)(2616005)(15650500001)(2906002)(478600001)(110136005)(54906003)(83380400001)(6666004)(43740500002)(45980500001);
- DIR:OUT; SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?UzVxZmkzbG85QURiTGFpemUwTXByUjZ4M1lOd0hycVZuQ25pZ2NYVUtMd0JX?=
- =?utf-8?B?bjc4UGxYNzlYaWx3anVBMFh4TWxUODF6ajAybk5COXIyanN5S2FUM0tpOG9G?=
- =?utf-8?B?QnlDSlgvYlAyQ1haWHdPRUw5QUxQTVBvR1lMWUFYRnJqUk1xMGxHUlQ1UW1q?=
- =?utf-8?B?R2pWcmdJYUhLTTBYYVZFVDhaRi9Ob0VlaExsc0lmYU56TVNnVEg5dG1FSkRK?=
- =?utf-8?B?eTdYcmtJaFlScSswWFVpN1Z5cURCNFMxWm9ZRHIvendxTlVHSU1WQVlkeXlO?=
- =?utf-8?B?S28ySGJ3aXFjRXVjVVpOTG5uK0VlZ1hmL0hoUk9DNzFvQk56bWVwaDJBUFNE?=
- =?utf-8?B?M0lPQ3F4bUxRYVNNeEhqVUtvQ2x6Y04wK09CMVY3OHEvczQ5clljNjl2UzV2?=
- =?utf-8?B?bmRIcFQ5ajEzT0R4OEdLSU4rdjQ1cVVHTVVUWlJBaWxIU1pKeG1tWDRMMW1G?=
- =?utf-8?B?WHB2MjhDemRNU2p6bGpML1VoUGVRcEFZMlJOV0pEdklmb0I5eVhRWlRveTFy?=
- =?utf-8?B?WFYzTE9aTHBDdEVHdHhGdFJQRnRYenUxRkdMbHhMSXpJMHV3SDZHM0cwSC9l?=
- =?utf-8?B?N05TR1ZTZVpFaDBlYmVleVNsOVNqSGs2V093Y3RRcHhFb3ExK28yY0RhU2hz?=
- =?utf-8?B?NEkzUGdaSk9hdE9EU05vWnkzaFQ5eDl5RzdFZ2lTSHRVTGVSUDZVQS9rL0ZK?=
- =?utf-8?B?YU94MkNKL2lzMlZzWG1qTmFhTmlMTWdIRTFPSmlWdzgxRnQ0ek9lS09NNUs2?=
- =?utf-8?B?NGc1clkzcitMSmM3RG9yWWN0dExHWlUvVFYrcUpnb1pFOFRJL0tLSWxTSVNU?=
- =?utf-8?B?cXNJeVltcFZsMDYrb0lXdTR4WkUvRkxWUU1mRGpMbXlsbWdaczJ3cG1XREVK?=
- =?utf-8?B?MHM3RTNXcDdJRHdTSUlnUEVOK1hGMGpqT1g0ZC9QbnZTd1FMcFJqQmQ0anNC?=
- =?utf-8?B?aUpaSUJoSVExbUNlTmREZytWeHdyVWpabHhyQk0rNisxcFBIY1hpSWIzWTBV?=
- =?utf-8?B?VG81U0FRSTZ4dkVMUm1VTncrWkFMVXBZYkN0MmZtU0VjVkhLSFdQcEhRd2pK?=
- =?utf-8?B?NzIzeDRDcGRjQzl2bUJ4WlVILzBvNEJ3MExRc01xSExYYWhzcU1OT3JHamRn?=
- =?utf-8?B?TzgwZHkrMzJJaDFlMDVGd0dVcVhKem9WK3pNT0JtOG4rZS9DR1NIV1pEWHY0?=
- =?utf-8?B?YXMxaXRMSHJLVDBOZGZEY1BFaFZyNVpSZkxXRlFmcGZYb0xHZzFmeHE4SzAv?=
- =?utf-8?B?U0dwdTJ4cXBpeDBVOGpvdjRzUFBPdlhwWGNCRlNETHpJd1YrbFkxZnpwaG1N?=
- =?utf-8?B?QWF0UDR0cU4vZ1FET2RQMDkwQVl1K1g2enBBbEJ4Myt4L2dXN0d5WHFkVmpF?=
- =?utf-8?B?RjdsbjhJLzhuVWloWHhNNGgxV0RKQkJKclZYVjdZMHhsR3ZoY0ZLVHFaNFJ3?=
- =?utf-8?B?U0RreXh3Y3dpa05taFF6WnZIemlYbFU3SUpINmh1UTJNdGJQcjZsK1FUVUIy?=
- =?utf-8?B?bTJabmxwUEZ0YjRlSEJlcUthbVpUbzByU3d2Y0pkUjB1L25nMW9ZQ2ZYY0JM?=
- =?utf-8?B?U1krNERCOXJRWGhkYkVEZFhNOXdKQlBPcWtwaGlHZ2UxbW1IT3czM2VXVXlp?=
- =?utf-8?B?MnB6eENlbzFqYk56M2p0MlZXR3VZSEoyTnVvcjZHZ2ZDYmFwM09BRFB0VGpz?=
- =?utf-8?B?VjRNNStCZHJWbkpIOTU1bmtkQUhqWVJuMHVzd1hjSnlTVWplZWVFU2l6ZkVE?=
- =?utf-8?B?dDRqYWNrUVJ0VG5obXhqNUVwdW15UDMxSUxRNXVYNjV6dlpYdTQzYUtQRTJx?=
- =?utf-8?B?MTdxRmpjZVRKanBEYXFWS3VZakpWeDBzK1p2eEFYQ0N5MURlNkVVeXdsOUZp?=
- =?utf-8?B?S2JXMlNuVWVtMEp6MU9QWG5QT2ZUVnBVQTdzbTlRbEZFRVdia2RKVlk1NkV4?=
- =?utf-8?B?U2s5QmRaZ3ZQOGlBT3ZOd1ZweTlTclF5SjhpU0FmZkViYnl3TG9JN0VIOXhh?=
- =?utf-8?B?Z3JvTVVycG5TM1FwZkk1dit1dDhaQVdTYTVvNnJhcCsvZFRHbkp3c24vLzZD?=
- =?utf-8?B?dVFSVVpRWW82Z1c1eXd6dDQ1bC9yUjlqSVVhaHJ0YklJRUNGYm9ja21aQlRi?=
- =?utf-8?Q?C+CZjGw9kVqjJSTa2ecO0IFVO?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: bfdf4b58-790b-4a10-051c-08db71b7d465
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB6879.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jun 2023 17:57:36.0958 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: LjRti/PPa4tk5iWuRYtpUbLwlQQIDtVPlgkMYYAgAdlg5YYNMoc61PrqfDB1FMQ+9pEoA5QuBxt+Ej99TMeiPg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR11MB4609
-X-OriginatorOrg: intel.com
-Received-SPF: pass client-ip=192.55.52.93; envelope-from=dongwon.kim@intel.com;
- helo=mga11.intel.com
-X-Spam_score_int: -44
-X-Spam_score: -4.5
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
+ casper.infradead.org. See http://www.infradead.org/rpr.html
+Received-SPF: none client-ip=2001:8b0:10b:1236::1;
+ envelope-from=BATV+288f744f4c934e53f325+7240+infradead.org+dwmw2@casper.srs.infradead.org;
+ helo=casper.infradead.org
+X-Spam_score_int: -43
+X-Spam_score: -4.4
 X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -196,74 +84,184 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello,
 
-I just came across this discussion regarding s3/s4 support in virtio-gpu 
-driver and QEMU.
+--=-WKeoCu8f39FjIHVazDdn
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-We saw similar problem a while ago (QEMU deletes all objects upon 
-suspension) and
+From: David Woodhouse <dwmw@amazon.co.uk>
 
-came up with an experimental solution that is basically making 
-virtio-gpu driver to do object creation
+Coverity was unhappy (CID 1508359) because we didn't check the return of
+init_walk_op() in transaction_commit(), despite doing so at every other
+call site.
 
-for all existing resources once VM is resumed so that he QEMU recreate them.
+Strictly speaking, this is a false positive since it can never fail. It
+only fails for invalid user input (transaction ID or path), and both of
+those are hard-coded to known sane values in this invocation.
 
-This method has worked pretty well on our case. I submitted patches for 
-this to dri-devel a while ago.
+But Coverity doesn't know that, and neither does the casual reader of the
+code.
 
-[RFC PATCH 0/2] drm/virtio:virtio-gpu driver freeze-and-restore 
-implementation (lists.freedesktop.org) 
-<https://lists.freedesktop.org/archives/dri-devel/2022-September/373892.html>
+Returning an error here would be weird, since the transaction *is*
+committed by this point; all the walk_op is doing is firing watches on
+the newly-committed changed nodes. So make it a g_assert(!ret), since
+it really should never happen.
 
-This is kernel driver only solution. Nothing has to be changed in QEMU.
+Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+---
+ hw/i386/kvm/xenstore_impl.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-Jiqian and other reviewers, can you check this old solution we suggested 
-as well?
+diff --git a/hw/i386/kvm/xenstore_impl.c b/hw/i386/kvm/xenstore_impl.c
+index 305fe75519..d9732b567e 100644
+--- a/hw/i386/kvm/xenstore_impl.c
++++ b/hw/i386/kvm/xenstore_impl.c
+@@ -1022,6 +1022,7 @@ static int transaction_commit(XenstoreImplState *s, X=
+sTransaction *tx)
+ {
+     struct walk_op op;
+     XsNode **n;
++    int ret;
+=20
+     if (s->root_tx !=3D tx->base_tx) {
+         return EAGAIN;
+@@ -1032,7 +1033,16 @@ static int transaction_commit(XenstoreImplState *s, =
+XsTransaction *tx)
+     s->root_tx =3D tx->tx_id;
+     s->nr_nodes =3D tx->nr_nodes;
+=20
+-    init_walk_op(s, &op, XBT_NULL, tx->dom_id, "/", &n);
++    ret =3D init_walk_op(s, &op, XBT_NULL, tx->dom_id, "/", &n);
++    /*
++     * There are two reasons why init_walk_op() may fail: an invalid tx_id=
+,
++     * or an invalid path. We pass XBT_NULL and "/", and it cannot fail.
++     * If it does, the world is broken. And returning 'ret' would be weird
++     * because the transaction *was* committed, and all this tree walk is
++     * trying to do is fire the resulting watches on newly-committed nodes=
+.
++     */
++    g_assert(!ret);
++
+     op.deleted_in_tx =3D false;
+     op.mutating =3D true;
+=20
+--=20
+2.34.1
 
-On 6/20/2023 5:26 AM, Robert Beckett wrote:
 
->
-> On 20/06/2023 10:41, Gerd Hoffmann wrote:
->>    Hi,
->>
->>>> The guest driver should be able to restore resources after resume.
->>> Thank you for your suggestion!
->>> As far as I know, resources are created on host side and guest has 
->>> no backup, if resources are destroyed, guest can't restore them.
->>> Or do you mean guest driver need to send commands to re-create 
->>> resources after resume?
->> The later.  The guest driver knows which resources it has created,
->> it can restore them after suspend.
->
->
-> Are you sure that this is viable?
->
-> How would you propose that a guest kernel could reproduce a resource, 
-> including pixel data upload during a resume?
->
-> The kernel would not have any of the pixel data to transfer to host. 
-> This is normally achieved by guest apps calling GL calls and mesa 
-> asking the kernel to create the textures with the given data (often 
-> read from a file).
-> If your suggestion is to get the userland application to do it, that 
-> would entirely break how suspend/resume is meant to happen. It should 
-> be transparent to userland applications for the most part.
->
-> Could you explain how you anticipate the guest being able to reproduce 
-> the resources please?
->
->
->>
->>> If so, I have some questions. Can guest re-create resources by using
->>> object(virtio_vpu_object) or others? Can the new resources replace the
->>> destroyed resources to continue the suspended display tasks after
->>> resume?
->> Any display scanout information will be gone too, the guest driver needs
->> re-create this too (after re-creating the resources).
->>
->> take care,
->>    Gerd
->>
->
+
+--=-WKeoCu8f39FjIHVazDdn
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
+
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCEkQw
+ggYQMIID+KADAgECAhBNlCwQ1DvglAnFgS06KwZPMA0GCSqGSIb3DQEBDAUAMIGIMQswCQYDVQQG
+EwJVUzETMBEGA1UECBMKTmV3IEplcnNleTEUMBIGA1UEBxMLSmVyc2V5IENpdHkxHjAcBgNVBAoT
+FVRoZSBVU0VSVFJVU1QgTmV0d29yazEuMCwGA1UEAxMlVVNFUlRydXN0IFJTQSBDZXJ0aWZpY2F0
+aW9uIEF1dGhvcml0eTAeFw0xODExMDIwMDAwMDBaFw0zMDEyMzEyMzU5NTlaMIGWMQswCQYDVQQG
+EwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYD
+VQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50
+aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKC
+AQEAyjztlApB/975Rrno1jvm2pK/KxBOqhq8gr2+JhwpKirSzZxQgT9tlC7zl6hn1fXjSo5MqXUf
+ItMltrMaXqcESJuK8dtK56NCSrq4iDKaKq9NxOXFmqXX2zN8HHGjQ2b2Xv0v1L5Nk1MQPKA19xeW
+QcpGEGFUUd0kN+oHox+L9aV1rjfNiCj3bJk6kJaOPabPi2503nn/ITX5e8WfPnGw4VuZ79Khj1YB
+rf24k5Ee1sLTHsLtpiK9OjG4iQRBdq6Z/TlVx/hGAez5h36bBJMxqdHLpdwIUkTqT8se3ed0PewD
+ch/8kHPo5fZl5u1B0ecpq/sDN/5sCG52Ds+QU5O5EwIDAQABo4IBZDCCAWAwHwYDVR0jBBgwFoAU
+U3m/WqorSs9UgOHYm8Cd8rIDZsswHQYDVR0OBBYEFAnA8vwL2pTbX/4r36iZQs/J4K0AMA4GA1Ud
+DwEB/wQEAwIBhjASBgNVHRMBAf8ECDAGAQH/AgEAMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEF
+BQcDBDARBgNVHSAECjAIMAYGBFUdIAAwUAYDVR0fBEkwRzBFoEOgQYY/aHR0cDovL2NybC51c2Vy
+dHJ1c3QuY29tL1VTRVJUcnVzdFJTQUNlcnRpZmljYXRpb25BdXRob3JpdHkuY3JsMHYGCCsGAQUF
+BwEBBGowaDA/BggrBgEFBQcwAoYzaHR0cDovL2NydC51c2VydHJ1c3QuY29tL1VTRVJUcnVzdFJT
+QUFkZFRydXN0Q0EuY3J0MCUGCCsGAQUFBzABhhlodHRwOi8vb2NzcC51c2VydHJ1c3QuY29tMA0G
+CSqGSIb3DQEBDAUAA4ICAQBBRHUAqznCFfXejpVtMnFojADdF9d6HBA4kMjjsb0XMZHztuOCtKF+
+xswhh2GqkW5JQrM8zVlU+A2VP72Ky2nlRA1GwmIPgou74TZ/XTarHG8zdMSgaDrkVYzz1g3nIVO9
+IHk96VwsacIvBF8JfqIs+8aWH2PfSUrNxP6Ys7U0sZYx4rXD6+cqFq/ZW5BUfClN/rhk2ddQXyn7
+kkmka2RQb9d90nmNHdgKrwfQ49mQ2hWQNDkJJIXwKjYA6VUR/fZUFeCUisdDe/0ABLTI+jheXUV1
+eoYV7lNwNBKpeHdNuO6Aacb533JlfeUHxvBz9OfYWUiXu09sMAviM11Q0DuMZ5760CdO2VnpsXP4
+KxaYIhvqPqUMWqRdWyn7crItNkZeroXaecG03i3mM7dkiPaCkgocBg0EBYsbZDZ8bsG3a08LwEsL
+1Ygz3SBsyECa0waq4hOf/Z85F2w2ZpXfP+w8q4ifwO90SGZZV+HR/Jh6rEaVPDRF/CEGVqR1hiuQ
+OZ1YL5ezMTX0ZSLwrymUE0pwi/KDaiYB15uswgeIAcA6JzPFf9pLkAFFWs1QNyN++niFhsM47qod
+x/PL+5jR87myx5uYdBEQkkDc+lKB1Wct6ucXqm2EmsaQ0M95QjTmy+rDWjkDYdw3Ms6mSWE3Bn7i
+5ZgtwCLXgAIe5W8mybM2JzCCBhQwggT8oAMCAQICEQDGvhmWZ0DEAx0oURL6O6l+MA0GCSqGSIb3
+DQEBCwUAMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYD
+VQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28g
+UlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMB4XDTIyMDEwNzAw
+MDAwMFoXDTI1MDEwNjIzNTk1OVowJDEiMCAGCSqGSIb3DQEJARYTZHdtdzJAaW5mcmFkZWFkLm9y
+ZzCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALQ3GpC2bomUqk+91wLYBzDMcCj5C9m6
+oZaHwvmIdXftOgTbCJXADo6G9T7BBAebw2JV38EINgKpy/ZHh7htyAkWYVoFsFPrwHounto8xTsy
+SSePMiPlmIdQ10BcVSXMUJ3Juu16GlWOnAMJY2oYfEzmE7uT9YgcBqKCo65pTFmOnR/VVbjJk4K2
+xE34GC2nAdUQkPFuyaFisicc6HRMOYXPuF0DuwITEKnjxgNjP+qDrh0db7PAjO1D4d5ftfrsf+kd
+RR4gKVGSk8Tz2WwvtLAroJM4nXjNPIBJNT4w/FWWc/5qPHJy2U+eITZ5LLE5s45mX2oPFknWqxBo
+bQZ8a9dsZ3dSPZBvE9ZrmtFLrVrN4eo1jsXgAp1+p7bkfqd3BgBEmfsYWlBXO8rVXfvPgLs32VdV
+NZxb/CDWPqBsiYv0Hv3HPsz07j5b+/cVoWqyHDKzkaVbxfq/7auNVRmPB3v5SWEsH8xi4Bez2V9U
+KxfYCnqsjp8RaC2/khxKt0A552Eaxnz/4ly/2C7wkwTQnBmdlFYhAflWKQ03Ufiu8t3iBE3VJbc2
+5oMrglj7TRZrmKq3CkbFnX0fyulB+kHimrt6PIWn7kgyl9aelIl6vtbhMA+l0nfrsORMa4kobqQ5
+C5rveVgmcIad67EDa+UqEKy/GltUwlSh6xy+TrK1tzDvAgMBAAGjggHMMIIByDAfBgNVHSMEGDAW
+gBQJwPL8C9qU21/+K9+omULPyeCtADAdBgNVHQ4EFgQUzMeDMcimo0oz8o1R1Nver3ZVpSkwDgYD
+VR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
+MEAGA1UdIAQ5MDcwNQYMKwYBBAGyMQECAQEBMCUwIwYIKwYBBQUHAgEWF2h0dHBzOi8vc2VjdGln
+by5jb20vQ1BTMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9jcmwuc2VjdGlnby5jb20vU2VjdGln
+b1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1haWxDQS5jcmwwgYoGCCsGAQUFBwEB
+BH4wfDBVBggrBgEFBQcwAoZJaHR0cDovL2NydC5zZWN0aWdvLmNvbS9TZWN0aWdvUlNBQ2xpZW50
+QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNydDAjBggrBgEFBQcwAYYXaHR0cDovL29j
+c3Auc2VjdGlnby5jb20wHgYDVR0RBBcwFYETZHdtdzJAaW5mcmFkZWFkLm9yZzANBgkqhkiG9w0B
+AQsFAAOCAQEAyW6MUir5dm495teKqAQjDJwuFCi35h4xgnQvQ/fzPXmtR9t54rpmI2TfyvcKgOXp
+qa7BGXNFfh1JsqexVkIqZP9uWB2J+uVMD+XZEs/KYNNX2PvIlSPrzIB4Z2wyIGQpaPLlYflrrVFK
+v9CjT2zdqvy2maK7HKOQRt3BiJbVG5lRiwbbygldcALEV9ChWFfgSXvrWDZspnU3Gjw/rMHrGnql
+Htlyebp3pf3fSS9kzQ1FVtVIDrL6eqhTwJxe+pXSMMqFiN0whpBtXdyDjzBtQTaZJ7zTT/vlehc/
+tDuqZwGHm/YJy883Ll+GP3NvOkgaRGWEuYWJJ6hFCkXYjyR9IzCCBhQwggT8oAMCAQICEQDGvhmW
+Z0DEAx0oURL6O6l+MA0GCSqGSIb3DQEBCwUAMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3Jl
+YXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0
+ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJl
+IEVtYWlsIENBMB4XDTIyMDEwNzAwMDAwMFoXDTI1MDEwNjIzNTk1OVowJDEiMCAGCSqGSIb3DQEJ
+ARYTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALQ3
+GpC2bomUqk+91wLYBzDMcCj5C9m6oZaHwvmIdXftOgTbCJXADo6G9T7BBAebw2JV38EINgKpy/ZH
+h7htyAkWYVoFsFPrwHounto8xTsySSePMiPlmIdQ10BcVSXMUJ3Juu16GlWOnAMJY2oYfEzmE7uT
+9YgcBqKCo65pTFmOnR/VVbjJk4K2xE34GC2nAdUQkPFuyaFisicc6HRMOYXPuF0DuwITEKnjxgNj
+P+qDrh0db7PAjO1D4d5ftfrsf+kdRR4gKVGSk8Tz2WwvtLAroJM4nXjNPIBJNT4w/FWWc/5qPHJy
+2U+eITZ5LLE5s45mX2oPFknWqxBobQZ8a9dsZ3dSPZBvE9ZrmtFLrVrN4eo1jsXgAp1+p7bkfqd3
+BgBEmfsYWlBXO8rVXfvPgLs32VdVNZxb/CDWPqBsiYv0Hv3HPsz07j5b+/cVoWqyHDKzkaVbxfq/
+7auNVRmPB3v5SWEsH8xi4Bez2V9UKxfYCnqsjp8RaC2/khxKt0A552Eaxnz/4ly/2C7wkwTQnBmd
+lFYhAflWKQ03Ufiu8t3iBE3VJbc25oMrglj7TRZrmKq3CkbFnX0fyulB+kHimrt6PIWn7kgyl9ae
+lIl6vtbhMA+l0nfrsORMa4kobqQ5C5rveVgmcIad67EDa+UqEKy/GltUwlSh6xy+TrK1tzDvAgMB
+AAGjggHMMIIByDAfBgNVHSMEGDAWgBQJwPL8C9qU21/+K9+omULPyeCtADAdBgNVHQ4EFgQUzMeD
+Mcimo0oz8o1R1Nver3ZVpSkwDgYDVR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwHQYDVR0lBBYw
+FAYIKwYBBQUHAwQGCCsGAQUFBwMCMEAGA1UdIAQ5MDcwNQYMKwYBBAGyMQECAQEBMCUwIwYIKwYB
+BQUHAgEWF2h0dHBzOi8vc2VjdGlnby5jb20vQ1BTMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9j
+cmwuc2VjdGlnby5jb20vU2VjdGlnb1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1h
+aWxDQS5jcmwwgYoGCCsGAQUFBwEBBH4wfDBVBggrBgEFBQcwAoZJaHR0cDovL2NydC5zZWN0aWdv
+LmNvbS9TZWN0aWdvUlNBQ2xpZW50QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNydDAj
+BggrBgEFBQcwAYYXaHR0cDovL29jc3Auc2VjdGlnby5jb20wHgYDVR0RBBcwFYETZHdtdzJAaW5m
+cmFkZWFkLm9yZzANBgkqhkiG9w0BAQsFAAOCAQEAyW6MUir5dm495teKqAQjDJwuFCi35h4xgnQv
+Q/fzPXmtR9t54rpmI2TfyvcKgOXpqa7BGXNFfh1JsqexVkIqZP9uWB2J+uVMD+XZEs/KYNNX2PvI
+lSPrzIB4Z2wyIGQpaPLlYflrrVFKv9CjT2zdqvy2maK7HKOQRt3BiJbVG5lRiwbbygldcALEV9Ch
+WFfgSXvrWDZspnU3Gjw/rMHrGnqlHtlyebp3pf3fSS9kzQ1FVtVIDrL6eqhTwJxe+pXSMMqFiN0w
+hpBtXdyDjzBtQTaZJ7zTT/vlehc/tDuqZwGHm/YJy883Ll+GP3NvOkgaRGWEuYWJJ6hFCkXYjyR9
+IzGCBMcwggTDAgEBMIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVz
+dGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMT
+NVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEA
+xr4ZlmdAxAMdKFES+jupfjANBglghkgBZQMEAgEFAKCCAeswGAYJKoZIhvcNAQkDMQsGCSqGSIb3
+DQEHATAcBgkqhkiG9w0BCQUxDxcNMjMwNjIwMTc1ODU1WjAvBgkqhkiG9w0BCQQxIgQgUT3s50st
+D218f4UKFIcbdotqYYTun5QfCaqnDlvhwmQwgb0GCSsGAQQBgjcQBDGBrzCBrDCBljELMAkGA1UE
+BhMCR0IxGzAZBgNVBAgTEkdyZWF0ZXIgTWFuY2hlc3RlcjEQMA4GA1UEBxMHU2FsZm9yZDEYMBYG
+A1UEChMPU2VjdGlnbyBMaW1pdGVkMT4wPAYDVQQDEzVTZWN0aWdvIFJTQSBDbGllbnQgQXV0aGVu
+dGljYXRpb24gYW5kIFNlY3VyZSBFbWFpbCBDQQIRAMa+GZZnQMQDHShREvo7qX4wgb8GCyqGSIb3
+DQEJEAILMYGvoIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVy
+MRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNl
+Y3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEAxr4Z
+lmdAxAMdKFES+jupfjANBgkqhkiG9w0BAQEFAASCAgCN/iWAXvf4QDoAPjP4HyoJ4mqdkXUBep7V
+ZfpDyACLs9LArJmnJyRQw8YD5PXsbv7pmOvMaoLCopnU1+TyKN+14JZ/D9dVHG1eG2PrSLy1Xa5n
+BsxDTV7PaLF1nCwYGQBqtLEGw0f3K1ah1ufenaCdBjyG8zhAR8YP+OoLgKbu+NzDd1uNvNeD/i8b
+BiYARWvJWAvSeE74PBr6EfXulReDUw+prmvFqi7nMkv6r6mp5+Yfu4QhxID88mn8VNiOuwkQHopG
+Sb3Y8Q1KJOGHVIFeAAx6t1B08WPL8M0BoAMYlX4yFdpc9LfzG4Dj0jJb33KqlyR3sF5l9T0akhbn
+TLAp+Dt7PcI0jD4EJ28nccvJV/QXEjC2jRhah9VWaQv85UYhoG1SAEKYY5p8Pl9vhj7/8h2Mmndu
+Kb2/G1rE1yk8piJz58SftSY02R6VrtboGk0Hzo/sQcEVto11Hweax7ubJsZojmqWDE5MuYESZgNy
+b+l+gAHHPIsANCZLMBfsN3GorBYwuwoM8w+4ODaJwFjgV3LMW6KCNEeYPfOsj1ECzVT/SJLl37nS
+AEbH7p2HxyMJL7OI757AFQ1Z+xWmh8B5aDDBZ1xtyQTq0Ph+jUaz7AqVwewbM1C6uyTNa0DBtBf8
+UjOM2Ek2x8XGEmBPs710+dWfnTTka3m2nqtlJrAFNAAAAAAAAA==
+
+
+--=-WKeoCu8f39FjIHVazDdn--
 
