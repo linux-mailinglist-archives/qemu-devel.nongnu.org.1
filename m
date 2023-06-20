@@ -2,83 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09F667369B7
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 12:46:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94AE37369B9
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 12:46:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBYrf-0005SC-LB; Tue, 20 Jun 2023 06:45:37 -0400
+	id 1qBYrs-0005ZD-Q5; Tue, 20 Jun 2023 06:45:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qBYrT-0005NB-KN; Tue, 20 Jun 2023 06:45:24 -0400
-Received: from mail-pj1-x1029.google.com ([2607:f8b0:4864:20::1029])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qBYre-0005TV-JY
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 06:45:35 -0400
+Received: from mail-lf1-x129.google.com ([2a00:1450:4864:20::129])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qBYrR-00065n-Oi; Tue, 20 Jun 2023 06:45:23 -0400
-Received: by mail-pj1-x1029.google.com with SMTP id
- 98e67ed59e1d1-25eb777c7f2so1759770a91.0; 
- Tue, 20 Jun 2023 03:45:20 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qBYrb-0006Ah-9o
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 06:45:33 -0400
+Received: by mail-lf1-x129.google.com with SMTP id
+ 2adb3069b0e04-4f004cc54f4so6026932e87.3
+ for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 03:45:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1687257920; x=1689849920;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:from:to:cc:subject:date
+ d=linaro.org; s=google; t=1687257929; x=1689849929;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Z2+PWYWu67kOtcO1/lpBoUmVw2CnwyGnQa1s2+g/LgM=;
- b=HkASxJZcRjiMU5OdqNZgM0NOUXHYdY1+1tKO0qn5lfX2jO1HHe9P0aIYeJfTzOptjg
- jlo8I7ni+RWhnJG02ESuxPoiGGt+GKb8o74fY1m5JONwHF9qGQ8UtTkZ8s9vtvn+KZz8
- O5K9xCLm++pSgehZ/eE84HrrIgVuuOs7uiWcFFxKLztT1A1lOKijCi08ehD0ep3VL4/t
- F4PuXfjJPsxMhM/6JAFTpnXXfhqXURG+wuGHyb5CvOfRmDP5FDKbOsPc0SV3Ot7ZQgh3
- Hj0LYWtT27VSgPPU3bk/+UDPkn+oj8a+D05RLfneX+xh/pL8O9Tocd821U7yQXBSU5N3
- pslg==
+ bh=P9HtAUbQG2WEBuGLDkf0mvAshs8VjcKrOvKuVeCQIcg=;
+ b=ANxvYeD9y0hb6vBrl9X+91t4YD6mWxllHpQSb6faKvOBvgCYvec1drwjd88lnYabUP
+ IvT8WGRKe5H67ZwUs27vhCZYlNY0bs7Ri5r5EQFD5+JNRzMm/SV4doYUp3pxid0DolQ8
+ 7pB4oI3knSzFerE0tDoE+B0agbsZGzB7ryHSULldLByoZgloi54INBMO/H7ybWFYSNC0
+ 26TElT/YFDrlD3da/OJ3+IPVJ7fYvWU55PI3on1XNw/gpT8FbBN/9I+oVgsfCtv3Ejjn
+ olfu1rGP8NPW0ajKtzv36qQ/1Ci1Onq0OUYnLu1cO3ozRM246JHfJSJ7UjH81Nk28S8d
+ hZ1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687257920; x=1689849920;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=Z2+PWYWu67kOtcO1/lpBoUmVw2CnwyGnQa1s2+g/LgM=;
- b=NEbKM8j50Fk10N8BMMPpbDa8Z9/eOdbyxlGYuz028QC8rjbb6vUCHkr1CpduIEkJDn
- 3epo5YMjrxg1UdJEpKV6VAWAYswzHDMqWDAq2DMxSLaVazMaaIuEw8iHqylCMWY5kp+U
- 6BzgE6WpCG/OCHJi4uKYnkpgV7hIo865edYE8mlQWC7BcVyZIUX4z69tvzAa9vAMd4RQ
- +/OI4wT/JjlirQtA++ogRNZHWNaec1+040W1VVZnFWxGGAct/upfOeaf1Q3hiOYo6Vnl
- 2QDYXQcYOO7AuuNnNnA4Vb9Xmpwi1rdi57d3cZ5Qrply+KqHoOcNjIxbUY8FkMX2KTsF
- bAyw==
-X-Gm-Message-State: AC+VfDzja+FJ48PzKH+Gy0CQB4ssuTiipJ8loOC3P8UPz7C1U0wHoVJc
- HNtF3Rqfd3p4DErd+LhMEs0=
-X-Google-Smtp-Source: ACHHUZ7Q2gSZx3nGOOy8Gc/zg/4X2KGDHJq+QdYWLeep25+lkcTY4MzJuL2Bp5gII+hxxONnhvA/IA==
-X-Received: by 2002:a17:90a:fe06:b0:25b:ba34:c4b4 with SMTP id
- ck6-20020a17090afe0600b0025bba34c4b4mr6946683pjb.32.1687257919626; 
- Tue, 20 Jun 2023 03:45:19 -0700 (PDT)
-Received: from localhost ([124.170.190.103]) by smtp.gmail.com with ESMTPSA id
- gz24-20020a17090b0ed800b0025695b06decsm1254519pjb.31.2023.06.20.03.45.15
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 20 Jun 2023 03:45:19 -0700 (PDT)
-Mime-Version: 1.0
+ d=1e100.net; s=20221208; t=1687257929; x=1689849929;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=P9HtAUbQG2WEBuGLDkf0mvAshs8VjcKrOvKuVeCQIcg=;
+ b=jJqV1N2teowmal5YSWgtzmkxM5qQMUpDhUU1wDPxW67Qm3qCUAmylJTCuU8kP3W+8A
+ d82dYOAho4rBc00wdYpQzt+o8+weUJY3N7DNayRG8LtMHfUU7318C2K+xT6hUaACU2o7
+ 6PJFQO/g+94DzyWDWSOQ9nnsfgqNnpn2n17DnkOD4Fet7Xp1nzgIt+oyh8knrJ3HJyaC
+ fKlo12fMhi1zhd6nm1NXKEulZJjilAtaALLh0dj/wrTarIjwsbJ3/2cc5IZmAxC25HD9
+ OdWrW/XbmqG5pEx8dsCOBUrGGdy2qBA9Vjhr+2CJWB8QadMRcn2PZNjpc4HrtrE3wz5Q
+ houQ==
+X-Gm-Message-State: AC+VfDyZR5CI0KkIayUN32aJIavh/jd/dYSg8e4ne3R/A9Hbhpff0CCT
+ eyxOU7+jfAZf6x9pKqFcA+r0fisTxaL46IajNmuu/CeEQAQOwV05
+X-Google-Smtp-Source: ACHHUZ7d5WO2/C8lV6IKKOO66aIx5SQ3rdXEeupEn1Vu4YwKnkZTr6hp00GppnMunykpIuavA1P3ixsqGFGRXpwsVXc=
+X-Received: by 2002:a19:4f49:0:b0:4f8:58d3:b7ab with SMTP id
+ a9-20020a194f49000000b004f858d3b7abmr6705676lfk.4.1687257929307; Tue, 20 Jun
+ 2023 03:45:29 -0700 (PDT)
+MIME-Version: 1.0
+References: <20230610133132.290703-1-danielhb413@gmail.com>
+ <20230610133132.290703-6-danielhb413@gmail.com>
+In-Reply-To: <20230610133132.290703-6-danielhb413@gmail.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 20 Jun 2023 11:45:18 +0100
+Message-ID: <CAFEAcA_KKSc=Ns9n1UJKdnhZ846EGK-nFbsG_e2mw_zwMoOJcw@mail.gmail.com>
+Subject: Re: [PULL 05/29] pnv/xive2: Handle TIMA access through all ports
+To: Daniel Henrique Barboza <danielhb413@gmail.com>
+Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, richard.henderson@linaro.org, 
+ Frederic Barrat <fbarrat@linux.ibm.com>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 20 Jun 2023 20:45:13 +1000
-Message-Id: <CTHF0GSBVRD5.3FZQQ8143ZVWB@wheely>
-Cc: <qemu-devel@nongnu.org>, "Daniel Henrique Barboza"
- <dbarboza@ventanamicro.com>, "Richard Henderson"
- <richard.henderson@linaro.org>, =?utf-8?q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>, "Thomas Huth" <thuth@redhat.com>, "Harsh Prateek
- Bora" <harshpb@linux.ibm.com>, "Kautuk Consul" <kconsul@linux.vnet.ibm.com>
-Subject: Re: [PATCH 0/4] target/ppc: TCG SMT support for spapr
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, <qemu-ppc@nongnu.org>
-X-Mailer: aerc 0.14.0
-References: <20230605112323.179259-1-npiggin@gmail.com>
- <43ca9ac8-d383-42fd-ca29-f7cdd18d701d@kaod.org>
- <CTHEBROKN9FJ.33DEPNNJ89JEQ@wheely>
- <2756fa81-9ab8-0b15-a69e-726b47a43d41@kaod.org>
-In-Reply-To: <2756fa81-9ab8-0b15-a69e-726b47a43d41@kaod.org>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1029;
- envelope-from=npiggin@gmail.com; helo=mail-pj1-x1029.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::129;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x129.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -96,65 +89,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue Jun 20, 2023 at 8:27 PM AEST, C=C3=A9dric Le Goater wrote:
-> On 6/20/23 12:12, Nicholas Piggin wrote:
-> > On Wed Jun 7, 2023 at 12:09 AM AEST, C=C3=A9dric Le Goater wrote:
-> >> On 6/5/23 13:23, Nicholas Piggin wrote:
-> >>> Previous RFC here
-> >>>
-> >>> https://lists.gnu.org/archive/html/qemu-ppc/2023-05/msg00453.html
-> >>>
-> >>> This series drops patch 1 from the previous, which is more of
-> >>> a standalone bugfix.
-> >>>
-> >>> Also accounted for Cedric's comments, except a nicer way to
-> >>> set cpu_index vs PIR/TIR SPRs, which is not quite trivial.
-> >>>
-> >>> This limits support for SMT to POWER8 and newer. It is also
-> >>> incompatible with nested-HV so that is checked for too.
-> >>>
-> >>> Iterating CPUs to find siblings for now I kept because similar
-> >>> loops exist in a few places, and it is not conceptually
-> >>> difficult for SMT, just fiddly code to improve. For now it
-> >>> should not be much performane concern.
-> >>>
-> >>> I removed hypervisor msgsnd support from patch 3, which is not
-> >>> required for spapr and added significantly to the patch.
-> >>>
-> >>> For now nobody has objected to the way shared SPR access is
-> >>> handled (serialised with TCG atomics support) so we'll keep
-> >>> going with it.
-> >>
-> >> Cc:ing more people for possible feedback.
-> >=20
-> > Not much feedback so I'll plan to go with this.
-> >=20
-> > A more performant implementation might try to synchronize
-> > threads at the register level rather than serialize everything,
-> > but SMT shared registers are not too performance critical so
-> > this should do for now.
+On Sat, 10 Jun 2023 at 14:31, Daniel Henrique Barboza
+<danielhb413@gmail.com> wrote:
 >
-> yes. Could you please rebase this series on upstream ?
+> From: Frederic Barrat <fbarrat@linux.ibm.com>
+>
+> The Thread Interrupt Management Area (TIMA) can be accessed through 4
+> ports, targeted by the address. The base address of a TIMA
+> is using port 0 and the other ports are 0x80 apart. Using one port or
+> another can be useful to balance the load on the snoop buses. With
+> skiboot and linux, we currently use port 0, but as it tends to be
+> busy, another hypervisor is using port 1 for TIMA access.
+>
+> The port address bits fall in between the special op indication
+> bits (the 2 MSBs) and the register offset bits (the 6 LSBs). They are
+> "don't care" for the hardware when processing a TIMA operation. This
+> patch filters out those port address bits so that a TIMA operation can
+> be triggered using any port.
+>
+> It is also true for indirect access (through the IC BAR) and it's
+> actually nothing new, it was already the case on P9. Which helps here,
+> as the TIMA handling code is common between P9 (xive) and P10 (xive2).
+>
+> Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
+> Reviewed-by: C=C3=A9dric Le Goater <clg@kaod.org>
+> Message-Id: <20230601121331.487207-6-fbarrat@linux.ibm.com>
+> Signed-off-by: Daniel Henrique Barboza <danielhb413@gmail.com>
+> ---
 
-Oh yeah I should have said, I will rebase and resend.
+Hi -- Coverity points out that there's a problem with this
+change (CID 1512997, 1512998):
 
-> It would be good to add tests for SMT. May be we could extend :
+> --- a/hw/intc/pnv_xive2.c
+> +++ b/hw/intc/pnv_xive2.c
+> @@ -1662,6 +1662,8 @@ static void pnv_xive2_tm_write(void *opaque, hwaddr=
+ offset,
+>      bool gen1_tima_os =3D
+>          xive->cq_regs[CQ_XIVE_CFG >> 3] & CQ_XIVE_CFG_GEN1_TIMA_OS;
 >
->    tests/avocado/ppc_pseries.py
->
-> with a couple of extra QEMU configs adding 'threads=3D' (if possible) and
-> check :
->
->    "CPU maps initialized for Y threads per core"
->
-> and
->
->    "smp: Brought up 1 node, X*Y CPUs"
->
-> ?
+> +    offset &=3D TM_ADDRESS_MASK;
 
-Yeah that could be a good idea, I'll try it.
+Here we now mask off most of the bytes of 'offset',
+because TM_ADDRESS_MASK is 0xC3F...
 
-Thanks,
-Nick
+> +
+>      /* TODO: should we switch the TM ops table instead ? */
+>      if (!gen1_tima_os && offset =3D=3D HV_PUSH_OS_CTX_OFFSET) {
+
+...but here we compare offset against HV_PUSH_OS_CTX_OFFSET,
+which is defined as
+#define HV_PUSH_OS_CTX_OFFSET  (HV_PAGE_OFFSET | (TM_QW1_OS + TM_WORD2))
+and since
+#define HV_PAGE_OFFSET         (XIVE_TM_HV_PAGE << TM_SHIFT)
+#define XIVE_TM_HV_PAGE         0x1
+#define TM_SHIFT                16
+
+that means HV_PUSH_OS_CTX_OFFSET has bits defined in the
+upper 16 bits, and the comparison can now never be true,
+making the if() dead code.
+
+>          xive2_tm_push_os_ctx(xptr, tctx, offset, value, size);
+> @@ -1681,6 +1683,8 @@ static uint64_t pnv_xive2_tm_read(void *opaque, hwa=
+ddr offset, unsigned size)
+>      bool gen1_tima_os =3D
+>          xive->cq_regs[CQ_XIVE_CFG >> 3] & CQ_XIVE_CFG_GEN1_TIMA_OS;
+>
+> +    offset &=3D TM_ADDRESS_MASK;
+> +
+>      /* TODO: should we switch the TM ops table instead ? */
+>      if (!gen1_tima_os && offset =3D=3D HV_PULL_OS_CTX_OFFSET) {
+>          return xive2_tm_pull_os_ctx(xptr, tctx, offset, size);
+
+Similarly here.
+
+thanks
+-- PMM
 
