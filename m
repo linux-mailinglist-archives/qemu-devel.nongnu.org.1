@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5CE373662E
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 10:28:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F5C2736624
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 10:28:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBWh5-0003pG-Ng; Tue, 20 Jun 2023 04:26:31 -0400
+	id 1qBWh6-0003pS-VU; Tue, 20 Jun 2023 04:26:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qBWgy-0003nJ-NX
+ id 1qBWgy-0003nK-O9
  for qemu-devel@nongnu.org; Tue, 20 Jun 2023 04:26:26 -0400
-Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
+Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qBWgv-00066O-2q
+ id 1qBWgw-00066u-8V
  for qemu-devel@nongnu.org; Tue, 20 Jun 2023 04:26:24 -0400
-Received: by mail-ej1-x62d.google.com with SMTP id
- a640c23a62f3a-988a076a7d3so309248066b.3
- for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 01:26:20 -0700 (PDT)
+Received: by mail-ej1-x632.google.com with SMTP id
+ a640c23a62f3a-977e0fbd742so604172366b.2
+ for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 01:26:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687249579; x=1689841579;
+ d=linaro.org; s=google; t=1687249580; x=1689841580;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=+TmabPbQ2VPO69RUQ9J/eYEsNr+nAcuy11nDNH27vWA=;
- b=KjJ4jilbk1stobQdumcIrgliYPw3iYVvU6MHxWBijgW7w+ALjy9qzCTUTLkZ3XVCF1
- IntCqpfn7haCgJ6t8LT8Qpg5jA3/FzjFMM/2bakmseCaTNsBoBm8WICQ5NiMBgjahhmu
- RgHNQ/q135WbF6Y3RLw2DLEwboRDXCB63UETHkmkHpXxE6oSQYgKkdhw1g8+UnVJxlIi
- oYJqkgSGUlNuJ84iAHVyHotff3dk1QtKQLeyUYhQpIoXKrHChQtPFLp++XL2TtGo4ilQ
- T/aKKZHC1tlUnubjnHvrcq6wfqXQ2nEAxf8/cZ5HjwSTFkyo62txKtZ3VXLKOfkZRciD
- n4fw==
+ bh=WRPMzmYk/CCPO77sVfrTSeKgekjeb0C45UKRtQqYc08=;
+ b=Pbj3N6b5bFzGH2uYECBvG23yQHSfnW47WqjvWcFVGQEY46wpWhXG4rQv50VIRyK76z
+ djcm4N/kf+YXn/qkKHB07pVbaiR9W3J8AVWqhvqBlPcgUrwwnn7Pb20H0e2l4FlMJL1d
+ bxMny6Fc6A9vVRi96pghr3jnjjATgqd19ppTyG1E9ReXJyimenhcyI9thdY+SpJpUHjs
+ jTjEw9NB+rPgCbpMjQZjjZXBv+7kgSFnTxLfrYylT0F2ZRD41a1VVlTR6SCR3sKT6H+L
+ 6kPQkpCPbzgZQNRvKIMiVYkcWZSazUXJcW4VfpD5/RRm4ZbL78tRZZVL+s4BuEYISfIS
+ KyIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687249579; x=1689841579;
+ d=1e100.net; s=20221208; t=1687249580; x=1689841580;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+TmabPbQ2VPO69RUQ9J/eYEsNr+nAcuy11nDNH27vWA=;
- b=jen4h/ZfPGeGioYRWyhIPZ0iwtrEEJOnPId3G6VV/Lyu6zC8utUGDFTjmduy75Ygft
- F9s5+ZyfIR+cPoy8cUFoztJioOzIrArBFa0xbXiogaYGAbyM8ObyhAVtUlcAgZmVo+pj
- M41shp/8TfPiEZy1s80EIROIerhW03jjmp8c3b33n92plVpeq44OTqOFwNkaQTdGRqYJ
- 6f0BwSJ4gUJzKoyr0iPNS28y7+oFwg4hGR6D/glvZvYAr+EEJf21d1H5IUPqMgfPN1S+
- LaDrbW/mGz8foK7+DV3CUWq5sGJnJkoO0KNY2rd2XQg9J/2h8vKSXnO78CZqriuvv1Hy
- iuyA==
-X-Gm-Message-State: AC+VfDy4+WBvInxR0V0ZIqL9Ku5OYSA2GCxB+3a1vDYVFITjkgbn8Hnj
- G5n4AmahOdjrwyY5XpSmsCTLvNroTkJWTLKjVzPbnmWz
-X-Google-Smtp-Source: ACHHUZ7yTZ6Z8XdW/V6i9YBHHC/E3pP5uZdBA68LOo3j/VWhuLwegM1QJexzkTMWAI5hCpj551kabA==
-X-Received: by 2002:a17:907:3d91:b0:973:bcf6:1d4 with SMTP id
- he17-20020a1709073d9100b00973bcf601d4mr11537030ejc.76.1687249579580; 
- Tue, 20 Jun 2023 01:26:19 -0700 (PDT)
+ bh=WRPMzmYk/CCPO77sVfrTSeKgekjeb0C45UKRtQqYc08=;
+ b=Hk4YSxFM74Lj5PReVu38MTbMpBBrJXxwqQAMiqhbCx4LYhZEAjTZbu3VkG7EI2IXNf
+ R+FZ7Wtv9hv4Wnsf+mCtdqziG58sRIhmKCDhoAx8F1cBX/MFFy+d1EGinREmr69C6Eau
+ 82oOybeoFeKoafvUtUmJ9HtjaaiD7zrCW54MYSIpojyvpMxCQJKQB1zEu6FR/qA9FLHj
+ waexFIknItDBDrU/EOfQ0cZQ+iYKl2zCtX04p31GNIq42gn9maxklFW0K5GBbzxWDhh+
+ qatt1H4hsmZLV2JihyoNSS1nizeZ9ISEEWobPtAVT11yJg08rx/X7qW9mKVbFFzAvysB
+ kH5g==
+X-Gm-Message-State: AC+VfDzJ74Z/nP84u2uzhMNwe9rMpi8+FwX8amvTwpwJ6PCEMcpCZIbO
+ pY7VWRVtsoGhyxU7AQI//WMqGNJuiGbn36pAWzVHpjXp
+X-Google-Smtp-Source: ACHHUZ6RyMCLSl4eMLBJThzbaUWTxoUuPPvWMY0lkj/6r8rwsvShonMUJrZlP7kM4TvYPB+UEDIxbw==
+X-Received: by 2002:a17:907:a01:b0:973:d1ce:dbe8 with SMTP id
+ bb1-20020a1709070a0100b00973d1cedbe8mr9732469ejc.46.1687249580522; 
+ Tue, 20 Jun 2023 01:26:20 -0700 (PDT)
 Received: from stoup.lan ([176.176.183.29]) by smtp.gmail.com with ESMTPSA id
- z19-20020a170906669300b00977c7566ccbsm935901ejo.164.2023.06.20.01.26.18
+ z19-20020a170906669300b00977c7566ccbsm935901ejo.164.2023.06.20.01.26.19
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 20 Jun 2023 01:26:19 -0700 (PDT)
+ Tue, 20 Jun 2023 01:26:20 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 06/16] target/m68k: Check for USER_ONLY definition instead of
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Nicholas Piggin <npiggin@gmail.com>
+Subject: [PULL 07/16] target/ppc: Check for USER_ONLY definition instead of
  SOFTMMU one
-Date: Tue, 20 Jun 2023 10:26:01 +0200
-Message-Id: <20230620082611.770620-7-richard.henderson@linaro.org>
+Date: Tue, 20 Jun 2023 10:26:02 +0200
+Message-Id: <20230620082611.770620-8-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230620082611.770620-1-richard.henderson@linaro.org>
 References: <20230620082611.770620-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
- envelope-from=richard.henderson@linaro.org; helo=mail-ej1-x62d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::632;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ej1-x632.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,219 +98,142 @@ From: Philippe Mathieu-Daudé <philmd@linaro.org>
 Since we *might* have user emulation with softmmu,
 replace the system emulation check by !user emulation one.
 
-Invert some if() ladders for clarity.
-
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20230613133347.82210-4-philmd@linaro.org>
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+Message-Id: <20230613133347.82210-5-philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/m68k/helper.h    |  2 +-
- target/m68k/cpu.c       | 14 ++++++--------
- target/m68k/helper.c    |  4 ++--
- target/m68k/translate.c | 28 ++++++++++++++--------------
- 4 files changed, 23 insertions(+), 25 deletions(-)
+ target/ppc/cpu_init.c    | 20 ++++++++++----------
+ target/ppc/helper_regs.c |  6 ++----
+ 2 files changed, 12 insertions(+), 14 deletions(-)
 
-diff --git a/target/m68k/helper.h b/target/m68k/helper.h
-index c9bed2b884..2bbe0dc032 100644
---- a/target/m68k/helper.h
-+++ b/target/m68k/helper.h
-@@ -124,7 +124,7 @@ DEF_HELPER_FLAGS_4(bfffo_mem, TCG_CALL_NO_WG, i64, env, i32, s32, i32)
- DEF_HELPER_3(chk, void, env, s32, s32)
- DEF_HELPER_4(chk2, void, env, s32, s32, s32)
- 
+diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
+index 9f97222655..7bce421a7c 100644
+--- a/target/ppc/cpu_init.c
++++ b/target/ppc/cpu_init.c
+@@ -5841,7 +5841,7 @@ POWERPC_FAMILY(970)(ObjectClass *oc, void *data)
+                     (1ull << MSR_PMM) |
+                     (1ull << MSR_RI);
+     pcc->mmu_model = POWERPC_MMU_64B;
 -#if defined(CONFIG_SOFTMMU)
 +#if !defined(CONFIG_USER_ONLY)
- DEF_HELPER_3(ptest, void, env, i32, i32)
- DEF_HELPER_3(pflush, void, env, i32, i32)
- DEF_HELPER_FLAGS_1(reset, TCG_CALL_NO_RWG, void, env)
-diff --git a/target/m68k/cpu.c b/target/m68k/cpu.c
-index 99af1ab541..70d58471dc 100644
---- a/target/m68k/cpu.c
-+++ b/target/m68k/cpu.c
-@@ -80,10 +80,10 @@ static void m68k_cpu_reset_hold(Object *obj)
-     }
- 
-     memset(env, 0, offsetof(CPUM68KState, end_reset_fields));
--#ifdef CONFIG_SOFTMMU
--    cpu_m68k_set_sr(env, SR_S | SR_I);
--#else
-+#ifdef CONFIG_USER_ONLY
-     cpu_m68k_set_sr(env, 0);
-+#else
-+    cpu_m68k_set_sr(env, SR_S | SR_I);
+     pcc->hash64_opts = &ppc_hash64_opts_basic;
  #endif
-     for (i = 0; i < 8; i++) {
-         env->fregs[i].d = nan;
-@@ -334,7 +334,7 @@ static void m68k_cpu_initfn(Object *obj)
-     cpu_set_cpustate_pointers(cpu);
- }
- 
+     pcc->excp_model = POWERPC_EXCP_970;
+@@ -5920,7 +5920,7 @@ POWERPC_FAMILY(POWER5P)(ObjectClass *oc, void *data)
+     pcc->lpcr_mask = LPCR_RMLS | LPCR_ILE | LPCR_LPES0 | LPCR_LPES1 |
+         LPCR_RMI | LPCR_HDICE;
+     pcc->mmu_model = POWERPC_MMU_2_03;
 -#if defined(CONFIG_SOFTMMU)
 +#if !defined(CONFIG_USER_ONLY)
- static bool fpu_needed(void *opaque)
- {
-     M68kCPU *s = opaque;
-@@ -525,15 +525,13 @@ static const VMStateDescription vmstate_m68k_cpu = {
-         NULL
-     },
- };
--#endif
- 
--#ifndef CONFIG_USER_ONLY
- #include "hw/core/sysemu-cpu-ops.h"
- 
- static const struct SysemuCPUOps m68k_sysemu_ops = {
-     .get_phys_page_debug = m68k_cpu_get_phys_page_debug,
- };
--#endif
-+#endif /* !CONFIG_USER_ONLY */
- 
- #include "hw/core/tcg-cpu-ops.h"
- 
-@@ -568,7 +566,7 @@ static void m68k_cpu_class_init(ObjectClass *c, void *data)
-     cc->get_pc = m68k_cpu_get_pc;
-     cc->gdb_read_register = m68k_cpu_gdb_read_register;
-     cc->gdb_write_register = m68k_cpu_gdb_write_register;
--#if defined(CONFIG_SOFTMMU)
-+#if !defined(CONFIG_USER_ONLY)
-     dc->vmsd = &vmstate_m68k_cpu;
-     cc->sysemu_ops = &m68k_sysemu_ops;
+     pcc->hash64_opts = &ppc_hash64_opts_basic;
+     pcc->lrg_decr_bits = 32;
  #endif
-diff --git a/target/m68k/helper.c b/target/m68k/helper.c
-index 3b3a6ea8bd..01c18a7c59 100644
---- a/target/m68k/helper.c
-+++ b/target/m68k/helper.c
-@@ -1480,7 +1480,7 @@ void HELPER(set_mac_extu)(CPUM68KState *env, uint32_t val, uint32_t acc)
-     env->macc[acc + 1] = res;
- }
- 
+@@ -6037,7 +6037,7 @@ POWERPC_FAMILY(POWER7)(ObjectClass *oc, void *data)
+         LPCR_LPES0 | LPCR_LPES1 | LPCR_HDICE;
+     pcc->lpcr_pm = LPCR_P7_PECE0 | LPCR_P7_PECE1 | LPCR_P7_PECE2;
+     pcc->mmu_model = POWERPC_MMU_2_06;
 -#if defined(CONFIG_SOFTMMU)
 +#if !defined(CONFIG_USER_ONLY)
- void HELPER(ptest)(CPUM68KState *env, uint32_t addr, uint32_t is_read)
- {
-     hwaddr physical;
-@@ -1534,4 +1534,4 @@ void HELPER(reset)(CPUM68KState *env)
- {
-     /* FIXME: reset all except CPU */
- }
--#endif
-+#endif /* !CONFIG_USER_ONLY */
-diff --git a/target/m68k/translate.c b/target/m68k/translate.c
-index 551ef9e52a..e07161d76f 100644
---- a/target/m68k/translate.c
-+++ b/target/m68k/translate.c
-@@ -2637,10 +2637,10 @@ DISAS_INSN(swap)
- 
- DISAS_INSN(bkpt)
- {
--#if defined(CONFIG_SOFTMMU)
--    gen_exception(s, s->base.pc_next, EXCP_ILLEGAL);
--#else
-+#if defined(CONFIG_USER_ONLY)
-     gen_exception(s, s->base.pc_next, EXCP_DEBUG);
-+#else
-+    gen_exception(s, s->base.pc_next, EXCP_ILLEGAL);
+     pcc->hash64_opts = &ppc_hash64_opts_POWER7;
+     pcc->lrg_decr_bits = 32;
  #endif
+@@ -6181,7 +6181,7 @@ POWERPC_FAMILY(POWER8)(ObjectClass *oc, void *data)
+     pcc->lpcr_pm = LPCR_P8_PECE0 | LPCR_P8_PECE1 | LPCR_P8_PECE2 |
+                    LPCR_P8_PECE3 | LPCR_P8_PECE4;
+     pcc->mmu_model = POWERPC_MMU_2_07;
+-#if defined(CONFIG_SOFTMMU)
++#if !defined(CONFIG_USER_ONLY)
+     pcc->hash64_opts = &ppc_hash64_opts_POWER7;
+     pcc->lrg_decr_bits = 32;
+     pcc->n_host_threads = 8;
+@@ -6197,7 +6197,7 @@ POWERPC_FAMILY(POWER8)(ObjectClass *oc, void *data)
+     pcc->l1_icache_size = 0x8000;
  }
  
-@@ -2838,7 +2838,7 @@ DISAS_INSN(unlk)
-     tcg_gen_addi_i32(QREG_SP, src, 4);
- }
- 
--#if defined(CONFIG_SOFTMMU)
-+#if !defined(CONFIG_USER_ONLY)
- DISAS_INSN(reset)
- {
-     if (IS_USER(s)) {
-@@ -4398,7 +4398,7 @@ DISAS_INSN(move_from_sr)
-     DEST_EA(env, insn, OS_WORD, sr, NULL);
- }
- 
--#if defined(CONFIG_SOFTMMU)
-+#if !defined(CONFIG_USER_ONLY)
- DISAS_INSN(moves)
- {
-     int opsize;
-@@ -4605,7 +4605,7 @@ DISAS_INSN(cinv)
-     /* Invalidate cache line.  Implement as no-op.  */
- }
- 
--#if defined(CONFIG_SOFTMMU)
-+#if !defined(CONFIG_USER_ONLY)
- DISAS_INSN(pflush)
- {
-     TCGv opmode;
-@@ -5352,7 +5352,7 @@ DISAS_INSN(ftrapcc)
-     do_trapcc(s, &c);
- }
- 
--#if defined(CONFIG_SOFTMMU)
-+#if !defined(CONFIG_USER_ONLY)
- DISAS_INSN(frestore)
- {
-     TCGv addr;
-@@ -5795,7 +5795,7 @@ void register_m68k_insns (CPUM68KState *env)
-     BASE(bitop_im,  08c0, ffc0);
-     INSN(arith_im,  0a80, fff8, CF_ISA_A);
-     INSN(arith_im,  0a00, ff00, M68K);
--#if defined(CONFIG_SOFTMMU)
-+#if !defined(CONFIG_USER_ONLY)
-     INSN(moves,     0e00, ff00, M68K);
- #endif
-     INSN(cas,       0ac0, ffc0, CAS);
-@@ -5824,7 +5824,7 @@ void register_m68k_insns (CPUM68KState *env)
-     BASE(move_to_ccr, 44c0, ffc0);
-     INSN(not,       4680, fff8, CF_ISA_A);
-     INSN(not,       4600, ff00, M68K);
--#if defined(CONFIG_SOFTMMU)
-+#if !defined(CONFIG_USER_ONLY)
-     BASE(move_to_sr, 46c0, ffc0);
- #endif
-     INSN(nbcd,      4800, ffc0, M68K);
-@@ -5841,7 +5841,7 @@ void register_m68k_insns (CPUM68KState *env)
-     BASE(tst,       4a00, ff00);
-     INSN(tas,       4ac0, ffc0, CF_ISA_B);
-     INSN(tas,       4ac0, ffc0, M68K);
--#if defined(CONFIG_SOFTMMU)
-+#if !defined(CONFIG_USER_ONLY)
-     INSN(halt,      4ac8, ffff, CF_ISA_A);
-     INSN(halt,      4ac8, ffff, M68K);
- #endif
-@@ -5855,7 +5855,7 @@ void register_m68k_insns (CPUM68KState *env)
-     BASE(trap,      4e40, fff0);
-     BASE(link,      4e50, fff8);
-     BASE(unlk,      4e58, fff8);
--#if defined(CONFIG_SOFTMMU)
-+#if !defined(CONFIG_USER_ONLY)
-     INSN(move_to_usp, 4e60, fff8, USP);
-     INSN(move_from_usp, 4e68, fff8, USP);
-     INSN(reset,     4e70, ffff, M68K);
-@@ -5980,7 +5980,7 @@ void register_m68k_insns (CPUM68KState *env)
-     INSN(ftrapcc,   f27a, fffe, FPU);       /* opmode 010, 011 */
-     INSN(ftrapcc,   f27c, ffff, FPU);       /* opmode 100 */
-     INSN(fbcc,      f280, ff80, FPU);
--#if defined(CONFIG_SOFTMMU)
-+#if !defined(CONFIG_USER_ONLY)
-     INSN(frestore,  f340, ffc0, CF_FPU);
-     INSN(fsave,     f300, ffc0, CF_FPU);
-     INSN(frestore,  f340, ffc0, FPU);
-@@ -6190,7 +6190,7 @@ void m68k_cpu_dump_state(CPUState *cs, FILE *f, int flags)
-         break;
-     }
-     qemu_fprintf(f, "\n");
 -#ifdef CONFIG_SOFTMMU
 +#ifndef CONFIG_USER_ONLY
-     qemu_fprintf(f, "%sA7(MSP) = %08x %sA7(USP) = %08x %sA7(ISP) = %08x\n",
-                  env->current_sp == M68K_SSP ? "->" : "  ", env->sp[M68K_SSP],
-                  env->current_sp == M68K_USP ? "->" : "  ", env->sp[M68K_USP],
-@@ -6204,5 +6204,5 @@ void m68k_cpu_dump_state(CPUState *cs, FILE *f, int flags)
-                  env->mmu.ttr[M68K_ITTR0], env->mmu.ttr[M68K_ITTR1]);
-     qemu_fprintf(f, "MMUSR %08x, fault at %08x\n",
-                  env->mmu.mmusr, env->mmu.ar);
+ /*
+  * Radix pg sizes and AP encodings for dt node ibm,processor-radix-AP-encodings
+  * Encoded as array of int_32s in the form:
+@@ -6214,7 +6214,7 @@ static struct ppc_radix_page_info POWER9_radix_page_info = {
+         0x4000001e  /*  1G - enc: 0x2 */
+     }
+ };
+-#endif /* CONFIG_SOFTMMU */
++#endif /* CONFIG_USER_ONLY */
+ 
+ static void init_proc_POWER9(CPUPPCState *env)
+ {
+@@ -6371,7 +6371,7 @@ POWERPC_FAMILY(POWER9)(ObjectClass *oc, void *data)
+         LPCR_HEIC | LPCR_LPES0 | LPCR_HVICE | LPCR_HDICE;
+     pcc->lpcr_pm = LPCR_PDEE | LPCR_HDEE | LPCR_EEE | LPCR_DEE | LPCR_OEE;
+     pcc->mmu_model = POWERPC_MMU_3_00;
+-#if defined(CONFIG_SOFTMMU)
++#if !defined(CONFIG_USER_ONLY)
+     /* segment page size remain the same */
+     pcc->hash64_opts = &ppc_hash64_opts_POWER7;
+     pcc->radix_page_info = &POWER9_radix_page_info;
+@@ -6389,7 +6389,7 @@ POWERPC_FAMILY(POWER9)(ObjectClass *oc, void *data)
+     pcc->l1_icache_size = 0x8000;
+ }
+ 
+-#ifdef CONFIG_SOFTMMU
++#ifndef CONFIG_USER_ONLY
+ /*
+  * Radix pg sizes and AP encodings for dt node ibm,processor-radix-AP-encodings
+  * Encoded as array of int_32s in the form:
+@@ -6406,7 +6406,7 @@ static struct ppc_radix_page_info POWER10_radix_page_info = {
+         0x4000001e  /*  1G - enc: 0x2 */
+     }
+ };
+-#endif /* CONFIG_SOFTMMU */
++#endif /* !CONFIG_USER_ONLY */
+ 
+ static void init_proc_POWER10(CPUPPCState *env)
+ {
+@@ -6547,7 +6547,7 @@ POWERPC_FAMILY(POWER10)(ObjectClass *oc, void *data)
+ 
+     pcc->lpcr_pm = LPCR_PDEE | LPCR_HDEE | LPCR_EEE | LPCR_DEE | LPCR_OEE;
+     pcc->mmu_model = POWERPC_MMU_3_00;
+-#if defined(CONFIG_SOFTMMU)
++#if !defined(CONFIG_USER_ONLY)
+     /* segment page size remain the same */
+     pcc->hash64_opts = &ppc_hash64_opts_POWER7;
+     pcc->radix_page_info = &POWER10_radix_page_info;
+diff --git a/target/ppc/helper_regs.c b/target/ppc/helper_regs.c
+index bc7e9d7eda..e27f4a75a4 100644
+--- a/target/ppc/helper_regs.c
++++ b/target/ppc/helper_regs.c
+@@ -310,7 +310,7 @@ int hreg_store_msr(CPUPPCState *env, target_ulong value, int alter_hv)
+     return excp;
+ }
+ 
+-#ifdef CONFIG_SOFTMMU
++#ifndef CONFIG_USER_ONLY
+ void store_40x_sler(CPUPPCState *env, uint32_t val)
+ {
+     /* XXX: TO BE FIXED */
+@@ -320,9 +320,7 @@ void store_40x_sler(CPUPPCState *env, uint32_t val)
+     }
+     env->spr[SPR_405_SLER] = val;
+ }
+-#endif /* CONFIG_SOFTMMU */
+ 
+-#ifndef CONFIG_USER_ONLY
+ void check_tlb_flush(CPUPPCState *env, bool global)
+ {
+     CPUState *cs = env_cpu(env);
+@@ -341,7 +339,7 @@ void check_tlb_flush(CPUPPCState *env, bool global)
+         tlb_flush(cs);
+     }
+ }
 -#endif
 +#endif /* !CONFIG_USER_ONLY */
- }
+ 
+ /**
+  * _spr_register
 -- 
 2.34.1
 
