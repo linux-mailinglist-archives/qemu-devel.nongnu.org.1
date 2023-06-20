@@ -2,171 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCC577361F6
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 05:06:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF682736239
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 05:40:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBRg9-0007jB-PF; Mon, 19 Jun 2023 23:05:13 -0400
+	id 1qBSD5-00032b-De; Mon, 19 Jun 2023 23:39:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1qBRg8-0007j3-34
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 23:05:12 -0400
-Received: from mga12.intel.com ([192.55.52.136])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1qBRg0-0000or-G8
- for qemu-devel@nongnu.org; Mon, 19 Jun 2023 23:05:11 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1687230304; x=1718766304;
- h=from:to:cc:subject:date:message-id:references:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=/XoyIJr2nMvCb8inihEKNCEdHp98T9QwYXxYNZXJ9MA=;
- b=WJWz51BXACujqM/SZ6M+3/uvy2Krn/MWhnKPbV3N5Jj/pohdBRhLRp88
- LUbXqw4fQwy2jZMlz+YoiPLmnMvKpyvp2W0O+m8Td15CARe4QcTDwWM9Y
- Dd6ziLu52+GyTXfKPejaj7pzqauCPOxabRbq572rnpzuqMF0AXZTHDR0x
- ZHtpQNnqZs1OCCgh9YMVPtUmCYXBiCOgEzbgRbVYtgKBke1FykRRokBVN
- TmgtmPBEgDNq6QiRqq9xJ/wkdbJlfok+fa6nMapd+CPKzFRuqXBmgpwpV
- 7sy1oNa2Tpu/9vd3RQSoqwCk+zEQOruRlCue7gDgCe2KUqYI9kJ3gq8sQ g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10746"; a="339366357"
-X-IronPort-AV: E=Sophos;i="6.00,256,1681196400"; d="scan'208";a="339366357"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
- by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Jun 2023 20:04:59 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10746"; a="1044078067"
-X-IronPort-AV: E=Sophos;i="6.00,256,1681196400"; d="scan'208";a="1044078067"
-Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
- by fmsmga005.fm.intel.com with ESMTP; 19 Jun 2023 20:04:59 -0700
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23; Mon, 19 Jun 2023 20:04:59 -0700
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23; Mon, 19 Jun 2023 20:04:58 -0700
-Received: from fmsedg602.ED.cps.intel.com (10.1.192.136) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23 via Frontend Transport; Mon, 19 Jun 2023 20:04:58 -0700
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (104.47.70.103)
- by edgegateway.intel.com (192.55.55.71) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.23; Mon, 19 Jun 2023 20:04:58 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=FNASYIoh+G69wcU7JiqzvMQJkzhn6D0fyxU86nuZj8KWKf43hNqwDF6IHga7roL8rkngWQeWLOfEqU7Sa3UbuZn8k4s0CHhPUvwZtdwqrNInIaSPXIFznjUyCJr6MgVuMRcgapbdcvTzvl/zY119rdi/BbbT/UX9tPfCtrMNX7EZDPTxEEr4XOxHphWP2UR0xNbt6nPgwc53Y3dyEh1/XOP8AVGKfh6Z6mDAfH7FpgcH7pFEOU9fg9AJR56G/yGxXhrBLRCbWtcJkfKr1RXc6vP2llYiUO9OxH7ywiNwVE19OEHsNRWQXLMXSiy7vcGq+k4OxKqadFWFPCrVMJ2xuw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/XoyIJr2nMvCb8inihEKNCEdHp98T9QwYXxYNZXJ9MA=;
- b=U3oR9DCPPr/e3B+YYKVVP2nyvpDEKTiI7zXEOIoxwSxeK+ecza02GoraMuDys19gKYTinwHETFGy3TFPnEFKVF7dtkx1iN8LJ15ba88080o5cCviL7P/WUP/6P/5qtstYfZYhKsbHUqF+xfb+GW0WKlmt/+s2jbe/UsqwMmJMY7G7Nc12m1suK5DnsMrujfySM1qALK17HG8Sku1ljmvdjZJJadbff/0phVHM4P2eMqw8AVpUWvpuR0n+mHDR7UqDkCmJ/4BUcXAGVikr6ZhH+42O6JvGtIFEf5EZf7AQxAENd9XxXwIW9dhZKIe0ZER676/n1P3h1KdZD2QV2DB5w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from SJ0PR11MB6744.namprd11.prod.outlook.com (2603:10b6:a03:47d::10)
- by CO6PR11MB5617.namprd11.prod.outlook.com (2603:10b6:5:35c::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6500.37; Tue, 20 Jun
- 2023 03:04:54 +0000
-Received: from SJ0PR11MB6744.namprd11.prod.outlook.com
- ([fe80::da0a:8aab:d75b:55f1]) by SJ0PR11MB6744.namprd11.prod.outlook.com
- ([fe80::da0a:8aab:d75b:55f1%5]) with mapi id 15.20.6500.036; Tue, 20 Jun 2023
- 03:04:54 +0000
-From: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>
-To: Avihai Horon <avihaih@nvidia.com>, "qemu-devel@nongnu.org"
- <qemu-devel@nongnu.org>
-CC: "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
- "clg@redhat.com" <clg@redhat.com>, "Martins, Joao"
- <joao.m.martins@oracle.com>, "Peng, Chao P" <chao.p.peng@intel.com>
-Subject: RE: [PATCH v2] vfio/migration: Refactor and fix print of "Migration
- disabled"
-Thread-Topic: [PATCH v2] vfio/migration: Refactor and fix print of "Migration
- disabled"
-Thread-Index: AQHZoowecKaj4XAnBEKc7Un5J/J7Ha+R+RWAgAEJD5A=
-Date: Tue, 20 Jun 2023 03:04:54 +0000
-Message-ID: <SJ0PR11MB67443F8A4A7AF037379355C5925CA@SJ0PR11MB6744.namprd11.prod.outlook.com>
-References: <20230619084446.399059-1-zhenzhong.duan@intel.com>
- <41469da8-dae3-df36-6de1-4b44bf6ba508@nvidia.com>
-In-Reply-To: <41469da8-dae3-df36-6de1-4b44bf6ba508@nvidia.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SJ0PR11MB6744:EE_|CO6PR11MB5617:EE_
-x-ms-office365-filtering-correlation-id: 19011fc9-2221-4158-e5ac-08db713b1f7a
-x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: lhYxU7v+YLBwH+SrISm9eSMzm9le9/Af1ol5tsejdQm9m5xB0FHTX+r/CGS9AxyZRE9Bi9g3u1ffn1t4AVDCtnR/XQqEkWhlb8bm8e1WtOuiTwN/Hi3tSQRpmMB6IoXTS1Dj0wQVtqi1NrnaBn6fhUDECisg6Xsr5Qmb7iR15bWDlFgSCSU1wZxvEA/5792xbOMKFR2PxmGRx10gUJttJ1jMkM+i5jLGX2q2UQXTEVdrOy1mZSEPcYbkUIZrXEiOOuIf6Ob8W5/iFA0n6CCWdoIJy4z2SMMIt8WV/GSanZNmVambczDBIU+90oPyRqFhc3TfXA0F0/nF7Qilv0c41BDSTmU0q51qn3g85C1+Amb6Gqjrysh5po3XrToQDmAxwGfmHwUFFXe8i8adXMshQUW0rE/ZiQwRiN47CM0rHt8k1LG/FewxjAcIJZ2Qxb1X/9/GVbXiND2gFn/O04m/HlnucFmOqO3WQsulhl2dRg6LA1VmLV4iS1RTF7LPWsquIEYeQ7SeEgO5wCqD2rC2wukFrFbk3eicFLWYZdOuEXzZw+Dj7VkwYiPs6ZH6MwuP43f8DQYsbVPeeuXEQrCdYxiiv3SX0WG96QBmjvNGXummPk9niRKn9OKs6nQUHzSn
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SJ0PR11MB6744.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230028)(346002)(376002)(136003)(366004)(396003)(39860400002)(451199021)(26005)(107886003)(33656002)(83380400001)(6506007)(9686003)(71200400001)(110136005)(54906003)(478600001)(7696005)(82960400001)(316002)(41300700001)(122000001)(38100700002)(86362001)(66446008)(76116006)(66946007)(4326008)(66476007)(66556008)(64756008)(2906002)(38070700005)(8936002)(8676002)(55016003)(186003)(52536014)(5660300002);
- DIR:OUT; SFP:1102; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?U3k0MmdIeGpEa0lHTmhGdnZsVVZadTU2d0V4OU5KOVlMY00zS3FzdTREV2Jt?=
- =?utf-8?B?UEx6Q2pkSUZmd2NkSVhMWEhacWFHcUxvekhXWEhkTlNiVHFlN3c4WjErRnF6?=
- =?utf-8?B?UGNhVFNOYkJsMDdGaStzTVMyd2h1UEdFWnluS0dmdytlVU9wRmRVSGxvM2Mw?=
- =?utf-8?B?cDA1cVVDTWZUV2tSZ1g1TmJoeVFOWmFYSFVmM21KbU42RjFIK3VGcVcvUTZ4?=
- =?utf-8?B?Vmw1bTNrUnN5WmhaRXJQTzBrcEgySnlJSTQxUi9tSDcyWmJvOU1Yd0RFRnBn?=
- =?utf-8?B?ZHdVR05CQllaQXpIdDJjOHhMN1QxRkxiMVNBMEdaTkR2WFIwd2hhNDB0MHpl?=
- =?utf-8?B?ZkgrMDFEdW9KZnZObmRuT01YQzh5Vi9wQ2FUNm9YTkF1Z092c1NJRksvU1dB?=
- =?utf-8?B?QnA4QkxXUTVVSXR3dlRqNStRZlRRaGV5Tk5rWE5sd1c5cm5ZQmcyOEU5ZG54?=
- =?utf-8?B?WXh3MFBYZTdqNkdUMmU2c2JIOVgyL2U4MzdHVnNIbW96aUNmODB0NEVydWFJ?=
- =?utf-8?B?YmlFcHl4WlpwTlJnY1lqd1pxTk9lYlNaUTRDRllMWjBseTR0bTFlTFQyV284?=
- =?utf-8?B?MldaT0Z1djhzRHFwek9xT2xiRzBkcU5zUXZPMjBIWDdHS3VNbkpyR00wdkpF?=
- =?utf-8?B?eUpJTlp6NTVkMTRaV3Q0aVYrR2ZpQUZ3d3hZazJaK1U4YzBQeVJEK05acm1p?=
- =?utf-8?B?cmVZUzBYZEV0WVRXQ0FDQnN6d2kyVUhlbUZFVXBJdmRZT2JYOGs5NWhMS3lJ?=
- =?utf-8?B?SVZxT09oRnlQUHEyMERzdXA2N0tPM0tqbGpTNi9lSXZtbU84NkxzOTd0WXIr?=
- =?utf-8?B?aDIzOVk3cXZBSDN1UmYrQjM3MUNaWXNBTFdkVS9WT2w0NDQwaDZEMmFRMlRD?=
- =?utf-8?B?QUp5UlFvclpvU0lOazhYVUlRNXVod1pBWHdRdUlQTUliL1RKYW5teEpPM2lZ?=
- =?utf-8?B?NFhJeldxUkxwTlZUMUtvU1RraE4zYUR2bXBLQVBPSmMyMDBnWEtEay9xV0xn?=
- =?utf-8?B?c21aMTRuUmJaekdqRjc2Q2hjRGJyc2xJQ3BnQTUxR1laSmFHd0dKVGZYNzdy?=
- =?utf-8?B?bGZTK2xCUFdCVDBNOVhzUlZ1b2NEYld3WEFxcmpuUExJanpVUDdwcnh3ZkU0?=
- =?utf-8?B?TzRPZE1zSWZ6MUZsWHpWRmt5NE1aWFdDbzJCN1pDbEp2b2hXMFBhUFloQ1By?=
- =?utf-8?B?WnRTdDY2UDFWaDJnYVdOUStkQ2M0ckdram8zSFFzUFpLc3FoR3cybm9VSTFv?=
- =?utf-8?B?cmV6aDZQMUhsc0s3RjM5aDh4WDY4R2dHWDRhZ0dTR0RMckdLV0RsZ2JibFB4?=
- =?utf-8?B?WDFqY3RZamVvVU0zM3FqVjJzMmRHUFJZaUhpcGc0QkFWWnVmUlE2d2lPb1JW?=
- =?utf-8?B?RWFwV1lmRS9OQ2swWmpqNy8yaDZIbWFZMEEzd3dMalpUYjhRckFjTVA4UEVt?=
- =?utf-8?B?OEp0b1ZCSThjdGFLa1g2UzhsK2VXT2JmZWhvYThGVzB4R052NVNaemtDdDRB?=
- =?utf-8?B?WmlZRy9ITDJsTm14VndHQUdWMEFXbXRXVDE2dkZRQ2pqcmppWXI0Ylc0QzVY?=
- =?utf-8?B?cCtLVjRucTF6aHI5VC9vN3dXMVdIcCtmNnZULzJGZVRUeUxnQU02M243ZHRv?=
- =?utf-8?B?Z3Y3NVIway9ORHFCcXhOOFZUTTJaWVVWNnhObmgveUMya3JIZXJMV0JHNWt2?=
- =?utf-8?B?WFlDa1p5U0JpSjdpZU40UUUwU2NJNm9ZajArak1EdkJNWVZIU0ZEa2ZlazdS?=
- =?utf-8?B?ZlNlWHZEWEJkTTBjVFQvdHNySzdWZmdmZ3Qwc1pwZEdtNk5DMTVrVlU1MThw?=
- =?utf-8?B?ak5PWDVhK3c1bHlkTnZORUdDZDY0aER0TDJCeDlvNHNLUmxkN2Yxc2t2K05l?=
- =?utf-8?B?cEpKVEhXMXlvVjg3cEplZHZ6bFJqSkpBbVNwS3BqQ29iWmExVWo0T2lGTFo0?=
- =?utf-8?B?bDMxSm9pcExvRDFnenErUDBBNS9zeWhidmovbnU0eUZaYWdIRDJkUGVSMlBy?=
- =?utf-8?B?M0ZFTy9hM1NGMk1Qa3NUMm1adlN0cXU3NWFkUlZGaGRKZ2FSWnhhWGQ5dTk5?=
- =?utf-8?B?ZGN6YXRISncyMXF0dEx2UXVDc2F4dkx5TWo1V0NPVjlsblBRQ08zTWI0WGo4?=
- =?utf-8?Q?7dXvO6Ky7BjsZpCuaqjyW4mQL?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB6744.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 19011fc9-2221-4158-e5ac-08db713b1f7a
-X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Jun 2023 03:04:54.8028 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: ltNP+bpovWuCD1DUbp6PMQ4PZ1l5FI13G7mvjlw3oXaneh3nPAfR3d/hlS6n1xNYQqPgCEITM7EuB6SUwrMHq37iqO8rEBr1SE8SUepQq0M=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO6PR11MB5617
-X-OriginatorOrg: intel.com
-Received-SPF: pass client-ip=192.55.52.136;
- envelope-from=zhenzhong.duan@intel.com; helo=mga12.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1qBSD3-00032C-2u; Mon, 19 Jun 2023 23:39:13 -0400
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1qBSD1-0007ee-DL; Mon, 19 Jun 2023 23:39:12 -0400
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-1b5452b77b4so24473335ad.3; 
+ Mon, 19 Jun 2023 20:39:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1687232349; x=1689824349;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=ilKhaW4H6z2ExCKfqx6DO3BNHEZuD+M/GKSxDyZrt8E=;
+ b=BtcdtijHNrMHs0KILWrmZk1zZIhalykN13+ReJVbT2eZK+vDeC5kLXybVt3xX9WLXu
+ JgNE9rGUMw/3FDBidX+ScUMmIHrWGxz/WlEYuGLkfyAnRScoVvRXlQpEVuqCz5sDLG1s
+ 3jpYQ2x9ewF4laC1oM5ozZse5U7fONWFsZrmLuQEcEUE0OCpwGY4d5sun6mjluC4ZW+/
+ 5hR0hJ7Y2dqzlhRg/cX5Le/Z9H/8nCNQPZv71AGj5iTGTK4RnSwb8C08r7oVDSvfUC/S
+ RoTIF3gtpFPX82NCYVXUP+rqxQvC/jXajjPs3Yl97zHu53ff/rONgH3KJxbUThuWJJyM
+ W9vQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1687232349; x=1689824349;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=ilKhaW4H6z2ExCKfqx6DO3BNHEZuD+M/GKSxDyZrt8E=;
+ b=QQgWyCbHEVC/owkm+DHWfPx9t2i8coYsLlDnkZAob8iAo2jmS7kDPCeezP4mKNt7tO
+ V+UVKbyGy8erbcfczVuiduYJ+RGnWbCEFTSiMMHTG3a2FndIzA1K7nd5pfdwcuaudRvf
+ 1aOB0FfeaPCfqoux71+NSpXZnDARl6jvm4CiOSIwt5xSN1C9ZvFta03SB4w0YbYHCrgi
+ 4/hhWenpwshqhfnVh8xtHMxNTxlM8TdkozmdzNOe56ecvk0J6HdXtZO1k/5+/fGOz5RT
+ 6xA3eLyn4KR0cptEjXgSgxMiMIyLCpakMBUZaTkmgPP/vxA8Erw2JhLWqz3vLb/u13Qu
+ 5FJw==
+X-Gm-Message-State: AC+VfDybpgOZI/VF1/LZ7qJgW6BtVFmgLIyc9gKRwx0rYUazdRySl5os
+ +dL/xNAnINsFRTjw5GdjeBA=
+X-Google-Smtp-Source: ACHHUZ7VG7eiOXS9BoKevXx6InMkbOqAUsqvX5Z3Jbvr8/nu+dZZKmOYzJ/1nk14bKFAokcN/Nqwzw==
+X-Received: by 2002:a17:902:bc42:b0:1ae:8892:7d27 with SMTP id
+ t2-20020a170902bc4200b001ae88927d27mr10922300plz.42.1687232348891; 
+ Mon, 19 Jun 2023 20:39:08 -0700 (PDT)
+Received: from localhost ([1.146.105.3]) by smtp.gmail.com with ESMTPSA id
+ y1-20020a170902b48100b001a24cded097sm477239plr.236.2023.06.19.20.39.05
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 19 Jun 2023 20:39:08 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 20 Jun 2023 13:39:01 +1000
+Message-Id: <CTH5Y56UH8XV.27NIMNBOJQYWK@wheely>
+Cc: "Daniel Henrique Barboza" <danielhb413@gmail.com>,
+ <qemu-ppc@nongnu.org>, <qemu-devel@nongnu.org>, <qemu-stable@nongnu.org>
+Subject: Re: [PATCH 2/4] target/ppc: Ensure stcx size matches larx
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "Peter Maydell" <peter.maydell@linaro.org>, "Richard Henderson"
+ <richard.henderson@linaro.org>
+X-Mailer: aerc 0.14.0
+References: <20230604102858.148584-1-npiggin@gmail.com>
+ <20230604102858.148584-2-npiggin@gmail.com>
+ <CT4I52C30RXG.AESIFCY16U6T@wheely>
+ <94a453bc-cfd5-5fb0-289d-dbb321c8b172@linaro.org>
+ <CAFEAcA_hirbGc_iZUhsD22Ksjj_2OBevDJq-r1mvnVqKoTqCvA@mail.gmail.com>
+ <8b14781d-f5e5-b5b1-90c3-2d6eae8ffdc9@linaro.org>
+ <CAFEAcA_9Rh8Y6aWf4SubL2niwow5J73PmXd9P6r5WZ=Mc+_GeQ@mail.gmail.com>
+In-Reply-To: <CAFEAcA_9Rh8Y6aWf4SubL2niwow5J73PmXd9P6r5WZ=Mc+_GeQ@mail.gmail.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x636.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -183,34 +97,98 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-DQoNCj4tLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPkZyb206IEF2aWhhaSBIb3JvbiA8YXZp
-aGFpaEBudmlkaWEuY29tPg0KPlNlbnQ6IE1vbmRheSwgSnVuZSAxOSwgMjAyMyA3OjE0IFBNDQou
-Li4NCj4+IGEvaHcvdmZpby9taWdyYXRpb24uYyBiL2h3L3ZmaW8vbWlncmF0aW9uLmMgaW5kZXgN
-Cj4+IDZiNThkZGRiODg1OS4uYmM1MWFhNzY1Y2I4IDEwMDY0NA0KPj4gLS0tIGEvaHcvdmZpby9t
-aWdyYXRpb24uYw0KPj4gKysrIGIvaHcvdmZpby9taWdyYXRpb24uYw0KPj4gQEAgLTYzMiw0MiAr
-NjMyLDQxIEBAIGludDY0X3QgdmZpb19taWdfYnl0ZXNfdHJhbnNmZXJyZWQodm9pZCkNCj4+ICAg
-ICAgIHJldHVybiBieXRlc190cmFuc2ZlcnJlZDsNCj4+ICAgfQ0KPj4NCj4+IC1pbnQgdmZpb19t
-aWdyYXRpb25fcmVhbGl6ZShWRklPRGV2aWNlICp2YmFzZWRldiwgRXJyb3IgKiplcnJwKQ0KPj4g
-K2Jvb2wgdmZpb19taWdyYXRpb25fcmVhbGl6ZShWRklPRGV2aWNlICp2YmFzZWRldiwgRXJyb3Ig
-KiplcnJwKQ0KPj4gICB7DQo+PiAtICAgIGludCByZXQgPSAtRU5PVFNVUDsNCj4+ICsgICAgaW50
-IHJldDsNCj4+DQo+PiAtICAgIGlmICghdmJhc2VkZXYtPmVuYWJsZV9taWdyYXRpb24pIHsNCj4+
-ICsgICAgaWYgKCF2YmFzZWRldi0+ZW5hYmxlX21pZ3JhdGlvbiB8fCB2ZmlvX21pZ3JhdGlvbl9p
-bml0KHZiYXNlZGV2KSkgew0KPj4gKyAgICAgICAgZXJyb3Jfc2V0ZygmdmJhc2VkZXYtPm1pZ3Jh
-dGlvbl9ibG9ja2VyLA0KPj4gKyAgICAgICAgICAgICAgICAgICAiVkZJTyBkZXZpY2UgZG9lc24n
-dCBzdXBwb3J0IG1pZ3JhdGlvbiIpOw0KPj4gICAgICAgICAgIGdvdG8gYWRkX2Jsb2NrZXI7DQo+
-PiAgICAgICB9DQo+Pg0KPj4gLSAgICByZXQgPSB2ZmlvX21pZ3JhdGlvbl9pbml0KHZiYXNlZGV2
-KTsNCj4+IC0gICAgaWYgKHJldCkgew0KPj4gKyAgICBpZiAodmZpb19ibG9ja19tdWx0aXBsZV9k
-ZXZpY2VzX21pZ3JhdGlvbihlcnJwKSkgew0KPj4gKyAgICAgICAgZXJyb3Jfc2V0ZygmdmJhc2Vk
-ZXYtPm1pZ3JhdGlvbl9ibG9ja2VyLA0KPj4gKyAgICAgICAgICAgICAgICAgICAiTWlncmF0aW9u
-IGlzIGN1cnJlbnRseSBub3Qgc3VwcG9ydGVkIHdpdGggbXVsdGlwbGUgIg0KPj4gKyAgICAgICAg
-ICAgICAgICAgICAiVkZJTyBkZXZpY2VzIik7DQo+PiAgICAgICAgICAgZ290byBhZGRfYmxvY2tl
-cjsNCj4+ICAgICAgIH0NCj4NCj5IZXJlIHlvdSBhcmUgdHlpbmcgdGhlIG11bHRpcGxlIGRldmlj
-ZXMgYmxvY2tlciB0byBhIHNwZWNpZmljIGRldmljZS4NCj5UaGlzIGNvdWxkIGJlIHByb2JsZW1h
-dGljOg0KPklmIHlvdSBhZGQgdmZpbyBkZXZpY2UgIzEgYW5kIHRoZW4gZGV2aWNlICMyIHRoZW4g
-dGhlIGJsb2NrZXIgd2lsbCBiZSBhZGRlZCB0bw0KPmRldmljZSAjMi4gSWYgeW91IHRoZW4gcmVt
-b3ZlIGRldmljZSAjMSwgbWlncmF0aW9uIHdpbGwgc3RpbGwgYmUgYmxvY2tlZA0KPmFsdGhvdWdo
-IGl0IHNob3VsZG4ndC4NCj4NCj5JIHRoaW5rIHdlIHNob3VsZCBrZWVwIGl0IGFzIGEgZ2xvYmFs
-IGJsb2NrZXIgYW5kIG5vdCBhIHBlci1kZXZpY2UgYmxvY2tlci4NCg0KVGhhbmtzIGZvciBwb2lu
-dCBvdXQsIHlvdSBhcmUgcmlnaHQsIHNlZW1zIEkgbmVlZCB0byByZXN0b3JlIHRoZSBtdWx0aXBs
-ZSBkZXZpY2VzIHBhcnQgY29kZS4NCg0KUmVnYXJkcw0KWmhlbnpob25nDQo=
+On Tue Jun 20, 2023 at 3:14 AM AEST, Peter Maydell wrote:
+> On Mon, 19 Jun 2023 at 18:03, Richard Henderson
+> <richard.henderson@linaro.org> wrote:
+> >
+> > On 6/19/23 17:55, Peter Maydell wrote:
+> > > On Mon, 19 Jun 2023 at 16:49, Richard Henderson
+> > > <richard.henderson@linaro.org> wrote:
+> > >>
+> > >> On 6/5/23 08:27, Nicholas Piggin wrote:
+> > >>> On Sun Jun 4, 2023 at 8:28 PM AEST, Nicholas Piggin wrote:
+> > >>>> Differently-sized larx/stcx. pairs can succeed if the starting add=
+ress
+> > >>>> matches. Add a size check to require stcx. exactly match the larx =
+that
+> > >>>> established the reservation.
+> > >>>
+> > >>> Hmm, question: reserve_addr is a VMSTATE field, but reserve_val is =
+not
+> > >>> (nor reserve_size after this patch).
+> > >>>
+> > >>> Blue Swirl added that with commit a456d59c20f ("VM load/save suppor=
+t for
+> > >>> PPC CPU"), and when reserve_val was added in commit 18b21a2f83a
+> > >>> ("target-ppc: retain l{w,d}arx loaded value") it did not get migrat=
+ed.
+> > >>>
+> > >>> Could we end up with reserve_addr !=3D -1, but with a bogus reserve=
+_val,
+> > >>> which could then permit a stcx. incorrectly? Not entirely outlandis=
+h if
+> > >>> reserve_val starts out initialised to zero.
+> > >>>
+> > >>> Could we just clear the reserve in cpu_post_load? It is permitted t=
+o be
+> > >>> lost for an implementation-specific reason. Doesn't seem necessary =
+to
+> > >>> try keep it alive over a migration.
+> > >>
+> > >> It's not a bad idea to flush the reservation over migrate.
+> > >
+> > > Is there any particular reason to do so? The default simple
+> > > thing is "if this is state that persists across instructions
+> > > then migrate it"; we usually reserve "do something special in
+> > > post-load" for oddball cases where "just copy the data" doesn't
+> > > work.
+> > >
+> > > target/arm migrates both the exclusive addr and value.
+> >
+> > ppc is adding "size", which arm technically should have as well.
+>
+> Arm allows an implementation to require the transaction size
+> to match on loadexcl and storexcl, but doesn't mandate it, fwiw.
+> (Also, our implementation is miles away from the architectural
+> requirements anyway because we operate on virtual addresses,
+> not physical addresses.)
+
+The same as powerpc. Size *and* address within reserve granule
+does not have to match the larx which established the reserve,
+but the latter we always enforced and in practice no open source
+software seems to hit it (or AIX).
+
+My thinking is that it is good to tighten it because very likely
+software that gets it wrong is deviating from ISA unintentionally.
+Linux provides no HWCAP bit to allow code to test such
+implementation details, for example.
+
+> > > target/mips migrates lladdr but has forgotten llval
+> > > (and perhaps llval_wp and llnewval_wp, depending on what
+> > > those fields do).
+> >
+> > So, similarly, would need to handle migration for which all of the requ=
+ired data is not
+> > present.
+> >
+> > The thought is, rather than migrate this new data also, and handle comp=
+atibility, simply
+> > discard all reservations.
+>
+> I don't see a problem for normal migration and snapshotting.
+> I do wonder whether this would have a bad interaction
+> with record-and-replay's use of snapshots. Does that
+> expect "execution from the loaded snapshot" to match
+> "execution continues from point of snapshot save" ?
+
+I don't mind the idea of moving the new state across, I wondered
+if clearing the reserve would be easier for compatibility and
+backporting.
+
+I don't know the rr code but if the snapshots use this vmstate
+and the replay from that is expected to match exactly the
+recording, then I think you must be right.
+
+Thanks,
+Nick
 
