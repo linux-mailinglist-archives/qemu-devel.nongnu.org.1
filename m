@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F5C2736624
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 10:28:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 993AD73662F
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 10:28:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBWh6-0003pS-VU; Tue, 20 Jun 2023 04:26:33 -0400
+	id 1qBWh8-0003qJ-7W; Tue, 20 Jun 2023 04:26:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qBWgy-0003nK-O9
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 04:26:26 -0400
-Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
+ id 1qBWh0-0003ni-El
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 04:26:28 -0400
+Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qBWgw-00066u-8V
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 04:26:24 -0400
-Received: by mail-ej1-x632.google.com with SMTP id
- a640c23a62f3a-977e0fbd742so604172366b.2
- for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 01:26:21 -0700 (PDT)
+ id 1qBWgx-00067E-1V
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 04:26:25 -0400
+Received: by mail-ej1-x62b.google.com with SMTP id
+ a640c23a62f3a-983f499fc81so535576466b.3
+ for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 01:26:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687249580; x=1689841580;
+ d=linaro.org; s=google; t=1687249581; x=1689841581;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=WRPMzmYk/CCPO77sVfrTSeKgekjeb0C45UKRtQqYc08=;
- b=Pbj3N6b5bFzGH2uYECBvG23yQHSfnW47WqjvWcFVGQEY46wpWhXG4rQv50VIRyK76z
- djcm4N/kf+YXn/qkKHB07pVbaiR9W3J8AVWqhvqBlPcgUrwwnn7Pb20H0e2l4FlMJL1d
- bxMny6Fc6A9vVRi96pghr3jnjjATgqd19ppTyG1E9ReXJyimenhcyI9thdY+SpJpUHjs
- jTjEw9NB+rPgCbpMjQZjjZXBv+7kgSFnTxLfrYylT0F2ZRD41a1VVlTR6SCR3sKT6H+L
- 6kPQkpCPbzgZQNRvKIMiVYkcWZSazUXJcW4VfpD5/RRm4ZbL78tRZZVL+s4BuEYISfIS
- KyIA==
+ bh=xr8xkNcKwgwoONsVtAD+H1pU4pyhmWsZaQ/1NBOXoO8=;
+ b=SNchMFtpq+YpYDD5cqfhFy1e+puZ3IdyR7RxYW6koa+HpGNGEENwrCgmulZUwhp5zj
+ c5dI6Q5whyE1Y3ulYs256Bq1eGpWc7Q3zlCnn/N6vOSZe3CmQWzY4mBj6IUilEd/lF/w
+ dtdBesLMJMf65puafKXVhwR4ykuZ8/IyOdz1CrsfOiq8UhrQ/bFgVU0A28str0LQKApZ
+ m4RU+MJ3LruSc28a6z+XIrAI1dyJFTwUTuYCqPmfXdlBCJNYBME8Q265mTdjwctisXHZ
+ UQRN4p10EXAc96BZcOiCO0sK4AloIi/CnGwpW94f7wI2tPocCDkubIhpOQAg+ZcfXJdl
+ CXyQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687249580; x=1689841580;
+ d=1e100.net; s=20221208; t=1687249581; x=1689841581;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=WRPMzmYk/CCPO77sVfrTSeKgekjeb0C45UKRtQqYc08=;
- b=Hk4YSxFM74Lj5PReVu38MTbMpBBrJXxwqQAMiqhbCx4LYhZEAjTZbu3VkG7EI2IXNf
- R+FZ7Wtv9hv4Wnsf+mCtdqziG58sRIhmKCDhoAx8F1cBX/MFFy+d1EGinREmr69C6Eau
- 82oOybeoFeKoafvUtUmJ9HtjaaiD7zrCW54MYSIpojyvpMxCQJKQB1zEu6FR/qA9FLHj
- waexFIknItDBDrU/EOfQ0cZQ+iYKl2zCtX04p31GNIq42gn9maxklFW0K5GBbzxWDhh+
- qatt1H4hsmZLV2JihyoNSS1nizeZ9ISEEWobPtAVT11yJg08rx/X7qW9mKVbFFzAvysB
- kH5g==
-X-Gm-Message-State: AC+VfDzJ74Z/nP84u2uzhMNwe9rMpi8+FwX8amvTwpwJ6PCEMcpCZIbO
- pY7VWRVtsoGhyxU7AQI//WMqGNJuiGbn36pAWzVHpjXp
-X-Google-Smtp-Source: ACHHUZ6RyMCLSl4eMLBJThzbaUWTxoUuPPvWMY0lkj/6r8rwsvShonMUJrZlP7kM4TvYPB+UEDIxbw==
-X-Received: by 2002:a17:907:a01:b0:973:d1ce:dbe8 with SMTP id
- bb1-20020a1709070a0100b00973d1cedbe8mr9732469ejc.46.1687249580522; 
- Tue, 20 Jun 2023 01:26:20 -0700 (PDT)
+ bh=xr8xkNcKwgwoONsVtAD+H1pU4pyhmWsZaQ/1NBOXoO8=;
+ b=WHror7E7cbZbh581TjqLcVrn5LAWVMmNsFeSDCNr8jAsLSYl/zTUlazGk8z9b09jgE
+ UkdJ9Kn6q5n91MkkWXqKznKZHoYVbnztx3kFkb44lLQ76YtFVjqi2XnBC7YeEkWLVM3J
+ ITd8bCwFfZVme+TfK+snOG8UgHoobRYTB/+q5UpiGRW0tF+vnVRUgMXT3e+yHXHk6U4l
+ VFhyEZ8z54JfiVzz41V4DGHdsP0lvqdsz4s5/trkGtoXfFsXgjtQYudUivFx5t7XurLT
+ PqIO9US2NTZM4qDC6leHRHwq6cdeFJ8pSQJAb1uOGfcRFKK2RoWpBJsTFRrn9nFV28+I
+ TJHw==
+X-Gm-Message-State: AC+VfDwvIu/4vGYIbEXcOzCOyXQhIcu86qotWkbu3nVSbKMpqjFQvbEz
+ la7uWPaexza05TLAiPurHJFIFuwFodFotvN4G5kFQlRO
+X-Google-Smtp-Source: ACHHUZ7xKmd6ZeCk7a157+SxpHAkap0olzEUtMmMlr4yXHV4FjayOaZ346XwXUN4F/qW7nR8D9OfFA==
+X-Received: by 2002:a17:906:27ca:b0:977:e2a6:47ce with SMTP id
+ k10-20020a17090627ca00b00977e2a647cemr8944534ejc.35.1687249581460; 
+ Tue, 20 Jun 2023 01:26:21 -0700 (PDT)
 Received: from stoup.lan ([176.176.183.29]) by smtp.gmail.com with ESMTPSA id
- z19-20020a170906669300b00977c7566ccbsm935901ejo.164.2023.06.20.01.26.19
+ z19-20020a170906669300b00977c7566ccbsm935901ejo.164.2023.06.20.01.26.20
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 20 Jun 2023 01:26:20 -0700 (PDT)
+ Tue, 20 Jun 2023 01:26:21 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Nicholas Piggin <npiggin@gmail.com>
-Subject: [PULL 07/16] target/ppc: Check for USER_ONLY definition instead of
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 08/16] hw/core/cpu: Check for USER_ONLY definition instead of
  SOFTMMU one
-Date: Tue, 20 Jun 2023 10:26:02 +0200
-Message-Id: <20230620082611.770620-8-richard.henderson@linaro.org>
+Date: Tue, 20 Jun 2023 10:26:03 +0200
+Message-Id: <20230620082611.770620-9-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230620082611.770620-1-richard.henderson@linaro.org>
 References: <20230620082611.770620-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::632;
- envelope-from=richard.henderson@linaro.org; helo=mail-ej1-x632.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ej1-x62b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,142 +97,159 @@ From: Philippe Mathieu-Daudé <philmd@linaro.org>
 Since we *might* have user emulation with softmmu,
 replace the system emulation check by !user emulation one.
 
+Invert the #ifdef'ry in TCGCPUOps structure for clarity.
+
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
-Message-Id: <20230613133347.82210-5-philmd@linaro.org>
+Message-Id: <20230613133347.82210-6-philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/ppc/cpu_init.c    | 20 ++++++++++----------
- target/ppc/helper_regs.c |  6 ++----
- 2 files changed, 12 insertions(+), 14 deletions(-)
+ include/hw/core/cpu.h         |   4 +-
+ include/hw/core/tcg-cpu-ops.h | 102 +++++++++++++++++-----------------
+ 2 files changed, 53 insertions(+), 53 deletions(-)
 
-diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
-index 9f97222655..7bce421a7c 100644
---- a/target/ppc/cpu_init.c
-+++ b/target/ppc/cpu_init.c
-@@ -5841,7 +5841,7 @@ POWERPC_FAMILY(970)(ObjectClass *oc, void *data)
-                     (1ull << MSR_PMM) |
-                     (1ull << MSR_RI);
-     pcc->mmu_model = POWERPC_MMU_64B;
--#if defined(CONFIG_SOFTMMU)
-+#if !defined(CONFIG_USER_ONLY)
-     pcc->hash64_opts = &ppc_hash64_opts_basic;
- #endif
-     pcc->excp_model = POWERPC_EXCP_970;
-@@ -5920,7 +5920,7 @@ POWERPC_FAMILY(POWER5P)(ObjectClass *oc, void *data)
-     pcc->lpcr_mask = LPCR_RMLS | LPCR_ILE | LPCR_LPES0 | LPCR_LPES1 |
-         LPCR_RMI | LPCR_HDICE;
-     pcc->mmu_model = POWERPC_MMU_2_03;
--#if defined(CONFIG_SOFTMMU)
-+#if !defined(CONFIG_USER_ONLY)
-     pcc->hash64_opts = &ppc_hash64_opts_basic;
-     pcc->lrg_decr_bits = 32;
- #endif
-@@ -6037,7 +6037,7 @@ POWERPC_FAMILY(POWER7)(ObjectClass *oc, void *data)
-         LPCR_LPES0 | LPCR_LPES1 | LPCR_HDICE;
-     pcc->lpcr_pm = LPCR_P7_PECE0 | LPCR_P7_PECE1 | LPCR_P7_PECE2;
-     pcc->mmu_model = POWERPC_MMU_2_06;
--#if defined(CONFIG_SOFTMMU)
-+#if !defined(CONFIG_USER_ONLY)
-     pcc->hash64_opts = &ppc_hash64_opts_POWER7;
-     pcc->lrg_decr_bits = 32;
- #endif
-@@ -6181,7 +6181,7 @@ POWERPC_FAMILY(POWER8)(ObjectClass *oc, void *data)
-     pcc->lpcr_pm = LPCR_P8_PECE0 | LPCR_P8_PECE1 | LPCR_P8_PECE2 |
-                    LPCR_P8_PECE3 | LPCR_P8_PECE4;
-     pcc->mmu_model = POWERPC_MMU_2_07;
--#if defined(CONFIG_SOFTMMU)
-+#if !defined(CONFIG_USER_ONLY)
-     pcc->hash64_opts = &ppc_hash64_opts_POWER7;
-     pcc->lrg_decr_bits = 32;
-     pcc->n_host_threads = 8;
-@@ -6197,7 +6197,7 @@ POWERPC_FAMILY(POWER8)(ObjectClass *oc, void *data)
-     pcc->l1_icache_size = 0x8000;
- }
+diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
+index d84fbccaab..4871ad85f0 100644
+--- a/include/hw/core/cpu.h
++++ b/include/hw/core/cpu.h
+@@ -1016,7 +1016,7 @@ void page_size_init(void);
+ 
+ #ifdef NEED_CPU_H
  
 -#ifdef CONFIG_SOFTMMU
 +#ifndef CONFIG_USER_ONLY
- /*
-  * Radix pg sizes and AP encodings for dt node ibm,processor-radix-AP-encodings
-  * Encoded as array of int_32s in the form:
-@@ -6214,7 +6214,7 @@ static struct ppc_radix_page_info POWER9_radix_page_info = {
-         0x4000001e  /*  1G - enc: 0x2 */
-     }
- };
--#endif /* CONFIG_SOFTMMU */
-+#endif /* CONFIG_USER_ONLY */
  
- static void init_proc_POWER9(CPUPPCState *env)
- {
-@@ -6371,7 +6371,7 @@ POWERPC_FAMILY(POWER9)(ObjectClass *oc, void *data)
-         LPCR_HEIC | LPCR_LPES0 | LPCR_HVICE | LPCR_HDICE;
-     pcc->lpcr_pm = LPCR_PDEE | LPCR_HDEE | LPCR_EEE | LPCR_DEE | LPCR_OEE;
-     pcc->mmu_model = POWERPC_MMU_3_00;
--#if defined(CONFIG_SOFTMMU)
-+#if !defined(CONFIG_USER_ONLY)
-     /* segment page size remain the same */
-     pcc->hash64_opts = &ppc_hash64_opts_POWER7;
-     pcc->radix_page_info = &POWER9_radix_page_info;
-@@ -6389,7 +6389,7 @@ POWERPC_FAMILY(POWER9)(ObjectClass *oc, void *data)
-     pcc->l1_icache_size = 0x8000;
+ extern const VMStateDescription vmstate_cpu_common;
+ 
+@@ -1027,7 +1027,7 @@ extern const VMStateDescription vmstate_cpu_common;
+     .flags = VMS_STRUCT,                                                    \
+     .offset = 0,                                                            \
  }
- 
--#ifdef CONFIG_SOFTMMU
-+#ifndef CONFIG_USER_ONLY
- /*
-  * Radix pg sizes and AP encodings for dt node ibm,processor-radix-AP-encodings
-  * Encoded as array of int_32s in the form:
-@@ -6406,7 +6406,7 @@ static struct ppc_radix_page_info POWER10_radix_page_info = {
-         0x4000001e  /*  1G - enc: 0x2 */
-     }
- };
 -#endif /* CONFIG_SOFTMMU */
 +#endif /* !CONFIG_USER_ONLY */
  
- static void init_proc_POWER10(CPUPPCState *env)
- {
-@@ -6547,7 +6547,7 @@ POWERPC_FAMILY(POWER10)(ObjectClass *oc, void *data)
+ #endif /* NEED_CPU_H */
  
-     pcc->lpcr_pm = LPCR_PDEE | LPCR_HDEE | LPCR_EEE | LPCR_DEE | LPCR_OEE;
-     pcc->mmu_model = POWERPC_MMU_3_00;
--#if defined(CONFIG_SOFTMMU)
-+#if !defined(CONFIG_USER_ONLY)
-     /* segment page size remain the same */
-     pcc->hash64_opts = &ppc_hash64_opts_POWER7;
-     pcc->radix_page_info = &POWER10_radix_page_info;
-diff --git a/target/ppc/helper_regs.c b/target/ppc/helper_regs.c
-index bc7e9d7eda..e27f4a75a4 100644
---- a/target/ppc/helper_regs.c
-+++ b/target/ppc/helper_regs.c
-@@ -310,7 +310,7 @@ int hreg_store_msr(CPUPPCState *env, target_ulong value, int alter_hv)
-     return excp;
- }
- 
+diff --git a/include/hw/core/tcg-cpu-ops.h b/include/hw/core/tcg-cpu-ops.h
+index 0ae08df47e..3e8b1b737a 100644
+--- a/include/hw/core/tcg-cpu-ops.h
++++ b/include/hw/core/tcg-cpu-ops.h
+@@ -64,7 +64,56 @@ struct TCGCPUOps {
+      */
+     void (*do_interrupt)(CPUState *cpu);
+ #endif /* !CONFIG_USER_ONLY || !TARGET_I386 */
 -#ifdef CONFIG_SOFTMMU
-+#ifndef CONFIG_USER_ONLY
- void store_40x_sler(CPUPPCState *env, uint32_t val)
- {
-     /* XXX: TO BE FIXED */
-@@ -320,9 +320,7 @@ void store_40x_sler(CPUPPCState *env, uint32_t val)
-     }
-     env->spr[SPR_405_SLER] = val;
- }
++#ifdef CONFIG_USER_ONLY
++    /**
++     * record_sigsegv:
++     * @cpu: cpu context
++     * @addr: faulting guest address
++     * @access_type: access was read/write/execute
++     * @maperr: true for invalid page, false for permission fault
++     * @ra: host pc for unwinding
++     *
++     * We are about to raise SIGSEGV with si_code set for @maperr,
++     * and si_addr set for @addr.  Record anything further needed
++     * for the signal ucontext_t.
++     *
++     * If the emulated kernel does not provide anything to the signal
++     * handler with anything besides the user context registers, and
++     * the siginfo_t, then this hook need do nothing and may be omitted.
++     * Otherwise, record the data and return; the caller will raise
++     * the signal, unwind the cpu state, and return to the main loop.
++     *
++     * If it is simpler to re-use the sysemu tlb_fill code, @ra is provided
++     * so that a "normal" cpu exception can be raised.  In this case,
++     * the signal must be raised by the architecture cpu_loop.
++     */
++    void (*record_sigsegv)(CPUState *cpu, vaddr addr,
++                           MMUAccessType access_type,
++                           bool maperr, uintptr_t ra);
++    /**
++     * record_sigbus:
++     * @cpu: cpu context
++     * @addr: misaligned guest address
++     * @access_type: access was read/write/execute
++     * @ra: host pc for unwinding
++     *
++     * We are about to raise SIGBUS with si_code BUS_ADRALN,
++     * and si_addr set for @addr.  Record anything further needed
++     * for the signal ucontext_t.
++     *
++     * If the emulated kernel does not provide the signal handler with
++     * anything besides the user context registers, and the siginfo_t,
++     * then this hook need do nothing and may be omitted.
++     * Otherwise, record the data and return; the caller will raise
++     * the signal, unwind the cpu state, and return to the main loop.
++     *
++     * If it is simpler to re-use the sysemu do_unaligned_access code,
++     * @ra is provided so that a "normal" cpu exception can be raised.
++     * In this case, the signal must be raised by the architecture cpu_loop.
++     */
++    void (*record_sigbus)(CPUState *cpu, vaddr addr,
++                          MMUAccessType access_type, uintptr_t ra);
++#else
+     /** @cpu_exec_interrupt: Callback for processing interrupts in cpu_exec */
+     bool (*cpu_exec_interrupt)(CPUState *cpu, int interrupt_request);
+     /**
+@@ -121,56 +170,7 @@ struct TCGCPUOps {
+      */
+     bool (*io_recompile_replay_branch)(CPUState *cpu,
+                                        const TranslationBlock *tb);
+-#else
+-    /**
+-     * record_sigsegv:
+-     * @cpu: cpu context
+-     * @addr: faulting guest address
+-     * @access_type: access was read/write/execute
+-     * @maperr: true for invalid page, false for permission fault
+-     * @ra: host pc for unwinding
+-     *
+-     * We are about to raise SIGSEGV with si_code set for @maperr,
+-     * and si_addr set for @addr.  Record anything further needed
+-     * for the signal ucontext_t.
+-     *
+-     * If the emulated kernel does not provide anything to the signal
+-     * handler with anything besides the user context registers, and
+-     * the siginfo_t, then this hook need do nothing and may be omitted.
+-     * Otherwise, record the data and return; the caller will raise
+-     * the signal, unwind the cpu state, and return to the main loop.
+-     *
+-     * If it is simpler to re-use the sysemu tlb_fill code, @ra is provided
+-     * so that a "normal" cpu exception can be raised.  In this case,
+-     * the signal must be raised by the architecture cpu_loop.
+-     */
+-    void (*record_sigsegv)(CPUState *cpu, vaddr addr,
+-                           MMUAccessType access_type,
+-                           bool maperr, uintptr_t ra);
+-    /**
+-     * record_sigbus:
+-     * @cpu: cpu context
+-     * @addr: misaligned guest address
+-     * @access_type: access was read/write/execute
+-     * @ra: host pc for unwinding
+-     *
+-     * We are about to raise SIGBUS with si_code BUS_ADRALN,
+-     * and si_addr set for @addr.  Record anything further needed
+-     * for the signal ucontext_t.
+-     *
+-     * If the emulated kernel does not provide the signal handler with
+-     * anything besides the user context registers, and the siginfo_t,
+-     * then this hook need do nothing and may be omitted.
+-     * Otherwise, record the data and return; the caller will raise
+-     * the signal, unwind the cpu state, and return to the main loop.
+-     *
+-     * If it is simpler to re-use the sysemu do_unaligned_access code,
+-     * @ra is provided so that a "normal" cpu exception can be raised.
+-     * In this case, the signal must be raised by the architecture cpu_loop.
+-     */
+-    void (*record_sigbus)(CPUState *cpu, vaddr addr,
+-                          MMUAccessType access_type, uintptr_t ra);
 -#endif /* CONFIG_SOFTMMU */
- 
--#ifndef CONFIG_USER_ONLY
- void check_tlb_flush(CPUPPCState *env, bool global)
- {
-     CPUState *cs = env_cpu(env);
-@@ -341,7 +339,7 @@ void check_tlb_flush(CPUPPCState *env, bool global)
-         tlb_flush(cs);
-     }
- }
--#endif
 +#endif /* !CONFIG_USER_ONLY */
+ #endif /* NEED_CPU_H */
  
- /**
-  * _spr_register
+ };
 -- 
 2.34.1
 
