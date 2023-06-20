@@ -2,81 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0ABF8736358
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 08:00:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C28473635A
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 08:01:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBUNu-0003vx-RA; Tue, 20 Jun 2023 01:58:34 -0400
+	id 1qBUPh-0004q6-Nw; Tue, 20 Jun 2023 02:00:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qBUNg-0003tz-NC
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 01:58:22 -0400
-Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qBUNf-0004DL-5h
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 01:58:20 -0400
-Received: by mail-ed1-x530.google.com with SMTP id
- 4fb4d7f45d1cf-51a20138617so5980126a12.2
- for <qemu-devel@nongnu.org>; Mon, 19 Jun 2023 22:58:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687240697; x=1689832697;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=2xcBAdwII6yzsWBjXS29yhfUkfOz3aLh72vXGr5+6UA=;
- b=lgFSgJJLMoTg2aDOhHg9Rn5QTdCdYuc3Q3AFg3S2oxnJ4z/oV4B4vVsuRk0o5zrjZa
- IbQpIqLPZ91fEQRtHZaXutk1BDpgnYPPUFg0JRUWuIJ/R0GguwcNKe4a8SXIiAtmiqlo
- EQQP1zYmr74TQX3eucXkRxUYm9Mn+4Of/yIOXl+xZHFtkKkDx/OntHznuUVmYMpstktB
- +/hPH0Fw9OEqOYlR8R1L9Jc34sm7cz55cjj+Aug0DQ2vYmQ33qNJyjl3MQE5r67TOSNG
- XOWm1e14/npRTEzI4fyTr/4VpM8J8Ve+B7n5pxCRrXMdqv04VTtGEtiQn6+pazWOWadi
- VWvA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687240697; x=1689832697;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=2xcBAdwII6yzsWBjXS29yhfUkfOz3aLh72vXGr5+6UA=;
- b=Gz8KhCrw52jFVGDzmtlSowXaugLIe2XnR9GIJt/RGNfPYipemxJ6yAozwYaXzyEQ+2
- ZwAXRZprzo999Kn5RTLXusGTEXn11Z4ixL3e9ukyAG0BsaYtDT/B9ANaOdcj4XDMkmDV
- BJvAJR623LS9/rqjoH/ZYHbMR/wVxsQwDfRongzTLwU2a0jy2h6XSqLUIVPuUaSDxAhM
- dw6eJkRDYHrkKeuhI/Z6mMjrz3FNaTv0LHb4II0xDfzpxqBbXBQ5MtFPeMl6AW+oldD+
- NLgeu3WkY/lZeZHDVejONqROqAjyhmo4OHNehYCbrlliCwTzNm4a18uvEgSkQs96xXwG
- MPTw==
-X-Gm-Message-State: AC+VfDyPRhE9QmTc9Syles8RObyRE2Tfv2jk6GcmLWSSiDggrYX1Kd4i
- jk41ho1KzssfuU484tF/GOEjPg==
-X-Google-Smtp-Source: ACHHUZ4zukHqu+GGT1rXm2Pbjps8VyWC+0oxhyyBXqgXBObRjYcMF7D4Vp6zTXj5up5AXb4BRfdRKA==
-X-Received: by 2002:a17:907:16a2:b0:982:9a9f:d43c with SMTP id
- hc34-20020a17090716a200b009829a9fd43cmr10761085ejc.48.1687240697414; 
- Mon, 19 Jun 2023 22:58:17 -0700 (PDT)
-Received: from [192.168.69.115] ([176.176.183.29])
- by smtp.gmail.com with ESMTPSA id
- fy25-20020a170906b7d900b00969f25b96basm682646ejb.204.2023.06.19.22.58.16
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 19 Jun 2023 22:58:17 -0700 (PDT)
-Message-ID: <5bfd2c65-882f-eed6-4988-9d717271a617@linaro.org>
-Date: Tue, 20 Jun 2023 07:58:15 +0200
+ (Exim 4.90_1) (envelope-from <SRS0=rj0j=CI=kaod.org=clg@ozlabs.org>)
+ id 1qBUOy-0004WB-CT; Tue, 20 Jun 2023 01:59:42 -0400
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
+ helo=gandalf.ozlabs.org)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <SRS0=rj0j=CI=kaod.org=clg@ozlabs.org>)
+ id 1qBUOt-0004UZ-UP; Tue, 20 Jun 2023 01:59:38 -0400
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4QlbYm0zSFz4x0L;
+ Tue, 20 Jun 2023 15:59:24 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4QlbYk3Vjrz4x09;
+ Tue, 20 Jun 2023 15:59:22 +1000 (AEST)
+From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
+To: qemu-ppc@nongnu.org,
+	Daniel Henrique Barboza <danielhb413@gmail.com>
+Cc: qemu-devel@nongnu.org, =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
+Subject: [PATCH 0/9] ppc: New reviewers and KVM cleanups  
+Date: Tue, 20 Jun 2023 07:59:02 +0200
+Message-ID: <20230620055911.187065-1-clg@kaod.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.12.0
-Subject: Re: [PATCH] ppc/pnv/pci: Clean up error messages
-Content-Language: en-US
-To: Joel Stanley <joel@jms.id.au>, =?UTF-8?Q?C=c3=a9dric_Le_Goater?=
- <clg@kaod.org>, qemu-ppc@nongnu.org
-Cc: qemu-devel@nongnu.org
-References: <20230619233636.57452-1-joel@jms.id.au>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230619233636.57452-1-joel@jms.id.au>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::530;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x530.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+ envelope-from=SRS0=rj0j=CI=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -39
+X-Spam_score: -4.0
+X-Spam_bar: ----
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -93,15 +62,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 20/6/23 01:36, Joel Stanley wrote:
-> The phb error macros add a newline for you, so remove the second one to
-> avoid double whitespace.
-> 
-> Signed-off-by: Joel Stanley <joel@jms.id.au>
-> ---
->   hw/pci-host/pnv_phb4.c | 14 +++++++-------
->   1 file changed, 7 insertions(+), 7 deletions(-)
+Hello,
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Please welcome new reviewers on baremetal POWER systems !
+
+Follow cleanups to report an error when KVM is used on non-KVM
+machines.
+
+Thanks,
+
+C.
+
+Cédric Le Goater (9):
+  MAINTAINERS: Add reviewers for PowerNV baremetal emulation
+  MAINTAINERS: Add reviewer for PowerPC TCG CPUs
+  MAINTAINERS: Add reviewer for XIVE
+  ppc/prep: Report an error when run with KVM
+  ppc/pegasos2: Report an error when run with KVM
+  ppc/sam460ex: Report an error when run with KVM
+  ppc/bamboo: Report an error when run with KVM
+  ppc/pnv: Rephrase error when run with KVM
+  target/ppc: Fix timer register accessors when !KVM
+
+ MAINTAINERS            |  4 ++++
+ hw/ppc/pegasos2.c      |  7 ++++++-
+ hw/ppc/pnv.c           |  3 ++-
+ hw/ppc/ppc440_bamboo.c | 17 ++++++-----------
+ hw/ppc/prep.c          | 20 +++++++-------------
+ hw/ppc/sam460ex.c      | 15 ++++++---------
+ target/ppc/kvm.c       | 12 ++++++++++++
+ 7 files changed, 43 insertions(+), 35 deletions(-)
+
+-- 
+2.41.0
 
 
