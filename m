@@ -2,85 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DFFF7370D9
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 17:47:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 781E77370F8
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 17:52:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBdZ1-0005Z1-Hx; Tue, 20 Jun 2023 11:46:39 -0400
+	id 1qBddY-0007m4-Jk; Tue, 20 Jun 2023 11:51:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qBdYv-0005YX-K2
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 11:46:33 -0400
-Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qBdYt-0002MY-Ll
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 11:46:32 -0400
-Received: by mail-ej1-x62a.google.com with SMTP id
- a640c23a62f3a-988a076a7d3so371325166b.3
- for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 08:46:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687275990; x=1689867990;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=nS5VmzPsL24vhra4r9Gd1EaZdRsn/gxMbJdFkIUo9V4=;
- b=BSn7cBWaK1mH7Ca1SaOJLYo2e6dKLesg5KVbKMXaI/A10HmuaFacrxzXxo1TqAhSgl
- nFC9/WikpKkuYMWSG5pHjFQvwzdo42kc7605diA6u9doyu0g/WxcNBzEkpDuCzeO23rQ
- 4h3icxwmdid3VjxkKmeAY+YvCsFHCjgviN9EAK+fA3pfRngG63c8Dj+pwpuQN1sEbuUX
- a3ai+TJv5coqKWAVx1nboM8gw73ujADQOUmJQPKarOBLIjiHEoY2NlpW82mh6RfRZbOu
- RC1XBy4bKqS8PboYuQVXCMOKc4PozJ+TxvwCE2hGtkq6EBHI/p5LD5REvbzns+Hmq9XV
- bKzw==
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qBddV-0007lq-GS
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 11:51:18 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qBddT-0003fg-CG
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 11:51:17 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1687276274;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=0qkii4M+UClxwBZABaTrozc2d9DqniP4E3jnyirnhB8=;
+ b=Uyw2u8ZYmPKjfQYz+JIdizKGmLQT/M5OdMYWM6qIFoqqwW5CEGnvQXA9JXJ2+TuWU5reyR
+ ZMpseghp6dj5f7zyDil3d9SqY4erN48MGr2kmscK9HO8of5iEBhzewJmIU1fy2o5jQQyVt
+ filFcsKC+v6OMPd5AEn1jHb8X0cbKA4=
+Received: from mail-ua1-f72.google.com (mail-ua1-f72.google.com
+ [209.85.222.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-589-qeelBoE8OkeQIpcW3zrTvA-1; Tue, 20 Jun 2023 11:51:06 -0400
+X-MC-Unique: qeelBoE8OkeQIpcW3zrTvA-1
+Received: by mail-ua1-f72.google.com with SMTP id
+ a1e0cc1a2514c-78f1b0510c7so1014331241.2
+ for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 08:51:05 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687275990; x=1689867990;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=nS5VmzPsL24vhra4r9Gd1EaZdRsn/gxMbJdFkIUo9V4=;
- b=Vcy2nA2CK6FdW5XJdiu1l8U5UTCpR8NTo2WeymgmFqMOBBoxveOEbUCN8TSk9uaqI8
- /13Qf2yntypj1NHrxo5YJY8zwZcGUaVM3w+Ecq0P6XghYLGWeSCAiyyDuUWLXwq9DuWs
- XaWyewLLjZdM/M92J/GnHx370WqFyI7st4UvkPV17vCgNErE/ZSET0IulRqXUIBZzj8z
- f+sWK9awm+kugpIf5C5n+Jqe1E5Of6wXkI+JowRXxu7Y2RHDgE4i7O88dXka9uDe9xd7
- iPALXn5hYoGGXKGVEwgzNDBU4UsRdscEFvX5475N4OlXTAFRJayo9vxVt+nOF+d0yKrv
- l11w==
-X-Gm-Message-State: AC+VfDylg0veGWQyNh8C53z6mz1P4pQFvIK3F1rk7Bvkm/CakmHWidBO
- YWvpKbdBOLuZR/KV/B+E72R/qA==
-X-Google-Smtp-Source: ACHHUZ7PJKecfbfoYpFU4rKQa6fKuW/cT3F2iTkrf5705uBa5gCb+S67g+wDddH4MC8WCqaEiPp2jQ==
-X-Received: by 2002:a17:907:2687:b0:987:4e89:577f with SMTP id
- bn7-20020a170907268700b009874e89577fmr9674650ejc.24.1687275990112; 
- Tue, 20 Jun 2023 08:46:30 -0700 (PDT)
-Received: from [192.168.69.129] ([176.176.183.29])
- by smtp.gmail.com with ESMTPSA id
- r16-20020a170906705000b009892cca8ae3sm1288325ejj.165.2023.06.20.08.46.29
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 20 Jun 2023 08:46:29 -0700 (PDT)
-Message-ID: <6670763e-c427-09be-41d8-c797a394900e@linaro.org>
-Date: Tue, 20 Jun 2023 17:46:25 +0200
+ d=1e100.net; s=20221208; t=1687276265; x=1689868265;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=0qkii4M+UClxwBZABaTrozc2d9DqniP4E3jnyirnhB8=;
+ b=jGsuW5Fa4M8tthik8FflsmWeAgGblBt5jobAjWJAsjzUlQul3d9f9+9MVRZG8jP/do
+ /elu5fS0V/jCiGaTEsiXcNlBGfY8wQy3d1efxPRGMjNZ49H2EyuUUQAdh23bNbJvm2hM
+ zyGcLO97/L1yx9iRu2Y3J5JyToCjctRrD/P9NZxPhpO+dI7yf1bbVm0DC+856/n1HOiD
+ IOtg3muKD7CizylHaZaAdWB3/og6DUaq6KM/kAf4mhoGDdPZET7dgwCNugn/P8AfcbfC
+ RP2tOcgHnRDnJWPyGb/4B0WxAEYIixAyN305awDEhUYeoD8RRFhEKHVkQE/0EONLMp/I
+ A0dw==
+X-Gm-Message-State: AC+VfDw3BzHcUEK+I20NM1/FNeq76+f8NWx6s0XyJWLSXeBdVxfRyNXe
+ fP/MwBZ16e/d5YOtjftwXi5biuz/EkT9FiOs7azxYnfEpKHHiMPccwLKP52WJa+6JzD6aWtpwTQ
+ VEkV5ZHOGq2rdfCSCLW9m4tgzJNGkH34=
+X-Received: by 2002:a67:e983:0:b0:437:d6b8:8baf with SMTP id
+ b3-20020a67e983000000b00437d6b88bafmr2851183vso.15.1687276265099; 
+ Tue, 20 Jun 2023 08:51:05 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5P4UGcxnZNMMpxjQWniczi75ptZLTHZUaZcZoLq6wtj7iv2175n9PlTvkoMuAKwUMe8ZZMnOR0WBS62av4OAw=
+X-Received: by 2002:a67:e983:0:b0:437:d6b8:8baf with SMTP id
+ b3-20020a67e983000000b00437d6b88bafmr2851170vso.15.1687276264791; Tue, 20 Jun
+ 2023 08:51:04 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH v3 1/5] target/microblaze: Define TCG_GUEST_DEFAULT_MO
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Alistair Francis <alistair.francis@wdc.com>,
- "Edgar E . Iglesias" <edgar.iglesias@gmail.com>
-References: <20230619142333.429028-1-richard.henderson@linaro.org>
- <20230619142333.429028-2-richard.henderson@linaro.org>
- <2974a774-b55d-371a-5596-5be1938ad4af@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <2974a774-b55d-371a-5596-5be1938ad4af@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
- envelope-from=richard.henderson@linaro.org; helo=mail-ej1-x62a.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+References: <20230619171437.357374-1-alex.bennee@linaro.org>
+ <20230619171437.357374-6-alex.bennee@linaro.org>
+In-Reply-To: <20230619171437.357374-6-alex.bennee@linaro.org>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Tue, 20 Jun 2023 17:50:53 +0200
+Message-ID: <CABgObfZLcNjmi4j9Bo4Fpp2XMP1cQPtWgWfqvG1wHL12xdsOsQ@mail.gmail.com>
+Subject: Re: [PATCH 5/5] docs/devel: introduce some key concepts for QOM
+ development
+To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org, Eduardo Habkost <eduardo@habkost.net>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Markus Armbruster <armbru@redhat.com>, Peter Xu <peterx@redhat.com>, 
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Peter Maydell <peter.maydell@linaro.org>, 
+ Juan Quintela <quintela@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>, 
+ Leonardo Bras <leobras@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -98,52 +103,109 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/20/23 17:41, Philippe Mathieu-Daudé wrote:
-> On 19/6/23 16:23, Richard Henderson wrote:
->> The microblaze architecture does not reorder instructions.
->> While there is an MBAR wait-for-data-access instruction,
->> this concerns synchronizing with DMA.
->>
->> This should have been defined when enabling MTTCG.
->>
->> Cc: Alistair Francis <alistair.francis@wdc.com>
->> Cc: Edgar E. Iglesias <edgar.iglesias@gmail.com>
->> Fixes: d449561b130 ("configure: microblaze: Enable mttcg")
->> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
->> ---
->>   target/microblaze/cpu.h | 3 +++
->>   1 file changed, 3 insertions(+)
->>
->> diff --git a/target/microblaze/cpu.h b/target/microblaze/cpu.h
->> index 88324d0bc1..b474abcc2a 100644
->> --- a/target/microblaze/cpu.h
->> +++ b/target/microblaze/cpu.h
->> @@ -24,6 +24,9 @@
->>   #include "exec/cpu-defs.h"
->>   #include "qemu/cpu-float.h"
->> +/* MicroBlaze is always in-order. */
->> +#define TCG_GUEST_DEFAULT_MO  TCG_MO_ALL
-> 
-> Targets missing such definition:
-> 
-> - cris
-> - m68k
-> - nios2
-> - rx
-> - sh4
-> - sparc/64 (!)
-> - tricore
-> 
-> I expect targets designed for embedded systems
-> to be in-order for power efficiency.
-> 
-> What about having each target being explicit about that,
-> having a build failure if TCG_GUEST_DEFAULT_MO is not defined,
-> instead of the '#ifdef TCG_GUEST_DEFAULT_MO' in accel/tcg/?
+On Mon, Jun 19, 2023 at 7:15=E2=80=AFPM Alex Benn=C3=A9e <alex.bennee@linar=
+o.org> wrote:
+>
+> Using QOM correctly is increasingly important to maintaining a modern
+> code base. However the current documentation skips some important
+> concepts before launching into a simple example. Lets:
+>
+>   - at least mention properties
+>   - mention TYPE_OBJECT and TYPE_DEVICE
+>   - talk about why we have realize/unrealize
+>   - mention the QOM tree
+>
+> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+> ---
+>  docs/devel/qom.rst | 47 ++++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 47 insertions(+)
+>
+> diff --git a/docs/devel/qom.rst b/docs/devel/qom.rst
+> index 98a4f178d5..53633fbd35 100644
+> --- a/docs/devel/qom.rst
+> +++ b/docs/devel/qom.rst
+> @@ -13,6 +13,53 @@ features:
+>  - System for dynamically registering types
+>  - Support for single-inheritance of types
+>  - Multiple inheritance of stateless interfaces
+> +- Mapping internal members to publicly exposed properties
+> +
+> +The root object class is TYPE_OBJECT which provides for the basic
+> +object methods.
 
-I'd be ok with that.
+Very nice, but I would suggest some changes here.
+
+> +The Device Class
+> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> +
+> +The TYPE_DEVICE class is the parent class for all modern devices
+> +implemented in QEMU and adds some specific methods to handle QEMU
+> +device model. This includes managing the lifetime of devices from
+> +creation through to when they become visible to the guest and
+> +eventually unrealized.
+
+Place this paragraph before "Alternatively several static types".
+
+> +Device Life-cycle
+> +-----------------
 
 
-r~
+Make this "=3D=3D=3D=3D=3D" level and move it at the very end of the docume=
+nt.
+
+Replace these two lines:
+
+The first example of such a QOM method was #CPUClass.reset,
+another example is #DeviceClass.realize.
+
+with
+
+One example of such methods is ``DeviceClass.reset``. More examples
+can be found at [link to Device Life-Cycle].
+
+> +As class initialisation cannot fail devices have an two additional
+> +methods to handle the creation of dynamic devices. The ``realize``
+> +function is called with ``Error **`` pointer which should be set if
+> +the device cannot complete its setup. Otherwise on successful
+> +completion of the ``realize`` method the device object is added to the
+> +QOM tree and made visible to the guest.
+> +
+> +The reverse function is ``unrealize`` and should be were clean-up
+> +code lives to tidy up after the system is done with the device.
+> +
+> +All devices can be instantiated by C code, however only some can
+> +created dynamically via the command line or monitor. Likewise only
+> +some can be unplugged after creation and need an explicit
+> +``unrealize`` implementation. This is determined by the
+> +``user_creatable`` and ``hotpluggable`` variables in the root
+> +``DeviceClass`` structure.
+
+Move the second sentence (the one starting with "Likewise") to a
+separate paragraph. Unpluggability is determined by the HotplugHandler
+rather than by "user_creatable" and "hotpluggable".
+
+> +The QOM tree
+> +------------
+> +
+> +The QOM tree is a composition tree which represents all of the objects
+> +that make up a QEMU "machine". You can view this tree by running
+> +``info qom-tree`` in the :ref:`QEMU monitor`. It will contain both
+> +objects created by the machine itself as well those created due to
+> +user configuration.
+
+Also make this "=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D".
+
+> +Creating a minimal device
+> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D
+
+Name this "Creating a QOM class", and change "Class Initialization",
+"Interfaces" and "Methods" to "-------------".
+
+> +A simple minimal device implementation may look something like bellow:
+
+"below".
+
+Paolo
 
 
