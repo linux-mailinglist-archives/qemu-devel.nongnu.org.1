@@ -2,87 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E23FF737734
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 00:06:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF8A5737736
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 00:07:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBjTc-0004xK-LM; Tue, 20 Jun 2023 18:05:28 -0400
+	id 1qBjV7-00068M-P6; Tue, 20 Jun 2023 18:07:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qBjTa-0004wg-7n
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 18:05:26 -0400
-Received: from mail-oo1-xc36.google.com ([2607:f8b0:4864:20::c36])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qBjTY-0002FI-4V
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 18:05:25 -0400
-Received: by mail-oo1-xc36.google.com with SMTP id
- 006d021491bc7-55e40fac2faso2045594eaf.3
- for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 15:05:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1687298723; x=1689890723;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=njXA+/Lu0IBg76Uy0/EWL34WqNEM5Jz/ZZ4OaB/GWDg=;
- b=Gg/85FwCJFCrcwZYMxu4/ZEiITSWZlJgAcLcdk3d8rQGPMT56yPZFO4NBsQkmTUla/
- x+SmvuXM426/339boIyjBz84Gg8pwOAUFwO1kJYtkghi+XPnQN/ae2yZSvSTejMyHgpo
- iRyuDyCZ+2KYgyhkd2+8M0RndTYZe0spWL0XJcFkbBaWih3rweNt32k6iIWmZgDg4eH5
- UmMMej9JNnMSEQJ/JtHtNzjkrqx4ZGaeQPi7V1rKRpg0W3Chp9STWeMK8SN0Xz0U5NHN
- 0C/ItTHgxk2or5ZxCjkJYgskvhRoj2l4zKdJoz9A0/zSEtmquKG4QYCkqMgml1oocect
- JcrQ==
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qBjV5-00067q-BR
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 18:06:59 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qBjV2-0003sP-00
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 18:06:57 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1687298814;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=8fhG25UD3TZrqAS5uf6Dh+5K9gS5WGArbOEVECFU2M4=;
+ b=QTONO3ALk4+EDrhu1AZTZ4lgYFTlskK3gISzV3DdxJHI1AiJOXbxOc5jm8lnRWcq/NPD0b
+ 9f/FZZOM5MW6nbDDtks3cnVcnsbHp5gVoRiu5t+7CVW1M1E5R5VMwL6M8OI6URFLCOdutB
+ hc70L29Xza4shEaw7/R4a1FgCtCnvkY=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-374-UuhxfXYBM-av7qTn29KZFQ-1; Tue, 20 Jun 2023 18:06:52 -0400
+X-MC-Unique: UuhxfXYBM-av7qTn29KZFQ-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-3f8f1b55a6fso20600025e9.2
+ for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 15:06:51 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687298723; x=1689890723;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=njXA+/Lu0IBg76Uy0/EWL34WqNEM5Jz/ZZ4OaB/GWDg=;
- b=NYUVyfwzrTMdRLlKV86QgvuVuMWIa6HaognCL1APUfpYP5Lx1mKaUARC9O36HjKNMr
- qzr78yBdJ1Pvg0tJf+7yPPncT4+ycz4D/D+tpiunvMFHMIiNMl4GGLWXZjC+/S5ONj75
- PA3orct/q/Nz9R96yJtFw15GowhHL7REmd1e9i6/181j2s+amwoC2C23nE1QJosDCrzh
- w+jxt4+BCzx3Tt9kxg7TriofBTHS4S/zuSIGFeanM8OUAsLDJd/M1GD2VnbXGb2ov//z
- ph7hMoZa8kr96Z+BkWMU2N9RuQged4djKfl9fl/PlN2Wm4i+lAXeFOlbMwDLADiw44R0
- CtLg==
-X-Gm-Message-State: AC+VfDy4PqHtwX/UveNWpgQJyqZimP3T4nVh0O3Wy14lGuRTElaKwu7y
- +g+1Z39e79/JIx5tfKwu0oNvXQ==
-X-Google-Smtp-Source: ACHHUZ63y3tYC2UwHRUAyUiUir/gUVJzczwjIwaeyDojJ6Nh/Wk0fIDODFzbYd8EDVw1LvEyhWNUGw==
-X-Received: by 2002:a4a:bb96:0:b0:558:a990:3ab0 with SMTP id
- h22-20020a4abb96000000b00558a9903ab0mr9632430oop.7.1687298722685; 
- Tue, 20 Jun 2023 15:05:22 -0700 (PDT)
-Received: from [192.168.68.108] ([177.170.117.210])
- by smtp.gmail.com with ESMTPSA id
- h3-20020a4ac443000000b0055e3f471d5bsm1400496ooq.20.2023.06.20.15.05.19
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 20 Jun 2023 15:05:22 -0700 (PDT)
-Message-ID: <7c5920b1-8240-9922-c4eb-3d7be7436176@ventanamicro.com>
-Date: Tue, 20 Jun 2023 19:05:18 -0300
+ d=1e100.net; s=20221208; t=1687298811; x=1689890811;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=8fhG25UD3TZrqAS5uf6Dh+5K9gS5WGArbOEVECFU2M4=;
+ b=KK4WwPuZKpBroM2rzLtMH7eN6URf5z4Lr1KwxESq4Q9753x27ThPlJWZAO64RcO8om
+ 3nkE28qX/FPEzIVEjPxt3HaxyuWAPbYzMn7OD44H3fmJ7SNjX2nnoUg/qlal0i9wsWaC
+ Ui17OETlC66DbgPqnkcuozhLgSq1EyhKwobqAg5DQduaYpzu9v7vJAksRz+/bGeJHlAL
+ b8bYz5gV1PAmreNTmszFAh+5BlQl7nRrzfe8S6J2R5YAj6fauLsIuT5kKFTCs0C5l3Or
+ NY4n36Sq4DKU9VTHZoNjhJnf9jNk/TX2dW93yv82+4ZTfH8UiQ5NHGxcYv/PLoeWGjQU
+ K8xw==
+X-Gm-Message-State: AC+VfDwj67nnKt+QyYQfU2glQzJkIJGvhYdARxlp5Dwa9i2i/ToaY45+
+ mIGgL2NDDkPlyIwel0wAGL+az73gfP97BZc9sgfIBEv984fSMyUi3v/N45I14e/m9Ur9CBjg4Ya
+ 9Smyz6nTGl6Km8eM=
+X-Received: by 2002:a7b:c5d9:0:b0:3f7:f45d:5e44 with SMTP id
+ n25-20020a7bc5d9000000b003f7f45d5e44mr9226737wmk.32.1687298810906; 
+ Tue, 20 Jun 2023 15:06:50 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4W7ollmYLe1MyeW0Zqs81Ac+LBEExGD7tcuhPFI2S5aniOFqJX3/YusGKePkhEbl3YS7OASQ==
+X-Received: by 2002:a7b:c5d9:0:b0:3f7:f45d:5e44 with SMTP id
+ n25-20020a7bc5d9000000b003f7f45d5e44mr9226730wmk.32.1687298810588; 
+ Tue, 20 Jun 2023 15:06:50 -0700 (PDT)
+Received: from redhat.com ([2.52.15.156]) by smtp.gmail.com with ESMTPSA id
+ p16-20020a5d6390000000b003113943bb66sm2817350wru.110.2023.06.20.15.06.49
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 20 Jun 2023 15:06:49 -0700 (PDT)
+Date: Tue, 20 Jun 2023 18:06:47 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Ani Sinha <anisinha@redhat.com>
+Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, qemu-devel@nongnu.org
+Subject: Re: [PATCH] hw/pci: add comment explaining the reason for checking
+ function 0 in hotplug
+Message-ID: <20230620180557-mutt-send-email-mst@kernel.org>
+References: <20230620142551.115394-1-anisinha@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH v2 15/18] target/riscv: make riscv_isa_string_ext() KVM
- compatible
-Content-Language: en-US
-To: Andrew Jones <ajones@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com,
- bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com,
- palmer@rivosinc.com
-References: <20230613205857.495165-1-dbarboza@ventanamicro.com>
- <20230613205857.495165-16-dbarboza@ventanamicro.com>
- <20230619-30e78979c13df598ca2e4493@orel>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20230619-30e78979c13df598ca2e4493@orel>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c36;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-oo1-xc36.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230620142551.115394-1-anisinha@redhat.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -99,148 +96,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-On 6/19/23 06:54, Andrew Jones wrote:
-> On Tue, Jun 13, 2023 at 05:58:54PM -0300, Daniel Henrique Barboza wrote:
->> The isa_edata_arr[] is used by riscv_isa_string_ext() to create the
->> riscv,isa DT attribute. isa_edata_arr[] is kept in sync with the TCG
->> property vector riscv_cpu_extensions[], i.e. all TCG properties from
->> this vector that has a riscv,isa representation are included in
->> isa_edata_arr[].
->>
->> KVM doesn't implement all TCG properties, but allow them to be created
->> anyway to not force an API change between TCG and KVM guests. Some of
->> these TCG-only extensions are defaulted to 'true', and users are also
->> allowed to enable them. KVM doesn't care, but riscv_isa_string_ext()
->> does. The result is that these TCG-only enabled extensions will appear
->> in the riscv,isa DT string under KVM.
->>
->> To avoid code repetition and re-use riscv_isa_string_ext() for KVM
->> guests we'll make a couple of tweaks:
->>
->> - set env->priv_ver to 'LATEST' for the KVM 'host' CPU. This is needed
->>    because riscv_isa_string_ext() makes a priv check for each extension
->>    before including them in the ISA string. KVM doesn't care about
->>    env->priv_ver, since it's part of the TCG-only CPU validation, so this
->>    change is benign for KVM;
->>
->> - add a new 'kvm_available' flag in isa_ext_data struct. This flag is
->>    set via a new ISA_EXT_DATA_ENTRY_KVM macro to report that, for a given
->>    extension, KVM also supports it. riscv_isa_string_ext() then can check
->>    if a given extension is known by KVM and skip it if it's not.
->>
->> This will allow us to re-use riscv_isa_string_ext() for KVM guests.
->>
->> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
->> ---
->>   target/riscv/cpu.c | 28 ++++++++++++++++++++--------
->>   1 file changed, 20 insertions(+), 8 deletions(-)
->>
->> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
->> index a4f3ed0c17..a773c09645 100644
->> --- a/target/riscv/cpu.c
->> +++ b/target/riscv/cpu.c
->> @@ -44,11 +44,15 @@ struct isa_ext_data {
->>       const char *name;
->>       int min_version;
->>       int ext_enable_offset;
->> +    bool kvm_available;
->>   };
->>   
->>   #define ISA_EXT_DATA_ENTRY(_name, _min_ver, _prop) \
->>       {#_name, _min_ver, offsetof(struct RISCVCPUConfig, _prop)}
->>   
->> +#define ISA_EXT_DATA_ENTRY_KVM(_name, _min_ver, _prop) \
->> +    {#_name, _min_ver, offsetof(struct RISCVCPUConfig, _prop), true}
->> +
->>   /*
->>    * Here are the ordering rules of extension naming defined by RISC-V
->>    * specification :
->> @@ -68,14 +72,17 @@ struct isa_ext_data {
->>    *
->>    * Single letter extensions are checked in riscv_cpu_validate_misa_priv()
->>    * instead.
->> + *
->> + * ISA_EXT_DATA_ENTRY_KVM() is used to indicate that the extension is
->> + * also known by the KVM driver. If unsure, use ISA_EXT_DATA_ENTRY().
->>    */
->>   static const struct isa_ext_data isa_edata_arr[] = {
->> -    ISA_EXT_DATA_ENTRY(zicbom, PRIV_VERSION_1_12_0, ext_icbom),
->> -    ISA_EXT_DATA_ENTRY(zicboz, PRIV_VERSION_1_12_0, ext_icboz),
->> +    ISA_EXT_DATA_ENTRY_KVM(zicbom, PRIV_VERSION_1_12_0, ext_icbom),
->> +    ISA_EXT_DATA_ENTRY_KVM(zicboz, PRIV_VERSION_1_12_0, ext_icboz),
->>       ISA_EXT_DATA_ENTRY(zicond, PRIV_VERSION_1_12_0, ext_zicond),
->>       ISA_EXT_DATA_ENTRY(zicsr, PRIV_VERSION_1_10_0, ext_icsr),
->>       ISA_EXT_DATA_ENTRY(zifencei, PRIV_VERSION_1_10_0, ext_ifencei),
->> -    ISA_EXT_DATA_ENTRY(zihintpause, PRIV_VERSION_1_10_0, ext_zihintpause),
->> +    ISA_EXT_DATA_ENTRY_KVM(zihintpause, PRIV_VERSION_1_10_0, ext_zihintpause),
->>       ISA_EXT_DATA_ENTRY(zawrs, PRIV_VERSION_1_12_0, ext_zawrs),
->>       ISA_EXT_DATA_ENTRY(zfh, PRIV_VERSION_1_11_0, ext_zfh),
->>       ISA_EXT_DATA_ENTRY(zfhmin, PRIV_VERSION_1_11_0, ext_zfhmin),
->> @@ -89,7 +96,7 @@ static const struct isa_ext_data isa_edata_arr[] = {
->>       ISA_EXT_DATA_ENTRY(zcmp, PRIV_VERSION_1_12_0, ext_zcmp),
->>       ISA_EXT_DATA_ENTRY(zcmt, PRIV_VERSION_1_12_0, ext_zcmt),
->>       ISA_EXT_DATA_ENTRY(zba, PRIV_VERSION_1_12_0, ext_zba),
->> -    ISA_EXT_DATA_ENTRY(zbb, PRIV_VERSION_1_12_0, ext_zbb),
->> +    ISA_EXT_DATA_ENTRY_KVM(zbb, PRIV_VERSION_1_12_0, ext_zbb),
->>       ISA_EXT_DATA_ENTRY(zbc, PRIV_VERSION_1_12_0, ext_zbc),
->>       ISA_EXT_DATA_ENTRY(zbkb, PRIV_VERSION_1_12_0, ext_zbkb),
->>       ISA_EXT_DATA_ENTRY(zbkc, PRIV_VERSION_1_12_0, ext_zbkc),
->> @@ -114,13 +121,13 @@ static const struct isa_ext_data isa_edata_arr[] = {
->>       ISA_EXT_DATA_ENTRY(zhinxmin, PRIV_VERSION_1_12_0, ext_zhinxmin),
->>       ISA_EXT_DATA_ENTRY(smaia, PRIV_VERSION_1_12_0, ext_smaia),
->>       ISA_EXT_DATA_ENTRY(smstateen, PRIV_VERSION_1_12_0, ext_smstateen),
->> -    ISA_EXT_DATA_ENTRY(ssaia, PRIV_VERSION_1_12_0, ext_ssaia),
->> +    ISA_EXT_DATA_ENTRY_KVM(ssaia, PRIV_VERSION_1_12_0, ext_ssaia),
->>       ISA_EXT_DATA_ENTRY(sscofpmf, PRIV_VERSION_1_12_0, ext_sscofpmf),
->> -    ISA_EXT_DATA_ENTRY(sstc, PRIV_VERSION_1_12_0, ext_sstc),
->> +    ISA_EXT_DATA_ENTRY_KVM(sstc, PRIV_VERSION_1_12_0, ext_sstc),
->>       ISA_EXT_DATA_ENTRY(svadu, PRIV_VERSION_1_12_0, ext_svadu),
->> -    ISA_EXT_DATA_ENTRY(svinval, PRIV_VERSION_1_12_0, ext_svinval),
->> +    ISA_EXT_DATA_ENTRY_KVM(svinval, PRIV_VERSION_1_12_0, ext_svinval),
->>       ISA_EXT_DATA_ENTRY(svnapot, PRIV_VERSION_1_12_0, ext_svnapot),
->> -    ISA_EXT_DATA_ENTRY(svpbmt, PRIV_VERSION_1_12_0, ext_svpbmt),
->> +    ISA_EXT_DATA_ENTRY_KVM(svpbmt, PRIV_VERSION_1_12_0, ext_svpbmt),
+On Tue, Jun 20, 2023 at 07:55:51PM +0530, Ani Sinha wrote:
+> This change is cosmetic. A comment is added explaining why we need to check for
+> the availability of function 0 when we hotplug a device.
 > 
-> This approach looks a bit difficult to maintain (it's hard to even see the
-> _KVM macro uses). The approach will be even more difficult if we add more
-> accelerators. I feel like we need an extension class where objects of that
-> class can be passed to functions like riscv_isa_string_ext(). And then we
-> also need tcg-extension and kvm-extension classes which inherit from
-> the extension class. We can then keep the lists of extensions separate, as
-> you originally proposed, as each list will be of its own type.
-
-So, after coding around a little, I didn't manage to create a KVM list in
-kvm.c file because of how ARRAY_SIZE() (a macro that riscv_isa_string_ext())
-calculates the array size. If the list is exported from another file the macro
-fails to calculate the size of the array. Similar issues also happens when trying
-to use kvm_multi_ext_cfgs[] in this function.
-
-This means that both tcg and kvm arrays ended up in cpu.c. The tcg array is
-left untouched (isa_edata_arr). The KVM array uses the same type TCG already
-uses (isa_ext_edata) because it's good enough for KVM as well. I removed the
-'kvm_available' flag since we're going to manually edit the array.
-
-riscv_isa_string_ext() is then changed to switch between the tcg/kvm array
-as required. The rest of the logic of the function stood the same. I'll also
-add a pre-patch prior to all these changes to simplify riscv_isa_string_ext()
-a bit when running under TCG.
-
-In the end, as the code stands today, the only way to use this function with
-the array we already have in KVM (kvm_multi_ext_cfgs[]) requires way more
-changes than I believe it is worth doing ATM. I'd say that the extra kvm array
-in cpu.c is an okay price to pay to keep the code in the simple side.
-
-
-
-Thanks,
-
-
-Daniel
-
-
+> CC: mst@redhat.com
+> Signed-off-by: Ani Sinha <anisinha@redhat.com>
+> ---
+>  hw/pci/pci.c | 5 +++++
+>  1 file changed, 5 insertions(+)
 > 
-> Thanks,
-> drew
+> diff --git a/hw/pci/pci.c b/hw/pci/pci.c
+> index bf38905b7d..847e534f68 100644
+> --- a/hw/pci/pci.c
+> +++ b/hw/pci/pci.c
+> @@ -1179,6 +1179,11 @@ static PCIDevice *do_pci_register_device(PCIDevice *pci_dev,
+>                     PCI_SLOT(devfn), PCI_FUNC(devfn), name,
+>                     bus->devices[devfn]->name, bus->devices[devfn]->qdev.id);
+>          return NULL;
+> +    /*
+> +     * Populating function 0 triggers a scan from the guest that
+> +     * exposes other non-zero functions. Hence we need to ensure that
+> +     * function 0 wasn't added yet.
+> +     */
+
+bad place for the comment
+
+>      }
+
+
+stick the comment here
+
+> else
+
+or here
+
+> if (dev->hotplugged &&
+>                 !pci_is_vf(pci_dev) &&
+>                 pci_get_function_0(pci_dev)) {
+> -- 
+> 2.39.1
+
 
