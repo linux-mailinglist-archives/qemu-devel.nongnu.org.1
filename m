@@ -2,51 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3922736818
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 11:43:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0DF5736803
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 11:41:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBXpW-0007Xi-1T; Tue, 20 Jun 2023 05:39:18 -0400
+	id 1qBXqd-0003u6-Gs; Tue, 20 Jun 2023 05:40:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1qBXpF-0007Dm-0A
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 05:39:03 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1qBXpB-0006Q7-HC
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 05:39:00 -0400
-Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8Bx7eqkc5Fk6SUHAA--.14714S3;
- Tue, 20 Jun 2023 17:38:44 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.185])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8BxduSGc5FkzIQhAA--.28394S48; 
- Tue, 20 Jun 2023 17:38:43 +0800 (CST)
-From: Song Gao <gaosong@loongson.cn>
-To: qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org
-Subject: [PATCH v1 46/46] target/loongarch: CPUCFG support LASX
-Date: Tue, 20 Jun 2023 17:38:14 +0800
-Message-Id: <20230620093814.123650-47-gaosong@loongson.cn>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <20230620093814.123650-1-gaosong@loongson.cn>
-References: <20230620093814.123650-1-gaosong@loongson.cn>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8BxduSGc5FkzIQhAA--.28394S48
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
- ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
- nUUI43ZEXa7xR_UUUUUUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1qBXqW-00033F-FW; Tue, 20 Jun 2023 05:40:20 -0400
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1qBXqT-0006q9-27; Tue, 20 Jun 2023 05:40:20 -0400
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-1b5251e5774so20183765ad.1; 
+ Tue, 20 Jun 2023 02:40:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1687254013; x=1689846013;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=48gT1MrKLybpZPeA/w3PDKAgaxKbpQsQGAATvmogWPY=;
+ b=BHNry5VDEr6LHug6tsDu5sg3VQj8+bxsQjfHGGJsHbooG5gLBVgxCmjnCRRoqrHmR8
+ 1sjtVkEnevt9rqUqMLBTHOW6RLOBJlZcQBuOE1f+Z7bEgdghVMQ37a7tOT3NPMd7B2w/
+ xlE+C4ZJ5fiMfrxp3DqyWm9cc59FijFqOlApMXVwwhs5HBjUiuPjCkXKI/ECxdOIt1eg
+ Sq8J4iT4hb/jJcanItfGReHlYop4GX+ItL2Io2XXo5kz7HU9saWs2tqQu1i9CxyW9qGe
+ 7Ixjqwygv3mAL7pp2+CBhpg5Ml6ObcunZeuOY3tqflkcu/z63WBIR2frd3/bAuOG4dSk
+ yTtA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1687254013; x=1689846013;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=48gT1MrKLybpZPeA/w3PDKAgaxKbpQsQGAATvmogWPY=;
+ b=ZP9QzH3FAp6nEFBjV8gVzt8aGQoHQ2ZPAX+VqsRRqjMQQN3pI3dkdTqGdnLygB0KQp
+ lNNoNRRg85/sHUZH7Ryx9Jhps1UlT/M5jG2xNSx0uECLrUxnuKsDdlS80nYRLay4ERfK
+ HLQbeo9VZN0hvzv4QTqovOgGy5mEV71weQxRktl8AAZqvF7e85kH7Qb0WoxiyBL2mMxO
+ vI8nXehfAcE2uwzVX2zHlnNivMuuju0hNNQRXsqtKn4wTzck1MksBLhPS7wYETVATkBy
+ aFA1Ftid/YlEdl9/JkpVsmkRA3xfq/tAWQjp8xlyIfPvjMJ+oGBRp53Y22lcLzOgIpcz
+ XbrA==
+X-Gm-Message-State: AC+VfDxUy8X87pICx10+Cyqwh7RlyIaDzfrfg25CiY8U4nTuGKXu8OJt
+ bW/AtJ6FI7VNoaP2nEf5IUuhGe8PTxU=
+X-Google-Smtp-Source: ACHHUZ65Zy7PFRKidMzFm5t5J9VuO0gFvvzTEcjY9IxtmbrnBljqkv0WhsedqEWws74lo278/z/HDA==
+X-Received: by 2002:a17:902:7c92:b0:1b3:91f7:4883 with SMTP id
+ y18-20020a1709027c9200b001b391f74883mr2172454pll.46.1687254013526; 
+ Tue, 20 Jun 2023 02:40:13 -0700 (PDT)
+Received: from localhost ([124.170.190.103]) by smtp.gmail.com with ESMTPSA id
+ u2-20020a170902e5c200b001b05e96d859sm1201501plf.135.2023.06.20.02.40.10
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 20 Jun 2023 02:40:13 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 20 Jun 2023 19:40:08 +1000
+Message-Id: <CTHDMMUCBTAM.Z7LPA87SQCVK@wheely>
+Cc: <qemu-devel@nongnu.org>, =?utf-8?q?Fr=C3=A9d=C3=A9ric_Barrat?=
+ <fbarrat@linux.ibm.com>
+Subject: Re: [PATCH 1/9] MAINTAINERS: Add reviewers for PowerNV baremetal
+ emulation
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, <qemu-ppc@nongnu.org>,
+ "Daniel Henrique Barboza" <danielhb413@gmail.com>
+X-Mailer: aerc 0.14.0
+References: <20230620055911.187065-1-clg@kaod.org>
+ <20230620055911.187065-2-clg@kaod.org>
+In-Reply-To: <20230620055911.187065-2-clg@kaod.org>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x629.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -62,24 +93,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Song Gao <gaosong@loongson.cn>
----
- target/loongarch/cpu.c | 1 +
- 1 file changed, 1 insertion(+)
+On Tue Jun 20, 2023 at 3:59 PM AEST, C=C3=A9dric Le Goater wrote:
+> Fred and Nick have been hacking baremetal POWER systems (OPAL) for
+> many years. They use and modify the QEMU models regularly. Add them as
+> PowerNV reviewers.
+>
 
-diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
-index c9f9cbb19d..aeccbb42e6 100644
---- a/target/loongarch/cpu.c
-+++ b/target/loongarch/cpu.c
-@@ -392,6 +392,7 @@ static void loongarch_la464_initfn(Object *obj)
-     data = FIELD_DP32(data, CPUCFG2, FP_DP, 1);
-     data = FIELD_DP32(data, CPUCFG2, FP_VER, 1);
-     data = FIELD_DP32(data, CPUCFG2, LSX, 1),
-+    data = FIELD_DP32(data, CPUCFG2, LASX, 1),
-     data = FIELD_DP32(data, CPUCFG2, LLFTP, 1);
-     data = FIELD_DP32(data, CPUCFG2, LLFTP_VER, 1);
-     data = FIELD_DP32(data, CPUCFG2, LAM, 1);
--- 
-2.39.1
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+
+> Cc: Fr=C3=A9d=C3=A9ric Barrat <fbarrat@linux.ibm.com>
+> Cc: Nicholas Piggin <npiggin@gmail.com>
+> Signed-off-by: C=C3=A9dric Le Goater <clg@kaod.org>
+> ---
+>  MAINTAINERS | 2 ++
+>  1 file changed, 2 insertions(+)
+>
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 88b5a7ee0a79..e6f3dade2230 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -1448,6 +1448,8 @@ F: tests/avocado/ppc_pseries.py
+> =20
+>  PowerNV (Non-Virtualized)
+>  M: C=C3=A9dric Le Goater <clg@kaod.org>
+> +R: Fr=C3=A9d=C3=A9ric Barrat <fbarrat@linux.ibm.com>
+> +R: Nicholas Piggin <npiggin@gmail.com>
+>  L: qemu-ppc@nongnu.org
+>  S: Odd Fixes
+>  F: docs/system/ppc/powernv.rst
+> --=20
+> 2.41.0
 
 
