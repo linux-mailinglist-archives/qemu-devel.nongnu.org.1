@@ -2,74 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D55D736622
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 10:28:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9643573660E
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 10:27:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBWh6-0003pO-5g; Tue, 20 Jun 2023 04:26:32 -0400
+	id 1qBWh9-0003rV-Gi; Tue, 20 Jun 2023 04:26:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qBWh2-0003oI-CM
+ id 1qBWh2-0003oF-Bh
  for qemu-devel@nongnu.org; Tue, 20 Jun 2023 04:26:28 -0400
-Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
+Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qBWgy-00067a-Fd
+ id 1qBWh0-00067z-5U
  for qemu-devel@nongnu.org; Tue, 20 Jun 2023 04:26:27 -0400
-Received: by mail-ed1-x529.google.com with SMTP id
- 4fb4d7f45d1cf-51a3e6a952aso5254855a12.3
- for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 01:26:23 -0700 (PDT)
+Received: by mail-ej1-x62e.google.com with SMTP id
+ a640c23a62f3a-986d8332f50so517180766b.0
+ for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 01:26:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687249582; x=1689841582;
+ d=linaro.org; s=google; t=1687249583; x=1689841583;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ogodEHMvGs+jdKhtwTqfSiSIlFeubpJ1YnGuLMjQdzc=;
- b=npToVQfjywIhrYyeZ9m2JXHCn+m8B7dP/wv+/6Icg2enmbO9GDs0U2wzhEe7ACDs6o
- CiQw7dkLzBId8ZvN0b1oIZa2pEv4+fOp/hMDuY2j5mI75cYwj/AXr+Y1/Pw3wYrR05nA
- xnlkVyMkmcrLGkmy22Wj2JuFvft9TnNJDYukMrGYvgg7DFwie0Nm8U62WIRVJBF6apAC
- qEiWbstWJysABBD4h7saTF5HT6R0I48GnN1eMFR61r4j7ngB0LNdNURzYsss63Q5Fg9M
- I8PECQ5Hx3pseEfTn6bIVTL4p6T3wa6xTwaFvdywGTyfn1vW2ivh57kG/YkWHUPezUWd
- VIbg==
+ bh=3Eu+o+b/kPOX7bqHOKI9EK0FyfSFZrSyUyQQ0MvpYlw=;
+ b=a0ThfYa/SzOSvBKAFQHWKqp6XRTKHSiCAE1SFpblkMG4mm+XHPn+GbI+TegXQrdrdx
+ GaFTAQZ5qVJ/l3agcqPFeb6P+t3Xfstxy5/zO8UrxttzL6VvqgZ3pQ4CNjDwsWMQLEaM
+ paQ7Iy3ZKZnTgqRku0QSXT0vtVNsnJ5BExgFD9y8OM/0y4a+Oo5SNhE33Kv1TFwU4jj5
+ XkyDY6f/6lr1CWLVZyJ0S9WCcxh+8znpvc3GJbkA4Gg0D3C8G56jo9biscwBYb32zxsh
+ rNIC8c/pFWKwDSMDWs3+UpW6bwkT+0lrvMsuIxacKr6WLSwL1FetIFg3a55mm0xDl/tB
+ Uqbg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687249582; x=1689841582;
+ d=1e100.net; s=20221208; t=1687249583; x=1689841583;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ogodEHMvGs+jdKhtwTqfSiSIlFeubpJ1YnGuLMjQdzc=;
- b=ZJb2kWU7JNbasXTpEhzagAUw4gUsRzZUA2Z/Ig3WzruSlDhdHtfLul/U7dSvm/Lfcd
- XSuif4D8VGSjFskog4ubSzVfASb1f9wvaAIGWBRFMPUyijNYhjoUaUzBe6OURqfjADSi
- xVIaQohajlU7FqIz8FIq/H9gNN+lWM6Jzn+ojW9oL5+xOFE00KGmiQnCXlTASPo0zlys
- 59bkE5lK6H9AdNdvzgyOFnrTv4470ND5rLEWcUwLnBvuUNn0l0GYagyBqv3MrjasMJLB
- COgmfhCy/h/AalXWU/kKTGCHvBZMPTVABhzWpyWy3jgPZDYHN5Yvr6TShi51h9KUZJbW
- dlcg==
-X-Gm-Message-State: AC+VfDx02UGv73/kFgy50SZMZ2WJsCtMorOkYGcaZuYNJvxrZ/JjOznO
- Ds3HS5K+qfzJJ1Oi2BJhlz56AG/F6P5lb+CCoqihBv0L
-X-Google-Smtp-Source: ACHHUZ5dgkJyTts01QNmSgApI2jGPyr33HnFzcEmMhPD3z8WyY8KsSNWZycdvqIL8RgEtU3g3Xl81g==
-X-Received: by 2002:a17:907:16a1:b0:988:d1d5:cd5b with SMTP id
- hc33-20020a17090716a100b00988d1d5cd5bmr3703353ejc.75.1687249582599; 
- Tue, 20 Jun 2023 01:26:22 -0700 (PDT)
+ bh=3Eu+o+b/kPOX7bqHOKI9EK0FyfSFZrSyUyQQ0MvpYlw=;
+ b=IBDye1VP+qTUbOe0NzrzGdJLDbV152793mnW/B1p3CUT6ka1gXIv/feQrd+N4zDRZ5
+ cIIR797cf+k4ASBU1R/aqRjA5VND5pAa/tDsgv+TmEn+P3ZoEEQVnmxDT4srUcdP3fQN
+ 8ocM/RbpjeCmJEyLG/s+PzrpckwCxZN3ACqMBHpzOuMhE0c3DjYy2dW9hQa2h/Pfw/s2
+ 8E0SbtAZJDwcpwuUfPqOKllHuxFK5Ux8in4uZA9iHmPLNnb+CYH5Cc1ZIKC3Mu+BJkUc
+ 2XCm9UIDCPPvVY9oskKpxD73FK4OyvtIu/bxZ05syKq1NHJL0bVLlX8Fb6CC2Ah6GL3z
+ AlYg==
+X-Gm-Message-State: AC+VfDy6OrFv+Ca3v+CPSfES0ZJz52bWDAeEd41/tnaU5R6WE7U0NBHY
+ oGSLAGZyOIcAAks1xfZqmhFjhfzzHJCr8HbygMzmVM1S
+X-Google-Smtp-Source: ACHHUZ5pjbwfN4QSRP/8nmER2mjTz0Ba4yshXHOBOGvaLI0T4HGSSSBx9ZvocaabA5S8AhpijfxfHw==
+X-Received: by 2002:a17:906:4793:b0:96f:5747:a0de with SMTP id
+ cw19-20020a170906479300b0096f5747a0demr10873353ejc.6.1687249583545; 
+ Tue, 20 Jun 2023 01:26:23 -0700 (PDT)
 Received: from stoup.lan ([176.176.183.29]) by smtp.gmail.com with ESMTPSA id
- z19-20020a170906669300b00977c7566ccbsm935901ejo.164.2023.06.20.01.26.21
+ z19-20020a170906669300b00977c7566ccbsm935901ejo.164.2023.06.20.01.26.22
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 20 Jun 2023 01:26:22 -0700 (PDT)
+ Tue, 20 Jun 2023 01:26:23 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 09/16] accel/tcg: Check for USER_ONLY definition instead of
- SOFTMMU one
-Date: Tue, 20 Jun 2023 10:26:04 +0200
-Message-Id: <20230620082611.770620-10-richard.henderson@linaro.org>
+Subject: [PULL 10/16] meson: Alias CONFIG_SOFTMMU -> CONFIG_SYSTEM_ONLY
+Date: Tue, 20 Jun 2023 10:26:05 +0200
+Message-Id: <20230620082611.770620-11-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230620082611.770620-1-richard.henderson@linaro.org>
 References: <20230620082611.770620-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::529;
- envelope-from=richard.henderson@linaro.org; helo=mail-ed1-x529.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ej1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,60 +93,30 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Since we *might* have user emulation with softmmu,
-replace the system emulation check by !user emulation one.
-
-Invert some if() ladders for clarity.
+We use the CONFIG_USER_ONLY key to describe user emulation,
+and the CONFIG_SOFTMMU key to describe system emulation. Alias
+it as 'CONFIG_SYSTEM_ONLY' for parity with user emulation.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20230613133347.82210-7-philmd@linaro.org>
+Message-Id: <20230613133347.82210-8-philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- accel/tcg/internal.h | 6 +++---
- accel/tcg/cpu-exec.c | 4 ++--
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ meson.build | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/accel/tcg/internal.h b/accel/tcg/internal.h
-index 24f225cac7..65380ccb42 100644
---- a/accel/tcg/internal.h
-+++ b/accel/tcg/internal.h
-@@ -17,10 +17,10 @@
-  * memory related structures are protected with mmap_lock.
-  * In !user-mode we use per-page locks.
-  */
--#ifdef CONFIG_SOFTMMU
--#define assert_memory_lock()
--#else
-+#ifdef CONFIG_USER_ONLY
- #define assert_memory_lock() tcg_debug_assert(have_mmap_lock())
-+#else
-+#define assert_memory_lock()
- #endif
- 
- #if defined(CONFIG_SOFTMMU) && defined(CONFIG_DEBUG_TCG)
-diff --git a/accel/tcg/cpu-exec.c b/accel/tcg/cpu-exec.c
-index ebc1db03d7..c0ab00385f 100644
---- a/accel/tcg/cpu-exec.c
-+++ b/accel/tcg/cpu-exec.c
-@@ -566,7 +566,7 @@ void cpu_exec_step_atomic(CPUState *cpu)
-         cpu_tb_exec(cpu, tb, &tb_exit);
-         cpu_exec_exit(cpu);
-     } else {
--#ifndef CONFIG_SOFTMMU
-+#ifdef CONFIG_USER_ONLY
-         clear_helper_retaddr();
-         if (have_mmap_lock()) {
-             mmap_unlock();
-@@ -1023,7 +1023,7 @@ static int cpu_exec_setjmp(CPUState *cpu, SyncClocks *sc)
-         /* Non-buggy compilers preserve this; assert the correct value. */
-         g_assert(cpu == current_cpu);
- 
--#ifndef CONFIG_SOFTMMU
-+#ifdef CONFIG_USER_ONLY
-         clear_helper_retaddr();
-         if (have_mmap_lock()) {
-             mmap_unlock();
+diff --git a/meson.build b/meson.build
+index cfa98e9e25..3276f738ae 100644
+--- a/meson.build
++++ b/meson.build
+@@ -2864,6 +2864,7 @@ foreach target : target_dirs
+     endif
+     config_target += { 'CONFIG_BSD_USER': 'y' }
+   elif target.endswith('softmmu')
++    config_target += { 'CONFIG_SYSTEM_ONLY': 'y' }
+     config_target += { 'CONFIG_SOFTMMU': 'y' }
+   endif
+   if target.endswith('-user')
 -- 
 2.34.1
 
