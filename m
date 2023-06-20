@@ -2,55 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26DCD736684
+	by mail.lfdr.de (Postfix) with ESMTPS id 3434F736685
 	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 10:41:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBWuz-0000tG-Nn; Tue, 20 Jun 2023 04:40:53 -0400
+	id 1qBWuQ-0000mW-TK; Tue, 20 Jun 2023 04:40:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dgibson@gandalf.ozlabs.org>)
- id 1qBWux-0000si-3n; Tue, 20 Jun 2023 04:40:51 -0400
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
+ (Exim 4.90_1)
+ (envelope-from <frederic.petrot@univ-grenoble-alpes.fr>)
+ id 1qBWuJ-0000kX-KC; Tue, 20 Jun 2023 04:40:11 -0400
+Received: from eastern.birch.relay.mailchannels.net ([23.83.209.55])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dgibson@gandalf.ozlabs.org>)
- id 1qBWuk-0001i3-F1; Tue, 20 Jun 2023 04:40:42 -0400
-Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
- id 4Qlg7b47K0z4x0G; Tue, 20 Jun 2023 18:40:27 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gibson.dropbear.id.au; s=201602; t=1687250427;
- bh=qImls6H0+tUCcLvJorYTzhLjLCUt9VrZVQlco4lSbE4=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=Q0EpZpx0sGGe80J4m86aF5HFfu2H+oS+UbBvhd1r6xYv1RVfEjl1qkMg1nUoK9Wsl
- 1fzXB8cCHqbTdWqiCQfG3QfzU1KqV9TMVjKXAYu9VIjrv5IwjwraHefx4K4zaah8ET
- rpHPKvtyuSn64p0G1qflRRAM/lsH+xBkmMw92mQQ=
-Date: Tue, 20 Jun 2023 18:33:45 +1000
-From: David Gibson <david@gibson.dropbear.id.au>
-To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Harsh Prateek Bora <harshpb@linux.ibm.com>,
- =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Greg Kurz <groug@kaod.org>, qemu-ppc@nongnu.org
-Subject: Re: [PATCH] hw/ppc/spapr: Test whether TCG is enabled with
- tcg_enabled()
-Message-ID: <ZJFkabcFuLDxq9XQ@zatzit>
-References: <20230620074802.86898-1-philmd@linaro.org>
+ (Exim 4.90_1)
+ (envelope-from <frederic.petrot@univ-grenoble-alpes.fr>)
+ id 1qBWuE-0001LA-Av; Tue, 20 Jun 2023 04:40:10 -0400
+X-Sender-Id: hostpapa|x-authuser|frederic@petrot.fr
+Received: from relay.mailchannels.net (localhost [127.0.0.1])
+ by relay.mailchannels.net (Postfix) with ESMTP id 856E1760EA9;
+ Tue, 20 Jun 2023 08:39:57 +0000 (UTC)
+Received: from hp220.hostpapa.com (unknown [127.0.0.6])
+ (Authenticated sender: hostpapa)
+ by relay.mailchannels.net (Postfix) with ESMTPA id 54B94760E8F;
+ Tue, 20 Jun 2023 08:39:56 +0000 (UTC)
+ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1687250396; a=rsa-sha256;
+ cv=none;
+ b=y2ReY+ivJuGFQyNkIzM7/xje3XYP55Uaoso7qnsj9U/7g1ti52Hsah+hIjrRACuSnF3bsY
+ kvIOAck80PukVNxN6Qj+TOeBR/IYpYbgf7KenvA0HXcOIKPzarFnQB4zbcaCKvhLlBmMnR
+ cnDYKyhogs7shLSQela9BTN1FCCg4+ELbcD8JMy6tVfMIbyNd0gQaumweUcAlvgEO9BAa5
+ 7WtMQOxO0/N+4OtXgqTAZ+vu5SSzjUevYwp89ODN9NAeg/xlu29rknCPwroVw/YkEBlVPZ
+ bimDc9dUegFQt1d8Fn/hV6YuQrpGh92Cf1VUPFRiwIh/ue28sL1ZyM7o6u6dEQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=mailchannels.net; s=arc-2022; t=1687250396;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:dkim-signature;
+ bh=poaKJQvZweTmGOjc7UP6H0N83EddyRxebyZeNCKNK1I=;
+ b=Lhq1xK/wnzuUyHhQoPjj/QY1VF+j9FOOSkTBF9QcLFeabwlPhgUJF/UoGwq0seuThiBiQO
+ l4sDWcI5rXH7CYjgVjwO32mLtz/Bb228ke0MpbuwUAojRriDelT68NqpDcWubuCzCzZsrP
+ akdOTE5vaAiY7TgSnSOAlfOx5IxaVJHaZl6KrjINVK8h7HUiNUG0HE8FVkNoB56Tm/yIBK
+ QVv57rd8p6fO6skbylykLQyVWuzPkfRLpVfZY7JYoQ5zUPVFTXkExUcLb+5nR5hY7CMwHp
+ x2p3yEZ7o4mDx1EeEsr5ixwveEvH1eZ0AigEUxJEiLGeUduZdS/nCIZGL35xeQ==
+ARC-Authentication-Results: i=1; rspamd-9fcc56855-ktntx;
+ auth=pass smtp.auth=hostpapa
+ smtp.mailfrom=frederic.petrot@univ-grenoble-alpes.fr
+X-Sender-Id: hostpapa|x-authuser|frederic@petrot.fr
+X-MC-Relay: Neutral
+X-MC-Copy: stored-urls
+X-MailChannels-SenderId: hostpapa|x-authuser|frederic@petrot.fr
+X-MailChannels-Auth-Id: hostpapa
+X-Turn-Befitting: 121b16f136beff3a_1687250397111_3529346042
+X-MC-Loop-Signature: 1687250397111:1168153802
+X-MC-Ingress-Time: 1687250397110
+Received: from hp220.hostpapa.com (hp220.hostpapa.com [69.90.161.120])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384)
+ by 100.120.163.52 (trex/6.9.1); Tue, 20 Jun 2023 08:39:57 +0000
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=petrot.fr; 
+ s=default;
+ h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-Id:
+ Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:Content-Description:
+ Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+ In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+ List-Post:List-Owner:List-Archive;
+ bh=poaKJQvZweTmGOjc7UP6H0N83EddyRxebyZeNCKNK1I=; b=lip2BVxjJlP5Qfc5zuFZje/pWM
+ Mk8YSYF99YVcd/Ka1K8uSFrAQTJKsk4MlDv9vR9eybWx7+NL/WMal/u9HdqQ76FeGunlA1+Dm9hHK
+ yMMxPPGy4VJlZXEU4iciv0s1bi25HhyUs42WbJyM2dQDuQ2T7pUg07xlRS9NwZ0GENrJV6a9etufo
+ fRigPUD/skDFIWPe4/2Sr16cESibwff46WnoF3A5OVIQTzYW6a4B5v7TEzVm/QLH3WoC1vxpTCUV7
+ HrJ3oUlEBRWGLXSsJ/QF93S9PcVVLpJAlXmxYvQR8D82OBlKo8T+go2+gKGNAQ0krM4YVjFUDrrOv
+ purn0I0Q==;
+Received: from 87-90-81-144.abo.bbox.fr ([87.90.81.144]:51802 helo=palmier.lan)
+ by hp220.hostpapa.com with esmtpa (Exim 4.95)
+ (envelope-from <frederic.petrot@univ-grenoble-alpes.fr>)
+ id 1qBWu3-00Cwpw-JO; Tue, 20 Jun 2023 10:39:55 +0200
+From: =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20P=C3=A9trot?=
+ <frederic.petrot@univ-grenoble-alpes.fr>
+To: qemu-trivial@nongnu.org,
+	qemu-devel@nongnu.org
+Cc: richard.henderson@linaro.org, alex.bennee@linaro.org,
+ =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20P=C3=A9trot?=
+ <frederic.petrot@univ-grenoble-alpes.fr>
+Subject: [PATCH] x86_64/atomic128-ldst.h: fix arch include guard
+Date: Tue, 20 Jun 2023 10:39:18 +0200
+Message-Id: <20230620083918.9134-1-frederic.petrot@univ-grenoble-alpes.fr>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="bIpG1SBUF0k9WPhb"
-Content-Disposition: inline
-In-Reply-To: <20230620074802.86898-1-philmd@linaro.org>
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
- envelope-from=dgibson@gandalf.ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -40
-X-Spam_score: -4.1
-X-Spam_bar: ----
-X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, HEADER_FROM_DIFFERENT_DOMAINS=0.25,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-AuthUser: frederic@petrot.fr
+Received-SPF: softfail client-ip=23.83.209.55;
+ envelope-from=frederic.petrot@univ-grenoble-alpes.fr;
+ helo=eastern.birch.relay.mailchannels.net
+X-Spam_score_int: -9
+X-Spam_score: -1.0
+X-Spam_bar: -
+X-Spam_report: (-1.0 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_SOFTFAIL=0.665,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -66,67 +115,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Fix arch name in the define that prevents multiple inclusions.
 
---bIpG1SBUF0k9WPhb
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Frédéric Pétrot <frederic.petrot@univ-grenoble-alpes.fr>
+---
+ host/include/x86_64/host/atomic128-ldst.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-On Tue, Jun 20, 2023 at 09:48:02AM +0200, Philippe Mathieu-Daud=E9 wrote:
-> Although the PPC target only supports the TCG and KVM
-> accelerators, QEMU supports more. We can no assume that
-> '!kvm =3D=3D tcg', so test for the correct accelerator. This
-> also eases code review, because here we don't care about
-> KVM, we really want to test for TCG.
->=20
-> Signed-off-by: Philippe Mathieu-Daud=E9 <philmd@linaro.org>
+diff --git a/host/include/x86_64/host/atomic128-ldst.h b/host/include/x86_64/host/atomic128-ldst.h
+index adc9332f91..d0240d4212 100644
+--- a/host/include/x86_64/host/atomic128-ldst.h
++++ b/host/include/x86_64/host/atomic128-ldst.h
+@@ -8,8 +8,8 @@
+  * atomic primitive is meant to provide.
+  */
+ 
+-#ifndef AARCH64_ATOMIC128_LDST_H
+-#define AARCH64_ATOMIC128_LDST_H
++#ifndef X86_64_ATOMIC128_LDST_H
++#define X86_64_ATOMIC128_LDST_H
+ 
+ #ifdef CONFIG_INT128_TYPE
+ #include "host/cpuinfo.h"
+@@ -65,4 +65,4 @@ static inline void atomic16_set(Int128 *ptr, Int128 val)
+ #include "host/include/generic/host/atomic128-ldst.h"
+ #endif
+ 
+-#endif /* AARCH64_ATOMIC128_LDST_H */
++#endif /* X86_64_ATOMIC128_LDST_H */
+-- 
+2.30.2
 
-Reviewed-by: David Gibson <david@gibson.dropbear.id.au>
-
-> ---
->  hw/ppc/spapr.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-> index dcb7f1c70a..c4b666587b 100644
-> --- a/hw/ppc/spapr.c
-> +++ b/hw/ppc/spapr.c
-> @@ -2524,7 +2524,7 @@ static void spapr_set_vsmt_mode(SpaprMachineState *=
-spapr, Error **errp)
->      int ret;
->      unsigned int smp_threads =3D ms->smp.threads;
-> =20
-> -    if (!kvm_enabled() && (smp_threads > 1)) {
-> +    if (tcg_enabled() && (smp_threads > 1)) {
->          error_setg(errp, "TCG cannot support more than 1 thread/core "
->                     "on a pseries machine");
->          return;
-
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
-
---bIpG1SBUF0k9WPhb
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmSRZEsACgkQzQJF27ox
-2GfVIA//bOIatQfpsDgM3/TSG4G3Qjk2qlBDZYhOfkjbJUc/CEHAcjY7qmXpmewe
-NPq6PSIi9D4uPEcgKgiebHfqAqjkY2aY2itIb4PLXcB2xqIsqlCBi1AG7j2cgRpS
-KrsDXsxsmZMSADsCS9jW1un+pt2fGE227nz2S4fATrCcqRVXPSBeYkGON7Qe/Koo
-igDPxafRbGET7Ii3vsHFDsUzPdXMhZzrJtX9IwU3f8mxC23nGNjRGib8HMSev3va
-vledemgZkKLWMee1yHs10Hy8zEFXBoP19jlYrrG6hU6XF9X00kPGhABtYsJCsEgM
-J1o0mjk1EjtFvIaAQH11yvansfW13/xSFB1eIBygiFObW75n1gOe2IVs7mbKNxrk
-Hp2fLm5ef7+z5vGKAFFKsxinmUNbA4sbb/RIzY8QZrqN6tniMNzuAaupiDQ96ikO
-Rj76umuWV0ap4bqBkX+UbJVB5ofMVpTtliKYT1F+eQtZd4fSaSQo+lQOnWbchawI
-/5fJ+Fx6xyA+9IHV66oNphiP+AIz15AJlf4YL/zyCLsXjzRqLPqiP6iNhdhJEbyi
-XEGism1Q0WaTnH8R0R4mR+s+QQaKD2ehyH6QAP1EW2fl76zHBcHmShXU3dm0MRoF
-tb9Q7uOIKJ94GV0ucHF8Bcw6fwedHYHGSS7W2Kq/rMt16QeyZfk=
-=jBKU
------END PGP SIGNATURE-----
-
---bIpG1SBUF0k9WPhb--
 
