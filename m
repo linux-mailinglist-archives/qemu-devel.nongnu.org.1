@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D423736886
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 11:58:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4522D7368B1
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 12:03:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBY88-00027e-TJ; Tue, 20 Jun 2023 05:58:32 -0400
+	id 1qBYBq-0006ux-2L; Tue, 20 Jun 2023 06:02:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qBY87-00024Q-7x
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 05:58:31 -0400
+ id 1qBYBk-0006uM-6X
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 06:02:16 -0400
 Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qBY84-0002XF-Sq
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 05:58:30 -0400
+ id 1qBYBi-0004Cn-GF
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 06:02:15 -0400
 Received: by mail-ed1-x529.google.com with SMTP id
- 4fb4d7f45d1cf-5187aa18410so4742605a12.0
- for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 02:58:28 -0700 (PDT)
+ 4fb4d7f45d1cf-51a1d539ffaso8574729a12.0
+ for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 03:02:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687255107; x=1689847107;
+ d=linaro.org; s=google; t=1687255333; x=1689847333;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=tZo9BUmsdQMMVtYnmg9TiTWZiPyjjdRzwmBFivCvqyg=;
- b=DTIooRhBpLLTtXvcIJTxCUNZqGVsbM/7mej5NyXpuz/V2pTm27soeSQVsMPKEa55Ei
- H/vDHYqtrN6c+XqHu/5g8Z3iV3aVo3VLvOIpvy24x3kPCVpYfeVormg8xHWQv6jyW5nM
- 2vSnU1M6yCOWc1q4HKlxN3VuhuRO8Yt91x55HhRDzoW8y2R7Ccws/VEwU4bmSnXVT7WA
- keQshw8/KYrNmrbgQcloiyWcxoPRiQU/4QYiUduez8MWVgPRMUeFERd9fbWD7VdT98xH
- K5SfypfiIrumHVqXgz/b8VtGO754uMukDnNEYVfL6aKYX5+HOv6iWp9JUOad2kZsQgdv
- WJuw==
+ bh=c936LieMh+vuW2j5DLlTohojPSPBC96QqqBuoeqzW8M=;
+ b=zYEdC9KOlAC71cqRKxfc9mhbc4BDVFzR1WhppZV43sPaTTM34fMfhEOY6JmEJyelP5
+ MeMeeB5+51T6gf+OtfndCz6EkF24Rpa7d8R891nGwFvi4uuuMKchHk78zSsouf/dnsYq
+ Bak0ZWfFOSiF90xdYu1zO6PgXa6aQdLcICrMS+DSyBqg6p/y3EkjAfpDf7Ealo98Nj9L
+ X1U3BrrVB2OYDtnzIwpDOxbZ3d6itmU/rtbw2/+bl37RLbzOUQueRY8hV1LfrXz1qhym
+ ApsAwtoI9O12ysAdPnLdYTAb2jwrZ/wnjDCuet42WY4ZGGWYJIdWvqOw9+9AzIRYSO2w
+ i2Rw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687255107; x=1689847107;
+ d=1e100.net; s=20221208; t=1687255333; x=1689847333;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=tZo9BUmsdQMMVtYnmg9TiTWZiPyjjdRzwmBFivCvqyg=;
- b=LLdvlpX+BamBo5ZbldZ+N7vGRJM29LFAp6PYiuhLU38mkrlnedjBLxgOCJ6zkwAXuS
- 0WVyT5V10UeEoPP+KhgyuTBRNatFjOEtEmgFdU/R9Ka+sRJ+lLoj2Ov9ary4rFMPO2cn
- x+D4lSacZ11FA7LV0/AL0Y/n4Sf/XVXhM+1CjTT5yGtmz9ob8fI9GFx/adSVFnHm+0PZ
- off8xEEcJDEYmonP/dZyBqKj1J31Bml2+NocbIu39DVkwsdpYWpQPZaC4cfxGLpIpqsx
- d9OaJcoJS14Wdzu1sME5huOgzoainZS1gzTWtoOnEKmbHsrpLFakd1vRU/uuIsDEoLv/
- e/yQ==
-X-Gm-Message-State: AC+VfDy4VYkGA+ZL20uHCquXRnsNlGdCitzmnh31f91WFMpsi2sD5RHa
- r7BI9KAZAWSL+5r5k53GVXm5PQ==
-X-Google-Smtp-Source: ACHHUZ5OT3d79U/xA7mneA2HKQmyKYgRNhYmiUQlBv6Kij/RdQbTbeq2KY/g9/jvO8KIsu/7q/ajWw==
-X-Received: by 2002:a17:907:1b09:b0:974:771e:6bf0 with SMTP id
- mp9-20020a1709071b0900b00974771e6bf0mr9953505ejc.56.1687255107063; 
- Tue, 20 Jun 2023 02:58:27 -0700 (PDT)
+ bh=c936LieMh+vuW2j5DLlTohojPSPBC96QqqBuoeqzW8M=;
+ b=j0uDsrfFHb2ch2e18bILAP47Pw3+6V9gT9uQf2T6RxBWoZUceT/mB4OdgXXpEfzfa+
+ +PJkGN3V1bIWNI1LrZE0ecKSv+t8vX7qzDJ3NX/MA41ZVJtWsWmc3IT8UwBc1pCVpowb
+ q+F8E4ek0Znlzoj2ISJATqu+HTLS4KhDcQwhBKGPcR6Vn0u7Wb9wmlT7+QcACSfV81l2
+ eVJ0pl5wcPSbvqZmkcXMR6w8gCFW7csAc+9gRuK6eVORbUpn1+5xRS5ybmuKIYA/XU+r
+ 8V8APa+UTepjRGjG4bRg9ZDQnC02gnQIRF6c1INvjyQEet3SZPT2/YutjszPDyAuJkdC
+ AWPA==
+X-Gm-Message-State: AC+VfDwupnHlVGW6lcr6NahOcJWuDnwBZ+XX4dtS6O0hX0fhxyCXktw4
+ O4IB9ncoZcf1klV3EuKR1S05Wg==
+X-Google-Smtp-Source: ACHHUZ5x6k09zfLm1AwzYvE8BF6AHiQ7b7Y1+BvErSOWzmKb7UVmZ+L7kggrXBtAYAbzIkKIbFiCzw==
+X-Received: by 2002:a05:6402:2683:b0:51a:4c1e:c94a with SMTP id
+ w3-20020a056402268300b0051a4c1ec94amr6708312edd.2.1687255332791; 
+ Tue, 20 Jun 2023 03:02:12 -0700 (PDT)
 Received: from [192.168.69.129] ([176.176.183.29])
  by smtp.gmail.com with ESMTPSA id
- ju15-20020a17090798af00b009788554ad10sm1087860ejc.138.2023.06.20.02.58.25
+ w3-20020a056402128300b005149e012658sm906780edv.34.2023.06.20.03.02.11
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 20 Jun 2023 02:58:26 -0700 (PDT)
-Message-ID: <58a6f77c-ee36-62cd-48bc-4f0e16eee2ed@linaro.org>
-Date: Tue, 20 Jun 2023 11:58:23 +0200
+ Tue, 20 Jun 2023 03:02:12 -0700 (PDT)
+Message-ID: <3ac0e48b-9e84-266b-5f5b-27bdce05c785@linaro.org>
+Date: Tue, 20 Jun 2023 12:02:09 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PATCH 2/5] include/migration: mark vmstate_register() as a
- legacy function
+Subject: Re: [PATCH 3/5] include/hw/qdev-core: fixup kerneldoc annotations
+ (!COMPLETE)
 Content-Language: en-US
 To: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
  qemu-devel@nongnu.org
@@ -75,9 +75,9 @@ Cc: Eduardo Habkost <eduardo@habkost.net>,
  Peter Maydell <peter.maydell@linaro.org>, Juan Quintela
  <quintela@redhat.com>, Leonardo Bras <leobras@redhat.com>
 References: <20230619171437.357374-1-alex.bennee@linaro.org>
- <20230619171437.357374-3-alex.bennee@linaro.org>
+ <20230619171437.357374-4-alex.bennee@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230619171437.357374-3-alex.bennee@linaro.org>
+In-Reply-To: <20230619171437.357374-4-alex.bennee@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2a00:1450:4864:20::529;
@@ -105,15 +105,34 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 6/19/23 19:14, Alex Bennée wrote:
-> Mention that QOM-ified devices already have support for registering
-> the description.
+> Fix up the kerneldoc markup and start documenting the various fields
+> in QDEV related structures. Unfortunately this is not enough include
+> the documentation because kerneldoc currently chokes on some of our
+> macros such as:
+> 
+>      /**
+>       * @gpios: list of named GPIOs the device provides.
+>       */
+>      QLIST_HEAD(, NamedGPIOList) gpios;
+> 
+> where it demands we document QLIST_HEAD and NamedGPIOList despite them
+> not technically being fields in the structure.
 > 
 > Signed-off-by: Alex Bennée<alex.bennee@linaro.org>
 > ---
->   include/migration/vmstate.h | 9 ++++++++-
->   1 file changed, 8 insertions(+), 1 deletion(-)
+>   include/hw/qdev-core.h | 123 ++++++++++++++++++++++++++++++++++-------
+>   1 file changed, 102 insertions(+), 21 deletions(-)
+
+I wonder if e.g.
+
+   typedef QLIST_HEAD(, NamedGPIOList) NamedGPIOListHead;
+
+outside of struct DeviceClass would help with those.
+
+Anyway, for this patch,
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+
 
 r~
 
