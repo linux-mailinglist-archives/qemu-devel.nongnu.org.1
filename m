@@ -2,85 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC74E73698C
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 12:40:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A20BC736991
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 12:40:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBYmo-0005dq-Rb; Tue, 20 Jun 2023 06:40:34 -0400
+	id 1qBYmy-00061W-NN; Tue, 20 Jun 2023 06:40:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qBYmk-0005SP-VT
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 06:40:32 -0400
-Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qBYmv-0005zB-RL
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 06:40:41 -0400
+Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qBYmf-0004iJ-En
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 06:40:26 -0400
-Received: by mail-ed1-x536.google.com with SMTP id
- 4fb4d7f45d1cf-51a21185130so4723943a12.0
- for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 03:40:25 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qBYmu-0004ks-8d
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 06:40:41 -0400
+Received: by mail-ed1-x52d.google.com with SMTP id
+ 4fb4d7f45d1cf-51a2c60c529so5564654a12.3
+ for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 03:40:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687257624; x=1689849624;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=ka3CMzCB+5HrtaMK79lnHyi0S0NQSXryjFCdnDk80RY=;
- b=atFtFX4ZNnPXPPl+jZ6j5cJ7A2ccxXSWHYHbYs3ROwW5dwuEsoMuSXHkFQGo66am3L
- ct3om/DFszK3D6AY/iCferQuMSW+twMOdcYovdup6AU+L3cAFYuUTg0GZHIcbvsgVNt6
- jdqI1xu4MLGjVJ4jWiO73TmMwrhmkYThXvoXkJNn8Lj2krwY1KIqu8Mwei35GNVgysbm
- rLuqIVH8cyg8ugL0XkqRl3rWGtp1/6eu5obEuj/D+Dc2pIRBk+TsXAAnncQvwFLzaZe/
- Aioz5ixOnFfdjreXZ0ivuqvTrM0S6+bAPQhPPGSrKs74G9exkH7MYRbokEI05ZxwLzQa
- qjbQ==
+ d=linaro.org; s=google; t=1687257638; x=1689849638;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=mFOudbuGPQ7r/aWWs57bo2A6yGDK1HAt0N0n9817+nA=;
+ b=J28MAzHw7ImP7TZrAe1c02Hjk/82lYeCJPQXC4esjGE2nOPt//WwSzu964hWhLW/FH
+ kIQ0OLOwZLRJO2RVpG25+Q8S9klna7qVUZlol6T0edQx1NhMGFoVvsOMGJdKkm/RilES
+ ra6dwpLgRi4zvVUTRasj2xLtYgH3P3uFQv1MZruZZJw5GzXsL+1WNVCLNF/I5/qzQjMg
+ bduo53aoI5rkQu0XEa4JXWpbA5WcvJC2S9lzL7TN7Outdi7+S4hyYnAeOK5ufDV5lSIl
+ VzOppWUXyexcuxSXYC8JAOWJzZY4tS5GJZlXjdaPEt4EWiBttOZrDQU/zBwjGFXpxnR6
+ Vm5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687257624; x=1689849624;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ka3CMzCB+5HrtaMK79lnHyi0S0NQSXryjFCdnDk80RY=;
- b=FlgsVXdFdQDKOEEG/LpgujfnfVpRUx8T2Ff7J47TEALw/ik9YDyMR5LAbvswpOdghl
- czhVLyUSFOHFlPlmFyQ6dOjhOri3mAin90bnriFnCtcshy/oi9wvtACF6iIMbCDpbgOi
- PRzWg7ymX7Uht8duoStr+o0msGtgK+8ENikq6q6reVFA1ptkg+XTOLvq9LcosS6lxuZ2
- u3zCam3osJsVdqd1GasHzF/S9UXuauodiOfaJni5E7S1mznuZJjxlNpmFaCv9FzFrBw1
- WCgdb/9coboUeV2vrS6I+4CbTwm01dGSk5F55cA+RGydm4yfjTJbjPua44Me/Sfug9Cl
- uC/w==
-X-Gm-Message-State: AC+VfDzPY0DbhK50eQAy1mje35UjbDN/9oimPx29Q3gIgcuZLfR9tvVF
- wNpjutobYKXwZgWA/XsEeTdLFA==
-X-Google-Smtp-Source: ACHHUZ7oY5J9q3Jncnx6LWZgspMNtd/gXpRKDHDVJFnC/W734Zc5YwjuOxt0rIXnhCQF7yAPuJPsug==
-X-Received: by 2002:aa7:cf19:0:b0:518:7bab:b8f7 with SMTP id
- a25-20020aa7cf19000000b005187babb8f7mr7995551edy.16.1687257624074; 
- Tue, 20 Jun 2023 03:40:24 -0700 (PDT)
-Received: from [192.168.69.129] ([176.176.183.29])
- by smtp.gmail.com with ESMTPSA id
- y19-20020aa7c253000000b005148e981bd3sm954062edo.12.2023.06.20.03.40.23
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 20 Jun 2023 03:40:23 -0700 (PDT)
-Message-ID: <2f722452-b835-e341-19cd-4bb14e0bcd31@linaro.org>
-Date: Tue, 20 Jun 2023 12:40:21 +0200
+ d=1e100.net; s=20221208; t=1687257638; x=1689849638;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=mFOudbuGPQ7r/aWWs57bo2A6yGDK1HAt0N0n9817+nA=;
+ b=MdUh0c3GcXe7vfdaFHzWJA61Dym9OIdcMP9alBQpSFPu5pxBX6BJ/n38PSCgFaxX/1
+ 82R33K3kkpvDgtg4HPKW9WNx6x49c7fcMddxBgBuhsCkJX2jzznOHWEmNLANW55omg/+
+ WbMkvRdpEPFAwRtj38wHaouPVxLcKZQfggVRw1DUqGcjZRvAO7ulYnzj59/Xu17uStrZ
+ ldaongEUumKuOPgBlsWahHpqfTBuwwznswOub0kPHzlelU0qyH6HmVIjZbWsgLuaVh9U
+ 1Aq+o12f2kN1at1fJPWY0of+wzE3GCbIHvMsV/nmCqFT/Zith4bQYzCO8t4EI07XpJKn
+ EeyQ==
+X-Gm-Message-State: AC+VfDwHSyRND5sBlAYO34Nz6bupNgknNQvWRvZEZldEZQcAUxk3c/g5
+ BD9e9RpMkhFEw5t88Ycjiqn2sJExUIcSk/PfKPuTaA==
+X-Google-Smtp-Source: ACHHUZ7rhRNXE3FeTkqKkROyak2QNbPbhotj9k8WOXu2+GHzTV68FNQc1c85MtCqcH9ZvEukkmqhLHJEXUWlzHCSBLc=
+X-Received: by 2002:a05:6402:651:b0:51a:5a07:a5c3 with SMTP id
+ u17-20020a056402065100b0051a5a07a5c3mr3833695edx.14.1687257638565; Tue, 20
+ Jun 2023 03:40:38 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH v3 25/34] target/arm/tcg: Extract PAuth definitions to
- 'helper-pauth.h.inc'
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, Peter Maydell <peter.maydell@linaro.org>
-References: <20230619154302.80350-1-philmd@linaro.org>
- <20230619155510.80991-1-philmd@linaro.org>
- <20230619155510.80991-13-philmd@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230619155510.80991-13-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::536;
- envelope-from=richard.henderson@linaro.org; helo=mail-ed1-x536.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+References: <alpine.DEB.2.22.394.2306151649350.897208@ubuntu-linux-20-04-desktop>
+ <20230615235254.1366267-6-sstabellini@kernel.org>
+In-Reply-To: <20230615235254.1366267-6-sstabellini@kernel.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 20 Jun 2023 11:40:27 +0100
+Message-ID: <CAFEAcA8dFsXaBjvHf3_GpGVF8nP-nSKAQh7txHHUzB0bv4jeqg@mail.gmail.com>
+Subject: Re: [PULL v5 06/11] hw/xen/xen-hvm-common: skip ioreq creation on
+ ioreq registration failure
+To: Stefano Stabellini <sstabellini@kernel.org>
+Cc: richard.henderson@linaro.org, qemu-devel@nongnu.org, 
+ vikram.garhwal@amd.com, Stefano Stabellini <stefano.stabellini@amd.com>, 
+ Paul Durrant <paul@xen.org>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -98,21 +88,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/19/23 17:55, Philippe Mathieu-Daudé wrote:
-> helper.h is used by all units, but not all require the crypto
-> definitions. Move them to a new header, which we only include
-> where necessary, removing the need for "exec/helper-proto.h".
-> 
-> Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org>
-> ---
->   target/arm/tcg/helper-a64.h.inc   | 12 ------------
->   target/arm/tcg/helper-pauth.h.inc | 19 +++++++++++++++++++
->   target/arm/tcg/pauth_helper.c     |  4 +++-
->   target/arm/tcg/translate-a64.c    |  6 ++++++
->   4 files changed, 28 insertions(+), 13 deletions(-)
->   create mode 100644 target/arm/tcg/helper-pauth.h.inc
+On Fri, 16 Jun 2023 at 00:53, Stefano Stabellini <sstabellini@kernel.org> wrote:
+>
+> From: Stefano Stabellini <stefano.stabellini@amd.com>
+>
+> On ARM it is possible to have a functioning xenpv machine with only the
+> PV backends and no IOREQ server. If the IOREQ server creation fails continue
+> to the PV backends initialization.
+>
+> Also, moved the IOREQ registration and mapping subroutine to new function
+> xen_do_ioreq_register().
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Hi. This refactoring has prompted Coverity to notice that
+we're passing around a large structure by value here:
+MemoryListener is 192 bytes in size, and we pass it by value
+into xen_register_ioreq() and now through into xen_do_ioreq_register().
 
-r~
+Does this really need to be pass by value? Could we pass a pointer
+instead?
+
+(CID 1513106, 1513107).
+
+I suspect also that the argument should be a const pointer,
+and the callsites should mark the structs they're passing as
+const.
+
+> -void xen_register_ioreq(XenIOState *state, unsigned int max_cpus,
+> -                        MemoryListener xen_memory_listener)
+> +static void xen_do_ioreq_register(XenIOState *state,
+> +                                           unsigned int max_cpus,
+> +                                           MemoryListener xen_memory_listener)
+
+thanks
+-- PMM
 
