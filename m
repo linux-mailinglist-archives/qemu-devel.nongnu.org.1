@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D5C473673C
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 11:12:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38194736743
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 11:12:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBXPG-0004cH-Hh; Tue, 20 Jun 2023 05:12:10 -0400
+	id 1qBXPI-0004vP-EN; Tue, 20 Jun 2023 05:12:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qBXP8-0004NN-UD
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 05:12:03 -0400
-Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
+ id 1qBXPG-0004mv-HB
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 05:12:10 -0400
+Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qBXP7-0000cN-DN
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 05:12:02 -0400
-Received: by mail-ed1-x52b.google.com with SMTP id
- 4fb4d7f45d1cf-514ab6cb529so10553653a12.1
- for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 02:12:00 -0700 (PDT)
+ id 1qBXPE-0000eH-Rx
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 05:12:10 -0400
+Received: by mail-ed1-x534.google.com with SMTP id
+ 4fb4d7f45d1cf-51a324beca6so6009794a12.1
+ for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 02:12:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687252320; x=1689844320;
+ d=linaro.org; s=google; t=1687252327; x=1689844327;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=3gif1IxSp3f99xEMoIr1useawRrU6RHI0oi8P12TIKQ=;
- b=hSnLzUnk2KDP+QTlcN6RXfGB2y/6jDh0e7bDljW9P+wqufWX357nSoPBNuEsW09VGL
- owMYpuVFaA1aatur6ub6xNJ3z9pTpupnfSeqKh5qwFt034zI3wX0VXUqx1WGmDU0VRnZ
- 9UdGCYDhgMv42vSN6qMWtCGGc4nzkeVXLjIesBnQ2QJV5kG5lKZ/LuSOdtW2kl3Awq3Z
- jBgOJzO82UDcTaY6JnyUg0c+saw6u00SD7ScJ0GkUEtaVRozNjz83TwqmLu/RlM2c+z3
- plA0q7uFwfnh+lIA/prWWsqfNBykD+nt31UE3PN+XVAB79T4uQdKLsU+NsUE2zPY7xDS
- V4GA==
+ bh=hXWkUbCN8mCx3bzv7BwWRwJ3Kc3wo97oFFfvsnwxyvY=;
+ b=h2aKcWKaHnQQCGATJZuukNYQV/+8Hwme7WR8aC7PSVHa12TxIeo4o274LyDMs1yyoW
+ 2UemGQUYFoGO/2Nw+1/lZlIE83hxPx0trXsvNHxxnYuxiwn1tmqBFJJS2/tWIDJ0CzJn
+ H0ARRBP6YOKHIcc2VSkI7vxoKx8asoT+jynz2PXbXMhRy31Ff2uac1q2MpHgFf6s/GRa
+ 4iB4ZNGx35GRNy9DmKkH7lygqaWCVoIzDCnuOMiC7J9IVX1L4rb8+N3qr6bv6Rps/xaB
+ CbgsFOLsXHG1Ld/a8xbINBIj5+NwcULFBBc4iUnHDGCSn6S3UF2mQw1XRDA4X/xkMcYL
+ 7gdw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687252320; x=1689844320;
+ d=1e100.net; s=20221208; t=1687252327; x=1689844327;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=3gif1IxSp3f99xEMoIr1useawRrU6RHI0oi8P12TIKQ=;
- b=TTfs7AMbuwUHZkdemP/jpVnmB7XRWlWGn3GswyQxnZ0+Mh0OXXNV2MsJ8XSVi/wkKX
- /LbkTCqA+c0eKKIWMwZUma7SvWLsHyu7h8++oETX5r168urGEFx+UUKritwe1IWGOeDc
- wCezCDuIsG/0T2dp23TzVpWXnS3gbSBllV0jOFLJtEWCgpfRZQrrn93V33jtc3sJCgaJ
- 3pFIDqHSHcXeH3kQN1crWEKgIkQ1hnrX3WoS8oo9ylswtAr2D4KCotxrCa+VRpjHFGge
- 5z18CXYSj7hFt2ztxHAYY1zpQ7XYGz1g3TpH3NwT1H4waqw7V5PMq+wBc+0YBJEabX8S
- o2kA==
-X-Gm-Message-State: AC+VfDwG8sjXN8Nk5j9j67jA8Zlf3GZ47FKuIP3fL5D2HEni9WxnAUnc
- hc0zj9WBvSq2Xzg27wVFDaeHQSx79TUi0f51kF2YslYw
-X-Google-Smtp-Source: ACHHUZ4SEcG4vadKXUb9/rYO28zWrImuIMxAYVyudshDOIBqyS5KFwcSd/py8sgRrz/e6ffMqlEw0Q==
-X-Received: by 2002:a50:ee14:0:b0:51a:4d20:3b1c with SMTP id
- g20-20020a50ee14000000b0051a4d203b1cmr7044797eds.18.1687252320176; 
- Tue, 20 Jun 2023 02:12:00 -0700 (PDT)
+ bh=hXWkUbCN8mCx3bzv7BwWRwJ3Kc3wo97oFFfvsnwxyvY=;
+ b=absERRiyhL27RmYllekxUPtLVk8Ws3904queXhcNlLldjQkRRe5Dgv2mDRR25XJPhx
+ ZbDdWddP0v586npO1B8G5de6MDFM5dTZj8X+gW1tyNS2tiPWa6cWvyhkzKFaugXB0JxG
+ 9c8uR8drNZwOje5gq9fwa6AAZRCYq2kVTCNAiippbT8yEFkUQ/GztjFxTnbJ3jknmO3n
+ XFSn7z8rMknMacxoYWebyoBVhv4kQDelbZvrdFIhid69xtR3NtZt7zZEZqnNgk2l3GkP
+ xkxK/HaacNZw5CKhLr7Eu2R1T5MiWezkVZkGpmK1nbNf9vRT8fpd2nFzDZvfXow57BQg
+ RKkA==
+X-Gm-Message-State: AC+VfDyN0GYqetZCKvHZGo0cRJAPv3almpKqcjblq8uFkJaWiftAFOJD
+ 5sydXz1kw9yKM39XAYhZjwg7Vg==
+X-Google-Smtp-Source: ACHHUZ5CE+JkfNuThiWpy2Kem7RMKchuAfP+1QyoqLpW+JagZJWYsX0+NFdWmc03hkAlIwWV/Q6v4A==
+X-Received: by 2002:a05:6402:759:b0:51a:7bcd:a82d with SMTP id
+ p25-20020a056402075900b0051a7bcda82dmr2812949edy.23.1687252327487; 
+ Tue, 20 Jun 2023 02:12:07 -0700 (PDT)
 Received: from [192.168.69.129] ([176.176.183.29])
  by smtp.gmail.com with ESMTPSA id
- j20-20020aa7c414000000b0051a3334f873sm821633edq.89.2023.06.20.02.11.58
+ h3-20020aa7c603000000b005149b6ec1bdsm831776edq.29.2023.06.20.02.12.06
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 20 Jun 2023 02:11:59 -0700 (PDT)
-Message-ID: <3b9309c8-9407-ebd0-f135-55b27b8b1fec@linaro.org>
-Date: Tue, 20 Jun 2023 11:11:56 +0200
+ Tue, 20 Jun 2023 02:12:07 -0700 (PDT)
+Message-ID: <b5a9c470-d499-fdaa-3699-b1d66e9262ff@linaro.org>
+Date: Tue, 20 Jun 2023 11:12:05 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PATCH 7/9] ppc/bamboo: Report an error when run with KVM
+Subject: Re: [PATCH 8/9] ppc/pnv: Rephrase error when run with KVM
 Content-Language: en-US
 To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>, qemu-ppc@nongnu.org,
  Daniel Henrique Barboza <danielhb413@gmail.com>
 Cc: qemu-devel@nongnu.org
 References: <20230620055911.187065-1-clg@kaod.org>
- <20230620055911.187065-8-clg@kaod.org>
+ <20230620055911.187065-9-clg@kaod.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230620055911.187065-8-clg@kaod.org>
+In-Reply-To: <20230620055911.187065-9-clg@kaod.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
- envelope-from=richard.henderson@linaro.org; helo=mail-ed1-x52b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::534;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ed1-x534.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -97,13 +97,10 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 6/20/23 07:59, Cédric Le Goater wrote:
-> The 'bamboo' machine was used as a KVM platform in the early days (~2008).
-> It clearly doesn't support it anymore.
-> 
 > Signed-off-by: Cédric Le Goater<clg@kaod.org>
 > ---
->   hw/ppc/ppc440_bamboo.c | 17 ++++++-----------
->   1 file changed, 6 insertions(+), 11 deletions(-)
+>   hw/ppc/pnv.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
