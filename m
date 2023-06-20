@@ -2,82 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D9BD7370A7
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 17:38:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB7CF7370B7
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 17:41:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBdQx-0008EF-A9; Tue, 20 Jun 2023 11:38:23 -0400
+	id 1qBdU0-00032H-U1; Tue, 20 Jun 2023 11:41:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qBdQr-00087K-0o
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 11:38:15 -0400
-Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qBdTy-00031p-To
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 11:41:26 -0400
+Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qBdQo-0007rY-0X
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 11:38:12 -0400
-Received: by mail-ed1-x52b.google.com with SMTP id
- 4fb4d7f45d1cf-519f6e1a16cso5749223a12.2
- for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 08:38:08 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qBdTx-0000WI-Bj
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 11:41:26 -0400
+Received: by mail-ej1-x636.google.com with SMTP id
+ a640c23a62f3a-988c30a540aso283419166b.3
+ for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 08:41:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687275487; x=1689867487;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=MoGjPgk/uRWlVcWLSh1TXKixNJ0OTYRcu7/yn7yeKEU=;
- b=wg/qrnfOyXMhQ3PoKqOxz4GOk1oFPe5eFIc8AEaRPPDsu4mY7yV/MYEodDFGeEKmew
- DmWJOVomXdg6/TeC+nSbL3NjQX8zcUtn5xFMbUbQlQX1eTrADqiuaRxsDT7j1z5FKavS
- t6Cijnr1zm7aXFvT9aXP7cBzLQ7vNGfQ8/ulP5pbDA8mJzjKhPr71vbu3LTDeK/UP2Tw
- A5JcFYZuWE3RuYs/FM1RBQLZH5YyNsBYP0OJONs3ZxjFYibD+VARXaQNL1wBJElT2HO6
- sGOiU8rIP0pmPRl/d8Hu9DJAHGgmUCbuZYoDFOLP8GK8pjc2957NyrktnGzhGTMdlowq
- RaAw==
+ d=linaro.org; s=google; t=1687275684; x=1689867684;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=6kr/yAHzUnE7I9uVhtWoT9osyspM/+Hnlrq3EKlb/wE=;
+ b=VX34LI0ckBkJydgP4sRmI9vWhfCNynaSQhIGyPFjM8/OobjRckiPbglyiyc9Fa9GEW
+ 9e87lSzNcZesNVkLBMWTI8ey5hCdgtbFmFuaQDKsCYsq0aGzVt3qMf8mjCIXdjRK1uTz
+ 6u1icaQ5WiCFF2WafaZHA5yjvsGN+QC4JNrn8K7z3HgO831R/9+jHkFg2ZwgdollI+kg
+ KcNkFXvhot6rq7HrFxhszpuy5hnvFYnWRDlt6PoC53jZFTsmCchUrT/epl2Cucd4LPJx
+ sqZ0rrZ3UJi+fidkuijDozJldEdeXhFvMAwlgtsNxIk0WHPOkINwWIwljE8RZ8xox1Mn
+ dYIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687275487; x=1689867487;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=MoGjPgk/uRWlVcWLSh1TXKixNJ0OTYRcu7/yn7yeKEU=;
- b=IPTOPlvOmB3SbybqED8rk54XA4Om2BTd/xZg5sdhwN5pP0GPKwy19rGxvn4KvfokMo
- ks+MVHAA/j7CT92f4i792OhsmiABSr4zeEIecRfV9cJrWjQP5I4S0sxTOORD0wwO04h0
- q25FssCroQzvNiSrdqE9DuIPeRtROhdN/XITBVCBWm47NveT4XHvUNgoMaO0GJf804I+
- cl4lgg/0Jydd0bpFkP/Hileo5IL+mVw1r/3kCnEOKu/+tzPfFuHhsfXUOYSXzuCY+lAB
- yI2ESkbevTLjDLBsQE7kpgKp1W5kbn8f4iSihWhKh2UUqVM9rzJSQwtoYdOeWXiGbAw+
- Sp0w==
-X-Gm-Message-State: AC+VfDySb637KGWMfp6H5YDh4KhyTKL3vHxdoLeHsd759KIx9ngxbPaw
- 64idh0dr2Ju1mp0IwPkWrgGpga3K5ZrDP9oPOHbFLw==
-X-Google-Smtp-Source: ACHHUZ5RQu/KrtxTKBcZw4tLQ2esizgg5gbEutgXh6FzGL2dOjgcuK9LfJXy4crj1Rl6CixOtLDnYNLu9Yt72Z0E/LY=
-X-Received: by 2002:aa7:d7c4:0:b0:51b:c626:7d71 with SMTP id
- e4-20020aa7d7c4000000b0051bc6267d71mr2546886eds.14.1687275487599; Tue, 20 Jun
- 2023 08:38:07 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1687275684; x=1689867684;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=6kr/yAHzUnE7I9uVhtWoT9osyspM/+Hnlrq3EKlb/wE=;
+ b=DwKKl2SpAswsap4uhXgxXz+za8YmjKbirP7+wUM0ZlEqxePrf4JoH6kRjyH3S+vlO3
+ FPmDSfRvGPDAIgawiRB2vIvLqts3TUiT/R4/8bAE8Oq/k6e89/BL+Yogo/PzgUrc8D6g
+ YIde+PJFJiwJ+1q3Xsxe+HoBwWCrX4rqJlESbhrWrh0rGgq361V2hysb5EcNjDwvgeKx
+ 7nA0bf24FYbJhGFr4jD54LZf+Y4ChDrtqRi0j+kyVabVXF9fl3ifUIJzvKOLB5C0qb+G
+ Z13MhYt2LxXop1oMWI1lmEXwLcoLd9C9or0pCfT44hTvldu063aGRsCiqdbyo5FwW9pm
+ wQNA==
+X-Gm-Message-State: AC+VfDwX4IKvajBKD71IvkhRCjeHvyU1mLlmTpu4bypTuUUcls2Vo5XU
+ yzccAhmt2Pua5Z2bQEsl8/g4Gw==
+X-Google-Smtp-Source: ACHHUZ4FvcikndAeBbnebioeD5RqwbsETiBwdd6g0Ad7eubVMAGVlRjU9XgxVpwYKmopDEg2q9B20w==
+X-Received: by 2002:a17:907:162a:b0:988:918c:8116 with SMTP id
+ hb42-20020a170907162a00b00988918c8116mr5457568ejc.61.1687275683737; 
+ Tue, 20 Jun 2023 08:41:23 -0700 (PDT)
+Received: from [192.168.69.115] ([176.176.183.29])
+ by smtp.gmail.com with ESMTPSA id
+ ju3-20020a17090798a300b0097381fe7aaasm1596187ejc.180.2023.06.20.08.41.22
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 20 Jun 2023 08:41:23 -0700 (PDT)
+Message-ID: <2974a774-b55d-371a-5596-5be1938ad4af@linaro.org>
+Date: Tue, 20 Jun 2023 17:41:21 +0200
 MIME-Version: 1.0
-References: <20230619171437.357374-1-alex.bennee@linaro.org>
- <20230619171437.357374-2-alex.bennee@linaro.org>
-In-Reply-To: <20230619171437.357374-2-alex.bennee@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 20 Jun 2023 16:37:56 +0100
-Message-ID: <CAFEAcA8jVCMn+CmOWOA5a2HWu5NQtN96qES2-BMtf6PNnNqgtA@mail.gmail.com>
-Subject: Re: [PATCH 1/5] docs/devel: add some front matter to the devel index
-To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org, Eduardo Habkost <eduardo@habkost.net>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- Paolo Bonzini <pbonzini@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Peter Xu <peterx@redhat.com>, 
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Juan Quintela <quintela@redhat.com>, 
- Richard Henderson <richard.henderson@linaro.org>,
- Leonardo Bras <leobras@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.12.0
+Subject: Re: [PATCH v3 1/5] target/microblaze: Define TCG_GUEST_DEFAULT_MO
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: Alistair Francis <alistair.francis@wdc.com>,
+ "Edgar E . Iglesias" <edgar.iglesias@gmail.com>
+References: <20230619142333.429028-1-richard.henderson@linaro.org>
+ <20230619142333.429028-2-richard.henderson@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230619142333.429028-2-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::636;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x636.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -95,16 +94,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 19 Jun 2023 at 18:14, Alex Benn=C3=A9e <alex.bennee@linaro.org> wro=
-te:
->
-> Give an overview of the most useful bits of the devel documentation to
-> read depending on what the developer wants to do.
->
-> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+On 19/6/23 16:23, Richard Henderson wrote:
+> The microblaze architecture does not reorder instructions.
+> While there is an MBAR wait-for-data-access instruction,
+> this concerns synchronizing with DMA.
+> 
+> This should have been defined when enabling MTTCG.
+> 
+> Cc: Alistair Francis <alistair.francis@wdc.com>
+> Cc: Edgar E. Iglesias <edgar.iglesias@gmail.com>
+> Fixes: d449561b130 ("configure: microblaze: Enable mttcg")
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>   target/microblaze/cpu.h | 3 +++
+>   1 file changed, 3 insertions(+)
+> 
+> diff --git a/target/microblaze/cpu.h b/target/microblaze/cpu.h
+> index 88324d0bc1..b474abcc2a 100644
+> --- a/target/microblaze/cpu.h
+> +++ b/target/microblaze/cpu.h
+> @@ -24,6 +24,9 @@
+>   #include "exec/cpu-defs.h"
+>   #include "qemu/cpu-float.h"
+>   
+> +/* MicroBlaze is always in-order. */
+> +#define TCG_GUEST_DEFAULT_MO  TCG_MO_ALL
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Targets missing such definition:
 
-thanks
--- PMM
+- cris
+- m68k
+- nios2
+- rx
+- sh4
+- sparc/64 (!)
+- tricore
+
+I expect targets designed for embedded systems
+to be in-order for power efficiency.
+
+What about having each target being explicit about that,
+having a build failure if TCG_GUEST_DEFAULT_MO is not defined,
+instead of the '#ifdef TCG_GUEST_DEFAULT_MO' in accel/tcg/?
+
 
