@@ -2,91 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D2F37368E7
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 12:12:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61F3A7368EB
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 12:13:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBYK2-0001ex-5J; Tue, 20 Jun 2023 06:10:50 -0400
+	id 1qBYMG-0002UU-UW; Tue, 20 Jun 2023 06:13:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qBYJv-0001eS-7k
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 06:10:43 -0400
-Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1qBYME-0002UE-U0; Tue, 20 Jun 2023 06:13:06 -0400
+Received: from mail-pg1-x52a.google.com ([2607:f8b0:4864:20::52a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qBYJt-0006G8-Lo
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 06:10:42 -0400
-Received: by mail-ej1-x62e.google.com with SMTP id
- a640c23a62f3a-985b04c47c3so618791666b.1
- for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 03:10:41 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1qBYMD-0006fL-7K; Tue, 20 Jun 2023 06:13:06 -0400
+Received: by mail-pg1-x52a.google.com with SMTP id
+ 41be03b00d2f7-54fbcfe65caso3673787a12.1; 
+ Tue, 20 Jun 2023 03:13:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687255840; x=1689847840;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=mVD0uBSjvZ/iWn0rNtVSWoNfudVRsdQwAGNu8rYOCCk=;
- b=NfRnXbOhYtDuqLcCslOg5oXZVJnkTPERfiowoFr8Z6WS8GCsoHhqbHnEWG2KEmW5CZ
- NNzyncxTmQgwAVSNJY5ZG/wP8LLF9B0oedMEgi2aIJuXT5HIvhd81AZWrluqLvCvuTCR
- SCA2plIGnuBpW63LjjuS2HoT8er2UaNgANjDcaykAMFizoFwfVhZwfmE9n8hE5HjEx1z
- ost/hIeZWHuiQ5UnSiGC/z6Sk02UMioG/neHwyr+MTdF5jC49ulOcYG5XZCqoljhxmgJ
- C6G3owt+T0D1IhCvBCliHlMYtLnOaQstbyr6ZbpRjAvpfKw+5N4F3ZHksrms0qIT/qpL
- EVHA==
+ d=gmail.com; s=20221208; t=1687255983; x=1689847983;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=m2ET9aNrfsRLdNp/DMnqrDeB4EceBt3i3n6JlHvi8zQ=;
+ b=imRowmo9pX1nzKrz1WHeG7uKB2VN/FK5+uHr8eeryYNRSR4Gn/G1X3zEwqXGCfFHtK
+ of2OHMAqU+cf1CGkaqGQxDcGQZkipbVeAa+yWG6FlYuiho5KmHU1d65jH0VQyySMTGCz
+ LJPaj1V+85Z19vkgRNy0fDUsw8dof72LSvdCx3pE1UBGdtq8KWvCy2J0/TXTKN0V8kxq
+ 4wZeHGVlDV6sXXp2ijQp5qd0njcS8Y+0msjOAoT1pPATLKc69jfkTbPBAs5ByzGB8hYR
+ M5Rlv1EDjbqYG09abBafsaH+rKLlbdLEb7iHA2DVscFp3fkZKNSneA8VN50RquW2GykB
+ 4LXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687255840; x=1689847840;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=mVD0uBSjvZ/iWn0rNtVSWoNfudVRsdQwAGNu8rYOCCk=;
- b=MfEVfzUzgnv1PvAcKRy9GPB7ks7RI5T2mlp7app4sugWqCJhuduPwESGoNXasvjpiy
- uQTYah1w2M1IgM9P/KZZAkuYvzGipgZDzbNerVZ4oht0JG4WcQwevpKciYijp6VOENE7
- 3JPHItoRfG7Upk13c5YrUVorxEtey5Eii6oq+Acve5qCz5WKYxoHEblvxr4GD5AiphdQ
- 3Bf8gLLfV/NZxsQDi8PsZwnYjhabg56Co7c5/FKJvgdUgzK68gBlEA+6ckkd0fkXHBXE
- Nietd5+1TTPvcuZB9lxQKFEh3Ipot/kFufwdzJduhADPiWZt6E0zNRTRtMhfBbMbfetx
- 506g==
-X-Gm-Message-State: AC+VfDxDDQai8NHEZ9VxtQp3AztOxiuw/jMxSxqNLhBh0tLe6TTdYF5r
- cygkSofP1kcI5p78QJbePptScQ==
-X-Google-Smtp-Source: ACHHUZ5akGeegNysSoiTdH86PoZtFUO/0/rqa27aBS8xSyNFdy5nq8qnOPHjf0fqIc6s7vPTqqATiQ==
-X-Received: by 2002:a17:907:7b96:b0:969:7739:2eb7 with SMTP id
- ne22-20020a1709077b9600b0096977392eb7mr12265453ejc.4.1687255839817; 
- Tue, 20 Jun 2023 03:10:39 -0700 (PDT)
-Received: from [192.168.69.129] ([176.176.183.29])
- by smtp.gmail.com with ESMTPSA id
- si25-20020a170906ced900b009823e0bfb05sm1084582ejb.162.2023.06.20.03.10.38
+ d=1e100.net; s=20221208; t=1687255983; x=1689847983;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=m2ET9aNrfsRLdNp/DMnqrDeB4EceBt3i3n6JlHvi8zQ=;
+ b=AVU7NGQPVx9n3ZLN1pf8H4R/JJkiZY61fPrUFewIg8LQvuB4ul54O+iRCyTp22UF+z
+ POaCpeCHzCYaTQtq4khABtfaAiA2lKesK5MoezzfXuqXiB0/LibabSEq3Xir9D243Gd7
+ hCLw4Syqo0G32O/bqjaKNsF01DlWhzU9HeA6b+oxwuAzDH2CzqCKTOtj6h5nQCkPdwoB
+ 6+ebdfr329DlNwqZ7ch4j9I2FMeM0fjaJGJEFCEdqIkZBSqYConARVVVxKMHz7rDMLeg
+ IFjhv/GJpe94WV9TUGfQw7At2F77ngCoBjjJHt6/Nn+bqdyZXPyACn96FUQlT18N9ahp
+ iMtA==
+X-Gm-Message-State: AC+VfDxIEP8oliBpHsY14gC7c7yS11GLNjSW7D34SjU2YB8hnmHN3MQW
+ slQh5WlPDrB+oqSbwgGAmDA=
+X-Google-Smtp-Source: ACHHUZ6ug1tF4vlEfzViKPU/UV+NnBMO4hT5hHAhzxKGqpC9QdZ03u7cK+puZ70Uo7+czTWYS9vHOA==
+X-Received: by 2002:a17:902:cf46:b0:1ac:820e:c34a with SMTP id
+ e6-20020a170902cf4600b001ac820ec34amr16366858plg.0.1687255983005; 
+ Tue, 20 Jun 2023 03:13:03 -0700 (PDT)
+Received: from localhost ([124.170.190.103]) by smtp.gmail.com with ESMTPSA id
+ q7-20020a170902b10700b001b24857d1f2sm1269180plr.188.2023.06.20.03.12.59
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 20 Jun 2023 03:10:39 -0700 (PDT)
-Message-ID: <77def85b-1a40-880e-0a54-ba5ae49b8f47@linaro.org>
-Date: Tue, 20 Jun 2023 12:10:36 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH 5/5] docs/devel: introduce some key concepts for QOM
- development
-Content-Language: en-US
-To: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Eduardo Habkost <eduardo@habkost.net>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Peter Xu <peterx@redhat.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Peter Maydell <peter.maydell@linaro.org>, Juan Quintela
- <quintela@redhat.com>, Leonardo Bras <leobras@redhat.com>
-References: <20230619171437.357374-1-alex.bennee@linaro.org>
- <20230619171437.357374-6-alex.bennee@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230619171437.357374-6-alex.bennee@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
- envelope-from=richard.henderson@linaro.org; helo=mail-ej1-x62e.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+ Tue, 20 Jun 2023 03:13:02 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 20 Jun 2023 20:12:57 +1000
+Message-Id: <CTHEBROKN9FJ.33DEPNNJ89JEQ@wheely>
+Cc: <qemu-devel@nongnu.org>, "Daniel Henrique Barboza"
+ <dbarboza@ventanamicro.com>, "Richard Henderson"
+ <richard.henderson@linaro.org>, =?utf-8?q?Alex_Benn=C3=A9e?=
+ <alex.bennee@linaro.org>
+Subject: Re: [PATCH 0/4] target/ppc: TCG SMT support for spapr
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, <qemu-ppc@nongnu.org>
+X-Mailer: aerc 0.14.0
+References: <20230605112323.179259-1-npiggin@gmail.com>
+ <43ca9ac8-d383-42fd-ca29-f7cdd18d701d@kaod.org>
+In-Reply-To: <43ca9ac8-d383-42fd-ca29-f7cdd18d701d@kaod.org>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52a;
+ envelope-from=npiggin@gmail.com; helo=mail-pg1-x52a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -104,17 +93,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/19/23 19:14, Alex Bennée wrote:
-> +As class initialisation cannot fail devices have an two additional
-> +methods to handle the creation of dynamic devices. The ``realize``
+On Wed Jun 7, 2023 at 12:09 AM AEST, C=C3=A9dric Le Goater wrote:
+> On 6/5/23 13:23, Nicholas Piggin wrote:
+> > Previous RFC here
+> >=20
+> > https://lists.gnu.org/archive/html/qemu-ppc/2023-05/msg00453.html
+> >=20
+> > This series drops patch 1 from the previous, which is more of
+> > a standalone bugfix.
+> >=20
+> > Also accounted for Cedric's comments, except a nicer way to
+> > set cpu_index vs PIR/TIR SPRs, which is not quite trivial.
+> >=20
+> > This limits support for SMT to POWER8 and newer. It is also
+> > incompatible with nested-HV so that is checked for too.
+> >=20
+> > Iterating CPUs to find siblings for now I kept because similar
+> > loops exist in a few places, and it is not conceptually
+> > difficult for SMT, just fiddly code to improve. For now it
+> > should not be much performane concern.
+> >=20
+> > I removed hypervisor msgsnd support from patch 3, which is not
+> > required for spapr and added significantly to the patch.
+> >=20
+> > For now nobody has objected to the way shared SPR access is
+> > handled (serialised with TCG atomics support) so we'll keep
+> > going with it.
+>
+> Cc:ing more people for possible feedback.
 
-Beginning with "as" feels like a continuation from something that has been omitted. 
-You've skipped over describing ``init`` entirely, and then assumed it.
+Not much feedback so I'll plan to go with this.
 
-> +The reverse function is ``unrealize`` and should be were clean-up
+A more performant implementation might try to synchronize
+threads at the register level rather than serialize everything,
+but SMT shared registers are not too performance critical so
+this should do for now.
 
-"and is where clean-up"
-
-
-r~
+Thanks,
+Nick
 
