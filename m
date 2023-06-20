@@ -2,51 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63130736EA5
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 16:27:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17522736EB3
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 16:32:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBcJl-0008HM-A1; Tue, 20 Jun 2023 10:26:49 -0400
+	id 1qBcOB-0001VF-O9; Tue, 20 Jun 2023 10:31:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qBcJj-0008Gf-7J; Tue, 20 Jun 2023 10:26:47 -0400
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ (Exim 4.90_1) (envelope-from <fbarrat@linux.ibm.com>)
+ id 1qBcO8-0001St-CB; Tue, 20 Jun 2023 10:31:20 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qBcJh-0003wy-AZ; Tue, 20 Jun 2023 10:26:46 -0400
-Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id 3E53874638A;
- Tue, 20 Jun 2023 16:26:34 +0200 (CEST)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 7717E746377; Tue, 20 Jun 2023 16:26:33 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 75C11745720;
- Tue, 20 Jun 2023 16:26:33 +0200 (CEST)
-Date: Tue, 20 Jun 2023 16:26:33 +0200 (CEST)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Nicholas Piggin <npiggin@gmail.com>
-cc: qemu-ppc@nongnu.org, qemu-devel@nongnu.org, 
- Harsh Prateek Bora <harshpb@linux.ibm.com>, 
- Daniel Henrique Barboza <danielhb413@gmail.com>, 
- Anushree Mathur <anushree.mathur@linux.vnet.ibm.com>, 
- Fabiano Rosas <farosas@suse.de>
-Subject: Re: [PATCH 1/4] target/ppc: Fix instruction loading endianness in
- alignment interrupt
-In-Reply-To: <20230620131044.169110-2-npiggin@gmail.com>
-Message-ID: <393305f2-e785-c3f6-523f-6826b3511cc4@eik.bme.hu>
-References: <20230620131044.169110-1-npiggin@gmail.com>
- <20230620131044.169110-2-npiggin@gmail.com>
+ (Exim 4.90_1) (envelope-from <fbarrat@linux.ibm.com>)
+ id 1qBcO5-00054n-RX; Tue, 20 Jun 2023 10:31:20 -0400
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 35KEEFBQ002711; Tue, 20 Jun 2023 14:31:14 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=TeFuEQvaUC+D2rEdn7AMITJyJP6mr516clm6/SeWh3U=;
+ b=iLU55ao4qOBmSs4GiuwFCy+dNQBF7DYG+OOPK2dlOCxiVjhSvJLuL3jXDG9bm7lCOFH6
+ O2IHIgWH2sR7DuzpR6xlsrYUhPSltoGJJklCi9CWzI1dJCnBJDCiH1pgg7NQEWxOjaSC
+ yL1B8DeLrkQC1XwwgKjigYADAYlSuk9WuzZ0ZfW6a8GownyIiJm9KqtI6l0KV1z2Llc1
+ hpbxyxOoqUZEPIos90NW86IbWH1vhA7qzc4CCvru8SbIg0gs5lNCxmwMftTCIvmg8zOc
+ 7s2FS99yGexa2t69JIeLOQosjHWrSoJK1ggN2Ix/QnPnEcCh/Ju0sKrAkdIJiBfbXKd2 uQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rbdpq8hg2-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 20 Jun 2023 14:31:13 +0000
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 35KEEWCt003554;
+ Tue, 20 Jun 2023 14:31:12 GMT
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.98])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rbdpq8hev-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 20 Jun 2023 14:31:12 +0000
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+ by ppma03ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 35K2R8Ra027827;
+ Tue, 20 Jun 2023 14:31:10 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+ by ppma03ams.nl.ibm.com (PPS) with ESMTPS id 3r94f5248v-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 20 Jun 2023 14:31:10 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com
+ [10.20.54.104])
+ by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 35KEV7Rv31588646
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 20 Jun 2023 14:31:07 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C29C12004E;
+ Tue, 20 Jun 2023 14:31:07 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7BEAD20040;
+ Tue, 20 Jun 2023 14:31:07 +0000 (GMT)
+Received: from [9.101.4.34] (unknown [9.101.4.34])
+ by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Tue, 20 Jun 2023 14:31:07 +0000 (GMT)
+Message-ID: <9f71ffc4-2b37-d8b8-56c6-658d264242c4@linux.ibm.com>
+Date: Tue, 20 Jun 2023 16:31:06 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-X-Spam-Probability: 9%
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.1
+Subject: Re: [PULL 05/29] pnv/xive2: Handle TIMA access through all ports
+Content-Language: en-US
+To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>
+Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, richard.henderson@linaro.org
+References: <20230610133132.290703-1-danielhb413@gmail.com>
+ <20230610133132.290703-6-danielhb413@gmail.com>
+ <CAFEAcA_KKSc=Ns9n1UJKdnhZ846EGK-nFbsG_e2mw_zwMoOJcw@mail.gmail.com>
+ <4ad1a081-bf98-1b7d-05c9-82c230da34ce@kaod.org>
+From: Frederic Barrat <fbarrat@linux.ibm.com>
+In-Reply-To: <4ad1a081-bf98-1b7d-05c9-82c230da34ce@kaod.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: rkVhVBVbmELP8bwDlJll0c6Uv8QPipFl
+X-Proofpoint-ORIG-GUID: 02ViZBRxSKo9rRK7b-8nmUlpdxKeQtqO
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-06-20_10,2023-06-16_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=931 clxscore=1011
+ suspectscore=0 spamscore=0 bulkscore=0 lowpriorityscore=0 phishscore=0
+ impostorscore=0 priorityscore=1501 adultscore=0 malwarescore=0 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2305260000
+ definitions=main-2306200127
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=fbarrat@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -63,78 +118,105 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 20 Jun 2023, Nicholas Piggin wrote:
-> powerpc ifetch endianness depends on MSR[LE] so it has to byteswap
-> after cpu_ldl_code(). This corrects DSISR bits in alignment
-> interrupts when running in little endian mode.
->
-> Reviewed-by: Fabiano Rosas <farosas@suse.de>
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
-> target/ppc/excp_helper.c | 22 +++++++++++++++++++++-
-> 1 file changed, 21 insertions(+), 1 deletion(-)
->
-> diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
-> index 12d8a7257b..a2801f6e6b 100644
-> --- a/target/ppc/excp_helper.c
-> +++ b/target/ppc/excp_helper.c
-> @@ -133,6 +133,26 @@ static void dump_hcall(CPUPPCState *env)
->                   env->nip);
-> }
->
-> +#ifdef CONFIG_TCG
-> +/* Return true iff byteswap is needed to load instruction */
-> +static inline bool insn_need_byteswap(CPUArchState *env)
-> +{
-> +    /* SYSTEM builds TARGET_BIG_ENDIAN. Need to swap when MSR[LE] is set */
-> +    return !!(env->msr & ((target_ulong)1 << MSR_LE));
-> +}
 
-Don't other places typically use FIELD_EX64 to test for msr bits now? If 
-this really only tests for the LE bit and used only once do we need a new 
-function for that? I don't quite like trivial one line functions unless it 
-does something more complex Because if just makes code harder to read as I 
-have to look up what these do when I could just see it right away where it 
-used without these functions.
 
-> +
-> +static uint32_t ppc_ldl_code(CPUArchState *env, hwaddr addr)
-> +{
-> +    uint32_t insn = cpu_ldl_code(env, addr);
-> +
-> +    if (insn_need_byteswap(env)) {
-> +        insn = bswap32(insn);
-> +    }
-> +
-> +    return insn;
-> +}
-> +#endif
+On 20/06/2023 13:20, Cédric Le Goater wrote:
+> On 6/20/23 12:45, Peter Maydell wrote:
+>> On Sat, 10 Jun 2023 at 14:31, Daniel Henrique Barboza
+>> <danielhb413@gmail.com> wrote:
+>>>
+>>> From: Frederic Barrat <fbarrat@linux.ibm.com>
+>>>
+>>> The Thread Interrupt Management Area (TIMA) can be accessed through 4
+>>> ports, targeted by the address. The base address of a TIMA
+>>> is using port 0 and the other ports are 0x80 apart. Using one port or
+>>> another can be useful to balance the load on the snoop buses. With
+>>> skiboot and linux, we currently use port 0, but as it tends to be
+>>> busy, another hypervisor is using port 1 for TIMA access.
+>>>
+>>> The port address bits fall in between the special op indication
+>>> bits (the 2 MSBs) and the register offset bits (the 6 LSBs). They are
+>>> "don't care" for the hardware when processing a TIMA operation. This
+>>> patch filters out those port address bits so that a TIMA operation can
+>>> be triggered using any port.
+>>>
+>>> It is also true for indirect access (through the IC BAR) and it's
+>>> actually nothing new, it was already the case on P9. Which helps here,
+>>> as the TIMA handling code is common between P9 (xive) and P10 (xive2).
+>>>
+>>> Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
+>>> Reviewed-by: Cédric Le Goater <clg@kaod.org>
+>>> Message-Id: <20230601121331.487207-6-fbarrat@linux.ibm.com>
+>>> Signed-off-by: Daniel Henrique Barboza <danielhb413@gmail.com>
+>>> ---
+>>
+>> Hi -- Coverity points out that there's a problem with this
+>> change (CID 1512997, 1512998):
+>>
+>>> --- a/hw/intc/pnv_xive2.c
+>>> +++ b/hw/intc/pnv_xive2.c
+>>> @@ -1662,6 +1662,8 @@ static void pnv_xive2_tm_write(void *opaque, 
+>>> hwaddr offset,
+>>>       bool gen1_tima_os =
+>>>           xive->cq_regs[CQ_XIVE_CFG >> 3] & CQ_XIVE_CFG_GEN1_TIMA_OS;
+>>>
+>>> +    offset &= TM_ADDRESS_MASK;
+>>
+>> Here we now mask off most of the bytes of 'offset',
+>> because TM_ADDRESS_MASK is 0xC3F...
+>>
+>>> +
+>>>       /* TODO: should we switch the TM ops table instead ? */
+>>>       if (!gen1_tima_os && offset == HV_PUSH_OS_CTX_OFFSET) {
+>>
+>> ...but here we compare offset against HV_PUSH_OS_CTX_OFFSET,
+>> which is defined as
+>> #define HV_PUSH_OS_CTX_OFFSET  (HV_PAGE_OFFSET | (TM_QW1_OS + TM_WORD2))
+>> and since
+>> #define HV_PAGE_OFFSET         (XIVE_TM_HV_PAGE << TM_SHIFT)
+>> #define XIVE_TM_HV_PAGE         0x1
+>> #define TM_SHIFT                16
+>>
+>> that means HV_PUSH_OS_CTX_OFFSET has bits defined in the
+>> upper 16 bits, and the comparison can now never be true,
+>> making the if() dead code.
+>>
+>>>           xive2_tm_push_os_ctx(xptr, tctx, offset, value, size);
+>>> @@ -1681,6 +1683,8 @@ static uint64_t pnv_xive2_tm_read(void *opaque, 
+>>> hwaddr offset, unsigned size)
+>>>       bool gen1_tima_os =
+>>>           xive->cq_regs[CQ_XIVE_CFG >> 3] & CQ_XIVE_CFG_GEN1_TIMA_OS;
+>>>
+>>> +    offset &= TM_ADDRESS_MASK;
+>>> +
+>>>       /* TODO: should we switch the TM ops table instead ? */
+>>>       if (!gen1_tima_os && offset == HV_PULL_OS_CTX_OFFSET) {
+>>>           return xive2_tm_pull_os_ctx(xptr, tctx, offset, size);
+>>
+>> Similarly here.
+> 
+> 
+> yes. I think this went unnoticed because the push/pull os context
+> commands are only used by the HV when a vCPU is dipatched on a HW
+> thread. We would need a test for a KVM guest running under the QEMU
+> PowerNV POWER10 machine. This requires an image with some tuning
+> because emulation is a bit slow. I use to have a buildroot image
+> including a qemu and smaller buildroot image for it.
 
-Along the same lines I'm not sure this wrapper is needed unless this is a 
-recurring operation. Otherwise you could just add the if and the comment 
-below at the single place where this is needed. If this will be needed at 
-more places later then adding a function may make sense but otherwise I'd 
-avoid making code tangled with single line functions defined away from 
-where they are used as it's simpler to just have the if and swap at the 
-single place where it's needed than adding two new functions that I'd had 
-to look up and comprehend first to see what's happening. (It also would be 
-just 3 lines instead of 20 that way.)
 
-Regards,
-BALATON Zoltan
+Working on a fix. It's true that I hadn't run a guest within the powernv 
+machine for quite a while. I'm dusting off my buildroot repo to test it 
+this time...
 
-> +
-> static void ppc_excp_debug_sw_tlb(CPUPPCState *env, int excp)
-> {
->     const char *es;
-> @@ -3104,7 +3124,7 @@ void ppc_cpu_do_unaligned_access(CPUState *cs, vaddr vaddr,
->
->     /* Restore state and reload the insn we executed, for filling in DSISR.  */
->     cpu_restore_state(cs, retaddr);
-> -    insn = cpu_ldl_code(env, env->nip);
-> +    insn = ppc_ldl_code(env, env->nip);
->
->     switch (env->mmu_model) {
->     case POWERPC_MMU_SOFT_4xx:
->
+   Fred
+
+
+> 
+> So, offset is within the full TIMA region (4 pages) and
+> TM_ADDRESS_MASK is a mask within a page. This needs a fix.
+> 
+> Thanks,
+> 
+> C.
+> 
 
