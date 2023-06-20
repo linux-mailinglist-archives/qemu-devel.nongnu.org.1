@@ -2,86 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B41D9736987
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 12:40:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CA9F736957
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 12:31:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBYmA-0004JF-Gj; Tue, 20 Jun 2023 06:39:54 -0400
+	id 1qBYd4-0005ye-8W; Tue, 20 Jun 2023 06:30:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qBYll-0004GS-7X
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 06:39:29 -0400
-Received: from mail-lj1-x233.google.com ([2a00:1450:4864:20::233])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qBYlj-0004Ls-N9
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 06:39:28 -0400
-Received: by mail-lj1-x233.google.com with SMTP id
- 38308e7fff4ca-2b466073e19so45131681fa.1
- for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 03:39:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687257566; x=1689849566;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=mUmoYq8PPbCPQh1Ss4hnb9BZHMKS1FS70+9nY8yhubQ=;
- b=BRAFGnDXMXYJp29fYb/UuY2ALe2d6YKSD8KKNynu7ZZJdMuGHeQsc/4I7BvWZZwgQg
- o3kr1EPQd2M8dYnCd7Pg5+2PODjC0XMkjINOGqLiIBZ7lwv4x+0LrzQfLlmoCXDcZslY
- iU56J+kM+P+YRy7GMumtWKVOdEFp7jIyRky47+qPdiQyyfT727X+RPOQoa5FeQMyzf5C
- WEBhiKwpSCemvPnHqb0IWIwpfP5bIhOZuj7WQlQlltrqER+v/fAcZqUh3WIEyhm5FJ1j
- +ul1ZRjLN5SQ9j7PEf5Z5ng2CuizupMOr1O+hHlEHcVAjCZIi9gjq/1ReK3eI37M+YZF
- uhuQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687257566; x=1689849566;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=mUmoYq8PPbCPQh1Ss4hnb9BZHMKS1FS70+9nY8yhubQ=;
- b=YGt/F2GWfqaLjUZxBzlG7e2fx/1X6alxYFM4UO0u7xxiopqnqJAq1nI8LrwfdTdbYN
- 0EoLiBzpVdKwNXogx35iNKIRMbbO/IpffdR0my/MidWuOtajPclvAa6Y38afEXkfvZJc
- Kh3flt2KkLMQrQwrVd3oJ7NqE5v7RWtpHrjpmgjH3UMfKYrFn/seO6D4KSG81Iq4pV2Z
- ieDMukiAcwYHZUzizgIMS1sqEJHOBbcJzV+87fgUirUBp7t3kig+OzsWyyy0qYsgYS4w
- hYOg58StQ+L2FQw48RoeBhwolcnnDI42z8dj5G3QIqqpD8yh/fLv/hDB9gaeuSWI/NyQ
- VbFA==
-X-Gm-Message-State: AC+VfDwk4nBFgSmb4x6gXq2z6zEEgq7tImfGm8Dm9FYPYvKMghZ2gBLs
- bJqVLZqpJhixumK2DqdSWIbQpg==
-X-Google-Smtp-Source: ACHHUZ72Ic4tKPeqDR63h8zxWIeJukq5wIWoitKEITYqBrDT0wBjS7oL+EEwLOD7kfn1J7I+/ioQXA==
-X-Received: by 2002:a2e:9ad6:0:b0:2b4:78f6:d32b with SMTP id
- p22-20020a2e9ad6000000b002b478f6d32bmr4302427ljj.39.1687257565877; 
- Tue, 20 Jun 2023 03:39:25 -0700 (PDT)
-Received: from [192.168.69.129] ([176.176.183.29])
- by smtp.gmail.com with ESMTPSA id
- p4-20020a170906838400b0098696189722sm1118596ejx.192.2023.06.20.03.39.24
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 20 Jun 2023 03:39:25 -0700 (PDT)
-Message-ID: <e53998c9-676c-c9d1-0a0d-cde1b2ec6057@linaro.org>
-Date: Tue, 20 Jun 2023 12:39:23 +0200
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1qBYd1-0005xp-Mg
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 06:30:27 -0400
+Received: from mga06b.intel.com ([134.134.136.31] helo=mga06.intel.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1qBYcz-00023J-BE
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 06:30:27 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1687257025; x=1718793025;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=1Wse39LDo7hK0+nVPaYo8+DNDgFHN1y5GekDfRmWNF8=;
+ b=B8Jna5VAJfyYWbwvENFv0ntniXzo9Dttg0vmro6i3+BOcR9f1RKFPIDx
+ /nDIyf8Ou7mUoS+DmWQ9qUaplYjx5TFq279Bn3LDkjKNi+iVQIx+RWXyc
+ AxVNhK4jtK09zbLzycsOs0SfD9tBZLBGchzZEs4tuPAeD0zDraYxPia4p
+ nMrkMT5l8lgGh+F6qJWd2RAY5vysJXofL0iT02BzMZCyTVJTR/OoJC6m8
+ nClO+ewW0TzMkQDzs5Umm83rLuXwmN889Uuz2DuOrWlFk1OZMnpkT32zu
+ ZoOxDfsce7wipu/ynUvc1K9EyEfW+8XwPTaZS37CigrVog/gdACXjTKiY A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10746"; a="423488448"
+X-IronPort-AV: E=Sophos;i="6.00,256,1681196400"; d="scan'208";a="423488448"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+ by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Jun 2023 03:30:20 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10746"; a="714002226"
+X-IronPort-AV: E=Sophos;i="6.00,256,1681196400"; d="scan'208";a="714002226"
+Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.28])
+ by orsmga002.jf.intel.com with ESMTP; 20 Jun 2023 03:30:17 -0700
+From: Zhao Liu <zhao1.liu@linux.intel.com>
+To: "Michael S . Tsirkin" <mst@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>, Yanan Wang <wangyanan55@huawei.com>
+Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org, Zhenyu Wang <zhenyu.z.wang@intel.com>,
+ Zhao Liu <zhao1.liu@intel.com>
+Subject: [PATCH v3 0/4] hw/smbios: Cleanup topology related variables
+Date: Tue, 20 Jun 2023 18:39:54 +0800
+Message-Id: <20230620103958.3907565-1-zhao1.liu@linux.intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH v3 23/34] target/arm/tcg: Reduce 'helper-mve.h.inc'
- inclusion
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, Peter Maydell <peter.maydell@linaro.org>
-References: <20230619154302.80350-1-philmd@linaro.org>
- <20230619155510.80991-1-philmd@linaro.org>
- <20230619155510.80991-11-philmd@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230619155510.80991-11-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::233;
- envelope-from=richard.henderson@linaro.org; helo=mail-lj1-x233.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Received-SPF: none client-ip=134.134.136.31;
+ envelope-from=zhao1.liu@linux.intel.com; helo=mga06.intel.com
+X-Spam_score_int: -42
+X-Spam_score: -4.3
+X-Spam_bar: ----
+X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -98,20 +78,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/19/23 17:54, Philippe Mathieu-Daudé wrote:
-> Instead of including helper-mve.h.inc via helper.h which
-> is included by all TCG files, restrict it to the few files
-> that require it.
-> 
-> Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org>
-> ---
->   target/arm/helper.h            | 2 --
->   target/arm/tcg/mve_helper.c    | 5 ++++-
->   target/arm/tcg/translate-mve.c | 6 ++++++
->   target/arm/tcg/translate.c     | 4 ++++
->   4 files changed, 14 insertions(+), 3 deletions(-)
+From: Zhao Liu <zhao1.liu@intel.com>
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Hi all,
 
-r~
+This is my v3 patch series based on 48ab886d3da4f ("Merge tag 'pull-
+target-arm-20230619' of https://git.linaro.org/people/pmaydell/qemu-arm
+into staging").
+
+Compared with v2 [1], v3 introduces 2 helpers to wrap the calculation of
+threads/cores per socket so that smbios can use these 2 helpers directly
+to avoid calculation error caused by missing topology changes.
+
+Also due to the introduction of these two helpers, I involve more people
+for review of this v3.
+
+
+Introduction
+============
+
+This patchset is split from my previous hybrid topology RFC [2].
+
+There are three places for topology-related cleanup:
+
+1. Fix the calculation of the number of sockets.
+
+   Due to the misuse of the smp.cpus variable and the change in the
+   meaning of smp.cores, the calculation of socket number in smbios is
+   incorrect. This can be fixed by using smp.sockets directly.
+
+2. Fix core count in type4.
+
+   The meaning of smp.cores changed so that the calculation of cores
+   per socket became wrong.
+
+   v3 introduces the helper "machine_topo_get_cores_per_socket()" to
+   wrap the calculation of cores per socket. This can help other modules
+   avoid calculation error caused by missing topology changes.
+
+3. Fix thread count in type4.
+
+   I also found that the definition of thread count in type4 doesn't
+   match the spec (smbios 3.0.0) and cleaned it up as well.
+
+   Similar to core count, v3 uses a new helper to fix this.
+
+[1]: https://lists.gnu.org/archive/html/qemu-devel/2023-06/msg00072.html
+[2]: https://mail.gnu.org/archive/html/qemu-devel/2023-02/msg03205.html
+
+
+Regards,
+Zhao
+
+---
+Zhao Liu (4):
+  machine: Add helpers to get cores/threads per socket
+  hw/smbios: Fix smbios_smp_sockets caculation
+  hw/smbios: Fix thread count in type4
+  hw/smbios: Fix core count in type4
+
+ hw/smbios/smbios.c  | 16 ++++++++++------
+ include/hw/boards.h | 12 ++++++++++++
+ 2 files changed, 22 insertions(+), 6 deletions(-)
+
+-- 
+2.34.1
+
 
