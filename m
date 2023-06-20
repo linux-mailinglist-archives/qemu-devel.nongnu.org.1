@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E561B737539
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 21:44:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47E3773753A
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 21:44:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBhGk-0005H9-UO; Tue, 20 Jun 2023 15:44:02 -0400
+	id 1qBhGo-0005Ih-1E; Tue, 20 Jun 2023 15:44:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lucas@osdyne.com>) id 1qBhGi-0005DI-3P
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 15:44:00 -0400
-Received: from mail-oi1-x22d.google.com ([2607:f8b0:4864:20::22d])
+ (Exim 4.90_1) (envelope-from <lucas@osdyne.com>) id 1qBhGl-0005IQ-PS
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 15:44:03 -0400
+Received: from mail-oi1-x231.google.com ([2607:f8b0:4864:20::231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <lucas@osdyne.com>) id 1qBhGe-0000ix-RU
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 15:43:59 -0400
-Received: by mail-oi1-x22d.google.com with SMTP id
- 5614622812f47-39eac9da7ecso434453b6e.1
- for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 12:43:56 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <lucas@osdyne.com>) id 1qBhGj-0000jS-6b
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 15:44:03 -0400
+Received: by mail-oi1-x231.google.com with SMTP id
+ 5614622812f47-39ea3943c07so336807b6e.1
+ for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 12:44:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=osdyne.com; s=google; t=1687290235; x=1689882235;
+ d=osdyne.com; s=google; t=1687290240; x=1689882240;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
  bh=0H2F2TynOv6XAuQxcEErLPWZK5cjqLSbSV0b24Rq8+4=;
- b=AEwp9y4jd9/Uk6CsY+2o26stpVYlZRx0bxspcl4Tt7Si+iFeAMInTkeOEyHwPJODSq
- eWVyBULxdIkK4UBJlZU76HOApN7tXc9K7Y0B7kMBsAsGeF0WQ2SnacJyzf1Mzd3ZIsGv
- c1E3HJBPSXa3MBJRMo4egM6PB1eNzTlY+SAXf3n2TPGitz6ht+oOMQly6aA2/Ok8IFDN
- 8HGMX6oe+dPlIOfcom2OP9caftyqWPpe+ZkxwLqcXwFH4yFSmSStkWyQAKlg16rdo66A
- sypXl7ZHd3lnMHhWaVBziS8Szt2QkTDo0F0iJZAAHD+l2DOLnjbXSt+h0UKqRSNaYoFE
- XVQg==
+ b=K6nWNX8EMuOM2I/ZwJPkNon0K8rocD7DMBqITgFh0T/18IX8RKkbKNH5GdUFLBVw0U
+ t/MEtdRtR/32ZH9yfBVLOxRPdod9XPa27wJ+7qbUMdyKxSPsfWvdCJbiVLZiONausKm/
+ xVEhg7yZ+K1wNQ5UABZV+wWn5kl6JAu7gMJXjo3ZN+Fl3mULzRbaT7QN47AgEKG47a2U
+ Q1VVOgTuEoviVdgiaNyOaMDBXm8W+4pblbsP+77cP1zrWpO7VVpaeGy4UuEOcc9Xw/yw
+ Vhm8W/Nt/jnQk7cWpoey0/B2IgEpolsq7fbqnF4sDe9c+uINEiPaI8xvR4PNEJehKJwI
+ LH+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687290235; x=1689882235;
+ d=1e100.net; s=20221208; t=1687290240; x=1689882240;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
  bh=0H2F2TynOv6XAuQxcEErLPWZK5cjqLSbSV0b24Rq8+4=;
- b=ZKSe214zq/eYwsDdCSnp8NOU+dP7qVYVDvr/C7GoDRQ6UaSReYCMegGNdXdFRFUO03
- e14utWkNRh+MB5OFTaH+ZCdTyI66co+Rbza7F+6J+6K7KBtaKu4HK9VQ7e7lxOeBL44p
- wUjydHmY8jp4qxbnEGwfuNnquhQBsyYBOMOooKmBBO0+y8ZsRM0hyGxQyoZb12PZyDU2
- IpNBaqhusmJtRdhfAUIM8lev2oNz0xKvyiUlzjJAohQSIvLcye5BNSUYluGPKSB2K81C
- vDBr88Eqd8hI/MvEP/y8LivDShU10Zl4qeaYT6FAuqx/w8MwFGHKG12Rd/wyvOn3SFp2
- mTjQ==
-X-Gm-Message-State: AC+VfDzKMtSnrx5efOUZMb/b2rd75yMujxO7pIoQTlq1V1H35zU4GdtG
- xXwlMbWRG0bu5Wj8blSBdtTy/w==
-X-Google-Smtp-Source: ACHHUZ48oP13xAkbM2FaR2oSDBSA8V93EcUAYuHUAMNO4kRnzY4QJrYEZ2IgDmic635EfXJ7sfAhiA==
-X-Received: by 2002:aca:3442:0:b0:396:4680:df1b with SMTP id
- b63-20020aca3442000000b003964680df1bmr7888200oia.3.1687290235301; 
- Tue, 20 Jun 2023 12:43:55 -0700 (PDT)
+ b=M5l3uzCZjZQpy17+zU/7mtqL6Da2ZRUj2PI/8DP1RrunHtuMK3ttlK4/s5ao1q2WYA
+ XA+YwnFMggOXNEvYzeu4QO4x7IUqv679Zv4LDiGAzWJ0+NYO7OxnaV3BEJBj6Q6ebJJ/
+ oYmhUrWl0csYa2gL79IIs/GPNX48B2xUvD7g78UPNqD1YP815ZmwpkpSVOJdtq5YjIvV
+ UvRI3v4dXKnKJPM7O5M7HY3/VGLbmUjsrGirEP6O1eAsAy6MBjcWwmOfdR2aRgZrjAjn
+ E95pFjtq17PmbwaFknO0o7che64/9ag0kL/JcGuWUsWdQ6nCjUP8ZiNPsgx9PDXs4RMc
+ 26VA==
+X-Gm-Message-State: AC+VfDxs5TzpEMx4bt7seOnmnBpduDji6vwPhCCKx3S+kikyxrvghO9Z
+ k/e1anLM4RhlIE6PEuY0fvY3aA==
+X-Google-Smtp-Source: ACHHUZ4WmEkCnQYvoEaVDJD3GGBR5wmkXU/k1OG+aw/ws3XN//A0JS5Hmprb53PnIxLVxUg6rBlzxg==
+X-Received: by 2002:aca:b9d7:0:b0:398:99e7:b08 with SMTP id
+ j206-20020acab9d7000000b0039899e70b08mr10769460oif.5.1687290240005; 
+ Tue, 20 Jun 2023 12:44:00 -0700 (PDT)
 Received: from localhost.localdomain ([2804:14c:46:24d1:115d:65a6:335b:88b6])
  by smtp.gmail.com with ESMTPSA id
- bj36-20020a05680819a400b003a033fc87c7sm1429916oib.30.2023.06.20.12.43.53
+ q7-20020acaf207000000b003982a8a1e3fsm1478758oih.51.2023.06.20.12.43.57
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 20 Jun 2023 12:43:54 -0700 (PDT)
+ Tue, 20 Jun 2023 12:43:59 -0700 (PDT)
 From: Lucas Villa Real <lucas@osdyne.com>
 To: qemu-arm@nongnu.org
 Cc: qemu-devel@nongnu.org, erdnaxe@crans.org,
  Lucas Villa Real <lucas@osdyne.com>,
  "Lucas C . Villa Real" <lucas@odsyne.com>
 Subject: [PATCH] STM32F100: add support for external memory via FSMC
-Date: Tue, 20 Jun 2023 16:43:17 -0300
-Message-Id: <20230620194317.45772-1-lucas@osdyne.com>
+Date: Tue, 20 Jun 2023 16:43:54 -0300
+Message-Id: <20230620194354.45827-1-lucas@osdyne.com>
 X-Mailer: git-send-email 2.39.2 (Apple Git-143)
 In-Reply-To: <20230619221819.6882-1-lucas@osdyne.com>
 References: <20230619221819.6882-1-lucas@osdyne.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::22d;
- envelope-from=lucas@osdyne.com; helo=mail-oi1-x22d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::231;
+ envelope-from=lucas@osdyne.com; helo=mail-oi1-x231.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
