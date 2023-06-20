@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31DD57362FA
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 07:06:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25EEE7362FC
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 07:07:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBTYr-00035q-4M; Tue, 20 Jun 2023 01:05:49 -0400
+	id 1qBTaX-0003yQ-3t; Tue, 20 Jun 2023 01:07:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qBTYa-00035P-GW; Tue, 20 Jun 2023 01:05:34 -0400
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+ id 1qBTaU-0003y0-Fg; Tue, 20 Jun 2023 01:07:31 -0400
+Received: from mail-pg1-x52c.google.com ([2607:f8b0:4864:20::52c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qBTYX-0001pb-VM; Tue, 20 Jun 2023 01:05:31 -0400
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-1b5452b77b4so24881915ad.3; 
- Mon, 19 Jun 2023 22:05:29 -0700 (PDT)
+ id 1qBTaS-0002LN-TF; Tue, 20 Jun 2023 01:07:30 -0400
+Received: by mail-pg1-x52c.google.com with SMTP id
+ 41be03b00d2f7-553ad54d3c6so884913a12.1; 
+ Mon, 19 Jun 2023 22:07:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1687237528; x=1689829528;
- h=in-reply-to:references:subject:cc:to:from:message-id:date
+ d=gmail.com; s=20221208; t=1687237647; x=1689829647;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
  :content-transfer-encoding:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=aI+bxrj8zYTmW7OzDn6PjfWar9fX241WEO0y6wz03aY=;
- b=ZYY0Bgx50HGyeJweY7ICJR1BAqgArrQIDHNyhb9UzEPBCYw5zR2QjaDpwL1OcFPJAK
- Ejex06rd7g85ZLVCmc+8P4pGM7XcL2+A8j5Pa/GEeG+WD9VcyiITprFA4wzyFVA/Ktne
- Q2f2qBl2EygaOkCT1uJQonVQ3JWibcBo6L+I7iU9r+Ck/svfUiqVEugG0TpAbsBu976A
- UA94Qd04d2FNcXA7p9nlri5fD+ZpkkEaPKZKNoiGJkknVCt5XWcJnHNexzLF7FnscK6E
- C/JbDMFWXH6uQtVj3Tcb8gKZ0HmmL2uiUKwMHnwjXQztNvyEsLJrzs60/r1HETVmKV9T
- qR4Q==
+ bh=av8d+meRDMEmw+rUNFiLEmIhDWBKBTS+5SGeN4eqETI=;
+ b=lGWwYe/I+0SgNrDO4Glgn55u/clt+FLJOPqVmkhULGFs9dl5theVzM8liFPPCR19a7
+ 3ZEPvtW45nwfuVQSD3h1rqWunQmUYxLf8+R4AiOQlLQ1PUeIu/femzLYhEKreSAikLPE
+ RU4S+HDgqxv1e8m7FtnxvLgS5NQdh+ErSfoKLO8g/8A7sERUC05NTJ7dXRYQWBXuRlQm
+ 8O8OEubzHv5SQ0LLRsikVqNdbHZlWDq61EstckDAB03DkiYzcujL2U/KGu3Y4vYwjXxA
+ yl+aXDDVIwpHp3YRvJk5DYW8kFXpuYyD70vZBE4y1v+K4bZbmlzIUwwfzd6eg5uv7dMD
+ 96nQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687237528; x=1689829528;
- h=in-reply-to:references:subject:cc:to:from:message-id:date
+ d=1e100.net; s=20221208; t=1687237647; x=1689829647;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
  :content-transfer-encoding:mime-version:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=aI+bxrj8zYTmW7OzDn6PjfWar9fX241WEO0y6wz03aY=;
- b=IRx75JOqMhbUzGDo6wTHzaRWjOjJKiOG/1OVMwX6RGUdxBPIUdf+QYJuYyR8k6Rn89
- 8tidc2vJ9oejuvCPzDGu856DAYlO4NgQUS9DfQlw2DcFalIqJj2dhng3v6v335vI0R6n
- my5ib4483lBa0YqTLtyAF08uA7M6hT0Wjc4IkfNp8NGxCHsllUGTO9m3Pf+f3EGHWNOd
- ST5l+/vodeP9p9FRe5klAWrP8Ob0OcRaYKdMrU2RjKjbEmzyXzzAhQ5lYo6NgmurMIEU
- Dbs05t0bYk5fFToi2o/bBieQOiz50IZ+QjimMeLZ4ychAqnCU3z4P1dV8tcGZuXsJTk/
- S8Hg==
-X-Gm-Message-State: AC+VfDygKBplcZQCC6jzNaJBiFto9RgwNnj3xHLKQIhGAMa1lXmsApaY
- +Qht7axhr1y018ISnKhpOcs=
-X-Google-Smtp-Source: ACHHUZ62b2GNcBKHUgkLLJwwJjm19ggu7+TCqCQbvv6Ja8vb0DqARaS5uo8QeTL4kJh1hL9coFj7BA==
-X-Received: by 2002:a17:903:258e:b0:1b1:78ba:f350 with SMTP id
- jb14-20020a170903258e00b001b178baf350mr10168571plb.46.1687237528248; 
- Mon, 19 Jun 2023 22:05:28 -0700 (PDT)
+ bh=av8d+meRDMEmw+rUNFiLEmIhDWBKBTS+5SGeN4eqETI=;
+ b=RcSUw8tXdsVML4PWveUvfWx4ke/T6lDtBX4sYFm5J3Lb8Jg7yq6G8+Mhao5x+kOWyx
+ vfN2QMBOrQrtVIvWEbHif57dgWKt0lgZidhaRbhJfa5ge9cXpkegDjJ7PzC4KKaYxXWV
+ /mNPMH38Gtyka6Nfd/rdB2MGHKo/gwMUm+wckcx4I1OAvDjNTn8mpWmxG6O6fGfP2mxt
+ Gz6fd2K1ao/XOcdd0GsqPsZhWcJEVw5E6KBN3LZW46FaihOizk4yenS/xLGCVm9yGTr+
+ q/VGktvipm+T4jDPSd+W3nrrxgptjQ+v/AdNqnuKrAWizgX0PYVucf+yLlBlC0wNyzQF
+ I7Gw==
+X-Gm-Message-State: AC+VfDxgeMT0ydvUmThJFTUKFAa2YiZUX8P/bTh3izvVRzOkpCcGahUf
+ RH800+IAdwokrQT+Kbsrtj4=
+X-Google-Smtp-Source: ACHHUZ5JWRVTtBY88B13oA+gZA5omyPJwfsmk/gSJ9L4rgDAunNfeXdZo3L7psbvvnlyVRHQjqHAbA==
+X-Received: by 2002:a05:6a20:8f19:b0:121:8c15:8c04 with SMTP id
+ b25-20020a056a208f1900b001218c158c04mr3693430pzk.27.1687237646791; 
+ Mon, 19 Jun 2023 22:07:26 -0700 (PDT)
 Received: from localhost ([1.146.127.111]) by smtp.gmail.com with ESMTPSA id
- h4-20020a170902f54400b001b008b3dee2sm598276plf.287.2023.06.19.22.05.25
+ s15-20020a62e70f000000b0066884d4efdbsm490029pfh.12.2023.06.19.22.07.23
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 19 Jun 2023 22:05:27 -0700 (PDT)
+ Mon, 19 Jun 2023 22:07:26 -0700 (PDT)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 20 Jun 2023 15:05:22 +1000
-Message-Id: <CTH7S9BB9YYE.2XS3E91DZ8OKT@wheely>
+Date: Tue, 20 Jun 2023 15:07:20 +1000
+Message-Id: <CTH7TRQ8I0SP.30Z12X2RSO5JI@wheely>
+Cc: <clg@kaod.org>, "Greg Kurz" <groug@kaod.org>, "Daniel Henrique Barboza"
+ <danielhb413@gmail.com>
+Subject: Re: [PATCH v3 12/14] target/ppc: Clean up ifdefs in excp_helper.c,
+ part 1
 From: "Nicholas Piggin" <npiggin@gmail.com>
 To: "BALATON Zoltan" <balaton@eik.bme.hu>, <qemu-devel@nongnu.org>,
  <qemu-ppc@nongnu.org>
-Cc: <clg@kaod.org>, "Greg Kurz" <groug@kaod.org>, "Daniel Henrique Barboza"
- <danielhb413@gmail.com>
-Subject: Re: [PATCH v3 10/14] target/ppc: Simplify syscall exception handlers
 X-Mailer: aerc 0.14.0
 References: <cover.1686868895.git.balaton@eik.bme.hu>
- <ec260247d973fa0b60f2bb7920ed09c599ac2586.1686868895.git.balaton@eik.bme.hu>
-In-Reply-To: <ec260247d973fa0b60f2bb7920ed09c599ac2586.1686868895.git.balaton@eik.bme.hu>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x62f.google.com
+ <178a7e99a1d930b8f988280741147513a726a68b.1686868895.git.balaton@eik.bme.hu>
+In-Reply-To: <178a7e99a1d930b8f988280741147513a726a68b.1686868895.git.balaton@eik.bme.hu>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52c;
+ envelope-from=npiggin@gmail.com; helo=mail-pg1-x52c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,97 +94,14 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On Fri Jun 16, 2023 at 9:03 AM AEST, BALATON Zoltan wrote:
-> After previous changes the hypercall handling in 7xx and 74xx
-> exception handlers can be folded into one if statement to simpilfy
-> this code.
+> Use #ifdef, #ifndef for brevity and add comments to #endif that are
+> more than a few lines apart for clarity.
 
-Simplify and add unlikely?
-
-I like to avoid slipping in improvements with cleanups. Arguably
-the changelog is actually more important to describe the stuff
-that isn't just rejig of code. Pretty minor in this case, but
-good practice otherwise it can get out of hand.
+These will collide with the SOFTMMU ifdef changes that Philippe is
+working on I think? They seem okay but maybe wait until after those
+are merged?
 
 Thanks,
 Nick
-
->
-> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
-> ---
->  target/ppc/excp_helper.c | 24 ++++++++----------------
->  1 file changed, 8 insertions(+), 16 deletions(-)
->
-> diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
-> index ef363b0285..a62103b8ac 100644
-> --- a/target/ppc/excp_helper.c
-> +++ b/target/ppc/excp_helper.c
-> @@ -741,25 +741,21 @@ static void powerpc_excp_7xx(PowerPCCPU *cpu, int e=
-xcp)
->      case POWERPC_EXCP_SYSCALL:   /* System call exception               =
-     */
->      {
->          int lev =3D env->error_code;
-> -
-> -        if (lev =3D=3D 1 && cpu->vhyp) {
-> -            dump_hcall(env);
-> -        } else {
-> -            dump_syscall(env);
-> -        }
->          /*
->           * The Virtual Open Firmware (VOF) relies on the 'sc 1'
->           * instruction to communicate with QEMU. The pegasos2 machine
->           * uses VOF and the 7xx CPUs, so although the 7xx don't have
->           * HV mode, we need to keep hypercall support.
->           */
-> -        if (lev =3D=3D 1 && cpu->vhyp) {
-> +        if (unlikely(lev =3D=3D 1 && cpu->vhyp)) {
->              PPCVirtualHypervisorClass *vhc =3D
->                  PPC_VIRTUAL_HYPERVISOR_GET_CLASS(cpu->vhyp);
-> +            dump_hcall(env);
->              vhc->hypercall(cpu->vhyp, cpu);
->              return;
-> +        } else {
-> +            dump_syscall(env);
->          }
-> -
->          break;
->      }
->      case POWERPC_EXCP_FPU:       /* Floating-point unavailable exception=
-     */
-> @@ -885,25 +881,21 @@ static void powerpc_excp_74xx(PowerPCCPU *cpu, int =
-excp)
->      case POWERPC_EXCP_SYSCALL:   /* System call exception               =
-     */
->      {
->          int lev =3D env->error_code;
-> -
-> -        if (lev =3D=3D 1 && cpu->vhyp) {
-> -            dump_hcall(env);
-> -        } else {
-> -            dump_syscall(env);
-> -        }
->          /*
->           * The Virtual Open Firmware (VOF) relies on the 'sc 1'
->           * instruction to communicate with QEMU. The pegasos2 machine
->           * uses VOF and the 74xx CPUs, so although the 74xx don't have
->           * HV mode, we need to keep hypercall support.
->           */
-> -        if (lev =3D=3D 1 && cpu->vhyp) {
-> +        if (unlikely(lev =3D=3D 1 && cpu->vhyp)) {
->              PPCVirtualHypervisorClass *vhc =3D
->                  PPC_VIRTUAL_HYPERVISOR_GET_CLASS(cpu->vhyp);
-> +            dump_hcall(env);
->              vhc->hypercall(cpu->vhyp, cpu);
->              return;
-> +        } else {
-> +            dump_syscall(env);
->          }
-> -
->          break;
->      }
->      case POWERPC_EXCP_FPU:       /* Floating-point unavailable exception=
-     */
-> --=20
-> 2.30.9
 
 
