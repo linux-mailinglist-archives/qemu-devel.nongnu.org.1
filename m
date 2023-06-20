@@ -2,56 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EBD373B90E
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 15:48:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C2F173BA37
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 16:32:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCh7l-0008IC-6T; Fri, 23 Jun 2023 09:46:53 -0400
+	id 1qChox-0003xh-Ts; Fri, 23 Jun 2023 10:31:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=Kxto=CL=kaod.org=clg@ozlabs.org>)
- id 1qCh7i-0008H2-Ub; Fri, 23 Jun 2023 09:46:50 -0400
-Received: from gandalf.ozlabs.org ([150.107.74.76])
+ (Exim 4.90_1) (envelope-from <outgoing@sr.ht>)
+ id 1qChop-0003v2-Ep; Fri, 23 Jun 2023 10:31:23 -0400
+Received: from mail-b.sr.ht ([173.195.146.151])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=Kxto=CL=kaod.org=clg@ozlabs.org>)
- id 1qCh7g-0005jl-MV; Fri, 23 Jun 2023 09:46:50 -0400
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4Qndnc2xndz4x04;
- Fri, 23 Jun 2023 23:46:44 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4QndnY4tBWz4wgm;
- Fri, 23 Jun 2023 23:46:41 +1000 (AEST)
-Message-ID: <a474146f-cd1d-b91a-eefd-596a1d08f772@kaod.org>
-Date: Fri, 23 Jun 2023 15:46:36 +0200
+ (Exim 4.90_1) (envelope-from <outgoing@sr.ht>)
+ id 1qChon-0004NY-LP; Fri, 23 Jun 2023 10:31:23 -0400
+Authentication-Results: mail-b.sr.ht; dkim=none 
+Received: from git.sr.ht (unknown [173.195.146.142])
+ by mail-b.sr.ht (Postfix) with ESMTPSA id 0334B11EEF6;
+ Fri, 23 Jun 2023 14:31:19 +0000 (UTC)
+From: ~rlakshmibai <rlakshmibai@git.sr.ht>
+Date: Tue, 20 Jun 2023 19:20:06 +0530
+Subject: [PATCH qemu v3] fdt_load_addr is getting assigned as the result of
+ riscv_compute_fdt_addr(), which is an uint64_t.
+Message-ID: <168753067876.24231.11584763305862806528-0@git.sr.ht>
+X-Mailer: git.sr.ht
+To: qemu-riscv@nongnu.org, dbarboza@ventanamicro.com
+Cc: alistair.francis@wdc.com, rathinabalan.thalaiappan@bodhicomputing.com,
+ qemu-devel@nongnu.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: qemu-system-ppc64 option -smp 2 broken with commit
- 20b6643324a79860dcdfe811ffe4a79942bca21e
-Content-Language: en-US
-To: Anushree Mathur <anushree.mathur@linux.vnet.ibm.com>,
- qemu-ppc@nongnu.org, qemu-devel@nongnu.org, richard.henderson@linaro.org,
- alex.bennee@linaro.org
-Cc: Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Nicholas Piggin <npiggin@gmail.com>, harshpb@linux.ibm.com
-References: <8780abd9-59ef-c452-bfee-c3bfbf275e51@linux.vnet.ibm.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <8780abd9-59ef-c452-bfee-c3bfbf275e51@linux.vnet.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=150.107.74.76;
- envelope-from=SRS0=Kxto=CL=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -17
-X-Spam_score: -1.8
+Received-SPF: pass client-ip=173.195.146.151; envelope-from=outgoing@sr.ht;
+ helo=mail-b.sr.ht
+X-Spam_score_int: -18
+X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, NICE_REPLY_A=-0.09, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -64,65 +51,40 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: ~rlakshmibai <lakshmi.bai.rajasubramanian@bodhicomputing.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello Anushree,
+From: Lakshmi Bai Raja Subramanian <lakshmi.bai.rajasubramanian@bodhicomputin=
+g.com>
 
-On 6/23/23 13:09, Anushree Mathur wrote:
-> Hi everyone,
-> 
-> I was trying to boot rhel9.3 image with upstream qemu-system-ppc64 -smp 2 option and observed a segfault (qemu crash).
-> 
-> qemu command line used:
-> 
-> qemu-system-ppc64 -name Rhel9.3.ppc64le -smp 2 -m 16G -vga none -nographic -machine pseries -cpu POWER10 -accel tcg -device virtio-scsi-pci -drive file=/home/rh93.qcow2,if=none,format=qcow2,id=hd0 -device scsi-hd,drive=hd0 -boot c
-> 
-> After doing a git bisect, I found the first bad commit which introduced this issue is below:
+fdt_load_addr is declared as uint32_t which is not matching with the
+return data type of riscv_compute_fdt_addr. Modified fdt_load_addr data type
+to uint64_t to match the riscv_compute_fdt_addr() return data type. This fix
+also helps in calculating the right fdt address when DRAM is mapped to higher
+64-bit address.
 
-Could you please open a gitlab issue on QEMU project ?
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Signed-off-by: Lakshmi Bai Raja Subramanian <lakshmi.bai.rajasubramanian@bodh=
+icomputing.com>
+---
+ hw/riscv/virt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-  https://gitlab.com/qemu-project/qemu/-/issues
-
-Thanks,
-
-C.
-
-> [qemu]# git bisect good
-> 20b6643324a79860dcdfe811ffe4a79942bca21e is the first bad commit
-> commit 20b6643324a79860dcdfe811ffe4a79942bca21e
-> Author: Richard Henderson <richard.henderson@linaro.org>
-> Date:   Mon Dec 5 17:45:02 2022 -0600
-> 
->      tcg/ppc: Reorg goto_tb implementation
-> 
->      The old ppc64 implementation replaces 2 or 4 insns, which leaves a race
->      condition in which a thread could be stopped at a PC in the middle of
->      the sequence, and when restarted does not see the complete address
->      computation and branches to nowhere.
-> 
->      The new implemetation replaces only one insn, swapping between
-> 
->              b       <dest>
->      and
->              mtctr   r31
-> 
->      falling through to a general-case indirect branch.
-> 
->      Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
->      Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> 
->   tcg/ppc/tcg-target.c.inc | 152 +++++++++++++----------------------------------
->   tcg/ppc/tcg-target.h     |   3 +-
->   2 files changed, 41 insertions(+), 114 deletions(-)
-> [qemu]#
-> 
-> Can someone please take a look and suggest a fix to resolve this issue?
-> 
-> Thanks in advance.
-> Regards,
-> Anushree-Mathur
-> 
-> 
-
+diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
+index 95708d890e..c348529ac0 100644
+--- a/hw/riscv/virt.c
++++ b/hw/riscv/virt.c
+@@ -1244,7 +1244,7 @@ static void virt_machine_done(Notifier *notifier, void =
+*data)
+     target_ulong start_addr =3D memmap[VIRT_DRAM].base;
+     target_ulong firmware_end_addr, kernel_start_addr;
+     const char *firmware_name =3D riscv_default_firmware_name(&s->soc[0]);
+-    uint32_t fdt_load_addr;
++    uint64_t fdt_load_addr;
+     uint64_t kernel_entry =3D 0;
+     BlockBackend *pflash_blk0;
+=20
+--=20
+2.38.5
 
