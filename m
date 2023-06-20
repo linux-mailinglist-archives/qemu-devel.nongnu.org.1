@@ -2,78 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67EB2737068
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 17:25:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D853C737069
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 17:26:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBdE3-0007Hz-LM; Tue, 20 Jun 2023 11:24:59 -0400
+	id 1qBdFZ-0008Ci-Hz; Tue, 20 Jun 2023 11:26:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qBdE0-0007HM-RT
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 11:24:57 -0400
-Received: from mail-oo1-xc2e.google.com ([2607:f8b0:4864:20::c2e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qBdFX-0008C3-9l
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 11:26:31 -0400
+Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qBdDy-0001y9-Ta
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 11:24:56 -0400
-Received: by mail-oo1-xc2e.google.com with SMTP id
- 006d021491bc7-55e163e93d5so3102129eaf.3
- for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 08:24:52 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qBdFV-0002gq-Mk
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 11:26:31 -0400
+Received: by mail-ej1-x635.google.com with SMTP id
+ a640c23a62f3a-987a977f62aso403956466b.1
+ for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 08:26:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1687274691; x=1689866691;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=hRTjh2Nv0RWWlcgr3WBnu5WWioZGP5WsirTKNEfAeIA=;
- b=EVxBGVZ7tW+oDa3L/Ic48waHLioh26OBUOxVPuv9tvUxwcqTcNOo/FYziPL6zV0ll2
- MGLnrlQC6tInLF+s73jYQCVT/Z61N20lpcGN8IvoW9ho/2g/bKwx7P7Wej9Xe+f+CR52
- FYaYFln5mLk4JU+lHkRa/ckb1TqTd4Uk+zYbjJQnYgbV5dOx97QQEvD8IbOup0wCx31T
- /OWk/t7c8+CVYoZDTPvcOg/NS1bcQ6peLmKxPn8yS8lPEzhKEGaZhtV/0EF04/6rSL4b
- vEuaY5rDoHzoDecrD69378NRYhIBplj4+1vTVgrdrrk8dvO4CeUK/bFzFNEpAl13t0aE
- izOg==
+ d=linaro.org; s=google; t=1687274788; x=1689866788;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=E/W2IwaiZZ6tXBXg6MqJeRDXXIVTJ7hEke0yuOoz/Qk=;
+ b=v61B2uLMalKvejLLkQ6YNNzl70LuSUuwYZRyskwUSlJEk/sdwjQ8078crAxFlA7fPg
+ Pv2G2piTlQ262187278FYwHR1ll4TZyKuloLbdKpJGu6eAiZUlfGLEAXirQmj/A36AoN
+ 9b65rxeJ41VQZLBxp2splqv2f9WfzY/rcLxcTLbomWOpzsxbfXoHTTFm8LjfDVQ9kDp7
+ WvT1Lwf2jNhG3Eu7VxEw24jtETraZ3S5usWfSLPByxHr/m9EljGK/EmiCF15IK3GbWdd
+ 0xY68b2R+ASun5cYP8jyWqfcSrAksOZ9uXCPpwGugQXNdS8ykEfl2b15NAaO1+HzatFN
+ p2wA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687274691; x=1689866691;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=hRTjh2Nv0RWWlcgr3WBnu5WWioZGP5WsirTKNEfAeIA=;
- b=EPzQY+Y+ulDRuUzFF49gbL/RU03OzqIBFHnexaD+DnR8O7ed0m0fSjLU57UI4J6N9x
- bNxueF1VrjOkkdQcOfd+gsMayi+5++qOfzxiLKrRjicyFzBMki16529EioZtzYB4LxXT
- k5+VIZayyVg4esCMyvSKG1gguQhClamEC8NOlNiyUEsLTf+qEPlvlXRa2M89y4kv4T9Z
- 8QkUcQXIHmeHYqxcwTbTejQN3tFqJN8Gm9knpLPsEuIaWBsraEBb7JOnApvxP/wq3Po4
- URV7fFnDf4sFm70Y9QNHSajv+u6YYWV2UOZIh9lP4U5I46ZnQ3SLDG7kFw3oqFBJzCyt
- hFhQ==
-X-Gm-Message-State: AC+VfDzWs03G4Geknxoqv06vsmgmJXLg7MzxKfSeRclqMMCAgPPZ2xrH
- VErdZz1GiactirpY8g2uuyCffYgJ4SHHtK23jWY=
-X-Google-Smtp-Source: ACHHUZ5GAzc+MtcQ6d7l7Q9mqH5qCj/4yTts9IOKKfet3GqBwQb/8EkKynhPCTgrW92+iX5HePMm0Q==
-X-Received: by 2002:a4a:bc83:0:b0:55c:86b2:a315 with SMTP id
- m3-20020a4abc83000000b0055c86b2a315mr9247330oop.1.1687274691652; 
- Tue, 20 Jun 2023 08:24:51 -0700 (PDT)
-Received: from grind.. ([177.170.117.210]) by smtp.gmail.com with ESMTPSA id
- f7-20020a4ac487000000b00558c88d131asm1044056ooq.36.2023.06.20.08.24.49
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 20 Jun 2023 08:24:51 -0700 (PDT)
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
- liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH] target/riscv/cpu.c: fix veyron-v1 CPU properties
-Date: Tue, 20 Jun 2023 12:24:43 -0300
-Message-ID: <20230620152443.137079-1-dbarboza@ventanamicro.com>
-X-Mailer: git-send-email 2.41.0
+ d=1e100.net; s=20221208; t=1687274788; x=1689866788;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=E/W2IwaiZZ6tXBXg6MqJeRDXXIVTJ7hEke0yuOoz/Qk=;
+ b=Co0xrQqjmRabVh81uGqNODIItj5bJdx6i/OHohhAb/4sSZHpLcDzfWC4MD9HIyaMjH
+ GBgdKuZ3F02YIP1ntepXKkFjQQyvn16YSF65k73LqztIgaMjGDgohUtZ2wgBjLz7p+tB
+ JEU0W2wPmVRjBroinVMKrhSCTcIk4O659CG3Wrp7gGrIt3XM/GtsGNn0QHX7DX+bRpm/
+ L7zESFAzoJ8gKmOkEWX6pgBeOenzbjl+zhYP8w/pQGk2LLCCHPjI2ko9qF0SkXQie78h
+ fnzYoEsmeEmtW6IMLgVbav08b575c04DFAirERU2bWLnBD8oxQmzT9/jrGbanl4/miaY
+ ycBA==
+X-Gm-Message-State: AC+VfDwnXQCUrLCsL1hXwVJ5u7TDJn+nFpkk338su0FNKZHxbAXVK+wB
+ AtuaebN+nOWrhk0BX9THNGjGyQ==
+X-Google-Smtp-Source: ACHHUZ5EOkhPAu0vJmdHYYn6fGxv6KNG6Bl39uLgz/wscXXw9CQFPSfa+KjzCk5uPXW2N7XJFmTxrw==
+X-Received: by 2002:a17:907:720c:b0:988:6491:98da with SMTP id
+ dr12-20020a170907720c00b00988649198damr4967799ejc.12.1687274788097; 
+ Tue, 20 Jun 2023 08:26:28 -0700 (PDT)
+Received: from [192.168.69.115] ([176.176.183.29])
+ by smtp.gmail.com with ESMTPSA id
+ g12-20020a170906394c00b00988b8ff849csm1575112eje.108.2023.06.20.08.26.26
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 20 Jun 2023 08:26:27 -0700 (PDT)
+Message-ID: <92d01a5a-2fd5-a2ff-0208-e94103be9a13@linaro.org>
+Date: Tue, 20 Jun 2023 17:26:25 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.12.0
+Subject: Re: [PATCH] hw/ppc/spapr: Test whether TCG is enabled with
+ tcg_enabled()
+Content-Language: en-US
+To: Greg Kurz <groug@kaod.org>, Claudio Fontana <cfontana@suse.de>
+Cc: qemu-devel@nongnu.org, Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>, qemu-ppc@nongnu.org
+References: <20230620074802.86898-1-philmd@linaro.org>
+ <eb064809-7253-899a-97d1-635eb652b7fd@suse.de>
+ <20230620164803.0aa623e6@bahia>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230620164803.0aa623e6@bahia>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c2e;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-oo1-xc2e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=2a00:1450:4864:20::635;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x635.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,49 +98,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Commit 7f0bdfb5bfc2 ("target/riscv/cpu.c: remove cfg setup from
-riscv_cpu_init()") removed code that was enabling mmu, pmp, ext_ifencei
-and ext_icsr from riscv_cpu_init(), the init() function of
-TYPE_RISCV_CPU, parent type of all RISC-V CPUss. This was done to force
-CPUs to explictly enable all extensions and features it requires,
-without any 'magic values' that were inherited by the parent type.
+On 20/6/23 16:48, Greg Kurz wrote:
+> On Tue, 20 Jun 2023 09:55:49 +0200
+> Claudio Fontana <cfontana@suse.de> wrote:
+> 
+>> On 6/20/23 09:48, Philippe Mathieu-Daudé wrote:
+>>> Although the PPC target only supports the TCG and KVM
+>>> accelerators, QEMU supports more. We can no assume that
+>>> '!kvm == tcg', so test for the correct accelerator. This
+>>> also eases code review, because here we don't care about
+>>> KVM, we really want to test for TCG.
+>>>
+>>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>>
+>> I don't remember anymore, but what about qtest ? It is usually the forgotten case in these kind of tests... so much complexity :-)
 
-This commit failed to make appropriate changes in the 'veyron-v1' CPU,
-added earlier by commit e1d084a8524a. The result is that the veyron-v1
-CPU has ext_ifencei, ext_icsr and pmp set to 'false', which is not the
-case.
+Good to think about this, since such changes indeed usually break,
+qtests :)
 
-The reason why it took this long to notice (thanks LIU Zhiwei for
-reporting it) is because Linux doesn't mind 'ifencei' and 'icsr' being
-absent in the 'riscv,isa' DT, implying that they're both present if the
-'i' extension is enabled. OpenSBI also doesn't error out or warns about
-the lack of 'pmp', it'll just not protect memory pages.
+> This check was added with TCG in mind because it is a known limitation.
+> I don't see any reason to prevent qtest from being used with the rest
+> of this function though.
 
-Fix it by setting them to 'true' in rv64_veyron_v1_cpu_init() like
-7f0bdfb5bfc2 already did with other CPUs.
+We don't have any CPU core when using qtest accelerator, so this
+check is irrelevant IMHO (not reachable with '-accel qtest').
 
-Reported-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-Fixes: 7f0bdfb5bfc2 ("target/riscv/cpu.c: remove cfg setup from riscv_cpu_init()")
-Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
----
- target/riscv/cpu.c | 3 +++
- 1 file changed, 3 insertions(+)
+>>> ---
+>>>   hw/ppc/spapr.c | 2 +-
+>>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>>
+>>> diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
+>>> index dcb7f1c70a..c4b666587b 100644
+>>> --- a/hw/ppc/spapr.c
+>>> +++ b/hw/ppc/spapr.c
+>>> @@ -2524,7 +2524,7 @@ static void spapr_set_vsmt_mode(SpaprMachineState *spapr, Error **errp)
+>>>       int ret;
+>>>       unsigned int smp_threads = ms->smp.threads;
+>>>   
+>>> -    if (!kvm_enabled() && (smp_threads > 1)) {
+>>> +    if (tcg_enabled() && (smp_threads > 1)) {
+> 
+> Bonjour Philippe,
+> 
+> Please drop the unneeded parens in the second check.
 
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 881bddf393..707f62b592 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -444,6 +444,9 @@ static void rv64_veyron_v1_cpu_init(Object *obj)
- 
-     /* Enable ISA extensions */
-     cpu->cfg.mmu = true;
-+    cpu->cfg.ext_ifencei = true;
-+    cpu->cfg.ext_icsr = true;
-+    cpu->cfg.pmp = true;
-     cpu->cfg.ext_icbom = true;
-     cpu->cfg.cbom_blocksize = 64;
-     cpu->cfg.cboz_blocksize = 64;
--- 
-2.41.0
+I wanted to do that but then thought someone would ask me to do one
+change at once ;)
+
+> With this fixed,
+> 
+> Reviewed-by: Greg Kurz <groug@kaod.org>
+
+Thanks!
+
 
 
