@@ -2,74 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14F83736CC8
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 15:12:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37CF1736CC7
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 15:12:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBb8e-0007MY-Ef; Tue, 20 Jun 2023 09:11:16 -0400
+	id 1qBb8g-0007N0-41; Tue, 20 Jun 2023 09:11:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qBb8Z-0007L9-AG; Tue, 20 Jun 2023 09:11:12 -0400
-Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
+ id 1qBb8d-0007Ml-2y; Tue, 20 Jun 2023 09:11:16 -0400
+Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qBb8X-0000BT-13; Tue, 20 Jun 2023 09:11:10 -0400
-Received: by mail-pf1-x429.google.com with SMTP id
- d2e1a72fcca58-666683eb028so2603231b3a.0; 
- Tue, 20 Jun 2023 06:11:08 -0700 (PDT)
+ id 1qBb8b-0000C8-8x; Tue, 20 Jun 2023 09:11:14 -0400
+Received: by mail-pf1-x42e.google.com with SMTP id
+ d2e1a72fcca58-66615629689so4102183b3a.2; 
+ Tue, 20 Jun 2023 06:11:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1687266667; x=1689858667;
+ d=gmail.com; s=20221208; t=1687266671; x=1689858671;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=eGD4jDYB/Ab8J80PqrqMHdSvac+MGxjnb+U7C/k+OH0=;
- b=c0KD1bIqTza+UE7k7vT6m6WU41rIOo1COetHiYWK57N2SoQyK+cxZ9vFovWjE/HQE7
- N9PqwPpgpEW6mN+fAYU/6HpaKhG4nPKToxpf06hhAgRJivBYMKRyCPbSw78rpWaD0TAE
- G2+mJhYGwEFXP9l2sSaLm7W3nUWyqw5ccoiszh0lZjt2ap6alHIfx8T2e5sHKagL39Yc
- e0ezYftzLVcxGpBLt5Ys1nuQt8nMHmeckY8azdCgaDXUFt7NNRds/6+67YTdCxTY+mqk
- VtjFckgjLW74x1sXccDJut+5sM2ph9FocAiqwj9wSZPUY1kg3gcuCpoDJ71UecYlNWTr
- NhDg==
+ bh=tlJWLjigIxCs/9BWhWNpbYBgast/1lf+L/OL3y0vS50=;
+ b=Swj9VCBK0z9DEBP0pI8kwzaGIBcamDz7RdmZkuV1Z7UkGfalwggvSznBbqdrgQ5VI6
+ xiWbRzEeWza/kLdQFP5kCqXzkphDvokX8zddkDvDe0kKtS6HRmQqM5p1VCIB+AC8cojv
+ bWQ3SSu6VpHvSPWV2UP8C0+DUjdR/YOPCXEKtVOkrnVDk9whuBedUVHK2sVTHbGYbqf5
+ SCVgto6Yf06kVibsRrxH0AkwbWEj6kNO8L+o+RLmPLoCztKqlyM5K8OLCzFXZbVTjOPd
+ WLdN0CeVc85DkYduYz6Hqmo4KeDa72APRKXWQp59qqs9DaNc505TqpHMi6rgKdXJ/Hw/
+ TTTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687266667; x=1689858667;
+ d=1e100.net; s=20221208; t=1687266671; x=1689858671;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=eGD4jDYB/Ab8J80PqrqMHdSvac+MGxjnb+U7C/k+OH0=;
- b=bL4mXpDyBGhtNWJkmOJxur8o8A3YXkV62hcvf+kJOoFj6XvhKz4j2Tw5mxPWa9gY9Q
- qpvaxDmXotWFxcAMeGd8k4YRfPqhJV2ACpq5zjLC3cWWSpo6dcvCul4coOpOfyhUsU5q
- /hbrZqXkvyiaqaiEcQ37XfSYBBjy7HFTk/yA2LtO9MDI67cMBzoyZVhHp0xq2PFMJmIx
- Urh3hggPQgRyf8ZTboyJgNrWgPTCS79ePbQlgUnmNVmJ7zVX0aCw8eC8BQV3sNnWCJOt
- HA0+88AdFHCPaj6Ysmng9S/FWl1cGJnMbHBsYqY1NRilwB7lFI0kvBZABK7f41joMr9P
- bP8Q==
-X-Gm-Message-State: AC+VfDwei/ASK23X3sbbajYCZQPT2dwTLGuR2QGY4lCgsbgW+2Dha9cb
- /n9vsf/KtEWohe7nI5RSyj4c/CQDuRk=
-X-Google-Smtp-Source: ACHHUZ7KqnVlMpAH49YPkKOe+7eHQwrLSoMbJvzH/1OgeiQSAkEeRo4MBz6Msis0MwvCCfJezgzfwg==
-X-Received: by 2002:a05:6a00:1355:b0:668:7209:1866 with SMTP id
- k21-20020a056a00135500b0066872091866mr4952185pfu.3.1687266666426; 
- Tue, 20 Jun 2023 06:11:06 -0700 (PDT)
+ bh=tlJWLjigIxCs/9BWhWNpbYBgast/1lf+L/OL3y0vS50=;
+ b=UILg3+K8DcWYdZBfxZqR6Oo1umRLXZ53s7QIkLVqYOe2fb1VljzFeQfMPqat+imicY
+ zdRKeP4mjLiVrqgOFYnMqVVmm/vr5t2mcsSI97k+E59bOYMKlm5oOWeGtnQz/D792n7k
+ yMDsxZnKBQ9xSkw2jqUdfbU1H4lnFxGh3LFyEwnT0mhAUweC6+51bDwwLl5FLLcPSzKQ
+ kxYkx75EgnwXdF+vTWwgrYJLHsUhDaEE6WD8RS7X8FEJttg2CYszys5scXp95PEPJCo9
+ iE+iHQg2HyNloHVwpTx36PGzJCnKVcK14PK9praMVglc4EyZadVN5DgMq7SJmz2qFTs5
+ 4RbA==
+X-Gm-Message-State: AC+VfDwY8Dj48NBAApXM4C8HsATBuZEcwLiQvEvuwjxYnh2SAl4T8BH5
+ t+cbkzYpKT343GJT+oGJe3/7lpIdzes=
+X-Google-Smtp-Source: ACHHUZ60BUPS9H7Q4X96B5QcFlKNZ8qRbcJu7DhLRgVdeM5ez/3DFLhwy1JHbGvvh432jeGT3MxQMg==
+X-Received: by 2002:a05:6a00:1496:b0:668:82c5:ff75 with SMTP id
+ v22-20020a056a00149600b0066882c5ff75mr5490368pfu.28.1687266670876; 
+ Tue, 20 Jun 2023 06:11:10 -0700 (PDT)
 Received: from wheely.local0.net ([124.170.190.103])
  by smtp.gmail.com with ESMTPSA id
- w5-20020aa78585000000b00652a72b89d1sm1353285pfn.170.2023.06.20.06.11.03
+ w5-20020aa78585000000b00652a72b89d1sm1353285pfn.170.2023.06.20.06.11.07
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 20 Jun 2023 06:11:05 -0700 (PDT)
+ Tue, 20 Jun 2023 06:11:10 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org,
  Harsh Prateek Bora <harshpb@linux.ibm.com>,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
- Anushree Mathur <anushree.mathur@linux.vnet.ibm.com>
-Subject: [PATCH 2/4] target/ppc: Change partition-scope translate interface
-Date: Tue, 20 Jun 2023 23:10:42 +1000
-Message-Id: <20230620131044.169110-3-npiggin@gmail.com>
+ Anushree Mathur <anushree.mathur@linux.vnet.ibm.com>,
+ Fabiano Rosas <farosas@suse.de>
+Subject: [PATCH 3/4] target/ppc: Add SRR1 prefix indication to interrupt
+ handlers
+Date: Tue, 20 Jun 2023 23:10:43 +1000
+Message-Id: <20230620131044.169110-4-npiggin@gmail.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230620131044.169110-1-npiggin@gmail.com>
 References: <20230620131044.169110-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x429.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,70 +94,183 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Rather than always performing partition scope page table translation
-with access type of 0 (MMU_DATA_LOAD), pass through the processor
-access type which first initiated the translation sequence. Process-
-scoped page table loads are then set to MMU_DATA_LOAD access type in
-the xlate function.
+ISA v3.1 introduced prefix instructions. Among the changes, various
+synchronous interrupts report whether they were caused by a prefix
+instruction in (H)SRR1.
 
-This will allow more information to be passed to the exception
-handler in the next patch.
+The case of instruction fetch that causes an HDSI due to access of a
+process-scoped table faulting on the partition scoped translation is the
+tricky one. As with ISIs and HISIs, this does not try to set the prefix
+bit because there is no instruction image to be loaded. The HDSI needs
+the originating access type to be passed through to the handler to
+distinguish this from HDSIs that fault translating process scoped tables
+originating from a load or store instruction (in that case the prefix
+bit should be provided).
 
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/ppc/mmu-radix64.c | 24 ++++++++++++++++--------
- 1 file changed, 16 insertions(+), 8 deletions(-)
+ target/ppc/excp_helper.c | 73 +++++++++++++++++++++++++++++++++++++++-
+ target/ppc/mmu-radix64.c | 14 ++++++--
+ 2 files changed, 83 insertions(+), 4 deletions(-)
 
+diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
+index a2801f6e6b..1de6ea3f03 100644
+--- a/target/ppc/excp_helper.c
++++ b/target/ppc/excp_helper.c
+@@ -28,6 +28,7 @@
+ #include "trace.h"
+ 
+ #ifdef CONFIG_TCG
++#include "sysemu/tcg.h"
+ #include "exec/helper-proto.h"
+ #include "exec/cpu_ldst.h"
+ #endif
+@@ -141,7 +142,7 @@ static inline bool insn_need_byteswap(CPUArchState *env)
+     return !!(env->msr & ((target_ulong)1 << MSR_LE));
+ }
+ 
+-static uint32_t ppc_ldl_code(CPUArchState *env, hwaddr addr)
++static uint32_t ppc_ldl_code(CPUArchState *env, abi_ptr addr)
+ {
+     uint32_t insn = cpu_ldl_code(env, addr);
+ 
+@@ -1348,6 +1349,72 @@ static bool books_vhyp_handles_hv_excp(PowerPCCPU *cpu)
+     return false;
+ }
+ 
++#ifdef CONFIG_TCG
++static bool is_prefix_insn(CPUPPCState *env, uint32_t insn)
++{
++    if (!(env->insns_flags2 & PPC2_ISA310)) {
++        return false;
++    }
++    return ((insn & 0xfc000000) == 0x04000000);
++}
++
++static bool is_prefix_insn_excp(PowerPCCPU *cpu, int excp)
++{
++    CPUPPCState *env = &cpu->env;
++
++    if (!tcg_enabled()) {
++        /*
++	 * This does not load instructions and set the prefix bit correctly
++	 * for injected interrupts with KVM. That may have to be discovered
++	 * and set by the KVM layer before injecting.
++         */
++        return false;
++    }
++
++    switch (excp) {
++    case POWERPC_EXCP_HDSI:
++        /* HDSI PRTABLE_FAULT has the originating access type in error_code */
++        if ((env->spr[SPR_HDSISR] & DSISR_PRTABLE_FAULT) &&
++            (env->error_code == MMU_INST_FETCH)) {
++            /*
++             * Fetch failed due to partition scope translation, so prefix
++             * indication is not relevant (and attempting to load the
++             * instruction at NIP would cause recursive faults with the same
++             * translation).
++             */
++            break;
++        }
++        /* fall through */
++    case POWERPC_EXCP_MCHECK:
++    case POWERPC_EXCP_DSI:
++    case POWERPC_EXCP_DSEG:
++    case POWERPC_EXCP_ALIGN:
++    case POWERPC_EXCP_PROGRAM:
++    case POWERPC_EXCP_FPU:
++    case POWERPC_EXCP_TRACE:
++    case POWERPC_EXCP_HV_EMU:
++    case POWERPC_EXCP_VPU:
++    case POWERPC_EXCP_VSXU:
++    case POWERPC_EXCP_FU:
++    case POWERPC_EXCP_HV_FU: {
++        uint32_t insn = ppc_ldl_code(env, env->nip);
++        if (is_prefix_insn(env, insn)) {
++            return true;
++        }
++        break;
++    }
++    default:
++        break;
++    }
++    return false;
++}
++#else
++static bool is_prefix_insn_excp(PowerPCCPU *cpu, int excp)
++{
++    return false;
++}
++#endif
++
+ static void powerpc_excp_books(PowerPCCPU *cpu, int excp)
+ {
+     CPUState *cs = CPU(cpu);
+@@ -1395,6 +1462,10 @@ static void powerpc_excp_books(PowerPCCPU *cpu, int excp)
+ 
+     vector |= env->excp_prefix;
+ 
++    if (is_prefix_insn_excp(cpu, excp)) {
++        msr |= PPC_BIT(34);
++    }
++
+     switch (excp) {
+     case POWERPC_EXCP_MCHECK:    /* Machine check exception                  */
+         if (!FIELD_EX64(env->msr, MSR, ME)) {
 diff --git a/target/ppc/mmu-radix64.c b/target/ppc/mmu-radix64.c
-index 031efda0df..1fc1ba3ecf 100644
+index 1fc1ba3ecf..920084bd8f 100644
 --- a/target/ppc/mmu-radix64.c
 +++ b/target/ppc/mmu-radix64.c
-@@ -380,6 +380,14 @@ static int ppc_radix64_partition_scoped_xlate(PowerPCCPU *cpu,
-     hwaddr pte_addr;
-     uint64_t pte;
+@@ -145,6 +145,13 @@ static void ppc_radix64_raise_hsi(PowerPCCPU *cpu, MMUAccessType access_type,
+     CPUState *cs = CPU(cpu);
+     CPUPPCState *env = &cpu->env;
  
-+    if (pde_addr) {
-+        /*
-+         * Translation of process-scoped tables/directories is performed as
-+         * a read-access.
-+         */
++    env->error_code = 0;
++    if (cause & DSISR_PRTABLE_FAULT) {
++        /* HDSI PRTABLE_FAULT gets the originating access type in error_code */
++        env->error_code = access_type;
 +        access_type = MMU_DATA_LOAD;
 +    }
 +
-     qemu_log_mask(CPU_LOG_MMU, "%s for %s @0x%"VADDR_PRIx
-                   " mmu_idx %u 0x%"HWADDR_PRIx"\n",
+     qemu_log_mask(CPU_LOG_MMU, "%s for %s @0x%"VADDR_PRIx" 0x%"
+                   HWADDR_PRIx" cause %08x\n",
                    __func__, access_str(access_type),
-@@ -477,10 +485,10 @@ static int ppc_radix64_process_scoped_xlate(PowerPCCPU *cpu,
-          * is only used to translate the effective addresses of the
-          * process table entries.
-          */
--        ret = ppc_radix64_partition_scoped_xlate(cpu, 0, eaddr, prtbe_addr,
--                                                 pate, &h_raddr, &h_prot,
--                                                 &h_page_size, true,
--            /* mmu_idx is 5 because we're translating from hypervisor scope */
-+        /* mmu_idx is 5 because we're translating from hypervisor scope */
-+        ret = ppc_radix64_partition_scoped_xlate(cpu, access_type, eaddr,
-+                                                 prtbe_addr, pate, &h_raddr,
-+                                                 &h_prot, &h_page_size, true,
-                                                  5, guest_visible);
-         if (ret) {
-             return ret;
-@@ -519,11 +527,11 @@ static int ppc_radix64_process_scoped_xlate(PowerPCCPU *cpu,
-          * translation
-          */
-         do {
--            ret = ppc_radix64_partition_scoped_xlate(cpu, 0, eaddr, pte_addr,
--                                                     pate, &h_raddr, &h_prot,
--                                                     &h_page_size, true,
-             /* mmu_idx is 5 because we're translating from hypervisor scope */
--                                                     5, guest_visible);
-+            ret = ppc_radix64_partition_scoped_xlate(cpu, access_type, eaddr,
-+                                                     pte_addr, pate, &h_raddr,
-+                                                     &h_prot, &h_page_size,
-+                                                     true, 5, guest_visible);
-             if (ret) {
-                 return ret;
-             }
+@@ -166,7 +173,6 @@ static void ppc_radix64_raise_hsi(PowerPCCPU *cpu, MMUAccessType access_type,
+         env->spr[SPR_HDSISR] = cause;
+         env->spr[SPR_HDAR] = eaddr;
+         env->spr[SPR_ASDR] = g_raddr;
+-        env->error_code = 0;
+         break;
+     default:
+         g_assert_not_reached();
+@@ -369,13 +375,14 @@ static bool validate_pate(PowerPCCPU *cpu, uint64_t lpid, ppc_v3_pate_t *pate)
+ }
+ 
+ static int ppc_radix64_partition_scoped_xlate(PowerPCCPU *cpu,
+-                                              MMUAccessType access_type,
++                                              MMUAccessType orig_access_type,
+                                               vaddr eaddr, hwaddr g_raddr,
+                                               ppc_v3_pate_t pate,
+                                               hwaddr *h_raddr, int *h_prot,
+                                               int *h_page_size, bool pde_addr,
+                                               int mmu_idx, bool guest_visible)
+ {
++    MMUAccessType access_type = orig_access_type;
+     int fault_cause = 0;
+     hwaddr pte_addr;
+     uint64_t pte;
+@@ -404,7 +411,8 @@ static int ppc_radix64_partition_scoped_xlate(PowerPCCPU *cpu,
+             fault_cause |= DSISR_PRTABLE_FAULT;
+         }
+         if (guest_visible) {
+-            ppc_radix64_raise_hsi(cpu, access_type, eaddr, g_raddr, fault_cause);
++            ppc_radix64_raise_hsi(cpu, orig_access_type,
++                                  eaddr, g_raddr, fault_cause);
+         }
+         return 1;
+     }
 -- 
 2.40.1
 
