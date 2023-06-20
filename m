@@ -2,65 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52698737566
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 21:51:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7558B737573
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 21:59:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBhOB-0000Uq-UJ; Tue, 20 Jun 2023 15:51:43 -0400
+	id 1qBhUf-00046z-9b; Tue, 20 Jun 2023 15:58:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lvivier@redhat.com>)
- id 1qBhO8-0000C6-EK
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 15:51:40 -0400
-Received: from mout.kundenserver.de ([212.227.17.24])
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qBhUd-00046o-EP
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 15:58:23 -0400
+Received: from mout.gmx.net ([212.227.17.22])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lvivier@redhat.com>)
- id 1qBhO2-0002kn-EF
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 15:51:36 -0400
-Received: from lenovo-t14s ([37.171.229.63]) by mrelayeu.kundenserver.de
- (mreue107 [212.227.15.183]) with ESMTPSA (Nemesis) id
- 1MiZkX-1pZ5Ax482R-00fnHL; Tue, 20 Jun 2023 21:51:01 +0200
-From: Laurent Vivier <lvivier@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org, Stefan Berger <stefanb@linux.vnet.ibm.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- jasowang@redhat.com, mst@redhat.com, David Hildenbrand <david@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, marcandre.lureau@redhat.com,
- eric.auger@redhat.com, Peter Xu <peterx@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>
-Subject: [PATCH 2/2] tpm_crb: mark memory as protected
-Date: Tue, 20 Jun 2023 21:50:54 +0200
-Message-ID: <20230620195054.23929-3-lvivier@redhat.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230620195054.23929-1-lvivier@redhat.com>
-References: <20230620195054.23929-1-lvivier@redhat.com>
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qBhUb-0005tw-I2
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 15:58:23 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
+ s=s31663417; t=1687291098; x=1687895898; i=deller@gmx.de;
+ bh=DCO3iDCFG5Bwc9Aw25OAiYJnx9sM0oY/um9SZT3X4mw=;
+ h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
+ b=gNy1IYS+NIe9HY8LQvbBa7yWltgnFm5onrhtOIhA4zBVG43gULHaauOOxgseElUNQeaSkFo
+ kHhiYJ/tc85ZIBqmKu7DwBr+dS3tKUZReZPbvX1ZPesuU7PIWtFgvrJqancS1vZAwU/lJFuVf
+ S3AiOL9RcFyI+xpfnK3ERIgF4CSnTGL3SQY5ba4+Z38JmEO3BBKh7EHTqJGFOdm1e94PXI7WC
+ d925bYPKCHeOe/Q/F4+i7ECVuc1jpyESxEUYtzkcMTXmxxOQ+rOAF88fvA35x9y2YeWVKBtpn
+ 1GToakqJWCSgj2LKNvjPxUBkPQW5XpZAGh2S/kFHHh5Q6OTcmy8A==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from p100.fritz.box ([94.134.157.8]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MZktj-1qYdvq3w6p-00Wk4q; Tue, 20
+ Jun 2023 21:58:18 +0200
+From: Helge Deller <deller@gmx.de>
+To: Peter Maydell <peter.maydell@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: Helge Deller <deller@gmx.de>
+Subject: [PULL 0/1] Seabios hppa v7 patches
+Date: Tue, 20 Jun 2023 21:58:16 +0200
+Message-Id: <20230620195817.119401-1-deller@gmx.de>
+X-Mailer: git-send-email 2.38.1
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:g16mSSSjdFVfKKPs3z37Bqx5Jz6Ljqr7fhiUuxhxwmgujPCx9Ai
- cIETq1wjt9PmkAfJhYT0rEkqciUvKGfD0a25A9wnakpYMr58IoQVQyST/bGmMDGSzKf7MI5
- 1Ly2qsBQvMDYrhfDnLETdGtcu6LxZDjnOk9rFQ1w6gr7YMNrSLBqdi+JXKq1ztA+K3cjABU
- X6m6zR9Hog3CXL6GLsldQ==
-UI-OutboundReport: notjunk:1;M01:P0:M+1wXmKuHC8=;1erNwjG6VHrnLxongzkXxKPYnjc
- /09Ke9Z/MlNXxxYbh5VUNb9xd5DOTkiheqVqQeZkCcm1AaNhATV2hELwEuZDEeSfzPq7gfPbb
- RyxvFTtrF4vl/veaW95dKitemKvajWEwjRd++OKaLtttFkx3g3yTg7dXj2nCTALU6Lnpm/Ewz
- Rwggq+qWdn0DJyUwiyjpTIoQqwuy5S5Z0HWiXuz4hqE1bjRp+Ixi+MZbvrKVBq48P4YjeYJy8
- DbcjcFNscJzZxO+9OJ9srBi3ciObXR4gDF8CcyzZ7pocbpeW/kU+F8miLyYgy3jI7RHcaWVgC
- kZghGX0m2jOlTrZhI5OgIzB4pDDA1SE7bUpGyENKaOlcLnvaMq4izUc+lPXZMW9W9LVCb3mNH
- I+QSRguOraMYu5PvYI4+a3W16kAR9+Wse5aBjfABsIX+UzToArZX0D4iSvGOh/xcswheshg+3
- P0ypNOJ4sbtQrfJwvXQ9m/WcrmELgmeT+nd77DFOZw1QhLUntKHfEmEFbV0LgR/dvtaoHTv3n
- Y4s2+ZrjMa6A4PJglhUxL4AlCrqhFlZBNqlGIElVPpyY0rVpuxX16/epLjDv/3Bd3lkSB93cR
- VTU3/rENy97m6xmJRkSz/z47KiYkWcfY42F8e4qMUQdX2IhUkihY7T5FXJz1KdbV1mxJaP6I5
- bpMgmeG4sZJEwSO3JD1C7OlLeZXcI5rMvb425D1XdA==
-Received-SPF: permerror client-ip=212.227.17.24;
- envelope-from=lvivier@redhat.com; helo=mout.kundenserver.de
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_FAIL=0.001,
- SPF_HELO_NONE=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:aWHndqyc77O2ffq2ss6tsx2Ez3iGAoEefFXpits5uB328BqPrsU
+ cax/+xUYbp+pEOY8w9Eqzw5USkv5ZTniQyjN4leIj9Tfw7TUsYST3+AlAgSEAxOViaBxVK8
+ PiBM1Zx9eOEyk1x/GvC1DKhOVigHqt+Cg2hJQsJZAsJdkrIqYE548ALscPpLUJ1DEMbQVCf
+ O61/rez9p2REfsbwrxO1Q==
+UI-OutboundReport: notjunk:1;M01:P0:TefMXmOZoFU=;Y1bUDiXfOrxwGb1ABvr0vRuErAL
+ l9dBKK6v3pp5mUvRP3TiX4KSrB7I7s8ZOIt64okrvArfdRXdgMtgtF0aVhzJUMBdl65j8z+A+
+ ww0dbbyQ3v5JW3WRJVoLAQXHKA2HcbLwPx+BdUEAzF3buyy1eS+tkJLwXCwsrB+UVKwQtsJIe
+ rrhqjyttxP5G663N0/N8IVV5636rMSrtwvpH6cH4VA2r3diukVOTO+bymrWTT3ltVtBXVE282
+ xJxnGNlEy7/Tgp7D2u91uYZU970PVcbUiU0G5ft/rmuQYNmeH2efCHbSLPx6Hb4KqPk5IkjzZ
+ 8Hfob2hhBggYu2odgvTgYGDD+JaeAJ0ibx78L1vEziyfGrqCX/v2GvOiekXx+Ky9ekjAtmbis
+ F44DINkKnpoE3I2xXth+jYL2guszXPCrIZgc3FQIn05Cg2dJ+ZA9y1+wpSYUc2/WOm3XukPoi
+ mOJQ7W9hQW4QPvShmeB3tAh8HGnYsgN90cdKTfiiMWN6O8Gq55fGrQ2j3dtF4JAbiSO3vF/PP
+ n6TjP+8r4soxqOJ9W+Lubk5TPro/jckR5VZgr3D7w313zMUElvx6LtZ0qnomrhaLpenmiwAPk
+ ZaJziUctUBll3NTDXEv89iGDedOMJVWLPr4jfJYFmbBbl5pqgVbL1FPKF0KcLLK0jCM5IIJhj
+ nQ476t2dWNCa8TaaQBHreeLzn6atFwMbdp+u/nwwz6LKQrRQD+NaTuciF4o4g/MQevMrTrXeV
+ LKXs9HZQVGP0YBGUv63lii/9DXg7Mu3ESpdmBchgUOMqJezjWKxJroQ5cQ6ShueB8wHUkMsi9
+ ccqN9pmFNKrl4koAzWnGuerxAoWQp4FTL9QPIjeQoClDZcY7IcjSSldt0WApqjBIC85dqVRm9
+ RpGYsZKNxAS9FtS9MAhzwUoS0vqetWFt93SRUW0O2Wlttgb88MnfAQkimDuZ52AHOgvLSk53p
+ JFjWEBsm6VLWsBjX3N0EB9wnbO0=
+Received-SPF: pass client-ip=212.227.17.22; envelope-from=deller@gmx.de;
+ helo=mout.gmx.net
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -76,46 +84,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This memory is not correctly aligned and cannot be registered
-by vDPA and VFIO.
+The following changes since commit 327ec8d6c2a2223b78d311153a471036e474c5c=
+5:
 
-An error is reported for vhost-vdpa case:
-qemu-kvm: vhost_vdpa_listener_region_add received unaligned region
+  Merge tag 'pull-tcg-20230423' of https://gitlab.com/rth7680/qemu into st=
+aging (2023-04-23 11:20:37 +0100)
 
-To make it ignored by VFIO and vDPA devices, mark it as RAM_PROTECTED.
+are available in the Git repository at:
 
-The RAM_PROTECTED flag has been introduced to skip memory
-region that looks like RAM but is not accessible via normal
-mechanims, including DMA.
+  https://github.com/hdeller/qemu-hppa.git tags/seabios-hppa-v7-pull-reque=
+st
 
-See 56918a126a ("memory: Add RAM_PROTECTED flag to skip IOMMU mappings")
+for you to fetch changes up to bb9c998ca9343d445c76b69fa15dea9db692f526:
 
-Bug: https://bugzilla.redhat.com/show_bug.cgi?id=2141965
+  target/hppa: New SeaBIOS-hppa version 7 (2023-06-20 21:39:47 +0200)
 
-cc: peter.maydell@linaro.org
-cc: marcandre.lureau@redhat.com
-cc: eric.auger@redhat.com
-cc: mst@redhat.com
-cc: jasowang@redhat.com
-Signed-off-by: Laurent Vivier <lvivier@redhat.com>
----
- hw/tpm/tpm_crb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+=2D---------------------------------------------------------------
+hppa: New SeaBIOS-hppa version 7 ROM
 
-diff --git a/hw/tpm/tpm_crb.c b/hw/tpm/tpm_crb.c
-index ea930da545af..0a93c488f2fa 100644
---- a/hw/tpm/tpm_crb.c
-+++ b/hw/tpm/tpm_crb.c
-@@ -296,7 +296,7 @@ static void tpm_crb_realize(DeviceState *dev, Error **errp)
- 
-     memory_region_init_io(&s->mmio, OBJECT(s), &tpm_crb_memory_ops, s,
-         "tpm-crb-mmio", sizeof(s->regs));
--    memory_region_init_ram(&s->cmdmem, OBJECT(s),
-+    memory_region_init_ram_protected(&s->cmdmem, OBJECT(s),
-         "tpm-crb-cmd", CRB_CTRL_CMD_SIZE, errp);
- 
-     memory_region_add_subregion(get_system_memory(),
--- 
-2.41.0
+New SeaBIOS-hppa version 7 ROM to fix Debian-12
+CD-ROM boot issues.
+
+Signed-off-by: Helge Deller <deller@gmx.de>
+
+=2D---------------------------------------------------------------
+
+Helge Deller (1):
+  target/hppa: New SeaBIOS-hppa version 7
+
+ pc-bios/hppa-firmware.img | Bin 719368 -> 719376 bytes
+ roms/seabios-hppa         |   2 +-
+ 2 files changed, 1 insertion(+), 1 deletion(-)
+
+=2D-
+2.38.1
 
 
