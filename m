@@ -2,73 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C4A37371EF
+	by mail.lfdr.de (Postfix) with ESMTPS id 77F527371F0
 	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 18:42:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBePT-0003bt-Lb; Tue, 20 Jun 2023 12:40:51 -0400
+	id 1qBeQA-0003if-K8; Tue, 20 Jun 2023 12:41:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qBePQ-0003b6-3p
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 12:40:48 -0400
-Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qBeQ6-0003i3-PU
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 12:41:31 -0400
+Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qBePO-0002FK-3d
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 12:40:47 -0400
-Received: by mail-ej1-x636.google.com with SMTP id
- a640c23a62f3a-988883b0d8fso425602166b.1
- for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 09:40:45 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qBeQ5-0002Le-3d
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 12:41:30 -0400
+Received: by mail-ed1-x52d.google.com with SMTP id
+ 4fb4d7f45d1cf-5186a157b85so6813303a12.0
+ for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 09:41:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687279244; x=1689871244;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=jct63rFb48sV+5hvOO6V2h6GbxQHLHhpSIfreHhtJXo=;
- b=GNi65gj3w+SRZytRPU7VtzNHGTOvuVdXN9gT6YJwwhiuFmLt1IypZEKcQ9Jf5gW8/W
- YPExz1HbyPXU0zUr2L3x0+NsZSkOWb1DhQPhAGDGTgriqV2JMSrFBkFvL+eKcEnubzCs
- owlNx9m4l5/0C+lrvfl+eK0x8Js5eKqi6Hzdsldf17PWQed3ORbHVKMLa8X5htt2N69T
- /FN8HbgqHhHiXdpuKGEQ4Fwg+tAjLknkuTsvvf10bkoD8MCCxxFllKIFIyQ/ZylEhOix
- xm8akhf0tyVQ7p7tEXV8f3Um8FltkRkqQDPGGaNuO6bCSjdw/BvegJyNm5pEm15i7/5N
- 5D1w==
+ d=linaro.org; s=google; t=1687279288; x=1689871288;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=gLInNtPN0vC6dKWb43kvEsfo/g0LGqljKuSCRcS4h6k=;
+ b=h9iAB0c4WSq6kYSah46GKggocaU+lmUQWaWDfmD11uymTeYeLnmM/IDxndxLO2TRWd
+ FKB+DvS4DxACxrv3xXjfqhoHBgzbsFO8a7ElHPflZ9+FLrbh5+qnySUKsn1C5fHwEC1G
+ EfhNkWAyNtv0zayBS3nbCXLyb+bq2CwyLmofhBn1G/HIZ+XWBOPrIkyqT4keVIRmjxb2
+ erq6ilNrPHKd+8u/epEZtHrF5K3vz/Pu3Ssccp1WcNkFvafkVEHnMg89oV0JIlsuBWee
+ XXmIeGjHXj5XhqM8pibIZZKJO6QwYpeiJFfafsa+DkKR33K9RQ2PM+kfY9Ia0L2Ai13h
+ 0xNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687279244; x=1689871244;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=jct63rFb48sV+5hvOO6V2h6GbxQHLHhpSIfreHhtJXo=;
- b=g/6wTm1xRpwupHvWWaL9ucfWS8RChRJYnMTzyrxCJAFe6U2NhAf2Htxqfa74mST584
- f/GS0RV0KHKUG1aGFk1NG/EUO9JiPuXpU1mDTQkjhILJBsKRGVdMty6nzuIFp0Doxf+S
- j+IMJ1h/eXVunMOLt8c/qDfZM/25/mL/y3XVs0IzTTOSUYBX45Tu04iqpvR022sBuAm/
- b/Qbr/BDtvEalVuKarac8ddo6zSpX259Rytrpy4Q1HXaiJFj2GhR10f24FBuksh8votV
- HWHnBCzLQYlgzvcNGfNu95oKCtQyAhOPZPub0YmBwPHPcVYiTnATRwRoA73c23bHqJop
- 7ZUA==
-X-Gm-Message-State: AC+VfDze5kqg2yxp/dnE/vyI6jxTfb8kshHI+q/e+clF0/bQ2vH+Hcz8
- IyUDhxIY7lBnD2Avn427O9Q1ZVbYH1+K8E9NwuFkTcYX
-X-Google-Smtp-Source: ACHHUZ7IblhLpMF1Yp4ubZcM6cuV/6lKj4ML6IJxTYuzNtGVF4vv10UTqRflo2v9JiQcHuWgi1oFLA==
-X-Received: by 2002:a17:907:3f18:b0:97d:ee91:df83 with SMTP id
- hq24-20020a1709073f1800b0097dee91df83mr14140775ejc.61.1687279244572; 
- Tue, 20 Jun 2023 09:40:44 -0700 (PDT)
-Received: from stoup.lan ([176.176.183.29]) by smtp.gmail.com with ESMTPSA id
- ks25-20020a170906f85900b0098864f474cesm1685589ejb.126.2023.06.20.09.40.43
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 20 Jun 2023 09:40:44 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: mark.cave-ayland@ilande.co.uk,
-	atar4qemu@gmail.com
-Subject: [PATCH 2/2] configs: Enable MTTCG for sparc, sparc64
-Date: Tue, 20 Jun 2023 18:40:40 +0200
-Message-Id: <20230620164040.912490-3-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230620164040.912490-1-richard.henderson@linaro.org>
-References: <20230620164040.912490-1-richard.henderson@linaro.org>
+ d=1e100.net; s=20221208; t=1687279288; x=1689871288;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=gLInNtPN0vC6dKWb43kvEsfo/g0LGqljKuSCRcS4h6k=;
+ b=UkpjYIecSgk1ZtL7pfe/IHl+VTNgQVI4WCd93IkmJvNcpR6yYSN+4dGELTaHS9J33G
+ gS59iJ2yDae/ZXv4cWEcDhhK66fH7obQhHg19cdpvaJvUEVb2uQWUfcWvFPxK/7NBze3
+ V6j80dZjF/3Gk5Uc2y8FEtaqPOSEnJ9p7kfwcYi1KEA/jrVkn9YsIs6NFMfx6Lc/bIRq
+ JienyMdBKLcce/SuDWsQ9PKqWrmg4urJRUWzLopWIIjElQoK9R5EKTccNWH0rOXWkx8F
+ 9reRf7RBoYd/7iTzUdRQhO0PWGv/FOzKyDOOIEZP2d662PX6yDreaewMU4Zy98g+QV5B
+ HkWw==
+X-Gm-Message-State: AC+VfDw3RFNp3B4HhdTDx35t3kaVSAZJ5gVKDkF8Iw3jWoGWtzdxjKwH
+ CowW8g1Oc3t+6GH3fkxyT8k4AQp/Vo6p8vQOeyi2DQ==
+X-Google-Smtp-Source: ACHHUZ55ovVaqMnZyzeQFrFjHBKDtShK00jgFs4PqdotBVhh57+pgsLZtMY83xwxX3CZOqSrDHYTNxp5jvf+XZquo8Q=
+X-Received: by 2002:aa7:c2c9:0:b0:51a:5ac3:4df3 with SMTP id
+ m9-20020aa7c2c9000000b0051a5ac34df3mr4776713edp.5.1687279287774; Tue, 20 Jun
+ 2023 09:41:27 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::636;
- envelope-from=richard.henderson@linaro.org; helo=mail-ej1-x636.google.com
+References: <20230620124418.805717-1-richard.henderson@linaro.org>
+ <CAFEAcA91RPvuC_GArpu=x3rEpv1-HsfdEOTGf50N7VY9ZwgtjA@mail.gmail.com>
+ <66f83d87-6314-8173-cfb5-47917584a1ee@linaro.org>
+In-Reply-To: <66f83d87-6314-8173-cfb5-47917584a1ee@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 20 Jun 2023 17:41:16 +0100
+Message-ID: <CAFEAcA_ckBzGz2rqgntF7m6D8-T3oAk=z00ASc6iF_nSav+RZw@mail.gmail.com>
+Subject: Re: [PATCH v5 00/20] target/arm: Implement FEAT_RME
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,34 +86,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This will be of small comfort to sparc64, because both
-sun4u and sun4v board models force max_cpus = 1.
-But it does enable actual smp for sparc32 sun4m.
+On Tue, 20 Jun 2023 at 17:28, Richard Henderson
+<richard.henderson@linaro.org> wrote:
+>
+> On 6/20/23 17:57, Peter Maydell wrote:
+> > On Tue, 20 Jun 2023 at 13:46, Richard Henderson
+> > <richard.henderson@linaro.org> wrote:
+> >>
+> >> Changes for v5:
+> >>    * Enabled only by cpu property x-rme=on, not -cpu max.
+> >>    * Rebase vs SecEL2 fixes, now in master.
+> >>
+> >> This doesn't have the magic RMM memory, which previous patch sets
+> >> included for booting Huawei's forked TF-A.  Upstream TF-A does not
+> >> have sufficient code to build either PLAT={qemu,qemu_sbsa} with
+> >> the RMM enabled, so that can't be tested either at the moment.
+> >>
+> >> All I can say is that this doesn't appear to break anything else
+> >> with x-rme=on.  Which is less than satisfying.
+> >
+> > Have you tried 'make check-tcg' ? I get:
+> >
+> > make: Leaving directory
+> > '/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-clang'
+> > make: Entering directory
+> > '/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-clang'
+> >    BUILD   arm-softmmu guest-tests
+> >    RUN     arm-softmmu guest-tests
+> >    TEST    test-armv6m-undef on arm
+> >    BUILD   arm-linux-user guest-tests
+> >    RUN     arm-linux-user guest-tests
+> >    TEST    semihosting on arm
+> >    SKIPPED semiconsole on arm because MANUAL ONLY
+> >    TEST    convd on arm
+> >    DIFF    float_convd.out with
+> > /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/tests/tcg/arm/float_convd.ref
+> >    TEST    convs on arm
+> >    DIFF    float_convs.out with
+> > /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/tests/tcg/arm/float_convs.ref
+> >    TEST    madds on arm
+> >    DIFF    float_madds.out with
+> > /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/tests/tcg/arm/float_madds.ref
+> >    TEST    munmap-pthread on arm
+> > **
+> > ERROR:../../plugins/core.c:221:qemu_plugin_vcpu_init_hook: assertion
+> > failed: (success)
+> > make[1]: *** [Makefile:174: run-munmap-pthread] Error 124
+> > make: *** [/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/tests/Makefile.include:56:
+> > run-tcg-tests-arm-linux-user] Error 2
+> > make: Leaving directory
+> > '/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/arm-clang'
+> >
+> > But I haven't run 'check-tcg' recently, so maybe that's an
+> > existing bug rather than something in this series.
+>
+> Not today -- I only tried system mode because, obviously.  :-)
+> Let me double-check...
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- configs/targets/sparc-softmmu.mak   | 1 +
- configs/targets/sparc64-softmmu.mak | 1 +
- 2 files changed, 2 insertions(+)
+I get the same error on current head-of-git, so whatever it
+is it's not this patchset's fault.
 
-diff --git a/configs/targets/sparc-softmmu.mak b/configs/targets/sparc-softmmu.mak
-index 454eb35499..a5d9200382 100644
---- a/configs/targets/sparc-softmmu.mak
-+++ b/configs/targets/sparc-softmmu.mak
-@@ -1,2 +1,3 @@
- TARGET_ARCH=sparc
- TARGET_BIG_ENDIAN=y
-+TARGET_SUPPORTS_MTTCG=y
-diff --git a/configs/targets/sparc64-softmmu.mak b/configs/targets/sparc64-softmmu.mak
-index d3f8a3b710..36ca64ec41 100644
---- a/configs/targets/sparc64-softmmu.mak
-+++ b/configs/targets/sparc64-softmmu.mak
-@@ -1,3 +1,4 @@
- TARGET_ARCH=sparc64
- TARGET_BASE_ARCH=sparc
- TARGET_BIG_ENDIAN=y
-+TARGET_SUPPORTS_MTTCG=y
--- 
-2.34.1
-
+thanks
+-- PMM
 
