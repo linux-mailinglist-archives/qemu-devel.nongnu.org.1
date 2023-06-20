@@ -2,83 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E68C737213
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 18:49:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7207B73721C
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 18:51:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBeXt-0002BL-VS; Tue, 20 Jun 2023 12:49:33 -0400
+	id 1qBeZU-0003aS-Ro; Tue, 20 Jun 2023 12:51:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qBeXs-00025f-9l
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 12:49:32 -0400
-Received: from mail-lj1-x22d.google.com ([2a00:1450:4864:20::22d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qBeXp-0004Te-DJ
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 12:49:32 -0400
-Received: by mail-lj1-x22d.google.com with SMTP id
- 38308e7fff4ca-2b466073e19so51876121fa.1
- for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 09:49:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687279767; x=1689871767;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=XFnkXXRA1u93BwS7oiFDUqZ7KPxRD/eOJHkxHJI42KM=;
- b=WZ16hjh+D5PX81su31mDdUJe0g4pFOSRs6fINwvIHCAzZpy4nzilpdf03l3kp5ij9p
- 6OL5xQ10NAC8WlQWfv2fwaD+7XIUHkX0lkBDc6nHDy379E52OkR/uaP1c5pMfTDP36nW
- ogYwDpSshDgMRsrKBhnsM6f+BRdLdPfJYciLbfXh3B51d28U2ZRVl/YTSvsu5YCSExl7
- cohIZp70KDps+mD9xinCllUg+wCioGpDi6vEjvJgUj6jDZsPr59F9hLDKQnC8+DuF9nK
- XY7ibM8uwyc2FjHfRPMcd8bm4FyiEW8SGNYukg1FqnZRXoEdKWPCne4W+dKSJHiqg7Jj
- /m2Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687279767; x=1689871767;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=XFnkXXRA1u93BwS7oiFDUqZ7KPxRD/eOJHkxHJI42KM=;
- b=Tr4xqJOewU//0v9M0cT0ZjOIZ87vpMrXLCTBXGqjR8ssgDiHcG5Hp01On3W0eNz7Nr
- t7gmQyS3TmqwfA/3lGt8aj9INCNggYbJFhV8wdvoXzJiJhDfDOsY6Gm2MEWDGu4fhG/J
- Cs8g3kNoIjmzfSZoDfGbOQHTZbuxQY/qXm3xl+qKsaL+R6j0S+stcuYMlDlGaxTMLpKo
- czwYJwXlp6yXOM0tX+QTjYvc3aKWIuFevKyZJa2VxrICwHmlhcC4P30OJz/rgAEWHrRM
- ogIJNfQD8ROjz2xDW2VJH0BSqZrgm3QY+Ctw77yRhk7Y5gD3L2G4+bd+80pc5j0NOen/
- /8Jw==
-X-Gm-Message-State: AC+VfDxPLwyTuwSSlrAHnZ+dtCvMggGI4yXChEIIls3QKU5h3VXulcXQ
- sChMmXPmTXcznacwht3LETrjsw==
-X-Google-Smtp-Source: ACHHUZ4GVhMOymHTxZtmuYjbwCDJgmzmX9jZb8EmFJOU1c5XvBWAeFwT6elKdYnIfF6lTahAfIRoHA==
-X-Received: by 2002:a2e:6e07:0:b0:2b4:4a68:a95 with SMTP id
- j7-20020a2e6e07000000b002b44a680a95mr8711689ljc.8.1687279767580; 
- Tue, 20 Jun 2023 09:49:27 -0700 (PDT)
-Received: from [192.168.69.115] ([176.176.183.29])
- by smtp.gmail.com with ESMTPSA id
- ks25-20020a170906f85900b0098864f474cesm1696213ejb.126.2023.06.20.09.49.26
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 20 Jun 2023 09:49:27 -0700 (PDT)
-Message-ID: <a97f13d5-9f40-8109-3182-c359a08435ec@linaro.org>
-Date: Tue, 20 Jun 2023 18:49:25 +0200
+ (Exim 4.90_1) (envelope-from <isaku.yamahata@intel.com>)
+ id 1qBeZP-0003ZD-7h
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 12:51:07 -0400
+Received: from mga01.intel.com ([192.55.52.88])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <isaku.yamahata@intel.com>)
+ id 1qBeZJ-000542-BR
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 12:51:06 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1687279861; x=1718815861;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=Rj80g4SpcaK+O5Lyev0GdIQ3Ow+U6i9UoPUwFBN8IhM=;
+ b=aPtP2egbLRym6OZ93or+xBea0C/FBycKiCLT95oe8SVtdfVnko2B0Tx0
+ NpQavr4k7W0RW82/PYXFrx6VB+j9buzwpZ6lbExmFmyW7jVqM8ff3OtO0
+ jfrZ47Eg+Cdbr6P0/Ip9e54MMoo8Sq2lZm24VguJXFK/a4DM5m9M/L748
+ HRwUL5nWUfyFAlWhrhAifnE9RnsG+uBVbo0oV6OVli2KyUNuv+AhiWgee
+ 9eU34O3DdXV2J5yGLWI5yz5mNDf/iPj/Z1wr06e/fwq9ztAtSvyKALCdR
+ V8ErG49754DuIwp4ZIuxHawa5S+mgXfrGKQyw6GGv7PAPO1VOw9IXEWsG A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10747"; a="389218029"
+X-IronPort-AV: E=Sophos;i="6.00,257,1681196400"; d="scan'208";a="389218029"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+ by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Jun 2023 09:50:55 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10747"; a="691499954"
+X-IronPort-AV: E=Sophos;i="6.00,257,1681196400"; d="scan'208";a="691499954"
+Received: from ls.sc.intel.com (HELO localhost) ([172.25.112.31])
+ by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Jun 2023 09:50:55 -0700
+From: Isaku Yamahata <isaku.yamahata@intel.com>
+To: qemu-devel@nongnu.org
+Cc: Isaku Yamahata <isaku.yamahata@intel.com>
+Subject: [PATCH 0/3] Add symbols for memory listener priority
+Date: Tue, 20 Jun 2023 09:50:46 -0700
+Message-Id: <cover.1687279702.git.isaku.yamahata@intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.12.0
-Subject: Re: [PATCH 2/2] configs: Enable MTTCG for sparc, sparc64
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: mark.cave-ayland@ilande.co.uk, atar4qemu@gmail.com,
- Fabien Chouteau <chouteau@adacore.com>,
- Frederic Konrad <konrad.frederic@yahoo.fr>
-References: <20230620164040.912490-1-richard.henderson@linaro.org>
- <20230620164040.912490-3-richard.henderson@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230620164040.912490-3-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::22d;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x22d.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=192.55.52.88;
+ envelope-from=isaku.yamahata@intel.com; helo=mga01.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -95,19 +75,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 20/6/23 18:40, Richard Henderson wrote:
-> This will be of small comfort to sparc64, because both
-> sun4u and sun4v board models force max_cpus = 1.
-> But it does enable actual smp for sparc32 sun4m.
+The hard-coded value, 10, is used for memory_listener_register().  Add symbolic
+values for priority of struct MemoryLister.  Replace those hard-coded values
+with symbols.
 
-Yay \o/
+The background is KVM guest memory[1] or TDX support.  I'd like to add one more
+memory listener whose priority is higher than the KVM memory listener.  And I
+don't want to hard-code 10 + 1.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+[1] KVM gmem patches
+https://github.com/sean-jc/linux/tree/x86/kvm_gmem_solo
 
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->   configs/targets/sparc-softmmu.mak   | 1 +
->   configs/targets/sparc64-softmmu.mak | 1 +
->   2 files changed, 2 insertions(+)
+Isaku Yamahata (3):
+  exec/memory: Add symbolic value for memory listener priority for accel
+  exec/memory: Add symbol for memory listener priority for dev backend
+  exec/memory: Add symbol for the min value of memory listener priority
+
+ accel/hvf/hvf-accel-ops.c         | 2 +-
+ accel/kvm/kvm-all.c               | 5 +++--
+ hw/arm/xen_arm.c                  | 2 +-
+ hw/i386/xen/xen-hvm.c             | 2 +-
+ hw/remote/proxy-memory-listener.c | 2 +-
+ hw/virtio/vhost.c                 | 2 +-
+ hw/xen/xen-hvm-common.c           | 2 +-
+ hw/xen/xen_pt.c                   | 4 ++--
+ include/exec/memory.h             | 4 ++++
+ target/arm/kvm.c                  | 1 +
+ target/i386/hax/hax-mem.c         | 2 +-
+ target/i386/nvmm/nvmm-all.c       | 2 +-
+ target/i386/whpx/whpx-all.c       | 2 +-
+ 13 files changed, 19 insertions(+), 13 deletions(-)
+
+
+base-commit: cab35c73be9d579db105ef73fa8a60728a890098
+-- 
+2.25.1
 
 
