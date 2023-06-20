@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B823373721E
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 18:52:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 166C4737228
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 18:56:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBeZN-0003Yt-U2; Tue, 20 Jun 2023 12:51:05 -0400
+	id 1qBedB-0007w0-UF; Tue, 20 Jun 2023 12:55:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qBeZJ-0003Xg-FV
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 12:51:03 -0400
-Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1qBed7-0007uv-F4; Tue, 20 Jun 2023 12:54:57 -0400
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qBeZF-000545-Ey
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 12:51:00 -0400
-Received: by mail-ej1-x634.google.com with SMTP id
- a640c23a62f3a-988a5383fd4so463569366b.0
- for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 09:50:56 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1qBed5-00069s-OZ; Tue, 20 Jun 2023 12:54:57 -0400
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-1b50d7b4aaaso21519355ad.3; 
+ Tue, 20 Jun 2023 09:54:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687279855; x=1689871855;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=WvR3qKi0WughjgrJC8R1M8Tr1N+10vHwo06/bOYFZlA=;
- b=OaUR1sRVF8E7FkiLNEjZ1clqe+GZRHCgJkWoYpl6FQw75Ik3QzAjNI/AhP/R85k9B2
- nMJYIIGqpijiV8Tok5Xp1Im4icVH6NydKBxsyIur9+K79hfG44yR00pO+PSZ2KdjW/wT
- TdFl2xhhceiJnt8J9USlSgoezCbXAvSPi+rYn5HZOEDy9vYl91+RoqjB8mjR1br1FJKu
- moJwbo1gGpWPF+XH7UQLPMMUNANrARm6K+A554ZCEPzArC5InRCdB+VAMc5X11FFWSoW
- pxqMaCjwyKFhh+IE7yMgGo0UIU4/uupUZLF9Fn5Ps0ZVYaLI+x+MrJWx+KVi+UGCioH0
- 7fkg==
+ d=gmail.com; s=20221208; t=1687280093; x=1689872093;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=4QP1abaxkkYbrV6B8GhKmCODns4qIHDBEp80+ZYA6tU=;
+ b=IcalvPFLl0SdcCd+TP7nPLh7W1qTMJx4AEQaMhU6udTNVtWbVtlP3b9vdfRdBP7MGv
+ yndzhsgOGWqBxegQyzfKMn3yBLFg4W74J+FBMYJ5dW2PnzE/Lu8cKIc042HfdvC9T0MQ
+ kO58zAw2mis+50xd5xMzzjlzNKZXFOL3IEDkfh3x5pBwAGT7Ojnojw/u6SMtTxKO+8Bf
+ 0jciSkE/HjFY9m8T9J854X+PFITsJj54n8M8IbcIjFcegc8tzzuQW8UV5bErLD9+nFlO
+ 8UlmSem4VsxA1KGrZtLsop2dW6N3Pk2A7qSnp+i/0cd4BRrjsixh9AhpyTF6+nkQEiL9
+ mDAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687279855; x=1689871855;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=WvR3qKi0WughjgrJC8R1M8Tr1N+10vHwo06/bOYFZlA=;
- b=Q2rPRD4LkCFkocsvwBObaJQckDo4iA65X+0I1Lu/D+QwqmEPZu2VKAUfYyEr7PK4jg
- zQawdRl8snnf6AXSBnTHZMlyQJWwpoYJCWGDrJHsdURTjMKvlsAZAYpwOYKgXM9hfruN
- +iWbsoCgAxXZx8Cxj85jqdYXYn0gQqY/CDrolCm47SFXhqtg5lCjKvfJIo2B2198txaF
- GiAJZpwLE6ami5WNhVG+sCps7AAb57JIGHFfKW6tvul4M9Qr9pNN9+EdFo5MkeQiDCF4
- ynSdZ76EnHqwXwsZKtfzCKNDgvGxo828FaKbXp5pzEyt8FdZ/mZDkguHUDYvDrxgp2+U
- bG3w==
-X-Gm-Message-State: AC+VfDycqhGWiC5rROz7L96QwPVQSggBFyhRXSG9AYVAeCiVlvthUQ8R
- qoWT1kB5hCFmPbTME771zs6Bsw==
-X-Google-Smtp-Source: ACHHUZ4XmNga0mShkL3k6MbkTpynPfQHT23+DMro5jPV2azC9v8uo/WCJ+ZSCCv+w9aJzDgEXasEMA==
-X-Received: by 2002:a17:906:ef0a:b0:978:2b56:d76e with SMTP id
- f10-20020a170906ef0a00b009782b56d76emr17015018ejs.12.1687279855738; 
- Tue, 20 Jun 2023 09:50:55 -0700 (PDT)
-Received: from [192.168.69.115] ([176.176.183.29])
- by smtp.gmail.com with ESMTPSA id
- n26-20020a1709065e1a00b0096f71ace804sm1681915eju.99.2023.06.20.09.50.54
+ d=1e100.net; s=20221208; t=1687280093; x=1689872093;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=4QP1abaxkkYbrV6B8GhKmCODns4qIHDBEp80+ZYA6tU=;
+ b=IX8CyxTyR/8n6P4pop0HEhbl2xZAs89RgPabe3WtD6mV363Pis5TnNPyRAHzY1prkL
+ Wd7qy0sL0WLkCL2dgyAIlhHKhXiurdFklLjLQ3sjGc5FUP3hMe/oMKOqMbx1aAAjNbkz
+ Tf/aBd9XFGGak56DgktfdiLiTCf19dcHrsKmCF2ciE/oDW79t1aVAMqpTUOfo2LrEatl
+ t2/Na/uXx2xkxPZmyRt7XIty5VsCPNWMaBUNSHaer2kctk7eIm8Bx7iDB8M9ni7xgRGb
+ kd5xBG8mMiKTs77DVuqaoRc8+cilynkBjUePPWNB1uhcMK2ZYGnStokqlrlwPLsp6wcl
+ VGww==
+X-Gm-Message-State: AC+VfDxaKO3KisRMqj6WZS4nRTsj3InudTfI1LZ3WsUfPWk+j6aK6ZjF
+ MaSI/FVFa1uQus8IUWY0/As=
+X-Google-Smtp-Source: ACHHUZ4pxcPBfBdYz1Via7MELhyvTSETbXM+kPMvzwD0GdCEeP/4XqYGv3V7FXCtnCcnrJftjeQOtw==
+X-Received: by 2002:a17:903:25cf:b0:1b0:499f:7a8d with SMTP id
+ jc15-20020a17090325cf00b001b0499f7a8dmr7718715plb.9.1687280093425; 
+ Tue, 20 Jun 2023 09:54:53 -0700 (PDT)
+Received: from localhost ([124.170.190.103]) by smtp.gmail.com with ESMTPSA id
+ u14-20020a170902e80e00b001a95f632340sm1884726plg.46.2023.06.20.09.54.50
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 20 Jun 2023 09:50:55 -0700 (PDT)
-Message-ID: <11348b82-34df-0589-5cc3-a1b693362821@linaro.org>
-Date: Tue, 20 Jun 2023 18:50:53 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.12.0
-Subject: Re: [PATCH] pc-bios/keymaps: Use the official xkb name for Arabic
- layout, not the legacy synonym
-Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, =?UTF-8?Q?Alex_Benn=c3=a9e?=
- <alex.bennee@linaro.org>, Richard Henderson <richard.henderson@linaro.org>,
- Gerd Hoffmann <kraxel@redhat.com>
-References: <20230620162024.1132013-1-peter.maydell@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230620162024.1132013-1-peter.maydell@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::634;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x634.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+ Tue, 20 Jun 2023 09:54:53 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 21 Jun 2023 02:54:47 +1000
+Message-Id: <CTHMVFHEA2B4.3968LCTW14GHR@wheely>
+Cc: <qemu-ppc@nongnu.org>, <qemu-devel@nongnu.org>, "Harsh Prateek Bora"
+ <harshpb@linux.ibm.com>, "Daniel Henrique Barboza" <danielhb413@gmail.com>,
+ "Anushree Mathur" <anushree.mathur@linux.vnet.ibm.com>, "Fabiano Rosas"
+ <farosas@suse.de>
+Subject: Re: [PATCH 1/4] target/ppc: Fix instruction loading endianness in
+ alignment interrupt
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "BALATON Zoltan" <balaton@eik.bme.hu>
+X-Mailer: aerc 0.14.0
+References: <20230620131044.169110-1-npiggin@gmail.com>
+ <20230620131044.169110-2-npiggin@gmail.com>
+ <393305f2-e785-c3f6-523f-6826b3511cc4@eik.bme.hu>
+In-Reply-To: <393305f2-e785-c3f6-523f-6826b3511cc4@eik.bme.hu>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x629.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -95,41 +95,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 20/6/23 18:20, Peter Maydell wrote:
-> The xkb official name for the Arabic keyboard layout is 'ara'.
-> However xkb has for at least the past 15 years also permitted it to
-> be named via the legacy synonym 'ar'.  In xkeyboard-config 2.39 this
-> synoynm was removed, which breaks compilation of QEMU:
-> 
-> FAILED: pc-bios/keymaps/ar
-> /home/fred/qemu-git/src/qemu/build-full/qemu-keymap -f pc-bios/keymaps/ar -l ar
-> xkbcommon: ERROR: Couldn't find file "symbols/ar" in include paths
-> xkbcommon: ERROR: 1 include paths searched:
-> xkbcommon: ERROR: 	/usr/share/X11/xkb
-> xkbcommon: ERROR: 3 include paths could not be added:
-> xkbcommon: ERROR: 	/home/fred/.config/xkb
-> xkbcommon: ERROR: 	/home/fred/.xkb
-> xkbcommon: ERROR: 	/etc/xkb
-> xkbcommon: ERROR: Abandoning symbols file "(unnamed)"
-> xkbcommon: ERROR: Failed to compile xkb_symbols
-> xkbcommon: ERROR: Failed to compile keymap
-> 
-> The upstream xkeyboard-config change removing the compat
-> mapping is:
-> https://gitlab.freedesktop.org/xkeyboard-config/xkeyboard-config/-/commit/470ad2cd8fea84d7210377161d86b31999bb5ea6
-> 
-> Make QEMU always ask for the 'ara' xkb layout, which should work on
-> both older and newer xkeyboard-config.  We leave the QEMU name for
-> this keyboard layout as 'ar'; it is not the only one where our name
-> for it deviates from the xkb standard name.
-> 
-> Cc: qemu-stable@nongnu.org
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1709
-> ---
->   pc-bios/keymaps/meson.build | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+On Wed Jun 21, 2023 at 12:26 AM AEST, BALATON Zoltan wrote:
+> On Tue, 20 Jun 2023, Nicholas Piggin wrote:
+> > powerpc ifetch endianness depends on MSR[LE] so it has to byteswap
+> > after cpu_ldl_code(). This corrects DSISR bits in alignment
+> > interrupts when running in little endian mode.
+> >
+> > Reviewed-by: Fabiano Rosas <farosas@suse.de>
+> > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> > ---
+> > target/ppc/excp_helper.c | 22 +++++++++++++++++++++-
+> > 1 file changed, 21 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
+> > index 12d8a7257b..a2801f6e6b 100644
+> > --- a/target/ppc/excp_helper.c
+> > +++ b/target/ppc/excp_helper.c
+> > @@ -133,6 +133,26 @@ static void dump_hcall(CPUPPCState *env)
+> >                   env->nip);
+> > }
+> >
+> > +#ifdef CONFIG_TCG
+> > +/* Return true iff byteswap is needed to load instruction */
+> > +static inline bool insn_need_byteswap(CPUArchState *env)
+> > +{
+> > +    /* SYSTEM builds TARGET_BIG_ENDIAN. Need to swap when MSR[LE] is s=
+et */
+> > +    return !!(env->msr & ((target_ulong)1 << MSR_LE));
+> > +}
+>
+> Don't other places typically use FIELD_EX64 to test for msr bits now? If=
+=20
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Yeah I should use that, good point. There's at least another case in
+that file that doesn't use it but I probably added that too :/
 
+> this really only tests for the LE bit and used only once do we need a new=
+=20
+> function for that? I don't quite like trivial one line functions unless i=
+t=20
+> does something more complex Because if just makes code harder to read as =
+I=20
+> have to look up what these do when I could just see it right away where i=
+t=20
+> used without these functions.
+
+It's based on mem_helper.c, which is familiar pattern/name so I=20
+might keep it. Maybe not, I'll check. I'm on the fence.
+
+> > +
+> > +static uint32_t ppc_ldl_code(CPUArchState *env, hwaddr addr)
+> > +{
+> > +    uint32_t insn =3D cpu_ldl_code(env, addr);
+> > +
+> > +    if (insn_need_byteswap(env)) {
+> > +        insn =3D bswap32(insn);
+> > +    }
+> > +
+> > +    return insn;
+> > +}
+> > +#endif
+>
+> Along the same lines I'm not sure this wrapper is needed unless this is a=
+=20
+> recurring operation. Otherwise you could just add the if and the comment=
+=20
+> below at the single place where this is needed. If this will be needed at=
+=20
+> more places later then adding a function may make sense but otherwise I'd=
+=20
+> avoid making code tangled with single line functions defined away from=20
+> where they are used as it's simpler to just have the if and swap at the=
+=20
+> single place where it's needed than adding two new functions that I'd had=
+=20
+> to look up and comprehend first to see what's happening. (It also would b=
+e=20
+> just 3 lines instead of 20 that way.)
+
+It does get used in a couple more places later. Few-line
+"abstraction" used once isn't necessarily wrong though.
+
+Thanks,
+Nick
 
