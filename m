@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F74A736498
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 09:32:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6728173649B
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 09:32:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBVpC-0007Me-2f; Tue, 20 Jun 2023 03:30:50 -0400
+	id 1qBVqk-0007oM-Qo; Tue, 20 Jun 2023 03:32:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qBVp9-0007MV-FV
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 03:30:47 -0400
-Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
+ id 1qBVqa-0007iC-Rw
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 03:32:16 -0400
+Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qBVp7-0000Rr-Jc
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 03:30:47 -0400
-Received: by mail-ed1-x535.google.com with SMTP id
- 4fb4d7f45d1cf-5149aafef44so5102822a12.0
- for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 00:30:44 -0700 (PDT)
+ id 1qBVqY-0000ig-Tm
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 03:32:16 -0400
+Received: by mail-ej1-x632.google.com with SMTP id
+ a640c23a62f3a-982a88ca610so519586466b.2
+ for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 00:32:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687246243; x=1689838243;
+ d=linaro.org; s=google; t=1687246333; x=1689838333;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=f/UiSoe4+3cr/6cPapF4uoXT+4tlHQ3Akl/Bj/1hhEQ=;
- b=AsmHCTwqBaamsdzjTOtdhGnPn4pKyGIElCoGfd3N7JOko/xldaxguFj6GObM0AttFM
- lhU3J9na61mobfrAWCKGC/aPTbkfznJIKYU9Ifr+/aeS1e6UyrcrOaLeKVZ+pr+FB1ET
- UFRakkAEuT+OK/+uR8XhNkVXRhdQ82pYqKOJNUfjI9xVHHbGjsfq1yJy9CH94zC1aGy/
- sDuhVssZB8PN1lMZjl4MEZLG2Wxtsc2G0zCZHx7yLgP8g21V+c7yCTIjZa5HU/LIKumV
- gM6SpnDpWZzvCbptMfrltSagV9Azm6LaqnxKEwVpEDcchhUoFUeY5WlbqpE+ZOWkAHZu
- 4IJA==
+ bh=OXoncybMt8iiMhAE7YB+rTdIxHNRU8KW6uRKJncDUfA=;
+ b=MKf1MBjTN7if5FMC344TLhZwehHtyGjWjxqINpXB9Aeqke2oLOCQjoB0RaHdJ4E5NV
+ SQVarXFVQbtdbIhDW1YQJ+tl1sxIMDQcg/ZrRLxQfCwwWxQC2d1IqW8mvud8a2pgfZgG
+ Zx6egfo9jOQKlQNvJgn9Q02dvQMdh0memxTiLmkeES7XOGnbZpP+rQBf3NdbWRgP9PbW
+ NGf7PTRUXwD+ilpqfg2uM7h2aGV+P69iA+6l4GWUqtYVyXflQjDG059ozi2eDz6IMSoT
+ SXXTiaw3dZ1ZS1xtBMKhQ0ctg7j6iixrnz7lnnQRATuxPRMOKCH9xBI1cQGfoYyKZQaO
+ 9p3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687246243; x=1689838243;
+ d=1e100.net; s=20221208; t=1687246333; x=1689838333;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=f/UiSoe4+3cr/6cPapF4uoXT+4tlHQ3Akl/Bj/1hhEQ=;
- b=BOJFZt+vMTUQr25lp47oSvC3IvLYzfEVLFUXEviUEONZXHw4V7qB9YdhKlvMTFJwKv
- VBQ0PYs+IJA2Yp0ZztGhrd9wnctcpWBHc0nBTs+iRUBN5dqfB5mnDvdOFksBsqOaLz3D
- 1+C0a2+mgWjTGAvotTcFSWbhcRmv3Uon9LyZg2kTVjO4PKTRzxQ3P1spmmSzGV8xxiXg
- /9i1vk9T7gTk8+RsKGJrxGXCz5wUeJatiQOD4v9MxGsHOT7A1I8K+o6EBDyy7FMek/bs
- Ie4NzrsQv2OVt2IS6TTquxDX1QiIB3zgfYbkIBvgEfS/zhvPU/+J8eURdb56G1WiHQbw
- Zk7w==
-X-Gm-Message-State: AC+VfDy9Qf6hiCzUVK4OYo/wLKAxTC/+ZQ2aK4ejaxxDJXiT5U6uRNUh
- l+gvgy9Z/ujXBgM6M/sgILJku61JBAIS5bTYGcIjez0P
-X-Google-Smtp-Source: ACHHUZ5foQ2RqTaB3vhh7Y065ildXkSf+STymNGAGlTRflB2D6jaztxh2J3B5DF3Osr3n/5L5D0DcA==
-X-Received: by 2002:a17:906:dc8b:b0:988:e57c:20ed with SMTP id
- cs11-20020a170906dc8b00b00988e57c20edmr3153238ejc.72.1687246243641; 
- Tue, 20 Jun 2023 00:30:43 -0700 (PDT)
+ bh=OXoncybMt8iiMhAE7YB+rTdIxHNRU8KW6uRKJncDUfA=;
+ b=R2hcd3FP03qEVg9sAfZ1wbWtFW2+BxfmyysL7Li4kIqfitdTdqIyp3gBpGtEX8jfF0
+ HYjCWrB+AbSoaXh9xIW9VHaVIPYswEqlvot3UBcU/f4t8F1KNQ9fUty9bU4ma2ACnAv8
+ mISw25gfbuujFApx72qOCZMSD1TUUjc6OBAT6z6+ykrKB6v1iMkGvhii0fJnmvDtmMTl
+ SjCWA+vUQPTzg9rdnBVHigo8JTGQqpRS3SJoEc6y4KcLVOypA9IuWFvOyxDSgaYDJZ5X
+ 8wT2CNR6R8GTGvXg6ynZShTBNZO/epRSDHAoXkTla50uxHGo+eW+BNklAzW927B9bHzu
+ 8Nvw==
+X-Gm-Message-State: AC+VfDwC/Cwh/k+iYg7QRXMXbIcFuKQUa7eNxkyFuhx9tDMr4Dy7C6XU
+ 0/Qoe7Vl8i+aMB53xe1geuTCcA==
+X-Google-Smtp-Source: ACHHUZ788olubTiwP7HbBqTa2tiT1ITZ8uAHBoZ3UAHfUrhsNOU1GPlDi3ezqxkZxQonrAqmEd1ZXA==
+X-Received: by 2002:a17:907:6ea8:b0:974:1f03:fcd1 with SMTP id
+ sh40-20020a1709076ea800b009741f03fcd1mr11146654ejc.3.1687246333264; 
+ Tue, 20 Jun 2023 00:32:13 -0700 (PDT)
 Received: from [192.168.69.129] ([176.176.183.29])
  by smtp.gmail.com with ESMTPSA id
- m6-20020a170906258600b009871b3f961asm844240ejb.58.2023.06.20.00.30.42
+ x17-20020a170906711100b009884f015a44sm840311ejj.49.2023.06.20.00.32.12
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 20 Jun 2023 00:30:43 -0700 (PDT)
-Message-ID: <93013d5b-1b91-8e4a-de7f-d67bc9a3ed5f@linaro.org>
-Date: Tue, 20 Jun 2023 09:30:41 +0200
+ Tue, 20 Jun 2023 00:32:13 -0700 (PDT)
+Message-ID: <910efeb9-78c2-659c-3101-0e7dc3770ef5@linaro.org>
+Date: Tue, 20 Jun 2023 09:32:10 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PATCH qemu 1/2] semihosting: Added to support GDB_O_APPEND flag
- of host_open()
+Subject: Re: [PATCH qemu 2/2] gdbstub: Fixed gdb_open() does not work issue
+ while an extra 'x' is being added when converting '%s' to a pointer
 Content-Language: en-US
 To: ~foxes <foxes687@andestech.com>, qemu-devel@nongnu.org
 Cc: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>
-References: <168723238949.9156.9853906656288727865-0@git.sr.ht>
+References: <168723238949.9156.9853906656288727865-1@git.sr.ht>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <168723238949.9156.9853906656288727865-0@git.sr.ht>
+In-Reply-To: <168723238949.9156.9853906656288727865-1@git.sr.ht>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::535;
- envelope-from=richard.henderson@linaro.org; helo=mail-ed1-x535.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::632;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ej1-x632.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -95,28 +95,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/8/23 11:07, ~foxes wrote:
+On 6/8/23 11:06, ~foxes wrote:
 > From: Foxes Hung <foxes687@andestech.com>
 > 
 > Signed-off-by: Foxes Hung <foxes687@andestech.com>
 > ---
->   semihosting/syscalls.c | 3 +++
->   1 file changed, 3 insertions(+)
+>   gdbstub/syscalls.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/semihosting/syscalls.c b/semihosting/syscalls.c
-> index 68899ebb1c..1a5d39da01 100644
-> --- a/semihosting/syscalls.c
-> +++ b/semihosting/syscalls.c
-> @@ -281,6 +281,9 @@ static void host_open(CPUState *cs, gdb_syscall_complete_cb complete,
->       if (gdb_flags & GDB_O_TRUNC) {
->           host_flags |= O_TRUNC;
->       }
-> +    if (gdb_flags & GDB_O_APPEND) {
-> +        host_flags |= O_APPEND;
-> +    }
->       if (gdb_flags & GDB_O_EXCL) {
->           host_flags |= O_EXCL;
->       }
+> diff --git a/gdbstub/syscalls.c b/gdbstub/syscalls.c
+> index 02e3a8f74c..4c6b5f728b 100644
+> --- a/gdbstub/syscalls.c
+> +++ b/gdbstub/syscalls.c
+> @@ -126,7 +126,7 @@ void gdb_do_syscall(gdb_syscall_complete_cb cb, const char *fmt, ...)
+>               case 's':
+>                   i64 = va_arg(va, uint64_t);
+>                   i32 = va_arg(va, uint32_t);
+> -                p += snprintf(p, p_end - p, "%" PRIx64 "/%x" PRIx32, i64, i32);
+> +                p += snprintf(p, p_end - p, "%" PRIx64 "/%" PRIx32, i64, i32);
+>                   break;
+>               default:
+>               bad_format:
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
