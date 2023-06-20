@@ -2,71 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2A69736CC6
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 15:12:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EAEA3736CCA
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 15:12:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBb8V-0007Jt-J5; Tue, 20 Jun 2023 09:11:07 -0400
+	id 1qBb8b-0007LU-L3; Tue, 20 Jun 2023 09:11:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qBb8U-0007JT-7W; Tue, 20 Jun 2023 09:11:06 -0400
-Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
+ id 1qBb8W-0007Kb-JZ; Tue, 20 Jun 2023 09:11:09 -0400
+Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qBb8P-0000AI-Ff; Tue, 20 Jun 2023 09:11:05 -0400
-Received: by mail-pf1-x42d.google.com with SMTP id
- d2e1a72fcca58-6686a05bc66so1805536b3a.1; 
- Tue, 20 Jun 2023 06:11:00 -0700 (PDT)
+ id 1qBb8T-0000Ac-79; Tue, 20 Jun 2023 09:11:08 -0400
+Received: by mail-pf1-x42c.google.com with SMTP id
+ d2e1a72fcca58-668689ce13fso1403140b3a.0; 
+ Tue, 20 Jun 2023 06:11:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1687266659; x=1689858659;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=Dq9QLHk3SCarxrgZcKKe0CkJMeecWY83BLaEKFPBBJA=;
- b=Kwzx3LIP4g5E2andKzT3weOFZ1q98L31nMD1Oc3JLVN2iSgb/8ILVgYN3gSMZDiv0W
- 8tiudb6c/3zFNJzfnuRYNlPyVvAxFCLwaLp075vL2L3rldJEa6ddYohT3+/+2KQUgUKq
- /KGWy2OKJlrRZaXNbg7MiR0XVjQAdvk0wdpcCYBT0f1EHHs9L6w8sNuBnm5BDjmi9s38
- 3I3u1P/nr/C9IK9BkI6M7TgFjy/2ThFM4AFqGU4Awe+0Et7zDLLutl8sUdOuDDeJifmc
- zanI1qJK9kaqE2Yy3p65QYE4TIeMTkUa6BjH/cKbP8Hg6eSuFh5G6yXBzR+3KqcZKcqX
- 4ffA==
+ d=gmail.com; s=20221208; t=1687266663; x=1689858663;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=1n1bZ+D44uedI4wYVe5liTwhxzhBDGrrNBpEgbZTtF8=;
+ b=Xtac5LsgdvqhfjkJI8J4/Ejmq974PZKeNJllGKlm64XWw1S2Mbe1sdP/e+qcUdE0YT
+ qIl7TLD5rCHZO+puQglhp4Q0ZYK2fMdd4+PjAo1YLuHa4q13TC/+a8zO/FBCLxjUp6Dr
+ 8S5Y3uQ6MjPSVwluSigG2+Rot5ZCrq2coRbVykYC44iQwb+K+hm7WQIbGb3tHcV49Pjx
+ t//v3Ruy3T0OZRS2u/l1XaaevIHTws9GSAR5ocBytCdbttVR39Zi06k3QD1gzHbANV+V
+ qXxD/hUua0BVZSQ33HbQEwdqkODDMgyBXUiKnU1sxRKJTmaCUPBSTwDr9TxU774dljDB
+ EjYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687266659; x=1689858659;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=Dq9QLHk3SCarxrgZcKKe0CkJMeecWY83BLaEKFPBBJA=;
- b=hrRRvaT5c11trH1So6hzd/WSe8roTDn6FePoV8dFBIzzFZn+HyivM2sHkBz/Hc40uv
- op0cFrPHf48Uf8dFEMOCQ1Dv76yP042xuqlALOC8sIWEaZ2Zb6NmceaTW5q317D9fNiv
- AoWZ19P7KhiYwCjAV3GyX3ugA89sNFChjMTOTLnShaWQ1zZT6Em6jXvXFBMghOLS0qRi
- p1N+eIZrmnl/jLdWRFK43qABIUcf6JUu+UcSuMKhpwsWUEg18yB1ZGOQKTVpJmLYBstj
- NU1VTG/vDpYDcPF1iql/twhbK7GLVWTYzzYi7Lh/erg2g3ZtqoEApLM4t8CCUSgeyy4W
- 3HbA==
-X-Gm-Message-State: AC+VfDwh2f4UIJkBYzLTvFZ/e0MMx9j6++EWr0ghu6962R+nPUoXRNso
- +wjJZaV72xCRNS+BppphPDqFQptN4xc=
-X-Google-Smtp-Source: ACHHUZ6mWBQJD4sfJMHX6aI1mUFNT/qfFWOcr9B0PLkAsttrgITMYX99BTMAQ/g78z4KfeFqfcwbMw==
-X-Received: by 2002:a05:6a00:2d8c:b0:668:95c1:b4f7 with SMTP id
- fb12-20020a056a002d8c00b0066895c1b4f7mr2210168pfb.27.1687266659184; 
- Tue, 20 Jun 2023 06:10:59 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1687266663; x=1689858663;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=1n1bZ+D44uedI4wYVe5liTwhxzhBDGrrNBpEgbZTtF8=;
+ b=C0Aa7fs2pMj05LWbd73gNxsD3DmevUVp6P7J7VYwF7WMRSaVevAzHdH65bifw2zfQ2
+ RZEs9zqFKVrLUEitkAgCp+ZsmWk1ZHPMxKXSHKN9iPcaFd2b0F1l4kVvWzenGR7w3ZyJ
+ Pnxs/Dnm+2r9QbJAQTFkG+KaMtLR0G9yi3T/qgWQjSmGhdWlf9Vsa5fAcO98N52/T3Tw
+ Oq2kJYxnrs2ogVodOj/D/xUioBgPoHvH5j62AU6qt1yALBbDxdj+pD1b3HiWfvW/BTcC
+ mbVFE8AOFPP2wUiVXv1uKUa6dC97FMfzjB1KewWPzOPmrWlJOoAQA2R35XrDE1AcD+hp
+ rqyg==
+X-Gm-Message-State: AC+VfDz0fyLrEsnb8nYwcqZiGaHvFZ80j5gteuvnK3c3G3PM5C/7gynO
+ 3UIoqSUTU+X+oKrtCAmB3vyclQElxIc=
+X-Google-Smtp-Source: ACHHUZ59mk1z7BmwZqVfS84RnPQZBDDRiPrHdvj6qovzfbHXPqfVnTlFDGTwkZCOqr/kyoL9yfmgmA==
+X-Received: by 2002:a05:6a21:158c:b0:10f:1e5d:83ea with SMTP id
+ nr12-20020a056a21158c00b0010f1e5d83eamr7159896pzb.25.1687266662833; 
+ Tue, 20 Jun 2023 06:11:02 -0700 (PDT)
 Received: from wheely.local0.net ([124.170.190.103])
  by smtp.gmail.com with ESMTPSA id
- w5-20020aa78585000000b00652a72b89d1sm1353285pfn.170.2023.06.20.06.10.55
+ w5-20020aa78585000000b00652a72b89d1sm1353285pfn.170.2023.06.20.06.10.59
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 20 Jun 2023 06:10:58 -0700 (PDT)
+ Tue, 20 Jun 2023 06:11:02 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org,
  Harsh Prateek Bora <harshpb@linux.ibm.com>,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
- Anushree Mathur <anushree.mathur@linux.vnet.ibm.com>
-Subject: [PATCH 0/4] target/ppc: Fixes for instruction-related
-Date: Tue, 20 Jun 2023 23:10:40 +1000
-Message-Id: <20230620131044.169110-1-npiggin@gmail.com>
+ Anushree Mathur <anushree.mathur@linux.vnet.ibm.com>,
+ Fabiano Rosas <farosas@suse.de>
+Subject: [PATCH 1/4] target/ppc: Fix instruction loading endianness in
+ alignment interrupt
+Date: Tue, 20 Jun 2023 23:10:41 +1000
+Message-Id: <20230620131044.169110-2-npiggin@gmail.com>
 X-Mailer: git-send-email 2.40.1
+In-Reply-To: <20230620131044.169110-1-npiggin@gmail.com>
+References: <20230620131044.169110-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x42d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,32 +94,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Because they got more complexities than I first thought, these patches
-are broken out from the bigger series here:
+powerpc ifetch endianness depends on MSR[LE] so it has to byteswap
+after cpu_ldl_code(). This corrects DSISR bits in alignment
+interrupts when running in little endian mode.
 
-https://lists.gnu.org/archive/html/qemu-ppc/2023-05/msg00425.html
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+ target/ppc/excp_helper.c | 22 +++++++++++++++++++++-
+ 1 file changed, 21 insertions(+), 1 deletion(-)
 
-Since then I fixed the --disable-tcg compile bug reported by Anushree
-hopefully. Also added a workaround for KVM so injected interrupts
-wouldn't attempt to find the prefix bit setting. I don't know how much
-that is really needed, but injection callers would have to set it one
-way or anohter if we need to add it.
-
-Thanks,
-Nick
-
-Nicholas Piggin (4):
-  target/ppc: Fix instruction loading endianness in alignment interrupt
-  target/ppc: Change partition-scope translate interface
-  target/ppc: Add SRR1 prefix indication to interrupt handlers
-  target/ppc: Implement HEIR SPR
-
- target/ppc/cpu.h         |   1 +
- target/ppc/cpu_init.c    |  23 ++++++++
- target/ppc/excp_helper.c | 110 ++++++++++++++++++++++++++++++++++++++-
- target/ppc/mmu-radix64.c |  38 ++++++++++----
- 4 files changed, 159 insertions(+), 13 deletions(-)
-
+diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
+index 12d8a7257b..a2801f6e6b 100644
+--- a/target/ppc/excp_helper.c
++++ b/target/ppc/excp_helper.c
+@@ -133,6 +133,26 @@ static void dump_hcall(CPUPPCState *env)
+                   env->nip);
+ }
+ 
++#ifdef CONFIG_TCG
++/* Return true iff byteswap is needed to load instruction */
++static inline bool insn_need_byteswap(CPUArchState *env)
++{
++    /* SYSTEM builds TARGET_BIG_ENDIAN. Need to swap when MSR[LE] is set */
++    return !!(env->msr & ((target_ulong)1 << MSR_LE));
++}
++
++static uint32_t ppc_ldl_code(CPUArchState *env, hwaddr addr)
++{
++    uint32_t insn = cpu_ldl_code(env, addr);
++
++    if (insn_need_byteswap(env)) {
++        insn = bswap32(insn);
++    }
++
++    return insn;
++}
++#endif
++
+ static void ppc_excp_debug_sw_tlb(CPUPPCState *env, int excp)
+ {
+     const char *es;
+@@ -3104,7 +3124,7 @@ void ppc_cpu_do_unaligned_access(CPUState *cs, vaddr vaddr,
+ 
+     /* Restore state and reload the insn we executed, for filling in DSISR.  */
+     cpu_restore_state(cs, retaddr);
+-    insn = cpu_ldl_code(env, env->nip);
++    insn = ppc_ldl_code(env, env->nip);
+ 
+     switch (env->mmu_model) {
+     case POWERPC_MMU_SOFT_4xx:
 -- 
 2.40.1
 
