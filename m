@@ -2,76 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31D09737113
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 17:59:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EBFB737134
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 18:12:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBdke-0004sB-Ig; Tue, 20 Jun 2023 11:58:44 -0400
+	id 1qBdwJ-0004SK-Iz; Tue, 20 Jun 2023 12:10:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qBdkH-0004cf-O4
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 11:58:17 -0400
-Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
+ id 1qBdwG-0004Rv-95
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 12:10:41 -0400
+Received: from mail-lj1-x22e.google.com ([2a00:1450:4864:20::22e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qBdkG-00060y-AW
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 11:58:17 -0400
-Received: by mail-ed1-x529.google.com with SMTP id
- 4fb4d7f45d1cf-5187aa18410so5212035a12.0
- for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 08:58:15 -0700 (PDT)
+ id 1qBdwD-0001sj-4K
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 12:10:39 -0400
+Received: by mail-lj1-x22e.google.com with SMTP id
+ 38308e7fff4ca-2b466744368so52346991fa.0
+ for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 09:10:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687276695; x=1689868695;
+ d=linaro.org; s=google; t=1687277426; x=1689869426;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=5KQoYQEfwJu/376+DWnLIGfWGq9QwHg19XSNj0syNIs=;
- b=BNrMJwjQylaZRkhSXPReYCeIhqrV0OTDI6S7qDiyIho5aee9HVFK1JvkIdXhVXTkSH
- ne1G2LXE9zVEb5L25kUFU+Juh8MbzpnfcU0rD0JUZU0Vsu5F4N/TU8dZ3BkUHTJzCD6P
- YZ0JO8R23Qc2xpKSf0uMY/SDLP0MdrvzPKI04iKm6hW0UY8JUYNIOSrAAGNcoLml/omP
- gn5nT54VsHF7fZ4dRhdecVZSlRQ0PIVwv/rrpw0D/GXgqcwm2xoT4Zop09OOdRT8bk5r
- BP2tfqTEKDJ2sgkn1NGftfHdWCYGfM7/U0IDRHjTQmc7OD+a3PTZ07MmCuMEcqxYSwQ7
- no5w==
+ bh=Kg5f28StkxYB7qw5EtF0u4dsTVGSLQjAudZoRVEluNY=;
+ b=kAuz9Hfsg4/dHofSXJ29luc7DO4/HNwL5jljBOvGTrUpt2d2c3kiTP9JGv52W2UOtb
+ hCh61cm0As5/Tjxx2F6AGO64yR4IlHicmCEsXSip5FDT6KpFRYxeNi7pKVZtJaty6737
+ tqlZyaVRIKBBTXlq5gHzAXiS3c3DBUgdrnkmZY7yv4RQ0sj0Sd6X3JqGoHK9F+4HseyV
+ BM31Ng0NnPWeJ3dk7+QipzYFdm3i7PH+njKsEKq+lhVBfxRBzjKdiSE3U2ZrvSTU9ovj
+ P3rJ0vu0gnTOtJ+nZuVbTykWSDipJ3wsCTBjj2qbS0ctB//pr+iBINW0Zl9dqWUFWgSL
+ nuBg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687276695; x=1689868695;
+ d=1e100.net; s=20221208; t=1687277426; x=1689869426;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=5KQoYQEfwJu/376+DWnLIGfWGq9QwHg19XSNj0syNIs=;
- b=FZY36Fi5+eXakDwqnrxqfooOTgaDuGiPMEW1Z5Dua15BRiDDelf4q8T0Z7TZ8Qb/Q3
- oUqOvUDLsvZS5rk3GJYi4ww95d1lL/T2o4xC9QAFAVewCVMY3wrZRv8UH3YdKzGOVT42
- BhxMFa99DuVgyZrwB+1Vb/prGaoOBnNZCKO+z+Ecmv/ELqFYLAJei1luZPTFSNuwSwMX
- Ab31FNH0y22uYtTBbWoCV9Wi/Uv7jt2rS4xFrbE4h4BOo95ysDPX+Zhnb+3SXZNDbV4G
- gfn/1Y8yqtaPJLsSYyER1m8EdBxYb6GnkN6nkPc7B7AFsBBt8y+FGV6ylRnY4Hd/YP+8
- aN5Q==
-X-Gm-Message-State: AC+VfDyDEQAgSweQN4do+cqEKkM77QxrrSTbJcVkMrKCiBz+zemx/wVX
- m+Br0CZz/44ALFPDg0r+Jh5oxw==
-X-Google-Smtp-Source: ACHHUZ5dVm/w5/rB31qtAtTa3yN6aw+8LIsa+SDIOPvE9P4Bt8eJXcp0ZqM4xUOrC/QoCkOkQxi3HA==
-X-Received: by 2002:aa7:cf19:0:b0:514:9e3c:d82e with SMTP id
- a25-20020aa7cf19000000b005149e3cd82emr9587450edy.14.1687276694645; 
- Tue, 20 Jun 2023 08:58:14 -0700 (PDT)
+ bh=Kg5f28StkxYB7qw5EtF0u4dsTVGSLQjAudZoRVEluNY=;
+ b=ihlZXJkwSsac4YsjUZbGNhEs0BYYpeHDSjKsgQC43DarGnGklY+5ChQI2bPoYp1Id1
+ 53elLXvkeWmoZX1KlpMtsEWlSw411ALVgeTKfseNWQd0k3o6x+/KCaMCQmtwSltH5j3z
+ XyyBC1HB3pVwlXAM8wXjG+KlA7RxY2i03ImPeswhI8PN9uGgCj9oUUcGReBYwuD/MddB
+ tKA1tCOgXQy56ZQ4uEWBrpy9OsY7CvyYw9ktVBJGngjOgRbt6a5eFdaog47Qfwu/ehDT
+ EKe+cyPAY7nNruBdAxOnrYHIfuw2pYwWxvjss2IRhHZ4C5YrhhLqR9s0Y0ZeQ6PVCUuO
+ u94g==
+X-Gm-Message-State: AC+VfDxMfaNElQ5DYlzd7TLrwDgOEyjswiEqfn5ekYFv8y5mF5Zd0j85
+ p1UYe+YZ3KKMetqmRlNha2DoEA==
+X-Google-Smtp-Source: ACHHUZ7yKJuZAkzQfUTbOroP240nLH6Q63WobrQ5gtUGCAxqsDnLD/1m99dG83ZVDn0nh2xSDC4HYA==
+X-Received: by 2002:a2e:80c9:0:b0:2b1:e6eb:1ba2 with SMTP id
+ r9-20020a2e80c9000000b002b1e6eb1ba2mr8951130ljg.22.1687277426389; 
+ Tue, 20 Jun 2023 09:10:26 -0700 (PDT)
 Received: from [192.168.69.129] ([176.176.183.29])
  by smtp.gmail.com with ESMTPSA id
- o4-20020aa7d3c4000000b0051632dc69absm1375087edr.86.2023.06.20.08.58.14
+ o5-20020aa7c505000000b0051879590e06sm1414833edq.24.2023.06.20.09.10.25
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 20 Jun 2023 08:58:14 -0700 (PDT)
-Message-ID: <1916d7b6-f1f7-5fd3-e3d5-fa7894118280@linaro.org>
-Date: Tue, 20 Jun 2023 17:58:12 +0200
+ Tue, 20 Jun 2023 09:10:26 -0700 (PDT)
+Message-ID: <97cf0a1f-86c6-6bd3-5643-4982a5db03bb@linaro.org>
+Date: Tue, 20 Jun 2023 18:10:23 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PATCH v2 07/10] target/i386: sysret and sysexit are privileged
+Subject: Re: [PATCH v2 08/10] target/i386: implement 32-bit SYSCALL for
+ linux-user
 Content-Language: en-US
-To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org,
+ Warner Losh <imp@bsdimp.com>
 References: <20230620151634.21053-1-pbonzini@redhat.com>
- <20230620151634.21053-8-pbonzini@redhat.com>
+ <20230620151634.21053-9-pbonzini@redhat.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230620151634.21053-8-pbonzini@redhat.com>
+In-Reply-To: <20230620151634.21053-9-pbonzini@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::529;
- envelope-from=richard.henderson@linaro.org; helo=mail-ed1-x529.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::22e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-lj1-x22e.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -95,12 +97,30 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 6/20/23 17:16, Paolo Bonzini wrote:
-> Signed-off-by: Paolo Bonzini<pbonzini@redhat.com>
-> ---
->   target/i386/tcg/translate.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
+> @@ -211,6 +211,9 @@ void cpu_loop(CPUX86State *env)
+>  
+>          switch(trapnr) {
+>          case 0x80:
+> +#ifdef TARGET_ABI32
+> +        case EXCP_SYSCALL:
+> +#endif
+>              /* linux syscall from int $0x80 */
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+ABI32 includes x32.
+I think you want TARGET_I386.
+
+> +#if defined CONFIG_SOFTMMU || defined CONFIG_LINUX_USER
+> +#define TCG_EXT2_NOBSD_FEATURES CPUID_EXT2_SYSCALL
+> +#else
+> +#define TCG_EXT2_NOBSD_FEATURES 0
+> +#endif
+
+Missing TARGET_I386 test per above.
+Better named TCG_EXT2_USERONLY_FEATURES.
+
+Warner, if I'm reading freebsd-src correctly, sys/x86 (aka 32-bit) does not use 
+sysenter/sysret?  I only see that under sys/amd64 (where fast_syscall32 is a cya nop).
+
 
 r~
 
