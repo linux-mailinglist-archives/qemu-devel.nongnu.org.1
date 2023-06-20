@@ -2,38 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17D3A736360
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 08:02:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70E68736363
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 08:03:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBUPh-0004en-4W; Tue, 20 Jun 2023 02:00:25 -0400
+	id 1qBUQl-0005TD-By; Tue, 20 Jun 2023 02:01:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=rj0j=CI=kaod.org=clg@ozlabs.org>)
- id 1qBUOy-0004WD-EV; Tue, 20 Jun 2023 01:59:42 -0400
+ id 1qBUP7-0004dG-Nw; Tue, 20 Jun 2023 01:59:52 -0400
 Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=rj0j=CI=kaod.org=clg@ozlabs.org>)
- id 1qBUOu-0004W4-0j; Tue, 20 Jun 2023 01:59:38 -0400
+ id 1qBUP1-0004Xq-Jw; Tue, 20 Jun 2023 01:59:46 -0400
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4QlbYw0Rjjz4x2c;
- Tue, 20 Jun 2023 15:59:32 +1000 (AEST)
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4QlbZ22ZtKz4x09;
+ Tue, 20 Jun 2023 15:59:38 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4QlbYt0pjFz4x09;
- Tue, 20 Jun 2023 15:59:29 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4QlbYz2lJjz4x47;
+ Tue, 20 Jun 2023 15:59:35 +1000 (AEST)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
 To: qemu-ppc@nongnu.org,
 	Daniel Henrique Barboza <danielhb413@gmail.com>
 Cc: qemu-devel@nongnu.org,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Barrat?= <fbarrat@linux.ibm.com>
-Subject: [PATCH 3/9] MAINTAINERS: Add reviewer for XIVE
-Date: Tue, 20 Jun 2023 07:59:05 +0200
-Message-ID: <20230620055911.187065-4-clg@kaod.org>
+ BALATON Zoltan <balaton@eik.bme.hu>
+Subject: [PATCH 5/9] ppc/pegasos2: Report an error when run with KVM
+Date: Tue, 20 Jun 2023 07:59:07 +0200
+Message-ID: <20230620055911.187065-6-clg@kaod.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230620055911.187065-1-clg@kaod.org>
 References: <20230620055911.187065-1-clg@kaod.org>
@@ -63,27 +63,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fred discusses frequently with the IBM HW designers, he is fluent in
-XIVE logic, add him as a reviewer.
+The 'pegasos2' machine never supported KVM. This piece of code was
+inherited from another model.
 
-Cc: Frédéric Barrat <fbarrat@linux.ibm.com>
+Cc: BALATON Zoltan <balaton@eik.bme.hu>
 Signed-off-by: Cédric Le Goater <clg@kaod.org>
 ---
- MAINTAINERS | 1 +
- 1 file changed, 1 insertion(+)
+ hw/ppc/pegasos2.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 90fb83c4cb58..2e8c715eaca4 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -2445,6 +2445,7 @@ T: git https://github.com/philmd/qemu.git fw_cfg-next
+diff --git a/hw/ppc/pegasos2.c b/hw/ppc/pegasos2.c
+index af5489de26ed..830323cc7849 100644
+--- a/hw/ppc/pegasos2.c
++++ b/hw/ppc/pegasos2.c
+@@ -29,7 +29,6 @@
+ #include "qemu/log.h"
+ #include "qemu/error-report.h"
+ #include "sysemu/kvm.h"
+-#include "kvm_ppc.h"
+ #include "exec/address-spaces.h"
+ #include "qom/qom-qobject.h"
+ #include "qapi/qmp/qdict.h"
+@@ -120,6 +119,12 @@ static void pegasos2_init(MachineState *machine)
+     int i, sz;
+     uint8_t *spd_data;
  
- XIVE
- M: Cédric Le Goater <clg@kaod.org>
-+R: Frédéric Barrat <fbarrat@linux.ibm.com>
- L: qemu-ppc@nongnu.org
- S: Odd Fixes
- F: hw/*/*xive*
++    if (kvm_enabled()) {
++        error_report("machine %s does not support the KVM accelerator",
++                     MACHINE_GET_CLASS(machine)->name);
++        exit(EXIT_FAILURE);
++    }
++
+     /* init CPU */
+     pm->cpu = POWERPC_CPU(cpu_create(machine->cpu_type));
+     env = &pm->cpu->env;
 -- 
 2.41.0
 
