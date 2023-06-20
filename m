@@ -2,76 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57C6C736ABD
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 13:18:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FE3C736AD6
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 13:21:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBZMo-000399-Ea; Tue, 20 Jun 2023 07:17:46 -0400
+	id 1qBZQ0-00018X-EE; Tue, 20 Jun 2023 07:21:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mads@ynddal.dk>) id 1qBZMm-00037D-7k
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 07:17:44 -0400
-Received: from mr85p00im-zteg06021901.me.com ([17.58.23.194])
+ (Exim 4.90_1) (envelope-from <SRS0=rj0j=CI=kaod.org=clg@ozlabs.org>)
+ id 1qBZPr-00016S-Ti; Tue, 20 Jun 2023 07:20:56 -0400
+Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mads@ynddal.dk>) id 1qBZMj-0006jn-PE
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 07:17:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ynddal.dk; s=sig1;
- t=1687259859; bh=dG5Rc0PCllhhaYpBxMghZWbAcodEUEjgv6iCawS3ORM=;
- h=Content-Type:Mime-Version:Subject:From:Date:Message-Id:To;
- b=c2ILi5ag640YDiy22KuJOQ5LPxYFNglWipXYk2DIU1M0Gk00J9HGiztddMYbweNnm
- gkoTUP8D1ZPfQcndbDF/vMoqsK09P3Xv3XMWyH1KdfsD47vN327RfdhsZhNtx3Rusm
- nKZqGEGuyo8LoLQf0zZIJCAJzOW9CxwPGG0GFGxpr9RLT9bLfSyDuWsjKPNBmqzcUF
- YYOTS537ivl2I6UGkEW42m2EJN69+eUARy5eSSyQ4WeAZGPVVe1gR+mKILU6kKLI90
- +sKqifZXXiWYTZ6ZyhEzN4z96n8cWiVf1vQ5mWqwO1DWotB2UZxcMJfFx2zLtKc2+F
- d5AxNT8WSuPBQ==
-Received: from smtpclient.apple (mr38p00im-dlb-asmtp-mailmevip.me.com
- [17.57.152.18])
- by mr85p00im-zteg06021901.me.com (Postfix) with ESMTPSA id 38D4774006D;
- Tue, 20 Jun 2023 11:17:36 +0000 (UTC)
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3731.600.7\))
-Subject: Re: [PATCH 00/12] Introduce new vmapple machine type
-From: Mads Ynddal <mads@ynddal.dk>
-In-Reply-To: <20230614224038.86148-1-graf@amazon.com>
-Date: Tue, 20 Jun 2023 13:17:23 +0200
-Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org,
- "open list:ARM cores" <qemu-arm@nongnu.org>,
- Cameron Esfahani <dirty@apple.com>,
- Roman Bolshakov <r.bolshakov@yadro.com>,
- Stefan Hajnoczi <stefanha@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>
-Content-Transfer-Encoding: 7bit
-Message-Id: <ACE1A94A-4CB8-4B23-B09A-D2B1685E402E@ynddal.dk>
-References: <20230614224038.86148-1-graf@amazon.com>
-To: Alexander Graf <graf@amazon.com>
-X-Mailer: Apple Mail (2.3731.600.7)
-X-Proofpoint-GUID: uXnx1zlMLQ7Nu4NAVJoZNbwry9ZOmjvX
-X-Proofpoint-ORIG-GUID: uXnx1zlMLQ7Nu4NAVJoZNbwry9ZOmjvX
-X-Proofpoint-Virus-Version: =?UTF-8?Q?vendor=3Dfsecure_engine=3D1.1.170-22c6f66c430a71ce266a39bfe25bc?=
- =?UTF-8?Q?2903e8d5c8f:6.0.138,18.0.572,17.11.62.513.0000000_definitions?=
- =?UTF-8?Q?=3D2020-02-14=5F11:2020-02-14=5F02,2020-02-14=5F11,2021-12-02?=
- =?UTF-8?Q?=5F01_signatures=3D0?=
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0
- mlxscore=0 adultscore=0
- spamscore=0 bulkscore=0 clxscore=1030 suspectscore=0 malwarescore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2212070000 definitions=main-2306200101
-Received-SPF: pass client-ip=17.58.23.194; envelope-from=mads@ynddal.dk;
- helo=mr85p00im-zteg06021901.me.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ (Exim 4.90_1) (envelope-from <SRS0=rj0j=CI=kaod.org=clg@ozlabs.org>)
+ id 1qBZPp-0007ru-Pp; Tue, 20 Jun 2023 07:20:55 -0400
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4Qlkhb5Vmhz4x0G;
+ Tue, 20 Jun 2023 21:20:47 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4QlkhY6852z4wjC;
+ Tue, 20 Jun 2023 21:20:45 +1000 (AEST)
+Message-ID: <4ad1a081-bf98-1b7d-05c9-82c230da34ce@kaod.org>
+Date: Tue, 20 Jun 2023 13:20:43 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PULL 05/29] pnv/xive2: Handle TIMA access through all ports
+To: Peter Maydell <peter.maydell@linaro.org>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>
+Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, richard.henderson@linaro.org, 
+ Frederic Barrat <fbarrat@linux.ibm.com>
+References: <20230610133132.290703-1-danielhb413@gmail.com>
+ <20230610133132.290703-6-danielhb413@gmail.com>
+ <CAFEAcA_KKSc=Ns9n1UJKdnhZ846EGK-nFbsG_e2mw_zwMoOJcw@mail.gmail.com>
+Content-Language: en-US
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <CAFEAcA_KKSc=Ns9n1UJKdnhZ846EGK-nFbsG_e2mw_zwMoOJcw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=SRS0=rj0j=CI=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, NICE_REPLY_A=-0.09, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,71 +66,91 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-> On 15 Jun 2023, at 00.40, Alexander Graf <graf@amazon.com> wrote:
+On 6/20/23 12:45, Peter Maydell wrote:
+> On Sat, 10 Jun 2023 at 14:31, Daniel Henrique Barboza
+> <danielhb413@gmail.com> wrote:
+>>
+>> From: Frederic Barrat <fbarrat@linux.ibm.com>
+>>
+>> The Thread Interrupt Management Area (TIMA) can be accessed through 4
+>> ports, targeted by the address. The base address of a TIMA
+>> is using port 0 and the other ports are 0x80 apart. Using one port or
+>> another can be useful to balance the load on the snoop buses. With
+>> skiboot and linux, we currently use port 0, but as it tends to be
+>> busy, another hypervisor is using port 1 for TIMA access.
+>>
+>> The port address bits fall in between the special op indication
+>> bits (the 2 MSBs) and the register offset bits (the 6 LSBs). They are
+>> "don't care" for the hardware when processing a TIMA operation. This
+>> patch filters out those port address bits so that a TIMA operation can
+>> be triggered using any port.
+>>
+>> It is also true for indirect access (through the IC BAR) and it's
+>> actually nothing new, it was already the case on P9. Which helps here,
+>> as the TIMA handling code is common between P9 (xive) and P10 (xive2).
+>>
+>> Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
+>> Reviewed-by: Cédric Le Goater <clg@kaod.org>
+>> Message-Id: <20230601121331.487207-6-fbarrat@linux.ibm.com>
+>> Signed-off-by: Daniel Henrique Barboza <danielhb413@gmail.com>
+>> ---
 > 
-> This patch set introduces a new ARM and HVF specific machine type
-> called "vmapple". It mimicks the device model that Apple's proprietary
-> Virtualization.Framework exposes, but implements it in QEMU.
+> Hi -- Coverity points out that there's a problem with this
+> change (CID 1512997, 1512998):
 > 
-> With this new machine type, you can run macOS guests on Apple Silicon
-> systems via HVF. To do so, you need to first install macOS using
-> Virtualization.Framework onto a virtual disk image using a tool like
-> macosvm (https://github.com/s-u/macosvm)
+>> --- a/hw/intc/pnv_xive2.c
+>> +++ b/hw/intc/pnv_xive2.c
+>> @@ -1662,6 +1662,8 @@ static void pnv_xive2_tm_write(void *opaque, hwaddr offset,
+>>       bool gen1_tima_os =
+>>           xive->cq_regs[CQ_XIVE_CFG >> 3] & CQ_XIVE_CFG_GEN1_TIMA_OS;
+>>
+>> +    offset &= TM_ADDRESS_MASK;
 > 
->  $ macosvm --disk disk.img,size=32g --aux aux.img \
->            --restore UniversalMac_12.0.1_21A559_Restore.ipsw vm.json
+> Here we now mask off most of the bytes of 'offset',
+> because TM_ADDRESS_MASK is 0xC3F...
 > 
-> Then, extract the ECID from the installed VM:
+>> +
+>>       /* TODO: should we switch the TM ops table instead ? */
+>>       if (!gen1_tima_os && offset == HV_PUSH_OS_CTX_OFFSET) {
 > 
->  $ cat "$DIR/macosvm.json" | python3 -c                                 \
->  'import json,sys;obj=json.load(sys.stdin);print(obj["machineId"]) |    \
->  base64 -d | plutil -extract ECID raw -
-
-Beware, that the file will be called 'vm.json' and DIR is undefined following
-the previous line. Also, it's missing a single-quote at the end of
-`["machineId"])`.
-
-> In addition, cut off the first 16kb of the aux.img:
+> ...but here we compare offset against HV_PUSH_OS_CTX_OFFSET,
+> which is defined as
+> #define HV_PUSH_OS_CTX_OFFSET  (HV_PAGE_OFFSET | (TM_QW1_OS + TM_WORD2))
+> and since
+> #define HV_PAGE_OFFSET         (XIVE_TM_HV_PAGE << TM_SHIFT)
+> #define XIVE_TM_HV_PAGE         0x1
+> #define TM_SHIFT                16
 > 
->  $ dd if=aux.img of=aux.img.trimmed bs=$(( 0x4000 )) skip=1
+> that means HV_PUSH_OS_CTX_OFFSET has bits defined in the
+> upper 16 bits, and the comparison can now never be true,
+> making the if() dead code.
 > 
-> Now, you can just launch QEMU with the bits generated above:
+>>           xive2_tm_push_os_ctx(xptr, tctx, offset, value, size);
+>> @@ -1681,6 +1683,8 @@ static uint64_t pnv_xive2_tm_read(void *opaque, hwaddr offset, unsigned size)
+>>       bool gen1_tima_os =
+>>           xive->cq_regs[CQ_XIVE_CFG >> 3] & CQ_XIVE_CFG_GEN1_TIMA_OS;
+>>
+>> +    offset &= TM_ADDRESS_MASK;
+>> +
+>>       /* TODO: should we switch the TM ops table instead ? */
+>>       if (!gen1_tima_os && offset == HV_PULL_OS_CTX_OFFSET) {
+>>           return xive2_tm_pull_os_ctx(xptr, tctx, offset, size);
 > 
->  $ qemu-system-aarch64 -serial mon:stdio                                \
->  -m 4G                                                                  \
->  -M vmapple,uuid=6240349656165161789                                    \
->  -bios /Sys*/Lib*/Fra*/Virtualization.f*/R*/AVPBooter.vmapple2.bin      \
->  -pflash aux.img.trimmed                                                \
->  -pflash disk.img                                                       \
->  -drive file=disk.img,if=none,id=root                                   \
->  -device virtio-blk-pci,drive=root,x-apple-type=1                       \
->  -drive file=aux.img.trimmed,if=none,id=aux                             \
->  -device virtio-blk-pci,drive=aux,x-apple-type=2                        \
->  -accel hvf -no-reboot
-
-Just for clarity, I'd add that the 'vmapple,uuid=...' has to be set to the
-ECID the previous step.
-
-You haven't defined a display, but I'm not sure if that is on purpose to
-show a minimal setup. I had to add '-display sdl' for it to fully work.
-
-> There are a few limitations with this implementation:
-> 
->  - Only runs on macOS because it relies on
->    ParavirtualizesGraphics.Framework
->  - Something is not fully correct on interrupt delivery or
->    similar - the keyboard does not work
->  - No Rosetta in the guest because we lack the private
->    entitlement to enable TSO
-
-Would it be possible to mitigate the keyboard issue using an emulated USB
-keyboard? I tried poking around with it, but with no success.
-
-> Over time, I hope that some of the limitations above could cease to exist.
-> This device model would enable very nice use cases with KVM on an Asahi
-> Linux device.
+> Similarly here.
 
 
+yes. I think this went unnoticed because the push/pull os context
+commands are only used by the HV when a vCPU is dipatched on a HW
+thread. We would need a test for a KVM guest running under the QEMU
+PowerNV POWER10 machine. This requires an image with some tuning
+because emulation is a bit slow. I use to have a buildroot image
+including a qemu and smaller buildroot image for it.
+
+So, offset is within the full TIMA region (4 pages) and
+TM_ADDRESS_MASK is a mask within a page. This needs a fix.
+
+Thanks,
+
+C.
 
 
