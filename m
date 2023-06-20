@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8C59737544
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 21:47:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0343973753E
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 21:46:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBhIp-0000OB-LU; Tue, 20 Jun 2023 15:46:11 -0400
+	id 1qBhJJ-0000Tl-0A; Tue, 20 Jun 2023 15:46:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jupham125@gmail.com>)
- id 1qBf7n-0004bK-PA
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 13:26:39 -0400
-Received: from mail-vk1-xa35.google.com ([2607:f8b0:4864:20::a35])
+ id 1qBf7o-0004c3-Tk
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 13:26:40 -0400
+Received: from mail-yw1-x1129.google.com ([2607:f8b0:4864:20::1129])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <jupham125@gmail.com>)
- id 1qBf7m-0006j7-DR
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 13:26:39 -0400
-Received: by mail-vk1-xa35.google.com with SMTP id
- 71dfb90a1353d-47151ee3fe6so1454714e0c.2
- for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 10:26:38 -0700 (PDT)
+ id 1qBf7n-0006jF-DB
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 13:26:40 -0400
+Received: by mail-yw1-x1129.google.com with SMTP id
+ 00721157ae682-5707b429540so62321737b3.1
+ for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 10:26:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1687281997; x=1689873997;
+ d=gmail.com; s=20221208; t=1687281998; x=1689873998;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=OA/WxFF2LjQwsusJe2ZEpybwtLFNNB6dL8Z37x5MiNA=;
- b=Gw/ePyPCZN6D3R1lWEpm9o7z/zkmsq5C1rmuygaCsoLkAVfyEB2INLuL4Q3dZ3eRvw
- M2U2UC838z71yX74m5WjScvJTVZAodbHCfcg5o1Dd6TWhksUBFgJJOxfxgIxE6S47L1G
- pOTQU8xgcuhfrCgn9bB4/VggimQCKWiOcMGICTs1n0qeH7cYpquX2hrU8MBZybMoDi3C
- ACKDJRBaCa967M0qH7wJ8nuxQnFE0kkQ6VQrucbr+q/6ae4YWtog6F5y3oB/6QtjhwET
- xmQPCQ5ROzWM1HJjut//n2STpO4dETYKelWRV8ex3U8VeHWtJFQyNRw7JBkVd6pDiDKi
- BFkg==
+ bh=4bMCmETV5A3RE3Y5AD1rHTVY6vGqDtmQP66Im/JEggA=;
+ b=gDFBR4RHmuOhFl0zAKSW/YdHa+4P3awfbEylJDwusaDIY85UFvDLY/tz68yUx65RBX
+ R28q+pnm2RIUNWuMX0W3/mgO69hSHo3BFQP4vBuszuEtuXtXv9oazcjnZMrlhUKwm8X7
+ yyIMv6fSasCsKWsbWRAj0B/dlQb1R3Vzx6ZKTvAzt5sBPhZPcc1tKDcNtjOlwLuss8k/
+ 4US8q4b3RE1J/8EYgFIrfFmQjcGDe/zdXmKeXB//ADqkVuINn7gpFl+7DSKGnOCjd+3h
+ 7ilSxeJu7N4TheFvtsrd7Y7MNA9vGkk7DQNGQ4ZCoH/iatDdzMoUABr7v68ARDKLWb2j
+ evDQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687281997; x=1689873997;
+ d=1e100.net; s=20221208; t=1687281998; x=1689873998;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=OA/WxFF2LjQwsusJe2ZEpybwtLFNNB6dL8Z37x5MiNA=;
- b=gydjc3dgVa4EVDSt75Gvb8Ss7xCtscpKOxt6HnYTh0L8QSnWe66+w2ngCmChcBh6pC
- qo9EJRWJRkk3S30+KbTos5mY8E1XtG/OuBtipMNQU8RfsNedvWdStWkqDhJ/73xu2V4S
- kECj58BgA5aY4BFGALRxqOZSmsI6yINz+0Ze/vxjJ7Fv7awYsmmrkTlnqKQeNiUm155p
- rAGklgdUbwq0GOXFAHVPf8lK1vREiOZiq5YL8pVySWl4l9j4g1TqAshR2H+H0AdhylQ+
- bdhan0TKpti9Fhld0PcYJvj4RnQgmpQbRt6RnOQmGi4LojOZt8phcmxsEyV/isGRfMtg
- x3Rg==
-X-Gm-Message-State: AC+VfDwBzYgWCjz3ogJ2beQWe0TRae6xL92KYGl7ZNXrrhm+S2rSV6sB
- zMZfNQAmVZKCveUUxtnUyE79wq6GXULgiQ==
-X-Google-Smtp-Source: ACHHUZ7L0oZpvP/sxYGy5/jli+O3tVyFSsDaBOmDeyl+UBkS9lXMKJXY5ZCB7QK5VML07xbsvEgtNQ==
-X-Received: by 2002:a1f:c14e:0:b0:46e:8724:5dbb with SMTP id
- r75-20020a1fc14e000000b0046e87245dbbmr2957742vkf.2.1687281996916; 
- Tue, 20 Jun 2023 10:26:36 -0700 (PDT)
+ bh=4bMCmETV5A3RE3Y5AD1rHTVY6vGqDtmQP66Im/JEggA=;
+ b=GYBt4d5LSUzQ7APVW4YEdiTEfjvNDXY/1xUe7gcGKH6W38HW4cvnUB9tlfZq3XwuyW
+ PAdO5QxUQH9geREmBVlS//FNMipPLaCSOYRbbVfGnYniogqZtrm8WD/bolqWjZxisa/1
+ EKg8JBU3gdHuWdeXA+R8TNYc24ADczR8t8LBWid8uypt7KfDbT8YsFSuuVQYwy/r0pl5
+ cb5hxi/1Am+Q3XgHWIWVr9ZyB++sEky9sVn+TBY6/xXtsxyAXS7Ccsz4Q01mXJnolDXc
+ M2ARrNhfflnC9YirTyGCE2yzoFtAzN1f4ipA7k1JOkq40Y1xMdbn+tALuvbXDGmMk6e5
+ nTYA==
+X-Gm-Message-State: AC+VfDyaX21nwDwVdvxUnpU1VoAcY2c4CCSP1Si+txlR2QFA46oPrTwF
+ dp4EK/tQyInTzHb1m5nrH/kbCkDDOpWn/w==
+X-Google-Smtp-Source: ACHHUZ7cU55hy5Cb37BJ9iPrgAmJK5V5Rqisz43YU2ciSAZoqwyKKwB4+WRqY0bOxGK9i+BEe6e6MQ==
+X-Received: by 2002:a0d:d947:0:b0:56c:fd14:a6f2 with SMTP id
+ b68-20020a0dd947000000b0056cfd14a6f2mr15247962ywe.8.1687281998081; 
+ Tue, 20 Jun 2023 10:26:38 -0700 (PDT)
 Received: from joel-Precision-7920-Tower.. ([24.53.71.1])
  by smtp.gmail.com with ESMTPSA id
- e65-20020a0dc244000000b0056cffe97a11sm604604ywd.13.2023.06.20.10.26.35
+ e65-20020a0dc244000000b0056cffe97a11sm604604ywd.13.2023.06.20.10.26.37
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 20 Jun 2023 10:26:36 -0700 (PDT)
+ Tue, 20 Jun 2023 10:26:37 -0700 (PDT)
 From: Joel Upham <jupham125@gmail.com>
 To: qemu-devel@nongnu.org
-Cc: Joel Upham <jupham125@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>
-Subject: [PATCH v1 22/23] qdev-monitor/pt: bypass root device check
-Date: Tue, 20 Jun 2023 13:24:56 -0400
-Message-Id: <6e4af8cf474a949609298e8536ee5f47f9017e5c.1687278381.git.jupham125@gmail.com>
+Cc: Joel Upham <jupham125@gmail.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>
+Subject: [PATCH v1 23/23] s3 support: enabling s3 with q35
+Date: Tue, 20 Jun 2023 13:24:57 -0400
+Message-Id: <109921db6ea7bfbb46130cbd3734f41068d38fe5.1687278381.git.jupham125@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <cover.1687278381.git.jupham125@gmail.com>
 References: <cover.1687278381.git.jupham125@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::a35;
- envelope-from=jupham125@gmail.com; helo=mail-vk1-xa35.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1129;
+ envelope-from=jupham125@gmail.com; helo=mail-yw1-x1129.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -95,37 +95,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On xen we need to be able to have hotpluggable root devices,
-even on Q35 at the moment. Having this check disables PT of
-devices, so lets turn it off for now.
+Resetting pci devices after s3 causes guest freezes, as xen usually
+likes to handle resetting devices.
+
 
 Signed-off-by: Joel Upham <jupham125@gmail.com>
 ---
- softmmu/qdev-monitor.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ hw/acpi/ich9.c    | 12 ++++++++----
+ hw/pci-host/q35.c |  3 ++-
+ 2 files changed, 10 insertions(+), 5 deletions(-)
 
-diff --git a/softmmu/qdev-monitor.c b/softmmu/qdev-monitor.c
-index b8d2c4dadd..f57dfa1964 100644
---- a/softmmu/qdev-monitor.c
-+++ b/softmmu/qdev-monitor.c
-@@ -43,6 +43,7 @@
- #include "hw/qdev-properties.h"
- #include "hw/clock.h"
- #include "hw/boards.h"
-+#include "sysemu/xen.h"
+diff --git a/hw/acpi/ich9.c b/hw/acpi/ich9.c
+index 1c236be1c7..234706a191 100644
+--- a/hw/acpi/ich9.c
++++ b/hw/acpi/ich9.c
+@@ -143,7 +143,8 @@ static int ich9_pm_post_load(void *opaque, int version_id)
+ {
+     ICH9LPCPMRegs *pm = opaque;
+     uint32_t pm_io_base = pm->pm_io_base;
+-    pm->pm_io_base = 0;
++    if (!xen_enabled())
++        pm->pm_io_base = 0;
+     ich9_pm_iospace_update(pm, pm_io_base);
+     return 0;
+ }
+@@ -274,7 +275,10 @@ static void pm_reset(void *opaque)
+     acpi_pm1_evt_reset(&pm->acpi_regs);
+     acpi_pm1_cnt_reset(&pm->acpi_regs);
+     acpi_pm_tmr_reset(&pm->acpi_regs);
+-    acpi_gpe_reset(&pm->acpi_regs);
++    /* Noticed guest freezing in xen when this was reset after S3. */
++    if (!xen_enabled()) {
++        acpi_gpe_reset(&pm->acpi_regs);
++    }
  
- /*
-  * Aliases were a bad idea from the start.  Let's keep them
-@@ -663,7 +664,8 @@ DeviceState *qdev_device_add_from_qdict(const QDict *opts,
-         return NULL;
+     pm->smi_en = 0;
+     if (!pm->smm_enabled) {
+@@ -322,7 +326,7 @@ void ich9_pm_init(PCIDevice *lpc_pci, ICH9LPCPMRegs *pm, qemu_irq sci_irq)
+         acpi_pm_tco_init(&pm->tco_regs, &pm->io);
      }
  
--    if (phase_check(PHASE_MACHINE_READY) && bus && !qbus_is_hotpluggable(bus)) {
-+    if (phase_check(PHASE_MACHINE_READY) && bus && !qbus_is_hotpluggable(bus)
-+        && !xen_enabled()) {
-         error_setg(errp, QERR_BUS_NO_HOTPLUG, bus->name);
-         return NULL;
-     }
+-    if (pm->acpi_pci_hotplug.use_acpi_hotplug_bridge) {
++    if (pm->acpi_pci_hotplug.use_acpi_hotplug_bridge || xen_enabled()) {
+         acpi_pcihp_init(OBJECT(lpc_pci),
+                         &pm->acpi_pci_hotplug,
+                         pci_get_bus(lpc_pci),
+@@ -345,7 +349,7 @@ void ich9_pm_init(PCIDevice *lpc_pci, ICH9LPCPMRegs *pm, qemu_irq sci_irq)
+     legacy_acpi_cpu_hotplug_init(pci_address_space_io(lpc_pci),
+         OBJECT(lpc_pci), &pm->gpe_cpu, ICH9_CPU_HOTPLUG_IO_BASE);
+ 
+-    if (pm->acpi_memory_hotplug.is_enabled) {
++    if (pm->acpi_memory_hotplug.is_enabled || xen_enabled()) {
+         acpi_memory_hotplug_init(pci_address_space_io(lpc_pci), OBJECT(lpc_pci),
+                                  &pm->acpi_memory_hotplug,
+                                  ACPI_MEMORY_HOTPLUG_BASE);
+diff --git a/hw/pci-host/q35.c b/hw/pci-host/q35.c
+index 1fe4e5a5c9..5891839ce9 100644
+--- a/hw/pci-host/q35.c
++++ b/hw/pci-host/q35.c
+@@ -580,7 +580,8 @@ static void mch_reset(DeviceState *qdev)
+     d->config[MCH_HOST_BRIDGE_F_SMBASE] = 0;
+     d->wmask[MCH_HOST_BRIDGE_F_SMBASE] = 0xff;
+ 
+-    mch_update(mch);
++    if (!xen_enabled())
++        mch_update(mch);
+ }
+ 
+ static void mch_realize(PCIDevice *d, Error **errp)
 -- 
 2.34.1
 
