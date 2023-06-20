@@ -2,73 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09C0973623A
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 05:41:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EAA873627D
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 06:05:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBSF0-0005fB-7g; Mon, 19 Jun 2023 23:41:14 -0400
+	id 1qBSaU-0008K1-Hm; Tue, 20 Jun 2023 00:03:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qBSEx-0005Xv-CK; Mon, 19 Jun 2023 23:41:11 -0400
-Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
+ id 1qBSaS-0008Jo-Rd; Tue, 20 Jun 2023 00:03:25 -0400
+Received: from mail-oo1-xc36.google.com ([2607:f8b0:4864:20::c36])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qBSEu-0008Gi-EB; Mon, 19 Jun 2023 23:41:10 -0400
-Received: by mail-pf1-x434.google.com with SMTP id
- d2e1a72fcca58-666ecf9a081so3003167b3a.2; 
- Mon, 19 Jun 2023 20:41:07 -0700 (PDT)
+ id 1qBSaQ-0004P7-QX; Tue, 20 Jun 2023 00:03:24 -0400
+Received: by mail-oo1-xc36.google.com with SMTP id
+ 006d021491bc7-55e11f94817so2386915eaf.2; 
+ Mon, 19 Jun 2023 21:03:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1687232466; x=1689824466;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
+ d=gmail.com; s=20221208; t=1687233801; x=1689825801;
+ h=in-reply-to:references:cc:to:from:subject:message-id:date
  :content-transfer-encoding:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Xvk3u73onqtpjd8Pgu8MN5iX9aAoq9h8tykvTgZt2mU=;
- b=Zvt68d06xjp8QafzyucaQ+He4ZDkf2sdhb33sewdM1JASWDpfdJaB6POSNlXiIoQZo
- Mj7hGTx6xVxro9I2QuAD8nIwLBND7O8ntEv+qB6n/XwGpbvhxaIIXr/7f/Vba1SYsaxF
- bv7VuKx+1JgWtOj4rzVZSav0DMpOhaLgc3QMmjQqm2XRP/Y+pHZi/O56V2k90BNfW3Ko
- ZguAfcpNvg0u/YutyGZ4spyn8bnM0AnfQ8q+9pMIf2nA1jI1WYKsvEDtqJf9fwtV0s6t
- BSm4Bseg/iawMvP8OPC7X2OEoMsd1TR6pJx1oZLf+rxRojeBPVQXSourF9aOUKmM+zOp
- BriA==
+ bh=RiAMFiLZkGxqMC9I4/gm91Qe7ZrOinCfJdtNNLoGkKE=;
+ b=d+WYZmK1laN3k1FM+xZ4Ofp1jpdd6+tZQlZvCLrBzEiikhKuL+TQWYrcgN0BLyxjmF
+ /cYWAA7q26ZQcjuxQzp166SOmPgz8znLFtgiA92qe6oMwgBoxj1LUycuWAGHD9JV2cp+
+ KCUOv7hEfY7K/EY8Ys+DT0aXyRvlov7dkTVqd4Kfi1Zg78ed/0wcgbdYUsryxDKsTXpo
+ tHfnbt8Bzn/eBeaRY9J6e8RwVY6WNyZIED1UNTzHz4R7RkckYE7Mfrp2p5HfKhTz23fh
+ WxAoBayWNxxPGs8HmgBGonXkTJ3aQeQkVPApQyaWJpdGuhUK/oNGYi5JoJs8EYuu21p5
+ yS2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687232466; x=1689824466;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
+ d=1e100.net; s=20221208; t=1687233801; x=1689825801;
+ h=in-reply-to:references:cc:to:from:subject:message-id:date
  :content-transfer-encoding:mime-version:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=Xvk3u73onqtpjd8Pgu8MN5iX9aAoq9h8tykvTgZt2mU=;
- b=cAB8zK/AJSUZWmbBe7NAi9hJ9RhmnHqoy2+o6MNhMmHzFUrt+TAG5/wDnM3eD+M3RL
- 8OqIE2JMOr16lf8QpZPl5FNEgzd2q1d9ZXBNq/KHLVuEIUy9nVzek7WsOG1vS9QQDVMz
- O5lyEygBnv91rSr51l+87K1IeFtOkba0qIpqYmFirT4/1z3uD7W4K/JR5FPg9FPW6vVU
- Qn/VaYTHCB2QqANMDPEa2kc5oDQW4i/2SBUoTWJuJ6rlxBCz74cHX+Smqp9BA/3+s1jy
- Id1q2/26u5I636KA5ZfzCKt4kO81jEZpYIuT/YztnPkTdfAEx+wJ6/95fhyCNjTyUTzE
- 9VaQ==
-X-Gm-Message-State: AC+VfDy/XbUbONdb/P4PMlbeUAu4qEtPr+PrLLnK955qbbDoIbl/33Li
- btpcODb3BZPFn05ch9MQxDg=
-X-Google-Smtp-Source: ACHHUZ7wjY6Wwo1xzKU2QrR+uuEveCO6FWkIjJjXrhQx/C1d8nydQUZpRZv3QqlIxC6MibS7kdgLSQ==
-X-Received: by 2002:a05:6a20:8f17:b0:11f:66a0:c9d1 with SMTP id
- b23-20020a056a208f1700b0011f66a0c9d1mr12952118pzk.46.1687232466386; 
- Mon, 19 Jun 2023 20:41:06 -0700 (PDT)
-Received: from localhost ([1.146.105.3]) by smtp.gmail.com with ESMTPSA id
- c16-20020aa78c10000000b00653fe2d527esm356111pfd.32.2023.06.19.20.41.03
+ bh=RiAMFiLZkGxqMC9I4/gm91Qe7ZrOinCfJdtNNLoGkKE=;
+ b=in5IzCc8PfxnmJpmtWPppO1uAtQ2nTnV2IpJoGp/sTUfDTC6xTnN1+A6N4bzYAKYrt
+ nmfZRsQqL6lW/e9Ya/DPE23KPoOC4/vEwV/ecXqihVr4I1V4KnEsGbJzWlC5MVl4KI9v
+ inkLX5oU3Cg1+z3KArEYmCtgUs4zWpEGL2QKeRLYW0ZZVLrray2YeO/xjPTcV1ATEVQd
+ RsaMSLKCpIRe8yScu2AasScy4SDL/qG4j9M1I7BrJYG4RMAdfmdhUTOU4wwYQkDLXIdE
+ AYxiMp8/Jk+uH5V/zilanqpCvS3vvNTGjFrh7awaluYqTOI7WbBfuC+sEty5f74TWKuk
+ sCJg==
+X-Gm-Message-State: AC+VfDysxVdK8mV/EOgQrOCoXBmEVSfc0F+8ZEqwClr7I1QQmhKxuIm1
+ WTt9hyzi1JcoGtsURG81aBg=
+X-Google-Smtp-Source: ACHHUZ58T5cClk3PXDh8EEK2fxL6K2r9hy697qpIf4TkmozG74k2op9soTFh4u4ybcr+sNiac8fwYA==
+X-Received: by 2002:a05:6808:1302:b0:39e:b7aa:9fc8 with SMTP id
+ y2-20020a056808130200b0039eb7aa9fc8mr8589732oiv.33.1687233801169; 
+ Mon, 19 Jun 2023 21:03:21 -0700 (PDT)
+Received: from localhost ([1.146.65.59]) by smtp.gmail.com with ESMTPSA id
+ u8-20020a17090a0c4800b0025bc49aa716sm561117pje.27.2023.06.19.21.03.16
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 19 Jun 2023 20:41:06 -0700 (PDT)
+ Mon, 19 Jun 2023 21:03:20 -0700 (PDT)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 20 Jun 2023 13:41:00 +1000
-Message-Id: <CTH5ZNVFOSL2.Q42839O8BVBR@wheely>
-Cc: <qemu-devel@nongnu.org>, "Harsh Prateek Bora" <harshpb@linux.ibm.com>
-Subject: Re: [PATCH 4/4] ppc/spapr: Move spapr nested HV to a new file
+Date: Tue, 20 Jun 2023 14:03:04 +1000
+Message-Id: <CTH6GK21KYBI.1IP2B72YOI8WR@wheely>
+Subject: Re: [PATCH v3 08/14] target/ppc: Fix gen_sc to use correct nip
 From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Daniel Henrique Barboza" <danielhb413@gmail.com>, <qemu-ppc@nongnu.org>
+To: "BALATON Zoltan" <balaton@eik.bme.hu>, <qemu-devel@nongnu.org>,
+ <qemu-ppc@nongnu.org>
+Cc: <clg@kaod.org>, "Greg Kurz" <groug@kaod.org>, "Daniel Henrique Barboza"
+ <danielhb413@gmail.com>
 X-Mailer: aerc 0.14.0
-References: <20230608091344.88685-1-npiggin@gmail.com>
- <20230608091344.88685-5-npiggin@gmail.com>
- <ffe96bb1-dee9-2736-68db-85e37a65e1ae@gmail.com>
-In-Reply-To: <ffe96bb1-dee9-2736-68db-85e37a65e1ae@gmail.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x434.google.com
+References: <cover.1686868895.git.balaton@eik.bme.hu>
+ <e38e606e937e7b6dfc679c881c762c7037b325a4.1686868895.git.balaton@eik.bme.hu>
+In-Reply-To: <e38e606e937e7b6dfc679c881c762c7037b325a4.1686868895.git.balaton@eik.bme.hu>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c36;
+ envelope-from=npiggin@gmail.com; helo=mail-oo1-xc36.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,16 +92,149 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sun Jun 18, 2023 at 7:53 PM AEST, Daniel Henrique Barboza wrote:
-> Nick,
+On Fri Jun 16, 2023 at 9:03 AM AEST, BALATON Zoltan wrote:
+> Most exceptions are raised with nip pointing to the faulting
+> instruction but the sc instruction generating a syscall exception
+> leaves nip pointing to next instruction. Fix gen_sc to not use
+> gen_exception_err() which sets nip back but correctly set nip to
+> pc_next so we don't have to patch this in the exception handlers.
 >
-> Do you plan to send a new version of this patch with a spapr_nested.h
-> header included? Otherwise I'll pick this one as is.
+> This changes the nip logged in dump_syscall and dump_hcall debug
+> functions but now this matches how nip would be on a real CPU.
 
-Hey Daniel,
+I think this is okay. I'll just send a possible scv change after
+this goes in.
 
-I'll send another series shortly with the header split out.
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 
-Thanks,
-Nick
+>
+> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+> ---
+>  target/ppc/excp_helper.c | 39 ---------------------------------------
+>  target/ppc/translate.c   |  8 +++++---
+>  2 files changed, 5 insertions(+), 42 deletions(-)
+>
+> diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
+> index f19a0f2d1d..903216c2a6 100644
+> --- a/target/ppc/excp_helper.c
+> +++ b/target/ppc/excp_helper.c
+> @@ -495,12 +495,6 @@ static void powerpc_excp_40x(PowerPCCPU *cpu, int ex=
+cp)
+>          break;
+>      case POWERPC_EXCP_SYSCALL:   /* System call exception               =
+     */
+>          dump_syscall(env);
+> -
+> -        /*
+> -         * We need to correct the NIP which in this case is supposed
+> -         * to point to the next instruction
+> -         */
+> -        env->nip +=3D 4;
+>          break;
+>      case POWERPC_EXCP_FIT:       /* Fixed-interval timer interrupt      =
+     */
+>          trace_ppc_excp_print("FIT");
+> @@ -611,12 +605,6 @@ static void powerpc_excp_6xx(PowerPCCPU *cpu, int ex=
+cp)
+>          break;
+>      case POWERPC_EXCP_SYSCALL:   /* System call exception               =
+     */
+>          dump_syscall(env);
+> -
+> -        /*
+> -         * We need to correct the NIP which in this case is supposed
+> -         * to point to the next instruction
+> -         */
+> -        env->nip +=3D 4;
+>          break;
+>      case POWERPC_EXCP_FPU:       /* Floating-point unavailable exception=
+     */
+>      case POWERPC_EXCP_DECR:      /* Decrementer exception               =
+     */
+> @@ -759,13 +747,6 @@ static void powerpc_excp_7xx(PowerPCCPU *cpu, int ex=
+cp)
+>          } else {
+>              dump_syscall(env);
+>          }
+> -
+> -        /*
+> -         * We need to correct the NIP which in this case is supposed
+> -         * to point to the next instruction
+> -         */
+> -        env->nip +=3D 4;
+> -
+>          /*
+>           * The Virtual Open Firmware (VOF) relies on the 'sc 1'
+>           * instruction to communicate with QEMU. The pegasos2 machine
+> @@ -910,13 +891,6 @@ static void powerpc_excp_74xx(PowerPCCPU *cpu, int e=
+xcp)
+>          } else {
+>              dump_syscall(env);
+>          }
+> -
+> -        /*
+> -         * We need to correct the NIP which in this case is supposed
+> -         * to point to the next instruction
+> -         */
+> -        env->nip +=3D 4;
+> -
+>          /*
+>           * The Virtual Open Firmware (VOF) relies on the 'sc 1'
+>           * instruction to communicate with QEMU. The pegasos2 machine
+> @@ -1075,12 +1049,6 @@ static void powerpc_excp_booke(PowerPCCPU *cpu, in=
+t excp)
+>          break;
+>      case POWERPC_EXCP_SYSCALL:   /* System call exception               =
+     */
+>          dump_syscall(env);
+> -
+> -        /*
+> -         * We need to correct the NIP which in this case is supposed
+> -         * to point to the next instruction
+> -         */
+> -        env->nip +=3D 4;
+>          break;
+>      case POWERPC_EXCP_FPU:       /* Floating-point unavailable exception=
+     */
+>      case POWERPC_EXCP_APU:       /* Auxiliary processor unavailable     =
+     */
+> @@ -1322,13 +1290,6 @@ static void powerpc_excp_books(PowerPCCPU *cpu, in=
+t excp)
+>          } else {
+>              dump_syscall(env);
+>          }
+> -
+> -        /*
+> -         * We need to correct the NIP which in this case is supposed
+> -         * to point to the next instruction
+> -         */
+> -        env->nip +=3D 4;
+> -
+>          /* "PAPR mode" built-in hypercall emulation */
+>          if (lev =3D=3D 1 && books_vhyp_handles_hcall(cpu)) {
+>              PPCVirtualHypervisorClass *vhc =3D
+> diff --git a/target/ppc/translate.c b/target/ppc/translate.c
+> index a32a9b8a5f..4260d3d66f 100644
+> --- a/target/ppc/translate.c
+> +++ b/target/ppc/translate.c
+> @@ -4419,10 +4419,12 @@ static void gen_hrfid(DisasContext *ctx)
+>  #endif
+>  static void gen_sc(DisasContext *ctx)
+>  {
+> -    uint32_t lev;
+> +    uint32_t lev =3D (ctx->opcode >> 5) & 0x7F;
+> =20
+> -    lev =3D (ctx->opcode >> 5) & 0x7F;
+> -    gen_exception_err(ctx, POWERPC_SYSCALL, lev);
+> +    gen_update_nip(ctx, ctx->base.pc_next);
+> +    gen_helper_raise_exception_err(cpu_env, tcg_constant_i32(POWERPC_SYS=
+CALL),
+> +                                   tcg_constant_i32(lev));
+> +    ctx->base.is_jmp =3D DISAS_NORETURN;
+>  }
+> =20
+>  #if defined(TARGET_PPC64)
+> --=20
+> 2.30.9
+
 
