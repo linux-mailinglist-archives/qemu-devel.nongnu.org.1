@@ -2,84 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 781E77370F8
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 17:52:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ACCC37370FC
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 17:54:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBddY-0007m4-Jk; Tue, 20 Jun 2023 11:51:20 -0400
+	id 1qBdfd-0000vR-0Q; Tue, 20 Jun 2023 11:53:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qBddV-0007lq-GS
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 11:51:18 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qBdfa-0000sd-Ni
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 11:53:26 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qBddT-0003fg-CG
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 11:51:17 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qBdfZ-0004FL-17
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 11:53:26 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687276274;
+ s=mimecast20190719; t=1687276404;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=0qkii4M+UClxwBZABaTrozc2d9DqniP4E3jnyirnhB8=;
- b=Uyw2u8ZYmPKjfQYz+JIdizKGmLQT/M5OdMYWM6qIFoqqwW5CEGnvQXA9JXJ2+TuWU5reyR
- ZMpseghp6dj5f7zyDil3d9SqY4erN48MGr2kmscK9HO8of5iEBhzewJmIU1fy2o5jQQyVt
- filFcsKC+v6OMPd5AEn1jHb8X0cbKA4=
-Received: from mail-ua1-f72.google.com (mail-ua1-f72.google.com
- [209.85.222.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=qfT+etxBUB2ey0cqQE8ThqToZPZ6ZoLDDqRPABZNiY8=;
+ b=g50e8GeWHG3J8gJAMwivE9UwapMgiKBgEgToqJ8MwzvrP7jtrJmch96jPov7PS0S5+R+NZ
+ cJFdJtTZQPXYoCuRb2OH8/wCH/0YXVELuEe9e67PDVCwFmWRFT2mhsqj4eFLOGStkWGHAU
+ Tbt2SeJEWdpeze70nJekwUznPrJUJX0=
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
+ [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-589-qeelBoE8OkeQIpcW3zrTvA-1; Tue, 20 Jun 2023 11:51:06 -0400
-X-MC-Unique: qeelBoE8OkeQIpcW3zrTvA-1
-Received: by mail-ua1-f72.google.com with SMTP id
- a1e0cc1a2514c-78f1b0510c7so1014331241.2
- for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 08:51:05 -0700 (PDT)
+ us-mta-199-utnCQSAlOG6Dd3cSMRoJWg-1; Tue, 20 Jun 2023 11:53:21 -0400
+X-MC-Unique: utnCQSAlOG6Dd3cSMRoJWg-1
+Received: by mail-qv1-f71.google.com with SMTP id
+ 6a1803df08f44-62dd9986b76so9701096d6.1
+ for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 08:53:17 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687276265; x=1689868265;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=0qkii4M+UClxwBZABaTrozc2d9DqniP4E3jnyirnhB8=;
- b=jGsuW5Fa4M8tthik8FflsmWeAgGblBt5jobAjWJAsjzUlQul3d9f9+9MVRZG8jP/do
- /elu5fS0V/jCiGaTEsiXcNlBGfY8wQy3d1efxPRGMjNZ49H2EyuUUQAdh23bNbJvm2hM
- zyGcLO97/L1yx9iRu2Y3J5JyToCjctRrD/P9NZxPhpO+dI7yf1bbVm0DC+856/n1HOiD
- IOtg3muKD7CizylHaZaAdWB3/og6DUaq6KM/kAf4mhoGDdPZET7dgwCNugn/P8AfcbfC
- RP2tOcgHnRDnJWPyGb/4B0WxAEYIixAyN305awDEhUYeoD8RRFhEKHVkQE/0EONLMp/I
- A0dw==
-X-Gm-Message-State: AC+VfDw3BzHcUEK+I20NM1/FNeq76+f8NWx6s0XyJWLSXeBdVxfRyNXe
- fP/MwBZ16e/d5YOtjftwXi5biuz/EkT9FiOs7azxYnfEpKHHiMPccwLKP52WJa+6JzD6aWtpwTQ
- VEkV5ZHOGq2rdfCSCLW9m4tgzJNGkH34=
-X-Received: by 2002:a67:e983:0:b0:437:d6b8:8baf with SMTP id
- b3-20020a67e983000000b00437d6b88bafmr2851183vso.15.1687276265099; 
- Tue, 20 Jun 2023 08:51:05 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5P4UGcxnZNMMpxjQWniczi75ptZLTHZUaZcZoLq6wtj7iv2175n9PlTvkoMuAKwUMe8ZZMnOR0WBS62av4OAw=
-X-Received: by 2002:a67:e983:0:b0:437:d6b8:8baf with SMTP id
- b3-20020a67e983000000b00437d6b88bafmr2851170vso.15.1687276264791; Tue, 20 Jun
- 2023 08:51:04 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230619171437.357374-1-alex.bennee@linaro.org>
- <20230619171437.357374-6-alex.bennee@linaro.org>
-In-Reply-To: <20230619171437.357374-6-alex.bennee@linaro.org>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Tue, 20 Jun 2023 17:50:53 +0200
-Message-ID: <CABgObfZLcNjmi4j9Bo4Fpp2XMP1cQPtWgWfqvG1wHL12xdsOsQ@mail.gmail.com>
-Subject: Re: [PATCH 5/5] docs/devel: introduce some key concepts for QOM
- development
-To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org, Eduardo Habkost <eduardo@habkost.net>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- Markus Armbruster <armbru@redhat.com>, Peter Xu <peterx@redhat.com>, 
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Peter Maydell <peter.maydell@linaro.org>, 
- Juan Quintela <quintela@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>, 
+ d=1e100.net; s=20221208; t=1687276396; x=1689868396;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=qfT+etxBUB2ey0cqQE8ThqToZPZ6ZoLDDqRPABZNiY8=;
+ b=M1KF2G6c1S/rYPUMAafdRgoO/vDj3CRxa/2U94z7vWkXk3V0uFGdy59Nv8W/baQhKo
+ 61wtbA6lrfhcfNf52Rj0lwTKfC0SStCr5Fbop4osgtKQIVF5fgJRk38KU5bom+wqdm3e
+ hiA/ClO5J6I2lRegLxYiZijwkAKyab/MJe7TSN80gFjmh98o4qXlCvky3HCjYRETblom
+ xr8DzR7gG3h6u/d2YcXKR+OStMsNAPiENA6mkiEttnDZVgJKpxawNrwqLlwY0SLReVl9
+ iT2KExWM+mmBEnTd6KOnDCptDfb3BsCHv4updV7hKgcRTxuWKR0Hyk5qKuW+pvZ/7QL0
+ NiIQ==
+X-Gm-Message-State: AC+VfDxIVWy3ZTc8sE+I0/1H7NCE2+JGGzu6HGSjgQrAUrWk7rr7ZknK
+ 69ZojFIOTZKKCaBWzI82aA8m/TVwCJ1vL5qG2Mf5B+JipozKYwJ1vW1jjzGkswikqR065xeNfZ5
+ w0YV30rtUK1kWfDA=
+X-Received: by 2002:a05:6214:2262:b0:625:aa49:c182 with SMTP id
+ gs2-20020a056214226200b00625aa49c182mr15480181qvb.6.1687276396547; 
+ Tue, 20 Jun 2023 08:53:16 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4+428Uk4C3LIqf9vUxyyYvosizp6nMWagEzdU48WQUGTBbwkDqxgDlrFSHR2HljgPoyUnpBw==
+X-Received: by 2002:a05:6214:2262:b0:625:aa49:c182 with SMTP id
+ gs2-20020a056214226200b00625aa49c182mr15480163qvb.6.1687276396195; 
+ Tue, 20 Jun 2023 08:53:16 -0700 (PDT)
+Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
+ [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
+ b12-20020a0cc98c000000b00630044b530esm1369928qvk.83.2023.06.20.08.53.14
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 20 Jun 2023 08:53:15 -0700 (PDT)
+Date: Tue, 20 Jun 2023 11:53:14 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Juan Quintela <quintela@redhat.com>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>,
  Leonardo Bras <leobras@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Subject: Re: [PATCH 16/42] migration-test: Create do_migrate()
+Message-ID: <ZJHLahb43lc27gIR@x1n>
+References: <20230608224943.3877-1-quintela@redhat.com>
+ <20230608224943.3877-17-quintela@redhat.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230608224943.3877-17-quintela@redhat.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -103,109 +100,147 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jun 19, 2023 at 7:15=E2=80=AFPM Alex Benn=C3=A9e <alex.bennee@linar=
-o.org> wrote:
->
-> Using QOM correctly is increasingly important to maintaining a modern
-> code base. However the current documentation skips some important
-> concepts before launching into a simple example. Lets:
->
->   - at least mention properties
->   - mention TYPE_OBJECT and TYPE_DEVICE
->   - talk about why we have realize/unrealize
->   - mention the QOM tree
->
-> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+On Fri, Jun 09, 2023 at 12:49:17AM +0200, Juan Quintela wrote:
+> We called migrate_qmp() in lot of places.  And there are tricks like
+> changing tcp address with the right port.
+> 
+> Only two callers remaining:
+> - postcopy resume: It needs to play with the qmp.
+> - baddest: We want to do a unvalid URI. For that we need to do it by
+>   hand.
+> 
+> Signed-off-by: Juan Quintela <quintela@redhat.com>
 > ---
->  docs/devel/qom.rst | 47 ++++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 47 insertions(+)
->
-> diff --git a/docs/devel/qom.rst b/docs/devel/qom.rst
-> index 98a4f178d5..53633fbd35 100644
-> --- a/docs/devel/qom.rst
-> +++ b/docs/devel/qom.rst
-> @@ -13,6 +13,53 @@ features:
->  - System for dynamically registering types
->  - Support for single-inheritance of types
->  - Multiple inheritance of stateless interfaces
-> +- Mapping internal members to publicly exposed properties
+>  tests/qtest/migration-test.c | 41 ++++++++++++++++++------------------
+>  1 file changed, 21 insertions(+), 20 deletions(-)
+> 
+> diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
+> index e623c43957..96b495f255 100644
+> --- a/tests/qtest/migration-test.c
+> +++ b/tests/qtest/migration-test.c
+> @@ -528,6 +528,17 @@ static void migrate_postcopy_start(QTestState *from, QTestState *to)
+>      qtest_qmp_eventwait(to, "RESUME");
+>  }
+>  
+> +static void do_migrate(QTestState *from, QTestState *to, const gchar *uri)
+> +{
+> +    if (!uri) {
+> +        g_autofree char *tcp_uri =
+> +            migrate_get_socket_address(to, "socket-address");
+> +        migrate_qmp(from, tcp_uri, "{}");
+> +    } else {
+> +        migrate_qmp(from, uri, "{}");
+> +    }
+> +}
 > +
-> +The root object class is TYPE_OBJECT which provides for the basic
-> +object methods.
+>  typedef struct {
+>      /*
+>       * QTEST_LOG=1 may override this.  When QTEST_LOG=1, we always dump errors
+> @@ -1173,7 +1184,7 @@ static void migrate_postcopy_prepare(QTestState **from_ptr,
+>      /* Wait for the first serial output from the source */
+>      wait_for_serial("src_serial");
+>  
+> -    migrate_qmp(from, uri, "{}");
+> +    do_migrate(from, to, uri);
+>  
+>      wait_for_migration_pass(from);
+>  
+> @@ -1378,6 +1389,9 @@ static void test_baddest(void)
+>      QTestState *from, *to;
+>  
+>      test_migrate_start(&from, &to, "tcp:127.0.0.1:0", &args);
+> +    /*
+> +     * Don't change to do_migrate(). We are using a wrong uri on purpose.
+> +     */
+>      migrate_qmp(from, "tcp:127.0.0.1:0", "{}");
+>      wait_for_migration_fail(from, false);
+>      test_migrate_end(from, to, false);
+> @@ -1424,14 +1438,7 @@ static void test_precopy_common(MigrateCommon *args)
+>          }
+>      }
+>  
+> -    if (!args->connect_uri) {
+> -        g_autofree char *local_connect_uri =
+> -            migrate_get_socket_address(to, "socket-address");
+> -        migrate_qmp(from, local_connect_uri, "{}");
+> -    } else {
+> -        migrate_qmp(from, args->connect_uri, "{}");
+> -    }
+> -
+> +    do_migrate(from, to, args->connect_uri);
+>  
+>      if (args->result != MIG_TEST_SUCCEED) {
+>          bool allow_active = args->result == MIG_TEST_FAIL;
+> @@ -1586,7 +1593,7 @@ static void test_ignore_shared(void)
+>      /* Wait for the first serial output from the source */
+>      wait_for_serial("src_serial");
+>  
+> -    migrate_qmp(from, uri, "{}");
+> +    do_migrate(from, to, uri);
+>  
+>      wait_for_migration_pass(from);
+>  
+> @@ -1890,7 +1897,7 @@ static void do_test_validate_uuid(MigrateStart *args, bool should_fail)
+>      /* Wait for the first serial output from the source */
+>      wait_for_serial("src_serial");
+>  
+> -    migrate_qmp(from, uri, "{}");
+> +    do_migrate(from, to, uri);
+>  
+>      if (should_fail) {
+>          qtest_set_expected_status(to, EXIT_FAILURE);
+> @@ -1991,7 +1998,7 @@ static void test_migrate_auto_converge(void)
+>      /* Wait for the first serial output from the source */
+>      wait_for_serial("src_serial");
+>  
+> -    migrate_qmp(from, uri, "{}");
+> +    do_migrate(from, to, uri);
+>  
+>      /* Wait for throttling begins */
+>      percentage = 0;
+> @@ -2280,7 +2287,6 @@ static void test_multifd_tcp_cancel(void)
+>          .hide_stderr = true,
+>      };
+>      QTestState *from, *to, *to2;
+> -    g_autofree char *uri = NULL;
+>  
+>      test_migrate_start(&from, &to, "defer", &args);
+>  
+> @@ -2299,9 +2305,7 @@ static void test_multifd_tcp_cancel(void)
+>      /* Wait for the first serial output from the source */
+>      wait_for_serial("src_serial");
+>  
+> -    uri = migrate_get_socket_address(to, "socket-address");
+> -
+> -    migrate_qmp(from, uri, "{}");
+> +    do_migrate(from, to, "127.0.0.1:0");
 
-Very nice, but I would suggest some changes here.
+I think this means migrating to "127.0.0.1:0".  Can this work?
 
-> +The Device Class
-> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> +
-> +The TYPE_DEVICE class is the parent class for all modern devices
-> +implemented in QEMU and adds some specific methods to handle QEMU
-> +device model. This includes managing the lifetime of devices from
-> +creation through to when they become visible to the guest and
-> +eventually unrealized.
+>  
+>      wait_for_migration_pass(from);
+>  
+> @@ -2325,14 +2329,11 @@ static void test_multifd_tcp_cancel(void)
+>      qtest_qmp_assert_success(to2, "{ 'execute': 'migrate-incoming',"
+>                               "  'arguments': { 'uri': 'tcp:127.0.0.1:0' }}");
+>  
+> -    g_free(uri);
+> -    uri = migrate_get_socket_address(to2, "socket-address");
+> -
+>      wait_for_migration_status(from, "cancelled", NULL);
+>  
+>      migrate_ensure_converge(from);
+>  
+> -    migrate_qmp(from, uri, "{}");
+> +    do_migrate(from, to2, "127.0.0.1:0");
+>  
+>      wait_for_migration_pass(from);
+>  
+> -- 
+> 2.40.1
+> 
 
-Place this paragraph before "Alternatively several static types".
-
-> +Device Life-cycle
-> +-----------------
-
-
-Make this "=3D=3D=3D=3D=3D" level and move it at the very end of the docume=
-nt.
-
-Replace these two lines:
-
-The first example of such a QOM method was #CPUClass.reset,
-another example is #DeviceClass.realize.
-
-with
-
-One example of such methods is ``DeviceClass.reset``. More examples
-can be found at [link to Device Life-Cycle].
-
-> +As class initialisation cannot fail devices have an two additional
-> +methods to handle the creation of dynamic devices. The ``realize``
-> +function is called with ``Error **`` pointer which should be set if
-> +the device cannot complete its setup. Otherwise on successful
-> +completion of the ``realize`` method the device object is added to the
-> +QOM tree and made visible to the guest.
-> +
-> +The reverse function is ``unrealize`` and should be were clean-up
-> +code lives to tidy up after the system is done with the device.
-> +
-> +All devices can be instantiated by C code, however only some can
-> +created dynamically via the command line or monitor. Likewise only
-> +some can be unplugged after creation and need an explicit
-> +``unrealize`` implementation. This is determined by the
-> +``user_creatable`` and ``hotpluggable`` variables in the root
-> +``DeviceClass`` structure.
-
-Move the second sentence (the one starting with "Likewise") to a
-separate paragraph. Unpluggability is determined by the HotplugHandler
-rather than by "user_creatable" and "hotpluggable".
-
-> +The QOM tree
-> +------------
-> +
-> +The QOM tree is a composition tree which represents all of the objects
-> +that make up a QEMU "machine". You can view this tree by running
-> +``info qom-tree`` in the :ref:`QEMU monitor`. It will contain both
-> +objects created by the machine itself as well those created due to
-> +user configuration.
-
-Also make this "=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D".
-
-> +Creating a minimal device
-> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D
-
-Name this "Creating a QOM class", and change "Class Initialization",
-"Interfaces" and "Methods" to "-------------".
-
-> +A simple minimal device implementation may look something like bellow:
-
-"below".
-
-Paolo
+-- 
+Peter Xu
 
 
