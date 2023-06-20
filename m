@@ -2,63 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6F487375DF
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 22:15:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 960CC737645
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 22:46:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBhjX-0007HJ-LZ; Tue, 20 Jun 2023 16:13:47 -0400
+	id 1qBiE3-0007TU-AD; Tue, 20 Jun 2023 16:45:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
- id 1qBhjR-0007Gz-7E
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 16:13:41 -0400
-Received: from vps-vb.mhejs.net ([37.28.154.113])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qBiDv-0007TG-Pj
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 16:45:12 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
- id 1qBhjO-0002Ay-Nv
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 16:13:40 -0400
-Received: from MUA by vps-vb.mhejs.net with esmtps (TLS1.2) tls
- TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 (Exim 4.94.2)
- (envelope-from <mail@maciej.szmigiero.name>)
- id 1qBhj2-000063-KM; Tue, 20 Jun 2023 22:13:16 +0200
-Message-ID: <987af80f-9636-42da-26de-e2d07dc25ce3@maciej.szmigiero.name>
-Date: Tue, 20 Jun 2023 22:13:10 +0200
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qBiDs-0005fb-Tl
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 16:45:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1687293906;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=BL6/acRFVscf3QAYVVFI8f3hNoboVDEJ+WDKjJuREL8=;
+ b=MNCpDc/yKhgAPelPbcX9ADHD1ieJkTJ87JY6gxj1GEZqSX8yOXAVRmzNVq9znyVOUAzAUU
+ bj3Y/b3CFLc5OQJlxws+g7fgo6y9zC5IQZB2KQGzLN49i9tk2jq2dH1nTvs/zrNzbi2F5F
+ dTWsuCVmFvQz2h3FxJQ95hdT+S0EdAM=
+Received: from mail-vs1-f69.google.com (mail-vs1-f69.google.com
+ [209.85.217.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-139-IYdGkbO5PDW9rZGZxYpdqw-1; Tue, 20 Jun 2023 16:45:04 -0400
+X-MC-Unique: IYdGkbO5PDW9rZGZxYpdqw-1
+Received: by mail-vs1-f69.google.com with SMTP id
+ ada2fe7eead31-440bf45dc93so502017137.0
+ for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 13:45:04 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1687293904; x=1689885904;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=BL6/acRFVscf3QAYVVFI8f3hNoboVDEJ+WDKjJuREL8=;
+ b=IZo562FswS+ZTaYJQq/oG5t78S3CQGE/2O3XXvAcGuLglkNhWhavaKFDQP3bs7rqjh
+ IVmkseRhK5mPnp3Lmr1KPbMDl0yQ1Jkxp9pH6SNvfnafWDnpXC/w8Jdq2t4V48sXUx0I
+ RoR/jJWj53Loi1E/9S5phc1vClGkVYPUGm0XocAi9FQ6kYkZezXYwBwxjVamGaU1L5SL
+ yyFoZMo+BRSJ/MY8Fk7SLg4zHl/EGcp2aXJOzMDYbxCORoRI1z0xWkNS4UuTnW62sE0d
+ 0txRyY7yIih37P1VZfF4cm3nc0GLHMToFRCCg9lziy/YrxT8C2TQTV6Bb0fNcjluhG7I
+ WSfg==
+X-Gm-Message-State: AC+VfDz+ZN5SlUsU7QuU89K57ucWlK/VQT02bPJlZIYoVaodT3mNv6jC
+ eFN1cBFcZZL6Wp3UMfVpBs5ve83TC63i+tHWC/E0H4EJVabhZxuW1bh4Cw5kidYsDYWOayoWvG7
+ 5yf4YxyQPwJafKqRjDxvpaqjOv2s5MYw=
+X-Received: by 2002:a05:6102:e44:b0:43c:8aac:19bd with SMTP id
+ p4-20020a0561020e4400b0043c8aac19bdmr6046827vst.3.1687293903932; 
+ Tue, 20 Jun 2023 13:45:03 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5wIp3Se4cvv9MYpZda5Cg47nkrjIh96sdgxuaQBP7s5G+xbG9m9bgl0KdOfaA605QEiydUcFPLlCz96ZJrKIo=
+X-Received: by 2002:a05:6102:e44:b0:43c:8aac:19bd with SMTP id
+ p4-20020a0561020e4400b0043c8aac19bdmr6046812vst.3.1687293903630; Tue, 20 Jun
+ 2023 13:45:03 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Content-Language: en-US, pl-PL
-To: David Hildenbrand <david@redhat.com>
-Cc: "Michael S . Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
- Thomas Huth <thuth@redhat.com>,
- =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>
-References: <cover.1686577753.git.maciej.szmigiero@oracle.com>
- <896327748bde906826e24ce7cc45301e325e14a7.1686577753.git.maciej.szmigiero@oracle.com>
- <f54e55d0-b8dd-a431-7634-02fdec0611bb@redhat.com>
- <1b107fba-38e0-cced-e19f-b62684072bfd@maciej.szmigiero.name>
- <008fced2-1bcf-7a89-d642-bb724eb63ddf@redhat.com>
-From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
-Subject: Re: [PATCH][RESEND v5 3/3] Add a Hyper-V Dynamic Memory Protocol
- driver (hv-balloon)
-In-Reply-To: <008fced2-1bcf-7a89-d642-bb724eb63ddf@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=37.28.154.113;
- envelope-from=mail@maciej.szmigiero.name; helo=vps-vb.mhejs.net
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+References: <20230618212039.102052-1-pbonzini@redhat.com>
+ <d6a79a1d2159e0659cd0ed6ff545bf577c05bad3.camel@linux.ibm.com>
+In-Reply-To: <d6a79a1d2159e0659cd0ed6ff545bf577c05bad3.camel@linux.ibm.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Tue, 20 Jun 2023 22:44:53 +0200
+Message-ID: <CABgObfa8kEiG22MAdsuhgpuWrzWq9yWMeRaFgvWA5x_eoROPUw@mail.gmail.com>
+Subject: Re: [PATCH] git-submodule.sh: allow running in validate mode without
+ previous update
+To: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+Cc: qemu-devel <qemu-devel@nongnu.org>
+Content-Type: multipart/alternative; boundary="000000000000c203d205fe95b9e3"
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.09,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -74,182 +93,223 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 19.06.2023 17:58, David Hildenbrand wrote:
-> [...]
-> 
-> Sorry for the late reply!
-> 
-> Still trying to make up my mind what the right way forward with this is.
-> 
->>>
->>> This usage is still problematic I suspect (well, and a layer violation regarding the machine). The machine hotplug handler is supposed to call the pre_plug/plug/unplug hooks as response to pre_plug/plug/unplug notifications from the core. See how we handle virtio-mem/virtio-pmem/nvdimms as an example.
->>>
->>> We assume that when memory_device_pre_plug() gets called, that the device is not realized yet, but once it gets plugged, that it already is realized, and that the device will actually vanish (get unrealized) when unplugging the device.
->>> Otherwise memory device logic like in get_plugged_memory_size() stops working.
->>
->> get_plugged_memory_size() just calls get_plugged_size() method on every
->> realized TYPE_MEMORY_DEVICE.
->>
->> While this now always returns the whole backing memory size (once the
->> backend gets plugged) I don't see a reason why this method could not be
->> overridden in hv-balloon to return just the currently hot-added size.
->>
->> By the way, this function seems to be used just for reporting stats via QMP.
-> 
-> memory_device_build_list() is another example, used for memory_device_get_free_addr().
+--000000000000c203d205fe95b9e3
+Content-Type: text/plain; charset="UTF-8"
 
-I don't see it calling get_plugged_size() method, I can see it only using
-(indirectly) get_addr() method.
+Il mar 20 giu 2023, 19:35 Nina Schoetterl-Glausch <nsg@linux.ibm.com> ha
+scritto:
 
-> You'd be blocking memory address ranges with an unplugged-but-realized memory device.> 
-> Memory device code expects that realized memory devices are plugged and vice versa.
+> > +            modules="$modules $m"
+> > +            grep $m $substat > /dev/null 2>&1 || $GIT submodule status
+> $module >> $substat
+> > +        else
+> > +            echo "warn: ignoring non-existent submodule $m"
+>
+> What is the rational for ignoring non-existing submodules, i.e. how do the
+> arguments to
+> the script go stale as you say in the patch description?
+>
 
-Which QEMU code you mean specifically? Maybe it just needs a trivial
-change.
+For example when a Makefile calls the script before the Makefile itself is
+rebuilt.
 
-Before the driver hot-adds the first chunk of memory it does not use any
-part of the address space.
+I'm asking because the fedora spec file initializes a new git repo in order
+> to apply
+> patches so the script exits with 0.
 
-After that, it has to reserve address space for the whole backing memory
-device, so no other devices will claim parts of it and because a
-TYPE_MEMORY_DEVICE (currently) can have just a single range.
 
-This address space is released when the VM is restarted.
+You mean it succeeds even if roms/SLOF is empty?
 
->>
->>>
->>> As an example, see device_set_realized() on the pre_plug+realize+plug interaction.
->>>
->>> IIRC, you're reusing the already-realized hv-balloon device here, correct?
->>
->> Yes - in this version of the driver.
->>
->> The previous version used separate virtual DIMM devices instead but you have
->> recommended against that approach.
->>
-> 
-> Yes. My recommendation was to make the hv-balloon device a memory device and use a single memory region, which you did (and I think it's much better).
-> 
-> It's now all about when we (un)plug the memory device itself -- and how.
-> 
->>>
->>> Why can't you call the pre_plug/plug/unplug functions from the machine pre_plug/plug/unplug hooks -- exactly once for the memory device when plugging the hv-balloon device?
->>>
->>> Is it to support the !memdev case or why is this this plugging/unplugging in our_range_plugged_new()/our_range_plugged_free() required?
->>
->> At least for three (four) reasons:
->> 1a) At the hv-balloon plug time the device doesn't yet know the guest
->> alignement requirements - or whether the guest supports memory hot add at
->> all - that's what the device will learn only once the guest connects
->> to the protocol.
-> 
-> Understood, so you want to at least expose the memory dynamically to the VM (map the MR on demand).
-> 
-> That could be done using a memory region container like virtio-mem is planning [1] on using fairly easily.
-> 
-> [1] https://lkml.kernel.org/r/20230616092654.175518-14-david@redhat.com
+Nothing that cannot be worked around ofc.
+>
+> > +        fi
+> > +    done
+> > +else
+> > +    modules=$maybe_modules
+> >  fi
+> >
+> > -if test -n "$maybe_modules" && test -z "$GIT"
+> > -then
+> > -    echo "$0: unexpectedly called with submodules but git binary not
+> found"
+> > -    exit 1
+> > -fi
+> > -
+> > -modules=""
+> > -for m in $maybe_modules
+> > -do
+> > -    $GIT submodule status $m 1> /dev/null 2>&1
+> > -    if test $? = 0
+> > -    then
+> > -        modules="$modules $m"
+> > -    else
+> > -        echo "warn: ignoring non-existent submodule $m"
+> > -    fi
+> > -done
+> > -
+> >  case "$command" in
+> >  status|validate)
+> > -    test -f "$substat" || validate_error "$command"
+> > -    test -z "$maybe_modules" && exit 0
+> >      for module in $modules; do
+> > -        check_updated $module || validate_error "$command"
+> > +        if is_git; then
+> > +            check_updated $module || validate_error "$command"
+> > +        elif ! test -d $module; then
+>
+> archive-source.sh creates an empty directory for e.g. roms/SLOF,
+> so this check succeeds even if the submodule sources are unavailable.
 
-Thanks for the pointer to your series - I've looked at it and it seems
-to me that while it allows multiple memory subregions, each backed by
-a separate memslot it still needs a single big main region for
-the particular TYPE_MEMORY_DEVICE, am I right?
+Something like
+>
+>         elif ! test -d $module || test -z "$(ls -A "$module")"; then
+>
 
->> 1b) For the same reason the memory region has to be unplugged at the VM
->> reset time - the new guest might have stricter alignement requirements
-> 
-> Alignment is certainly interesting, but is it a real problem?
-> 
-> As default (not other memory devices) you get an address that's aligned to 1 GiB. And, in fact, you can simply always request a 1 GiB alignment for the device, independent of the guest requirement.
-> 
-> Would the guest requirement be even stricter than that (e.g., 2 GiB)?
+Or (set "$module"/* && test -e "$1").
 
-The protocol allows up to 32 GiB alignement so we cannot simply
-hardcode the alignement to 1 GiB, especially since this is Windows
-we're talking about (so this parameter is subject to unpredictable
-changes).
+Paolo
 
-> In theory, when using a memory region container (again [1]) into which you dynamically map the RAM region, you can do this alignment internally.
-> 
-> So it might be an option to use a memory region container and dynamically map into that one as you please (it just has to have a fixed size).
+works.
+>
+> > +            echo "$0: sources not available for $module and
+> $no_git_error"
+> > +            validate_error "$command"
+> > +        fi
+> >      done
+> > -    exit 0
+> >      ;;
+> > +
+> >  update)
+> > -    test -e $substat || touch $substat
+> > -    test -z "$maybe_modules" && exit 0
+> > +    is_git || {
+> > +        echo "$0: unexpectedly called with submodules but $no_git_error"
+> > +        exit 1
+> > +    }
+> >
+> >      $GIT submodule update --init $modules 1>/dev/null
+> >      test $? -ne 0 && update_error "failed to update modules"
+>
+>
 
-Still, demand-allocating just the right memory region (with the right
-alignement) seems to me like a cleaner solution than allocating a huge
-worst-case memory region upfront and then trying to carve the right
-part of it.
+--000000000000c203d205fe95b9e3
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
->>
->> By the way, the memory region *can't* be unplugged yet at VMBus device
->> reset time - Windows keeps on using it until the system is restarted,
->> even after disconnecting from the VMBus.
-> 
-> Yes, similar to virtio-mem -- we can only e.g. do it at system reset time.
-> 
->>
->> 2) The !memdev case, when the driver is just used for Windows-native
->> ballooning and stats reporting.
-> 
-> So we'd want support for a memory device that doesn't expose any memory -- in the current configuration. Should be doable (NULL returned as device memory region -> skip pre_plug/plug/unplug and teach the other code to just ignore this device). It would be easier if we could decide at runtime that this device is not a memory device ...
-> 
-> But let's first figure out if that's the right approach.
-> 
-> 
->>
->> 3) This will hopefully allow sharing the backing memory device between
->> virtio-mem and hv-balloon in the future - Linux guests will connect to
->> the former interface while Windows guests will connect to the later.
->>
-> 
-> I've been told that the virtio-mem driver for Windows will show up polished in the near future ... we'll see :)
+<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote"><div dir=3D"ltr" =
+class=3D"gmail_attr">Il mar 20 giu 2023, 19:35 Nina Schoetterl-Glausch &lt;=
+<a href=3D"mailto:nsg@linux.ibm.com">nsg@linux.ibm.com</a>&gt; ha scritto:<=
+/div><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-le=
+ft:1px #ccc solid;padding-left:1ex">
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 modules=3D&quot;$modules $m=
+&quot;<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 grep $m $substat &gt; /dev/=
+null 2&gt;&amp;1 || $GIT submodule status $module &gt;&gt; $substat<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 else<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 echo &quot;warn: ignoring n=
+on-existent submodule $m&quot;<br>
+<br>
+What is the rational for ignoring non-existing submodules, i.e. how do the =
+arguments to<br>
+the script go stale as you say in the patch description?<br></blockquote></=
+div></div><div dir=3D"auto"><br></div><div dir=3D"auto">For example when a =
+Makefile calls the script before the Makefile itself is rebuilt.</div><div =
+dir=3D"auto"><br></div><div dir=3D"auto"><div class=3D"gmail_quote"><blockq=
+uote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc =
+solid;padding-left:1ex">
+I&#39;m asking because the fedora spec file initializes a new git repo in o=
+rder to apply<br>
+patches so the script exits with 0.</blockquote></div></div><div dir=3D"aut=
+o"><br></div><div dir=3D"auto">You mean it succeeds even if roms/SLOF is em=
+pty?</div><div dir=3D"auto"><br></div><div dir=3D"auto"></div><div dir=3D"a=
+uto"><div class=3D"gmail_quote"><blockquote class=3D"gmail_quote" style=3D"=
+margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex">
+Nothing that cannot be worked around ofc.<br>
+<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 fi<br>
+&gt; +=C2=A0 =C2=A0 done<br>
+&gt; +else<br>
+&gt; +=C2=A0 =C2=A0 modules=3D$maybe_modules<br>
+&gt;=C2=A0 fi<br>
+&gt;=C2=A0 <br>
+&gt; -if test -n &quot;$maybe_modules&quot; &amp;&amp; test -z &quot;$GIT&q=
+uot;<br>
+&gt; -then<br>
+&gt; -=C2=A0 =C2=A0 echo &quot;$0: unexpectedly called with submodules but =
+git binary not found&quot;<br>
+&gt; -=C2=A0 =C2=A0 exit 1<br>
+&gt; -fi<br>
+&gt; -<br>
+&gt; -modules=3D&quot;&quot;<br>
+&gt; -for m in $maybe_modules<br>
+&gt; -do<br>
+&gt; -=C2=A0 =C2=A0 $GIT submodule status $m 1&gt; /dev/null 2&gt;&amp;1<br=
+>
+&gt; -=C2=A0 =C2=A0 if test $? =3D 0<br>
+&gt; -=C2=A0 =C2=A0 then<br>
+&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 modules=3D&quot;$modules $m&quot;<br>
+&gt; -=C2=A0 =C2=A0 else<br>
+&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 echo &quot;warn: ignoring non-existent su=
+bmodule $m&quot;<br>
+&gt; -=C2=A0 =C2=A0 fi<br>
+&gt; -done<br>
+&gt; -<br>
+&gt;=C2=A0 case &quot;$command&quot; in<br>
+&gt;=C2=A0 status|validate)<br>
+&gt; -=C2=A0 =C2=A0 test -f &quot;$substat&quot; || validate_error &quot;$c=
+ommand&quot;<br>
+&gt; -=C2=A0 =C2=A0 test -z &quot;$maybe_modules&quot; &amp;&amp; exit 0<br=
+>
+&gt;=C2=A0 =C2=A0 =C2=A0 for module in $modules; do<br>
+&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 check_updated $module || validate_error &=
+quot;$command&quot;<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 if is_git; then<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 check_updated $module || va=
+lidate_error &quot;$command&quot;<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 elif ! test -d $module; then<br>
+<br>
+archive-source.sh creates an empty directory for e.g. roms/SLOF,<br>
+so this check succeeds even if the submodule sources are unavailable.</bloc=
+kquote></div></div><div dir=3D"auto"></div><div dir=3D"auto"><div class=3D"=
+gmail_quote"><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;b=
+order-left:1px #ccc solid;padding-left:1ex">
+Something like<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 elif ! test -d $module || test -z &quot;$(ls -A=
+ &quot;$module&quot;)&quot;; then<br></blockquote></div></div><div dir=3D"a=
+uto"><br></div><div dir=3D"auto">Or (set &quot;$module&quot;/* &amp;&amp; t=
+est -e &quot;$1&quot;).</div><div dir=3D"auto"><br></div><div dir=3D"auto">=
+Paolo</div><div dir=3D"auto"><br></div><div dir=3D"auto"><div class=3D"gmai=
+l_quote"><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;borde=
+r-left:1px #ccc solid;padding-left:1ex">
+works.<br>
+<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 echo &quot;$0: sources not =
+available for $module and $no_git_error&quot;<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 validate_error &quot;$comma=
+nd&quot;<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 fi<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 done<br>
+&gt; -=C2=A0 =C2=A0 exit 0<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 ;;<br>
+&gt; +<br>
+&gt;=C2=A0 update)<br>
+&gt; -=C2=A0 =C2=A0 test -e $substat || touch $substat<br>
+&gt; -=C2=A0 =C2=A0 test -z &quot;$maybe_modules&quot; &amp;&amp; exit 0<br=
+>
+&gt; +=C2=A0 =C2=A0 is_git || {<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 echo &quot;$0: unexpectedly called with s=
+ubmodules but $no_git_error&quot;<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 exit 1<br>
+&gt; +=C2=A0 =C2=A0 }<br>
+&gt;=C2=A0 <br>
+&gt;=C2=A0 =C2=A0 =C2=A0 $GIT submodule update --init $modules 1&gt;/dev/nu=
+ll<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 test $? -ne 0 &amp;&amp; update_error &quot;failed=
+ to update modules&quot;<br>
+<br>
+</blockquote></div></div></div>
 
-virtio-mem driver for Windows is still at version 1 at [1] so I guess
-it's going to take a while for it to be production-ready - due to, in part,
-difficulty in acquiring stability guarantees for the required Windows
-kernel MM APIs.
-
-> Anyhow, I consider that a secondary requirement. (virtio-mem is not compatible with shared memdevs)
-> 
-> 
->>>
->>> Supporting the !memdev case is interesting: you essentially want to plug a memory device without a device region (or with an empty stub). I guess we should get that figured out somehow.
->>>
->>
->> That's why the previous version of this driver used a parent VMBus
->> device (non-TYPE_MEMORY_DEVICE) which then had virtual DIMMs as its
->> children carrying memory for hot add.
-> 
-> So we have the following two options I think
-> 
-> (1) Make the hv-balloon device a memory device, 
-
-It's already a TYPE_MEMORY_DEVICE, so no change required here.
-
-> plug/unplug it from the machine code when plug/unplug'ing the hv-balloon device.
-
-Don't quite follow that - the device is not designed to be hot-pluggable
-(I'm not sure that Windows would even allow hot-plugging a DM protocol
-device).
-
-It is rather designed to be instantiated at the QEMU command line for the
-lifetime of the VM.
-
-> We'd use a memory region container as device memory region (like [1]) and would have to handle the !memdev case (I can help with that). > Into that, you can map the RAM memory region on demand (and eventually even using multiple slots like [1]).
-> 
-> (2) Use a single virtual DIMM and (un)plug that on demand. Let the machine code handle (un)plugging of the device.
-> 
-> 
-> (1) feels cleanest to me, although it will require a bit more work.
-> 
-
-I also think approach (1) makes more sense as it avoids memslot metadata
-overhead for not-yet-hot-added parts of the memory backing device.
-
-Not sure what you mean that the !memdev case would be problematic in this
-case - it is working in the current driver shape so why would adding
-potential memory subregions (used in the memdev case) change that?
-
-Thanks,
-Maciej
-
-[1]: https://github.com/virtio-win/kvm-guest-drivers-windows/pull/794
+--000000000000c203d205fe95b9e3--
 
 
