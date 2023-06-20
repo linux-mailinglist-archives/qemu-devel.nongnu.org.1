@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C56FC736615
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 10:27:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF26B736611
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 10:27:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBWh4-0003pD-Qt; Tue, 20 Jun 2023 04:26:30 -0400
+	id 1qBWh3-0003oJ-2C; Tue, 20 Jun 2023 04:26:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qBWgu-0003n0-Jx
+ id 1qBWgu-0003my-JV
  for qemu-devel@nongnu.org; Tue, 20 Jun 2023 04:26:20 -0400
-Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
+Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qBWgr-00065A-9Q
+ id 1qBWgs-00065S-7j
  for qemu-devel@nongnu.org; Tue, 20 Jun 2023 04:26:19 -0400
-Received: by mail-ed1-x52b.google.com with SMTP id
- 4fb4d7f45d1cf-51a4044b7a1so5441187a12.2
- for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 01:26:16 -0700 (PDT)
+Received: by mail-ej1-x629.google.com with SMTP id
+ a640c23a62f3a-988a5383fd4so368417666b.0
+ for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 01:26:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687249575; x=1689841575;
+ d=linaro.org; s=google; t=1687249576; x=1689841576;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=iu9NYRz6Ra5A62BXzInURdN1K99XZz4HoyPXiDzEZbw=;
- b=GEEvcbOC2aBtwZ2SJpJdLjluYMniVSd736VdZDawiICngQUT/kftQhdILdImEOIayU
- DE/bJr36thZtrloZtVIsLFdI1IzLeGlG3vQD6HbHq2slmgKGechPUuCyrx0bduzyIQyH
- Fm25xe9gGLIb5n1qnMKFx6FVuzhtvAbNpSvH4NdUt20IHZLZnEfOJsC+AyARI7amBlOK
- dd1o8cXxWGSZO2nGptGrAeOisxGQuV8Ai75Od4P2frdI8dnU8vTrm3mPuU1hVLT8VMnn
- cNwaYPv8ZvLCNAZQREytzi8+4lvjoaoQ4dRQbzdu6I4j3nLOSgA9IvcdTM7olQgyZA+p
- KMFw==
+ bh=vtpvnoCGXBYmDE1iTvy2apfZncVWql8zpzIm5cBPnKE=;
+ b=TdzzK9LS1Dju1xZfKask8UrA4XH89+GMJA45YuTANRRyXRMOzKPAdU3IuabMkChRgD
+ nSjniZDQflskPsdFko0daKijo/ssljsTDTvUFWOV8Mi1JquInE9pyOPEpw+AzRZYwrfe
+ +uxxdUwSEtHM20yFCO06iYbUTY/eTAwky40dUdSJCxRfJcWcpCe2ebJNBbN1wTnSka1g
+ KVU187RjP5dq1rrfmgV41By+RB7/fAvTTyhiWpqVQJVYWW1MDZF+n6cmaMnKN5r8EYCL
+ 4N1THm00nNEyjFQ7fHczFp7c9Z9+cF6U4Lo41ZIu7IqVcfaO4kRsR5ETTvUuT2P/YDiT
+ vDxA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687249575; x=1689841575;
+ d=1e100.net; s=20221208; t=1687249576; x=1689841576;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=iu9NYRz6Ra5A62BXzInURdN1K99XZz4HoyPXiDzEZbw=;
- b=Lg9AD42onY6JdLITbaCy+LJfpMwmkCDfOIsbqtSp0uSmT0MK2Wmp5v/vAjztVeShuv
- YhrxpO/5OSIrRAPWfYg/GLqPfhH97Y7h4gwbxHWToA6c2VCHy+EOAQHOrac7PHPHajv9
- zKwinjMeHGPiq17z1ouaSzhAaVBAt4Wx9NHgauqv+yBp3jjSakM6CTXB44JXlvzbN/3e
- d2e0FzlQYTfZP96vdm+quK3Apd24fFUh9rHWSb5kKbZI9CqMrvIOjgxg4GkzUoH2NKag
- v0xtRVgoJlhaLkpHDWt7efgu47ETd7N0MfTpOacxxgxG5b824eZx9WOqSsfcvigu0/E2
- DzfA==
-X-Gm-Message-State: AC+VfDwIUvMxDtW3mUsUzn4AFsyvXJhQmeNZbTCZQKtLgz18hdRdvVnS
- VnlZfJ9ZM/Tj0PeRZyQBiuInYOD4Rgb6SILK4qfGOdpv
-X-Google-Smtp-Source: ACHHUZ7tsWShJulBlla1CTKzaNxL2Rnvrj9pXDqywiMERiIb/MFs26Yqc2IAJvvsB5EoC/bDW4Ta4w==
-X-Received: by 2002:a17:907:7245:b0:982:a454:6d24 with SMTP id
- ds5-20020a170907724500b00982a4546d24mr10653212ejc.74.1687249575697; 
- Tue, 20 Jun 2023 01:26:15 -0700 (PDT)
+ bh=vtpvnoCGXBYmDE1iTvy2apfZncVWql8zpzIm5cBPnKE=;
+ b=hk/jtHOFnXUkGke2AzYgNfNO1VwuqsOq1QRDPnTwuX7CKcXAkytNdtl4u9wehG6DJu
+ b9FeQTTjA5Axl8+E99JkBX7at07sqlNaXxdId/ta46HsU93E+FjMxQeNFjrJOzRSmjAI
+ t0lLAdIgbEPR+uP1JDEwipHnQpVneqROIU011EC2egXwSZB9d0r+d+FXxxk24Ph/5idX
+ MY5Aprz9Pl9oxitDUATrDFxdl8whq+rVLV+yazJvQAjQMC1fWv9SaU03jDHn3s1NeoTt
+ nznJcJZRkVCO6vLpCzYCRRKbe9cj2qWoPVenvOqiOSMGKSzZlnQbLtbv+TudcU7pkoi9
+ BYrw==
+X-Gm-Message-State: AC+VfDwS2+BahkMxc7KenjA2IOQJajNUVT+OUzPHTevrvv/MiWtMtt+m
+ OMg8UzIn97M6MvfQlIBAweV+zWBrYwzq8lIagzr7Yz+D
+X-Google-Smtp-Source: ACHHUZ7pJLpHRcPEpE6sh135TRkeNTL6TeK5eQucA4sGSlL8eU1pYxWHl23+E1EoPrU+Be5D7090uQ==
+X-Received: by 2002:a17:907:8a1b:b0:988:bad4:e422 with SMTP id
+ sc27-20020a1709078a1b00b00988bad4e422mr4123458ejc.13.1687249576520; 
+ Tue, 20 Jun 2023 01:26:16 -0700 (PDT)
 Received: from stoup.lan ([176.176.183.29]) by smtp.gmail.com with ESMTPSA id
  z19-20020a170906669300b00977c7566ccbsm935901ejo.164.2023.06.20.01.26.15
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 20 Jun 2023 01:26:15 -0700 (PDT)
+ Tue, 20 Jun 2023 01:26:16 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>
-Subject: [PULL 02/16] accel/tcg: Handle MO_ATOM_WITHIN16 in do_st16_leN
-Date: Tue, 20 Jun 2023 10:25:57 +0200
-Message-Id: <20230620082611.770620-3-richard.henderson@linaro.org>
+Cc: Daniel Henrique Barboza <danielhb413@gmail.com>
+Subject: [PULL 03/16] tcg/ppc: Define _CALL_AIX for clang on ppc64(be)
+Date: Tue, 20 Jun 2023 10:25:58 +0200
+Message-Id: <20230620082611.770620-4-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230620082611.770620-1-richard.henderson@linaro.org>
 References: <20230620082611.770620-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
- envelope-from=richard.henderson@linaro.org; helo=mail-ed1-x52b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::629;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ej1-x629.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,28 +90,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Otherwise we hit the default assert not reached.
-Handle it as MO_ATOM_NONE, because of size and misalignment.
-We already handle this correctly in do_ld16_beN.
+Restructure the ifdef ladder, separating 64-bit from 32-bit,
+and ensure _CALL_AIX is set for ELF v1.  Fixes the build for
+ppc64 big-endian host with clang.
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Daniel Henrique Barboza <danielhb413@gmail.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- accel/tcg/cputlb.c | 1 +
- 1 file changed, 1 insertion(+)
+ tcg/ppc/tcg-target.c.inc | 23 ++++++++++++++++-------
+ 1 file changed, 16 insertions(+), 7 deletions(-)
 
-diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
-index 5e2ca47243..14ce97c33b 100644
---- a/accel/tcg/cputlb.c
-+++ b/accel/tcg/cputlb.c
-@@ -2727,6 +2727,7 @@ static uint64_t do_st16_leN(CPUArchState *env, MMULookupPageData *p,
-          * and so neither is atomic.
-          */
-     case MO_ATOM_IFALIGN:
-+    case MO_ATOM_WITHIN16:
-     case MO_ATOM_NONE:
-         stq_le_p(p->haddr, int128_getlo(val_le));
-         return store_bytes_leN(p->haddr + 8, p->size - 8,
+diff --git a/tcg/ppc/tcg-target.c.inc b/tcg/ppc/tcg-target.c.inc
+index 507fe6cda8..5c8378f8f6 100644
+--- a/tcg/ppc/tcg-target.c.inc
++++ b/tcg/ppc/tcg-target.c.inc
+@@ -29,15 +29,24 @@
+ /*
+  * Standardize on the _CALL_FOO symbols used by GCC:
+  * Apple XCode does not define _CALL_DARWIN.
+- * Clang defines _CALL_ELF (64-bit) but not _CALL_SYSV (32-bit).
++ * Clang defines _CALL_ELF (64-bit) but not _CALL_SYSV or _CALL_AIX.
+  */
+-#if !defined(_CALL_SYSV) && \
+-    !defined(_CALL_DARWIN) && \
+-    !defined(_CALL_AIX) && \
+-    !defined(_CALL_ELF)
+-# if defined(__APPLE__)
++#if TCG_TARGET_REG_BITS == 64
++# ifdef _CALL_AIX
++    /* ok */
++# elif defined(_CALL_ELF) && _CALL_ELF == 1
++#  define _CALL_AIX
++# elif defined(_CALL_ELF) && _CALL_ELF == 2
++    /* ok */
++# else
++#  error "Unknown ABI"
++# endif
++#else
++# if defined(_CALL_SYSV) || defined(_CALL_DARWIN)
++    /* ok */
++# elif defined(__APPLE__)
+ #  define _CALL_DARWIN
+-# elif defined(__ELF__) && TCG_TARGET_REG_BITS == 32
++# elif defined(__ELF__)
+ #  define _CALL_SYSV
+ # else
+ #  error "Unknown ABI"
 -- 
 2.34.1
 
