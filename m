@@ -2,40 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3DAD73681E
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 11:43:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FA5A736809
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 11:42:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBXqX-00031f-FE; Tue, 20 Jun 2023 05:40:21 -0400
+	id 1qBXoq-00075M-Tg; Tue, 20 Jun 2023 05:38:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1qBXqQ-0002hO-5A
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 05:40:14 -0400
+ id 1qBXoi-00072B-Bd
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 05:38:31 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1qBXqM-0006aQ-DP
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 05:40:12 -0400
+ (envelope-from <gaosong@loongson.cn>) id 1qBXod-0006JK-A9
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 05:38:28 -0400
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8Bxb+uMc5FkkiUHAA--.14737S3;
- Tue, 20 Jun 2023 17:38:20 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8Cx8OiNc5FkliUHAA--.12756S3;
+ Tue, 20 Jun 2023 17:38:21 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
  by localhost.localdomain (Coremail) with SMTP id
- AQAAf8BxduSGc5FkzIQhAA--.28394S11; 
- Tue, 20 Jun 2023 17:38:18 +0800 (CST)
+ AQAAf8BxduSGc5FkzIQhAA--.28394S12; 
+ Tue, 20 Jun 2023 17:38:20 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org
-Subject: [PATCH v1 09/46] target/loongarch: Implement xvhaddw/xvhsubw
-Date: Tue, 20 Jun 2023 17:37:37 +0800
-Message-Id: <20230620093814.123650-10-gaosong@loongson.cn>
+Subject: [PATCH v1 10/46] target/loongarch: Implement xvaddw/xvsubw
+Date: Tue, 20 Jun 2023 17:37:38 +0800
+Message-Id: <20230620093814.123650-11-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20230620093814.123650-1-gaosong@loongson.cn>
 References: <20230620093814.123650-1-gaosong@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8BxduSGc5FkzIQhAA--.28394S11
+X-CM-TRANSID: AQAAf8BxduSGc5FkzIQhAA--.28394S12
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -63,275 +63,825 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 This patch includes:
-- XVHADDW.{H.B/W.H/D.W/Q.D/HU.BU/WU.HU/DU.WU/QU.DU};
-- XVHSUBW.{H.B/W.H/D.W/Q.D/HU.BU/WU.HU/DU.WU/QU.DU}.
+- XVADDW{EV/OD}.{H.B/W.H/D.W/Q.D}[U];
+- XVSUBW{EV/OD}.{H.B/W.H/D.W/Q.D}[U];
+- XVADDW{EV/OD}.{H.BU.B/W.HU.H/D.WU.W/Q.DU.D}.
 
 Signed-off-by: Song Gao <gaosong@loongson.cn>
 ---
- target/loongarch/disas.c                     | 17 ++++
- target/loongarch/helper.h                    | 18 ++++
- target/loongarch/insn_trans/trans_lasx.c.inc | 30 +++++++
- target/loongarch/insns.decode                | 18 ++++
- target/loongarch/lasx_helper.c               | 90 ++++++++++++++++++++
- target/loongarch/lsx_helper.c                |  3 -
- target/loongarch/vec.h                       |  3 +
- 7 files changed, 176 insertions(+), 3 deletions(-)
+ target/loongarch/disas.c                     |  43 ++
+ target/loongarch/helper.h                    |  45 ++
+ target/loongarch/insn_trans/trans_lasx.c.inc | 410 +++++++++++++++++++
+ target/loongarch/insns.decode                |  45 ++
+ target/loongarch/lasx_helper.c               | 214 ++++++++++
+ 5 files changed, 757 insertions(+)
 
 diff --git a/target/loongarch/disas.c b/target/loongarch/disas.c
-index 2a2993cb95..770359524e 100644
+index 770359524e..6e790f0959 100644
 --- a/target/loongarch/disas.c
 +++ b/target/loongarch/disas.c
-@@ -1765,6 +1765,23 @@ INSN_LASX(xvssub_hu,         xxx)
- INSN_LASX(xvssub_wu,         xxx)
- INSN_LASX(xvssub_du,         xxx)
+@@ -1782,6 +1782,49 @@ INSN_LASX(xvhsubw_wu_hu,     xxx)
+ INSN_LASX(xvhsubw_du_wu,     xxx)
+ INSN_LASX(xvhsubw_qu_du,     xxx)
  
-+INSN_LASX(xvhaddw_h_b,       xxx)
-+INSN_LASX(xvhaddw_w_h,       xxx)
-+INSN_LASX(xvhaddw_d_w,       xxx)
-+INSN_LASX(xvhaddw_q_d,       xxx)
-+INSN_LASX(xvhaddw_hu_bu,     xxx)
-+INSN_LASX(xvhaddw_wu_hu,     xxx)
-+INSN_LASX(xvhaddw_du_wu,     xxx)
-+INSN_LASX(xvhaddw_qu_du,     xxx)
-+INSN_LASX(xvhsubw_h_b,       xxx)
-+INSN_LASX(xvhsubw_w_h,       xxx)
-+INSN_LASX(xvhsubw_d_w,       xxx)
-+INSN_LASX(xvhsubw_q_d,       xxx)
-+INSN_LASX(xvhsubw_hu_bu,     xxx)
-+INSN_LASX(xvhsubw_wu_hu,     xxx)
-+INSN_LASX(xvhsubw_du_wu,     xxx)
-+INSN_LASX(xvhsubw_qu_du,     xxx)
++INSN_LASX(xvaddwev_h_b,      xxx)
++INSN_LASX(xvaddwev_w_h,      xxx)
++INSN_LASX(xvaddwev_d_w,      xxx)
++INSN_LASX(xvaddwev_q_d,      xxx)
++INSN_LASX(xvaddwod_h_b,      xxx)
++INSN_LASX(xvaddwod_w_h,      xxx)
++INSN_LASX(xvaddwod_d_w,      xxx)
++INSN_LASX(xvaddwod_q_d,      xxx)
++INSN_LASX(xvsubwev_h_b,      xxx)
++INSN_LASX(xvsubwev_w_h,      xxx)
++INSN_LASX(xvsubwev_d_w,      xxx)
++INSN_LASX(xvsubwev_q_d,      xxx)
++INSN_LASX(xvsubwod_h_b,      xxx)
++INSN_LASX(xvsubwod_w_h,      xxx)
++INSN_LASX(xvsubwod_d_w,      xxx)
++INSN_LASX(xvsubwod_q_d,      xxx)
++
++INSN_LASX(xvaddwev_h_bu,     xxx)
++INSN_LASX(xvaddwev_w_hu,     xxx)
++INSN_LASX(xvaddwev_d_wu,     xxx)
++INSN_LASX(xvaddwev_q_du,     xxx)
++INSN_LASX(xvaddwod_h_bu,     xxx)
++INSN_LASX(xvaddwod_w_hu,     xxx)
++INSN_LASX(xvaddwod_d_wu,     xxx)
++INSN_LASX(xvaddwod_q_du,     xxx)
++INSN_LASX(xvsubwev_h_bu,     xxx)
++INSN_LASX(xvsubwev_w_hu,     xxx)
++INSN_LASX(xvsubwev_d_wu,     xxx)
++INSN_LASX(xvsubwev_q_du,     xxx)
++INSN_LASX(xvsubwod_h_bu,     xxx)
++INSN_LASX(xvsubwod_w_hu,     xxx)
++INSN_LASX(xvsubwod_d_wu,     xxx)
++INSN_LASX(xvsubwod_q_du,     xxx)
++
++INSN_LASX(xvaddwev_h_bu_b,   xxx)
++INSN_LASX(xvaddwev_w_hu_h,   xxx)
++INSN_LASX(xvaddwev_d_wu_w,   xxx)
++INSN_LASX(xvaddwev_q_du_d,   xxx)
++INSN_LASX(xvaddwod_h_bu_b,   xxx)
++INSN_LASX(xvaddwod_w_hu_h,   xxx)
++INSN_LASX(xvaddwod_d_wu_w,   xxx)
++INSN_LASX(xvaddwod_q_du_d,   xxx)
 +
  INSN_LASX(xvreplgr2vr_b,     xr)
  INSN_LASX(xvreplgr2vr_h,     xr)
  INSN_LASX(xvreplgr2vr_w,     xr)
 diff --git a/target/loongarch/helper.h b/target/loongarch/helper.h
-index b9de77d926..db2deaff79 100644
+index db2deaff79..2034576d87 100644
 --- a/target/loongarch/helper.h
 +++ b/target/loongarch/helper.h
-@@ -696,3 +696,21 @@ DEF_HELPER_4(vextrins_b, void, env, i32, i32, i32)
- DEF_HELPER_4(vextrins_h, void, env, i32, i32, i32)
- DEF_HELPER_4(vextrins_w, void, env, i32, i32, i32)
- DEF_HELPER_4(vextrins_d, void, env, i32, i32, i32)
+@@ -714,3 +714,48 @@ DEF_HELPER_4(xvhsubw_hu_bu, void, env, i32, i32, i32)
+ DEF_HELPER_4(xvhsubw_wu_hu, void, env, i32, i32, i32)
+ DEF_HELPER_4(xvhsubw_du_wu, void, env, i32, i32, i32)
+ DEF_HELPER_4(xvhsubw_qu_du, void, env, i32, i32, i32)
 +
-+/* LoongArch LASX */
-+DEF_HELPER_4(xvhaddw_h_b, void, env, i32, i32, i32)
-+DEF_HELPER_4(xvhaddw_w_h, void, env, i32, i32, i32)
-+DEF_HELPER_4(xvhaddw_d_w, void, env, i32, i32, i32)
-+DEF_HELPER_4(xvhaddw_q_d, void, env, i32, i32, i32)
-+DEF_HELPER_4(xvhaddw_hu_bu, void, env, i32, i32, i32)
-+DEF_HELPER_4(xvhaddw_wu_hu, void, env, i32, i32, i32)
-+DEF_HELPER_4(xvhaddw_du_wu, void, env, i32, i32, i32)
-+DEF_HELPER_4(xvhaddw_qu_du, void, env, i32, i32, i32)
-+DEF_HELPER_4(xvhsubw_h_b, void, env, i32, i32, i32)
-+DEF_HELPER_4(xvhsubw_w_h, void, env, i32, i32, i32)
-+DEF_HELPER_4(xvhsubw_d_w, void, env, i32, i32, i32)
-+DEF_HELPER_4(xvhsubw_q_d, void, env, i32, i32, i32)
-+DEF_HELPER_4(xvhsubw_hu_bu, void, env, i32, i32, i32)
-+DEF_HELPER_4(xvhsubw_wu_hu, void, env, i32, i32, i32)
-+DEF_HELPER_4(xvhsubw_du_wu, void, env, i32, i32, i32)
-+DEF_HELPER_4(xvhsubw_qu_du, void, env, i32, i32, i32)
++DEF_HELPER_FLAGS_4(xvaddwev_h_b, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_4(xvaddwev_w_h, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_4(xvaddwev_d_w, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_4(xvaddwev_q_d, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_4(xvaddwod_h_b, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_4(xvaddwod_w_h, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_4(xvaddwod_d_w, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_4(xvaddwod_q_d, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++
++DEF_HELPER_FLAGS_4(xvsubwev_h_b, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_4(xvsubwev_w_h, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_4(xvsubwev_d_w, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_4(xvsubwev_q_d, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_4(xvsubwod_h_b, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_4(xvsubwod_w_h, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_4(xvsubwod_d_w, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_4(xvsubwod_q_d, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++
++DEF_HELPER_FLAGS_4(xvaddwev_h_bu, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_4(xvaddwev_w_hu, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_4(xvaddwev_d_wu, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_4(xvaddwev_q_du, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_4(xvaddwod_h_bu, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_4(xvaddwod_w_hu, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_4(xvaddwod_d_wu, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_4(xvaddwod_q_du, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++
++DEF_HELPER_FLAGS_4(xvsubwev_h_bu, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_4(xvsubwev_w_hu, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_4(xvsubwev_d_wu, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_4(xvsubwev_q_du, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_4(xvsubwod_h_bu, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_4(xvsubwod_w_hu, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_4(xvsubwod_d_wu, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_4(xvsubwod_q_du, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++
++DEF_HELPER_FLAGS_4(xvaddwev_h_bu_b, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_4(xvaddwev_w_hu_h, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_4(xvaddwev_d_wu_w, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_4(xvaddwev_q_du_d, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_4(xvaddwod_h_bu_b, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_4(xvaddwod_w_hu_h, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_4(xvaddwod_d_wu_w, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_4(xvaddwod_q_du_d, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
 diff --git a/target/loongarch/insn_trans/trans_lasx.c.inc b/target/loongarch/insn_trans/trans_lasx.c.inc
-index ec68193686..aa0e35b228 100644
+index aa0e35b228..0a574182db 100644
 --- a/target/loongarch/insn_trans/trans_lasx.c.inc
 +++ b/target/loongarch/insn_trans/trans_lasx.c.inc
-@@ -15,6 +15,19 @@
- #define CHECK_ASXE
- #endif
+@@ -178,6 +178,416 @@ TRANS(xvhsubw_wu_hu, gen_xxx, gen_helper_xvhsubw_wu_hu)
+ TRANS(xvhsubw_du_wu, gen_xxx, gen_helper_xvhsubw_du_wu)
+ TRANS(xvhsubw_qu_du, gen_xxx, gen_helper_xvhsubw_qu_du)
  
-+static bool gen_xxx(DisasContext *ctx, arg_xxx *a,
-+                    void (*func)(TCGv_ptr, TCGv_i32, TCGv_i32, TCGv_i32))
++static void do_xvaddwev_s(unsigned vece, uint32_t xd_ofs, uint32_t xj_ofs,
++                          uint32_t xk_ofs, uint32_t oprsz, uint32_t maxsz)
 +{
-+    TCGv_i32 xd = tcg_constant_i32(a->xd);
-+    TCGv_i32 xj = tcg_constant_i32(a->xj);
-+    TCGv_i32 xk = tcg_constant_i32(a->xk);
++    static const TCGOpcode vecop_list[] = {
++        INDEX_op_shli_vec, INDEX_op_sari_vec, INDEX_op_add_vec, 0
++        };
++    static const GVecGen3 op[4] = {
++        {
++            .fniv = gen_vaddwev_s,
++            .fno = gen_helper_xvaddwev_h_b,
++            .opt_opc = vecop_list,
++            .vece = MO_16
++        },
++        {
++            .fni4 = gen_vaddwev_w_h,
++            .fniv = gen_vaddwev_s,
++            .fno = gen_helper_xvaddwev_w_h,
++            .opt_opc = vecop_list,
++            .vece = MO_32
++        },
++        {
++            .fni8 = gen_vaddwev_d_w,
++            .fniv = gen_vaddwev_s,
++            .fno = gen_helper_xvaddwev_d_w,
++            .opt_opc = vecop_list,
++            .vece = MO_64
++        },
++        {
++            .fno = gen_helper_xvaddwev_q_d,
++            .vece = MO_128
++        },
++    };
 +
-+    CHECK_ASXE;
-+
-+    func(cpu_env, xd, xj, xk);
-+    return true;
++    tcg_gen_gvec_3(xd_ofs, xj_ofs, xk_ofs, oprsz, maxsz, &op[vece]);
 +}
 +
- static bool gvec_xxx(DisasContext *ctx, arg_xxx *a, MemOp mop,
-                      void (*func)(unsigned, uint32_t, uint32_t,
-                                   uint32_t, uint32_t, uint32_t))
-@@ -148,6 +161,23 @@ TRANS(xvssub_hu, gvec_xxx, MO_16, tcg_gen_gvec_ussub)
- TRANS(xvssub_wu, gvec_xxx, MO_32, tcg_gen_gvec_ussub)
- TRANS(xvssub_du, gvec_xxx, MO_64, tcg_gen_gvec_ussub)
- 
-+TRANS(xvhaddw_h_b, gen_xxx, gen_helper_xvhaddw_h_b)
-+TRANS(xvhaddw_w_h, gen_xxx, gen_helper_xvhaddw_w_h)
-+TRANS(xvhaddw_d_w, gen_xxx, gen_helper_xvhaddw_d_w)
-+TRANS(xvhaddw_q_d, gen_xxx, gen_helper_xvhaddw_q_d)
-+TRANS(xvhaddw_hu_bu, gen_xxx, gen_helper_xvhaddw_hu_bu)
-+TRANS(xvhaddw_wu_hu, gen_xxx, gen_helper_xvhaddw_wu_hu)
-+TRANS(xvhaddw_du_wu, gen_xxx, gen_helper_xvhaddw_du_wu)
-+TRANS(xvhaddw_qu_du, gen_xxx, gen_helper_xvhaddw_qu_du)
-+TRANS(xvhsubw_h_b, gen_xxx, gen_helper_xvhsubw_h_b)
-+TRANS(xvhsubw_w_h, gen_xxx, gen_helper_xvhsubw_w_h)
-+TRANS(xvhsubw_d_w, gen_xxx, gen_helper_xvhsubw_d_w)
-+TRANS(xvhsubw_q_d, gen_xxx, gen_helper_xvhsubw_q_d)
-+TRANS(xvhsubw_hu_bu, gen_xxx, gen_helper_xvhsubw_hu_bu)
-+TRANS(xvhsubw_wu_hu, gen_xxx, gen_helper_xvhsubw_wu_hu)
-+TRANS(xvhsubw_du_wu, gen_xxx, gen_helper_xvhsubw_du_wu)
-+TRANS(xvhsubw_qu_du, gen_xxx, gen_helper_xvhsubw_qu_du)
++TRANS(xvaddwev_h_b, gvec_xxx, MO_8, do_xvaddwev_s)
++TRANS(xvaddwev_w_h, gvec_xxx, MO_16, do_xvaddwev_s)
++TRANS(xvaddwev_d_w, gvec_xxx, MO_32, do_xvaddwev_s)
++TRANS(xvaddwev_q_d, gvec_xxx, MO_64, do_xvaddwev_s)
++
++static void do_xvaddwod_s(unsigned vece, uint32_t xd_ofs, uint32_t xj_ofs,
++                          uint32_t xk_ofs, uint32_t oprsz, uint32_t maxsz)
++{
++    static const TCGOpcode vecop_list[] = {
++        INDEX_op_sari_vec, INDEX_op_add_vec, 0
++        };
++    static const GVecGen3 op[4] = {
++        {
++            .fniv = gen_vaddwod_s,
++            .fno = gen_helper_xvaddwod_h_b,
++            .opt_opc = vecop_list,
++            .vece = MO_16
++        },
++        {
++            .fni4 = gen_vaddwod_w_h,
++            .fniv = gen_vaddwod_s,
++            .fno = gen_helper_xvaddwod_w_h,
++            .opt_opc = vecop_list,
++            .vece = MO_32
++        },
++        {
++            .fni8 = gen_vaddwod_d_w,
++            .fniv = gen_vaddwod_s,
++            .fno = gen_helper_xvaddwod_d_w,
++            .opt_opc = vecop_list,
++            .vece = MO_64
++        },
++        {
++            .fno = gen_helper_xvaddwod_q_d,
++            .vece = MO_128
++        },
++    };
++
++    tcg_gen_gvec_3(xd_ofs, xj_ofs, xk_ofs, oprsz, maxsz, &op[vece]);
++}
++
++TRANS(xvaddwod_h_b, gvec_xxx, MO_8, do_xvaddwod_s)
++TRANS(xvaddwod_w_h, gvec_xxx, MO_16, do_xvaddwod_s)
++TRANS(xvaddwod_d_w, gvec_xxx, MO_32, do_xvaddwod_s)
++TRANS(xvaddwod_q_d, gvec_xxx, MO_64, do_xvaddwod_s)
++
++static void do_xvsubwev_s(unsigned vece, uint32_t xd_ofs, uint32_t xj_ofs,
++                          uint32_t xk_ofs, uint32_t oprsz, uint32_t maxsz)
++{
++    static const TCGOpcode vecop_list[] = {
++        INDEX_op_shli_vec, INDEX_op_sari_vec, INDEX_op_sub_vec, 0
++        };
++    static const GVecGen3 op[4] = {
++        {
++            .fniv = gen_vsubwev_s,
++            .fno = gen_helper_xvsubwev_h_b,
++            .opt_opc = vecop_list,
++            .vece = MO_16
++        },
++        {
++            .fni4 = gen_vsubwev_w_h,
++            .fniv = gen_vsubwev_s,
++            .fno = gen_helper_xvsubwev_w_h,
++            .opt_opc = vecop_list,
++            .vece = MO_32
++        },
++        {
++            .fni8 = gen_vsubwev_d_w,
++            .fniv = gen_vsubwev_s,
++            .fno = gen_helper_xvsubwev_d_w,
++            .opt_opc = vecop_list,
++            .vece = MO_64
++        },
++        {
++            .fno = gen_helper_xvsubwev_q_d,
++            .vece = MO_128
++        },
++    };
++
++    tcg_gen_gvec_3(xd_ofs, xj_ofs, xk_ofs, oprsz, maxsz, &op[vece]);
++}
++
++TRANS(xvsubwev_h_b, gvec_xxx, MO_8, do_xvsubwev_s)
++TRANS(xvsubwev_w_h, gvec_xxx, MO_16, do_xvsubwev_s)
++TRANS(xvsubwev_d_w, gvec_xxx, MO_32, do_xvsubwev_s)
++TRANS(xvsubwev_q_d, gvec_xxx, MO_64, do_xvsubwev_s)
++
++static void do_xvsubwod_s(unsigned vece, uint32_t xd_ofs, uint32_t xj_ofs,
++                          uint32_t xk_ofs, uint32_t oprsz, uint32_t maxsz)
++{
++    static const TCGOpcode vecop_list[] = {
++        INDEX_op_sari_vec, INDEX_op_sub_vec, 0
++        };
++    static const GVecGen3 op[4] = {
++        {
++            .fniv = gen_vsubwod_s,
++            .fno = gen_helper_xvsubwod_h_b,
++            .opt_opc = vecop_list,
++            .vece = MO_16
++        },
++        {
++            .fni4 = gen_vsubwod_w_h,
++            .fniv = gen_vsubwod_s,
++            .fno = gen_helper_xvsubwod_w_h,
++            .opt_opc = vecop_list,
++            .vece = MO_32
++        },
++        {
++            .fni8 = gen_vsubwod_d_w,
++            .fniv = gen_vsubwod_s,
++            .fno = gen_helper_xvsubwod_d_w,
++            .opt_opc = vecop_list,
++            .vece = MO_64
++        },
++        {
++            .fno = gen_helper_xvsubwod_q_d,
++            .vece = MO_128
++        },
++    };
++
++    tcg_gen_gvec_3(xd_ofs, xj_ofs, xk_ofs, oprsz, maxsz, &op[vece]);
++}
++
++TRANS(xvsubwod_h_b, gvec_xxx, MO_8, do_xvsubwod_s)
++TRANS(xvsubwod_w_h, gvec_xxx, MO_16, do_xvsubwod_s)
++TRANS(xvsubwod_d_w, gvec_xxx, MO_32, do_xvsubwod_s)
++TRANS(xvsubwod_q_d, gvec_xxx, MO_64, do_xvsubwod_s)
++
++static void do_xvaddwev_u(unsigned vece, uint32_t xd_ofs, uint32_t xj_ofs,
++                          uint32_t xk_ofs, uint32_t oprsz, uint32_t maxsz)
++{
++    static const TCGOpcode vecop_list[] = {
++        INDEX_op_add_vec, 0
++        };
++    static const GVecGen3 op[4] = {
++        {
++            .fniv = gen_vaddwev_u,
++            .fno = gen_helper_xvaddwev_h_bu,
++            .opt_opc = vecop_list,
++            .vece = MO_16
++        },
++        {
++            .fni4 = gen_vaddwev_w_hu,
++            .fniv = gen_vaddwev_u,
++            .fno = gen_helper_xvaddwev_w_hu,
++            .opt_opc = vecop_list,
++            .vece = MO_32
++        },
++        {
++            .fni8 = gen_vaddwev_d_wu,
++            .fniv = gen_vaddwev_u,
++            .fno = gen_helper_xvaddwev_d_wu,
++            .opt_opc = vecop_list,
++            .vece = MO_64
++        },
++        {
++            .fno = gen_helper_xvaddwev_q_du,
++            .vece = MO_128
++        },
++    };
++
++    tcg_gen_gvec_3(xd_ofs, xj_ofs, xk_ofs, oprsz, maxsz, &op[vece]);
++}
++
++TRANS(xvaddwev_h_bu, gvec_xxx, MO_8, do_xvaddwev_u)
++TRANS(xvaddwev_w_hu, gvec_xxx, MO_16, do_xvaddwev_u)
++TRANS(xvaddwev_d_wu, gvec_xxx, MO_32, do_xvaddwev_u)
++TRANS(xvaddwev_q_du, gvec_xxx, MO_64, do_xvaddwev_u)
++
++static void do_xvaddwod_u(unsigned vece, uint32_t xd_ofs, uint32_t xj_ofs,
++                          uint32_t xk_ofs, uint32_t oprsz, uint32_t maxsz)
++{
++    static const TCGOpcode vecop_list[] = {
++        INDEX_op_shri_vec, INDEX_op_add_vec, 0
++        };
++    static const GVecGen3 op[4] = {
++        {
++            .fniv = gen_vaddwod_u,
++            .fno = gen_helper_xvaddwod_h_bu,
++            .opt_opc = vecop_list,
++            .vece = MO_16
++        },
++        {
++            .fni4 = gen_vaddwod_w_hu,
++            .fniv = gen_vaddwod_u,
++            .fno = gen_helper_xvaddwod_w_hu,
++            .opt_opc = vecop_list,
++            .vece = MO_32
++        },
++        {
++            .fni8 = gen_vaddwod_d_wu,
++            .fniv = gen_vaddwod_u,
++            .fno = gen_helper_xvaddwod_d_wu,
++            .opt_opc = vecop_list,
++            .vece = MO_64
++        },
++        {
++            .fno = gen_helper_xvaddwod_q_du,
++            .vece = MO_128
++        },
++    };
++
++    tcg_gen_gvec_3(xd_ofs, xj_ofs, xk_ofs, oprsz, maxsz, &op[vece]);
++}
++
++TRANS(xvaddwod_h_bu, gvec_xxx, MO_8, do_xvaddwod_u)
++TRANS(xvaddwod_w_hu, gvec_xxx, MO_16, do_xvaddwod_u)
++TRANS(xvaddwod_d_wu, gvec_xxx, MO_32, do_xvaddwod_u)
++TRANS(xvaddwod_q_du, gvec_xxx, MO_64, do_xvaddwod_u)
++
++static void do_xvsubwev_u(unsigned vece, uint32_t xd_ofs, uint32_t xj_ofs,
++                          uint32_t xk_ofs, uint32_t oprsz, uint32_t maxsz)
++{
++    static const TCGOpcode vecop_list[] = {
++        INDEX_op_sub_vec, 0
++        };
++    static const GVecGen3 op[4] = {
++        {
++            .fniv = gen_vsubwev_u,
++            .fno = gen_helper_xvsubwev_h_bu,
++            .opt_opc = vecop_list,
++            .vece = MO_16
++        },
++        {
++            .fni4 = gen_vsubwev_w_hu,
++            .fniv = gen_vsubwev_u,
++            .fno = gen_helper_xvsubwev_w_hu,
++            .opt_opc = vecop_list,
++            .vece = MO_32
++        },
++        {
++            .fni8 = gen_vsubwev_d_wu,
++            .fniv = gen_vsubwev_u,
++            .fno = gen_helper_xvsubwev_d_wu,
++            .opt_opc = vecop_list,
++            .vece = MO_64
++        },
++        {
++            .fno = gen_helper_xvsubwev_q_du,
++            .vece = MO_128
++        },
++    };
++
++    tcg_gen_gvec_3(xd_ofs, xj_ofs, xk_ofs, oprsz, maxsz, &op[vece]);
++}
++
++TRANS(xvsubwev_h_bu, gvec_xxx, MO_8, do_xvsubwev_u)
++TRANS(xvsubwev_w_hu, gvec_xxx, MO_16, do_xvsubwev_u)
++TRANS(xvsubwev_d_wu, gvec_xxx, MO_32, do_xvsubwev_u)
++TRANS(xvsubwev_q_du, gvec_xxx, MO_64, do_xvsubwev_u)
++
++static void do_xvsubwod_u(unsigned vece, uint32_t xd_ofs, uint32_t xj_ofs,
++                          uint32_t xk_ofs, uint32_t oprsz, uint32_t maxsz)
++{
++    static const TCGOpcode vecop_list[] = {
++        INDEX_op_shri_vec, INDEX_op_sub_vec, 0
++        };
++    static const GVecGen3 op[4] = {
++        {
++            .fniv = gen_vsubwod_u,
++            .fno = gen_helper_xvsubwod_h_bu,
++            .opt_opc = vecop_list,
++            .vece = MO_16
++        },
++        {
++            .fni4 = gen_vsubwod_w_hu,
++            .fniv = gen_vsubwod_u,
++            .fno = gen_helper_xvsubwod_w_hu,
++            .opt_opc = vecop_list,
++            .vece = MO_32
++        },
++        {
++            .fni8 = gen_vsubwod_d_wu,
++            .fniv = gen_vsubwod_u,
++            .fno = gen_helper_xvsubwod_d_wu,
++            .opt_opc = vecop_list,
++            .vece = MO_64
++        },
++        {
++            .fno = gen_helper_xvsubwod_q_du,
++            .vece = MO_128
++        },
++    };
++
++    tcg_gen_gvec_3(xd_ofs, xj_ofs, xk_ofs, oprsz, maxsz, &op[vece]);
++}
++
++TRANS(xvsubwod_h_bu, gvec_xxx, MO_8, do_xvsubwod_u)
++TRANS(xvsubwod_w_hu, gvec_xxx, MO_16, do_xvsubwod_u)
++TRANS(xvsubwod_d_wu, gvec_xxx, MO_32, do_xvsubwod_u)
++TRANS(xvsubwod_q_du, gvec_xxx, MO_64, do_xvsubwod_u)
++
++static void do_xvaddwev_u_s(unsigned vece, uint32_t xd_ofs, uint32_t xj_ofs,
++                            uint32_t xk_ofs, uint32_t oprsz, uint32_t maxsz)
++{
++    static const TCGOpcode vecop_list[] = {
++        INDEX_op_shli_vec, INDEX_op_sari_vec, INDEX_op_add_vec, 0
++        };
++    static const GVecGen3 op[4] = {
++        {
++            .fniv = gen_vaddwev_u_s,
++            .fno = gen_helper_xvaddwev_h_bu_b,
++            .opt_opc = vecop_list,
++            .vece = MO_16
++        },
++        {
++            .fni4 = gen_vaddwev_w_hu_h,
++            .fniv = gen_vaddwev_u_s,
++            .fno = gen_helper_xvaddwev_w_hu_h,
++            .opt_opc = vecop_list,
++            .vece = MO_32
++        },
++        {
++            .fni8 = gen_vaddwev_d_wu_w,
++            .fniv = gen_vaddwev_u_s,
++            .fno = gen_helper_xvaddwev_d_wu_w,
++            .opt_opc = vecop_list,
++            .vece = MO_64
++        },
++        {
++            .fno = gen_helper_xvaddwev_q_du_d,
++            .vece = MO_128
++        },
++    };
++
++    tcg_gen_gvec_3(xd_ofs, xj_ofs, xk_ofs, oprsz, maxsz, &op[vece]);
++}
++
++TRANS(xvaddwev_h_bu_b, gvec_xxx, MO_8, do_xvaddwev_u_s)
++TRANS(xvaddwev_w_hu_h, gvec_xxx, MO_16, do_xvaddwev_u_s)
++TRANS(xvaddwev_d_wu_w, gvec_xxx, MO_32, do_xvaddwev_u_s)
++TRANS(xvaddwev_q_du_d, gvec_xxx, MO_64, do_xvaddwev_u_s)
++
++static void do_xvaddwod_u_s(unsigned vece, uint32_t xd_ofs, uint32_t xj_ofs,
++                            uint32_t xk_ofs, uint32_t oprsz, uint32_t maxsz)
++{
++    static const TCGOpcode vecop_list[] = {
++        INDEX_op_shri_vec, INDEX_op_sari_vec,  INDEX_op_add_vec, 0
++        };
++    static const GVecGen3 op[4] = {
++        {
++            .fniv = gen_vaddwod_u_s,
++            .fno = gen_helper_xvaddwod_h_bu_b,
++            .opt_opc = vecop_list,
++            .vece = MO_16
++        },
++        {
++            .fni4 = gen_vaddwod_w_hu_h,
++            .fniv = gen_vaddwod_u_s,
++            .fno = gen_helper_xvaddwod_w_hu_h,
++            .opt_opc = vecop_list,
++            .vece = MO_32
++        },
++        {
++            .fni8 = gen_vaddwod_d_wu_w,
++            .fniv = gen_vaddwod_u_s,
++            .fno = gen_helper_xvaddwod_d_wu_w,
++            .opt_opc = vecop_list,
++            .vece = MO_64
++        },
++        {
++            .fno = gen_helper_xvaddwod_q_du_d,
++            .vece = MO_128
++        },
++    };
++
++    tcg_gen_gvec_3(xd_ofs, xj_ofs, xk_ofs, oprsz, maxsz, &op[vece]);
++}
++
++TRANS(xvaddwod_h_bu_b, gvec_xxx, MO_8, do_xvaddwod_u_s)
++TRANS(xvaddwod_w_hu_h, gvec_xxx, MO_16, do_xvaddwod_u_s)
++TRANS(xvaddwod_d_wu_w, gvec_xxx, MO_32, do_xvaddwod_u_s)
++TRANS(xvaddwod_q_du_d, gvec_xxx, MO_64, do_xvaddwod_u_s)
 +
  static bool gvec_dupx(DisasContext *ctx, arg_xr *a, MemOp mop)
  {
      TCGv src = gpr_src(ctx, a->rj, EXT_NONE);
 diff --git a/target/loongarch/insns.decode b/target/loongarch/insns.decode
-index be706fe0f7..48556b2267 100644
+index 48556b2267..1d177f9676 100644
 --- a/target/loongarch/insns.decode
 +++ b/target/loongarch/insns.decode
-@@ -1358,6 +1358,24 @@ xvssub_hu        0111 01000100 11001 ..... ..... .....    @xxx
- xvssub_wu        0111 01000100 11010 ..... ..... .....    @xxx
- xvssub_du        0111 01000100 11011 ..... ..... .....    @xxx
+@@ -1376,6 +1376,51 @@ xvhsubw_wu_hu    0111 01000101 10101 ..... ..... .....    @xxx
+ xvhsubw_du_wu    0111 01000101 10110 ..... ..... .....    @xxx
+ xvhsubw_qu_du    0111 01000101 10111 ..... ..... .....    @xxx
  
-+xvhaddw_h_b      0111 01000101 01000 ..... ..... .....    @xxx
-+xvhaddw_w_h      0111 01000101 01001 ..... ..... .....    @xxx
-+xvhaddw_d_w      0111 01000101 01010 ..... ..... .....    @xxx
-+xvhaddw_q_d      0111 01000101 01011 ..... ..... .....    @xxx
-+xvhaddw_hu_bu    0111 01000101 10000 ..... ..... .....    @xxx
-+xvhaddw_wu_hu    0111 01000101 10001 ..... ..... .....    @xxx
-+xvhaddw_du_wu    0111 01000101 10010 ..... ..... .....    @xxx
-+xvhaddw_qu_du    0111 01000101 10011 ..... ..... .....    @xxx
++xvaddwev_h_b     0111 01000001 11100 ..... ..... .....    @xxx
++xvaddwev_w_h     0111 01000001 11101 ..... ..... .....    @xxx
++xvaddwev_d_w     0111 01000001 11110 ..... ..... .....    @xxx
++xvaddwev_q_d     0111 01000001 11111 ..... ..... .....    @xxx
++xvaddwod_h_b     0111 01000010 00100 ..... ..... .....    @xxx
++xvaddwod_w_h     0111 01000010 00101 ..... ..... .....    @xxx
++xvaddwod_d_w     0111 01000010 00110 ..... ..... .....    @xxx
++xvaddwod_q_d     0111 01000010 00111 ..... ..... .....    @xxx
 +
-+xvhsubw_h_b      0111 01000101 01100 ..... ..... .....    @xxx
-+xvhsubw_w_h      0111 01000101 01101 ..... ..... .....    @xxx
-+xvhsubw_d_w      0111 01000101 01110 ..... ..... .....    @xxx
-+xvhsubw_q_d      0111 01000101 01111 ..... ..... .....    @xxx
-+xvhsubw_hu_bu    0111 01000101 10100 ..... ..... .....    @xxx
-+xvhsubw_wu_hu    0111 01000101 10101 ..... ..... .....    @xxx
-+xvhsubw_du_wu    0111 01000101 10110 ..... ..... .....    @xxx
-+xvhsubw_qu_du    0111 01000101 10111 ..... ..... .....    @xxx
++xvsubwev_h_b     0111 01000010 00000 ..... ..... .....    @xxx
++xvsubwev_w_h     0111 01000010 00001 ..... ..... .....    @xxx
++xvsubwev_d_w     0111 01000010 00010 ..... ..... .....    @xxx
++xvsubwev_q_d     0111 01000010 00011 ..... ..... .....    @xxx
++xvsubwod_h_b     0111 01000010 01000 ..... ..... .....    @xxx
++xvsubwod_w_h     0111 01000010 01001 ..... ..... .....    @xxx
++xvsubwod_d_w     0111 01000010 01010 ..... ..... .....    @xxx
++xvsubwod_q_d     0111 01000010 01011 ..... ..... .....    @xxx
++
++xvaddwev_h_bu    0111 01000010 11100 ..... ..... .....    @xxx
++xvaddwev_w_hu    0111 01000010 11101 ..... ..... .....    @xxx
++xvaddwev_d_wu    0111 01000010 11110 ..... ..... .....    @xxx
++xvaddwev_q_du    0111 01000010 11111 ..... ..... .....    @xxx
++xvaddwod_h_bu    0111 01000011 00100 ..... ..... .....    @xxx
++xvaddwod_w_hu    0111 01000011 00101 ..... ..... .....    @xxx
++xvaddwod_d_wu    0111 01000011 00110 ..... ..... .....    @xxx
++xvaddwod_q_du    0111 01000011 00111 ..... ..... .....    @xxx
++
++xvsubwev_h_bu    0111 01000011 00000 ..... ..... .....    @xxx
++xvsubwev_w_hu    0111 01000011 00001 ..... ..... .....    @xxx
++xvsubwev_d_wu    0111 01000011 00010 ..... ..... .....    @xxx
++xvsubwev_q_du    0111 01000011 00011 ..... ..... .....    @xxx
++xvsubwod_h_bu    0111 01000011 01000 ..... ..... .....    @xxx
++xvsubwod_w_hu    0111 01000011 01001 ..... ..... .....    @xxx
++xvsubwod_d_wu    0111 01000011 01010 ..... ..... .....    @xxx
++xvsubwod_q_du    0111 01000011 01011 ..... ..... .....    @xxx
++
++xvaddwev_h_bu_b  0111 01000011 11100 ..... ..... .....    @xxx
++xvaddwev_w_hu_h  0111 01000011 11101 ..... ..... .....    @xxx
++xvaddwev_d_wu_w  0111 01000011 11110 ..... ..... .....    @xxx
++xvaddwev_q_du_d  0111 01000011 11111 ..... ..... .....    @xxx
++xvaddwod_h_bu_b  0111 01000100 00000 ..... ..... .....    @xxx
++xvaddwod_w_hu_h  0111 01000100 00001 ..... ..... .....    @xxx
++xvaddwod_d_wu_w  0111 01000100 00010 ..... ..... .....    @xxx
++xvaddwod_q_du_d  0111 01000100 00011 ..... ..... .....    @xxx
 +
  xvreplgr2vr_b    0111 01101001 11110 00000 ..... .....    @xr
  xvreplgr2vr_h    0111 01101001 11110 00001 ..... .....    @xr
  xvreplgr2vr_w    0111 01101001 11110 00010 ..... .....    @xr
 diff --git a/target/loongarch/lasx_helper.c b/target/loongarch/lasx_helper.c
-index 1754790a3a..d86381ff8a 100644
+index d86381ff8a..8e830e1f3c 100644
 --- a/target/loongarch/lasx_helper.c
 +++ b/target/loongarch/lasx_helper.c
-@@ -4,3 +4,93 @@
-  *
-  * Copyright (c) 2023 Loongson Technology Corporation Limited
-  */
+@@ -94,3 +94,217 @@ void HELPER(xvhsubw_qu_du)(CPULoongArchState *env,
+     Xd->XQ(1) = int128_sub(int128_make64(Xj->UXD(3)),
+                            int128_make64(Xk->UXD(2)));
+ }
 +
-+#include "qemu/osdep.h"
-+#include "cpu.h"
-+#include "exec/exec-all.h"
-+#include "exec/helper-proto.h"
-+#include "internals.h"
-+#include "vec.h"
-+
-+#define XDO_ODD_EVEN(NAME, BIT, E1, E2, DO_OP)                       \
-+void HELPER(NAME)(CPULoongArchState *env,                            \
-+                  uint32_t xd, uint32_t xj, uint32_t xk)             \
-+{                                                                    \
-+    int i;                                                           \
-+    XReg *Xd = &(env->fpr[xd].xreg);                                 \
-+    XReg *Xj = &(env->fpr[xj].xreg);                                 \
-+    XReg *Xk = &(env->fpr[xk].xreg);                                 \
-+    typedef __typeof(Xd->E1(0)) TD;                                  \
-+                                                                     \
-+    for (i = 0; i < LASX_LEN / BIT; i++) {                           \
-+        Xd->E1(i) = DO_OP((TD)Xj->E2(2 * i + 1), (TD)Xk->E2(2 * i)); \
-+    }                                                                \
++#define XDO_EVEN(NAME, BIT, E1, E2, DO_OP)                       \
++void HELPER(NAME)(void *xd, void *xj, void *xk, uint32_t v)      \
++{                                                                \
++    int i;                                                       \
++    XReg *Xd = (XReg *)xd;                                       \
++    XReg *Xj = (XReg *)xj;                                       \
++    XReg *Xk = (XReg *)xk;                                       \
++    typedef __typeof(Xd->E1(0)) TD;                              \
++    for (i = 0; i < LASX_LEN / BIT; i++) {                       \
++        Xd->E1(i) = DO_OP((TD)Xj->E2(2 * i), (TD)Xk->E2(2 * i)); \
++    }                                                            \
 +}
 +
-+XDO_ODD_EVEN(xvhaddw_h_b, 16, XH, XB, DO_ADD)
-+XDO_ODD_EVEN(xvhaddw_w_h, 32, XW, XH, DO_ADD)
-+XDO_ODD_EVEN(xvhaddw_d_w, 64, XD, XW, DO_ADD)
++#define XDO_ODD(NAME, BIT, E1, E2, DO_OP)                                \
++void HELPER(NAME)(void *xd, void *xj, void *xk, uint32_t v)              \
++{                                                                        \
++    int i;                                                               \
++    XReg *Xd = (XReg *)xd;                                               \
++    XReg *Xj = (XReg *)xj;                                               \
++    XReg *Xk = (XReg *)xk;                                               \
++    typedef __typeof(Xd->E1(0)) TD;                                      \
++    for (i = 0; i < LASX_LEN / BIT; i++) {                               \
++        Xd->E1(i) = DO_OP((TD)Xj->E2(2 * i + 1), (TD)Xk->E2(2 * i + 1)); \
++    }                                                                    \
++}
 +
-+void HELPER(xvhaddw_q_d)(CPULoongArchState *env,
-+                         uint32_t xd, uint32_t xj, uint32_t xk)
++void HELPER(xvaddwev_q_d)(void *xd, void *xj, void *xk, uint32_t v)
 +{
-+    XReg *Xd = &(env->fpr[xd].xreg);
-+    XReg *Xj = &(env->fpr[xj].xreg);
-+    XReg *Xk = &(env->fpr[xk].xreg);
++    XReg *Xd = (XReg *)xd;
++    XReg *Xj = (XReg *)xj;
++    XReg *Xk = (XReg *)xk;
++
++    Xd->XQ(0) = int128_add(int128_makes64(Xj->XD(0)),
++                           int128_makes64(Xk->XD(0)));
++    Xd->XQ(1) = int128_add(int128_makes64(Xj->XD(2)),
++                           int128_makes64(Xk->XD(2)));
++}
++
++XDO_EVEN(xvaddwev_h_b, 16, XH, XB, DO_ADD)
++XDO_EVEN(xvaddwev_w_h, 32, XW, XH, DO_ADD)
++XDO_EVEN(xvaddwev_d_w, 64, XD, XW, DO_ADD)
++
++void HELPER(xvaddwod_q_d)(void *xd, void *xj, void *xk, uint32_t v)
++{
++    XReg *Xd = (XReg *)xd;
++    XReg *Xj = (XReg *)xj;
++    XReg *Xk = (XReg *)xk;
 +
 +    Xd->XQ(0) = int128_add(int128_makes64(Xj->XD(1)),
-+                           int128_makes64(Xk->XD(0)));
++                           int128_makes64(Xk->XD(1)));
 +    Xd->XQ(1) = int128_add(int128_makes64(Xj->XD(3)),
++                           int128_makes64(Xk->XD(3)));
++}
++
++XDO_ODD(xvaddwod_h_b, 16, XH, XB, DO_ADD)
++XDO_ODD(xvaddwod_w_h, 32, XW, XH, DO_ADD)
++XDO_ODD(xvaddwod_d_w, 64, XD, XW, DO_ADD)
++
++void HELPER(xvsubwev_q_d)(void *xd, void *xj, void *xk, uint32_t v)
++{
++    XReg *Xd = (XReg *)xd;
++    XReg *Xj = (XReg *)xj;
++    XReg *Xk = (XReg *)xk;
++
++    Xd->XQ(0) = int128_sub(int128_makes64(Xj->XD(0)),
++                           int128_makes64(Xk->XD(0)));
++    Xd->XQ(1) = int128_sub(int128_makes64(Xj->XD(2)),
 +                           int128_makes64(Xk->XD(2)));
 +}
 +
-+XDO_ODD_EVEN(xvhsubw_h_b, 16, XH, XB, DO_SUB)
-+XDO_ODD_EVEN(xvhsubw_w_h, 32, XW, XH, DO_SUB)
-+XDO_ODD_EVEN(xvhsubw_d_w, 64, XD, XW, DO_SUB)
++XDO_EVEN(xvsubwev_h_b, 16, XH, XB, DO_SUB)
++XDO_EVEN(xvsubwev_w_h, 32, XW, XH, DO_SUB)
++XDO_EVEN(xvsubwev_d_w, 64, XD, XW, DO_SUB)
 +
-+void HELPER(xvhsubw_q_d)(CPULoongArchState *env,
-+                         uint32_t xd, uint32_t xj, uint32_t xk)
++void HELPER(xvsubwod_q_d)(void *xd, void *xj, void *xk, uint32_t v)
 +{
-+    XReg *Xd = &(env->fpr[xd].xreg);
-+    XReg *Xj = &(env->fpr[xj].xreg);
-+    XReg *Xk = &(env->fpr[xk].xreg);
++    XReg *Xd = (XReg *)xd;
++    XReg *Xj = (XReg *)xj;
++    XReg *Xk = (XReg *)xk;
 +
 +    Xd->XQ(0) = int128_sub(int128_makes64(Xj->XD(1)),
-+                           int128_makes64(Xk->XD(0)));
++                           int128_makes64(Xk->XD(1)));
 +    Xd->XQ(1) = int128_sub(int128_makes64(Xj->XD(3)),
++                           int128_makes64(Xk->XD(3)));
++}
++
++XDO_ODD(xvsubwod_h_b, 16, XH, XB, DO_SUB)
++XDO_ODD(xvsubwod_w_h, 32, XW, XH, DO_SUB)
++XDO_ODD(xvsubwod_d_w, 64, XD, XW, DO_SUB)
++
++void HELPER(xvaddwev_q_du)(void *xd, void *xj, void *xk, uint32_t v)
++{
++    XReg *Xd = (XReg *)xd;
++    XReg *Xj = (XReg *)xj;
++    XReg *Xk = (XReg *)xk;
++
++    Xd->XQ(0) = int128_add(int128_make64(Xj->UXD(0)),
++                           int128_make64(Xk->UXD(0)));
++    Xd->XQ(1) = int128_add(int128_make64(Xj->UXD(2)),
++                           int128_make64(Xk->UXD(2)));
++}
++
++XDO_EVEN(xvaddwev_h_bu, 16, UXH, UXB, DO_ADD)
++XDO_EVEN(xvaddwev_w_hu, 32, UXW, UXH, DO_ADD)
++XDO_EVEN(xvaddwev_d_wu, 64, UXD, UXW, DO_ADD)
++
++void HELPER(xvaddwod_q_du)(void *xd, void *xj, void *xk, uint32_t v)
++{
++    XReg *Xd = (XReg *)xd;
++    XReg *Xj = (XReg *)xj;
++    XReg *Xk = (XReg *)xk;
++
++    Xd->XQ(0) = int128_add(int128_make64(Xj->UXD(1)),
++                           int128_make64(Xk->UXD(1)));
++    Xd->XQ(1) = int128_add(int128_make64(Xj->UXD(3)),
++                           int128_make64(Xk->UXD(3)));
++}
++
++XDO_ODD(xvaddwod_h_bu, 16, UXH, UXB, DO_ADD)
++XDO_ODD(xvaddwod_w_hu, 32, UXW, UXH, DO_ADD)
++XDO_ODD(xvaddwod_d_wu, 64, UXD, UXW, DO_ADD)
++
++void HELPER(xvsubwev_q_du)(void *xd, void *xj, void *xk, uint32_t v)
++{
++    XReg *Xd = (XReg *)xd;
++    XReg *Xj = (XReg *)xj;
++    XReg *Xk = (XReg *)xk;
++
++    Xd->XQ(0) = int128_sub(int128_make64(Xj->UXD(0)),
++                           int128_make64(Xk->UXD(0)));
++    Xd->XQ(1) = int128_sub(int128_make64(Xj->UXD(2)),
++                           int128_make64(Xk->UXD(2)));
++}
++
++XDO_EVEN(xvsubwev_h_bu, 16, UXH, UXB, DO_SUB)
++XDO_EVEN(xvsubwev_w_hu, 32, UXW, UXH, DO_SUB)
++XDO_EVEN(xvsubwev_d_wu, 64, UXD, UXW, DO_SUB)
++
++void HELPER(xvsubwod_q_du)(void *xd, void *xj, void *xk, uint32_t v)
++{
++    XReg *Xd = (XReg *)xd;
++    XReg *Xj = (XReg *)xj;
++    XReg *Xk = (XReg *)xk;
++
++    Xd->XQ(0) = int128_sub(int128_make64(Xj->UXD(1)),
++                           int128_make64(Xk->UXD(1)));
++    Xd->XQ(1) = int128_sub(int128_make64(Xj->UXD(3)),
++                           int128_make64(Xk->UXD(3)));
++}
++
++XDO_ODD(xvsubwod_h_bu, 16, UXH, UXB, DO_SUB)
++XDO_ODD(xvsubwod_w_hu, 32, UXW, UXH, DO_SUB)
++XDO_ODD(xvsubwod_d_wu, 64, UXD, UXW, DO_SUB)
++
++#define XDO_EVEN_U_S(NAME, BIT, ES1, EU1, ES2, EU2, DO_OP)            \
++void HELPER(NAME)(void *xd, void *xj, void *xk, uint32_t v)           \
++{                                                                     \
++    int i;                                                            \
++    XReg *Xd = (XReg *)xd;                                            \
++    XReg *Xj = (XReg *)xj;                                            \
++    XReg *Xk = (XReg *)xk;                                            \
++    typedef __typeof(Xd->ES1(0)) TDS;                                 \
++    typedef __typeof(Xd->EU1(0)) TDU;                                 \
++    for (i = 0; i < LASX_LEN / BIT; i++) {                            \
++        Xd->ES1(i) = DO_OP((TDU)Xj->EU2(2 * i), (TDS)Xk->ES2(2 * i)); \
++    }                                                                 \
++}
++
++#define XDO_ODD_U_S(NAME, BIT, ES1, EU1, ES2, EU2, DO_OP)                     \
++void HELPER(NAME)(void *xd, void *xj, void *xk, uint32_t v)                   \
++{                                                                             \
++    int i;                                                                    \
++    XReg *Xd = (XReg *)xd;                                                    \
++    XReg *Xj = (XReg *)xj;                                                    \
++    XReg *Xk = (XReg *)xk;                                                    \
++    typedef __typeof(Xd->ES1(0)) TDS;                                         \
++    typedef __typeof(Xd->EU1(0)) TDU;                                         \
++    for (i = 0; i < LSX_LEN / BIT; i++) {                                     \
++        Xd->ES1(i) = DO_OP((TDU)Xj->EU2(2 * i + 1), (TDS)Xk->ES2(2 * i + 1)); \
++    }                                                                         \
++}
++
++void HELPER(xvaddwev_q_du_d)(void *xd, void *xj, void *xk, uint32_t v)
++{
++    XReg *Xd = (XReg *)xd;
++    XReg *Xj = (XReg *)xj;
++    XReg *Xk = (XReg *)xk;
++
++    Xd->XQ(0) = int128_add(int128_make64(Xj->UXD(0)),
++                           int128_makes64(Xk->XD(0)));
++    Xd->XQ(1) = int128_add(int128_make64(Xj->UXD(2)),
 +                           int128_makes64(Xk->XD(2)));
 +}
 +
-+XDO_ODD_EVEN(xvhaddw_hu_bu, 16, UXH, UXB, DO_ADD)
-+XDO_ODD_EVEN(xvhaddw_wu_hu, 32, UXW, UXH, DO_ADD)
-+XDO_ODD_EVEN(xvhaddw_du_wu, 64, UXD, UXW, DO_ADD)
++XDO_EVEN_U_S(xvaddwev_h_bu_b, 16, XH, UXH, XB, UXB, DO_ADD)
++XDO_EVEN_U_S(xvaddwev_w_hu_h, 32, XW, UXW, XH, UXH, DO_ADD)
++XDO_EVEN_U_S(xvaddwev_d_wu_w, 64, XD, UXD, XW, UXW, DO_ADD)
 +
-+void HELPER(xvhaddw_qu_du)(CPULoongArchState *env,
-+                           uint32_t xd, uint32_t xj, uint32_t xk)
++void HELPER(xvaddwod_q_du_d)(void *xd, void *xj, void *xk, uint32_t v)
 +{
-+    XReg *Xd = &(env->fpr[xd].xreg);
-+    XReg *Xj = &(env->fpr[xj].xreg);
-+    XReg *Xk = &(env->fpr[xk].xreg);
++    XReg *Xd = (XReg *)xd;
++    XReg *Xj = (XReg *)xj;
++    XReg *Xk = (XReg *)xk;
 +
 +    Xd->XQ(0) = int128_add(int128_make64(Xj->UXD(1)),
-+                           int128_make64(Xk->UXD(0)));
++                           int128_makes64(Xk->XD(1)));
 +    Xd->XQ(1) = int128_add(int128_make64(Xj->UXD(3)),
-+                           int128_make64(Xk->UXD(2)));
++                           int128_makes64(Xk->XD(3)));
 +}
 +
-+XDO_ODD_EVEN(xvhsubw_hu_bu, 16, UXH, UXB, DO_SUB)
-+XDO_ODD_EVEN(xvhsubw_wu_hu, 32, UXW, UXH, DO_SUB)
-+XDO_ODD_EVEN(xvhsubw_du_wu, 64, UXD, UXW, DO_SUB)
-+
-+void HELPER(xvhsubw_qu_du)(CPULoongArchState *env,
-+                           uint32_t xd, uint32_t xj, uint32_t xk)
-+{
-+    XReg *Xd = &(env->fpr[xd].xreg);
-+    XReg *Xj = &(env->fpr[xj].xreg);
-+    XReg *Xk = &(env->fpr[xk].xreg);
-+
-+    Xd->XQ(0) = int128_sub(int128_make64(Xj->UXD(1)),
-+                           int128_make64(Xk->UXD(0)));
-+    Xd->XQ(1) = int128_sub(int128_make64(Xj->UXD(3)),
-+                           int128_make64(Xk->UXD(2)));
-+}
-diff --git a/target/loongarch/lsx_helper.c b/target/loongarch/lsx_helper.c
-index b231a2798b..d79a65dfe2 100644
---- a/target/loongarch/lsx_helper.c
-+++ b/target/loongarch/lsx_helper.c
-@@ -14,9 +14,6 @@
- #include "tcg/tcg.h"
- #include "vec.h"
- 
--#define DO_ADD(a, b)  (a + b)
--#define DO_SUB(a, b)  (a - b)
--
- #define DO_ODD_EVEN(NAME, BIT, E1, E2, DO_OP)                        \
- void HELPER(NAME)(CPULoongArchState *env,                            \
-                   uint32_t vd, uint32_t vj, uint32_t vk)             \
-diff --git a/target/loongarch/vec.h b/target/loongarch/vec.h
-index a89cdb8d45..7e71035e50 100644
---- a/target/loongarch/vec.h
-+++ b/target/loongarch/vec.h
-@@ -48,4 +48,7 @@
- #define XQ(x)  XQ[x]
- #endif /* HOST_BIG_ENDIAN */
- 
-+#define DO_ADD(a, b)  (a + b)
-+#define DO_SUB(a, b)  (a - b)
-+
- #endif /* LOONGARCH_VEC_H */
++XDO_ODD_U_S(xvaddwod_h_bu_b, 16, XH, UXH, XB, UXB, DO_ADD)
++XDO_ODD_U_S(xvaddwod_w_hu_h, 32, XW, UXW, XH, UXH, DO_ADD)
++XDO_ODD_U_S(xvaddwod_d_wu_w, 64, XD, UXD, XW, UXW, DO_ADD)
 -- 
 2.39.1
 
