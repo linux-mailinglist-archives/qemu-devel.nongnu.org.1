@@ -2,77 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6728173649B
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 09:32:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 701CC7364D1
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 09:35:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBVqk-0007oM-Qo; Tue, 20 Jun 2023 03:32:26 -0400
+	id 1qBVtb-0000cP-Hq; Tue, 20 Jun 2023 03:35:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qBVqa-0007iC-Rw
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 03:32:16 -0400
-Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
+ id 1qBVtK-0000a1-O2
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 03:35:10 -0400
+Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qBVqY-0000ig-Tm
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 03:32:16 -0400
-Received: by mail-ej1-x632.google.com with SMTP id
- a640c23a62f3a-982a88ca610so519586466b.2
- for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 00:32:14 -0700 (PDT)
+ id 1qBVtG-00015Q-Gc
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 03:35:06 -0400
+Received: by mail-ej1-x629.google.com with SMTP id
+ a640c23a62f3a-9881b9d8cbdso510349466b.1
+ for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 00:34:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687246333; x=1689838333;
+ d=linaro.org; s=google; t=1687246495; x=1689838495;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=OXoncybMt8iiMhAE7YB+rTdIxHNRU8KW6uRKJncDUfA=;
- b=MKf1MBjTN7if5FMC344TLhZwehHtyGjWjxqINpXB9Aeqke2oLOCQjoB0RaHdJ4E5NV
- SQVarXFVQbtdbIhDW1YQJ+tl1sxIMDQcg/ZrRLxQfCwwWxQC2d1IqW8mvud8a2pgfZgG
- Zx6egfo9jOQKlQNvJgn9Q02dvQMdh0memxTiLmkeES7XOGnbZpP+rQBf3NdbWRgP9PbW
- NGf7PTRUXwD+ilpqfg2uM7h2aGV+P69iA+6l4GWUqtYVyXflQjDG059ozi2eDz6IMSoT
- SXXTiaw3dZ1ZS1xtBMKhQ0ctg7j6iixrnz7lnnQRATuxPRMOKCH9xBI1cQGfoYyKZQaO
- 9p3A==
+ bh=xN94Poz986YoqV8mAwwk+tgACOj5wxmAgpq2OTlPDyg=;
+ b=RKkPqEHDH/sxS1LqTIkGKW89E1xd4SvHLwylBOR7H7VxmZLK2EVDM+NCeHX5qpDU7j
+ rnOKImZ7aXskIQAatJB8F4BudXbE5rSlJx/TQPCLskyDc168BeBW9KbL4EtROaTau1KZ
+ 0QPtO+EZmR7NBNbhz5Aed9O8VXSCSSyQQiMAND+ADStp5GzfoIBd3rt1cXzqYtL0HTsW
+ b80AFHM/eRevp1am3wnZ7hfAgi+bUbSOeih+FMnrXCT6gc1jEMjlKwWpVelYNJuQlvEW
+ lq5CiihkdcuI40VuphkXKzNH0SZ3laSpToNJmd5RgsK9OoOplxkY/hm1OtJ7Ytzr6iay
+ udbw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687246333; x=1689838333;
+ d=1e100.net; s=20221208; t=1687246495; x=1689838495;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=OXoncybMt8iiMhAE7YB+rTdIxHNRU8KW6uRKJncDUfA=;
- b=R2hcd3FP03qEVg9sAfZ1wbWtFW2+BxfmyysL7Li4kIqfitdTdqIyp3gBpGtEX8jfF0
- HYjCWrB+AbSoaXh9xIW9VHaVIPYswEqlvot3UBcU/f4t8F1KNQ9fUty9bU4ma2ACnAv8
- mISw25gfbuujFApx72qOCZMSD1TUUjc6OBAT6z6+ykrKB6v1iMkGvhii0fJnmvDtmMTl
- SjCWA+vUQPTzg9rdnBVHigo8JTGQqpRS3SJoEc6y4KcLVOypA9IuWFvOyxDSgaYDJZ5X
- 8wT2CNR6R8GTGvXg6ynZShTBNZO/epRSDHAoXkTla50uxHGo+eW+BNklAzW927B9bHzu
- 8Nvw==
-X-Gm-Message-State: AC+VfDwC/Cwh/k+iYg7QRXMXbIcFuKQUa7eNxkyFuhx9tDMr4Dy7C6XU
- 0/Qoe7Vl8i+aMB53xe1geuTCcA==
-X-Google-Smtp-Source: ACHHUZ788olubTiwP7HbBqTa2tiT1ITZ8uAHBoZ3UAHfUrhsNOU1GPlDi3ezqxkZxQonrAqmEd1ZXA==
-X-Received: by 2002:a17:907:6ea8:b0:974:1f03:fcd1 with SMTP id
- sh40-20020a1709076ea800b009741f03fcd1mr11146654ejc.3.1687246333264; 
- Tue, 20 Jun 2023 00:32:13 -0700 (PDT)
+ bh=xN94Poz986YoqV8mAwwk+tgACOj5wxmAgpq2OTlPDyg=;
+ b=lSlvNL6ivC+PwhXz2gUVSgqfFNRNEToxjg+lvtDB3F5LL6hNDC9d3pm0oB1Ay+kRs8
+ R28OJzSaAjTcDHv3pscMDPNgJzq5/pqoC9s+kDQNxnqrP1Yf+oZHK/yuiSIHrZr+x+M4
+ QhNg97B59aWW4tU5WXcIbob4KQM1UqmagZAqHuwXsGutRRuLhbi9xKqrDEtVyiHBDrgr
+ LzHmRvC8yRhkWDdlSB43eaS1vTYK14k3Lgn3sNggkbZ1EmTxtzmk6RJkO0mwi1G/z+a9
+ yTHhRubpdwv6rm74owIIReY8llKshQdmS7u/PjCrKbV7fgX2PtzWeMRYyjIMHXrCsClT
+ tmGA==
+X-Gm-Message-State: AC+VfDyYwOsoMckFvKeKUUTG9ioB3v/h4RJuieSb2Y/FWCkmXlnA9sOI
+ eQomTJxhg8QPTWvAwoZuvLa8cA==
+X-Google-Smtp-Source: ACHHUZ46cCzQY31xzlXxuNDiRRRhNJuIDacOp3brFCfilRWfNEkMbyqfU5MGHPOD9mp9Fh7qcMKldg==
+X-Received: by 2002:a17:907:944c:b0:953:834d:899b with SMTP id
+ dl12-20020a170907944c00b00953834d899bmr15750148ejc.29.1687246494769; 
+ Tue, 20 Jun 2023 00:34:54 -0700 (PDT)
 Received: from [192.168.69.129] ([176.176.183.29])
  by smtp.gmail.com with ESMTPSA id
- x17-20020a170906711100b009884f015a44sm840311ejj.49.2023.06.20.00.32.12
+ w23-20020a170906481700b00987258cf1f7sm844238ejq.154.2023.06.20.00.34.54
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 20 Jun 2023 00:32:13 -0700 (PDT)
-Message-ID: <910efeb9-78c2-659c-3101-0e7dc3770ef5@linaro.org>
-Date: Tue, 20 Jun 2023 09:32:10 +0200
+ Tue, 20 Jun 2023 00:34:54 -0700 (PDT)
+Message-ID: <d0641e1a-4461-71b1-c108-d226e1885906@linaro.org>
+Date: Tue, 20 Jun 2023 09:34:52 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PATCH qemu 2/2] gdbstub: Fixed gdb_open() does not work issue
- while an extra 'x' is being added when converting '%s' to a pointer
+Subject: Re: [PATCH] tests/plugin: Remove duplicate insn log from libinsn.so
 Content-Language: en-US
-To: ~foxes <foxes687@andestech.com>, qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>
-References: <168723238949.9156.9853906656288727865-1@git.sr.ht>
+To: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org
+References: <20230610171959.928544-1-richard.henderson@linaro.org>
+ <87ttvee4tf.fsf@linaro.org> <ba4c99fc-7b3d-3969-260c-96c7c244cc46@linaro.org>
+ <1199d248-8aee-4e93-95cd-ad8847ed2255@linaro.org> <87mt0vjqxi.fsf@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <168723238949.9156.9853906656288727865-1@git.sr.ht>
+In-Reply-To: <87mt0vjqxi.fsf@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::632;
- envelope-from=richard.henderson@linaro.org; helo=mail-ej1-x632.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::629;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ej1-x629.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -95,29 +96,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/8/23 11:06, ~foxes wrote:
-> From: Foxes Hung <foxes687@andestech.com>
+On 6/19/23 19:34, Alex Bennée wrote:
 > 
-> Signed-off-by: Foxes Hung <foxes687@andestech.com>
-> ---
->   gdbstub/syscalls.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+> Richard Henderson <richard.henderson@linaro.org> writes:
 > 
-> diff --git a/gdbstub/syscalls.c b/gdbstub/syscalls.c
-> index 02e3a8f74c..4c6b5f728b 100644
-> --- a/gdbstub/syscalls.c
-> +++ b/gdbstub/syscalls.c
-> @@ -126,7 +126,7 @@ void gdb_do_syscall(gdb_syscall_complete_cb cb, const char *fmt, ...)
->               case 's':
->                   i64 = va_arg(va, uint64_t);
->                   i32 = va_arg(va, uint32_t);
-> -                p += snprintf(p, p_end - p, "%" PRIx64 "/%x" PRIx32, i64, i32);
-> +                p += snprintf(p, p_end - p, "%" PRIx64 "/%" PRIx32, i64, i32);
->                   break;
->               default:
->               bad_format:
+>> On 6/12/23 04:50, Richard Henderson wrote:
+>>> On 6/11/23 02:14, Alex Bennée wrote:
+>>>>
+>>>> Richard Henderson <richard.henderson@linaro.org> writes:
+>>>>
+>>>>> This is a perfectly natural occurrence for x86 "rep movb",
+>>>>> where the "rep" prefix forms a counted loop of the one insn.
+>>>>>
+>>>>> During the tests/tcg/multiarch/memory test, this logging is
+>>>>> triggered over 350000 times.  Within the context of cross-i386-tci
+>>>>> build, which is already slow by nature, the logging is sufficient
+>>>>> to push the test into timeout.
+>>>>
+>>>> How does this get triggered because I added these:
+>>>>
+>>>> # non-inline runs will trigger the duplicate instruction heuristics in libinsn.so
+>>>> run-plugin-%-with-libinsn.so:
+>>>>      $(call run-test, $@, \
+>>>>        $(QEMU) -monitor none -display none \
+>>>>            -chardev file$(COMMA)path=$@.out$(COMMA)id=output \
+>>>>                     -plugin ../../plugin/libinsn.so$(COMMA)inline=on \
+>>>>                -d plugin -D $*-with-libinsn.so.pout \
+>>>>            $(QEMU_OPTS) $*)
+>>>>
+>>>> to prevent the callback versions from being called for x86. The original
+>>>> intent of the check was to detect failures due to cpu_io_recompile, see
+>>>> e025d799af (tests/plugin: expand insn test to detect duplicate instructions)
+>>> I have no idea how, but it's happening.
+>>>
+>>>>> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+>>>>> ---
+>>>>> Irritatingly, it doesn't timeout locally, so I used staging to double-check:
+>>>>>
+>>>>> Fail: https://gitlab.com/qemu-project/qemu/-/jobs/4450754282#L5062
+>>>>> Pass: https://gitlab.com/qemu-project/qemu/-/jobs/4450927108
+>>> Note that in the pass case, we don't even log that the test ran.
+>>
+>> Any further thoughts on this?  Otherwise I'll merge it to get rid of
+>> the cross-i386-tci failure...
+>>
+>>
+>> r~
+> 
+> I'm happy to drop the feature from the plugin but the clean-up also
+> needs to be applied to the run-plugin-%-with-libinsn.so: rules for i386
+> and x86_64.
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Pardon?  I don't know what you mean wrt changing the makefile.
+
 
 r~
 
