@@ -2,89 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4FAF737029
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 17:18:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B881737035
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 17:19:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBd6U-0003Ww-7B; Tue, 20 Jun 2023 11:17:10 -0400
+	id 1qBd6R-0003VI-N6; Tue, 20 Jun 2023 11:17:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qBd6S-0003WI-Jp
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 11:17:08 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1qBd6N-0003T2-Ke
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 11:17:03 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qBd6R-0007Sb-6b
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 11:17:08 -0400
+ id 1qBd6M-0007RP-7P
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 11:17:03 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687274222;
+ s=mimecast20190719; t=1687274221;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=c0HhDiWb58uRb84/9vQ3z2FaN86twOISs5asaxbq5Go=;
- b=S+lQNRyxUWMykdAn8tVf1SeMeqo0xx7Bop1s0roEmyNRXpJYC8zPTLiCI20N6eIa+xhHu+
- nE9ud/Odr+PZ/LQaNyTjMmCx0MkbZs0PthpuHItM7fAr/E/ksOcQEBjWhYsd1H9faGTJod
- x80G3I+WJlhFS846tvO2IVuxWWuCwZ8=
+ bh=HrX4qvW6uvMTDaXl0T3F6y1r/ZtScSoh9oMeF9M0nyg=;
+ b=H78nZVauaqjlgaMni/iQC98ecMNmH6wbcIGbMiarGQ6ZfIJRvJ8ALu60Y81dAolef5Ez+A
+ Vs99JavCxonWvIbSIAj3DTHdeiqF035+seVvxBPHDgRaSnTzucqKnMDndkf8+kWN+PJDA1
+ FajMkKS7G09VQiOtPJRWOAzp9X3HlKI=
 Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
  [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-212-Py_C59JpMMuFzaKOe8sIoA-1; Tue, 20 Jun 2023 11:16:56 -0400
-X-MC-Unique: Py_C59JpMMuFzaKOe8sIoA-1
+ us-mta-461-we1LHgIUNtuFjE20Trr-aA-1; Tue, 20 Jun 2023 11:16:51 -0400
+X-MC-Unique: we1LHgIUNtuFjE20Trr-aA-1
 Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-94a35b0d4ceso286802766b.3
- for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 08:16:51 -0700 (PDT)
+ a640c23a62f3a-987accb96dbso232445966b.2
+ for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 08:16:50 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687274207; x=1689866207;
+ d=1e100.net; s=20221208; t=1687274209; x=1689866209;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=c0HhDiWb58uRb84/9vQ3z2FaN86twOISs5asaxbq5Go=;
- b=QW9yWLZP3m1rm8XtzMlJ6yuMCoDpfTazvdMp4+/IsoZgmydrEDNHi4N5V9gihkzgle
- +jUhwtYks0/7cRSEgkbo4ogk30IZZDqPcerjr6Q64STV7ReA7ThNlNW2w5So+a53va1y
- iHGiuoE9lWmaHS98pyxxdfpU1UtrvJyH9hQX76cJEvR7Gkysf3BQZ+MQbArM6sye11DE
- 5FdIZosKgnyV/Rlgk8/04ij3yUVuvPahlfoEmUlhUms2PeK+Mnk2Yy6fkHCAdE5d/cdk
- NKcXw1jFMoY/xfSrvZxakrl8fln1c8nIi9mp7OnSgqbnzN9EeWQqZaqgpqLCe2qM+Mdd
- WOgQ==
-X-Gm-Message-State: AC+VfDxt7wY+lqrz3dpD+O+/8wE2YzyfE4ivzEce5GumAJA9foE9zXCV
- qfLEBcJ3V/sgZbv4/Z82t86ReuiH59DCPCvWv5DuAz9PxXXpXo6FZdYhaiO1XuZrwiIgwfUeyvy
- xwKpujJuUfA3MmmOIDp6aVM709GuQPiEG+RQYx3pEYV0/ILjH0P+tRym0DcXbARQ/tXl+4pDqMF
- A=
-X-Received: by 2002:a17:907:9623:b0:988:9a65:eae6 with SMTP id
- gb35-20020a170907962300b009889a65eae6mr6016635ejc.38.1687274206969; 
- Tue, 20 Jun 2023 08:16:46 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6cNBXaFy1AGxGcyiME9jHSa4CXTCLvF+vUbGuQdiJuBYMKtOJTqWOuUUIPV0Wvxzpi6NxguA==
-X-Received: by 2002:a17:907:9623:b0:988:9a65:eae6 with SMTP id
- gb35-20020a170907962300b009889a65eae6mr6016620ejc.38.1687274206694; 
- Tue, 20 Jun 2023 08:16:46 -0700 (PDT)
+ bh=HrX4qvW6uvMTDaXl0T3F6y1r/ZtScSoh9oMeF9M0nyg=;
+ b=FLQZL6/Vktj95GvC4MYo7ZMkr3bkncLu77UrN0bIzZCXBIzTyTRviFarguNTqhO6zs
+ N9hxfXol925whJb4NDSLPO+GIugtdT7q422ROohCeLIDycL2gKSOSbpeMlTxSmEv7jom
+ kxgTRuVxV01rutKwRE+PDnfdZJWqIy3F9J7bajZwTOkTnBGPWk+CJL7jQKWR6upbhJIv
+ jR6h67b9/PaEDo42zlBXCL1z2VoEDK+Kq4M/0HFO+Tg7wqjfTb9R2klJz0Yv6mvDMAaA
+ huceMWoNWRrwWQM80wH7Y0wYYbfjVmxSy6qsz7zO8IEp0x/+AmA7IU0/BfwISKkzQXRe
+ eaig==
+X-Gm-Message-State: AC+VfDyBy+kdso49DQjVbQatWOUfahEIPHxEVUgvlmiQfMTkFfM0Np+D
+ vqhGC9Hv5tOfglOlBwPXm//sbWh9uulzJXnUYuACa7dbq+LOR04dzfU0Pw2aJC9xh/sVuiDHVCa
+ 6Ux4EMwXMfyHooHfjh/49eCZtm8DprMXfc8JlPQitI/d7U89lgNa4LbPfDGeYkYhn9/3FP9trDp
+ E=
+X-Received: by 2002:a17:907:971f:b0:989:2264:fa86 with SMTP id
+ jg31-20020a170907971f00b009892264fa86mr2136715ejc.17.1687274209460; 
+ Tue, 20 Jun 2023 08:16:49 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7ILzAhfor91F9uq77qNWYFmEBErlGXIdMgErIiKueNoch4idMSeMW5IgzoGJlKQXad6fSl+g==
+X-Received: by 2002:a17:907:971f:b0:989:2264:fa86 with SMTP id
+ jg31-20020a170907971f00b009892264fa86mr2136698ejc.17.1687274209121; 
+ Tue, 20 Jun 2023 08:16:49 -0700 (PDT)
 Received: from [192.168.1.72] ([2001:b07:add:ec09:c399:bc87:7b6c:fb2a])
  by smtp.gmail.com with ESMTPSA id
- n19-20020a17090625d300b009890e402a6bsm1596903ejb.221.2023.06.20.08.16.45
+ o19-20020a170906359300b009895af2580asm423517ejb.36.2023.06.20.08.16.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 20 Jun 2023 08:16:46 -0700 (PDT)
+ Tue, 20 Jun 2023 08:16:48 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org
-Subject: [PATCH v2 06/10] target/i386: Intel only supports SYSCALL in long mode
-Date: Tue, 20 Jun 2023 17:16:30 +0200
-Message-Id: <20230620151634.21053-7-pbonzini@redhat.com>
+Subject: [PATCH v2 07/10] target/i386: sysret and sysexit are privileged
+Date: Tue, 20 Jun 2023 17:16:31 +0200
+Message-Id: <20230620151634.21053-8-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230620151634.21053-1-pbonzini@redhat.com>
 References: <20230620151634.21053-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -103,41 +102,31 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/cpu.c           | 4 ++++
- target/i386/tcg/translate.c | 5 ++++-
- 2 files changed, 8 insertions(+), 1 deletion(-)
+ target/i386/tcg/translate.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 695e01582bf..978d24b5ec7 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -6238,6 +6238,10 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-                 *ecx |= 1 << 1;    /* CmpLegacy bit */
-             }
-         }
-+        if (tcg_enabled() && env->cpuid_vendor1 == CPUID_VENDOR_INTEL_1 &&
-+            !(env->hflags & HF_LMA_MASK)) {
-+            *edx &= ~CPUID_EXT2_SYSCALL;
-+        }
-         break;
-     case 0x80000002:
-     case 0x80000003:
 diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
-index 89df7bb528a..9aec7ec8288 100644
+index 9aec7ec8288..c58f5f24ab3 100644
 --- a/target/i386/tcg/translate.c
 +++ b/target/i386/tcg/translate.c
-@@ -5684,7 +5684,10 @@ static bool disas_insn(DisasContext *s, CPUState *cpu)
+@@ -5675,7 +5675,7 @@ static bool disas_insn(DisasContext *s, CPUState *cpu)
+         /* For Intel SYSEXIT is valid on 64-bit */
+         if (CODE64(s) && env->cpuid_vendor1 != CPUID_VENDOR_INTEL_1)
+             goto illegal_op;
+-        if (!PE(s)) {
++        if (!PE(s) || CPL(s) != 0) {
+             gen_exception_gpf(s);
+         } else {
+             gen_helper_sysexit(cpu_env, tcg_constant_i32(dflag - 1));
+@@ -5697,7 +5697,7 @@ static bool disas_insn(DisasContext *s, CPUState *cpu)
+         gen_eob_worker(s, false, true);
          break;
- #ifdef TARGET_X86_64
-     case 0x105: /* syscall */
--        /* XXX: is it usable in real mode ? */
-+        /* For Intel SYSCALL is only valid in long mode */
-+        if (!LMA(s) && env->cpuid_vendor1 == CPUID_VENDOR_INTEL_1) {
-+            goto illegal_op;
-+        }
-         gen_update_cc_op(s);
-         gen_update_eip_cur(s);
-         gen_helper_syscall(cpu_env, cur_insn_len_i32(s));
+     case 0x107: /* sysret */
+-        if (!PE(s)) {
++        if (!PE(s) || CPL(s) != 0) {
+             gen_exception_gpf(s);
+         } else {
+             gen_helper_sysret(cpu_env, tcg_constant_i32(dflag - 1));
 -- 
 2.40.1
 
