@@ -2,87 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40FA0736D5B
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 15:28:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 81F12736D95
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 15:42:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBbOn-0008Ft-5E; Tue, 20 Jun 2023 09:27:58 -0400
+	id 1qBbbV-0003I8-9D; Tue, 20 Jun 2023 09:41:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qBbOU-0008A9-EQ
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 09:27:41 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qBbbO-0003FR-99
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 09:40:58 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qBbOS-0004ZM-LK
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 09:27:38 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qBbbM-0000TI-Mk
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 09:40:58 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687267654;
+ s=mimecast20190719; t=1687268455;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=C8Ij+HkW/GZRCSCj9HXfBsGFl742i2Hi41Ktjb65h/4=;
- b=VbMsKNHChS0m4Kj/BLQOnh5//CenoRTTKuKEeq0K0qK2frolRAUoOTnFeXhNT1TNT1yb+S
- os9EzdYkf1klyCtp8jWBDWspwXHvitfeKIAqBTyH3FWPeusyvlAt1XUjGUr1bL01ROOHvx
- 7gpPXSk5mJUToTrYGbaq1sIKMJPJrtA=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=tC3qdFtTdeycT8afpwZwMdQp6ocXNX/FZs91WkGcpJE=;
+ b=Ut9ruH2XESmw+uqxwbtiYYRF3WM0zYBs3Fsf46Sa8a5c8bPq6MPlpoprrMqKOqGgxrIP3P
+ noJ31Wf0D3Q3M2iTBkTg2Y46eCiR6PmwA42BZdK4Z9bfXRWyZ6mTC01YRSUcml4oHudVp+
+ LlNLvl3xyf5bJtpw/o2zZ8/QGjdrlBk=
+Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
+ [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-17-nEW6OiJ0PiqKX0QgL9XCzQ-1; Tue, 20 Jun 2023 09:27:32 -0400
-X-MC-Unique: nEW6OiJ0PiqKX0QgL9XCzQ-1
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-311292a0fe9so2214545f8f.3
- for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 06:27:31 -0700 (PDT)
+ us-mta-331-pBNcVTXcOWeZje2iMVM__w-1; Tue, 20 Jun 2023 09:40:53 -0400
+X-MC-Unique: pBNcVTXcOWeZje2iMVM__w-1
+Received: by mail-lf1-f70.google.com with SMTP id
+ 2adb3069b0e04-4f3932e595dso3235821e87.1
+ for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 06:40:47 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687267650; x=1689859650;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=C8Ij+HkW/GZRCSCj9HXfBsGFl742i2Hi41Ktjb65h/4=;
- b=Voo72HcPPxfpdGWkbfb3+HLW3oB3WvaDWETg7ike5zj65z3PJnyGR/k50PTM+ZWuh6
- jkvDfHcHJgBXJeryigD7g3+YKOjPE7mVqKzhbIB/wypiMhK6IcsFxhoMqKHmYsIfz0Qb
- zX9jm9K3FgetTxCdNtodHWx1MAKtwh1sNHrcSl5DJbeqkbJPd9p1rXQzTsqx4JnIM+Ut
- glG2dFoTpLJEEjyXCPVgEvlfjW97/kLQftTBHMM2G5XO4jHMsgFV5NfPA7ur5E1EdaVa
- Q2uat669HBWxFl6nghYyOE5xMSZbejRWGc4xvYkp7mQj9Ph0knAMuu4Gg4nY3MO9+VOE
- p0tQ==
-X-Gm-Message-State: AC+VfDzTHegK6kAd4jlJOAtNRRuoFPnhK43Mz1t4ToBhcWxBj3OVwXZZ
- boWA6x5FE9wdLSMIrHntdO853jBhcCZu7QA1gN/Lj/Yo/Dd2zwIEiQZ1rUG4SzwmWDtg6YLr9wn
- gDCe4lchfKQKNGkTsQwHKB9J8rg==
-X-Received: by 2002:a5d:5608:0:b0:30e:3f55:ebc9 with SMTP id
- l8-20020a5d5608000000b0030e3f55ebc9mr11103542wrv.13.1687267650456; 
- Tue, 20 Jun 2023 06:27:30 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5lCNbOP8H0vmrbdDS19L/auusG6pNjnpQnpZ7KffDx/p3uwznOyacEWylXofp/1RqWDQM+Ug==
-X-Received: by 2002:a5d:5608:0:b0:30e:3f55:ebc9 with SMTP id
- l8-20020a5d5608000000b0030e3f55ebc9mr11103528wrv.13.1687267650126; 
- Tue, 20 Jun 2023 06:27:30 -0700 (PDT)
-Received: from redhat.com ([2.52.15.156]) by smtp.gmail.com with ESMTPSA id
- y7-20020a1c4b07000000b003f17848673fsm2343715wma.27.2023.06.20.06.27.28
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 20 Jun 2023 06:27:29 -0700 (PDT)
-Date: Tue, 20 Jun 2023 09:27:26 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: BALATON Zoltan <balaton@eik.bme.hu>
-Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, qemu-devel@nongnu.org,
- Igor Mammedov <imammedo@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH v2] hw/acpi: Fix PM control register access
-Message-ID: <20230620092639-mutt-send-email-mst@kernel.org>
-References: <20230607200125.A9988746377@zero.eik.bme.hu>
- <c080f8f6-b1d4-4ffb-7fcb-f29c7ddaf980@ilande.co.uk>
- <20230608111241-mutt-send-email-mst@kernel.org>
- <a37ca4bf-ad22-9086-b3a8-3c0d4f55da27@eik.bme.hu>
+ d=1e100.net; s=20221208; t=1687268447; x=1689860447;
+ h=content-transfer-encoding:in-reply-to:organization:from:references
+ :cc:to:content-language:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=tC3qdFtTdeycT8afpwZwMdQp6ocXNX/FZs91WkGcpJE=;
+ b=DOiKFB+BSxWDIIdkchb8eUxYqbbG/yCSg5p8gYBsYutbBkPBnoyvMiQ6+D6t7YHkDR
+ yU0WpDBjQuPUmatla2ZvJ4anGRO/ofkOrMhTJ1T0rwT7zSj1sAZVkcNVTC0NnlhdMpAN
+ yZkIZLf/nKAcbi4m5OsmTk236vROtegxhG0UwpSZ5gFO1qbXxlTpHi4TAg4It3cmTRsW
+ DZCawdsmNKPyr5ivMjPJ4lOzz/xoXxFrkHAvyeZavBZTAyAzjlX7mhTD5iJgh+14IYR9
+ 2s3fvA3hqVlu8m4srD9jrr+zfJR+j0SJbnn0bwRqpGJmnOOTXF8yfIF1+w7NELeJRdxJ
+ bVkA==
+X-Gm-Message-State: AC+VfDzUlYmkL3yd6xdSrbq6jqBpKTYnuXRnvpTZzoZkKyPe8jx4DVeo
+ k8XYNJIY/Gv+6oX28gnG1cr+PAprxYhGtsdploYy98SbQfsLMCv3P1RX5g6wDuK+OvnaWdrDTkF
+ 7mVSVx+MRBvrU1xc=
+X-Received: by 2002:a05:6512:446:b0:4f8:47e9:ad90 with SMTP id
+ y6-20020a056512044600b004f847e9ad90mr8859375lfk.35.1687268446705; 
+ Tue, 20 Jun 2023 06:40:46 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ73sHvmwBXS59zi6SFmyClCbYF78zJD5sd0iwdyRaxQdCB75vwJaHKfHrHQrCS2VI/tukw1vQ==
+X-Received: by 2002:a05:6512:446:b0:4f8:47e9:ad90 with SMTP id
+ y6-20020a056512044600b004f847e9ad90mr8859352lfk.35.1687268446317; 
+ Tue, 20 Jun 2023 06:40:46 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c739:d200:8745:c520:8bf6:b587?
+ (p200300cbc739d2008745c5208bf6b587.dip0.t-ipconnect.de.
+ [2003:cb:c739:d200:8745:c520:8bf6:b587])
+ by smtp.gmail.com with ESMTPSA id
+ u16-20020a7bc050000000b003f080b2f9f4sm13494996wmc.27.2023.06.20.06.40.45
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 20 Jun 2023 06:40:45 -0700 (PDT)
+Message-ID: <9cf21743-17b3-45f7-6fdb-e2d8a53f8c39@redhat.com>
+Date: Tue, 20 Jun 2023 15:40:44 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a37ca4bf-ad22-9086-b3a8-3c0d4f55da27@eik.bme.hu>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH v1 4/4] virtio-mem: Support "x-ignore-shared" migration
+Content-Language: en-US
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>,
+ Peter Xu <peterx@redhat.com>, Leonardo Bras <leobras@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Peng Tao <tao.peng@linux.alibaba.com>
+References: <20230620130354.322180-1-david@redhat.com>
+ <20230620130354.322180-5-david@redhat.com>
+ <20230620090527-mutt-send-email-mst@kernel.org>
+From: David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+In-Reply-To: <20230620090527-mutt-send-email-mst@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,133 +109,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jun 08, 2023 at 05:20:37PM +0200, BALATON Zoltan wrote:
-> On Thu, 8 Jun 2023, Michael S. Tsirkin wrote:
-> > On Thu, Jun 08, 2023 at 12:37:08PM +0100, Mark Cave-Ayland wrote:
-> > > On 07/06/2023 21:01, BALATON Zoltan wrote:
-> > > 
-> > > > On pegasos2 which has ACPI as part of VT8231 south bridge the board
-> > > > firmware writes PM control register by accessing the second byte so
-> > > > addr will be 1. This wasn't handled correctly and the write went to
-> > > > addr 0 instead. Remove the acpi_pm1_cnt_write() function which is used
-> > > > only once and does not take addr into account and handle non-zero
-> > > > address in acpi_pm_cnt_{read|write}. This fixes ACPI shutdown with
-> > > > pegasos2 firmware.
-> > > > 
-> > > > Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
-> > > > ---
-> > > >   hw/acpi/core.c | 52 +++++++++++++++++++++++++-------------------------
-> > > >   1 file changed, 26 insertions(+), 26 deletions(-)
-> > > > 
-> > > > diff --git a/hw/acpi/core.c b/hw/acpi/core.c
-> > > > index 6da275c599..00b1e79a30 100644
-> > > > --- a/hw/acpi/core.c
-> > > > +++ b/hw/acpi/core.c
-> > > > @@ -551,30 +551,6 @@ void acpi_pm_tmr_reset(ACPIREGS *ar)
-> > > >   }
-> > > >   /* ACPI PM1aCNT */
-> > > > -static void acpi_pm1_cnt_write(ACPIREGS *ar, uint16_t val)
-> > > > -{
-> > > > -    ar->pm1.cnt.cnt = val & ~(ACPI_BITMASK_SLEEP_ENABLE);
-> > > > -
-> > > > -    if (val & ACPI_BITMASK_SLEEP_ENABLE) {
-> > > > -        /* change suspend type */
-> > > > -        uint16_t sus_typ = (val >> 10) & 7;
-> > > > -        switch (sus_typ) {
-> > > > -        case 0: /* soft power off */
-> > > > -            qemu_system_shutdown_request(SHUTDOWN_CAUSE_GUEST_SHUTDOWN);
-> > > > -            break;
-> > > > -        case 1:
-> > > > -            qemu_system_suspend_request();
-> > > > -            break;
-> > > > -        default:
-> > > > -            if (sus_typ == ar->pm1.cnt.s4_val) { /* S4 request */
-> > > > -                qapi_event_send_suspend_disk();
-> > > > -                qemu_system_shutdown_request(SHUTDOWN_CAUSE_GUEST_SHUTDOWN);
-> > > > -            }
-> > > > -            break;
-> > > > -        }
-> > > > -    }
-> > > > -}
-> > > > -
-> > > >   void acpi_pm1_cnt_update(ACPIREGS *ar,
-> > > >                            bool sci_enable, bool sci_disable)
-> > > >   {
-> > > > @@ -593,13 +569,37 @@ void acpi_pm1_cnt_update(ACPIREGS *ar,
-> > > >   static uint64_t acpi_pm_cnt_read(void *opaque, hwaddr addr, unsigned width)
-> > > >   {
-> > > >       ACPIREGS *ar = opaque;
-> > > > -    return ar->pm1.cnt.cnt;
-> > > > +    return ar->pm1.cnt.cnt >> addr * 8;
-> > > 
-> > > This shift here...
-> > > 
-> > > >   }
-> > > >   static void acpi_pm_cnt_write(void *opaque, hwaddr addr, uint64_t val,
-> > > >                                 unsigned width)
-> > > >   {
-> > > > -    acpi_pm1_cnt_write(opaque, val);
-> > > > +    ACPIREGS *ar = opaque;
-> > > > +
-> > > > +    if (addr == 1) {
-> > > > +        val = val << 8 | (ar->pm1.cnt.cnt & 0xff);
-> > > > +    }
-> > > 
-> > > and this shift here look similar to my workaround in https://patchew.org/QEMU/20230524211104.686087-1-mark.cave-ayland@ilande.co.uk/20230524211104.686087-31-mark.cave-ayland@ilande.co.uk/
-> > > which is a symptom of https://gitlab.com/qemu-project/qemu/-/issues/360.
-> > > 
-> > > Whilst there is no imminent fix for the above issue, it may be worth a few
-> > > mins to determine if this is the same issue and if so document it with
-> > > comments accordingly as I did so that the workaround can be removed at a
-> > > later date.
-> > 
-> > So I will add
-> > this triggers a but in memory core,
-> > (see
-> > https://gitlab.com/qemu-project/qemu/-/issues/360 for more detail)
-> > 
-> > ?
+On 20.06.23 15:06, Michael S. Tsirkin wrote:
+> On Tue, Jun 20, 2023 at 03:03:54PM +0200, David Hildenbrand wrote:
+>> To achieve desired "x-ignore-shared" functionality, we should not
+>> discard all RAM when realizing the device and not mess with
+>> preallocation/postcopy when loading device state. In essence, we should
+>> not touch RAM content.
+>>
+>> As "x-ignore-shared" gets set after realizing the device, we cannot
+>> rely on that. Let's simply skip discarding of RAM on incoming migration.
+>> Note that virtio_mem_post_load() will call
+>> virtio_mem_restore_unplugged() -- unless "x-ignore-shared" is set. So
+>> once migration finished we'll have a consistent state.
+>>
+>> The initial system reset will also not discard any RAM, because
+>> virtio_mem_unplug_all() will not call virtio_mem_unplug_all() when no
+>> memory is plugged (which is the case before loading the device state).
+>>
+>> Note that something like VM templating -- see commit b17fbbe55cba
+>> ("migration: allow private destination ram with x-ignore-shared") -- is
+>> currently incompatible with virtio-mem and ram_block_discard_range() will
+>> warn in case a private file mapping is supplied by virtio-mem.
+>>
+>> For VM templating with virtio-mem, it makes more sense to either
+>> (a) Create the template without the virtio-mem device and hotplug a
+>>      virtio-mem device to the new VM instances using proper own memory
+>>      backend.
+>> (b) Use a virtio-mem device that doesn't provide any memory in the
+>>      template (requested-size=0) and use private anonymous memory.
+>>
+>> Signed-off-by: David Hildenbrand <david@redhat.com>
+>> ---
+>>   hw/virtio/virtio-mem.c | 47 ++++++++++++++++++++++++++++++++++--------
+>>   1 file changed, 38 insertions(+), 9 deletions(-)
+>>
+>> diff --git a/hw/virtio/virtio-mem.c b/hw/virtio/virtio-mem.c
+>> index 9f6169af32..b013dfbaf0 100644
+>> --- a/hw/virtio/virtio-mem.c
+>> +++ b/hw/virtio/virtio-mem.c
+>> @@ -18,6 +18,7 @@
+>>   #include "sysemu/numa.h"
+>>   #include "sysemu/sysemu.h"
+>>   #include "sysemu/reset.h"
+>> +#include "sysemu/runstate.h"
+>>   #include "hw/virtio/virtio.h"
+>>   #include "hw/virtio/virtio-bus.h"
+>>   #include "hw/virtio/virtio-access.h"
+>> @@ -886,11 +887,23 @@ static void virtio_mem_device_realize(DeviceState *dev, Error **errp)
+>>           return;
+>>       }
+>>   
+>> -    ret = ram_block_discard_range(rb, 0, qemu_ram_get_used_length(rb));
+>> -    if (ret) {
+>> -        error_setg_errno(errp, -ret, "Unexpected error discarding RAM");
+>> -        ram_block_coordinated_discard_require(false);
+>> -        return;
+>> +    /*
+>> +     * We don't know at this point whether shared RAM is migrated using
+>> +     * QEMU or migrated using the file content. "x-ignore-shared" will be
+>> +     * configurated
 > 
-> Apart from the typo but -> bug I'm not sure this is related to that issue
-> but in any case this does not trigger but works around some possible bug so
-> maybe "This work around may be related to issue URL" or something like that
-> maybe? I'm also not sure what comment to add where so I'd appreciate if you
-> can handle this on merging.
-> 
-> Regards,
-> BALATON Zoltan
+> configurated == configured?
 
-I'll merge, just got back from travel.
+Thanks!
 
+-- 
+Cheers,
 
-> > > > +    ar->pm1.cnt.cnt = val & ~(ACPI_BITMASK_SLEEP_ENABLE);
-> > > > +
-> > > > +    if (val & ACPI_BITMASK_SLEEP_ENABLE) {
-> > > > +        /* change suspend type */
-> > > > +        uint16_t sus_typ = (val >> 10) & 7;
-> > > > +        switch (sus_typ) {
-> > > > +        case 0: /* soft power off */
-> > > > +            qemu_system_shutdown_request(SHUTDOWN_CAUSE_GUEST_SHUTDOWN);
-> > > > +            break;
-> > > > +        case 1:
-> > > > +            qemu_system_suspend_request();
-> > > > +            break;
-> > > > +        default:
-> > > > +            if (sus_typ == ar->pm1.cnt.s4_val) { /* S4 request */
-> > > > +                qapi_event_send_suspend_disk();
-> > > > +                qemu_system_shutdown_request(SHUTDOWN_CAUSE_GUEST_SHUTDOWN);
-> > > > +            }
-> > > > +            break;
-> > > > +        }
-> > > > +    }
-> > > >   }
-> > > >   static const MemoryRegionOps acpi_pm_cnt_ops = {
-> > > 
-> > > 
-> > > ATB,
-> > > 
-> > > Mark.
-> > 
-> > 
+David / dhildenb
 
 
