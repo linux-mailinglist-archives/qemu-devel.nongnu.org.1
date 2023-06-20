@@ -2,52 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FF0973721B
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 18:51:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 291A873721A
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 18:51:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBeZT-0003Z9-QK; Tue, 20 Jun 2023 12:51:11 -0400
+	id 1qBeZU-0003aR-F0; Tue, 20 Jun 2023 12:51:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <isaku.yamahata@intel.com>)
- id 1qBeZN-0003Yf-8f
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 12:51:05 -0400
+ id 1qBeZP-0003ZE-8Y
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 12:51:07 -0400
 Received: from mga01.intel.com ([192.55.52.88])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <isaku.yamahata@intel.com>)
- id 1qBeZJ-00054S-BS
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 12:51:04 -0400
+ id 1qBeZN-00054S-KH
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 12:51:07 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1687279861; x=1718815861;
+ t=1687279865; x=1718815865;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=p7mCt+GtEic3MbUydVwdYYLTQC2lZqrngfjr58vKJ7U=;
- b=R9PtY16ZEhYHJPkE+yNJRZ18YBAck0luiRL5GLy72HFS4EG+C/cf0bzn
- BsumHHiSDxwFdiT40KfM36KA/f0MfY2do+5s81lSBSL9fAJHFbscR6DKP
- z5WB9/AMLcf8CgY4e9ohx16umes86ELlsieeBrQ3ZtsK676cWayWiZAdp
- zfT8tGNE+DrNxQhJQcxVmcJ5hHaAR86KRngJl5HUtTIkwJq6WlcZM6NFo
- XGop1QbIrXj1qhK0ofa8vHKaY6kYFzLhlARF8imaHitT+7C87Myde5Wca
- 3z3VsSl6Vfi1sLGHRf667ZBI6Y4N5YO3SA4726z8aAy/uQrajNhz6RPvG w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10747"; a="389218032"
-X-IronPort-AV: E=Sophos;i="6.00,257,1681196400"; d="scan'208";a="389218032"
+ bh=ZGYds0W9a52MmZEls/WsrzhjgIIBAfJQiVVeEQy7Yn8=;
+ b=MK0otCkaWlmq6mBe73BhSKvQ27lMm6yRnDTb/ZrXh7k9brFthHvYJzWj
+ CZf6QGQZjzkGG1afeIkPg/hC9pqu4xuR1WV5mvLgYSVm5NgofzLMuTz6p
+ qtD5fzVwIdeIiihdOZaLxYgkZMwcb8BTk6y4/y3U+oA4UHPHcnF//D4T4
+ J0/VbH6TlO/rM7e1qOzE+c/0yBpgqpQTzXcDcdWpsQQZbBqP8Zd1YvQbH
+ vkEkjJD18xTgcaazt3qU6ddosoa3UH6rbUi4XH3Gwr81seTbZWL+OI3yp
+ tMOZ3By18j9ZB1RQ5sqbNglExY9PEInzEY+0mSQ/JwJtkSsFfvyPWvzSu w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10747"; a="389218035"
+X-IronPort-AV: E=Sophos;i="6.00,257,1681196400"; d="scan'208";a="389218035"
 Received: from orsmga006.jf.intel.com ([10.7.209.51])
  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Jun 2023 09:50:55 -0700
+ 20 Jun 2023 09:50:56 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10747"; a="691499957"
-X-IronPort-AV: E=Sophos;i="6.00,257,1681196400"; d="scan'208";a="691499957"
+X-IronPort-AV: E=McAfee;i="6600,9927,10747"; a="691499960"
+X-IronPort-AV: E=Sophos;i="6.00,257,1681196400"; d="scan'208";a="691499960"
 Received: from ls.sc.intel.com (HELO localhost) ([172.25.112.31])
  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  20 Jun 2023 09:50:55 -0700
 From: Isaku Yamahata <isaku.yamahata@intel.com>
 To: qemu-devel@nongnu.org
 Cc: Isaku Yamahata <isaku.yamahata@intel.com>
-Subject: [PATCH 1/3] exec/memory: Add symbolic value for memory listener
- priority for accel
-Date: Tue, 20 Jun 2023 09:50:47 -0700
-Message-Id: <feebe423becc6e2aa375f59f6abce9a85bc15abb.1687279702.git.isaku.yamahata@intel.com>
+Subject: [PATCH 2/3] exec/memory: Add symbol for memory listener priority for
+ dev backend
+Date: Tue, 20 Jun 2023 09:50:48 -0700
+Message-Id: <8314d91688030d7004e96958f12e2c83fb889245.1687279702.git.isaku.yamahata@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <cover.1687279702.git.isaku.yamahata@intel.com>
 References: <cover.1687279702.git.isaku.yamahata@intel.com>
@@ -78,163 +78,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add MEMORY_LISTNER_PRIORITY_ACCEL for the symbolic value for the memory
-listener to replace the hard-coded value 10 for accel.
+Add MEMORY_LISTNER_PRIORITY_DEV_BAKCNED for the symbolic value for memory
+listener to replace the hard-coded value 10 for the device backend.
 
 No functional change intended.
 
 Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
 ---
- accel/hvf/hvf-accel-ops.c   | 2 +-
- accel/kvm/kvm-all.c         | 2 +-
- hw/arm/xen_arm.c            | 2 +-
- hw/i386/xen/xen-hvm.c       | 2 +-
- hw/xen/xen-hvm-common.c     | 2 +-
- hw/xen/xen_pt.c             | 4 ++--
- include/exec/memory.h       | 2 ++
- target/i386/hax/hax-mem.c   | 2 +-
- target/i386/nvmm/nvmm-all.c | 2 +-
- target/i386/whpx/whpx-all.c | 2 +-
- 10 files changed, 12 insertions(+), 10 deletions(-)
+ accel/kvm/kvm-all.c               | 2 +-
+ hw/remote/proxy-memory-listener.c | 2 +-
+ hw/virtio/vhost.c                 | 2 +-
+ include/exec/memory.h             | 1 +
+ 4 files changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/accel/hvf/hvf-accel-ops.c b/accel/hvf/hvf-accel-ops.c
-index 9c3da03c948f..c0c51841a615 100644
---- a/accel/hvf/hvf-accel-ops.c
-+++ b/accel/hvf/hvf-accel-ops.c
-@@ -304,7 +304,7 @@ static void hvf_region_del(MemoryListener *listener,
- 
- static MemoryListener hvf_memory_listener = {
-     .name = "hvf",
--    .priority = 10,
-+    .priority = MEMORY_LISTENER_PRIORITY_ACCEL,
-     .region_add = hvf_region_add,
-     .region_del = hvf_region_del,
-     .log_start = hvf_log_start,
 diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index 7679f397aec0..36ed4ca246b5 100644
+index 36ed4ca246b5..ae6ecf8326d1 100644
 --- a/accel/kvm/kvm-all.c
 +++ b/accel/kvm/kvm-all.c
-@@ -1775,7 +1775,7 @@ void kvm_memory_listener_register(KVMState *s, KVMMemoryListener *kml,
-     kml->listener.commit = kvm_region_commit;
-     kml->listener.log_start = kvm_log_start;
-     kml->listener.log_stop = kvm_log_stop;
--    kml->listener.priority = 10;
-+    kml->listener.priority = MEMORY_LISTENER_PRIORITY_ACCEL;
-     kml->listener.name = name;
- 
-     if (s->kvm_dirty_ring_size) {
-diff --git a/hw/arm/xen_arm.c b/hw/arm/xen_arm.c
-index 19b1cb81ade9..044093fec75d 100644
---- a/hw/arm/xen_arm.c
-+++ b/hw/arm/xen_arm.c
-@@ -45,7 +45,7 @@ static MemoryListener xen_memory_listener = {
-     .log_sync = NULL,
-     .log_global_start = NULL,
-     .log_global_stop = NULL,
+@@ -1800,7 +1800,7 @@ static MemoryListener kvm_io_listener = {
+     .name = "kvm-io",
+     .eventfd_add = kvm_io_ioeventfd_add,
+     .eventfd_del = kvm_io_ioeventfd_del,
 -    .priority = 10,
-+    .priority = MEMORY_LISTENER_PRIORITY_ACCEL,
++    .priority = MEMORY_LISTENER_PRIORITY_DEV_BAKCNED,
  };
  
- struct XenArmState {
-diff --git a/hw/i386/xen/xen-hvm.c b/hw/i386/xen/xen-hvm.c
-index 5dc5e805351c..3da5a2b23f7d 100644
---- a/hw/i386/xen/xen-hvm.c
-+++ b/hw/i386/xen/xen-hvm.c
-@@ -467,7 +467,7 @@ static MemoryListener xen_memory_listener = {
-     .log_sync = xen_log_sync,
-     .log_global_start = xen_log_global_start,
-     .log_global_stop = xen_log_global_stop,
--    .priority = 10,
-+    .priority = MEMORY_LISTENER_PRIORITY_ACCEL,
- };
+ int kvm_set_irq(KVMState *s, int irq, int level)
+diff --git a/hw/remote/proxy-memory-listener.c b/hw/remote/proxy-memory-listener.c
+index 18d96a1d04dc..a7f53a0ba464 100644
+--- a/hw/remote/proxy-memory-listener.c
++++ b/hw/remote/proxy-memory-listener.c
+@@ -217,7 +217,7 @@ void proxy_memory_listener_configure(ProxyMemoryListener *proxy_listener,
+     proxy_listener->listener.commit = proxy_memory_listener_commit;
+     proxy_listener->listener.region_add = proxy_memory_listener_region_addnop;
+     proxy_listener->listener.region_nop = proxy_memory_listener_region_addnop;
+-    proxy_listener->listener.priority = 10;
++    proxy_listener->listener.priority = MEMORY_LISTENER_PRIORITY_DEV_BAKCNED;
+     proxy_listener->listener.name = "proxy";
  
- static void regs_to_cpu(vmware_regs_t *vmport_regs, ioreq_t *req)
-diff --git a/hw/xen/xen-hvm-common.c b/hw/xen/xen-hvm-common.c
-index 42339c96bdba..886c3ee944d3 100644
---- a/hw/xen/xen-hvm-common.c
-+++ b/hw/xen/xen-hvm-common.c
-@@ -155,7 +155,7 @@ MemoryListener xen_io_listener = {
-     .name = "xen-io",
-     .region_add = xen_io_add,
-     .region_del = xen_io_del,
--    .priority = 10,
-+    .priority = MEMORY_LISTENER_PRIORITY_ACCEL,
- };
+     memory_listener_register(&proxy_listener->listener,
+diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
+index 23da579ce290..75f7418369cb 100644
+--- a/hw/virtio/vhost.c
++++ b/hw/virtio/vhost.c
+@@ -1445,7 +1445,7 @@ int vhost_dev_init(struct vhost_dev *hdev, void *opaque,
+         .log_sync = vhost_log_sync,
+         .log_global_start = vhost_log_global_start,
+         .log_global_stop = vhost_log_global_stop,
+-        .priority = 10
++        .priority = MEMORY_LISTENER_PRIORITY_DEV_BAKCNED
+     };
  
- DeviceListener xen_device_listener = {
-diff --git a/hw/xen/xen_pt.c b/hw/xen/xen_pt.c
-index a5401496399b..36e6f93c372f 100644
---- a/hw/xen/xen_pt.c
-+++ b/hw/xen/xen_pt.c
-@@ -691,14 +691,14 @@ static const MemoryListener xen_pt_memory_listener = {
-     .name = "xen-pt-mem",
-     .region_add = xen_pt_region_add,
-     .region_del = xen_pt_region_del,
--    .priority = 10,
-+    .priority = MEMORY_LISTENER_PRIORITY_ACCEL,
- };
- 
- static const MemoryListener xen_pt_io_listener = {
-     .name = "xen-pt-io",
-     .region_add = xen_pt_io_region_add,
-     .region_del = xen_pt_io_region_del,
--    .priority = 10,
-+    .priority = MEMORY_LISTENER_PRIORITY_ACCEL,
- };
- 
- /* destroy. */
+     hdev->iommu_listener = (MemoryListener) {
 diff --git a/include/exec/memory.h b/include/exec/memory.h
-index 47c2e0221c35..6d95d5917544 100644
+index 6d95d5917544..5c9e04bf1208 100644
 --- a/include/exec/memory.h
 +++ b/include/exec/memory.h
-@@ -811,6 +811,8 @@ struct IOMMUMemoryRegion {
- #define IOMMU_NOTIFIER_FOREACH(n, mr) \
+@@ -812,6 +812,7 @@ struct IOMMUMemoryRegion {
      QLIST_FOREACH((n), &(mr)->iommu_notify, node)
  
-+#define MEMORY_LISTENER_PRIORITY_ACCEL          10
-+
+ #define MEMORY_LISTENER_PRIORITY_ACCEL          10
++#define MEMORY_LISTENER_PRIORITY_DEV_BAKCNED    10
+ 
  /**
   * struct MemoryListener: callbacks structure for updates to the physical memory map
-  *
-diff --git a/target/i386/hax/hax-mem.c b/target/i386/hax/hax-mem.c
-index 05dbe8cce3ae..bb5ffbc9ac4f 100644
---- a/target/i386/hax/hax-mem.c
-+++ b/target/i386/hax/hax-mem.c
-@@ -291,7 +291,7 @@ static MemoryListener hax_memory_listener = {
-     .region_add = hax_region_add,
-     .region_del = hax_region_del,
-     .log_sync = hax_log_sync,
--    .priority = 10,
-+    .priority = MEMORY_LISTENER_PRIORITY_ACCEL,
- };
- 
- static void hax_ram_block_added(RAMBlockNotifier *n, void *host, size_t size,
-diff --git a/target/i386/nvmm/nvmm-all.c b/target/i386/nvmm/nvmm-all.c
-index b75738ee9cdf..19d2f7ef09a6 100644
---- a/target/i386/nvmm/nvmm-all.c
-+++ b/target/i386/nvmm/nvmm-all.c
-@@ -1138,7 +1138,7 @@ static MemoryListener nvmm_memory_listener = {
-     .region_add = nvmm_region_add,
-     .region_del = nvmm_region_del,
-     .log_sync = nvmm_log_sync,
--    .priority = 10,
-+    .priority = MEMORY_LISTENER_PRIORITY_ACCEL,
- };
- 
- static void
-diff --git a/target/i386/whpx/whpx-all.c b/target/i386/whpx/whpx-all.c
-index 52af81683c1e..7f94dd438826 100644
---- a/target/i386/whpx/whpx-all.c
-+++ b/target/i386/whpx/whpx-all.c
-@@ -2427,7 +2427,7 @@ static MemoryListener whpx_memory_listener = {
-     .region_add = whpx_region_add,
-     .region_del = whpx_region_del,
-     .log_sync = whpx_log_sync,
--    .priority = 10,
-+    .priority = MEMORY_LISTENER_PRIORITY_ACCEL,
- };
- 
- static void whpx_memory_init(void)
 -- 
 2.25.1
 
