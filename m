@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A01F1737551
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 21:48:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0054273755B
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 21:50:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBhIg-0008PL-4m; Tue, 20 Jun 2023 15:46:02 -0400
+	id 1qBhIo-0000B5-67; Tue, 20 Jun 2023 15:46:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jupham125@gmail.com>)
- id 1qBf7e-0004LE-SQ
+ id 1qBf7e-0004LD-Rw
  for qemu-devel@nongnu.org; Tue, 20 Jun 2023 13:26:30 -0400
-Received: from mail-yw1-x1133.google.com ([2607:f8b0:4864:20::1133])
+Received: from mail-yw1-x1134.google.com ([2607:f8b0:4864:20::1134])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <jupham125@gmail.com>)
- id 1qBf7a-0006ed-9a
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 13:26:29 -0400
-Received: by mail-yw1-x1133.google.com with SMTP id
- 00721157ae682-570114e1feaso57478897b3.3
- for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 10:26:24 -0700 (PDT)
+ id 1qBf7a-0006ex-Qd
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 13:26:28 -0400
+Received: by mail-yw1-x1134.google.com with SMTP id
+ 00721157ae682-5707b429540so62318677b3.1
+ for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 10:26:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1687281983; x=1689873983;
+ d=gmail.com; s=20221208; t=1687281985; x=1689873985;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=aUH0LrDNCluOY2g7IZF9uazabmu57c7aIkRqhWuUoW4=;
- b=iwRwRTaFQJfYCfdFgHs5hBrVVJyyLJCQKXLzDjc2uw1+9/aIo5cnUv+/xiPHbxjuh2
- XFwA15wc+YNcwlq8WwcGhVyB1lz9VsRgzw4+XvIpPjE8ExRcuEvjNOBNE0RQ57VEEDNJ
- 64EPpQNaQEYzxkQ3c/wV95dN8zfhpngMP2nU9OZ/liVkq+4MPfn3nPH+QPU4ginQEKvn
- U8V7lDKGEZ9gP08J4zgUGhm2JE9iozhSVNTDMielRBCFN0rxFigIZOc94CQIhyYeuQPR
- hxGZm6uHroeQ+mGmjc3xBa9l0n2oo9PXJfgI65Ux8poxJl/JDEtJvcHnMCpECNXdCZx2
- LiXA==
+ bh=/ZtR49Wj+BsujqlKtwlIvLXrUvLyGZ/7NrGzguEb9A0=;
+ b=rxOo0tXcKfS1IYKEXuRJnHwkAChp/cBkhBvjJfVCWGOzcsHGlCZ6l3tNOl0XO8izkf
+ 9Ua5For1WY8+nDPZPjKubfsBDBU/BzDNa6nmgGSAIshSBmPHoYrQPtjQl0y1Xheg+pE8
+ mM18gyjsk2UTfcWTS2tbtC/0QL/fxAXqEYd0vMsCcXesrSzdEw4xpnL1uHCir3pVNz7k
+ fO0iYsRcdwiWniF2hmpqKPZiwJcE4Ct8XbLtn4XH9Vidk+E4PIB7BHmUoGSLo1GRK+Pl
+ BVW1BZbGXKhPuDybfQm9FQoZV3aTssCTg85XrL/1IVvdxnV3aGq8D/bcziQJXFRksMgz
+ 9cxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687281983; x=1689873983;
+ d=1e100.net; s=20221208; t=1687281985; x=1689873985;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=aUH0LrDNCluOY2g7IZF9uazabmu57c7aIkRqhWuUoW4=;
- b=ZcA1o5+VQ8Fbb4A6HxKprIPZI6gDc3lntVICV8NMDUsHPUGnHivLXqfvRO32Qhqd7G
- gDKpzvodYnTJD4WXWoKOEEBRuGkxMOlpEm6/4VXAP1nN7uUujkb8+XnRHhe7pjAwKj9H
- PBN+Ehk+aeGFbTaak4UBkZgIg8ZqCZW2o4Q6/3ziZaxN2ArdxdG9Akzrn6FF8p1YyxVi
- ny+vyEMWmp6dintmH3EbJbvZIw2JFdExqAuyjkNjFVJ+7ndy/FZHPRUzsffgLF9W+JSb
- z/K7AvfNe2bKtYW66IuXkhXR6Q4PGPsFrOIIOuNj1DkBQ5BipKjgK6jHaks74bCw/bUR
- zMZQ==
-X-Gm-Message-State: AC+VfDwzsI0kWarnvg647Dbp+y6fUClNKKvcOiFTYzSmNnkiTh8XmwV6
- Uua9m0farDxXQQb9oTPvrv43ilPd1rp/yA==
-X-Google-Smtp-Source: ACHHUZ7H14tCE3HKsTlD/gtaiOjoMH3zAfVEsd3ThHpqpefM/jk8OkdgqNWhx9f/7UfbiTzox58o8A==
-X-Received: by 2002:a81:5215:0:b0:56c:e2c1:6695 with SMTP id
- g21-20020a815215000000b0056ce2c16695mr12352572ywb.50.1687281983595; 
- Tue, 20 Jun 2023 10:26:23 -0700 (PDT)
+ bh=/ZtR49Wj+BsujqlKtwlIvLXrUvLyGZ/7NrGzguEb9A0=;
+ b=MlU21hZ/PWijusFAETE24uB6f86+SulslnvRTMspUAzJkv7yMcpz9rG56oqLo3WKb7
+ ygfNyf6KMH/XwR9ZJd+P7WIB0U6nNMX0/HftQvrZQQMPOmTewP8e58kgK1lFx3sTOYoQ
+ J3fYj2Swpa6zK5SdAMfkENS+Tgvgv+eOL5Ezj8ElQhTbyYwy3/VWxBTHiP979xUFr/9G
+ 5yGSoguukxcpdr0UEW9QQvRzDFAbuCPwlJXJdtNh4N85v5CS+cM3qSfutLoxJx3no03v
+ Q75mp4KrnN+cZEhknida+cH6X5kHsWwmO2yyZ+/qMzKch+YoZ3NASG2ER+zmHjjMWQSU
+ 8GTA==
+X-Gm-Message-State: AC+VfDyA7JdHzsFUS+VbEYQM5XDEQ5kbRCQPaNq8n5yXnPsvSsAbIj6B
+ 7jUJ6T/hV6L3wTb3p1Cywjw7I2u157upKA==
+X-Google-Smtp-Source: ACHHUZ7vnof2FXuOFDNyhaBtlcGPG7xrWzUFudElGDOK5WYidGkK2Dmf/59suWaFDE/d1Yxi9aEXng==
+X-Received: by 2002:a0d:cbcb:0:b0:56c:e5a3:3e09 with SMTP id
+ n194-20020a0dcbcb000000b0056ce5a33e09mr21057302ywd.15.1687281985609; 
+ Tue, 20 Jun 2023 10:26:25 -0700 (PDT)
 Received: from joel-Precision-7920-Tower.. ([24.53.71.1])
  by smtp.gmail.com with ESMTPSA id
- e65-20020a0dc244000000b0056cffe97a11sm604604ywd.13.2023.06.20.10.26.22
+ e65-20020a0dc244000000b0056cffe97a11sm604604ywd.13.2023.06.20.10.26.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 20 Jun 2023 10:26:23 -0700 (PDT)
+ Tue, 20 Jun 2023 10:26:25 -0700 (PDT)
 From: Joel Upham <jupham125@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Joel Upham <jupham125@gmail.com>,
  Stefano Stabellini <sstabellini@kernel.org>,
  Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
  xen-devel@lists.xenproject.org (open list:X86 Xen CPUs)
-Subject: [PATCH v1 14/23] xen/pt: add fixed-size PCIe Extended Capabilities
- descriptors
-Date: Tue, 20 Jun 2023 13:24:48 -0400
-Message-Id: <ddd201fc1ee529a90861aabdf0479e8b1d382bf3.1687278381.git.jupham125@gmail.com>
+Subject: [PATCH v1 15/23] xen/pt: add AER PCIe Extended Capability descriptor
+ and sizing
+Date: Tue, 20 Jun 2023 13:24:49 -0400
+Message-Id: <adf11b407bbb7c8fd2815559329b7a3d4e5b0f1e.1687278381.git.jupham125@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <cover.1687278381.git.jupham125@gmail.com>
 References: <cover.1687278381.git.jupham125@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1133;
- envelope-from=jupham125@gmail.com; helo=mail-yw1-x1133.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1134;
+ envelope-from=jupham125@gmail.com; helo=mail-yw1-x1134.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -82,7 +82,7 @@ X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Tue, 20 Jun 2023 15:45:55 -0400
+X-Mailman-Approved-At: Tue, 20 Jun 2023 15:45:54 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,217 +97,100 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This adds description structures for all fixed-size PCIe Extended
-Capabilities.
-
-For every capability register group, only 2 registers are emulated
-currently: Capability ID (16 bit) and Next Capability Offset/Version (16
-bit). Both needed to implement selective capability hiding. All other
-registers are passed through at the moment (unless they belong to
-a "hardwired" capability which is hidden)
+The patch provides Advanced Error Reporting PCIe Extended Capability
+description structure and corresponding capability sizing function.
 
 Signed-off-by: Alexey Gerasimenko <x1917x@xxxxxxxxx>
 Signed-off-by: Joel Upham <jupham125@gmail.com>
 ---
- hw/xen/xen_pt_config_init.c | 183 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 183 insertions(+)
+ hw/xen/xen_pt_config_init.c | 72 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 72 insertions(+)
 
 diff --git a/hw/xen/xen_pt_config_init.c b/hw/xen/xen_pt_config_init.c
-index 20b5561d25..69d8857c66 100644
+index 69d8857c66..9fd0531bc4 100644
 --- a/hw/xen/xen_pt_config_init.c
 +++ b/hw/xen/xen_pt_config_init.c
-@@ -1669,6 +1669,37 @@ static XenPTRegInfo xen_pt_ext_cap_emu_reg_vendor[] = {
-         .size = 0,
-     },
- };
+@@ -1861,6 +1861,70 @@ static int xen_pt_msix_size_init(XenPCIPassthroughState *s,
+ }
+ 
+ 
++/* get Advanced Error Reporting Extended Capability register group size */
++#define PCI_ERR_CAP_TLP_PREFIX_LOG      (1U << 11)
++#define PCI_DEVCAP2_END_END_TLP_PREFIX  (1U << 21)
++static int xen_pt_ext_cap_aer_size_init(XenPCIPassthroughState *s,
++                                        const XenPTRegGroupInfo *grp_reg,
++                                        uint32_t base_offset,
++                                        uint32_t *size)
++{
++    uint8_t dev_type = get_pcie_device_type(s);
++    uint32_t aer_caps = 0;
++    uint32_t sz = 0;
++    int pcie_cap_pos;
++    uint32_t devcaps2;
++    int ret = 0;
 +
-+/* Common reg static information table for all passthru-type
-+ * PCIe Extended Capabilities. Only Extended Cap ID and
-+ * Next pointer are handled (to support capability hiding).
-+ */
-+static XenPTRegInfo xen_pt_ext_cap_emu_reg_dummy[] = {
-+    {
-+        .offset     = XEN_PCIE_CAP_ID,
-+        .size       = 2,
-+        .init_val   = 0x0000,
-+        .ro_mask    = 0xFFFF,
-+        .emu_mask   = 0xFFFF,
-+        .init       = xen_pt_ext_cap_capid_reg_init,
-+        .u.w.read   = xen_pt_word_reg_read,
-+        .u.w.write  = xen_pt_word_reg_write,
-+    },
-+    {
-+        .offset     = XEN_PCIE_CAP_LIST_NEXT,
-+        .size       = 2,
-+        .init_val   = 0x0000,
-+        .ro_mask    = 0xFFFF,
-+        .emu_mask   = 0xFFFF,
-+        .init       = xen_pt_ext_cap_ptr_reg_init,
-+        .u.w.read   = xen_pt_word_reg_read,
-+        .u.w.write  = xen_pt_word_reg_write,
-+    },
-+    {
-+        .size = 0,
-+    },
-+};
++    pcie_cap_pos = xen_host_pci_find_next_cap(&s->real_device, 0,
++                                              PCI_CAP_ID_EXP);
++    if (!pcie_cap_pos) {
++        XEN_PT_ERR(&s->dev,
++                   "Cannot find a required PCI Express Capability\n");
++        return -1;
++    }
 +
- /****************************
-  * Capabilities
-  */
-@@ -1945,6 +1976,158 @@ static const XenPTRegGroupInfo xen_pt_emu_reg_grps[] = {
-         .size_init   = xen_pt_ext_cap_vendor_size_init,
-         .emu_regs    = xen_pt_ext_cap_emu_reg_vendor,
++    if (get_pcie_capability_version(s) > 1) {
++        ret = xen_host_pci_get_long(&s->real_device,
++                                    pcie_cap_pos + PCI_EXP_DEVCAP2,
++                                    &devcaps2);
++        if (ret) {
++            XEN_PT_ERR(&s->dev, "Error while reading Device "
++                       "Capabilities 2 Register \n");
++            return -1;
++        }
++    }
++
++    if (devcaps2 & PCI_DEVCAP2_END_END_TLP_PREFIX) {
++        ret = xen_host_pci_get_long(&s->real_device,
++                                    base_offset + PCI_ERR_CAP,
++                                    &aer_caps);
++        if (ret) {
++            XEN_PT_ERR(&s->dev,
++                       "Error while reading AER Extended Capability\n");
++            return -1;
++        }
++
++        if (aer_caps & PCI_ERR_CAP_TLP_PREFIX_LOG) {
++            sz = 0x48;
++        }
++    }
++
++    if (!sz) {
++        if (dev_type == PCI_EXP_TYPE_ROOT_PORT ||
++            dev_type == PCI_EXP_TYPE_RC_EC) {
++            sz = 0x38;
++        } else {
++            sz = 0x2C;
++        }
++    }
++
++    *size = sz;
++
++    log_pcie_extended_cap(s, "AER", base_offset, *size);
++    return ret;
++}
++
+ static const XenPTRegGroupInfo xen_pt_emu_reg_grps[] = {
+     /* Header Type0 reg group */
+     {
+@@ -2128,6 +2192,14 @@ static const XenPTRegGroupInfo xen_pt_emu_reg_grps[] = {
+         .size_init  = xen_pt_reg_grp_size_init,
+         .emu_regs   = xen_pt_ext_cap_emu_reg_dummy,
      },
-+    /* Device Serial Number Extended Capability reg group */
++    /* Advanced Error Reporting Extended Capability reg group */
 +    {
-+        .grp_id     = PCIE_EXT_CAP_ID(PCI_EXT_CAP_ID_DSN),
++        .grp_id     = PCIE_EXT_CAP_ID(PCI_EXT_CAP_ID_ERR),
 +        .grp_type   = XEN_PT_GRP_TYPE_EMU,
-+        .grp_size   = PCI_EXT_CAP_DSN_SIZEOF,       /*0x0C*/
-+        .size_init  = xen_pt_reg_grp_size_init,
-+        .emu_regs   = xen_pt_ext_cap_emu_reg_dummy,
-+    },
-+    /* Power Budgeting Extended Capability reg group */
-+    {
-+        .grp_id     = PCIE_EXT_CAP_ID(PCI_EXT_CAP_ID_PWR),
-+        .grp_type   = XEN_PT_GRP_TYPE_EMU,
-+        .grp_size   = PCI_EXT_CAP_PWR_SIZEOF,       /*0x10*/
-+        .size_init  = xen_pt_reg_grp_size_init,
-+        .emu_regs   = xen_pt_ext_cap_emu_reg_dummy,
-+    },
-+    /* Root Complex Internal Link Control Extended Capability reg group */
-+    {
-+        .grp_id     = PCIE_EXT_CAP_ID(PCI_EXT_CAP_ID_RCILC),
-+        .grp_type   = XEN_PT_GRP_TYPE_EMU,
-+        .grp_size   = 0x0C,
-+        .size_init  = xen_pt_reg_grp_size_init,
-+        .emu_regs   = xen_pt_ext_cap_emu_reg_dummy,
-+    },
-+    /* Root Complex Event Collector Extended Capability reg group */
-+    {
-+        .grp_id     = PCIE_EXT_CAP_ID(PCI_EXT_CAP_ID_RCEC),
-+        .grp_type   = XEN_PT_GRP_TYPE_EMU,
-+        .grp_size   = 0x08,
-+        .size_init  = xen_pt_reg_grp_size_init,
-+        .emu_regs   = xen_pt_ext_cap_emu_reg_dummy,
-+    },
-+    /* Root Complex Register Block Extended Capability reg group */
-+    {
-+        .grp_id     = PCIE_EXT_CAP_ID(PCI_EXT_CAP_ID_RCRB),
-+        .grp_type   = XEN_PT_GRP_TYPE_EMU,
-+        .grp_size   = 0x14,
-+        .size_init  = xen_pt_reg_grp_size_init,
-+        .emu_regs   = xen_pt_ext_cap_emu_reg_dummy,
-+    },
-+    /* Configuration Access Correlation Extended Capability reg group */
-+    {
-+        .grp_id     = PCIE_EXT_CAP_ID(PCI_EXT_CAP_ID_CAC),
-+        .grp_type   = XEN_PT_GRP_TYPE_EMU,
-+        .grp_size   = 0x08,
-+        .size_init  = xen_pt_reg_grp_size_init,
-+        .emu_regs   = xen_pt_ext_cap_emu_reg_dummy,
-+    },
-+    /* Alternate Routing ID Extended Capability reg group */
-+    {
-+        .grp_id     = PCIE_EXT_CAP_ID(PCI_EXT_CAP_ID_ARI),
-+        .grp_type   = XEN_PT_GRP_TYPE_EMU,
-+        .grp_size   = PCI_EXT_CAP_ARI_SIZEOF,
-+        .size_init  = xen_pt_reg_grp_size_init,
-+        .emu_regs   = xen_pt_ext_cap_emu_reg_dummy,
-+    },
-+    /* Address Translation Services Extended Capability reg group */
-+    {
-+        .grp_id     = PCIE_EXT_CAP_ID(PCI_EXT_CAP_ID_ATS),
-+        .grp_type   = XEN_PT_GRP_TYPE_EMU,
-+        .grp_size   = PCI_EXT_CAP_ATS_SIZEOF,
-+        .size_init  = xen_pt_reg_grp_size_init,
-+        .emu_regs   = xen_pt_ext_cap_emu_reg_dummy,
-+    },
-+    /* Single Root I/O Virtualization Extended Capability reg group */
-+    {
-+        .grp_id     = PCIE_EXT_CAP_ID(PCI_EXT_CAP_ID_SRIOV),
-+        .grp_type   = XEN_PT_GRP_TYPE_EMU,
-+        .grp_size   = PCI_EXT_CAP_SRIOV_SIZEOF,
-+        .size_init  = xen_pt_reg_grp_size_init,
-+        .emu_regs   = xen_pt_ext_cap_emu_reg_dummy,
-+    },
-+    /* Page Request Interface Extended Capability reg group */
-+    {
-+        .grp_id     = PCIE_EXT_CAP_ID(PCI_EXT_CAP_ID_PRI),
-+        .grp_type   = XEN_PT_GRP_TYPE_EMU,
-+        .grp_size   = PCI_EXT_CAP_PRI_SIZEOF,
-+        .size_init  = xen_pt_reg_grp_size_init,
-+        .emu_regs   = xen_pt_ext_cap_emu_reg_dummy,
-+    },
-+    /* Latency Tolerance Reporting Extended Capability reg group */
-+    {
-+        .grp_id     = PCIE_EXT_CAP_ID(PCI_EXT_CAP_ID_LTR),
-+        .grp_type   = XEN_PT_GRP_TYPE_EMU,
-+        .grp_size   = PCI_EXT_CAP_LTR_SIZEOF,
-+        .size_init  = xen_pt_reg_grp_size_init,
-+        .emu_regs   = xen_pt_ext_cap_emu_reg_dummy,
-+    },
-+    /* Secondary PCIe Capability Extended Capability reg group */
-+    {
-+        .grp_id     = PCIE_EXT_CAP_ID(PCI_EXT_CAP_ID_SECPCI),
-+        .grp_type   = XEN_PT_GRP_TYPE_EMU,
-+        .grp_size   = 0x10,
-+        .size_init  = xen_pt_reg_grp_size_init,
-+        .emu_regs   = xen_pt_ext_cap_emu_reg_dummy,
-+    },
-+    /* Process Address Space ID Extended Capability reg group */
-+    {
-+        .grp_id     = PCIE_EXT_CAP_ID(PCI_EXT_CAP_ID_PASID),
-+        .grp_type   = XEN_PT_GRP_TYPE_EMU,
-+        .grp_size   = PCI_EXT_CAP_PASID_SIZEOF,
-+        .size_init  = xen_pt_reg_grp_size_init,
-+        .emu_regs   = xen_pt_ext_cap_emu_reg_dummy,
-+    },
-+    /* L1 PM Substates Extended Capability reg group */
-+    {
-+        .grp_id     = PCIE_EXT_CAP_ID(PCI_EXT_CAP_ID_L1SS),
-+        .grp_type   = XEN_PT_GRP_TYPE_EMU,
-+        .grp_size   = 0x10,
-+        .size_init  = xen_pt_reg_grp_size_init,
-+        .emu_regs   = xen_pt_ext_cap_emu_reg_dummy,
-+    },
-+    /* Precision Time Measurement Extended Capability reg group */
-+    {
-+        .grp_id     = PCIE_EXT_CAP_ID(PCI_EXT_CAP_ID_PTM),
-+        .grp_type   = XEN_PT_GRP_TYPE_EMU,
-+        .grp_size   = 0x0C,
-+        .size_init  = xen_pt_reg_grp_size_init,
-+        .emu_regs   = xen_pt_ext_cap_emu_reg_dummy,
-+    },
-+    /* M-PCIe Extended Capability reg group */
-+    {
-+        .grp_id     = PCIE_EXT_CAP_ID(0x20),
-+        .grp_type   = XEN_PT_GRP_TYPE_EMU,
-+        .grp_size   = 0x1C,
-+        .size_init  = xen_pt_reg_grp_size_init,
-+        .emu_regs   = xen_pt_ext_cap_emu_reg_dummy,
-+    },
-+    /* LN Requester (LNR) Extended Capability reg group */
-+    {
-+        .grp_id     = PCIE_EXT_CAP_ID(0x1C),
-+        .grp_type   = XEN_PT_GRP_TYPE_EMU,
-+        .grp_size   = 0x08,
-+        .size_init  = xen_pt_reg_grp_size_init,
-+        .emu_regs   = xen_pt_ext_cap_emu_reg_dummy,
-+    },
-+    /* Function Readiness Status (FRS) Extended Capability reg group */
-+    {
-+        .grp_id     = PCIE_EXT_CAP_ID(0x21),
-+        .grp_type   = XEN_PT_GRP_TYPE_EMU,
-+        .grp_size   = 0x10,
-+        .size_init  = xen_pt_reg_grp_size_init,
-+        .emu_regs   = xen_pt_ext_cap_emu_reg_dummy,
-+    },
-+    /* Readiness Time Extended Capability reg group */
-+    {
-+        .grp_id     = PCIE_EXT_CAP_ID(0x22),
-+        .grp_type   = XEN_PT_GRP_TYPE_EMU,
-+        .grp_size   = 0x0C,
-+        .size_init  = xen_pt_reg_grp_size_init,
++        .grp_size   = 0xFF,
++        .size_init  = xen_pt_ext_cap_aer_size_init,
 +        .emu_regs   = xen_pt_ext_cap_emu_reg_dummy,
 +    },
      {
