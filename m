@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73CFE737211
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 18:49:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E68C737213
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 18:49:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBeWz-0000ru-If; Tue, 20 Jun 2023 12:48:37 -0400
+	id 1qBeXt-0002BL-VS; Tue, 20 Jun 2023 12:49:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qBeWx-0000qv-66
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 12:48:35 -0400
-Received: from mail-ej1-x62c.google.com ([2a00:1450:4864:20::62c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qBeXs-00025f-9l
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 12:49:32 -0400
+Received: from mail-lj1-x22d.google.com ([2a00:1450:4864:20::22d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qBeWv-0004HQ-Ex
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 12:48:34 -0400
-Received: by mail-ej1-x62c.google.com with SMTP id
- a640c23a62f3a-986d871a9beso640327766b.1
- for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 09:48:32 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qBeXp-0004Te-DJ
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 12:49:32 -0400
+Received: by mail-lj1-x22d.google.com with SMTP id
+ 38308e7fff4ca-2b466073e19so51876121fa.1
+ for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 09:49:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687279711; x=1689871711;
+ d=linaro.org; s=google; t=1687279767; x=1689871767;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=oHJja0sseFGPbho8OKig4+L941WnlMPcDfOMYGQOS3g=;
- b=Xztpds0xzJjxtE6zRLBIzk4DGB/kuwyv3qGsbyP5BGpWtO3QAmG6Jk2zGzGFmKxzJR
- An6O44b75xqoj5npgPmuH1HBG9IVMu91Hu3XcLmJyfSmnUtobKqSVontFrEuXVxSht2a
- 5MYa1aWlaGGS+skTm4pfoPOHOxzBQ/jucYfu+atGuFSy3PSpPJ6r2p6LmzPBe3tfLVAw
- /s1ywXNCC4A+pEiyaJsq4QKIOX8t1Pq00LlbOGqjRzSPpefLLfSds+wk7EXpbUa509q/
- RejP0c82WN76DS7OrUQo6yPzmP2JL7qHUhotBNzSm3m+Zjf+r3vPqou0LnY55joDyiP7
- iKmA==
+ bh=XFnkXXRA1u93BwS7oiFDUqZ7KPxRD/eOJHkxHJI42KM=;
+ b=WZ16hjh+D5PX81su31mDdUJe0g4pFOSRs6fINwvIHCAzZpy4nzilpdf03l3kp5ij9p
+ 6OL5xQ10NAC8WlQWfv2fwaD+7XIUHkX0lkBDc6nHDy379E52OkR/uaP1c5pMfTDP36nW
+ ogYwDpSshDgMRsrKBhnsM6f+BRdLdPfJYciLbfXh3B51d28U2ZRVl/YTSvsu5YCSExl7
+ cohIZp70KDps+mD9xinCllUg+wCioGpDi6vEjvJgUj6jDZsPr59F9hLDKQnC8+DuF9nK
+ XY7ibM8uwyc2FjHfRPMcd8bm4FyiEW8SGNYukg1FqnZRXoEdKWPCne4W+dKSJHiqg7Jj
+ /m2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687279711; x=1689871711;
+ d=1e100.net; s=20221208; t=1687279767; x=1689871767;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=oHJja0sseFGPbho8OKig4+L941WnlMPcDfOMYGQOS3g=;
- b=R1bKQDu9ZX58leyAZZdQ/WgP6SJTZ8/vpPdm3hfvUKBO5B1hcjqRXUZcDQ6QqtZWIm
- ioEMFe/YTuBmZIkbcexo0RP9MhTQezbKkShY3D+S7DlfxgQFsVJSinpdMhYoRioEfdW8
- PBgvtLYyWr6o5uVGuFi+wFkx0Hq5vWAosGS64EJku73aLbizktkBNU6t/BtRHQ6f2Ha2
- 6bkbN9AQkveQPws44UbE/0nkxIUebmAOfOzRKxizxdVTZUJekNPLeSbCOKOrv062UM1s
- CEnqIMhhRMyPQWmZdfpfL19BoeD8wB5+ozL817Jqc/KWAsTBTL2uZv1wmy+K6GPAiZnW
- d8ng==
-X-Gm-Message-State: AC+VfDwfNB+UbStoGfuJ5YnaJZ8nZQDlFEDhdbS87ZmA1VYXQMIShgYl
- rVUeXdz21mF3S3rGbg2N7ZTWoA==
-X-Google-Smtp-Source: ACHHUZ7SK9cjAqBkBvZF0mm4gHbkQ/+bfgUfezm2hNZN8Cs9KlvjW/gsAUZw6ITdcXpy57/dcJA0oA==
-X-Received: by 2002:a17:907:3e88:b0:97d:cdf4:719f with SMTP id
- hs8-20020a1709073e8800b0097dcdf4719fmr13531888ejc.68.1687279711480; 
- Tue, 20 Jun 2023 09:48:31 -0700 (PDT)
+ bh=XFnkXXRA1u93BwS7oiFDUqZ7KPxRD/eOJHkxHJI42KM=;
+ b=Tr4xqJOewU//0v9M0cT0ZjOIZ87vpMrXLCTBXGqjR8ssgDiHcG5Hp01On3W0eNz7Nr
+ t7gmQyS3TmqwfA/3lGt8aj9INCNggYbJFhV8wdvoXzJiJhDfDOsY6Gm2MEWDGu4fhG/J
+ Cs8g3kNoIjmzfSZoDfGbOQHTZbuxQY/qXm3xl+qKsaL+R6j0S+stcuYMlDlGaxTMLpKo
+ czwYJwXlp6yXOM0tX+QTjYvc3aKWIuFevKyZJa2VxrICwHmlhcC4P30OJz/rgAEWHrRM
+ ogIJNfQD8ROjz2xDW2VJH0BSqZrgm3QY+Ctw77yRhk7Y5gD3L2G4+bd+80pc5j0NOen/
+ /8Jw==
+X-Gm-Message-State: AC+VfDxPLwyTuwSSlrAHnZ+dtCvMggGI4yXChEIIls3QKU5h3VXulcXQ
+ sChMmXPmTXcznacwht3LETrjsw==
+X-Google-Smtp-Source: ACHHUZ4GVhMOymHTxZtmuYjbwCDJgmzmX9jZb8EmFJOU1c5XvBWAeFwT6elKdYnIfF6lTahAfIRoHA==
+X-Received: by 2002:a2e:6e07:0:b0:2b4:4a68:a95 with SMTP id
+ j7-20020a2e6e07000000b002b44a680a95mr8711689ljc.8.1687279767580; 
+ Tue, 20 Jun 2023 09:49:27 -0700 (PDT)
 Received: from [192.168.69.115] ([176.176.183.29])
  by smtp.gmail.com with ESMTPSA id
- c24-20020a170906341800b0094f07545d40sm1659684ejb.220.2023.06.20.09.48.30
+ ks25-20020a170906f85900b0098864f474cesm1696213ejb.126.2023.06.20.09.49.26
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 20 Jun 2023 09:48:31 -0700 (PDT)
-Message-ID: <666fbda6-33d5-48cc-3e12-6045617bde8d@linaro.org>
-Date: Tue, 20 Jun 2023 18:48:29 +0200
+ Tue, 20 Jun 2023 09:49:27 -0700 (PDT)
+Message-ID: <a97f13d5-9f40-8109-3182-c359a08435ec@linaro.org>
+Date: Tue, 20 Jun 2023 18:49:25 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.12.0
-Subject: Re: [PATCH 1/2] target/sparc: Set TCG_GUEST_DEFAULT_MO
+Subject: Re: [PATCH 2/2] configs: Enable MTTCG for sparc, sparc64
 Content-Language: en-US
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
 Cc: mark.cave-ayland@ilande.co.uk, atar4qemu@gmail.com,
  Fabien Chouteau <chouteau@adacore.com>,
  Frederic Konrad <konrad.frederic@yahoo.fr>
 References: <20230620164040.912490-1-richard.henderson@linaro.org>
- <20230620164040.912490-2-richard.henderson@linaro.org>
+ <20230620164040.912490-3-richard.henderson@linaro.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230620164040.912490-2-richard.henderson@linaro.org>
+In-Reply-To: <20230620164040.912490-3-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62c;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::22d;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x22d.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -96,16 +96,18 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 20/6/23 18:40, Richard Henderson wrote:
-> Always use TSO, per the Oracle 2015 manual.
-> This is slightly less restrictive than the TCG_MO_ALL default,
-> and happens to match the i386 model, which will eliminate a few
-> extra barriers on that host.
-> 
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->   target/sparc/cpu.h | 23 +++++++++++++++++++++++
->   1 file changed, 23 insertions(+)
+> This will be of small comfort to sparc64, because both
+> sun4u and sun4v board models force max_cpus = 1.
+> But it does enable actual smp for sparc32 sun4m.
+
+Yay \o/
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>   configs/targets/sparc-softmmu.mak   | 1 +
+>   configs/targets/sparc64-softmmu.mak | 1 +
+>   2 files changed, 2 insertions(+)
 
 
