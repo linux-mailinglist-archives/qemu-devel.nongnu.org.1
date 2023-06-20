@@ -2,78 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B6FB736732
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 11:11:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D45573673A
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Jun 2023 11:12:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBXOT-0002qT-9l; Tue, 20 Jun 2023 05:11:21 -0400
+	id 1qBXOf-0003Ai-Ch; Tue, 20 Jun 2023 05:11:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qBXOP-0002oB-IL
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 05:11:17 -0400
-Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
+ id 1qBXOb-00030p-9m
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 05:11:30 -0400
+Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qBXOO-0000WD-2M
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 05:11:17 -0400
-Received: by mail-ej1-x635.google.com with SMTP id
- a640c23a62f3a-988a5383fd4so375947266b.0
- for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 02:11:14 -0700 (PDT)
+ id 1qBXOZ-0000Xb-Lo
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 05:11:29 -0400
+Received: by mail-ed1-x52b.google.com with SMTP id
+ 4fb4d7f45d1cf-51a2c60c529so5447395a12.3
+ for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 02:11:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687252273; x=1689844273;
+ d=linaro.org; s=google; t=1687252283; x=1689844283;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=yq68unAUdMneW4tN6/iQG1fgqeqN99gloUkD0F59B5g=;
- b=lBPd+kTusZHoxz5EdU23W+yALUmezNVSJil6xsybN07BwrnjXQq1h3GNEJzS+fqlc9
- kXlHT8OEFY14A5eDY6pdspX4fZ6DhgSUWbO0slcCLNkdslkjL256vmrn2UA9d+zJJOZO
- 69se5JBqLsslAd9hBGtpBELZpCbI7vr/lwDuBCKOH8nMxpjiLYERrnOUIHDz3tKqxxvE
- tbv0vQe8D/IBqYRsnxZkgZP51Js3TMPMdmGEwXQo4O0kkWOKC8uj42zTOYZrulevbbKw
- op0F63I7+9oFlAOWiA2LeDoAxEKMOhHKVAxuB2oQ3yn7lyN59VpADddDidhLKs2nbIl2
- Oipw==
+ bh=CDSN6ihfk9NmZslQbaGwstNERXKLRDtFfVZy3z9jsxM=;
+ b=CcJVQ03/ZZhLYek+kFJyTjfDKYTRoqvi/ck2tqC2IgFOyLY6syVXT4IM9c4DgmaQZj
+ 4FBgh/Sm+V7QfPJMysNT+0jduv35m3BNeyNegiJaMRygCml4fFVXDnV8cEkPmVQ3tBuN
+ bzEpFgrF8gh2/kfGRqA906Z8EwWt28ipNnys7lTRvhbRsVaWXsoDTKS4K38xXiX5j/JN
+ NWTpcGf78I9G4G70f7zvMOzxA06In+2sH1uX8fle5dTL/JZIV3AyU63vTuwIKreNT/SL
+ ygS9d6m9YX1TN4BU/eK5sCvnBuHvBrTcl6Y9XXuyVCFVfK+8Pub0Y77sPlRFmYQ3yyVg
+ Tsfw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687252273; x=1689844273;
+ d=1e100.net; s=20221208; t=1687252283; x=1689844283;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=yq68unAUdMneW4tN6/iQG1fgqeqN99gloUkD0F59B5g=;
- b=Q1xrfcOk0YZhilwXu2+b4vclmkgRJYtjJQ6Qa8lmWy19F4FJichfF1R9qB8xAjVRrw
- oZcZfJmgfnlQ9AuoLddXytvtbr/vrq+K8q4GZ4x8eACTy7eBa2P/mYYtQZBddiiYPME6
- C/qSDZIy3uZu3q+DFd07MS+YHYs+B9hspNQTMQq4dg6BT+I8Qgn61q6kYTCvfUdbWmxd
- hhQIeq5Lqsb1RTWunJojTC84UmtP0bpH6MI1Cp/qrmQgl91OBsfRXjvAzKA/MyELUlsH
- e2ryVeNPO2Zh10tcE+NXEv9lOpamNF57OLD3AxcI1UpFYCyQVhVMSmU9rLfE2iRQaklU
- +LCg==
-X-Gm-Message-State: AC+VfDw3tng7FoO6X66ta83RJAFTEXIGPgP2lIPbi+PkTQHNJiCAfpge
- 3dG0E+3ugVtDiP/gph4wpPMVGQ==
-X-Google-Smtp-Source: ACHHUZ5lQD7Fwy5K2bc0HXy1L/5BRlzDtSrezKkYa+KNEbePQzSKPULh9GusX+/VtAIfPc9QuV/z6A==
-X-Received: by 2002:a17:907:360a:b0:982:a022:a540 with SMTP id
- bk10-20020a170907360a00b00982a022a540mr12929152ejc.11.1687252273805; 
- Tue, 20 Jun 2023 02:11:13 -0700 (PDT)
+ bh=CDSN6ihfk9NmZslQbaGwstNERXKLRDtFfVZy3z9jsxM=;
+ b=iHHdfiaNdUii4y3+MC53wp3HSPxAP5m4zqzK7BCNjAo3jSEgd9E7yh2e6Emkwt8UdA
+ NuwQWx3IZDQi68DK0RKRfvrEFBUuqFZ+J7zb679Oe8YNFRSVKmF/iq4IjYzh/H/n8d/O
+ wHoalRRyWAIfjx/cTHPhRjdpyKCpILill8gM8YK+JjTlUME1PdsxqZ234jhh26XX6c9o
+ /aed9iORXsK5mwrzqeB70y9nM5OGOoQ3rme2Q3oCgeTkg0Chbb4wzuW42BN2mcdhcbtS
+ GS8bOofP+CXGGUGsQwl7GuI3STKawDWGYDhXhGlMtKnc712dG2Bz1vjhghrDSV4b+QYS
+ 1xnw==
+X-Gm-Message-State: AC+VfDxwzBY+tOqs+9LwYzBNHH7rU7BygEO2OuTOecPifxunMBLSrF/7
+ zS2tlSDl8SJmrPyydEm2/+6EyA==
+X-Google-Smtp-Source: ACHHUZ5cTOLj0SYHBlDQIPxWk2luYXZseLaD89ABTtuubipFeoVhIv3Lfksw5Is9HshcgMdlUERgjA==
+X-Received: by 2002:a17:907:7dab:b0:989:2cfb:444 with SMTP id
+ oz43-20020a1709077dab00b009892cfb0444mr1035123ejc.43.1687252283253; 
+ Tue, 20 Jun 2023 02:11:23 -0700 (PDT)
 Received: from [192.168.69.129] ([176.176.183.29])
  by smtp.gmail.com with ESMTPSA id
- fy25-20020a170906b7d900b00969f25b96basm976952ejb.204.2023.06.20.02.11.12
+ s8-20020a170906168800b0098884f86e41sm988520ejd.123.2023.06.20.02.11.22
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 20 Jun 2023 02:11:13 -0700 (PDT)
-Message-ID: <bcbadbf1-5905-713d-799f-101f0cc22923@linaro.org>
-Date: Tue, 20 Jun 2023 11:11:11 +0200
+ Tue, 20 Jun 2023 02:11:22 -0700 (PDT)
+Message-ID: <b317a2a5-f14a-7c5d-f324-997663e48460@linaro.org>
+Date: Tue, 20 Jun 2023 11:11:20 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PATCH 2/9] MAINTAINERS: Add reviewer for PowerPC TCG CPUs
+Subject: Re: [PATCH 3/9] MAINTAINERS: Add reviewer for XIVE
 Content-Language: en-US
 To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>, qemu-ppc@nongnu.org,
  Daniel Henrique Barboza <danielhb413@gmail.com>
-Cc: qemu-devel@nongnu.org, Nicholas Piggin <npiggin@gmail.com>
+Cc: qemu-devel@nongnu.org, =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?=
+ <fbarrat@linux.ibm.com>
 References: <20230620055911.187065-1-clg@kaod.org>
- <20230620055911.187065-3-clg@kaod.org>
+ <20230620055911.187065-4-clg@kaod.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230620055911.187065-3-clg@kaod.org>
+In-Reply-To: <20230620055911.187065-4-clg@kaod.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::635;
- envelope-from=richard.henderson@linaro.org; helo=mail-ej1-x635.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ed1-x52b.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -97,10 +98,10 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 6/20/23 07:59, Cédric Le Goater wrote:
-> Nick has great knowledge of the PowerPC CPUs, software and hardware.
-> Add him as a reviewer on CPU TCG modeling.
+> Fred discusses frequently with the IBM HW designers, he is fluent in
+> XIVE logic, add him as a reviewer.
 > 
-> Cc: Nicholas Piggin<npiggin@gmail.com>
+> Cc: Frédéric Barrat<fbarrat@linux.ibm.com>
 > Signed-off-by: Cédric Le Goater<clg@kaod.org>
 > ---
 >   MAINTAINERS | 1 +
@@ -108,6 +109,6 @@ On 6/20/23 07:59, Cédric Le Goater wrote:
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-
 r~
+
 
