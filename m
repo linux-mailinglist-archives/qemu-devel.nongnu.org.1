@@ -2,81 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1058873904D
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 21:42:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5998B739067
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 21:51:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qC3i2-0001WP-QI; Wed, 21 Jun 2023 15:41:42 -0400
+	id 1qC3pd-0005AB-Ow; Wed, 21 Jun 2023 15:49:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qC3i1-0001WH-9s
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 15:41:41 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1qC3pb-00059w-53
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 15:49:31 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qC3hz-0002K3-V4
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 15:41:41 -0400
+ id 1qC3pZ-0004RS-Hz
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 15:49:30 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687376499;
+ s=mimecast20190719; t=1687376968;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=21/fMto7FPWz3MHKRHGZQero3o5nwN4vYVOjaabaGIs=;
- b=K154MG9rtHUa7pf57X7wQoQNulbRWSI8v+ILMIchz8+9BYB9f/pGTk9ha0GpCOoFzTle0G
- 5CMAnBgg+LuzQbREDN9v+Yd0yW8n1JL4gbjCdKfRz3nE/JcVKOkk4gpgC5+6UTzZDkm+2l
- pYzH+rdrUn08nPPG2AJM85FKL3X8DqU=
-Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
- [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=1GsdMr/zx34JXZ1v5mFs8a7oBOVi435yn45IQBG0bMs=;
+ b=fJTEID2LjzW1IGuPw47kZn0me4oEulnLZ0E64VMJT2+5BkhIx7+cDa9DZrDJvAe3qKvUcC
+ U+hlX+JaqccDrx1ILV95HVlAwXRwY6vHlMMNJjC+LKRUo31NpyXQ2hih/fPTT1EsEcZgxr
+ 6+ZugvVgLUx5FqgoJd1f2BacK9SISnQ=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-644-bY3VzP6-Ni-MWlmzAGQnVA-1; Wed, 21 Jun 2023 15:41:37 -0400
-X-MC-Unique: bY3VzP6-Ni-MWlmzAGQnVA-1
-Received: by mail-lf1-f70.google.com with SMTP id
- 2adb3069b0e04-4f8727c7fb6so3161137e87.0
- for <qemu-devel@nongnu.org>; Wed, 21 Jun 2023 12:41:37 -0700 (PDT)
+ us-mta-7-3TT0pdpHMbegnocz_MNNrA-1; Wed, 21 Jun 2023 15:49:27 -0400
+X-MC-Unique: 3TT0pdpHMbegnocz_MNNrA-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-3f9b0f64149so18888075e9.0
+ for <qemu-devel@nongnu.org>; Wed, 21 Jun 2023 12:49:26 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687376496; x=1689968496;
- h=mime-version:message-id:date:reply-to:user-agent:references
- :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=21/fMto7FPWz3MHKRHGZQero3o5nwN4vYVOjaabaGIs=;
- b=FysN4hclfmiGGQ36g738ZnI6gj5kunPfVb5bQqasxPqGlK9iU0CGXUF6DM62OyGKY4
- cxUe8OZN5hmwnNoGMUTE102YGKUh/km4G4P62m7t52VydNK0DXgKOfRgVxeANpNByiVn
- 0IfB3hw4BjM917kHr39gtEeZkL7td2B9tDzsVKw0TcO+5jMhFr4CpTCEd/uk3Kgr+I/Y
- qkOFWAJ9Zmb/4+OIcxtAY5iJ0MJ2zWLw9INlx7EXSseEiNc8p5UWlfK9NLC/FMGEryqu
- 05bvrT7H+kohxBm3xbDlv72hIat8Jyn6lBsoTo8qKfqpNTOqOM9k3YDjZpS9v2T4HjhP
- 1qng==
-X-Gm-Message-State: AC+VfDwZyrw0lD9u/LkOwFA1x8ebe5Mu3UrZQt68LXmUJhVQokeWev1e
- fCGB9a+TkHcTQ4aR93iECWdr/eJihi0/Krz+ocusym63NFYPwRjiuneaaJnI6U3zi9FojUjwDEA
- 000ntSZwtDRWhJdU=
-X-Received: by 2002:a19:5e01:0:b0:4f6:45af:70b8 with SMTP id
- s1-20020a195e01000000b004f645af70b8mr9368071lfb.58.1687376496312; 
- Wed, 21 Jun 2023 12:41:36 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7btsAuTz3J6MNMj91spmUZRBTsjyjAZ4bf6btQDSaesJ4lW0FOB+xAuOldahHHc6U2yeSwsQ==
-X-Received: by 2002:a19:5e01:0:b0:4f6:45af:70b8 with SMTP id
- s1-20020a195e01000000b004f645af70b8mr9368058lfb.58.1687376496004; 
- Wed, 21 Jun 2023 12:41:36 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1687376966; x=1689968966;
+ h=content-transfer-encoding:mime-version:message-id:date:reply-to
+ :user-agent:references:in-reply-to:subject:cc:to:from
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=1GsdMr/zx34JXZ1v5mFs8a7oBOVi435yn45IQBG0bMs=;
+ b=O15WqnLRoNS6wN4iiG3STgCQy1IUcLgjdf8OqGRc5SNvDJZry69xmUZZvFPp17KARs
+ kWa2VPiF8vlYV/1Geiv1lAQnwnX1K3PYS0eU/XmS6kiWF81eau8Jazp0j68fVGiral+C
+ V+Y3G8FC1piaD3KuwajNzSRL5Xy9thMpipX8DWzYmKsdj/M2jEAC6mwakxHIry99xYq5
+ m2LU/OdhWIeV8kd9RptljH+DQBr/XlgOYbWavuO8bFflGM6GrcH4F/By/sZNH4N4+yZG
+ K6uy94B0ALS6Mu/2YzQrXXqJ95SL4ECXH5ONkYzFXbRUjR4AndwU9jPR2w4HlkqOwqVR
+ d44w==
+X-Gm-Message-State: AC+VfDybmXzyBvIye7f48EeERDnFk/jFbqj9QFyTiXvIRRpn1y6aOQnG
+ 83n+9OR85v+U64rYOk1lL+Kp3tmsVVO/xRFBkQICewVDyYy2DRSlfTNd503DRBaD+9jVUyLjENm
+ WqWyB9B6JmeZ/0UI=
+X-Received: by 2002:a05:600c:10d1:b0:3f7:a20a:561d with SMTP id
+ l17-20020a05600c10d100b003f7a20a561dmr15314625wmd.8.1687376965947; 
+ Wed, 21 Jun 2023 12:49:25 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6twwwVC1Ib5iHWiyaz+lkFowPMVyfy7GKzI6dvf81hiq0xnUYml+Ptla1hY+YnLD6Vpi7EbQ==
+X-Received: by 2002:a05:600c:10d1:b0:3f7:a20a:561d with SMTP id
+ l17-20020a05600c10d100b003f7a20a561dmr15314613wmd.8.1687376965582; 
+ Wed, 21 Jun 2023 12:49:25 -0700 (PDT)
 Received: from redhat.com (static-92-120-85-188.ipcom.comunitel.net.
  [188.85.120.92]) by smtp.gmail.com with ESMTPSA id
- p25-20020a1c7419000000b003f8fac0ad4bsm5757277wmc.17.2023.06.21.12.41.34
+ w21-20020a1cf615000000b003f8126bcf34sm16828865wmc.48.2023.06.21.12.49.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 21 Jun 2023 12:41:35 -0700 (PDT)
+ Wed, 21 Jun 2023 12:49:24 -0700 (PDT)
 From: Juan Quintela <quintela@redhat.com>
-To: Wei Wang <wei.w.wang@intel.com>
-Cc: peterx@redhat.com,  lei4.wang@intel.com,  qemu-devel@nongnu.org
-Subject: Re: [PATCH v2 1/2] migration: enfocre multifd and postcopy preempt
- to be set before incoming
-In-Reply-To: <20230606101910.20456-2-wei.w.wang@intel.com> (Wei Wang's message
- of "Tue, 6 Jun 2023 18:19:09 +0800")
-References: <20230606101910.20456-1-wei.w.wang@intel.com>
- <20230606101910.20456-2-wei.w.wang@intel.com>
+To: Chuang Xu <xuchuangxclwt@bytedance.com>
+Cc: qemu-devel@nongnu.org,  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Yanan Wang <wangyanan55@huawei.com>,  Markus Armbruster
+ <armbru@redhat.com>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>,  "Dr.
+ David Alan Gilbert" <dgilbert@redhat.com>,  Eduardo Habkost
+ <eduardo@habkost.net>,  Eric Blake <eblake@redhat.com>
+Subject: Re: [PATCH v2 04/11] multifd: Count the number of bytes sent correctly
+In-Reply-To: <CALophutb+J2Qqa-msbY_aW+sz-OPW-XoQQLfCVfEXLfcaWa8xQ@mail.gmail.com>
+ (Chuang Xu's message of "Fri, 16 Jun 2023 03:53:10 -0500")
+References: <20230130080956.3047-1-quintela@redhat.com>
+ <20230130080956.3047-5-quintela@redhat.com>
+ <CALophutb+J2Qqa-msbY_aW+sz-OPW-XoQQLfCVfEXLfcaWa8xQ@mail.gmail.com>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
-Date: Wed, 21 Jun 2023 21:41:34 +0200
-Message-ID: <87fs6ka9ht.fsf@secure.mitica>
+Date: Wed, 21 Jun 2023 21:49:24 +0200
+Message-ID: <87bkh8a94r.fsf@secure.mitica>
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -102,23 +110,101 @@ Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Wei Wang <wei.w.wang@intel.com> wrote:
-> qemu_start_incoming_migration needs to check the number of multifd
-> channels or postcopy ram channels to configure the backlog parameter (i.e.
-> the maximum length to which the queue of pending connections for sockfd
-> may grow) of listen(). So enforce the usage of postcopy-preempt and
-> multifd as below:
-> - need to use "-incoming defer" on the destination; and
-> - set_capability and set_parameter need to be done before migrate_incoming
+Chuang Xu <xuchuangxclwt@bytedance.com> wrote:
+> Hi,Juan,
 >
-> Otherwise, disable the use of the features and report error messages to
-> remind users to adjust the commands.
+> On 2023/1/30 =E4=B8=8B=E5=8D=884:09, Juan Quintela wrote:
+>> Current code asumes that all pages are whole.  That is not true for
+>> example for compression already.  Fix it for creating a new field
+>> ->sent_bytes that includes it.
+>>
+>> All ram_counters are used only from the migration thread, so we have
+>> two options:
+>> - put a mutex and fill everything when we sent it (not only
+>>    ram_counters, also qemu_file->xfer_bytes).
+>> - Create a local variable that implements how much has been sent
+>>    through each channel.  And when we push another packet, we "add" the
+>>    previous stats.
+>>
+>> I choose two due to less changes overall.  On the previous code we
+>> increase transferred and then we sent.  Current code goes the other
+>> way around.  It sents the data, and after the fact, it updates the
+>> counters.  Notice that each channel can have a maximum of half a
+>> megabyte of data without counting, so it is not very important.
+>>
+>> Signed-off-by: Juan Quintela <quintela@redhat.com>
+>> ---
+>>   migration/multifd.h | 2 ++
+>>   migration/multifd.c | 6 ++++--
+>>   2 files changed, 6 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/migration/multifd.h b/migration/multifd.h
+>> index e2802a9ce2..36f899c56f 100644
+>> --- a/migration/multifd.h
+>> +++ b/migration/multifd.h
+>> @@ -102,6 +102,8 @@ typedef struct {
+>>       uint32_t flags;
+>>       /* global number of generated multifd packets */
+>>       uint64_t packet_num;
+>> +    /* How many bytes have we sent on the last packet */
+>> +    uint64_t sent_bytes;
+>>       /* thread has work to do */
+>>       int pending_job;
+>>       /* array of pages to sent.
+>> diff --git a/migration/multifd.c b/migration/multifd.c
+>> index 61cafe4c76..cd26b2fda9 100644
+>> --- a/migration/multifd.c
+>> +++ b/migration/multifd.c
+>> @@ -394,7 +394,6 @@ static int multifd_send_pages(QEMUFile *f)
+>>       static int next_channel;
+>>       MultiFDSendParams *p =3D NULL; /* make happy gcc */
+>>       MultiFDPages_t *pages =3D multifd_send_state->pages;
+>> -    uint64_t transferred;
+>>
+>>       if (qatomic_read(&multifd_send_state->exiting)) {
+>>           return -1;
+>> @@ -429,7 +428,8 @@ static int multifd_send_pages(QEMUFile *f)
+>>       p->packet_num =3D multifd_send_state->packet_num++;
+>>       multifd_send_state->pages =3D p->pages;
+>>       p->pages =3D pages;
+>> -    transferred =3D ((uint64_t) pages->num) * p->page_size + p->packet_=
+len;
+>> +    uint64_t transferred =3D p->sent_bytes;
+>> +    p->sent_bytes =3D 0;
+>>       qemu_file_acct_rate_limit(f, transferred);
+>>       qemu_mutex_unlock(&p->mutex);
+>>       stat64_add(&ram_atomic_counters.multifd_bytes, transferred);
+>> @@ -719,6 +719,8 @@ static void *multifd_send_thread(void *opaque)
+>>               }
+>>
+>>               qemu_mutex_lock(&p->mutex);
+>> +            p->sent_bytes +=3D p->packet_len;
+>> +            p->sent_bytes +=3D p->next_packet_size;
 >
-> Signed-off-by: Wei Wang <wei.w.wang@intel.com>
-> Reviewed-by: Peter Xu <peterx@redhat.com>
+> Consider a scenario where some normal pages are transmitted in the first =
+round,
+> followed by several consecutive rounds of zero pages. When zero pages
+> are transmitted,
+> next_packet_size of first round is still incorrectly added to
+> sent_bytes. If we set a rate
+> limiting for dirty page transmission, the transmission performance of
+> multi zero check
+> will degrade.
+>
+> Maybe we should set next_packet_size to 0 in multifd_send_pages()?
 
-Reviewed-by: Juan Quintela <quintela@redhat.com>
+See my series of migration atomic counters O:-)
 
-queued.
+You are right with your comments, that is the reason why it took me so
+many patches to fix it properly.
+
+After the last serie on the list that set_bytes variable don't exist
+anymore and I just do (with atomic operations):
+
+multifd_bytes +=3D size_of_write_just_done;
+
+And no more sheanigans.
+
+Thanks, Juan.
 
 
