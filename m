@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D3B57386CE
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 16:24:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2309F7386D4
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 16:24:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qByki-0002Nc-8O; Wed, 21 Jun 2023 10:24:08 -0400
+	id 1qBykn-0002vg-SU; Wed, 21 Jun 2023 10:24:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1qBykf-0002Mc-Sy
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 10:24:05 -0400
+ id 1qBykl-0002eH-In
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 10:24:11 -0400
 Received: from shirlock.uni-paderborn.de ([2001:638:502:c003::15])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1qByke-00015u-AH
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 10:24:05 -0400
+ id 1qBykj-00017J-Sh
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 10:24:11 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=mail.uni-paderborn.de; s=20170601; h=Content-Transfer-Encoding:MIME-Version
  :References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=OmDVJgJ9c5C1GWkJRO4KPh52S2VQzBCHwvl67xsKF9s=; b=LqNm3ofPIMKvwJYF7u7grqLDzq
- yr6xfW0WAvuQcI8Dy1qsjfYpXKZO/Q1Pkr7ALgMPUgn4e9Ot9QavIHnKfuHu3YnXI7+Gmry4uZ/a9
- AVdK2QCzf5UzRj5ve/kRaWzTgdbGRHOl650wgxAqYNOg15uVu7ExzDsg0J/8JuS85/1E=;
+ bh=/htau6bSKfYD8Y7NTksXnUd7vYWE0/n0flv6UfvEMtw=; b=uP+2AwoziWgmtFzPKO3kmeLSyr
+ HC4RcVqCld0nkXYIJ5YbM2BwCPm/M1KRPS32CPhq5Bmb6rhoQ1pVtv2ePykyEJ7uXiUwHx2uUIBbt
+ gemYpAo19H7AsaUGbC/Xq8F/DVs5HTt62A5RpAUXhEyr/Le/675dSplnG0dfnX8fgz2o=;
 X-Envelope-From: <kbastian@mail.uni-paderborn.de>
 From: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
 To: qemu-devel@nongnu.org
 Cc: kbastian@mail.uni-paderborn.de,
 	richard.henderson@linaro.org
-Subject: [PATCH v4 6/8] target/tricore: Implement privilege level for all insns
-Date: Wed, 21 Jun 2023 16:23:00 +0200
-Message-Id: <20230621142302.1648383-7-kbastian@mail.uni-paderborn.de>
+Subject: [PATCH v4 7/8] target/tricore: Honour privilege changes on PSW write
+Date: Wed, 21 Jun 2023 16:23:01 +0200
+Message-Id: <20230621142302.1648383-8-kbastian@mail.uni-paderborn.de>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230621142302.1648383-1-kbastian@mail.uni-paderborn.de>
 References: <20230621142302.1648383-1-kbastian@mail.uni-paderborn.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-PMX-Version: 6.4.9.2830568, Antispam-Engine: 2.7.2.2107409,
- Antispam-Data: 2023.6.21.141216, AntiVirus-Engine: 6.0.0,
+ Antispam-Data: 2023.6.21.141517, AntiVirus-Engine: 6.0.0,
  AntiVirus-Data: 2023.6.6.600001
-X-Sophos-SenderHistory: ip=79.202.219.6, fs=1202333, da=174966506, mc=135, sc=0,
- hc=135, sp=0, fso=1202333, re=0, sd=0, hd=0
+X-Sophos-SenderHistory: ip=79.202.219.6, fs=1202339, da=174966512, mc=137, sc=0,
+ hc=137, sp=0, fso=1202339, re=0, sd=0, hd=0
 X-IMT-Source: Intern
 X-IMT-Spam-Score: 0.0 ()
 X-IMT-Authenticated-Sender: uid=kbastian,ou=People,o=upb,c=de
@@ -72,110 +72,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+the CPU can change the privilege level by writing the corresponding bits
+in PSW. If this happens all instructions after this 'mtcr' in the TB are
+translated with the wrong privilege level. So we have to exit to the
+cpu_loop() and start translating again with the new privilege level.
+
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
 ---
- target/tricore/translate.c | 43 +++++++++++++++++++++++++++++---------
- 1 file changed, 33 insertions(+), 10 deletions(-)
+ target/tricore/translate.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/target/tricore/translate.c b/target/tricore/translate.c
-index 1a0c6d35d3..1d570b49ff 100644
+index 1d570b49ff..71b6209af4 100644
 --- a/target/tricore/translate.c
 +++ b/target/tricore/translate.c
-@@ -387,7 +387,7 @@ static inline void gen_mtcr(DisasContext *ctx, TCGv r1,
-             }
-         }
-     } else {
--        /* generate privilege trap */
-+        generate_trap(ctx, TRAPC_PROT, TIN1_PRIV);
-     }
+@@ -333,7 +333,6 @@ static void gen_swapmsk(DisasContext *ctx, int reg, TCGv ea)
+     tcg_gen_mov_tl(cpu_gpr_d[reg], temp);
  }
  
-@@ -3373,7 +3373,11 @@ static void decode_sc_opc(DisasContext *ctx, int op1)
-         tcg_gen_andi_tl(cpu_gpr_d[15], cpu_gpr_d[15], const16);
-         break;
-     case OPC1_16_SC_BISR:
--        gen_helper_1arg(bisr, const16 & 0xff);
-+        if (ctx->priv == TRICORE_PRIV_SM) {
-+            gen_helper_1arg(bisr, const16 & 0xff);
-+        } else {
-+            generate_trap(ctx, TRAPC_PROT, TIN1_PRIV);
-+        }
-         break;
-     case OPC1_16_SC_LD_A:
-         gen_offset_ld(ctx, cpu_gpr_a[15], cpu_gpr_a[10], const16 * 4, MO_LESL);
-@@ -5234,7 +5238,11 @@ static void decode_rc_serviceroutine(DisasContext *ctx)
- 
-     switch (op2) {
-     case OPC2_32_RC_BISR:
--        gen_helper_1arg(bisr, const9);
-+        if (ctx->priv == TRICORE_PRIV_SM) {
-+            gen_helper_1arg(bisr, const9);
-+        } else {
-+            generate_trap(ctx, TRAPC_PROT, TIN1_PRIV);
-+        }
-         break;
-     case OPC2_32_RC_SYSCALL:
-         generate_trap(ctx, TRAPC_SYSCALL, const9 & 0xff);
-@@ -7882,20 +7890,33 @@ static void decode_sys_interrupts(DisasContext *ctx)
-         /* raise EXCP_DEBUG */
-         break;
-     case OPC2_32_SYS_DISABLE:
--        tcg_gen_andi_tl(cpu_ICR, cpu_ICR, ~ctx->icr_ie_mask);
-+        if (ctx->priv == TRICORE_PRIV_SM || ctx->priv == TRICORE_PRIV_UM1) {
-+            tcg_gen_andi_tl(cpu_ICR, cpu_ICR, ~ctx->icr_ie_mask);
-+        } else {
-+            generate_trap(ctx, TRAPC_PROT, TIN1_PRIV);
-+        }
-         break;
-     case OPC2_32_SYS_DISABLE_D:
-         if (has_feature(ctx, TRICORE_FEATURE_16)) {
--            tcg_gen_extract_tl(cpu_gpr_d[r1], cpu_ICR, ctx->icr_ie_offset, 1);
--            tcg_gen_andi_tl(cpu_ICR, cpu_ICR, ~ctx->icr_ie_mask);
-+            if (ctx->priv == TRICORE_PRIV_SM || ctx->priv == TRICORE_PRIV_UM1) {
-+                tcg_gen_extract_tl(cpu_gpr_d[r1], cpu_ICR,
-+                        ctx->icr_ie_offset, 1);
-+                tcg_gen_andi_tl(cpu_ICR, cpu_ICR, ~ctx->icr_ie_mask);
-+            } else {
-+                generate_trap(ctx, TRAPC_PROT, TIN1_PRIV);
-+            }
-         } else {
-             generate_trap(ctx, TRAPC_INSN_ERR, TIN2_IOPC);
-         }
-     case OPC2_32_SYS_DSYNC:
-         break;
-     case OPC2_32_SYS_ENABLE:
--        tcg_gen_ori_tl(cpu_ICR, cpu_ICR, ctx->icr_ie_mask);
--        ctx->base.is_jmp = DISAS_EXIT_UPDATE;
-+        if (ctx->priv == TRICORE_PRIV_SM || ctx->priv == TRICORE_PRIV_UM1) {
-+            tcg_gen_ori_tl(cpu_ICR, cpu_ICR, ctx->icr_ie_mask);
+-
+ /* We generate loads and store to core special function register (csfr) through
+    the function gen_mfcr and gen_mtcr. To handle access permissions, we use 3
+    makros R, A and E, which allow read-only, all and endinit protected access.
+@@ -381,6 +380,7 @@ static inline void gen_mtcr(DisasContext *ctx, TCGv r1,
+         /* since we're caching PSW make this a special case */
+         if (offset == 0xfe04) {
+             gen_helper_psw_write(cpu_env, r1);
 +            ctx->base.is_jmp = DISAS_EXIT_UPDATE;
-+        } else {
-+            generate_trap(ctx, TRAPC_PROT, TIN1_PRIV);
-+        }
-         break;
-     case OPC2_32_SYS_ISYNC:
-         break;
-@@ -7923,7 +7944,7 @@ static void decode_sys_interrupts(DisasContext *ctx)
-             gen_set_label(l1);
-             ctx->base.is_jmp = DISAS_EXIT;
          } else {
--            /* generate privilege trap */
-+            generate_trap(ctx, TRAPC_PROT, TIN1_PRIV);
-         }
-         break;
-     case OPC2_32_SYS_RSLCX:
-@@ -7936,7 +7957,9 @@ static void decode_sys_interrupts(DisasContext *ctx)
-         if (has_feature(ctx, TRICORE_FEATURE_16)) {
-             if (ctx->priv == TRICORE_PRIV_SM || ctx->priv == TRICORE_PRIV_UM1) {
-                 tcg_gen_deposit_tl(cpu_ICR, cpu_ICR, cpu_gpr_d[r1], 8, 1);
--            } /* else raise privilege trap */
-+            } else {
-+                generate_trap(ctx, TRAPC_PROT, TIN1_PRIV);
-+            }
-         } else {
-             generate_trap(ctx, TRAPC_INSN_ERR, TIN2_IOPC);
-         }
+             switch (offset) {
+ #include "csfr.h.inc"
 -- 
 2.40.1
 
