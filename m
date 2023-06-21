@@ -2,87 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 390E0738827
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 16:56:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A156738833
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 16:58:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBzFT-0002C7-4n; Wed, 21 Jun 2023 10:55:55 -0400
+	id 1qBzHx-0007TM-L3; Wed, 21 Jun 2023 10:58:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yongxuan.wang@sifive.com>)
- id 1qBzFF-00029o-PT
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 10:55:42 -0400
-Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <yongxuan.wang@sifive.com>)
- id 1qBzFC-0006Zs-HT
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 10:55:40 -0400
-Received: by mail-pf1-x432.google.com with SMTP id
- d2e1a72fcca58-6686c74183cso3667945b3a.1
- for <qemu-devel@nongnu.org>; Wed, 21 Jun 2023 07:55:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1687359337; x=1689951337;
- h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
- :cc:subject:date:message-id:reply-to;
- bh=Bm3bHXx4XMJAkVaSJSU1IJsxlNn6HtEgEpiQJjVUZmo=;
- b=O8sk7FHInMACG9ySk7R5Lw96Ppq7rfHRj/mfnakudhrcsihKyTrVoWE8r3o+HlyeQn
- 6y7yl2qvLuxPQf/NUE0CBwIQ2nSjsfhUxkdhO0GDZL2a9iskMyLyKc6XLJo1YMVYMjHJ
- mcW4tG38ouETfzLhIHWW/QUfbncpbIIxvlTgW5SDXbcipcx6OyxXayPP4eAa3FneE2IM
- tQj4ATcF92hdTWQwtzRKwLI16uJg0n0w1qgBT58S95SaNZelxukpVUOrt/DtZtdYJwCA
- OrNQukMaiDfnmXf8UlpKrXt0MzqzA5FO2J5owya39oNgWPYkrtYSMWP8e+V5DcwPhgfo
- DD9w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687359337; x=1689951337;
- h=references:in-reply-to:message-id:date:subject:cc:to:from
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Bm3bHXx4XMJAkVaSJSU1IJsxlNn6HtEgEpiQJjVUZmo=;
- b=C49K/oj4iw6r+1vahnb5gv6Q4X7y1A0W1e66mlNfBZvfF/JAa9FtSsxRsCs7Tyy444
- Fb6l5jruXNaH25/VB7ePZ4D+GrD4SBBUuwm31FCCH6btWz7CpOZsvLW/CPh7cDt3q60B
- iYZ5ZevRBs8wq14RpSHzRiT8WUj/mPZu4KU6LyOZHVCJLrrwn63RX3QOOqJy7cWUGirO
- pxWJO5URx0h9vS+2gs8WZkZuSaeDAX7tXRXvwKCkWwG1hF63AJUvJlYyoAsRaebs9m8a
- a1kvSEvapN5+SMm6l1qx1X+zGkyFGiB7h1FkRrQGLvKT/PcaJdRzlFIrm09LmAoYEC+6
- K09A==
-X-Gm-Message-State: AC+VfDxRn8qpqBYXT+zEiH3XuUIbC6GVjMGFIC/CbimFglppnzFJqki9
- 8q81MvZTsqbV+sgVOf7ORqr08GgwuD6EpH2fkcT+oIVrPvIx/zSwKJtSVsdZ27y3AGFoKsHaXaj
- 1kyausy3VT4fO2Zp0aVxfdoMPVSvxudnEE+WBtqtfyPjC+6CpLCEYZf6UU1s8xex9XMF1jNhpTb
- FvLul5
-X-Google-Smtp-Source: ACHHUZ6up53kMxAmR/J4OHLzNHtwCAA9I58DVH7LSPsnrW9SmVLQuy1kHvFRhrjBA4EM/KVPSbfMhg==
-X-Received: by 2002:a05:6a20:42a6:b0:122:cd6d:38e with SMTP id
- o38-20020a056a2042a600b00122cd6d038emr4820464pzj.37.1687359336898; 
- Wed, 21 Jun 2023 07:55:36 -0700 (PDT)
-Received: from hsinchu26.internal.sifive.com
- (59-124-168-89.hinet-ip.hinet.net. [59.124.168.89])
- by smtp.gmail.com with ESMTPSA id
- v8-20020a62a508000000b0066a4e561beesm356762pfm.173.2023.06.21.07.55.34
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 21 Jun 2023 07:55:36 -0700 (PDT)
-From: Yong-Xuan Wang <yongxuan.wang@sifive.com>
-To: qemu-devel@nongnu.org,
-	qemu-riscv@nongnu.org
-Cc: rkanwal@rivosinc.com, anup@brainfault.org, dbarboza@ventanamicro.com,
- atishp@atishpatra.org, vincent.chen@sifive.com, greentime.hu@sifive.com,
- frank.chang@sifive.com, jim.shu@sifive.com,
- Yong-Xuan Wang <yongxuan.wang@sifive.com>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
-Subject: [PATCH v4 6/6] target/riscv: select KVM AIA in riscv virt machine
-Date: Wed, 21 Jun 2023 14:54:56 +0000
-Message-Id: <20230621145500.25624-7-yongxuan.wang@sifive.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20230621145500.25624-1-yongxuan.wang@sifive.com>
-References: <20230621145500.25624-1-yongxuan.wang@sifive.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
- envelope-from=yongxuan.wang@sifive.com; helo=mail-pf1-x432.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ (Exim 4.90_1) (envelope-from <groug@kaod.org>) id 1qBzHt-0007Sz-UC
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 10:58:25 -0400
+Received: from 7.mo552.mail-out.ovh.net ([188.165.59.253])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <groug@kaod.org>) id 1qBzHp-0007uS-Dt
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 10:58:25 -0400
+Received: from mxplan5.mail.ovh.net (unknown [10.109.156.35])
+ by mo552.mail-out.ovh.net (Postfix) with ESMTPS id D53FE2B07B;
+ Wed, 21 Jun 2023 14:58:03 +0000 (UTC)
+Received: from kaod.org (37.59.142.106) by DAG6EX1.mxp5.local (172.16.2.51)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Wed, 21 Jun
+ 2023 16:58:03 +0200
+Authentication-Results: garm.ovh; auth=pass
+ (GARM-106R006dd416d25-b1da-47d6-8088-695861588f76,
+ 909E68869DE5F343E5F9AFAFEE281BFD2240853A) smtp.auth=groug@kaod.org
+X-OVh-ClientIp: 78.197.208.248
+Date: Wed, 21 Jun 2023 16:58:02 +0200
+From: Greg Kurz <groug@kaod.org>
+To: Christian Schoenebeck <qemu_oss@crudebyte.com>
+CC: <qemu-devel@nongnu.org>
+Subject: Re: [PATCH v3] 9pfs: deprecate 'proxy' backend
+Message-ID: <20230621165802.724bae7b@bahia>
+In-Reply-To: <1802263.gKGKeHe8zJ@silver>
+References: <E1q7ytt-0005Fl-JX@lizzy.crudebyte.com>
+ <10417219.URJpt1F07l@silver> <20230621154136.6e1f3f4b@bahia>
+ <1802263.gKGKeHe8zJ@silver>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [37.59.142.106]
+X-ClientProxiedBy: DAG6EX2.mxp5.local (172.16.2.52) To DAG6EX1.mxp5.local
+ (172.16.2.51)
+X-Ovh-Tracer-GUID: 0a578265-68f0-4ad0-bde1-414cc8b4af55
+X-Ovh-Tracer-Id: 1151514133701564826
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: 0
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvhedrgeefkedgheeiucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucenucfjughrpeffhffvvefukfgjfhfogggtgfhisehtjeertdertddvnecuhfhrohhmpefirhgvghcumfhurhiiuceoghhrohhugheskhgrohgurdhorhhgqeenucggtffrrghtthgvrhhnpefhhefhudegleffffegvdejleeludethffhteeiuedtfeetleekheettdevteeugeenucffohhmrghinhepphgrthgthhgvfidrohhrghenucfkphepuddvjedrtddrtddruddpfeejrdehledrudegvddruddtiedpjeekrdduleejrddvtdekrddvgeeknecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepuddvjedrtddrtddruddpmhgrihhlfhhrohhmpeeoghhrohhugheskhgrohgurdhorhhgqedpnhgspghrtghpthhtohepuddprhgtphhtthhopehqvghmuhgpohhsshestghruhguvggshihtvgdrtghomhdpqhgvmhhuqdguvghvvghlsehnohhnghhnuhdrohhrghdpoffvtefjohhsthepmhhoheehvddpmhhouggvpehsmhhtphhouhht
+Received-SPF: pass client-ip=188.165.59.253; envelope-from=groug@kaod.org;
+ helo=7.mo552.mail-out.ovh.net
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,206 +72,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Select KVM AIA when the host kernel has in-kernel AIA chip support.
-Since KVM AIA only has one APLIC instance, we map the QEMU APLIC
-devices to KVM APLIC.
-We also extend virt machine to specify the KVM AIA mode. The "kvm-aia"
-parameter is passed along with machine name in QEMU command-line.
-1) "kvm-aia=emul": IMSIC is emulated by hypervisor
-2) "kvm-aia=hwaccel": use hardware guest IMSIC
-3) "kvm-aia=auto": use the hardware guest IMSICs whenever available
-                   otherwise we fallback to software emulation.
+On Wed, 21 Jun 2023 16:16:46 +0200
+Christian Schoenebeck <qemu_oss@crudebyte.com> wrote:
 
-Signed-off-by: Yong-Xuan Wang <yongxuan.wang@sifive.com>
-Reviewed-by: Jim Shu <jim.shu@sifive.com>
----
- hw/riscv/virt.c         | 92 ++++++++++++++++++++++++++++++++++-------
- include/hw/riscv/virt.h |  1 +
- 2 files changed, 79 insertions(+), 14 deletions(-)
+> On Wednesday, June 21, 2023 3:41:36 PM CEST Greg Kurz wrote:
+> > On Wed, 21 Jun 2023 15:32:39 +0200
+> > Christian Schoenebeck <qemu_oss@crudebyte.com> wrote:
+> > 
+> > > On Thursday, June 15, 2023 11:35:05 AM CEST Christian Schoenebeck wrote:
+> > > > On Saturday, June 10, 2023 3:39:44 PM CEST Christian Schoenebeck wrote:
+> > > > > As recent CVE-2023-2861 once again showed, the 9p 'proxy' fs driver is 
+> in
+> > > > > bad shape. Using the 'proxy' backend was already discouraged for 
+> safety
+> > > > > reasons before and we recommended to use the 'local' backend instead,
+> > > > > but now it is time to officially deprecate the 'proxy' backend.
+> > > > > 
+> > > > > Signed-off-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
+> > > 
+> > > Ping
+> > > 
+> > 
+> > It seems you missed the review I posted last week :
+> > 
+> > https://patchew.org/QEMU/E1q7ytt-0005Fl-JX@lizzy.crudebyte.com/
+> #20230612165742.3333ea08@bahia
+> 
+> Oh, I never received your email. I'll check the logs what happened there.
+> 
+> I'll send a v4 with your suggestions, they make sense.
+> 
+> Do you want me to add your "for the records" comments as well in the
+> deprecation notice?
+> 
 
-diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
-index 4a1d29a741..efa176a184 100644
---- a/hw/riscv/virt.c
-+++ b/hw/riscv/virt.c
-@@ -35,6 +35,7 @@
- #include "hw/riscv/virt.h"
- #include "hw/riscv/boot.h"
- #include "hw/riscv/numa.h"
-+#include "kvm_riscv.h"
- #include "hw/intc/riscv_aclint.h"
- #include "hw/intc/riscv_aplic.h"
- #include "hw/intc/riscv_imsic.h"
-@@ -74,6 +75,12 @@
- #error "Can't accomodate all IMSIC groups in address space"
- #endif
- 
-+/* KVM AIA only supports APLIC.m. APLIC.w is always emulated by QEMU. */
-+static bool virt_use_kvm_aia(RISCVVirtState *s)
-+{
-+    return kvm_irqchip_in_kernel() && s->aia_type == VIRT_AIA_TYPE_APLIC_IMSIC;
-+}
-+
- static const MemMapEntry virt_memmap[] = {
-     [VIRT_DEBUG] =        {        0x0,         0x100 },
-     [VIRT_MROM] =         {     0x1000,        0xf000 },
-@@ -642,7 +649,8 @@ static void create_fdt_socket_aplic(RISCVVirtState *s,
-                                     uint32_t msi_s_phandle,
-                                     uint32_t *phandle,
-                                     uint32_t *intc_phandles,
--                                    uint32_t *aplic_phandles)
-+                                    uint32_t *aplic_phandles,
-+                                    int num_harts)
- {
-     int cpu;
-     char *aplic_name;
-@@ -653,11 +661,11 @@ static void create_fdt_socket_aplic(RISCVVirtState *s,
- 
-     aplic_m_phandle = (*phandle)++;
-     aplic_s_phandle = (*phandle)++;
--    aplic_cells = g_new0(uint32_t, s->soc[socket].num_harts * 2);
-+    aplic_cells = g_new0(uint32_t, num_harts * 2);
- 
-     if (!kvm_enabled()) {
-         /* M-level APLIC node */
--        for (cpu = 0; cpu < s->soc[socket].num_harts; cpu++) {
-+        for (cpu = 0; cpu < num_harts; cpu++) {
-             aplic_cells[cpu * 2 + 0] = cpu_to_be32(intc_phandles[cpu]);
-             aplic_cells[cpu * 2 + 1] = cpu_to_be32(IRQ_M_EXT);
-         }
-@@ -691,7 +699,7 @@ static void create_fdt_socket_aplic(RISCVVirtState *s,
-     }
- 
-     /* S-level APLIC node */
--    for (cpu = 0; cpu < s->soc[socket].num_harts; cpu++) {
-+    for (cpu = 0; cpu < num_harts; cpu++) {
-         aplic_cells[cpu * 2 + 0] = cpu_to_be32(intc_phandles[cpu]);
-         aplic_cells[cpu * 2 + 1] = cpu_to_be32(IRQ_S_EXT);
-     }
-@@ -798,17 +806,25 @@ static void create_fdt_sockets(RISCVVirtState *s, const MemMapEntry *memmap,
-         *msi_pcie_phandle = msi_s_phandle;
-     }
- 
--    phandle_pos = ms->smp.cpus;
--    for (socket = (socket_count - 1); socket >= 0; socket--) {
--        phandle_pos -= s->soc[socket].num_harts;
-+    /* KVM AIA only has one APLIC instance */
-+    if (virt_use_kvm_aia(s)) {
-+        create_fdt_socket_aplic(s, memmap, 0,
-+            msi_m_phandle, msi_s_phandle, phandle,
-+            &intc_phandles[0], xplic_phandles, ms->smp.cpus);
-+    } else {
-+        phandle_pos = ms->smp.cpus;
-+        for (socket = (socket_count - 1); socket >= 0; socket--) {
-+            phandle_pos -= s->soc[socket].num_harts;
- 
--        if (s->aia_type == VIRT_AIA_TYPE_NONE) {
--            create_fdt_socket_plic(s, memmap, socket, phandle,
--                &intc_phandles[phandle_pos], xplic_phandles);
--        } else {
--            create_fdt_socket_aplic(s, memmap, socket,
--                msi_m_phandle, msi_s_phandle, phandle,
--                &intc_phandles[phandle_pos], xplic_phandles);
-+            if (s->aia_type == VIRT_AIA_TYPE_NONE) {
-+                create_fdt_socket_plic(s, memmap, socket, phandle,
-+                    &intc_phandles[phandle_pos], xplic_phandles);
-+            } else {
-+                create_fdt_socket_aplic(s, memmap, socket,
-+                    msi_m_phandle, msi_s_phandle, phandle,
-+                    &intc_phandles[phandle_pos], xplic_phandles,
-+                    s->soc[socket].num_harts);
-+            }
-         }
-     }
- 
-@@ -819,6 +835,9 @@ static void create_fdt_sockets(RISCVVirtState *s, const MemMapEntry *memmap,
-             *irq_mmio_phandle = xplic_phandles[socket];
-             *irq_virtio_phandle = xplic_phandles[socket];
-             *irq_pcie_phandle = xplic_phandles[socket];
-+
-+            if (virt_use_kvm_aia(s))
-+                break;
-         }
-         if (socket == 1) {
-             *irq_virtio_phandle = xplic_phandles[socket];
-@@ -1454,6 +1473,14 @@ static void virt_machine_init(MachineState *machine)
-         }
-     }
- 
-+    if (virt_use_kvm_aia(s)) {
-+        kvm_riscv_aia_create(
-+            machine, s->kvm_aia_mode, IMSIC_MMIO_GROUP_MIN_SHIFT,
-+            VIRT_IRQCHIP_NUM_SOURCES, VIRT_IRQCHIP_NUM_MSIS,
-+            memmap[VIRT_APLIC_S].base, memmap[VIRT_IMSIC_S].base,
-+            s->aia_guests);
-+    }
-+
-     if (riscv_is_32bit(&s->soc[0])) {
- #if HOST_LONG_BITS == 64
-         /* limit RAM size in a 32-bit system */
-@@ -1610,6 +1637,31 @@ static void virt_set_aia(Object *obj, const char *val, Error **errp)
-     }
- }
- 
-+#if defined(CONFIG_KVM)
-+static char *virt_get_kvm_aia(Object *obj, Error **errp)
-+{
-+    RISCVVirtState *s = RISCV_VIRT_MACHINE(obj);
-+
-+    return kvm_aia_mode_str(s->kvm_aia_mode);
-+}
-+
-+static void virt_set_kvm_aia(Object *obj, const char *val, Error **errp)
-+{
-+    RISCVVirtState *s = RISCV_VIRT_MACHINE(obj);
-+
-+    if (!strcmp(val, "emul")) {
-+        s->kvm_aia_mode = KVM_DEV_RISCV_AIA_MODE_EMUL;
-+    } else if (!strcmp(val, "hwaccel")) {
-+        s->kvm_aia_mode = KVM_DEV_RISCV_AIA_MODE_HWACCEL;
-+    } else if (!strcmp(val, "auto")) {
-+        s->kvm_aia_mode = KVM_DEV_RISCV_AIA_MODE_AUTO;
-+    } else {
-+        error_setg(errp, "Invalid KVM AIA mode");
-+        error_append_hint(errp, "Valid values are emul, hwaccel, and auto.\n");
-+    }
-+}
-+#endif
-+
- static bool virt_get_aclint(Object *obj, Error **errp)
- {
-     RISCVVirtState *s = RISCV_VIRT_MACHINE(obj);
-@@ -1717,6 +1769,18 @@ static void virt_machine_class_init(ObjectClass *oc, void *data)
-     sprintf(str, "Set number of guest MMIO pages for AIA IMSIC. Valid value "
-                  "should be between 0 and %d.", VIRT_IRQCHIP_MAX_GUESTS);
-     object_class_property_set_description(oc, "aia-guests", str);
-+
-+#if defined(CONFIG_KVM)
-+    object_class_property_add_str(oc, "kvm-aia", virt_get_kvm_aia,
-+                                  virt_set_kvm_aia);
-+    object_class_property_set_description(oc, "kvm-aia",
-+                                          "Set KVM AIA mode. Valid values are "
-+                                          "emul, hwaccel, and auto. Default "
-+                                          "is auto.");
-+    object_property_set_default_str(object_class_property_find(oc, "kvm-aia"),
-+                                    "auto");
-+
-+#endif
-     object_class_property_add(oc, "acpi", "OnOffAuto",
-                               virt_get_acpi, virt_set_acpi,
-                               NULL, NULL);
-diff --git a/include/hw/riscv/virt.h b/include/hw/riscv/virt.h
-index e5c474b26e..d0140feeff 100644
---- a/include/hw/riscv/virt.h
-+++ b/include/hw/riscv/virt.h
-@@ -56,6 +56,7 @@ struct RISCVVirtState {
-     bool have_aclint;
-     RISCVVirtAIAType aia_type;
-     int aia_guests;
-+    uint64_t kvm_aia_mode;
-     char *oem_id;
-     char *oem_table_id;
-     OnOffAuto acpi;
+This was more targeting qemu-devel archives or git log, but feel
+free to provide relevant details in the deprecation notice.
+
+I agree with Daniel that virtiofsd should also be mentioned as
+an alternative.
+
+> Best regards,
+> Christian Schoenebeck
+> 
+> 
+
+Cheers,
+
 -- 
-2.17.1
-
+Greg
 
