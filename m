@@ -2,86 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA9227386A5
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 16:18:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1F2C7386B1
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 16:20:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qByew-00070W-1m; Wed, 21 Jun 2023 10:18:10 -0400
+	id 1qBygm-0007jo-MK; Wed, 21 Jun 2023 10:20:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qByeu-00070O-8T
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 10:18:08 -0400
-Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qByes-0005cq-GS
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 10:18:08 -0400
-Received: by mail-ej1-x636.google.com with SMTP id
- a640c23a62f3a-98746d7f35dso765862566b.2
- for <qemu-devel@nongnu.org>; Wed, 21 Jun 2023 07:18:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687357084; x=1689949084;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=TQ+aXEmKgFEn7tJ4vAhc3WH24tyhsAlVp0/QyUnd2WE=;
- b=FmdWo7kfX4YwdupWmW1KltEBU4sMiCR5mzABXNmuwHCrbjecyKWZjzAZmIhq0GFMcW
- WxE8P8AOxRxi0xjmDe8g9Yzn5JM8+p5DWlvGaEAuE5Q5tzz+Dpb9shINHX7FCfiLUmB6
- Wlnx9fVCTNmHLB2bEDF42MtPgylyVtjLZZsVvS5epKzQaPoQ3cvo8Fu21P0yw3IAJUst
- 1bCQ8rlKXDCh/f/CbHZsP1dbYgl4clS5VCMCBrEvUU6sR00JojTYIbPWg7jBe0MgSzY9
- QrESG6JhQsHycjhazZEPlx3PI1qRqO0JquARktc6lMehMyIGjSxt7NY5Ta8l88lJtFfI
- ftCQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687357084; x=1689949084;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=TQ+aXEmKgFEn7tJ4vAhc3WH24tyhsAlVp0/QyUnd2WE=;
- b=FAp5O8g7BjRJIP4qAMLiAXs2Tq8KNyo9oCSpTdQCyqT6qJgP5HTpiZVtn0EtG4POuw
- ASDoiZMAiuNGAKkheTJcwC87MO4Li5YsTF0ZiZSsB583Ta6ey3ifbD4OpkxqJcXsrPvo
- PMlK2LVnTJvO2YGPLllpWTglMAEYDDWwjChX8Q8rHw2z1xWgrnJRzInHyOp8iOPCnUi1
- Xmvbzz2TsGyVb9l/i7yFOA3oKQ5kJ4dwXhUEyx+Emm77dwpL83PTrwR95U5Uww2IoOK+
- 5cM5pmMImQsqAKar9TwxGpukIMX9Jxf6gECRAVDD/xQ/Th3vz9QBGPHhdGLmOH/v1u5a
- x3Ow==
-X-Gm-Message-State: AC+VfDwUMxIJUTqa1DoHjhUnohubfc73WluOB1bAtlBMF3xuSTolpSGX
- K4aqiU3j/0a5CZtIGpd6Q0tJDw==
-X-Google-Smtp-Source: ACHHUZ7GHgVZPLv74V9A0JBXyb63ISH35q5m9mnDiy+CXgVavLBKFzrIqKTJXJm+UaUIHTFDTaicnQ==
-X-Received: by 2002:a17:907:6e1d:b0:988:8786:f573 with SMTP id
- sd29-20020a1709076e1d00b009888786f573mr9391407ejc.35.1687357083384; 
- Wed, 21 Jun 2023 07:18:03 -0700 (PDT)
-Received: from [192.168.69.115] ([176.176.128.70])
- by smtp.gmail.com with ESMTPSA id
- ks25-20020a170906f85900b0098864f474cesm3207067ejb.126.2023.06.21.07.17.54
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 21 Jun 2023 07:18:03 -0700 (PDT)
-Message-ID: <e4d548bf-bc37-4f7b-f0cc-d9684639810b@linaro.org>
-Date: Wed, 21 Jun 2023 16:17:42 +0200
+ (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
+ id 1qBygj-0007ja-PZ
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 10:20:01 -0400
+Received: from nylar.uni-paderborn.de ([2001:638:502:c003::18])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
+ id 1qBygh-0008CZ-HO
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 10:20:01 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=mail.uni-paderborn.de; s=20170601; h=In-Reply-To:Content-Type:MIME-Version:
+ References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+ Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+ List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=2Kr7vdAJQvKY8RUUQKe18V3wNOm8vhOF1n28VxtZ+fU=; b=HPGAGKW29dEJlqiR/rB0bld68E
+ 4hn24s/fbK5Zf4AoXRo+D9wi3pl02Nar9vZ9+OuAG5TezbhXcdfguz8Ld2agCMVdVlzyDFTxNsBuW
+ 6MeOvK196OdBbh9iFMlqswgFeY9VjuUhbwaG6ykb9XfMJAXDMGq5dI/rE2k8MLcsrBRg=;
+Date: Wed, 21 Jun 2023 16:19:49 +0200
+From: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org
+Subject: Re: [PATCH v3 8/8] target/tricore: Fix ICR.IE offset in RESTORE insn
+Message-ID: <ayyapij7bzmukd22e5crpghew5eulv2iaqi6lqjxdlfvv6gcp3@pwltajc2qcip>
+References: <20230621101950.1645420-1-kbastian@mail.uni-paderborn.de>
+ <20230621101950.1645420-9-kbastian@mail.uni-paderborn.de>
+ <227914fb-3251-648e-799f-495273cd311f@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.12.0
-Subject: Re: [PATCH for-8.1] target/sparc: Use tcg_gen_lookup_and_goto_ptr
-Content-Language: en-US
-To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-References: <20230405185922.2122668-1-richard.henderson@linaro.org>
- <2d46a274-8234-a635-81ca-c79c2969cb7b@linaro.org>
- <fc35257d-8af0-8aa1-af88-982c7506bfa5@ilande.co.uk>
- <a5c261f4-b3e5-314f-b28f-dfac54a0bed8@linaro.org>
- <f7d45693-78db-261b-f016-c198a7c98d97@linaro.org>
- <0489cb19-8d5e-7cdd-4c98-12fea8afa0d1@ilande.co.uk>
- <e4c9cd2d-7992-5506-1c10-638e97a66f0e@ilande.co.uk>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <e4c9cd2d-7992-5506-1c10-638e97a66f0e@ilande.co.uk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::636;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x636.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.093,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <227914fb-3251-648e-799f-495273cd311f@linaro.org>
+X-IMT-Source: Extern
+X-IMT-Spam-Score: 0.0 ()
+X-IMT-rspamd-score: 4
+X-IMT-rspamd-bar: /
+X-PMX-Version: 6.4.9.2830568, Antispam-Engine: 2.7.2.2107409,
+ Antispam-Data: 2023.6.21.140617, AntiVirus-Engine: 6.0.0,
+ AntiVirus-Data: 2023.6.21.600001
+X-Sophos-SenderHistory: ip=79.202.219.6, fs=1202082, da=174966255, mc=122, sc=0,
+ hc=122, sp=0, fso=1202082, re=0, sd=0, hd=0
+X-IMT-Authenticated-Sender: kbastian@UNI-PADERBORN.DE
+Received-SPF: pass client-ip=2001:638:502:c003::18;
+ envelope-from=kbastian@mail.uni-paderborn.de; helo=nylar.uni-paderborn.de
+X-Spam_score_int: -42
+X-Spam_score: -4.3
+X-Spam_bar: ----
+X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -98,34 +74,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 21/6/23 15:47, Mark Cave-Ayland wrote:
-> On 21/06/2023 10:14, Mark Cave-Ayland wrote:
+On Wed, Jun 21, 2023 at 01:06:33PM +0200, Richard Henderson wrote:
+> On 6/21/23 12:19, Bastian Koppelmann wrote:
+> > from ISA v1.6.1 onwards the bit position of ICR.IE changed.
+> > ctx->icr_ie_offset contains the correct value for the ISA version used
+> > by the vCPU.
+> > 
+> > Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+> > Signed-off-by: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
+> > ---
+> >   target/tricore/translate.c | 3 ++-
+> >   1 file changed, 2 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/target/tricore/translate.c b/target/tricore/translate.c
+> > index 71b6209af4..9cab0734dd 100644
+> > --- a/target/tricore/translate.c
+> > +++ b/target/tricore/translate.c
+> > @@ -7956,7 +7956,8 @@ static void decode_sys_interrupts(DisasContext *ctx)
+> >       case OPC2_32_SYS_RESTORE:
+> >           if (has_feature(ctx, TRICORE_FEATURE_16)) {
+> >               if (ctx->priv == TRICORE_PRIV_SM || ctx->priv == TRICORE_PRIV_UM1) {
+> > -                tcg_gen_deposit_tl(cpu_ICR, cpu_ICR, cpu_gpr_d[r1], 8, 1);
+> > +                tcg_gen_deposit_tl(cpu_ICR, cpu_ICR, cpu_gpr_d[r1],
+> > +                        ctx->icr_ie_offset, 1);
+> >               } else {
+> >                   generate_trap(ctx, TRAPC_PROT, TIN1_PRIV);
+> >               }
 > 
->> On 19/06/2023 16:41, Richard Henderson wrote:
->>
->>> On 5/11/23 13:02, Richard Henderson wrote:
->>>> On 5/11/23 09:40, Mark Cave-Ayland wrote:
->>>>> Obviously nothing notionally against this patch, however if you 
->>>>> could give me a few days to run my OpenBIOS SPARC32/SPARC64 boot 
->>>>> tests against git master with this patch applied to double-check 
->>>>> there are no regressions, that would be great.
->>>>
->>>> No problem.  I just didn't want it to get lost.
->>>
->>> Ping for results?
->>>
->>> r~
->>
->> Sorry I haven't had a chance to test this yet - I'll try and get to it 
->> later today.
-> 
-> I got as far as running my OpenBIOS sparc32 tests, and I'm seeing an 
-> issue with my Solaris 8 image in that the mouse is frozen when booting 
-> into the GUI with this patch applied so looks like something still isn't 
-> right here :(
+> Need to exit the tb, like for ENABLE.
 
-Could you isolate the 4 changes [*] to see which one breaks?
+Thank you, for the thorough review. Will do.
 
-[*] 
-https://lore.kernel.org/qemu-devel/676ac594-77c6-3953-7355-1b96a09d93df@linaro.org/
+Cheers,
+Bastian
 
