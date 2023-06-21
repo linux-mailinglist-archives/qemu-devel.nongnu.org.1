@@ -2,79 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57771737F56
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 12:15:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EC2B737F61
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 12:19:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBuqr-0006CT-Hf; Wed, 21 Jun 2023 06:14:13 -0400
+	id 1qBuur-0008B3-I8; Wed, 21 Jun 2023 06:18:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qBuqd-0006AT-1i; Wed, 21 Jun 2023 06:14:00 -0400
-Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qBuqa-0007RJ-WC; Wed, 21 Jun 2023 06:13:58 -0400
-Received: by mail-pf1-x430.google.com with SMTP id
- d2e1a72fcca58-6689430d803so1459752b3a.0; 
- Wed, 21 Jun 2023 03:13:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1687342435; x=1689934435;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=4Esuk0ckXGn7W+ZI+ReRMcD3DyOzy36hwcRszJy2GSc=;
- b=eArc9TliOP3yF836J3vxtsT4Kop2CXiKCiBXrwceMQv8hSpxWVNP/3iQbqOdL+1jA3
- CD2s4qIOMnLIngFrz0dd80ZDk9BWgSj1VfK82klNFfIwv6Fhxhq3LWU6N+3uQCS1t2mg
- DQZ0SuOEKbmfMhix1Z4g0LQBoPmyMJV/FbXEfBdXag6Be/7x/iuhngTrKYm4ORwAmbA9
- CQG3rMEpcaJOt98aN4AwbP2/OfgV6fOQ4Rm761PgOpsOmmvJifATS36ySGtInBbpGMlH
- rEpOQKPLm/eB+iG9rxbH9oB2Q2xVinetaDoLj5D2XoWgHlRc9HCQHVSm2H9K915UIZbY
- 5hqQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687342435; x=1689934435;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=4Esuk0ckXGn7W+ZI+ReRMcD3DyOzy36hwcRszJy2GSc=;
- b=d59rmifxsdCOAUZV2dMzdM6pPQdnAVHpxTumI03bIbNtsdJIHY1zj+5Y4H54vQwv0o
- Fd8f8b/rqDS9tUArdp5EbBW2GEmFjbyP+rbkMOMQkJUJBLht0AGdXhQHmtyxmAMN+2BV
- A8tRWBpU2tgMPHLZuxnxaWbqNtlgErQW4RBttIG69D/s0oZ1TxDNZOul1GGlqz4kNpKf
- +cVws3/pnnurZItKTBue6uoG9cHszyeONPSZTLG877tavIbJHahy/M5FxPJh1bWuc5eW
- TpYeL8Aj9Hy2usY8tbontg1zmG0SONcLCSnphxk3wWpeDPiuFoNE4HC4sgSy46Ich6li
- K78g==
-X-Gm-Message-State: AC+VfDy/svnhTV/AvR/5xa9bHnlCcGIGgCXqvAksqvcxzCBzeyFvdbFu
- RdMKIcJaMXRSN9XH9BiSXpg=
-X-Google-Smtp-Source: ACHHUZ64sWvm0/NDvPXvNh/ZAt3oC0EOEL7hJIhi96CeETsUL5zoAe5Eas6xYA2CKqaMq1nd4JMH3Q==
-X-Received: by 2002:a05:6a21:6d96:b0:121:56aa:82d6 with SMTP id
- wl22-20020a056a216d9600b0012156aa82d6mr9606141pzb.22.1687342434799; 
- Wed, 21 Jun 2023 03:13:54 -0700 (PDT)
-Received: from localhost (193-116-203-37.tpgi.com.au. [193.116.203.37])
- by smtp.gmail.com with ESMTPSA id
- bd6-20020a170902830600b001a525705aa8sm3126039plb.136.2023.06.21.03.13.52
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 21 Jun 2023 03:13:54 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+ (Exim 4.90_1) (envelope-from <mzamazal@redhat.com>)
+ id 1qBuuo-0008AG-Ip
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 06:18:18 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mzamazal@redhat.com>)
+ id 1qBuum-0000c3-CA
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 06:18:18 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1687342694;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=ZK8egzUyOZFCjqZkgZnPHQkoAIwE3n9lBtE/K/3xoUY=;
+ b=EVnYc1KBxltrvMRLDer/E7MnQvH8yGNoId57q/swdBpPa+RJs/OoNlP5uGOti6mi1eS6WM
+ MrKpXlcq7K2hB7fUkgDrUBgxurcRmhCtfhyVvomavm2LyzGojZtAMWn4/gqAkG4p146sIz
+ Ud46gGX23zcSw7HMttr9Q/3tt++LslE=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-7-uDSZrpwQPHuBrsTdOGp4XQ-1; Wed, 21 Jun 2023 06:18:13 -0400
+X-MC-Unique: uDSZrpwQPHuBrsTdOGp4XQ-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 12AE0104458C;
+ Wed, 21 Jun 2023 10:18:13 +0000 (UTC)
+Received: from nuthatch.redhat.com (unknown [10.45.225.193])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id CDC49492C13;
+ Wed, 21 Jun 2023 10:18:11 +0000 (UTC)
+From: Milan Zamazal <mzamazal@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Milan Zamazal <mzamazal@redhat.com>, mst@redhat.com, stefanha@redhat.com,
+ alex.bennee@linaro.org, thuth@redhat.com, vincent.guittot@linaro.org
+Subject: [PATCH v2 0/4] Add SCMI vhost-user VIRTIO device
+Date: Wed, 21 Jun 2023 12:17:06 +0200
+Message-Id: <20230621101710.297975-1-mzamazal@redhat.com>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 21 Jun 2023 20:13:49 +1000
-Message-Id: <CTI8YYVN0BH5.1AEWH9GLUG3FY@wheely>
-Cc: <qemu-devel@nongnu.org>, "Daniel Henrique Barboza" <danielhb413@gmail.com>
-Subject: Re: [PATCH] target/ppc: Add ISA v3.1 LEV indication in SRR1 for
- system call interrupts
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Harsh Prateek Bora" <harshpb@linux.ibm.com>, <qemu-ppc@nongnu.org>
-X-Mailer: aerc 0.14.0
-References: <20230620131321.169261-1-npiggin@gmail.com>
- <a3dce513-d55a-7116-c6f8-5d30e4f3d131@linux.ibm.com>
-In-Reply-To: <a3dce513-d55a-7116-c6f8-5d30e4f3d131@linux.ibm.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x430.google.com
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mzamazal@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -92,71 +76,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed Jun 21, 2023 at 6:31 PM AEST, Harsh Prateek Bora wrote:
->
->
-> On 6/20/23 18:43, Nicholas Piggin wrote:
-> > System call interrupts in ISA v3.1 CPUs add a LEV indication in SRR1
-> > that corresponds with the LEV field of the instruction that caused the
-> > interrupt.
-> >=20
->
-> Did we encounter any issue without this patch leading to this fix?
+This patch series adds a vhost-user VIRTIO device for SCMI.
+It's similar to other similar vhost-user VIRTIO devices.
 
-No, I just noticed it.
+I'm aware of the work in progress by Alex Bennée to simplify similar devices
+and avoid excessive code duplication.  I think the SCMI device support
+doesn't bring anything special and it can be rebased on the given work
+if/once it is merged.
 
-> If so, it will be great to talk about it in short if possible.
->
-> > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> > ---
-> > This is unchanged, just taken out of the bigger series since it is
-> > independent.
-> >=20
-> > Thanks,
-> > Nick
-> >=20
-> >   target/ppc/excp_helper.c | 4 ++++
-> >   1 file changed, 4 insertions(+)
-> >=20
-> > diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
-> > index 77bfc18734..c7550fea13 100644
-> > --- a/target/ppc/excp_helper.c
-> > +++ b/target/ppc/excp_helper.c
-> > @@ -1591,6 +1591,10 @@ static void powerpc_excp_books(PowerPCCPU *cpu, =
-int excp)
-> >               vhc->hypercall(cpu->vhyp, cpu);
-> >               return;
-> >           }
-> > +        if (env->insns_flags2 & PPC2_ISA310) {
-> > +            /* ISAv3.1 puts LEV into SRR1 */
-> > +            msr |=3D lev << 20;
->
-> Since LEV values greater than 2 are reserved, should we do:
->                 msr |=3D (lev <=3D 2) ? lev << 20 : 0;
+The device has been tested with a prototype rust-vmm based
+vhost-user-scmi daemon emulating a sensor device and a Linux guest OS
+(the production version of the vhost-user daemon is developed at
+https://github.com/mz-pdm/vhost-device/tree/scmi).
 
-Oh good point. Actually I think we want this which would be a
-separate patch going before this one, as it is a fix for sc
-even for pre-v3.1:
+v2:
+ - A missing trailing space additionally added in the comment typo fix.
+ - A note about testing added above.
 
-Thanks
-Nick
+Milan Zamazal (4):
+  hw/virtio: Add boilerplate for vhost-user-scmi device
+  hw/virtio: Add vhost-user-scmi-pci boilerplate
+  tests/qtest: Fix a comment typo in vhost-user-test.c
+  tests/qtest: enable tests for virtio-scmi
 
-diff --git a/target/ppc/translate.c b/target/ppc/translate.c
-index 15a00bd4fa..297159280e 100644
---- a/target/ppc/translate.c
-+++ b/target/ppc/translate.c
-@@ -4424,7 +4424,18 @@ static void gen_sc(DisasContext *ctx)
- {
-     uint32_t lev;
+ MAINTAINERS                         |   7 +
+ hw/virtio/Kconfig                   |   5 +
+ hw/virtio/meson.build               |   2 +
+ hw/virtio/vhost-user-scmi-pci.c     |  68 +++++++
+ hw/virtio/vhost-user-scmi.c         | 306 ++++++++++++++++++++++++++++
+ include/hw/virtio/vhost-user-scmi.h |  30 +++
+ tests/qtest/libqos/meson.build      |   1 +
+ tests/qtest/libqos/virtio-scmi.c    | 174 ++++++++++++++++
+ tests/qtest/libqos/virtio-scmi.h    |  34 ++++
+ tests/qtest/vhost-user-test.c       |  46 ++++-
+ 10 files changed, 672 insertions(+), 1 deletion(-)
+ create mode 100644 hw/virtio/vhost-user-scmi-pci.c
+ create mode 100644 hw/virtio/vhost-user-scmi.c
+ create mode 100644 include/hw/virtio/vhost-user-scmi.h
+ create mode 100644 tests/qtest/libqos/virtio-scmi.c
+ create mode 100644 tests/qtest/libqos/virtio-scmi.h
 
--    lev =3D (ctx->opcode >> 5) & 0x7F;
-+    /*
-+     * LEV is a 7-bit field, but the top 6 bits are treated as a reserved
-+     * field (i.e., ignored). ISA v3.1 changes that to 5 bits, but that
-+     * is for Ultravisor is not not supported, so keep using 6 and 1.
-+     */
-+    lev =3D (ctx->opcode >> 5) & 0x1;
-     gen_exception_err(ctx, POWERPC_SYSCALL, lev);
- }
+-- 
+2.40.1
 
 
