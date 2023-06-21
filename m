@@ -2,60 +2,134 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F163A738C7C
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 19:00:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A39D738C7B
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 19:00:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qC1BF-0004Wm-48; Wed, 21 Jun 2023 12:59:41 -0400
+	id 1qC1B9-0004Uf-7A; Wed, 21 Jun 2023 12:59:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=5utS=CJ=kaod.org=clg@ozlabs.org>)
- id 1qC1BC-0004Vo-VR; Wed, 21 Jun 2023 12:59:38 -0400
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
+ (Exim 4.90_1) (envelope-from <den@virtuozzo.com>)
+ id 1qC1B7-0004UT-FF; Wed, 21 Jun 2023 12:59:33 -0400
+Received: from mail-am7eur03on2072e.outbound.protection.outlook.com
+ ([2a01:111:f400:7eaf::72e]
+ helo=EUR03-AM7-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=5utS=CJ=kaod.org=clg@ozlabs.org>)
- id 1qC1BA-0004rM-Os; Wed, 21 Jun 2023 12:59:38 -0400
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4QmV8y69wTz4wjF;
- Thu, 22 Jun 2023 02:59:30 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4QmV8w5hKQz4wgj;
- Thu, 22 Jun 2023 02:59:28 +1000 (AEST)
-Message-ID: <2449d9af-c468-fb9a-2caa-5d4955bb64fb@kaod.org>
-Date: Wed, 21 Jun 2023 18:59:25 +0200
-MIME-Version: 1.0
+ (Exim 4.90_1) (envelope-from <den@virtuozzo.com>)
+ id 1qC1B5-0004r2-PD; Wed, 21 Jun 2023 12:59:33 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=MGB/BwbOleJsZzZNz18/Kr+cisME3/MGDAcsixOm8DSRj4eLxrPAx9sK9d4VFHY9Tfg4QGqwGWFzfxeRan+3IwS7WVrZilfFa1aLeaFjrSrVPuJKj9DMP+u/3DtHZCBDmS79OSBtzZvPmRYx8g24i2727YMhceKitrDqNmShOhPHFxsIYELENWuD73O+S2EwnqhJsnRuN8i3V7zK+QWRI1scLpCaK+HddlwhGzBPzSFnKN6wQV15tBv53uLK5gXYoz/a1n8kQj2ShHHRGlyEyYGlpyF6aVAWExjuelFoPAdsT+9996Ny7uCuXWoujaZkYdFvpTKiKFS67LHcIPWooQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=O83usSY06h4DSZfKonGiOUI0gRBVPhWS39TNeF1NmJg=;
+ b=PpSqmnFk4LzHHznqkT69WeFeWgBxcYOXoJXehBQK3Iz/4UlGuWOJ6NzAxjHOSc/iWRRY4b6MucYlj5/LHkTKbOPvsO6M5gFmsOkZVRAwAzLJpACFQg9329TwWcem6h2TLbpSWkOivc/WpyjL84t88PGlLTlrKHl0TJ7dPCUN/MgWWn4f28qU4zZvOeUNMtuyzar9Fl1hhN036TnK6albBOo7h6zhYnK5G+ausTKPIS/kO1iWFPXvvSekVM76R266/hL4RZKwrS++FZrIUS2tJbr2GbkeUEo3C1l1RGwtXRA4VYXbFhtDfc9Z7utxoabovrQ0A1cbiahKMObZtsgQPA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
+ header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=O83usSY06h4DSZfKonGiOUI0gRBVPhWS39TNeF1NmJg=;
+ b=zO3bKN413XMVxyG00riJ5weJG+rwYPzGYEv5ChKyT3XGiiloWt0QN+wrVBOLJ9AKQ4OiHh68QBUW4+8z2hD11kW+3qr1s+SVpyYWXLWxKQcTp75qrsUsUzW/t63CqjqZDDtXaT7eWtVIMbRsgtSOx2s1swFm4Yt4y3iNz+Q1oKZEoomXBoc8CYZ0Wo1BggfDq/CwOQ7wTAhY2GHJrNmNDHC3RySZ+QEtMaqq4h4ny/plJA/OSKd4//REoDr26nJ1MwFnVxfn55HqY69FxR2mqFaSuwRWu07LIFdcLOkboDaT19EXi6SvNSF7IQ+AsFtXT5Hm8fwW6FpcZxPvbdWb9w==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=virtuozzo.com;
+Received: from PAXPR08MB6956.eurprd08.prod.outlook.com (2603:10a6:102:1db::9)
+ by PAWPR08MB9968.eurprd08.prod.outlook.com (2603:10a6:102:35b::14)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6500.37; Wed, 21 Jun
+ 2023 16:59:29 +0000
+Received: from PAXPR08MB6956.eurprd08.prod.outlook.com
+ ([fe80::1e66:7c11:641a:2c7]) by PAXPR08MB6956.eurprd08.prod.outlook.com
+ ([fe80::1e66:7c11:641a:2c7%4]) with mapi id 15.20.6500.036; Wed, 21 Jun 2023
+ 16:59:29 +0000
+Message-ID: <3dc36e1d-92ec-3466-523b-bf19ccd04f83@virtuozzo.com>
+Date: Wed, 21 Jun 2023 18:59:27 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PULL 05/29] pnv/xive2: Handle TIMA access through all ports
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v6 0/5] parallels: Add duplication check, repair at open, 
+ fix bugs
 Content-Language: en-US
-To: Frederic Barrat <fbarrat@linux.ibm.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Daniel Henrique Barboza <danielhb413@gmail.com>
-Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, richard.henderson@linaro.org
-References: <20230610133132.290703-1-danielhb413@gmail.com>
- <20230610133132.290703-6-danielhb413@gmail.com>
- <CAFEAcA_KKSc=Ns9n1UJKdnhZ846EGK-nFbsG_e2mw_zwMoOJcw@mail.gmail.com>
- <4ad1a081-bf98-1b7d-05c9-82c230da34ce@kaod.org>
- <9f71ffc4-2b37-d8b8-56c6-658d264242c4@linux.ibm.com>
- <c300d299-a90b-c29a-b556-83a2545adc30@kaod.org>
- <93480aa2-3639-1758-0395-a91bd7640099@linux.ibm.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <93480aa2-3639-1758-0395-a91bd7640099@linux.ibm.com>
+To: Alexander Ivanov <alexander.ivanov@virtuozzo.com>, qemu-devel@nongnu.org
+Cc: qemu-block@nongnu.org, stefanha@redhat.com, vsementsov@yandex-team.ru,
+ kwolf@redhat.com, hreitz@redhat.com
+References: <20230621082010.139195-1-alexander.ivanov@virtuozzo.com>
+From: "Denis V. Lunev" <den@virtuozzo.com>
+In-Reply-To: <20230621082010.139195-1-alexander.ivanov@virtuozzo.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
- envelope-from=SRS0=5utS=CJ=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -40
-X-Spam_score: -4.1
-X-Spam_bar: ----
-X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, NICE_REPLY_A=-0.093,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR0P281CA0243.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:af::10) To PAXPR08MB6956.eurprd08.prod.outlook.com
+ (2603:10a6:102:1db::9)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR08MB6956:EE_|PAWPR08MB9968:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7c2b29c3-3129-432a-8264-08db7278e05c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 3KQgi4XJ+C6bWlKb5dka3ROxuaXmgOOqe+pU/gTfyYEWNDAtsTjrxjCefyMgtarcmT9/BCoI/X87S0Ms9hnZlhJfkUvgE66mH2UCRiJPj+gUYZUaADbNXLi8FTyWHz/1uSK4Iz0G+phD09qS4VlN+VwhZVpl+7U0rFOEUSAiTduDxHEZ0xF/+CMFUkLI7frzgzBkSOyXpzyIWtI6J9GXT1PB/2yMnXZMIEEF1OxiM6zFzLruGwhq5ksIhyqfJcUpKrJNkgMVK00og19TPeqElnALJbk0pgaJXAhgCqFZOJyScXRIJ5T+sWJMN/xy2w9tcpu8rl3PMxQwH7+BuMb29tZW3DpQik1tS5u9jXpOx8eBPzZmSAH7DCjYccLiu6lbRD1stRjf3WEnJ4UjyruUjXSC0PVVP5g3S39XBBf4MLYWl5946eCtGqTqhud7zyTYeFJhHudarGPf4ooBGi5d2JHOaJ1xOq37BLWv4y3k4vO89tsUmvvSCv6MP659WJAzyiFClHLxiHe3O/3145m6bosPWulfdji2GIGT03P1ClfGov8mdDUkVRK4ET1uBGFkSdrzYT3CsVWtCMOO/aKwQ2N4ANqY1/+Lyg902nPSP29qhxnxKFQlknlR47Aio6CrpHpXEKs6zC6M6A45Q+HTeQ==
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:PAXPR08MB6956.eurprd08.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230028)(4636009)(376002)(366004)(396003)(136003)(39850400004)(346002)(451199021)(26005)(2906002)(6512007)(6506007)(53546011)(186003)(66946007)(41300700001)(66556008)(316002)(4326008)(2616005)(6486002)(83380400001)(478600001)(5660300002)(8676002)(38100700002)(66476007)(36756003)(86362001)(31696002)(8936002)(31686004)(43740500002)(45980500001);
+ DIR:OUT; SFP:1102; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?d09LZVpHWWxGVnIvUXlGSHBSMElKSkZvNnVnbHZ1SVhXaW80T01PZ1p0clNF?=
+ =?utf-8?B?VFp2RGdYSDFRMGhHR2ovSGw1UGxmUFVrcVJWU0RTazh3R2doT3N4cDNaelp5?=
+ =?utf-8?B?Wmw1R0szZzRlc3oySW1GTXhlNDZqbkNQY3dyb3FTbW50OW5IcmMwTEhLSitX?=
+ =?utf-8?B?N05hcllHOThtVWJJM3R2c2Y2Uk9VQmpzRlJRK3QzWklMOEF1MnNhL3A4UUVE?=
+ =?utf-8?B?Q2Q2a0JjYm9OWW1JVjZRd1h6bEM3RlVMdlMvbFZzRUFTa080ZUJQM1I3ZFlM?=
+ =?utf-8?B?NlV3dnRQbnk3Nk5zRXpSRDk0VEl3emlEUGM4TmwxRlFoU0ZlaXpiQ3BOR1Aw?=
+ =?utf-8?B?UWpwL0U5SVFBUG8vc1JWN3FudkJtSjVJd0V5eTZZRHIyaTQxRGZ6WkRUTUs5?=
+ =?utf-8?B?cjJRZjdnQ0ZrUVdqREE0LzM3VmpUb0hFUktXNXJ6NlZaSDgwL0JETTJQNnZJ?=
+ =?utf-8?B?NWk3M2JrNElScVF3VGsrZ0xpOHlyRy9sQUllT0ZWUzZZNXJFcEZweDNNc282?=
+ =?utf-8?B?T0l3M2Y2Wkt2azBKM0NEYzh6Z1Y1SnBad0htMmFLU0kyak5TTnoxa25GejNN?=
+ =?utf-8?B?d0gvYXZGcXIydWpWUk95emc4eGZwYitMYUh4b2tlV1dTc1crQWQ5WGdyajJL?=
+ =?utf-8?B?bXlWc0FrNlkwT1VPNTczaGx5SzFpTnF0L0VnTHRGaDJ1bFVPaWFRZlZPVGVT?=
+ =?utf-8?B?c2M1blRsQkJ2RXFEdVFJNDRRZDhvYUpRck9pL0N3b0p1UkRza0RwVlNjNmpl?=
+ =?utf-8?B?akI5dTJNUEdDMDdtbVR5RkRPNk5OMlhwWlB5Yk9pMzF4Z2JUTDFobHN3UGZj?=
+ =?utf-8?B?M2phWDdGb2gzMXdldnBVaVdnTHNaWm1mZndOcU9QVUgwNDZhbjNlVG8rREFn?=
+ =?utf-8?B?SXpWWStwZitqRUMxaWQ4Zml6c2t6Q3Z2QnkyVDQwRFF4aklZUXpoUmdNY2RZ?=
+ =?utf-8?B?cUJ1dlRQYWxCNEwyKzEvdVZMd216UTc4MzZIdkFPb3c5WFdZcjhlbnBxUjQv?=
+ =?utf-8?B?Q292b0lvdERJNk0vT2tpYkdUNmRUcjNuZXZIUkZVWEdwd0ZMTENXTXZMNXNZ?=
+ =?utf-8?B?anVNZnJPQTJyNmlrNklCU0RBQnVEVEMvQ2dQRDF6bzZ1RSsxaVNKTnBJME0x?=
+ =?utf-8?B?bTNwcUQwZlFMOFdROFJQUXIzZmJGTHNKczdDMUJ1Q3Iwb0dvcDRUbTFsNnRU?=
+ =?utf-8?B?clo0elVlRDM0MWxadVgwRDJTOHh5cGpkYTNSZGJ3aVliOWcxM0lLczVMaGRF?=
+ =?utf-8?B?VThGTmNsTHNoVFpoNEVWS2NiV2ZxMlAvVlorZWo5aEpqc2FkTU0wQlFoU096?=
+ =?utf-8?B?WlhHeEpmb1Rsb0lFNkFPbnYzNHpGWVVDRFJwWHJ1MjByK085WXlEVUxGTFU5?=
+ =?utf-8?B?NFVwVU56WEJWZ2xodE5CbUJjTms4ekFsT3BqYS9NUnZ3SWxIa3EzVmcwMXcx?=
+ =?utf-8?B?Z1F1Sk8zN0VXbHpUUEVRVDZEZDVCOGJkTks5VWhJSVlMSDlxTm13UVYvSk5h?=
+ =?utf-8?B?NkUzek9CcU10Nmt6Nmo1eVhwNldScU5SVE1vUTNBbmtDS1VkRW5EKzljaXlZ?=
+ =?utf-8?B?UnAvWHpwN3lDSTF5dFpWdzVxQU9ZNHFkbFBpT3JqOTUzTTAwdU83NkNKVFNN?=
+ =?utf-8?B?UVlZRDVXcEdCUXd5akc1YXhFTmdwRTVUWWVSS2tpUWZ3dVJKeWErTVdUUG5u?=
+ =?utf-8?B?ZFcvblpwSE00WFBzOXcyRGN4Q2tjVlJwMW9CZkxudXYzN241Q0RyaEJ2NUND?=
+ =?utf-8?B?NEx1UFczcitVTkFtNk5HK0tVa3BmQTZDRTVPUjlKaExNY2pPK1YrRm9pL2Ez?=
+ =?utf-8?B?YWthSjF1Y1NRbC9TbldBdzdlYkE0Y3pLWnJsWXJ5MkphM1FyMzBpd2F6dUxs?=
+ =?utf-8?B?aTA4YmlYUXB2RHMyRWpyQmV5Z0QyTUZKVTR4YVdQOWs3dHJzSXlUUjBpVUFV?=
+ =?utf-8?B?b0l5ZVROaGcwbW41TEVDTFVaTHo5K0FMMUtHQnM5d2NQRDFmT1J3eVcwTUJH?=
+ =?utf-8?B?YVJmN1Ywd2ZiZTJReVdOWmFYUWZ5bEszM09XalZ0Wno5WHVHY3cvZEhpQjlT?=
+ =?utf-8?B?NktvcmVrVXgxclJYRUdKcUJVdldiR0Q2bklQOTl1WVJnb2Z4MU02VC9OK04z?=
+ =?utf-8?Q?0O7i/cOrqmjwBEn2yxb0uiZVa?=
+X-OriginatorOrg: virtuozzo.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7c2b29c3-3129-432a-8264-08db7278e05c
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR08MB6956.eurprd08.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jun 2023 16:59:29.0068 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ffgt2dLAJW0weQThcP+/bFBE2Q8/PBUswhEXtJnpLKw8n940xBRQ/WoZTxPR1BnhyG4yljjBDO9wnQrrrIGT/Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAWPR08MB9968
+Received-SPF: pass client-ip=2a01:111:f400:7eaf::72e;
+ envelope-from=den@virtuozzo.com;
+ helo=EUR03-AM7-obe.outbound.protection.outlook.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.093,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -72,88 +146,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/21/23 17:18, Frederic Barrat wrote:
-> 
-> 
-> On 21/06/2023 09:18, Cédric Le Goater wrote:
->> The XIVE2 TM ops are implemented with a shortcut (See the TODO in
->> pnv_xive2_tm_*()). We could
->>
->> 1. extend xive_tctx_tm_write/read with a 'bool gen1_tima_os' parameter:
->>
->>      xive_tctx_tm_write(xptr, tctx, offset, value, size, gen1_tima_os);
->>
->>     and use the bool in xive_tm_find_op() to select a XiveTmOp array.
->>     The new xive2_tm_operations[] would be defined as xive_tm_operations[]
->>     but with an override of HV_PUSH_OS_CTX_OFFSET and HV_PULL_OS_CTX_OFFSET.
->>
->> 2. or extend the XivePresenterClass with a get_config() handler like it
->>     was done for Xive2RouterClass().
->>
->> 3. or introduce an array of XiveTmOp under XivePresenterClass defined by
->>     the controller variant.
->>
->> In any case, we need a new xive2_tm_operations[] for the XIVE2 TM register
->> layout. Option 1 is simpler I think.
-> 
-> 
-> I was also leaning on introducing a xive2_tm_operations[] array of operations to fix it correctly.
-> 
-> While I agree it's the simplest, I'm not fond of (1), since we'd need to carry that extra parameter to xive_tm_find_op(). Admittedly it's just one extra level, but I went with something which is hopefully what you had in mind for (2). 
+On 6/21/23 10:20, Alexander Ivanov wrote:
+> Fix incorrect data end calculation in parallels_open().
+>
+> Check if data_end greater than the file size.
+>
+> Add change_info argument to parallels_check_leak().
+>
+> Add checking and repairing duplicate offsets in BAT
+>
+> Image repairing in parallels_open().
+>
+> v6:
+> 2: Different patch. Refused to split image leak handling. Instead there is a
+>     patch with a data_end check.
+> 3: Different patch. There is a patch with change_info argument.
+> 4: Removed changing fprintf by qemu_log from this patchset. Previously 3rd
+>     patch became 4th. Replaced qemu_memalign() by qemu_blockalign(). Got
+>     rid of iovecs, replaced bdrv_co_pwritev() by bdrv_co_pwrite(). Added
+>     assert(cluster_index < bitmap_size). Now BAT changes are reverted if
+>     there was an error in the cluster copying process. Simplified a sector
+>     calculation.
+> 5: Moved header magic check to the appropriate place. Added a
+>     migrate_del_blocker() call and s->bat_dirty_bmap freeing on error.
+>
+> v5:
+> 3: Fixed a byteorder bug, fixed zero-length image handling and fixed uint32
+>     truncation.
+>
+> v4:
+> 2,5: Rebased.
+>
+> v3:
+> 2: Added (size >= res->image_end_offset) assert and changed the comment in
+>     parallels_get_leak_size(). Changed error printing and leaks fixing order.
+> 3: Removed highest_offset() helper, instead image_end_offset field is used.
+> 5: Moved highest_offset() code to parallels_open() - now it is used only in
+>     this function. Fixed data_end update condition. Fixed a leak of
+>     s->migration_blocker.
+>
+> v2:
+> 2: Moved outsude parallels_check_leak() 2 helpers:
+>     parallels_get_leak_size() and parallels_fix_leak().
+>     
+> 3: Used highest_offset() helper in parallels_check_leak(). Fixed a typo.
+>     Added comments. Replaced g_malloc() call by qemu_memalign(). Replaced
+>     bdrv_pread() call by bdrv_co_pread(). Got rid of keeping bytes and
+>     sectors in the same variable. Added setting the bitmap of the used
+>     clusters for a new allocated cluster if it isn't out of the bitmap.
+>     Moved the leak fix to the end of all the checks. Removed a dependence
+>     on image format for the duplicate check.
+>     
+> 4 (old): Merged this patch to the previous.
+> 4 (former 5): Fixed formatting.
+> 5 (former 6): Fixed comments. Added O_INACTIVE check in the condition.
+>                Replaced inuse detection by header_unclean checking.
+>                Replaced playing with corutines by bdrv_check() usage.
+>
+> Alexander Ivanov (5):
+>    parallels: Incorrect data end calculation in parallels_open()
+>    parallels: Check if data_end greater than the file size
+>    parallels: Add change_info argument to parallels_check_leak()
+>    parallels: Add checking and repairing duplicate offsets in BAT
+>    parallels: Image repairing in parallels_open()
+>
+>   block/parallels.c | 228 +++++++++++++++++++++++++++++++++++++++-------
+>   1 file changed, 195 insertions(+), 33 deletions(-)
+>
+could you pls also include tests for this functionality for the next 
+iteration?
 
-It is.
-
-> I like that we can easily extend it in the future.
-
-Yes. There are new  bits in the Gen2 TM layout that might need an
-implementation for other workloads than OPAL/Linux. Having a second
-array will help.
-  
-
->> This would  also "fix" the indirect ops in XIVE2, not that we care much
->> but it will be cleaner.
-> 
-> I'm not sure I see what you mean here. It cleans up nicely pnv_xive2_tm_read/write(), but is that really what you had in mind?
-
-yes.
-
-I meant that indirect ops in XIVE2 didn't bother testing Gen1/Gen2.
-
-> 
-> 
-> Something related I notice is that when doing an indirect access to the TIMA through the IC BAR, we call the TIMA access functions with a NULL reference to the presenter:
-
-Yes. I don't remember why. May be because it was not important at
-the time.
-
-> 
-> static uint64_t pnv_xive2_ic_tm_indirect_read(void *opaque, hwaddr offset,
->                                                unsigned size)
-> {
->      PnvXive2 *xive = PNV_XIVE2(opaque);
-> ...
->      tctx = pnv_xive2_get_indirect_tctx(xive, pir);
->      if (tctx) {
->          val = xive_tctx_tm_read(NULL, tctx, offset, size);
->      }
-> 
-> We seem to mostly ignore that first parameter in xive_tctx_tm_read/write(). IIUC, the special ops will be checked with a page offset matching ring 0 and won't match anything. Still, it seems a bit dangerous and I was wondering:
-> 1. can't we just create it from the PnvXive2 we have at hand?
-
-we could.
-
-> 2. in any case, isn't it always redundant with tctxt->presenter?
-
-it is. it should be the same. May add an assert in pnv_xive2_get_indirect_tctx()
-if they are different.
-
-
-Thanks,
-
-C.
-
-
-> 
->    Fred
-
+We have had this series some time ago but it was lost
 
