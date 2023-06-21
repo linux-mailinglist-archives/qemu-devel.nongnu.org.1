@@ -2,76 +2,103 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AAE17380A9
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 13:10:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD1767380FA
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 13:10:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBvio-00047T-BW; Wed, 21 Jun 2023 07:09:58 -0400
+	id 1qBvjM-0004uo-EO; Wed, 21 Jun 2023 07:10:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qBvih-00040N-Ph; Wed, 21 Jun 2023 07:09:51 -0400
-Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qBvig-0000Qb-4I; Wed, 21 Jun 2023 07:09:51 -0400
-Received: by mail-pf1-x434.google.com with SMTP id
- d2e1a72fcca58-66767d628e2so2165444b3a.2; 
- Wed, 21 Jun 2023 04:09:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1687345788; x=1689937788;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=V3flM4LfZjqSEsYEJbnnNk50fkdmZyFjvr4+WMqMQYQ=;
- b=JUCiuTCFijO5pekNgDFFCeRvoct1H2m2e+BghW07RHdzzI9cNC0FxrbIMSZtL+U6fw
- YOX92W/LqLemoNZYumsK3sMAQc2Wm6uXktSsv1qfAqi6RwuiDHIHY4ewdkTUq6cSOXJY
- tSU6aDJz/wiH9ke86TWV4N+zEt8B79YPAbzjvQSgcC6wcvyMctHJ0xEcPIsUJlaomst0
- 1qDard+LQA7qjmfMVnTgJFuu8p8d26E/7XUJWPSqvZ5g2E0/p7FxgQKqSpycSWaVbKZR
- KQ4hdEedlr9Te8J4Vcau4wkCKPYNfHqYv6OhUXCexqXiuxuVFez7BxBLZoz7Yz/MZyBT
- 3zyg==
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qBvjG-0004oE-IF
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 07:10:26 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qBvjD-0000jn-M9
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 07:10:24 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1687345822;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=+PPJcZwVybRKqB+oePB3oQpC+QICYQE72Fmc4NGzUQ0=;
+ b=SIQrlfeuVOu7TRefREFEPi2LMYyM0sSbk3rtvMtdZ2dP4dqkcru5nByaBVqubXYAXXX/fE
+ akY7/SlHS/LEUJ/+xP7iKBKSZqyn1zixouKNUQDVpkxMNshZYrGZTMeSRqXD9ZXKBIS1A7
+ 6u29q46k+K46RsPrAsMRf4pwleEfYbw=
+Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
+ [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-627-pbgDk5ZaPtCUOKJJNj-yAg-1; Wed, 21 Jun 2023 07:10:21 -0400
+X-MC-Unique: pbgDk5ZaPtCUOKJJNj-yAg-1
+Received: by mail-lf1-f69.google.com with SMTP id
+ 2adb3069b0e04-4ec817fb123so3914852e87.3
+ for <qemu-devel@nongnu.org>; Wed, 21 Jun 2023 04:10:20 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687345788; x=1689937788;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20221208; t=1687345819; x=1689937819;
+ h=content-transfer-encoding:in-reply-to:organization:from:references
+ :cc:to:content-language:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=V3flM4LfZjqSEsYEJbnnNk50fkdmZyFjvr4+WMqMQYQ=;
- b=SiU3+MwrYGsvC5JU3Kpd1/aasCQ2NsvflKdfIH+jTAZBkzsegJ53cggD1H/u20vrHb
- /uQBUIQ1FxJnZt7c/PayEfC1NJrrFc105uFvuSgTE7m+1q8YosIBrRxFLBd7mJ/9TyPu
- ePZ9hvgax7gSwPAWx6xaR1/bDzoOsUHavV9RG9j4y8vly0OXUsqK8pksMu4d4LyNKoSf
- R2Id5gsbC8DHV8hBe1MEkLTDqxD7FiUyDa72jBMsHFoN5RP+txbqnuakoxYtm9Xd2xek
- GVU69T2jtFfB7Bw52rcOANne4zTAb7X91O97tL6B2/ekwVUatSW5bnDuhRkLOEXWoT92
- ypKw==
-X-Gm-Message-State: AC+VfDwrRPzm3vQsRSnBoW8RxW5C4IsUEazuhWIB0TrrxElRbyCKag4D
- v0h6JrC/cM3/kaGWX+zJihq+ukYTY0g=
-X-Google-Smtp-Source: ACHHUZ5BZYy5uujNmIt+IPC7BgiAa1wee1h4d9m1b29aRlUCA7q5OzxhXh4D6ajH9n2S+a+rNw19Qw==
-X-Received: by 2002:a05:6a20:c18f:b0:11f:6d4c:f54f with SMTP id
- bg15-20020a056a20c18f00b0011f6d4cf54fmr8627703pzb.33.1687345787959; 
- Wed, 21 Jun 2023 04:09:47 -0700 (PDT)
-Received: from wheely.local0.net (193-116-203-37.tpgi.com.au. [193.116.203.37])
+ bh=+PPJcZwVybRKqB+oePB3oQpC+QICYQE72Fmc4NGzUQ0=;
+ b=JE9uc190ItJfEut5dr444FLT2S1548r3fkSFy8guI+0B83xVSycFWTrTtaI9j8gYbh
+ B59N06sjgG7TfNNcWMRrFw29bTt7nQcSsd5mn/LEmFw7rBOv5SFBN4+cPAVB+39tfmcH
+ x5eyAFIIjlwVpuzB/E0VEy1nr7GO0aSERugzSrpfw3hhHGKElKaYvY0q0hilTd83z2yk
+ M31v+v0Ml4epledPzFqBV79XixpWntjGa7wrixr5XAh6Z65SrMIFX8BWFnXQdIyIztm0
+ yNFkbOwWJSUDOTNXobE0D9oUWTOBGq5iH/dRYF/a2kGa6k9HbX/Omvpt9J2yaWHeE7NP
+ gZjg==
+X-Gm-Message-State: AC+VfDzy698B4sgUh13lZR/+3XltxTyy8sYlPZbeKvhOTHfxU66QO6Nb
+ K1XbwqzJhLNCSIUmRW7qAIyxm6FzgEPzubPG/cHU+Iyu0+yFBLT/wRoEU8moMQjKH3hHmtNlFVE
+ UCBdMc/39NAlmQ6U=
+X-Received: by 2002:a19:5f5e:0:b0:4f8:554f:36aa with SMTP id
+ a30-20020a195f5e000000b004f8554f36aamr8695665lfj.29.1687345819122; 
+ Wed, 21 Jun 2023 04:10:19 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6dPOiwWjMrFeux8c7Yxb3pQd32Zv1F1r4CL1oEYE69e28hwJuZI9LmzmivR8K/k43R01PkHg==
+X-Received: by 2002:a19:5f5e:0:b0:4f8:554f:36aa with SMTP id
+ a30-20020a195f5e000000b004f8554f36aamr8695649lfj.29.1687345818759; 
+ Wed, 21 Jun 2023 04:10:18 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c70b:9c00:7978:3030:9d9a:1aef?
+ (p200300cbc70b9c00797830309d9a1aef.dip0.t-ipconnect.de.
+ [2003:cb:c70b:9c00:7978:3030:9d9a:1aef])
  by smtp.gmail.com with ESMTPSA id
- m2-20020aa79002000000b0064d1d8fd24asm2725133pfo.60.2023.06.21.04.09.45
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 21 Jun 2023 04:09:47 -0700 (PDT)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: qemu-ppc@nongnu.org
-Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>
-Subject: [PATCH] target/ppc: Fix sc instruction handling of LEV field
-Date: Wed, 21 Jun 2023 21:09:38 +1000
-Message-Id: <20230621110938.239066-1-npiggin@gmail.com>
-X-Mailer: git-send-email 2.40.1
+ n6-20020a05600c294600b003f7e4639aabsm15838957wmd.10.2023.06.21.04.10.17
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 21 Jun 2023 04:10:18 -0700 (PDT)
+Message-ID: <02b6a8a8-2da7-2864-0c0e-5ed81a560355@redhat.com>
+Date: Wed, 21 Jun 2023 13:10:16 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x434.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH v1 1/1] Q35 Support
+Content-Language: en-US
+To: Joel Upham <jupham125@gmail.com>, qemu-devel@nongnu.org
+Cc: "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
+ =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ "open list:X86 Xen CPUs" <xen-devel@lists.xenproject.org>
+References: <cover.1687127946.git.jupham125@gmail.com>
+ <272947b9494f00bb4ad3e27c050e99f8b61905b3.1687127946.git.jupham125@gmail.com>
+From: David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+In-Reply-To: <272947b9494f00bb4ad3e27c050e99f8b61905b3.1687127946.git.jupham125@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.093, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -88,53 +115,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The top bits of the LEV field of the sc instruction are to be treated as
-as a reserved field rather than a reserved value, meaning LEV is
-effectively the bottom bit. LEV=0xF should be treated as LEV=1 and be
-a hypercall, for example.
+On 20.06.23 19:24, Joel Upham wrote:
 
-This changes the instruction execution to just set lev from the low bit
-of the field. Processors which don't support the LEV field will continue
-to ignore it.
+Inexpressive patch subject and non-existant patch desciption. I have no 
+clue what this is supposed to do, except that it involes q35 and xen ()I 
+guess ?.
 
-ISA v3.1 defines LEV to be 2 bits, in order to add the 'sc 2' ultracall
-instruction. TCG does not support Ultravisor, so don't worry about
-that bit.
+> ---
+>   hw/acpi/ich9.c                |   22 +-
+>   hw/acpi/pcihp.c               |    6 +-
+>   hw/core/machine.c             |   19 +
+>   hw/i386/pc_piix.c             |    3 +-
+>   hw/i386/pc_q35.c              |   39 +-
+>   hw/i386/xen/xen-hvm.c         |    7 +-
+>   hw/i386/xen/xen_platform.c    |   19 +-
+>   hw/isa/lpc_ich9.c             |   53 +-
+>   hw/isa/piix3.c                |    2 +-
+>   hw/pci-host/q35.c             |   28 +-
+>   hw/pci/pci.c                  |   17 +
+>   hw/xen/xen-host-pci-device.c  |  106 +++-
+>   hw/xen/xen-host-pci-device.h  |    6 +-
+>   hw/xen/xen_pt.c               |   49 +-
+>   hw/xen/xen_pt.h               |   19 +-
+>   hw/xen/xen_pt_config_init.c   | 1103 ++++++++++++++++++++++++++++++---
+>   include/hw/acpi/ich9.h        |    1 +
+>   include/hw/acpi/pcihp.h       |    2 +
+>   include/hw/boards.h           |    1 +
+>   include/hw/i386/pc.h          |    3 +
+>   include/hw/pci-host/q35.h     |    4 +-
+>   include/hw/pci/pci.h          |    3 +
+>   include/hw/southbridge/ich9.h |    1 +
+>   include/hw/xen/xen.h          |    4 +-
+>   qemu-options.hx               |    1 +
+>   softmmu/datadir.c             |    1 -
+>   softmmu/qdev-monitor.c        |    3 +-
+>   stubs/xen-hw-stub.c           |    4 +-
+>   28 files changed, 1395 insertions(+), 131 deletions(-)
+> 
 
-Suggested-by: "Harsh Prateek Bora" <harshpb@linux.ibm.com>
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
-This should probably go ahead of the ISA 3.1 LEV in SRR1 patch. I
-don't think they need to be backported to stable though, have not
-caused any real problems.
+Usually people refrain from reviewing such massive patches. Most 
+probably this can be broken up into reviewable pieces.
 
-Thanks to Harsh for spotting it.
+Was this supposed to be an RFC?
 
-Thanks,
-Nick
-
- target/ppc/translate.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
-
-diff --git a/target/ppc/translate.c b/target/ppc/translate.c
-index 15a00bd4fa..3c62f9188a 100644
---- a/target/ppc/translate.c
-+++ b/target/ppc/translate.c
-@@ -4424,7 +4424,12 @@ static void gen_sc(DisasContext *ctx)
- {
-     uint32_t lev;
- 
--    lev = (ctx->opcode >> 5) & 0x7F;
-+    /*
-+     * LEV is a 7-bit field, but the top 6 bits are treated as a reserved
-+     * field (i.e., ignored). ISA v3.1 changes that to 5 bits, but that is
-+     * for Ultravisor which TCG does not support, so just ignore the top 6.
-+     */
-+    lev = (ctx->opcode >> 5) & 0x1;
-     gen_exception_err(ctx, POWERPC_SYSCALL, lev);
- }
- 
 -- 
-2.40.1
+Cheers,
+
+David / dhildenb
 
 
