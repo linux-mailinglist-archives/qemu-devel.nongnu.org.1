@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E6E3737DF1
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 10:58:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F21E737DDF
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 10:56:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBtcc-0003az-DQ; Wed, 21 Jun 2023 04:55:26 -0400
+	id 1qBtcW-0003Vf-LQ; Wed, 21 Jun 2023 04:55:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qBtcO-0003Np-6B
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 04:55:16 -0400
+ id 1qBtcS-0003O4-An
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 04:55:17 -0400
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qBtcM-00050S-Lz
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 04:55:11 -0400
+ id 1qBtcQ-00055n-GO
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 04:55:16 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
  MIME-Version:References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:
  Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
  Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
  List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=EOk9C1LephgeYrzHSr/Iao6dFyKhO8TARh1/pIHN4ps=; b=PPfkWZP8icUYAEp46hqieXviAa
- i9aWnJD5Q2oKhN1uoX750/PGxSg5KN4KgyqHYkrP9/YMeX9xV0GhOTViUjoRYTpGTT/RHT3frVUxG
- 3ckWofU47fiM1VkDLmvHne7Wp4B2zXfEjBN3ICcYbL743hBV9L3W5HbaclKPYPqK5VGpHhNMJLNps
- hxumhnbpY43qbtuoiXDXqUFXY+ycBsMdV2DkXC4AkzLWcHe5Zb+BIt2UwPBubwZkGbqoz9DYJwJhe
- SGi7AzaR/IlHNVDBe9w9igMQwa5vFp8Jl17ptUTbAHFF8h9WHa5PoeVCDb7GLQApfp3HEHGZ0S4/U
- pPc1XMjmNQnas+2EpzZQtf1MtkoVnWIdMWSGEUDyk4krTJVUzSelTt/qQnmd6NYXGiCJFZK6Ssx9n
- F8m3/Bh80X7RD0GwuZeu3IU2tnPl4KtJSz884q53aNZGY+jWuYMNrsgUBa2s5HId0LtP+5cq7MFLf
- qI8jtmgntDkL4WcfgWMQU+NpILpqkcy5mrOxjpfaO7JpAxBEbcVg06skD5oJ0eVvjOZF4rbBGvy7T
- 8a2RUL3sOd/nDFyAHqOkuxF1cY+KSqHsCxSyCsNV+TCACbEtRmgP8xSm5NscA6RBlz1LSwB2Jv73E
- vXjIeLTDoDWbIIDho7QikFj1jM4rG7iW/GJpYaoDw=;
+ bh=4IL1GZjuekZgVUgNf/eYQgnMiGylOKscGLf22vZHKTI=; b=HND2W/y5LQs/Kp8E9ATh5WBed7
+ qujp9bOU4M/mB71QVmNzseaNAB12b10/hzprAjSvRoj31L1PaMynwtNyfvmhr/4NQa9DjLisMpyAd
+ otL1XzUjb+DQuH59XpQYxqvDl9dO2yswLlho3madH9jilaz5bLIqthfbBH8EbGdoBpdMOWGG4xxoq
+ yf6u9ZWVo5uhzeylv8s+BNUptQ0DnG0cialBtxNSIyNGj6NYC+IY7VomA2k6hTYqYFZhkRVuydVTv
+ v7f3w8oBxSLkhFa63gZrKPaPx2rS5IEHV2ffjNZDYlUqkfuzW3oePow+oehJ0gaKynKEiclh65um5
+ pcxpklnsSyh+LwHjNDQHxJfVFB1HYhOiQm8M+biQsG9D6/UGGOQ7KIK7ju+cG0QnlBV0KZ6rt8LyH
+ FWfJq1eSinc43RhmGIjRBUWaPQwgg6sIRESsTO2I4PQ/4FKCI6GwnMEAdg7jnHjsRSy5z7VCK+/CX
+ jNmjcB/7OlMB32wTbae4bDkSBp1rnk4PAMGQipx0nlipH4LXwaqBKXLejfPP85q339xCGCm3ch3R+
+ GQWNzzskS0yyBo8DUUL/+Nsj6bp/nmd4zq9MIf8/XBnx0mUqRQZTRkE0HUJSDWUs7I2TofQD989/3
+ XYpWfVGCG0eS/mzJW+aJzIdtHNUKFxME1hk3KFCu8=;
 Received: from host86-130-37-216.range86-130.btcentralplus.com
  ([86.130.37.216] helo=kentang.home)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qBtc1-0001ZB-82; Wed, 21 Jun 2023 09:54:53 +0100
+ id 1qBtc5-0001ZB-H0; Wed, 21 Jun 2023 09:54:57 +0100
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: laurent@vivier.eu,
 	qemu-devel@nongnu.org
-Date: Wed, 21 Jun 2023 09:53:44 +0100
-Message-Id: <20230621085353.113233-16-mark.cave-ayland@ilande.co.uk>
+Date: Wed, 21 Jun 2023 09:53:45 +0100
+Message-Id: <20230621085353.113233-17-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20230621085353.113233-1-mark.cave-ayland@ilande.co.uk>
 References: <20230621085353.113233-1-mark.cave-ayland@ilande.co.uk>
@@ -52,7 +52,7 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 86.130.37.216
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH v4 15/24] q800: move dp8393x device to Q800MachineState
+Subject: [PATCH v4 16/24] q800: move ESCC device to Q800MachineState
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -78,10 +78,9 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Also change the instantiation of the dp8393x device to use object_initialize_child().
+Also change the instantiation of the ESCC device to use object_initialize_child().
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-CC: Jason Wang <jasowang@redhat.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Laurent Vivier <laurent@vivier.eu>
 ---
@@ -90,45 +89,46 @@ Reviewed-by: Laurent Vivier <laurent@vivier.eu>
  2 files changed, 6 insertions(+), 2 deletions(-)
 
 diff --git a/hw/m68k/q800.c b/hw/m68k/q800.c
-index 988b4981b8..13806613fa 100644
+index 13806613fa..8bf94b2511 100644
 --- a/hw/m68k/q800.c
 +++ b/hw/m68k/q800.c
-@@ -315,14 +315,16 @@ static void q800_machine_init(MachineState *machine)
-     nd_table[0].macaddr.a[1] = 0x00;
-     nd_table[0].macaddr.a[2] = 0x07;
+@@ -346,7 +346,9 @@ static void q800_machine_init(MachineState *machine)
  
--    dev = qdev_new("dp8393x");
-+    object_initialize_child(OBJECT(machine), "dp8393x", &m->dp8393x,
-+                            TYPE_DP8393X);
-+    dev = DEVICE(&m->dp8393x);
-     qdev_set_nic_properties(dev, &nd_table[0]);
-     qdev_prop_set_uint8(dev, "it_shift", 2);
-     qdev_prop_set_bit(dev, "big_endian", true);
-     object_property_set_link(OBJECT(dev), "dma_mr",
-                              OBJECT(get_system_memory()), &error_abort);
+     /* SCC */
+ 
+-    dev = qdev_new(TYPE_ESCC);
++    object_initialize_child(OBJECT(machine), "escc", &m->escc,
++                            TYPE_ESCC);
++    dev = DEVICE(&m->escc);
+     qdev_prop_set_uint32(dev, "disabled", 0);
+     qdev_prop_set_uint32(dev, "frequency", MAC_CLOCK);
+     qdev_prop_set_uint32(dev, "it_shift", 1);
+@@ -356,7 +358,7 @@ static void q800_machine_init(MachineState *machine)
+     qdev_prop_set_uint32(dev, "chnBtype", 0);
+     qdev_prop_set_uint32(dev, "chnAtype", 0);
      sysbus = SYS_BUS_DEVICE(dev);
 -    sysbus_realize_and_unref(sysbus, &error_fatal);
 +    sysbus_realize(sysbus, &error_fatal);
-     memory_region_add_subregion(&m->macio, SONIC_BASE - IO_BASE,
-                                 sysbus_mmio_get_region(sysbus, 0));
-     sysbus_connect_irq(sysbus, 0,
+ 
+     /* Logically OR both its IRQs together */
+     escc_orgate = DEVICE(object_new(TYPE_OR_IRQ));
 diff --git a/include/hw/m68k/q800.h b/include/hw/m68k/q800.h
-index 06c771635b..d11bc020ed 100644
+index d11bc020ed..9e76a3fe7c 100644
 --- a/include/hw/m68k/q800.h
 +++ b/include/hw/m68k/q800.h
-@@ -29,6 +29,7 @@
- #include "exec/memory.h"
+@@ -30,6 +30,7 @@
  #include "hw/m68k/q800-glue.h"
  #include "hw/misc/mac_via.h"
-+#include "hw/net/dp8393x.h"
+ #include "hw/net/dp8393x.h"
++#include "hw/char/escc.h"
  
  /*
   * The main Q800 machine
-@@ -42,6 +43,7 @@ struct Q800MachineState {
-     GLUEState glue;
+@@ -44,6 +45,7 @@ struct Q800MachineState {
      MOS6522Q800VIA1State via1;
      MOS6522Q800VIA2State via2;
-+    dp8393xState dp8393x;
+     dp8393xState dp8393x;
++    ESCCState escc;
      MemoryRegion macio;
      MemoryRegion macio_alias;
  };
