@@ -2,89 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 572E4737DB7
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 10:41:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE340737DD5
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 10:55:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBtNc-0007Ug-TZ; Wed, 21 Jun 2023 04:39:56 -0400
+	id 1qBtbN-0001rx-02; Wed, 21 Jun 2023 04:54:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1qBtNZ-0007UL-Mc
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 04:39:53 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1qBtbL-0001rp-R6
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 04:54:07 -0400
+Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1qBtNX-0005Vn-S0
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 04:39:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687336789;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=OinvM39eNcyuqTY4ayH3U9HRb8PC8b84eJfHXMZWEzo=;
- b=JFC/cGq8K8QSYa8ZXU8JfLtbyt0HS3Qwixl0/YMRXneD/E3JoA69A05icozCOSoTUmXac6
- hz4SS+aUueJAqvR4vWQ1sNA7Xud2rF0saaDH6Sh7Sn4M+3TGmYyEJ24ptmP5XD0+dSd1sw
- 2c/7BES4zLqkYDBh6m5fH59DOPa13iU=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-643-nOT0jC-nMhCavQXxm-kAig-1; Wed, 21 Jun 2023 04:39:43 -0400
-X-MC-Unique: nOT0jC-nMhCavQXxm-kAig-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DCD4C280BC88;
- Wed, 21 Jun 2023 08:39:42 +0000 (UTC)
-Received: from sirius.home.kraxel.org (unknown [10.39.192.126])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 5C9DD4087C6D;
- Wed, 21 Jun 2023 08:39:42 +0000 (UTC)
-Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id 1AF931800381; Wed, 21 Jun 2023 10:39:41 +0200 (CEST)
-Date: Wed, 21 Jun 2023 10:39:41 +0200
-From: Gerd Hoffmann <kraxel@redhat.com>
-To: Robert Beckett <bob.beckett@collabora.com>
-Cc: "Chen, Jiqian" <Jiqian.Chen@amd.com>, 
- =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@gmail.com>,
- Damien Hedde <damien.hedde@greensocs.com>, 
- "Michael S . Tsirkin" <mst@redhat.com>,
- Stefano Stabellini <sstabellini@kernel.org>, 
- Anthony PERARD <anthony.perard@citrix.com>,
- Roger Pau =?utf-8?B?TW9ubsOp?= <roger.pau@citrix.com>, 
- Jan Beulich <jbeulich@suse.com>,
- "Dr . David Alan Gilbert" <dgilbert@redhat.com>, 
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, 
- "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>, "Deucher,
- Alexander" <Alexander.Deucher@amd.com>, 
- "Koenig, Christian" <Christian.Koenig@amd.com>, "Hildebrand,
- Stewart" <Stewart.Hildebrand@amd.com>, 
- Xenia Ragiadakou <burzalodowa@gmail.com>, "Huang,
- Honglei1" <Honglei1.Huang@amd.com>, 
- "Zhang, Julia" <Julia.Zhang@amd.com>, "Huang, Ray" <Ray.Huang@amd.com>
-Subject: Re: [QEMU PATCH 1/1] virtgpu: do not destroy resources when guest
- suspend
-Message-ID: <2s33vb2tfogntkyk5laxzcmgexf42mhkpwr2gh3gjvpitav6ez@h5zbmuklzmv5>
-References: <20230608025655.1674357-1-Jiqian.Chen@amd.com>
- <20230608025655.1674357-2-Jiqian.Chen@amd.com>
- <CAJ+F1CKjTW7zycr2xAW0x+d_7CEy+LxWur2Tqp2dvsb=PoJ5Dw@mail.gmail.com>
- <q2rpqbg5b4bqxb7oayclzgbf5fplofm3dmxgmpmskjf4mcfzpn@peeiuxwkqxbb>
- <BL1PR12MB58491E2E13F959365AA3F594E75CA@BL1PR12MB5849.namprd12.prod.outlook.com>
- <lgan3p6wqmxht5fpduh5nvg3f5m5n636k7zrrealnu2lilghhh@qlbvgu3l4apw>
- <2164ff79-aa09-d959-cc61-c7a2a21db5e3@collabora.com>
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1qBtbJ-000316-U2
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 04:54:07 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
+ MIME-Version:Message-Id:Date:To:From:Sender:Reply-To:Cc:Content-ID:
+ Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+ :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+ List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=BziEirOESD0fhMMtCkbV9oe+z4HOiXhB9toniOkRcak=; b=mcBvakGXCMHY/8HAOeqrixOwEp
+ LI2CGOYS7ZTVWJpSZllMPhE1S+iUsxlOipBMQhrgE+Pk/8f7w/e5iEh+bNh5u3ZXKAxIx+kkD+JJ4
+ it44SqB24mbv9Qh89EwtBvu5dvnavs8n7oDURcJGuyTVaNc65XOHgc+lBErrgbTUujNl3SyGUxxAj
+ Y11joBL4B2ZxYfWr07d2uGvzn4iKWsBKcPK6XDQ0H2ak9PsInELuV3RV+PPeO5OM7zRz1itBOm19i
+ LQg9yYlNwncgFPRzoZTtx3yaQ1IQsQDIktpI38EJ6wU1W2brPgQsRGt44aoqaUvAZ/TFKRTKZmbnX
+ 3tKmFhgJlJVYwa8nsxvZCvFq0+t5+STDZ+oMUYiBU47KkYMKwADaNUBElz8zcXcl2suVH+wTVYlqv
+ LFObdrfc6GGr1LB6KFwaSNOAxDGGnMP9+noPf39GUiFRAY4UyKVE1t8mRIA1dF+XKN8hbbIY/WDJu
+ SrzW3Txh4GslMftOjKm8gfqGkai3msmx5NpsUgA4M1uvl2L5kIi2OtVhwVFBdfI/l5T7Jy0JqvM0Y
+ CkhWQe1O34fRfFLka89vjKvDD+HSfNO+OskMP8xpMi9/p/I9zPf1GqetgXzKosVQvWbpIBsGmsA15
+ Q3VOQ0kYUadI9OQt78E7VOTkGFSB91O8K0kjfU9jA=;
+Received: from host86-130-37-216.range86-130.btcentralplus.com
+ ([86.130.37.216] helo=kentang.home)
+ by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1qBtb5-0001ZB-Lz; Wed, 21 Jun 2023 09:53:55 +0100
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+To: laurent@vivier.eu,
+	qemu-devel@nongnu.org
+Date: Wed, 21 Jun 2023 09:53:29 +0100
+Message-Id: <20230621085353.113233-1-mark.cave-ayland@ilande.co.uk>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2164ff79-aa09-d959-cc61-c7a2a21db5e3@collabora.com>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kraxel@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 86.130.37.216
+X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
+Subject: [PATCH v4 00/24] q800: add support for booting MacOS Classic - part 1
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
+Received-SPF: pass client-ip=2001:41c9:1:41f::167;
+ envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,40 +76,126 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jun 20, 2023 at 01:26:15PM +0100, Robert Beckett wrote:
-> 
-> On 20/06/2023 10:41, Gerd Hoffmann wrote:
-> >    Hi,
-> > 
-> > > > The guest driver should be able to restore resources after resume.
-> > > Thank you for your suggestion!
-> > > As far as I know, resources are created on host side and guest has no backup, if resources are destroyed, guest can't restore them.
-> > > Or do you mean guest driver need to send commands to re-create resources after resume?
-> > The later.  The guest driver knows which resources it has created,
-> > it can restore them after suspend.
-> 
-> Are you sure that this is viable?
-> 
-> How would you propose that a guest kernel could reproduce a resource,
-> including pixel data upload during a resume?
-> 
-> The kernel would not have any of the pixel data to transfer to host.
+[MCA: the original series has now been split into 2 separate parts based upon
+Phil's comments re: QOM parenting for objects in Q800MachineState. Part 1
+consists of the Q800MachineState patches along with QOM parenting fixes and
+the 2 mac_via RTC patches.]
 
-Depends on the of resource type.  For resources which are created by
-uploading pixel data (using VIRTIO_GPU_CMD_TRANSFER_TO_HOST_*) a guest
-mirror exists which can be used for re-upload.
+This series contains the remaining patches needed to allow QEMU's q800
+machine to boot MacOS Classic when used in conjunction with a real
+Quadra 800 ROM image. In fact with this series applied it is possible
+to boot all of the following OSs:
 
-For resources filled by gl rendering ops this is indeed not the case.
+  - MacOS 7.1 - 8.1, with or without virtual memory enabled
+  - A/UX 3.0.1
+  - NetBSD 9.3
+  - Linux (via EMILE)
 
-> Could you explain how you anticipate the guest being able to reproduce the
-> resources please?
+If you are ready to experience some 90s nostalgia then all you need is
+to grab yourself a copy of the Quadra 800 ROM (checksum 0xf1acad13) and a
+suitable install ISO as follows:
 
-Same you do on physical hardware?  Suspend can poweroff your PCI
-devices, so there must be some standard way to handle that situation
-for resources stored in gpu device memory, which is very similar to
-the problem we have here.
+  # Prepare a PRAM image
+  $ qemu-img create -f raw pram.img 256b
 
-take care,
-  Gerd
+  # Launch QEMU with blank disk and install CDROM
+  $ ./qemu-system-m68k \
+      -M q800 \
+      -m 128 \
+      -bios Quadra800.rom \
+      -drive file=pram.img,format=raw,if=mtd \
+      -drive file=disk.img,media=disk,format=raw,if=none,id=hd \
+      -device scsi-hd,scsi-id=0,drive=hd \
+      -drive file=cdrom.iso,media=cdrom,if=none,id=cd \
+      -device scsi-cd,scsi-id=3,drive=cd
+
+And off you go! For more in-depth information about the installation process
+I highly recommend the installation guide over at emaculation.com [1].
+Compatibility is generally very good, and I'm pleased to report it is possible
+to run one of the most popular productivity apps from the 90s [2].
+
+I'd like to add a big thank you to all the people who have helped me work on
+this series, including testing on real hardware, answering questions about
+MacOS Classic internals and helping to diagnose and fix bugs in the 68k
+emulation. In particular thanks go to Laurent Vivier, Finn Thain, Howard
+Spoelstra, Volker Rümelin, Richard Henderson, Martin Husemann, Rin Okuyama,
+Elliot Nunn, and SolraBizna.
+
+Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+
+[1] https://www.emaculation.com/doku.php/qemu
+[2] https://www.youtube.com/watch?v=yI21gURQ1Ew
+
+
+Patches missing review tags: 8 (new)
+
+v4:
+- Rebase onto master
+- Add R-B tags from Phil and Laurent
+- Use qdev_realize() in patch 5 as suggested by Markus
+- Add new patch 8 to switch q800-glue.c to use the DEFINE_TYPES macro
+  as suggested by Phil
+
+v3:
+- Add R-B tags from Phil and Laurent
+- Add missing headers in patches indicated by Phil
+- Change patch 5 to use valid_cpu_types Machine class property and the cpu_type
+  Machine property to initialise the CPU
+- Remove osdep.h header from dp8393x.h in patch 13 noticed by Phil
+- Change sysbus_realize_and_unref() to sysbus_realize() in patch 19
+- Use memory_region_add_subregion() instead of sysbus_mmio_map() in patch 19
+
+v2:
+- Split series into 2 parts (this is part 1)
+- Update QOM parenting for objects in Q800MachineState (Phil)
+- Split GLUE device into separate glue.c and glue.h files
+- Split TYPE_DP8393X and dp8393xState into dp8393x.h
+- Add R-B tags from Laurent (where I still believe they are valid)
+
+
+Mark Cave-Ayland (24):
+  q800: fix up minor spacing issues in hw_compat_q800 GlobalProperty
+    array
+  q800: add missing space after parent object in GLUEState
+  q800: introduce Q800MachineState
+  q800: rename q800_init() to q800_machine_init()
+  q800: move CPU object into Q800MachineState
+  q800: move ROM memory region to Q800MachineState
+  q800: move GLUE device into separate q800-glue.c file
+  q800-glue.c: switch TypeInfo registration to use DEFINE_TYPES() macro
+  q800: move GLUE device to Q800MachineState
+  q800: introduce mac-io container memory region
+  q800: reimplement mac-io region aliasing using IO memory region
+  q800: move VIA1 device to Q800MachineState
+  q800: move VIA2 device to Q800MachineState
+  hw/net/dp8393x.c: move TYPE_DP8393X and dp8393xState into dp8393x.h
+  q800: move dp8393x device to Q800MachineState
+  q800: move ESCC device to Q800MachineState
+  q800: move escc_orgate device to Q800MachineState
+  q800: move ESP device to Q800MachineState
+  q800: move SWIM device to Q800MachineState
+  q800: move mac-nubus-bridge device to Q800MachineState
+  q800: don't access Nubus bus directly from the mac-nubus-bridge device
+  q800: move macfb device to Q800MachineState
+  mac_via: fix rtc command decoding from PRAM addresses 0x0 to 0xf
+  mac_via: fix rtc command decoding for the PRAM seconds registers
+
+ MAINTAINERS                 |   3 +
+ hw/m68k/meson.build         |   2 +-
+ hw/m68k/q800-glue.c         | 249 +++++++++++++++++
+ hw/m68k/q800.c              | 526 ++++++++++++++----------------------
+ hw/misc/mac_via.c           |  13 +-
+ hw/net/dp8393x.c            |  32 +--
+ include/hw/m68k/q800-glue.h |  50 ++++
+ include/hw/m68k/q800.h      |  66 +++++
+ include/hw/net/dp8393x.h    |  60 ++++
+ 9 files changed, 635 insertions(+), 366 deletions(-)
+ create mode 100644 hw/m68k/q800-glue.c
+ create mode 100644 include/hw/m68k/q800-glue.h
+ create mode 100644 include/hw/m68k/q800.h
+ create mode 100644 include/hw/net/dp8393x.h
+
+-- 
+2.30.2
 
 
