@@ -2,72 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37D4B737CA1
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 10:02:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE3EE737D29
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 10:16:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBsnD-0007wB-Pk; Wed, 21 Jun 2023 04:02:19 -0400
+	id 1qBszj-0004jN-SM; Wed, 21 Jun 2023 04:15:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qBsnB-0007qX-FW
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 04:02:17 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1qBszX-0004ev-H0
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 04:15:04 -0400
+Received: from mga18.intel.com ([134.134.136.126])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qBsn7-0005Fe-RR
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 04:02:15 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687334533;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=NX0cXvGYWse5PIGg7/4NmF7I92jUyHDJNWIo2akgce8=;
- b=dN/UwKW+kLi0+lxrTuh4nHrFAOZVkJXjb0QydH99IjNbZ4gLYN8NtYesARcL3r2MIUzsrK
- NCYEC4bVaO8ExY6/rwEY0PMgl5Iu2fl14HkvScWu15cqEHLobo2ummXWgB4/xvtKjT8zXr
- 8T/x3F+SGvL0vl2OU/4BqqyCvYjdoNo=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-164-tB1cu1fDOYecp6lDjbwfJg-1; Wed, 21 Jun 2023 04:02:09 -0400
-X-MC-Unique: tB1cu1fDOYecp6lDjbwfJg-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5F58F8870D5;
- Wed, 21 Jun 2023 08:02:09 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.44])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 6124D14682F9;
- Wed, 21 Jun 2023 08:02:08 +0000 (UTC)
-Date: Wed, 21 Jun 2023 09:02:06 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Andrew Melnychenko <andrew@daynix.com>
-Cc: jasowang@redhat.com, mst@redhat.com, armbru@redhat.com,
- eblake@redhat.com, qemu-devel@nongnu.org,
- yuri.benditovich@daynix.com, yan@daynix.com
-Subject: Re: [PATCH v3 4/6] ebpf: Added declaration/initialization routines.
-Message-ID: <ZJKufmSx2XfuLZ/Q@redhat.com>
-References: <20230614221026.56950-1-andrew@daynix.com>
- <20230614221026.56950-5-andrew@daynix.com>
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1qBszV-0002s2-8u
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 04:15:03 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1687335301; x=1718871301;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=Yvby1xL5KE7nyNMw/+xyjbntCpFwyMIb7Sk0TIIoQOs=;
+ b=Yti9RWRX6RrIQeMT9R5NOX0MUipf2wAdKpydmlJuBehMiViXnLUmVUL6
+ /iJ0UmNDvCfwWF0lnzRKjeO/sc95A0YowSv6+kyOGBN0HEPbBksUSpPDg
+ mOtbRuR2IH3GMBghCm6JCLNgAcxn1Ba29UXjFsw25F8KJD1hExyCU8ldL
+ vAgAnFfMaPWgRHJqeHMhVGK9A+/dzD1GEyAb0SYkvVnCoegLD47ZYiKSq
+ RGhf1fDAhPTS4R8jdvFvm9qEOCIdwC/Xiiq+bhkkg+uL5HDkLrDQZetnV
+ lJgcuUAjhL21aux1WHn/4sGrinZZ2i5Zmx7B2F5pib33HeL1Drck1enFZ g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10747"; a="344843445"
+X-IronPort-AV: E=Sophos;i="6.00,259,1681196400"; d="scan'208";a="344843445"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+ by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Jun 2023 01:14:58 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10747"; a="804282278"
+X-IronPort-AV: E=Sophos;i="6.00,259,1681196400"; d="scan'208";a="804282278"
+Received: from duan-server-s2600bt.bj.intel.com ([10.240.192.147])
+ by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Jun 2023 01:14:55 -0700
+From: Zhenzhong Duan <zhenzhong.duan@intel.com>
+To: qemu-devel@nongnu.org
+Cc: alex.williamson@redhat.com, clg@redhat.com, joao.m.martins@oracle.com,
+ avihaih@nvidia.com, chao.p.peng@intel.com
+Subject: [PATCH v3 0/3] VFIO migration related refactor and bug fix
+Date: Wed, 21 Jun 2023 16:02:01 +0800
+Message-Id: <20230621080204.420723-1-zhenzhong.duan@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230614221026.56950-5-andrew@daynix.com>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=134.134.136.126;
+ envelope-from=zhenzhong.duan@intel.com; helo=mga18.intel.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -82,33 +72,39 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jun 15, 2023 at 01:10:24AM +0300, Andrew Melnychenko wrote:
-> Now, the binary objects may be retrieved by id.
-> It would require for future qmp commands that may require specific
-> eBPF blob.
-> 
-> Signed-off-by: Andrew Melnychenko <andrew@daynix.com>
-> ---
->  ebpf/ebpf.c      | 70 ++++++++++++++++++++++++++++++++++++++++++++++++
->  ebpf/ebpf.h      | 31 +++++++++++++++++++++
->  ebpf/ebpf_rss.c  |  6 +++++
->  ebpf/meson.build |  2 +-
->  4 files changed, 108 insertions(+), 1 deletion(-)
->  create mode 100644 ebpf/ebpf.c
->  create mode 100644 ebpf/ebpf.h
+PATCH3 refactors the VFIO migration blocker related code based on
+suggestions from Joao and Cedric, so that code is simpler and
+"Migration disabled" printed in right case.
 
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+But before that works, also found some hotplug bugs when testing
+blocker adding failed case. PATCH1 and PATCH2 fix them.
 
+See patch description for details.
 
-With regards,
-Daniel
+Thanks
+
+v3: Add PATCH1,2 to fix hotplug bug
+    Fix bugs in PATCH3 Avihai and Joao pointed out
+
+Tested vfio hotplug/unplug with vfio migration supported and unsupported cases,
+including blocker adding failed case.
+
+Zhenzhong Duan (3):
+  vfio/pci: Fix resource leak in vfio_realize
+  vfio/pci: Fix a segfault in vfio_realize
+  vfio/migration: vfio/migration: Refactor and fix print of "Migration
+    disabled"
+
+ hw/vfio/common.c              | 54 +++++------------------------------
+ hw/vfio/migration.c           | 37 +++++++++++-------------
+ hw/vfio/pci.c                 |  9 ++++--
+ include/hw/vfio/vfio-common.h |  7 ++---
+ 4 files changed, 33 insertions(+), 74 deletions(-)
+
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+2.34.1
 
 
