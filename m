@@ -2,39 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DC2B7386D5
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 16:25:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A2477386D1
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 16:24:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBykR-0001iD-5u; Wed, 21 Jun 2023 10:23:51 -0400
+	id 1qBykV-0001lc-IE; Wed, 21 Jun 2023 10:23:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1qBykP-0001ha-Bj
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 10:23:49 -0400
+ id 1qBykU-0001kT-9O
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 10:23:54 -0400
 Received: from collins.uni-paderborn.de ([2001:638:502:c003::14])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1qBykN-00011n-Mi
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 10:23:49 -0400
+ id 1qBykS-000135-P2
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 10:23:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=mail.uni-paderborn.de; s=20170601; h=Content-Transfer-Encoding:MIME-Version
  :References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=p5JByFDjZ9Ua7QQpoM28cwc6cgKhU516ZKfqLIc1/N0=; b=Y3j2geDw9uP777QKSkX3l+RBm2
- 2X5kubk/Niks9qu+umg2dfPa/X9Azu5qPHiSlk8g2+jTLncjU8zAIVsY+lznuRyZp5scwM77uiIM/
- KiQgmoFi+Fn05SLy0IENP/YaVSgcR1NdDacVHoiYD5twuRDf0TAh7kzoIlqxaByE0U0c=;
+ bh=dzqccvTlIxU125doeZdmaSY/euehHcs4q/DqWiGg2wQ=; b=rMDhVhvCWbQ19c2UM8aytNy/bS
+ kcg9Fk40CzAoz5KdTfazRXedwyVXw8l4tRHTykXRU2f+t4065t6wq9gQoA9VE+Wem7h8cDO3w8bTZ
+ 2b5DZbvAWQKmmqhx15DYEqPdJT807qN40QDU5tME/hekWNXHVJYKyU49DGpfCCXSCoaA=;
 X-Envelope-From: <kbastian@mail.uni-paderborn.de>
 From: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
 To: qemu-devel@nongnu.org
 Cc: kbastian@mail.uni-paderborn.de,
 	richard.henderson@linaro.org
-Subject: [PATCH v4 3/8] target/tricore: ENABLE exit to main-loop
-Date: Wed, 21 Jun 2023 16:22:57 +0200
-Message-Id: <20230621142302.1648383-4-kbastian@mail.uni-paderborn.de>
+Subject: [PATCH v4 4/8] target/tricore: Indirect jump insns use
+ tcg_gen_lookup_and_goto_ptr()
+Date: Wed, 21 Jun 2023 16:22:58 +0200
+Message-Id: <20230621142302.1648383-5-kbastian@mail.uni-paderborn.de>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230621142302.1648383-1-kbastian@mail.uni-paderborn.de>
 References: <20230621142302.1648383-1-kbastian@mail.uni-paderborn.de>
@@ -43,8 +44,8 @@ Content-Transfer-Encoding: 8bit
 X-PMX-Version: 6.4.9.2830568, Antispam-Engine: 2.7.2.2107409,
  Antispam-Data: 2023.6.21.141517, AntiVirus-Engine: 6.0.0,
  AntiVirus-Data: 2023.6.21.600001
-X-Sophos-SenderHistory: ip=79.202.219.6, fs=1202316, da=174966489, mc=129, sc=0,
- hc=129, sp=0, fso=1202316, re=0, sd=0, hd=0
+X-Sophos-SenderHistory: ip=79.202.219.6, fs=1202322, da=174966495, mc=131, sc=0,
+ hc=131, sp=0, fso=1202322, re=0, sd=0, hd=0
 X-IMT-Source: Intern
 X-IMT-Spam-Score: 0.0 ()
 X-IMT-Authenticated-Sender: uid=kbastian,ou=People,o=upb,c=de
@@ -72,45 +73,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-so we can recognize exceptions after re-enabling interrupts.
-
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reported-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
 ---
- target/tricore/translate.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ target/tricore/translate.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
 diff --git a/target/tricore/translate.c b/target/tricore/translate.c
-index d4f7415158..025b12567a 100644
+index 025b12567a..3d0c90b3dd 100644
 --- a/target/tricore/translate.c
 +++ b/target/tricore/translate.c
-@@ -38,6 +38,7 @@
- #undef  HELPER_H
+@@ -39,6 +39,7 @@
  
  #define DISAS_EXIT        DISAS_TARGET_0
-+#define DISAS_EXIT_UPDATE DISAS_TARGET_1
+ #define DISAS_EXIT_UPDATE DISAS_TARGET_1
++#define DISAS_JUMP        DISAS_TARGET_2
  
  /*
   * TCG registers
-@@ -7892,6 +7893,7 @@ static void decode_sys_interrupts(DisasContext *ctx)
+@@ -6074,8 +6075,9 @@ static void decode_rr_idirect(DisasContext *ctx)
          break;
-     case OPC2_32_SYS_ENABLE:
-         tcg_gen_ori_tl(cpu_ICR, cpu_ICR, ctx->icr_ie_mask);
-+        ctx->base.is_jmp = DISAS_EXIT_UPDATE;
-         break;
-     case OPC2_32_SYS_ISYNC:
-         break;
-@@ -8379,6 +8381,9 @@ static void tricore_tr_tb_stop(DisasContextBase *dcbase, CPUState *cpu)
-     case DISAS_TOO_MANY:
-         gen_goto_tb(ctx, 0, ctx->base.pc_next);
-         break;
-+    case DISAS_EXIT_UPDATE:
-+        gen_save_pc(ctx->base.pc_next);
-+        /* fall through */
+     default:
+         generate_trap(ctx, TRAPC_INSN_ERR, TIN2_IOPC);
++        return;
+     }
+-    ctx->base.is_jmp = DISAS_EXIT;
++    ctx->base.is_jmp = DISAS_JUMP;
+ }
+ 
+ static void decode_rr_divide(DisasContext *ctx)
+@@ -8387,6 +8389,9 @@ static void tricore_tr_tb_stop(DisasContextBase *dcbase, CPUState *cpu)
      case DISAS_EXIT:
          tcg_gen_exit_tb(NULL, 0);
          break;
++    case DISAS_JUMP:
++        tcg_gen_lookup_and_goto_ptr();
++        break;
+     case DISAS_NORETURN:
+         break;
+     default:
 -- 
 2.40.1
 
