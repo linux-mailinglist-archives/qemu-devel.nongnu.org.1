@@ -2,85 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9313A737BE6
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C076737BE5
 	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 09:09:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBrx0-00014G-9q; Wed, 21 Jun 2023 03:08:22 -0400
+	id 1qBrxL-00017u-DC; Wed, 21 Jun 2023 03:08:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qBrwy-00013V-1T
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 03:08:20 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qBrxI-00016E-Oz
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 03:08:40 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qBrwv-0006n2-SF
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 03:08:19 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qBrxH-0006pc-2d
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 03:08:40 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687331296;
+ s=mimecast20190719; t=1687331318;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=guajjWA0E41jSktTFHRwPYzg0aHi5JVRDO2nkZp+v4g=;
- b=JVtHbB4Io0M6Z/ab/zCb2f1r0Hytb/zwvnmyZE56uLOpBVlZkacgrJNHmiAfoWt5eiyGBu
- 5N9ojqxcEV9bvsancXtrMblM7xPt5iU1VTakl4MXIRgkdUjQCUoWTLIHZ6466Qf7fGkxkZ
- tm1xa/FLgUF7BmAJ1QfBQJby4KPlQJ4=
-Received: from mail-vs1-f72.google.com (mail-vs1-f72.google.com
- [209.85.217.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=sKco4T/GA7XGYLqZw2lpoJj//tNbzul91G89gk0KL/U=;
+ b=QkPUVaXKCxjJuSChx26cM9gt0bQZRREFdq2eDJiyPyjoVgAIYap2bt33sInjJWTtgjSlZi
+ O30Sm7K7zR9KyvS5njh4NfR8zfcRMEnPMiSdRa2Z6ywm0ciEvDZQIcGMYENgwYDObc3R9l
+ 9Gvp6YH5mIv/I0vbaAjRRc5tPGdnAv0=
+Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
+ [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-418-NFnxGxzHOdqr0gmUv536Zw-1; Wed, 21 Jun 2023 03:08:14 -0400
-X-MC-Unique: NFnxGxzHOdqr0gmUv536Zw-1
-Received: by mail-vs1-f72.google.com with SMTP id
- ada2fe7eead31-440bc497ef7so658253137.3
- for <qemu-devel@nongnu.org>; Wed, 21 Jun 2023 00:08:14 -0700 (PDT)
+ us-mta-22-B0_0lOxJOratBeR_UZetgw-1; Wed, 21 Jun 2023 03:08:36 -0400
+X-MC-Unique: B0_0lOxJOratBeR_UZetgw-1
+Received: by mail-lf1-f69.google.com with SMTP id
+ 2adb3069b0e04-4f63eed2413so3994208e87.1
+ for <qemu-devel@nongnu.org>; Wed, 21 Jun 2023 00:08:36 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687331292; x=1689923292;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=guajjWA0E41jSktTFHRwPYzg0aHi5JVRDO2nkZp+v4g=;
- b=ccEZe1P6r0W72FfNGbP8nqk2RCtNqj0hgRWgoDxsPouQDd4aHx5ErZ1wjM5pkr8OvW
- GX1DGCHaK8bSpBihZFS0iXT9pAJcqkZKDxIhK2ur4xnqvkABWbxmg++FsEmcJHSGyIt5
- NCm0+lxroCgB11dqMQDMyFIdNtvfR0Y0IFUv+i/+fM8rUiPdR4KEpZHnIkdPrsSmJJd7
- Uwjias7v5HF2M0+WlBzs4OhrdlPqHxK75hy/jRmYbaxS+aLdBHUsJahPdUz6TKmNdeVz
- 2iw7wXTbt8mkEoOGLN3R0FAe8N8fil4trzw0Zo//5g4oHgdrDROV77G6uQ2p5NKivWrc
- 2L+A==
-X-Gm-Message-State: AC+VfDwMR1/r9aunD6UcCuVLSbkP9zl8e3y1Cy/Q2nYfmXa7nlYQUA5s
- 82TmkY8dhB22aVp58eidoGGQzjqbJStGAJX/4Kj5ZNJ6iHFtoxbZVpTlLqH4NNIar8HU7BVadQI
- 3jy/bIz+7y21QyQIiYuWHq/L0jb9Gzuk=
-X-Received: by 2002:a67:de81:0:b0:43f:4714:a03b with SMTP id
- r1-20020a67de81000000b0043f4714a03bmr6036821vsk.17.1687331292583; 
- Wed, 21 Jun 2023 00:08:12 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6LP9jbx4etZ1ryFHRkkEbqAiuZ/wOjr+vgmMuqXHYSrnvBD6TqPu1LAO89iF28X+a2WBe/+Y4+v6qSYhGeDaU=
-X-Received: by 2002:a67:de81:0:b0:43f:4714:a03b with SMTP id
- r1-20020a67de81000000b0043f4714a03bmr6036809vsk.17.1687331292314; Wed, 21 Jun
- 2023 00:08:12 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1687331315; x=1689923315;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=sKco4T/GA7XGYLqZw2lpoJj//tNbzul91G89gk0KL/U=;
+ b=MXWdVRSYS7E3ean3gOC+uHcf7R6CCgeGyakDBX+GP55yWbEYAMd586EDY9PP3/pWL/
+ m50N310805P+WGgoao683LbkEBHqdNhXlBBTTMLVR0eUDOg7WzD+KUV9ZpTYgYYaEHrq
+ hyXrlRa9gFd7R+ybsNoZWyBLOf12py7RhMPSamI9sXZUX0ILcKFgy5vMG+zOxi6siTVn
+ ml+aCIiJ+Hq11jXHPp+c2y3+w78mCIM++Pa1333ieCLbbDD8FN4uTotMbTex/nsvN3CF
+ esNly3T9gbvZHkBIS7iFa6uSOYduoanZJjADKmt7gD9rExzWz4afgzJLOfgrqFnaYS1n
+ dteQ==
+X-Gm-Message-State: AC+VfDz6TIGaiIhxUgatZsG3sF5U6V5Hm+6UCBrT2kMe4i8bvOKWYmo3
+ 060eWdAXRU5dXIR9N2mSlHfzadpu6bOFQCvYnkB5VrObGp6erKuFWfbcp/axs41D0swVOI3MqgK
+ VOl4WdEDIqCi6H4g=
+X-Received: by 2002:a19:5f05:0:b0:4f8:442c:de25 with SMTP id
+ t5-20020a195f05000000b004f8442cde25mr7842039lfb.5.1687331315309; 
+ Wed, 21 Jun 2023 00:08:35 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7ybjXMclxGmxa0+iB1VhFJOM4keYhG20kd6hWcZ6cenJ0/AKKB1oLCjHIQPgNO9IsMHcLifg==
+X-Received: by 2002:a19:5f05:0:b0:4f8:442c:de25 with SMTP id
+ t5-20020a195f05000000b004f8442cde25mr7842013lfb.5.1687331314847; 
+ Wed, 21 Jun 2023 00:08:34 -0700 (PDT)
+Received: from [10.33.192.205] (nat-pool-str-t.redhat.com. [149.14.88.106])
+ by smtp.gmail.com with ESMTPSA id
+ n12-20020a7bc5cc000000b003eddc6aa5fasm15222118wmk.39.2023.06.21.00.08.33
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 21 Jun 2023 00:08:34 -0700 (PDT)
+Message-ID: <e715e41d-b50a-3747-8007-e188e911a724@redhat.com>
+Date: Wed, 21 Jun 2023 09:08:33 +0200
 MIME-Version: 1.0
-References: <20230621002121.1609612-1-jsnow@redhat.com>
-In-Reply-To: <20230621002121.1609612-1-jsnow@redhat.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Wed, 21 Jun 2023 09:08:01 +0200
-Message-ID: <CABgObfahSN4eQ65nu9Dy_7bkWmxfERiJ-ZEM729futMFuGWwPw@mail.gmail.com>
-Subject: Re: [PATCH RFC 0/6] Switch iotests to pyvenv
-To: John Snow <jsnow@redhat.com>
-Cc: qemu-devel <qemu-devel@nongnu.org>, Thomas Huth <thuth@redhat.com>, 
- "open list:Block layer core" <qemu-block@nongnu.org>,
- Beraldo Leal <bleal@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- Kevin Wolf <kwolf@redhat.com>, Cleber Rosa <crosa@redhat.com>
-Content-Type: multipart/alternative; boundary="0000000000004c139a05fe9e6e90"
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [RFC 4/6] migration: Deprecate -incoming <uri>
+Content-Language: en-US
+To: Juan Quintela <quintela@redhat.com>, qemu-devel@nongnu.org
+Cc: Markus Armbruster <armbru@redhat.com>, Leonardo Bras
+ <leobras@redhat.com>, =?UTF-8?Q?Daniel_P_=2e_Berrang=c3=a9?=
+ <berrange@redhat.com>, qemu-block@nongnu.org, Peter Xu <peterx@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Fam Zheng <fam@euphon.net>, libvir-list@redhat.com,
+ Paolo Bonzini <pbonzini@redhat.com>
+References: <20230612193344.3796-1-quintela@redhat.com>
+ <20230612193344.3796-5-quintela@redhat.com>
+From: Thomas Huth <thuth@redhat.com>
+In-Reply-To: <20230612193344.3796-5-quintela@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
+ NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
  RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,147 +106,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---0000000000004c139a05fe9e6e90
-Content-Type: text/plain; charset="UTF-8"
+On 12/06/2023 21.33, Juan Quintela wrote:
+> Only "defer" is recommended.  After setting all migation parameters,
+> start incoming migration with "migrate-incoming uri" command.
+> 
+> Signed-off-by: Juan Quintela <quintela@redhat.com>
+> ---
+>   docs/about/deprecated.rst | 7 +++++++
+>   softmmu/vl.c              | 2 ++
+>   2 files changed, 9 insertions(+)
+> 
+> diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+> index 47e98dc95e..518672722d 100644
+> --- a/docs/about/deprecated.rst
+> +++ b/docs/about/deprecated.rst
+> @@ -447,3 +447,10 @@ The new way to modify migration is using migration parameters.
+>   ``blk`` functionality can be acchieved using
+>   ``migrate_set_parameter block-incremental true``.
+>   
+> +``-incoming uri`` (since 8.1)
+> +'''''''''''''''''''''''''''''
+> +
+> +Everything except ``-incoming defer`` are deprecated.  This allows to
+> +setup parameters before launching the proper migration with
+> +``migrate-incoming uri``.
+> +
+> diff --git a/softmmu/vl.c b/softmmu/vl.c
+> index b0b96f67fa..7fe865ab59 100644
+> --- a/softmmu/vl.c
+> +++ b/softmmu/vl.c
+> @@ -2651,6 +2651,8 @@ void qmp_x_exit_preconfig(Error **errp)
+>       if (incoming) {
+>           Error *local_err = NULL;
+>           if (strcmp(incoming, "defer") != 0) {
+> +            warn_report("-incoming %s is deprecated, use -incoming defer and "
+> +                        " set the uri with migrate-incoming.", incoming);
+>               qmp_migrate_incoming(incoming, &local_err);
+>               if (local_err) {
+>                   error_reportf_err(local_err, "-incoming %s: ", incoming);
 
-Il mer 21 giu 2023, 02:21 John Snow <jsnow@redhat.com> ha scritto:
+Could we maybe keep at least the smallest set of necessary parameters 
+around? I'm often doing a "-incoming tcp:0:1234" for doing quick sanity 
+checks with migration, not caring about other migration parameters, so if 
+that could continue to work, that would be very appreciated.
 
-> Hi, this is ... a fairly incomplete series about trying to get iotests
-> to run out of the configure-time venv. I'm looking for some feedback, so
-> out to the list it goes.
->
-> Primarily, I'm having doubts about these points:
->
-> 1) I think I need something like "mkvenv install" in the first patch,
->    but mkvenv.py is getting pretty long...
->
-
-It's not a lot of code, but using pip install from configure might also be
-good enough, I don't know.
-
-2) Is there a way to optimize the speed for patch #2? Maybe installing
-
-   this package can be skipped until it's needed, but that means that
->    things like iotest's ./check might get complicated to support that.
->
-> 3) I cheated quite a bit in patch 4 to use the correct Python to launch
->    iotests, but I'm wondering if there's a nicer way to solve this
->    more *completely*.
->
-
-Maybe patch 4 can use distlib.scripts as well to create the check script in
-the build directory? (Yes that's another mkvenv functionality...) On a
-phone and don't have the docs at hand, so I am not sure. If not, your
-solution is good enough.
-
-Apart from this the only issue is the speed. IIRC having a prebuilt .whl
-would fix it, I think for Meson we observed that the slow part was building
-the wheel. Possibilities:
-
-1) using --no-pep517 if that also speeds it up?
-
-2) already removing the sources to qemu.qmp since that's the plan anyway;
-and then, if you want editability you can install the package with --user
---editable, i.e. outside the venv
-
-Paolo
-
-
-> John Snow (6):
->   experiment: add mkvenv install
->   build, tests: Add qemu in-tree packages to pyvenv at configure time.
->   iotests: get rid of '..' in path environment output
->   iotests: use the correct python to run linters
->   iotests: use pyvenv/bin/python3 to launch child test processes
->   iotests: don't add qemu.git/python to PYTHONPATH
->
->  configure                     | 31 +++++++++++++++++++++++++++
->  python/scripts/mkvenv.py      | 40 +++++++++++++++++++++++++++++++++++
->  tests/qemu-iotests/linters.py |  2 +-
->  tests/qemu-iotests/testenv.py | 21 ++++++++++++------
->  4 files changed, 87 insertions(+), 7 deletions(-)
->
-> --
-> 2.40.1
->
->
->
-
---0000000000004c139a05fe9e6e90
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote"><div dir=3D"ltr" =
-class=3D"gmail_attr">Il mer 21 giu 2023, 02:21 John Snow &lt;<a href=3D"mai=
-lto:jsnow@redhat.com">jsnow@redhat.com</a>&gt; ha scritto:<br></div><blockq=
-uote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc =
-solid;padding-left:1ex">Hi, this is ... a fairly incomplete series about tr=
-ying to get iotests<br>
-to run out of the configure-time venv. I&#39;m looking for some feedback, s=
-o<br>
-out to the list it goes.<br>
-<br>
-Primarily, I&#39;m having doubts about these points:<br>
-<br>
-1) I think I need something like &quot;mkvenv install&quot; in the first pa=
-tch,<br>
-=C2=A0 =C2=A0but mkvenv.py is getting pretty long...<br></blockquote></div>=
-</div><div dir=3D"auto"><br></div><div dir=3D"auto">It&#39;s not a lot of c=
-ode, but using pip install from configure might also be good enough, I don&=
-#39;t know.</div><div dir=3D"auto"><br></div><div dir=3D"auto"><div class=
-=3D"gmail_quote"><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8=
-ex;border-left:1px #ccc solid;padding-left:1ex">
-2) Is there a way to optimize the speed for patch #2? Maybe installing</blo=
-ckquote><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border=
--left:1px #ccc solid;padding-left:1ex">
-=C2=A0 =C2=A0this package can be skipped until it&#39;s needed, but that me=
-ans that<br>
-=C2=A0 =C2=A0things like iotest&#39;s ./check might get complicated to supp=
-ort that.<br>
-<br>
-3) I cheated quite a bit in patch 4 to use the correct Python to launch<br>
-=C2=A0 =C2=A0iotests, but I&#39;m wondering if there&#39;s a nicer way to s=
-olve this<br>
-=C2=A0 =C2=A0more *completely*.<br></blockquote></div></div><div dir=3D"aut=
-o"><br></div><div dir=3D"auto">Maybe patch 4 can use distlib.scripts as wel=
-l to create the check script in the build directory? (Yes that&#39;s anothe=
-r mkvenv functionality...) On a phone and don&#39;t have the docs at hand, =
-so I am not sure. If not, your solution is good enough.</div><div dir=3D"au=
-to"><br></div><div dir=3D"auto">Apart from this the only issue is the speed=
-. IIRC having a prebuilt .whl would fix it, I think for Meson we observed t=
-hat the slow part was building the wheel. Possibilities:</div><div dir=3D"a=
-uto"><br></div><div dir=3D"auto">1) using --no-pep517 if that also speeds i=
-t up?</div><div dir=3D"auto"><br></div><div dir=3D"auto">2) already removin=
-g the sources to qemu.qmp since that&#39;s the plan anyway; and then, if yo=
-u want editability you can install the package with --user --editable, i.e.=
- outside the venv</div><div dir=3D"auto"><br></div><div dir=3D"auto">Paolo<=
-br></div><div dir=3D"auto"><br></div><div dir=3D"auto"><div class=3D"gmail_=
-quote"><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-=
-left:1px #ccc solid;padding-left:1ex">
-<br>
-John Snow (6):<br>
-=C2=A0 experiment: add mkvenv install<br>
-=C2=A0 build, tests: Add qemu in-tree packages to pyvenv at configure time.=
-<br>
-=C2=A0 iotests: get rid of &#39;..&#39; in path environment output<br>
-=C2=A0 iotests: use the correct python to run linters<br>
-=C2=A0 iotests: use pyvenv/bin/python3 to launch child test processes<br>
-=C2=A0 iotests: don&#39;t add qemu.git/python to PYTHONPATH<br>
-<br>
-=C2=A0configure=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0| 31 +++++++++++++++++++++++++++<br>
-=C2=A0python/scripts/mkvenv.py=C2=A0 =C2=A0 =C2=A0 | 40 +++++++++++++++++++=
-++++++++++++++++<br>
-=C2=A0tests/qemu-iotests/linters.py |=C2=A0 2 +-<br>
-=C2=A0tests/qemu-iotests/testenv.py | 21 ++++++++++++------<br>
-=C2=A04 files changed, 87 insertions(+), 7 deletions(-)<br>
-<br>
--- <br>
-2.40.1<br>
-<br>
-<br>
-</blockquote></div></div></div>
-
---0000000000004c139a05fe9e6e90--
+  Thomas
 
 
