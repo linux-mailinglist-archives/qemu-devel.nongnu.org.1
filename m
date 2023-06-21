@@ -2,63 +2,132 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3FB1738E6C
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 20:18:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EAD8738E84
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 20:23:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qC2On-0000lt-V9; Wed, 21 Jun 2023 14:17:45 -0400
+	id 1qC2Tz-0003MQ-QH; Wed, 21 Jun 2023 14:23:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
- id 1qC2Ol-0000la-Ad
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 14:17:43 -0400
-Received: from vps-vb.mhejs.net ([37.28.154.113])
+ (Exim 4.90_1) (envelope-from <den@virtuozzo.com>)
+ id 1qC2Tn-0003Ll-2L; Wed, 21 Jun 2023 14:22:55 -0400
+Received: from mail-dbaeur03on20717.outbound.protection.outlook.com
+ ([2a01:111:f400:fe1a::717]
+ helo=EUR03-DBA-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
- id 1qC2Oi-0002ZF-NH
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 14:17:43 -0400
-Received: from MUA by vps-vb.mhejs.net with esmtps (TLS1.2) tls
- TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 (Exim 4.94.2)
- (envelope-from <mail@maciej.szmigiero.name>)
- id 1qC2OX-0004k3-Um; Wed, 21 Jun 2023 20:17:29 +0200
-Message-ID: <0a7cc359-f308-21a1-6c6d-7bcb51051f7e@maciej.szmigiero.name>
-Date: Wed, 21 Jun 2023 20:17:24 +0200
-MIME-Version: 1.0
+ (Exim 4.90_1) (envelope-from <den@virtuozzo.com>)
+ id 1qC2Th-0005tE-Mg; Wed, 21 Jun 2023 14:22:54 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=NUQAEAjgv5Hgxab6HSaoWTRBQwWHUnwtiHFrKXsp1cmjc88ihyGNI+lNv5pKC8yiMYbbPTg9oifbtKu4apcKtXdXshetneaIZyOHlNQ1G4Mv5lbRQh/N+hDxh8ZuI/ZV6M5UGev5wijt8pBGc1pHzf1afN1boKveTocd24GG+LPHPwfAr5khjBbj7+s9DgI+6G74DBtLNQ1fgp/JbtFUP/pgvi10kOO/tOjU7KomrSnM+RYTE8KQgfh7kIVWDliE9djw/ZdtaWAXxJQrg9OKSEQiBivLNlCB/FRFNcKhKK+vcN8dGwVtEMctqq1W6IM+4KMs9RKqkuTmidqJ2/NBLQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ltA4VK3G8fHEvWcPjb5O8cUBfV2aDJOWFfYyAzxDOmM=;
+ b=V4BLQqaZzFop2F3QE/aE4veEHZaVewOq2EBTWeFSZQeViLRn53j6JFH8GM3IlBvewT1kS9fX4z31SF3vlEjmBOqf4QEEp8xQs1V/QWx0VL+ZFZiwTSzFyJcnKk3Njw+RUpmqFAcD4RSyRb4R+S41nJuAgHoeoxWVCLfGn9vXCzRNOFYvcTT0fwXBVhB0hLVGXGEAH+57PNMA5aS3uj/jGLtOPcu7ZNtVLowgEFl1wiOoC4+0NcVWHJ5dqvvb+RK4dAo65R3Sk2i/qN6d/AAesgE1JDdvRBJpRKvfyU29uNuY39AipFpiaOD9ADQus4KmGXXZkLdH59jAfn8lvtkQBg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
+ header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ltA4VK3G8fHEvWcPjb5O8cUBfV2aDJOWFfYyAzxDOmM=;
+ b=dvtyDromkuiG5ejgY3nTclDh27uW1PvaCwfegSgTcWmyzelO1bd+vW5zUgY5n1rBcrB1nbWsK4yolv34M8OPM9dmezkbUL7GShu0vAIN9u39dj2ykzvoxi99vxJ6AjJx52pcT+HxUdyq6mftUhAE+fQRhsGYl0dvlbDaLu9QuIdg+pDCo6Y57OEgXyAcmYuZhDmdSThmYIT9xKUC6dpkU2p3EzvQLjHZOrtxjvVBecehfSRJKMCUpWrZZRGjN5V6C+OITvZVhCqX5L2V2TdEImTie8QgWBWMPFBCviqDRtCgjw10NeudxGwhy808dNh1GAZoJyJpsZsGDneCNhmShA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=virtuozzo.com;
+Received: from AS8PR08MB6946.eurprd08.prod.outlook.com (2603:10a6:20b:345::17)
+ by PAWPR08MB9806.eurprd08.prod.outlook.com (2603:10a6:102:2e2::8)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6500.37; Wed, 21 Jun
+ 2023 18:22:46 +0000
+Received: from AS8PR08MB6946.eurprd08.prod.outlook.com
+ ([fe80::1e80:70d8:d23c:9b65]) by AS8PR08MB6946.eurprd08.prod.outlook.com
+ ([fe80::1e80:70d8:d23c:9b65%4]) with mapi id 15.20.6521.023; Wed, 21 Jun 2023
+ 18:22:45 +0000
+Message-ID: <e0927e6c-a265-8551-4cde-20f9dd50b8a9@virtuozzo.com>
+Date: Wed, 21 Jun 2023 20:22:43 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Content-Language: en-US, pl-PL
-To: David Hildenbrand <david@redhat.com>
-Cc: "Michael S . Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
- Thomas Huth <thuth@redhat.com>,
- =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>
-References: <cover.1686577753.git.maciej.szmigiero@oracle.com>
- <896327748bde906826e24ce7cc45301e325e14a7.1686577753.git.maciej.szmigiero@oracle.com>
- <f54e55d0-b8dd-a431-7634-02fdec0611bb@redhat.com>
- <1b107fba-38e0-cced-e19f-b62684072bfd@maciej.szmigiero.name>
- <008fced2-1bcf-7a89-d642-bb724eb63ddf@redhat.com>
- <987af80f-9636-42da-26de-e2d07dc25ce3@maciej.szmigiero.name>
- <acf9402f-3baf-6c07-6662-7e0638f78263@redhat.com>
-From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
-Subject: Re: [PATCH][RESEND v5 3/3] Add a Hyper-V Dynamic Memory Protocol
- driver (hv-balloon)
-In-Reply-To: <acf9402f-3baf-6c07-6662-7e0638f78263@redhat.com>
+ Thunderbird/102.11.0
+Subject: Re: [PATCH 5/6] qemu-img: add compression option to rebase subcommand
+Content-Language: en-US
+To: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>, qemu-block@nongnu.org
+Cc: qemu-devel@nongnu.org, kwolf@redhat.com, hreitz@redhat.com
+References: <20230601192836.598602-1-andrey.drobyshev@virtuozzo.com>
+ <20230601192836.598602-6-andrey.drobyshev@virtuozzo.com>
+From: "Denis V. Lunev" <den@virtuozzo.com>
+In-Reply-To: <20230601192836.598602-6-andrey.drobyshev@virtuozzo.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=37.28.154.113;
- envelope-from=mail@maciej.szmigiero.name; helo=vps-vb.mhejs.net
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+X-ClientProxiedBy: VI1PR04CA0084.eurprd04.prod.outlook.com
+ (2603:10a6:803:64::19) To AS8PR08MB6946.eurprd08.prod.outlook.com
+ (2603:10a6:20b:345::17)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS8PR08MB6946:EE_|PAWPR08MB9806:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3e31174c-12bb-479a-ab9d-08db728482bd
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: F8+KSeXASyKcoiwHsBs67vlFMmIK3a/lf9fjzwIGHadJAvffiyFroOX6AbD2tNvF6VaCutG7vrfQOags0WqdiQ4FP6Z4JLVqxyOsv4OuvCE8Wdg0B7aAmitgWVBXRlBgWoYeNiZZejHbi1Ta3NeSjgcQH4xTA4QfQabg1xJigahcGYzkm/8uykicbm5GTvitjd82Ll53wm4Ko7NSj7xg6l4hpHxMKQuDxLGEHf5D11BHd7vlQ1hXGpWONQoN6ArFmpcgWtfkpTU6ve083o8EqmIYPBtIKMMXu/xFVL31NZ5fbIYKk1Wu4MEjzzHToJpRxMr6q/qjqYhvbSE2sfl2H3/X4rwSLcIZB1PaxxU2WW5cWSdPgBuV4Zb1MDac96qdUA+pfhc68HgqgdxlKh+jkChGS5GyUilWr2bqUUF0xPAArX4w5fv5UqKzGp6SvyEf9vPXirJ+mmh8l0sgH/INXBWcTRW+MlbObxkDcHQZlKCXgXwPX1UuEtcjisd9i0VIZoF1z79Eom3Rsw4r5rZzEMTgLNoyOl9pffigfIBZSWYvMi3FtLIHfz4Kj0ETwolnNRFuwUVYPXsCx6Naq64ICtdi8WU1VYHmjH7NNQ37QcuohZ6bhMV7uZGYoxQEDlrz4SCtP3qeBBTQmIHP0qIFZg==
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:AS8PR08MB6946.eurprd08.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230028)(4636009)(136003)(39850400004)(376002)(396003)(366004)(346002)(451199021)(5660300002)(31686004)(8936002)(8676002)(4326008)(66946007)(66556008)(66476007)(316002)(41300700001)(2906002)(6486002)(478600001)(26005)(53546011)(186003)(83380400001)(6506007)(36756003)(2616005)(6512007)(38100700002)(86362001)(31696002)(43740500002)(45980500001);
+ DIR:OUT; SFP:1102; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?bzN2TmFkcTVWc0M2eHZ0MW9yUFM4T2FWVHZjTklYd0QrbTB1UTR3STVOSGhM?=
+ =?utf-8?B?MENZRE5OZDJQUStqZk9YMGxCSUlNSzN5VE5INDN0VEhjVXpDdUliUWF5QU5l?=
+ =?utf-8?B?RzdQWmd1Tnp2TVlhK2o4VEJtdVlQc01VeWxMWGljZGVXc1FqWlVyaFAxNlRm?=
+ =?utf-8?B?YlphODEwTE5hR05iYlRqaSsybWd6SVpmNTB0amhJZHRZYVVncEkyWCs3TGtr?=
+ =?utf-8?B?bzRvenhpSlJ0OWJzSDJEbldDNlhTOC9KaTFaTnR1VDlhRWREdzBlZ2QybW0w?=
+ =?utf-8?B?UU5oOVdyR2t6dURuNGZrUWJIVUNrV1NFQ2J4dWFKaU1FbW8yKzRkc3VBbmdF?=
+ =?utf-8?B?K1ZuOWVTVDlMcXI1T09JRnF2ZnlnTTVZY212MkVnbHlIMFd0Z2t6bFIxeFc1?=
+ =?utf-8?B?MjQrVUhWTlpZRVVIRnRMYTV6bUZ4ZXFQSklUQ2pCRnU0ZUVuV0ErQ1BZdUJM?=
+ =?utf-8?B?K08wN1ZhNHczVngrTkZPdzdTdGJ4MXBSSzVTOFVBWDZDVmpvYVJXenpMVi8w?=
+ =?utf-8?B?aFNvdW04ZFBxNC9mWnIvam9uRnE3U01iZWhHSEJtdDlQajhDeUZ0eWlweGky?=
+ =?utf-8?B?SnVBeWJyZWoxa09VSWo5KzNWUmkvbXlWclZodmRWN2VKdUxOcWVLMXNoa1lK?=
+ =?utf-8?B?azladlJoeWhETlF0VG10THo1NzYvR1l2N2pMWFRIWjQvZitHRURmR3phdk5S?=
+ =?utf-8?B?RFhnSk16MmFKcitjNlIxUFFodDRSZzNUUExiUkJmYjJ3cXZ2TzN6NGRXMjVq?=
+ =?utf-8?B?SDE4a3E5R3hpZEhxNUVaTTUwSVFBNlU4QTYxdUROUGFCamYxcHcrY20yRGpu?=
+ =?utf-8?B?QVd0dlFmN1lOSWhpS1lNYVNERm8zOXZSYUdKS3FvU1A0ZkdkbGpGZ04zMUcy?=
+ =?utf-8?B?cWdZeDRaMUJQREE3YWFRdG5PV0c1ZXNyVG5EZlRGSTBSSHZxcDRuVE1BL2VU?=
+ =?utf-8?B?RkVDTmZwSFV4c1YyZzhSbWdzR2Q3SnQxQkIwdm0zZzdLV0tUelRMQ0R4cnM5?=
+ =?utf-8?B?aG5QY0k3TlBDemNMWHRocVJKeTF1RXRheE4zSjh1a2JlWkV0bDhsV2dqb3Nx?=
+ =?utf-8?B?dmRYZHFDL0NOMnVyMjA0MEFNb1J0MDBmdit3aGkvRm1lWlJvMkpPQTk0c0dl?=
+ =?utf-8?B?c2VzMFlQQzlOZkxBdGtlUkJsR0M3SS8wNk40SFU2bmZQQ2gvcWtUejNqK3g1?=
+ =?utf-8?B?Z1RQaVFHOEpiT051VUE1dWtNa2dlenZDK05xc240WmRmOTk5dXIrdjBYTit1?=
+ =?utf-8?B?bGRoYzNTVitXQkZLREZsckllamZjOW4xQXRWSUlZTkcrZVVzSzJOdk1tUTNR?=
+ =?utf-8?B?R2d1NzVVRjFJb1lYMys1blF0bEdyUDZwNzFxYmZlVjBOS2NJaTZBckZraWd2?=
+ =?utf-8?B?d2drelprUjQ3bEFZS1g3eERoL0E3WGJHU0RwUnkwMGJBano0RjI4d1ZUVGRw?=
+ =?utf-8?B?VWtpTUpQNmpQNjc5aXdWS2t4dkNYeXZyc25McUhFb3U4OTZnSEsvOG8rbE9r?=
+ =?utf-8?B?UzBYWVFlRVU5WkhaSXAyYUlPVy9ldVc3aURWTWpyQ2VkVlROOWFubmsxVERU?=
+ =?utf-8?B?ZktiUFRsNSsrMmdDRm1KVXYxTGR3citFTDl4Qm1NMGVnOXlyRzFpNzNmRUtl?=
+ =?utf-8?B?TlJTOE00djNjdEppei90WHphdk52cDVOaWUzUEcvZktaL3dxTDgzSWNTNk4r?=
+ =?utf-8?B?UGpQbGg0TUtZTDFBYVRpUGNtMTFxZTNYMVJMb2NpMm5xYXBYdEd1blVGL0ZZ?=
+ =?utf-8?B?ZFgrQUFkbmpGajcwV3VST2k2eE1GY3ZvUlF4bWhFKzhMU1dKdWNLS3pQMVFk?=
+ =?utf-8?B?M1lDUXV3RS9jSFE1MFdYVHo0RWFZU0xZZEozbUVKY1N2UHZrOGhNeE9MS2hB?=
+ =?utf-8?B?RzI5WTdBTjZ0KzVNSjAzMFpNUlY2M0ExbG11TmZkWVZYYjJoWVJnS3o5WGgw?=
+ =?utf-8?B?TllrdDF5RVNKRmFLbys3eTRtbnRoOWJSckRJZi80Um11aWxCKzJJM0tGYzF2?=
+ =?utf-8?B?NE1CZzB6ZkNRUlFzZUZvcEMrY3pvWVdWY0FDQURWUGxCM1pybzVEQ3NlWkhE?=
+ =?utf-8?B?Y3Vtc3NZcFpORTdpbmM4MlpUYnRPWE9JZ05od3M0emIrT3hBYWE3RnJMWHd1?=
+ =?utf-8?Q?Pm0lMi2KszE8A2+KzO54s84cE?=
+X-OriginatorOrg: virtuozzo.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3e31174c-12bb-479a-ab9d-08db728482bd
+X-MS-Exchange-CrossTenant-AuthSource: AS8PR08MB6946.eurprd08.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jun 2023 18:22:45.9302 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Okc6kMv+ubCxNlXiLm5l6YcIw06vTlTFc3nJS2UW5UeEjqSMcbGbPimRxlW1aCfR3VZKvybhHEUZ96njoMyb8Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAWPR08MB9806
+Received-SPF: pass client-ip=2a01:111:f400:fe1a::717;
+ envelope-from=den@virtuozzo.com;
+ helo=EUR03-DBA-obe.outbound.protection.outlook.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.093,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.093,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -76,277 +145,138 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 21.06.2023 12:32, David Hildenbrand wrote:
-> On 20.06.23 22:13, Maciej S. Szmigiero wrote:
->> On 19.06.2023 17:58, David Hildenbrand wrote:
->>> [...]
->>>
->>> Sorry for the late reply!
->>>
->>> Still trying to make up my mind what the right way forward with this is.
->>>
->>>>>
->>>>> This usage is still problematic I suspect (well, and a layer violation regarding the machine). The machine hotplug handler is supposed to call the pre_plug/plug/unplug hooks as response to pre_plug/plug/unplug notifications from the core. See how we handle virtio-mem/virtio-pmem/nvdimms as an example.
->>>>>
->>>>> We assume that when memory_device_pre_plug() gets called, that the device is not realized yet, but once it gets plugged, that it already is realized, and that the device will actually vanish (get unrealized) when unplugging the device.
->>>>> Otherwise memory device logic like in get_plugged_memory_size() stops working.
->>>>
->>>> get_plugged_memory_size() just calls get_plugged_size() method on every
->>>> realized TYPE_MEMORY_DEVICE.
->>>>
->>>> While this now always returns the whole backing memory size (once the
->>>> backend gets plugged) I don't see a reason why this method could not be
->>>> overridden in hv-balloon to return just the currently hot-added size.
->>>>
->>>> By the way, this function seems to be used just for reporting stats via QMP.
->>>
->>> memory_device_build_list() is another example, used for memory_device_get_free_addr().
->>
->> I don't see it calling get_plugged_size() method, I can see it only using
->> (indirectly) get_addr() method.
-> 
-> It similarly contains the TYPE_MEMORY_DEVICE -> dev->realized logic.
+On 6/1/23 21:28, Andrey Drobyshev wrote:
+> If we rebase an image whose backing file has compressed clusters, we
+> might end up wasting disk space since the copied clusters are now
+> uncompressed.  In order to have better control over this, let's add
+> "--compress" option to the "qemu-img rebase" command.
+>
+> Note that this option affects only the clusters which are actually being
+> copied from the original backing file.  The clusters which were
+> uncompressed in the target image will remain so.
+>
+> Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+> ---
+>   docs/tools/qemu-img.rst |  6 ++++--
+>   qemu-img-cmds.hx        |  4 ++--
+>   qemu-img.c              | 19 +++++++++++++++++--
+>   3 files changed, 23 insertions(+), 6 deletions(-)
+>
+> diff --git a/docs/tools/qemu-img.rst b/docs/tools/qemu-img.rst
+> index 15aeddc6d8..973a912dec 100644
+> --- a/docs/tools/qemu-img.rst
+> +++ b/docs/tools/qemu-img.rst
+> @@ -663,7 +663,7 @@ Command description:
+>   
+>     List, apply, create or delete snapshots in image *FILENAME*.
+>   
+> -.. option:: rebase [--object OBJECTDEF] [--image-opts] [-U] [-q] [-f FMT] [-t CACHE] [-T SRC_CACHE] [-p] [-u] -b BACKING_FILE [-F BACKING_FMT] FILENAME
+> +.. option:: rebase [--object OBJECTDEF] [--image-opts] [-U] [-q] [-f FMT] [-t CACHE] [-T SRC_CACHE] [-p] [-u] [-c] -b BACKING_FILE [-F BACKING_FMT] FILENAME
+>   
+>     Changes the backing file of an image. Only the formats ``qcow2`` and
+>     ``qed`` support changing the backing file.
+> @@ -690,7 +690,9 @@ Command description:
+>   
+>       In order to achieve this, any clusters that differ between
+>       *BACKING_FILE* and the old backing file of *FILENAME* are merged
+> -    into *FILENAME* before actually changing the backing file.
+> +    into *FILENAME* before actually changing the backing file. With ``-c``
+> +    option specified, the clusters which are being merged (but not the
+> +    entire *FILENAME* image) are written in the compressed mode.
+>   
+>       Note that the safe mode is an expensive operation, comparable to
+>       converting an image. It only works if the old backing file still
+> diff --git a/qemu-img-cmds.hx b/qemu-img-cmds.hx
+> index 1b1dab5b17..068692d13e 100644
+> --- a/qemu-img-cmds.hx
+> +++ b/qemu-img-cmds.hx
+> @@ -88,9 +88,9 @@ SRST
+>   ERST
+>   
+>   DEF("rebase", img_rebase,
+> -    "rebase [--object objectdef] [--image-opts] [-U] [-q] [-f fmt] [-t cache] [-T src_cache] [-p] [-u] -b backing_file [-F backing_fmt] filename")
+> +    "rebase [--object objectdef] [--image-opts] [-U] [-q] [-f fmt] [-t cache] [-T src_cache] [-p] [-u] [-c] -b backing_file [-F backing_fmt] filename")
+>   SRST
+> -.. option:: rebase [--object OBJECTDEF] [--image-opts] [-U] [-q] [-f FMT] [-t CACHE] [-T SRC_CACHE] [-p] [-u] -b BACKING_FILE [-F BACKING_FMT] FILENAME
+> +.. option:: rebase [--object OBJECTDEF] [--image-opts] [-U] [-q] [-f FMT] [-t CACHE] [-T SRC_CACHE] [-p] [-u] [-c] -b BACKING_FILE [-F BACKING_FMT] FILENAME
+>   ERST
+>   
+>   DEF("resize", img_resize,
+> diff --git a/qemu-img.c b/qemu-img.c
+> index 9a469cd609..108da27b23 100644
+> --- a/qemu-img.c
+> +++ b/qemu-img.c
+> @@ -3517,11 +3517,13 @@ static int img_rebase(int argc, char **argv)
+>       char *filename;
+>       const char *fmt, *cache, *src_cache, *out_basefmt, *out_baseimg;
+>       int c, flags, src_flags, ret;
+> +    BdrvRequestFlags write_flags = 0;
+>       bool writethrough, src_writethrough;
+>       int unsafe = 0;
+>       bool force_share = false;
+>       int progress = 0;
+>       bool quiet = false;
+> +    bool compress = false;
+>       Error *local_err = NULL;
+>       bool image_opts = false;
+>   
+> @@ -3537,9 +3539,10 @@ static int img_rebase(int argc, char **argv)
+>               {"object", required_argument, 0, OPTION_OBJECT},
+>               {"image-opts", no_argument, 0, OPTION_IMAGE_OPTS},
+>               {"force-share", no_argument, 0, 'U'},
+> +            {"compress", no_argument, 0, 'c'},
+>               {0, 0, 0, 0}
+>           };
+> -        c = getopt_long(argc, argv, ":hf:F:b:upt:T:qU",
+> +        c = getopt_long(argc, argv, ":hf:F:b:upt:T:qUc",
+>                           long_options, NULL);
+>           if (c == -1) {
+>               break;
+> @@ -3587,6 +3590,9 @@ static int img_rebase(int argc, char **argv)
+>           case 'U':
+>               force_share = true;
+>               break;
+> +        case 'c':
+> +            compress = true;
+> +            break;
+>           }
+>       }
+>   
+> @@ -3639,6 +3645,14 @@ static int img_rebase(int argc, char **argv)
+>   
+>       unfiltered_bs = bdrv_skip_filters(bs);
+>   
+> +    if (compress && !block_driver_can_compress(unfiltered_bs->drv)) {
+> +        error_report("Compression not supported for this file format");
+> +        ret = -1;
+> +        goto out;
+> +    } else if (compress) {
+> +        write_flags |= BDRV_REQ_WRITE_COMPRESSED;
+> +    }
+> +
 
-All right, I thought at first you meant just that the get_plugged_memory_size()
-function reports misleading values.
+minor neat-picking. Should we get a global
+if (compress) {
+   if (!block_driver_can_compress(unfiltered_bs->drv)) {
+      report_error
+      goto out;
+   }
+   write_flags |= BDRV_REQ_WRITE_COMPRESSED;
+}
 
-> 
->>
->>> You'd be blocking memory address ranges with an unplugged-but-realized memory device.>
->>> Memory device code expects that realized memory devices are plugged and vice versa.
->>
->> Which QEMU code you mean specifically? Maybe it just needs a trivial
->> change.
->>
->> Before the driver hot-adds the first chunk of memory it does not use any
->> part of the address space.
->>
->> After that, it has to reserve address space for the whole backing memory
->> device, so no other devices will claim parts of it and because a
->> TYPE_MEMORY_DEVICE (currently) can have just a single range.
->>
->> This address space is released when the VM is restarted.
->>
-> 
-> As I said, memory device code currently expects that you don't have realized
-> TYPE_MEMORY_DEVICE that are not plugged, and currently that holds true for all
-> memory devices.
-> 
-> We could modify memory device code to change that, but IMHO it's the wrong way
-> around: the machine (hotplug) is responsible for (un)plugging memory devices
-> as they get realized.
-> 
-> Doing a qdev_get_machine()/current_machine from device code and then
-> modifying the state of the machine (here: calling plug/unplug handlers)
-> is usually a warning sign that there is a layer violation.
-> 
-> That's why I'm thinking about a cleaner way to handle that.
-
-Okay, now I think I understand what you think is questionable:
-calling memory_device_pre_plug(), memory_device_plug() and friends from
-the driver when hot-adding the first memory chunk, even thought no actual
-device is getting plugged in at that time.
-
-I'm open to other approaches here (besides the virtual DIMMs one that we
-already tried in the past).
-
-> [...]
-> 
->>>>> Is it to support the !memdev case or why is this this plugging/unplugging in our_range_plugged_new()/our_range_plugged_free() required?
->>>>
->>>> At least for three (four) reasons:
->>>> 1a) At the hv-balloon plug time the device doesn't yet know the guest
->>>> alignement requirements - or whether the guest supports memory hot add at
->>>> all - that's what the device will learn only once the guest connects
->>>> to the protocol.
->>>
->>> Understood, so you want to at least expose the memory dynamically to the VM (map the MR on demand).
->>>
->>> That could be done using a memory region container like virtio-mem is planning [1] on using fairly easily.
->>>
->>> [1] https://lkml.kernel.org/r/20230616092654.175518-14-david@redhat.com
->>
->> Thanks for the pointer to your series - I've looked at it and it seems
->> to me that while it allows multiple memory subregions, each backed by
->> a separate memslot it still needs a single big main region for
->> the particular TYPE_MEMORY_DEVICE, am I right?
-> 
-> Yes.
-> 
->>
->>>> 1b) For the same reason the memory region has to be unplugged at the VM
->>>> reset time - the new guest might have stricter alignement requirements
->>>
->>> Alignment is certainly interesting, but is it a real problem?
->>>
->>> As default (not other memory devices) you get an address that's aligned to 1 GiB. And, in fact, you can simply always request a 1 GiB alignment for the device, independent of the guest requirement.
->>>
->>> Would the guest requirement be even stricter than that (e.g., 2 GiB)?
->>
->> The protocol allows up to 32 GiB alignement so we cannot simply
->> hardcode the alignement to 1 GiB, especially since this is Windows
->> we're talking about (so this parameter is subject to unpredictable
->> changes).
-> 
-> Note that anything bigger than 1 GiB is not really guaranteed to work in
-> QEMU on x86-64. See the warning in memory_device_get_free_addr():
-> 
->      /* start of address space indicates the maximum alignment we expect */
->      if (!QEMU_IS_ALIGNED(range_lob(&as), align)) {
->          warn_report("the alignment (0x%" PRIx64 ") exceeds the expected"
->                      " maximum alignment, memory will get fragmented and not"
->                      " all 'maxmem' might be usable for memory devices.",
->                      align);
->      }
-> 
-> 
-> So assume you do a "-m 4G,maxmem=36G"
-> 
-> You cannot add a 32 GiB device with an alignment of 32 GiB -- thee is not
-> sufficient room in the device region size. To achieve that, you'd have to
-> increase maxmem to something like:
-> 
-> "-m 4G,maxmem=68G"
-> 
-> to eventually make that work.
-> 
-> So "it's complicated" already to guarantee anything > 1 GiB, even when doing it
-> from within QEMU.
-> 
-> 
-> Thinking about how to handle it with a device memory region container:
-> With the 32 GiB max alignment, you could similarly always size the device managed
-> region container effectively sizeof(memdev)+32 GiB, and document that. Adding a
-> 32 GiB device to the "-m 4G,maxmem=36G" configuration would fail right from the
-> start, instead of later at runtime when you fail to find an aligned address range
-> in the configuration.
-> 
-> Within that region container, you can then align the address as you want, without
-> getting warnings about alignment from the core or failing hotplug if the alignment
-> in the configuration cannot be satisfied.
-
-Won't using a bigger container also require up-sizing the backing memory
-device?
-
-In other words, is it possible to attach the backing memory device at
-non-zero offset in the container only at runtime, when the required
-alignement becomes known?
-If such offset attachment is indeed possible, then I don't see a problem
-with using such container.
-
-In the current driver form, with the effective requirement of
-maxmem=32G+sizeof(memdev), we're just wasting address space, not parts of
-the actual backing memory device.
-
->>
->>> In theory, when using a memory region container (again [1]) into which you dynamically map the RAM region, you can do this alignment internally.
->>>
->>> So it might be an option to use a memory region container and dynamically map into that one as you please (it just has to have a fixed size).
->>
->> Still, demand-allocating just the right memory region (with the right
->> alignement) seems to me like a cleaner solution than allocating a huge
->> worst-case memory region upfront and then trying to carve the right
->> part of it.
-> 
-> See above, this does not work in the general case as you would need it.
-> 
-> [...]
-> 
->>>> 3) This will hopefully allow sharing the backing memory device between
->>>> virtio-mem and hv-balloon in the future - Linux guests will connect to
->>>> the former interface while Windows guests will connect to the later.
->>>>
->>>
->>> I've been told that the virtio-mem driver for Windows will show up polished in the near future ... we'll see :)
->>
->> virtio-mem driver for Windows is still at version 1 at [1] so I guess
->> it's going to take a while for it to be production-ready - due to, in part,
->> difficulty in acquiring stability guarantees for the required Windows
->> kernel MM APIs.
-> 
-> I heard that there is progress on both, and that it should be upstream soonish. But I'm not
-> involved in the actual development (and Microsoft discussions), so I can only echo what
-> people told me.
-
-As you said, we'll see - competition is generally a good thing (if kept
-within reason).
-
->>
->>> Anyhow, I consider that a secondary requirement. (virtio-mem is not compatible with shared memdevs)
->>>
->>>
->>>>>
->>>>> Supporting the !memdev case is interesting: you essentially want to plug a memory device without a device region (or with an empty stub). I guess we should get that figured out somehow.
->>>>>
->>>>
->>>> That's why the previous version of this driver used a parent VMBus
->>>> device (non-TYPE_MEMORY_DEVICE) which then had virtual DIMMs as its
->>>> children carrying memory for hot add.
->>>
->>> So we have the following two options I think
->>>
->>> (1) Make the hv-balloon device a memory device,
->>
->> It's already a TYPE_MEMORY_DEVICE, so no change required here.
->>
->>> plug/unplug it from the machine code when plug/unplug'ing the hv-balloon device.
->>
->> Don't quite follow that - the device is not designed to be hot-pluggable
->> (I'm not sure that Windows would even allow hot-plugging a DM protocol
->> device).
-> 
-> There is coldplug and hotplug. Coldplug is just specifying a device on the QEMU
-> cmdline and letting the (hot)plug handler wire it up correctly.
-
-So we'll only have to support the coldplug case for the hv-balloon driver
-itself.
-
-On the other hand, previous versions of the driver used to hot-plug
-virtual DIMM devices.
-
->>
->> It is rather designed to be instantiated at the QEMU command line for the
->> lifetime of the VM.
->>
-> 
-> Right, and I assume it cannot get unplugged.
-
-That's right.
-
->>> We'd use a memory region container as device memory region (like [1]) and would have to handle the !memdev case (I can help with that). > Into that, you can map the RAM memory region on demand (and eventually even using multiple slots like [1]).
->>>
->>> (2) Use a single virtual DIMM and (un)plug that on demand. Let the machine code handle (un)plugging of the device.
->>>
->>>
->>> (1) feels cleanest to me, although it will require a bit more work.
->>>
->>
->> I also think approach (1) makes more sense as it avoids memslot metadata
->> overhead for not-yet-hot-added parts of the memory backing device.
->>
->> Not sure what you mean that the !memdev case would be problematic in this
->> case - it is working in the current driver shape so why would adding
->> potential memory subregions (used in the memdev case) change that?
-> 
-> I'm thinking about the case where you have a hv-balloon device without a memdev.
-> 
-> Without -m X,maxmem=y we don't currently expect to have memory devices around
-> (and especially them getting (un)plugged. But why should we "force" to set the
-> "maxmem" option
-
-I guess it's only a small change to QEMU to allow having hv-balloon
-device (without a memdev) even in the case where there's no "maxmem"
-option given on the QEMU command line.
-
-> 
-> I hope I'll find some time soonish to prototype what I have in mind, to see
-> if it could be made working.
-> 
-
-Okay, so I'll wait for your prototype before commencing further work on
-the next version of this driver.
-
-Thanks,
-Maciej
-
+>       if (out_basefmt != NULL) {
+>           if (bdrv_find_format(out_basefmt) == NULL) {
+>               error_report("Invalid format name: '%s'", out_basefmt);
+> @@ -3903,7 +3917,8 @@ static int img_rebase(int argc, char **argv)
+>                                               bdi.cluster_size);
+>                           end = end > size ? size : end;
+>                           ret = blk_pwrite(blk, start, end - start,
+> -                                         buf_old + (start - offset), 0);
+> +                                         buf_old + (start - offset),
+> +                                         write_flags);
+>                           pnum = end - (offset + written);
+>                       }
+>                       if (ret < 0) {
+Anyway, for both variants,
+Reviewed-by: Denis V. Lunev <den@openvz.org>
 
