@@ -2,81 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F000737F1F
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 11:47:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DBBA737F3F
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 12:00:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBuQO-0006lm-8o; Wed, 21 Jun 2023 05:46:52 -0400
+	id 1qBuda-0003CE-3u; Wed, 21 Jun 2023 06:00:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qBuQM-0006lT-3L
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 05:46:50 -0400
-Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qBudY-0003BG-94
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 06:00:28 -0400
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qBuQK-0002X1-4z
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 05:46:49 -0400
-Received: by mail-ed1-x530.google.com with SMTP id
- 4fb4d7f45d1cf-51bdf6336d2so225897a12.2
- for <qemu-devel@nongnu.org>; Wed, 21 Jun 2023 02:46:47 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qBudW-0001lP-91
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 06:00:27 -0400
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-3f900cd3f69so41206865e9.0
+ for <qemu-devel@nongnu.org>; Wed, 21 Jun 2023 03:00:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687340806; x=1689932806;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=wC7HbOc7aDuirvYpYu+juqtN6YdFA9pAjWz3EsMRdiM=;
- b=XMEvzKOCkBiecJUTf8UjZzwXy02NLyKxrHajGM5rqzf4njdvooTaW1EXBiWL8Vs7rJ
- 6RB7pXCoHURCpUZEwD8/cR2mXUCxBieWO3LEVbFXcq1Z2X8bPf5l+NvSwaX9FQ4G1VW3
- +TozN15L/fQP2VsAV2OL3a2uF1R8Jclf/AZvtdmpgJMoAZ25jhRhYp6+IhVZPNOsOkZd
- dS69max7ar78/WD5ShbVdDvSMexjuDl3BAyUD5jAyYUHnRu98XRqxCGXTCx043gJXLeJ
- VHdScRYPlyOjOIqOdO1yQSy6/nN1fROwA7QefNMDShUlcACGGtujeF1e8VwI9xvO6YV4
- rL+A==
+ d=linaro.org; s=google; t=1687341624; x=1689933624;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=0M2GZsK11waFkDX11itgLIoZ/oepbH4ktK7VF3alvqM=;
+ b=w3a9SFQqgjPIXjz3MLMdmXpTlHexxUhIiaTCJby5veaMqwiS1/JLrRbHR3XZwo90Ji
+ 22EopiTKit9bwzaSmybKhAt+cb7E33mM9REG6QGjd8JJQ+wuH/qA0EBimpZdNfe/gCiV
+ zth1+//SY+dgtVTxxoef1mj2rYckOCU2xg018QeoKiW2BoVFROzltX+/INblKOtqa5hg
+ YG7/X9s4+WPxbOsXOaxkpBSftIvkhn5o/ip0AT9LThSTT2SmrdGsiY9glt5FOY5Ds6IY
+ LwXGa0PHzEkUt+hxTn+pvRLmv03GScnQ6+Z9x/d8fzBBx3T1eIBleE3H6/devwTkiqeh
+ CPSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687340806; x=1689932806;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=wC7HbOc7aDuirvYpYu+juqtN6YdFA9pAjWz3EsMRdiM=;
- b=FOfQ+LBcMLqmTnsuYJyUAnhKJNiqb/O7q+Q4C56LbPzFJBLAlktER5Jdef4TnibX90
- UEzT07Lp5nKvFzkws4IzrxOKqz9Y9NWfx7OtkAspY8q1obT8oRBXQELwA3n5RP4EeaIB
- ct0FuwkhEWUGYbeAknHqlTatiY+jcHSdQbewaSEnTRC/E6tCISN/Z+M7Tmv31J1pNmgw
- LDeE/j19m13x0IxqPFjy4gxGVdIgzcEGII/5nyHsChXNQWDdRRlK8zCuBLsIl/Wk3TI0
- k5si2wB5WCCAFJ8HjXD4HvPeQIhCK4SzCvtqtEF9TPEIXDYe/8CfcQ1TkHogOE0A4viu
- hr+A==
-X-Gm-Message-State: AC+VfDwFalglM+U8ABK3ZojCBaA0SlSJ0NFDWRYjt8xX1flrqnldE9Vx
- rnN6ddp7FSThGXrD7R0KeDZ5qg==
-X-Google-Smtp-Source: ACHHUZ7fZVffhAYOyNbJ3jAQn/HllDB8nP939U2B0f3//kp2ppokOnwvgMi27gfHWaKvkf2ZbCGCQQ==
-X-Received: by 2002:aa7:cf86:0:b0:51a:2769:9d1a with SMTP id
- z6-20020aa7cf86000000b0051a27699d1amr10102503edx.28.1687340806498; 
- Wed, 21 Jun 2023 02:46:46 -0700 (PDT)
-Received: from [192.168.69.115] ([176.176.128.70])
+ d=1e100.net; s=20221208; t=1687341624; x=1689933624;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=0M2GZsK11waFkDX11itgLIoZ/oepbH4ktK7VF3alvqM=;
+ b=jUc8I5Fp+ym04aU65sFNReiHTXNMSLVByTYQueRKPHYZkgy6FeJtouYBS79LT7G/uL
+ aA2G3OUwzXtMzleu1X5s7TZncf7TTPh3td5zT1EQQoIWk3S6WtOILO6MkIeh/1DhUlDJ
+ 1paXGTm32cyZa47g5uHLm4yvl41iy9IBwAmUeEhqdF8K2TwRUSiPCZHWVMywFuxj+1VJ
+ ledGzsECdTbPRHv9Wg2qu5S4OoT+BVCJYDcXrhGQh8F5m9bbRp/K4Gv8DizuyhrZ7vTn
+ CQegw6aC3Ime8H1ui3p+982jwGxPa9HznfSECxYBK8EmSge9NokstwI2PYwBPT0MU7rN
+ Bnpw==
+X-Gm-Message-State: AC+VfDys9oUpJcNBeW4VJCvFP4wGOxAUB+aWAtlf3V/IG5ZSYJ4Q0aXF
+ r3OGM11ZuVv9ZKzQpe/xIBNCQA==
+X-Google-Smtp-Source: ACHHUZ7GADC/35159LkeZalHaJVZTw+vQLTG40eSVCWIf7Zr3x/vdWNkZtYbsg3nF01t+XKi3kdrkw==
+X-Received: by 2002:a7b:c356:0:b0:3f8:f6fe:26bf with SMTP id
+ l22-20020a7bc356000000b003f8f6fe26bfmr10183542wmj.12.1687341624282; 
+ Wed, 21 Jun 2023 03:00:24 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- g9-20020aa7d1c9000000b0051495ce23absm2343007edp.10.2023.06.21.02.46.45
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 21 Jun 2023 02:46:46 -0700 (PDT)
-Message-ID: <b15a4923-dfab-f8f8-c6f7-45ffda82d9d0@linaro.org>
-Date: Wed, 21 Jun 2023 11:46:44 +0200
+ t24-20020a7bc3d8000000b003f96d10eafbsm4537701wmj.12.2023.06.21.03.00.23
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 21 Jun 2023 03:00:23 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id 4B8131FFBB;
+ Wed, 21 Jun 2023 11:00:23 +0100 (BST)
+References: <CAFEAcA_UkPyic7U8eJkzBdBNoQowMToJkK-ro9re51zwn9-CMw@mail.gmail.com>
+ <CAFEAcA_EjzQvy67XpXeEn7zMbkoCPLAs3n5PGK2J5kuGkFEBhQ@mail.gmail.com>
+ <87352li6kx.fsf@linaro.org>
+ <CAFEAcA9JuKBZSjq6WaztNA74CU1g+b=5GQFO0KPqb2RzT3LcWg@mail.gmail.com>
+User-agent: mu4e 1.11.6; emacs 29.0.92
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: QEMU Developers <qemu-devel@nongnu.org>, Richard Henderson
+ <richard.henderson@linaro.org>, Phil =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>
+Subject: Re: 'make check-tcg' fails with an assert in
+ qemu_plugin_vcpu_init_hook
+Date: Wed, 21 Jun 2023 10:55:51 +0100
+In-reply-to: <CAFEAcA9JuKBZSjq6WaztNA74CU1g+b=5GQFO0KPqb2RzT3LcWg@mail.gmail.com>
+Message-ID: <87y1kdgmo8.fsf@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.12.0
-Subject: Re: [PATCH v4 07/24] q800: move GLUE device into separate q800-glue.c
- file
-Content-Language: en-US
-To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, laurent@vivier.eu,
- qemu-devel@nongnu.org
-References: <20230621085353.113233-1-mark.cave-ayland@ilande.co.uk>
- <20230621085353.113233-8-mark.cave-ayland@ilande.co.uk>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230621085353.113233-8-mark.cave-ayland@ilande.co.uk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::530;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x530.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x336.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -94,98 +101,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 21/6/23 10:53, Mark Cave-Ayland wrote:
-> This will allow the q800-glue.h header to be included separately so that the
-> GLUE device can be referenced externally.
-> 
-> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-> Reviewed-by: Laurent Vivier <laurent@vivier.eu>
-> ---
->   MAINTAINERS                 |   2 +
->   hw/m68k/meson.build         |   2 +-
->   hw/m68k/q800-glue.c         | 252 ++++++++++++++++++++++++++++++++++++
->   hw/m68k/q800.c              | 238 +---------------------------------
->   include/hw/m68k/q800-glue.h |  50 +++++++
->   5 files changed, 306 insertions(+), 238 deletions(-)
->   create mode 100644 hw/m68k/q800-glue.c
->   create mode 100644 include/hw/m68k/q800-glue.h
+
+Peter Maydell <peter.maydell@linaro.org> writes:
+
+> On Wed, 21 Jun 2023 at 09:05, Alex Benn=C3=A9e <alex.bennee@linaro.org> w=
+rote:
+>>
+>>
+>> Peter Maydell <peter.maydell@linaro.org> writes:
+>>
+>> > On Tue, 20 Jun 2023 at 17:56, Peter Maydell <peter.maydell@linaro.org>=
+ wrote:
+>> >>
+>> >> $ make -C build/x86 check-tcg
+>> >> make: Entering directory '/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/=
+build/x86'
+>> >> [...]
+>> >>   TEST    munmap-pthread on arm
+>> >> **
+>> >> ERROR:../../plugins/core.c:221:qemu_plugin_vcpu_init_hook: assertion
+>> >> failed: (success)
+>> >> **
+>> >> ERROR:../../accel/tcg/cpu-exec.c:1024:cpu_exec_setjmp: assertion
+>> >> failed: (cpu =3D=3D current_cpu)
+>> >
+>> > git bisect blames commit d7ee93e2435970:
+>> >
+>> >     cputlb: Restrict SavedIOTLB to system emulation
+>> >
+>> > I think that commit is not correct, because it means that
+>> > the size of 'struct CPUState' and also the offset of fields
+>> > like 'cpu_index' will be different for files which are
+>> > compile-per-target-for-usermode and files which are
+>> > compile-once-only. The assert happens here because the
+>> > code which sets up cpu_index is build-once, but the code
+>> > in qemu_plugin_vcpu_init_hook() which reads cpu_index is
+>> > build-per-target and now they don't agree about where in
+>> > the struct the field is...
+>>
+>> Hmm two things from that imply:
+>>
+>>   - I suspect the plugin core stuff could be build once (or maybe twice,
+>>     system and user)
+>
+> It is already build-once, that's why it goes wrong...
+
+I thought it was the other way around:
+
+  specific_ss.add(when: 'CONFIG_PLUGIN', if_true: [files(
+    'loader.c',
+    'core.c',
+    'api.c',
+  ), declare_dependency(link_args: plugin_ldflags)])
+
+but if we built it for linux-user and softmmu this could be fixed (until
+the next breakage anyway). cpus-common.c is the common code that sets
+this once.
+
+>>   - we need to have some guard rails somehow to make sure things don't
+>>     go out of sync
+>
+> We do, this is the poison.h stuff. CONFIG_USER_ONLY is a
+> special case which we don't poison because there would be
+> too much refactoring required...
+
+I guess a great big honking comment at the top of CPUState telling
+people not to do that or pushing softmmu and user specific bits of
+CPUState into their own de-referenced structures.
+
+>
+> -- PMM
 
 
-> diff --git a/hw/m68k/q800-glue.c b/hw/m68k/q800-glue.c
-> new file mode 100644
-> index 0000000000..e81f9438f1
-> --- /dev/null
-> +++ b/hw/m68k/q800-glue.c
-> @@ -0,0 +1,252 @@
-> +/*
-> + * QEMU q800 logic GLUE (General Logic Unit)
-> + *
-> + * Permission is hereby granted, free of charge, to any person obtaining a copy
-> + * of this software and associated documentation files (the "Software"), to deal
-> + * in the Software without restriction, including without limitation the rights
-> + * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-> + * copies of the Software, and to permit persons to whom the Software is
-> + * furnished to do so, subject to the following conditions:
-> + *
-> + * The above copyright notice and this permission notice shall be included in
-> + * all copies or substantial portions of the Software.
-> + *
-> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-> + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-> + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-> + * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-> + * THE SOFTWARE.
-> + */
-> +
-> +#include "qemu/osdep.h"
-> +#include "cpu.h"
-> +#include "hw/m68k/q800-glue.h"
-> +#include "hw/boards.h"
-
-"hw/boards.h" shouldn't be necessary here.
-
-> +#include "hw/irq.h"
-> +#include "hw/nmi.h"
-> +#include "hw/qdev-properties.h"
-> +#include "migration/vmstate.h"
-
-
-> diff --git a/include/hw/m68k/q800-glue.h b/include/hw/m68k/q800-glue.h
-> new file mode 100644
-> index 0000000000..c1817b01a5
-> --- /dev/null
-> +++ b/include/hw/m68k/q800-glue.h
-> @@ -0,0 +1,50 @@
-> +/*
-> + * QEMU q800 logic glue
-
-"QEMU q800 logic GLUE (General Logic Unit)" similar to .c?
-(could be changed when applying, no need to respin)
-
-Otherwise,
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
-> + *
-> + * Permission is hereby granted, free of charge, to any person obtaining a copy
-> + * of this software and associated documentation files (the "Software"), to deal
-> + * in the Software without restriction, including without limitation the rights
-> + * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-> + * copies of the Software, and to permit persons to whom the Software is
-> + * furnished to do so, subject to the following conditions:
-> + *
-> + * The above copyright notice and this permission notice shall be included in
-> + * all copies or substantial portions of the Software.
-> + *
-> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-> + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-> + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-> + * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-> + * THE SOFTWARE.
-> + */
-
-
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
