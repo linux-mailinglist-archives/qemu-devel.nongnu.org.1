@@ -2,103 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 275AA737DFF
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 11:06:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 572E4737DB7
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 10:41:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBtmm-0002gr-1p; Wed, 21 Jun 2023 05:05:56 -0400
+	id 1qBtNc-0007Ug-TZ; Wed, 21 Jun 2023 04:39:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1qBtmh-0002fn-Sq; Wed, 21 Jun 2023 05:05:52 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1qBtNZ-0007UL-Mc
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 04:39:53 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1qBtmc-00081n-Ds; Wed, 21 Jun 2023 05:05:49 -0400
-Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 35L8hJSI029082; Wed, 21 Jun 2023 09:04:42 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=KiuGYSFvMZdi9oFlfHWolbdYLE8I02nagxyVRa/FANU=;
- b=cX1Ytaj1wzldIZ4NmYihr89LRl+QWjnO8HrJmITAO6cP5y/YEudbS8uqyaOORktpHLZi
- ydg3C2AnRWFLeTASbfaLQPkqBCEaKwoZgB/+MWaMIWmFghoncdVjzs5I6vUXRiXqW1ET
- Da/SwESzpZeI+p51gt26K9E1/W0VS9gXfyDWAI+NVLxvN9Ge3qL8aAXq747WbS4h2hRr
- j/Xqh3bwP/6oLfgWDDODwaplZebq//hVBW0TQWiAE1zOE/X5Vb24wqCyEUgzpX6xK08m
- 1w3O+Qo914GznFVpJcBYRwot23IDEnPvi/UXRNVY+TCS0DWbnur6QZYQKZjnyucI3Zum oA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rbvpbtes7-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 21 Jun 2023 09:04:41 +0000
-Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 35L8tqWd026578;
- Wed, 21 Jun 2023 09:04:41 GMT
-Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
- [169.55.85.253])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rbvpbter6-2
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 21 Jun 2023 09:04:41 +0000
-Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
- by ppma01wdc.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 35L8Dtvo028352;
- Wed, 21 Jun 2023 08:31:31 GMT
-Received: from smtprelay07.dal12v.mail.ibm.com ([9.208.130.99])
- by ppma01wdc.us.ibm.com (PPS) with ESMTPS id 3r94f5udtq-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 21 Jun 2023 08:31:31 +0000
-Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com
- [10.39.53.230])
- by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 35L8VUa838273624
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 21 Jun 2023 08:31:31 GMT
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C6BBD5806A;
- Wed, 21 Jun 2023 08:31:30 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1088E5805A;
- Wed, 21 Jun 2023 08:31:29 +0000 (GMT)
-Received: from [9.109.242.129] (unknown [9.109.242.129])
- by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Wed, 21 Jun 2023 08:31:28 +0000 (GMT)
-Message-ID: <a3dce513-d55a-7116-c6f8-5d30e4f3d131@linux.ibm.com>
-Date: Wed, 21 Jun 2023 14:01:27 +0530
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1qBtNX-0005Vn-S0
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 04:39:53 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1687336789;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=OinvM39eNcyuqTY4ayH3U9HRb8PC8b84eJfHXMZWEzo=;
+ b=JFC/cGq8K8QSYa8ZXU8JfLtbyt0HS3Qwixl0/YMRXneD/E3JoA69A05icozCOSoTUmXac6
+ hz4SS+aUueJAqvR4vWQ1sNA7Xud2rF0saaDH6Sh7Sn4M+3TGmYyEJ24ptmP5XD0+dSd1sw
+ 2c/7BES4zLqkYDBh6m5fH59DOPa13iU=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-643-nOT0jC-nMhCavQXxm-kAig-1; Wed, 21 Jun 2023 04:39:43 -0400
+X-MC-Unique: nOT0jC-nMhCavQXxm-kAig-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DCD4C280BC88;
+ Wed, 21 Jun 2023 08:39:42 +0000 (UTC)
+Received: from sirius.home.kraxel.org (unknown [10.39.192.126])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 5C9DD4087C6D;
+ Wed, 21 Jun 2023 08:39:42 +0000 (UTC)
+Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
+ id 1AF931800381; Wed, 21 Jun 2023 10:39:41 +0200 (CEST)
+Date: Wed, 21 Jun 2023 10:39:41 +0200
+From: Gerd Hoffmann <kraxel@redhat.com>
+To: Robert Beckett <bob.beckett@collabora.com>
+Cc: "Chen, Jiqian" <Jiqian.Chen@amd.com>, 
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@gmail.com>,
+ Damien Hedde <damien.hedde@greensocs.com>, 
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Stefano Stabellini <sstabellini@kernel.org>, 
+ Anthony PERARD <anthony.perard@citrix.com>,
+ Roger Pau =?utf-8?B?TW9ubsOp?= <roger.pau@citrix.com>, 
+ Jan Beulich <jbeulich@suse.com>,
+ "Dr . David Alan Gilbert" <dgilbert@redhat.com>, 
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, 
+ "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>, "Deucher,
+ Alexander" <Alexander.Deucher@amd.com>, 
+ "Koenig, Christian" <Christian.Koenig@amd.com>, "Hildebrand,
+ Stewart" <Stewart.Hildebrand@amd.com>, 
+ Xenia Ragiadakou <burzalodowa@gmail.com>, "Huang,
+ Honglei1" <Honglei1.Huang@amd.com>, 
+ "Zhang, Julia" <Julia.Zhang@amd.com>, "Huang, Ray" <Ray.Huang@amd.com>
+Subject: Re: [QEMU PATCH 1/1] virtgpu: do not destroy resources when guest
+ suspend
+Message-ID: <2s33vb2tfogntkyk5laxzcmgexf42mhkpwr2gh3gjvpitav6ez@h5zbmuklzmv5>
+References: <20230608025655.1674357-1-Jiqian.Chen@amd.com>
+ <20230608025655.1674357-2-Jiqian.Chen@amd.com>
+ <CAJ+F1CKjTW7zycr2xAW0x+d_7CEy+LxWur2Tqp2dvsb=PoJ5Dw@mail.gmail.com>
+ <q2rpqbg5b4bqxb7oayclzgbf5fplofm3dmxgmpmskjf4mcfzpn@peeiuxwkqxbb>
+ <BL1PR12MB58491E2E13F959365AA3F594E75CA@BL1PR12MB5849.namprd12.prod.outlook.com>
+ <lgan3p6wqmxht5fpduh5nvg3f5m5n636k7zrrealnu2lilghhh@qlbvgu3l4apw>
+ <2164ff79-aa09-d959-cc61-c7a2a21db5e3@collabora.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH] target/ppc: Add ISA v3.1 LEV indication in SRR1 for
- system call interrupts
-Content-Language: en-US
-To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
-Cc: qemu-devel@nongnu.org, Daniel Henrique Barboza <danielhb413@gmail.com>
-References: <20230620131321.169261-1-npiggin@gmail.com>
-From: Harsh Prateek Bora <harshpb@linux.ibm.com>
-In-Reply-To: <20230620131321.169261-1-npiggin@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: pcj2UF_bL7Z-DopRofdXP6-nhOTpQiMM
-X-Proofpoint-GUID: zoTtxoOUPvlOkeksuhgftMZ3q0-PblH_
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-06-21_06,2023-06-16_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=958 mlxscore=0
- bulkscore=0 priorityscore=1501 malwarescore=0 spamscore=0 suspectscore=0
- phishscore=0 adultscore=0 impostorscore=0 clxscore=1015 lowpriorityscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2305260000
- definitions=main-2306210071
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=harshpb@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2164ff79-aa09-d959-cc61-c7a2a21db5e3@collabora.com>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kraxel@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -114,49 +100,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-On 6/20/23 18:43, Nicholas Piggin wrote:
-> System call interrupts in ISA v3.1 CPUs add a LEV indication in SRR1
-> that corresponds with the LEV field of the instruction that caused the
-> interrupt.
+On Tue, Jun 20, 2023 at 01:26:15PM +0100, Robert Beckett wrote:
 > 
-
-Did we encounter any issue without this patch leading to this fix?
-If so, it will be great to talk about it in short if possible.
-
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
-> This is unchanged, just taken out of the bigger series since it is
-> independent.
+> On 20/06/2023 10:41, Gerd Hoffmann wrote:
+> >    Hi,
+> > 
+> > > > The guest driver should be able to restore resources after resume.
+> > > Thank you for your suggestion!
+> > > As far as I know, resources are created on host side and guest has no backup, if resources are destroyed, guest can't restore them.
+> > > Or do you mean guest driver need to send commands to re-create resources after resume?
+> > The later.  The guest driver knows which resources it has created,
+> > it can restore them after suspend.
 > 
-> Thanks,
-> Nick
+> Are you sure that this is viable?
 > 
->   target/ppc/excp_helper.c | 4 ++++
->   1 file changed, 4 insertions(+)
+> How would you propose that a guest kernel could reproduce a resource,
+> including pixel data upload during a resume?
 > 
-> diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
-> index 77bfc18734..c7550fea13 100644
-> --- a/target/ppc/excp_helper.c
-> +++ b/target/ppc/excp_helper.c
-> @@ -1591,6 +1591,10 @@ static void powerpc_excp_books(PowerPCCPU *cpu, int excp)
->               vhc->hypercall(cpu->vhyp, cpu);
->               return;
->           }
-> +        if (env->insns_flags2 & PPC2_ISA310) {
-> +            /* ISAv3.1 puts LEV into SRR1 */
-> +            msr |= lev << 20;
+> The kernel would not have any of the pixel data to transfer to host.
 
-Since LEV values greater than 2 are reserved, should we do:
-                msr |= (lev <= 2) ? lev << 20 : 0;
+Depends on the of resource type.  For resources which are created by
+uploading pixel data (using VIRTIO_GPU_CMD_TRANSFER_TO_HOST_*) a guest
+mirror exists which can be used for re-upload.
 
+For resources filled by gl rendering ops this is indeed not the case.
 
-Otherwise,
-Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+> Could you explain how you anticipate the guest being able to reproduce the
+> resources please?
 
-> +        }
->           if (lev == 1) {
->               new_msr |= (target_ulong)MSR_HVB;
->           }
+Same you do on physical hardware?  Suspend can poweroff your PCI
+devices, so there must be some standard way to handle that situation
+for resources stored in gpu device memory, which is very similar to
+the problem we have here.
+
+take care,
+  Gerd
+
 
