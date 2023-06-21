@@ -2,79 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3098737A8D
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 07:13:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE686737A94
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 07:20:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBq8n-0002jV-BL; Wed, 21 Jun 2023 01:12:25 -0400
+	id 1qBqFc-0004Do-TZ; Wed, 21 Jun 2023 01:19:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qBq8i-0002j9-AZ
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 01:12:20 -0400
-Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
+ id 1qBqFZ-0004Df-Cx
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 01:19:26 -0400
+Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qBq8g-0007W7-Oh
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 01:12:20 -0400
-Received: by mail-ed1-x52c.google.com with SMTP id
- 4fb4d7f45d1cf-51878f8e541so6477093a12.3
- for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 22:12:18 -0700 (PDT)
+ id 1qBqFV-000124-LO
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 01:19:25 -0400
+Received: by mail-ej1-x636.google.com with SMTP id
+ a640c23a62f3a-988689a5f44so399318166b.1
+ for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 22:19:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687324337; x=1689916337;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=linaro.org; s=google; t=1687324759; x=1689916759;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=29bRPvMC/Ktp8+2vrwiNkWvw3NQFP+pIp2qfiMu9zcU=;
- b=t/qJNcJCyV/yqsy5LRxWKzhp9Hg7U0dt71OTAp6+FgWrRba4+5oIFRNqBaHPyWCIUf
- aTdn5W2nKy7Hlx/RpFMY6lZJo0lO4Tj9XP5U/nY/ul1qgwddo0eQoxtxYpxEwns0+vfF
- HfVuIiasrDbQwnA948+ZYzfk874oWREBw1zlMm5Lxo8wanHpdfC4Yvumo9GXZUZTmjkL
- yyuxtzyJMx93fBsKHle3EIlNrOyC5fnyt2bpZrDWD6Fu0aqvP9gIfMqT+LSB8WmwUk9u
- SXe+55DkPzESLTahnHmIDojeMtvP8HgF7tuZa+xcNayWs2oVC89TsvBKAMUMgwXht3ko
- RtUQ==
+ bh=/HN+yKqUD/yA9EKDJLg6477lfuJWVRhwH0D6rVXvrhc=;
+ b=wgFzTQBvHD9Vv9XJmf1XtwzMUB4wrKqbwAiXCSPiVIdMb9rUGHHyMOkjprvngLrcQn
+ Jw7dCxD2DHi28G+MQirewRA2IpkuwPd+dOQ/ORKvCWbbtHs/+LqOAMdNU+vG7XZcKM0E
+ F33IRS8ALa/0iV+fXc6NaDv6bOROw4LTdjycyi3z4+JdNeNP3CPZreI55nFvXGYyha5u
+ eX9re60rvaFemx99jOHflYbkpHMj2hm+cyF1CVPHDpRzUnao7TjI5ZQyJbcYlofLGW6j
+ LF7PLNizLrDNTOLCAKazUoNOBBfzuv/YyfVooQZGXXjCNMRXOXl8poZvAIXwXxRkkVNe
+ FFMw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687324337; x=1689916337;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20221208; t=1687324759; x=1689916759;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=29bRPvMC/Ktp8+2vrwiNkWvw3NQFP+pIp2qfiMu9zcU=;
- b=U8zVlUglW62pJgC5ZhpRKqWugHvwmgp1gXahkwVCWn2xfwuS4O1dhoI67JEaAkr4K+
- 9m2+3cR7bVZ+bHcKGYKDLT3L+Ip1UEQQ8UZbNk+ZPimnHGWp9Y5HpwY5gOCF/y+9BzNu
- N/WH4dF2fhvsNjW/3Zxt/EZXzIsUvTxuQDplR26u1Sx27PHKKMP4KUUtVMHKOCrMeq8w
- O/18qjy0PZ6QPAUW7+BDNuBzMhRBjtph9ShINiQ6IasbKYKNpZF8mjs2JJJzuvgtEQL2
- R5hzIpdIsUR9P+W5q5W9bnl+Cn14FcYCHQCReWjddTFXKiQLOGVGqIapcVRjo1dB17Pb
- 1c5w==
-X-Gm-Message-State: AC+VfDxAfxb9ZErdu849y9djh9MzaxkNHlEvAA6Q1RT7gptsUDE1glOi
- gD4RyDrDtq6xljhfMvnLILSdo1gt62rS0oic4Wi4n5Vz
-X-Google-Smtp-Source: ACHHUZ5tbH6yWTUwT7wSfzKybIWWqP1h6PiCZIHaL4tRsuDukAv3f1k0g6IDBUB5ev5HK+B1yHCDZg==
-X-Received: by 2002:a17:907:2da1:b0:988:7428:2c1a with SMTP id
- gt33-20020a1709072da100b0098874282c1amr9258986ejc.7.1687324337026; 
- Tue, 20 Jun 2023 22:12:17 -0700 (PDT)
+ bh=/HN+yKqUD/yA9EKDJLg6477lfuJWVRhwH0D6rVXvrhc=;
+ b=Mf1T4z7UynEMZnDvbhjLvpThTRuMKvVrHTQ4Og1pfBq73ZhQ5M6/U84yDZ3B0nRa5I
+ caWAbBmisdwscEFWsRJTwR9L+9YcBHLuYxz57sh4CTRZBFcMC/ysdifN7W744KRb8aw5
+ ZvbYmIHuMAh8D5acxvmG5kdot8iWnV4XUdci4tDMxaHCrV0mlIBxX1/mrbj/YUor1v0W
+ jMDRP41WjBYZyYMXflj7WmTzekME6QpYK1H0FMn5KP/EClvfohQl7hAk9xC7yOuQmk+P
+ SiGynk6Y1tY3975gUAzgBW12VS+o3UdjnXXExLwPMhpDCzFXVIL2b72Y22fb6wJbpEtT
+ iBmg==
+X-Gm-Message-State: AC+VfDy2J/6c8qRu8B83zw+R53vNrlJLrLTBVTNKgrWjLCsNEf6IDwxn
+ llhy9ubi3rSA4Q5AFbc2UAsWx7nM86AbGGeI1+/EORl+
+X-Google-Smtp-Source: ACHHUZ7TbOhz9kQpzU3FyBZybfUtaVMILUh3L19eIjaaETMkQA1YXfi0ZN4HWGodLvnllP84eaizfA==
+X-Received: by 2002:a17:906:9b88:b0:988:91cb:afd1 with SMTP id
+ dd8-20020a1709069b8800b0098891cbafd1mr8222160ejc.29.1687324759245; 
+ Tue, 20 Jun 2023 22:19:19 -0700 (PDT)
 Received: from [192.168.69.129] ([176.176.128.70])
  by smtp.gmail.com with ESMTPSA id
- m6-20020a170906258600b009871b3f961asm2424102ejb.58.2023.06.20.22.12.16
+ u9-20020a17090617c900b0098768661505sm2474982eje.117.2023.06.20.22.19.18
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 20 Jun 2023 22:12:16 -0700 (PDT)
-Message-ID: <8a130216-4224-4e85-5183-9917dc74d004@linaro.org>
-Date: Wed, 21 Jun 2023 07:12:14 +0200
+ Tue, 20 Jun 2023 22:19:18 -0700 (PDT)
+Message-ID: <5b2bf86d-44fa-35ae-8049-b395d715adcb@linaro.org>
+Date: Wed, 21 Jun 2023 07:19:16 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PULL 49/52] exec/poison: Do not poison CONFIG_SOFTMMU
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?=
- <philmd@linaro.org>
-References: <20230605201548.1596865-1-richard.henderson@linaro.org>
- <20230605201548.1596865-50-richard.henderson@linaro.org>
- <CAFEAcA92u+N2Vo8+GN_DutdqDeen0VDAe1=b8vTRNnpEUELodg@mail.gmail.com>
+Subject: Re: [PATCH] Revert "cputlb: Restrict SavedIOTLB to system emulation"
 Content-Language: en-US
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+References: <20230620175712.1331625-1-peter.maydell@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <CAFEAcA92u+N2Vo8+GN_DutdqDeen0VDAe1=b8vTRNnpEUELodg@mail.gmail.com>
+In-Reply-To: <20230620175712.1331625-1-peter.maydell@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
- envelope-from=richard.henderson@linaro.org; helo=mail-ed1-x52c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::636;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ej1-x636.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -97,33 +95,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/20/23 20:01, Peter Maydell wrote:
-> On Mon, 5 Jun 2023 at 21:23, Richard Henderson
-> <richard.henderson@linaro.org> wrote:
->>
->> If CONFIG_USER_ONLY is ok generically, so is CONFIG_SOFTMMU,
->> because they are exactly opposite.
+On 6/20/23 19:57, Peter Maydell wrote:
+> This reverts commit d7ee93e24359703debf4137f4cc632563aa4e8d1.
 > 
-> This isn't quite right. CONFIG_USER_ONLY is theoretically
-> something we should poison, because it's unsafe in the general
-> case to use it in compiled-once source files. But in practice
-> we make quite a lot of use of it in "we know this specific
-> use of it is OK" situations, like ifdeffing out function
-> prototypes. So we'd like to poison it, but we can't poison
-> it without a huge amoun of refactoring which isn't really
-> worth the effort.
+> That commit tries to make a field in the CPUState struct not be
+> present when CONFIG_USER_ONLY is set.  Unfortunately, you can't
+> conditionally omit fields in structs like this based on ifdefs that
+> are set per-target.  If you try it, then code in files compiled
+> per-target (where CONFIG_USER_ONLY is or can be set) will disagree
+> about the struct layout with files that are compiled once-only (where
+> this kind of ifdef is never set).
+> 
+> This manifests specifically in 'make check-tcg' failing, because code
+> in cpus-common.c that sets up the CPUState::cpu_index field puts it
+> at a different offset from the code in plugins/core.c in
+> qemu_plugin_vcpu_init_hook() which reads the cpu_index field.  The
+> latter then hits an assert because from its point of view every
+> thread has a 0 cpu_index. There might be other weird behaviour too.
+> 
+> Mostly we catch this kind of bug because the CONFIG_whatever is
+> listed in include/exec/poison.h and so the reference to it in
+> build-once source files will then cause a compiler error.
+> Unfortunately CONFIG_USER_ONLY is an exception to that: we have some
+> places where we use it in "safe" ways in headers that will be seen by
+> once-only source files (e.g.  ifdeffing out function prototypes) and
+> it would be a lot of refactoring to be able to get to a position
+> where we could poison it.  This leaves us in a "you have to be
+> careful to walk around the bear trap" situation...
+> 
+> Fixes: d7ee93e243597 ("cputlb: Restrict SavedIOTLB to system emulation")
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> ---
+>   include/hw/core/cpu.h | 6 ++----
+>   1 file changed, 2 insertions(+), 4 deletions(-)
 
-Yes, a similar amount of refactoring would have been required within tcg/ to retain the 
-poison of CONFIG_SOFTMMU.
-
-> So it's not a good model for "therefore it's OK not to poison
-> CONFIG_SOFTMMU" -- we should leave that poisoned if we can,
-> so we don't introduce either new buggy uses of CONFIG_SOFTMMU,
-> or new "we know this is safe" uses of it which will make
-> it difficult to put it back into the poison-list later...
-
-My plan is to remove it as a define entirely.  But not this cycle.
-
+Ho hum, thanks.  I'll apply this directly.
 
 r~
+
 
