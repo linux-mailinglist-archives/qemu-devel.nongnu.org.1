@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75F11738BC5
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 18:42:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84588738BCF
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 18:43:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qC0uB-0000Be-PY; Wed, 21 Jun 2023 12:42:03 -0400
+	id 1qC0uQ-0000L5-Uo; Wed, 21 Jun 2023 12:42:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qC0u9-0000Az-Ec
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 12:42:01 -0400
+ id 1qC0uO-0000Jk-4D
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 12:42:16 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qC0u7-000388-7x
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 12:42:01 -0400
+ id 1qC0uM-0003gk-Ho
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 12:42:15 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687365718;
+ s=mimecast20190719; t=1687365733;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Umzl6YliAIiz09ZbmfsvFE5YVihXb4PciqbT3xRvPD8=;
- b=XBon/KrnjOJRURg9FhDBbbwIAWp52hU1L1TfBQVMYkOwA7z8tXVoMCC2aknnoeUKQ5oC5u
- Ev5LSRJNp3Cl1PTIxD0G/dlywBF7cRXfptPHW+WJOEY1g8qsfHTBY9A9iHjr83RQrUxNOl
- b85wGHyVM5ZXV9WQ4o5jERySgn7ICR8=
+ bh=98e8z/9LqmOyYXEfqKdU+egMzEAfEKb+HmIjv54oIds=;
+ b=h/DajwCZCKXo975eZI4lKv5dg3ivxXRCebGShhhl/cjgt8jahePEZVVoY7mfxo9LNsAKby
+ ehksehyt3Js0I1usrkb8pxCMIQdphJGvjS/8dHuQ0lVRv+x3ovOUnlqePjyO83MbAZlEVs
+ t0sBH87J7glnsbDqICwaYOgeUqH+sKg=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-322-RaCEfK00M16h-qsVeNKFqg-1; Wed, 21 Jun 2023 12:41:53 -0400
-X-MC-Unique: RaCEfK00M16h-qsVeNKFqg-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
+ us-mta-656-5xX-7lD5OWS3LzQ3ttYILg-1; Wed, 21 Jun 2023 12:42:08 -0400
+X-MC-Unique: 5xX-7lD5OWS3LzQ3ttYILg-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6C28B8C586A;
- Wed, 21 Jun 2023 16:41:53 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 60E408C589A;
+ Wed, 21 Jun 2023 16:42:07 +0000 (UTC)
 Received: from redhat.com (unknown [10.42.28.44])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id A74A04087C6D;
- Wed, 21 Jun 2023 16:41:52 +0000 (UTC)
-Date: Wed, 21 Jun 2023 17:41:50 +0100
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 9B48A40C206F;
+ Wed, 21 Jun 2023 16:42:06 +0000 (UTC)
+Date: Wed, 21 Jun 2023 17:42:04 +0100
 From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 To: Richard Henderson <richard.henderson@linaro.org>
 Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, qemu-arm@nongnu.org,
  qemu-riscv@nongnu.org,
  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: Re: [PATCH v3 31/37] crypto: Remove AES_shifts, AES_ishifts
-Message-ID: <ZJMoTlrJ+a4jrMjl@redhat.com>
+Subject: Re: [PATCH v3 32/37] crypto: Implement aesdec_IMC with AES_imc_rot
+Message-ID: <ZJMoXMT5ULlBbZGK@redhat.com>
 References: <20230620110758.787479-1-richard.henderson@linaro.org>
- <20230620110758.787479-32-richard.henderson@linaro.org>
+ <20230620110758.787479-33-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230620110758.787479-32-richard.henderson@linaro.org>
+In-Reply-To: <20230620110758.787479-33-richard.henderson@linaro.org>
 User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -86,17 +86,18 @@ Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jun 20, 2023 at 01:07:52PM +0200, Richard Henderson wrote:
-> These arrays are no longer used, replaced by AES_SH_*, AES_ISH_*.
+On Tue, Jun 20, 2023 at 01:07:53PM +0200, Richard Henderson wrote:
+> This method uses one uint32_t * 256 table instead of 4,
+> which means its data cache overhead is less.
 > 
 > Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->  include/crypto/aes.h |  4 ----
->  crypto/aes.c         | 14 --------------
->  2 files changed, 18 deletions(-)
+>  crypto/aes.c | 42 +++++++++++++++++++++---------------------
+>  1 file changed, 21 insertions(+), 21 deletions(-)
 
 Acked-by: Daniel P. Berrangé <berrange@redhat.com>
+
 
 With regards,
 Daniel
