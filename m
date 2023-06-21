@@ -2,39 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA6F1738AA9
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 18:16:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9FC6738AAC
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 18:16:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qC0Um-0007Td-PD; Wed, 21 Jun 2023 12:15:48 -0400
+	id 1qC0Un-0007XM-Ex; Wed, 21 Jun 2023 12:15:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1qC0Ud-0007Gp-UB
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 12:15:39 -0400
+ id 1qC0Uj-0007Pb-Mr
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 12:15:47 -0400
 Received: from hoth.uni-paderborn.de ([2001:638:502:c003::19])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1qC0Ub-0007pd-Uf
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 12:15:39 -0400
+ id 1qC0Uh-0007tT-VU
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 12:15:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=mail.uni-paderborn.de; s=20170601; h=Content-Transfer-Encoding:MIME-Version
  :References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=zEaEaBUAw4sEMPJbBnR45EWT+VDULEUt6VZtHTfNdc8=; b=A7gnPenNT2bZRIr8SPAAMLEiWR
- 4TgKCQx0SBw/718TWaxP2kZd8fG23QUF7AHeV7cOHUrxAsV2CTBIjFzskw7jawyL6omdMjzRStf+u
- LcSNuLIXLgeB7VqzpQZFSw3Dv/aJGMo8ui3EjE41D/FPqMNm+E+antk3+cG0tgQZwJRE=;
+ bh=LH59LTNMT0ZSKCUx7YHIaMaTmvHlcCykiKKwW1zf2yg=; b=nG3n7Qp+4w7aZyUQCJcClBzvub
+ ZS9g9NjjU95ukuJ6H9ggIU9GrPisnXi3rRr+QQkFiMYm2AViFo3Tx6eJyLGE7pukNwo4Id/yx/SuN
+ +YCAjX3But07KQuLEucDZ/YgS3Z0+02r3XoxSIuxVIJaq9AN2NDwfOLV9ZXx2VXeOqv8=;
 X-Envelope-From: <kbastian@mail.uni-paderborn.de>
 From: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
 To: qemu-devel@nongnu.org
-Cc: kbastian@mail.uni-paderborn.de
-Subject: [PULL 12/20] target/tricore: Fix helper_ret() not correctly restoring
- PSW
-Date: Wed, 21 Jun 2023 18:14:14 +0200
-Message-Id: <20230621161422.1652151-13-kbastian@mail.uni-paderborn.de>
+Cc: kbastian@mail.uni-paderborn.de,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PULL 13/20] target/tricore: Fix RR_JLI clobbering reg A[11]
+Date: Wed, 21 Jun 2023 18:14:15 +0200
+Message-Id: <20230621161422.1652151-14-kbastian@mail.uni-paderborn.de>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230621161422.1652151-1-kbastian@mail.uni-paderborn.de>
 References: <20230621161422.1652151-1-kbastian@mail.uni-paderborn.de>
@@ -43,8 +43,8 @@ Content-Transfer-Encoding: 8bit
 X-PMX-Version: 6.4.9.2830568, Antispam-Engine: 2.7.2.2107409,
  Antispam-Data: 2023.6.21.160616, AntiVirus-Engine: 6.0.0,
  AntiVirus-Data: 2023.6.6.600001
-X-Sophos-SenderHistory: ip=79.202.219.6, fs=1209027, da=174973200, mc=165, sc=0,
- hc=165, sp=0, fso=1209027, re=0, sd=0, hd=0
+X-Sophos-SenderHistory: ip=79.202.219.6, fs=1209033, da=174973206, mc=167, sc=0,
+ hc=167, sp=0, fso=1209033, re=0, sd=0, hd=0
 X-IMT-Source: Intern
 X-IMT-Spam-Score: 0.0 ()
 X-IMT-Authenticated-Sender: uid=kbastian,ou=People,o=upb,c=de
@@ -71,41 +71,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We are always taking the TRICORE_FEATURE_13 branch as every CPU has TRICORE_FEATURE_13.
-For CPUs with ISA > 1.3 we have to take the else branch.
+if A[r1] == A[11], then we would overwrite the destination address of
+the jump with the return address.
 
-We fix this by inverting the condition. We check for
-TRICORE_FEATURE_131, which every CPU except TRICORE_FEATURE_13 CPUs
-have.
-
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1700
+Reported-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
-Message-Id: <20230612113245.56667-5-kbastian@mail.uni-paderborn.de>
+Message-Id: <20230621142302.1648383-2-kbastian@mail.uni-paderborn.de>
 ---
- target/tricore/op_helper.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ target/tricore/translate.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/tricore/op_helper.c b/target/tricore/op_helper.c
-index 9a7a26b171..821a4b67cb 100644
---- a/target/tricore/op_helper.c
-+++ b/target/tricore/op_helper.c
-@@ -2584,12 +2584,12 @@ void helper_ret(CPUTriCoreState *env)
-     /* PCXI = new_PCXI; */
-     env->PCXI = new_PCXI;
- 
--    if (tricore_feature(env, TRICORE_FEATURE_13)) {
--        /* PSW = new_PSW */
--        psw_write(env, new_PSW);
--    } else {
-+    if (tricore_feature(env, TRICORE_FEATURE_131)) {
-         /* PSW = {new_PSW[31:26], PSW[25:24], new_PSW[23:0]}; */
-         psw_write(env, (new_PSW & ~(0x3000000)) + (psw & (0x3000000)));
-+    } else { /* TRICORE_FEATURE_13 only */
-+        /* PSW = new_PSW */
-+        psw_write(env, new_PSW);
-     }
- }
- 
+diff --git a/target/tricore/translate.c b/target/tricore/translate.c
+index d1b319e374..cca52c75b2 100644
+--- a/target/tricore/translate.c
++++ b/target/tricore/translate.c
+@@ -6064,8 +6064,8 @@ static void decode_rr_idirect(DisasContext *ctx)
+         tcg_gen_andi_tl(cpu_PC, cpu_gpr_a[r1], ~0x1);
+         break;
+     case OPC2_32_RR_JLI:
+-        tcg_gen_movi_tl(cpu_gpr_a[11], ctx->pc_succ_insn);
+         tcg_gen_andi_tl(cpu_PC, cpu_gpr_a[r1], ~0x1);
++        tcg_gen_movi_tl(cpu_gpr_a[11], ctx->pc_succ_insn);
+         break;
+     case OPC2_32_RR_CALLI:
+         gen_helper_1arg(call, ctx->pc_succ_insn);
 -- 
 2.40.1
 
