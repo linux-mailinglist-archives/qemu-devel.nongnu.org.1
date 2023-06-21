@@ -2,92 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45A8C73826C
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 13:52:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D089B73827C
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 13:58:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBwNy-0004g3-MC; Wed, 21 Jun 2023 07:52:31 -0400
+	id 1qBwRo-0006US-QF; Wed, 21 Jun 2023 07:56:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1qBwNt-0004dV-7C
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 07:52:26 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qBwRm-0006U2-9S
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 07:56:26 -0400
+Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1qBwNr-000598-Qq
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 07:52:24 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687348343;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=xuxGBrFySUpFdaMZyf6lD57o+cjaU24aCglqgfIFZhE=;
- b=dAPGrlNzpZoBEnG8mZkPcpv2Z0ug5L5WZWc8bFqNYI2jCujF0ynEqUeDUF6KbdpcKIcy2z
- n7qI8IMqDArhP+Cn6iWM5UcgVFKdgcXkSvC1dbdGiUiZsIv4NtLsRAvHV34qxOnN48MNcz
- 2LkxqT4dCg581TpnhGRN14kvtfZqAAo=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-119-gpQihIOlOSOYiHCzefAYzg-1; Wed, 21 Jun 2023 07:52:17 -0400
-X-MC-Unique: gpQihIOlOSOYiHCzefAYzg-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 76AA9104458B;
- Wed, 21 Jun 2023 11:52:16 +0000 (UTC)
-Received: from sirius.home.kraxel.org (unknown [10.39.192.126])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 237362166B32;
- Wed, 21 Jun 2023 11:52:16 +0000 (UTC)
-Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id C42DC1800381; Wed, 21 Jun 2023 13:52:14 +0200 (CEST)
-Date: Wed, 21 Jun 2023 13:52:14 +0200
-From: Gerd Hoffmann <kraxel@redhat.com>
-To: Robert Beckett <bob.beckett@collabora.com>
-Cc: "Chen, Jiqian" <Jiqian.Chen@amd.com>, 
- =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@gmail.com>,
- Damien Hedde <damien.hedde@greensocs.com>, 
- "Michael S . Tsirkin" <mst@redhat.com>,
- Stefano Stabellini <sstabellini@kernel.org>, 
- Anthony PERARD <anthony.perard@citrix.com>,
- Roger Pau =?utf-8?B?TW9ubsOp?= <roger.pau@citrix.com>, 
- Jan Beulich <jbeulich@suse.com>,
- "Dr . David Alan Gilbert" <dgilbert@redhat.com>, 
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, 
- "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>, "Deucher,
- Alexander" <Alexander.Deucher@amd.com>, 
- "Koenig, Christian" <Christian.Koenig@amd.com>, "Hildebrand,
- Stewart" <Stewart.Hildebrand@amd.com>, 
- Xenia Ragiadakou <burzalodowa@gmail.com>, "Huang,
- Honglei1" <Honglei1.Huang@amd.com>, 
- "Zhang, Julia" <Julia.Zhang@amd.com>, "Huang, Ray" <Ray.Huang@amd.com>
-Subject: Re: [QEMU PATCH 1/1] virtgpu: do not destroy resources when guest
- suspend
-Message-ID: <ihcpcf5lkwv6apvon5kye33nna6nfjwwlpsxxphekb5dq5j5sh@alc56ijteeac>
-References: <20230608025655.1674357-1-Jiqian.Chen@amd.com>
- <20230608025655.1674357-2-Jiqian.Chen@amd.com>
- <CAJ+F1CKjTW7zycr2xAW0x+d_7CEy+LxWur2Tqp2dvsb=PoJ5Dw@mail.gmail.com>
- <q2rpqbg5b4bqxb7oayclzgbf5fplofm3dmxgmpmskjf4mcfzpn@peeiuxwkqxbb>
- <BL1PR12MB58491E2E13F959365AA3F594E75CA@BL1PR12MB5849.namprd12.prod.outlook.com>
- <lgan3p6wqmxht5fpduh5nvg3f5m5n636k7zrrealnu2lilghhh@qlbvgu3l4apw>
- <2164ff79-aa09-d959-cc61-c7a2a21db5e3@collabora.com>
- <2s33vb2tfogntkyk5laxzcmgexf42mhkpwr2gh3gjvpitav6ez@h5zbmuklzmv5>
- <e9e10508-c26c-cf2a-6407-8e26a1342370@collabora.com>
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qBwRk-0007dh-8C
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 07:56:25 -0400
+Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
+ by localhost (Postfix) with SMTP id 26E1A748A61;
+ Wed, 21 Jun 2023 13:56:13 +0200 (CEST)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id DD16C748A5D; Wed, 21 Jun 2023 13:56:12 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id DB69D748A60;
+ Wed, 21 Jun 2023 13:56:12 +0200 (CEST)
+Date: Wed, 21 Jun 2023 13:56:12 +0200 (CEST)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+cc: laurent@vivier.eu, qemu-devel@nongnu.org
+Subject: Re: [PATCH v4 05/24] q800: move CPU object into Q800MachineState
+In-Reply-To: <20230621085353.113233-6-mark.cave-ayland@ilande.co.uk>
+Message-ID: <eaa9eb9e-1a1f-82a6-7daa-3fe547f59c24@eik.bme.hu>
+References: <20230621085353.113233-1-mark.cave-ayland@ilande.co.uk>
+ <20230621085353.113233-6-mark.cave-ayland@ilande.co.uk>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e9e10508-c26c-cf2a-6407-8e26a1342370@collabora.com>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kraxel@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: multipart/mixed;
+ boundary="3866299591-346340854-1687348572=:25233"
+X-Spam-Probability: 9%
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,20 +61,116 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  Hi,
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-> As virtio drivers are by design paravirt drivers ,I think it is reasonable
-> to accept some knowledge with and cooperation with the host to manage
-> suspend/resume.
+--3866299591-346340854-1687348572=:25233
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8BIT
 
-Fair point.
+On Wed, 21 Jun 2023, Mark Cave-Ayland wrote:
+> Also change the instantiation of the CPU to use object_initialize_child()
+> followed by a separate realisation.
 
-In any case this needs a feature flag, so guest and host can negotiate
-whenever this is supported or not.
+Also seems to restrict valid CPU types but not mentioned in commit 
+message. Should this patch be split up?
 
-virtio spec needs an update for that, describing the exact behavior.
+Regards,
+BALATON Zoltan
 
-take care,
-  Gerd
-
+> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+> Reviewed-by: Laurent Vivier <laurent@vivier.eu>
+> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+> hw/m68k/q800.c         | 18 +++++++++++++-----
+> include/hw/m68k/q800.h |  3 +++
+> 2 files changed, 16 insertions(+), 5 deletions(-)
+>
+> diff --git a/hw/m68k/q800.c b/hw/m68k/q800.c
+> index 062a3c6c76..2b651de3c1 100644
+> --- a/hw/m68k/q800.c
+> +++ b/hw/m68k/q800.c
+> @@ -364,7 +364,7 @@ static uint8_t fake_mac_rom[] = {
+>
+> static void q800_machine_init(MachineState *machine)
+> {
+> -    M68kCPU *cpu = NULL;
+> +    Q800MachineState *m = Q800_MACHINE(machine);
+>     int linux_boot;
+>     int32_t kernel_size;
+>     uint64_t elf_entry;
+> @@ -407,8 +407,9 @@ static void q800_machine_init(MachineState *machine)
+>     }
+>
+>     /* init CPUs */
+> -    cpu = M68K_CPU(cpu_create(machine->cpu_type));
+> -    qemu_register_reset(main_cpu_reset, cpu);
+> +    object_initialize_child(OBJECT(machine), "cpu", &m->cpu, machine->cpu_type);
+> +    qdev_realize(DEVICE(&m->cpu), NULL, &error_fatal);
+> +    qemu_register_reset(main_cpu_reset, &m->cpu);
+>
+>     /* RAM */
+>     memory_region_add_subregion(get_system_memory(), 0, machine->ram);
+> @@ -430,7 +431,8 @@ static void q800_machine_init(MachineState *machine)
+>
+>     /* IRQ Glue */
+>     glue = qdev_new(TYPE_GLUE);
+> -    object_property_set_link(OBJECT(glue), "cpu", OBJECT(cpu), &error_abort);
+> +    object_property_set_link(OBJECT(glue), "cpu", OBJECT(&m->cpu),
+> +                             &error_abort);
+>     sysbus_realize_and_unref(SYS_BUS_DEVICE(glue), &error_fatal);
+>
+>     /* VIA 1 */
+> @@ -605,7 +607,7 @@ static void q800_machine_init(MachineState *machine)
+>
+>     macfb_mode = (NUBUS_MACFB(dev)->macfb).mode;
+>
+> -    cs = CPU(cpu);
+> +    cs = CPU(&m->cpu);
+>     if (linux_boot) {
+>         uint64_t high;
+>         void *param_blob, *param_ptr, *param_rng_seed;
+> @@ -735,6 +737,11 @@ static GlobalProperty hw_compat_q800[] = {
+> };
+> static const size_t hw_compat_q800_len = G_N_ELEMENTS(hw_compat_q800);
+>
+> +static const char *q800_machine_valid_cpu_types[] = {
+> +    M68K_CPU_TYPE_NAME("m68040"),
+> +    NULL
+> +};
+> +
+> static void q800_machine_class_init(ObjectClass *oc, void *data)
+> {
+>     MachineClass *mc = MACHINE_CLASS(oc);
+> @@ -742,6 +749,7 @@ static void q800_machine_class_init(ObjectClass *oc, void *data)
+>     mc->desc = "Macintosh Quadra 800";
+>     mc->init = q800_machine_init;
+>     mc->default_cpu_type = M68K_CPU_TYPE_NAME("m68040");
+> +    mc->valid_cpu_types = q800_machine_valid_cpu_types;
+>     mc->max_cpus = 1;
+>     mc->block_default_type = IF_SCSI;
+>     mc->default_ram_id = "m68k_mac.ram";
+> diff --git a/include/hw/m68k/q800.h b/include/hw/m68k/q800.h
+> index f3bc17aa1b..4cb1a51dfe 100644
+> --- a/include/hw/m68k/q800.h
+> +++ b/include/hw/m68k/q800.h
+> @@ -25,6 +25,7 @@
+>
+> #include "hw/boards.h"
+> #include "qom/object.h"
+> +#include "target/m68k/cpu-qom.h"
+>
+> /*
+>  * The main Q800 machine
+> @@ -32,6 +33,8 @@
+>
+> struct Q800MachineState {
+>     MachineState parent_obj;
+> +
+> +    M68kCPU cpu;
+> };
+>
+> #define TYPE_Q800_MACHINE MACHINE_TYPE_NAME("q800")
+>
+--3866299591-346340854-1687348572=:25233--
 
