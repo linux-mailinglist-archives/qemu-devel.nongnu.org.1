@@ -2,39 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3401C738AB4
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 18:18:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1C33738AA5
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 18:15:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qC0U7-00059e-Bw; Wed, 21 Jun 2023 12:15:07 -0400
+	id 1qC0UE-0005RE-IR; Wed, 21 Jun 2023 12:15:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1qC0U5-00059B-AV
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 12:15:05 -0400
+ id 1qC0UB-0005EV-R1
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 12:15:11 -0400
 Received: from hoth.uni-paderborn.de ([2001:638:502:c003::19])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1qC0U3-0007Tl-DA
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 12:15:05 -0400
+ id 1qC0U9-0007fi-71
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 12:15:11 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=mail.uni-paderborn.de; s=20170601; h=Content-Transfer-Encoding:MIME-Version
  :References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=NQcDj2jVwcyb1hB4HGsD3s2q2KeOYflDYmnJJc6yn38=; b=lPs/gbgx3oohVPcdsUmdpNF/2/
- q2A5SkK6CZM8P6aQQqofmoM7kyNLNHgQXcWxukt7YI0loOc+soeRADB/RsQx2Q8ITi9NuHZs9syFW
- B7lrizo0xH8XN44vVddbchjlM1eDhfLiSu7NPNlv1g8JY5J5ya+mRDigB8Nscqp9TPKs=;
+ bh=IWsRswkIsiV10LY9WnXMekiNt8kKRoy9JRiTWSZzRQw=; b=bfUZwMqfoRIpC+/aeZjDVQmWkY
+ ci64wRV6VfdjvD7+Ybb+6xdwg01opiJsXY5sjUXxTMQB8ouf5L5ZgqZ+VLT86Vfdlv8zb+ZJlzNql
+ VBAcSwOJNfpHMvyTYHB9AFE0FW9sZe/5go39BYbIp0/hRVJq0nhcPD+yVHZTwy6kJeNw=;
 X-Envelope-From: <kbastian@mail.uni-paderborn.de>
 From: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
 To: qemu-devel@nongnu.org
 Cc: kbastian@mail.uni-paderborn.de,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 06/20] target/tricore: Add shuffle insn
-Date: Wed, 21 Jun 2023 18:14:08 +0200
-Message-Id: <20230621161422.1652151-7-kbastian@mail.uni-paderborn.de>
+Subject: [PULL 07/20] target/tricore: Implement SYCSCALL insn
+Date: Wed, 21 Jun 2023 18:14:09 +0200
+Message-Id: <20230621161422.1652151-8-kbastian@mail.uni-paderborn.de>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230621161422.1652151-1-kbastian@mail.uni-paderborn.de>
 References: <20230621161422.1652151-1-kbastian@mail.uni-paderborn.de>
@@ -43,8 +43,8 @@ Content-Transfer-Encoding: 8bit
 X-PMX-Version: 6.4.9.2830568, Antispam-Engine: 2.7.2.2107409,
  Antispam-Data: 2023.6.21.160616, AntiVirus-Engine: 6.0.0,
  AntiVirus-Data: 2023.6.6.600001
-X-Sophos-SenderHistory: ip=79.202.219.6, fs=1208992, da=174973165, mc=153, sc=0,
- hc=153, sp=0, fso=1208992, re=0, sd=0, hd=0
+X-Sophos-SenderHistory: ip=79.202.219.6, fs=1208998, da=174973171, mc=155, sc=0,
+ hc=155, sp=0, fso=1208998, re=0, sd=0, hd=0
 X-IMT-Source: Intern
 X-IMT-Spam-Score: 0.0 ()
 X-IMT-Authenticated-Sender: uid=kbastian,ou=People,o=upb,c=de
@@ -71,111 +71,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-this is based on code by volumit (https://github.com/volumit/qemu/).
-
-Reported in https://gitlab.com/qemu-project/qemu/-/issues/1667
-and https://gitlab.com/qemu-project/qemu/-/issues/1452.
-
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1452
 Signed-off-by: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
-Message-Id: <20230614100039.1337971-7-kbastian@mail.uni-paderborn.de>
+Message-Id: <20230614100039.1337971-8-kbastian@mail.uni-paderborn.de>
 ---
- target/tricore/helper.h          |  1 +
- target/tricore/op_helper.c       | 36 ++++++++++++++++++++++++++++++++
- target/tricore/translate.c       |  8 +++++++
- target/tricore/tricore-opcodes.h |  1 +
- 4 files changed, 46 insertions(+)
+ target/tricore/translate.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/tricore/helper.h b/target/tricore/helper.h
-index a10576e09e..31d71eac7a 100644
---- a/target/tricore/helper.h
-+++ b/target/tricore/helper.h
-@@ -134,6 +134,7 @@ DEF_HELPER_FLAGS_5(mulr_h, TCG_CALL_NO_RWG_SE, i32, i32, i32, i32, i32, i32)
- DEF_HELPER_FLAGS_2(crc32b, TCG_CALL_NO_RWG_SE, i32, i32, i32)
- DEF_HELPER_FLAGS_2(crc32_be, TCG_CALL_NO_RWG_SE, i32, i32, i32)
- DEF_HELPER_FLAGS_2(crc32_le, TCG_CALL_NO_RWG_SE, i32, i32, i32)
-+DEF_HELPER_FLAGS_2(shuffle, TCG_CALL_NO_RWG_SE, i32, i32, i32)
- /* CSA */
- DEF_HELPER_2(call, void, env, i32)
- DEF_HELPER_1(ret, void, env)
-diff --git a/target/tricore/op_helper.c b/target/tricore/op_helper.c
-index b6ef1462e4..026e15f3e0 100644
---- a/target/tricore/op_helper.c
-+++ b/target/tricore/op_helper.c
-@@ -2308,6 +2308,42 @@ uint32_t helper_crc32_le(uint32_t arg0, uint32_t arg1)
-     return crc32(arg1, buf, 4);
- }
- 
-+uint32_t helper_shuffle(uint32_t arg0, uint32_t arg1)
-+{
-+    uint32_t resb;
-+    uint32_t byte_select;
-+    uint32_t res = 0;
-+
-+    byte_select = arg1 & 0x3;
-+    resb = extract32(arg0, byte_select * 8, 8);
-+    res |= resb << 0;
-+
-+    byte_select = (arg1 >> 2) & 0x3;
-+    resb = extract32(arg0, byte_select * 8, 8);
-+    res |= resb << 8;
-+
-+    byte_select = (arg1 >> 4) & 0x3;
-+    resb = extract32(arg0, byte_select * 8, 8);
-+    res |= resb << 16;
-+
-+    byte_select = (arg1 >> 6) & 0x3;
-+    resb = extract32(arg0, byte_select * 8, 8);
-+    res |= resb << 24;
-+
-+    if (arg1 & 0x100) {
-+        /* Assign the correct nibble position.  */
-+        res = ((res & 0xf0f0f0f0) >> 4)
-+          | ((res & 0x0f0f0f0f) << 4);
-+        /* Assign the correct bit position.  */
-+        res = ((res & 0x88888888) >> 3)
-+          | ((res & 0x44444444) >> 1)
-+          | ((res & 0x22222222) << 1)
-+          | ((res & 0x11111111) << 3);
-+    }
-+
-+    return res;
-+}
-+
- /* context save area (CSA) related helpers */
- 
- static int cdc_increment(target_ulong *psw)
 diff --git a/target/tricore/translate.c b/target/tricore/translate.c
-index 85526ef4db..a4c60e8ae2 100644
+index a4c60e8ae2..f01000efd4 100644
 --- a/target/tricore/translate.c
 +++ b/target/tricore/translate.c
-@@ -5011,6 +5011,14 @@ static void decode_rc_logical_shift(DisasContext *ctx)
-     case OPC2_32_RC_XOR:
-         tcg_gen_xori_tl(cpu_gpr_d[r2], cpu_gpr_d[r1], const9);
+@@ -5236,7 +5236,7 @@ static void decode_rc_serviceroutine(DisasContext *ctx)
+         gen_helper_1arg(bisr, const9);
          break;
-+    case OPC2_32_RC_SHUFFLE:
-+        if (has_feature(ctx, TRICORE_FEATURE_162)) {
-+            TCGv temp = tcg_constant_i32(const9);
-+            gen_helper_shuffle(cpu_gpr_d[r2], cpu_gpr_d[r1], temp);
-+        } else {
-+            generate_trap(ctx, TRAPC_INSN_ERR, TIN2_IOPC);
-+        }
-+        break;
+     case OPC2_32_RC_SYSCALL:
+-        /* TODO: Add exception generation */
++        generate_trap(ctx, TRAPC_SYSCALL, const9 & 0xff);
+         break;
      default:
          generate_trap(ctx, TRAPC_INSN_ERR, TIN2_IOPC);
-     }
-diff --git a/target/tricore/tricore-opcodes.h b/target/tricore/tricore-opcodes.h
-index 27f80e1702..af63926731 100644
---- a/target/tricore/tricore-opcodes.h
-+++ b/target/tricore/tricore-opcodes.h
-@@ -885,6 +885,7 @@ enum {
-     OPC2_32_RC_SHAS                              = 0x02,
-     OPC2_32_RC_XNOR                              = 0x0d,
-     OPC2_32_RC_XOR                               = 0x0c,
-+    OPC2_32_RC_SHUFFLE                           = 0x07, /* v1.6.2 only */
- };
- /* OPCM_32_RC_ACCUMULATOR                           */
- enum {
 -- 
 2.40.1
 
