@@ -2,39 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20E63738ACC
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 18:19:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DEB5738AB5
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 18:18:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qC0Ux-0007oH-0w; Wed, 21 Jun 2023 12:15:59 -0400
+	id 1qC0V2-0008Gl-QI; Wed, 21 Jun 2023 12:16:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1qC0Uv-0007fs-09
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 12:15:57 -0400
+ id 1qC0V0-0008Ck-Mu
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 12:16:02 -0400
 Received: from hoth.uni-paderborn.de ([2001:638:502:c003::19])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1qC0Ut-0007w4-9T
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 12:15:56 -0400
+ id 1qC0Uz-0007xZ-2j
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 12:16:02 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=mail.uni-paderborn.de; s=20170601; h=Content-Transfer-Encoding:MIME-Version
  :References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=MVk8ciOMx47WIt4XnaaUcux778RHElW/8JTuiz00Cvk=; b=a2yOYrQ2QGmrw/h2VCKjjz41ke
- w2bcri4wlwhW2dq5IdDONAmzp03B4uMjTw+1Rv2iJXGibdXPGiyVFuBVuREPb90HA0fWJbTucl1nh
- Z2Owkc0DoLDO0DlmN63+YXlcllAXhCpeFHs+IC6XU3gLfOsnwpy3nmEmAm2BOyq1lcu8=;
+ bh=5IGgMgmqBrconTwc2JIjo5Dwix4qyKWPhUfXJBeZfqs=; b=fDdBzuZi+CVRWkZ6+8BNTRj+XN
+ /PL6s6Ua8WSjtjfLuUc/Gaa6OEIkUxx742MKnVlhoiXD96qHS1pbw3Jq53zKFgQQzyFiU3xTibiLM
+ Qrgzp613ZFmvdsdJBVJSYOxybbk2LjJLyx0Gim5m+ftsJyps/Ogh550UWwtz68nem6gs=;
 X-Envelope-From: <kbastian@mail.uni-paderborn.de>
 From: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
 To: qemu-devel@nongnu.org
 Cc: kbastian@mail.uni-paderborn.de,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 15/20] target/tricore: ENABLE exit to main-loop
-Date: Wed, 21 Jun 2023 18:14:17 +0200
-Message-Id: <20230621161422.1652151-16-kbastian@mail.uni-paderborn.de>
+Subject: [PULL 16/20] target/tricore: Indirect jump insns use
+ tcg_gen_lookup_and_goto_ptr()
+Date: Wed, 21 Jun 2023 18:14:18 +0200
+Message-Id: <20230621161422.1652151-17-kbastian@mail.uni-paderborn.de>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230621161422.1652151-1-kbastian@mail.uni-paderborn.de>
 References: <20230621161422.1652151-1-kbastian@mail.uni-paderborn.de>
@@ -43,8 +44,8 @@ Content-Transfer-Encoding: 8bit
 X-PMX-Version: 6.4.9.2830568, Antispam-Engine: 2.7.2.2107409,
  Antispam-Data: 2023.6.21.160616, AntiVirus-Engine: 6.0.0,
  AntiVirus-Data: 2023.6.6.600001
-X-Sophos-SenderHistory: ip=79.202.219.6, fs=1209044, da=174973217, mc=171, sc=0,
- hc=171, sp=0, fso=1209044, re=0, sd=0, hd=0
+X-Sophos-SenderHistory: ip=79.202.219.6, fs=1209050, da=174973223, mc=173, sc=0,
+ hc=173, sp=0, fso=1209050, re=0, sd=0, hd=0
 X-IMT-Source: Intern
 X-IMT-Spam-Score: 0.0 ()
 X-IMT-Authenticated-Sender: uid=kbastian,ou=People,o=upb,c=de
@@ -71,46 +72,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-so we can recognize exceptions after re-enabling interrupts.
-
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reported-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
-Message-Id: <20230621142302.1648383-4-kbastian@mail.uni-paderborn.de>
+Message-Id: <20230621142302.1648383-5-kbastian@mail.uni-paderborn.de>
 ---
- target/tricore/translate.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ target/tricore/translate.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
 diff --git a/target/tricore/translate.c b/target/tricore/translate.c
-index ef74e9f234..98e2767d21 100644
+index 98e2767d21..fb6f0caa24 100644
 --- a/target/tricore/translate.c
 +++ b/target/tricore/translate.c
-@@ -38,6 +38,7 @@
- #undef  HELPER_H
+@@ -39,6 +39,7 @@
  
  #define DISAS_EXIT        DISAS_TARGET_0
-+#define DISAS_EXIT_UPDATE DISAS_TARGET_1
+ #define DISAS_EXIT_UPDATE DISAS_TARGET_1
++#define DISAS_JUMP        DISAS_TARGET_2
  
  /*
   * TCG registers
-@@ -7900,6 +7901,7 @@ static void decode_sys_interrupts(DisasContext *ctx)
+@@ -6077,8 +6078,9 @@ static void decode_rr_idirect(DisasContext *ctx)
          break;
-     case OPC2_32_SYS_ENABLE:
-         tcg_gen_ori_tl(cpu_ICR, cpu_ICR, ctx->icr_ie_mask);
-+        ctx->base.is_jmp = DISAS_EXIT_UPDATE;
-         break;
-     case OPC2_32_SYS_ISYNC:
-         break;
-@@ -8387,6 +8389,9 @@ static void tricore_tr_tb_stop(DisasContextBase *dcbase, CPUState *cpu)
-     case DISAS_TOO_MANY:
-         gen_goto_tb(ctx, 0, ctx->base.pc_next);
-         break;
-+    case DISAS_EXIT_UPDATE:
-+        gen_save_pc(ctx->base.pc_next);
-+        /* fall through */
+     default:
+         generate_trap(ctx, TRAPC_INSN_ERR, TIN2_IOPC);
++        return;
+     }
+-    ctx->base.is_jmp = DISAS_EXIT;
++    ctx->base.is_jmp = DISAS_JUMP;
+ }
+ 
+ static void decode_rr_divide(DisasContext *ctx)
+@@ -8395,6 +8397,9 @@ static void tricore_tr_tb_stop(DisasContextBase *dcbase, CPUState *cpu)
      case DISAS_EXIT:
          tcg_gen_exit_tb(NULL, 0);
          break;
++    case DISAS_JUMP:
++        tcg_gen_lookup_and_goto_ptr();
++        break;
+     case DISAS_NORETURN:
+         break;
+     default:
 -- 
 2.40.1
 
