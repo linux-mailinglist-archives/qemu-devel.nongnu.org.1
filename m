@@ -2,62 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D97C738657
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 16:10:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF959738690
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 16:16:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qByWs-0001r8-Ku; Wed, 21 Jun 2023 10:09:50 -0400
+	id 1qBycB-00044J-Ct; Wed, 21 Jun 2023 10:15:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qByWq-0001qb-KU
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 10:09:48 -0400
+ id 1qBybv-0003ub-G3
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 10:15:10 -0400
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qByWp-0000kE-64
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 10:09:48 -0400
+ id 1qBybq-0003M2-LM
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 10:15:02 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
- In-Reply-To:From:References:To:MIME-Version:Date:Message-ID:Sender:Reply-To:
- Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
- Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+ In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
+ Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+ :Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
  List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=pAB7pL3eTId2EnNBib5vhqnGaa9L3geGXhdQuDJSd4s=; b=Q7T6+VZ3cH6Pk8w+ptGBfYfEA/
- actgTLe/Ae3ofiPNk+ZXX4sRIiSm3CAWLFBUe0+Lnr2/6cELlwg56kmsoVMVE1GWpycKmflWjYMSe
- bxF/VBx/C050YTNPaZmRYecvXsPJoYitBKU1nj+2LZgK3tZUrPTdD19IJP7fXHvWqYzGNB0qbrr0m
- pgdlil9RdSOl14BFkgJ7jStxnNtaj8JNhR+iivSa6E68F1qSySSU1ktDzsYGQM6PD5XtB3WLda4Lb
- TyvqOluRjCmjv5wNnNGj0bb1NjY60k/BO/1zrJc6bvD6Up11fx1C7SPE2pODr6WIak8IZK9b6DOOT
- w/XbJi5tZMIhLJ/qfo0wp9E3z4fARmmb7XZ/2MeBnnaRe70nih6IHiw1B5ROTWfkoc6RLDb4c4aqJ
- E/pqDe34eWGpjAP0g7CFMCmv84gOQ4ZiJH/EIytsXjeYBN4wk1eDPYnwKol88jXSvEYpZqQx4gh25
- VvUVUn7dVq/RslPMttzTwh3rh5d/J7YdRui9KTQpNbjWaC7js532yhOu4OCLe3Yj9iUhRKL/x2X+/
- N8f6BC4yFWc/scTGEvgwPevA/NR5sQdHxLeRioDPtEWQFpLLGSSZcW1uNkTm8UpJgbfcYKyBfxijW
- kvsSTf4xaObuUfL7vSelyXbErmzYBevHQx6Qln8/I=;
+ bh=/rzUBg0aKFBHZM/Dn/xlUNKB9LnFIZR7Ak5kcCHLEt0=; b=MMsFLJaFcrJ4E9wLiYbLmjcQIn
+ sSVJpJznL41j/00un0/mvNzwRESZCHROrWuvIjgLCJUB3dLglaMV2AGlrrt47s2Sicl+PeFLQBYVG
+ ZejTFONwqEPo71XWi9SpcZlA1nidSHcXeZpwtHa8Hzv2T8IDCstHktp23FBkYdjJXFK2IX8Zqrqse
+ mWE8KuNMNbqVDiQz9fhS9ajqhTC0WWQCRNpOiwXHuTrMWY/JARNWYWEphCPnEqKE2avLYnQOcPZdv
+ laMYWm9GF1XkpW5oKBZ1XAuB6qqTj117vdVpx80ZudXUKbEfbOvW7GX2vIpAfB9A8rsHBFUlLPp+p
+ G+VBJUEq8kllMJ/H2QWuuUglYEY0s1B1+se2wq6fQdVU7kh7Rp7O8UT7WKVqvkIfHWiPQotm3/Ici
+ pHTZRL58AgdM3nR1vBMganDljqjL1nohpQyc66aqxyIRG0VZoPVDTdovnoBCU9UGJweUuS+5Ma2TE
+ TuGnyj6UtY9wDDYvRvAj+TElNFp9ZUS8w+tmsCPrZPgN+IS8qC0zUmmw4XGokFw0NLdAjECmch/TF
+ dcgYYLvgToI6o0uQP44rCZdXPYITgrAfPGg/9NRMkTPhgjLPhuOiiKa8i7e8qJ11EwLdkYlh209m6
+ GMVWuvI9Rz7Ax43FRiQVJMSkGdZKKvft6it4cmjUc=;
 Received: from host86-130-37-216.range86-130.btcentralplus.com
  ([86.130.37.216] helo=[10.8.0.6])
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qByWd-0003Gr-0t; Wed, 21 Jun 2023 15:09:39 +0100
-Message-ID: <b1a9d38e-d238-6249-ae9e-9d917e2a091f@ilande.co.uk>
-Date: Wed, 21 Jun 2023 15:09:40 +0100
+ id 1qBybX-0003IJ-Hn; Wed, 21 Jun 2023 15:14:43 +0100
+Message-ID: <0fcee3b0-145b-b640-aa9b-d86247e4e224@ilande.co.uk>
+Date: Wed, 21 Jun 2023 15:14:45 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.10.0
 Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- laurent@vivier.eu, qemu-devel@nongnu.org
+To: BALATON Zoltan <balaton@eik.bme.hu>
+Cc: laurent@vivier.eu, qemu-devel@nongnu.org
 References: <20230621085353.113233-1-mark.cave-ayland@ilande.co.uk>
- <20230621085353.113233-8-mark.cave-ayland@ilande.co.uk>
- <b15a4923-dfab-f8f8-c6f7-45ffda82d9d0@linaro.org>
+ <20230621085353.113233-4-mark.cave-ayland@ilande.co.uk>
+ <3ffba6ed-4213-2e57-dcd1-ba1315f2df31@eik.bme.hu>
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-In-Reply-To: <b15a4923-dfab-f8f8-c6f7-45ffda82d9d0@linaro.org>
+In-Reply-To: <3ffba6ed-4213-2e57-dcd1-ba1315f2df31@eik.bme.hu>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 86.130.37.216
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: Re: [PATCH v4 07/24] q800: move GLUE device into separate q800-glue.c
- file
+Subject: Re: [PATCH v4 03/24] q800: introduce Q800MachineState
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -84,88 +83,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 21/06/2023 10:46, Philippe Mathieu-Daudé wrote:
+On 21/06/2023 12:33, BALATON Zoltan wrote:
 
-> On 21/6/23 10:53, Mark Cave-Ayland wrote:
->> This will allow the q800-glue.h header to be included separately so that the
->> GLUE device can be referenced externally.
+> On Wed, 21 Jun 2023, Mark Cave-Ayland wrote:
+>> This provides an overall container and owner for Machine-related objects such
+>> as MemoryRegions.
 >>
 >> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 >> Reviewed-by: Laurent Vivier <laurent@vivier.eu>
+>> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 >> ---
->>   MAINTAINERS                 |   2 +
->>   hw/m68k/meson.build         |   2 +-
->>   hw/m68k/q800-glue.c         | 252 ++++++++++++++++++++++++++++++++++++
->>   hw/m68k/q800.c              | 238 +---------------------------------
->>   include/hw/m68k/q800-glue.h |  50 +++++++
->>   5 files changed, 306 insertions(+), 238 deletions(-)
->>   create mode 100644 hw/m68k/q800-glue.c
->>   create mode 100644 include/hw/m68k/q800-glue.h
-> 
-> 
->> diff --git a/hw/m68k/q800-glue.c b/hw/m68k/q800-glue.c
+>> MAINTAINERS            |  1 +
+>> hw/m68k/q800.c         |  2 ++
+>> include/hw/m68k/q800.h | 40 ++++++++++++++++++++++++++++++++++++++++
+>> 3 files changed, 43 insertions(+)
+>> create mode 100644 include/hw/m68k/q800.h
+>>
+>> diff --git a/MAINTAINERS b/MAINTAINERS
+>> index 88b5a7ee0a..748a66fbaa 100644
+>> --- a/MAINTAINERS
+>> +++ b/MAINTAINERS
+>> @@ -1236,6 +1236,7 @@ F: include/hw/misc/mac_via.h
+>> F: include/hw/nubus/*
+>> F: include/hw/display/macfb.h
+>> F: include/hw/block/swim.h
+>> +F: include/hw/m68k/q800.h
+>>
+>> virt
+>> M: Laurent Vivier <laurent@vivier.eu>
+>> diff --git a/hw/m68k/q800.c b/hw/m68k/q800.c
+>> index 465c510c18..c0256c8a90 100644
+>> --- a/hw/m68k/q800.c
+>> +++ b/hw/m68k/q800.c
+>> @@ -38,6 +38,7 @@
+>> #include "standard-headers/asm-m68k/bootinfo.h"
+>> #include "standard-headers/asm-m68k/bootinfo-mac.h"
+>> #include "bootinfo.h"
+>> +#include "hw/m68k/q800.h"
+>> #include "hw/misc/mac_via.h"
+>> #include "hw/input/adb.h"
+>> #include "hw/nubus/mac-nubus-bridge.h"
+>> @@ -749,6 +750,7 @@ static void q800_machine_class_init(ObjectClass *oc, void *data)
+>> static const TypeInfo q800_machine_typeinfo = {
+>>     .name       = MACHINE_TYPE_NAME("q800"),
+>>     .parent     = TYPE_MACHINE,
+>> +    .instance_size = sizeof(Q800MachineState),
+>>     .class_init = q800_machine_class_init,
+>> };
+>>
+>> diff --git a/include/hw/m68k/q800.h b/include/hw/m68k/q800.h
 >> new file mode 100644
->> index 0000000000..e81f9438f1
+>> index 0000000000..f3bc17aa1b
 >> --- /dev/null
->> +++ b/hw/m68k/q800-glue.c
->> @@ -0,0 +1,252 @@
->> +/*
->> + * QEMU q800 logic GLUE (General Logic Unit)
->> + *
->> + * Permission is hereby granted, free of charge, to any person obtaining a copy
->> + * of this software and associated documentation files (the "Software"), to deal
->> + * in the Software without restriction, including without limitation the rights
->> + * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
->> + * copies of the Software, and to permit persons to whom the Software is
->> + * furnished to do so, subject to the following conditions:
->> + *
->> + * The above copyright notice and this permission notice shall be included in
->> + * all copies or substantial portions of the Software.
->> + *
->> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
->> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
->> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
->> + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
->> + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
->> + * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
->> + * THE SOFTWARE.
->> + */
->> +
->> +#include "qemu/osdep.h"
->> +#include "cpu.h"
->> +#include "hw/m68k/q800-glue.h"
->> +#include "hw/boards.h"
+>> +++ b/include/hw/m68k/q800.h
 > 
-> "hw/boards.h" shouldn't be necessary here.
+> Why is this defined in a public header? Moving struct definitions of devices to allow 
+> them to be embedded in other structs makes sense but is there ever a reason to embed 
+> a machine state anywhere else than using it in q800.c? I don't think so, thus to 
+> preserve locality and save some lines in this series I think this machine state 
+> should just be in q800.c like I have similar struct in pegasos2.c. It may only make 
+> sense to put it in a header if q800.c was split up to multiple files but even then it 
+> should be a local header in hw/m68k and not a public header in my opinion.
 
-Okay.
-
->> +#include "hw/irq.h"
->> +#include "hw/nmi.h"
->> +#include "hw/qdev-properties.h"
->> +#include "migration/vmstate.h"
-> 
-> 
->> diff --git a/include/hw/m68k/q800-glue.h b/include/hw/m68k/q800-glue.h
->> new file mode 100644
->> index 0000000000..c1817b01a5
->> --- /dev/null
->> +++ b/include/hw/m68k/q800-glue.h
->> @@ -0,0 +1,50 @@
->> +/*
->> + * QEMU q800 logic glue
-> 
-> "QEMU q800 logic GLUE (General Logic Unit)" similar to .c?
-> (could be changed when applying, no need to respin)
-
-Ah so I updated it in the .c file but forgot to do the same for the .h file.
-
-Laurent, are you able to squash this or would you like me to send a v5?
-
-> Otherwise,
-> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
-Thanks!
+This is just following our standard guidelines since MachineState is a QOM object of 
+TYPE_MACHINE. Note that there are also a number of existing examples of this 
+currently within the QEMU tree.
 
 
 ATB,
