@@ -2,87 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52EA473824C
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 13:26:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E71E73824D
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 13:29:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBvxg-0001De-I1; Wed, 21 Jun 2023 07:25:20 -0400
+	id 1qBw0U-0002IF-Eh; Wed, 21 Jun 2023 07:28:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qBvxe-0001DR-OJ
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 07:25:18 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1qBw0S-0002Hg-Db
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 07:28:12 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qBvxc-0000j8-Tf
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 07:25:18 -0400
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1qBw0Q-0001Lp-Kv
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 07:28:12 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687346716;
+ s=mimecast20190719; t=1687346882;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=gslmMEtZTeG4HpAvCAUtMkJSV2pAKAaQ2yPlMfZ7NSk=;
- b=Y75pZDNDHLeYAg+mdr85Dtuupzu5PVtMst2N15Bovv4tHTaVRO9VS5QK+lY48JO3UKTBGr
- 0YIyMOU8qkKMq7FOMGxhpnNjmfX9e7RtSjyObFQ7m3HRv/hF4Kzc6MT4u1+Te3WmO+bbZe
- u8FgeERNDO9AeFCDCTuqKdLpRmE0ReU=
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com
- [209.85.214.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=4yphGCBfO/6x46f1sDPNo65ZnoDyIGQUDnYSCxhOhoA=;
+ b=gnnS0LOoG2n3qW75/ZJ0gRIEKViY5FXEb56O00AoNuTvUgm48CWGryM9KRvy3LoBIt6oMg
+ P0bXJHm8fFM9E/NSRo3gIt9v9W6tStywLeaHIu2BWv6VEsf4cKJxhLU25BXdwyvKN8Uxad
+ LgqH11lG8FCX0Cmu1IZt5snmyrgeqms=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-526-3SpyWttQMtyc2WDmATJS8g-1; Wed, 21 Jun 2023 07:25:12 -0400
-X-MC-Unique: 3SpyWttQMtyc2WDmATJS8g-1
-Received: by mail-pl1-f197.google.com with SMTP id
- d9443c01a7336-1afba64045aso40876765ad.0
- for <qemu-devel@nongnu.org>; Wed, 21 Jun 2023 04:25:12 -0700 (PDT)
+ us-mta-213-tSM82_WsN1W7ac51S9VgLQ-1; Wed, 21 Jun 2023 07:28:00 -0400
+X-MC-Unique: tSM82_WsN1W7ac51S9VgLQ-1
+Received: by mail-ed1-f72.google.com with SMTP id
+ 4fb4d7f45d1cf-51836731bfbso2954345a12.3
+ for <qemu-devel@nongnu.org>; Wed, 21 Jun 2023 04:28:00 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687346712; x=1689938712;
- h=to:references:message-id:content-transfer-encoding:cc:date
- :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20221208; t=1687346878; x=1689938878;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=gslmMEtZTeG4HpAvCAUtMkJSV2pAKAaQ2yPlMfZ7NSk=;
- b=AcemlTxKy3z/S3Vuheu+6qi1Y/OGbmumuAxWFoQ2pf6M0vjRA/lw5bOk+Gl05U8yHO
- 487cSZdQXr6jKvD7kp+aJaR/2TuydbFmskifbu8DrZB5b6sDKfj4QgBEEUB0qzevBKKp
- Ftc9rDCUVGsNnliTg1WGTAJrqniEcQuMau8rN5wtSSHHOG3f13ia/FEQlE84inKfll3D
- iGV7iaoZ2lFBzSxyy00ru2Xb65ryEeR5Nt+lwD+oie9UsNPXww9k4Dnat2DNbzinTbeS
- ZFGbsIqxGFPT0qr1VRvB+txC5cnn5T9BRmmfVp6tBTWhTtSG0JZ2yy91QDv54X9taZJ5
- IWVg==
-X-Gm-Message-State: AC+VfDy/GflkODO/fsJtfz6U2VFUouFhMtNfaY5vu8Jo2jfI9MqP3zvx
- dVRuvJVoL9/d87I5JDYO9inv2khtxEF7qjQvY7Yt9N87iIpU3kLGiwZR+QM7bs/PG16r3G5RYTM
- F5+xFA9lAGI+NQWM=
-X-Received: by 2002:a17:902:e84d:b0:1ac:85b0:1bd8 with SMTP id
- t13-20020a170902e84d00b001ac85b01bd8mr22771928plg.34.1687346711708; 
- Wed, 21 Jun 2023 04:25:11 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ65OnJTO+tC3kCL8CPL4NYQ0MKIGbvdFFMhMIt1PTeF8L+86fCf1vyDLMp+hNAW3u/CW+aFZg==
-X-Received: by 2002:a17:902:e84d:b0:1ac:85b0:1bd8 with SMTP id
- t13-20020a170902e84d00b001ac85b01bd8mr22771910plg.34.1687346711363; 
- Wed, 21 Jun 2023 04:25:11 -0700 (PDT)
-Received: from smtpclient.apple ([115.96.199.101])
- by smtp.gmail.com with ESMTPSA id
- q21-20020a170902b11500b001b414fae374sm3241936plr.291.2023.06.21.04.25.08
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Wed, 21 Jun 2023 04:25:10 -0700 (PDT)
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.3\))
-Subject: Re: [PATCH v4] hw/pci: enforce use of slot only slot 0 when devices
- have an upstream PCIE port
-From: Ani Sinha <anisinha@redhat.com>
-In-Reply-To: <9B88C548-C607-4949-B401-DE4226DFB6FC@redhat.com>
-Date: Wed, 21 Jun 2023 16:55:06 +0530
-Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Julia Suvorova <jusual@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <D2277938-2218-4F9F-AF9A-C94A1D5A8050@redhat.com>
-References: <20230620071805.4400-1-anisinha@redhat.com>
- <20230620062307-mutt-send-email-mst@kernel.org>
- <9B88C548-C607-4949-B401-DE4226DFB6FC@redhat.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-X-Mailer: Apple Mail (2.3696.120.41.1.3)
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
+ bh=4yphGCBfO/6x46f1sDPNo65ZnoDyIGQUDnYSCxhOhoA=;
+ b=Bz3arWrth2+2l3eGUTyPbFu0m3/+Xg4SGfGXNpC9bxgExW5lTtQciMOGFWvUMo0iob
+ Nn/2+ul0qE5hsOIij73Ph+YLXyxzjPJ+pENC0h7rAMaQI6iwmJUzZshesGojlTbR2kLQ
+ OrZDtreHbQWeWVauucKLWtYIge3Q+plFrtADx/mUNXkzNajw4dYMdbksW9cqaUMmYqPK
+ N1vJIQHib4HG2ndgfjpsHhkQTd4gwhf/hj7BtHr/gfd/ue/u7/xb9zgARXcKcPtADDxB
+ on2I6QKxZrnWkYvDQMYeYyz5EBuZRrfduqtyLdNX3Ez9p8Bd9LlnLyR8/TmQXcGqzJxJ
+ 7POQ==
+X-Gm-Message-State: AC+VfDxbW6VDTH3qHcBLzNcG0wgywddeg/0TI4rfO/F/dBJs6lOz0Blr
+ zu3Mfa/8FWZ56jgunK5MUgQJ/UzD3NeZw8PVIq5nifkBNkktDfSKHFFzhx5UGe9eicujQ3gCSag
+ qjnQgNi2VeS/bj+K872tFnp8=
+X-Received: by 2002:a05:6402:78d:b0:51a:3fda:8cfd with SMTP id
+ d13-20020a056402078d00b0051a3fda8cfdmr8567914edy.14.1687346878775; 
+ Wed, 21 Jun 2023 04:27:58 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6+eskFpCUIUd6omHiOvlooVPiCn4m9xlA28+Wymv2T6pjW63mcX5d3buTQA4yfSq+j9lznFw==
+X-Received: by 2002:a05:6402:78d:b0:51a:3fda:8cfd with SMTP id
+ d13-20020a056402078d00b0051a3fda8cfdmr8567895edy.14.1687346878458; 
+ Wed, 21 Jun 2023 04:27:58 -0700 (PDT)
+Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
+ [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
+ u8-20020aa7d0c8000000b0051a3248cf96sm2476500edo.57.2023.06.21.04.27.57
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 21 Jun 2023 04:27:57 -0700 (PDT)
+Date: Wed, 21 Jun 2023 13:27:57 +0200
+From: Igor Mammedov <imammedo@redhat.com>
+To: Joel Upham <jupham125@gmail.com>
+Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>, Ani Sinha
+ <anisinha@redhat.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: Re: [PATCH v1 02/23] pc/q35: Apply PCI bus BSEL property for Xen
+ PCI device hotplug
+Message-ID: <20230621132757.2a951cdf@imammedo.users.ipa.redhat.com>
+In-Reply-To: <fc1a6594429e549af90037e0ba0a256680a95cf6.1687278381.git.jupham125@gmail.com>
+References: <cover.1687278381.git.jupham125@gmail.com>
+ <fc1a6594429e549af90037e0ba0a256680a95cf6.1687278381.git.jupham125@gmail.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -107,160 +103,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Tue, 20 Jun 2023 13:24:36 -0400
+Joel Upham <jupham125@gmail.com> wrote:
 
+> On Q35 we still need to assign BSEL property to bus(es) for PCI device
+> add/hotplug to work.
+> Extend acpi_set_pci_info() function to support Q35 as well. This patch adds new (trivial)
+> function find_q35() which returns root PCIBus object on Q35, in a way
+> similar to what find_i440fx does.
 
-> On 21-Jun-2023, at 4:36 PM, Ani Sinha <anisinha@redhat.com> wrote:
->=20
->=20
->=20
->> On 20-Jun-2023, at 4:13 PM, Michael S. Tsirkin <mst@redhat.com> =
-wrote:
->>=20
->> On Tue, Jun 20, 2023 at 12:48:05PM +0530, Ani Sinha wrote:
->>> When a device has an upstream PCIE port, we can only use slot 0.
->>=20
->> Actually, it's when device is plugged into a PCIE port.
->> So maybe:
->>=20
->> 	PCI Express ports only have one slot, so
->> 	PCI Express devices can only be plugged into
->> 	slot 0 on a PCIE port
->>=20
->>> Non-zero slots
->>> are invalid. This change ensures that we throw an error if the user
->>> tries to hotplug a device with an upstream PCIE port to a non-zero =
-slot.
->>=20
->> it also adds a comment explaining why function 0 must not exist
->> when function !=3D 0 is added. or maybe split that part out.
->>=20
->>> CC: jusual@redhat.com
->>> CC: imammedo@redhat.com
->>> Resolves: https://bugzilla.redhat.com/show_bug.cgi?id=3D2128929
->>> Signed-off-by: Ani Sinha <anisinha@redhat.com>
->>> ---
->>> hw/pci/pci.c | 18 ++++++++++++++++++
->>> 1 file changed, 18 insertions(+)
->>>=20
->>> changelog:
->>> v2: addressed issue with multifunction pcie root ports. Should allow
->>> hotplug on functions other than function 0.
->>> v3: improved commit message.
->>> v4: improve commit message and code comments further. Some more
->>> improvements might come in v5. No claims made here that this is
->>> the final one :-)
->>>=20
->>> diff --git a/hw/pci/pci.c b/hw/pci/pci.c
->>> index bf38905b7d..30ce6a78cb 100644
->>> --- a/hw/pci/pci.c
->>> +++ b/hw/pci/pci.c
->>> @@ -64,6 +64,7 @@ bool pci_available =3D true;
->>> static char *pcibus_get_dev_path(DeviceState *dev);
->>> static char *pcibus_get_fw_dev_path(DeviceState *dev);
->>> static void pcibus_reset(BusState *qbus);
->>> +static bool pcie_has_upstream_port(PCIDevice *dev);
->>>=20
->>> static Property pci_props[] =3D {
->>>    DEFINE_PROP_PCI_DEVFN("addr", PCIDevice, devfn, -1),
->>> @@ -1182,6 +1183,11 @@ static PCIDevice =
-*do_pci_register_device(PCIDevice *pci_dev,
->>>    } else if (dev->hotplugged &&
->>>               !pci_is_vf(pci_dev) &&
->>>               pci_get_function_0(pci_dev)) {
->>> +        /*
->>> +         * populating function 0 triggers a bus scan from the guest =
-that
->>> +         * exposes other non-zero functions. Hence we need to =
-ensure that
->>> +         * function 0 wasn't added yet.
->>> +         */
->>=20
->> Pls capitalize populating. Also, comments like this should come
->> before the logic they document, not after. By the way it doesn't
->> have to be a bus scan - I'd just say "a scan" - with ACPI
->> guest knows what was added and can just probe the device functions.
->>=20
->>>        error_setg(errp, "PCI: slot %d function 0 already occupied by =
-%s,"
->>>                   " new func %s cannot be exposed to guest.",
->>>                   PCI_SLOT(pci_get_function_0(pci_dev)->devfn),
->>> @@ -1189,6 +1195,18 @@ static PCIDevice =
-*do_pci_register_device(PCIDevice *pci_dev,
->>>                   name);
->>>=20
->>>       return NULL;
->>> +    } else if (dev->hotplugged &&
->>=20
->> why hotplugged? Doesn't the same rule apply to all devices?
->>=20
->>> +               !pci_is_vf(pci_dev) &&
->>=20
->> Hmm. I think you copied it from here:
->>   } else if (dev->hotplugged &&
->>              !pci_is_vf(pci_dev) &&
->>              pci_get_function_0(pci_dev)) {
->>=20
->> it makes sense there because VFs are added later
->> after PF exists.
->>=20
->> But here it makes no sense that I can see.
->=20
-> This patch with these changes causes failures in bios-tables-test =
-which can be fixed easily. It also breaks hd-geo-test and I do not know =
-enough of this test to fix them.
+I think patch is mostly obsolete, q35 ACPI PCI hotplug is supported in upstream QEMU.
 
-Specifically it breaks test_override_scsi_q35() and =
-test_override_virtio_blk_q35().=20
-I think these tests were wrong to begin with since they attach a =
-pcie-to-pci bridge on a pcie root port and then attach a scsi controller =
-not on the pcie-to-pci bridge but on the root port (which is not =
-possible because we can only attach one device on a non-multifunction =
-pcie root port). Even if I fix them, its failing somewhere else.
+Also see comment below.
+ 
+> 
+> Signed-off-by: Alexey Gerasimenko <x1917x@xxxxxxxxx>
+> Signed-off-by: Joel Upham <jupham125@gmail.com>
+> ---
+>  hw/acpi/pcihp.c      | 4 +++-
+>  hw/pci-host/q35.c    | 9 +++++++++
+>  include/hw/i386/pc.h | 3 +++
+>  3 files changed, 15 insertions(+), 1 deletion(-)
+> 
+> diff --git a/hw/acpi/pcihp.c b/hw/acpi/pcihp.c
+> index cdd6f775a1..f4e39d7a9c 100644
+> --- a/hw/acpi/pcihp.c
+> +++ b/hw/acpi/pcihp.c
+> @@ -40,6 +40,7 @@
+>  #include "qapi/error.h"
+>  #include "qom/qom-qobject.h"
+>  #include "trace.h"
+> +#include "sysemu/xen.h"
+>  
+>  #define ACPI_PCIHP_SIZE 0x0018
+>  #define PCI_UP_BASE 0x0000
+> @@ -84,7 +85,8 @@ static void *acpi_set_bsel(PCIBus *bus, void *opaque)
+>      bool is_bridge = IS_PCI_BRIDGE(br);
+>  
+>      /* hotplugged bridges can't be described in ACPI ignore them */
+> -    if (qbus_is_hotpluggable(BUS(bus))) {
 
-I have added Thomas and Laurent, maybe they can help fix these in this =
-test.
-I have pushed my patch here: =
-https://gitlab.com/anisinha/qemu/-/commit/24b3eddb968a0739bff222bdf781f722=
-365cc9b2
+> +    /* Xen requires hotplugging to the root device, even on the Q35 chipset */
+pls explain what 'root device' is.
+Why can't you use root-ports for hotplug?
 
-
->=20
-> I think I will drop this patch for now.
->=20
->>=20
->>=20
->>> +               pcie_has_upstream_port(pci_dev) && PCI_SLOT(devfn)) =
-{
->>> +        /*
->>> +         * If the device has an upstream PCIE port, like a pcie =
-root port,
->>=20
->> no, a root port can not be an upstream port.
->>=20
->>=20
->>> +         * we only support functions on slot 0.
->>> +         */
->>> +        error_setg(errp, "PCI: slot %d is not valid for %s,"
->>> +                   " only functions on slot 0 is supported for =
-devices"
->>> +                   " with an upstream PCIE port.",
->>=20
->>=20
->> something like:
->>=20
->>       error_setg(errp, "PCI: slot %d is not valid for %s:"
->>                  " PCI Express devices can only be plugged into slot =
-0")
->>=20
->> and then you don't really need a comment.
->>=20
->>=20
->>> +                   PCI_SLOT(devfn), name);
->>> +        return NULL;
->>>    }
->>>=20
->>>    pci_dev->devfn =3D devfn;
->>> --=20
->>> 2.39.1
+> +    if (qbus_is_hotpluggable(BUS(bus)) || xen_enabled()) {
+>          if (!is_bridge || (!br->hotplugged && info->has_bridge_hotplug)) {
+>              bus_bsel = g_malloc(sizeof *bus_bsel);
+>  
+> diff --git a/hw/pci-host/q35.c b/hw/pci-host/q35.c
+> index fd18920e7f..fe5fc0f47c 100644
+> --- a/hw/pci-host/q35.c
+> +++ b/hw/pci-host/q35.c
+> @@ -259,6 +259,15 @@ static void q35_host_initfn(Object *obj)
+>                               qdev_prop_allow_set_link_before_realize, 0);
+>  }
+>  
+> +PCIBus *find_q35(void)
+> +{
+> +    PCIHostState *s = OBJECT_CHECK(PCIHostState,
+> +                                   object_resolve_path("/machine/q35", NULL),
+> +                                   TYPE_PCI_HOST_BRIDGE);
+> +    return s ? s->bus : NULL;
+> +}
+> +
+> +
+>  static const TypeInfo q35_host_info = {
+>      .name       = TYPE_Q35_HOST_DEVICE,
+>      .parent     = TYPE_PCIE_HOST_BRIDGE,
+> diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
+> index c661e9cc80..550f8fa221 100644
+> --- a/include/hw/i386/pc.h
+> +++ b/include/hw/i386/pc.h
+> @@ -196,6 +196,9 @@ void pc_madt_cpu_entry(int uid, const CPUArchIdList *apic_ids,
+>  /* sgx.c */
+>  void pc_machine_init_sgx_epc(PCMachineState *pcms);
+>  
+> +/* q35.c */
+> +PCIBus *find_q35(void);
+> +
+>  extern GlobalProperty pc_compat_8_0[];
+>  extern const size_t pc_compat_8_0_len;
+>  
 
 
