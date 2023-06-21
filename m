@@ -2,82 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE686737A94
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 07:20:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43951737AAC
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 07:44:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBqFc-0004Do-TZ; Wed, 21 Jun 2023 01:19:28 -0400
+	id 1qBqcI-0006bH-GE; Wed, 21 Jun 2023 01:42:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qBqFZ-0004Df-Cx
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 01:19:26 -0400
-Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1qBqcE-0006ad-Jb; Wed, 21 Jun 2023 01:42:51 -0400
+Received: from mail-qt1-x830.google.com ([2607:f8b0:4864:20::830])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qBqFV-000124-LO
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 01:19:25 -0400
-Received: by mail-ej1-x636.google.com with SMTP id
- a640c23a62f3a-988689a5f44so399318166b.1
- for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 22:19:20 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1qBqcD-00079r-2O; Wed, 21 Jun 2023 01:42:50 -0400
+Received: by mail-qt1-x830.google.com with SMTP id
+ d75a77b69052e-3ff22072856so25387311cf.3; 
+ Tue, 20 Jun 2023 22:42:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687324759; x=1689916759;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=/HN+yKqUD/yA9EKDJLg6477lfuJWVRhwH0D6rVXvrhc=;
- b=wgFzTQBvHD9Vv9XJmf1XtwzMUB4wrKqbwAiXCSPiVIdMb9rUGHHyMOkjprvngLrcQn
- Jw7dCxD2DHi28G+MQirewRA2IpkuwPd+dOQ/ORKvCWbbtHs/+LqOAMdNU+vG7XZcKM0E
- F33IRS8ALa/0iV+fXc6NaDv6bOROw4LTdjycyi3z4+JdNeNP3CPZreI55nFvXGYyha5u
- eX9re60rvaFemx99jOHflYbkpHMj2hm+cyF1CVPHDpRzUnao7TjI5ZQyJbcYlofLGW6j
- LF7PLNizLrDNTOLCAKazUoNOBBfzuv/YyfVooQZGXXjCNMRXOXl8poZvAIXwXxRkkVNe
- FFMw==
+ d=gmail.com; s=20221208; t=1687326165; x=1689918165;
+ h=in-reply-to:references:message-id:to:from:subject:cc:date
+ :content-transfer-encoding:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=wIMYrDqJWebxm9R1xnKcJDFQnFugU/m3Z6y9mYIO2kI=;
+ b=qfnK18ehPgbVYgNGQcwoTONQtCdhdF3P70yOubkhj9bipAvs2bKN1LJqSe6CHXZaPE
+ 6ZpK1zQKm442/sCPcpQUEm8TskjzfgZPNiOwV6ch6IzoBMC/RQktIgJ5YZujg0tJ51Pk
+ c/pjFED6TWqsmmOVVOZHQgVLw+B1rqHTnKp/rMu9vxaeTY++Qvm0gNlAC6jcQxH8LdyG
+ 6T7QQYIt8uZm06QVpav/Z51JdwKVvpJ6XarVYntZi3jDJIyz+Rm1B7arift/Rg+6cDtm
+ QK0p/iXegyviE3ZUz9DdHNDGTYqsQhtiyZ8kJ/umhv2/Stl0i/QGuOOJu1jHiP+3VVaV
+ J3aw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687324759; x=1689916759;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=/HN+yKqUD/yA9EKDJLg6477lfuJWVRhwH0D6rVXvrhc=;
- b=Mf1T4z7UynEMZnDvbhjLvpThTRuMKvVrHTQ4Og1pfBq73ZhQ5M6/U84yDZ3B0nRa5I
- caWAbBmisdwscEFWsRJTwR9L+9YcBHLuYxz57sh4CTRZBFcMC/ysdifN7W744KRb8aw5
- ZvbYmIHuMAh8D5acxvmG5kdot8iWnV4XUdci4tDMxaHCrV0mlIBxX1/mrbj/YUor1v0W
- jMDRP41WjBYZyYMXflj7WmTzekME6QpYK1H0FMn5KP/EClvfohQl7hAk9xC7yOuQmk+P
- SiGynk6Y1tY3975gUAzgBW12VS+o3UdjnXXExLwPMhpDCzFXVIL2b72Y22fb6wJbpEtT
- iBmg==
-X-Gm-Message-State: AC+VfDy2J/6c8qRu8B83zw+R53vNrlJLrLTBVTNKgrWjLCsNEf6IDwxn
- llhy9ubi3rSA4Q5AFbc2UAsWx7nM86AbGGeI1+/EORl+
-X-Google-Smtp-Source: ACHHUZ7TbOhz9kQpzU3FyBZybfUtaVMILUh3L19eIjaaETMkQA1YXfi0ZN4HWGodLvnllP84eaizfA==
-X-Received: by 2002:a17:906:9b88:b0:988:91cb:afd1 with SMTP id
- dd8-20020a1709069b8800b0098891cbafd1mr8222160ejc.29.1687324759245; 
- Tue, 20 Jun 2023 22:19:19 -0700 (PDT)
-Received: from [192.168.69.129] ([176.176.128.70])
- by smtp.gmail.com with ESMTPSA id
- u9-20020a17090617c900b0098768661505sm2474982eje.117.2023.06.20.22.19.18
+ d=1e100.net; s=20221208; t=1687326165; x=1689918165;
+ h=in-reply-to:references:message-id:to:from:subject:cc:date
+ :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=wIMYrDqJWebxm9R1xnKcJDFQnFugU/m3Z6y9mYIO2kI=;
+ b=hric8eLNh0Pc5fF4X1AxYy3xx+HqxObpOP1Vo7fkw0/CgCl732e7hillruS74l4Xip
+ tM1hd0uc3YLFtacZUendNkgpe3nGHb2kJpkBFa+cq8k3h1JAjSA/L5Bm4QK/+b4DpMEE
+ wAXRTdOrnNxXEizDJoXpCTo61j5TAN18w3FG8pHE1W+ZsahaV2pGEk9VVThtdzGCOrE+
+ E3s5aws038lXS+52/2Fust6pGZzSu4hfSOLru42kGkcjqv/VFI6V+Odjuo8ZgUKyFVPp
+ RCu8SzpaX/ou+0DZ48nIfKpRsJN47tkJ+9lmdufI1j5nWwRRHRQXuso0CJeSWyvoW++X
+ +fBg==
+X-Gm-Message-State: AC+VfDyFV3O4X8q7V1X78q6n0nNP6ozwosoOG7tRXaz4wsZy1uxvjfAh
+ E9X6ExZcaTK9TKkrgY4yn8Y=
+X-Google-Smtp-Source: ACHHUZ6LZPRktygpvsLkP+qxLmhfrXO+kJ9etTHc96doDCRudfFePTb9qkkJqTyBsxwRuOojUuEDpg==
+X-Received: by 2002:ac8:5b91:0:b0:3ff:2cc2:3f54 with SMTP id
+ a17-20020ac85b91000000b003ff2cc23f54mr5009933qta.9.1687326165442; 
+ Tue, 20 Jun 2023 22:42:45 -0700 (PDT)
+Received: from localhost ([1.145.207.60]) by smtp.gmail.com with ESMTPSA id
+ j10-20020a17090a2a8a00b0025e2358f146sm8711817pjd.13.2023.06.20.22.42.05
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 20 Jun 2023 22:19:18 -0700 (PDT)
-Message-ID: <5b2bf86d-44fa-35ae-8049-b395d715adcb@linaro.org>
-Date: Wed, 21 Jun 2023 07:19:16 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH] Revert "cputlb: Restrict SavedIOTLB to system emulation"
-Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-References: <20230620175712.1331625-1-peter.maydell@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230620175712.1331625-1-peter.maydell@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::636;
- envelope-from=richard.henderson@linaro.org; helo=mail-ej1-x636.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+ Tue, 20 Jun 2023 22:42:44 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 21 Jun 2023 15:41:54 +1000
+Cc: <qemu-ppc@nongnu.org>, <qemu-devel@nongnu.org>, "Harsh Prateek Bora"
+ <harshpb@linux.ibm.com>, "Daniel Henrique Barboza" <danielhb413@gmail.com>,
+ "Anushree Mathur" <anushree.mathur@linux.vnet.ibm.com>, "Fabiano Rosas"
+ <farosas@suse.de>
+Subject: Re: [PATCH 1/4] target/ppc: Fix instruction loading endianness in
+ alignment interrupt
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "Nicholas Piggin" <npiggin@gmail.com>, "BALATON Zoltan"
+ <balaton@eik.bme.hu>
+Message-Id: <CTI332CVP3JK.3AG3PF04TUWGH@wheely>
+X-Mailer: aerc 0.14.0
+References: <20230620131044.169110-1-npiggin@gmail.com>
+ <20230620131044.169110-2-npiggin@gmail.com>
+ <393305f2-e785-c3f6-523f-6826b3511cc4@eik.bme.hu>
+ <CTHMVFHEA2B4.3968LCTW14GHR@wheely>
+In-Reply-To: <CTHMVFHEA2B4.3968LCTW14GHR@wheely>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::830;
+ envelope-from=npiggin@gmail.com; helo=mail-qt1-x830.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -95,42 +97,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/20/23 19:57, Peter Maydell wrote:
-> This reverts commit d7ee93e24359703debf4137f4cc632563aa4e8d1.
-> 
-> That commit tries to make a field in the CPUState struct not be
-> present when CONFIG_USER_ONLY is set.  Unfortunately, you can't
-> conditionally omit fields in structs like this based on ifdefs that
-> are set per-target.  If you try it, then code in files compiled
-> per-target (where CONFIG_USER_ONLY is or can be set) will disagree
-> about the struct layout with files that are compiled once-only (where
-> this kind of ifdef is never set).
-> 
-> This manifests specifically in 'make check-tcg' failing, because code
-> in cpus-common.c that sets up the CPUState::cpu_index field puts it
-> at a different offset from the code in plugins/core.c in
-> qemu_plugin_vcpu_init_hook() which reads the cpu_index field.  The
-> latter then hits an assert because from its point of view every
-> thread has a 0 cpu_index. There might be other weird behaviour too.
-> 
-> Mostly we catch this kind of bug because the CONFIG_whatever is
-> listed in include/exec/poison.h and so the reference to it in
-> build-once source files will then cause a compiler error.
-> Unfortunately CONFIG_USER_ONLY is an exception to that: we have some
-> places where we use it in "safe" ways in headers that will be seen by
-> once-only source files (e.g.  ifdeffing out function prototypes) and
-> it would be a lot of refactoring to be able to get to a position
-> where we could poison it.  This leaves us in a "you have to be
-> careful to walk around the bear trap" situation...
-> 
-> Fixes: d7ee93e243597 ("cputlb: Restrict SavedIOTLB to system emulation")
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-> ---
->   include/hw/core/cpu.h | 6 ++----
->   1 file changed, 2 insertions(+), 4 deletions(-)
+On Wed Jun 21, 2023 at 2:54 AM AEST, Nicholas Piggin wrote:
+> On Wed Jun 21, 2023 at 12:26 AM AEST, BALATON Zoltan wrote:
+> > On Tue, 20 Jun 2023, Nicholas Piggin wrote:
+> > > powerpc ifetch endianness depends on MSR[LE] so it has to byteswap
+> > > after cpu_ldl_code(). This corrects DSISR bits in alignment
+> > > interrupts when running in little endian mode.
+> > >
+> > > Reviewed-by: Fabiano Rosas <farosas@suse.de>
+> > > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> > > ---
+> > > target/ppc/excp_helper.c | 22 +++++++++++++++++++++-
+> > > 1 file changed, 21 insertions(+), 1 deletion(-)
+> > >
+> > > diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
+> > > index 12d8a7257b..a2801f6e6b 100644
+> > > --- a/target/ppc/excp_helper.c
+> > > +++ b/target/ppc/excp_helper.c
+> > > @@ -133,6 +133,26 @@ static void dump_hcall(CPUPPCState *env)
+> > >                   env->nip);
+> > > }
+> > >
+> > > +#ifdef CONFIG_TCG
+> > > +/* Return true iff byteswap is needed to load instruction */
+> > > +static inline bool insn_need_byteswap(CPUArchState *env)
+> > > +{
+> > > +    /* SYSTEM builds TARGET_BIG_ENDIAN. Need to swap when MSR[LE] is=
+ set */
+> > > +    return !!(env->msr & ((target_ulong)1 << MSR_LE));
+> > > +}
+> >
+> > Don't other places typically use FIELD_EX64 to test for msr bits now? I=
+f=20
+>
+> Yeah I should use that, good point. There's at least another case in
+> that file that doesn't use it but I probably added that too :/
 
-Ho hum, thanks.  I'll apply this directly.
+This incremental patch fixes it:
 
-r~
+Thanks,
+Nick
 
+---
+diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
+index ff7166adf9..cfdbeb0da5 100644
+--- a/target/ppc/excp_helper.c
++++ b/target/ppc/excp_helper.c
+@@ -138,7 +138,7 @@ static void dump_hcall(CPUPPCState *env)
+ static inline bool insn_need_byteswap(CPUArchState *env)
+ {
+     /* SYSTEM builds TARGET_BIG_ENDIAN. Need to swap when MSR[LE] is set *=
+/
+-    return !!(env->msr & ((target_ulong)1 << MSR_LE));
++    return FIELD_EX64(env->msr, MSR, LE);
+ }
+=20
+ static uint32_t ppc_ldl_code(CPUArchState *env, hwaddr addr)
 
