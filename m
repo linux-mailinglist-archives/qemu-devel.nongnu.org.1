@@ -2,89 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5593D737F19
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 11:43:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 043A2737F1C
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 11:44:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBuMa-0001bP-BH; Wed, 21 Jun 2023 05:42:56 -0400
+	id 1qBuMp-0002AD-MA; Wed, 21 Jun 2023 05:43:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qBuMW-0001b2-Na
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 05:42:52 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qBuMV-00013u-0O
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 05:42:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687340569;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=hOGeLcSvPsA0mfBzjhKfS6Mj93Fprkqf7wVdizZVIQE=;
- b=Kb30U9FCnJlKa7jvUkK9h88VYzu6QbUtC6cq9PiqlZ5GhVUgEVXyKiEWIbQSBbNld+KFJC
- q7Q17AxLsx1LnFQojGKkLgUd0eL8vAIwV/p3KtVyppbPo8S2ky9i9mzvJiBqAR69C5co/E
- C1Ao3fYw3a6Mi0QMyItvbG/uK4BKYHY=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-57-ZQkWuKl5OBmhIp2F-g9xXQ-1; Wed, 21 Jun 2023 05:42:48 -0400
-X-MC-Unique: ZQkWuKl5OBmhIp2F-g9xXQ-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-3f8fa2ef407so22006865e9.1
- for <qemu-devel@nongnu.org>; Wed, 21 Jun 2023 02:42:47 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qBuMh-00023G-PE
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 05:43:03 -0400
+Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qBuMf-00015i-Uk
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 05:43:03 -0400
+Received: by mail-ed1-x52c.google.com with SMTP id
+ 4fb4d7f45d1cf-518b69d5b5dso7780029a12.1
+ for <qemu-devel@nongnu.org>; Wed, 21 Jun 2023 02:43:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1687340580; x=1689932580;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=y7yxYGxqlc/vJ/zCVF6hmEoorIc5CKvHshLGKf5ND8I=;
+ b=Du7O4rogg9Li5fxM+UG3M9GCOHQmIDIi3tkQh/dP6+Jb8adw+DzY3jWaGU0zw5PIAW
+ rrWgPDN4EdWUUeB7yXHiseHPuqH42QggSCKxJfBHDpM/kHM3+dVWSsQOuBhnOeHVTkRL
+ qV/HMLqc6vGOBD7Hgo1dOazRsBmOyOIBTfCmHvMnMYLj8aCln8juHBZtVLXa2GawRfxe
+ A4kjD+tnAzmFN5Q1rQ0Fziq/UQFf4thL/DnujS7AGkmBWUC21jLog57M0ru5crAxFWrM
+ 7X1YaWS1JQwpMk6a7cH5Yvwtx/+ye4HacBCPkOFZalrpjIGMZMa8oYzdPYXLM7ln7Rsj
+ sUeg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687340567; x=1689932567;
- h=mime-version:message-id:date:reply-to:user-agent:references
- :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=hOGeLcSvPsA0mfBzjhKfS6Mj93Fprkqf7wVdizZVIQE=;
- b=CpJdDBqEwwvuCXVgLbEi4zefs8Kqau87mqPZgjgNlv84SIrhhlZY5MsWO9bJb0OEYw
- 7xz03o3G9N0ROHtjaW0EERZyN+hVXG4Bpmn/CPCwS2cNsphGIkHfCfWduTJd1evplc7O
- iHCWg4UwDxGdHqJWMcKly3L5QXLGHLvCVRdzS8F1PQKVN1XGvkJ5hwMzr6uTM2k0cv39
- c2eIdzSG+1WkZvOzw4uSayWztDUqgSgnZsHWb6O0RdQQ6Mfu058HyrStVKy9JtD/sh5D
- p2uTAU7ckH1ATu/wk6DvwGJ/HgamwTtODm92OKkTJjuqPP393YUrvk9yZMCE0XaT6znb
- yrvQ==
-X-Gm-Message-State: AC+VfDzuex6wCJssFIXsnToEm/VKwykPdGgk6Tt/PAy1CjRd21GvOQzm
- /Spf0lFYFCTnrV0ZOLSFY9EsJr8ClQClvq7P8qK2o02YVLGLIhjLzo1+NgcvKs93Lol+cwjcgSc
- QeWM2dCAtK791k/U=
-X-Received: by 2002:a7b:ce12:0:b0:3f9:b9d6:8af6 with SMTP id
- m18-20020a7bce12000000b003f9b9d68af6mr2311434wmc.25.1687340566985; 
- Wed, 21 Jun 2023 02:42:46 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ59SKRwi6bOC7eN6n7WHHyw8ZcLB+5RSz35KUu+TuyvCAJDNy0zQUkeSWOkARFFOUEZQwH3WQ==
-X-Received: by 2002:a7b:ce12:0:b0:3f9:b9d6:8af6 with SMTP id
- m18-20020a7bce12000000b003f9b9d68af6mr2311418wmc.25.1687340566669; 
- Wed, 21 Jun 2023 02:42:46 -0700 (PDT)
-Received: from redhat.com (static-92-120-85-188.ipcom.comunitel.net.
- [188.85.120.92]) by smtp.gmail.com with ESMTPSA id
- s14-20020a7bc38e000000b003f801c12c58sm4478562wmj.43.2023.06.21.02.42.45
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 21 Jun 2023 02:42:46 -0700 (PDT)
-From: Juan Quintela <quintela@redhat.com>
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org,  Paolo Bonzini <pbonzini@redhat.com>,  Laurent
- Vivier <lvivier@redhat.com>,  Thomas Huth <thuth@redhat.com>,  Peter
- Maydell <peter.maydell@linaro.org>,  Daniel P . =?utf-8?Q?Berrang=C3=A9?=
- <berrange@redhat.com>,  Leonardo Bras <leobras@redhat.com>
-Subject: Re: [PATCH 03/42] migration-test: simplify shmem_opts handling
-In-Reply-To: <ZJG/jqmk1hHwzXpJ@x1n> (Peter Xu's message of "Tue, 20 Jun 2023
- 11:02:38 -0400")
-References: <20230608224943.3877-1-quintela@redhat.com>
- <20230608224943.3877-4-quintela@redhat.com> <ZJG/jqmk1hHwzXpJ@x1n>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
-Date: Wed, 21 Jun 2023 11:42:45 +0200
-Message-ID: <87pm5pb17u.fsf@secure.mitica>
+ d=1e100.net; s=20221208; t=1687340580; x=1689932580;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=y7yxYGxqlc/vJ/zCVF6hmEoorIc5CKvHshLGKf5ND8I=;
+ b=lGaPs3xsMprf2kQ3ZCRhr+wGHz+Ow8Dp/8I0Nvf0DFsZX9wDHRieWfX5jkTN++qVGt
+ 7W2u6wzsoRUGvqMcB9BgQQwVKZm1zuKhke/h85TTuziQer6cfh21YcR1cAn1DVkCjG/9
+ ifaTrMd8wOj6W8q0TeuK2IBgjp5QhEQgHDNgaASIohdYcb3A3Y9441UihRqPBDZ8G2vN
+ z1MNESOGNMLfrOJIHkAkO95alZ6OTUkMjZH/yTMp46z1dFHG8dOaR2GOZ6HL8vDI2JzJ
+ 88l2jsQpfOel5dzvWGatZMxHCgrFVwgKA86CFPHmVz5oh40olWs3ZV6WKBNgtHYJadMc
+ Dt2A==
+X-Gm-Message-State: AC+VfDzUdmzL85eCj8zNYDCMpMQ4r7XgYHkuzPrD5DfvW7C/ZSbP45G0
+ sx3CD/eShsVhckZYc3QDn8flGA==
+X-Google-Smtp-Source: ACHHUZ6e+PRDcy7SiPYFxV9S9bjx0q8pjUm1pwtqzl9N66Ybsnlbagc1JsRcLSlVG0SnTZfoq21JQQ==
+X-Received: by 2002:aa7:d65a:0:b0:51a:2ca4:5758 with SMTP id
+ v26-20020aa7d65a000000b0051a2ca45758mr10212901edr.8.1687340579886; 
+ Wed, 21 Jun 2023 02:42:59 -0700 (PDT)
+Received: from [192.168.69.115] ([176.176.128.70])
+ by smtp.gmail.com with ESMTPSA id
+ u7-20020a05640207c700b00514b854c399sm2327451edy.84.2023.06.21.02.42.58
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 21 Jun 2023 02:42:59 -0700 (PDT)
+Message-ID: <0e8c4da9-2b33-dc24-77b0-cea5bdd905a3@linaro.org>
+Date: Wed, 21 Jun 2023 11:42:57 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.12.0
+Subject: Re: [PATCH v4 00/24] q800: add support for booting MacOS Classic -
+ part 1
+Content-Language: en-US
+To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, laurent@vivier.eu,
+ qemu-devel@nongnu.org
+References: <20230621085353.113233-1-mark.cave-ayland@ilande.co.uk>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230621085353.113233-1-mark.cave-ayland@ilande.co.uk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52c.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -99,71 +90,49 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Xu <peterx@redhat.com> wrote:
-> On Fri, Jun 09, 2023 at 12:49:04AM +0200, Juan Quintela wrote:
->> Signed-off-by: Juan Quintela <quintela@redhat.com>
->> ---
->>  tests/qtest/migration-test.c | 9 ++++-----
->>  1 file changed, 4 insertions(+), 5 deletions(-)
->> 
->> diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
->> index 73b2f01427..95ccc9bce7 100644
->> --- a/tests/qtest/migration-test.c
->> +++ b/tests/qtest/migration-test.c
->> @@ -681,9 +681,6 @@ static int test_migrate_start(QTestState **from, QTestState **to,
->>              "-object memory-backend-file,id=mem0,size=%s"
->>              ",mem-path=%s,share=on -numa node,memdev=mem0",
->>              memory_size, shmem_path);
->> -    } else {
->> -        shmem_path = NULL;
->> -        shmem_opts = g_strdup("");
->>      }
->>  
->>      cmd_source = g_strdup_printf("-accel kvm%s -accel tcg%s%s "
->> @@ -696,7 +693,8 @@ static int test_migrate_start(QTestState **from, QTestState **to,
->>                                   machine_opts ? " -machine " : "",
->>                                   machine_opts ? machine_opts : "",
->>                                   memory_size, tmpfs,
->> -                                 arch_source, shmem_opts,
->> +                                 arch_source,
->> +                                 shmem_opts ? shmem_opts : "",
->>                                   args->opts_source ? args->opts_source : "",
->>                                   ignore_stderr ? ignore_stderr : "");
->>  
->> @@ -718,7 +716,8 @@ static int test_migrate_start(QTestState **from, QTestState **to,
->>                                   machine_opts ? " -machine " : "",
->>                                   machine_opts ? machine_opts : "",
->>                                   memory_size, tmpfs, uri,
->> -                                 arch_target, shmem_opts,
->> +                                 arch_target,
->> +                                 shmem_opts ? shmem_opts : "",
->
-> Isn't this adding duplications instead?
+On 21/6/23 10:53, Mark Cave-Ayland wrote:
+> [MCA: the original series has now been split into 2 separate parts based upon
+> Phil's comments re: QOM parenting for objects in Q800MachineState. Part 1
+> consists of the Q800MachineState patches along with QOM parenting fixes and
+> the 2 mac_via RTC patches.]
+> 
+> This series contains the remaining patches needed to allow QEMU's q800
+> machine to boot MacOS Classic when used in conjunction with a real
+> Quadra 800 ROM image. In fact with this series applied it is possible
+> to boot all of the following OSs:
+> 
+>    - MacOS 7.1 - 8.1, with or without virtual memory enabled
+>    - A/UX 3.0.1
+>    - NetBSD 9.3
+>    - Linux (via EMILE)
+> 
+> If you are ready to experience some 90s nostalgia then all you need is
+> to grab yourself a copy of the Quadra 800 ROM (checksum 0xf1acad13) and a
+> suitable install ISO as follows:
+> 
+>    # Prepare a PRAM image
+>    $ qemu-img create -f raw pram.img 256b
+> 
+>    # Launch QEMU with blank disk and install CDROM
+>    $ ./qemu-system-m68k \
+>        -M q800 \
+>        -m 128 \
+>        -bios Quadra800.rom \
+>        -drive file=pram.img,format=raw,if=mtd \
+>        -drive file=disk.img,media=disk,format=raw,if=none,id=hd \
+>        -device scsi-hd,scsi-id=0,drive=hd \
+>        -drive file=cdrom.iso,media=cdrom,if=none,id=cd \
+>        -device scsi-cd,scsi-id=3,drive=cd
+> 
+> And off you go! For more in-depth information about the installation process
+> I highly recommend the installation guide over at emaculation.com [1].
+> Compatibility is generally very good, and I'm pleased to report it is possible
+> to run one of the most popular productivity apps from the 90s [2].
 
-I don't follow.
-
-> Meanwhile, shmem_opts right now is auto-free.  If we do this we don't need
-> it to be auto-free anymore..
-
-We need.
-It can still be from g_strdup_printf().
-
-What this patch change is that it will never be (again) "".
-
-It is going to be NULL or a real string, like all the other options.
-The real string is generated, so it needs to be auto_free.
-
-Later, Juan.
-
->>                                   args->opts_target ? args->opts_target : "",
->>                                   ignore_stderr ? ignore_stderr : "");
->>      *to = qtest_init(cmd_target);
->> -- 
->> 2.40.1
->> 
-
+Could you add an Avocado test for this machine? See how the
+MipsFuloong2e test (tests/avocado/machine_mips_fuloong2e.py)
+handles the firmware (RESCUE_YL_PATH).
 
