@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFFD3737DDD
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 10:55:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E6E3737DF1
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 10:58:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBtcC-00033a-31; Wed, 21 Jun 2023 04:55:00 -0400
+	id 1qBtcc-0003az-DQ; Wed, 21 Jun 2023 04:55:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qBtcA-0002wr-9F
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 04:54:58 -0400
+ id 1qBtcO-0003Np-6B
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 04:55:16 -0400
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qBtc8-000500-Fq
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 04:54:58 -0400
+ id 1qBtcM-00050S-Lz
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 04:55:11 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
  MIME-Version:References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:
  Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
  Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
  List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=apUR2AcU/GV1nUWjdATL9pqMQIij0c+zFxaLq8ZRd7w=; b=HluD/dCm5bx3YNv+STJB8vhSvP
- soSwcMa1CzC6Eofo7W6F+CDmvUo2VWhPKkzmCVkD30ux0AHmuLC/9JEB0joLRFutRncQGZJRhje/8
- wvUOgkOEpXAF0mu/7E8K7DiQcYZmABlYXreow9h3YbqTXVYBTYrRJW77gwHMue/LEGoxMZLxYAFaP
- uB9iCqIqhPKDXizU86HO8rZkQyc9wRzuhSooJDNWXPlhkVdTIT9Oj+PSiZrDFprefbRWcAUhdxakW
- Y/S3NsjfqILwaZYaWsWOcu0B+xuDJ3rxxCFt4iselkGx7IPfGsBzlL40gHNSfaP4HCqumj7DwBiyj
- HhmTzplSB2df3ywJogGlHsMQWneqMEBTwxWk6XqsxqKjWKr3Us8mCXhNEWGOPJybSb+9XOEAmtKZr
- Y4ub5DVfc6bugwbhbVI2eaI9OBcJpeAVcOYJQK58yw4liwJdtei9CYNd1tU1tNwvphHvDApPy+C9y
- stTrS3t9Sevr6a7giaLCivVbYayb+JgR7TtEdFGI/rvf/2mN/tTsTykMn2y5+faXX6vOF9qqUg/3w
- KQRNkDkArM1EcJd1qzHf6nZ42lT4WOA1Cyk8+hegP7LGhUlpwPSCxlk97JQkZ3047ZS6yq9gLnjz6
- 7PVappy7ltnvpia9M7hrc9kPgeqYON2UgvHFeLnsA=;
+ bh=EOk9C1LephgeYrzHSr/Iao6dFyKhO8TARh1/pIHN4ps=; b=PPfkWZP8icUYAEp46hqieXviAa
+ i9aWnJD5Q2oKhN1uoX750/PGxSg5KN4KgyqHYkrP9/YMeX9xV0GhOTViUjoRYTpGTT/RHT3frVUxG
+ 3ckWofU47fiM1VkDLmvHne7Wp4B2zXfEjBN3ICcYbL743hBV9L3W5HbaclKPYPqK5VGpHhNMJLNps
+ hxumhnbpY43qbtuoiXDXqUFXY+ycBsMdV2DkXC4AkzLWcHe5Zb+BIt2UwPBubwZkGbqoz9DYJwJhe
+ SGi7AzaR/IlHNVDBe9w9igMQwa5vFp8Jl17ptUTbAHFF8h9WHa5PoeVCDb7GLQApfp3HEHGZ0S4/U
+ pPc1XMjmNQnas+2EpzZQtf1MtkoVnWIdMWSGEUDyk4krTJVUzSelTt/qQnmd6NYXGiCJFZK6Ssx9n
+ F8m3/Bh80X7RD0GwuZeu3IU2tnPl4KtJSz884q53aNZGY+jWuYMNrsgUBa2s5HId0LtP+5cq7MFLf
+ qI8jtmgntDkL4WcfgWMQU+NpILpqkcy5mrOxjpfaO7JpAxBEbcVg06skD5oJ0eVvjOZF4rbBGvy7T
+ 8a2RUL3sOd/nDFyAHqOkuxF1cY+KSqHsCxSyCsNV+TCACbEtRmgP8xSm5NscA6RBlz1LSwB2Jv73E
+ vXjIeLTDoDWbIIDho7QikFj1jM4rG7iW/GJpYaoDw=;
 Received: from host86-130-37-216.range86-130.btcentralplus.com
  ([86.130.37.216] helo=kentang.home)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qBtbx-0001ZB-19; Wed, 21 Jun 2023 09:54:49 +0100
+ id 1qBtc1-0001ZB-82; Wed, 21 Jun 2023 09:54:53 +0100
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: laurent@vivier.eu,
 	qemu-devel@nongnu.org
-Date: Wed, 21 Jun 2023 09:53:43 +0100
-Message-Id: <20230621085353.113233-15-mark.cave-ayland@ilande.co.uk>
+Date: Wed, 21 Jun 2023 09:53:44 +0100
+Message-Id: <20230621085353.113233-16-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20230621085353.113233-1-mark.cave-ayland@ilande.co.uk>
 References: <20230621085353.113233-1-mark.cave-ayland@ilande.co.uk>
@@ -52,8 +52,7 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 86.130.37.216
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH v4 14/24] hw/net/dp8393x.c: move TYPE_DP8393X and dp8393xState
- into dp8393x.h
+Subject: [PATCH v4 15/24] q800: move dp8393x device to Q800MachineState
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -79,141 +78,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is to enable them to be used outside of dp8393x.c.
+Also change the instantiation of the dp8393x device to use object_initialize_child().
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 CC: Jason Wang <jasowang@redhat.com>
-Reviewed-by: Laurent Vivier <laurent@vivier.eu>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Laurent Vivier <laurent@vivier.eu>
 ---
- hw/net/dp8393x.c         | 32 +--------------------
- include/hw/net/dp8393x.h | 60 ++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 61 insertions(+), 31 deletions(-)
- create mode 100644 include/hw/net/dp8393x.h
+ hw/m68k/q800.c         | 6 ++++--
+ include/hw/m68k/q800.h | 2 ++
+ 2 files changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/hw/net/dp8393x.c b/hw/net/dp8393x.c
-index 45b954e46c..a596f7fbc6 100644
---- a/hw/net/dp8393x.c
-+++ b/hw/net/dp8393x.c
-@@ -20,6 +20,7 @@
- #include "qemu/osdep.h"
- #include "hw/irq.h"
- #include "hw/qdev-properties.h"
+diff --git a/hw/m68k/q800.c b/hw/m68k/q800.c
+index 988b4981b8..13806613fa 100644
+--- a/hw/m68k/q800.c
++++ b/hw/m68k/q800.c
+@@ -315,14 +315,16 @@ static void q800_machine_init(MachineState *machine)
+     nd_table[0].macaddr.a[1] = 0x00;
+     nd_table[0].macaddr.a[2] = 0x07;
+ 
+-    dev = qdev_new("dp8393x");
++    object_initialize_child(OBJECT(machine), "dp8393x", &m->dp8393x,
++                            TYPE_DP8393X);
++    dev = DEVICE(&m->dp8393x);
+     qdev_set_nic_properties(dev, &nd_table[0]);
+     qdev_prop_set_uint8(dev, "it_shift", 2);
+     qdev_prop_set_bit(dev, "big_endian", true);
+     object_property_set_link(OBJECT(dev), "dma_mr",
+                              OBJECT(get_system_memory()), &error_abort);
+     sysbus = SYS_BUS_DEVICE(dev);
+-    sysbus_realize_and_unref(sysbus, &error_fatal);
++    sysbus_realize(sysbus, &error_fatal);
+     memory_region_add_subregion(&m->macio, SONIC_BASE - IO_BASE,
+                                 sysbus_mmio_get_region(sysbus, 0));
+     sysbus_connect_irq(sysbus, 0,
+diff --git a/include/hw/m68k/q800.h b/include/hw/m68k/q800.h
+index 06c771635b..d11bc020ed 100644
+--- a/include/hw/m68k/q800.h
++++ b/include/hw/m68k/q800.h
+@@ -29,6 +29,7 @@
+ #include "exec/memory.h"
+ #include "hw/m68k/q800-glue.h"
+ #include "hw/misc/mac_via.h"
 +#include "hw/net/dp8393x.h"
- #include "hw/sysbus.h"
- #include "migration/vmstate.h"
- #include "net/net.h"
-@@ -85,7 +86,6 @@ static const char *reg_names[] = {
- #define SONIC_MPT    0x2e
- #define SONIC_MDT    0x2f
- #define SONIC_DCR2   0x3f
--#define SONIC_REG_COUNT  0x40
- 
- #define SONIC_CR_HTX     0x0001
- #define SONIC_CR_TXP     0x0002
-@@ -139,36 +139,6 @@ static const char *reg_names[] = {
- #define SONIC_DESC_EOL   0x0001
- #define SONIC_DESC_ADDR  0xFFFE
- 
--#define TYPE_DP8393X "dp8393x"
--OBJECT_DECLARE_SIMPLE_TYPE(dp8393xState, DP8393X)
--
--struct dp8393xState {
--    SysBusDevice parent_obj;
--
--    /* Hardware */
--    uint8_t it_shift;
--    bool big_endian;
--    bool last_rba_is_full;
--    qemu_irq irq;
--    int irq_level;
--    QEMUTimer *watchdog;
--    int64_t wt_last_update;
--    NICConf conf;
--    NICState *nic;
--    MemoryRegion mmio;
--
--    /* Registers */
--    uint16_t cam[16][3];
--    uint16_t regs[SONIC_REG_COUNT];
--
--    /* Temporaries */
--    uint8_t tx_buffer[0x10000];
--    int loopback_packet;
--
--    /* Memory access */
--    MemoryRegion *dma_mr;
--    AddressSpace as;
--};
  
  /*
-  * Accessor functions for values which are formed by
-diff --git a/include/hw/net/dp8393x.h b/include/hw/net/dp8393x.h
-new file mode 100644
-index 0000000000..4a3f7478be
---- /dev/null
-+++ b/include/hw/net/dp8393x.h
-@@ -0,0 +1,60 @@
-+/*
-+ * QEMU NS SONIC DP8393x netcard
-+ *
-+ * Copyright (c) 2008-2009 Herve Poussineau
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License along
-+ * with this program; if not, see <http://www.gnu.org/licenses/>.
-+ */
-+
-+#ifndef HW_NET_DP8393X_H
-+#define HW_NET_DP8393X_H
-+
-+#include "hw/sysbus.h"
-+#include "net/net.h"
-+#include "exec/memory.h"
-+
-+#define SONIC_REG_COUNT  0x40
-+
-+#define TYPE_DP8393X "dp8393x"
-+OBJECT_DECLARE_SIMPLE_TYPE(dp8393xState, DP8393X)
-+
-+struct dp8393xState {
-+    SysBusDevice parent_obj;
-+
-+    /* Hardware */
-+    uint8_t it_shift;
-+    bool big_endian;
-+    bool last_rba_is_full;
-+    qemu_irq irq;
-+    int irq_level;
-+    QEMUTimer *watchdog;
-+    int64_t wt_last_update;
-+    NICConf conf;
-+    NICState *nic;
-+    MemoryRegion mmio;
-+
-+    /* Registers */
-+    uint16_t cam[16][3];
-+    uint16_t regs[SONIC_REG_COUNT];
-+
-+    /* Temporaries */
-+    uint8_t tx_buffer[0x10000];
-+    int loopback_packet;
-+
-+    /* Memory access */
-+    MemoryRegion *dma_mr;
-+    AddressSpace as;
-+};
-+
-+#endif
+  * The main Q800 machine
+@@ -42,6 +43,7 @@ struct Q800MachineState {
+     GLUEState glue;
+     MOS6522Q800VIA1State via1;
+     MOS6522Q800VIA2State via2;
++    dp8393xState dp8393x;
+     MemoryRegion macio;
+     MemoryRegion macio_alias;
+ };
 -- 
 2.30.2
 
