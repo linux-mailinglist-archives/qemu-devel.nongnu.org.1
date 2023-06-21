@@ -2,85 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43951737AAC
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 07:44:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C424737AB2
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 07:47:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBqcI-0006bH-GE; Wed, 21 Jun 2023 01:42:54 -0400
+	id 1qBqgV-0007s6-G9; Wed, 21 Jun 2023 01:47:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qBqcE-0006ad-Jb; Wed, 21 Jun 2023 01:42:51 -0400
-Received: from mail-qt1-x830.google.com ([2607:f8b0:4864:20::830])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qBqcD-00079r-2O; Wed, 21 Jun 2023 01:42:50 -0400
-Received: by mail-qt1-x830.google.com with SMTP id
- d75a77b69052e-3ff22072856so25387311cf.3; 
- Tue, 20 Jun 2023 22:42:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1687326165; x=1689918165;
- h=in-reply-to:references:message-id:to:from:subject:cc:date
- :content-transfer-encoding:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=wIMYrDqJWebxm9R1xnKcJDFQnFugU/m3Z6y9mYIO2kI=;
- b=qfnK18ehPgbVYgNGQcwoTONQtCdhdF3P70yOubkhj9bipAvs2bKN1LJqSe6CHXZaPE
- 6ZpK1zQKm442/sCPcpQUEm8TskjzfgZPNiOwV6ch6IzoBMC/RQktIgJ5YZujg0tJ51Pk
- c/pjFED6TWqsmmOVVOZHQgVLw+B1rqHTnKp/rMu9vxaeTY++Qvm0gNlAC6jcQxH8LdyG
- 6T7QQYIt8uZm06QVpav/Z51JdwKVvpJ6XarVYntZi3jDJIyz+Rm1B7arift/Rg+6cDtm
- QK0p/iXegyviE3ZUz9DdHNDGTYqsQhtiyZ8kJ/umhv2/Stl0i/QGuOOJu1jHiP+3VVaV
- J3aw==
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qBqgJ-0007rV-MB
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 01:47:06 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qBqgH-00088N-Rv
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 01:47:03 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1687326420;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=caehTjHmxAnRg06rIzwSJcSsihZqva93mQM+S7A5go4=;
+ b=Q3aHPjRvYHnsXkAuq8yQOh79orQcNlh8b6qohA14OpTSglNPTQq5sXDdewXfw25tnpi1YZ
+ IS8tkgByJwXFaoTrSgPESI9/64HKprWQPcdDs4PnTwZ1nLOhH8qPBjO9IlzItNQac9/9TC
+ YJ5jDnvxCrf1Uoanw3fwQf9/XYxIrVg=
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
+ [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-570-HqLwIsJrMyyt_W_PJvGGAw-1; Wed, 21 Jun 2023 01:46:58 -0400
+X-MC-Unique: HqLwIsJrMyyt_W_PJvGGAw-1
+Received: by mail-qk1-f199.google.com with SMTP id
+ af79cd13be357-763a15829e5so367919785a.2
+ for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 22:46:58 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687326165; x=1689918165;
- h=in-reply-to:references:message-id:to:from:subject:cc:date
- :content-transfer-encoding:mime-version:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=wIMYrDqJWebxm9R1xnKcJDFQnFugU/m3Z6y9mYIO2kI=;
- b=hric8eLNh0Pc5fF4X1AxYy3xx+HqxObpOP1Vo7fkw0/CgCl732e7hillruS74l4Xip
- tM1hd0uc3YLFtacZUendNkgpe3nGHb2kJpkBFa+cq8k3h1JAjSA/L5Bm4QK/+b4DpMEE
- wAXRTdOrnNxXEizDJoXpCTo61j5TAN18w3FG8pHE1W+ZsahaV2pGEk9VVThtdzGCOrE+
- E3s5aws038lXS+52/2Fust6pGZzSu4hfSOLru42kGkcjqv/VFI6V+Odjuo8ZgUKyFVPp
- RCu8SzpaX/ou+0DZ48nIfKpRsJN47tkJ+9lmdufI1j5nWwRRHRQXuso0CJeSWyvoW++X
- +fBg==
-X-Gm-Message-State: AC+VfDyFV3O4X8q7V1X78q6n0nNP6ozwosoOG7tRXaz4wsZy1uxvjfAh
- E9X6ExZcaTK9TKkrgY4yn8Y=
-X-Google-Smtp-Source: ACHHUZ6LZPRktygpvsLkP+qxLmhfrXO+kJ9etTHc96doDCRudfFePTb9qkkJqTyBsxwRuOojUuEDpg==
-X-Received: by 2002:ac8:5b91:0:b0:3ff:2cc2:3f54 with SMTP id
- a17-20020ac85b91000000b003ff2cc23f54mr5009933qta.9.1687326165442; 
- Tue, 20 Jun 2023 22:42:45 -0700 (PDT)
-Received: from localhost ([1.145.207.60]) by smtp.gmail.com with ESMTPSA id
- j10-20020a17090a2a8a00b0025e2358f146sm8711817pjd.13.2023.06.20.22.42.05
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 20 Jun 2023 22:42:44 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 21 Jun 2023 15:41:54 +1000
-Cc: <qemu-ppc@nongnu.org>, <qemu-devel@nongnu.org>, "Harsh Prateek Bora"
- <harshpb@linux.ibm.com>, "Daniel Henrique Barboza" <danielhb413@gmail.com>,
- "Anushree Mathur" <anushree.mathur@linux.vnet.ibm.com>, "Fabiano Rosas"
- <farosas@suse.de>
-Subject: Re: [PATCH 1/4] target/ppc: Fix instruction loading endianness in
- alignment interrupt
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Nicholas Piggin" <npiggin@gmail.com>, "BALATON Zoltan"
- <balaton@eik.bme.hu>
-Message-Id: <CTI332CVP3JK.3AG3PF04TUWGH@wheely>
-X-Mailer: aerc 0.14.0
-References: <20230620131044.169110-1-npiggin@gmail.com>
- <20230620131044.169110-2-npiggin@gmail.com>
- <393305f2-e785-c3f6-523f-6826b3511cc4@eik.bme.hu>
- <CTHMVFHEA2B4.3968LCTW14GHR@wheely>
-In-Reply-To: <CTHMVFHEA2B4.3968LCTW14GHR@wheely>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::830;
- envelope-from=npiggin@gmail.com; helo=mail-qt1-x830.google.com
+ d=1e100.net; s=20221208; t=1687326417; x=1689918417;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=caehTjHmxAnRg06rIzwSJcSsihZqva93mQM+S7A5go4=;
+ b=Pb8YxJh6TH3xrXlptYuKPu+sE5MZ+2evBALCFOxQ0bB5oi12Ej0sSUKxEpCu6EEGmj
+ FPizQzA59ZN5BNScHKjsebIZ5+pNztl3JffgUs2fS2JXOUfhPTmNXL21rlriTlYBcsSi
+ WFMmUe9DKpWTOZtdpZ8YKaDcyZA8+3XeENK9lvCx3x3oqoJUK8ooIO3JXjq83ieutsKw
+ ZJ7++1lZjpvFEDYcNNEzcQlWh68YUoCZIW4guV0XLoLl2DxGFOK/OHuRpMR5d3l4MBFH
+ 8jTURlvsB14o63kNQMEAYJTRAHdU2Q+ovgl2hzlcE002DCrM83sZrfAbRvD5bdhgWN0y
+ cZfg==
+X-Gm-Message-State: AC+VfDzNk+2AkI+s5GuDZ4kU3zWClEucsLpsP3QJcid77fnrcALt3ch8
+ EoI653UyOX2fA3w1dQxoCivk375vlQNRIyGfP0/PyEJF4gD79q2fvJN8cE2555rMnhHwIFMt7p5
+ UpvOo4cLwKZ06EmAQOMal3HjV9x6lxIk=
+X-Received: by 2002:a05:620a:674c:b0:763:af8d:9932 with SMTP id
+ rq12-20020a05620a674c00b00763af8d9932mr3504722qkn.30.1687326417695; 
+ Tue, 20 Jun 2023 22:46:57 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6gVYPXfNSDtt4D2FqBmrwOGSpmSs5qMfvVsOxHm/UyX7BYcTkX9mcAJSM0FSthRzT+iiZxd/1tkEU5dLMx/rQ=
+X-Received: by 2002:a05:620a:674c:b0:763:af8d:9932 with SMTP id
+ rq12-20020a05620a674c00b00763af8d9932mr3504706qkn.30.1687326417353; Tue, 20
+ Jun 2023 22:46:57 -0700 (PDT)
+MIME-Version: 1.0
+References: <20230620151634.21053-1-pbonzini@redhat.com>
+ <20230620151634.21053-4-pbonzini@redhat.com>
+ <c0624482-6b69-70f7-4d02-88d150822e7a@linaro.org>
+In-Reply-To: <c0624482-6b69-70f7-4d02-88d150822e7a@linaro.org>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Wed, 21 Jun 2023 07:46:47 +0200
+Message-ID: <CABgObfa-Yw2EzDpQ873Opa7DJHbDiZMXqcRSie6VC3z6M-VNgw@mail.gmail.com>
+Subject: Re: [PATCH v2 03/10] target/i386: TCG supports RDSEED
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel <qemu-devel@nongnu.org>
+Content-Type: multipart/alternative; boundary="000000000000ba17a205fe9d4b66"
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -97,60 +94,126 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed Jun 21, 2023 at 2:54 AM AEST, Nicholas Piggin wrote:
-> On Wed Jun 21, 2023 at 12:26 AM AEST, BALATON Zoltan wrote:
-> > On Tue, 20 Jun 2023, Nicholas Piggin wrote:
-> > > powerpc ifetch endianness depends on MSR[LE] so it has to byteswap
-> > > after cpu_ldl_code(). This corrects DSISR bits in alignment
-> > > interrupts when running in little endian mode.
-> > >
-> > > Reviewed-by: Fabiano Rosas <farosas@suse.de>
-> > > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> > > ---
-> > > target/ppc/excp_helper.c | 22 +++++++++++++++++++++-
-> > > 1 file changed, 21 insertions(+), 1 deletion(-)
-> > >
-> > > diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
-> > > index 12d8a7257b..a2801f6e6b 100644
-> > > --- a/target/ppc/excp_helper.c
-> > > +++ b/target/ppc/excp_helper.c
-> > > @@ -133,6 +133,26 @@ static void dump_hcall(CPUPPCState *env)
-> > >                   env->nip);
-> > > }
-> > >
-> > > +#ifdef CONFIG_TCG
-> > > +/* Return true iff byteswap is needed to load instruction */
-> > > +static inline bool insn_need_byteswap(CPUArchState *env)
-> > > +{
-> > > +    /* SYSTEM builds TARGET_BIG_ENDIAN. Need to swap when MSR[LE] is=
- set */
-> > > +    return !!(env->msr & ((target_ulong)1 << MSR_LE));
-> > > +}
+--000000000000ba17a205fe9d4b66
+Content-Type: text/plain; charset="UTF-8"
+
+Il mar 20 giu 2023, 18:24 Richard Henderson <richard.henderson@linaro.org>
+ha scritto:
+
+> On 6/20/23 17:16, Paolo Bonzini wrote:
+> > TCG implements RDSEED, and in fact uses qcrypto_random_bytes which is
+> > secure enough to match hardware behavior.  Expose it to guests.
 > >
-> > Don't other places typically use FIELD_EX64 to test for msr bits now? I=
-f=20
+> > Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+> > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> > ---
+> >   target/i386/cpu.c | 5 ++---
+> >   1 file changed, 2 insertions(+), 3 deletions(-)
+> >
+> > diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+> > index ff3dcd02dcb..fc4246223d4 100644
+> > --- a/target/i386/cpu.c
+> > +++ b/target/i386/cpu.c
+> > @@ -657,11 +657,10 @@ void x86_cpu_vendor_words2str(char *dst, uint32_t
+> vendor1,
+> >             CPUID_7_0_EBX_BMI1 | CPUID_7_0_EBX_BMI2 | CPUID_7_0_EBX_ADX
+> | \
+> >             CPUID_7_0_EBX_PCOMMIT | CPUID_7_0_EBX_CLFLUSHOPT |
+>   \
+> >             CPUID_7_0_EBX_CLWB | CPUID_7_0_EBX_MPX |
+> CPUID_7_0_EBX_FSGSBASE | \
+> > -          CPUID_7_0_EBX_ERMS | CPUID_7_0_EBX_AVX2)
+> > +          CPUID_7_0_EBX_ERMS | CPUID_7_0_EBX_AVX2 |
+> CPUID_7_0_EBX_RDSEED)
+> >             /* missing:
+> >             CPUID_7_0_EBX_HLE
+> > -          CPUID_7_0_EBX_INVPCID, CPUID_7_0_EBX_RTM,
+> > -          CPUID_7_0_EBX_RDSEED */
+> > +          CPUID_7_0_EBX_INVPCID, CPUID_7_0_EBX_RTM */
+> >   #define TCG_7_0_ECX_FEATURES (CPUID_7_0_ECX_UMIP | CPUID_7_0_ECX_PKU |
+> \
+> >             /* CPUID_7_0_ECX_OSPKE is dynamic */ \
+> >             CPUID_7_0_ECX_LA57 | CPUID_7_0_ECX_PKS | CPUID_7_0_ECX_VAES)
 >
-> Yeah I should use that, good point. There's at least another case in
-> that file that doesn't use it but I probably added that too :/
+> Still missing the check for CPUID_7_0_EBX_RDSEED at the RDSEED insn.
+>
 
-This incremental patch fixes it:
+Sorry, I 6kissed that remain. It's more of a separate patch IMO, I will add
+it.
 
-Thanks,
-Nick
+Paolo
 
----
-diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
-index ff7166adf9..cfdbeb0da5 100644
---- a/target/ppc/excp_helper.c
-+++ b/target/ppc/excp_helper.c
-@@ -138,7 +138,7 @@ static void dump_hcall(CPUPPCState *env)
- static inline bool insn_need_byteswap(CPUArchState *env)
- {
-     /* SYSTEM builds TARGET_BIG_ENDIAN. Need to swap when MSR[LE] is set *=
-/
--    return !!(env->msr & ((target_ulong)1 << MSR_LE));
-+    return FIELD_EX64(env->msr, MSR, LE);
- }
-=20
- static uint32_t ppc_ldl_code(CPUArchState *env, hwaddr addr)
+
+> r~
+>
+>
+
+--000000000000ba17a205fe9d4b66
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote"><div dir=3D"ltr" =
+class=3D"gmail_attr">Il mar 20 giu 2023, 18:24 Richard Henderson &lt;<a hre=
+f=3D"mailto:richard.henderson@linaro.org">richard.henderson@linaro.org</a>&=
+gt; ha scritto:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:=
+0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex">On 6/20/23 17:16, P=
+aolo Bonzini wrote:<br>
+&gt; TCG implements RDSEED, and in fact uses qcrypto_random_bytes which is<=
+br>
+&gt; secure enough to match hardware behavior.=C2=A0 Expose it to guests.<b=
+r>
+&gt; <br>
+&gt; Reviewed-by: Richard Henderson &lt;<a href=3D"mailto:richard.henderson=
+@linaro.org" target=3D"_blank" rel=3D"noreferrer">richard.henderson@linaro.=
+org</a>&gt;<br>
+&gt; Signed-off-by: Paolo Bonzini &lt;<a href=3D"mailto:pbonzini@redhat.com=
+" target=3D"_blank" rel=3D"noreferrer">pbonzini@redhat.com</a>&gt;<br>
+&gt; ---<br>
+&gt;=C2=A0 =C2=A0target/i386/cpu.c | 5 ++---<br>
+&gt;=C2=A0 =C2=A01 file changed, 2 insertions(+), 3 deletions(-)<br>
+&gt; <br>
+&gt; diff --git a/target/i386/cpu.c b/target/i386/cpu.c<br>
+&gt; index ff3dcd02dcb..fc4246223d4 100644<br>
+&gt; --- a/target/i386/cpu.c<br>
+&gt; +++ b/target/i386/cpu.c<br>
+&gt; @@ -657,11 +657,10 @@ void x86_cpu_vendor_words2str(char *dst, uint32_=
+t vendor1,<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0CPUID_7_0_EBX_BMI1 | CP=
+UID_7_0_EBX_BMI2 | CPUID_7_0_EBX_ADX | \<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0CPUID_7_0_EBX_PCOMMIT |=
+ CPUID_7_0_EBX_CLFLUSHOPT |=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 \<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0CPUID_7_0_EBX_CLWB | CP=
+UID_7_0_EBX_MPX | CPUID_7_0_EBX_FSGSBASE | \<br>
+&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 CPUID_7_0_EBX_ERMS | CPUID_7_0_EBX=
+_AVX2)<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 CPUID_7_0_EBX_ERMS | CPUID_7_0_EBX=
+_AVX2 | CPUID_7_0_EBX_RDSEED)<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0/* missing:<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0CPUID_7_0_EBX_HLE<br>
+&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 CPUID_7_0_EBX_INVPCID, CPUID_7_0_E=
+BX_RTM,<br>
+&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 CPUID_7_0_EBX_RDSEED */<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 CPUID_7_0_EBX_INVPCID, CPUID_7_0_E=
+BX_RTM */<br>
+&gt;=C2=A0 =C2=A0#define TCG_7_0_ECX_FEATURES (CPUID_7_0_ECX_UMIP | CPUID_7=
+_0_ECX_PKU | \<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0/* CPUID_7_0_ECX_OSPKE =
+is dynamic */ \<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0CPUID_7_0_ECX_LA57 | CP=
+UID_7_0_ECX_PKS | CPUID_7_0_ECX_VAES)<br>
+<br>
+Still missing the check for CPUID_7_0_EBX_RDSEED at the RDSEED insn.<br></b=
+lockquote></div></div><div dir=3D"auto"><br></div><div dir=3D"auto">Sorry, =
+I 6kissed that remain. It&#39;s more of a separate patch IMO, I will add it=
+.</div><div dir=3D"auto"><br></div><div dir=3D"auto">Paolo</div><div dir=3D=
+"auto"><br></div><div dir=3D"auto"><div class=3D"gmail_quote"><blockquote c=
+lass=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;=
+padding-left:1ex">
+<br>
+r~<br>
+<br>
+</blockquote></div></div></div>
+
+--000000000000ba17a205fe9d4b66--
+
 
