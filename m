@@ -2,54 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4A9773788C
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 03:05:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D0FEE737888
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 03:05:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBmGI-0007pj-8Q; Tue, 20 Jun 2023 21:03:54 -0400
+	id 1qBmGJ-0007qU-HB; Tue, 20 Jun 2023 21:03:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dongwon.kim@intel.com>)
- id 1qBmGG-0007p6-9V
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 21:03:52 -0400
+ id 1qBmGH-0007pU-4A
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 21:03:53 -0400
 Received: from mga11.intel.com ([192.55.52.93])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dongwon.kim@intel.com>)
- id 1qBmGE-0001Gy-Iv
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 21:03:51 -0400
+ id 1qBmGF-0001GW-CN
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 21:03:52 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1687309430; x=1718845430;
+ t=1687309431; x=1718845431;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=dlMd5Y05RlitQ/LDn4QHI3iY/Scnnj1sren1XCBp1Gw=;
- b=Wb3w+EvlgTBNjKv+xhkG/232K0Wb5rrpEpyErmB3+eKadw/74Ga48fCe
- AaWORwY3ifNNLkGqMGwDrcWt+SlYHJu9qWTRZY67z7KagJIbTrHjjHFiO
- mc/5cW6SY/fNhSg9xg5HA5xhOzkIXvVcWwzeNd961iwV43m9IxkNPCV4m
- Ru/972KzgF6NA4HeSwF2uQbV9hFLJRiZ9AICqk1eFjQ1TcS905TQGtjK5
- U0u/kxXyIhBOy582ree+DeSi8p3i/rgFIqnyvyeVBzwX5aP1CrLFJkcF0
- n7+pcBvhLPVyFXKI6G3tQm7ku1rxWA066AfRG62PnZt5WA9clZktmsK4u g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10747"; a="357522840"
-X-IronPort-AV: E=Sophos;i="6.00,258,1681196400"; d="scan'208";a="357522840"
+ bh=NADUm1702aVn1LWj7KvqXMVwTggCDu8sw+9YZB3ZF08=;
+ b=U8uObmwoVfgkknpcZ07grSTyfEPzQ3czWXOXdoUkleVb//7e8SmMLmBo
+ G1eDgZ+wsHqDEzjRTvvteCC+/NDrAsBMnpbZPg2ixUBgaGKuZZNR/hons
+ MH/ze9EYTDKDC3LipbJSj9HhGG7NBeR/oz6a6iyFVZxSYwPVjpDc0BeBY
+ AlDjC6fwc1td587zIK17IPW6Ll48zd96+hYNdjH4qirFUUaJek+VOcGn/
+ /1Va6HVK9ni0gKlghmwtiyFJfVISz45MH708bz0QlHv38dBYcn4kafHxL
+ R9zXaQSuzlkmPMLLaMhVwcdr+ImSCX6t3aGncgCqRwgkaPRXNF3i+FRiI g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10747"; a="357522845"
+X-IronPort-AV: E=Sophos;i="6.00,258,1681196400"; d="scan'208";a="357522845"
 Received: from orsmga004.jf.intel.com ([10.7.209.38])
  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  20 Jun 2023 18:03:45 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10747"; a="838429580"
-X-IronPort-AV: E=Sophos;i="6.00,258,1681196400"; d="scan'208";a="838429580"
+X-IronPort-AV: E=McAfee;i="6600,9927,10747"; a="838429584"
+X-IronPort-AV: E=Sophos;i="6.00,258,1681196400"; d="scan'208";a="838429584"
 Received: from dongwonk-z390-aorus-ultra-intel-gfx.fm.intel.com
  ([10.105.129.122])
- by orsmga004.jf.intel.com with ESMTP; 20 Jun 2023 18:03:44 -0700
+ by orsmga004.jf.intel.com with ESMTP; 20 Jun 2023 18:03:45 -0700
 From: Dongwon Kim <dongwon.kim@intel.com>
 To: qemu-devel@nongnu.org
 Cc: kraxel@redhat.com, berrange@redhat.com, armbru@redhat.com,
  philmd@linaro.org, marcandre.lureau@redhat.com, vivek.kasireddy@intel.com,
  Dongwon Kim <dongwon.kim@intel.com>
-Subject: [RFC PATCH 8/9] ui/gtk: skip drawing if any of ctx/surface/image
- don't exist
-Date: Tue, 20 Jun 2023 17:43:54 -0700
-Message-Id: <20230621004355.19920-9-dongwon.kim@intel.com>
+Subject: [RFC PATCH 9/9] ui/gtk: skip refresh/rendering if VC is invisible
+Date: Tue, 20 Jun 2023 17:43:55 -0700
+Message-Id: <20230621004355.19920-10-dongwon.kim@intel.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20230621004355.19920-1-dongwon.kim@intel.com>
 References: <20230621004355.19920-1-dongwon.kim@intel.com>
@@ -80,8 +79,7 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Rendering of scanout could be skipped if ctx/surface/image don't
-exist due to an asynchronous event such as monitors being disconnected.
+Skip any drawing activities if VC is invisible because it can't be finished.
 
 Cc: Gerd Hoffmann <kraxel@redhat.com>
 Cc: Daniel P. Berrangé <berrange@redhat.com>
@@ -91,25 +89,56 @@ Cc: Marc-André Lureau <marcandre.lureau@redhat.com>
 Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>
 Signed-off-by: Dongwon Kim <dongwon.kim@intel.com>
 ---
- ui/gtk-egl.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ ui/gtk-egl.c     | 4 ++++
+ ui/gtk-gl-area.c | 4 ++++
+ ui/gtk.c         | 4 ++++
+ 3 files changed, 12 insertions(+)
 
 diff --git a/ui/gtk-egl.c b/ui/gtk-egl.c
-index aa22ebbd98..8eae2b4b1f 100644
+index 8eae2b4b1f..63bfad1f06 100644
 --- a/ui/gtk-egl.c
 +++ b/ui/gtk-egl.c
-@@ -106,6 +106,11 @@ void gd_egl_draw(VirtualConsole *vc)
-         if (!vc->gfx.ds) {
-             return;
-         }
+@@ -148,6 +148,10 @@ void gd_egl_refresh(DisplayChangeListener *dcl)
+     gd_update_monitor_refresh_rate(
+             vc, vc->window ? vc->window : vc->gfx.drawing_area);
+ 
++    if (!vc->gfx.visible) {
++        return;
++    }
 +
-+        if (!vc->gfx.esurface || !vc->gfx.ectx || !vc->gfx.ds->image) {
-+            return;
+     if (!vc->gfx.esurface) {
+         gd_egl_init(vc);
+         if (!vc->gfx.esurface) {
+diff --git a/ui/gtk-gl-area.c b/ui/gtk-gl-area.c
+index 8228cc9f3f..8d01addb3b 100644
+--- a/ui/gtk-gl-area.c
++++ b/ui/gtk-gl-area.c
+@@ -123,6 +123,10 @@ void gd_gl_area_refresh(DisplayChangeListener *dcl)
+ 
+     gd_update_monitor_refresh_rate(vc, vc->window ? vc->window : vc->gfx.drawing_area);
+ 
++    if (!vc->gfx.visible) {
++        return;
++    }
++
+     if (!vc->gfx.gls) {
+         if (!gtk_widget_get_realized(vc->gfx.drawing_area)) {
+             return;
+diff --git a/ui/gtk.c b/ui/gtk.c
+index e4ef1f7173..0bc35b64e0 100644
+--- a/ui/gtk.c
++++ b/ui/gtk.c
+@@ -847,6 +847,10 @@ static gboolean gd_draw_event(GtkWidget *widget, cairo_t *cr, void *opaque)
+ 
+ #if defined(CONFIG_OPENGL)
+     if (vc->gfx.gls) {
++        if (!vc->gfx.visible) {
++            return TRUE;
 +        }
 +
-         eglMakeCurrent(qemu_egl_display, vc->gfx.esurface,
-                        vc->gfx.esurface, vc->gfx.ectx);
- 
+         if (gtk_use_gl_area) {
+             /* invoke render callback please */
+             return FALSE;
 -- 
 2.34.1
 
