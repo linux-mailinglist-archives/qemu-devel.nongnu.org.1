@@ -2,39 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 181DF738A96
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 18:15:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1B0E738AA2
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 18:15:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qC0Tm-0004hw-6u; Wed, 21 Jun 2023 12:14:46 -0400
+	id 1qC0Tp-0004iT-7V; Wed, 21 Jun 2023 12:14:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1qC0Tk-0004hk-EM
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 12:14:44 -0400
-Received: from shirlock.uni-paderborn.de ([2001:638:502:c003::15])
+ id 1qC0Tn-0004iI-Tz
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 12:14:47 -0400
+Received: from hoth.uni-paderborn.de ([2001:638:502:c003::19])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1qC0Th-0007Oo-Jj
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 12:14:44 -0400
+ id 1qC0Tm-0007Pv-9g
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 12:14:47 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=mail.uni-paderborn.de; s=20170601; h=Content-Transfer-Encoding:MIME-Version
  :References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=TLJ1eYW1E488kTVathjDHesa5us6WxOTocYzbPayHgI=; b=ZSrgNHT8Kb2vzCTCdgm2Sja/Ag
- NVa6mOnU3YT04p65jSRqaw463gFS5NEybDGNZbLqLpUyM3EfKC25YbhWfF/8ZK5qvfg5Xe1/KSwOF
- B+YflUf8rXIWpQ9xwahVNOZyyZhR/QPB5yLxnvO1cHIZa7eQYBRi7jADw+YcEwhGp4qU=;
+ bh=MfJQ4pjn8nMrlj8wMLdKfQZvbpl9uq5ljQPX8RNjzb0=; b=s1LMZucPMtTv6HZI+bvJZaapas
+ SxGJrl2pW8wkdsG+/z1/ixPMElzkdCv8IDetly2lvBvL068apbcwJKyFEF1Nzeqa+puZEL6SdSqSe
+ DG/gEYsmGBBvPhpbfTNVn+oU960j2Vadkttr8QZ9SJqHzXL3MDebSzVkfKiC1WWcMrog=;
 X-Envelope-From: <kbastian@mail.uni-paderborn.de>
 From: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
 To: qemu-devel@nongnu.org
 Cc: kbastian@mail.uni-paderborn.de,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 02/20] target/tricore: Add popcnt.w insn
-Date: Wed, 21 Jun 2023 18:14:04 +0200
-Message-Id: <20230621161422.1652151-3-kbastian@mail.uni-paderborn.de>
+Subject: [PULL 03/20] target/tricore: Add LHA insn
+Date: Wed, 21 Jun 2023 18:14:05 +0200
+Message-Id: <20230621161422.1652151-4-kbastian@mail.uni-paderborn.de>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230621161422.1652151-1-kbastian@mail.uni-paderborn.de>
 References: <20230621161422.1652151-1-kbastian@mail.uni-paderborn.de>
@@ -43,19 +43,18 @@ Content-Transfer-Encoding: 8bit
 X-PMX-Version: 6.4.9.2830568, Antispam-Engine: 2.7.2.2107409,
  Antispam-Data: 2023.6.21.160616, AntiVirus-Engine: 6.0.0,
  AntiVirus-Data: 2023.6.6.600001
-X-Sophos-SenderHistory: ip=79.202.219.6, fs=1208970, da=174973143, mc=145, sc=0,
- hc=145, sp=0, fso=1208970, re=0, sd=0, hd=0
+X-Sophos-SenderHistory: ip=79.202.219.6, fs=1208975, da=174973148, mc=147, sc=0,
+ hc=147, sp=0, fso=1208975, re=0, sd=0, hd=0
 X-IMT-Source: Intern
 X-IMT-Spam-Score: 0.0 ()
 X-IMT-Authenticated-Sender: uid=kbastian,ou=People,o=upb,c=de
-Received-SPF: pass client-ip=2001:638:502:c003::15;
- envelope-from=kbastian@mail.uni-paderborn.de; helo=shirlock.uni-paderborn.de
-X-Spam_score_int: -42
-X-Spam_score: -4.3
-X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=2001:638:502:c003::19;
+ envelope-from=kbastian@mail.uni-paderborn.de; helo=hoth.uni-paderborn.de
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -76,42 +75,73 @@ reported in https://gitlab.com/qemu-project/qemu/-/issues/1667
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
-Message-Id: <20230614100039.1337971-3-kbastian@mail.uni-paderborn.de>
+Message-Id: <20230614100039.1337971-4-kbastian@mail.uni-paderborn.de>
 ---
- target/tricore/translate.c       | 7 +++++++
- target/tricore/tricore-opcodes.h | 1 +
- 2 files changed, 8 insertions(+)
+ target/tricore/translate.c       | 14 ++++++++++++--
+ target/tricore/tricore-opcodes.h |  9 ++++++++-
+ 2 files changed, 20 insertions(+), 3 deletions(-)
 
 diff --git a/target/tricore/translate.c b/target/tricore/translate.c
-index cd33a1dcdd..26b284bcec 100644
+index 26b284bcec..898557d22a 100644
 --- a/target/tricore/translate.c
 +++ b/target/tricore/translate.c
-@@ -6197,6 +6197,13 @@ static void decode_rr_divide(DisasContext *ctx)
-             generate_trap(ctx, TRAPC_INSN_ERR, TIN2_IOPC);
-         }
+@@ -7931,7 +7931,7 @@ static void decode_sys_interrupts(DisasContext *ctx)
+ 
+ static void decode_32Bit_opc(DisasContext *ctx)
+ {
+-    int op1;
++    int op1, op2;
+     int32_t r1, r2, r3;
+     int32_t address, const16;
+     int8_t b, const4;
+@@ -7982,9 +7982,19 @@ static void decode_32Bit_opc(DisasContext *ctx)
+         tcg_gen_qemu_ld_tl(cpu_gpr_d[r1], temp, ctx->mem_idx, MO_LEUW);
+         tcg_gen_shli_tl(cpu_gpr_d[r1], cpu_gpr_d[r1], 16);
          break;
-+    case OPC2_32_RR_POPCNT_W:
+-    case OPC1_32_ABS_LEA:
++    case OPCM_32_ABS_LEA_LHA:
+         address = MASK_OP_ABS_OFF18(ctx->opcode);
+         r1 = MASK_OP_ABS_S1D(ctx->opcode);
++
 +        if (has_feature(ctx, TRICORE_FEATURE_162)) {
-+            tcg_gen_ctpop_tl(cpu_gpr_d[r3], cpu_gpr_d[r1]);
-+        } else {
-+            generate_trap(ctx, TRAPC_INSN_ERR, TIN2_IOPC);
++            op2 = MASK_OP_ABS_OP2(ctx->opcode);
++            if (op2 == OPC2_32_ABS_LHA) {
++                tcg_gen_movi_tl(cpu_gpr_a[r1], address << 14);
++                break;
++            }
++            /* otherwise translate regular LEA */
 +        }
-+        break;
-     case OPC2_32_RR_DIV:
-         if (has_feature(ctx, TRICORE_FEATURE_16)) {
-             GEN_HELPER_RR(divide, cpu_gpr_d[r3], cpu_gpr_d[r3+1], cpu_gpr_d[r1],
++
+         tcg_gen_movi_tl(cpu_gpr_a[r1], EA_ABS_FORMAT(address));
+         break;
+ /* ABSB-format */
 diff --git a/target/tricore/tricore-opcodes.h b/target/tricore/tricore-opcodes.h
-index f7135f183d..59aa39a7a5 100644
+index 59aa39a7a5..9fab4bd75c 100644
 --- a/target/tricore/tricore-opcodes.h
 +++ b/target/tricore/tricore-opcodes.h
-@@ -1133,6 +1133,7 @@ enum {
-     OPC2_32_RR_PARITY                            = 0x02,
-     OPC2_32_RR_UNPACK                            = 0x08,
-     OPC2_32_RR_CRC32                             = 0x03,
-+    OPC2_32_RR_POPCNT_W                          = 0x22, /* 1.6.2 only */
-     OPC2_32_RR_DIV                               = 0x20,
-     OPC2_32_RR_DIV_U                             = 0x21,
-     OPC2_32_RR_MUL_F                             = 0x04,
+@@ -430,7 +430,7 @@ enum {
+     OPCM_32_ABS_STOREB_H                             = 0x25,
+     OPC1_32_ABS_STOREQ                               = 0x65,
+     OPC1_32_ABS_LD_Q                                 = 0x45,
+-    OPC1_32_ABS_LEA                                  = 0xc5,
++    OPCM_32_ABS_LEA_LHA                              = 0xc5,
+ /* ABSB Format */
+     OPC1_32_ABSB_ST_T                                = 0xd5,
+ /* B Format */
+@@ -592,6 +592,13 @@ enum {
+     OPC2_32_ABS_ST_B                             = 0x00,
+     OPC2_32_ABS_ST_H                             = 0x02,
+ };
++
++/* OPCM_32_ABS_LEA_LHA */
++enum {
++    OPC2_32_ABS_LEA                              = 0x00,
++    OPC2_32_ABS_LHA                              = 0x01,
++};
++
+ /*
+  * Bit Format
+  */
 -- 
 2.40.1
 
