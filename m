@@ -2,59 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 589167391BD
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 23:40:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE3C87391CD
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 23:53:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qC5YE-0000QB-Dy; Wed, 21 Jun 2023 17:39:42 -0400
+	id 1qC5kZ-0003Tz-Cw; Wed, 21 Jun 2023 17:52:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dongwon.kim@intel.com>)
- id 1qC5YA-0000Pf-Qp
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 17:39:39 -0400
-Received: from mga11.intel.com ([192.55.52.93])
+ id 1qC5kX-0003TK-2d
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 17:52:25 -0400
+Received: from mga04.intel.com ([192.55.52.120])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dongwon.kim@intel.com>)
- id 1qC5Y9-00065j-0D
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 17:39:38 -0400
+ id 1qC5kU-0004Dd-Sc
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 17:52:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1687383577; x=1718919577;
+ t=1687384342; x=1718920342;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=p9BLet2xnL8h3a+xaxicCdxCNPe/jFBenIJbP6jnUR4=;
- b=mbXYH4LheL/gIFke0ML6c+x8KRJTxbzcAgx91TkThsOXZ0SeJeG7PotX
- MCe+TIZ83Vyq0y0iMxkFAIb4lmmZMRtpUmr0shkQDVmXEmy27jJ5RG4yY
- VR30AHMZ1bbx9nRRicMpI2Ima25SwFAA+F3XjH8IjL2sNAMZXR5+DFmRi
- 79xmFoOTIQK0fhaN/vLh4GJLECP/7E/nedh+L6fVpjhkFiZLiWH3ETW+f
- aNh5KXeT41wwj1jfNEgaELbdac4fMyKZiaieekyN3A/w8sJhPDlgTlQjc
- To4bX+1w27tQsPUerpM/vcIyDm8USQUU3jTKAWO9LXVyzfaKcnIqd1Gd5 Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10748"; a="357808665"
-X-IronPort-AV: E=Sophos;i="6.00,261,1681196400"; d="scan'208";a="357808665"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
- by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Jun 2023 14:39:05 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10748"; a="784665841"
-X-IronPort-AV: E=Sophos;i="6.00,261,1681196400"; d="scan'208";a="784665841"
+ bh=5aO41xUSSwh5cdJC98draqCfco7vLE8yPbubUixOYi8=;
+ b=TuMy1dwP1qiE968B4VdR8Adx3llun1/Ozs/Me1es6hLGhcHwbopSEKl+
+ SQvje+9X8pl00KUSyz9VchMY0bE+hpIp40dnHMg4dFuGKZl+UO9+sFcWZ
+ i9/8DP3B5OTi3sR1c32xrQJPvR1w8FiOotqpZ/aj4oT7khTqZbBtiHhyo
+ 7nilbJ16KpBJfZpek5JiStlSCB21kRcn6J4RsjtzX3iBrMC5SiH5PVILD
+ cG0i5NEZI3IKsmmpRzOPzhnrVHq66wICuLOqEyRab8U+nrfDr220cQBjN
+ D2N52Mbl4//WAtIJ4FGwmxhz6od4GXstg2hw2adbuKnAhutxK1YJiJBM7 Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10748"; a="359183975"
+X-IronPort-AV: E=Sophos;i="6.00,261,1681196400"; d="scan'208";a="359183975"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+ by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Jun 2023 14:51:28 -0700
+X-IronPort-AV: E=McAfee;i="6600,9927,10748"; a="748895341"
+X-IronPort-AV: E=Sophos;i="6.00,261,1681196400"; d="scan'208";a="748895341"
 Received: from dongwonk-z390-aorus-ultra-intel-gfx.fm.intel.com
  ([10.105.129.122])
- by fmsmga004.fm.intel.com with ESMTP; 21 Jun 2023 14:39:04 -0700
+ by orsmga001.jf.intel.com with ESMTP; 21 Jun 2023 14:51:27 -0700
 From: Dongwon Kim <dongwon.kim@intel.com>
 To: qemu-devel@nongnu.org
 Cc: Dongwon Kim <dongwon.kim@intel.com>, Gerd Hoffmann <kraxel@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Vivek Kasireddy <vivek.kasireddy@intel.com>
-Subject: [PATCH] virtio-gpu: OUT_OF_MEMORY if failing to create udmabuf
-Date: Wed, 21 Jun 2023 14:19:31 -0700
-Message-Id: <20230621211931.29448-1-dongwon.kim@intel.com>
+Subject: [PATCH] ui/gtk: set the area of the scanout texture correctly
+Date: Wed, 21 Jun 2023 14:31:50 -0700
+Message-Id: <20230621213150.29573-1-dongwon.kim@intel.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=192.55.52.93; envelope-from=dongwon.kim@intel.com;
- helo=mga11.intel.com
+Received-SPF: pass client-ip=192.55.52.120; envelope-from=dongwon.kim@intel.com;
+ helo=mga04.intel.com
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -77,34 +76,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Respond with VIRTIO_GPU_RESP_ERR_OUT_OF_MEMORY if it fails to create
-an udmabuf for the blob resource.
+x and y offsets and width and height of the scanout texture
+is not correctly configured in case guest scanout frame is
+dmabuf.
 
 Cc: Gerd Hoffmann <kraxel@redhat.com>
 Cc: Marc-André Lureau <marcandre.lureau@redhat.com>
 Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>
 Signed-off-by: Dongwon Kim <dongwon.kim@intel.com>
 ---
- hw/display/virtio-gpu.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ ui/gtk-egl.c     | 3 ++-
+ ui/gtk-gl-area.c | 3 ++-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
-index 66cddd94d9..efe66ca7a3 100644
---- a/hw/display/virtio-gpu.c
-+++ b/hw/display/virtio-gpu.c
-@@ -635,9 +635,11 @@ static void virtio_gpu_do_set_scanout(VirtIOGPU *g,
-             if (!virtio_gpu_update_dmabuf(g, scanout_id, res, fb, r)) {
-                 virtio_gpu_update_scanout(g, scanout_id, res, r);
-                 return;
-+            } else {
-+                *error = VIRTIO_GPU_RESP_ERR_OUT_OF_MEMORY;
-+                return;
-             }
-         }
--
-         data = res->blob;
-     } else {
-         data = (uint8_t *)pixman_image_get_data(res->image);
+diff --git a/ui/gtk-egl.c b/ui/gtk-egl.c
+index 19130041bc..e99e3b0d8c 100644
+--- a/ui/gtk-egl.c
++++ b/ui/gtk-egl.c
+@@ -257,7 +257,8 @@ void gd_egl_scanout_dmabuf(DisplayChangeListener *dcl,
+ 
+     gd_egl_scanout_texture(dcl, dmabuf->texture,
+                            dmabuf->y0_top, dmabuf->width, dmabuf->height,
+-                           0, 0, dmabuf->width, dmabuf->height);
++                           dmabuf->x, dmabuf->y, dmabuf->scanout_width,
++                           dmabuf->scanout_height);
+ 
+     if (dmabuf->allow_fences) {
+         vc->gfx.guest_fb.dmabuf = dmabuf;
+diff --git a/ui/gtk-gl-area.c b/ui/gtk-gl-area.c
+index c384a1516b..1605818bd1 100644
+--- a/ui/gtk-gl-area.c
++++ b/ui/gtk-gl-area.c
+@@ -299,7 +299,8 @@ void gd_gl_area_scanout_dmabuf(DisplayChangeListener *dcl,
+ 
+     gd_gl_area_scanout_texture(dcl, dmabuf->texture,
+                                dmabuf->y0_top, dmabuf->width, dmabuf->height,
+-                               0, 0, dmabuf->width, dmabuf->height);
++                               dmabuf->x, dmabuf->y, dmabuf->scanout_width,
++                               dmabuf->scanout_height);
+ 
+     if (dmabuf->allow_fences) {
+         vc->gfx.guest_fb.dmabuf = dmabuf;
 -- 
 2.34.1
 
