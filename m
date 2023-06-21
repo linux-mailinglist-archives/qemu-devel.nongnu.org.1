@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CF727385EC
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 15:58:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 005CF7385EB
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 15:58:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qByKR-0004Dt-Rs; Wed, 21 Jun 2023 09:56:59 -0400
+	id 1qByKU-0004Fq-W5; Wed, 21 Jun 2023 09:57:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1qByKN-0004D0-8I
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 09:56:55 -0400
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1qByKS-0004F3-IV
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 09:57:00 -0400
 Received: from rev.ng ([5.9.113.41])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1qByKL-00058A-O1
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 09:56:55 -0400
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1qByKR-00058a-3r
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 09:57:00 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
  s=dkim; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
  Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive;
- bh=KL0HEHcxOGOGPy+Xruv9K7Sbk2AToedwhGYR3JyjQ9o=; b=hPDlPkNXlkQM7XniDlhK7iqg5N
- YggzPEBf/yiMTdaI2noKCNW/IHw9aMpvssh3cW2Mf50xLb1QmdH1M3jF2VhEQ+8Der3trj1wkwZXR
- ULzF8ilUsMh/Q9gR01TUqhO3lqboFwOH1PWstUvAd2perVBZlaCh+IqHdoXDOPd84akw=;
+ bh=pVV1aw3UHD3/IfZyb2RafLM8Bplxmcp0hDTKJwwNfUA=; b=w18JMse+STyYp1Oz4rrVuyZ3xh
+ sv+HXzM2bkgcmGY6AJA3SgIyDbuEMcWPdxG/m7Ukk/+HteLFG6TVaz99OjXhHvaC5H0GGd9dfZcP6
+ pwLCcp2R3fC5wUHQSu/KWYglqrrTZ+/w37+n3lO8Fr1GHjI8uQ8zTw9+WImXoemhbe9I=;
 To: qemu-devel@nongnu.org
 Cc: ale@rev.ng, richard.henderson@linaro.org, pbonzini@redhat.com,
  eduardo@habkost.net, philmd@linaro.org, marcel.apfelbaum@gmail.com,
  wangyanan55@huawei.com
-Subject: [PATCH v3 09/12] accel/tcg: Replace target_ulong with vaddr in
- *_mmu_lookup()
-Date: Wed, 21 Jun 2023 15:56:30 +0200
-Message-ID: <20230621135633.1649-10-anjo@rev.ng>
+Subject: [PATCH v3 10/12] accel/tcg: Replace target_ulong with vaddr in
+ translator_*()
+Date: Wed, 21 Jun 2023 15:56:31 +0200
+Message-ID: <20230621135633.1649-11-anjo@rev.ng>
 In-Reply-To: <20230621135633.1649-1-anjo@rev.ng>
 References: <20230621135633.1649-1-anjo@rev.ng>
 MIME-Version: 1.0
@@ -61,63 +61,77 @@ From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Update atomic_mmu_lookup() and cpu_mmu_lookup() to take the guest
-virtual address as a vaddr instead of a target_ulong.
+Use vaddr for guest virtual address in translator_use_goto_tb() and
+translator_loop().
 
 Signed-off-by: Anton Johansson <anjo@rev.ng>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- accel/tcg/cputlb.c    | 6 +++---
- accel/tcg/user-exec.c | 6 +++---
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ accel/tcg/translator.c    | 10 +++++-----
+ include/exec/translator.h |  6 +++---
+ 2 files changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
-index d873e58a5d..e02cfc550e 100644
---- a/accel/tcg/cputlb.c
-+++ b/accel/tcg/cputlb.c
-@@ -1898,15 +1898,15 @@ static bool mmu_lookup(CPUArchState *env, vaddr addr, MemOpIdx oi,
-  * Probe for an atomic operation.  Do not allow unaligned operations,
-  * or io operations to proceed.  Return the host address.
+diff --git a/accel/tcg/translator.c b/accel/tcg/translator.c
+index 918a455e73..0fd9efceba 100644
+--- a/accel/tcg/translator.c
++++ b/accel/tcg/translator.c
+@@ -117,7 +117,7 @@ static void gen_tb_end(const TranslationBlock *tb, uint32_t cflags,
+     }
+ }
+ 
+-bool translator_use_goto_tb(DisasContextBase *db, target_ulong dest)
++bool translator_use_goto_tb(DisasContextBase *db, vaddr dest)
+ {
+     /* Suppress goto_tb if requested. */
+     if (tb_cflags(db->tb) & CF_NO_GOTO_TB) {
+@@ -129,8 +129,8 @@ bool translator_use_goto_tb(DisasContextBase *db, target_ulong dest)
+ }
+ 
+ void translator_loop(CPUState *cpu, TranslationBlock *tb, int *max_insns,
+-                     target_ulong pc, void *host_pc,
+-                     const TranslatorOps *ops, DisasContextBase *db)
++                     vaddr pc, void *host_pc, const TranslatorOps *ops,
++                     DisasContextBase *db)
+ {
+     uint32_t cflags = tb_cflags(tb);
+     TCGOp *icount_start_insn;
+@@ -235,10 +235,10 @@ void translator_loop(CPUState *cpu, TranslationBlock *tb, int *max_insns,
+ }
+ 
+ static void *translator_access(CPUArchState *env, DisasContextBase *db,
+-                               target_ulong pc, size_t len)
++                               vaddr pc, size_t len)
+ {
+     void *host;
+-    target_ulong base, end;
++    vaddr base, end;
+     TranslationBlock *tb;
+ 
+     tb = db->tb;
+diff --git a/include/exec/translator.h b/include/exec/translator.h
+index 224ae14aa7..a53d3243d4 100644
+--- a/include/exec/translator.h
++++ b/include/exec/translator.h
+@@ -142,8 +142,8 @@ typedef struct TranslatorOps {
+  * - When too many instructions have been translated.
   */
--static void *atomic_mmu_lookup(CPUArchState *env, target_ulong addr,
--                               MemOpIdx oi, int size, uintptr_t retaddr)
-+static void *atomic_mmu_lookup(CPUArchState *env, vaddr addr, MemOpIdx oi,
-+                               int size, uintptr_t retaddr)
- {
-     uintptr_t mmu_idx = get_mmuidx(oi);
-     MemOp mop = get_memop(oi);
-     int a_bits = get_alignment_bits(mop);
-     uintptr_t index;
-     CPUTLBEntry *tlbe;
--    target_ulong tlb_addr;
-+    vaddr tlb_addr;
-     void *hostaddr;
-     CPUTLBEntryFull *full;
+ void translator_loop(CPUState *cpu, TranslationBlock *tb, int *max_insns,
+-                     target_ulong pc, void *host_pc,
+-                     const TranslatorOps *ops, DisasContextBase *db);
++                     vaddr pc, void *host_pc, const TranslatorOps *ops,
++                     DisasContextBase *db);
  
-diff --git a/accel/tcg/user-exec.c b/accel/tcg/user-exec.c
-index d71e26a7b5..f8b16d6ab8 100644
---- a/accel/tcg/user-exec.c
-+++ b/accel/tcg/user-exec.c
-@@ -889,7 +889,7 @@ void page_reset_target_data(target_ulong start, target_ulong last) { }
- 
- /* The softmmu versions of these helpers are in cputlb.c.  */
- 
--static void *cpu_mmu_lookup(CPUArchState *env, abi_ptr addr,
-+static void *cpu_mmu_lookup(CPUArchState *env, vaddr addr,
-                             MemOp mop, uintptr_t ra, MMUAccessType type)
- {
-     int a_bits = get_alignment_bits(mop);
-@@ -1324,8 +1324,8 @@ uint64_t cpu_ldq_code_mmu(CPUArchState *env, abi_ptr addr,
- /*
-  * Do not allow unaligned operations to proceed.  Return the host address.
+ /**
+  * translator_use_goto_tb
+@@ -153,7 +153,7 @@ void translator_loop(CPUState *cpu, TranslationBlock *tb, int *max_insns,
+  * Return true if goto_tb is allowed between the current TB
+  * and the destination PC.
   */
--static void *atomic_mmu_lookup(CPUArchState *env, target_ulong addr,
--                               MemOpIdx oi, int size, uintptr_t retaddr)
-+static void *atomic_mmu_lookup(CPUArchState *env, vaddr addr, MemOpIdx oi,
-+                               int size, uintptr_t retaddr)
- {
-     MemOp mop = get_memop(oi);
-     int a_bits = get_alignment_bits(mop);
+-bool translator_use_goto_tb(DisasContextBase *db, target_ulong dest);
++bool translator_use_goto_tb(DisasContextBase *db, vaddr dest);
+ 
+ /**
+  * translator_io_start
 -- 
 2.41.0
 
