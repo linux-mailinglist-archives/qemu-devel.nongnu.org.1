@@ -2,53 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FD60738B6E
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 18:35:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 256AE738B73
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 18:36:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qC0mp-00005h-4s; Wed, 21 Jun 2023 12:34:27 -0400
+	id 1qC0o4-0000ov-2X; Wed, 21 Jun 2023 12:35:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qC0mj-0008Sz-0M
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 12:34:21 -0400
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qC0mf-0000kE-A7
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 12:34:20 -0400
-Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id 82F8D748A61;
- Wed, 21 Jun 2023 18:34:05 +0200 (CEST)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 253AF748A56; Wed, 21 Jun 2023 18:34:05 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 22B56748A60;
- Wed, 21 Jun 2023 18:34:05 +0200 (CEST)
-Date: Wed, 21 Jun 2023 18:34:05 +0200 (CEST)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-cc: laurent@vivier.eu, qemu-devel@nongnu.org
-Subject: Re: [PATCH v4 07/24] q800: move GLUE device into separate q800-glue.c
- file
-In-Reply-To: <df4b5287-4053-d875-9f79-d8ae536181d7@eik.bme.hu>
-Message-ID: <cc69d8cc-ec7d-1ef6-63c4-d8be0833f1fb@eik.bme.hu>
-References: <20230621085353.113233-1-mark.cave-ayland@ilande.co.uk>
- <20230621085353.113233-8-mark.cave-ayland@ilande.co.uk>
- <31e93e09-1d34-9331-25ac-984934905a52@eik.bme.hu>
- <807f324f-0e8a-d448-e941-fa87128d53f7@ilande.co.uk>
- <df4b5287-4053-d875-9f79-d8ae536181d7@eik.bme.hu>
+ (Exim 4.90_1) (envelope-from <jupham125@gmail.com>)
+ id 1qC0o1-0000dM-MD
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 12:35:41 -0400
+Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <jupham125@gmail.com>)
+ id 1qC0nw-0001Kc-ST
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 12:35:38 -0400
+Received: by mail-ed1-x52e.google.com with SMTP id
+ 4fb4d7f45d1cf-514ab6cb529so13433443a12.1
+ for <qemu-devel@nongnu.org>; Wed, 21 Jun 2023 09:35:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1687365335; x=1689957335;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=OlyLGh0xTVH8JxlpESb1IMLg1C/AdwZE4iFR202x120=;
+ b=b7KCOl2BOdBXWKllyS8slO2xb4rmElxeKUEAy/BqXLwcQWUSZgu9ledfPdJvqgWSw2
+ A/YahHliAocepaa1qlGxUQu57qULXb89dtd2u6RtoBUxUkTn7FDha1QGveYdRktIi6cw
+ x4nCrpwM8FYi0ZkdahCo/n3u6WRqFd6aHNZXRgjsd5aCen3TV0Fq2NBFPjKep01Zdo+/
+ TkLb6hbeAZBE+3LgJ/StlpSwajC0DzZ4wXoFJJC0hLR0N7craALcI8AMyfjNjlkayGmO
+ Kgpg5mDRA6KXLS6kHrA4+GSPNKOZR6Y3BszitMvAQYdWUAqfRYczr7oHjL9U/kjicJdY
+ 7k1g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1687365335; x=1689957335;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=OlyLGh0xTVH8JxlpESb1IMLg1C/AdwZE4iFR202x120=;
+ b=C0p1irJsJSinJkrNEcra8L9jLIu3bklwU3EW0DxeRa/KyiNUu5zEAIfLQbdjHspeRR
+ hZzLOx7BZgwfMc3KlMCTPSZ/UvKyXIkPg/TbUq+YUsYyLnbUsTnykqvxtPklKzYs+kcJ
+ m+kbSKibd9fpMs6gYfTAyUTUBi4XDT9Q+lP4Fyz052erKoFgVqF1G3CpGFH1Mq08/Bu4
+ Mn3AgWhriYkQMNI/XQqBaXs7opbhewhE6WIwVNoDKek7IVeKPWFD7HGB9oyoEG8GdTO/
+ P3DH1pSwqY7zJjXaSWWJ4RD7HrXRynejkXKuKqb2S77LVIz7j0XRUHGxEg99DHIZ2Ltw
+ vR3A==
+X-Gm-Message-State: AC+VfDxPZDGDRHQKEC/SYOpTX61bnIl0f3fgcGQRAzKlCOvNcjqLndCR
+ w7WgoQK2rjG9/of0tJp/NU6Grk1PhMgQJ2EuHgQ=
+X-Google-Smtp-Source: ACHHUZ6YSZIhcRxYSKM7fyS+mZ8b49f7mH4l43bFTLHnG0QGv6NB/cNIZlfGry75u1h9mKHA45f8PFBi3LAMcVzIqT8=
+X-Received: by 2002:a05:6402:274b:b0:51a:4039:b9e with SMTP id
+ z11-20020a056402274b00b0051a40390b9emr14444586edd.9.1687365334858; Wed, 21
+ Jun 2023 09:35:34 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="3866299591-844428655-1687365245=:5320"
-X-Spam-Probability: 10%
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+References: <cover.1687127946.git.jupham125@gmail.com>
+ <272947b9494f00bb4ad3e27c050e99f8b61905b3.1687127946.git.jupham125@gmail.com>
+ <02b6a8a8-2da7-2864-0c0e-5ed81a560355@redhat.com>
+In-Reply-To: <02b6a8a8-2da7-2864-0c0e-5ed81a560355@redhat.com>
+From: Joel Upham <jupham125@gmail.com>
+Date: Wed, 21 Jun 2023 12:35:23 -0400
+Message-ID: <CADPhr0kMXxj1SUQggcNQeXY4wSbLNN1-Amqxo3uGVeBMSJmn-g@mail.gmail.com>
+Subject: Re: [PATCH v1 1/1] Q35 Support
+To: David Hildenbrand <david@redhat.com>
+Cc: Ani Sinha <anisinha@redhat.com>, Anthony Perard <anthony.perard@citrix.com>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Eduardo Habkost <eduardo@habkost.net>, Igor Mammedov <imammedo@redhat.com>, 
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, Paul Durrant <paul@xen.org>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Richard Henderson <richard.henderson@linaro.org>,
+ Stefano Stabellini <sstabellini@kernel.org>, 
+ Yanan Wang <wangyanan55@huawei.com>, 
+ "open list:X86 Xen CPUs" <xen-devel@lists.xenproject.org>,
+ qemu-devel@nongnu.org
+Content-Type: multipart/alternative; boundary="00000000000063ffd605fea65b42"
+Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
+ envelope-from=jupham125@gmail.com; helo=mail-ed1-x52e.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, HTML_MESSAGE=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -64,728 +98,159 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+--00000000000063ffd605fea65b42
+Content-Type: text/plain; charset="UTF-8"
 
---3866299591-844428655-1687365245=:5320
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8BIT
+Sorry, this was sent in error when I did the git send-email for the folder.
+This was before I broke each patch down (after looking at the Qemu
+submission guidance). This is my first time sending a patch in this way, so
+thanks for the understanding. This patch can be ignored, as they are all
+covered elsewhere.
 
-On Wed, 21 Jun 2023, BALATON Zoltan wrote:
-> On Wed, 21 Jun 2023, Mark Cave-Ayland wrote:
->> On 21/06/2023 13:00, BALATON Zoltan wrote:
->>> On Wed, 21 Jun 2023, Mark Cave-Ayland wrote:
->>>> This will allow the q800-glue.h header to be included separately so that 
->>>> the
->>>> GLUE device can be referenced externally.
->>>> 
->>>> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
->>>> Reviewed-by: Laurent Vivier <laurent@vivier.eu>
->>>> ---
->>>> MAINTAINERS                 |   2 +
->>>> hw/m68k/meson.build         |   2 +-
->>>> hw/m68k/q800-glue.c         | 252 ++++++++++++++++++++++++++++++++++++
->>>> hw/m68k/q800.c              | 238 +---------------------------------
->>>> include/hw/m68k/q800-glue.h |  50 +++++++
->>>> 5 files changed, 306 insertions(+), 238 deletions(-)
->>>> create mode 100644 hw/m68k/q800-glue.c
->>>> create mode 100644 include/hw/m68k/q800-glue.h
->>>> 
->>>> diff --git a/MAINTAINERS b/MAINTAINERS
->>>> index 748a66fbaa..7f323cd2eb 100644
->>>> --- a/MAINTAINERS
->>>> +++ b/MAINTAINERS
->>>> @@ -1225,6 +1225,7 @@ q800
->>>> M: Laurent Vivier <laurent@vivier.eu>
->>>> S: Maintained
->>>> F: hw/m68k/q800.c
->>>> +F: hw/m68k/q800-glue.c
->>>> F: hw/misc/mac_via.c
->>>> F: hw/nubus/*
->>>> F: hw/display/macfb.c
->>>> @@ -1237,6 +1238,7 @@ F: include/hw/nubus/*
->>>> F: include/hw/display/macfb.h
->>>> F: include/hw/block/swim.h
->>>> F: include/hw/m68k/q800.h
->>>> +F: include/hw/m68k/q800-glue.h
->>>> 
->>>> virt
->>>> M: Laurent Vivier <laurent@vivier.eu>
->>>> diff --git a/hw/m68k/meson.build b/hw/m68k/meson.build
->>>> index 31248641d3..84bc68fa4e 100644
->>>> --- a/hw/m68k/meson.build
->>>> +++ b/hw/m68k/meson.build
->>>> @@ -2,7 +2,7 @@ m68k_ss = ss.source_set()
->>>> m68k_ss.add(when: 'CONFIG_AN5206', if_true: files('an5206.c', 
->>>> 'mcf5206.c'))
->>>> m68k_ss.add(when: 'CONFIG_MCF5208', if_true: files('mcf5208.c', 
->>>> 'mcf_intc.c'))
->>>> m68k_ss.add(when: 'CONFIG_NEXTCUBE', if_true: files('next-kbd.c', 
->>>> 'next-cube.c'))
->>>> -m68k_ss.add(when: 'CONFIG_Q800', if_true: files('q800.c'))
->>>> +m68k_ss.add(when: 'CONFIG_Q800', if_true: files('q800.c', 
->>>> 'q800-glue.c'))
->>>> m68k_ss.add(when: 'CONFIG_M68K_VIRT', if_true: files('virt.c'))
->>>> 
->>>> hw_arch += {'m68k': m68k_ss}
->>>> diff --git a/hw/m68k/q800-glue.c b/hw/m68k/q800-glue.c
->>>> new file mode 100644
->>>> index 0000000000..e81f9438f1
->>>> --- /dev/null
->>>> +++ b/hw/m68k/q800-glue.c
->>>> @@ -0,0 +1,252 @@
->>>> +/*
->>>> + * QEMU q800 logic GLUE (General Logic Unit)
->>> 
->>> Maybe clearer:
->>> 
->>> q800 General Logic Unit (aka GLUE)
->> 
->> The current wording was suggested by Phil during a previous round of review 
->> :)
+-Joel Upham
+
+On Wed, Jun 21, 2023 at 7:10 AM David Hildenbrand <david@redhat.com> wrote:
+
+> On 20.06.23 19:24, Joel Upham wrote:
 >
-> I think he just asked to include the expanded General Logic Unit name not 
-> just GLUE which might be confusing if you don't know Mac hardware but he did 
-> not suggest a specific wording. In any case this is just a minor nit so not 
-> really important.
-
-I think my problem is really that "logic" is now doubled and seems 
-redundant. So either
-QEMU q800 General Logic Unit (aka GLUE)
-or
-QEMU q800 GLUE (General Logic Unit)
-
-Regards,
-BALATON Zoltan
-
->>> Sorry for coming late in this review but I just had some time to look more 
->>> closely at these.
->> 
->> No worries.
->> 
->>> Regards,
->>> BALATON Zoltan
->>> 
->>>> + *
->>>> + * Permission is hereby granted, free of charge, to any person obtaining 
->>>> a copy
->>>> + * of this software and associated documentation files (the "Software"), 
->>>> to deal
->>>> + * in the Software without restriction, including without limitation the 
->>>> rights
->>>> + * to use, copy, modify, merge, publish, distribute, sublicense, and/or 
->>>> sell
->>>> + * copies of the Software, and to permit persons to whom the Software is
->>>> + * furnished to do so, subject to the following conditions:
->>>> + *
->>>> + * The above copyright notice and this permission notice shall be 
->>>> included in
->>>> + * all copies or substantial portions of the Software.
->>>> + *
->>>> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, 
->>>> EXPRESS OR
->>>> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF 
->>>> MERCHANTABILITY,
->>>> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT 
->>>> SHALL
->>>> + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR 
->>>> OTHER
->>>> + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, 
->>>> ARISING FROM,
->>>> + * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
->>>> DEALINGS IN
->>>> + * THE SOFTWARE.
->>>> + */
->>>> +
->>>> +#include "qemu/osdep.h"
->>>> +#include "cpu.h"
->>>> +#include "hw/m68k/q800-glue.h"
->>>> +#include "hw/boards.h"
->>>> +#include "hw/irq.h"
->>>> +#include "hw/nmi.h"
->>>> +#include "hw/qdev-properties.h"
->>>> +#include "migration/vmstate.h"
->>>> +
->>>> +/*
->>>> + * The GLUE (General Logic Unit) is an Apple custom integrated circuit 
->>>> chip
->>>> + * that performs a variety of functions (RAM management, clock 
->>>> generation, ...).
->>>> + * The GLUE chip receives interrupt requests from various devices,
->>>> + * assign priority to each, and asserts one or more interrupt line to 
->>>> the
->>>> + * CPU.
->>>> + */
->>>> +
->>>> +/*
->>>> + * The GLUE logic on the Quadra 800 supports 2 different IRQ routing 
->>>> modes
->>>> + * controlled from the VIA1 auxmode GPIO (port B bit 6) which are 
->>>> documented
->>>> + * in NetBSD as follows:
->>>> + *
->>>> + * A/UX mode (Linux, NetBSD, auxmode GPIO low)
->>>> + *
->>>> + *   Level 0:        Spurious: ignored
->>>> + *   Level 1:        Software
->>>> + *   Level 2:        VIA2 (except ethernet, sound)
->>>> + *   Level 3:        Ethernet
->>>> + *   Level 4:        Serial (SCC)
->>>> + *   Level 5:        Sound
->>>> + *   Level 6:        VIA1
->>>> + *   Level 7:        NMIs: parity errors, RESET button, YANCC error
->>>> + *
->>>> + * Classic mode (default: used by MacOS, A/UX 3.0.1, auxmode GPIO high)
->>>> + *
->>>> + *   Level 0:        Spurious: ignored
->>>> + *   Level 1:        VIA1 (clock, ADB)
->>>> + *   Level 2:        VIA2 (NuBus, SCSI)
->>>> + *   Level 3:
->>>> + *   Level 4:        Serial (SCC)
->>>> + *   Level 5:
->>>> + *   Level 6:
->>>> + *   Level 7:        Non-maskable: parity errors, RESET button
->>>> + *
->>>> + * Note that despite references to A/UX mode in Linux and NetBSD, at 
->>>> least
->>>> + * A/UX 3.0.1 still uses Classic mode.
->>>> + */
->>>> +
->>>> +static void GLUE_set_irq(void *opaque, int irq, int level)
->>>> +{
->>>> +    GLUEState *s = opaque;
->>>> +    int i;
->>>> +
->>>> +    if (s->auxmode) {
->>>> +        /* Classic mode */
->>>> +        switch (irq) {
->>>> +        case GLUE_IRQ_IN_VIA1:
->>>> +            irq = 0;
->>>> +            break;
->>>> +
->>>> +        case GLUE_IRQ_IN_VIA2:
->>>> +            irq = 1;
->>>> +            break;
->>>> +
->>>> +        case GLUE_IRQ_IN_SONIC:
->>>> +            /* Route to VIA2 instead */
->>>> +            qemu_set_irq(s->irqs[GLUE_IRQ_NUBUS_9], level);
->>>> +            return;
->>>> +
->>>> +        case GLUE_IRQ_IN_ESCC:
->>>> +            irq = 3;
->>>> +            break;
->>>> +
->>>> +        case GLUE_IRQ_IN_NMI:
->>>> +            irq = 6;
->>>> +            break;
->>>> +
->>>> +        default:
->>>> +            g_assert_not_reached();
->>>> +        }
->>>> +    } else {
->>>> +        /* A/UX mode */
->>>> +        switch (irq) {
->>>> +        case GLUE_IRQ_IN_VIA1:
->>>> +            irq = 5;
->>>> +            break;
->>>> +
->>>> +        case GLUE_IRQ_IN_VIA2:
->>>> +            irq = 1;
->>>> +            break;
->>>> +
->>>> +        case GLUE_IRQ_IN_SONIC:
->>>> +            irq = 2;
->>>> +            break;
->>>> +
->>>> +        case GLUE_IRQ_IN_ESCC:
->>>> +            irq = 3;
->>>> +            break;
->>>> +
->>>> +        case GLUE_IRQ_IN_NMI:
->>>> +            irq = 6;
->>>> +            break;
->>>> +
->>>> +        default:
->>>> +            g_assert_not_reached();
->>>> +        }
->>>> +    }
->>>> +
->>>> +    if (level) {
->>>> +        s->ipr |= 1 << irq;
->>>> +    } else {
->>>> +        s->ipr &= ~(1 << irq);
->>>> +    }
->>>> +
->>>> +    for (i = 7; i >= 0; i--) {
->>>> +        if ((s->ipr >> i) & 1) {
->>>> +            m68k_set_irq_level(s->cpu, i + 1, i + 25);
->>>> +            return;
->>>> +        }
->>>> +    }
->>>> +    m68k_set_irq_level(s->cpu, 0, 0);
->>>> +}
->>>> +
->>>> +static void glue_auxmode_set_irq(void *opaque, int irq, int level)
->>>> +{
->>>> +    GLUEState *s = GLUE(opaque);
->>>> +
->>>> +    s->auxmode = level;
->>>> +}
->>>> +
->>>> +static void glue_nmi(NMIState *n, int cpu_index, Error **errp)
->>>> +{
->>>> +    GLUEState *s = GLUE(n);
->>>> +
->>>> +    /* Hold NMI active for 100ms */
->>>> +    GLUE_set_irq(s, GLUE_IRQ_IN_NMI, 1);
->>>> +    timer_mod(s->nmi_release, qemu_clock_get_ms(QEMU_CLOCK_VIRTUAL) + 
->>>> 100);
->>>> +}
->>>> +
->>>> +static void glue_nmi_release(void *opaque)
->>>> +{
->>>> +    GLUEState *s = GLUE(opaque);
->>>> +
->>>> +    GLUE_set_irq(s, GLUE_IRQ_IN_NMI, 0);
->>>> +}
->>>> +
->>>> +static void glue_reset(DeviceState *dev)
->>>> +{
->>>> +    GLUEState *s = GLUE(dev);
->>>> +
->>>> +    s->ipr = 0;
->>>> +    s->auxmode = 0;
->>>> +
->>>> +    timer_del(s->nmi_release);
->>>> +}
->>>> +
->>>> +static const VMStateDescription vmstate_glue = {
->>>> +    .name = "q800-glue",
->>>> +    .version_id = 0,
->>>> +    .minimum_version_id = 0,
->>>> +    .fields = (VMStateField[]) {
->>>> +        VMSTATE_UINT8(ipr, GLUEState),
->>>> +        VMSTATE_UINT8(auxmode, GLUEState),
->>>> +        VMSTATE_TIMER_PTR(nmi_release, GLUEState),
->>>> +        VMSTATE_END_OF_LIST(),
->>>> +    },
->>>> +};
->>>> +
->>>> +/*
->>>> + * If the m68k CPU implemented its inbound irq lines as GPIO lines
->>>> + * rather than via the m68k_set_irq_level() function we would not need
->>>> + * this cpu link property and could instead provide outbound IRQ lines
->>>> + * that the board could wire up to the CPU.
->>>> + */
->>>> +static Property glue_properties[] = {
->>>> +    DEFINE_PROP_LINK("cpu", GLUEState, cpu, TYPE_M68K_CPU, M68kCPU *),
->>>> +    DEFINE_PROP_END_OF_LIST(),
->>>> +};
->>>> +
->>>> +static void glue_finalize(Object *obj)
->>>> +{
->>>> +    GLUEState *s = GLUE(obj);
->>>> +
->>>> +    timer_free(s->nmi_release);
->>>> +}
->>>> +
->>>> +static void glue_init(Object *obj)
->>>> +{
->>>> +    DeviceState *dev = DEVICE(obj);
->>>> +    GLUEState *s = GLUE(dev);
->>>> +
->>>> +    qdev_init_gpio_in(dev, GLUE_set_irq, 8);
->>>> +    qdev_init_gpio_in_named(dev, glue_auxmode_set_irq, "auxmode", 1);
->>>> +
->>>> +    qdev_init_gpio_out(dev, s->irqs, 1);
->>>> +
->>>> +    /* NMI release timer */
->>>> +    s->nmi_release = timer_new_ms(QEMU_CLOCK_VIRTUAL, glue_nmi_release, 
->>>> s);
->>>> +}
->>>> +
->>>> +static void glue_class_init(ObjectClass *klass, void *data)
->>>> +{
->>>> +    DeviceClass *dc = DEVICE_CLASS(klass);
->>>> +    NMIClass *nc = NMI_CLASS(klass);
->>>> +
->>>> +    dc->vmsd = &vmstate_glue;
->>>> +    dc->reset = glue_reset;
->>>> +    device_class_set_props(dc, glue_properties);
->>>> +    nc->nmi_monitor_handler = glue_nmi;
->>>> +}
->>>> +
->>>> +static const TypeInfo glue_info = {
->>>> +    .name = TYPE_GLUE,
->>>> +    .parent = TYPE_SYS_BUS_DEVICE,
->>>> +    .instance_size = sizeof(GLUEState),
->>>> +    .instance_init = glue_init,
->>>> +    .instance_finalize = glue_finalize,
->>>> +    .class_init = glue_class_init,
->>>> +    .interfaces = (InterfaceInfo[]) {
->>>> +         { TYPE_NMI },
->>>> +         { }
->>>> +    },
->>>> +};
->>>> +
->>>> +static void glue_register_types(void)
->>>> +{
->>>> +    type_register_static(&glue_info);
->>>> +}
->>>> +
->>>> +type_init(glue_register_types)
->>>> diff --git a/hw/m68k/q800.c b/hw/m68k/q800.c
->>>> index 9f9668c2b4..9f9de2ebaf 100644
->>>> --- a/hw/m68k/q800.c
->>>> +++ b/hw/m68k/q800.c
->>>> @@ -28,7 +28,6 @@
->>>> #include "cpu.h"
->>>> #include "hw/boards.h"
->>>> #include "hw/or-irq.h"
->>>> -#include "hw/nmi.h"
->>>> #include "elf.h"
->>>> #include "hw/loader.h"
->>>> #include "ui/console.h"
->>>> @@ -39,6 +38,7 @@
->>>> #include "standard-headers/asm-m68k/bootinfo-mac.h"
->>>> #include "bootinfo.h"
->>>> #include "hw/m68k/q800.h"
->>>> +#include "hw/m68k/q800-glue.h"
->>>> #include "hw/misc/mac_via.h"
->>>> #include "hw/input/adb.h"
->>>> #include "hw/nubus/mac-nubus-bridge.h"
->>>> @@ -88,241 +88,6 @@
->>>> #define Q800_NUBUS_SLOTS_AVAILABLE    (BIT(0x9) | BIT(0xc) | BIT(0xd) | \
->>>>                                        BIT(0xe))
->>>> 
->>>> -/*
->>>> - * The GLUE (General Logic Unit) is an Apple custom integrated circuit 
->>>> chip
->>>> - * that performs a variety of functions (RAM management, clock 
->>>> generation, ...).
->>>> - * The GLUE chip receives interrupt requests from various devices,
->>>> - * assign priority to each, and asserts one or more interrupt line to 
->>>> the
->>>> - * CPU.
->>>> - */
->>>> -
->>>> -#define TYPE_GLUE "q800-glue"
->>>> -OBJECT_DECLARE_SIMPLE_TYPE(GLUEState, GLUE)
->>>> -
->>>> -struct GLUEState {
->>>> -    SysBusDevice parent_obj;
->>>> -
->>>> -    M68kCPU *cpu;
->>>> -    uint8_t ipr;
->>>> -    uint8_t auxmode;
->>>> -    qemu_irq irqs[1];
->>>> -    QEMUTimer *nmi_release;
->>>> -};
->>>> -
->>>> -#define GLUE_IRQ_IN_VIA1       0
->>>> -#define GLUE_IRQ_IN_VIA2       1
->>>> -#define GLUE_IRQ_IN_SONIC      2
->>>> -#define GLUE_IRQ_IN_ESCC       3
->>>> -#define GLUE_IRQ_IN_NMI        4
->>>> -
->>>> -#define GLUE_IRQ_NUBUS_9       0
->>>> -
->>>> -/*
->>>> - * The GLUE logic on the Quadra 800 supports 2 different IRQ routing 
->>>> modes
->>>> - * controlled from the VIA1 auxmode GPIO (port B bit 6) which are 
->>>> documented
->>>> - * in NetBSD as follows:
->>>> - *
->>>> - * A/UX mode (Linux, NetBSD, auxmode GPIO low)
->>>> - *
->>>> - *   Level 0:        Spurious: ignored
->>>> - *   Level 1:        Software
->>>> - *   Level 2:        VIA2 (except ethernet, sound)
->>>> - *   Level 3:        Ethernet
->>>> - *   Level 4:        Serial (SCC)
->>>> - *   Level 5:        Sound
->>>> - *   Level 6:        VIA1
->>>> - *   Level 7:        NMIs: parity errors, RESET button, YANCC error
->>>> - *
->>>> - * Classic mode (default: used by MacOS, A/UX 3.0.1, auxmode GPIO high)
->>>> - *
->>>> - *   Level 0:        Spurious: ignored
->>>> - *   Level 1:        VIA1 (clock, ADB)
->>>> - *   Level 2:        VIA2 (NuBus, SCSI)
->>>> - *   Level 3:
->>>> - *   Level 4:        Serial (SCC)
->>>> - *   Level 5:
->>>> - *   Level 6:
->>>> - *   Level 7:        Non-maskable: parity errors, RESET button
->>>> - *
->>>> - * Note that despite references to A/UX mode in Linux and NetBSD, at 
->>>> least
->>>> - * A/UX 3.0.1 still uses Classic mode.
->>>> - */
->>>> -
->>>> -static void GLUE_set_irq(void *opaque, int irq, int level)
->>>> -{
->>>> -    GLUEState *s = opaque;
->>>> -    int i;
->>>> -
->>>> -    if (s->auxmode) {
->>>> -        /* Classic mode */
->>>> -        switch (irq) {
->>>> -        case GLUE_IRQ_IN_VIA1:
->>>> -            irq = 0;
->>>> -            break;
->>>> -
->>>> -        case GLUE_IRQ_IN_VIA2:
->>>> -            irq = 1;
->>>> -            break;
->>>> -
->>>> -        case GLUE_IRQ_IN_SONIC:
->>>> -            /* Route to VIA2 instead */
->>>> -            qemu_set_irq(s->irqs[GLUE_IRQ_NUBUS_9], level);
->>>> -            return;
->>>> -
->>>> -        case GLUE_IRQ_IN_ESCC:
->>>> -            irq = 3;
->>>> -            break;
->>>> -
->>>> -        case GLUE_IRQ_IN_NMI:
->>>> -            irq = 6;
->>>> -            break;
->>>> -
->>>> -        default:
->>>> -            g_assert_not_reached();
->>>> -        }
->>>> -    } else {
->>>> -        /* A/UX mode */
->>>> -        switch (irq) {
->>>> -        case GLUE_IRQ_IN_VIA1:
->>>> -            irq = 5;
->>>> -            break;
->>>> -
->>>> -        case GLUE_IRQ_IN_VIA2:
->>>> -            irq = 1;
->>>> -            break;
->>>> -
->>>> -        case GLUE_IRQ_IN_SONIC:
->>>> -            irq = 2;
->>>> -            break;
->>>> -
->>>> -        case GLUE_IRQ_IN_ESCC:
->>>> -            irq = 3;
->>>> -            break;
->>>> -
->>>> -        case GLUE_IRQ_IN_NMI:
->>>> -            irq = 6;
->>>> -            break;
->>>> -
->>>> -        default:
->>>> -            g_assert_not_reached();
->>>> -        }
->>>> -    }
->>>> -
->>>> -    if (level) {
->>>> -        s->ipr |= 1 << irq;
->>>> -    } else {
->>>> -        s->ipr &= ~(1 << irq);
->>>> -    }
->>>> -
->>>> -    for (i = 7; i >= 0; i--) {
->>>> -        if ((s->ipr >> i) & 1) {
->>>> -            m68k_set_irq_level(s->cpu, i + 1, i + 25);
->>>> -            return;
->>>> -        }
->>>> -    }
->>>> -    m68k_set_irq_level(s->cpu, 0, 0);
->>>> -}
->>>> -
->>>> -static void glue_auxmode_set_irq(void *opaque, int irq, int level)
->>>> -{
->>>> -    GLUEState *s = GLUE(opaque);
->>>> -
->>>> -    s->auxmode = level;
->>>> -}
->>>> -
->>>> -static void glue_nmi(NMIState *n, int cpu_index, Error **errp)
->>>> -{
->>>> -    GLUEState *s = GLUE(n);
->>>> -
->>>> -    /* Hold NMI active for 100ms */
->>>> -    GLUE_set_irq(s, GLUE_IRQ_IN_NMI, 1);
->>>> -    timer_mod(s->nmi_release, qemu_clock_get_ms(QEMU_CLOCK_VIRTUAL) + 
->>>> 100);
->>>> -}
->>>> -
->>>> -static void glue_nmi_release(void *opaque)
->>>> -{
->>>> -    GLUEState *s = GLUE(opaque);
->>>> -
->>>> -    GLUE_set_irq(s, GLUE_IRQ_IN_NMI, 0);
->>>> -}
->>>> -
->>>> -static void glue_reset(DeviceState *dev)
->>>> -{
->>>> -    GLUEState *s = GLUE(dev);
->>>> -
->>>> -    s->ipr = 0;
->>>> -    s->auxmode = 0;
->>>> -
->>>> -    timer_del(s->nmi_release);
->>>> -}
->>>> -
->>>> -static const VMStateDescription vmstate_glue = {
->>>> -    .name = "q800-glue",
->>>> -    .version_id = 0,
->>>> -    .minimum_version_id = 0,
->>>> -    .fields = (VMStateField[]) {
->>>> -        VMSTATE_UINT8(ipr, GLUEState),
->>>> -        VMSTATE_UINT8(auxmode, GLUEState),
->>>> -        VMSTATE_TIMER_PTR(nmi_release, GLUEState),
->>>> -        VMSTATE_END_OF_LIST(),
->>>> -    },
->>>> -};
->>>> -
->>>> -/*
->>>> - * If the m68k CPU implemented its inbound irq lines as GPIO lines
->>>> - * rather than via the m68k_set_irq_level() function we would not need
->>>> - * this cpu link property and could instead provide outbound IRQ lines
->>>> - * that the board could wire up to the CPU.
->>>> - */
->>>> -static Property glue_properties[] = {
->>>> -    DEFINE_PROP_LINK("cpu", GLUEState, cpu, TYPE_M68K_CPU, M68kCPU *),
->>>> -    DEFINE_PROP_END_OF_LIST(),
->>>> -};
->>>> -
->>>> -static void glue_finalize(Object *obj)
->>>> -{
->>>> -    GLUEState *s = GLUE(obj);
->>>> -
->>>> -    timer_free(s->nmi_release);
->>>> -}
->>>> -
->>>> -static void glue_init(Object *obj)
->>>> -{
->>>> -    DeviceState *dev = DEVICE(obj);
->>>> -    GLUEState *s = GLUE(dev);
->>>> -
->>>> -    qdev_init_gpio_in(dev, GLUE_set_irq, 8);
->>>> -    qdev_init_gpio_in_named(dev, glue_auxmode_set_irq, "auxmode", 1);
->>>> -
->>>> -    qdev_init_gpio_out(dev, s->irqs, 1);
->>>> -
->>>> -    /* NMI release timer */
->>>> -    s->nmi_release = timer_new_ms(QEMU_CLOCK_VIRTUAL, glue_nmi_release, 
->>>> s);
->>>> -}
->>>> -
->>>> -static void glue_class_init(ObjectClass *klass, void *data)
->>>> -{
->>>> -    DeviceClass *dc = DEVICE_CLASS(klass);
->>>> -    NMIClass *nc = NMI_CLASS(klass);
->>>> -
->>>> -    dc->vmsd = &vmstate_glue;
->>>> -    dc->reset = glue_reset;
->>>> -    device_class_set_props(dc, glue_properties);
->>>> -    nc->nmi_monitor_handler = glue_nmi;
->>>> -}
->>>> -
->>>> -static const TypeInfo glue_info = {
->>>> -    .name = TYPE_GLUE,
->>>> -    .parent = TYPE_SYS_BUS_DEVICE,
->>>> -    .instance_size = sizeof(GLUEState),
->>>> -    .instance_init = glue_init,
->>>> -    .instance_finalize = glue_finalize,
->>>> -    .class_init = glue_class_init,
->>>> -    .interfaces = (InterfaceInfo[]) {
->>>> -         { TYPE_NMI },
->>>> -         { }
->>>> -    },
->>>> -};
->>>> 
->>>> static void main_cpu_reset(void *opaque)
->>>> {
->>>> @@ -763,7 +528,6 @@ static const TypeInfo q800_machine_typeinfo = {
->>>> static void q800_machine_register_types(void)
->>>> {
->>>>     type_register_static(&q800_machine_typeinfo);
->>>> -    type_register_static(&glue_info);
->>>> }
->>>> 
->>>> type_init(q800_machine_register_types)
->>>> diff --git a/include/hw/m68k/q800-glue.h b/include/hw/m68k/q800-glue.h
->>>> new file mode 100644
->>>> index 0000000000..c1817b01a5
->>>> --- /dev/null
->>>> +++ b/include/hw/m68k/q800-glue.h
->>>> @@ -0,0 +1,50 @@
->>>> +/*
->>>> + * QEMU q800 logic glue
->>>> + *
->>>> + * Permission is hereby granted, free of charge, to any person obtaining 
->>>> a copy
->>>> + * of this software and associated documentation files (the "Software"), 
->>>> to deal
->>>> + * in the Software without restriction, including without limitation the 
->>>> rights
->>>> + * to use, copy, modify, merge, publish, distribute, sublicense, and/or 
->>>> sell
->>>> + * copies of the Software, and to permit persons to whom the Software is
->>>> + * furnished to do so, subject to the following conditions:
->>>> + *
->>>> + * The above copyright notice and this permission notice shall be 
->>>> included in
->>>> + * all copies or substantial portions of the Software.
->>>> + *
->>>> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, 
->>>> EXPRESS OR
->>>> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF 
->>>> MERCHANTABILITY,
->>>> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT 
->>>> SHALL
->>>> + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR 
->>>> OTHER
->>>> + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, 
->>>> ARISING FROM,
->>>> + * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
->>>> DEALINGS IN
->>>> + * THE SOFTWARE.
->>>> + */
->>>> +
->>>> +#ifndef HW_Q800_GLUE_H
->>>> +#define HW_Q800_GLUE_H
->>>> +
->>>> +#include "qemu/osdep.h"
->>>> +#include "hw/sysbus.h"
->>>> +
->>>> +#define TYPE_GLUE "q800-glue"
->>>> +OBJECT_DECLARE_SIMPLE_TYPE(GLUEState, GLUE)
->>>> +
->>>> +struct GLUEState {
->>>> +    SysBusDevice parent_obj;
->>>> +
->>>> +    M68kCPU *cpu;
->>>> +    uint8_t ipr;
->>>> +    uint8_t auxmode;
->>>> +    qemu_irq irqs[1];
->>>> +    QEMUTimer *nmi_release;
->>>> +};
->>>> +
->>>> +#define GLUE_IRQ_IN_VIA1       0
->>>> +#define GLUE_IRQ_IN_VIA2       1
->>>> +#define GLUE_IRQ_IN_SONIC      2
->>>> +#define GLUE_IRQ_IN_ESCC       3
->>>> +#define GLUE_IRQ_IN_NMI        4
->>>> +
->>>> +#define GLUE_IRQ_NUBUS_9       0
->>>> +
->>>> +#endif
->> 
->> 
->> ATB,
->> 
->> Mark.
->> 
+> Inexpressive patch subject and non-existant patch desciption. I have no
+> clue what this is supposed to do, except that it involes q35 and xen ()I
+> guess ?.
 >
---3866299591-844428655-1687365245=:5320--
+> > ---
+> >   hw/acpi/ich9.c                |   22 +-
+> >   hw/acpi/pcihp.c               |    6 +-
+> >   hw/core/machine.c             |   19 +
+> >   hw/i386/pc_piix.c             |    3 +-
+> >   hw/i386/pc_q35.c              |   39 +-
+> >   hw/i386/xen/xen-hvm.c         |    7 +-
+> >   hw/i386/xen/xen_platform.c    |   19 +-
+> >   hw/isa/lpc_ich9.c             |   53 +-
+> >   hw/isa/piix3.c                |    2 +-
+> >   hw/pci-host/q35.c             |   28 +-
+> >   hw/pci/pci.c                  |   17 +
+> >   hw/xen/xen-host-pci-device.c  |  106 +++-
+> >   hw/xen/xen-host-pci-device.h  |    6 +-
+> >   hw/xen/xen_pt.c               |   49 +-
+> >   hw/xen/xen_pt.h               |   19 +-
+> >   hw/xen/xen_pt_config_init.c   | 1103 ++++++++++++++++++++++++++++++---
+> >   include/hw/acpi/ich9.h        |    1 +
+> >   include/hw/acpi/pcihp.h       |    2 +
+> >   include/hw/boards.h           |    1 +
+> >   include/hw/i386/pc.h          |    3 +
+> >   include/hw/pci-host/q35.h     |    4 +-
+> >   include/hw/pci/pci.h          |    3 +
+> >   include/hw/southbridge/ich9.h |    1 +
+> >   include/hw/xen/xen.h          |    4 +-
+> >   qemu-options.hx               |    1 +
+> >   softmmu/datadir.c             |    1 -
+> >   softmmu/qdev-monitor.c        |    3 +-
+> >   stubs/xen-hw-stub.c           |    4 +-
+> >   28 files changed, 1395 insertions(+), 131 deletions(-)
+> >
+>
+> Usually people refrain from reviewing such massive patches. Most
+> probably this can be broken up into reviewable pieces.
+>
+> Was this supposed to be an RFC?
+>
+> --
+> Cheers,
+>
+> David / dhildenb
+>
+>
+
+--00000000000063ffd605fea65b42
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"auto">Sorry, this was sent in error when I did the git send-ema=
+il for the folder. This was before I broke each patch down (after looking a=
+t the Qemu submission guidance). This is my first time sending a patch in t=
+his way, so thanks for the understanding. This patch can be ignored, as the=
+y are all covered elsewhere.=C2=A0</div><div dir=3D"auto"><br></div><div di=
+r=3D"auto">-Joel Upham</div><div><br><div class=3D"gmail_quote"><div dir=3D=
+"ltr" class=3D"gmail_attr">On Wed, Jun 21, 2023 at 7:10 AM David Hildenbran=
+d &lt;<a href=3D"mailto:david@redhat.com">david@redhat.com</a>&gt; wrote:<b=
+r></div><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border=
+-left:1px #ccc solid;padding-left:1ex">On 20.06.23 19:24, Joel Upham wrote:=
+<br>
+<br>
+Inexpressive patch subject and non-existant patch desciption. I have no <br=
+>
+clue what this is supposed to do, except that it involes q35 and xen ()I <b=
+r>
+guess ?.<br>
+<br>
+&gt; ---<br>
+&gt;=C2=A0 =C2=A0hw/acpi/ich9.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 |=C2=A0 =C2=A022 +-<br>
+&gt;=C2=A0 =C2=A0hw/acpi/pcihp.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0|=C2=A0 =C2=A0 6 +-<br>
+&gt;=C2=A0 =C2=A0hw/core/machine.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0|=C2=A0 =C2=A019 +<br>
+&gt;=C2=A0 =C2=A0hw/i386/pc_piix.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0|=C2=A0 =C2=A0 3 +-<br>
+&gt;=C2=A0 =C2=A0hw/i386/pc_q35.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 |=C2=A0 =C2=A039 +-<br>
+&gt;=C2=A0 =C2=A0hw/i386/xen/xen-hvm.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0|=
+=C2=A0 =C2=A0 7 +-<br>
+&gt;=C2=A0 =C2=A0hw/i386/xen/xen_platform.c=C2=A0 =C2=A0 |=C2=A0 =C2=A019 +=
+-<br>
+&gt;=C2=A0 =C2=A0hw/isa/lpc_ich9.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0|=C2=A0 =C2=A053 +-<br>
+&gt;=C2=A0 =C2=A0hw/isa/piix3.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 |=C2=A0 =C2=A0 2 +-<br>
+&gt;=C2=A0 =C2=A0hw/pci-host/q35.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0|=C2=A0 =C2=A028 +-<br>
+&gt;=C2=A0 =C2=A0hw/pci/pci.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 |=C2=A0 =C2=A017 +<br>
+&gt;=C2=A0 =C2=A0hw/xen/xen-host-pci-device.c=C2=A0 |=C2=A0 106 +++-<br>
+&gt;=C2=A0 =C2=A0hw/xen/xen-host-pci-device.h=C2=A0 |=C2=A0 =C2=A0 6 +-<br>
+&gt;=C2=A0 =C2=A0hw/xen/xen_pt.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0|=C2=A0 =C2=A049 +-<br>
+&gt;=C2=A0 =C2=A0hw/xen/xen_pt.h=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0|=C2=A0 =C2=A019 +-<br>
+&gt;=C2=A0 =C2=A0hw/xen/xen_pt_config_init.c=C2=A0 =C2=A0| 1103 +++++++++++=
++++++++++++++++++++---<br>
+&gt;=C2=A0 =C2=A0include/hw/acpi/ich9.h=C2=A0 =C2=A0 =C2=A0 =C2=A0 |=C2=A0 =
+=C2=A0 1 +<br>
+&gt;=C2=A0 =C2=A0include/hw/acpi/pcihp.h=C2=A0 =C2=A0 =C2=A0 =C2=A0|=C2=A0 =
+=C2=A0 2 +<br>
+&gt;=C2=A0 =C2=A0include/hw/boards.h=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0|=C2=A0 =C2=A0 1 +<br>
+&gt;=C2=A0 =C2=A0include/hw/i386/pc.h=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 |=
+=C2=A0 =C2=A0 3 +<br>
+&gt;=C2=A0 =C2=A0include/hw/pci-host/q35.h=C2=A0 =C2=A0 =C2=A0|=C2=A0 =C2=
+=A0 4 +-<br>
+&gt;=C2=A0 =C2=A0include/hw/pci/pci.h=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 |=
+=C2=A0 =C2=A0 3 +<br>
+&gt;=C2=A0 =C2=A0include/hw/southbridge/ich9.h |=C2=A0 =C2=A0 1 +<br>
+&gt;=C2=A0 =C2=A0include/hw/xen/xen.h=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 |=
+=C2=A0 =C2=A0 4 +-<br>
+&gt;=C2=A0 =C2=A0qemu-options.hx=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0|=C2=A0 =C2=A0 1 +<br>
+&gt;=C2=A0 =C2=A0softmmu/datadir.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0|=C2=A0 =C2=A0 1 -<br>
+&gt;=C2=A0 =C2=A0softmmu/qdev-monitor.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 |=C2=A0 =
+=C2=A0 3 +-<br>
+&gt;=C2=A0 =C2=A0stubs/xen-hw-stub.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0|=C2=A0 =C2=A0 4 +-<br>
+&gt;=C2=A0 =C2=A028 files changed, 1395 insertions(+), 131 deletions(-)<br>
+&gt; <br>
+<br>
+Usually people refrain from reviewing such massive patches. Most <br>
+probably this can be broken up into reviewable pieces.<br>
+<br>
+Was this supposed to be an RFC?<br>
+<br>
+-- <br>
+Cheers,<br>
+<br>
+David / dhildenb<br>
+<br>
+</blockquote></div></div>
+
+--00000000000063ffd605fea65b42--
 
