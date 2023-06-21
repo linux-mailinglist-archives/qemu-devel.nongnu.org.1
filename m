@@ -2,72 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AA69737E24
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 11:15:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 500EB737E25
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 11:15:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBtvI-0006UB-02; Wed, 21 Jun 2023 05:14:44 -0400
+	id 1qBtvT-0006af-R5; Wed, 21 Jun 2023 05:14:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qBtvE-0006TP-2K
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 05:14:40 -0400
-Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qBtvC-0004Tc-7n
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 05:14:39 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
- In-Reply-To:From:References:To:MIME-Version:Date:Message-ID:Sender:Reply-To:
- Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
- Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
- List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=s8gAWWQ3yPzKzwInyUQ+XwslVjP6fQiUmc7wRqZiBc8=; b=g5yvVE7QyIa2nCLMylaRU1YTGh
- t9EywSx7VWV91O2O3OlhU0jrhH/o2PJa0fLU6o6Yv6SnXttNvzPSFpk8kSTwYzLZUDsl1SsOuoLIu
- ONCqYV2as04H5UPVcqjdVzjsyuysdH9T3/UqQPZMxmnENR+aoF5GuKJIYgRu4mwL9mGj2T+Nq/Vj2
- ExC4zVOHkIMgxHA3NTXNSlgYzrL7n/hqV/0nU79mg+KeWu79/RBwPInGuVGwMQMKhzta4tz7VJ47y
- VOMJYZ4Ud4bKo6JXJyz9cNJ0GI1K830dugODeSKYJHM194Ax3avJI/TBxENrb76+Do32q8FUa1HkT
- DKkt1c3aHEBxMig02bahmSk52RKJjiJc3f+r7e+dv+jIlm+U78rulmR9qO0TzO9700U1pWDDfMMio
- Rr0TNSyjQSSzMxfC6treKRqRVjPW6tCodVyCeVWmnFm5QDGhi4U6d0eScNq0s53ho/D7HGpgfKP7y
- b7IRqHRwDZzzGB3gbB/ndFMUc51SPPd0s6iZtFY5IldqAi1AOGdVcZuwC6EY8MwRP2NHDp0E1wu9B
- m4j8BTzTB+7VBz6Q/ixmSpGGzDMIeRBgd59tOL0JpCc/dsCN/uJJZWx9N7vbSsGR6oy3ne2iWJwDo
- 9pRv5aLf52CDL0A+qtsBFXv3ze+FSTpDaNb8G5zq0=;
-Received: from host86-130-37-216.range86-130.btcentralplus.com
- ([86.130.37.216] helo=[10.8.0.6])
- by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qBtv0-0001oD-Ga; Wed, 21 Jun 2023 10:14:29 +0100
-Message-ID: <0489cb19-8d5e-7cdd-4c98-12fea8afa0d1@ilande.co.uk>
-Date: Wed, 21 Jun 2023 10:14:32 +0100
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qBtvO-0006XE-CY
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 05:14:50 -0400
+Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qBtvL-0004UW-HK
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 05:14:49 -0400
+Received: by mail-ej1-x62b.google.com with SMTP id
+ a640c23a62f3a-9881b9d8cbdso742779266b.1
+ for <qemu-devel@nongnu.org>; Wed, 21 Jun 2023 02:14:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1687338886; x=1689930886;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=flknc6IAMOkvaHLJcij+gC86DpoYwTv6WZ4YwzFNM78=;
+ b=ybC27lIgVb62eFQrygXuZkBNvQ1jO382ivTf/8HizlfNgyrIh10LBuWVmhKxdxzC84
+ OAZ920RS5pXl/jSy4UUvBH9l4YhEMUp0U8Y60k8UjYfCG1ykBEp+d3qALosmLLVT+BJ8
+ 4vmnnw8euMMykpK9hoAcQYGDT0qKm3PrVz2q0c41YuLpsvkHcgQ9JAgkHst1xMBlbdTk
+ WxgVTWUtzRYF4Vg+5YBKAoOYT4hE47MeoaRQxxf9ZF0I/Q8uNk+thd/esdXMoMZYf/PX
+ MgUY8a8m5BGTQs3mI0cHNsPrhup1kRngVyq3piuW8CNPJctzBvejSqDc4lzFhwhkUkXK
+ djmA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1687338886; x=1689930886;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=flknc6IAMOkvaHLJcij+gC86DpoYwTv6WZ4YwzFNM78=;
+ b=kQ/76hhh4hV1eDi26Av6QkEpOuiluYJC8URKqIHHBsrmZhdMqV1iEeaya42yUjmczj
+ yiT+gJoJFwTzEJlxjdAocxbTjjPVEYZTznvvL2XUnbY/kyOeu2gLHSWKVxmZIh2NHxwl
+ C94hUh3TG33b5ey++1apz3Np8BXuuuOoTpLbnkt6Fn98redByScEqG5ffvNgZpAKudtV
+ 1/3RxBdVV1CZkkszEthavj4DNv2B18dSi7EhuOxxVInxlBIKlu/6a+ahMoJK9bTorVOH
+ QQVt3R5kwgDRHBiyp8H4wBs+mLQMfDOvTsPiejnRoo4+EOpm4gI0FjVeMP3SJ4/3gkTg
+ LiTQ==
+X-Gm-Message-State: AC+VfDwj0FYMlnx/X26xzGbsjZV5eprLix3Z3vkh8oct2ZmXEHx46XqN
+ Na8V5C63pMKMSe/wYBGgvC96Uqr4NS1gHz97JVVAXu13
+X-Google-Smtp-Source: ACHHUZ5c/TRzLZJcpiQji8cziEqVxMVhXYtVDAdHbbK3EbtVYkIPEe8fQKaB3xTikMZDcha+oRVRVg==
+X-Received: by 2002:a17:906:58cd:b0:989:d9d:d90a with SMTP id
+ e13-20020a17090658cd00b009890d9dd90amr5508881ejs.34.1687338885804; 
+ Wed, 21 Jun 2023 02:14:45 -0700 (PDT)
+Received: from stoup.lan ([176.176.128.70]) by smtp.gmail.com with ESMTPSA id
+ i15-20020a170906850f00b00982cac5fbbbsm2803297ejx.62.2023.06.21.02.14.45
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 21 Jun 2023 02:14:45 -0700 (PDT)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: alex.bennee@linaro.org
+Subject: [PATCH v2] tests/plugin: Remove duplicate insn log from libinsn.so
+Date: Wed, 21 Jun 2023 11:14:43 +0200
+Message-Id: <20230621091443.1187290-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-References: <20230405185922.2122668-1-richard.henderson@linaro.org>
- <2d46a274-8234-a635-81ca-c79c2969cb7b@linaro.org>
- <fc35257d-8af0-8aa1-af88-982c7506bfa5@ilande.co.uk>
- <a5c261f4-b3e5-314f-b28f-dfac54a0bed8@linaro.org>
- <f7d45693-78db-261b-f016-c198a7c98d97@linaro.org>
-From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-In-Reply-To: <f7d45693-78db-261b-f016-c198a7c98d97@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 86.130.37.216
-X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: Re: [PATCH for-8.1] target/sparc: Use tcg_gen_lookup_and_goto_ptr
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
-Received-SPF: pass client-ip=2001:41c9:1:41f::167;
- envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ej1-x62b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -84,25 +87,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 19/06/2023 16:41, Richard Henderson wrote:
+This is a perfectly natural occurrence for x86 "rep movb",
+where the "rep" prefix forms a counted loop of the one insn.
 
-> On 5/11/23 13:02, Richard Henderson wrote:
->> On 5/11/23 09:40, Mark Cave-Ayland wrote:
->>> Obviously nothing notionally against this patch, however if you could give me a 
->>> few days to run my OpenBIOS SPARC32/SPARC64 boot tests against git master with 
->>> this patch applied to double-check there are no regressions, that would be great.
->>
->> No problem.  I just didn't want it to get lost.
-> 
-> Ping for results?
->  
-> r~
+During the tests/tcg/multiarch/memory test, this logging is
+triggered over 350000 times.  Within the context of cross-i386-tci
+build, which is already slow by nature, the logging is sufficient
+to push the test into timeout.
 
-Sorry I haven't had a chance to test this yet - I'll try and get to it later today.
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ tests/tcg/i386/Makefile.softmmu-target   | 9 ---------
+ tests/tcg/i386/Makefile.target           | 6 ------
+ tests/tcg/x86_64/Makefile.softmmu-target | 9 ---------
+ 3 files changed, 24 deletions(-)
 
-
-ATB,
-
-Mark.
+diff --git a/tests/tcg/i386/Makefile.softmmu-target b/tests/tcg/i386/Makefile.softmmu-target
+index ed922d59c8..5266f2335a 100644
+--- a/tests/tcg/i386/Makefile.softmmu-target
++++ b/tests/tcg/i386/Makefile.softmmu-target
+@@ -33,14 +33,5 @@ EXTRA_RUNS+=$(MULTIARCH_RUNS)
+ 
+ memory: CFLAGS+=-DCHECK_UNALIGNED=1
+ 
+-# non-inline runs will trigger the duplicate instruction heuristics in libinsn.so
+-run-plugin-%-with-libinsn.so:
+-	$(call run-test, $@, \
+-	  $(QEMU) -monitor none -display none \
+-		  -chardev file$(COMMA)path=$@.out$(COMMA)id=output \
+-                  -plugin ../../plugin/libinsn.so$(COMMA)inline=on \
+-	    	  -d plugin -D $*-with-libinsn.so.pout \
+-		  $(QEMU_OPTS) $*)
+-
+ # Running
+ QEMU_OPTS+=-device isa-debugcon,chardev=output -device isa-debug-exit,iobase=0xf4,iosize=0x4 -kernel
+diff --git a/tests/tcg/i386/Makefile.target b/tests/tcg/i386/Makefile.target
+index 821822ed0c..f2ee7a4db7 100644
+--- a/tests/tcg/i386/Makefile.target
++++ b/tests/tcg/i386/Makefile.target
+@@ -63,12 +63,6 @@ else
+ SKIP_I386_TESTS+=test-i386-fprem
+ endif
+ 
+-# non-inline runs will trigger the duplicate instruction heuristics in libinsn.so
+-run-plugin-%-with-libinsn.so:
+-	$(call run-test, $@, $(QEMU) $(QEMU_OPTS) \
+-	       -plugin ../../plugin/libinsn.so$(COMMA)inline=on \
+-	       -d plugin -D $*-with-libinsn.so.pout $*)
+-
+ # Update TESTS
+ I386_TESTS:=$(filter-out $(SKIP_I386_TESTS), $(ALL_X86_TESTS))
+ TESTS=$(MULTIARCH_TESTS) $(I386_TESTS)
+diff --git a/tests/tcg/x86_64/Makefile.softmmu-target b/tests/tcg/x86_64/Makefile.softmmu-target
+index 7207fee94c..1bd763f2e6 100644
+--- a/tests/tcg/x86_64/Makefile.softmmu-target
++++ b/tests/tcg/x86_64/Makefile.softmmu-target
+@@ -33,14 +33,5 @@ EXTRA_RUNS+=$(MULTIARCH_RUNS)
+ 
+ memory: CFLAGS+=-DCHECK_UNALIGNED=1
+ 
+-# non-inline runs will trigger the duplicate instruction heuristics in libinsn.so
+-run-plugin-%-with-libinsn.so:
+-	$(call run-test, $@, \
+-	  $(QEMU) -monitor none -display none \
+-		  -chardev file$(COMMA)path=$@.out$(COMMA)id=output \
+-                  -plugin ../../plugin/libinsn.so$(COMMA)inline=on \
+-	    	  -d plugin -D $*-with-libinsn.so.pout \
+-		  $(QEMU_OPTS) $*)
+-
+ # Running
+ QEMU_OPTS+=-device isa-debugcon,chardev=output -device isa-debug-exit,iobase=0xf4,iosize=0x4 -kernel
+-- 
+2.34.1
 
 
