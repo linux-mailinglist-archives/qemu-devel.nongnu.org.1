@@ -2,105 +2,114 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49A2C7385A4
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 15:48:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19C897385AA
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 15:49:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qByCF-0000El-6U; Wed, 21 Jun 2023 09:48:31 -0400
+	id 1qByD3-0000wZ-PL; Wed, 21 Jun 2023 09:49:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1qByC8-0000Du-4O; Wed, 21 Jun 2023 09:48:24 -0400
+ (Exim 4.90_1) (envelope-from <pmorel@linux.ibm.com>)
+ id 1qByD0-0000tl-0d; Wed, 21 Jun 2023 09:49:18 -0400
 Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1qByC5-000113-SE; Wed, 21 Jun 2023 09:48:23 -0400
-Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
+ (Exim 4.90_1) (envelope-from <pmorel@linux.ibm.com>)
+ id 1qByCt-0001AX-AL; Wed, 21 Jun 2023 09:49:17 -0400
+Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 35LDlVQk019821; Wed, 21 Jun 2023 13:48:17 GMT
+ 35LDc1lf001525; Wed, 21 Jun 2023 13:49:00 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=ln7H/5Zpj6NItiL1LfzlYPQS6fCd6TMmMgD+hTxhBCo=;
- b=cXKn8g/OAmHpDey/Ckv1fM5Kiju6nkWhVC22E2817GRC02UIuw3GChsLkggifI7qOKqT
- qw3XoHQ3opt3UfTIEnj5Zn2QQNzi5H0Mt3C0P82Cpwyx28zbdJBKW2K9nBCia/kaNsKx
- Gi1hWDqxDAd9dd5BxoGb0rE1D4m/HZJ1xJxRzbimF1IdZK68ZabPrbvtYcJS9wADngsZ
- JHnnri6qElm3tEbn4eDKIxWWai01aDVwS8xh55f+r55t2prlTbgQfT7alCsbKvypQnK9
- hHkwevF9VSvczg7SjStRSW8qEWYK4Sfeb3yeY5IkmnqR5QnOxkfVrn1kFZSU99hrAp65 dw== 
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=1KYgQ5nuJ7ikSIxJ0Sw+BcNWQZZUHOps7pSA7hMzbg4=;
+ b=X4igH8Dz7gPT3zikcFlFvM1//5c8sSn0J1zdRYrk+sZdBWp+roE/DucPMoEe0ChecVZA
+ 0ZODtcb2+o1E2y72je8oEwTRUfiL4IUA6OA/7Re+yMyfywm2ugJOJebjg/gvcrvVoYxq
+ Zq4iD3MANfBkx3XMFs2wcCPgTW3PB7P8Z9RKDPIGoKY3rQeDmOMlYXJm/Uv6WOIdxAls
+ xcDXIyGPvoxQH7DGtVrrNjCC7O8JRBgyNL60Fl7Y0Jz4daSDpPrDIo6Ay4HmFHMtwxEQ
+ Nr8KuL8NBJyYbAn9qdG8UvAvS80GFGplWMhubeMkYaKRIBj14rA8bmIJcJeMqMn6FLNI 5Q== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rc2d9g0db-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rc0bg3cxj-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 21 Jun 2023 13:48:16 +0000
-Received: from m0353726.ppops.net (m0353726.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 35LDlvf4020578;
- Wed, 21 Jun 2023 13:48:16 GMT
-Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.107])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rc2d9g0cs-1
+ Wed, 21 Jun 2023 13:48:59 +0000
+Received: from m0353728.ppops.net (m0353728.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 35LDcpnX005323;
+ Wed, 21 Jun 2023 13:48:59 GMT
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.98])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rc0bg3cwj-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 21 Jun 2023 13:48:16 +0000
-Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
- by ppma03fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 35L4OSTp000823;
- Wed, 21 Jun 2023 13:48:13 GMT
+ Wed, 21 Jun 2023 13:48:59 +0000
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+ by ppma03ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 35L3Agpe029539;
+ Wed, 21 Jun 2023 13:48:56 GMT
 Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
- by ppma03fra.de.ibm.com (PPS) with ESMTPS id 3r94f5a4c4-1
+ by ppma03ams.nl.ibm.com (PPS) with ESMTPS id 3r94f52smq-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 21 Jun 2023 13:48:13 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
- [10.20.54.105])
+ Wed, 21 Jun 2023 13:48:56 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com
+ [10.20.54.104])
  by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 35LDmBsY38142436
+ 35LDmo3d41943450
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 21 Jun 2023 13:48:11 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0C1C02004B;
- Wed, 21 Jun 2023 13:48:11 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B335020043;
- Wed, 21 Jun 2023 13:48:10 +0000 (GMT)
-Received: from [9.155.209.184] (unknown [9.155.209.184])
- by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Wed, 21 Jun 2023 13:48:10 +0000 (GMT)
-Message-ID: <4cf02e6ef71c6f2bff38f06b433e99526ee244d4.camel@linux.ibm.com>
-Subject: Re: [PATCH v3 8/8] tests/tcg: Add a test for info proc mappings
-From: Ilya Leoshkevich <iii@linux.ibm.com>
-To: Alex =?ISO-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>
-Cc: Laurent Vivier <laurent@vivier.eu>, Peter Maydell
- <peter.maydell@linaro.org>, Richard Henderson
- <richard.henderson@linaro.org>, David Hildenbrand <david@redhat.com>,
- Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-s390x@nongnu.org
-Date: Wed, 21 Jun 2023 15:48:10 +0200
-In-Reply-To: <87legdglka.fsf@linaro.org>
-References: <20230606132743.1386003-1-iii@linux.ibm.com>
- <20230606132743.1386003-9-iii@linux.ibm.com> <87legdglka.fsf@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4 (3.46.4-1.fc37) 
+ Wed, 21 Jun 2023 13:48:50 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6794720043;
+ Wed, 21 Jun 2023 13:48:50 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id DE99D20040;
+ Wed, 21 Jun 2023 13:48:49 +0000 (GMT)
+Received: from [9.152.222.242] (unknown [9.152.222.242])
+ by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+ Wed, 21 Jun 2023 13:48:49 +0000 (GMT)
+Message-ID: <faf2d79d-a993-48a2-11cc-a229d0dbc17b@linux.ibm.com>
+Date: Wed, 21 Jun 2023 15:48:49 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
+Subject: Re: [PATCH v20 02/21] s390x/cpu topology: add topology entries on CPU
+ hotplug
+Content-Language: en-US
+To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
+ Thomas Huth <thuth@redhat.com>, qemu-s390x@nongnu.org
+Cc: qemu-devel@nongnu.org, borntraeger@de.ibm.com, pasic@linux.ibm.com,
+ richard.henderson@linaro.org, david@redhat.com, cohuck@redhat.com,
+ mst@redhat.com, pbonzini@redhat.com, kvm@vger.kernel.org,
+ ehabkost@redhat.com, marcel.apfelbaum@gmail.com, eblake@redhat.com,
+ armbru@redhat.com, seiden@linux.ibm.com, nrb@linux.ibm.com,
+ nsg@linux.ibm.com, frankja@linux.ibm.com, berrange@redhat.com
+References: <20230425161456.21031-1-pmorel@linux.ibm.com>
+ <20230425161456.21031-3-pmorel@linux.ibm.com>
+ <1a919123-f07b-572e-8a33-0e5f9a6ed75c@redhat.com>
+ <e233756c-52f6-547c-4c06-708459a98075@linux.ibm.com>
+ <0d983d5f-f511-8e8f-0762-99f83e41171f@redhat.com>
+ <83be3f5a-0df4-0b7d-9be3-5bf9a30ab709@kaod.org>
+From: Pierre Morel <pmorel@linux.ibm.com>
+In-Reply-To: <83be3f5a-0df4-0b7d-9be3-5bf9a30ab709@kaod.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 7oISqhuAXdlpeTS9_5z2JF6aVggxr5vP
-X-Proofpoint-GUID: e4wWvDLTHE_LH2gZRlqu_NgeH46cjb-K
+X-Proofpoint-GUID: LMWgfax_dC0_Y2j7YsmaENlpcMmNpU1R
+X-Proofpoint-ORIG-GUID: WedStPnIEkKq_tmHLSn9YYwIQJPU7N7p
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
  definitions=2023-06-21_08,2023-06-16_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 malwarescore=0
- clxscore=1011 impostorscore=0 bulkscore=0 mlxlogscore=999 spamscore=0
- phishscore=0 adultscore=0 lowpriorityscore=0 suspectscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2305260000 definitions=main-2306210114
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
+ impostorscore=0
+ lowpriorityscore=0 spamscore=0 priorityscore=1501 adultscore=0
+ suspectscore=0 clxscore=1015 mlxlogscore=999 bulkscore=0 mlxscore=0
+ phishscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2305260000 definitions=main-2306210114
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=pmorel@linux.ibm.com;
  helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H5=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.093,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -116,119 +125,133 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 2023-06-21 at 11:21 +0100, Alex Benn=C3=A9e wrote:
->=20
-> Ilya Leoshkevich <iii@linux.ibm.com> writes:
->=20
-> > Add a small test to prevent regressions.
-> > Since there are issues with how GDB interprets QEMU's target.xml,
-> > enable the test only on aarch64 and s390x for now.
-> >=20
-> > Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-> > ---
-> > =C2=A0tests/tcg/aarch64/Makefile.target=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 3 +-
-> > =C2=A0tests/tcg/multiarch/Makefile.target=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 7 +++
-> > =C2=A0.../multiarch/gdbstub/test-proc-mappings.py=C2=A0=C2=A0 | 55
-> > +++++++++++++++++++
-> > =C2=A0tests/tcg/s390x/Makefile.target=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 2 +-
-> > =C2=A04 files changed, 65 insertions(+), 2 deletions(-)
-> > =C2=A0create mode 100644 tests/tcg/multiarch/gdbstub/test-proc-
-> > mappings.py
-> >=20
-> > diff --git a/tests/tcg/aarch64/Makefile.target
-> > b/tests/tcg/aarch64/Makefile.target
-> > index 03157954871..38402b0ba1f 100644
-> > --- a/tests/tcg/aarch64/Makefile.target
-> > +++ b/tests/tcg/aarch64/Makefile.target
-> > @@ -97,7 +97,8 @@ run-gdbstub-sve-ioctls: sve-ioctls
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0--bin $< --test $(AARCH64_SRC)/gdbstub/test-sve-
-> > ioctl.py, \
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0basic gdbstub SVE ZLEN =
-support)
-> > =C2=A0
-> > -EXTRA_RUNS +=3D run-gdbstub-sysregs run-gdbstub-sve-ioctls
-> > +EXTRA_RUNS +=3D run-gdbstub-sysregs run-gdbstub-sve-ioctls \
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0 run-gdbstub-proc-mappings
-> > =C2=A0endif
-> > =C2=A0endif
-> > =C2=A0
-> > diff --git a/tests/tcg/multiarch/Makefile.target
-> > b/tests/tcg/multiarch/Makefile.target
-> > index 373db696481..cbc0b75787a 100644
-> > --- a/tests/tcg/multiarch/Makefile.target
-> > +++ b/tests/tcg/multiarch/Makefile.target
-> > @@ -81,6 +81,13 @@ run-gdbstub-qxfer-auxv-read: sha1
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0--bin $< --test $(MULTIARCH_SRC)/gdbstub/test-
-> > qxfer-auxv-read.py, \
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0basic gdbstub qXfer:aux=
-v:read support)
-> > =C2=A0
-> > +run-gdbstub-proc-mappings: sha1
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0$(call run-test, $@, $(GDB_S=
-CRIPT) \
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0--gdb $(HAVE_GDB_BIN) \
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0--qemu $(QEMU) --qargs "$(QEMU_OPTS)" \
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0--bin $< --test $(MULTIARCH_SRC)/gdbstub/test-proc-
-> > mappings.py, \
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0proc mappings support)
-> > +
->=20
-> I wondered if it makes more sense to keep the extra test
-> configuration
-> logic in multiarch:
->=20
-> =C2=A0 run-gdbstub-proc-mappings: sha1
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 $(call run-test, $=
-@, $(GDB_SCRIPT) \
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 --gdb $(HAVE_GDB_BIN) \
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 --qemu $(QEMU) --qargs "$(QEMU_OPTS)" \
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 --bin $< --test $(MULTIARCH_SRC)/gdbstub/tes=
-t-proc-
-> mappings.py, \
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 proc mappings supp=
-ort)
->=20
-> =C2=A0 # only enable for s390x and aarch64 for now
-> =C2=A0 ifneq (,$(findstring aarch64,$(TARGET_NAME)))
-> =C2=A0 EXTRA_RUNS +=3D run-gdbstub-proc-mappings
-> =C2=A0 else ifneq (,$(findstring s390x,$(TARGET_NAME)))
-> =C2=A0 EXTRA_RUNS +=3D run-gdbstub-proc-mappings
-> =C2=A0 endif
->=20
-> but it still ends up pretty ugly. Is the gdb handling fixed for other
-> arches in other versions. Maybe we could probe gdb for support and
-> wrap
-> the whole stanza in something like:
->=20
-> =C2=A0 ifeq ($(HOST_GDB_SUPPORTS_PROC_MAPPING),y)
-> =C2=A0 ...
-> =C2=A0 endif
->=20
-> ?
 
-I think I better add the check to the test itself, because otherwise we
-have to probe GDB against QEMU binary we just built, which sounds
-unnecessarily complicated.
+On 5/3/23 12:23, Cédric Le Goater wrote:
+> Hello,
+>
+> On 5/3/23 11:12, Thomas Huth wrote:
+>> On 28/04/2023 14.35, Pierre Morel wrote:
+>>>
+>>> On 4/27/23 15:38, Thomas Huth wrote:
+>>>> On 25/04/2023 18.14, Pierre Morel wrote:
+>>>>> The topology information are attributes of the CPU and are
+>>>>> specified during the CPU device creation.
+>>>>>
+>>>>> On hot plug we:
+>>>>> - calculate the default values for the topology for drawers,
+>>>>>    books and sockets in the case they are not specified.
+>>>>> - verify the CPU attributes
+>>>>> - check that we have still room on the desired socket
+>>>>>
+>>>>> The possibility to insert a CPU in a mask is dependent on the
+>>>>> number of cores allowed in a socket, a book or a drawer, the
+>>>>> checking is done during the hot plug of the CPU to have an
+>>>>> immediate answer.
+>>>>>
+>>>>> If the complete topology is not specified, the core is added
+>>>>> in the physical topology based on its core ID and it gets
+>>>>> defaults values for the modifier attributes.
+>>>>>
+>>>>> This way, starting QEMU without specifying the topology can
+>>>>> still get some advantage of the CPU topology.
+>>>>>
+>>>>> Signed-off-by: Pierre Morel <pmorel@linux.ibm.com>
+>>>>> ---
+>>>> ...
+>>>>> diff --git a/hw/s390x/cpu-topology.c b/hw/s390x/cpu-topology.c
+>>>>> new file mode 100644
+>>>>> index 0000000000..471e0e7292
+>>>>> --- /dev/null
+>>>>> +++ b/hw/s390x/cpu-topology.c
+>>>>> @@ -0,0 +1,259 @@
+>>>>> +/* SPDX-License-Identifier: GPL-2.0-or-later */
+>>>>> +/*
+>>>>> + * CPU Topology
+>>>>
+>>>> Since you later introduce a file with almost the same name in the 
+>>>> target/s390x/ folder, it would be fine to have some more 
+>>>> explanation here what this file is all about (especially with 
+>>>> regards to the other file in target/s390x/).
+>>>
+>>>
+>>> I first did put the interceptions in target/s390/ then moved them in 
+>>> target/s390x/kvm because it is KVM related then again only let STSI 
+>>> interception.
+>>>
+>>> But to be honest I do not see any reason why not put everything in 
+>>> hw/s390x/ if CPU topology is implemented for TCG I think the code 
+>>> will call insert_stsi_15_1_x() too.
+>>>
+>>> no?
+>>
+>> Oh well, it's all so borderline ... whether you rather think of this 
+>> as part of the CPU (like the STSI instruction) or rather part of the 
+>> machine (drawers, books, ...).
+>> I don't mind too much, as long as we don't have two files around with 
+>> almost the same name (apart from "_" vs. "-"). So either keep the 
+>> stsi part in target/s390x and use a better file name for that, or put 
+>> everything together in one "cpu-topology.c" file.
+>> Or what do others think about it?
+>
+> Would it make sense to have a target/s390x/stsi.c file with the stsi
+> routines to be called from TCG insn helpers and from the KVM backend ?
+> This suggestion is based on the services found in the ioinst.c file.
+>
+> So, target/s390x/kvm/cpu_topology.c would become target/s390x/stsi.c
+> and stsi services would be moved there, if that makes sense.
+>
+> Or target/s390x/kvm/stsi.c to start with because services are only
+> active for KVM targets.
+>
+>
+> Looking at hw/s390x/meson.build :
+>
+>   s390x_ss.add(when: 'CONFIG_KVM', if_true: files(
+>     'tod-kvm.c',
+>     's390-skeys-kvm.c',
+>     's390-stattrib-kvm.c',
+>     'pv.c',
+>     's390-pci-kvm.c',
+>     'cpu-topology.c',
+>   ))
+>
+> It seems cpu-topology.c should be named cpu-topology-kvm.c to follow
+> the same convention.
+>
+> However, I don't see much reason for the KVM condition, apart from
+> the new polarization definitions in machine-target.json which depend
+> on KVM. cpu-topology.c could well be compiled without the KVM #ifdef,
+> all seems in place to detect support at runtime.
+>
+> In this file, we find a s390_handle_ptf() which is called from
+> kvm_handle_ptf() in target/s390x/kvm/kvm.c. Is it the right place for
+> it ? Shouldn't we move the service under target/s390x/kvm/kvm.c ?
+>
+> Thanks,
+>
+> C.
+>
+>
+Hello Cédric,
 
-The error message on all arches without this series is:
+The reason to have the s390_handle_ptf() here is to be ready for TCG.
 
-    warning: unable to open /proc file '/proc/1/maps'
+We have the choice to let the cpu-topology.c file inside the KVM list of 
+meson.build until TCG provides the CPU_TOPOLOGY facility and then move 
+it to the general list
+or
+to move it now to the general list inside meson.build and keep code that 
+will only be useful when TCG provides the CPU_TOPOLOGY facility
 
-The error message on x86_64 (expected) with this series is:
+The option taken here is to not let the code active if it is not in use.
 
-   Not supported on this target.
+Did I answered the question or forgot something?
 
-So we can simply exit(0) from the test if we see this.
+Regards,
+
+Pierre
+
+
+
+
 
