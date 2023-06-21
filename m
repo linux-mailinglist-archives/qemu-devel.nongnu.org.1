@@ -2,113 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19C897385AA
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 15:49:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04E647385D6
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 15:58:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qByD3-0000wZ-PL; Wed, 21 Jun 2023 09:49:21 -0400
+	id 1qByKN-0004C6-8T; Wed, 21 Jun 2023 09:56:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pmorel@linux.ibm.com>)
- id 1qByD0-0000tl-0d; Wed, 21 Jun 2023 09:49:18 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1qByKJ-0004AY-GZ
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 09:56:51 -0400
+Received: from rev.ng ([5.9.113.41])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pmorel@linux.ibm.com>)
- id 1qByCt-0001AX-AL; Wed, 21 Jun 2023 09:49:17 -0400
-Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 35LDc1lf001525; Wed, 21 Jun 2023 13:49:00 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=1KYgQ5nuJ7ikSIxJ0Sw+BcNWQZZUHOps7pSA7hMzbg4=;
- b=X4igH8Dz7gPT3zikcFlFvM1//5c8sSn0J1zdRYrk+sZdBWp+roE/DucPMoEe0ChecVZA
- 0ZODtcb2+o1E2y72je8oEwTRUfiL4IUA6OA/7Re+yMyfywm2ugJOJebjg/gvcrvVoYxq
- Zq4iD3MANfBkx3XMFs2wcCPgTW3PB7P8Z9RKDPIGoKY3rQeDmOMlYXJm/Uv6WOIdxAls
- xcDXIyGPvoxQH7DGtVrrNjCC7O8JRBgyNL60Fl7Y0Jz4daSDpPrDIo6Ay4HmFHMtwxEQ
- Nr8KuL8NBJyYbAn9qdG8UvAvS80GFGplWMhubeMkYaKRIBj14rA8bmIJcJeMqMn6FLNI 5Q== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rc0bg3cxj-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 21 Jun 2023 13:48:59 +0000
-Received: from m0353728.ppops.net (m0353728.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 35LDcpnX005323;
- Wed, 21 Jun 2023 13:48:59 GMT
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.98])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rc0bg3cwj-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 21 Jun 2023 13:48:59 +0000
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
- by ppma03ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 35L3Agpe029539;
- Wed, 21 Jun 2023 13:48:56 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
- by ppma03ams.nl.ibm.com (PPS) with ESMTPS id 3r94f52smq-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 21 Jun 2023 13:48:56 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com
- [10.20.54.104])
- by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 35LDmo3d41943450
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 21 Jun 2023 13:48:50 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6794720043;
- Wed, 21 Jun 2023 13:48:50 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DE99D20040;
- Wed, 21 Jun 2023 13:48:49 +0000 (GMT)
-Received: from [9.152.222.242] (unknown [9.152.222.242])
- by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTPS;
- Wed, 21 Jun 2023 13:48:49 +0000 (GMT)
-Message-ID: <faf2d79d-a993-48a2-11cc-a229d0dbc17b@linux.ibm.com>
-Date: Wed, 21 Jun 2023 15:48:49 +0200
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1qByKG-00056v-1Q
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 09:56:51 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
+ s=dkim; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:Cc:
+ To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+ Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+ In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+ List-Post:List-Owner:List-Archive;
+ bh=mLHEPhwrRRbn4qdNfuRDBHjNN58ksRLR5GIU2bzeh2s=; b=cVnbvqn9fKRn4FBh/T0KI0gRP9
+ 4Va5muMZo7gFHJQZlJQYRe+3l3Grq/tlCAv0VafKuZFOpThy07MlkomXTkNYJXUW/41sQ9yQbnoKO
+ N4T7gotvEF9oUwuWO3o0+J06zQEUSBmjemQt+RqeranPaQMh5T+xNGLi3zh6KTzn352s=;
+To: qemu-devel@nongnu.org
+Cc: ale@rev.ng, richard.henderson@linaro.org, pbonzini@redhat.com,
+ eduardo@habkost.net, philmd@linaro.org, marcel.apfelbaum@gmail.com,
+ wangyanan55@huawei.com
+Subject: [PATCH v3 00/12] Start replacing target_ulong with vaddr
+Date: Wed, 21 Jun 2023 15:56:21 +0200
+Message-ID: <20230621135633.1649-1-anjo@rev.ng>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: Re: [PATCH v20 02/21] s390x/cpu topology: add topology entries on CPU
- hotplug
-Content-Language: en-US
-To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
- Thomas Huth <thuth@redhat.com>, qemu-s390x@nongnu.org
-Cc: qemu-devel@nongnu.org, borntraeger@de.ibm.com, pasic@linux.ibm.com,
- richard.henderson@linaro.org, david@redhat.com, cohuck@redhat.com,
- mst@redhat.com, pbonzini@redhat.com, kvm@vger.kernel.org,
- ehabkost@redhat.com, marcel.apfelbaum@gmail.com, eblake@redhat.com,
- armbru@redhat.com, seiden@linux.ibm.com, nrb@linux.ibm.com,
- nsg@linux.ibm.com, frankja@linux.ibm.com, berrange@redhat.com
-References: <20230425161456.21031-1-pmorel@linux.ibm.com>
- <20230425161456.21031-3-pmorel@linux.ibm.com>
- <1a919123-f07b-572e-8a33-0e5f9a6ed75c@redhat.com>
- <e233756c-52f6-547c-4c06-708459a98075@linux.ibm.com>
- <0d983d5f-f511-8e8f-0762-99f83e41171f@redhat.com>
- <83be3f5a-0df4-0b7d-9be3-5bf9a30ab709@kaod.org>
-From: Pierre Morel <pmorel@linux.ibm.com>
-In-Reply-To: <83be3f5a-0df4-0b7d-9be3-5bf9a30ab709@kaod.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: LMWgfax_dC0_Y2j7YsmaENlpcMmNpU1R
-X-Proofpoint-ORIG-GUID: WedStPnIEkKq_tmHLSn9YYwIQJPU7N7p
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-06-21_08,2023-06-16_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0
- lowpriorityscore=0 spamscore=0 priorityscore=1501 adultscore=0
- suspectscore=0 clxscore=1015 mlxlogscore=999 bulkscore=0 mlxscore=0
- phishscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2305260000 definitions=main-2306210114
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=pmorel@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
+Received-SPF: pass client-ip=5.9.113.41; envelope-from=anjo@rev.ng; helo=rev.ng
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.093,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -122,136 +53,125 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Anton Johansson <anjo@rev.ng>
+From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+This is a first patchset in removing target_ulong from non-target/
+directories.  As use of target_ulong is spread accross the codebase we
+are attempting to target as few maintainers as possible with each
+patchset in order to ease reviewing.
 
-On 5/3/23 12:23, Cédric Le Goater wrote:
-> Hello,
->
-> On 5/3/23 11:12, Thomas Huth wrote:
->> On 28/04/2023 14.35, Pierre Morel wrote:
->>>
->>> On 4/27/23 15:38, Thomas Huth wrote:
->>>> On 25/04/2023 18.14, Pierre Morel wrote:
->>>>> The topology information are attributes of the CPU and are
->>>>> specified during the CPU device creation.
->>>>>
->>>>> On hot plug we:
->>>>> - calculate the default values for the topology for drawers,
->>>>>    books and sockets in the case they are not specified.
->>>>> - verify the CPU attributes
->>>>> - check that we have still room on the desired socket
->>>>>
->>>>> The possibility to insert a CPU in a mask is dependent on the
->>>>> number of cores allowed in a socket, a book or a drawer, the
->>>>> checking is done during the hot plug of the CPU to have an
->>>>> immediate answer.
->>>>>
->>>>> If the complete topology is not specified, the core is added
->>>>> in the physical topology based on its core ID and it gets
->>>>> defaults values for the modifier attributes.
->>>>>
->>>>> This way, starting QEMU without specifying the topology can
->>>>> still get some advantage of the CPU topology.
->>>>>
->>>>> Signed-off-by: Pierre Morel <pmorel@linux.ibm.com>
->>>>> ---
->>>> ...
->>>>> diff --git a/hw/s390x/cpu-topology.c b/hw/s390x/cpu-topology.c
->>>>> new file mode 100644
->>>>> index 0000000000..471e0e7292
->>>>> --- /dev/null
->>>>> +++ b/hw/s390x/cpu-topology.c
->>>>> @@ -0,0 +1,259 @@
->>>>> +/* SPDX-License-Identifier: GPL-2.0-or-later */
->>>>> +/*
->>>>> + * CPU Topology
->>>>
->>>> Since you later introduce a file with almost the same name in the 
->>>> target/s390x/ folder, it would be fine to have some more 
->>>> explanation here what this file is all about (especially with 
->>>> regards to the other file in target/s390x/).
->>>
->>>
->>> I first did put the interceptions in target/s390/ then moved them in 
->>> target/s390x/kvm because it is KVM related then again only let STSI 
->>> interception.
->>>
->>> But to be honest I do not see any reason why not put everything in 
->>> hw/s390x/ if CPU topology is implemented for TCG I think the code 
->>> will call insert_stsi_15_1_x() too.
->>>
->>> no?
->>
->> Oh well, it's all so borderline ... whether you rather think of this 
->> as part of the CPU (like the STSI instruction) or rather part of the 
->> machine (drawers, books, ...).
->> I don't mind too much, as long as we don't have two files around with 
->> almost the same name (apart from "_" vs. "-"). So either keep the 
->> stsi part in target/s390x and use a better file name for that, or put 
->> everything together in one "cpu-topology.c" file.
->> Or what do others think about it?
->
-> Would it make sense to have a target/s390x/stsi.c file with the stsi
-> routines to be called from TCG insn helpers and from the KVM backend ?
-> This suggestion is based on the services found in the ioinst.c file.
->
-> So, target/s390x/kvm/cpu_topology.c would become target/s390x/stsi.c
-> and stsi services would be moved there, if that makes sense.
->
-> Or target/s390x/kvm/stsi.c to start with because services are only
-> active for KVM targets.
->
->
-> Looking at hw/s390x/meson.build :
->
->   s390x_ss.add(when: 'CONFIG_KVM', if_true: files(
->     'tod-kvm.c',
->     's390-skeys-kvm.c',
->     's390-stattrib-kvm.c',
->     'pv.c',
->     's390-pci-kvm.c',
->     'cpu-topology.c',
->   ))
->
-> It seems cpu-topology.c should be named cpu-topology-kvm.c to follow
-> the same convention.
->
-> However, I don't see much reason for the KVM condition, apart from
-> the new polarization definitions in machine-target.json which depend
-> on KVM. cpu-topology.c could well be compiled without the KVM #ifdef,
-> all seems in place to detect support at runtime.
->
-> In this file, we find a s390_handle_ptf() which is called from
-> kvm_handle_ptf() in target/s390x/kvm/kvm.c. Is it the right place for
-> it ? Shouldn't we move the service under target/s390x/kvm/kvm.c ?
->
-> Thanks,
->
-> C.
->
->
-Hello Cédric,
+The following instances of target_ulong remain in accel/ and tcg/
+    - atomic helpers (atomic_common.c.inc), cpu_atomic_*()
+      (atomic_template.h,) and cpu_[st|ld]*()
+      (cputlb.c/ldst_common.c.inc) are only used in target/ and can
+      be pulled out into a separate target-specific file;
 
-The reason to have the s390_handle_ptf() here is to be ready for TCG.
+    - walk_memory_regions() is used in user-exec.c and
+      linux-user/elfload.c;
 
-We have the choice to let the cpu-topology.c file inside the KVM list of 
-meson.build until TCG provides the CPU_TOPOLOGY facility and then move 
-it to the general list
-or
-to move it now to the general list inside meson.build and keep code that 
-will only be useful when TCG provides the CPU_TOPOLOGY facility
+    - kvm_find_sw_breakpoint() in kvm-all.c used in target/;
 
-The option taken here is to not let the code active if it is not in use.
+Changes in v2:
+    - addr argument in tb_invalidate_phys_addr() changed from vaddr
+      to hwaddr;
 
-Did I answered the question or forgot something?
+    - Removed previous patch:
 
-Regards,
+        "[PATCH 4/8] accel/tcg: Replace target_ulong with vaddr in helper_unaligned_*()"
 
-Pierre
+      as these functions are removed by Richard's patches;
 
+    - First patch:
 
+        "[PATCH 1/8] accel: Replace `target_ulong` with `vaddr` in TB/TLB"
 
+      has been split into patches 1-7 to ease reviewing;
 
+    - Pulled in target/ changes to cpu_get_tb_cpu_state() into this
+      patchset.  This was done to avoid pointer casts to target_ulong *
+      which would break for 32-bit targets on a 64-bit BE host;
+
+      Note the small target/ changes are collected in a single
+      patch to not break bisection.  If it's still desirable to split
+      based on maintainer, let me know;
+
+    - `last` argument of pageflags_[find|next] changed from target_long
+       to vaddr.  This change was left out of the last patchset due to
+       triggering a "Bad ram pointer" error (softmmu/physmem.c:2273)
+       when running make check for a i386-softmmu target.
+
+       I was not able to recreate this on master or post rebase on
+       Richard's tcg-once branch.
+
+Changes in v3:
+    - Rebased on master
+
+Finally, the grand goal is to allow for heterogeneous QEMU binaries
+consisting of multiple frontends.
+
+RFC: https://lists.nongnu.org/archive/html/qemu-devel/2022-12/msg04518.html
+
+Anton Johansson (12):
+  accel: Replace target_ulong in tlb_*()
+  accel/tcg/translate-all.c: Widen pc and cs_base
+  target: Widen pc/cs_base in cpu_get_tb_cpu_state
+  accel/tcg/cputlb.c: Widen CPUTLBEntry access functions
+  accel/tcg/cputlb.c: Widen addr in MMULookupPageData
+  accel/tcg/cpu-exec.c: Widen pc to vaddr
+  accel/tcg: Widen pc to vaddr in CPUJumpCache
+  accel: Replace target_ulong with vaddr in probe_*()
+  accel/tcg: Replace target_ulong with vaddr in *_mmu_lookup()
+  accel/tcg: Replace target_ulong with vaddr in translator_*()
+  accel/tcg: Replace target_ulong with vaddr in page_*()
+  cpu: Replace target_ulong with hwaddr in tb_invalidate_phys_addr()
+
+ accel/stubs/tcg-stub.c       |   6 +-
+ accel/tcg/cpu-exec.c         |  43 ++++---
+ accel/tcg/cputlb.c           | 233 +++++++++++++++++------------------
+ accel/tcg/internal.h         |   6 +-
+ accel/tcg/tb-hash.h          |  12 +-
+ accel/tcg/tb-jmp-cache.h     |   2 +-
+ accel/tcg/tb-maint.c         |   2 +-
+ accel/tcg/translate-all.c    |  13 +-
+ accel/tcg/translator.c       |  10 +-
+ accel/tcg/user-exec.c        |  58 +++++----
+ cpu.c                        |   2 +-
+ include/exec/cpu-all.h       |  10 +-
+ include/exec/cpu-defs.h      |   4 +-
+ include/exec/cpu_ldst.h      |  10 +-
+ include/exec/exec-all.h      |  95 +++++++-------
+ include/exec/translate-all.h |   2 +-
+ include/exec/translator.h    |   6 +-
+ include/qemu/plugin-memory.h |   2 +-
+ target/alpha/cpu.h           |   4 +-
+ target/arm/cpu.h             |   4 +-
+ target/arm/helper.c          |   4 +-
+ target/avr/cpu.h             |   4 +-
+ target/cris/cpu.h            |   4 +-
+ target/hexagon/cpu.h         |   4 +-
+ target/hppa/cpu.h            |   5 +-
+ target/i386/cpu.h            |   4 +-
+ target/loongarch/cpu.h       |   6 +-
+ target/m68k/cpu.h            |   4 +-
+ target/microblaze/cpu.h      |   4 +-
+ target/mips/cpu.h            |   4 +-
+ target/nios2/cpu.h           |   4 +-
+ target/openrisc/cpu.h        |   5 +-
+ target/ppc/cpu.h             |   8 +-
+ target/ppc/helper_regs.c     |   4 +-
+ target/riscv/cpu.h           |   4 +-
+ target/riscv/cpu_helper.c    |   4 +-
+ target/rx/cpu.h              |   4 +-
+ target/s390x/cpu.h           |   4 +-
+ target/sh4/cpu.h             |   4 +-
+ target/sparc/cpu.h           |   4 +-
+ target/tricore/cpu.h         |   4 +-
+ target/xtensa/cpu.h          |   4 +-
+ 42 files changed, 307 insertions(+), 313 deletions(-)
+
+--
+2.41.0
 
