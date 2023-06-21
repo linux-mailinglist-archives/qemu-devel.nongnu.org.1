@@ -2,94 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C076737BE5
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 09:09:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8236D737BE7
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 09:09:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBrxL-00017u-DC; Wed, 21 Jun 2023 03:08:43 -0400
+	id 1qBry3-0001vI-JK; Wed, 21 Jun 2023 03:09:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qBrxI-00016E-Oz
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 03:08:40 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qBry0-0001p1-K8
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 03:09:25 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qBrxH-0006pc-2d
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 03:08:40 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qBrxy-0007mv-P0
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 03:09:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687331318;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ s=mimecast20190719; t=1687331361;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=sKco4T/GA7XGYLqZw2lpoJj//tNbzul91G89gk0KL/U=;
- b=QkPUVaXKCxjJuSChx26cM9gt0bQZRREFdq2eDJiyPyjoVgAIYap2bt33sInjJWTtgjSlZi
- O30Sm7K7zR9KyvS5njh4NfR8zfcRMEnPMiSdRa2Z6ywm0ciEvDZQIcGMYENgwYDObc3R9l
- 9Gvp6YH5mIv/I0vbaAjRRc5tPGdnAv0=
-Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
- [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-22-B0_0lOxJOratBeR_UZetgw-1; Wed, 21 Jun 2023 03:08:36 -0400
-X-MC-Unique: B0_0lOxJOratBeR_UZetgw-1
-Received: by mail-lf1-f69.google.com with SMTP id
- 2adb3069b0e04-4f63eed2413so3994208e87.1
- for <qemu-devel@nongnu.org>; Wed, 21 Jun 2023 00:08:36 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687331315; x=1689923315;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=sKco4T/GA7XGYLqZw2lpoJj//tNbzul91G89gk0KL/U=;
- b=MXWdVRSYS7E3ean3gOC+uHcf7R6CCgeGyakDBX+GP55yWbEYAMd586EDY9PP3/pWL/
- m50N310805P+WGgoao683LbkEBHqdNhXlBBTTMLVR0eUDOg7WzD+KUV9ZpTYgYYaEHrq
- hyXrlRa9gFd7R+ybsNoZWyBLOf12py7RhMPSamI9sXZUX0ILcKFgy5vMG+zOxi6siTVn
- ml+aCIiJ+Hq11jXHPp+c2y3+w78mCIM++Pa1333ieCLbbDD8FN4uTotMbTex/nsvN3CF
- esNly3T9gbvZHkBIS7iFa6uSOYduoanZJjADKmt7gD9rExzWz4afgzJLOfgrqFnaYS1n
- dteQ==
-X-Gm-Message-State: AC+VfDz6TIGaiIhxUgatZsG3sF5U6V5Hm+6UCBrT2kMe4i8bvOKWYmo3
- 060eWdAXRU5dXIR9N2mSlHfzadpu6bOFQCvYnkB5VrObGp6erKuFWfbcp/axs41D0swVOI3MqgK
- VOl4WdEDIqCi6H4g=
-X-Received: by 2002:a19:5f05:0:b0:4f8:442c:de25 with SMTP id
- t5-20020a195f05000000b004f8442cde25mr7842039lfb.5.1687331315309; 
- Wed, 21 Jun 2023 00:08:35 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7ybjXMclxGmxa0+iB1VhFJOM4keYhG20kd6hWcZ6cenJ0/AKKB1oLCjHIQPgNO9IsMHcLifg==
-X-Received: by 2002:a19:5f05:0:b0:4f8:442c:de25 with SMTP id
- t5-20020a195f05000000b004f8442cde25mr7842013lfb.5.1687331314847; 
- Wed, 21 Jun 2023 00:08:34 -0700 (PDT)
-Received: from [10.33.192.205] (nat-pool-str-t.redhat.com. [149.14.88.106])
- by smtp.gmail.com with ESMTPSA id
- n12-20020a7bc5cc000000b003eddc6aa5fasm15222118wmk.39.2023.06.21.00.08.33
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 21 Jun 2023 00:08:34 -0700 (PDT)
-Message-ID: <e715e41d-b50a-3747-8007-e188e911a724@redhat.com>
-Date: Wed, 21 Jun 2023 09:08:33 +0200
+ bh=DV/6JAnJDvw9kwdAsvWoWHEKuZaga7Gc+N3SGojc/Qg=;
+ b=h5XYhJMgGj6h2JkoQk+5F/Wa53TqxQcqN+ip7ERpWP0crF8sOASWiL1uoNadPXHMcK0E1W
+ lqJBab+lqWxDJFxyao8W4hoYYfL9z/v/oW8yZe4V0FJIk4cb3AH6h604143d8FW1saAZ2X
+ Wq5AnKR8W2NrSM6kEZdjuQbwt0IXhPQ=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-490-MQdkrp_wNk-riLfbodLKBg-1; Wed, 21 Jun 2023 03:09:15 -0400
+X-MC-Unique: MQdkrp_wNk-riLfbodLKBg-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3A68A3C0DDAB;
+ Wed, 21 Jun 2023 07:09:15 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.44])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 9A0911402C06;
+ Wed, 21 Jun 2023 07:09:14 +0000 (UTC)
+Date: Wed, 21 Jun 2023 08:09:12 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Henrik Carlqvist <hc94@poolhem.se>
+Cc: hc981@poolhem.se, mark.cave-ayland@ilande.co.uk, qemu-devel@nongnu.org
+Subject: Re: [PATCH v7] Emulate dip switch language layout settings on SUN
+ keyboard
+Message-ID: <ZJKiGBJNQa5Kx+Dg@redhat.com>
+References: <20230328191958.3e3eb5e4.hc981@poolhem.se>
+ <ZCMq/imcAq0ApLQp@redhat.com>
+ <20230328221608.328ab80f.hc981@poolhem.se>
+ <20230430225533.1a57879a.hc981@poolhem.se>
+ <20230608181439.7ea3a5c5.hc981@poolhem.se>
+ <4e8f027a-ca00-c54f-ef2f-f0df1f5b2f9e@ilande.co.uk>
+ <20230610122912.0fc157de.hc981@poolhem.se>
+ <20230611014751.22f22674.hc94@poolhem.se>
+ <ZJFv4Hq8RMVOUum/@redhat.com>
+ <20230620215043.6124c450.hc94@poolhem.se>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [RFC 4/6] migration: Deprecate -incoming <uri>
-Content-Language: en-US
-To: Juan Quintela <quintela@redhat.com>, qemu-devel@nongnu.org
-Cc: Markus Armbruster <armbru@redhat.com>, Leonardo Bras
- <leobras@redhat.com>, =?UTF-8?Q?Daniel_P_=2e_Berrang=c3=a9?=
- <berrange@redhat.com>, qemu-block@nongnu.org, Peter Xu <peterx@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>, Eric Blake <eblake@redhat.com>,
- Fam Zheng <fam@euphon.net>, libvir-list@redhat.com,
- Paolo Bonzini <pbonzini@redhat.com>
-References: <20230612193344.3796-1-quintela@redhat.com>
- <20230612193344.3796-5-quintela@redhat.com>
-From: Thomas Huth <thuth@redhat.com>
-In-Reply-To: <20230612193344.3796-5-quintela@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230620215043.6124c450.hc94@poolhem.se>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -103,53 +89,55 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/06/2023 21.33, Juan Quintela wrote:
-> Only "defer" is recommended.  After setting all migation parameters,
-> start incoming migration with "migrate-incoming uri" command.
+On Tue, Jun 20, 2023 at 09:50:43PM +0200, Henrik Carlqvist wrote:
+> On Tue, 20 Jun 2023 10:22:40 +0100
+> Daniel P. BerrangÃ© <berrange@redhat.com> wrote:
 > 
-> Signed-off-by: Juan Quintela <quintela@redhat.com>
-> ---
->   docs/about/deprecated.rst | 7 +++++++
->   softmmu/vl.c              | 2 ++
->   2 files changed, 9 insertions(+)
+> Thanks for your feedback!
 > 
-> diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-> index 47e98dc95e..518672722d 100644
-> --- a/docs/about/deprecated.rst
-> +++ b/docs/about/deprecated.rst
-> @@ -447,3 +447,10 @@ The new way to modify migration is using migration parameters.
->   ``blk`` functionality can be acchieved using
->   ``migrate_set_parameter block-incremental true``.
->   
-> +``-incoming uri`` (since 8.1)
-> +'''''''''''''''''''''''''''''
-> +
-> +Everything except ``-incoming defer`` are deprecated.  This allows to
-> +setup parameters before launching the proper migration with
-> +``migrate-incoming uri``.
-> +
-> diff --git a/softmmu/vl.c b/softmmu/vl.c
-> index b0b96f67fa..7fe865ab59 100644
-> --- a/softmmu/vl.c
-> +++ b/softmmu/vl.c
-> @@ -2651,6 +2651,8 @@ void qmp_x_exit_preconfig(Error **errp)
->       if (incoming) {
->           Error *local_err = NULL;
->           if (strcmp(incoming, "defer") != 0) {
-> +            warn_report("-incoming %s is deprecated, use -incoming defer and "
-> +                        " set the uri with migrate-incoming.", incoming);
->               qmp_migrate_incoming(incoming, &local_err);
->               if (local_err) {
->                   error_reportf_err(local_err, "-incoming %s: ", incoming);
+> > Assuming you have docutils installed, QEMU will build the manual by
+> > default and print any issues on console during build. You can point
+> > your browser to $BUILD/docs/manual/system/index.html to see the result.
+> 
+> It seems as if I have docutils version 0.17.1 installed. However the
+> build/docs directory only contains a symlink to the config directory in
+> ../../docs after make is completed.
+> 
+> > For future reference, if you want to put some questions/notes in the
+> > submission, it is best to keep them separate from the commit message
+> > text, as the questions/notes shouldn't end up in git history. To
+> > separate them, put questions  immediately after the '---' that separate
+> > the commit message from the diffstat
+> 
+> Thanks! Will do...
+> 
+> > You need to remove the space between :ref: and `keyboard`.
+> > 
+> > You'll also need to add it to a ToC (table of contents) otherwise
+> > the build system complains.
+> > 
+> > I'd suggest putting the new file at docs/system/devices/keyboards.rst
+> > and adding to the ToC in docs/system/device-emulation.rst
+> 
+> I will update the .rst files and placements, hopefully the coming weekend and
+> come back with an updated patch. However, until I am able to build something
+> from those .rst files, I can only follow your instructions to finally get them
+> right.
 
-Could we maybe keep at least the smallest set of necessary parameters 
-around? I'm often doing a "-incoming tcp:0:1234" for doing quick sanity 
-checks with migration, not caring about other migration parameters, so if 
-that could continue to work, that would be very appreciated.
+If you're using one of the common Linux distros, you'll find a list of
+the full set of packages you need to enable QEMU feuatres in the
+dockerfiles at tests/docker/dockerfiles/. Those all have enough to
+enable the docs build.
 
-  Thomas
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
