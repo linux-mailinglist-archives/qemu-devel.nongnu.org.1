@@ -2,72 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E24B7386C5
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 16:23:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E64727386CA
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 16:24:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qByjW-0000tT-Em; Wed, 21 Jun 2023 10:22:54 -0400
+	id 1qBykC-0001WE-Vi; Wed, 21 Jun 2023 10:23:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qByjU-0000tK-CX
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 10:22:52 -0400
-Received: from smtp-out2.suse.de ([2001:67c:2178:6::1d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qByjS-0000oJ-R5
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 10:22:52 -0400
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 606561FEAB;
- Wed, 21 Jun 2023 14:22:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1687357368; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=3LbDV9fIwPZxPlQPFTZlTi5F9fw4s3nsfpB3zo48hAY=;
- b=DnVt/aUWZzX0Y+x0J7N+Sbf6ImCYIgb0/emf3+gs5a1SvqU3ECMMVbzqkW+amG6048syKd
- wZ76HkJesFgrLsiNLjbBs34imcmck0N8kSbhyMueZBuB52234ngXavlKmBYyqNCTgUSgS7
- 2CvaN+4wWu3HATodnAG8++XmEuoPf4M=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1687357368;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=3LbDV9fIwPZxPlQPFTZlTi5F9fw4s3nsfpB3zo48hAY=;
- b=yAfesyIcXtJW7bllbOKBw6875FKndVgzpzQQq+8u8R2ZfaORQRaZF0oeuoDhjzcn/avqv9
- tnptoGJcQGGtotCA==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id B121D133E6;
- Wed, 21 Jun 2023 14:22:47 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id 8sFMGLcHk2SbBAAAMHmgww
- (envelope-from <farosas@suse.de>); Wed, 21 Jun 2023 14:22:47 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: z00619469 <zhangjianguo18@huawei.com>, qemu-devel@nongnu.org
-Cc: chenyuhui5@huawei.com, xuyinghua3@huawei.com, liheng.liheng@huawei.com,
- renxuming@huawei.com, pengyi.pengyi@huawei.com, yubihong@huawei.com,
- zhengchuan@huawei.com, huhao33@huawei.com
-Subject: Re: [PATCH] migrate/multifd: fix coredump when the multifd thread
- cleanup
-In-Reply-To: <20230621081826.3203053-1-zhangjianguo18@huawei.com>
-References: <20230621081826.3203053-1-zhangjianguo18@huawei.com>
-Date: Wed, 21 Jun 2023 11:22:44 -0300
-Message-ID: <87wmzwsxmz.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
+ id 1qByk9-0001VC-LP
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 10:23:34 -0400
+Received: from hoth.uni-paderborn.de ([2001:638:502:c003::19])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
+ id 1qByk7-0000xZ-N8
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 10:23:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=mail.uni-paderborn.de; s=20170601; h=Content-Transfer-Encoding:MIME-Version
+ :Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+ Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+ :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+ List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=i6PqxMoglgKlzvO5aLeXlZc6aMDYtSZ1gQHGFFlMBLk=; b=itO6PsgEDHzKqxIiGQPuSsYeK+
+ Ex4RqgKLncvndwqyldUQZmmxDvZR3XcOuJyp/ZxBmE5XSW5/4yWKVwg4nsqoufiFJH6ThbmFdQNnW
+ zw1a2h7zQWu0rsdbZMM955dzIT2Udh5CPmB9IDV2DGn3vHx+xVCvIV9E69WUWmsU7stI=;
+X-Envelope-From: <kbastian@mail.uni-paderborn.de>
+From: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
+To: qemu-devel@nongnu.org
+Cc: kbastian@mail.uni-paderborn.de,
+	richard.henderson@linaro.org
+Subject: [PATCH v4 0/8] TriCore Privilege Levels
+Date: Wed, 21 Jun 2023 16:22:54 +0200
+Message-Id: <20230621142302.1648383-1-kbastian@mail.uni-paderborn.de>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=2001:67c:2178:6::1d; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Transfer-Encoding: 8bit
+X-PMX-Version: 6.4.9.2830568, Antispam-Engine: 2.7.2.2107409,
+ Antispam-Data: 2023.6.21.141517, AntiVirus-Engine: 6.0.0,
+ AntiVirus-Data: 2023.6.6.600001
+X-Sophos-SenderHistory: ip=79.202.219.6, fs=1202299, da=174966472, mc=123, sc=0,
+ hc=123, sp=0, fso=1202299, re=0, sd=0, hd=0
+X-IMT-Source: Intern
+X-IMT-Spam-Score: 0.0 ()
+X-IMT-Authenticated-Sender: uid=kbastian,ou=People,o=upb,c=de
+Received-SPF: pass client-ip=2001:638:502:c003::19;
+ envelope-from=kbastian@mail.uni-paderborn.de; helo=hoth.uni-paderborn.de
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -84,32 +69,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-z00619469 via <qemu-devel@nongnu.org> writes:
+Hi,
 
-> From: c00454449 <chenyuhui5@huawei.com>
->
-> There is a coredump while trying to destroy mutex when
-> p->running is false but p->mutex is not unlock.
-> Make sure all mutexes has been released before destroy them.
->
-> Signed-off-by: c00454449 <chenyuhui5@huawei.com>
-> ---
->  migration/multifd.c | 6 ++----
->  1 file changed, 2 insertions(+), 4 deletions(-)
->
-> diff --git a/migration/multifd.c b/migration/multifd.c
-> index b7ad7002e0..7dcdb2d3a0 100644
-> --- a/migration/multifd.c
-> +++ b/migration/multifd.c
-> @@ -523,9 +523,7 @@ void multifd_save_cleanup(void)
->      for (i = 0; i < migrate_multifd_channels(); i++) {
->          MultiFDSendParams *p = &multifd_send_state->params[i];
->  
-> -        if (p->running) {
+this patch series tries to properly implement privilege levels for the TriCore,
+as discussed in
+https://lore.kernel.org/qemu-devel/20230118090319.32n4uto7ogy3gfr6@schnipp.zuhause/.
 
-The need for this flag is dubious IMO. Commit 10351fbad1
-("migration/multifd: Join all multifd threads in order to avoid leaks")
-already moved the other join outside of it. If we figure out another way
-to deal with the sem_sync lockup we could probably remove this
-altogether.
+While implementing privilege traps for the SV/UM1 only insns, I saw that
+the RESTORE insn uses the wrong ICR.IE bit. So I fixed that as well.
+
+Cheers,
+Bastian
+
+v1 -> v2:
+    - Fixed bug where JLI clobbered reg A[11]          | PATCH [01/08]
+    - Moved all calls to tcg_gen_exit_tb() to          | PATCH [02/08]
+      tricore_tr_tb_stop()                             |
+    - Enable/disable insns now exit to main-loop       | PATCH [03/08]
+    - Indirect jumps us tcg_gen_lookup_and_goto_ptr()  | PATCH [04/08]
+    - Removed (uint32_t) cast                          | PATCH [05/08]
+    - Removed psw_write() calling cpu_loop_exit()      | PATCH [07/08]
+
+v2 -> v3:
+    - DISABLE insns don't end the TB                   | PATCH [03/08]
+    - generate_trap() for indirct jump now set         | PATCH [04/08]
+      DISAS_NORETURN
+
+v3 -> v4:
+    - Exit tb for RESTORE insn                         | PATCH [08/08]
+
+Bastian Koppelmann (8):
+  target/tricore: Fix RR_JLI clobbering reg A[11]
+  target/tricore: Introduce DISAS_TARGET_EXIT
+  target/tricore: ENABLE exit to main-loop
+  target/tricore: Indirect jump insns use tcg_gen_lookup_and_goto_ptr()
+  target/tricore: Introduce priv tb flag
+  target/tricore: Implement privilege level for all insns
+  target/tricore: Honour privilege changes on PSW write
+  target/tricore: Fix ICR.IE offset in RESTORE insn
+
+ target/tricore/cpu.h       | 17 +++++--
+ target/tricore/translate.c | 98 ++++++++++++++++++++++++++------------
+ 2 files changed, 79 insertions(+), 36 deletions(-)
+
+--
+2.40.1
+
 
