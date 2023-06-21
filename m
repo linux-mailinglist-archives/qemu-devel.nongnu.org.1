@@ -2,58 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E5B6737BF2
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 09:19:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 188FD737BFB
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 09:25:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBs6t-00065h-Pl; Wed, 21 Jun 2023 03:18:35 -0400
+	id 1qBsCc-0007Of-9B; Wed, 21 Jun 2023 03:24:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=5utS=CJ=kaod.org=clg@ozlabs.org>)
- id 1qBs6q-00064v-PI; Wed, 21 Jun 2023 03:18:32 -0400
-Received: from gandalf.ozlabs.org ([150.107.74.76])
+ (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1qBsCQ-0007K7-8J
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 03:24:19 -0400
+Received: from mail-b.sr.ht ([173.195.146.151])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=5utS=CJ=kaod.org=clg@ozlabs.org>)
- id 1qBs6o-0001x1-GZ; Wed, 21 Jun 2023 03:18:32 -0400
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4QmFGL5c44z4x09;
- Wed, 21 Jun 2023 17:18:18 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4QmFGJ61qVz4x07;
- Wed, 21 Jun 2023 17:18:16 +1000 (AEST)
-Message-ID: <c300d299-a90b-c29a-b556-83a2545adc30@kaod.org>
-Date: Wed, 21 Jun 2023 09:18:12 +0200
+ (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1qBsCM-0005H2-S3
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 03:24:17 -0400
+Authentication-Results: mail-b.sr.ht; dkim=none 
+Received: from git.sr.ht (unknown [173.195.146.142])
+ by mail-b.sr.ht (Postfix) with ESMTPSA id F337B11EF01;
+ Wed, 21 Jun 2023 07:24:12 +0000 (UTC)
+From: ~hyman <hyman@git.sr.ht>
+Date: Wed, 21 Jun 2023 07:24:12 +0000
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PULL 05/29] pnv/xive2: Handle TIMA access through all ports
-Content-Language: en-US
-To: Frederic Barrat <fbarrat@linux.ibm.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Daniel Henrique Barboza <danielhb413@gmail.com>
-Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, richard.henderson@linaro.org
-References: <20230610133132.290703-1-danielhb413@gmail.com>
- <20230610133132.290703-6-danielhb413@gmail.com>
- <CAFEAcA_KKSc=Ns9n1UJKdnhZ846EGK-nFbsG_e2mw_zwMoOJcw@mail.gmail.com>
- <4ad1a081-bf98-1b7d-05c9-82c230da34ce@kaod.org>
- <9f71ffc4-2b37-d8b8-56c6-658d264242c4@linux.ibm.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <9f71ffc4-2b37-d8b8-56c6-658d264242c4@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=150.107.74.76;
- envelope-from=SRS0=5utS=CJ=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -17
-X-Spam_score: -1.8
+Subject: [PATCH QEMU v6 0/9] migration: introduce dirtylimit capability
+Message-ID: <168733225273.5845.15871826788879741674-0@git.sr.ht>
+X-Mailer: git.sr.ht
+To: qemu-devel <qemu-devel@nongnu.org>
+Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Philippe =?utf-8?q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ hyman <hyman@git.sr.ht>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=173.195.146.151; envelope-from=outgoing@sr.ht;
+ helo=mail-b.sr.ht
+X-Spam_score_int: -18
+X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, NICE_REPLY_A=-0.09, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -66,129 +56,116 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: ~hyman <yong.huang@smartx.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/20/23 16:31, Frederic Barrat wrote:
-> 
-> 
-> On 20/06/2023 13:20, Cédric Le Goater wrote:
->> On 6/20/23 12:45, Peter Maydell wrote:
->>> On Sat, 10 Jun 2023 at 14:31, Daniel Henrique Barboza
->>> <danielhb413@gmail.com> wrote:
->>>>
->>>> From: Frederic Barrat <fbarrat@linux.ibm.com>
->>>>
->>>> The Thread Interrupt Management Area (TIMA) can be accessed through 4
->>>> ports, targeted by the address. The base address of a TIMA
->>>> is using port 0 and the other ports are 0x80 apart. Using one port or
->>>> another can be useful to balance the load on the snoop buses. With
->>>> skiboot and linux, we currently use port 0, but as it tends to be
->>>> busy, another hypervisor is using port 1 for TIMA access.
->>>>
->>>> The port address bits fall in between the special op indication
->>>> bits (the 2 MSBs) and the register offset bits (the 6 LSBs). They are
->>>> "don't care" for the hardware when processing a TIMA operation. This
->>>> patch filters out those port address bits so that a TIMA operation can
->>>> be triggered using any port.
->>>>
->>>> It is also true for indirect access (through the IC BAR) and it's
->>>> actually nothing new, it was already the case on P9. Which helps here,
->>>> as the TIMA handling code is common between P9 (xive) and P10 (xive2).
->>>>
->>>> Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
->>>> Reviewed-by: Cédric Le Goater <clg@kaod.org>
->>>> Message-Id: <20230601121331.487207-6-fbarrat@linux.ibm.com>
->>>> Signed-off-by: Daniel Henrique Barboza <danielhb413@gmail.com>
->>>> ---
->>>
->>> Hi -- Coverity points out that there's a problem with this
->>> change (CID 1512997, 1512998):
->>>
->>>> --- a/hw/intc/pnv_xive2.c
->>>> +++ b/hw/intc/pnv_xive2.c
->>>> @@ -1662,6 +1662,8 @@ static void pnv_xive2_tm_write(void *opaque, hwaddr offset,
->>>>       bool gen1_tima_os =
->>>>           xive->cq_regs[CQ_XIVE_CFG >> 3] & CQ_XIVE_CFG_GEN1_TIMA_OS;
->>>>
->>>> +    offset &= TM_ADDRESS_MASK;
->>>
->>> Here we now mask off most of the bytes of 'offset',
->>> because TM_ADDRESS_MASK is 0xC3F...
->>>
->>>> +
->>>>       /* TODO: should we switch the TM ops table instead ? */
->>>>       if (!gen1_tima_os && offset == HV_PUSH_OS_CTX_OFFSET) {
->>>
->>> ...but here we compare offset against HV_PUSH_OS_CTX_OFFSET,
->>> which is defined as
->>> #define HV_PUSH_OS_CTX_OFFSET  (HV_PAGE_OFFSET | (TM_QW1_OS + TM_WORD2))
->>> and since
->>> #define HV_PAGE_OFFSET         (XIVE_TM_HV_PAGE << TM_SHIFT)
->>> #define XIVE_TM_HV_PAGE         0x1
->>> #define TM_SHIFT                16
->>>
->>> that means HV_PUSH_OS_CTX_OFFSET has bits defined in the
->>> upper 16 bits, and the comparison can now never be true,
->>> making the if() dead code.
->>>
->>>>           xive2_tm_push_os_ctx(xptr, tctx, offset, value, size);
->>>> @@ -1681,6 +1683,8 @@ static uint64_t pnv_xive2_tm_read(void *opaque, hwaddr offset, unsigned size)
->>>>       bool gen1_tima_os =
->>>>           xive->cq_regs[CQ_XIVE_CFG >> 3] & CQ_XIVE_CFG_GEN1_TIMA_OS;
->>>>
->>>> +    offset &= TM_ADDRESS_MASK;
->>>> +
->>>>       /* TODO: should we switch the TM ops table instead ? */
->>>>       if (!gen1_tima_os && offset == HV_PULL_OS_CTX_OFFSET) {
->>>>           return xive2_tm_pull_os_ctx(xptr, tctx, offset, size);
->>>
->>> Similarly here.
->>
->>
->> yes. I think this went unnoticed because the push/pull os context
->> commands are only used by the HV when a vCPU is dipatched on a HW
->> thread. We would need a test for a KVM guest running under the QEMU
->> PowerNV POWER10 machine. This requires an image with some tuning
->> because emulation is a bit slow. I use to have a buildroot image
->> including a qemu and smaller buildroot image for it.
-> 
-> 
-> Working on a fix. It's true that I hadn't run a guest within the powernv machine for quite a while. I'm dusting off my buildroot repo to test it this time...
+Thanks Juan for the review, in case to keep the modifications consistent
+with the old versions, i posted the full series for review. Feel free to
+pull  the first 5 commits if it help speeding up the process. The
+version 6 do the following modifications:
+v6:
+1. Rebase on master
+2. Split the commit "Implement dirty-limit convergence algo" into two as
+    Juan suggested as the following:
+    a. Put the detection logic before auto-converge checking
+    b. Implement dirty-limit convergence algo
+3. Put the detection logic before auto-converge checking
+4. Sort the migrate_dirty_limit function in commit
+    "Introduce dirty-limit capability" suggested by Juan
+5. Substitute the the int64_t to uint64_t in the last 2 commits
+6. Fix the comments spell mistake
+7. Add helper function in the commit
+    "Implement dirty-limit convergence algo" suggested by Juan
 
+Please review. Thanks.
+Yong
+v5:
+1. Rebase on master and enrich the comment for "dirty-limit" capability,
+    suggesting by Markus.
+2. Drop commits that have already been merged.
 
-The XIVE2 TM ops are implemented with a shortcut (See the TODO in
-pnv_xive2_tm_*()). We could
+v4:
+1. Polish the docs and update the release version suggested by Markus
+2. Rename the migrate exported info "dirty-limit-throttle-time-per-
+round"
+   to "dirty-limit-throttle-time-per-full".
 
-1. extend xive_tctx_tm_write/read with a 'bool gen1_tima_os' parameter:
+v3(resend):
+- fix the syntax error of the topic.
 
-	xive_tctx_tm_write(xptr, tctx, offset, value, size, gen1_tima_os);
+v3:
+This version make some modifications inspired by Peter and Markus
+as following:
+1. Do the code clean up in [PATCH v2 02/11] suggested by Markus
+2. Replace the [PATCH v2 03/11] with a much simpler patch posted by
+   Peter to fix the following bug:
+   https://bugzilla.redhat.com/show_bug.cgi?id=3D2124756
+3. Fix the error path of migrate_params_check in [PATCH v2 04/11]
+   pointed out by Markus. Enrich the commit message to explain why
+   x-vcpu-dirty-limit-period an unstable parameter.
+4. Refactor the dirty-limit convergence algo in [PATCH v2 07/11]
+   suggested by Peter:
+   a. apply blk_mig_bulk_active check before enable dirty-limit
+   b. drop the unhelpful check function before enable dirty-limit
+   c. change the migration_cancel logic, just cancel dirty-limit
+      only if dirty-limit capability turned on.
+   d. abstract a code clean commit [PATCH v3 07/10] to adjust
+      the check order before enable auto-converge
+5. Change the name of observing indexes during dirty-limit live
+   migration to make them more easy-understanding. Use the
+   maximum throttle time of vpus as "dirty-limit-throttle-time-per-full"
+6. Fix some grammatical and spelling errors pointed out by Markus
+   and enrich the document about the dirty-limit live migration
+   observing indexes "dirty-limit-ring-full-time"
+   and "dirty-limit-throttle-time-per-full"
+7. Change the default value of x-vcpu-dirty-limit-period to 1000ms,
+   which is optimal value pointed out in cover letter in that
+   testing environment.
+8. Drop the 2 guestperf test commits [PATCH v2 10/11],
+   [PATCH v2 11/11] and post them with a standalone series in the
+   future.
 
-    and use the bool in xive_tm_find_op() to select a XiveTmOp array.
-    The new xive2_tm_operations[] would be defined as xive_tm_operations[]
-    but with an override of HV_PUSH_OS_CTX_OFFSET and HV_PULL_OS_CTX_OFFSET.
+v2:
+This version make a little bit modifications comparing with
+version 1 as following:
+1. fix the overflow issue reported by Peter Maydell
+2. add parameter check for hmp "set_vcpu_dirty_limit" command
+3. fix the racing issue between dirty ring reaper thread and
+   Qemu main thread.
+4. add migrate parameter check for x-vcpu-dirty-limit-period
+   and vcpu-dirty-limit.
+5. add the logic to forbid hmp/qmp commands set_vcpu_dirty_limit,
+   cancel_vcpu_dirty_limit during dirty-limit live migration when
+   implement dirty-limit convergence algo.
+6. add capability check to ensure auto-converge and dirty-limit
+   are mutually exclusive.
+7. pre-check if kvm dirty ring size is configured before setting
+   dirty-limit migrate parameter
 
-2. or extend the XivePresenterClass with a get_config() handler like it
-    was done for Xive2RouterClass().
+Hyman Huang(=E9=BB=84=E5=8B=87) (9):
+  softmmu/dirtylimit: Add parameter check for hmp "set_vcpu_dirty_limit"
+  qapi/migration: Introduce x-vcpu-dirty-limit-period parameter
+  qapi/migration: Introduce vcpu-dirty-limit parameters
+  migration: Introduce dirty-limit capability
+  migration: Refactor auto-converge capability logic
+  migration: Put the detection logic before auto-converge checking
+  migration: Implement dirty-limit convergence algo
+  migration: Extend query-migrate to provide dirty page limit info
+  tests: Add migration dirty-limit capability test
 
-3. or introduce an array of XiveTmOp under XivePresenterClass defined by
-    the controller variant.
+ include/sysemu/dirtylimit.h    |   2 +
+ migration/migration-hmp-cmds.c |  26 ++++++
+ migration/migration.c          |  13 +++
+ migration/options.c            |  72 +++++++++++++++
+ migration/options.h            |   1 +
+ migration/ram.c                |  61 ++++++++++---
+ migration/trace-events         |   1 +
+ qapi/migration.json            |  74 ++++++++++++++--
+ softmmu/dirtylimit.c           |  91 +++++++++++++++++--
+ tests/qtest/migration-test.c   | 155 +++++++++++++++++++++++++++++++++
+ 10 files changed, 471 insertions(+), 25 deletions(-)
 
-In any case, we need a new xive2_tm_operations[] for the XIVE2 TM register
-layout. Option 1 is simpler I think.
-
-The weird part would be to include "xive2.h" in "xive.c" to get the
-definitions of xive2_tm_push/pull_os_ctx. I guess that's ok.
-
-This would  also "fix" the indirect ops in XIVE2, not that we care much
-but it will be cleaner.
-
-Thanks,
-
-
-C.
-
-
-
-
+--=20
+2.38.5
 
