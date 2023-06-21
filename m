@@ -2,78 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8E067383A3
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 14:23:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C8B317383A6
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 14:23:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBwo8-0006mh-J4; Wed, 21 Jun 2023 08:19:32 -0400
+	id 1qBwru-0005pS-SK; Wed, 21 Jun 2023 08:23:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qBwnv-0006eF-Ow
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 08:19:21 -0400
-Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1qBwrr-0005ob-Oq
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 08:23:23 -0400
+Received: from mail-oo1-xc30.google.com ([2607:f8b0:4864:20::c30])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qBwnt-0000Lz-1y
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 08:19:19 -0400
-Received: by mail-ed1-x52f.google.com with SMTP id
- 4fb4d7f45d1cf-5147e40bbbbso6151790a12.3
- for <qemu-devel@nongnu.org>; Wed, 21 Jun 2023 05:19:14 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1qBwrp-0003uI-RR
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 08:23:23 -0400
+Received: by mail-oo1-xc30.google.com with SMTP id
+ 006d021491bc7-55b3d77c9deso4141131eaf.0
+ for <qemu-devel@nongnu.org>; Wed, 21 Jun 2023 05:23:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687349953; x=1689941953;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=D1z7ZijI3noWzsrc+wKPRkU7wte4eSKNmnXzrL2G2aM=;
- b=lBMODMeTg+hkkn1GjjmH97sp2IKxM4gKQuMkdF6Ats712MlbtTnZeHgMaBjBHmD1CJ
- 3qRhjx4HgX4I3e/PTBCNGDjquVryQxbaSpSn4f4wb+nGTyZ94qltqv20rXS3v/Iuu6ro
- X/uxEca+FMStJYQwqO4lNOd9k5U930zX5U4BcsWiDHy87tFMKIrmSUPuVx/k+YNhoDbF
- 0AlYwjNBvn2U9Q0aXCxbHIcP8qUHuyEbxyjEX0jXr/E9jUgpNRpTqV3ue9w3rD0vcz7M
- 3QqAL8VxZNvyEBQFrSpoOKFv75Q1nJtl0B7F7uHWXQQW7jFKSqYe6clunBzHQFDhMK8k
- 1xZA==
+ d=gmail.com; s=20221208; t=1687350200; x=1689942200;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=IOSdOO7jr8gRDoaOezFqkntAdqpBhlnc5jE0elj/aW4=;
+ b=IEnI+8tc8Q5KyB90mP82i9DReLu7Tzs3HI9z0ewFS0YWVd0fnREE8LlLZdBWADGVWH
+ AohGokL739Gg5aL9YAz5hw24pBNYWIkSJyjbKjZBKRgKPs1VQPYNWy4fR3ET/ePVWr0i
+ xB31Y/8dYhFTb5qfvJRMhYDbJYMTPh3ximVpoi06Od7gH8BzfY3aRWQ7T7F8GRt9zruz
+ K/N3Kgd1dSCKFKdq4V3j7J6tdaDsqP1KqVTRP7hYxqUrgGSs0J4MSZF2oJMXTGLY4TiM
+ S9nrZ6b5KzV+5G8KDtf9VbZ/Fpp5efYFjg2M0vZ51vgC0DCUqxvNONhuIZx4QvIV0F17
+ pXQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687349953; x=1689941953;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=D1z7ZijI3noWzsrc+wKPRkU7wte4eSKNmnXzrL2G2aM=;
- b=EE3YltcYJ+FXYSjQWIPY1xNQzIvSKylaycD77P7Ie4DpaT0e6gYFp55qWSu/RkVjO5
- xcqffbU7RA0zPhfviJhuhZYiwRehTRBtVEHGaLNj9gVSt6IBl9CFzbJ3R8VVDMSWxJfx
- LjHc9s+hgJ8Uf31TF0rWThEbyDiHsRDObkpOEoovAqWtZojIkBwrpW4wAPuAP+jy02QG
- +Mp69PCXM19Q83rXQp6Y0F3P/V7mtZ5wGqE6WeCFyH3Dzf49zE/jiVvZ+STZabPcnVtg
- 5QnPwTVEvb5Oc+o7bQfST6I+96gItEWrPArLeOcLXD+y1t10uRFtv5W6n75Mbdu7duKD
- TzgQ==
-X-Gm-Message-State: AC+VfDxA/QGXMMcC6WFyJnonmDLDflkR0XMbHa/S7D0S5O/lvhDxBZni
- TfJ4DDzY+BWz2p2uS58y3iuO4G79jcix8L8/cUJn9I3W
-X-Google-Smtp-Source: ACHHUZ4fGhD66VDZIm4GR4CthH6WkQjodUZDM+Ad4pYP5LcRTqVozPPKESriUB9ydNO7uKQZ8YF6vg==
-X-Received: by 2002:aa7:d78d:0:b0:51a:4557:2caf with SMTP id
- s13-20020aa7d78d000000b0051a45572cafmr6666542edq.34.1687349953386; 
- Wed, 21 Jun 2023 05:19:13 -0700 (PDT)
-Received: from stoup.lan ([176.176.128.70]) by smtp.gmail.com with ESMTPSA id
- s6-20020a056402014600b0051bdf152295sm543176edu.76.2023.06.21.05.19.12
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 21 Jun 2023 05:19:13 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org
-Subject: [PATCH v2 9/9] target/arm: Do memory type alignment check when
- translation enabled
-Date: Wed, 21 Jun 2023 14:19:02 +0200
-Message-Id: <20230621121902.1392277-10-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230621121902.1392277-1-richard.henderson@linaro.org>
-References: <20230621121902.1392277-1-richard.henderson@linaro.org>
+ d=1e100.net; s=20221208; t=1687350200; x=1689942200;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=IOSdOO7jr8gRDoaOezFqkntAdqpBhlnc5jE0elj/aW4=;
+ b=i/UGJczU74mqY5uxGBghIRhHN9RhO5/lGLM8FtjoksoP1dN/k5Ow6GWWDGT4AygMir
+ mPtFq4aJcTGV620luLIm+4Bw8qfd03zOOxSh5NQoQI8k5rPeKCkdMtOxeOfu5Hnlr3kw
+ sYefUTfqm5CpZMJ8nt5oqLZ3n36mddPriDb33NAnxi90Kf2/iE+0HgLabsjAgCbhkWsB
+ /8FxEueNvYnaz93F5C2ftX/L+SdiBAnEZS2bxsZRulCxT5PhbzyJ9+z2uRN0KwvgN6+2
+ K0LeYkMs8qGbwExNXR1zpaV62sxEyEa2gog7FYwkb72LWSjNanYaElFTyLs1l7rlv+7f
+ uUyw==
+X-Gm-Message-State: AC+VfDwsUL8ftR0ovgVYti8E/33qGG6pQ5GlEouNZ7DFn3FntRjKEGBg
+ /T1IZXWdNRJRV0v4zH3Do9nHhCYNswxys2KvB5U=
+X-Google-Smtp-Source: ACHHUZ7GMBP8kdZSaTrjwl+a0WPOMTfboEXzpO5sAas+FV/gfPiHD6gtOJ/6wMbTKvOFGDsUczsGka7AQA3GDYfAO+A=
+X-Received: by 2002:a4a:ea8e:0:b0:558:b7e4:cd13 with SMTP id
+ r14-20020a4aea8e000000b00558b7e4cd13mr11475621ooh.4.1687350199944; Wed, 21
+ Jun 2023 05:23:19 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
- envelope-from=richard.henderson@linaro.org; helo=mail-ed1-x52f.google.com
+References: <c206fa1d-077d-ae9b-476f-f43eec36a187@grimberg.me>
+ <20230608160817.GK2138915@fedora>
+ <d8028f17-8d33-790b-8d3e-fa1170108774@grimberg.me>
+In-Reply-To: <d8028f17-8d33-790b-8d3e-fa1170108774@grimberg.me>
+From: Stefan Hajnoczi <stefanha@gmail.com>
+Date: Wed, 21 Jun 2023 14:23:07 +0200
+Message-ID: <CAJSP0QXt6wyK+_r1uxhxmBhWEgmA6-Y5x2q6Uamkm1ZMwV96cw@mail.gmail.com>
+Subject: Re: virtio-blk using a single iothread
+To: Sagi Grimberg <sagi@grimberg.me>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Qemu Developers <qemu-devel@nongnu.org>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c30;
+ envelope-from=stefanha@gmail.com; helo=mail-oo1-xc30.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -91,77 +87,138 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If translation is enabled, and the PTE memory type is Device,
-enable checking alignment via TLB_CHECK_ALIGNMENT.  While the
-check is done later than it should be per the ARM, it's better
-than not performing the check at all.
+Hi Sagi,
+I just got back from a conference and am going to be offline for a
+week starting tomorrow. I haven't had time to look through your email
+but will reply when I'm back from vacation.
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- target/arm/ptw.c | 28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+Stefan
 
-diff --git a/target/arm/ptw.c b/target/arm/ptw.c
-index 37bcb17a9e..8dcd5d80ce 100644
---- a/target/arm/ptw.c
-+++ b/target/arm/ptw.c
-@@ -227,6 +227,16 @@ static bool regime_translation_disabled(CPUARMState *env, ARMMMUIdx mmu_idx,
-     return (regime_sctlr(env, mmu_idx) & SCTLR_M) == 0;
- }
- 
-+static bool S1_attrs_are_device(uint8_t attrs)
-+{
-+    /*
-+     * This slightly under-decodes the MAIR_ELx field:
-+     * 0b0000dd01 is Device with FEAT_XS, otherwise UNPREDICTABLE;
-+     * 0b0000dd1x is UNPREDICTABLE.
-+     */
-+    return (attrs & 0xf0) == 0;
-+}
-+
- static bool S2_attrs_are_device(uint64_t hcr, uint8_t attrs)
- {
-     /*
-@@ -1274,6 +1284,7 @@ static bool get_phys_addr_lpae(CPUARMState *env, S1Translate *ptw,
-     bool aarch64 = arm_el_is_aa64(env, el);
-     uint64_t descriptor, new_descriptor;
-     bool nstable;
-+    bool device;
- 
-     /* TODO: This code does not support shareability levels. */
-     if (aarch64) {
-@@ -1623,6 +1634,8 @@ static bool get_phys_addr_lpae(CPUARMState *env, S1Translate *ptw,
-     if (regime_is_stage2(mmu_idx)) {
-         result->cacheattrs.is_s2_format = true;
-         result->cacheattrs.attrs = extract32(attrs, 2, 4);
-+        device = S2_attrs_are_device(arm_hcr_el2_eff_secstate(env, is_secure),
-+                                     result->cacheattrs.attrs);
-     } else {
-         /* Index into MAIR registers for cache attributes */
-         uint8_t attrindx = extract32(attrs, 2, 3);
-@@ -1635,6 +1648,21 @@ static bool get_phys_addr_lpae(CPUARMState *env, S1Translate *ptw,
-         if (aarch64 && cpu_isar_feature(aa64_bti, cpu)) {
-             result->f.guarded = extract64(attrs, 50, 1); /* GP */
-         }
-+        device = S1_attrs_are_device(result->cacheattrs.attrs);
-+    }
-+
-+    /*
-+     * Enable alignment checks on Device memory.
-+     *
-+     * Per R_XCHFJ, this check is mis-ordered, in that this alignment check
-+     * should have priority 30, while the permission check should be next at
-+     * priority 31 and stage2 translation faults come after that.
-+     * Due to the way the TCG softmmu TLB operates, we will have implicitly
-+     * done the permission check and the stage2 lookup in finding the TLB
-+     * entry, so the alignment check cannot be done sooner.
-+     */
-+    if (device) {
-+        result->f.tlb_fill_flags |= TLB_CHECK_ALIGNED;
-     }
- 
-     /*
--- 
-2.34.1
-
+On Sun, 11 Jun 2023 at 14:29, Sagi Grimberg <sagi@grimberg.me> wrote:
+>
+>
+>
+> On 6/8/23 19:08, Stefan Hajnoczi wrote:
+> > On Thu, Jun 08, 2023 at 10:40:57AM +0300, Sagi Grimberg wrote:
+> >> Hey Stefan, Paolo,
+> >>
+> >> I just had a report from a user experiencing lower virtio-blk
+> >> performance than he expected. This user is running virtio-blk on top of
+> >> nvme-tcp device. The guest is running 12 CPU cores.
+> >>
+> >> The guest read/write throughput is capped at around 30% of the available
+> >> throughput from the host (~800MB/s from the guest vs. 2800MB/s from the
+> >> host - 25Gb/s nic). The workload running on the guest is a
+> >> multi-threaded fio workload.
+> >>
+> >> What is observed is the fact that virtio-blk is using a single disk-wide
+> >> iothread processing all the vqs. Specifically nvme-tcp (similar to other
+> >> tcp based protocols) is negatively impacted by lack of thread
+> >> concurrency that can distribute I/O requests to different TCP
+> >> connections.
+> >>
+> >> We also attempted to move the iothread to a dedicated core, however that
+> >> did yield any meaningful performance improvements). The reason appears
+> >> to be less about CPU utilization on the iothread core, but more around
+> >> single TCP connection serialization.
+> >>
+> >> Moving to io=threads does increase the throughput, however sacrificing
+> >> latency significantly.
+> >>
+> >> So the user find itself with available host cpus and TCP connections
+> >> that it could easily use to get maximum throughput, without the ability
+> >> to leverage them. True, other guests will use different
+> >> threads/contexts, however the goal here is to allow the full performance
+> >> from a single device.
+> >>
+> >> I've seen several discussions and attempts in the past to allow a
+> >> virtio-blk device leverage multiple iothreads, but around 2 years ago
+> >> the discussions over this paused. So wanted to ask, are there any plans
+> >> or anything in the works to address this limitation?
+> >>
+> >> I've seen that the spdk folks are heading in this direction with their
+> >> vhost-blk implementation:
+> >> https://review.spdk.io/gerrit/c/spdk/spdk/+/16068
+> >
+> > Hi Sagi,
+> > Yes, there is an ongoing QEMU multi-queue block layer effort to make it
+> > possible for multiple IOThreads to process disk I/O for the same
+> > --blockdev in parallel.
+>
+> Great to know.
+>
+> > Most of my recent QEMU patches have been part of this effort. There is a
+> > work-in-progress branch that supports mapping virtio-blk virtqueues to
+> > specific IOThreads:
+> > https://gitlab.com/stefanha/qemu/-/commits/virtio-blk-iothread-vq-mapping
+>
+> Thanks for the pointer.
+>
+> > The syntax is:
+> >
+> >    --device '{"driver":"virtio-blk-pci","iothread-vq-mapping":[{"iothread":"iothread0"},{"iothread":"iothread1"}],"drive":"drive0"}'
+> >
+> > This says "assign virtqueues round-robin to iothread0 and iothread1".
+> > Half the virtqueues will be processed by iothread0 and the other half by
+> > iothread1. There is also syntax for assigning specific virtqueues to
+> > each IOThread, but usually the automatic round-robin assignment is all
+> > that's needed.
+> >
+> > This work is not finished yet. Basic I/O (e.g. fio) works without
+> > crashes, but expect to hit issues if you use blockjobs, hotplug, etc.
+> >
+> > Performance optimization work has just begun, so it won't deliver all
+> > the benefits yet. I ran a benchmark yesterday where going from 1 to 2
+> > IOThreads increased performance by 25%. That's much less than we're
+> > aiming for; attaching two independent virtio-blk devices improves the
+> > performance by ~100%. I know we can get there eventually. Some of the
+> > bottlenecks are known (e.g. block statistics collection causes lock
+> > contention) and others are yet to be investigated.
+>
+> Hmm, I rebased this branch on top of mainline master and ran a naive
+> test, and it seems that performance regressed quite a bit :(
+>
+> I'm running this test on my laptop (Intel(R) Core(TM) i7-8650U CPU
+> @1.90GHz), so this is more qualitative test for BW only.
+> I use null_blk as the host device.
+>
+> With mainline master I get ~9GB/s 64k randread, and with your branch
+> I get ~5GB/s, this is regardless of assigning iothreads (one or
+> two) or not.
+>
+> my qemu command:
+> taskset -c 0-3 build/qemu-system-x86_64 -cpu host -m 1G -enable-kvm -smp
+> 4 -drive
+> file=/var/lib/libvirt/images/ubuntu-22/root-disk-clone.qcow2,format=qcow2
+> -drive
+> if=none,id=drive0,cache=none,aio=native,format=raw,file=/dev/nullb0
+> -device virtio-blk-pci,drive=drive0,scsi=off -nographic
+>
+> my guest fio jobfile:
+> --
+> [global]
+> group_reporting
+> runtime=3000
+> time_based
+> loops=1
+> direct=1
+> invalidate=1
+> randrepeat=0
+> norandommap
+> exitall
+> cpus_allowed=0-3
+> cpus_allowed_policy=split
+>
+> [read]
+> filename=/dev/vda
+> numjobs=4
+> iodepth=32
+> bs=64k
+> rw=randread
+> ioengine=io_uring
+> --
+>
+> Maybe I'm doing something wrong? Didn't expect to find a regression
+> against mainline on the default setup.
+>
 
