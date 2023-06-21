@@ -2,56 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9089973836C
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 14:14:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5445738297
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 14:11:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBwik-0004Wr-M5; Wed, 21 Jun 2023 08:13:58 -0400
+	id 1qBwef-0002f6-6L; Wed, 21 Jun 2023 08:09:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhangjianguo18@huawei.com>)
- id 1qBtb8-0001r7-Oi
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 04:53:54 -0400
-Received: from szxga02-in.huawei.com ([45.249.212.188])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qBweZ-0002ec-JP
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 08:09:39 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhangjianguo18@huawei.com>)
- id 1qBtb6-0002fm-Cw
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 04:53:54 -0400
-Received: from dggpemm500018.china.huawei.com (unknown [172.30.72.54])
- by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4QmHJv3pwHzMpWS
- for <qemu-devel@nongnu.org>; Wed, 21 Jun 2023 16:50:39 +0800 (CST)
-Received: from localhost.localdomain (10.175.124.27) by
- dggpemm500018.china.huawei.com (7.185.36.111) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Wed, 21 Jun 2023 16:53:47 +0800
-To: <qemu-devel@nongnu.org>
-CC: <chenyuhui5@huawei.com>, <xuyinghua3@huawei.com>,
- <liheng.liheng@huawei.com>, <renxuming@huawei.com>,
- <pengyi.pengyi@huawei.com>, <yubihong@huawei.com>, <zhengchuan@huawei.com>,
- <huhao33@huawei.com>, <zhangjianguo18@huawei.com>
-Subject: [RESEND][PATCH] migrate/multifd: fix coredump when the multifd thread
- cleanup
-Date: Wed, 21 Jun 2023 16:53:39 +0800
-Message-ID: <20230621085339.3530621-1-zhangjianguo18@huawei.com>
-X-Mailer: git-send-email 2.33.0
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qBweW-00053q-Na
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 08:09:37 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1687349374;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=3kmZqkyDCD0mwk+ISNvKLX/ovfqtcz3dJm97viSjS0E=;
+ b=ZU+CmoEzFuCxekXkYrQ5agv2MyBqT1yuZ5Py07TYnH7YfIB09fppWqrd3efR3YpBwrW8s6
+ by9vBP9+od0BMPWsQ+qotG72pduAZgrgPJ6PITPbFHqtU8F6qeOQq2DOpZKgQuGYNUkiBL
+ 9VgCtoemnhkpwq4up69AqLDoiVOU0So=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-570-iBg6LfcDOjOGKdWwiHExAg-1; Wed, 21 Jun 2023 08:09:32 -0400
+X-MC-Unique: iBg6LfcDOjOGKdWwiHExAg-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-3f7e7cfcae4so31409015e9.1
+ for <qemu-devel@nongnu.org>; Wed, 21 Jun 2023 05:09:31 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1687349371; x=1689941371;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=3kmZqkyDCD0mwk+ISNvKLX/ovfqtcz3dJm97viSjS0E=;
+ b=IjH2+c/f63mqNvdhCmv0GX7eGF1jJtpczqVS1kyi9DT7q/WefB5rgUHGwuD+Up/KJ9
+ yERtMR97O32Dv/U/7luGezI6z892rGg9WIJ+NVn+4j/Yavhrh4Mk/CDKkdW7j8SG7LCd
+ CD7suSamOD8TDhrHdc36gKxHF2vKhpquGXxOQggo/1o48bBcSx75lM/CG27f1BUL73J+
+ I+4/AKd5SFXsGJrrTbupPtD/brtJ2mIXPu5HN3irePDl8BUX0t0jVLc72m6HWEBUeyy+
+ GnH4+Xf3LZ41QTg2Xtrx7Th2pFt/xMQvM43Zgfihh7uK8m4jIt+JV3iHwVALAW6UEb8p
+ 3UeQ==
+X-Gm-Message-State: AC+VfDxLXBYPrBho0vjupwG6gHBZT6fGniydQrxS0lwPFPeuD5gyr5DH
+ Llar2ouAMNrH+ARSRXikLx0e1MgXTo9ieZ/IPzkOnBy4HMzLvMhC/iyaoMWQlVFNqiXoWRnuyrA
+ 0X0oUDVKKX3SSV0M=
+X-Received: by 2002:a7b:cb88:0:b0:3f9:b0ed:b729 with SMTP id
+ m8-20020a7bcb88000000b003f9b0edb729mr7639151wmi.18.1687349370952; 
+ Wed, 21 Jun 2023 05:09:30 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4PXEyTiSAtO6nXnJoBSy5tciEjPjmOVEJDfKQlKPPqtgW0xMcTPrWSl4DAwx9zMlaCqhaPTQ==
+X-Received: by 2002:a7b:cb88:0:b0:3f9:b0ed:b729 with SMTP id
+ m8-20020a7bcb88000000b003f9b0edb729mr7639138wmi.18.1687349370605; 
+ Wed, 21 Jun 2023 05:09:30 -0700 (PDT)
+Received: from [10.33.192.205] (nat-pool-str-t.redhat.com. [149.14.88.106])
+ by smtp.gmail.com with ESMTPSA id
+ 12-20020a05600c020c00b003f9bd9e3226sm1722801wmi.7.2023.06.21.05.09.29
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 21 Jun 2023 05:09:30 -0700 (PDT)
+Message-ID: <806a45bd-c74b-409f-521e-d6d1dbb1a8a6@redhat.com>
+Date: Wed, 21 Jun 2023 14:09:29 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH 07/21] tests: make dbus-display-test work on win32
+Content-Language: en-US
+To: marcandre.lureau@redhat.com, qemu-devel@nongnu.org
+Cc: Gerd Hoffmann <kraxel@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+References: <20230606115658.677673-1-marcandre.lureau@redhat.com>
+ <20230606115658.677673-8-marcandre.lureau@redhat.com>
+From: Thomas Huth <thuth@redhat.com>
+In-Reply-To: <20230606115658.677673-8-marcandre.lureau@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.175.124.27]
-X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
- dggpemm500018.china.huawei.com (7.185.36.111)
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=45.249.212.188;
- envelope-from=zhangjianguo18@huawei.com; helo=szxga02-in.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.093, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Wed, 21 Jun 2023 08:13:46 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,48 +99,19 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  z00619469 <zhangjianguo18@huawei.com>
-From:  z00619469 via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Yuhui Chen <chenyuhui5@huawei.com>
+On 06/06/2023 13.56, marcandre.lureau@redhat.com wrote:
+> From: Marc-André Lureau <marcandre.lureau@redhat.com>
+> 
+> Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+> ---
+>   tests/qtest/dbus-display-test.c | 43 ++++++++++++++++++++++++++++++---
+>   tests/qtest/meson.build         |  2 +-
+>   2 files changed, 41 insertions(+), 4 deletions(-)
 
-There is a coredump while trying to destroy mutex when
-p->running is false but p->mutex is not unlock.
-Make sure all mutexes has been released before destroy them.
 
-Signed-off-by: Yuhui Chen <chenyuhui5@huawei.com>
----
- migration/multifd.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
-
-diff --git a/migration/multifd.c b/migration/multifd.c
-index b7ad7002e0..7dcdb2d3a0 100644
---- a/migration/multifd.c
-+++ b/migration/multifd.c
-@@ -523,9 +523,7 @@ void multifd_save_cleanup(void)
-     for (i = 0; i < migrate_multifd_channels(); i++) {
-         MultiFDSendParams *p = &multifd_send_state->params[i];
- 
--        if (p->running) {
--            qemu_thread_join(&p->thread);
--        }
-+        qemu_thread_join(&p->thread);
-     }
-     for (i = 0; i < migrate_multifd_channels(); i++) {
-         MultiFDSendParams *p = &multifd_send_state->params[i];
-@@ -1040,8 +1038,8 @@ int multifd_load_cleanup(Error **errp)
-              * however try to wakeup it without harm in cleanup phase.
-              */
-             qemu_sem_post(&p->sem_sync);
--            qemu_thread_join(&p->thread);
-         }
-+        qemu_thread_join(&p->thread);
-     }
-     for (i = 0; i < migrate_multifd_channels(); i++) {
-         MultiFDRecvParams *p = &multifd_recv_state->params[i];
--- 
-2.21.0.windows.1
+Acked-by: Thomas Huth <thuth@redhat.com>
 
 
