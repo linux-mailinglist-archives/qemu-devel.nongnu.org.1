@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBE27737DDC
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 10:55:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA814737DD8
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 10:55:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBtbQ-0001uT-Fu; Wed, 21 Jun 2023 04:54:12 -0400
+	id 1qBtbT-0001v3-2S; Wed, 21 Jun 2023 04:54:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qBtbP-0001tz-4N
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 04:54:11 -0400
+ id 1qBtbR-0001ud-AU
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 04:54:13 -0400
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qBtbM-00035G-N7
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 04:54:10 -0400
+ id 1qBtbP-0003DK-O7
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 04:54:13 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
  MIME-Version:References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:
  Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
  Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
  List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=A3/WkMfkaejjywJyaK8uB5G9dA8YvQzmw0BKHuM085M=; b=lbZT5qUWcnG2plZem0q01atRqP
- 9Lx7D9gVXl01FGpX1YYaAsbetDulAXXO3ELaIdXSa+YTaFe5HGtyIKYOPz3LXa8+nHrIGkKYJXhC6
- Wa279eIePpTGgxib9PUurPEbGT191gS0ZNtTp5OliE0icz+Vfc2QmJizLrbKiL3bEWcJPKewOZDlD
- 5knx5VV8ZcVb3iZSRP2tMPV1CirUHEAulNKYhBrPv9bCJdisubUDMG9VETBY4gnrkXG4N84D4CtWf
- x1mT0wSYV74ohzLDoNw8wBnjIsskUomX633bZSCIuMkAm6WSls7Ayvgi8GSePYY5Nt/la2GcbpBsR
- mjJc/MPUgAUjWXSI+MepwBkkgQ/EYghbp7Uzls1HdiFyh4w9lRxQo6mbIAQlheqxoniKgbGO2N2yP
- inlhwHiIrNURGX2CMidjmoKtse1P0Yzc1I0JA1PlqltgR5nHQ6EqcUQ66n+YGxsPxTvZpaL43I2zq
- UI1r9qWl/aOPxpdnTbBlJCYLohNwVL99ynZ9PGR1hA8UvmaYpd503vrj42o4dMRVgr3/DPJ5LThnN
- 6VdipTqemBRyt9ALTdj4x4xqZV8nSpILxMLup2LHxJxbfn0f1z1lSuLid+kqFk6/OpWutCmig3For
- cHmNp/2Gbcms3EjNtM7y4zAbu7F2GOtSNfBRQwO6s=;
+ bh=IRzrPR9ntrOayXydUShbDK23mwAnImbRkwCubHvvs3Y=; b=jWpz3g8hscs/bKGN7+mTUemI/Z
+ Xyf2C5NGOzaq8a7hX8KXIuoFKC+hmZ3HD1SawYhfktfmW50aGfxy4MhGF6oPkfdsCoUvK1N8xVLqG
+ LzgpPYqNqW8LeenT+9nrfn+/jSjreBcpAlaIySrlXTiCAQRDgSMyV0Q4El0cn2Mau6oYeNNIonCXx
+ z0sSBFzlMHiVWz9GPVZenZ3ohRfVyD5wi8eeulRdunl5ODJF6FzzKHCN5QAe6nbiWdg5sGXb63mNM
+ C0uqQF1MdQhaohNLPx96bLCzSmzHe640w9GXfvo73OjQx+OAlLYk+LfwUInXwfP/+wd6ZVxDNLNjD
+ 6ZkX/EUwuUioo7w30KauRwCJ6Sc3ofh+2I4a4MAizMK79Jt0YHCih+7spNSbu/ECbsra+S9/fIbmC
+ KMqind4xICG64lCkAHHIH1vnryt0Au3mn2b/cS/5NlcVAuYrfwg6WGkpDkRX9AbEpPbMPHKOimrEm
+ m6m0iamt+k0XmGMFW9KTsOxtKyW1M5i3mtlkCqTFenJsa/Rl+0jVCuqy89gjdL4yHddtUOK/bNO+B
+ MfE5VlWzf68YNmuOMFcBxFgKe42P8/X1jEg4hVGPIW8Sc3AXKemnLJy1sBSmdtJ6BPI4qv+4Txd8O
+ 25RKJbQ9GYPX00vk7mT2PIDe8fciJfws4VpDNG/yk=;
 Received: from host86-130-37-216.range86-130.btcentralplus.com
  ([86.130.37.216] helo=kentang.home)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qBtbA-0001ZB-2f; Wed, 21 Jun 2023 09:54:00 +0100
+ id 1qBtbE-0001ZB-C7; Wed, 21 Jun 2023 09:54:04 +0100
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: laurent@vivier.eu,
 	qemu-devel@nongnu.org
-Date: Wed, 21 Jun 2023 09:53:30 +0100
-Message-Id: <20230621085353.113233-2-mark.cave-ayland@ilande.co.uk>
+Date: Wed, 21 Jun 2023 09:53:31 +0100
+Message-Id: <20230621085353.113233-3-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20230621085353.113233-1-mark.cave-ayland@ilande.co.uk>
 References: <20230621085353.113233-1-mark.cave-ayland@ilande.co.uk>
@@ -52,8 +52,8 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 86.130.37.216
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH v4 01/24] q800: fix up minor spacing issues in hw_compat_q800
- GlobalProperty array
+Subject: [PATCH v4 02/24] q800: add missing space after parent object in
+ GLUEState
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -79,40 +79,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Ensure there is a space before the final closing brace for all global
-properties.
+This brings GLUEState in line with our current QOM guidelines.
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Reviewed-by: Laurent Vivier <laurent@vivier.eu>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Laurent Vivier <laurent@vivier.eu>
 ---
- hw/m68k/q800.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ hw/m68k/q800.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/hw/m68k/q800.c b/hw/m68k/q800.c
-index 68f0cd8cac..dda57c60bf 100644
+index dda57c60bf..465c510c18 100644
 --- a/hw/m68k/q800.c
 +++ b/hw/m68k/q800.c
-@@ -719,14 +719,14 @@ static void q800_init(MachineState *machine)
- }
+@@ -100,6 +100,7 @@ OBJECT_DECLARE_SIMPLE_TYPE(GLUEState, GLUE)
  
- static GlobalProperty hw_compat_q800[] = {
--    { "scsi-hd", "quirk_mode_page_vendor_specific_apple", "on"},
-+    { "scsi-hd", "quirk_mode_page_vendor_specific_apple", "on" },
-     { "scsi-hd", "vendor", " SEAGATE" },
-     { "scsi-hd", "product", "          ST225N" },
-     { "scsi-hd", "ver", "1.0 " },
--    { "scsi-cd", "quirk_mode_page_apple_vendor", "on"},
--    { "scsi-cd", "quirk_mode_sense_rom_use_dbd", "on"},
--    { "scsi-cd", "quirk_mode_page_vendor_specific_apple", "on"},
--    { "scsi-cd", "quirk_mode_page_truncated", "on"},
-+    { "scsi-cd", "quirk_mode_page_apple_vendor", "on" },
-+    { "scsi-cd", "quirk_mode_sense_rom_use_dbd", "on" },
-+    { "scsi-cd", "quirk_mode_page_vendor_specific_apple", "on" },
-+    { "scsi-cd", "quirk_mode_page_truncated", "on" },
-     { "scsi-cd", "vendor", "MATSHITA" },
-     { "scsi-cd", "product", "CD-ROM CR-8005" },
-     { "scsi-cd", "ver", "1.0k" },
+ struct GLUEState {
+     SysBusDevice parent_obj;
++
+     M68kCPU *cpu;
+     uint8_t ipr;
+     uint8_t auxmode;
 -- 
 2.30.2
 
