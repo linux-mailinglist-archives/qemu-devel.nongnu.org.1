@@ -2,92 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 754F173824E
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 13:29:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83459738253
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 13:35:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBw13-0002V8-2Q; Wed, 21 Jun 2023 07:28:49 -0400
+	id 1qBw69-0006FQ-AF; Wed, 21 Jun 2023 07:34:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1qBw11-0002Ug-CY
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 07:28:47 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qBw5z-0006FA-Sh
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 07:33:56 -0400
+Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1qBw0z-0001bS-Pk
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 07:28:47 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687346925;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=xathR/t2Ikw02K4dyoTcVKom9t1EZ5V8unf9o6ytpco=;
- b=PBuoc1xRlN+ri+Wla2X0AAXDlKtq8F3ABnkeGwZU2Cyu1ZyI+xvvRinGwZSe0V1WCb/uqY
- xtK+BCFYPK6dbpV0HSoxVC3C03eW6DVPRcghxYX7qynOuj5TS994rX4mN9r9M+2VFGGXGc
- FlcIEUvcsfLSPrkseSxaliWJA8SwQtY=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-591-BDbfqZ-ENxqSu07OmI1vdg-1; Wed, 21 Jun 2023 07:28:43 -0400
-X-MC-Unique: BDbfqZ-ENxqSu07OmI1vdg-1
-Received: by mail-ed1-f72.google.com with SMTP id
- 4fb4d7f45d1cf-50daa85e940so3764315a12.0
- for <qemu-devel@nongnu.org>; Wed, 21 Jun 2023 04:28:43 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687346923; x=1689938923;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=xathR/t2Ikw02K4dyoTcVKom9t1EZ5V8unf9o6ytpco=;
- b=NxcD7SmiztJI55JFb9K1S/wA32pXj8j9mT0y9yMoc4jsD2wmddDu7C60t/sgOSPHpJ
- 150ljWdO5umOp5mdK41XmRW27A7/+lX4h0zapBZYWrTrBgTxKJcndqK3ZlFv37e1PC0y
- ++2D3X9T12eoXY+cAQ5og6KgRUPXoivEgR3qKOKM2g0MzRp1bKKDdJd+nVa8LIMc4okX
- AgESHcjfwuCsX/AJBW8GfbEdlgdt7p0Q9RIRJlx4nZGhe49xkBcXq5HS8J+krfwjP7ja
- zEoPhcjVv1JHYcwFXSeCM3Wb1imraovQ5qssYVK3ih/XHPZtw6h9cQgSs2E4+KmsOFsm
- tEqw==
-X-Gm-Message-State: AC+VfDx6Zfs3W/NiC0lYlu6gOH9b6qog+1OPSokEdO01jvWv+Du/J4wG
- EH0HWrELauvCiV4uxnNdo658ysmcUzicFJFifTYcAOVlk+t3FLrRRnatEM7XyGB++vnKHz6VXN2
- MQcVRpZqPf8+0nMc=
-X-Received: by 2002:a50:ef19:0:b0:51b:ac91:9f58 with SMTP id
- m25-20020a50ef19000000b0051bac919f58mr4825660eds.4.1687346922882; 
- Wed, 21 Jun 2023 04:28:42 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5mRtpoB4D3RWovlFYrpuLTOb6GkV4MGrWkC6CTQxYMhVISxScpArmHEXsCRJEzfVj31K8deQ==
-X-Received: by 2002:a50:ef19:0:b0:51b:ac91:9f58 with SMTP id
- m25-20020a50ef19000000b0051bac919f58mr4825646eds.4.1687346922578; 
- Wed, 21 Jun 2023 04:28:42 -0700 (PDT)
-Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
- [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
- d8-20020a056402078800b005187a42b44fsm2476093edy.58.2023.06.21.04.28.41
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 21 Jun 2023 04:28:42 -0700 (PDT)
-Date: Wed, 21 Jun 2023 13:28:40 +0200
-From: Igor Mammedov <imammedo@redhat.com>
-To: Joel Upham <jupham125@gmail.com>
-Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>, Ani Sinha
- <anisinha@redhat.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: Re: [PATCH v1 03/23] q35/acpi/xen: Provide ACPI PCI hotplug
- interface for Xen on Q35
-Message-ID: <20230621132840.7cf3e05f@imammedo.users.ipa.redhat.com>
-In-Reply-To: <5e066d5cfb355656a8704f4d07ba697507613568.1687278381.git.jupham125@gmail.com>
-References: <cover.1687278381.git.jupham125@gmail.com>
- <5e066d5cfb355656a8704f4d07ba697507613568.1687278381.git.jupham125@gmail.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qBw5x-0005h2-St
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 07:33:55 -0400
+Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
+ by localhost (Postfix) with SMTP id A2EDF748A62;
+ Wed, 21 Jun 2023 13:33:39 +0200 (CEST)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 67C81748A5D; Wed, 21 Jun 2023 13:33:39 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 65AED748A61;
+ Wed, 21 Jun 2023 13:33:39 +0200 (CEST)
+Date: Wed, 21 Jun 2023 13:33:39 +0200 (CEST)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+cc: laurent@vivier.eu, qemu-devel@nongnu.org
+Subject: Re: [PATCH v4 03/24] q800: introduce Q800MachineState
+In-Reply-To: <20230621085353.113233-4-mark.cave-ayland@ilande.co.uk>
+Message-ID: <3ffba6ed-4213-2e57-dcd1-ba1315f2df31@eik.bme.hu>
+References: <20230621085353.113233-1-mark.cave-ayland@ilande.co.uk>
+ <20230621085353.113233-4-mark.cave-ayland@ilande.co.uk>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: multipart/mixed;
+ boundary="3866299591-1190823114-1687347219=:25233"
+X-Spam-Probability: 10%
+Received-SPF: pass client-ip=2001:738:2001:2001::2001;
+ envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,87 +61,118 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 20 Jun 2023 13:24:37 -0400
-Joel Upham <jupham125@gmail.com> wrote:
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-> This patch allows to use ACPI PCI hotplug functionality for Xen on Q35.
-> All added code depends on xen_enabled(), so no functionality change for
-> non-Xen usage.
-> 
-> We need to call the acpi_set_pci_info function from ich9_pm_init as well,
-> so it was made globally visible again (as it was before).
+--3866299591-1190823114-1687347219=:25233
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8BIT
 
-this patch is also likely obsolete 
-
-> 
-> Signed-off-by: Alexey Gerasimenko <x1917x@xxxxxxxxx>
-> Signed-off-by: Joel Upham <jupham125@gmail.com>
+On Wed, 21 Jun 2023, Mark Cave-Ayland wrote:
+> This provides an overall container and owner for Machine-related objects such
+> as MemoryRegions.
+>
+> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+> Reviewed-by: Laurent Vivier <laurent@vivier.eu>
+> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->  hw/acpi/ich9.c          | 10 ++++++++++
->  hw/acpi/pcihp.c         |  2 +-
->  include/hw/acpi/pcihp.h |  2 ++
->  3 files changed, 13 insertions(+), 1 deletion(-)
-> 
-> diff --git a/hw/acpi/ich9.c b/hw/acpi/ich9.c
-> index 25e2c7243e..1c236be1c7 100644
-> --- a/hw/acpi/ich9.c
-> +++ b/hw/acpi/ich9.c
-> @@ -39,6 +39,8 @@
->  #include "hw/southbridge/ich9.h"
->  #include "hw/mem/pc-dimm.h"
->  #include "hw/mem/nvdimm.h"
-> +#include "hw/xen/xen.h"
-> +#include "sysemu/xen.h"
->  
->  //#define DEBUG
->  
-> @@ -67,6 +69,10 @@ static void ich9_gpe_writeb(void *opaque, hwaddr addr, uint64_t val,
->      ICH9LPCPMRegs *pm = opaque;
->      acpi_gpe_ioport_writeb(&pm->acpi_regs, addr, val);
->      acpi_update_sci(&pm->acpi_regs, pm->irq);
-> +
-> +    if (xen_enabled()) {
-> +        acpi_pcihp_reset(&pm->acpi_pci_hotplug);
-> +    }
->  }
->  
->  static const MemoryRegionOps ich9_gpe_ops = {
-> @@ -332,6 +338,10 @@ void ich9_pm_init(PCIDevice *lpc_pci, ICH9LPCPMRegs *pm, qemu_irq sci_irq)
->      pm->powerdown_notifier.notify = pm_powerdown_req;
->      qemu_register_powerdown_notifier(&pm->powerdown_notifier);
->  
-> +    if (xen_enabled()) {
-> +            acpi_set_pci_info(true);
-> +    }
-> +
->      legacy_acpi_cpu_hotplug_init(pci_address_space_io(lpc_pci),
->          OBJECT(lpc_pci), &pm->gpe_cpu, ICH9_CPU_HOTPLUG_IO_BASE);
->  
-> diff --git a/hw/acpi/pcihp.c b/hw/acpi/pcihp.c
-> index f4e39d7a9c..5b065d670c 100644
-> --- a/hw/acpi/pcihp.c
-> +++ b/hw/acpi/pcihp.c
-> @@ -99,7 +99,7 @@ static void *acpi_set_bsel(PCIBus *bus, void *opaque)
->      return info;
->  }
->  
-> -static void acpi_set_pci_info(bool has_bridge_hotplug)
-> +void acpi_set_pci_info(bool has_bridge_hotplug)
->  {
->      static bool bsel_is_set;
->      Object *host = acpi_get_i386_pci_host();
-> diff --git a/include/hw/acpi/pcihp.h b/include/hw/acpi/pcihp.h
-> index ef59810c17..d35a517c9e 100644
-> --- a/include/hw/acpi/pcihp.h
-> +++ b/include/hw/acpi/pcihp.h
-> @@ -72,6 +72,8 @@ void acpi_pcihp_device_unplug_request_cb(HotplugHandler *hotplug_dev,
->  /* Called on reset */
->  void acpi_pcihp_reset(AcpiPciHpState *s);
->  
-> +void acpi_set_pci_info(bool has_bridge_hotplug);
-> +
->  void build_append_pcihp_slots(Aml *parent_scope, PCIBus *bus);
->  
->  extern const VMStateDescription vmstate_acpi_pcihp_pci_status;
+> MAINTAINERS            |  1 +
+> hw/m68k/q800.c         |  2 ++
+> include/hw/m68k/q800.h | 40 ++++++++++++++++++++++++++++++++++++++++
+> 3 files changed, 43 insertions(+)
+> create mode 100644 include/hw/m68k/q800.h
+>
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 88b5a7ee0a..748a66fbaa 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -1236,6 +1236,7 @@ F: include/hw/misc/mac_via.h
+> F: include/hw/nubus/*
+> F: include/hw/display/macfb.h
+> F: include/hw/block/swim.h
+> +F: include/hw/m68k/q800.h
+>
+> virt
+> M: Laurent Vivier <laurent@vivier.eu>
+> diff --git a/hw/m68k/q800.c b/hw/m68k/q800.c
+> index 465c510c18..c0256c8a90 100644
+> --- a/hw/m68k/q800.c
+> +++ b/hw/m68k/q800.c
+> @@ -38,6 +38,7 @@
+> #include "standard-headers/asm-m68k/bootinfo.h"
+> #include "standard-headers/asm-m68k/bootinfo-mac.h"
+> #include "bootinfo.h"
+> +#include "hw/m68k/q800.h"
+> #include "hw/misc/mac_via.h"
+> #include "hw/input/adb.h"
+> #include "hw/nubus/mac-nubus-bridge.h"
+> @@ -749,6 +750,7 @@ static void q800_machine_class_init(ObjectClass *oc, void *data)
+> static const TypeInfo q800_machine_typeinfo = {
+>     .name       = MACHINE_TYPE_NAME("q800"),
+>     .parent     = TYPE_MACHINE,
+> +    .instance_size = sizeof(Q800MachineState),
+>     .class_init = q800_machine_class_init,
+> };
+>
+> diff --git a/include/hw/m68k/q800.h b/include/hw/m68k/q800.h
+> new file mode 100644
+> index 0000000000..f3bc17aa1b
+> --- /dev/null
+> +++ b/include/hw/m68k/q800.h
 
+Why is this defined in a public header? Moving struct definitions of 
+devices to allow them to be embedded in other structs makes sense but is 
+there ever a reason to embed a machine state anywhere else than using it 
+in q800.c? I don't think so, thus to preserve locality and save some lines 
+in this series I think this machine state should just be in q800.c like I 
+have similar struct in pegasos2.c. It may only make sense to put it in a 
+header if q800.c was split up to multiple files but even then it should be 
+a local header in hw/m68k and not a public header in my opinion.
+
+Regards,
+BALATON Zoltan
+
+> @@ -0,0 +1,40 @@
+> +/*
+> + * QEMU Motorla 680x0 Macintosh hardware System Emulator
+> + *
+> + * Permission is hereby granted, free of charge, to any person obtaining a copy
+> + * of this software and associated documentation files (the "Software"), to deal
+> + * in the Software without restriction, including without limitation the rights
+> + * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+> + * copies of the Software, and to permit persons to whom the Software is
+> + * furnished to do so, subject to the following conditions:
+> + *
+> + * The above copyright notice and this permission notice shall be included in
+> + * all copies or substantial portions of the Software.
+> + *
+> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+> + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+> + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+> + * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+> + * THE SOFTWARE.
+> + */
+> +
+> +#ifndef HW_Q800_H
+> +#define HW_Q800_H
+> +
+> +#include "hw/boards.h"
+> +#include "qom/object.h"
+> +
+> +/*
+> + * The main Q800 machine
+> + */
+> +
+> +struct Q800MachineState {
+> +    MachineState parent_obj;
+> +};
+> +
+> +#define TYPE_Q800_MACHINE MACHINE_TYPE_NAME("q800")
+> +OBJECT_DECLARE_SIMPLE_TYPE(Q800MachineState, Q800_MACHINE)
+> +
+> +#endif
+>
+--3866299591-1190823114-1687347219=:25233--
 
