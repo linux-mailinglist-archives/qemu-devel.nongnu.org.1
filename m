@@ -2,65 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56B117379DD
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 05:48:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD32D737AD3
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 07:50:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBooK-0008Av-9T; Tue, 20 Jun 2023 23:47:12 -0400
+	id 1qBqj7-0000mp-Bu; Wed, 21 Jun 2023 01:49:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <wangyuquan1236@phytium.com.cn>)
- id 1qBooG-0008Aj-Ue; Tue, 20 Jun 2023 23:47:08 -0400
-Received: from sgoci-sdnproxy-4.icoremail.net ([129.150.39.64])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <wangyuquan1236@phytium.com.cn>)
- id 1qBooE-0003G4-Ez; Tue, 20 Jun 2023 23:47:08 -0400
-Received: from prodtpl.icoremail.net (unknown [10.12.1.20])
- by hzbj-icmmx-7 (Coremail) with SMTP id AQAAfwDHTV9BcpJkrLSMAA--.24950S2;
- Wed, 21 Jun 2023 11:45:05 +0800 (CST)
-Received: from WYQ-S (unknown [218.76.62.144])
- by mail (Coremail) with SMTP id AQAAfwCXErKkcpJkfDcAAA--.2596S3;
- Wed, 21 Jun 2023 11:46:45 +0800 (CST)
-Date: Wed, 21 Jun 2023 11:46:45 +0800
-From: "Yuquan Wang" <wangyuquan1236@phytium.com.cn>
-To: quic_llindhol <quic_llindhol@quicinc.com>, 
- peter.maydell <peter.maydell@linaro.org>
-Cc: rad <rad@semihalf.com>, pbonzini <pbonzini@redhat.com>, 
- marcin.juszkiewicz <marcin.juszkiewicz@linaro.org>, 
- chenbaozi <chenbaozi@phytium.com.cn>, qemu-arm <qemu-arm@nongnu.org>, 
- qemu-devel <qemu-devel@nongnu.org>
-Subject: Re: [PATCH v4 1/1] hw/arm/sbsa-ref: use XHCI to replace EHCI
-References: <20230607023314.192439-1-wangyuquan1236@phytium.com.cn>, 
- <20230607023314.192439-2-wangyuquan1236@phytium.com.cn>, 
- <CAFEAcA-B6Pbc2KyTVP9hheGfEecfTbwu-zi7_9EmjJH5opbiYg@mail.gmail.com>, 
- <f1e8edcc-14ed-0e97-0172-292032e61f1d@quicinc.com>
-X-Priority: 3
-X-GUID: 27CBE808-AD2C-4349-AF22-F7AF4419C482
-X-Has-Attach: no
-X-Mailer: Foxmail 7.2.25.228[cn]
-Mime-Version: 1.0
-Message-ID: <2023062111461132026159@phytium.com.cn>
-Content-Type: multipart/alternative;
- boundary="----=_001_NextPart378351548818_=----"
-X-CM-TRANSID: AQAAfwCXErKkcpJkfDcAAA--.2596S3
-X-CM-SenderInfo: 5zdqw5pxtxt0arstlqxsk13x1xpou0fpof0/1tbiAQARAWSR+kEBRwABsY
-Authentication-Results: hzbj-icmmx-7; spf=neutral smtp.mail=wangyuquan
- 1236@phytium.com.cn;
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
- ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU8nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
- nUUI43ZEXa7xR_UUUUUUUUU==
-Received-SPF: pass client-ip=129.150.39.64;
- envelope-from=wangyuquan1236@phytium.com.cn;
- helo=sgoci-sdnproxy-4.icoremail.net
+ (Exim 4.90_1) (envelope-from <shivamvijay543@gmail.com>)
+ id 1qBpyY-0001DP-GL
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 01:01:51 -0400
+Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <shivamvijay543@gmail.com>)
+ id 1qBpyW-0001iU-Vv
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 01:01:50 -0400
+Received: by mail-ed1-x52b.google.com with SMTP id
+ 4fb4d7f45d1cf-519f6e1a16cso6460679a12.2
+ for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 22:01:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1687323706; x=1689915706;
+ h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=zAccjwQrlUkSvGUrWlsWMJpUn6ys/uCYuq5viuv4094=;
+ b=EaOCUUyOROA1+Z8N5XBns5H6ZRsbjaiwtKVKeqQaFsK/dV0IgkhNGg4BnnPEYA8Xgg
+ N0xJQFjFjwu4ihmiPjoxN9WRDUoRkxe1v457EoicC6TKyRJeSUhShL67u8Upmd8R1nOA
+ SUTSAGQNLT040CBvsJ/k9vSzaz40gxwWJfpyeOGk5RaKWXDMS8XgdoTEmd4QSi7/tqwl
+ jMZn0FIpOWr4bYNwRBYs9tHnXCXS4UuowG7zZbd4WllWUvwnIMuBTdGwPua7dx7cydU7
+ o6pmnfcJpfRwMOo41nM8QgSt3kYnRpJzN/vfLZgV8TLtunNG1bgb2yhYqjd831TTvhSb
+ M6wQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1687323706; x=1689915706;
+ h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=zAccjwQrlUkSvGUrWlsWMJpUn6ys/uCYuq5viuv4094=;
+ b=gPvbSCVQHpQOqP9xSAH0n4mX4tq5OJJju6gRn03a+gsVKb3Ff+clzwcZOTlbex/1CO
+ f1R320kA88pGeI4CPFrGX2/qFWH8PH7RRNPUN2nUA1EGNarOCRrffFQ8As+g7giQ/Ljt
+ ouOHdfXnV3XBx/QOZWpHJ/uj+4y86+QpsK1OecW3ZEXhU4kpBsf1JqfFIF1TrADB/LS1
+ vaS7uBHFJtZnMyuuB0m4etZTc+S/YyO4Pk7+cxhnLdkGcgg2SFS4kqH3OBd2pqRQScsW
+ jzEjAUqztdmZO9XRU4KfE2lSQKFn8wBJlPX6fsRjKX+pyP93GYZLsj+MkKp9F79GS8S4
+ 7jSg==
+X-Gm-Message-State: AC+VfDx4fRan/oCCbCK5fW85Zq9pUKKNf/03TkOEH75YK5h6euV22V6Y
+ cXfSYSt0q11ixgs54oKmrrUN/QKAvdMJ3bWUj3RdTHCWga1EfQ==
+X-Google-Smtp-Source: ACHHUZ5E1rKvSxiK1PgLQ1jitYwnVlinnteRc/ATwvONk69iDEmz3e8sx6FAp2d7UqNjP6YIKRABzI/8VTKU25JBvo8=
+X-Received: by 2002:a17:907:3da9:b0:988:4f36:6afa with SMTP id
+ he41-20020a1709073da900b009884f366afamr8349906ejc.56.1687323706126; Tue, 20
+ Jun 2023 22:01:46 -0700 (PDT)
+MIME-Version: 1.0
+From: Shivam <shivamvijay543@gmail.com>
+Date: Wed, 21 Jun 2023 10:31:34 +0530
+Message-ID: <CAC583hE_ZXqA4ZkA2OfYYULzPAD+mJOHqvZuJxevyae8eT74rg@mail.gmail.com>
+Subject: Request for Assistance: Adding I2C Support in QEMU for Raspberry Pi
+ (BCM2835 Peripherals)
+To: qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>, philmd@linaro.org
+Content-Type: multipart/mixed; boundary="0000000000002004f305fe9caa2e"
+Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
+ envelope-from=shivamvijay543@gmail.com; helo=mail-ed1-x52b.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, HTML_FONT_LOW_CONTRAST=0.001,
- HTML_MESSAGE=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_KAM_HTML_FONT_INVALID=0.01,
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, HTML_MESSAGE=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Wed, 21 Jun 2023 01:49:52 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,59 +84,166 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is a multi-part message in MIME format.
+--0000000000002004f305fe9caa2e
+Content-Type: multipart/alternative; boundary="0000000000002004f205fe9caa2c"
 
-------=_001_NextPart378351548818_=----
-Content-Type: text/plain;
-	charset="UTF-8"
-Content-Transfer-Encoding: base64
+--0000000000002004f205fe9caa2c
+Content-Type: text/plain; charset="UTF-8"
 
-T24gMjAyMy0wNi0yMSAwMToyNCwgIExlaWYgd3JvdGU6DQoNCj4gTGVpZiwgZG8geW91IHRoaW5r
-IHdlIHNob3VsZCBidW1wIHRoZSBtaW5vciB2ZXJzaW9uIGhlcmU/DQogDQpJIHRoaW5rIHRoYXQg
-bWFrZXMgc2Vuc2UsIHllcy4NCiANCi8NCiAgICAgTGVpZg0KDQpUaGFua3MgZm9yIGV2ZXJ5b25l
-J3MgZ3VpZGFuY2UuDQpUaGVyZSBpcyBhIG5ldyBjb25mdXNpb246IFdoaWNoIG1pbm9yIHZlcnNp
-b24gc2hvdWxkIEkgYnVtcCB0byAoMiBvciAzKSA/DQpBcyBJIGZvdW5kIHRoYXQgTWFyY2lu4oCZ
-cyBsYXRlc3QgcGF0Y2ggKGFkZCBJVFMgc3VwcG9ydCBpbiBTQlNBIEdJQw0KaHR0cHM6Ly9saXN0
-cy5ub25nbnUub3JnL2FyY2hpdmUvaHRtbC9xZW11LWFybS8yMDIzLTA2L21zZzAwNzA5Lmh0bWwg
-KQ0KaW5jcmVhc2VkIHRoZSBtaW5vciB2ZXJzaW9uIHRvIDIuIA0KDQoNCk1hbnkgdGhhbmtzDQpZ
-dXF1YW4NCg==
+Hi,
 
-------=_001_NextPart378351548818_=----
-Content-Type: text/html;
-	charset="UTF-8"
+I hope this email finds you well. I am reaching out to seek guidance and
+assistance regarding a project I am working on involving the addition of
+I2C support in QEMU for the Raspberry Pi, specifically targeting the
+BCM2835 peripherals.
+
+I have been studying the BCM2835 datasheet to familiarize myself with the
+I2C device registers and their functionalities. Currently, I have started
+implementing the i2c controller for bcm2835, but now couldn't able to get
+the feel that how should I integrate it with the BCM2835
+Soc.(bcm2835_peripheral.c)
+
+I have attaching bcm2835_i2c.c ( which have basic template for BSC0
+controller)
+
+
+Thanks & Regards
+Shivam Vijay
+
+--0000000000002004f205fe9caa2c
+Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-<html><head><meta http-equiv=3D"content-type" content=3D"text/html; charse=
-t=3DUTF-8"><style>body { line-height: 1.5; }blockquote { margin-top: 0px; =
-margin-bottom: 0px; margin-left: 0.5em; }body { font-size: 13px; font-fami=
-ly: "Times New Roman"; color: rgb(0, 0, 0); line-height: 1.5; }</style></h=
-ead><body>=0A =0A<div><span style=3D"background-color: transparent;">On&nb=
-sp;2023-06-21&nbsp;01:24,&nbsp;</span><span style=3D"background-color: tra=
-nsparent;">&nbsp;</span><span style=3D"color: rgb(0, 0, 0); background-col=
-or: rgba(0, 0, 0, 0);">Leif&nbsp;</span><span style=3D"background-color: t=
-ransparent;">wrote:</span></div><div><div><table width=3D"100%"><tbody><tr=
-><td width=3D"100%"><blockquote style=3D"border-left: 2px solid rgb(0, 0, =
-0); margin: 0px 0px 0px 0.5em; padding-left: 5px; padding-right: 0px;">=0A=
-<div><br></div>=0A<div>&gt; Leif, do you think we should bump the minor ve=
-rsion here?</div>=0A<div>&nbsp;</div>=0A<div>I think that makes sense, yes=
-.</div>=0A<div>&nbsp;</div>=0A<div>/</div>=0A<div>&nbsp;&nbsp;&nbsp;&nbsp;=
- Leif</div>=0A</blockquote></td></tr></tbody></table></div><div><br></div>=
-<div>Thanks for everyone's guidance.</div><div>There is a new confusion:&n=
-bsp;<span style=3D"background-color: transparent;">Which minor version sho=
-uld I bump to (2 or 3) ?</span></div><div><span style=3D"background-color:=
- transparent;">As I found that&nbsp;</span><span style=3D"color: rgb(0, 0,=
- 0); background-color: rgba(0, 0, 0, 0);">Marcin=E2=80=99s latest patch (<=
-/span><span style=3D"color: rgb(0, 0, 0); background-color: rgba(0, 0, 0, =
-0);">add&nbsp;ITS&nbsp;support&nbsp;in&nbsp;SBSA&nbsp;GIC</span></div><div=
-><a href=3D"https://lists.nongnu.org/archive/html/qemu-arm/2023-06/msg0070=
-9.html" style=3D"background-color: transparent;">https://lists.nongnu.org/=
-archive/html/qemu-arm/2023-06/msg00709.html</a><span style=3D"color: rgb(0=
-, 0, 0); background-color: rgba(0, 0, 0, 0);">&nbsp;)</span></div><div>inc=
-reased the minor version to 2.&nbsp;</div><div><br></div><span style=3D"co=
-lor: rgb(0, 0, 0); background-color: rgba(0, 0, 0, 0);"></span><div><span =
-style=3D"background-color: transparent;"><br></span></div><div><span style=
-=3D"background-color: transparent;">Many thanks</span></div><div>Yuquan</d=
-iv></div></body></html>
-------=_001_NextPart378351548818_=------
+<div dir=3D"ltr">Hi,=C2=A0<br><br clear=3D"all"><div><div dir=3D"ltr" class=
+=3D"gmail_signature" data-smartmail=3D"gmail_signature"><div dir=3D"ltr">I =
+hope this email finds you well. I am reaching out to seek guidance and assi=
+stance regarding a project I am working on involving the addition of I2C su=
+pport in QEMU for the Raspberry Pi, specifically targeting the BCM2835 peri=
+pherals.<br><br>I have been studying the BCM2835 datasheet to familiarize m=
+yself with the I2C device registers and their functionalities. Currently, I=
+ have started implementing the i2c controller for bcm2835, but now couldn&#=
+39;t=C2=A0able to get the feel that how should I integrate it with the BCM2=
+835 Soc.(bcm2835_peripheral.c)<br><br>I have attaching bcm2835_i2c.c ( whic=
+h have basic template for BSC0 controller)<br><br><br>Thanks &amp; Regards=
+=C2=A0<br>Shivam Vijay<br><br><br></div></div></div></div>
 
+--0000000000002004f205fe9caa2c--
+
+--0000000000002004f305fe9caa2e
+Content-Type: application/octet-stream; name="bcm2835_i2c.c"
+Content-Disposition: attachment; filename="bcm2835_i2c.c"
+Content-Transfer-Encoding: base64
+Content-ID: <f_lj58xz160>
+X-Attachment-Id: f_lj58xz160
+
+I2luY2x1ZGUgInFlbXUvb3NkZXAuaCINCiNpbmNsdWRlICJody9pMmMvaTJjLmgiDQojaW5jbHVk
+ZSAiaHcvaXJxLmgiDQojaW5jbHVkZSAicWVtdS9tb2R1bGUuaCINCiNpbmNsdWRlICJody9zeXNi
+dXMuaCINCiNpbmNsdWRlICJtaWdyYXRpb24vdm1zdGF0ZS5oIg0KI2luY2x1ZGUgInFvbS9vYmpl
+Y3QuaCINCiNpbmNsdWRlICJody9pMmMvYmNtMjgzNV9pMmMuaCINCiNpbmNsdWRlICJxZW11L2xv
+Zy5oIg0KDQoNCiNkZWZpbmUgQkNNMjgzNV9JMkNfQwkJMHgwDQojZGVmaW5lIEJDTTI4MzVfSTJD
+X1MJCTB4NA0KI2RlZmluZSBCQ00yODM1X0kyQ19ETEVOCTB4OA0KI2RlZmluZSBCQ00yODM1X0ky
+Q19BCQkweGMNCiNkZWZpbmUgQkNNMjgzNV9JMkNfRklGTwkweDEwDQojZGVmaW5lIEJDTTI4MzVf
+STJDX0RJVgkJMHgxNA0KI2RlZmluZSBCQ00yODM1X0kyQ19ERUwJCTB4MTgNCiNkZWZpbmUgQkNN
+MjgzNV9JMkNfQ0xLVAkweDFjDQoNCi8vIENvbnRyb2wgcmVnaXN0ZXIgYml0cyAgICANCg0KI2Rl
+ZmluZSBCQ00yODM1X0kyQ19DX1JFQUQJQklUKDApDQojZGVmaW5lIEJDTTI4MzVfSTJDX0NfQ0xF
+QVIJQklUKDQpIC8qIGJpdHMgNCBhbmQgNSBib3RoIGNsZWFyICovDQojZGVmaW5lIEJDTTI4MzVf
+STJDX0NfU1QJQklUKDcpDQojZGVmaW5lIEJDTTI4MzVfSTJDX0NfSU5URAlCSVQoOCkNCiNkZWZp
+bmUgQkNNMjgzNV9JMkNfQ19JTlRUCUJJVCg5KQ0KI2RlZmluZSBCQ00yODM1X0kyQ19DX0lOVFIJ
+QklUKDEwKQ0KI2RlZmluZSBCQ00yODM1X0kyQ19DX0kyQ0VOCUJJVCgxNSkNCg0KLy8gU3RhdHVz
+IHJlZ2lzdGVyIGJpdHMNCiNkZWZpbmUgQkNNMjgzNV9JMkNfU19UQQlCSVQoMCkNCiNkZWZpbmUg
+QkNNMjgzNV9JMkNfU19ET05FCUJJVCgxKQ0KI2RlZmluZSBCQ00yODM1X0kyQ19TX1RYVwlCSVQo
+MikNCiNkZWZpbmUgQkNNMjgzNV9JMkNfU19SWFIJQklUKDMpDQojZGVmaW5lIEJDTTI4MzVfSTJD
+X1NfVFhECUJJVCg0KQ0KI2RlZmluZSBCQ00yODM1X0kyQ19TX1JYRAlCSVQoNSkNCiNkZWZpbmUg
+QkNNMjgzNV9JMkNfU19UWEUJQklUKDYpDQojZGVmaW5lIEJDTTI4MzVfSTJDX1NfUlhGCUJJVCg3
+KQ0KI2RlZmluZSBCQ00yODM1X0kyQ19TX0VSUglCSVQoOCkNCiNkZWZpbmUgQkNNMjgzNV9JMkNf
+U19DTEtUCUJJVCg5KQ0KI2RlZmluZSBCQ00yODM1X0kyQ19TX0xFTglCSVQoMTApIC8qIEZha2Ug
+Yml0IGZvciBTVyBlcnJvciByZXBvcnRpbmcgKi8NCg0KDQoNCg0Kc3RhdGljIHZvaWQgYmNtMjgz
+NV9pMmNfcmVzZXQoRGV2aWNlU3RhdGUgKmRldikNCnsNCiAgICBCQ00yODM1STJDU3RhdGUgKnMg
+PSBCQ00yODM1X0kyQyhkZXYpOw0KDQogICAgcy0+Y29udHJvbCA9IDA7DQogICAgcy0+c3RhdHVz
+ID0gMDsNCiAgICBzLT5kYXRhX2xlbmd0aCA9IDA7DQogICAgcy0+c2xhdmVfYWRkcmVzcyA9IDA7
+DQogICAgcy0+ZmlmbyA9IDA7DQogICAgcy0+Y2xvY2tfZGl2aWRlciA9IDA7DQogICAgcy0+ZGF0
+YV9kZWxheSA9IDA7DQogICAgcy0+Y2xvY2tfc3RyZXRjaF90aW1lb3V0ID0gMDsNCn0NCg0KDQoN
+Cg0KDQpzdGF0aWMgdWludDY0X3QgYmNtMjgzNV9pMmNfcmVhZCh2b2lkICpvcGFxdWUsIGh3YWRk
+ciBhZGRyLCB1bnNpZ25lZCBpbnQgc2l6ZSkNCnsNCg0KICAgIHJldHVybiAxOw0KICAgICAgICBC
+Q00yODM1STJDU3RhdGUgKnMgPSBCQ00yODM1X0kyQyhvcGFxdWUpOw0KICAgICAgICB1aW50NjRf
+dCB2YWx1ZSA9IDA7DQoNCiAgICAgICAgc3dpdGNoIChhZGRyKSB7DQogICAgICAgIGNhc2UgQkNN
+MjgzNV9JMkNfQzoNCiAgICAgICAgICAgICAgICB2YWx1ZSA9IHMtPmNvbnRyb2w7DQogICAgICAg
+ICAgICAgICAgYnJlYWs7DQogICAgICAgIGNhc2UgQkNNMjgzNV9JMkNfUzoNCiAgICAgICAgICAg
+ICAgICB2YWx1ZSA9IHMtPnN0YXR1czsNCiAgICAgICAgICAgICAgICBicmVhazsNCg0KICAgICAg
+ICBjYXNlIEJDTTI4MzVfSTJDX0RMRU46DQogICAgICAgICAgICAgICAgdmFsdWUgPSBzLT5kYXRh
+X2xlbmd0aDsNCiAgICAgICAgICAgICAgICBicmVhazsgIA0KDQogICAgICAgIGNhc2UgQkNNMjgz
+NV9JMkNfQToNCiAgICAgICAgICAgICAgICB2YWx1ZSA9IHMtPnNsYXZlX2FkZHJlc3M7DQogICAg
+ICAgICAgICAgICAgYnJlYWs7DQoNCiAgICAgICAgY2FzZSBCQ00yODM1X0kyQ19GSUZPOg0KICAg
+ICAgICAgICAgICAgIHZhbHVlID0gcy0+ZmlmbzsNCiAgICAgICAgICAgICAgICBicmVhazsNCg0K
+ICAgICAgICBjYXNlIEJDTTI4MzVfSTJDX0RJVjoNCiAgICAgICAgICAgICAgICB2YWx1ZSA9IHMt
+PmNsb2NrX2RpdmlkZXI7DQogICAgICAgICAgICAgICAgYnJlYWs7DQoNCiAgICAgICAgY2FzZSBC
+Q00yODM1X0kyQ19ERUw6DQogICAgICAgICAgICAgICAgdmFsdWUgPSBzLT5kYXRhX2RlbGF5Ow0K
+ICAgICAgICAgICAgICAgIGJyZWFrOw0KDQogICAgICAgIGNhc2UgQkNNMjgzNV9JMkNfQ0xLVDoN
+CiAgICAgICAgICAgICAgICB2YWx1ZSA9IHMtPmNsb2NrX3N0cmV0Y2hfdGltZW91dDsNCiAgICAg
+ICAgICAgICAgICBicmVhazsNCg0KICAgICAgICBkZWZhdWx0Og0KICAgICAgICAgICAgICAgIHZh
+bHVlID0gMDsNCiAgICAgICAgICAgICAgICBicmVhazsNCiAgICAgICAgfQ0KDQogICAgICAgIHJl
+dHVybiB2YWx1ZTsNCg0KfQ0KDQpzdGF0aWMgdm9pZCBiY20yODM1X2kyY193cml0ZSh2b2lkICpv
+cGFxdWUsIGh3YWRkciBhZGRyLCB1aW50NjRfdCB2YWx1ZSwgdW5zaWduZWQgaW50IHNpemUpDQp7
+DQoNCiAgICAgICAgQkNNMjgzNUkyQ1N0YXRlICpzID0gQkNNMjgzNV9JMkMob3BhcXVlKTsNCg0K
+ICAgICAgICBzd2l0Y2ggKGFkZHIpIHsNCiAgICAgICAgY2FzZSBCQ00yODM1X0kyQ19DOg0KICAg
+ICAgICAgICAgICAgIHMtPmNvbnRyb2wgPSB2YWx1ZTsNCiAgICAgICAgICAgICAgICBicmVhazsN
+CiAgICAgICAgY2FzZSBCQ00yODM1X0kyQ19TOg0KICAgICAgICAgICAgICAgIHMtPnN0YXR1cyA9
+IHZhbHVlOw0KICAgICAgICAgICAgICAgIGJyZWFrOw0KDQogICAgICAgIGNhc2UgQkNNMjgzNV9J
+MkNfRExFTjoNCiAgICAgICAgICAgICAgICBzLT5kYXRhX2xlbmd0aCA9IHZhbHVlOw0KICAgICAg
+ICAgICAgICAgIGJyZWFrOyAgDQoNCiAgICAgICAgY2FzZSBCQ00yODM1X0kyQ19BOg0KICAgICAg
+ICAgICAgICAgIHMtPnNsYXZlX2FkZHJlc3MgPSB2YWx1ZTsNCiAgICAgICAgICAgICAgICBicmVh
+azsNCg0KICAgICAgICBjYXNlIEJDTTI4MzVfSTJDX0ZJRk86DQogICAgICAgICAgICAgICAgcy0+
+ZmlmbyA9IHZhbHVlOw0KICAgICAgICAgICAgICAgIGJyZWFrOw0KDQogICAgICAgIGNhc2UgQkNN
+MjgzNV9JMkNfRElWOg0KICAgICAgICAgICAgICAgIHMtPmNsb2NrX2RpdmlkZXIgPSB2YWx1ZTsN
+CiAgICAgICAgICAgICAgICBicmVhazsNCg0KICAgICAgICBjYXNlIEJDTTI4MzVfSTJDX0RFTDoN
+CiAgICAgICAgICAgICAgICBzLT5kYXRhX2RlbGF5ID0gdmFsdWU7DQogICAgICAgICAgICAgICAg
+YnJlYWs7DQoNCiAgICAgICAgY2FzZSBCQ00yODM1X0kyQ19DTEtUOg0KICAgICAgICAgICAgICAg
+IHMtPmNsb2NrX3N0cmV0Y2hfdGltZW91dCA9IHZhbHVlOw0KICAgICAgICAgICAgICAgIGJyZWFr
+Ow0KDQogICAgICAgIGRlZmF1bHQ6DQogICAgICAgICAgICAgICAgYnJlYWs7DQogICAgICAgIH0N
+CiAgICANCn0NCg0Kc3RhdGljIGNvbnN0IE1lbW9yeVJlZ2lvbk9wcyBiY20yODM1X2kyY19vcHMg
+PSB7DQogICAgLnJlYWQgPSBiY20yODM1X2kyY19yZWFkLA0KICAgIC53cml0ZSA9IGJjbTI4MzVf
+aTJjX3dyaXRlLA0KICAgIC5lbmRpYW5uZXNzID0gREVWSUNFX05BVElWRV9FTkRJQU4sDQp9Ow0K
+DQpzdGF0aWMgY29uc3QgVk1TdGF0ZURlc2NyaXB0aW9uIHZtc3RhdGVfYmNtMjgzNV9pMmMgPSB7
+DQogICAgLm5hbWUgPSAiYmNtMjgzNS1pMmMiLA0KICAgIC52ZXJzaW9uX2lkID0gMSwNCiAgICAu
+bWluaW11bV92ZXJzaW9uX2lkID0gMSwNCiAgICAuZmllbGRzID0gKFZNU3RhdGVGaWVsZFtdKSB7
+DQogICAgICAgIFZNU1RBVEVfVUlOVDMyKGNvbnRyb2wsIEJDTTI4MzVJMkNTdGF0ZSksDQogICAg
+ICAgIFZNU1RBVEVfVUlOVDMyKHN0YXR1cywgQkNNMjgzNUkyQ1N0YXRlKSwNCiAgICAgICAgVk1T
+VEFURV9VSU5UMzIoZGF0YV9sZW5ndGgsIEJDTTI4MzVJMkNTdGF0ZSksDQogICAgICAgIFZNU1RB
+VEVfVUlOVDMyKHNsYXZlX2FkZHJlc3MsIEJDTTI4MzVJMkNTdGF0ZSksDQogICAgICAgIFZNU1RB
+VEVfVUlOVDMyKGZpZm8sIEJDTTI4MzVJMkNTdGF0ZSksDQogICAgICAgIFZNU1RBVEVfVUlOVDMy
+KGNsb2NrX2RpdmlkZXIsIEJDTTI4MzVJMkNTdGF0ZSksDQogICAgICAgIFZNU1RBVEVfVUlOVDMy
+KGRhdGFfZGVsYXksIEJDTTI4MzVJMkNTdGF0ZSksDQogICAgICAgIFZNU1RBVEVfVUlOVDMyKGNs
+b2NrX3N0cmV0Y2hfdGltZW91dCwgQkNNMjgzNUkyQ1N0YXRlKSwNCiAgICAgICAgVk1TVEFURV9F
+TkRfT0ZfTElTVCgpDQogICAgfQ0KfTsNCg0KLy8gc3RhdGljIHZvaWQgYmNtMjgzNV9pMmNfcmVh
+bGl6ZShEZXZpY2VTdGF0ZSAqZGV2LCBFcnJvciAqKmVycnApDQovLyB7DQovLyAgICAgQkNNMjgz
+NUkyQ1N0YXRlICpzID0gQkNNMjgzNV9JMkMoZGV2KTsNCi8vICAgICAgIC8qIEluaXRpYWxpemUg
+dGhlIElSUSAqLw0KLy8gICAgIHN5c2J1c19pbml0X2lycShTWVNfQlVTX0RFVklDRShkZXYpLCAm
+cy0+aXJxKTsNCg0KLy8gICAgIC8qIEluaXRpYWxpemUgeW91ciBkZXNpcmVkIHN0YXRlIHZhcmlh
+YmxlcyBoZXJlICovDQovLyAgICAgbWVtb3J5X3JlZ2lvbl9pbml0X2lvKCZzLT5pb21lbSwgT0JK
+RUNUKGRldiksICZiY20yODM1X2kyY19vcHMsIHMsDQovLyAgICAgICAgICAgICAgICAgICAgICAg
+ICAgIFRZUEVfQkNNMjgzNV9JMkMsIDB4MTAwMCk7DQovLyAgICAgc3lzYnVzX2luaXRfbW1pbyhT
+WVNfQlVTX0RFVklDRShkZXYpLCAmcy0+aW9tZW0pOw0KDQovLyAgICAgLyogSW5pdGlhbGl6ZSB0
+aGUgSTJDIGJ1cyAqLw0KLy8gICAgIHMtPmJ1cyA9IGkyY19pbml0X2J1cyhkZXYsICJpMmMiKTsN
+Cg0KICANCi8vIH0NCg0Kc3RhdGljIHZvaWQgYmNtMjgzNV9pMmNfaW5pdChPYmplY3QgKm9iaikN
+CnsNCiAgICAgICAgQkNNMjgzNUkyQ1N0YXRlICpzID0gQkNNMjgzNV9JMkMob2JqKTsNCg0KICAg
+ICAgICBtZW1vcnlfcmVnaW9uX2luaXRfaW8oJnMtPmlvbWVtLCBvYmosICZiY20yODM1X2kyY19v
+cHMsIHMsDQogICAgICAgICAgICAgICAgICAgICAgICAgIFRZUEVfQkNNMjgzNV9JMkMsIDB4MTAw
+MCk7DQogICAgICAgIHN5c2J1c19pbml0X21taW8oU1lTX0JVU19ERVZJQ0UocyksICZzLT5pb21l
+bSk7DQogICAgICAgIHN5c2J1c19pbml0X2lycShTWVNfQlVTX0RFVklDRShzKSwgJnMtPmlycSk7
+DQogICAgICAgIHMtPmJ1cyA9IGkyY19pbml0X2J1cyhERVZJQ0UocyksICJpMmMiKTsgICAgICAN
+CiAgICAgIA0KfQ0KDQpzdGF0aWMgdm9pZCBiY20yODM1X2kyY19jbGFzc19pbml0KE9iamVjdENs
+YXNzICprbGFzcywgdm9pZCAqZGF0YSkNCnsNCg0KICAgcWVtdV9sb2coImJjbTI4MzVfaTJjX2Ns
+YXNzX2luaXRcbiIpOw0KICAgIERldmljZUNsYXNzICpkYyA9IERFVklDRV9DTEFTUyhrbGFzcyk7
+DQoNCi8vICAgICBkYy0+cmVhbGl6ZSA9IGJjbTI4MzVfaTJjX3JlYWxpemU7DQogICAgZGMtPnZt
+c2QgPSAmdm1zdGF0ZV9iY20yODM1X2kyYzsNCiAgICBkYy0+cmVzZXQgPSBiY20yODM1X2kyY19y
+ZXNldDsNCiAgICBkYy0+ZGVzYyA9ICJCQ00yODM1IEkyQyBDb250cm9sbGVyIjsNCiAgICAvKiBB
+ZGQgYW55IG90aGVyIHJlcXVpcmVkIGNsYXNzIGluaXRpYWxpemF0aW9uIGhlcmUgKi8NCn0NCg0K
+c3RhdGljIGNvbnN0IFR5cGVJbmZvIGJjbTI4MzVfaTJjX3R5cGVfaW5mbyA9IHsNCiAgICAubmFt
+ZSA9IFRZUEVfQkNNMjgzNV9JMkMsDQogICAgLnBhcmVudCA9IFRZUEVfU1lTX0JVU19ERVZJQ0Us
+DQogICAgLmluc3RhbmNlX3NpemUgPSBzaXplb2YoQkNNMjgzNUkyQ1N0YXRlKSwNCiAgICAuaW5z
+dGFuY2VfaW5pdCA9IGJjbTI4MzVfaTJjX2luaXQsDQogICAgLmNsYXNzX2luaXQgPSBiY20yODM1
+X2kyY19jbGFzc19pbml0LA0KfTsNCg0Kc3RhdGljIHZvaWQgYmNtMjgzNV9pMmNfcmVnaXN0ZXJf
+dHlwZXModm9pZCkNCnsNCiAgICB0eXBlX3JlZ2lzdGVyX3N0YXRpYygmYmNtMjgzNV9pMmNfdHlw
+ZV9pbmZvKTsNCn0NCg0KdHlwZV9pbml0KGJjbTI4MzVfaTJjX3JlZ2lzdGVyX3R5cGVzKQ0K
+--0000000000002004f305fe9caa2e--
 
