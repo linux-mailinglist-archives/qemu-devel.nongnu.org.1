@@ -2,86 +2,103 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7C70737D38
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 10:20:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 275AA737DFF
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 11:06:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBt55-0000OK-0T; Wed, 21 Jun 2023 04:20:47 -0400
+	id 1qBtmm-0002gr-1p; Wed, 21 Jun 2023 05:05:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1qBt51-0000Nf-LC
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 04:20:44 -0400
-Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1qBt4z-0007E0-Ev
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 04:20:43 -0400
-Received: by mail-ed1-x530.google.com with SMTP id
- 4fb4d7f45d1cf-51bde6a8c20so246980a12.0
- for <qemu-devel@nongnu.org>; Wed, 21 Jun 2023 01:20:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1687335639; x=1689927639;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=kvLjwMq3PxVEGtDnA1BKBzvFsCEnzQ9gEE/LtKASkjM=;
- b=T1UPGKEThgKjWE8s7HD8PWGpuaSsBL1GuDYJT9XfKuHrxxuA8t6cxv06U/ogZKskXe
- J7QekbsFL3A4UhWfE2tEU1rUCnpzyjxuHsM1Byjm2Yb4hAf4vPofrDaPsen/oLi1lTe3
- bujWUkweeN6XVe1QMeOpEjroFihuk2e3hd1KLcH1KpvjBQMs+BpZ50FbFZGBJu/QTZue
- RPsgnF8fA2+oq5GcHXSaDS76RpYNFsmHM+UZCjnV69+DJ+kWDQ2uuVSEMbx/ulYxTL2/
- otIOp5mMP0Y+xoS8ocIMmFIArwu9QaNYHin9/BXdqFj58i4+ReszPhm70TqIyHnvbaCx
- Btgw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687335639; x=1689927639;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=kvLjwMq3PxVEGtDnA1BKBzvFsCEnzQ9gEE/LtKASkjM=;
- b=BrFOLBhPwOFbYDe0Z6M30V8jYKcETO07G/vWKnFvGaKAQZTK+FDFW07yThK2/lZbdO
- FLvWQk38+uGoc5ww+FDCGqdAErHUmmmWSUt7qGVBqWwt+Vir6MOJlVBo/tUEd3OvYQ7K
- q1aga0pmfZwfwkcRhxYRukBCy4QAOLnfH3wnMdrs3BzeZCfRcL9fF5sSmpHqSUl8Wpee
- 6azA19yhQFWEZXZ0vKi5E3YndvhUB3ELyLZFg90pfy7Omno7UDVO48Q6Pu0PGmSq2S5f
- kBHJ+XCZhCZzZk2tb5aoIRlKAnM9POKirjhJdtiynTujQ5GqUeHa9fsDr4/kMC7HwTkI
- UiZw==
-X-Gm-Message-State: AC+VfDzKp++gno/bU+qflSpXJ5fwqOnx/3De+//nNJvAeyxlM6GzSuGh
- E1ss05+Ei8Wd5fzYDdQDDXINNA==
-X-Google-Smtp-Source: ACHHUZ7HNN4dV2M/bPrPMhupBk6d8gxkHcQgDSFHxB26r5ykHbjUkeJsGtR3XmRGAp2pWuyMmg7F1g==
-X-Received: by 2002:aa7:c698:0:b0:51a:5966:693a with SMTP id
- n24-20020aa7c698000000b0051a5966693amr5562177edq.13.1687335639093; 
- Wed, 21 Jun 2023 01:20:39 -0700 (PDT)
-Received: from localhost (2001-1ae9-1c2-4c00-20f-c6b4-1e57-7965.ip6.tmcz.cz.
- [2001:1ae9:1c2:4c00:20f:c6b4:1e57:7965])
- by smtp.gmail.com with ESMTPSA id
- w20-20020aa7d294000000b005182edf2a52sm2275940edq.30.2023.06.21.01.20.38
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 21 Jun 2023 01:20:38 -0700 (PDT)
-Date: Wed, 21 Jun 2023 10:20:37 +0200
-From: Andrew Jones <ajones@ventanamicro.com>
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
- bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
- palmer@rivosinc.com
-Subject: Re: [PATCH v2 15/18] target/riscv: make riscv_isa_string_ext() KVM
- compatible
-Message-ID: <20230621-6ff3576dad2e55bb261819c8@orel>
-References: <20230613205857.495165-1-dbarboza@ventanamicro.com>
- <20230613205857.495165-16-dbarboza@ventanamicro.com>
- <20230619-30e78979c13df598ca2e4493@orel>
- <7c5920b1-8240-9922-c4eb-3d7be7436176@ventanamicro.com>
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1qBtmh-0002fn-Sq; Wed, 21 Jun 2023 05:05:52 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1qBtmc-00081n-Ds; Wed, 21 Jun 2023 05:05:49 -0400
+Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 35L8hJSI029082; Wed, 21 Jun 2023 09:04:42 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=KiuGYSFvMZdi9oFlfHWolbdYLE8I02nagxyVRa/FANU=;
+ b=cX1Ytaj1wzldIZ4NmYihr89LRl+QWjnO8HrJmITAO6cP5y/YEudbS8uqyaOORktpHLZi
+ ydg3C2AnRWFLeTASbfaLQPkqBCEaKwoZgB/+MWaMIWmFghoncdVjzs5I6vUXRiXqW1ET
+ Da/SwESzpZeI+p51gt26K9E1/W0VS9gXfyDWAI+NVLxvN9Ge3qL8aAXq747WbS4h2hRr
+ j/Xqh3bwP/6oLfgWDDODwaplZebq//hVBW0TQWiAE1zOE/X5Vb24wqCyEUgzpX6xK08m
+ 1w3O+Qo914GznFVpJcBYRwot23IDEnPvi/UXRNVY+TCS0DWbnur6QZYQKZjnyucI3Zum oA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rbvpbtes7-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 21 Jun 2023 09:04:41 +0000
+Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 35L8tqWd026578;
+ Wed, 21 Jun 2023 09:04:41 GMT
+Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
+ [169.55.85.253])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rbvpbter6-2
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 21 Jun 2023 09:04:41 +0000
+Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
+ by ppma01wdc.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 35L8Dtvo028352;
+ Wed, 21 Jun 2023 08:31:31 GMT
+Received: from smtprelay07.dal12v.mail.ibm.com ([9.208.130.99])
+ by ppma01wdc.us.ibm.com (PPS) with ESMTPS id 3r94f5udtq-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 21 Jun 2023 08:31:31 +0000
+Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com
+ [10.39.53.230])
+ by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 35L8VUa838273624
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 21 Jun 2023 08:31:31 GMT
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C6BBD5806A;
+ Wed, 21 Jun 2023 08:31:30 +0000 (GMT)
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1088E5805A;
+ Wed, 21 Jun 2023 08:31:29 +0000 (GMT)
+Received: from [9.109.242.129] (unknown [9.109.242.129])
+ by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+ Wed, 21 Jun 2023 08:31:28 +0000 (GMT)
+Message-ID: <a3dce513-d55a-7116-c6f8-5d30e4f3d131@linux.ibm.com>
+Date: Wed, 21 Jun 2023 14:01:27 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7c5920b1-8240-9922-c4eb-3d7be7436176@ventanamicro.com>
-Received-SPF: pass client-ip=2a00:1450:4864:20::530;
- envelope-from=ajones@ventanamicro.com; helo=mail-ed1-x530.google.com
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH] target/ppc: Add ISA v3.1 LEV indication in SRR1 for
+ system call interrupts
+Content-Language: en-US
+To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
+Cc: qemu-devel@nongnu.org, Daniel Henrique Barboza <danielhb413@gmail.com>
+References: <20230620131321.169261-1-npiggin@gmail.com>
+From: Harsh Prateek Bora <harshpb@linux.ibm.com>
+In-Reply-To: <20230620131321.169261-1-npiggin@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: pcj2UF_bL7Z-DopRofdXP6-nhOTpQiMM
+X-Proofpoint-GUID: zoTtxoOUPvlOkeksuhgftMZ3q0-PblH_
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-06-21_06,2023-06-16_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=958 mlxscore=0
+ bulkscore=0 priorityscore=1501 malwarescore=0 spamscore=0 suspectscore=0
+ phishscore=0 adultscore=0 impostorscore=0 clxscore=1015 lowpriorityscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2305260000
+ definitions=main-2306210071
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=harshpb@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,143 +114,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jun 20, 2023 at 07:05:18PM -0300, Daniel Henrique Barboza wrote:
-> 
-> 
-> On 6/19/23 06:54, Andrew Jones wrote:
-> > On Tue, Jun 13, 2023 at 05:58:54PM -0300, Daniel Henrique Barboza wrote:
-> > > The isa_edata_arr[] is used by riscv_isa_string_ext() to create the
-> > > riscv,isa DT attribute. isa_edata_arr[] is kept in sync with the TCG
-> > > property vector riscv_cpu_extensions[], i.e. all TCG properties from
-> > > this vector that has a riscv,isa representation are included in
-> > > isa_edata_arr[].
-> > > 
-> > > KVM doesn't implement all TCG properties, but allow them to be created
-> > > anyway to not force an API change between TCG and KVM guests. Some of
-> > > these TCG-only extensions are defaulted to 'true', and users are also
-> > > allowed to enable them. KVM doesn't care, but riscv_isa_string_ext()
-> > > does. The result is that these TCG-only enabled extensions will appear
-> > > in the riscv,isa DT string under KVM.
-> > > 
-> > > To avoid code repetition and re-use riscv_isa_string_ext() for KVM
-> > > guests we'll make a couple of tweaks:
-> > > 
-> > > - set env->priv_ver to 'LATEST' for the KVM 'host' CPU. This is needed
-> > >    because riscv_isa_string_ext() makes a priv check for each extension
-> > >    before including them in the ISA string. KVM doesn't care about
-> > >    env->priv_ver, since it's part of the TCG-only CPU validation, so this
-> > >    change is benign for KVM;
-> > > 
-> > > - add a new 'kvm_available' flag in isa_ext_data struct. This flag is
-> > >    set via a new ISA_EXT_DATA_ENTRY_KVM macro to report that, for a given
-> > >    extension, KVM also supports it. riscv_isa_string_ext() then can check
-> > >    if a given extension is known by KVM and skip it if it's not.
-> > > 
-> > > This will allow us to re-use riscv_isa_string_ext() for KVM guests.
-> > > 
-> > > Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-> > > ---
-> > >   target/riscv/cpu.c | 28 ++++++++++++++++++++--------
-> > >   1 file changed, 20 insertions(+), 8 deletions(-)
-> > > 
-> > > diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-> > > index a4f3ed0c17..a773c09645 100644
-> > > --- a/target/riscv/cpu.c
-> > > +++ b/target/riscv/cpu.c
-> > > @@ -44,11 +44,15 @@ struct isa_ext_data {
-> > >       const char *name;
-> > >       int min_version;
-> > >       int ext_enable_offset;
-> > > +    bool kvm_available;
-> > >   };
-> > >   #define ISA_EXT_DATA_ENTRY(_name, _min_ver, _prop) \
-> > >       {#_name, _min_ver, offsetof(struct RISCVCPUConfig, _prop)}
-> > > +#define ISA_EXT_DATA_ENTRY_KVM(_name, _min_ver, _prop) \
-> > > +    {#_name, _min_ver, offsetof(struct RISCVCPUConfig, _prop), true}
-> > > +
-> > >   /*
-> > >    * Here are the ordering rules of extension naming defined by RISC-V
-> > >    * specification :
-> > > @@ -68,14 +72,17 @@ struct isa_ext_data {
-> > >    *
-> > >    * Single letter extensions are checked in riscv_cpu_validate_misa_priv()
-> > >    * instead.
-> > > + *
-> > > + * ISA_EXT_DATA_ENTRY_KVM() is used to indicate that the extension is
-> > > + * also known by the KVM driver. If unsure, use ISA_EXT_DATA_ENTRY().
-> > >    */
-> > >   static const struct isa_ext_data isa_edata_arr[] = {
-> > > -    ISA_EXT_DATA_ENTRY(zicbom, PRIV_VERSION_1_12_0, ext_icbom),
-> > > -    ISA_EXT_DATA_ENTRY(zicboz, PRIV_VERSION_1_12_0, ext_icboz),
-> > > +    ISA_EXT_DATA_ENTRY_KVM(zicbom, PRIV_VERSION_1_12_0, ext_icbom),
-> > > +    ISA_EXT_DATA_ENTRY_KVM(zicboz, PRIV_VERSION_1_12_0, ext_icboz),
-> > >       ISA_EXT_DATA_ENTRY(zicond, PRIV_VERSION_1_12_0, ext_zicond),
-> > >       ISA_EXT_DATA_ENTRY(zicsr, PRIV_VERSION_1_10_0, ext_icsr),
-> > >       ISA_EXT_DATA_ENTRY(zifencei, PRIV_VERSION_1_10_0, ext_ifencei),
-> > > -    ISA_EXT_DATA_ENTRY(zihintpause, PRIV_VERSION_1_10_0, ext_zihintpause),
-> > > +    ISA_EXT_DATA_ENTRY_KVM(zihintpause, PRIV_VERSION_1_10_0, ext_zihintpause),
-> > >       ISA_EXT_DATA_ENTRY(zawrs, PRIV_VERSION_1_12_0, ext_zawrs),
-> > >       ISA_EXT_DATA_ENTRY(zfh, PRIV_VERSION_1_11_0, ext_zfh),
-> > >       ISA_EXT_DATA_ENTRY(zfhmin, PRIV_VERSION_1_11_0, ext_zfhmin),
-> > > @@ -89,7 +96,7 @@ static const struct isa_ext_data isa_edata_arr[] = {
-> > >       ISA_EXT_DATA_ENTRY(zcmp, PRIV_VERSION_1_12_0, ext_zcmp),
-> > >       ISA_EXT_DATA_ENTRY(zcmt, PRIV_VERSION_1_12_0, ext_zcmt),
-> > >       ISA_EXT_DATA_ENTRY(zba, PRIV_VERSION_1_12_0, ext_zba),
-> > > -    ISA_EXT_DATA_ENTRY(zbb, PRIV_VERSION_1_12_0, ext_zbb),
-> > > +    ISA_EXT_DATA_ENTRY_KVM(zbb, PRIV_VERSION_1_12_0, ext_zbb),
-> > >       ISA_EXT_DATA_ENTRY(zbc, PRIV_VERSION_1_12_0, ext_zbc),
-> > >       ISA_EXT_DATA_ENTRY(zbkb, PRIV_VERSION_1_12_0, ext_zbkb),
-> > >       ISA_EXT_DATA_ENTRY(zbkc, PRIV_VERSION_1_12_0, ext_zbkc),
-> > > @@ -114,13 +121,13 @@ static const struct isa_ext_data isa_edata_arr[] = {
-> > >       ISA_EXT_DATA_ENTRY(zhinxmin, PRIV_VERSION_1_12_0, ext_zhinxmin),
-> > >       ISA_EXT_DATA_ENTRY(smaia, PRIV_VERSION_1_12_0, ext_smaia),
-> > >       ISA_EXT_DATA_ENTRY(smstateen, PRIV_VERSION_1_12_0, ext_smstateen),
-> > > -    ISA_EXT_DATA_ENTRY(ssaia, PRIV_VERSION_1_12_0, ext_ssaia),
-> > > +    ISA_EXT_DATA_ENTRY_KVM(ssaia, PRIV_VERSION_1_12_0, ext_ssaia),
-> > >       ISA_EXT_DATA_ENTRY(sscofpmf, PRIV_VERSION_1_12_0, ext_sscofpmf),
-> > > -    ISA_EXT_DATA_ENTRY(sstc, PRIV_VERSION_1_12_0, ext_sstc),
-> > > +    ISA_EXT_DATA_ENTRY_KVM(sstc, PRIV_VERSION_1_12_0, ext_sstc),
-> > >       ISA_EXT_DATA_ENTRY(svadu, PRIV_VERSION_1_12_0, ext_svadu),
-> > > -    ISA_EXT_DATA_ENTRY(svinval, PRIV_VERSION_1_12_0, ext_svinval),
-> > > +    ISA_EXT_DATA_ENTRY_KVM(svinval, PRIV_VERSION_1_12_0, ext_svinval),
-> > >       ISA_EXT_DATA_ENTRY(svnapot, PRIV_VERSION_1_12_0, ext_svnapot),
-> > > -    ISA_EXT_DATA_ENTRY(svpbmt, PRIV_VERSION_1_12_0, ext_svpbmt),
-> > > +    ISA_EXT_DATA_ENTRY_KVM(svpbmt, PRIV_VERSION_1_12_0, ext_svpbmt),
-> > 
-> > This approach looks a bit difficult to maintain (it's hard to even see the
-> > _KVM macro uses). The approach will be even more difficult if we add more
-> > accelerators. I feel like we need an extension class where objects of that
-> > class can be passed to functions like riscv_isa_string_ext(). And then we
-> > also need tcg-extension and kvm-extension classes which inherit from
-> > the extension class. We can then keep the lists of extensions separate, as
-> > you originally proposed, as each list will be of its own type.
-> 
-> So, after coding around a little, I didn't manage to create a KVM list in
-> kvm.c file because of how ARRAY_SIZE() (a macro that riscv_isa_string_ext())
-> calculates the array size. If the list is exported from another file the macro
-> fails to calculate the size of the array. Similar issues also happens when trying
-> to use kvm_multi_ext_cfgs[] in this function.
-> 
-> This means that both tcg and kvm arrays ended up in cpu.c.
 
-Hmm, I'd really rather we don't have a kvm array in cpu.c. Going back to
-duplicating functions like riscv_isa_string_ext() into kvm.c is better,
-IMO.
 
-> The tcg array is
-> left untouched (isa_edata_arr). The KVM array uses the same type TCG already
-> uses (isa_ext_edata) because it's good enough for KVM as well. I removed the
-> 'kvm_available' flag since we're going to manually edit the array.
+On 6/20/23 18:43, Nicholas Piggin wrote:
+> System call interrupts in ISA v3.1 CPUs add a LEV indication in SRR1
+> that corresponds with the LEV field of the instruction that caused the
+> interrupt.
 > 
-> riscv_isa_string_ext() is then changed to switch between the tcg/kvm array
-> as required. The rest of the logic of the function stood the same. I'll also
-> add a pre-patch prior to all these changes to simplify riscv_isa_string_ext()
-> a bit when running under TCG.
 
-If we have to teach riscv_isa_string_ext() about both tcg and kvm cfg
-types (and any other functions that come along), then this approach
-isn't all that helpful anyway.
+Did we encounter any issue without this patch leading to this fix?
+If so, it will be great to talk about it in short if possible.
 
-Thanks,
-drew
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+> This is unchanged, just taken out of the bigger series since it is
+> independent.
+> 
+> Thanks,
+> Nick
+> 
+>   target/ppc/excp_helper.c | 4 ++++
+>   1 file changed, 4 insertions(+)
+> 
+> diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
+> index 77bfc18734..c7550fea13 100644
+> --- a/target/ppc/excp_helper.c
+> +++ b/target/ppc/excp_helper.c
+> @@ -1591,6 +1591,10 @@ static void powerpc_excp_books(PowerPCCPU *cpu, int excp)
+>               vhc->hypercall(cpu->vhyp, cpu);
+>               return;
+>           }
+> +        if (env->insns_flags2 & PPC2_ISA310) {
+> +            /* ISAv3.1 puts LEV into SRR1 */
+> +            msr |= lev << 20;
+
+Since LEV values greater than 2 are reserved, should we do:
+                msr |= (lev <= 2) ? lev << 20 : 0;
+
+
+Otherwise,
+Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+
+> +        }
+>           if (lev == 1) {
+>               new_msr |= (target_ulong)MSR_HVB;
+>           }
 
