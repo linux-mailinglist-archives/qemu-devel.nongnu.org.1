@@ -2,75 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 043A2737F1C
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 11:44:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9378A737F1A
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 11:44:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBuMp-0002AD-MA; Wed, 21 Jun 2023 05:43:11 -0400
+	id 1qBuMu-0002Hu-Ds; Wed, 21 Jun 2023 05:43:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qBuMh-00023G-PE
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 05:43:03 -0400
-Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qBuMq-0002Ef-S8
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 05:43:12 -0400
+Received: from mail-ot1-x32f.google.com ([2607:f8b0:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qBuMf-00015i-Uk
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 05:43:03 -0400
-Received: by mail-ed1-x52c.google.com with SMTP id
- 4fb4d7f45d1cf-518b69d5b5dso7780029a12.1
- for <qemu-devel@nongnu.org>; Wed, 21 Jun 2023 02:43:01 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qBuMo-000176-Sa
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 05:43:12 -0400
+Received: by mail-ot1-x32f.google.com with SMTP id
+ 46e09a7af769-6b587d2593aso2307698a34.1
+ for <qemu-devel@nongnu.org>; Wed, 21 Jun 2023 02:43:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687340580; x=1689932580;
- h=content-transfer-encoding:in-reply-to:from:references:to
+ d=ventanamicro.com; s=google; t=1687340590; x=1689932590;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=y7yxYGxqlc/vJ/zCVF6hmEoorIc5CKvHshLGKf5ND8I=;
- b=Du7O4rogg9Li5fxM+UG3M9GCOHQmIDIi3tkQh/dP6+Jb8adw+DzY3jWaGU0zw5PIAW
- rrWgPDN4EdWUUeB7yXHiseHPuqH42QggSCKxJfBHDpM/kHM3+dVWSsQOuBhnOeHVTkRL
- qV/HMLqc6vGOBD7Hgo1dOazRsBmOyOIBTfCmHvMnMYLj8aCln8juHBZtVLXa2GawRfxe
- A4kjD+tnAzmFN5Q1rQ0Fziq/UQFf4thL/DnujS7AGkmBWUC21jLog57M0ru5crAxFWrM
- 7X1YaWS1JQwpMk6a7cH5Yvwtx/+ye4HacBCPkOFZalrpjIGMZMa8oYzdPYXLM7ln7Rsj
- sUeg==
+ bh=J6ECwfCxUrbQ7mrGd+S+knUEhOO5grcoBRUGmmvqWEA=;
+ b=Wr+3rLdUdZFVL3LNvePT4UMZ1BPsSbxSKYjYm93/L690kv26bVK453L9NAUa5j6DPp
+ 1spZMqmm6LE6G26NiyqJ+Z7JU4RowxhW4izzHEC8JYi04H+WanwwX7dP9o8/bmTO6fH6
+ 5NY7lrmWThSOQ1k3cxlqc0r1t3lTjk9ZnTjwMtaiADF8BFtj9aP+Ru+N4EdIZ8aVY/ry
+ rKy6fBkamqUq/LvOWIJdfatOMRkauOwSkYgtqaDFdittMNcMXpwuwvfVYJa/fz9gXZE/
+ 4oD0L7veuH4QuTAxjMbgNQlbvyfKEH2Sg1+yvXIgaSds9fVh2OqHH10yg2RbXvOPYzIX
+ SePA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687340580; x=1689932580;
- h=content-transfer-encoding:in-reply-to:from:references:to
+ d=1e100.net; s=20221208; t=1687340590; x=1689932590;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=y7yxYGxqlc/vJ/zCVF6hmEoorIc5CKvHshLGKf5ND8I=;
- b=lGaPs3xsMprf2kQ3ZCRhr+wGHz+Ow8Dp/8I0Nvf0DFsZX9wDHRieWfX5jkTN++qVGt
- 7W2u6wzsoRUGvqMcB9BgQQwVKZm1zuKhke/h85TTuziQer6cfh21YcR1cAn1DVkCjG/9
- ifaTrMd8wOj6W8q0TeuK2IBgjp5QhEQgHDNgaASIohdYcb3A3Y9441UihRqPBDZ8G2vN
- z1MNESOGNMLfrOJIHkAkO95alZ6OTUkMjZH/yTMp46z1dFHG8dOaR2GOZ6HL8vDI2JzJ
- 88l2jsQpfOel5dzvWGatZMxHCgrFVwgKA86CFPHmVz5oh40olWs3ZV6WKBNgtHYJadMc
- Dt2A==
-X-Gm-Message-State: AC+VfDzUdmzL85eCj8zNYDCMpMQ4r7XgYHkuzPrD5DfvW7C/ZSbP45G0
- sx3CD/eShsVhckZYc3QDn8flGA==
-X-Google-Smtp-Source: ACHHUZ6e+PRDcy7SiPYFxV9S9bjx0q8pjUm1pwtqzl9N66Ybsnlbagc1JsRcLSlVG0SnTZfoq21JQQ==
-X-Received: by 2002:aa7:d65a:0:b0:51a:2ca4:5758 with SMTP id
- v26-20020aa7d65a000000b0051a2ca45758mr10212901edr.8.1687340579886; 
- Wed, 21 Jun 2023 02:42:59 -0700 (PDT)
-Received: from [192.168.69.115] ([176.176.128.70])
- by smtp.gmail.com with ESMTPSA id
- u7-20020a05640207c700b00514b854c399sm2327451edy.84.2023.06.21.02.42.58
+ bh=J6ECwfCxUrbQ7mrGd+S+knUEhOO5grcoBRUGmmvqWEA=;
+ b=O0CmfEqsIrIzesT1fmzS6Fuj6MAhOinc6LJsqkBX8tucBjstPZcZDoTEdlS19a5CSH
+ TR6mFX7Ix9DjM5hA7cWKD9qm60k3YC9ec/Bd/OEAidKh/s1vlqaCIFWHRPqnkQoTmjIt
+ cEVywtLLk77aJRDpv63v6+8wYMUm30LlunHvAT4efZcORgA5pZOhNNCk+a5woxPb323o
+ iLH4rI/jCPjgIWO5WDYbj7vuM41GjZp9+M4KVkVXJhnW26yU14nZ6cZjTP6nmryifByl
+ PHlylZhFV/B3oRS9fTQAdXQWlEjwLoY2316odaob98EmAol2XBokHKbq/IbNlEBTa2dS
+ /Inw==
+X-Gm-Message-State: AC+VfDz1RO97P1vi9CTGQ6f2/ADCU514atVy28K5yQXnXmljIb5H/Oux
+ jAVs3JD+rhhm5QdS4jo6QgZ0EA==
+X-Google-Smtp-Source: ACHHUZ4xY+SBaqpmqHVL0/Nlv1LWW77xxEPAvumqreaJtSCmsM+DzBVUP2MYX3i2Mj0iuxc42yI2lA==
+X-Received: by 2002:a9d:74c9:0:b0:696:1583:642 with SMTP id
+ a9-20020a9d74c9000000b0069615830642mr14219233otl.21.1687340589715; 
+ Wed, 21 Jun 2023 02:43:09 -0700 (PDT)
+Received: from [192.168.68.108] (201-69-66-110.dial-up.telesp.net.br.
+ [201.69.66.110]) by smtp.gmail.com with ESMTPSA id
+ i2-20020a9d6242000000b006a662e9f074sm1761808otk.58.2023.06.21.02.43.07
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 21 Jun 2023 02:42:59 -0700 (PDT)
-Message-ID: <0e8c4da9-2b33-dc24-77b0-cea5bdd905a3@linaro.org>
-Date: Wed, 21 Jun 2023 11:42:57 +0200
+ Wed, 21 Jun 2023 02:43:09 -0700 (PDT)
+Message-ID: <ede6aa9c-feeb-15ef-3842-86fe3efcec12@ventanamicro.com>
+Date: Wed, 21 Jun 2023 06:43:05 -0300
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.12.0
-Subject: Re: [PATCH v4 00/24] q800: add support for booting MacOS Classic -
- part 1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH v2 15/18] target/riscv: make riscv_isa_string_ext() KVM
+ compatible
 Content-Language: en-US
-To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, laurent@vivier.eu,
- qemu-devel@nongnu.org
-References: <20230621085353.113233-1-mark.cave-ayland@ilande.co.uk>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230621085353.113233-1-mark.cave-ayland@ilande.co.uk>
+To: Andrew Jones <ajones@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com,
+ bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com,
+ palmer@rivosinc.com
+References: <20230613205857.495165-1-dbarboza@ventanamicro.com>
+ <20230613205857.495165-16-dbarboza@ventanamicro.com>
+ <20230619-30e78979c13df598ca2e4493@orel>
+ <7c5920b1-8240-9922-c4eb-3d7be7436176@ventanamicro.com>
+ <20230621-6ff3576dad2e55bb261819c8@orel>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <20230621-6ff3576dad2e55bb261819c8@orel>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32f;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-ot1-x32f.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -93,46 +101,163 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 21/6/23 10:53, Mark Cave-Ayland wrote:
-> [MCA: the original series has now been split into 2 separate parts based upon
-> Phil's comments re: QOM parenting for objects in Q800MachineState. Part 1
-> consists of the Q800MachineState patches along with QOM parenting fixes and
-> the 2 mac_via RTC patches.]
-> 
-> This series contains the remaining patches needed to allow QEMU's q800
-> machine to boot MacOS Classic when used in conjunction with a real
-> Quadra 800 ROM image. In fact with this series applied it is possible
-> to boot all of the following OSs:
-> 
->    - MacOS 7.1 - 8.1, with or without virtual memory enabled
->    - A/UX 3.0.1
->    - NetBSD 9.3
->    - Linux (via EMILE)
-> 
-> If you are ready to experience some 90s nostalgia then all you need is
-> to grab yourself a copy of the Quadra 800 ROM (checksum 0xf1acad13) and a
-> suitable install ISO as follows:
-> 
->    # Prepare a PRAM image
->    $ qemu-img create -f raw pram.img 256b
-> 
->    # Launch QEMU with blank disk and install CDROM
->    $ ./qemu-system-m68k \
->        -M q800 \
->        -m 128 \
->        -bios Quadra800.rom \
->        -drive file=pram.img,format=raw,if=mtd \
->        -drive file=disk.img,media=disk,format=raw,if=none,id=hd \
->        -device scsi-hd,scsi-id=0,drive=hd \
->        -drive file=cdrom.iso,media=cdrom,if=none,id=cd \
->        -device scsi-cd,scsi-id=3,drive=cd
-> 
-> And off you go! For more in-depth information about the installation process
-> I highly recommend the installation guide over at emaculation.com [1].
-> Compatibility is generally very good, and I'm pleased to report it is possible
-> to run one of the most popular productivity apps from the 90s [2].
 
-Could you add an Avocado test for this machine? See how the
-MipsFuloong2e test (tests/avocado/machine_mips_fuloong2e.py)
-handles the firmware (RESCUE_YL_PATH).
+
+On 6/21/23 05:20, Andrew Jones wrote:
+> On Tue, Jun 20, 2023 at 07:05:18PM -0300, Daniel Henrique Barboza wrote:
+>>
+>>
+>> On 6/19/23 06:54, Andrew Jones wrote:
+>>> On Tue, Jun 13, 2023 at 05:58:54PM -0300, Daniel Henrique Barboza wrote:
+>>>> The isa_edata_arr[] is used by riscv_isa_string_ext() to create the
+>>>> riscv,isa DT attribute. isa_edata_arr[] is kept in sync with the TCG
+>>>> property vector riscv_cpu_extensions[], i.e. all TCG properties from
+>>>> this vector that has a riscv,isa representation are included in
+>>>> isa_edata_arr[].
+>>>>
+>>>> KVM doesn't implement all TCG properties, but allow them to be created
+>>>> anyway to not force an API change between TCG and KVM guests. Some of
+>>>> these TCG-only extensions are defaulted to 'true', and users are also
+>>>> allowed to enable them. KVM doesn't care, but riscv_isa_string_ext()
+>>>> does. The result is that these TCG-only enabled extensions will appear
+>>>> in the riscv,isa DT string under KVM.
+>>>>
+>>>> To avoid code repetition and re-use riscv_isa_string_ext() for KVM
+>>>> guests we'll make a couple of tweaks:
+>>>>
+>>>> - set env->priv_ver to 'LATEST' for the KVM 'host' CPU. This is needed
+>>>>     because riscv_isa_string_ext() makes a priv check for each extension
+>>>>     before including them in the ISA string. KVM doesn't care about
+>>>>     env->priv_ver, since it's part of the TCG-only CPU validation, so this
+>>>>     change is benign for KVM;
+>>>>
+>>>> - add a new 'kvm_available' flag in isa_ext_data struct. This flag is
+>>>>     set via a new ISA_EXT_DATA_ENTRY_KVM macro to report that, for a given
+>>>>     extension, KVM also supports it. riscv_isa_string_ext() then can check
+>>>>     if a given extension is known by KVM and skip it if it's not.
+>>>>
+>>>> This will allow us to re-use riscv_isa_string_ext() for KVM guests.
+>>>>
+>>>> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+>>>> ---
+>>>>    target/riscv/cpu.c | 28 ++++++++++++++++++++--------
+>>>>    1 file changed, 20 insertions(+), 8 deletions(-)
+>>>>
+>>>> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+>>>> index a4f3ed0c17..a773c09645 100644
+>>>> --- a/target/riscv/cpu.c
+>>>> +++ b/target/riscv/cpu.c
+>>>> @@ -44,11 +44,15 @@ struct isa_ext_data {
+>>>>        const char *name;
+>>>>        int min_version;
+>>>>        int ext_enable_offset;
+>>>> +    bool kvm_available;
+>>>>    };
+>>>>    #define ISA_EXT_DATA_ENTRY(_name, _min_ver, _prop) \
+>>>>        {#_name, _min_ver, offsetof(struct RISCVCPUConfig, _prop)}
+>>>> +#define ISA_EXT_DATA_ENTRY_KVM(_name, _min_ver, _prop) \
+>>>> +    {#_name, _min_ver, offsetof(struct RISCVCPUConfig, _prop), true}
+>>>> +
+>>>>    /*
+>>>>     * Here are the ordering rules of extension naming defined by RISC-V
+>>>>     * specification :
+>>>> @@ -68,14 +72,17 @@ struct isa_ext_data {
+>>>>     *
+>>>>     * Single letter extensions are checked in riscv_cpu_validate_misa_priv()
+>>>>     * instead.
+>>>> + *
+>>>> + * ISA_EXT_DATA_ENTRY_KVM() is used to indicate that the extension is
+>>>> + * also known by the KVM driver. If unsure, use ISA_EXT_DATA_ENTRY().
+>>>>     */
+>>>>    static const struct isa_ext_data isa_edata_arr[] = {
+>>>> -    ISA_EXT_DATA_ENTRY(zicbom, PRIV_VERSION_1_12_0, ext_icbom),
+>>>> -    ISA_EXT_DATA_ENTRY(zicboz, PRIV_VERSION_1_12_0, ext_icboz),
+>>>> +    ISA_EXT_DATA_ENTRY_KVM(zicbom, PRIV_VERSION_1_12_0, ext_icbom),
+>>>> +    ISA_EXT_DATA_ENTRY_KVM(zicboz, PRIV_VERSION_1_12_0, ext_icboz),
+>>>>        ISA_EXT_DATA_ENTRY(zicond, PRIV_VERSION_1_12_0, ext_zicond),
+>>>>        ISA_EXT_DATA_ENTRY(zicsr, PRIV_VERSION_1_10_0, ext_icsr),
+>>>>        ISA_EXT_DATA_ENTRY(zifencei, PRIV_VERSION_1_10_0, ext_ifencei),
+>>>> -    ISA_EXT_DATA_ENTRY(zihintpause, PRIV_VERSION_1_10_0, ext_zihintpause),
+>>>> +    ISA_EXT_DATA_ENTRY_KVM(zihintpause, PRIV_VERSION_1_10_0, ext_zihintpause),
+>>>>        ISA_EXT_DATA_ENTRY(zawrs, PRIV_VERSION_1_12_0, ext_zawrs),
+>>>>        ISA_EXT_DATA_ENTRY(zfh, PRIV_VERSION_1_11_0, ext_zfh),
+>>>>        ISA_EXT_DATA_ENTRY(zfhmin, PRIV_VERSION_1_11_0, ext_zfhmin),
+>>>> @@ -89,7 +96,7 @@ static const struct isa_ext_data isa_edata_arr[] = {
+>>>>        ISA_EXT_DATA_ENTRY(zcmp, PRIV_VERSION_1_12_0, ext_zcmp),
+>>>>        ISA_EXT_DATA_ENTRY(zcmt, PRIV_VERSION_1_12_0, ext_zcmt),
+>>>>        ISA_EXT_DATA_ENTRY(zba, PRIV_VERSION_1_12_0, ext_zba),
+>>>> -    ISA_EXT_DATA_ENTRY(zbb, PRIV_VERSION_1_12_0, ext_zbb),
+>>>> +    ISA_EXT_DATA_ENTRY_KVM(zbb, PRIV_VERSION_1_12_0, ext_zbb),
+>>>>        ISA_EXT_DATA_ENTRY(zbc, PRIV_VERSION_1_12_0, ext_zbc),
+>>>>        ISA_EXT_DATA_ENTRY(zbkb, PRIV_VERSION_1_12_0, ext_zbkb),
+>>>>        ISA_EXT_DATA_ENTRY(zbkc, PRIV_VERSION_1_12_0, ext_zbkc),
+>>>> @@ -114,13 +121,13 @@ static const struct isa_ext_data isa_edata_arr[] = {
+>>>>        ISA_EXT_DATA_ENTRY(zhinxmin, PRIV_VERSION_1_12_0, ext_zhinxmin),
+>>>>        ISA_EXT_DATA_ENTRY(smaia, PRIV_VERSION_1_12_0, ext_smaia),
+>>>>        ISA_EXT_DATA_ENTRY(smstateen, PRIV_VERSION_1_12_0, ext_smstateen),
+>>>> -    ISA_EXT_DATA_ENTRY(ssaia, PRIV_VERSION_1_12_0, ext_ssaia),
+>>>> +    ISA_EXT_DATA_ENTRY_KVM(ssaia, PRIV_VERSION_1_12_0, ext_ssaia),
+>>>>        ISA_EXT_DATA_ENTRY(sscofpmf, PRIV_VERSION_1_12_0, ext_sscofpmf),
+>>>> -    ISA_EXT_DATA_ENTRY(sstc, PRIV_VERSION_1_12_0, ext_sstc),
+>>>> +    ISA_EXT_DATA_ENTRY_KVM(sstc, PRIV_VERSION_1_12_0, ext_sstc),
+>>>>        ISA_EXT_DATA_ENTRY(svadu, PRIV_VERSION_1_12_0, ext_svadu),
+>>>> -    ISA_EXT_DATA_ENTRY(svinval, PRIV_VERSION_1_12_0, ext_svinval),
+>>>> +    ISA_EXT_DATA_ENTRY_KVM(svinval, PRIV_VERSION_1_12_0, ext_svinval),
+>>>>        ISA_EXT_DATA_ENTRY(svnapot, PRIV_VERSION_1_12_0, ext_svnapot),
+>>>> -    ISA_EXT_DATA_ENTRY(svpbmt, PRIV_VERSION_1_12_0, ext_svpbmt),
+>>>> +    ISA_EXT_DATA_ENTRY_KVM(svpbmt, PRIV_VERSION_1_12_0, ext_svpbmt),
+>>>
+>>> This approach looks a bit difficult to maintain (it's hard to even see the
+>>> _KVM macro uses). The approach will be even more difficult if we add more
+>>> accelerators. I feel like we need an extension class where objects of that
+>>> class can be passed to functions like riscv_isa_string_ext(). And then we
+>>> also need tcg-extension and kvm-extension classes which inherit from
+>>> the extension class. We can then keep the lists of extensions separate, as
+>>> you originally proposed, as each list will be of its own type.
+>>
+>> So, after coding around a little, I didn't manage to create a KVM list in
+>> kvm.c file because of how ARRAY_SIZE() (a macro that riscv_isa_string_ext())
+>> calculates the array size. If the list is exported from another file the macro
+>> fails to calculate the size of the array. Similar issues also happens when trying
+>> to use kvm_multi_ext_cfgs[] in this function.
+>>
+>> This means that both tcg and kvm arrays ended up in cpu.c.
+> 
+> Hmm, I'd really rather we don't have a kvm array in cpu.c. Going back to
+> duplicating functions like riscv_isa_string_ext() into kvm.c is better,
+> IMO.
+> 
+>> The tcg array is
+>> left untouched (isa_edata_arr). The KVM array uses the same type TCG already
+>> uses (isa_ext_edata) because it's good enough for KVM as well. I removed the
+>> 'kvm_available' flag since we're going to manually edit the array.
+>>
+>> riscv_isa_string_ext() is then changed to switch between the tcg/kvm array
+>> as required. The rest of the logic of the function stood the same. I'll also
+>> add a pre-patch prior to all these changes to simplify riscv_isa_string_ext()
+>> a bit when running under TCG.
+> 
+> If we have to teach riscv_isa_string_ext() about both tcg and kvm cfg
+> types (and any other functions that come along), then this approach
+> isn't all that helpful anyway.
+
+Someone must point the function to the right array. We can do it inside the function,
+we can pass the array as parameter and the caller will be responsible for it. But
+somewhere along the road there'll be an 'if (kvm_enabled())'.
+
+All this said, the root cause of all this saga is due to extensions being enabled
+without KVM knowing about it. riscv_isa_string_ext() is quite straightforward: it is
+going through all the cpu->cfg.ext_() properties and picking the ones enable.
+If we can ensure that (1) all non-kvm properties are always default to false and
+(2) there is no way for the user to set them via command line, riscv_isa_string_ext()
+and all related artifacts can remain untouched.
+
+I have an idea to accomplish that. I'll see how it goes. Thanks,
+
+
+Daniel
+
+> 
+> Thanks,
+> drew
 
