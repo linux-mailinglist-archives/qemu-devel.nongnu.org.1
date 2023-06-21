@@ -2,82 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01A3A739071
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 21:54:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1514173907E
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 22:02:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qC3tn-0006MX-NG; Wed, 21 Jun 2023 15:53:52 -0400
+	id 1qC414-0007fI-3t; Wed, 21 Jun 2023 16:01:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qC3tj-0006MH-QL
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 15:53:47 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qC412-0007ew-BY
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 16:01:20 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qC3ti-0005aC-1S
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 15:53:47 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qC410-0002h0-0Y
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 16:01:20 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687377225;
+ s=mimecast20190719; t=1687377675;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=t5aVkECsFf0NMHkTszWX7n1xUdV7uCAZeey46/HVhik=;
- b=ZlkAHGejZoatuDK6dXh7i+ncioGOirmkHcO1XlpANQqhQf+SWip6u3qPop7XLcCgjhWwqs
- cMS7M8qYGEw9NRQNcaPtMZAKHuw+CQx9rfWO+VO2dMhkf3acBht5hc1BUhCnONhoAV7aak
- zl9XbjPphYqMRmqS4ZQ9tXpuMcd5I/w=
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
- [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=3JC/0xRoE8YEw0WeqBhd/slwuZDgJcVYDaChP+3idk0=;
+ b=RO7fe0BYIVgvVo6coT1Eq67VMN0oX9wO4xGXxaoMnIXKOPT/TPEomNkUj0Cl+fAzOhZu0M
+ EaNKHxVsBkJycWrsB0SvFp9ZJGiG7tHR3pptV5ABNsSqr2Kv8CPjG2Mtn8DKllVVCqIWgB
+ /1Bt/R+08hhGmu1edkkeL2Yd+AKr/eY=
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
+ [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-85-7XT5xcI2P2eqaikXaGi51w-1; Wed, 21 Jun 2023 15:53:44 -0400
-X-MC-Unique: 7XT5xcI2P2eqaikXaGi51w-1
-Received: by mail-qt1-f198.google.com with SMTP id
- d75a77b69052e-3ff1fec3500so7487421cf.0
- for <qemu-devel@nongnu.org>; Wed, 21 Jun 2023 12:53:43 -0700 (PDT)
+ us-mta-48-7w3e58lbPjqi8ajZ8NBn7g-1; Wed, 21 Jun 2023 16:01:12 -0400
+X-MC-Unique: 7w3e58lbPjqi8ajZ8NBn7g-1
+Received: by mail-qv1-f70.google.com with SMTP id
+ 6a1803df08f44-631e9a9e92bso6573726d6.1
+ for <qemu-devel@nongnu.org>; Wed, 21 Jun 2023 13:01:01 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687377223; x=1689969223;
+ d=1e100.net; s=20221208; t=1687377661; x=1689969661;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=t5aVkECsFf0NMHkTszWX7n1xUdV7uCAZeey46/HVhik=;
- b=cPkU9hC/Aes/nBrWCFeiMRQJkOOScs9k1oOgUwSY171APAOWilDBCTZ/JbDUf6MdrM
- BjrDlfWUjAw7tFofk15icPjaAkckof8g7BJwPnWZrFGK+B7iNaaDPRMzZG7+L+TzcBy7
- kpMLzp0q/58a6XyYc095uhIZTzIbYUqWQmnQ0dbvezINUztVMOg/Kw9HwJp9NI8+HLh5
- h0Mmn+CeJXQmvaZf7rz8aXQbyyLUo8TDhx3J8WJ4iP6q0sycWepCjZ0GkH+hlnYPViX9
- vif3I03Bwlg++pBjHNdV9a/fghaFYOzLWHEvlJNsLmGnK/H89NkjCWCZXa5F63dh/bYv
- nMLw==
-X-Gm-Message-State: AC+VfDxJigf4yBOAkArEMJCO/D1+GdVOU53PD+78H3u/DDtJZ/sLdtYp
- SmCvb77T1rG+oEDKISR+U0cLYsPJNb17oWGpv7Rt/byDKnGXoW+yOk8kqXMRy/yvDsFZlxEThR9
- TylUpSAsMzzeDV+Q=
-X-Received: by 2002:a05:622a:18a9:b0:3ff:2adf:5c28 with SMTP id
- v41-20020a05622a18a900b003ff2adf5c28mr7709540qtc.1.1687377223378; 
- Wed, 21 Jun 2023 12:53:43 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ42gcNqZo0MrgmFjarOJu2p/sBJcF4pSnSgdCPNFVr7M8/jhVqW5GbuzDkTz587iCYTgWiuPg==
-X-Received: by 2002:a05:622a:18a9:b0:3ff:2adf:5c28 with SMTP id
- v41-20020a05622a18a900b003ff2adf5c28mr7709527qtc.1.1687377223103; 
- Wed, 21 Jun 2023 12:53:43 -0700 (PDT)
+ bh=3JC/0xRoE8YEw0WeqBhd/slwuZDgJcVYDaChP+3idk0=;
+ b=eNJK9LTf5uKDEYsWVnvDbFgwSLaGdNqFD+EaUKYxXvn6K/DIQ02C2CP0TkwNK3U3W3
+ h8cccQs3LSoK0ze5UB0A/RdRhg9woALEcpvQgLOdGy9MH6csbqnUMWWzCvSKfzVXOzdT
+ 1aU72gNmnZjLrIGAmoRO4gXf8Hq3ri1+ToHkA01QIHR1MC7CHCtypC/vbQPnSHtuUPgI
+ rA3d+u6to0C7OnJU3eYe0si9wWD1vyF+HFA2nJU43w28jTWyAm1chDK6UzBKO18/jNAw
+ hbY/t3wYsB0K1HauyPY1lj0oflb7sXyqgxqXMLDm8DeMKMz4bxKGgzSlgPV/2JPlf5Ja
+ xGCg==
+X-Gm-Message-State: AC+VfDw4vpG6K5kwMZlhuGC83RXASBNCpmsNSdOrdfOALFsF+sN7LdrP
+ SqBX7MHrnJFGW0Byhw+sxTPlhStZC9TIDfhFFZoUg3kBpwdSnifk/R8FKYX6dGOqCmT/PWeVFKD
+ xMYYzsRMr+4htGCY=
+X-Received: by 2002:a05:6214:5298:b0:62f:1283:6185 with SMTP id
+ kj24-20020a056214529800b0062f12836185mr19899186qvb.2.1687377661143; 
+ Wed, 21 Jun 2023 13:01:01 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ56FCNR0gCFsnWyt+eqPq7FXWFyao0vglmdZTONx0VIxo1DN+/6zvmXN+urDCYelCrTc0LYHQ==
+X-Received: by 2002:a05:6214:5298:b0:62f:1283:6185 with SMTP id
+ kj24-20020a056214529800b0062f12836185mr19899164qvb.2.1687377660834; 
+ Wed, 21 Jun 2023 13:01:00 -0700 (PDT)
 Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
  [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- bz24-20020a05622a1e9800b003ff268d90aesm2732913qtb.56.2023.06.21.12.53.42
+ t2-20020a0cde02000000b0062fede81d0asm2787296qvk.144.2023.06.21.13.00.59
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 21 Jun 2023 12:53:42 -0700 (PDT)
-Date: Wed, 21 Jun 2023 15:53:41 -0400
+ Wed, 21 Jun 2023 13:01:00 -0700 (PDT)
+Date: Wed, 21 Jun 2023 16:00:59 -0400
 From: Peter Xu <peterx@redhat.com>
-To: Juan Quintela <quintela@redhat.com>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>,
- Leonardo Bras <leobras@redhat.com>, Yury Kotov <yury-kotov@yandex-team.ru>
-Subject: Re: [PATCH 12/42] migration-test: Enable back ignore-shared test
-Message-ID: <ZJNVRQfPRxhbLpfZ@x1n>
-References: <20230608224943.3877-1-quintela@redhat.com>
- <20230608224943.3877-13-quintela@redhat.com> <ZJHFbgdyd7yj13rp@x1n>
- <87jzvwa9nj.fsf@secure.mitica>
+To: Steven Sistare <steven.sistare@oracle.com>
+Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+Subject: Re: [PATCH V1 3/3] tests/qtest: live migration suspended state
+Message-ID: <ZJNW+2RsId/gbEQ6@x1n>
+References: <1686860800-34667-1-git-send-email-steven.sistare@oracle.com>
+ <1686860800-34667-4-git-send-email-steven.sistare@oracle.com>
+ <ZJMpFfetFkZ/QjfT@x1n>
+ <e848fa92-3cfe-a3bc-d666-625e72a65518@oracle.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <87jzvwa9nj.fsf@secure.mitica>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+In-Reply-To: <e848fa92-3cfe-a3bc-d666-625e72a65518@oracle.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -102,81 +101,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jun 21, 2023 at 09:38:08PM +0200, Juan Quintela wrote:
-> Peter Xu <peterx@redhat.com> wrote:
-> > On Fri, Jun 09, 2023 at 12:49:13AM +0200, Juan Quintela wrote:
-> >> It failed on aarch64 tcg, lets see if that is still the case.
-> >> 
-> >> Signed-off-by: Juan Quintela <quintela@redhat.com>
-> >
-> > According to the history:
-> >
-> > https://lore.kernel.org/all/20190305180635.GA3803@work-vm/
-> >
-> > It's never enabled, and not sure whether Yury followed it up.  Juan: have
-> > you tried it out on aarch64 before enabling it again?  I assume we rely on
-> > the previous patch but that doesn't even sound like aarch64 specific.  I
-> > worry it'll just keep failing on aarch64.
+On Wed, Jun 21, 2023 at 03:39:44PM -0400, Steven Sistare wrote:
+> >> -        jmp mainloop
+> >> +        # should this test suspend?
+> >> +        mov (suspend_me),%eax
+> >> +        cmp $0,%eax
+> >> +        je mainloop
+> >> +
+> >> +        # are we waking after suspend?  do not suspend again.
+> >> +        mov $suspended,%eax
+> > 
+> > So IIUC then it'll use 4 bytes over 100MB range which means we need at
+> > least 100MB+4bytes.. not obvious for a HIGH_ADDR definition to me..
+> > 
+> > Could we just define a variable inside the section like suspend_me?
 > 
-> Hi
-> 
-> I am resending this series.
-> 
-> I hard tested this time.  x86_64 host.
-> Two build directories:
-> - x86_64 (I just build qemu-system-x86_64, kvm)
-> - aarch64 (I just build qemu-system-aarch64, tcg)
-> 
-> Everything is run as:
-> 
-> while true; do $command || break; done
-> 
-> And run this:
-> - x86_64:
->   * make check (nit: you can't run two make checks on the same
->     directory)
->   * 4 ./test/qtest/migration-test
->   * 2 ./test/qtest/migration-test -p ./tests/qtest/migration-test -p /x86_64/migration/multifd/tcp/plain/cancel
->   * 2 ./test/qtest/migration-test -p ./tests/qtest/migration-test -p /x86_64/migration/ignore_shared
-> 
-> - aarch64:
->   The same with s/x86_64/aarch64/
-> 
-> And left it running for 6 hours.  No errors.
-> Machine has enough RAM for running this (128GB) and 18 cores (intel
-> i9900K).
-> Load of the machine while running this tests is around 50 (I really hope
-> that our CI hosts have less load).
-> 
-> A run master with the same configuration.  In less than 10 minutes I get
-> the dreaded:
-> 
-> # starting QEMU: exec ./qemu-system-aarch64 -qtest unix:/tmp/qtest-3264370.sock -qtest-log /dev/null -chardev socket,path=/tmp/qtest-3264370.qmp,id=char0 -mon chardev=char0,mode=control -display none -accel kvm -accel tcg -machine virt,gic-version=max -name target,debug-threads=on -m 150M -serial file:/tmp/migration-test-1A1461/dest_serial -incoming defer -cpu max -kernel /tmp/migration-test-1A1461/bootsect    -accel qtest
-> Broken pipe
-> ../../../../../mnt/code/qemu/multifd/tests/qtest/libqtest.c:195: kill_qemu() detected QEMU death from signal 6 (Aborted) (core dumped)
-> Aborted (core dumped)
-> $
-> 
-> On multifd+cancel.
-> 
-> I have no been able to ever get ignore_shared to fail on my machine.
-> But I didn't tested aarch64 TCG in the past so hard, and in x86_64 it
-> has always worked for me.
+> No, because modifications to this memory backing the boot block are not
+> copied to the destination.  The dest reads a clean copy of the boot block
+> from disk, as specified by the qemu command line arguments.
 
-Thanks a lot, Juan.
+Oh okay, can we use HIGH_ADDR-4, then?  I just still think it'll be nice if
+we can keep HIGH_ADDR the high bar of the whole range.
 
-Do you mean master is broken with QEMU_TEST_FLAKY_TESTS=1?  And after the
-whole series applied we cannot trigger issue in the few hours test even
-with it?
-
-Shall we wait for another 1-2 days to see whether Yury would comment
-(before you repost)?  Otherwise I agree if it survives your few-hours test
-we should give it a try - at least according to Dave's comment before it
-was failing easily, but it is not now on the test bed.
-
-Maybe it's still just hidden, but in that case I also agree enabling it in
-the repo is the simplest way to reproduce the failure again, if we still
-ever want to enable it one day..
+Thanks,
 
 -- 
 Peter Xu
