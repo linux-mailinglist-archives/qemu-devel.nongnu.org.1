@@ -2,71 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2266B737F3A
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 11:57:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D6A1737F3B
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 11:58:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBuaJ-0001Iw-5i; Wed, 21 Jun 2023 05:57:07 -0400
+	id 1qBubS-0002P4-L8; Wed, 21 Jun 2023 05:58:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1qBuaG-0001IF-LF
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 05:57:04 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1qBuaD-0000e2-Vv
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 05:57:04 -0400
-Received: from loongson.cn (unknown [10.20.42.57])
- by gateway (Coremail) with SMTP id _____8Dxc8RlyZJkehYAAA--.177S3;
- Wed, 21 Jun 2023 17:56:54 +0800 (CST)
-Received: from [10.20.42.57] (unknown [10.20.42.57])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8Dx4eRjyZJkrmsAAA--.2702S3; 
- Wed, 21 Jun 2023 17:56:51 +0800 (CST)
-Subject: Re: [PATCH v1 04/46] target/loongarch: Implement xvadd/xvsub
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-References: <20230620093814.123650-1-gaosong@loongson.cn>
- <20230620093814.123650-5-gaosong@loongson.cn>
- <47d12e8b-493a-e58c-54a1-47bd919c7e20@linaro.org>
- <cbe08731-718e-23d9-d834-1c34565902ad@loongson.cn>
- <49783ad9-cb1f-28d4-703f-6c0a99722935@linaro.org>
-From: Song Gao <gaosong@loongson.cn>
-Message-ID: <49588b69-de95-a065-a7d5-58553857fc62@loongson.cn>
-Date: Wed, 21 Jun 2023 17:56:51 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qBubQ-0002Oh-9E
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 05:58:16 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qBubO-0001Bh-O5
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 05:58:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1687341493;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=uWsYA+kLlQK5RjMBQvQ44g07/GzVlb9FKo/XgkvxgiQ=;
+ b=bOA9gehinc3vgiqNF2RYCvnHWdS+nEVosaoj3I0+c60S0IfSaQIwLLVaQURo6UILYBotcD
+ YJ2FUB2s1mdjFQtrZSks7eqUu4jC+oARLxsTrAUHDUfOSZdYF0IOvEsOjOebXlQmCpNGmC
+ qxlNr/KCYaReo7kKH5q70hqY9JOuX6I=
+Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
+ [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-365-7K3ND8ZLMtG9qx3DHohKdg-1; Wed, 21 Jun 2023 05:58:12 -0400
+X-MC-Unique: 7K3ND8ZLMtG9qx3DHohKdg-1
+Received: by mail-lf1-f69.google.com with SMTP id
+ 2adb3069b0e04-4f8727c7fb6so2576365e87.0
+ for <qemu-devel@nongnu.org>; Wed, 21 Jun 2023 02:58:12 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1687341491; x=1689933491;
+ h=mime-version:message-id:date:reply-to:user-agent:references
+ :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=uWsYA+kLlQK5RjMBQvQ44g07/GzVlb9FKo/XgkvxgiQ=;
+ b=Z3FgLsLGejkWRRGbRAl6StMM7SzR2NJgn6Ef5Ru81IX1XuR/5cKwESPjU+VWW/D0td
+ S66OC9GUdi4FL1wNmR+p4FXkAGXwYum6qlcUyiaKhu0p0snFNvWYKbU255KQgCbrv7sn
+ Gp1TVMuET+Ds5EBUg8c4Fv3g3nw6/8N2F7KeR/xKUiBGSXXeLwXOnFDod8MUiB+ZYtuy
+ D5xi033o97CiA43B83P6OtRcEpsRZ2aMQBt5i80tV0CfPRZRqtw/pz3J5n6fVaDks4pZ
+ v4ziloPZ/G3er0pcUg66b3JRKnwxykNBiC9lcYYZbnQpNsiPkFhhmh3cm8hxiB8m/P7h
+ w9Fw==
+X-Gm-Message-State: AC+VfDyiM5se3Y7eCmVpuvoRzs0tbL/fpjjcMY8sxmX/FoP0yrptfwRK
+ R4I86/6XPrMQNH/1l+GdCaztdS69hD9lZduWozciH7lywWtS2iKpEqKgXjkn7kt7a9kQd29d+tX
+ inp2r5Z2tYJQrb+Y=
+X-Received: by 2002:a19:6750:0:b0:4f8:6cb4:ea37 with SMTP id
+ e16-20020a196750000000b004f86cb4ea37mr5244766lfj.16.1687341490913; 
+ Wed, 21 Jun 2023 02:58:10 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7SIeWeKEXq48HxXsQnQgSDvgiDEp0ltHklt4vKZOhwt5SNxgezWA5veNVolsbw5vMOjzzqSg==
+X-Received: by 2002:a19:6750:0:b0:4f8:6cb4:ea37 with SMTP id
+ e16-20020a196750000000b004f86cb4ea37mr5244761lfj.16.1687341490491; 
+ Wed, 21 Jun 2023 02:58:10 -0700 (PDT)
+Received: from redhat.com (static-92-120-85-188.ipcom.comunitel.net.
+ [188.85.120.92]) by smtp.gmail.com with ESMTPSA id
+ n8-20020a05600c294800b003f90a604885sm4509340wmd.34.2023.06.21.02.58.09
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 21 Jun 2023 02:58:09 -0700 (PDT)
+From: Juan Quintela <quintela@redhat.com>
+To: Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org,  Paolo Bonzini <pbonzini@redhat.com>,  Laurent
+ Vivier <lvivier@redhat.com>,  Thomas Huth <thuth@redhat.com>,  Peter
+ Maydell <peter.maydell@linaro.org>,  Daniel P . =?utf-8?Q?Berrang=C3=A9?=
+ <berrange@redhat.com>,  Leonardo Bras <leobras@redhat.com>
+Subject: Re: [PATCH 11/42] migration-test: Update test_ignore_shared to use
+ args
+In-Reply-To: <ZJHD94Moce7KPqzq@x1n> (Peter Xu's message of "Tue, 20 Jun 2023
+ 11:21:27 -0400")
+References: <20230608224943.3877-1-quintela@redhat.com>
+ <20230608224943.3877-12-quintela@redhat.com> <ZJHD94Moce7KPqzq@x1n>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+Date: Wed, 21 Jun 2023 11:58:09 +0200
+Message-ID: <87legdb0i6.fsf@secure.mitica>
 MIME-Version: 1.0
-In-Reply-To: <49783ad9-cb1f-28d4-703f-6c0a99722935@linaro.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-CM-TRANSID: AQAAf8Dx4eRjyZJkrmsAAA--.2702S3
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoW7tFyUWrW7Xw1xJw47XF4UJrc_yoW8AF47pr
- 4kJFW8JFWrtr4ktw1j93WUXF90yr13tw15Wwn5Xas5t34qvr12gF17XFWq9Fn7Gr4xCr1U
- XF4j9rsruFW3JrcCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUU9ab4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
- xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
- 1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv
- 67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07
- AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwCFI7km07C2
- 67AKxVWUXVWUAwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI
- 8E67AF67kF1VAFwI0_Jrv_JF1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWU
- CwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r
- 1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsG
- vfC2KfnxnUUI43ZEXa7IU1wL05UUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Content-Type: text/plain
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.09,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -80,63 +100,29 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-在 2023/6/21 下午5:27, Richard Henderson 写道:
-> On 6/21/23 11:19, Song Gao wrote:
->>
->>
->> 在 2023/6/20 下午8:25, Richard Henderson 写道:
->>> On 6/20/23 11:37, Song Gao wrote:
->>>> +static bool gvec_xxx(DisasContext *ctx, arg_xxx *a, MemOp mop,
->>>> +                     void (*func)(unsigned, uint32_t, uint32_t,
->>>> +                                  uint32_t, uint32_t, uint32_t))
->>>> +{
->>>> +    uint32_t xd_ofs, xj_ofs, xk_ofs;
->>>> +
->>>> +    CHECK_ASXE;
->>>> +
->>>> +    xd_ofs = vec_full_offset(a->xd);
->>>> +    xj_ofs = vec_full_offset(a->xj);
->>>> +    xk_ofs = vec_full_offset(a->xk);
->>>> +
->>>> +    func(mop, xd_ofs, xj_ofs, xk_ofs, 32, ctx->vl / 8);
->>>> +    return true;
->>>> +}
->>>
->>> Comparing gvec_xxx vs gvec_vvv for LSX,
->>>
->>>>     func(mop, vd_ofs, vj_ofs, vk_ofs, 16, ctx->vl/8);
->>>
->>> gvec_vvv will write 16 bytes of output, followed by 16 bytes of zero 
->>> to satisfy vl / 8.
->>>
->>>
->>> I presume this is the intended behaviour of mixing LSX with LASX, 
->>> that the high 128-bits that are not considered by the LSX 
->>> instruction are zeroed on write?
->>>
->> Yes,  the LSX instruction  can ignore the high 128-bits.
+Peter Xu <peterx@redhat.com> wrote:
+> On Fri, Jun 09, 2023 at 12:49:12AM +0200, Juan Quintela wrote:
+>> It missed this treatment:
+>> 
+>> commit 11f1a4ce14803f15d59cff42a4cfb7ac50d36bd0
+>> Author: Juan Quintela <quintela@redhat.com>
+>> Date:   Mon Nov 29 18:57:51 2021 +0100
+>> 
+>>     migration-test: Check for shared memory like for everything else
+>> 
+>> Signed-off-by: Juan Quintela <quintela@redhat.com>
 >
-> Ignore != write zeros on output.  What is the behaviour?
->
-Unpredictable,
+> This is still under "#if 0" block.. and the old code doesn't even compile,
+> but the change looks fine.
 
-For more,
-LSX:
-LA64 fp instructiosn change fp registers value,    the same num LSX 
-registers [127: 64]  is  unpredictable.
+With the change it compiles O:-)
 
-LASX:
-LA64 fp instructions change fp_registers value,  the same num LASX 
-registers[255: 64] is unpredictable.
-LSX instructions change LSX registers value,    the same num  LASX 
-registers[255: 128] is Unpredictable.
+> Reviewed-by: Peter Xu <peterx@redhat.com>
 
-Thanks.
-Song Gao.
+Thanks. 
 
 
