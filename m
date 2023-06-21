@@ -2,92 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03F79737DF9
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 11:02:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DAF7737E23
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 11:14:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBtie-0001as-Gl; Wed, 21 Jun 2023 05:01:40 -0400
+	id 1qBttj-0004S9-J1; Wed, 21 Jun 2023 05:13:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vannapurve@google.com>)
- id 1qBtiW-0001aW-N4
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 05:01:32 -0400
-Received: from mail-qv1-xf36.google.com ([2607:f8b0:4864:20::f36])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qBtth-0004Rl-CT
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 05:13:05 -0400
+Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <vannapurve@google.com>)
- id 1qBtiU-0007dG-H3
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 05:01:32 -0400
-Received: by mail-qv1-xf36.google.com with SMTP id
- 6a1803df08f44-5ed99ebe076so53198526d6.2
- for <qemu-devel@nongnu.org>; Wed, 21 Jun 2023 02:01:28 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qBttf-0004Fo-9B
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 05:13:05 -0400
+Received: by mail-ej1-x62b.google.com with SMTP id
+ a640c23a62f3a-988c30a540aso386590866b.3
+ for <qemu-devel@nongnu.org>; Wed, 21 Jun 2023 02:13:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20221208; t=1687338087; x=1689930087;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=GggaCXOFg4z+F5xlvFzI/hjEnVVezaR8FCxhsY4X+4k=;
- b=YAkAPnxt6pZOgcUU5gErX3sbI43Adc76e+9dsxfRuvvo+hzThnkDKhy0joF+qo8LKM
- HkRf3+n40noWJYMgW83bd7IvUDZ/poWHNY3Jx1Z0KKe+uvulO3QyNs4xo6HTDMH2hPXm
- mEyTVrzeHNyELzHfZu0pENPirl89gRQWJHsWmtgLETtVwCs3WFG3VOYxDKL6+/p0L57u
- Ed6oukufenkRQxhbsbLj97fBL8/GHe0TLHzpbnHYFmrrtWgSp8ZZC8fJiJiVaSIZwngJ
- fGzr6DoZWgbSFyEfbfo7ZEqzCzJckfia6djl5Sxaxenl3VRUwlMPCMrLTnNH2Z7mADxU
- oCWg==
+ d=linaro.org; s=google; t=1687338781; x=1689930781;
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=dgppXVXTc9T9trLOQQgbJTTblexaN9EHcgOrpHGOB3A=;
+ b=HxDScBPWpGHuS6dg8Kc6WsYSjzKcgZVkF7Su26ZjGkGDDtr4GGYMbiILSADIEXaj91
+ fnigJt52cowsVU/5zUITC2oWei6AtsTXxA29TMg5tBCYJMC6hmFK2zIYvJqnSTz4xCle
+ nMoMspgPPEPPDgKszZEiIn6ZQ+y37GDV3xO7bqy04gMlyP6FkG+bpk6XWiScnOtWVrtK
+ XS2O230V6nlrnF3nc9MLXOzfSzuf4s4BzBk7kp/hA/jZWMZo6Nua3Yo1YvX4W7FVvPgp
+ 51AiSNpEy54zrZTUO9j54oVy0/yLwJSzfAEFR2OyHF/xHSf7DVf/Uwx0kVZR3QhIwqqq
+ 5bUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687338087; x=1689930087;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=GggaCXOFg4z+F5xlvFzI/hjEnVVezaR8FCxhsY4X+4k=;
- b=TOQPS1kbslbFRUuBCD6dRkBqduVV7I4G2TIgKXVUzQ7qCINuxLh0e2umjH0Y+aoSkt
- r3kaJ4+Zw2GsY3lfYLWAWtCdXPG5BnkGVfI+Ik8uNQo2JRWqLIHO/NlB3/t2QpMRrz3m
- 7bYeRikFYuqfXcsmThJin6CeDw9cawN+HD/cITTbD/w1g989LS1cASsrcCFR8uViAftr
- gZkt5ugafY7CNDvxkj50kLbEC7UAdBWIbS1mn3WXpgDhw3C+Pq2xyByAfTDppaPIGwAp
- aodmPB7rl+KY/TH8dBSysCWeK7squAZc5z93MB7vc+5TpE842PB6YYxVBuCqMKd7bPfF
- uA9g==
-X-Gm-Message-State: AC+VfDz68EL8Cjh8S0iXPY+ECWZKaB9OBsnrZi/FMEaQ/xlJrrVa9WLp
- EkWJe8WPfypS3HSRCsggKctgY5DPnL3npi9xpR/RXA==
-X-Google-Smtp-Source: ACHHUZ67nqRlyPSAmJAdYAQRecAssNEK0bXaPkvdoVklsOrLI7I63am8sKR0bbgFoaWyaJf4gLP9WVi33cBGzMyYMr0=
-X-Received: by 2002:a05:6214:1c87:b0:628:8185:bd6e with SMTP id
- ib7-20020a0562141c8700b006288185bd6emr6847558qvb.5.1687338087414; Wed, 21 Jun
- 2023 02:01:27 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1687338781; x=1689930781;
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=dgppXVXTc9T9trLOQQgbJTTblexaN9EHcgOrpHGOB3A=;
+ b=APZu5e1vcWjiDiNmTnSIadzVehXNnKqYp7YB8t5wexuP1fst0wDctohxSUTjpV0cGN
+ NLQ8/Bxk1Vn7FjUm/svTSS9on6eRLZvcFWi9rW7+Zjddvu8F9lnreu1dw1WGEAJ92BRf
+ 7hH9sf8aFOF3f/e8ETM9aadWb2AUBnt3CaJF/scW/FGkFtMAJyNYLR7EKgZ7Od7HA2wM
+ W9VuoCE6LDfxQyhU8sGSCDDJXNf1we/qLubeDy/izZZ/A99E/rWgMZPx7WPx4pbD2ai8
+ iveayVARgXXpNOM5azPqjPbUAmaAzbOC7YWDtRaGQhCmgyBB3Cu+akZKlSJLZbgUuv+q
+ BCGg==
+X-Gm-Message-State: AC+VfDxxrhgq0ITia3OghgOz5brnTXPgHSSUqAyQtYi/RRbqYr4hBqUN
+ HlH9gh2ghNj0wUq86UhrrisGcBTY0zPAjpIwdtME04sj
+X-Google-Smtp-Source: ACHHUZ44O0omWxgA/AAOe8uyWa9UIRsHuVr5JtYEx7RznZ4GMhEzJk0K4m8GvO0CecvRuL3mxVKPbQ==
+X-Received: by 2002:a17:907:7b96:b0:969:7739:2eb7 with SMTP id
+ ne22-20020a1709077b9600b0096977392eb7mr15009758ejc.4.1687338781189; 
+ Wed, 21 Jun 2023 02:13:01 -0700 (PDT)
+Received: from [192.168.69.129] ([176.176.128.70])
+ by smtp.gmail.com with ESMTPSA id
+ g11-20020a1709061c8b00b0096fbc516a93sm2728743ejh.211.2023.06.21.02.13.00
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 21 Jun 2023 02:13:00 -0700 (PDT)
+Message-ID: <0f0aed5b-1db2-59e4-0523-14d957eac24a@linaro.org>
+Date: Wed, 21 Jun 2023 11:12:58 +0200
 MIME-Version: 1.0
-References: <cover.1686077275.git.ackerleytng@google.com>
- <20230616182815.GA7371@monkey>
-In-Reply-To: <20230616182815.GA7371@monkey>
-From: Vishal Annapurve <vannapurve@google.com>
-Date: Wed, 21 Jun 2023 02:01:16 -0700
-Message-ID: <CAGtprH9OJpj_iUbgjVSjCnqqpWt3XiMT6Xg5PtywEf9b-iF-1A@mail.gmail.com>
-Subject: Re: [RFC PATCH 00/19] hugetlb support for KVM guest_mem
-To: Mike Kravetz <mike.kravetz@oracle.com>
-Cc: Ackerley Tng <ackerleytng@google.com>, akpm@linux-foundation.org, 
- muchun.song@linux.dev, pbonzini@redhat.com, seanjc@google.com, 
- shuah@kernel.org, willy@infradead.org, brauner@kernel.org, 
- chao.p.peng@linux.intel.com, coltonlewis@google.com, david@redhat.com, 
- dhildenb@redhat.com, dmatlack@google.com, erdemaktas@google.com, 
- hughd@google.com, isaku.yamahata@gmail.com, jarkko@kernel.org, 
- jmattson@google.com, joro@8bytes.org, jthoughton@google.com, 
- jun.nakajima@intel.com, kirill.shutemov@linux.intel.com, 
- liam.merwick@oracle.com, mail@maciej.szmigiero.name, mhocko@suse.com, 
- michael.roth@amd.com, qperret@google.com, rientjes@google.com, 
- rppt@kernel.org, steven.price@arm.com, tabba@google.com, vbabka@suse.cz, 
- vipinsh@google.com, vkuznets@redhat.com, wei.w.wang@intel.com, 
- yu.c.zhang@linux.intel.com, kvm@vger.kernel.org, linux-api@vger.kernel.org, 
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org, qemu-devel@nongnu.org, 
- x86@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::f36;
- envelope-from=vannapurve@google.com; helo=mail-qv1-xf36.google.com
-X-Spam_score_int: -175
-X-Spam_score: -17.6
-X-Spam_bar: -----------------
-X-Spam_report: (-17.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- ENV_AND_HDR_SPF_MATCH=-0.5, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01, USER_IN_DEF_DKIM_WL=-7.5,
- USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH 0/4] fpu: Add float64_to_int{32,64}_modulo
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: christoph.muellner@vrull.eu, alex.bennee@linaro.org
+References: <20230527141910.1885950-1-richard.henderson@linaro.org>
+In-Reply-To: <20230527141910.1885950-1-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ej1-x62b.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,80 +94,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Jun 16, 2023 at 11:28=E2=80=AFAM Mike Kravetz <mike.kravetz@oracle.=
-com> wrote:
->
-> On 06/06/23 19:03, Ackerley Tng wrote:
-> > Hello,
-> >
-> > This patchset builds upon a soon-to-be-published WIP patchset that Sean
-> > published at https://github.com/sean-jc/linux/tree/x86/kvm_gmem_solo, m=
-entioned
-> > at [1].
-> >
-> > The tree can be found at:
-> > https://github.com/googleprodkernel/linux-cc/tree/gmem-hugetlb-rfc-v1
-> >
-> > In this patchset, hugetlb support for KVM's guest_mem (aka gmem) is int=
-roduced,
-> > allowing VM private memory (for confidential computing) to be backed by=
- hugetlb
-> > pages.
-> >
-> > guest_mem provides userspace with a handle, with which userspace can al=
-locate
-> > and deallocate memory for confidential VMs without mapping the memory i=
-nto
-> > userspace.
->
-> Hello Ackerley,
->
-> I am not sure if you are aware or, have been following the hugetlb HGM
-> discussion in this thread:
-> https://lore.kernel.org/linux-mm/20230306191944.GA15773@monkey/
->
-> There we are trying to decide if HGM should be added to hugetlb, or if
-> perhaps a new filesystem/driver/allocator should be created.  The concern
-> is added complexity to hugetlb as well as core mm special casing.  Note
-> that HGM is addressing issues faced by existing hugetlb users.
->
-> Your proposal here suggests modifying hugetlb so that it can be used in
-> a new way (use case) by KVM's guest_mem.  As such it really seems like
-> something that should be done in a separate filesystem/driver/allocator.
-> You will likely not get much support for modifying hugetlb.
->
-> --
-> Mike Kravetz
->
+On 5/27/23 16:19, Richard Henderson wrote:
+> Extract some common code from Alpha and Arm, and which will
+> shortly also be required by the RISC-V Zfa extension.
+> Added a new test for Alpha; I already had a RISU test for Arm.
+> 
+> 
+> r~
+> 
+> 
+> Richard Henderson (4):
+>    fpu: Add float64_to_int{32,64}_modulo
+>    tests/tcg/alpha: Add test for cvttq
+>    target/alpha: Use float64_to_int64_modulo for CVTTQ
+>    target/arm: Use float64_to_int32_modulo for FJCVTZS
+> 
+>   include/fpu/softfloat.h         |  3 ++
+>   fpu/softfloat.c                 | 31 ++++++++++++
+>   target/alpha/fpu_helper.c       | 85 +++++++--------------------------
+>   target/arm/vfp_helper.c         | 71 +++++----------------------
+>   tests/tcg/alpha/test-cvttq.c    | 78 ++++++++++++++++++++++++++++++
+>   fpu/softfloat-parts.c.inc       | 78 ++++++++++++++++++++++++++++++
+>   tests/tcg/alpha/Makefile.target |  2 +-
+>   7 files changed, 221 insertions(+), 127 deletions(-)
+>   create mode 100644 tests/tcg/alpha/test-cvttq.c
+> 
+ping.
 
-IIUC mm/hugetlb.c implements memory manager for Hugetlb pages and
-fd/hugetlbfs/inode.c implements the filesystem logic for hugetlbfs.
-
-This series implements a new filesystem with limited operations
-parallel to hugetlbfs filesystem but tries to reuse hugetlb memory
-manager. The effort here is to not add any new feature to hugetlb
-memory manager but clean it up so that it can be used by a new
-filesystem.
-
-guest_mem warrants a new filesystem since it supports limited
-operations on the underlying files but there is no additional
-restriction on underlying memory management. Though one could argue
-that memory management for guest_mem files can be a very simple one
-that goes inline with limited operations on the files.
-
-If this series were to go a separate way of implementing a new memory
-manager, one immediate requirement that might spring up, would be to
-convert memory from hugetlb managed memory to be managed by this newly
-introduced memory manager and vice a versa at runtime since there
-could be a mix of VMs on the same platform using guest_mem and
-hugetlb.
-Maybe this can be satisfied by having a separate global pool for
-reservation that's consumed by both, which would need more changes in
-my understanding.
-
-Using guest_mem for all the VMs by default would be a future work
-contingent on all existing usecases/requirements being satisfied.
-
-Regards,
-Vishal
+r~
 
