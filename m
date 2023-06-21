@@ -2,43 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C43B73782B
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 02:23:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E48D173782E
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 02:23:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBlbY-00041e-Au; Tue, 20 Jun 2023 20:21:48 -0400
+	id 1qBlbW-0003zI-Sw; Tue, 20 Jun 2023 20:21:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1qBlbW-00040E-DF
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 20:21:46 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1qBlbU-0003yT-6l
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 20:21:44 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1qBlbQ-00006p-S8
- for qemu-devel@nongnu.org; Tue, 20 Jun 2023 20:21:45 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1qBlbQ-000093-N3
+ for qemu-devel@nongnu.org; Tue, 20 Jun 2023 20:21:43 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687306898;
+ s=mimecast20190719; t=1687306900;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=IbqHUNUUzyICKNg1KPxJjBeG4KgfXfoJFkJJCGALlEY=;
- b=ZmTQiTt8acOVh0uDev7e8vrV9DozVoAP4sm0eog7V4HLF4sqEKaPiYxgNJgt/8JUOSKFEy
- yDYp6F+qRrvJdfD+uqSSrzG9giZh4Ow3MR+8PkGj0ec0BcUcwPhqmrgB/lfN74a8GkpjD3
- 30AgjbIbHJhDOT7pZimStsZR2PzDm3s=
+ bh=7tmXMJY+e4M0cUKQ5yliUcPrNFZ1qAAb8NZJYE/gZ7o=;
+ b=AKQECWenCV9fKTUuH/MgIS5sC9D7mpVj8K/c8cRUb+KyDtW5XOS3cUzt8JyDU3fB1e6Mq/
+ eLkBJTgqRwNxAJpGVWog0q/F6wNn463kmXoavOHXMYf78JJuc6L7xlObcum4I/YHT4kUT6
+ Kw793KtsCp/Iws0haZIki5AsxN7o+8w=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-88-ZTshDb7HOiuNIGhGbmf0XQ-1; Tue, 20 Jun 2023 20:21:35 -0400
-X-MC-Unique: ZTshDb7HOiuNIGhGbmf0XQ-1
+ us-mta-134-UaBkaYbiNzafKZ9VAPAM1w-1; Tue, 20 Jun 2023 20:21:36 -0400
+X-MC-Unique: UaBkaYbiNzafKZ9VAPAM1w-1
 Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
  [10.11.54.3])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 851048D6E26;
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id EA88A8028B2;
  Wed, 21 Jun 2023 00:21:35 +0000 (UTC)
 Received: from scv.redhat.com (unknown [10.22.32.44])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 2E7F8112132C;
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 93948112132C;
  Wed, 21 Jun 2023 00:21:35 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
@@ -47,9 +47,10 @@ Cc: Thomas Huth <thuth@redhat.com>, qemu-block@nongnu.org,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  John Snow <jsnow@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
  Cleber Rosa <crosa@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH RFC 1/6] experiment: add mkvenv install
-Date: Tue, 20 Jun 2023 20:21:16 -0400
-Message-Id: <20230621002121.1609612-2-jsnow@redhat.com>
+Subject: [PATCH RFC 2/6] build,
+ tests: Add qemu in-tree packages to pyvenv at configure time.
+Date: Tue, 20 Jun 2023 20:21:17 -0400
+Message-Id: <20230621002121.1609612-3-jsnow@redhat.com>
 In-Reply-To: <20230621002121.1609612-1-jsnow@redhat.com>
 References: <20230621002121.1609612-1-jsnow@redhat.com>
 MIME-Version: 1.0
@@ -80,83 +81,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is just so I can do "mkvenv install './python'" or "mkvenv install
-file:python" to install the in-tree packages to pyvenv.
+though, ouch: on my machine this takes 3-4 entire seconds to do. I wish
+it wasn't so slow, but we can't rely on these packages not having any
+dependencies any more.
 
-It probably isn't quite appropriate to bypass do_ensure in its entirety
-like this because we miss out on a lot of error handling, but as a quick
-proof of concept it works just fine.
+We could theoretically use a .pth hack when creating the venv to
+automatically include this directory as an "installed packages"
+location, but when we go to drop qemu.qmp in the future, that will break
+- I think we need to *install* this package.
 
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- python/scripts/mkvenv.py | 40 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 40 insertions(+)
+ configure | 31 +++++++++++++++++++++++++++++++
+ 1 file changed, 31 insertions(+)
 
-diff --git a/python/scripts/mkvenv.py b/python/scripts/mkvenv.py
-index a47f1eaf5d..ea8df34111 100644
---- a/python/scripts/mkvenv.py
-+++ b/python/scripts/mkvenv.py
-@@ -940,6 +940,35 @@ def _add_ensure_subcommand(subparsers: Any) -> None:
-     )
+diff --git a/configure b/configure
+index 01a53576a7..d2e0abc068 100755
+--- a/configure
++++ b/configure
+@@ -250,6 +250,7 @@ git_submodules_action="update"
+ git="git"
+ debug_tcg="no"
+ docs="auto"
++tests="enabled"
+ EXESUF=""
+ prefix="/usr/local"
+ qemu_suffix="qemu"
+@@ -639,6 +640,10 @@ for opt do
+   ;;
+   --disable-docs) docs=disabled
+   ;;
++  --enable-tests) tests=enabled
++  ;;
++  --disable-tests) tests=disabled
++  ;;
+   --cpu=*)
+   ;;
+   --target-list=*) target_list="$optarg"
+@@ -985,6 +990,32 @@ if test "$docs" != "disabled" ; then
+     fi
+ fi
  
- 
-+def _add_install_subcommand(subparsers: Any) -> None:
-+    subparser = subparsers.add_parser(
-+        "install", help="Install the specified package."
-+    )
-+    subparser.add_argument(
-+        "--online",
-+        action="store_true",
-+        help="Install packages from PyPI, if necessary.",
-+    )
-+    subparser.add_argument(
-+        "--dir",
-+        type=str,
-+        action="store",
-+        help="Path to vendored packages where we may install from.",
-+    )
-+    subparser.add_argument(
-+        '--editable',
-+        action="store_true",
-+        help="Should package(s) be installed in editable mode?"
-+    )
-+    subparser.add_argument(
-+        "dep_specs",
-+        type=str,
-+        action="store",
-+        help="PEP 508 Dependency specification, e.g. 'meson>=0.61.5'",
-+        nargs="+",
-+    )
++# Optionally pre-load the testing pre-requisites. This is for iotests,
++# vmtests, and anything else that uses Python qemu.* packages. Note that
++# our in-tree qemu packages are currently pure python with zero external
++# dependencies. For this reason, it excludes the Avocado dependencies
++# which are installed on-demand at time of use instead.
 +
++mkvenv_flags=""
++if test "$pypi" = "enabled" ; then
++    mkvenv_flags="--online"
++fi
 +
- def main() -> int:
-     """CLI interface to make_qemu_venv. See module docstring."""
-     if os.environ.get("DEBUG") or os.environ.get("GITLAB_CI"):
-@@ -964,6 +993,7 @@ def main() -> int:
-     _add_create_subcommand(subparsers)
-     _add_post_init_subcommand(subparsers)
-     _add_ensure_subcommand(subparsers)
-+    _add_install_subcommand(subparsers)
++if test "$tests" = "enabled" ; then
++    if ! $mkvenv install \
++         $mkvenv_flags \
++         --editable \
++         --dir "${source_path}/python/wheels" \
++         "${source_path}/python/";
++    then
++        echo "There was a problem installing the in-tree python packages for testing."
++        exit 1
++    fi
++    touch pyvenv/tests.group
++fi
++
++echo "mkvenv: done for now, ciao!"
++
+ # Probe for ninja
  
-     args = parser.parse_args()
-     try:
-@@ -982,6 +1012,16 @@ def main() -> int:
-                 wheels_dir=args.dir,
-                 prog=args.diagnose,
-             )
-+        if args.command == "install":
-+            print(f"mkvenv: installing {', '.join(args.dep_specs)}", file=sys.stderr)
-+            pip_args = list(args.dep_specs)
-+            if args.editable:
-+                pip_args.insert(0, "--editable")
-+            pip_install(
-+                args=pip_args,
-+                online=args.online,
-+                wheels_dir=args.dir
-+            )
-         logger.debug("mkvenv.py %s: exiting", args.command)
-     except Ouch as exc:
-         print("\n*** Ouch! ***\n", file=sys.stderr)
+ if test -z "$ninja"; then
 -- 
 2.40.1
 
