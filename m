@@ -2,72 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF959738690
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 16:16:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F12E73869C
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 16:17:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBycB-00044J-Ct; Wed, 21 Jun 2023 10:15:20 -0400
+	id 1qBydi-0005xz-Jn; Wed, 21 Jun 2023 10:16:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qBybv-0003ub-G3
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 10:15:10 -0400
-Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
+ (Exim 4.90_1) (envelope-from <qemu_oss@crudebyte.com>)
+ id 1qBydg-0005xY-F2
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 10:16:52 -0400
+Received: from kylie.crudebyte.com ([5.189.157.229])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qBybq-0003M2-LM
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 10:15:02 -0400
+ (Exim 4.90_1) (envelope-from <qemu_oss@crudebyte.com>)
+ id 1qByde-000402-B8
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 10:16:52 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
- In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
- Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
- :Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
- List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=/rzUBg0aKFBHZM/Dn/xlUNKB9LnFIZR7Ak5kcCHLEt0=; b=MMsFLJaFcrJ4E9wLiYbLmjcQIn
- sSVJpJznL41j/00un0/mvNzwRESZCHROrWuvIjgLCJUB3dLglaMV2AGlrrt47s2Sicl+PeFLQBYVG
- ZejTFONwqEPo71XWi9SpcZlA1nidSHcXeZpwtHa8Hzv2T8IDCstHktp23FBkYdjJXFK2IX8Zqrqse
- mWE8KuNMNbqVDiQz9fhS9ajqhTC0WWQCRNpOiwXHuTrMWY/JARNWYWEphCPnEqKE2avLYnQOcPZdv
- laMYWm9GF1XkpW5oKBZ1XAuB6qqTj117vdVpx80ZudXUKbEfbOvW7GX2vIpAfB9A8rsHBFUlLPp+p
- G+VBJUEq8kllMJ/H2QWuuUglYEY0s1B1+se2wq6fQdVU7kh7Rp7O8UT7WKVqvkIfHWiPQotm3/Ici
- pHTZRL58AgdM3nR1vBMganDljqjL1nohpQyc66aqxyIRG0VZoPVDTdovnoBCU9UGJweUuS+5Ma2TE
- TuGnyj6UtY9wDDYvRvAj+TElNFp9ZUS8w+tmsCPrZPgN+IS8qC0zUmmw4XGokFw0NLdAjECmch/TF
- dcgYYLvgToI6o0uQP44rCZdXPYITgrAfPGg/9NRMkTPhgjLPhuOiiKa8i7e8qJ11EwLdkYlh209m6
- GMVWuvI9Rz7Ax43FRiQVJMSkGdZKKvft6it4cmjUc=;
-Received: from host86-130-37-216.range86-130.btcentralplus.com
- ([86.130.37.216] helo=[10.8.0.6])
- by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qBybX-0003IJ-Hn; Wed, 21 Jun 2023 15:14:43 +0100
-Message-ID: <0fcee3b0-145b-b640-aa9b-d86247e4e224@ilande.co.uk>
-Date: Wed, 21 Jun 2023 15:14:45 +0100
+ d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
+ MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:To:From:Cc:
+ Content-ID:Content-Description;
+ bh=eaJmqR6up6YsWmQDZkJPcCoGIjICd/lH5f9KCDMiQRo=; b=H/T4rLnxnFusZEcFznwzLeTpGe
+ UvcJ5eWALZJncleog4LJr6COi9LE1fJmddJ9+Hqw1YU2Mx3OYIVBYlqk8pfSS+RYxujxp5Nume74o
+ wBzGPRKn8wo2JXeWgyNjI3PG2Vz0wwmoxdy29Um3ymnVwyzY/SjORcfKEXL5sSS3b/OXfLHzHI38u
+ 36sgekFZeJ0JGM+v0UKWZexJGgdBakrxD4Yk9xhMMsipUEevIDcImy0pY3MR5COoF+daMicFMF0hi
+ GWQgH8wkepOLuDbuewyyJzTcJaRpliSmCJZXNGVI8+AeV/VBx9gfYqUpVywRksNx3vXPVuTJx4OHY
+ jtnXTi05G2t77Wn/OL43Qz9hHHt5ZQn563rRSLjDq2nI4fkmaY8hU5iCJraXiRXNnL/PFoAxVxA41
+ 5v7aYal252xrbUlcaLaYgJbxkCeJF+HDJYX38AsfzsXZl92pI1cr0WuG/glnNlwVzNrtBUqwNcR9h
+ DzIDvUxCYzxQrtammRULMoyp7rpHQ9GxQQSLUiNYAV9agOY0WTuVjd9z/QYQ+pMLjOULSkwCjslZn
+ kKZ53pSZbN5/+1QTztTmBi1orTJxkbIVE76BBywqLtyALnYbmjlmZ81baJSTuNXSRcwSvlDw3PQVZ
+ kqwYYEnSX9+vztN8/kZt2j7SgFjLQnPcIKFggVzQk=;
+From: Christian Schoenebeck <qemu_oss@crudebyte.com>
+To: qemu-devel@nongnu.org, Greg Kurz <groug@kaod.org>
+Subject: Re: [PATCH v3] 9pfs: deprecate 'proxy' backend
+Date: Wed, 21 Jun 2023 16:16:46 +0200
+Message-ID: <1802263.gKGKeHe8zJ@silver>
+In-Reply-To: <20230621154136.6e1f3f4b@bahia>
+References: <E1q7ytt-0005Fl-JX@lizzy.crudebyte.com>
+ <10417219.URJpt1F07l@silver> <20230621154136.6e1f3f4b@bahia>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Content-Language: en-US
-To: BALATON Zoltan <balaton@eik.bme.hu>
-Cc: laurent@vivier.eu, qemu-devel@nongnu.org
-References: <20230621085353.113233-1-mark.cave-ayland@ilande.co.uk>
- <20230621085353.113233-4-mark.cave-ayland@ilande.co.uk>
- <3ffba6ed-4213-2e57-dcd1-ba1315f2df31@eik.bme.hu>
-From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-In-Reply-To: <3ffba6ed-4213-2e57-dcd1-ba1315f2df31@eik.bme.hu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 86.130.37.216
-X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: Re: [PATCH v4 03/24] q800: introduce Q800MachineState
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
-Received-SPF: pass client-ip=2001:41c9:1:41f::167;
- envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+Received-SPF: pass client-ip=5.189.157.229;
+ envelope-from=qemu_oss@crudebyte.com; helo=kylie.crudebyte.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.093,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,75 +66,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 21/06/2023 12:33, BALATON Zoltan wrote:
-
-> On Wed, 21 Jun 2023, Mark Cave-Ayland wrote:
->> This provides an overall container and owner for Machine-related objects such
->> as MemoryRegions.
->>
->> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
->> Reviewed-by: Laurent Vivier <laurent@vivier.eu>
->> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->> ---
->> MAINTAINERS            |  1 +
->> hw/m68k/q800.c         |  2 ++
->> include/hw/m68k/q800.h | 40 ++++++++++++++++++++++++++++++++++++++++
->> 3 files changed, 43 insertions(+)
->> create mode 100644 include/hw/m68k/q800.h
->>
->> diff --git a/MAINTAINERS b/MAINTAINERS
->> index 88b5a7ee0a..748a66fbaa 100644
->> --- a/MAINTAINERS
->> +++ b/MAINTAINERS
->> @@ -1236,6 +1236,7 @@ F: include/hw/misc/mac_via.h
->> F: include/hw/nubus/*
->> F: include/hw/display/macfb.h
->> F: include/hw/block/swim.h
->> +F: include/hw/m68k/q800.h
->>
->> virt
->> M: Laurent Vivier <laurent@vivier.eu>
->> diff --git a/hw/m68k/q800.c b/hw/m68k/q800.c
->> index 465c510c18..c0256c8a90 100644
->> --- a/hw/m68k/q800.c
->> +++ b/hw/m68k/q800.c
->> @@ -38,6 +38,7 @@
->> #include "standard-headers/asm-m68k/bootinfo.h"
->> #include "standard-headers/asm-m68k/bootinfo-mac.h"
->> #include "bootinfo.h"
->> +#include "hw/m68k/q800.h"
->> #include "hw/misc/mac_via.h"
->> #include "hw/input/adb.h"
->> #include "hw/nubus/mac-nubus-bridge.h"
->> @@ -749,6 +750,7 @@ static void q800_machine_class_init(ObjectClass *oc, void *data)
->> static const TypeInfo q800_machine_typeinfo = {
->>     .name       = MACHINE_TYPE_NAME("q800"),
->>     .parent     = TYPE_MACHINE,
->> +    .instance_size = sizeof(Q800MachineState),
->>     .class_init = q800_machine_class_init,
->> };
->>
->> diff --git a/include/hw/m68k/q800.h b/include/hw/m68k/q800.h
->> new file mode 100644
->> index 0000000000..f3bc17aa1b
->> --- /dev/null
->> +++ b/include/hw/m68k/q800.h
+On Wednesday, June 21, 2023 3:41:36 PM CEST Greg Kurz wrote:
+> On Wed, 21 Jun 2023 15:32:39 +0200
+> Christian Schoenebeck <qemu_oss@crudebyte.com> wrote:
 > 
-> Why is this defined in a public header? Moving struct definitions of devices to allow 
-> them to be embedded in other structs makes sense but is there ever a reason to embed 
-> a machine state anywhere else than using it in q800.c? I don't think so, thus to 
-> preserve locality and save some lines in this series I think this machine state 
-> should just be in q800.c like I have similar struct in pegasos2.c. It may only make 
-> sense to put it in a header if q800.c was split up to multiple files but even then it 
-> should be a local header in hw/m68k and not a public header in my opinion.
+> > On Thursday, June 15, 2023 11:35:05 AM CEST Christian Schoenebeck wrote:
+> > > On Saturday, June 10, 2023 3:39:44 PM CEST Christian Schoenebeck wrote:
+> > > > As recent CVE-2023-2861 once again showed, the 9p 'proxy' fs driver is 
+in
+> > > > bad shape. Using the 'proxy' backend was already discouraged for 
+safety
+> > > > reasons before and we recommended to use the 'local' backend instead,
+> > > > but now it is time to officially deprecate the 'proxy' backend.
+> > > > 
+> > > > Signed-off-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
+> > 
+> > Ping
+> > 
+> 
+> It seems you missed the review I posted last week :
+> 
+> https://patchew.org/QEMU/E1q7ytt-0005Fl-JX@lizzy.crudebyte.com/
+#20230612165742.3333ea08@bahia
 
-This is just following our standard guidelines since MachineState is a QOM object of 
-TYPE_MACHINE. Note that there are also a number of existing examples of this 
-currently within the QEMU tree.
+Oh, I never received your email. I'll check the logs what happened there.
 
+I'll send a v4 with your suggestions, they make sense.
 
-ATB,
+Do you want me to add your "for the records" comments as well in the
+deprecation notice?
 
-Mark.
+Best regards,
+Christian Schoenebeck
+
 
 
