@@ -2,82 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF3D873893B
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 17:33:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3923C738A39
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 17:57:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBzp9-0003Nw-MA; Wed, 21 Jun 2023 11:32:47 -0400
+	id 1qC0B6-0001Po-51; Wed, 21 Jun 2023 11:55:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qBzp7-0003Nk-2i
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 11:32:45 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qC0B3-0001PL-6f
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 11:55:25 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qBzp5-0005Rn-Aw
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 11:32:44 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qC0B1-0006VJ-FR
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 11:55:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687361561;
+ s=mimecast20190719; t=1687362922;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=8ULFljKopCnJv2Otux0903HhUd3oiiP0Lc3NYFHN5yg=;
- b=gdF2T3frWzb42GjsbFk9itJHtEQiyk0CgIKOAKinCnHBmSvvXGKp/D8VTyHbq6C6pRwid4
- 1aX1+kuamCQ1cgA901EmVyukupTJ0NRd4KdDIo2s2SxyJGcULJnAW7W3W+ui1SO9bHorSj
- cE92WzHptG+XHpnD277pFWYRP1vrNjY=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Vtr0iZKYwNtQtVA4wbFMTfEWEMie+ugu9/HhG8ngzPk=;
+ b=LmqkG+ML74UbO9htnUVd3RKhIIU2pFgXVNivkmkcK+TMeY1ooZ690HGG8upgQ/51zNkc/8
+ /cXtL8crSu9RobRPyxXvygegQRO6yG++bZBWvI4DqdBFOABBQKHu5kAX0PWHfHrhlHwRTa
+ Ybh6uaPhLKgBAqfVg1OQLxMFPmKKJHU=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-345-7jMQlKb3PyOP30iSzVG3ag-1; Wed, 21 Jun 2023 11:32:39 -0400
-X-MC-Unique: 7jMQlKb3PyOP30iSzVG3ag-1
-Received: by mail-qv1-f70.google.com with SMTP id
- 6a1803df08f44-62ff7a8b9aeso9528876d6.1
- for <qemu-devel@nongnu.org>; Wed, 21 Jun 2023 08:32:39 -0700 (PDT)
+ us-mta-203-CNozbGQbM9S758vhXOc9rg-1; Wed, 21 Jun 2023 11:55:19 -0400
+X-MC-Unique: CNozbGQbM9S758vhXOc9rg-1
+Received: by mail-qk1-f197.google.com with SMTP id
+ af79cd13be357-76248f3057bso75812885a.1
+ for <qemu-devel@nongnu.org>; Wed, 21 Jun 2023 08:55:19 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687361559; x=1689953559;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=8ULFljKopCnJv2Otux0903HhUd3oiiP0Lc3NYFHN5yg=;
- b=OOZYBlw7Ox/FPoi7FFW4Yum237xOiabh5RTcvhV7q5EcUs+gVEYs+XPBbi35RIB5qP
- 8NJLeI3sxq62TtIDXAnimmmHGEXw5YKA+K9Uhe2inFBNvIZP8hD9jo5kRMxfztHSrqmo
- 6ipGBKbzti8xiNnSHAwD9Eh95dP0DdYkj1tScDYUfbCVf4Yu3/GRT4W1HzeWPONqcMnY
- 1CFEpgw0wsII0Irqwf78ZNqmq6MEctQ7fihgiscevnyY91Zjp4fSi3nAJDSxTWiEokDU
- B/eQhV8yCarElYth0EeYuwQhVPvNZBjuy5+Cku+sB7UZVM4mjJuawRPOERdhunTATPLm
- 9yhw==
-X-Gm-Message-State: AC+VfDy76DqlukMAzawyLF0+0IWysvgs6JNZmNkODig4S7woDqStyy4l
- avRAKTBC9CQcPeHg/UNXa3vWhLc4VzR2sjWAu4NQEtx3g2fcNehgM3Ot+2TX5NaJQloM9fVAV9F
- 60TUqfLwOzvTXs14=
-X-Received: by 2002:ad4:5945:0:b0:625:aa48:e50f with SMTP id
- eo5-20020ad45945000000b00625aa48e50fmr18278100qvb.6.1687361559271; 
- Wed, 21 Jun 2023 08:32:39 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5jGOMA/wYJbQ7vm0iAw+4KDBYWdh547jf97tdEUouGeD8EmcBC0CY4dxVxqxPTwuByFF7mvg==
-X-Received: by 2002:ad4:5945:0:b0:625:aa48:e50f with SMTP id
- eo5-20020ad45945000000b00625aa48e50fmr18278059qvb.6.1687361558920; 
- Wed, 21 Jun 2023 08:32:38 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1687362919; x=1689954919;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Vtr0iZKYwNtQtVA4wbFMTfEWEMie+ugu9/HhG8ngzPk=;
+ b=boVy1Crrte6pUqKUkxcWrTJRJIU261K26IzLqpfNyw6O5fhWgGl8Fo4BdQcF6XFO5O
+ qYq6zUQv5TZL5Nr7hsORsI8M7DkcPzvkxbzaIvUMeq4IB5FYysXAbSY8QU770eG46puU
+ b93Hivt2giO2vXxVBYgi/sP6vmTdrAHDOv5GQlAnWl4AtwlmUD1OMJ05SvtoKsvtW+X4
+ 2iG3iOTZc1NATbHRMbFUKiyp66aJOvAJMO+1LuneB1HwKiMd7nNxZuNF5IARMXF7iXaC
+ Er7cMkLbgAUPAraA08VBj6STZVimRlVysuwoLYemf3u4HsM4UUJy7+dutsSSQC1EdnQX
+ /VGQ==
+X-Gm-Message-State: AC+VfDwTyws+gCi/n6JHdGO/ypouyuRK2SXvp72x4qbsy5Rf3GvXcq7j
+ cUZwM9EklUwWC/jcpA9bOyF+123ihQ2/K4pyjQsnyXgxGrQfn4zZNFQ6GY4sqBn+Ol3gFqwdEKE
+ RVgg/hQYQyMgC2Fc=
+X-Received: by 2002:a05:620a:319f:b0:760:3db8:fd60 with SMTP id
+ bi31-20020a05620a319f00b007603db8fd60mr18810939qkb.2.1687362919145; 
+ Wed, 21 Jun 2023 08:55:19 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6FRwIUjSIwJ3A+JRamr4ecqCVQWN/+YMc4m/bDYcT8gTRK/+Snq51qyYoXPhN1U6ZcP4PPKg==
+X-Received: by 2002:a05:620a:319f:b0:760:3db8:fd60 with SMTP id
+ bi31-20020a05620a319f00b007603db8fd60mr18810929qkb.2.1687362918871; 
+ Wed, 21 Jun 2023 08:55:18 -0700 (PDT)
 Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
  [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- t2-20020a0cb382000000b0063004b5482csm2618885qve.92.2023.06.21.08.32.37
+ 27-20020a05620a079b00b0075b1d85e6f9sm2357441qka.68.2023.06.21.08.55.18
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 21 Jun 2023 08:32:38 -0700 (PDT)
-Date: Wed, 21 Jun 2023 11:32:37 -0400
+ Wed, 21 Jun 2023 08:55:18 -0700 (PDT)
+Date: Wed, 21 Jun 2023 11:55:17 -0400
 From: Peter Xu <peterx@redhat.com>
-To: Laurent Vivier <lvivier@redhat.com>
-Cc: qemu-devel@nongnu.org, peter.maydell@linaro.org,
- Stefan Berger <stefanb@linux.vnet.ibm.com>,
+To: David Hildenbrand <david@redhat.com>
+Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
+ Juan Quintela <quintela@redhat.com>, Leonardo Bras <leobras@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- jasowang@redhat.com, mst@redhat.com, David Hildenbrand <david@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, marcandre.lureau@redhat.com,
- eric.auger@redhat.com
-Subject: Re: [PATCH 0/2] vhost-vdpa: skip TPM CRB memory section
-Message-ID: <ZJMYFVHlQI085zSi@x1n>
-References: <20230620195054.23929-1-lvivier@redhat.com>
+ Peng Tao <tao.peng@linux.alibaba.com>
+Subject: Re: [PATCH v1 1/4] softmmu/physmem: Warn with
+ ram_block_discard_range() on MAP_PRIVATE file mapping
+Message-ID: <ZJMdZRoeu9BVm0z8@x1n>
+References: <20230620130354.322180-1-david@redhat.com>
+ <20230620130354.322180-2-david@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230620195054.23929-1-lvivier@redhat.com>
+In-Reply-To: <20230620130354.322180-2-david@redhat.com>
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -103,38 +102,88 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jun 20, 2023 at 09:50:52PM +0200, Laurent Vivier wrote:
-> An error is reported for vhost-vdpa case:
-> qemu-kvm: vhost_vdpa_listener_region_add received unaligned region
+On Tue, Jun 20, 2023 at 03:03:51PM +0200, David Hildenbrand wrote:
+> ram_block_discard_range() cannot possibly do the right thing in
+> MAP_PRIVATE file mappings in the general case.
 > 
-> Marc-André has proposed a fix to this problem by skipping
-> the memory region owned by the TPM CRB but it seems more generic
-> to skip not DMA-able memory.
+> To achieve the documented semantics, we also have to punch a hole into
+> the file, possibly messing with other MAP_PRIVATE/MAP_SHARED mappings
+> of such a file.
 > 
-> We have a memory flag for that, RAM_PROTECTED.
+> For example, using VM templating -- see commit b17fbbe55cba ("migration:
+> allow private destination ram with x-ignore-shared") -- in combination with
+> any mechanism that relies on discarding of RAM is problematic. This
+> includes:
+> * Postcopy live migration
+> * virtio-balloon inflation/deflation or free-page-reporting
+> * virtio-mem
 > 
-> This series expands the memory API to provide a way to initialize
-> a "protected" memory region and use it with the TPM CRB object.
-> 
-> For the previous discussions, see
-> 
-> https://lists.nongnu.org/archive/html/qemu-devel/2022-11/msg03670.html
-> 
-> and from Eric for VFIO:
-> 
-> https://lore.kernel.org/all/20220506132510.1847942-1-eric.auger@redhat.com/
-> https://lore.kernel.org/all/20220524091405.416256-1-eric.auger@redhat.com/
-> 
-> Bug: https://bugzilla.redhat.com/show_bug.cgi?id=2141965
-> 
-> Thanks,
-> Laurent
-> 
-> Laurent Vivier (2):
->   memory: introduce memory_region_init_ram_protected()
->   tpm_crb: mark memory as protected
+> So at least warn that there is something possibly dangerous is going on
+> when using ram_block_discard_range() in these cases.
 
-Reviewed-by: Peter Xu <peterx@redhat.com>
+The issue is probably valid.
+
+One thing I worry is when the user (or, qemu instance) exclusively owns the
+file, just forgot to attach share=on, where it used to work perfectly then
+it'll show this warning.  But I agree maybe it's good to remind them just
+to attach the share=on.
+
+For real private mem users, the warning can of real help, one should
+probably leverage things like file snapshot provided by modern file
+systems, so each VM should just have its own snapshot ram file to use then
+map it share=on I suppose.
+
+For the long term, maybe we should simply support private mem here simply
+by a MADV_DONTNEED.  I assume that's the right semantics for postcopy (just
+need to support MINOR faults, though; MISSING faults definitely will stop
+working.. but for all the rest framework shouldn't need much change), and I
+hope that's also the semantics that balloon/virtio-mem wants here.  Not
+sure whether/when that's strongly needed, assuming the corner case above
+can still be work arounded properly by other means.
+
+For now, a warning looks all sane.
+
+> 
+> Signed-off-by: David Hildenbrand <david@redhat.com>
+
+Acked-by: Peter Xu <peterx@redhat.com>
+
+> ---
+>  softmmu/physmem.c | 18 ++++++++++++++++++
+>  1 file changed, 18 insertions(+)
+> 
+> diff --git a/softmmu/physmem.c b/softmmu/physmem.c
+> index 6bdd944fe8..27c7219c82 100644
+> --- a/softmmu/physmem.c
+> +++ b/softmmu/physmem.c
+> @@ -3451,6 +3451,24 @@ int ram_block_discard_range(RAMBlock *rb, uint64_t start, size_t length)
+>               * so a userfault will trigger.
+>               */
+>  #ifdef CONFIG_FALLOCATE_PUNCH_HOLE
+> +            /*
+> +             * We'll discard data from the actual file, even though we only
+> +             * have a MAP_PRIVATE mapping, possibly messing with other
+> +             * MAP_PRIVATE/MAP_SHARED mappings. There is no easy way to
+> +             * change that behavior whithout violating the promised
+> +             * semantics of ram_block_discard_range().
+> +             *
+> +             * Only warn, because it work as long as nobody else uses that
+> +             * file.
+> +             */
+> +            if (!qemu_ram_is_shared(rb)) {
+> +                warn_report_once("ram_block_discard_range: Discarding RAM"
+> +                                 " in private file mappings is possibly"
+> +                                 " dangerous, because it will modify the"
+> +                                 " underlying file and will affect other"
+> +                                 " users of the file");
+> +            }
+> +
+>              ret = fallocate(rb->fd, FALLOC_FL_PUNCH_HOLE | FALLOC_FL_KEEP_SIZE,
+>                              start, length);
+>              if (ret) {
+> -- 
+> 2.40.1
+> 
 
 -- 
 Peter Xu
