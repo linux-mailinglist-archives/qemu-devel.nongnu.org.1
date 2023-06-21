@@ -2,58 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91D46737FA2
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 12:41:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18298737FBC
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 12:59:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBvFu-0000qC-Ds; Wed, 21 Jun 2023 06:40:06 -0400
+	id 1qBvXI-0005xz-6i; Wed, 21 Jun 2023 06:58:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <wangyuquan1236@phytium.com.cn>)
- id 1qBvFr-0000pU-F4; Wed, 21 Jun 2023 06:40:03 -0400
-Received: from zg8tmja5ljk3lje4ms43mwaa.icoremail.net ([209.97.181.73])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <wangyuquan1236@phytium.com.cn>)
- id 1qBvFp-0001nD-3x; Wed, 21 Jun 2023 06:40:03 -0400
-Received: from prodtpl.icoremail.net (unknown [10.12.1.20])
- by hzbj-icmmx-6 (Coremail) with SMTP id AQAAfwD3M0qT1JJkR_ZsAA--.23395S2;
- Wed, 21 Jun 2023 18:44:35 +0800 (CST)
-Received: from phytium.com.cn (unknown [123.150.8.50])
- by mail (Coremail) with SMTP id AQAAfwDHQrJj05JkPXYAAA--.3909S4;
- Wed, 21 Jun 2023 18:39:35 +0800 (CST)
-From: Yuquan Wang <wangyuquan1236@phytium.com.cn>
-To: rad@semihalf.com,
-	peter.maydell@linaro.org,
-	pbonzini@redhat.com
-Cc: marcin.juszkiewicz@linaro.org, quic_llindhol@quicinc.com,
- chenbaozi@phytium.com.cn, qemu-arm@nongnu.org, qemu-devel@nongnu.org,
- Yuquan Wang <wangyuquan1236@phytium.com.cn>
-Subject: [PATCH v5 1/1] hw/arm/sbsa-ref: use XHCI to replace EHCI
-Date: Wed, 21 Jun 2023 18:38:47 +0800
-Message-Id: <20230621103847.447508-2-wangyuquan1236@phytium.com.cn>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230621103847.447508-1-wangyuquan1236@phytium.com.cn>
-References: <20230621103847.447508-1-wangyuquan1236@phytium.com.cn>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qBvXF-0005x1-RC
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 06:58:01 -0400
+Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qBvXD-0003MC-VI
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 06:58:01 -0400
+Received: by mail-ej1-x62a.google.com with SMTP id
+ a640c23a62f3a-982a0232bdcso889974166b.1
+ for <qemu-devel@nongnu.org>; Wed, 21 Jun 2023 03:57:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1687345076; x=1689937076;
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=TswoE/cWbng7N3rzxjvBBpvcimCGZUEqqoDgjmoj0Uw=;
+ b=MB1AwMPo8wgJ7wJx2GjyrJXA9d/lKW8gRqRAN+9fcbTBpUip32TkTBQEJU1uOWO9yP
+ A7M0AZ+F3OVb9hc4tLw0SMSg6E7Ue/tqq6ke6fk2HoZN/eXYlAqimphSHIQLoqDv6eu0
+ J6cjFJytf52JPu/ke5NrkhPlB+SUHfRHIojnIJESKJaJytGv6yVqUlMDmdXAsywO7uZ4
+ FVYD6cl0PfwohoekfbxGUH30nKgQUKeHjw2kFDHFmGdFIrX/Q2Xw2vvq2iNfPRZnJKFC
+ Q52ixniLFSC6AKRMhQqw83gFO19vxdsRE2SKyw4UhyAW6LZHWu4dThoPsNgmwJlhkwZw
+ ThPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1687345076; x=1689937076;
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=TswoE/cWbng7N3rzxjvBBpvcimCGZUEqqoDgjmoj0Uw=;
+ b=NsHJK5y0eZitJNLD34dzrxdfOPLaqF6yB9Vi78Mn2xxGRuCLhz0Y9l9nM9uYQxWrbw
+ b9QohJVhgyIWLljjHryarcjaO+IxN7wUdKKvEmPHSHR6GsuNese855wf2fu61GDyR7Ai
+ OuPTkpL/a1M2vCNR53tYx1vS2bFT4esK5QjIfgBuOxe4c9dYNnYAjdobllA2PJ/ivnK3
+ fcdcpZ8BzaZINQWVSOq43wqBMhgn0BZxF3DE0aJqPqOrjs36LoYHZ0fXIb0spBmrmg7w
+ XM3dRwQtRA6wdqimzXhEFnRTBc9Aq6quxI+opI33y7lcUupM/vr/mBEHV3iU9wO/0fvO
+ buGQ==
+X-Gm-Message-State: AC+VfDySXoRVXB59S9sI/8zTN5p/0HcyrrpNC+mVHU/7qHErHnmUPMaE
+ Lc7HUo+u6sG7J6LcD9pXo4scIQ==
+X-Google-Smtp-Source: ACHHUZ7xyascRkiwA6mIKnaDRsVdsbVlKNNUrigH+tAmMsDFRdTLmhfcSLf3KWdJ0P9J9JpHGjFF2g==
+X-Received: by 2002:a17:907:6088:b0:988:dc8e:2fec with SMTP id
+ ht8-20020a170907608800b00988dc8e2fecmr6923382ejc.36.1687345076336; 
+ Wed, 21 Jun 2023 03:57:56 -0700 (PDT)
+Received: from [192.168.69.115] ([176.176.128.70])
+ by smtp.gmail.com with ESMTPSA id
+ y4-20020a056402134400b0051a468dc144sm2442811edw.20.2023.06.21.03.57.55
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 21 Jun 2023 03:57:55 -0700 (PDT)
+Message-ID: <780c8505-9cd7-87fd-c5cc-23f0e8aa455c@linaro.org>
+Date: Wed, 21 Jun 2023 12:57:54 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.12.0
+Subject: Re: [PATCH] Revert "cputlb: Restrict SavedIOTLB to system emulation"
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+To: Richard Henderson <richard.henderson@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
+ Thomas Huth <thuth@redhat.com>
+References: <20230620175712.1331625-1-peter.maydell@linaro.org>
+ <5b2bf86d-44fa-35ae-8049-b395d715adcb@linaro.org>
+ <97cace68-b1d3-73f7-fa69-266ea0f36229@linaro.org>
+In-Reply-To: <97cace68-b1d3-73f7-fa69-266ea0f36229@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAfwDHQrJj05JkPXYAAA--.3909S4
-X-CM-SenderInfo: 5zdqw5pxtxt0arstlqxsk13x1xpou0fpof0/1tbiAQARAWSR+kED4wAAs-
-Authentication-Results: hzbj-icmmx-6; spf=neutral smtp.mail=wangyuquan
- 1236@phytium.com.cn;
-X-Coremail-Antispam: 1Uk129KBjvJXoWxXrW5KFy7Gw17XF17uryUZFb_yoWrXr1fpF
- 48urZIkr48tF1rJ39xuw1xWF45C397Zw17Zry3CFn3ZFyDJr4jqrWkGay0kas8JrW5ZrWj
- 9FykWFy8Zr1xAw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
- DUYxn0WfASr-VFAU7a7-sFnT9fnUUIcSsGvfJ3UbIYCTnIWIevJa73UjIFyTuYvj4RJUUU
- UUUUU
-Received-SPF: pass client-ip=209.97.181.73;
- envelope-from=wangyuquan1236@phytium.com.cn;
- helo=zg8tmja5ljk3lje4ms43mwaa.icoremail.net
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62a.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -70,125 +96,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The current sbsa-ref cannot use EHCI controller which is only
-able to do 32-bit DMA, since sbsa-ref doesn't have RAM below 4GB.
-Hence, this uses XHCI to provide a usb controller with 64-bit
-DMA capablity instead of EHCI.
+On 21/6/23 11:39, Philippe Mathieu-Daudé wrote:
+> On 21/6/23 07:19, Richard Henderson wrote:
+>> On 6/20/23 19:57, Peter Maydell wrote:
+>>> This reverts commit d7ee93e24359703debf4137f4cc632563aa4e8d1.
+>>>
+>>> That commit tries to make a field in the CPUState struct not be
+>>> present when CONFIG_USER_ONLY is set.  Unfortunately, you can't
+>>> conditionally omit fields in structs like this based on ifdefs that
+>>> are set per-target.  If you try it, then code in files compiled
+>>> per-target (where CONFIG_USER_ONLY is or can be set) will disagree
+>>> about the struct layout with files that are compiled once-only (where
+>>> this kind of ifdef is never set).
+> 
+> Oops, sorry.
+> 
+>>> This manifests specifically in 'make check-tcg' failing, because code
+>>> in cpus-common.c that sets up the CPUState::cpu_index field puts it
+>>> at a different offset from the code in plugins/core.c in
+>>> qemu_plugin_vcpu_init_hook() which reads the cpu_index field.  The
+>>> latter then hits an assert because from its point of view every
+>>> thread has a 0 cpu_index. There might be other weird behaviour too.
+> 
+> Why isn't this covered by CI, and where could we add a such check?
 
-Bumping platform version to 0.3 with this change.
+Actually it is covered and failed on staging:
+https://gitlab.com/qemu-project/qemu/-/jobs/4503766933
 
-Signed-off-by: Yuquan Wang <wangyuquan1236@phytium.com.cn>
----
- docs/system/arm/sbsa.rst |  2 +-
- hw/arm/Kconfig           |  2 +-
- hw/arm/sbsa-ref.c        | 23 +++++++++++++----------
- 3 files changed, 15 insertions(+), 12 deletions(-)
+Anyhow, sorry for the mess.
 
-diff --git a/docs/system/arm/sbsa.rst b/docs/system/arm/sbsa.rst
-index f571fe645e..f0c809eb60 100644
---- a/docs/system/arm/sbsa.rst
-+++ b/docs/system/arm/sbsa.rst
-@@ -19,7 +19,7 @@ The ``sbsa-ref`` board supports:
-   - A configurable number of AArch64 CPUs
-   - GIC version 3
-   - System bus AHCI controller
--  - System bus EHCI controller
-+  - System bus XHCI controller
-   - CDROM and hard disc on AHCI bus
-   - E1000E ethernet card on PCIe bus
-   - Bochs display adapter on PCIe bus
-diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
-index 7de17d1e8c..7e68348440 100644
---- a/hw/arm/Kconfig
-+++ b/hw/arm/Kconfig
-@@ -266,7 +266,7 @@ config SBSA_REF
-     select PL011 # UART
-     select PL031 # RTC
-     select PL061 # GPIO
--    select USB_EHCI_SYSBUS
-+    select USB_XHCI_SYSBUS
-     select WDT_SBSA
-     select BOCHS_DISPLAY
- 
-diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
-index de21200ff9..dbd9f89837 100644
---- a/hw/arm/sbsa-ref.c
-+++ b/hw/arm/sbsa-ref.c
-@@ -40,6 +40,7 @@
- #include "hw/pci-host/gpex.h"
- #include "hw/qdev-properties.h"
- #include "hw/usb.h"
-+#include "hw/usb/xhci.h"
- #include "hw/char/pl011.h"
- #include "hw/watchdog/sbsa_gwdt.h"
- #include "net/net.h"
-@@ -82,7 +83,7 @@ enum {
-     SBSA_SECURE_UART_MM,
-     SBSA_SECURE_MEM,
-     SBSA_AHCI,
--    SBSA_EHCI,
-+    SBSA_XHCI,
- };
- 
- struct SBSAMachineState {
-@@ -119,7 +120,7 @@ static const MemMapEntry sbsa_ref_memmap[] = {
-     [SBSA_SMMU] =               { 0x60050000, 0x00020000 },
-     /* Space here reserved for more SMMUs */
-     [SBSA_AHCI] =               { 0x60100000, 0x00010000 },
--    [SBSA_EHCI] =               { 0x60110000, 0x00010000 },
-+    [SBSA_XHCI] =               { 0x60110000, 0x00010000 },
-     /* Space here reserved for other devices */
-     [SBSA_PCIE_PIO] =           { 0x7fff0000, 0x00010000 },
-     /* 32-bit address PCIE MMIO space */
-@@ -139,7 +140,7 @@ static const int sbsa_ref_irqmap[] = {
-     [SBSA_SECURE_UART] = 8,
-     [SBSA_SECURE_UART_MM] = 9,
-     [SBSA_AHCI] = 10,
--    [SBSA_EHCI] = 11,
-+    [SBSA_XHCI] = 11,
-     [SBSA_SMMU] = 12, /* ... to 15 */
-     [SBSA_GWDT_WS0] = 16,
- };
-@@ -219,7 +220,7 @@ static void create_fdt(SBSAMachineState *sms)
-      *                        fw compatibility.
-      */
-     qemu_fdt_setprop_cell(fdt, "/", "machine-version-major", 0);
--    qemu_fdt_setprop_cell(fdt, "/", "machine-version-minor", 1);
-+    qemu_fdt_setprop_cell(fdt, "/", "machine-version-minor", 3);
- 
-     if (ms->numa_state->have_numa_distance) {
-         int size = nb_numa_nodes * nb_numa_nodes * 3 * sizeof(uint32_t);
-@@ -575,13 +576,15 @@ static void create_ahci(const SBSAMachineState *sms)
-     }
- }
- 
--static void create_ehci(const SBSAMachineState *sms)
-+static void create_xhci(const SBSAMachineState *sms)
- {
--    hwaddr base = sbsa_ref_memmap[SBSA_EHCI].base;
--    int irq = sbsa_ref_irqmap[SBSA_EHCI];
-+    hwaddr base = sbsa_ref_memmap[SBSA_XHCI].base;
-+    int irq = sbsa_ref_irqmap[SBSA_XHCI];
-+    DeviceState *dev = qdev_new(TYPE_XHCI_SYSBUS);
- 
--    sysbus_create_simple("platform-ehci-usb", base,
--                         qdev_get_gpio_in(sms->gic, irq));
-+    sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
-+    sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, base);
-+    sysbus_connect_irq(SYS_BUS_DEVICE(dev), 0, qdev_get_gpio_in(sms->gic, irq));
- }
- 
- static void create_smmu(const SBSAMachineState *sms, PCIBus *bus)
-@@ -803,7 +806,7 @@ static void sbsa_ref_init(MachineState *machine)
- 
-     create_ahci(sms);
- 
--    create_ehci(sms);
-+    create_xhci(sms);
- 
-     create_pcie(sms);
- 
--- 
-2.34.1
+>>> Mostly we catch this kind of bug because the CONFIG_whatever is
+>>> listed in include/exec/poison.h and so the reference to it in
+>>> build-once source files will then cause a compiler error.
+>>> Unfortunately CONFIG_USER_ONLY is an exception to that: we have some
+>>> places where we use it in "safe" ways in headers that will be seen by
+>>> once-only source files (e.g.  ifdeffing out function prototypes) and
+>>> it would be a lot of refactoring to be able to get to a position
+>>> where we could poison it.  This leaves us in a "you have to be
+>>> careful to walk around the bear trap" situation...
+>>>
+>>> Fixes: d7ee93e243597 ("cputlb: Restrict SavedIOTLB to system emulation")
+>>> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+>>> ---
+>>>   include/hw/core/cpu.h | 6 ++----
+>>>   1 file changed, 2 insertions(+), 4 deletions(-)
+>>
+>> Ho hum, thanks.  I'll apply this directly.
+> 
+> Thanks both.
+> 
 
 
