@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C560A737F69
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 12:19:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7567737F64
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 12:19:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBuv2-0008D3-QQ; Wed, 21 Jun 2023 06:18:32 -0400
+	id 1qBuv4-0008DX-6A; Wed, 21 Jun 2023 06:18:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mzamazal@redhat.com>)
- id 1qBuv0-0008CZ-SX
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 06:18:30 -0400
+ id 1qBuv2-0008D4-Bx
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 06:18:32 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mzamazal@redhat.com>)
- id 1qBuuy-0000j8-Jz
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 06:18:30 -0400
+ id 1qBuv0-0000lD-95
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 06:18:32 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687342707;
+ s=mimecast20190719; t=1687342709;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=YAbeWJq4cK3Qq913TSSnvsIsGclK2lgWkZ484QWVh3A=;
- b=TQYwJEnIR/gpRL15xNkCoG+CL80UMCr8ZjUNgff9hmGKurs6g16Ia8BajWAHtAud0oT6BZ
- YG9HFDR7t78Jv6Vs0c0cyBmPS97BbZzeFU4zRnDx/YkvK3MojLszfang9suGmMfhWTkwlE
- nV/RiOj2ZM4N2xmHuUx0dabBnnxfUrA=
+ bh=tFdPW5qQxnpBqMxHStmQOBMq/CUC9iIkI5NWc1P2Odo=;
+ b=CW7fJ6OMzV9V6D3ZnMS4t2YHgPf6gXXna++BTgNzqOptNtg6LcRwaNlIGfIS6jHV0lsNQB
+ eXJsNEJUlX9TJW1woYWhPBCFBdouB8yaQsirOTsExXx/2WESDDCg5GFQRRSrq8Eki+o5cE
+ hZ2EGLa+TwSBK1srowucoQFefhk9sBo=
 Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
  [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-465-kTKaC6kBNsSw4VFtIFIRIw-1; Wed, 21 Jun 2023 06:18:23 -0400
-X-MC-Unique: kTKaC6kBNsSw4VFtIFIRIw-1
+ us-mta-147-CS2mmsM8MpSSvQuwfGPKCA-1; Wed, 21 Jun 2023 06:18:28 -0400
+X-MC-Unique: CS2mmsM8MpSSvQuwfGPKCA-1
 Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
  [10.11.54.10])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 680E41C0878A;
- Wed, 21 Jun 2023 10:18:23 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 04F86280D591;
+ Wed, 21 Jun 2023 10:18:28 +0000 (UTC)
 Received: from nuthatch.redhat.com (unknown [10.45.225.193])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 2A74B425356;
- Wed, 21 Jun 2023 10:18:22 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id D9206492C13;
+ Wed, 21 Jun 2023 10:18:26 +0000 (UTC)
 From: Milan Zamazal <mzamazal@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Milan Zamazal <mzamazal@redhat.com>, mst@redhat.com, stefanha@redhat.com,
  alex.bennee@linaro.org, thuth@redhat.com, vincent.guittot@linaro.org
-Subject: [PATCH v2 1/4] hw/virtio: Add boilerplate for vhost-user-scmi device
-Date: Wed, 21 Jun 2023 12:17:07 +0200
-Message-Id: <20230621101710.297975-2-mzamazal@redhat.com>
+Subject: [PATCH v2 2/4] hw/virtio: Add vhost-user-scmi-pci boilerplate
+Date: Wed, 21 Jun 2023 12:17:08 +0200
+Message-Id: <20230621101710.297975-3-mzamazal@redhat.com>
 In-Reply-To: <20230621101710.297975-1-mzamazal@redhat.com>
 References: <20230621101710.297975-1-mzamazal@redhat.com>
 MIME-Version: 1.0
@@ -78,410 +78,103 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This creates the QEMU side of the vhost-user-scmi device which connects to
-the remote daemon.  It is based on code of similar vhost-user devices.
+This allows is to instantiate a vhost-user-scmi device as part of a PCI bus.
+It is mostly boilerplate similar to the other vhost-user-*-pci boilerplates
+of similar devices.
 
 Signed-off-by: Milan Zamazal <mzamazal@redhat.com>
 ---
- MAINTAINERS                         |   6 +
- hw/virtio/Kconfig                   |   5 +
- hw/virtio/meson.build               |   1 +
- hw/virtio/vhost-user-scmi.c         | 306 ++++++++++++++++++++++++++++
- include/hw/virtio/vhost-user-scmi.h |  30 +++
- 5 files changed, 348 insertions(+)
- create mode 100644 hw/virtio/vhost-user-scmi.c
- create mode 100644 include/hw/virtio/vhost-user-scmi.h
+ hw/virtio/meson.build           |  1 +
+ hw/virtio/vhost-user-scmi-pci.c | 68 +++++++++++++++++++++++++++++++++
+ 2 files changed, 69 insertions(+)
+ create mode 100644 hw/virtio/vhost-user-scmi-pci.c
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 88b5a7ee0a..f7b275d33e 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -2204,6 +2204,12 @@ F: hw/virtio/vhost-user-gpio*
- F: include/hw/virtio/vhost-user-gpio.h
- F: tests/qtest/libqos/virtio-gpio.*
- 
-+vhost-user-scmi
-+R: mzamazal@redhat.com
-+S: Supported
-+F: hw/virtio/vhost-user-scmi*
-+F: include/hw/virtio/vhost-user-scmi.h
-+
- virtio-crypto
- M: Gonglei <arei.gonglei@huawei.com>
- S: Supported
-diff --git a/hw/virtio/Kconfig b/hw/virtio/Kconfig
-index 89e9e426d8..2515d4ff68 100644
---- a/hw/virtio/Kconfig
-+++ b/hw/virtio/Kconfig
-@@ -90,3 +90,8 @@ config VHOST_VDPA_DEV
-     bool
-     default y
-     depends on VIRTIO && VHOST_VDPA && LINUX
-+
-+config VHOST_USER_SCMI
-+    bool
-+    default y
-+    depends on VIRTIO && VHOST_USER
 diff --git a/hw/virtio/meson.build b/hw/virtio/meson.build
-index e83c37fffd..d3c3ba86a3 100644
+index d3c3ba86a3..e345d7e123 100644
 --- a/hw/virtio/meson.build
 +++ b/hw/virtio/meson.build
-@@ -32,6 +32,7 @@ specific_virtio_ss.add(when: 'CONFIG_VHOST_USER_I2C', if_true: files('vhost-user
- specific_virtio_ss.add(when: 'CONFIG_VHOST_USER_RNG', if_true: files('vhost-user-rng.c'))
+@@ -33,6 +33,7 @@ specific_virtio_ss.add(when: 'CONFIG_VHOST_USER_RNG', if_true: files('vhost-user
  specific_virtio_ss.add(when: 'CONFIG_VHOST_USER_GPIO', if_true: files('vhost-user-gpio.c'))
  specific_virtio_ss.add(when: ['CONFIG_VIRTIO_PCI', 'CONFIG_VHOST_USER_GPIO'], if_true: files('vhost-user-gpio-pci.c'))
-+specific_virtio_ss.add(when: 'CONFIG_VHOST_USER_SCMI', if_true: files('vhost-user-scmi.c'))
+ specific_virtio_ss.add(when: 'CONFIG_VHOST_USER_SCMI', if_true: files('vhost-user-scmi.c'))
++specific_virtio_ss.add(when: ['CONFIG_VIRTIO_PCI', 'CONFIG_VHOST_USER_SCMI'], if_true: files('vhost-user-scmi-pci.c'))
  specific_virtio_ss.add(when: 'CONFIG_VHOST_VDPA_DEV', if_true: files('vdpa-dev.c'))
  
  virtio_pci_ss = ss.source_set()
-diff --git a/hw/virtio/vhost-user-scmi.c b/hw/virtio/vhost-user-scmi.c
+diff --git a/hw/virtio/vhost-user-scmi-pci.c b/hw/virtio/vhost-user-scmi-pci.c
 new file mode 100644
-index 0000000000..d386fb2df9
+index 0000000000..7f53af7fce
 --- /dev/null
-+++ b/hw/virtio/vhost-user-scmi.c
-@@ -0,0 +1,306 @@
++++ b/hw/virtio/vhost-user-scmi-pci.c
+@@ -0,0 +1,68 @@
 +/*
-+ * Vhost-user SCMI virtio device
++ * Vhost-user SCMI virtio device PCI glue
 + *
 + * SPDX-FileCopyrightText: Red Hat, Inc.
 + * SPDX-License-Identifier: GPL-2.0-or-later
-+ *
-+ * Implementation based on other vhost-user devices in QEMU.
 + */
 +
 +#include "qemu/osdep.h"
-+#include "qapi/error.h"
-+#include "qemu/error-report.h"
-+#include "hw/virtio/virtio-bus.h"
++#include "hw/qdev-properties.h"
 +#include "hw/virtio/vhost-user-scmi.h"
-+#include "standard-headers/linux/virtio_ids.h"
-+#include "standard-headers/linux/virtio_scmi.h"
-+#include "trace.h"
++#include "hw/virtio/virtio-pci.h"
 +
-+/*
-+ * In this version, we don't support VIRTIO_SCMI_F_SHARED_MEMORY.
-+ * Note that VIRTIO_SCMI_F_SHARED_MEMORY is currently not supported in
-+ * Linux VirtIO SCMI guest driver.
-+ */
-+static const int feature_bits[] = {
-+    VIRTIO_F_VERSION_1,
-+    VIRTIO_F_NOTIFY_ON_EMPTY,
-+    VIRTIO_RING_F_INDIRECT_DESC,
-+    VIRTIO_RING_F_EVENT_IDX,
-+    VIRTIO_F_RING_RESET,
-+    VIRTIO_SCMI_F_P2A_CHANNELS,
-+    VHOST_INVALID_FEATURE_BIT
++struct VHostUserSCMIPCI {
++    VirtIOPCIProxy parent_obj;
++    VHostUserSCMI vdev;
 +};
 +
-+static int vu_scmi_start(VirtIODevice *vdev)
++typedef struct VHostUserSCMIPCI VHostUserSCMIPCI;
++
++#define TYPE_VHOST_USER_SCMI_PCI "vhost-user-scmi-pci-base"
++
++DECLARE_INSTANCE_CHECKER(VHostUserSCMIPCI, VHOST_USER_SCMI_PCI,
++                         TYPE_VHOST_USER_SCMI_PCI)
++
++static void vhost_user_scmi_pci_realize(VirtIOPCIProxy *vpci_dev, Error **errp)
 +{
-+    VHostUserSCMI *scmi = VHOST_USER_SCMI(vdev);
-+    BusState *qbus = BUS(qdev_get_parent_bus(DEVICE(vdev)));
-+    VirtioBusClass *k = VIRTIO_BUS_GET_CLASS(qbus);
-+    struct vhost_dev *vhost_dev = &scmi->vhost_dev;
-+    int ret, i;
++    VHostUserSCMIPCI *dev = VHOST_USER_SCMI_PCI(vpci_dev);
++    DeviceState *vdev = DEVICE(&dev->vdev);
 +
-+    if (!k->set_guest_notifiers) {
-+        error_report("binding does not support guest notifiers");
-+        return -ENOSYS;
-+    }
-+
-+    ret = vhost_dev_enable_notifiers(vhost_dev, vdev);
-+    if (ret < 0) {
-+        error_report("Error enabling host notifiers: %d", ret);
-+        return ret;
-+    }
-+
-+    ret = k->set_guest_notifiers(qbus->parent, vhost_dev->nvqs, true);
-+    if (ret < 0) {
-+        error_report("Error binding guest notifier: %d", ret);
-+        goto err_host_notifiers;
-+    }
-+
-+    vhost_ack_features(&scmi->vhost_dev, feature_bits, vdev->guest_features);
-+
-+    ret = vhost_dev_start(&scmi->vhost_dev, vdev, true);
-+    if (ret < 0) {
-+        error_report("Error starting vhost-user-scmi: %d", ret);
-+        goto err_guest_notifiers;
-+    }
-+
-+    /*
-+     * guest_notifier_mask/pending not used yet, so just unmask
-+     * everything here. virtio-pci will do the right thing by
-+     * enabling/disabling irqfd.
-+     */
-+    for (i = 0; i < scmi->vhost_dev.nvqs; i++) {
-+        vhost_virtqueue_mask(&scmi->vhost_dev, vdev, i, false);
-+    }
-+    return 0;
-+
-+err_guest_notifiers:
-+    k->set_guest_notifiers(qbus->parent, vhost_dev->nvqs, false);
-+err_host_notifiers:
-+    vhost_dev_disable_notifiers(vhost_dev, vdev);
-+
-+    return ret;
++    vpci_dev->nvectors = 1;
++    qdev_realize(vdev, BUS(&vpci_dev->bus), errp);
 +}
 +
-+static void vu_scmi_stop(VirtIODevice *vdev)
-+{
-+    VHostUserSCMI *scmi = VHOST_USER_SCMI(vdev);
-+    BusState *qbus = BUS(qdev_get_parent_bus(DEVICE(vdev)));
-+    VirtioBusClass *k = VIRTIO_BUS_GET_CLASS(qbus);
-+    struct vhost_dev *vhost_dev = &scmi->vhost_dev;
-+    int ret;
-+
-+    if (!k->set_guest_notifiers) {
-+        return;
-+    }
-+
-+    vhost_dev_stop(vhost_dev, vdev, true);
-+
-+    ret = k->set_guest_notifiers(qbus->parent, vhost_dev->nvqs, false);
-+    if (ret < 0) {
-+        error_report("vhost guest notifier cleanup failed: %d", ret);
-+        return;
-+    }
-+    vhost_dev_disable_notifiers(vhost_dev, vdev);
-+}
-+
-+static void vu_scmi_set_status(VirtIODevice *vdev, uint8_t status)
-+{
-+    VHostUserSCMI *scmi = VHOST_USER_SCMI(vdev);
-+    bool should_start = virtio_device_should_start(vdev, status);
-+
-+    if (!scmi->connected) {
-+        return;
-+    }
-+    if (vhost_dev_is_started(&scmi->vhost_dev) == should_start) {
-+        return;
-+    }
-+
-+    if (should_start) {
-+        vu_scmi_start(vdev);
-+    } else {
-+        vu_scmi_stop(vdev);
-+    }
-+}
-+
-+static uint64_t vu_scmi_get_features(VirtIODevice *vdev, uint64_t features,
-+                                     Error **errp)
-+{
-+    VHostUserSCMI *scmi = VHOST_USER_SCMI(vdev);
-+
-+    return vhost_get_features(&scmi->vhost_dev, feature_bits, features);
-+}
-+
-+static void vu_scmi_handle_output(VirtIODevice *vdev, VirtQueue *vq)
-+{
-+    /*
-+     * Not normally called; it's the daemon that handles the queue;
-+     * however virtio's cleanup path can call this.
-+     */
-+}
-+
-+static void vu_scmi_guest_notifier_mask(VirtIODevice *vdev, int idx, bool mask)
-+{
-+    VHostUserSCMI *scmi = VHOST_USER_SCMI(vdev);
-+
-+    if (idx == VIRTIO_CONFIG_IRQ_IDX) {
-+        return;
-+    }
-+
-+    vhost_virtqueue_mask(&scmi->vhost_dev, vdev, idx, mask);
-+}
-+
-+static bool vu_scmi_guest_notifier_pending(VirtIODevice *vdev, int idx)
-+{
-+    VHostUserSCMI *scmi = VHOST_USER_SCMI(vdev);
-+
-+    return vhost_virtqueue_pending(&scmi->vhost_dev, idx);
-+}
-+
-+static void vu_scmi_connect(DeviceState *dev)
-+{
-+    VirtIODevice *vdev = VIRTIO_DEVICE(dev);
-+    VHostUserSCMI *scmi = VHOST_USER_SCMI(vdev);
-+
-+    if (scmi->connected) {
-+        return;
-+    }
-+    scmi->connected = true;
-+
-+    /* restore vhost state */
-+    if (virtio_device_started(vdev, vdev->status)) {
-+        vu_scmi_start(vdev);
-+    }
-+}
-+
-+static void vu_scmi_disconnect(DeviceState *dev)
-+{
-+    VirtIODevice *vdev = VIRTIO_DEVICE(dev);
-+    VHostUserSCMI *scmi = VHOST_USER_SCMI(vdev);
-+
-+    if (!scmi->connected) {
-+        return;
-+    }
-+    scmi->connected = false;
-+
-+    if (vhost_dev_is_started(&scmi->vhost_dev)) {
-+        vu_scmi_stop(vdev);
-+    }
-+}
-+
-+static void vu_scmi_event(void *opaque, QEMUChrEvent event)
-+{
-+    DeviceState *dev = opaque;
-+
-+    switch (event) {
-+    case CHR_EVENT_OPENED:
-+        vu_scmi_connect(dev);
-+        break;
-+    case CHR_EVENT_CLOSED:
-+        vu_scmi_disconnect(dev);
-+        break;
-+    case CHR_EVENT_BREAK:
-+    case CHR_EVENT_MUX_IN:
-+    case CHR_EVENT_MUX_OUT:
-+        /* Ignore */
-+        break;
-+    }
-+}
-+
-+static void do_vhost_user_cleanup(VirtIODevice *vdev, VHostUserSCMI *scmi)
-+{
-+    virtio_delete_queue(scmi->cmd_vq);
-+    virtio_delete_queue(scmi->event_vq);
-+    g_free(scmi->vhost_dev.vqs);
-+    virtio_cleanup(vdev);
-+    vhost_user_cleanup(&scmi->vhost_user);
-+}
-+
-+static void vu_scmi_device_realize(DeviceState *dev, Error **errp)
-+{
-+    VirtIODevice *vdev = VIRTIO_DEVICE(dev);
-+    VHostUserSCMI *scmi = VHOST_USER_SCMI(dev);
-+    int ret;
-+
-+    if (!scmi->chardev.chr) {
-+        error_setg(errp, "vhost-user-scmi: chardev is mandatory");
-+        return;
-+    }
-+
-+    vdev->host_features |= (1ULL << VIRTIO_SCMI_F_P2A_CHANNELS);
-+
-+    if (!vhost_user_init(&scmi->vhost_user, &scmi->chardev, errp)) {
-+        return;
-+    }
-+
-+    virtio_init(vdev, VIRTIO_ID_SCMI, 0);
-+
-+    scmi->cmd_vq = virtio_add_queue(vdev, 256, vu_scmi_handle_output);
-+    scmi->event_vq = virtio_add_queue(vdev, 256, vu_scmi_handle_output);
-+    scmi->vhost_dev.nvqs = 2;
-+    scmi->vhost_dev.vqs = g_new0(struct vhost_virtqueue, scmi->vhost_dev.nvqs);
-+
-+    ret = vhost_dev_init(&scmi->vhost_dev, &scmi->vhost_user,
-+                         VHOST_BACKEND_TYPE_USER, 0, errp);
-+    if (ret < 0) {
-+        error_setg_errno(errp, -ret,
-+                         "vhost-user-scmi: vhost_dev_init() failed");
-+        do_vhost_user_cleanup(vdev, scmi);
-+        return;
-+    }
-+
-+    qemu_chr_fe_set_handlers(&scmi->chardev, NULL, NULL, vu_scmi_event, NULL,
-+                             dev, NULL, true);
-+
-+    return;
-+}
-+
-+static void vu_scmi_device_unrealize(DeviceState *dev)
-+{
-+    VirtIODevice *vdev = VIRTIO_DEVICE(dev);
-+    VHostUserSCMI *scmi = VHOST_USER_SCMI(dev);
-+
-+    vu_scmi_set_status(vdev, 0);
-+    vhost_dev_cleanup(&scmi->vhost_dev);
-+    do_vhost_user_cleanup(vdev, scmi);
-+}
-+
-+static const VMStateDescription vu_scmi_vmstate = {
-+    .name = "vhost-user-scmi",
-+    .unmigratable = 1,
-+};
-+
-+static Property vu_scmi_properties[] = {
-+    DEFINE_PROP_CHR("chardev", VHostUserSCMI, chardev),
-+    DEFINE_PROP_END_OF_LIST(),
-+};
-+
-+static void vu_scmi_class_init(ObjectClass *klass, void *data)
++static void vhost_user_scmi_pci_class_init(ObjectClass *klass, void *data)
 +{
 +    DeviceClass *dc = DEVICE_CLASS(klass);
-+    VirtioDeviceClass *vdc = VIRTIO_DEVICE_CLASS(klass);
-+
-+    device_class_set_props(dc, vu_scmi_properties);
-+    dc->vmsd = &vu_scmi_vmstate;
++    VirtioPCIClass *k = VIRTIO_PCI_CLASS(klass);
++    PCIDeviceClass *pcidev_k = PCI_DEVICE_CLASS(klass);
++    k->realize = vhost_user_scmi_pci_realize;
 +    set_bit(DEVICE_CATEGORY_INPUT, dc->categories);
-+    vdc->realize = vu_scmi_device_realize;
-+    vdc->unrealize = vu_scmi_device_unrealize;
-+    vdc->get_features = vu_scmi_get_features;
-+    vdc->set_status = vu_scmi_set_status;
-+    vdc->guest_notifier_mask = vu_scmi_guest_notifier_mask;
-+    vdc->guest_notifier_pending = vu_scmi_guest_notifier_pending;
++    pcidev_k->vendor_id = PCI_VENDOR_ID_REDHAT_QUMRANET;
++    pcidev_k->device_id = 0; /* Set by virtio-pci based on virtio id */
++    pcidev_k->revision = 0x00;
++    pcidev_k->class_id = PCI_CLASS_COMMUNICATION_OTHER;
 +}
 +
-+static const TypeInfo vu_scmi_info = {
-+    .name = TYPE_VHOST_USER_SCMI,
-+    .parent = TYPE_VIRTIO_DEVICE,
-+    .instance_size = sizeof(VHostUserSCMI),
-+    .class_init = vu_scmi_class_init,
-+};
-+
-+static void vu_scmi_register_types(void)
++static void vhost_user_scmi_pci_instance_init(Object *obj)
 +{
-+    type_register_static(&vu_scmi_info);
++    VHostUserSCMIPCI *dev = VHOST_USER_SCMI_PCI(obj);
++
++    virtio_instance_init_common(obj, &dev->vdev, sizeof(dev->vdev),
++                                TYPE_VHOST_USER_SCMI);
 +}
 +
-+type_init(vu_scmi_register_types)
-diff --git a/include/hw/virtio/vhost-user-scmi.h b/include/hw/virtio/vhost-user-scmi.h
-new file mode 100644
-index 0000000000..6175a74ebd
---- /dev/null
-+++ b/include/hw/virtio/vhost-user-scmi.h
-@@ -0,0 +1,30 @@
-+/*
-+ * Vhost-user SCMI virtio device
-+ *
-+ * Copyright (c) 2023 Red Hat, Inc.
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+#ifndef _QEMU_VHOST_USER_SCMI_H
-+#define _QEMU_VHOST_USER_SCMI_H
-+
-+#include "hw/virtio/virtio.h"
-+#include "hw/virtio/vhost.h"
-+#include "hw/virtio/vhost-user.h"
-+
-+#define TYPE_VHOST_USER_SCMI "vhost-user-scmi"
-+OBJECT_DECLARE_SIMPLE_TYPE(VHostUserSCMI, VHOST_USER_SCMI);
-+
-+struct VHostUserSCMI {
-+    VirtIODevice parent;
-+    CharBackend chardev;
-+    struct vhost_virtqueue *vhost_vqs;
-+    struct vhost_dev vhost_dev;
-+    VhostUserState vhost_user;
-+    VirtQueue *cmd_vq;
-+    VirtQueue *event_vq;
-+    bool connected;
++static const VirtioPCIDeviceTypeInfo vhost_user_scmi_pci_info = {
++    .base_name = TYPE_VHOST_USER_SCMI_PCI,
++    .non_transitional_name = "vhost-user-scmi-pci",
++    .instance_size = sizeof(VHostUserSCMIPCI),
++    .instance_init = vhost_user_scmi_pci_instance_init,
++    .class_init = vhost_user_scmi_pci_class_init,
 +};
 +
-+#endif /* _QEMU_VHOST_USER_SCMI_H */
++static void vhost_user_scmi_pci_register(void)
++{
++    virtio_pci_types_register(&vhost_user_scmi_pci_info);
++}
++
++type_init(vhost_user_scmi_pci_register);
 -- 
 2.40.1
 
