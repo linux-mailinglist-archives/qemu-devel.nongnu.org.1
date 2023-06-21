@@ -2,73 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C828573859F
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 15:48:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49A2C7385A4
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 15:48:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qByBX-00080j-Ji; Wed, 21 Jun 2023 09:47:48 -0400
+	id 1qByCF-0000El-6U; Wed, 21 Jun 2023 09:48:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qByBR-0007wf-Ik
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 09:47:42 -0400
-Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1qByC8-0000Du-4O; Wed, 21 Jun 2023 09:48:24 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qByBN-0000mP-ET
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 09:47:40 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
- In-Reply-To:References:To:From:MIME-Version:Date:Message-ID:Sender:Reply-To:
- Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
- Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
- List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=N6EDZ5traJZHrOvCR/Ulph58VuUbOT+TYgJIPgQKBk0=; b=oBYd3atR3vSP0m+u8U4B/mKVQ0
- io2gE6rIWcymnngjfBlZMg6zDNmtJBj6DCFwv9lg8OgWoqYY5KDPv4XJRsCD/s56lmeNY0ID2nwjx
- JMrLofX9PFG27sIbloKhUBQgOGZsK6HbQYhLhfstH4GHZ3KFuSWP9MscROz0WOASqMy1OlWOgwSDJ
- udzZCfkLmRiAOqonmDROXCPDlUsDPLn4UKcJalPf55lEKwLDcPeWGg+486jVCX98r5sPO2k0xge7k
- ZpQbKeELfWkmI7H2++mHLsToJZN3rzc0BpdAsCkerVCLQstBXRMuoiB8jcUjbmKVoRm7VdiiUCwvd
- 8AQ5jGxnrIT/mf+1Xu+lPUHQ7rQmhhJbEAaWijmBoipn6u0kRyCldHme6uInwLLST5n3HaIUOrOfO
- DN3TlxISgtMTnuJeGqmGkTezlqpJc7LGTR2E5qh+nX650qnSpvQPUaI1lDhkAtBCFj4MQ+QdYVtRV
- AOp0C32/tHZHp8UsrLTooDsJ6fjDRRZSe0B0paHDHcXm/dILn2zhXGeKROeqwoKOO9zGXHkWthgsk
- euTlAjTCK+fnN2ncVbUV+qEEl9JPYfGczAjhSrr5BEp9DATIIj/2SVFT4p2dYd05k6/u1UOr4lNNZ
- 1tA3rMPzit3FAnQNmdIdDGWPYBYmwPaxINAzKSZPU=;
-Received: from host86-130-37-216.range86-130.btcentralplus.com
- ([86.130.37.216] helo=[10.8.0.6])
- by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qByBE-00038g-4T; Wed, 21 Jun 2023 14:47:28 +0100
-Message-ID: <e4c9cd2d-7992-5506-1c10-638e97a66f0e@ilande.co.uk>
-Date: Wed, 21 Jun 2023 14:47:33 +0100
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1qByC5-000113-SE; Wed, 21 Jun 2023 09:48:23 -0400
+Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 35LDlVQk019821; Wed, 21 Jun 2023 13:48:17 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=ln7H/5Zpj6NItiL1LfzlYPQS6fCd6TMmMgD+hTxhBCo=;
+ b=cXKn8g/OAmHpDey/Ckv1fM5Kiju6nkWhVC22E2817GRC02UIuw3GChsLkggifI7qOKqT
+ qw3XoHQ3opt3UfTIEnj5Zn2QQNzi5H0Mt3C0P82Cpwyx28zbdJBKW2K9nBCia/kaNsKx
+ Gi1hWDqxDAd9dd5BxoGb0rE1D4m/HZJ1xJxRzbimF1IdZK68ZabPrbvtYcJS9wADngsZ
+ JHnnri6qElm3tEbn4eDKIxWWai01aDVwS8xh55f+r55t2prlTbgQfT7alCsbKvypQnK9
+ hHkwevF9VSvczg7SjStRSW8qEWYK4Sfeb3yeY5IkmnqR5QnOxkfVrn1kFZSU99hrAp65 dw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rc2d9g0db-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 21 Jun 2023 13:48:16 +0000
+Received: from m0353726.ppops.net (m0353726.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 35LDlvf4020578;
+ Wed, 21 Jun 2023 13:48:16 GMT
+Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.107])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rc2d9g0cs-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 21 Jun 2023 13:48:16 +0000
+Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
+ by ppma03fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 35L4OSTp000823;
+ Wed, 21 Jun 2023 13:48:13 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+ by ppma03fra.de.ibm.com (PPS) with ESMTPS id 3r94f5a4c4-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 21 Jun 2023 13:48:13 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
+ [10.20.54.105])
+ by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 35LDmBsY38142436
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 21 Jun 2023 13:48:11 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0C1C02004B;
+ Wed, 21 Jun 2023 13:48:11 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B335020043;
+ Wed, 21 Jun 2023 13:48:10 +0000 (GMT)
+Received: from [9.155.209.184] (unknown [9.155.209.184])
+ by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Wed, 21 Jun 2023 13:48:10 +0000 (GMT)
+Message-ID: <4cf02e6ef71c6f2bff38f06b433e99526ee244d4.camel@linux.ibm.com>
+Subject: Re: [PATCH v3 8/8] tests/tcg: Add a test for info proc mappings
+From: Ilya Leoshkevich <iii@linux.ibm.com>
+To: Alex =?ISO-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>
+Cc: Laurent Vivier <laurent@vivier.eu>, Peter Maydell
+ <peter.maydell@linaro.org>, Richard Henderson
+ <richard.henderson@linaro.org>, David Hildenbrand <david@redhat.com>,
+ Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-s390x@nongnu.org
+Date: Wed, 21 Jun 2023 15:48:10 +0200
+In-Reply-To: <87legdglka.fsf@linaro.org>
+References: <20230606132743.1386003-1-iii@linux.ibm.com>
+ <20230606132743.1386003-9-iii@linux.ibm.com> <87legdglka.fsf@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.4 (3.46.4-1.fc37) 
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Content-Language: en-US
-From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-References: <20230405185922.2122668-1-richard.henderson@linaro.org>
- <2d46a274-8234-a635-81ca-c79c2969cb7b@linaro.org>
- <fc35257d-8af0-8aa1-af88-982c7506bfa5@ilande.co.uk>
- <a5c261f4-b3e5-314f-b28f-dfac54a0bed8@linaro.org>
- <f7d45693-78db-261b-f016-c198a7c98d97@linaro.org>
- <0489cb19-8d5e-7cdd-4c98-12fea8afa0d1@ilande.co.uk>
-In-Reply-To: <0489cb19-8d5e-7cdd-4c98-12fea8afa0d1@ilande.co.uk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 86.130.37.216
-X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: Re: [PATCH for-8.1] target/sparc: Use tcg_gen_lookup_and_goto_ptr
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
-Received-SPF: pass client-ip=2001:41c9:1:41f::167;
- envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 7oISqhuAXdlpeTS9_5z2JF6aVggxr5vP
+X-Proofpoint-GUID: e4wWvDLTHE_LH2gZRlqu_NgeH46cjb-K
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-06-21_08,2023-06-16_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 malwarescore=0
+ clxscore=1011 impostorscore=0 bulkscore=0 mlxlogscore=999 spamscore=0
+ phishscore=0 adultscore=0 lowpriorityscore=0 suspectscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2305260000 definitions=main-2306210114
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.093,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -85,31 +116,119 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 21/06/2023 10:14, Mark Cave-Ayland wrote:
+On Wed, 2023-06-21 at 11:21 +0100, Alex Benn=C3=A9e wrote:
+>=20
+> Ilya Leoshkevich <iii@linux.ibm.com> writes:
+>=20
+> > Add a small test to prevent regressions.
+> > Since there are issues with how GDB interprets QEMU's target.xml,
+> > enable the test only on aarch64 and s390x for now.
+> >=20
+> > Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+> > ---
+> > =C2=A0tests/tcg/aarch64/Makefile.target=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 3 +-
+> > =C2=A0tests/tcg/multiarch/Makefile.target=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 7 +++
+> > =C2=A0.../multiarch/gdbstub/test-proc-mappings.py=C2=A0=C2=A0 | 55
+> > +++++++++++++++++++
+> > =C2=A0tests/tcg/s390x/Makefile.target=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 2 +-
+> > =C2=A04 files changed, 65 insertions(+), 2 deletions(-)
+> > =C2=A0create mode 100644 tests/tcg/multiarch/gdbstub/test-proc-
+> > mappings.py
+> >=20
+> > diff --git a/tests/tcg/aarch64/Makefile.target
+> > b/tests/tcg/aarch64/Makefile.target
+> > index 03157954871..38402b0ba1f 100644
+> > --- a/tests/tcg/aarch64/Makefile.target
+> > +++ b/tests/tcg/aarch64/Makefile.target
+> > @@ -97,7 +97,8 @@ run-gdbstub-sve-ioctls: sve-ioctls
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0--bin $< --test $(AARCH64_SRC)/gdbstub/test-sve-
+> > ioctl.py, \
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0basic gdbstub SVE ZLEN =
+support)
+> > =C2=A0
+> > -EXTRA_RUNS +=3D run-gdbstub-sysregs run-gdbstub-sve-ioctls
+> > +EXTRA_RUNS +=3D run-gdbstub-sysregs run-gdbstub-sve-ioctls \
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0 run-gdbstub-proc-mappings
+> > =C2=A0endif
+> > =C2=A0endif
+> > =C2=A0
+> > diff --git a/tests/tcg/multiarch/Makefile.target
+> > b/tests/tcg/multiarch/Makefile.target
+> > index 373db696481..cbc0b75787a 100644
+> > --- a/tests/tcg/multiarch/Makefile.target
+> > +++ b/tests/tcg/multiarch/Makefile.target
+> > @@ -81,6 +81,13 @@ run-gdbstub-qxfer-auxv-read: sha1
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0--bin $< --test $(MULTIARCH_SRC)/gdbstub/test-
+> > qxfer-auxv-read.py, \
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0basic gdbstub qXfer:aux=
+v:read support)
+> > =C2=A0
+> > +run-gdbstub-proc-mappings: sha1
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0$(call run-test, $@, $(GDB_S=
+CRIPT) \
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0--gdb $(HAVE_GDB_BIN) \
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0--qemu $(QEMU) --qargs "$(QEMU_OPTS)" \
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0--bin $< --test $(MULTIARCH_SRC)/gdbstub/test-proc-
+> > mappings.py, \
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0proc mappings support)
+> > +
+>=20
+> I wondered if it makes more sense to keep the extra test
+> configuration
+> logic in multiarch:
+>=20
+> =C2=A0 run-gdbstub-proc-mappings: sha1
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 $(call run-test, $=
+@, $(GDB_SCRIPT) \
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 --gdb $(HAVE_GDB_BIN) \
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 --qemu $(QEMU) --qargs "$(QEMU_OPTS)" \
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 --bin $< --test $(MULTIARCH_SRC)/gdbstub/tes=
+t-proc-
+> mappings.py, \
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 proc mappings supp=
+ort)
+>=20
+> =C2=A0 # only enable for s390x and aarch64 for now
+> =C2=A0 ifneq (,$(findstring aarch64,$(TARGET_NAME)))
+> =C2=A0 EXTRA_RUNS +=3D run-gdbstub-proc-mappings
+> =C2=A0 else ifneq (,$(findstring s390x,$(TARGET_NAME)))
+> =C2=A0 EXTRA_RUNS +=3D run-gdbstub-proc-mappings
+> =C2=A0 endif
+>=20
+> but it still ends up pretty ugly. Is the gdb handling fixed for other
+> arches in other versions. Maybe we could probe gdb for support and
+> wrap
+> the whole stanza in something like:
+>=20
+> =C2=A0 ifeq ($(HOST_GDB_SUPPORTS_PROC_MAPPING),y)
+> =C2=A0 ...
+> =C2=A0 endif
+>=20
+> ?
 
-> On 19/06/2023 16:41, Richard Henderson wrote:
-> 
->> On 5/11/23 13:02, Richard Henderson wrote:
->>> On 5/11/23 09:40, Mark Cave-Ayland wrote:
->>>> Obviously nothing notionally against this patch, however if you could give me a 
->>>> few days to run my OpenBIOS SPARC32/SPARC64 boot tests against git master with 
->>>> this patch applied to double-check there are no regressions, that would be great.
->>>
->>> No problem.  I just didn't want it to get lost.
->>
->> Ping for results?
->>
->> r~
-> 
-> Sorry I haven't had a chance to test this yet - I'll try and get to it later today.
+I think I better add the check to the test itself, because otherwise we
+have to probe GDB against QEMU binary we just built, which sounds
+unnecessarily complicated.
 
-I got as far as running my OpenBIOS sparc32 tests, and I'm seeing an issue with my 
-Solaris 8 image in that the mouse is frozen when booting into the GUI with this patch 
-applied so looks like something still isn't right here :(
+The error message on all arches without this series is:
 
+    warning: unable to open /proc file '/proc/1/maps'
 
-ATB,
+The error message on x86_64 (expected) with this series is:
 
-Mark.
+   Not supported on this target.
 
+So we can simply exit(0) from the test if we see this.
 
