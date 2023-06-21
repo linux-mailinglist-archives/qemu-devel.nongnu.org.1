@@ -2,53 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F37E273788A
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 03:05:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68E5E73788F
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 03:05:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBmGF-0007oZ-Jn; Tue, 20 Jun 2023 21:03:51 -0400
+	id 1qBmGE-0007oI-Vf; Tue, 20 Jun 2023 21:03:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dongwon.kim@intel.com>)
- id 1qBmGC-0007nF-Ve
+ id 1qBmGC-0007nC-RO
  for qemu-devel@nongnu.org; Tue, 20 Jun 2023 21:03:48 -0400
 Received: from mga11.intel.com ([192.55.52.93])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dongwon.kim@intel.com>)
- id 1qBmGB-0001GW-3s
+ id 1qBmGB-0001Fp-3H
  for qemu-devel@nongnu.org; Tue, 20 Jun 2023 21:03:48 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1687309427; x=1718845427;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=8ecAhgIN3FOozG45b0VPagWbfpHdvTXwa+wo0o/M2p8=;
- b=QAyRfyJracLCMnGxqnOCWRVRW+eiILo/V6TKZjqV2ierXC7qA2pEnv+4
- E2mv6fEqrNEoV99RgQk1NmotByRW7MBY58klmNGC8+55iHVNNZ4pBReRj
- U7TdA5RPTqJEL0ZC9z82xz0+tb5ekHycvPGBv9J6fy+GlS0qJi4894B+/
- kH7VhuL6C7moKzlClSOfqakcV6ufu/KNEabk7PaKZvVU2UkQ3YRE9oIP7
- VhaBZooFayUXciO348IpcLql0JVO05aWBIsizqaZ1EiiGH2n3geB8WpwO
- Om0eK5A0KFDt8+6TcX7TUUgZxfkuhVMN1kfIzBTnKJVbawScrxQVWaDRv Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10747"; a="357522813"
-X-IronPort-AV: E=Sophos;i="6.00,258,1681196400"; d="scan'208";a="357522813"
+ bh=NzRNLrigI1mTX2rfYDAoYeRMXBVawCRCZ4B/zs9bAh4=;
+ b=Ll4JLANsvskJi0GlYGsedDV7pkEzdMOCSgDDm0BBcZSgy6rZ3ZoIRabJ
+ kCVzFR/2334GDajbB63t8MqrYAd7EzOOaf16BWHQCIcuDdGUsUTO9zipq
+ lwLvQ8z/S2A1dW1lbuJ3vuomqkKSMZgNIc/vYTmDJVwEIR4x78eQMVYVT
+ xp0QkPtHnPsgo4jSh4G8weXWOW8qpI6tIUVmD81b9I5oX3KzDyhFw12u5
+ RYEaikf6Ru622dWUjKlsH8R+yD845mF07tcZB/jmsXBS+nplsYwLFF6ik
+ Tw2Iol/15ZcAB40EdGEBbqvMM1Nncd4xXJod7MdvpGA+95a7YG1kfoGrC A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10747"; a="357522819"
+X-IronPort-AV: E=Sophos;i="6.00,258,1681196400"; d="scan'208";a="357522819"
 Received: from orsmga004.jf.intel.com ([10.7.209.38])
  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Jun 2023 18:03:41 -0700
+ 20 Jun 2023 18:03:42 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10747"; a="838429561"
-X-IronPort-AV: E=Sophos;i="6.00,258,1681196400"; d="scan'208";a="838429561"
+X-IronPort-AV: E=McAfee;i="6600,9927,10747"; a="838429566"
+X-IronPort-AV: E=Sophos;i="6.00,258,1681196400"; d="scan'208";a="838429566"
 Received: from dongwonk-z390-aorus-ultra-intel-gfx.fm.intel.com
  ([10.105.129.122])
- by orsmga004.jf.intel.com with ESMTP; 20 Jun 2023 18:03:40 -0700
+ by orsmga004.jf.intel.com with ESMTP; 20 Jun 2023 18:03:41 -0700
 From: Dongwon Kim <dongwon.kim@intel.com>
 To: qemu-devel@nongnu.org
 Cc: kraxel@redhat.com, berrange@redhat.com, armbru@redhat.com,
  philmd@linaro.org, marcandre.lureau@redhat.com, vivek.kasireddy@intel.com,
  Dongwon Kim <dongwon.kim@intel.com>
-Subject: [RFC PATCH 3/9] ui/gtk: reset visible flag when window is minimized
-Date: Tue, 20 Jun 2023 17:43:49 -0700
-Message-Id: <20230621004355.19920-4-dongwon.kim@intel.com>
+Subject: [RFC PATCH 4/9] ui/gtk: Disable the scanout when a detached tab is
+ closed
+Date: Tue, 20 Jun 2023 17:43:50 -0700
+Message-Id: <20230621004355.19920-5-dongwon.kim@intel.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20230621004355.19920-1-dongwon.kim@intel.com>
 References: <20230621004355.19920-1-dongwon.kim@intel.com>
@@ -79,86 +80,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a callback for window-state-event that resets vc->gfx.visible when
-associated window is minimized or restored.
+From: Vivek Kasireddy <vivek.kasireddy@intel.com>
 
-In case of virtio-gpu blob scanout, if the window is minimized before
-the rendering event for the last guest scanout frame is finished, it cancels
-the draw submission and unblocks the pipeline to prevent a permanent lockup.
+When a detached tab window is closed, the underlying (EGL) context
+is destroyed; therefore, disable the scanout which also destroys the
+underlying framebuffer (id) and other objects. Also add calls to
+make the context current in disable scanout and other missing places.
 
 Cc: Gerd Hoffmann <kraxel@redhat.com>
 Cc: Daniel P. Berrangé <berrange@redhat.com>
 Cc: Markus Armbruster <armbru@redhat.com>
 Cc: Philippe Mathieu-Daudé <philmd@linaro.org>
 Cc: Marc-André Lureau <marcandre.lureau@redhat.com>
-Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>
+Signed-off-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
 Signed-off-by: Dongwon Kim <dongwon.kim@intel.com>
 ---
- ui/gtk.c | 37 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 37 insertions(+)
+ ui/gtk-egl.c     | 3 +++
+ ui/gtk-gl-area.c | 2 ++
+ ui/gtk.c         | 1 +
+ 3 files changed, 6 insertions(+)
 
-diff --git a/ui/gtk.c b/ui/gtk.c
-index ff4a5c58ea..f9096aea14 100644
---- a/ui/gtk.c
-+++ b/ui/gtk.c
-@@ -1419,6 +1419,35 @@ static gboolean gd_tab_window_close(GtkWidget *widget, GdkEvent *event,
-     return TRUE;
+diff --git a/ui/gtk-egl.c b/ui/gtk-egl.c
+index 443873e266..aa22ebbd98 100644
+--- a/ui/gtk-egl.c
++++ b/ui/gtk-egl.c
+@@ -214,6 +214,9 @@ void gd_egl_scanout_disable(DisplayChangeListener *dcl)
+ {
+     VirtualConsole *vc = container_of(dcl, VirtualConsole, gfx.dcl);
+ 
++    eglMakeCurrent(qemu_egl_display, vc->gfx.esurface,
++                   vc->gfx.esurface, vc->gfx.ectx);
++
+     vc->gfx.w = 0;
+     vc->gfx.h = 0;
+     gtk_egl_set_scanout_mode(vc, false);
+diff --git a/ui/gtk-gl-area.c b/ui/gtk-gl-area.c
+index 68b16a5ff1..8228cc9f3f 100644
+--- a/ui/gtk-gl-area.c
++++ b/ui/gtk-gl-area.c
+@@ -270,6 +270,7 @@ void gd_gl_area_scanout_disable(DisplayChangeListener *dcl)
+ {
+     VirtualConsole *vc = container_of(dcl, VirtualConsole, gfx.dcl);
+ 
++    gtk_gl_area_make_current(GTK_GL_AREA(vc->gfx.drawing_area));
+     gtk_gl_area_set_scanout_mode(vc, false);
  }
  
-+static gboolean gd_window_state_event(GtkWidget *widget, GdkEvent *event,
-+                                      void *opaque)
-+{
-+    VirtualConsole *vc = opaque;
-+
-+    if (!vc) {
-+        return TRUE;
-+    }
-+
-+    if (event->window_state.new_window_state & GDK_WINDOW_STATE_ICONIFIED) {
-+        vc->gfx.visible = false;
-+        gd_set_ui_size(vc, 0, 0);
-+        if (vc->gfx.guest_fb.dmabuf &&
-+            vc->gfx.guest_fb.dmabuf->draw_submitted) {
-+            vc->gfx.guest_fb.dmabuf->draw_submitted = false;
-+            graphic_hw_gl_block(vc->gfx.dcl.con, false);
-+        }
-+    } else {
-+        GdkWindow *window;
-+        window = gtk_widget_get_window(vc->gfx.drawing_area);
-+        gd_set_ui_size(vc, gdk_window_get_width(window),
-+                       gdk_window_get_height(window));
-+
-+        vc->gfx.visible = true;
-+    }
-+
-+    return TRUE;
-+}
-+
- static gboolean gd_win_grab(void *opaque)
- {
-     VirtualConsole *vc = opaque;
-@@ -1460,6 +1489,9 @@ static void gd_menu_untabify(GtkMenuItem *item, void *opaque)
- 
-         g_signal_connect(vc->window, "delete-event",
-                          G_CALLBACK(gd_tab_window_close), vc);
-+        g_signal_connect(vc->window, "window-state-event",
-+                         G_CALLBACK(gd_window_state_event), vc);
-+
-         gtk_widget_show_all(vc->window);
- 
-         if (qemu_console_is_graphic(vc->gfx.dcl.con)) {
-@@ -2498,6 +2530,11 @@ static void gtk_display_init(DisplayState *ds, DisplayOptions *opts)
+@@ -282,6 +283,7 @@ void gd_gl_area_scanout_flush(DisplayChangeListener *dcl,
+         return;
      }
  
-     vc = gd_vc_find_current(s);
-+
-+    g_signal_connect(s->window, "window-state-event",
-+                     G_CALLBACK(gd_window_state_event),
-+                     vc);
-+
-     gtk_widget_set_sensitive(s->view_menu, vc != NULL);
- #ifdef CONFIG_VTE
-     gtk_widget_set_sensitive(s->copy_item,
++    gtk_gl_area_make_current(GTK_GL_AREA(vc->gfx.drawing_area));
+     if (vc->gfx.guest_fb.dmabuf && !vc->gfx.guest_fb.dmabuf->draw_submitted) {
+         graphic_hw_gl_block(vc->gfx.dcl.con, true);
+         vc->gfx.guest_fb.dmabuf->draw_submitted = true;
+diff --git a/ui/gtk.c b/ui/gtk.c
+index f9096aea14..90ecb8b82f 100644
+--- a/ui/gtk.c
++++ b/ui/gtk.c
+@@ -1400,6 +1400,7 @@ static gboolean gd_tab_window_close(GtkWidget *widget, GdkEvent *event,
+ 
+     vc->gfx.visible = false;
+     gd_set_ui_size(vc, 0, 0);
++    dpy_gl_scanout_disable(vc->gfx.dcl.con);
+     gtk_widget_set_sensitive(vc->menu_item, true);
+     gd_widget_reparent(vc->window, s->notebook, vc->tab_item);
+     gtk_notebook_set_tab_label_text(GTK_NOTEBOOK(s->notebook),
 -- 
 2.34.1
 
