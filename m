@@ -2,39 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA73B7386CC
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 16:24:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 549E57386D0
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 16:24:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBykG-0001aM-Sp; Wed, 21 Jun 2023 10:23:40 -0400
+	id 1qBykK-0001c2-Hy; Wed, 21 Jun 2023 10:23:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1qBykE-0001ZM-NV
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 10:23:38 -0400
-Received: from shirlock.uni-paderborn.de ([2001:638:502:c003::15])
+ id 1qBykJ-0001ar-0s
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 10:23:43 -0400
+Received: from hoth.uni-paderborn.de ([2001:638:502:c003::19])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1qBykC-0000zD-NL
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 10:23:38 -0400
+ id 1qBykH-00010n-Bd
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 10:23:42 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=mail.uni-paderborn.de; s=20170601; h=Content-Transfer-Encoding:MIME-Version
  :References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=z7MyUypTHEtrgaFGHqECGQzvC/1wJwIBwkgSxgv86/c=; b=aALSl3Px4vvoXQzdZ4w1JtpLRK
- sNbfSaNC3RRbe6z55fzjc+HKCEGoVH2iIgQjt+IUZsqX4P5ktywh+HFGe53GNBdxRQsiZ7KFl18S7
- Ov/t2u8pBmq2/hUT3Ikie4JMOv50ytSE9iXN/1GVdKRmqPpP1DxdAaRudP8Ie3x8doUo=;
+ bh=WhpYMjqz4Ig7skPQDJvGYLwTbqkfGujugXNsVTzBpGc=; b=M23V5DAYAnjW5QFjyo0i70y1HW
+ glUBs9jnv4Tt3YANdI1iRnDgz/yfh7Hg8b/zzhn1O4a0QqjwuN4YRimsGT3ekfMhJ7Baw5rR5jQwg
+ WXLbWZ1qlLvsOAyXtZPrjXyg+7K2cvLiPwiXV2vqx89bT1vYaRaCh10pvIbD7tPLjC08=;
 X-Envelope-From: <kbastian@mail.uni-paderborn.de>
 From: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
 To: qemu-devel@nongnu.org
 Cc: kbastian@mail.uni-paderborn.de,
 	richard.henderson@linaro.org
-Subject: [PATCH v4 1/8] target/tricore: Fix RR_JLI clobbering reg A[11]
-Date: Wed, 21 Jun 2023 16:22:55 +0200
-Message-Id: <20230621142302.1648383-2-kbastian@mail.uni-paderborn.de>
+Subject: [PATCH v4 2/8] target/tricore: Introduce DISAS_TARGET_EXIT
+Date: Wed, 21 Jun 2023 16:22:56 +0200
+Message-Id: <20230621142302.1648383-3-kbastian@mail.uni-paderborn.de>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230621142302.1648383-1-kbastian@mail.uni-paderborn.de>
 References: <20230621142302.1648383-1-kbastian@mail.uni-paderborn.de>
@@ -42,20 +42,19 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-PMX-Version: 6.4.9.2830568, Antispam-Engine: 2.7.2.2107409,
  Antispam-Data: 2023.6.21.141216, AntiVirus-Engine: 6.0.0,
- AntiVirus-Data: 2023.6.6.600001
-X-Sophos-SenderHistory: ip=79.202.219.6, fs=1202305, da=174966478, mc=125, sc=0,
- hc=125, sp=0, fso=1202305, re=0, sd=0, hd=0
+ AntiVirus-Data: 2023.6.21.600001
+X-Sophos-SenderHistory: ip=79.202.219.6, fs=1202310, da=174966483, mc=127, sc=0,
+ hc=127, sp=0, fso=1202310, re=0, sd=0, hd=0
 X-IMT-Source: Intern
 X-IMT-Spam-Score: 0.0 ()
 X-IMT-Authenticated-Sender: uid=kbastian,ou=People,o=upb,c=de
-Received-SPF: pass client-ip=2001:638:502:c003::15;
- envelope-from=kbastian@mail.uni-paderborn.de; helo=shirlock.uni-paderborn.de
-X-Spam_score_int: -42
-X-Spam_score: -4.3
-X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=2001:638:502:c003::19;
+ envelope-from=kbastian@mail.uni-paderborn.de; helo=hoth.uni-paderborn.de
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -72,30 +71,118 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-if A[r1] == A[11], then we would overwrite the destination address of
-the jump with the return address.
+this replaces all calls to tcg_gen_exit_tb() and moves them to
+tricore_tb_stop().
 
-Reported-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
 ---
- target/tricore/translate.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/tricore/translate.c | 25 ++++++++++++-------------
+ 1 file changed, 12 insertions(+), 13 deletions(-)
 
 diff --git a/target/tricore/translate.c b/target/tricore/translate.c
-index 6712d98f6e..1d522d3b50 100644
+index 1d522d3b50..d4f7415158 100644
 --- a/target/tricore/translate.c
 +++ b/target/tricore/translate.c
-@@ -6061,8 +6061,8 @@ static void decode_rr_idirect(DisasContext *ctx)
-         tcg_gen_andi_tl(cpu_PC, cpu_gpr_a[r1], ~0x1);
+@@ -37,6 +37,7 @@
+ #include "exec/helper-info.c.inc"
+ #undef  HELPER_H
+ 
++#define DISAS_EXIT        DISAS_TARGET_0
+ 
+ /*
+  * TCG registers
+@@ -2835,6 +2836,7 @@ static void gen_goto_tb(DisasContext *ctx, int n, target_ulong dest)
+         gen_save_pc(dest);
+         tcg_gen_lookup_and_goto_ptr();
+     }
++    ctx->base.is_jmp = DISAS_NORETURN;
+ }
+ 
+ static void generate_trap(DisasContext *ctx, int class, int tin)
+@@ -2895,8 +2897,7 @@ static void gen_fret(DisasContext *ctx)
+     tcg_gen_qemu_ld_tl(cpu_gpr_a[11], cpu_gpr_a[10], ctx->mem_idx, MO_LESL);
+     tcg_gen_addi_tl(cpu_gpr_a[10], cpu_gpr_a[10], 4);
+     tcg_gen_mov_tl(cpu_PC, temp);
+-    tcg_gen_exit_tb(NULL, 0);
+-    ctx->base.is_jmp = DISAS_NORETURN;
++    ctx->base.is_jmp = DISAS_EXIT;
+ }
+ 
+ static void gen_compute_branch(DisasContext *ctx, uint32_t opc, int r1,
+@@ -2995,12 +2996,12 @@ static void gen_compute_branch(DisasContext *ctx, uint32_t opc, int r1,
+ /* SR-format jumps */
+     case OPC1_16_SR_JI:
+         tcg_gen_andi_tl(cpu_PC, cpu_gpr_a[r1], 0xfffffffe);
+-        tcg_gen_exit_tb(NULL, 0);
++        ctx->base.is_jmp = DISAS_EXIT;
          break;
-     case OPC2_32_RR_JLI:
--        tcg_gen_movi_tl(cpu_gpr_a[11], ctx->pc_succ_insn);
-         tcg_gen_andi_tl(cpu_PC, cpu_gpr_a[r1], ~0x1);
-+        tcg_gen_movi_tl(cpu_gpr_a[11], ctx->pc_succ_insn);
+     case OPC2_32_SYS_RET:
+     case OPC2_16_SR_RET:
+         gen_helper_ret(cpu_env);
+-        tcg_gen_exit_tb(NULL, 0);
++        ctx->base.is_jmp = DISAS_EXIT;
          break;
-     case OPC2_32_RR_CALLI:
-         gen_helper_1arg(call, ctx->pc_succ_insn);
+ /* B-format */
+     case OPC1_32_B_CALLA:
+@@ -3152,7 +3153,6 @@ static void gen_compute_branch(DisasContext *ctx, uint32_t opc, int r1,
+     default:
+         generate_trap(ctx, TRAPC_INSN_ERR, TIN2_IOPC);
+     }
+-    ctx->base.is_jmp = DISAS_NORETURN;
+ }
+ 
+ 
+@@ -3493,8 +3493,7 @@ static void decode_sr_system(DisasContext *ctx)
+         break;
+     case OPC2_16_SR_RFE:
+         gen_helper_rfe(cpu_env);
+-        tcg_gen_exit_tb(NULL, 0);
+-        ctx->base.is_jmp = DISAS_NORETURN;
++        ctx->base.is_jmp = DISAS_EXIT;
+         break;
+     case OPC2_16_SR_DEBUG:
+         /* raise EXCP_DEBUG */
+@@ -6075,8 +6074,7 @@ static void decode_rr_idirect(DisasContext *ctx)
+     default:
+         generate_trap(ctx, TRAPC_INSN_ERR, TIN2_IOPC);
+     }
+-    tcg_gen_exit_tb(NULL, 0);
+-    ctx->base.is_jmp = DISAS_NORETURN;
++    ctx->base.is_jmp = DISAS_EXIT;
+ }
+ 
+ static void decode_rr_divide(DisasContext *ctx)
+@@ -7907,8 +7905,7 @@ static void decode_sys_interrupts(DisasContext *ctx)
+         break;
+     case OPC2_32_SYS_RFE:
+         gen_helper_rfe(cpu_env);
+-        tcg_gen_exit_tb(NULL, 0);
+-        ctx->base.is_jmp = DISAS_NORETURN;
++        ctx->base.is_jmp = DISAS_EXIT;
+         break;
+     case OPC2_32_SYS_RFM:
+         if ((ctx->hflags & TRICORE_HFLAG_KUU) == TRICORE_HFLAG_SM) {
+@@ -7920,8 +7917,7 @@ static void decode_sys_interrupts(DisasContext *ctx)
+             tcg_gen_brcondi_tl(TCG_COND_NE, tmp, 1, l1);
+             gen_helper_rfm(cpu_env);
+             gen_set_label(l1);
+-            tcg_gen_exit_tb(NULL, 0);
+-            ctx->base.is_jmp = DISAS_NORETURN;
++            ctx->base.is_jmp = DISAS_EXIT;
+         } else {
+             /* generate privilege trap */
+         }
+@@ -8383,6 +8379,9 @@ static void tricore_tr_tb_stop(DisasContextBase *dcbase, CPUState *cpu)
+     case DISAS_TOO_MANY:
+         gen_goto_tb(ctx, 0, ctx->base.pc_next);
+         break;
++    case DISAS_EXIT:
++        tcg_gen_exit_tb(NULL, 0);
++        break;
+     case DISAS_NORETURN:
+         break;
+     default:
 -- 
 2.40.1
 
