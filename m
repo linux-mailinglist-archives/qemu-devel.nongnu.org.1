@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CCCD737DEC
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 10:57:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A373D737DEE
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 10:57:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBtcz-00049v-NP; Wed, 21 Jun 2023 04:55:51 -0400
+	id 1qBtd3-0004m3-PQ; Wed, 21 Jun 2023 04:55:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qBtcf-00046U-WC
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 04:55:30 -0400
+ id 1qBtck-0004Az-9v
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 04:55:36 -0400
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qBtcd-0005FY-74
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 04:55:29 -0400
+ id 1qBtch-0005GE-4K
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 04:55:33 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
  MIME-Version:References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:
  Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
  Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
  List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=NkGsfKnqZKVHgn7j3dDfmqDAr6NLQVzR90yX1G8XW3U=; b=kPaqnmVqSVzfOvT2rNCty/PhZU
- tvuNibay/ZUtE+yYMVq/Z9cmnYhj2dya/ToFn+WBIWylIHjg7qCM9N02qXiQUxy70whteSUKeHFG7
- AqW8dIz2LD+eluwlrzIYAcmUvNBw4fOW4HG6aTVN0v+oDqvyF+ZS2uCo/rRszxbZWnmjWq+rmhtmp
- oXOjLeCchHaGHTllAau2A1GzGmy0Qk2lh82rPj8+CsXz3IDwim77RdQ6+NGGP1lfkin+Cxlp9TST1
- TyiiiAYUuLsW0xeTgqzlAcvd2z/lLMeEkzqjOcqOsUzECKYV8g9tYwtxgmB06W660FupBbEaM+3yo
- svEXnatgDQvzDI87Dcky4bT1aID1i/csK1zvouiKnQyBYQv0O8PMdlRpiMSJa3J5qDIL3+UHJY8+r
- o3MCWXMV99rplRMmw9Kcr+qG06ND+BuGKFD/goYbN0wQz1yQ+TnZ1l5AX4NyFADKNhji8SXe5AIF8
- VZybEsAZ1pr1e0BgOB3x2Va5AEM55cUpXJU2KE675+tRIYZzWjDXWhKT3ZREwkOEY9Q+H+EMoVdXe
- vNSGH5tovWUE8IKxYHSipYKtRDsUinbMBTkJK7g7p6HCt8OGwcukbDFpENnd2EhgfWEGL2DZfV50z
- dIQYgZQL6qCNvxNMrn5V+vROhfyUMULcqb/jUz2LA=;
+ bh=B3LhSM9tOUVZLir2gQou8hgFdFwVhZHN4ayOtaUGQVU=; b=wJW2W8zoOkeAEowvdZzuXFIRqZ
+ aHU70FbCJZp0KP69EG3kVYQaxLWdRVU849SKsSJwGS+QVzSPCIFgBsc3K3ETQlQLuASof9+0MWXZU
+ 7HlpOMXvJP5nM+K4lVFInl32/BZOa8f1i+L1Ak5Tpx/3/cIjWZHF/ZhpNibACHNolXOpcXMOBQxkU
+ gPAj2kM5qWR626q+Fo+XmHQ5K1KuHKiuCkzROvB6CCwZ7o6SrFON0zxc6BZE431yqxX2Xch115B8x
+ FbkncUC8DDudytXFCz1JNgrTRZh78SgJBXq6swtjX1bIX4gta8m9sFRJZRLOcPRaJT5T7yt9NdeJs
+ 3LY8Epo7JBZIpDDV1vYSOGOTsiTQnzRRXQNjM3A78KKJYp+YLzk/WwEorVlDKapteYJIPIDl5gdaZ
+ zaRaz+RssQ4CHk2KEH+syAtG8eZsL6N+eBaro3g7g75GcHhL3kanw6bXMApEx6EqJznQRAHB7FrRg
+ 9u1RfFH/EhdQe4teqnxueDNluW8tBaj883seiWxFqmb3hOcqRjiDV9SlKsy+bcizXulYN1duLtFzl
+ Ih6bdr8zBBAYsdcSC3jY2kbDG0jN2ovReiFT4ZNN/pmad2nDylTshNhNJ5isjp5EvDP4u9KS9ravu
+ bIe95vE231te/xgADXgkqz6bqzKds1YTbQLT/tucs=;
 Received: from host86-130-37-216.range86-130.btcentralplus.com
  ([86.130.37.216] helo=kentang.home)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qBtcH-0001ZB-NE; Wed, 21 Jun 2023 09:55:09 +0100
+ id 1qBtcL-0001ZB-Ul; Wed, 21 Jun 2023 09:55:13 +0100
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: laurent@vivier.eu,
 	qemu-devel@nongnu.org
-Date: Wed, 21 Jun 2023 09:53:49 +0100
-Message-Id: <20230621085353.113233-21-mark.cave-ayland@ilande.co.uk>
+Date: Wed, 21 Jun 2023 09:53:50 +0100
+Message-Id: <20230621085353.113233-22-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20230621085353.113233-1-mark.cave-ayland@ilande.co.uk>
 References: <20230621085353.113233-1-mark.cave-ayland@ilande.co.uk>
@@ -52,8 +52,8 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 86.130.37.216
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH v4 20/24] q800: move mac-nubus-bridge device to
- Q800MachineState
+Subject: [PATCH v4 21/24] q800: don't access Nubus bus directly from the
+ mac-nubus-bridge device
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -79,71 +79,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Also change the instantiation of the mac-nubus-bridge device to use
-object_initialize_child() and map the Nubus address space using
-memory_region_add_subregion() instead of sysbus_mmio_map().
+Instead use the qdev_get_child_bus() function which is intended for this exact
+purpose.
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Reviewed-by: Laurent Vivier <laurent@vivier.eu>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/m68k/q800.c         | 21 ++++++++++++++-------
- include/hw/m68k/q800.h |  2 ++
- 2 files changed, 16 insertions(+), 7 deletions(-)
+ hw/m68k/q800.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/hw/m68k/q800.c b/hw/m68k/q800.c
-index 50fc7de9a2..b22651931a 100644
+index b22651931a..a32e6fbf8d 100644
 --- a/hw/m68k/q800.c
 +++ b/hw/m68k/q800.c
-@@ -415,14 +415,21 @@ static void q800_machine_init(MachineState *machine)
- 
-     /* NuBus */
- 
--    dev = qdev_new(TYPE_MAC_NUBUS_BRIDGE);
--    qdev_prop_set_uint32(dev, "slot-available-mask",
-+    object_initialize_child(OBJECT(machine), "mac-nubus-bridge",
-+                            &m->mac_nubus_bridge,
-+                            TYPE_MAC_NUBUS_BRIDGE);
-+    sysbus = SYS_BUS_DEVICE(&m->mac_nubus_bridge);
-+    dev = DEVICE(&m->mac_nubus_bridge);
-+    qdev_prop_set_uint32(DEVICE(&m->mac_nubus_bridge), "slot-available-mask",
-                          Q800_NUBUS_SLOTS_AVAILABLE);
--    sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
--    sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0,
--                    MAC_NUBUS_FIRST_SLOT * NUBUS_SUPER_SLOT_SIZE);
--    sysbus_mmio_map(SYS_BUS_DEVICE(dev), 1, NUBUS_SLOT_BASE +
--                    MAC_NUBUS_FIRST_SLOT * NUBUS_SLOT_SIZE);
-+    sysbus_realize(sysbus, &error_fatal);
-+    memory_region_add_subregion(get_system_memory(),
-+                                MAC_NUBUS_FIRST_SLOT * NUBUS_SUPER_SLOT_SIZE,
-+                                sysbus_mmio_get_region(sysbus, 0));
-+    memory_region_add_subregion(get_system_memory(),
-+                                NUBUS_SLOT_BASE +
-+                                MAC_NUBUS_FIRST_SLOT * NUBUS_SLOT_SIZE,
-+                                sysbus_mmio_get_region(sysbus, 1));
-     qdev_connect_gpio_out(dev, 9,
+@@ -448,7 +448,7 @@ static void q800_machine_init(MachineState *machine)
                            qdev_get_gpio_in_named(DEVICE(&m->via2), "nubus-irq",
-                           VIA2_NUBUS_IRQ_INTVIDEO));
-diff --git a/include/hw/m68k/q800.h b/include/hw/m68k/q800.h
-index 06e095ae29..8f2c572a81 100644
---- a/include/hw/m68k/q800.h
-+++ b/include/hw/m68k/q800.h
-@@ -34,6 +34,7 @@
- #include "hw/or-irq.h"
- #include "hw/scsi/esp.h"
- #include "hw/block/swim.h"
-+#include "hw/nubus/mac-nubus-bridge.h"
+                                                  VIA2_NUBUS_IRQ_9));
  
- /*
-  * The main Q800 machine
-@@ -52,6 +53,7 @@ struct Q800MachineState {
-     OrIRQState escc_orgate;
-     SysBusESPState esp;
-     Swim swim;
-+    MacNubusBridge mac_nubus_bridge;
-     MemoryRegion macio;
-     MemoryRegion macio_alias;
- };
+-    nubus = &NUBUS_BRIDGE(dev)->bus;
++    nubus = NUBUS_BUS(qdev_get_child_bus(dev, "nubus-bus.0"));
+ 
+     /* framebuffer in nubus slot #9 */
+ 
 -- 
 2.30.2
 
