@@ -2,67 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1B65737DEF
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 10:57:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CC4D737DE3
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 10:56:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBtd4-0004oC-Vr; Wed, 21 Jun 2023 04:55:55 -0400
+	id 1qBtbP-0001uA-Ts; Wed, 21 Jun 2023 04:54:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qBtcw-0004bK-2R
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 04:55:47 -0400
-Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qBtcu-0005Mm-2N
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 04:55:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
- References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
- Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
- Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
- List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=RZPPecDlHV4Qw2k5yjU6Ai2tqsGrdK9RgBx7NxHeIkY=; b=Ufb+XBFsG2PyS7xGN5yvR8EGdw
- cZvH1zOKsTSRWw4ff4klUYj+Kh5bt5OAf3dAHOqotdN/RaKne3prT83XiSoopkA/3SYSuCemQtLF2
- uquXNKIkjKwSdBEwawLFI666HGihTtbAaUaBaXqSmcj8h3+Zca0eeNmM4v+bLTDP2uSb294/yxvV2
- 22lBY4sFKDL/V8ExkQB6nWp2SY5rFWByny6SHMuwyMrZiqXea9OmA7Isq/X4zWbvJi1l3TpbgDCLJ
- 8DEB6fcbHPvvGQTPUv+KhIbGIZ7MnTdDwCUh/eJFi6vI6hVBnd3R+dd0jHQJqyT0jzpXX8Tz6tfi8
- 04bBgAKxa/clxJHIn5ORzNescmnw3yOgea2hYKv2uogL/ZyhFBW3RXAfC0YWea/et4DOJyoM0z4Pv
- UBQYkTNiFer+BylvXvhQGCI6SngIRLn/cKiYv4WYcQF20iTFnBm+cttknOsJH4H0Zh9nBHq2ry4b4
- eIgml2adeFR6t7M7OCDhS8crHVpEu/7OKQmUkkdXj9vuARHdmExFqLg6SbYRpXfq6VQKMfmX1669Z
- x4gCEUPZQy2lTgJkYV6gAQ4qO6CV9/9CeSRnPl8iWGz844aNfdoeRxGnk/lmBo34yC6L8oUN8B83s
- JTt6vHQ1KJdazIkNS94rAfG2PgXWv0ezDJudQaWd4=;
-Received: from host86-130-37-216.range86-130.btcentralplus.com
- ([86.130.37.216] helo=kentang.home)
- by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qBtcV-0001ZB-UU; Wed, 21 Jun 2023 09:55:26 +0100
-From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-To: laurent@vivier.eu,
-	qemu-devel@nongnu.org
-Date: Wed, 21 Jun 2023 09:53:53 +0100
-Message-Id: <20230621085353.113233-25-mark.cave-ayland@ilande.co.uk>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20230621085353.113233-1-mark.cave-ayland@ilande.co.uk>
-References: <20230621085353.113233-1-mark.cave-ayland@ilande.co.uk>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qBtbN-0001to-OD
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 04:54:09 -0400
+Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qBtbM-00034o-05
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 04:54:09 -0400
+Received: by mail-ed1-x529.google.com with SMTP id
+ 4fb4d7f45d1cf-51a3e6a952aso6813547a12.3
+ for <qemu-devel@nongnu.org>; Wed, 21 Jun 2023 01:54:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1687337645; x=1689929645;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=vM8YIyESMKhb+DbkG6IkfWnKPU8RjLc9yyayBpyog4M=;
+ b=pNk2as+sAygFVMwAhJiZvVUxK27+5cp0ipU/Xw1omnk+56chjBLDyT0MO0KyvOBTyH
+ 7atCBnwFV4dViJEgufoHC3u/MfXJMFFzvyYxeXRIEd0RGgRbp4EmWQt1VvQZrZJy3q12
+ LzJeiH9VUopMQfwR3ak2y+sXDxfw7vK24lSduj1f7TAoy93eLFXFA2TPDPPhKr+nGIwC
+ PeMNXHWkpYSuAjA+vxv6qLYp/+GkTO/KKNIkEdZCG726EqQkBlFrob23e0RL9cDF/kY7
+ cLwbrmC3M10kjKqXXoRwkI+QiJWzd8F2NQuttZlqbf57W5lGb6xBQzWoMazpFBReUP5l
+ WP3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1687337645; x=1689929645;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=vM8YIyESMKhb+DbkG6IkfWnKPU8RjLc9yyayBpyog4M=;
+ b=IJnzAjCTR0G01Q+kbBSPSGTM7afZFPx2+qw3HpYsPBw4PBuWSzJRtvAocJGYWkEmAG
+ GIYR+80NrfM0aPHjZ1vDmLqstWu3QRvd0QPdSRPPuGMfa07xLKq3FjVQTlfF8a06pOiV
+ rToDUQwLpyrt7hfc1IiHkynBLjVPnRMr25Ks7a+9B4ucGJ6OK/ZP0BU7TJxbmzVX33Z+
+ nH6gC+ru9IH0htd68m853wQ6xEhi7N9GUPPp3T+QS9MPt8waIA8yM4kBN/mJcVSQyXFW
+ HkJoFzSmWjtNYcjyO22XnM8sgRr6+y7yuRitK6Fq7JNgMKZX2By9dpnR/BCDi55asbJX
+ uWNw==
+X-Gm-Message-State: AC+VfDxgQ1YruJ0pcOMimmeykk1tMI6woFkoJpyPWECoGKd2tpXpbHhU
+ L6tcSw+oHS248QbwgSzw+yo4gZ+wCyN7qFEzO9ZtMg==
+X-Google-Smtp-Source: ACHHUZ6/HMt13QfVsTQthit49v8dSThZG7Q9aA44mkRiZECY2f77mb7SEv4tICkDB7oIirFF38vhVe9r3A2E99j93k0=
+X-Received: by 2002:aa7:d9cf:0:b0:516:459d:d913 with SMTP id
+ v15-20020aa7d9cf000000b00516459dd913mr10912732eds.37.1687337645630; Wed, 21
+ Jun 2023 01:54:05 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 86.130.37.216
-X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH v4 24/24] mac_via: fix rtc command decoding for the PRAM
- seconds registers
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
-Received-SPF: pass client-ip=2001:41c9:1:41f::167;
- envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
+References: <CAFEAcA_UkPyic7U8eJkzBdBNoQowMToJkK-ro9re51zwn9-CMw@mail.gmail.com>
+ <CAFEAcA_EjzQvy67XpXeEn7zMbkoCPLAs3n5PGK2J5kuGkFEBhQ@mail.gmail.com>
+ <87352li6kx.fsf@linaro.org>
+In-Reply-To: <87352li6kx.fsf@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Wed, 21 Jun 2023 09:53:54 +0100
+Message-ID: <CAFEAcA9JuKBZSjq6WaztNA74CU1g+b=5GQFO0KPqb2RzT3LcWg@mail.gmail.com>
+Subject: Re: 'make check-tcg' fails with an assert in
+ qemu_plugin_vcpu_init_hook
+To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
+Cc: QEMU Developers <qemu-devel@nongnu.org>,
+ Richard Henderson <richard.henderson@linaro.org>, 
+ =?UTF-8?Q?Phil_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::529;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x529.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,59 +91,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Analysis of the MacOS toolbox ROM code shows that on startup it attempts 2
-separate reads of the seconds registers with commands 0x9d...0x91 followed by
-0x8d..0x81 without resetting the command to its initial value. The PRAM seconds
-value is only accepted when the values of the 2 separate reads match.
+On Wed, 21 Jun 2023 at 09:05, Alex Benn=C3=A9e <alex.bennee@linaro.org> wro=
+te:
+>
+>
+> Peter Maydell <peter.maydell@linaro.org> writes:
+>
+> > On Tue, 20 Jun 2023 at 17:56, Peter Maydell <peter.maydell@linaro.org> =
+wrote:
+> >>
+> >> $ make -C build/x86 check-tcg
+> >> make: Entering directory '/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/b=
+uild/x86'
+> >> [...]
+> >>   TEST    munmap-pthread on arm
+> >> **
+> >> ERROR:../../plugins/core.c:221:qemu_plugin_vcpu_init_hook: assertion
+> >> failed: (success)
+> >> **
+> >> ERROR:../../accel/tcg/cpu-exec.c:1024:cpu_exec_setjmp: assertion
+> >> failed: (cpu =3D=3D current_cpu)
+> >
+> > git bisect blames commit d7ee93e2435970:
+> >
+> >     cputlb: Restrict SavedIOTLB to system emulation
+> >
+> > I think that commit is not correct, because it means that
+> > the size of 'struct CPUState' and also the offset of fields
+> > like 'cpu_index' will be different for files which are
+> > compile-per-target-for-usermode and files which are
+> > compile-once-only. The assert happens here because the
+> > code which sets up cpu_index is build-once, but the code
+> > in qemu_plugin_vcpu_init_hook() which reads cpu_index is
+> > build-per-target and now they don't agree about where in
+> > the struct the field is...
+>
+> Hmm two things from that imply:
+>
+>   - I suspect the plugin core stuff could be build once (or maybe twice,
+>     system and user)
 
-From this we conclude that bit 4 of the rtc command is not decoded or we don't
-care about its value when reading the PRAM seconds registers. Implement this
-decoding change so that both reads return successfully which allows the MacOS
-toolbox ROM to correctly set the date/time.
+It is already build-once, that's why it goes wrong...
 
-Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Reviewed-by: Laurent Vivier <laurent@vivier.eu>
----
- hw/misc/mac_via.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+>   - we need to have some guard rails somehow to make sure things don't
+>     go out of sync
 
-diff --git a/hw/misc/mac_via.c b/hw/misc/mac_via.c
-index 85c2e65856..0787a0268d 100644
---- a/hw/misc/mac_via.c
-+++ b/hw/misc/mac_via.c
-@@ -362,10 +362,10 @@ static void pram_update(MOS6522Q800VIA1State *v1s)
-  *
-  * Command byte    Register addressed by the command
-  *
-- * z0000001        Seconds register 0 (lowest-order byte)
-- * z0000101        Seconds register 1
-- * z0001001        Seconds register 2
-- * z0001101        Seconds register 3 (highest-order byte)
-+ * z00x0001        Seconds register 0 (lowest-order byte)
-+ * z00x0101        Seconds register 1
-+ * z00x1001        Seconds register 2
-+ * z00x1101        Seconds register 3 (highest-order byte)
-  * 00110001        Test register (write-only)
-  * 00110101        Write-Protect Register (write-only)
-  * z010aa01        RAM address 100aa ($10-$13) (first 20 bytes only)
-@@ -373,6 +373,7 @@ static void pram_update(MOS6522Q800VIA1State *v1s)
-  * z0111aaa        Extended memory designator and sector number
-  *
-  * For a read request, z=1, for a write z=0
-+ * The letter x indicates don't care
-  * The letter a indicates bits whose value depend on what parameter
-  * RAM byte you want to address
-  */
-@@ -389,7 +390,7 @@ static int via1_rtc_compact_cmd(uint8_t value)
-     }
-     if ((value & 0x03) == 0x01) {
-         value >>= 2;
--        if ((value & 0x1c) == 0) {
-+        if ((value & 0x18) == 0) {
-             /* seconds registers */
-             return read | (REG_0 + (value & 0x03));
-         } else if ((value == 0x0c) && !read) {
--- 
-2.30.2
+We do, this is the poison.h stuff. CONFIG_USER_ONLY is a
+special case which we don't poison because there would be
+too much refactoring required...
 
+-- PMM
 
