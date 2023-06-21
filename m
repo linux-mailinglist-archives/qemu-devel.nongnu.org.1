@@ -2,77 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90787737BEF
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 09:17:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E5B6737BF2
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 09:19:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBs5l-0005QP-1k; Wed, 21 Jun 2023 03:17:25 -0400
+	id 1qBs6t-00065h-Pl; Wed, 21 Jun 2023 03:18:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qBs5i-0005Q9-2S
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 03:17:22 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <SRS0=5utS=CJ=kaod.org=clg@ozlabs.org>)
+ id 1qBs6q-00064v-PI; Wed, 21 Jun 2023 03:18:32 -0400
+Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qBs5f-0000ud-Ua
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 03:17:21 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687331839;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=hjH+NNI2d1enNQ9JMwMXztNaTsFcJ6lMuYS8EU2qC5U=;
- b=QS3XWT18bi/4FvjeumM1zGFIw+jxz2W+FYxbOlben8NGmlKLnkcNAVTA792Uf/Hj67VqRT
- FBJOihoIpLeCgDEPJgV/KIn8Cyug2lPEybYBqNMHMpPr6dCYLQJJBQq+ZVCByj3/WxfSh3
- I8KMEpV1oya1EADtMx1QK5b0rND1FHo=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-400-DL2PhZoIOjGyK3ktCPn9Fw-1; Wed, 21 Jun 2023 03:17:13 -0400
-X-MC-Unique: DL2PhZoIOjGyK3ktCPn9Fw-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (Exim 4.90_1) (envelope-from <SRS0=5utS=CJ=kaod.org=clg@ozlabs.org>)
+ id 1qBs6o-0001x1-GZ; Wed, 21 Jun 2023 03:18:32 -0400
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4QmFGL5c44z4x09;
+ Wed, 21 Jun 2023 17:18:18 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2D252104458B;
- Wed, 21 Jun 2023 07:17:13 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.44])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 869EC112132C;
- Wed, 21 Jun 2023 07:17:11 +0000 (UTC)
-Date: Wed, 21 Jun 2023 08:17:09 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Joel Upham <jupham125@gmail.com>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
- "open list:X86 Xen CPUs" <xen-devel@lists.xenproject.org>
-Subject: Re: [PATCH v1 01/23] pc/xen: Xen Q35 support: provide IRQ handling
- for PCI devices
-Message-ID: <ZJKj9YQfOVzVXOno@redhat.com>
-References: <cover.1687278381.git.jupham125@gmail.com>
- <1c547c5581ce6192b70c68f39de108cdb2c73f7e.1687278381.git.jupham125@gmail.com>
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4QmFGJ61qVz4x07;
+ Wed, 21 Jun 2023 17:18:16 +1000 (AEST)
+Message-ID: <c300d299-a90b-c29a-b556-83a2545adc30@kaod.org>
+Date: Wed, 21 Jun 2023 09:18:12 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <1c547c5581ce6192b70c68f39de108cdb2c73f7e.1687278381.git.jupham125@gmail.com>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PULL 05/29] pnv/xive2: Handle TIMA access through all ports
+Content-Language: en-US
+To: Frederic Barrat <fbarrat@linux.ibm.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>
+Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, richard.henderson@linaro.org
+References: <20230610133132.290703-1-danielhb413@gmail.com>
+ <20230610133132.290703-6-danielhb413@gmail.com>
+ <CAFEAcA_KKSc=Ns9n1UJKdnhZ846EGK-nFbsG_e2mw_zwMoOJcw@mail.gmail.com>
+ <4ad1a081-bf98-1b7d-05c9-82c230da34ce@kaod.org>
+ <9f71ffc4-2b37-d8b8-56c6-658d264242c4@linux.ibm.com>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <9f71ffc4-2b37-d8b8-56c6-658d264242c4@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=SRS0=5utS=CJ=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, NICE_REPLY_A=-0.09, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,243 +66,129 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jun 20, 2023 at 01:24:34PM -0400, Joel Upham wrote:
-> 
-> Signed-off-by: Alexey Gerasimenko <x1917x@xxxxxxxxx>
-
-This isn't a valid email address for Alexey - I presume you grabbed
-these patches from the xen-devel mail archives, which have mangled
-the addresses for anti-spam reasons.
-
-Fortunately there are alternative archives which don't mangle the
-patches:
-
-  https://lore.kernel.org/xen-devel/6067bc3c91c9ee629a35723dfb474ef168ff4ebf.1520867955.git.x1917x@gmail.com/
-
-  Signed-off-by: Alexey Gerasimenko <x1917x@gmail.com>
-
-This affects all patches in the series, but I won't repeat my
-comment on each one.
-
-> Signed-off-by: Joel Upham <jupham125@gmail.com>
-> ---
->  hw/i386/pc_piix.c             |  3 +-
->  hw/i386/xen/xen-hvm.c         |  7 +++--
->  hw/isa/lpc_ich9.c             | 53 ++++++++++++++++++++++++++++++++---
->  hw/isa/piix3.c                |  2 +-
->  include/hw/southbridge/ich9.h |  1 +
->  include/hw/xen/xen.h          |  4 +--
->  stubs/xen-hw-stub.c           |  4 +--
->  7 files changed, 61 insertions(+), 13 deletions(-)
-> 
-> diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
-> index d5b0dcd1fe..8c1b20f3bc 100644
-> --- a/hw/i386/pc_piix.c
-> +++ b/hw/i386/pc_piix.c
-> @@ -62,6 +62,7 @@
->  #endif
->  #include "hw/xen/xen-x86.h"
->  #include "hw/xen/xen.h"
-> +#include "sysemu/xen.h"
->  #include "migration/global_state.h"
->  #include "migration/misc.h"
->  #include "sysemu/numa.h"
-> @@ -233,7 +234,7 @@ static void pc_init1(MachineState *machine,
->                                x86ms->above_4g_mem_size,
->                                pci_memory, ram_memory);
->          pci_bus_map_irqs(pci_bus,
-> -                         xen_enabled() ? xen_pci_slot_get_pirq
-> +                         xen_enabled() ? xen_cmn_pci_slot_get_pirq
->                                         : pc_pci_slot_get_pirq);
->          pcms->bus = pci_bus;
->  
-> diff --git a/hw/i386/xen/xen-hvm.c b/hw/i386/xen/xen-hvm.c
-> index 56641a550e..540ac46639 100644
-> --- a/hw/i386/xen/xen-hvm.c
-> +++ b/hw/i386/xen/xen-hvm.c
-> @@ -15,6 +15,7 @@
->  #include "hw/pci/pci.h"
->  #include "hw/pci/pci_host.h"
->  #include "hw/i386/pc.h"
-> +#include "hw/southbridge/ich9.h"
->  #include "hw/irq.h"
->  #include "hw/hw.h"
->  #include "hw/i386/apic-msidef.h"
-> @@ -136,14 +137,14 @@ typedef struct XenIOState {
->      Notifier wakeup;
->  } XenIOState;
->  
-> -/* Xen specific function for piix pci */
-> +/* Xen-specific functions for pci dev IRQ handling */
->  
-> -int xen_pci_slot_get_pirq(PCIDevice *pci_dev, int irq_num)
-> +int xen_cmn_pci_slot_get_pirq(PCIDevice *pci_dev, int irq_num)
->  {
->      return irq_num + (PCI_SLOT(pci_dev->devfn) << 2);
->  }
->  
-> -void xen_piix3_set_irq(void *opaque, int irq_num, int level)
-> +void xen_cmn_set_irq(void *opaque, int irq_num, int level)
->  {
->      xen_set_pci_intx_level(xen_domid, 0, 0, irq_num >> 2,
->                             irq_num & 3, level);
-> diff --git a/hw/isa/lpc_ich9.c b/hw/isa/lpc_ich9.c
-> index 9c47a2f6c7..733a99d443 100644
-> --- a/hw/isa/lpc_ich9.c
-> +++ b/hw/isa/lpc_ich9.c
-> @@ -51,6 +51,9 @@
->  #include "hw/core/cpu.h"
->  #include "hw/nvram/fw_cfg.h"
->  #include "qemu/cutils.h"
-> +#include "hw/xen/xen.h"
-> +#include "sysemu/xen.h"
-> +#include "hw/southbridge/piix.h"
->  #include "hw/acpi/acpi_aml_interface.h"
->  #include "trace.h"
->  
-> @@ -535,11 +538,49 @@ static int ich9_lpc_post_load(void *opaque, int version_id)
->      return 0;
->  }
->  
-> +static void ich9_lpc_config_write_xen(PCIDevice *d,
-> +                                  uint32_t addr, uint32_t val, int len)
-> +{
-> +    static bool pirqe_f_warned = false;
-> +    if (ranges_overlap(addr, len, ICH9_LPC_PIRQA_ROUT, 4)) {
-> +        /* handle PIRQA..PIRQD routing */
-> +        /* Scan for updates to PCI link routes (0x60-0x63). */
-> +        int i;
-> +        for (i = 0; i < len; i++) {
-> +            uint8_t v = (val >> (8 * i)) & 0xff;
-> +            if (v & 0x80) {
-> +                v = 0;
-> +            }
-> +            v &= 0xf;
-> +            if (((addr + i) >= PIIX_PIRQCA) && ((addr + i) <= PIIX_PIRQCD)) {
-> +                xen_set_pci_link_route(addr + i - PIIX_PIRQCA, v);
-> +            }
-> +        }
-> +    } else if (ranges_overlap(addr, len, ICH9_LPC_PIRQE_ROUT, 4)) {
-> +        while (len--) {
-> +            if (range_covers_byte(ICH9_LPC_PIRQE_ROUT, 4, addr) &&
-> +                (val & 0x80) == 0) {
-> +                /* print warning only once */
-> +                if (!pirqe_f_warned) {
-> +                    pirqe_f_warned = true;
-> +                    fprintf(stderr, "WARNING: guest domain attempted to use PIRQ%c "
-> +                            "routing which is not supported for Xen/Q35 currently\n",
-> +                            (char)(addr - ICH9_LPC_PIRQE_ROUT + 'E'));
-> +                    break;
-> +                }
-> +            }
-> +            addr++, val >>= 8;
-> +        }
-> +    }
-> +}
-> +
->  static void ich9_lpc_config_write(PCIDevice *d,
->                                    uint32_t addr, uint32_t val, int len)
->  {
->      ICH9LPCState *lpc = ICH9_LPC_DEVICE(d);
->      uint32_t rcba_old = pci_get_long(d->config + ICH9_LPC_RCBA);
-> +    if (xen_enabled())
-> +        ich9_lpc_config_write_xen(d, addr, val, len);
->  
->      pci_default_write_config(d, addr, val, len);
->      if (ranges_overlap(addr, len, ICH9_LPC_PMBASE, 4) ||
-> @@ -731,10 +772,14 @@ static void ich9_lpc_realize(PCIDevice *d, Error **errp)
->          return;
->      }
->  
-> -    pci_bus_irqs(pci_bus, ich9_lpc_set_irq, d, ICH9_LPC_NB_PIRQS);
-> -    pci_bus_map_irqs(pci_bus, ich9_lpc_map_irq);
-> -    pci_bus_set_route_irq_fn(pci_bus, ich9_route_intx_pin_to_irq);
-> -
-> +    if (xen_enabled()) {
-> +        pci_bus_irqs(pci_bus, xen_cmn_set_irq, d, ICH9_XEN_NUM_IRQ_SOURCES);
-> +        pci_bus_map_irqs(pci_bus, xen_cmn_pci_slot_get_pirq);
-> +    } else {
-> +        pci_bus_irqs(pci_bus, ich9_lpc_set_irq, d, ICH9_LPC_NB_PIRQS);
-> +        pci_bus_map_irqs(pci_bus, ich9_lpc_map_irq);
-> +        pci_bus_set_route_irq_fn(pci_bus, ich9_route_intx_pin_to_irq);
-> +    }
->      ich9_lpc_pm_init(lpc);
->  }
->  
-> diff --git a/hw/isa/piix3.c b/hw/isa/piix3.c
-> index f9103ea45a..3d0545eb0e 100644
-> --- a/hw/isa/piix3.c
-> +++ b/hw/isa/piix3.c
-> @@ -420,7 +420,7 @@ static void piix3_xen_realize(PCIDevice *dev, Error **errp)
->       * connected to the IOAPIC directly.
->       * These additional routes can be discovered through ACPI.
->       */
-> -    pci_bus_irqs(pci_bus, xen_piix3_set_irq, piix3, XEN_PIIX_NUM_PIRQS);
-> +    pci_bus_irqs(pci_bus, xen_cmn_set_irq, piix3, XEN_PIIX_NUM_PIRQS);
->  }
->  
->  static void piix3_xen_class_init(ObjectClass *klass, void *data)
-> diff --git a/include/hw/southbridge/ich9.h b/include/hw/southbridge/ich9.h
-> index fd01649d04..07b84d5227 100644
-> --- a/include/hw/southbridge/ich9.h
-> +++ b/include/hw/southbridge/ich9.h
-> @@ -130,6 +130,7 @@ struct ICH9LPCState {
->  
->  #define ICH9_A2_LPC_REVISION                    0x2
->  #define ICH9_LPC_NB_PIRQS                       8       /* PCI A-H */
-> +#define ICH9_XEN_NUM_IRQ_SOURCES                128
->  
->  #define ICH9_LPC_PMBASE                         0x40
->  #define ICH9_LPC_PMBASE_BASE_ADDRESS_MASK       ICH9_MASK(32, 15, 7)
-> diff --git a/include/hw/xen/xen.h b/include/hw/xen/xen.h
-> index 2bd8ec742d..a2c3d98eaa 100644
-> --- a/include/hw/xen/xen.h
-> +++ b/include/hw/xen/xen.h
-> @@ -37,9 +37,9 @@ extern uint32_t xen_domid;
->  extern enum xen_mode xen_mode;
->  extern bool xen_domid_restrict;
->  
-> -int xen_pci_slot_get_pirq(PCIDevice *pci_dev, int irq_num);
-> +int xen_cmn_pci_slot_get_pirq(PCIDevice *pci_dev, int irq_num);
->  int xen_set_pci_link_route(uint8_t link, uint8_t irq);
-> -void xen_piix3_set_irq(void *opaque, int irq_num, int level);
-> +void xen_cmn_set_irq(void *opaque, int irq_num, int level);
->  void xen_hvm_inject_msi(uint64_t addr, uint32_t data);
->  int xen_is_pirq_msi(uint32_t msi_data);
->  
-> diff --git a/stubs/xen-hw-stub.c b/stubs/xen-hw-stub.c
-> index 34a22f2ad7..f06fbf48c8 100644
-> --- a/stubs/xen-hw-stub.c
-> +++ b/stubs/xen-hw-stub.c
-> @@ -10,12 +10,12 @@
->  #include "hw/xen/xen.h"
->  #include "hw/xen/xen-x86.h"
->  
-> -int xen_pci_slot_get_pirq(PCIDevice *pci_dev, int irq_num)
-> +int xen_cmn_pci_slot_get_pirq(PCIDevice *pci_dev, int irq_num)
->  {
->      return -1;
->  }
->  
-> -void xen_piix3_set_irq(void *opaque, int irq_num, int level)
-> +void xen_cmn_set_irq(void *opaque, int irq_num, int level)
->  {
->  }
->  
-> -- 
-> 2.34.1
+On 6/20/23 16:31, Frederic Barrat wrote:
 > 
 > 
+> On 20/06/2023 13:20, Cédric Le Goater wrote:
+>> On 6/20/23 12:45, Peter Maydell wrote:
+>>> On Sat, 10 Jun 2023 at 14:31, Daniel Henrique Barboza
+>>> <danielhb413@gmail.com> wrote:
+>>>>
+>>>> From: Frederic Barrat <fbarrat@linux.ibm.com>
+>>>>
+>>>> The Thread Interrupt Management Area (TIMA) can be accessed through 4
+>>>> ports, targeted by the address. The base address of a TIMA
+>>>> is using port 0 and the other ports are 0x80 apart. Using one port or
+>>>> another can be useful to balance the load on the snoop buses. With
+>>>> skiboot and linux, we currently use port 0, but as it tends to be
+>>>> busy, another hypervisor is using port 1 for TIMA access.
+>>>>
+>>>> The port address bits fall in between the special op indication
+>>>> bits (the 2 MSBs) and the register offset bits (the 6 LSBs). They are
+>>>> "don't care" for the hardware when processing a TIMA operation. This
+>>>> patch filters out those port address bits so that a TIMA operation can
+>>>> be triggered using any port.
+>>>>
+>>>> It is also true for indirect access (through the IC BAR) and it's
+>>>> actually nothing new, it was already the case on P9. Which helps here,
+>>>> as the TIMA handling code is common between P9 (xive) and P10 (xive2).
+>>>>
+>>>> Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
+>>>> Reviewed-by: Cédric Le Goater <clg@kaod.org>
+>>>> Message-Id: <20230601121331.487207-6-fbarrat@linux.ibm.com>
+>>>> Signed-off-by: Daniel Henrique Barboza <danielhb413@gmail.com>
+>>>> ---
+>>>
+>>> Hi -- Coverity points out that there's a problem with this
+>>> change (CID 1512997, 1512998):
+>>>
+>>>> --- a/hw/intc/pnv_xive2.c
+>>>> +++ b/hw/intc/pnv_xive2.c
+>>>> @@ -1662,6 +1662,8 @@ static void pnv_xive2_tm_write(void *opaque, hwaddr offset,
+>>>>       bool gen1_tima_os =
+>>>>           xive->cq_regs[CQ_XIVE_CFG >> 3] & CQ_XIVE_CFG_GEN1_TIMA_OS;
+>>>>
+>>>> +    offset &= TM_ADDRESS_MASK;
+>>>
+>>> Here we now mask off most of the bytes of 'offset',
+>>> because TM_ADDRESS_MASK is 0xC3F...
+>>>
+>>>> +
+>>>>       /* TODO: should we switch the TM ops table instead ? */
+>>>>       if (!gen1_tima_os && offset == HV_PUSH_OS_CTX_OFFSET) {
+>>>
+>>> ...but here we compare offset against HV_PUSH_OS_CTX_OFFSET,
+>>> which is defined as
+>>> #define HV_PUSH_OS_CTX_OFFSET  (HV_PAGE_OFFSET | (TM_QW1_OS + TM_WORD2))
+>>> and since
+>>> #define HV_PAGE_OFFSET         (XIVE_TM_HV_PAGE << TM_SHIFT)
+>>> #define XIVE_TM_HV_PAGE         0x1
+>>> #define TM_SHIFT                16
+>>>
+>>> that means HV_PUSH_OS_CTX_OFFSET has bits defined in the
+>>> upper 16 bits, and the comparison can now never be true,
+>>> making the if() dead code.
+>>>
+>>>>           xive2_tm_push_os_ctx(xptr, tctx, offset, value, size);
+>>>> @@ -1681,6 +1683,8 @@ static uint64_t pnv_xive2_tm_read(void *opaque, hwaddr offset, unsigned size)
+>>>>       bool gen1_tima_os =
+>>>>           xive->cq_regs[CQ_XIVE_CFG >> 3] & CQ_XIVE_CFG_GEN1_TIMA_OS;
+>>>>
+>>>> +    offset &= TM_ADDRESS_MASK;
+>>>> +
+>>>>       /* TODO: should we switch the TM ops table instead ? */
+>>>>       if (!gen1_tima_os && offset == HV_PULL_OS_CTX_OFFSET) {
+>>>>           return xive2_tm_pull_os_ctx(xptr, tctx, offset, size);
+>>>
+>>> Similarly here.
+>>
+>>
+>> yes. I think this went unnoticed because the push/pull os context
+>> commands are only used by the HV when a vCPU is dipatched on a HW
+>> thread. We would need a test for a KVM guest running under the QEMU
+>> PowerNV POWER10 machine. This requires an image with some tuning
+>> because emulation is a bit slow. I use to have a buildroot image
+>> including a qemu and smaller buildroot image for it.
+> 
+> 
+> Working on a fix. It's true that I hadn't run a guest within the powernv machine for quite a while. I'm dusting off my buildroot repo to test it this time...
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+
+The XIVE2 TM ops are implemented with a shortcut (See the TODO in
+pnv_xive2_tm_*()). We could
+
+1. extend xive_tctx_tm_write/read with a 'bool gen1_tima_os' parameter:
+
+	xive_tctx_tm_write(xptr, tctx, offset, value, size, gen1_tima_os);
+
+    and use the bool in xive_tm_find_op() to select a XiveTmOp array.
+    The new xive2_tm_operations[] would be defined as xive_tm_operations[]
+    but with an override of HV_PUSH_OS_CTX_OFFSET and HV_PULL_OS_CTX_OFFSET.
+
+2. or extend the XivePresenterClass with a get_config() handler like it
+    was done for Xive2RouterClass().
+
+3. or introduce an array of XiveTmOp under XivePresenterClass defined by
+    the controller variant.
+
+In any case, we need a new xive2_tm_operations[] for the XIVE2 TM register
+layout. Option 1 is simpler I think.
+
+The weird part would be to include "xive2.h" in "xive.c" to get the
+definitions of xive2_tm_push/pull_os_ctx. I guess that's ok.
+
+This would  also "fix" the indirect ops in XIVE2, not that we care much
+but it will be cleaner.
+
+Thanks,
+
+
+C.
+
+
+
 
 
