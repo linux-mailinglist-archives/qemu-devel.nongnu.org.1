@@ -2,53 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 759B5738A93
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 18:14:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D097C738A99
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 18:15:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qC0S8-0003ug-4r; Wed, 21 Jun 2023 12:13:04 -0400
+	id 1qC0Td-0004gc-Q7; Wed, 21 Jun 2023 12:14:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qC0S4-0003uA-CT
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 12:13:00 -0400
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
+ id 1qC0Ta-0004g7-ES
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 12:14:34 -0400
+Received: from zuban.uni-paderborn.de ([2001:638:502:c003::17])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qC0S0-0006vq-Sq
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 12:12:59 -0400
-Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id 76D18746E5A;
- Wed, 21 Jun 2023 18:12:44 +0200 (CEST)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 3EBD174632B; Wed, 21 Jun 2023 18:12:44 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 3CC23745720;
- Wed, 21 Jun 2023 18:12:44 +0200 (CEST)
-Date: Wed, 21 Jun 2023 18:12:44 +0200 (CEST)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-cc: laurent@vivier.eu, qemu-devel@nongnu.org
-Subject: Re: [PATCH v4 02/24] q800: add missing space after parent object in
- GLUEState
-In-Reply-To: <4e72ee4d-a5ed-7c43-df8b-3d3d8c159675@ilande.co.uk>
-Message-ID: <73bb7d36-d5c2-02b9-a0f1-79b940487ddc@eik.bme.hu>
-References: <20230621085353.113233-1-mark.cave-ayland@ilande.co.uk>
- <20230621085353.113233-3-mark.cave-ayland@ilande.co.uk>
- <2f1b2a44-0d0a-751d-4f3f-2de1f4ce4729@eik.bme.hu>
- <4e72ee4d-a5ed-7c43-df8b-3d3d8c159675@ilande.co.uk>
+ (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
+ id 1qC0TX-0007Mj-Lf
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 12:14:34 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=mail.uni-paderborn.de; s=20170601; h=Content-Transfer-Encoding:MIME-Version
+ :Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+ Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+ :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+ List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=UNXVAnO2CHKrSfMElGZ6Jp+zM0cIL4vN3FTw5C4l28g=; b=DlzhInrTXt8V0st3CdQg8Jhvmh
+ lrn4F2Io0mlEpSnf6DdX7hRDdpzplkzj5hAQfxJie6u7L0oLxyYNUADWJUINVpYgtaunIcQxn2DFm
+ DnuYh1NY1BGcDwRAHOVDlrnHST56hVFPZHoRc+bfci3/c/flt5EVq10SdXRtmec3dmR4=;
+X-Envelope-From: <kbastian@mail.uni-paderborn.de>
+From: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
+To: qemu-devel@nongnu.org
+Cc: kbastian@mail.uni-paderborn.de
+Subject: [PULL 00/20] tricore queue
+Date: Wed, 21 Jun 2023 18:14:02 +0200
+Message-Id: <20230621161422.1652151-1-kbastian@mail.uni-paderborn.de>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="3866299591-1591175739-1687363964=:5320"
-X-Spam-Probability: 9%
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-PMX-Version: 6.4.9.2830568, Antispam-Engine: 2.7.2.2107409,
+ Antispam-Data: 2023.6.21.160018, AntiVirus-Engine: 6.0.0,
+ AntiVirus-Data: 2023.6.21.600001
+X-Sophos-SenderHistory: ip=79.202.219.6, fs=1208958, da=174973131, mc=141, sc=0,
+ hc=141, sp=0, fso=1208958, re=0, sd=0, hd=0
+X-IMT-Source: Intern
+X-IMT-Spam-Score: 0.0 ()
+X-IMT-Authenticated-Sender: uid=kbastian,ou=People,o=upb,c=de
+Received-SPF: pass client-ip=2001:638:502:c003::17;
+ envelope-from=kbastian@mail.uni-paderborn.de; helo=zuban.uni-paderborn.de
+X-Spam_score_int: -42
+X-Spam_score: -4.3
+X-Spam_bar: ----
+X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -64,58 +69,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+The following changes since commit c5ffd16ba4c8fd3601742cc9d2b3cff03995dd5d:
 
---3866299591-1591175739-1687363964=:5320
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8BIT
+  Revert "cputlb: Restrict SavedIOTLB to system emulation" (2023-06-21 07:19:46 +0200)
 
-On Wed, 21 Jun 2023, Mark Cave-Ayland wrote:
-> On 21/06/2023 12:41, BALATON Zoltan wrote:
->
->> On Wed, 21 Jun 2023, Mark Cave-Ayland wrote:
->>> This brings GLUEState in line with our current QOM guidelines.
->> 
->> Are these guidelines documented somewhere? I like this better than the 
->> public/private comments (although I prefer no space at all with just 
->> documenting that QOM object parents should not be accessed directly) but I 
->> haven't seen it discussed and agreed upon so it looks like a convention you 
->> defined but not documented anywhere. But it could be I missed the patch to 
->> coding style or QOM docs to establish this convention.
->
-> Alex documented this earlier in the year: you can find this online at 
-> https://qemu.readthedocs.io/en/master/devel/style.html#qemu-specific-idioms.
+are available in the Git repository at:
 
-The examples in
-https://qemu.readthedocs.io/en/master/devel/qom.html
-now contradict that by using parent instead of parent_obj there.
+  https://github.com/bkoppelmann/qemu.git tags/pull-tricore-20230621-1
 
->> If we really want to make these QOM object states stand out we might even 
->> consider formatting these as
->> 
->> struct GLUEState { SysBusDevice parent_obj;
->>      M68kCPU *cpu;
->>      ...
->> }
->> 
->> unless checkpatch would not like that or something.
->
-> I'm not overly convinced by this, and yes I suspect it would also require 
-> some hacking on checkpatch.pl for it to work.
+for you to fetch changes up to a9c37abdff65a07d0191123a21d318c4d8cc7f33:
 
-Nevermind, was just an idea. Blank line wiithout comments is also a good 
-convention and less weird looking than the above.
+  target/tricore: Fix ICR.IE offset in RESTORE insn (2023-06-21 18:09:54 +0200)
 
-Regards,
-BALATON Zoltan
+----------------------------------------------------------------
+- Implement privilege levels for TriCore
+- Fix missing REG_PAIR() for insns using two 32 regs
+- Fix erroneously saving PSW.CDC on CALL insns
+- Added some missing v1.6.2 insns
 
->
->
-> ATB,
->
-> Mark.
->
->
---3866299591-1591175739-1687363964=:5320--
+----------------------------------------------------------------
+Bastian Koppelmann (19):
+      target/tricore: Introduce ISA 1.6.2 feature
+      target/tricore: Add popcnt.w insn
+      target/tricore: Add LHA insn
+      target/tricore: Add crc32l.w insn
+      target/tricore: Add crc32.b insn
+      target/tricore: Add shuffle insn
+      target/tricore: Implement SYCSCALL insn
+      target/tricore: Add DISABLE insn variant
+      target/tricore: Correctly fix saving PSW.CDE to CSA on call
+      target/tricore: Add CHECK_REG_PAIR() for insn accessing 64 bit regs
+      target/tricore: Fix helper_ret() not correctly restoring PSW
+      target/tricore: Fix RR_JLI clobbering reg A[11]
+      target/tricore: Introduce DISAS_TARGET_EXIT
+      target/tricore: ENABLE exit to main-loop
+      target/tricore: Indirect jump insns use tcg_gen_lookup_and_goto_ptr()
+      target/tricore: Introduce priv tb flag
+      target/tricore: Implement privilege level for all insns
+      target/tricore: Honour privilege changes on PSW write
+      target/tricore: Fix ICR.IE offset in RESTORE insn
+
+Siqi Chen (1):
+      target/tricore: Fix out-of-bounds index in imask instruction
+
+ target/tricore/cpu.c             |  13 +++
+ target/tricore/cpu.h             |  18 +++--
+ target/tricore/helper.h          |   5 +-
+ target/tricore/op_helper.c       |  69 ++++++++++++++--
+ target/tricore/translate.c       | 167 ++++++++++++++++++++++++++++++---------
+ target/tricore/tricore-opcodes.h |  16 +++-
+ 6 files changed, 237 insertions(+), 51 deletions(-)
 
