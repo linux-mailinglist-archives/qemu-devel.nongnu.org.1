@@ -2,81 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21B29738FFE
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 21:24:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05E2773900D
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 21:26:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qC3QN-0004Qs-1c; Wed, 21 Jun 2023 15:23:27 -0400
+	id 1qC3Sn-0005Au-GQ; Wed, 21 Jun 2023 15:25:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qC3QH-0004QM-Mj
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 15:23:21 -0400
-Received: from mail-lj1-x22e.google.com ([2a00:1450:4864:20::22e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qC3QF-0002lH-Tj
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 15:23:21 -0400
-Received: by mail-lj1-x22e.google.com with SMTP id
- 38308e7fff4ca-2b46d4e1b0aso67255401fa.2
- for <qemu-devel@nongnu.org>; Wed, 21 Jun 2023 12:23:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687375396; x=1689967396;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=D98fWOq/ufaLClSXbmaB44g4u1fVaXRgc4OO/ZyQ4/g=;
- b=IfowSHsp/8dQ4BzcPVRK+lBCX6J0My2DClWDk9wgkEihQA42kTOA3l38xr8hdvczOb
- jxjdYtCC1upOgJCjD05+t8DGtXiykY+rMZ1Dd508Cx+C5kphIm/9Ac7FCiku8Oh+jcnp
- vHKwHjatNxJpR9Lx0OLTxkgiPt5GobPHpFy/2I9ugf4HS6+MtZulIz/7XcubUCY2p4VO
- zPVAHeRRryjcfIS3QRVS3TJEozttOnqJu7gdjHPLynn0R3uxGhIe0S9P80SvPEV/cpU1
- SNTnRofMWLQPIKVFgpgHU8oN6stJbfu0yEl77CGBtC472SWg/O8rVluyOaZ0j5dijUtg
- ApYw==
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qC3Sj-0005Ai-H9
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 15:25:53 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qC3Sh-0004bj-M3
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 15:25:52 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1687375550;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=hC45HfnF3wa3gE3dE3ykWurOhQ3b7U62Yjsh2yLrk/A=;
+ b=JWgagSrUvPbZcZosL3CF/tPDn4CJtsEew3COUrUSF5NRSwcclnjISCVvCbUNRizxM2uNjB
+ TjHi4QQLW73bn5CNv9q6V+aYrip3n/2byleIhSmJ5zQsPmuZx3yTbuwa1D6UtKgnDpgoaG
+ mgbv6KfmWPmQ+IeqUj60CBr3TE2dmS0=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-613-dttV3BeOPXyT8EZeAfFhlA-1; Wed, 21 Jun 2023 15:25:49 -0400
+X-MC-Unique: dttV3BeOPXyT8EZeAfFhlA-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-3f8ff5efc90so23903195e9.3
+ for <qemu-devel@nongnu.org>; Wed, 21 Jun 2023 12:25:48 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687375396; x=1689967396;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20221208; t=1687375547; x=1689967547;
+ h=mime-version:message-id:date:reply-to:user-agent:references
+ :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=D98fWOq/ufaLClSXbmaB44g4u1fVaXRgc4OO/ZyQ4/g=;
- b=k7WVEgI34cGWi6MxAWCl/wa5lAkdwKwndRyVrAfsGftQWbsFHh1pwtQtneYAiwNjkC
- rk33yb8HmwloBG6lOuoZRuhit2crfPNF0Zya/Xddyy/71ZSxHK9n0r8yS6S4aUfEhXMr
- quiXwYcIJ1njtnHfylknt4E/iGCP3xNXzpCXYBp8GEOwtaE9PPmJahwMCpj2ZdTbhNj0
- Gotlj4TxdOV22MOgAQFyiBpOeLLcqFRuHMIZqc27f5ll5e/z1mF/9f+3F19+hoaXgGqJ
- P1bFs49cEiiBK5yf7k+MlxFAkZmhjxiwoZKppwxJCKA5L8TS4dr8lMgANr9RyXA5Sm5R
- z+gQ==
-X-Gm-Message-State: AC+VfDyarJvME11wlVhyvvZOhsNm1S5ufFQTbpsaoCvTaosFgd/UfAz/
- g+zTGZHvsIrkIQ6kmXEMDoaYtINAJFw8TC2rnBPYdw==
-X-Google-Smtp-Source: ACHHUZ7ylidxA+rBgWGtOIX28U5Q7HYZD041fPyaDgd0p//bGDAh0g2uEIbyj21dM3NVylMsfyq7Uno2jQruliPXM/c=
-X-Received: by 2002:a2e:8443:0:b0:2b1:edfe:8171 with SMTP id
- u3-20020a2e8443000000b002b1edfe8171mr9711250ljh.36.1687375396179; Wed, 21 Jun
- 2023 12:23:16 -0700 (PDT)
+ bh=hC45HfnF3wa3gE3dE3ykWurOhQ3b7U62Yjsh2yLrk/A=;
+ b=QcnHI+6WWSac3Ueecl5hxA/YDXv5FiG/R2b+lG89YpTNDAyNJ5UQe5pGzURryA/Pe4
+ wGtKGtVZS1mukQeHK6oLuDP3D81qPStjv4B3EbCYTutfqWLLQy+3BYOSTx+zGPhcMZwr
+ CnaUzfLpDat/ILYt5tBSNxoEtprRhttQIf6xYC83Gm8sVroMMgDC0Pkn/YLlVcibFmPl
+ 2a0oHqXkPAU74AIZA3U6DO7Eyi0C5vXSWkdAmUX8VqaP9gWVvbHC8xBxWdoiqhtuPq73
+ hmot0TVIt+DoNS4liwvqRYh6+LMLyK5GMM4HLtBjml+kmcF1uWczkJmofKr1gL68q74G
+ unpA==
+X-Gm-Message-State: AC+VfDw0qud7VyELz4+Y6ufJAVHXSTUP7nKl47OdV/alvMcnlasIXxCI
+ ccsFQhBxUrb/a88AJNHEvIDdSqcT9+6Ovc+eHQblQ+SPZR69AV/hAO/DCPWgoJLY7Q7VrA0Xjqh
+ LbeZEVfuQasczpfw=
+X-Received: by 2002:a05:600c:2190:b0:3f9:be1:507d with SMTP id
+ e16-20020a05600c219000b003f90be1507dmr8305969wme.20.1687375547757; 
+ Wed, 21 Jun 2023 12:25:47 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ59hH2cc0tljJ6Jf0GP90+6G5QreXl5BVOrpKmg+98hakguwmkAjlkxcnmvTD4ZCugXKEZbkA==
+X-Received: by 2002:a05:600c:2190:b0:3f9:be1:507d with SMTP id
+ e16-20020a05600c219000b003f90be1507dmr8305956wme.20.1687375547453; 
+ Wed, 21 Jun 2023 12:25:47 -0700 (PDT)
+Received: from redhat.com (static-92-120-85-188.ipcom.comunitel.net.
+ [188.85.120.92]) by smtp.gmail.com with ESMTPSA id
+ r19-20020a05600c285300b003f605566610sm16726021wmb.13.2023.06.21.12.25.46
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 21 Jun 2023 12:25:46 -0700 (PDT)
+From: Juan Quintela <quintela@redhat.com>
+To: Tejus GK <tejus.gk@nutanix.com>
+Cc: qemu-devel@nongnu.org,  peterx@redhat.com,  leobras@redhat.com,
+ berrange@redhat.com,  aravind.retnakaran@nutanix.com,
+ shivam.kumar1@nutanix.com
+Subject: Re: [PATCH v5 0/2] Update error description whenever migration fails
+In-Reply-To: <20230621130940.178659-1-tejus.gk@nutanix.com> (Tejus GK's
+ message of "Wed, 21 Jun 2023 13:09:38 +0000")
+References: <20230621130940.178659-1-tejus.gk@nutanix.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+Date: Wed, 21 Jun 2023 21:25:46 +0200
+Message-ID: <87sfakaa85.fsf@secure.mitica>
 MIME-Version: 1.0
-References: <CAFEAcA_UkPyic7U8eJkzBdBNoQowMToJkK-ro9re51zwn9-CMw@mail.gmail.com>
- <CAFEAcA_EjzQvy67XpXeEn7zMbkoCPLAs3n5PGK2J5kuGkFEBhQ@mail.gmail.com>
- <87352li6kx.fsf@linaro.org>
- <CAFEAcA9JuKBZSjq6WaztNA74CU1g+b=5GQFO0KPqb2RzT3LcWg@mail.gmail.com>
- <87y1kdgmo8.fsf@linaro.org>
-In-Reply-To: <87y1kdgmo8.fsf@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Wed, 21 Jun 2023 20:23:05 +0100
-Message-ID: <CAFEAcA_+fSjhPBRTi5b64kcJAqZxrL+4oFiLyKG+TmobQhy5hw@mail.gmail.com>
-Subject: Re: 'make check-tcg' fails with an assert in
- qemu_plugin_vcpu_init_hook
-To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
-Cc: QEMU Developers <qemu-devel@nongnu.org>,
- Richard Henderson <richard.henderson@linaro.org>, 
- =?UTF-8?Q?Phil_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::22e;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x22e.google.com
+Content-Type: text/plain
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -90,53 +98,30 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 21 Jun 2023 at 11:00, Alex Benn=C3=A9e <alex.bennee@linaro.org> wro=
-te:
+Tejus GK <tejus.gk@nutanix.com> wrote:
+> Hi everyone,
 >
->
-> Peter Maydell <peter.maydell@linaro.org> writes:
->
-> > On Wed, 21 Jun 2023 at 09:05, Alex Benn=C3=A9e <alex.bennee@linaro.org>=
- wrote:
-> >>   - I suspect the plugin core stuff could be build once (or maybe twic=
-e,
-> >>     system and user)
-> >
-> > It is already build-once, that's why it goes wrong...
->
-> I thought it was the other way around:
->
->   specific_ss.add(when: 'CONFIG_PLUGIN', if_true: [files(
->     'loader.c',
->     'core.c',
->     'api.c',
->   ), declare_dependency(link_args: plugin_ldflags)])
->
-> but if we built it for linux-user and softmmu this could be fixed (until
-> the next breakage anyway). cpus-common.c is the common code that sets
-> this once.
+> This is the v5 patchset which has been rebased on the current 
+> master. Requesting this to be queued for merge as this has already been
+> reviewed. 
 
-Oh, right, I got it the wrong way around.
+queued.
 
-> >>   - we need to have some guard rails somehow to make sure things don't
-> >>     go out of sync
-> >
-> > We do, this is the poison.h stuff. CONFIG_USER_ONLY is a
-> > special case which we don't poison because there would be
-> > too much refactoring required...
+thanks.
+
 >
-> I guess a great big honking comment at the top of CPUState telling
-> people not to do that or pushing softmmu and user specific bits of
-> CPUState into their own de-referenced structures.
+> Regards,
+> Tejus
+>
+> Tejus GK (2):
+>   migration: Update error description whenever migration fails
+>   migration: Refactor repeated call of yank_unregister_instance
+>
+>  migration/migration.c | 23 ++++++++++++-----------
+>  1 file changed, 12 insertions(+), 11 deletions(-)
 
-It's not specific to CPUState, though. The thing you must not
-do is use CONFIG_USER_ONLY (or CONFIG_SOFTMMU, now) to ifdef
-out any struct field anywhere in any struct that's visible to
-compiled-once code, or otherwise do something that changes
-the ABI of a global or of a type passed around between functions.
-
--- PMM
 
