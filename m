@@ -2,39 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57A7A738AA4
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 18:15:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4E80738AB2
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 18:18:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qC0UJ-0005zI-5J; Wed, 21 Jun 2023 12:15:19 -0400
+	id 1qC0UN-0006Pv-QL; Wed, 21 Jun 2023 12:15:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1qC0UG-0005ie-GP
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 12:15:16 -0400
-Received: from hoth.uni-paderborn.de ([2001:638:502:c003::19])
+ id 1qC0UM-0006PK-Dz
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 12:15:22 -0400
+Received: from shirlock.uni-paderborn.de ([2001:638:502:c003::15])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1qC0UE-0007iP-Pj
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 12:15:16 -0400
+ id 1qC0UK-0007jd-RM
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 12:15:22 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=mail.uni-paderborn.de; s=20170601; h=Content-Transfer-Encoding:MIME-Version
  :References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=LUZ1WBSpQ4sZqf8bDekbMypQeyimgYsK7YIRqWKGFXA=; b=TLLMq6TsHBHGUElHi5ojIpW1ea
- QSH3GJAST4r9ZPupfUgjC/V79ImIJjNf8oGbIuUe1ez7+CssNYfuzVH3lTwQtAkm/Sg0qFtuRVMgM
- wzTPcSrcArlZna6yjzZIwgU74imPCVPprTYhAIXobD3K4yIKyl7vkhnBP16xRU3dBVtI=;
+ bh=RHciuW2fEWc0swd4kloYT+oqZYQTeQiigRooo87XSpc=; b=PTHDIf6LAOZhr9G3O4e/Xb8EJJ
+ GUT+tdxRIhsJVt+f/X4uYSoWsDtNAVl8mVsQBEGltKBBxh+OwCYQ82XJ7DgaXFVG/ctgH3aV8absW
+ QEz4BFwpuPx4tiuJT5t56YeEe9d3blZvkpJgjc/0Y0hoCKgfliogRtVmnsclBr8oFI4k=;
 X-Envelope-From: <kbastian@mail.uni-paderborn.de>
 From: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
 To: qemu-devel@nongnu.org
 Cc: kbastian@mail.uni-paderborn.de,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 08/20] target/tricore: Add DISABLE insn variant
-Date: Wed, 21 Jun 2023 18:14:10 +0200
-Message-Id: <20230621161422.1652151-9-kbastian@mail.uni-paderborn.de>
+	Siqi Chen <coc.cyqh@gmail.com>
+Subject: [PULL 09/20] target/tricore: Fix out-of-bounds index in imask
+ instruction
+Date: Wed, 21 Jun 2023 18:14:11 +0200
+Message-Id: <20230621161422.1652151-10-kbastian@mail.uni-paderborn.de>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230621161422.1652151-1-kbastian@mail.uni-paderborn.de>
 References: <20230621161422.1652151-1-kbastian@mail.uni-paderborn.de>
@@ -42,19 +43,20 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-PMX-Version: 6.4.9.2830568, Antispam-Engine: 2.7.2.2107409,
  Antispam-Data: 2023.6.21.160616, AntiVirus-Engine: 6.0.0,
- AntiVirus-Data: 2023.6.21.600001
-X-Sophos-SenderHistory: ip=79.202.219.6, fs=1209004, da=174973177, mc=157, sc=0,
- hc=157, sp=0, fso=1209004, re=0, sd=0, hd=0
+ AntiVirus-Data: 2023.6.6.600001
+X-Sophos-SenderHistory: ip=79.202.219.6, fs=1209010, da=174973183, mc=159, sc=0,
+ hc=159, sp=0, fso=1209010, re=0, sd=0, hd=0
 X-IMT-Source: Intern
 X-IMT-Spam-Score: 0.0 ()
 X-IMT-Authenticated-Sender: uid=kbastian,ou=People,o=upb,c=de
-Received-SPF: pass client-ip=2001:638:502:c003::19;
- envelope-from=kbastian@mail.uni-paderborn.de; helo=hoth.uni-paderborn.de
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=2001:638:502:c003::15;
+ envelope-from=kbastian@mail.uni-paderborn.de; helo=shirlock.uni-paderborn.de
+X-Spam_score_int: -42
+X-Spam_score: -4.3
+X-Spam_bar: ----
+X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -71,68 +73,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-this variant saves the 'IE' bit to a 'd' register. The 'IE' bitfield
-changed from ISA version 1.6.1, so we add icr_ie_offset to DisasContext
-as with the other DISABLE insn.
+From: Siqi Chen <coc.cyqh@gmail.com>
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+When translating  "imask" instruction of Tricore architecture, QEMU did not check whether the register index was out of bounds, resulting in a global-buffer-overflow.
+
+Reviewed-by: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1698
+Reported-by: Siqi Chen <coc.cyqh@gmail.com>
+Signed-off-by: Siqi Chen <coc.cyqh@gmail.com>
 Signed-off-by: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
-Message-Id: <20230614100039.1337971-9-kbastian@mail.uni-paderborn.de>
+Message-Id: <20230612065633.149152-1-coc.cyqh@gmail.com>
+Message-Id: <20230612113245.56667-2-kbastian@mail.uni-paderborn.de>
 ---
- target/tricore/translate.c       | 11 ++++++++++-
- target/tricore/tricore-opcodes.h |  1 +
- 2 files changed, 11 insertions(+), 1 deletion(-)
+ target/tricore/translate.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/target/tricore/translate.c b/target/tricore/translate.c
-index f01000efd4..6712d98f6e 100644
+index 6712d98f6e..74faad4794 100644
 --- a/target/tricore/translate.c
 +++ b/target/tricore/translate.c
-@@ -75,7 +75,7 @@ typedef struct DisasContext {
-     int mem_idx;
-     uint32_t hflags, saved_hflags;
-     uint64_t features;
--    uint32_t icr_ie_mask;
-+    uint32_t icr_ie_mask, icr_ie_offset;
- } DisasContext;
+@@ -5339,6 +5339,7 @@ static void decode_rcrw_insert(DisasContext *ctx)
  
- static int has_feature(DisasContext *ctx, int feature)
-@@ -7883,6 +7883,13 @@ static void decode_sys_interrupts(DisasContext *ctx)
-     case OPC2_32_SYS_DISABLE:
-         tcg_gen_andi_tl(cpu_ICR, cpu_ICR, ~ctx->icr_ie_mask);
-         break;
-+    case OPC2_32_SYS_DISABLE_D:
-+        if (has_feature(ctx, TRICORE_FEATURE_16)) {
-+            tcg_gen_extract_tl(cpu_gpr_d[r1], cpu_ICR, ctx->icr_ie_offset, 1);
-+            tcg_gen_andi_tl(cpu_ICR, cpu_ICR, ~ctx->icr_ie_mask);
-+        } else {
-+            generate_trap(ctx, TRAPC_INSN_ERR, TIN2_IOPC);
-+        }
-     case OPC2_32_SYS_DSYNC:
-         break;
-     case OPC2_32_SYS_ENABLE:
-@@ -8302,8 +8309,10 @@ static void tricore_tr_init_disas_context(DisasContextBase *dcbase,
-     ctx->features = env->features;
-     if (has_feature(ctx, TRICORE_FEATURE_161)) {
-         ctx->icr_ie_mask = R_ICR_IE_161_MASK;
-+        ctx->icr_ie_offset = R_ICR_IE_161_SHIFT;
-     } else {
-         ctx->icr_ie_mask = R_ICR_IE_13_MASK;
-+        ctx->icr_ie_offset = R_ICR_IE_13_SHIFT;
-     }
- }
- 
-diff --git a/target/tricore/tricore-opcodes.h b/target/tricore/tricore-opcodes.h
-index af63926731..bc62b73173 100644
---- a/target/tricore/tricore-opcodes.h
-+++ b/target/tricore/tricore-opcodes.h
-@@ -1467,6 +1467,7 @@ enum {
- enum {
-     OPC2_32_SYS_DEBUG                            = 0x04,
-     OPC2_32_SYS_DISABLE                          = 0x0d,
-+    OPC2_32_SYS_DISABLE_D                        = 0x0f, /* 1.6 up */
-     OPC2_32_SYS_DSYNC                            = 0x12,
-     OPC2_32_SYS_ENABLE                           = 0x0c,
-     OPC2_32_SYS_ISYNC                            = 0x13,
+     switch (op2) {
+     case OPC2_32_RCRW_IMASK:
++        CHECK_REG_PAIR(r4);
+         tcg_gen_andi_tl(temp, cpu_gpr_d[r3], 0x1f);
+         tcg_gen_movi_tl(temp2, (1 << width) - 1);
+         tcg_gen_shl_tl(cpu_gpr_d[r4 + 1], temp2, temp);
 -- 
 2.40.1
 
