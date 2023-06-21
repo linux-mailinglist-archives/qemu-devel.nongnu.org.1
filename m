@@ -2,74 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD32D737AD3
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 07:50:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F55B737A8A
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 07:09:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBqj7-0000mp-Bu; Wed, 21 Jun 2023 01:49:57 -0400
+	id 1qBq4E-0001jo-GI; Wed, 21 Jun 2023 01:07:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shivamvijay543@gmail.com>)
- id 1qBpyY-0001DP-GL
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 01:01:51 -0400
-Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shivamvijay543@gmail.com>)
- id 1qBpyW-0001iU-Vv
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 01:01:50 -0400
-Received: by mail-ed1-x52b.google.com with SMTP id
- 4fb4d7f45d1cf-519f6e1a16cso6460679a12.2
- for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 22:01:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1687323706; x=1689915706;
- h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
- :date:message-id:reply-to;
- bh=zAccjwQrlUkSvGUrWlsWMJpUn6ys/uCYuq5viuv4094=;
- b=EaOCUUyOROA1+Z8N5XBns5H6ZRsbjaiwtKVKeqQaFsK/dV0IgkhNGg4BnnPEYA8Xgg
- N0xJQFjFjwu4ihmiPjoxN9WRDUoRkxe1v457EoicC6TKyRJeSUhShL67u8Upmd8R1nOA
- SUTSAGQNLT040CBvsJ/k9vSzaz40gxwWJfpyeOGk5RaKWXDMS8XgdoTEmd4QSi7/tqwl
- jMZn0FIpOWr4bYNwRBYs9tHnXCXS4UuowG7zZbd4WllWUvwnIMuBTdGwPua7dx7cydU7
- o6pmnfcJpfRwMOo41nM8QgSt3kYnRpJzN/vfLZgV8TLtunNG1bgb2yhYqjd831TTvhSb
- M6wQ==
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qBq40-0001jF-Ev
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 01:07:30 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qBq3y-0004Nf-AB
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 01:07:28 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1687324044;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=2yX/rTODsrzZBkWIB9/BWb+xdm4DDNCUFnFoaUQ0XKI=;
+ b=CEsL5KmROEU6mq0WbTrSXBX3mEsRYVoPFwEH62oQCocGi0M4V/2vWDWMVk4XGFNguRJNZG
+ DvdsFu9O6ZTog9rzuhpf6iLOL0imdlBxRk3QjolNcoV7R+UI1S2X1AKhoR2jJsSfJP/6Wx
+ ukA4sNTQH9Sk9LMnKlQQOEYU1Q8W6ZU=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-508-PouZvXlUP6-K4aDQD55cyg-1; Wed, 21 Jun 2023 01:07:22 -0400
+X-MC-Unique: PouZvXlUP6-K4aDQD55cyg-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-3f81f4a7596so32464955e9.1
+ for <qemu-devel@nongnu.org>; Tue, 20 Jun 2023 22:07:22 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687323706; x=1689915706;
- h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=zAccjwQrlUkSvGUrWlsWMJpUn6ys/uCYuq5viuv4094=;
- b=gPvbSCVQHpQOqP9xSAH0n4mX4tq5OJJju6gRn03a+gsVKb3Ff+clzwcZOTlbex/1CO
- f1R320kA88pGeI4CPFrGX2/qFWH8PH7RRNPUN2nUA1EGNarOCRrffFQ8As+g7giQ/Ljt
- ouOHdfXnV3XBx/QOZWpHJ/uj+4y86+QpsK1OecW3ZEXhU4kpBsf1JqfFIF1TrADB/LS1
- vaS7uBHFJtZnMyuuB0m4etZTc+S/YyO4Pk7+cxhnLdkGcgg2SFS4kqH3OBd2pqRQScsW
- jzEjAUqztdmZO9XRU4KfE2lSQKFn8wBJlPX6fsRjKX+pyP93GYZLsj+MkKp9F79GS8S4
- 7jSg==
-X-Gm-Message-State: AC+VfDx4fRan/oCCbCK5fW85Zq9pUKKNf/03TkOEH75YK5h6euV22V6Y
- cXfSYSt0q11ixgs54oKmrrUN/QKAvdMJ3bWUj3RdTHCWga1EfQ==
-X-Google-Smtp-Source: ACHHUZ5E1rKvSxiK1PgLQ1jitYwnVlinnteRc/ATwvONk69iDEmz3e8sx6FAp2d7UqNjP6YIKRABzI/8VTKU25JBvo8=
-X-Received: by 2002:a17:907:3da9:b0:988:4f36:6afa with SMTP id
- he41-20020a1709073da900b009884f366afamr8349906ejc.56.1687323706126; Tue, 20
- Jun 2023 22:01:46 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1687324041; x=1689916041;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=2yX/rTODsrzZBkWIB9/BWb+xdm4DDNCUFnFoaUQ0XKI=;
+ b=OsYs7C9K2qtFhKn7rxf64LV53mKb3N49cnfsgsE43hIsmEBTGT2zSJNVKoWCqlp6l4
+ vB8fmtQTU7hkLwpPQ3zLFQ8O8pdl9f7JVkY8oyuAaZkLPPK2f3f9sWTfg1M/si6P6Nwo
+ sNW+hm3l5W6+y94IThhIV7v7SqMn+Sk7GB4W2FEneAvGbW9BD+GJc4WAelmBsWeRgVkz
+ lKWSISUcOi6wd2Ti9S55fXvEvNiJ6CkyhAL1K1Dx2wuUkRX1tkHiE2UNg5D+Sdzhxy9j
+ Wp2pYjPqydkdX1QbmscegbUISGeyljM9jySpkPd8cBJSe9whDnyUe/Iyb5AsNCzG8c8L
+ Sq+w==
+X-Gm-Message-State: AC+VfDzmxMy7jWDS2jfefvxAiBGTAfgpS2sAzHaD/yto0WPUiPEIBN9c
+ FezfwPCmVwdMhUwL90QjS377Morop7vzi2Zp4VR5CF13WePN1uA8OC3IOif/5gmyQgT25mGz+OR
+ Up9yvwd73YczD0Ok=
+X-Received: by 2002:a05:600c:2114:b0:3f9:9a93:216f with SMTP id
+ u20-20020a05600c211400b003f99a93216fmr6559839wml.29.1687324041593; 
+ Tue, 20 Jun 2023 22:07:21 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4dSPiJpKHfhwyHXcNfwqH+UJzT4kM4UQbyp/USjHxueSuk5yorMPHyQPTQwcV6dULADR9vAA==
+X-Received: by 2002:a05:600c:2114:b0:3f9:9a93:216f with SMTP id
+ u20-20020a05600c211400b003f99a93216fmr6559830wml.29.1687324041267; 
+ Tue, 20 Jun 2023 22:07:21 -0700 (PDT)
+Received: from redhat.com ([2.52.15.156]) by smtp.gmail.com with ESMTPSA id
+ z7-20020a7bc7c7000000b003f90067880esm12267507wmk.47.2023.06.20.22.07.19
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 20 Jun 2023 22:07:20 -0700 (PDT)
+Date: Wed, 21 Jun 2023 01:07:17 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Ani Sinha <anisinha@redhat.com>
+Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Julia Suvorova <jusual@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, qemu-devel@nongnu.org
+Subject: Re: [PATCH v4] hw/pci: enforce use of slot only slot 0 when devices
+ have an upstream PCIE port
+Message-ID: <20230621010614-mutt-send-email-mst@kernel.org>
+References: <20230620071805.4400-1-anisinha@redhat.com>
+ <20230620062307-mutt-send-email-mst@kernel.org>
+ <06B2DB46-643C-4835-B850-D66FD01D5E69@redhat.com>
 MIME-Version: 1.0
-From: Shivam <shivamvijay543@gmail.com>
-Date: Wed, 21 Jun 2023 10:31:34 +0530
-Message-ID: <CAC583hE_ZXqA4ZkA2OfYYULzPAD+mJOHqvZuJxevyae8eT74rg@mail.gmail.com>
-Subject: Request for Assistance: Adding I2C Support in QEMU for Raspberry Pi
- (BCM2835 Peripherals)
-To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>, philmd@linaro.org
-Content-Type: multipart/mixed; boundary="0000000000002004f305fe9caa2e"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
- envelope-from=shivamvijay543@gmail.com; helo=mail-ed1-x52b.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, HTML_MESSAGE=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <06B2DB46-643C-4835-B850-D66FD01D5E69@redhat.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Wed, 21 Jun 2023 01:49:52 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,166 +100,135 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---0000000000002004f305fe9caa2e
-Content-Type: multipart/alternative; boundary="0000000000002004f205fe9caa2c"
+On Wed, Jun 21, 2023 at 08:09:55AM +0530, Ani Sinha wrote:
+> 
+> 
+> > On 20-Jun-2023, at 4:13 PM, Michael S. Tsirkin <mst@redhat.com> wrote:
+> > 
+> > On Tue, Jun 20, 2023 at 12:48:05PM +0530, Ani Sinha wrote:
+> >> When a device has an upstream PCIE port, we can only use slot 0.
+> > 
+> > Actually, it's when device is plugged into a PCIE port.
+> > So maybe:
+> > 
+> > 	PCI Express ports only have one slot, so
+> > 	PCI Express devices can only be plugged into
+> > 	slot 0 on a PCIE port
+> > 
+> >> Non-zero slots
+> >> are invalid. This change ensures that we throw an error if the user
+> >> tries to hotplug a device with an upstream PCIE port to a non-zero slot.
+> > 
+> > it also adds a comment explaining why function 0 must not exist
+> > when function != 0 is added. or maybe split that part out.
+> > 
+> >> CC: jusual@redhat.com
+> >> CC: imammedo@redhat.com
+> >> Resolves: https://bugzilla.redhat.com/show_bug.cgi?id=2128929
+> >> Signed-off-by: Ani Sinha <anisinha@redhat.com>
+> >> ---
+> >> hw/pci/pci.c | 18 ++++++++++++++++++
+> >> 1 file changed, 18 insertions(+)
+> >> 
+> >> changelog:
+> >> v2: addressed issue with multifunction pcie root ports. Should allow
+> >> hotplug on functions other than function 0.
+> >> v3: improved commit message.
+> >> v4: improve commit message and code comments further. Some more
+> >> improvements might come in v5. No claims made here that this is
+> >> the final one :-)
+> >> 
+> >> diff --git a/hw/pci/pci.c b/hw/pci/pci.c
+> >> index bf38905b7d..30ce6a78cb 100644
+> >> --- a/hw/pci/pci.c
+> >> +++ b/hw/pci/pci.c
+> >> @@ -64,6 +64,7 @@ bool pci_available = true;
+> >> static char *pcibus_get_dev_path(DeviceState *dev);
+> >> static char *pcibus_get_fw_dev_path(DeviceState *dev);
+> >> static void pcibus_reset(BusState *qbus);
+> >> +static bool pcie_has_upstream_port(PCIDevice *dev);
+> >> 
+> >> static Property pci_props[] = {
+> >>     DEFINE_PROP_PCI_DEVFN("addr", PCIDevice, devfn, -1),
+> >> @@ -1182,6 +1183,11 @@ static PCIDevice *do_pci_register_device(PCIDevice *pci_dev,
+> >>     } else if (dev->hotplugged &&
+> >>                !pci_is_vf(pci_dev) &&
+> >>                pci_get_function_0(pci_dev)) {
+> >> +        /*
+> >> +         * populating function 0 triggers a bus scan from the guest that
+> >> +         * exposes other non-zero functions. Hence we need to ensure that
+> >> +         * function 0 wasn't added yet.
+> >> +         */
+> > 
+> > Pls capitalize populating. Also, comments like this should come
+> > before the logic they document, not after. By the way it doesn't
+> > have to be a bus scan - I'd just say "a scan" - with ACPI
+> > guest knows what was added and can just probe the device functions.
+> > 
+> >>         error_setg(errp, "PCI: slot %d function 0 already occupied by %s,"
+> >>                    " new func %s cannot be exposed to guest.",
+> >>                    PCI_SLOT(pci_get_function_0(pci_dev)->devfn),
+> >> @@ -1189,6 +1195,18 @@ static PCIDevice *do_pci_register_device(PCIDevice *pci_dev,
+> >>                    name);
+> >> 
+> >>        return NULL;
+> >> +    } else if (dev->hotplugged &&
+> > 
+> > why hotplugged? Doesn't the same rule apply to all devices?
+> > 
+> >> +               !pci_is_vf(pci_dev) &&
+> > 
+> > Hmm. I think you copied it from here:
+> >    } else if (dev->hotplugged &&
+> >               !pci_is_vf(pci_dev) &&
+> >               pci_get_function_0(pci_dev)) {
+> > 
+> > it makes sense there because VFs are added later
+> > after PF exists.
+> 
+> I thought PFs are handled only in the host OS and only VFs are
+> passthrough into the guest?
 
---0000000000002004f205fe9caa2c
-Content-Type: text/plain; charset="UTF-8"
+This is emulated SRIOV. host and guest would be nested L2.
 
-Hi,
+> I thought this check was because VFs have
+> a different domain address separate from other non-vf devices in the
+> guest PCI tree. 
 
-I hope this email finds you well. I am reaching out to seek guidance and
-assistance regarding a project I am working on involving the addition of
-I2C support in QEMU for the Raspberry Pi, specifically targeting the
-BCM2835 peripherals.
+Maybe take a look at the SRIOV spec then.
 
-I have been studying the BCM2835 datasheet to familiarize myself with the
-I2C device registers and their functionalities. Currently, I have started
-implementing the i2c controller for bcm2835, but now couldn't able to get
-the feel that how should I integrate it with the BCM2835
-Soc.(bcm2835_peripheral.c)
+> > 
+> > But here it makes no sense that I can see.
+> > 
+> > 
+> >> +               pcie_has_upstream_port(pci_dev) && PCI_SLOT(devfn)) {
+> >> +        /*
+> >> +         * If the device has an upstream PCIE port, like a pcie root port,
+> > 
+> > no, a root port can not be an upstream port.
+> > 
+> > 
+> >> +         * we only support functions on slot 0.
+> >> +         */
+> >> +        error_setg(errp, "PCI: slot %d is not valid for %s,"
+> >> +                   " only functions on slot 0 is supported for devices"
+> >> +                   " with an upstream PCIE port.",
+> > 
+> > 
+> > something like:
+> > 
+> >        error_setg(errp, "PCI: slot %d is not valid for %s:"
+> >                   " PCI Express devices can only be plugged into slot 0")
+> > 
+> > and then you don't really need a comment.
+> > 
+> > 
+> >> +                   PCI_SLOT(devfn), name);
+> >> +        return NULL;
+> >>     }
+> >> 
+> >>     pci_dev->devfn = devfn;
+> >> -- 
+> >> 2.39.1
 
-I have attaching bcm2835_i2c.c ( which have basic template for BSC0
-controller)
-
-
-Thanks & Regards
-Shivam Vijay
-
---0000000000002004f205fe9caa2c
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr">Hi,=C2=A0<br><br clear=3D"all"><div><div dir=3D"ltr" class=
-=3D"gmail_signature" data-smartmail=3D"gmail_signature"><div dir=3D"ltr">I =
-hope this email finds you well. I am reaching out to seek guidance and assi=
-stance regarding a project I am working on involving the addition of I2C su=
-pport in QEMU for the Raspberry Pi, specifically targeting the BCM2835 peri=
-pherals.<br><br>I have been studying the BCM2835 datasheet to familiarize m=
-yself with the I2C device registers and their functionalities. Currently, I=
- have started implementing the i2c controller for bcm2835, but now couldn&#=
-39;t=C2=A0able to get the feel that how should I integrate it with the BCM2=
-835 Soc.(bcm2835_peripheral.c)<br><br>I have attaching bcm2835_i2c.c ( whic=
-h have basic template for BSC0 controller)<br><br><br>Thanks &amp; Regards=
-=C2=A0<br>Shivam Vijay<br><br><br></div></div></div></div>
-
---0000000000002004f205fe9caa2c--
-
---0000000000002004f305fe9caa2e
-Content-Type: application/octet-stream; name="bcm2835_i2c.c"
-Content-Disposition: attachment; filename="bcm2835_i2c.c"
-Content-Transfer-Encoding: base64
-Content-ID: <f_lj58xz160>
-X-Attachment-Id: f_lj58xz160
-
-I2luY2x1ZGUgInFlbXUvb3NkZXAuaCINCiNpbmNsdWRlICJody9pMmMvaTJjLmgiDQojaW5jbHVk
-ZSAiaHcvaXJxLmgiDQojaW5jbHVkZSAicWVtdS9tb2R1bGUuaCINCiNpbmNsdWRlICJody9zeXNi
-dXMuaCINCiNpbmNsdWRlICJtaWdyYXRpb24vdm1zdGF0ZS5oIg0KI2luY2x1ZGUgInFvbS9vYmpl
-Y3QuaCINCiNpbmNsdWRlICJody9pMmMvYmNtMjgzNV9pMmMuaCINCiNpbmNsdWRlICJxZW11L2xv
-Zy5oIg0KDQoNCiNkZWZpbmUgQkNNMjgzNV9JMkNfQwkJMHgwDQojZGVmaW5lIEJDTTI4MzVfSTJD
-X1MJCTB4NA0KI2RlZmluZSBCQ00yODM1X0kyQ19ETEVOCTB4OA0KI2RlZmluZSBCQ00yODM1X0ky
-Q19BCQkweGMNCiNkZWZpbmUgQkNNMjgzNV9JMkNfRklGTwkweDEwDQojZGVmaW5lIEJDTTI4MzVf
-STJDX0RJVgkJMHgxNA0KI2RlZmluZSBCQ00yODM1X0kyQ19ERUwJCTB4MTgNCiNkZWZpbmUgQkNN
-MjgzNV9JMkNfQ0xLVAkweDFjDQoNCi8vIENvbnRyb2wgcmVnaXN0ZXIgYml0cyAgICANCg0KI2Rl
-ZmluZSBCQ00yODM1X0kyQ19DX1JFQUQJQklUKDApDQojZGVmaW5lIEJDTTI4MzVfSTJDX0NfQ0xF
-QVIJQklUKDQpIC8qIGJpdHMgNCBhbmQgNSBib3RoIGNsZWFyICovDQojZGVmaW5lIEJDTTI4MzVf
-STJDX0NfU1QJQklUKDcpDQojZGVmaW5lIEJDTTI4MzVfSTJDX0NfSU5URAlCSVQoOCkNCiNkZWZp
-bmUgQkNNMjgzNV9JMkNfQ19JTlRUCUJJVCg5KQ0KI2RlZmluZSBCQ00yODM1X0kyQ19DX0lOVFIJ
-QklUKDEwKQ0KI2RlZmluZSBCQ00yODM1X0kyQ19DX0kyQ0VOCUJJVCgxNSkNCg0KLy8gU3RhdHVz
-IHJlZ2lzdGVyIGJpdHMNCiNkZWZpbmUgQkNNMjgzNV9JMkNfU19UQQlCSVQoMCkNCiNkZWZpbmUg
-QkNNMjgzNV9JMkNfU19ET05FCUJJVCgxKQ0KI2RlZmluZSBCQ00yODM1X0kyQ19TX1RYVwlCSVQo
-MikNCiNkZWZpbmUgQkNNMjgzNV9JMkNfU19SWFIJQklUKDMpDQojZGVmaW5lIEJDTTI4MzVfSTJD
-X1NfVFhECUJJVCg0KQ0KI2RlZmluZSBCQ00yODM1X0kyQ19TX1JYRAlCSVQoNSkNCiNkZWZpbmUg
-QkNNMjgzNV9JMkNfU19UWEUJQklUKDYpDQojZGVmaW5lIEJDTTI4MzVfSTJDX1NfUlhGCUJJVCg3
-KQ0KI2RlZmluZSBCQ00yODM1X0kyQ19TX0VSUglCSVQoOCkNCiNkZWZpbmUgQkNNMjgzNV9JMkNf
-U19DTEtUCUJJVCg5KQ0KI2RlZmluZSBCQ00yODM1X0kyQ19TX0xFTglCSVQoMTApIC8qIEZha2Ug
-Yml0IGZvciBTVyBlcnJvciByZXBvcnRpbmcgKi8NCg0KDQoNCg0Kc3RhdGljIHZvaWQgYmNtMjgz
-NV9pMmNfcmVzZXQoRGV2aWNlU3RhdGUgKmRldikNCnsNCiAgICBCQ00yODM1STJDU3RhdGUgKnMg
-PSBCQ00yODM1X0kyQyhkZXYpOw0KDQogICAgcy0+Y29udHJvbCA9IDA7DQogICAgcy0+c3RhdHVz
-ID0gMDsNCiAgICBzLT5kYXRhX2xlbmd0aCA9IDA7DQogICAgcy0+c2xhdmVfYWRkcmVzcyA9IDA7
-DQogICAgcy0+ZmlmbyA9IDA7DQogICAgcy0+Y2xvY2tfZGl2aWRlciA9IDA7DQogICAgcy0+ZGF0
-YV9kZWxheSA9IDA7DQogICAgcy0+Y2xvY2tfc3RyZXRjaF90aW1lb3V0ID0gMDsNCn0NCg0KDQoN
-Cg0KDQpzdGF0aWMgdWludDY0X3QgYmNtMjgzNV9pMmNfcmVhZCh2b2lkICpvcGFxdWUsIGh3YWRk
-ciBhZGRyLCB1bnNpZ25lZCBpbnQgc2l6ZSkNCnsNCg0KICAgIHJldHVybiAxOw0KICAgICAgICBC
-Q00yODM1STJDU3RhdGUgKnMgPSBCQ00yODM1X0kyQyhvcGFxdWUpOw0KICAgICAgICB1aW50NjRf
-dCB2YWx1ZSA9IDA7DQoNCiAgICAgICAgc3dpdGNoIChhZGRyKSB7DQogICAgICAgIGNhc2UgQkNN
-MjgzNV9JMkNfQzoNCiAgICAgICAgICAgICAgICB2YWx1ZSA9IHMtPmNvbnRyb2w7DQogICAgICAg
-ICAgICAgICAgYnJlYWs7DQogICAgICAgIGNhc2UgQkNNMjgzNV9JMkNfUzoNCiAgICAgICAgICAg
-ICAgICB2YWx1ZSA9IHMtPnN0YXR1czsNCiAgICAgICAgICAgICAgICBicmVhazsNCg0KICAgICAg
-ICBjYXNlIEJDTTI4MzVfSTJDX0RMRU46DQogICAgICAgICAgICAgICAgdmFsdWUgPSBzLT5kYXRh
-X2xlbmd0aDsNCiAgICAgICAgICAgICAgICBicmVhazsgIA0KDQogICAgICAgIGNhc2UgQkNNMjgz
-NV9JMkNfQToNCiAgICAgICAgICAgICAgICB2YWx1ZSA9IHMtPnNsYXZlX2FkZHJlc3M7DQogICAg
-ICAgICAgICAgICAgYnJlYWs7DQoNCiAgICAgICAgY2FzZSBCQ00yODM1X0kyQ19GSUZPOg0KICAg
-ICAgICAgICAgICAgIHZhbHVlID0gcy0+ZmlmbzsNCiAgICAgICAgICAgICAgICBicmVhazsNCg0K
-ICAgICAgICBjYXNlIEJDTTI4MzVfSTJDX0RJVjoNCiAgICAgICAgICAgICAgICB2YWx1ZSA9IHMt
-PmNsb2NrX2RpdmlkZXI7DQogICAgICAgICAgICAgICAgYnJlYWs7DQoNCiAgICAgICAgY2FzZSBC
-Q00yODM1X0kyQ19ERUw6DQogICAgICAgICAgICAgICAgdmFsdWUgPSBzLT5kYXRhX2RlbGF5Ow0K
-ICAgICAgICAgICAgICAgIGJyZWFrOw0KDQogICAgICAgIGNhc2UgQkNNMjgzNV9JMkNfQ0xLVDoN
-CiAgICAgICAgICAgICAgICB2YWx1ZSA9IHMtPmNsb2NrX3N0cmV0Y2hfdGltZW91dDsNCiAgICAg
-ICAgICAgICAgICBicmVhazsNCg0KICAgICAgICBkZWZhdWx0Og0KICAgICAgICAgICAgICAgIHZh
-bHVlID0gMDsNCiAgICAgICAgICAgICAgICBicmVhazsNCiAgICAgICAgfQ0KDQogICAgICAgIHJl
-dHVybiB2YWx1ZTsNCg0KfQ0KDQpzdGF0aWMgdm9pZCBiY20yODM1X2kyY193cml0ZSh2b2lkICpv
-cGFxdWUsIGh3YWRkciBhZGRyLCB1aW50NjRfdCB2YWx1ZSwgdW5zaWduZWQgaW50IHNpemUpDQp7
-DQoNCiAgICAgICAgQkNNMjgzNUkyQ1N0YXRlICpzID0gQkNNMjgzNV9JMkMob3BhcXVlKTsNCg0K
-ICAgICAgICBzd2l0Y2ggKGFkZHIpIHsNCiAgICAgICAgY2FzZSBCQ00yODM1X0kyQ19DOg0KICAg
-ICAgICAgICAgICAgIHMtPmNvbnRyb2wgPSB2YWx1ZTsNCiAgICAgICAgICAgICAgICBicmVhazsN
-CiAgICAgICAgY2FzZSBCQ00yODM1X0kyQ19TOg0KICAgICAgICAgICAgICAgIHMtPnN0YXR1cyA9
-IHZhbHVlOw0KICAgICAgICAgICAgICAgIGJyZWFrOw0KDQogICAgICAgIGNhc2UgQkNNMjgzNV9J
-MkNfRExFTjoNCiAgICAgICAgICAgICAgICBzLT5kYXRhX2xlbmd0aCA9IHZhbHVlOw0KICAgICAg
-ICAgICAgICAgIGJyZWFrOyAgDQoNCiAgICAgICAgY2FzZSBCQ00yODM1X0kyQ19BOg0KICAgICAg
-ICAgICAgICAgIHMtPnNsYXZlX2FkZHJlc3MgPSB2YWx1ZTsNCiAgICAgICAgICAgICAgICBicmVh
-azsNCg0KICAgICAgICBjYXNlIEJDTTI4MzVfSTJDX0ZJRk86DQogICAgICAgICAgICAgICAgcy0+
-ZmlmbyA9IHZhbHVlOw0KICAgICAgICAgICAgICAgIGJyZWFrOw0KDQogICAgICAgIGNhc2UgQkNN
-MjgzNV9JMkNfRElWOg0KICAgICAgICAgICAgICAgIHMtPmNsb2NrX2RpdmlkZXIgPSB2YWx1ZTsN
-CiAgICAgICAgICAgICAgICBicmVhazsNCg0KICAgICAgICBjYXNlIEJDTTI4MzVfSTJDX0RFTDoN
-CiAgICAgICAgICAgICAgICBzLT5kYXRhX2RlbGF5ID0gdmFsdWU7DQogICAgICAgICAgICAgICAg
-YnJlYWs7DQoNCiAgICAgICAgY2FzZSBCQ00yODM1X0kyQ19DTEtUOg0KICAgICAgICAgICAgICAg
-IHMtPmNsb2NrX3N0cmV0Y2hfdGltZW91dCA9IHZhbHVlOw0KICAgICAgICAgICAgICAgIGJyZWFr
-Ow0KDQogICAgICAgIGRlZmF1bHQ6DQogICAgICAgICAgICAgICAgYnJlYWs7DQogICAgICAgIH0N
-CiAgICANCn0NCg0Kc3RhdGljIGNvbnN0IE1lbW9yeVJlZ2lvbk9wcyBiY20yODM1X2kyY19vcHMg
-PSB7DQogICAgLnJlYWQgPSBiY20yODM1X2kyY19yZWFkLA0KICAgIC53cml0ZSA9IGJjbTI4MzVf
-aTJjX3dyaXRlLA0KICAgIC5lbmRpYW5uZXNzID0gREVWSUNFX05BVElWRV9FTkRJQU4sDQp9Ow0K
-DQpzdGF0aWMgY29uc3QgVk1TdGF0ZURlc2NyaXB0aW9uIHZtc3RhdGVfYmNtMjgzNV9pMmMgPSB7
-DQogICAgLm5hbWUgPSAiYmNtMjgzNS1pMmMiLA0KICAgIC52ZXJzaW9uX2lkID0gMSwNCiAgICAu
-bWluaW11bV92ZXJzaW9uX2lkID0gMSwNCiAgICAuZmllbGRzID0gKFZNU3RhdGVGaWVsZFtdKSB7
-DQogICAgICAgIFZNU1RBVEVfVUlOVDMyKGNvbnRyb2wsIEJDTTI4MzVJMkNTdGF0ZSksDQogICAg
-ICAgIFZNU1RBVEVfVUlOVDMyKHN0YXR1cywgQkNNMjgzNUkyQ1N0YXRlKSwNCiAgICAgICAgVk1T
-VEFURV9VSU5UMzIoZGF0YV9sZW5ndGgsIEJDTTI4MzVJMkNTdGF0ZSksDQogICAgICAgIFZNU1RB
-VEVfVUlOVDMyKHNsYXZlX2FkZHJlc3MsIEJDTTI4MzVJMkNTdGF0ZSksDQogICAgICAgIFZNU1RB
-VEVfVUlOVDMyKGZpZm8sIEJDTTI4MzVJMkNTdGF0ZSksDQogICAgICAgIFZNU1RBVEVfVUlOVDMy
-KGNsb2NrX2RpdmlkZXIsIEJDTTI4MzVJMkNTdGF0ZSksDQogICAgICAgIFZNU1RBVEVfVUlOVDMy
-KGRhdGFfZGVsYXksIEJDTTI4MzVJMkNTdGF0ZSksDQogICAgICAgIFZNU1RBVEVfVUlOVDMyKGNs
-b2NrX3N0cmV0Y2hfdGltZW91dCwgQkNNMjgzNUkyQ1N0YXRlKSwNCiAgICAgICAgVk1TVEFURV9F
-TkRfT0ZfTElTVCgpDQogICAgfQ0KfTsNCg0KLy8gc3RhdGljIHZvaWQgYmNtMjgzNV9pMmNfcmVh
-bGl6ZShEZXZpY2VTdGF0ZSAqZGV2LCBFcnJvciAqKmVycnApDQovLyB7DQovLyAgICAgQkNNMjgz
-NUkyQ1N0YXRlICpzID0gQkNNMjgzNV9JMkMoZGV2KTsNCi8vICAgICAgIC8qIEluaXRpYWxpemUg
-dGhlIElSUSAqLw0KLy8gICAgIHN5c2J1c19pbml0X2lycShTWVNfQlVTX0RFVklDRShkZXYpLCAm
-cy0+aXJxKTsNCg0KLy8gICAgIC8qIEluaXRpYWxpemUgeW91ciBkZXNpcmVkIHN0YXRlIHZhcmlh
-YmxlcyBoZXJlICovDQovLyAgICAgbWVtb3J5X3JlZ2lvbl9pbml0X2lvKCZzLT5pb21lbSwgT0JK
-RUNUKGRldiksICZiY20yODM1X2kyY19vcHMsIHMsDQovLyAgICAgICAgICAgICAgICAgICAgICAg
-ICAgIFRZUEVfQkNNMjgzNV9JMkMsIDB4MTAwMCk7DQovLyAgICAgc3lzYnVzX2luaXRfbW1pbyhT
-WVNfQlVTX0RFVklDRShkZXYpLCAmcy0+aW9tZW0pOw0KDQovLyAgICAgLyogSW5pdGlhbGl6ZSB0
-aGUgSTJDIGJ1cyAqLw0KLy8gICAgIHMtPmJ1cyA9IGkyY19pbml0X2J1cyhkZXYsICJpMmMiKTsN
-Cg0KICANCi8vIH0NCg0Kc3RhdGljIHZvaWQgYmNtMjgzNV9pMmNfaW5pdChPYmplY3QgKm9iaikN
-CnsNCiAgICAgICAgQkNNMjgzNUkyQ1N0YXRlICpzID0gQkNNMjgzNV9JMkMob2JqKTsNCg0KICAg
-ICAgICBtZW1vcnlfcmVnaW9uX2luaXRfaW8oJnMtPmlvbWVtLCBvYmosICZiY20yODM1X2kyY19v
-cHMsIHMsDQogICAgICAgICAgICAgICAgICAgICAgICAgIFRZUEVfQkNNMjgzNV9JMkMsIDB4MTAw
-MCk7DQogICAgICAgIHN5c2J1c19pbml0X21taW8oU1lTX0JVU19ERVZJQ0UocyksICZzLT5pb21l
-bSk7DQogICAgICAgIHN5c2J1c19pbml0X2lycShTWVNfQlVTX0RFVklDRShzKSwgJnMtPmlycSk7
-DQogICAgICAgIHMtPmJ1cyA9IGkyY19pbml0X2J1cyhERVZJQ0UocyksICJpMmMiKTsgICAgICAN
-CiAgICAgIA0KfQ0KDQpzdGF0aWMgdm9pZCBiY20yODM1X2kyY19jbGFzc19pbml0KE9iamVjdENs
-YXNzICprbGFzcywgdm9pZCAqZGF0YSkNCnsNCg0KICAgcWVtdV9sb2coImJjbTI4MzVfaTJjX2Ns
-YXNzX2luaXRcbiIpOw0KICAgIERldmljZUNsYXNzICpkYyA9IERFVklDRV9DTEFTUyhrbGFzcyk7
-DQoNCi8vICAgICBkYy0+cmVhbGl6ZSA9IGJjbTI4MzVfaTJjX3JlYWxpemU7DQogICAgZGMtPnZt
-c2QgPSAmdm1zdGF0ZV9iY20yODM1X2kyYzsNCiAgICBkYy0+cmVzZXQgPSBiY20yODM1X2kyY19y
-ZXNldDsNCiAgICBkYy0+ZGVzYyA9ICJCQ00yODM1IEkyQyBDb250cm9sbGVyIjsNCiAgICAvKiBB
-ZGQgYW55IG90aGVyIHJlcXVpcmVkIGNsYXNzIGluaXRpYWxpemF0aW9uIGhlcmUgKi8NCn0NCg0K
-c3RhdGljIGNvbnN0IFR5cGVJbmZvIGJjbTI4MzVfaTJjX3R5cGVfaW5mbyA9IHsNCiAgICAubmFt
-ZSA9IFRZUEVfQkNNMjgzNV9JMkMsDQogICAgLnBhcmVudCA9IFRZUEVfU1lTX0JVU19ERVZJQ0Us
-DQogICAgLmluc3RhbmNlX3NpemUgPSBzaXplb2YoQkNNMjgzNUkyQ1N0YXRlKSwNCiAgICAuaW5z
-dGFuY2VfaW5pdCA9IGJjbTI4MzVfaTJjX2luaXQsDQogICAgLmNsYXNzX2luaXQgPSBiY20yODM1
-X2kyY19jbGFzc19pbml0LA0KfTsNCg0Kc3RhdGljIHZvaWQgYmNtMjgzNV9pMmNfcmVnaXN0ZXJf
-dHlwZXModm9pZCkNCnsNCiAgICB0eXBlX3JlZ2lzdGVyX3N0YXRpYygmYmNtMjgzNV9pMmNfdHlw
-ZV9pbmZvKTsNCn0NCg0KdHlwZV9pbml0KGJjbTI4MzVfaTJjX3JlZ2lzdGVyX3R5cGVzKQ0K
---0000000000002004f305fe9caa2e--
 
