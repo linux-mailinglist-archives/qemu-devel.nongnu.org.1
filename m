@@ -2,85 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A26273823E
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 13:14:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E047F738241
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 13:15:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBvn3-0003wI-Nw; Wed, 21 Jun 2023 07:14:21 -0400
+	id 1qBvoC-0004qF-Fs; Wed, 21 Jun 2023 07:15:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <bob.beckett@collabora.com>)
- id 1qBvn1-0003s4-5e
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 07:14:19 -0400
-Received: from madras.collabora.co.uk ([46.235.227.172])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <bob.beckett@collabora.com>)
- id 1qBvmz-0002xB-87
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 07:14:18 -0400
-Received: from [192.168.178.53] (82-71-8-225.dsl.in-addr.zen.co.uk
- [82.71.8.225])
- (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested) (Authenticated sender: bbeckett)
- by madras.collabora.co.uk (Postfix) with ESMTPSA id E5D586606F8B;
- Wed, 21 Jun 2023 12:14:14 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
- s=mail; t=1687346055;
- bh=MJIa8GnFWfms/olooPp651/+u8wmfzSy1yn/q7OMU28=;
- h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
- b=TlctRtqxSe2Xfa93NmrfOZsDe3qO+n5QormbBFMXTqpdUajdSHjL7aC6Oxlxd1bDK
- 2nYpU77KYpXJkWmEViBea8NjmWeM+Wnd4K38CSYLVt7HzIZFMTZ0JCf9s3UVwZqBmH
- gxhUEZb2cfbKeE5cm69nLVrjTt77BOXHu06WoDST4zUNqAL6M42gdsevvM1sY9SceH
- 8FVltG6sbbgf61AIwFkoqJKA4+LXTyPjhMegrOokmeXhLtoc9GErYo18Le5WSCAfd1
- yFVm7p4XY/v5CT1u9dn1Exw4RHic1pLUcUJR/w9UvRYoMMtPNF7WJlY8XPd8UM+wPA
- zknwi14bIv5Qg==
-Message-ID: <e9e10508-c26c-cf2a-6407-8e26a1342370@collabora.com>
-Date: Wed, 21 Jun 2023 12:14:12 +0100
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qBvoA-0004ot-4f
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 07:15:30 -0400
+Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qBvo4-0003LO-Dc
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 07:15:28 -0400
+Received: by mail-ej1-x62d.google.com with SMTP id
+ a640c23a62f3a-988e6fc41ccso348032566b.3
+ for <qemu-devel@nongnu.org>; Wed, 21 Jun 2023 04:15:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1687346122; x=1689938122;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=BF7bvq7+IWyfrCATWCi++Znx31JboqJ4DiKQyx+7chM=;
+ b=vmYiLm0qHYYPjSGUnOXLgzcZPAfZQ19QFYxEwaaNpfKpLfcM0cvypEwfyxsOXDwuWZ
+ Z+0yq007+AfUXDqKlxhPjMEuhDQFC5Rqgrfrm265DC1VcK43MmfN39viUAhBgoBpDtbZ
+ jWcW2xq8XD9tY0bt6pMYzTW8QH16Rgm5VJLmNICqZcevm9Sv2mBGpd0IzLbsHaX5BQTG
+ m/brLIThkbWIkserW8RGKXpdkNUWS63ZupyircIX5MmsA5N5tT3i9rAgylWHeyKIdol6
+ VC1VgDikU39GRDjtRpjAzzHjLu87uzPBDi7h4/hNuzPcGUD5uHzJLOOn6yrb++4zZVy5
+ O09A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1687346122; x=1689938122;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=BF7bvq7+IWyfrCATWCi++Znx31JboqJ4DiKQyx+7chM=;
+ b=EbagYXlY5JFuwH6znXtQEAvu3SvDHq3si0ln7achCewqG42uv8HM7eXDNrKm5bUmfL
+ Rqy9FoMd8Zia5bOU6kszxwgHzBHPnQL3xjphgxep0ZEMwYV4+vrgObSZAXpkqFRqKajZ
+ Z9/t7QdLtc/gdmtC9atccNT7jCAA/xNfzW4PPX2Hr9ZxN9EnC1rjSWrf3MN4vr778sgl
+ Ik1FyEJrF7uqYJiuhumBesMOIWMB9OnqWvq2vhWioj+PQJ+vKNPLA4RkuoO48BgrfXH5
+ ksJdqo1A4az3D0Kkrav8MS5NxfczGfmMu01FP9waZgXlayjh1UXToYDjEiSwAzie/FNb
+ efpQ==
+X-Gm-Message-State: AC+VfDz3BhupzjYXvcG0LiJrOfizNkGniTf9rSygmbCOrAmFmlQbFtq2
+ xH8/B+O3CZmeyfmE2Fpny9I2sacsBs3TG/Ttuh1y5mJZ
+X-Google-Smtp-Source: ACHHUZ43vZ37QKR/WlSMjG8wd4oenogmgVwWkaqgzLodthBC9C0NDXozzGiGt/TELnXCv7FAgCYodA==
+X-Received: by 2002:a17:906:db0d:b0:982:80b7:ad4c with SMTP id
+ xj13-20020a170906db0d00b0098280b7ad4cmr12163777ejb.16.1687346122234; 
+ Wed, 21 Jun 2023 04:15:22 -0700 (PDT)
+Received: from stoup.lan ([176.176.128.70]) by smtp.gmail.com with ESMTPSA id
+ q10-20020a170906144a00b00987506c21b1sm2929972ejc.219.2023.06.21.04.15.21
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 21 Jun 2023 04:15:21 -0700 (PDT)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: alex.bennee@linaro.org
+Subject: [PATCH v3] tests/plugin: Remove duplicate insn log from libinsn.so
+Date: Wed, 21 Jun 2023 13:15:20 +0200
+Message-Id: <20230621111520.1390967-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [QEMU PATCH 1/1] virtgpu: do not destroy resources when guest
- suspend
-To: Gerd Hoffmann <kraxel@redhat.com>
-Cc: "Chen, Jiqian" <Jiqian.Chen@amd.com>,
- =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@gmail.com>,
- Damien Hedde <damien.hedde@greensocs.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Anthony PERARD <anthony.perard@citrix.com>,
- =?UTF-8?Q?Roger_Pau_Monn=c3=a9?= <roger.pau@citrix.com>,
- Jan Beulich <jbeulich@suse.com>,
- "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
- "Deucher, Alexander" <Alexander.Deucher@amd.com>,
- "Koenig, Christian" <Christian.Koenig@amd.com>,
- "Hildebrand, Stewart" <Stewart.Hildebrand@amd.com>,
- Xenia Ragiadakou <burzalodowa@gmail.com>,
- "Huang, Honglei1" <Honglei1.Huang@amd.com>,
- "Zhang, Julia" <Julia.Zhang@amd.com>, "Huang, Ray" <Ray.Huang@amd.com>
-References: <20230608025655.1674357-1-Jiqian.Chen@amd.com>
- <20230608025655.1674357-2-Jiqian.Chen@amd.com>
- <CAJ+F1CKjTW7zycr2xAW0x+d_7CEy+LxWur2Tqp2dvsb=PoJ5Dw@mail.gmail.com>
- <q2rpqbg5b4bqxb7oayclzgbf5fplofm3dmxgmpmskjf4mcfzpn@peeiuxwkqxbb>
- <BL1PR12MB58491E2E13F959365AA3F594E75CA@BL1PR12MB5849.namprd12.prod.outlook.com>
- <lgan3p6wqmxht5fpduh5nvg3f5m5n636k7zrrealnu2lilghhh@qlbvgu3l4apw>
- <2164ff79-aa09-d959-cc61-c7a2a21db5e3@collabora.com>
- <2s33vb2tfogntkyk5laxzcmgexf42mhkpwr2gh3gjvpitav6ez@h5zbmuklzmv5>
-Content-Language: en-US
-From: Robert Beckett <bob.beckett@collabora.com>
-In-Reply-To: <2s33vb2tfogntkyk5laxzcmgexf42mhkpwr2gh3gjvpitav6ez@h5zbmuklzmv5>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=46.235.227.172;
- envelope-from=bob.beckett@collabora.com; helo=madras.collabora.co.uk
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ej1-x62d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.093,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -97,75 +87,105 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+This is a perfectly natural occurrence for x86 "rep movb",
+where the "rep" prefix forms a counted loop of the one insn.
 
-On 21/06/2023 09:39, Gerd Hoffmann wrote:
-> On Tue, Jun 20, 2023 at 01:26:15PM +0100, Robert Beckett wrote:
->> On 20/06/2023 10:41, Gerd Hoffmann wrote:
->>>     Hi,
->>>
->>>>> The guest driver should be able to restore resources after resume.
->>>> Thank you for your suggestion!
->>>> As far as I know, resources are created on host side and guest has no backup, if resources are destroyed, guest can't restore them.
->>>> Or do you mean guest driver need to send commands to re-create resources after resume?
->>> The later.  The guest driver knows which resources it has created,
->>> it can restore them after suspend.
->> Are you sure that this is viable?
->>
->> How would you propose that a guest kernel could reproduce a resource,
->> including pixel data upload during a resume?
->>
->> The kernel would not have any of the pixel data to transfer to host.
-> Depends on the of resource type.  For resources which are created by
-> uploading pixel data (using VIRTIO_GPU_CMD_TRANSFER_TO_HOST_*) a guest
-> mirror exists which can be used for re-upload.
+During the tests/tcg/multiarch/memory test, this logging is
+triggered over 350000 times.  Within the context of cross-i386-tci
+build, which is already slow by nature, the logging is sufficient
+to push the test into timeout.
 
-unfortunately this is not always the case.
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ tests/plugin/insn.c                      | 9 +--------
+ tests/tcg/i386/Makefile.softmmu-target   | 9 ---------
+ tests/tcg/i386/Makefile.target           | 6 ------
+ tests/tcg/x86_64/Makefile.softmmu-target | 9 ---------
+ 4 files changed, 1 insertion(+), 32 deletions(-)
 
-https://gitlab.freedesktop.org/mesa/mesa/-/blob/main/src/gallium/drivers/virgl/virgl_resource.c#L668
+diff --git a/tests/plugin/insn.c b/tests/plugin/insn.c
+index cd5ea5d4ae..9bd6e44f73 100644
+--- a/tests/plugin/insn.c
++++ b/tests/plugin/insn.c
+@@ -19,7 +19,6 @@ QEMU_PLUGIN_EXPORT int qemu_plugin_version = QEMU_PLUGIN_VERSION;
+ #define MAX_CPUS 8 /* lets not go nuts */
+ 
+ typedef struct {
+-    uint64_t last_pc;
+     uint64_t insn_count;
+ } InstructionCount;
+ 
+@@ -51,13 +50,7 @@ static void vcpu_insn_exec_before(unsigned int cpu_index, void *udata)
+ {
+     unsigned int i = cpu_index % MAX_CPUS;
+     InstructionCount *c = &counts[i];
+-    uint64_t this_pc = GPOINTER_TO_UINT(udata);
+-    if (this_pc == c->last_pc) {
+-        g_autofree gchar *out = g_strdup_printf("detected repeat execution @ 0x%"
+-                                                PRIx64 "\n", this_pc);
+-        qemu_plugin_outs(out);
+-    }
+-    c->last_pc = this_pc;
++
+     c->insn_count++;
+ }
+ 
+diff --git a/tests/tcg/i386/Makefile.softmmu-target b/tests/tcg/i386/Makefile.softmmu-target
+index ed922d59c8..5266f2335a 100644
+--- a/tests/tcg/i386/Makefile.softmmu-target
++++ b/tests/tcg/i386/Makefile.softmmu-target
+@@ -33,14 +33,5 @@ EXTRA_RUNS+=$(MULTIARCH_RUNS)
+ 
+ memory: CFLAGS+=-DCHECK_UNALIGNED=1
+ 
+-# non-inline runs will trigger the duplicate instruction heuristics in libinsn.so
+-run-plugin-%-with-libinsn.so:
+-	$(call run-test, $@, \
+-	  $(QEMU) -monitor none -display none \
+-		  -chardev file$(COMMA)path=$@.out$(COMMA)id=output \
+-                  -plugin ../../plugin/libinsn.so$(COMMA)inline=on \
+-	    	  -d plugin -D $*-with-libinsn.so.pout \
+-		  $(QEMU_OPTS) $*)
+-
+ # Running
+ QEMU_OPTS+=-device isa-debugcon,chardev=output -device isa-debug-exit,iobase=0xf4,iosize=0x4 -kernel
+diff --git a/tests/tcg/i386/Makefile.target b/tests/tcg/i386/Makefile.target
+index 821822ed0c..f2ee7a4db7 100644
+--- a/tests/tcg/i386/Makefile.target
++++ b/tests/tcg/i386/Makefile.target
+@@ -63,12 +63,6 @@ else
+ SKIP_I386_TESTS+=test-i386-fprem
+ endif
+ 
+-# non-inline runs will trigger the duplicate instruction heuristics in libinsn.so
+-run-plugin-%-with-libinsn.so:
+-	$(call run-test, $@, $(QEMU) $(QEMU_OPTS) \
+-	       -plugin ../../plugin/libinsn.so$(COMMA)inline=on \
+-	       -d plugin -D $*-with-libinsn.so.pout $*)
+-
+ # Update TESTS
+ I386_TESTS:=$(filter-out $(SKIP_I386_TESTS), $(ALL_X86_TESTS))
+ TESTS=$(MULTIARCH_TESTS) $(I386_TESTS)
+diff --git a/tests/tcg/x86_64/Makefile.softmmu-target b/tests/tcg/x86_64/Makefile.softmmu-target
+index 7207fee94c..1bd763f2e6 100644
+--- a/tests/tcg/x86_64/Makefile.softmmu-target
++++ b/tests/tcg/x86_64/Makefile.softmmu-target
+@@ -33,14 +33,5 @@ EXTRA_RUNS+=$(MULTIARCH_RUNS)
+ 
+ memory: CFLAGS+=-DCHECK_UNALIGNED=1
+ 
+-# non-inline runs will trigger the duplicate instruction heuristics in libinsn.so
+-run-plugin-%-with-libinsn.so:
+-	$(call run-test, $@, \
+-	  $(QEMU) -monitor none -display none \
+-		  -chardev file$(COMMA)path=$@.out$(COMMA)id=output \
+-                  -plugin ../../plugin/libinsn.so$(COMMA)inline=on \
+-	    	  -d plugin -D $*-with-libinsn.so.pout \
+-		  $(QEMU_OPTS) $*)
+-
+ # Running
+ QEMU_OPTS+=-device isa-debugcon,chardev=output -device isa-debug-exit,iobase=0xf4,iosize=0x4 -kernel
+-- 
+2.34.1
 
-Often mesa will decide that it won't need to access a resource again 
-after initial upload (textures etc). In this case, if it is able to copy 
-back from host if needed, it will not maintain the guest shadow copy. 
-Instead it will create a single page proxy object. The transfer to host 
-will then over fill it to the correct size.
-
-I think this was a fairly huge optimization for them.
-
->
-> For resources filled by gl rendering ops this is indeed not the case.
->
->> Could you explain how you anticipate the guest being able to reproduce the
->> resources please?
-> Same you do on physical hardware?  Suspend can poweroff your PCI
-> devices, so there must be some standard way to handle that situation
-> for resources stored in gpu device memory, which is very similar to
-> the problem we have here.
-
-In traditional PCI gfx card setups, TTM is used as the memory manager in 
-the kernel. This is used to migrate the buffers back from VRAM to system 
-pages during a suspend.
-
-This would be suitable for use to track host blob buffers that get 
-mapped to guest via the PCI BAR, though would be a significant 
-re-architecting of virtio gpu driver.
-
-It would not help with the previously mentioned proxied resources. 
-Though in theory the driver could read the resources back from host to 
-guest pages during suspend, this would then be potentially complicated 
-by suspend time alloc failures etc.
-
-
-As virtio drivers are by design paravirt drivers ,I think it is 
-reasonable to accept some knowledge with and cooperation with the host 
-to manage suspend/resume.
-
-It seems to me like a lot of effort and long term maintenance to add 
-support for transparent suspend/resume that would otherwise be unneeded.
-
-Perhaps others have alternative designs for this?
-
->
-> take care,
->    Gerd
->
 
