@@ -2,47 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A8CB73836D
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 14:14:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9089973836C
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 14:14:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBwif-0004VZ-Rn; Wed, 21 Jun 2023 08:13:54 -0400
+	id 1qBwik-0004Wr-M5; Wed, 21 Jun 2023 08:13:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhangjianguo18@huawei.com>)
- id 1qBt3E-0007uZ-K9
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 04:18:52 -0400
-Received: from szxga01-in.huawei.com ([45.249.212.187])
+ id 1qBtb8-0001r7-Oi
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 04:53:54 -0400
+Received: from szxga02-in.huawei.com ([45.249.212.188])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhangjianguo18@huawei.com>)
- id 1qBt3B-00055R-8o
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 04:18:52 -0400
-Received: from dggpemm500018.china.huawei.com (unknown [172.30.72.53])
- by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4QmGXt28cCzqVJN
- for <qemu-devel@nongnu.org>; Wed, 21 Jun 2023 16:15:58 +0800 (CST)
+ id 1qBtb6-0002fm-Cw
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 04:53:54 -0400
+Received: from dggpemm500018.china.huawei.com (unknown [172.30.72.54])
+ by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4QmHJv3pwHzMpWS
+ for <qemu-devel@nongnu.org>; Wed, 21 Jun 2023 16:50:39 +0800 (CST)
 Received: from localhost.localdomain (10.175.124.27) by
  dggpemm500018.china.huawei.com (7.185.36.111) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Wed, 21 Jun 2023 16:18:34 +0800
+ 15.1.2507.27; Wed, 21 Jun 2023 16:53:47 +0800
 To: <qemu-devel@nongnu.org>
 CC: <chenyuhui5@huawei.com>, <xuyinghua3@huawei.com>,
  <liheng.liheng@huawei.com>, <renxuming@huawei.com>,
  <pengyi.pengyi@huawei.com>, <yubihong@huawei.com>, <zhengchuan@huawei.com>,
- <huhao33@huawei.com>
-Subject: [PATCH] migrate/multifd: fix coredump when the multifd thread cleanup
-Date: Wed, 21 Jun 2023 16:18:26 +0800
-Message-ID: <20230621081826.3203053-1-zhangjianguo18@huawei.com>
+ <huhao33@huawei.com>, <zhangjianguo18@huawei.com>
+Subject: [RESEND][PATCH] migrate/multifd: fix coredump when the multifd thread
+ cleanup
+Date: Wed, 21 Jun 2023 16:53:39 +0800
+Message-ID: <20230621085339.3530621-1-zhangjianguo18@huawei.com>
 X-Mailer: git-send-email 2.33.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-Originating-IP: [10.175.124.27]
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
  dggpemm500018.china.huawei.com (7.185.36.111)
 X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=45.249.212.187;
- envelope-from=zhangjianguo18@huawei.com; helo=szxga01-in.huawei.com
+Received-SPF: pass client-ip=45.249.212.188;
+ envelope-from=zhangjianguo18@huawei.com; helo=szxga02-in.huawei.com
 X-Spam_score_int: -41
 X-Spam_score: -4.2
 X-Spam_bar: ----
@@ -50,7 +51,7 @@ X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Wed, 21 Jun 2023 08:13:45 -0400
+X-Mailman-Approved-At: Wed, 21 Jun 2023 08:13:46 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,13 +68,13 @@ From:  z00619469 via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: c00454449 <chenyuhui5@huawei.com>
+From: Yuhui Chen <chenyuhui5@huawei.com>
 
 There is a coredump while trying to destroy mutex when
 p->running is false but p->mutex is not unlock.
 Make sure all mutexes has been released before destroy them.
 
-Signed-off-by: c00454449 <chenyuhui5@huawei.com>
+Signed-off-by: Yuhui Chen <chenyuhui5@huawei.com>
 ---
  migration/multifd.c | 6 ++----
  1 file changed, 2 insertions(+), 4 deletions(-)
