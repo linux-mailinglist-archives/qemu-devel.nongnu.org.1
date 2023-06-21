@@ -2,48 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 188FD737BFB
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 09:25:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B5AC6737BFF
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 09:25:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qBsCc-0007Of-9B; Wed, 21 Jun 2023 03:24:30 -0400
+	id 1qBsCe-0007PP-GF; Wed, 21 Jun 2023 03:24:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1qBsCQ-0007K7-8J
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 03:24:19 -0400
-Received: from mail-b.sr.ht ([173.195.146.151])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qBsCX-0007Lp-RO
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 03:24:25 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1qBsCM-0005H2-S3
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 03:24:17 -0400
-Authentication-Results: mail-b.sr.ht; dkim=none 
-Received: from git.sr.ht (unknown [173.195.146.142])
- by mail-b.sr.ht (Postfix) with ESMTPSA id F337B11EF01;
- Wed, 21 Jun 2023 07:24:12 +0000 (UTC)
-From: ~hyman <hyman@git.sr.ht>
-Date: Wed, 21 Jun 2023 07:24:12 +0000
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qBsCW-0005JR-2x
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 03:24:25 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1687332261;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=xw5oVW0ioyxua/KLQz7cxNYsMkJmpVvqA39iPvp9m+E=;
+ b=gege5FNoMzshCuaGkeNH0pqObrokyv6oLuekA2nH+wNyut+BvCyDq/8Rx4dEvRciqE1a29
+ b9TgqSlwiCf11DZQU/Zc9NpeeurndBie17dFHB203KxpTwO7bYqPqreFTzK167MPNQRg39
+ DCrUXnAeXAFzf5CdEBAc9vunFNwIOao=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-190-0ntag1jDMb-rdEUqTdzPIQ-1; Wed, 21 Jun 2023 03:24:19 -0400
+X-MC-Unique: 0ntag1jDMb-rdEUqTdzPIQ-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-3f90ab2de48so71647205e9.2
+ for <qemu-devel@nongnu.org>; Wed, 21 Jun 2023 00:24:19 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1687332258; x=1689924258;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=xw5oVW0ioyxua/KLQz7cxNYsMkJmpVvqA39iPvp9m+E=;
+ b=Q3ybjV02kV3pqq8ohsMft755PZqnW4TVOuZVDAFQUmf9NTYEyLqVSDyzJoTV/CtpTZ
+ 9YMieB9fcjEPcHEWrayvwQmY0JCJgDlU3O6qdMbz2tZUdSU5PDjTQ1VUMbUNXAoJD+Wj
+ XEU5sP6CZmWefdM1c9svn4/OboAARGMPwB2KBKgxaDKbmi7d/2HcM2YvvoLhJpJxEazi
+ ZLWc8C4YkWGxw9o01mY+jJz1/8bxM3cmAKzz5mYutLDsR7qBeNxOej28n/rRgJVMXD8/
+ AH33u2Bkskk/4PndzUsrUoYXfdoHntDi4c+N95nfmGPMokI3FoYGoPEx0O+ERRUTjFfN
+ XC3A==
+X-Gm-Message-State: AC+VfDykT+LEj32pgjGwysU5cz+ZNkiwbZTrb8O2h2LdtsvT3Sk9tFtq
+ e+rxyOl8CQXwrA4nd9j9ov9VXUTKuD6bZIeBYXb6HpAzXW6ppzBtUNefu/1WJ983QcMuBk94U1o
+ Hz31t2UyOwPiVCkQ=
+X-Received: by 2002:a05:600c:218d:b0:3f9:b8d0:1bfd with SMTP id
+ e13-20020a05600c218d00b003f9b8d01bfdmr4257145wme.4.1687332258526; 
+ Wed, 21 Jun 2023 00:24:18 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5WDbputscjvt79vGTPlMEwO+vGpk29NAtDsI2Z3qA5wtg0M9SnVKWIqaOPgvWDQxhT+gimJg==
+X-Received: by 2002:a05:600c:218d:b0:3f9:b8d0:1bfd with SMTP id
+ e13-20020a05600c218d00b003f9b8d01bfdmr4257132wme.4.1687332258221; 
+ Wed, 21 Jun 2023 00:24:18 -0700 (PDT)
+Received: from [10.33.192.205] (nat-pool-str-t.redhat.com. [149.14.88.106])
+ by smtp.gmail.com with ESMTPSA id
+ v15-20020a1cf70f000000b003f8d770e935sm15467560wmh.0.2023.06.21.00.24.16
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 21 Jun 2023 00:24:17 -0700 (PDT)
+Message-ID: <5e440af9-e0c6-ed13-c17a-ae069939ed67@redhat.com>
+Date: Wed, 21 Jun 2023 09:24:16 +0200
 MIME-Version: 1.0
-Subject: [PATCH QEMU v6 0/9] migration: introduce dirtylimit capability
-Message-ID: <168733225273.5845.15871826788879741674-0@git.sr.ht>
-X-Mailer: git.sr.ht
-To: qemu-devel <qemu-devel@nongnu.org>
-Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Philippe =?utf-8?q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- hyman <hyman@git.sr.ht>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=173.195.146.151; envelope-from=outgoing@sr.ht;
- helo=mail-b.sr.ht
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH] hw/mips: Improve the default USB settings in the
+ loongson3-virt machine
+Content-Language: en-US
+To: Michael Tokarev <mjt@tls.msk.ru>, qemu-devel@nongnu.org,
+ Huacai Chen <chenhuacai@kernel.org>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ QEMU Trivial <qemu-trivial@nongnu.org>
+References: <20230525064731.1854107-1-thuth@redhat.com>
+ <5795da20-a2f6-e606-27bd-a23fc72346fc@redhat.com>
+ <10ef6b88-0770-65bb-b6dd-217a5f731d14@tls.msk.ru>
+From: Thomas Huth <thuth@redhat.com>
+In-Reply-To: <10ef6b88-0770-65bb-b6dd-217a5f731d14@tls.msk.ru>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -56,116 +103,75 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: ~hyman <yong.huang@smartx.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Thanks Juan for the review, in case to keep the modifications consistent
-with the old versions, i posted the full series for review. Feel free to
-pull  the first 5 commits if it help speeding up the process. The
-version 6 do the following modifications:
-v6:
-1. Rebase on master
-2. Split the commit "Implement dirty-limit convergence algo" into two as
-    Juan suggested as the following:
-    a. Put the detection logic before auto-converge checking
-    b. Implement dirty-limit convergence algo
-3. Put the detection logic before auto-converge checking
-4. Sort the migrate_dirty_limit function in commit
-    "Introduce dirty-limit capability" suggested by Juan
-5. Substitute the the int64_t to uint64_t in the last 2 commits
-6. Fix the comments spell mistake
-7. Add helper function in the commit
-    "Implement dirty-limit convergence algo" suggested by Juan
+On 08/06/2023 20.31, Michael Tokarev wrote:
+> 07.06.2023 13:26, Thomas Huth wrote:
+>> On 25/05/2023 08.47, Thomas Huth wrote:
+>>> It's possible to compile QEMU without the USB devices (e.g. when using
+>>> "--without-default-devices" as option for the "configure" script).
+>>> To be still able to run the loongson3-virt machine in default mode with
+>>> such a QEMU binary, we have to check here for the availability of the
+>>> devices first before instantiating them.
+>>>
+>>> Signed-off-by: Thomas Huth <thuth@redhat.com>
+>>> ---
+>>>   The alternative would be to use a "#ifdef CONFIG_USB_OHCI_PCI" etc.
+>>>   ... not sure what is nicer ... what do you think?
+>>>
+>>>   hw/mips/loongson3_virt.c | 10 +++++++---
+>>>   1 file changed, 7 insertions(+), 3 deletions(-)
+>>>
+>>> diff --git a/hw/mips/loongson3_virt.c b/hw/mips/loongson3_virt.c
+>>> index 216812f660..a0afb17030 100644
+>>> --- a/hw/mips/loongson3_virt.c
+>>> +++ b/hw/mips/loongson3_virt.c
+>>> @@ -447,10 +447,14 @@ static inline void 
+>>> loongson3_virt_devices_init(MachineState *machine,
+>>>       pci_vga_init(pci_bus);
+>>> -    if (defaults_enabled()) {
+>>> +    if (defaults_enabled() && module_object_class_by_name("pci-ohci")) {
+>>>           pci_create_simple(pci_bus, -1, "pci-ohci");
+>>> -        usb_create_simple(usb_bus_find(-1), "usb-kbd");
+>>> -        usb_create_simple(usb_bus_find(-1), "usb-tablet");
+>>> +        if (module_object_class_by_name("usb-kbd")) {
+>>> +            usb_create_simple(usb_bus_find(-1), "usb-kbd");
+>>> +        }
+>>> +        if (module_object_class_by_name("usb-tablet")) {
+>>> +            usb_create_simple(usb_bus_find(-1), "usb-tablet");
+>>> +        }
+> 
+> It looks like kbd/tablet don't need to have an if around, because
+> hw/usb/usb-hid.c is always compiled when CONFIG_USB is enabled,
+> and enabling CONFIG_USB_OHCI automatically selects CONFIG_USB.
 
-Please review. Thanks.
-Yong
-v5:
-1. Rebase on master and enrich the comment for "dirty-limit" capability,
-    suggesting by Markus.
-2. Drop commits that have already been merged.
+Oh, right! So this can be simplified, indeed.
 
-v4:
-1. Polish the docs and update the release version suggested by Markus
-2. Rename the migrate exported info "dirty-limit-throttle-time-per-
-round"
-   to "dirty-limit-throttle-time-per-full".
+> I guess this whole code can be guarded by #if CONFIG_USB_OHCI..#endif,
+> instead of using runtime checking of device availability.
 
-v3(resend):
-- fix the syntax error of the topic.
+Yes, that's the alternative ... I'll respin the patch with that to see how 
+it looks like.
 
-v3:
-This version make some modifications inspired by Peter and Markus
-as following:
-1. Do the code clean up in [PATCH v2 02/11] suggested by Markus
-2. Replace the [PATCH v2 03/11] with a much simpler patch posted by
-   Peter to fix the following bug:
-   https://bugzilla.redhat.com/show_bug.cgi?id=3D2124756
-3. Fix the error path of migrate_params_check in [PATCH v2 04/11]
-   pointed out by Markus. Enrich the commit message to explain why
-   x-vcpu-dirty-limit-period an unstable parameter.
-4. Refactor the dirty-limit convergence algo in [PATCH v2 07/11]
-   suggested by Peter:
-   a. apply blk_mig_bulk_active check before enable dirty-limit
-   b. drop the unhelpful check function before enable dirty-limit
-   c. change the migration_cancel logic, just cancel dirty-limit
-      only if dirty-limit capability turned on.
-   d. abstract a code clean commit [PATCH v3 07/10] to adjust
-      the check order before enable auto-converge
-5. Change the name of observing indexes during dirty-limit live
-   migration to make them more easy-understanding. Use the
-   maximum throttle time of vpus as "dirty-limit-throttle-time-per-full"
-6. Fix some grammatical and spelling errors pointed out by Markus
-   and enrich the document about the dirty-limit live migration
-   observing indexes "dirty-limit-ring-full-time"
-   and "dirty-limit-throttle-time-per-full"
-7. Change the default value of x-vcpu-dirty-limit-period to 1000ms,
-   which is optimal value pointed out in cover letter in that
-   testing environment.
-8. Drop the 2 guestperf test commits [PATCH v2 10/11],
-   [PATCH v2 11/11] and post them with a standalone series in the
-   future.
+> Notes:
+> 
+> Other places don't check if ohci or other usb controllers are available.
 
-v2:
-This version make a little bit modifications comparing with
-version 1 as following:
-1. fix the overflow issue reported by Peter Maydell
-2. add parameter check for hmp "set_vcpu_dirty_limit" command
-3. fix the racing issue between dirty ring reaper thread and
-   Qemu main thread.
-4. add migrate parameter check for x-vcpu-dirty-limit-period
-   and vcpu-dirty-limit.
-5. add the logic to forbid hmp/qmp commands set_vcpu_dirty_limit,
-   cancel_vcpu_dirty_limit during dirty-limit live migration when
-   implement dirty-limit convergence algo.
-6. add capability check to ensure auto-converge and dirty-limit
-   are mutually exclusive.
-7. pre-check if kvm dirty ring size is configured before setting
-   dirty-limit migrate parameter
+Those likely use "select" instead of "imply" in their Kconfig, so the OHCI 
+controller is always included.
 
-Hyman Huang(=E9=BB=84=E5=8B=87) (9):
-  softmmu/dirtylimit: Add parameter check for hmp "set_vcpu_dirty_limit"
-  qapi/migration: Introduce x-vcpu-dirty-limit-period parameter
-  qapi/migration: Introduce vcpu-dirty-limit parameters
-  migration: Introduce dirty-limit capability
-  migration: Refactor auto-converge capability logic
-  migration: Put the detection logic before auto-converge checking
-  migration: Implement dirty-limit convergence algo
-  migration: Extend query-migrate to provide dirty page limit info
-  tests: Add migration dirty-limit capability test
+> We have TYPE_PCI_OHCI #define which isn't used in places where pci-ohci
+> is requested, - probably need to move it to a common header (it is
+> defined in hw/usb/hcd-ohci-pci.c now).
 
- include/sysemu/dirtylimit.h    |   2 +
- migration/migration-hmp-cmds.c |  26 ++++++
- migration/migration.c          |  13 +++
- migration/options.c            |  72 +++++++++++++++
- migration/options.h            |   1 +
- migration/ram.c                |  61 ++++++++++---
- migration/trace-events         |   1 +
- qapi/migration.json            |  74 ++++++++++++++--
- softmmu/dirtylimit.c           |  91 +++++++++++++++++--
- tests/qtest/migration-test.c   | 155 +++++++++++++++++++++++++++++++++
- 10 files changed, 471 insertions(+), 25 deletions(-)
+Yes, sounds like a cleanup that could be done in an additional patch.
 
---=20
-2.38.5
+> roms/config.seabios-128k turns USB_OHCI off.
+
+That's the config of the seabios ROM - not (directly) related to the config 
+of the QEMU binaries.
+
+  Thomas
+
 
