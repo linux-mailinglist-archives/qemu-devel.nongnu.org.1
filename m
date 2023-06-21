@@ -2,89 +2,103 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7CD77390D5
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 22:36:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF3DE7390DF
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 Jun 2023 22:38:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qC4Xg-00063q-HE; Wed, 21 Jun 2023 16:35:04 -0400
+	id 1qC4ZO-0006sl-6M; Wed, 21 Jun 2023 16:36:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qC4Xd-00063T-MB
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 16:35:01 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1qC4ZL-0006rx-JG; Wed, 21 Jun 2023 16:36:47 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qC4Xb-0007Zy-Qe
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 16:35:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687379698;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=+iLdzV/Em04/sgfTq5BTurqyY8h9d9LGqxlS0m3thlk=;
- b=F38Vr7yPplu8VqlOPb1qkFx5wZkmpxbH6BiyXWM/W/xKMfr03SGJIXIQHpctlht/xnsOzm
- SEveDlrs4m8sWbOSHtVyEUHZ3quRHjpG1cB29bbc5Sb1LAJmcLxQIolqahCtCeju0VlBOX
- 4jK577MTjegbLxfGjbph2UQtKYtr+8U=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-447-tY2_VnUtOFOl6q7ZKH3XzQ-1; Wed, 21 Jun 2023 16:34:57 -0400
-X-MC-Unique: tY2_VnUtOFOl6q7ZKH3XzQ-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-3f9b4d88f24so14342715e9.0
- for <qemu-devel@nongnu.org>; Wed, 21 Jun 2023 13:34:57 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687379696; x=1689971696;
- h=mime-version:message-id:date:reply-to:user-agent:references
- :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=+iLdzV/Em04/sgfTq5BTurqyY8h9d9LGqxlS0m3thlk=;
- b=Yo7b0qAbzpjDIt0pOWGWCqRKRktjg0TOLyB7b4b5ESwdey5eYFRcvJUkuH6hm0iL/b
- XfYYay3TLhZASr6VxHXUApRJ7LSnYhSdTXkKaNzxRbTGGGvHmMoYV1+bO1OcPmF2ufuo
- I3dIJPTvUPo6ash/jTHqGHRieeLWKRAc+QkLARYCfYO8WxuVYburBjzZFdCYtzxIQOPc
- op3cloQ1KXJ/kbldUyNSj4N+nftXd/XJH1zh1AResyLTXCbVG91ytIe//NggnwlNTn+O
- JXcuYFPwzDi1HSx3rGm1dvjCc82gJy7YNksIDgB+JG3x7ftziKtFehPYme8nYvkYgraq
- efHg==
-X-Gm-Message-State: AC+VfDxuZCyNizU1jcAI2FBdoGUjDU8ogj+jRvtLV9hdhmqF/zbhTR8l
- hZEFONG2+cCude+BdV7h0rIUmMbdAmaEG0zcCnNyJ9oGOFKS2EVbiRgmpIJePtC9G100ml1xqYj
- NY7t+/acYpJZDb/Y=
-X-Received: by 2002:a05:600c:cb:b0:3f9:b4a0:6061 with SMTP id
- u11-20020a05600c00cb00b003f9b4a06061mr140319wmm.34.1687379696333; 
- Wed, 21 Jun 2023 13:34:56 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ4wpx8rT6xD5nmM1oSqFSzw38H2tlXIgdjdnQvs01S+hqDtRWUAYkOTEMMi6CwdjfXoWiMigA==
-X-Received: by 2002:a05:600c:cb:b0:3f9:b4a0:6061 with SMTP id
- u11-20020a05600c00cb00b003f9b4a06061mr140306wmm.34.1687379696005; 
- Wed, 21 Jun 2023 13:34:56 -0700 (PDT)
-Received: from redhat.com (static-92-120-85-188.ipcom.comunitel.net.
- [188.85.120.92]) by smtp.gmail.com with ESMTPSA id
- q19-20020a1cf313000000b003f7361ca753sm16689965wmq.24.2023.06.21.13.34.55
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 21 Jun 2023 13:34:55 -0700 (PDT)
-From: Juan Quintela <quintela@redhat.com>
-To: Wei Wang <wei.w.wang@intel.com>
-Cc: peterx@redhat.com,  lei4.wang@intel.com,  qemu-devel@nongnu.org
-Subject: Re: [PATCH v2 1/2] migration: enfocre multifd and postcopy preempt
- to be set before incoming
-In-Reply-To: <20230606101910.20456-2-wei.w.wang@intel.com> (Wei Wang's message
- of "Tue, 6 Jun 2023 18:19:09 +0800")
-References: <20230606101910.20456-1-wei.w.wang@intel.com>
- <20230606101910.20456-2-wei.w.wang@intel.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
-Date: Wed, 21 Jun 2023 22:34:54 +0200
-Message-ID: <87ttv08sgh.fsf@secure.mitica>
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1qC4ZJ-0008Aq-Lb; Wed, 21 Jun 2023 16:36:47 -0400
+Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 35LKEDLJ021604; Wed, 21 Jun 2023 20:36:42 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : content-type : content-transfer-encoding :
+ mime-version; s=pp1; bh=Olv/SPFDe57mQYbFufCTBfHlCo8PtawonsURPrr/Atk=;
+ b=cXLWv/ZsAvbsgpipIvSsA9kGyxEyjuCkqzqDdbWn4D7TiqQg1ShoCBTVM65b5FC+FNWX
+ mU2iXnEU8/3ucW0SRZKz1HyMvFCkzmCq1T0J58WCSXeICU0LdFBA/YM1bTVHXwNZOuRN
+ KfVwsz36sxQep6IE65JAC/+IIOmiFaOrwPO/e4rklMcXpOWnqwapxvuckr0X5okxtI5B
+ GuzcAQw2to9ZItsbmt3OVpfSHRR+1oMMIb+dzleLkxiyhsa1MrlMPo/uOwFN/1Hb+G7b
+ 50uHcm7fBKvL8500xXMASEeensdCUgdAEGQp30asVLAYYfgZyX6GWWpINYutVKXEO80j xw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rc82g8ew0-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 21 Jun 2023 20:36:42 +0000
+Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 35LKHx52001634;
+ Wed, 21 Jun 2023 20:36:41 GMT
+Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.108])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rc82g8ev3-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 21 Jun 2023 20:36:41 +0000
+Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
+ by ppma05fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 35LCgd38030224;
+ Wed, 21 Jun 2023 20:36:39 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+ by ppma05fra.de.ibm.com (PPS) with ESMTPS id 3r94f52ade-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 21 Jun 2023 20:36:39 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com
+ [10.20.54.102])
+ by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 35LKaaMY39649618
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 21 Jun 2023 20:36:36 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7E6092004B;
+ Wed, 21 Jun 2023 20:36:36 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 032E120043;
+ Wed, 21 Jun 2023 20:36:36 +0000 (GMT)
+Received: from heavy.boeblingen.de.ibm.com (unknown [9.179.1.208])
+ by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Wed, 21 Jun 2023 20:36:35 +0000 (GMT)
+From: Ilya Leoshkevich <iii@linux.ibm.com>
+To: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Laurent Vivier <laurent@vivier.eu>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ David Hildenbrand <david@redhat.com>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-s390x@nongnu.org,
+ Ilya Leoshkevich <iii@linux.ibm.com>
+Subject: [PATCH v4 0/8] gdbstub: Add support for info proc mappings
+Date: Wed, 21 Jun 2023 22:36:19 +0200
+Message-Id: <20230621203627.1808446-1-iii@linux.ibm.com>
+X-Mailer: git-send-email 2.40.1
+Content-Type: text/plain; charset=UTF-8
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: xSQlRD2SAsxCKCOyQYBwijARHYMiSY9H
+X-Proofpoint-GUID: dp1vQDPGRquV6dRBjR_6zShC3qSXVnvj
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-06-21_12,2023-06-16_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0
+ priorityscore=1501 spamscore=0 lowpriorityscore=0 phishscore=0
+ clxscore=1015 adultscore=0 bulkscore=0 impostorscore=0 mlxscore=0
+ suspectscore=0 mlxlogscore=999 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2305260000 definitions=main-2306210172
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -98,149 +112,74 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Wei Wang <wei.w.wang@intel.com> wrote:
-> qemu_start_incoming_migration needs to check the number of multifd
-> channels or postcopy ram channels to configure the backlog parameter (i.e.
-> the maximum length to which the queue of pending connections for sockfd
-> may grow) of listen(). So enforce the usage of postcopy-preempt and
-> multifd as below:
-> - need to use "-incoming defer" on the destination; and
-> - set_capability and set_parameter need to be done before migrate_incoming
->
-> Otherwise, disable the use of the features and report error messages to
-> remind users to adjust the commands.
->
-> Signed-off-by: Wei Wang <wei.w.wang@intel.com>
-> Reviewed-by: Peter Xu <peterx@redhat.com>
-> ---
->  migration/options.c | 36 +++++++++++++++++++++++++++++++-----
->  1 file changed, 31 insertions(+), 5 deletions(-)
->
+v3: https://lists.gnu.org/archive/html/qemu-devel/2023-06/msg01311.html
+v3 -> v4: Fix the 32-bit build (Alex).
+          Enable the test on all architectures and ignore certain
+          expected failures (Alex). I tried this with the latest
+          gdb-multiarch and it works. The only skip is on x86_64,
+          as expected.
 
-This bit is wrong
+v2: https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg06837.html
+v2 -> v3: Use openat() instead of safe_openat() (new patch: 2/8).
+          Add /proc/self/smaps emulation (new patch: 3/8).
+          With these 2 changes, the minor issues previously mentioned in
+          the patch 6/8 are gone.
 
-> @@ -998,11 +1013,22 @@ bool migrate_params_check(MigrationParameters *params, Error **errp)
->  
->      /* x_checkpoint_delay is now always positive */
->  
-> -    if (params->has_multifd_channels && (params->multifd_channels < 1)) {
-> -        error_setg(errp, QERR_INVALID_PARAMETER_VALUE,
-> -                   "multifd_channels",
-> -                   "a value between 1 and 255");
-> -        return false;
-> +    if (params->has_multifd_channels) {
-> +        if (params->multifd_channels < 1) {
-> +            error_setg(errp, QERR_INVALID_PARAMETER_VALUE,
-> +                       "multifd_channels",
-> +                       "a value between 1 and 255");
-> +            return false;
-> +        }
-> +        if (migrate_incoming_started()) {
-> +            MigrationState *ms = migrate_get_current();
-> +
-> +            ms->capabilities[MIGRATION_CAPABILITY_MULTIFD] = false;
-> +            error_setg(errp, QERR_INVALID_PARAMETER_VALUE,
-> +                       "multifd_channels",
-> +                       "must be set before incoming starts");
-> +            return false;
-> +        }
->      }
->  
->      if (params->has_multifd_zlib_level &&
+v1: https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg02614.html
+v1 -> v2: Reword the 5/6 commit message (Dominik).
+          Add R-bs.
+          Patches that need review:
+          4/6 gdbstub: Add support for info proc mappings
+          6/6 tests/tcg: Add a test for info proc mappings
 
-# Start of tls tests
-# starting QEMU: exec ./qemu-system-x86_64 -qtest unix:/tmp/qtest-3655124.sock -qtest-log /dev/null -chardev socket,path=/tmp/qtest-3655124.qmp,id=char0 -mon chardev=char0,mode=control -display none -accel kvm -accel tcg -name source,debug-threads=on -m 150M -serial file:/tmp/migration-test-5QEX61/src_serial -drive file=/tmp/migration-test-5QEX61/bootsect,format=raw    2>/dev/null -accel qtest
-# starting QEMU: exec ./qemu-system-x86_64 -qtest unix:/tmp/qtest-3655124.sock -qtest-log /dev/null -chardev socket,path=/tmp/qtest-3655124.qmp,id=char0 -mon chardev=char0,mode=control -display none -accel kvm -accel tcg -name target,debug-threads=on -m 150M -serial file:/tmp/migration-test-5QEX61/dest_serial -incoming unix:/tmp/migration-test-5QEX61/migsocket -drive file=/tmp/migration-test-5QEX61/bootsect,format=raw    2>/dev/null -accel qtest
-# {
-#     "error": {
-#         "class": "GenericError",
-#         "desc": "Parameter 'multifd_channels' expects must be set before incoming starts"
-#     }
-# }
-**
-ERROR:../../../../../mnt/code/qemu/full/tests/qtest/libqtest.c:1259:qtest_vqmp_assert_success_ref: assertion failed: (qdict_haskey(response, "return"))
-not ok /x86_64/migration/postcopy/recovery/tls/psk - ERROR:../../../../../mnt/code/qemu/full/tests/qtest/libqtest.c:1259:qtest_vqmp_assert_success_ref: assertion failed: (qdict_haskey(response, "return"))
-Bail out!
-Aborted (core dumped)
+Hi,
 
-This is the tests that fails.
+this series partially implements the Host I/O feature of the GDB Remote
+Serial Protocol in order to make generate-core-file work with qemu-user.
+It borrows heavily from the abandoned patch by Dominik [1], hence 4/6
+carries the respective Co-developed-by: tag. I also peeked at
+gdbserver/hostio.cc quite a few times.
 
-        qtest_add_func("/migration/postcopy/preempt/plain", test_postcopy_preempt);
+The changes compared to Dominik's patch are:
 
-I am dropping that change and let the others, which are right.
+- Implement readlink.
+- Move the main functionality to user-target.c.
+- Allocate buffers on heap.
+- Add a test.
+- Update gdb.rst.
+- Split refactorings to the existing code into separate patches.
+- Rename do_openat() to do_guest_openat().
+- Do not retry pread(), since GDB is capable of doing it itself.
+- Add an extra sanity check to gdb_handle_query_xfer_exec_file().
+- Replace citations of the spec by a single link.
 
-I think what we should do is changing that check to:
+Best regards,
+Ilya
+Ilya Leoshkevich (8):
+  linux-user: Expose do_guest_openat() and do_guest_readlink()
+  linux-user: Add "safe" parameter to do_guest_openat()
+  linux-user: Emulate /proc/self/smaps
+  gdbstub: Expose gdb_get_process() and gdb_get_first_cpu_in_process()
+  gdbstub: Report the actual qemu-user pid
+  gdbstub: Add support for info proc mappings
+  docs: Document security implications of debugging
+  tests/tcg: Add a test for info proc mappings
 
+ docs/system/gdb.rst                           |  15 ++
+ gdbstub/gdbstub.c                             |  86 ++++++++---
+ gdbstub/internals.h                           |   7 +
+ gdbstub/user-target.c                         | 139 ++++++++++++++++++
+ linux-user/qemu.h                             |   3 +
+ linux-user/syscall.c                          | 128 +++++++++++++---
+ tests/tcg/multiarch/Makefile.target           |   9 +-
+ .../multiarch/gdbstub/test-proc-mappings.py   |  65 ++++++++
+ 8 files changed, 409 insertions(+), 43 deletions(-)
+ create mode 100644 tests/tcg/multiarch/gdbstub/test-proc-mappings.py
 
-static bool migration_has_started(void)
-{
-    MigrationIncomingState *mis = migration_incoming_get_current();
-
-    if (mis->state != MIGRATION_STATUS_NONE) {
-       return true;
-    }
-    MigrationState *ms = migration_get_current();
-    if (mis->state != MIGRATION_STATUS_NONE) {
-       return true;
-    }
-    return false;
-}
-
-And for all the parameters that can't be changed after migration has
-started do:
-
-    if (params->has_multifd_channels) {
-        if (params->multifd_channels < 1) {
-            error_setg(errp, QERR_INVALID_PARAMETER_VALUE,
-                       "multifd_channels",
-                       "a value between 1 and 255");
-            return false;
-        }
-        if (migration_has_started()) {
-            error_setg(errp, QERR_INVALID_PARAMETER_VALUE,
-                       "multifd_channels",
-                       "must be set before migration starts");
-            return false;
-        }
-     }
-
-Forr all parameters, can they be changed after migration has started:
-
-compress_level: NO
-compress_threads: NO
-compress_wait_thread: NO
-decompress_threads: NO
-throttle_trigger_threshold: MAYBE
-cpu_throttle_initial: NO
-cpu_throttle_increment: NO?
-cpu_throotle_tailslow: NO?
-tls_creds: NO
-tls_hostname: NO
-max_bandwidth: YES
-downtime_limit: YES
-x_checkpoint_delay: NO?
-block_incremental: NO
-multifd_channels: NO
-multifd_compression: NO
-multifd_zlib_devel: NO
-multifd_zstd_level: NO
-xbzrle_cache_size: YES
-max_cpu_throttle: YES?
-announce_*: YES (but it shouldn't.  There is no good reason for changing
-                 it in the middle of migration.  But no harm either)
-block_bitmap_mapping: NO?
-zero_copy_send: NO
-vcpu_dirty_limit_period: NO?
-vcpu_dirty_limit: NO?
-
-For capabilities, I think none make sense to change after migration starts.
-
-What do you think?
-
-Later, Juan.
+-- 
+2.40.1
 
 
