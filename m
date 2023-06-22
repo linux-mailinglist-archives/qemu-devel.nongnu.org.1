@@ -2,64 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA1BC739574
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 04:17:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3598739580
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 04:24:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qC9rQ-00028A-IB; Wed, 21 Jun 2023 22:15:49 -0400
+	id 1qC9yU-0002mb-RV; Wed, 21 Jun 2023 22:23:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qC9qr-0000GA-2x
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 22:15:13 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1qC9yS-0002lu-D2
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 22:23:04 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qC9qn-0005Fj-UV
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 22:15:11 -0400
+ id 1qC9yQ-000105-Ta
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 22:23:04 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687400109;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=HTz/G5BiFE58fQISpbQndXC0ldXtbuPPgD/w277DDSU=;
- b=iKiJwPUQMGFcWpU+vMHZjNm/KsVJAhJcvxnFL5quo/5elFrl6JyzpqEixPtsGdPhNrcQbp
- wgs4UScK7xiLxzAj5IHSyAW7YtP9SHBLvfnm+6HUF2T7bUgzILVK8ozvGHDrgWwQXiMoi9
- n/THTxo354IFp/zQ8vX+LehNWdrlD1M=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-634-FV47GfIbMFav2-_C0merOg-1; Wed, 21 Jun 2023 22:15:04 -0400
-X-MC-Unique: FV47GfIbMFav2-_C0merOg-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5256229AA3BA;
- Thu, 22 Jun 2023 02:15:04 +0000 (UTC)
-Received: from secure.mitica (unknown [10.39.193.228])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 5B5AA112132C;
- Thu, 22 Jun 2023 02:15:02 +0000 (UTC)
+ s=mimecast20190719; t=1687400581;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=DzqftHJZuGuUvcgofzRZFS34qM7+GDbzBkVM9QqFKZY=;
+ b=DmMqJ5rOiiXNv495fWk6HPajpi0Jas95RysJhJCaRx0INlTfjplcxvx18/VHGUcsVdQre7
+ on0/Wq23ifQG/bKqBJ+73L3PB4lhUKkv5y2PgSuzXC7XJkPiJSbLsf5yTCPVaIn6h8Qb5Z
+ 29Z3HeYBW0BgQP3CMVAwbZTW4k2mnGk=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-643-cV1oiD0CMqiAqISdh95TEw-1; Wed, 21 Jun 2023 22:22:58 -0400
+X-MC-Unique: cV1oiD0CMqiAqISdh95TEw-1
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-31273e0507dso1729648f8f.3
+ for <qemu-devel@nongnu.org>; Wed, 21 Jun 2023 19:22:58 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1687400577; x=1689992577;
+ h=mime-version:message-id:date:reply-to:user-agent:references
+ :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=DzqftHJZuGuUvcgofzRZFS34qM7+GDbzBkVM9QqFKZY=;
+ b=E2G8Zo2PWHlTtTer6fg+aaR04fftePovfpd8xI/O+KAqMbRThNFtu8Tt1Me/eycQUu
+ +dPxQQ6woLy15iEuksedYxc4+HcUiD2LUvToka+wLBOap1x5okNIifSppsdEVjt/5zx+
+ z/IobiMmcqnuB5TGdH0w8DYjbBdm9ELVLJZ/MGCft59mkijCLXF/gx+ZkdyC6S6yzOn4
+ XjrQT4tcswuBaumNk/UisXzBcG4nmSnmN8lyoeEywnkv2obaqQArJR7Ek/MFNBkjvKWD
+ pGIqWq0Zt8QA9KbwgwaeTMqY0DD3Qv3PfaGzUDaazEKTtQkf2yIL/qEYpdXHxYBZZQMP
+ CW7g==
+X-Gm-Message-State: AC+VfDyeCErAeyd+pjGrYwG+akUvLfwcI2/ZvFdCfDI86oHSiMUbpQxK
+ rSP3LvcwsDJhfmdNW6BcAGII1t1OLevLstJP5d7r/xkWrmFM/PM1zmh0J8x8ZBqxVTCGGRZgYYs
+ j/YBjQpqMu+rD98Q=
+X-Received: by 2002:adf:f3d0:0:b0:311:1bd2:de6f with SMTP id
+ g16-20020adff3d0000000b003111bd2de6fmr14617544wrp.12.1687400577527; 
+ Wed, 21 Jun 2023 19:22:57 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7u7/Hvn9NzUVsK+l6gpUrgLnGJq0EN3uu6j0+CNMIVr0yIALDdSeKvAm98/fL0EQ0/muDz1w==
+X-Received: by 2002:adf:f3d0:0:b0:311:1bd2:de6f with SMTP id
+ g16-20020adff3d0000000b003111bd2de6fmr14617535wrp.12.1687400577244; 
+ Wed, 21 Jun 2023 19:22:57 -0700 (PDT)
+Received: from redhat.com (static-92-120-85-188.ipcom.comunitel.net.
+ [188.85.120.92]) by smtp.gmail.com with ESMTPSA id
+ m12-20020a7bcb8c000000b003f9b66a9376sm6260875wmi.42.2023.06.21.19.22.56
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 21 Jun 2023 19:22:56 -0700 (PDT)
 From: Juan Quintela <quintela@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Peter Xu <peterx@redhat.com>, Leonardo Bras <leobras@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Juan Quintela <quintela@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- qemu-block@nongnu.org, Eric Blake <eblake@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>, Fam Zheng <fam@euphon.net>,
- Laurent Vivier <lvivier@redhat.com>
-Subject: [PULL 30/30] migration/rdma: Split qemu_fopen_rdma() into
- input/output functions
-Date: Thu, 22 Jun 2023 04:13:20 +0200
-Message-Id: <20230622021320.66124-31-quintela@redhat.com>
-In-Reply-To: <20230622021320.66124-1-quintela@redhat.com>
-References: <20230622021320.66124-1-quintela@redhat.com>
+To: Thomas Huth <thuth@redhat.com>
+Cc: qemu-devel@nongnu.org,  Markus Armbruster <armbru@redhat.com>,  Leonardo
+ Bras <leobras@redhat.com>,  Daniel P . =?utf-8?Q?Berrang=C3=A9?=
+ <berrange@redhat.com>,
+ qemu-block@nongnu.org,  Peter Xu <peterx@redhat.com>,  Stefan Hajnoczi
+ <stefanha@redhat.com>,  Eric Blake <eblake@redhat.com>,  Fam Zheng
+ <fam@euphon.net>,  libvir-list@redhat.com,  Paolo Bonzini
+ <pbonzini@redhat.com>
+Subject: Re: [RFC 4/6] migration: Deprecate -incoming <uri>
+In-Reply-To: <e715e41d-b50a-3747-8007-e188e911a724@redhat.com> (Thomas Huth's
+ message of "Wed, 21 Jun 2023 09:08:33 +0200")
+References: <20230612193344.3796-1-quintela@redhat.com>
+ <20230612193344.3796-5-quintela@redhat.com>
+ <e715e41d-b50a-3747-8007-e188e911a724@redhat.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+Date: Thu, 22 Jun 2023 04:22:55 +0200
+Message-ID: <875y7g8ccg.fsf@secure.mitica>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
+Content-Type: text/plain
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -81,126 +104,71 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is how everything else in QEMUFile is structured.
-As a bonus they are three less lines of code.
+Thomas Huth <thuth@redhat.com> wrote:
+> On 12/06/2023 21.33, Juan Quintela wrote:
+>> Only "defer" is recommended.  After setting all migation parameters,
+>> start incoming migration with "migrate-incoming uri" command.
+>> Signed-off-by: Juan Quintela <quintela@redhat.com>
+>> ---
+>>   docs/about/deprecated.rst | 7 +++++++
+>>   softmmu/vl.c              | 2 ++
+>>   2 files changed, 9 insertions(+)
+>> diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+>> index 47e98dc95e..518672722d 100644
+>> --- a/docs/about/deprecated.rst
+>> +++ b/docs/about/deprecated.rst
+>> @@ -447,3 +447,10 @@ The new way to modify migration is using migration parameters.
+>>   ``blk`` functionality can be acchieved using
+>>   ``migrate_set_parameter block-incremental true``.
+>>   +``-incoming uri`` (since 8.1)
+>> +'''''''''''''''''''''''''''''
+>> +
+>> +Everything except ``-incoming defer`` are deprecated.  This allows to
+>> +setup parameters before launching the proper migration with
+>> +``migrate-incoming uri``.
+>> +
+>> diff --git a/softmmu/vl.c b/softmmu/vl.c
+>> index b0b96f67fa..7fe865ab59 100644
+>> --- a/softmmu/vl.c
+>> +++ b/softmmu/vl.c
+>> @@ -2651,6 +2651,8 @@ void qmp_x_exit_preconfig(Error **errp)
+>>       if (incoming) {
+>>           Error *local_err = NULL;
+>>           if (strcmp(incoming, "defer") != 0) {
+>> +            warn_report("-incoming %s is deprecated, use -incoming defer and "
+>> +                        " set the uri with migrate-incoming.", incoming);
+>>               qmp_migrate_incoming(incoming, &local_err);
+>>               if (local_err) {
+>>                   error_reportf_err(local_err, "-incoming %s: ", incoming);
+>
+> Could we maybe keep at least the smallest set of necessary parameters
+> around? I'm often doing a "-incoming tcp:0:1234" for doing quick
+> sanity checks with migration, not caring about other migration
+> parameters, so if that could continue to work, that would be very
+> appreciated.
 
-Reviewed-by: Peter Xu <peterx@redhat.com>
-Message-ID: <20230530183941.7223-17-quintela@redhat.com>
-Signed-off-by: Juan Quintela <quintela@redhat.com>
----
- migration/qemu-file.h |  1 -
- migration/qemu-file.c | 12 ------------
- migration/rdma.c      | 39 +++++++++++++++++++--------------------
- 3 files changed, 19 insertions(+), 33 deletions(-)
+I will try to explain myself here.
 
-diff --git a/migration/qemu-file.h b/migration/qemu-file.h
-index 8b8b7d27fe..47015f5201 100644
---- a/migration/qemu-file.h
-+++ b/migration/qemu-file.h
-@@ -102,7 +102,6 @@ uint64_t qemu_file_transferred_noflush(QEMUFile *f);
-  */
- void qemu_put_buffer_async(QEMUFile *f, const uint8_t *buf, size_t size,
-                            bool may_free);
--bool qemu_file_mode_is_not_valid(const char *mode);
- 
- #include "migration/qemu-file-types.h"
- 
-diff --git a/migration/qemu-file.c b/migration/qemu-file.c
-index d30bf3c377..19c33c9985 100644
---- a/migration/qemu-file.c
-+++ b/migration/qemu-file.c
-@@ -100,18 +100,6 @@ int qemu_file_shutdown(QEMUFile *f)
-     return 0;
- }
- 
--bool qemu_file_mode_is_not_valid(const char *mode)
--{
--    if (mode == NULL ||
--        (mode[0] != 'r' && mode[0] != 'w') ||
--        mode[1] != 'b' || mode[2] != 0) {
--        fprintf(stderr, "qemu_fopen: Argument validity check failed\n");
--        return true;
--    }
--
--    return false;
--}
--
- static QEMUFile *qemu_file_new_impl(QIOChannel *ioc, bool is_writable)
- {
-     QEMUFile *f;
-diff --git a/migration/rdma.c b/migration/rdma.c
-index dd1c039e6c..ca430d319d 100644
---- a/migration/rdma.c
-+++ b/migration/rdma.c
-@@ -4053,27 +4053,26 @@ static void qio_channel_rdma_register_types(void)
- 
- type_init(qio_channel_rdma_register_types);
- 
--static QEMUFile *qemu_fopen_rdma(RDMAContext *rdma, const char *mode)
-+static QEMUFile *rdma_new_input(RDMAContext *rdma)
- {
--    QIOChannelRDMA *rioc;
-+    QIOChannelRDMA *rioc = QIO_CHANNEL_RDMA(object_new(TYPE_QIO_CHANNEL_RDMA));
- 
--    if (qemu_file_mode_is_not_valid(mode)) {
--        return NULL;
--    }
-+    rioc->file = qemu_file_new_input(QIO_CHANNEL(rioc));
-+    rioc->rdmain = rdma;
-+    rioc->rdmaout = rdma->return_path;
-+    qemu_file_set_hooks(rioc->file, &rdma_read_hooks);
- 
--    rioc = QIO_CHANNEL_RDMA(object_new(TYPE_QIO_CHANNEL_RDMA));
-+    return rioc->file;
-+}
- 
--    if (mode[0] == 'w') {
--        rioc->file = qemu_file_new_output(QIO_CHANNEL(rioc));
--        rioc->rdmaout = rdma;
--        rioc->rdmain = rdma->return_path;
--        qemu_file_set_hooks(rioc->file, &rdma_write_hooks);
--    } else {
--        rioc->file = qemu_file_new_input(QIO_CHANNEL(rioc));
--        rioc->rdmain = rdma;
--        rioc->rdmaout = rdma->return_path;
--        qemu_file_set_hooks(rioc->file, &rdma_read_hooks);
--    }
-+static QEMUFile *rdma_new_output(RDMAContext *rdma)
-+{
-+    QIOChannelRDMA *rioc = QIO_CHANNEL_RDMA(object_new(TYPE_QIO_CHANNEL_RDMA));
-+
-+    rioc->file = qemu_file_new_output(QIO_CHANNEL(rioc));
-+    rioc->rdmaout = rdma;
-+    rioc->rdmain = rdma->return_path;
-+    qemu_file_set_hooks(rioc->file, &rdma_write_hooks);
- 
-     return rioc->file;
- }
-@@ -4099,9 +4098,9 @@ static void rdma_accept_incoming_migration(void *opaque)
-         return;
-     }
- 
--    f = qemu_fopen_rdma(rdma, "rb");
-+    f = rdma_new_input(rdma);
-     if (f == NULL) {
--        fprintf(stderr, "RDMA ERROR: could not qemu_fopen_rdma\n");
-+        fprintf(stderr, "RDMA ERROR: could not open RDMA for input\n");
-         qemu_rdma_cleanup(rdma);
-         return;
-     }
-@@ -4224,7 +4223,7 @@ void rdma_start_outgoing_migration(void *opaque,
- 
-     trace_rdma_start_outgoing_migration_after_rdma_connect();
- 
--    s->to_dst_file = qemu_fopen_rdma(rdma, "wb");
-+    s->to_dst_file = rdma_new_output(rdma);
-     migrate_fd_connect(s, NULL);
-     return;
- return_path_err:
--- 
-2.40.1
+I think that everything except tcp works.
+But when we have tcp, we have two cases where this is a trap:
+- multifd channels:
+  * if we default to a big number, we underuse resources in a normal
+    case
+  * if we default to a small number, we have the problem that if the
+    user set "later" multifd-channels to a bigger number, things can
+    break.
+- postcopy+preempt:
+  this case is also problematic, but easily fixable.  Put a default
+  of 2 instead of 1.
+
+The only other solution that I can think of is just fail if we set
+multifd without incoming defer.  But more sooner than later we are going
+to have to default to multifd, so ...
+
+Later, Juan.
 
 
