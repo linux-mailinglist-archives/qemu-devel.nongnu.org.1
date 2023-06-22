@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B277973A5A7
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 18:10:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5964473A5A0
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 18:09:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCMrf-0002Vj-Vn; Thu, 22 Jun 2023 12:08:56 -0400
+	id 1qCMs3-0002qb-Tq; Thu, 22 Jun 2023 12:09:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qCMre-0002VZ-7O
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 12:08:54 -0400
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qCMrz-0002np-63
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 12:09:15 -0400
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qCMrc-0007fk-BR
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 12:08:53 -0400
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-311275efaf8so5835774f8f.3
- for <qemu-devel@nongnu.org>; Thu, 22 Jun 2023 09:08:51 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qCMrm-0007hE-1H
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 12:09:04 -0400
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-311183ef595so7380230f8f.0
+ for <qemu-devel@nongnu.org>; Thu, 22 Jun 2023 09:09:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687450130; x=1690042130;
+ d=linaro.org; s=google; t=1687450140; x=1690042140;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=xHLdIwIywOmneOj5eUp5g6ra2t5DF15QteoMLknkUnc=;
- b=hz1Iri7fzveQD0XzRURoVBQ0AayjUFEKed+ma5hJWh66FT6qnBh9fJ6Yqa49kNHo/F
- 3IpOngfIDQP04/ptc2tjcBXuEBGYnyItgUqUv1Xzu4OMyAwehLKCQiYvbdeSNCij8x95
- cWxKOYJL2Kj+I0ElvY9i/iRKv7l1uzjI7KdJo4fnnC4me8XMGc9CZSrylMv1xwbefMDq
- 20wIR6Hftn5IW5cBGp88Pv5LYTiLSSfKvPKxbm7q5nblR8TO4SLMy+l/dx7jOAt50qA/
- UPo0hT2rx1nx+tTGE22u6Jz+w2s4b5BrZ3reMQGP04EpIgkSA8Qr9dx1Stp7KU/I3xGF
- CtaQ==
+ bh=iG1kgLZ5QV1q9fprOekDS1vi4YDLS9XqOgasp153yeA=;
+ b=pioUrZaFPhU8I3k58jH5e1qB2rLoMjDOpycpjg9MKCT8jB0VWYDPIf8BgBkiqcuhFF
+ TGcG4z4waQLxR0t85sX3LfEm1fBfri5nyTc7hT7LFVuMZJ8cJ7iLzkMzgCCxgXAXjRp1
+ 5FcEvpmzbqIFAxYcu+grqZd6fl2U26lypXHSgtzz883z04khvbCBjPhnZpOIijZm7hIY
+ 73T6xIrKJfYThnwqe3k9n+UZwuUIp87JUU4oxyTveu1UWR2+M0IfsVqIofaSE6fL7s6R
+ TsZ+4CItCUkFmVs4drtOmtuFIt03b22ea/hckXR+fp4F3k6OU3hz418EDxIcz7+/pZ4m
+ IaZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687450130; x=1690042130;
+ d=1e100.net; s=20221208; t=1687450140; x=1690042140;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=xHLdIwIywOmneOj5eUp5g6ra2t5DF15QteoMLknkUnc=;
- b=Dk7MGTv9pkGlVRqUnt5xY0dLS7sAdVh2Lq7pSLJuF0WH65i4kZSQpmnDTk/7T2GBrx
- USYu16WISZ6f47rh7XD6oD8GnhoB4wrV5peyL/ztI4SGNF8qkX0ecHYm8Yk3GlGgBQeM
- L7c4pXWuPz4i7jww9pD4A54o/J5Iy6xQAHUDBtVeq/ZevJCM4jxmTQptRwRl2TyvcjHn
- GMXdJDmFfEoS+Iy9NNaxRWepzeQRo/2qR7FDepDwSbGyYP4Vq9bFbG6Lxr8GnKKZ6iCR
- oSECcwjYrMork8dN32g+BbVCn2vrc/flMS7JAzNt5wxk1B8oF/zCvJ1ODdQnh710kP9I
- TuWw==
-X-Gm-Message-State: AC+VfDwcwn5+dvizEbaOMPc9tlAp9XXo/J/OP5Ovqd3Qno7BCa/8nY4q
- nEei1243LAnuqMlQdbTFTo0mzJHnG06rxHaNFygvAQ==
-X-Google-Smtp-Source: ACHHUZ5FZJ07KWuWBYKgfrnuifY1fdOTl2VG8E4TsYr3Kvhd2tgi1EDXYohQtUPqrVHBijnkT2QeEg==
-X-Received: by 2002:adf:f952:0:b0:30f:ca58:a00d with SMTP id
- q18-20020adff952000000b0030fca58a00dmr10419263wrr.45.1687450130628; 
- Thu, 22 Jun 2023 09:08:50 -0700 (PDT)
+ bh=iG1kgLZ5QV1q9fprOekDS1vi4YDLS9XqOgasp153yeA=;
+ b=Yo5Tk+w6uj8lNBFmrh8TaRHWwr5C+6gZhJ0raN0644CqhRIKSStSBGzwGUOVsetVlH
+ Zmu0SrGQN2dgKULMvgd81nUhB5bh9YMxGxNlKg1XFknugoJYyiNM6FG5CXTxBmAWwaBW
+ zDbUX812Jp6u7kTPZHnJz2WNPdPFeM9TFz1O0hpweW8+8FwKNk03LlwUmRcC1xsmUSHE
+ W8Ryvz75FhJl85DfeP0FSHLRvbJqcNQJFkXkfef7DArtDaknbmBuFBrd/U/np98At2FA
+ si6uju+/vQxm6tee0aP88s76gdDPuYwL/G0lvKLxfoqULalheo7J2AcEuBU/dz60KQ8D
+ ekfQ==
+X-Gm-Message-State: AC+VfDwVZGLAuUn5X5x3RkbJ5WhETP7/gFXPPGzyuYTii3oYyupdQgF6
+ cBCFer4vEccZy+enGl+VZkUjKmjomPKj1dHL1ftsTg==
+X-Google-Smtp-Source: ACHHUZ5hS1cl385w0yy33SqHwzVfoviqPj7U7KGbU74d6nSn/Ie9wcppThLz//Iv2Nhpzhzuwuby+Q==
+X-Received: by 2002:adf:e610:0:b0:311:1679:6b5c with SMTP id
+ p16-20020adfe610000000b0031116796b5cmr2213196wrm.63.1687450140515; 
+ Thu, 22 Jun 2023 09:09:00 -0700 (PDT)
 Received: from localhost.localdomain (230.red-88-28-3.dynamicip.rima-tde.net.
  [88.28.3.230]) by smtp.gmail.com with ESMTPSA id
- o8-20020a5d4a88000000b003068f5cca8csm7356928wrq.94.2023.06.22.09.08.46
+ n11-20020a5d4c4b000000b003113ccbf388sm7480042wrt.13.2023.06.22.09.08.56
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 22 Jun 2023 09:08:50 -0700 (PDT)
+ Thu, 22 Jun 2023 09:09:00 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Reinoud Zandijk <reinoud@netbsd.org>, qemu-arm@nongnu.org,
@@ -69,17 +69,17 @@ Cc: Reinoud Zandijk <reinoud@netbsd.org>, qemu-arm@nongnu.org,
  Richard Henderson <richard.henderson@linaro.org>,
  xen-devel@lists.xenproject.org, Eduardo Habkost <eduardo@habkost.net>,
  Cameron Esfahani <dirty@apple.com>
-Subject: [PATCH v2 02/16] accel: Document generic accelerator headers
-Date: Thu, 22 Jun 2023 18:08:09 +0200
-Message-Id: <20230622160823.71851-3-philmd@linaro.org>
+Subject: [PATCH v2 03/16] accel: Remove unused hThread variable on TCG/WHPX
+Date: Thu, 22 Jun 2023 18:08:10 +0200
+Message-Id: <20230622160823.71851-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230622160823.71851-1-philmd@linaro.org>
 References: <20230622160823.71851-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,99 +102,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These headers are meant to be include by any file to check
-the availability of accelerators, thus are not accelerator
-specific.
+On Windows hosts, cpu->hThread is assigned but never accessed:
+remove it.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Acked-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/sysemu/hax.h  | 2 ++
- include/sysemu/kvm.h  | 2 ++
- include/sysemu/nvmm.h | 2 ++
- include/sysemu/tcg.h  | 2 ++
- include/sysemu/whpx.h | 2 ++
- include/sysemu/xen.h  | 2 ++
- 6 files changed, 12 insertions(+)
+ accel/tcg/tcg-accel-ops-mttcg.c   | 4 ----
+ accel/tcg/tcg-accel-ops-rr.c      | 3 ---
+ target/i386/whpx/whpx-accel-ops.c | 3 ---
+ 3 files changed, 10 deletions(-)
 
-diff --git a/include/sysemu/hax.h b/include/sysemu/hax.h
-index bf8f99a824..80fc716f80 100644
---- a/include/sysemu/hax.h
-+++ b/include/sysemu/hax.h
-@@ -19,6 +19,8 @@
-  *
-  */
+diff --git a/accel/tcg/tcg-accel-ops-mttcg.c b/accel/tcg/tcg-accel-ops-mttcg.c
+index b320ff0037..b276262007 100644
+--- a/accel/tcg/tcg-accel-ops-mttcg.c
++++ b/accel/tcg/tcg-accel-ops-mttcg.c
+@@ -152,8 +152,4 @@ void mttcg_start_vcpu_thread(CPUState *cpu)
  
-+/* header to be included in non-HAX-specific code */
-+
- #ifndef QEMU_HAX_H
- #define QEMU_HAX_H
+     qemu_thread_create(cpu->thread, thread_name, mttcg_cpu_thread_fn,
+                        cpu, QEMU_THREAD_JOINABLE);
+-
+-#ifdef _WIN32
+-    cpu->hThread = qemu_thread_get_handle(cpu->thread);
+-#endif
+ }
+diff --git a/accel/tcg/tcg-accel-ops-rr.c b/accel/tcg/tcg-accel-ops-rr.c
+index 23e4d0f452..2d523289a8 100644
+--- a/accel/tcg/tcg-accel-ops-rr.c
++++ b/accel/tcg/tcg-accel-ops-rr.c
+@@ -329,9 +329,6 @@ void rr_start_vcpu_thread(CPUState *cpu)
  
-diff --git a/include/sysemu/kvm.h b/include/sysemu/kvm.h
-index 88f5ccfbce..7902acdfd9 100644
---- a/include/sysemu/kvm.h
-+++ b/include/sysemu/kvm.h
-@@ -11,6 +11,8 @@
-  *
-  */
+         single_tcg_halt_cond = cpu->halt_cond;
+         single_tcg_cpu_thread = cpu->thread;
+-#ifdef _WIN32
+-        cpu->hThread = qemu_thread_get_handle(cpu->thread);
+-#endif
+     } else {
+         /* we share the thread */
+         cpu->thread = single_tcg_cpu_thread;
+diff --git a/target/i386/whpx/whpx-accel-ops.c b/target/i386/whpx/whpx-accel-ops.c
+index e8dc4b3a47..67cad86720 100644
+--- a/target/i386/whpx/whpx-accel-ops.c
++++ b/target/i386/whpx/whpx-accel-ops.c
+@@ -71,9 +71,6 @@ static void whpx_start_vcpu_thread(CPUState *cpu)
+              cpu->cpu_index);
+     qemu_thread_create(cpu->thread, thread_name, whpx_cpu_thread_fn,
+                        cpu, QEMU_THREAD_JOINABLE);
+-#ifdef _WIN32
+-    cpu->hThread = qemu_thread_get_handle(cpu->thread);
+-#endif
+ }
  
-+/* header to be included in non-KVM-specific code */
-+
- #ifndef QEMU_KVM_H
- #define QEMU_KVM_H
- 
-diff --git a/include/sysemu/nvmm.h b/include/sysemu/nvmm.h
-index 833670fccb..be7bc9a62d 100644
---- a/include/sysemu/nvmm.h
-+++ b/include/sysemu/nvmm.h
-@@ -7,6 +7,8 @@
-  * See the COPYING file in the top-level directory.
-  */
- 
-+/* header to be included in non-NVMM-specific code */
-+
- #ifndef QEMU_NVMM_H
- #define QEMU_NVMM_H
- 
-diff --git a/include/sysemu/tcg.h b/include/sysemu/tcg.h
-index 53352450ff..5e2ca9aab3 100644
---- a/include/sysemu/tcg.h
-+++ b/include/sysemu/tcg.h
-@@ -5,6 +5,8 @@
-  * See the COPYING file in the top-level directory.
-  */
- 
-+/* header to be included in non-TCG-specific code */
-+
- #ifndef SYSEMU_TCG_H
- #define SYSEMU_TCG_H
- 
-diff --git a/include/sysemu/whpx.h b/include/sysemu/whpx.h
-index 2889fa2278..781ca5b2b6 100644
---- a/include/sysemu/whpx.h
-+++ b/include/sysemu/whpx.h
-@@ -10,6 +10,8 @@
-  *
-  */
- 
-+/* header to be included in non-WHPX-specific code */
-+
- #ifndef QEMU_WHPX_H
- #define QEMU_WHPX_H
- 
-diff --git a/include/sysemu/xen.h b/include/sysemu/xen.h
-index 0ca25697e4..bc13ad5692 100644
---- a/include/sysemu/xen.h
-+++ b/include/sysemu/xen.h
-@@ -5,6 +5,8 @@
-  * See the COPYING file in the top-level directory.
-  */
- 
-+/* header to be included in non-Xen-specific code */
-+
- #ifndef SYSEMU_XEN_H
- #define SYSEMU_XEN_H
- 
+ static void whpx_kick_vcpu_thread(CPUState *cpu)
 -- 
 2.38.1
 
