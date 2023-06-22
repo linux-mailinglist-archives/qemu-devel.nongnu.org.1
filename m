@@ -2,85 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DFD373A749
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 19:31:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C14A473A752
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 19:33:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCO8j-00051q-FJ; Thu, 22 Jun 2023 13:30:37 -0400
+	id 1qCOBA-0006AS-GB; Thu, 22 Jun 2023 13:33:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qCO8h-00051a-I2
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 13:30:35 -0400
-Received: from mail-oa1-x2e.google.com ([2001:4860:4864:20::2e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qCO8f-0004Ol-RV
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 13:30:35 -0400
-Received: by mail-oa1-x2e.google.com with SMTP id
- 586e51a60fabf-1aa291b3fc7so4369988fac.1
- for <qemu-devel@nongnu.org>; Thu, 22 Jun 2023 10:30:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1687455032; x=1690047032;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=+K9i5UeQRlo9zQpucK2unPpZOkcmFzTinHURf1fIF9s=;
- b=l2DHKGY+ZJ/11jvqHkFG4L5DI5UmesbOglO/3uXM7mJcCmrD+r3G6KZRIUTZSryut3
- PvTuB/PvnNwW7Fbio7QLtHu9n/5GAChCAKHzDxmTPmFJMamurN0nA5QSIkXu5qk57Nz1
- m7KTJy9SHPeOMRO6zZHf+tJRMn+sWVf13Jb0wNU9SgQXb8ITLdEbQtbjj26QQru0QZ8M
- +FNnaIOU+zHtCgFRmS1N98uvu5NVMDnn4EDnMzz6R2iyn1odEYmZX5dSawYH54XbdUoG
- /GaH9RYuBoVZXx+WXQQza5Iv1bOUBelqSI6iH3tbSKxA7xu+fBt9BeXaQXVQCU9B0Z1E
- wJUg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687455032; x=1690047032;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=+K9i5UeQRlo9zQpucK2unPpZOkcmFzTinHURf1fIF9s=;
- b=hAu/0L4leLPop3DIwwaECPh5hBneKw1dGytCa1DBPo1wgMd+wEz5oUqLVjx7yAym6X
- y9cJ5FjQCae4t/j9EatfsByuLeCeSWAKrKtt4P+857MwE9/ogeWNjRQ+A1MLj65M+/CC
- Yo0G5w9DUJanhGtMMR0nB1eXHCRU+pu05sxk6WCw3fWvsnXb/NNpmN5P+ijBfeEzfTtV
- cFUBJY9vBQd/DxDSoARzV/Oz8cQ6SjdceLN/3iMHTVXmbk/cXRPEaZsfdC0nyymBHdyc
- w3z9mZ/jupX+w8YGdSVaTB2s4CcVq/zgVpiqSbXYJVcxpPYYxBhAe7aqekLZXztPzM4q
- 1fOA==
-X-Gm-Message-State: AC+VfDwAIkmbbqxwHzF934ZxWZNyoLf9PfLDtyaGMHc46anK9Do7r+Wm
- mO0jM+J7UpwmFKH/s5dVTAFfBA==
-X-Google-Smtp-Source: ACHHUZ5Fop/0AyX3uSz8ZllfeDTFNuWLooy4pAmagLC8LNNmsnqqLvNfkUm3nYOm8THFhXfTApXQgA==
-X-Received: by 2002:a05:6870:44c1:b0:19f:214b:b852 with SMTP id
- t1-20020a05687044c100b0019f214bb852mr14450156oai.56.1687455032189; 
- Thu, 22 Jun 2023 10:30:32 -0700 (PDT)
-Received: from [192.168.68.108] (201-69-66-110.dial-up.telesp.net.br.
- [201.69.66.110]) by smtp.gmail.com with ESMTPSA id
- pn2-20020a0568704d0200b001a695700c69sm4404871oab.37.2023.06.22.10.30.30
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 22 Jun 2023 10:30:31 -0700 (PDT)
-Message-ID: <684ca7f1-c4f4-70f8-b92d-34b0d3336646@ventanamicro.com>
-Date: Thu, 22 Jun 2023 14:30:28 -0300
+ (Exim 4.90_1) (envelope-from <SRS0=yb1G=CK=kaod.org=clg@ozlabs.org>)
+ id 1qCOB8-0006A5-Qe; Thu, 22 Jun 2023 13:33:06 -0400
+Received: from gandalf.ozlabs.org ([150.107.74.76])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <SRS0=yb1G=CK=kaod.org=clg@ozlabs.org>)
+ id 1qCOB6-0005P5-Is; Thu, 22 Jun 2023 13:33:06 -0400
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4Qn6s72xkyz4x07;
+ Fri, 23 Jun 2023 03:32:59 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits))
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Qn6s44J7kz4wgj;
+ Fri, 23 Jun 2023 03:32:56 +1000 (AEST)
+Message-ID: <a925b38c-9267-c144-befc-e730388e9c63@kaod.org>
+Date: Thu, 22 Jun 2023 19:32:54 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
-Subject: Re: [PATCH v4 08/17] tcg: Fix temporary variable in tcg_gen_gvec_andcs
+Subject: Re: [PATCH v2 2/7] target/ppc: Add support for SMT CTRL register
 Content-Language: en-US
-To: Max Chou <max.chou@sifive.com>, qemu-devel@nongnu.org,
- qemu-riscv@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>
-References: <20230622161646.32005-1-max.chou@sifive.com>
- <20230622161646.32005-9-max.chou@sifive.com>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20230622161646.32005-9-max.chou@sifive.com>
+To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
+Cc: qemu-devel@nongnu.org, Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+References: <20230622093357.255649-1-npiggin@gmail.com>
+ <20230622093357.255649-3-npiggin@gmail.com>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <20230622093357.255649-3-npiggin@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2001:4860:4864:20::2e;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-oa1-x2e.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=SRS0=yb1G=CK=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, NICE_REPLY_A=-0.09, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,35 +67,112 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-On 6/22/23 13:16, Max Chou wrote:
-> The 5th parameter of tcg_gen_gvec_2s should be replaces by the temporary
-
-s/replaces/replaced
-
-
-> tmp variable in the tcg_gen_gvec_andcs function.
+On 6/22/23 11:33, Nicholas Piggin wrote:
+> A relatively simple case to begin with, CTRL is a SMT shared register
+> where reads and writes need to synchronise against state changes by
+> other threads in the core.
 > 
-> Signed-off-by: Max Chou <max.chou@sifive.com>
+> Atomic serialisation operations are used to achieve this.
+> 
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+
+Reviewed-by: Cédric Le Goater <clg@kaod.org>
+
+Thanks,
+
+C.
+
+
 > ---
-
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-
->   tcg/tcg-op-gvec.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+>   target/ppc/helper.h      |  2 ++
+>   target/ppc/misc_helper.c | 25 +++++++++++++++++++++++++
+>   target/ppc/translate.c   | 18 +++++++++++++++++-
+>   3 files changed, 44 insertions(+), 1 deletion(-)
 > 
-> diff --git a/tcg/tcg-op-gvec.c b/tcg/tcg-op-gvec.c
-> index 95a588d6d2..a062239804 100644
-> --- a/tcg/tcg-op-gvec.c
-> +++ b/tcg/tcg-op-gvec.c
-> @@ -2774,7 +2774,7 @@ void tcg_gen_gvec_andcs(unsigned vece, uint32_t dofs, uint32_t aofs,
+> diff --git a/target/ppc/helper.h b/target/ppc/helper.h
+> index 38efbc351c..fda40b8a60 100644
+> --- a/target/ppc/helper.h
+> +++ b/target/ppc/helper.h
+> @@ -704,6 +704,8 @@ DEF_HELPER_3(store_dcr, void, env, tl, tl)
 >   
->       TCGv_i64 tmp = tcg_temp_ebb_new_i64();
->       tcg_gen_dup_i64(vece, tmp, c);
-> -    tcg_gen_gvec_2s(dofs, aofs, oprsz, maxsz, c, &g);
-> +    tcg_gen_gvec_2s(dofs, aofs, oprsz, maxsz, tmp, &g);
->       tcg_temp_free_i64(tmp);
+>   DEF_HELPER_2(load_dump_spr, void, env, i32)
+>   DEF_HELPER_2(store_dump_spr, void, env, i32)
+> +DEF_HELPER_3(spr_write_CTRL, void, env, i32, tl)
+> +
+>   DEF_HELPER_4(fscr_facility_check, void, env, i32, i32, i32)
+>   DEF_HELPER_4(msr_facility_check, void, env, i32, i32, i32)
+>   DEF_HELPER_FLAGS_1(load_tbl, TCG_CALL_NO_RWG, tl, env)
+> diff --git a/target/ppc/misc_helper.c b/target/ppc/misc_helper.c
+> index 40ddc5c08c..a058eb24cd 100644
+> --- a/target/ppc/misc_helper.c
+> +++ b/target/ppc/misc_helper.c
+> @@ -43,6 +43,31 @@ void helper_store_dump_spr(CPUPPCState *env, uint32_t sprn)
+>                env->spr[sprn]);
 >   }
 >   
+> +void helper_spr_write_CTRL(CPUPPCState *env, uint32_t sprn,
+> +                           target_ulong val)
+> +{
+> +    CPUState *cs = env_cpu(env);
+> +    CPUState *ccs;
+> +    uint32_t run = val & 1;
+> +    uint32_t ts, ts_mask;
+> +
+> +    assert(sprn == SPR_CTRL);
+> +
+> +    env->spr[sprn] &= ~1U;
+> +    env->spr[sprn] |= run;
+> +
+> +    ts_mask = ~(1U << (8 + env->spr[SPR_TIR]));
+> +    ts = run << (8 + env->spr[SPR_TIR]);
+> +
+> +    THREAD_SIBLING_FOREACH(cs, ccs) {
+> +        CPUPPCState *cenv = &POWERPC_CPU(ccs)->env;
+> +
+> +        cenv->spr[sprn] &= ts_mask;
+> +        cenv->spr[sprn] |= ts;
+> +    }
+> +}
+> +
+> +
+>   #ifdef TARGET_PPC64
+>   static void raise_hv_fu_exception(CPUPPCState *env, uint32_t bit,
+>                                     const char *caller, uint32_t cause,
+> diff --git a/target/ppc/translate.c b/target/ppc/translate.c
+> index 5d585393c5..41a8b800bd 100644
+> --- a/target/ppc/translate.c
+> +++ b/target/ppc/translate.c
+> @@ -438,7 +438,7 @@ void spr_write_generic32(DisasContext *ctx, int sprn, int gprn)
+>   #endif
+>   }
+>   
+> -void spr_write_CTRL(DisasContext *ctx, int sprn, int gprn)
+> +static void spr_write_CTRL_ST(DisasContext *ctx, int sprn, int gprn)
+>   {
+>       /* This does not implement >1 thread */
+>       TCGv t0 = tcg_temp_new();
+> @@ -447,6 +447,22 @@ void spr_write_CTRL(DisasContext *ctx, int sprn, int gprn)
+>       tcg_gen_shli_tl(t1, t0, 8); /* Duplicate the bit in TS */
+>       tcg_gen_or_tl(t1, t1, t0);
+>       gen_store_spr(sprn, t1);
+> +}
+> +
+> +void spr_write_CTRL(DisasContext *ctx, int sprn, int gprn)
+> +{
+> +    if (!(ctx->flags & POWERPC_FLAG_SMT)) {
+> +        spr_write_CTRL_ST(ctx, sprn, gprn);
+> +        goto out;
+> +    }
+> +
+> +    if (!gen_serialize(ctx)) {
+> +        return;
+> +    }
+> +
+> +    gen_helper_spr_write_CTRL(cpu_env, tcg_constant_i32(sprn),
+> +                              cpu_gpr[gprn]);
+> +out:
+>       spr_store_dump_spr(sprn);
+>   
+>       /*
+
 
