@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8443673A59E
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 18:09:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B277973A5A7
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 18:10:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCMrX-0002Qt-IG; Thu, 22 Jun 2023 12:08:47 -0400
+	id 1qCMrf-0002Vj-Vn; Thu, 22 Jun 2023 12:08:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qCMrV-0002Gj-5k
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 12:08:45 -0400
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qCMre-0002VZ-7O
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 12:08:54 -0400
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qCMrS-0007eG-Fa
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 12:08:44 -0400
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-3111547c8f9so8486981f8f.1
- for <qemu-devel@nongnu.org>; Thu, 22 Jun 2023 09:08:42 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qCMrc-0007fk-BR
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 12:08:53 -0400
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-311275efaf8so5835774f8f.3
+ for <qemu-devel@nongnu.org>; Thu, 22 Jun 2023 09:08:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687450120; x=1690042120;
+ d=linaro.org; s=google; t=1687450130; x=1690042130;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=+JIxHWMClVl6mvpALDoBK231PZeNGUQgT3foMweSwl8=;
- b=m+sOyJwBwsltlHfQ5plMWKOLIis+OEb+I+kYqnZLv4G8Ud23JDgwJFKc5QbUKlQQoS
- 1zKSS1dPuy4yqZPNl6TAEFOkN/4qh6Z7q8wJxnI3w+xUocRyREHjcikLswb/B58iAjAw
- i0Kwl0CU2mChgimY0x1pocirTiLNpGhvP2OOxOZgzVdLhbaNm1KhLhoBCcbuNucTQQ3G
- RtyEsciQU1EctCDZTXKzkq/56Q8BpF4exuWzK5Zi9+g+wdZDHRqUsfqn3qJyaskO1hMN
- ORq6jEFNL0dLVh/Tn8LHeYLlV/JThI4azyQy/GqlByxiQt/VVPM3RXqUH7+Gq+EH6hC4
- YgBw==
+ bh=xHLdIwIywOmneOj5eUp5g6ra2t5DF15QteoMLknkUnc=;
+ b=hz1Iri7fzveQD0XzRURoVBQ0AayjUFEKed+ma5hJWh66FT6qnBh9fJ6Yqa49kNHo/F
+ 3IpOngfIDQP04/ptc2tjcBXuEBGYnyItgUqUv1Xzu4OMyAwehLKCQiYvbdeSNCij8x95
+ cWxKOYJL2Kj+I0ElvY9i/iRKv7l1uzjI7KdJo4fnnC4me8XMGc9CZSrylMv1xwbefMDq
+ 20wIR6Hftn5IW5cBGp88Pv5LYTiLSSfKvPKxbm7q5nblR8TO4SLMy+l/dx7jOAt50qA/
+ UPo0hT2rx1nx+tTGE22u6Jz+w2s4b5BrZ3reMQGP04EpIgkSA8Qr9dx1Stp7KU/I3xGF
+ CtaQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687450120; x=1690042120;
+ d=1e100.net; s=20221208; t=1687450130; x=1690042130;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+JIxHWMClVl6mvpALDoBK231PZeNGUQgT3foMweSwl8=;
- b=Q8irszQLNSxAHb+wNZ/BL87wM3PPPzCkuljy8U79ZdaQWAPwHTQS+VJ1xPS7DHL0rn
- WbHkn6pJ0N2PC0B8g9KJEbLDyXgjKT3jFqF8Nz1M2ehVwnua++hFoxbJhhO0YNRfkHxY
- vt63qtWf/q+xLQImhM46BilFk3ES7ae0sNs4ESjAFZFSx/MQ5EEL+VuPR1MODdTPRxvZ
- ohTqURC83YLXcTgWiEJhVN6z4UtS8+qegtdt5elW30lIEDiIW1xsLAmVsXA6ip4bHW/n
- Jw2eUuXUiy0ZDkyeEzCJJ2TkeeI5lmOmHvyYukz4hWfK5MPmxuR9JXor0rZgM2y87BCc
- nW6w==
-X-Gm-Message-State: AC+VfDyhlFeDxHM1WyKvifEbb0ZTV93i3O2gqTmRqk8oUzshaDtSaQXJ
- C7UHy4xBGb7zJBvM2AApoq3gGg+5pvQMSQlPr05vHg==
-X-Google-Smtp-Source: ACHHUZ6j9PL4gNb09NvEUjJSuIorrjesDgNKCq1cC1uX5pyBuSA6/zCj91wre6SrtXJc4I0XeTLuqQ==
-X-Received: by 2002:a5d:67cd:0:b0:2ef:b052:1296 with SMTP id
- n13-20020a5d67cd000000b002efb0521296mr16834670wrw.22.1687450120463; 
- Thu, 22 Jun 2023 09:08:40 -0700 (PDT)
+ bh=xHLdIwIywOmneOj5eUp5g6ra2t5DF15QteoMLknkUnc=;
+ b=Dk7MGTv9pkGlVRqUnt5xY0dLS7sAdVh2Lq7pSLJuF0WH65i4kZSQpmnDTk/7T2GBrx
+ USYu16WISZ6f47rh7XD6oD8GnhoB4wrV5peyL/ztI4SGNF8qkX0ecHYm8Yk3GlGgBQeM
+ L7c4pXWuPz4i7jww9pD4A54o/J5Iy6xQAHUDBtVeq/ZevJCM4jxmTQptRwRl2TyvcjHn
+ GMXdJDmFfEoS+Iy9NNaxRWepzeQRo/2qR7FDepDwSbGyYP4Vq9bFbG6Lxr8GnKKZ6iCR
+ oSECcwjYrMork8dN32g+BbVCn2vrc/flMS7JAzNt5wxk1B8oF/zCvJ1ODdQnh710kP9I
+ TuWw==
+X-Gm-Message-State: AC+VfDwcwn5+dvizEbaOMPc9tlAp9XXo/J/OP5Ovqd3Qno7BCa/8nY4q
+ nEei1243LAnuqMlQdbTFTo0mzJHnG06rxHaNFygvAQ==
+X-Google-Smtp-Source: ACHHUZ5FZJ07KWuWBYKgfrnuifY1fdOTl2VG8E4TsYr3Kvhd2tgi1EDXYohQtUPqrVHBijnkT2QeEg==
+X-Received: by 2002:adf:f952:0:b0:30f:ca58:a00d with SMTP id
+ q18-20020adff952000000b0030fca58a00dmr10419263wrr.45.1687450130628; 
+ Thu, 22 Jun 2023 09:08:50 -0700 (PDT)
 Received: from localhost.localdomain (230.red-88-28-3.dynamicip.rima-tde.net.
  [88.28.3.230]) by smtp.gmail.com with ESMTPSA id
- k7-20020a5d5187000000b0031128382ed0sm7377909wrv.83.2023.06.22.09.08.36
+ o8-20020a5d4a88000000b003068f5cca8csm7356928wrq.94.2023.06.22.09.08.46
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 22 Jun 2023 09:08:40 -0700 (PDT)
+ Thu, 22 Jun 2023 09:08:50 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Reinoud Zandijk <reinoud@netbsd.org>, qemu-arm@nongnu.org,
@@ -69,17 +69,17 @@ Cc: Reinoud Zandijk <reinoud@netbsd.org>, qemu-arm@nongnu.org,
  Richard Henderson <richard.henderson@linaro.org>,
  xen-devel@lists.xenproject.org, Eduardo Habkost <eduardo@habkost.net>,
  Cameron Esfahani <dirty@apple.com>
-Subject: [PATCH v2 01/16] MAINTAINERS: Update Roman Bolshakov email address
-Date: Thu, 22 Jun 2023 18:08:08 +0200
-Message-Id: <20230622160823.71851-2-philmd@linaro.org>
+Subject: [PATCH v2 02/16] accel: Document generic accelerator headers
+Date: Thu, 22 Jun 2023 18:08:09 +0200
+Message-Id: <20230622160823.71851-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230622160823.71851-1-philmd@linaro.org>
 References: <20230622160823.71851-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,54 +102,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-r.bolshakov@yadro.com is bouncing: Update Roman's email address
-using one found somewhere on the Internet; this way he can Ack-by.
-
-(Reorder Taylor's line to keep the section sorted alphabetically).
+These headers are meant to be include by any file to check
+the availability of accelerators, thus are not accelerator
+specific.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Acked-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- MAINTAINERS | 4 ++--
- .mailmap    | 3 ++-
- 2 files changed, 4 insertions(+), 3 deletions(-)
+ include/sysemu/hax.h  | 2 ++
+ include/sysemu/kvm.h  | 2 ++
+ include/sysemu/nvmm.h | 2 ++
+ include/sysemu/tcg.h  | 2 ++
+ include/sysemu/whpx.h | 2 ++
+ include/sysemu/xen.h  | 2 ++
+ 6 files changed, 12 insertions(+)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 7f323cd2eb..1da135b0c8 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -497,14 +497,14 @@ F: target/arm/hvf/
+diff --git a/include/sysemu/hax.h b/include/sysemu/hax.h
+index bf8f99a824..80fc716f80 100644
+--- a/include/sysemu/hax.h
++++ b/include/sysemu/hax.h
+@@ -19,6 +19,8 @@
+  *
+  */
  
- X86 HVF CPUs
- M: Cameron Esfahani <dirty@apple.com>
--M: Roman Bolshakov <r.bolshakov@yadro.com>
-+M: Roman Bolshakov <rbolshakov@ddn.com>
- W: https://wiki.qemu.org/Features/HVF
- S: Maintained
- F: target/i386/hvf/
++/* header to be included in non-HAX-specific code */
++
+ #ifndef QEMU_HAX_H
+ #define QEMU_HAX_H
  
- HVF
- M: Cameron Esfahani <dirty@apple.com>
--M: Roman Bolshakov <r.bolshakov@yadro.com>
-+M: Roman Bolshakov <rbolshakov@ddn.com>
- W: https://wiki.qemu.org/Features/HVF
- S: Maintained
- F: accel/hvf/
-diff --git a/.mailmap b/.mailmap
-index b57da4827e..64ef9f4de6 100644
---- a/.mailmap
-+++ b/.mailmap
-@@ -76,9 +76,10 @@ Paul Burton <paulburton@kernel.org> <pburton@wavecomp.com>
- Philippe Mathieu-Daudé <philmd@linaro.org> <f4bug@amsat.org>
- Philippe Mathieu-Daudé <philmd@linaro.org> <philmd@redhat.com>
- Philippe Mathieu-Daudé <philmd@linaro.org> <philmd@fungible.com>
-+Roman Bolshakov <rbolshakov@ddn.com> <r.bolshakov@yadro.com>
- Stefan Brankovic <stefan.brankovic@syrmia.com> <stefan.brankovic@rt-rk.com.com>
--Yongbok Kim <yongbok.kim@mips.com> <yongbok.kim@imgtec.com>
- Taylor Simpson <ltaylorsimpson@gmail.com> <tsimpson@quicinc.com>
-+Yongbok Kim <yongbok.kim@mips.com> <yongbok.kim@imgtec.com>
+diff --git a/include/sysemu/kvm.h b/include/sysemu/kvm.h
+index 88f5ccfbce..7902acdfd9 100644
+--- a/include/sysemu/kvm.h
++++ b/include/sysemu/kvm.h
+@@ -11,6 +11,8 @@
+  *
+  */
  
- # Also list preferred name forms where people have changed their
- # git author config, or had utf8/latin1 encoding issues.
++/* header to be included in non-KVM-specific code */
++
+ #ifndef QEMU_KVM_H
+ #define QEMU_KVM_H
+ 
+diff --git a/include/sysemu/nvmm.h b/include/sysemu/nvmm.h
+index 833670fccb..be7bc9a62d 100644
+--- a/include/sysemu/nvmm.h
++++ b/include/sysemu/nvmm.h
+@@ -7,6 +7,8 @@
+  * See the COPYING file in the top-level directory.
+  */
+ 
++/* header to be included in non-NVMM-specific code */
++
+ #ifndef QEMU_NVMM_H
+ #define QEMU_NVMM_H
+ 
+diff --git a/include/sysemu/tcg.h b/include/sysemu/tcg.h
+index 53352450ff..5e2ca9aab3 100644
+--- a/include/sysemu/tcg.h
++++ b/include/sysemu/tcg.h
+@@ -5,6 +5,8 @@
+  * See the COPYING file in the top-level directory.
+  */
+ 
++/* header to be included in non-TCG-specific code */
++
+ #ifndef SYSEMU_TCG_H
+ #define SYSEMU_TCG_H
+ 
+diff --git a/include/sysemu/whpx.h b/include/sysemu/whpx.h
+index 2889fa2278..781ca5b2b6 100644
+--- a/include/sysemu/whpx.h
++++ b/include/sysemu/whpx.h
+@@ -10,6 +10,8 @@
+  *
+  */
+ 
++/* header to be included in non-WHPX-specific code */
++
+ #ifndef QEMU_WHPX_H
+ #define QEMU_WHPX_H
+ 
+diff --git a/include/sysemu/xen.h b/include/sysemu/xen.h
+index 0ca25697e4..bc13ad5692 100644
+--- a/include/sysemu/xen.h
++++ b/include/sysemu/xen.h
+@@ -5,6 +5,8 @@
+  * See the COPYING file in the top-level directory.
+  */
+ 
++/* header to be included in non-Xen-specific code */
++
+ #ifndef SYSEMU_XEN_H
+ #define SYSEMU_XEN_H
+ 
 -- 
 2.38.1
 
