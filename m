@@ -2,38 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 330AA73A753
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 19:33:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B92773A754
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 19:34:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCOBS-0006Em-33; Thu, 22 Jun 2023 13:33:26 -0400
+	id 1qCOBW-0006HZ-2a; Thu, 22 Jun 2023 13:33:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=yb1G=CK=kaod.org=clg@ozlabs.org>)
- id 1qCOBP-0006Dl-Ri; Thu, 22 Jun 2023 13:33:23 -0400
+ id 1qCOBU-0006Gy-Ll; Thu, 22 Jun 2023 13:33:28 -0400
 Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
  helo=gandalf.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=yb1G=CK=kaod.org=clg@ozlabs.org>)
- id 1qCOBN-0005wL-Rf; Thu, 22 Jun 2023 13:33:23 -0400
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4Qn6sR0ZT3z4x07;
- Fri, 23 Jun 2023 03:33:15 +1000 (AEST)
+ id 1qCOBS-00062m-Al; Thu, 22 Jun 2023 13:33:28 -0400
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4Qn6sb4nvBz4wgj;
+ Fri, 23 Jun 2023 03:33:23 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits))
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Qn6sN36brz4wgj;
- Fri, 23 Jun 2023 03:33:12 +1000 (AEST)
-Message-ID: <104b0621-41f2-5145-9822-e9f2f4adcd76@kaod.org>
-Date: Thu, 22 Jun 2023 19:33:10 +0200
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Qn6sY1CFHz4x3q;
+ Fri, 23 Jun 2023 03:33:20 +1000 (AEST)
+Message-ID: <dfc9e93a-7481-c6c3-9786-947df8d3ab68@kaod.org>
+Date: Thu, 22 Jun 2023 19:33:19 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
-Subject: Re: [PATCH v2 1/7] target/ppc: Add initial flags and helpers for SMT
- support
+Subject: Re: [PATCH v2 3/7] target/ppc: Add msgsnd/p and DPDES SMT support
 Content-Language: en-US
 To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
 Cc: qemu-devel@nongnu.org, Harsh Prateek Bora <harshpb@linux.ibm.com>,
@@ -41,9 +39,9 @@ Cc: qemu-devel@nongnu.org, Harsh Prateek Bora <harshpb@linux.ibm.com>,
  David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
  =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
 References: <20230622093357.255649-1-npiggin@gmail.com>
- <20230622093357.255649-2-npiggin@gmail.com>
+ <20230622093357.255649-4-npiggin@gmail.com>
 From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20230622093357.255649-2-npiggin@gmail.com>
+In-Reply-To: <20230622093357.255649-4-npiggin@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
@@ -71,15 +69,8 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 6/22/23 11:33, Nicholas Piggin wrote:
-> TGC SMT emulation needs to know whether it is running with SMT siblings,
-> to be able to iterate over siblings in a core, and to serialise
-> threads to access per-core shared SPRs. Add infrastructure to do these
-> things.
-> 
-> For now the sibling iteration and serialisation are implemented in a
-> simple but inefficient way. SMT shared state and sibling access is not
-> too common, and SMT configurations are mainly useful to test system
-> code, so performance is not to critical.
+> Doorbells in SMT need to coordinate msgsnd/msgclr and DPDES access from
+> multiple threads that affect the same state.
 > 
 > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 
@@ -90,92 +81,194 @@ Thanks,
 C.
 
 
+
 > ---
->   target/ppc/cpu.h       |  9 +++++++++
->   target/ppc/cpu_init.c  |  5 +++++
->   target/ppc/translate.c | 20 ++++++++++++++++++++
->   3 files changed, 34 insertions(+)
+>   hw/ppc/ppc.c             |  6 ++++++
+>   include/hw/ppc/ppc.h     |  1 +
+>   target/ppc/excp_helper.c | 30 ++++++++++++++++++++++-----
+>   target/ppc/misc_helper.c | 44 ++++++++++++++++++++++++++++++++++------
+>   target/ppc/translate.c   |  8 ++++++++
+>   5 files changed, 78 insertions(+), 11 deletions(-)
 > 
-> diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
-> index bfa1777289..0087ce66e2 100644
-> --- a/target/ppc/cpu.h
-> +++ b/target/ppc/cpu.h
-> @@ -672,6 +672,8 @@ enum {
->       POWERPC_FLAG_TM       = 0x00100000,
->       /* Has SCV (ISA 3.00)                                                    */
->       POWERPC_FLAG_SCV      = 0x00200000,
-> +    /* Has >1 thread per core                                                */
-> +    POWERPC_FLAG_SMT      = 0x00400000,
->   };
+> diff --git a/hw/ppc/ppc.c b/hw/ppc/ppc.c
+> index 1b1220c423..82e4408c5c 100644
+> --- a/hw/ppc/ppc.c
+> +++ b/hw/ppc/ppc.c
+> @@ -1436,6 +1436,12 @@ int ppc_cpu_pir(PowerPCCPU *cpu)
+>       return env->spr_cb[SPR_PIR].default_value;
+>   }
+>   
+> +int ppc_cpu_tir(PowerPCCPU *cpu)
+> +{
+> +    CPUPPCState *env = &cpu->env;
+> +    return env->spr_cb[SPR_TIR].default_value;
+> +}
+> +
+>   PowerPCCPU *ppc_get_vcpu_by_pir(int pir)
+>   {
+>       CPUState *cs;
+> diff --git a/include/hw/ppc/ppc.h b/include/hw/ppc/ppc.h
+> index 02af03ada2..e095c002dc 100644
+> --- a/include/hw/ppc/ppc.h
+> +++ b/include/hw/ppc/ppc.h
+> @@ -6,6 +6,7 @@
+>   void ppc_set_irq(PowerPCCPU *cpu, int n_IRQ, int level);
+>   PowerPCCPU *ppc_get_vcpu_by_pir(int pir);
+>   int ppc_cpu_pir(PowerPCCPU *cpu);
+> +int ppc_cpu_tir(PowerPCCPU *cpu);
+>   
+>   /* PowerPC hardware exceptions management helpers */
+>   typedef void (*clk_setup_cb)(void *opaque, uint32_t freq);
+> diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
+> index 7d45035447..d40eecb4c7 100644
+> --- a/target/ppc/excp_helper.c
+> +++ b/target/ppc/excp_helper.c
+> @@ -3187,22 +3187,42 @@ void helper_book3s_msgclrp(CPUPPCState *env, target_ulong rb)
+>   }
 >   
 >   /*
-> @@ -1270,6 +1272,13 @@ struct CPUArchState {
->       uint64_t pmu_base_time;
->   };
->   
-> +#define _CORE_ID(cs)                                            \
-> +    (POWERPC_CPU(cs)->env.spr_cb[SPR_PIR].default_value & ~(cs->nr_threads - 1))
-> +
-> +#define THREAD_SIBLING_FOREACH(cs, cs_sibling)                  \
-> +    CPU_FOREACH(cs_sibling)                                     \
-> +        if (_CORE_ID(cs) == _CORE_ID(cs_sibling))
-> +
->   #define SET_FIT_PERIOD(a_, b_, c_, d_)          \
->   do {                                            \
->       env->fit_period[0] = (a_);                  \
-> diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
-> index dccc064053..aeff71d063 100644
-> --- a/target/ppc/cpu_init.c
-> +++ b/target/ppc/cpu_init.c
-> @@ -6755,6 +6755,7 @@ static void ppc_cpu_realize(DeviceState *dev, Error **errp)
+> - * sends a message to other threads that are on the same
+> + * sends a message to another thread  on the same
+>    * multi-threaded processor
+>    */
+>   void helper_book3s_msgsndp(CPUPPCState *env, target_ulong rb)
 >   {
->       CPUState *cs = CPU(dev);
->       PowerPCCPU *cpu = POWERPC_CPU(dev);
-> +    CPUPPCState *env = &cpu->env;
->       PowerPCCPUClass *pcc = POWERPC_CPU_GET_CLASS(cpu);
->       Error *local_err = NULL;
+> -    int pir = env->spr_cb[SPR_PIR].default_value;
+> +    CPUState *cs = env_cpu(env);
+> +    PowerPCCPU *cpu = POWERPC_CPU(cs);
+> +    CPUState *ccs;
+> +    uint32_t nr_threads = cs->nr_threads;
+> +    int ttir = rb & PPC_BITMASK(57, 63);
 >   
-> @@ -6786,6 +6787,10 @@ static void ppc_cpu_realize(DeviceState *dev, Error **errp)
+>       helper_hfscr_facility_check(env, HFSCR_MSGP, "msgsndp", HFSCR_IC_MSGP);
 >   
->       pcc->parent_realize(dev, errp);
->   
-> +    if (env_cpu(env)->nr_threads > 1) {
-> +        env->flags |= POWERPC_FLAG_SMT;
+> -    if (!dbell_type_server(rb)) {
+> +    if (!dbell_type_server(rb) || ttir >= nr_threads) {
+> +        return;
 > +    }
 > +
->       return;
+> +    if (nr_threads == 1) {
+> +        ppc_set_irq(cpu, PPC_INTERRUPT_DOORBELL, 1);
+>           return;
+>       }
 >   
->   unrealize:
+> -    /* TODO: TCG supports only one thread */
+> +    /* Does iothread need to be locked for walking CPU list? */
+> +    qemu_mutex_lock_iothread();
+> +    THREAD_SIBLING_FOREACH(cs, ccs) {
+> +        PowerPCCPU *ccpu = POWERPC_CPU(ccs);
+> +        uint32_t thread_id = ppc_cpu_tir(ccpu);
+> +
+> +        if (ttir == thread_id) {
+> +            ppc_set_irq(ccpu, PPC_INTERRUPT_DOORBELL, 1);
+> +            qemu_mutex_unlock_iothread();
+> +            return;
+> +        }
+> +    }
+>   
+> -    book3s_msgsnd_common(pir, PPC_INTERRUPT_DOORBELL);
+> +    g_assert_not_reached();
+>   }
+>   #endif /* TARGET_PPC64 */
+>   
+> diff --git a/target/ppc/misc_helper.c b/target/ppc/misc_helper.c
+> index a058eb24cd..1f1af21f33 100644
+> --- a/target/ppc/misc_helper.c
+> +++ b/target/ppc/misc_helper.c
+> @@ -184,14 +184,31 @@ void helper_store_pcr(CPUPPCState *env, target_ulong value)
+>    */
+>   target_ulong helper_load_dpdes(CPUPPCState *env)
+>   {
+> +    CPUState *cs = env_cpu(env);
+> +    CPUState *ccs;
+> +    uint32_t nr_threads = cs->nr_threads;
+>       target_ulong dpdes = 0;
+>   
+>       helper_hfscr_facility_check(env, HFSCR_MSGP, "load DPDES", HFSCR_IC_MSGP);
+>   
+> -    /* TODO: TCG supports only one thread */
+> -    if (env->pending_interrupts & PPC_INTERRUPT_DOORBELL) {
+> -        dpdes = 1;
+> +    if (nr_threads == 1) {
+> +        if (env->pending_interrupts & PPC_INTERRUPT_DOORBELL) {
+> +            dpdes = 1;
+> +        }
+> +        return dpdes;
+> +    }
+> +
+> +    qemu_mutex_lock_iothread();
+> +    THREAD_SIBLING_FOREACH(cs, ccs) {
+> +        PowerPCCPU *ccpu = POWERPC_CPU(ccs);
+> +        CPUPPCState *cenv = &ccpu->env;
+> +        uint32_t thread_id = ppc_cpu_tir(ccpu);
+> +
+> +        if (cenv->pending_interrupts & PPC_INTERRUPT_DOORBELL) {
+> +            dpdes |= (0x1 << thread_id);
+> +        }
+>       }
+> +    qemu_mutex_unlock_iothread();
+>   
+>       return dpdes;
+>   }
+> @@ -199,17 +216,32 @@ target_ulong helper_load_dpdes(CPUPPCState *env)
+>   void helper_store_dpdes(CPUPPCState *env, target_ulong val)
+>   {
+>       PowerPCCPU *cpu = env_archcpu(env);
+> +    CPUState *cs = env_cpu(env);
+> +    CPUState *ccs;
+> +    uint32_t nr_threads = cs->nr_threads;
+>   
+>       helper_hfscr_facility_check(env, HFSCR_MSGP, "store DPDES", HFSCR_IC_MSGP);
+>   
+> -    /* TODO: TCG supports only one thread */
+> -    if (val & ~0x1) {
+> +    if (val & ~(nr_threads - 1)) {
+>           qemu_log_mask(LOG_GUEST_ERROR, "Invalid DPDES register value "
+>                         TARGET_FMT_lx"\n", val);
+> +        val &= (nr_threads - 1); /* Ignore the invalid bits */
+> +    }
+> +
+> +    if (nr_threads == 1) {
+> +        ppc_set_irq(cpu, PPC_INTERRUPT_DOORBELL, val & 0x1);
+>           return;
+>       }
+>   
+> -    ppc_set_irq(cpu, PPC_INTERRUPT_DOORBELL, val & 0x1);
+> +    /* Does iothread need to be locked for walking CPU list? */
+> +    qemu_mutex_lock_iothread();
+> +    THREAD_SIBLING_FOREACH(cs, ccs) {
+> +        PowerPCCPU *ccpu = POWERPC_CPU(ccs);
+> +        uint32_t thread_id = ppc_cpu_tir(ccpu);
+> +
+> +        ppc_set_irq(cpu, PPC_INTERRUPT_DOORBELL, val & (0x1 << thread_id));
+> +    }
+> +    qemu_mutex_unlock_iothread();
+>   }
+>   #endif /* defined(TARGET_PPC64) */
+>   
 > diff --git a/target/ppc/translate.c b/target/ppc/translate.c
-> index b62b624682..5d585393c5 100644
+> index 41a8b800bd..eb278c2683 100644
 > --- a/target/ppc/translate.c
 > +++ b/target/ppc/translate.c
-> @@ -236,6 +236,26 @@ struct opc_handler_t {
->       void (*handler)(DisasContext *ctx);
->   };
->   
-> +static inline bool gen_serialize(DisasContext *ctx)
-> +{
-> +    if (tb_cflags(ctx->base.tb) & CF_PARALLEL) {
-> +        /* Restart with exclusive lock.  */
-> +        gen_helper_exit_atomic(cpu_env);
-> +        ctx->base.is_jmp = DISAS_NORETURN;
-> +        return false;
-> +    }
-> +    return true;
-> +}
-> +
-> +static inline bool gen_serialize_core(DisasContext *ctx)
-> +{
-> +    if (ctx->flags & POWERPC_FLAG_SMT) {
-> +        return gen_serialize(ctx);
-> +    }
-> +
-> +    return true;
-> +}
-> +
->   /* SPR load/store helpers */
->   static inline void gen_load_spr(TCGv t, int reg)
+> @@ -815,11 +815,19 @@ void spr_write_pcr(DisasContext *ctx, int sprn, int gprn)
+>   /* DPDES */
+>   void spr_read_dpdes(DisasContext *ctx, int gprn, int sprn)
 >   {
+> +    if (!gen_serialize_core(ctx)) {
+> +        return;
+> +    }
+> +
+>       gen_helper_load_dpdes(cpu_gpr[gprn], cpu_env);
+>   }
+>   
+>   void spr_write_dpdes(DisasContext *ctx, int sprn, int gprn)
+>   {
+> +    if (!gen_serialize_core(ctx)) {
+> +        return;
+> +    }
+> +
+>       gen_helper_store_dpdes(cpu_env, cpu_gpr[gprn]);
+>   }
+>   #endif
 
 
