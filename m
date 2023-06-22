@@ -2,103 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B42473A1AF
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 15:14:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3951673A1C7
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 15:18:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCK8R-0000OX-5F; Thu, 22 Jun 2023 09:14:03 -0400
+	id 1qCKBb-0002Kn-56; Thu, 22 Jun 2023 09:17:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <borntraeger@linux.ibm.com>)
- id 1qCK8N-0000Nd-3K; Thu, 22 Jun 2023 09:13:59 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <borntraeger@linux.ibm.com>)
- id 1qCK8I-0008MR-9X; Thu, 22 Jun 2023 09:13:58 -0400
-Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 35MCCIIF030984; Thu, 22 Jun 2023 13:12:44 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=ZGSoIy25pJnqEOpdC8Ut6k6utPGKAdGoUXQioCoWhfs=;
- b=sNxeXYOH0FeEvXqOH5TsTaD5yhUiwR5xNauVj5sf8YXIAbJlgkM9qeqJf2PxQkLSENcA
- Ljb/1yJ2hXOvaQrml7KoBEZCs/pxkZTl2NrEDOApKzR/5dvY5IGvQpxtYUpS9ahLhq4D
- DQMVk9DNIVsZwp4myREf6/UF37ucCYBE5ABLiMzEkbH5Pyyo8ka4rYPdXOcgUy/RZ5f+
- /EPVl9w/5prOamSsrF5UEwhaNS00EsULbN+zwXNhOMSe5Yu+mBrWymNcSgLo+5WJmm3r
- CyBmchumEv9bgigXyMO/bnx+5CgQP3Cuhtushv3qWrI1pPnDwfduTBUU8pXhkxewJqh9 SA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rcp3jhxp3-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 22 Jun 2023 13:12:43 +0000
-Received: from m0353726.ppops.net (m0353726.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 35MDBdeE017269;
- Thu, 22 Jun 2023 13:12:43 GMT
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.99])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rcp3jhxjm-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 22 Jun 2023 13:12:42 +0000
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
- by ppma04ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 35M2IchL030142;
- Thu, 22 Jun 2023 13:12:36 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
- by ppma04ams.nl.ibm.com (PPS) with ESMTPS id 3r94f5bfqp-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 22 Jun 2023 13:12:35 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com
- [10.20.54.106])
- by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 35MDCXHR8061562
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 22 Jun 2023 13:12:33 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id AFF9B20040;
- Thu, 22 Jun 2023 13:12:33 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6F97620043;
- Thu, 22 Jun 2023 13:12:33 +0000 (GMT)
-Received: from [9.171.62.26] (unknown [9.171.62.26])
- by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 22 Jun 2023 13:12:33 +0000 (GMT)
-Message-ID: <7609d599-88e6-00a6-3ee0-fe203194e12f@linux.ibm.com>
-Date: Thu, 22 Jun 2023 15:12:33 +0200
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qCKBZ-0002K2-3M
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 09:17:17 -0400
+Received: from mail-lf1-x133.google.com ([2a00:1450:4864:20::133])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qCKBX-0000o6-3p
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 09:17:16 -0400
+Received: by mail-lf1-x133.google.com with SMTP id
+ 2adb3069b0e04-4f8735ac3e3so6525120e87.2
+ for <qemu-devel@nongnu.org>; Thu, 22 Jun 2023 06:17:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1687439832; x=1690031832;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=HS5dTigQ5WPP5LDtaopg5+CMkXi9Z7Mxuy3T/1gnsTA=;
+ b=YzsZVexYiQUEqS5Ybmn9hnv0ZZ433j+6n2qqvCx7S13FnB/oQhlb+5ql3gaEukKUY8
+ uXfm3Jg/tWAzVi/7lQmLUUaZU4t3gjxtHCZEYjXBHFiYoO4YqVouVJxVPfX5PgaQoVqV
+ l3frSqV4VCh0kb6FJycpdmsouqJQn2iMwXGBeGOCFZteQWfECzlnpxRLZyJd4IhGyttJ
+ 8pIenjw5gtfdx5DFfFh13UkAOTchGnBqeqNIHLZLSQjQp/K80OBcES1RZA1W7J48d4N4
+ NSphWCPwudJm0vva6hgCwgTNXLfcap1L188c7yTqXnudjOszp8M/9U5LPZPP6ggTMA13
+ XTQw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1687439832; x=1690031832;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=HS5dTigQ5WPP5LDtaopg5+CMkXi9Z7Mxuy3T/1gnsTA=;
+ b=XUpZdTh3EbZAS42cNKVPc3CWvrS1gF+iwkupRl4JELmzXL2cqX9YGWUjB2fdlCOU2n
+ 3OnLm51/5eNTo5c7+xG5LTJVeW39DvqxlnL5mX5qeWXCNTCYyodDOHE3fG8T0DB/kp5W
+ FZlZQsMk8VnWzYUxCGu9PmITatfokrM+vIA9RQn3OkNVyLuqnexw+tbXyHm1ve/bgCLf
+ vaEZsOcSV/56NE8OTKVotzSNebctDk1btjxlxKeR8lelTg8ewDt9dmszHmnmiO4VRY6Q
+ k1i29IEFfS+k2H4vfngsCnLlmZonjJzc0Ji17rXWFAa9GxLVhmHO3ExshjNcuw2//fjs
+ dWAg==
+X-Gm-Message-State: AC+VfDw3qLpT+weHfN2OJwBYJNSaWDBG9UzCnHcYgWbYKhYKfTUgH1Q1
+ S8ldmDnth5TY0dlssJrZbCKvf677sORAPGtraFFDQg==
+X-Google-Smtp-Source: ACHHUZ4iyLCquy06FwR0//V/JCoM6j9OvW8htZIpqHT7QEZrDblFyhjaKsactnh/XPIGoWPiL1AhWjZad9EUWHe+L1U=
+X-Received: by 2002:a05:6512:455:b0:4f6:2e4e:e425 with SMTP id
+ y21-20020a056512045500b004f62e4ee425mr7246329lfk.50.1687439830697; Thu, 22
+ Jun 2023 06:17:10 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH] pc-bios/s390-ccw/Makefile: Use -z noexecstack to silence
- linker warning
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
-Cc: qemu-s390x@nongnu.org
-References: <20230622130822.396793-1-thuth@redhat.com>
-Content-Language: en-US
-From: Christian Borntraeger <borntraeger@linux.ibm.com>
-In-Reply-To: <20230622130822.396793-1-thuth@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: wKPdKtTC7NNRKB7v1di4NYm3suf9_jAd
-X-Proofpoint-GUID: cxHsv_s4oJHbhToi4h0ud9BE6hpnDA3V
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-06-22_09,2023-06-22_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 adultscore=0
- malwarescore=0 spamscore=0 bulkscore=0 phishscore=0 mlxlogscore=999
- clxscore=1011 priorityscore=1501 mlxscore=0 lowpriorityscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2305260000 definitions=main-2306220110
-Received-SPF: pass client-ip=148.163.156.1;
- envelope-from=borntraeger@linux.ibm.com; helo=mx0a-001b2d01.pphosted.com
+References: <20230620195054.23929-1-lvivier@redhat.com>
+ <20230620195054.23929-2-lvivier@redhat.com>
+In-Reply-To: <20230620195054.23929-2-lvivier@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 22 Jun 2023 14:16:59 +0100
+Message-ID: <CAFEAcA-XOrY+VJDhv2MVV-d1arSD3twukAY13KfuEuADqF1QHQ@mail.gmail.com>
+Subject: Re: [PATCH 1/2] memory: introduce memory_region_init_ram_protected()
+To: Laurent Vivier <lvivier@redhat.com>
+Cc: qemu-devel@nongnu.org, Stefan Berger <stefanb@linux.vnet.ibm.com>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ jasowang@redhat.com, mst@redhat.com, David Hildenbrand <david@redhat.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, marcandre.lureau@redhat.com,
+ eric.auger@redhat.com, Peter Xu <peterx@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::133;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x133.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -114,36 +89,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 22.06.23 um 15:08 schrieb Thomas Huth:
-> Recent versions of ld complain when linking the s390-ccw bios:
-> 
->   /usr/bin/ld: warning: start.o: missing .note.GNU-stack section implies
->                executable stack
->   /usr/bin/ld: NOTE: This behaviour is deprecated and will be removed in
->                a future version of the linker
-> 
-> We can silence the warning by telling the linker to mark the stack
-> as not executable.
-> 
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
+On Tue, 20 Jun 2023 at 20:51, Laurent Vivier <lvivier@redhat.com> wrote:
+>
+> Commit 56918a126a ("memory: Add RAM_PROTECTED flag to skip IOMMU mappings")
+> has introduced the RAM_PROTECTED flag to denote "protected" memory.
+>
+> This flags is only used with qemu_ram_alloc_from_fd() for now.
+>
+> To be able to register memory region with this flag, define
+> memory_region_init_ram_protected() and declare the flag as valid in
+> qemu_ram_alloc_internal() and qemu_ram_alloc().
+>
+> Signed-off-by: Laurent Vivier <lvivier@redhat.com>
 > ---
->   pc-bios/s390-ccw/Makefile | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/pc-bios/s390-ccw/Makefile b/pc-bios/s390-ccw/Makefile
-> index 2e8cc015aa..acfcd1e71a 100644
-> --- a/pc-bios/s390-ccw/Makefile
-> +++ b/pc-bios/s390-ccw/Makefile
-> @@ -55,7 +55,7 @@ config-cc.mak: Makefile
->   	    $(call cc-option,-march=z900,-march=z10)) 3> config-cc.mak
->   -include config-cc.mak
->   
-> -LDFLAGS += -Wl,-pie -nostdlib
-> +LDFLAGS += -Wl,-pie -nostdlib -z noexecstack
->   
->   build-all: s390-ccw.img s390-netboot.img
+>  include/exec/memory.h | 33 +++++++++++++++++++++++++++++++++
+>  softmmu/memory.c      | 33 +++++++++++++++++++++++++++------
+>  softmmu/physmem.c     |  4 ++--
+>  3 files changed, 62 insertions(+), 8 deletions(-)
+>
+> diff --git a/include/exec/memory.h b/include/exec/memory.h
+> index 47c2e0221c35..d8760015c381 100644
+> --- a/include/exec/memory.h
+> +++ b/include/exec/memory.h
+> @@ -1520,6 +1520,39 @@ void memory_region_init_iommu(void *_iommu_mr,
+>                                const char *name,
+>                                uint64_t size);
+>
+> +/**
+> + * memory_region_init_ram_protected - Initialize RAM memory region.  Accesses
+> + *                                    into the region will modify memory
+> + *                                    directly.
+> + *
+> + * The memory is created with the RAM_PROTECTED flag, for memory that
+> + * looks and acts like RAM but inaccessible via normal mechanisms,
+> + * including DMA.
 
-In the end this should not matter as the resulting binary is not loaded by an
-elf loader so this should be fine
-Acked-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+This doesn't really tell me why you might want to mark
+a region as RAM_PROTECTED. What kind of memory region is
+not DMAable to? What are "normal mechanisms" here?
+What are the "non-normal mechanisms" that you *can* use on
+this memory region?
+
+At the moment we only seem to use RAM_PROTECTED for
+the SGX EPC memory backend. The commit message adding
+that flag is pretty vague about what it means...
+
+thanks
+-- PMM
 
