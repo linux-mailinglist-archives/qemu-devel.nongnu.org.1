@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D981773A923
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 21:51:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73A0E73A926
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 21:52:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCQKq-0004JP-9A; Thu, 22 Jun 2023 15:51:16 -0400
+	id 1qCQKo-0004Et-6g; Thu, 22 Jun 2023 15:51:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qCQKT-0004CN-22
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 15:50:53 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1qCQKR-0004Bp-IL
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 15:50:51 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qCQKR-0002sG-Gr
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 15:50:52 -0400
+ id 1qCQKN-0002re-UC
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 15:50:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687463450;
+ s=mimecast20190719; t=1687463447;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=fI3S2OCmB0MvN93l8l7vdXzPcvm7ZD+8BlQA4Yf3rfQ=;
- b=HMEbIBJNZeLUTrNhhZ4oSTqrgxC+2iBMxx6RNOYE2TDHRKOZcvRqFsib0S24mssHAgYV33
- SLZeEc0b5H8/2e8SblSf6RnnKRKRooVcQg4w+IF/lpMv4lyqPmxIIMXVNZHnEaMq25Z8n9
- heZEtJ57NmDzciqKl432LvGLfz6pojs=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=wd9gQX3xT46jkB3DvMY7w/wI+JD70INi2OM0Nj+ylog=;
+ b=TTlYm2Eg4nVjCRtilF2pwIChv6TR5zbiz4Wvy1B+Gm7+trynY+mM8zXETfwwSppHRf/1f2
+ ILzlvhSISksGF8SbgbdIi0OvI1ObTMqQa0FM+7einoYsKDq5XupG2XhZ9WWo/Cgmfqb1LI
+ L5VQNRCuz9iFZfvB/uYUFxvSfOITUIA=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-303-LMPxIg_IMACpFuo_Uo-i9Q-1; Thu, 22 Jun 2023 15:50:42 -0400
-X-MC-Unique: LMPxIg_IMACpFuo_Uo-i9Q-1
+ us-mta-448-D8VouvcLNQawVVaDS4rlcw-1; Thu, 22 Jun 2023 15:50:45 -0400
+X-MC-Unique: D8VouvcLNQawVVaDS4rlcw-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
  [10.11.54.8])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 954E21C07551;
- Thu, 22 Jun 2023 19:50:32 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A2D6990ED20;
+ Thu, 22 Jun 2023 19:50:35 +0000 (UTC)
 Received: from secure.mitica (unknown [10.39.192.73])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 74466C00049;
- Thu, 22 Jun 2023 19:50:29 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id DFB04C00049;
+ Thu, 22 Jun 2023 19:50:32 +0000 (UTC)
 From: Juan Quintela <quintela@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Markus Armbruster <armbru@redhat.com>,
@@ -50,16 +50,17 @@ Cc: Markus Armbruster <armbru@redhat.com>,
  libvir-list@redhat.com, Peter Xu <peterx@redhat.com>,
  qemu-block@nongnu.org, Eric Blake <eblake@redhat.com>,
  Fam Zheng <fam@euphon.net>, Paolo Bonzini <pbonzini@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>, Leonardo Bras <leobras@redhat.com>
-Subject: [PATCH v2 3/5] migration: migrate 'blk' command option is deprecated.
-Date: Thu, 22 Jun 2023 21:50:17 +0200
-Message-Id: <20230622195019.4396-4-quintela@redhat.com>
+ Stefan Hajnoczi <stefanha@redhat.com>, Leonardo Bras <leobras@redhat.com>,
+ Kevin Wolf <kwolf@redhat.com>, Hanna Czenczek <hreitz@redhat.com>
+Subject: [PATCH v2 4/5] migration: Deprecate block migration
+Date: Thu, 22 Jun 2023 21:50:18 +0200
+Message-Id: <20230622195019.4396-5-quintela@redhat.com>
 In-Reply-To: <20230622195019.4396-1-quintela@redhat.com>
 References: <20230622195019.4396-1-quintela@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -84,81 +85,191 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Set the 'block' migration capability to 'true' instead.
+It is obsolete.  It is better to use driver-mirror with NBD instead.
+
+CC: Kevin Wolf <kwolf@redhat.com>
+CC: Eric Blake <eblake@redhat.com>
+CC: Stefan Hajnoczi <stefanha@redhat.com>
+CC: Hanna Czenczek <hreitz@redhat.com>
 
 Signed-off-by: Juan Quintela <quintela@redhat.com>
 ---
- docs/about/deprecated.rst |  7 +++++++
- qapi/migration.json       | 10 +++++++---
- migration/migration.c     |  5 +++++
- 3 files changed, 19 insertions(+), 3 deletions(-)
+ docs/about/deprecated.rst | 10 ++++++++++
+ qapi/migration.json       | 30 +++++++++++++++++++++++++-----
+ migration/block.c         |  3 +++
+ migration/options.c       |  9 ++++++++-
+ 4 files changed, 46 insertions(+), 6 deletions(-)
 
 diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-index cc0001041f..f727db958e 100644
+index f727db958e..2d7c48185e 100644
 --- a/docs/about/deprecated.rst
 +++ b/docs/about/deprecated.rst
-@@ -440,3 +440,10 @@ The new way to modify migration is using migration parameters.
- ``inc`` functionality can be achieved by setting the
- ``block-incremental`` migration parameter to ``true``.
+@@ -447,3 +447,13 @@ The new way to modify migration is using migration parameters.
+ ``blk`` functionality can be achieved by setting the
+ ``block`` migration capability to ``true``.
  
-+``blk`` migrate command option (since 8.1)
-+''''''''''''''''''''''''''''''''''''''''''
++block migration (since 8.1)
++'''''''''''''''''''''''''''
 +
-+The new way to modify migration is using migration parameters.
-+``blk`` functionality can be achieved by setting the
-+``block`` migration capability to ``true``.
++Block migration is too inflexible.  It needs to migrate all block
++devices or none.
++
++Please see "QMP invocation for live storage migration with
++``driver-mirror`` + NBD" in docs/interop/live-block-operations.rst for
++a detailed explanation.
 +
 diff --git a/qapi/migration.json b/qapi/migration.json
-index 8b30f748ef..291af9407e 100644
+index 291af9407e..08dee855cb 100644
 --- a/qapi/migration.json
 +++ b/qapi/migration.json
-@@ -1477,7 +1477,9 @@
+@@ -270,11 +270,16 @@
+ #     average memory load of virtual CPU indirectly. Note that zero
+ #     means guest doesn't dirty memory (since 8.1)
  #
- # @uri: the Uniform Resource Identifier of the destination VM
++# Features:
++#
++# @deprecated: @disk migration is deprecated.  Use driver-mirror
++#     with NBD instead.
++#
+ # Since: 0.14
+ ##
+ { 'struct': 'MigrationInfo',
+   'data': {'*status': 'MigrationStatus', '*ram': 'MigrationStats',
+-           '*disk': 'MigrationStats',
++           '*disk': { 'type': 'MigrationStats', 'features': ['deprecated'] },
+            '*vfio': 'VfioStats',
+            '*xbzrle-cache': 'XBZRLECacheStats',
+            '*total-time': 'int',
+@@ -520,6 +525,9 @@
  #
--# @blk: do block migration (full disk copy)
-+# @blk: do block migration (full disk copy). This option is
-+#     deprecated.  Set the 'block' migration capability to 'true'
-+#     instead.
- #
- # @inc: incremental disk copy migration.  This option is deprecated.
- #     Set the 'block-incremetantal' migration parameter to 'true'
-@@ -1491,7 +1493,8 @@
  # Features:
  #
- # @deprecated: option @inc should be enabled by setting the
--#     'block-incremental' migration parameter to 'true'.
-+#     'block-incremental' migration parameter to 'true', option @blk
-+#     should be enabled by setting the 'block' capability to 'true'.
++# @deprecated: @block migration is deprecated.  Use driver-mirror
++#     with NBD instead.
++#
+ # @unstable: Members @x-colo and @x-ignore-shared are experimental.
  #
- # Returns: nothing on success
+ # Since: 1.2
+@@ -529,7 +537,8 @@
+            'compress', 'events', 'postcopy-ram',
+            { 'name': 'x-colo', 'features': [ 'unstable' ] },
+            'release-ram',
+-           'block', 'return-path', 'pause-before-switchover', 'multifd',
++           { 'name': 'block', 'features': [ 'deprecated' ] },
++           'return-path', 'pause-before-switchover', 'multifd',
+            'dirty-bitmaps', 'postcopy-blocktime', 'late-block-activate',
+            { 'name': 'x-ignore-shared', 'features': [ 'unstable' ] },
+            'validate-uuid', 'background-snapshot',
+@@ -819,6 +828,9 @@
  #
-@@ -1514,7 +1517,8 @@
- # <- { "return": {} }
- ##
- { 'command': 'migrate',
--  'data': {'uri': 'str', '*blk': 'bool',
-+  'data': {'uri': 'str',
-+           '*blk': { 'type': 'bool', 'features': ['deprecated'] },
-            '*inc': { 'type': 'bool', 'features': ['deprecated'] },
-            '*detach': 'bool', '*resume': 'bool' } }
+ # Features:
+ #
++# @deprecated: Member @block-incremental is obsolete. Use
++#     driver-mirror with NBD instead.
++#
+ # @unstable: Members @x-checkpoint-delay and @x-vcpu-dirty-limit-period
+ #     are experimental.
+ #
+@@ -834,7 +846,7 @@
+            'tls-creds', 'tls-hostname', 'tls-authz', 'max-bandwidth',
+            'downtime-limit',
+            { 'name': 'x-checkpoint-delay', 'features': [ 'unstable' ] },
+-           'block-incremental',
++           { 'name': 'block-incremental', 'features': [ 'deprecated' ] },
+            'multifd-channels',
+            'xbzrle-cache-size', 'max-postcopy-bandwidth',
+            'max-cpu-throttle', 'multifd-compression',
+@@ -985,6 +997,9 @@
+ #
+ # Features:
+ #
++# @deprecated: Member @block-incremental is obsolete. Use
++#     driver-mirror with NBD instead.
++#
+ # @unstable: Members @x-checkpoint-delay and @x-vcpu-dirty-limit-period
+ #     are experimental.
+ #
+@@ -1013,7 +1028,8 @@
+             '*downtime-limit': 'uint64',
+             '*x-checkpoint-delay': { 'type': 'uint32',
+                                      'features': [ 'unstable' ] },
+-            '*block-incremental': 'bool',
++            '*block-incremental': { 'type': 'bool',
++                                    'features': [ 'deprecated' ] },
+             '*multifd-channels': 'uint8',
+             '*xbzrle-cache-size': 'size',
+             '*max-postcopy-bandwidth': 'size',
+@@ -1188,6 +1204,9 @@
+ #
+ # Features:
+ #
++# @deprecated: Member @block-incremental is obsolete. Use
++#     driver-mirror with NBD instead.
++#
+ # @unstable: Members @x-checkpoint-delay and
+ #     @x-vcpu-dirty-limit-period are experimental.
+ #
+@@ -1213,7 +1232,8 @@
+             '*downtime-limit': 'uint64',
+             '*x-checkpoint-delay': { 'type': 'uint32',
+                                      'features': [ 'unstable' ] },
+-            '*block-incremental': 'bool',
++            '*block-incremental': { 'type': 'bool',
++                                    'features': [ 'deprecated' ] },
+             '*multifd-channels': 'uint8',
+             '*xbzrle-cache-size': 'size',
+             '*max-postcopy-bandwidth': 'size',
+diff --git a/migration/block.c b/migration/block.c
+index b29e80bdc4..a095024108 100644
+--- a/migration/block.c
++++ b/migration/block.c
+@@ -722,6 +722,9 @@ static int block_save_setup(QEMUFile *f, void *opaque)
+     trace_migration_block_save("setup", block_mig_state.submitted,
+                                block_mig_state.transferred);
  
-diff --git a/migration/migration.c b/migration/migration.c
-index abc40e6ef6..4c7e8ff5ee 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -1563,6 +1563,11 @@ static bool migrate_prepare(MigrationState *s, bool blk, bool blk_inc,
-                     " instead.");
++    warn_report("block migration is deprecated.  Use driver-mirror with"
++                "NBD instead.");
++
+     qemu_mutex_lock_iothread();
+     ret = init_blk_migration(f);
+     if (ret < 0) {
+diff --git a/migration/options.c b/migration/options.c
+index c072c2fab7..24c883696f 100644
+--- a/migration/options.c
++++ b/migration/options.c
+@@ -12,6 +12,7 @@
+  */
+ 
+ #include "qemu/osdep.h"
++#include "qemu/error-report.h"
+ #include "exec/target_page.h"
+ #include "qapi/clone-visitor.h"
+ #include "qapi/error.h"
+@@ -456,10 +457,14 @@ bool migrate_caps_check(bool *old_caps, bool *new_caps, Error **errp)
+     if (new_caps[MIGRATION_CAPABILITY_BLOCK]) {
+         error_setg(errp, "QEMU compiled without old-style (blk/-b, inc/-i) "
+                    "block migration");
+-        error_append_hint(errp, "Use drive_mirror+NBD instead.\n");
++        error_append_hint(errp, "Use driver-mirror with NBD instead.\n");
+         return false;
+     }
+ #endif
++    if (new_caps[MIGRATION_CAPABILITY_BLOCK]) {
++        warn_report("Block migration is deprecated. "
++                    "Use driver-mirror with NBD instead.");
++    }
+ 
+ #ifndef CONFIG_REPLICATION
+     if (new_caps[MIGRATION_CAPABILITY_X_COLO]) {
+@@ -1336,6 +1341,8 @@ static void migrate_params_apply(MigrateSetParameters *params, Error **errp)
      }
  
-+    if (blk) {
-+        warn_report("-blk migrate option is deprecated, set the "
-+                    "'block' capability to 'true' instead.");
-+    }
-+
-     if (resume) {
-         if (s->state != MIGRATION_STATUS_POSTCOPY_PAUSED) {
-             error_setg(errp, "Cannot resume if there is no "
+     if (params->has_block_incremental) {
++        warn_report("Block migration is deprecated. "
++                    "Use driver-mirror with NBD instead.");
+         s->parameters.block_incremental = params->block_incremental;
+     }
+     if (params->has_multifd_channels) {
 -- 
 2.40.1
 
