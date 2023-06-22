@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B13AD73A6D9
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 19:00:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E1F9F73A6AC
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 18:56:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCNbo-0007mG-HL; Thu, 22 Jun 2023 12:56:36 -0400
+	id 1qCNbi-0007Cb-Jm; Thu, 22 Jun 2023 12:56:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qCNbR-00071Y-TC
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 12:56:17 -0400
+ id 1qCNbQ-00070Z-Mo
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 12:56:12 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qCNbQ-0008RG-FH
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 12:56:13 -0400
+ id 1qCNbO-0008Qq-VA
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 12:56:12 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687452971;
+ s=mimecast20190719; t=1687452970;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=aN5p6skIIBhg7piCxOmYKQra9+UkFG8YnJMzg4pOE2E=;
- b=cwyEAoYpBY+9lZ5eDoskSAsl3EjX5vMOdDgr0JA7VyJXl/8RaAYqhSUmwqYUwV651Beqnx
- 8U3pyi60mOqa9pF1w8I+SGdKgZX5R3e+iEY7GD8mlwGHKtXsJSstRosyWo78X3EXS65Pg4
- M1qe0kD2UmJvLI6fme8ml2XS3QzSWW0=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=/rFBgHJ4D0rnee2hOZE5ZKRJbpKxVo1csNBW02wMzHA=;
+ b=dZ7HeW7RwY3vIttEWcHfqFkRJTBgabc1npScKdTUfsycQ0OtfOfHD+pgSMmTKEYkLHXmll
+ ajFbzhR3M8ZhIhmILXsTJ81eVoevc9j0Yz6aRBvPg0+I56nDyrZiYYztBEp0txEo2eqHAV
+ TRtl6T0pRqe7uiSUv2HXB2kvvcr0gF0=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-452-MW4OE9RJOB-BPy3XNrDTLQ-1; Thu, 22 Jun 2023 12:56:03 -0400
-X-MC-Unique: MW4OE9RJOB-BPy3XNrDTLQ-1
+ us-mta-446-zAcXwVBxMAyUUGCP30EiDg-1; Thu, 22 Jun 2023 12:56:05 -0400
+X-MC-Unique: zAcXwVBxMAyUUGCP30EiDg-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
  [10.11.54.8])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C7611102D008;
- Thu, 22 Jun 2023 16:55:57 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1616C1C07259;
+ Thu, 22 Jun 2023 16:56:00 +0000 (UTC)
 Received: from secure.mitica (unknown [10.39.192.73])
- by smtp.corp.redhat.com (Postfix) with ESMTP id CC0EBC00049;
- Thu, 22 Jun 2023 16:55:55 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 1C622C00049;
+ Thu, 22 Jun 2023 16:55:57 +0000 (UTC)
 From: Juan Quintela <quintela@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
@@ -50,9 +50,10 @@ Cc: Peter Xu <peterx@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Fam Zheng <fam@euphon.net>, Juan Quintela <quintela@redhat.com>,
  Leonardo Bras <leobras@redhat.com>, Markus Armbruster <armbru@redhat.com>,
  qemu-block@nongnu.org
-Subject: [PULL 11/30] migration-test: Be consistent for ppc
-Date: Thu, 22 Jun 2023 18:55:08 +0200
-Message-Id: <20230622165527.2417-12-quintela@redhat.com>
+Subject: [PULL 12/30] migration-test: Make machine_opts regular with other
+ options
+Date: Thu, 22 Jun 2023 18:55:09 +0200
+Message-Id: <20230622165527.2417-13-quintela@redhat.com>
 In-Reply-To: <20230622165527.2417-1-quintela@redhat.com>
 References: <20230622165527.2417-1-quintela@redhat.com>
 MIME-Version: 1.0
@@ -83,28 +84,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It makes no sense that we don't have the same configuration on both sides.
-
-Reviewed-by: Laurent Vivier <lvivier@redhat.com>
-Message-ID: <20230608224943.3877-2-quintela@redhat.com>
+Reviewed-by: Peter Xu <peterx@redhat.com>
 Signed-off-by: Juan Quintela <quintela@redhat.com>
+Message-ID: <20230608224943.3877-5-quintela@redhat.com>
 ---
- tests/qtest/migration-test.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tests/qtest/migration-test.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
 diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-index b0c355bbd9..c5e0c69c6b 100644
+index c5e0c69c6b..79157d600b 100644
 --- a/tests/qtest/migration-test.c
 +++ b/tests/qtest/migration-test.c
-@@ -646,7 +646,7 @@ static int test_migrate_start(QTestState **from, QTestState **to,
-                                       "'nvramrc=hex .\" _\" begin %x %x "
-                                       "do i c@ 1 + i c! 1000 +loop .\" B\" 0 "
-                                       "until'", end_address, start_address);
--        arch_target = g_strdup("");
-+        arch_target = g_strdup("-nodefaults");
+@@ -637,7 +637,7 @@ static int test_migrate_start(QTestState **from, QTestState **to,
+         start_address = S390_TEST_MEM_START;
+         end_address = S390_TEST_MEM_END;
+     } else if (strcmp(arch, "ppc64") == 0) {
+-        machine_opts = "vsmt=8";
++        machine_opts = "-machine vsmt=8";
+         memory_size = "256M";
+         start_address = PPC_TEST_MEM_START;
+         end_address = PPC_TEST_MEM_END;
+@@ -649,7 +649,7 @@ static int test_migrate_start(QTestState **from, QTestState **to,
+         arch_target = g_strdup("-nodefaults");
      } else if (strcmp(arch, "aarch64") == 0) {
          init_bootfile(bootpath, aarch64_kernel, sizeof(aarch64_kernel));
-         machine_opts = "virt,gic-version=max";
+-        machine_opts = "virt,gic-version=max";
++        machine_opts = "-machine virt,gic-version=max";
+         memory_size = "150M";
+         arch_source = g_strdup_printf("-cpu max "
+                                       "-kernel %s",
+@@ -689,14 +689,13 @@ static int test_migrate_start(QTestState **from, QTestState **to,
+         shmem_opts = g_strdup("");
+     }
+ 
+-    cmd_source = g_strdup_printf("-accel kvm%s -accel tcg%s%s "
++    cmd_source = g_strdup_printf("-accel kvm%s -accel tcg %s "
+                                  "-name source,debug-threads=on "
+                                  "-m %s "
+                                  "-serial file:%s/src_serial "
+                                  "%s %s %s %s",
+                                  args->use_dirty_ring ?
+                                  ",dirty-ring-size=4096" : "",
+-                                 machine_opts ? " -machine " : "",
+                                  machine_opts ? machine_opts : "",
+                                  memory_size, tmpfs,
+                                  arch_source, shmem_opts,
+@@ -709,7 +708,7 @@ static int test_migrate_start(QTestState **from, QTestState **to,
+                                      &got_src_stop);
+     }
+ 
+-    cmd_target = g_strdup_printf("-accel kvm%s -accel tcg%s%s "
++    cmd_target = g_strdup_printf("-accel kvm%s -accel tcg %s "
+                                  "-name target,debug-threads=on "
+                                  "-m %s "
+                                  "-serial file:%s/dest_serial "
+@@ -717,7 +716,6 @@ static int test_migrate_start(QTestState **from, QTestState **to,
+                                  "%s %s %s %s",
+                                  args->use_dirty_ring ?
+                                  ",dirty-ring-size=4096" : "",
+-                                 machine_opts ? " -machine " : "",
+                                  machine_opts ? machine_opts : "",
+                                  memory_size, tmpfs, uri,
+                                  arch_target, shmem_opts,
 -- 
 2.40.1
 
