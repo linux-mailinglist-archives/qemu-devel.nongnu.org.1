@@ -2,33 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 296C1739F4D
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 13:14:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30D43739F4F
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 13:15:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCIFM-0007Jd-EN; Thu, 22 Jun 2023 07:13:05 -0400
+	id 1qCIHS-0000dP-RA; Thu, 22 Jun 2023 07:15:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
- id 1qCIFD-0007J7-4H
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 07:12:55 -0400
-Received: from vps-vb.mhejs.net ([37.28.154.113])
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qCIHR-0000dH-8F
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 07:15:13 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
- id 1qCIFB-0007mv-76
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 07:12:54 -0400
-Received: from MUA by vps-vb.mhejs.net with esmtps (TLS1.2) tls
- TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 (Exim 4.94.2)
- (envelope-from <mail@maciej.szmigiero.name>)
- id 1qCIEu-00006K-1h; Thu, 22 Jun 2023 13:12:36 +0200
-Message-ID: <614701f8-b0cf-a856-a374-5b59165ebc9c@maciej.szmigiero.name>
-Date: Thu, 22 Jun 2023 13:12:30 +0200
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qCIHO-0000HV-M3
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 07:15:13 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1687432509;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=TZZWw9hTsgoqMiQsiZ8JoVuWTaIZehWa+unNhMd/5fM=;
+ b=XOKD5prYhlHzOI4QoJtdOr8GjZaoTquhP2uYtbHmSWiwx4DpKUSd2NGfBYN0fBK0r4mKr3
+ 60/L9aqil7AlO30O6WL+gVaxZ32X+P3Lyv63yLBh7nlxdg7ROhWpPFTTeRTaXr5hfiY+xj
+ 4i/7VUq56ap55IimYmCZpZbCJbCbMKs=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-396-PFBD6VxFPFeaS_X--1hNDw-1; Thu, 22 Jun 2023 07:15:07 -0400
+X-MC-Unique: PFBD6VxFPFeaS_X--1hNDw-1
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-30932d15a30so3811737f8f.1
+ for <qemu-devel@nongnu.org>; Thu, 22 Jun 2023 04:15:07 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1687432506; x=1690024506;
+ h=content-transfer-encoding:in-reply-to:organization:from:references
+ :cc:to:content-language:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=TZZWw9hTsgoqMiQsiZ8JoVuWTaIZehWa+unNhMd/5fM=;
+ b=fnVOM6E5MvliFOcDAXvZpPgqgy2Eoyd7eolKPpOaKcmyacFg1ZdN24h9ehALkXo6Ot
+ O3DAm83yJW02H4FrfF5CQNyBTlyFsp3H5xavtmceuRNYbD/G3YpaUshOicBFtHA+/4iA
+ YMHTtZowhgYaLyg/NKHYisRwe08MDekTKm07nQGEzxC7G9b9hy77CKSxNsLn36go9kkB
+ CycshaY1fYShnTGECl1Wy/pqMo6jzG8A3jlNLs3VN2kC5PwQS58pfVICxtwUkMy4RnIq
+ oi6jr/xqcGrKg2ilYtG8rmd2IsmIfbLN/2ntSw25YoE/rnBubxOWbb0RGfyRjZo2Jx3f
+ GG7A==
+X-Gm-Message-State: AC+VfDwSf+IRqtYGUxhNmqPO+bk3JT+ZoymM5KyqiiWK4fPNSiuX6Ge+
+ 3bGv/ZxGxyUeCQp65RfX+cgHPfzvFhwngg7KgR5FoVb5cblQqorFW49bdSQQobKmqyp9MX49kj3
+ KKDxNTAOhMttN/tM=
+X-Received: by 2002:adf:dcc3:0:b0:309:54b6:33b0 with SMTP id
+ x3-20020adfdcc3000000b0030954b633b0mr16521414wrm.44.1687432506387; 
+ Thu, 22 Jun 2023 04:15:06 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6e0CPP+bVvhHsKfaZlMh87iY/pqfEk5gKX3DBK1jjl6lEwIbUF4qduuCSMcnmYD3hqb834XQ==
+X-Received: by 2002:adf:dcc3:0:b0:309:54b6:33b0 with SMTP id
+ x3-20020adfdcc3000000b0030954b633b0mr16521388wrm.44.1687432505919; 
+ Thu, 22 Jun 2023 04:15:05 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c71a:c00:a3d3:85e8:742c:2e9?
+ (p200300cbc71a0c00a3d385e8742c02e9.dip0.t-ipconnect.de.
+ [2003:cb:c71a:c00:a3d3:85e8:742c:2e9])
+ by smtp.gmail.com with ESMTPSA id
+ p16-20020a5d6390000000b003113943bb66sm6722237wru.110.2023.06.22.04.15.04
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 22 Jun 2023 04:15:05 -0700 (PDT)
+Message-ID: <ec4d9557-c7af-54a5-2e17-f5d8d2b54534@redhat.com>
+Date: Thu, 22 Jun 2023 13:15:04 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
-Content-Language: en-US, pl-PL
-To: David Hildenbrand <david@redhat.com>
+Subject: Re: [PATCH][RESEND v5 3/3] Add a Hyper-V Dynamic Memory Protocol
+ driver (hv-balloon)
+Content-Language: en-US
+To: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
 Cc: "Michael S . Tsirkin" <mst@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
@@ -49,19 +93,21 @@ References: <cover.1686577753.git.maciej.szmigiero@oracle.com>
  <acf9402f-3baf-6c07-6662-7e0638f78263@redhat.com>
  <0a7cc359-f308-21a1-6c6d-7bcb51051f7e@maciej.szmigiero.name>
  <aa78a4fc-9c88-b6c1-98f8-d22348927df4@redhat.com>
-From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
-Subject: Re: [PATCH][RESEND v5 3/3] Add a Hyper-V Dynamic Memory Protocol
- driver (hv-balloon)
-In-Reply-To: <aa78a4fc-9c88-b6c1-98f8-d22348927df4@redhat.com>
+ <614701f8-b0cf-a856-a374-5b59165ebc9c@maciej.szmigiero.name>
+From: David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+In-Reply-To: <614701f8-b0cf-a856-a374-5b59165ebc9c@maciej.szmigiero.name>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=37.28.154.113;
- envelope-from=mail@maciej.szmigiero.name; helo=vps-vb.mhejs.net
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.09,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -78,90 +124,156 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 22.06.2023 13:01, David Hildenbrand wrote:
-> [...]
-> 
->>>>> We'd use a memory region container as device memory region (like [1]) and would have to handle the !memdev case (I can help with that). > Into that, you can map the RAM memory region on demand (and eventually even using multiple slots like [1]).
+On 22.06.23 13:12, Maciej S. Szmigiero wrote:
+> On 22.06.2023 13:01, David Hildenbrand wrote:
+>> [...]
+>>
+>>>>>> We'd use a memory region container as device memory region (like [1]) and would have to handle the !memdev case (I can help with that). > Into that, you can map the RAM memory region on demand (and eventually even using multiple slots like [1]).
+>>>>>>
+>>>>>> (2) Use a single virtual DIMM and (un)plug that on demand. Let the machine code handle (un)plugging of the device.
+>>>>>>
+>>>>>>
+>>>>>> (1) feels cleanest to me, although it will require a bit more work.
+>>>>>>
 >>>>>
->>>>> (2) Use a single virtual DIMM and (un)plug that on demand. Let the machine code handle (un)plugging of the device.
+>>>>> I also think approach (1) makes more sense as it avoids memslot metadata
+>>>>> overhead for not-yet-hot-added parts of the memory backing device.
 >>>>>
->>>>>
->>>>> (1) feels cleanest to me, although it will require a bit more work.
->>>>>
+>>>>> Not sure what you mean that the !memdev case would be problematic in this
+>>>>> case - it is working in the current driver shape so why would adding
+>>>>> potential memory subregions (used in the memdev case) change that?
 >>>>
->>>> I also think approach (1) makes more sense as it avoids memslot metadata
->>>> overhead for not-yet-hot-added parts of the memory backing device.
+>>>> I'm thinking about the case where you have a hv-balloon device without a memdev.
 >>>>
->>>> Not sure what you mean that the !memdev case would be problematic in this
->>>> case - it is working in the current driver shape so why would adding
->>>> potential memory subregions (used in the memdev case) change that?
+>>>> Without -m X,maxmem=y we don't currently expect to have memory devices around
+>>>> (and especially them getting (un)plugged. But why should we "force" to set the
+>>>> "maxmem" option
 >>>
->>> I'm thinking about the case where you have a hv-balloon device without a memdev.
+>>> I guess it's only a small change to QEMU to allow having hv-balloon
+>>> device (without a memdev) even in the case where there's no "maxmem"
+>>> option given on the QEMU command line.
 >>>
->>> Without -m X,maxmem=y we don't currently expect to have memory devices around
->>> (and especially them getting (un)plugged. But why should we "force" to set the
->>> "maxmem" option
+>>>>
+>>>> I hope I'll find some time soonish to prototype what I have in mind, to see
+>>>> if it could be made working.
+>>>>
+>>>
+>>> Okay, so I'll wait for your prototype before commencing further work on
+>>> the next version of this driver.
 >>
->> I guess it's only a small change to QEMU to allow having hv-balloon
->> device (without a memdev) even in the case where there's no "maxmem"
->> option given on the QEMU command line.
+>> About to have something simplistic running -- I think. Want to test with a Linux VM, but I don't seem to get it working (also without my changes).
 >>
->>>
->>> I hope I'll find some time soonish to prototype what I have in mind, to see
->>> if it could be made working.
->>>
 >>
->> Okay, so I'll wait for your prototype before commencing further work on
->> the next version of this driver.
+>> #!/bin/bash
+>>
+>> build/qemu-system-x86_64 \
+>>       --enable-kvm \
+>>       -m 4G,maxmem=36G \
+>>       -cpu host,hv-syndbg=on,hv-synic,hv-relaxed,hv-vpindex \
+>>       -smp 16 \
+>>       -nographic \
+>>       -nodefaults \
+>>       -net nic -net user \
+>>       -chardev stdio,nosignal,id=serial \
+>>       -hda Fedora-Cloud-Base-37-1.7.x86_64.qcow2 \
+>>       -cdrom /home/dhildenb/git/cloud-init/cloud-init.iso \
+>>       -device isa-serial,chardev=serial \
+>>       -chardev socket,id=monitor,path=/var/tmp/mon_src,server,nowait \
+>>       -mon chardev=monitor,mode=readline \
+>>       -device vmbus-bridge \
+>>       -object memory-backend-ram,size=2G,id=mem0 \
+>>       -device hv-balloon,id=hv1,memdev=mem0
+>>
+>>
+>>
+>> [root@vm-0 ~]# uname -r
+>> 6.3.5-100.fc37.x86_64
+>> [root@vm-0 ~]# modprobe hv_balloon
+>> modprobe: ERROR: could not insert 'hv_balloon': No such device
+>>
+>>
+>> Any magic flag I am missing? Or is there something preventing this to work with Linux VMs?
+>>
 > 
-> About to have something simplistic running -- I think. Want to test with a Linux VM, but I don't seem to get it working (also without my changes).
+> Haven't tested the driver with Linux guests in a long time (as it is
+> targeting Windows), but I think you need to disable KVM PV interface for
+> the Hyper-V one to be detected by Linux.
 > 
+> Something like adding "kvm=off" to "-cpu" and seeing in the dmesg whether
+> the detected hypervisor is now Hyper-V.
 > 
-> #!/bin/bash
+> Also, you need to disable S4 in the guest for hot-add capability to work
+> (I'm adding "-global ICH9-LPC.disable_s4=1" with q35 machine for this).
 > 
-> build/qemu-system-x86_64 \
->      --enable-kvm \
->      -m 4G,maxmem=36G \
->      -cpu host,hv-syndbg=on,hv-synic,hv-relaxed,hv-vpindex \
->      -smp 16 \
->      -nographic \
->      -nodefaults \
->      -net nic -net user \
->      -chardev stdio,nosignal,id=serial \
->      -hda Fedora-Cloud-Base-37-1.7.x86_64.qcow2 \
->      -cdrom /home/dhildenb/git/cloud-init/cloud-init.iso \
->      -device isa-serial,chardev=serial \
->      -chardev socket,id=monitor,path=/var/tmp/mon_src,server,nowait \
->      -mon chardev=monitor,mode=readline \
->      -device vmbus-bridge \
->      -object memory-backend-ram,size=2G,id=mem0 \
->      -device hv-balloon,id=hv1,memdev=mem0
-> 
-> 
-> 
-> [root@vm-0 ~]# uname -r
-> 6.3.5-100.fc37.x86_64
-> [root@vm-0 ~]# modprobe hv_balloon
-> modprobe: ERROR: could not insert 'hv_balloon': No such device
-> 
-> 
-> Any magic flag I am missing? Or is there something preventing this to work with Linux VMs?
-> 
+> Would also suggest adding "--trace 'hv_balloon_*' --trace 'memory_device_*'"
+> to QEMU command line to see what's happening.
 
-Haven't tested the driver with Linux guests in a long time (as it is
-targeting Windows), but I think you need to disable KVM PV interface for
-the Hyper-V one to be detected by Linux.
+VM is not happy:
 
-Something like adding "kvm=off" to "-cpu" and seeing in the dmesg whether
-the detected hypervisor is now Hyper-V.
+[    1.908595] BUG: kernel NULL pointer dereference, address: 0000000000000007
+[    1.908837] #PF: supervisor read access in kernel mode
+[    1.908837] #PF: error_code(0x0000) - not-present page
+[    1.908837] PGD 0 P4D 0
+[    1.908837] Oops: 0000 [#1] PREEMPT SMP NOPTI
+[    1.908837] CPU: 13 PID: 492 Comm: (udev-worker) Not tainted 6.3.5-100.fc37.x86_64 #1
+[    1.908837] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.2-0-gea1b7a073390-p4
+[    1.908837] RIP: 0010:acpi_ns_lookup+0x8f/0x4c0
+[    1.908837] Code: 8b 3d f5 eb 1c 03 83 05 52 ec 1c 03 01 48 85 ff 0f 84 51 03 00 00 44 89 c3 4c 89 cb
+[    1.908837] RSP: 0018:ffff95b680ad7950 EFLAGS: 00010286
+[    1.908837] RAX: ffff95b680ad79e0 RBX: 0000000000000002 RCX: 0000000000000003
+[    1.908837] RDX: 0000000000000000 RSI: ffff8a0283a3c558 RDI: ffffffffa4b376e0
+[    1.908837] RBP: 0000000000000000 R08: 0000000000000002 R09: 0000000000000000
+[    1.908837] R10: ffff8a02811034ec R11: 0000000000000000 R12: ffffffffffffffff
+[    1.908837] R13: ffff8a02811034e8 R14: ffff8a02811034e8 R15: 0000000000000000
+[    1.908837] FS:  00007f3bb2e7d0c0(0000) GS:ffff8a02bbd40000(0000) knlGS:0000000000000000
+[    1.908837] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[    1.908837] CR2: 0000000000000007 CR3: 0000000100a58002 CR4: 0000000000770ee0
+[    1.908837] PKRU: 55555554
+[    1.908837] Call Trace:
+[    1.908837]  <TASK>
+[    1.908837]  ? __die+0x23/0x70
+[    1.908837]  ? page_fault_oops+0x171/0x4e0
+[    1.908837]  ? prepare_alloc_pages.constprop.0+0xf6/0x1a0
+[    1.908837]  ? exc_page_fault+0x74/0x170
+[    1.908837]  ? asm_exc_page_fault+0x26/0x30
+[    1.908837]  ? acpi_ns_lookup+0x8f/0x4c0
+[    1.908837]  acpi_ns_get_node_unlocked+0xdd/0x110
+[    1.908837]  ? down_timeout+0x3e/0x60
+[    1.908837]  ? acpi_ns_get_node+0x3e/0x60
+[    1.908837]  acpi_ns_get_node+0x3e/0x60
+[    1.908837]  acpi_ns_evaluate+0x1cb/0x2d0
+[    1.908837]  acpi_ut_evaluate_object+0x68/0x1c0
+[    1.908837]  acpi_rs_get_method_data+0x37/0x80
+[    1.908837]  ? __pfx_vmbus_walk_resources+0x10/0x10 [hv_vmbus]
+[    1.908837]  acpi_walk_resources+0x91/0xe0
+[    1.908837]  vmbus_acpi_add+0x87/0x170 [hv_vmbus]
+[    1.908837]  acpi_device_probe+0x47/0x160
+[    1.908837]  really_probe+0x19f/0x400
+[    1.908837]  ? __pfx___driver_attach+0x10/0x10
+[    1.908837]  __driver_probe_device+0x78/0x160
+[    1.908837]  driver_probe_device+0x1f/0x90
+[    1.908837]  __driver_attach+0xd2/0x1c0
+[    1.908837]  bus_for_each_dev+0x85/0xd0
+[    1.908837]  bus_add_driver+0x116/0x220
+[    1.908837]  driver_register+0x59/0x100
+[    1.908837]  ? __pfx_init_module+0x10/0x10 [hv_vmbus]
+[    1.908837]  hv_acpi_init+0x39/0xff0 [hv_vmbus]
+[    1.908837]  ? __pfx_init_module+0x10/0x10 [hv_vmbus]
+[    1.908837]  do_one_initcall+0x5a/0x240
+[    1.908837]  do_init_module+0x4a/0x210
+[    1.908837]  __do_sys_init_module+0x17f/0x1b0
+[    1.908837]  do_syscall_64+0x5c/0x90
+[    1.908837]  ? handle_mm_fault+0x11e/0x310
+[    1.908837]  ? do_user_addr_fault+0x1e0/0x720
+[    1.908837]  ? exc_page_fault+0x74/0x170
+[    1.908837]  entry_SYSCALL_64_after_hwframe+0x72/0xdc
 
-Also, you need to disable S4 in the guest for hot-add capability to work
-(I'm adding "-global ICH9-LPC.disable_s4=1" with q35 machine for this).
 
-Would also suggest adding "--trace 'hv_balloon_*' --trace 'memory_device_*'"
-to QEMU command line to see what's happening.
+Maybe I'll have to install a Windows guest :/
 
-Thanks,
-Maciej
+-- 
+Cheers,
+
+David / dhildenb
 
 
