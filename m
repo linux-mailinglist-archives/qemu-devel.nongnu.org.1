@@ -2,57 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E658273ABCE
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 23:50:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0704F73ABDD
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 23:51:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCSBc-0003Fl-8j; Thu, 22 Jun 2023 17:49:52 -0400
+	id 1qCSBm-0003Nb-KN; Thu, 22 Jun 2023 17:50:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <joao.m.martins@oracle.com>)
- id 1qCSBa-0003FW-FA
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 17:49:50 -0400
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
+ id 1qCSBk-0003Mq-8D
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 17:50:00 -0400
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <joao.m.martins@oracle.com>)
- id 1qCSBZ-0007Ua-0f
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 17:49:50 -0400
-Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
+ id 1qCSBi-0007WQ-MY
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 17:50:00 -0400
+Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
  by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 35MIIq8O005803; Thu, 22 Jun 2023 21:49:47 GMT
+ 35MJu7EF018131; Thu, 22 Jun 2023 21:49:53 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
  h=from : to : cc :
  subject : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=corp-2023-03-30;
- bh=Po/ra4dh07FrZr1NNp3KpZMu9aR7qsmzh97ErMcsxjQ=;
- b=oQ8UoLeq+7hFBmk6fgDh6YJpvQnoXvLY0aywHxv1BmfWuAi+KQcnhv/sRDn33gi22WNo
- R8G/cX4k+hcyw7YGnt7uH5zcAx3k0KzPfn9BlSoPRHQhL/5LhKCVDSD9W+J+IADW3Dl2
- pPvIMbz+TOPhrvR8l8KoHjO+b+5hLL9nRktmQhxHbl1tDGsKPTZD4rEFCyHIxma9EtV4
- viILI/hCPxPAEVonxdeEdWuvEXg1AooIR37NkIiTqtzjsrBP3RfTjOxRS9OY5kPYq9Ta
- f8TPuumi3jJixirW3STttzcwYsnN3tLFnpI53lDz1JB4t4TDGme7+aAExJo0hVMxEg8u Sw== 
+ bh=tza8bXvQeCVQr3AkHiNg0rEv+YDBN54/6GSbdRIwV8c=;
+ b=z/LLDH43/M0YIro88XcSLjk//eYW/QFTyMQRh0liw1Uxhbobn3XCw4agNsrpn53U9gQ/
+ gQ+8hAtNnp6efQxdRQeuGu0vfe12kaTOez0NXKiye2OawSzkuRJBeSv1cn1h9nkhA96F
+ UZVhgRQCy2LER+mAmZEyug0dC92ER5ZInT0X/PmJIewRr+bAEX1POea98YmHqGAIDndh
+ d/zlQerAkK/eQHnXrLcp62doVe8Af4fkbJB2M90haV5Bnrt8iaTQfJEno4ynyVwzVusZ
+ iIXWPuEpsxg50q9Ubh4YZVKcZ0lQpVKe0E2OXyvYFriW31fX2RItSV2QQZe6H6AKqjWE gA== 
 Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3r94vcu0q7-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3r93rbtw5q-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 22 Jun 2023 21:49:46 +0000
+ Thu, 22 Jun 2023 21:49:53 +0000
 Received: from pps.filterd
  (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
  by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 35MKol2V008185; Thu, 22 Jun 2023 21:49:45 GMT
+ with ESMTP id 35MKol2Y008185; Thu, 22 Jun 2023 21:49:52 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 3r9398epkj-1
+ 3r9398eppg-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 22 Jun 2023 21:49:45 +0000
+ Thu, 22 Jun 2023 21:49:52 +0000
 Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 35MLn772035791;
- Thu, 22 Jun 2023 21:49:45 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 35MLn774035791;
+ Thu, 22 Jun 2023 21:49:52 GMT
 Received: from joaomart-mac.uk.oracle.com (dhcp-10-175-180-251.vpn.oracle.com
  [10.175.180.251])
  by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id
- 3r9398ep1g-9; Thu, 22 Jun 2023 21:49:44 +0000
+ 3r9398ep1g-10; Thu, 22 Jun 2023 21:49:49 +0000
 From: Joao Martins <joao.m.martins@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
@@ -66,10 +66,9 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
  Eduardo Habkost <eduardo@habkost.net>,
  Avihai Horon <avihaih@nvidia.com>, Jason Gunthorpe <jgg@nvidia.com>,
  Joao Martins <joao.m.martins@oracle.com>
-Subject: [PATCH v4 08/15] vfio/common: Relax vIOMMU detection when DMA
- translation is off
-Date: Thu, 22 Jun 2023 22:48:38 +0100
-Message-Id: <20230622214845.3980-9-joao.m.martins@oracle.com>
+Subject: [PATCH v4 09/15] memory/iommu: Add IOMMU_ATTR_MAX_IOVA attribute
+Date: Thu, 22 Jun 2023 22:48:39 +0100
+Message-Id: <20230622214845.3980-10-joao.m.martins@oracle.com>
 In-Reply-To: <20230622214845.3980-1-joao.m.martins@oracle.com>
 References: <20230622214845.3980-1-joao.m.martins@oracle.com>
 MIME-Version: 1.0
@@ -77,15 +76,15 @@ Content-Transfer-Encoding: 8bit
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
  definitions=2023-06-22_16,2023-06-22_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=882
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=982
  adultscore=0
  spamscore=0 phishscore=0 suspectscore=0 malwarescore=0 bulkscore=0
  mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2305260000 definitions=main-2306220186
-X-Proofpoint-GUID: rqWZzmVIHrM4k1sBkTWEexyoA7cpoQBa
-X-Proofpoint-ORIG-GUID: rqWZzmVIHrM4k1sBkTWEexyoA7cpoQBa
-Received-SPF: pass client-ip=205.220.177.32;
- envelope-from=joao.m.martins@oracle.com; helo=mx0b-00069f02.pphosted.com
+X-Proofpoint-ORIG-GUID: 0O4X65kGxE_hq8f_DqxEivt0mAlZpDyh
+X-Proofpoint-GUID: 0O4X65kGxE_hq8f_DqxEivt0mAlZpDyh
+Received-SPF: pass client-ip=205.220.165.32;
+ envelope-from=joao.m.martins@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
 X-Spam_bar: --
@@ -109,38 +108,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Relax the vIOMMU migration blocker when the underlying IOMMU reports DMA
-translation disabled. When it is disabled there will be no DMA mappings
-via the vIOMMU and the guest can only use it for Interrupt Remapping.
+From: Avihai Horon <avihaih@nvidia.com>
 
-The latter is done via vfio_viommu_preset() return value where in
-addition to validating that the address space is memory, we also check
-whether the vIOMMU backing the PCI device has DMA translation on. It
-is assumed to be enabled, if the IOMMU model does not support toggling
-on/off the dma-translation property.
+Add a new IOMMU attribute IOMMU_ATTR_MAX_IOVA which indicates the
+maximal IOVA that an IOMMU can use.
 
-Intel IOMMU right now is the only case supporting, although AMD IOMMU
-can in theory provide the same functionality.
+This attribute will be used by VFIO device dirty page tracking so it can
+track the entire IOVA space when needed (i.e. when vIOMMU is enabled).
 
+Signed-off-by: Avihai Horon <avihaih@nvidia.com>
 Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
+Acked-by: Peter Xu <peterx@redhat.com>
 ---
- hw/vfio/common.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ include/exec/memory.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/hw/vfio/common.c b/hw/vfio/common.c
-index fa8fd949b1cf..17c1d882e221 100644
---- a/hw/vfio/common.c
-+++ b/hw/vfio/common.c
-@@ -419,7 +419,8 @@ static bool vfio_viommu_preset(void)
-     VFIOAddressSpace *space;
+diff --git a/include/exec/memory.h b/include/exec/memory.h
+index 5d6c2ab1f397..742bff82dc77 100644
+--- a/include/exec/memory.h
++++ b/include/exec/memory.h
+@@ -321,6 +321,7 @@ typedef struct MemoryRegionClass {
+ enum IOMMUMemoryRegionAttr {
+     IOMMU_ATTR_SPAPR_TCE_FD,
+     IOMMU_ATTR_DMA_TRANSLATION,
++    IOMMU_ATTR_MAX_IOVA,
+ };
  
-     QLIST_FOREACH(space, &vfio_address_spaces, list) {
--        if (space->as != &address_space_memory) {
-+        if ((space->as != &address_space_memory) &&
-+            !space->no_dma_translation) {
-             return true;
-         }
-     }
+ /*
 -- 
 2.17.2
 
