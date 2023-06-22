@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A815873A5B0
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 18:10:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EDB0F73A5B8
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 18:10:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCMt1-0006E2-34; Thu, 22 Jun 2023 12:10:19 -0400
+	id 1qCMtL-0007AI-VW; Thu, 22 Jun 2023 12:10:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qCMsm-00068O-M1
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 12:10:04 -0400
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qCMsz-0006VU-AF
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 12:10:18 -0400
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qCMsk-00010n-Th
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 12:10:04 -0400
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-3094910b150so7581997f8f.0
- for <qemu-devel@nongnu.org>; Thu, 22 Jun 2023 09:10:02 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qCMsu-0001T3-Pr
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 12:10:15 -0400
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-31121494630so8422845f8f.3
+ for <qemu-devel@nongnu.org>; Thu, 22 Jun 2023 09:10:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687450201; x=1690042201;
+ d=linaro.org; s=google; t=1687450211; x=1690042211;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=0HtP5OMiHV1uHyCREuOsPgXLNdWuwc5y+seBeAIuir0=;
- b=fD2yFKYVUSbELRWkgGW0danFEJd49UvIoHVUaoL+iV8IqYQvNfiml31iLxtBJeKK+2
- BhYPg4qUhHRzjckRgaA9Y7ICZhNcCZMhqc202pVq8XOrpxWtk6WoH7hxA67ck5XYCSA2
- a1mUXkxpR3fQsnOmFzfz0iq4qYue5q1tdAT5/kH9rAuDXlR9gqshBZLvQbP2e7xh87Rz
- 116ue4dKX7z8nRG43aPZMWOGjKu3Mtzz5LGCpfwr8CqoismIj/q6QyBXeNO1kiC0U6lz
- /+jW94I7TghlhujpjnaWLHWAqKt+jU29K9hKNOv+XTxyLGAUr4jy4FnAEonFW8sot8W/
- zLTg==
+ bh=DKJxOwJmFtwOPAoIICT6M4A+Kzh99mIVYxe/d/9G77Y=;
+ b=eg02hjlfgcDaH24aEbjvIFOFqry3t+y3ca6mONxnjQGWPL1Jdtwu4KdzlrO2pncUEm
+ v2uAXFNtaqYiIggOc18WWF8JNx7doFAbVKyL4i5VvjAKuJTrn61jQREqSGuH7wbxPOHB
+ SQl9lpmkdOY2I8TmvPTRmSHTV/xdmaBelLgPfNn9zpSA2OubeWfB677UATrlvOYIbcR5
+ Xd77M5NfRhzJ8nLGIWLXvPckfbvl62BDfMBhKFdJDV8OUDdGPmWJ81CYWWuuNJVbGqz8
+ ykGAHRraJs8kr5Nc/YT6E4MagkrdbYLZbwKyQ84h9/BoPe+M9i29JT/WKZ3nt6qAzCaS
+ onVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687450201; x=1690042201;
+ d=1e100.net; s=20221208; t=1687450211; x=1690042211;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=0HtP5OMiHV1uHyCREuOsPgXLNdWuwc5y+seBeAIuir0=;
- b=bUD5J9/23eMSbYAqpt3133bVUQZ54f5BINQMCq0/EvFul6JhGHHaqPstxc2ujYGUPq
- EdRO2vsBEqa4NPOi7SgZwSExM2YGlktF0oXg3ezkoohbAO7xZ4QiPiwnBt9iWp6aQ4mT
- CRNKy6hD/d0kvIYa1oWlEtDYN0wwM8LACE1LXEB1XBvVl6RJ+4axlQt0fAL/9oFI06a/
- uCAEjgZ2ocBJvVOvhSh8ratmzfY8Rg6FgxWyn1a4FnRqwJnECmuWGVAvq5Zvq92lVZzB
- W0Ijz/dGwdVDvAYn3XvQAIDScD8aNMkNGP9CEhu08EIwg4Z5Zv/jg2oqzuAf1NPhEBT9
- BsXA==
-X-Gm-Message-State: AC+VfDxpjkDwkRAN1DZI6x8+CLkTwkvb5g+BBo0h9BcVSCSwvgTLbx5T
- Nwak8dllXuRRdgLK9PGJ7lKMwYXbMctcB++fYu7jrA==
-X-Google-Smtp-Source: ACHHUZ63Fuzhm8d41+KEQTBgPUOc0gqnijkCpCOihqOKQVjSB4IS+fg+O0ZMGvIAchJ0HLw7tqsoww==
-X-Received: by 2002:adf:e611:0:b0:309:fcbe:748a with SMTP id
- p17-20020adfe611000000b00309fcbe748amr17046247wrm.11.1687450201085; 
- Thu, 22 Jun 2023 09:10:01 -0700 (PDT)
+ bh=DKJxOwJmFtwOPAoIICT6M4A+Kzh99mIVYxe/d/9G77Y=;
+ b=fLuH78Lc4lQbBN8zlLUi7c8kC+2Xe31uT3fP3LytFC1vlOxDKJaDRMr9ja6JXIE7IX
+ 6Q5dvAtSfC4Inv7dK6PJ2whFqdKrCBiXn4rL+58nxJfDzUhQbBmrx8I/Cl9I5dM6CVPM
+ RqS+H2mmSKSezNvzDbpHoNh8rndn8doBJrj8+SnVpd5sqvf6Noi4QV7r2O2XXnwm1Gmp
+ b0W40znF7tn5VlB2oYU6UvQv5U9sNcpKYtQr9vqqLB0mVf3BztdnuFbDkcVTTriH6zNd
+ dVvAARdpM/puAq+Kdf4s/38EeiynuxfmHLogdFj5soE0nOvL7a1tVVrhT9vfcGinN/WH
+ 2UsQ==
+X-Gm-Message-State: AC+VfDx8EmqXjWWqaBXN/N0OwRRkmb8RM4g2lbFpkXnDSG7BaMSDCm6G
+ zc8xxHbiFqrxSHpUBzmLIf900HYrJFgUi2hcvRYj/Q==
+X-Google-Smtp-Source: ACHHUZ4UJwkfw8UWBY57D2hqCgPl1JN/hvtysVX8WTPHmCC0zEYaJGE4bKrnhQf98VbpMbWrM/7XNw==
+X-Received: by 2002:a5d:5751:0:b0:30f:c943:f925 with SMTP id
+ q17-20020a5d5751000000b0030fc943f925mr15315373wrw.49.1687450210926; 
+ Thu, 22 Jun 2023 09:10:10 -0700 (PDT)
 Received: from localhost.localdomain (230.red-88-28-3.dynamicip.rima-tde.net.
  [88.28.3.230]) by smtp.gmail.com with ESMTPSA id
- 18-20020a05600c231200b003f9063fc3cbsm15728619wmo.44.2023.06.22.09.09.56
+ p1-20020adfcc81000000b0030ada01ca78sm7404978wrj.10.2023.06.22.09.10.06
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 22 Jun 2023 09:10:00 -0700 (PDT)
+ Thu, 22 Jun 2023 09:10:10 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Reinoud Zandijk <reinoud@netbsd.org>, qemu-arm@nongnu.org,
@@ -69,17 +69,18 @@ Cc: Reinoud Zandijk <reinoud@netbsd.org>, qemu-arm@nongnu.org,
  Richard Henderson <richard.henderson@linaro.org>,
  xen-devel@lists.xenproject.org, Eduardo Habkost <eduardo@habkost.net>,
  Cameron Esfahani <dirty@apple.com>
-Subject: [PATCH v2 09/16] accel: Remove NVMM unreachable error path
-Date: Thu, 22 Jun 2023 18:08:16 +0200
-Message-Id: <20230622160823.71851-10-philmd@linaro.org>
+Subject: [PATCH v2 10/16] accel: Rename NVMM 'struct qemu_vcpu' ->
+ AccelCPUState
+Date: Thu, 22 Jun 2023 18:08:17 +0200
+Message-Id: <20230622160823.71851-11-philmd@linaro.org>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230622160823.71851-1-philmd@linaro.org>
 References: <20230622160823.71851-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,30 +103,168 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-g_malloc0() can not fail. Remove the unreachable error path.
+We want all accelerators to share the same opaque pointer in
+CPUState. Rename NVMM 'qemu_vcpu' as 'AccelCPUState'; directly
+use the typedef, remove unnecessary casts.
 
-https://developer-old.gnome.org/glib/stable/glib-Memory-Allocation.html#glib-Memory-Allocation.description
-
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/i386/nvmm/nvmm-all.c | 4 ----
- 1 file changed, 4 deletions(-)
+ target/i386/nvmm/nvmm-all.c | 34 +++++++++++++++++-----------------
+ 1 file changed, 17 insertions(+), 17 deletions(-)
 
 diff --git a/target/i386/nvmm/nvmm-all.c b/target/i386/nvmm/nvmm-all.c
-index 50b96ced45..0588a328ae 100644
+index 0588a328ae..e5ee4af084 100644
 --- a/target/i386/nvmm/nvmm-all.c
 +++ b/target/i386/nvmm/nvmm-all.c
-@@ -943,10 +943,6 @@ nvmm_init_vcpu(CPUState *cpu)
+@@ -26,7 +26,7 @@
+ 
+ #include <nvmm.h>
+ 
+-struct qemu_vcpu {
++struct AccelCPUState {
+     struct nvmm_vcpu vcpu;
+     uint8_t tpr;
+     bool stop;
+@@ -49,10 +49,10 @@ struct qemu_machine {
+ static bool nvmm_allowed;
+ static struct qemu_machine qemu_mach;
+ 
+-static struct qemu_vcpu *
++static AccelCPUState *
+ get_qemu_vcpu(CPUState *cpu)
+ {
+-    return (struct qemu_vcpu *)cpu->accel;
++    return cpu->accel;
+ }
+ 
+ static struct nvmm_machine *
+@@ -86,7 +86,7 @@ nvmm_set_registers(CPUState *cpu)
+ {
+     CPUX86State *env = cpu->env_ptr;
+     struct nvmm_machine *mach = get_nvmm_mach();
+-    struct qemu_vcpu *qcpu = get_qemu_vcpu(cpu);
++    AccelCPUState *qcpu = get_qemu_vcpu(cpu);
+     struct nvmm_vcpu *vcpu = &qcpu->vcpu;
+     struct nvmm_x64_state *state = vcpu->state;
+     uint64_t bitmap;
+@@ -223,7 +223,7 @@ nvmm_get_registers(CPUState *cpu)
+ {
+     CPUX86State *env = cpu->env_ptr;
+     struct nvmm_machine *mach = get_nvmm_mach();
+-    struct qemu_vcpu *qcpu = get_qemu_vcpu(cpu);
++    AccelCPUState *qcpu = get_qemu_vcpu(cpu);
+     struct nvmm_vcpu *vcpu = &qcpu->vcpu;
+     X86CPU *x86_cpu = X86_CPU(cpu);
+     struct nvmm_x64_state *state = vcpu->state;
+@@ -347,7 +347,7 @@ static bool
+ nvmm_can_take_int(CPUState *cpu)
+ {
+     CPUX86State *env = cpu->env_ptr;
+-    struct qemu_vcpu *qcpu = get_qemu_vcpu(cpu);
++    AccelCPUState *qcpu = get_qemu_vcpu(cpu);
+     struct nvmm_vcpu *vcpu = &qcpu->vcpu;
+     struct nvmm_machine *mach = get_nvmm_mach();
+ 
+@@ -372,7 +372,7 @@ nvmm_can_take_int(CPUState *cpu)
+ static bool
+ nvmm_can_take_nmi(CPUState *cpu)
+ {
+-    struct qemu_vcpu *qcpu = get_qemu_vcpu(cpu);
++    AccelCPUState *qcpu = get_qemu_vcpu(cpu);
+ 
+     /*
+      * Contrary to INTs, NMIs always schedule an exit when they are
+@@ -395,7 +395,7 @@ nvmm_vcpu_pre_run(CPUState *cpu)
+ {
+     CPUX86State *env = cpu->env_ptr;
+     struct nvmm_machine *mach = get_nvmm_mach();
+-    struct qemu_vcpu *qcpu = get_qemu_vcpu(cpu);
++    AccelCPUState *qcpu = get_qemu_vcpu(cpu);
+     struct nvmm_vcpu *vcpu = &qcpu->vcpu;
+     X86CPU *x86_cpu = X86_CPU(cpu);
+     struct nvmm_x64_state *state = vcpu->state;
+@@ -478,7 +478,7 @@ nvmm_vcpu_pre_run(CPUState *cpu)
+ static void
+ nvmm_vcpu_post_run(CPUState *cpu, struct nvmm_vcpu_exit *exit)
+ {
+-    struct qemu_vcpu *qcpu = get_qemu_vcpu(cpu);
++    AccelCPUState *qcpu = get_qemu_vcpu(cpu);
+     CPUX86State *env = cpu->env_ptr;
+     X86CPU *x86_cpu = X86_CPU(cpu);
+     uint64_t tpr;
+@@ -565,7 +565,7 @@ static int
+ nvmm_handle_rdmsr(struct nvmm_machine *mach, CPUState *cpu,
+     struct nvmm_vcpu_exit *exit)
+ {
+-    struct qemu_vcpu *qcpu = get_qemu_vcpu(cpu);
++    AccelCPUState *qcpu = get_qemu_vcpu(cpu);
+     struct nvmm_vcpu *vcpu = &qcpu->vcpu;
+     X86CPU *x86_cpu = X86_CPU(cpu);
+     struct nvmm_x64_state *state = vcpu->state;
+@@ -610,7 +610,7 @@ static int
+ nvmm_handle_wrmsr(struct nvmm_machine *mach, CPUState *cpu,
+     struct nvmm_vcpu_exit *exit)
+ {
+-    struct qemu_vcpu *qcpu = get_qemu_vcpu(cpu);
++    AccelCPUState *qcpu = get_qemu_vcpu(cpu);
+     struct nvmm_vcpu *vcpu = &qcpu->vcpu;
+     X86CPU *x86_cpu = X86_CPU(cpu);
+     struct nvmm_x64_state *state = vcpu->state;
+@@ -686,7 +686,7 @@ nvmm_vcpu_loop(CPUState *cpu)
+ {
+     CPUX86State *env = cpu->env_ptr;
+     struct nvmm_machine *mach = get_nvmm_mach();
+-    struct qemu_vcpu *qcpu = get_qemu_vcpu(cpu);
++    AccelCPUState *qcpu = get_qemu_vcpu(cpu);
+     struct nvmm_vcpu *vcpu = &qcpu->vcpu;
+     X86CPU *x86_cpu = X86_CPU(cpu);
+     struct nvmm_vcpu_exit *exit = vcpu->exit;
+@@ -892,7 +892,7 @@ static void
+ nvmm_ipi_signal(int sigcpu)
+ {
+     if (current_cpu) {
+-        struct qemu_vcpu *qcpu = get_qemu_vcpu(current_cpu);
++        AccelCPUState *qcpu = get_qemu_vcpu(current_cpu);
+ #if NVMM_USER_VERSION >= 2
+         struct nvmm_vcpu *vcpu = &qcpu->vcpu;
+         nvmm_vcpu_stop(vcpu);
+@@ -926,7 +926,7 @@ nvmm_init_vcpu(CPUState *cpu)
+     struct nvmm_vcpu_conf_cpuid cpuid;
+     struct nvmm_vcpu_conf_tpr tpr;
+     Error *local_error = NULL;
+-    struct qemu_vcpu *qcpu;
++    AccelCPUState *qcpu;
+     int ret, err;
+ 
+     nvmm_init_cpu_signals();
+@@ -942,7 +942,7 @@ nvmm_init_vcpu(CPUState *cpu)
+         }
      }
  
-     qcpu = g_malloc0(sizeof(*qcpu));
--    if (qcpu == NULL) {
--        error_report("NVMM: Failed to allocate VCPU context.");
--        return -ENOMEM;
--    }
+-    qcpu = g_malloc0(sizeof(*qcpu));
++    qcpu = g_new0(AccelCPUState, 1);
  
      ret = nvmm_vcpu_create(mach, cpu->cpu_index, &qcpu->vcpu);
      if (ret == -1) {
+@@ -991,7 +991,7 @@ nvmm_init_vcpu(CPUState *cpu)
+     }
+ 
+     cpu->vcpu_dirty = true;
+-    cpu->accel = (struct AccelCPUState *)qcpu;
++    cpu->accel = qcpu;
+ 
+     return 0;
+ }
+@@ -1023,7 +1023,7 @@ void
+ nvmm_destroy_vcpu(CPUState *cpu)
+ {
+     struct nvmm_machine *mach = get_nvmm_mach();
+-    struct qemu_vcpu *qcpu = get_qemu_vcpu(cpu);
++    AccelCPUState *qcpu = get_qemu_vcpu(cpu);
+ 
+     nvmm_vcpu_destroy(mach, &qcpu->vcpu);
+     g_free(cpu->accel);
 -- 
 2.38.1
 
