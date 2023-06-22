@@ -2,74 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18BB973A1D5
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 15:26:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D46F973A208
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 15:40:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCKJG-0006Ba-M3; Thu, 22 Jun 2023 09:25:14 -0400
+	id 1qCKWy-0000eF-2p; Thu, 22 Jun 2023 09:39:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1qCKJF-0006BP-4f
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 09:25:13 -0400
-Received: from mail-lf1-x12d.google.com ([2a00:1450:4864:20::12d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1qCKJD-00072M-EO
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 09:25:12 -0400
-Received: by mail-lf1-x12d.google.com with SMTP id
- 2adb3069b0e04-4f954d78bf8so4429699e87.3
- for <qemu-devel@nongnu.org>; Thu, 22 Jun 2023 06:25:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1687440306; x=1690032306;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=QH2+qTEywL+QIAQFNalSE1GaTvMf+6clGri0//KwB84=;
- b=k4+BlrbXWqT/mm1Fu1YIU0TnNSIjDZZTChWQtqlw4VK9pdNHPZ8iiGgTCbfhh6pIcU
- lPw+DlWWVLScXBuU/wFzY4wLGEeIUd4yOu4mhBd0mirM/Uob27tismwOoneNA/mRg8yA
- d9ySQwZKzJOyn1n2C4S1z3ip9gO8re4ySOsvt9k3b1rmbQvQwnF0d6R3e9XNCW8nBw81
- iNvphZEMuNSExdlbUKaf5+qOPqczNywUzbWRJmbXL2bpXzc3B+RbC1zU8APQ093EOVm6
- /G9VJrTRCK+mCCn1qcjDxRgmzet5u6BSrQfSBq6FNJzq9/pYc8RspLfv1971Y2QgNS9d
- hwCw==
+ (Exim 4.90_1) (envelope-from <lvivier@redhat.com>)
+ id 1qCKWv-0000dw-Ey
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 09:39:21 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <lvivier@redhat.com>)
+ id 1qCKWt-0002mA-Ql
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 09:39:21 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1687441159;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=ee2qq69m2UjhxJo00LbNqGtkBW1frUMVLIXumMTqWXw=;
+ b=by37itDPvkVW96CuJ/HqivosuloNL0ar8jc60Ts5FcLpQ5XAB7FbwgolBQ8smjqLLn0OTW
+ 0qE9DuwDBizB/SOoFrunLdzcg/CAas6AfV3QNFr/5L7FEYViBtz4kjO5OHRfqhAeNB8WdQ
+ zytjkaxZLiSHHX0onzdDmivsgavsVRs=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-199-HMymjbuBNx2v3i4hdoLJDA-1; Thu, 22 Jun 2023 09:39:17 -0400
+X-MC-Unique: HMymjbuBNx2v3i4hdoLJDA-1
+Received: by mail-qk1-f200.google.com with SMTP id
+ af79cd13be357-76531f6ae45so83892185a.3
+ for <qemu-devel@nongnu.org>; Thu, 22 Jun 2023 06:39:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687440306; x=1690032306;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=QH2+qTEywL+QIAQFNalSE1GaTvMf+6clGri0//KwB84=;
- b=gL9tLcqaF7+vTesSox0yD/bmdnoCqZvoOpzivBDmeowuW6DcDcttDCK+0IqagoFNa1
- ET6xkRChNYPbLmqFlxEAzwTaFyYwf97FWdvmmVSt6j0NkJF+PwTqZVaFbRMk62f8ivLM
- Rm1C5ZOk5cB8eAN3KEdWATTHIW5UjtbzDGXiN3huW6jIRs4YHHgz+EjASY9Pd6Co3MiY
- zr10TIabbWCw8Fblt1hq766Okm4gsR8MJPupK6X7C5wVCZz9e9odDA0jO+/xiT17XH7M
- fG2VeLnkB2zfsW0aftPU5QHRP50AADy0Rsb6dzSBfrt6tXWhcK9viBIHjy6w+YG3gfpw
- gcNA==
-X-Gm-Message-State: AC+VfDxGJsnDolfJE8cVz/C0PaEr3h1HO+fq6tbKTsb+7lvNJirL8HwF
- qAPZoC8TP/t8eKbYJy1tPjIglMzebmtFYagBHlbyyM04OVAoCbXL
-X-Google-Smtp-Source: ACHHUZ76zRMdkZRZSHXYZOgzTyVk/E6pa5Eskow0s4KLhXmsNkCuTklcGMkoek/Pj+1dRro+TEP7sIbvwzdHCv+DXoA=
-X-Received: by 2002:a19:f246:0:b0:4f7:4170:a5c9 with SMTP id
- d6-20020a19f246000000b004f74170a5c9mr10951648lfk.66.1687440306204; Thu, 22
- Jun 2023 06:25:06 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1687441156; x=1690033156;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=ee2qq69m2UjhxJo00LbNqGtkBW1frUMVLIXumMTqWXw=;
+ b=jCLY9ThhwhkhcpuvEaBYtf9wQDr7SZ8dkAKRhBtjSRpoNd4toQvJFWe4xXZURn5trW
+ AceFuGOiV+LfbXUvl5drAGpVWUUWWF0ATYV6sQmESOSCKQJRRjHUPCVwp6RpfdJVbHX6
+ XFR6d6Es5TYFebUJoTvRQ/w5n+cu+C83VHiDRbNZlNSD2AR4fgXGjhriwDF7GnxlDDtp
+ XWaaV4P6HchXr8W2rHqaxZwBWYlw17/iP3aVa2sj+9CcytkYgS+gxNdpUF0NeYQU9h3D
+ ZS2B8eVvEs6Y63bXZ3/FGBgvgHfoo0jdqkaSZJUq4Mw5ZKLblJzUuSxT509tU+W5AIE+
+ zr1A==
+X-Gm-Message-State: AC+VfDw0D4sT1t6zNKvZbtmlh09LvZ0r9ext5Ez4RTZRU1/eRGaWAmHJ
+ cC3Cj1v0wZC1DH7gudbKHObhSL8GlNVq7XqOB18dXqbJSYL4Csxf2HvlFCr8OLUTyXsvUNAq8Hx
+ fLPjGJDmGZhfJOB4=
+X-Received: by 2002:a05:620a:d8e:b0:75f:b4:7b87 with SMTP id
+ q14-20020a05620a0d8e00b0075f00b47b87mr20597276qkl.24.1687441156526; 
+ Thu, 22 Jun 2023 06:39:16 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5MqsTYNKeyRAUxrsohDo0jXSXTcQoF7w1gLvFGtRIYZTlfOHhMrc/ISKxzBRBB6MJpc5mI5Q==
+X-Received: by 2002:a05:620a:d8e:b0:75f:b4:7b87 with SMTP id
+ q14-20020a05620a0d8e00b0075f00b47b87mr20597254qkl.24.1687441156249; 
+ Thu, 22 Jun 2023 06:39:16 -0700 (PDT)
+Received: from [192.168.100.28] ([82.142.8.70])
+ by smtp.gmail.com with ESMTPSA id
+ c9-20020ae9e209000000b007623e63f642sm3453277qkc.32.2023.06.22.06.39.13
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 22 Jun 2023 06:39:15 -0700 (PDT)
+Message-ID: <269b9686-f7df-72de-ae6b-242767feccaa@redhat.com>
+Date: Thu, 22 Jun 2023 15:39:12 +0200
 MIME-Version: 1.0
-References: <20230621211931.29448-1-dongwon.kim@intel.com>
-In-Reply-To: <20230621211931.29448-1-dongwon.kim@intel.com>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Thu, 22 Jun 2023 15:24:25 +0200
-Message-ID: <CAJ+F1CJhDBPHY12xYh74g1t6K+WXhZ2ThKFw09QDNnTNA49RzQ@mail.gmail.com>
-Subject: Re: [PATCH] virtio-gpu: OUT_OF_MEMORY if failing to create udmabuf
-To: Dongwon Kim <dongwon.kim@intel.com>
-Cc: qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>, 
- Vivek Kasireddy <vivek.kasireddy@intel.com>
-Content-Type: multipart/alternative; boundary="00000000000007f59305feb7d02c"
-Received-SPF: pass client-ip=2a00:1450:4864:20::12d;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-lf1-x12d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH 2/2] tpm_crb: mark memory as protected
+Content-Language: en-US
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, Stefan Berger <stefanb@linux.vnet.ibm.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ jasowang@redhat.com, mst@redhat.com, David Hildenbrand <david@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, marcandre.lureau@redhat.com,
+ eric.auger@redhat.com, Peter Xu <peterx@redhat.com>
+References: <20230620195054.23929-1-lvivier@redhat.com>
+ <20230620195054.23929-3-lvivier@redhat.com>
+ <CAFEAcA_r31PU1LRka36dSJ6vZ2boP33MB=Ns5hDMRrSTN1Lmag@mail.gmail.com>
+From: Laurent Vivier <lvivier@redhat.com>
+In-Reply-To: <CAFEAcA_r31PU1LRka36dSJ6vZ2boP33MB=Ns5hDMRrSTN1Lmag@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=lvivier@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,116 +108,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---00000000000007f59305feb7d02c
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On 6/22/23 15:12, Peter Maydell wrote:
+> On Tue, 20 Jun 2023 at 20:51, Laurent Vivier <lvivier@redhat.com> wrote:
+>>
+>> This memory is not correctly aligned and cannot be registered
+>> by vDPA and VFIO.
+> 
+> Isn't this a vDPA/VFIO problem? There's no requirement
+> for RAM MemoryRegions to be aligned in any way. Code
+> that doesn't want to work with small or weirdly aligned
+> regions should skip them if that's the right behaviour
+> for that particular code IMHO.
+> 
 
-Hi
+Marc-André proposed to modify vDPA code to skip the region but Michal disagreed:
 
-On Wed, Jun 21, 2023 at 11:40=E2=80=AFPM Dongwon Kim <dongwon.kim@intel.com=
-> wrote:
+https://lists.nongnu.org/archive/html/qemu-devel/2022-11/msg03670.html
 
-> Respond with VIRTIO_GPU_RESP_ERR_OUT_OF_MEMORY if it fails to create
-> an udmabuf for the blob resource.
->
-> Cc: Gerd Hoffmann <kraxel@redhat.com>
-> Cc: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
-> Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>
-> Signed-off-by: Dongwon Kim <dongwon.kim@intel.com>
-> ---
->  hw/display/virtio-gpu.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
->
-> diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
-> index 66cddd94d9..efe66ca7a3 100644
-> --- a/hw/display/virtio-gpu.c
-> +++ b/hw/display/virtio-gpu.c
-> @@ -635,9 +635,11 @@ static void virtio_gpu_do_set_scanout(VirtIOGPU *g,
->              if (!virtio_gpu_update_dmabuf(g, scanout_id, res, fb, r)) {
->                  virtio_gpu_update_scanout(g, scanout_id, res, r);
->                  return;
-> +            } else {
-> +                *error =3D VIRTIO_GPU_RESP_ERR_OUT_OF_MEMORY;
-> +                return;
->              }
->          }
-> -
->
+No one wants the modification, so the problem cannot be fixed.
 
-unrelated style change
+Thanks,
+Laurent
 
-
->          data =3D res->blob;
->      } else {
->          data =3D (uint8_t *)pixman_image_get_data(res->image);
-> --
-> 2.34.1
->
->
->
-Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
-
-
---=20
-Marc-Andr=C3=A9 Lureau
-
---00000000000007f59305feb7d02c
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div dir=3D"ltr">Hi<br></div><br><div class=3D"gmail_quote=
-"><div dir=3D"ltr" class=3D"gmail_attr">On Wed, Jun 21, 2023 at 11:40=E2=80=
-=AFPM Dongwon Kim &lt;<a href=3D"mailto:dongwon.kim@intel.com">dongwon.kim@=
-intel.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=
-=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding=
--left:1ex">Respond with VIRTIO_GPU_RESP_ERR_OUT_OF_MEMORY if it fails to cr=
-eate<br>
-an udmabuf for the blob resource.<br>
-<br>
-Cc: Gerd Hoffmann &lt;<a href=3D"mailto:kraxel@redhat.com" target=3D"_blank=
-">kraxel@redhat.com</a>&gt;<br>
-Cc: Marc-Andr=C3=A9 Lureau &lt;<a href=3D"mailto:marcandre.lureau@redhat.co=
-m" target=3D"_blank">marcandre.lureau@redhat.com</a>&gt;<br>
-Cc: Vivek Kasireddy &lt;<a href=3D"mailto:vivek.kasireddy@intel.com" target=
-=3D"_blank">vivek.kasireddy@intel.com</a>&gt;<br>
-Signed-off-by: Dongwon Kim &lt;<a href=3D"mailto:dongwon.kim@intel.com" tar=
-get=3D"_blank">dongwon.kim@intel.com</a>&gt;<br>
----<br>
-=C2=A0hw/display/virtio-gpu.c | 4 +++-<br>
-=C2=A01 file changed, 3 insertions(+), 1 deletion(-)<br>
-<br>
-diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c<br>
-index 66cddd94d9..efe66ca7a3 100644<br>
---- a/hw/display/virtio-gpu.c<br>
-+++ b/hw/display/virtio-gpu.c<br>
-@@ -635,9 +635,11 @@ static void virtio_gpu_do_set_scanout(VirtIOGPU *g,<br=
->
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if (!virtio_gpu_update_dmab=
-uf(g, scanout_id, res, fb, r)) {<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0virtio_gpu_up=
-date_scanout(g, scanout_id, res, r);<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return;<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 } else {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 *error =3D VIRTIO_=
-GPU_RESP_ERR_OUT_OF_MEMORY;<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 return;<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
--<br></blockquote><div><br></div><div>unrelated style change</div><div>=C2=
-=A0<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px =
-0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0data =3D res-&gt;blob;<br>
-=C2=A0 =C2=A0 =C2=A0} else {<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0data =3D (uint8_t *)pixman_image_get_data=
-(res-&gt;image);<br>
--- <br>
-2.34.1<br>
-<br>
-<br></blockquote><div><br></div><div>Reviewed-by: Marc-Andr=C3=A9 Lureau &l=
-t;<a href=3D"mailto:marcandre.lureau@redhat.com">marcandre.lureau@redhat.co=
-m</a>&gt; <br></div></div><br clear=3D"all"><br><span class=3D"gmail_signat=
-ure_prefix">-- </span><br><div dir=3D"ltr" class=3D"gmail_signature">Marc-A=
-ndr=C3=A9 Lureau<br></div></div>
-
---00000000000007f59305feb7d02c--
 
