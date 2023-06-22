@@ -2,69 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A29AE73A0B1
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 14:16:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E5C7673A0BA
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 14:19:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCJEX-0002l3-Rl; Thu, 22 Jun 2023 08:16:20 -0400
+	id 1qCJEy-0003HA-CI; Thu, 22 Jun 2023 08:16:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <lukasstraub2@web.de>)
- id 1qCJE1-0002h4-94
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 08:15:46 -0400
-Received: from mout.web.de ([212.227.15.14])
+ id 1qCJE5-0002jQ-1h
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 08:15:51 -0400
+Received: from mout.web.de ([212.227.15.4])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <lukasstraub2@web.de>)
- id 1qCJDv-0004hs-Aj
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 08:15:42 -0400
+ id 1qCJE1-0004ja-2I
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 08:15:47 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
- s=s29768273; t=1687436118; x=1688040918; i=lukasstraub2@web.de;
- bh=hbQnc5B7sbqpBhLG2YXl+AmDHf0JZy8xQ3zAuAgPEFE=;
+ s=s29768273; t=1687436129; x=1688040929; i=lukasstraub2@web.de;
+ bh=eqH2U4fEnluonyQhABHLQ3e0x8Vrc66j24B8XUKpzfc=;
  h=X-UI-Sender-Class:Date:From:To:Cc:Subject:In-Reply-To:References;
- b=Zta5rK+6aWtKk9i/ES2/LlWRpn2iqs7c30IQaaEgw+eC3KK7hZ8JdRexehJtZfDqLoU9Bpw
- v+79kF0DQNyn3JXQNi8oWKdlXY1SF/50zaBD0DkdpWyBYCizzXBH5i5qkbWTvZwsA4xOg/Q0n
- jbuC9/VZ5BRYOE50qHj+JObphVkzrB91cO0CFKR02ZpJ3u0H7K5++vGBzRRnDZ2AxyruTlrnE
- XRo1NjeMILKxKEueJ0DosT3zNRHA4LsRyc5ykRBp4FGCg2qZM7jv34kmXw2x/Yr7A30G37uNy
- 2VmFvGG+QnDEOk+ASkS4FTdoqAriYlMubAoxwmwC6t0EIoyM7J0g==
+ b=FAfJRoLnZEvBI7lf5TCSOJbSfgq+RSAesiWuSlLtCxEcgYGKa+HwQ2NIEZq19Gw0rqJSj+Q
+ coOQqhsvdu2KEJpZMo/xdTuETK4xqT8A74Jc2kIdx2ZJIv/cLrlDd3pFd9PGYTPB755Q6TpxA
+ rAo7qnmbU4L7YcxgrxdvSeo0Mp0z68JXfbZtkUC3t3zCZI6gVyrnaSaOOJjdKFOmegAoWqoZn
+ 9be5pXaQ9j9ZQUArHS6zoM/8HMGodx/yldnbxRwnwU4TEQqJ4OiK0wwgz4ihVffTYQISzaDKY
+ QoDtX1wS6CTdkbNQ98yi5qeK87F7Dw2/qNGbdFDQEyEOMZKZi6lw==
 X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
 Received: from mobian ([141.58.32.133]) by smtp.web.de (mrweb006
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1MG9DE-1qHkjq1mQu-00GdW4; Thu, 22
- Jun 2023 14:15:18 +0200
-Date: Thu, 22 Jun 2023 14:15:15 +0200
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1MmQYX-1pmHvU34uP-00iIdA; Thu, 22
+ Jun 2023 14:15:29 +0200
+Date: Thu, 22 Jun 2023 14:15:26 +0200
 From: Lukas Straub <lukasstraub2@web.de>
 To: qemu-devel <qemu-devel@nongnu.org>
 Cc: Hailiang Zhang <zhanghailiang@xfusion.com>, Juan Quintela
  <quintela@redhat.com>, Peter Xu <peterx@redhat.com>, Leonardo Bras
  <leobras@redhat.com>, "Zhang, Chen" <chen.zhang@intel.com>
-Subject: [PATCH 1/8] colo: Only support the same qemu version on source and
- destination
-Message-ID: <9acf84c3a558357d1c834923b832ddc1d2aa7548.1687429356.git.lukasstraub2@web.de>
+Subject: [PATCH 2/8] colo: Setup ram cache in normal migration path
+Message-ID: <dcc6c36a6225cb883c9d58697351a316b8b285e3.1687429356.git.lukasstraub2@web.de>
 In-Reply-To: <cover.1687429356.git.lukasstraub2@web.de>
 References: <cover.1687429356.git.lukasstraub2@web.de>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/xFedaaOIsFjPGys/AC.h=wW";
+Content-Type: multipart/signed; boundary="Sig_/mL2JbU9Z5BXS4FHVUj48THa";
  protocol="application/pgp-signature"; micalg=pgp-sha512
-X-Provags-ID: V03:K1:WAigrmgCJtNl1jf36bTojW5mU+hYAnVCsaGmXJIGNN+YHawfduJ
- bmHmbz41v/dzet2s2tji3pxrG0/0NctwRMTUr7uo5Xvf1UjeNHp/MbGbcvkstTThnPHi0BH
- FS8ElZQggMNGUYOtIysyx1uDCafOye2o2/y5ScWbNKyj3HPDqn1gnuWadHQWEvPZf4WFtbF
- AlMgu9herPfHjBRfmk4/A==
-UI-OutboundReport: notjunk:1;M01:P0:6w/8k4xe6qw=;QFqcGMjcsATc4xv1dNbEo2Yl6An
- z+TOsUsmUe81ARzPgsHgZTZF7So5ZfA8gDbwiFSeaxPilloPPVjo+6OipwYLMLEZQ6kszDJxX
- bwDJovKY+V/lJTmBraWr8FNn/lj+RODh031qrGo5A+b0c4w5O5M4NyRTgjeM+T/ByTT0bBbLo
- vKbGuGprxAJH0ftirScreFwak6y9a0MM6CrK3zWbPyjsHnV8v3fLXzUe+8RXk2uCiFBvUvLqh
- oF5ajuMPUqTf8E+pkE2Gq5DsnBMb74RGAUtmZWtvwd0+1gl0g1jc9+LBIFMqufHpjqU01R/rN
- PkWlPXxYDSVj9LsUf3KGrjDEuOQdAgHF7CHvaPGx281Be0ILbA5B3VkDfmtkP8Hk2cFdnD9b9
- tLnpdgsFZlMwUL5P4h/KKSJvnFtEMNmMyYCFEga4gp81SFZTF+K/E6DCIgY+cavK8U6tET90K
- Vt5SA98xPbl33LWbsSvF2Ms+KEIggxIGlYx2OA3NepU/QGeM/QqowpNtnUCIdQKQt8U+3t+Xi
- CrbgrX8/bDks5ui5Ip0eWMEDEM2chPYTIvciDx0UO7MLMsX+mPcaT0FYpPjxIjriMW4gFnzWU
- 5XYENlQc4Qp+/TiyAmkuVRe8xk25ee/+gyD/S0PqJA12aEITFJx/tsdNoIlk3+QXaQZmwJSOt
- m509ftCZbdv9B4knmdZeVCBtmrR6Y1uFb/nvKRqJ2G9P9qJUmPLhj2C9h13IH0MadjYBCHE5I
- aXEeTG4Wa+i02FF6rIP8mlNJSuL+zBSsugeFg0Pf5tPNpGHPeKUXk9RebXYDrWEpN9BZ69Wgw
- e3wi2+rA7hjXr6ruxkWVine2Phcl/TNrj2zcSyCRBbWCc7JIcFVbOFGMdNz6ayLUTYz0vxpNv
- 5OdS9Qzabu4Uh65M7OWnd9czn/fTLtglIMbkwlogFm2lK8WrVkZQwol0jXogW9Pp9xw6Vhq+F
- fn1m5Vvu2k7jbFs6Dbr52Vz+MSo=
-Received-SPF: pass client-ip=212.227.15.14; envelope-from=lukasstraub2@web.de;
+X-Provags-ID: V03:K1:KsusEnZSB//mYFcbOAwad4HTUx904f4PvvJ/5P4rrjZmIP7+6yy
+ gaz2f7/QLFJzmpndOciVGWQqEROMh8AvsSdy+yEaWY/iqrHHHtInJotXLjDvhwCApwavh8K
+ Q+VtPrHwCCpcuVB1Zn93unLdatPKkQK2MydN2LvLRPfOpyW/FpwgyOjEiII7HP1deAAwwm2
+ lFzEYfVBCX6cAMWDYBYCw==
+UI-OutboundReport: notjunk:1;M01:P0:8GT7lOm08sU=;oW5W61uBO350/hoTqC93xBLkmTk
+ wUkkgiQwvgr/0FeaYInqpcTRhbIVMDlA0+/eL8YNoQYAKLHzQeBaCo7FhUSJlj+bXB6VCDYTC
+ cdCYaISNwlRJdVWRBnEHUQajE9COU3vZBCnQOJMtQlawQmcBa4VvqIonVuKnus+tEyDASeVdv
+ 474v3NUneLqHtq+x8/lbBkikG+AQGpC2C5wuJ0o20cQzicAC2/HxUyrG+LhAywHz/IXj8tL7E
+ xO+24dNkZcw9pyDBlRhfS/LVTunkTXL/vyw4MQrATtSe5htpMLezCw6k61qsVHpoaPdnRO5Ze
+ gLjrYORwcu1begUYVdWTn5eZpug/TdlofJCaBqRXRR8O77iOwiq3hY9Gkj0LjBru2U8cCPzm9
+ EJh7Cil6KsRBfd57c2+Kro7FQUleoVTHOsYYguHCLZQDQVO82T3ZONtgB5E+VTHrgElzccw8W
+ cW5Utp3ERBbm/v8GLIVY8289WfY4Ti5hF9rUHEjLiaRUtZU5YEEtVXAonaqGCXhz9T5wSYBfc
+ Mgag3ll3/b74Wdu1W+kc4ixQ0csxIjlpFyzjDRSFotjF5v0RdYQ87BsbQ1HLHM27YuTLhZAGU
+ FX6H8gTNFZuKOHEiaUMlAk/YlstvQwsl7uGoBMcHFgFOo50YL2OLQbn7Tqv0sAHppjgF6RGAV
+ rXQzxJiYRq31EY9MRHGFz5oXqygXRN4BRtlqY76lE2YoiiPAPEjUoNXdhohyA/UXl0mBUhDIJ
+ uq9QDpYBHSTcTxalHZdt/5QQD9B3IcGnT3E5dLXG0voHhqZ6gmWGwoj9V41PlgSrVCB8R7KRe
+ K+gY629hGWhZZNQqkh2JnF4RY5b5hcYDAVbq4Sj6904yu8zDC05yZjrsMCXvT4By68PB/qfe1
+ QnbGjt6S0+jQ0R1SsWEMw55qpZt06GyQ8UeRE2rOKLcjw/DuY8FH9OSe/0Ema6BMF+gHXM1cK
+ wGYoew==
+Received-SPF: pass client-ip=212.227.15.4; envelope-from=lukasstraub2@web.de;
  helo=mout.web.de
 X-Spam_score_int: -25
 X-Spam_score: -2.6
@@ -72,7 +71,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -89,52 +88,100 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---Sig_/xFedaaOIsFjPGys/AC.h=wW
+--Sig_/mL2JbU9Z5BXS4FHVUj48THa
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: quoted-printable
 
+Now that x-colo capability needs to be always enabled on the
+incoming side we can use that to initialize the ram cache in
+the normal migration path.
+
 Signed-off-by: Lukas Straub <lukasstraub2@web.de>
 ---
- docs/COLO-FT.txt | 2 ++
- 1 file changed, 2 insertions(+)
+ migration/migration.c | 16 ++++++++++++----
+ migration/savevm.c    | 10 +---------
+ 2 files changed, 13 insertions(+), 13 deletions(-)
 
-diff --git a/docs/COLO-FT.txt b/docs/COLO-FT.txt
-index 2e760a4aee..8e64480dbd 100644
---- a/docs/COLO-FT.txt
-+++ b/docs/COLO-FT.txt
-@@ -148,6 +148,8 @@ in test procedure.
- Note: Here we are running both instances on the same host for testing,
- change the IP Addresses if you want to run it on two hosts. Initially
- 127.0.0.1 is the Primary Host and 127.0.0.2 is the Secondary Host.
-+Note: COLO is a experimental feature, so currently is should only be used
-+with the same qemu version on sourcee and target.
+diff --git a/migration/migration.c b/migration/migration.c
+index dc05c6f6ea..050bd8ffc8 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -404,10 +404,6 @@ int migration_incoming_enable_colo(void)
+         return -EINVAL;
+     }
 =20
- =3D=3D Startup qemu =3D=3D
- 1. Primary:
+-    if (ram_block_discard_disable(true)) {
+-        error_report("COLO: cannot disable RAM discard");
+-        return -EBUSY;
+-    }
+     migration_colo_enabled =3D true;
+     return 0;
+ }
+@@ -519,6 +515,18 @@ process_incoming_migration_co(void *opaque)
+         goto fail;
+     }
+=20
++    if (migrate_colo()) {
++        if (ram_block_discard_disable(true)) {
++            error_report("COLO: cannot disable RAM discard");
++            goto fail;
++        }
++
++        if (colo_init_ram_cache() < 0) {
++            error_report("Init ram cache failed");
++            goto fail;
++        }
++    }
++
+     mis->largest_page_size =3D qemu_ram_pagesize_largest();
+     postcopy_state_set(POSTCOPY_INCOMING_NONE);
+     migrate_set_state(&mis->state, MIGRATION_STATUS_NONE,
+diff --git a/migration/savevm.c b/migration/savevm.c
+index bc284087f9..155abb0fda 100644
+--- a/migration/savevm.c
++++ b/migration/savevm.c
+@@ -2302,15 +2302,7 @@ static int loadvm_handle_recv_bitmap(MigrationIncomi=
+ngState *mis,
+=20
+ static int loadvm_process_enable_colo(MigrationIncomingState *mis)
+ {
+-    int ret =3D migration_incoming_enable_colo();
+-
+-    if (!ret) {
+-        ret =3D colo_init_ram_cache();
+-        if (ret) {
+-            migration_incoming_disable_colo();
+-        }
+-    }
+-    return ret;
++    return migration_incoming_enable_colo();
+ }
+=20
+ /*
 --=20
 2.39.2
 
 
---Sig_/xFedaaOIsFjPGys/AC.h=wW
+--Sig_/mL2JbU9Z5BXS4FHVUj48THa
 Content-Type: application/pgp-signature
 Content-Description: OpenPGP digital signature
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCgAdFiEEg/qxWKDZuPtyYo+kNasLKJxdslgFAmSUO1MACgkQNasLKJxd
-sljCgQ//VUowdiahyyiL//8xyFcTIQc9YwI4qM0Ydx3Z1XUo0bnqFZNCweku1Lu2
-NxL8yHsxVN2rGbU9huGxXsLHgtVocAB1IH/+jrNN/iIBJWY2gqAgLToZrko1JwbP
-jgGraDkg4zGRUYKE5xRQYlnThnNsW4sXvD/c/pWAAS35UHwWUV/QljofpD8kkGZV
-amiSxm766df6DTdyIOn0a1QCZS+S6sgaq3PlL34NSVNcJOkbZcnbNUVF0sjDr6Wa
-5LActdtc9UGNDUYLEgKDvRd877CFO5cU4/gip8lr1iJAsf8ZKdpBrIepJh4pbbyd
-xMuMEx719GHVVVIXhEl7pI1IzTgp3njflAejlHGADXd/LcqgjGMtR2fMn22472M1
-UdSqc3aMuv2noLH5G7WQZOJmzUM/pIlRmRIhW0rQ8irx7NWRNM9y8r16Nngl/BND
-b1oItJ0Wn8hFoqcdRM56HiWJ4E8IjCTb4nO6lquu7D8XngSyyUOGbkbfdhQyz8rB
-or7p7VxWu07iglr8da2YHksxNITT23nNn+92mps5PP84WqMaLQEgQFFeoEEiId9v
-9PV9FhHsPBH5Uoql9KNWcjWvRvkr6Km3ScuODQymCS0ecjZJwZTruud/Ym6GzdvV
-alLTM/IbowBQJVPAfQ55nIEqhdsSpqAF7D41J9U5rQO7J3XJ6dQ=
-=HP35
+iQIzBAEBCgAdFiEEg/qxWKDZuPtyYo+kNasLKJxdslgFAmSUO14ACgkQNasLKJxd
+sljAZQ//d/tT5MKXtzMNGLHVEZZArKgbz59Ady0gAqi2Iffi5O8/43xdwrKz6KwB
+chxWeHz+mXlxWUnNvWn8gZQ3iJVWsk9jJ5LjYfiRg+/m2zMtaYa3hRfebWlMaBRo
+X0W6PJNoG/yEBHIfLsMR5+qguZ2tbZl9udXHeWOwKnMDQyem9femFDU0An7Tp8bg
+AojTT7Q0/0ipLffr1lyRLvY+slxMxOuLEFzrWzfKQtslorNciusQuDB/NG3ACxp7
+H6QqhSqMYpodHEFrj/OJaCIVUX9qpxyfSR1sM2tuCbiWSWcMl//v5VpYaIjp8g+H
+JbXsqnuN7kMrVZZCZhDd7T2l3r0OAnCEs5gInupJJALzL+0em3gbKIEV86XQ8Rd4
++elVPh98O5e/cDlXANFnnmkx3no3j3yPy1XNn0bvf78ko230e4qc3U+JlAwfA0QL
+MHnm8JR13sCi+SRAFhbeSA7q2FG2ZYn8jAW0mtnV/QvsGjJkRFB/OwgAOz/L20g1
+uMBas6TJlaA/5JE5z0jbMIy884mb2nosw+k1z5OAVldvxbZALm42sYnozx0i0aUH
+xj6GVqUhVrhxq/FzmYP4ApoNQzElNKDMseOi/t3NCjB8nGKHtPRwmeQiyxJ3GOGh
+kix+96u/Va2forF6TxEy813Q36aqyQ2a2bQH9yJxNtP3v0H0tCc=
+=j/fk
 -----END PGP SIGNATURE-----
 
---Sig_/xFedaaOIsFjPGys/AC.h=wW--
+--Sig_/mL2JbU9Z5BXS4FHVUj48THa--
 
