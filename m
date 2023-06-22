@@ -2,78 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D219C739FF7
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 13:45:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BCC3B739FF8
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 13:45:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCIkP-0003Jr-S8; Thu, 22 Jun 2023 07:45:10 -0400
+	id 1qCIkr-0003vE-1B; Thu, 22 Jun 2023 07:45:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <lukasstraub2@web.de>)
- id 1qCIkM-0003JR-5B
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 07:45:06 -0400
-Received: from mout.web.de ([217.72.192.78])
+ id 1qCIkl-0003kX-SW
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 07:45:32 -0400
+Received: from mout.web.de ([212.227.17.12])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <lukasstraub2@web.de>)
- id 1qCIkK-0004Ab-Fo
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 07:45:05 -0400
+ id 1qCIki-0004lD-Lf
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 07:45:30 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
- s=s29768273; t=1687434299; x=1688039099; i=lukasstraub2@web.de;
- bh=rpJ9wOUt/3Sra1X9De0tnfNY+rh6ZD4OC8IV/FDErdU=;
+ s=s29768273; t=1687434324; x=1688039124; i=lukasstraub2@web.de;
+ bh=+xHwPYGwakMQyrvLLr57oDzuuxrNVcj/R6IoJohRJN4=;
  h=X-UI-Sender-Class:Date:From:To:Cc:Subject:In-Reply-To:References;
- b=IjGpNcOUfu6md5Dyv1aEOmqEFgKpRylo0e7SOJ1PECm5t7Ss7IAbrH1C7jRq8wrf9vsJ/Xh
- osQV1y53RovjgP3w9qKveMQaw1mvMEW//0TWMetwcA+Xpvocq5CxQzemq444xp1WjQgDCqXVi
- epgYQoR/WwApeT7Pon/a/L/vNSo77AjUXCtpgTVJDUxWy0BH2ltIzhXefxfZzGtZm7xuPqjTt
- 0e/N0qydxExhDPX1qOPvqOEqvmrqe/cng+b3eDQg/HyROTiadc4rYO6im6T0Od6bOI+zoSKHo
- kv0+FgSBWSsAAnrDdj9rstWH01ksHGuhxlnae69W2+1g9IAIG1nA==
+ b=Zb/gQO8FItNzj8jwB2TMZI2bO8fiwRQ6clX+NbzOY2IGgLAJzpwTfkGxcldpWWM1gzM8gr8
+ TnHd5pjCXEejYplx8hzNFsBkTnJBY5nv5kKuyAiKjAOYSTZ/Qg9bxaO3gyRoagkm0oDrVEoL7
+ dWix0+YiXSF28Z8Fqez+MAfVxABJ2UoMmZiePuJB1W6rs845btU38YF8mCgDCAmUzQ9PFfd3w
+ 1w4JNTtqg9TS888t52EPr7ro8gfVPGqPwFkND9wNV/TirC6pYm9UomPVHZmK06keJhvS26Yf2
+ WFRgnhXChuthGJemJ70x8FOp8dp+U+fevOeKrEfcXkVzPAz0frYQ==
 X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from mobian ([46.114.147.93]) by smtp.web.de (mrweb106
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1N79RG-1q0MUB2tTg-017cvZ; Thu, 22
- Jun 2023 13:44:59 +0200
-Date: Thu, 22 Jun 2023 13:44:56 +0200
+Received: from mobian ([46.114.147.93]) by smtp.web.de (mrweb105
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1MtPrY-1pwZ7S2Zgc-00v0ak; Thu, 22
+ Jun 2023 13:45:24 +0200
+Date: Thu, 22 Jun 2023 13:45:20 +0200
 From: Lukas Straub <lukasstraub2@web.de>
 To: Juan Quintela <quintela@redhat.com>
 Cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>, Leonardo Bras
  <leobras@redhat.com>
-Subject: Re: [PATCH 05/18] migration: Move compression_counters cleanup
- ram-compress.c
-Message-ID: <20230622134456.03ddc78c@mobian>
-In-Reply-To: <20230613145757.10131-6-quintela@redhat.com>
+Subject: Re: [PATCH 06/18] migration: Create populate_compress()
+Message-ID: <20230622134520.1811f61e@mobian>
+In-Reply-To: <20230613145757.10131-7-quintela@redhat.com>
 References: <20230613145757.10131-1-quintela@redhat.com>
- <20230613145757.10131-6-quintela@redhat.com>
+ <20230613145757.10131-7-quintela@redhat.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/_Yad9hTMEuV_nZv/=iTKFF4";
+Content-Type: multipart/signed; boundary="Sig_/l4wMH_xUdBVbM7I8_RWr5Qb";
  protocol="application/pgp-signature"; micalg=pgp-sha512
-X-Provags-ID: V03:K1:TClYR61fr+GgAApKeJiEVN/3sO3l6pj+QmqaM+mEBNWvPKvTnAN
- sPqUl0CgIR5GdX71xUj562ApfWJ0gQz0BxyZcKaktLvyEzP8rEQjmEaNdYP2TW4uRtUHS0O
- uA95lzV3P8q4OutVxvv+BroD8F8EMo6JHRPZ7e1MfSLArLphGulJxh0ylJx57oMtBCcVV7B
- h8Qn8iqUMqdQJ2EE2tqag==
-UI-OutboundReport: notjunk:1;M01:P0:h9r7N5hxZuo=;WY3/+7fNqPBdYd+ftmudOSFv48O
- JazljHGcFBYU/3fA8gBY/yRZa46JBqqCS/nnbCFhwRMXCQBBr4It6aFL8dulujWK6I0QwiUY0
- QQg6El0ngva1aRTf73cI1/ysrbpOFvXhXjYN1Gl1zvLDqRq27nu+DO9FjywkPOmgmvdDSRzWC
- P8evMvUw2uPlu+t69rJ7NZf1JW6i+THdAVzlK4Bt/9TBUxuCMjswlR7Dr7lNKRMo+vcvyKDxC
- Se+v/el31HDerUSA7CVv4DvtenrtqXkB2XIU6FXci/SszK+LIxpKWXAswVvNdX6sDRW4Zy7gy
- iFDZ8jhLn6/vL+A8pFPNGyUBN6Ya9PXOmlpD33SbbCih2qNkS2RGUqmrZS/kGtR3YacQJCrQk
- rubvv+nLEr3L8oCG4EPRzOo7hk46NY+z6CNb4eoeWgkXFOVWMC7QGJYEoYiVdAxmJpW9mtdCv
- mhqIQ7yk6vmPVr87JG5P9UJ/tOEu95WAb7X5Q6H1TVfi1Ve+tVwuv7zkddX+7gtqv4a6uHu8r
- XbU5HneRoMhLlIi8T/lMPMzPQnnUVbJhaMmXz5xpNyO5QCbEY1LDVlPLxJngs9kT1xV3oO0/g
- jcLn9MAc/b/W3m4SQLue743qrJofRZSzE29psWhw0tbqumxeWFmeN00rsff6uTKvw5J3jLAdx
- BM1HjXHKQ+1rnLGraI0ZeNLJkuIp+yXcPJsLOQlPb8YRuuSVWEFrEL8YtqeDkNvbkanPF7wh3
- 1HwmhsF9UQfVW5OK+XELfn8iP2nVgN7wzCv3VdeMjsh15IAXHJjbyjOLVZfYCjawzz9XqL1dF
- +4CZxeGAB4jj1VgWV6vqnTE2by29tmNV65xhWsdCLhyHYkIsxUbAzVtg4OOAkxnpc3/gHl5ks
- u/VHHAVnCwFCxKmtbCpvp0CPZ5TGocq/CUqcHfkSX4iuBVeLGuDdXY+iIRSxWlEDesjdaX5k7
- 92Fv6oBPb09xtVxMr/MOBKTcX4U=
-Received-SPF: pass client-ip=217.72.192.78; envelope-from=lukasstraub2@web.de;
+X-Provags-ID: V03:K1:+3xASDX0leR8lVSPz5uglYR5433cXqufu5qKLbb3ooNgOuda4bA
+ BNdoDLVIwRwDdVi2tyWazQ6xYGTTu+bhDsmGO/YprC5E5P6/z/fdySsk/0mpgaNDeVvu6Bh
+ 1e+FNvnBd4XeBCOKepsz42Z4WsVIwsif84iVNLBzvwK+lzG11lXnKnNW1S7xcO0e8sr4MX/
+ gVR/I0vIDEKLHPy0ZiXqQ==
+UI-OutboundReport: notjunk:1;M01:P0:TxNWX+1Oa8Y=;o+6wK50T/6tL7TF3j8Lgki37c2D
+ 04kVOTR/QLdKtDuMquoC+7MbiSYnw4b4jG2hiSOVKcTyVHysIdKVHESKu6EpGcjISxfV+1TRE
+ DCltWuQqTdurI/hdNZ12BZyOzq/8Ty+zRUeRGE147VITtdhFDBvb3pafUKGgiCdV8Kh0ybTil
+ d5zOCXQgFWOOGoyH1W+kecAjEx00Cb9zya8ThMeev+iuAPoTO7lGeeueyBfq6mrExPosHXjGV
+ ios3rg67++uTowu87Mq0Cyzdo0su9eY2IVnL+IVI/XTe9EuL64+x/0tv+MdRm0TqUmcOqe3rN
+ ojgT6aEtL6MVg5Avzg22+oIGWl3u5wtvS2mgW84m5mjlUfC1oUvAyW/QeGaIKe43+SpAzOIxP
+ ZPkmbh1iS3+xavxDnHubeZeuJshNJTF+aujsqeoJ4VH+9RVxVJUXp3+TcbWxQDMp6orubOtTi
+ ry0iEFUpbzJ3hijsQJnBX4uhKd9/kSjU9Ju0aOyKnjR1pfzAuuV7G8X5t5dO6iNg+1tSXMWQP
+ ps4CMXH7Fl9FqXp8823XAqdjZFY5zqbXTJ7Dzvxl4HSMPvSmJLiVSB9xb5/y+XOAOXpLeqpXl
+ lZDCiaKqW7tW8bLFLFavXMB5aDBnUc4X+wyw/z/BYJJeTfAvGW/hvmFgIsrrk206iG8kBOpwz
+ uEyH/qjCxrHFaJxxSx+9TDQ775E94UZzeGYPy1uExAuEI6P2kmIEgZUhVaTEBHbqta6QpBB/d
+ +lyYiGunXHff2y8WZzrfFySeW9TmGyiYWpKnlmWtDlhe+EUKPN+ZsFPrGUil3rFenrMzcq0co
+ ETIUaet+SxYy1cdxh8PFyFm9van145cDut6u2giaZGnNN7FKGFbtzUuyZxtC0YBUzksjdm+NB
+ DFbUulvAw0FFWMbIZQGSAOQi0/uHxvZj1YVJwIj/gI1HvgFZsspAF5Xe3wsQ9hrrdXI1RJ5yf
+ gSzGAcOUybPad9Kt6nQPaJehoVA=
+Received-SPF: pass client-ip=212.227.17.12; envelope-from=lukasstraub2@web.de;
  helo=mout.web.de
-X-Spam_score_int: -25
-X-Spam_score: -2.6
-X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,92 +88,123 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---Sig_/_Yad9hTMEuV_nZv/=iTKFF4
+--Sig_/l4wMH_xUdBVbM7I8_RWr5Qb
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, 13 Jun 2023 16:57:44 +0200
+On Tue, 13 Jun 2023 16:57:45 +0200
 Juan Quintela <quintela@redhat.com> wrote:
 
+> So we don't have to access compression_counters from outside
+> ram-compress.c.
+>=20
 > Signed-off-by: Juan Quintela <quintela@redhat.com>
 
+With the comment below fixed:
 Reviewed-by: Lukas Straub <lukasstraub2@web.de>
 
 > ---
->  migration/migration.c    | 4 +---
->  migration/ram-compress.c | 5 +++++
->  migration/savevm.c       | 1 -
->  3 files changed, 6 insertions(+), 4 deletions(-)
+>  migration/ram-compress.h |  3 +++
+>  migration/migration.c    | 11 +----------
+>  migration/ram-compress.c | 14 ++++++++++++++
+>  3 files changed, 18 insertions(+), 10 deletions(-)
 >=20
+> diff --git a/migration/ram-compress.h b/migration/ram-compress.h
+> index 6f7fe2f472..43ff44c0ba 100644
+> --- a/migration/ram-compress.h
+> +++ b/migration/ram-compress.h
+> @@ -30,6 +30,7 @@
+>  #define QEMU_MIGRATION_COMPRESS_H
+> =20
+>  #include "qemu-file.h"
+> +#include "qapi/qapi-types-migration.h"
+> =20
+>  enum CompressResult {
+>      RES_NONE =3D 0,
+> @@ -67,4 +68,6 @@ void compress_threads_load_cleanup(void);
+>  int compress_threads_load_setup(QEMUFile *f);
+>  void decompress_data_with_multi_threads(QEMUFile *f, void *host, int len=
+);
+> =20
+> +void populate_compress(MigrationInfo *info);
+> +
+>  #endif
 > diff --git a/migration/migration.c b/migration/migration.c
-> index 84551f040c..5105ad6825 100644
+> index 5105ad6825..402bcd0d67 100644
 > --- a/migration/migration.c
 > +++ b/migration/migration.c
-> @@ -1628,11 +1628,9 @@ static bool migrate_prepare(MigrationState *s, boo=
-l blk, bool blk_inc,
-> =20
->      migrate_init(s);
->      /*
-> -     * set mig_stats compression_counters memory to zero for a
-> -     * new migration
-> +     * set mig_stats memory to zero for a new migration
->       */
->      memset(&mig_stats, 0, sizeof(mig_stats));
-> -    memset(&compression_counters, 0, sizeof(compression_counters));
-> =20
->      return true;
->  }
-> diff --git a/migration/ram-compress.c b/migration/ram-compress.c
-> index 06254d8c69..a0f6a56470 100644
-> --- a/migration/ram-compress.c
-> +++ b/migration/ram-compress.c
-> @@ -430,6 +430,11 @@ int compress_threads_load_setup(QEMUFile *f)
->          return 0;
+> @@ -956,16 +956,7 @@ static void populate_ram_info(MigrationInfo *info, M=
+igrationState *s)
+>          info->xbzrle_cache->overflow =3D xbzrle_counters.overflow;
 >      }
 > =20
-> +    /*
-> +     * set compression_counters memory to zero for a new migration
-> +     */
-> +    memset(&compression_counters, 0, sizeof(compression_counters));
+> -    if (migrate_compress()) {
+> -        info->compression =3D g_malloc0(sizeof(*info->compression));
+> -        info->compression->pages =3D compression_counters.pages;
+> -        info->compression->busy =3D compression_counters.busy;
+> -        info->compression->busy_rate =3D compression_counters.busy_rate;
+> -        info->compression->compressed_size =3D
+> -                                    compression_counters.compressed_size;
+> -        info->compression->compression_rate =3D
+> -                                    compression_counters.compression_rat=
+e;
+> -    }
+> +    populate_compress(info);
+> =20
+>      if (cpu_throttle_active()) {
+>          info->has_cpu_throttle_percentage =3D true;
+> diff --git a/migration/ram-compress.c b/migration/ram-compress.c
+> index a0f6a56470..a91c32588e 100644
+> --- a/migration/ram-compress.c
+> +++ b/migration/ram-compress.c
+> @@ -488,3 +488,17 @@ void decompress_data_with_multi_threads(QEMUFile *f,=
+ void *host, int len)
+>          }
+>      }
+>  }
 > +
->      thread_count =3D migrate_decompress_threads();
->      decompress_threads =3D g_new0(QemuThread, thread_count);
->      decomp_param =3D g_new0(DecompressParam, thread_count);
-> diff --git a/migration/savevm.c b/migration/savevm.c
-> index bc284087f9..aa31d29f23 100644
-> --- a/migration/savevm.c
-> +++ b/migration/savevm.c
-> @@ -1621,7 +1621,6 @@ static int qemu_savevm_state(QEMUFile *f, Error **e=
-rrp)
-> =20
->      migrate_init(ms);
->      memset(&mig_stats, 0, sizeof(mig_stats));
-> -    memset(&compression_counters, 0, sizeof(compression_counters));
->      ms->to_dst_file =3D f;
-> =20
->      qemu_mutex_unlock_iothread();
+> +void populate_compress(MigrationInfo *info)
+> +{
+> +    if (migrate_compress()) {
+
+Use early return:
+
+if (!migrate_compress()) {
+	return;
+}
+
+> +        info->compression =3D g_malloc0(sizeof(*info->compression));
+> +        info->compression->pages =3D compression_counters.pages;
+> +        info->compression->busy =3D compression_counters.busy;
+> +        info->compression->busy_rate =3D compression_counters.busy_rate;
+> +        info->compression->compressed_size =3D
+> +            compression_counters.compressed_size;
+> +        info->compression->compression_rate =3D
+> +            compression_counters.compression_rate;
+> +    }
+> +}
 
 
---Sig_/_Yad9hTMEuV_nZv/=iTKFF4
+--Sig_/l4wMH_xUdBVbM7I8_RWr5Qb
 Content-Type: application/pgp-signature
 Content-Description: OpenPGP digital signature
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCgAdFiEEg/qxWKDZuPtyYo+kNasLKJxdslgFAmSUNDgACgkQNasLKJxd
-slihsA/+KMZQiX1KGj80oXifWmaB35Dy5MUH8dNqv1gFdsDtpRtgfwA9wLiG40dS
-b5c6LPbC+uhfDewiJS/WGMT81+F+V21hr4XFjzO5smbuVJ+su9WGRMoIh2fLvGOv
-gCUMpZhB7QlUR1I7kH3OSD7jsAUZNDOU1VsHkiH/fZDIpyZ+MCz7dYqS1YS56BYz
-GsccJ0NufP22Z2UCwhrEk3gPEKG4Kzc565z/awiDKzswtb4pMACbAunV3DDG7EAm
-IHvKOUqUIsrtP8O9HoDmUd3+AmBFqJMvcfdCiU54CyQs6YfkOZp1rzwHvXnaa5NG
-xoK+lMZOtrhgNZNC2Qrt6CzSVW/4JzmEYdusmYw6a+WUr/YPd+hJhkWcRscX8hAc
-CP5wgZsjlrJ+MskammqCDAVUw5kktCjNmWPjWyKdtjkej/W2/FmV5lIlRTNjjdHZ
-TJBoCRT0zMXgn7lTuwULUE4Nb3hL7EfH1sjhNyOdwW0FQpiywApOvVXnjq1LcUEa
-XRC+3mRggV6kMpULH21w4rGE1Xxwd1lH+aL08IhqFbgbDo+OYj1/ztwrjH9AAgxS
-+q/9ID2OOT89bv5xj2OTW8GtMtBMyfS/v9wrXjcw0ScD04eRhMrww97xXPb7FoJF
-RKUaUPvhftMaMaAIzzDbdulofzXcQo+BNZH/foYxp5NtwibD5ko=
-=l9Qm
+iQIzBAEBCgAdFiEEg/qxWKDZuPtyYo+kNasLKJxdslgFAmSUNFAACgkQNasLKJxd
+slgIew//cNt/b32k4rjKierNdPkpsdut1aA1WU38jvwcjiN2xF2meXw/fflG1zE8
+Dzd3MWHsbFsvtch9oYX4GpbSKgZpl/IZIBGw67maQdlM3C1z9/hbCuatQY5SpjS/
+5FcxmlQ5jkyyIN7fQyhISAXybgl0VzZ7xgKcAck9ZrCtVVpvMMZQdptK6/aNZRAg
+c06P2ZpnuG1t7kXjWRTVLeICX+CFqiJXXiy7Nb5EgRC+DOZVI6+SW0PTFvnMB5DL
+lEotAU7pKFrwaZY+aGxh+rpeT/IdGyHhjoYXnyoZIJKElmvP1eUtMp/Xc5EVm9my
+B5v7e/NtljbZpRLa49JPw8mfI7czzQR/igO0uMc/IydAcBEQeXsm/2+ZT1qXgC7e
+74HvM0Xm1YK7QmCalAe5IFPvwng7QVQuvmQtSVkgfZRd+oroAlNYqHaHA87XLSA3
+9JG6iRg6+2hrXIfumtgTzzx1flW5steu9KpxqHvnNGrfxPsNx6rhX1wseXkfnNHc
+spVWJjVWYjaMz0Z6WSWfSeLV2eipdebgP6fldCyEkzwoTdAs10AxC9WdgR0YMunL
+wKyPassgO2fG0Bl9YF2vCgM8MxpSU/JoDlQQZ0dwD2AczSOR9P7Rs2AzCDNaC47O
+roLy2K9B1pJrSZXwvdfHcXsUCpMlx6yvpGshGjGLEYENidzIQnQ=
+=9OPW
 -----END PGP SIGNATURE-----
 
---Sig_/_Yad9hTMEuV_nZv/=iTKFF4--
+--Sig_/l4wMH_xUdBVbM7I8_RWr5Qb--
 
