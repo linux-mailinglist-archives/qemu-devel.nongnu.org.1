@@ -2,56 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4616B739E06
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D404739E07
 	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 12:08:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCHDR-0002Lk-5X; Thu, 22 Jun 2023 06:07:02 -0400
+	id 1qCHEG-0002lx-UB; Thu, 22 Jun 2023 06:07:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=yb1G=CK=kaod.org=clg@ozlabs.org>)
- id 1qCHDI-0002LL-KD; Thu, 22 Jun 2023 06:06:52 -0400
-Received: from gandalf.ozlabs.org ([150.107.74.76])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=yb1G=CK=kaod.org=clg@ozlabs.org>)
- id 1qCHDG-0005sG-Bw; Thu, 22 Jun 2023 06:06:52 -0400
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4QmwyD0gvHz4x09;
- Thu, 22 Jun 2023 20:06:44 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits))
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Qmwy90wr2z4wjB;
- Thu, 22 Jun 2023 20:06:40 +1000 (AEST)
-Message-ID: <3bb379ff-62d0-b212-0376-7ff1f8cc61fa@kaod.org>
-Date: Thu, 22 Jun 2023 12:06:39 +0200
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qCHED-0002gT-5T
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 06:07:49 -0400
+Received: from mail-lj1-x230.google.com ([2a00:1450:4864:20::230])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qCHEB-0008Tc-3U
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 06:07:48 -0400
+Received: by mail-lj1-x230.google.com with SMTP id
+ 38308e7fff4ca-2b47742de92so67584071fa.0
+ for <qemu-devel@nongnu.org>; Thu, 22 Jun 2023 03:07:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1687428452; x=1690020452;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=nfKvOgOrbkgkXViPw7vzimy09tR0n7wu6nRhHT0mqj0=;
+ b=uCAvesJlEbiGITu28gkVfUlziLgIoX/sUBIeHW9iBPFjKPU+Mz84nExk9ru72YotqL
+ JCyZ3SGVZRmpexJTYD0gmuNfMxngBk1T7t/yUGdj9c/BKDA0zVTqtO+tcjmtsgxqjVvF
+ bTX72UWqvWOerz6IgNixqObN2YU6nkvlhLK0AXp7n3U6/FDiekr/bVtavYzY4VVl1Sp6
+ 6G4krcxyO3aAzu0bnC8hrlJFDv7/+MpOjdZR/YnCv6DMRzrwwKB8vwZUELjygVrcgtFB
+ pte17ULNN6XTR3UdbiXwOGxQTPzv6kwMoHOd0UuaQ8f+xxcaO7ett2fnpLZ9tq0tT2Z0
+ Juig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1687428452; x=1690020452;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=nfKvOgOrbkgkXViPw7vzimy09tR0n7wu6nRhHT0mqj0=;
+ b=G9eQLP2pDo4qImCshwwop0MpiS0mpTIr+T2FYFROIeKS1HMfHMeF0/+/stZi6mY2Ar
+ ZMwxdA9k9Cu1xwFiJfVoOsTm4SvCkam2gNRGzFGDQoAjMvp6lx3I9/AsM9U6YDQd1UqP
+ yFUDuLv3t0eRzJq0Ta7m/KWcZB1nhBrmjMJVI3Jp8i6zmOSsyy3YiQkoKRuYSPcIG8Hu
+ m84odeYzlp6kIdqaRoF7O2dcr1DJ78B6FGHBNLLhuyDTnDD0b2dwaGVwNApdkuovgtXV
+ UEd64VgLrGv7hGpmhhfL6gsKrqkUNZn3Yml0BynXbVaBPBGHD4l905tlwoNDJnX1Sf14
+ CO5w==
+X-Gm-Message-State: AC+VfDyPjd3oKqdcB+7eMIN2Yhmp5/Q45wxiZ0K3vSLVPCeZ2JTsTPd6
+ s/+SvC4gakII320QOdp07+6mtwlXXqmm6emV2jEpGw==
+X-Google-Smtp-Source: ACHHUZ6CeEaQzusqYfZHzslq1oEa2jfJKMElEqh5WtAfXQttGmJi/HSmj+f4y1OTwr6ZgKw4jRmxIA==
+X-Received: by 2002:a05:6512:3109:b0:4f8:6534:9a5f with SMTP id
+ n9-20020a056512310900b004f865349a5fmr9000030lfb.36.1687428452096; 
+ Thu, 22 Jun 2023 03:07:32 -0700 (PDT)
+Received: from [192.168.122.175] (127.red-88-28-17.dynamicip.rima-tde.net.
+ [88.28.17.127]) by smtp.gmail.com with ESMTPSA id
+ f4-20020a5d58e4000000b00311299df211sm6696332wrd.77.2023.06.22.03.07.30
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 22 Jun 2023 03:07:31 -0700 (PDT)
+Message-ID: <773ac3d3-a7a1-13eb-7434-67e0db9b64c9@linaro.org>
+Date: Thu, 22 Jun 2023 12:07:28 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH v2 5/7] spapr: TCG allow up to 8-thread SMT on POWER8 and
- newer CPUs
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.12.0
+Subject: Re: [PATCH v4 00/24] q800: add support for booting MacOS Classic -
+ part 1
 Content-Language: en-US
-To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
-Cc: qemu-devel@nongnu.org, Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-References: <20230622093357.255649-1-npiggin@gmail.com>
- <20230622093357.255649-6-npiggin@gmail.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20230622093357.255649-6-npiggin@gmail.com>
+To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, laurent@vivier.eu,
+ qemu-devel@nongnu.org
+References: <20230621085353.113233-1-mark.cave-ayland@ilande.co.uk>
+ <0e8c4da9-2b33-dc24-77b0-cea5bdd905a3@linaro.org>
+ <0da13e10-27d4-ff12-656d-291bff2e1b70@ilande.co.uk>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <0da13e10-27d4-ff12-656d-291bff2e1b70@ilande.co.uk>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=150.107.74.76;
- envelope-from=SRS0=yb1G=CK=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, NICE_REPLY_A=-0.093, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::230;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x230.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.093,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -67,115 +95,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/22/23 11:33, Nicholas Piggin wrote:
-> PPC TCG supports SMT CPU configurations for non-hypervisor state, so
-> permit POWER8-10 pseries machines to enable SMT.
+On 21/6/23 16:06, Mark Cave-Ayland wrote:
+> On 21/06/2023 10:42, Philippe Mathieu-Daudé wrote:
 > 
-> This requires PIR and TIR be set, because that's how sibling thread
-> matching is done by TCG.
+>> On 21/6/23 10:53, Mark Cave-Ayland wrote:
+>>> [MCA: the original series has now been split into 2 separate parts 
+>>> based upon
+>>> Phil's comments re: QOM parenting for objects in Q800MachineState. 
+>>> Part 1
+>>> consists of the Q800MachineState patches along with QOM parenting 
+>>> fixes and
+>>> the 2 mac_via RTC patches.]
+>>>
+>>> This series contains the remaining patches needed to allow QEMU's q800
+>>> machine to boot MacOS Classic when used in conjunction with a real
+>>> Quadra 800 ROM image. In fact with this series applied it is possible
+>>> to boot all of the following OSs:
+>>>
+>>>    - MacOS 7.1 - 8.1, with or without virtual memory enabled
+>>>    - A/UX 3.0.1
+>>>    - NetBSD 9.3
+>>>    - Linux (via EMILE)
+>>>
+>>> If you are ready to experience some 90s nostalgia then all you need is
+>>> to grab yourself a copy of the Quadra 800 ROM (checksum 0xf1acad13) 
+>>> and a
+>>> suitable install ISO as follows:
+>>>
+>>>    # Prepare a PRAM image
+>>>    $ qemu-img create -f raw pram.img 256b
+>>>
+>>>    # Launch QEMU with blank disk and install CDROM
+>>>    $ ./qemu-system-m68k \
+>>>        -M q800 \
+>>>        -m 128 \
+>>>        -bios Quadra800.rom \
+>>>        -drive file=pram.img,format=raw,if=mtd \
+>>>        -drive file=disk.img,media=disk,format=raw,if=none,id=hd \
+>>>        -device scsi-hd,scsi-id=0,drive=hd \
+>>>        -drive file=cdrom.iso,media=cdrom,if=none,id=cd \
+>>>        -device scsi-cd,scsi-id=3,drive=cd
+>>>
+>>> And off you go! For more in-depth information about the installation 
+>>> process
+>>> I highly recommend the installation guide over at emaculation.com [1].
+>>> Compatibility is generally very good, and I'm pleased to report it is 
+>>> possible
+>>> to run one of the most popular productivity apps from the 90s [2].
+>>
+>> Could you add an Avocado test for this machine? See how the
+>> MipsFuloong2e test (tests/avocado/machine_mips_fuloong2e.py)
+>> handles the firmware (RESCUE_YL_PATH).
 > 
-> spapr's nested-HV capability does not currently coexist with SMT, so
-> that combination is prohibited (interestingly somewhat analogous to
-> LPAR-per-core mode on real hardware which also does not support KVM).
+> In theory it is possible to do this, but how do we handle booting 
+> proprietary OS ISOs that are still within copyright?
+
+Just provide the hash. You are not redistributing anything.
+
+> Also this is only 
+> part 1 of the required changes, you'll need part 2 applied in order to 
+> achieve a successful boot :)
 > 
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
->   hw/ppc/spapr.c          | 16 ++++++++++++----
->   hw/ppc/spapr_caps.c     | 14 ++++++++++++++
->   hw/ppc/spapr_cpu_core.c |  7 +++++--
->   3 files changed, 31 insertions(+), 6 deletions(-)
 > 
-> diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-> index 8e7d497f25..677b5eef9d 100644
-> --- a/hw/ppc/spapr.c
-> +++ b/hw/ppc/spapr.c
-> @@ -2525,10 +2525,18 @@ static void spapr_set_vsmt_mode(SpaprMachineState *spapr, Error **errp)
->       int ret;
->       unsigned int smp_threads = ms->smp.threads;
->   
-> -    if (tcg_enabled() && (smp_threads > 1)) {
-> -        error_setg(errp, "TCG cannot support more than 1 thread/core "
-> -                   "on a pseries machine");
-> -        return;
-> +    if (tcg_enabled()) {
-> +        if (!ppc_type_check_compat(ms->cpu_type, CPU_POWERPC_LOGICAL_2_07, 0,
-> +                                   spapr->max_compat_pvr)) {
-> +            error_setg(errp, "TCG only supports SMT on POWER8 or newer CPUs");
-> +            return;
-> +        }
-
-So if TCG is enabled and the CPU < P8, QEMU bails out ? You should run
-qemu-ppc-boot :)
-
-Thanks,
-
-C.
-
-> +
-> +        if (smp_threads > 8) {
-> +            error_setg(errp, "TCG cannot support more than 8 threads/core "
-> +                       "on a pseries machine");
-> +            return;
-> +        }
->       }
->       if (!is_power_of_2(smp_threads)) {
->           error_setg(errp, "Cannot support %d threads/core on a pseries "
-> diff --git a/hw/ppc/spapr_caps.c b/hw/ppc/spapr_caps.c
-> index 3fd45a6dec..5a0755d34f 100644
-> --- a/hw/ppc/spapr_caps.c
-> +++ b/hw/ppc/spapr_caps.c
-> @@ -473,6 +473,20 @@ static void cap_nested_kvm_hv_apply(SpaprMachineState *spapr,
->                   error_append_hint(errp,
->                                     "Try appending -machine cap-nested-hv=off\n");
->           }
-> +    } else if (tcg_enabled()) {
-> +        MachineState *ms = MACHINE(spapr);
-> +        unsigned int smp_threads = ms->smp.threads;
-> +
-> +        /*
-> +         * Nested-HV vCPU env state to L2, so SMT-shared SPR updates, for
-> +         * example, do not necessarily update the correct SPR value on sibling
-> +         * threads that are in a different guest/host context.
-> +         */
-> +        if (smp_threads > 1) {
-> +            error_setg(errp, "TCG does not support nested-HV with SMT");
-> +            error_append_hint(errp, "Try appending -machine cap-nested-hv=off "
-> +                                    "or use threads=1 with -smp\n");
-> +        }
->       }
->   }
->   
-> diff --git a/hw/ppc/spapr_cpu_core.c b/hw/ppc/spapr_cpu_core.c
-> index 9b88dd549a..a4e3c2fadd 100644
-> --- a/hw/ppc/spapr_cpu_core.c
-> +++ b/hw/ppc/spapr_cpu_core.c
-> @@ -255,7 +255,7 @@ static void spapr_cpu_core_unrealize(DeviceState *dev)
->   }
->   
->   static bool spapr_realize_vcpu(PowerPCCPU *cpu, SpaprMachineState *spapr,
-> -                               SpaprCpuCore *sc, Error **errp)
-> +                               SpaprCpuCore *sc, int thread_index, Error **errp)
->   {
->       CPUPPCState *env = &cpu->env;
->       CPUState *cs = CPU(cpu);
-> @@ -267,6 +267,9 @@ static bool spapr_realize_vcpu(PowerPCCPU *cpu, SpaprMachineState *spapr,
->       cpu_ppc_set_vhyp(cpu, PPC_VIRTUAL_HYPERVISOR(spapr));
->       kvmppc_set_papr(cpu);
->   
-> +    env->spr_cb[SPR_PIR].default_value = cs->cpu_index;
-> +    env->spr_cb[SPR_TIR].default_value = thread_index;
-> +
->       /* Set time-base frequency to 512 MHz. vhyp must be set first. */
->       cpu_ppc_tb_init(env, SPAPR_TIMEBASE_FREQ);
->   
-> @@ -337,7 +340,7 @@ static void spapr_cpu_core_realize(DeviceState *dev, Error **errp)
->       for (i = 0; i < cc->nr_threads; i++) {
->           sc->threads[i] = spapr_create_vcpu(sc, i, errp);
->           if (!sc->threads[i] ||
-> -            !spapr_realize_vcpu(sc->threads[i], spapr, sc, errp)) {
-> +            !spapr_realize_vcpu(sc->threads[i], spapr, sc, i, errp)) {
->               spapr_cpu_core_unrealize(dev);
->               return;
->           }
+> ATB,
+> 
+> Mark.
+> 
 
 
