@@ -2,57 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A15C973ABD7
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 23:51:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DADA73ABDF
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 23:51:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCSCC-00041w-65; Thu, 22 Jun 2023 17:50:28 -0400
+	id 1qCSCN-0004Sb-8o; Thu, 22 Jun 2023 17:50:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <joao.m.martins@oracle.com>)
- id 1qCSC7-0003xk-Ul
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 17:50:23 -0400
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
+ id 1qCSCD-0004I3-Pn
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 17:50:30 -0400
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <joao.m.martins@oracle.com>)
- id 1qCSC5-0007v2-RH
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 17:50:23 -0400
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
+ id 1qCSCC-00082c-27
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 17:50:29 -0400
+Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
  by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 35MJo4a3021548; Thu, 22 Jun 2023 21:50:19 GMT
+ 35MJYYdd019949; Thu, 22 Jun 2023 21:50:23 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
  h=from : to : cc :
  subject : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=corp-2023-03-30;
- bh=9kNKx6R9jFh+8uU24jkKwYU0650934+xnHSDNWrDuoo=;
- b=AdcwoVpDKBcSZMHOY1xne0xmfTsvVUpA8zHs4neSatlVAQQWZgL8jYbkSBE8lORBxlQh
- xV3763TBzKJM+08K6hHMd0d5c1FUooHo7I520ACb2Ie3pWVLE0fAvhF1Nsxk9kEk0GF9
- J8yIq8QqeZRfXXVBvfp3X4pn85GOn9llPmsNBPfBjIeJzSgeW5IRHMwqLfKUY1Qgdnj7
- 79ztAm1R26bUY9YFY7Pwsssw1DFu1wfo7x7vuvzmkc1G4iBVMUAZXxqRjU9IqIdm4xpd
- vtyO65VZe58SJPGMjrLEnHSJzgM/Th8PISVGsIi5iGw7Opp0s327UJrqitPdJ75k89sI HA== 
+ bh=mMoMFeioJjSbDxrvMabIUSoJaWlEO/hD5COIK4zVbUw=;
+ b=mDD9g1ZJirlQAq3J1DmzuWgp8rFmzu3vrszB81ClUm29nBoZo7SQAoTHdKpsG0rtPwB1
+ KQQKDdAcB+sceQxQ+XSFYPz5zBsXR9UKqrT1oZJCa7wagpLrdiQPt0tgLy42/+f1cOQ4
+ mcKmkRYCNd5g2Zpoq+tJkthtCW0N3Sef5ye3vsPCO/FuGvnQSfhVPiyu/Dp1KqMOmuX6
+ 2ZC1v/Hamlzfaeg5rzYYgt24gG8kH+qgly8xj2EX//VpJn+DQl6liYqewoV/SLVBrS6N
+ GhiJecfUHAi4Bf+rcA8jSu7/FgOjnYEMpPNQeCWlEuy8kOIsotRE8166KwFW1WHaNWdS qQ== 
 Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3r93m3txvb-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3r93e1jugv-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 22 Jun 2023 21:50:19 +0000
+ Thu, 22 Jun 2023 21:50:23 +0000
 Received: from pps.filterd
  (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
  by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 35ML7Sfn008390; Thu, 22 Jun 2023 21:50:18 GMT
+ with ESMTP id 35MKIV3H008333; Thu, 22 Jun 2023 21:50:23 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 3r9398eq96-1
+ 3r9398eqb9-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 22 Jun 2023 21:50:18 +0000
+ Thu, 22 Jun 2023 21:50:22 +0000
 Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 35MLn77G035791;
- Thu, 22 Jun 2023 21:50:17 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 35MLn77I035791;
+ Thu, 22 Jun 2023 21:50:22 GMT
 Received: from joaomart-mac.uk.oracle.com (dhcp-10-175-180-251.vpn.oracle.com
  [10.175.180.251])
  by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id
- 3r9398ep1g-15; Thu, 22 Jun 2023 21:50:17 +0000
+ 3r9398ep1g-16; Thu, 22 Jun 2023 21:50:22 +0000
 From: Joao Martins <joao.m.martins@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
@@ -66,10 +66,10 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
  Eduardo Habkost <eduardo@habkost.net>,
  Avihai Horon <avihaih@nvidia.com>, Jason Gunthorpe <jgg@nvidia.com>,
  Joao Martins <joao.m.martins@oracle.com>
-Subject: [PATCH v4 14/15] vfio/common: Optimize device dirty page tracking
- with vIOMMU
-Date: Thu, 22 Jun 2023 22:48:44 +0100
-Message-Id: <20230622214845.3980-15-joao.m.martins@oracle.com>
+Subject: [PATCH v4 15/15] vfio/common: Block migration with vIOMMUs without
+ address width limits
+Date: Thu, 22 Jun 2023 22:48:45 +0100
+Message-Id: <20230622214845.3980-16-joao.m.martins@oracle.com>
 In-Reply-To: <20230622214845.3980-1-joao.m.martins@oracle.com>
 References: <20230622214845.3980-1-joao.m.martins@oracle.com>
 MIME-Version: 1.0
@@ -77,15 +77,15 @@ Content-Transfer-Encoding: 8bit
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
  definitions=2023-06-22_16,2023-06-22_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=781
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=723
  adultscore=0
  spamscore=0 phishscore=0 suspectscore=0 malwarescore=0 bulkscore=0
  mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2305260000 definitions=main-2306220186
-X-Proofpoint-GUID: sK5VgQ-L1MaNJgeE2Z4X21Yt6rgcyDcP
-X-Proofpoint-ORIG-GUID: sK5VgQ-L1MaNJgeE2Z4X21Yt6rgcyDcP
-Received-SPF: pass client-ip=205.220.177.32;
- envelope-from=joao.m.martins@oracle.com; helo=mx0b-00069f02.pphosted.com
+X-Proofpoint-GUID: xhYTTd1lRk3AP-TeeRjKa7MSHJZSFceh
+X-Proofpoint-ORIG-GUID: xhYTTd1lRk3AP-TeeRjKa7MSHJZSFceh
+Received-SPF: pass client-ip=205.220.165.32;
+ envelope-from=joao.m.martins@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
 X-Spam_bar: --
@@ -109,137 +109,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Avihai Horon <avihaih@nvidia.com>
+Only block the case when the underlying vIOMMU model does not report any
+address space limits, in addition to DMA translation being off or no
+vIOMMU present. The limits are needed such that can define the IOVA limits
+that arm the device dirty tracker.
 
-When vIOMMU is enabled, syncing dirty page bitmaps is done by replaying
-the vIOMMU mappings and querying the dirty bitmap for each mapping.
+Additionally, reword the migration blocker error message to clarify that
+we the configured vIOMMU does not support migration, as opposed to
+implying that just being there blocks migration.
 
-With device dirty tracking this causes a lot of overhead, since the HW
-is queried many times (even with small idle guest this can end up with
-thousands of calls to HW).
-
-Optimize this by de-coupling dirty bitmap query from vIOMMU replay.
-Now a single dirty bitmap is queried per vIOMMU MR section, which is
-then used for all corresponding vIOMMU mappings within that MR section.
-
-Signed-off-by: Avihai Horon <avihaih@nvidia.com>
 Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
 ---
- hw/vfio/common.c | 74 ++++++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 72 insertions(+), 2 deletions(-)
+ hw/vfio/common.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
 diff --git a/hw/vfio/common.c b/hw/vfio/common.c
-index c530e9d87f21..62f91e8e102d 100644
+index 62f91e8e102d..c3cc0dd47044 100644
 --- a/hw/vfio/common.c
 +++ b/hw/vfio/common.c
-@@ -1832,8 +1832,36 @@ out:
- typedef struct {
-     IOMMUNotifier n;
-     VFIOGuestIOMMU *giommu;
-+    VFIOBitmap vbmap;
- } vfio_giommu_dirty_notifier;
+@@ -449,15 +449,18 @@ static int vfio_viommu_get_max_iova(hwaddr *max_iova)
  
-+static int vfio_iommu_set_dirty_bitmap(VFIOContainer *container,
-+                                       vfio_giommu_dirty_notifier *gdn,
-+                                       hwaddr iova, hwaddr size,
-+                                       ram_addr_t ram_addr)
-+{
-+    VFIOBitmap *vbmap = &gdn->vbmap;
-+    VFIOBitmap dst_vbmap;
-+    hwaddr start_iova = REAL_HOST_PAGE_ALIGN(gdn->n.start);
-+    hwaddr copy_offset;
-+    int ret;
-+
-+    ret = vfio_bitmap_alloc(&dst_vbmap, size);
-+    if (ret) {
-+        return -ENOMEM;
-+    }
-+
-+    copy_offset = (iova - start_iova) / qemu_real_host_page_size();
-+    bitmap_copy_with_src_offset(dst_vbmap.bitmap, vbmap->bitmap, copy_offset,
-+                                dst_vbmap.pages);
-+
-+    cpu_physical_memory_set_dirty_lebitmap(dst_vbmap.bitmap, ram_addr,
-+                                           dst_vbmap.pages);
-+    g_free(dst_vbmap.bitmap);
-+
-+    return 0;
-+}
-+
- static void vfio_iommu_map_dirty_notify(IOMMUNotifier *n, IOMMUTLBEntry *iotlb)
+ int vfio_block_giommu_migration(Error **errp)
  {
-     vfio_giommu_dirty_notifier *gdn = container_of(n,
-@@ -1854,8 +1882,15 @@ static void vfio_iommu_map_dirty_notify(IOMMUNotifier *n, IOMMUTLBEntry *iotlb)
++    hwaddr max;
+     int ret;
  
-     rcu_read_lock();
-     if (vfio_get_xlat_addr(iotlb, NULL, &translated_addr, NULL)) {
--        ret = vfio_get_dirty_bitmap(container, iova, iotlb->addr_mask + 1,
--                                    translated_addr);
-+        if (gdn->vbmap.bitmap) {
-+            ret = vfio_iommu_set_dirty_bitmap(container, gdn, iova,
-+                                              iotlb->addr_mask + 1,
-+                                              translated_addr);
-+        } else {
-+            ret = vfio_get_dirty_bitmap(container, iova, iotlb->addr_mask + 1,
-+                                        translated_addr);
-+        }
-+
-         if (ret) {
-             error_report("vfio_iommu_map_dirty_notify(%p, 0x%"HWADDR_PRIx", "
-                          "0x%"HWADDR_PRIx") = %d (%s)",
-@@ -1936,6 +1971,7 @@ static int vfio_sync_iommu_dirty_bitmap(VFIOContainer *container,
+     if (giommu_migration_blocker ||
+-        !vfio_viommu_preset()) {
++        !vfio_viommu_preset() ||
++        (vfio_viommu_preset() && !vfio_viommu_get_max_iova(&max))) {
+         return 0;
      }
  
-     gdn.giommu = giommu;
-+    gdn.vbmap.bitmap = NULL;
-     idx = memory_region_iommu_attrs_to_index(giommu->iommu_mr,
-                                              MEMTXATTRS_UNSPECIFIED);
- 
-@@ -1943,10 +1979,44 @@ static int vfio_sync_iommu_dirty_bitmap(VFIOContainer *container,
-                        section->size);
-     llend = int128_sub(llend, int128_one());
- 
-+    /*
-+     * Optimize device dirty tracking if the MR section is at least partially
-+     * tracked. Optimization is done by querying a single dirty bitmap for the
-+     * entire range instead of querying dirty bitmap for each vIOMMU mapping.
-+     */
-+    if (vfio_devices_all_device_dirty_tracking(container)) {
-+        hwaddr start = REAL_HOST_PAGE_ALIGN(section->offset_within_region);
-+        hwaddr end = int128_get64(llend);
-+        hwaddr iommu_max_iova;
-+        hwaddr size;
-+        int ret;
-+
-+        ret = vfio_viommu_get_max_iova(&iommu_max_iova);
-+        if (ret) {
-+            return -EINVAL;
-+        }
-+
-+        size = REAL_HOST_PAGE_ALIGN(MIN(iommu_max_iova, end) - start);
-+
-+        ret = vfio_bitmap_alloc(&gdn.vbmap, size);
-+        if (ret) {
-+            return -ENOMEM;
-+        }
-+
-+        ret = vfio_devices_query_dirty_bitmap(container, &gdn.vbmap,
-+                                              start, size);
-+        if (ret) {
-+            g_free(gdn.vbmap.bitmap);
-+
-+            return ret;
-+        }
-+    }
-+
-     iommu_notifier_init(&gdn.n, vfio_iommu_map_dirty_notify, IOMMU_NOTIFIER_MAP,
-                         section->offset_within_region, int128_get64(llend),
-                         idx);
-     memory_region_iommu_replay(giommu->iommu_mr, &gdn.n);
-+    g_free(gdn.vbmap.bitmap);
- 
-     return 0;
- }
+     error_setg(&giommu_migration_blocker,
+-               "Migration is currently not supported with vIOMMU enabled");
++               "Migration with vIOMMU is currently not supported "
++               "without vIOMMU address space boundaries");
+     ret = migrate_add_blocker(giommu_migration_blocker, errp);
+     if (ret < 0) {
+         error_free(giommu_migration_blocker);
 -- 
 2.17.2
 
