@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDF6673A009
+	by mail.lfdr.de (Postfix) with ESMTPS id B7FFF73A008
 	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 13:48:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCIng-0001SJ-1X; Thu, 22 Jun 2023 07:48:32 -0400
+	id 1qCInn-0001ki-3C; Thu, 22 Jun 2023 07:48:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <lukasstraub2@web.de>)
- id 1qCInQ-0001LI-7L
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 07:48:16 -0400
-Received: from mout.web.de ([217.72.192.78])
+ id 1qCIng-0001fJ-7m
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 07:48:32 -0400
+Received: from mout.web.de ([212.227.17.12])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <lukasstraub2@web.de>)
- id 1qCInN-0005IW-38
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 07:48:15 -0400
+ id 1qCIne-0005NA-CP
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 07:48:31 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
- s=s29768273; t=1687434489; x=1688039289; i=lukasstraub2@web.de;
- bh=qP9jCnrdh/L1HJlBpEa0+QrU4qIzImjbcD+AevDxfA8=;
+ s=s29768273; t=1687434506; x=1688039306; i=lukasstraub2@web.de;
+ bh=hlGHJKATVwQxfbowzxdbCuMyC7ltkmXILx9Iznw0EcE=;
  h=X-UI-Sender-Class:Date:From:To:Cc:Subject:In-Reply-To:References;
- b=BpWHqj7Bek7O++14Y9uiRhsTJccftUfi6FxlJHgEd5OFIxllpyBQJmujHOhwNVtqCZmwXK9
- 6UUHYCdq/Z7iEjVdMTKo65783P1UV4Cxxl9wEnpIv2sYVUdTjIYtqp41ac8QST5oK1Hssl9Cb
- kBUBe2HdxRvz8MaA1ykiw4Nt6zf69MMV/5cIdWbrjV9gCfsf494RsadYemIYmU4Bywn0rzn8Q
- CfPRESeseiOYTujuolvOA/hxZ/EqlfgCpT4+N2LE/spxYK1l9Vetdb6gRSYlr8qFn5hALuv1X
- UFiVH5GjQ+o0gGKpXTRORGPi4+tnFiy2QCEcxcTbRSD90wnvpl6A==
+ b=Nh8SbfJ3y7DJZEzLwnPPIE1qJXXPlfdjvMoqcBvsT1mFQcaTLCKOVyytSBlwGjF1ryx9ycI
+ ChA/4zwBNGgGKWFgsZGKLLkfXBXV6w3Iat/IzZ2f3Lh8kyF8i2J8eUuKjJOr1U5YTcPOCEmu8
+ kj/dlUnH69tCQCiQ2i0xJxeZ55j11qjNlPpHiZAo0DKxzfgMwE6OgVU7TILn9Is+VvJ5OrGoa
+ l5JCCpjukC+oVYRCPJmP9WOi8Yq2oPr105M1j/w+2TVtA/Z7Nd74WEdPp6nBJZUwCBfcwRnJA
+ otlWQKEK+SE3ZT6WVDctybqbn0fzSc6YEOiYuzu88jTWud0cFmqQ==
 X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
 Received: from mobian ([46.114.147.93]) by smtp.web.de (mrweb106
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1MFayq-1qIJ3n0Bw6-00HaZY; Thu, 22
- Jun 2023 13:48:09 +0200
-Date: Thu, 22 Jun 2023 13:48:06 +0200
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1Mi4z5-1pZ6Ed1MY5-00dhHj; Thu, 22
+ Jun 2023 13:48:26 +0200
+Date: Thu, 22 Jun 2023 13:48:22 +0200
 From: Lukas Straub <lukasstraub2@web.de>
 To: Juan Quintela <quintela@redhat.com>
 Cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>, Leonardo Bras
  <leobras@redhat.com>
-Subject: Re: [PATCH 16/18] migration: control_save_page() can take block
- through pss
-Message-ID: <20230622134806.53c74af0@mobian>
-In-Reply-To: <20230613145757.10131-17-quintela@redhat.com>
+Subject: Re: [PATCH 17/18] migration: Remove not needed block parameter for
+ save_zero_page*
+Message-ID: <20230622134822.50031f5a@mobian>
+In-Reply-To: <20230613145757.10131-18-quintela@redhat.com>
 References: <20230613145757.10131-1-quintela@redhat.com>
- <20230613145757.10131-17-quintela@redhat.com>
+ <20230613145757.10131-18-quintela@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:Iv2QemBm2f/+mL42fc30PmrchPGbsxE4TBNrJEhBKgwHFq7JWAj
- ofDAGU+hrQivwIygBegP4HrCf7S1FSxmL3SBJe7wqkPcm2i2NS39lK+pse7ezu7Y2FCVKWc
- LsfrQde0+2e/KnXWHXFffAVx5l60wxrMhdsm8UJC3RX2TQzh/Cktf0ksdDChu2ol7Sya6mC
- 5foYcCi2zRJBBeItNSPNg==
-UI-OutboundReport: notjunk:1;M01:P0:lXp02kDNspw=;/16jeRmv7xIdmijn8Ikh+Vh5ZFs
- vms2IJn1ukeWO50JpNnqbV1q4vTDOo0IAnCEaJUCaDdRxW7Mq4ucKfuSi3Ueov5m0RGzW1j0S
- wZKv6ckeq2JJzLrGh5Zej/IiDYTMz0XG53RDoFIDpWwIfId8B3asfSF0DDIS9ohA80S04Rx+r
- 3puV1o+S/sPes3MsJdCtqrm0pNhrUatXTrsclQDQ92bXP7436QPWyBtnJW/SfLuXouq25/eIo
- mp0v6Y2Yb5go+ezl1Kp9qLJsgxrVXdwEuCt+ru90p9TVDjQ4BQWdxax3SqK5UpxPSGQ1pQzKI
- 5616hpxuJMvO4et8aTjA6/PKtefxMoR7RXBmr1km1YwiK1ZvE8mwLISXq+z82DoVG6vhZ/fIp
- DttGZJdlsstH87spGFf/EFscyB2QAe2XMuHGVR1uv5BB0XnADxWjo+1WhdnMEjjOpDsfqi3If
- z+L9glJoQixnbqOXujcNRVBEK4Qw4+lKiUyDZZktw+Dt3IYFFGABNbyLUXVvGX9uAMf5Pl1QO
- wH6ufGt4S33v4jNqoCgB1tupMUFIBpzyk1KlrDkGpoSepxEUcsjmlG49zg0GJPFZQgktnNOqI
- n15KbrFUz9lcgrmkc3XYev+FYSscf4fz7Xx0wz8nDuSZz1wP50VgvCEZfdc2WJz5QExcdkvt/
- SPMcnltbrqIzNZKWlI6KG5i6Izx0EbNGanwmr3hV+GwBXQG6UCAVYerQpsjiCXxmuPmZkObPo
- kUgaqQL92e/fh8nfz2kY+vYMhYRub1pjUnrBK6AxlLzW9TYKGhpivCfyKW+fEyMNWzUHFLcQE
- kRzhaF0C+pU6ao1L8ZjBBcxqfEwLv8gl8rWeBLTETfHR9Cg/s1Z4Cmh/UkWzY9Y9qAK0bwD+T
- XHufLtdwl2lUHJNZ1NXFK5UnMnoNCpzHDP1LzY28NqbOiheQRG3r07hDOy3p/YypwqH1IaU0L
- 34FotrFRF9fTb+SRSc0mRZoNnVE=
-Received-SPF: pass client-ip=217.72.192.78; envelope-from=lukasstraub2@web.de;
+Content-Type: multipart/signed; boundary="Sig_/UcmOS8TcRdsF=ykguf28zyL";
+ protocol="application/pgp-signature"; micalg=pgp-sha512
+X-Provags-ID: V03:K1:SRbGbk0ah8RlglGALQQhLa/Op1c7XpYg50x5e7C1/sjYJCv4Z+F
+ bb/SAvvf28qPI7Rjwwy+mH2hlctvJp+goutrEQjju6srXHl8Kd7MkjMDH06Ar4jX3VUJLsQ
+ blzYUJmX2DKVLPT1p0HSCX2HhQwkEVeKzihcSLvOgDRe8ozH/V8LtSbi1ZoMoY6JSBmc33l
+ wQT9Z8LdHgMd1IukYs4xg==
+UI-OutboundReport: notjunk:1;M01:P0:miMHbIHvEZg=;Bzuf5+Lm4rDdHmAfIjCYYnLz3Pg
+ TYBC9oB5j0fpIh63L6iv5fqHNNEGRYcsZ6XO8m5ayb7SWNY8SHh/vJUl1328l2F0shcCUoR/8
+ 3UjFHZjw4wCc0YvGtSxo1eYSHTbkaTF7gILNyDgElMdJ7nFhcChNmt+YSmCZqpbLxXoUuxzEw
+ LYVQyRIvj1kRXbLjW+1VZIY9ea2JUmYjD4seVgXsr/m5bozPGAs25ktRafjrf4Ga0ojNDe8+u
+ 4SPeCjn0Xp6I+mz/AOGhnF6jdHGq93hgO6RP9hV5uvR8cn8DQdOl4kde85U1aNxTvac/Z6dJj
+ trWz7zJiknCyF1Q0LtzLvU4pmfUvImphaQ/PmYNn9/lnDuL4FrmvHimd2F+QD2RCZHKeyrBLl
+ e2i0ZfoCAbvXbwfBmCdrCy5aJDjkOROoHkmGIDkdEqgztRqW7txlmVBFyhhUsuxIy9gRd97Iz
+ sa0dMmoupm0E16o6Ent6TJup+3kbd5L+hVUcF74ULBiRqVaO0Y5awjty5MlKt++0uKr+IvBwj
+ cJKibiOMFADsj0AiM2MR/KvAUrgwMhLVHUdhTAU6vI4sSEh/HGqS3xR3vLPI3ycbziYIPdzrt
+ f6cVHHhde1syjfCsEjZ/LkPJMkF1EfKmaNQ+baDqhkaRcAnM1CksKNo8fZOmuEvd1YtNAZZlu
+ BYp1S5evT7Zj8Z9frG4a2CscGuRWqpvo5Clem1PpGuyJyhgLsKiA3NPJRoYu8UFen/9h2qDCr
+ UxFkNJ4VuBguaGCQfPNWdFcLgDKxurB2+fyPTT1dLJ1VLVn+jDUoqhxT0XH8O1HG2Q23W7Q8w
+ 2w5KOqMEJVwB//Ctgz631hi3Ihj45FtA3cJaSgb45uWDcvbKTE81qwB6+O+z3i+y5ZHzohqpx
+ uayfN3R+ylNzdZ4Ax/NoHWrm2+M/xWokOc4/oBK2lzqOhdqKAalKfrgCFzj3uHn4qZcnE8i4p
+ o4/m2g==
+Received-SPF: pass client-ip=212.227.17.12; envelope-from=lukasstraub2@web.de;
  helo=mout.web.de
-X-Spam_score_int: -25
-X-Spam_score: -2.6
-X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,7 +89,11 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 13 Jun 2023 16:57:55 +0200
+--Sig_/UcmOS8TcRdsF=ykguf28zyL
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
+
+On Tue, 13 Jun 2023 16:57:56 +0200
 Juan Quintela <quintela@redhat.com> wrote:
 
 > Signed-off-by: Juan Quintela <quintela@redhat.com>
@@ -97,43 +101,92 @@ Juan Quintela <quintela@redhat.com> wrote:
 Reviewed-by: Lukas Straub <lukasstraub2@web.de>
 
 > ---
->  migration/ram.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
->
+>  migration/ram.c | 18 ++++++++----------
+>  1 file changed, 8 insertions(+), 10 deletions(-)
+>=20
 > diff --git a/migration/ram.c b/migration/ram.c
-> index e3ff98a6ce..293ea87a70 100644
+> index 293ea87a70..0259c33da7 100644
 > --- a/migration/ram.c
 > +++ b/migration/ram.c
-> @@ -1114,14 +1114,14 @@ static int save_zero_page(PageSearchStatus *pss,=
- QEMUFile *f, RAMBlock *block,
+> @@ -1067,20 +1067,20 @@ void ram_release_page(const char *rbname, uint64_=
+t offset)
+>   * a zero page
 >   *
->   * Return true if the pages has been saved, otherwise false is returned=
-.
+>   * @pss: current PSS channel
+> - * @block: block that contains the page we want to send
+>   * @offset: offset inside the block for the page
 >   */
-> -static bool control_save_page(PageSearchStatus *pss, RAMBlock *block,
-> +static bool control_save_page(PageSearchStatus *pss,
->                                ram_addr_t offset, int *pages)
+>  static int save_zero_page_to_file(PageSearchStatus *pss, QEMUFile *file,
+> -                                  RAMBlock *block, ram_addr_t offset)
+> +                                  ram_addr_t offset)
 >  {
->      uint64_t bytes_xmit =3D 0;
->      int ret;
->
->      *pages =3D -1;
-> -    ret =3D ram_control_save_page(pss->pss_channel, block->offset, offs=
-et,
-> +    ret =3D ram_control_save_page(pss->pss_channel, pss->block->offset,=
- offset,
->                                  TARGET_PAGE_SIZE, &bytes_xmit);
->      if (ret =3D=3D RAM_SAVE_CONTROL_NOT_SUPP) {
->          return false;
-> @@ -2025,7 +2025,7 @@ static int ram_save_target_page_legacy(RAMState *r=
-s, PageSearchStatus *pss)
->      ram_addr_t offset =3D ((ram_addr_t)pss->page) << TARGET_PAGE_BITS;
->      int res;
->
-> -    if (control_save_page(pss, block, offset, &res)) {
-> +    if (control_save_page(pss, offset, &res)) {
->          return res;
+> -    uint8_t *p =3D block->host + offset;
+> +    uint8_t *p =3D pss->block->host + offset;
+>      int len =3D 0;
+> =20
+>      if (buffer_is_zero(p, TARGET_PAGE_SIZE)) {
+> -        len +=3D save_page_header(pss, file, block, offset | RAM_SAVE_FL=
+AG_ZERO);
+> +        len +=3D save_page_header(pss, file, pss->block,
+> +                                offset | RAM_SAVE_FLAG_ZERO);
+>          qemu_put_byte(file, 0);
+>          len +=3D 1;
+> -        ram_release_page(block->idstr, offset);
+> +        ram_release_page(pss->block->idstr, offset);
 >      }
->
+>      return len;
+>  }
+> @@ -1091,13 +1091,11 @@ static int save_zero_page_to_file(PageSearchStatu=
+s *pss, QEMUFile *file,
+>   * Returns the number of pages written.
+>   *
+>   * @pss: current PSS channel
+> - * @block: block that contains the page we want to send
+>   * @offset: offset inside the block for the page
+>   */
+> -static int save_zero_page(PageSearchStatus *pss, QEMUFile *f, RAMBlock *=
+block,
+> -                          ram_addr_t offset)
+> +static int save_zero_page(PageSearchStatus *pss, QEMUFile *f, ram_addr_t=
+ offset)
+>  {
+> -    int len =3D save_zero_page_to_file(pss, f, block, offset);
+> +    int len =3D save_zero_page_to_file(pss, f, offset);
+> =20
+>      if (len) {
+>          stat64_add(&mig_stats.zero_pages, 1);
+> @@ -2033,7 +2031,7 @@ static int ram_save_target_page_legacy(RAMState *rs=
+, PageSearchStatus *pss)
+>          return 1;
+>      }
+> =20
+> -    res =3D save_zero_page(pss, pss->pss_channel, block, offset);
+> +    res =3D save_zero_page(pss, pss->pss_channel, offset);
+>      if (res > 0) {
+>          /* Must let xbzrle know, otherwise a previous (now 0'd) cached
+>           * page would be stale
 
+
+--Sig_/UcmOS8TcRdsF=ykguf28zyL
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEEg/qxWKDZuPtyYo+kNasLKJxdslgFAmSUNQYACgkQNasLKJxd
+slhttBAAhpsxieIWg+Vk/7gAosifhYb/vy+adt0kMD2I/OI7pGUEyG7SzkFhIX0T
+W6+mHW7vpsKkhJuv0JM7vIdzvk8HhL8wYuuzWStqlkQRnw5jkHq0+Mp5xeg5C0qw
+wD/lrwKakIcaK+xkEYBLlSbD9qY0dbIyaAlEp7lMRZFEF6qIa2aukti0egpI7AE4
+2Juqsy/iGcS6NIp2uxyX8k0o69U9CwaF4tsEDlbK+73xb5LLIja+mMpsxZn8jniM
++sE1eOnBXU2xxc9DVSaMfo/srGOJCgR8x/sOhna4Y/Kx69GUovXIopvY3z1k3cLu
+gMJeSSBrV9rt7xMqgH0dnFU5fKndqtC0JcC3O7tGuAGrGJrRC7OxPP6+rA0nHc7q
+7cVbF4J44xsl0U2pwaAvzDTO7n7IiPHaqAeUxPGnCeXq2v2tj7GG04bCaM9CddTd
+YdjWRP1CQXZuV2SCGFAq2WehCtAyuh3rDJG5V8B99WL01pEpudWjzBWpiEhgDa7F
+2G+WlGi13gKfRqd8RPi9TOK8FAxrQSp2w7RyvZcpOsbDyaxmjnJKCN6LJSZTzn/S
+BdBrUxH1hOyDQkWvMuZUNUvaXrho+gtLNogqQ8v8iup9CaPPSXuxs/jGC3c/u2nb
+RMipnVWomHtNPdffx1RhyRgVZd7glmKzaC44T9y3x7DMrrz7YiY=
+=W/m/
+-----END PGP SIGNATURE-----
+
+--Sig_/UcmOS8TcRdsF=ykguf28zyL--
 
