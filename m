@@ -2,95 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3ECB73A5DA
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 18:18:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 63F9A73A587
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 18:07:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCMzU-0008Lx-HG; Thu, 22 Jun 2023 12:17:00 -0400
+	id 1qCMoj-0000xc-2A; Thu, 22 Jun 2023 12:05:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qCMzR-0008LK-9a
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 12:16:57 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qCMzP-0004Rc-Tr
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 12:16:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687450615;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=bWJ6zg2et6wOyca5/YYQOedAZfrx3sINWOKa6pJOvII=;
- b=XlShJoZywH+q9zCUOSPGnl8QSdsIwft1SRAQcF1UGd6Al3+hXIY3ov5ktMWw2IUzV1yrIo
- 1LMCKYUf+49mL3I0LJBMnphN2h3wIJT+uIo+u3NODo+fm47GvQbgf1rYSFoMsP80EJ8jgg
- xIH2G/tX0xH2Cfk0Etdc19G+HnW3xcw=
-Received: from mail-yw1-f197.google.com (mail-yw1-f197.google.com
- [209.85.128.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-623-L588LxabOp-RF2P5eyG6jw-1; Thu, 22 Jun 2023 12:16:38 -0400
-X-MC-Unique: L588LxabOp-RF2P5eyG6jw-1
-Received: by mail-yw1-f197.google.com with SMTP id
- 00721157ae682-5706641dda9so97429957b3.3
- for <qemu-devel@nongnu.org>; Thu, 22 Jun 2023 09:16:29 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qCMoX-0000wW-Kr
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 12:05:45 -0400
+Received: from mail-lf1-x129.google.com ([2a00:1450:4864:20::129])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qCMoT-000620-Li
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 12:05:39 -0400
+Received: by mail-lf1-x129.google.com with SMTP id
+ 2adb3069b0e04-4f8777caaa1so5668592e87.3
+ for <qemu-devel@nongnu.org>; Thu, 22 Jun 2023 09:05:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1687449934; x=1690041934;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=GKSFzHfoOe8E2L1wD0MShd505mBa2EuWuWm9TG36N5g=;
+ b=LGu0aD8V0nQVF/44KlKCuzurl1chD9j6pU76xxLfD+DTfx/syVNryceP4tSGn60t2S
+ P+G22BC1ZjIlymizrXU37AKF3BWJ5WBe4ZWOUZlkthNIhM/w8iggqKtzAA1y97NM+PmD
+ fNMLPFDk/BVos0cAFIoDFOzHj8+1KlAgynXaZksWWKTEdvMj+yfyRPWbOPXed/ys5hn3
+ QFhnuHcMGg4Op0fyl/fY/sAlmK9Iazqw8XOR4o1cCB7Fesf/1kbpniVI105gnCUlExrZ
+ 0tLpzoOpQD+9e9eP6fUDw7H/nz2++3SSHnT5zKykjkF6F3lITSxuNgh5fKyaDbCujzkw
+ 6JQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687450589; x=1690042589;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=bWJ6zg2et6wOyca5/YYQOedAZfrx3sINWOKa6pJOvII=;
- b=NTJZ6JVWapSPEYwvuFTIYokANQCN700ahL4X8DdHGulxTaiId3/5z8L9DVkuIPDDdj
- xEcsU+ng+nqyxbkli6p1sCuwHLabgbo5AQsE7Z6crX5QnWyw6jhdXsnvC6rKvn1fEkEG
- Nvp5MAoJ5DdHtQb/phKHml7ObIhv6DRvDPuXR8DGAuOs76QsJrNaS6/nCcmwgzo/G8iE
- 799oahUted3rPv+A2xSy1ymzf3dvEFKdyszDPG1wzONKanRAFRPKJFDmSOMGjRbOC1Jo
- 3vKcpcJqn28gM1BBToBkcB9/zxNFfILMvofzxlQpMueoFeukl4yem87oACJHONLZ1scg
- HeVw==
-X-Gm-Message-State: AC+VfDx4X/Ph11bITMgkax2Xvy6ZYbF6XCrc8MDozFezHCwP0RzJaYja
- AvLwkAoOA9sU+dLvAyeGzXLQJsHQbPi8py7Gn0OMoETTwHQu2NDwtbkcWhOZb87Y5eGwc4tYO2t
- 4lxq2rYz8x6Z6V9x1U3zHbUZvUJ8ifeg=
-X-Received: by 2002:a67:f151:0:b0:440:b63f:1dd7 with SMTP id
- t17-20020a67f151000000b00440b63f1dd7mr6869311vsm.25.1687449815115; 
- Thu, 22 Jun 2023 09:03:35 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6B/MmxHaxkNF9JtjN6ldWDIERn1FN0D8238qA8/hXw4kDqheTzZ8tpuRkU+QXxMUk41zq34oUsLzK1pK6zsfE=
-X-Received: by 2002:a67:f151:0:b0:440:b63f:1dd7 with SMTP id
- t17-20020a67f151000000b00440b63f1dd7mr6869289vsm.25.1687449814798; Thu, 22
- Jun 2023 09:03:34 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1687449934; x=1690041934;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=GKSFzHfoOe8E2L1wD0MShd505mBa2EuWuWm9TG36N5g=;
+ b=DDHdii0EABH9CjXUeRF/TXdCNHfmkxEAiLQh0snb4dV6VBmSEaxzhJiRz/Sk6vYvlM
+ RwtSiYKnGBCn/IFAq95itVZuDRXIhxFfZN50bibfL5drlplwgkjWpqg/GwldVpkWLXxM
+ LpgwbSPzpglMJ2wpdAgLnqQaU+2/X02Lxo3JlQgibiUmLnErzyhx4Oz0wcsnIEnaENIL
+ yFGRdCg/LDQS2iI3tWHdBO883p412JhQ2eG/80N1jl3o0H5WkT1Sx0IJ77i9KTmRxCZs
+ 8XR0ArwA+U/A6OFoEy3GLgezvje9o4/+JMnBIjgDXigZW0bexmTWqh8iSLyvQ9v+aMS/
+ U69Q==
+X-Gm-Message-State: AC+VfDwZC8hyo8OcCjyCWgQbwaHiiTPVLMo7R9GwvEF7/RXxkR1vtadP
+ Tkr+wWF9CYji/zyPMmrhaDWGV3wm0s7D09BAlbzZcIFS
+X-Google-Smtp-Source: ACHHUZ65XRt6FxAowZF7/Hvm/ppBHouutuP5Kj53LYpfMbCDCixdEQYFT/OxXtaj8y+tY+InTZfLbw==
+X-Received: by 2002:a05:6512:3985:b0:4f9:615f:14dd with SMTP id
+ j5-20020a056512398500b004f9615f14ddmr2577505lfu.11.1687449934516; 
+ Thu, 22 Jun 2023 09:05:34 -0700 (PDT)
+Received: from [192.168.157.227] ([91.223.100.38])
+ by smtp.gmail.com with ESMTPSA id
+ u23-20020ac24c37000000b004f86df7b2ffsm1140903lfq.267.2023.06.22.09.05.33
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 22 Jun 2023 09:05:34 -0700 (PDT)
+Message-ID: <d232206c-7bd1-ccc0-5eb9-da295628444a@linaro.org>
+Date: Thu, 22 Jun 2023 18:05:29 +0200
 MIME-Version: 1.0
-References: <20230612193344.3796-1-quintela@redhat.com>
- <20230612193344.3796-5-quintela@redhat.com>
- <ZId0+HYF/ETLVri3@x1n> <875y7sflqb.fsf@secure.mitica>
- <d88c707a-abd9-6c8e-907c-13a3fa9a0219@redhat.com>
- <87wmzv7ubn.fsf@secure.mitica>
- <59f958ac-807d-e940-e5de-8109de62eb8c@redhat.com>
- <87sfaj7r3g.fsf@secure.mitica> <ZJRnokKh47xe/4CE@x1n>
-In-Reply-To: <ZJRnokKh47xe/4CE@x1n>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Thu, 22 Jun 2023 18:03:22 +0200
-Message-ID: <CABgObfZTipxvR6WvZTmt1+4mAdW=XuJasroS6y4LMN2L+YFuXw@mail.gmail.com>
-Subject: Re: [RFC 4/6] migration: Deprecate -incoming <uri>
-To: Peter Xu <peterx@redhat.com>
-Cc: Juan Quintela <quintela@redhat.com>, qemu-devel@nongnu.org, 
- Markus Armbruster <armbru@redhat.com>, Leonardo Bras <leobras@redhat.com>, 
- =?UTF-8?B?RGFuaWVsIFAuQmVycmFuZ8Op?= <berrange@redhat.com>, 
- qemu-block@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>,
- Eric Blake <eblake@redhat.com>, 
- Fam Zheng <fam@euphon.net>, Thomas Huth <thuth@redhat.com>,
- libvir-list@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v2 1/9] accel/tcg: Store some tlb flags in CPUTLBEntryFull
+Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org
+References: <20230621121902.1392277-1-richard.henderson@linaro.org>
+ <20230621121902.1392277-2-richard.henderson@linaro.org>
+ <405f3697-9cc8-3a19-ee79-094e6e130c29@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <405f3697-9cc8-3a19-ee79-094e6e130c29@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::129;
+ envelope-from=richard.henderson@linaro.org; helo=mail-lf1-x129.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,29 +97,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jun 22, 2023 at 5:26=E2=80=AFPM Peter Xu <peterx@redhat.com> wrote:
-> PS: we may want to postpone this to be later than migration_object_init()=
-,
-> when/if there's a real patch.
+On 6/22/23 11:58, Philippe Mathieu-Daudé wrote:
+> On 21/6/23 14:18, Richard Henderson wrote:
+>> We have run out of bits we can use within the CPUTLBEntry comparators,
+>> as TLB_FLAGS_MASK cannot overlap alignment.
+>>
+>> Store slow_flags[] in CPUTLBEntryFull, and merge with the flags from
+>> the comparator.  A new TLB_FORCE_SLOW bit is set within the comparator
+>> as an indication that the slow path must be used.
+>>
+>> Move TLB_BSWAP to TLB_SLOW_FLAGS_MASK.  Since we are out of bits,
+>> we cannot create a new bit without moving an old one.
+>>
+>> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+>> ---
+>>   include/exec/cpu-all.h  | 21 +++++++--
+>>   include/exec/cpu-defs.h |  6 +++
+>>   accel/tcg/cputlb.c      | 96 ++++++++++++++++++++++++-----------------
+>>   3 files changed, 80 insertions(+), 43 deletions(-)
+> 
+> Do you mind squashing this for clarity?
+> 
+> -- >8 --
+> diff --git a/include/exec/cpu-defs.h b/include/exec/cpu-defs.h
+> index c174d5371a..c0f19e5893 100644
+> --- a/include/exec/cpu-defs.h
+> +++ b/include/exec/cpu-defs.h
+> @@ -130,3 +130,3 @@ typedef struct CPUTLBEntryFull {
+>        */
+> -    uint8_t slow_flags[3];
+> +    uint8_t slow_flags[MMU_ACCESS_COUNT];
+> 
+> diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
+> index 4871ad85f0..d07763fdeb 100644
+> --- a/include/hw/core/cpu.h
+> +++ b/include/hw/core/cpu.h
+> @@ -86,2 +86,3 @@ typedef enum MMUAccessType {
+>       MMU_INST_FETCH = 2
+> +#define MMU_ACCESS_COUNT 3
+>   } MMUAccessType;
 
-Yes, that's true.
 
-> > > The only incompatibility is for people who are using "," in an URI,
-> > > which is rare and only an issue for the "exec" protocol.
->
-> If we worry on breaking anyone, we can apply the keyval parsing only when
-> !exec.  Not sure whether it matters a huge lot..
+Done.
 
-No, I don't think it does.
 
-> > Aha, that makes sense.  And will allow us to deprecate/remove the
-> > --global migration.* stuff.
->
-> We may still need a way to set the caps/params for src qemu?..
-
-The source can use migrate_set_parameters normally, since migration
-has to be started from the monitor anyway.
-
-Paolo
-
+r~
 
