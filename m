@@ -2,94 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2243F73A7A2
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 19:49:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8110873A7A6
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 19:49:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCOQL-0007pe-JS; Thu, 22 Jun 2023 13:48:49 -0400
+	id 1qCOQT-0008CA-It; Thu, 22 Jun 2023 13:48:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qCOQE-0007ml-I1
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 13:48:42 -0400
-Received: from mail-lj1-x22d.google.com ([2a00:1450:4864:20::22d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qCOQ9-0006SF-Eg
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 13:48:42 -0400
-Received: by mail-lj1-x22d.google.com with SMTP id
- 38308e7fff4ca-2b46f5d236dso81977431fa.2
- for <qemu-devel@nongnu.org>; Thu, 22 Jun 2023 10:48:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687456114; x=1690048114;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=dqzSwhmIqLC0pNAcU2LtSNI/E1J8NE7gvDvKGn+6LZQ=;
- b=zuKhnA4x/RPSFsbRDJ0d4Ftiske/KmneH55J9Sv9/ZNVVwbQ3icFYY8MVzx8/+V+SR
- 4px+9lMVNc6S6yvGsRMvceKngfoW5pSqqDQQYha/GLw6t5fgE82RkgNXPjSfLlIUq2S8
- 74Gy4qNIB83KfhY9VgP7FhCVfKwLiYQM5/Gq9OuvUnzhr4ChZp+/8xcqVOjBMc5OMnXL
- 7lZZUBotN2tra15w4fQs0CKbHFSzkmjl5gWKDqCI6yat/f3cTNUnlkQKgFQcHajMXIlS
- Rc93JrOx+coCGdYDTXciBqhdaAn9GSwr36eB+HAU5RTRzwbNQhV9G5MhDRblA/3DLi9f
- Wsmw==
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qCOQK-0007ub-Pc
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 13:48:49 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qCOQI-0006Vf-10
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 13:48:48 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1687456122;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=ZflWP3tHywO9WWzFgVkl2XbyskLd6sOtISiz7Y7TAD4=;
+ b=dKZHrulJeROWBuH5mobB95ZGZyXbrO2SuPhmKD+AUqQmSBSJFNLK/zmPXer1cBjgR1zjLD
+ 7zKt+RNc6KN5vjDjUSmZG9Y9Ts0CWGh/Lg54qlA75K0FScA95HcKhg8/CEOYPfru5qPTdG
+ vuULr4zf4I2u5JcAfxhd3YbXoSJw1Cg=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-150-AG9A0JRyPEyw4nvXFwcVDg-1; Thu, 22 Jun 2023 13:48:40 -0400
+X-MC-Unique: AG9A0JRyPEyw4nvXFwcVDg-1
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-986db3313f0so427052166b.3
+ for <qemu-devel@nongnu.org>; Thu, 22 Jun 2023 10:48:40 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687456115; x=1690048115;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20221208; t=1687456119; x=1690048119;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=dqzSwhmIqLC0pNAcU2LtSNI/E1J8NE7gvDvKGn+6LZQ=;
- b=kydWv3rWhdTAmhm6aIoEHdjgbQU7j9KKda1USuLZvxYsR3x9ZBqqGCCuBFHSl/x7vl
- v3j8IK7thpn6ofoVmGPUrpALD83vif918Coeg3+J0AbxLzejoqPGaVDWU8BcMUwLOS0i
- bWv4XTXHWl59Tzj2XmhIygoOfEVyg54e3wgRi3R7iYim7sOi6JgqImonz6r/21AWI+8S
- voqYjcgM51ytSS3zRiGhmtNunSue8acwIy3vpJUKD2kY0vFqJgxy/4V0NnANSwwCmFWD
- IVK6XV3sC09g+w64XSBGwzXY53bZWV2EI/NY+mHBntBVMuD9s6zlX3UdmjIXtnEdGNOQ
- EeDQ==
-X-Gm-Message-State: AC+VfDzx0UiBGoQ+Z02KZVYRuYpvcNDfSdjnMLCerM/hzFwfaQPL1f7G
- T6rWsevsxlmmazO+DqFPS/tUNg==
-X-Google-Smtp-Source: ACHHUZ4yU6Z4OBHWNZinbZubWOW6GhuB/jEGytDVFOrPmlBXaknK7EKzwKrqWJRARRFro1oeE4SvtQ==
-X-Received: by 2002:a2e:834b:0:b0:2af:25cf:92ae with SMTP id
- l11-20020a2e834b000000b002af25cf92aemr12328492ljh.22.1687456114734; 
- Thu, 22 Jun 2023 10:48:34 -0700 (PDT)
-Received: from [192.168.157.227] ([91.223.100.47])
- by smtp.gmail.com with ESMTPSA id
- y3-20020a05651c020300b002b4832d0c8esm1421362ljn.118.2023.06.22.10.48.31
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 22 Jun 2023 10:48:34 -0700 (PDT)
-Message-ID: <d1d63ac7-b0dc-4d8d-73ff-9b693ca163c2@linaro.org>
-Date: Thu, 22 Jun 2023 19:48:29 +0200
+ bh=ZflWP3tHywO9WWzFgVkl2XbyskLd6sOtISiz7Y7TAD4=;
+ b=fir3k95MagjmWOy1cmg8N5YJYU3yuyLthAq9CGmS2Z5cP/NSHhc3W5UdVBbKMAVqMs
+ 2nZQWaa0+0eMWgTDe9FFXhGI/XgbF/Iwm1Yn7tKH/tq4OHcm9Gi4FoWgqGFaC55q3oWI
+ +5ihVwPbN5Zv9Oryjo++jz+0W8cAxq8E07iQZQAb595R81JXqZeApsIofd7Xn9gtz/em
+ SkPp/CHSvJ+4sJfeN+IG6RNbHXLN5SkEjBKdTzg3TB1H2wugNYdhvwM0GjIGgXIONS24
+ FiKE7qoHVezm7X/1tLGFUE+mTYASBAv9+8UsxHMplkR4+x+7Fvr6glxgy5nOIkrUyj8n
+ b4XQ==
+X-Gm-Message-State: AC+VfDxI6M0aHBlM1C+tJv3iK++OEx8RC+wQr5/JvUwnwjLQkNUek00J
+ lHLw19pWPRiJ+EF47a/3Kp4dBNgEh66KBjgtgf8/F66JrxT6M0/TImVXq3C264uQVOB58Rr1ueO
+ Q0GumJMetPj60S+k=
+X-Received: by 2002:a17:907:7207:b0:988:8786:f56c with SMTP id
+ dr7-20020a170907720700b009888786f56cmr11691680ejc.0.1687456119242; 
+ Thu, 22 Jun 2023 10:48:39 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4JXhjtWpIpnktBexR3Qc8JD1of5O+02ui90OOo86ADX4k+EfuRDswQKn0eH4naY5uFdM+vig==
+X-Received: by 2002:a17:907:7207:b0:988:8786:f56c with SMTP id
+ dr7-20020a170907720700b009888786f56cmr11691669ejc.0.1687456118857; 
+ Thu, 22 Jun 2023 10:48:38 -0700 (PDT)
+Received: from redhat.com ([2.52.149.110]) by smtp.gmail.com with ESMTPSA id
+ lf4-20020a170906ae4400b0098822e05eddsm4936093ejb.100.2023.06.22.10.48.37
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 22 Jun 2023 10:48:38 -0700 (PDT)
+Date: Thu, 22 Jun 2023 13:48:34 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Julia Suvorova <jusual@redhat.com>
+Cc: Ani Sinha <anisinha@redhat.com>, qemu-devel@nongnu.org,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, imammedo@redhat.com
+Subject: Re: [PATCH v2 5/5] hw/pci: ensure PCIE devices are plugged into only
+ slot 0 of PCIE port
+Message-ID: <20230622134437-mutt-send-email-mst@kernel.org>
+References: <20230622103255.267289-1-anisinha@redhat.com>
+ <20230622103255.267289-6-anisinha@redhat.com>
+ <CAMDeoFWHJhN3ppAO4XB9jGUg4Yu-zFzzzKwAvDiSJSgjeZH6jg@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH v2 12/16] accel: Remove WHPX unreachable error path
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Reinoud Zandijk <reinoud@netbsd.org>, qemu-arm@nongnu.org,
- kvm@vger.kernel.org, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Anthony Perard <anthony.perard@citrix.com>,
- Yanan Wang <wangyanan55@huawei.com>, Peter Maydell
- <peter.maydell@linaro.org>, Roman Bolshakov <rbolshakov@ddn.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Paul Durrant <paul@xen.org>,
- Sunil Muthuswamy <sunilmut@microsoft.com>, Alexander Graf <agraf@csgraf.de>,
- xen-devel@lists.xenproject.org, Eduardo Habkost <eduardo@habkost.net>,
- Cameron Esfahani <dirty@apple.com>
-References: <20230622160823.71851-1-philmd@linaro.org>
- <20230622160823.71851-13-philmd@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230622160823.71851-13-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::22d;
- envelope-from=richard.henderson@linaro.org; helo=mail-lj1-x22d.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+In-Reply-To: <CAMDeoFWHJhN3ppAO4XB9jGUg4Yu-zFzzzKwAvDiSJSgjeZH6jg@mail.gmail.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,18 +101,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/22/23 18:08, Philippe Mathieu-Daudé wrote:
-> g_new0() can not fail. Remove the unreachable error path.
+On Thu, Jun 22, 2023 at 05:46:40PM +0200, Julia Suvorova wrote:
+> On Thu, Jun 22, 2023 at 12:34 PM Ani Sinha <anisinha@redhat.com> wrote:
+> >
+> > PCI Express ports only have one slot, so PCI Express devices can only be
+> > plugged into slot 0 on a PCIE port. Enforce it.
+> >
+> > CC: jusual@redhat.com
+> > CC: imammedo@redhat.com
+> > Resolves: https://bugzilla.redhat.com/show_bug.cgi?id=2128929
+> > Signed-off-by: Ani Sinha <anisinha@redhat.com>
+> > ---
+> >  hw/pci/pci.c | 6 ++++++
+> >  1 file changed, 6 insertions(+)
+> >
+> > diff --git a/hw/pci/pci.c b/hw/pci/pci.c
+> > index bf38905b7d..5f25ab9f5e 100644
+> > --- a/hw/pci/pci.c
+> > +++ b/hw/pci/pci.c
+> > @@ -64,6 +64,7 @@ bool pci_available = true;
+> >  static char *pcibus_get_dev_path(DeviceState *dev);
+> >  static char *pcibus_get_fw_dev_path(DeviceState *dev);
+> >  static void pcibus_reset(BusState *qbus);
+> > +static bool pcie_has_upstream_port(PCIDevice *dev);
+> >
+> >  static Property pci_props[] = {
+> >      DEFINE_PROP_PCI_DEVFN("addr", PCIDevice, devfn, -1),
+> > @@ -1189,6 +1190,11 @@ static PCIDevice *do_pci_register_device(PCIDevice *pci_dev,
+> >                     name);
+> >
+> >         return NULL;
+> > +    } else if (pcie_has_upstream_port(pci_dev) && PCI_SLOT(devfn)) {
+> > +        error_setg(errp, "PCI: slot %d is not valid for %s,"
+> > +                   " PCI express devices can only be plugged into slot 0.",
 > 
-> https://developer-old.gnome.org/glib/stable/glib-Memory-Allocation.html#glib-Memory-Allocation.description
+> This is not technically correct, because downstream ports and root
+> ports are also PCIe devices, and they can have different slots under
+> upstream ports and RC. But this error will never be shown for them, so
+> it seems fine.
+
+Hmm. Confusing users is not nice ... I agree this might
+make people think they can not use root ports in slot !=0 either.
+
+Would you add "with an upstream port"?
+E.g. "PCI Express devices with an upstream port" ?
+
 > 
-> Reported-by: Richard Henderson <richard.henderson@linaro.org>
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->   target/i386/whpx/whpx-all.c | 6 ------
->   1 file changed, 6 deletions(-)
+> Reviewed-by: Julia Suvorova <jusual@redhat.com>
+> 
+> 
+> 
+> 
+> > +                   PCI_SLOT(devfn), name);
+> > +        return NULL;
+> >      }
+> >
+> >      pci_dev->devfn = devfn;
+> > --
+> > 2.39.1
+> >
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-
-r~
 
