@@ -2,57 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED887739EE3
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 12:51:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 229D1739F30
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 13:02:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCHtD-0000PZ-Gf; Thu, 22 Jun 2023 06:50:11 -0400
+	id 1qCI3n-0003N2-9g; Thu, 22 Jun 2023 07:01:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=yb1G=CK=kaod.org=clg@ozlabs.org>)
- id 1qCHt9-0000PL-2y; Thu, 22 Jun 2023 06:50:07 -0400
-Received: from gandalf.ozlabs.org ([150.107.74.76])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=yb1G=CK=kaod.org=clg@ozlabs.org>)
- id 1qCHt6-0007cI-MY; Thu, 22 Jun 2023 06:50:06 -0400
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4Qmxw74zKrz4x09;
- Thu, 22 Jun 2023 20:49:59 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits))
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Qmxw50zwgz4x04;
- Thu, 22 Jun 2023 20:49:56 +1000 (AEST)
-Message-ID: <53cf03d5-a339-09be-9739-34327221ff5e@kaod.org>
-Date: Thu, 22 Jun 2023 12:49:55 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH v2 5/7] spapr: TCG allow up to 8-thread SMT on POWER8 and
- newer CPUs
-Content-Language: en-US
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
-Cc: qemu-devel@nongnu.org, Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-References: <20230622093357.255649-1-npiggin@gmail.com>
- <20230622093357.255649-6-npiggin@gmail.com>
- <3bb379ff-62d0-b212-0376-7ff1f8cc61fa@kaod.org>
-In-Reply-To: <3bb379ff-62d0-b212-0376-7ff1f8cc61fa@kaod.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=150.107.74.76;
- envelope-from=SRS0=yb1G=CK=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, NICE_REPLY_A=-0.09, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1qCI3k-0003MD-6r; Thu, 22 Jun 2023 07:01:04 -0400
+Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1qCI3i-00072K-Ji; Thu, 22 Jun 2023 07:01:03 -0400
+Received: by mail-pl1-x630.google.com with SMTP id
+ d9443c01a7336-1b4f95833c7so37115155ad.1; 
+ Thu, 22 Jun 2023 04:01:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1687431660; x=1690023660;
+ h=in-reply-to:references:subject:cc:to:from:message-id:date
+ :content-transfer-encoding:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Suf8xcjr94twkMdtMq86GZspr4L+OaQC3ip8khX+UCI=;
+ b=eOjsx/7zKe58OyxcpnI//TWxssnvvVCpTO8c7LuSR3rfiggVEByGDW9vyVp4heyPjy
+ NPH/mmCbo1Qt0R3AjcFabnIUU5lM2BhOvSe8i/gD/VDB8UYVY9ny8mC/f73hqvQP3y6Z
+ BDU4brfDm1EIgrpmnuSON/fmS+KAP8TGiYMsb837vjS+wl9QXkrhUBZfRj/tKqdyGvnP
+ TtsF0bC+7xRAbSQoob3/SYI5R9ijKryoAgD76ewofWe9e4qAD5tA4SOfmY56XC+YWmEN
+ gupyi+bK/nADxBTWK+TI1KAexZwpLNibOuQxS767vxpzdNNGk69paAO6GuSevXOYsr3r
+ MC1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1687431660; x=1690023660;
+ h=in-reply-to:references:subject:cc:to:from:message-id:date
+ :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=Suf8xcjr94twkMdtMq86GZspr4L+OaQC3ip8khX+UCI=;
+ b=MNqmxYaNbQb0+GOKIijFse3J/SA6W6WD4auwcT1snYr9qJb8TYYdeF+V/WXOD+SYKY
+ zUt913guMA1tnjGK8pxSKx8I9VhOATPR9fDWH3um61Q680gIAAFg0BRAwywbhg7jvDlO
+ oUSDIaXwbCnuEp9o1T7wsWDHbH0xMGraXkQ/dL4pBxQxJXi+qTXev3x42R4vrNukxMtq
+ prvKGUJDDKrvMAGqyeH4+Es3nEbarQ4IcodHdy/Z9jWI2qX6flR3oAgTNjpHm7LiYPxU
+ UtqojztCS6EQcjypuA941GMC6gB17F7G42y65XrB9cuC9KD5YHTKTJlluFrSDgSD38Iv
+ /nhQ==
+X-Gm-Message-State: AC+VfDzfhXQwYL+zHyVkyq2qUgK9q/mI/ETO2QZqH2DYpndGpX700BEH
+ GtfZ6mDdXGShJRDT1bRBkg5bghKz9ik=
+X-Google-Smtp-Source: ACHHUZ6uBFue6I9AQ/bjF9KeTPWc3i3ZSFwwUnQBJP2NdfbBTCYXuxMNkoE6vYuVD7ErhRKD1afRpw==
+X-Received: by 2002:a17:902:d702:b0:1b3:9d13:34b3 with SMTP id
+ w2-20020a170902d70200b001b39d1334b3mr13732435ply.37.1687431660241; 
+ Thu, 22 Jun 2023 04:01:00 -0700 (PDT)
+Received: from localhost (193-116-203-37.tpgi.com.au. [193.116.203.37])
+ by smtp.gmail.com with ESMTPSA id
+ jh5-20020a170903328500b001ac7c725c1asm1384523plb.6.2023.06.22.04.00.57
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 22 Jun 2023 04:00:59 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 22 Jun 2023 21:00:55 +1000
+Message-Id: <CTJ4LKZXRDU5.3J10AK6I35GNF@wheely>
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "Harsh Prateek Bora" <harshpb@linux.ibm.com>, <qemu-ppc@nongnu.org>
+Cc: <qemu-devel@nongnu.org>, "Daniel Henrique Barboza" <danielhb413@gmail.com>
+Subject: Re: [PATCH] target/ppc: Fix sc instruction handling of LEV field
+X-Mailer: aerc 0.14.0
+References: <20230621110938.239066-1-npiggin@gmail.com>
+ <ceed7522-ac70-02fd-14b5-e97fad5e52a3@linux.ibm.com>
+In-Reply-To: <ceed7522-ac70-02fd-14b5-e97fad5e52a3@linux.ibm.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x630.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -68,122 +91,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/22/23 12:06, Cédric Le Goater wrote:
-> On 6/22/23 11:33, Nicholas Piggin wrote:
->> PPC TCG supports SMT CPU configurations for non-hypervisor state, so
->> permit POWER8-10 pseries machines to enable SMT.
->>
->> This requires PIR and TIR be set, because that's how sibling thread
->> matching is done by TCG.
->>
->> spapr's nested-HV capability does not currently coexist with SMT, so
->> that combination is prohibited (interestingly somewhat analogous to
->> LPAR-per-core mode on real hardware which also does not support KVM).
->>
->> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
->> ---
->>   hw/ppc/spapr.c          | 16 ++++++++++++----
->>   hw/ppc/spapr_caps.c     | 14 ++++++++++++++
->>   hw/ppc/spapr_cpu_core.c |  7 +++++--
->>   3 files changed, 31 insertions(+), 6 deletions(-)
->>
->> diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
->> index 8e7d497f25..677b5eef9d 100644
->> --- a/hw/ppc/spapr.c
->> +++ b/hw/ppc/spapr.c
->> @@ -2525,10 +2525,18 @@ static void spapr_set_vsmt_mode(SpaprMachineState *spapr, Error **errp)
->>       int ret;
->>       unsigned int smp_threads = ms->smp.threads;
->> -    if (tcg_enabled() && (smp_threads > 1)) {
->> -        error_setg(errp, "TCG cannot support more than 1 thread/core "
->> -                   "on a pseries machine");
->> -        return;
->> +    if (tcg_enabled()) {
+On Thu Jun 22, 2023 at 6:00 PM AEST, Harsh Prateek Bora wrote:
+>
+>
+> On 6/21/23 16:39, Nicholas Piggin wrote:
+> > The top bits of the LEV field of the sc instruction are to be treated a=
+s
+> > as a reserved field rather than a reserved value, meaning LEV is
+> > effectively the bottom bit. LEV=3D0xF should be treated as LEV=3D1 and =
+be
+> > a hypercall, for example.
+> >=20
+> > This changes the instruction execution to just set lev from the low bit
+> > of the field. Processors which don't support the LEV field will continu=
+e
+> > to ignore it.
+> >=20
+> > ISA v3.1 defines LEV to be 2 bits, in order to add the 'sc 2' ultracall
+> > instruction. TCG does not support Ultravisor, so don't worry about
+> > that bit.
+> >=20
+> > Suggested-by: "Harsh Prateek Bora" <harshpb@linux.ibm.com>
+> > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> > ---
+> > This should probably go ahead of the ISA 3.1 LEV in SRR1 patch. I
+> > don't think they need to be backported to stable though, have not
+> > caused any real problems.
+> >=20
+> > Thanks to Harsh for spotting it.
+> >=20
+> > Thanks,
+> > Nick
+> >=20
+> >   target/ppc/translate.c | 7 ++++++-
+> >   1 file changed, 6 insertions(+), 1 deletion(-)
+> >=20
+> > diff --git a/target/ppc/translate.c b/target/ppc/translate.c
+> > index 15a00bd4fa..3c62f9188a 100644
+> > --- a/target/ppc/translate.c
+> > +++ b/target/ppc/translate.c
+> > @@ -4424,7 +4424,12 @@ static void gen_sc(DisasContext *ctx)
+> >   {
+> >       uint32_t lev;
+> >  =20
+> > -    lev =3D (ctx->opcode >> 5) & 0x7F;
+> > +    /*
+> > +     * LEV is a 7-bit field, but the top 6 bits are treated as a reser=
+ved
+> > +     * field (i.e., ignored). ISA v3.1 changes that to 5 bits, but tha=
+t is
+> > +     * for Ultravisor which TCG does not support, so just ignore the t=
+op 6.
+> > +     */
+> > +    lev =3D (ctx->opcode >> 5) & 0x1;
+>
+> should this change be applied to gen_scv() defined next to it as well ?
 
-I will add :
+No. scv uses all LEV bits.
 
-             if (smp_threads > 1 &&
+Thanks,
+Nick
 
-No need to resend for that.
-
-C.
-
-
->> +        if (!ppc_type_check_compat(ms->cpu_type, CPU_POWERPC_LOGICAL_2_07, 0,
->> +                                   spapr->max_compat_pvr)) {
->> +            error_setg(errp, "TCG only supports SMT on POWER8 or newer CPUs");
->> +            return;
->> +        }
-> 
-> So if TCG is enabled and the CPU < P8, QEMU bails out ? You should run
-> qemu-ppc-boot :)
-> 
-> Thanks,
-> 
-> C.
-> 
->> +
->> +        if (smp_threads > 8) {
->> +            error_setg(errp, "TCG cannot support more than 8 threads/core "
->> +                       "on a pseries machine");
->> +            return;
->> +        }
->>       }
->>       if (!is_power_of_2(smp_threads)) {
->>           error_setg(errp, "Cannot support %d threads/core on a pseries "
->> diff --git a/hw/ppc/spapr_caps.c b/hw/ppc/spapr_caps.c
->> index 3fd45a6dec..5a0755d34f 100644
->> --- a/hw/ppc/spapr_caps.c
->> +++ b/hw/ppc/spapr_caps.c
->> @@ -473,6 +473,20 @@ static void cap_nested_kvm_hv_apply(SpaprMachineState *spapr,
->>                   error_append_hint(errp,
->>                                     "Try appending -machine cap-nested-hv=off\n");
->>           }
->> +    } else if (tcg_enabled()) {
->> +        MachineState *ms = MACHINE(spapr);
->> +        unsigned int smp_threads = ms->smp.threads;
->> +
->> +        /*
->> +         * Nested-HV vCPU env state to L2, so SMT-shared SPR updates, for
->> +         * example, do not necessarily update the correct SPR value on sibling
->> +         * threads that are in a different guest/host context.
->> +         */
->> +        if (smp_threads > 1) {
->> +            error_setg(errp, "TCG does not support nested-HV with SMT");
->> +            error_append_hint(errp, "Try appending -machine cap-nested-hv=off "
->> +                                    "or use threads=1 with -smp\n");
->> +        }
->>       }
->>   }
->> diff --git a/hw/ppc/spapr_cpu_core.c b/hw/ppc/spapr_cpu_core.c
->> index 9b88dd549a..a4e3c2fadd 100644
->> --- a/hw/ppc/spapr_cpu_core.c
->> +++ b/hw/ppc/spapr_cpu_core.c
->> @@ -255,7 +255,7 @@ static void spapr_cpu_core_unrealize(DeviceState *dev)
->>   }
->>   static bool spapr_realize_vcpu(PowerPCCPU *cpu, SpaprMachineState *spapr,
->> -                               SpaprCpuCore *sc, Error **errp)
->> +                               SpaprCpuCore *sc, int thread_index, Error **errp)
->>   {
->>       CPUPPCState *env = &cpu->env;
->>       CPUState *cs = CPU(cpu);
->> @@ -267,6 +267,9 @@ static bool spapr_realize_vcpu(PowerPCCPU *cpu, SpaprMachineState *spapr,
->>       cpu_ppc_set_vhyp(cpu, PPC_VIRTUAL_HYPERVISOR(spapr));
->>       kvmppc_set_papr(cpu);
->> +    env->spr_cb[SPR_PIR].default_value = cs->cpu_index;
->> +    env->spr_cb[SPR_TIR].default_value = thread_index;
->> +
->>       /* Set time-base frequency to 512 MHz. vhyp must be set first. */
->>       cpu_ppc_tb_init(env, SPAPR_TIMEBASE_FREQ);
->> @@ -337,7 +340,7 @@ static void spapr_cpu_core_realize(DeviceState *dev, Error **errp)
->>       for (i = 0; i < cc->nr_threads; i++) {
->>           sc->threads[i] = spapr_create_vcpu(sc, i, errp);
->>           if (!sc->threads[i] ||
->> -            !spapr_realize_vcpu(sc->threads[i], spapr, sc, errp)) {
->> +            !spapr_realize_vcpu(sc->threads[i], spapr, sc, i, errp)) {
->>               spapr_cpu_core_unrealize(dev);
->>               return;
->>           }
-> 
+>
+> Otherwise,
+> Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+>
+> >       gen_exception_err(ctx, POWERPC_SYSCALL, lev);
+> >   }
+> >  =20
 
 
