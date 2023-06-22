@@ -2,52 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 398787398B9
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 09:58:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D17FF7398CD
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 10:00:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCFAn-0004FJ-Jc; Thu, 22 Jun 2023 03:56:09 -0400
+	id 1qCFBI-0004m5-KZ; Thu, 22 Jun 2023 03:56:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1qCFAf-00042i-QF
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1qCFAf-00042m-Uc
  for qemu-devel@nongnu.org; Thu, 22 Jun 2023 03:56:02 -0400
 Received: from mout.kundenserver.de ([212.227.126.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1qCFAa-0002tM-EN
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1qCFAa-0002tU-Sn
  for qemu-devel@nongnu.org; Thu, 22 Jun 2023 03:56:01 -0400
 Received: from quad ([82.142.8.70]) by mrelayeu.kundenserver.de (mreue011
- [212.227.15.167]) with ESMTPSA (Nemesis) id 1MofLl-1pjAp91EAT-00p3r5; Thu, 22
+ [212.227.15.167]) with ESMTPSA (Nemesis) id 1Mi2aH-1pYDWd37dR-00e2J5; Thu, 22
  Jun 2023 09:55:54 +0200
 From: Laurent Vivier <laurent@vivier.eu>
 To: qemu-devel@nongnu.org
 Cc: Laurent Vivier <laurent@vivier.eu>,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 16/24] q800: move ESCC device to Q800MachineState
-Date: Thu, 22 Jun 2023 09:55:36 +0200
-Message-Id: <20230622075544.210899-17-laurent@vivier.eu>
+Subject: [PULL 17/24] q800: move escc_orgate device to Q800MachineState
+Date: Thu, 22 Jun 2023 09:55:37 +0200
+Message-Id: <20230622075544.210899-18-laurent@vivier.eu>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230622075544.210899-1-laurent@vivier.eu>
 References: <20230622075544.210899-1-laurent@vivier.eu>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:+9Z7l2cpk3VirFoUWI2Ac+rwZ3uJHXimiOlZnGV0HKwJC5kZ47J
- tqz3snW8/kNhGTiU1tStb4gwl8PlqQcwm0wt7ehNzWXWv6rjcqxecTBEP6QTxK9qKxDLhvB
- LW7pqEASCecyGTgmVfOuEykSnKjk2j9obXSB7WOhMpx7VogYx2tOyIN6OI9ksgXVzQyPh9H
- ldSie+owyYj7vStv9cKIw==
-UI-OutboundReport: notjunk:1;M01:P0:dZnF26nBPnI=;BShbyPGpeg/t32Jv+iQ4o1oYPPO
- E0AjhwkgadvpWwHc1ZBvoAXeLGPQmhc/zkM60B8gcbtPDo0aiiK+U/iH5Hm59IEu8Vo+VqDck
- TOTue7ZsA0D9rDbccWc2xs3kRk4Q4bGZJZFOWTK+aF22AHMqUFCmKS53vZiu+vzKvqXiv2jt9
- Z3yRXMqRGv+tHIn2HRp61lR9IBlzLDi15u05yV/krP0voXc/IK99aXpTE0OM4UR0eahFiauBz
- Aw0LpiWO6UIhcpbYsE9Q5nBSO7tHNh9/414wxBA7HfQ/+A+dZxH0mIc3uFF0IEqEJNcwkcYs8
- 8vqhAYTfiTI4/ezv0s/+iddu82dDxkNOWjljBFXBe5nVamEHeJtQBXlWVQw4X+7/EIoA8lL7R
- Z/Rsf2ngQoHgIvaNv2t5m4Fl/MauS7k+14W5t8UGgU8RIoCrxBBhDny1hUrGw6foVkVhQJ7s3
- lKyFUojBrYvEj8J3DHUxhN3JT6yOuEuYltPGqIxLXQBI1TX4PsBIhQsLjM8Diym26wI5NCM3I
- 5wNwtPNL0iwtpEmWHMl/9XD3FVVapD6VlARG3gb+OIvp9EgYq1ZVdVS6eLHhSEmpWxRkwCd7A
- rsMbC6+qVGY+Oe3TxzU+Z02HyNlQjFio9uD7cqvscn9KXgeoIxMG4CRs0JxgBRBPOqklT/Sai
- l9xAcUjIBpHdxnOAz5VP1gYnINg1pgzAKtFpM4maCA==
+X-Provags-ID: V03:K1:oBZ2MWvC3s7DHW5P16pH8wSgi3VrCWT1P0Qy8IDxtNy0XpAKS2R
+ OwwE7fDi15K3O8t2jmHR50iZ/oL0gLvcjTWdR1pG+tyC4RUFEEE5ScOt8aSSa/HAB3XnvQH
+ gj7h7WIyQPMHv1TssmC3l2h2T9ZLYDeiukoJuqDCUgRz8cKqkI+C21mdF6+GY1v+l9iUHVm
+ ez8+liNUxxfT8kfw0G9Lg==
+UI-OutboundReport: notjunk:1;M01:P0:M6U5CpwuyNM=;1mWO9JE2G8PpNzEZ5DNCEONnw6n
+ buQ0zTKfsWk4HbBGASRelKznX9H6JYxo0Mt0Nkj1ZQGCdkHhbumfOCoY5Evii83IZZjK70XZz
+ xPHimEGv/Vk1l10mfMlib4Iq0nFhd7AKZiPlEHf4dipfgNUnSrv60pRU+3RG0GK+MFmBPQxJV
+ bnH74fJHfx+J+Weyo6wYqHw3kUbIBgI1WDRCSfLVLwrNUKkATLuvCPPcU1+o8YXK1rAtBLWbU
+ 3sM7bTsHrmrc71qwbaSBl2kSPHwk06pMm33FSZWvLr6qfR3XTe6624A9AKxrmOkKAfiS0WeAc
+ DUdjQfl736MTEbyRPscaLmJnXPedyoUrwV78sgs5UTwsn1irCmWYz8sO2F+qvhox+yYLSFTNW
+ 4DPW8MCha21uRVpmGoHU0u3tcj+f5t2KMxSQtntOfBpeb4SMixPybXwbueMi0Lq+skxET1zCc
+ wtZU+A3qDbBjRcD8azS5nFEuvaZJDOq2kf2BJLr79JnIzUKGfv5R1x25q8gEgn+5e2pe+20i2
+ By96u3aDo231HxzdQ8/QoDuDv8gQw5S8pkpke5D8g0INPJEKDuo6TdwSsHnd1/QMPzQwqe3Sf
+ xxBQQ63VtZBdivmbp26o5PNfV6dl60VlfELHxXOtVWKcMaiHYgneNVd50uJ9mULoh4N3Z1Gwd
+ M26n/5Z9hhWEwCIOszlM9A09wkJEn7vHDo/lbD3zAg==
 Received-SPF: none client-ip=212.227.126.131; envelope-from=laurent@vivier.eu;
  helo=mout.kundenserver.de
 X-Spam_score_int: -18
@@ -73,62 +73,72 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 
-Also change the instantiation of the ESCC device to use object_initialize_child().
+Also change the instantiation of the escc_orgate device to use object_initialize_child().
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Laurent Vivier <laurent@vivier.eu>
-Message-Id: <20230621085353.113233-17-mark.cave-ayland@ilande.co.uk>
+Message-Id: <20230621085353.113233-18-mark.cave-ayland@ilande.co.uk>
 Signed-off-by: Laurent Vivier <laurent@vivier.eu>
 ---
- include/hw/m68k/q800.h | 2 ++
- hw/m68k/q800.c         | 6 ++++--
- 2 files changed, 6 insertions(+), 2 deletions(-)
+ include/hw/m68k/q800.h |  2 ++
+ hw/m68k/q800.c         | 16 +++++++++-------
+ 2 files changed, 11 insertions(+), 7 deletions(-)
 
 diff --git a/include/hw/m68k/q800.h b/include/hw/m68k/q800.h
-index d11bc020ed98..9e76a3fe7c0c 100644
+index 9e76a3fe7c0c..36e1bd8e4e4d 100644
 --- a/include/hw/m68k/q800.h
 +++ b/include/hw/m68k/q800.h
-@@ -30,6 +30,7 @@
- #include "hw/m68k/q800-glue.h"
+@@ -31,6 +31,7 @@
  #include "hw/misc/mac_via.h"
  #include "hw/net/dp8393x.h"
-+#include "hw/char/escc.h"
+ #include "hw/char/escc.h"
++#include "hw/or-irq.h"
  
  /*
   * The main Q800 machine
-@@ -44,6 +45,7 @@ struct Q800MachineState {
-     MOS6522Q800VIA1State via1;
+@@ -46,6 +47,7 @@ struct Q800MachineState {
      MOS6522Q800VIA2State via2;
      dp8393xState dp8393x;
-+    ESCCState escc;
+     ESCCState escc;
++    OrIRQState escc_orgate;
      MemoryRegion macio;
      MemoryRegion macio_alias;
  };
 diff --git a/hw/m68k/q800.c b/hw/m68k/q800.c
-index 13806613fa36..8bf94b2511c1 100644
+index 8bf94b2511c1..c6314c6bf937 100644
 --- a/hw/m68k/q800.c
 +++ b/hw/m68k/q800.c
-@@ -346,7 +346,9 @@ static void q800_machine_init(MachineState *machine)
- 
-     /* SCC */
- 
--    dev = qdev_new(TYPE_ESCC);
-+    object_initialize_child(OBJECT(machine), "escc", &m->escc,
-+                            TYPE_ESCC);
-+    dev = DEVICE(&m->escc);
-     qdev_prop_set_uint32(dev, "disabled", 0);
-     qdev_prop_set_uint32(dev, "frequency", MAC_CLOCK);
-     qdev_prop_set_uint32(dev, "it_shift", 1);
-@@ -356,7 +358,7 @@ static void q800_machine_init(MachineState *machine)
-     qdev_prop_set_uint32(dev, "chnBtype", 0);
-     qdev_prop_set_uint32(dev, "chnAtype", 0);
-     sysbus = SYS_BUS_DEVICE(dev);
--    sysbus_realize_and_unref(sysbus, &error_fatal);
-+    sysbus_realize(sysbus, &error_fatal);
+@@ -212,7 +212,6 @@ static void q800_machine_init(MachineState *machine)
+     hwaddr parameters_base;
+     CPUState *cs;
+     DeviceState *dev;
+-    DeviceState *escc_orgate;
+     SysBusESPState *sysbus_esp;
+     ESPState *esp;
+     SysBusDevice *sysbus;
+@@ -361,12 +360,15 @@ static void q800_machine_init(MachineState *machine)
+     sysbus_realize(sysbus, &error_fatal);
  
      /* Logically OR both its IRQs together */
-     escc_orgate = DEVICE(object_new(TYPE_OR_IRQ));
+-    escc_orgate = DEVICE(object_new(TYPE_OR_IRQ));
+-    object_property_set_int(OBJECT(escc_orgate), "num-lines", 2, &error_fatal);
+-    qdev_realize_and_unref(escc_orgate, NULL, &error_fatal);
+-    sysbus_connect_irq(sysbus, 0, qdev_get_gpio_in(escc_orgate, 0));
+-    sysbus_connect_irq(sysbus, 1, qdev_get_gpio_in(escc_orgate, 1));
+-    qdev_connect_gpio_out(escc_orgate, 0,
++    object_initialize_child(OBJECT(machine), "escc_orgate", &m->escc_orgate,
++                            TYPE_OR_IRQ);
++    object_property_set_int(OBJECT(&m->escc_orgate), "num-lines", 2,
++                            &error_fatal);
++    dev = DEVICE(&m->escc_orgate);
++    qdev_realize(dev, NULL, &error_fatal);
++    sysbus_connect_irq(sysbus, 0, qdev_get_gpio_in(dev, 0));
++    sysbus_connect_irq(sysbus, 1, qdev_get_gpio_in(dev, 1));
++    qdev_connect_gpio_out(dev, 0,
+                           qdev_get_gpio_in(DEVICE(&m->glue),
+                                            GLUE_IRQ_IN_ESCC));
+     memory_region_add_subregion(&m->macio, SCC_BASE - IO_BASE,
 -- 
 2.40.1
 
