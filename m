@@ -2,54 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B4D173A667
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 18:48:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DCA573A668
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 18:50:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCNSw-0004EO-BP; Thu, 22 Jun 2023 12:47:26 -0400
+	id 1qCNV0-0005Mp-OB; Thu, 22 Jun 2023 12:49:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=yb1G=CK=kaod.org=clg@ozlabs.org>)
- id 1qCNSs-0004Dy-Gq; Thu, 22 Jun 2023 12:47:22 -0400
-Received: from gandalf.ozlabs.org ([150.107.74.76])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=yb1G=CK=kaod.org=clg@ozlabs.org>)
- id 1qCNSq-0006QR-2s; Thu, 22 Jun 2023 12:47:22 -0400
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4Qn5rK1YjGz4x3S;
- Fri, 23 Jun 2023 02:47:13 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Qn5rH43LTz4x0L;
- Fri, 23 Jun 2023 02:47:11 +1000 (AEST)
-Message-ID: <107820d6-2c7b-4f35-970e-7d04d11ba7d4@kaod.org>
-Date: Thu, 22 Jun 2023 18:47:07 +0200
+ (Exim 4.90_1) (envelope-from <thiago.bauermann@linaro.org>)
+ id 1qCNUx-0005Ku-CJ
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 12:49:31 -0400
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <thiago.bauermann@linaro.org>)
+ id 1qCNUv-0006ul-Nw
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 12:49:31 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-3fa74d06d72so7785945e9.3
+ for <qemu-devel@nongnu.org>; Thu, 22 Jun 2023 09:49:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1687452567; x=1690044567;
+ h=content-transfer-encoding:mime-version:message-id:date:in-reply-to
+ :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=fb1boCvjAsx9mWVXiB/4mB52CgFpGNj1KWlRTjdHkgY=;
+ b=QGSzombm3WVNVMJ2GceMSHM+M0WwhJu7D9rGwmQbVrra/+XuOy8j06kdr/8Dag0fCu
+ SnvijFcXXX3f1lePgd6FNPG8JX024ptuNGOZeALRMzTxDw0vp2VQbIC57+P1VNM76nHt
+ hhVxf7U80V5IPGVZ+B1BGu7Zgxci/qY10/EPEU+5PICzwWm8aBbuLdiIgFHj9JPNL38u
+ eGTIDcnixn5DayP0m3MtUVN0M0XDJwcTr9JGvFKuW6s2yQa3y1D0SchDh7QBhxHNc9p9
+ IAXARH+IdzEDESnBdjXaUoMNA7PAgSvmvbYJDndVsY+rhAQd2vHF+86KUO8eMEEccAWE
+ NlHA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1687452567; x=1690044567;
+ h=content-transfer-encoding:mime-version:message-id:date:in-reply-to
+ :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=fb1boCvjAsx9mWVXiB/4mB52CgFpGNj1KWlRTjdHkgY=;
+ b=P7RkUSAUMAyV+UQV3iaLgYps12Ou0Shzwk8EqihrqtMmjiwz9S2Vq1xCR3tGL95C4W
+ iMqpUB8nNM7/FG0XBpsdxyjUjQ0TxVOISBF2vkQhdzSfghbjUpVE/YATPmFkctB9NPbT
+ R7bULgsT/p/fTkCLz8gQ8Jopm3AZ8cznkV46oGd/t7YKTwqls9y2VtxBl12t5NVn5xRv
+ vlD9OeeJn9eBhoNhJulSN1OeA5OmY5nB1OqdsXumnez1FcuLLykFFRBJRQrprW2HqBkG
+ s/8kDLDqJicfRo4L2c09EIBQ91pDXdsJXOiepAhGLe3SsT+VMHg4cnERFqKB3QqsBWxX
+ sbSg==
+X-Gm-Message-State: AC+VfDx3wDtKrKr2Z636azu2C4YN7OwPLU3KvZR8m2SWPMf0PtzzcLpe
+ eCGN+zBZLtb1x6F2cMTleYaDkw==
+X-Google-Smtp-Source: ACHHUZ5UtQMVM4mX+RubsJJtsD4HZAjooiEwXzvZMkqg/FJFaQ4yIRhJsyoIE59PXTYDQbUp/D5NrQ==
+X-Received: by 2002:adf:fc47:0:b0:30f:ca87:8e09 with SMTP id
+ e7-20020adffc47000000b0030fca878e09mr2066039wrs.30.1687452567540; 
+ Thu, 22 Jun 2023 09:49:27 -0700 (PDT)
+Received: from localhost ([2a02:908:f60:bc60:5cc2:6b46:d8fa:2a2b])
+ by smtp.gmail.com with ESMTPSA id
+ q1-20020a5d6581000000b0030fa3567541sm7368513wru.48.2023.06.22.09.49.27
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 22 Jun 2023 09:49:27 -0700 (PDT)
+References: <20230620175712.1331625-1-peter.maydell@linaro.org>
+ <5b2bf86d-44fa-35ae-8049-b395d715adcb@linaro.org>
+ <97cace68-b1d3-73f7-fa69-266ea0f36229@linaro.org>
+ <780c8505-9cd7-87fd-c5cc-23f0e8aa455c@linaro.org>
+User-agent: mu4e 1.10.3; emacs 28.2
+From: Thiago Jung Bauermann <thiago.bauermann@linaro.org>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: Richard Henderson <richard.henderson@linaro.org>, Peter Maydell
+ <peter.maydell@linaro.org>, Alex =?utf-8?Q?Benn=C3=A9e?=
+ <alex.bennee@linaro.org>, Thomas
+ Huth <thuth@redhat.com>, qemu-devel@nongnu.org
+Subject: Re: [PATCH] Revert "cputlb: Restrict SavedIOTLB to system emulation"
+In-reply-to: <780c8505-9cd7-87fd-c5cc-23f0e8aa455c@linaro.org>
+Date: Thu, 22 Jun 2023 18:49:26 +0200
+Message-ID: <87wmzvh27d.fsf@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH v2 2/2] pnv/xive2: Check TIMA special ops against a
- dedicated array for P10
-Content-Language: en-US
-To: Frederic Barrat <fbarrat@linux.ibm.com>, danielhb413@gmail.com,
- qemu-ppc@nongnu.org, qemu-devel@nongnu.org
-References: <20230622162527.1118350-1-fbarrat@linux.ibm.com>
- <20230622162527.1118350-3-fbarrat@linux.ibm.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20230622162527.1118350-3-fbarrat@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=150.107.74.76;
- envelope-from=SRS0=yb1G=CK=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, NICE_REPLY_A=-0.09, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=thiago.bauermann@linaro.org; helo=mail-wm1-x333.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -65,205 +98,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/22/23 18:25, Frederic Barrat wrote:
-> Accessing the TIMA from some specific ring/offset combination can
-> trigger a special operation, with or without side effects. It is
-> implemented in qemu with an array of special operations to compare
-> accesses against. Since the presenter on P10 is pretty similar to P9,
-> we had the full array defined for P9 and we just had a special case
-> for P10 to treat one access differently. With a recent change,
-> 6f2cbd133d4 ("pnv/xive2: Handle TIMA access through all ports"), we
-> now ignore some of the bits of the TIMA address, but that patch
-> managed to botch the detection of the special case for P10.
-> 
-> To clean that up, this patch introduces a full array of special ops to
-> be used for P10. The code to detect a special access is common with
-> P9, only the array of operations differs. The presenter can pick the
-> correct array of special ops based on its configuration introduced in
-> a previous patch.
-> 
-> Fixes: Coverity CID 1512997, 1512998
-> Fixes: 6f2cbd133d4 ("pnv/xive2: Handle TIMA access through all ports")
-> Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
 
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
+Hello,
 
-Thanks,
+Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
 
-C.
+> On 21/6/23 11:39, Philippe Mathieu-Daud=C3=A9 wrote:
+>> On 21/6/23 07:19, Richard Henderson wrote:
+>>> On 6/20/23 19:57, Peter Maydell wrote:
+>>>> This manifests specifically in 'make check-tcg' failing, because code
+>>>> in cpus-common.c that sets up the CPUState::cpu_index field puts it
+>>>> at a different offset from the code in plugins/core.c in
+>>>> qemu_plugin_vcpu_init_hook() which reads the cpu_index field.=C2=A0 The
+>>>> latter then hits an assert because from its point of view every
+>>>> thread has a 0 cpu_index. There might be other weird behaviour too.
+>> Why isn't this covered by CI, and where could we add a such check?
+>
+> Actually it is covered and failed on staging:
+> https://gitlab.com/qemu-project/qemu/-/jobs/4503766933
 
-> ---
->   hw/intc/pnv_xive2.c | 32 ----------------------------
->   hw/intc/xive.c      | 52 +++++++++++++++++++++++++++++++++++++--------
->   2 files changed, 43 insertions(+), 41 deletions(-)
-> 
-> diff --git a/hw/intc/pnv_xive2.c b/hw/intc/pnv_xive2.c
-> index 59534f6843..ed438a20ed 100644
-> --- a/hw/intc/pnv_xive2.c
-> +++ b/hw/intc/pnv_xive2.c
-> @@ -1656,17 +1656,6 @@ static const MemoryRegionOps pnv_xive2_ic_tm_indirect_ops = {
->   /*
->    * TIMA ops
->    */
-> -
-> -/*
-> - * Special TIMA offsets to handle accesses in a POWER10 way.
-> - *
-> - * Only the CAM line updates done by the hypervisor should be handled
-> - * specifically.
-> - */
-> -#define HV_PAGE_OFFSET         (XIVE_TM_HV_PAGE << TM_SHIFT)
-> -#define HV_PUSH_OS_CTX_OFFSET  (HV_PAGE_OFFSET | (TM_QW1_OS + TM_WORD2))
-> -#define HV_PULL_OS_CTX_OFFSET  (HV_PAGE_OFFSET | TM_SPC_PULL_OS_CTX)
-> -
->   static void pnv_xive2_tm_write(void *opaque, hwaddr offset,
->                                  uint64_t value, unsigned size)
->   {
-> @@ -1674,18 +1663,7 @@ static void pnv_xive2_tm_write(void *opaque, hwaddr offset,
->       PnvXive2 *xive = pnv_xive2_tm_get_xive(cpu);
->       XiveTCTX *tctx = XIVE_TCTX(pnv_cpu_state(cpu)->intc);
->       XivePresenter *xptr = XIVE_PRESENTER(xive);
-> -    bool gen1_tima_os =
-> -        xive->cq_regs[CQ_XIVE_CFG >> 3] & CQ_XIVE_CFG_GEN1_TIMA_OS;
-> -
-> -    offset &= TM_ADDRESS_MASK;
->   
-> -    /* TODO: should we switch the TM ops table instead ? */
-> -    if (!gen1_tima_os && offset == HV_PUSH_OS_CTX_OFFSET) {
-> -        xive2_tm_push_os_ctx(xptr, tctx, offset, value, size);
-> -        return;
-> -    }
-> -
-> -    /* Other TM ops are the same as XIVE1 */
->       xive_tctx_tm_write(xptr, tctx, offset, value, size);
->   }
->   
-> @@ -1695,17 +1673,7 @@ static uint64_t pnv_xive2_tm_read(void *opaque, hwaddr offset, unsigned size)
->       PnvXive2 *xive = pnv_xive2_tm_get_xive(cpu);
->       XiveTCTX *tctx = XIVE_TCTX(pnv_cpu_state(cpu)->intc);
->       XivePresenter *xptr = XIVE_PRESENTER(xive);
-> -    bool gen1_tima_os =
-> -        xive->cq_regs[CQ_XIVE_CFG >> 3] & CQ_XIVE_CFG_GEN1_TIMA_OS;
-> -
-> -    offset &= TM_ADDRESS_MASK;
-> -
-> -    /* TODO: should we switch the TM ops table instead ? */
-> -    if (!gen1_tima_os && offset == HV_PULL_OS_CTX_OFFSET) {
-> -        return xive2_tm_pull_os_ctx(xptr, tctx, offset, size);
-> -    }
->   
-> -    /* Other TM ops are the same as XIVE1 */
->       return xive_tctx_tm_read(xptr, tctx, offset, size);
->   }
->   
-> diff --git a/hw/intc/xive.c b/hw/intc/xive.c
-> index 34a868b185..84c079b034 100644
-> --- a/hw/intc/xive.c
-> +++ b/hw/intc/xive.c
-> @@ -20,6 +20,7 @@
->   #include "monitor/monitor.h"
->   #include "hw/irq.h"
->   #include "hw/ppc/xive.h"
-> +#include "hw/ppc/xive2.h"
->   #include "hw/ppc/xive_regs.h"
->   #include "trace.h"
->   
-> @@ -461,7 +462,7 @@ static void xive_tm_push_os_ctx(XivePresenter *xptr, XiveTCTX *tctx,
->       }
->   }
->   
-> -static __attribute__((unused)) uint32_t xive_presenter_get_config(XivePresenter *xptr)
-> +static uint32_t xive_presenter_get_config(XivePresenter *xptr)
->   {
->       XivePresenterClass *xpc = XIVE_PRESENTER_GET_CLASS(xptr);
->   
-> @@ -504,14 +505,47 @@ static const XiveTmOp xive_tm_operations[] = {
->       { XIVE_TM_HV_PAGE, TM_SPC_PULL_POOL_CTX,  8, NULL, xive_tm_pull_pool_ctx },
->   };
->   
-> -static const XiveTmOp *xive_tm_find_op(hwaddr offset, unsigned size, bool write)
-> +static const XiveTmOp xive2_tm_operations[] = {
-> +    /*
-> +     * MMIOs below 2K : raw values and special operations without side
-> +     * effects
-> +     */
-> +    { XIVE_TM_OS_PAGE, TM_QW1_OS + TM_CPPR,   1, xive_tm_set_os_cppr, NULL },
-> +    { XIVE_TM_HV_PAGE, TM_QW1_OS + TM_WORD2,  4, xive2_tm_push_os_ctx, NULL },
-> +    { XIVE_TM_HV_PAGE, TM_QW3_HV_PHYS + TM_CPPR, 1, xive_tm_set_hv_cppr, NULL },
-> +    { XIVE_TM_HV_PAGE, TM_QW3_HV_PHYS + TM_WORD2, 1, xive_tm_vt_push, NULL },
-> +    { XIVE_TM_HV_PAGE, TM_QW3_HV_PHYS + TM_WORD2, 1, NULL, xive_tm_vt_poll },
-> +
-> +    /* MMIOs above 2K : special operations with side effects */
-> +    { XIVE_TM_OS_PAGE, TM_SPC_ACK_OS_REG,     2, NULL, xive_tm_ack_os_reg },
-> +    { XIVE_TM_OS_PAGE, TM_SPC_SET_OS_PENDING, 1, xive_tm_set_os_pending, NULL },
-> +    { XIVE_TM_HV_PAGE, TM_SPC_PULL_OS_CTX,    4, NULL, xive2_tm_pull_os_ctx },
-> +    { XIVE_TM_HV_PAGE, TM_SPC_PULL_OS_CTX,    8, NULL, xive2_tm_pull_os_ctx },
-> +    { XIVE_TM_HV_PAGE, TM_SPC_ACK_HV_REG,     2, NULL, xive_tm_ack_hv_reg },
-> +    { XIVE_TM_HV_PAGE, TM_SPC_PULL_POOL_CTX,  4, NULL, xive_tm_pull_pool_ctx },
-> +    { XIVE_TM_HV_PAGE, TM_SPC_PULL_POOL_CTX,  8, NULL, xive_tm_pull_pool_ctx },
-> +};
-> +
-> +static const XiveTmOp *xive_tm_find_op(XivePresenter *xptr, hwaddr offset,
-> +                                       unsigned size, bool write)
->   {
->       uint8_t page_offset = (offset >> TM_SHIFT) & 0x3;
->       uint32_t op_offset = offset & TM_ADDRESS_MASK;
-> -    int i;
-> +    const XiveTmOp *tm_ops;
-> +    int i, tm_ops_count;
-> +    uint32_t cfg;
-> +
-> +    cfg = xive_presenter_get_config(xptr);
-> +    if (cfg & XIVE_PRESENTER_GEN1_TIMA_OS) {
-> +        tm_ops = xive_tm_operations;
-> +        tm_ops_count = ARRAY_SIZE(xive_tm_operations);
-> +    } else {
-> +        tm_ops = xive2_tm_operations;
-> +        tm_ops_count = ARRAY_SIZE(xive2_tm_operations);
-> +    }
->   
-> -    for (i = 0; i < ARRAY_SIZE(xive_tm_operations); i++) {
-> -        const XiveTmOp *xto = &xive_tm_operations[i];
-> +    for (i = 0; i < tm_ops_count; i++) {
-> +        const XiveTmOp *xto = &tm_ops[i];
->   
->           /* Accesses done from a more privileged TIMA page is allowed */
->           if (xto->page_offset >= page_offset &&
-> @@ -542,7 +576,7 @@ void xive_tctx_tm_write(XivePresenter *xptr, XiveTCTX *tctx, hwaddr offset,
->        * First, check for special operations in the 2K region
->        */
->       if (offset & TM_SPECIAL_OP) {
-> -        xto = xive_tm_find_op(offset, size, true);
-> +        xto = xive_tm_find_op(tctx->xptr, offset, size, true);
->           if (!xto) {
->               qemu_log_mask(LOG_GUEST_ERROR, "XIVE: invalid write access at TIMA "
->                             "@%"HWADDR_PRIx"\n", offset);
-> @@ -555,7 +589,7 @@ void xive_tctx_tm_write(XivePresenter *xptr, XiveTCTX *tctx, hwaddr offset,
->       /*
->        * Then, for special operations in the region below 2K.
->        */
-> -    xto = xive_tm_find_op(offset, size, true);
-> +    xto = xive_tm_find_op(tctx->xptr, offset, size, true);
->       if (xto) {
->           xto->write_handler(xptr, tctx, offset, value, size);
->           return;
-> @@ -581,7 +615,7 @@ uint64_t xive_tctx_tm_read(XivePresenter *xptr, XiveTCTX *tctx, hwaddr offset,
->        * First, check for special operations in the 2K region
->        */
->       if (offset & TM_SPECIAL_OP) {
-> -        xto = xive_tm_find_op(offset, size, false);
-> +        xto = xive_tm_find_op(tctx->xptr, offset, size, false);
->           if (!xto) {
->               qemu_log_mask(LOG_GUEST_ERROR, "XIVE: invalid read access to TIMA"
->                             "@%"HWADDR_PRIx"\n", offset);
-> @@ -594,7 +628,7 @@ uint64_t xive_tctx_tm_read(XivePresenter *xptr, XiveTCTX *tctx, hwaddr offset,
->       /*
->        * Then, for special operations in the region below 2K.
->        */
-> -    xto = xive_tm_find_op(offset, size, false);
-> +    xto = xive_tm_find_op(tctx->xptr, offset, size, false);
->       if (xto) {
->           ret = xto->read_handler(xptr, tctx, offset, size);
->           goto out;
+Just for the record, it was also caught yesterday by the TCWG CI:
 
+https://ci.linaro.org/job/tcwg_gnu_cross_check_gcc--master-arm-bisect/87/
+
+--=20
+Thiago
 
