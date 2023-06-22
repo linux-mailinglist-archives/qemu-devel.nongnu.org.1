@@ -2,54 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68A4A73A6D7
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 19:00:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A97F73A6DE
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 19:03:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCNda-0006nH-P2; Thu, 22 Jun 2023 12:58:26 -0400
+	id 1qCNhk-0003Ha-Kv; Thu, 22 Jun 2023 13:02:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=yb1G=CK=kaod.org=clg@ozlabs.org>)
- id 1qCNdP-0006gN-5C; Thu, 22 Jun 2023 12:58:19 -0400
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qCNhg-0003F9-Mm
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 13:02:40 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=yb1G=CK=kaod.org=clg@ozlabs.org>)
- id 1qCNdM-0004Tt-OZ; Thu, 22 Jun 2023 12:58:14 -0400
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4Qn64v3v6Cz4x48;
- Fri, 23 Jun 2023 02:58:07 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits))
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Qn64t0gGzz4x3k;
- Fri, 23 Jun 2023 02:58:05 +1000 (AEST)
-Message-ID: <7884eabd-8e4b-3858-d76b-5c8967e742ca@kaod.org>
-Date: Thu, 22 Jun 2023 18:58:04 +0200
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qCNhf-0005s5-Aj
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 13:02:40 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1687453354;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=Z3IWJaOorYWfW6EIR6/SQ4oCWE5LTZkE8r4nkzrY+ys=;
+ b=JL98bCNjx4dMoCYGz2zE4bEDDvs4zyS2NGxGKcqL6PCSBFzICXAu29drbLyKDLgExYYMeG
+ RLVdXC+6P172AF/N7op1VhKrR3j5AENTBouUZfElGZ8ibHFFIRlhzfJ+/H1wWXl10UbOBF
+ bdzfT99fJh+5eZPqQP7V1OkML2NWmqE=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-596-9dI5I4AMMN2jrw4cPbjH-A-1; Thu, 22 Jun 2023 13:02:21 -0400
+X-MC-Unique: 9dI5I4AMMN2jrw4cPbjH-A-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-3f90ab2de48so102172135e9.2
+ for <qemu-devel@nongnu.org>; Thu, 22 Jun 2023 10:02:20 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1687453339; x=1690045339;
+ h=mime-version:message-id:date:reply-to:user-agent:references
+ :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Z3IWJaOorYWfW6EIR6/SQ4oCWE5LTZkE8r4nkzrY+ys=;
+ b=Pb7qQ3FZlhUSh/3+dEXBdjf7Sy8Klrg8jPpGIlPTPv0n4y+GHnVamHN4hv5/PxWDNo
+ Lg/KbjGx4F2/yuVX/YGayPw+jO+8+yZmUoOgMGCfPCoRPY50RUUuZvjH/VBA5M41fIV+
+ EaK++RE9O0SWpUa4m/w6cGFFRU+kzujt3RccuYqA7ppx/WxxPFyuMV6udfqtZO8X4/Gx
+ 3ObwoGk2M7hqcHUrWhUaZ8/7Ze6khx9EXlDMZwTWKpaZv449cQSaQlxe7c6wGiz4cYLt
+ QyNJP9e2k4v80HM3WOfeCuVf/bIkFGqVMvvY1FIPZcC1nAglfgvseb9eE6xxnMUirIL3
+ it/Q==
+X-Gm-Message-State: AC+VfDzh1QMMsDdYAp6dP77SmsaE4CxILSAlEQisJ/UFAsRBmhbkbCcX
+ LIJYGN/i4PWz7kYUQHn6zpSwfzg2U5a30fCDt/E7Zeb9dXgZ/CsmQlGwGNqEiOcrWDBFtqDAr3X
+ 3LuqvZcpffZyTqvlSZL20vE/Ojw==
+X-Received: by 2002:a1c:7c13:0:b0:3f8:fe21:b754 with SMTP id
+ x19-20020a1c7c13000000b003f8fe21b754mr17707520wmc.6.1687453338993; 
+ Thu, 22 Jun 2023 10:02:18 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7elMa8t519M3b3NO5pbbE8v72oZt/DTYP3exJKTYKtx2kCgy2tufnxkNZwu0NFaF/Dn3S7NA==
+X-Received: by 2002:a1c:7c13:0:b0:3f8:fe21:b754 with SMTP id
+ x19-20020a1c7c13000000b003f8fe21b754mr17707500wmc.6.1687453338662; 
+ Thu, 22 Jun 2023 10:02:18 -0700 (PDT)
+Received: from redhat.com (static-92-120-85-188.ipcom.comunitel.net.
+ [188.85.120.92]) by smtp.gmail.com with ESMTPSA id
+ k10-20020adff5ca000000b0030ae87bd3e3sm7520071wrp.18.2023.06.22.10.02.17
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 22 Jun 2023 10:02:18 -0700 (PDT)
+From: Juan Quintela <quintela@redhat.com>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org,  Peter Xu <peterx@redhat.com>,  Leonardo Bras
+ <leobras@redhat.com>,  Eric Blake <eblake@redhat.com>
+Subject: Re: [PATCH] migration.json: Don't use space before colon
+In-Reply-To: <87352jbpo5.fsf@pond.sub.org> (Markus Armbruster's message of
+ "Thu, 22 Jun 2023 15:19:06 +0200")
+References: <20230612191604.2219-1-quintela@redhat.com>
+ <87352jbpo5.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+Date: Thu, 22 Jun 2023 19:02:16 +0200
+Message-ID: <87edm3fn1j.fsf@secure.mitica>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH v2 1/2] pnv/xive2: Add a get_config() method on the
- presenter class
-Content-Language: en-US
-To: Frederic Barrat <fbarrat@linux.ibm.com>, danielhb413@gmail.com,
- qemu-ppc@nongnu.org, qemu-devel@nongnu.org
-References: <20230622162527.1118350-1-fbarrat@linux.ibm.com>
- <20230622162527.1118350-2-fbarrat@linux.ibm.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20230622162527.1118350-2-fbarrat@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
- envelope-from=SRS0=yb1G=CK=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -40
-X-Spam_score: -4.1
-X-Spam_bar: ----
-X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+Content-Type: text/plain
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -63,175 +98,24 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/22/23 18:25, Frederic Barrat wrote:
-> The presenters for xive on P9 and P10 are mostly similar but the
-> behavior can be tuned through a few CQ registers. This patch adds a
-> "get_config" method, which will allow to access that config from the
-> presenter in a later patch.
-> For now, just define the config for the TIMA version.
-> 
-> Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
+Markus Armbruster <armbru@redhat.com> wrote:
+> Juan Quintela <quintela@redhat.com> writes:
+>
+>> So all the file is consistent.
+>>
+>> Signed-off-by: Juan Quintela <quintela@redhat.com>
+>
+> Reviewed-by: Markus Armbruster <armbru@redhat.com>
+>
+> Queued.  thanks!
 
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
+My deprecated series depend on this, so I will got it through the
+migration tree if you don't care.
 
-> ---
->   hw/intc/pnv_xive.c    | 11 +++++++++++
->   hw/intc/pnv_xive2.c   | 12 ++++++++++++
->   hw/intc/spapr_xive.c  | 16 ++++++++++++++++
->   hw/intc/xive.c        |  7 +++++++
->   include/hw/ppc/xive.h |  3 +++
->   5 files changed, 49 insertions(+)
-> 
-> diff --git a/hw/intc/pnv_xive.c b/hw/intc/pnv_xive.c
-> index 622f9d28b7..e536b3ec26 100644
-> --- a/hw/intc/pnv_xive.c
-> +++ b/hw/intc/pnv_xive.c
-> @@ -479,6 +479,16 @@ static int pnv_xive_match_nvt(XivePresenter *xptr, uint8_t format,
->       return count;
->   }
->   
-> +static uint32_t pnv_xive_presenter_get_config(XivePresenter *xptr)
-> +{
-> +    uint32_t cfg = 0;
-> +
-> +    /* TIMA GEN1 is all P9 knows */
-> +    cfg |= XIVE_PRESENTER_GEN1_TIMA_OS;
-> +
-> +    return cfg;
-> +}
-> +
->   static uint8_t pnv_xive_get_block_id(XiveRouter *xrtr)
->   {
->       return pnv_xive_block_id(PNV_XIVE(xrtr));
-> @@ -1991,6 +2001,7 @@ static void pnv_xive_class_init(ObjectClass *klass, void *data)
->   
->       xnc->notify = pnv_xive_notify;
->       xpc->match_nvt  = pnv_xive_match_nvt;
-> +    xpc->get_config = pnv_xive_presenter_get_config;
->   };
->   
->   static const TypeInfo pnv_xive_info = {
-> diff --git a/hw/intc/pnv_xive2.c b/hw/intc/pnv_xive2.c
-> index ec1edeb385..59534f6843 100644
-> --- a/hw/intc/pnv_xive2.c
-> +++ b/hw/intc/pnv_xive2.c
-> @@ -501,6 +501,17 @@ static int pnv_xive2_match_nvt(XivePresenter *xptr, uint8_t format,
->       return count;
->   }
->   
-> +static uint32_t pnv_xive2_presenter_get_config(XivePresenter *xptr)
-> +{
-> +    PnvXive2 *xive = PNV_XIVE2(xptr);
-> +    uint32_t cfg = 0;
-> +
-> +    if (xive->cq_regs[CQ_XIVE_CFG >> 3] & CQ_XIVE_CFG_GEN1_TIMA_OS) {
-> +        cfg |= XIVE_PRESENTER_GEN1_TIMA_OS;
-> +    }
-> +    return cfg;
-> +}
-> +
->   static uint8_t pnv_xive2_get_block_id(Xive2Router *xrtr)
->   {
->       return pnv_xive2_block_id(PNV_XIVE2(xrtr));
-> @@ -1987,6 +1998,7 @@ static void pnv_xive2_class_init(ObjectClass *klass, void *data)
->       xnc->notify    = pnv_xive2_notify;
->   
->       xpc->match_nvt  = pnv_xive2_match_nvt;
-> +    xpc->get_config = pnv_xive2_presenter_get_config;
->   };
->   
->   static const TypeInfo pnv_xive2_info = {
-> diff --git a/hw/intc/spapr_xive.c b/hw/intc/spapr_xive.c
-> index dc641cc604..8bcab2846c 100644
-> --- a/hw/intc/spapr_xive.c
-> +++ b/hw/intc/spapr_xive.c
-> @@ -475,6 +475,21 @@ static int spapr_xive_match_nvt(XivePresenter *xptr, uint8_t format,
->       return count;
->   }
->   
-> +static uint32_t spapr_xive_presenter_get_config(XivePresenter *xptr)
-> +{
-> +    uint32_t cfg = 0;
-> +
-> +    /*
-> +     * Let's claim GEN1 TIMA format. If running with KVM on P10, the
-> +     * correct answer is deep in the hardware and not accessible to
-> +     * us.  But it shouldn't matter as it only affects the presenter
-> +     * as seen by a guest OS.
-> +     */
-> +    cfg |= XIVE_PRESENTER_GEN1_TIMA_OS;
-
-On POWER10, real HW, a Gen2 TIMA layout is exposed to the OS, HV and guest.
-Gen2 and Gen1 being compatible, it is not a problem since Linux (this might
-not be true for other OS) doesn't use any of the new Gen2 bits. There is a
-larger bitfield for VP CAM, but that's HV world.
-
-Nevertheless, it might be good to expose a Gen2 OS layout when on POWER10
-to be closer to reality, with a "property" may be. Who knows, one might
-implement the new Gen2 bits, but as of today, there is no difference in
-the OS ring of QEMU. No hurries.
-
-Thanks,
-
-C.
-
-
-> +
-> +    return cfg;
-> +}
-> +
->   static uint8_t spapr_xive_get_block_id(XiveRouter *xrtr)
->   {
->       return SPAPR_XIVE_BLOCK_ID;
-> @@ -832,6 +847,7 @@ static void spapr_xive_class_init(ObjectClass *klass, void *data)
->       sicc->post_load = spapr_xive_post_load;
->   
->       xpc->match_nvt  = spapr_xive_match_nvt;
-> +    xpc->get_config = spapr_xive_presenter_get_config;
->       xpc->in_kernel  = spapr_xive_in_kernel_xptr;
->   }
->   
-> diff --git a/hw/intc/xive.c b/hw/intc/xive.c
-> index 5204c14b87..34a868b185 100644
-> --- a/hw/intc/xive.c
-> +++ b/hw/intc/xive.c
-> @@ -461,6 +461,13 @@ static void xive_tm_push_os_ctx(XivePresenter *xptr, XiveTCTX *tctx,
->       }
->   }
->   
-> +static __attribute__((unused)) uint32_t xive_presenter_get_config(XivePresenter *xptr)
-> +{
-> +    XivePresenterClass *xpc = XIVE_PRESENTER_GET_CLASS(xptr);
-> +
-> +    return xpc->get_config(xptr);
-> +}
-> +
->   /*
->    * Define a mapping of "special" operations depending on the TIMA page
->    * offset and the size of the operation.
-> diff --git a/include/hw/ppc/xive.h b/include/hw/ppc/xive.h
-> index f7eea4ca81..3dfb06e002 100644
-> --- a/include/hw/ppc/xive.h
-> +++ b/include/hw/ppc/xive.h
-> @@ -430,6 +430,8 @@ typedef struct XivePresenterClass XivePresenterClass;
->   DECLARE_CLASS_CHECKERS(XivePresenterClass, XIVE_PRESENTER,
->                          TYPE_XIVE_PRESENTER)
->   
-> +#define XIVE_PRESENTER_GEN1_TIMA_OS     0x1
-> +
->   struct XivePresenterClass {
->       InterfaceClass parent;
->       int (*match_nvt)(XivePresenter *xptr, uint8_t format,
-> @@ -437,6 +439,7 @@ struct XivePresenterClass {
->                        bool cam_ignore, uint8_t priority,
->                        uint32_t logic_serv, XiveTCTXMatch *match);
->       bool (*in_kernel)(const XivePresenter *xptr);
-> +    uint32_t (*get_config)(XivePresenter *xptr);
->   };
->   
->   int xive_presenter_tctx_match(XivePresenter *xptr, XiveTCTX *tctx,
+Thanks, Juan.
 
 
