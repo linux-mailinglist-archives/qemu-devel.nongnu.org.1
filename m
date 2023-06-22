@@ -2,85 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5122A739696
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 07:03:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB07A7396E8
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 07:40:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCCSw-0004f8-2g; Thu, 22 Jun 2023 01:02:42 -0400
+	id 1qCD1Y-0001IY-Uc; Thu, 22 Jun 2023 01:38:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qCCSt-0004dG-Br
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 01:02:39 -0400
-Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
+ id 1qCD1W-0001ID-Bf
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 01:38:26 -0400
+Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qCCSr-00034n-Mx
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 01:02:39 -0400
-Received: by mail-ed1-x52e.google.com with SMTP id
- 4fb4d7f45d1cf-51bdca52424so1520794a12.3
- for <qemu-devel@nongnu.org>; Wed, 21 Jun 2023 22:02:37 -0700 (PDT)
+ id 1qCD1U-0004Na-Lp
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 01:38:26 -0400
+Received: by mail-ed1-x530.google.com with SMTP id
+ 4fb4d7f45d1cf-51a3e6a952aso7904887a12.3
+ for <qemu-devel@nongnu.org>; Wed, 21 Jun 2023 22:38:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687410155; x=1690002155;
+ d=linaro.org; s=google; t=1687412302; x=1690004302;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=zXUfc7hGokm3Dbcq5WJbG8+L18bzXjGTIBxT2q6jkiA=;
- b=hcJVgiq0Q9d865B+zFv9mLqkKGtWelENyBa2A7qmTOJnUwQm14s95bd3GWwzGwvdZq
- vU69QTDD+MM3ODQSvVwhPUA4SD5SBCQImdUM4q339eH8c9v3xlpQK0tev8J2C02ZJLun
- z3lXnvXC5o60eKt7s+GPYNVcr9ifp+Q1nMYAeGnGQaEoZBEiRRhepYyO06b/dE3bf5Ay
- ifo+nOxmDWAX4yv+aQFYhNFArmSmm7TDbxILvk69GIUiy6uYLz6WaFxCgAsUlBsuC1Z5
- +0ug0TSQNsPa58JC9+EDqw4iWOp24LEy0S+tQl6Yj9L5JT2abJX+eM9yR/uWzgIqW1Eh
- Xh3Q==
+ bh=qobpu5Ck8/G6g6LuBsyXvXxDx8gDB2KlNNdZB9A7mok=;
+ b=Z3+jtd2IyCgqHHJbM8XuQ0xRJFFJVh8JFTrCM90wk1hKDPSY60ltfub4fIMA1f1qJ7
+ rbd6rk9JWWThKBz0BoW5s6ReQY1Y/Z/adJKBDFSIEyQm7Wk54rOGALsYsdShzUKKIo2n
+ +JYweuuT7L4w7Y7j4rRw+vXkwoazKdjel0DBbZrg93tqso2nvYQcP1JxdYaoJZSI9VX0
+ 06+OoeOKt1sNTuJ1ImlPPTuM/uFa1hAChc4DWRcjGpdpdwofuNEjfeRpxBkUlBt8MQCt
+ t3qvLy44t4L0o+SK1K9o0+q9ejqoA8zOKmn8hAH6xTAlBoiTkwEoomG5tS16tB0PRm98
+ 0L6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687410155; x=1690002155;
+ d=1e100.net; s=20221208; t=1687412302; x=1690004302;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=zXUfc7hGokm3Dbcq5WJbG8+L18bzXjGTIBxT2q6jkiA=;
- b=AHcLm1+WTEBniil9/hYQSbgKTqYtiIgF53m+exG00r8U21gvWQaDDYAzRzZY17+4PY
- uKptrOc5t1s9AzUAcG0YGpniatp8E0bs/NcMynMPTt1LMrMn0PVYUC3hg95o0qF6/RXB
- FDW02L0I048A7JR99WEnQkpdPqTYvEky7YcuJnNMiNegvD9zHhAO+sO/kIVaQKfivszw
- Nkta8aKLb6j0QiXRS15nTmYQjS0ss/AMuMXy0QqjVcr+uNU7p3Dm32n10D/3wmXKe97i
- Y8JjtZ4LuG7NNKcxjQbTTeOA3qnt1Wtnr4T0kvrJl0R/5lBnz36ooQs/kROE0JYLquZb
- CCGQ==
-X-Gm-Message-State: AC+VfDw4znLjaAZYpcPE1tGG5/nQVC4iMf2zzFP2jpUAVeS2PkgTGBIb
- xsljM1Y9Rua3T3JJAeYp2ow2GQ==
-X-Google-Smtp-Source: ACHHUZ5TViKVwoArY+NSkr8hRqu0UV29diLv7JL/HUmhB6qhzwOJkGvClsaxA2d7Onri+WYV0C9r3A==
-X-Received: by 2002:a17:906:da8a:b0:97d:2bcc:47d5 with SMTP id
- xh10-20020a170906da8a00b0097d2bcc47d5mr15199792ejb.49.1687410155597; 
- Wed, 21 Jun 2023 22:02:35 -0700 (PDT)
+ bh=qobpu5Ck8/G6g6LuBsyXvXxDx8gDB2KlNNdZB9A7mok=;
+ b=aUX0b5b8+tYFO3tVCKTYa2LiN7KMT6sIqSYIeMf/3CTEwmpYr06oU2gVABCQbKx8fy
+ dJXKGCU6QZkdUngWfM7xhgrND0kl+qMOO7/U+hVXjnwExhPErbacY/KVQQ375KhpwEth
+ ZNlM9Zg78zUKARbx5aJl1NYbdbK4+fuJSMh+EIbQwDW+xqAlE/Wy7gjT9tvI+OmxepDD
+ a8FzV99xtGYYczVg48t06TCKqCeuGK77KU3On52QYX/DEufKn8n8mxl1FRdGyiKGUGlD
+ J/xuME8C+zBzJg/tfz+m0VD7gYWOpdNujiPffjGMMvqVB21CBQshJ4XpSYYEe6Oya6mB
+ tefA==
+X-Gm-Message-State: AC+VfDwT2xiu1upsONWtUY+7DvtFQkl9obRYsclTWsZO8cSjhNfSX3Le
+ Ku8NWHpPiAzubmD44f7T6zNyWw==
+X-Google-Smtp-Source: ACHHUZ6ZHq2vMaZ9snHRXAZ8swnYcw/2JpYzlLIGh9c7sn4IHEvbTsQmXNwmn+OYpVxTwneYpoVYsQ==
+X-Received: by 2002:a05:6402:502:b0:51b:ebd3:69a2 with SMTP id
+ m2-20020a056402050200b0051bebd369a2mr176087edv.38.1687412301920; 
+ Wed, 21 Jun 2023 22:38:21 -0700 (PDT)
 Received: from [192.168.69.129] ([176.176.171.45])
  by smtp.gmail.com with ESMTPSA id
- f4-20020a170906c08400b009788d51e4b9sm4093407ejz.130.2023.06.21.22.02.33
+ w17-20020a50fa91000000b00514b3dd8638sm3450111edr.67.2023.06.21.22.38.19
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 21 Jun 2023 22:02:35 -0700 (PDT)
-Message-ID: <1f1d2da4-4402-d92a-c0f9-5f7f06089ccb@linaro.org>
-Date: Thu, 22 Jun 2023 07:02:30 +0200
+ Wed, 21 Jun 2023 22:38:21 -0700 (PDT)
+Message-ID: <609d91c6-1690-5f2e-57a7-da6e4b1597e4@linaro.org>
+Date: Thu, 22 Jun 2023 07:38:17 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PATCH] ui/gtk: making dmabuf NULL when it's released.
+Subject: Re: [PULL 00/30] Next patches
 Content-Language: en-US
-To: Dongwon Kim <dongwon.kim@intel.com>, qemu-devel@nongnu.org
-Cc: Gerd Hoffmann <kraxel@redhat.com>,
- =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
- Vivek Kasireddy <vivek.kasireddy@intel.com>
-References: <20230621221134.29802-1-dongwon.kim@intel.com>
+To: Juan Quintela <quintela@redhat.com>, qemu-devel@nongnu.org
+Cc: Peter Xu <peterx@redhat.com>, Leonardo Bras <leobras@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>, qemu-block@nongnu.org,
+ Eric Blake <eblake@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
+ Fam Zheng <fam@euphon.net>, Laurent Vivier <lvivier@redhat.com>
+References: <20230622021320.66124-1-quintela@redhat.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230621221134.29802-1-dongwon.kim@intel.com>
+In-Reply-To: <20230622021320.66124-1-quintela@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
- envelope-from=richard.henderson@linaro.org; helo=mail-ed1-x52e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::530;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ed1-x530.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.093,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,20 +98,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/22/23 00:11, Dongwon Kim wrote:
->   static void gd_gl_release_dmabuf(DisplayChangeListener *dcl,
->                                    QemuDmaBuf *dmabuf)
->   {
-> +    VirtualConsole *vc = container_of(dcl, VirtualConsole, gfx.dcl);
->   #ifdef CONFIG_GBM
->       egl_dmabuf_release_texture(dmabuf);
-> +    if (vc->gfx.guest_fb.dmabuf == dmabuf) {
-> +        vc->gfx.guest_fb.dmabuf = NULL;
-> +    }
->   #endif
->   }
+On 6/22/23 04:12, Juan Quintela wrote:
+> The following changes since commit 67fe6ae41da64368bc4936b196fee2bf61f8c720:
+> 
+>    Merge tag 'pull-tricore-20230621-1' ofhttps://github.com/bkoppelmann/qemu  into staging (2023-06-21 20:08:48 +0200)
+> 
+> are available in the Git repository at:
+> 
+>    https://gitlab.com/juan.quintela/qemu.git  tags/next-pull-request
+> 
+> for you to fetch changes up to c53dc569d0a0fb76eaa83f353253a897914948f9:
+> 
+>    migration/rdma: Split qemu_fopen_rdma() into input/output functions (2023-06-22 02:45:30 +0200)
+> 
+> ----------------------------------------------------------------
+> Migration Pull request (20230621)
+> 
+> In this pull request:
+> 
+> - fix for multifd thread creation (fabiano)
+> - dirtylimity (hyman)
+>    * migration-test will go on next PULL request, as it has failures.
+> - Improve error description (tejus)
+> - improve -incoming and set parameters before calling incoming (wei)
+> - migration atomic counters reviewed patches (quintela)
+> - migration-test refacttoring reviewed (quintela)
+> 
+> Please apply.
 
-Conditionally unused variable outside the ifdef.
+You really need to test at least one 32-bit host regularly.
+It should be trivial for you to do an i686 build somewhere.
+
+https://gitlab.com/qemu-project/qemu/-/jobs/4518975360#L4817
+https://gitlab.com/qemu-project/qemu/-/jobs/4518975263#L3486
+https://gitlab.com/qemu-project/qemu/-/jobs/4518975261#L3145
+https://gitlab.com/qemu-project/qemu/-/jobs/4518975298#L3372
+https://gitlab.com/qemu-project/qemu/-/jobs/4518975301#L3221
+
+../softmmu/dirtylimit.c:558:58: error: format specifies type 'long' but the argument has 
+type 'int64_t' (aka 'long long') [-Werror,-Wformat]
+         error_setg(&err, "invalid dirty page limit %ld", dirty_rate);
+                                                    ~~~   ^~~~~~~~~~
+                                                    %lld
+
 
 r~
 
