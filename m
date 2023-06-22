@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA36D73A7FC
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 20:12:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70D6473A7FD
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 20:12:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCOmr-0007Wn-HS; Thu, 22 Jun 2023 14:12:05 -0400
+	id 1qCOnD-0007o1-4D; Thu, 22 Jun 2023 14:12:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qCOmp-0007Up-IK
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 14:12:03 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1qCOnB-0007kg-Cj
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 14:12:25 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qCOmn-0002Gw-Qz
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 14:12:03 -0400
+ id 1qCOn9-0002Nh-W3
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 14:12:25 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687457520;
+ s=mimecast20190719; t=1687457543;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=YDYAyHIyw5ulxi4KJ/tLMhWEgFMdQ5JmcnzuA7oR2NM=;
- b=G7rHu/55tGIlAW2tpZ/AMae1fVkiAdSCaM2WTzj25kAqp5QpwU5w1MnNRquYDPFiBNleQI
- a4myhIYSXjxnkdtV2pocpa+ChQwURxwXBGc15xXh+uO39huwqt7F9PHAvGTD8Izq0gegp1
- LeiazXA2zaI198A4VejLKQUWHYyalpE=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=sxmM1HUqxDGYzAup0ZlXsQhWCY7t0bgMK+rE2WTZoJY=;
+ b=KAM/bvnkmV0drNHUD+FB069f7LkmSlkH6bqQm5OVwBUiZmF/bpMl15oFZ02Lhxgt9w0lkL
+ fTr9PMgCtLLJT06cpWKhMNupTaeCIZJ6exnAlhVSGV4H2y2Oin3QM2d2C6CZHiNCi0yVUg
+ 5DNHjphmmE7Hqf2Q2XRAC0mR9TKGMjk=
+Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
+ [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-167-5cLZIvh0Mc2ieTJzzzSceg-1; Thu, 22 Jun 2023 14:11:58 -0400
-X-MC-Unique: 5cLZIvh0Mc2ieTJzzzSceg-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-3f5df65fa35so34781165e9.3
- for <qemu-devel@nongnu.org>; Thu, 22 Jun 2023 11:11:58 -0700 (PDT)
+ us-mta-298-5czFyZ4dOMGJX7QmXTBiPQ-1; Thu, 22 Jun 2023 14:12:21 -0400
+X-MC-Unique: 5czFyZ4dOMGJX7QmXTBiPQ-1
+Received: by mail-lf1-f69.google.com with SMTP id
+ 2adb3069b0e04-4f863fcc56aso4349023e87.1
+ for <qemu-devel@nongnu.org>; Thu, 22 Jun 2023 11:12:21 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687457517; x=1690049517;
+ d=1e100.net; s=20221208; t=1687457540; x=1690049540;
  h=content-transfer-encoding:mime-version:message-id:date:reply-to
  :user-agent:references:in-reply-to:subject:cc:to:from
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=YDYAyHIyw5ulxi4KJ/tLMhWEgFMdQ5JmcnzuA7oR2NM=;
- b=DqEpEYaIyABmw4DpgMQffQteDWTOVZCAFatVo89VQEPyQMqakVnqiQ9KP7tgHarSPw
- 409zdywQycaSFJYx8+8iOLbH26h7ykCAgorPuKjJrwL9V4bn5T9xciOG4Bp7A6Sp6El8
- S0M2xIKbsUiTOhC5TmfFOJQlGyOyI+HDLv3/8qNUsG9GOk8WYYw+jnoPEjyHkhlXL1U2
- QzNpHA1TP0aWcX1bWEU0HAXHUhiCc2l6Wdp6+IgnMqpAQbXA6EDVfg/sasA8fRIAXzdj
- 3PrEwBH3dwphlTTJkmXxllHsQBxFnHTBD1ei0T5dsz+m86Iab/g4fOMKfTplKgsZwy4W
- r0Kw==
-X-Gm-Message-State: AC+VfDwQp/P1iH3ojzXlnu6sUQUs9FcgTXP6f31Xp2y3IeU2zX/fWx9s
- 24Rng8WTowuaBSCtx/y5OUPjJkPazIMqDVfjEfJvbe+S6ofdbIh4em8tRW5iRSQhxO21a4n5eUg
- LvEvLYHHrp8KGBHM=
-X-Received: by 2002:a7b:c407:0:b0:3f9:bd21:eb5e with SMTP id
- k7-20020a7bc407000000b003f9bd21eb5emr4551198wmi.29.1687457517209; 
- Thu, 22 Jun 2023 11:11:57 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6qVn1QhFAg5MU57dryT+1M2IjnHAR1Ssjzcoc7pcn8H+MpcAAl2YTYjW2v9ZYP90Z2XoYlDw==
-X-Received: by 2002:a7b:c407:0:b0:3f9:bd21:eb5e with SMTP id
- k7-20020a7bc407000000b003f9bd21eb5emr4551177wmi.29.1687457516822; 
- Thu, 22 Jun 2023 11:11:56 -0700 (PDT)
+ bh=sxmM1HUqxDGYzAup0ZlXsQhWCY7t0bgMK+rE2WTZoJY=;
+ b=fNSs0MgR5gOHFeZeHqJAaaz1KmH4LDE9Dq9TzFeyyURBeK9mDQ/aLU/y1sB0v87oHb
+ sD3r/3XASa+t941rZiAqsvEXgzLQ2eplYvTLzSgz0tnv9/QUHTDXjS8P3CDkI3qsFDB8
+ UIfNLAzJN1FKs0HbzeRbYOzdGYmj2zQcWJA8XsHIe+sw4WN/h7bG4SY4N3Zmq73LVCQc
+ jvJKzAYOg3YkJcrO/jrdHadoVJf9ugz6GHYbvx2kqI7Uj3FHfda0ctuEsZePxgbeyCGm
+ fJQ+MAyiVXIwruxbUSQypenv7P7iF76vd32WMj5EOM4tLheEf05n6dRSTpBXyqc/Dl+G
+ ypkA==
+X-Gm-Message-State: AC+VfDzKbo1TJyh0mwvKWQF+W1Qjjstu8j9aAFsNKYNb0COApb8oBqz+
+ O2lH/w4h7kmMSbqORJXIto0deAuea/4kuuKXScsoX1OAInY2rqMYIT0gpip9G6t3z/Z5Ryd81fV
+ HCWrbREUshajTyoY=
+X-Received: by 2002:a05:6512:b08:b0:4f8:5b23:5287 with SMTP id
+ w8-20020a0565120b0800b004f85b235287mr6147832lfu.62.1687457540280; 
+ Thu, 22 Jun 2023 11:12:20 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6uqwYn3thtfoEO8b2d+Iu43tNa8dCouwsu27rz3VI+lYHFuniAJ3T2jIZQ+UEL2RFrf56fMw==
+X-Received: by 2002:a05:6512:b08:b0:4f8:5b23:5287 with SMTP id
+ w8-20020a0565120b0800b004f85b235287mr6147812lfu.62.1687457540012; 
+ Thu, 22 Jun 2023 11:12:20 -0700 (PDT)
 Received: from redhat.com (static-92-120-85-188.ipcom.comunitel.net.
  [188.85.120.92]) by smtp.gmail.com with ESMTPSA id
- v14-20020a05600c214e00b003f7f60203ffsm152898wml.25.2023.06.22.11.11.56
+ f1-20020adfdb41000000b0030ae499da59sm7579329wrj.111.2023.06.22.11.12.19
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 22 Jun 2023 11:11:56 -0700 (PDT)
+ Thu, 22 Jun 2023 11:12:19 -0700 (PDT)
 From: Juan Quintela <quintela@redhat.com>
 To: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
 Cc: qemu-devel@nongnu.org,  Markus Armbruster <armbru@redhat.com>,  Leonardo
@@ -72,20 +72,20 @@ Cc: qemu-devel@nongnu.org,  Markus Armbruster <armbru@redhat.com>,  Leonardo
  <eblake@redhat.com>,  Fam Zheng <fam@euphon.net>,  Thomas Huth
  <thuth@redhat.com>,  libvir-list@redhat.com,  Paolo Bonzini
  <pbonzini@redhat.com>
-Subject: Re: [RFC 2/6] migration: migrate 'inc' command option is deprecated.
-In-Reply-To: <ZJGWEhITI2hzT7Ro@redhat.com> ("Daniel P. =?utf-8?Q?Berrang?=
+Subject: Re: [RFC 3/6] migration: migrate 'blk' command option is deprecated.
+In-Reply-To: <ZJGWLI9jl8MfJnd/@redhat.com> ("Daniel P. =?utf-8?Q?Berrang?=
  =?utf-8?Q?=C3=A9=22's?= message of
- "Tue, 20 Jun 2023 13:05:38 +0100")
+ "Tue, 20 Jun 2023 13:06:04 +0100")
 References: <20230612193344.3796-1-quintela@redhat.com>
- <20230612193344.3796-3-quintela@redhat.com>
- <ZJGWEhITI2hzT7Ro@redhat.com>
+ <20230612193344.3796-4-quintela@redhat.com>
+ <ZJGWLI9jl8MfJnd/@redhat.com>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
-Date: Thu, 22 Jun 2023 20:11:55 +0200
-Message-ID: <875y7ffjtg.fsf@secure.mitica>
+Date: Thu, 22 Jun 2023 20:12:18 +0200
+Message-ID: <871qi3fjst.fsf@secure.mitica>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -112,36 +112,35 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Daniel P. Berrang=C3=A9 <berrange@redhat.com> wrote:
-> On Mon, Jun 12, 2023 at 09:33:40PM +0200, Juan Quintela wrote:
->> Use 'migrate_set_parameter block_incremental true' instead.
+> On Mon, Jun 12, 2023 at 09:33:41PM +0200, Juan Quintela wrote:
+>> Use 'migrate_set_capability block true' instead.
 >>=20
 >> Signed-off-by: Juan Quintela <quintela@redhat.com>
 >> ---
 >>  docs/about/deprecated.rst |  7 +++++++
->>  qapi/migration.json       | 11 +++++++++--
+>>  qapi/migration.json       | 11 +++++++----
 >>  migration/migration.c     |  5 +++++
->>  3 files changed, 21 insertions(+), 2 deletions(-)
+>>  3 files changed, 19 insertions(+), 4 deletions(-)
 >>=20
 >> diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
->> index e1aa0eafc8..c75a3a8f5a 100644
+>> index c75a3a8f5a..47e98dc95e 100644
 >> --- a/docs/about/deprecated.rst
 >> +++ b/docs/about/deprecated.rst
->> @@ -433,3 +433,10 @@ Migration
->>  ``skipped`` field in Migration stats has been deprecated.  It hasn't
->>  been used for more than 10 years.
+>> @@ -440,3 +440,10 @@ The new way to modify migration is using migration =
+parameters.
+>>  ``inc`` functionality can be acchieved using
+>>  ``migrate_set_parameter block-incremental true``.
 >>=20=20
->> +``inc`` migrate command option (since 8.1)
+>> +``blk`` migrate command option (since 8.1)
 >> +''''''''''''''''''''''''''''''''''''''''''
 >> +
 >> +The new way to modify migration is using migration parameters.
->> +``inc`` functionality can be acchieved using
+>> +``blk`` functionality can be acchieved using
 >> +``migrate_set_parameter block-incremental true``.
 >
-> This is a HMP command, but the change affects QMP too. I'd suggest
->
->  ``inc`` functionality can be achieved by setting the
->  ``block-incremental`` migration parameter to ``true``.
+> Same comments on rewording as the previous patch, so won't repeate them
+> all.
 
-Applied all suggestions.  Thanks.
+Did the same than the previous one.  Thanks.
 
 
