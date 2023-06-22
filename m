@@ -2,71 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 492DB73943B
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 03:05:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BF30739443
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 03:07:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qC8jr-0002Bt-8z; Wed, 21 Jun 2023 21:03:55 -0400
+	id 1qC8n2-00038s-Fg; Wed, 21 Jun 2023 21:07:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qC8jp-0002BM-11; Wed, 21 Jun 2023 21:03:53 -0400
-Received: from mail-ua1-x935.google.com ([2607:f8b0:4864:20::935])
+ (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
+ id 1qC8mx-00038B-WA; Wed, 21 Jun 2023 21:07:08 -0400
+Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qC8jn-0003GQ-6z; Wed, 21 Jun 2023 21:03:52 -0400
-Received: by mail-ua1-x935.google.com with SMTP id
- a1e0cc1a2514c-78a1e095508so1992902241.0; 
- Wed, 21 Jun 2023 18:03:50 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
+ id 1qC8mw-0004g7-9s; Wed, 21 Jun 2023 21:07:07 -0400
+Received: by mail-pl1-x62f.google.com with SMTP id
+ d9443c01a7336-1b51780bed0so51587335ad.3; 
+ Wed, 21 Jun 2023 18:07:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1687395829; x=1689987829;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=7kiOx34JQpXxSODn+9cr74J/iavDza5OkqmneYZTZmw=;
- b=AdALQAFLq3JmtoE/sL6kqEpcQMJiuCk9meA9wYYVHt74PAR7OsCphxBw8xJ2jXGMx/
- 9Rt47Q2iE/ov57kgNUKXqEQUh3nvqe3yjDkzndHHnfXdzfQBH9Iy+qI05FzYQcEvh0PC
- 1Sp1xfvP+edAQhwkIhu/zH1IYknG+9EYkY9Ee6rdKbX6OKGKlvtHjGxwoeL85iqdGL+J
- cexOp21WS66Czn8mo1HpcXs4DtYzR8M/CWvPUPFH+R4ubDJXNbKL2/o5cIXmXvyHS8qE
- bYEbbu5R77O+5kRy4yGqDQKi7iTmkCKwD7+d9ttUe6ZzoUoahKOmkaUL+vrBeu0OLXKA
- Fdiw==
+ d=gmail.com; s=20221208; t=1687396024; x=1689988024;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=AcyAk4KfNjMaGzogo3bV3Rmv0BQ9Y6yjY3S4Xdz/rzw=;
+ b=Sq+3DuPAdSZoRKOOsmqyqA/acx45P580nI8JbNLBR8hM2ziotwPGUmE+hNEQt+lQBY
+ DU/wB+w6mhK8zeZf4TVrruuMrfbLutWaihEgDPBAyWcHYBqMyx3xMihbrMHjxm8JxRpX
+ 5MM/ZNYdJPnbid6mwLQ3tVXsxP0780OxV2dKVCiNfOYNgAd9PsA9roTR40kKf1nfTSAc
+ IbTueCRgQ8qP1DfbOpr/SVF1WBRLOMo76nHPY8lXjL3mtwmScTwJFIZR3zp95Cjch5nQ
+ FBRhBIUTQuR9DGIbW6C05wOn1mJIRmfDPbcdsmToFKb5cl3BgdElbGo6nhtzs/AXFVAS
+ cMlA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687395829; x=1689987829;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=7kiOx34JQpXxSODn+9cr74J/iavDza5OkqmneYZTZmw=;
- b=a5CYymi0kxu0BRE5BewQ/v6DLWVNHn8cmo65K/RkotzS/HjYOYox4VYxLZGU6uCKKH
- smzq7WcbxT7JEAostqTSbbpJIWhirpnSLB/4qMSTVCQcjttYi/hPXtybjk/J1C4Kc7yW
- SWcnDmRF50FfZr25io3eyoep2ktM8IuRsHqll6hZscjRxBIkC01FI/GPa1YDat48ZbA4
- ZQsR0374Hj9s/R7kyQhrsKQjRI3JO7Hy1ADgXu02sJbdqGN3zMQgTycmdO9nj25aRchN
- jXV0nClHWISl5aETfBivb+VbQOhPGpW33ytDHA7rsFq9bcGH7LXnMwgRKq2PEuN6RzwH
- x1rQ==
-X-Gm-Message-State: AC+VfDx8D1P3fiUly55sewHUvFEJ4cWa07LrELZNgpyDpZwhpXG3HVur
- +qeHPjbwgfT56yx4IkuMxqLym/b64878vOqic0U=
-X-Google-Smtp-Source: ACHHUZ7qQiYJQMO6p5XkNr5lySwl8SEZgHZHLVsL4vMAicb4dleczrj7xYNq2NIWumKho6xjTKiOGXrRaOsrjpJr3fM=
-X-Received: by 2002:a67:db81:0:b0:440:c4fb:f257 with SMTP id
- f1-20020a67db81000000b00440c4fbf257mr3725655vsk.0.1687395829287; Wed, 21 Jun
- 2023 18:03:49 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1687396024; x=1689988024;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=AcyAk4KfNjMaGzogo3bV3Rmv0BQ9Y6yjY3S4Xdz/rzw=;
+ b=Jmb6kMR/flofYCUTMHnLfoGjTcq0QsEiojcP1Mgymkew+6u5s3cGH25AedPb2xIdVx
+ +8XRXmcBUYO0sQy1QprlkFqw4bAKW5Z0V5usZY/AFj7kJM+hGfyKRj/xlmC8LmyEmnLZ
+ yYg+uevLOk8mH4sS6E42q1a4uWi3lq0cweXzRouwVbuyPWp+eWquSM6AgOL96ZrvRRm4
+ QFwEeo/4bdNtu3ilPUr63ln6Gz9BrArjkvDE+PmYD/iB/V7Y6HJf41Q9pp0kFzBQ3j9e
+ 9H1tzL+gRKZw3iwCdz4tp6Ak+ca77q714r9NCedMRfBZ3TZqA8F3qGRiImMFjhnSwmub
+ MpPg==
+X-Gm-Message-State: AC+VfDzLZK7Gy8wU6lPB77b4wahnRT0oA1iAHclP9QZtE24zf2jJytjB
+ v83ds70IFdkyYq/JgdLRnlo=
+X-Google-Smtp-Source: ACHHUZ7pPPOoDHaUGUtriykEmcp08H5ppyqfmOyrNN1uHuRtSqbgo0YnzpZ3NT6vl0GoK5ku901zuw==
+X-Received: by 2002:a17:902:6b88:b0:1b5:553e:4ea1 with SMTP id
+ p8-20020a1709026b8800b001b5553e4ea1mr10467735plk.1.1687396023746; 
+ Wed, 21 Jun 2023 18:07:03 -0700 (PDT)
+Received: from localhost ([117.136.38.170]) by smtp.gmail.com with ESMTPSA id
+ z6-20020a170903018600b001b02bd00c61sm4052432plg.237.2023.06.21.18.07.02
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 21 Jun 2023 18:07:03 -0700 (PDT)
+From: Hawkins Jiawei <yin31149@gmail.com>
+To: jasowang@redhat.com,
+	mst@redhat.com,
+	eperezma@redhat.com
+Cc: qemu-devel@nongnu.org, qemu-stable@nongnu.org, yin31149@gmail.com,
+ 18801353760@163.com
+Subject: [PATCH] vdpa: Increase out buffer size for CVQ commands
+Date: Thu, 22 Jun 2023 09:06:51 +0800
+Message-Id: <20230622010651.22698-1-yin31149@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <20230612111034.3955227-1-christoph.muellner@vrull.eu>
-In-Reply-To: <20230612111034.3955227-1-christoph.muellner@vrull.eu>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Thu, 22 Jun 2023 11:03:23 +1000
-Message-ID: <CAKmqyKNBa3-F1R8ZQUKoiMJCsM3kpvRg9dpwXX-tawcBM6Vrcw@mail.gmail.com>
-Subject: Re: [PATCH v2 0/8] disas/riscv: Add vendor extension support
-To: Christoph Muellner <christoph.muellner@vrull.eu>
-Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org, 
- Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bin.meng@windriver.com>,
- Philipp Tomsich <philipp.tomsich@vrull.eu>, Palmer Dabbelt <palmer@dabbelt.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Zhiwei Liu <zhiwei_liu@linux.alibaba.com>, 
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::935;
- envelope-from=alistair23@gmail.com; helo=mail-ua1-x935.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
+ envelope-from=yin31149@gmail.com; helo=mail-pl1-x62f.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -90,89 +89,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jun 12, 2023 at 9:11=E2=80=AFPM Christoph Muellner
-<christoph.muellner@vrull.eu> wrote:
->
-> From: Christoph M=C3=BCllner <christoph.muellner@vrull.eu>
->
-> This series adds vendor extension support to the QEMU disassembler
-> for RISC-V. The following vendor extensions are covered:
-> * XThead{Ba,Bb,Bs,Cmo,CondMov,FMemIdx,Fmv,Mac,MemIdx,MemPair,Sync}
-> * XVentanaCondOps
->
-> So far, there have been two attempts to add vendor extension support
-> to the QEMU disassembler. The first one [1] was posted in August 2022
-> by LIU Zhiwei and attempts to separate vendor extension specifics
-> from standard extension code in combination with a patch that introduced
-> support for XVentanaCondOps. The second one [2] was posted in March 2023
-> by me and added XThead* support without separating the vendor extensions
-> from the standard code.
->
-> This patchset represents the third attempt to add vendor extension
-> support to the QEMU disassembler. It adds all features of the previous
-> attempts and integrates them into a patchset that uses the same
-> mechanism for testing the extension availability like translate.c
-> (using the booleans RISCVCPUConfig::ext_*).
-> To achieve that, a couple of patches were needed to restructure
-> the existing code.
->
-> Note, that this patchset allows an instruction encoder function for each
-> vendor extension, but operand decoding and instruction printing remains
-> common code. This is irrelevant for XVentanaCondOps, but the patch for
-> the XThead* extensions includes changes in riscv.c and riscv.h.
-> This could be changed to force more separation with the cost of
-> duplication.
->
-> The first patch of this series is cherry-picked from LIU Zhiwei's series.
-> It was reviewed by Alistair Francis and Richard Henderson, but never
-> made it on master. I've added "Reviewed-by" tags to the commit.
->
-> Changes for v2:
-> * Rebase on Alistair's riscv-to-apply.next branch
->
-> [1] https://lists.nongnu.org/archive/html/qemu-devel/2022-08/msg03662.htm=
-l
-> [2] https://lists.nongnu.org/archive/html/qemu-devel/2023-03/msg04566.htm=
-l
->
-> Christoph M=C3=BCllner (7):
->   target/riscv: Factor out extension tests to cpu_cfg.h
->   disas/riscv: Move types/constants to new header file
->   disas/riscv: Make rv_op_illegal a shared enum value
->   disas/riscv: Encapsulate opcode_data into decode
->   disas/riscv: Provide infrastructure for vendor extensions
->   disas/riscv: Add support for XVentanaCondOps
->   disas/riscv: Add support for XThead* instructions
->
-> LIU Zhiwei (1):
->   target/riscv: Use xl instead of mxl for disassemble
+According to the VirtIO standard, "Since there are no guarantees,
+it can use a hash filter or silently switch to
+allmulti or promiscuous mode if it is given too many addresses."
+To achive this, QEMU ignores MAC addresses and marks `mac_table.x_overflow`
+in the device internal state in virtio_net_handle_mac()
+if the guest sets more than `MAC_TABLE_ENTRIES` MAC addresses
+for the filter table.
 
-Thanks!
+However, the problem is that QEMU never marks the `mac_table.x_overflow`
+for the vdpa device internal state when the guest sets more than
+`MAC_TABLE_ENTRIES` MAC addresses.
 
-Applied to riscv-to-apply.next
+To be more specific, currently QEMU offers a buffer size of
+vhost_vdpa_net_cvq_cmd_len() for CVQ commands, which represents the size of
+VIRTIO_NET_CTRL_MAC_TABLE_SET command with a maximum `MAC_TABLE_ENTRIES`
+MAC addresses.
 
-Alistair
+Consequently, if the guest sets more than `MAC_TABLE_ENTRIES` MAC addresses,
+QEMU truncates the CVQ command data and copies this incomplete command
+into the out buffer. In this situation, virtio_net_handle_mac() fails the
+integrity check and returns VIRTIO_NET_ERR instead of marking
+`mac_table.x_overflow` and returning VIRTIO_NET_OK, since the copied
+CVQ command in the buffer is incomplete and flawed.
 
->
->  disas/meson.build        |   6 +-
->  disas/riscv-xthead.c     | 707 +++++++++++++++++++++++++++++++++++++++
->  disas/riscv-xthead.h     |  28 ++
->  disas/riscv-xventana.c   |  41 +++
->  disas/riscv-xventana.h   |  18 +
->  disas/riscv.c            | 378 ++++++---------------
->  disas/riscv.h            | 299 +++++++++++++++++
->  target/riscv/cpu.c       |   3 +-
->  target/riscv/cpu_cfg.h   |  37 ++
->  target/riscv/translate.c |  27 +-
->  10 files changed, 1246 insertions(+), 298 deletions(-)
->  create mode 100644 disas/riscv-xthead.c
->  create mode 100644 disas/riscv-xthead.h
->  create mode 100644 disas/riscv-xventana.c
->  create mode 100644 disas/riscv-xventana.h
->  create mode 100644 disas/riscv.h
->
-> --
-> 2.40.1
->
->
+This patch solves this problem by increasing the buffer size to
+vhost_vdpa_net_cvq_cmd_page_len(), which represents the size of the buffer
+that is allocated and mmaped. Therefore, everything should work correctly
+as long as the guest sets fewer than `(vhost_vdpa_net_cvq_cmd_page_len() -
+sizeof(struct virtio_net_ctrl_hdr)
+- 2 * sizeof(struct virtio_net_ctrl_mac)) / ETH_ALEN` MAC addresses.
+
+Considering the highly unlikely scenario for the guest setting more than
+that number of MAC addresses for the filter table, this patch should
+work fine for the majority of cases. If there is a need for more than thoes
+entries, we can increase the value for vhost_vdpa_net_cvq_cmd_page_len()
+in the future, mapping more than one page for command output.
+
+Fixes: 7a7f87e94c ("vdpa: Move command buffers map to start of net device")
+Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
+---
+ net/vhost-vdpa.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
+
+diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+index 5a72204899..ecfa8852b5 100644
+--- a/net/vhost-vdpa.c
++++ b/net/vhost-vdpa.c
+@@ -784,9 +784,18 @@ static int vhost_vdpa_net_handle_ctrl_avail(VhostShadowVirtqueue *svq,
+     };
+     ssize_t dev_written = -EINVAL;
+ 
++    /*
++     * This code truncates the VIRTIO_NET_CTRL_MAC_TABLE_SET CVQ command
++     * and prevents QEMU from marking `mac_table.x_overflow` in the device
++     * internal state in virtio_net_handle_mac() if the guest sets more than
++     * `(vhost_vdpa_net_cvq_cmd_page_len() - sizeof(struct virtio_net_ctrl_hdr)
++     * - 2 * sizeof(struct virtio_net_ctrl_mac)) / ETH_ALEN` MAC addresses for
++     * filter table.
++     * However, this situation is considered rare, so it is acceptable.
++     */
+     out.iov_len = iov_to_buf(elem->out_sg, elem->out_num, 0,
+                              s->cvq_cmd_out_buffer,
+-                             vhost_vdpa_net_cvq_cmd_len());
++                             vhost_vdpa_net_cvq_cmd_page_len());
+     if (*(uint8_t *)s->cvq_cmd_out_buffer == VIRTIO_NET_CTRL_ANNOUNCE) {
+         /*
+          * Guest announce capability is emulated by qemu, so don't forward to
+-- 
+2.25.1
+
 
