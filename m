@@ -2,77 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C742E73A261
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 15:59:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17AF673A26B
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 15:59:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCKoL-0007WM-Ea; Thu, 22 Jun 2023 09:57:21 -0400
+	id 1qCKoM-0007Wv-Al; Thu, 22 Jun 2023 09:57:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qCKoG-0007US-Pr
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 09:57:16 -0400
-Received: from mail-oa1-x31.google.com ([2001:4860:4864:20::31])
+ id 1qCKoJ-0007VT-J3
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 09:57:19 -0400
+Received: from mail-oo1-xc35.google.com ([2607:f8b0:4864:20::c35])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qCKoF-0000di-0q
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 09:57:16 -0400
-Received: by mail-oa1-x31.google.com with SMTP id
- 586e51a60fabf-1aa0d354a8aso4578576fac.0
- for <qemu-devel@nongnu.org>; Thu, 22 Jun 2023 06:57:14 -0700 (PDT)
+ id 1qCKoH-0000jk-Rw
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 09:57:19 -0400
+Received: by mail-oo1-xc35.google.com with SMTP id
+ 006d021491bc7-55e4d71a5daso3384855eaf.0
+ for <qemu-devel@nongnu.org>; Thu, 22 Jun 2023 06:57:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1687442233; x=1690034233;
+ d=ventanamicro.com; s=google; t=1687442236; x=1690034236;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=DReao0hDMiDF72kgz7UAQRQxD03tnNvVGU/fYBfp15s=;
- b=SKNGiiqfwiQPd6pMEcTiC+xZd7txU2CSgu2IPsVMmOFSHAxtjz4DrAFZTUnWKO5PCC
- LseDRGhl4RfYZgmAcYC7JbTfgYIYzLZs1aKVnT9DZgaV1XhITBMHbQTEOdpT+T97xK6i
- rYfdCmBwPg62+xMN513kOW1M9/GCQ1r2u4qJX/PVz1KljJfQ9NS59E6llGwOM5ZDARig
- HuY9dMYD+0SKS4QR74vnNW1MISM2S+JbinOn/zs88+TZpfTN7gOu6TQShvGDhxdgVuoI
- xuIp0xd5Y1sT/tJBro6JLW4tv4xBOWPHyGSf1poepDK+Sl1EfYaJt8YBQ+0qHuJebew5
- DPLA==
+ bh=9gwOO78O4XTM3BGF4an3EOt2RG84iLZdasioodl4gL8=;
+ b=J0/FtqgpSLb1gtWeo6f6b9zexBEyztzxTRQZgqI0WWIndl2vX5MNucvcxuxjx3LXaG
+ B850s6Q6ryCGu0UvdSDI8sJ/YPH4bjkYok0VaRRpNJ2s0qqoHrvkrDqyUhsGp75e7Lrt
+ ovh1F/apwslz66MF9IVcC812YUx1baEH3MeHgC3UUrw0SE58BLaRyif8uFYgKiensbgj
+ JaCArKejux63ngSJ3DaobJ0DvWGnlmkG39S19losjrB3zZocqf04RN0GQpQ2tvefGOr/
+ Bzh6UEnx3B8aoACw9Z6eZ2oqPRdlZJg5OlQfzFiHEF7gCzZP618jBCqYuULPimJtRoMG
+ OqDQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687442233; x=1690034233;
+ d=1e100.net; s=20221208; t=1687442236; x=1690034236;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=DReao0hDMiDF72kgz7UAQRQxD03tnNvVGU/fYBfp15s=;
- b=jthW/EeCNUJoxIuhySUlZHN0hHH02nqVM+FJ2McmvdH/+haprF+YkNvHv5cg2iTzdD
- JBbmHNL1y4WvmXy8qvwYKgXYDxZbAJZQLWlgD2Z/8Yk9rAQ2vA4QPuwJIn6fhDRnB2/g
- Ph/r6rjB0pYuWd571SWb+9oaN2EbAGQ6cSfT1bOUpOiRuCIuuvSaqmf02I3NfBh4fOcc
- PFZxN9unthAsPYeZn0Fn03VyzpKuk0kJ7NkVJ+gh8QdoBem624WbYlSGok7GQzQ5/iLK
- kpN9qF7OS9X0t6AijVx6CIrRRuta5bhVtrB+yskuXnKsx7BQnu6JI0CDy7iAdcc7JDaX
- VkGg==
-X-Gm-Message-State: AC+VfDwSAuH2Q+ONwBaHOLWMjkmLzJ423mwy1ChmuIcxhQBpjnkYb/9z
- DLo3CT3kD2Y2ZHov6pI20h2nVG8VbvKENcgDw2Q=
-X-Google-Smtp-Source: ACHHUZ4+mDltIrT1e5DNrh2KtCIoP7jsa65ZTfuHCIhEyNN/0rou4CvnziWlfEgSzdN9PFqHpGMEsw==
-X-Received: by 2002:a4a:a592:0:b0:558:b703:b9f with SMTP id
- d18-20020a4aa592000000b00558b7030b9fmr13094754oom.8.1687442233380; 
- Thu, 22 Jun 2023 06:57:13 -0700 (PDT)
+ bh=9gwOO78O4XTM3BGF4an3EOt2RG84iLZdasioodl4gL8=;
+ b=fNj6lLbSaZq5e3Ta2fhvHUbbxlQeOneADBYS5ogWCBVHGe48rVjlE+qdNlKd8WyXoO
+ DWamK7TlKUmorCFT/sVNe8aiSRtazAHm+GBpu2piS2/BAIG6NvmJV4e4trO1sqGzH3nd
+ iY7BTUPL22qMK+5eyssC9C4eAMsCyOrWAiBalVwFkHcB+LjS/S0e672pwFe33XZnshQF
+ WXbM/g7Zp62NIN8w944VjB0D8mccdY02EdJtPzPmY9SHnPnzv/Ya0OxssuJys8BjLy+a
+ U83wx7W6pqOnfT6poR6OBHH+uJPa8g8AikSXIByOzHCmPLhheQZSUW5Vsj8NBk9tl8Tr
+ ZeAQ==
+X-Gm-Message-State: AC+VfDxW2fTO6htPlrEPJu4PPruKksqQPGaXQIZ2bzJ13a5Gkqb/rXa/
+ 8v7SAkFLuwYb27bRXcSyzWi6x/sEdyoJXbzIv4g=
+X-Google-Smtp-Source: ACHHUZ7f2IxXLPcGa6MOdAuR/eV/kNIWr0sjvG4WTPXxPnylebuQu5LZCeLvHfGNjXwaF3FrPp0ybg==
+X-Received: by 2002:a4a:b805:0:b0:558:b5b2:72fe with SMTP id
+ g5-20020a4ab805000000b00558b5b272femr7856075oop.2.1687442236498; 
+ Thu, 22 Jun 2023 06:57:16 -0700 (PDT)
 Received: from grind.. (201-69-66-110.dial-up.telesp.net.br. [201.69.66.110])
  by smtp.gmail.com with ESMTPSA id
- w6-20020a4aa446000000b00562f06fb5easm156677ool.11.2023.06.22.06.57.10
+ w6-20020a4aa446000000b00562f06fb5easm156677ool.11.2023.06.22.06.57.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 22 Jun 2023 06:57:13 -0700 (PDT)
+ Thu, 22 Jun 2023 06:57:16 -0700 (PDT)
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
  liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
  ajones@ventanamicro.com,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH v3 02/19] hw/riscv/virt.c: skip 'mmu-type' FDT if satp mode
- not set
-Date: Thu, 22 Jun 2023 10:56:43 -0300
-Message-ID: <20230622135700.105383-3-dbarboza@ventanamicro.com>
+Subject: [PATCH v3 03/19] target/riscv/cpu.c: restrict 'mvendorid' value
+Date: Thu, 22 Jun 2023 10:56:44 -0300
+Message-ID: <20230622135700.105383-4-dbarboza@ventanamicro.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230622135700.105383-1-dbarboza@ventanamicro.com>
 References: <20230622135700.105383-1-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::31;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-oa1-x31.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c35;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-oo1-xc35.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,68 +94,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The absence of a satp mode in riscv_host_cpu_init() is causing the
-following error:
+We're going to change the handling of mvendorid/marchid/mimpid by the
+KVM driver. Since these are always present in all CPUs let's put the
+same validation for everyone.
 
-$ sudo ./qemu/build/qemu-system-riscv64  -machine virt,accel=kvm \
-    -m 2G -smp 1  -nographic -snapshot \
-    -kernel ./guest_imgs/Image \
-    -initrd ./guest_imgs/rootfs_kvm_riscv64.img \
-    -append "earlycon=sbi root=/dev/ram rw" \
-    -cpu host
-**
-ERROR:../target/riscv/cpu.c:320:satp_mode_str: code should not be
-reached
-Bail out! ERROR:../target/riscv/cpu.c:320:satp_mode_str: code should
-not be reached
-Aborted
+It doesn't make sense to allow 'mvendorid' to be different than it
+is already set in named (vendor) CPUs. Generic (dynamic) CPUs can have
+any 'mvendorid' they want.
 
-The error is triggered from create_fdt_socket_cpus() in hw/riscv/virt.c.
-It's trying to get satp_mode_str for a NULL cpu->cfg.satp_mode.map.
+Change 'mvendorid' to be a class property created via
+'object_class_property_add', instead of using the DEFINE_PROP_UINT32()
+macro. This allow us to define a custom setter for it that will verify,
+for named CPUs, if mvendorid is different than it is already set by the
+CPU. This is the error thrown for the 'veyron-v1' CPU if 'mvendorid' is
+set to an invalid value:
 
-For this KVM cpu we would need to inherit the satp supported modes
-from the RISC-V host. At this moment this is not possible because the
-KVM driver does not support it. And even when it does we can't just let
-this broken for every other older kernel.
-
-Since mmu-type is not a required node, according to [1], skip the
-'mmu-type' FDT node if there's no satp_mode set. We'll revisit this
-logic when we can get satp information from KVM.
-
-[1] https://github.com/devicetree-org/dt-schema/blob/main/dtschema/schemas/cpu.yaml
+$ qemu-system-riscv64 -M virt -nographic -cpu veyron-v1,mvendorid=2
+qemu-system-riscv64: can't apply global veyron-v1-riscv-cpu.mvendorid=2:
+    Unable to change veyron-v1-riscv-cpu mvendorid (0x61f)
 
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- hw/riscv/virt.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ target/riscv/cpu.c | 38 +++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 37 insertions(+), 1 deletion(-)
 
-diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
-index 95708d890e..f025a0fcaf 100644
---- a/hw/riscv/virt.c
-+++ b/hw/riscv/virt.c
-@@ -243,13 +243,13 @@ static void create_fdt_socket_cpus(RISCVVirtState *s, int socket,
-             s->soc[socket].hartid_base + cpu);
-         qemu_fdt_add_subnode(ms->fdt, cpu_name);
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index e515dde208..b65958a887 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -1738,7 +1738,6 @@ static void riscv_cpu_add_user_properties(Object *obj)
+ static Property riscv_cpu_properties[] = {
+     DEFINE_PROP_BOOL("debug", RISCVCPU, cfg.debug, true),
  
--        satp_mode_max = satp_mode_max_from_map(
--            s->soc[socket].harts[cpu].cfg.satp_mode.map);
--        sv_name = g_strdup_printf("riscv,%s",
--                                  satp_mode_str(satp_mode_max, is_32_bit));
--        qemu_fdt_setprop_string(ms->fdt, cpu_name, "mmu-type", sv_name);
--        g_free(sv_name);
--
-+        if (cpu_ptr->cfg.satp_mode.supported != 0) {
-+            satp_mode_max = satp_mode_max_from_map(cpu_ptr->cfg.satp_mode.map);
-+            sv_name = g_strdup_printf("riscv,%s",
-+                                      satp_mode_str(satp_mode_max, is_32_bit));
-+            qemu_fdt_setprop_string(ms->fdt, cpu_name, "mmu-type", sv_name);
-+            g_free(sv_name);
-+        }
+-    DEFINE_PROP_UINT32("mvendorid", RISCVCPU, cfg.mvendorid, 0),
+     DEFINE_PROP_UINT64("marchid", RISCVCPU, cfg.marchid, RISCV_CPU_MARCHID),
+     DEFINE_PROP_UINT64("mimpid", RISCVCPU, cfg.mimpid, RISCV_CPU_MIMPID),
  
-         name = riscv_isa_string(cpu_ptr);
-         qemu_fdt_setprop_string(ms->fdt, cpu_name, "riscv,isa", name);
+@@ -1825,6 +1824,40 @@ static const struct TCGCPUOps riscv_tcg_ops = {
+ #endif /* !CONFIG_USER_ONLY */
+ };
+ 
++static bool riscv_cpu_is_dynamic(Object *cpu_obj)
++{
++    return object_dynamic_cast(cpu_obj, TYPE_RISCV_DYNAMIC_CPU) != NULL;
++}
++
++static void cpu_set_mvendorid(Object *obj, Visitor *v, const char *name,
++                              void *opaque, Error **errp)
++{
++    bool dynamic_cpu = riscv_cpu_is_dynamic(obj);
++    RISCVCPU *cpu = RISCV_CPU(obj);
++    uint32_t prev_val = cpu->cfg.mvendorid;
++    uint32_t value;
++
++    if (!visit_type_uint32(v, name, &value, errp)) {
++        return;
++    }
++
++    if (!dynamic_cpu && prev_val != value) {
++        error_setg(errp, "Unable to change %s mvendorid (0x%x)",
++                   object_get_typename(obj), prev_val);
++        return;
++    }
++
++    cpu->cfg.mvendorid = value;
++}
++
++static void cpu_get_mvendorid(Object *obj, Visitor *v, const char *name,
++                              void *opaque, Error **errp)
++{
++    bool value = RISCV_CPU(obj)->cfg.mvendorid;
++
++    visit_type_bool(v, name, &value, errp);
++}
++
+ static void riscv_cpu_class_init(ObjectClass *c, void *data)
+ {
+     RISCVCPUClass *mcc = RISCV_CPU_CLASS(c);
+@@ -1856,6 +1889,9 @@ static void riscv_cpu_class_init(ObjectClass *c, void *data)
+     cc->gdb_get_dynamic_xml = riscv_gdb_get_dynamic_xml;
+     cc->tcg_ops = &riscv_tcg_ops;
+ 
++    object_class_property_add(c, "mvendorid", "uint32", cpu_get_mvendorid,
++                              cpu_set_mvendorid, NULL, NULL);
++
+     device_class_set_props(dc, riscv_cpu_properties);
+ }
+ 
 -- 
 2.41.0
 
