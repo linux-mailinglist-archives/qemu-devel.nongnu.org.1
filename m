@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1098373A0BB
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 14:19:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5B6273A0B9
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 14:18:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCJFD-0003wX-6R; Thu, 22 Jun 2023 08:17:05 -0400
+	id 1qCJEz-0003UO-NM; Thu, 22 Jun 2023 08:16:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <lukasstraub2@web.de>)
- id 1qCJEN-0002vp-GD
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 08:16:09 -0400
-Received: from mout.web.de ([212.227.15.3])
+ id 1qCJET-0002yv-VV
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 08:16:15 -0400
+Received: from mout.web.de ([212.227.15.4])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <lukasstraub2@web.de>)
- id 1qCJEK-0004oG-Qd
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 08:16:06 -0400
+ id 1qCJEP-0004pK-RS
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 08:16:12 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
- s=s29768273; t=1687436150; x=1688040950; i=lukasstraub2@web.de;
- bh=ea7VwcjFFAVHqWFdORSqpLl0iTAREXn2aHg2ceqegUA=;
+ s=s29768273; t=1687436158; x=1688040958; i=lukasstraub2@web.de;
+ bh=LHTPFx26nLfuCo78D/NfUSFHYtAmB2Ipa3ilByNTIqI=;
  h=X-UI-Sender-Class:Date:From:To:Cc:Subject:In-Reply-To:References;
- b=YRplzXbFyj6v5Bz3764QVejYFwJLlEZCcziKJuICUKUuACxzYS6Nl/UOZvFKDUn/pFvR77O
- B82T1otwXZQ6as/JhPCVGkUqJYxH4uaKTwf2JTgPKyrI8TvbXJ2s7kq2eGDMHGi4NlosS8923
- T3QRegvdfauj+IfTS8by2p2zXIwy8UiufXYH8yklPjKDjzVNTMCVbtpusGD47p3XCRqhY288J
- HHaWQvELqXeF/PNa9mNL2RuJ5a9LYlZ1mpQD1UmfBap2Qjj3xX3UzGUn6CtDEZJqtfFkeqA/z
- 0lbhIRun1UhejNkC/d2Yr0QCnDtFwfBXjcLAVNEUHVVv5+jLveTA==
+ b=tABNQIRMB7zNJ6FXBBk3LMzfV11QXWy3p98Y/19JRpW/XSzBTpocHr5VnoZ6rZqxsJhtlEd
+ n/3fn+6nP8gmKAuPh5o1n1FlEF6fz+FwuXLH/L4EU1+pWflAwajOIzVFXeP8dO0qV5J1zglmm
+ ZwGGsLJ4BIzn61p2CSCTJNiEpjdqLmEuhXOgWTjEGG2lmdnYK9f2cz8LBn9gIDUfViVGdXEtc
+ Tqlzd1razHU20bN2/m85fVuUkCnyMOrWdeEhfUUlCLTG8GAiiKwhLVE8ZBoVSja3yPFUh8v6q
+ +FiPgU7TM8EVyOwzGv6On1Fk+y7YIwgME5gBhDiZB0JkrcvYrnMw==
 X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from mobian ([141.58.32.133]) by smtp.web.de (mrweb005
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1MNORC-1qSIZg16x0-00Omjr; Thu, 22
- Jun 2023 14:15:50 +0200
-Date: Thu, 22 Jun 2023 14:15:46 +0200
+Received: from mobian ([141.58.32.133]) by smtp.web.de (mrweb006
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1MElVH-1qJfbZ1A8h-00GMmM; Thu, 22
+ Jun 2023 14:15:58 +0200
+Date: Thu, 22 Jun 2023 14:15:55 +0200
 From: Lukas Straub <lukasstraub2@web.de>
 To: qemu-devel <qemu-devel@nongnu.org>
 Cc: Hailiang Zhang <zhanghailiang@xfusion.com>, Juan Quintela
  <quintela@redhat.com>, Peter Xu <peterx@redhat.com>, Leonardo Bras
  <leobras@redhat.com>, "Zhang, Chen" <chen.zhang@intel.com>
-Subject: [PATCH 4/8] colo: Remove ENABLE_COLO loadvm command functions
-Message-ID: <5628c538ff7b35246b5acb09d82420abbadccf02.1687429356.git.lukasstraub2@web.de>
+Subject: [PATCH 5/8] colo: Don't send ENABLE_COLO command
+Message-ID: <c5fc483a73f755e294a869ce9f6850323abeb8a2.1687429356.git.lukasstraub2@web.de>
 In-Reply-To: <cover.1687429356.git.lukasstraub2@web.de>
 References: <cover.1687429356.git.lukasstraub2@web.de>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/.9AEkJabhCLPvezCg4a.BK.";
+Content-Type: multipart/signed; boundary="Sig_/qY1nuiH8lLkXmuuY6=78zTc";
  protocol="application/pgp-signature"; micalg=pgp-sha512
-X-Provags-ID: V03:K1:rHf2CjxAyFfBTIw421O2e/9f41n+xaSpBVwxOgdOFs4sBT9d0RI
- ur+hHtg4f3+4kvOEgf9wadssPCPSe0bWeDZYAxMMzkFttjGAQaVoN1z2/tm1C953RzQpXsF
- sSwa9mz0JIaHBdFoLo+DR3b5eKj4YDNmG7w4X+U4kfoSbiEMxfhKV3Yuqba8w4/n3UfOQVs
- 8tf0sp6rFm1Cf26lTwwcA==
-UI-OutboundReport: notjunk:1;M01:P0:ErDGgjUG4O8=;iCVAnIzWattqwr2fWBa+rITyFLY
- 2eJh319jrngPEx7hIo17e3jFrIii3bsrDVMgt91f8HsL6T3c1ysk0R4XLV3iOhYpSug9u6NFx
- 5iqjsrH+GpY4aq9cODhnn5qs4oAI4DWWl28eaJEp+trkTqpSjqc23u6uWvTDSGEIgMFycGNXk
- lpQLxT7K8umOQqMM2RWAxiryzzjfu5ASLMjvob36JQD19s9AnvFs2+URHniXJlsfAxUZ/IfoT
- FtxU0eGu76XkO/gLBkqhjpjdnGe+DO2mE9/Vext9Bhecn0ZqPLsVjR80krf0JGSRp6jPU5oqJ
- 9uJCvTYUaVHbVG1u4z5/KDKaYjyjminOiqWMF3/vqzWxyc/1au/nDNHEXnkhrfKxAaG2WD1Uy
- 1sbW9wy6Lx32x56zC3u56SoDYejEkQITxDGtnc0FhN2m5PfweWmSBV/a3Ugr8sIJ+Gvosq6Hi
- tHsqU0/SO28iB/+zF0/IjH51+HCmhCRMocg2L4xAy5H1ffCBfKhZsnjp5xAPsB8ojbc5N7Vlp
- GWMIlbxssrrKeegnZH1NuTWg2BzGmal4BcY6B4a4S62mS+5higpvY/VYfz27GWPAadlc6d5BQ
- +mJF8zLZqp96f6DVdevnHqOQPxURfhhdJIdlduUlf6qR8VejhPepaFKRJbUyp7uc3aSpYjrOa
- 5UhHuFgyNFIEbF2TahNAb9Gl/2pOTQ5HaUg7maS1xRd/ZNGWyCkTDs31I/BNIFU33kFS6Crhs
- GIYijHrQu+53noiEQI6E8vmfCva/HKl5KELn6+V9ZQDFZszQLaT9ozncH3HRYR6j7Tlq7q6KN
- lNt3vEhJjCnIAdYJVBdzu+Y9IuX5BODAV/NOXnt/ou0QQCrLPDdoR0tmWnaYN90TEnqaImK81
- chCbWRRPm1a//FueJShZSC82x09owp0HqI3qpBr1tEHNG07C/UM3Oi3v0KIxUXUDE1CeuA/Co
- 7qMZ8HxhtAB68MrhLYU1pcLCG/Y=
-Received-SPF: pass client-ip=212.227.15.3; envelope-from=lukasstraub2@web.de;
+X-Provags-ID: V03:K1:MYV703HeTQioXgtgsJKYkXs2I42pDTlRQ++aQLb+ToeUh8NraYu
+ c0fe9SfJ2qfWhuTZLg7+P5ghHxnyRtGU2hUuDhIOZAYTiR9UucPqjMkkJCikimzXPyiw//t
+ /X1U6ABA9WcFkN9kvriDJowTQj5Y3v9b9XGksopWVvUvGp610lv4bbwevvGWIrci6ekR5gP
+ qQik9oGvpuaZM+xWPr8FQ==
+UI-OutboundReport: notjunk:1;M01:P0:C4saCdPCwJE=;UXUowXWHhVTZH3pOmVUMQYD7+Tb
+ uk/Z04L6COcG+WYMBuBMfGQ+cNwwNPcwMfpYybxGzmSHqnUqtwLNdHgwMmDqgLo72iUM9hovL
+ ZLCIa8f1n4+H+Z4rTfmB7Iv4rpjf/+rPeAfHgKE8vHRPTq5AXfOx7hUzcnOUZZXul4DgUx+ne
+ c0NUDPsPDQJ/iOeb16NjKfGenKXOiAuybdrefX5EsRH9MRRSOJagVOohACUTsGdKy4iGoGiYV
+ u2yWa3GH3R9MUoQnEdGfAwu4yc74+HTA1J7sSr7rlvWOjISAHapbRIRMubCvXH/pZh/zuUFJ5
+ 2HZFWSjzJS5eI692Om9nuv3IHg3UdKBaHHQsEjeOD/e4EJYRIw81jVzTjI+RwTcKBT+fGSCpF
+ BWozS64Wmxlyzwq1qhbyWvvdHV+qZJBw/avEmRNRzCTQsPlIMS1KkUH1B8gJiKXRf4JU6E5CM
+ dEEh/wDM84XkItoMnT8NF3xANhmCWSfiiwBbmH3iGx0jvS7QpGxMLYFETQKOW507B1MklBimE
+ OJCpKaX6pLp+zzeiPoS4CRKjGKqg7Cy2D1MlylgSEqAs33HPYlqUPvLfUp/QooVLYNXYj2YMg
+ XxNVSKH1DszISSYC5rlfK18+jmTTNxw6UaDlc92ojJaF/MIf4m1+zM+eiamOAI+NunBsvPYXl
+ eHW9pbb+sZ10hMFwitTO/KJaEO2mnvd+Bu56+aapSzDPEC+3fY+GNEHZiHIMWX32DkClnDmih
+ HlzVhqryEas9id9nvj4slfeOp5fJtIILkKQUKGk8VYj1sSuSX0G/ndGNBh7koJlIKW03qZKKv
+ 02xGZplik9ttexiNxIFbRLL4ISqAvP4eyjfOM22eK/tS8EWLWy7WpLs+Om3sribRr5Dw4iP2A
+ vnPY4dEMOE0cMq5jrjulmwwhAnsReyT8xIHXOYcEhDm6j66oCp/+/HPBucNi07ex2Um1u5VbC
+ AXnsby4ALWIAV++DjrSJSuez9kU=
+Received-SPF: pass client-ip=212.227.15.4; envelope-from=lukasstraub2@web.de;
  helo=mout.web.de
 X-Spam_score_int: -25
 X-Spam_score: -2.6
@@ -88,130 +88,103 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---Sig_/.9AEkJabhCLPvezCg4a.BK.
+--Sig_/qY1nuiH8lLkXmuuY6=78zTc
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: quoted-printable
 
-No need for it anymore now that x-colo capability is required
-on incoming side. Still accept the command as noop, for
-compatibility with older qemu.
+We should only migrate to qemu with newer version, and there it's
+not needed anymore.
 
 Signed-off-by: Lukas Straub <lukasstraub2@web.de>
 ---
- include/migration/colo.h |  2 --
- migration/migration.c    | 26 --------------------------
- migration/savevm.c       |  7 +------
- 3 files changed, 1 insertion(+), 34 deletions(-)
+ migration/migration.c  | 5 -----
+ migration/savevm.c     | 6 ------
+ migration/savevm.h     | 1 -
+ migration/trace-events | 1 -
+ 4 files changed, 13 deletions(-)
 
-diff --git a/include/migration/colo.h b/include/migration/colo.h
-index 4a1955067b..addbc24fcf 100644
---- a/include/migration/colo.h
-+++ b/include/migration/colo.h
-@@ -25,8 +25,6 @@ void migrate_start_colo_process(MigrationState *s);
- bool migration_in_colo_state(void);
-=20
- /* loadvm */
--int migration_incoming_enable_colo(void);
--void migration_incoming_disable_colo(void);
- bool migration_incoming_in_colo_state(void);
-=20
- COLOMode get_colo_mode(void);
 diff --git a/migration/migration.c b/migration/migration.c
-index 2506fd63f7..1d347533f9 100644
+index 1d347533f9..a954ff4f7d 100644
 --- a/migration/migration.c
 +++ b/migration/migration.c
-@@ -378,31 +378,6 @@ int migrate_send_rp_req_pages(MigrationIncomingState *=
-mis,
-     return migrate_send_rp_message_req_pages(mis, rb, start);
- }
-=20
--static bool migration_colo_enabled;
--void migration_incoming_disable_colo(void)
--{
--    ram_block_discard_disable(false);
--    migration_colo_enabled =3D false;
--}
--
--int migration_incoming_enable_colo(void)
--{
--#ifndef CONFIG_REPLICATION
--    error_report("ENABLE_COLO command come in migration stream, but COLO "
--                 "module is not built in");
--    return -ENOTSUP;
--#endif
--
--    if (!migrate_colo()) {
--        error_report("ENABLE_COLO command come in migration stream, but c-=
-colo "
--                     "capability is not set");
--        return -EINVAL;
--    }
--
--    migration_colo_enabled =3D true;
--    return 0;
--}
--
- void migrate_add_address(SocketAddress *address)
- {
-     MigrationIncomingState *mis =3D migration_incoming_get_current();
-@@ -480,7 +455,6 @@ static void process_incoming_migration_bh(void *opaque)
-             runstate_set(RUN_STATE_PAUSED);
-         }
-     } else if (migrate_colo()) {
--        migration_incoming_disable_colo();
-         vm_start();
-     } else {
-         runstate_set(global_state_get_runstate());
-diff --git a/migration/savevm.c b/migration/savevm.c
-index 155abb0fda..3a1de15bd0 100644
---- a/migration/savevm.c
-+++ b/migration/savevm.c
-@@ -2300,11 +2300,6 @@ static int loadvm_handle_recv_bitmap(MigrationIncomi=
-ngState *mis,
-     return 0;
- }
-=20
--static int loadvm_process_enable_colo(MigrationIncomingState *mis)
--{
--    return migration_incoming_enable_colo();
--}
--
- /*
-  * Process an incoming 'QEMU_VM_COMMAND'
-  * 0           just a normal return
-@@ -2387,7 +2382,7 @@ static int loadvm_process_command(QEMUFile *f)
-         return loadvm_handle_recv_bitmap(mis, len);
-=20
-     case MIG_CMD_ENABLE_COLO:
--        return loadvm_process_enable_colo(mis);
-+        return 0;
+@@ -2929,11 +2929,6 @@ static void *migration_thread(void *opaque)
+         qemu_savevm_send_postcopy_advise(s->to_dst_file);
      }
 =20
-     return 0;
+-    if (migrate_colo()) {
+-        /* Notify migration destination that we enable COLO */
+-        qemu_savevm_send_colo_enable(s->to_dst_file);
+-    }
+-
+     qemu_savevm_state_setup(s->to_dst_file);
+=20
+     qemu_savevm_wait_unplug(s, MIGRATION_STATUS_SETUP,
+diff --git a/migration/savevm.c b/migration/savevm.c
+index 3a1de15bd0..5986f852b2 100644
+--- a/migration/savevm.c
++++ b/migration/savevm.c
+@@ -1035,12 +1035,6 @@ static void qemu_savevm_command_send(QEMUFile *f,
+     qemu_fflush(f);
+ }
+=20
+-void qemu_savevm_send_colo_enable(QEMUFile *f)
+-{
+-    trace_savevm_send_colo_enable();
+-    qemu_savevm_command_send(f, MIG_CMD_ENABLE_COLO, 0, NULL);
+-}
+-
+ void qemu_savevm_send_ping(QEMUFile *f, uint32_t value)
+ {
+     uint32_t buf;
+diff --git a/migration/savevm.h b/migration/savevm.h
+index fb636735f0..cb3318e9e2 100644
+--- a/migration/savevm.h
++++ b/migration/savevm.h
+@@ -57,7 +57,6 @@ void qemu_savevm_send_postcopy_ram_discard(QEMUFile *f, c=
+onst char *name,
+                                            uint16_t len,
+                                            uint64_t *start_list,
+                                            uint64_t *length_list);
+-void qemu_savevm_send_colo_enable(QEMUFile *f);
+ void qemu_savevm_live_state(QEMUFile *f);
+ int qemu_save_device_state(QEMUFile *f);
+=20
+diff --git a/migration/trace-events b/migration/trace-events
+index cdaef7a1ea..bd3ec40e31 100644
+--- a/migration/trace-events
++++ b/migration/trace-events
+@@ -36,7 +36,6 @@ savevm_send_ping(uint32_t val) "0x%x"
+ savevm_send_postcopy_listen(void) ""
+ savevm_send_postcopy_run(void) ""
+ savevm_send_postcopy_resume(void) ""
+-savevm_send_colo_enable(void) ""
+ savevm_send_recv_bitmap(char *name) "%s"
+ savevm_state_setup(void) ""
+ savevm_state_resume_prepare(void) ""
 --=20
 2.39.2
 
 
---Sig_/.9AEkJabhCLPvezCg4a.BK.
+--Sig_/qY1nuiH8lLkXmuuY6=78zTc
 Content-Type: application/pgp-signature
 Content-Description: OpenPGP digital signature
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCgAdFiEEg/qxWKDZuPtyYo+kNasLKJxdslgFAmSUO3MACgkQNasLKJxd
-slgiTw//dHYPntG+7yZ5O7MUJHKAY2HgO9AOTzAySmfr7l1xGQaFNIBagjCYzI08
-c1m7KZXShurqpqxGVUDyClV+K8ZHx9hQa8jjuAAY5lqD76Drww+tnO2daSKJFQhC
-xmQjm6HLjjmGLzCZt4ppZN32r8nox2txa5CjGkWAmgCiwHcmNfIsuQsoCtJOh03N
-OXXKdsY6eU1crBUFGlnN3NEFWkCHBC4OkJHfMJxPu9iwHTfsGopkE5a7myjkbKou
-TOQrRyDVcqDZnbcQUjCScT7o+5Pz7M3p0xOfF0RDMAGWc0ZjfQNzQnz39zyUKHDW
-QHDxrNx+Hy/Je87cjSkLKgYjfLJ2dqohI+ehggl6UxrneLRA9S3BvWpBxSyVSEYO
-zIvZIQyrxkBJEqZ4QMONgXlIUJS15faos1dBpOsn+nOiYQO5A++6+aR9Ya/iuEGr
-IC1cepQxMlyw6379CTixO0pUAZJgcaxsXdU5kwkLVChiOdiXmOy4Uz2wdjlld9yl
-ee2+l0BJVFNkdZdGXeFh5arsIiKmyz2jVIFIs5kFPKXoqGTuXnu2a0jrqcjDWDGe
-WaCc+0eJNhSGzvqB6Skf+9iMac81pi8cLG97+m2Jm1RKvOC/nWGY1bx3/Sz/4NGc
-Kx1BKs+NtGyPAJ4YLhkAIwYxuLrSPiGr1HHOEPrBwTplzz+XIfo=
-=GAH4
+iQIzBAEBCgAdFiEEg/qxWKDZuPtyYo+kNasLKJxdslgFAmSUO3sACgkQNasLKJxd
+slgGqBAAsMN3T1WIavZDGk8vbz110k9Fdvmhbq5JIVPS4OzBhW6G2NeTwCe2bfj5
+7bt6c0AlF3+s4EnleMG0CV1rdcJbef8fL0ZzITBxfUS6pGrOC+eTMeWFOadxMScO
+DJEqGWAZWrHSU/48J9UsrPANI0mR2JOiAR4Jrig+Jh5gSAYs7cCVu0rVomlyTW8w
+zeqsVIaZx0F+P7pWpR/qZk7KWCcaw/C9C9JmsAYseUFVFUUBqJA2DuQgBTOltJQU
+J8r4WeqP9Xx6xAlh+7Evb0/GGjJvOoXN8jxSxo6amtQQ5pG0s5q1tk8AhH2L289y
+k1UZSLZMoAekux86qDb29Nog/WfG2vQBvyxzLGsiShXurC3FdD6kbVHRRyeeBZgF
+/epPqL004RdffVT/gzDJ6M5AHElsXFixr/8ks7vJehRZpE59u1Cq4OGTU04UWGsR
+VDdOt2+SuVLG5Un1qTd+dSOYb5fzrUFZw8ZsXt2Ijq2BHKFe0JD2HktzA35eB4aR
+ss9QUztrYB8qnXB6+hDHntI4P3CAasGtbzc7SBOBdf51Q13dBsOqjbd3Nlioc/Ei
+y8c3Ax2dyzgog7kxnIHPrd2E62838PDHKT/iwpJzR+4gAfAzqosSNyEuDhLyWF9Q
+1BxKVEUBNiSN/4GkMbVqdhnclKjK97ZJ/x/rboAwfG5hZJgDYw4=
+=i5/X
 -----END PGP SIGNATURE-----
 
---Sig_/.9AEkJabhCLPvezCg4a.BK.--
+--Sig_/qY1nuiH8lLkXmuuY6=78zTc--
 
