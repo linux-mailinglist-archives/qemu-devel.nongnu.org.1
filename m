@@ -2,57 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F55973ABDC
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 23:51:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ADD073ABD9
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 23:51:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCSBs-0003OX-Up; Thu, 22 Jun 2023 17:50:08 -0400
+	id 1qCSBv-0003Pa-Il; Thu, 22 Jun 2023 17:50:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <joao.m.martins@oracle.com>)
- id 1qCSBr-0003OO-34
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 17:50:07 -0400
-Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
+ id 1qCSBt-0003Oz-GJ
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 17:50:09 -0400
+Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <joao.m.martins@oracle.com>)
- id 1qCSBp-0007kT-GG
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 17:50:06 -0400
-Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
+ id 1qCSBr-0007lU-Po
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 17:50:09 -0400
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
  by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 35MKMFt1004331; Thu, 22 Jun 2023 21:50:01 GMT
+ 35MK24Dp019481; Thu, 22 Jun 2023 21:50:05 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
  h=from : to : cc :
  subject : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=corp-2023-03-30;
- bh=D8sJBWHFKbzRhdEFK0ztebWVJvFcWgua+sz/1uYPWSg=;
- b=LONTXQeUr7pGA7lPwfplCXu4FbtxR0cD4RYgjmEiqHg33AvguO80gcWBa2zEA7SzhvDQ
- pQOivcOjE1YxoH13PMRrIamcAgqclEL5WUHQA+rmwZeASXcBXj5JXwUdtjF2zN4E3b5z
- WI0c2rKaLeLqlABio1AsHiALxegQiieso8krpGvMFLYEUEcNArPQhMbuDgE+uvi/g0yR
- v2kUNOUmxuB3BjapZy17FjYSmTipZLP9+u4N81UFar21gVEB1e8yjty3n8EIa2f7YpZ8
- plcbTeLBQPTPXWixlAYoMutIF906HjyhFGgKbH/r+jifK4ujN43FQNukEfGLPLtKSDP1 Ig== 
+ bh=bQtVazwT3QoQkJyOPrjd5tGv+nILONCMQ+b89mlhz4c=;
+ b=V3li4+yIeP+qLVozSIfmAoUe1oI2Kmp4Gvp/cVhtqZCRDuNEYyZ0yfZEAJQfbcTqosl6
+ zR4zfVtll92jMBp/YLFWUJLt+2X0e9VXkU7VfpGJmfQnnLzDgKCsXzl+mNEYGSSS6nSg
+ I8O+KYa8O+mptKxLEbtx04At9TS7vbDeLOBauwdJu8yXK/3UbctenGmoiqGgEd4Hnvrf
+ jPdZp8CKRhFwnuxz9BVRMjR7OcWnv72Md9v4r0+8f/K/+TM8nDEV5YrRvMDT1QZQWMQ7
+ Ue9yfVj1UhZL7vo8foFkb5o8gbcKjbd6q4uLupbKl/4AqxJLMIPii+DWhYJSRs5MQTDo wQ== 
 Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3r93rbtw6b-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3r938dtt0w-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 22 Jun 2023 21:50:00 +0000
+ Thu, 22 Jun 2023 21:50:05 +0000
 Received: from pps.filterd
  (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
  by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 35MJnlAx008353; Thu, 22 Jun 2023 21:50:00 GMT
+ with ESMTP id 35MJv6Ag008427; Thu, 22 Jun 2023 21:50:04 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 3r9398ept7-1
+ 3r9398epwr-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 22 Jun 2023 21:50:00 +0000
+ Thu, 22 Jun 2023 21:50:04 +0000
 Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 35MLn776035791;
- Thu, 22 Jun 2023 21:49:59 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 35MLn778035791;
+ Thu, 22 Jun 2023 21:50:04 GMT
 Received: from joaomart-mac.uk.oracle.com (dhcp-10-175-180-251.vpn.oracle.com
  [10.175.180.251])
  by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id
- 3r9398ep1g-11; Thu, 22 Jun 2023 21:49:56 +0000
+ 3r9398ep1g-12; Thu, 22 Jun 2023 21:50:03 +0000
 From: Joao Martins <joao.m.martins@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
@@ -66,10 +66,10 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
  Eduardo Habkost <eduardo@habkost.net>,
  Avihai Horon <avihaih@nvidia.com>, Jason Gunthorpe <jgg@nvidia.com>,
  Joao Martins <joao.m.martins@oracle.com>
-Subject: [PATCH v4 10/15] intel-iommu: Implement IOMMU_ATTR_MAX_IOVA
- get_attr() attribute
-Date: Thu, 22 Jun 2023 22:48:40 +0100
-Message-Id: <20230622214845.3980-11-joao.m.martins@oracle.com>
+Subject: [PATCH v4 11/15] vfio/common: Move dirty tracking ranges update to
+ helper
+Date: Thu, 22 Jun 2023 22:48:41 +0100
+Message-Id: <20230622214845.3980-12-joao.m.martins@oracle.com>
 In-Reply-To: <20230622214845.3980-1-joao.m.martins@oracle.com>
 References: <20230622214845.3980-1-joao.m.martins@oracle.com>
 MIME-Version: 1.0
@@ -82,10 +82,10 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
  spamscore=0 phishscore=0 suspectscore=0 malwarescore=0 bulkscore=0
  mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2305260000 definitions=main-2306220186
-X-Proofpoint-ORIG-GUID: ZXWFStTShDYH87vFRp9vROKOTcwmhV_V
-X-Proofpoint-GUID: ZXWFStTShDYH87vFRp9vROKOTcwmhV_V
-Received-SPF: pass client-ip=205.220.165.32;
- envelope-from=joao.m.martins@oracle.com; helo=mx0a-00069f02.pphosted.com
+X-Proofpoint-GUID: 0u0E5PCU_Cow0xh1xsnImdt7MZzSl9xp
+X-Proofpoint-ORIG-GUID: 0u0E5PCU_Cow0xh1xsnImdt7MZzSl9xp
+Received-SPF: pass client-ip=205.220.177.32;
+ envelope-from=joao.m.martins@oracle.com; helo=mx0b-00069f02.pphosted.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
 X-Spam_bar: --
@@ -109,35 +109,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Avihai Horon <avihaih@nvidia.com>
+Separate the changes that updates the ranges from the listener, to
+make it reusable in preparation to expand its use to vIOMMU support.
 
-Implement get_attr() method and use the address width property to report
-the IOMMU_ATTR_MAX_IOVA attribute.
-
-Signed-off-by: Avihai Horon <avihaih@nvidia.com>
 Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
 ---
- hw/i386/intel_iommu.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ hw/vfio/common.c | 36 +++++++++++++++++++++---------------
+ 1 file changed, 21 insertions(+), 15 deletions(-)
 
-diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-index ed2a46e008df..989993e303a6 100644
---- a/hw/i386/intel_iommu.c
-+++ b/hw/i386/intel_iommu.c
-@@ -3876,6 +3876,13 @@ static int vtd_iommu_get_attr(IOMMUMemoryRegion *iommu_mr,
-         *enabled = s->dma_translation;
-         break;
+diff --git a/hw/vfio/common.c b/hw/vfio/common.c
+index 17c1d882e221..ecfb9afb3fb6 100644
+--- a/hw/vfio/common.c
++++ b/hw/vfio/common.c
+@@ -1413,20 +1413,10 @@ typedef struct VFIODirtyRangesListener {
+     MemoryListener listener;
+ } VFIODirtyRangesListener;
+ 
+-static void vfio_dirty_tracking_update(MemoryListener *listener,
+-                                       MemoryRegionSection *section)
++static void vfio_dirty_tracking_update(hwaddr iova, hwaddr end,
++                                       VFIODirtyRanges *range)
+ {
+-    VFIODirtyRangesListener *dirty = container_of(listener,
+-                                                  VFIODirtyRangesListener,
+-                                                  listener);
+-    VFIODirtyRanges *range = &dirty->ranges;
+-    hwaddr iova, end, *min, *max;
+-
+-    if (!vfio_listener_valid_section(section, "tracking_update") ||
+-        !vfio_get_section_iova_range(dirty->container, section,
+-                                     &iova, &end, NULL)) {
+-        return;
+-    }
++    hwaddr *min, *max;
+ 
+     /*
+      * The address space passed to the dirty tracker is reduced to two ranges:
+@@ -1450,12 +1440,28 @@ static void vfio_dirty_tracking_update(MemoryListener *listener,
      }
-+    case IOMMU_ATTR_MAX_IOVA:
-+    {
-+        hwaddr *max_iova = (hwaddr *)(uintptr_t) data;
+ 
+     trace_vfio_device_dirty_tracking_update(iova, end, *min, *max);
+-    return;
++}
 +
-+        *max_iova = MAKE_64BIT_MASK(0, s->aw_bits);;
-+        break;
++static void vfio_listener_dirty_tracking_update(MemoryListener *listener,
++                                                MemoryRegionSection *section)
++{
++    VFIODirtyRangesListener *dirty = container_of(listener,
++                                                  VFIODirtyRangesListener,
++                                                  listener);
++    hwaddr iova, end;
++
++    if (!vfio_listener_valid_section(section, "tracking_update") ||
++        !vfio_get_section_iova_range(dirty->container, section,
++                                     &iova, &end, NULL)) {
++        return;
 +    }
-     default:
-         ret = -EINVAL;
-         break;
++
++    vfio_dirty_tracking_update(iova, end, &dirty->ranges);
+ }
+ 
+ static const MemoryListener vfio_dirty_tracking_listener = {
+     .name = "vfio-tracking",
+-    .region_add = vfio_dirty_tracking_update,
++    .region_add = vfio_listener_dirty_tracking_update,
+ };
+ 
+ static void vfio_dirty_tracking_init(VFIOContainer *container,
 -- 
 2.17.2
 
