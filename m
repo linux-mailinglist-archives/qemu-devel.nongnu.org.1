@@ -2,69 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70E45739F57
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 13:18:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6927739F58
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 13:20:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCIJr-0001nO-F2; Thu, 22 Jun 2023 07:17:43 -0400
+	id 1qCILZ-0002uE-Da; Thu, 22 Jun 2023 07:19:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
- id 1qCIJp-0001mZ-Aw
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 07:17:41 -0400
-Received: from vps-vb.mhejs.net ([37.28.154.113])
+ (Exim 4.90_1) (envelope-from <lukasstraub2@web.de>)
+ id 1qCILX-0002ts-Qe
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 07:19:27 -0400
+Received: from mout.web.de ([212.227.15.3])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
- id 1qCIJm-0000vc-Pg
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 07:17:41 -0400
-Received: from MUA by vps-vb.mhejs.net with esmtps (TLS1.2) tls
- TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 (Exim 4.94.2)
- (envelope-from <mail@maciej.szmigiero.name>)
- id 1qCIJd-00007C-Mn; Thu, 22 Jun 2023 13:17:29 +0200
-Message-ID: <9da309c5-d39e-8d42-d444-b021d6379c14@maciej.szmigiero.name>
-Date: Thu, 22 Jun 2023 13:17:24 +0200
+ (Exim 4.90_1) (envelope-from <lukasstraub2@web.de>)
+ id 1qCILU-0004qN-J6
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 07:19:27 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+ s=s29768273; t=1687432758; x=1688037558; i=lukasstraub2@web.de;
+ bh=74YFrnTHV3m+nHMo2Nn1V2d8fk+1hOwOgOeVWlw3fUE=;
+ h=X-UI-Sender-Class:Date:From:To:Cc:Subject;
+ b=eHlTfDcI0dMy6WyijIhy90r9oQ9ZArm58EOr7xaMrNqRA9+irFT8YuidC7Xm7AgpBFUM9Pj
+ SdbmIhOiWelxx9Z2tukwndz8zqFw6WCW0tx/w08CgZ8pVHbtB2lFhz00Ev3m0RAPuU2pWFHRS
+ x7FskUnxHX+NxDffyawcdBu6FmniZq46tinsRtZOEx2Xm7a3Dm4EkLEcdb6QrFZ5uFrPngSBu
+ dSpJ/PsePgyDMnf+M7raFwMF3XRK1KRmEjr59cl7jKvYjXUlBiT0OwcO1vm7ieo00wihfDylR
+ jTPceYEcloYOhM2m7/FyLRMgO6mNLHCjF5BY/p7QnJVJlFKlTldg==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from mobian ([46.114.147.93]) by smtp.web.de (mrweb006
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1MQ8ai-1qPa213TOa-00MFjc; Thu, 22
+ Jun 2023 13:19:18 +0200
+Date: Thu, 22 Jun 2023 13:18:46 +0200
+From: Lukas Straub <lukasstraub2@web.de>
+To: qemu-devel <qemu-devel@nongnu.org>
+Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Leonardo Bras <leobras@redhat.com>
+Subject: [PATCH v3] multifd: Add colo support
+Message-ID: <20230622131846.1f5fabb1@mobian>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH][RESEND v5 3/3] Add a Hyper-V Dynamic Memory Protocol
- driver (hv-balloon)
-Content-Language: en-US, pl-PL
-To: David Hildenbrand <david@redhat.com>
-Cc: "Michael S . Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
- Thomas Huth <thuth@redhat.com>,
- =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>
-References: <cover.1686577753.git.maciej.szmigiero@oracle.com>
- <896327748bde906826e24ce7cc45301e325e14a7.1686577753.git.maciej.szmigiero@oracle.com>
- <f54e55d0-b8dd-a431-7634-02fdec0611bb@redhat.com>
- <1b107fba-38e0-cced-e19f-b62684072bfd@maciej.szmigiero.name>
- <008fced2-1bcf-7a89-d642-bb724eb63ddf@redhat.com>
- <987af80f-9636-42da-26de-e2d07dc25ce3@maciej.szmigiero.name>
- <acf9402f-3baf-6c07-6662-7e0638f78263@redhat.com>
- <0a7cc359-f308-21a1-6c6d-7bcb51051f7e@maciej.szmigiero.name>
- <aa78a4fc-9c88-b6c1-98f8-d22348927df4@redhat.com>
- <614701f8-b0cf-a856-a374-5b59165ebc9c@maciej.szmigiero.name>
- <ec4d9557-c7af-54a5-2e17-f5d8d2b54534@redhat.com>
-From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
-In-Reply-To: <ec4d9557-c7af-54a5-2e17-f5d8d2b54534@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=37.28.154.113;
- envelope-from=mail@maciej.szmigiero.name; helo=vps-vb.mhejs.net
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Content-Type: multipart/signed; boundary="Sig_/dc+pofX.XfCXEgXSv2tLTL7";
+ protocol="application/pgp-signature"; micalg=pgp-sha512
+X-Provags-ID: V03:K1:pbgsSHAf7fk+cMYfKckdZj3w7M2KXEHJuoSj45dg2420DQnE/MH
+ n1MHrYluiGwcuho4gY0CPsd9E45Q4qCb9dqqNgw6/2Kmn1LlHf3VvvGjy/9mBdCUUo5MPYv
+ GLQQVLgRngSxAr0ul6Nm+5JQmq8ECeFmx7urgiL06SQb67tiMXdNGbcATWKWeInl487R13K
+ L4jM7q0X0MHjKW7TH4rGg==
+UI-OutboundReport: notjunk:1;M01:P0:tPqkSRylChk=;6DeNtD8jgcvsATkem2QFjLRBagX
+ 5CZtEO8NJR4f9/1ZRsNHC4jF+JQqS9+++j68hLHGb8O4cixnuEAFqa19dbMQYAr7wsRjywOBN
+ haINk0yI1KX9nRRscrgaAsZuZcV1XXkBP8vQ/1Np9pdSkixBo4mq5tq6NF6c86PegiWqyi6Wk
+ KyeAwPOMlxW7VR7OG78AEWHFJheGNElcJUoCoGEPqKc9XHy6PciYVrfmqx4mP5jzwpzUgkZ+S
+ D/I3gYmiom0Tlqm2MFTvyx/34kFXB1wFBriKcYZTwHrjHk7uWM1kAGk0sOGdldjLio+KfuzSU
+ sA1hirQtTpOAiukPCR620hXcXqQdXMv3ejsiZZNoPPonIFxyADFui2W2QFvLi4uEN7URpBpgl
+ wPFc+v6yMEsCE4DswOGbxLtvJOx+GB6KyRZ3bPrdSgH9nzE/NOrAeqkAZXpdz8c1iYSQaol7+
+ OCGcS0IjN5tjCTLnR/T6X9wdHFF+pWr8uJ4gV6DWvHpvb+fs3uQZECGG+DiKPZ+wsXa1AG6ll
+ IgwLF4ha6Is2smlK/Irt+Oa9AKsS2qLKYs1r5cc89iWDJd0O8fxmA0dSY7laHvhX1D5JJWNoB
+ x5u6ABQntOyTcpriJ3MpKAMdFsZmZglGARMFamGLErAk6kM1B//CjGfFkFlQJIL33iRwRyai2
+ 51uMm+Fo/VvZI75AII9Uoxh1SdELikfyQWba+PCydk+wjjhp56ejVkqnBrSzVkYKcrH6T0Byr
+ CqbZHgBgKC0xmtvFCVVlwBe49oN8E8TmqU5B/8/vFMu0w0XVHcPizS54gwcKvJMiCZBuQO0JR
+ 6sv/mPrKUzYtMxjqAX1kHOXwK+zNks8ZchR9pkmqliVK/Qz5UnL1ZmJzv/Np3OuDvOcPSe5Qa
+ NZ5je4SH0dUTrswmilV+EKZXUpdblH14JcZ2+ld8FWY6fZgwUmchcKBNU7kqfo0BNBUf8Eajl
+ HgfgHw==
+Received-SPF: pass client-ip=212.227.15.3; envelope-from=lukasstraub2@web.de;
+ helo=mout.web.de
+X-Spam_score_int: -25
+X-Spam_score: -2.6
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.09,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,160 +85,178 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 22.06.2023 13:15, David Hildenbrand wrote:
-> On 22.06.23 13:12, Maciej S. Szmigiero wrote:
->> On 22.06.2023 13:01, David Hildenbrand wrote:
->>> [...]
->>>
->>>>>>> We'd use a memory region container as device memory region (like [1]) and would have to handle the !memdev case (I can help with that). > Into that, you can map the RAM memory region on demand (and eventually even using multiple slots like [1]).
->>>>>>>
->>>>>>> (2) Use a single virtual DIMM and (un)plug that on demand. Let the machine code handle (un)plugging of the device.
->>>>>>>
->>>>>>>
->>>>>>> (1) feels cleanest to me, although it will require a bit more work.
->>>>>>>
->>>>>>
->>>>>> I also think approach (1) makes more sense as it avoids memslot metadata
->>>>>> overhead for not-yet-hot-added parts of the memory backing device.
->>>>>>
->>>>>> Not sure what you mean that the !memdev case would be problematic in this
->>>>>> case - it is working in the current driver shape so why would adding
->>>>>> potential memory subregions (used in the memdev case) change that?
->>>>>
->>>>> I'm thinking about the case where you have a hv-balloon device without a memdev.
->>>>>
->>>>> Without -m X,maxmem=y we don't currently expect to have memory devices around
->>>>> (and especially them getting (un)plugged. But why should we "force" to set the
->>>>> "maxmem" option
->>>>
->>>> I guess it's only a small change to QEMU to allow having hv-balloon
->>>> device (without a memdev) even in the case where there's no "maxmem"
->>>> option given on the QEMU command line.
->>>>
->>>>>
->>>>> I hope I'll find some time soonish to prototype what I have in mind, to see
->>>>> if it could be made working.
->>>>>
->>>>
->>>> Okay, so I'll wait for your prototype before commencing further work on
->>>> the next version of this driver.
->>>
->>> About to have something simplistic running -- I think. Want to test with a Linux VM, but I don't seem to get it working (also without my changes).
->>>
->>>
->>> #!/bin/bash
->>>
->>> build/qemu-system-x86_64 \
->>>       --enable-kvm \
->>>       -m 4G,maxmem=36G \
->>>       -cpu host,hv-syndbg=on,hv-synic,hv-relaxed,hv-vpindex \
->>>       -smp 16 \
->>>       -nographic \
->>>       -nodefaults \
->>>       -net nic -net user \
->>>       -chardev stdio,nosignal,id=serial \
->>>       -hda Fedora-Cloud-Base-37-1.7.x86_64.qcow2 \
->>>       -cdrom /home/dhildenb/git/cloud-init/cloud-init.iso \
->>>       -device isa-serial,chardev=serial \
->>>       -chardev socket,id=monitor,path=/var/tmp/mon_src,server,nowait \
->>>       -mon chardev=monitor,mode=readline \
->>>       -device vmbus-bridge \
->>>       -object memory-backend-ram,size=2G,id=mem0 \
->>>       -device hv-balloon,id=hv1,memdev=mem0
->>>
->>>
->>>
->>> [root@vm-0 ~]# uname -r
->>> 6.3.5-100.fc37.x86_64
->>> [root@vm-0 ~]# modprobe hv_balloon
->>> modprobe: ERROR: could not insert 'hv_balloon': No such device
->>>
->>>
->>> Any magic flag I am missing? Or is there something preventing this to work with Linux VMs?
->>>
->>
->> Haven't tested the driver with Linux guests in a long time (as it is
->> targeting Windows), but I think you need to disable KVM PV interface for
->> the Hyper-V one to be detected by Linux.
->>
->> Something like adding "kvm=off" to "-cpu" and seeing in the dmesg whether
->> the detected hypervisor is now Hyper-V.
->>
->> Also, you need to disable S4 in the guest for hot-add capability to work
->> (I'm adding "-global ICH9-LPC.disable_s4=1" with q35 machine for this).
->>
->> Would also suggest adding "--trace 'hv_balloon_*' --trace 'memory_device_*'"
->> to QEMU command line to see what's happening.
-> 
-> VM is not happy:
-> 
-> [    1.908595] BUG: kernel NULL pointer dereference, address: 0000000000000007
-> [    1.908837] #PF: supervisor read access in kernel mode
-> [    1.908837] #PF: error_code(0x0000) - not-present page
-> [    1.908837] PGD 0 P4D 0
-> [    1.908837] Oops: 0000 [#1] PREEMPT SMP NOPTI
-> [    1.908837] CPU: 13 PID: 492 Comm: (udev-worker) Not tainted 6.3.5-100.fc37.x86_64 #1
-> [    1.908837] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.2-0-gea1b7a073390-p4
-> [    1.908837] RIP: 0010:acpi_ns_lookup+0x8f/0x4c0
-> [    1.908837] Code: 8b 3d f5 eb 1c 03 83 05 52 ec 1c 03 01 48 85 ff 0f 84 51 03 00 00 44 89 c3 4c 89 cb
-> [    1.908837] RSP: 0018:ffff95b680ad7950 EFLAGS: 00010286
-> [    1.908837] RAX: ffff95b680ad79e0 RBX: 0000000000000002 RCX: 0000000000000003
-> [    1.908837] RDX: 0000000000000000 RSI: ffff8a0283a3c558 RDI: ffffffffa4b376e0
-> [    1.908837] RBP: 0000000000000000 R08: 0000000000000002 R09: 0000000000000000
-> [    1.908837] R10: ffff8a02811034ec R11: 0000000000000000 R12: ffffffffffffffff
-> [    1.908837] R13: ffff8a02811034e8 R14: ffff8a02811034e8 R15: 0000000000000000
-> [    1.908837] FS:  00007f3bb2e7d0c0(0000) GS:ffff8a02bbd40000(0000) knlGS:0000000000000000
-> [    1.908837] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> [    1.908837] CR2: 0000000000000007 CR3: 0000000100a58002 CR4: 0000000000770ee0
-> [    1.908837] PKRU: 55555554
-> [    1.908837] Call Trace:
-> [    1.908837]  <TASK>
-> [    1.908837]  ? __die+0x23/0x70
-> [    1.908837]  ? page_fault_oops+0x171/0x4e0
-> [    1.908837]  ? prepare_alloc_pages.constprop.0+0xf6/0x1a0
-> [    1.908837]  ? exc_page_fault+0x74/0x170
-> [    1.908837]  ? asm_exc_page_fault+0x26/0x30
-> [    1.908837]  ? acpi_ns_lookup+0x8f/0x4c0
-> [    1.908837]  acpi_ns_get_node_unlocked+0xdd/0x110
-> [    1.908837]  ? down_timeout+0x3e/0x60
-> [    1.908837]  ? acpi_ns_get_node+0x3e/0x60
-> [    1.908837]  acpi_ns_get_node+0x3e/0x60
-> [    1.908837]  acpi_ns_evaluate+0x1cb/0x2d0
-> [    1.908837]  acpi_ut_evaluate_object+0x68/0x1c0
-> [    1.908837]  acpi_rs_get_method_data+0x37/0x80
-> [    1.908837]  ? __pfx_vmbus_walk_resources+0x10/0x10 [hv_vmbus]
-> [    1.908837]  acpi_walk_resources+0x91/0xe0
-> [    1.908837]  vmbus_acpi_add+0x87/0x170 [hv_vmbus]
-> [    1.908837]  acpi_device_probe+0x47/0x160
-> [    1.908837]  really_probe+0x19f/0x400
-> [    1.908837]  ? __pfx___driver_attach+0x10/0x10
-> [    1.908837]  __driver_probe_device+0x78/0x160
-> [    1.908837]  driver_probe_device+0x1f/0x90
-> [    1.908837]  __driver_attach+0xd2/0x1c0
-> [    1.908837]  bus_for_each_dev+0x85/0xd0
-> [    1.908837]  bus_add_driver+0x116/0x220
-> [    1.908837]  driver_register+0x59/0x100
-> [    1.908837]  ? __pfx_init_module+0x10/0x10 [hv_vmbus]
-> [    1.908837]  hv_acpi_init+0x39/0xff0 [hv_vmbus]
-> [    1.908837]  ? __pfx_init_module+0x10/0x10 [hv_vmbus]
-> [    1.908837]  do_one_initcall+0x5a/0x240
-> [    1.908837]  do_init_module+0x4a/0x210
-> [    1.908837]  __do_sys_init_module+0x17f/0x1b0
-> [    1.908837]  do_syscall_64+0x5c/0x90
-> [    1.908837]  ? handle_mm_fault+0x11e/0x310
-> [    1.908837]  ? do_user_addr_fault+0x1e0/0x720
-> [    1.908837]  ? exc_page_fault+0x74/0x170
-> [    1.908837]  entry_SYSCALL_64_after_hwframe+0x72/0xdc
-> 
+--Sig_/dc+pofX.XfCXEgXSv2tLTL7
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-I guess *few* people run Linux with QEMU Hyper-V interfaces
-implementation..
-  
-> Maybe I'll have to install a Windows guest :/
-> 
-I think that makes more sense, since we're targeting Windows anyway.
+Like in the normal ram_load() path, put the received pages into the
+colo cache and mark the pages in the bitmap so that they will be
+flushed to the guest later.
 
-Thanks,
-Maciej
+Signed-off-by: Juan Quintela <quintela@redhat.com>
+Signed-off-by: Lukas Straub <lukasstraub2@web.de>
+---
+ migration/meson.build    |  1 +
+ migration/multifd-colo.c | 53 ++++++++++++++++++++++++++++++++++++++++
+ migration/multifd-colo.h | 24 ++++++++++++++++++
+ migration/multifd.c      |  5 ++++
+ 4 files changed, 83 insertions(+)
+ create mode 100644 migration/multifd-colo.c
+ create mode 100644 migration/multifd-colo.h
 
+diff --git a/migration/meson.build b/migration/meson.build
+index 1ae28523a1..063e0e0a8c 100644
+--- a/migration/meson.build
++++ b/migration/meson.build
+@@ -21,6 +21,7 @@ system_ss.add(files(
+   'migration.c',
+   'multifd.c',
+   'multifd-zlib.c',
++  'multifd-colo.c',
+   'ram-compress.c',
+   'options.c',
+   'postcopy-ram.c',
+diff --git a/migration/multifd-colo.c b/migration/multifd-colo.c
+new file mode 100644
+index 0000000000..4872dc6d01
+--- /dev/null
++++ b/migration/multifd-colo.c
+@@ -0,0 +1,53 @@
++/*
++ * multifd colo implementation
++ *
++ * Copyright (c) Lukas Straub <lukasstraub2@web.de>
++ *
++ * This work is licensed under the terms of the GNU GPL, version 2 or late=
+r.
++ * See the COPYING file in the top-level directory.
++ */
++
++#include "qemu/osdep.h"
++#include "exec/target_page.h"
++#include "exec/ramblock.h"
++#include "qemu/error-report.h"
++#include "qapi/error.h"
++#include "ram.h"
++#include "multifd.h"
++#include "options.h"
++#include "io/channel-socket.h"
++#include "migration/colo.h"
++#include "multifd-colo.h"
++
++void multifd_colo_prepare_recv_pages(MultiFDRecvParams *p)
++{
++    if (!migrate_colo())
++        return;
++
++    assert(p->block->colo_cache);
++
++    /*
++     * While we're still in precopy state (not yet in colo state), we copy
++     * received pages to both guest and cache. No need to set dirty bits,
++     * since guest and cache memory are in sync.
++     */
++    if (migration_incoming_in_colo_state()) {
++        colo_record_bitmap(p->block, p->normal, p->normal_num);
++    }
++    p->host =3D p->block->colo_cache;
++}
++
++void multifd_colo_process_recv_pages(MultiFDRecvParams *p)
++{
++    if (!migrate_colo())
++        return;
++
++    if (!migration_incoming_in_colo_state()) {
++        for (int i =3D 0; i < p->normal_num; i++) {
++            void *guest =3D p->block->host + p->normal[i];
++            void *cache =3D p->host + p->normal[i];
++            memcpy(guest, cache, p->page_size);
++        }
++    }
++    p->host =3D p->block->host;
++}
+diff --git a/migration/multifd-colo.h b/migration/multifd-colo.h
+new file mode 100644
+index 0000000000..58920a0583
+--- /dev/null
++++ b/migration/multifd-colo.h
+@@ -0,0 +1,24 @@
++/*
++ * multifd colo header
++ *
++ * Copyright (c) Lukas Straub <lukasstraub2@web.de>
++ *
++ * This work is licensed under the terms of the GNU GPL, version 2 or late=
+r.
++ * See the COPYING file in the top-level directory.
++ */
++
++#ifndef QEMU_MIGRATION_MULTIFD_COLO_H
++#define QEMU_MIGRATION_MULTIFD_COLO_H
++
++#ifdef CONFIG_REPLICATION
++
++void multifd_colo_prepare_recv_pages(MultiFDRecvParams *p);
++void multifd_colo_process_recv_pages(MultiFDRecvParams *p);
++
++#else
++
++static inline void multifd_colo_prepare_recv_pages(MultiFDRecvParams *p) {}
++static inline void multifd_colo_process_recv_pages(MultiFDRecvParams *p) {}
++
++#endif
++#endif
+diff --git a/migration/multifd.c b/migration/multifd.c
+index 3387d8277f..6b031c1fd2 100644
+--- a/migration/multifd.c
++++ b/migration/multifd.c
+@@ -25,6 +25,7 @@
+ #include "qemu-file.h"
+ #include "trace.h"
+ #include "multifd.h"
++#include "multifd-colo.h"
+ #include "threadinfo.h"
+ #include "options.h"
+ #include "qemu/yank.h"
+@@ -1134,10 +1135,14 @@ static void *multifd_recv_thread(void *opaque)
+         qemu_mutex_unlock(&p->mutex);
+=20
+         if (p->normal_num) {
++            multifd_colo_prepare_recv_pages(p);
++
+             ret =3D multifd_recv_state->ops->recv_pages(p, &local_err);
+             if (ret !=3D 0) {
+                 break;
+             }
++
++            multifd_colo_process_recv_pages(p);
+         }
+=20
+         if (flags & MULTIFD_FLAG_SYNC) {
+--=20
+2.39.2
+
+--Sig_/dc+pofX.XfCXEgXSv2tLTL7
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEEg/qxWKDZuPtyYo+kNasLKJxdslgFAmSULhYACgkQNasLKJxd
+sli42g//clgCT+JjG3VLZmWHSc7dSVUFfIGK6jTsuNeWD8/Aaag4peiFi570yez1
+f6h180RNJbpXCrD7TpT5TBsooT99RiclEQsEfjGb/ZIhn5r3zeha2c7qrnBstX3/
+mjlCwKSBTawE0G7mbPkhEiWaX8ojQrAtMkKmELt2vsLj7lDi/TYSKx99y1A5OICH
+H5HCL/RjMGppmqWpthf57xFHNHgJADDoR+OFlgKqBdVhG42j1CQlsFvznoeZ+GBH
+9I7bIgk+vZ3hH+7mq74mO3OP286vsQ5g5SHZTmUqjcDg6G3XGMVRiH826QKXWEbi
+msTQvXJOfpjs3bYz9GA0Qug7EnDAQsHM+GiS2ef5Jp7hXFh4vhlDz4NdLPMdY6EU
+NclkgJWe2FEsixNuRclRts55ID7tak30Lu3gSZB4JVn7ebDE7u9UyRSEsX5J8qXB
+H81j32j0wFaBRb/oTDLJdzZ4FbPfJxN0h4Sbh7C1q7oPxsKr5XpLMuZCKF9xhMDq
+EQ7xq2PjzBPu6ygzG0/GzXGC9Q7xX5krg60joqs2UPEEKMcPLncCjC9yXIDRTe9s
+/AYCM5YbHBljB1Hhch9kaZHwa+ECH8Fy1A8Y8fQwn8t+5n4oTWvLQ7FeTLvZVpAW
+UKmKA62Pjym7phLzx1PTGV49hPxYY5Y5WoNE/9m3yImC/WtnaEI=
+=fWLq
+-----END PGP SIGNATURE-----
+
+--Sig_/dc+pofX.XfCXEgXSv2tLTL7--
 
