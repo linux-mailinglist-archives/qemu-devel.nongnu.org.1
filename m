@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6206373A0B6
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 14:17:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DC5D73A0B5
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 14:17:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCJF1-0003ro-Bm; Thu, 22 Jun 2023 08:16:47 -0400
+	id 1qCJFd-0004VY-OE; Thu, 22 Jun 2023 08:17:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <lukasstraub2@web.de>)
- id 1qCJEe-0003OE-OE
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 08:16:33 -0400
+ id 1qCJF5-0004Dg-4C
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 08:16:54 -0400
 Received: from mout.web.de ([212.227.15.14])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <lukasstraub2@web.de>)
- id 1qCJEc-0004sA-Ly
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 08:16:24 -0400
+ id 1qCJF2-0004xw-8n
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 08:16:49 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
- s=s29768273; t=1687436166; x=1688040966; i=lukasstraub2@web.de;
- bh=Px+Y/tVB+Oj9OhJDFyDlzeSvmWStrMZ2B884l15ZcAw=;
+ s=s29768273; t=1687436192; x=1688040992; i=lukasstraub2@web.de;
+ bh=OXl53ydPaLHEO9W6L9zf0yph3Okbtg2KEAYvqSFOuWc=;
  h=X-UI-Sender-Class:Date:From:To:Cc:Subject:In-Reply-To:References;
- b=oOliFi2qcu3+QMRZDA6tq2v0Tt7o8asXtMF6XSafsA08Dq6JtiB/H57bkeS3G/DQVSpeBDv
- 8d4llqhkP0IwozvBKkPdpkXosNAbEx/PAe84hjD1PQaEq2CK9WuKTCgP5Htp1gS3oBUiimXT4
- 1gZW9kHSZvx7HLtLSsFX0pPGo+7SF37t0uZM2NvYBCYkUdQEPV48ryCbPIqA3BP8UutECmnao
- 6ArzYzLNoPNjNHkHuGlhnBg2cGb6t9tTPt0SgRyp81Esc3yAPg3NjcUJJMilr2+RU0Al43AFo
- h09SwFubSgrH6G0ovtkj0KGhASxgF++UM5wy8hVKfu6lWTBQTuKA==
+ b=pS0WGnPPhz9BT8pM+Jop69Cku8NcEzMaSSaG+Lxj+n447MYgBr/rOZPAalo2CR6bW8/aeX2
+ H77y/9A5pmXRiIcOrb7A8V17aulhmF6KraneacpvDWaBB7xd39OZ3wrLIFe5sH6xq5U/iKWa4
+ rZ2k8Alu/ub/4fCfDja9t6dEhgKEHmjhy5rX/VVOQ+HVzN/FmAUFf0FDQZe9+6y7RsOP5Ad5X
+ lFk3z9OOEv3o5ehOcVFUMYYvVMpANyhQ4sLC/fYy4Zv5oUJpDgtnc7Cc/aDPqBEBiNJQJgLhM
+ bz4l7KVNMxvWiymKWBzSNzWH9ZGLkIeuIoqBVpnAc+wxVVpu23PQ==
 X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
 Received: from mobian ([141.58.32.133]) by smtp.web.de (mrweb006
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1Movne-1pjExE3538-00qFRh; Thu, 22
- Jun 2023 14:16:06 +0200
-Date: Thu, 22 Jun 2023 14:16:03 +0200
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1MDvDU-1qJykV4A8i-00A4PA; Thu, 22
+ Jun 2023 14:16:32 +0200
+Date: Thu, 22 Jun 2023 14:16:28 +0200
 From: Lukas Straub <lukasstraub2@web.de>
 To: qemu-devel <qemu-devel@nongnu.org>
 Cc: Hailiang Zhang <zhanghailiang@xfusion.com>, Juan Quintela
  <quintela@redhat.com>, Peter Xu <peterx@redhat.com>, Leonardo Bras
  <leobras@redhat.com>, "Zhang, Chen" <chen.zhang@intel.com>
-Subject: [PATCH 6/8] colo: Reject colo with postcopy capability enabled
-Message-ID: <1054ff7b2410ce8ec05a8b60cdc8faf306a7374d.1687429356.git.lukasstraub2@web.de>
+Subject: [PATCH 7/8] colo: Reject colo with block migration capability enabled
+Message-ID: <dcf358d5dbd3e5c82b8c2c085146088da60b4b4e.1687429356.git.lukasstraub2@web.de>
 In-Reply-To: <cover.1687429356.git.lukasstraub2@web.de>
 References: <cover.1687429356.git.lukasstraub2@web.de>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/epmtosof8T9sv8V.L/DdCCi";
+Content-Type: multipart/signed; boundary="Sig_/yjmeoGEA/pij_WahwauE.mq";
  protocol="application/pgp-signature"; micalg=pgp-sha512
-X-Provags-ID: V03:K1:y4DshqWHV2DQ2aDrKmbjEuvEL37cnBwpv5al7mJPhqpX1B5al2q
- LYEWV9L73GzQen9vFlcmnVVWAKsAst6UlYos+Av1M+abG9Qt2oRttLUZnzCsts8dCu42PxC
- 3EWS9XVTJGY1l5Q8EpzrwrDtFHfbN1Rs+CF4I7cfHPXXMjDz42ccCUMtkn8ROyXvHaKPNQD
- dBLbjLoYw9JptR+SWNK/g==
-UI-OutboundReport: notjunk:1;M01:P0:xOoR/uL/bQ8=;15XvXhvdrGu2H3D5uhVAx1PdiQc
- LIpN/dz62oOJfXYW8oPRMEGrl/WA2Vq+a7zNsnynCQ7IPqU6vccLw0EQi2S2O7cMjoLOs2ivg
- tQ2ZBGhboMWm1V1bW131nRZRrjeZW5GfhH3pw0EQg4MCGkR1165HeRBmCpEKm9VcG3yOR5Dvt
- Sh1cx0m2LPBhUXAToytYyggXcG4ORLWgJQIOiAlz7zVLUy57sDzDJio+kjeE4kdeKSdceKi4c
- YexEEsogsiaPcEIP8k3k3p8EZmmweTcLTg3vEQOJqSOd7O+xZuCithFvcFwxtFXezxEXjKT0z
- ZvHSDFCv03vKnrld5pCfD4p188bmwSaNDOtYdfUKLWgQ4s7tSxnbN31bT3ab63U5jzWCl/X3x
- +U2Mp9SF9d0tj9XWC1IwFd+gMUlK7RIj8Z74meW08lBctUW4mTmItnHoHNLooB3Ream3iXYH/
- E1AHsR57Z4f07h/Ka8KIAht9ZeeGLeZbsCAS3efL3vuHxwt+C0BJdDDvqu5yULakx+lzyMsSg
- ZljLnXQGNmiCAqIp1oHYn9kUjLYlx3Wb9WBP+qdgheJLPWOOn5q+SpaiY84Bbi2YUt+/OYJJk
- wUNH6HvQ1z7724olc7u6V2NbWebKE2b/FF4ip+/VvdyvZBKAIlnzZIiLRXG3rp3c4wfKWlztC
- xZAQ9IwYENXSAcue35ytflTY3cjzCUHcMJDeI9BHaf+HMNJk2eFhPOpjfdLaS2dIWsiHVKJ9d
- 2+NHmZ6L8suLPzUPyahShbCw/6yR+C12IwaN21IjvqwdFekMVa/EPTt7tc1AfWsffZ2SxY25D
- mQsduIW9/hWeP3y/wtKxFVV5gvEoVqfT8QzxVcQ5IyEWCpW7MgcRbvWdyH88U2KkDTZdNsCxW
- FZ45Npwi7A4/EYKl1j9gomKHJmjalbIPnpFnM4PV2GOMvZcYoHGmlS6aHlOmAwTtR+kxhUWRT
- v15JHzth2ugnsW+Ok3URRvhUp1w=
+X-Provags-ID: V03:K1:s/YoV9zE25RIi3G82I/rJwAND2jDra5jR5vkSsIJUB9vOo6Dt95
+ dbf1L3WSHlUcJohkIWxX8+DcXiIRlyPdIPJZlm0Kt4Be0Oicsos79zZvadI1rTvc75hXTrA
+ Iqz9R+J+zEN4o4I4guIR+IhCIQRgAqCtDBHjMh6zJDDXEYhrRUhCtdK6mxlBdlJdKKuEsfZ
+ dA50JJeiibu0WjdyCnxHg==
+UI-OutboundReport: notjunk:1;M01:P0:CPhDQX7JfzE=;6GdoBkR2G7yc6WK2L2D5JeTbVA7
+ PKP0Ya4sn6W6vLbk315AFovGBt9ypbXU8I1A3amNeGaby5gD8/GIclHU95YfvcVf/Xi3y72SS
+ vriurfG9hQcXgLtx5VAWwyPe5mqCO42NDK+OjQ2pYFwm5ohMI6JDqj6uxHTnK2d4B/4A/sWmq
+ Km2H6KPqFq1NMsOTrt4eD34bRq3ZYF21ri3+T0ePYI8jAvOxUJ0cGFlgwbLpUxYI0PcqjK+SW
+ xGTpIALSbE4j13TBzcloZ3z14Vy7suin5Da0SrceN6SUeaTp7D8JI01YrFZQPyHZ0wpWF5Y07
+ tjH+HpwJ5jDxcvfhK1gfe+uS4+Yl/r46KI79GTRJsQwiAcNMsAqDXm/4mut31Gmjy1Vis6Rzm
+ Qvx2iFlFFM8YeABdaR7MzO4qXJeiQuVELLz0TTuTP4ZyI7N6EENqd4jIzFKZdkMJYDPMkUYfY
+ 9GdVW88UCrtgOLtCFMv06X9LpoAfYqAW0kKPxI3GAiegwcdl96mv7k35UY3d0z9HZi1cYAI6U
+ zfO7x2VPdqBOK42bN2IJGRrWX6TuCdF0rQvpIj3uEErLFPOWzeDkpxxHVz7sbopIZMG7Ul+WH
+ PlwTUiRbAOXyZJuB7IdsFsKIuEVdEKXV6i8VjEsF7k6J+2AGTUpU/wT+D8w7n3DZ32ZAYUH91
+ SroElE5f26l/qMEjzt2eIcGMDoLx/QbgPigBiQZHswSm2HIw9tr552Xs3oxGiZh6xemZQhL2H
+ 7IAIBop02fRxA51UiZuD7cZUlxCeFc3lL/Jf3xwUNoCcAVKfK+CYeJUapTiklbxgCL4cTJ+sC
+ 6ihmdiAOFx0N26kKR1Bj2B7wiaQQ2PxsvnAFJJD2fxwHDdsNgGeJ/ys7SmLjCYDlGQWUN9BTJ
+ S9u3C3mZHte8M8zjOJtJaNaGRY71b9lClVCXueGcd59SrL3dZ1O8g+yLVX+xZ2EEwIYZwpe47
+ EhENgOfUN7BWk6eGp0ywpJYM/cI=
 Received-SPF: pass client-ip=212.227.15.14; envelope-from=lukasstraub2@web.de;
  helo=mout.web.de
 X-Spam_score_int: -25
@@ -88,81 +88,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---Sig_/epmtosof8T9sv8V.L/DdCCi
+--Sig_/yjmeoGEA/pij_WahwauE.mq
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: quoted-printable
 
 Signed-off-by: Lukas Straub <lukasstraub2@web.de>
 ---
- migration/migration.c | 5 +++--
- migration/options.c   | 9 +++++++++
- 2 files changed, 12 insertions(+), 2 deletions(-)
+ migration/migration.c | 4 ----
+ migration/options.c   | 5 +++++
+ 2 files changed, 5 insertions(+), 4 deletions(-)
 
 diff --git a/migration/migration.c b/migration/migration.c
-index a954ff4f7d..9860f960f2 100644
+index 9860f960f2..270130579f 100644
 --- a/migration/migration.c
 +++ b/migration/migration.c
-@@ -2333,9 +2333,10 @@ static void migration_completion(MigrationState *s)
-         goto fail;
+@@ -1571,10 +1571,6 @@ static bool migrate_prepare(MigrationState *s, bool =
+blk, bool blk_inc,
      }
 =20
--    if (migrate_colo() && s->state =3D=3D MIGRATION_STATUS_ACTIVE) {
-+    if (migrate_colo()) {
-         /* COLO does not support postcopy */
--        migrate_set_state(&s->state, MIGRATION_STATUS_ACTIVE,
-+        assert(s->state !=3D MIGRATION_STATUS_POSTCOPY_ACTIVE);
-+        migrate_set_state(&s->state, current_active_state,
-                           MIGRATION_STATUS_COLO);
-     } else {
-         migrate_set_state(&s->state, current_active_state,
+     if (blk || blk_inc) {
+-        if (migrate_colo()) {
+-            error_setg(errp, "No disk migration is required in COLO mode");
+-            return false;
+-        }
+         if (migrate_block() || migrate_block_incremental()) {
+             error_setg(errp, "Command options are incompatible with "
+                        "current migration capabilities");
 diff --git a/migration/options.c b/migration/options.c
-index b62ab30cd5..d3d4525d40 100644
+index d3d4525d40..1e9659fcb3 100644
 --- a/migration/options.c
 +++ b/migration/options.c
-@@ -445,8 +445,17 @@ bool migrate_caps_check(bool *old_caps, bool *new_caps=
+@@ -451,6 +451,11 @@ bool migrate_caps_check(bool *old_caps, bool *new_caps=
 , Error **errp)
-         error_append_hint(errp, "Please enable replication before COLO.\n"=
+             error_setg(errp, "COLO is not compatible with postcopy");
+             return false;
+         }
++
++        if (new_caps[MIGRATION_CAPABILITY_BLOCK]) {
++            error_setg(errp, "COLO is not compatible with block migration"=
 );
-         return false;
-     }
-+#else
-+    if (new_caps[MIGRATION_CAPABILITY_X_COLO]) {
-+        if (new_caps[MIGRATION_CAPABILITY_POSTCOPY_RAM]) {
-+            error_setg(errp, "COLO is not compatible with postcopy");
 +            return false;
 +        }
-+    }
+     }
  #endif
 =20
-+
-+
-     if (new_caps[MIGRATION_CAPABILITY_POSTCOPY_RAM]) {
-         /* This check is reasonably expensive, so only when it's being
-          * set the first time, also it's only the destination that needs
 --=20
 2.39.2
 
 
---Sig_/epmtosof8T9sv8V.L/DdCCi
+--Sig_/yjmeoGEA/pij_WahwauE.mq
 Content-Type: application/pgp-signature
 Content-Description: OpenPGP digital signature
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCgAdFiEEg/qxWKDZuPtyYo+kNasLKJxdslgFAmSUO4MACgkQNasLKJxd
-sljuBQ/+JbPF7jSp4HfviRHxjnwCd531pGqbts++IrCViCczHCe848kM9aUfh5D5
-sZPCqTeRY/1OviGB7FLWZF3w17uqGx/is75GnszxZhbLBKkGBebMObPknO4tkbjK
-ejFadq4V6bAIzksXqYAjzvJvG4NU9ZHhv+vK5i8YZmeaYJ6mntk+XYdkKW/mi7oK
-rkzAD/HCS+FO7DKd5kdvmO17r4fg0ZIfLeNUMmNLQOD+HJjm5tYM8Oof/DLn/w/8
-qcgDAtx5epB+EVTig0L0LWC+XrsoSWOYaFvn7hasDcY2EiwKJG3prftI4SLEfL6P
-FmqjLgqEMiZr73b1w2OP+WdOpFQ4eJ00W4cj5kLzmqeG1jKtKowOgnnbvrTxN2vZ
-4bxS3yPwEj8FAMgkLcLAfPAEEhxm2cnm8u8X925p3q1o1XpToYUt+WznH/9O1DnN
-YjM9o5ZnuggbT564jwD6E9xLiyjkUJnwS2f+0klgRrCFacN8GJ4ZbrhFu2o3+zMd
-FkDNuh1JplPF2767dNRi5egAoAjFlyTAVTh6Bf8UJLcoqegFItVy/ZQc9TJFSm95
-Xox8K9T/FPI5EcaxWBkYSWElNlNbBvkingO5W4jAw9NsFVgTxuMlNLoNwF9ukSbn
-iekKmETetkx/ExvbPSHwJaGf0caGX+GKjrQOkCgCoRp55E7+qfs=
-=chN3
+iQIzBAEBCgAdFiEEg/qxWKDZuPtyYo+kNasLKJxdslgFAmSUO50ACgkQNasLKJxd
+slgXTA//Xauv+h8bAYAcRdWVZYumMjZqzN4uMEMx6/tkmnIt9DwZca/7d/zt94/m
+IjifQP6cimR1BjcXuAU9G4vpP1d8blBzaBkiGg6vEL6z8a6XWD+380NqnpduQnIJ
+uYO0fdsX+P1xWZuE/4KRl0I3ZlDPpNV36VeYObEL8rRvW2l9RhUn+NQEe/zpqS8n
+ehQ3pwZOkTLPqJ2Q9BXQUZCokyFinmwHe9g3h4SaU9YamhkGeHasqMRJzJRtNzIa
+rZc5pjRrbIlYBFDIiFc/CRbgdHVI/AsrOjntZxnvAcbykk+hEZMG8l/udQsqYm8t
+55LbKgq3XwUxb1DcQ2fp+P1ey1d+h7qEXyXojJl8RqSwOJVHaIsYajlv+b8vfak7
+sAyLsJa55bPVp9P6jbu3QJhfOexU6TUNbazU97eak/ylciVrWjPt8mHn9D0l2BgM
+EMdRilBxQ8VV/drW6WHVGf3hkBYDJAQTxu1iHx1j1RPoJrMOdOmQ4jMV7EWxXaHr
+5TVtB1SR0gc+rbVOrZjxtyqhlrxzC43V9Xj9o3MOXq9ieDcqQ93HmIoIqHXr28nP
+bx0QoDRXRQ4lYQFuRYTU82t/wbFy3G8iuFOp5YT6FXhQjwkAbDMcgOwUCtMAIuQv
+hlx0si6vjzcCxwW0seEFHo0LBFj0fZ/N6+MmvfF8kJALhqzqlKs=
+=sX8C
 -----END PGP SIGNATURE-----
 
---Sig_/epmtosof8T9sv8V.L/DdCCi--
+--Sig_/yjmeoGEA/pij_WahwauE.mq--
 
