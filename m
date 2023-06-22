@@ -2,178 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D4CF73AB9D
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 23:30:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D8F673ABD5
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 23:51:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCRrq-0008MH-4i; Thu, 22 Jun 2023 17:29:26 -0400
+	id 1qCSB9-0003A0-Ur; Thu, 22 Jun 2023 17:49:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1qCRrU-0008Lu-3P
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 17:29:04 -0400
-Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
+ (Exim 4.90_1) (envelope-from <joao.m.martins@oracle.com>)
+ id 1qCSB6-00039P-Ln
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 17:49:20 -0400
+Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1qCRrQ-0002HV-0l
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 17:29:03 -0400
-Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
+ (Exim 4.90_1) (envelope-from <joao.m.martins@oracle.com>)
+ id 1qCSB2-0007Nx-O3
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 17:49:20 -0400
+Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
  by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 35MIWbPd029505; Thu, 22 Jun 2023 21:28:57 GMT
+ 35MIbN5G031279; Thu, 22 Jun 2023 21:49:09 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=corp-2023-03-30;
- bh=fXamm3rRRHV7Ft1qyWpWrjhBgycvczK5JxIL9q2ZWV4=;
- b=1NPLj0R30BZ5cwZj4Gzr4TOnwSBRJHkCEHIt3VwLPr/fm1xbWdt//Sf7+kilhCbG7Vnc
- kG+VxpMbVELAvUYfTh9QZhEW05Z6EWLTTTWW2hr7l2/SGF0d1tAB0nevoIIzxwvHxIFe
- cFIqiQ6yFJx/Vuf+wZGVfDHDJItGaNsWfgHwv182+i+yVdryrkSqww6S9A2YbLRtR8c0
- UeFlnQUdbRfBvTMoIr2oRfN+pecKMAnnBagrT/COl3neBEeDmu6JS3UQysTRAtmurWGR
- hk7eCjVHYKtMbIy/B7qK5vXT0CPjsCxI0AgRBYzu1k8Jupbomxu3qzJCwVnKJ0ua6l0b Dw== 
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
- (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3r95cu2tpv-1
+ h=from : to : cc :
+ subject : date : message-id : mime-version : content-transfer-encoding;
+ s=corp-2023-03-30; bh=KN0zfDUZkh90PoVwIuiDS6YEm4/UbVbLS0DC+sZS1hQ=;
+ b=nY7qOz5TuWLteMGll7NXAMiqjL22SfJAFtSHotxjtgX6CN1HXELmRBa/Pn70hXZJN/US
+ Wgzx3Su5LonmOkE8JxX4GptZolubQqGhpag+L6M0l9zXQroz00p+TFglSqpTCmCZIwYF
+ QBHA9ql8OHn/vLoG4G3Kp9ZUfUn+djGgw2u5EYdWZiuZmyGwfldvGjJ9sQuznxf2/f4E
+ FJ6m6yDIiJ8KnKtcLP1ZCW8Tt97IrLgpcaxg8n2U514NQF/JmnREslQMSqDBSl4LxjRF
+ kiNoa36jrdTH/7XqDC6cYnR7z/aq3BJLcd4ptCYEvBxdVUosxovh/E2yf0nOOttG/eaV Ww== 
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
+ (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3r94ettxkk-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 22 Jun 2023 21:28:56 +0000
+ Thu, 22 Jun 2023 21:49:08 +0000
 Received: from pps.filterd
- (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 35MLD19Y032934; Thu, 22 Jun 2023 21:28:56 GMT
-Received: from nam11-co1-obe.outbound.protection.outlook.com
- (mail-co1nam11lp2175.outbound.protection.outlook.com [104.47.56.175])
- by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 3r93993ucw-1
+ (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+ by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
+ with ESMTP id 35MKvXx4008371; Thu, 22 Jun 2023 21:49:08 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+ by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
+ 3r9398ep3s-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 22 Jun 2023 21:28:56 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=oFcAK6qQ3GNFToXl9U7oGdlRePThpV2jPukDuUYuOTc9GHQwmU51qHYAXoEbRI4fxBdRBuJ8ifi1/faqWAtIgsTPd5vA9WxswKtkAfDe1M2WQ3aTiG8oagnMKZV5VZ7utWdeYPYQeg8sPgpTrqau0IEfeCdnMVFEmDYH06fWJJmf3abaqT4U+bIXmiPJtO++e7IjgJamKwSQALFc4TxHLKa/T0YMVjeSdrwCcUhe7xseQDg7LeUA7zlusFwzSGrpLluVX+KOdgUvKtV4iIW0Itw61XnLc1DnNUxPCHw+hrXc9qXGA2Igaextx/W7sIXo3pKu50nWRXEcWKV1XFTBWQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=fXamm3rRRHV7Ft1qyWpWrjhBgycvczK5JxIL9q2ZWV4=;
- b=nqhUxCpgAzoGXGi1PN67SKfzD0olhZyZ6e7o73DA1AbVCPVeedDx/Mc7nq8OL4xuZh/7UyQeuy0DsSUT3J9uoKd1mHu5wZckJ9LP/aqm8IGBOtjuq9kZ+cAyuvlYnYaBYWuQ2MEB99VHnl6iDYCGoJlhhhThyh+k9YS8cJyXnnJTqKbR4GMTjg3eV9IgEH2P/DqHdbT5Wes1e+W1ACLqPj3hlWuRjysp0b+i1CrINKPZUmnfl8dYQ5utkW1Sr3A6TBlQU8DHILFiuoDpCWnBzUe0J0o/tUqdYOmqVKrSFh48qZ6pYTB4ges6jl7z7UJN0H5I0fkpdABAi4sGBAiU5w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=fXamm3rRRHV7Ft1qyWpWrjhBgycvczK5JxIL9q2ZWV4=;
- b=cCwgD0IhsfHyXTC9cv8e8oPP/KbKeZ16HYa0vcraXCGsHOmmEX8HCiugWloUJ9YWgNsxY3REm/9+tnekEwdyTWz9y2IrkNv1g/J2CIf6Dg17QSuAgVwNgC7+ZaU6kDr/yUJJawFLsjKsw+AZsecWEUWz5956drO7YFwGBRwC1U4=
-Received: from SA2PR10MB4684.namprd10.prod.outlook.com (2603:10b6:806:119::14)
- by DS0PR10MB6917.namprd10.prod.outlook.com (2603:10b6:8:134::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6521.23; Thu, 22 Jun
- 2023 21:28:54 +0000
-Received: from SA2PR10MB4684.namprd10.prod.outlook.com
- ([fe80::2743:9347:3bf1:5f11]) by SA2PR10MB4684.namprd10.prod.outlook.com
- ([fe80::2743:9347:3bf1:5f11%6]) with mapi id 15.20.6521.020; Thu, 22 Jun 2023
- 21:28:54 +0000
-Message-ID: <e732c868-b3ce-de9c-63e0-89bb6851dc51@oracle.com>
-Date: Thu, 22 Jun 2023 17:28:49 -0400
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH V1 3/3] tests/qtest: live migration suspended state
-Content-Language: en-US
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
- =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>
-References: <1686860800-34667-1-git-send-email-steven.sistare@oracle.com>
- <1686860800-34667-4-git-send-email-steven.sistare@oracle.com>
- <ZJMpFfetFkZ/QjfT@x1n> <e848fa92-3cfe-a3bc-d666-625e72a65518@oracle.com>
- <ZJNW+2RsId/gbEQ6@x1n>
-From: Steven Sistare <steven.sistare@oracle.com>
-Organization: Oracle Corporation
-In-Reply-To: <ZJNW+2RsId/gbEQ6@x1n>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: DS7PR05CA0088.namprd05.prod.outlook.com
- (2603:10b6:8:56::14) To SA2PR10MB4684.namprd10.prod.outlook.com
- (2603:10b6:806:119::14)
+ Thu, 22 Jun 2023 21:49:07 +0000
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
+ (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 35MLn76k035791;
+ Thu, 22 Jun 2023 21:49:07 GMT
+Received: from joaomart-mac.uk.oracle.com (dhcp-10-175-180-251.vpn.oracle.com
+ [10.175.180.251])
+ by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id
+ 3r9398ep1g-1; Thu, 22 Jun 2023 21:49:07 +0000
+From: Joao Martins <joao.m.martins@oracle.com>
+To: qemu-devel@nongnu.org
+Cc: Alex Williamson <alex.williamson@redhat.com>,
+ Cedric Le Goater <clg@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
+ Philippe Mathieu-Daude <philmd@linaro.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Jason Wang <jasowang@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Avihai Horon <avihaih@nvidia.com>, Jason Gunthorpe <jgg@nvidia.com>,
+ Joao Martins <joao.m.martins@oracle.com>, Yi Liu <yi.l.liu@intel.com>
+Subject: [PATCH v4 00/15] vfio: VFIO migration support with vIOMMU
+Date: Thu, 22 Jun 2023 22:48:30 +0100
+Message-Id: <20230622214845.3980-1-joao.m.martins@oracle.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA2PR10MB4684:EE_|DS0PR10MB6917:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3b93987d-7c02-4019-2826-08db7367adf2
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: +36xvd/7BlQxch25M8pa6fMn9XFfshY/diCXy0DSvHewUjCarwF8fcD+GfHBqypxbyEcOjNI5yLUwQWrzMMrWcSVQZ0aFv1kQAJlc3Y+534hG9pU64ezyh9hOIvUFtP1KrkijLprYXxDqB+hBibYYzPp1/fkKuBF0oUj3PZjuQpEXpcXJ6NlcqQMVxA+6djC/GEuVKLXvRO8h1YQ+agpjJs7er4LQ/ezGROdCAvWMBgkSnko+sJnzIN3laeLJdBvHhIRHNCUgiFaG1Xp6CgtMVkZXdh856Y1jRb/IIU5ipZdkL+DkG43yWF9oGVT8m269oBZyNEbh5stddl9xK6BoKcTVELxWm0aqTCBTe9c/Zk+r9Wk8wA7JzsxW15lfGnCodShB9b2suuTmYCGnQHzozhppT+llb7/mPnoe7nVc/T10Mh/a/vCRmn0bsiCGugP/elmBF4j7e1qmM8POPwmN624Y8WPwlh4/HeQnCr0W0tKXIl5Mzhz2aBXO06c/yJUj+ewhPxFmJqUtP36HDruJdGd2LmQn7EVMlSL9D/qwFo5Ykd1FD1gOYIMhgcaxzDfT2Rn9PhGQlDJtt2TPcWIIfk/BmCFMJQ1mJe2Qlwj19sm3H5zEWLafFA55WEweMXxwjmik34yx5gQgb31n8grtA==
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SA2PR10MB4684.namprd10.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230028)(366004)(376002)(346002)(39860400002)(136003)(396003)(451199021)(8936002)(8676002)(2906002)(5660300002)(4744005)(54906003)(6666004)(31686004)(44832011)(316002)(41300700001)(15650500001)(66946007)(6916009)(4326008)(66556008)(66476007)(6486002)(36756003)(36916002)(478600001)(31696002)(86362001)(186003)(38100700002)(2616005)(83380400001)(6512007)(26005)(6506007)(53546011)(43740500002)(45980500001);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?L2NKd3AwTEl4dXg2a0pKUkkzRmNPdEFiaUkvaEFyeTFtN1I2VUlYRG16b09O?=
- =?utf-8?B?S0hoU3ZlbnZjL3RKeWNIMTU1bTI1Nm94UFNLMjR0T2xmeklFamlLVjhjajFH?=
- =?utf-8?B?Y3p0QkpxVXBIYTR2ckNQYzNQOXhITGFBdmlQa2VOdGxiNlQzSC9EcG1jYkZW?=
- =?utf-8?B?SGQ5T2JOdVJCNWMyZGdGRG9yK3J2ekl6a3RKWDRiY3l3L3N4ZXpLNTdLRTVi?=
- =?utf-8?B?V0haVDNhS1pJUVNOdVhhYkVUMERkUmxjblc4Q0FDS2xDeVh0dE9nL0htUjFX?=
- =?utf-8?B?U1ZMOEZqeVBzWmRoQW9kR1FwdmNHdXpOMVRzeXh4ZWxoZFFDRWpGMFFaS1RV?=
- =?utf-8?B?c1NCdGl4L3g0dm1WZnlnOUZhUWdab3daR3ZDMTAwVDc3SWc3c2ZVZlQ3dFBP?=
- =?utf-8?B?dFk2VlR3L04vQ1RvUHM5N0cxbnpNUHJmQjlmVzZaajVHNk9ZdHIvM1V6QWpq?=
- =?utf-8?B?bDk4SzNEazFmVnlaemtaK0U1Q0UrL1pkQ0FwVEE2ekR2NVpnbW53R1EyeWxR?=
- =?utf-8?B?VUVUVHM0b1ErRTZPV0RwcWIwQWNQSUNNQ3RpZ25IVjYrWncrVWNmL1JCbFFR?=
- =?utf-8?B?UUVZZGFpcmRGQzNvUmhCQjZTZ1hSZVY5RFJEdlZnRitwT1FHZ0ZuUFJrQUZz?=
- =?utf-8?B?c2NzS0lOaHlGblc5Y0x2b0svdjQ3ZUxXUENXdzNYK2ZCUUxYODljamtYV3FX?=
- =?utf-8?B?K2d2azBBdmZNTU42bXFrbGVqdnF6RVpEQlN4WnJmOTU2OVpEcmZXZFR0dUxz?=
- =?utf-8?B?ZnFQaExpa0ZCRlNyWGhMNTViTEcxL1RNcThmRURZd3c2MnR4RHZvSzdpM3VF?=
- =?utf-8?B?SGIycFFqaTlXcnhhZ0duTlk2eEp0ejJWQ2NnaStwUUlMMlh1bkZqWGp5OFVu?=
- =?utf-8?B?dUtWT1ptQ3JqT3VxT2dBYlhDWGZ0Ykh2TmlQMFdFQklFTzhUVU13OTNka2ZY?=
- =?utf-8?B?dytSVm1FVWphbUlJMGlua1IwTTBxZmpuNkZNb0FqVVl1Z3NjREVYU1JMb0hK?=
- =?utf-8?B?OXYyVnhJNkhSQ2lLbmgyNzhJeUZ0S2lBczFid0RuUkxCdEFMVUxIc204b0do?=
- =?utf-8?B?U1lUb0NqUG8wZmhNRjBnWUpVczUwenVjWDV0UUp2TGpFUGxtcWRzTGE5N2Rs?=
- =?utf-8?B?QzhCb3pxVzNTdElYYitFVDR2RzdPdFlJZHdja1piYjBFYkZXbFpaRXArZFB2?=
- =?utf-8?B?Tk15eGF2bS9Vb3FRazFoeWFpRzR3VFFxeUhpd1JYQnZYd0VxYzdJMXJzUE9J?=
- =?utf-8?B?M3VvOG54SFV6NjFQeHV0NTlwWVFIR2lzTndTZ2lvRW5uYTRPVDdnWUYvUVJ3?=
- =?utf-8?B?b1FQMGlVN0YvRzQ1enNLcFlWblFmS295bENrNno3bzU2eTY5S2NCTzlWUnBU?=
- =?utf-8?B?RFc5QXBId1Zwbk1wQUJOeUoxRFZMZDI4aHZpdmdBTi9GMEdoUjBZbU1iLzg5?=
- =?utf-8?B?K0ppcDVVN2NQdzBrU3FmbEJ0Y3dxdzJ5akdOeE9kcWpMbXBMVnc3L3pHOVVh?=
- =?utf-8?B?RDkzT0hSNHZWNUphRXZtK2NLZDZhVHZER3FFQTBmUGpwVnlWUlIwTTd1Yndz?=
- =?utf-8?B?NWIyTFJpS25RUVNkUFdVVWFycU10Zm0yZG8zeC8xcCtYL1hhWnlBTVI5WWpE?=
- =?utf-8?B?QWJoZnJWeVBoWWNtdm43ZW94enhnM2JiOVJBYm8wbk9XVFk5VUdySDJMdk1W?=
- =?utf-8?B?N1czeGZLMnZlQ2xwNVVpWi9xUyt4bFRnMHJPN00zY1EvS3UvTGtqYnJ2cHB4?=
- =?utf-8?B?WDlXUncrcFZCQStGZW1TbzlMWHo0TjZRdUoxNHhxM1FyMUhBK1kzZDFnMzAr?=
- =?utf-8?B?WTdVMFRvQ2ttL2NRNkkzdmFqd1Y4czdjZ2tSNzUwV0ZsQlg0NDc1VkxGSU9j?=
- =?utf-8?B?eDhLMkFoWkRQbC9Gd1g3SndUbjVabWhBOWRzTGNXdVNUZE51NmZKRGhrQjhw?=
- =?utf-8?B?em1TTkhtV2xhNWswZy9xVGpwbDBBNzliNlpGNmsxSU1XbXQ4WlBtL3N5SkxE?=
- =?utf-8?B?WTNrMHh1ZGZjLy9IMGFqK2RyWGZOUlpiM2FNb0hBYktpdzJwZzM4SCtMTVdt?=
- =?utf-8?B?SisvQjd3NlZvYkRXYVJiSVRZN2NrQlJJRWtrdEFRZjJ2b1ZxWG5UWTd4bERk?=
- =?utf-8?B?bGovaWpGTGhoV0pXbmNidlI1RWNHR2U0SENWcjhOYlE5a2EyS2ZTNFJFSFNk?=
- =?utf-8?B?Mnc9PQ==?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: KlAKQQ6IssxBu4D/JpFpPZqcur8YueU6M3tvTv+va31cDfouviHefYXVlczR4dVkg3NYniyg02Fkf1TGp0fSYrm2yK6TE6TL5dz0ZPU+/l7VbKMvU16CpaLE6jWLK6WyhlHLOS4BWGUJH1V/e6qGxGFNeeFlCg2OgUzH75nkoa9D8506+OJg893G6f9gKJohJBt858YY1BfbsPSUDWamdo7kZdmAdAO9e36NNwpz10Ql92wm0DueFAg9i1A8OLQ6K3h6L4xNpNrHHhPUAeLqBMlrxs/eNGK7SpsaKBFd38/m/nXJGcYm8E67hfairZdljTvCN6RAI/7uHLlKiofR8OlO+FDuAs0dVMQTo5zd3c4HzZFGFW+SAs6u8+ElhT4RvO9D360WpR4Pw+lAsgzKelElh/+/Rqf0W6oHXE7GagnmzF7dEhFaiPuxKgPIHJIkonwJXRzaImkgb7nWbyUWkoU4SNqanpUpOgFEyie5N9SeEcNUqj3hx3sU1nyTZpcM7BxmYu9kbt8jaQslCjk46xStwwUtONu9vaQCic+5RuNE6RkftYDPRn1Iy+/YPCiYlEJAm9C4rdcYUoKpFni6+2kstlxCrIHSNO+7L/i6nNhUGiwVuIHTKAdiUeGG/YKDssCEJgNh2rxhfA2EOcgaRnSx9yy3NyBID/o1lxtUcOgs6g1nLxuMij9xvtyj+9EeMPx5pU1+6LsmfMu0wuF5ofAFTXkbjwPdyFzxpIxAgOONCmEuH0k7R9TJtuCwlI9IoVQgutpvWOSj7dsyBk6w7Q==
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3b93987d-7c02-4019-2826-08db7367adf2
-X-MS-Exchange-CrossTenant-AuthSource: SA2PR10MB4684.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jun 2023 21:28:54.1659 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: hav8bxNls+RQ0ZWgdCPf0/YlQvpsMnlY+h6U6ifHhv4qDkfpZzAgKno/FCs6NNy+C9NpyEUL1QAMkZwv/J8KOdFtiE+CT11+GcZ78Sdh270=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR10MB6917
+Content-Transfer-Encoding: 8bit
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
  definitions=2023-06-22_16,2023-06-22_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=951
- phishscore=0
- bulkscore=0 suspectscore=0 mlxscore=0 spamscore=0 malwarescore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2305260000 definitions=main-2306220183
-X-Proofpoint-GUID: b5CzGiLTwO9v-QONsNMLHSIrsrLGTHmK
-X-Proofpoint-ORIG-GUID: b5CzGiLTwO9v-QONsNMLHSIrsrLGTHmK
-Received-SPF: pass client-ip=205.220.165.32;
- envelope-from=steven.sistare@oracle.com; helo=mx0a-00069f02.pphosted.com
-X-Spam_score_int: -28
-X-Spam_score: -2.9
-X-Spam_bar: --
-X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
+ adultscore=0
+ spamscore=0 phishscore=0 suspectscore=0 malwarescore=0 bulkscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2305260000 definitions=main-2306220186
+X-Proofpoint-GUID: vjBmvDFS-DsiAnXWi5zbMt2IoYzx2SkS
+X-Proofpoint-ORIG-GUID: vjBmvDFS-DsiAnXWi5zbMt2IoYzx2SkS
+Received-SPF: pass client-ip=205.220.177.32;
+ envelope-from=joao.m.martins@oracle.com; helo=mx0b-00069f02.pphosted.com
+X-Spam_score_int: -7
+X-Spam_score: -0.8
+X-Spam_bar: /
+X-Spam_report: (-0.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ URI_TRY_3LD=1.999 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -189,30 +105,158 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/21/2023 4:00 PM, Peter Xu wrote:
-> On Wed, Jun 21, 2023 at 03:39:44PM -0400, Steven Sistare wrote:
->>>> -        jmp mainloop
->>>> +        # should this test suspend?
->>>> +        mov (suspend_me),%eax
->>>> +        cmp $0,%eax
->>>> +        je mainloop
->>>> +
->>>> +        # are we waking after suspend?  do not suspend again.
->>>> +        mov $suspended,%eax
->>>
->>> So IIUC then it'll use 4 bytes over 100MB range which means we need at
->>> least 100MB+4bytes.. not obvious for a HIGH_ADDR definition to me..
->>>
->>> Could we just define a variable inside the section like suspend_me?
->>
->> No, because modifications to this memory backing the boot block are not
->> copied to the destination.  The dest reads a clean copy of the boot block
->> from disk, as specified by the qemu command line arguments.
-> 
-> Oh okay, can we use HIGH_ADDR-4, then?  I just still think it'll be nice if
-> we can keep HIGH_ADDR the high bar of the whole range.
+Hey,
 
-Sure.  I'll use LOW_ADDR + 4, and add a comment.
+This series introduces support for vIOMMU with VFIO device migration,
+particurlarly related to how we do the dirty page tracking.
 
-- Steve
+Today vIOMMUs serve two purposes: 1) enable interrupt remaping 2)
+provide dma translation services for guests to provide some form of
+guest kernel managed DMA e.g. for nested virt based usage; (1) is specially
+required for big VMs with VFs with more than 255 vcpus. We tackle both
+and remove the migration blocker when vIOMMU is present provided the
+conditions are met. I have both use-cases here in one series, but I am happy
+to tackle them in separate series.
+
+As I found out we don't necessarily need to expose the whole vIOMMU
+functionality in order to just support interrupt remapping. x86 IOMMUs
+on Windows Server 2018[2] and Linux >=5.10, with qemu 7.1+ (or really
+Linux guests with commit c40aaaac10 and since qemu commit 8646d9c773d8)
+can instantiate a IOMMU just for interrupt remapping without needing to
+be advertised/support DMA translation. AMD IOMMU in theory can provide
+the same, but Linux doesn't quite support the IR-only part there yet,
+only intel-iommu.
+
+The series is organized as following:
+
+Patches 1-5: Today we can't gather vIOMMU details before the guest
+establishes their first DMA mapping via the vIOMMU. So these first four
+patches add a way for vIOMMUs to be asked of their properties at start
+of day. I choose the least churn possible way for now (as opposed to a
+treewide conversion) and allow easy conversion a posteriori. As
+suggested by Peter Xu[7], I have ressurected Yi's patches[5][6] which
+allows us to fetch PCI backing vIOMMU attributes, without necessarily
+tieing the caller (VFIO or anyone else) to an IOMMU MR like I
+was doing in v3.
+
+Patches 6-8: Handle configs with vIOMMU interrupt remapping but without
+DMA translation allowed. Today the 'dma-translation' attribute is
+x86-iommu only, but the way this series is structured nothing stops from
+other vIOMMUs supporting it too as long as they use
+pci_setup_iommu_ops() and the necessary IOMMU MR get_attr attributes
+are handled. The blocker is thus relaxed when vIOMMUs are able to toggle
+the toggle/report DMA_TRANSLATION attribute. With the patches up to this set,
+we've then tackled item (1) of the second paragraph.
+
+Patches 9-15: Simplified a lot from v2 (patch 9) to only track the complete
+IOVA address space, leveraging the logic we use to compose the dirty ranges.
+The blocker is once again relaxed for vIOMMUs that advertise their IOVA
+addressing limits. This tackles item (2). So far I mainly use it with
+intel-iommu, although I have a small set of patches for virtio-iommu per
+Alex's suggestion in v2.
+
+Comments, suggestions welcome. Thanks for the review!
+
+Regards,
+	Joao
+
+Changes since v3[8]:
+* Pick up Yi's patches[5][6], and rework the first four patches.
+  These are a bit better splitted, and make the new iommu_ops *optional*
+  as opposed to a treewide conversion. Rather than returning an IOMMU MR
+  and let VFIO operate on it to fetch attributes, we instead let the
+  underlying IOMMU driver fetch the desired IOMMU MR and ask for the
+  desired IOMMU attribute. Callers only care about PCI Device backing
+  vIOMMU attributes regardless of its topology/association. (Peter Xu)
+  These patches are a bit better splitted compared to original ones,
+  and I've kept all the same authorship and note the changes from
+  original where applicable.
+* Because of the rework of the first four patches, switch to
+  individual attributes in the VFIOSpace that track dma_translation
+  and the max_iova. All are expected to be unused when zero to retain
+  the defaults of today in common code.
+* Improve the migration blocker message of the last patch to be
+  more obvious that vIOMMU migration blocker is added when no vIOMMU
+  address space limits are advertised. (Patch 15)
+* Cast to uintptr_t in IOMMUAttr data in intel-iommu (Philippe).
+* Switch to MAKE_64BIT_MASK() instead of plain left shift (Philippe).
+* Change diffstat of patches with scripts/git.orderfile (Philippe).
+
+Changes since v2[3]:
+* New patches 1-9 to be able to handle vIOMMUs without DMA translation, and
+introduce ways to know various IOMMU model attributes via the IOMMU MR. This
+is partly meant to address a comment in previous versions where we can't
+access the IOMMU MR prior to the DMA mapping happening. Before this series
+vfio giommu_list is only tracking 'mapped GIOVA' and that controlled by the
+guest. As well as better tackling of the IOMMU usage for interrupt-remapping
+only purposes. 
+* Dropped Peter Xu ack on patch 9 given that the code changed a bit.
+* Adjust patch 14 to adjust for the VFIO bitmaps no longer being pointers.
+* The patches that existed in v2 of vIOMMU dirty tracking, are mostly
+* untouched, except patch 12 which was greatly simplified.
+
+Changes since v1[4]:
+- Rebased on latest master branch. As part of it, made some changes in
+  pre-copy to adjust it to Juan's new patches:
+  1. Added a new patch that passes threshold_size parameter to
+     .state_pending_{estimate,exact}() handlers.
+  2. Added a new patch that refactors vfio_save_block().
+  3. Changed the pre-copy patch to cache and report pending pre-copy
+     size in the .state_pending_estimate() handler.
+- Removed unnecessary P2P code. This should be added later on when P2P
+  support is added. (Alex)
+- Moved the dirty sync to be after the DMA unmap in vfio_dma_unmap()
+  (patch #11). (Alex)
+- Stored vfio_devices_all_device_dirty_tracking()'s value in a local
+  variable in vfio_get_dirty_bitmap() so it can be re-used (patch #11).
+- Refactored the viommu device dirty tracking ranges creation code to
+  make it clearer (patch #15).
+- Changed overflow check in vfio_iommu_range_is_device_tracked() to
+  emphasize that we specifically check for 2^64 wrap around (patch #15).
+- Added R-bs / Acks.
+
+[0] https://lore.kernel.org/qemu-devel/20230222174915.5647-1-avihaih@nvidia.com/
+[1] https://lore.kernel.org/qemu-devel/c66d2d8e-f042-964a-a797-a3d07c260a3b@oracle.com/
+[2] https://learn.microsoft.com/en-us/windows-hardware/design/device-experiences/oem-kernel-dma-protection
+[3] https://lore.kernel.org/qemu-devel/20230222174915.5647-1-avihaih@nvidia.com/
+[4] https://lore.kernel.org/qemu-devel/20230126184948.10478-1-avihaih@nvidia.com/
+[5] https://lore.kernel.org/all/20210302203827.437645-5-yi.l.liu@intel.com/
+[6] https://lore.kernel.org/all/20210302203827.437645-6-yi.l.liu@intel.com/
+[7] https://lore.kernel.org/qemu-devel/ZH9Kr6mrKNqUgcYs@x1n/
+[8] https://lore.kernel.org/qemu-devel/20230530175937.24202-1-joao.m.martins@oracle.com/
+
+Avihai Horon (4):
+  memory/iommu: Add IOMMU_ATTR_MAX_IOVA attribute
+  intel-iommu: Implement IOMMU_ATTR_MAX_IOVA get_attr() attribute
+  vfio/common: Extract vIOMMU code from vfio_sync_dirty_bitmap()
+  vfio/common: Optimize device dirty page tracking with vIOMMU
+
+Joao Martins (7):
+  memory/iommu: Add IOMMU_ATTR_DMA_TRANSLATION attribute
+  intel-iommu: Implement get_attr() method
+  vfio/common: Track whether DMA Translation is enabled on the vIOMMU
+  vfio/common: Relax vIOMMU detection when DMA translation is off
+  vfio/common: Move dirty tracking ranges update to helper
+  vfio/common: Support device dirty page tracking with vIOMMU
+  vfio/common: Block migration with vIOMMUs without address width limits
+
+Yi Liu (4):
+  hw/pci: Add a pci_setup_iommu_ops() helper
+  hw/pci: Refactor pci_device_iommu_address_space()
+  hw/pci: Introduce pci_device_iommu_get_attr()
+  intel-iommu: Switch to pci_setup_iommu_ops()
+
+ include/exec/memory.h         |   4 +-
+ include/hw/pci/pci.h          |  11 ++
+ include/hw/pci/pci_bus.h      |   1 +
+ include/hw/vfio/vfio-common.h |   2 +
+ hw/i386/intel_iommu.c         |  53 +++++++-
+ hw/pci/pci.c                  |  58 +++++++-
+ hw/vfio/common.c              | 241 ++++++++++++++++++++++++++--------
+ hw/vfio/pci.c                 |  22 +++-
+ 8 files changed, 329 insertions(+), 63 deletions(-)
+
+-- 
+2.17.2
+
 
