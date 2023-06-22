@@ -2,90 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF98E73A902
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 21:33:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60E9873A904
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 21:35:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCQ2Y-0005aw-1c; Thu, 22 Jun 2023 15:32:22 -0400
+	id 1qCQ56-000790-JR; Thu, 22 Jun 2023 15:35:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qCQ2W-0005Zi-3T
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 15:32:20 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1qCQ54-00078V-Sa
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 15:34:58 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qCQ2U-0002iY-Er
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 15:32:19 -0400
+ id 1qCQ53-00032F-85
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 15:34:58 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687462335;
+ s=mimecast20190719; t=1687462496;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Z+8aCizdY8GKSrLR9cehw3CsMh0xGFQBV+fRh2a6f7Y=;
- b=RAoW2ZPDu7H63167oIVybGZtOFRAwe2xU+0XxNoJfgKoWwe6q1VqFkiUNhx6ixdtlcsl62
- hQQrwhVkC0C6/TEgf3fABwcQm/NW4R/89HKYvCZIxDSVWSAPb2Bdsz3ES1C3d2HirKsCY0
- /oR8j2dgoHLvXNWeBefDcAZ3t+RXURI=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=6LqbnDGa4rm1KzgYmUgQQMS19KTLoRd2OqA82f8PZq0=;
+ b=P3hJ9AMgXctlxExCDSVFQ2FhStAMesKHiZAZpyM0SnwaIb+eS/I1NUdvD3JGJgLuA0BNgY
+ +hOEBJzNMfoPGJgMs2C/gc89L7siqlvm5R4PH2BU91YxQeEXBu5dwSpHpddGQEKbbYJ9lc
+ Dyx8E1s5g+uptfZkxI/6yr1WCD3iBII=
+Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
+ [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-221-DI1-UWkDMwe8C-6aWomqZw-1; Thu, 22 Jun 2023 15:32:12 -0400
-X-MC-Unique: DI1-UWkDMwe8C-6aWomqZw-1
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-3129750e403so619281f8f.3
- for <qemu-devel@nongnu.org>; Thu, 22 Jun 2023 12:32:04 -0700 (PDT)
+ us-mta-400-Rb1FHRJpNQa3ab-T47_0jg-1; Thu, 22 Jun 2023 15:34:55 -0400
+X-MC-Unique: Rb1FHRJpNQa3ab-T47_0jg-1
+Received: by mail-lf1-f69.google.com with SMTP id
+ 2adb3069b0e04-4ec790b902bso6121250e87.1
+ for <qemu-devel@nongnu.org>; Thu, 22 Jun 2023 12:34:54 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687462323; x=1690054323;
- h=content-transfer-encoding:mime-version:message-id:date:reply-to
- :user-agent:references:in-reply-to:subject:cc:to:from
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Z+8aCizdY8GKSrLR9cehw3CsMh0xGFQBV+fRh2a6f7Y=;
- b=AMZNqBSFUOcPWoMI6Tp6m3KL0TYJGEheEgiq9RLcNw17+hz+F2gXlbWzX61t7npoI6
- dcGVeV/fSogLAPCPfTP0ugPQCXuxgw2ZwCmUV5mWLIKEuuE7jglsWu+XRnD5aSAlfhIr
- f3VFbzZd3/vMcFOvpOTFmj/MbJrFXWDCeWs2d8oYd+PRIW/VBNMpSKc9gOgOldWtA4Re
- 2ikve0Zbz4WCfF0ZpipjOcPLgdRyX4EqmX5N8Wgbz5E4r7B2WOP3cLZBEMTN74RqkAK0
- YRElhRIu5hGW7brmjwdl2Q0TgUh3Xbu2sIsJ6BA10FuV23h6lDEH1q+kdpusTAAYXNDL
- KaQQ==
-X-Gm-Message-State: AC+VfDwrRQeTzuwU+c4hPtki+/4m62lhOO1zJUvDDqC/xXUTvDCu3BTn
- 8Nqr/tm5UrOO73Jal3vypnh2DlZzcCgjAUHfu4YTvdDBhkB+kCyCPc0UexOPZoXabdlU5ktnmTE
- QILu5gdnmzuat3uY=
-X-Received: by 2002:adf:fa83:0:b0:30d:44a1:99a with SMTP id
- h3-20020adffa83000000b0030d44a1099amr14565175wrr.54.1687462323541; 
- Thu, 22 Jun 2023 12:32:03 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5bWvCPoPCIr1sOfytAWNoj2FqMDoWEwf6izBBuTHrs1i2j3iYhJjJpPqz5JGZg7H6nJ/heEQ==
-X-Received: by 2002:adf:fa83:0:b0:30d:44a1:99a with SMTP id
- h3-20020adffa83000000b0030d44a1099amr14565157wrr.54.1687462323250; 
- Thu, 22 Jun 2023 12:32:03 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1687462493; x=1690054493;
+ h=mime-version:message-id:date:reply-to:user-agent:references
+ :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=6LqbnDGa4rm1KzgYmUgQQMS19KTLoRd2OqA82f8PZq0=;
+ b=e2rGsQ49u9mGhQ8YvP4BaOU3tdHu/cAjxCLwvtGEQ+p8FXBvYfwK6O/pfYoOOKcqEd
+ rQcxXY7a1mCDIGI/pRGtzQhSt4KsPTyKe/dW7T6K46FhR0UYpdDT8F3DictCDWxwA+4w
+ yZgukM1DUkhmWwzYjUTDw/5dy1X6/yXB63Qtrj5Xju0/a1KsNazz6jaG/Oz1z/3a2+rT
+ Cfz1kpjvaQNapTVFmdCXjJIaAm60onqq7tsaUSOhCtSlIfuh/wHCX3xOwpMy8Q0bR/hq
+ LptTVTWcP+vY3LL6eMr+FiDJPnt1daPGMB9BtsuPYwF8hH3MIyuMjh3pWst9tPjCEXQG
+ PSeQ==
+X-Gm-Message-State: AC+VfDx3G3wfxTZEMqeK8zca08lbgG41FsAq3+XE2BT6HBySB5QndIt4
+ YUlLXWCRaX8fCEtHyRKtX3s7oiAcAong5xFwGBlm5683ZE7Z7AGo7OrMMSQVWZA8NbYYcVf7eb5
+ pQovpk/f47tKGwxc=
+X-Received: by 2002:a05:6512:607:b0:4f8:6f40:477b with SMTP id
+ b7-20020a056512060700b004f86f40477bmr9426375lfe.25.1687462492843; 
+ Thu, 22 Jun 2023 12:34:52 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6rVeh4zAxpm3dvo3GFlBdcenWAe0Kl3QjxUDxi+3bgwYMPsM9yHiBbCaemT3ELgB+DkzAxhw==
+X-Received: by 2002:a05:6512:607:b0:4f8:6f40:477b with SMTP id
+ b7-20020a056512060700b004f86f40477bmr9426364lfe.25.1687462492488; 
+ Thu, 22 Jun 2023 12:34:52 -0700 (PDT)
 Received: from redhat.com (static-92-120-85-188.ipcom.comunitel.net.
  [188.85.120.92]) by smtp.gmail.com with ESMTPSA id
- l8-20020a05600012c800b0030ae4350212sm7715685wrx.66.2023.06.22.12.32.02
+ 9-20020a05600c228900b003f9b3588192sm342185wmf.8.2023.06.22.12.34.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 22 Jun 2023 12:32:02 -0700 (PDT)
+ Thu, 22 Jun 2023 12:34:51 -0700 (PDT)
 From: Juan Quintela <quintela@redhat.com>
-To: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
+To: Peter Xu <peterx@redhat.com>
 Cc: qemu-devel@nongnu.org,  Markus Armbruster <armbru@redhat.com>,  Leonardo
- Bras <leobras@redhat.com>,  qemu-block@nongnu.org,  Peter Xu
- <peterx@redhat.com>,  Stefan Hajnoczi <stefanha@redhat.com>,  Eric Blake
- <eblake@redhat.com>,  Fam Zheng <fam@euphon.net>,  Thomas Huth
+ Bras <leobras@redhat.com>,  Daniel P . =?utf-8?Q?Berrang=C3=A9?=
+ <berrange@redhat.com>,
+ qemu-block@nongnu.org,  Stefan Hajnoczi <stefanha@redhat.com>,  Eric
+ Blake <eblake@redhat.com>,  Fam Zheng <fam@euphon.net>,  Thomas Huth
  <thuth@redhat.com>,  libvir-list@redhat.com,  Paolo Bonzini
  <pbonzini@redhat.com>
-Subject: Re: [RFC 6/6] migration: Deprecated old compression method
-In-Reply-To: <ZJLRj02koQn4jXHi@redhat.com> ("Daniel P. =?utf-8?Q?Berrang?=
- =?utf-8?Q?=C3=A9=22's?= message of
- "Wed, 21 Jun 2023 11:31:43 +0100")
+Subject: Re: [RFC 4/6] migration: Deprecate -incoming <uri>
+In-Reply-To: <ZIeL7MGzKBv7CgZ2@x1n> (Peter Xu's message of "Mon, 12 Jun 2023
+ 17:19:40 -0400")
 References: <20230612193344.3796-1-quintela@redhat.com>
- <20230612193344.3796-7-quintela@redhat.com>
- <ZJLRj02koQn4jXHi@redhat.com>
+ <20230612193344.3796-5-quintela@redhat.com> <ZId0+HYF/ETLVri3@x1n>
+ <875y7sflqb.fsf@secure.mitica> <ZIeL7MGzKBv7CgZ2@x1n>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
-Date: Thu, 22 Jun 2023 21:32:01 +0200
-Message-ID: <87jzvve1ji.fsf@secure.mitica>
+Date: Thu, 22 Jun 2023 21:34:51 +0200
+Message-ID: <87cz1ne1es.fsf@secure.mitica>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
+Content-Type: text/plain
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -111,87 +108,90 @@ Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Daniel P. Berrang=C3=A9 <berrange@redhat.com> wrote:
-> On Mon, Jun 12, 2023 at 09:33:44PM +0200, Juan Quintela wrote:
->> Signed-off-by: Juan Quintela <quintela@redhat.com>
->> ---
->>  docs/about/deprecated.rst |  8 ++++
->>  qapi/migration.json       | 92 ++++++++++++++++++++++++---------------
->>  migration/options.c       | 13 ++++++
->>  3 files changed, 79 insertions(+), 34 deletions(-)
->>=20
->> diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
->> index 173c5ba5cb..fe7f2bbde8 100644
->> --- a/docs/about/deprecated.rst
->> +++ b/docs/about/deprecated.rst
->> @@ -460,3 +460,11 @@ block migration (since 8.1)
->>  Block migration is too inflexible.  It needs to migrate all block
->>  devices or none.  Use driver_mirror+NBD instead.
->>=20=20
->> +old compression method (since 8.1)
->> +''''''''''''''''''''''''''''''''''
->> +
->> +Compression method fails too much.  Too many races.  We are going to
->> +remove it if nobody fixes it.  For starters, migration-test
->> +compression tests are disabled becase they hand randomly.  If you need
->> +compression, use multifd compression methods.
->> +
->> diff --git a/qapi/migration.json b/qapi/migration.json
->> index a8497de48d..40a8b5d124 100644
->> --- a/qapi/migration.json
->> +++ b/qapi/migration.json
->> @@ -244,6 +244,7 @@
->>  #
->>  # @compression: migration compression statistics, only returned if
->>  #     compression feature is on and status is 'active' or 'completed'
->> +#     It is obsolete and deprecated.  Use multifd compression methods.
->>  #     (Since 3.1)
+Peter Xu <peterx@redhat.com> wrote:
+> On Mon, Jun 12, 2023 at 10:51:08PM +0200, Juan Quintela wrote:
+>> Peter Xu <peterx@redhat.com> wrote:
+>> > On Mon, Jun 12, 2023 at 09:33:42PM +0200, Juan Quintela wrote:
+>> >> Only "defer" is recommended.  After setting all migation parameters,
+>> >> start incoming migration with "migrate-incoming uri" command.
+>> >> 
+>> >> Signed-off-by: Juan Quintela <quintela@redhat.com>
+>> >> ---
+>> >>  docs/about/deprecated.rst | 7 +++++++
+>> >>  softmmu/vl.c              | 2 ++
+>> >>  2 files changed, 9 insertions(+)
+>> >> 
+>> >> diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+>> >> index 47e98dc95e..518672722d 100644
+>> >> --- a/docs/about/deprecated.rst
+>> >> +++ b/docs/about/deprecated.rst
+>> >> @@ -447,3 +447,10 @@ The new way to modify migration is using migration parameters.
+>> >>  ``blk`` functionality can be acchieved using
+>> >>  ``migrate_set_parameter block-incremental true``.
+>> >>  
+>> >> +``-incoming uri`` (since 8.1)
+>> >> +'''''''''''''''''''''''''''''
+>> >> +
+>> >> +Everything except ``-incoming defer`` are deprecated.  This allows to
+>> >> +setup parameters before launching the proper migration with
+>> >> +``migrate-incoming uri``.
+>> >> +
+>> >> diff --git a/softmmu/vl.c b/softmmu/vl.c
+>> >> index b0b96f67fa..7fe865ab59 100644
+>> >> --- a/softmmu/vl.c
+>> >> +++ b/softmmu/vl.c
+>> >> @@ -2651,6 +2651,8 @@ void qmp_x_exit_preconfig(Error **errp)
+>> >>      if (incoming) {
+>> >>          Error *local_err = NULL;
+>> >>          if (strcmp(incoming, "defer") != 0) {
+>> >> +            warn_report("-incoming %s is deprecated, use -incoming defer and "
+>> >> +                        " set the uri with migrate-incoming.", incoming);
+>> >
+>> > I still use uri for all my scripts, alongside with "-global migration.xxx"
+>> > and it works.
+>> 
+>> You know what you are doing (TM).
+>> And remember that we don't support -gobal migration.x-foo.
+>> Yes, I know, we should drop the "x-" prefixes.
 >
-> This doesn't give users an indication /why/ we're saying this. Instead
-> I'd suggest
+> I hope they'll always be there. :) They're pretty handy for tests, when we
+> want to boot a VM without the need to script the sequences of qmp cmds.
 >
->   This feature is unreliable and not tested. It is recommended to
->   use multifd migration instead, which offers an alternative reliable
->   and tested compression implementation.
-
-Much better.  Done, thanks.
-
-
->>  # @deprecated: @disk migration is deprecated.  Use driver_mirror+NBD
->> -#     instead.
->> +#     instead. @compression is obsolete use multifd compression
->> +#     methods instead.
+> Yes, we probably should just always drop the x-.  We can always declare
+> debugging purpose for all -global migration.* fields.
 >
-> For @deprecated, are we supposed to list multiple things at once, or
-> use a separate @deprecated tag for each one ?
-
-# @unstable: Members @x-colo and @x-ignore-shared are experimental.
-
-This is the only example that I found that is similar.
-Only one example.  Markus?
-
+>> 
+>> > Shall we just leave it there?  Or is deprecating it helps us in any form?
+>> 
+>> See the patches two weeks ago when people complained that lisen(.., num)
+>> was too low.  And there are other parameters that work the same way
+>> (that I convenientely had forgotten).  So the easiest way to get things
+>> right is to use "defer" always.  Using -incoming "uri" should only be
+>> for people that "know what they are doing", so we had to ways to do it:
+>> - review all migration options and see which ones work without defer
+>>   and document it
+>> - deprecate everything that is not defer.
+>> 
+>> Anything else is not going to be very user unfriendly.
+>> What do you think.
 >
-> Again I'd suggest rewording
+> IIRC Wei Wang had a series just for that, so after that patchset applied we
+> should have fixed all issues cleanly?
+
+No, what he does is using always a very big value for listen.  But that
+is it.  Anyways, I don't know how to change the backlog listen value
+without restarting the listen call.
+
+> Is there one more thing that's not
+> working right there?
+
+Compression has other problems.  But independentely of that, they have
+the problem that we need to set the parameters before we call incoming.
+
+>> PD.  This series are RFC for multiple reasons O:-)
 >
->     @compression is unreliable and untested. It is recommended to
->     use multifd migration, which offers an alternative compression
->     implementation that is reliable and tested.
+> Happy to know the rest (besides which I know will break my script :).
 
-Done.
-
-
-
->> @@ -443,6 +443,11 @@ bool migrate_caps_check(bool *old_caps, bool *new_c=
-aps, Error **errp)
->>                      "Use driver_mirror+NBD instead.");
->>      }
->>=20=20
->> +    if (new_caps[MIGRATION_CAPABILITY_BLOCK]) {
->
-> Surely MIGRATION_CAPABILITY_COMPRESS not BLOCK ?
-
-Good catch.  Copy & paste to its best.
-
-Thanks very much.
+Thanks, Juan.
 
 
