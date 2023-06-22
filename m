@@ -2,82 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 845F6739E4B
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 12:19:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EAB55739E97
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 12:34:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCHNb-0008W2-Qp; Thu, 22 Jun 2023 06:17:31 -0400
+	id 1qCHd4-0002xa-8k; Thu, 22 Jun 2023 06:33:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qCHNY-0008Uk-Hn
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 06:17:29 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qCHNW-0003Jb-W6
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 06:17:28 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-3f90b8acefeso51612875e9.0
- for <qemu-devel@nongnu.org>; Thu, 22 Jun 2023 03:17:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687429044; x=1690021044;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=gfHj/18jEb5HZc5WOL4oeH6nRL+WbriNo612ICdOt40=;
- b=wxxoAt/QkgH4yLm5KGKrK5QqvUPH1o66mxBFggWJmp+4nvu5pwcYaWkOBeR4KZ+NYr
- Ngn37XQu1i04z6T8CkdKWdCViMcX9WoM7f4Xe2qUEkjMQ0ua9jbjzIxyrpE9TKWwStrH
- 3KbvMpCmcFIBsIoBCvXMX0qAaiDvTLTwLlORylW/qGSAXSHAq9IX5+TDRWNwcltbuahx
- Fuv6SpLnnihRqOwNHMIDzOdU6cewDlR/jGqn0EkLnfFt5fLrpkGWbeTCqs6W3zucu9sB
- h9Sf5ttO8ulbU4peydI1cKxFP5ZwTO4njAa4UFJLTi7APLTI1q27wzFM1TeNAhYWdpfX
- 9Wow==
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1qCHcw-0002xD-KM
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 06:33:22 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1qCHcu-0006b9-Ou
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 06:33:22 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1687429999;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=oAwRpxWWTD40A5nkSpAnR6wbSwXPD/kg7mGgslTa0d8=;
+ b=BsQwgXERjgHYwDo8+Dpd7G7LniCqdMF3lWLXalmSabp/Fuva6hPYV5Wnhp8YJK6AUwVhX2
+ RAHMKf+ttAM1p5MDblgFkTXci5PM4jhUWWzLeIk3VIkTInHkDbT+q2cPlBO3WmRR7AwUVd
+ Fidql5U71kIw1HB9uDv/Zk/9DG/KSIg=
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
+ [209.85.216.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-324-OH6XAz_yMIqX54Q4KUxKtw-1; Thu, 22 Jun 2023 06:33:18 -0400
+X-MC-Unique: OH6XAz_yMIqX54Q4KUxKtw-1
+Received: by mail-pj1-f69.google.com with SMTP id
+ 98e67ed59e1d1-25e78cf986dso3571016a91.0
+ for <qemu-devel@nongnu.org>; Thu, 22 Jun 2023 03:33:18 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687429044; x=1690021044;
+ d=1e100.net; s=20221208; t=1687429997; x=1690021997;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=gfHj/18jEb5HZc5WOL4oeH6nRL+WbriNo612ICdOt40=;
- b=DJw1T1JeOhS2atc8N5Xjqu28bI7X6ZVWVkj/qoKmbzTBxs1IHj87m+u6OBAm7hxtVs
- sBgztjPsm8dvKjvnxPoEozlqfEffsQVoRaevJr3HE6EbsldN/3YkXH/ev7QT9lJNqy78
- IJKTiTz+H5WV9IfprDbI8EWhatl2SHi+KZWc758VWtil6ig04PYs1Z2QBd+rJFNPa9iD
- P38cSOT00EFmryC8VLFxHPT+SZ4PnCyGHayzEIWcolE80sUrFrOFBG0NZxhdUk6LI+ll
- cddWSxFmGPtAQCeBEJ2z7e6WaGaImb1QbkbMGH3+LP02KtuMKDZMVH8CteUXTtvlp/DL
- t3mw==
-X-Gm-Message-State: AC+VfDxZfT3mlkj7sBV/r67JCNje06WNVW61sSbnlxR5n4482hG1EpKk
- hgQokIrxI2BfsTV3x4NP1hnzXkMsR2mBH6TWEg0ZKg==
-X-Google-Smtp-Source: ACHHUZ7Tfrpkbsb2MfQ5eaRu75/LqZyhhbsOTZ44tcjFtxVizNHncI3gDn93tw/HKHNO28oe/jbLPw==
-X-Received: by 2002:adf:cf12:0:b0:30f:d20f:f922 with SMTP id
- o18-20020adfcf12000000b0030fd20ff922mr12943675wrj.9.1687429044427; 
- Thu, 22 Jun 2023 03:17:24 -0700 (PDT)
-Received: from localhost.localdomain (127.red-88-28-17.dynamicip.rima-tde.net.
- [88.28.17.127]) by smtp.gmail.com with ESMTPSA id
- f12-20020a5d58ec000000b00309382eb047sm6616897wrd.112.2023.06.22.03.17.21
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 22 Jun 2023 03:17:23 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+ bh=oAwRpxWWTD40A5nkSpAnR6wbSwXPD/kg7mGgslTa0d8=;
+ b=emthwMdaurdTd07ZEkZEg4FX3T6wqNOPPtQW7SNYo4IzolPwHHD0k2jKhLpnrIKUYI
+ I/FObvboJuDWbqEhEtct6yWky7VyCsQS10nlHMn5dKJlDYfGoxvUVMulU4AkLZNtVXEb
+ WklwR3i008xfXF+qIhPGA3srT1X3FWAHTwmv+ehxZ0rD9ConZQIOF4XlAU1rKOwYCtpL
+ pmqy80p/CLnez+Ok8oSTLIKTLGRVxihT+vgLORJmBa+QE2NL6DlKHZ1Kmvw0YnSvbQEQ
+ q8xHo8hHwLTvK+vKa1q7BE++wWuDh4T702ezoO5mvt/8p1JAZ/nxf9lgzkcWsrP8KkxH
+ kjFw==
+X-Gm-Message-State: AC+VfDyBEsolEm8wpa7vE9Yq6EVPuXc9DDOKWw+bN3lUumgB5iMBuvs2
+ l6btDAVtUCv0FNjD+ElusmgTJ0l/DbbY0Lk2mK2TIU0CodOS7j7lm+hB5N8DMn6/m/S8AfwbahR
+ uHmE7j0FBlG31GCg7NYINJIld2aCDmjRroWY4ppz6KACHEy9hCcQWgYHh7Go8bodsf/VMdBmwUk
+ E=
+X-Received: by 2002:a17:90a:6a8d:b0:25e:8550:5182 with SMTP id
+ u13-20020a17090a6a8d00b0025e85505182mr13143095pjj.39.1687429996771; 
+ Thu, 22 Jun 2023 03:33:16 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5Nw0EqMBhJwDLXxFfe7YXwJobP3BOaZV8S/FHTvfAfOn1KqjHEMAdu5PpRvIDzTZDizOyj7w==
+X-Received: by 2002:a17:90a:6a8d:b0:25e:8550:5182 with SMTP id
+ u13-20020a17090a6a8d00b0025e85505182mr13143071pjj.39.1687429996390; 
+ Thu, 22 Jun 2023 03:33:16 -0700 (PDT)
+Received: from localhost.localdomain ([115.96.105.213])
+ by smtp.googlemail.com with ESMTPSA id
+ 29-20020a17090a035d00b0025eb3b237b4sm11004872pjf.44.2023.06.22.03.33.13
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 22 Jun 2023 03:33:15 -0700 (PDT)
+From: Ani Sinha <anisinha@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Eduardo Habkost <eduardo@habkost.net>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Juan Quintela <quintela@redhat.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Paolo Bonzini <pbonzini@redhat.com>, qemu-trivial@nongnu.org,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH] docs/devel/qom.rst: Correct code style
-Date: Thu, 22 Jun 2023 12:17:17 +0200
-Message-Id: <20230622101717.70468-1-philmd@linaro.org>
-X-Mailer: git-send-email 2.38.1
+Cc: Ani Sinha <anisinha@redhat.com>, mst@redhat.com, imammedo@redhat.com,
+ jusual@redhat.com, thuth@redhat.com, lvivier@redhat.com,
+ michael.labiuk@virtuozzo.com
+Subject: [PATCH v2 0/5] test and QEMU fixes to ensure proper PCIE device usage
+Date: Thu, 22 Jun 2023 16:02:50 +0530
+Message-Id: <20230622103255.267289-1-anisinha@redhat.com>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,44 +99,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Per commit 067109a11c ("docs/devel: mention the spacing requirement
-for QOM"):
+Patches 1-4:
+Fix tests so that devices do not use non-zero slots on the pcie root
+ports. PCIE ports only have one slot, so PCIE devices can only be
+plugged into slot 0 on a PCIE port.
 
-  For a storage structure the first declaration should always be
-  called “parent_obj” and for a class structure the first member
-  should always be called “parent_class”
+Patch 5:
+Enforce only one slot on PCIE port.
 
-Adapt the QOM rST document accordingly.
+The test fixes must be applied before the QEMU change that checks for use
+of a single slot in PCIE port.
 
-Reported-by: BALATON Zoltan <balaton@eik.bme.hu>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- docs/devel/qom.rst | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+CC: mst@redhat.com
+CC: imammedo@redhat.com
+CC: jusual@redhat.com
+CC: thuth@redhat.com
+CC: lvivier@redhat.com
+CC: michael.labiuk@virtuozzo.com
 
-diff --git a/docs/devel/qom.rst b/docs/devel/qom.rst
-index c9237950d0..2828843058 100644
---- a/docs/devel/qom.rst
-+++ b/docs/devel/qom.rst
-@@ -26,7 +26,7 @@ features:
-    typedef DeviceClass MyDeviceClass;
-    typedef struct MyDevice
-    {
--       DeviceState parent;
-+       DeviceState parent_obj;
- 
-        int reg0, reg1, reg2;
-    } MyDevice;
-@@ -147,7 +147,7 @@ will also have a wrapper function to call it easily:
- 
-    typedef struct MyDeviceClass
-    {
--       DeviceClass parent;
-+       DeviceClass parent_class;
- 
-        void (*frobnicate) (MyDevice *obj);
-    } MyDeviceClass;
+Changelog:
+v2: add hd-geo-test fix as well as the actual QEMU code fix to the patchset.
+The patches are added in the right order.
+
+Ani Sinha (5):
+  tests/acpi: allow changes in DSDT.noacpihp table blob
+  tests/acpi/bios-tables-test: use the correct slot on the
+    pcie-root-port
+  tests/acpi/bios-tables-test: update acpi blob q35/DSDT.noacpihp
+  tests/qtest/hd-geo-test: fix test by removing unnecessary
+    pcie-root-port
+  hw/pci: ensure PCIE devices are plugged into only slot 0 of PCIE port
+
+ hw/pci/pci.c                      |   6 ++++++
+ tests/data/acpi/q35/DSDT.noacpihp | Bin 8248 -> 8241 bytes
+ tests/qtest/bios-tables-test.c    |   4 ++--
+ tests/qtest/hd-geo-test.c         |  18 ++++++++----------
+ 4 files changed, 16 insertions(+), 12 deletions(-)
+
 -- 
-2.38.1
+2.39.1
 
 
