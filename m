@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B93973A6BD
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 18:58:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4136173A6AE
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 18:57:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCNb2-0006hq-Gh; Thu, 22 Jun 2023 12:55:48 -0400
+	id 1qCNbF-0006o4-89; Thu, 22 Jun 2023 12:56:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qCNb0-0006h8-Sr
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 12:55:46 -0400
+ id 1qCNbC-0006nI-MW
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 12:55:58 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qCNay-0008Jk-Tx
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 12:55:46 -0400
+ id 1qCNbB-0008MA-9X
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 12:55:58 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687452943;
+ s=mimecast20190719; t=1687452956;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=jBYn87bb9I1f9KUD77mIUek71xIJdcNhfmFCCVLtKX8=;
- b=eneJ7VS1Tfa6ssHUQw/2wV/xWpeBz7RLti7RYInawkrUxflNosW5qj7KEhftrwwnwnanfS
- aBX95xqSNV/ot/XabBkvbS5B10hUSrpM+FhBBPnZ23n5yfE1xSadNp2EzfwzShn9jgHZaq
- kCbCQxiexTzuRnDFaZ3cDLiJk1e7iv8=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=HG4qFamXiC/igNA1ujuSMBpaMOPN+6MrLExnJSf2DMU=;
+ b=Z+qrGgpG8H3iEfjN5jEFLBOkunHok1/hFYhtwdI/igmwbVneEd9TP/IBgHVws5NBxUWAdP
+ 0jraIwG/zAqgXGWETYyPRzebKqINOPDtMP1RwrNbRRU2Vqgr/EJ6cJmKev9YfGlD/Xm9ud
+ IFMr+r9X5uWhR+AaSY3Q+MrQf5TGofg=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-328-PL9Ge4drNBy9-erVImooSw-1; Thu, 22 Jun 2023 12:55:40 -0400
-X-MC-Unique: PL9Ge4drNBy9-erVImooSw-1
+ us-mta-282-4IogEFTSNHu-WoLZz9gyxQ-1; Thu, 22 Jun 2023 12:55:48 -0400
+X-MC-Unique: 4IogEFTSNHu-WoLZz9gyxQ-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
  [10.11.54.8])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6CC003C3466F;
- Thu, 22 Jun 2023 16:55:35 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4C4E697DE50;
+ Thu, 22 Jun 2023 16:55:38 +0000 (UTC)
 Received: from secure.mitica (unknown [10.39.192.73])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 50E1DC00049;
- Thu, 22 Jun 2023 16:55:33 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id B68E6C00049;
+ Thu, 22 Jun 2023 16:55:35 +0000 (UTC)
 From: Juan Quintela <quintela@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
@@ -49,13 +49,16 @@ Cc: Peter Xu <peterx@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Laurent Vivier <lvivier@redhat.com>, Eric Blake <eblake@redhat.com>,
  Fam Zheng <fam@euphon.net>, Juan Quintela <quintela@redhat.com>,
  Leonardo Bras <leobras@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- qemu-block@nongnu.org, Fabiano Rosas <farosas@suse.de>
-Subject: [PULL 02/30] migration/multifd: Protect accesses to migration_threads
-Date: Thu, 22 Jun 2023 18:54:59 +0200
-Message-Id: <20230622165527.2417-3-quintela@redhat.com>
+ qemu-block@nongnu.org,
+ =?UTF-8?q?Hyman=20Huang=28=E9=BB=84=E5=8B=87=29?= <yong.huang@smartx.com>
+Subject: [PULL 03/30] softmmu/dirtylimit: Add parameter check for hmp
+ "set_vcpu_dirty_limit"
+Date: Thu, 22 Jun 2023 18:55:00 +0200
+Message-Id: <20230622165527.2417-4-quintela@redhat.com>
 In-Reply-To: <20230622165527.2417-1-quintela@redhat.com>
 References: <20230622165527.2417-1-quintela@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
@@ -67,7 +70,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,88 +86,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Fabiano Rosas <farosas@suse.de>
+From: Hyman Huang(黄勇) <yong.huang@smartx.com>
 
-This doubly linked list is common for all the multifd and migration
-threads so we need to avoid concurrent access.
+dirty_rate paraemter of hmp command "set_vcpu_dirty_limit" is invalid
+if less than 0, so add parameter check for it.
 
-Add a mutex to protect the data from concurrent access. This fixes a
-crash when removing two MigrationThread objects from the list at the
-same time during cleanup of multifd threads.
+Note that this patch also delete the unsolicited help message and
+clean up the code.
 
-Fixes: 671326201d ("migration: Introduce interface query-migrationthreads")
-Signed-off-by: Fabiano Rosas <farosas@suse.de>
+Signed-off-by: Hyman Huang(黄勇) <yong.huang@smartx.com>
+Reviewed-by: Markus Armbruster <armbru@redhat.com>
 Reviewed-by: Peter Xu <peterx@redhat.com>
 Reviewed-by: Juan Quintela <quintela@redhat.com>
-Message-Id: <20230607161306.31425-3-farosas@suse.de>
+Message-Id: <168618975839.6361.17407633874747688653-1@git.sr.ht>
 Signed-off-by: Juan Quintela <quintela@redhat.com>
 ---
- migration/threadinfo.h |  2 --
- migration/threadinfo.c | 15 ++++++++++++++-
- 2 files changed, 14 insertions(+), 3 deletions(-)
+ softmmu/dirtylimit.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/migration/threadinfo.h b/migration/threadinfo.h
-index 8aa6999d58..2f356ff312 100644
---- a/migration/threadinfo.h
-+++ b/migration/threadinfo.h
-@@ -10,8 +10,6 @@
-  *  See the COPYING file in the top-level directory.
-  */
+diff --git a/softmmu/dirtylimit.c b/softmmu/dirtylimit.c
+index 015a9038d1..e80201097a 100644
+--- a/softmmu/dirtylimit.c
++++ b/softmmu/dirtylimit.c
+@@ -515,14 +515,15 @@ void hmp_set_vcpu_dirty_limit(Monitor *mon, const QDict *qdict)
+     int64_t cpu_index = qdict_get_try_int(qdict, "cpu_index", -1);
+     Error *err = NULL;
  
--#include "qemu/queue.h"
--#include "qemu/osdep.h"
- #include "qapi/error.h"
- #include "qapi/qapi-commands-migration.h"
- 
-diff --git a/migration/threadinfo.c b/migration/threadinfo.c
-index 3dd9b14ae6..262990dd75 100644
---- a/migration/threadinfo.c
-+++ b/migration/threadinfo.c
-@@ -10,23 +10,35 @@
-  *  See the COPYING file in the top-level directory.
-  */
- 
-+#include "qemu/osdep.h"
-+#include "qemu/queue.h"
-+#include "qemu/lockable.h"
- #include "threadinfo.h"
- 
-+QemuMutex migration_threads_lock;
- static QLIST_HEAD(, MigrationThread) migration_threads;
- 
-+static void __attribute__((constructor)) migration_threads_init(void)
-+{
-+    qemu_mutex_init(&migration_threads_lock);
-+}
-+
- MigrationThread *migration_threads_add(const char *name, int thread_id)
- {
-     MigrationThread *thread =  g_new0(MigrationThread, 1);
-     thread->name = name;
-     thread->thread_id = thread_id;
- 
--    QLIST_INSERT_HEAD(&migration_threads, thread, node);
-+    WITH_QEMU_LOCK_GUARD(&migration_threads_lock) {
-+        QLIST_INSERT_HEAD(&migration_threads, thread, node);
++    if (dirty_rate < 0) {
++        error_setg(&err, "invalid dirty page limit %" PRId64, dirty_rate);
++        goto out;
 +    }
++
+     qmp_set_vcpu_dirty_limit(!!(cpu_index != -1), cpu_index, dirty_rate, &err);
+-    if (err) {
+-        hmp_handle_error(mon, err);
+-        return;
+-    }
  
-     return thread;
+-    monitor_printf(mon, "[Please use 'info vcpu_dirty_limit' to query "
+-                   "dirty limit for virtual CPU]\n");
++out:
++    hmp_handle_error(mon, err);
  }
  
- void migration_threads_remove(MigrationThread *thread)
- {
-+    QEMU_LOCK_GUARD(&migration_threads_lock);
-     if (thread) {
-         QLIST_REMOVE(thread, node);
-         g_free(thread);
-@@ -39,6 +51,7 @@ MigrationThreadInfoList *qmp_query_migrationthreads(Error **errp)
-     MigrationThreadInfoList **tail = &head;
-     MigrationThread *thread = NULL;
- 
-+    QEMU_LOCK_GUARD(&migration_threads_lock);
-     QLIST_FOREACH(thread, &migration_threads, node) {
-         MigrationThreadInfo *info = g_new0(MigrationThreadInfo, 1);
-         info->name = g_strdup(thread->name);
+ static struct DirtyLimitInfo *dirtylimit_query_vcpu(int cpu_index)
 -- 
 2.40.1
 
