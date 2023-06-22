@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 247E6739555
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 04:14:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39FAE73955C
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 04:15:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qC9pT-0005Z4-UN; Wed, 21 Jun 2023 22:13:47 -0400
+	id 1qC9pS-0005Yb-Ni; Wed, 21 Jun 2023 22:13:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qC9pI-0005Ru-Ga
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 22:13:37 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1qC9pM-0005WB-G5
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 22:13:43 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qC9pG-0004pW-Fl
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 22:13:35 -0400
+ id 1qC9pK-0004qf-Fb
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 22:13:40 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687400013;
+ s=mimecast20190719; t=1687400017;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=VIMnHSP9RUdf5ypifstZBmauNhEEok0ZnZYAC+7f52M=;
- b=HOT8IKJ90K/y0NwcPwClX6dAQn2iDk31VSiVQ6mNXvefM/1B1SJW58kZk6NAoAR7RFfiv8
- mQvUmS/CYuQeCU4lpW9XUYUAuJuEeqOZC9QDTEDkxfWU8UZueJ/DLR2D7bT20tKxI5A4l8
- RVkP8hqDd4//7AdAIhtgnmQHAA3vur0=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=SFhrjM7lUKDquypfaK4yDGZL8ex0kV3B/YXIxLQaoVU=;
+ b=e8ufGCH3FUqeSlUunm6vFX4su52L53b5JLXDwmmCn645TFoDzIgyGXF3MWmDTTvw4jiU9Y
+ vvzXblVmt9KAAbq5osypvafXuDX8u/5vK9Bffgw4wxcBqLh/g3PIfXVM5iigPZ82SW09IR
+ hudWlQiEHEgq2eY6vvQiKp+6avAlYYI=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-108-zMPewLBHOeuWE2Pc53ihqA-1; Wed, 21 Jun 2023 22:13:32 -0400
-X-MC-Unique: zMPewLBHOeuWE2Pc53ihqA-1
+ us-mta-179-aukcg451MauZBOSCkAu0wQ-1; Wed, 21 Jun 2023 22:13:34 -0400
+X-MC-Unique: aukcg451MauZBOSCkAu0wQ-1
 Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
  [10.11.54.3])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9F3FC3C10151;
- Thu, 22 Jun 2023 02:13:31 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 46E0E8AB382;
+ Thu, 22 Jun 2023 02:13:34 +0000 (UTC)
 Received: from secure.mitica (unknown [10.39.193.228])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 0BBFA112132C;
- Thu, 22 Jun 2023 02:13:28 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id EBD13112132C;
+ Thu, 22 Jun 2023 02:13:31 +0000 (UTC)
 From: Juan Quintela <quintela@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Leonardo Bras <leobras@redhat.com>,
@@ -51,17 +51,17 @@ Cc: Peter Xu <peterx@redhat.com>, Leonardo Bras <leobras@redhat.com>,
  Stefan Hajnoczi <stefanha@redhat.com>, Fam Zheng <fam@euphon.net>,
  Laurent Vivier <lvivier@redhat.com>,
  =?UTF-8?q?Hyman=20Huang=28=E9=BB=84=E5=8B=87=29?= <yong.huang@smartx.com>
-Subject: [PULL 03/30] softmmu/dirtylimit: Add parameter check for hmp
- "set_vcpu_dirty_limit"
-Date: Thu, 22 Jun 2023 04:12:53 +0200
-Message-Id: <20230622021320.66124-4-quintela@redhat.com>
+Subject: [PULL 04/30] qapi/migration: Introduce x-vcpu-dirty-limit-period
+ parameter
+Date: Thu, 22 Jun 2023 04:12:54 +0200
+Message-Id: <20230622021320.66124-5-quintela@redhat.com>
 In-Reply-To: <20230622021320.66124-1-quintela@redhat.com>
 References: <20230622021320.66124-1-quintela@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -88,48 +88,221 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Hyman Huang(黄勇) <yong.huang@smartx.com>
 
-dirty_rate paraemter of hmp command "set_vcpu_dirty_limit" is invalid
-if less than 0, so add parameter check for it.
+Introduce "x-vcpu-dirty-limit-period" migration experimental
+parameter, which is in the range of 1 to 1000ms and used to
+make dirtyrate calculation period configurable.
 
-Note that this patch also delete the unsolicited help message and
-clean up the code.
+Currently with the "x-vcpu-dirty-limit-period" varies, the
+total time of live migration changes, test results show the
+optimal value of "x-vcpu-dirty-limit-period" ranges from
+500ms to 1000 ms. "x-vcpu-dirty-limit-period" should be made
+stable once it proves best value can not be determined with
+developer's experiments.
 
 Signed-off-by: Hyman Huang(黄勇) <yong.huang@smartx.com>
 Reviewed-by: Markus Armbruster <armbru@redhat.com>
-Reviewed-by: Peter Xu <peterx@redhat.com>
 Reviewed-by: Juan Quintela <quintela@redhat.com>
-Message-Id: <168618975839.6361.17407633874747688653-1@git.sr.ht>
+Message-Id: <168618975839.6361.17407633874747688653-2@git.sr.ht>
 Signed-off-by: Juan Quintela <quintela@redhat.com>
 ---
- softmmu/dirtylimit.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ qapi/migration.json            | 34 +++++++++++++++++++++++++++-------
+ migration/migration-hmp-cmds.c |  8 ++++++++
+ migration/options.c            | 28 ++++++++++++++++++++++++++++
+ 3 files changed, 63 insertions(+), 7 deletions(-)
 
-diff --git a/softmmu/dirtylimit.c b/softmmu/dirtylimit.c
-index 015a9038d1..5c12d26d49 100644
---- a/softmmu/dirtylimit.c
-+++ b/softmmu/dirtylimit.c
-@@ -515,14 +515,15 @@ void hmp_set_vcpu_dirty_limit(Monitor *mon, const QDict *qdict)
-     int64_t cpu_index = qdict_get_try_int(qdict, "cpu_index", -1);
-     Error *err = NULL;
+diff --git a/qapi/migration.json b/qapi/migration.json
+index 5bb5ab82a0..67c26d9dea 100644
+--- a/qapi/migration.json
++++ b/qapi/migration.json
+@@ -779,9 +779,14 @@
+ #     Nodes are mapped to their block device name if there is one, and
+ #     to their node name otherwise.  (Since 5.2)
+ #
++# @x-vcpu-dirty-limit-period: Periodic time (in milliseconds) of dirty limit during
++#                             live migration. Should be in the range 1 to 1000ms,
++#                             defaults to 1000ms. (Since 8.1)
++#
+ # Features:
+ #
+-# @unstable: Member @x-checkpoint-delay is experimental.
++# @unstable: Members @x-checkpoint-delay and @x-vcpu-dirty-limit-period
++#            are experimental.
+ #
+ # Since: 2.4
+ ##
+@@ -799,8 +804,9 @@
+            'multifd-channels',
+            'xbzrle-cache-size', 'max-postcopy-bandwidth',
+            'max-cpu-throttle', 'multifd-compression',
+-           'multifd-zlib-level' ,'multifd-zstd-level',
+-           'block-bitmap-mapping' ] }
++           'multifd-zlib-level', 'multifd-zstd-level',
++           'block-bitmap-mapping',
++           { 'name': 'x-vcpu-dirty-limit-period', 'features': ['unstable'] } ] }
  
-+    if (dirty_rate < 0) {
-+        error_setg(&err, "invalid dirty page limit %ld", dirty_rate);
-+        goto out;
-+    }
+ ##
+ # @MigrateSetParameters:
+@@ -935,9 +941,14 @@
+ #     Nodes are mapped to their block device name if there is one, and
+ #     to their node name otherwise.  (Since 5.2)
+ #
++# @x-vcpu-dirty-limit-period: Periodic time (in milliseconds) of dirty limit during
++#                             live migration. Should be in the range 1 to 1000ms,
++#                             defaults to 1000ms. (Since 8.1)
++#
+ # Features:
+ #
+-# @unstable: Member @x-checkpoint-delay is experimental.
++# @unstable: Members @x-checkpoint-delay and @x-vcpu-dirty-limit-period
++#            are experimental.
+ #
+ # TODO: either fuse back into MigrationParameters, or make
+ #     MigrationParameters members mandatory
+@@ -972,7 +983,9 @@
+             '*multifd-compression': 'MultiFDCompression',
+             '*multifd-zlib-level': 'uint8',
+             '*multifd-zstd-level': 'uint8',
+-            '*block-bitmap-mapping': [ 'BitmapMigrationNodeAlias' ] } }
++            '*block-bitmap-mapping': [ 'BitmapMigrationNodeAlias' ],
++            '*x-vcpu-dirty-limit-period': { 'type': 'uint64',
++                                            'features': [ 'unstable' ] } } }
+ 
+ ##
+ # @migrate-set-parameters:
+@@ -1127,9 +1140,14 @@
+ #     Nodes are mapped to their block device name if there is one, and
+ #     to their node name otherwise.  (Since 5.2)
+ #
++# @x-vcpu-dirty-limit-period: Periodic time (in milliseconds) of dirty limit during
++#                             live migration. Should be in the range 1 to 1000ms,
++#                             defaults to 1000ms. (Since 8.1)
++#
+ # Features:
+ #
+-# @unstable: Member @x-checkpoint-delay is experimental.
++# @unstable: Members @x-checkpoint-delay and @x-vcpu-dirty-limit-period
++#            are experimental.
+ #
+ # Since: 2.4
+ ##
+@@ -1161,7 +1179,9 @@
+             '*multifd-compression': 'MultiFDCompression',
+             '*multifd-zlib-level': 'uint8',
+             '*multifd-zstd-level': 'uint8',
+-            '*block-bitmap-mapping': [ 'BitmapMigrationNodeAlias' ] } }
++            '*block-bitmap-mapping': [ 'BitmapMigrationNodeAlias' ],
++            '*x-vcpu-dirty-limit-period': { 'type': 'uint64',
++                                            'features': [ 'unstable' ] } } }
+ 
+ ##
+ # @query-migrate-parameters:
+diff --git a/migration/migration-hmp-cmds.c b/migration/migration-hmp-cmds.c
+index 9885d7c9f7..352e9ec716 100644
+--- a/migration/migration-hmp-cmds.c
++++ b/migration/migration-hmp-cmds.c
+@@ -364,6 +364,10 @@ void hmp_info_migrate_parameters(Monitor *mon, const QDict *qdict)
+                 }
+             }
+         }
 +
-     qmp_set_vcpu_dirty_limit(!!(cpu_index != -1), cpu_index, dirty_rate, &err);
--    if (err) {
--        hmp_handle_error(mon, err);
--        return;
--    }
++        monitor_printf(mon, "%s: %" PRIu64 " ms\n",
++        MigrationParameter_str(MIGRATION_PARAMETER_X_VCPU_DIRTY_LIMIT_PERIOD),
++        params->x_vcpu_dirty_limit_period);
+     }
  
--    monitor_printf(mon, "[Please use 'info vcpu_dirty_limit' to query "
--                   "dirty limit for virtual CPU]\n");
-+out:
-+    hmp_handle_error(mon, err);
+     qapi_free_MigrationParameters(params);
+@@ -620,6 +624,10 @@ void hmp_migrate_set_parameter(Monitor *mon, const QDict *qdict)
+         error_setg(&err, "The block-bitmap-mapping parameter can only be set "
+                    "through QMP");
+         break;
++    case MIGRATION_PARAMETER_X_VCPU_DIRTY_LIMIT_PERIOD:
++        p->has_x_vcpu_dirty_limit_period = true;
++        visit_type_size(v, param, &p->x_vcpu_dirty_limit_period, &err);
++        break;
+     default:
+         assert(0);
+     }
+diff --git a/migration/options.c b/migration/options.c
+index b62ab30cd5..9743dea3ab 100644
+--- a/migration/options.c
++++ b/migration/options.c
+@@ -80,6 +80,8 @@
+ #define DEFINE_PROP_MIG_CAP(name, x)             \
+     DEFINE_PROP_BOOL(name, MigrationState, capabilities[x], false)
+ 
++#define DEFAULT_MIGRATE_VCPU_DIRTY_LIMIT_PERIOD     1000    /* milliseconds */
++
+ Property migration_properties[] = {
+     DEFINE_PROP_BOOL("store-global-state", MigrationState,
+                      store_global_state, true),
+@@ -163,6 +165,9 @@ Property migration_properties[] = {
+     DEFINE_PROP_STRING("tls-creds", MigrationState, parameters.tls_creds),
+     DEFINE_PROP_STRING("tls-hostname", MigrationState, parameters.tls_hostname),
+     DEFINE_PROP_STRING("tls-authz", MigrationState, parameters.tls_authz),
++    DEFINE_PROP_UINT64("x-vcpu-dirty-limit-period", MigrationState,
++                       parameters.x_vcpu_dirty_limit_period,
++                       DEFAULT_MIGRATE_VCPU_DIRTY_LIMIT_PERIOD),
+ 
+     /* Migration capabilities */
+     DEFINE_PROP_MIG_CAP("x-xbzrle", MIGRATION_CAPABILITY_XBZRLE),
+@@ -891,6 +896,9 @@ MigrationParameters *qmp_query_migrate_parameters(Error **errp)
+                        s->parameters.block_bitmap_mapping);
+     }
+ 
++    params->has_x_vcpu_dirty_limit_period = true;
++    params->x_vcpu_dirty_limit_period = s->parameters.x_vcpu_dirty_limit_period;
++
+     return params;
  }
  
- static struct DirtyLimitInfo *dirtylimit_query_vcpu(int cpu_index)
+@@ -923,6 +931,7 @@ void migrate_params_init(MigrationParameters *params)
+     params->has_announce_max = true;
+     params->has_announce_rounds = true;
+     params->has_announce_step = true;
++    params->has_x_vcpu_dirty_limit_period = true;
+ }
+ 
+ /*
+@@ -1083,6 +1092,15 @@ bool migrate_params_check(MigrationParameters *params, Error **errp)
+     }
+ #endif
+ 
++    if (params->has_x_vcpu_dirty_limit_period &&
++        (params->x_vcpu_dirty_limit_period < 1 ||
++         params->x_vcpu_dirty_limit_period > 1000)) {
++        error_setg(errp, QERR_INVALID_PARAMETER_VALUE,
++                   "x-vcpu-dirty-limit-period",
++                   "a value between 1 and 1000");
++        return false;
++    }
++
+     return true;
+ }
+ 
+@@ -1182,6 +1200,11 @@ static void migrate_params_test_apply(MigrateSetParameters *params,
+         dest->has_block_bitmap_mapping = true;
+         dest->block_bitmap_mapping = params->block_bitmap_mapping;
+     }
++
++    if (params->has_x_vcpu_dirty_limit_period) {
++        dest->x_vcpu_dirty_limit_period =
++            params->x_vcpu_dirty_limit_period;
++    }
+ }
+ 
+ static void migrate_params_apply(MigrateSetParameters *params, Error **errp)
+@@ -1300,6 +1323,11 @@ static void migrate_params_apply(MigrateSetParameters *params, Error **errp)
+             QAPI_CLONE(BitmapMigrationNodeAliasList,
+                        params->block_bitmap_mapping);
+     }
++
++    if (params->has_x_vcpu_dirty_limit_period) {
++        s->parameters.x_vcpu_dirty_limit_period =
++            params->x_vcpu_dirty_limit_period;
++    }
+ }
+ 
+ void qmp_migrate_set_parameters(MigrateSetParameters *params, Error **errp)
 -- 
 2.40.1
 
