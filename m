@@ -2,88 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F040E739CD3
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 11:25:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D21A3739D78
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 11:35:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCGYX-0007VK-UK; Thu, 22 Jun 2023 05:24:45 -0400
+	id 1qCGhn-0000jh-3V; Thu, 22 Jun 2023 05:34:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qCGYV-0007Td-Tv
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 05:24:43 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qCGYU-0004nA-H1
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 05:24:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687425881;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=QnIQ/xapN5uMJfMUk52uv20vhhWsBLm/ASSD3EXtZUA=;
- b=T70LXO8KN15m35uLi8msFEMJVT5FkRj5Jp86ARvPfbzk+z3F4PuzUZ5CdJ3n9jKfzBIAsm
- M2uJ0kGfHGq5s9kmynrtkXSSqfvLthNyNi5Rk2YrRhcZiZ638pU2zS79Zms9fYcvR3cU78
- LRCQWajIHRCrZLFuIAgEh2kT89+mov4=
-Received: from mail-vs1-f69.google.com (mail-vs1-f69.google.com
- [209.85.217.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-65-40UdhIGKPJ-XlCj07E7TJQ-1; Thu, 22 Jun 2023 05:24:40 -0400
-X-MC-Unique: 40UdhIGKPJ-XlCj07E7TJQ-1
-Received: by mail-vs1-f69.google.com with SMTP id
- ada2fe7eead31-440bc497ef7so1229321137.3
- for <qemu-devel@nongnu.org>; Thu, 22 Jun 2023 02:24:40 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1qCGhi-0000im-HA; Thu, 22 Jun 2023 05:34:14 -0400
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1qCGhf-0002ts-V3; Thu, 22 Jun 2023 05:34:13 -0400
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-1b5452b77b4so44400055ad.3; 
+ Thu, 22 Jun 2023 02:34:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1687426446; x=1690018446;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=wGq1yIzNjRPww6SOy4+fqHGahDdLFedI858KNg6DDy0=;
+ b=ghXWa9cuPtPmgZY17+W9uTxZmxvF7rrmagfQqNOPyMYwieL4D8RnzgqVMlfmhes+kf
+ /43EXODQA7dIQfH8b7VoUwIQgFH8e9+BdBp/WchpuQrrFIrqBMzaPjcOum4wvg45ivrV
+ AkqktslsqtSJPlQ5dWPi1kWH9cdyJafKQjdSSBqNlnvWsyBWsV+Xq2VPvcBXPwRz77fY
+ pPJq0XyMwId/F/xJFO8sazS5pkp37fSbMrZTwNLRpE5iKXJrHZvv2lPUSLGCtfe+eGjC
+ zCYvgoja7dlX2OOCa4Kz2VsDzzk45W00Jfk+/oR+sjydSzmTpOhgRZxmILehjS4fI9PT
+ OfYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687425879; x=1690017879;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=QnIQ/xapN5uMJfMUk52uv20vhhWsBLm/ASSD3EXtZUA=;
- b=hfsWplBe0nPtOOA50JuMOVcWVf6GjHRXuAa0d8kcegLKXpSfN23Ciz5cMFpVpISXA8
- M7y2Oy56LblTOGlW5wNJC463/OnUaCg0fYdpCTb1h+YfeNiRX4nLhgSi7pLAEObtfUyR
- RExtxjT2DAO6itRcyuGxqD1Kc1Dz/BAmnwnkKsVy3kdc0y/ntbgCFKivABtdKW1kIFqz
- wjr7MAJqgxxUMFGIrJoa6aHFsgJw2VQhZ+poWCV2AgFxwFdqCCRD5YRJNHIAZpNGtXni
- gga3J3aPXhRIx8yaVzoDLCp7jizzf8JlAX7d4xX56PXRXFcxaWxK+k/XaDhs3EeoWmkZ
- BoIQ==
-X-Gm-Message-State: AC+VfDxiMxSo5de3Q+icrQ9xMZUyPSdrkNQL5Vv0FKDwYTE7iHuILcud
- biZhWbtJDh7Rfprhj37F8tDgNtqzsEHewJP91DLJSS9Mw394TeIqjR+mcS+YR6HxgL5hJB6bYK8
- 6VNxCDf6C8JNrUPTvrF27tlW9MdtMwTk=
-X-Received: by 2002:a67:e295:0:b0:42e:2b9f:f8f0 with SMTP id
- g21-20020a67e295000000b0042e2b9ff8f0mr8423351vsf.30.1687425879706; 
- Thu, 22 Jun 2023 02:24:39 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ47AV+4CmtigoZtgtC5gdxPwwtW+rE2O+Y/b63DaVQqaLk+XdNy70jYjqiguhSRoRHhpA0/orVl4HG30ZbLO9I=
-X-Received: by 2002:a67:e295:0:b0:42e:2b9f:f8f0 with SMTP id
- g21-20020a67e295000000b0042e2b9ff8f0mr8423345vsf.30.1687425879514; Thu, 22
- Jun 2023 02:24:39 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1687426446; x=1690018446;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=wGq1yIzNjRPww6SOy4+fqHGahDdLFedI858KNg6DDy0=;
+ b=dRLl/IQROs4VDQcOqvNnK79qiKs22aPkt27d4xomPL4BhB33W8E1VO+Fk0TH9NMC4p
+ nA3LIcZfHlf9mB2yB/64hSf5kEYvn7Nt26UOgKX5eau0hM8+EExO/KJCGkN5qJEGW1cH
+ wjE6TCrThAClvkuVo0xmWwfUYCq0DJjJRc9HTe9ZBCPPtIy4xRXg4I43eq/TTx5TFjFA
+ CJuITPo+cKwFSp34+SjFqvDrst0uFAADS89iKGzu7gPtIBCbs/Ou9rnMNO/WrjoAZSfP
+ rBpyK9OOGGQLVnUcHSe8eZoyZwzGxYxYeUZxbd5F0RRFuV97GaFs6mYgPRPCVngEHtJe
+ 2ntg==
+X-Gm-Message-State: AC+VfDwN3Iw2giCZf5hx2SQ9jGeraO5XEisSd7kfU5c5Dl4L3ra0tOQu
+ DTpQ3KIG3vvqwQlsdyMwTXoLLZXbT28=
+X-Google-Smtp-Source: ACHHUZ5fWgS24W79/dV+Xj7DxcfwBNr7zslfvMHk+EFSfxSvvnFS4tRgHeoLPKwTM3r7XriydyXyDw==
+X-Received: by 2002:a17:903:25c9:b0:1b5:694:b1a9 with SMTP id
+ jc9-20020a17090325c900b001b50694b1a9mr15671230plb.32.1687426446518; 
+ Thu, 22 Jun 2023 02:34:06 -0700 (PDT)
+Received: from wheely.local0.net (193-116-203-37.tpgi.com.au. [193.116.203.37])
+ by smtp.gmail.com with ESMTPSA id
+ x3-20020a1709027c0300b001ac2c3e54adsm4925662pll.118.2023.06.22.02.34.02
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 22 Jun 2023 02:34:06 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: qemu-ppc@nongnu.org
+Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v2 0/7]  target/ppc: TCG SMT support for spapr machine
+Date: Thu, 22 Jun 2023 19:33:50 +1000
+Message-Id: <20230622093357.255649-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-References: <20230621002121.1609612-1-jsnow@redhat.com>
- <CABgObfahSN4eQ65nu9Dy_7bkWmxfERiJ-ZEM729futMFuGWwPw@mail.gmail.com>
-In-Reply-To: <CABgObfahSN4eQ65nu9Dy_7bkWmxfERiJ-ZEM729futMFuGWwPw@mail.gmail.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Thu, 22 Jun 2023 11:24:28 +0200
-Message-ID: <CABgObfYKK+eU56iP2O+O7s=dcfWxmpXrB3EuNj=CkUw-XEjSnA@mail.gmail.com>
-Subject: Re: [PATCH RFC 0/6] Switch iotests to pyvenv
-To: John Snow <jsnow@redhat.com>
-Cc: qemu-devel <qemu-devel@nongnu.org>, Thomas Huth <thuth@redhat.com>, 
- "open list:Block layer core" <qemu-block@nongnu.org>,
- Beraldo Leal <bleal@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- Kevin Wolf <kwolf@redhat.com>, Cleber Rosa <crosa@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x636.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,49 +92,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jun 21, 2023 at 9:08=E2=80=AFAM Paolo Bonzini <pbonzini@redhat.com>=
- wrote:
-> Maybe patch 4 can use distlib.scripts as well to create the check script =
-in the build directory? (Yes that's another mkvenv functionality...) On a p=
-hone and don't have the docs at hand, so I am not sure. If not, your soluti=
-on is good enough.
->
-> Apart from this the only issue is the speed. IIRC having a prebuilt .whl =
-would fix it, I think for Meson we observed that the slow part was building=
- the wheel. Possibilities:
->
-> 1) using --no-pep517 if that also speeds it up?
->
-> 2) already removing the sources to qemu.qmp since that's the plan anyway;=
- and then, if you want editability you can install the package with --user =
---editable, i.e. outside the venv
+This series is based on some previously posted TCG fixes, in particular
+the CTRL register fix is required.
 
-Nope, it's 3 second always and 1.5 even with the wheel.
+Also added the Philippe's patch in the series to prevent conflict.
 
-Maybe replace qemu.qmp with a wheel and leaving PYTHONPATH for the rest?
+Since v1, main changes are just some tidying of comments and changelogs,
+and addition of avocado tests to boot Linux on SMT machine and make sure
+the CPUs come up, as suggested by Cedric.
 
-Paolo
+Thanks,
+Nick
 
-> Paolo
->
->>
->> John Snow (6):
->>   experiment: add mkvenv install
->>   build, tests: Add qemu in-tree packages to pyvenv at configure time.
->>   iotests: get rid of '..' in path environment output
->>   iotests: use the correct python to run linters
->>   iotests: use pyvenv/bin/python3 to launch child test processes
->>   iotests: don't add qemu.git/python to PYTHONPATH
->>
->>  configure                     | 31 +++++++++++++++++++++++++++
->>  python/scripts/mkvenv.py      | 40 +++++++++++++++++++++++++++++++++++
->>  tests/qemu-iotests/linters.py |  2 +-
->>  tests/qemu-iotests/testenv.py | 21 ++++++++++++------
->>  4 files changed, 87 insertions(+), 7 deletions(-)
->>
->> --
->> 2.40.1
->>
->>
+Nicholas Piggin (6):
+  target/ppc: Add initial flags and helpers for SMT support
+  target/ppc: Add support for SMT CTRL register
+  target/ppc: Add msgsnd/p and DPDES SMT support
+  spapr: TCG allow up to 8-thread SMT on POWER8 and newer CPUs
+  tests/avocado: boot ppc64 pseries to Linux VFS mount
+  tests/avocado: Add ppc64 pseries multiprocessor boot tests
+
+Philippe Mathieu-Daudé (1):
+  hw/ppc/spapr: Test whether TCG is enabled with tcg_enabled()
+
+ hw/ppc/ppc.c                 |  6 ++++
+ hw/ppc/spapr.c               | 16 ++++++---
+ hw/ppc/spapr_caps.c          | 14 ++++++++
+ hw/ppc/spapr_cpu_core.c      |  7 ++--
+ include/hw/ppc/ppc.h         |  1 +
+ target/ppc/cpu.h             |  9 +++++
+ target/ppc/cpu_init.c        |  5 +++
+ target/ppc/excp_helper.c     | 30 +++++++++++++---
+ target/ppc/helper.h          |  2 ++
+ target/ppc/misc_helper.c     | 69 ++++++++++++++++++++++++++++++++----
+ target/ppc/translate.c       | 46 +++++++++++++++++++++++-
+ tests/avocado/ppc_pseries.py | 62 ++++++++++++++++++++++++++++----
+ 12 files changed, 243 insertions(+), 24 deletions(-)
+
+-- 
+2.40.1
 
 
