@@ -2,94 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 932CE739815
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 09:32:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 85AB1739832
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 09:35:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCEms-00046N-Vc; Thu, 22 Jun 2023 03:31:27 -0400
+	id 1qCEqL-0006dM-Ri; Thu, 22 Jun 2023 03:35:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qCEme-00045X-GT
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 03:31:12 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1qCEqJ-0006d4-1x
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 03:34:59 -0400
+Received: from mout.kundenserver.de ([212.227.126.133])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qCEmb-0006lX-W0
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 03:31:12 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687419068;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=NrXJc973Aw+qwUB2NskQRr3m482eTOjm/t2oFDdYi4w=;
- b=QrGbfyjyauSwru0CW7SSG5y8kBFlcA75yRdn9GqMqL8e7D+ghkIZglicYEHKBAomfw0+Q+
- ivVaokyWs3qYAnAJwo2dB7yLSOShiX1TWuQVL1ZeCiclif1yGPlF8KHd55/1rSE/IcSHu0
- WDihEwpTT9YU+A1lMYxPVwkHHY82VrE=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-317-Gi4zLuNeMbqH3AWowC_BuQ-1; Thu, 22 Jun 2023 03:31:07 -0400
-X-MC-Unique: Gi4zLuNeMbqH3AWowC_BuQ-1
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-30e4d85e1ffso10245464f8f.0
- for <qemu-devel@nongnu.org>; Thu, 22 Jun 2023 00:31:06 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687419066; x=1690011066;
- h=mime-version:message-id:date:reply-to:user-agent:references
- :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=NrXJc973Aw+qwUB2NskQRr3m482eTOjm/t2oFDdYi4w=;
- b=aqJj1J38AUgqcail8O1ZFl0N2g+KkDKJZgC84cQKm0dmgqcbH2hn02XnRycJMw1wee
- PqTptpbUxrOILvJq7v2F8srh77ZGj1wg0TPblNxWDbK9KIhrpfWHtv9cVcE39l8BR4ek
- NDowg2y2shHBCW3kopm3hRzjEb+6xBg9LKfDz5lW5PSQD4FzWiwar/5xnTU6Cde4Q3Yz
- CYyCKA4jAy0Qfu3wnCjEQRr5XCu8RVSsHEzhrY/31NyLN6o99dl+IKfbQZbsQTvNtCVK
- WWXB5S9nebxtgcsI2gKQkHa0xJd2QUvZQN3wR1yxyZAmR1dK5TcsefYZnXA5W8Q7qjD7
- rk+g==
-X-Gm-Message-State: AC+VfDw+hebD4srbJcXqHQin7kHfZLQ+Q4TrMuPEk+b0QRK+UUCbqv/a
- LLbrIWZ3BI873+r0k3WhgfK8N8uDt1vHLcyXhxWP8gWtyOWuv74DNQ6YWoUxhLagu9Sy4WEegs7
- IczDU0BR0MM3rHbg=
-X-Received: by 2002:adf:f811:0:b0:311:17af:df96 with SMTP id
- s17-20020adff811000000b0031117afdf96mr18008575wrp.44.1687419066060; 
- Thu, 22 Jun 2023 00:31:06 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ4K0nWLKNY0dckfn2mQ/NuSOdPggS1PxmpZdeFcrW2dneSQaWPQPB+hT+NTdV8bRMKp1MqNOQ==
-X-Received: by 2002:adf:f811:0:b0:311:17af:df96 with SMTP id
- s17-20020adff811000000b0031117afdf96mr18008553wrp.44.1687419065707; 
- Thu, 22 Jun 2023 00:31:05 -0700 (PDT)
-Received: from redhat.com (static-92-120-85-188.ipcom.comunitel.net.
- [188.85.120.92]) by smtp.gmail.com with ESMTPSA id
- z11-20020a5d4c8b000000b0030c4d8930b1sm6286808wrs.91.2023.06.22.00.31.04
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 22 Jun 2023 00:31:05 -0700 (PDT)
-From: Juan Quintela <quintela@redhat.com>
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org,  Peter Xu <peterx@redhat.com>,  Leonardo Bras
- <leobras@redhat.com>,  Thomas Huth <thuth@redhat.com>,  Paolo Bonzini
- <pbonzini@redhat.com>,  Markus Armbruster <armbru@redhat.com>,
- qemu-block@nongnu.org,  Eric Blake <eblake@redhat.com>,  Stefan Hajnoczi
- <stefanha@redhat.com>,  Fam Zheng <fam@euphon.net>,  Laurent Vivier
- <lvivier@redhat.com>
-Subject: Re: [PULL 00/30] Next patches
-In-Reply-To: <609d91c6-1690-5f2e-57a7-da6e4b1597e4@linaro.org> (Richard
- Henderson's message of "Thu, 22 Jun 2023 07:38:17 +0200")
-References: <20230622021320.66124-1-quintela@redhat.com>
- <609d91c6-1690-5f2e-57a7-da6e4b1597e4@linaro.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
-Date: Thu, 22 Jun 2023 09:31:04 +0200
-Message-ID: <871qi47y2v.fsf@secure.mitica>
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1qCEqH-0001Ux-15
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 03:34:58 -0400
+Received: from [192.168.100.1] ([82.142.8.70]) by mrelayeu.kundenserver.de
+ (mreue009 [213.165.67.103]) with ESMTPSA (Nemesis) id
+ 1MHX3R-1qGJJf3VBZ-00DW7Q; Thu, 22 Jun 2023 09:34:55 +0200
+Message-ID: <e62cc656-b313-0b21-531c-44a5e5a480af@vivier.eu>
+Date: Thu, 22 Jun 2023 09:34:54 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH v4 00/24] q800: add support for booting MacOS Classic -
+ part 1
+Content-Language: fr
+To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, qemu-devel@nongnu.org
+References: <20230621085353.113233-1-mark.cave-ayland@ilande.co.uk>
+From: Laurent Vivier <laurent@vivier.eu>
+In-Reply-To: <20230621085353.113233-1-mark.cave-ayland@ilande.co.uk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Provags-ID: V03:K1:ohZP+/5W6dL9xnjHCEdF0wjvuzy6Zf/TL6F8bEeSPKX31KvvZwh
+ 1lfuq+35psPz1jje1WuiS5Fjz0VhC5r+W2cc4F/5quGYQqw75Q8NgM3FVQ5DJpp3bqaAIFC
+ ArAICoHGSOppbF+jMDFVHXIvlrGgm82unmEMvOYM8goU8wd8lyfAWKr/f9KCOScQe61mJ0+
+ tIlRwIjQ75iNDPC8gjcdA==
+UI-OutboundReport: notjunk:1;M01:P0:gonCbJLCFxQ=;o7Ks8539/Li1p866k2TAS5CS34v
+ iwUm9idWtVrVvoSSePkIfYMAVNcdiOCV5C/0qAk8004ZySzfw392AIraSj4ykuz90B3swoeeM
+ 1YDjBHoaRPcF5fMLP+Dsz0qy2PrhaU94q5Tj/APQU25QNs18s2kya7tdQvqGXr0ANKFS3dOkW
+ E6PFQIUupAKtpbpUQ3IZZvQsvt0WD2iDJj58HRkHouWKFrdRvoTeE96I9uxFBPZo+E+F0CywB
+ zYTyUBi3XGCuoYg/Z8nNltF7zqz3OB71gmkwK0ZtEYtZEyQ5HLQ/npafb99v0qGLS8p14A6bP
+ u30gEv6JrJEMj5e1/kAgfSk3K1om19weeRflteeXxH4c+0wFwOhcMEfGvYy7+Tay6LtG4fS9g
+ WAgocn6Z8e9t52aIt+1+56Ucm+X8PWuUrgcevOafSuijPXgGqH0uETTkQIOIbdxH6TCC0eBbd
+ 6rCv6PwAUu/CtJ2GBWhF+R75nqktlz1hwHCkZCuRqTMLh0/dx4Iu4k03KbIoDAJunTayQvxNo
+ 5kFtjsXz60xrhm1/cLtA8+VERHEM0AGXgP7AirHAry1scyMPv61+xoi6t5gcn18ugoE2WFX/a
+ Q5GdbE32YOGRd7jfqAVw6UP8wycVFAjRt0/Yc1gIrshxYIJhg7jPd7/1HvN4p4kiYLEBP3XuG
+ JlwC3Y5yQbivhDPQCPdDuaAITOe32owo61XMO1eqPQ==
+Received-SPF: none client-ip=212.227.126.133; envelope-from=laurent@vivier.eu;
+ helo=mout.kundenserver.de
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.093,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,58 +68,132 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Richard Henderson <richard.henderson@linaro.org> wrote:
-> On 6/22/23 04:12, Juan Quintela wrote:
->> The following changes since commit 67fe6ae41da64368bc4936b196fee2bf61f8c720:
->>    Merge tag 'pull-tricore-20230621-1'
->> ofhttps://github.com/bkoppelmann/qemu  into staging (2023-06-21
->> 20:08:48 +0200)
->> are available in the Git repository at:
->>    https://gitlab.com/juan.quintela/qemu.git  tags/next-pull-request
->> for you to fetch changes up to
->> c53dc569d0a0fb76eaa83f353253a897914948f9:
->>    migration/rdma: Split qemu_fopen_rdma() into input/output
->> functions (2023-06-22 02:45:30 +0200)
->> ----------------------------------------------------------------
->> Migration Pull request (20230621)
->> In this pull request:
->> - fix for multifd thread creation (fabiano)
->> - dirtylimity (hyman)
->>    * migration-test will go on next PULL request, as it has failures.
->> - Improve error description (tejus)
->> - improve -incoming and set parameters before calling incoming (wei)
->> - migration atomic counters reviewed patches (quintela)
->> - migration-test refacttoring reviewed (quintela)
->> Please apply.
->
-> You really need to test at least one 32-bit host regularly.
-> It should be trivial for you to do an i686 build somewhere.
->
-> https://gitlab.com/qemu-project/qemu/-/jobs/4518975360#L4817
-> https://gitlab.com/qemu-project/qemu/-/jobs/4518975263#L3486
-> https://gitlab.com/qemu-project/qemu/-/jobs/4518975261#L3145
-> https://gitlab.com/qemu-project/qemu/-/jobs/4518975298#L3372
-> https://gitlab.com/qemu-project/qemu/-/jobs/4518975301#L3221
->
-> ../softmmu/dirtylimit.c:558:58: error: format specifies type 'long'
-> but the argument has type 'int64_t' (aka 'long long')
-> [-Werror,-Wformat]
->         error_setg(&err, "invalid dirty page limit %ld", dirty_rate);
->                                                    ~~~   ^~~~~~~~~~
->                                                    %lld
+Le 21/06/2023 à 10:53, Mark Cave-Ayland a écrit :
+> [MCA: the original series has now been split into 2 separate parts based upon
+> Phil's comments re: QOM parenting for objects in Q800MachineState. Part 1
+> consists of the Q800MachineState patches along with QOM parenting fixes and
+> the 2 mac_via RTC patches.]
+> 
+> This series contains the remaining patches needed to allow QEMU's q800
+> machine to boot MacOS Classic when used in conjunction with a real
+> Quadra 800 ROM image. In fact with this series applied it is possible
+> to boot all of the following OSs:
+> 
+>    - MacOS 7.1 - 8.1, with or without virtual memory enabled
+>    - A/UX 3.0.1
+>    - NetBSD 9.3
+>    - Linux (via EMILE)
+> 
+> If you are ready to experience some 90s nostalgia then all you need is
+> to grab yourself a copy of the Quadra 800 ROM (checksum 0xf1acad13) and a
+> suitable install ISO as follows:
+> 
+>    # Prepare a PRAM image
+>    $ qemu-img create -f raw pram.img 256b
+> 
+>    # Launch QEMU with blank disk and install CDROM
+>    $ ./qemu-system-m68k \
+>        -M q800 \
+>        -m 128 \
+>        -bios Quadra800.rom \
+>        -drive file=pram.img,format=raw,if=mtd \
+>        -drive file=disk.img,media=disk,format=raw,if=none,id=hd \
+>        -device scsi-hd,scsi-id=0,drive=hd \
+>        -drive file=cdrom.iso,media=cdrom,if=none,id=cd \
+>        -device scsi-cd,scsi-id=3,drive=cd
+> 
+> And off you go! For more in-depth information about the installation process
+> I highly recommend the installation guide over at emaculation.com [1].
+> Compatibility is generally very good, and I'm pleased to report it is possible
+> to run one of the most popular productivity apps from the 90s [2].
+> 
+> I'd like to add a big thank you to all the people who have helped me work on
+> this series, including testing on real hardware, answering questions about
+> MacOS Classic internals and helping to diagnose and fix bugs in the 68k
+> emulation. In particular thanks go to Laurent Vivier, Finn Thain, Howard
+> Spoelstra, Volker Rümelin, Richard Henderson, Martin Husemann, Rin Okuyama,
+> Elliot Nunn, and SolraBizna.
+> 
+> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+> 
+> [1] https://www.emaculation.com/doku.php/qemu
+> [2] https://www.youtube.com/watch?v=yI21gURQ1Ew
+> 
+> 
+> Patches missing review tags: 8 (new)
+> 
+> v4:
+> - Rebase onto master
+> - Add R-B tags from Phil and Laurent
+> - Use qdev_realize() in patch 5 as suggested by Markus
+> - Add new patch 8 to switch q800-glue.c to use the DEFINE_TYPES macro
+>    as suggested by Phil
+> 
+> v3:
+> - Add R-B tags from Phil and Laurent
+> - Add missing headers in patches indicated by Phil
+> - Change patch 5 to use valid_cpu_types Machine class property and the cpu_type
+>    Machine property to initialise the CPU
+> - Remove osdep.h header from dp8393x.h in patch 13 noticed by Phil
+> - Change sysbus_realize_and_unref() to sysbus_realize() in patch 19
+> - Use memory_region_add_subregion() instead of sysbus_mmio_map() in patch 19
+> 
+> v2:
+> - Split series into 2 parts (this is part 1)
+> - Update QOM parenting for objects in Q800MachineState (Phil)
+> - Split GLUE device into separate glue.c and glue.h files
+> - Split TYPE_DP8393X and dp8393xState into dp8393x.h
+> - Add R-B tags from Laurent (where I still believe they are valid)
+> 
+> 
+> Mark Cave-Ayland (24):
+>    q800: fix up minor spacing issues in hw_compat_q800 GlobalProperty
+>      array
+>    q800: add missing space after parent object in GLUEState
+>    q800: introduce Q800MachineState
+>    q800: rename q800_init() to q800_machine_init()
+>    q800: move CPU object into Q800MachineState
+>    q800: move ROM memory region to Q800MachineState
+>    q800: move GLUE device into separate q800-glue.c file
+>    q800-glue.c: switch TypeInfo registration to use DEFINE_TYPES() macro
+>    q800: move GLUE device to Q800MachineState
+>    q800: introduce mac-io container memory region
+>    q800: reimplement mac-io region aliasing using IO memory region
+>    q800: move VIA1 device to Q800MachineState
+>    q800: move VIA2 device to Q800MachineState
+>    hw/net/dp8393x.c: move TYPE_DP8393X and dp8393xState into dp8393x.h
+>    q800: move dp8393x device to Q800MachineState
+>    q800: move ESCC device to Q800MachineState
+>    q800: move escc_orgate device to Q800MachineState
+>    q800: move ESP device to Q800MachineState
+>    q800: move SWIM device to Q800MachineState
+>    q800: move mac-nubus-bridge device to Q800MachineState
+>    q800: don't access Nubus bus directly from the mac-nubus-bridge device
+>    q800: move macfb device to Q800MachineState
+>    mac_via: fix rtc command decoding from PRAM addresses 0x0 to 0xf
+>    mac_via: fix rtc command decoding for the PRAM seconds registers
+> 
+>   MAINTAINERS                 |   3 +
+>   hw/m68k/meson.build         |   2 +-
+>   hw/m68k/q800-glue.c         | 249 +++++++++++++++++
+>   hw/m68k/q800.c              | 526 ++++++++++++++----------------------
+>   hw/misc/mac_via.c           |  13 +-
+>   hw/net/dp8393x.c            |  32 +--
+>   include/hw/m68k/q800-glue.h |  50 ++++
+>   include/hw/m68k/q800.h      |  66 +++++
+>   include/hw/net/dp8393x.h    |  60 ++++
+>   9 files changed, 635 insertions(+), 366 deletions(-)
+>   create mode 100644 hw/m68k/q800-glue.c
+>   create mode 100644 include/hw/m68k/q800-glue.h
+>   create mode 100644 include/hw/m68k/q800.h
+>   create mode 100644 include/hw/net/dp8393x.h
+> 
 
-Grrr, sorry.
+Queued
 
-Will not happen again.
-
-Later, Juan.
-
->
->
-> r~
-
+Thanks,
+Laurent
 
