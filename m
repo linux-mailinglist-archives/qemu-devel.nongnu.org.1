@@ -2,92 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 874A473A0AE
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 14:16:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A29AE73A0B1
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 14:16:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCJDa-0002QR-1I; Thu, 22 Jun 2023 08:15:18 -0400
+	id 1qCJEX-0002l3-Rl; Thu, 22 Jun 2023 08:16:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qCJDU-0002O9-Db
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 08:15:12 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <lukasstraub2@web.de>)
+ id 1qCJE1-0002h4-94
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 08:15:46 -0400
+Received: from mout.web.de ([212.227.15.14])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qCJDS-0004OY-Ni
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 08:15:12 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687436109;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=oVRZoWmWXdvRy4SxXAKvCwy86tNDGhys7Dd5svwpeHk=;
- b=C1+2xrtdstNRaCDTIUqBQ6x2ewUD5FWAl6XJn1mBZURJ6ykUzh4shz+APFFahj7udYzkzq
- TO5hf1M8Y1n4xIl5zxgUE4jGKAQgkdZgCwBGe+WBPPOrASfc65TIwgsd2Ir4JuOidYQPOm
- S2ne7mBKgM6YXuL5ZJFV+SJRwmhJxQI=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-575-eP6oWIWTPxaOMacA1tFu1w-1; Thu, 22 Jun 2023 08:15:07 -0400
-X-MC-Unique: eP6oWIWTPxaOMacA1tFu1w-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-3f9bd5c7fdfso9941865e9.1
- for <qemu-devel@nongnu.org>; Thu, 22 Jun 2023 05:15:07 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687436106; x=1690028106;
- h=mime-version:message-id:date:reply-to:user-agent:references
- :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=oVRZoWmWXdvRy4SxXAKvCwy86tNDGhys7Dd5svwpeHk=;
- b=ASHCx5X/E7hqKfpzZRx4bme29TTTu//xcks2QeiTUlwDEgzWMsT3uZLbDgDIbuhFxj
- P3AfjQrcPk/5Ocxsm0SfkHJbQyJ3ZqK0Gb1ndD6ugGOr77jQLeIQHvX8EvwInpzk+yjC
- bMHZXbS+oJZevbTd2CiBj0qgvItptIGBm1t9hD0AqTMCNi7lOZjJdmScmVR8Fy2jL+OF
- RHs99zh5kvDSWu+rZvut0TUSYsV8+8OvwrkZpyzVzYvVAwCC6aISvScnTb1p3e4Sv/X9
- MrtnTwbVJyOzXKPm8Y+TDw/PoNTCZSj2M2j2cJPLwg/gVgRv2mg5vbPihqoykSjf5dbB
- rlfg==
-X-Gm-Message-State: AC+VfDyaok7NOLoBNXa57bicw38ZnbimnxDmgy0d48CFFj2ypHV0AErp
- eANCRfwPAlNKIWyaNGFjykgiqnca647HbnWO96Nvz6NtO6hrgACAA7pRrbDh3ZtybiAL6QbQE60
- bNBP5Rq3qaxC2W+Y=
-X-Received: by 2002:a1c:4b0c:0:b0:3f9:b083:109 with SMTP id
- y12-20020a1c4b0c000000b003f9b0830109mr8911311wma.33.1687436106659; 
- Thu, 22 Jun 2023 05:15:06 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6opVcerVlMFjFBPO4/mKuW54+sfdxaCZ0HyMMY4foIfNauhIn2y07NP5NvNUQcaBeMV0+v4Q==
-X-Received: by 2002:a1c:4b0c:0:b0:3f9:b083:109 with SMTP id
- y12-20020a1c4b0c000000b003f9b0830109mr8911288wma.33.1687436106298; 
- Thu, 22 Jun 2023 05:15:06 -0700 (PDT)
-Received: from redhat.com (static-92-120-85-188.ipcom.comunitel.net.
- [188.85.120.92]) by smtp.gmail.com with ESMTPSA id
- f10-20020a7bcd0a000000b003f9b0830107sm1889193wmj.41.2023.06.22.05.15.05
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 22 Jun 2023 05:15:05 -0700 (PDT)
-From: Juan Quintela <quintela@redhat.com>
-To: Lukas Straub <lukasstraub2@web.de>
-Cc: qemu-devel@nongnu.org,  Peter Xu <peterx@redhat.com>,  Leonardo Bras
- <leobras@redhat.com>
-Subject: Re: [PATCH 01/18] migration: Give one error if trying to set
- MULTIFD and XBZRLE
-In-Reply-To: <20230622133623.5189e059@mobian> (Lukas Straub's message of "Thu, 
- 22 Jun 2023 13:36:23 +0200")
-References: <20230613145757.10131-1-quintela@redhat.com>
- <20230613145757.10131-2-quintela@redhat.com>
- <20230622133623.5189e059@mobian>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
-Date: Thu, 22 Jun 2023 14:15:04 +0200
-Message-ID: <87o7l77kxj.fsf@secure.mitica>
+ (Exim 4.90_1) (envelope-from <lukasstraub2@web.de>)
+ id 1qCJDv-0004hs-Aj
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 08:15:42 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+ s=s29768273; t=1687436118; x=1688040918; i=lukasstraub2@web.de;
+ bh=hbQnc5B7sbqpBhLG2YXl+AmDHf0JZy8xQ3zAuAgPEFE=;
+ h=X-UI-Sender-Class:Date:From:To:Cc:Subject:In-Reply-To:References;
+ b=Zta5rK+6aWtKk9i/ES2/LlWRpn2iqs7c30IQaaEgw+eC3KK7hZ8JdRexehJtZfDqLoU9Bpw
+ v+79kF0DQNyn3JXQNi8oWKdlXY1SF/50zaBD0DkdpWyBYCizzXBH5i5qkbWTvZwsA4xOg/Q0n
+ jbuC9/VZ5BRYOE50qHj+JObphVkzrB91cO0CFKR02ZpJ3u0H7K5++vGBzRRnDZ2AxyruTlrnE
+ XRo1NjeMILKxKEueJ0DosT3zNRHA4LsRyc5ykRBp4FGCg2qZM7jv34kmXw2x/Yr7A30G37uNy
+ 2VmFvGG+QnDEOk+ASkS4FTdoqAriYlMubAoxwmwC6t0EIoyM7J0g==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from mobian ([141.58.32.133]) by smtp.web.de (mrweb006
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1MG9DE-1qHkjq1mQu-00GdW4; Thu, 22
+ Jun 2023 14:15:18 +0200
+Date: Thu, 22 Jun 2023 14:15:15 +0200
+From: Lukas Straub <lukasstraub2@web.de>
+To: qemu-devel <qemu-devel@nongnu.org>
+Cc: Hailiang Zhang <zhanghailiang@xfusion.com>, Juan Quintela
+ <quintela@redhat.com>, Peter Xu <peterx@redhat.com>, Leonardo Bras
+ <leobras@redhat.com>, "Zhang, Chen" <chen.zhang@intel.com>
+Subject: [PATCH 1/8] colo: Only support the same qemu version on source and
+ destination
+Message-ID: <9acf84c3a558357d1c834923b832ddc1d2aa7548.1687429356.git.lukasstraub2@web.de>
+In-Reply-To: <cover.1687429356.git.lukasstraub2@web.de>
+References: <cover.1687429356.git.lukasstraub2@web.de>
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: multipart/signed; boundary="Sig_/xFedaaOIsFjPGys/AC.h=wW";
+ protocol="application/pgp-signature"; micalg=pgp-sha512
+X-Provags-ID: V03:K1:WAigrmgCJtNl1jf36bTojW5mU+hYAnVCsaGmXJIGNN+YHawfduJ
+ bmHmbz41v/dzet2s2tji3pxrG0/0NctwRMTUr7uo5Xvf1UjeNHp/MbGbcvkstTThnPHi0BH
+ FS8ElZQggMNGUYOtIysyx1uDCafOye2o2/y5ScWbNKyj3HPDqn1gnuWadHQWEvPZf4WFtbF
+ AlMgu9herPfHjBRfmk4/A==
+UI-OutboundReport: notjunk:1;M01:P0:6w/8k4xe6qw=;QFqcGMjcsATc4xv1dNbEo2Yl6An
+ z+TOsUsmUe81ARzPgsHgZTZF7So5ZfA8gDbwiFSeaxPilloPPVjo+6OipwYLMLEZQ6kszDJxX
+ bwDJovKY+V/lJTmBraWr8FNn/lj+RODh031qrGo5A+b0c4w5O5M4NyRTgjeM+T/ByTT0bBbLo
+ vKbGuGprxAJH0ftirScreFwak6y9a0MM6CrK3zWbPyjsHnV8v3fLXzUe+8RXk2uCiFBvUvLqh
+ oF5ajuMPUqTf8E+pkE2Gq5DsnBMb74RGAUtmZWtvwd0+1gl0g1jc9+LBIFMqufHpjqU01R/rN
+ PkWlPXxYDSVj9LsUf3KGrjDEuOQdAgHF7CHvaPGx281Be0ILbA5B3VkDfmtkP8Hk2cFdnD9b9
+ tLnpdgsFZlMwUL5P4h/KKSJvnFtEMNmMyYCFEga4gp81SFZTF+K/E6DCIgY+cavK8U6tET90K
+ Vt5SA98xPbl33LWbsSvF2Ms+KEIggxIGlYx2OA3NepU/QGeM/QqowpNtnUCIdQKQt8U+3t+Xi
+ CrbgrX8/bDks5ui5Ip0eWMEDEM2chPYTIvciDx0UO7MLMsX+mPcaT0FYpPjxIjriMW4gFnzWU
+ 5XYENlQc4Qp+/TiyAmkuVRe8xk25ee/+gyD/S0PqJA12aEITFJx/tsdNoIlk3+QXaQZmwJSOt
+ m509ftCZbdv9B4knmdZeVCBtmrR6Y1uFb/nvKRqJ2G9P9qJUmPLhj2C9h13IH0MadjYBCHE5I
+ aXEeTG4Wa+i02FF6rIP8mlNJSuL+zBSsugeFg0Pf5tPNpGHPeKUXk9RebXYDrWEpN9BZ69Wgw
+ e3wi2+rA7hjXr6ruxkWVine2Phcl/TNrj2zcSyCRBbWCc7JIcFVbOFGMdNz6ayLUTYz0vxpNv
+ 5OdS9Qzabu4Uh65M7OWnd9czn/fTLtglIMbkwlogFm2lK8WrVkZQwol0jXogW9Pp9xw6Vhq+F
+ fn1m5Vvu2k7jbFs6Dbr52Vz+MSo=
+Received-SPF: pass client-ip=212.227.15.14; envelope-from=lukasstraub2@web.de;
+ helo=mout.web.de
+X-Spam_score_int: -25
+X-Spam_score: -2.6
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,55 +86,55 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Lukas Straub <lukasstraub2@web.de> wrote:
-> On Tue, 13 Jun 2023 16:57:40 +0200
-> Juan Quintela <quintela@redhat.com> wrote:
->
->> Signed-off-by: Juan Quintela <quintela@redhat.com>
->> ---
->>  migration/options.c | 7 +++++++
->>  1 file changed, 7 insertions(+)
->> 
->> diff --git a/migration/options.c b/migration/options.c
->> index b62ab30cd5..c6674a4753 100644
->> --- a/migration/options.c
->> +++ b/migration/options.c
->> @@ -547,6 +547,13 @@ bool migrate_caps_check(bool *old_caps, bool *new_caps, Error **errp)
->>          }
->>      }
->>  
->> +    if (new_caps[MIGRATION_CAPABILITY_MULTIFD]) {
->> +        if (new_caps[MIGRATION_CAPABILITY_XBZRLE]) {
->> +            error_setg(errp, "Multifd is not compatible with xbzrle");
->> +            return false;
->> +        }
->> +    }
->> +
->>      return true;
->>  }
->>  
->
-> Hmm, I think supporting xbzrle + multifd might be worthwhile as an
-> alternative to xbzrle + compress.
+--Sig_/xFedaaOIsFjPGys/AC.h=wW
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-Nack.
+Signed-off-by: Lukas Straub <lukasstraub2@web.de>
+---
+ docs/COLO-FT.txt | 2 ++
+ 1 file changed, 2 insertions(+)
 
-> I don't use it, but it should be easy to do by just letting xbzlre try
-> to handle the page before multifd.
+diff --git a/docs/COLO-FT.txt b/docs/COLO-FT.txt
+index 2e760a4aee..8e64480dbd 100644
+--- a/docs/COLO-FT.txt
++++ b/docs/COLO-FT.txt
+@@ -148,6 +148,8 @@ in test procedure.
+ Note: Here we are running both instances on the same host for testing,
+ change the IP Addresses if you want to run it on two hosts. Initially
+ 127.0.0.1 is the Primary Host and 127.0.0.2 is the Secondary Host.
++Note: COLO is a experimental feature, so currently is should only be used
++with the same qemu version on sourcee and target.
+=20
+ =3D=3D Startup qemu =3D=3D
+ 1. Primary:
+--=20
+2.39.2
 
-My idea here is to implement xbzrle as we implement zlib/zstd on
-multifd.  Just go from there.
 
-> There shouldn't be any incompatibilities other than that, as long as
-> xbzlre sees the pages before multifd and the zero-page case is still
-> handled the old way.
+--Sig_/xFedaaOIsFjPGys/AC.h=wW
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
 
-The way that I say is going to be easier and probably also faster.
+-----BEGIN PGP SIGNATURE-----
 
-Later, Juan.
+iQIzBAEBCgAdFiEEg/qxWKDZuPtyYo+kNasLKJxdslgFAmSUO1MACgkQNasLKJxd
+sljCgQ//VUowdiahyyiL//8xyFcTIQc9YwI4qM0Ydx3Z1XUo0bnqFZNCweku1Lu2
+NxL8yHsxVN2rGbU9huGxXsLHgtVocAB1IH/+jrNN/iIBJWY2gqAgLToZrko1JwbP
+jgGraDkg4zGRUYKE5xRQYlnThnNsW4sXvD/c/pWAAS35UHwWUV/QljofpD8kkGZV
+amiSxm766df6DTdyIOn0a1QCZS+S6sgaq3PlL34NSVNcJOkbZcnbNUVF0sjDr6Wa
+5LActdtc9UGNDUYLEgKDvRd877CFO5cU4/gip8lr1iJAsf8ZKdpBrIepJh4pbbyd
+xMuMEx719GHVVVIXhEl7pI1IzTgp3njflAejlHGADXd/LcqgjGMtR2fMn22472M1
+UdSqc3aMuv2noLH5G7WQZOJmzUM/pIlRmRIhW0rQ8irx7NWRNM9y8r16Nngl/BND
+b1oItJ0Wn8hFoqcdRM56HiWJ4E8IjCTb4nO6lquu7D8XngSyyUOGbkbfdhQyz8rB
+or7p7VxWu07iglr8da2YHksxNITT23nNn+92mps5PP84WqMaLQEgQFFeoEEiId9v
+9PV9FhHsPBH5Uoql9KNWcjWvRvkr6Km3ScuODQymCS0ecjZJwZTruud/Ym6GzdvV
+alLTM/IbowBQJVPAfQ55nIEqhdsSpqAF7D41J9U5rQO7J3XJ6dQ=
+=HP35
+-----END PGP SIGNATURE-----
 
+--Sig_/xFedaaOIsFjPGys/AC.h=wW--
 
