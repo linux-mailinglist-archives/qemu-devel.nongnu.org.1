@@ -2,97 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E257739CCF
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 11:24:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F040E739CD3
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 11:25:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCGXE-0006XF-FZ; Thu, 22 Jun 2023 05:23:24 -0400
+	id 1qCGYX-0007VK-UK; Thu, 22 Jun 2023 05:24:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qCGX9-0006VJ-JR
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 05:23:19 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qCGYV-0007Td-Tv
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 05:24:43 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qCGX1-0004NJ-MJ
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 05:23:16 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qCGYU-0004nA-H1
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 05:24:43 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687425783;
+ s=mimecast20190719; t=1687425881;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=UEsFW6dzgW2GRq0CvXUAaYpERVA9Nk2cDYdeV87zEk8=;
- b=RC69RY5mYHG1MxHtMQc6LYnl7rJG7GcuQ+HgoHlZuOSkb8RhgsrNmnZOQy1KfBiUhwcMwv
- Fl9sHrmozs86SqrzIN1TqOwiyeIWCIx4Z7kbYdbrxjCaRoIUo4K25YkIaZlKGaeCGzCuQA
- 3r3+NsZF2cQiSEDHERbT/4tFXI10+OE=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=QnIQ/xapN5uMJfMUk52uv20vhhWsBLm/ASSD3EXtZUA=;
+ b=T70LXO8KN15m35uLi8msFEMJVT5FkRj5Jp86ARvPfbzk+z3F4PuzUZ5CdJ3n9jKfzBIAsm
+ M2uJ0kGfHGq5s9kmynrtkXSSqfvLthNyNi5Rk2YrRhcZiZ638pU2zS79Zms9fYcvR3cU78
+ LRCQWajIHRCrZLFuIAgEh2kT89+mov4=
+Received: from mail-vs1-f69.google.com (mail-vs1-f69.google.com
+ [209.85.217.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-217-4kIcNCreNWmO5gGcVakL2w-1; Thu, 22 Jun 2023 05:23:01 -0400
-X-MC-Unique: 4kIcNCreNWmO5gGcVakL2w-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-3f81f4a7596so39589335e9.1
- for <qemu-devel@nongnu.org>; Thu, 22 Jun 2023 02:23:01 -0700 (PDT)
+ us-mta-65-40UdhIGKPJ-XlCj07E7TJQ-1; Thu, 22 Jun 2023 05:24:40 -0400
+X-MC-Unique: 40UdhIGKPJ-XlCj07E7TJQ-1
+Received: by mail-vs1-f69.google.com with SMTP id
+ ada2fe7eead31-440bc497ef7so1229321137.3
+ for <qemu-devel@nongnu.org>; Thu, 22 Jun 2023 02:24:40 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687425780; x=1690017780;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=UEsFW6dzgW2GRq0CvXUAaYpERVA9Nk2cDYdeV87zEk8=;
- b=aDjxVXoFRRTyA091ndjExz62ZF1mQ4WVrzS7M3ApOIJAgDSZTn+mfhrLOSRMFtBtxh
- 8TrIiM6wBFpPmXixU0786kj6Tdtu+0YXBWjK+amrgg8QfZkvjyxVoog4hbuyidQsBzUa
- oS8nEx+tIWk1zt7rbRBEM4j3f9u3BExVI7QAjqRCK3w05xniXRwFtjoWKgugriiEo9J2
- JJPQoPsyWyMMX1x7r5ErmE/otrYTTYyC7snHca1cOSM0wQHryZ4mNieZKqK0oO+sThKQ
- n6W0ax/ozD2NndUJ+FQZFAzBMyKR40v3khHDL9uLM2cfdoGmJb+nss8SGeZ+BymcrxCf
- jF0A==
-X-Gm-Message-State: AC+VfDwnQGReEyWqYr2yx77Vt1/6PKghq7mj4lLSlqZ1KNRgY7WARYFq
- kVNUM2nGGkdg/NYPaMIocyPVJ7IkMJiCBqp0OU96Q3Ye1lfeYBBdQHbz9AaaS84+Mgh+BpHJVA+
- 31Ieo9TAT4Z1ND6yMfFx0CcM=
-X-Received: by 2002:a7b:cbd8:0:b0:3fa:781a:3d07 with SMTP id
- n24-20020a7bcbd8000000b003fa781a3d07mr110583wmi.35.1687425780749; 
- Thu, 22 Jun 2023 02:23:00 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ4KVR8B5yypa1+y+CMi1LWz2pr2kstpY/WYDl8+DpHQ5eLoBDOP+4LbX4bHuaLD0CkIX+VZPQ==
-X-Received: by 2002:a7b:cbd8:0:b0:3fa:781a:3d07 with SMTP id
- n24-20020a7bcbd8000000b003fa781a3d07mr110485wmi.35.1687425778120; 
- Thu, 22 Jun 2023 02:22:58 -0700 (PDT)
-Received: from [10.33.192.205] (nat-pool-str-t.redhat.com. [149.14.88.106])
- by smtp.gmail.com with ESMTPSA id
- n8-20020a05600c294800b003f90a604885sm7158769wmd.34.2023.06.22.02.22.56
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 22 Jun 2023 02:22:57 -0700 (PDT)
-Message-ID: <a81d48ac-4aee-1c5a-e530-20c634e42d5b@redhat.com>
-Date: Thu, 22 Jun 2023 11:22:56 +0200
+ d=1e100.net; s=20221208; t=1687425879; x=1690017879;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=QnIQ/xapN5uMJfMUk52uv20vhhWsBLm/ASSD3EXtZUA=;
+ b=hfsWplBe0nPtOOA50JuMOVcWVf6GjHRXuAa0d8kcegLKXpSfN23Ciz5cMFpVpISXA8
+ M7y2Oy56LblTOGlW5wNJC463/OnUaCg0fYdpCTb1h+YfeNiRX4nLhgSi7pLAEObtfUyR
+ RExtxjT2DAO6itRcyuGxqD1Kc1Dz/BAmnwnkKsVy3kdc0y/ntbgCFKivABtdKW1kIFqz
+ wjr7MAJqgxxUMFGIrJoa6aHFsgJw2VQhZ+poWCV2AgFxwFdqCCRD5YRJNHIAZpNGtXni
+ gga3J3aPXhRIx8yaVzoDLCp7jizzf8JlAX7d4xX56PXRXFcxaWxK+k/XaDhs3EeoWmkZ
+ BoIQ==
+X-Gm-Message-State: AC+VfDxiMxSo5de3Q+icrQ9xMZUyPSdrkNQL5Vv0FKDwYTE7iHuILcud
+ biZhWbtJDh7Rfprhj37F8tDgNtqzsEHewJP91DLJSS9Mw394TeIqjR+mcS+YR6HxgL5hJB6bYK8
+ 6VNxCDf6C8JNrUPTvrF27tlW9MdtMwTk=
+X-Received: by 2002:a67:e295:0:b0:42e:2b9f:f8f0 with SMTP id
+ g21-20020a67e295000000b0042e2b9ff8f0mr8423351vsf.30.1687425879706; 
+ Thu, 22 Jun 2023 02:24:39 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ47AV+4CmtigoZtgtC5gdxPwwtW+rE2O+Y/b63DaVQqaLk+XdNy70jYjqiguhSRoRHhpA0/orVl4HG30ZbLO9I=
+X-Received: by 2002:a67:e295:0:b0:42e:2b9f:f8f0 with SMTP id
+ g21-20020a67e295000000b0042e2b9ff8f0mr8423345vsf.30.1687425879514; Thu, 22
+ Jun 2023 02:24:39 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [RFC 4/6] migration: Deprecate -incoming <uri>
-Content-Language: en-US
-To: quintela@redhat.com, Paolo Bonzini <pbonzini@redhat.com>
-Cc: Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org,
- Markus Armbruster <armbru@redhat.com>, Leonardo Bras <leobras@redhat.com>,
- =?UTF-8?Q?Daniel_P=2eBerrang=c3=a9?= <berrange@redhat.com>,
- qemu-block@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>,
- Eric Blake <eblake@redhat.com>, Fam Zheng <fam@euphon.net>,
- libvir-list@redhat.com
-References: <20230612193344.3796-1-quintela@redhat.com>
- <20230612193344.3796-5-quintela@redhat.com> <ZId0+HYF/ETLVri3@x1n>
- <875y7sflqb.fsf@secure.mitica>
- <d88c707a-abd9-6c8e-907c-13a3fa9a0219@redhat.com>
- <87wmzv7ubn.fsf@secure.mitica>
-From: Thomas Huth <thuth@redhat.com>
-In-Reply-To: <87wmzv7ubn.fsf@secure.mitica>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+References: <20230621002121.1609612-1-jsnow@redhat.com>
+ <CABgObfahSN4eQ65nu9Dy_7bkWmxfERiJ-ZEM729futMFuGWwPw@mail.gmail.com>
+In-Reply-To: <CABgObfahSN4eQ65nu9Dy_7bkWmxfERiJ-ZEM729futMFuGWwPw@mail.gmail.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Thu, 22 Jun 2023 11:24:28 +0200
+Message-ID: <CABgObfYKK+eU56iP2O+O7s=dcfWxmpXrB3EuNj=CkUw-XEjSnA@mail.gmail.com>
+Subject: Re: [PATCH RFC 0/6] Switch iotests to pyvenv
+To: John Snow <jsnow@redhat.com>
+Cc: qemu-devel <qemu-devel@nongnu.org>, Thomas Huth <thuth@redhat.com>, 
+ "open list:Block layer core" <qemu-block@nongnu.org>,
+ Beraldo Leal <bleal@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ Kevin Wolf <kwolf@redhat.com>, Cleber Rosa <crosa@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.093, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -109,63 +99,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 22/06/2023 10.52, Juan Quintela wrote:
-> Paolo Bonzini <pbonzini@redhat.com> wrote:
->> On 6/12/23 22:51, Juan Quintela wrote:
->>>> Shall we just leave it there?  Or is deprecating it helps us in any form?
->>> See the patches two weeks ago when people complained that lisen(.., num)
->>> was too low.  And there are other parameters that work the same way
->>> (that I convenientely had forgotten).  So the easiest way to get things
->>> right is to use "defer" always.  Using -incoming "uri" should only be
->>> for people that "know what they are doing", so we had to ways to do it:
->>> - review all migration options and see which ones work without defer
->>>     and document it
->>> - deprecate everything that is not defer.
->>
->> "-incoming <uri>" is literally the same as running "migrate-incoming"
->> as the first thing on the monitor:
->>
->>      if (incoming) {
->>          Error *local_err = NULL;
->>          if (strcmp(incoming, "defer") != 0) {
->>              qmp_migrate_incoming(incoming, &local_err);
->>              if (local_err) {
->>                  error_reportf_err(local_err, "-incoming %s: ", incoming);
->>                  exit(1);
->>              }
->>          }
->>      } else if (autostart) {
->>          qmp_cont(NULL);
->>      }
->>
->> It's the only piece of code which distinguishes "-incoming defer" from
->> "-incoming <uri>".
->>
->> So I'm not sure what the problem would be with keeping it?
-> 
-> User friendliness.
-> 
-> First of all, I use it all the time.  And I know that it is useful for
-> developers.  I was the one asking peter to implement -global
-> migration.foo to be able to test multifd with it.
-> 
-> The problem is that if you use more than two channels with multifd, on
-> the incoming side, you need to do:
-> 
-> - migrate_set_parameter multifd-channels 16
-> - migrate_incoming <uri>
-> 
-> And people continue to do:
-> 
-> - qemu -incoming <uri>
-> - migrate_set_parameter multifd-channels 16 (on the command line)
-> 
-> And they complain that it fails, because we are calling listen with the
-> wrong value.
+On Wed, Jun 21, 2023 at 9:08=E2=80=AFAM Paolo Bonzini <pbonzini@redhat.com>=
+ wrote:
+> Maybe patch 4 can use distlib.scripts as well to create the check script =
+in the build directory? (Yes that's another mkvenv functionality...) On a p=
+hone and don't have the docs at hand, so I am not sure. If not, your soluti=
+on is good enough.
+>
+> Apart from this the only issue is the speed. IIRC having a prebuilt .whl =
+would fix it, I think for Meson we observed that the slow part was building=
+ the wheel. Possibilities:
+>
+> 1) using --no-pep517 if that also speeds it up?
+>
+> 2) already removing the sources to qemu.qmp since that's the plan anyway;=
+ and then, if you want editability you can install the package with --user =
+--editable, i.e. outside the venv
 
-Then simply forbid "migrate_set_parameter multifd-channels ..." if the uri 
-has been specified on the command line?
+Nope, it's 3 second always and 1.5 even with the wheel.
 
-  Thomas
+Maybe replace qemu.qmp with a wheel and leaving PYTHONPATH for the rest?
+
+Paolo
+
+> Paolo
+>
+>>
+>> John Snow (6):
+>>   experiment: add mkvenv install
+>>   build, tests: Add qemu in-tree packages to pyvenv at configure time.
+>>   iotests: get rid of '..' in path environment output
+>>   iotests: use the correct python to run linters
+>>   iotests: use pyvenv/bin/python3 to launch child test processes
+>>   iotests: don't add qemu.git/python to PYTHONPATH
+>>
+>>  configure                     | 31 +++++++++++++++++++++++++++
+>>  python/scripts/mkvenv.py      | 40 +++++++++++++++++++++++++++++++++++
+>>  tests/qemu-iotests/linters.py |  2 +-
+>>  tests/qemu-iotests/testenv.py | 21 ++++++++++++------
+>>  4 files changed, 87 insertions(+), 7 deletions(-)
+>>
+>> --
+>> 2.40.1
+>>
+>>
 
 
