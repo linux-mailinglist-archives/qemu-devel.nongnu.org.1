@@ -2,98 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFDF373A9A6
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 22:51:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 676B373A9B0
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 22:57:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCRGM-0001hn-HY; Thu, 22 Jun 2023 16:50:42 -0400
+	id 1qCRLY-0003kJ-Vh; Thu, 22 Jun 2023 16:56:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qCRGJ-0001hU-9b
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 16:50:39 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qCRLW-0003k4-Nr
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 16:56:02 -0400
+Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qCRGH-0000Za-LW
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 16:50:39 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687467036;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=NwzX4Mzs30RnJAAGTLXl9bOivXBTGy+p4HrdsN1kF6I=;
- b=ERfWEr/o2n5gv3nuxWvgn2TZmuP1fpMjTZwELacOSo2XcrfEAAJnO4tswxoroeFzc6rewx
- kc552YOA4OdGbDRT7ZAjHq/0FRJHOxfMAez0ZlSTePPu8H5gQkzYMhRpNHBPJ47oCXjovB
- +i5VgEYTVudiriua4V6jmosRZLMrRHQ=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-441-km7ZAZMpPcyq9hWsGwSaHQ-1; Thu, 22 Jun 2023 16:50:34 -0400
-X-MC-Unique: km7ZAZMpPcyq9hWsGwSaHQ-1
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-312a08e70e3so1169501f8f.1
- for <qemu-devel@nongnu.org>; Thu, 22 Jun 2023 13:50:34 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687467033; x=1690059033;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=NwzX4Mzs30RnJAAGTLXl9bOivXBTGy+p4HrdsN1kF6I=;
- b=A2eKsbbKTV2dbnmGxDtQlC1meOrhGveBnw66iQhW+OBpHskeI0tUWudWvglH7XOS8i
- HXiAr05s2UL8xQ5wd+yjZkAIuHqAIvAy+hfIkeCy0tPFFQ43mT0t3O2DV5h8dgbANm1s
- m8MeOPdrT2wEuFy1X3pAuZIrMDER8uwCOqo74PlwjhoYy3EqG3futkRHNDFGSkiDgSx6
- P0Mzd7QZWZwvo7HEZ7YxfTaxbBJNoKPpd/4reFaU0lzInEfnZxjoLVD2JjIRVfqkike7
- nkUFLkUec3VfzjZvATQr7c+SJz5B1gZwaWl8z7xxU6YtUs0xJvmCWdL27C3bt9fadykr
- rWnw==
-X-Gm-Message-State: AC+VfDz/ELnK7VEqqbCyn5BGnEt86E1K21CgUGGEBIwcKJZqWxJG2kto
- 1simNfCeEFf3VjIIOrlVQdYbPnq3zoeSXm63ku5CfXDEHNXL/Nd5JJAF5c7hHhdtW7ZSp0V5jyx
- bJqfDcWRXnoD8jlo=
-X-Received: by 2002:adf:e585:0:b0:307:8879:6cc1 with SMTP id
- l5-20020adfe585000000b0030788796cc1mr19291184wrm.71.1687467033181; 
- Thu, 22 Jun 2023 13:50:33 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7aQmgnRRL7y1dfc5/lL1m46qR8D4rx/UMwIwffLTW/mYHgJtGJi03/saMMXC4ou8f520bC9g==
-X-Received: by 2002:adf:e585:0:b0:307:8879:6cc1 with SMTP id
- l5-20020adfe585000000b0030788796cc1mr19291156wrm.71.1687467032875; 
- Thu, 22 Jun 2023 13:50:32 -0700 (PDT)
-Received: from redhat.com ([2.52.149.110]) by smtp.gmail.com with ESMTPSA id
- d2-20020adff842000000b00312793cc763sm7895492wrq.15.2023.06.22.13.50.30
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 22 Jun 2023 13:50:32 -0700 (PDT)
-Date: Thu, 22 Jun 2023 16:50:28 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Joao Martins <joao.m.martins@oracle.com>
-Cc: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org, Alex Williamson <alex.williamson@redhat.com>,
- Cedric Le Goater <clg@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
- David Hildenbrand <david@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Jason Wang <jasowang@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Avihai Horon <avihaih@nvidia.com>, Jason Gunthorpe <jgg@nvidia.com>
-Subject: Re: [PATCH v3 01/15] hw/pci: Refactor pci_device_iommu_address_space()
-Message-ID: <20230622165003-mutt-send-email-mst@kernel.org>
-References: <20230530175937.24202-1-joao.m.martins@oracle.com>
- <20230530175937.24202-2-joao.m.martins@oracle.com>
- <ad557a25-0cca-518e-9d0f-f69f8bbd98c6@linaro.org>
- <41a452d7-5b17-d2b8-401e-5b5e7ddb5299@oracle.com>
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qCRLU-0002kF-GR
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 16:56:02 -0400
+Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
+ by localhost (Postfix) with SMTP id D337D748A56;
+ Thu, 22 Jun 2023 22:55:46 +0200 (CEST)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 886E774632B; Thu, 22 Jun 2023 22:55:46 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 8649C745720;
+ Thu, 22 Jun 2023 22:55:46 +0200 (CEST)
+Date: Thu, 22 Jun 2023 22:55:46 +0200 (CEST)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: =?ISO-8859-15?Q?Alex_Benn=E9e?= <alex.bennee@linaro.org>
+cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>, 
+ Aurelien Jarno <aurelien@aurel32.net>, 
+ Peter Maydell <peter.maydell@linaro.org>
+Subject: Re: [RFC PATCH] softfloat: use QEMU_FLATTEN to avoid mistaken isra
+ inlining
+In-Reply-To: <8920aa58-505c-92df-cff0-4ee232ca6f8b@eik.bme.hu>
+Message-ID: <5082a19d-0fc2-a140-eeb7-8c608b33e410@eik.bme.hu>
+References: <20230523131107.3680641-1-alex.bennee@linaro.org>
+ <8920aa58-505c-92df-cff0-4ee232ca6f8b@eik.bme.hu>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <41a452d7-5b17-d2b8-401e-5b5e7ddb5299@oracle.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: multipart/mixed;
+ boundary="3866299591-1484231473-1687467346=:28401"
+X-Spam-Probability: 9%
+Received-SPF: pass client-ip=2001:738:2001:2001::2001;
+ envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,94 +64,201 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, May 31, 2023 at 11:03:23AM +0100, Joao Martins wrote:
-> On 30/05/2023 23:04, Philippe Mathieu-Daudé wrote:
-> > Hi Joao,
-> > 
-> > On 30/5/23 19:59, Joao Martins wrote:
-> >> Rename pci_device_iommu_address_space() into pci_device_iommu_info().
-> >> In the new function return a new type PCIAddressSpace that encapsulates
-> >> the AddressSpace pointer that originally was returned.
-> >>
-> >> The new type is added in preparation to expanding it to include the IOMMU
-> >> memory region as a new field, such that we are able to fetch attributes of
-> >> the vIOMMU e.g. at vfio migration setup.
-> >>
-> >> Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
-> >> ---
-> >>   hw/pci/pci.c         |  9 ++++++---
-> >>   include/hw/pci/pci.h | 21 ++++++++++++++++++++-
-> > 
-> > Please consider using scripts/git.orderfile.
-> > 
-> Will do -- wasn't aware of that script.
-> 
-> >>   2 files changed, 26 insertions(+), 4 deletions(-)
-> >>
-> >> diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-> >> index 1cc7c89036b5..ecf8a543aa77 100644
-> >> --- a/hw/pci/pci.c
-> >> +++ b/hw/pci/pci.c
-> >> @@ -2633,11 +2633,12 @@ static void pci_device_class_base_init(ObjectClass
-> >> *klass, void *data)
-> >>       }
-> >>   }
-> >>   -AddressSpace *pci_device_iommu_address_space(PCIDevice *dev)
-> >> +PCIAddressSpace pci_device_iommu_info(PCIDevice *dev)
-> >>   {
-> > 
-> > This function is PCI specific, ...
-> > 
-> >>   }
-> >>     void pci_setup_iommu(PCIBus *bus, PCIIOMMUFunc fn, void *opaque)
-> >> diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
-> >> index e6d0574a2999..9ffaf47fe2ab 100644
-> >> --- a/include/hw/pci/pci.h
-> >> +++ b/include/hw/pci/pci.h
-> >> @@ -363,9 +363,28 @@ void pci_bus_get_w64_range(PCIBus *bus, Range *range);
-> >>     void pci_device_deassert_intx(PCIDevice *dev);
-> >>   +typedef struct PCIAddressSpace {
-> >> +    AddressSpace *as;
-> > 
-> > ... but here I fail to understand what is PCI specific in this
-> > structure. You are just trying to an AS with a IOMMU MR, right?
-> > 
-> Right. The patch is trying to better split the changes to use one function to
-> return everything (via pci_device_iommu_info) with the PCIAddressSpace
-> intermediate structure as retval, such that patch 3 just adds a
-> IOMMUMemoryRegion* in the latter for usage with the
-> pci_device_iommu_memory_region().
-> 
-> I've named the structure with a 'PCI' prefix, because it seemed to me that it is
-> the only case (AIUI) that cares about whether a PCI has a different address
-> space that the memory map.
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
+--3866299591-1484231473-1687467346=:28401
+Content-Type: text/plain; charset=ISO-8859-15; format=flowed
+Content-Transfer-Encoding: 8BIT
 
-yea keep that pls. It should be possible to figure out the header
-from the name.
+Hello,
 
-> >> +} PCIAddressSpace;
-> >> +
-> >>   typedef AddressSpace *(*PCIIOMMUFunc)(PCIBus *, void *, int);
-> >> +static inline PCIAddressSpace as_to_pci_as(AddressSpace *as)
-> >> +{
-> >> +    PCIAddressSpace ret = { .as = as };
-> >> +
-> >> +    return ret;
-> >> +}
-> >> +static inline AddressSpace *pci_as_to_as(PCIAddressSpace pci_as)
-> >> +{
-> >> +    return pci_as.as;
-> >> +}
-> >> +
-> >> +PCIAddressSpace pci_device_iommu_info(PCIDevice *dev);
-> >> +static inline AddressSpace *pci_device_iommu_address_space(PCIDevice *dev)
-> >> +{
-> >> +    return pci_as_to_as(pci_device_iommu_info(dev));
-> >> +}
-> >>   -AddressSpace *pci_device_iommu_address_space(PCIDevice *dev);
-> >>   void pci_setup_iommu(PCIBus *bus, PCIIOMMUFunc fn, void *opaque);
-> >>     pcibus_t pci_bar_address(PCIDevice *d,
-> > 
+What happened to this patch? Will this be merged by somebody?
 
+Regards,
+BALATON Zoltan
+
+On Tue, 23 May 2023, BALATON Zoltan wrote:
+> On Tue, 23 May 2023, Alex Bennée wrote:
+>> Balton discovered that asserts for the extract/deposit calls had a
+>
+> Missing an a in my name and my given name is Zoltan. (First name and last 
+> name is in the other way in Hungarian.) Maybe just add a Reported-by instead 
+> of here if you want to record it.
+>
+>> significant impact on a lame benchmark on qemu-ppc. Replicating with:
+>>
+>>  ./qemu-ppc64 ~/lsrc/tests/lame.git-svn/builds/ppc64/frontend/lame \
+>>    -h pts-trondheim-3.wav pts-trondheim-3.mp3
+>> 
+>> showed up the pack/unpack routines not eliding the assert checks as it
+>> should have done causing them to prominently figure in the profile:
+>> 
+>>  11.44%  qemu-ppc64  qemu-ppc64               [.] unpack_raw64.isra.0
+>>  11.03%  qemu-ppc64  qemu-ppc64               [.] parts64_uncanon_normal
+>>   8.26%  qemu-ppc64  qemu-ppc64               [.] 
+>> helper_compute_fprf_float64
+>>   6.75%  qemu-ppc64  qemu-ppc64               [.] do_float_check_status
+>>   5.34%  qemu-ppc64  qemu-ppc64               [.] parts64_muladd
+>>   4.75%  qemu-ppc64  qemu-ppc64               [.] pack_raw64.isra.0
+>>   4.38%  qemu-ppc64  qemu-ppc64               [.] parts64_canonicalize
+>>   3.62%  qemu-ppc64  qemu-ppc64               [.] 
+>> float64r32_round_pack_canonical
+>> 
+>> After this patch the same test runs 31 seconds faster with a profile
+>> where the generated code dominates more:
+>> 
+>> +   14.12%     0.00%  qemu-ppc64  [unknown]                [.] 
+>> 0x0000004000619420
+>> +   13.30%     0.00%  qemu-ppc64  [unknown]                [.] 
+>> 0x0000004000616850
+>> +   12.58%    12.19%  qemu-ppc64  qemu-ppc64               [.] 
+>> parts64_uncanon_normal
+>> +   10.62%     0.00%  qemu-ppc64  [unknown]                [.] 
+>> 0x000000400061bf70
+>> +    9.91%     9.73%  qemu-ppc64  qemu-ppc64               [.] 
+>> helper_compute_fprf_float64
+>> +    7.84%     7.82%  qemu-ppc64  qemu-ppc64               [.] 
+>> do_float_check_status
+>> +    6.47%     5.78%  qemu-ppc64  qemu-ppc64               [.] 
+>> parts64_canonicalize.constprop.0
+>> +    6.46%     0.00%  qemu-ppc64  [unknown]                [.] 
+>> 0x0000004000620130
+>> +    6.42%     0.00%  qemu-ppc64  [unknown]                [.] 
+>> 0x0000004000619400
+>> +    6.17%     6.04%  qemu-ppc64  qemu-ppc64               [.] 
+>> parts64_muladd
+>> +    5.85%     0.00%  qemu-ppc64  [unknown]                [.] 
+>> 0x00000040006167e0
+>> +    5.74%     0.00%  qemu-ppc64  [unknown]                [.] 
+>> 0x0000b693fcffffd3
+>> +    5.45%     4.78%  qemu-ppc64  qemu-ppc64               [.] 
+>> float64r32_round_pack_canonical
+>> 
+>> Suggested-by: Richard Henderson <richard.henderson@linaro.org>
+>> Message-Id: <ec9cfe5a-d5f2-466d-34dc-c35817e7e010@linaro.org>
+>> [AJB: Patchified rth's suggestion]
+>> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+>> Cc: BALATON Zoltan <balaton@eik.bme.hu>
+>
+> Replace Cc: with
+> Tested-by: BALATON Zoltan <balaton@eik.bme.hu>
+>
+> This solves the softfloat related usages, the rest probably are lower 
+> overhead, I could not measure any more improvement with removing asserts on 
+> top of this patch. I still have these functions high in my profiling result:
+>
+> children  self    command          symbol
+> 11.40%    10.86%  qemu-system-ppc  helper_compute_fprf_float64
+> 11.25%     0.61%  qemu-system-ppc  helper_fmadds
+> 10.01%     3.23%  qemu-system-ppc  float64r32_round_pack_canonical
+> 8.59%     1.80%  qemu-system-ppc  helper_float_check_status
+> 8.34%     7.23%  qemu-system-ppc  parts64_muladd
+> 8.16%     0.67%  qemu-system-ppc  helper_fmuls
+> 8.08%     0.43%  qemu-system-ppc  parts64_uncanon
+> 7.49%     1.78%  qemu-system-ppc  float64r32_mul
+> 7.32%     7.32%  qemu-system-ppc  parts64_uncanon_normal
+> 6.48%     0.52%  qemu-system-ppc  helper_fadds
+> 6.31%     6.31%  qemu-system-ppc  do_float_check_status
+> 5.99%     1.14%  qemu-system-ppc  float64r32_add
+>
+> Any idea on those?
+>
+> Unrelated to this patch I also started to see random crashes with a DSI on a 
+> dcbz instruction now which did not happen before (or not frequently enough 
+> for me to notice). I did not bisect that as it happens randomly but I wonder 
+> if it could be related to recent unaligned access changes or some other TCG 
+> change? Any idea what to check?
+>
+> Regards,
+> BALATON Zoltan
+>
+>> ---
+>> fpu/softfloat.c | 22 +++++++++++-----------
+>> 1 file changed, 11 insertions(+), 11 deletions(-)
+>> 
+>> diff --git a/fpu/softfloat.c b/fpu/softfloat.c
+>> index 108f9cb224..42e6c188b4 100644
+>> --- a/fpu/softfloat.c
+>> +++ b/fpu/softfloat.c
+>> @@ -593,27 +593,27 @@ static void unpack_raw64(FloatParts64 *r, const 
+>> FloatFmt *fmt, uint64_t raw)
+>>     };
+>> }
+>> 
+>> -static inline void float16_unpack_raw(FloatParts64 *p, float16 f)
+>> +static void QEMU_FLATTEN float16_unpack_raw(FloatParts64 *p, float16 f)
+>> {
+>>     unpack_raw64(p, &float16_params, f);
+>> }
+>> 
+>> -static inline void bfloat16_unpack_raw(FloatParts64 *p, bfloat16 f)
+>> +static void QEMU_FLATTEN bfloat16_unpack_raw(FloatParts64 *p, bfloat16 f)
+>> {
+>>     unpack_raw64(p, &bfloat16_params, f);
+>> }
+>> 
+>> -static inline void float32_unpack_raw(FloatParts64 *p, float32 f)
+>> +static void QEMU_FLATTEN float32_unpack_raw(FloatParts64 *p, float32 f)
+>> {
+>>     unpack_raw64(p, &float32_params, f);
+>> }
+>> 
+>> -static inline void float64_unpack_raw(FloatParts64 *p, float64 f)
+>> +static void QEMU_FLATTEN float64_unpack_raw(FloatParts64 *p, float64 f)
+>> {
+>>     unpack_raw64(p, &float64_params, f);
+>> }
+>> 
+>> -static void floatx80_unpack_raw(FloatParts128 *p, floatx80 f)
+>> +static void QEMU_FLATTEN floatx80_unpack_raw(FloatParts128 *p, floatx80 f)
+>> {
+>>     *p = (FloatParts128) {
+>>         .cls = float_class_unclassified,
+>> @@ -623,7 +623,7 @@ static void floatx80_unpack_raw(FloatParts128 *p, 
+>> floatx80 f)
+>>     };
+>> }
+>> 
+>> -static void float128_unpack_raw(FloatParts128 *p, float128 f)
+>> +static void QEMU_FLATTEN float128_unpack_raw(FloatParts128 *p, float128 f)
+>> {
+>>     const int f_size = float128_params.frac_size - 64;
+>>     const int e_size = float128_params.exp_size;
+>> @@ -650,27 +650,27 @@ static uint64_t pack_raw64(const FloatParts64 *p, 
+>> const FloatFmt *fmt)
+>>     return ret;
+>> }
+>> 
+>> -static inline float16 float16_pack_raw(const FloatParts64 *p)
+>> +static float16 QEMU_FLATTEN float16_pack_raw(const FloatParts64 *p)
+>> {
+>>     return make_float16(pack_raw64(p, &float16_params));
+>> }
+>> 
+>> -static inline bfloat16 bfloat16_pack_raw(const FloatParts64 *p)
+>> +static bfloat16 QEMU_FLATTEN bfloat16_pack_raw(const FloatParts64 *p)
+>> {
+>>     return pack_raw64(p, &bfloat16_params);
+>> }
+>> 
+>> -static inline float32 float32_pack_raw(const FloatParts64 *p)
+>> +static float32 QEMU_FLATTEN float32_pack_raw(const FloatParts64 *p)
+>> {
+>>     return make_float32(pack_raw64(p, &float32_params));
+>> }
+>> 
+>> -static inline float64 float64_pack_raw(const FloatParts64 *p)
+>> +static float64 QEMU_FLATTEN float64_pack_raw(const FloatParts64 *p)
+>> {
+>>     return make_float64(pack_raw64(p, &float64_params));
+>> }
+>> 
+>> -static float128 float128_pack_raw(const FloatParts128 *p)
+>> +static float128 QEMU_FLATTEN float128_pack_raw(const FloatParts128 *p)
+>> {
+>>     const int f_size = float128_params.frac_size - 64;
+>>     const int e_size = float128_params.exp_size;
+>
+--3866299591-1484231473-1687467346=:28401--
 
