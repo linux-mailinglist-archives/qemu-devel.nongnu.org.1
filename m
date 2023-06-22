@@ -2,59 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1B507398C7
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 09:59:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0262F7398DE
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 10:00:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCFBL-0004y7-9d; Thu, 22 Jun 2023 03:56:43 -0400
+	id 1qCFFF-0003Qe-0L; Thu, 22 Jun 2023 04:00:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1qCFAj-00048b-98
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 03:56:05 -0400
-Received: from mout.kundenserver.de ([212.227.17.13])
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1qCFEs-0003Jr-5k; Thu, 22 Jun 2023 04:00:22 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1qCFAf-0002uo-DW
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 03:56:04 -0400
-Received: from quad ([82.142.8.70]) by mrelayeu.kundenserver.de (mreue106
- [212.227.15.183]) with ESMTPSA (Nemesis) id 1N8XDT-1pyVqw1PIv-014RC6; Thu, 22
- Jun 2023 09:55:59 +0200
-From: Laurent Vivier <laurent@vivier.eu>
-To: qemu-devel@nongnu.org
-Cc: Laurent Vivier <laurent@vivier.eu>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Subject: [PULL 24/24] mac_via: fix rtc command decoding for the PRAM seconds
- registers
-Date: Thu, 22 Jun 2023 09:55:44 +0200
-Message-Id: <20230622075544.210899-25-laurent@vivier.eu>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230622075544.210899-1-laurent@vivier.eu>
-References: <20230622075544.210899-1-laurent@vivier.eu>
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1qCFEp-00009g-FE; Thu, 22 Jun 2023 04:00:21 -0400
+Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 35M7wfZu024271; Thu, 22 Jun 2023 08:00:17 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=5iige622nueld80GJR2fHC47QDQ7jPiqE+zQFh1Dmp4=;
+ b=kDAojQonzd8aV2RKeLjWqM5pjuZjeJMaFYWTrUQJHYNbCdehEq1RUTZQEDws3h29PojU
+ 7Ydtq0OtPgqqtyewoIgl7qJwUOdVY7qIj66pnx2Gd0NzeMRpbXyRyPlOOypq217ut/pR
+ AfG5ysgr/ukY1nIw1IoaRQXad0KL51KVS98mT2CWY1UJHbC+Go/m5uQ6/zqEe3uz7Hzm
+ KD4bP5VW86genQ7WAwYT2RDd9kMRSo45yuZ5UBpiTUDsSx/i13iBlFFrf25ZCXwDGlYb
+ rqrTV/wdbagg57mKMRYYEGwUt/BFUOV7JE2+LX1NN37eTEZkZ13wJu30yBBZkipMN64D xQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rchwggw68-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 22 Jun 2023 08:00:16 +0000
+Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 35M7QKDj020074;
+ Thu, 22 Jun 2023 08:00:16 GMT
+Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com
+ [169.63.121.186])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rchwggw5e-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 22 Jun 2023 08:00:16 +0000
+Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
+ by ppma03wdc.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 35M4juPh016312;
+ Thu, 22 Jun 2023 08:00:15 GMT
+Received: from smtprelay02.dal12v.mail.ibm.com ([9.208.130.97])
+ by ppma03wdc.us.ibm.com (PPS) with ESMTPS id 3r94f68gph-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 22 Jun 2023 08:00:14 +0000
+Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com
+ [10.39.53.231])
+ by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 35M80D6Z11010702
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 22 Jun 2023 08:00:14 GMT
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 929305805F;
+ Thu, 22 Jun 2023 08:00:13 +0000 (GMT)
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1626058045;
+ Thu, 22 Jun 2023 08:00:12 +0000 (GMT)
+Received: from [9.109.242.129] (unknown [9.109.242.129])
+ by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+ Thu, 22 Jun 2023 08:00:11 +0000 (GMT)
+Message-ID: <ceed7522-ac70-02fd-14b5-e97fad5e52a3@linux.ibm.com>
+Date: Thu, 22 Jun 2023 13:30:10 +0530
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:4BncvCbkfznm9DbU91w+DqND9gdV6sjJwgfy6YGgWVzQ66x+xtx
- aaZUGRxU28NiosMeDBqPQrGjqIJhfJFT5ezipfbH5puOlL6nBRVb7YB8lAON0beg7EOyyR3
- Mxr5PA0un4u5ZNhiQ+D196gwRmSAYFGY7v4KeCR3ZxsxFdP0vW+Uhct71OW54oGt/ouSgGx
- Ycz/eRdTTIeswh9vmEhOA==
-UI-OutboundReport: notjunk:1;M01:P0:UybWCMW1myU=;N/I7K0LaYolsmpx6m7VfWc8asFZ
- pAVqMJOvG+5qBCb9XyU1Z543QFaYCPtG+h7MKqlNPd808mPPfZqrWlNj7hbt8+4YuEW86pkU5
- qgfBlqNhR1GzWe+0WQ/RqOs3TCfpPgp0+oK9o9YGfsSCiceymqqGY7jeEjBxXoy7ua7VTIsBG
- pGrO92u8uASDtiuvDFtrxeBam8zIR/YD6CaXIA38qskJecXsH3ylRF7g18ppImv4j3g/FNDK0
- RJGPu37ofa7hboN4rjFpZLGyeq0k1ijQAhykHmj8fu/amj3QOy7qQIOpUs58Xag2BZLRVZiap
- s//oENkJSzFz1+nhaMZ1SeM6lKx45c/ufwAgCjRhGD9iGS1r4thT8GXXBxFz/1ktxJo/QmsGH
- /Bv0dK4HQVPmhrFvB67aL/JBnSLQCJc6l8aOOGTezaQpIUF5e+EuOQdQE3MS1E2nnoKkJRp+n
- S2P260cPqgGhvQCw68WOSJzBXhyCSk9SNwGcKtGOXr6el+PHndqMWv0dl9dVpct/R8grpmY5f
- 6oSzwfsv80qXJBUrGQgkQtvU9wxpsOszOyh9+QRRBa+G4GNFrgZn0CWTo752c/IBI2mwcBEou
- 8xcFK/VeG46t8pyfwaCGO2m/KDZJmcGYNNbKenXrWdjFMwqU1DeqtS7/QtS9yuvmLOU3xVmGO
- PDalvAlAaX0SyEgId0zwGWFHav36vUvO8NQP2XroHg==
-Received-SPF: none client-ip=212.227.17.13; envelope-from=laurent@vivier.eu;
- helo=mout.kundenserver.de
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH] target/ppc: Fix sc instruction handling of LEV field
+Content-Language: en-US
+To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
+Cc: qemu-devel@nongnu.org, Daniel Henrique Barboza <danielhb413@gmail.com>
+References: <20230621110938.239066-1-npiggin@gmail.com>
+From: Harsh Prateek Bora <harshpb@linux.ibm.com>
+In-Reply-To: <20230621110938.239066-1-npiggin@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: JiJjaaOTmGM9p_yQHgIIhgue1ZuxXdGL
+X-Proofpoint-ORIG-GUID: zCWpQYLbTHhwtp59fpwfXoCKLwej9kru
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-06-22_04,2023-06-16_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 adultscore=0
+ malwarescore=0 clxscore=1015 mlxlogscore=795 spamscore=0
+ lowpriorityscore=0 impostorscore=0 priorityscore=1501 mlxscore=0
+ bulkscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2305260000 definitions=main-2306220062
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=harshpb@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.093,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -70,63 +113,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 
-Analysis of the MacOS toolbox ROM code shows that on startup it attempts 2
-separate reads of the seconds registers with commands 0x9d...0x91 followed by
-0x8d..0x81 without resetting the command to its initial value. The PRAM seconds
-value is only accepted when the values of the 2 separate reads match.
 
-From this we conclude that bit 4 of the rtc command is not decoded or we don't
-care about its value when reading the PRAM seconds registers. Implement this
-decoding change so that both reads return successfully which allows the MacOS
-toolbox ROM to correctly set the date/time.
+On 6/21/23 16:39, Nicholas Piggin wrote:
+> The top bits of the LEV field of the sc instruction are to be treated as
+> as a reserved field rather than a reserved value, meaning LEV is
+> effectively the bottom bit. LEV=0xF should be treated as LEV=1 and be
+> a hypercall, for example.
+> 
+> This changes the instruction execution to just set lev from the low bit
+> of the field. Processors which don't support the LEV field will continue
+> to ignore it.
+> 
+> ISA v3.1 defines LEV to be 2 bits, in order to add the 'sc 2' ultracall
+> instruction. TCG does not support Ultravisor, so don't worry about
+> that bit.
+> 
+> Suggested-by: "Harsh Prateek Bora" <harshpb@linux.ibm.com>
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+> This should probably go ahead of the ISA 3.1 LEV in SRR1 patch. I
+> don't think they need to be backported to stable though, have not
+> caused any real problems.
+> 
+> Thanks to Harsh for spotting it.
+> 
+> Thanks,
+> Nick
+> 
+>   target/ppc/translate.c | 7 ++++++-
+>   1 file changed, 6 insertions(+), 1 deletion(-)
+> 
+> diff --git a/target/ppc/translate.c b/target/ppc/translate.c
+> index 15a00bd4fa..3c62f9188a 100644
+> --- a/target/ppc/translate.c
+> +++ b/target/ppc/translate.c
+> @@ -4424,7 +4424,12 @@ static void gen_sc(DisasContext *ctx)
+>   {
+>       uint32_t lev;
+>   
+> -    lev = (ctx->opcode >> 5) & 0x7F;
+> +    /*
+> +     * LEV is a 7-bit field, but the top 6 bits are treated as a reserved
+> +     * field (i.e., ignored). ISA v3.1 changes that to 5 bits, but that is
+> +     * for Ultravisor which TCG does not support, so just ignore the top 6.
+> +     */
+> +    lev = (ctx->opcode >> 5) & 0x1;
 
-Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Reviewed-by: Laurent Vivier <laurent@vivier.eu>
-Message-Id: <20230621085353.113233-25-mark.cave-ayland@ilande.co.uk>
-Signed-off-by: Laurent Vivier <laurent@vivier.eu>
----
- hw/misc/mac_via.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+should this change be applied to gen_scv() defined next to it as well ?
 
-diff --git a/hw/misc/mac_via.c b/hw/misc/mac_via.c
-index 85c2e65856eb..0787a0268d17 100644
---- a/hw/misc/mac_via.c
-+++ b/hw/misc/mac_via.c
-@@ -362,10 +362,10 @@ static void pram_update(MOS6522Q800VIA1State *v1s)
-  *
-  * Command byte    Register addressed by the command
-  *
-- * z0000001        Seconds register 0 (lowest-order byte)
-- * z0000101        Seconds register 1
-- * z0001001        Seconds register 2
-- * z0001101        Seconds register 3 (highest-order byte)
-+ * z00x0001        Seconds register 0 (lowest-order byte)
-+ * z00x0101        Seconds register 1
-+ * z00x1001        Seconds register 2
-+ * z00x1101        Seconds register 3 (highest-order byte)
-  * 00110001        Test register (write-only)
-  * 00110101        Write-Protect Register (write-only)
-  * z010aa01        RAM address 100aa ($10-$13) (first 20 bytes only)
-@@ -373,6 +373,7 @@ static void pram_update(MOS6522Q800VIA1State *v1s)
-  * z0111aaa        Extended memory designator and sector number
-  *
-  * For a read request, z=1, for a write z=0
-+ * The letter x indicates don't care
-  * The letter a indicates bits whose value depend on what parameter
-  * RAM byte you want to address
-  */
-@@ -389,7 +390,7 @@ static int via1_rtc_compact_cmd(uint8_t value)
-     }
-     if ((value & 0x03) == 0x01) {
-         value >>= 2;
--        if ((value & 0x1c) == 0) {
-+        if ((value & 0x18) == 0) {
-             /* seconds registers */
-             return read | (REG_0 + (value & 0x03));
-         } else if ((value == 0x0c) && !read) {
--- 
-2.40.1
+Otherwise,
+Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
 
+>       gen_exception_err(ctx, POWERPC_SYSCALL, lev);
+>   }
+>   
 
