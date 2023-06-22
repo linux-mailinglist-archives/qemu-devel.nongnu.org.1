@@ -2,62 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAD5D739F59
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 13:20:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F367739F5A
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 13:21:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCILm-0002vH-0W; Thu, 22 Jun 2023 07:19:42 -0400
+	id 1qCIMn-0004IE-P9; Thu, 22 Jun 2023 07:20:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <lukasstraub2@web.de>)
- id 1qCILk-0002um-Mp; Thu, 22 Jun 2023 07:19:40 -0400
+ id 1qCIMm-0004I0-3H; Thu, 22 Jun 2023 07:20:44 -0400
 Received: from mout.web.de ([212.227.15.3])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <lukasstraub2@web.de>)
- id 1qCILj-0004tM-3n; Thu, 22 Jun 2023 07:19:40 -0400
+ id 1qCIMk-0005Di-8M; Thu, 22 Jun 2023 07:20:43 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
- s=s29768273; t=1687432776; x=1688037576; i=lukasstraub2@web.de;
- bh=ddWbLBpQVuLtpgtxk3xEWBoFyEIL7NttvuUp3ALaQGo=;
- h=X-UI-Sender-Class:Date:From:To:Cc:Subject;
- b=uH4zJ7soALs1WIp04BtTOZlf6c22EqLIw36jmvLWq9lv8mTq6cjSxTUwexJKkZu2Ho2TTo3
- 1/YflZQPa3jPG3WjKWJuoFtqEc6nLdwMf0yOX1yB4PUCz4xnknu2A5TQn+gSgezgFjivxzea/
- If6myYte0lzoWN5ADOdTJ1UFCwAGsGcXUzZHRr/WDTFuu2F0b9DfaJ5Vt258GmJXqqa1SG2a4
- xqHsyLK+9rMNx3LqSpOL8/jPWRq5e7dIb9S2KGxNqX2cdGpBbb+qUuancK8YxihT8ed+c0tgU
- JCN6taSqwt4yZd4hKWgdO25MEevlBKr7uxGlafs8KohaoMFN9KqA==
+ s=s29768273; t=1687432840; x=1688037640; i=lukasstraub2@web.de;
+ bh=kOqgGPtLZSggHdyOH0344NP/No9yRkURQWWFPRLmaHI=;
+ h=X-UI-Sender-Class:Date:From:To:Cc:Subject:In-Reply-To:References;
+ b=syZ9wegBZNHBp++vWomf0PImbYgbCSHA3wLupz1GJHSP6iuvOcGUdvl7W8wuiwokL/VP2yp
+ iy51W0hcp1BA9KTHYMoNGFvJwbyCsbmJ3zhFEviOmEtu5wPZZ9pw+drd2DTb0YCrXKwU+MZd9
+ WC4SN/X36yejND4gIAPuwAviERJyPYBG4mdm32GuJrGPoGJBFPauj5+u3WFSZmPyLrdMkxyr9
+ WjhKs14SqW28WBwFVkv65rsOuNRFKu66qe2C5MOs17MR/ktvaACXOmx0iYi5HZDJOOxbm2/n/
+ jRtGTpT6g75MC9K5KdY/Ex0Ps+K1sKL9cYrrlJgJ0+3byZiDaeXA==
 X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from mobian ([46.114.147.93]) by smtp.web.de (mrweb005
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1N8Elg-1pzHkd3o12-0148yX; Thu, 22
- Jun 2023 13:19:36 +0200
-Date: Thu, 22 Jun 2023 13:19:32 +0200
+Received: from mobian ([46.114.147.93]) by smtp.web.de (mrweb006
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1N1LsV-1q6gNv0pfn-012i90; Thu, 22
+ Jun 2023 13:20:40 +0200
+Date: Thu, 22 Jun 2023 13:20:36 +0200
 From: Lukas Straub <lukasstraub2@web.de>
 To: qemu-devel <qemu-devel@nongnu.org>
 Cc: qemu-block <qemu-block@nongnu.org>, John Snow <jsnow@redhat.com>, Hanna
  Reitz <hreitz@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 1/2] ide: Fix a rare hang during block draining
-Message-ID: <d69ad42912db00f9520a7205c4d2bae6efca5279.1687430874.git.lukasstraub2@web.de>
+Subject: [PATCH 2/2] ide: Explicitly poll for BHs on cancel
+Message-ID: <209e5ce8e8bfb99f5f2c5b8844e17de76f20786c.1687430874.git.lukasstraub2@web.de>
+In-Reply-To: <d69ad42912db00f9520a7205c4d2bae6efca5279.1687430874.git.lukasstraub2@web.de>
+References: <d69ad42912db00f9520a7205c4d2bae6efca5279.1687430874.git.lukasstraub2@web.de>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/j9QAq3kUhqyIl=ux45clnyQ";
+Content-Type: multipart/signed; boundary="Sig_/q=68LfgmOfTOsO03kxUmZ0l";
  protocol="application/pgp-signature"; micalg=pgp-sha512
-X-Provags-ID: V03:K1:l8yVPj6Aa0iNe/BphBFKXUvUnHJ2BHRI8o54sDbhUDs2RQXvlzb
- ZyfBQkbmOZGP/Ag8CAScp2fY0RCR2H31AkuN8Sv0L0tUEll/ehKl/Od78aYNptnCB9I2dqS
- uylT76ukoqXkF0eZDNaxFM+hTE9Xu0oPnclEauMwYw+VZXFzKNRcQmojjN4WD1exdfhlg/O
- ThpLkpotvH0BIDogs4xrA==
-UI-OutboundReport: notjunk:1;M01:P0:4hMrkcvElhU=;2H5lg0HF+mJ+o05SwwJwEs+TXri
- sIX28w9AaDEkEsyPY4CfFi47o9WRaOF0ahFx9SXi+64dlhhBvgoRx1OSsviFgkSg1WpLGU+al
- W2iiBNNyuG3XEUuTXkx0UxFBtU6CAKcJG4c6J4dwEH4cFbDsWwUvXcGYzb61xOHQhSsKwIIKz
- z08e3QI/fO3vnkqBejAH+3I+i1ekdvqTXDS1rEoli6jwo5VP+sreVkKt7E/67FF23qEuAX9pX
- BnSptXJuJNj4saLYymLE3KFtZp1+x0C8mFa9Oz0/i4hYe/4EKsxILrym5+IzWWIftFirFyaYm
- dPNnVB6xhZPqqYq5v3ljdk/TBI3kLeJD9ZOYXdyMxkpjo9ZY+Evr3P7ERqOSPYdn8C6V3/8wf
- oNiS6uQO0fLV0G37i4Kkf16d6hmKJkQ0tSzv1MUtD1Vu4FxGH2bnkw4OLh0hPfiLG8Loo4ME0
- fi1tijPDPFOcIGOoJ9yReLuUQ3cqOyGQ5kU5KSHbRWPNpmvIddJoX3odDktq97/ns461SW3GG
- ImKSJL8IVt7YeblAg2agjRKCTqUapkWp5ylVd/XT4MPewWM6KYC8KaiAm2XL6srJvhmAmMvqr
- TTg+y7KNaNyrm6GuV2071vsFl6jPfle1cqzhdOkVVb3nXpRRtFRm879nv2Bf0qFNcSPLIg0rZ
- BLTnDo61thd9qDNAyZVUHDVuCD5g4j/4z6Pt7WF21WvSjv/C+uoPbiz5UX7oq5h6or0Ev5c+M
- eN9HwvnrUWcOqX+YKnCUJjH8R39hY8m5F2/HBIlPYL7tkUlBQOz0s66pO6aZtMwh+Pmv18LDY
- doTKhPXu/9XiyuGRa2IRYwJKumRIf4Q90vHpEj6xcXfRq3OvzPMicXnOXmCdS4pwQBqoUM0h9
- ag0mivQ7F8Hwm9FerqkzFHvf2ctWYL07yiL96LzKvfzq+oPvSkWEs8ggxv14zvbFWuNA9qfZu
- 6+e8Kg==
+X-Provags-ID: V03:K1:Kaw0TpcZl7TAoIxxlTOHBln5BqBcQFIWsmEjszkh+HOM8VycIp/
+ KxlqIxZ/81Pks0TNdnc05g2iigxrnppMLkbG82qXZn0hS3IN672EgWuPhTbNDkH8pi7ML8m
+ 5Sq9AhcseyxHwu7pGzjoh0HPnPEXfE+ID07p+t/kOgipBIL817SU1GU0H6Io6a42qZJAtZo
+ Q2LBuxkoVOwHrPafKNL8A==
+UI-OutboundReport: notjunk:1;M01:P0:LnxVqIxllQ4=;LmBpPVcAcb/WOl2M4dJAN09nY0r
+ JI6UKmsQF3pt01Yb80hs4fEX1dMquhi/eD2cCMaVKTZXs/NaKczSz983XEtPUlDDExe+39Akg
+ 5IssbDRn32ATJKv4TizA4MQDrvwfihSpbWObE2eHOhwCGP4uODAl7jcnX7RscPF44PH8EHoSo
+ A1C4z6CiBkajZ6YwFECZuWFZywCV64szetxTkgrrBbAWCUxVv66y4EjLCcK/3hk7njYWRtjap
+ pc94RWuAfkDqaI819Bs+kiNWdzZD/g/H7mgrzSBn130Xs/qLbhzyhf6PCWQpXfjNxZY/bk4cp
+ yQFS/hGfS6ltnpBVvlI89w/oe0AYL+HdR5zFy7q8RT9v8cUlqrnpevFpZ1dMuG3otfJ+V/cea
+ OyZ/fzmOGRHXcJCxAiLKa4J/JGHlsJMI7Inwz6nort721TJgmb1Hzsq2hm5HJeN7x/JVdQnNi
+ gz1CT9zd3WUn9Kj2tR0w73EapxaftTVdbC20B5LfgNyU+Jl0UELqcr2u9qJ5+BwBWumvvidAJ
+ YSP2WM0/Vp63C3W/nHudrt7QlC9noRxVl5O9pAnfjfY2IifyTbJTr+8AzK3dt3hVmCrlJwak8
+ qTPOnVxL3KjHU2oLLhNAIVsS/9TREhBWyTZdc1nXV9Dxs7urbvn7Afnr4LBQuZQg5Adyt6hLW
+ VQCxooJ768GqrxeMM7PdkvWDHHtzuh5pQm8aSR7QLXMk/tpmEPrSNHIj+WtwDIQmhJu2f2Bqs
+ jAiCqdOgKMi0cM7U0gnIqc3bMO95fBEdcAx026MppVCmxeSGH8engYUZjToaUQM+HPI2U80lm
+ m33iFPMNiVxJat1ozwrqkiGxqQdIMKn/IV+VuVBldkbiRDbRVhwxCMf3LdywGzZNzRaSLPucz
+ DODB+cx8VXA4TmlL5DvZyWSOCTeukaTa+hj5FH7ha+XeupFASD4mAMgzEFyLiBMTfmq2a94a3
+ N3vHpJoGNAmfREDpbaQSuIkgzF4=
 Received-SPF: pass client-ip=212.227.15.3; envelope-from=lukasstraub2@web.de;
  helo=mout.web.de
 X-Spam_score_int: -25
@@ -83,82 +85,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---Sig_/j9QAq3kUhqyIl=ux45clnyQ
+--Sig_/q=68LfgmOfTOsO03kxUmZ0l
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: quoted-printable
 
-If the guest issues a discard during a block drain section, the
-blk_aio_pdiscard() may not be processed, but queued instead.
-And so the callback will never be called to issue the bh and decrease
-the BB in-flight number again.
-This causes a hang in the drain code, since it will wait forever for the
-BB in-flight counter to decrease.
+When we still have an AIOCB registered for DMA operations, we try to
+settle the respective operation by draining the BlockBackend associated
+with the IDE device.
 
-This reverts commit 7e5cdb34 "ide: Increment BB in-flight counter for TRIM =
-BH"
-to fix this hang. The bug fixed by that commit will be fixed differently
-in the next commit.
+However, this assumes that every DMA operation is associated with some
+I/O operation on the BlockBackend, and so settling the latter will
+settle the former.  That is not the case; for example, the guest is free
+to issue a zero-length TRIM operation that will not result in any I/O
+operation forwarded to the BlockBackend.  In such a case, blk_drain()
+will be a no-op if no other operations are in flight.
 
+It is clear that if blk_drain() is a no-op, the value of
+s->bus->dma->aiocb will not change between checking it in the `if`
+condition and asserting that it is NULL after blk_drain().
+
+To settle the DMA operation, we will thus need to explicitly invoke
+aio_poll() ourselves, which will run any outstanding BHs (like
+ide_trim_bh_cb()), until s->bus->dma->aiocb is NULL.  To stop this from
+being an infinite loop, assert that we made progress with every
+aio_poll() call (i.e., invoked some BH).
+
+Buglink: https://bugzilla.redhat.com/show_bug.cgi?id=3D2029980
+Signed-off-by: Hanna Reitz <hreitz@redhat.com>
 Signed-off-by: Lukas Straub <lukasstraub2@web.de>
 ---
- hw/ide/core.c | 7 -------
- 1 file changed, 7 deletions(-)
+ hw/ide/core.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
 diff --git a/hw/ide/core.c b/hw/ide/core.c
-index de48ff9f86..d172e70f1e 100644
+index d172e70f1e..a5fd89ebdd 100644
 --- a/hw/ide/core.c
 +++ b/hw/ide/core.c
-@@ -436,16 +436,12 @@ static const AIOCBInfo trim_aiocb_info =3D {
- static void ide_trim_bh_cb(void *opaque)
- {
-     TrimAIOCB *iocb =3D opaque;
--    BlockBackend *blk =3D iocb->s->blk;
-=20
-     iocb->common.cb(iocb->common.opaque, iocb->ret);
-=20
-     qemu_bh_delete(iocb->bh);
-     iocb->bh =3D NULL;
-     qemu_aio_unref(iocb);
--
--    /* Paired with an increment in ide_issue_trim() */
--    blk_dec_in_flight(blk);
+@@ -736,7 +736,17 @@ void ide_cancel_dma_sync(IDEState *s)
+     if (s->bus->dma->aiocb) {
+         trace_ide_cancel_dma_sync_remaining();
+         blk_drain(s->blk);
+-        assert(s->bus->dma->aiocb =3D=3D NULL);
++
++        /*
++         * Wait for potentially still-scheduled BHs, like ide_trim_bh_cb()
++         * (blk_drain() will only poll if there are in-flight requests on =
+the
++         * BlockBackend, which there may not necessarily be, e.g. when the
++         * guest has issued a zero-length TRIM request)
++         */
++        while (s->bus->dma->aiocb) {
++            bool progress =3D aio_poll(qemu_get_aio_context(), true);
++            assert(progress);
++        }
+     }
  }
 =20
- static void ide_issue_trim_cb(void *opaque, int ret)
-@@ -516,9 +512,6 @@ BlockAIOCB *ide_issue_trim(
-     IDEDevice *dev =3D s->unit ? s->bus->slave : s->bus->master;
-     TrimAIOCB *iocb;
-=20
--    /* Paired with a decrement in ide_trim_bh_cb() */
--    blk_inc_in_flight(s->blk);
--
-     iocb =3D blk_aio_get(&trim_aiocb_info, s->blk, cb, cb_opaque);
-     iocb->s =3D s;
-     iocb->bh =3D qemu_bh_new_guarded(ide_trim_bh_cb, iocb,
 --=20
 2.39.2
 
-
---Sig_/j9QAq3kUhqyIl=ux45clnyQ
+--Sig_/q=68LfgmOfTOsO03kxUmZ0l
 Content-Type: application/pgp-signature
 Content-Description: OpenPGP digital signature
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCgAdFiEEg/qxWKDZuPtyYo+kNasLKJxdslgFAmSULkQACgkQNasLKJxd
-sljU9g//bQ7SIX8/f7hsgfoqjdH6B3u4FmeW88eVX0KrZVDo4eu0iAhvTZMnawxl
-QXgLKWBJbp5PSkzeNkh7L7M3itFI3LT2CBc9RjzXy3kTiej0CNBgR2JUvXBAoIZa
-Dcbey6PHMmfAqSDNVJUkoBS35crSizgetG+NKTtQ6sVKt1xEXW2Og2L8va87b3N8
-/mNsnq9cg41x0JdALpBvOGMw0YxYLiGYUUHMIYjUvz5U7uuepBtzYeoVYTWdfU76
-WCwvN5wsxBawbpuD7hrCyPU97sUxtQEilomMLIJd8RHzbGN0G6PiT6KUnoWhgIyX
-7xuT0by7Nf+KQ6MxhYsSeu9REFGZKYHD7nK2KJ6Fhk8qaZqXJg1bLsrcCcTElu7o
-EA6H9Ssqz08zK4hnbgT0eHuqWY2Ktx25i9Xy66kS3Ya11QDaiAlgRIciBWeGj2dw
-GIFaRW6niV+P4+FTSEfKuxqr/QLApUAYkZIzJ1/pwY4dPDuL731PXE5G4g1rSKAA
-e7P/+HevU4VttYyOqAeByEBIzqeOt39cq7zEd9OrnOpcfSB0I1igXiXc4eNadZK0
-Ztj9ywcqB4soHy+9GspvyQ139Irj/1k2b4Sgt01UNQSuua8wgidkM44VnJAUvO0J
-OFG0Gc9vAX1FcatrWP0VEP0XlGqJl12sCbBZk4eMg+Ty4CXqDtE=
-=rob9
+iQIzBAEBCgAdFiEEg/qxWKDZuPtyYo+kNasLKJxdslgFAmSULoQACgkQNasLKJxd
+slh2jg//eg0eizEBLEssbuka4ekBjdjAZ+ZiShqzUU57T8X41EgLN/HvV9wroFPf
+oiSHtOIVv1gQyZjhfNqpZLvgGvAhTn+UrggXHCDAVlGiX5COcGQLKKVw8GBnXYPA
++ck0r8FSxmIX3UtTzi+3JA8zq7rQPHg6oAJ4fWDzBJA5mx9XElo874qvGFszpzen
+31e4wBzI5xWwdVgJbghwRztRSwmXEmX9znYZfFWy3CN3YsNG21WS+ii9x0rYTQLe
+/fWDOi2hCX8DEk3DvyqBvWfoaj58qW5yUHuQn4S3reb8n74UNF6ruV7W5Zz6NUw6
+86TaFFSigqSzEgTyXKm60LsqntG/r7PRw8NtrzgjN66wGScBIB3yHIX2IVbVgHXJ
+uWTGuBwv0BF15lmcCTRzdjPFfrTaP0urqZeH8fvFoUXfhC86FZwQy2+u0tokP7zx
+bXn7Lwfx8Ue646bWkDVPTTd2jbmzwC7S/UVhmkL5XMv1xnDp5MEQFqzpHwIW4JWJ
+OhmJ4eW7wiyPZNGWxjn4gGAqWq6GfsH6+rpEznuQH9S256ga119XVnr65fqPDRys
+a/37e1RoqzQsOMTKHsmQoeTNwo6dMlS/g5RZaOxnaaoNnWiV8Njf8EdTCI838yNP
+IB6k3DOv5Rhi7mnVYJ5CkgNS8bmeXXuvQLV8UNqNhw7Bh7uBeHU=
+=GzdF
 -----END PGP SIGNATURE-----
 
---Sig_/j9QAq3kUhqyIl=ux45clnyQ--
+--Sig_/q=68LfgmOfTOsO03kxUmZ0l--
 
