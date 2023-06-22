@@ -2,86 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E77A739DA3
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 11:48:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E299E739DB8
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 11:51:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCGud-0001Dj-Ko; Thu, 22 Jun 2023 05:47:35 -0400
+	id 1qCGxv-0002Cc-Ok; Thu, 22 Jun 2023 05:50:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qCGub-0001BA-9T
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 05:47:33 -0400
+ id 1qCGxt-0002CO-KR
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 05:50:57 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qCGuZ-00035j-Ba
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 05:47:32 -0400
+ id 1qCGxs-000429-2O
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 05:50:57 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687427250;
+ s=mimecast20190719; t=1687427455;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=d3Bz1MDUAGegLmUcMTYwL65VY1c4z30rvlkSNatPGiU=;
- b=RlxsFmsgVmwRO0XvujBGHRWRMwrLxcFLR2GEGDDhYs7z0T58iJZCSloQf854uUHJCusydk
- IpZcpHysRqIkz2iZmHNLdiFFvfOGp4X+hhBvbcDn2O+m8ZtJRTspiGfI/UdpBR1ggHiW2S
- IgNRhTJc0lWP1M0r3JZ8j+fqK1leAuI=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=+Npk9UCzJ8vF1IZdoWvvaD8mW24I9tVTaVLrBtwTR/4=;
+ b=iTKtI/HR0vo4LeKdAmJP8Ex6RaNLG12naGSQkLgdkm8Bi3LFrFhV1oL/1VwDWOU4EI+MR5
+ hpsonGKFrZfwh6PW71OOks6XG1PDRSP4LO0qoMsvcj4zmtKtnPUgvr+SN2uzENQ+pwnxrx
+ Kzm+oTH11OGKd1lqrr5opxKgratHaAU=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-114-RJpHbpjmOvuoQVbObV-icQ-1; Thu, 22 Jun 2023 05:47:28 -0400
-X-MC-Unique: RJpHbpjmOvuoQVbObV-icQ-1
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-9879d2fc970so384915866b.0
- for <qemu-devel@nongnu.org>; Thu, 22 Jun 2023 02:47:28 -0700 (PDT)
+ us-mta-440-3V1u4GEYMYGNR7-ZuHBvdw-1; Thu, 22 Jun 2023 05:50:53 -0400
+X-MC-Unique: 3V1u4GEYMYGNR7-ZuHBvdw-1
+Received: by mail-ed1-f71.google.com with SMTP id
+ 4fb4d7f45d1cf-51a49eb6000so4057753a12.2
+ for <qemu-devel@nongnu.org>; Thu, 22 Jun 2023 02:50:53 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687427247; x=1690019247;
+ d=1e100.net; s=20221208; t=1687427452; x=1690019452;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=d3Bz1MDUAGegLmUcMTYwL65VY1c4z30rvlkSNatPGiU=;
- b=faQV4ZgbKGO1gogv9V5JSlwUWqPbZNX7B1L5OBriZ/ceiOVpQPKjgTcYikSqQXMsk8
- dH32TRPcy7XirBWaorsyQ4BfLxcxLEy/CvCjkKeJnmJfoEQlVtn3RYPNImqNaFzDmDFx
- 15rdPnltkJjb4GNWsnY/fyNvtLSjq87gno266Swv4sXv754OrSBpVAwb1DDwj1fqhA65
- 3nL8VdX+eTBdwr3wafIdXZepBm/X5DOXnsplOThlzJgfqlW6AmYb/3B+YB7jNehMdebl
- sBPlpPtIwoZWCCd8yAxuWtHv1QfvefVnTPi0DDSYDLd/bx3rbgW8G2Dl9o5/G2XB6Lym
- mIUQ==
-X-Gm-Message-State: AC+VfDyannbThE/eT6GZTfdIaJHAWTFqfo6+N4kF1ee2ZAiTRm7VF9fg
- 9R4h53Nt89462gqfxuHcoAKjVSGh+pzDEmcuzYc+vbQTdHTCj/KHXAZtoUro9dCneF83Gn5TQsc
- iFBY1amt30bDYQw4=
-X-Received: by 2002:a17:907:60c9:b0:988:e243:7a9f with SMTP id
- hv9-20020a17090760c900b00988e2437a9fmr9581729ejc.35.1687427247785; 
- Thu, 22 Jun 2023 02:47:27 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7X5Eq8yMPllWTFGlz9dPAPeTy/chqET/jupG/cpx7YD6b/rjAXxZ8YgMtDfVlhmOr93h3Axw==
-X-Received: by 2002:a17:907:60c9:b0:988:e243:7a9f with SMTP id
- hv9-20020a17090760c900b00988e2437a9fmr9581715ejc.35.1687427247506; 
- Thu, 22 Jun 2023 02:47:27 -0700 (PDT)
+ bh=+Npk9UCzJ8vF1IZdoWvvaD8mW24I9tVTaVLrBtwTR/4=;
+ b=ketTdx5dpcpsQoGc4tLODlhmpCkXvYhclWxh7k6/3magpb7KZGePbq/eaUoUgc4AbU
+ VJ5ot5u68IkxjTXChgVrE3LCyCkPd3fbf0wsf0ZqWv+2TakNgcNhlW8lN58COFVoLv51
+ caZnhw6Trp3wxjHnpkYhV0Wpfdlx8vzBhndbd7Rp7t6MYg0Jvt1dnsH0KHngYYjgW4mF
+ NDzusACTE4qMsl9zd7mPW9zgRC/JqqMbDg5KJZTCDI+NPFUZYiqQyUP+hd/s73jXoIfk
+ 7MHnF2shbNF+crzNzMCVO+5GppeOQtV3SJPP5I8pYPFD2TJGbF7m9tYzxHsLSsZ8FGZW
+ Y0bA==
+X-Gm-Message-State: AC+VfDymgVTypqSnVxOeoKMBZyuRwlEY8aAY4jA8ioSWiOrDT6yADm8e
+ GB9QyzWfz5aYcc5+62tFfmCHeNCrlnfflElDzV9GV10tPhtMOC8kEkbyWXOqDKTGJMnKL0WExrZ
+ Cp5axjOiqKLU9kEqXyFeQhbo=
+X-Received: by 2002:aa7:d292:0:b0:51b:dfce:1a49 with SMTP id
+ w18-20020aa7d292000000b0051bdfce1a49mr2386268edq.37.1687427451868; 
+ Thu, 22 Jun 2023 02:50:51 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4yococCIciwl2ViVY6lEEPO1Fzda129IIPTFQcqAl+5+/nCY7cFMojzOTjXy/uCsOwlI8JIA==
+X-Received: by 2002:aa7:d292:0:b0:51b:dfce:1a49 with SMTP id
+ w18-20020aa7d292000000b0051bdfce1a49mr2386255edq.37.1687427451603; 
+ Thu, 22 Jun 2023 02:50:51 -0700 (PDT)
 Received: from ?IPV6:2001:b07:6468:f312:9af8:e5f5:7516:fa89?
  ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
  by smtp.googlemail.com with ESMTPSA id
- u15-20020a170906780f00b009884b9da1f7sm4384904ejm.106.2023.06.22.02.47.26
+ s6-20020a056402014600b0051bdf152295sm1751393edu.76.2023.06.22.02.50.50
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 22 Jun 2023 02:47:26 -0700 (PDT)
-Message-ID: <39ab6c4d-9c02-db9d-e6b3-fdbc29f96e94@redhat.com>
-Date: Thu, 22 Jun 2023 11:47:25 +0200
+ Thu, 22 Jun 2023 02:50:50 -0700 (PDT)
+Message-ID: <d560c659-32e3-1610-6a81-2aa54e94a814@redhat.com>
+Date: Thu, 22 Jun 2023 11:50:50 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.10.0
-Subject: Re: [PATCH 07/10] pc-bios/s390-ccw: always build network bootloader
+Subject: Re: [PATCH] git-submodule.sh: allow running in validate mode without
+ previous update
 Content-Language: en-US
-To: Thomas Huth <thuth@redhat.com>,
- Nina Schoetterl-Glausch <nsg@linux.ibm.com>, qemu-devel@nongnu.org
-Cc: berrange@redhat.com
-References: <20230605095223.107653-1-pbonzini@redhat.com>
- <20230605095223.107653-8-pbonzini@redhat.com>
- <bcd7bd4829ba2046b7cc8196e8e83fba338f2f94.camel@linux.ibm.com>
- <2c0f81cc-af61-515d-8d83-84da6f3aefb5@redhat.com>
+To: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+Cc: qemu-devel <qemu-devel@nongnu.org>
+References: <20230618212039.102052-1-pbonzini@redhat.com>
+ <d6a79a1d2159e0659cd0ed6ff545bf577c05bad3.camel@linux.ibm.com>
+ <CABgObfa8kEiG22MAdsuhgpuWrzWq9yWMeRaFgvWA5x_eoROPUw@mail.gmail.com>
+ <31e1b43a026886e08ed48dcebbd27626eede872e.camel@linux.ibm.com>
+ <bc41fa85012d7eaf1534016f17308f9b50f35f27.camel@linux.ibm.com>
 From: Paolo Bonzini <pbonzini@redhat.com>
-In-Reply-To: <2c0f81cc-af61-515d-8d83-84da6f3aefb5@redhat.com>
+In-Reply-To: <bc41fa85012d7eaf1534016f17308f9b50f35f27.camel@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
@@ -107,20 +108,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/22/23 10:42, Thomas Huth wrote:
->>
->> Only if run in a git repository, not in a tree generated with 
->> archive-source.sh
->> which doesn't package roms/SLOF.
->> So without the check below the build fails.
->> This is not inteded, is it?
-> 
-> I guess archive-source.sh needs to be changed to include the SLOF 
-> sources now? Paolo, what would you recommend?
 
-It's not strictly necessary, I have sent a patch at 
-https://patchew.org/QEMU/20230618212039.102052-1-pbonzini@redhat.com/ 
-and I'll have to send v2 based on Nina's comments.
+On 6/21/23 16:20, Nina Schoetterl-Glausch wrote:
+> On Wed, 2023-06-21 at 16:07 +0200, Nina Schoetterl-Glausch wrote:
+>> On Tue, 2023-06-20 at 22:44 +0200, Paolo Bonzini wrote:
+>>> Il mar 20 giu 2023, 19:35 Nina Schoetterl-Glausch <nsg@linux.ibm.com> ha scritto:
+>>>>> +            modules="$modules $m"
+>>>>> +            grep $m $substat > /dev/null 2>&1 || $GIT submodule status $module >> $substat
+>>>>> +        else
+>>>>> +            echo "warn: ignoring non-existent submodule $m"
+>>>>
+>>>> What is the rational for ignoring non-existing submodules, i.e. how do the arguments to
+>>>> the script go stale as you say in the patch description?
+>>>
+>>> For example when a Makefile calls the script before the Makefile itself is rebuilt.
+>>
+>> Ah thanks. Can this still happen, roms/SLOF being the only
+>> remaining build time user of submodules,
+>> as per 1f468152fb ("build: remove git submodule handling from main
+>> makefile")? pc-bios/s390-ccw/Makefile explicitly names roms/SLOF,
+>> so if that were removed, the Makefile would
+>> need to be fixed anyway.
+
+Yeah it cannot happen but I'm thinking it's sensible behavior in 
+principle.  It also matches "git submodule update", which doesn't return 
+an error if the required path is not a submodule.
+
+>>> You mean it succeeds even if roms/SLOF is empty?
+>>
+>> Yeah, it does:
+>>
+>> %prep
+>> %autosetup -n qemu-%{version}%{?rcstr} -S git_am
+>>
+>> Which I does a git init, git add ., git commit, so no submodules exist
+>> and git-submodule.sh ignores every maybe_module.
+> 
+> Also the official source tar does include roms/SLOF, so they won't run into problems.
+> I used the spec file with a tar generated by archive-source.sh which doesn't package roms/SLOF.
+> How is the official tar generated?
+
+It's generated with scripts/make-release.
 
 Paolo
 
