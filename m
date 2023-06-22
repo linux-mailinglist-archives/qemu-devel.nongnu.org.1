@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58486739D7D
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 11:36:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DAE99739D79
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 11:35:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCGhq-0000kd-HQ; Thu, 22 Jun 2023 05:34:22 -0400
+	id 1qCGhu-0000lc-1r; Thu, 22 Jun 2023 05:34:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qCGhn-0000kN-Hj; Thu, 22 Jun 2023 05:34:20 -0400
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+ id 1qCGhs-0000lD-0x; Thu, 22 Jun 2023 05:34:24 -0400
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qCGhl-0003NV-W9; Thu, 22 Jun 2023 05:34:19 -0400
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-1b55bc0c907so37493205ad.0; 
- Thu, 22 Jun 2023 02:34:17 -0700 (PDT)
+ id 1qCGhq-0003QB-Ay; Thu, 22 Jun 2023 05:34:23 -0400
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-1b52132181aso37095835ad.2; 
+ Thu, 22 Jun 2023 02:34:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1687426456; x=1690018456;
+ d=gmail.com; s=20221208; t=1687426460; x=1690018460;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=IJQeOCVTk4IYZUoWEWRQMehatOO+sQzn5G0/NFJ9jWQ=;
- b=gvzmWDnUt5FpVHiGh/YY4/xI/qL1lDzDQkdnt3Jan8BoGA2VfQB6brd3pRyoPtbJdy
- Hzhnn4kcD6PO3b4VGdwXlkfT51zf2qCLiTKY92YvdkDyo1uIT6dPy1oX08obMRUrJw79
- LEb4LAUut144bZVV+cJNTb9AAQ0oo/virS1pEwRDNj9Rh0V+YOcTx7S37wlv4W8Dp/rl
- fH0hjDEE20Gxz+gqBm2iUyKsKUHqqhlb1z+RYfL6FzDIBVs7BWNomB4SDM4EAOHC/r5s
- 4ELiQB9duLBja9u/1ST4cIWNcJ96krSSsBDQYlhxpUJ4FrsWs7iXg36PdxD+pkSRXuSY
- 7SLA==
+ bh=Pzzr5pE6kWqzcd42lVxfWrDN6uelcbJs3SVe8LRJUoc=;
+ b=a6ibJTKNdIb8mRHWoFW1fh/th/hYh90MCE983YD2zyN7mMPuf/7ToZGon8O1W7Eff5
+ 6+Ktf2qJb117Vz9qldJtR4AtnUV79tj0EE7Zf6clSXaFV1rjjZp+6E3hemYjzMicicHO
+ /QONtKQUCAnWWpswjeIQEiFDlHtOm/OBjIASxIyxaWM2U8GyJ92Uzrtfd7dWgW6/umym
+ 6ls/n4BA8c7NjGHs5xNjxVQY9SunfXGVXX/+VjwninUUPjicVU8p0KHqMx11KoZ8vG77
+ 1J0hvpudbWfYeQRK7hXbcfMFt8krSkgIeqYuNW14BCp2iuK3c5f6XCCASk7Y3gG9hc2v
+ eniA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687426456; x=1690018456;
+ d=1e100.net; s=20221208; t=1687426460; x=1690018460;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=IJQeOCVTk4IYZUoWEWRQMehatOO+sQzn5G0/NFJ9jWQ=;
- b=hi76w8YMbT6vUVCDLvRTt2oh2M6zSRwnp+mLWXD0iF4tbK79ubHspmiYQa+xuFTp/Z
- nbUqftRWrac3yeh3PXE6ucbZ2XT8D/1GAxxu4o+1xjaztq6OPo1VdxHZ8QSDr5sJo+KI
- 6S/FmDyPvEYT+gXpj8GdFkyFkzgkBbkd0JhCH8j5HHcI0bR1Fgw/XjC/NdkA24jSrQtd
- N0crGhUwwS1NM+8DU1LqU+i3LW6g5lAj5sUySscU3zEza3HvWFM81dL92Z8LeLKO4yX8
- k61IHBAbxJGZZN+Vt+KWlqraXF7DyQDrQz4Yvi3kOlvIor9APVgJZdy863dYvSbO6A0/
- crFQ==
-X-Gm-Message-State: AC+VfDw5GzTE5Pd//JRnQnHefheiu1Tcj+ODbgnjb6/evGAgPs/OrZU3
- q+aEeRxza482hzH+xlyukEYS5G3N1oM=
-X-Google-Smtp-Source: ACHHUZ5OvyE6D7Rmq/6sKGERS11n+uxp0bDn/UKuJXmnOx5U4QAXwnMGgAbNQGBLIyDu471Zd0snQA==
-X-Received: by 2002:a17:902:6b44:b0:1b5:3500:9e22 with SMTP id
- g4-20020a1709026b4400b001b535009e22mr16457820plt.63.1687426455951; 
- Thu, 22 Jun 2023 02:34:15 -0700 (PDT)
+ bh=Pzzr5pE6kWqzcd42lVxfWrDN6uelcbJs3SVe8LRJUoc=;
+ b=bMRGBs3WFR9n4g1hO96Jo6E3545MLbV4pwcKbXaRFTAjfxi3XdX022vfdZmTojewIl
+ ckqCqN88nBWB3ts/ATCV8sRYf6tBm5d+xqg2cLc+7Fh+iWAyaa7Ayx4KBgb1MP1K3cuy
+ EDcJnnHaq7QLX423uLNIeYIvNJWrx4jnTELj3g0NW0A2/zKZAeNr+NSNCdoEmSsJcT1f
+ BQeePb/+smJh740+MRvm7ZFxtVCommzN5P5pZLmwmqCR3YCDwsiX2mZIMytriR6PSpJf
+ EDQn3Mw4gIYcR/9Q8PTW427gJq/2fVtC9XSdbFuF0VPN5VSagT5ewiZnv16yALUtS4kB
+ /Yfg==
+X-Gm-Message-State: AC+VfDy8nMM9WfzrGMQzJaufPXs0Z+Cf+WupQwKzlHOwTU6Xu2EwZxtl
+ s0udKSP3uFYRyI+oRnsGnjDoRa68hBA=
+X-Google-Smtp-Source: ACHHUZ6OVeIT63zBfxw7pXUmS2N9/geH0gnd5RbUpsOTVMVD63Bp096PJVS/YA+RF+TMgSe/EVMDdQ==
+X-Received: by 2002:a17:903:234b:b0:1b5:42fe:5eac with SMTP id
+ c11-20020a170903234b00b001b542fe5eacmr11298166plh.10.1687426460306; 
+ Thu, 22 Jun 2023 02:34:20 -0700 (PDT)
 Received: from wheely.local0.net (193-116-203-37.tpgi.com.au. [193.116.203.37])
  by smtp.gmail.com with ESMTPSA id
- x3-20020a1709027c0300b001ac2c3e54adsm4925662pll.118.2023.06.22.02.34.11
+ x3-20020a1709027c0300b001ac2c3e54adsm4925662pll.118.2023.06.22.02.34.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 22 Jun 2023 02:34:15 -0700 (PDT)
+ Thu, 22 Jun 2023 02:34:20 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org,
@@ -62,16 +62,16 @@ Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 2/7] target/ppc: Add support for SMT CTRL register
-Date: Thu, 22 Jun 2023 19:33:52 +1000
-Message-Id: <20230622093357.255649-3-npiggin@gmail.com>
+Subject: [PATCH v2 3/7] target/ppc: Add msgsnd/p and DPDES SMT support
+Date: Thu, 22 Jun 2023 19:33:53 +1000
+Message-Id: <20230622093357.255649-4-npiggin@gmail.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230622093357.255649-1-npiggin@gmail.com>
 References: <20230622093357.255649-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x631.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x634.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,104 +94,198 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-A relatively simple case to begin with, CTRL is a SMT shared register
-where reads and writes need to synchronise against state changes by
-other threads in the core.
-
-Atomic serialisation operations are used to achieve this.
+Doorbells in SMT need to coordinate msgsnd/msgclr and DPDES access from
+multiple threads that affect the same state.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/ppc/helper.h      |  2 ++
- target/ppc/misc_helper.c | 25 +++++++++++++++++++++++++
- target/ppc/translate.c   | 18 +++++++++++++++++-
- 3 files changed, 44 insertions(+), 1 deletion(-)
+ hw/ppc/ppc.c             |  6 ++++++
+ include/hw/ppc/ppc.h     |  1 +
+ target/ppc/excp_helper.c | 30 ++++++++++++++++++++++-----
+ target/ppc/misc_helper.c | 44 ++++++++++++++++++++++++++++++++++------
+ target/ppc/translate.c   |  8 ++++++++
+ 5 files changed, 78 insertions(+), 11 deletions(-)
 
-diff --git a/target/ppc/helper.h b/target/ppc/helper.h
-index 38efbc351c..fda40b8a60 100644
---- a/target/ppc/helper.h
-+++ b/target/ppc/helper.h
-@@ -704,6 +704,8 @@ DEF_HELPER_3(store_dcr, void, env, tl, tl)
- 
- DEF_HELPER_2(load_dump_spr, void, env, i32)
- DEF_HELPER_2(store_dump_spr, void, env, i32)
-+DEF_HELPER_3(spr_write_CTRL, void, env, i32, tl)
-+
- DEF_HELPER_4(fscr_facility_check, void, env, i32, i32, i32)
- DEF_HELPER_4(msr_facility_check, void, env, i32, i32, i32)
- DEF_HELPER_FLAGS_1(load_tbl, TCG_CALL_NO_RWG, tl, env)
-diff --git a/target/ppc/misc_helper.c b/target/ppc/misc_helper.c
-index 40ddc5c08c..a058eb24cd 100644
---- a/target/ppc/misc_helper.c
-+++ b/target/ppc/misc_helper.c
-@@ -43,6 +43,31 @@ void helper_store_dump_spr(CPUPPCState *env, uint32_t sprn)
-              env->spr[sprn]);
+diff --git a/hw/ppc/ppc.c b/hw/ppc/ppc.c
+index 1b1220c423..82e4408c5c 100644
+--- a/hw/ppc/ppc.c
++++ b/hw/ppc/ppc.c
+@@ -1436,6 +1436,12 @@ int ppc_cpu_pir(PowerPCCPU *cpu)
+     return env->spr_cb[SPR_PIR].default_value;
  }
  
-+void helper_spr_write_CTRL(CPUPPCState *env, uint32_t sprn,
-+                           target_ulong val)
++int ppc_cpu_tir(PowerPCCPU *cpu)
 +{
-+    CPUState *cs = env_cpu(env);
-+    CPUState *ccs;
-+    uint32_t run = val & 1;
-+    uint32_t ts, ts_mask;
-+
-+    assert(sprn == SPR_CTRL);
-+
-+    env->spr[sprn] &= ~1U;
-+    env->spr[sprn] |= run;
-+
-+    ts_mask = ~(1U << (8 + env->spr[SPR_TIR]));
-+    ts = run << (8 + env->spr[SPR_TIR]);
-+
-+    THREAD_SIBLING_FOREACH(cs, ccs) {
-+        CPUPPCState *cenv = &POWERPC_CPU(ccs)->env;
-+
-+        cenv->spr[sprn] &= ts_mask;
-+        cenv->spr[sprn] |= ts;
-+    }
++    CPUPPCState *env = &cpu->env;
++    return env->spr_cb[SPR_TIR].default_value;
 +}
 +
-+
- #ifdef TARGET_PPC64
- static void raise_hv_fu_exception(CPUPPCState *env, uint32_t bit,
-                                   const char *caller, uint32_t cause,
-diff --git a/target/ppc/translate.c b/target/ppc/translate.c
-index 5d585393c5..41a8b800bd 100644
---- a/target/ppc/translate.c
-+++ b/target/ppc/translate.c
-@@ -438,7 +438,7 @@ void spr_write_generic32(DisasContext *ctx, int sprn, int gprn)
- #endif
- }
- 
--void spr_write_CTRL(DisasContext *ctx, int sprn, int gprn)
-+static void spr_write_CTRL_ST(DisasContext *ctx, int sprn, int gprn)
+ PowerPCCPU *ppc_get_vcpu_by_pir(int pir)
  {
-     /* This does not implement >1 thread */
-     TCGv t0 = tcg_temp_new();
-@@ -447,6 +447,22 @@ void spr_write_CTRL(DisasContext *ctx, int sprn, int gprn)
-     tcg_gen_shli_tl(t1, t0, 8); /* Duplicate the bit in TS */
-     tcg_gen_or_tl(t1, t1, t0);
-     gen_store_spr(sprn, t1);
-+}
-+
-+void spr_write_CTRL(DisasContext *ctx, int sprn, int gprn)
-+{
-+    if (!(ctx->flags & POWERPC_FLAG_SMT)) {
-+        spr_write_CTRL_ST(ctx, sprn, gprn);
-+        goto out;
-+    }
-+
-+    if (!gen_serialize(ctx)) {
+     CPUState *cs;
+diff --git a/include/hw/ppc/ppc.h b/include/hw/ppc/ppc.h
+index 02af03ada2..e095c002dc 100644
+--- a/include/hw/ppc/ppc.h
++++ b/include/hw/ppc/ppc.h
+@@ -6,6 +6,7 @@
+ void ppc_set_irq(PowerPCCPU *cpu, int n_IRQ, int level);
+ PowerPCCPU *ppc_get_vcpu_by_pir(int pir);
+ int ppc_cpu_pir(PowerPCCPU *cpu);
++int ppc_cpu_tir(PowerPCCPU *cpu);
+ 
+ /* PowerPC hardware exceptions management helpers */
+ typedef void (*clk_setup_cb)(void *opaque, uint32_t freq);
+diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
+index 7d45035447..d40eecb4c7 100644
+--- a/target/ppc/excp_helper.c
++++ b/target/ppc/excp_helper.c
+@@ -3187,22 +3187,42 @@ void helper_book3s_msgclrp(CPUPPCState *env, target_ulong rb)
+ }
+ 
+ /*
+- * sends a message to other threads that are on the same
++ * sends a message to another thread  on the same
+  * multi-threaded processor
+  */
+ void helper_book3s_msgsndp(CPUPPCState *env, target_ulong rb)
+ {
+-    int pir = env->spr_cb[SPR_PIR].default_value;
++    CPUState *cs = env_cpu(env);
++    PowerPCCPU *cpu = POWERPC_CPU(cs);
++    CPUState *ccs;
++    uint32_t nr_threads = cs->nr_threads;
++    int ttir = rb & PPC_BITMASK(57, 63);
+ 
+     helper_hfscr_facility_check(env, HFSCR_MSGP, "msgsndp", HFSCR_IC_MSGP);
+ 
+-    if (!dbell_type_server(rb)) {
++    if (!dbell_type_server(rb) || ttir >= nr_threads) {
 +        return;
 +    }
 +
-+    gen_helper_spr_write_CTRL(cpu_env, tcg_constant_i32(sprn),
-+                              cpu_gpr[gprn]);
-+out:
-     spr_store_dump_spr(sprn);
++    if (nr_threads == 1) {
++        ppc_set_irq(cpu, PPC_INTERRUPT_DOORBELL, 1);
+         return;
+     }
  
-     /*
+-    /* TODO: TCG supports only one thread */
++    /* Does iothread need to be locked for walking CPU list? */
++    qemu_mutex_lock_iothread();
++    THREAD_SIBLING_FOREACH(cs, ccs) {
++        PowerPCCPU *ccpu = POWERPC_CPU(ccs);
++        uint32_t thread_id = ppc_cpu_tir(ccpu);
++
++        if (ttir == thread_id) {
++            ppc_set_irq(ccpu, PPC_INTERRUPT_DOORBELL, 1);
++            qemu_mutex_unlock_iothread();
++            return;
++        }
++    }
+ 
+-    book3s_msgsnd_common(pir, PPC_INTERRUPT_DOORBELL);
++    g_assert_not_reached();
+ }
+ #endif /* TARGET_PPC64 */
+ 
+diff --git a/target/ppc/misc_helper.c b/target/ppc/misc_helper.c
+index a058eb24cd..1f1af21f33 100644
+--- a/target/ppc/misc_helper.c
++++ b/target/ppc/misc_helper.c
+@@ -184,14 +184,31 @@ void helper_store_pcr(CPUPPCState *env, target_ulong value)
+  */
+ target_ulong helper_load_dpdes(CPUPPCState *env)
+ {
++    CPUState *cs = env_cpu(env);
++    CPUState *ccs;
++    uint32_t nr_threads = cs->nr_threads;
+     target_ulong dpdes = 0;
+ 
+     helper_hfscr_facility_check(env, HFSCR_MSGP, "load DPDES", HFSCR_IC_MSGP);
+ 
+-    /* TODO: TCG supports only one thread */
+-    if (env->pending_interrupts & PPC_INTERRUPT_DOORBELL) {
+-        dpdes = 1;
++    if (nr_threads == 1) {
++        if (env->pending_interrupts & PPC_INTERRUPT_DOORBELL) {
++            dpdes = 1;
++        }
++        return dpdes;
++    }
++
++    qemu_mutex_lock_iothread();
++    THREAD_SIBLING_FOREACH(cs, ccs) {
++        PowerPCCPU *ccpu = POWERPC_CPU(ccs);
++        CPUPPCState *cenv = &ccpu->env;
++        uint32_t thread_id = ppc_cpu_tir(ccpu);
++
++        if (cenv->pending_interrupts & PPC_INTERRUPT_DOORBELL) {
++            dpdes |= (0x1 << thread_id);
++        }
+     }
++    qemu_mutex_unlock_iothread();
+ 
+     return dpdes;
+ }
+@@ -199,17 +216,32 @@ target_ulong helper_load_dpdes(CPUPPCState *env)
+ void helper_store_dpdes(CPUPPCState *env, target_ulong val)
+ {
+     PowerPCCPU *cpu = env_archcpu(env);
++    CPUState *cs = env_cpu(env);
++    CPUState *ccs;
++    uint32_t nr_threads = cs->nr_threads;
+ 
+     helper_hfscr_facility_check(env, HFSCR_MSGP, "store DPDES", HFSCR_IC_MSGP);
+ 
+-    /* TODO: TCG supports only one thread */
+-    if (val & ~0x1) {
++    if (val & ~(nr_threads - 1)) {
+         qemu_log_mask(LOG_GUEST_ERROR, "Invalid DPDES register value "
+                       TARGET_FMT_lx"\n", val);
++        val &= (nr_threads - 1); /* Ignore the invalid bits */
++    }
++
++    if (nr_threads == 1) {
++        ppc_set_irq(cpu, PPC_INTERRUPT_DOORBELL, val & 0x1);
+         return;
+     }
+ 
+-    ppc_set_irq(cpu, PPC_INTERRUPT_DOORBELL, val & 0x1);
++    /* Does iothread need to be locked for walking CPU list? */
++    qemu_mutex_lock_iothread();
++    THREAD_SIBLING_FOREACH(cs, ccs) {
++        PowerPCCPU *ccpu = POWERPC_CPU(ccs);
++        uint32_t thread_id = ppc_cpu_tir(ccpu);
++
++        ppc_set_irq(cpu, PPC_INTERRUPT_DOORBELL, val & (0x1 << thread_id));
++    }
++    qemu_mutex_unlock_iothread();
+ }
+ #endif /* defined(TARGET_PPC64) */
+ 
+diff --git a/target/ppc/translate.c b/target/ppc/translate.c
+index 41a8b800bd..eb278c2683 100644
+--- a/target/ppc/translate.c
++++ b/target/ppc/translate.c
+@@ -815,11 +815,19 @@ void spr_write_pcr(DisasContext *ctx, int sprn, int gprn)
+ /* DPDES */
+ void spr_read_dpdes(DisasContext *ctx, int gprn, int sprn)
+ {
++    if (!gen_serialize_core(ctx)) {
++        return;
++    }
++
+     gen_helper_load_dpdes(cpu_gpr[gprn], cpu_env);
+ }
+ 
+ void spr_write_dpdes(DisasContext *ctx, int sprn, int gprn)
+ {
++    if (!gen_serialize_core(ctx)) {
++        return;
++    }
++
+     gen_helper_store_dpdes(cpu_env, cpu_gpr[gprn]);
+ }
+ #endif
 -- 
 2.40.1
 
