@@ -2,67 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D867739D9B
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 11:45:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 16531739D9D
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 11:46:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCGrF-0007PG-VI; Thu, 22 Jun 2023 05:44:05 -0400
+	id 1qCGsw-0008Sa-AH; Thu, 22 Jun 2023 05:45:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ivan.klokov@syntacore.com>)
- id 1qCGrD-0007OJ-S7; Thu, 22 Jun 2023 05:44:03 -0400
-Received: from mta-04.yadro.com ([89.207.88.248])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qCGsk-0008Qp-9i
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 05:45:39 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ivan.klokov@syntacore.com>)
- id 1qCGrB-0002Cy-VZ; Thu, 22 Jun 2023 05:44:03 -0400
-DKIM-Filter: OpenDKIM Filter v2.11.0 mta-04.yadro.com EC190C0007
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=syntacore.com;
- s=mta-04; t=1687427036;
- bh=nUWR8bJEtUnaIatZdrVaASTKGaApzxZ6nVq4mh+HlL0=;
- h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
- b=DL3rrsjeCYNaO86JsBtrjF8dFaspASM4xJhhkRdv71TOJYMguPm2ZIpAUFm4pTIa/
- MOHuY1orVKEOGRI1eBx9xRMANlc7IdEb1OLTPfr85Zph7IRYqZY861cfA+q+h6gT9q
- Xzx3tUbNd9vJWMJ02iU5YFhapzAV+1ivx8chwNkFxNVmfjz9tEII48jnKwHeJTA058
- fyMQls8MQf8zzxKZLMH6x5pF9gp9YW8rIB3vbiNNqBzPc0gWWHV9oyyQ1PkcVO13kF
- GL7eovaIhdZ+jzUfEwOkO8cb36+mEQnUtRWQqd59gDo6379zbi2aHy+0fkjBGm3kwU
- VT6F6MlHSLxSw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=syntacore.com;
- s=mta-03; t=1687427036;
- bh=nUWR8bJEtUnaIatZdrVaASTKGaApzxZ6nVq4mh+HlL0=;
- h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
- b=LqCzKD8zgAN4veCS2n2UVq0t+RmMpyfIU2+2wMpzC0LaumQQ9IKRYQhwAQ8ZjVwTK
- YM3ZtXoH5cFsuK53oz2krlU7MAMvyIQF2ikJPvliNswoZjdUNanaO+Dz0YZ+knU66e
- knFSX4NdhiiNoxbpGnZpdTeUuBz/kGtuKQ8mVVFFgx5rIS21JQioCRnRzL0LPuYJpK
- EaEnzgIDpSBArOumu56uEI3QMtS9kE00b2amW/SOjhHWem93Sh+25u9vB/S6d1GKyD
- GjMKQgGpLamejf5rTSKntSbgJkfJH1yGu6GoPZqblTfkzy2ZbpVqgjNxwqdHnnM+th
- 7jCs5XW9DJk+g==
-From: Ivan Klokov <ivan.klokov@syntacore.com>
-To: <qemu-devel@nongnu.org>
-CC: <qemu-riscv@nongnu.org>, <richard.henderson@linaro.org>,
- <pbonzini@redhat.com>, <eduardo@habkost.net>, <marcel.apfelbaum@gmail.com>,
- <philmd@linaro.org>, <wangyanan55@huawei.com>, <palmer@dabbelt.com>,
- <alistair.francis@wdc.com>, <bin.meng@windriver.com>, <liweiwei@iscas.ac.cn>, 
- <dbarboza@ventanamicro.com>, <zhiwei_liu@linux.alibaba.com>, Ivan Klokov
- <ivan.klokov@syntacore.com>
-Subject: [PATCH v4 1/1] target/riscv: Add RVV registers to log
-Date: Thu, 22 Jun 2023 12:43:46 +0300
-Message-ID: <20230622094346.29853-1-ivan.klokov@syntacore.com>
-X-Mailer: git-send-email 2.34.1
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qCGsg-0002gt-9n
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 05:45:37 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1687427133;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=GqDU0eg+pczPtGb1MNYxfNystMrl6imoFdmyIpUqMtk=;
+ b=ZwImgBGmBFRcOnd0iilUy9hK8GGubvDVZBVhs1/xwuoKPiMqHzdrrPakrOIS1Y20bp0SH5
+ sajqoqH/8B8fwTQeTze/iJXG5qNcpw695E+Bqidg5OzP+TvFXc4NAUZRU1WPn1y7j/TEtJ
+ yMjvL+CGtpj+visu2ZVm4Y0yX/Oe/vU=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-38-ipu84kkhMQOCZMLsq25tLA-1; Thu, 22 Jun 2023 05:45:31 -0400
+X-MC-Unique: ipu84kkhMQOCZMLsq25tLA-1
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-986db3313f0so401127366b.3
+ for <qemu-devel@nongnu.org>; Thu, 22 Jun 2023 02:45:31 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1687427130; x=1690019130;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=GqDU0eg+pczPtGb1MNYxfNystMrl6imoFdmyIpUqMtk=;
+ b=gPG17ccqg8Do5IUf+LtIgdzImnPcm0C9Jaj37OfpEh2tK/9sFr3ytYxRb58/3chcFE
+ ZeYblUJ/lxJLKud9xbakbzySamiywQ50bSTFf5U5Yqf9GKuAvW8Dt+1RDZUqHVKsrifx
+ JpmawyZmGTp8l8dr2yJLeau94nKUz0yU6G7y+VixMpSu0Cawz+vpuQp1xZdtD0Ieb+0y
+ KnZn4pRA52aopjkT3llMDUNSFB3Fhvmmbryhc/0VRt8esJGJ585nokv0I2FpOGTtpmou
+ VizqtBj9KwvgmEd0i3tbzqkGw4ZqLigEJYcH6XDJn0GG3cV7HzI6uX0SelPqJRqAEbrF
+ U7ug==
+X-Gm-Message-State: AC+VfDyi17JxrVyYq5CudRxyiv72Ap8gy5eVjStPUZ9hxfEIFtNy+9Gw
+ Y/GvRYGykvkt6FTamS+4FLcQV9oP1PURqYbXZ644OqICqng7ZO21WI7hGBUpY5yyE8CX+VDbN/+
+ zMTEoWofbKCJ+kNQ=
+X-Received: by 2002:a17:907:9491:b0:982:9fbb:216 with SMTP id
+ dm17-20020a170907949100b009829fbb0216mr15800734ejc.19.1687427130251; 
+ Thu, 22 Jun 2023 02:45:30 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7sJZRUKpFAZHzXIKWam2PUyoh4RPPBzqw/fKBDo8WgqcvyPoYMtEU91Qw+i4baQMP+IjsY/A==
+X-Received: by 2002:a17:907:9491:b0:982:9fbb:216 with SMTP id
+ dm17-20020a170907949100b009829fbb0216mr15800719ejc.19.1687427129833; 
+ Thu, 22 Jun 2023 02:45:29 -0700 (PDT)
+Received: from ?IPV6:2001:b07:6468:f312:9af8:e5f5:7516:fa89?
+ ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
+ by smtp.googlemail.com with ESMTPSA id
+ e19-20020a50fb93000000b0051a44a5636asm3688290edq.44.2023.06.22.02.45.28
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 22 Jun 2023 02:45:29 -0700 (PDT)
+Message-ID: <59f958ac-807d-e940-e5de-8109de62eb8c@redhat.com>
+Date: Thu, 22 Jun 2023 11:45:28 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: T-Exch-05.corp.yadro.com (172.17.10.109) To
- S-Exch-01.corp.yadro.com (10.78.5.241)
-Received-SPF: permerror client-ip=89.207.88.248;
- envelope-from=ivan.klokov@syntacore.com; helo=mta-04.yadro.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [RFC 4/6] migration: Deprecate -incoming <uri>
+Content-Language: en-US
+To: quintela@redhat.com
+Cc: Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org,
+ Markus Armbruster <armbru@redhat.com>, Leonardo Bras <leobras@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2eBerrang=c3=a9?= <berrange@redhat.com>,
+ qemu-block@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>,
+ Eric Blake <eblake@redhat.com>, Fam Zheng <fam@euphon.net>,
+ Thomas Huth <thuth@redhat.com>, libvir-list@redhat.com
+References: <20230612193344.3796-1-quintela@redhat.com>
+ <20230612193344.3796-5-quintela@redhat.com> <ZId0+HYF/ETLVri3@x1n>
+ <875y7sflqb.fsf@secure.mitica>
+ <d88c707a-abd9-6c8e-907c-13a3fa9a0219@redhat.com>
+ <87wmzv7ubn.fsf@secure.mitica>
+From: Paolo Bonzini <pbonzini@redhat.com>
+In-Reply-To: <87wmzv7ubn.fsf@secure.mitica>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_PERMERROR=0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.093, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,98 +112,98 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Print RvV extesion register to log if VPU option is enabled.
 
-Signed-off-by: Ivan Klokov <ivan.klokov@syntacore.com>
----
-v4:
-   - General part of patch has been merged, rebase riscv part and resend. 
----
- target/riscv/cpu.c | 56 +++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 55 insertions(+), 1 deletion(-)
+On 6/22/23 10:52, Juan Quintela wrote:
+> User friendliness.
+> The problem is that if you use more than two channels with multifd, on
+> the incoming side, you need to do:
 
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index fb8458bf74..b23f3fde0d 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -183,6 +183,14 @@ const char * const riscv_fpr_regnames[] = {
-     "f30/ft10", "f31/ft11"
- };
- 
-+const char * const riscv_rvv_regnames[] = {
-+  "v0",  "v1",  "v2",  "v3",  "v4",  "v5",  "v6",
-+  "v7",  "v8",  "v9",  "v10", "v11", "v12", "v13",
-+  "v14", "v15", "v16", "v17", "v18", "v19", "v20",
-+  "v21", "v22", "v23", "v24", "v25", "v26", "v27",
-+  "v28", "v29", "v30", "v31"
-+};
-+
- static const char * const riscv_excp_names[] = {
-     "misaligned_fetch",
-     "fault_fetch",
-@@ -611,7 +619,8 @@ static void riscv_cpu_dump_state(CPUState *cs, FILE *f, int flags)
- {
-     RISCVCPU *cpu = RISCV_CPU(cs);
-     CPURISCVState *env = &cpu->env;
--    int i;
-+    int i, j;
-+    uint8_t *p;
- 
- #if !defined(CONFIG_USER_ONLY)
-     if (riscv_has_ext(env, RVH)) {
-@@ -695,6 +704,51 @@ static void riscv_cpu_dump_state(CPUState *cs, FILE *f, int flags)
+You're sacrificing user-friendliness for the 99.99% that don't use 
+multifd, for an error (i.e. it's not even fixing the issue) for the 
+0.01% that use multifd.  That's not user-friendly.
+
+> - migrate_set_parameter multifd-channels 16
+> - migrate_incoming <uri>
+> 
+>> The issue is not how many features the command line has, but how
+>> they're implemented.
+> 
+> Or if they are confusing for the user?
+
+Anyone using multifd is not a typical user anyway.
+
+>> If they're just QMP wrappers and as such they're self-contained in
+>> softmmu/vl.c, that's fine.
+>>
+>> In fact, even for parameters, we could use keyval to parse "-incoming"
+> 
+> What is keyval?
+
+util/keyval.c and include/qemu/keyval.h.  It parses a list of key=value 
+pairs into a QDict.  Once you have removed the "source" key from the 
+QDict you can use a visitor to parse the rest into a 
+MigrateSetParameters.  See the handling of QEMU_OPTION_audio, it could 
+be something like
+
+
+             case QEMU_OPTION_incoing: {
+                 Visitor *v;
+                 MigrateSetParameters *incoming_params = NULL;
+                 QDict *dict = keyval_parse(optarg, "source", NULL, 
+&error_fatal);
+
+                 if (incoming) {
+                     if (qdict_haskey(dict, "source")) {
+                         error_setg(&error_fatal, "Parameter 'source' is 
+duplicate");
+                     }
+                 } else {
+                     if (!qdict_haskey(dict, "source")) {
+                         error_setg(&error_fatal, "Parameter 'source' is 
+missing");
+                     }
+                     runstate_set(RUN_STATE_INMIGRATE);
+                     incoming = g_strdup(qdict_get_str(dict, "source"));
+                     qdict_del(dict, "source");
+                 }
+
+                 v = qobject_input_visitor_new_keyval(QOBJECT(dict));
+                 qobject_unref(dict);
+                 visit_type_MigrateSetParameters(v, NULL, 
+&incoming_params, &error_fatal);
+                 visit_free(v);
+                 qmp_migration_set_parameters(incoming_params, 
+&error_fatal);
+                 qapi_free_MigrateSetParameters(incoming_params);
              }
-         }
-     }
-+    if (riscv_has_ext(env, RVV) && (flags & CPU_DUMP_VPU)) {
-+        static const int dump_rvv_csrs[] = {
-+                    CSR_VSTART,
-+                    CSR_VXSAT,
-+                    CSR_VXRM,
-+                    CSR_VCSR,
-+                    CSR_VL,
-+                    CSR_VTYPE,
-+                    CSR_VLENB,
-+                };
-+        for (int i = 0; i < ARRAY_SIZE(dump_rvv_csrs); ++i) {
-+            int csrno = dump_rvv_csrs[i];
-+            target_ulong val = 0;
-+            RISCVException res = riscv_csrrw_debug(env, csrno, &val, 0, 0);
-+
-+            /*
-+             * Rely on the smode, hmode, etc, predicates within csr.c
-+             * to do the filtering of the registers that are present.
-+             */
-+            if (res == RISCV_EXCP_NONE) {
-+                qemu_fprintf(f, " %-8s " TARGET_FMT_lx "\n",
-+                             csr_ops[csrno].name, val);
-+            }
-+        }
-+        uint16_t vlenb = env_archcpu(env)->cfg.vlen >> 3;
-+
-+/*
-+ * From vector_helper.c
-+ * Note that vector data is stored in host-endian 64-bit chunks,
-+ * so addressing bytes needs a host-endian fixup.
-+ */
-+#if HOST_BIG_ENDIAN
-+#define BYTE(x)   ((x) ^ 7)
-+#else
-+#define BYTE(x)   (x)
-+#endif
-+        for (i = 0; i < 32; i++) {
-+            qemu_fprintf(f, " %-8s ", riscv_rvv_regnames[i]);
-+            p = (uint8_t *)env->vreg;
-+            for (j = vlenb - 1 ; j >= 0; j--) {
-+                qemu_fprintf(f, "%02x", *(p + i * vlenb + BYTE(j)));
-+            }
-+            qemu_fprintf(f, "\n");
-+        }
-+    }
- }
- 
- static void riscv_cpu_set_pc(CPUState *cs, vaddr value)
--- 
-2.34.1
+
+
+For example "-incoming [source=]tcp:foo,multifd-channels=16" would 
+desugar to
+
+   migrate_set_parameter multifd-channels 16
+   migrate_incoming tcp:foo
+
+The only incompatibility is for people who are using "," in an URI, 
+which is rare and only an issue for the "exec" protocol.
+
+Paolo
+
+>> and
+>> set the parameters in the same place as above.  That would remove the need
+>> for "-global migration".
+> 
+> Could you elaborate?
+
+
+
+> The other option that I can think of is changing the error messages for
+> migrate_check_parameters() and give instructions that you can't set
+> multifd channels once that you have started incoming migration.
+> Explaining there to use migrate_incoming command?
+> 
+> Later, Juan.
+> 
+> 
 
 
