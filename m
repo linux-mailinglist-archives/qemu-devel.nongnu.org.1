@@ -2,67 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 921A5739F5B
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 13:23:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A29A1739F5C
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 13:23:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCIOd-00059Z-55; Thu, 22 Jun 2023 07:22:39 -0400
+	id 1qCIOr-0005FF-V1; Thu, 22 Jun 2023 07:22:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <lukasstraub2@web.de>)
- id 1qCIOb-00059R-Os
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 07:22:37 -0400
-Received: from mout.web.de ([212.227.15.14])
+ id 1qCIOm-0005AB-Ed
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 07:22:48 -0400
+Received: from mout.web.de ([212.227.15.4])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <lukasstraub2@web.de>)
- id 1qCIOZ-0006HZ-Vs
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 07:22:37 -0400
+ id 1qCIOk-0006J6-RL
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 07:22:48 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
- s=s29768273; t=1687432951; x=1688037751; i=lukasstraub2@web.de;
- bh=Q0A14vffn08CMXaiQ9zgKTot5/J14WGLPsJvNOe5Z8U=;
- h=X-UI-Sender-Class:Date:From:To:Cc:Subject;
- b=RNk5U2kKltqq0+WO1o0LYk8GFlHxlcZmuQaxfPy+K0+sJbCySPReQAXX8oJ1ObXz2/VpT2q
- zvudxaDLYGvueW7UoNdqEsb9kt6JcSFUo/dh6FdfrPXnX/ePg+N/xI2IVm+EGKxCnB07lhzDD
- QY2fFcIWquqmae5bw/6cSdjS/l/YKJqx5Y9+fWTp2Bt5BosRyPa2bHM0u1Yw5eZFwmSLMKdqE
- wPHhMPxhK9ItaUPdm2DdDVFDIpzdB2ky7k4QPlUDLSH2RiYe+QORfAkmJpIj+pzrMsgJOvRkP
- fzrQpP2EumqKfCTgZT5bZcDjLNRi+Gw+tP6OwgPddrA8M/D4b17g==
+ s=s29768273; t=1687432962; x=1688037762; i=lukasstraub2@web.de;
+ bh=tk8ma7v3hC61F8xrAUpSv6dthTlZBmxKf3VkzxTLhp4=;
+ h=X-UI-Sender-Class:Date:From:To:Cc:Subject:In-Reply-To:References;
+ b=WKa0SpEUqmUywMetO4HlaxCsMkgVZ1ABChPaaAREWyULs9kjOUyl3XxoWxs77ZQHoRaKU23
+ GvhQRJ+X56ox7dCTlp82GyvXDmsbPRWXOa+LSLaB5J0PM6r2eYYiNL2/tonvijyJy7f4fGoOs
+ wXV+PPnqHTVa1uIdklH2FuWrMrCZyBkrtnyrC+1xB49CYBWTf7IM/20NlPMvGK+fjDhZlJ1eG
+ kJW0hZFFwubaixVGiHFWUYMz5Zp8hDaWD1sOFoVEgwqi///7dzzKTPXQOJWTDsjVvPJe1OXj+
+ tXqqI656kG9S0DUchmlnL1WRskNjxY2hasXZfJxjLxEffrP/q5/w==
 X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
 Received: from mobian ([46.114.147.93]) by smtp.web.de (mrweb005
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1Mmyqx-1plifQ03N9-00k9qK; Thu, 22
- Jun 2023 13:22:31 +0200
-Date: Thu, 22 Jun 2023 13:22:26 +0200
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1M4KNZ-1qCZNY3rLl-000P41; Thu, 22
+ Jun 2023 13:22:42 +0200
+Date: Thu, 22 Jun 2023 13:22:38 +0200
 From: Lukas Straub <lukasstraub2@web.de>
 To: qemu-devel <qemu-devel@nongnu.org>
 Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
  Leonardo Bras <leobras@redhat.com>, "=?UTF-8?B?Q8OpZHJpYw==?= Le Goater"
  <clg@redhat.com>, Alex Williamson <alex.williamson@redhat.com>
-Subject: [PATCH 1/2] vfio: Don't be a iterable and legacy device at the same
- time
-Message-ID: <3c45b84bf970d20bfc72865c4de5c33563c2b62d.1687430098.git.lukasstraub2@web.de>
+Subject: [PATCH 2/2] savevm: Disallow devices being legacy and iterable at
+ the same time
+Message-ID: <e6994f3d2d7f78ddf46bf22c9483fe718aae217b.1687430098.git.lukasstraub2@web.de>
+In-Reply-To: <3c45b84bf970d20bfc72865c4de5c33563c2b62d.1687430098.git.lukasstraub2@web.de>
+References: <3c45b84bf970d20bfc72865c4de5c33563c2b62d.1687430098.git.lukasstraub2@web.de>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/xF2ZyHc=++LELis2iYi0di/";
+Content-Type: multipart/signed; boundary="Sig_/vR5Y.N3pzCj19WYOy/2VMv2";
  protocol="application/pgp-signature"; micalg=pgp-sha512
-X-Provags-ID: V03:K1:FdIbjF0R4/nrtSksfO5LR5yej+j1raKdwKcrYzhW4DakZmNkJMf
- 0+viTSAklvrcbpdNnVASRWShPL0wyQJxJd9lebHrqKutougg0ZrYyipixu5MSwilr2qPBRW
- SJ6NuJWNgk438PD14GDF9HxqK12so6XNPmP4Gp/ySlzT3AGK6r6SBrFnXh2Wvvuh1T2e92b
- kqr7D7F7lrn5v23+2Ch4Q==
-UI-OutboundReport: notjunk:1;M01:P0:uCSYVKHLFTg=;6bYJjumgmOqR7+65WclBuZr+iLj
- F75hsrVkxkRG/TE82VzUsF0CIXuY5YB4k/+yfHbVCOsBIqUgnLDHyYSwdEH2rpiuB8Xbie8e1
- SitN+VThoJEoTzpXd8KlYCbYxQ/+Owvx6uXoo4taDCGIWDLH1OLl1aFuhA2DUJ++sbuK3AHw3
- U/G75gsw4bNociHT2xyRmQIVEub1XqE5vba4yqYXvPb+MZ3utoGxaJidlurVhJEWnmtuXa+Gf
- Wsoh9nOANBdBDWbVQnSL6rxRrFwtf44RFfaqtxg5k1oAgyudJhcGd5w6zWpMxVsV6ZFYtYx95
- laJp2+NxYOja+8+bL3uNJq6ZZCVz3frHQLAzUdrG4/d3USWmFqzKTi5AySzByOKZ44GLYE3C+
- IcG0lUvw7h14OopUIBfn9RFMQW+IDlkw+7Vq80iWRVdcvgO6roOwuFr1LJNZBrn8qNV4SAKGb
- ZfW8aEaFIODFYns5Dm7ybrTh/W1wD95y83bfMJwoMcBYQ8Ke+t2p/mBCPJoLfxiXPjMgyIKxW
- Uzpw6QM9TPfIdE5J3jReGYsUx7JwYUZPpp4/+Qf35kXWSfIUlPggdqqlsZgzINSBaxPZPMYuU
- oDACexSEqtpDFHUi6m7+TzUVJl+p+iSfCojDD2DpErO477DpFwyCWGKKm0jQwVC702xrx43bX
- ETnSe5xi8H4eVQ5jxUN+/+4dLks/PnWya+Fdc/4y+Olwr95KIQcb9GrN7U02OwZFlZbFtL7cx
- YVZmCQ7CGlF8U7lIzxvjAG/l/uIanlAKwNnv32mHih92dKG/hRKOkWiLHK2CWfEocV5hXzEQm
- xTWEImH2APkmKYulxE7BjBuKITsXRHALzHIG9s9sTI80YUDWJ5lcDc2mw6sdjVo4NrLFQZSwV
- /sjVMm1kZ6xVgoG8syPXWMhTzXzsTk3hF5c9xhBZrC5ktCNkVBhjCg62mJf+VC+AxgMLokJ4Z
- Kkb4Qw==
-Received-SPF: pass client-ip=212.227.15.14; envelope-from=lukasstraub2@web.de;
+X-Provags-ID: V03:K1:hcdoR5mPasvgGWzs2TUzneFrxRhaVsrYMPJCtoN6xoHKtmvJQiv
+ ++xzbxVgPmh296LPFShafkf3XcIPir5o0xGBcGZvnJv/a87E30yloy1xqNPeGPM6/4N9Hz2
+ 0otMChUktP0087sis4+sHD7AjDppBRJWMwh23+mPx++56jpF0DrbT62TefACabwQnfkDBs5
+ HFYuK1gFDgX5CUKVhwvew==
+UI-OutboundReport: notjunk:1;M01:P0:EKmtBgFf2RU=;HNF3LuuETJ4C8Z0SBydsF8kP8rM
+ VXgXZLbyi2lk612ESMlR5gg9kCUibD6gLhuFQJrbBvg4FEuv6d8sXfejHQOdPHLsy2juaQjzh
+ bgFwre3iIn691U6EI2wONOycNne8UyYK4pNk+ITEpc+gp2d+vwgUmC4u+U13w6yCpRzGQ6p6n
+ fNQOiyLZ7FRdHVKuJJHI0KIY7wLeeIIsztwAy623kDizOXkp16VuAopknBx+BAI8NT6lpLHDs
+ 89JToOHX3oNQ+ofJY/BuUmmWNgWp+UBMqE0mzwJ+Bnnr/ptXSb+sNiI/F0R+VvWb/8Yult9Sx
+ ZW0eSfEQYLXM0Uz3IAz3L1Okw0fZLw9VKlGcAv8zLcKlff5iar123FscLqHk0Oij7KeKV7WKz
+ +cq9HOut31yijP63rvwfUqzb7wqL5WhsW6YojE7UaAhoXcy2waDpzFyhaa3zLQoDO3N2fS01m
+ pkr2O6O7xingNiBDRhYG+AbhWBQ9dOOorIN1dHBLWlr3g20nXoHpfAIHU3+sfDeRJeiQ6mntQ
+ Kkboatf0yvV+RcuHk3rBMvjewrU1SAtpq4myPPH906MXC9Z+PseDySYIinQAdzu6sk+XcQCqS
+ zOV/ST+e7/SSnt/s94yjSN+MGjULsPaP+fGKvReSF4LV2chKOe5RfzJ6g52D5J3ityDOlVZ5U
+ w+6i3NxCbLvFeX+7Jeao37/Oejx7MAKxkwI12j/1vmZ4ppRYfgph41z77f6gmkpws7sQFrhF/
+ vSQFfXqPzDsHqi0t9cDAgDWj3UEiRYQejBATS3oSUEY5NK2e554rR+CVz8TX9tTb9s3zXbMCZ
+ 0UzHweKDNaQFlpscjaecvFil27vlX4NVgQPjZ8VTQTI0u4Z98bJLz1ic/MUomh4EifJs60Uaj
+ ynQkwBeOGtcWdOvo9bRXdGHqErwxfggWkUu8b8bRiYAYNgwEQcZDHeKz0HeX0LSECln/c+eaE
+ xUitJuQQr4ADZikeJoWhVYF8EQg=
+Received-SPF: pass client-ip=212.227.15.4; envelope-from=lukasstraub2@web.de;
  helo=mout.web.de
 X-Spam_score_int: -25
 X-Spam_score: -2.6
@@ -70,7 +72,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -87,125 +89,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---Sig_/xF2ZyHc=++LELis2iYi0di/
+--Sig_/vR5Y.N3pzCj19WYOy/2VMv2
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: quoted-printable
 
-Legacy savevm devices only implement save_state() and load_state().
-Iterable devices shouldn't implement save_state() or else they are
-handled both as an iterable and legacy device in the savevm code.
-
 Signed-off-by: Lukas Straub <lukasstraub2@web.de>
 ---
+ migration/savevm.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Note: this patch is completely untested.
-
- hw/vfio/migration.c | 38 +++++++++++---------------------------
- 1 file changed, 11 insertions(+), 27 deletions(-)
-
-diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
-index 6b58dddb88..8d7f22dbd3 100644
---- a/hw/vfio/migration.c
-+++ b/hw/vfio/migration.c
-@@ -166,23 +166,6 @@ static int vfio_load_buffer(QEMUFile *f, VFIODevice *v=
-basedev,
-     return ret;
- }
-=20
--static int vfio_save_device_config_state(QEMUFile *f, void *opaque)
--{
--    VFIODevice *vbasedev =3D opaque;
--
--    qemu_put_be64(f, VFIO_MIG_FLAG_DEV_CONFIG_STATE);
--
--    if (vbasedev->ops && vbasedev->ops->vfio_save_config) {
--        vbasedev->ops->vfio_save_config(vbasedev, f);
--    }
--
--    qemu_put_be64(f, VFIO_MIG_FLAG_END_OF_STATE);
--
--    trace_vfio_save_device_config_state(vbasedev->name);
--
--    return qemu_file_get_error(f);
--}
--
- static int vfio_load_device_config_state(QEMUFile *f, void *opaque)
- {
-     VFIODevice *vbasedev =3D opaque;
-@@ -351,7 +334,6 @@ static int vfio_save_complete_precopy(QEMUFile *f, void=
- *opaque)
-         }
-     } while (!ret);
-=20
--    qemu_put_be64(f, VFIO_MIG_FLAG_END_OF_STATE);
-     ret =3D qemu_file_get_error(f);
-     if (ret) {
-         return ret;
-@@ -365,20 +347,23 @@ static int vfio_save_complete_precopy(QEMUFile *f, vo=
-id *opaque)
-                                    VFIO_DEVICE_STATE_ERROR);
-     trace_vfio_save_complete_precopy(vbasedev->name, ret);
-=20
--    return ret;
--}
-+    qemu_put_be64(f, VFIO_MIG_FLAG_DEV_CONFIG_STATE);
-=20
--static void vfio_save_state(QEMUFile *f, void *opaque)
--{
--    VFIODevice *vbasedev =3D opaque;
--    int ret;
-+    if (vbasedev->ops && vbasedev->ops->vfio_save_config) {
-+        vbasedev->ops->vfio_save_config(vbasedev, f);
-+    }
-+
-+    qemu_put_be64(f, VFIO_MIG_FLAG_END_OF_STATE);
-+
-+    trace_vfio_save_device_config_state(vbasedev->name);
-=20
--    ret =3D vfio_save_device_config_state(f, opaque);
-+    ret =3D qemu_file_get_error(f);
-     if (ret) {
-         error_report("%s: Failed to save device config space",
-                      vbasedev->name);
--        qemu_file_set_error(f, ret);
+diff --git a/migration/savevm.c b/migration/savevm.c
+index 5986f852b2..8d3cf7d675 100644
+--- a/migration/savevm.c
++++ b/migration/savevm.c
+@@ -774,6 +774,8 @@ int register_savevm_live(const char *idstr,
+         se->is_ram =3D 1;
      }
-+
-+    return ret;
- }
 =20
- static int vfio_load_setup(QEMUFile *f, void *opaque)
-@@ -458,7 +443,6 @@ static const SaveVMHandlers savevm_vfio_handlers =3D {
-     .save_cleanup =3D vfio_save_cleanup,
-     .state_pending_exact =3D vfio_state_pending_exact,
-     .save_live_complete_precopy =3D vfio_save_complete_precopy,
--    .save_state =3D vfio_save_state,
-     .load_setup =3D vfio_load_setup,
-     .load_cleanup =3D vfio_load_cleanup,
-     .load_state =3D vfio_load_state,
++    assert(!(se->ops->save_setup && se->ops->save_state));
++
+     pstrcat(se->idstr, sizeof(se->idstr), idstr);
+=20
+     if (instance_id =3D=3D VMSTATE_INSTANCE_ID_ANY) {
 --=20
 2.39.2
 
-
---Sig_/xF2ZyHc=++LELis2iYi0di/
+--Sig_/vR5Y.N3pzCj19WYOy/2VMv2
 Content-Type: application/pgp-signature
 Content-Description: OpenPGP digital signature
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCgAdFiEEg/qxWKDZuPtyYo+kNasLKJxdslgFAmSULvIACgkQNasLKJxd
-slji1A//X1Rb1XNtHcdpClMwoy1ZuSNLegZ4Rh5C5fGTfYSYI8OEjCXksP4J9rbv
-Ef4Hrl7WhXuGz4oISBTYLycNf0Ge38WmsohHXBpBHpYLU6tDDy7d1sgsnPRqFTU2
-yuGxoD/+cifqoKhzX3FKYwMoXNcCadtVD31wTNv5nNuWegRosPHBHZgoeLqM41gz
-vACeg9EeJEOC/0GuNa4iGkSlFwQTWod8xwXyEbF0KGlTNj167KuzgVGZ9xT7opoo
-Zn7Zo9+BfPdL4K4lRq9yifRG0DrwJ8TEHjua1d3KFaobowFuj1q+Nd2IwSZUbA+N
-q8tFGsktfFkr3/OQJuT5bQxSZz5N+Phyq1GeCFWrZD4e2LoWOcH19vwGP+igG+Cp
-7KToKEOUjARkqlLsVF+MufY2na2QVtbzzj4ejAM2ifPrm34w++RF/z2NFRbd8k8f
-wG6GlTdsktvgdAVZwID/o9BpPr2lRhpiYjMmCmY+nVwuDER1+wzndl+z5lzLkn0u
-nfsju4boOTvDjT+nqC1RR6RZ+HuYlkY+rxMr/Qe3wM4QWBxeqwKpwMixPTsIrYoV
-b/wGgoZR8/0KWNp/bepjD5a1vkzjA/eiL/QrMobA7dMUAjqNnY6TXJ/0BXUh8xtX
-zZsyyyLHbLHX8eNjKY/gCHHDcEHOg0VbyYWAE9XnNZOpa895pIo=
-=VQMo
+iQIzBAEBCgAdFiEEg/qxWKDZuPtyYo+kNasLKJxdslgFAmSULv4ACgkQNasLKJxd
+sliC+RAApCaWiKaToubXFdKQCQSEcvLcLXwZuXmAG/hwAelEI2rKeIx3l/wuy8O2
+6icsYPpjZH+144Z9onT60MGcZXHKRaYCdvMFESALXrDB8ugynJlEP/JdCB+TEHxb
+yyCvj6x8QY3wF4oCir+W08C8O0Jw+JZOyRkAz8FK8nRkGPtNhBplujwxjxK0NT1b
+nWI/kvSHYQ5eB0u5Iw+mvvz6m+8bFGz/RYoh8idlhG8sdeal+sQYMdWgeVy9Dupx
+bp2jodIJ9GYCM7xSLobE+Xskno5m2bYnWvoYZovUwbSAlay2HMovbRFjnJ1iBZ8c
+A3BlzzDLKWRBL6sUBnD7zEeM3u6PJw7ZBWB0Gow/GLYmbDeIOiUwKcMy+KVZs3hg
+CvXA6xAVHSOim3klkex8Kj9/93q5IhrglLpRYbX4CA+C82bTNgaAXJpMZjgxhGeo
+aT79s6Dch1xQGNQ4w1fvuvZNw1AUx2MURVHPic3vv9XWboxv7RD6dyCNWGxPcNcz
+T4QXAJZgM5k59lqqjHf3mMjmuw+0OEcMo9+Q24YJPE2ndXzUiM1sOVXhTfvhr+vy
+z99FopueLrKHeo0xPwIrN7PHOld5yu1ebf4GuFESc3bvaWvlzBFnQoEsEr71vjpl
+h5oHpwfjA70J2LDFOxgaCz4Kiew/C16l41uvWOjCVlBy3oCzrPI=
+=USCo
 -----END PGP SIGNATURE-----
 
---Sig_/xF2ZyHc=++LELis2iYi0di/--
+--Sig_/vR5Y.N3pzCj19WYOy/2VMv2--
 
