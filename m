@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 931187398A0
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 09:57:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A77967398B8
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 09:58:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCFAi-00044Q-Sf; Thu, 22 Jun 2023 03:56:04 -0400
+	id 1qCFBK-0004th-9U; Thu, 22 Jun 2023 03:56:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1qCFAb-0003yk-PO
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 03:56:00 -0400
-Received: from mout.kundenserver.de ([212.227.126.187])
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1qCFAf-00040k-6K
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 03:56:01 -0400
+Received: from mout.kundenserver.de ([212.227.126.133])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1qCFAY-0002rh-8O
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 03:55:57 -0400
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1qCFAY-0002s5-8j
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 03:55:58 -0400
 Received: from quad ([82.142.8.70]) by mrelayeu.kundenserver.de (mreue011
- [212.227.15.167]) with ESMTPSA (Nemesis) id 1MQdtO-1qPtuE2odi-00NkVU; Thu, 22
- Jun 2023 09:55:48 +0200
+ [212.227.15.167]) with ESMTPSA (Nemesis) id 1MD9jV-1qKjcy0YZV-0097Op; Thu, 22
+ Jun 2023 09:55:49 +0200
 From: Laurent Vivier <laurent@vivier.eu>
 To: qemu-devel@nongnu.org
 Cc: Laurent Vivier <laurent@vivier.eu>,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 05/24] q800: move CPU object into Q800MachineState
-Date: Thu, 22 Jun 2023 09:55:25 +0200
-Message-Id: <20230622075544.210899-6-laurent@vivier.eu>
+Subject: [PULL 06/24] q800: move ROM memory region to Q800MachineState
+Date: Thu, 22 Jun 2023 09:55:26 +0200
+Message-Id: <20230622075544.210899-7-laurent@vivier.eu>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230622075544.210899-1-laurent@vivier.eu>
 References: <20230622075544.210899-1-laurent@vivier.eu>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:2a8xwGQld4SdRMFrDuktq0vClksm0MGLxxJy4dQWs0nckl6VWNw
- /D9ZxgjHg74t9YAUYWKKJHOwAC004kLYI9IIOuCtTFtN3mjiuJbbfoxchaYmjcXOfEksKZ8
- m4EnlD+XatHGvPgT4tOtKBx+c+hnzpX/hkxzedaPh4tYvnEWdJA1rRaO6J08s5dlxdBAOsh
- f3hYIYmGO64+Nd/yQgVXA==
-UI-OutboundReport: notjunk:1;M01:P0:RgsqI9lrHfk=;X9vIn40SdYWg/GiMWNmuZ9ofkpA
- fIGH0nkk16ssi/34/I9xXzyKw6/ySeYpJM6UWV87S3me+6ypyJ3GUrd8LjBRXywjFQqVQQL9i
- WWd5rf0sO3OeBE5Clp0RfjFXLBvb30tW5d+TTG8aV1k9eKaqlVsls21CA/KKGQ33Km4LiL3Ra
- WBNRqlbIij9FcSZ3p8TU+u9kt5cofTV0epdMgU6NlmElhtviXSCTIU6V32uEc71mIiIBfmc7H
- iFh/CLYcoQ13oLI8MlwuNlMVuieYtM794A4BrHQwYoSXslmTYTTIT8qhIFVcmhxTJHc+iBcGj
- ig+8Mtwu7yQTi62tjh0FBG/0/U25n7dSWy1r/OZSPedbC6bB4gDhJP3XikAHuB2g0g2MpqMHl
- sMNgjOgVmp1pPWrEC10hbsz4EmXq9pBgXLVcTAEETGqdBwYfGRs9oRJGzE9aTuiVNwLwmHtEq
- 5Q4XgHnNavCZhS2RP4kmqqDxhw4fHlBjhhWe4JZqYQisTQv5q1cN4zZm0Mef10YO1uENOia6+
- AMsrChMpoADd0OufMa24wgQ81Pe0p/JSVMsibEN3kS8b3tvwpQeUqSfMYAeB8c4+4RELvbRIL
- /7C/z94W7yAUW4RXG8JoHzCx00WAltjgpcQDT+JuOPIUy3Vnws4nDxco5olk/l/d/a/qqhkNj
- BFv56buR3Yy3nJtN6Br4OOX6YUKsSrDdOE3tL+0QMg==
-Received-SPF: none client-ip=212.227.126.187; envelope-from=laurent@vivier.eu;
+X-Provags-ID: V03:K1:nFhTxUe+M2uX0htoHlTjvqFF1q20sVTZsIZ2mTtA8gyK/Iy4OrP
+ VqtVVr9P/Xt3SWnXUwo2D7ghUwfgmhEFCdezTpaf7NY/sibB8T6506azDfKrxL9RQqLSDp4
+ KWjDCOBCy7C2j57BEO1/wqImmTDtM1bbOeXyEHtMCGepXNnPorAZ40Kidjs3pG27CoUI2Aj
+ EYo+J8jb7rj41jZw4NQqA==
+UI-OutboundReport: notjunk:1;M01:P0:mwZuDtMqCZY=;F0bo6dzn0bVE5rj7EWAU7vv9vQY
+ c2Uv0Odfz+23buX6ZFwkFmn8TaftWdiwQ2xIX3Gg5f/2yzEkHo9MZoNUDrG1DGUxJywPnr9KJ
+ e3lAv4PSlO0YVDnAok0iIzZGbHE9oD00Z6KCmOKbsjt1ikefAzIxbPXcdYpNmjbpeA7WsuVcO
+ 0SGX70ymG4RjQ92rjvVQTYaPttWRHelblVQK1mD9d0iUgj+mjaDmP9zPxzczcW5djRkUelDgX
+ drc7YqH+ZlouMRW9BfnuEY7Cu/8kO2otfavKqtND9wDxkOkzN8d3/1uBi9zBLt8EvCZgs4G2A
+ It+x/cnbqdDahRbHZop8r6qmS+8fMpv15US/SMgFTUYb2uQx1KcnUyvm6/b/FWXJpQpRIzM6Y
+ WzBBpr5YUdZORv2nD3l3OQRfyBKeBsAv9XHA23Y6vUXI01k9YNU9PfuzrTZIeVzvXVRJGX1yH
+ Pn7p6h9MXCG4YpgQtGW2s1Nd7uXdDnATYH3Or/DNeAHhqF8hrqyFX1Y5RhkdhuMAFCPzqhzdX
+ PyuoXZ6eU2+Px00LzgSMZAjZLV5+pphkO2GvDHxeu11TMs3NUEqZpdwDVgHU44G2Gq2Nk4ufv
+ 7E72YPc23Im7+wPLmlI31Gp3BNa/B3SgUT6Hy9Jscd5y7j91SJTRwXOMqvxxRI9BJz9FFNOlF
+ kyNka284NoHflgQDB34IzOtFjXNuW/1Rz2/SGdT3/Q==
+Received-SPF: none client-ip=212.227.126.133; envelope-from=laurent@vivier.eu;
  helo=mout.kundenserver.de
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_MSPIKE_H2=-0.001,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -73,106 +73,77 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 
-Also change the instantiation of the CPU to use object_initialize_child()
-followed by a separate realisation.
-Restrict valid CPU types to m68040.
-
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Reviewed-by: Laurent Vivier <laurent@vivier.eu>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <20230621085353.113233-6-mark.cave-ayland@ilande.co.uk>
-[lv: update commit message]
+Reviewed-by: Laurent Vivier <laurent@vivier.eu>
+Message-Id: <20230621085353.113233-7-mark.cave-ayland@ilande.co.uk>
 Signed-off-by: Laurent Vivier <laurent@vivier.eu>
 ---
- include/hw/m68k/q800.h |  3 +++
- hw/m68k/q800.c         | 18 +++++++++++++-----
- 2 files changed, 16 insertions(+), 5 deletions(-)
+ include/hw/m68k/q800.h |  2 ++
+ hw/m68k/q800.c         | 13 +++++--------
+ 2 files changed, 7 insertions(+), 8 deletions(-)
 
 diff --git a/include/hw/m68k/q800.h b/include/hw/m68k/q800.h
-index f3bc17aa1bdc..4cb1a51dfe9d 100644
+index 4cb1a51dfe9d..d1f1ae4b8864 100644
 --- a/include/hw/m68k/q800.h
 +++ b/include/hw/m68k/q800.h
-@@ -25,6 +25,7 @@
- 
+@@ -26,6 +26,7 @@
  #include "hw/boards.h"
  #include "qom/object.h"
-+#include "target/m68k/cpu-qom.h"
+ #include "target/m68k/cpu-qom.h"
++#include "exec/memory.h"
  
  /*
   * The main Q800 machine
-@@ -32,6 +33,8 @@
- 
- struct Q800MachineState {
+@@ -35,6 +36,7 @@ struct Q800MachineState {
      MachineState parent_obj;
-+
-+    M68kCPU cpu;
+ 
+     M68kCPU cpu;
++    MemoryRegion rom;
  };
  
  #define TYPE_Q800_MACHINE MACHINE_TYPE_NAME("q800")
 diff --git a/hw/m68k/q800.c b/hw/m68k/q800.c
-index 062a3c6c7614..2b651de3c13b 100644
+index 2b651de3c13b..9f9668c2b4b3 100644
 --- a/hw/m68k/q800.c
 +++ b/hw/m68k/q800.c
-@@ -364,7 +364,7 @@ static uint8_t fake_mac_rom[] = {
+@@ -372,7 +372,6 @@ static void q800_machine_init(MachineState *machine)
+     int bios_size;
+     ram_addr_t initrd_base;
+     int32_t initrd_size;
+-    MemoryRegion *rom;
+     MemoryRegion *io;
+     MemoryRegion *dp8393x_prom = g_new(MemoryRegion, 1);
+     uint8_t *prom;
+@@ -646,11 +645,10 @@ static void q800_machine_init(MachineState *machine)
+         BOOTINFO1(param_ptr, BI_MAC_VROW, macfb_mode->stride);
+         BOOTINFO1(param_ptr, BI_MAC_SCCBASE, SCC_BASE);
  
- static void q800_machine_init(MachineState *machine)
- {
--    M68kCPU *cpu = NULL;
-+    Q800MachineState *m = Q800_MACHINE(machine);
-     int linux_boot;
-     int32_t kernel_size;
-     uint64_t elf_entry;
-@@ -407,8 +407,9 @@ static void q800_machine_init(MachineState *machine)
-     }
+-        rom = g_malloc(sizeof(*rom));
+-        memory_region_init_ram_ptr(rom, NULL, "m68k_fake_mac.rom",
++        memory_region_init_ram_ptr(&m->rom, NULL, "m68k_fake_mac.rom",
+                                    sizeof(fake_mac_rom), fake_mac_rom);
+-        memory_region_set_readonly(rom, true);
+-        memory_region_add_subregion(get_system_memory(), MACROM_ADDR, rom);
++        memory_region_set_readonly(&m->rom, true);
++        memory_region_add_subregion(get_system_memory(), MACROM_ADDR, &m->rom);
  
-     /* init CPUs */
--    cpu = M68K_CPU(cpu_create(machine->cpu_type));
--    qemu_register_reset(main_cpu_reset, cpu);
-+    object_initialize_child(OBJECT(machine), "cpu", &m->cpu, machine->cpu_type);
-+    qdev_realize(DEVICE(&m->cpu), NULL, &error_fatal);
-+    qemu_register_reset(main_cpu_reset, &m->cpu);
+         if (kernel_cmdline) {
+             BOOTINFOSTR(param_ptr, BI_COMMAND_LINE,
+@@ -692,11 +690,10 @@ static void q800_machine_init(MachineState *machine)
+     } else {
+         uint8_t *ptr;
+         /* allocate and load BIOS */
+-        rom = g_malloc(sizeof(*rom));
+-        memory_region_init_rom(rom, NULL, "m68k_mac.rom", MACROM_SIZE,
++        memory_region_init_rom(&m->rom, NULL, "m68k_mac.rom", MACROM_SIZE,
+                                &error_abort);
+         filename = qemu_find_file(QEMU_FILE_TYPE_BIOS, bios_name);
+-        memory_region_add_subregion(get_system_memory(), MACROM_ADDR, rom);
++        memory_region_add_subregion(get_system_memory(), MACROM_ADDR, &m->rom);
  
-     /* RAM */
-     memory_region_add_subregion(get_system_memory(), 0, machine->ram);
-@@ -430,7 +431,8 @@ static void q800_machine_init(MachineState *machine)
- 
-     /* IRQ Glue */
-     glue = qdev_new(TYPE_GLUE);
--    object_property_set_link(OBJECT(glue), "cpu", OBJECT(cpu), &error_abort);
-+    object_property_set_link(OBJECT(glue), "cpu", OBJECT(&m->cpu),
-+                             &error_abort);
-     sysbus_realize_and_unref(SYS_BUS_DEVICE(glue), &error_fatal);
- 
-     /* VIA 1 */
-@@ -605,7 +607,7 @@ static void q800_machine_init(MachineState *machine)
- 
-     macfb_mode = (NUBUS_MACFB(dev)->macfb).mode;
- 
--    cs = CPU(cpu);
-+    cs = CPU(&m->cpu);
-     if (linux_boot) {
-         uint64_t high;
-         void *param_blob, *param_ptr, *param_rng_seed;
-@@ -735,6 +737,11 @@ static GlobalProperty hw_compat_q800[] = {
- };
- static const size_t hw_compat_q800_len = G_N_ELEMENTS(hw_compat_q800);
- 
-+static const char *q800_machine_valid_cpu_types[] = {
-+    M68K_CPU_TYPE_NAME("m68040"),
-+    NULL
-+};
-+
- static void q800_machine_class_init(ObjectClass *oc, void *data)
- {
-     MachineClass *mc = MACHINE_CLASS(oc);
-@@ -742,6 +749,7 @@ static void q800_machine_class_init(ObjectClass *oc, void *data)
-     mc->desc = "Macintosh Quadra 800";
-     mc->init = q800_machine_init;
-     mc->default_cpu_type = M68K_CPU_TYPE_NAME("m68040");
-+    mc->valid_cpu_types = q800_machine_valid_cpu_types;
-     mc->max_cpus = 1;
-     mc->block_default_type = IF_SCSI;
-     mc->default_ram_id = "m68k_mac.ram";
+         /* Load MacROM binary */
+         if (filename) {
 -- 
 2.40.1
 
