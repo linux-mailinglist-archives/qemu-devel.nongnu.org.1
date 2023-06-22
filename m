@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B618A73956A
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 04:16:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 141B0739570
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 04:17:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qC9qs-0008TE-UG; Wed, 21 Jun 2023 22:15:22 -0400
+	id 1qC9qi-00085T-Ox; Wed, 21 Jun 2023 22:15:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qC9qK-00072A-Sj
+ id 1qC9qL-00072O-F7
  for qemu-devel@nongnu.org; Wed, 21 Jun 2023 22:14:42 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qC9qH-00054u-4H
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 22:14:40 -0400
+ id 1qC9qI-00055I-NB
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 22:14:41 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1687400076;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=n9TdMXOS+qjL+W5lDCLJHlY6rS6mQChhMxpnTbMZipM=;
- b=C/lWDk7wJEJnuMRIT0H5xHuBBswkb0wQ9Ax6oMFmh3zjYIrkTUB+hrThiSDCITc1lvVKfr
- XKYV8OuWPAte9i4mhGEJ9DL1wAzRwDqbC8XFBUF2JzQsUb2iaLlLV4HDmNw9D4eT89Kx3T
- /ZoGcRB1zTUNnILuN5K15T+noZ7Mzj8=
+ bh=7C3D7iNM38aBqhdSOuDcDrLT+thUiibV5CBvo7gXvFw=;
+ b=HArC8Wv+sAdSid7L4Rszv/aSEPh4mR23Sc81X5PnCs+b0LBaQ31K3LNeQ1wdEBSFf/r9we
+ t7G072E2ketaSRE9G95SgUc2Lvy3LxuXBwxiC2TmVW6MoBdjpZ3aR4wCzZW3Cy1kKBGZya
+ Zs5xDgUIAplLMY0l/Mcm6D7M60otEys=
 Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
  [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-250-rgTzGs0MOqmKXeRI89MScQ-1; Wed, 21 Jun 2023 22:14:32 -0400
-X-MC-Unique: rgTzGs0MOqmKXeRI89MScQ-1
+ us-mta-528-VxIyhA7gMAyJo7Ue8WJ9Xw-1; Wed, 21 Jun 2023 22:14:35 -0400
+X-MC-Unique: VxIyhA7gMAyJo7Ue8WJ9Xw-1
 Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
  [10.11.54.3])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8309D3C10152;
- Thu, 22 Jun 2023 02:14:32 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C3B3C1C06EDE;
+ Thu, 22 Jun 2023 02:14:34 +0000 (UTC)
 Received: from secure.mitica (unknown [10.39.193.228])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 69C30112132C;
- Thu, 22 Jun 2023 02:14:30 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id CC0B0112132C;
+ Thu, 22 Jun 2023 02:14:32 +0000 (UTC)
 From: Juan Quintela <quintela@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Leonardo Bras <leobras@redhat.com>,
@@ -50,9 +50,9 @@ Cc: Peter Xu <peterx@redhat.com>, Leonardo Bras <leobras@redhat.com>,
  qemu-block@nongnu.org, Eric Blake <eblake@redhat.com>,
  Stefan Hajnoczi <stefanha@redhat.com>, Fam Zheng <fam@euphon.net>,
  Laurent Vivier <lvivier@redhat.com>
-Subject: [PULL 17/30] migration-test: Add bootfile_create/delete() functions
-Date: Thu, 22 Jun 2023 04:13:07 +0200
-Message-Id: <20230622021320.66124-18-quintela@redhat.com>
+Subject: [PULL 18/30] migration-test: dirtylimit checks for x86_64 arch before
+Date: Thu, 22 Jun 2023 04:13:08 +0200
+Message-Id: <20230622021320.66124-19-quintela@redhat.com>
 In-Reply-To: <20230622021320.66124-1-quintela@redhat.com>
 References: <20230622021320.66124-1-quintela@redhat.com>
 MIME-Version: 1.0
@@ -67,7 +67,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,132 +83,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The bootsector code is read only from the guest (otherwise we are
-going to have problems with it being read from both source and
-destination).
-
-Create a single copy for all the tests.
+So no need to assert we are in x86_64.
+Once there, refactor the function to remove useless variables.
 
 Reviewed-by: Peter Xu <peterx@redhat.com>
-Message-ID: <20230608224943.3877-10-quintela@redhat.com>
+Message-ID: <20230608224943.3877-11-quintela@redhat.com>
 Signed-off-by: Juan Quintela <quintela@redhat.com>
 ---
- tests/qtest/migration-test.c | 50 ++++++++++++++++++++++++++----------
- 1 file changed, 36 insertions(+), 14 deletions(-)
+ tests/qtest/migration-test.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
 diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-index 0f80dbfe80..eb6a11e758 100644
+index eb6a11e758..fbe9db23cf 100644
 --- a/tests/qtest/migration-test.c
 +++ b/tests/qtest/migration-test.c
-@@ -111,14 +111,47 @@ static char *bootpath;
- #include "tests/migration/aarch64/a-b-kernel.h"
- #include "tests/migration/s390x/a-b-bios.h"
- 
--static void init_bootfile(void *content, size_t len)
-+static void bootfile_create(char *dir)
+@@ -2515,10 +2515,7 @@ static int64_t get_limit_rate(QTestState *who)
+ static QTestState *dirtylimit_start_vm(void)
  {
-+    const char *arch = qtest_get_arch();
-+    unsigned char *content;
-+    size_t len;
-+
-+    bootpath = g_strdup_printf("%s/bootsect", dir);
-+    if (strcmp(arch, "i386") == 0 || strcmp(arch, "x86_64") == 0) {
-+        /* the assembled x86 boot sector should be exactly one sector large */
-+        g_assert(sizeof(x86_bootsect) == 512);
-+        content = x86_bootsect;
-+        len = sizeof(x86_bootsect);
-+    } else if (g_str_equal(arch, "s390x")) {
-+        content = s390x_elf;
-+        len = sizeof(s390x_elf);
-+    } else if (strcmp(arch, "ppc64") == 0) {
-+        /*
-+         * sane architectures can be programmed at the boot prompt
-+         */
-+        return;
-+    } else if (strcmp(arch, "aarch64") == 0) {
-+        content = aarch64_kernel;
-+        len = sizeof(aarch64_kernel);
-+        g_assert(sizeof(aarch64_kernel) <= ARM_TEST_MAX_KERNEL_SIZE);
-+    } else {
-+        g_assert_not_reached();
-+    }
-+
-     FILE *bootfile = fopen(bootpath, "wb");
- 
-     g_assert_cmpint(fwrite(content, len, 1, bootfile), ==, 1);
-     fclose(bootfile);
- }
- 
-+static void bootfile_delete(void)
-+{
-+    unlink(bootpath);
-+    g_free(bootpath);
-+    bootpath = NULL;
-+}
-+
- /*
-  * Wait for some output in the serial output file,
-  * we get an 'A' followed by an endless string of 'B's
-@@ -622,15 +655,11 @@ static int test_migrate_start(QTestState **from, QTestState **to,
-     got_src_stop = false;
-     got_dst_resume = false;
-     if (strcmp(arch, "i386") == 0 || strcmp(arch, "x86_64") == 0) {
--        /* the assembled x86 boot sector should be exactly one sector large */
--        assert(sizeof(x86_bootsect) == 512);
--        init_bootfile(x86_bootsect, sizeof(x86_bootsect));
-         memory_size = "150M";
-         arch_opts = g_strdup_printf("-drive file=%s,format=raw", bootpath);
-         start_address = X86_TEST_MEM_START;
-         end_address = X86_TEST_MEM_END;
-     } else if (g_str_equal(arch, "s390x")) {
--        init_bootfile(s390x_elf, sizeof(s390x_elf));
-         memory_size = "128M";
-         arch_opts = g_strdup_printf("-bios %s", bootpath);
-         start_address = S390_TEST_MEM_START;
-@@ -645,14 +674,11 @@ static int test_migrate_start(QTestState **from, QTestState **to,
-                                       "until'", end_address, start_address);
-         arch_opts = g_strdup("-nodefaults -machine vsmt=8");
-     } else if (strcmp(arch, "aarch64") == 0) {
--        init_bootfile(aarch64_kernel, sizeof(aarch64_kernel));
-         memory_size = "150M";
-         arch_opts = g_strdup_printf("-machine virt,gic-version=max -cpu max "
-                                     "-kernel %s", bootpath);
-         start_address = ARM_TEST_MEM_START;
-         end_address = ARM_TEST_MEM_END;
+     QTestState *vm = NULL;
+-    g_autofree gchar *cmd = NULL;
+-    const char *arch = qtest_get_arch();
 -
--        g_assert(sizeof(aarch64_kernel) <= ARM_TEST_MAX_KERNEL_SIZE);
-     } else {
-         g_assert_not_reached();
-     }
-@@ -2493,9 +2519,6 @@ static QTestState *dirtylimit_start_vm(void)
-     const char *arch = qtest_get_arch();
- 
-     assert((strcmp(arch, "x86_64") == 0));
--    assert(sizeof(x86_bootsect) == 512);
--    init_bootfile(x86_bootsect, sizeof(x86_bootsect));
--
+-    assert((strcmp(arch, "x86_64") == 0));
++    g_autofree gchar *
      cmd = g_strdup_printf("-accel kvm,dirty-ring-size=4096 "
                            "-name dirtylimit-test,debug-threads=on "
                            "-m 150M -smp 1 "
-@@ -2671,7 +2694,7 @@ int main(int argc, char **argv)
-                        g_get_tmp_dir(), err->message);
-     }
-     g_assert(tmpfs);
--    bootpath = g_strdup_printf("%s/bootsect", tmpfs);
-+    bootfile_create(tmpfs);
- 
-     module_call_init(MODULE_INIT_QOM);
- 
-@@ -2815,8 +2838,7 @@ int main(int argc, char **argv)
- 
-     g_assert_cmpint(ret, ==, 0);
- 
--    cleanup("bootsect");
--    g_free(bootpath);
-+    bootfile_delete();
-     ret = rmdir(tmpfs);
-     if (ret != 0) {
-         g_test_message("unable to rmdir: path (%s): %s",
 -- 
 2.40.1
 
