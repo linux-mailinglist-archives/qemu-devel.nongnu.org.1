@@ -2,87 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 000CE73A7FF
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 20:13:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6DB073A807
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 20:17:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCOnr-0000bK-4f; Thu, 22 Jun 2023 14:13:07 -0400
+	id 1qCOrr-0002kS-Ta; Thu, 22 Jun 2023 14:17:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qCOnp-0000aH-2F
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 14:13:05 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1qCOrp-0002kA-W9
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 14:17:14 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qCOnn-0002Ug-NW
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 14:13:04 -0400
+ id 1qCOro-0003J8-Cs
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 14:17:13 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687457583;
+ s=mimecast20190719; t=1687457831;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=eUFg8VEyakOxwujkPxQq2SFC9ks+nhH7uTZBH12zXfg=;
- b=f96v3xP84kMwzkz4ci9cp+6TVAqgMNByQ7y2RQLJ5eeCAMLJ5xXghZUbAcZf7w5A7+ONvm
- bvizokKW1F+XUuehqDXSKLXVxdxEF4/JhyUOokBoKjQwUs+YhpbOpODGPctSZZrKEaSmCp
- pC/EQuGG76hJA2WH2Yc/fFJphAOARvE=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=R98ZaD+eZbGWBFxO/DBSZjvmhqViUT0xi1cQ6t9Wi0c=;
+ b=HSBGrbBur7J/5DKxx254FF5/yWjQ9z1HFX8Ry7b786ej2ZPdWZwz6cQGXBumi66pxenu9Y
+ yZO6IKixiEjYCN2yKbYQ1kvQqjziM6FelgatU/u5p4Z/owDicPL1ZVhYrYJba+IBZwVxfI
+ MhcNGAtc5cvJzsDw47xzKuqRf32LA10=
+Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
+ [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-588-6CVsJX9RO9yJ_JeQRqk2kw-1; Thu, 22 Jun 2023 14:13:01 -0400
-X-MC-Unique: 6CVsJX9RO9yJ_JeQRqk2kw-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-3f96d10ebd8so28268695e9.0
- for <qemu-devel@nongnu.org>; Thu, 22 Jun 2023 11:13:01 -0700 (PDT)
+ us-mta-607-lLJnVN3nO7Wc6eon8PSWew-1; Thu, 22 Jun 2023 14:17:09 -0400
+X-MC-Unique: lLJnVN3nO7Wc6eon8PSWew-1
+Received: by mail-lj1-f197.google.com with SMTP id
+ 38308e7fff4ca-2b46bfa6710so49178191fa.1
+ for <qemu-devel@nongnu.org>; Thu, 22 Jun 2023 11:17:09 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687457580; x=1690049580;
+ d=1e100.net; s=20221208; t=1687457828; x=1690049828;
  h=mime-version:message-id:date:reply-to:user-agent:references
  :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=eUFg8VEyakOxwujkPxQq2SFC9ks+nhH7uTZBH12zXfg=;
- b=RWlkDzGDn2jc/P+ePBdNQKvmfP97KqVScvz4rifo4qgTLQNq0bI5N5oUHVxsQR3X2O
- Mtn4vjaXB1cSmj2nufk/0XkhXWvis/sS5f6G/Lkq1V1ze/wRSecwUmdjeZpohKmzR1SP
- KrhxucBpxhzWx9izxFEg95yD9pBi46oD934In/zVcTVbefpxb32ByDq7gKYB0Q5rXRs/
- U9poajZENwVDdZHxK72bDm+BswgfsKIFU9WwgPDKTA5BH6u6dk709g+a6TRdGgIcqt4U
- YHrens4h1VVaFJ1VN/883CFMBbr9C10fIs2yLZ9edzDYi3RxAKLDW3I09GWCIuvG5dp+
- rolw==
-X-Gm-Message-State: AC+VfDy7GoTy3rpemT1cKBIFihjOkOINXqIgm9K5OWHEgeNsogZvPAP0
- uaSPhkA0ri7HNtAP+QeN4KG8NARjwRrlRQgGuXYM1hj31lPpOyB/5tzT0A+gg3QIq4EKE9NwSk7
- YUxJUMcMAAvcKmn73Y24V9PHGXAPGDQTlI0ixuaTA+jVH5WDgdwqexXFKq2t8KCLhH4hLOM8Njz
- mJ2w==
-X-Received: by 2002:a05:600c:2290:b0:3fa:7227:852 with SMTP id
- 16-20020a05600c229000b003fa72270852mr2085966wmf.17.1687457580410; 
- Thu, 22 Jun 2023 11:13:00 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6AY6g1Flx+gpLOtdSd0+J7fJkPZtrNr1X6PjHoXbj87LKVdK1iM02P2IvaeCptF083bI/Nxg==
-X-Received: by 2002:a05:600c:2290:b0:3fa:7227:852 with SMTP id
- 16-20020a05600c229000b003fa72270852mr2085945wmf.17.1687457580094; 
- Thu, 22 Jun 2023 11:13:00 -0700 (PDT)
+ bh=R98ZaD+eZbGWBFxO/DBSZjvmhqViUT0xi1cQ6t9Wi0c=;
+ b=d/Bg1FPkMyrX42k55q5ueCjWLZKZ5nRqooHPuIVH0wPzvHhbteq9vOF3PRsOezFBQp
+ w2qrvx/gm+4ypRWvoUQJNIeKDe/+HzypUw6VQ4//p6OverNiprNFcw05S5cyjEtnB4kW
+ hqt04uU5JgxE988JYgGPKywHDZJblHnNw74lDlEoHVRNmto+uW6Lh8HT12+jD2llZflf
+ eJ+2CH63qAPLCMlvYf9vpFw6LEv+H+S4dfxMmiMrM4etLO8u7j5OzZLRph05jXQFdguU
+ 8euNSSxplQX+yagY3MsrisZZx/GAG3oFKS2ESN7QkaIx+UtvXphL47TDFlxcV8iw+Yho
+ FL6Q==
+X-Gm-Message-State: AC+VfDyLT+2vBkGd3XY/SL81Lfh8xM5h+CJQwCL8yeAnGUf0uitIScv0
+ wIDGnd7mOd/MqyybLTL2d08gsxIVcRjIj/y7sGnXrgxjhxoN+zTEFNC87igMTL/jVdP/Nf6H7M3
+ J4hDnkJpaEhrlgKU=
+X-Received: by 2002:a05:6512:31c7:b0:4f9:5cb9:5be5 with SMTP id
+ j7-20020a05651231c700b004f95cb95be5mr4060973lfe.65.1687457828269; 
+ Thu, 22 Jun 2023 11:17:08 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4HJKAIjBUPTHigek842x2ku9FdOjcZN/FQmO5zOA2GnGVN7zo5i0jmQBaPgJ4ZtNWG6Jr0bA==
+X-Received: by 2002:a05:6512:31c7:b0:4f9:5cb9:5be5 with SMTP id
+ j7-20020a05651231c700b004f95cb95be5mr4060961lfe.65.1687457827963; 
+ Thu, 22 Jun 2023 11:17:07 -0700 (PDT)
 Received: from redhat.com (static-92-120-85-188.ipcom.comunitel.net.
  [188.85.120.92]) by smtp.gmail.com with ESMTPSA id
- n18-20020a7bcbd2000000b003f90846d8a7sm192678wmi.6.2023.06.22.11.12.59
+ u25-20020a05600c211900b003fa74bff02asm155751wml.26.2023.06.22.11.17.07
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 22 Jun 2023 11:12:59 -0700 (PDT)
+ Thu, 22 Jun 2023 11:17:07 -0700 (PDT)
 From: Juan Quintela <quintela@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Markus Armbruster <armbru@redhat.com>,  Leonardo Bras
- <leobras@redhat.com>,  Daniel P . =?utf-8?Q?Berrang=C3=A9?=
+To: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: qemu-devel@nongnu.org,  Markus Armbruster <armbru@redhat.com>,  Leonardo
+ Bras <leobras@redhat.com>,  Daniel P . =?utf-8?Q?Berrang=C3=A9?=
  <berrange@redhat.com>,
- qemu-block@nongnu.org,  Peter Xu <peterx@redhat.com>,  Stefan Hajnoczi
- <stefanha@redhat.com>,  Eric Blake <eblake@redhat.com>,  Fam Zheng
- <fam@euphon.net>,  Thomas Huth <thuth@redhat.com>,
- libvir-list@redhat.com,  Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [RFC 4/6] migration: Deprecate -incoming <uri>
-In-Reply-To: <20230612193344.3796-5-quintela@redhat.com> (Juan Quintela's
- message of "Mon, 12 Jun 2023 21:33:42 +0200")
+ qemu-block@nongnu.org,  Peter Xu <peterx@redhat.com>,  Eric Blake
+ <eblake@redhat.com>,  Fam Zheng <fam@euphon.net>,  Thomas Huth
+ <thuth@redhat.com>,  libvir-list@redhat.com,  Paolo Bonzini
+ <pbonzini@redhat.com>,  Kevin Wolf <kwolf@redhat.com>,  Hanna Czenczek
+ <hreitz@redhat.com>
+Subject: Re: [RFC 5/6] migration: Deprecate block migration
+In-Reply-To: <20230621114534.GA2681260@fedora> (Stefan Hajnoczi's message of
+ "Wed, 21 Jun 2023 13:45:34 +0200")
 References: <20230612193344.3796-1-quintela@redhat.com>
- <20230612193344.3796-5-quintela@redhat.com>
+ <20230612193344.3796-6-quintela@redhat.com>
+ <20230621114534.GA2681260@fedora>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
-Date: Thu, 22 Jun 2023 20:12:58 +0200
-Message-ID: <87wmzve579.fsf@secure.mitica>
+Date: Thu, 22 Jun 2023 20:17:06 +0200
+Message-ID: <87sfaje50d.fsf@secure.mitica>
 MIME-Version: 1.0
 Content-Type: text/plain
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -108,17 +109,32 @@ Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Juan Quintela <quintela@redhat.com> wrote:
-> Only "defer" is recommended.  After setting all migation parameters,
-> start incoming migration with "migrate-incoming uri" command.
+Stefan Hajnoczi <stefanha@redhat.com> wrote:
+> On Mon, Jun 12, 2023 at 09:33:43PM +0200, Juan Quintela wrote:
+>> It is obsolete.  It is better to use driver_mirror+NBD instead.
+>> 
+>> CC: Kevin Wolf <kwolf@redhat.com>
+>> CC: Eric Blake <eblake@redhat.com>
+>> CC: Stefan Hajnoczi <stefanha@redhat.com>
+>> CC: Hanna Czenczek <hreitz@redhat.com>
+>> 
+>> Signed-off-by: Juan Quintela <quintela@redhat.com>
+>> 
+>> ---
+>> 
+>> Can any of you give one example of how to use driver_mirror+NBD for
+>> deprecated.rst?
 >
-> Signed-off-by: Juan Quintela <quintela@redhat.com>
+> Please see "QMP invocation for live storage migration with
+> ``drive-mirror`` + NBD" in docs/interop/live-block-operations.rst for a
+> detailed explanation.
 
-Nack myself.
+You put here drive-mirror, and everything else blockdev-mirror.
 
-Dropped on next submissiong.  keyfile properties suggested by paolo is a
-much better suggestion.
+It appears that blockdev-mirror is the new name from driver-mirror, but
+as the documentation says driver-mirror + NBD, I am changing to
+driver-mirror everywhere?
 
-Thanks to everybody involved.
+Thanks, Juan.
 
 
