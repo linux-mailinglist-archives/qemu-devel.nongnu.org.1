@@ -2,48 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62DE87398C3
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 09:59:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A23F7398B4
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 09:58:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCFBH-0004eD-Do; Thu, 22 Jun 2023 03:56:39 -0400
+	id 1qCFAj-00047X-Mb; Thu, 22 Jun 2023 03:56:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1qCFAf-00040l-8Z
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1qCFAf-00040S-2H
  for qemu-devel@nongnu.org; Thu, 22 Jun 2023 03:56:01 -0400
 Received: from mout.kundenserver.de ([212.227.126.133])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1qCFAY-0002r9-8x
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1qCFAY-0002rO-90
  for qemu-devel@nongnu.org; Thu, 22 Jun 2023 03:55:58 -0400
 Received: from quad ([82.142.8.70]) by mrelayeu.kundenserver.de (mreue011
- [212.227.15.167]) with ESMTPSA (Nemesis) id 1MLzSD-1qTV4N1AwL-00Hx5T; Thu, 22
+ [212.227.15.167]) with ESMTPSA (Nemesis) id 1M8hlZ-1q7YLD3B8D-004hYV; Thu, 22
  Jun 2023 09:55:46 +0200
 From: Laurent Vivier <laurent@vivier.eu>
 To: qemu-devel@nongnu.org
-Cc: Laurent Vivier <laurent@vivier.eu>
-Subject: [PULL 00/24] Q800 for 8.1 patches
-Date: Thu, 22 Jun 2023 09:55:20 +0200
-Message-Id: <20230622075544.210899-1-laurent@vivier.eu>
+Cc: Laurent Vivier <laurent@vivier.eu>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 01/24] q800: fix up minor spacing issues in hw_compat_q800
+ GlobalProperty array
+Date: Thu, 22 Jun 2023 09:55:21 +0200
+Message-Id: <20230622075544.210899-2-laurent@vivier.eu>
 X-Mailer: git-send-email 2.40.1
+In-Reply-To: <20230622075544.210899-1-laurent@vivier.eu>
+References: <20230622075544.210899-1-laurent@vivier.eu>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:f9KRN/Mxf2ZnhtF9y1zFKjUBSCCeAQ+MWgbbO0Y2QFD0GmvaIE1
- IjlNGas22YFGNg8Tt3x/UVgGv5MbvEQfkIqDvtaDNBB11iOH0c6iXVKgeI1bOq5g/2IMNq2
- 76pTaNHD5rDdwhEXZberRFo38zjzXLXm5lvRwsEVLzeb2MN2EOepXXgH133xPzt8rxar7iM
- 8Ns6pxep9m0pDpvEQ+nLA==
-UI-OutboundReport: notjunk:1;M01:P0:e9KCPJzuIOM=;6nkdSVtsiBAlYpGFET/MR/SwrZP
- Qw8hn6xhk+dDAOBruu82JbQ4EmKJh6sNn6RE01bsl92SBnVve9NnV5o6myySygvF5ghl5MXLc
- ndEtiqj8HjxD9homEH9eYOb9QcY5ejc83M4ao2KJ21kevD4c/S677scS4JwgBM6TT5jyYbjMH
- DZDDYSBWYyeU0+sDAzj63xoUA4IrlO6wpCdtexv+cHMJ1UuTyMqVhpKdtW98l2YAGSAjPrS1k
- TwpkIYZ0MsyILzPZnfBI9ufdyaewLk2KqZ0cXKWN+I5DZyvzAodng1Czl/UfEzTopy16Bhkxl
- 1wGHX7CGg3/2mDAgopaqSZml1wsNgOcly6G4Le54pnQ91pTll50aOcbNFN6cfBxqn9TM9m2Ci
- 8EyzLfXTwIX3Itl0rNqbGM+o4syENkLPmlyQkKNucSxB5by9R7jIGKH9x/cp4vSC+hw76ILX2
- +bX7pMBXrX/EJR3p5mbsUNh12RuiBn9LIIOhdf9K87lWaOR+s7v2CrvWj1oW9HiZGYIvWNTdQ
- jXueASon0HUX1GEIxJl0ArWkcqIuxGJy1EX7KO+5t0OhVIzN7vdmFz7QQ/B6uc8BgiUXm2Sty
- QYGR/Wv1vdk+0XoAIKaHj/prit2Q5Cx48pr8kJ/Etr43Lk/kh9Qcd7ThSqKMadigea4fKGH+Q
- gneSngT4C6m+QUbWn1cnouCL+1Yl6S/NMJ8iDD2JSQ==
+X-Provags-ID: V03:K1:oGnDNRk7z5rEwHHbUeu1Ly5s+5yURUSa4tum0ZFJUAxfUD2rxGX
+ wjwu0Cm0yMAQSKiyWwmkkzHXULiOpfMNnu3RWpDfb6ob4IlTsgGlfgbsBPmepphfi/+OZhu
+ YgO15e+6EWWRrhj25ElimEy5LQrd5Yi5bGeDkj8v/uyIuuT7KzWjBEE2ByW987EZpTW0t+H
+ uVcOo3OQkCilEdTTPvlfg==
+UI-OutboundReport: notjunk:1;M01:P0:K3zxL/9EqL4=;N85fwa4YgdarS8XGK+Vlq/sIyEt
+ o8q3/YxHYSYrs7+rClhYUiLHrrtAEc68JPtXkPloVxCJKkRKKzmIvzsvaEoG+i3t1DIPjTDc4
+ d7PT1CH+U5TPo1eKrn5j/6ljwFvCDFocnBNTNdgV7Gkf3KC2YIMupwlshBFsF1DE7XjjsZiDC
+ MFFRM3YKpi52695Fr9Cqs1Td/o1hO7TtZxEBhPoN5l7BkML5FLgwX51VhKdyZwOsqILZgYlAu
+ HRb8hZ37AKa1AtBJlhABr6KdiocCzAXFEpTFijIAk0wRevzBF3++18XHEasSCvmh9IUv8/ljj
+ 6OrYpfInk4/hchB9eKOfrFecnekkKe41zlSZzY1eXprydg3gR6bCGcZ1V0oWIobF+Hd9Ltvrj
+ MSQHIf7H9VG0ljUWtW18M0u2eoYnMNijKZSZkTU6vxqgUH2G79QyiAQWasNVXtwsqFWXCKrJQ
+ Y5ifQONDkgrl27USKDzB/Da04GQ0CA/lNx3dzDwCDrb4fuDRqBqhtOuh4zPlvU5dIarmrhKoT
+ 7yXFsTVNgKedpReCApPFt5IgJJitLy5A5mtzY+4QFX04LimdL5lXqVKzQBqaxAJQH+e0HjTXL
+ TjBZMwN3N2xX/Hu1dvK6M1sz8IkPiBDLf4RjzCtxXklSB5n8SlTQmMiZZuG945717y/uCDgdQ
+ x7QTAJjBpoQNYsAqvkdBhldt3qyyrroD70aAbJ3QXw==
 Received-SPF: none client-ip=212.227.126.133; envelope-from=laurent@vivier.eu;
  helo=mout.kundenserver.de
 X-Spam_score_int: -18
@@ -67,67 +72,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 67fe6ae41da64368bc4936b196fee2bf61f8c720:
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 
-  Merge tag 'pull-tricore-20230621-1' of https://github.com/bkoppelmann/qemu into staging (2023-06-21 20:08:48 +0200)
+Ensure there is a space before the final closing brace for all global
+properties.
 
-are available in the Git repository at:
+Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Reviewed-by: Laurent Vivier <laurent@vivier.eu>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-Id: <20230621085353.113233-2-mark.cave-ayland@ilande.co.uk>
+Signed-off-by: Laurent Vivier <laurent@vivier.eu>
+---
+ hw/m68k/q800.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-  https://github.com/vivier/qemu-m68k.git tags/q800-for-8.1-pull-request
-
-for you to fetch changes up to 532009054b45d75a3cf7ba9c31921add669d290d:
-
-  mac_via: fix rtc command decoding for the PRAM seconds registers (2023-06-22 09:31:18 +0200)
-
-----------------------------------------------------------------
-Q800 branch pull request 20230622
-
-Cleanup to introduce support of MacOS Classic
-
-----------------------------------------------------------------
-
-Mark Cave-Ayland (24):
-  q800: fix up minor spacing issues in hw_compat_q800 GlobalProperty
-    array
-  q800: add missing space after parent object in GLUEState
-  q800: introduce Q800MachineState
-  q800: rename q800_init() to q800_machine_init()
-  q800: move CPU object into Q800MachineState
-  q800: move ROM memory region to Q800MachineState
-  q800: move GLUE device into separate q800-glue.c file
-  q800-glue.c: switch TypeInfo registration to use DEFINE_TYPES() macro
-  q800: move GLUE device to Q800MachineState
-  q800: introduce mac-io container memory region
-  q800: reimplement mac-io region aliasing using IO memory region
-  q800: move VIA1 device to Q800MachineState
-  q800: move VIA2 device to Q800MachineState
-  hw/net/dp8393x.c: move TYPE_DP8393X and dp8393xState into dp8393x.h
-  q800: move dp8393x device to Q800MachineState
-  q800: move ESCC device to Q800MachineState
-  q800: move escc_orgate device to Q800MachineState
-  q800: move ESP device to Q800MachineState
-  q800: move SWIM device to Q800MachineState
-  q800: move mac-nubus-bridge device to Q800MachineState
-  q800: don't access Nubus bus directly from the mac-nubus-bridge device
-  q800: move macfb device to Q800MachineState
-  mac_via: fix rtc command decoding from PRAM addresses 0x0 to 0xf
-  mac_via: fix rtc command decoding for the PRAM seconds registers
-
- MAINTAINERS                 |   3 +
- include/hw/m68k/q800-glue.h |  50 ++++
- include/hw/m68k/q800.h      |  66 +++++
- include/hw/net/dp8393x.h    |  60 ++++
- hw/m68k/q800-glue.c         | 249 +++++++++++++++++
- hw/m68k/q800.c              | 526 ++++++++++++++----------------------
- hw/misc/mac_via.c           |  13 +-
- hw/net/dp8393x.c            |  32 +--
- hw/m68k/meson.build         |   2 +-
- 9 files changed, 635 insertions(+), 366 deletions(-)
- create mode 100644 include/hw/m68k/q800-glue.h
- create mode 100644 include/hw/m68k/q800.h
- create mode 100644 include/hw/net/dp8393x.h
- create mode 100644 hw/m68k/q800-glue.c
-
+diff --git a/hw/m68k/q800.c b/hw/m68k/q800.c
+index 68f0cd8cac2e..dda57c60bfd9 100644
+--- a/hw/m68k/q800.c
++++ b/hw/m68k/q800.c
+@@ -719,14 +719,14 @@ static void q800_init(MachineState *machine)
+ }
+ 
+ static GlobalProperty hw_compat_q800[] = {
+-    { "scsi-hd", "quirk_mode_page_vendor_specific_apple", "on"},
++    { "scsi-hd", "quirk_mode_page_vendor_specific_apple", "on" },
+     { "scsi-hd", "vendor", " SEAGATE" },
+     { "scsi-hd", "product", "          ST225N" },
+     { "scsi-hd", "ver", "1.0 " },
+-    { "scsi-cd", "quirk_mode_page_apple_vendor", "on"},
+-    { "scsi-cd", "quirk_mode_sense_rom_use_dbd", "on"},
+-    { "scsi-cd", "quirk_mode_page_vendor_specific_apple", "on"},
+-    { "scsi-cd", "quirk_mode_page_truncated", "on"},
++    { "scsi-cd", "quirk_mode_page_apple_vendor", "on" },
++    { "scsi-cd", "quirk_mode_sense_rom_use_dbd", "on" },
++    { "scsi-cd", "quirk_mode_page_vendor_specific_apple", "on" },
++    { "scsi-cd", "quirk_mode_page_truncated", "on" },
+     { "scsi-cd", "vendor", "MATSHITA" },
+     { "scsi-cd", "product", "CD-ROM CR-8005" },
+     { "scsi-cd", "ver", "1.0k" },
 -- 
 2.40.1
 
