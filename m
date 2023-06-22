@@ -2,69 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05EE1739E1C
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 12:14:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 845F6739E4B
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 12:19:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCHJ8-0005uG-Pw; Thu, 22 Jun 2023 06:12:54 -0400
+	id 1qCHNb-0008W2-Qp; Thu, 22 Jun 2023 06:17:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qCHJ7-0005tr-8U
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 06:12:53 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qCHJ5-00023h-6u
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 06:12:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687428769;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=zOrxnBQY2m2uV8IDYJmtbHH3tt0LHi27rfHj5y/YCZc=;
- b=LNeFUwEifChKUcY+Sl+vWW737DR5AdIS8l3SgWAApDHdWkJHjuojJpIfoxY4dHpOoSTehV
- q/nDu7+6uxucE7Za41XKnYhwjBJ67GOWYQHH7mzXjze6AB79BZ5j2UBf7uGox5cMOA0hxd
- iczMg55+v0jcch4oIAXAhq5sNc0yiRY=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-627-UlxZjnVrNA2TLqtGoD-cZg-1; Thu, 22 Jun 2023 06:12:48 -0400
-X-MC-Unique: UlxZjnVrNA2TLqtGoD-cZg-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A20BD280BC42;
- Thu, 22 Jun 2023 10:12:47 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.45])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id C8CA2112132C;
- Thu, 22 Jun 2023 10:12:46 +0000 (UTC)
-Date: Thu, 22 Jun 2023 11:12:44 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Steve Sistare <steven.sistare@oracle.com>
-Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>,
- Peter Xu <peterx@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: Re: [PATCH V2] migration: file URI
-Message-ID: <ZJQenKR1aMJzaLCu@redhat.com>
-References: <1686163139-256654-1-git-send-email-steven.sistare@oracle.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qCHNY-0008Uk-Hn
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 06:17:29 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qCHNW-0003Jb-W6
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 06:17:28 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-3f90b8acefeso51612875e9.0
+ for <qemu-devel@nongnu.org>; Thu, 22 Jun 2023 03:17:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1687429044; x=1690021044;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=gfHj/18jEb5HZc5WOL4oeH6nRL+WbriNo612ICdOt40=;
+ b=wxxoAt/QkgH4yLm5KGKrK5QqvUPH1o66mxBFggWJmp+4nvu5pwcYaWkOBeR4KZ+NYr
+ Ngn37XQu1i04z6T8CkdKWdCViMcX9WoM7f4Xe2qUEkjMQ0ua9jbjzIxyrpE9TKWwStrH
+ 3KbvMpCmcFIBsIoBCvXMX0qAaiDvTLTwLlORylW/qGSAXSHAq9IX5+TDRWNwcltbuahx
+ Fuv6SpLnnihRqOwNHMIDzOdU6cewDlR/jGqn0EkLnfFt5fLrpkGWbeTCqs6W3zucu9sB
+ h9Sf5ttO8ulbU4peydI1cKxFP5ZwTO4njAa4UFJLTi7APLTI1q27wzFM1TeNAhYWdpfX
+ 9Wow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1687429044; x=1690021044;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=gfHj/18jEb5HZc5WOL4oeH6nRL+WbriNo612ICdOt40=;
+ b=DJw1T1JeOhS2atc8N5Xjqu28bI7X6ZVWVkj/qoKmbzTBxs1IHj87m+u6OBAm7hxtVs
+ sBgztjPsm8dvKjvnxPoEozlqfEffsQVoRaevJr3HE6EbsldN/3YkXH/ev7QT9lJNqy78
+ IJKTiTz+H5WV9IfprDbI8EWhatl2SHi+KZWc758VWtil6ig04PYs1Z2QBd+rJFNPa9iD
+ P38cSOT00EFmryC8VLFxHPT+SZ4PnCyGHayzEIWcolE80sUrFrOFBG0NZxhdUk6LI+ll
+ cddWSxFmGPtAQCeBEJ2z7e6WaGaImb1QbkbMGH3+LP02KtuMKDZMVH8CteUXTtvlp/DL
+ t3mw==
+X-Gm-Message-State: AC+VfDxZfT3mlkj7sBV/r67JCNje06WNVW61sSbnlxR5n4482hG1EpKk
+ hgQokIrxI2BfsTV3x4NP1hnzXkMsR2mBH6TWEg0ZKg==
+X-Google-Smtp-Source: ACHHUZ7Tfrpkbsb2MfQ5eaRu75/LqZyhhbsOTZ44tcjFtxVizNHncI3gDn93tw/HKHNO28oe/jbLPw==
+X-Received: by 2002:adf:cf12:0:b0:30f:d20f:f922 with SMTP id
+ o18-20020adfcf12000000b0030fd20ff922mr12943675wrj.9.1687429044427; 
+ Thu, 22 Jun 2023 03:17:24 -0700 (PDT)
+Received: from localhost.localdomain (127.red-88-28-17.dynamicip.rima-tde.net.
+ [88.28.17.127]) by smtp.gmail.com with ESMTPSA id
+ f12-20020a5d58ec000000b00309382eb047sm6616897wrd.112.2023.06.22.03.17.21
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Thu, 22 Jun 2023 03:17:23 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Eduardo Habkost <eduardo@habkost.net>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Juan Quintela <quintela@redhat.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Paolo Bonzini <pbonzini@redhat.com>, qemu-trivial@nongnu.org,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ BALATON Zoltan <balaton@eik.bme.hu>
+Subject: [PATCH] docs/devel/qom.rst: Correct code style
+Date: Thu, 22 Jun 2023 12:17:17 +0200
+Message-Id: <20230622101717.70468-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <1686163139-256654-1-git-send-email-steven.sistare@oracle.com>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -78,220 +91,47 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jun 07, 2023 at 11:38:59AM -0700, Steve Sistare wrote:
-> Extend the migration URI to support file:<filename>.  This can be used for
-> any migration scenario that does not require a reverse path.  It can be used
-> as an alternative to 'exec:cat > file' in minimized containers that do not
-> contain /bin/sh, and it is easier to use than the fd:<fdname> URI.  It can
-> be used in HMP commands, and as a qemu command-line parameter.
-> 
-> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
+Per commit 067109a11c ("docs/devel: mention the spacing requirement
+for QOM"):
 
-In the cases where libvirt wants to save/restore QEMU migration state
-to a file, we also need to have libvirt header and XML document at the
-front of the file.
+  For a storage structure the first declaration should always be
+  called “parent_obj” and for a class structure the first member
+  should always be called “parent_class”
 
-IOW, if libvirt is to be able to use this new 'file:' protocol, then
-it neeeds to have the ability to specify an offset too. eg so libvirt
-can tell QEMU to start reading/writing at, for example, 4MB offset
-from the start.
+Adapt the QOM rST document accordingly.
 
-Should be fairly easy to add on top of this - just requires support
-for a URI parameter, and then a seek once the file is opened.
+Reported-by: BALATON Zoltan <balaton@eik.bme.hu>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ docs/devel/qom.rst | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-> ---
->  migration/file.c       | 62 ++++++++++++++++++++++++++++++++++++++++++++++++++
->  migration/file.h       | 14 ++++++++++++
->  migration/meson.build  |  1 +
->  migration/migration.c  |  5 ++++
->  migration/trace-events |  4 ++++
->  qemu-options.hx        |  6 ++++-
->  6 files changed, 91 insertions(+), 1 deletion(-)
->  create mode 100644 migration/file.c
->  create mode 100644 migration/file.h
-> 
-> diff --git a/migration/file.c b/migration/file.c
-> new file mode 100644
-> index 0000000..8e35827
-> --- /dev/null
-> +++ b/migration/file.c
-> @@ -0,0 +1,62 @@
-> +/*
-> + * Copyright (c) 2021-2023 Oracle and/or its affiliates.
-> + *
-> + * This work is licensed under the terms of the GNU GPL, version 2.
-> + * See the COPYING file in the top-level directory.
-> + */
-> +
-> +#include "qemu/osdep.h"
-> +#include "channel.h"
-> +#include "file.h"
-> +#include "migration.h"
-> +#include "io/channel-file.h"
-> +#include "io/channel-util.h"
-> +#include "trace.h"
-> +
-> +void file_start_outgoing_migration(MigrationState *s, const char *filename,
-> +                                   Error **errp)
-> +{
-> +    g_autoptr(QIOChannelFile) fioc = NULL;
-> +    QIOChannel *ioc;
-> +
-> +    trace_migration_file_outgoing(filename);
-> +
-> +    fioc = qio_channel_file_new_path(filename, O_CREAT | O_WRONLY | O_TRUNC,
-> +                                     0600, errp);
-> +    if (!fioc) {
-> +        return;
-> +    }
-> +
-> +    ioc = QIO_CHANNEL(fioc);
-> +    qio_channel_set_name(ioc, "migration-file-outgoing");
-> +    migration_channel_connect(s, ioc, NULL, NULL);
-> +}
-> +
-> +static gboolean file_accept_incoming_migration(QIOChannel *ioc,
-> +                                               GIOCondition condition,
-> +                                               gpointer opaque)
-> +{
-> +    migration_channel_process_incoming(ioc);
-> +    object_unref(OBJECT(ioc));
-> +    return G_SOURCE_REMOVE;
-> +}
-> +
-> +void file_start_incoming_migration(const char *filename, Error **errp)
-> +{
-> +    QIOChannelFile *fioc = NULL;
-> +    QIOChannel *ioc;
-> +
-> +    trace_migration_file_incoming(filename);
-> +
-> +    fioc = qio_channel_file_new_path(filename, O_RDONLY, 0, errp);
-> +    if (!fioc) {
-> +        return;
-> +    }
-> +
-> +    ioc = QIO_CHANNEL(fioc);
-> +    qio_channel_set_name(QIO_CHANNEL(ioc), "migration-file-incoming");
-> +    qio_channel_add_watch_full(ioc, G_IO_IN,
-> +                               file_accept_incoming_migration,
-> +                               NULL, NULL,
-> +                               g_main_context_get_thread_default());
-> +}
-> diff --git a/migration/file.h b/migration/file.h
-> new file mode 100644
-> index 0000000..841b94a
-> --- /dev/null
-> +++ b/migration/file.h
-> @@ -0,0 +1,14 @@
-> +/*
-> + * Copyright (c) 2021-2023 Oracle and/or its affiliates.
-> + *
-> + * This work is licensed under the terms of the GNU GPL, version 2.
-> + * See the COPYING file in the top-level directory.
-> + */
-> +
-> +#ifndef QEMU_MIGRATION_FILE_H
-> +#define QEMU_MIGRATION_FILE_H
-> +void file_start_incoming_migration(const char *filename, Error **errp);
-> +
-> +void file_start_outgoing_migration(MigrationState *s, const char *filename,
-> +                                   Error **errp);
-> +#endif
-> diff --git a/migration/meson.build b/migration/meson.build
-> index 8ba6e42..3af817e 100644
-> --- a/migration/meson.build
-> +++ b/migration/meson.build
-> @@ -16,6 +16,7 @@ softmmu_ss.add(files(
->    'dirtyrate.c',
->    'exec.c',
->    'fd.c',
-> +  'file.c',
->    'global_state.c',
->    'migration-hmp-cmds.c',
->    'migration.c',
-> diff --git a/migration/migration.c b/migration/migration.c
-> index dc05c6f..cfbde86 100644
-> --- a/migration/migration.c
-> +++ b/migration/migration.c
-> @@ -20,6 +20,7 @@
->  #include "migration/blocker.h"
->  #include "exec.h"
->  #include "fd.h"
-> +#include "file.h"
->  #include "socket.h"
->  #include "sysemu/runstate.h"
->  #include "sysemu/sysemu.h"
-> @@ -442,6 +443,8 @@ static void qemu_start_incoming_migration(const char *uri, Error **errp)
->          exec_start_incoming_migration(p, errp);
->      } else if (strstart(uri, "fd:", &p)) {
->          fd_start_incoming_migration(p, errp);
-> +    } else if (strstart(uri, "file:", &p)) {
-> +        file_start_incoming_migration(p, errp);
->      } else {
->          error_setg(errp, "unknown migration protocol: %s", uri);
->      }
-> @@ -1662,6 +1665,8 @@ void qmp_migrate(const char *uri, bool has_blk, bool blk,
->          exec_start_outgoing_migration(s, p, &local_err);
->      } else if (strstart(uri, "fd:", &p)) {
->          fd_start_outgoing_migration(s, p, &local_err);
-> +    } else if (strstart(uri, "file:", &p)) {
-> +        file_start_outgoing_migration(s, p, &local_err);
->      } else {
->          if (!(has_resume && resume)) {
->              yank_unregister_instance(MIGRATION_YANK_INSTANCE);
-> diff --git a/migration/trace-events b/migration/trace-events
-> index cdaef7a..c8c1771 100644
-> --- a/migration/trace-events
-> +++ b/migration/trace-events
-> @@ -307,6 +307,10 @@ migration_exec_incoming(const char *cmd) "cmd=%s"
->  migration_fd_outgoing(int fd) "fd=%d"
->  migration_fd_incoming(int fd) "fd=%d"
->  
-> +# file.c
-> +migration_file_outgoing(const char *filename) "filename=%s"
-> +migration_file_incoming(const char *filename) "filename=%s"
-> +
->  # socket.c
->  migration_socket_incoming_accepted(void) ""
->  migration_socket_outgoing_connected(const char *hostname) "hostname=%s"
-> diff --git a/qemu-options.hx b/qemu-options.hx
-> index b37eb96..b93449d 100644
-> --- a/qemu-options.hx
-> +++ b/qemu-options.hx
-> @@ -4610,6 +4610,7 @@ DEF("incoming", HAS_ARG, QEMU_OPTION_incoming, \
->      "                prepare for incoming migration, listen on\n" \
->      "                specified protocol and socket address\n" \
->      "-incoming fd:fd\n" \
-> +    "-incoming file:filename\n" \
->      "-incoming exec:cmdline\n" \
->      "                accept incoming migration on given file descriptor\n" \
->      "                or from given external command\n" \
-> @@ -4626,7 +4627,10 @@ SRST
->      Prepare for incoming migration, listen on a given unix socket.
->  
->  ``-incoming fd:fd``
-> -    Accept incoming migration from a given filedescriptor.
-> +    Accept incoming migration from a given file descriptor.
-> +
-> +``-incoming file:filename``
-> +    Accept incoming migration from a given file.
->  
->  ``-incoming exec:cmdline``
->      Accept incoming migration as an output from specified external
-> -- 
-> 1.8.3.1
-> 
-
-With regards,
-Daniel
+diff --git a/docs/devel/qom.rst b/docs/devel/qom.rst
+index c9237950d0..2828843058 100644
+--- a/docs/devel/qom.rst
++++ b/docs/devel/qom.rst
+@@ -26,7 +26,7 @@ features:
+    typedef DeviceClass MyDeviceClass;
+    typedef struct MyDevice
+    {
+-       DeviceState parent;
++       DeviceState parent_obj;
+ 
+        int reg0, reg1, reg2;
+    } MyDevice;
+@@ -147,7 +147,7 @@ will also have a wrapper function to call it easily:
+ 
+    typedef struct MyDeviceClass
+    {
+-       DeviceClass parent;
++       DeviceClass parent_class;
+ 
+        void (*frobnicate) (MyDevice *obj);
+    } MyDeviceClass;
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+2.38.1
 
 
