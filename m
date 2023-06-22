@@ -2,79 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AD0373938D
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 02:09:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 492DB73943B
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 03:05:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qC7rM-0002FX-SV; Wed, 21 Jun 2023 20:07:36 -0400
+	id 1qC8jr-0002Bt-8z; Wed, 21 Jun 2023 21:03:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <noreply@launchpad.net>)
- id 1qC7rK-0002EF-Fd
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 20:07:34 -0400
-Received: from smtp-relay-services-1.canonical.com ([185.125.188.251])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <noreply@launchpad.net>)
- id 1qC7rH-0004OA-Vj
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 20:07:34 -0400
-Received: from scripts-1.lp.internal (scripts.lp.internal [10.131.66.196])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by smtp-relay-services-1.canonical.com (Postfix) with ESMTPSA id A0B563F144
- for <qemu-devel@nongnu.org>; Thu, 22 Jun 2023 00:07:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=launchpad.net;
- s=20210803; t=1687392443;
- bh=erMzaroJ8woMr80KRFrU6riRubfFk32ARfVwyaVGiTk=;
- h=MIME-Version:Content-Type:Date:From:To:Reply-To:References:
- Message-Id:Subject;
- b=I0nnGgzXORBpTvK4ICiaoEoOKSNlLAYc5ejtpmFd8L+oeq37MMilQViIlUACoAO29
- pWRTlVsa/v+Iahd5qy+upA6/9D1hs2837Nx247BrrioiIIoNucBZ2oRJR0CqxmXM+j
- OnthClP0LZ4SbGeE1/BEEFPu9g42gdDEA2QEwRo5yQl5g/h/Brhe9U2knBgxbDaHKp
- 46NxP7fmJ1PDaU0RfcrmhP7QaYrIv94iQJc9KMaVCjhf7rOOkPV1+om5oeTfwgJihH
- jJasAwmj2eJmjQAkFb1RoyqxoToEBtOxcBriWuN3UwTGUnS9Z+ts7kBt55Rq59zYDW
- yVv0iXnEpP2Kw==
-Received: from
- juju-4112d9-prod-launchpad-manual-servers-36.openstack.prodstack5.lan
- (localhost [127.0.0.1])
- by scripts-1.lp.internal (Postfix) with ESMTP id 090963F0C2
- for <qemu-devel@nongnu.org>; Thu, 22 Jun 2023 00:07:14 +0000 (UTC)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qC8jp-0002BM-11; Wed, 21 Jun 2023 21:03:53 -0400
+Received: from mail-ua1-x935.google.com ([2607:f8b0:4864:20::935])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qC8jn-0003GQ-6z; Wed, 21 Jun 2023 21:03:52 -0400
+Received: by mail-ua1-x935.google.com with SMTP id
+ a1e0cc1a2514c-78a1e095508so1992902241.0; 
+ Wed, 21 Jun 2023 18:03:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1687395829; x=1689987829;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=7kiOx34JQpXxSODn+9cr74J/iavDza5OkqmneYZTZmw=;
+ b=AdALQAFLq3JmtoE/sL6kqEpcQMJiuCk9meA9wYYVHt74PAR7OsCphxBw8xJ2jXGMx/
+ 9Rt47Q2iE/ov57kgNUKXqEQUh3nvqe3yjDkzndHHnfXdzfQBH9Iy+qI05FzYQcEvh0PC
+ 1Sp1xfvP+edAQhwkIhu/zH1IYknG+9EYkY9Ee6rdKbX6OKGKlvtHjGxwoeL85iqdGL+J
+ cexOp21WS66Czn8mo1HpcXs4DtYzR8M/CWvPUPFH+R4ubDJXNbKL2/o5cIXmXvyHS8qE
+ bYEbbu5R77O+5kRy4yGqDQKi7iTmkCKwD7+d9ttUe6ZzoUoahKOmkaUL+vrBeu0OLXKA
+ Fdiw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1687395829; x=1689987829;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=7kiOx34JQpXxSODn+9cr74J/iavDza5OkqmneYZTZmw=;
+ b=a5CYymi0kxu0BRE5BewQ/v6DLWVNHn8cmo65K/RkotzS/HjYOYox4VYxLZGU6uCKKH
+ smzq7WcbxT7JEAostqTSbbpJIWhirpnSLB/4qMSTVCQcjttYi/hPXtybjk/J1C4Kc7yW
+ SWcnDmRF50FfZr25io3eyoep2ktM8IuRsHqll6hZscjRxBIkC01FI/GPa1YDat48ZbA4
+ ZQsR0374Hj9s/R7kyQhrsKQjRI3JO7Hy1ADgXu02sJbdqGN3zMQgTycmdO9nj25aRchN
+ jXV0nClHWISl5aETfBivb+VbQOhPGpW33ytDHA7rsFq9bcGH7LXnMwgRKq2PEuN6RzwH
+ x1rQ==
+X-Gm-Message-State: AC+VfDx8D1P3fiUly55sewHUvFEJ4cWa07LrELZNgpyDpZwhpXG3HVur
+ +qeHPjbwgfT56yx4IkuMxqLym/b64878vOqic0U=
+X-Google-Smtp-Source: ACHHUZ7qQiYJQMO6p5XkNr5lySwl8SEZgHZHLVsL4vMAicb4dleczrj7xYNq2NIWumKho6xjTKiOGXrRaOsrjpJr3fM=
+X-Received: by 2002:a67:db81:0:b0:440:c4fb:f257 with SMTP id
+ f1-20020a67db81000000b00440c4fbf257mr3725655vsk.0.1687395829287; Wed, 21 Jun
+ 2023 18:03:49 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+References: <20230612111034.3955227-1-christoph.muellner@vrull.eu>
+In-Reply-To: <20230612111034.3955227-1-christoph.muellner@vrull.eu>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Thu, 22 Jun 2023 11:03:23 +1000
+Message-ID: <CAKmqyKNBa3-F1R8ZQUKoiMJCsM3kpvRg9dpwXX-tawcBM6Vrcw@mail.gmail.com>
+Subject: Re: [PATCH v2 0/8] disas/riscv: Add vendor extension support
+To: Christoph Muellner <christoph.muellner@vrull.eu>
+Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org, 
+ Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bin.meng@windriver.com>,
+ Philipp Tomsich <philipp.tomsich@vrull.eu>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Zhiwei Liu <zhiwei_liu@linux.alibaba.com>, 
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 21 Jun 2023 23:58:05 -0000
-From: =?utf-8?b?5p6X5Y2a5LuBKEJ1by1yZW4sIExpbik=?= <1617385@bugs.launchpad.net>
-To: qemu-devel@nongnu.org
-X-Launchpad-Notification-Type: bug
-X-Launchpad-Bug: product=qemu; status=Confirmed; importance=Undecided;
- assignee=None; 
-X-Launchpad-Bug-Information-Type: Public
-X-Launchpad-Bug-Private: no
-X-Launchpad-Bug-Security-Vulnerability: no
-X-Launchpad-Bug-Commenters: buo-ren-lin dgilbert-h feuerkogel1 janitor
-X-Launchpad-Bug-Reporter: feuerkogel1 (feuerkogel1)
-X-Launchpad-Bug-Modifier: =?utf-8?b?5p6X5Y2a5LuBKEJ1by1yZW4sIExpbikgKGJ1by1yZW4tbGluKQ==?=
-References: <20160826155556.27103.59439.malonedeb@gac.canonical.com>
-Message-Id: <168739188505.439318.17942227405614014026.malone@juju-98d295-prod-launchpad-2>
-Subject: [Bug 1617385] Re: No snapshot possible with virtio-gpu activated
-X-Launchpad-Message-Rationale: Subscriber (QEMU) @qemu-devel-ml
-X-Launchpad-Message-For: qemu-devel-ml
-Precedence: bulk
-X-Generated-By: Launchpad (canonical.com);
- Revision="1a64fbf0a633b6c807613475aecca0f26ff240b3"; Instance="production"
-X-Launchpad-Hash: 407086478901fa96cb90da66d98b10487b7eba93
-Received-SPF: pass client-ip=185.125.188.251;
- envelope-from=noreply@launchpad.net; helo=smtp-relay-services-1.canonical.com
-X-Spam_score_int: -42
-X-Spam_score: -4.3
-X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::935;
+ envelope-from=alistair23@gmail.com; helo=mail-ua1-x935.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
+Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -83,52 +87,92 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Bug 1617385 <1617385@bugs.launchpad.net>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-I also have this problem, with the 3D acceleration enabled, it would be
-great if the situation improves as the VM often not stable after the
-host restores from sleep state.
+On Mon, Jun 12, 2023 at 9:11=E2=80=AFPM Christoph Muellner
+<christoph.muellner@vrull.eu> wrote:
+>
+> From: Christoph M=C3=BCllner <christoph.muellner@vrull.eu>
+>
+> This series adds vendor extension support to the QEMU disassembler
+> for RISC-V. The following vendor extensions are covered:
+> * XThead{Ba,Bb,Bs,Cmo,CondMov,FMemIdx,Fmv,Mac,MemIdx,MemPair,Sync}
+> * XVentanaCondOps
+>
+> So far, there have been two attempts to add vendor extension support
+> to the QEMU disassembler. The first one [1] was posted in August 2022
+> by LIU Zhiwei and attempts to separate vendor extension specifics
+> from standard extension code in combination with a patch that introduced
+> support for XVentanaCondOps. The second one [2] was posted in March 2023
+> by me and added XThead* support without separating the vendor extensions
+> from the standard code.
+>
+> This patchset represents the third attempt to add vendor extension
+> support to the QEMU disassembler. It adds all features of the previous
+> attempts and integrates them into a patchset that uses the same
+> mechanism for testing the extension availability like translate.c
+> (using the booleans RISCVCPUConfig::ext_*).
+> To achieve that, a couple of patches were needed to restructure
+> the existing code.
+>
+> Note, that this patchset allows an instruction encoder function for each
+> vendor extension, but operand decoding and instruction printing remains
+> common code. This is irrelevant for XVentanaCondOps, but the patch for
+> the XThead* extensions includes changes in riscv.c and riscv.h.
+> This could be changed to force more separation with the cost of
+> duplication.
+>
+> The first patch of this series is cherry-picked from LIU Zhiwei's series.
+> It was reviewed by Alistair Francis and Richard Henderson, but never
+> made it on master. I've added "Reviewed-by" tags to the commit.
+>
+> Changes for v2:
+> * Rebase on Alistair's riscv-to-apply.next branch
+>
+> [1] https://lists.nongnu.org/archive/html/qemu-devel/2022-08/msg03662.htm=
+l
+> [2] https://lists.nongnu.org/archive/html/qemu-devel/2023-03/msg04566.htm=
+l
+>
+> Christoph M=C3=BCllner (7):
+>   target/riscv: Factor out extension tests to cpu_cfg.h
+>   disas/riscv: Move types/constants to new header file
+>   disas/riscv: Make rv_op_illegal a shared enum value
+>   disas/riscv: Encapsulate opcode_data into decode
+>   disas/riscv: Provide infrastructure for vendor extensions
+>   disas/riscv: Add support for XVentanaCondOps
+>   disas/riscv: Add support for XThead* instructions
+>
+> LIU Zhiwei (1):
+>   target/riscv: Use xl instead of mxl for disassemble
 
-** Changed in: qemu
-       Status: Expired =3D> Confirmed
+Thanks!
 
---=20
-You received this bug notification because you are a member of qemu-
-devel-ml, which is subscribed to QEMU.
-https://bugs.launchpad.net/bugs/1617385
+Applied to riscv-to-apply.next
 
-Title:
-  No snapshot possible with virtio-gpu activated
+Alistair
 
-Status in QEMU:
-  Confirmed
-
-Bug description:
-  I'm using "Qemu" and "Virtual Machine Manager" on Debian-8-Stretch -
-  both newest versions out of the Debian-testing-repository (state
-  26.08.2016).
-
-  If I try to save a virtual machine, it fails and I'll get the
-  following error:
-
-  libvirtError: internal error: unable to execute QEMU command
-  'migrate': State blocked by non-migratable device
-  '0000:00:02.0/virtio-gpu'
-
-  This only happens, if I chose "Virtio" as graphics-driver (no matter
-  if I use "Spice" or "Vnc" as Server by the way). If I switch to any
-  other driver (Cirrus, Qxl, Vga, VMvga...) there is no problem to take
-  a snapshot and save the virtual machine.
-
-  Unfortunately "virtio-gpu" (together with "Spice-Server") is the only
-  driver that provides proper working/running my virtual machines on my
-  PC.
-
-  feuerkogel1
-
-To manage notifications about this bug go to:
-https://bugs.launchpad.net/qemu/+bug/1617385/+subscriptions
-
+>
+>  disas/meson.build        |   6 +-
+>  disas/riscv-xthead.c     | 707 +++++++++++++++++++++++++++++++++++++++
+>  disas/riscv-xthead.h     |  28 ++
+>  disas/riscv-xventana.c   |  41 +++
+>  disas/riscv-xventana.h   |  18 +
+>  disas/riscv.c            | 378 ++++++---------------
+>  disas/riscv.h            | 299 +++++++++++++++++
+>  target/riscv/cpu.c       |   3 +-
+>  target/riscv/cpu_cfg.h   |  37 ++
+>  target/riscv/translate.c |  27 +-
+>  10 files changed, 1246 insertions(+), 298 deletions(-)
+>  create mode 100644 disas/riscv-xthead.c
+>  create mode 100644 disas/riscv-xthead.h
+>  create mode 100644 disas/riscv-xventana.c
+>  create mode 100644 disas/riscv-xventana.h
+>  create mode 100644 disas/riscv.h
+>
+> --
+> 2.40.1
+>
+>
 
