@@ -2,68 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 445AC739FFE
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 13:46:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D24873A000
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 13:47:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCIlo-0005AQ-0D; Thu, 22 Jun 2023 07:46:36 -0400
+	id 1qCIlq-0005az-Vv; Thu, 22 Jun 2023 07:46:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <lukasstraub2@web.de>)
- id 1qCIlX-0004sS-2d
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 07:46:20 -0400
+ id 1qCIlk-00051p-QW
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 07:46:34 -0400
 Received: from mout.web.de ([217.72.192.78])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <lukasstraub2@web.de>)
- id 1qCIlU-0004re-EN
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 07:46:17 -0400
+ id 1qCIlj-0004tV-6Z
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 07:46:32 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
- s=s29768273; t=1687434372; x=1688039172; i=lukasstraub2@web.de;
- bh=+bf24HCTd7ajjUz8LKc/TuPXrsAVigyVQtpW8nShY9o=;
+ s=s29768273; t=1687434387; x=1688039187; i=lukasstraub2@web.de;
+ bh=gRuIjHThs8c4R4l3DWmDH6gN2HtTljB1ICb/8Zv2aT4=;
  h=X-UI-Sender-Class:Date:From:To:Cc:Subject:In-Reply-To:References;
- b=t46uu+s49ktrrFyOAQoq6t1j4SXb+vkn98NGanNu6xmRnRUDXyzfLWPTpzgIkH1V6oLLUW1
- SGOE5VdFr25VCgRkO7rka4Ke0tIIYOrPKFn3udxugzjFpAfgD1XA7xSF6TVm1UM/3DsCdviFd
- YFST03Q+3jpEbiuDiczomgLIapz6Hnas7YL+pT8gKSaZoCQ0ArvdXUkGz0hjgquJRD+gdrCI8
- zdQ4+BZ9jL+YIkpLDOjb0YgFo7Dx36IMaiXXWNq3r2RUvlQTeEGuDQJiGNW2di4rT/e3FRG6m
- ZEL8bJ5esVd+qbU43j/2ToIo4nriNASHUlf3s6Nm/QACYYeO/ATQ==
+ b=Q/Le9m53rhgUemoBgCcE5iA0gWQFBKQ7A4OdKTj/pr0k3moOAYkNICMrAO07Tego0RqUb/H
+ 8PIJgJb6aFAxOksuXMcMjnU8rPHPeS/6mA4gvfzu15Z9L6dxlJQH2ymMw1e6vCfmaS/VnnRR0
+ Ig9j5nPK+RUQQsxmpvkuLxJMOxKU/zmiMbiDTs9LNeDBFRqn90FUW1nnjEKPiHyjntGF/LC5I
+ Sc3pqtGzwgqerUdQjWaEJIH1FMPEykTJ/pR/sphxZVGSf3+kKaaILGOaCMCHLPDbpyQjC4M8r
+ GA7e/T1z5TSyGxf1R8HebENhW3LRWTnLwzmuxR30HM5o593rCDHg==
 X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from mobian ([46.114.147.93]) by smtp.web.de (mrweb106
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1MidDR-1pYY2F0qNr-00fLRA; Thu, 22
- Jun 2023 13:46:12 +0200
-Date: Thu, 22 Jun 2023 13:46:08 +0200
+Received: from mobian ([46.114.147.93]) by smtp.web.de (mrweb105
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1Mmyr7-1pljKH2jvr-00jhvD; Thu, 22
+ Jun 2023 13:46:26 +0200
+Date: Thu, 22 Jun 2023 13:46:22 +0200
 From: Lukas Straub <lukasstraub2@web.de>
 To: Juan Quintela <quintela@redhat.com>
 Cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>, Leonardo Bras
  <leobras@redhat.com>
-Subject: Re: [PATCH 09/18] migration: Make compress_data_with_multithreads
- return bool
-Message-ID: <20230622134608.5c5e1028@mobian>
-In-Reply-To: <20230613145757.10131-10-quintela@redhat.com>
+Subject: Re: [PATCH 10/18] migration: Simplify compress_page_with_multithread()
+Message-ID: <20230622134622.672ea9b7@mobian>
+In-Reply-To: <20230613145757.10131-11-quintela@redhat.com>
 References: <20230613145757.10131-1-quintela@redhat.com>
- <20230613145757.10131-10-quintela@redhat.com>
+ <20230613145757.10131-11-quintela@redhat.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/kuihRaDYG+peD6is43aAVbk";
+Content-Type: multipart/signed; boundary="Sig_/_dMwvyqQdvi8jSZ2igKX3Sz";
  protocol="application/pgp-signature"; micalg=pgp-sha512
-X-Provags-ID: V03:K1:HPLl5Ow2DzD0DEHMSkJo053+XN6Y4zP3jb5ZYnSMogec2pxre9f
- IAZm0Yhsh3ZevAR2FIBoKHtGguS4Ms9ttXPYfT1e171lnstWDUFCujW4sAqTKSjHKjV5nWg
- 8cJ35krouxBVt4i70bleWdzAr8kC2KiogOqoC3oESY9NXY6v1f0/jfpzOm9FJ+sdW/XRREg
- NQ5ekeb1gAHdhYd2oNmkA==
-UI-OutboundReport: notjunk:1;M01:P0:f1AcAgPc3q0=;MMR9h8VJ4Cl1uSoANhbJPg9Pn4V
- 5U6xuCfmHI7/J1GHoR+WbMarCFDgkPG+b6e4lEFrDag9gsZNrDKeiri5tfPl69lkiKpqXPM0u
- vC4YFRhpXTi7dv2laKTIBa3iP8mAgtiuB9BKniOHxkY1DV10g1EYq+UqyAppSwInvqk6j7HOn
- gTkT/+oqxQ8x+vwaZNAtTU83XWhd/Vc5uk6UzpDOMFmg6gtL4UD3nlsSckyWLnlCKB0ScFUxv
- cou61bHSpTrd/DfL4Xpj/22qW31S/aIoNNYU/iJcnZtuIFqsaV3IHHxaCvL5t1B81A6f804s6
- sbyn6x14vKss6+xJHCBxpKxDa7XugiFFBGbiFM2Pvclvtrso9HbFRYrrxUpneae6t10agKegl
- HKJR3ik5ayjDrbE68+s017fbInwpWvGFJv2EihDeFEpXbqDEPxRrtoWWScd2tOn0BeMFVUoY3
- FsHTMNZni/HkjtsnlJKt542UBXi5EG7Y3jRqhY9Jh+oc48VsVed0vPGjaZlXArG8xVZeYigYY
- BGtIxPyyCP/eNXpXAwEMuAF9tJ6b1MjmNOi6twJh7XY01iprMhRE+7WDvQermgqs2jmF3zdrd
- LXbrIBLy/4drIHrF/AcpYmvAhuxsszPFwgmVu7HTx8fEkcnLvL/RPWmffsgHh0dXYvKYjhWcq
- sGMWrX2xliEBR6aDWuB473x2aDiiWRSfX4KiEIOfUO9YA/GfbUEWBd94RewIXOYih8wv+xUvJ
- qce3Bc6GrrJoVEwjHCSLwWPkwAN3gOS24iCFl35QiQxQSC58q9QJhUs4TrjmBVupVXWFN1o3r
- FRNWNYjlTuq8Cmg/8wd4LwWtLfBuLmSKQfcN/CQ12b6whq8H5IXEwEVBagbLGkqashGeSQifs
- l1SKC7nopCLSj+hcvkWFDMA4hrTckeEno1Uzoe+O727NPKKE+y000hqVxO0YBNLFbRfh5QnwQ
- Zb/TrZCyTF4enmMSZGYsw6EZi60=
+X-Provags-ID: V03:K1:udhhZyY99+2ED179DvPTMbWhuOZeVDDBvL/uppKDu50Gz9Q3/Uh
+ jxZnmfs7qpaSNxKxeSSD2Nt03HX/CeZ+FTyeXMXWNPTsKONjl9w/SsOnrcFn3T3XeFTfdu0
+ XrsfyZ3NbGReXuIr7JHXwFfokL+l03CUEcIFrYhGZz3d/E62E0w/Nlp4cu5OmOeXPat4dbc
+ NfpvflGFhF9fvBf2yBECw==
+UI-OutboundReport: notjunk:1;M01:P0:E80mg43IxQ0=;6N8JOi87qdo+XLqaEBTLC1imOSN
+ 2xjZsTHai4pkqj47qTNsH8EsViDo5M9ocv8a9Ec7m7rFwnsSmvTOXXhpV/fPXHcmElnpGIWKO
+ beqy0ntitQKcBoWycjk5ItPd/G3MnEQo0SC8mUkkR5QEvs8x7tsvKRdW7IWAwdfqKurgR3sTj
+ OHJFsURrOuncvFRoyvYoIz/l2nO6GSFVOKeu7ekf/nbkVoMc+LZvAzKmxPLZr07eYzVXEUPWS
+ Z6AT0yWm40vz2zKnuRDGwUC7U6uJXkVZOdmq5iRnx/qey/rij5yejpIAhurrQ3c7li4AP4oct
+ ChO5KfpzV9bNppcJ8eXuBRTWjPqTmUlMdkznOg1FOlKm9dF7szz0tzNOpuPBWTsQN50Uo8DaA
+ kou9cvCNAEjh91J9q4OwO4kUx7qUTvfRKNblAEOG/WntLuwiLnxZHnaf3YFhc/R86pJ09mJ2K
+ axImPUeK8f9zJDhMV1JjWeq/gJZ4KiLwt3uvIfcixexnvDlQTwak8yuqur78PlPOn5V3Ayqcu
+ RFZhlrY90QVB6xCUPz+SL+B3hF+8eiUaX/fWvRyyGpCdG8Fg2g6kPr9otdo20eccqG/SC9Sp1
+ w06bv0XRl4v/MYoGFOdIpUX9RyHXF+NtV0r6koBPcyp5B0BTCd3X2GOTrW6Y7KIGJRbYkKUkb
+ Snx56ew6Lo3FwbUq9ZCqLjBHCV5qfM+0O+pSYrwgSKRWcaChFIzb8o8+Um67yrMBxJzkjHY/P
+ 50OkfkVvuYtGxWsiydvYr/5yIB8L4XzU7krE9ogF3lEIxRj8jAlA7IQ0I0I5YOcmEgBbpRBox
+ AD1d000IHcxtaqkF/xYhBwk6lOEDJKlfNt3TzRtj4nCd2NU2cvp4rXq3SyWPw6Dn88VJGu+3f
+ BF/JZ7ecZUdh1C8yVuU5ugPbzH4QwrtqgtHE5QyOKUC8SaUdwPwW74BbNAa2shYnyQpkz2y63
+ OMws2sOmK0pmZlHZo7hQrPJGzkM=
 Received-SPF: pass client-ip=217.72.192.78; envelope-from=lukasstraub2@web.de;
  helo=mout.web.de
 X-Spam_score_int: -25
@@ -89,133 +88,112 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---Sig_/kuihRaDYG+peD6is43aAVbk
+--Sig_/_dMwvyqQdvi8jSZ2igKX3Sz
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, 13 Jun 2023 16:57:48 +0200
+On Tue, 13 Jun 2023 16:57:49 +0200
 Juan Quintela <quintela@redhat.com> wrote:
 
+> Move the goto to a while true.
+>=20
 > Signed-off-by: Juan Quintela <quintela@redhat.com>
 
-Nit:
-Probably makes sense to rename it to try_compress_page or similar.
-
-And probably for zero_page and xbzrle (when factored out in it's own
-function) too.
+Reviewed-by: Lukas Straub <lukasstraub2@web.de>
 
 > ---
->  migration/ram-compress.h |  4 ++--
->  migration/ram-compress.c | 17 ++++++++++-------
->  migration/ram.c          |  2 +-
->  3 files changed, 13 insertions(+), 10 deletions(-)
+>  migration/ram-compress.c | 48 ++++++++++++++++++++--------------------
+>  1 file changed, 24 insertions(+), 24 deletions(-)
 >=20
-> diff --git a/migration/ram-compress.h b/migration/ram-compress.h
-> index e55d3b50bd..b228640092 100644
-> --- a/migration/ram-compress.h
-> +++ b/migration/ram-compress.h
-> @@ -60,8 +60,8 @@ void compress_threads_save_cleanup(void);
->  int compress_threads_save_setup(void);
-> =20
->  void flush_compressed_data(int (send_queued_data(CompressParam *)));
-> -int compress_page_with_multi_thread(RAMBlock *block, ram_addr_t offset,
-> -                                int (send_queued_data(CompressParam *)));
-> +bool compress_page_with_multi_thread(RAMBlock *block, ram_addr_t offset,
-> +                                      int (send_queued_data(CompressPara=
-m *)));
-> =20
->  int wait_for_decompress_done(void);
->  void compress_threads_load_cleanup(void);
 > diff --git a/migration/ram-compress.c b/migration/ram-compress.c
-> index 47b600d62b..8ce9519f3d 100644
+> index 8ce9519f3d..3c44803132 100644
 > --- a/migration/ram-compress.c
 > +++ b/migration/ram-compress.c
-> @@ -262,10 +262,13 @@ static inline void set_compress_params(CompressPara=
-m *param, RAMBlock *block,
->      param->trigger =3D true;
->  }
-> =20
-> -int compress_page_with_multi_thread(RAMBlock *block, ram_addr_t offset,
-> -                                int (send_queued_data(CompressParam *)))
-> +/*
-> + * Return true when it compress a page
-> + */
-> +bool compress_page_with_multi_thread(RAMBlock *block, ram_addr_t offset,
-> +                                     int (send_queued_data(CompressParam=
- *)))
->  {
-> -    int idx, thread_count, pages =3D -1;
-> +    int idx, thread_count;
->      bool wait =3D migrate_compress_wait_thread();
+> @@ -273,35 +273,35 @@ bool compress_page_with_multi_thread(RAMBlock *bloc=
+k, ram_addr_t offset,
 > =20
 >      thread_count =3D migrate_compress_threads();
-> @@ -283,8 +286,8 @@ retry:
+>      qemu_mutex_lock(&comp_done_lock);
+> -retry:
+> -    for (idx =3D 0; idx < thread_count; idx++) {
+> -        if (comp_param[idx].done) {
+> -            CompressParam *param =3D &comp_param[idx];
+> -            qemu_mutex_lock(&param->mutex);
+> -            param->done =3D false;
+> -            send_queued_data(param);
+> -            assert(qemu_file_buffer_empty(param->file));
+> -            compress_reset_result(param);
+> -            set_compress_params(param, block, offset);
 > =20
->              qemu_cond_signal(&param->cond);
->              qemu_mutex_unlock(&param->mutex);
-> -            pages =3D 1;
-> -            break;
-> +            qemu_mutex_unlock(&comp_done_lock);
-> +            return true;
+> -            qemu_cond_signal(&param->cond);
+> -            qemu_mutex_unlock(&param->mutex);
+> +    while (true) {
+> +        for (idx =3D 0; idx < thread_count; idx++) {
+> +            if (comp_param[idx].done) {
+> +                CompressParam *param =3D &comp_param[idx];
+> +                qemu_mutex_lock(&param->mutex);
+> +                param->done =3D false;
+> +                send_queued_data(param);
+> +                assert(qemu_file_buffer_empty(param->file));
+> +                compress_reset_result(param);
+> +                set_compress_params(param, block, offset);
+> +
+> +                qemu_cond_signal(&param->cond);
+> +                qemu_mutex_unlock(&param->mutex);
+> +                qemu_mutex_unlock(&comp_done_lock);
+> +                return true;
+> +            }
+> +        }
+> +        if (!wait) {
+>              qemu_mutex_unlock(&comp_done_lock);
+> -            return true;
+> +            return false;
 >          }
->      }
-> =20
-> @@ -292,13 +295,13 @@ retry:
->       * wait for the free thread if the user specifies 'compress-wait-thr=
+> -    }
+> -
+> -    /*
+> -     * wait for the free thread if the user specifies 'compress-wait-thr=
 ead',
->       * otherwise we will post the page out in the main thread as normal =
+> -     * otherwise we will post the page out in the main thread as normal =
 page.
->       */
-> -    if (pages < 0 && wait) {
-> +    if (wait) {
+> -     */
+> -    if (wait) {
+> +        /*
+> +         * wait for a free thread if the user specifies
+> +         * 'compress-wait-thread', otherwise we will post the page out
+> +         * in the main thread as normal page.
+> +         */
 >          qemu_cond_wait(&comp_done_cond, &comp_done_lock);
->          goto retry;
+> -        goto retry;
 >      }
->      qemu_mutex_unlock(&comp_done_lock);
-> =20
-> -    return pages;
-> +    return false;
+> -    qemu_mutex_unlock(&comp_done_lock);
+> -
+> -    return false;
 >  }
 > =20
 >  /* return the size after decompression, or negative value on error */
-> diff --git a/migration/ram.c b/migration/ram.c
-> index 53dec4d305..2a3ff2c36e 100644
-> --- a/migration/ram.c
-> +++ b/migration/ram.c
-> @@ -2034,7 +2034,7 @@ static bool save_compress_page(RAMState *rs, PageSe=
-archStatus *pss,
->          return false;
->      }
-> =20
-> -    if (compress_page_with_multi_thread(block, offset, send_queued_data)=
- > 0) {
-> +    if (compress_page_with_multi_thread(block, offset, send_queued_data)=
-) {
->          return true;
->      }
-> =20
 
 
---Sig_/kuihRaDYG+peD6is43aAVbk
+--Sig_/_dMwvyqQdvi8jSZ2igKX3Sz
 Content-Type: application/pgp-signature
 Content-Description: OpenPGP digital signature
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCgAdFiEEg/qxWKDZuPtyYo+kNasLKJxdslgFAmSUNIAACgkQNasLKJxd
-sliuww//QqAhjQGgsA4eIohIKIsypSxjMHtomSkLb0t91J1OPr3WwIOCIoGk9WWW
-rfrRlubROMdYfJ+Zr9msDaZhWpcKN83fUcKUZ4ndylrPzHHeiYcn2FrVdoXyt3T9
-5z+JjmlufvaccEpaJZLdMW6y13R2o99C0ZHR9+1FyCG838Cq3iC+sP/+w+kspU9R
-klP3GYxfbEIsLaZqjKcOmM++6ju7FOGldWTI80jsT+rdLgFneqY66XpNPhhmZ5BE
-U7HR6vhbe8cLDw2scfcZGFG9fRXw0Qd0Ipt6Al5Pj0UVtj52KqeSR5iTTD6u35ar
-OY7cOrhlcQZDwTbBx8YHvUYpSysXIrE3/QRtMTLqSu8m8cuhL8Uk+98cuuZlN4dF
-RyVEEgdJ0jm1FYTSZQBg2IungH65pQbGcptn8OVOxtHXGEEsdCokxsH4LlY1xBIc
-dP8ZH58kyYmavGVvtbtJQvuEoG7rl+22BBR8ggt2UM8JdWsuyEj/toliDcboY1N3
-J626B6M45kunejSraTlqylGjO6mEC3MVUUjwe7F5wLHg2sQClkQM3BGFntNNipS/
-pxqnGTbugnKc9pMan0GDsINN9sda/moMe5ibns/bpFJuswyLTjePBlthW0I/vqmS
-utP9Am9MN7FC93XsML1jYuQm8SagMxvraiimsFLFucrXIYeQBpo=
-=Gwhc
+iQIzBAEBCgAdFiEEg/qxWKDZuPtyYo+kNasLKJxdslgFAmSUNI4ACgkQNasLKJxd
+sli5+BAAuxX7QYJqnO6EyzSISkGRxZUEyrI/oDVCJGQ5uVV2Eomib3yElgCvy2lC
+kpYuX2ZGsbGOPKxC+n0rLXue/WL4MaBNrBSfeLjco3WpXHMo4OUURcZv2gNAQ1Hc
+lHU8u2axUtHp8Aj2PM/n1BkOO8JCO88TFrGOU1U3ji9lxXQFTOgAgSLQI/Brra8G
+vOYCRV5p3qOsJB1paCIEfSSBodF65GFSmArrlPSYkgHynxECGT8a0YlNi25ydaQE
+ZaHDUS57FSl2hOhKpzFJcsJfru3dPqZsdxhZeU1Badztf/MQzIUz+xEsTTPNp09F
+iyOyZh3kMfn+DZ0SDrCdDX12OBDsmoAm10Zkg6imkbEorJ9GOLHmYrZg5zx0OOuK
+K0TsabmgFnHl8Q+AnfWU5rwgH/JcP4M5Sdp2NWjgPJhwRAmanPq74tP/E12rsDJ9
+weS3Ollle2PSuZw5nnfolw2h7tCa18kWw7TlskTni9rnPcRnQtoIblBcJSf5MKyx
+klLsrD5naECSfygdq2EeA/3iD6bZNpUnbw3hZZ/CIDSmV2ExH/D5sJ8Zv7xthVRa
+SKTm2mPnk7+HYe5ipEGB2sPRGov/xjwDjRbW4DiG/1rMEpl5hZpqvdOtUca6MrGB
+S1XHmbT2HIiJ3X4nLWr91QmlhtIhOabUBb4fT8owzzj4XacleEQ=
+=CqiQ
 -----END PGP SIGNATURE-----
 
---Sig_/kuihRaDYG+peD6is43aAVbk--
+--Sig_/_dMwvyqQdvi8jSZ2igKX3Sz--
 
