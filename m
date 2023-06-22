@@ -2,75 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AAFD73A969
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 22:19:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B784773A972
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 22:27:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCQlp-0008P4-DL; Thu, 22 Jun 2023 16:19:09 -0400
+	id 1qCQtQ-0001Sc-02; Thu, 22 Jun 2023 16:27:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1qCQlj-0008Ob-5G
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 16:19:03 -0400
-Received: from mail-lf1-x12e.google.com ([2a00:1450:4864:20::12e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1qCQlc-0001p9-Ns
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 16:19:00 -0400
-Received: by mail-lf1-x12e.google.com with SMTP id
- 2adb3069b0e04-4f954d7309fso1329808e87.1
- for <qemu-devel@nongnu.org>; Thu, 22 Jun 2023 13:18:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1687465133; x=1690057133;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=oCTMSW6xjjcP4DWhetOpBrc4XXOPjxDHF4dZ2HQwM3I=;
- b=eSSYbngq399RFJyYcqGpe8xMra+JYc6mZfDNguy9l+4yiM86u/2M8KZRf5YzXaZUkF
- h+48zXCVZQuZB61dWuOUEdx2uvqLz6LoYCsaUBSigI4msQULkD3UVVK5QL8c7Ipyk6SL
- 7qnYhaMu1uYjUlUg+KX/Fl60YbmKjVLCAlhCxWwVa0Ov5XhiBPOVBDtbyvGPJSzmxePn
- OvoajwY8tDxgKOrEhSF0KpxzqBgipe1ROfgtcVfwIFXsX0MLHSVdXQJ92ntpkVKu4Tre
- daQV8RIX2VpGse/Rs4Dqq9EB1AqWy2onkzrlEDeKHBTRCw/WOxnvhuakMubAihmlCcSV
- Ns5g==
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qCQtA-0001Qk-UX
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 16:26:46 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qCQt8-00056c-Pj
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 16:26:44 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1687465601;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=rRjV7wZFrFjhDbAQFew1TOgDrI5aleXAHiDoRE+Gkfg=;
+ b=WMbIMaU5aMkqKk7YsFkhdUx6pP9Nto6rSkkdAJ/Ulxrs7CyFeAKiLndhLsNzrmA1lsJ43W
+ cXWAilQVNHtUSfzID6HUJwOtO2oTvYtmnsuEaFDpzqV9FTjF8bRQNXBnKN5RbBefS5Gp6H
+ mjNJzDmr9JB69iSsA44EmlpyWsKDh2Q=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-390-ii3lkD5hPJCZyCtZPJdWMQ-1; Thu, 22 Jun 2023 16:26:38 -0400
+X-MC-Unique: ii3lkD5hPJCZyCtZPJdWMQ-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-3f8fe1f1199so29312325e9.0
+ for <qemu-devel@nongnu.org>; Thu, 22 Jun 2023 13:26:38 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687465133; x=1690057133;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=oCTMSW6xjjcP4DWhetOpBrc4XXOPjxDHF4dZ2HQwM3I=;
- b=Iuia23zQuOekY+Naqoqwf1aZt0X/DLNFbJcpQ+KxMLe9brOC5y9Uwlf803FPAS2zL0
- /h8npq9k//4StJXCVY4a0UoUHTepg1P3/UFqOnyjUN6A9m9X2+v+BUHtbfiyp0qkA0D/
- modji7Zv3RIplinTi23ivG5c2/CiG5YfWmjYpUonK7h/Bag34c2D5i0bpzyuKKqvUpUk
- GVC8hY4bD4L0LZBSEKp2ZzVhQVNJnGgAdIhJOFqW7CW8H8W5RS5XZyWN+86b2p04/yh7
- +suUJryuZrefcIffHXZpEL0P7Lyaa9jjZ3TKtMZ1hV69bO7lHeBNRGNFy/lVm2aBB23B
- nUZw==
-X-Gm-Message-State: AC+VfDzisqq10o907r8SvI0q5lTnfbKImv9N1CdcKwaA3KF8xoYWaB5I
- Mdnelya3oUB2C9gaQ1F1iN3q8wW5olqBlB3T2w0=
-X-Google-Smtp-Source: ACHHUZ7INF3UMT6u4UYUw+As2dFKgYxN5Ljx55I1HrhxlnAqU+6Y8WautKGuTb8FD8XJW4GmfJPAW3OZAaBerUtIO1s=
-X-Received: by 2002:a19:650c:0:b0:4f8:6ac4:1aa9 with SMTP id
- z12-20020a19650c000000b004f86ac41aa9mr5151474lfb.21.1687465132961; Thu, 22
- Jun 2023 13:18:52 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1687465597; x=1690057597;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=rRjV7wZFrFjhDbAQFew1TOgDrI5aleXAHiDoRE+Gkfg=;
+ b=TXSBdex6v6C0NyWSmoNXIVLckYba3xOpbO2JJgwdIZAqbSA8HphnNeEKOUxDGJ0Xu8
+ NS6VBTqexBrC10h65RvlLUB+2wMRJo/6dk3Jbzv60OZ7u7SOzAo0T8Ic/CThDWfVRk5w
+ 0ZK+MjwOCASWB2/faA3yQyth/eno9e48kUJczkcDj+Gulj8vmQTlRejmHLquECubjBDL
+ KwFC4S54cIY0cLk3qqqZIjL/+ElPyiPVShmZET3F/sa3qr5PbbhO9WEGpTVs7DCBZuQf
+ cWI7J/m+h/CpiYRaaeivQgFxrCQi5x4HDOxa2NDgIifA00R3Rxo+DB8cTKKAz1lhQheh
+ 4vvg==
+X-Gm-Message-State: AC+VfDzkUCCvXeSFqpwhJdAHcAw/uGpLBDgbs31WClS1rgqOmgxVla1A
+ hjXNNDY5zZnFAFAa1ctgE5wx98C70qsDzazSj4sAAixUNRr0/TFOTicqe1E1FDyaf52JH+BgJry
+ 3Wilz2VUSJtl2Ml4=
+X-Received: by 2002:a05:600c:2189:b0:3f6:7e6:44ea with SMTP id
+ e9-20020a05600c218900b003f607e644eamr2467830wme.18.1687465597638; 
+ Thu, 22 Jun 2023 13:26:37 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7P3O1MSwL2iAie9rFZyKToaL6dvlTlCZonzk2rmBKRUnD2SSG64JLtqdJTu4/n6ElwFNGWTA==
+X-Received: by 2002:a05:600c:2189:b0:3f6:7e6:44ea with SMTP id
+ e9-20020a05600c218900b003f607e644eamr2467818wme.18.1687465597231; 
+ Thu, 22 Jun 2023 13:26:37 -0700 (PDT)
+Received: from redhat.com ([2.52.149.110]) by smtp.gmail.com with ESMTPSA id
+ k19-20020a05600c0b5300b003f90ab2fff9sm432306wmr.9.2023.06.22.13.26.35
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 22 Jun 2023 13:26:36 -0700 (PDT)
+Date: Thu, 22 Jun 2023 16:26:33 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Bui Quang Minh <minhquangbui99@gmail.com>
+Cc: qemu-devel@nongnu.org, David Woodhouse <dwmw2@infradead.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Igor Mammedov <imammedo@redhat.com>,
+ Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>
+Subject: Re: [PATCH v4 5/5] amd_iommu: report x2APIC support to the operating
+ system
+Message-ID: <20230622162602-mutt-send-email-mst@kernel.org>
+References: <20230522163157.9754-1-minhquangbui99@gmail.com>
+ <20230522163157.9754-6-minhquangbui99@gmail.com>
 MIME-Version: 1.0
-References: <20230524091333.201767-1-aesteve@redhat.com>
- <20230524091333.201767-4-aesteve@redhat.com>
-In-Reply-To: <20230524091333.201767-4-aesteve@redhat.com>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Thu, 22 Jun 2023 22:18:41 +0200
-Message-ID: <CAJ+F1CJ1O+s3q3+C_4_Q6LhbKbO+=K=-EbUb=SiSFywc1U-VLQ@mail.gmail.com>
-Subject: Re: [PATCH v3 3/4] vhost-user: add shared_object msg
-To: Albert Esteve <aesteve@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>
-Cc: qemu-devel@nongnu.org, kraxel@redhat.com, cohuck@redhat.com, 
- Fam Zheng <fam@euphon.net>
-Content-Type: multipart/alternative; boundary="000000000000d2386a05febd97d7"
-Received-SPF: pass client-ip=2a00:1450:4864:20::12e;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-lf1-x12e.google.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230522163157.9754-6-minhquangbui99@gmail.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,854 +103,322 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000d2386a05febd97d7
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-Hi
-
-On Wed, May 24, 2023 at 11:13=E2=80=AFAM Albert Esteve <aesteve@redhat.com>=
- wrote:
-
-> Add new vhost-user protocol message
-> `VHOST_USER_BACKEND_SHARED_OBJECT`. This new
-> message is sent from vhost-user back-ends
-> to interact with the virtio-dmabuf table
-> in order to add, remove, or lookup for
-> virtio dma-buf shared objects.
->
-> The action taken in the front-end depends
-> on the type stored in the payload struct.
->
-> In the libvhost-user library add helper
-> functions to allow sending messages to
-> interact with the virtio shared objects
-> hash table.
->
-> Signed-off-by: Albert Esteve <aesteve@redhat.com>
+On Mon, May 22, 2023 at 11:31:57PM +0700, Bui Quang Minh wrote:
+> This commit adds XTSup configuration to let user choose to whether enable
+> this feature or not. When XTSup is enabled, additional bytes in IRTE with
+> enabled guest virtual VAPIC are used to support 32-bit destination id.
+> 
+> Additionally, this commit exports IVHD type 0x11 besides the old IVHD type
+> 0x10 in ACPI table. IVHD type 0x10 does not report full set of IOMMU
+> features only the legacy ones, so operating system (e.g. Linux) may only
+> detects x2APIC support if IVHD type 0x11 is available. The IVHD type 0x10
+> is kept so that old operating system that only parses type 0x10 can detect
+> the IOMMU device.
+> 
+> Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
 > ---
->  docs/interop/vhost-user.rst               | 15 ++++
->  hw/virtio/vhost-user.c                    | 68 ++++++++++++++++++
->  subprojects/libvhost-user/libvhost-user.c | 88 +++++++++++++++++++++++
->  subprojects/libvhost-user/libvhost-user.h | 56 +++++++++++++++
->  4 files changed, 227 insertions(+)
->
-> diff --git a/docs/interop/vhost-user.rst b/docs/interop/vhost-user.rst
-> index 5a070adbc1..d3d8db41e5 100644
-> --- a/docs/interop/vhost-user.rst
-> +++ b/docs/interop/vhost-user.rst
-> @@ -1528,6 +1528,21 @@ is sent by the front-end.
->
->    The state.num field is currently reserved and must be set to 0.
->
-> +``VHOST_USER_BACKEND_SHARED_OBJECT``
-> +  :id: 6
-> +  :equivalent ioctl: N/A
-> +  :request payload: ``struct VhostUserShared``
-> +  :reply payload: ``struct VhostUserShared`` (only for ``LOOKUP``
-> requests)
->
-
-only for LOOKUP, ahah...
-
-
+>  hw/i386/acpi-build.c | 127 ++++++++++++++++++++++++++-----------------
+>  hw/i386/amd_iommu.c  |  21 ++++++-
+>  hw/i386/amd_iommu.h  |  16 ++++--
+>  3 files changed, 108 insertions(+), 56 deletions(-)
+> 
+> diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
+> index 512162003b..4459122e56 100644
+> --- a/hw/i386/acpi-build.c
+> +++ b/hw/i386/acpi-build.c
+> @@ -2339,30 +2339,23 @@ static void
+>  build_amd_iommu(GArray *table_data, BIOSLinker *linker, const char *oem_id,
+>                  const char *oem_table_id)
+>  {
+> -    int ivhd_table_len = 24;
+>      AMDVIState *s = AMD_IOMMU_DEVICE(x86_iommu_get_default());
+>      GArray *ivhd_blob = g_array_new(false, true, 1);
+>      AcpiTable table = { .sig = "IVRS", .rev = 1, .oem_id = oem_id,
+>                          .oem_table_id = oem_table_id };
+> +    uint64_t feature_report;
+>  
+>      acpi_table_begin(&table, table_data);
+>      /* IVinfo - IO virtualization information common to all
+>       * IOMMU units in a system
+>       */
+> -    build_append_int_noprefix(table_data, 40UL << 8/* PASize */, 4);
+> +    build_append_int_noprefix(table_data,
+> +                             (1UL << 0) | /* EFRSup */
+> +                             (40UL << 8), /* PASize */
+> +                             4);
+>      /* reserved */
+>      build_append_int_noprefix(table_data, 0, 8);
+>  
+> -    /* IVHD definition - type 10h */
+> -    build_append_int_noprefix(table_data, 0x10, 1);
+> -    /* virtualization flags */
+> -    build_append_int_noprefix(table_data,
+> -                             (1UL << 0) | /* HtTunEn      */
+> -                             (1UL << 4) | /* iotblSup     */
+> -                             (1UL << 6) | /* PrefSup      */
+> -                             (1UL << 7),  /* PPRSup       */
+> -                             1);
+> -
+>      /*
+>       * A PCI bus walk, for each PCI host bridge, is necessary to create a
+>       * complete set of IVHD entries.  Do this into a separate blob so that we
+> @@ -2382,56 +2375,92 @@ build_amd_iommu(GArray *table_data, BIOSLinker *linker, const char *oem_id,
+>          build_append_int_noprefix(ivhd_blob, 0x0000001, 4);
+>      }
+>  
+> -    ivhd_table_len += ivhd_blob->len;
+> -
+>      /*
+>       * When interrupt remapping is supported, we add a special IVHD device
+> -     * for type IO-APIC.
+> -     */
+> -    if (x86_iommu_ir_supported(x86_iommu_get_default())) {
+> -        ivhd_table_len += 8;
+> -    }
+> -
+> -    /* IVHD length */
+> -    build_append_int_noprefix(table_data, ivhd_table_len, 2);
+> -    /* DeviceID */
+> -    build_append_int_noprefix(table_data,
+> -                              object_property_get_int(OBJECT(&s->pci), "addr",
+> -                                                      &error_abort), 2);
+> -    /* Capability offset */
+> -    build_append_int_noprefix(table_data, s->pci.capab_offset, 2);
+> -    /* IOMMU base address */
+> -    build_append_int_noprefix(table_data, s->mmio.addr, 8);
+> -    /* PCI Segment Group */
+> -    build_append_int_noprefix(table_data, 0, 2);
+> -    /* IOMMU info */
+> -    build_append_int_noprefix(table_data, 0, 2);
+> -    /* IOMMU Feature Reporting */
+> -    build_append_int_noprefix(table_data,
+> -                             (48UL << 30) | /* HATS   */
+> -                             (48UL << 28) | /* GATS   */
+> -                             (1UL << 2)   | /* GTSup  */
+> -                             (1UL << 6),    /* GASup  */
+> -                             4);
+> -
+> -    /* IVHD entries as found above */
+> -    g_array_append_vals(table_data, ivhd_blob->data, ivhd_blob->len);
+> -    g_array_free(ivhd_blob, TRUE);
+> -
+> -    /*
+> -     * Add a special IVHD device type.
+> +     * for type IO-APIC
+>       * Refer to spec - Table 95: IVHD device entry type codes
+>       *
+>       * Linux IOMMU driver checks for the special IVHD device (type IO-APIC).
+>       * See Linux kernel commit 'c2ff5cf5294bcbd7fa50f7d860e90a66db7e5059'
+>       */
+>      if (x86_iommu_ir_supported(x86_iommu_get_default())) {
+> -        build_append_int_noprefix(table_data,
+> +        build_append_int_noprefix(ivhd_blob,
+>                                   (0x1ull << 56) |           /* type IOAPIC */
+>                                   (IOAPIC_SB_DEVID << 40) |  /* IOAPIC devid */
+>                                   0x48,                      /* special device */
+>                                   8);
+>      }
 > +
-> +  Backends that need to interact with the virtio-dmabuf shared table API
-> +  can send this message. The operation is determined by the ``type``
-> member
-> +  of the payload struct. The valid values for the operation type are
-> +  ``VHOST_SHARED_OBJECT_*`` members, i.e., ``ADD``, ``LOOKUP``, and
-> ``REMOVE``.
->
-
-...why not use specific messages instead of this extra "type"?
-
-
-> +  ``LOOKUP`` operations require the ``VHOST_USER_NEED_REPLY_MASK`` flag
-> to be
-> +  set by the back-end, and the front-end will then send the dma-buf fd a=
-s
-> +  a response if the UUID matches an object in the table, or a negative
-> value
-> +  otherwise.
->
-
-This new message(s) should be initially negotiated with a protocol feature
-flag.
-
-
+> +    /* IVHD definition - type 10h */
+> +    build_append_int_noprefix(table_data, 0x10, 1);
+> +    /* virtualization flags */
+> +    build_append_int_noprefix(table_data,
+> +                             (1UL << 0) | /* HtTunEn      */
+> +                             (1UL << 4) | /* iotblSup     */
+> +                             (1UL << 6) | /* PrefSup      */
+> +                             (1UL << 7),  /* PPRSup       */
+> +                             1);
 > +
->  .. _reply_ack:
->
->  VHOST_USER_PROTOCOL_F_REPLY_ACK
-> diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
-> index 74a2a28663..5ac5f0eafd 100644
-> --- a/hw/virtio/vhost-user.c
-> +++ b/hw/virtio/vhost-user.c
-> @@ -10,6 +10,7 @@
->
->  #include "qemu/osdep.h"
->  #include "qapi/error.h"
-> +#include "hw/virtio/virtio-dmabuf.h"
->  #include "hw/virtio/vhost.h"
->  #include "hw/virtio/vhost-user.h"
->  #include "hw/virtio/vhost-backend.h"
-> @@ -20,6 +21,7 @@
->  #include "sysemu/kvm.h"
->  #include "qemu/error-report.h"
->  #include "qemu/main-loop.h"
-> +#include "qemu/uuid.h"
->  #include "qemu/sockets.h"
->  #include "sysemu/runstate.h"
->  #include "sysemu/cryptodev.h"
-> @@ -128,6 +130,7 @@ typedef enum VhostUserSlaveRequest {
->      VHOST_USER_BACKEND_IOTLB_MSG =3D 1,
->      VHOST_USER_BACKEND_CONFIG_CHANGE_MSG =3D 2,
->      VHOST_USER_BACKEND_VRING_HOST_NOTIFIER_MSG =3D 3,
-> +    VHOST_USER_BACKEND_SHARED_OBJECT =3D 6,
->      VHOST_USER_BACKEND_MAX
->  }  VhostUserSlaveRequest;
->
-> @@ -190,6 +193,18 @@ typedef struct VhostUserInflight {
->      uint16_t queue_size;
->  } VhostUserInflight;
->
-> +typedef enum VhostUserSharedType {
-> +    VHOST_SHARED_OBJECT_ADD =3D 0,
-> +    VHOST_SHARED_OBJECT_LOOKUP,
-> +    VHOST_SHARED_OBJECT_REMOVE,
-> +} VhostUserSharedType;
+> +    /* IVHD length */
+> +    build_append_int_noprefix(table_data, ivhd_blob->len + 24, 2);
+> +    /* DeviceID */
+> +    build_append_int_noprefix(table_data,
+> +                              object_property_get_int(OBJECT(&s->pci), "addr",
+> +                                                      &error_abort), 2);
+> +    /* Capability offset */
+> +    build_append_int_noprefix(table_data, s->pci.capab_offset, 2);
+> +    /* IOMMU base address */
+> +    build_append_int_noprefix(table_data, s->mmio.addr, 8);
+> +    /* PCI Segment Group */
+> +    build_append_int_noprefix(table_data, 0, 2);
+> +    /* IOMMU info */
+> +    build_append_int_noprefix(table_data, 0, 2);
+> +    /* IOMMU Feature Reporting */
+> +    feature_report = (48UL << 30) | /* HATS   */
+> +                     (48UL << 28) | /* GATS   */
+> +                     (1UL << 2)   | /* GTSup  */
+> +                     (1UL << 6);    /* GASup  */
+> +    if (s->xtsup) {
+> +        feature_report |= (1UL << 0); /* XTSup */
+> +    }
+> +    build_append_int_noprefix(table_data, feature_report, 4);
 > +
-> +typedef struct VhostUserShared {
-> +    unsigned char uuid[16];
-> +    VhostUserSharedType type;
-> +    int dmabuf_fd;
-> +} VhostUserShared;
+> +    /* IVHD entries as found above */
+> +    g_array_append_vals(table_data, ivhd_blob->data, ivhd_blob->len);
 > +
->  typedef struct {
->      VhostUserRequest request;
->
-> @@ -214,6 +229,7 @@ typedef union {
->          VhostUserCryptoSession session;
->          VhostUserVringArea area;
->          VhostUserInflight inflight;
-> +        VhostUserShared object;
->  } VhostUserPayload;
->
->  typedef struct VhostUserMsg {
-> @@ -1582,6 +1598,52 @@ static int
-> vhost_user_slave_handle_vring_host_notifier(struct vhost_dev *dev,
+> +   /* IVHD definition - type 11h */
+> +    build_append_int_noprefix(table_data, 0x11, 1);
+> +    /* virtualization flags */
+> +    build_append_int_noprefix(table_data,
+> +                             (1UL << 0) | /* HtTunEn      */
+> +                             (1UL << 4),  /* iotblSup     */
+> +                             1);
+> +
+> +    /* IVHD length */
+> +    build_append_int_noprefix(table_data, ivhd_blob->len + 40, 2);
+> +    /* DeviceID */
+> +    build_append_int_noprefix(table_data,
+> +                              object_property_get_int(OBJECT(&s->pci), "addr",
+> +                                                      &error_abort), 2);
+> +    /* Capability offset */
+> +    build_append_int_noprefix(table_data, s->pci.capab_offset, 2);
+> +    /* IOMMU base address */
+> +    build_append_int_noprefix(table_data, s->mmio.addr, 8);
+> +    /* PCI Segment Group */
+> +    build_append_int_noprefix(table_data, 0, 2);
+> +    /* IOMMU info */
+> +    build_append_int_noprefix(table_data, 0, 2);
+> +    /* IOMMU Attributes */
+> +    build_append_int_noprefix(table_data, 0, 4);
+> +    /* EFR Register Image */
+> +    build_append_int_noprefix(table_data, s->efr_reg, 8);
+> +    /* EFR Register Image 2 */
+> +    build_append_int_noprefix(table_data, 0, 8);
+> +
+> +    /* IVHD entries as found above */
+> +    g_array_append_vals(table_data, ivhd_blob->data, ivhd_blob->len);
+> +
+> +    g_array_free(ivhd_blob, TRUE);
+>      acpi_table_end(linker, &table);
+>  }
+>  
+> diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
+> index 9c77304438..0e308184d7 100644
+> --- a/hw/i386/amd_iommu.c
+> +++ b/hw/i386/amd_iommu.c
+> @@ -31,6 +31,7 @@
+>  #include "hw/i386/apic_internal.h"
+>  #include "trace.h"
+>  #include "hw/i386/apic-msidef.h"
+> +#include "hw/qdev-properties.h"
+>  
+>  /* used AMD-Vi MMIO registers */
+>  const char *amdvi_mmio_low[] = {
+> @@ -1155,7 +1156,12 @@ static int amdvi_int_remap_ga(AMDVIState *iommu,
+>      irq->vector = irte.hi.fields.vector;
+>      irq->dest_mode = irte.lo.fields_remap.dm;
+>      irq->redir_hint = irte.lo.fields_remap.rq_eoi;
+> -    irq->dest = irte.lo.fields_remap.destination;
+> +    if (iommu->xtsup) {
+> +        irq->dest = irte.lo.fields_remap.destination |
+> +                    (irte.hi.fields.destination_hi << 24);
+> +    } else {
+> +        irq->dest = irte.lo.fields_remap.destination & 0xff;
+> +    }
+>  
 >      return 0;
 >  }
->
-> +static int vhost_user_backend_handle_shared_object(VhostUserShared
-> *object)
-> +{
-> +    QemuUUID uuid;
-> +    memcpy(uuid.data, object->uuid, sizeof(object->uuid));
+> @@ -1503,10 +1509,15 @@ static void amdvi_init(AMDVIState *s)
+>      s->enabled = false;
+>      s->ats_enabled = false;
+>      s->cmdbuf_enabled = false;
+> +    s->efr_reg = AMDVI_DEFAULT_EXT_FEATURES;
 > +
-> +    switch (object->type) {
-> +    case VHOST_SHARED_OBJECT_ADD:
-> +        return virtio_add_dmabuf(&uuid, object->dmabuf_fd);
-> +    case VHOST_SHARED_OBJECT_LOOKUP:
-> +        object->dmabuf_fd =3D virtio_lookup_dmabuf(&uuid);
-> +        if (object->dmabuf_fd < 0) {
-> +            return object->dmabuf_fd;
-> +        }
-> +        break;
-> +    case VHOST_SHARED_OBJECT_REMOVE:
-> +        return virtio_remove_resource(&uuid);
+> +    if (s->xtsup) {
+> +        s->efr_reg |= AMDVI_FEATURE_XT;
 > +    }
-> +
-> +    return 0;
-> +}
-> +
-> +static bool
-> +vhost_user_backend_send_dmabuf_fd(QIOChannel *ioc, VhostUserHeader *hdr,
-> +                                  VhostUserPayload *payload)
-> +{
-> +    Error *local_err =3D NULL;
-> +    struct iovec iov[2];
-> +    if (hdr->flags & VHOST_USER_NEED_REPLY_MASK) {
-> +        hdr->flags &=3D ~VHOST_USER_NEED_REPLY_MASK;
-> +        hdr->flags |=3D VHOST_USER_REPLY_MASK;
-> +
-> +        hdr->size =3D sizeof(payload->object);
-> +
-> +        iov[0].iov_base =3D hdr;
-> +        iov[0].iov_len =3D VHOST_USER_HDR_SIZE;
-> +        iov[1].iov_base =3D payload;
-> +        iov[1].iov_len =3D hdr->size;
-> +
-> +        if (qio_channel_writev_all(ioc, iov, ARRAY_SIZE(iov),
-> &local_err)) {
-> +            error_report_err(local_err);
-> +            return false;
-> +        }
-> +    }
-> +    return true;
-> +}
-> +
->  static void close_slave_channel(struct vhost_user *u)
->  {
->      g_source_destroy(u->slave_src);
-> @@ -1639,6 +1701,12 @@ static gboolean slave_read(QIOChannel *ioc,
-> GIOCondition condition,
->          ret =3D vhost_user_slave_handle_vring_host_notifier(dev,
-> &payload.area,
->                                                            fd ? fd[0] :
-> -1);
->          break;
-> +    case VHOST_USER_BACKEND_SHARED_OBJECT:
-> +        ret =3D vhost_user_backend_handle_shared_object(&payload.object)=
-;
-> +        if (!vhost_user_backend_send_dmabuf_fd(ioc, &hdr, &payload)) {
-> +            goto err;
-> +        }
-> +        break;
->      default:
->          error_report("Received unexpected msg type: %d.", hdr.request);
->          ret =3D -EINVAL;
-> diff --git a/subprojects/libvhost-user/libvhost-user.c
-> b/subprojects/libvhost-user/libvhost-user.c
-> index 8fb61e2df2..27f16d292a 100644
-> --- a/subprojects/libvhost-user/libvhost-user.c
-> +++ b/subprojects/libvhost-user/libvhost-user.c
-> @@ -1403,6 +1403,94 @@ bool vu_set_queue_host_notifier(VuDev *dev, VuVirt=
-q
-> *vq, int fd,
->      return vu_process_message_reply(dev, &vmsg);
+>  
+>      /* reset MMIO */
+>      memset(s->mmior, 0, AMDVI_MMIO_SIZE);
+> -    amdvi_set_quad(s, AMDVI_MMIO_EXT_FEATURES, AMDVI_EXT_FEATURES,
+> +    amdvi_set_quad(s, AMDVI_MMIO_EXT_FEATURES, s->efr_reg,
+>              0xffffffffffffffef, 0);
+>      amdvi_set_quad(s, AMDVI_MMIO_STATUS, 0, 0x98, 0x67);
 >  }
->
-> +bool
-> +vu_get_shared_object(VuDev *dev, unsigned char uuid[UUID_LEN], int
-> *dmabuf_fd)
-> +{
-> +    bool result =3D false;
-> +    VhostUserMsg msg_reply;
-> +    VhostUserMsg msg =3D {
-> +        .request =3D VHOST_USER_BACKEND_SHARED_OBJECT,
-> +        .size =3D sizeof(msg.payload.object),
-> +        .flags =3D VHOST_USER_VERSION | VHOST_USER_NEED_REPLY_MASK,
-> +        .payload.object =3D {
-> +            .type =3D VHOST_SHARED_OBJECT_LOOKUP,
-> +        },
-> +    };
+> @@ -1591,6 +1602,11 @@ static void amdvi_sysbus_realize(DeviceState *dev, Error **errp)
+>      amdvi_init(s);
+>  }
+>  
+> +static Property amdvi_properties[] = {
+> +    DEFINE_PROP_BOOL("xtsup", AMDVIState, xtsup, false),
+> +    DEFINE_PROP_END_OF_LIST(),
+> +};
 > +
-> +    memcpy(msg.payload.object.uuid, uuid, sizeof(uuid[0]) * UUID_LEN);
+>  static const VMStateDescription vmstate_amdvi_sysbus = {
+>      .name = "amd-iommu",
+>      .unmigratable = 1
+> @@ -1617,6 +1633,7 @@ static void amdvi_sysbus_class_init(ObjectClass *klass, void *data)
+>      dc->user_creatable = true;
+>      set_bit(DEVICE_CATEGORY_MISC, dc->categories);
+>      dc->desc = "AMD IOMMU (AMD-Vi) DMA Remapping device";
+> +    device_class_set_props(dc, amdvi_properties);
+>  }
+>  
+>  static const TypeInfo amdvi_sysbus = {
+> diff --git a/hw/i386/amd_iommu.h b/hw/i386/amd_iommu.h
+> index 6da893ee57..f3730db990 100644
+> --- a/hw/i386/amd_iommu.h
+> +++ b/hw/i386/amd_iommu.h
+> @@ -154,6 +154,7 @@
+>  
+>  #define AMDVI_FEATURE_PREFETCH            (1ULL << 0) /* page prefetch       */
+>  #define AMDVI_FEATURE_PPR                 (1ULL << 1) /* PPR Support         */
+> +#define AMDVI_FEATURE_XT                  (1ULL << 2) /* x2APIC Support      */
+>  #define AMDVI_FEATURE_GT                  (1ULL << 4) /* Guest Translation   */
+>  #define AMDVI_FEATURE_IA                  (1ULL << 6) /* inval all support   */
+>  #define AMDVI_FEATURE_GA                  (1ULL << 7) /* guest VAPIC support */
+> @@ -173,8 +174,9 @@
+>  #define AMDVI_IOTLB_MAX_SIZE 1024
+>  #define AMDVI_DEVID_SHIFT    36
+>  
+> -/* extended feature support */
+> -#define AMDVI_EXT_FEATURES (AMDVI_FEATURE_PREFETCH | AMDVI_FEATURE_PPR | \
+> +/* default extended feature */
+> +#define AMDVI_DEFAULT_EXT_FEATURES \
+> +        (AMDVI_FEATURE_PREFETCH | AMDVI_FEATURE_PPR | \
+>          AMDVI_FEATURE_IA | AMDVI_FEATURE_GT | AMDVI_FEATURE_HE | \
+>          AMDVI_GATS_MODE | AMDVI_HATS_MODE | AMDVI_FEATURE_GA)
+>  
+> @@ -278,8 +280,8 @@ union irte_ga_lo {
+>                  dm:1,
+>                  /* ------ */
+>                  guest_mode:1,
+> -                destination:8,
+> -                rsvd_1:48;
+> +                destination:24,
+> +                rsvd_1:32;
+>    } fields_remap;
+>  };
+>  
+> @@ -287,7 +289,8 @@ union irte_ga_hi {
+>    uint64_t val;
+>    struct {
+>        uint64_t  vector:8,
+> -                rsvd_2:56;
+> +                rsvd_2:48,
+> +                destination_hi:8;
+>    } fields;
+>  };
+>  
+> @@ -366,6 +369,9 @@ struct AMDVIState {
+>  
+>      /* Interrupt remapping */
+>      bool ga_enabled;
+> +    bool xtsup;
 > +
-> +    pthread_mutex_lock(&dev->slave_mutex);
-> +    if (!vu_message_write(dev, dev->slave_fd, &msg)) {
-> +        goto out;
-> +    }
-> +
-> +    if (!vu_message_read_default(dev, dev->slave_fd, &msg_reply)) {
-> +        goto out;
-> +    }
-> +
-> +    if (msg_reply.request !=3D msg.request) {
-> +        DPRINT("Received unexpected msg type. Expected %d, received %d",
-> +               msg.request, msg_reply.request);
-> +        goto out;
-> +    }
-> +
-> +    *dmabuf_fd =3D msg_reply.payload.object.dmabuf_fd;
-> +    result =3D *dmabuf_fd > 0;
-> +out:
-> +    pthread_mutex_unlock(&dev->slave_mutex);
-> +
-> +    return result;
-> +}
-> +
-> +static bool
-> +vu_send_message(VuDev *dev, VhostUserMsg *vmsg)
-> +{
-> +    bool result =3D false;
-> +    pthread_mutex_lock(&dev->slave_mutex);
-> +    if (!vu_message_write(dev, dev->slave_fd, vmsg)) {
-> +        goto out;
-> +    }
-> +
-> +    result =3D true;
-> +out:
-> +    pthread_mutex_unlock(&dev->slave_mutex);
-> +
-> +    return result;
-> +}
-> +
-> +bool
-> +vu_add_shared_object(VuDev *dev, unsigned char uuid[UUID_LEN], int
-> dmabuf_fd)
-> +{
-> +    VhostUserMsg msg =3D {
-> +        .request =3D VHOST_USER_BACKEND_SHARED_OBJECT,
-> +        .size =3D sizeof(msg.payload.object),
-> +        .flags =3D VHOST_USER_VERSION,
-> +        .payload.object =3D {
-> +            .dmabuf_fd =3D dmabuf_fd,
-> +            .type =3D VHOST_SHARED_OBJECT_ADD,
-> +        },
-> +    };
-> +    memcpy(msg.payload.object.uuid, uuid, sizeof(uuid[0]) * UUID_LEN);
-> +
-> +    return vu_send_message(dev, &msg);
-> +}
-> +
-> +bool
-> +vu_rm_shared_object(VuDev *dev, unsigned char uuid[UUID_LEN])
-> +{
-> +    VhostUserMsg msg =3D {
-> +        .request =3D VHOST_USER_BACKEND_SHARED_OBJECT,
-> +        .size =3D sizeof(msg.payload.object),
-> +        .flags =3D VHOST_USER_VERSION,
-> +        .payload.object =3D {
-> +            .type =3D VHOST_SHARED_OBJECT_REMOVE,
-> +        },
-> +    };
-> +    memcpy(msg.payload.object.uuid, uuid, sizeof(uuid[0]) * UUID_LEN);
-> +
-> +    return vu_send_message(dev, &msg);
-> +}
-> +
->  static bool
->  vu_set_vring_call_exec(VuDev *dev, VhostUserMsg *vmsg)
->  {
-> diff --git a/subprojects/libvhost-user/libvhost-user.h
-> b/subprojects/libvhost-user/libvhost-user.h
-> index 49208cceaa..a43d115bd7 100644
-> --- a/subprojects/libvhost-user/libvhost-user.h
-> +++ b/subprojects/libvhost-user/libvhost-user.h
-> @@ -119,6 +119,7 @@ typedef enum VhostUserSlaveRequest {
->      VHOST_USER_BACKEND_VRING_HOST_NOTIFIER_MSG =3D 3,
->      VHOST_USER_BACKEND_VRING_CALL =3D 4,
->      VHOST_USER_BACKEND_VRING_ERR =3D 5,
-> +    VHOST_USER_BACKEND_SHARED_OBJECT =3D 6,
->      VHOST_USER_BACKEND_MAX
->  }  VhostUserSlaveRequest;
->
-> @@ -172,6 +173,20 @@ typedef struct VhostUserInflight {
->      uint16_t queue_size;
->  } VhostUserInflight;
->
-> +typedef enum VhostUserSharedType {
-> +    VHOST_SHARED_OBJECT_ADD =3D 0,
-> +    VHOST_SHARED_OBJECT_LOOKUP,
-> +    VHOST_SHARED_OBJECT_REMOVE,
-> +} VhostUserSharedType;
-> +
-> +#define UUID_LEN 16
-> +
-> +typedef struct VhostUserShared {
-> +    unsigned char uuid[UUID_LEN];
-> +    VhostUserSharedType type;
-> +    int dmabuf_fd;
-> +} VhostUserShared;
-> +
->  #if defined(_WIN32) && (defined(__x86_64__) || defined(__i386__))
->  # define VU_PACKED __attribute__((gcc_struct, packed))
->  #else
-> @@ -199,6 +214,7 @@ typedef struct VhostUserMsg {
->          VhostUserConfig config;
->          VhostUserVringArea area;
->          VhostUserInflight inflight;
-> +        VhostUserShared object;
->      } payload;
->
->      int fds[VHOST_MEMORY_BASELINE_NREGIONS];
-> @@ -539,6 +555,46 @@ void vu_set_queue_handler(VuDev *dev, VuVirtq *vq,
->  bool vu_set_queue_host_notifier(VuDev *dev, VuVirtq *vq, int fd,
->                                  int size, int offset);
->
-> +/**
-> + * vu_get_shared_object:
-> + * @dev: a VuDev context
-> + * @uuid: UUID of the shared object
-> + * @dmabuf_fd: output dma-buf file descriptor
-> + *
-> + * Lookup for a virtio shared object (i.e., dma-buf fd) associated with
-> the
-> + * received UUID. Result, if found, is stored in the dmabuf_fd argument.
-> + *
-> + * Returns: whether the virtio object was found.
-> + */
-> +bool vu_get_shared_object(VuDev *dev, unsigned char uuid[UUID_LEN],
-> +                          int *dmabuf_fd);
-> +
-> +/**
-> + * vu_add_shared_object:
-> + * @dev: a VuDev context
-> + * @uuid: UUID of the shared object
-> + * @dmabuf_fd: output dma-buf file descriptor
-> + *
-> + * Stores a new shared object (i.e., dma-buf fd) in the hash table, and
-> + * associates it with the received UUID.
-> + *
-> + * Returns: TRUE on success, FALSE on failure.
-> + */
-> +bool vu_add_shared_object(VuDev *dev, unsigned char uuid[UUID_LEN],
-> +                          int dmabuf_fd);
-> +
-> +/**
-> + * vu_rm_shared_object:
-> + * @dev: a VuDev context
-> + * @uuid: UUID of the shared object
-> + *
-> + * Removes a shared object (i.e., dma-buf fd) associated with the
-> + * received UUID from the hash table.
-> + *
-> + * Returns: TRUE on success, FALSE on failure.
-> + */
-> +bool vu_rm_shared_object(VuDev *dev, unsigned char uuid[UUID_LEN]);
-> +
->  /**
->   * vu_queue_set_notification:
->   * @dev: a VuDev context
-> --
-> 2.40.0
->
->
+> +    uint64_t efr_reg;            /* extended feature register */
+>  };
 
---=20
-Marc-Andr=C3=A9 Lureau
+It would be cleaner to have efr_reg as a function and just call it
+when needed.
 
---000000000000d2386a05febd97d7
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+With that addressed:
 
-<div dir=3D"ltr"><div dir=3D"ltr">Hi<br></div><br><div class=3D"gmail_quote=
-"><div dir=3D"ltr" class=3D"gmail_attr">On Wed, May 24, 2023 at 11:13=E2=80=
-=AFAM Albert Esteve &lt;<a href=3D"mailto:aesteve@redhat.com">aesteve@redha=
-t.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"ma=
-rgin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:=
-1ex">Add new vhost-user protocol message<br>
-`VHOST_USER_BACKEND_SHARED_OBJECT`. This new<br>
-message is sent from vhost-user back-ends<br>
-to interact with the virtio-dmabuf table<br>
-in order to add, remove, or lookup for<br>
-virtio dma-buf shared objects.<br>
-<br>
-The action taken in the front-end depends<br>
-on the type stored in the payload struct.<br>
-<br>
-In the libvhost-user library add helper<br>
-functions to allow sending messages to<br>
-interact with the virtio shared objects<br>
-hash table.<br>
-<br>
-Signed-off-by: Albert Esteve &lt;<a href=3D"mailto:aesteve@redhat.com" targ=
-et=3D"_blank">aesteve@redhat.com</a>&gt;<br>
----<br>
-=C2=A0docs/interop/vhost-user.rst=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0| 15 ++++<br>
-=C2=A0hw/virtio/vhost-user.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 | 68 ++++++++++++++++++<br>
-=C2=A0subprojects/libvhost-user/libvhost-user.c | 88 ++++++++++++++++++++++=
-+<br>
-=C2=A0subprojects/libvhost-user/libvhost-user.h | 56 +++++++++++++++<br>
-=C2=A04 files changed, 227 insertions(+)<br>
-<br>
-diff --git a/docs/interop/vhost-user.rst b/docs/interop/vhost-user.rst<br>
-index 5a070adbc1..d3d8db41e5 100644<br>
---- a/docs/interop/vhost-user.rst<br>
-+++ b/docs/interop/vhost-user.rst<br>
-@@ -1528,6 +1528,21 @@ is sent by the front-end.<br>
-<br>
-=C2=A0 =C2=A0The state.num field is currently reserved and must be set to 0=
-.<br>
-<br>
-+``VHOST_USER_BACKEND_SHARED_OBJECT``<br>
-+=C2=A0 :id: 6<br>
-+=C2=A0 :equivalent ioctl: N/A<br>
-+=C2=A0 :request payload: ``struct VhostUserShared``<br>
-+=C2=A0 :reply payload: ``struct VhostUserShared`` (only for ``LOOKUP`` req=
-uests)<br></blockquote><div><br></div><div>only for LOOKUP, ahah...<br></di=
-v><div>=C2=A0<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0p=
-x 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
-+<br>
-+=C2=A0 Backends that need to interact with the virtio-dmabuf shared table =
-API<br>
-+=C2=A0 can send this message. The operation is determined by the ``type`` =
-member<br>
-+=C2=A0 of the payload struct. The valid values for the operation type are<=
-br>
-+=C2=A0 ``VHOST_SHARED_OBJECT_*`` members, i.e., ``ADD``, ``LOOKUP``, and `=
-`REMOVE``.<br></blockquote><div><br></div><div>...why not use specific mess=
-ages instead of this extra &quot;type&quot;? <br></div><div>=C2=A0<br></div=
-><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border=
--left:1px solid rgb(204,204,204);padding-left:1ex">
-+=C2=A0 ``LOOKUP`` operations require the ``VHOST_USER_NEED_REPLY_MASK`` fl=
-ag to be<br>
-+=C2=A0 set by the back-end, and the front-end will then send the dma-buf f=
-d as<br>
-+=C2=A0 a response if the UUID matches an object in the table, or a negativ=
-e value<br>
-+=C2=A0 otherwise.<br></blockquote><div><br></div><div>This new message(s) =
-should be initially negotiated with a protocol feature flag.</div><div>=C2=
-=A0<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px =
-0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
-+<br>
-=C2=A0.. _reply_ack:<br>
-<br>
-=C2=A0VHOST_USER_PROTOCOL_F_REPLY_ACK<br>
-diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c<br>
-index 74a2a28663..5ac5f0eafd 100644<br>
---- a/hw/virtio/vhost-user.c<br>
-+++ b/hw/virtio/vhost-user.c<br>
-@@ -10,6 +10,7 @@<br>
-<br>
-=C2=A0#include &quot;qemu/osdep.h&quot;<br>
-=C2=A0#include &quot;qapi/error.h&quot;<br>
-+#include &quot;hw/virtio/virtio-dmabuf.h&quot;<br>
-=C2=A0#include &quot;hw/virtio/vhost.h&quot;<br>
-=C2=A0#include &quot;hw/virtio/vhost-user.h&quot;<br>
-=C2=A0#include &quot;hw/virtio/vhost-backend.h&quot;<br>
-@@ -20,6 +21,7 @@<br>
-=C2=A0#include &quot;sysemu/kvm.h&quot;<br>
-=C2=A0#include &quot;qemu/error-report.h&quot;<br>
-=C2=A0#include &quot;qemu/main-loop.h&quot;<br>
-+#include &quot;qemu/uuid.h&quot;<br>
-=C2=A0#include &quot;qemu/sockets.h&quot;<br>
-=C2=A0#include &quot;sysemu/runstate.h&quot;<br>
-=C2=A0#include &quot;sysemu/cryptodev.h&quot;<br>
-@@ -128,6 +130,7 @@ typedef enum VhostUserSlaveRequest {<br>
-=C2=A0 =C2=A0 =C2=A0VHOST_USER_BACKEND_IOTLB_MSG =3D 1,<br>
-=C2=A0 =C2=A0 =C2=A0VHOST_USER_BACKEND_CONFIG_CHANGE_MSG =3D 2,<br>
-=C2=A0 =C2=A0 =C2=A0VHOST_USER_BACKEND_VRING_HOST_NOTIFIER_MSG =3D 3,<br>
-+=C2=A0 =C2=A0 VHOST_USER_BACKEND_SHARED_OBJECT =3D 6,<br>
-=C2=A0 =C2=A0 =C2=A0VHOST_USER_BACKEND_MAX<br>
-=C2=A0}=C2=A0 VhostUserSlaveRequest;<br>
-<br>
-@@ -190,6 +193,18 @@ typedef struct VhostUserInflight {<br>
-=C2=A0 =C2=A0 =C2=A0uint16_t queue_size;<br>
-=C2=A0} VhostUserInflight;<br>
-<br>
-+typedef enum VhostUserSharedType {<br>
-+=C2=A0 =C2=A0 VHOST_SHARED_OBJECT_ADD =3D 0,<br>
-+=C2=A0 =C2=A0 VHOST_SHARED_OBJECT_LOOKUP,<br>
-+=C2=A0 =C2=A0 VHOST_SHARED_OBJECT_REMOVE,<br>
-+} VhostUserSharedType;<br>
-+<br>
-+typedef struct VhostUserShared {<br>
-+=C2=A0 =C2=A0 unsigned char uuid[16];<br>
-+=C2=A0 =C2=A0 VhostUserSharedType type;<br>
-+=C2=A0 =C2=A0 int dmabuf_fd;<br>
-+} VhostUserShared;<br>
-+<br>
-=C2=A0typedef struct {<br>
-=C2=A0 =C2=A0 =C2=A0VhostUserRequest request;<br>
-<br>
-@@ -214,6 +229,7 @@ typedef union {<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0VhostUserCryptoSession session;<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0VhostUserVringArea area;<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0VhostUserInflight inflight;<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 VhostUserShared object;<br>
-=C2=A0} VhostUserPayload;<br>
-<br>
-=C2=A0typedef struct VhostUserMsg {<br>
-@@ -1582,6 +1598,52 @@ static int vhost_user_slave_handle_vring_host_notifi=
-er(struct vhost_dev *dev,<br>
-=C2=A0 =C2=A0 =C2=A0return 0;<br>
-=C2=A0}<br>
-<br>
-+static int vhost_user_backend_handle_shared_object(VhostUserShared *object=
-)<br>
-+{<br>
-+=C2=A0 =C2=A0 QemuUUID uuid;<br>
-+=C2=A0 =C2=A0 memcpy(uuid.data, object-&gt;uuid, sizeof(object-&gt;uuid));=
-<br>
-+<br>
-+=C2=A0 =C2=A0 switch (object-&gt;type) {<br>
-+=C2=A0 =C2=A0 case VHOST_SHARED_OBJECT_ADD:<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 return virtio_add_dmabuf(&amp;uuid, object-&gt=
-;dmabuf_fd);<br>
-+=C2=A0 =C2=A0 case VHOST_SHARED_OBJECT_LOOKUP:<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 object-&gt;dmabuf_fd =3D virtio_lookup_dmabuf(=
-&amp;uuid);<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (object-&gt;dmabuf_fd &lt; 0) {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 return object-&gt;dmabuf_fd;<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 break;<br>
-+=C2=A0 =C2=A0 case VHOST_SHARED_OBJECT_REMOVE:<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 return virtio_remove_resource(&amp;uuid);<br>
-+=C2=A0 =C2=A0 }<br>
-+<br>
-+=C2=A0 =C2=A0 return 0;<br>
-+}<br>
-+<br>
-+static bool<br>
-+vhost_user_backend_send_dmabuf_fd(QIOChannel *ioc, VhostUserHeader *hdr,<b=
-r>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 VhostUserPayload *payload)<br=
->
-+{<br>
-+=C2=A0 =C2=A0 Error *local_err =3D NULL;<br>
-+=C2=A0 =C2=A0 struct iovec iov[2];<br>
-+=C2=A0 =C2=A0 if (hdr-&gt;flags &amp; VHOST_USER_NEED_REPLY_MASK) {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 hdr-&gt;flags &amp;=3D ~VHOST_USER_NEED_REPLY_=
-MASK;<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 hdr-&gt;flags |=3D VHOST_USER_REPLY_MASK;<br>
-+<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 hdr-&gt;size =3D sizeof(payload-&gt;object);<b=
-r>
-+<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 iov[0].iov_base =3D hdr;<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 iov[0].iov_len =3D VHOST_USER_HDR_SIZE;<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 iov[1].iov_base =3D payload;<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 iov[1].iov_len =3D hdr-&gt;size;<br>
-+<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (qio_channel_writev_all(ioc, iov, ARRAY_SIZ=
-E(iov), &amp;local_err)) {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 error_report_err(local_err);<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 return false;<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
-+=C2=A0 =C2=A0 }<br>
-+=C2=A0 =C2=A0 return true;<br>
-+}<br>
-+<br>
-=C2=A0static void close_slave_channel(struct vhost_user *u)<br>
-=C2=A0{<br>
-=C2=A0 =C2=A0 =C2=A0g_source_destroy(u-&gt;slave_src);<br>
-@@ -1639,6 +1701,12 @@ static gboolean slave_read(QIOChannel *ioc, GIOCondi=
-tion condition,<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0ret =3D vhost_user_slave_handle_vring_hos=
-t_notifier(dev, &amp;payload.area,<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0fd ? fd[0] : =
--1);<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0break;<br>
-+=C2=A0 =C2=A0 case VHOST_USER_BACKEND_SHARED_OBJECT:<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 ret =3D vhost_user_backend_handle_shared_objec=
-t(&amp;payload.object);<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (!vhost_user_backend_send_dmabuf_fd(ioc, &a=
-mp;hdr, &amp;payload)) {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 goto err;<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 break;<br>
-=C2=A0 =C2=A0 =C2=A0default:<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0error_report(&quot;Received unexpected ms=
-g type: %d.&quot;, hdr.request);<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0ret =3D -EINVAL;<br>
-diff --git a/subprojects/libvhost-user/libvhost-user.c b/subprojects/libvho=
-st-user/libvhost-user.c<br>
-index 8fb61e2df2..27f16d292a 100644<br>
---- a/subprojects/libvhost-user/libvhost-user.c<br>
-+++ b/subprojects/libvhost-user/libvhost-user.c<br>
-@@ -1403,6 +1403,94 @@ bool vu_set_queue_host_notifier(VuDev *dev, VuVirtq =
-*vq, int fd,<br>
-=C2=A0 =C2=A0 =C2=A0return vu_process_message_reply(dev, &amp;vmsg);<br>
-=C2=A0}<br>
-<br>
-+bool<br>
-+vu_get_shared_object(VuDev *dev, unsigned char uuid[UUID_LEN], int *dmabuf=
-_fd)<br>
-+{<br>
-+=C2=A0 =C2=A0 bool result =3D false;<br>
-+=C2=A0 =C2=A0 VhostUserMsg msg_reply;<br>
-+=C2=A0 =C2=A0 VhostUserMsg msg =3D {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 .request =3D VHOST_USER_BACKEND_SHARED_OBJECT,=
-<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 .size =3D sizeof(msg.payload.object),<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 .flags =3D VHOST_USER_VERSION | VHOST_USER_NEE=
-D_REPLY_MASK,<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 .payload.object =3D {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 .type =3D VHOST_SHARED_OBJECT_LO=
-OKUP,<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 },<br>
-+=C2=A0 =C2=A0 };<br>
-+<br>
-+=C2=A0 =C2=A0 memcpy(msg.payload.object.uuid, uuid, sizeof(uuid[0]) * UUID=
-_LEN);<br>
-+<br>
-+=C2=A0 =C2=A0 pthread_mutex_lock(&amp;dev-&gt;slave_mutex);<br>
-+=C2=A0 =C2=A0 if (!vu_message_write(dev, dev-&gt;slave_fd, &amp;msg)) {<br=
->
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 goto out;<br>
-+=C2=A0 =C2=A0 }<br>
-+<br>
-+=C2=A0 =C2=A0 if (!vu_message_read_default(dev, dev-&gt;slave_fd, &amp;msg=
-_reply)) {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 goto out;<br>
-+=C2=A0 =C2=A0 }<br>
-+<br>
-+=C2=A0 =C2=A0 if (msg_reply.request !=3D msg.request) {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 DPRINT(&quot;Received unexpected msg type. Exp=
-ected %d, received %d&quot;,<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0msg.request, msg_re=
-ply.request);<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 goto out;<br>
-+=C2=A0 =C2=A0 }<br>
-+<br>
-+=C2=A0 =C2=A0 *dmabuf_fd =3D msg_reply.payload.object.dmabuf_fd;<br>
-+=C2=A0 =C2=A0 result =3D *dmabuf_fd &gt; 0;<br>
-+out:<br>
-+=C2=A0 =C2=A0 pthread_mutex_unlock(&amp;dev-&gt;slave_mutex);<br>
-+<br>
-+=C2=A0 =C2=A0 return result;<br>
-+}<br>
-+<br>
-+static bool<br>
-+vu_send_message(VuDev *dev, VhostUserMsg *vmsg)<br>
-+{<br>
-+=C2=A0 =C2=A0 bool result =3D false;<br>
-+=C2=A0 =C2=A0 pthread_mutex_lock(&amp;dev-&gt;slave_mutex);<br>
-+=C2=A0 =C2=A0 if (!vu_message_write(dev, dev-&gt;slave_fd, vmsg)) {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 goto out;<br>
-+=C2=A0 =C2=A0 }<br>
-+<br>
-+=C2=A0 =C2=A0 result =3D true;<br>
-+out:<br>
-+=C2=A0 =C2=A0 pthread_mutex_unlock(&amp;dev-&gt;slave_mutex);<br>
-+<br>
-+=C2=A0 =C2=A0 return result;<br>
-+}<br>
-+<br>
-+bool<br>
-+vu_add_shared_object(VuDev *dev, unsigned char uuid[UUID_LEN], int dmabuf_=
-fd)<br>
-+{<br>
-+=C2=A0 =C2=A0 VhostUserMsg msg =3D {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 .request =3D VHOST_USER_BACKEND_SHARED_OBJECT,=
-<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 .size =3D sizeof(msg.payload.object),<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 .flags =3D VHOST_USER_VERSION,<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 .payload.object =3D {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 .dmabuf_fd =3D dmabuf_fd,<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 .type =3D VHOST_SHARED_OBJECT_AD=
-D,<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 },<br>
-+=C2=A0 =C2=A0 };<br>
-+=C2=A0 =C2=A0 memcpy(msg.payload.object.uuid, uuid, sizeof(uuid[0]) * UUID=
-_LEN);<br>
-+<br>
-+=C2=A0 =C2=A0 return vu_send_message(dev, &amp;msg);<br>
-+}<br>
-+<br>
-+bool<br>
-+vu_rm_shared_object(VuDev *dev, unsigned char uuid[UUID_LEN])<br>
-+{<br>
-+=C2=A0 =C2=A0 VhostUserMsg msg =3D {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 .request =3D VHOST_USER_BACKEND_SHARED_OBJECT,=
-<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 .size =3D sizeof(msg.payload.object),<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 .flags =3D VHOST_USER_VERSION,<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 .payload.object =3D {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 .type =3D VHOST_SHARED_OBJECT_RE=
-MOVE,<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 },<br>
-+=C2=A0 =C2=A0 };<br>
-+=C2=A0 =C2=A0 memcpy(msg.payload.object.uuid, uuid, sizeof(uuid[0]) * UUID=
-_LEN);<br>
-+<br>
-+=C2=A0 =C2=A0 return vu_send_message(dev, &amp;msg);<br>
-+}<br>
-+<br>
-=C2=A0static bool<br>
-=C2=A0vu_set_vring_call_exec(VuDev *dev, VhostUserMsg *vmsg)<br>
-=C2=A0{<br>
-diff --git a/subprojects/libvhost-user/libvhost-user.h b/subprojects/libvho=
-st-user/libvhost-user.h<br>
-index 49208cceaa..a43d115bd7 100644<br>
---- a/subprojects/libvhost-user/libvhost-user.h<br>
-+++ b/subprojects/libvhost-user/libvhost-user.h<br>
-@@ -119,6 +119,7 @@ typedef enum VhostUserSlaveRequest {<br>
-=C2=A0 =C2=A0 =C2=A0VHOST_USER_BACKEND_VRING_HOST_NOTIFIER_MSG =3D 3,<br>
-=C2=A0 =C2=A0 =C2=A0VHOST_USER_BACKEND_VRING_CALL =3D 4,<br>
-=C2=A0 =C2=A0 =C2=A0VHOST_USER_BACKEND_VRING_ERR =3D 5,<br>
-+=C2=A0 =C2=A0 VHOST_USER_BACKEND_SHARED_OBJECT =3D 6,<br>
-=C2=A0 =C2=A0 =C2=A0VHOST_USER_BACKEND_MAX<br>
-=C2=A0}=C2=A0 VhostUserSlaveRequest;<br>
-<br>
-@@ -172,6 +173,20 @@ typedef struct VhostUserInflight {<br>
-=C2=A0 =C2=A0 =C2=A0uint16_t queue_size;<br>
-=C2=A0} VhostUserInflight;<br>
-<br>
-+typedef enum VhostUserSharedType {<br>
-+=C2=A0 =C2=A0 VHOST_SHARED_OBJECT_ADD =3D 0,<br>
-+=C2=A0 =C2=A0 VHOST_SHARED_OBJECT_LOOKUP,<br>
-+=C2=A0 =C2=A0 VHOST_SHARED_OBJECT_REMOVE,<br>
-+} VhostUserSharedType;<br>
-+<br>
-+#define UUID_LEN 16<br>
-+<br>
-+typedef struct VhostUserShared {<br>
-+=C2=A0 =C2=A0 unsigned char uuid[UUID_LEN];<br>
-+=C2=A0 =C2=A0 VhostUserSharedType type;<br>
-+=C2=A0 =C2=A0 int dmabuf_fd;<br>
-+} VhostUserShared;<br>
-+<br>
-=C2=A0#if defined(_WIN32) &amp;&amp; (defined(__x86_64__) || defined(__i386=
-__))<br>
-=C2=A0# define VU_PACKED __attribute__((gcc_struct, packed))<br>
-=C2=A0#else<br>
-@@ -199,6 +214,7 @@ typedef struct VhostUserMsg {<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0VhostUserConfig config;<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0VhostUserVringArea area;<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0VhostUserInflight inflight;<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 VhostUserShared object;<br>
-=C2=A0 =C2=A0 =C2=A0} payload;<br>
-<br>
-=C2=A0 =C2=A0 =C2=A0int fds[VHOST_MEMORY_BASELINE_NREGIONS];<br>
-@@ -539,6 +555,46 @@ void vu_set_queue_handler(VuDev *dev, VuVirtq *vq,<br>
-=C2=A0bool vu_set_queue_host_notifier(VuDev *dev, VuVirtq *vq, int fd,<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0int size, int offset);<br>
-<br>
-+/**<br>
-+ * vu_get_shared_object:<br>
-+ * @dev: a VuDev context<br>
-+ * @uuid: UUID of the shared object<br>
-+ * @dmabuf_fd: output dma-buf file descriptor<br>
-+ *<br>
-+ * Lookup for a virtio shared object (i.e., dma-buf fd) associated with th=
-e<br>
-+ * received UUID. Result, if found, is stored in the dmabuf_fd argument.<b=
-r>
-+ *<br>
-+ * Returns: whether the virtio object was found.<br>
-+ */<br>
-+bool vu_get_shared_object(VuDev *dev, unsigned char uuid[UUID_LEN],<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 int *dmabuf_fd);<br>
-+<br>
-+/**<br>
-+ * vu_add_shared_object:<br>
-+ * @dev: a VuDev context<br>
-+ * @uuid: UUID of the shared object<br>
-+ * @dmabuf_fd: output dma-buf file descriptor<br>
-+ *<br>
-+ * Stores a new shared object (i.e., dma-buf fd) in the hash table, and <b=
-r>
-+ * associates it with the received UUID.<br>
-+ *<br>
-+ * Returns: TRUE on success, FALSE on failure.<br>
-+ */<br>
-+bool vu_add_shared_object(VuDev *dev, unsigned char uuid[UUID_LEN],<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 int dmabuf_fd);<br>
-+<br>
-+/**<br>
-+ * vu_rm_shared_object:<br>
-+ * @dev: a VuDev context<br>
-+ * @uuid: UUID of the shared object<br>
-+ *<br>
-+ * Removes a shared object (i.e., dma-buf fd) associated with the<br>
-+ * received UUID from the hash table.<br>
-+ *<br>
-+ * Returns: TRUE on success, FALSE on failure.<br>
-+ */<br>
-+bool vu_rm_shared_object(VuDev *dev, unsigned char uuid[UUID_LEN]);<br>
-+<br>
-=C2=A0/**<br>
-=C2=A0 * vu_queue_set_notification:<br>
-=C2=A0 * @dev: a VuDev context<br>
--- <br>
-2.40.0<br>
-<br>
-</blockquote></div><br clear=3D"all"><br><span class=3D"gmail_signature_pre=
-fix">-- </span><br><div dir=3D"ltr" class=3D"gmail_signature">Marc-Andr=C3=
-=A9 Lureau<br></div></div>
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 
---000000000000d2386a05febd97d7--
+
+>  #endif
+> -- 
+> 2.25.1
+
 
