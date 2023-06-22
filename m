@@ -2,68 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0BCA739585
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 04:33:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E2AC7395AE
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 05:03:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCA6V-0004fA-JE; Wed, 21 Jun 2023 22:31:23 -0400
+	id 1qCAaE-0002S5-RJ; Wed, 21 Jun 2023 23:02:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qCA6T-0004eW-BJ; Wed, 21 Jun 2023 22:31:21 -0400
-Received: from mail-vk1-xa2b.google.com ([2607:f8b0:4864:20::a2b])
+ (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
+ id 1qCAaA-0002Rj-Sk
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 23:02:03 -0400
+Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qCA6R-0005nz-PO; Wed, 21 Jun 2023 22:31:21 -0400
-Received: by mail-vk1-xa2b.google.com with SMTP id
- 71dfb90a1353d-4718bc88afdso137863e0c.0; 
- Wed, 21 Jun 2023 19:31:19 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
+ id 1qCAa9-00015m-4i
+ for qemu-devel@nongnu.org; Wed, 21 Jun 2023 23:02:02 -0400
+Received: by mail-pl1-x62a.google.com with SMTP id
+ d9443c01a7336-1b52e55f45bso32423915ad.2
+ for <qemu-devel@nongnu.org>; Wed, 21 Jun 2023 20:02:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1687401078; x=1689993078;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=iJIBVtz65dTcztWlQG+ldPtBFsQy64k73NwZLQlOEhw=;
- b=cUlSLAlzdCIEyYP0nl1FIaTAO03DuqMl+032wwZEjYwcbvWABLcQ4/4zR+iT6q83pE
- 1FCwHF7xlsoBm9lKshEtkX+JsGf5511oUnWQVVeYT5jvO/itZROCAW5e9z867CK4clmM
- 7G4YecCtxZ9hNBA2otZOUqmrA/SKLOeqZ6PpONnR7uEF/NETWABJuBvdTnTEqxd11XGk
- Czr+ZDRhyK1b2J8FAgs96H7Zp2TUpICCbpBtJ70aGPoWu0Zb42G/h9kMXYaMUXxATxtU
- Cd+gREcWe3FZtzWE97RziFfe0ilvncL+BcDlZiMqAbqbmnNjIzMZdclGS0FpQ/EMFXZl
- Mqow==
+ d=gmail.com; s=20221208; t=1687402919; x=1689994919;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=bHofG7CrnAk4nDIcLgG7PFbqjaFYBESwUa42jQJ79vI=;
+ b=dk8Q/CgQFX8Es0sq0ahbGjWq0doy8yoE+n1fryMbljBibSnCA7BoQH2Oiu/iCmQGlZ
+ qYRNlRGTsHXhUA5H7OxGBowQNrB2LMVRXYXQ6YZk8FS2cC1sTZ7XheGW9k25UoNseR3C
+ npPwqlnhEi0COc7ao6t/E+Fo/SX5t+B50wQ51FbobbKOeMAhd9v4EuwCfTRFhLeltB3W
+ pEkHRMIwtyBUYEIvPMpE8OsqTPQ6ZWkndf6jDfYskZ/eSYYPWrFQ6lvVAMU7+ask7tt5
+ QsXJauCOndpq3kXAB0ZRDcTbYSOZ3gBqDCJV3zbGyN49lLPwSb5XN6E+OFYkOTQq0ksS
+ PsUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687401078; x=1689993078;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=iJIBVtz65dTcztWlQG+ldPtBFsQy64k73NwZLQlOEhw=;
- b=F93Ts1hEZjB/KhBrCvJuHDOVDA/nd4SIq8x6x0YqtuYcJ5voVFYGbcZpPegnGS37+V
- hAPhKnoM8Fmp27TwuCrPL9jIJP83blY2ZDzJnGn9NXD5mFJRxE1PF75N0mAfXVqnKzA0
- g7s+G/wl8c9OLhi2KJBEX7sBtSqhG2Xj7uoPnrSRnrzHdKOvUBQUralZV7Z2kbS1YUel
- /+Aowihz5iUqLGinJmcAXr8cAvss0LvWASKykP98sHqJ0QBdYMlES0OlpXfb53pcXWiT
- pPpN4YKgELPZIwnacXOThY5dxLLQN2mZNvIJYKcaAavGnBsbA2A/wbiO3TOGp2sFZzK/
- Skxg==
-X-Gm-Message-State: AC+VfDzBSpm2vT8skxFQ8aXNEB6xihvCWIW4l3MUqvpyjsqX6vI7ABQk
- xtit0RQhmR3VF8HH8AqeISYHLwm+JEF4LsyBht4=
-X-Google-Smtp-Source: ACHHUZ4mNlWHs8sTmjap5bX4Mq1R/EfL2/vfhwz7FHw3v5UX6HnFfg/mjzZhVmR4p9LCHNYW9I0W8D20XGgzGPMdHXY=
-X-Received: by 2002:a05:6122:a08:b0:466:3bd9:778 with SMTP id
- 8-20020a0561220a0800b004663bd90778mr5456683vkn.6.1687401078339; Wed, 21 Jun
- 2023 19:31:18 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1687402919; x=1689994919;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=bHofG7CrnAk4nDIcLgG7PFbqjaFYBESwUa42jQJ79vI=;
+ b=UGtvjsLlXh44ILH8MYC6FEO6FnBe2xx1eafSEOfAZBqKzGF38CYl6DTXFvUyLACp1o
+ TeC08saQP+gStiGJ8FbmtLe5AQ5MmbQTNx3SrTINIP0T0Ueb4xt17Vr45csY+lIMFnY1
+ TV2hY78AvKvNRFB0QEWkGffx0MQ/NtA8kvMQVRjH0tORZREZQTchHVk+Kg1mpOqQkYN3
+ Gp+leNjPKoysU56ZTsUxTA/4erJsODn1Mb9f1nA9lgj7dfEY2KyWrheNRHwma7XApVUv
+ Qy1shxtuUhjGe2fXNRKJewLRJq8RvO6z0Aqh4HVbBLINV91BO0PAfXtWrB6jyDZIsMWA
+ pDgQ==
+X-Gm-Message-State: AC+VfDwO8c19hx+lzzhfY0VA/Wa7IxbBnHqdF7RrCpGqvETSaCI9KxIJ
+ wKBil0S47UQysyPuqDWV8zM=
+X-Google-Smtp-Source: ACHHUZ59DTeNShO9/gWQ3f+nep9X06GD7CPiSab2O5ToxUzHM1L76jiMDF+RHs6fhd79P9Fwnu2Uiw==
+X-Received: by 2002:a17:903:230e:b0:1b6:b1f3:adfe with SMTP id
+ d14-20020a170903230e00b001b6b1f3adfemr133481plh.16.1687402918974; 
+ Wed, 21 Jun 2023 20:01:58 -0700 (PDT)
+Received: from localhost ([117.136.38.170]) by smtp.gmail.com with ESMTPSA id
+ h12-20020a170902eecc00b001b3acbde983sm4217429plb.3.2023.06.21.20.01.57
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 21 Jun 2023 20:01:58 -0700 (PDT)
+From: Hawkins Jiawei <yin31149@gmail.com>
+To: jasowang@redhat.com,
+	mst@redhat.com,
+	eperezma@redhat.com
+Cc: qemu-devel@nongnu.org,
+	yin31149@gmail.com,
+	18801353760@163.com
+Subject: [PATCH RFC 0/3] Vhost-vdpa Shadow Virtqueue _F_CTRL_RX commands
+ support
+Date: Thu, 22 Jun 2023 11:01:41 +0800
+Message-Id: <cover.1687402580.git.yin31149@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <20230620152443.137079-1-dbarboza@ventanamicro.com>
-In-Reply-To: <20230620152443.137079-1-dbarboza@ventanamicro.com>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Thu, 22 Jun 2023 12:30:52 +1000
-Message-ID: <CAKmqyKNYdL6ftV-5OYRzTKfHm4ehYrA+kCuJwzdpsko9Bc0B4Q@mail.gmail.com>
-Subject: Re: [PATCH] target/riscv/cpu.c: fix veyron-v1 CPU properties
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
- bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
- palmer@rivosinc.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::a2b;
- envelope-from=alistair23@gmail.com; helo=mail-vk1-xa2b.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
+ envelope-from=yin31149@gmail.com; helo=mail-pl1-x62a.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -87,61 +93,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jun 21, 2023 at 1:25=E2=80=AFAM Daniel Henrique Barboza
-<dbarboza@ventanamicro.com> wrote:
->
-> Commit 7f0bdfb5bfc2 ("target/riscv/cpu.c: remove cfg setup from
-> riscv_cpu_init()") removed code that was enabling mmu, pmp, ext_ifencei
-> and ext_icsr from riscv_cpu_init(), the init() function of
-> TYPE_RISCV_CPU, parent type of all RISC-V CPUss. This was done to force
-> CPUs to explictly enable all extensions and features it requires,
-> without any 'magic values' that were inherited by the parent type.
->
-> This commit failed to make appropriate changes in the 'veyron-v1' CPU,
-> added earlier by commit e1d084a8524a. The result is that the veyron-v1
-> CPU has ext_ifencei, ext_icsr and pmp set to 'false', which is not the
-> case.
->
-> The reason why it took this long to notice (thanks LIU Zhiwei for
-> reporting it) is because Linux doesn't mind 'ifencei' and 'icsr' being
-> absent in the 'riscv,isa' DT, implying that they're both present if the
-> 'i' extension is enabled. OpenSBI also doesn't error out or warns about
-> the lack of 'pmp', it'll just not protect memory pages.
->
-> Fix it by setting them to 'true' in rv64_veyron_v1_cpu_init() like
-> 7f0bdfb5bfc2 already did with other CPUs.
->
-> Reported-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-> Fixes: 7f0bdfb5bfc2 ("target/riscv/cpu.c: remove cfg setup from riscv_cpu=
-_init()")
-> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+This series enables shadowed CVQ to intercept rx commands related to
+VIRTIO_NET_F_CTRL_RX feature through shadowed CVQ, update the virtio
+NIC device model so qemu send it in a migration, and the restore of
+that rx state in the destination.
 
-Thanks!
+Note that this patch should be based on [1], and conflicts [2], which have not
+been merged. I will submit the v2 patch after they are merged.
 
-Applied to riscv-to-apply.next
+[1]. https://lore.kernel.org/all/cover.1685704856.git.yin31149@gmail.com/
+[2]. https://lore.kernel.org/all/cover.1686746406.git.yin31149@gmail.com/
 
-Alistair
+Hawkins Jiawei (3):
+  vdpa: Restore MAC address filtering state
+  vdpa: Restore packet receive filtering state relative with _F_CTRL_RX
+    feature
+  vdpa: Allow VIRTIO_NET_F_CTRL_RX in SVQ
 
-> ---
->  target/riscv/cpu.c | 3 +++
->  1 file changed, 3 insertions(+)
->
-> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-> index 881bddf393..707f62b592 100644
-> --- a/target/riscv/cpu.c
-> +++ b/target/riscv/cpu.c
-> @@ -444,6 +444,9 @@ static void rv64_veyron_v1_cpu_init(Object *obj)
->
->      /* Enable ISA extensions */
->      cpu->cfg.mmu =3D true;
-> +    cpu->cfg.ext_ifencei =3D true;
-> +    cpu->cfg.ext_icsr =3D true;
-> +    cpu->cfg.pmp =3D true;
->      cpu->cfg.ext_icbom =3D true;
->      cpu->cfg.cbom_blocksize =3D 64;
->      cpu->cfg.cboz_blocksize =3D 64;
-> --
-> 2.41.0
->
->
+ net/vhost-vdpa.c | 114 ++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 113 insertions(+), 1 deletion(-)
+
+-- 
+2.25.1
+
 
