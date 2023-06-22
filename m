@@ -2,99 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 814CC73A18C
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 15:11:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC0F573A193
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 15:12:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCK5o-00071c-VQ; Thu, 22 Jun 2023 09:11:21 -0400
+	id 1qCK6v-0007rd-Mo; Thu, 22 Jun 2023 09:12:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qCK5j-00071S-0Z
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 09:11:17 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qCK5h-0008CB-Hh
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 09:11:14 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687439472;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=n89m/SrAH6JVNZOGhqPJ9Vqr0FQk728C112jp9EjiPs=;
- b=HOU217XVATpHfRpto6190zKXoK+5dujK73WE4hlncmdkjndN2ecjRVM3CVI0tJwo1Md0wV
- 4bJ9vzGCkQDqQjuNfZmroQ7n7agL2vAkLgwVTamAaxfK04tcdLBV6DusoFamrWigBrvVuM
- Ij6M1/EQhSjXT34T9QudXhoT1FKIJcY=
-Received: from mail-lf1-f70.google.com (209.85.167.70 [209.85.167.70]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-553-9ukxONAUPSWoiW1msBOnOg-1; Thu,
- 22 Jun 2023 09:10:56 -0400
-X-MC-Unique: 9ukxONAUPSWoiW1msBOnOg-1
-Received: by mail-lf1-f70.google.com with SMTP id
- 2adb3069b0e04-4f3932e595dso5241074e87.1
- for <qemu-devel@nongnu.org>; Thu, 22 Jun 2023 06:10:55 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qCK6t-0007rQ-7C
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 09:12:27 -0400
+Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qCK6r-0008Ke-Nv
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 09:12:26 -0400
+Received: by mail-ed1-x533.google.com with SMTP id
+ 4fb4d7f45d1cf-51bece5d935so445090a12.1
+ for <qemu-devel@nongnu.org>; Thu, 22 Jun 2023 06:12:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1687439544; x=1690031544;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=SA/vJ+l8fw/3erSXBdeD5XJaOhP7w1IQ/WvPiGWpej4=;
+ b=v59WapG6leh1rE7BRWhskTnfIt7qdPr0QNYzwqi/sXsb3VRgnVKJBbnM2jBsaomgaK
+ OP8HKKdzo2L+XQeZA7CHe3/hO9p5sF2QyU+I/VgSL9TmN4cmF1EalHCgonI40jFnv08g
+ R8GI5GiFgTPl1D6myNvQoeeG/a/xJWGzfl4y2KtFgEtsM3ZJ4VdDPmk/R+3AtQ22IOtI
+ QXMGC++MDs+VN77AFdfQrMsRHxr02hkCP/5wgVTSNgGCstkabxwfzOmvKEOwF775nWYU
+ ns1AtQYTQT8Px+c/DUiBuM9Ye/HG7r5lbPo1rcuOx3YCHrcS54oUJ++LzFi9Tbc0aYUD
+ c3MQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687439450; x=1690031450;
- h=content-transfer-encoding:in-reply-to:organization:from:references
- :cc:to:content-language:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20221208; t=1687439544; x=1690031544;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=n89m/SrAH6JVNZOGhqPJ9Vqr0FQk728C112jp9EjiPs=;
- b=JHfTYE3jzesF+LNvDTHsjcn4RK5ZJEBNJN9wjm7VF0816VvyP+dFyVMnV96vrfpa3l
- /JMHbgs2066QnCrLFTkCh5FW++SgV/69w5pCoLNykhquN4JV/9XVXXKDplsm9YHY/kDn
- dftrtg57UJXQxPpoDLBGZ4B2DDafgCWCJlNT4wXWrptLUhAChNvUfQpRIUrphhhSbiSI
- fwI4eaBqJLgRtmKz4pX0k7zMilnjikG0eEFgrZJE6DrNy1DiP15RBBIlN3jTVAT+pi75
- 8ZCvOEmAnig8/4SV8KOgIDUnWV57fo5EaJOt+k5iWJ6aPMvdYDmsKzVs//NsuSdwi29W
- XudA==
-X-Gm-Message-State: AC+VfDwthu5rQ3R/mdb0XHLqK0L8oqBmUZr0n5x9UBXx9dWzHVyQdAda
- x3wWUvfSTfidR3gzPgkOAK5ZudI/pLfXM/ZuVQlhGivtM/NdkZ4Nzj6BEyjXLn/EUKXgmUSvPIb
- sVA3OAq9B+stjN+k=
-X-Received: by 2002:a05:6512:614:b0:4f8:7489:f1e5 with SMTP id
- b20-20020a056512061400b004f87489f1e5mr1789365lfe.38.1687439449777; 
- Thu, 22 Jun 2023 06:10:49 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ50jtgRPVpOE3dsPE77V/Vqqv44BPBXyfVI+cDcmFH/H1XEW/Jnjbd0BGP26mQFqNSOaNZl+A==
-X-Received: by 2002:a05:6512:614:b0:4f8:7489:f1e5 with SMTP id
- b20-20020a056512061400b004f87489f1e5mr1789341lfe.38.1687439449397; 
- Thu, 22 Jun 2023 06:10:49 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c71a:c00:a3d3:85e8:742c:2e9?
- (p200300cbc71a0c00a3d385e8742c02e9.dip0.t-ipconnect.de.
- [2003:cb:c71a:c00:a3d3:85e8:742c:2e9])
- by smtp.gmail.com with ESMTPSA id
- f20-20020a7bcd14000000b003f7f2a1484csm7720491wmj.5.2023.06.22.06.10.48
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 22 Jun 2023 06:10:48 -0700 (PDT)
-Message-ID: <0c2d7680-4aa4-9d88-7cc7-62dc3b9535a1@redhat.com>
-Date: Thu, 22 Jun 2023 15:10:47 +0200
+ bh=SA/vJ+l8fw/3erSXBdeD5XJaOhP7w1IQ/WvPiGWpej4=;
+ b=c+K7Tl8QWweaUuB85e9zE6lOTik24g1Tvs5sq8EzV6LF04vSShmuc9liQ2RwDx0/IT
+ OK59+6wb3ClYLQ1vhuKYD0ToqSOfJE/YRl2CjgnNLt8pitTAh/MvhEQetTR/JWzMZ0Do
+ IZvkJsJLxqZsj2K9BIUzar7OsEmSUlzPu0pVj2SEEFxneb47mBUdtRkreNtDKrQ2rrEs
+ UcQg3olRloSjoLUVDQ2fweGq2czTOwvUfx0u3waufo2rpYHyxn3xnUbtyP/ac/CHohde
+ eAtc96nVd5kCK8o1AkC2hRhBj3G/ytiu+MjVEJRvsBZVmwk765K2WyfYe+bTN8DH8nsx
+ KmHQ==
+X-Gm-Message-State: AC+VfDxoBxjUhKFxQk33BX8hYRp1H+3zS0PTS5ar+5+7+ND0E28KUXwZ
+ pWmc57weJ6GwjMfIin7u1Sdyt0kVjLdY5zdBAuGYdA==
+X-Google-Smtp-Source: ACHHUZ6hdY9cQJ1Jceqn1pX0tfSBzc1+nIhKcyY+JGR1wkuifQdFb0G+4zX7tUSafOMTj6TQDUexYFjQ3Hb1NQNFePo=
+X-Received: by 2002:aa7:c48b:0:b0:51a:4975:f515 with SMTP id
+ m11-20020aa7c48b000000b0051a4975f515mr11553653edq.38.1687439544203; Thu, 22
+ Jun 2023 06:12:24 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH v1 1/4] softmmu/physmem: Warn with
- ram_block_discard_range() on MAP_PRIVATE file mapping
-Content-Language: en-US
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
- Juan Quintela <quintela@redhat.com>, Leonardo Bras <leobras@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- Peng Tao <tao.peng@linux.alibaba.com>
-References: <20230620130354.322180-1-david@redhat.com>
- <20230620130354.322180-2-david@redhat.com> <ZJMdZRoeu9BVm0z8@x1n>
- <9f7afce0-ff7f-33f8-4f39-bba77f2b2ba4@redhat.com> <ZJMrhgEbzYUyt1KH@x1n>
-From: David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-In-Reply-To: <ZJMrhgEbzYUyt1KH@x1n>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+References: <20230620195054.23929-1-lvivier@redhat.com>
+ <20230620195054.23929-3-lvivier@redhat.com>
+In-Reply-To: <20230620195054.23929-3-lvivier@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 22 Jun 2023 14:12:13 +0100
+Message-ID: <CAFEAcA_r31PU1LRka36dSJ6vZ2boP33MB=Ns5hDMRrSTN1Lmag@mail.gmail.com>
+Subject: Re: [PATCH 2/2] tpm_crb: mark memory as protected
+To: Laurent Vivier <lvivier@redhat.com>
+Cc: qemu-devel@nongnu.org, Stefan Berger <stefanb@linux.vnet.ibm.com>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ jasowang@redhat.com, mst@redhat.com, David Hildenbrand <david@redhat.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, marcandre.lureau@redhat.com,
+ eric.auger@redhat.com, Peter Xu <peterx@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::533;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x533.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -111,55 +89,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 21.06.23 18:55, Peter Xu wrote:
-> On Wed, Jun 21, 2023 at 06:17:37PM +0200, David Hildenbrand wrote:
->> As documented, ram_block_discard_range() guarantees two things
->>
->> a) Read 0 after discarding succeeded
->> b) Make postcopy work by triggering a fault on next access
->>
->> And if we'd simply want to drop the FALLOC_FL_PUNCH_HOLE:
->>
->> 1) For hugetlb, only newer kernels support MADV_DONTNEED. So there is no way
->> to just discard in a private mapping here that works for kernels we still
->> care about.
->>
->> 2) free-page-reporting wants to read 0's when re-accessing discarded memory.
->> If there is still something there in the file, that won't work.
-> 
-> Ah right.  The semantics is indeed slightly different..
-> 
-> IMHO, ideally here we need a zero page installed as private, ignoring the
-> page cache underneath, freeing any possible private page.  But I just don't
-> know how to do that easily with current default mm infrastructures, or
-> free-page-reporting over private mem seems just won't really work at all,
-> it seems to me.
-> 
-> Maybe.. UFFDIO_ZEROPAGE would work? We need uffd registered by default, but
-> that's slightly tricky.
+On Tue, 20 Jun 2023 at 20:51, Laurent Vivier <lvivier@redhat.com> wrote:
+>
+> This memory is not correctly aligned and cannot be registered
+> by vDPA and VFIO.
 
-Maybe ... depends also on the uffd semantics as in 3).
+Isn't this a vDPA/VFIO problem? There's no requirement
+for RAM MemoryRegions to be aligned in any way. Code
+that doesn't want to work with small or weirdly aligned
+regions should skip them if that's the right behaviour
+for that particular code IMHO.
 
-> 
->>
->> 3) Regarding postcopy on MAP_PRIVATE shmem, I am not sure if it will
->> actually do what you want if the pagecache holds a page. Maybe it works, but
->> I am not so sure. Needs investigation.
-> 
-> For MINOR I think it will.  I actually already implemented some of that (I
-> think, all of that is required) in the HGM qemu rfc series, and smoked it a
-> bit without any known issue yet with the HGM kernel.
-> 
-> IIUC we can work on MINOR support without HGM; I can separate it out.  It's
-> really a matter of whether it'll be worthwhile the effort and time.
+> An error is reported for vhost-vdpa case:
+> qemu-kvm: vhost_vdpa_listener_region_add received unaligned region
+>
+> To make it ignored by VFIO and vDPA devices, mark it as RAM_PROTECTED.
+>
+> The RAM_PROTECTED flag has been introduced to skip memory
+> region that looks like RAM but is not accessible via normal
+> mechanims, including DMA.
 
-Yes, MINOR might work. But especially postcopy doesn't make too much 
-sense targeting a private mapping that has some other pages in there 
-already ... so it might not be worth the trouble I guess.
+You can DMA to a small RAM region if you want to...
 
--- 
-Cheers,
-
-David / dhildenb
-
+thanks
+-- PMM
 
