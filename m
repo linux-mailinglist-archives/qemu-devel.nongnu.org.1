@@ -2,83 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D404739E07
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 12:08:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05EE1739E1C
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 12:14:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCHEG-0002lx-UB; Thu, 22 Jun 2023 06:07:52 -0400
+	id 1qCHJ8-0005uG-Pw; Thu, 22 Jun 2023 06:12:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qCHED-0002gT-5T
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 06:07:49 -0400
-Received: from mail-lj1-x230.google.com ([2a00:1450:4864:20::230])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qCHEB-0008Tc-3U
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 06:07:48 -0400
-Received: by mail-lj1-x230.google.com with SMTP id
- 38308e7fff4ca-2b47742de92so67584071fa.0
- for <qemu-devel@nongnu.org>; Thu, 22 Jun 2023 03:07:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687428452; x=1690020452;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=nfKvOgOrbkgkXViPw7vzimy09tR0n7wu6nRhHT0mqj0=;
- b=uCAvesJlEbiGITu28gkVfUlziLgIoX/sUBIeHW9iBPFjKPU+Mz84nExk9ru72YotqL
- JCyZ3SGVZRmpexJTYD0gmuNfMxngBk1T7t/yUGdj9c/BKDA0zVTqtO+tcjmtsgxqjVvF
- bTX72UWqvWOerz6IgNixqObN2YU6nkvlhLK0AXp7n3U6/FDiekr/bVtavYzY4VVl1Sp6
- 6G4krcxyO3aAzu0bnC8hrlJFDv7/+MpOjdZR/YnCv6DMRzrwwKB8vwZUELjygVrcgtFB
- pte17ULNN6XTR3UdbiXwOGxQTPzv6kwMoHOd0UuaQ8f+xxcaO7ett2fnpLZ9tq0tT2Z0
- Juig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687428452; x=1690020452;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=nfKvOgOrbkgkXViPw7vzimy09tR0n7wu6nRhHT0mqj0=;
- b=G9eQLP2pDo4qImCshwwop0MpiS0mpTIr+T2FYFROIeKS1HMfHMeF0/+/stZi6mY2Ar
- ZMwxdA9k9Cu1xwFiJfVoOsTm4SvCkam2gNRGzFGDQoAjMvp6lx3I9/AsM9U6YDQd1UqP
- yFUDuLv3t0eRzJq0Ta7m/KWcZB1nhBrmjMJVI3Jp8i6zmOSsyy3YiQkoKRuYSPcIG8Hu
- m84odeYzlp6kIdqaRoF7O2dcr1DJ78B6FGHBNLLhuyDTnDD0b2dwaGVwNApdkuovgtXV
- UEd64VgLrGv7hGpmhhfL6gsKrqkUNZn3Yml0BynXbVaBPBGHD4l905tlwoNDJnX1Sf14
- CO5w==
-X-Gm-Message-State: AC+VfDyPjd3oKqdcB+7eMIN2Yhmp5/Q45wxiZ0K3vSLVPCeZ2JTsTPd6
- s/+SvC4gakII320QOdp07+6mtwlXXqmm6emV2jEpGw==
-X-Google-Smtp-Source: ACHHUZ6CeEaQzusqYfZHzslq1oEa2jfJKMElEqh5WtAfXQttGmJi/HSmj+f4y1OTwr6ZgKw4jRmxIA==
-X-Received: by 2002:a05:6512:3109:b0:4f8:6534:9a5f with SMTP id
- n9-20020a056512310900b004f865349a5fmr9000030lfb.36.1687428452096; 
- Thu, 22 Jun 2023 03:07:32 -0700 (PDT)
-Received: from [192.168.122.175] (127.red-88-28-17.dynamicip.rima-tde.net.
- [88.28.17.127]) by smtp.gmail.com with ESMTPSA id
- f4-20020a5d58e4000000b00311299df211sm6696332wrd.77.2023.06.22.03.07.30
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 22 Jun 2023 03:07:31 -0700 (PDT)
-Message-ID: <773ac3d3-a7a1-13eb-7434-67e0db9b64c9@linaro.org>
-Date: Thu, 22 Jun 2023 12:07:28 +0200
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qCHJ7-0005tr-8U
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 06:12:53 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qCHJ5-00023h-6u
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 06:12:53 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1687428769;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=zOrxnBQY2m2uV8IDYJmtbHH3tt0LHi27rfHj5y/YCZc=;
+ b=LNeFUwEifChKUcY+Sl+vWW737DR5AdIS8l3SgWAApDHdWkJHjuojJpIfoxY4dHpOoSTehV
+ q/nDu7+6uxucE7Za41XKnYhwjBJ67GOWYQHH7mzXjze6AB79BZ5j2UBf7uGox5cMOA0hxd
+ iczMg55+v0jcch4oIAXAhq5sNc0yiRY=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-627-UlxZjnVrNA2TLqtGoD-cZg-1; Thu, 22 Jun 2023 06:12:48 -0400
+X-MC-Unique: UlxZjnVrNA2TLqtGoD-cZg-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A20BD280BC42;
+ Thu, 22 Jun 2023 10:12:47 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.45])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id C8CA2112132C;
+ Thu, 22 Jun 2023 10:12:46 +0000 (UTC)
+Date: Thu, 22 Jun 2023 11:12:44 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Steve Sistare <steven.sistare@oracle.com>
+Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>,
+ Peter Xu <peterx@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: Re: [PATCH V2] migration: file URI
+Message-ID: <ZJQenKR1aMJzaLCu@redhat.com>
+References: <1686163139-256654-1-git-send-email-steven.sistare@oracle.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.12.0
-Subject: Re: [PATCH v4 00/24] q800: add support for booting MacOS Classic -
- part 1
-Content-Language: en-US
-To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, laurent@vivier.eu,
- qemu-devel@nongnu.org
-References: <20230621085353.113233-1-mark.cave-ayland@ilande.co.uk>
- <0e8c4da9-2b33-dc24-77b0-cea5bdd905a3@linaro.org>
- <0da13e10-27d4-ff12-656d-291bff2e1b70@ilande.co.uk>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <0da13e10-27d4-ff12-656d-291bff2e1b70@ilande.co.uk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::230;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x230.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <1686163139-256654-1-git-send-email-steven.sistare@oracle.com>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.093,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -92,74 +78,220 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 21/6/23 16:06, Mark Cave-Ayland wrote:
-> On 21/06/2023 10:42, Philippe Mathieu-Daudé wrote:
+On Wed, Jun 07, 2023 at 11:38:59AM -0700, Steve Sistare wrote:
+> Extend the migration URI to support file:<filename>.  This can be used for
+> any migration scenario that does not require a reverse path.  It can be used
+> as an alternative to 'exec:cat > file' in minimized containers that do not
+> contain /bin/sh, and it is easier to use than the fd:<fdname> URI.  It can
+> be used in HMP commands, and as a qemu command-line parameter.
 > 
->> On 21/6/23 10:53, Mark Cave-Ayland wrote:
->>> [MCA: the original series has now been split into 2 separate parts 
->>> based upon
->>> Phil's comments re: QOM parenting for objects in Q800MachineState. 
->>> Part 1
->>> consists of the Q800MachineState patches along with QOM parenting 
->>> fixes and
->>> the 2 mac_via RTC patches.]
->>>
->>> This series contains the remaining patches needed to allow QEMU's q800
->>> machine to boot MacOS Classic when used in conjunction with a real
->>> Quadra 800 ROM image. In fact with this series applied it is possible
->>> to boot all of the following OSs:
->>>
->>>    - MacOS 7.1 - 8.1, with or without virtual memory enabled
->>>    - A/UX 3.0.1
->>>    - NetBSD 9.3
->>>    - Linux (via EMILE)
->>>
->>> If you are ready to experience some 90s nostalgia then all you need is
->>> to grab yourself a copy of the Quadra 800 ROM (checksum 0xf1acad13) 
->>> and a
->>> suitable install ISO as follows:
->>>
->>>    # Prepare a PRAM image
->>>    $ qemu-img create -f raw pram.img 256b
->>>
->>>    # Launch QEMU with blank disk and install CDROM
->>>    $ ./qemu-system-m68k \
->>>        -M q800 \
->>>        -m 128 \
->>>        -bios Quadra800.rom \
->>>        -drive file=pram.img,format=raw,if=mtd \
->>>        -drive file=disk.img,media=disk,format=raw,if=none,id=hd \
->>>        -device scsi-hd,scsi-id=0,drive=hd \
->>>        -drive file=cdrom.iso,media=cdrom,if=none,id=cd \
->>>        -device scsi-cd,scsi-id=3,drive=cd
->>>
->>> And off you go! For more in-depth information about the installation 
->>> process
->>> I highly recommend the installation guide over at emaculation.com [1].
->>> Compatibility is generally very good, and I'm pleased to report it is 
->>> possible
->>> to run one of the most popular productivity apps from the 90s [2].
->>
->> Could you add an Avocado test for this machine? See how the
->> MipsFuloong2e test (tests/avocado/machine_mips_fuloong2e.py)
->> handles the firmware (RESCUE_YL_PATH).
-> 
-> In theory it is possible to do this, but how do we handle booting 
-> proprietary OS ISOs that are still within copyright?
+> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 
-Just provide the hash. You are not redistributing anything.
+In the cases where libvirt wants to save/restore QEMU migration state
+to a file, we also need to have libvirt header and XML document at the
+front of the file.
 
-> Also this is only 
-> part 1 of the required changes, you'll need part 2 applied in order to 
-> achieve a successful boot :)
+IOW, if libvirt is to be able to use this new 'file:' protocol, then
+it neeeds to have the ability to specify an offset too. eg so libvirt
+can tell QEMU to start reading/writing at, for example, 4MB offset
+from the start.
+
+Should be fairly easy to add on top of this - just requires support
+for a URI parameter, and then a seek once the file is opened.
+
+> ---
+>  migration/file.c       | 62 ++++++++++++++++++++++++++++++++++++++++++++++++++
+>  migration/file.h       | 14 ++++++++++++
+>  migration/meson.build  |  1 +
+>  migration/migration.c  |  5 ++++
+>  migration/trace-events |  4 ++++
+>  qemu-options.hx        |  6 ++++-
+>  6 files changed, 91 insertions(+), 1 deletion(-)
+>  create mode 100644 migration/file.c
+>  create mode 100644 migration/file.h
 > 
+> diff --git a/migration/file.c b/migration/file.c
+> new file mode 100644
+> index 0000000..8e35827
+> --- /dev/null
+> +++ b/migration/file.c
+> @@ -0,0 +1,62 @@
+> +/*
+> + * Copyright (c) 2021-2023 Oracle and/or its affiliates.
+> + *
+> + * This work is licensed under the terms of the GNU GPL, version 2.
+> + * See the COPYING file in the top-level directory.
+> + */
+> +
+> +#include "qemu/osdep.h"
+> +#include "channel.h"
+> +#include "file.h"
+> +#include "migration.h"
+> +#include "io/channel-file.h"
+> +#include "io/channel-util.h"
+> +#include "trace.h"
+> +
+> +void file_start_outgoing_migration(MigrationState *s, const char *filename,
+> +                                   Error **errp)
+> +{
+> +    g_autoptr(QIOChannelFile) fioc = NULL;
+> +    QIOChannel *ioc;
+> +
+> +    trace_migration_file_outgoing(filename);
+> +
+> +    fioc = qio_channel_file_new_path(filename, O_CREAT | O_WRONLY | O_TRUNC,
+> +                                     0600, errp);
+> +    if (!fioc) {
+> +        return;
+> +    }
+> +
+> +    ioc = QIO_CHANNEL(fioc);
+> +    qio_channel_set_name(ioc, "migration-file-outgoing");
+> +    migration_channel_connect(s, ioc, NULL, NULL);
+> +}
+> +
+> +static gboolean file_accept_incoming_migration(QIOChannel *ioc,
+> +                                               GIOCondition condition,
+> +                                               gpointer opaque)
+> +{
+> +    migration_channel_process_incoming(ioc);
+> +    object_unref(OBJECT(ioc));
+> +    return G_SOURCE_REMOVE;
+> +}
+> +
+> +void file_start_incoming_migration(const char *filename, Error **errp)
+> +{
+> +    QIOChannelFile *fioc = NULL;
+> +    QIOChannel *ioc;
+> +
+> +    trace_migration_file_incoming(filename);
+> +
+> +    fioc = qio_channel_file_new_path(filename, O_RDONLY, 0, errp);
+> +    if (!fioc) {
+> +        return;
+> +    }
+> +
+> +    ioc = QIO_CHANNEL(fioc);
+> +    qio_channel_set_name(QIO_CHANNEL(ioc), "migration-file-incoming");
+> +    qio_channel_add_watch_full(ioc, G_IO_IN,
+> +                               file_accept_incoming_migration,
+> +                               NULL, NULL,
+> +                               g_main_context_get_thread_default());
+> +}
+> diff --git a/migration/file.h b/migration/file.h
+> new file mode 100644
+> index 0000000..841b94a
+> --- /dev/null
+> +++ b/migration/file.h
+> @@ -0,0 +1,14 @@
+> +/*
+> + * Copyright (c) 2021-2023 Oracle and/or its affiliates.
+> + *
+> + * This work is licensed under the terms of the GNU GPL, version 2.
+> + * See the COPYING file in the top-level directory.
+> + */
+> +
+> +#ifndef QEMU_MIGRATION_FILE_H
+> +#define QEMU_MIGRATION_FILE_H
+> +void file_start_incoming_migration(const char *filename, Error **errp);
+> +
+> +void file_start_outgoing_migration(MigrationState *s, const char *filename,
+> +                                   Error **errp);
+> +#endif
+> diff --git a/migration/meson.build b/migration/meson.build
+> index 8ba6e42..3af817e 100644
+> --- a/migration/meson.build
+> +++ b/migration/meson.build
+> @@ -16,6 +16,7 @@ softmmu_ss.add(files(
+>    'dirtyrate.c',
+>    'exec.c',
+>    'fd.c',
+> +  'file.c',
+>    'global_state.c',
+>    'migration-hmp-cmds.c',
+>    'migration.c',
+> diff --git a/migration/migration.c b/migration/migration.c
+> index dc05c6f..cfbde86 100644
+> --- a/migration/migration.c
+> +++ b/migration/migration.c
+> @@ -20,6 +20,7 @@
+>  #include "migration/blocker.h"
+>  #include "exec.h"
+>  #include "fd.h"
+> +#include "file.h"
+>  #include "socket.h"
+>  #include "sysemu/runstate.h"
+>  #include "sysemu/sysemu.h"
+> @@ -442,6 +443,8 @@ static void qemu_start_incoming_migration(const char *uri, Error **errp)
+>          exec_start_incoming_migration(p, errp);
+>      } else if (strstart(uri, "fd:", &p)) {
+>          fd_start_incoming_migration(p, errp);
+> +    } else if (strstart(uri, "file:", &p)) {
+> +        file_start_incoming_migration(p, errp);
+>      } else {
+>          error_setg(errp, "unknown migration protocol: %s", uri);
+>      }
+> @@ -1662,6 +1665,8 @@ void qmp_migrate(const char *uri, bool has_blk, bool blk,
+>          exec_start_outgoing_migration(s, p, &local_err);
+>      } else if (strstart(uri, "fd:", &p)) {
+>          fd_start_outgoing_migration(s, p, &local_err);
+> +    } else if (strstart(uri, "file:", &p)) {
+> +        file_start_outgoing_migration(s, p, &local_err);
+>      } else {
+>          if (!(has_resume && resume)) {
+>              yank_unregister_instance(MIGRATION_YANK_INSTANCE);
+> diff --git a/migration/trace-events b/migration/trace-events
+> index cdaef7a..c8c1771 100644
+> --- a/migration/trace-events
+> +++ b/migration/trace-events
+> @@ -307,6 +307,10 @@ migration_exec_incoming(const char *cmd) "cmd=%s"
+>  migration_fd_outgoing(int fd) "fd=%d"
+>  migration_fd_incoming(int fd) "fd=%d"
+>  
+> +# file.c
+> +migration_file_outgoing(const char *filename) "filename=%s"
+> +migration_file_incoming(const char *filename) "filename=%s"
+> +
+>  # socket.c
+>  migration_socket_incoming_accepted(void) ""
+>  migration_socket_outgoing_connected(const char *hostname) "hostname=%s"
+> diff --git a/qemu-options.hx b/qemu-options.hx
+> index b37eb96..b93449d 100644
+> --- a/qemu-options.hx
+> +++ b/qemu-options.hx
+> @@ -4610,6 +4610,7 @@ DEF("incoming", HAS_ARG, QEMU_OPTION_incoming, \
+>      "                prepare for incoming migration, listen on\n" \
+>      "                specified protocol and socket address\n" \
+>      "-incoming fd:fd\n" \
+> +    "-incoming file:filename\n" \
+>      "-incoming exec:cmdline\n" \
+>      "                accept incoming migration on given file descriptor\n" \
+>      "                or from given external command\n" \
+> @@ -4626,7 +4627,10 @@ SRST
+>      Prepare for incoming migration, listen on a given unix socket.
+>  
+>  ``-incoming fd:fd``
+> -    Accept incoming migration from a given filedescriptor.
+> +    Accept incoming migration from a given file descriptor.
+> +
+> +``-incoming file:filename``
+> +    Accept incoming migration from a given file.
+>  
+>  ``-incoming exec:cmdline``
+>      Accept incoming migration as an output from specified external
+> -- 
+> 1.8.3.1
 > 
-> ATB,
-> 
-> Mark.
-> 
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
