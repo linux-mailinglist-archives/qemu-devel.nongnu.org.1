@@ -2,87 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0908873A4CF
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 17:26:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B9E1473A55E
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 17:50:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCMC5-0003aG-D1; Thu, 22 Jun 2023 11:25:57 -0400
+	id 1qCMYW-0000EQ-Nv; Thu, 22 Jun 2023 11:49:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qCMBm-0003P6-RR
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 11:25:39 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <jsuvorov@redhat.com>)
+ id 1qCMYV-0000E7-6R
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 11:49:07 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qCMBk-0001h3-7N
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 11:25:38 -0400
+ (Exim 4.90_1) (envelope-from <jsuvorov@redhat.com>)
+ id 1qCMYT-0002rD-LS
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 11:49:06 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687447534;
+ s=mimecast20190719; t=1687448942;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=0CSgMr8YKwuQ6xdtqio2ML7E9iZ0GLkqG4lEE5oQt5Y=;
- b=BstL2jGllC+OjlCaxRonKfXtENEJV11eyFlyvw9YNc0v+Zape+fzuZRioGujvdu4F/RtrO
- oA/lLYNqfOXAyeU1PQc3IdzfldPCF8Ex50cE8oW+3bFt3UpDLpL25VjAt0qlwsr6qbIq4h
- 6xGDXavbsVX6JQzKJGUFUMSL0AQXjtM=
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
- [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=wclAg+vy4266bIR7uN7BxS6xtNG6WGepnyY3DjNrtko=;
+ b=Pnro+7MkXhk5+9xx2GQZ6lXhTEw78BvAnjirGKT4/GZMN23mHLvuOcen3fC4L7xvnfnhuZ
+ L+8DJjkiFVH/3ZeCxFtCS2w8FTCS+LJFbrr0FbjwA14oUtYu2qyL4IjNZoFBQT5YelrDFh
+ E8gsoHx0Yb/bBS8wipOpjn6OmLOCb1g=
+Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
+ [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-257-S6Y5KAGVMZSlKziHGZEdsg-1; Thu, 22 Jun 2023 11:25:27 -0400
-X-MC-Unique: S6Y5KAGVMZSlKziHGZEdsg-1
-Received: by mail-qt1-f197.google.com with SMTP id
- d75a77b69052e-3f8283a3a7aso17650341cf.1
- for <qemu-devel@nongnu.org>; Thu, 22 Jun 2023 08:25:21 -0700 (PDT)
+ us-mta-639-6bVZQRe2MC2oNNKtg2h7Aw-1; Thu, 22 Jun 2023 11:47:02 -0400
+X-MC-Unique: 6bVZQRe2MC2oNNKtg2h7Aw-1
+Received: by mail-lf1-f71.google.com with SMTP id
+ 2adb3069b0e04-4f84a8b00e3so5496589e87.0
+ for <qemu-devel@nongnu.org>; Thu, 22 Jun 2023 08:47:01 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687447521; x=1690039521;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=0CSgMr8YKwuQ6xdtqio2ML7E9iZ0GLkqG4lEE5oQt5Y=;
- b=PCECMough6Mycadi3PPZvWTrzjsph8vLLAAHQ76RkHG7Nh/ehxTljex+69YJKjYNsP
- oWtzfirZfx18arPRxN6pslOCuE2HJfWePMyWAX69HG4mc9/O9tScql/6S+JuPCYYIKR9
- imYtx5PL0fCmzacBXRa1lN2wppz9KjGM/7t9IjBbUWFnat3ZOGjuhe8EAUcGBwuZCIfG
- wz1BUV9d+uynMdtm2UZieLUuyvkPMWFpCSWQng1Jecn0F48dMmxuOkelYsKkbjMsSv/X
- 4a2q0jORv1OSLijX/m/ZXSZ9JyTQ3u7sPbHdb/Q0grgc5QLTUcM6oveN3KlX7oHatdeg
- zQkQ==
-X-Gm-Message-State: AC+VfDy4jTL+99+DD/tDMHXV1tLYTYfeEubXHbtRzdaJa9gDz0j1CiY4
- ylVMJBQm+/O5/W4DCLpBfNdA2s6KhJ/isglmrWYZ9ZCmhrT382EuwnJvz9HO38UvXodtr1mgVgg
- H5NV8zGnCUaiZ9XE=
-X-Received: by 2002:ac8:59c5:0:b0:3fd:e953:74ee with SMTP id
- f5-20020ac859c5000000b003fde95374eemr18837385qtf.2.1687447520889; 
- Thu, 22 Jun 2023 08:25:20 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ65eG9qHglddRW13TtmkIu5/EE0ckwLYjPA6UBz+MQgALd+w8V+qkzKFp5C8oahQj0zc8rSrg==
-X-Received: by 2002:ac8:59c5:0:b0:3fd:e953:74ee with SMTP id
- f5-20020ac859c5000000b003fde95374eemr18837351qtf.2.1687447520612; 
- Thu, 22 Jun 2023 08:25:20 -0700 (PDT)
-Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
- [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- n4-20020a05622a11c400b003f6a607cf22sm3693286qtk.84.2023.06.22.08.25.19
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 22 Jun 2023 08:25:20 -0700 (PDT)
-Date: Thu, 22 Jun 2023 11:25:19 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Thomas Huth <thuth@redhat.com>
-Cc: quintela@redhat.com, Paolo Bonzini <pbonzini@redhat.com>,
- qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>,
- Leonardo Bras <leobras@redhat.com>,
- Daniel =?utf-8?B?UC5CZXJyYW5nw6k=?= <berrange@redhat.com>,
- qemu-block@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>,
- Eric Blake <eblake@redhat.com>, Fam Zheng <fam@euphon.net>,
- libvir-list@redhat.com
-Subject: Re: [RFC 4/6] migration: Deprecate -incoming <uri>
-Message-ID: <ZJRn3zMwA0DVkkcD@x1n>
-References: <20230612193344.3796-1-quintela@redhat.com>
- <20230612193344.3796-5-quintela@redhat.com> <ZId0+HYF/ETLVri3@x1n>
- <875y7sflqb.fsf@secure.mitica>
- <d88c707a-abd9-6c8e-907c-13a3fa9a0219@redhat.com>
- <87wmzv7ubn.fsf@secure.mitica>
- <a81d48ac-4aee-1c5a-e530-20c634e42d5b@redhat.com>
+ d=1e100.net; s=20221208; t=1687448820; x=1690040820;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=wclAg+vy4266bIR7uN7BxS6xtNG6WGepnyY3DjNrtko=;
+ b=cL/KCl4oBprzqC3AwsQkGa1hpxjT7lkKG9PCDDiYnYNkamUCu7gvhwMjh4+WyJslbP
+ +1NS+u8XbxiNgc9lPM8Gnda9dkkodaAnREAv4vRRrMBKJ+whtT1LfCfTR3C6wOiGzIFd
+ hpk0iVTtT0+/iD5qpn0fPu2LyeepmoIok+lB/ELiNh5D+TAzjMEemlBCEjIO1gGxNMkG
+ I+zKhjSGTNLwDIByGjOQqMO78Zts0FSHH9lh81v4UI3jGFTfdskiTEF2onmXEgsY9WjS
+ p0a+4a4rzBiqU6J4bbDxotOfJYge4skYHR0iOyVz/W20f/+N7nTeeitp1Zvj+Pg0gZJ2
+ RJsw==
+X-Gm-Message-State: AC+VfDxvK9/nCWsu+JIQ5BCf4RCQQ+VmSH/0SC1JIsrFn4j38S+3lOtL
+ odXHOMGxUHOnWTgS/UrwC96xUT0FaWATVIAdIEB86QqCgq/Kh1CuafbLxJo80CIprGT/fYlMVqo
+ 93x8q6LC/vSp7kVPLOkeaafPDLikeJoY=
+X-Received: by 2002:a05:6512:b08:b0:4f7:6966:36fb with SMTP id
+ w8-20020a0565120b0800b004f7696636fbmr12795749lfu.12.1687448819407; 
+ Thu, 22 Jun 2023 08:46:59 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7yx7VPkLvdgZDmiWVvdf08Fkfaj5scqrjQhmPn4cr4b+oEOhKrpH+mVMDFoHBQfwknbUNvqT5iWaFzx8v6bbE=
+X-Received: by 2002:a05:6512:b08:b0:4f7:6966:36fb with SMTP id
+ w8-20020a0565120b0800b004f7696636fbmr12795614lfu.12.1687448812165; Thu, 22
+ Jun 2023 08:46:52 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <a81d48ac-4aee-1c5a-e530-20c634e42d5b@redhat.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+References: <20230622103255.267289-1-anisinha@redhat.com>
+ <20230622103255.267289-6-anisinha@redhat.com>
+In-Reply-To: <20230622103255.267289-6-anisinha@redhat.com>
+From: Julia Suvorova <jusual@redhat.com>
+Date: Thu, 22 Jun 2023 17:46:40 +0200
+Message-ID: <CAMDeoFWHJhN3ppAO4XB9jGUg4Yu-zFzzzKwAvDiSJSgjeZH6jg@mail.gmail.com>
+Subject: Re: [PATCH v2 5/5] hw/pci: ensure PCIE devices are plugged into only
+ slot 0 of PCIE port
+To: Ani Sinha <anisinha@redhat.com>
+Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>, 
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, imammedo@redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsuvorov@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -91,7 +81,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,15 +97,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jun 22, 2023 at 11:22:56AM +0200, Thomas Huth wrote:
-> Then simply forbid "migrate_set_parameter multifd-channels ..." if the uri
-> has been specified on the command line?
+On Thu, Jun 22, 2023 at 12:34=E2=80=AFPM Ani Sinha <anisinha@redhat.com> wr=
+ote:
+>
+> PCI Express ports only have one slot, so PCI Express devices can only be
+> plugged into slot 0 on a PCIE port. Enforce it.
+>
+> CC: jusual@redhat.com
+> CC: imammedo@redhat.com
+> Resolves: https://bugzilla.redhat.com/show_bug.cgi?id=3D2128929
+> Signed-off-by: Ani Sinha <anisinha@redhat.com>
+> ---
+>  hw/pci/pci.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
+>
+> diff --git a/hw/pci/pci.c b/hw/pci/pci.c
+> index bf38905b7d..5f25ab9f5e 100644
+> --- a/hw/pci/pci.c
+> +++ b/hw/pci/pci.c
+> @@ -64,6 +64,7 @@ bool pci_available =3D true;
+>  static char *pcibus_get_dev_path(DeviceState *dev);
+>  static char *pcibus_get_fw_dev_path(DeviceState *dev);
+>  static void pcibus_reset(BusState *qbus);
+> +static bool pcie_has_upstream_port(PCIDevice *dev);
+>
+>  static Property pci_props[] =3D {
+>      DEFINE_PROP_PCI_DEVFN("addr", PCIDevice, devfn, -1),
+> @@ -1189,6 +1190,11 @@ static PCIDevice *do_pci_register_device(PCIDevice=
+ *pci_dev,
+>                     name);
+>
+>         return NULL;
+> +    } else if (pcie_has_upstream_port(pci_dev) && PCI_SLOT(devfn)) {
+> +        error_setg(errp, "PCI: slot %d is not valid for %s,"
+> +                   " PCI express devices can only be plugged into slot 0=
+.",
 
-Yeah, actually already in a pull (even though the pr may need a new one..):
+This is not technically correct, because downstream ports and root
+ports are also PCIe devices, and they can have different slots under
+upstream ports and RC. But this error will never be shown for them, so
+it seems fine.
 
-https://lore.kernel.org/r/20230622021320.66124-23-quintela@redhat.com
+Reviewed-by: Julia Suvorova <jusual@redhat.com>
 
--- 
-Peter Xu
+
+
+
+> +                   PCI_SLOT(devfn), name);
+> +        return NULL;
+>      }
+>
+>      pci_dev->devfn =3D devfn;
+> --
+> 2.39.1
+>
 
 
