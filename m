@@ -2,70 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96EB073A175
+	by mail.lfdr.de (Postfix) with ESMTPS id 99D7173A176
 	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 15:06:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCK0Y-0003DW-F1; Thu, 22 Jun 2023 09:05:54 -0400
+	id 1qCK0d-0003EK-Ia; Thu, 22 Jun 2023 09:05:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qCK0Q-0003Cz-CN
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 09:05:47 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qCK0b-0003EB-Qo
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 09:05:57 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qCK0M-0002CB-OI
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 09:05:45 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qCK0a-0002F7-1w
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 09:05:57 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687439140;
+ s=mimecast20190719; t=1687439155;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=R+V+dQMBw5ZgRyeVtB8kz1HzIkjhnPBDtVjrMhwt4/s=;
- b=Hp+DRvRH4v0eHi619XGxcbezZoXB4qfXdiWmCPsfxyG82xHLVcjUpkV3Ffo0AXrpGhNn36
- 8D2MUnmXGsBGNqPuqynCHuxPqDfN/T66LAtIntUCeP0wYwZ4F5Ugtk+EpcO+GjK1NQZM2L
- n2M1iaa0IA+sJw7OkCcpmbjh/wFSmUw=
-Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
- [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=v8gDsDNYdXwL2I9GT9/GVOX6hRqWeZD+z+cTQiukgbM=;
+ b=VAPzA6BD9/aFdrnfh1Bi9O1lydwsoPFVCusjbp4gPe4EW7LWa24qYdZNAhLv5E2c+hddzh
+ mJVrSN10EvVv3K4u3Zx0HkvHXe56aKAZ6NQknEvsIZno9CJl0BKDwJe7E1y1dPKyVaxCdI
+ oDI8UA3az9mvIMy3uB5UhrR63SLxKeQ=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-574-qlVTi6TxO2ClLwgH8v4k5A-1; Thu, 22 Jun 2023 09:05:37 -0400
-X-MC-Unique: qlVTi6TxO2ClLwgH8v4k5A-1
-Received: by mail-lf1-f69.google.com with SMTP id
- 2adb3069b0e04-4f01644f62eso4998248e87.0
- for <qemu-devel@nongnu.org>; Thu, 22 Jun 2023 06:05:36 -0700 (PDT)
+ us-mta-477-I1QUmLTPOvazILrpMBAq7g-1; Thu, 22 Jun 2023 09:05:52 -0400
+X-MC-Unique: I1QUmLTPOvazILrpMBAq7g-1
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-311292a0fe9so3496668f8f.3
+ for <qemu-devel@nongnu.org>; Thu, 22 Jun 2023 06:05:48 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687439135; x=1690031135;
+ d=1e100.net; s=20221208; t=1687439147; x=1690031147;
  h=content-transfer-encoding:in-reply-to:organization:from:references
  :cc:to:content-language:subject:user-agent:mime-version:date
  :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=R+V+dQMBw5ZgRyeVtB8kz1HzIkjhnPBDtVjrMhwt4/s=;
- b=EFMaSFKShwW3IHggHQxjrmu4zwuIlcEQEy6TdTm0Syj4/7baX1zLTQYSXCxMrvI/Cw
- e6DrOhnnCUQfCF3Ahvj/V2BwwBDzjyg3QuLdJZAzCm5SODCeEhMJZXOgaeaqxQN1J7/N
- dFb0deHXH2vuzOB3duBYnmzHZ7woHvH4cZCIdvOdEjAklYENZ63s0kd7Ll0jHLQMvMYA
- GEh89IMb70ah06IFF/lYuTjCjEyIg/JMUp/RduzAFTM84MiBTIh2k45LkUH11+PR6f/+
- hlP/9GX/HHZmdgrm3LgT0vzqZdi17B4WGfXV/j8T4oWown2TOXt1nppzzyyIwaMi+t0g
- yA8Q==
-X-Gm-Message-State: AC+VfDxVH9bg5dqv0PCaCXDjBOf4zq2Mrn0jX1JufyD1x+2ThfuRe314
- pJx/UHwMXXsfB81k0MA2+0+k2Oe/E3FJXJy5TsXzgjTUZX+V4oetNv8smMZy2WU1EVHxSEKG0uD
- ywN4xp3HXMzA1tak=
-X-Received: by 2002:ac2:5058:0:b0:4f8:67f0:724e with SMTP id
- a24-20020ac25058000000b004f867f0724emr9136636lfm.33.1687439135647; 
- Thu, 22 Jun 2023 06:05:35 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ4Cp8icUqPWLVwB8ktr3AwzHWkp6rwCAVQd/GioCA3dCnVFCGcq33M3N14V/KV5bVR/SZh03w==
-X-Received: by 2002:ac2:5058:0:b0:4f8:67f0:724e with SMTP id
- a24-20020ac25058000000b004f867f0724emr9136593lfm.33.1687439135205; 
- Thu, 22 Jun 2023 06:05:35 -0700 (PDT)
+ bh=v8gDsDNYdXwL2I9GT9/GVOX6hRqWeZD+z+cTQiukgbM=;
+ b=OcLKUuQpTKn/mwPQw3QXLvQdtymiYHUX4ogzobqklN4nnkKqPyu2W/Lyrbg19VuVcq
+ ULxMif65Ig3dWE35gpF427m2Ds4QhctIkm+5rlqg8FDhqjo0tRJbDwoq0bkIqIbj5iao
+ +o6YWkyah1b8KrdLvpCB1I+9TWFj5Xyx6lGriHUw6PK26E9hddD8q+A0vkfQsmVZg9fF
+ po+MfzU9XZIyIC58ENr/X5HZ6EJkKwPMXUu7hM4r4pHPXQXVSp2B/fdWvfRJNuB05GxB
+ LvIALxs/pAX1yilUvSbiaQRJ0KCJBXi3tFdncZaA73SYFHBXWoieBcx4ghz3omanzyY9
+ rvGw==
+X-Gm-Message-State: AC+VfDyhhu6MPs48BuFNg7Mt3jgwMlZ122rYm4zYnQruMDWsPKR7+1ow
+ 0qpQ7sJfmV+XAvIL3N+om6zGKU21416G0kx2N1YjV7zzZVxNdsQZMBnP4rxi59eFgsq3Nrg4ATL
+ P2ntiyp07ulf+Oe4=
+X-Received: by 2002:a5d:4004:0:b0:30e:56d9:d7ac with SMTP id
+ n4-20020a5d4004000000b0030e56d9d7acmr14609041wrp.35.1687439147721; 
+ Thu, 22 Jun 2023 06:05:47 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7iXW0WyaWzD7yVi9ybWHifwyqRdA8JXrl/22oSSurdYDcKgIrrrkvinhI559BPNQsvmhSFqw==
+X-Received: by 2002:a5d:4004:0:b0:30e:56d9:d7ac with SMTP id
+ n4-20020a5d4004000000b0030e56d9d7acmr14609021wrp.35.1687439147362; 
+ Thu, 22 Jun 2023 06:05:47 -0700 (PDT)
 Received: from ?IPV6:2003:cb:c71a:c00:a3d3:85e8:742c:2e9?
  (p200300cbc71a0c00a3d385e8742c02e9.dip0.t-ipconnect.de.
  [2003:cb:c71a:c00:a3d3:85e8:742c:2e9])
  by smtp.gmail.com with ESMTPSA id
- p7-20020adff207000000b00307acec258esm7108563wro.3.2023.06.22.06.05.34
+ x11-20020adff0cb000000b003112d12a1ecsm6950156wro.98.2023.06.22.06.05.46
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 22 Jun 2023 06:05:34 -0700 (PDT)
-Message-ID: <3f65e040-9ff8-2d40-299a-2d9d30ada58e@redhat.com>
-Date: Thu, 22 Jun 2023 15:05:33 +0200
+ Thu, 22 Jun 2023 06:05:46 -0700 (PDT)
+Message-ID: <9acf5fcc-f5d9-9f9f-2771-8af3b64b37f9@redhat.com>
+Date: Thu, 22 Jun 2023 15:05:45 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
@@ -79,14 +79,12 @@ Cc: peter.maydell@linaro.org, Stefan Berger <stefanb@linux.vnet.ibm.com>,
  Peter Xu <peterx@redhat.com>
 References: <20230620195054.23929-1-lvivier@redhat.com>
  <20230620195054.23929-3-lvivier@redhat.com>
- <13593b65-7df3-7ebc-0759-82c6731eb04b@redhat.com>
- <06d07da8-68a7-c7da-1a78-f45750971ede@redhat.com>
 From: David Hildenbrand <david@redhat.com>
 Organization: Red Hat
-In-Reply-To: <06d07da8-68a7-c7da-1a78-f45750971ede@redhat.com>
+In-Reply-To: <20230620195054.23929-3-lvivier@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -111,28 +109,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 22.06.23 14:59, Laurent Vivier wrote:
-> On 6/21/23 11:13, David Hildenbrand wrote:
->> On 20.06.23 21:50, Laurent Vivier wrote:
->>> This memory is not correctly aligned and cannot be registered
->>> by vDPA and VFIO.
->>>
->>> An error is reported for vhost-vdpa case:
->>> qemu-kvm: vhost_vdpa_listener_region_add received unaligned region
->>>
->>> To make it ignored by VFIO and vDPA devices, mark it as RAM_PROTECTED.
->>
->> So, VFIO will simply skip these sections via vfio_listener_valid_section() I guess.
->>
->> Yes, it will report an error but it will happily continue.
->>
->> So regarding vDPA, we're also only concerned about removing the reported error, everything
->> else works as expected?
->>
+On 20.06.23 21:50, Laurent Vivier wrote:
+> This memory is not correctly aligned and cannot be registered
+> by vDPA and VFIO.
 > 
-> Yes, it has been tested and vDPA works as expected.
+> An error is reported for vhost-vdpa case:
+> qemu-kvm: vhost_vdpa_listener_region_add received unaligned region
+> 
+> To make it ignored by VFIO and vDPA devices, mark it as RAM_PROTECTED.
+> 
+> The RAM_PROTECTED flag has been introduced to skip memory
+> region that looks like RAM but is not accessible via normal
+> mechanims, including DMA.
+> 
+> See 56918a126a ("memory: Add RAM_PROTECTED flag to skip IOMMU mappings")
+> 
+> Bug: https://bugzilla.redhat.com/show_bug.cgi?id=2141965
+> 
+> cc: peter.maydell@linaro.org
+> cc: marcandre.lureau@redhat.com
+> cc: eric.auger@redhat.com
+> cc: mst@redhat.com
+> cc: jasowang@redhat.com
+> Signed-off-by: Laurent Vivier <lvivier@redhat.com>
+> ---
+>   hw/tpm/tpm_crb.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/hw/tpm/tpm_crb.c b/hw/tpm/tpm_crb.c
+> index ea930da545af..0a93c488f2fa 100644
+> --- a/hw/tpm/tpm_crb.c
+> +++ b/hw/tpm/tpm_crb.c
+> @@ -296,7 +296,7 @@ static void tpm_crb_realize(DeviceState *dev, Error **errp)
+>   
+>       memory_region_init_io(&s->mmio, OBJECT(s), &tpm_crb_memory_ops, s,
+>           "tpm-crb-mmio", sizeof(s->regs));
+> -    memory_region_init_ram(&s->cmdmem, OBJECT(s),
+> +    memory_region_init_ram_protected(&s->cmdmem, OBJECT(s),
+>           "tpm-crb-cmd", CRB_CTRL_CMD_SIZE, errp);
+>   
+>       memory_region_add_subregion(get_system_memory(),
 
-Okay, so no Fixes: tags required
+Reviewed-by: David Hildenbrand <david@redhat.com>
 
 -- 
 Cheers,
