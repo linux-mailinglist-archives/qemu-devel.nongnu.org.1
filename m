@@ -2,85 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD7A673AB54
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 23:14:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 67B1373AB78
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 23:19:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCRcv-0003VD-FF; Thu, 22 Jun 2023 17:14:01 -0400
+	id 1qCRhA-0005lu-Ls; Thu, 22 Jun 2023 17:18:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qCRct-0003Ue-8T
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 17:13:59 -0400
-Received: from mail-oo1-xc2e.google.com ([2607:f8b0:4864:20::c2e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qCRcr-000282-Ho
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 17:13:59 -0400
-Received: by mail-oo1-xc2e.google.com with SMTP id
- 006d021491bc7-55e1ae72dceso5070077eaf.3
- for <qemu-devel@nongnu.org>; Thu, 22 Jun 2023 14:13:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1687468436; x=1690060436;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=c4TDafqpMHFVbuljEp1uX/vWutMx05bNcCMYKHoMSRQ=;
- b=oq6Y//F3mPgCAkBwOqJf6WE+JNqfw64ZD2uPPxVOHcjyTmMNLdhDs3DKS2ZbFc3dKL
- BeFmnVzvP5ePIB5IeoTRCGeufKFuNwSk1S1BQQn5UXZZ4Aw80+j19T4XWOqP+6sbfkKx
- 7kvlbSjiiZw2vStnvyT3PtsepZZvssOQVq2mswweRIaD3Q199nasWgTWr7gg9HzNzcdp
- t/ykCF2SvxKYsJ8sP/pgEjQmy4WSFHYjnVw4OIUJv2UNMHD/kDgg3sQHD3vhAb5Q/+nO
- 0TuPq68o45KifPpPfd3YzMyCPXIIj18Whj9GNBXzvU49b2tE8kmVs7InCrlfzy+zYwaz
- +rEg==
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1qCRh7-0005lK-PQ
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 17:18:22 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1qCRh6-00049o-6V
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 17:18:21 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1687468699;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=WlWQb96270yc7z/9os5xbg5nTcLQHLSVsY3/M2EFFCc=;
+ b=ITwRKnnDnCxz5jQBTiKRqDhYSSRi09DekKtBxVoQn9I6tN3rnYbH1bltzUxk7hDFNttUlT
+ qaWCdCwi05Dew9ubErHAJQZh/KVaiMWvL6cNj/AQJxfpiVTcqfpgtsePlxnV/3unt6ZatS
+ cl9tQxBF1Zh9p5RwYYTo4HnI3LTvaG4=
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com
+ [209.85.216.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-543-65ysSnktMDaQX0o7Urpq_g-1; Thu, 22 Jun 2023 17:18:17 -0400
+X-MC-Unique: 65ysSnktMDaQX0o7Urpq_g-1
+Received: by mail-pj1-f70.google.com with SMTP id
+ 98e67ed59e1d1-25eabbb5fc2so3922238a91.2
+ for <qemu-devel@nongnu.org>; Thu, 22 Jun 2023 14:18:17 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687468436; x=1690060436;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=c4TDafqpMHFVbuljEp1uX/vWutMx05bNcCMYKHoMSRQ=;
- b=CYHmIRrqSZNnLJg6Ur19YVUY5XgtD1rPKgGw8uWzK49xaRDhgN56JiPsEf7OJ38mWA
- IU2O+jFtY1Y6nA8v1B20vPpYSx+DmZdrdeBIZzCVlxgYASrROHwyb46nteUtQVXA5QuC
- 31ewDCD8ePl3x4rrmx46EVQGHb6/b59Pcm8TVN6FlKHvZclDesd+OgL+7xHOg4l9U5I6
- U1HeQklEGv15sFRlAHDUFIH5ZlF35FpB2fsbnCFH33jHwchuWfXfNWBE0DQb6dNkvRtL
- W3u5ZD3LSkVBZ/qIZpzMqM7D9jrOWgFhsc1Te/rAs+JCN2DUKg7T+EN7j/cmRzN862sF
- WoOA==
-X-Gm-Message-State: AC+VfDzb0vTc5qu2q13dq1VeedCoQ4qRqVnLEs/rJOh9VXhLCObYhrqW
- 9sNeCupKuU5x3zuxPe1gaFHrmg==
-X-Google-Smtp-Source: ACHHUZ5eOsZb0U1t14Bjg7S/h3TuYJDSbnVD5TYj3okLk0g3OFRZTwivYsZwpzWVm4sGiQcDEEcHog==
-X-Received: by 2002:a4a:d9c3:0:b0:55e:541b:c6a2 with SMTP id
- l3-20020a4ad9c3000000b0055e541bc6a2mr10304104oou.3.1687468436206; 
- Thu, 22 Jun 2023 14:13:56 -0700 (PDT)
-Received: from [192.168.68.108] (201-69-66-110.dial-up.telesp.net.br.
- [201.69.66.110]) by smtp.gmail.com with ESMTPSA id
- d14-20020a4aba8e000000b0055ec0ac448csm3119251oop.38.2023.06.22.14.13.52
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 22 Jun 2023 14:13:55 -0700 (PDT)
-Message-ID: <33ead5e5-ac4f-12b7-c7e4-1777b8b7e5e7@ventanamicro.com>
-Date: Thu, 22 Jun 2023 18:13:51 -0300
+ d=1e100.net; s=20221208; t=1687468696; x=1690060696;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=WlWQb96270yc7z/9os5xbg5nTcLQHLSVsY3/M2EFFCc=;
+ b=aLodQiwK2DqniDkX8Y6Ooa6qPnLFKWxEgdRLguKPVPiLGvk68ox831szN0LOEtQY4J
+ PZqWjC3DVzPsG8y4PLDWtxypjBgcEfDRyAMM6i+v+e5T8d3XTdnXwUdJafl4salsLATk
+ k0+YbufK6icuujf3bqLyWl2E2OnQCsy3eXvndcnmC8+yMXd/zmDRIe6rSXuKqJEcF8VG
+ Iob6ed07jVBEa7eclVLfOQzgcatb0NZ2keMgjTmGyCUvR1JvyRb815o1aiXFhe+qqNUp
+ RbTp+IdgGBi2OrhoOcIHxGwVIJI+y8Kzo+GL9i2L6IXbMSAuk4jIJ5rh9F143vWJblyb
+ wr9w==
+X-Gm-Message-State: AC+VfDzI4xXY1VWnQW1wJtDhoB7k5tr7z+5DNSeA45dVJ/tnLQs92aC0
+ igkCVro/LMRxMtQP+G3i2nvMYsQrbIrpN7gBSfm+R+1ZrkXxvRdZHCgmjWNcBHex07WwLrhrNG8
+ untX7Q6e9HRqBfDmArTkKPMaTMkahOlU=
+X-Received: by 2002:a17:90a:6ac5:b0:25e:a4ac:8516 with SMTP id
+ b5-20020a17090a6ac500b0025ea4ac8516mr14728845pjm.46.1687468696714; 
+ Thu, 22 Jun 2023 14:18:16 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6yBlrR1rlYbsQp7NyEBKyub45c4TELSkXUOlvNqpcFH5QaEoWgffwvyaAyrPnbHjbpgRE23lqpOfqIwD4UG1A=
+X-Received: by 2002:a17:90a:6ac5:b0:25e:a4ac:8516 with SMTP id
+ b5-20020a17090a6ac500b0025ea4ac8516mr14728832pjm.46.1687468696465; Thu, 22
+ Jun 2023 14:18:16 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH v4 1/1] target/riscv: Add RVV registers to log
-Content-Language: en-US
-To: Ivan Klokov <ivan.klokov@syntacore.com>, qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, richard.henderson@linaro.org, pbonzini@redhat.com, 
- eduardo@habkost.net, marcel.apfelbaum@gmail.com, philmd@linaro.org,
- wangyanan55@huawei.com, palmer@dabbelt.com, alistair.francis@wdc.com,
- bin.meng@windriver.com, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com
-References: <20230622094346.29853-1-ivan.klokov@syntacore.com>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20230622094346.29853-1-ivan.klokov@syntacore.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c2e;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-oo1-xc2e.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+References: <20230621002121.1609612-1-jsnow@redhat.com>
+ <CABgObfahSN4eQ65nu9Dy_7bkWmxfERiJ-ZEM729futMFuGWwPw@mail.gmail.com>
+ <CABgObfYKK+eU56iP2O+O7s=dcfWxmpXrB3EuNj=CkUw-XEjSnA@mail.gmail.com>
+ <CAFn=p-a1Lz=FdrAYcB8Ua3AK=C5674Lyg5vRyxNjaybNXgvQ0w@mail.gmail.com>
+ <CABgObfYo34ZOqAGdf9jEEQUtTztcwDUF+N9JGSsbBw8z1FOoWQ@mail.gmail.com>
+ <CAFn=p-YnhA=FGPbPifY9vR=skpV=8dVvtmgdivJGw0cNjR6ouw@mail.gmail.com>
+ <CABgObfbmjjB505_O4wg5sUKYkgVhcrdPnevV9Pv-uH+TCb=o-w@mail.gmail.com>
+In-Reply-To: <CABgObfbmjjB505_O4wg5sUKYkgVhcrdPnevV9Pv-uH+TCb=o-w@mail.gmail.com>
+From: John Snow <jsnow@redhat.com>
+Date: Thu, 22 Jun 2023 17:18:05 -0400
+Message-ID: <CAFn=p-YsWb2V-pjB82iDU4g_Z9kdq58QajzP_acDq8kfyja8=A@mail.gmail.com>
+Subject: Re: [PATCH RFC 0/6] Switch iotests to pyvenv
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel <qemu-devel@nongnu.org>, Thomas Huth <thuth@redhat.com>, 
+ "open list:Block layer core" <qemu-block@nongnu.org>,
+ Beraldo Leal <bleal@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ Kevin Wolf <kwolf@redhat.com>, Cleber Rosa <crosa@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -97,117 +102,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Thu, Jun 22, 2023 at 5:12=E2=80=AFPM Paolo Bonzini <pbonzini@redhat.com>=
+ wrote:
+>
+> On Thu, Jun 22, 2023 at 11:08=E2=80=AFPM John Snow <jsnow@redhat.com> wro=
+te:
+> >
+> > On Thu, Jun 22, 2023 at 5:05=E2=80=AFPM Paolo Bonzini <pbonzini@redhat.=
+com> wrote:
+> > >
+> > > On Thu, Jun 22, 2023 at 11:03=E2=80=AFPM John Snow <jsnow@redhat.com>=
+ wrote:
+> > > > If we always install it in editable mode, and the path where it is
+> > > > "installed" is what we expect it to be, it shouldn't have any probl=
+ems
+> > > > with being out of date.... I think. We could conceivably use the
+> > > > "faux" package version the internal package has to signal when the
+> > > > script needs to re-install it.
+> > >
+> > > Stupid question, why not treat it just like avocado?
+> > >
+> >
+> > How do you mean? (i.e. installing it on-demand in reaction to "make
+> > check-avocado"?)
+>
+> Yes, installing it on-demand the first time "make check-iotests" is
+> run, using a "depend:" keyword argument in
+> tests/qemu-iotests/meson.build.
+>
+> BTW,
+>
+> from distlib.scripts import ScriptMaker
+> ScriptMaker('..', '.').make('foo.py')
+>
+> Seems to do the right thing as long as foo.py includes a shebang (I
+> tested it inside a virtual environment).
+>
+> Paolo
 
+That's possible, but it means that it will break if you run configure
+and then immediately go to invoke iotests, unless we have a way to
+have iotests bootstrap itself. Which I think can't be done through the
+makefile, because we don't know which "make" to run in order to get
+that to happen. (Or at least, I don't!)
 
-On 6/22/23 06:43, Ivan Klokov wrote:
-> Print RvV extesion register to log if VPU option is enabled.
+Possibly I could teach mkvenv a new trick, like "mkvenv init iotests"
+and have the mkvenv script DTRT at that point, whatever that is --
+ideally exiting very quickly without doing anything.
 
-Typo: extesion -> extension
-
-> 
-> Signed-off-by: Ivan Klokov <ivan.klokov@syntacore.com>
-> ---
-> v4:
->     - General part of patch has been merged, rebase riscv part and resend.
-> ---
->   target/riscv/cpu.c | 56 +++++++++++++++++++++++++++++++++++++++++++++-
->   1 file changed, 55 insertions(+), 1 deletion(-)
-> 
-> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-> index fb8458bf74..b23f3fde0d 100644
-> --- a/target/riscv/cpu.c
-> +++ b/target/riscv/cpu.c
-> @@ -183,6 +183,14 @@ const char * const riscv_fpr_regnames[] = {
->       "f30/ft10", "f31/ft11"
->   };
->   
-> +const char * const riscv_rvv_regnames[] = {
-> +  "v0",  "v1",  "v2",  "v3",  "v4",  "v5",  "v6",
-> +  "v7",  "v8",  "v9",  "v10", "v11", "v12", "v13",
-> +  "v14", "v15", "v16", "v17", "v18", "v19", "v20",
-> +  "v21", "v22", "v23", "v24", "v25", "v26", "v27",
-> +  "v28", "v29", "v30", "v31"
-> +};
-> +
->   static const char * const riscv_excp_names[] = {
->       "misaligned_fetch",
->       "fault_fetch",
-> @@ -611,7 +619,8 @@ static void riscv_cpu_dump_state(CPUState *cs, FILE *f, int flags)
->   {
->       RISCVCPU *cpu = RISCV_CPU(cs);
->       CPURISCVState *env = &cpu->env;
-> -    int i;
-> +    int i, j;
-> +    uint8_t *p;
->   
->   #if !defined(CONFIG_USER_ONLY)
->       if (riscv_has_ext(env, RVH)) {
-> @@ -695,6 +704,51 @@ static void riscv_cpu_dump_state(CPUState *cs, FILE *f, int flags)
->               }
->           }
->       }
-> +    if (riscv_has_ext(env, RVV) && (flags & CPU_DUMP_VPU)) {
-> +        static const int dump_rvv_csrs[] = {
-> +                    CSR_VSTART,
-> +                    CSR_VXSAT,
-> +                    CSR_VXRM,
-> +                    CSR_VCSR,
-> +                    CSR_VL,
-> +                    CSR_VTYPE,
-> +                    CSR_VLENB,
-> +                };
-> +        for (int i = 0; i < ARRAY_SIZE(dump_rvv_csrs); ++i) {
-> +            int csrno = dump_rvv_csrs[i];
-> +            target_ulong val = 0;
-> +            RISCVException res = riscv_csrrw_debug(env, csrno, &val, 0, 0);
-> +
-> +            /*
-> +             * Rely on the smode, hmode, etc, predicates within csr.c
-> +             * to do the filtering of the registers that are present.
-> +             */
-> +            if (res == RISCV_EXCP_NONE) {
-> +                qemu_fprintf(f, " %-8s " TARGET_FMT_lx "\n",
-> +                             csr_ops[csrno].name, val);
-> +            }
-> +        }
-> +        uint16_t vlenb = env_archcpu(env)->cfg.vlen >> 3;
-
-We have a "RISCVCPU *cpu" pointer available at the start of the function. Use
-that to access the cfg obj and avoid an unneeded env_archcpu() call:
-
-> +        uint16_t vlenb = cpu->cfg.vlen >> 3;
-
-
-> +
-> +/*
-> + * From vector_helper.c
-> + * Note that vector data is stored in host-endian 64-bit chunks,
-> + * so addressing bytes needs a host-endian fixup.
-> + */
-> +#if HOST_BIG_ENDIAN
-> +#define BYTE(x)   ((x) ^ 7)
-> +#else
-> +#define BYTE(x)   (x)
-> +#endif
-
-Usually we don't declare new macros in the middle of functions. I suggest
-moving this #define block to outside of riscv_cpu_dump_state() to keep the
-code more line with the current code style we use. Thanks,
-
-
-Daniel
-
-
-> +        for (i = 0; i < 32; i++) {
-> +            qemu_fprintf(f, " %-8s ", riscv_rvv_regnames[i]);
-> +            p = (uint8_t *)env->vreg;
-> +            for (j = vlenb - 1 ; j >= 0; j--) {
-> +                qemu_fprintf(f, "%02x", *(p + i * vlenb + BYTE(j)));
-> +            }
-> +            qemu_fprintf(f, "\n");
-> +        }
-> +    }
->   }
->   
->   static void riscv_cpu_set_pc(CPUState *cs, vaddr value)
 
