@@ -2,57 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0E5E73ABD6
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 23:51:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EE6273ABD0
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 23:50:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCSBK-0003BU-Uk; Thu, 22 Jun 2023 17:49:34 -0400
+	id 1qCSBO-0003Bs-Sk; Thu, 22 Jun 2023 17:49:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <joao.m.martins@oracle.com>)
- id 1qCSBH-0003B6-Ti
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 17:49:31 -0400
+ id 1qCSBL-0003Bf-Nm
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 17:49:36 -0400
 Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <joao.m.martins@oracle.com>)
- id 1qCSBG-0007Qq-6u
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 17:49:31 -0400
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+ id 1qCSBK-0007RT-4E
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 17:49:35 -0400
+Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
  by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 35MLWLTu007802; Thu, 22 Jun 2023 21:49:25 GMT
+ 35MGKEE3020601; Thu, 22 Jun 2023 21:49:30 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
  h=from : to : cc :
  subject : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=corp-2023-03-30;
- bh=Im49a6fnTBbEY5Y0/C6Ivtgf1RhF+kCnOMpymBmRJlE=;
- b=MAUaOIR+o5opwNxPYHwqb37yf3TJVL99P/TEDX0qHSY1MUOrG29zmnzdI7QTPgDLjHaL
- CiwahljE8r0573CHvQ6NjexSO45eHXdiaN3q0N+dbJERXJbQvKcu0IrUxqLIsU9X8Cc9
- AX9qo6R/D56BgU1bXLoZZMXZidcplvxmZfNvdKoLwzlPCnVgo1z2J5KN0U3plnDUHcx/
- HfYrEpnf51oheOFzQVTOUhap6y5cjbNa2Uf91mCtJNvIJolzz2KQA3+ahxfjifZQ4wVb
- OfPxN/FMwy4a/R2+MsxCcIQ/3AMbD042GHiKaLYFku7B+QhDoaY7Fqks0KVjeB92FFhH eA== 
+ bh=rWzue+QbNU//80kWBcBr6ZZ15PdalMOP5DaZE9JScdg=;
+ b=0HCeSWev/7mhRtQm8ZkcsTatYH/tIDUZT4tKgTZIbMYKiA6p50L0qeu8j7szXdKzEShT
+ fjUF7whS+2FgO8RgXwxBuejAjwSRm0aB8yUosC1qTO0pxVjBRAcvizWjxwpfxtnAl4eV
+ yLyeFYzTu4dljS5d2rqIMj4esa18+QQ2pswvBWyRtUPb8iG5+t92h3PFJydXrNDEv63D
+ AHOSHv+i98AL0z0FbXFw02LBB+pvEm5DDJ7TwaLwXdTVHTzoi0sK6i9ELWOOWCQXh+Wn
+ SSr7A98qC6EErWdivhIA2YOasiLu9Qhrb0WcGGWOShQFXSmpnI7fvNk/RNSEMFXuOIqi Kw== 
 Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3r938dtt09-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3r94ettxm3-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 22 Jun 2023 21:49:25 +0000
+ Thu, 22 Jun 2023 21:49:30 +0000
 Received: from pps.filterd
  (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
  by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 35MLYusj008585; Thu, 22 Jun 2023 21:49:24 GMT
+ with ESMTP id 35MKIV2s008333; Thu, 22 Jun 2023 21:49:29 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 3r9398epb2-1
+ 3r9398epd5-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 22 Jun 2023 21:49:24 +0000
+ Thu, 22 Jun 2023 21:49:29 +0000
 Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 35MLn76q035791;
- Thu, 22 Jun 2023 21:49:23 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 35MLn76s035791;
+ Thu, 22 Jun 2023 21:49:28 GMT
 Received: from joaomart-mac.uk.oracle.com (dhcp-10-175-180-251.vpn.oracle.com
  [10.175.180.251])
  by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id
- 3r9398ep1g-4; Thu, 22 Jun 2023 21:49:22 +0000
+ 3r9398ep1g-5; Thu, 22 Jun 2023 21:49:28 +0000
 From: Joao Martins <joao.m.martins@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
@@ -66,9 +66,9 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
  Eduardo Habkost <eduardo@habkost.net>,
  Avihai Horon <avihaih@nvidia.com>, Jason Gunthorpe <jgg@nvidia.com>,
  Joao Martins <joao.m.martins@oracle.com>, Yi Liu <yi.l.liu@intel.com>
-Subject: [PATCH v4 03/15] hw/pci: Introduce pci_device_iommu_get_attr()
-Date: Thu, 22 Jun 2023 22:48:33 +0100
-Message-Id: <20230622214845.3980-4-joao.m.martins@oracle.com>
+Subject: [PATCH v4 04/15] intel-iommu: Switch to pci_setup_iommu_ops()
+Date: Thu, 22 Jun 2023 22:48:34 +0100
+Message-Id: <20230622214845.3980-5-joao.m.martins@oracle.com>
 In-Reply-To: <20230622214845.3980-1-joao.m.martins@oracle.com>
 References: <20230622214845.3980-1-joao.m.martins@oracle.com>
 MIME-Version: 1.0
@@ -81,8 +81,8 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
  spamscore=0 phishscore=0 suspectscore=0 malwarescore=0 bulkscore=0
  mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2305260000 definitions=main-2306220186
-X-Proofpoint-GUID: Yu3OEggms4HqIgAQIioV4Yl6XoBIWb5a
-X-Proofpoint-ORIG-GUID: Yu3OEggms4HqIgAQIioV4Yl6XoBIWb5a
+X-Proofpoint-GUID: 8NiyYnk7YI-CgUdrWTNPM6zF65L-PwD7
+X-Proofpoint-ORIG-GUID: 8NiyYnk7YI-CgUdrWTNPM6zF65L-PwD7
 Received-SPF: pass client-ip=205.220.177.32;
  envelope-from=joao.m.martins@oracle.com; helo=mx0b-00069f02.pphosted.com
 X-Spam_score_int: -27
@@ -110,69 +110,45 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Yi Liu <yi.l.liu@intel.com>
 
-Introduce pci_device_iommu_get_attr() to get vIOMMU attributes
-from the PCI device.
-
-This is in preparation to ask if vIOMMU has dma translation enabled
-and also to get IOVA boundaries.
+Use the PCI IOMMU setup function that supply a PCIIOMMUOps
+argument. This is in preparation to support fetching vIOMMU
+information via pci_device_get_iommu_attr() which will require
+switching the driver to pci_setup_iommu_ops().
 
 Signed-off-by: Yi Liu <yi.l.liu@intel.com>
-[joao: Massage commit message; add one more argument in
- pci_device_get_iommu_bus_devfn(); rename to pci_device_iommu_get_attr()
- to align with the other already namespaced function. ]
+[joao: Split from the original patch]
 Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
 ---
-follow-up version from:
-https://lore.kernel.org/all/20210302203827.437645-6-yi.l.liu@intel.com/
+Splitted from:
+https://lore.kernel.org/all/20210302203827.437645-5-yi.l.liu@intel.com/#Z2e.:20210302203827.437645-5-yi.l.liu::40intel.com:1hw:i386:intel_iommu.c
 ---
- include/hw/pci/pci.h |  4 ++++
- hw/pci/pci.c         | 16 ++++++++++++++++
- 2 files changed, 20 insertions(+)
+ hw/i386/intel_iommu.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
-index f59aef5a329a..10c81287b6b3 100644
---- a/include/hw/pci/pci.h
-+++ b/include/hw/pci/pci.h
-@@ -372,8 +372,12 @@ typedef struct PCIIOMMUOps PCIIOMMUOps;
- struct PCIIOMMUOps {
-     AddressSpace * (*get_address_space)(PCIBus *bus,
-                                 void *opaque, int32_t devfn);
-+    int (*get_iommu_attr)(PCIBus *bus, void *opaque, int32_t devfn,
-+                          enum IOMMUMemoryRegionAttr attr, void *data);
- };
- void pci_setup_iommu_ops(PCIBus *bus, const PCIIOMMUOps *iommu_ops, void *opaque);
-+int pci_device_iommu_get_attr(PCIDevice *dev, enum IOMMUMemoryRegionAttr attr,
-+                              void *data);
- 
- pcibus_t pci_bar_address(PCIDevice *d,
-                          int reg, uint8_t type, pcibus_t size);
-diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-index 90ae92a43d85..91ba6f0927a4 100644
---- a/hw/pci/pci.c
-+++ b/hw/pci/pci.c
-@@ -2710,6 +2710,22 @@ AddressSpace *pci_device_iommu_address_space(PCIDevice *dev)
-     return &address_space_memory;
+diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
+index 94d52f4205d2..1606d1b952d0 100644
+--- a/hw/i386/intel_iommu.c
++++ b/hw/i386/intel_iommu.c
+@@ -4032,6 +4032,10 @@ static AddressSpace *vtd_host_dma_iommu(PCIBus *bus, void *opaque, int devfn)
+     return &vtd_as->as;
  }
  
-+int pci_device_iommu_get_attr(PCIDevice *dev, enum IOMMUMemoryRegionAttr attr,
-+                              void *data)
-+{
-+    PCIBus *bus, *iommu_bus;
-+    uint8_t devfn;
++static PCIIOMMUOps vtd_iommu_ops = {
++    .get_address_space = vtd_host_dma_iommu,
++};
 +
-+    pci_device_get_iommu_bus_devfn(dev, &bus, &iommu_bus, &devfn);
-+    if (!pci_bus_bypass_iommu(bus) && iommu_bus &&
-+        iommu_bus->iommu_ops && iommu_bus->iommu_ops->get_iommu_attr) {
-+        return iommu_bus->iommu_ops->get_iommu_attr(bus, iommu_bus->iommu_opaque,
-+                                                    devfn, attr, data);
-+    }
-+
-+    return -ENOENT;
-+}
-+
- void pci_setup_iommu(PCIBus *bus, PCIIOMMUFunc fn, void *opaque)
+ static bool vtd_decide_config(IntelIOMMUState *s, Error **errp)
  {
-     bus->iommu_fn = fn;
+     X86IOMMUState *x86_iommu = X86_IOMMU_DEVICE(s);
+@@ -4155,7 +4159,7 @@ static void vtd_realize(DeviceState *dev, Error **errp)
+                                       g_free, g_free);
+     vtd_init(s);
+     sysbus_mmio_map(SYS_BUS_DEVICE(s), 0, Q35_HOST_BRIDGE_IOMMU_ADDR);
+-    pci_setup_iommu(bus, vtd_host_dma_iommu, dev);
++    pci_setup_iommu_ops(bus, &vtd_iommu_ops, dev);
+     /* Pseudo address space under root PCI bus. */
+     x86ms->ioapic_as = vtd_host_dma_iommu(bus, s, Q35_PSEUDO_DEVFN_IOAPIC);
+     qemu_add_machine_init_done_notifier(&vtd_machine_done_notify);
 -- 
 2.17.2
 
