@@ -2,84 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D30B773A88B
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 20:47:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B595173A8E7
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 21:21:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCPJk-0000zK-FU; Thu, 22 Jun 2023 14:46:04 -0400
+	id 1qCPqm-0001A0-Fs; Thu, 22 Jun 2023 15:20:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qCPJa-0000yL-OK
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 14:45:56 -0400
-Received: from mail-oo1-xc2b.google.com ([2607:f8b0:4864:20::c2b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qCPJU-0001GS-JO
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 14:45:52 -0400
-Received: by mail-oo1-xc2b.google.com with SMTP id
- 006d021491bc7-55e11f94817so4647596eaf.2
- for <qemu-devel@nongnu.org>; Thu, 22 Jun 2023 11:45:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1687459543; x=1690051543;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=XKyN5QSE+MTdh+8+dUkT/aMB00OyZJli1HAFK0+xm+Y=;
- b=Ssyrkfslz362xPdIp7qNlwKfJTcoyaKos0fxbpK2PLbvB5qDlFaNmT5zbs4CxfYnNB
- Ap3DWH5vRK8skZMXOzh7TZMkaNR0SBOKpjHAEpBddrcuEoQWMh4WafU3WG1vWFSQ+HNq
- Q96foL4x5DJQ4IQ/QwAS4eL4Ui8mExEztkhQ4sNuf+6idXXvrAXZhrII7NGVUyPnVbdQ
- 83n8HXOpCMKTWI7JDry4smmTGpGaGgssBwhTviTgssn55ndBBBHDvDU+GcKdGlWszPm/
- EEONh9g2kYwXC6zNYwWrsQtcDvF3m16AJnnyg7kb6E3ifNjEs20V3/IbH8f99DtF/ZfB
- pXuw==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qCPqk-00019Y-S5
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 15:20:10 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qCPqi-0002De-O5
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 15:20:10 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1687461607;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=14VtsKnVKF5TAMhjCO0cyadi9qMUeUj380kknWD4vQc=;
+ b=ElBo914E61da6Xtt0+s4fCyyEFvoTyO4fzZTlHqtlH/tP5ns4gmJ+AWLkhg07+xUCIBbZ+
+ S3JTWLIH3XLaYtBlwla8sBUb7h586/ezogGT4Kmc5hbkuvACHMeLpjaHOD2Cpx2vZ+qqGK
+ Yp8iBzWBBzxvZQp+46S1ZNstDK92FZ4=
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
+ [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-341-CmWb4MFDOVSLXQDxLKZ58Q-1; Thu, 22 Jun 2023 15:20:05 -0400
+X-MC-Unique: CmWb4MFDOVSLXQDxLKZ58Q-1
+Received: by mail-qt1-f200.google.com with SMTP id
+ d75a77b69052e-4007918c09aso3034021cf.1
+ for <qemu-devel@nongnu.org>; Thu, 22 Jun 2023 12:20:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687459543; x=1690051543;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20221208; t=1687461604; x=1690053604;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=XKyN5QSE+MTdh+8+dUkT/aMB00OyZJli1HAFK0+xm+Y=;
- b=L0yXQGnsZQdlYyBlP6sQsHVPfZ6M2S8W8xtEcqH85pYz3WznjWYfckmpFzoK19jVwh
- y9+nWRPtxVZI9wvBRVsaDCc8/876k6fru9uBhxNaKTL7/jng3qmfXRWqkCzmZniVTWR3
- JXf6AGvbLI0uAW07rEE1TqXsdN2IlKLL4AMbjMYBgjGrp/aCFu6X7Cg5GiS0GP8XJyYH
- CCXvJvixIwDsCFKdf0XGKANk5CfTrfA2pt5MzOAkMRSRsfEKvXWRxlokmKXBo9RhLw4d
- AW9X7f+KssLASKgJllXm5MYiBGGO1Cqp7EvUeQ11GKamGJXYSBmycfnHNuhKMB0LtwgP
- Qk8g==
-X-Gm-Message-State: AC+VfDwDqFAie12ddT080zyOvJHWMfHOU5ybfAOwgxHrS1IYfKDjX8H9
- jc7pumUKVDlEXJlh+t2UWmOPmw==
-X-Google-Smtp-Source: ACHHUZ5iaB+lQl39UaiZXGSgKe75oXW6Oq9puiDOUo7kf6Z7ueVsTlBpbr/3ukkDS1YNXrMciNaU5Q==
-X-Received: by 2002:a4a:dd04:0:b0:560:8f20:73d3 with SMTP id
- m4-20020a4add04000000b005608f2073d3mr6895126oou.1.1687459543437; 
- Thu, 22 Jun 2023 11:45:43 -0700 (PDT)
-Received: from [192.168.68.108] (201-69-66-110.dial-up.telesp.net.br.
- [201.69.66.110]) by smtp.gmail.com with ESMTPSA id
- t7-20020a4ad0a7000000b00560b1febfdfsm434793oor.10.2023.06.22.11.45.41
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 22 Jun 2023 11:45:43 -0700 (PDT)
-Message-ID: <da9768b2-84be-5e80-cdfd-ca60bdb48ac9@ventanamicro.com>
-Date: Thu, 22 Jun 2023 15:45:40 -0300
+ bh=14VtsKnVKF5TAMhjCO0cyadi9qMUeUj380kknWD4vQc=;
+ b=OgRqhpShXlBrJBPQmMmT8oORXuKz5tjyXxm0+ATq3FG3Iu+gf+tNc8P08glitr5mWz
+ 3nED4uzyRFHcDM/1M2s4hG7JLfYJP7dDiy+KtcXfsphQRgRt2Ca5NkYYGj7y/bmz5BnB
+ 6sEZIjqMpebElU+q7GccsxxmrSxM0FWwQyytgQ7QykLtfo2qOthAxs3T98a+28C7/3Le
+ +OOOHNQlNlJftVRahgq7w7PvtD9i2kAErxe97Nz1e81fY+WM9GeE6kfviemHawJLm0aw
+ UUm0vTCzp8enEy38D1Z7sK8kIfDn9UFTX6nqiYQxWCfRBNrJ63TLyu2E3pG8cwAEHaka
+ egqw==
+X-Gm-Message-State: AC+VfDzAAljIU81g4PzSjVq27CPgtC8G6f2PpHPoQxopl2JT1JfJWetM
+ q6BeuerNZyoJOd7RuV2UdleNqxuejDTOeHbFtzY2nFSwNbZK8Ldua4irXRrymPa+9LtJHlRNHVb
+ zZCK9wxgwz51sQM4=
+X-Received: by 2002:a05:620a:28ca:b0:763:c764:577c with SMTP id
+ l10-20020a05620a28ca00b00763c764577cmr7280210qkp.5.1687461604401; 
+ Thu, 22 Jun 2023 12:20:04 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ744S8XK7S8j2WyT91O/4bpIR6xyQUmlsOsTYD5txNDxawTok7Nc84zh23/8guuD/gRmondZw==
+X-Received: by 2002:a05:620a:28ca:b0:763:c764:577c with SMTP id
+ l10-20020a05620a28ca00b00763c764577cmr7280178qkp.5.1687461604070; 
+ Thu, 22 Jun 2023 12:20:04 -0700 (PDT)
+Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
+ [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
+ o25-20020a05620a131900b007621b795ffdsm3679403qkj.116.2023.06.22.12.20.02
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 22 Jun 2023 12:20:03 -0700 (PDT)
+Date: Thu, 22 Jun 2023 15:20:01 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+Cc: Juan Quintela <quintela@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org,
+ Markus Armbruster <armbru@redhat.com>,
+ Leonardo Bras <leobras@redhat.com>, qemu-block@nongnu.org,
+ Stefan Hajnoczi <stefanha@redhat.com>,
+ Eric Blake <eblake@redhat.com>, Fam Zheng <fam@euphon.net>,
+ Thomas Huth <thuth@redhat.com>, libvir-list@redhat.com
+Subject: Re: [RFC 4/6] migration: Deprecate -incoming <uri>
+Message-ID: <ZJSe4TunhU47yIJ/@x1n>
+References: <20230612193344.3796-1-quintela@redhat.com>
+ <20230612193344.3796-5-quintela@redhat.com> <ZId0+HYF/ETLVri3@x1n>
+ <875y7sflqb.fsf@secure.mitica>
+ <d88c707a-abd9-6c8e-907c-13a3fa9a0219@redhat.com>
+ <87wmzv7ubn.fsf@secure.mitica> <ZJQbnmbFZkY51bSy@redhat.com>
+ <ZJRuw19Rc1LlPQId@x1n> <ZJR32Vsw+bAyca8/@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH qemu v2] change the fdt_load_addr variable datatype to
- handle 64-bit DRAM address
-Content-Language: en-US
-To: ~rlakshmibai <lakshmi.bai.rajasubramanian@bodhicomputing.com>,
- qemu-riscv@nongnu.org, Alistair Francis <alistair.francis@wdc.com>
-Cc: qemu-devel@nongnu.org
-References: <168728374725.24164.15960018589525015764-0@git.sr.ht>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <168728374725.24164.15960018589525015764-0@git.sr.ht>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c2b;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-oo1-xc2b.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+In-Reply-To: <ZJR32Vsw+bAyca8/@redhat.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,41 +109,123 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-(CC-ing Alistair)
-
-On 6/20/23 14:44, ~rlakshmibai wrote:
-> From: Lakshmi Bai Raja Subramanian <lakshmi.bai.rajasubramanian@bodhicomputing.com>
+On Thu, Jun 22, 2023 at 05:33:29PM +0100, Daniel P. Berrangé wrote:
+> On Thu, Jun 22, 2023 at 11:54:43AM -0400, Peter Xu wrote:
+> > I can try to move the todo even higher.  Trying to list the initial goals
+> > here:
+> > 
+> > - One extra phase of handshake between src/dst (maybe the time to boost
+> >   QEMU_VM_FILE_VERSION) before anything else happens.
+> > 
+> > - Dest shouldn't need to apply any cap/param, it should get all from src.
+> >   Dest still need to be setup with an URI and that should be all it needs.
+> > 
+> > - Src shouldn't need to worry on the binary version of dst anymore as long
+> >   as dest qemu supports handshake, because src can fetch it from dest.
 > 
-> fdt_load_addr is getting overflowed when there is no DRAM at lower 32 bit address space.
-> To support pure 64-bit DRAM address, fdt_load_addr variable's data type is changed to uint64_t
-> instead of uint32_t.
+> I'm not sure that works in general. Even if we have a handshake and
+> bi-directional comms for live migration, we still haave the save/restore
+> to file codepath to deal with. The dst QEMU doesn't exist at the time
+> the save process is done, so we can't add logic to VMSate handling that
+> assumes knowledge of the dst version at time of serialization.
 
-It's worth mentioning that fdt_load_addr receives the result of
-riscv_compute_fdt_addr(), which is an uint64_t.
+My current thought was still based on a new cap or anything the user would
+need to specify first on both sides (but hopefully the last cap to set on
+dest).
+
+E.g. if with a new handshake cap we shouldn't set it on a exec: or file:
+protocol migration, and it should just fail on qmp_migrate() telling that
+the URI is not supported if the cap is set.  Return path is definitely
+required here.
 
 > 
-> Signed-off-by: Lakshmi Bai Raja Subramanian <lakshmi.bai.rajasubramanian@bodhicomputing.com>
-> ---
-
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-
->   hw/riscv/virt.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+> > - Handshake can always fail gracefully if anything wrong happened, it
+> >   normally should mean dest qemu is not compatible with src's setup (either
+> >   machine, device, or migration configs) for whatever reason.  Src should
+> >   be able to get a solid error from dest if so.
+> > 
+> > - Handshake protocol should always be self-bootstrap-able, it means when we
+> >   change the handshake protocol it should always works with old binaries.
+> > 
+> >   - When src is newer it should be able to know what's missing on dest and
+> >     skip the new bits.
+> > 
+> >   - When dst is newer it should all rely on src (which is older) and it
+> >     should always understand src's language.
 > 
-> diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
-> index 95708d890e..c348529ac0 100644
-> --- a/hw/riscv/virt.c
-> +++ b/hw/riscv/virt.c
-> @@ -1244,7 +1244,7 @@ static void virt_machine_done(Notifier *notifier, void *data)
->       target_ulong start_addr = memmap[VIRT_DRAM].base;
->       target_ulong firmware_end_addr, kernel_start_addr;
->       const char *firmware_name = riscv_default_firmware_name(&s->soc[0]);
-> -    uint32_t fdt_load_addr;
-> +    uint64_t fdt_load_addr;
+> I'm not convinced it can reliably self-bootstrap in a backwards
+> compatible manner, precisely because the current migration stream
+> has no handshake and only requires a unidirectional channel.
 
+Yes, please see above.  I meant when we grow the handshake protocol we
+should make sure we don't need anything new to be setup either on src/dst
+of qemu.  It won't apply to before-handshake binaries.
 
+> I don't think its possible for QEMU to validate that it has a fully
+> bi-directional channel, without adding timeouts to its detection which I
+> think we should strive to avoid.
+> 
+> I don't think we actually need self-bootstrapping anyway.
+> 
+> I think the mgmt app can just indicate the new v2 bi-directional
+> protocol when issuing the 'migrate' and 'migrate-incoming'
+> commands.  This becomes trivial when Het's refactoring of the
+> migrate address QAPI is accepted:
+> 
+>   https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg04851.html
+> 
+> eg:
+> 
+>     { "execute": "migrate",
+>       "arguments": {
+>           "channels": [ { "channeltype": "main",
+>                           "addr": { "transport": "socket", "type": "inet",
+>                                    "host": "10.12.34.9",
+>                                     "port": "1050" } } ] } }
+> 
+> note the 'channeltype' parameter here. If we declare the 'main'
+> refers to the existing migration protocol, then we merely need
+> to define a new 'channeltype' to use as an indicator for the
+> v2 migration handshake protocol.
 
->       uint64_t kernel_entry = 0;
->       BlockBackend *pflash_blk0;
->   
+Using a new channeltype would also work at least on src qemu, but I'm not
+sure on how dest qemu would know that it needs a handshake in that case,
+because it knows nothing until the connection is established.
+
+Maybe we still need QEMU_VM_FILE_VERSION to be boosted at least in this
+case, so dest can read this at the very beginning, old binaries will fail
+immediately, new binaries will start to talk with v2 language.
+
+> 
+> > - All !main channels need to be established later than the handshake - if
+> >   we're going to do this anyway we probably should do it altogether to make
+> >   channels named, so each channel used in migration needs to have a common
+> >   header.  Prepare to deprecate the old tricks of channel orderings.
+> 
+> Once the primary channel involves a bi-directional handshake,
+> we'll trivially ensure ordering - similar to how the existing
+> code worked fnie in TLS mode which had a bi-directional TLS
+> handshake.
+
+I'm not sure I fully get it here.
+
+IIUC tls handshake was mostly transparent to QEMU in this case while we're
+relying on gnutls_handshake().  Here IIUC we need to design the roundtrip
+messages to sync up two qemus well.
+
+The round trip messages can contain a lot of things that can be useful to
+us, besides knowing what features dest supports, what caps src use, we can
+e.g. also provide a device tree dump from dest and try to match it on src,
+failing the migration very early if we see any mismatch.  Right now we fail
+too late, only until the device load (which is the last stage).
+
+For channel orders, I'd expect the v2 protocol contains a phase to talk on
+the channels and creation of named channels should be part of setup phase
+before anything will happen next.
+
+Thanks,
+
+-- 
+Peter Xu
+
 
