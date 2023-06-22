@@ -2,67 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1171C739FFC
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 13:46:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0FB4739FFD
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 13:46:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCIlP-0004To-Q2; Thu, 22 Jun 2023 07:46:11 -0400
+	id 1qCIlm-0004yd-U8; Thu, 22 Jun 2023 07:46:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <lukasstraub2@web.de>)
- id 1qCIl1-0004Gf-QS
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 07:45:51 -0400
+ id 1qCIlT-0004kB-UR
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 07:46:16 -0400
 Received: from mout.web.de ([212.227.17.11])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <lukasstraub2@web.de>)
- id 1qCIkz-0004oj-Gg
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 07:45:46 -0400
+ id 1qCIlP-0004qY-8f
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 07:46:12 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
- s=s29768273; t=1687434341; x=1688039141; i=lukasstraub2@web.de;
- bh=42w8/Ws9HBdzcv51nTv16duYacTtRxYYG4xI4b7utYI=;
+ s=s29768273; t=1687434357; x=1688039157; i=lukasstraub2@web.de;
+ bh=jgN+5r2Z7ae5jhbXe+7P84xBTurQnzTstRVbT8bxDzU=;
  h=X-UI-Sender-Class:Date:From:To:Cc:Subject:In-Reply-To:References;
- b=YVOamDPr5OiXHFlXqJgHrIMkNaoBnP8jWMDDDlT1oBpBvyyJZ7e7MC6YwFfdfaevKpS2hlE
- BVOSTClQ6bWWm7LsECTA3pe6GtcFcvZro159sok4rrtBqBLdHW981IIBnMMSzVVEYEfGKrYBF
- S8jBaDvCdUDmPBsnYjLt0Wmwu55xEZaDnsuuV+CcPGgNyLAU8xWE0pePdoiUF2/nANFX+MrzB
- +dWQT+0MKMsgi89G9GiH0QugqO39IcwotflbNM6tLomoGbRJrmQDfcM1wr3G/DXoGF8OswHhY
- eUq0OIWWB/Fd1W244e0BKveUqK351Nie4GVMFIsWOZtNRL22PCvA==
+ b=nDSGv+DbnuZxN3fYaJx+vgQdfBX9hYnjQ69MIMp1GdGG3Mwf4qDhlYIvUF9yW62uDtsFoLA
+ izVCZtNuQae791hjbbjqLjL33QUFutUbuHr+gSSzm4kJbYFLlE52g+VxyzD2vyHodVJgJILoq
+ VQL3zkDOwopJd4arrMtQH0eAzu4Nmi+Sv3SM7/4yS3DmDJtOxIpzKh5etbVrLm3xNUl3Ius2L
+ 5izstw7Ihma21xfvaE3w1O9lDDa2jrhOIxPzY49IjLvrlXXvJ9kQw2NxqiFZjPtJnAJ3Mho/W
+ rDexBMfRw5hk3GGrlWccdSPq4NtDF47YnTWACoetWE0u9K/cI15A==
 X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
 Received: from mobian ([46.114.147.93]) by smtp.web.de (mrweb106
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1MsaRt-1pxwhb3nXX-00tXyU; Thu, 22
- Jun 2023 13:45:41 +0200
-Date: Thu, 22 Jun 2023 13:45:36 +0200
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1McZjb-1pecdV3VsL-00cZRX; Thu, 22
+ Jun 2023 13:45:57 +0200
+Date: Thu, 22 Jun 2023 13:45:52 +0200
 From: Lukas Straub <lukasstraub2@web.de>
 To: Juan Quintela <quintela@redhat.com>
 Cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>, Leonardo Bras
  <leobras@redhat.com>
-Subject: Re: [PATCH 07/18] migration: Create ram_compressed_pages()
-Message-ID: <20230622134536.35461096@mobian>
-In-Reply-To: <20230613145757.10131-8-quintela@redhat.com>
+Subject: Re: [PATCH 08/18] migration: Move update_compress_threads_counts()
+ to ram-compress.c
+Message-ID: <20230622134552.349475a8@mobian>
+In-Reply-To: <20230613145757.10131-9-quintela@redhat.com>
 References: <20230613145757.10131-1-quintela@redhat.com>
- <20230613145757.10131-8-quintela@redhat.com>
+ <20230613145757.10131-9-quintela@redhat.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/+IyMve3ydSkrCJeTchnZS2Y";
+Content-Type: multipart/signed; boundary="Sig_/UGz5SLvHE/cwn4vhOH7tI_m";
  protocol="application/pgp-signature"; micalg=pgp-sha512
-X-Provags-ID: V03:K1:ZZVAG5tj3PcR9hHV3DrKmyBMd8YMXcpet7Qp6UXLl6yPJocQ/pt
- 9GZA3U8rZGkendufG0nVkTA2HIMHhpd+uZuLtXAdaeUvf1wN6Xg/MzBqq847+zZCnnCl7tP
- t6u3gKCy9Q7uAe5gDRnccRDWP0ZG8KY0wx7v701QDARfIIPEgXqytDfCzVfMF9kJ5yMEaA0
- W7RjrHfbz36/2qfGKthUw==
-UI-OutboundReport: notjunk:1;M01:P0:YBe+UwGuOP4=;3IDDOnWB+qGWv05HF+r43Q2dJ8P
- mOfa+drx3qUSKvNsIfPFfkpiJ4qgaVfeCraq0sMKDFHMmUlX+6SKJdOe2oyHoZdSzZtWUpuDb
- a1PMmnz2qIhl3o0C6lDxngMd78d+oTrnaV9c8Ou/kbAO5PUiW43SCf53wFSsrTNXnBQ4ARNaU
- UDMhs9UvlbNBUM5N5Uou4mZodPPqquyMOBQUplYLD6U6JYkOdPBgoPQTAEYRKqJaEyewrB6Us
- PmEIOmPrV1Y7OKBLZCgt5Zo95xCnyjznP9v9Vafy8ZXnaoACKyhRwNQ9+2yHDGUcbvxE2SaVq
- Gc/jHjUALR1Yzhmx1TyGe+L3s/THaSz7Z+AJ9zDmnEuTyqfM1IFaDKIHj6A3umjDpKZecvabg
- DuMlYhqtUw3XFUHZnkgb+WTyph7dX/hOmhxr4XVP3XTrB6CkvKEwfHsDY4higRk1+zeXottop
- qVM3PhfRhkaGoRkMT/sBa8ttXPSIKv4z0I4HXEm88Q2eOdrSKSwVjlnGHJ+Jq+4Qgcc+fOTZO
- eMTNZ+aJz/G3cTff75jeC26ORT6E9X+eKkBfKXZIKAjLwIdc7DYC19E0dB7ndXKIs2z8nvNTX
- AIRJZlXHHAkNCgmKwDtpb/t+1/qbTtMczm+fDF4cjWvScZWxfPU0Av9UisVVH6Ly2skZELl5m
- Wc9V0f/TY340bAtaJXdjDJaVRbT4P0d3RfDiAEiGz/cxGxnJ6jGg6eefQAeAthSiecOdGEiBT
- ESEQTujTVwew3iw3h7L3dzu38fGc7fA42twUpCIboi7QlCLRqICjoX/WHbWd2ngralJ2YwHk3
- pR45acfALXxpbnwr9S2qI3UUgWxVyfVobsk4Hw5IEjQaU/g/Y9NLphg3czAFaLLMrJ8WiyKMI
- lax94Z44pZOUm6KfhCsaOy7w23oWg1CURphsHsbIum/luYOuM8z2a94zTu5m6rrMIuUpv4MID
- os41zg==
+X-Provags-ID: V03:K1:djBfmBB0EPRoOSNJV+SJHlyw6TFWMcF380KbX8NnahcstOSgVPx
+ InyhABgyvK3KnT5y3j1VF3NyyI5QDXcsCUhfd+o0NVkfLbRxRw2gvSxVsQ6Vw3pDv5bWro5
+ 4h7awpQqnv/UYWYMv86f1IriFCTozAwPWG6QdM2J4mi92AfnaWnNNod1T49C635hOpSe8Gg
+ 38M2aRhlQfehyZVPlcnzg==
+UI-OutboundReport: notjunk:1;M01:P0:ePjHCzzHeBA=;ycyE3voj6t6jWRQuPOdiQAVflWk
+ b2G2IPSDnRt4ltabgkAXPLowbgrgCSYFcicLyDrOd8b238YE3k0G7y2xxL1XiAhx7XZkwFo87
+ O2pypGr3HKfDPthIxA3z+eajNTecy/cJtutP9jM25Fd1Ciy9v8msCglwfhSnevyQ5kEHOFjmr
+ F+qPhOdv5q3pwMaBWX86bSwhVjW1NC+a6QbW1QmcsCgf6OP99R5PQPYsE1aIiJCtKSvf5AjCr
+ a7fqM5U3+2OlxD/eRuzOgEI8OjHg6uHWSmR3GcqMhODbeqyqy/RvKsof3nqzTfv2/Y5qsSnf7
+ dEZirC9LMdqAcOfK6V9MoobifcAJ3nNQWJ7mZMEE6udBkYh/4P8wBXmNBcLAhEsWQZFByfV85
+ N7O/PvTC4We6DLCGK/2ALtqWGJ45wLOCxQ/aTYM+V2YOvb6NaJR33TrFxscVKF+gy3k9Ic0nz
+ GFG0aIwsMOjwsOMXsMKwVdfeHy0rc0Ncj6dc7WikgDjKEFp1xeapPxnOgpPxecHWV2bRWJwkH
+ DunqeVd4ON30quzDEqnxETqBNxLobiy2kLvVHiFybi+hcPvDCU0WajnlY5b/V5So3vW2gu8QQ
+ WrMxmHNR6YeTrVIyqVjaxUc5tbD2J48aCWiFXs8aITZ4VtLDkSaUvnK5Cofltl2pcoqREUN2W
+ Xpb6oWDB4Z6o/iX2xRko6zPBlNxIxJ0N/61zaGWkvPnzA7+ziXhVLrFmlmnFqLCP3/zVdnSYQ
+ XC+9doSKN5/5yPx4m0aKy05pUhx2pk2ofYQudCRKct0cdRThLaXZqxTPywIlfPkXjDOqCKj72
+ DSnerpOw8jPi5WaL046yyOgORs8Gb9jLlxXpb/tqlijKLTVEyOdIGQXs09ktS6ESeCV0OZQzR
+ ZJEJHEaGS9m2jipw5Z08KgquiZIAkI+ruzx8RrqY6eQzJ2ffbKVh75VwgcqY8bGvQlqLyMCY/
+ uaeo7L5zX/yrq8BVvAci+MdXWaM=
 Received-SPF: pass client-ip=212.227.17.11; envelope-from=lukasstraub2@web.de;
  helo=mout.web.de
 X-Spam_score_int: -18
@@ -88,90 +89,123 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---Sig_/+IyMve3ydSkrCJeTchnZS2Y
+--Sig_/UGz5SLvHE/cwn4vhOH7tI_m
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, 13 Jun 2023 16:57:46 +0200
+On Tue, 13 Jun 2023 16:57:47 +0200
 Juan Quintela <quintela@redhat.com> wrote:
 
 > Signed-off-by: Juan Quintela <quintela@redhat.com>
->=20
-> fix ram_compress
->=20
-> Signed-off-by: Juan Quintela <quintela@redhat.com>
-
-Commit message is off. Other than that:
 
 Reviewed-by: Lukas Straub <lukasstraub2@web.de>
 
 > ---
->  migration/ram-compress.h | 1 +
->  migration/ram-compress.c | 6 ++++++
->  migration/ram.c          | 2 +-
->  3 files changed, 8 insertions(+), 1 deletion(-)
+>  migration/ram-compress.h |  1 +
+>  migration/ram-compress.c | 17 +++++++++++++++++
+>  migration/ram.c          | 15 ---------------
+>  3 files changed, 18 insertions(+), 15 deletions(-)
 >=20
 > diff --git a/migration/ram-compress.h b/migration/ram-compress.h
-> index 43ff44c0ba..77465dad4b 100644
+> index 77465dad4b..e55d3b50bd 100644
 > --- a/migration/ram-compress.h
 > +++ b/migration/ram-compress.h
-> @@ -69,5 +69,6 @@ int compress_threads_load_setup(QEMUFile *f);
->  void decompress_data_with_multi_threads(QEMUFile *f, void *host, int len=
-);
+> @@ -70,5 +70,6 @@ void decompress_data_with_multi_threads(QEMUFile *f, vo=
+id *host, int len);
 > =20
 >  void populate_compress(MigrationInfo *info);
-> +uint64_t ram_compressed_pages(void);
+>  uint64_t ram_compressed_pages(void);
+> +void update_compress_thread_counts(const CompressParam *param, int bytes=
+_xmit);
 > =20
 >  #endif
 > diff --git a/migration/ram-compress.c b/migration/ram-compress.c
-> index a91c32588e..c48d5c53f6 100644
+> index c48d5c53f6..47b600d62b 100644
 > --- a/migration/ram-compress.c
 > +++ b/migration/ram-compress.c
-> @@ -502,3 +502,9 @@ void populate_compress(MigrationInfo *info)
->              compression_counters.compression_rate;
->      }
+> @@ -32,11 +32,14 @@
+>  #include "ram-compress.h"
+> =20
+>  #include "qemu/error-report.h"
+> +#include "qemu/stats64.h"
+>  #include "migration.h"
+>  #include "options.h"
+>  #include "io/channel-null.h"
+>  #include "exec/target_page.h"
+>  #include "exec/ramblock.h"
+> +#include "ram.h"
+> +#include "migration-stats.h"
+> =20
+>  CompressionStats compression_counters;
+> =20
+> @@ -508,3 +511,17 @@ uint64_t ram_compressed_pages(void)
+>      return compression_counters.pages;
 >  }
-> +
-> +uint64_t ram_compressed_pages(void)
+> =20
+> +void update_compress_thread_counts(const CompressParam *param, int bytes=
+_xmit)
 > +{
-> +    return compression_counters.pages;
+> +    ram_transferred_add(bytes_xmit);
+> +
+> +    if (param->result =3D=3D RES_ZEROPAGE) {
+> +        stat64_add(&mig_stats.zero_pages, 1);
+> +        return;
+> +    }
+> +
+> +    /* 8 means a header with RAM_SAVE_FLAG_CONTINUE. */
+> +    compression_counters.compressed_size +=3D bytes_xmit - 8;
+> +    compression_counters.pages++;
 > +}
 > +
 > diff --git a/migration/ram.c b/migration/ram.c
-> index d4943b982f..13c518f81a 100644
+> index 13c518f81a..53dec4d305 100644
 > --- a/migration/ram.c
 > +++ b/migration/ram.c
-> @@ -927,7 +927,7 @@ uint64_t ram_get_total_transferred_pages(void)
->  {
->      return stat64_get(&mig_stats.normal_pages) +
->          stat64_get(&mig_stats.zero_pages) +
-> -        compression_counters.pages + xbzrle_counters.pages;
-> +        ram_compressed_pages() + xbzrle_counters.pages;
+> @@ -1259,21 +1259,6 @@ static int ram_save_multifd_page(QEMUFile *file, R=
+AMBlock *block,
+>      return 1;
 >  }
 > =20
->  static void migration_update_rates(RAMState *rs, int64_t end_time)
+> -static void
+> -update_compress_thread_counts(const CompressParam *param, int bytes_xmit)
+> -{
+> -    ram_transferred_add(bytes_xmit);
+> -
+> -    if (param->result =3D=3D RES_ZEROPAGE) {
+> -        stat64_add(&mig_stats.zero_pages, 1);
+> -        return;
+> -    }
+> -
+> -    /* 8 means a header with RAM_SAVE_FLAG_CONTINUE. */
+> -    compression_counters.compressed_size +=3D bytes_xmit - 8;
+> -    compression_counters.pages++;
+> -}
+> -
+>  static int send_queued_data(CompressParam *param)
+>  {
+>      PageSearchStatus *pss =3D &ram_state->pss[RAM_CHANNEL_PRECOPY];
 
 
---Sig_/+IyMve3ydSkrCJeTchnZS2Y
+--Sig_/UGz5SLvHE/cwn4vhOH7tI_m
 Content-Type: application/pgp-signature
 Content-Description: OpenPGP digital signature
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCgAdFiEEg/qxWKDZuPtyYo+kNasLKJxdslgFAmSUNGAACgkQNasLKJxd
-sli4bg/+JPYTLMF5jykUo2vnYjGQGhxaMduQSDZ3Q1oHhsArRPt0oM8JIDKspiHB
-m1XdSRILcLpz/51O7Zg+v1wEOaDYW1I7P27VVz7FYFsPJEChfhfA/yElcGN7QY11
-8MHa/soJrYFkXSChV9brkOsWLdNOG0OIbAJ2xY6XZhY4sXWzD9snSDk3spcV6P1c
-kzbXqGEnc2did1n2PMWtYvKR6UpMWQb+9FEOGwwgS8kK/3esF4uOPfzmicQP4Af4
-ktYwxgMUvDkxLb+ASlfHTiwolTpImTTT+wIj3e2Juk9t2W1GDCJrHceYK5KFHrcu
-sSKWPXMvrAOoO+qPgyBJGkRnf82A5ceH5L2vkvhH2ih80GzHF3csquBeUOdoJZ9R
-7mnRsXpCD7ybFCLNOQum9UoYt0AVG63Xr1AWJi7rynuFCm7fGFsLtue0kD6399H1
-O7h6SQvtujOvcglgQKxe71MK3bXsv9B9Ycs/CdhRkO0TkN71a6jSthSdbE3eX1op
-LrqfrtBnmvbrXnvIj0/nFqrkW12WwaF5F+rWJpLu8OCB6WlPL+jOuSQUDenEwcIJ
-oCe2xLfhnmn+DxH/S52bYRhWNX3byDnwDpZNXDoD5y8MQCT3Y8yULEiLMuriFIZM
-xHfL7vjfn4cWq2VZmY7Bvmd3/Za2TwebMK8GVrndCCL+xvBQwNs=
-=glWY
+iQIzBAEBCgAdFiEEg/qxWKDZuPtyYo+kNasLKJxdslgFAmSUNHAACgkQNasLKJxd
+sljwkQ//dq9a5IEVoZmmxbOxMdeO3RYj8zY4d1NNsZI+lZRzxkKf8wrj0uqnrC8I
+UypD6TDQONWJilhv8InCAQ8e13XksmdPpDCL6Qg4IvX0n+vWxPIx6V9q3f+yc33v
+QQ9Vxc3ciUODReGpFa+lAxJs82wasKUUQseFhvY4NPEfVgx+/i6bC3iG7sl8pJQQ
+Vr4dAgZbh0GrVEwmWRynuSvWFUzRCs1NawSQBzZSJm3ZtqvbQingJR0CLA5cot3B
+pvh+cPDNJYtiBqb+UkhjOIVmdZMw0lnI1pjjHvUAmgVmjdzU+PVyejhEBvrmWpNG
+NrjvODDYXterzPLokJEPMk0S6bN8GNtQH1NLWrUNIV/n4vHUI5zxDngqm17Y7f7l
+fRfqR8bF042/ENpfpZk5sfHyTXQBpdiM8chUoqzHz5dGyXaf3AVoE0Rrk2oRxhUe
+FMwHJpKYz8/PZyeafrz79EUowN6kQ5Z6GRn4BQNqFxKPoHPO3koXgEzDC7wf5OY4
+AVSK6PR1WjaiMxq1ly6MvtcE5V+jHtdUcFC4tfsSDbsPJRV3iTljlXHhHeUtFf16
+c2E/+dgjk4vF6isSOciqE1uL9a+bW/ow7OYjs0Cc+1RphQUN4CelaMSdirBTpgBU
+IFt3rHlHfi1jPKAYhnOPnYLGnZLSi8Xz2j2Bw266aqqplF+TjLo=
+=4Bfq
 -----END PGP SIGNATURE-----
 
---Sig_/+IyMve3ydSkrCJeTchnZS2Y--
+--Sig_/UGz5SLvHE/cwn4vhOH7tI_m--
 
