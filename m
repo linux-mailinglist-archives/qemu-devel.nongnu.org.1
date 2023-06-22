@@ -2,72 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E12073A6D0
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 18:59:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68A4A73A6D7
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 19:00:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCNcE-000147-Dy; Thu, 22 Jun 2023 12:57:02 -0400
+	id 1qCNda-0006nH-P2; Thu, 22 Jun 2023 12:58:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qCNc5-0000n8-Fb
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 12:56:53 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <SRS0=yb1G=CK=kaod.org=clg@ozlabs.org>)
+ id 1qCNdP-0006gN-5C; Thu, 22 Jun 2023 12:58:19 -0400
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
+ helo=gandalf.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qCNc3-0001QS-H0
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 12:56:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687453010;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=HTz/G5BiFE58fQISpbQndXC0ldXtbuPPgD/w277DDSU=;
- b=dnASCPHojoil98lhJcid2mmaw31CEZMCABMNc2+/XLF0Oyzr88DbP9clkAOVqcrqRqr1/v
- i0pDKhdd0taW9E46JQ3JwsMdFNNLbVUR/wzL78XoVuXFrqP0F6KtXFm3rn3LCbDHWmdTBL
- wTC6zNrhAOKDMulVAc7V7XOO9VLyJZI=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-167-exxF4cZ-NYKtMFDOn3RsZA-1; Thu, 22 Jun 2023 12:56:48 -0400
-X-MC-Unique: exxF4cZ-NYKtMFDOn3RsZA-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (Exim 4.90_1) (envelope-from <SRS0=yb1G=CK=kaod.org=clg@ozlabs.org>)
+ id 1qCNdM-0004Tt-OZ; Thu, 22 Jun 2023 12:58:14 -0400
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4Qn64v3v6Cz4x48;
+ Fri, 23 Jun 2023 02:58:07 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 399CF8A2E2A;
- Thu, 22 Jun 2023 16:56:45 +0000 (UTC)
-Received: from secure.mitica (unknown [10.39.192.73])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 3DAADC00049;
- Thu, 22 Jun 2023 16:56:43 +0000 (UTC)
-From: Juan Quintela <quintela@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Peter Xu <peterx@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>, Eric Blake <eblake@redhat.com>,
- Fam Zheng <fam@euphon.net>, Juan Quintela <quintela@redhat.com>,
- Leonardo Bras <leobras@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- qemu-block@nongnu.org
-Subject: [PULL 30/30] migration/rdma: Split qemu_fopen_rdma() into
- input/output functions
-Date: Thu, 22 Jun 2023 18:55:27 +0200
-Message-Id: <20230622165527.2417-31-quintela@redhat.com>
-In-Reply-To: <20230622165527.2417-1-quintela@redhat.com>
-References: <20230622165527.2417-1-quintela@redhat.com>
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Qn64t0gGzz4x3k;
+ Fri, 23 Jun 2023 02:58:05 +1000 (AEST)
+Message-ID: <7884eabd-8e4b-3858-d76b-5c8967e742ca@kaod.org>
+Date: Thu, 22 Jun 2023 18:58:04 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH v2 1/2] pnv/xive2: Add a get_config() method on the
+ presenter class
+Content-Language: en-US
+To: Frederic Barrat <fbarrat@linux.ibm.com>, danielhb413@gmail.com,
+ qemu-ppc@nongnu.org, qemu-devel@nongnu.org
+References: <20230622162527.1118350-1-fbarrat@linux.ibm.com>
+ <20230622162527.1118350-2-fbarrat@linux.ibm.com>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <20230622162527.1118350-2-fbarrat@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+ envelope-from=SRS0=yb1G=CK=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -40
+X-Spam_score: -4.1
+X-Spam_bar: ----
+X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -84,123 +66,172 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is how everything else in QEMUFile is structured.
-As a bonus they are three less lines of code.
+On 6/22/23 18:25, Frederic Barrat wrote:
+> The presenters for xive on P9 and P10 are mostly similar but the
+> behavior can be tuned through a few CQ registers. This patch adds a
+> "get_config" method, which will allow to access that config from the
+> presenter in a later patch.
+> For now, just define the config for the TIMA version.
+> 
+> Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
 
-Reviewed-by: Peter Xu <peterx@redhat.com>
-Message-ID: <20230530183941.7223-17-quintela@redhat.com>
-Signed-off-by: Juan Quintela <quintela@redhat.com>
----
- migration/qemu-file.h |  1 -
- migration/qemu-file.c | 12 ------------
- migration/rdma.c      | 39 +++++++++++++++++++--------------------
- 3 files changed, 19 insertions(+), 33 deletions(-)
+Reviewed-by: Cédric Le Goater <clg@kaod.org>
 
-diff --git a/migration/qemu-file.h b/migration/qemu-file.h
-index 8b8b7d27fe..47015f5201 100644
---- a/migration/qemu-file.h
-+++ b/migration/qemu-file.h
-@@ -102,7 +102,6 @@ uint64_t qemu_file_transferred_noflush(QEMUFile *f);
-  */
- void qemu_put_buffer_async(QEMUFile *f, const uint8_t *buf, size_t size,
-                            bool may_free);
--bool qemu_file_mode_is_not_valid(const char *mode);
- 
- #include "migration/qemu-file-types.h"
- 
-diff --git a/migration/qemu-file.c b/migration/qemu-file.c
-index d30bf3c377..19c33c9985 100644
---- a/migration/qemu-file.c
-+++ b/migration/qemu-file.c
-@@ -100,18 +100,6 @@ int qemu_file_shutdown(QEMUFile *f)
-     return 0;
- }
- 
--bool qemu_file_mode_is_not_valid(const char *mode)
--{
--    if (mode == NULL ||
--        (mode[0] != 'r' && mode[0] != 'w') ||
--        mode[1] != 'b' || mode[2] != 0) {
--        fprintf(stderr, "qemu_fopen: Argument validity check failed\n");
--        return true;
--    }
--
--    return false;
--}
--
- static QEMUFile *qemu_file_new_impl(QIOChannel *ioc, bool is_writable)
- {
-     QEMUFile *f;
-diff --git a/migration/rdma.c b/migration/rdma.c
-index dd1c039e6c..ca430d319d 100644
---- a/migration/rdma.c
-+++ b/migration/rdma.c
-@@ -4053,27 +4053,26 @@ static void qio_channel_rdma_register_types(void)
- 
- type_init(qio_channel_rdma_register_types);
- 
--static QEMUFile *qemu_fopen_rdma(RDMAContext *rdma, const char *mode)
-+static QEMUFile *rdma_new_input(RDMAContext *rdma)
- {
--    QIOChannelRDMA *rioc;
-+    QIOChannelRDMA *rioc = QIO_CHANNEL_RDMA(object_new(TYPE_QIO_CHANNEL_RDMA));
- 
--    if (qemu_file_mode_is_not_valid(mode)) {
--        return NULL;
--    }
-+    rioc->file = qemu_file_new_input(QIO_CHANNEL(rioc));
-+    rioc->rdmain = rdma;
-+    rioc->rdmaout = rdma->return_path;
-+    qemu_file_set_hooks(rioc->file, &rdma_read_hooks);
- 
--    rioc = QIO_CHANNEL_RDMA(object_new(TYPE_QIO_CHANNEL_RDMA));
-+    return rioc->file;
-+}
- 
--    if (mode[0] == 'w') {
--        rioc->file = qemu_file_new_output(QIO_CHANNEL(rioc));
--        rioc->rdmaout = rdma;
--        rioc->rdmain = rdma->return_path;
--        qemu_file_set_hooks(rioc->file, &rdma_write_hooks);
--    } else {
--        rioc->file = qemu_file_new_input(QIO_CHANNEL(rioc));
--        rioc->rdmain = rdma;
--        rioc->rdmaout = rdma->return_path;
--        qemu_file_set_hooks(rioc->file, &rdma_read_hooks);
--    }
-+static QEMUFile *rdma_new_output(RDMAContext *rdma)
-+{
-+    QIOChannelRDMA *rioc = QIO_CHANNEL_RDMA(object_new(TYPE_QIO_CHANNEL_RDMA));
-+
-+    rioc->file = qemu_file_new_output(QIO_CHANNEL(rioc));
-+    rioc->rdmaout = rdma;
-+    rioc->rdmain = rdma->return_path;
-+    qemu_file_set_hooks(rioc->file, &rdma_write_hooks);
- 
-     return rioc->file;
- }
-@@ -4099,9 +4098,9 @@ static void rdma_accept_incoming_migration(void *opaque)
-         return;
-     }
- 
--    f = qemu_fopen_rdma(rdma, "rb");
-+    f = rdma_new_input(rdma);
-     if (f == NULL) {
--        fprintf(stderr, "RDMA ERROR: could not qemu_fopen_rdma\n");
-+        fprintf(stderr, "RDMA ERROR: could not open RDMA for input\n");
-         qemu_rdma_cleanup(rdma);
-         return;
-     }
-@@ -4224,7 +4223,7 @@ void rdma_start_outgoing_migration(void *opaque,
- 
-     trace_rdma_start_outgoing_migration_after_rdma_connect();
- 
--    s->to_dst_file = qemu_fopen_rdma(rdma, "wb");
-+    s->to_dst_file = rdma_new_output(rdma);
-     migrate_fd_connect(s, NULL);
-     return;
- return_path_err:
--- 
-2.40.1
+> ---
+>   hw/intc/pnv_xive.c    | 11 +++++++++++
+>   hw/intc/pnv_xive2.c   | 12 ++++++++++++
+>   hw/intc/spapr_xive.c  | 16 ++++++++++++++++
+>   hw/intc/xive.c        |  7 +++++++
+>   include/hw/ppc/xive.h |  3 +++
+>   5 files changed, 49 insertions(+)
+> 
+> diff --git a/hw/intc/pnv_xive.c b/hw/intc/pnv_xive.c
+> index 622f9d28b7..e536b3ec26 100644
+> --- a/hw/intc/pnv_xive.c
+> +++ b/hw/intc/pnv_xive.c
+> @@ -479,6 +479,16 @@ static int pnv_xive_match_nvt(XivePresenter *xptr, uint8_t format,
+>       return count;
+>   }
+>   
+> +static uint32_t pnv_xive_presenter_get_config(XivePresenter *xptr)
+> +{
+> +    uint32_t cfg = 0;
+> +
+> +    /* TIMA GEN1 is all P9 knows */
+> +    cfg |= XIVE_PRESENTER_GEN1_TIMA_OS;
+> +
+> +    return cfg;
+> +}
+> +
+>   static uint8_t pnv_xive_get_block_id(XiveRouter *xrtr)
+>   {
+>       return pnv_xive_block_id(PNV_XIVE(xrtr));
+> @@ -1991,6 +2001,7 @@ static void pnv_xive_class_init(ObjectClass *klass, void *data)
+>   
+>       xnc->notify = pnv_xive_notify;
+>       xpc->match_nvt  = pnv_xive_match_nvt;
+> +    xpc->get_config = pnv_xive_presenter_get_config;
+>   };
+>   
+>   static const TypeInfo pnv_xive_info = {
+> diff --git a/hw/intc/pnv_xive2.c b/hw/intc/pnv_xive2.c
+> index ec1edeb385..59534f6843 100644
+> --- a/hw/intc/pnv_xive2.c
+> +++ b/hw/intc/pnv_xive2.c
+> @@ -501,6 +501,17 @@ static int pnv_xive2_match_nvt(XivePresenter *xptr, uint8_t format,
+>       return count;
+>   }
+>   
+> +static uint32_t pnv_xive2_presenter_get_config(XivePresenter *xptr)
+> +{
+> +    PnvXive2 *xive = PNV_XIVE2(xptr);
+> +    uint32_t cfg = 0;
+> +
+> +    if (xive->cq_regs[CQ_XIVE_CFG >> 3] & CQ_XIVE_CFG_GEN1_TIMA_OS) {
+> +        cfg |= XIVE_PRESENTER_GEN1_TIMA_OS;
+> +    }
+> +    return cfg;
+> +}
+> +
+>   static uint8_t pnv_xive2_get_block_id(Xive2Router *xrtr)
+>   {
+>       return pnv_xive2_block_id(PNV_XIVE2(xrtr));
+> @@ -1987,6 +1998,7 @@ static void pnv_xive2_class_init(ObjectClass *klass, void *data)
+>       xnc->notify    = pnv_xive2_notify;
+>   
+>       xpc->match_nvt  = pnv_xive2_match_nvt;
+> +    xpc->get_config = pnv_xive2_presenter_get_config;
+>   };
+>   
+>   static const TypeInfo pnv_xive2_info = {
+> diff --git a/hw/intc/spapr_xive.c b/hw/intc/spapr_xive.c
+> index dc641cc604..8bcab2846c 100644
+> --- a/hw/intc/spapr_xive.c
+> +++ b/hw/intc/spapr_xive.c
+> @@ -475,6 +475,21 @@ static int spapr_xive_match_nvt(XivePresenter *xptr, uint8_t format,
+>       return count;
+>   }
+>   
+> +static uint32_t spapr_xive_presenter_get_config(XivePresenter *xptr)
+> +{
+> +    uint32_t cfg = 0;
+> +
+> +    /*
+> +     * Let's claim GEN1 TIMA format. If running with KVM on P10, the
+> +     * correct answer is deep in the hardware and not accessible to
+> +     * us.  But it shouldn't matter as it only affects the presenter
+> +     * as seen by a guest OS.
+> +     */
+> +    cfg |= XIVE_PRESENTER_GEN1_TIMA_OS;
+
+On POWER10, real HW, a Gen2 TIMA layout is exposed to the OS, HV and guest.
+Gen2 and Gen1 being compatible, it is not a problem since Linux (this might
+not be true for other OS) doesn't use any of the new Gen2 bits. There is a
+larger bitfield for VP CAM, but that's HV world.
+
+Nevertheless, it might be good to expose a Gen2 OS layout when on POWER10
+to be closer to reality, with a "property" may be. Who knows, one might
+implement the new Gen2 bits, but as of today, there is no difference in
+the OS ring of QEMU. No hurries.
+
+Thanks,
+
+C.
+
+
+> +
+> +    return cfg;
+> +}
+> +
+>   static uint8_t spapr_xive_get_block_id(XiveRouter *xrtr)
+>   {
+>       return SPAPR_XIVE_BLOCK_ID;
+> @@ -832,6 +847,7 @@ static void spapr_xive_class_init(ObjectClass *klass, void *data)
+>       sicc->post_load = spapr_xive_post_load;
+>   
+>       xpc->match_nvt  = spapr_xive_match_nvt;
+> +    xpc->get_config = spapr_xive_presenter_get_config;
+>       xpc->in_kernel  = spapr_xive_in_kernel_xptr;
+>   }
+>   
+> diff --git a/hw/intc/xive.c b/hw/intc/xive.c
+> index 5204c14b87..34a868b185 100644
+> --- a/hw/intc/xive.c
+> +++ b/hw/intc/xive.c
+> @@ -461,6 +461,13 @@ static void xive_tm_push_os_ctx(XivePresenter *xptr, XiveTCTX *tctx,
+>       }
+>   }
+>   
+> +static __attribute__((unused)) uint32_t xive_presenter_get_config(XivePresenter *xptr)
+> +{
+> +    XivePresenterClass *xpc = XIVE_PRESENTER_GET_CLASS(xptr);
+> +
+> +    return xpc->get_config(xptr);
+> +}
+> +
+>   /*
+>    * Define a mapping of "special" operations depending on the TIMA page
+>    * offset and the size of the operation.
+> diff --git a/include/hw/ppc/xive.h b/include/hw/ppc/xive.h
+> index f7eea4ca81..3dfb06e002 100644
+> --- a/include/hw/ppc/xive.h
+> +++ b/include/hw/ppc/xive.h
+> @@ -430,6 +430,8 @@ typedef struct XivePresenterClass XivePresenterClass;
+>   DECLARE_CLASS_CHECKERS(XivePresenterClass, XIVE_PRESENTER,
+>                          TYPE_XIVE_PRESENTER)
+>   
+> +#define XIVE_PRESENTER_GEN1_TIMA_OS     0x1
+> +
+>   struct XivePresenterClass {
+>       InterfaceClass parent;
+>       int (*match_nvt)(XivePresenter *xptr, uint8_t format,
+> @@ -437,6 +439,7 @@ struct XivePresenterClass {
+>                        bool cam_ignore, uint8_t priority,
+>                        uint32_t logic_serv, XiveTCTXMatch *match);
+>       bool (*in_kernel)(const XivePresenter *xptr);
+> +    uint32_t (*get_config)(XivePresenter *xptr);
+>   };
+>   
+>   int xive_presenter_tctx_match(XivePresenter *xptr, XiveTCTX *tctx,
 
 
