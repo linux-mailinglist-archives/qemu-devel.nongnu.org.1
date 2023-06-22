@@ -2,70 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE2A673A327
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 16:35:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F4C073A32F
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 16:37:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCLPK-0005CF-HV; Thu, 22 Jun 2023 10:35:34 -0400
+	id 1qCLQa-000606-J4; Thu, 22 Jun 2023 10:36:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qCLPH-0005BC-SZ
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 10:35:31 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1qCLQY-0005zP-J0
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 10:36:50 -0400
+Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qCLPF-0007rN-RH
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 10:35:31 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687444528;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=dOBWiRTBZTY6HxGnhjCREOnLt71n1yYIHZ+SNPfpkIY=;
- b=Lglx1H4kY2Knfq2HXyMv7lNLYe+FtD8l8sQzjjQqj+ci3HoP4AWtDXU3nMEW+z50ECfXXR
- kUAs0Snx7Oxtq+eVAx+Rb44s3qnAhNqekn6guF3hQr0p1sxNpbyIh5dvEvVzocQ5DOsA5l
- zrfqtOQxfpiVkYupoipSk39F3+XiotU=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-299-ixVKytbIM0GDHQwyYbOBNw-1; Thu, 22 Jun 2023 10:35:16 -0400
-X-MC-Unique: ixVKytbIM0GDHQwyYbOBNw-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8DC9410504AC;
- Thu, 22 Jun 2023 14:34:59 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.45])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 11971207B2BC;
- Thu, 22 Jun 2023 14:34:58 +0000 (UTC)
-Date: Thu, 22 Jun 2023 15:34:57 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>
-Subject: Re: [PATCH] host-utils: Avoid using __builtin_subcll on buggy
- versions of Apple Clang
-Message-ID: <ZJRcEUPZy2ntkjJN@redhat.com>
-References: <20230622130823.1631719-1-peter.maydell@linaro.org>
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1qCLQW-000806-UQ
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 10:36:50 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
+ In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
+ Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+ :Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+ List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=v8fgw6ZtNr8W4WxhKEsSjvR80rsltbNMck88qEvkSzE=; b=qceCzuDkT4XfWEgQFAxuc1DVj8
+ udBVtVpy/hpTTmB2hfeXnhPHb8eYRV8ZQcsr1EobcrKDLoQw6MqBpZZGF0/Ck9MEVWYnS9/yuv9YT
+ cUngmKL8FLDZOy/YnzdiajeIgns8IburaObdDPzTmW/Y3/r5239mBzU/jhpGnEs1JCRFvNSCDNdb9
+ cIAwIzWO4FKc/CVmy+hnabgfyRVqM2w/i24KFXSQflNSaJysRmqZNGrXGaN4ex8CXOAF0yUHW8euo
+ OCy7q6TaAixqrjcQUH4R+WLKNBEkX+vuTMV4POTBmoAtl73bqw0vTWG0dZIE5fJHFhR/6aWiZ3DuN
+ bV3ifg1yZB/OfphLwfum12waSKopx/LMy50mo+ljrsK9b6ROeYBJ33/X4h4A5SP5r38nWtDHr+PpQ
+ beIum7qP4PtgqEKCPzK+uGgcAMgqJW37NEYvcSgrp88TmE2QXRbOm45/ajPKdTwE+bwNSAVS3jyga
+ 3myDU7S13+vWjR10t/BhJE5wJxvDpY9+od93dchYQ/5ku3EOcs9l7ulZIFHJkI/zzXUTDbGjCyA3S
+ JeVWB8n8Mk59bKSuGXhX+FloO+aOZj+Q6jNpuJIQNUcZ4sEW5YupCTr+WwB/DFZf+wJUPxvD8jFEE
+ 57LNbIdvijgeNXn5+7B+mBWe+2R6bkpi2LV34/n0Y=;
+Received: from host86-130-37-216.range86-130.btcentralplus.com
+ ([86.130.37.216] helo=[10.8.0.6])
+ by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1qCLQJ-000BeX-Ed; Thu, 22 Jun 2023 15:36:39 +0100
+Message-ID: <2044463e-24eb-722e-9cc1-a5a90c3f7ea3@ilande.co.uk>
+Date: Thu, 22 Jun 2023 15:36:41 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230622130823.1631719-1-peter.maydell@linaro.org>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: atar4qemu@gmail.com
+References: <20230620164040.912490-1-richard.henderson@linaro.org>
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+In-Reply-To: <20230620164040.912490-1-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 86.130.37.216
+X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
+Subject: Re: [PATCH 0/2] target/sparc: Enable MTTCG
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
+Received-SPF: pass client-ip=2001:41c9:1:41f::167;
+ envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -80,89 +78,56 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jun 22, 2023 at 02:08:23PM +0100, Peter Maydell wrote:
-> We use __builtin_subcll() to do a 64-bit subtract with borrow-in and
-> borrow-out when the host compiler supports it.  Unfortunately some
-> versions of Apple Clang have a bug in their implementation of this
-> intrinsic which means it returns the wrong value.  The effect is that
-> a QEMU built with the affected compiler will hang when emulating x86
-> float80 division.
-> 
-> The upstream LLVM issue is:
-> https://github.com/llvm/llvm-project/issues/55253
-> 
-> The commit that introduced the bug apparently never made it into an
-> upstream LLVM release without the subsequent fix
-> https://github.com/llvm/llvm-project/commit/fffb6e6afdbaba563189c1f715058ed401fbc88d
-> but unfortunately it did make it into Apple Clang 14.0, as shipped
-> in Xcode 14.3 (14.2 is reported to be OK). The Apple bug number is
-> FB12210478.
-> 
-> Add ifdefs to avoid use of __builtin_subcll() on Apple Clang version
-> 14 or greater.  There is not currently a version of Apple Clang which
-> has the bug fix -- when one appears we should be able to add an upper
-> bound to the ifdef condition so we can start using the builtin again.
-> We make the lower bound a conservative "any Apple clang with major
-> version 14 or greater" because the consequences of incorrectly
-> disabling the builtin when it would work are pretty small and the
-> consequences of not disabling it when we should are pretty bad.
-> 
-> Many thanks to those users who both reported this bug and also
-> did a lot of work in identifying the root cause; in particular
-> to Daniel Bertalan and osy.
-> 
-> Cc: qemu-stable@nongnu.org
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1631
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1659
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-> ---
-> I don't have a setup to test this, so this needs testing by the
-> people who've encountered this compiler bug to confirm it does
-> the right thing...
-> ---
->  include/qemu/compiler.h   | 13 +++++++++++++
->  include/qemu/host-utils.h |  2 +-
->  2 files changed, 14 insertions(+), 1 deletion(-)
-> 
-> diff --git a/include/qemu/compiler.h b/include/qemu/compiler.h
-> index c2f49df1f91..a309f90c768 100644
-> --- a/include/qemu/compiler.h
-> +++ b/include/qemu/compiler.h
-> @@ -184,4 +184,17 @@
->  #define QEMU_DISABLE_CFI
->  #endif
->  
-> +/*
-> + * Apple clang version 14 has a bug in its __builtin_subcll(); define
-> + * BUILTIN_SUBCLL_BROKEN for the offending versions so we can avoid it.
-> + * When a version of Apple clang which has this bug fixed is released
-> + * we can add an upper bound to this check.
-> + * See https://gitlab.com/qemu-project/qemu/-/issues/1631
-> + * and https://gitlab.com/qemu-project/qemu/-/issues/1659 for details.
-> + * The bug never made it into any upstream LLVM releases, only Apple ones.
+On 20/06/2023 17:40, Richard Henderson wrote:
 
-Perhaps add a reminder:
+> With the addition of TCG_GUEST_DEFAULT_MO, there's nothing in
+> the cpu emulation preventing this from working.  There is some
+> board model work to be done for sparc64, where max_cpus = 1.
 
- * TODO: put a max cap on __clang_major__/__clang_minor once
- * Apple have released a version with the fix
+I've tried testing this with the Advent Calendar image at 
+https://qemu-advent-calendar.org/2018/download/day11.tar.xz and even without these 
+patches applied I'm seeing hangs with -smp 2. When applied on top of the other 
+"target/sparc: Use tcg_gen_lookup_and_goto_ptr" series I get assert() after a minute 
+or two:
 
-> + */
-> +#if defined(__apple_build_version__) && __clang_major__ >= 14
-> +#define BUILTIN_SUBCLL_BROKEN
-> +#endif
+ERROR:../accel/tcg/tcg-accel-ops-mttcg.c:110:mttcg_cpu_thread_fn: assertion failed: 
+(cpu->halted)
+Bail out! ERROR:../accel/tcg/tcg-accel-ops-mttcg.c:110:mttcg_cpu_thread_fn: assertion 
+failed: (cpu->halted)
 
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+It may be wise to try and figure out what's going on with git head first before 
+applying this. In particular /proc/cpuinfo suggests things aren't right with -smp 2:
+
+# cat /proc/cpuinfo
+cpu             : Texas Instruments, Inc. - SuperSparc-(II)
+fpu             : SuperSparc on-chip FPU
+promlib         : Version 3 Revision 2
+prom            : 2.25
+type            : sun4m
+ncpus probed    : 2
+ncpus active    : 1
+CPU0Bogo        : 213.50
+CPU0ClkTck      : 0
+MMU type        : TI Viking/MXCC
+contexts        : 65536
+nocache total   : 3145728
+nocache used    : 375552
+
+> Richard Henderson (2):
+>    target/sparc: Set TCG_GUEST_DEFAULT_MO
+>    configs: Enable MTTCG for sparc, sparc64
+> 
+>   configs/targets/sparc-softmmu.mak   |  1 +
+>   configs/targets/sparc64-softmmu.mak |  1 +
+>   target/sparc/cpu.h                  | 23 +++++++++++++++++++++++
+>   3 files changed, 25 insertions(+)
 
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+ATB,
+
+Mark.
 
 
