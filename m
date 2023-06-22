@@ -2,96 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3598739580
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 04:24:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B0BCA739585
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 04:33:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qC9yU-0002mb-RV; Wed, 21 Jun 2023 22:23:06 -0400
+	id 1qCA6V-0004fA-JE; Wed, 21 Jun 2023 22:31:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qC9yS-0002lu-D2
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 22:23:04 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qC9yQ-000105-Ta
- for qemu-devel@nongnu.org; Wed, 21 Jun 2023 22:23:04 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687400581;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=DzqftHJZuGuUvcgofzRZFS34qM7+GDbzBkVM9QqFKZY=;
- b=DmMqJ5rOiiXNv495fWk6HPajpi0Jas95RysJhJCaRx0INlTfjplcxvx18/VHGUcsVdQre7
- on0/Wq23ifQG/bKqBJ+73L3PB4lhUKkv5y2PgSuzXC7XJkPiJSbLsf5yTCPVaIn6h8Qb5Z
- 29Z3HeYBW0BgQP3CMVAwbZTW4k2mnGk=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-643-cV1oiD0CMqiAqISdh95TEw-1; Wed, 21 Jun 2023 22:22:58 -0400
-X-MC-Unique: cV1oiD0CMqiAqISdh95TEw-1
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-31273e0507dso1729648f8f.3
- for <qemu-devel@nongnu.org>; Wed, 21 Jun 2023 19:22:58 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qCA6T-0004eW-BJ; Wed, 21 Jun 2023 22:31:21 -0400
+Received: from mail-vk1-xa2b.google.com ([2607:f8b0:4864:20::a2b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qCA6R-0005nz-PO; Wed, 21 Jun 2023 22:31:21 -0400
+Received: by mail-vk1-xa2b.google.com with SMTP id
+ 71dfb90a1353d-4718bc88afdso137863e0c.0; 
+ Wed, 21 Jun 2023 19:31:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1687401078; x=1689993078;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=iJIBVtz65dTcztWlQG+ldPtBFsQy64k73NwZLQlOEhw=;
+ b=cUlSLAlzdCIEyYP0nl1FIaTAO03DuqMl+032wwZEjYwcbvWABLcQ4/4zR+iT6q83pE
+ 1FCwHF7xlsoBm9lKshEtkX+JsGf5511oUnWQVVeYT5jvO/itZROCAW5e9z867CK4clmM
+ 7G4YecCtxZ9hNBA2otZOUqmrA/SKLOeqZ6PpONnR7uEF/NETWABJuBvdTnTEqxd11XGk
+ Czr+ZDRhyK1b2J8FAgs96H7Zp2TUpICCbpBtJ70aGPoWu0Zb42G/h9kMXYaMUXxATxtU
+ Cd+gREcWe3FZtzWE97RziFfe0ilvncL+BcDlZiMqAbqbmnNjIzMZdclGS0FpQ/EMFXZl
+ Mqow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687400577; x=1689992577;
- h=mime-version:message-id:date:reply-to:user-agent:references
- :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20221208; t=1687401078; x=1689993078;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=DzqftHJZuGuUvcgofzRZFS34qM7+GDbzBkVM9QqFKZY=;
- b=E2G8Zo2PWHlTtTer6fg+aaR04fftePovfpd8xI/O+KAqMbRThNFtu8Tt1Me/eycQUu
- +dPxQQ6woLy15iEuksedYxc4+HcUiD2LUvToka+wLBOap1x5okNIifSppsdEVjt/5zx+
- z/IobiMmcqnuB5TGdH0w8DYjbBdm9ELVLJZ/MGCft59mkijCLXF/gx+ZkdyC6S6yzOn4
- XjrQT4tcswuBaumNk/UisXzBcG4nmSnmN8lyoeEywnkv2obaqQArJR7Ek/MFNBkjvKWD
- pGIqWq0Zt8QA9KbwgwaeTMqY0DD3Qv3PfaGzUDaazEKTtQkf2yIL/qEYpdXHxYBZZQMP
- CW7g==
-X-Gm-Message-State: AC+VfDyeCErAeyd+pjGrYwG+akUvLfwcI2/ZvFdCfDI86oHSiMUbpQxK
- rSP3LvcwsDJhfmdNW6BcAGII1t1OLevLstJP5d7r/xkWrmFM/PM1zmh0J8x8ZBqxVTCGGRZgYYs
- j/YBjQpqMu+rD98Q=
-X-Received: by 2002:adf:f3d0:0:b0:311:1bd2:de6f with SMTP id
- g16-20020adff3d0000000b003111bd2de6fmr14617544wrp.12.1687400577527; 
- Wed, 21 Jun 2023 19:22:57 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7u7/Hvn9NzUVsK+l6gpUrgLnGJq0EN3uu6j0+CNMIVr0yIALDdSeKvAm98/fL0EQ0/muDz1w==
-X-Received: by 2002:adf:f3d0:0:b0:311:1bd2:de6f with SMTP id
- g16-20020adff3d0000000b003111bd2de6fmr14617535wrp.12.1687400577244; 
- Wed, 21 Jun 2023 19:22:57 -0700 (PDT)
-Received: from redhat.com (static-92-120-85-188.ipcom.comunitel.net.
- [188.85.120.92]) by smtp.gmail.com with ESMTPSA id
- m12-20020a7bcb8c000000b003f9b66a9376sm6260875wmi.42.2023.06.21.19.22.56
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 21 Jun 2023 19:22:56 -0700 (PDT)
-From: Juan Quintela <quintela@redhat.com>
-To: Thomas Huth <thuth@redhat.com>
-Cc: qemu-devel@nongnu.org,  Markus Armbruster <armbru@redhat.com>,  Leonardo
- Bras <leobras@redhat.com>,  Daniel P . =?utf-8?Q?Berrang=C3=A9?=
- <berrange@redhat.com>,
- qemu-block@nongnu.org,  Peter Xu <peterx@redhat.com>,  Stefan Hajnoczi
- <stefanha@redhat.com>,  Eric Blake <eblake@redhat.com>,  Fam Zheng
- <fam@euphon.net>,  libvir-list@redhat.com,  Paolo Bonzini
- <pbonzini@redhat.com>
-Subject: Re: [RFC 4/6] migration: Deprecate -incoming <uri>
-In-Reply-To: <e715e41d-b50a-3747-8007-e188e911a724@redhat.com> (Thomas Huth's
- message of "Wed, 21 Jun 2023 09:08:33 +0200")
-References: <20230612193344.3796-1-quintela@redhat.com>
- <20230612193344.3796-5-quintela@redhat.com>
- <e715e41d-b50a-3747-8007-e188e911a724@redhat.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
-Date: Thu, 22 Jun 2023 04:22:55 +0200
-Message-ID: <875y7g8ccg.fsf@secure.mitica>
+ bh=iJIBVtz65dTcztWlQG+ldPtBFsQy64k73NwZLQlOEhw=;
+ b=F93Ts1hEZjB/KhBrCvJuHDOVDA/nd4SIq8x6x0YqtuYcJ5voVFYGbcZpPegnGS37+V
+ hAPhKnoM8Fmp27TwuCrPL9jIJP83blY2ZDzJnGn9NXD5mFJRxE1PF75N0mAfXVqnKzA0
+ g7s+G/wl8c9OLhi2KJBEX7sBtSqhG2Xj7uoPnrSRnrzHdKOvUBQUralZV7Z2kbS1YUel
+ /+Aowihz5iUqLGinJmcAXr8cAvss0LvWASKykP98sHqJ0QBdYMlES0OlpXfb53pcXWiT
+ pPpN4YKgELPZIwnacXOThY5dxLLQN2mZNvIJYKcaAavGnBsbA2A/wbiO3TOGp2sFZzK/
+ Skxg==
+X-Gm-Message-State: AC+VfDzBSpm2vT8skxFQ8aXNEB6xihvCWIW4l3MUqvpyjsqX6vI7ABQk
+ xtit0RQhmR3VF8HH8AqeISYHLwm+JEF4LsyBht4=
+X-Google-Smtp-Source: ACHHUZ4mNlWHs8sTmjap5bX4Mq1R/EfL2/vfhwz7FHw3v5UX6HnFfg/mjzZhVmR4p9LCHNYW9I0W8D20XGgzGPMdHXY=
+X-Received: by 2002:a05:6122:a08:b0:466:3bd9:778 with SMTP id
+ 8-20020a0561220a0800b004663bd90778mr5456683vkn.6.1687401078339; Wed, 21 Jun
+ 2023 19:31:18 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+References: <20230620152443.137079-1-dbarboza@ventanamicro.com>
+In-Reply-To: <20230620152443.137079-1-dbarboza@ventanamicro.com>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Thu, 22 Jun 2023 12:30:52 +1000
+Message-ID: <CAKmqyKNYdL6ftV-5OYRzTKfHm4ehYrA+kCuJwzdpsko9Bc0B4Q@mail.gmail.com>
+Subject: Re: [PATCH] target/riscv/cpu.c: fix veyron-v1 CPU properties
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
+ bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
+ palmer@rivosinc.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::a2b;
+ envelope-from=alistair23@gmail.com; helo=mail-vk1-xa2b.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,71 +84,64 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Thomas Huth <thuth@redhat.com> wrote:
-> On 12/06/2023 21.33, Juan Quintela wrote:
->> Only "defer" is recommended.  After setting all migation parameters,
->> start incoming migration with "migrate-incoming uri" command.
->> Signed-off-by: Juan Quintela <quintela@redhat.com>
->> ---
->>   docs/about/deprecated.rst | 7 +++++++
->>   softmmu/vl.c              | 2 ++
->>   2 files changed, 9 insertions(+)
->> diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
->> index 47e98dc95e..518672722d 100644
->> --- a/docs/about/deprecated.rst
->> +++ b/docs/about/deprecated.rst
->> @@ -447,3 +447,10 @@ The new way to modify migration is using migration parameters.
->>   ``blk`` functionality can be acchieved using
->>   ``migrate_set_parameter block-incremental true``.
->>   +``-incoming uri`` (since 8.1)
->> +'''''''''''''''''''''''''''''
->> +
->> +Everything except ``-incoming defer`` are deprecated.  This allows to
->> +setup parameters before launching the proper migration with
->> +``migrate-incoming uri``.
->> +
->> diff --git a/softmmu/vl.c b/softmmu/vl.c
->> index b0b96f67fa..7fe865ab59 100644
->> --- a/softmmu/vl.c
->> +++ b/softmmu/vl.c
->> @@ -2651,6 +2651,8 @@ void qmp_x_exit_preconfig(Error **errp)
->>       if (incoming) {
->>           Error *local_err = NULL;
->>           if (strcmp(incoming, "defer") != 0) {
->> +            warn_report("-incoming %s is deprecated, use -incoming defer and "
->> +                        " set the uri with migrate-incoming.", incoming);
->>               qmp_migrate_incoming(incoming, &local_err);
->>               if (local_err) {
->>                   error_reportf_err(local_err, "-incoming %s: ", incoming);
+On Wed, Jun 21, 2023 at 1:25=E2=80=AFAM Daniel Henrique Barboza
+<dbarboza@ventanamicro.com> wrote:
 >
-> Could we maybe keep at least the smallest set of necessary parameters
-> around? I'm often doing a "-incoming tcp:0:1234" for doing quick
-> sanity checks with migration, not caring about other migration
-> parameters, so if that could continue to work, that would be very
-> appreciated.
+> Commit 7f0bdfb5bfc2 ("target/riscv/cpu.c: remove cfg setup from
+> riscv_cpu_init()") removed code that was enabling mmu, pmp, ext_ifencei
+> and ext_icsr from riscv_cpu_init(), the init() function of
+> TYPE_RISCV_CPU, parent type of all RISC-V CPUss. This was done to force
+> CPUs to explictly enable all extensions and features it requires,
+> without any 'magic values' that were inherited by the parent type.
+>
+> This commit failed to make appropriate changes in the 'veyron-v1' CPU,
+> added earlier by commit e1d084a8524a. The result is that the veyron-v1
+> CPU has ext_ifencei, ext_icsr and pmp set to 'false', which is not the
+> case.
+>
+> The reason why it took this long to notice (thanks LIU Zhiwei for
+> reporting it) is because Linux doesn't mind 'ifencei' and 'icsr' being
+> absent in the 'riscv,isa' DT, implying that they're both present if the
+> 'i' extension is enabled. OpenSBI also doesn't error out or warns about
+> the lack of 'pmp', it'll just not protect memory pages.
+>
+> Fix it by setting them to 'true' in rv64_veyron_v1_cpu_init() like
+> 7f0bdfb5bfc2 already did with other CPUs.
+>
+> Reported-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+> Fixes: 7f0bdfb5bfc2 ("target/riscv/cpu.c: remove cfg setup from riscv_cpu=
+_init()")
+> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-I will try to explain myself here.
+Thanks!
 
-I think that everything except tcp works.
-But when we have tcp, we have two cases where this is a trap:
-- multifd channels:
-  * if we default to a big number, we underuse resources in a normal
-    case
-  * if we default to a small number, we have the problem that if the
-    user set "later" multifd-channels to a bigger number, things can
-    break.
-- postcopy+preempt:
-  this case is also problematic, but easily fixable.  Put a default
-  of 2 instead of 1.
+Applied to riscv-to-apply.next
 
-The only other solution that I can think of is just fail if we set
-multifd without incoming defer.  But more sooner than later we are going
-to have to default to multifd, so ...
+Alistair
 
-Later, Juan.
-
+> ---
+>  target/riscv/cpu.c | 3 +++
+>  1 file changed, 3 insertions(+)
+>
+> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> index 881bddf393..707f62b592 100644
+> --- a/target/riscv/cpu.c
+> +++ b/target/riscv/cpu.c
+> @@ -444,6 +444,9 @@ static void rv64_veyron_v1_cpu_init(Object *obj)
+>
+>      /* Enable ISA extensions */
+>      cpu->cfg.mmu =3D true;
+> +    cpu->cfg.ext_ifencei =3D true;
+> +    cpu->cfg.ext_icsr =3D true;
+> +    cpu->cfg.pmp =3D true;
+>      cpu->cfg.ext_icbom =3D true;
+>      cpu->cfg.cbom_blocksize =3D 64;
+>      cpu->cfg.cboz_blocksize =3D 64;
+> --
+> 2.41.0
+>
+>
 
