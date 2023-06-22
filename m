@@ -2,77 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEAF473A954
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 22:08:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2962473A95F
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 22:15:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCQZu-0004BY-MD; Thu, 22 Jun 2023 16:06:50 -0400
+	id 1qCQgi-0005z7-M5; Thu, 22 Jun 2023 16:13:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qCQZr-0004BF-TR
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 16:06:47 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qCQgg-0005xp-TE
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 16:13:50 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qCQZq-0003W0-CP
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 16:06:47 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qCQgf-0007EM-AQ
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 16:13:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687464405;
+ s=mimecast20190719; t=1687464828;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=JZZ9JjdoHR+znLDebyfX+wIlXBjNbT70BYRaKypGddI=;
- b=Sl/cGStZsqSV8Oyg/lJjpRGrXXgGhno2cLTY4s4MZzCj3Np6GRNFS13Aqr2cKqB8OULl4S
- xKxbXFqt1qY1eI0ovPqT/EVrkSOr6FdJCZbVeu1Y+OHJi85+YR7bmz8oNjWs2xpDFsBAQH
- Lit9Rw2MadeiwcjFt34G0beD8am8hfI=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=XubY0rqvt0/p6OB1uA8q+9GRjQII2pVurqbY7EUIcZ8=;
+ b=R28My3pUXrlRp3nQIxpo9SWIlQYGTTycIpnDH56pAWYjsHfAlFA+OjKj3L1omKyxxtp/tW
+ jhyqZv1wC+EPOFu/1jNArcpFqGS+nM3PHRg5LLZQgO2jncjCBYnd/vfg7gOcnmYXbwQdYN
+ QHUrSai3UfwE87hfncVYpwtfhmflU0s=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-154-2-BBiRV7OsyFgUZo0hzEZg-1; Thu, 22 Jun 2023 16:06:38 -0400
-X-MC-Unique: 2-BBiRV7OsyFgUZo0hzEZg-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-3f9b5cc7298so18348515e9.3
- for <qemu-devel@nongnu.org>; Thu, 22 Jun 2023 13:06:33 -0700 (PDT)
+ us-mta-599-uUX7JjDrNgSLxMgqrxq3qw-1; Thu, 22 Jun 2023 16:13:41 -0400
+X-MC-Unique: uUX7JjDrNgSLxMgqrxq3qw-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-3f9b5bbd79aso19834565e9.2
+ for <qemu-devel@nongnu.org>; Thu, 22 Jun 2023 13:13:40 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687464392; x=1690056392;
+ d=1e100.net; s=20221208; t=1687464819; x=1690056819;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=JZZ9JjdoHR+znLDebyfX+wIlXBjNbT70BYRaKypGddI=;
- b=Ae3B7dQmNje0ueADuHueppkK0FqEYQKc9potqLvLb4ks9iKpfwnha9iJSBYPT5fgNe
- igLJKc5GurmT62HBvVdPgrgD0au8IkhneyekQO3MsThODYjmD9+mA7dwPMn1CKZSmhmu
- aORrFJJPZw8OnTibDi4C3eQOM0SfRj1MJSUsG2fT9WrfxpaXxN6qgzPOQsVa6c5+v4tt
- +TbHVesrGJQapud5gWs4k2OoaYWB3iONEYv/dYos5UcR/7p2Uyzk1TjUuXVGhhrGZoR3
- cfG5ktkjlwegNOewp08Kj8xSF0EkTLbQQ/hShBifPck6CrN/7T6vPksfNfCXQa2CNvPk
- ws6w==
-X-Gm-Message-State: AC+VfDx5UPrlO1SAm4UB6aD7hR4Fc9rvl0QysvekV2fIMyjwtn04nBxm
- uOskvbY4ZonWsZnxQcVmSka8S+L0jZkusKOyvvBNxI0kWKYhDPLvcB1Q9BjyY9z7k38750/J5x9
- 7Hn0QpkAb25cDHIY=
-X-Received: by 2002:a7b:cbd3:0:b0:3f9:b3ec:35d0 with SMTP id
- n19-20020a7bcbd3000000b003f9b3ec35d0mr7497165wmi.10.1687464392551; 
- Thu, 22 Jun 2023 13:06:32 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7rlWAO0UCevKHIljLvYL1MihIjVvKH+uXF3xKViaweSkl0GSzIFuP1drVD+x6jiQNGPOaoeg==
-X-Received: by 2002:a7b:cbd3:0:b0:3f9:b3ec:35d0 with SMTP id
- n19-20020a7bcbd3000000b003f9b3ec35d0mr7497156wmi.10.1687464392284; 
- Thu, 22 Jun 2023 13:06:32 -0700 (PDT)
+ bh=XubY0rqvt0/p6OB1uA8q+9GRjQII2pVurqbY7EUIcZ8=;
+ b=IxRZ2/eBKTHpQDYWfwc4ZxBle0VDWwEypnUkX67F/4DNawZOZ8uCHJ4Gb1e9kh/tBd
+ drdF8YVmqOlAfh2OPgbcea28tbp1GR72OOZwdsT3pcZfOJjWlNFi5jgGU6XMkiXtSfwx
+ Vf1w5cEyK4XEXzebSSmHVXbUohl5swZzwkOONKx9p06m5B5wPj7HYVzC8bgpaJKxJJ07
+ gH7bPNdM8lqfwZ924wq9EEe0NWFMGbYUN/FH3gXBNtXHhwUEYbPUo51A6O0h8Dl93ncY
+ CW85SrwWAEJn04Fq06lWF8DiqH96UokqVhHQ2XmtBW+L29rQysDfjvp/uyQPsiymxulK
+ jklg==
+X-Gm-Message-State: AC+VfDyE7HtCGdI2ZRafcpqbl73v8+2KihEvNBJY1Bv1hrUeO3yf9or/
+ cD4DhtyPD/YRGQF8E4Wg+dvFJ9TELTjT55UPxIariOzQrEa2du5BTAgOjjgGQ2gFZ8MaiHSbIt7
+ rQdkgw3L2Vy7ecGU=
+X-Received: by 2002:a05:6000:1008:b0:311:1501:ba53 with SMTP id
+ a8-20020a056000100800b003111501ba53mr13990332wrx.49.1687464819300; 
+ Thu, 22 Jun 2023 13:13:39 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7Z848Cdg9f74GCBSXn9IJ+HeZEJOTGfu6fEZWrkjAlXPzs+SsC21fcHu00BvljuPM9Du27mw==
+X-Received: by 2002:a05:6000:1008:b0:311:1501:ba53 with SMTP id
+ a8-20020a056000100800b003111501ba53mr13990310wrx.49.1687464819009; 
+ Thu, 22 Jun 2023 13:13:39 -0700 (PDT)
 Received: from redhat.com ([2.52.149.110]) by smtp.gmail.com with ESMTPSA id
- p9-20020adfcc89000000b003113f0ba414sm7771433wrj.65.2023.06.22.13.06.30
+ e10-20020a5d65ca000000b002f28de9f73bsm7752224wrw.55.2023.06.22.13.13.36
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 22 Jun 2023 13:06:31 -0700 (PDT)
-Date: Thu, 22 Jun 2023 16:06:28 -0400
+ Thu, 22 Jun 2023 13:13:38 -0700 (PDT)
+Date: Thu, 22 Jun 2023 16:13:34 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Thomas Huth <thuth@redhat.com>
-Cc: qemu-devel@nongnu.org, Laurent Vivier <lvivier@redhat.com>,
- Fabiano Rosas <farosas@suse.de>, Ani Sinha <anisinha@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>, John Snow <jsnow@redhat.com>
-Subject: Re: [PATCH 0/4] tests/qtest: Check for devices before using them
-Message-ID: <20230622160436-mutt-send-email-mst@kernel.org>
-References: <20230525081016.1870364-1-thuth@redhat.com>
+To: David Hildenbrand <david@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-ppc@nongnu.org,
+ Igor Mammedov <imammedo@redhat.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Xiao Guangrong <xiaoguangrong.eric@gmail.com>,
+ =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Eduardo Habkost <eduardo@habkost.net>, Greg Kurz <groug@kaod.org>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Song Gao <gaosong@loongson.cn>, Xiaojuan Yang <yangxiaojuan@loongson.cn>
+Subject: Re: [PATCH 00/10] memory-device: Some cleanups
+Message-ID: <20230622161320-mutt-send-email-mst@kernel.org>
+References: <20230530113838.257755-1-david@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230525081016.1870364-1-thuth@redhat.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+In-Reply-To: <20230530113838.257755-1-david@redhat.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -97,37 +108,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, May 25, 2023 at 10:10:12AM +0200, Thomas Huth wrote:
-> Here are some more patches that are required for running the qtests
-> with builds that have been configured with "--without-default-devices".
-> We need to check whether the required devices are really available
-> in the binaries before we can use them, otherwise the tests will
-> fail.
-> 
-> Thomas Huth (4):
->   tests/qtest/usb-hcd-uhci-test: Check whether "usb-storage" is
->     available
->   tests/qtest: Check for virtio-blk before using -cdrom with the arm
->     virt machine
->   tests/qtest/rtl8139-test: Check whether the rtl8139 device is
->     available
->   tests/qtest/usb-hcd-ehci-test: Check for EHCI and UHCI HCDs before
->     using them
-> 
->  tests/qtest/bios-tables-test.c  | 2 +-
->  tests/qtest/cdrom-test.c        | 6 +++++-
->  tests/qtest/rtl8139-test.c      | 4 ++++
->  tests/qtest/usb-hcd-ehci-test.c | 5 +++++
->  tests/qtest/usb-hcd-uhci-test.c | 4 +++-
->  5 files changed, 18 insertions(+), 3 deletions(-)
+On Tue, May 30, 2023 at 01:38:28PM +0200, David Hildenbrand wrote:
+> Working on adding multi-memslot support for virtio-mem (teaching memory
+> device code about memory devices that can consume multiple memslots), I
+> have some preparatory cleanups in my queue that make sense independent of
+> the actual memory-device/virtio-mem extensions.
 
-I am worried that if an uninitentional change disables some devices
-by default our CI will no longer catch this.
-Any way to address this? E.g. maybe introduce a "for CI" or
-"test all" configure flag and then make test fail if something
-hasn't been configured?
+pc/acpi things:
 
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+
+
+> v1 -> v2:
+> - Allocate ms->device_memory only if the size > 0.
+> - Split it up and include more cleanups
+> 
+> David Hildenbrand (10):
+>   memory-device: Unify enabled vs. supported error messages
+>   memory-device: Introduce memory_devices_init()
+>   hw/arm/virt: Use memory_devices_init()
+>   hw/ppc/spapr: Use memory_devices_init()
+>   hw/loongarch/virt: Use memory_devices_init()
+>   hw/i386/pc: Use memory_devices_init()
+>   hw/i386/acpi-build: Rely on machine->device_memory when building SRAT
+>   hw/i386/pc: Remove PC_MACHINE_DEVMEM_REGION_SIZE
+>   memory-device: Refactor memory_device_pre_plug()
+>   memory-device: Track used region size in DeviceMemoryState
+> 
+>  hw/arm/virt.c                  |  9 +----
+>  hw/i386/acpi-build.c           |  9 ++---
+>  hw/i386/pc.c                   | 36 +++---------------
+>  hw/loongarch/virt.c            | 14 ++-----
+>  hw/mem/memory-device.c         | 69 +++++++++++++++-------------------
+>  hw/ppc/spapr.c                 | 37 +++++++++---------
+>  hw/ppc/spapr_hcall.c           |  2 +-
+>  include/hw/boards.h            |  2 +
+>  include/hw/i386/pc.h           |  1 -
+>  include/hw/mem/memory-device.h |  2 +
+>  10 files changed, 68 insertions(+), 113 deletions(-)
+> 
 > -- 
-> 2.31.1
+> 2.40.1
 
 
