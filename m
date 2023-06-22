@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58F6573A6D5
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 18:59:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7932D73A6AF
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 Jun 2023 18:57:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCNcE-00017S-I6; Thu, 22 Jun 2023 12:57:02 -0400
+	id 1qCNcF-0001Rt-Q6; Thu, 22 Jun 2023 12:57:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qCNc6-0000rS-6o
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 12:56:54 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1qCNc7-0000z9-Tb
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 12:56:55 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qCNc4-0001Uv-JJ
- for qemu-devel@nongnu.org; Thu, 22 Jun 2023 12:56:53 -0400
+ id 1qCNc6-0001bI-Ec
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 12:56:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687453011;
+ s=mimecast20190719; t=1687453013;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=SGM9oDrMA/Qp+v4phUutbR6uhjgyVuEbgqQHcYuNgHY=;
- b=eXQI2TfVUoueFc+QHhh1kOF3KTAAB0qOuXBsZJtna7nHAMJk5ff69k8uaHTWIB3eRrZK8X
- d9nCdaK/beHNENuIIX01AQBu7L4YB0KZxY+hhY1qMHeuecmY8Gc3HmhyXruoXO/ZCGuic2
- ycXO4OYHu+C24prS20qfKf+xRd1rMO0=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=ZbmZd/0GUxBNkX2GKrDTd/Dukt5lTkWbqA7HJxboR+k=;
+ b=acGL+bcIK9Gn7ls8RWc01HlBuoeCXicnW9k4yl9coVCjphIInlTznGz9BOWTU9ssW1zuV/
+ TzO9Lu4ljjrXl7rcW/fOPhyH4BbewuxjbP6U/+wn+Nzpo25OudK7hegR9lX9F34Ye0Zrzi
+ WEJPughSFnmZbFG6m+z+gh/BwDZrjDo=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-520-8cVBt-IUPeC7ZDMUFhz3oQ-1; Thu, 22 Jun 2023 12:56:47 -0400
-X-MC-Unique: 8cVBt-IUPeC7ZDMUFhz3oQ-1
+ us-mta-57-WRYDQQI6PIKlAGBjWycddA-1; Thu, 22 Jun 2023 12:56:45 -0400
+X-MC-Unique: WRYDQQI6PIKlAGBjWycddA-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
  [10.11.54.8])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B8C5C92CAE4;
- Thu, 22 Jun 2023 16:56:33 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 29DE71C07250;
+ Thu, 22 Jun 2023 16:56:36 +0000 (UTC)
 Received: from secure.mitica (unknown [10.39.192.73])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 9AE72C00049;
- Thu, 22 Jun 2023 16:56:31 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 0A91EC00049;
+ Thu, 22 Jun 2023 16:56:33 +0000 (UTC)
 From: Juan Quintela <quintela@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
@@ -49,18 +49,17 @@ Cc: Peter Xu <peterx@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Laurent Vivier <lvivier@redhat.com>, Eric Blake <eblake@redhat.com>,
  Fam Zheng <fam@euphon.net>, Juan Quintela <quintela@redhat.com>,
  Leonardo Bras <leobras@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- qemu-block@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 25/30] migration: Change qemu_file_transferred to noflush
-Date: Thu, 22 Jun 2023 18:55:22 +0200
-Message-Id: <20230622165527.2417-26-quintela@redhat.com>
+ qemu-block@nongnu.org, Fabiano Rosas <farosas@suse.de>
+Subject: [PULL 26/30] migration: Use qemu_file_transferred_noflush() for block
+ migration.
+Date: Thu, 22 Jun 2023 18:55:23 +0200
+Message-Id: <20230622165527.2417-27-quintela@redhat.com>
 In-Reply-To: <20230622165527.2417-1-quintela@redhat.com>
 References: <20230622165527.2417-1-quintela@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -85,29 +84,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We do a qemu_fclose() just after that, that also does a qemu_fflush(),
-so remove one qemu_fflush().
+We only care about the amount of bytes transferred.  Flushing is done
+by the system somewhere else.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20230530183941.7223-3-quintela@redhat.com>
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
+Signed-off-by: Juan Quintela <quintela@redhat.com>
+Message-ID: <20230530183941.7223-4-quintela@redhat.com>
 Signed-off-by: Juan Quintela <quintela@redhat.com>
 ---
- migration/savevm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ migration/block.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/migration/savevm.c b/migration/savevm.c
-index f26b455764..b2199d1039 100644
---- a/migration/savevm.c
-+++ b/migration/savevm.c
-@@ -2952,7 +2952,7 @@ bool save_snapshot(const char *name, bool overwrite, const char *vmstate,
-         goto the_end;
+diff --git a/migration/block.c b/migration/block.c
+index b9580a6c7e..b29e80bdc4 100644
+--- a/migration/block.c
++++ b/migration/block.c
+@@ -748,7 +748,7 @@ static int block_save_setup(QEMUFile *f, void *opaque)
+ static int block_save_iterate(QEMUFile *f, void *opaque)
+ {
+     int ret;
+-    uint64_t last_bytes = qemu_file_transferred(f);
++    uint64_t last_bytes = qemu_file_transferred_noflush(f);
+ 
+     trace_migration_block_save("iterate", block_mig_state.submitted,
+                                block_mig_state.transferred);
+@@ -800,7 +800,7 @@ static int block_save_iterate(QEMUFile *f, void *opaque)
      }
-     ret = qemu_savevm_state(f, errp);
--    vm_state_size = qemu_file_transferred(f);
-+    vm_state_size = qemu_file_transferred_noflush(f);
-     ret2 = qemu_fclose(f);
-     if (ret < 0) {
-         goto the_end;
+ 
+     qemu_put_be64(f, BLK_MIG_FLAG_EOS);
+-    uint64_t delta_bytes = qemu_file_transferred(f) - last_bytes;
++    uint64_t delta_bytes = qemu_file_transferred_noflush(f) - last_bytes;
+     return (delta_bytes > 0);
+ }
+ 
 -- 
 2.40.1
 
