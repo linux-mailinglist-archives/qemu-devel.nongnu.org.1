@@ -2,92 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C69B773B1BE
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 09:33:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2907673B1C2
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 09:35:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCbIB-0003f5-6y; Fri, 23 Jun 2023 03:33:15 -0400
+	id 1qCbJX-00057g-U8; Fri, 23 Jun 2023 03:34:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qCbI9-0003eP-0J
- for qemu-devel@nongnu.org; Fri, 23 Jun 2023 03:33:13 -0400
-Received: from mail-lj1-x231.google.com ([2a00:1450:4864:20::231])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qCbI6-00020Y-Me
- for qemu-devel@nongnu.org; Fri, 23 Jun 2023 03:33:12 -0400
-Received: by mail-lj1-x231.google.com with SMTP id
- 38308e7fff4ca-2b474dac685so5269891fa.3
- for <qemu-devel@nongnu.org>; Fri, 23 Jun 2023 00:33:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687505588; x=1690097588;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=vE+z5UFbLaR9NANsKioHSP0sVf6L90bFNXgRGWgvp9w=;
- b=uzyXO/si0B/Frg9xLXmApprfsDQXgQgl1iAem9falM6tX/nhnRP8oPO9n3y8uE9v9C
- 4sgnA5duvy/1GHBH1FTDSsnOa/lW3CbBlEu4359S0XViWtjHjgPOxTtdsqa08etK0j/Y
- 2qgO2oHi9S7YbysY1YoP9Y5jkh2qzMLrl+U19EU0NdXa0JMOOSvpUUIDy/1k/ViVLl16
- Y2N6G2y9UjAKexG4DufKULPXY3xHcXliYy1y0tMa5C1dB6kAsz2+qE1S5ejviH2hf5iV
- vdVxGbA+c4eVnglnil/qmiCP6Q9dy1anTr5upvmdZr/fN8G+yS3LfykN1boVUlNdidaV
- +n1w==
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qCbJV-00056Y-1O
+ for qemu-devel@nongnu.org; Fri, 23 Jun 2023 03:34:37 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qCbJT-0002Gh-5r
+ for qemu-devel@nongnu.org; Fri, 23 Jun 2023 03:34:36 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1687505674;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=lfP4iqB/+NrbnkkrQsrp4BDqcurQYEcu7cXpy3uONtI=;
+ b=HWg8afQBLYwC4aPLNvk9nJkuILnsDuMp5uJewxyQusLQTqZo6GuYaiK5eneMIIXi/PMScF
+ vRpdrCSo0e0WSSKIxzEjGabdKM+DXYkpLbeV7PNS4tXhga3taUyvRMMd5UkpjH4R2TREAB
+ H+uXgcRrcvZiaSKxgPvgaiZGp7TZZNA=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-88-NKCbdNumNRKyjdvRxrSYmg-1; Fri, 23 Jun 2023 03:34:32 -0400
+X-MC-Unique: NKCbdNumNRKyjdvRxrSYmg-1
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-3127a76c56bso177268f8f.1
+ for <qemu-devel@nongnu.org>; Fri, 23 Jun 2023 00:34:32 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687505588; x=1690097588;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=vE+z5UFbLaR9NANsKioHSP0sVf6L90bFNXgRGWgvp9w=;
- b=GBzHL4hmeGkxYkEk8wjl/MSX5ufEPxwIGd6DNACWDVUTWWyZKSB6XDkXgpQtHqLlDv
- Qwwt8vxv3bI4zWkFLnDAVtLsu6MKFfCy87G7eR1mDnshrvLV2gL39nyIj0R9gmoApIWw
- WbHf+hZfJniPLMmNagTO58Ua3/+XWLEJuCc+1nhImRhi3G3Md8Hvdb41PzkwtHU2X9F/
- zdDk3inmfZtVyKKbw5EvFZMB2HskRxR1Qh3scZS3amfmJEScjl4irjXrEx25UZ4w27Zu
- Qk6UZ/DbYGe8g7OfaixxxBSrRQZee+R3FI5ETRvjsYJ6zay/knb5iiKIFJWIPojMe1/c
- hx5w==
-X-Gm-Message-State: AC+VfDzjTeKOk32B8pCFxemPek3b0C8fsXWMUh3NR+cqe9GKlVTa57Ln
- 1wZpjA1w4h7q6/Ucc/Vgztsm8g==
-X-Google-Smtp-Source: ACHHUZ5onL9I3HCgZm1smG6In3ausVKQOG4ceAdflSvBDGngKIB4KM31UzB4D6Ea6UIpktRgIAUOJA==
-X-Received: by 2002:a2e:9107:0:b0:2b5:9b3b:f7ea with SMTP id
- m7-20020a2e9107000000b002b59b3bf7eamr566221ljg.41.1687505588282; 
- Fri, 23 Jun 2023 00:33:08 -0700 (PDT)
-Received: from [192.168.69.129] ([176.176.168.147])
+ d=1e100.net; s=20221208; t=1687505672; x=1690097672;
+ h=mime-version:message-id:date:reply-to:user-agent:references
+ :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=lfP4iqB/+NrbnkkrQsrp4BDqcurQYEcu7cXpy3uONtI=;
+ b=ZNktM6KJ008UN+OZhhzBpGQrWVfQvrVjKVg7Pt4IBH1De/HGboKbMU+LKrihAG2K7T
+ xBFj4DPt5E+ZCQXP2WnOMValVcY9bxXMi6Yc2xdOTZTGtpTqQvaS9QSnQejYecPO+CHu
+ q4gVqyA/y+votSHl0C48BHg9oEVtLebIYqFtbPGM/OekKit3BF+ja88mkBtCASKbcMOE
+ 42NKLzd8RYgQ7CmjbwA0AGwrbPR1b1hjglGdEg0MZrxskrTw4eXt2rmZzDdsp2ivVR4y
+ +fj1TYDDEPAtumf5PFLvwoZHXppjDvTeQNU0A5MkHhJAfEJvrtwDO79kxFQ+UnawQfWw
+ HPkg==
+X-Gm-Message-State: AC+VfDyxmBAFG0fJijNGYcZTNB8LzIUSNM9O9Azcwu3J1IxJutdy4Xa6
+ 6CrtS5YCju5zLr2xyzXshWcP7bHO7qj5LnNVZ4UItG68T5/1hlLPzobG4e1nPs1PXLOYsTnxuOb
+ PXZ6xJpsUjHtFkTU=
+X-Received: by 2002:adf:f203:0:b0:311:19df:dac7 with SMTP id
+ p3-20020adff203000000b0031119dfdac7mr14850585wro.28.1687505671850; 
+ Fri, 23 Jun 2023 00:34:31 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6SlrLnaw6S09RNknRpWHEAfty/JCfLthbXSaFnziXBihOwvYoAgtVP/X7NjeuQ3NvN754s9A==
+X-Received: by 2002:adf:f203:0:b0:311:19df:dac7 with SMTP id
+ p3-20020adff203000000b0031119dfdac7mr14850571wro.28.1687505671483; 
+ Fri, 23 Jun 2023 00:34:31 -0700 (PDT)
+Received: from redhat.com (84.125.88.130.dyn.user.ono.com. [84.125.88.130])
  by smtp.gmail.com with ESMTPSA id
- a1-20020a05600c224100b003f9b44e5b7fsm1488802wmm.46.2023.06.23.00.33.06
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 23 Jun 2023 00:33:07 -0700 (PDT)
-Message-ID: <323d7da1-3e66-bf22-42c1-1afa4df3aeb4@linaro.org>
-Date: Fri, 23 Jun 2023 09:33:04 +0200
+ q6-20020adff506000000b00307c8d6b4a0sm8814024wro.26.2023.06.23.00.34.30
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 23 Jun 2023 00:34:30 -0700 (PDT)
+From: Juan Quintela <quintela@redhat.com>
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org,  Peter Xu <peterx@redhat.com>,  Paolo Bonzini
+ <pbonzini@redhat.com>,  Stefan Hajnoczi <stefanha@redhat.com>,  Thomas
+ Huth <thuth@redhat.com>,  Laurent Vivier <lvivier@redhat.com>,  Eric Blake
+ <eblake@redhat.com>,  Fam Zheng <fam@euphon.net>,  Leonardo Bras
+ <leobras@redhat.com>,  Markus Armbruster <armbru@redhat.com>,
+ qemu-block@nongnu.org
+Subject: Re: [PULL 00/30] Next patches
+In-Reply-To: <1f5c4a38-6ae2-53dd-d739-65accb1d86a8@linaro.org> (Richard
+ Henderson's message of "Fri, 23 Jun 2023 07:45:43 +0200")
+References: <20230622165527.2417-1-quintela@redhat.com>
+ <1f5c4a38-6ae2-53dd-d739-65accb1d86a8@linaro.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+Date: Fri, 23 Jun 2023 09:34:28 +0200
+Message-ID: <87ttuy1vjv.fsf@secure.mitica>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH v4 10/17] target/riscv: Add Zvkned ISA extension support
-Content-Language: en-US
-To: Max Chou <max.chou@sifive.com>, qemu-devel@nongnu.org,
- qemu-riscv@nongnu.org
-Cc: dbarboza@ventanamicro.com, Nazar Kazakov <nazar.kazakov@codethink.co.uk>, 
- Lawrence Hunter <lawrence.hunter@codethink.co.uk>,
- William Salmon <will.salmon@codethink.co.uk>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Kiran Ostrolenk <kiran.ostrolenk@codethink.co.uk>
-References: <20230622161646.32005-1-max.chou@sifive.com>
- <20230622161646.32005-11-max.chou@sifive.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230622161646.32005-11-max.chou@sifive.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::231;
- envelope-from=richard.henderson@linaro.org; helo=mail-lj1-x231.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,206 +102,97 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/22/23 18:16, Max Chou wrote:
-> --- a/target/riscv/vcrypto_helper.c
-> +++ b/target/riscv/vcrypto_helper.c
-> @@ -22,6 +22,7 @@
->   #include "qemu/bitops.h"
->   #include "qemu/bswap.h"
->   #include "cpu.h"
-> +#include "crypto/aes.h"
->   #include "exec/memop.h"
->   #include "exec/exec-all.h"
->   #include "exec/helper-proto.h"
-> @@ -195,3 +196,310 @@ RVVCALL(OPIVX2, vwsll_vx_w, WOP_UUU_W, H8, H4, DO_SLL)
->   GEN_VEXT_VX(vwsll_vx_b, 2)
->   GEN_VEXT_VX(vwsll_vx_h, 4)
->   GEN_VEXT_VX(vwsll_vx_w, 8)
-> +
-> +static inline void aes_sub_bytes(uint8_t round_state[4][4])
-> +{
-> +    for (int j = 0; j < 16; j++) {
-> +        round_state[j / 4][j % 4] = AES_sbox[round_state[j / 4][j % 4]];
-> +    }
-> +}
-> +
-> +static inline void aes_shift_bytes(uint8_t round_state[4][4])
-> +{
-> +    uint8_t temp;
-> +    temp = round_state[0][1];
-> +    round_state[0][1] = round_state[1][1];
-> +    round_state[1][1] = round_state[2][1];
-> +    round_state[2][1] = round_state[3][1];
-> +    round_state[3][1] = temp;
-> +    temp = round_state[0][2];
-> +    round_state[0][2] = round_state[2][2];
-> +    round_state[2][2] = temp;
-> +    temp = round_state[1][2];
-> +    round_state[1][2] = round_state[3][2];
-> +    round_state[3][2] = temp;
-> +    temp = round_state[0][3];
-> +    round_state[0][3] = round_state[3][3];
-> +    round_state[3][3] = round_state[2][3];
-> +    round_state[2][3] = round_state[1][3];
-> +    round_state[1][3] = temp;
-> +}
-> +
-> +static inline void xor_round_key(uint8_t round_state[4][4], uint8_t *round_key)
-> +{
-> +    for (int j = 0; j < 16; j++) {
-> +        round_state[j / 4][j % 4] = round_state[j / 4][j % 4] ^ (round_key)[j];
-> +    }
-> +}
-> +
-> +static inline void aes_inv_sub_bytes(uint8_t round_state[4][4])
-> +{
-> +    for (int j = 0; j < 16; j++) {
-> +        round_state[j / 4][j % 4] = AES_isbox[round_state[j / 4][j % 4]];
-> +    }
-> +}
-> +
-> +static inline void aes_inv_shift_bytes(uint8_t round_state[4][4])
-> +{
-> +    uint8_t temp;
-> +    temp = round_state[3][1];
-> +    round_state[3][1] = round_state[2][1];
-> +    round_state[2][1] = round_state[1][1];
-> +    round_state[1][1] = round_state[0][1];
-> +    round_state[0][1] = temp;
-> +    temp = round_state[0][2];
-> +    round_state[0][2] = round_state[2][2];
-> +    round_state[2][2] = temp;
-> +    temp = round_state[1][2];
-> +    round_state[1][2] = round_state[3][2];
-> +    round_state[3][2] = temp;
-> +    temp = round_state[0][3];
-> +    round_state[0][3] = round_state[1][3];
-> +    round_state[1][3] = round_state[2][3];
-> +    round_state[2][3] = round_state[3][3];
-> +    round_state[3][3] = temp;
-> +}
-> +
-> +static inline uint8_t xtime(uint8_t x)
-> +{
-> +    return (x << 1) ^ (((x >> 7) & 1) * 0x1b);
-> +}
-> +
-> +static inline uint8_t multiply(uint8_t x, uint8_t y)
-> +{
-> +    return (((y & 1) * x) ^ ((y >> 1 & 1) * xtime(x)) ^
-> +            ((y >> 2 & 1) * xtime(xtime(x))) ^
-> +            ((y >> 3 & 1) * xtime(xtime(xtime(x)))) ^
-> +            ((y >> 4 & 1) * xtime(xtime(xtime(xtime(x))))));
-> +}
-> +
-> +static inline void aes_inv_mix_cols(uint8_t round_state[4][4])
-> +{
-> +    uint8_t a, b, c, d;
-> +    for (int j = 0; j < 4; ++j) {
-> +        a = round_state[j][0];
-> +        b = round_state[j][1];
-> +        c = round_state[j][2];
-> +        d = round_state[j][3];
-> +        round_state[j][0] = multiply(a, 0x0e) ^ multiply(b, 0x0b) ^
-> +                            multiply(c, 0x0d) ^ multiply(d, 0x09);
-> +        round_state[j][1] = multiply(a, 0x09) ^ multiply(b, 0x0e) ^
-> +                            multiply(c, 0x0b) ^ multiply(d, 0x0d);
-> +        round_state[j][2] = multiply(a, 0x0d) ^ multiply(b, 0x09) ^
-> +                            multiply(c, 0x0e) ^ multiply(d, 0x0b);
-> +        round_state[j][3] = multiply(a, 0x0b) ^ multiply(b, 0x0d) ^
-> +                            multiply(c, 0x09) ^ multiply(d, 0x0e);
-> +    }
-> +}
-> +
-> +static inline void aes_mix_cols(uint8_t round_state[4][4])
-> +{
-> +    uint8_t a, b;
-> +    for (int j = 0; j < 4; ++j) {
-> +        a = round_state[j][0];
-> +        b = round_state[j][0] ^ round_state[j][1] ^ round_state[j][2] ^
-> +            round_state[j][3];
-> +        round_state[j][0] ^= xtime(round_state[j][0] ^ round_state[j][1]) ^ b;
-> +        round_state[j][1] ^= xtime(round_state[j][1] ^ round_state[j][2]) ^ b;
-> +        round_state[j][2] ^= xtime(round_state[j][2] ^ round_state[j][3]) ^ b;
-> +        round_state[j][3] ^= xtime(round_state[j][3] ^ a) ^ b;
-> +    }
-> +}
-> +
-> +#define GEN_ZVKNED_HELPER_VV(NAME, ...)                                   \
-> +    void HELPER(NAME)(void *vd_vptr, void *vs2_vptr, CPURISCVState *env,  \
-> +                      uint32_t desc)                                      \
-> +    {                                                                     \
-> +        uint64_t *vd = vd_vptr;                                           \
-> +        uint64_t *vs2 = vs2_vptr;                                         \
-> +        uint32_t vl = env->vl;                                            \
-> +        uint32_t total_elems = vext_get_total_elems(env, desc, 4);        \
-> +        uint32_t vta = vext_vta(desc);                                    \
-> +                                                                          \
-> +        for (uint32_t i = env->vstart / 4; i < env->vl / 4; i++) {        \
-> +            uint64_t round_key[2] = {                                     \
-> +                cpu_to_le64(vs2[i * 2 + 0]),                              \
-> +                cpu_to_le64(vs2[i * 2 + 1]),                              \
-> +            };                                                            \
-> +            uint8_t round_state[4][4];                                    \
-> +            cpu_to_le64s(vd + i * 2 + 0);                                 \
-> +            cpu_to_le64s(vd + i * 2 + 1);                                 \
-> +            for (int j = 0; j < 16; j++) {                                \
-> +                round_state[j / 4][j % 4] = ((uint8_t *)(vd + i * 2))[j]; \
-> +            }                                                             \
-> +            __VA_ARGS__;                                                  \
-> +            for (int j = 0; j < 16; j++) {                                \
-> +                ((uint8_t *)(vd + i * 2))[j] = round_state[j / 4][j % 4]; \
-> +            }                                                             \
-> +            le64_to_cpus(vd + i * 2 + 0);                                 \
-> +            le64_to_cpus(vd + i * 2 + 1);                                 \
-> +        }                                                                 \
-> +        env->vstart = 0;                                                  \
-> +        /* set tail elements to 1s */                                     \
-> +        vext_set_elems_1s(vd, vta, vl * 4, total_elems * 4);              \
-> +    }
-> +
-> +#define GEN_ZVKNED_HELPER_VS(NAME, ...)                                   \
-> +    void HELPER(NAME)(void *vd_vptr, void *vs2_vptr, CPURISCVState *env,  \
-> +                      uint32_t desc)                                      \
-> +    {                                                                     \
-> +        uint64_t *vd = vd_vptr;                                           \
-> +        uint64_t *vs2 = vs2_vptr;                                         \
-> +        uint32_t vl = env->vl;                                            \
-> +        uint32_t total_elems = vext_get_total_elems(env, desc, 4);        \
-> +        uint32_t vta = vext_vta(desc);                                    \
-> +                                                                          \
-> +        for (uint32_t i = env->vstart / 4; i < env->vl / 4; i++) {        \
-> +            uint64_t round_key[2] = {                                     \
-> +                cpu_to_le64(vs2[0]),                                      \
-> +                cpu_to_le64(vs2[1]),                                      \
-> +            };                                                            \
-> +            uint8_t round_state[4][4];                                    \
-> +            cpu_to_le64s(vd + i * 2 + 0);                                 \
-> +            cpu_to_le64s(vd + i * 2 + 1);                                 \
-> +            for (int j = 0; j < 16; j++) {                                \
-> +                round_state[j / 4][j % 4] = ((uint8_t *)(vd + i * 2))[j]; \
-> +            }                                                             \
-> +            __VA_ARGS__;                                                  \
-> +            for (int j = 0; j < 16; j++) {                                \
-> +                ((uint8_t *)(vd + i * 2))[j] = round_state[j / 4][j % 4]; \
-> +            }                                                             \
-> +            le64_to_cpus(vd + i * 2 + 0);                                 \
-> +            le64_to_cpus(vd + i * 2 + 1);                                 \
-> +        }                                                                 \
-> +        env->vstart = 0;                                                  \
-> +        /* set tail elements to 1s */                                     \
-> +        vext_set_elems_1s(vd, vta, vl * 4, total_elems * 4);              \
-> +    }
+Richard Henderson <richard.henderson@linaro.org> wrote:
+> On 6/22/23 18:54, Juan Quintela wrote:
+>> The following changes since commit b455ce4c2f300c8ba47cba7232dd03261368a4cb:
+>>    Merge tag 'q800-for-8.1-pull-request'
+>> ofhttps://github.com/vivier/qemu-m68k  into staging (2023-06-22
+>> 10:18:32 +0200)
+>> are available in the Git repository at:
+>>    https://gitlab.com/juan.quintela/qemu.git  tags/next-pull-request
+>> for you to fetch changes up to
+>> 23e4307eadc1497bd0a11ca91041768f15963b68:
+>>    migration/rdma: Split qemu_fopen_rdma() into input/output
+>> functions (2023-06-22 18:11:58 +0200)
+>> ----------------------------------------------------------------
+>> Migration Pull request (20230621) take 2
+>> In this pull request the only change is fixing 32 bits complitaion
+>> issue.
+>> Please apply.
+>> [take 1]
+>> - fix for multifd thread creation (fabiano)
+>> - dirtylimity (hyman)
+>>    * migration-test will go on next PULL request, as it has failures.
+>> - Improve error description (tejus)
+>> - improve -incoming and set parameters before calling incoming (wei)
+>> - migration atomic counters reviewed patches (quintela)
+>> - migration-test refacttoring reviewed (quintela)
 
-See
+I had the feeling when I wake up that today was going to be a great day.
+Confirmed.
 
-https://lore.kernel.org/qemu-devel/20230620110758.787479-1-richard.henderson@linaro.org/
+> New failure with check-cfi-x86_64:
 
-which should greatly simplify all of this.
+Aha. CFI.  Something that I don't know what it is failing on me.
 
+/me googles.
 
-r~
+/me enables cfi+lto and compiles with clang.
+
+50/491] Compiling C object subprojects/berkeley-testfloat-3/libtestfloat.a.p/source_test_az_f128_rx.c.o
+[51/491] Compiling C object subprojects/berkeley-testfloat-3/libtestfloat.a.p/source_test_az_f128.c.o
+[52/491] Compiling C object subprojects/berkeley-testfloat-3/libtestfloat.a.p/source_test_abz_f128.c.o
+[53/491] Compiling C object subprojects/berkeley-testfloat-3/libtestfloat.a.p/source_test_abcz_f128.c.o
+[54/491] Compiling C object subprojects/berkeley-testfloat-3/libtestfloat.a.p/source_test_ab_f128_z_bool.c.o
+[55/491] Linking target qemu-system-x86_64
+FAILED: qemu-system-x86_64 
+clang++ -m64 -mcx16 @qemu-system-x86_64.rsp
+/usr/bin/ld: cannot find libchardev.fa: Too many open files
+/usr/bin/ld: cannot find libqmp.fa: Too many open files
+/usr/bin/ld: cannot find libpage-vary-common.a: Too many open files
+/usr/bin/ld: cannot find libqemuutil.a: Too many open files
+/usr/bin/ld: cannot find subprojects/libvhost-user/libvhost-user-glib.a: Too many open files
+/usr/bin/ld: cannot find subprojects/libvhost-user/libvhost-user.a: Too many open files
+/usr/bin/ld: cannot find tcg/libtcg_softmmu.fa: Too many open files
+/usr/bin/ld: cannot find libmigration.fa: Too many open files
+/usr/bin/ld: cannot find libhwcore.fa: Too many open files
+/usr/bin/ld: cannot find libqom.fa: Too many open files
+/usr/bin/ld: cannot find gdbstub/libgdb_softmmu.fa: Too many open files
+/usr/bin/ld: cannot find libio.fa: Too many open files
+/usr/bin/ld: cannot find libcrypto.fa: Too many open files
+/usr/bin/ld: cannot find libauthz.fa: Too many open files
+/usr/bin/ld: cannot find libblockdev.fa: Too many open files
+/usr/bin/ld: cannot find libblock.fa: Too many open files
+/usr/bin/ld: cannot find libchardev.fa: Too many open files
+/usr/bin/ld: cannot find libqmp.fa: Too many open files
+/usr/bin/ld: cannot find /usr/lib64/libpixman-1.so: Too many open files
+/usr/bin/ld: cannot find /usr/lib64/libepoxy.so: Too many open files
+/usr/bin/ld: cannot find /usr/lib64/libxenctrl.so: Too many open files
+/usr/bin/ld: cannot find /usr/lib64/libxenstore.so: Too many open files
+/usr/bin/ld: cannot find /usr/lib64/libxenforeignmemory.so: Too many open files
+/usr/bin/ld: cannot find /usr/lib64/libxengnttab.so: Too many open files
+/usr/bin/ld: cannot find /usr/lib64/libxenevtchn.so: Too many open files
+
+Confirmed, today is going to be a great day.
+
+No check-cfi<anything> target for me.
+
+/me investigates what is going on.  Found this and retries.
+
+AR=llvm-ar CC=clang CXX=clang++ /mnt/code/qemu/full/configure
+--enable-cfi --target-list=x86_64-softmmu
+
+Gives the same error.
+
+After a while of desesperation trying to disable features, etc, etc
+Just doing a plain ulimit -n 4096 fixed the problem.
+
+Here we go.
+
+Later, Juan.
+
 
