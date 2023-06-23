@@ -2,79 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FC9B73B34B
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 11:11:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 642B273B385
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 11:28:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCco7-00077j-SY; Fri, 23 Jun 2023 05:10:19 -0400
+	id 1qCd4A-0002RB-QC; Fri, 23 Jun 2023 05:26:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qCco5-00076z-Vx
- for qemu-devel@nongnu.org; Fri, 23 Jun 2023 05:10:18 -0400
-Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qCco4-0006bQ-9a
- for qemu-devel@nongnu.org; Fri, 23 Jun 2023 05:10:17 -0400
-Received: by mail-ed1-x52c.google.com with SMTP id
- 4fb4d7f45d1cf-51be8edc657so387648a12.1
- for <qemu-devel@nongnu.org>; Fri, 23 Jun 2023 02:10:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687511413; x=1690103413;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=0SrNqzbZv2I41sbjAyhZIJ65TFui8JJKzaQciLBsjkg=;
- b=MBl/vk6slg1q9dEx3SPPcrTPr2zyLDB7gF1stxadv680/feNrVJrRPdp5kM+pidtX/
- nOWLwkNXbB8L63GyeCILh1Azw9PUt6FRtHShYG9ehaL5rXI9tx8VEdWiw8b86nLOtLJI
- ipivpzAx8el+hmgQQ80BpVo7UeyRklyXodxCJ3q3f4baPMkEQjr5q/woV57oXc1fgyQl
- a3Bg5NVbgJWwWYCdw2LZffmJFwIOdD6QVRarbfRkevr0WdVGCzBcN6+gGqOV7O5faF/D
- mSDOLEObmGBApyjESbwOTtp+8/Fud3k4a0e/loIhzUdwpRrkVtRml/E5LNjL/GpailGq
- 5NJA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687511413; x=1690103413;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=0SrNqzbZv2I41sbjAyhZIJ65TFui8JJKzaQciLBsjkg=;
- b=hVVlRhI3MTyzrpr2Ez2/i9ttBYDMINfS+FdqU5i6VytRJml9sBpIFbkDMyK9Dy4EYk
- WWsJbttSVTnz6oc2QraE5n1FVvGmjdA2m50P2eyt9drkssHuo3LwNRZZb4a4folwxYTe
- qRQscgyK5e78ebF7f9T249Q0lB3Pkyo9mDhGzHJvAnZ2i8REWHuqxCf1t3Y2eSfwMzOm
- Sw9sdrHICA+avjdAo6Ylx8R3AYyVIEqegLtIfOsDx7L8y9XQSH63PzCRsPSIQ18mbkkn
- TNjZdzQf66ACWp2VVsSsJMMXgIbbiBBg0FobF+aIEWbJsZbt9rRM+yFZLVIM3mKfFTrD
- vsww==
-X-Gm-Message-State: AC+VfDxvEN8w5P/C5qIGsMh7rVf9PQWUkiPNmAjD6c2TwShMwyOKRkMe
- lTYzp3D6R9nXRpk492sStsx9oHOviUCNyZY+ZhL4cQ==
-X-Google-Smtp-Source: ACHHUZ5wS/5kGgOBTl7GEYB26zQuHW/X+Qxk2pve8Zm04YUbjqTkhZZ0CQn0X/42fZXEJC67fWwM1fzeOfPV/a3IY7g=
-X-Received: by 2002:a05:6402:111a:b0:514:a110:6bed with SMTP id
- u26-20020a056402111a00b00514a1106bedmr13639933edv.27.1687511412974; Fri, 23
- Jun 2023 02:10:12 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <SRS0=Kxto=CL=kaod.org=clg@ozlabs.org>)
+ id 1qCd47-0002Qf-FU; Fri, 23 Jun 2023 05:26:51 -0400
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
+ helo=gandalf.ozlabs.org)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <SRS0=Kxto=CL=kaod.org=clg@ozlabs.org>)
+ id 1qCd44-0004ub-7G; Fri, 23 Jun 2023 05:26:50 -0400
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4QnX1Z1RN2z4x1f;
+ Fri, 23 Jun 2023 19:26:42 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4QnX1X5sB0z4wjB;
+ Fri, 23 Jun 2023 19:26:40 +1000 (AEST)
+Message-ID: <3d5f364a-4b6d-be94-4e74-a0bb32b137ed@kaod.org>
+Date: Fri, 23 Jun 2023 11:26:36 +0200
 MIME-Version: 1.0
-References: <20230623081953.290875-1-npiggin@gmail.com>
-In-Reply-To: <20230623081953.290875-1-npiggin@gmail.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 23 Jun 2023 10:10:02 +0100
-Message-ID: <CAFEAcA_Brf-R12t+DKNAoygqgC-qjKJ3Wiz4ULjGHOo8_vPovw@mail.gmail.com>
-Subject: Re: [PATCH 0/4] target/ppc: Catch invalid real address accesses
-To: Nicholas Piggin <npiggin@gmail.com>
-Cc: qemu-ppc@nongnu.org, qemu-devel@nongnu.org, 
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- BALATON Zoltan <balaton@eik.bme.hu>, 
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>, 
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, 
- David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [RFC PATCH 1/5] target/ppc: gdbstub init spr gdb_id for all CPUs
+Content-Language: en-US
+To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
+Cc: qemu-devel@nongnu.org, Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+References: <20230531012313.19891-1-npiggin@gmail.com>
+ <20230531012313.19891-2-npiggin@gmail.com>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <20230531012313.19891-2-npiggin@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+ envelope-from=SRS0=Kxto=CL=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -40
+X-Spam_score: -4.1
+X-Spam_bar: ----
+X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,50 +66,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 23 Jun 2023 at 09:21, Nicholas Piggin <npiggin@gmail.com> wrote:
->
-> ppc has always silently ignored access to real (physical) addresses
-> with nothing behind it, which can make debugging difficult at times.
->
-> It looks like the way to handle this is implement the transaction
-> failed call, which most target architectures do. Notably not x86
-> though, I wonder why?
+On 5/31/23 03:23, Nicholas Piggin wrote:
+> Make sure each CPU gets its state set up for gdb, not just the ones
+> before PowerPCCPUClass has had its gdb state set up.
+> 
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 
-Much of this is historical legacy. QEMU originally had no
-concept of "the system outside the CPU returns some kind
-of bus error and the CPU raises an exception for it".
-This is turn is (I think) because the x86 PC doesn't do
-that: you always get back some kind of response, I think
--1 on reads and writes ignored. We added the do_transaction_failed
-hook largely because we wanted it to give more accurate
-emulation of this kind of thing on Arm, but as usual with new
-facilities we left the other architectures to do it themselves
-if they wanted -- by default the behaviour remained the same.
-Some architectures have picked it up; some haven't.
+Applied to ppc-next.
 
-The main reason it's a bit of a pain to turn the correct
-handling on is because often boards don't actually implement
-all the devices they're supposed to. For a pile of legacy Arm
-boards, especially where we didn't have good test images,
-we use the machine flag ignore_memory_transaction_failures to
-retain the legacy behaviour. (This isn't great because it's
-pretty much going to mean we have that flag set on those
-boards forever because nobody is going to care enough to
-investigate and test.)
+Thanks,
 
-> Other question is, sometimes I guess it's nice to avoid crashing in
-> order to try to quickly get past some unimplemented MMIO. Maybe a
-> command line option or something could turn it off? It should
-> probably be a QEMU-wide option if so, so that shouldn't hold this
-> series up, I can propose a option for that if anybody is worried
-> about it.
+C.
 
-I would not recommend going any further than maybe setting the
-ignore_memory_transaction_failures flag for boards you don't
-care about. (But in an ideal world, don't set it and deal with
-any bug reports by implementing stub versions of missing devices.
-Depends how confident you are in your test coverage.)
 
-thanks
--- PMM
+
+> ---
+>   target/ppc/gdbstub.c | 30 +++++++++++++++++++-----------
+>   1 file changed, 19 insertions(+), 11 deletions(-)
+> 
+> diff --git a/target/ppc/gdbstub.c b/target/ppc/gdbstub.c
+> index 63c9abe4f1..ca39efdc35 100644
+> --- a/target/ppc/gdbstub.c
+> +++ b/target/ppc/gdbstub.c
+> @@ -327,6 +327,25 @@ void ppc_gdb_gen_spr_xml(PowerPCCPU *cpu)
+>       unsigned int num_regs = 0;
+>       int i;
+>   
+> +    for (i = 0; i < ARRAY_SIZE(env->spr_cb); i++) {
+> +        ppc_spr_t *spr = &env->spr_cb[i];
+> +
+> +        if (!spr->name) {
+> +            continue;
+> +        }
+> +
+> +        /*
+> +         * GDB identifies registers based on the order they are
+> +         * presented in the XML. These ids will not match QEMU's
+> +         * representation (which follows the PowerISA).
+> +         *
+> +         * Store the position of the current register description so
+> +         * we can make the correspondence later.
+> +         */
+> +        spr->gdb_id = num_regs;
+> +        num_regs++;
+> +    }
+> +
+>       if (pcc->gdb_spr_xml) {
+>           return;
+>       }
+> @@ -348,17 +367,6 @@ void ppc_gdb_gen_spr_xml(PowerPCCPU *cpu)
+>   
+>           g_string_append_printf(xml, " bitsize=\"%d\"", TARGET_LONG_BITS);
+>           g_string_append(xml, " group=\"spr\"/>");
+> -
+> -        /*
+> -         * GDB identifies registers based on the order they are
+> -         * presented in the XML. These ids will not match QEMU's
+> -         * representation (which follows the PowerISA).
+> -         *
+> -         * Store the position of the current register description so
+> -         * we can make the correspondence later.
+> -         */
+> -        spr->gdb_id = num_regs;
+> -        num_regs++;
+>       }
+>   
+>       g_string_append(xml, "</feature>");
+
 
