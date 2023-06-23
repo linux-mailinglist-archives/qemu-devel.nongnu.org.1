@@ -2,94 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDDD473B6FC
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 14:20:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF12273B706
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 14:22:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCfko-0002Ty-Nn; Fri, 23 Jun 2023 08:19:07 -0400
+	id 1qCfnY-0003s1-2g; Fri, 23 Jun 2023 08:21:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mathbern@qualcomm.com>)
- id 1qCfkd-0002Ru-Qk; Fri, 23 Jun 2023 08:18:56 -0400
-Received: from mx0a-0031df01.pphosted.com ([205.220.168.131])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mathbern@qualcomm.com>)
- id 1qCfkb-0001q0-5o; Fri, 23 Jun 2023 08:18:55 -0400
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
- by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 35NBEMK4027294; Fri, 23 Jun 2023 12:18:43 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com;
- h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=qcppdkim1;
- bh=xbNuUuaMWi+btH1Zt/bMFkqCaC5SmaYDxrOGgEwwLS4=;
- b=pVFOezscbGbpVnYSFxqa9HVdVhhsftCxXx3zs5MYbTEZV7bLJZv1gKqGU8A/N73sEOlK
- ZsA+5bpgo4lqZkahHxAnq4iK2w0vFZ12WOHzVK/lGFxAecg5eRvM55E7/XnIQq1LNorp
- 4txfcB3qrK38pCkm3fc43GXPKfMEnTuelRsvQLrmqgJPvnGKAgCW/ICAYoTCBGKRk0+2
- xvV/YV/x/56URyvsfu+NPsN+rBPeOUdTvsL1S/pyGtiZ4gwczwWDKCbpCJdKm8flz/9o
- gapbHCdP9pxk1gGq32X+FftGv68ZGEYgoHsmAwnOPNIV/hhNSWnPd+JVWENoO6s0cfil aw== 
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com
- [129.46.96.20])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3rcpjhap18-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 23 Jun 2023 12:18:43 +0000
-Received: from pps.filterd (NALASPPMTA04.qualcomm.com [127.0.0.1])
- by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTP id 35NCIgVj009488; 
- Fri, 23 Jun 2023 12:18:42 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
- by NALASPPMTA04.qualcomm.com (PPS) with ESMTPS id 3r95wn29j9-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 23 Jun 2023 12:18:42 +0000
-Received: from NALASPPMTA04.qualcomm.com (NALASPPMTA04.qualcomm.com
- [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 35NCIgwW009483;
- Fri, 23 Jun 2023 12:18:42 GMT
-Received: from hu-devc-sd-u20-a-1.qualcomm.com (hu-mathbern-lv.qualcomm.com
- [10.47.235.147])
- by NALASPPMTA04.qualcomm.com (PPS) with ESMTPS id 35NCIfRq009482
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 23 Jun 2023 12:18:42 +0000
-Received: by hu-devc-sd-u20-a-1.qualcomm.com (Postfix, from userid 4229910)
- id 2536A7376; Fri, 23 Jun 2023 09:18:41 -0300 (-03)
-From: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
-To: npiggin@gmail.com
-Cc: alex.bennee@linaro.org, qemu-devel@nongnu.org, qemu-stable@nongnu.org,
- quic_mathbern@quicinc.com, tsimpson@quicinc.com
-Subject: Re: [PATCH] gdbstub: Permit reverse step/break to provide stop
- response
-Date: Fri, 23 Jun 2023 09:18:39 -0300
-Message-Id: <5a4ff40f5adc9aa4a1b173fdfb4e179a53c922f3.1687522225.git.quic_mathbern@quicinc.com>
-X-Mailer: git-send-email 2.37.2
-In-Reply-To: <20230623035304.279833-1-npiggin@gmail.com>
-References: <20230623035304.279833-1-npiggin@gmail.com>
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qCfmo-0003kW-Mu
+ for qemu-devel@nongnu.org; Fri, 23 Jun 2023 08:21:12 -0400
+Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qCfmh-0003g0-Rn
+ for qemu-devel@nongnu.org; Fri, 23 Jun 2023 08:21:08 -0400
+Received: by mail-lf1-x12b.google.com with SMTP id
+ 2adb3069b0e04-4f86a7a5499so712044e87.2
+ for <qemu-devel@nongnu.org>; Fri, 23 Jun 2023 05:21:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1687522861; x=1690114861;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=j/vIHDwzFrIfz7Vm9fv4XCwyKtM7op7qmDeBZqPYxDg=;
+ b=UZsjfxWwQvhGk54oTi9Lvnr77Q2tGBdwoViKoVm9SC054lTJKGUyyBaGo4CMiW0bjb
+ Q2vxGES5epGE2mZ2WmcsWsR/+CmOwMaEzQENEZjuX2Sd9AQXeBcPzOQ8tFIkGfQwlSj4
+ pPVuDAX7TpcvJPA/jBkq9CD87r3ES6ni1pH241P3TwcZ8/gsewvDt/9QqO2nF6n6CRru
+ PEwNHrG5H1z+7zmoW9zAHxBrWiz4YD6PmlYj0bdXJYlSCEQS7rRKzmft6K/PtDiLMyaS
+ YUDoZq8Xr3/tjAJTzLrhDhCC17vBMGikuvQ/a+Msn/9o5W5gbqgShLR0fOyeP7dIr+Of
+ DLqg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1687522861; x=1690114861;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=j/vIHDwzFrIfz7Vm9fv4XCwyKtM7op7qmDeBZqPYxDg=;
+ b=fbnWNjqgLYTxeikwe8gExTP3s3MfklDwTbV9xuS4mZ7ZLGjGcC45XXcl4SxdJufdaZ
+ 6aaaRbdQekOfW0WHAIL+SLSmbjRwEI4Ma07cOqQWLvB04x/S5wJDT/ekTnECsQcJb8K+
+ ++0EHB31ED5UAbOP6r+Dp68wmDcNhnkKfqO8BEuQTidUjdlfmrDZvXPDMm4voP68FH/j
+ MDhKSiBmuD1r/+a9TpfU6Zo19rqbDaPINtUKBVoSGu9JPjRSPj+/AfMd+2h+ihTt0JcO
+ GMYuJOSfedEvzppWDggo98wurJo108AlugznGJDXTezGxJuFLH0hQdVhAEhhcUoqqYwx
+ wppw==
+X-Gm-Message-State: AC+VfDzhYNhaIuoF3hGLorlRxyH0i4uSYD7msnFsh83uwRaPtadpr03p
+ Vxs7TxHi71uRyZldfu3TaMF38A==
+X-Google-Smtp-Source: ACHHUZ41FOZskEHSZ7HKiqU+bvTp4/N68kyCciZB0jYSQHeC34DYIOrFWyz4Mllkh6QUGYQZNWpV2A==
+X-Received: by 2002:a05:6512:1319:b0:4f8:661f:60a4 with SMTP id
+ x25-20020a056512131900b004f8661f60a4mr10427129lfu.41.1687522861361; 
+ Fri, 23 Jun 2023 05:21:01 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
+ by smtp.gmail.com with ESMTPSA id
+ n12-20020a1c720c000000b003f90b58df65sm2177937wmc.29.2023.06.23.05.21.01
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 23 Jun 2023 05:21:01 -0700 (PDT)
+Received: from zen.lan (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id 841341FFBB;
+ Fri, 23 Jun 2023 13:21:00 +0100 (BST)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ Juan Quintela <quintela@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Cleber Rosa <crosa@redhat.com>,
+ Darren Kenny <darren.kenny@oracle.com>,
+ Alexandre Iooss <erdnaxe@crans.org>, Peter Xu <peterx@redhat.com>,
+ qemu-arm@nongnu.org, Eduardo Habkost <eduardo@habkost.net>,
+ Riku Voipio <riku.voipio@iki.fi>, Mahmoud Mandour <ma.mandourr@gmail.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Bandan Das <bsd@redhat.com>,
+ Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
+ Radoslaw Biernacki <rad@semihalf.com>, Alexander Bulekov <alxndr@bu.edu>,
+ Leif Lindholm <quic_llindhol@quicinc.com>,
+ Qiuhao Li <Qiuhao.Li@outlook.com>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Leonardo Bras <leobras@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Stefan Hajnoczi <stefanha@redhat.com>, Bin Meng <bmeng.cn@gmail.com>,
+ Thomas Huth <thuth@redhat.com>, Beraldo Leal <bleal@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>, Yanan Wang <wangyanan55@huawei.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PATCH 00/26] maintainer omnibus: testing, fuzz, plugins,
+ documentation
+Date: Fri, 23 Jun 2023 13:20:34 +0100
+Message-Id: <20230623122100.1640995-1-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-QCInternal: smtphost
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
- signatures=585085
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
- signatures=585085
-X-Proofpoint-ORIG-GUID: Tlwjvw_3o3ye5cbXJh41dJB7HeHIqmzx
-X-Proofpoint-GUID: Tlwjvw_3o3ye5cbXJh41dJB7HeHIqmzx
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-06-23_06,2023-06-22_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- suspectscore=0 spamscore=0 mlxscore=0 priorityscore=1501 bulkscore=0
- mlxlogscore=642 impostorscore=0 malwarescore=0 clxscore=1011 adultscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2305260000 definitions=main-2306230111
-Received-SPF: pass client-ip=205.220.168.131;
- envelope-from=mathbern@qualcomm.com; helo=mx0a-0031df01.pphosted.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
+Received-SPF: pass client-ip=2a00:1450:4864:20::12b;
+ envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x12b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, HEADER_FROM_DIFFERENT_DOMAINS=0.25,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -106,34 +113,123 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-> Nicholas Piggin <npiggin@gmail.com> wrote:
->
-> The final part of the reverse step and break handling is to bring
-> the machine back to a debug stop state. gdb expects a response.
-> 
-> A gdb 'rsi' command hangs forever because the gdbstub filters out
-> the response (also observable with reverse_debugging.py avocado
-> tests).
-> 
-> Fix by setting allow_stop_reply for the gdb backward packets.
+As softfreeze is fast approaching I thought it would be work combining
+my various trees into an omnibus series to ease the review and
+merging.
 
-Ah, it's interesting that [1] doesn't include 'bc' and 'bs' in the list
-of cmds that may respond with a stop-reply packet:
+The testing updates exposed a number of latent leaks that confused the
+oss-fuzz jobs (hence the test-fuzz addition to help debug that). This
+also includes some minor plugin updates and finally some documentation
+updates that clean-up and expose the QOM and QDEV APIs which are so
+core to emulating anything in QEMU.
 
-    "The 'C', 'c', 'S', 's', 'vCont', 'vAttach', 'vRun', 'vStopped', and
-    '?' packets can receive any of the below as a reply."
+Please review.
 
-But their definitions at [2] do say the following:
+Alex Bennée (20):
+  gitlab: reduce testing scope of check-gcov
+  tests/tcg: add mechanism to handle plugin arguments
+  qemu-keymap: use modern name for Arabic keymap
+  qemu-keymap: properly check return from xkb_keymap_mod_get_index
+  scripts/oss-fuzz: add a suppression for keymap
+  tests/qtests: clean-up and fix leak in generic_fuzz
+  tests/docker: add test-fuzz
+  Makefile: add lcitool-refresh to UNCHECKED_GOALS
+  tests/lcitool: update to latest version
+  tests/lcitool: add an explicit gcc-native package
+  tests/lcitool: introduce qemu-minimal
+  tests/docker: convert riscv64-cross to lcitool
+  plugins: force slow path when plugins instrument memory ops
+  plugins: fix memory leak while parsing options
+  plugins: update lockstep to use g_memdup2
+  docs/devel: add some front matter to the devel index
+  include/migration: mark vmstate_register() as a legacy function
+  include/hw/qdev-core: fixup kerneldoc annotations
+  docs/devel: split qom-api reference into new file
+  docs/devel: introduce some key concepts for QOM development
 
-    'bc' (and 'bc')
-    [...]
-    Reply: See Stop Reply Packets, for the reply specifications.
+Ani Sinha (1):
+  docs/devel: remind developers to run CI container pipeline when
+    updating images
 
-So I guess the list from [1] is not exhaustive. Anyway, thanks for the
-fix!
+Daniel P. Berrangé (2):
+  gitlab: explicit set artifacts publishing criteria
+  gitlab: ensure coverage job also publishes meson log
 
-Acked-by: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
+Erik Skultety (1):
+  tests/lcitool: Bump fedora container versions
 
-[1]: https://sourceware.org/gdb/onlinedocs/gdb/Stop-Reply-Packets.html#Stop-Reply-Packets
-[2]: https://sourceware.org/gdb/onlinedocs/gdb/Packets.html#Packets
+Marcin Juszkiewicz (1):
+  tests/avocado: update firmware to enable sbsa-ref/max
+
+Philippe Mathieu-Daudé (1):
+  docs/devel/qom.rst: Correct code style
+
+ docs/devel/index-api.rst                      |   2 +
+ docs/devel/index-process.rst                  |   2 +
+ docs/devel/index-tcg.rst                      |   2 +
+ docs/devel/index.rst                          |  24 +-
+ docs/devel/qdev-api.rst                       |   7 +
+ docs/devel/qom-api.rst                        |   9 +
+ docs/devel/qom.rst                            |  54 ++-
+ docs/devel/tcg.rst                            |   2 +
+ docs/devel/testing.rst                        |   6 +
+ Makefile                                      |   2 +-
+ include/exec/cpu-all.h                        |   2 +-
+ include/hw/core/cpu.h                         |  17 +
+ include/hw/qdev-core.h                        | 365 ++++++++++++------
+ include/migration/vmstate.h                   |   9 +-
+ accel/tcg/cputlb.c                            |   4 +-
+ accel/tcg/user-exec.c                         |   6 +-
+ contrib/plugins/cache.c                       |   2 +-
+ contrib/plugins/drcov.c                       |   2 +-
+ contrib/plugins/execlog.c                     |   2 +-
+ contrib/plugins/hotblocks.c                   |   2 +-
+ contrib/plugins/hotpages.c                    |   2 +-
+ contrib/plugins/howvec.c                      |   2 +-
+ contrib/plugins/hwprofile.c                   |   2 +-
+ contrib/plugins/lockstep.c                    |   4 +-
+ qemu-keymap.c                                 |  24 +-
+ target/arm/tcg/sve_helper.c                   |   4 -
+ tests/plugin/bb.c                             |   2 +-
+ tests/plugin/insn.c                           |   2 +-
+ tests/plugin/mem.c                            |   2 +-
+ tests/plugin/syscall.c                        |   2 +-
+ tests/qtest/fuzz/generic_fuzz.c               |  11 +-
+ .gitlab-ci.d/buildtest-template.yml           |   4 +-
+ .gitlab-ci.d/buildtest.yml                    |   7 +-
+ .gitlab-ci.d/crossbuild-template.yml          |   1 +
+ .gitlab-ci.d/crossbuilds.yml                  |   2 +
+ .gitlab-ci.d/opensbi.yml                      |   1 +
+ pc-bios/keymaps/meson.build                   |   2 +-
+ scripts/oss-fuzz/lsan_suppressions.txt        |   3 +
+ tests/avocado/machine_aarch64_sbsaref.py      |  22 +-
+ tests/docker/dockerfiles/alpine.docker        |   4 +-
+ .../dockerfiles/debian-amd64-cross.docker     |   1 +
+ .../dockerfiles/debian-arm64-cross.docker     |   1 +
+ .../dockerfiles/debian-armel-cross.docker     |   1 +
+ .../dockerfiles/debian-armhf-cross.docker     |   1 +
+ .../dockerfiles/debian-mips64el-cross.docker  |   1 +
+ .../dockerfiles/debian-mipsel-cross.docker    |   1 +
+ .../dockerfiles/debian-ppc64el-cross.docker   |   1 +
+ .../dockerfiles/debian-riscv64-cross.docker   | 119 +++---
+ .../dockerfiles/debian-s390x-cross.docker     |   1 +
+ .../dockerfiles/fedora-win32-cross.docker     |   5 +-
+ .../dockerfiles/fedora-win64-cross.docker     |   5 +-
+ tests/docker/dockerfiles/fedora.docker        |   4 +-
+ tests/docker/test-fuzz                        |  28 ++
+ tests/lcitool/libvirt-ci                      |   2 +-
+ tests/lcitool/projects/qemu-minimal.yml       |  27 ++
+ tests/lcitool/projects/qemu.yml               |   1 +
+ tests/lcitool/refresh                         |  18 +-
+ tests/tcg/Makefile.target                     |   8 +-
+ tests/tcg/aarch64/Makefile.target             |   8 +
+ 59 files changed, 627 insertions(+), 230 deletions(-)
+ create mode 100644 docs/devel/qdev-api.rst
+ create mode 100644 docs/devel/qom-api.rst
+ create mode 100755 tests/docker/test-fuzz
+ create mode 100644 tests/lcitool/projects/qemu-minimal.yml
+
+-- 
+2.39.2
+
 
