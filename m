@@ -2,85 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF92073B836
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 14:51:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E02A73B83C
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 14:53:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCgGF-0005Bp-TJ; Fri, 23 Jun 2023 08:51:35 -0400
+	id 1qCgHX-0005vg-6z; Fri, 23 Jun 2023 08:52:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qCgFz-0005AU-5S
- for qemu-devel@nongnu.org; Fri, 23 Jun 2023 08:51:20 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qCgH0-0005ov-35
+ for qemu-devel@nongnu.org; Fri, 23 Jun 2023 08:52:22 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qCgFx-00021C-J2
- for qemu-devel@nongnu.org; Fri, 23 Jun 2023 08:51:18 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qCgGy-00028f-Ax
+ for qemu-devel@nongnu.org; Fri, 23 Jun 2023 08:52:21 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687524677;
+ s=mimecast20190719; t=1687524739;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=lgAlc3sG2W+S9oUKWzHXDkQlvyR9ZL1B+1JLZ5SUzLY=;
- b=BVnYK+cfSlGZiqOsFwx4dHANEOshQGSzrvC/cIGpJ7guvCIRQydf9FLdzLy7sYz4HZcpxN
- U/YIsHiagjMelj8rSgc6dbyOajvBOunougnUfz5rQY2y/JR5nADZ/wEilrGTt8m+hFKawu
- OpEWrbHoMcROZTlUAFMcQFCrfwPDxhM=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=GO3TUHimbNhwNtdnxAHZ9lCqYq135j1p8mrN0Hfk2po=;
+ b=AwgTk+1ZYMpQXMwGQhc8LxrThz3nF1RA9j0UfyJMJN0tkcaZe3VwjoOI4oMOR9vRhgTRa9
+ c/69ZZwtZF6DbjX84QkhsAdhLWTwe883vUmA6UUf7+LZCe7Z/30Y25wm0wMwqWVXtZfRAz
+ QhLC921bAy3sPnzlB0But72VDtc8DXM=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-619-BiM_Uv5fOHeVDe4QU96mQw-1; Fri, 23 Jun 2023 08:51:15 -0400
-X-MC-Unique: BiM_Uv5fOHeVDe4QU96mQw-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-3f8f9b50f17so3876365e9.3
- for <qemu-devel@nongnu.org>; Fri, 23 Jun 2023 05:51:14 -0700 (PDT)
+ us-mta-364-XpE6qqqkNcqnCCnulnLzgg-1; Fri, 23 Jun 2023 08:52:18 -0400
+X-MC-Unique: XpE6qqqkNcqnCCnulnLzgg-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-3f8f8e29771so8788155e9.1
+ for <qemu-devel@nongnu.org>; Fri, 23 Jun 2023 05:52:17 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687524673; x=1690116673;
+ d=1e100.net; s=20221208; t=1687524737; x=1690116737;
  h=content-transfer-encoding:in-reply-to:organization:from:references
  :cc:to:content-language:subject:user-agent:mime-version:date
  :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=lgAlc3sG2W+S9oUKWzHXDkQlvyR9ZL1B+1JLZ5SUzLY=;
- b=loqqNNB8JoVI5YDybpNr0mDBNtlQnuwL1/FG/VgAiXQrUXx/V5iUuhtLpDJ9fmBMH/
- 9az5WQoE6m+zRm0c9/+3WpaAifSMnb1sV4todjpgt9BVe3z40yTYqKaCnHgs0d9fhz0R
- 4cZ2rAHzbjHmUnaoALStRLVQ4r6mtFMe9PlGre92zl46horZuwDQJ4eEmFb2n+MmA9X9
- ga8UQIUyRFf9vLUBxhtx9oDUm01sf4p5rpNrcwTs7mFRXDIADSyPEz6vHjIucPRxdInZ
- vQqTWaxrERw98hEz0MGf5esyyJKJkfwShMqxr20iP2Ygr8TzrmXa6D9RgXehihuU1Tmk
- PNUw==
-X-Gm-Message-State: AC+VfDzFIphtxRSmh0+c+NUXeST8HR/WtPIRMgPPr69kh5CyVb6v8Ktv
- yYQIKdCAKcU9XGLhQJ3+6uNbatDpS9dQ9A1OP38XK/8tF0JtQb6hKA6rZLY05sssZvSNbPLph8A
- 7Bza8LpsaxlT//MzremPGDvps7Ob38O3psXim3GIuUX1fVH7/dMIDAF8YYLCgR0aXH1RGdEk=
-X-Received: by 2002:a05:600c:284:b0:3fa:7dfc:411f with SMTP id
- 4-20020a05600c028400b003fa7dfc411fmr911184wmk.23.1687524673503; 
- Fri, 23 Jun 2023 05:51:13 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5WGCDahjAg7K4BuaHwk6XJYsJxv7B8577mpKrWg5O5/PJ7hrDhpQTjcOodh6QV7QzSNQoksw==
-X-Received: by 2002:a05:600c:284:b0:3fa:7dfc:411f with SMTP id
- 4-20020a05600c028400b003fa7dfc411fmr911166wmk.23.1687524673129; 
- Fri, 23 Jun 2023 05:51:13 -0700 (PDT)
+ bh=GO3TUHimbNhwNtdnxAHZ9lCqYq135j1p8mrN0Hfk2po=;
+ b=guqtVZQw0empTvyO/MHGtNJtbvXwAAZc4yTU1/zYLp2qxSblRytEJGe6ScvKiV8pdV
+ rn4KJaIVl87651f8ubrotuRJS8+OD73fa00BX5h296y5Shrl9s/11XhGbTjYLGApE3fQ
+ VupBxOV8IaVhRzkLl+3of7mmjHzA+S+xzO3nAd68gGzvYsQ1Ox086ncmtFNXN2Pj9KTN
+ KLXcU0k22mwfiLl0q5YCMt15z03nhWE2s4KT1R27U4dMcl7MXMoOaTgd28W/VL2SJRX8
+ A12/6B3hMOFxy5oud18MvQFTa3ql+K0BpYpTFYxS/8LnGj2Io7e5AZuLZ9+EZABwO//K
+ f/7Q==
+X-Gm-Message-State: AC+VfDxEs6FRFjCbWOnfelpRHj+J9WxlQ6mdfJbnBiVn1rFAE2z6+5wM
+ tbt2nbM8AwzVXTzSVD9pq+2APXhuakNHiqy+p9NA1aGYXrP9l7KNJULTPtrQ0ST4rJC+GYY4QDq
+ 2pbxnac9pbVcQLap0u7wBjR7R4OQMncMNRuUDHRO0Iq++Y/l/g31zz9X2FL6WlTaKOQuY+kk=
+X-Received: by 2002:a05:600c:3b97:b0:3f9:b535:381a with SMTP id
+ n23-20020a05600c3b9700b003f9b535381amr11541557wms.10.1687524736859; 
+ Fri, 23 Jun 2023 05:52:16 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ64eOgWDr+E9s1KhjWf+IqQG5NuUOfPyiW5c2k9+McDu0Xv2NUdSBPQKdyJ4RXwio7IzMbHYg==
+X-Received: by 2002:a05:600c:3b97:b0:3f9:b535:381a with SMTP id
+ n23-20020a05600c3b9700b003f9b535381amr11541535wms.10.1687524736540; 
+ Fri, 23 Jun 2023 05:52:16 -0700 (PDT)
 Received: from ?IPV6:2003:cb:c729:1700:9783:58ba:9db:1221?
  (p200300cbc7291700978358ba09db1221.dip0.t-ipconnect.de.
  [2003:cb:c729:1700:9783:58ba:9db:1221])
  by smtp.gmail.com with ESMTPSA id
- k7-20020a5d5187000000b0031128382ed0sm9488345wrv.83.2023.06.23.05.51.12
+ m13-20020adff38d000000b003113ed02080sm9527747wro.95.2023.06.23.05.52.15
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 23 Jun 2023 05:51:12 -0700 (PDT)
-Message-ID: <39b97e00-fb3c-29b2-aa1f-1de4c8094899@redhat.com>
-Date: Fri, 23 Jun 2023 14:51:11 +0200
+ Fri, 23 Jun 2023 05:52:16 -0700 (PDT)
+Message-ID: <7266ab51-51a4-e470-e134-8c2b338838ea@redhat.com>
+Date: Fri, 23 Jun 2023 14:52:15 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
-Subject: Re: [PATCH v1] virtio-mem: Simplify bitmap handling and
- virtio_mem_set_block_state()
+Subject: Re: [PATCH v4 0/3] vhost: memslot handling improvements
 Content-Language: en-US
 To: qemu-devel@nongnu.org
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, Gavin Shan <gshan@redhat.com>
-References: <20230523183036.517957-1-david@redhat.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+References: <20230523185915.540373-1-david@redhat.com>
 From: David Hildenbrand <david@redhat.com>
 Organization: Red Hat
-In-Reply-To: <20230523183036.517957-1-david@redhat.com>
+In-Reply-To: <20230523185915.540373-1-david@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -105,19 +107,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 23.05.23 20:30, David Hildenbrand wrote:
-> Let's separate plug and unplug handling to prepare for future changes
-> and make the code a bit easier to read -- working on block states
-> (plugged/unplugged) instead of on a bitmap.
+On 23.05.23 20:59, David Hildenbrand wrote:
+> Following up on my previous work to make virtio-mem consume multiple
+> memslots dynamically [1] that requires precise accounting between used vs.
+> reserved memslots, I realized that vhost makes this extra hard by
+> filtering out some memory region sections (so they don't consume a
+> memslot) in the vhost-user case, which messes up the whole memslot
+> accounting.
+> 
+> This series fixes what I found to be broken and prepares for more work on
+> [1]. Further, it cleanes up the merge checks that I consider unnecessary.
+> 
+> [1] https://lkml.kernel.org/r/20211027124531.57561-8-david@redhat.com
 > 
 > Cc: "Michael S. Tsirkin" <mst@redhat.com>
-> Cc: Gavin Shan <gshan@redhat.com>
-> Signed-off-by: David Hildenbrand <david@redhat.com>
-> ---
+> Cc: Stefan Hajnoczi <stefanha@redhat.com>
+> Cc: Igor Mammedov <imammedo@redhat.com>
+> Cc: Paolo Bonzini <pbonzini@redhat.com>
+> Cc: Peter Xu <peterx@redhat.com>
+> Cc: "Philippe Mathieu-Daudé" <philmd@linaro.org>
+> 
 
-I queued this to
-
-https://github.com/davidhildenbrand/qemu.git mem-next
+Gentle ping that this wants to get picked up :)
 
 -- 
 Cheers,
