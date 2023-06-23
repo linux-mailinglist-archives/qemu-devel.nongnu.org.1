@@ -2,52 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7561873B3A4
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 11:33:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4039F73B3A6
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 11:34:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCdAp-0007y3-4j; Fri, 23 Jun 2023 05:33:47 -0400
+	id 1qCdB9-0000SG-94; Fri, 23 Jun 2023 05:34:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=Kxto=CL=kaod.org=clg@ozlabs.org>)
- id 1qCdAj-0007sf-FC; Fri, 23 Jun 2023 05:33:41 -0400
-Received: from gandalf.ozlabs.org ([150.107.74.76])
+ id 1qCdB8-0000Rj-4z; Fri, 23 Jun 2023 05:34:06 -0400
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
+ helo=gandalf.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=Kxto=CL=kaod.org=clg@ozlabs.org>)
- id 1qCdAe-0000d5-HK; Fri, 23 Jun 2023 05:33:39 -0400
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4QnX9V1D4Vz4x3k;
- Fri, 23 Jun 2023 19:33:34 +1000 (AEST)
+ id 1qCdB6-0000l2-5g; Fri, 23 Jun 2023 05:34:05 -0400
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4QnXB13D5xz4x0L;
+ Fri, 23 Jun 2023 19:34:01 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits))
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4QnX9S3Zvbz4x0L;
- Fri, 23 Jun 2023 19:33:32 +1000 (AEST)
-Message-ID: <16cc303a-ed98-4918-bdb1-6df78bf67bf7@kaod.org>
-Date: Fri, 23 Jun 2023 11:33:30 +0200
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4QnX9y6Q65z4x3k;
+ Fri, 23 Jun 2023 19:33:58 +1000 (AEST)
+Message-ID: <ad19b2ba-5c71-f93c-9a93-fb6a8641f77a@kaod.org>
+Date: Fri, 23 Jun 2023 11:33:56 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
-Subject: Re: [PATCH] target/ppc: Fix sc instruction handling of LEV field
+Subject: Re: [PATCH v2 0/7] target/ppc: TCG SMT support for spapr machine
 Content-Language: en-US
 To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
 Cc: qemu-devel@nongnu.org, Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>
-References: <20230621110938.239066-1-npiggin@gmail.com>
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+References: <20230622093357.255649-1-npiggin@gmail.com>
 From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20230621110938.239066-1-npiggin@gmail.com>
+In-Reply-To: <20230622093357.255649-1-npiggin@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=150.107.74.76;
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
  envelope-from=SRS0=Kxto=CL=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, NICE_REPLY_A=-0.09, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+X-Spam_score_int: -40
+X-Spam_score: -4.1
+X-Spam_bar: ----
+X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -63,53 +68,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/21/23 13:09, Nicholas Piggin wrote:
-> The top bits of the LEV field of the sc instruction are to be treated as
-> as a reserved field rather than a reserved value, meaning LEV is
-> effectively the bottom bit. LEV=0xF should be treated as LEV=1 and be
-> a hypercall, for example.
+On 6/22/23 11:33, Nicholas Piggin wrote:
+> This series is based on some previously posted TCG fixes, in particular
+> the CTRL register fix is required.
 > 
-> This changes the instruction execution to just set lev from the low bit
-> of the field. Processors which don't support the LEV field will continue
-> to ignore it.
+> Also added the Philippe's patch in the series to prevent conflict.
 > 
-> ISA v3.1 defines LEV to be 2 bits, in order to add the 'sc 2' ultracall
-> instruction. TCG does not support Ultravisor, so don't worry about
-> that bit.
-> 
-> Suggested-by: "Harsh Prateek Bora" <harshpb@linux.ibm.com>
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
-> This should probably go ahead of the ISA 3.1 LEV in SRR1 patch. I
-> don't think they need to be backported to stable though, have not
-> caused any real problems.
-> 
-> Thanks to Harsh for spotting it.
+> Since v1, main changes are just some tidying of comments and changelogs,
+> and addition of avocado tests to boot Linux on SMT machine and make sure
+> the CPUs come up, as suggested by Cedric.
 > 
 > Thanks,
 > Nick
 > 
->   target/ppc/translate.c | 7 ++++++-
->   1 file changed, 6 insertions(+), 1 deletion(-)
+> Nicholas Piggin (6):
+>    target/ppc: Add initial flags and helpers for SMT support
+>    target/ppc: Add support for SMT CTRL register
+>    target/ppc: Add msgsnd/p and DPDES SMT support
+>    spapr: TCG allow up to 8-thread SMT on POWER8 and newer CPUs
+>    tests/avocado: boot ppc64 pseries to Linux VFS mount
+>    tests/avocado: Add ppc64 pseries multiprocessor boot tests
 > 
-> diff --git a/target/ppc/translate.c b/target/ppc/translate.c
-> index 15a00bd4fa..3c62f9188a 100644
-> --- a/target/ppc/translate.c
-> +++ b/target/ppc/translate.c
-> @@ -4424,7 +4424,12 @@ static void gen_sc(DisasContext *ctx)
->   {
->       uint32_t lev;
->   
-> -    lev = (ctx->opcode >> 5) & 0x7F;
-> +    /*
-> +     * LEV is a 7-bit field, but the top 6 bits are treated as a reserved
-> +     * field (i.e., ignored). ISA v3.1 changes that to 5 bits, but that is
-> +     * for Ultravisor which TCG does not support, so just ignore the top 6.
-> +     */
-> +    lev = (ctx->opcode >> 5) & 0x1;
->       gen_exception_err(ctx, POWERPC_SYSCALL, lev);
->   }
->   
+> Philippe Mathieu-Daudé (1):
+>    hw/ppc/spapr: Test whether TCG is enabled with tcg_enabled()
+> 
+>   hw/ppc/ppc.c                 |  6 ++++
+>   hw/ppc/spapr.c               | 16 ++++++---
+>   hw/ppc/spapr_caps.c          | 14 ++++++++
+>   hw/ppc/spapr_cpu_core.c      |  7 ++--
+>   include/hw/ppc/ppc.h         |  1 +
+>   target/ppc/cpu.h             |  9 +++++
+>   target/ppc/cpu_init.c        |  5 +++
+>   target/ppc/excp_helper.c     | 30 +++++++++++++---
+>   target/ppc/helper.h          |  2 ++
+>   target/ppc/misc_helper.c     | 69 ++++++++++++++++++++++++++++++++----
+>   target/ppc/translate.c       | 46 +++++++++++++++++++++++-
+>   tests/avocado/ppc_pseries.py | 62 ++++++++++++++++++++++++++++----
+>   12 files changed, 243 insertions(+), 24 deletions(-)
+> 
 
 Applied to ppc-next.
 
