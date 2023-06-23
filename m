@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11B8373B53E
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C92173B53D
 	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 12:29:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCe0s-0000DI-T3; Fri, 23 Jun 2023 06:27:34 -0400
+	id 1qCe1I-0000Hh-SP; Fri, 23 Jun 2023 06:28:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qCe0r-0000Ct-Ae
- for qemu-devel@nongnu.org; Fri, 23 Jun 2023 06:27:33 -0400
-Received: from mail-lf1-x12d.google.com ([2a00:1450:4864:20::12d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qCe0p-00018a-D3
- for qemu-devel@nongnu.org; Fri, 23 Jun 2023 06:27:33 -0400
-Received: by mail-lf1-x12d.google.com with SMTP id
- 2adb3069b0e04-4f955def3a5so536263e87.0
- for <qemu-devel@nongnu.org>; Fri, 23 Jun 2023 03:27:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687516049; x=1690108049;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=+uhIURa+W72BPO2EEf96ntY30qeTAcxropPwLHBkvmk=;
- b=V9oHB79HcaQ1KsE7neNNaQ0BixUh95zF2PHhJ+R6hk420ubXrKjPyTDORGLRhGxcmM
- ntC3MFT6wccp5pHediPpS11ZI0+XH80EXXWTcfAROc6h5HFmBdfnTWGZV2nlIf56P2L+
- q12Z+GWPMV62MREnsN3fKTUbpk1Yq3ZWoZBLCDrYJ1FY8v3QmYUwln+obcKYdb49miRq
- sKgemHOVRVi+9rHmrNrgBCs2TRJPBmV0W00eu8PLCNi47QhFzzcft3VpkdpZGUm93wnJ
- 4upL8hiiDGz+DpCi1pLEyDnzIGkBg0YG7m5bFDadH+OXKa6DCfmbRq6MR+tSv6o44pu9
- 7gTw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687516049; x=1690108049;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=+uhIURa+W72BPO2EEf96ntY30qeTAcxropPwLHBkvmk=;
- b=NTj8187rHZqs0vnWqPOcaUNfKiJI5aNtr9KYYsHBXXNmIQEFshqKOsnrq0LBPF0xM0
- FE3wWaBl3qDV61zzxy6huZHRnVnV11CAJM7B/+d9WRpioxqF2/fTgcC7EAkipY6Bgjhh
- Gi7HDp0usXrwLpvlaUO+xGydPP9pCN7B9QPql6qX9tN356XVRRyvAuFbefEVQyJ2r5AS
- /25c0BdI+FXp9QGWmWziM/m3fO2853Hf8aHtYMy+1Ols31SFIMnLnHUTW5LrOatyXAk1
- xOx9j3VI1wkifwyKrRZJ+i+abvf00kuWlQvOXhnxsya5jdBwv+byRBxHOLlQ/Z1Dhl6H
- GOOQ==
-X-Gm-Message-State: AC+VfDxruvm664IFKQ06XiyOqYrGl7N1peNBEB97sZYJQch0gr4MpGFF
- zs5UcDystplnBq9R6eHJ0EwYDIGQaaymHNusmipg7g==
-X-Google-Smtp-Source: ACHHUZ7u/YsbOdZk6tU/kXaeJonndsYeC98S1Rsm0BUeqGX52pWc4uMJXQmK1kBOCMnat0voOpX7XzVbMDPpHfWO9so=
-X-Received: by 2002:a05:6512:39c4:b0:4f9:5a0c:85b8 with SMTP id
- k4-20020a05651239c400b004f95a0c85b8mr5433051lfu.36.1687516049374; Fri, 23 Jun
- 2023 03:27:29 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qCe1G-0000HC-5n
+ for qemu-devel@nongnu.org; Fri, 23 Jun 2023 06:27:58 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qCe1E-0001Fr-Dj
+ for qemu-devel@nongnu.org; Fri, 23 Jun 2023 06:27:57 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1687516074;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=xOWNJKyjbPFIAPEoZ9eGsTLHJ3IBBWgmzh1N8FrMjIo=;
+ b=YpI+JUFXR9yC4eDbAXqfpbkQ+IKe/1g6i45fFpxZlyPGYQWgFHdE8D2QvN9Fsnmhd+/kxZ
+ /CfsjL6Og+br61Pe5JcSCxfIyoQJ5DhA3Be0FJ2tkyt0ow8BpqBrfMCxmLp3Rm420+V6A1
+ etP9b+4eYDu8Bzk4j7VxoAhQTl6EdCc=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-644-8obqrwYmOPik-iAJ6JlguA-1; Fri, 23 Jun 2023 06:27:50 -0400
+X-MC-Unique: 8obqrwYmOPik-iAJ6JlguA-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8AE8329AB3E2;
+ Fri, 23 Jun 2023 10:27:50 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.44])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id EB404F41C8;
+ Fri, 23 Jun 2023 10:27:49 +0000 (UTC)
+Date: Fri, 23 Jun 2023 11:27:47 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, Miroslav Rezanina <mrezanin@redhat.com>,
+ Gerd Hoffmann <kraxel@redhat.com>
+Subject: Re: [PATCH] keymaps: use 'ara' X11 keyboard map instead of 'ar'
+Message-ID: <ZJVzoxfRtLvwWEMN@redhat.com>
+References: <20230623094025.72295-1-berrange@redhat.com>
+ <CAFEAcA-DZ=LO_qctUeqjZY5Umf-_kV6=BsFhqtT9ZDdyE2B-vw@mail.gmail.com>
 MIME-Version: 1.0
-References: <20230619140216.402530-1-richard.henderson@linaro.org>
-In-Reply-To: <20230619140216.402530-1-richard.henderson@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 23 Jun 2023 11:27:18 +0100
-Message-ID: <CAFEAcA8baKHuwE9Rhagv69aSQu22GPvhkUf0j9dFB_zrVqRmvw@mail.gmail.com>
-Subject: Re: [PATCH] target/arm: Restructure has_vfp_d32 test
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, Mads Ynddal <mads@ynddal.dk>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::12d;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12d.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAFEAcA-DZ=LO_qctUeqjZY5Umf-_kV6=BsFhqtT9ZDdyE2B-vw@mail.gmail.com>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,29 +81,32 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 19 Jun 2023 at 15:02, Richard Henderson
-<richard.henderson@linaro.org> wrote:
->
-> One cannot test for feature aa32_simd_r32 without first
-> testing if AArch32 mode is supported at all.  This leads to
->
-> qemu-system-aarch64: ARM CPUs must have both VFP-D32 and Neon or neither
->
-> for Apple M1 cpus.
->
-> We already have a check for ARMv8-A never setting vfp-d32 true,
-> so restructure the code so that AArch64 avoids the test entirely.
->
-> Reported-by: Mads Ynddal <mads@ynddal.dk>
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+On Fri, Jun 23, 2023 at 11:12:13AM +0100, Peter Maydell wrote:
+> On Fri, 23 Jun 2023 at 10:40, Daniel P. Berrangé <berrange@redhat.com> wrote:
+> >
+> > The keyboard mapping name 'ar' was a legacy name only available from
+> > xkeyboard-config via a (15 year old) backcompat mapping. This mapping
+> > was finally removed in the latest upstream release 2.39:
+> >
+> >   https://gitlab.freedesktop.org/xkeyboard-config/xkeyboard-config/-/commit/470ad2cd8fea84d7210377161d86b31999bb5ea6
+> 
+> Hi; I sent a patch to fix this a couple of days ago:
+> https://patchew.org/QEMU/20230620162024.1132013-1-peter.maydell@linaro.org/
+> (That one's already been reviewed and has a bit more detail
+> in its commit message.)
 
-Applied to target-arm.next, thanks.
+Ah perfect, sorry I missed that.
 
-(We can change the check in the "provide 'neon' property" code
-as a separate patch.)
 
--- PMM
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+
 
