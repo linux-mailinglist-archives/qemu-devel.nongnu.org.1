@@ -2,68 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E145C73B0BB
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 08:28:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B08E73B0CD
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 08:34:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCaFM-0003A2-CA; Fri, 23 Jun 2023 02:26:16 -0400
+	id 1qCaM6-0004pn-4G; Fri, 23 Jun 2023 02:33:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vivek.kasireddy@intel.com>)
- id 1qCaF7-00037x-T2
- for qemu-devel@nongnu.org; Fri, 23 Jun 2023 02:26:02 -0400
-Received: from mga01.intel.com ([192.55.52.88])
+ (Exim 4.90_1) (envelope-from <SRS0=Kxto=CL=kaod.org=clg@ozlabs.org>)
+ id 1qCaM0-0004oS-Mm; Fri, 23 Jun 2023 02:33:08 -0400
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
+ helo=gandalf.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vivek.kasireddy@intel.com>)
- id 1qCaF4-0002Jo-PT
- for qemu-devel@nongnu.org; Fri, 23 Jun 2023 02:26:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1687501558; x=1719037558;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=QIocm1Y//9pegDEM18FMTbxasLNFF6KPTaxZPgdd5js=;
- b=iwtZ4+weB3C4NG9Ya5CsOseq3yKsTLNEv9H8VpwX02QDZU+83tq5O+2M
- jpvx1NhrT7xr6pBUpPvQHh3QVQDiEA9JpVHcW0YjX7qN8DFCZ/wlNyqAB
- hct5rxS361ZWC0rXfIWfzZQo/3N+cOYyNpzUZoVPipl9f3rSpWZReSmT1
- xmalURJ3ZZAi3kdkfDhvb23Hv9nfSTjdTHSoj7m+7eLMCiblwnxBgeaf4
- EjFrjoLcvWcYMU7B3wSmrWzoAO+XhtPE9dUX1VCNEFE/8g4Gcnwi+UBod
- jmaBGvSQoN5e5wst2Y13zamO9bXwEJiy+hu9lt/Q5YoK8Qllow0GNMSCm w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10749"; a="390619801"
-X-IronPort-AV: E=Sophos;i="6.01,151,1684825200"; d="scan'208";a="390619801"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
- by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Jun 2023 23:25:49 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10749"; a="828260759"
-X-IronPort-AV: E=Sophos;i="6.01,151,1684825200"; d="scan'208";a="828260759"
-Received: from vkasired-desk2.fm.intel.com ([10.105.128.127])
- by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Jun 2023 23:25:48 -0700
-From: Vivek Kasireddy <vivek.kasireddy@intel.com>
-To: qemu-devel@nongnu.org
-Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>,
- Gerd Hoffmann <kraxel@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Dongwon Kim <dongwon.kim@intel.com>
-Subject: [PATCH v1] virtio-gpu: Make non-gl display updates work again when
- blob=true
-Date: Thu, 22 Jun 2023 23:04:54 -0700
-Message-Id: <20230623060454.3749910-1-vivek.kasireddy@intel.com>
-X-Mailer: git-send-email 2.39.2
+ (Exim 4.90_1) (envelope-from <SRS0=Kxto=CL=kaod.org=clg@ozlabs.org>)
+ id 1qCaLy-0004jU-MB; Fri, 23 Jun 2023 02:33:08 -0400
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4QnS9231CVz4x0G;
+ Fri, 23 Jun 2023 16:32:54 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4QnS8z2vrkz4wjB;
+ Fri, 23 Jun 2023 16:32:51 +1000 (AEST)
+Message-ID: <346472c6-443a-7034-efce-36d6a10f2636@kaod.org>
+Date: Fri, 23 Jun 2023 08:32:47 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH v2 5/7] spapr: TCG allow up to 8-thread SMT on POWER8 and
+ newer CPUs
+Content-Language: en-US
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
+Cc: qemu-devel@nongnu.org, Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+References: <20230622093357.255649-1-npiggin@gmail.com>
+ <20230622093357.255649-6-npiggin@gmail.com>
+ <3bb379ff-62d0-b212-0376-7ff1f8cc61fa@kaod.org>
+ <53cf03d5-a339-09be-9739-34327221ff5e@kaod.org>
+In-Reply-To: <53cf03d5-a339-09be-9739-34327221ff5e@kaod.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=192.55.52.88;
- envelope-from=vivek.kasireddy@intel.com; helo=mga01.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+ envelope-from=SRS0=Kxto=CL=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -40
+X-Spam_score: -4.1
 X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -80,69 +71,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In the case where the console does not have gl capability, and
-if blob is set to true, make sure that the display updates still
-work. Commit e86a93f55463 accidentally broke this by misplacing
-the return statement (in resource_flush) causing the updates to
-be silently ignored.
+On 6/22/23 12:49, Cédric Le Goater wrote:
+> On 6/22/23 12:06, Cédric Le Goater wrote:
+>> On 6/22/23 11:33, Nicholas Piggin wrote:
+>>> PPC TCG supports SMT CPU configurations for non-hypervisor state, so
+>>> permit POWER8-10 pseries machines to enable SMT.
+>>>
+>>> This requires PIR and TIR be set, because that's how sibling thread
+>>> matching is done by TCG.
+>>>
+>>> spapr's nested-HV capability does not currently coexist with SMT, so
+>>> that combination is prohibited (interestingly somewhat analogous to
+>>> LPAR-per-core mode on real hardware which also does not support KVM).
+>>>
+>>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+>>> ---
+>>>   hw/ppc/spapr.c          | 16 ++++++++++++----
+>>>   hw/ppc/spapr_caps.c     | 14 ++++++++++++++
+>>>   hw/ppc/spapr_cpu_core.c |  7 +++++--
+>>>   3 files changed, 31 insertions(+), 6 deletions(-)
+>>>
+>>> diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
+>>> index 8e7d497f25..677b5eef9d 100644
+>>> --- a/hw/ppc/spapr.c
+>>> +++ b/hw/ppc/spapr.c
+>>> @@ -2525,10 +2525,18 @@ static void spapr_set_vsmt_mode(SpaprMachineState *spapr, Error **errp)
+>>>       int ret;
+>>>       unsigned int smp_threads = ms->smp.threads;
+>>> -    if (tcg_enabled() && (smp_threads > 1)) {
+>>> -        error_setg(errp, "TCG cannot support more than 1 thread/core "
+>>> -                   "on a pseries machine");
+>>> -        return;
+>>> +    if (tcg_enabled()) {
+> 
+> I will add :
+> 
+>              if (smp_threads > 1 &&
+> 
+> No need to resend for that.
 
-Fixes: e86a93f55463 ("virtio-gpu: splitting one extended mode guest fb into n-scanouts")
-Cc: Gerd Hoffmann <kraxel@redhat.com>
-Cc: Marc-André Lureau <marcandre.lureau@redhat.com>
-Cc: Dongwon Kim <dongwon.kim@intel.com>
-Signed-off-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
----
- hw/display/virtio-gpu.c | 27 ++++++++++++++++++++++-----
- 1 file changed, 22 insertions(+), 5 deletions(-)
+and
 
-diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
-index 66cddd94d9..97cd987cf3 100644
---- a/hw/display/virtio-gpu.c
-+++ b/hw/display/virtio-gpu.c
-@@ -498,6 +498,8 @@ static void virtio_gpu_resource_flush(VirtIOGPU *g,
-     struct virtio_gpu_resource_flush rf;
-     struct virtio_gpu_scanout *scanout;
-     pixman_region16_t flush_region;
-+    bool within_bounds = false;
-+    bool update_submitted = false;
-     int i;
- 
-     VIRTIO_GPU_FILL_CMD(rf);
-@@ -518,13 +520,28 @@ static void virtio_gpu_resource_flush(VirtIOGPU *g,
-                 rf.r.x < scanout->x + scanout->width &&
-                 rf.r.x + rf.r.width >= scanout->x &&
-                 rf.r.y < scanout->y + scanout->height &&
--                rf.r.y + rf.r.height >= scanout->y &&
--                console_has_gl(scanout->con)) {
--                dpy_gl_update(scanout->con, 0, 0, scanout->width,
--                              scanout->height);
-+                rf.r.y + rf.r.height >= scanout->y) {
-+                within_bounds = true;
-+
-+                if (console_has_gl(scanout->con)) {
-+                    dpy_gl_update(scanout->con, 0, 0, scanout->width,
-+                                  scanout->height);
-+                    update_submitted = true;
-+                }
-             }
-         }
--        return;
-+
-+        if (update_submitted) {
-+            return;
-+        }
-+        if (!within_bounds) {
-+            qemu_log_mask(LOG_GUEST_ERROR, "%s: flush bounds outside scanouts"
-+                          " bounds for flush %d: %d %d %d %d\n",
-+                          __func__, rf.resource_id, rf.r.x, rf.r.y,
-+                          rf.r.width, rf.r.height);
-+            cmd->error = VIRTIO_GPU_RESP_ERR_INVALID_PARAMETER;
-+            return;
-+        }
-     }
- 
-     if (!res->blob &&
--- 
-2.39.2
+
+Reviewed-by: Cédric Le Goater <clg@kaod.org>
+
+Thanks,
+
+C.
 
 
