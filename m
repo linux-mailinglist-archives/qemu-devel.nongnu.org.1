@@ -2,76 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D470D73B59A
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 12:42:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C5A973B5DE
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 13:10:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCeDg-0005ep-FT; Fri, 23 Jun 2023 06:40:48 -0400
+	id 1qCefK-0005yW-Vc; Fri, 23 Jun 2023 07:09:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qCeDX-0005eP-LD
- for qemu-devel@nongnu.org; Fri, 23 Jun 2023 06:40:40 -0400
-Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qCeDW-0008QZ-1s
- for qemu-devel@nongnu.org; Fri, 23 Jun 2023 06:40:39 -0400
-Received: by mail-ed1-x529.google.com with SMTP id
- 4fb4d7f45d1cf-51bdca52424so502795a12.3
- for <qemu-devel@nongnu.org>; Fri, 23 Jun 2023 03:40:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687516835; x=1690108835;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=YXFZsyp/XL+X7Zfhbibx83TVd1DCnGHs3FLQL/min0U=;
- b=ZGaQRuN7yu9Ia9+5SDW6yRmrDMgAZNgebD3zq21cwS4kSCdcwOKdPihJbkVRbkCdbk
- 6HWioHqfhx3uxtLIdqpqOM5vIW5oCeNsJvFRKeNwbmkOm12/B6nErIx3tiuBl5NKpWYk
- hV1b4az140L93jc7/2HfnBOE2DoxK+SoU3oZ0qYTDJCFugUBWjYz6m7hFgo8LmWvuQDp
- EyWCljMnD0+P3tARgzZb0udcw/wbkdTLtrjTsArYllFqkLo7quVP3awydrZZPOmUDmwm
- +DDBoE3r+kEr9e0PszauvbZ2wXowSfQHtQQkmLSObey+2rTN6RgbzJXfXLFbflp+HQoT
- J9cA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687516835; x=1690108835;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=YXFZsyp/XL+X7Zfhbibx83TVd1DCnGHs3FLQL/min0U=;
- b=LtQX7OI3xBtfTgPPduHvQcdIDb+EKkrUbAcikWxMKvq+UNMnlm8txuyWSmNIuzb4lZ
- 1ZQSbhcYjEfCzMH7V42Y5oksZ6TYGeMaWMNs8knKHcZ6j0BlE924At2ZeTkaOhjQLA91
- 1dCl/ipXlTGux9ZmSfyQDZsRHIYN1lPcKl2+i8HeNZdqKvd20ORqUqL6jTuoevSojWPB
- IS0e1u+pho3OhdJoxgfsRY1aVDF73w/FIGXDcyXSvmkkHEwA2b1AAcQGGFH67POe6JoC
- DAdGNgsOUAEqzBmDV3DTSqZZBwkI/26cZgtlPQD4nLEGNE+AU2sWn2SE24vTxcyMCzWp
- n2ZA==
-X-Gm-Message-State: AC+VfDwaCUIIuOuEzkxxtfTcgOm42oO1THKulxVX8htDkrvVe5wOs35w
- zee+2DdbQFvJrwb9tBEIw2ii5f+/Bml2sNzXAX+3LQ==
-X-Google-Smtp-Source: ACHHUZ7ZqMWPgNoO8OuNb/5VTaLf7NZozAS7sU2zRNgUMcxzAa5oViUN0yWh+4GnWNdvuJrDK+sd4jcO/5aTM1qZM9s=
-X-Received: by 2002:aa7:d597:0:b0:51b:ecb7:23d2 with SMTP id
- r23-20020aa7d597000000b0051becb723d2mr2584226edq.18.1687516835730; Fri, 23
- Jun 2023 03:40:35 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
+ id 1qCefH-0005y8-NX
+ for qemu-devel@nongnu.org; Fri, 23 Jun 2023 07:09:19 -0400
+Received: from collins.uni-paderborn.de ([2001:638:502:c003::14])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
+ id 1qCefE-0006H4-KE
+ for qemu-devel@nongnu.org; Fri, 23 Jun 2023 07:09:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=mail.uni-paderborn.de; s=20170601; h=In-Reply-To:Content-Type:MIME-Version:
+ References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+ Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+ List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=Mfpe2GQB+QX8jp4PZQhxZ76JJR+FPEvKYnPDBLB/Bfs=; b=uCVkkoGTfE3DWBCm5TG/QYAOlf
+ f87MvsJtrvZKO65zBrJOUVN7hk5N1uDqH58eZDMG+hrEmPDNDq4cvm6+A/VSEhr4rsbyT29smZHav
+ dAgFe2F+Ygs8LplXHqA0nUpY/dz4Nt0llFVO+QdCUDdO8XxBfQwIg/V0yNkVb2WhCEys=;
+Date: Fri, 23 Jun 2023 13:09:02 +0200
+From: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
+To: Michael Tokarev <mjt@tls.msk.ru>
+Cc: qemu-devel@nongnu.org, Siqi Chen <coc.cyqh@gmail.com>
+Subject: Re: [PULL 09/20] target/tricore: Fix out-of-bounds index in imask
+ instruction
+Message-ID: <kvoqsipnaikzgovgjzfmtko6znek3jw7yra3angl6tmeowr7ow@54kbrpvxdfyw>
+References: <20230621161422.1652151-1-kbastian@mail.uni-paderborn.de>
+ <20230621161422.1652151-10-kbastian@mail.uni-paderborn.de>
+ <c41c4ee2-29ae-78e8-612f-2d951f359540@tls.msk.ru>
+ <yury4wdzf434fmo6ty2mjmtc7u5bzg7bwak62s6us2a755tui5@5kwkzemwb6xl>
+ <e2a2fb5c-906a-9c42-e120-93651d548efd@tls.msk.ru>
+ <e77777fcuuipjbqhvj5u3fcix4gex55bpbo4fmg5u7j4i27ybg@hkylkdjknanz>
+ <7122632b-1628-8ebf-34b6-06e4c8b1c51c@tls.msk.ru>
 MIME-Version: 1.0
-References: <20230620134659.817559-1-richard.henderson@linaro.org>
-In-Reply-To: <20230620134659.817559-1-richard.henderson@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 23 Jun 2023 11:40:24 +0100
-Message-ID: <CAFEAcA-uEzWRu5q39DG2LrFcZk4iKJAUfZ=VvDxfHdjN01K=Gg@mail.gmail.com>
-Subject: Re: [PATCH] target/arm: Fix sve prediate store, 8 <= VQ <= 15
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, 
- Mark Rutland <mark.rutland@arm.com>,
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::529;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x529.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <7122632b-1628-8ebf-34b6-06e4c8b1c51c@tls.msk.ru>
+X-IMT-Source: Extern
+X-IMT-Spam-Score: 0.0 ()
+X-IMT-rspamd-score: 4
+X-IMT-rspamd-bar: /
+X-Sophos-SenderHistory: ip=79.202.219.6, fs=1363435, da=175127608, mc=185, sc=0,
+ hc=185, sp=0, fso=1363435, re=0, sd=0, hd=0
+X-PMX-Version: 6.4.9.2830568, Antispam-Engine: 2.7.2.2107409,
+ Antispam-Data: 2023.6.23.110017, AntiVirus-Engine: 6.0.0,
+ AntiVirus-Data: 2023.6.6.600001
+X-IMT-Authenticated-Sender: kbastian@UNI-PADERBORN.DE
+Received-SPF: pass client-ip=2001:638:502:c003::14;
+ envelope-from=kbastian@mail.uni-paderborn.de; helo=collins.uni-paderborn.de
+X-Spam_score_int: -42
+X-Spam_score: -4.3
+X-Spam_bar: ----
+X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -88,20 +79,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 20 Jun 2023 at 14:47, Richard Henderson
-<richard.henderson@linaro.org> wrote:
->
-> Brown bag time: store instead of load results in uninitialized temp.
->
-> Reported-by: Mark Rutland <mark.rutland@arm.com>
-> Fixes: e6dd5e782be ("target/arm: Use tcg_gen_qemu_{ld, st}_i128 in gen_sv=
-e_{ld, st}r")
-> Tested-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> --
+On Fri, Jun 23, 2023 at 01:29:23PM +0300, Michael Tokarev wrote:
+> 23.06.2023 12:51, Bastian Koppelmann wrote:
+> 
+> Here we go:
+>  https://www.qemu.org/docs/master/devel/stable-process.html
+> 
+> Basically, any bugfix you, as a subsystem maintainer, think is good for stable,
+> is good for stable :)  Usual tradeoff applies: more complex stuff with potential
+> to break something vs seriousness of an issue.
 
-Applied to target-arm.next (with the subject message typo
-fixed and the Resolves: line added), thanks.
+That helps a lot!
 
--- PMM
+Thanks,
+Bastian
 
