@@ -2,90 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AE8C73B1BD
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 09:33:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C69B773B1BE
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 09:33:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCbHl-0003SO-GB; Fri, 23 Jun 2023 03:32:50 -0400
+	id 1qCbIB-0003f5-6y; Fri, 23 Jun 2023 03:33:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qCbHZ-0003Ra-3i
- for qemu-devel@nongnu.org; Fri, 23 Jun 2023 03:32:37 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qCbHU-0001oj-0W
- for qemu-devel@nongnu.org; Fri, 23 Jun 2023 03:32:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687505550;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=PrgkC+hw6CZTqMYG4e1ConRF0w0LTQtQZswtR9P1m7o=;
- b=M2yrtNE0bu1uaKqcPey0yCa5ma0DnfY093Z9M+4GJG6/lTRfeOOf7oFwY6QYoxQsTLDp+q
- 9WoJvNYW+TAaeO8AKOW2rBM8t9ITFnjgVFY/s525jg+lxJjI8Zeoo6A+0m9ATBYIaem4ct
- f4VJ+IJryJbcs8JXMoNAONkB3/aKCdU=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-586-SkdW2DmDNaiOUX5RjHeXZg-1; Fri, 23 Jun 2023 03:32:29 -0400
-X-MC-Unique: SkdW2DmDNaiOUX5RjHeXZg-1
-Received: by mail-ed1-f72.google.com with SMTP id
- 4fb4d7f45d1cf-51a45552177so208440a12.1
- for <qemu-devel@nongnu.org>; Fri, 23 Jun 2023 00:32:29 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qCbI9-0003eP-0J
+ for qemu-devel@nongnu.org; Fri, 23 Jun 2023 03:33:13 -0400
+Received: from mail-lj1-x231.google.com ([2a00:1450:4864:20::231])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qCbI6-00020Y-Me
+ for qemu-devel@nongnu.org; Fri, 23 Jun 2023 03:33:12 -0400
+Received: by mail-lj1-x231.google.com with SMTP id
+ 38308e7fff4ca-2b474dac685so5269891fa.3
+ for <qemu-devel@nongnu.org>; Fri, 23 Jun 2023 00:33:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1687505588; x=1690097588;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=vE+z5UFbLaR9NANsKioHSP0sVf6L90bFNXgRGWgvp9w=;
+ b=uzyXO/si0B/Frg9xLXmApprfsDQXgQgl1iAem9falM6tX/nhnRP8oPO9n3y8uE9v9C
+ 4sgnA5duvy/1GHBH1FTDSsnOa/lW3CbBlEu4359S0XViWtjHjgPOxTtdsqa08etK0j/Y
+ 2qgO2oHi9S7YbysY1YoP9Y5jkh2qzMLrl+U19EU0NdXa0JMOOSvpUUIDy/1k/ViVLl16
+ Y2N6G2y9UjAKexG4DufKULPXY3xHcXliYy1y0tMa5C1dB6kAsz2+qE1S5ejviH2hf5iV
+ vdVxGbA+c4eVnglnil/qmiCP6Q9dy1anTr5upvmdZr/fN8G+yS3LfykN1boVUlNdidaV
+ +n1w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687505548; x=1690097548;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
+ d=1e100.net; s=20221208; t=1687505588; x=1690097588;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=PrgkC+hw6CZTqMYG4e1ConRF0w0LTQtQZswtR9P1m7o=;
- b=RO2Sy8PB2NcK7riY4Exz0wNXvaM75+rKy0g5TyoOpwYvzWJfHRFpO4Hw14wNuRr397
- WzVgwMaIboB4zCgKujDmF3ZutdfY6KCYzNoLIKWV2/qZv4TD2Uf5quNYhghOBQ4Wl/e2
- v4nIWyaeFvnyAKTMZtXLCLFP+1LZbBD4oVjhAcle4CW5pBTpbhwDG8lRjuIgz4t1hQQb
- o0kPWFo+Eba/2JWwr2WFWAvTqErshjdhL1x+ksWe6qquAaURYVozCamJDO47cFlXP462
- CROgtxPWoXbK+H3Pi/nU6vW+emd2ouwfWXyynXFWsmn94QhX/9gsdlzp+79yTVAjCHdG
- ZbMQ==
-X-Gm-Message-State: AC+VfDybMaacHZCtQQCRg10EMGRo7dJ36uFzlMVY8umuVRIUZgS8wRWW
- 2orb0Txs6jf6JSIUfpsn2hZTPp/X8JV5hIc1/zeu12KVGUJz6YpiwuSOTuIOgggiY9BMNps6IrT
- JBJHMh/1FdYE6rrk=
-X-Received: by 2002:aa7:d1d7:0:b0:51b:cd07:d101 with SMTP id
- g23-20020aa7d1d7000000b0051bcd07d101mr7405242edp.7.1687505548066; 
- Fri, 23 Jun 2023 00:32:28 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7309l6plkisgu73hYSgdsElqtRJGYITLNRDeoqeDl/rhAJqo+53Rtv9ZCAUdv/44Z4bpwmpQ==
-X-Received: by 2002:aa7:d1d7:0:b0:51b:cd07:d101 with SMTP id
- g23-20020aa7d1d7000000b0051bcd07d101mr7405225edp.7.1687505547631; 
- Fri, 23 Jun 2023 00:32:27 -0700 (PDT)
-Received: from redhat.com ([176.12.150.14]) by smtp.gmail.com with ESMTPSA id
- x7-20020aa7cd87000000b0051830f22825sm4994556edv.90.2023.06.23.00.32.25
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 23 Jun 2023 00:32:26 -0700 (PDT)
-Date: Fri, 23 Jun 2023 03:32:22 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Albert Esteve <aesteve@redhat.com>
-Cc: qemu-devel@nongnu.org, kraxel@redhat.com, marcandre.lureau@gmail.com,
- cohuck@redhat.com, Fam Zheng <fam@euphon.net>, pbonzini@redhat.com
-Subject: Re: [PATCH v3 3/4] vhost-user: add shared_object msg
-Message-ID: <20230623033131-mutt-send-email-mst@kernel.org>
-References: <20230524091333.201767-1-aesteve@redhat.com>
- <20230524091333.201767-4-aesteve@redhat.com>
- <20230623024322-mutt-send-email-mst@kernel.org>
- <CADSE00JP7N3fEM5pLYmF0WrRzcGZSeKbALXsUaFKKeOFXG9RDQ@mail.gmail.com>
+ bh=vE+z5UFbLaR9NANsKioHSP0sVf6L90bFNXgRGWgvp9w=;
+ b=GBzHL4hmeGkxYkEk8wjl/MSX5ufEPxwIGd6DNACWDVUTWWyZKSB6XDkXgpQtHqLlDv
+ Qwwt8vxv3bI4zWkFLnDAVtLsu6MKFfCy87G7eR1mDnshrvLV2gL39nyIj0R9gmoApIWw
+ WbHf+hZfJniPLMmNagTO58Ua3/+XWLEJuCc+1nhImRhi3G3Md8Hvdb41PzkwtHU2X9F/
+ zdDk3inmfZtVyKKbw5EvFZMB2HskRxR1Qh3scZS3amfmJEScjl4irjXrEx25UZ4w27Zu
+ Qk6UZ/DbYGe8g7OfaixxxBSrRQZee+R3FI5ETRvjsYJ6zay/knb5iiKIFJWIPojMe1/c
+ hx5w==
+X-Gm-Message-State: AC+VfDzjTeKOk32B8pCFxemPek3b0C8fsXWMUh3NR+cqe9GKlVTa57Ln
+ 1wZpjA1w4h7q6/Ucc/Vgztsm8g==
+X-Google-Smtp-Source: ACHHUZ5onL9I3HCgZm1smG6In3ausVKQOG4ceAdflSvBDGngKIB4KM31UzB4D6Ea6UIpktRgIAUOJA==
+X-Received: by 2002:a2e:9107:0:b0:2b5:9b3b:f7ea with SMTP id
+ m7-20020a2e9107000000b002b59b3bf7eamr566221ljg.41.1687505588282; 
+ Fri, 23 Jun 2023 00:33:08 -0700 (PDT)
+Received: from [192.168.69.129] ([176.176.168.147])
+ by smtp.gmail.com with ESMTPSA id
+ a1-20020a05600c224100b003f9b44e5b7fsm1488802wmm.46.2023.06.23.00.33.06
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 23 Jun 2023 00:33:07 -0700 (PDT)
+Message-ID: <323d7da1-3e66-bf22-42c1-1afa4df3aeb4@linaro.org>
+Date: Fri, 23 Jun 2023 09:33:04 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CADSE00JP7N3fEM5pLYmF0WrRzcGZSeKbALXsUaFKKeOFXG9RDQ@mail.gmail.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v4 10/17] target/riscv: Add Zvkned ISA extension support
+Content-Language: en-US
+To: Max Chou <max.chou@sifive.com>, qemu-devel@nongnu.org,
+ qemu-riscv@nongnu.org
+Cc: dbarboza@ventanamicro.com, Nazar Kazakov <nazar.kazakov@codethink.co.uk>, 
+ Lawrence Hunter <lawrence.hunter@codethink.co.uk>,
+ William Salmon <will.salmon@codethink.co.uk>,
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Kiran Ostrolenk <kiran.ostrolenk@codethink.co.uk>
+References: <20230622161646.32005-1-max.chou@sifive.com>
+ <20230622161646.32005-11-max.chou@sifive.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230622161646.32005-11-max.chou@sifive.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::231;
+ envelope-from=richard.henderson@linaro.org; helo=mail-lj1-x231.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,434 +103,203 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Jun 23, 2023 at 09:19:29AM +0200, Albert Esteve wrote:
-> 
-> 
-> On Fri, Jun 23, 2023 at 8:45 AM Michael S. Tsirkin <mst@redhat.com> wrote:
-> 
->     On Wed, May 24, 2023 at 11:13:32AM +0200, Albert Esteve wrote:
->     > Add new vhost-user protocol message
->     > `VHOST_USER_BACKEND_SHARED_OBJECT`. This new
->     > message is sent from vhost-user back-ends
->     > to interact with the virtio-dmabuf table
->     > in order to add, remove, or lookup for
->     > virtio dma-buf shared objects.
->     >
->     > The action taken in the front-end depends
->     > on the type stored in the payload struct.
->     >
->     > In the libvhost-user library add helper
->     > functions to allow sending messages to
->     > interact with the virtio shared objects
->     > hash table.
->     >
->     > Signed-off-by: Albert Esteve <aesteve@redhat.com>
->     > ---
->     >  docs/interop/vhost-user.rst               | 15 ++++
->     >  hw/virtio/vhost-user.c                    | 68 ++++++++++++++++++
->     >  subprojects/libvhost-user/libvhost-user.c | 88 +++++++++++++++++++++++
->     >  subprojects/libvhost-user/libvhost-user.h | 56 +++++++++++++++
->     >  4 files changed, 227 insertions(+)
->     >
->     > diff --git a/docs/interop/vhost-user.rst b/docs/interop/vhost-user.rst
->     > index 5a070adbc1..d3d8db41e5 100644
->     > --- a/docs/interop/vhost-user.rst
->     > +++ b/docs/interop/vhost-user.rst
->     > @@ -1528,6 +1528,21 @@ is sent by the front-end.
->     > 
->     >    The state.num field is currently reserved and must be set to 0.
->     > 
->     > +``VHOST_USER_BACKEND_SHARED_OBJECT``
->     > +  :id: 6
->     > +  :equivalent ioctl: N/A
->     > +  :request payload: ``struct VhostUserShared``
->     > +  :reply payload: ``struct VhostUserShared`` (only for ``LOOKUP``
->     requests)
->     > +
->     > +  Backends that need to interact with the virtio-dmabuf shared table API
->     > +  can send this message. The operation is determined by the ``type``
->     member
->     > +  of the payload struct. The valid values for the operation type are
->     > +  ``VHOST_SHARED_OBJECT_*`` members, i.e., ``ADD``, ``LOOKUP``, and
->     ``REMOVE``.
->     > +  ``LOOKUP`` operations require the ``VHOST_USER_NEED_REPLY_MASK`` flag
->     to be
->     > +  set by the back-end, and the front-end will then send the dma-buf fd
->     as
->     > +  a response if the UUID matches an object in the table, or a negative
->     value
->     > +  otherwise.
->     > +
->     >  .. _reply_ack:
->     > 
->     >  VHOST_USER_PROTOCOL_F_REPLY_ACK
->     > diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
->     > index 74a2a28663..5ac5f0eafd 100644
->     > --- a/hw/virtio/vhost-user.c
->     > +++ b/hw/virtio/vhost-user.c
->     > @@ -10,6 +10,7 @@
->     > 
->     >  #include "qemu/osdep.h"
->     >  #include "qapi/error.h"
->     > +#include "hw/virtio/virtio-dmabuf.h"
->     >  #include "hw/virtio/vhost.h"
->     >  #include "hw/virtio/vhost-user.h"
->     >  #include "hw/virtio/vhost-backend.h"
->     > @@ -20,6 +21,7 @@
->     >  #include "sysemu/kvm.h"
->     >  #include "qemu/error-report.h"
->     >  #include "qemu/main-loop.h"
->     > +#include "qemu/uuid.h"
->     >  #include "qemu/sockets.h"
->     >  #include "sysemu/runstate.h"
->     >  #include "sysemu/cryptodev.h"
->     > @@ -128,6 +130,7 @@ typedef enum VhostUserSlaveRequest {
->     >      VHOST_USER_BACKEND_IOTLB_MSG = 1,
->     >      VHOST_USER_BACKEND_CONFIG_CHANGE_MSG = 2,
->     >      VHOST_USER_BACKEND_VRING_HOST_NOTIFIER_MSG = 3,
->     > +    VHOST_USER_BACKEND_SHARED_OBJECT = 6,
->     >      VHOST_USER_BACKEND_MAX
->     >  }  VhostUserSlaveRequest;
->     > 
->     > @@ -190,6 +193,18 @@ typedef struct VhostUserInflight {
->     >      uint16_t queue_size;
->     >  } VhostUserInflight;
->     > 
->     > +typedef enum VhostUserSharedType {
->     > +    VHOST_SHARED_OBJECT_ADD = 0,
->     > +    VHOST_SHARED_OBJECT_LOOKUP,
->     > +    VHOST_SHARED_OBJECT_REMOVE,
->     > +} VhostUserSharedType;
->     > +
->     > +typedef struct VhostUserShared {
->     > +    unsigned char uuid[16];
->     > +    VhostUserSharedType type;
->     > +    int dmabuf_fd;
->     > +} VhostUserShared;
->     > +
->     >  typedef struct {
->     >      VhostUserRequest request;
->     > 
->     > @@ -214,6 +229,7 @@ typedef union {
->     >          VhostUserCryptoSession session;
->     >          VhostUserVringArea area;
->     >          VhostUserInflight inflight;
->     > +        VhostUserShared object;
->     >  } VhostUserPayload;
->     > 
->     >  typedef struct VhostUserMsg {
->     > @@ -1582,6 +1598,52 @@ static int
->     vhost_user_slave_handle_vring_host_notifier(struct vhost_dev *dev,
->     >      return 0;
->     >  }
->     > 
->     > +static int vhost_user_backend_handle_shared_object(VhostUserShared
->     *object)
->     > +{
->     > +    QemuUUID uuid;
-> 
->     Can we initialize it here? uuid = { .data = object->uuid } ?
-> 
->     Also, pls put space after variable declaration.
-> 
->     > +    memcpy(uuid.data, object->uuid, sizeof(object->uuid));
->     > +
->     > +    switch (object->type) {
->     > +    case VHOST_SHARED_OBJECT_ADD:
->     > +        return virtio_add_dmabuf(&uuid, object->dmabuf_fd);
->     > +    case VHOST_SHARED_OBJECT_LOOKUP:
->     > +        object->dmabuf_fd = virtio_lookup_dmabuf(&uuid);
->     > +        if (object->dmabuf_fd < 0) {
->     > +            return object->dmabuf_fd;
->     > +        }
->     > +        break;
->     > +    case VHOST_SHARED_OBJECT_REMOVE:
->     > +        return virtio_remove_resource(&uuid);
->     > +    }
->     > +
-> 
->     I couldn't figure out why, but if I commit this then run checkpatch,
->     like this
->     ./scripts/checkpatch.pl HEAD~1..HEAD
-> 
->     then it is unhappy about the : in case. Any idea why?
-> 
-> 
-> I don't see any errors / warnings. What do you get?
+On 6/22/23 18:16, Max Chou wrote:
+> --- a/target/riscv/vcrypto_helper.c
+> +++ b/target/riscv/vcrypto_helper.c
+> @@ -22,6 +22,7 @@
+>   #include "qemu/bitops.h"
+>   #include "qemu/bswap.h"
+>   #include "cpu.h"
+> +#include "crypto/aes.h"
+>   #include "exec/memop.h"
+>   #include "exec/exec-all.h"
+>   #include "exec/helper-proto.h"
+> @@ -195,3 +196,310 @@ RVVCALL(OPIVX2, vwsll_vx_w, WOP_UUU_W, H8, H4, DO_SLL)
+>   GEN_VEXT_VX(vwsll_vx_b, 2)
+>   GEN_VEXT_VX(vwsll_vx_h, 4)
+>   GEN_VEXT_VX(vwsll_vx_w, 8)
+> +
+> +static inline void aes_sub_bytes(uint8_t round_state[4][4])
+> +{
+> +    for (int j = 0; j < 16; j++) {
+> +        round_state[j / 4][j % 4] = AES_sbox[round_state[j / 4][j % 4]];
+> +    }
+> +}
+> +
+> +static inline void aes_shift_bytes(uint8_t round_state[4][4])
+> +{
+> +    uint8_t temp;
+> +    temp = round_state[0][1];
+> +    round_state[0][1] = round_state[1][1];
+> +    round_state[1][1] = round_state[2][1];
+> +    round_state[2][1] = round_state[3][1];
+> +    round_state[3][1] = temp;
+> +    temp = round_state[0][2];
+> +    round_state[0][2] = round_state[2][2];
+> +    round_state[2][2] = temp;
+> +    temp = round_state[1][2];
+> +    round_state[1][2] = round_state[3][2];
+> +    round_state[3][2] = temp;
+> +    temp = round_state[0][3];
+> +    round_state[0][3] = round_state[3][3];
+> +    round_state[3][3] = round_state[2][3];
+> +    round_state[2][3] = round_state[1][3];
+> +    round_state[1][3] = temp;
+> +}
+> +
+> +static inline void xor_round_key(uint8_t round_state[4][4], uint8_t *round_key)
+> +{
+> +    for (int j = 0; j < 16; j++) {
+> +        round_state[j / 4][j % 4] = round_state[j / 4][j % 4] ^ (round_key)[j];
+> +    }
+> +}
+> +
+> +static inline void aes_inv_sub_bytes(uint8_t round_state[4][4])
+> +{
+> +    for (int j = 0; j < 16; j++) {
+> +        round_state[j / 4][j % 4] = AES_isbox[round_state[j / 4][j % 4]];
+> +    }
+> +}
+> +
+> +static inline void aes_inv_shift_bytes(uint8_t round_state[4][4])
+> +{
+> +    uint8_t temp;
+> +    temp = round_state[3][1];
+> +    round_state[3][1] = round_state[2][1];
+> +    round_state[2][1] = round_state[1][1];
+> +    round_state[1][1] = round_state[0][1];
+> +    round_state[0][1] = temp;
+> +    temp = round_state[0][2];
+> +    round_state[0][2] = round_state[2][2];
+> +    round_state[2][2] = temp;
+> +    temp = round_state[1][2];
+> +    round_state[1][2] = round_state[3][2];
+> +    round_state[3][2] = temp;
+> +    temp = round_state[0][3];
+> +    round_state[0][3] = round_state[1][3];
+> +    round_state[1][3] = round_state[2][3];
+> +    round_state[2][3] = round_state[3][3];
+> +    round_state[3][3] = temp;
+> +}
+> +
+> +static inline uint8_t xtime(uint8_t x)
+> +{
+> +    return (x << 1) ^ (((x >> 7) & 1) * 0x1b);
+> +}
+> +
+> +static inline uint8_t multiply(uint8_t x, uint8_t y)
+> +{
+> +    return (((y & 1) * x) ^ ((y >> 1 & 1) * xtime(x)) ^
+> +            ((y >> 2 & 1) * xtime(xtime(x))) ^
+> +            ((y >> 3 & 1) * xtime(xtime(xtime(x)))) ^
+> +            ((y >> 4 & 1) * xtime(xtime(xtime(xtime(x))))));
+> +}
+> +
+> +static inline void aes_inv_mix_cols(uint8_t round_state[4][4])
+> +{
+> +    uint8_t a, b, c, d;
+> +    for (int j = 0; j < 4; ++j) {
+> +        a = round_state[j][0];
+> +        b = round_state[j][1];
+> +        c = round_state[j][2];
+> +        d = round_state[j][3];
+> +        round_state[j][0] = multiply(a, 0x0e) ^ multiply(b, 0x0b) ^
+> +                            multiply(c, 0x0d) ^ multiply(d, 0x09);
+> +        round_state[j][1] = multiply(a, 0x09) ^ multiply(b, 0x0e) ^
+> +                            multiply(c, 0x0b) ^ multiply(d, 0x0d);
+> +        round_state[j][2] = multiply(a, 0x0d) ^ multiply(b, 0x09) ^
+> +                            multiply(c, 0x0e) ^ multiply(d, 0x0b);
+> +        round_state[j][3] = multiply(a, 0x0b) ^ multiply(b, 0x0d) ^
+> +                            multiply(c, 0x09) ^ multiply(d, 0x0e);
+> +    }
+> +}
+> +
+> +static inline void aes_mix_cols(uint8_t round_state[4][4])
+> +{
+> +    uint8_t a, b;
+> +    for (int j = 0; j < 4; ++j) {
+> +        a = round_state[j][0];
+> +        b = round_state[j][0] ^ round_state[j][1] ^ round_state[j][2] ^
+> +            round_state[j][3];
+> +        round_state[j][0] ^= xtime(round_state[j][0] ^ round_state[j][1]) ^ b;
+> +        round_state[j][1] ^= xtime(round_state[j][1] ^ round_state[j][2]) ^ b;
+> +        round_state[j][2] ^= xtime(round_state[j][2] ^ round_state[j][3]) ^ b;
+> +        round_state[j][3] ^= xtime(round_state[j][3] ^ a) ^ b;
+> +    }
+> +}
+> +
+> +#define GEN_ZVKNED_HELPER_VV(NAME, ...)                                   \
+> +    void HELPER(NAME)(void *vd_vptr, void *vs2_vptr, CPURISCVState *env,  \
+> +                      uint32_t desc)                                      \
+> +    {                                                                     \
+> +        uint64_t *vd = vd_vptr;                                           \
+> +        uint64_t *vs2 = vs2_vptr;                                         \
+> +        uint32_t vl = env->vl;                                            \
+> +        uint32_t total_elems = vext_get_total_elems(env, desc, 4);        \
+> +        uint32_t vta = vext_vta(desc);                                    \
+> +                                                                          \
+> +        for (uint32_t i = env->vstart / 4; i < env->vl / 4; i++) {        \
+> +            uint64_t round_key[2] = {                                     \
+> +                cpu_to_le64(vs2[i * 2 + 0]),                              \
+> +                cpu_to_le64(vs2[i * 2 + 1]),                              \
+> +            };                                                            \
+> +            uint8_t round_state[4][4];                                    \
+> +            cpu_to_le64s(vd + i * 2 + 0);                                 \
+> +            cpu_to_le64s(vd + i * 2 + 1);                                 \
+> +            for (int j = 0; j < 16; j++) {                                \
+> +                round_state[j / 4][j % 4] = ((uint8_t *)(vd + i * 2))[j]; \
+> +            }                                                             \
+> +            __VA_ARGS__;                                                  \
+> +            for (int j = 0; j < 16; j++) {                                \
+> +                ((uint8_t *)(vd + i * 2))[j] = round_state[j / 4][j % 4]; \
+> +            }                                                             \
+> +            le64_to_cpus(vd + i * 2 + 0);                                 \
+> +            le64_to_cpus(vd + i * 2 + 1);                                 \
+> +        }                                                                 \
+> +        env->vstart = 0;                                                  \
+> +        /* set tail elements to 1s */                                     \
+> +        vext_set_elems_1s(vd, vta, vl * 4, total_elems * 4);              \
+> +    }
+> +
+> +#define GEN_ZVKNED_HELPER_VS(NAME, ...)                                   \
+> +    void HELPER(NAME)(void *vd_vptr, void *vs2_vptr, CPURISCVState *env,  \
+> +                      uint32_t desc)                                      \
+> +    {                                                                     \
+> +        uint64_t *vd = vd_vptr;                                           \
+> +        uint64_t *vs2 = vs2_vptr;                                         \
+> +        uint32_t vl = env->vl;                                            \
+> +        uint32_t total_elems = vext_get_total_elems(env, desc, 4);        \
+> +        uint32_t vta = vext_vta(desc);                                    \
+> +                                                                          \
+> +        for (uint32_t i = env->vstart / 4; i < env->vl / 4; i++) {        \
+> +            uint64_t round_key[2] = {                                     \
+> +                cpu_to_le64(vs2[0]),                                      \
+> +                cpu_to_le64(vs2[1]),                                      \
+> +            };                                                            \
+> +            uint8_t round_state[4][4];                                    \
+> +            cpu_to_le64s(vd + i * 2 + 0);                                 \
+> +            cpu_to_le64s(vd + i * 2 + 1);                                 \
+> +            for (int j = 0; j < 16; j++) {                                \
+> +                round_state[j / 4][j % 4] = ((uint8_t *)(vd + i * 2))[j]; \
+> +            }                                                             \
+> +            __VA_ARGS__;                                                  \
+> +            for (int j = 0; j < 16; j++) {                                \
+> +                ((uint8_t *)(vd + i * 2))[j] = round_state[j / 4][j % 4]; \
+> +            }                                                             \
+> +            le64_to_cpus(vd + i * 2 + 0);                                 \
+> +            le64_to_cpus(vd + i * 2 + 1);                                 \
+> +        }                                                                 \
+> +        env->vstart = 0;                                                  \
+> +        /* set tail elements to 1s */                                     \
+> +        vext_set_elems_1s(vd, vta, vl * 4, total_elems * 4);              \
+> +    }
+
+See
+
+https://lore.kernel.org/qemu-devel/20230620110758.787479-1-richard.henderson@linaro.org/
+
+which should greatly simplify all of this.
 
 
-15/90 Checking commit 6cd801b0656b (vhost-user: add shared_object msg)
-ERROR: spaces required around that ':' (ctx:VxE)
-#187: FILE: hw/virtio/vhost-user.c:1619:
-+    case VHOST_SHARED_OBJECT_ADD:
-                                 ^
-
-ERROR: spaces required around that ':' (ctx:VxE)
-#189: FILE: hw/virtio/vhost-user.c:1621:
-+    case VHOST_SHARED_OBJECT_LOOKUP:
-                                    ^
-
-ERROR: spaces required around that ':' (ctx:VxE)
-#195: FILE: hw/virtio/vhost-user.c:1627:
-+    case VHOST_SHARED_OBJECT_REMOVE:
-                                    ^
-
-ERROR: spaces required around that ':' (ctx:VxE)
-#234: FILE: hw/virtio/vhost-user.c:1716:
-+    case VHOST_USER_BACKEND_SHARED_OBJECT:
-                                          ^
-
-total: 4 errors, 0 warnings, 305 lines checked
-
-
-which is wrong.
-
-
-> 
->     > +    return 0;
->     > +}
->     > +
->     > +static bool
->     > +vhost_user_backend_send_dmabuf_fd(QIOChannel *ioc, VhostUserHeader *hdr,
->     > +                                  VhostUserPayload *payload)
->     > +{
->     > +    Error *local_err = NULL;
->     > +    struct iovec iov[2];
->     > +    if (hdr->flags & VHOST_USER_NEED_REPLY_MASK) {
->     > +        hdr->flags &= ~VHOST_USER_NEED_REPLY_MASK;
->     > +        hdr->flags |= VHOST_USER_REPLY_MASK;
->     > +
->     > +        hdr->size = sizeof(payload->object);
->     > +
->     > +        iov[0].iov_base = hdr;
->     > +        iov[0].iov_len = VHOST_USER_HDR_SIZE;
->     > +        iov[1].iov_base = payload;
->     > +        iov[1].iov_len = hdr->size;
->     > +
->     > +        if (qio_channel_writev_all(ioc, iov, ARRAY_SIZE(iov), &
->     local_err)) {
->     > +            error_report_err(local_err);
->     > +            return false;
->     > +        }
->     > +    }
->     > +    return true;
->     > +}
->     > +
->     >  static void close_slave_channel(struct vhost_user *u)
->     >  {
->     >      g_source_destroy(u->slave_src);
->     > @@ -1639,6 +1701,12 @@ static gboolean slave_read(QIOChannel *ioc,
->     GIOCondition condition,
->     >          ret = vhost_user_slave_handle_vring_host_notifier(dev, &
->     payload.area,
->     >                                                            fd ? fd[0] :
->     -1);
->     >          break;
->     > +    case VHOST_USER_BACKEND_SHARED_OBJECT:
->     > +        ret = vhost_user_backend_handle_shared_object(&payload.object);
->     > +        if (!vhost_user_backend_send_dmabuf_fd(ioc, &hdr, &payload)) {
->     > +            goto err;
->     > +        }
->     > +        break;
->     >      default:
->     >          error_report("Received unexpected msg type: %d.", hdr.request);
->     >          ret = -EINVAL;
->     > diff --git a/subprojects/libvhost-user/libvhost-user.c b/subprojects/
->     libvhost-user/libvhost-user.c
->     > index 8fb61e2df2..27f16d292a 100644
->     > --- a/subprojects/libvhost-user/libvhost-user.c
->     > +++ b/subprojects/libvhost-user/libvhost-user.c
->     > @@ -1403,6 +1403,94 @@ bool vu_set_queue_host_notifier(VuDev *dev,
->     VuVirtq *vq, int fd,
->     >      return vu_process_message_reply(dev, &vmsg);
->     >  }
->     > 
->     > +bool
->     > +vu_get_shared_object(VuDev *dev, unsigned char uuid[UUID_LEN], int
->     *dmabuf_fd)
->     > +{
->     > +    bool result = false;
->     > +    VhostUserMsg msg_reply;
->     > +    VhostUserMsg msg = {
->     > +        .request = VHOST_USER_BACKEND_SHARED_OBJECT,
->     > +        .size = sizeof(msg.payload.object),
->     > +        .flags = VHOST_USER_VERSION | VHOST_USER_NEED_REPLY_MASK,
->     > +        .payload.object = {
->     > +            .type = VHOST_SHARED_OBJECT_LOOKUP,
->     > +        },
->     > +    };
->     > +
->     > +    memcpy(msg.payload.object.uuid, uuid, sizeof(uuid[0]) * UUID_LEN);
->     > +
->     > +    pthread_mutex_lock(&dev->slave_mutex);
->     > +    if (!vu_message_write(dev, dev->slave_fd, &msg)) {
->     > +        goto out;
->     > +    }
->     > +
->     > +    if (!vu_message_read_default(dev, dev->slave_fd, &msg_reply)) {
->     > +        goto out;
->     > +    }
->     > +
->     > +    if (msg_reply.request != msg.request) {
->     > +        DPRINT("Received unexpected msg type. Expected %d, received %d",
->     > +               msg.request, msg_reply.request);
->     > +        goto out;
->     > +    }
->     > +
->     > +    *dmabuf_fd = msg_reply.payload.object.dmabuf_fd;
->     > +    result = *dmabuf_fd > 0;
->     > +out:
->     > +    pthread_mutex_unlock(&dev->slave_mutex);
->     > +
->     > +    return result;
->     > +}
->     > +
->     > +static bool
->     > +vu_send_message(VuDev *dev, VhostUserMsg *vmsg)
->     > +{
->     > +    bool result = false;
->     > +    pthread_mutex_lock(&dev->slave_mutex);
->     > +    if (!vu_message_write(dev, dev->slave_fd, vmsg)) {
->     > +        goto out;
->     > +    }
->     > +
->     > +    result = true;
->     > +out:
->     > +    pthread_mutex_unlock(&dev->slave_mutex);
->     > +
->     > +    return result;
->     > +}
->     > +
->     > +bool
->     > +vu_add_shared_object(VuDev *dev, unsigned char uuid[UUID_LEN], int
->     dmabuf_fd)
->     > +{
->     > +    VhostUserMsg msg = {
->     > +        .request = VHOST_USER_BACKEND_SHARED_OBJECT,
->     > +        .size = sizeof(msg.payload.object),
->     > +        .flags = VHOST_USER_VERSION,
->     > +        .payload.object = {
->     > +            .dmabuf_fd = dmabuf_fd,
->     > +            .type = VHOST_SHARED_OBJECT_ADD,
->     > +        },
->     > +    };
->     > +    memcpy(msg.payload.object.uuid, uuid, sizeof(uuid[0]) * UUID_LEN);
->     > +
->     > +    return vu_send_message(dev, &msg);
->     > +}
->     > +
->     > +bool
->     > +vu_rm_shared_object(VuDev *dev, unsigned char uuid[UUID_LEN])
->     > +{
->     > +    VhostUserMsg msg = {
->     > +        .request = VHOST_USER_BACKEND_SHARED_OBJECT,
->     > +        .size = sizeof(msg.payload.object),
->     > +        .flags = VHOST_USER_VERSION,
->     > +        .payload.object = {
->     > +            .type = VHOST_SHARED_OBJECT_REMOVE,
->     > +        },
->     > +    };
->     > +    memcpy(msg.payload.object.uuid, uuid, sizeof(uuid[0]) * UUID_LEN);
->     > +
->     > +    return vu_send_message(dev, &msg);
->     > +}
->     > +
->     >  static bool
->     >  vu_set_vring_call_exec(VuDev *dev, VhostUserMsg *vmsg)
->     >  {
->     > diff --git a/subprojects/libvhost-user/libvhost-user.h b/subprojects/
->     libvhost-user/libvhost-user.h
->     > index 49208cceaa..a43d115bd7 100644
->     > --- a/subprojects/libvhost-user/libvhost-user.h
->     > +++ b/subprojects/libvhost-user/libvhost-user.h
->     > @@ -119,6 +119,7 @@ typedef enum VhostUserSlaveRequest {
->     >      VHOST_USER_BACKEND_VRING_HOST_NOTIFIER_MSG = 3,
->     >      VHOST_USER_BACKEND_VRING_CALL = 4,
->     >      VHOST_USER_BACKEND_VRING_ERR = 5,
->     > +    VHOST_USER_BACKEND_SHARED_OBJECT = 6,
->     >      VHOST_USER_BACKEND_MAX
->     >  }  VhostUserSlaveRequest;
->     > 
->     > @@ -172,6 +173,20 @@ typedef struct VhostUserInflight {
->     >      uint16_t queue_size;
->     >  } VhostUserInflight;
->     > 
->     > +typedef enum VhostUserSharedType {
->     > +    VHOST_SHARED_OBJECT_ADD = 0,
->     > +    VHOST_SHARED_OBJECT_LOOKUP,
->     > +    VHOST_SHARED_OBJECT_REMOVE,
->     > +} VhostUserSharedType;
->     > +
->     > +#define UUID_LEN 16
->     > +
->     > +typedef struct VhostUserShared {
->     > +    unsigned char uuid[UUID_LEN];
->     > +    VhostUserSharedType type;
->     > +    int dmabuf_fd;
->     > +} VhostUserShared;
->     > +
->     >  #if defined(_WIN32) && (defined(__x86_64__) || defined(__i386__))
->     >  # define VU_PACKED __attribute__((gcc_struct, packed))
->     >  #else
->     > @@ -199,6 +214,7 @@ typedef struct VhostUserMsg {
->     >          VhostUserConfig config;
->     >          VhostUserVringArea area;
->     >          VhostUserInflight inflight;
->     > +        VhostUserShared object;
->     >      } payload;
->     > 
->     >      int fds[VHOST_MEMORY_BASELINE_NREGIONS];
->     > @@ -539,6 +555,46 @@ void vu_set_queue_handler(VuDev *dev, VuVirtq *vq,
->     >  bool vu_set_queue_host_notifier(VuDev *dev, VuVirtq *vq, int fd,
->     >                                  int size, int offset);
->     > 
->     > +/**
->     > + * vu_get_shared_object:
->     > + * @dev: a VuDev context
->     > + * @uuid: UUID of the shared object
->     > + * @dmabuf_fd: output dma-buf file descriptor
->     > + *
->     > + * Lookup for a virtio shared object (i.e., dma-buf fd) associated with
->     the
->     > + * received UUID. Result, if found, is stored in the dmabuf_fd argument.
->     > + *
->     > + * Returns: whether the virtio object was found.
->     > + */
->     > +bool vu_get_shared_object(VuDev *dev, unsigned char uuid[UUID_LEN],
->     > +                          int *dmabuf_fd);
->     > +
->     > +/**
->     > + * vu_add_shared_object:
->     > + * @dev: a VuDev context
->     > + * @uuid: UUID of the shared object
->     > + * @dmabuf_fd: output dma-buf file descriptor
->     > + *
->     > + * Stores a new shared object (i.e., dma-buf fd) in the hash table, and
->     > + * associates it with the received UUID.
->     > + *
->     > + * Returns: TRUE on success, FALSE on failure.
->     > + */
->     > +bool vu_add_shared_object(VuDev *dev, unsigned char uuid[UUID_LEN],
->     > +                          int dmabuf_fd);
->     > +
->     > +/**
->     > + * vu_rm_shared_object:
->     > + * @dev: a VuDev context
->     > + * @uuid: UUID of the shared object
->     > + *
->     > + * Removes a shared object (i.e., dma-buf fd) associated with the
->     > + * received UUID from the hash table.
->     > + *
->     > + * Returns: TRUE on success, FALSE on failure.
->     > + */
->     > +bool vu_rm_shared_object(VuDev *dev, unsigned char uuid[UUID_LEN]);
->     > +
->     >  /**
->     >   * vu_queue_set_notification:
->     >   * @dev: a VuDev context
->     > --
->     > 2.40.0
-> 
-> 
-
+r~
 
