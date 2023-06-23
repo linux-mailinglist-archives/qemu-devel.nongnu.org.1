@@ -2,90 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E41873BDEF
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 19:38:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C66E073BE07
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 19:46:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCkip-0003au-1Q; Fri, 23 Jun 2023 13:37:23 -0400
+	id 1qCkq6-0005YX-Jz; Fri, 23 Jun 2023 13:44:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <groeck7@gmail.com>)
- id 1qCkiU-0003Zm-D4; Fri, 23 Jun 2023 13:37:03 -0400
-Received: from mail-ot1-x330.google.com ([2607:f8b0:4864:20::330])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qCkq1-0005Y0-Ti
+ for qemu-devel@nongnu.org; Fri, 23 Jun 2023 13:44:49 -0400
+Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <groeck7@gmail.com>)
- id 1qCkiR-0008W7-VH; Fri, 23 Jun 2023 13:37:01 -0400
-Received: by mail-ot1-x330.google.com with SMTP id
- 46e09a7af769-6b72329b63eso758962a34.0; 
- Fri, 23 Jun 2023 10:36:58 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qCkq0-0004sk-61
+ for qemu-devel@nongnu.org; Fri, 23 Jun 2023 13:44:49 -0400
+Received: by mail-ed1-x530.google.com with SMTP id
+ 4fb4d7f45d1cf-51be61663c8so936504a12.2
+ for <qemu-devel@nongnu.org>; Fri, 23 Jun 2023 10:44:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1687541817; x=1690133817;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date:sender
- :from:to:cc:subject:date:message-id:reply-to;
- bh=kvbYavrrZ/b3ZYTQHWLJz2aS3Re5dZbFrgauqNrMUZw=;
- b=YJ+SYi/RbZe9gNYO/e2O0m/NmKr7Dlc9wKZLVKW3xXqCnSSaznZNvEhsFPS8MCok6y
- WTtZgAGD/ZXwM0afFvfGna/WROY13qnClFi76Ek1aks0WV6vnPYLgwxxhOgAmsPcGScd
- oi+gNv3B8MR58otMKjExKnVuD699LEfUvKMzzfNI9B634xID4QA78WK8PYWBTxLnPdUN
- Ro+BEAcdTWDvMJTWWvXQee7jMFUZZgCkg7g5kIHeC2OK8Nrd2GaXSQu2C6HRKtpLqR3m
- J97BbHIo9l0mmoAwjzap3njiUosaqxU6B2HZQ8PN4vrqEjh/QrEKNFM+QlG3HFbZyiFA
- YsAA==
+ d=linaro.org; s=google; t=1687542286; x=1690134286;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=sNg3QTruwYDJKg3OChiofa5YfqK0hbteIfBLi6n2lJQ=;
+ b=jNZjuuZj68dIy38frWrGzJ8Obicf0+BmlTSWOxRvIFoSSiDlRtfUYu95U4uG1/dUMU
+ jsNODzsyAHZv5LmKwJcxsjijBYwafwYgFnBI7upDpa47vXklL6708+FB1hrvPiQ4nMuy
+ zCF076t7NV/qS8ktR2Xei5AZhu8x5v4dVEDK/WL6p5O8NkdB2fQdTbJWPwTf0g426aac
+ wBtc4SH8mQHPAYivvr9dvYyX3XUG6ihoY41zn8oFuxpH4dhW60qZUmydf/ZFCRCjGXH4
+ tMRls7uaHPUuKZJMV+7ycmUmElc9oO9Za6d7iTUdaKt18fOv50MmJkvuMY0lvNaJ7wFL
+ zqKQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687541817; x=1690133817;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date:sender
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=kvbYavrrZ/b3ZYTQHWLJz2aS3Re5dZbFrgauqNrMUZw=;
- b=dFo2TkzgmjtHoq9lRgrkweUMN0SppUZwtqjkUjs4fpWKiQ27HgGgG7zKdFz/xx7vfI
- EpH1wgg9vDpLwK84aZxnLJ/R8wv+qtwccdJMu4JHCSflyLRxEGvofVSCAe+pVesKtBBZ
- 3E0eTvhzlV25cBF1Fp0c7LeDbLbWQFvI3WnJ7l3ns6PZPuVMFN89+ozZbA37sxXrS1yo
- nYK+3C+/++SOMuYClPP+dBaOSCqGG71NghjkPZtDESb5jcIE9Kxk5v/rim64ediJ5DtF
- YK6Ew8B+xTzSSDKbAPdcxuMwAU8e0ArUZrDljqmoDwpPGfp2RspjmqZnbXQDuueWPy+9
- rRtw==
-X-Gm-Message-State: AC+VfDyFpblBpCKhX1CAKMPBpjaBRiXlo1/OFtRk+lcCMeXJUySWpWbq
- 4vDkdBp9ETYHKTks+fT4Lko=
-X-Google-Smtp-Source: ACHHUZ64mtyLW8R0FEAFNatchvfldVojRuVnJWQ82OVocQKJan5+TYgU5zcHECaVxGOr4WqHY6At2g==
-X-Received: by 2002:a05:6359:282:b0:123:26fe:3346 with SMTP id
- ek2-20020a056359028200b0012326fe3346mr16317905rwb.2.1687541817383; 
- Fri, 23 Jun 2023 10:36:57 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
- by smtp.gmail.com with ESMTPSA id
- k23-20020a63f017000000b00528513c6bbcsm6642494pgh.28.2023.06.23.10.36.56
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 23 Jun 2023 10:36:56 -0700 (PDT)
-Date: Fri, 23 Jun 2023 10:36:55 -0700
-From: Guenter Roeck <linux@roeck-us.net>
-To: qianfan <qianfanguijin@163.com>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org,
- Strahinja Jankovic <strahinja.p.jankovic@gmail.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Beniamino Galvani <b.galvani@gmail.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Niek Linnenbank <nieklinnenbank@gmail.com>
-Subject: Re: [PATCH v5 01/11] hw: arm: Add bananapi M2-Ultra and
- allwinner-r40 support
-Message-ID: <b8954841-db12-46ae-b92a-d805eb446a69@roeck-us.net>
+ d=1e100.net; s=20221208; t=1687542286; x=1690134286;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=sNg3QTruwYDJKg3OChiofa5YfqK0hbteIfBLi6n2lJQ=;
+ b=ZHQioemtt2aMBEK0VkabD6YosajZGUnFdNsY5GbcYpZWMWe1Ll+ROK6qZ0hSrgd9r/
+ Ld/HnjNB1ObTSHEtLlMOy2oKBeAI9wvsilotyyy28+4vIaCOStlOgxGlk1KhuGYSXI+v
+ JAFblGiCSleklRjGRXQ2vEu+mPivfCIu51Skb6uigmTL3KSGEuDiqCdPW5tyVXPSsQW5
+ Do/QNzqDieTVe07ztxr+QBT0s1viY3mguUK4W2gFLoNHMcyvtOtkHugRAe5nXkSCpiXJ
+ /XFfqynNSzxhkBgpriRKPbF7+/r1gaWcy0pfthCyOvutQx2E37LNmUfzozPUYYTN2ucS
+ WSyw==
+X-Gm-Message-State: AC+VfDxwT9KX0A6lI7ni842be1iYnATkG/jTnroipNko/JMBicVdRGQt
+ geMIazHeRieFB3OsBaZsdUxvK2gvkEE4UuEQq1JwhQ==
+X-Google-Smtp-Source: ACHHUZ5XFHy1SbZ0vBgVu6pH/BiftidAn+J3tgmhyXRqf2u9La+LnkMf+v99WXsbthLY0n533y/lBYa+WgNCsT5l9fs=
+X-Received: by 2002:a05:6402:5141:b0:51b:e943:d192 with SMTP id
+ n1-20020a056402514100b0051be943d192mr4262828edd.19.1687542286336; Fri, 23 Jun
+ 2023 10:44:46 -0700 (PDT)
+MIME-Version: 1.0
 References: <20230523100508.32564-1-qianfanguijin@163.com>
  <20230523100508.32564-2-qianfanguijin@163.com>
  <41e71eae-72ad-410d-9cd8-cc495c06dac4@roeck-us.net>
- <10cf3c5e-655d-fc8b-cf48-3949588c2dcf@163.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <10cf3c5e-655d-fc8b-cf48-3949588c2dcf@163.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::330;
- envelope-from=groeck7@gmail.com; helo=mail-ot1-x330.google.com
-X-Spam_score_int: -12
-X-Spam_score: -1.3
-X-Spam_bar: -
-X-Spam_report: (-1.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_ENVFROM_END_DIGIT=0.25,
- FREEMAIL_FORGED_FROMDOMAIN=0.25, FREEMAIL_FROM=0.001,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+In-Reply-To: <41e71eae-72ad-410d-9cd8-cc495c06dac4@roeck-us.net>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 23 Jun 2023 18:44:35 +0100
+Message-ID: <CAFEAcA8aEQWAap36CtHMrEkFQUPnDCH7=-X5+TE2GJ-qzm3Y9w@mail.gmail.com>
+Subject: Re: [PATCH v5 01/11] hw: arm: Add bananapi M2-Ultra and allwinner-r40
+ support
+To: Guenter Roeck <linux@roeck-us.net>
+Cc: qianfanguijin@163.com, qemu-arm@nongnu.org, qemu-devel@nongnu.org, 
+ Strahinja Jankovic <strahinja.p.jankovic@gmail.com>,
+ Beniamino Galvani <b.galvani@gmail.com>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Niek Linnenbank <nieklinnenbank@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::530;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x530.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,72 +91,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sun, Jun 18, 2023 at 08:40:28AM +0800, qianfan wrote:
-> 
-> 在 2023/6/18 0:29, Guenter Roeck 写道:
-> > Hi,
-> > 
-> > On Tue, May 23, 2023 at 06:04:58PM +0800, qianfanguijin@163.com wrote:
-> > > From: qianfan Zhao <qianfanguijin@163.com>
-> > > 
-> > > Allwinner R40 (sun8i) SoC features a Quad-Core Cortex-A7 ARM CPU,
-> > > and a Mali400 MP2 GPU from ARM. It's also known as the Allwinner T3
-> > > for In-Car Entertainment usage, A40i and A40pro are variants that
-> > > differ in applicable temperatures range (industrial and military).
-> > > 
-> > > Signed-off-by: qianfan Zhao <qianfanguijin@163.com>
-> > > Reviewed-by: Niek Linnenbank <nieklinnenbank@gmail.com>
-> > I tried this in mainline linux with the following command.
-> > 
-> > qemu-system-arm -M bpim2u \
-> > 	-kernel arch/arm/boot/zImage -no-reboot \
-> > 	-snapshot -drive file=rootfs-armv7a.ext2,format=raw,if=sd \
-> > 	-nic user \
-> > 	--append "root=/dev/mmcblk0 rootwait console=ttyS0,115200" \
-> > 	-dtb arch/arm/boot/dts/sun8i-r40-bananapi-m2-ultra.dtb \
-> > 	-nographic -monitor null -serial stdio
-> > 
-> > Main problem is that the SD card gets instantiated randomly to
-> > mmc0, mmc1, or mmc2, making it all but impossible to specify a
-> > root file system device. The non-instantiated cards are always
-> > reported as non-removable, including mmc0. Example:
-> > 
-> > mmc0: Failed to initialize a non-removable card
-> > 
-> > Using "-sd <file>" instead of "-drive file=<file>" does not
-> > make a difference.
-> > 
-> > I can fix (work around ?) the problem by adding the following information
-> > to the devicetree file.
-> > 
-> >          aliases {
-> >                  ethernet0 = &gmac;
-> >                  serial0 = &uart0;
-> > +               mmc0 = &mmc0;
-> > +               mmc1 = &mmc1;
-> > +               mmc2 = &mmc2;
-> >          };
-> > 
-> > Linux upstream commits fa2d0aa96941 and 2a43322ca7f3 describe the
-> > logic behind this change.
-> > 
-> > Is this a bug in the Linux kernel, or a problem with the qemu emulation ?
-> 
-> On my work, the linux kenrel doesn't startup ext4 rootfs directly, it start
-> 
-> a custom ramdisk and we can handle this in ramdisk scripts.
-> 
+On Sat, 17 Jun 2023 at 17:29, Guenter Roeck <linux@roeck-us.net> wrote:
+>
+> Hi,
+>
+> On Tue, May 23, 2023 at 06:04:58PM +0800, qianfanguijin@163.com wrote:
+> > From: qianfan Zhao <qianfanguijin@163.com>
+> >
+> > Allwinner R40 (sun8i) SoC features a Quad-Core Cortex-A7 ARM CPU,
+> > and a Mali400 MP2 GPU from ARM. It's also known as the Allwinner T3
+> > for In-Car Entertainment usage, A40i and A40pro are variants that
+> > differ in applicable temperatures range (industrial and military).
+> >
+> > Signed-off-by: qianfan Zhao <qianfanguijin@163.com>
+> > Reviewed-by: Niek Linnenbank <nieklinnenbank@gmail.com>
+>
+> I tried this in mainline linux with the following command.
+>
+> qemu-system-arm -M bpim2u \
+>         -kernel arch/arm/boot/zImage -no-reboot \
+>         -snapshot -drive file=rootfs-armv7a.ext2,format=raw,if=sd \
+>         -nic user \
+>         --append "root=/dev/mmcblk0 rootwait console=ttyS0,115200" \
+>         -dtb arch/arm/boot/dts/sun8i-r40-bananapi-m2-ultra.dtb \
+>         -nographic -monitor null -serial stdio
+>
+> Main problem is that the SD card gets instantiated randomly to
+> mmc0, mmc1, or mmc2, making it all but impossible to specify a
+> root file system device. The non-instantiated cards are always
+> reported as non-removable, including mmc0. Example:
+>
+> mmc0: Failed to initialize a non-removable card
 
-That won't help for automated testing.
-I guess that means the answer to my question below is "no".
+Do you mean that QEMU randomly connects the SD card to
+a different MMC controller each time, or that Linux is
+randomly assigning mmc0 to a different MMC controller each
+time ?
 
-Thanks,
-Guenter
-
-> > Either case, is there a way to specify a qemu command line that doesn't
-> > result in random assignments of the provided drive to mmc0/1/2 ?
-> > 
-> > Thanks,
-> > Guenter
-> 
+thanks
+-- PMM
 
