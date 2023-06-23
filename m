@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E58B73B70D
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 14:23:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A2D4E73B709
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 14:22:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCfo9-0005Dm-VV; Fri, 23 Jun 2023 08:22:34 -0400
+	id 1qCfnk-00046m-HO; Fri, 23 Jun 2023 08:22:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qCfn3-0003pX-Pr
- for qemu-devel@nongnu.org; Fri, 23 Jun 2023 08:21:27 -0400
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ id 1qCfms-0003m1-RG
+ for qemu-devel@nongnu.org; Fri, 23 Jun 2023 08:21:18 -0400
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qCfmw-0003hs-D7
- for qemu-devel@nongnu.org; Fri, 23 Jun 2023 08:21:23 -0400
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-311275efaf8so549939f8f.3
- for <qemu-devel@nongnu.org>; Fri, 23 Jun 2023 05:21:06 -0700 (PDT)
+ id 1qCfmo-0003hB-Am
+ for qemu-devel@nongnu.org; Fri, 23 Jun 2023 08:21:13 -0400
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-3f9b258f3a2so7364545e9.0
+ for <qemu-devel@nongnu.org>; Fri, 23 Jun 2023 05:21:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687522865; x=1690114865;
+ d=linaro.org; s=google; t=1687522864; x=1690114864;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=vcsfGHCbHul0oRYFUr8ghI+TCa734UZNBqW4hxmvJxY=;
- b=SPXvYd4mezSEBv2WTGSrqRuK5vR7EsXrkhq6oDt5Etwps8/sZErBQBySRlOc/jlbUH
- DF5Qvug2f+tsTXz3kysAx4doLVT0czNq+gwPrpdqWQHvKMDRgQWcvXXgAlJ3lSWjRfjO
- n7mww229m42mNtHusQTXB3ReStHglLIUCKT6HYBYbjjL58zOLkaCttetqaZr9f3Qd00F
- Cc99/OoIcQVf6TEVrk57LbkG9XWA2o8MuodxItVqMMd7TdVGQzM3J4jsSlR5TLIdj4Lb
- eCJQEKcluha0a2aKOtjQIVLiRK9clNNQBDtcyI4f0GmUjXvouRErZ5mH3Vxv0HdMLpqy
- dNww==
+ bh=IO8FBVf+cxDpmWwXUlU1UGAlcwL+PYrJLsP60QqSPVQ=;
+ b=WIXk0hjU9d/HOhhwzcatybuWLPn6Vdye655bSjnK0J7RA/oGvMwn7pJmY0RTxzSMVk
+ jsemR+3oVSe5f3/EslT/ARZlSbpT6G+E9Sx8fivR/3ayzIwMKSW79IRWZ8Az6uc/NTjK
+ BoeDRg3zgm+c+pYcIe5viiAq4pnh5AEZ3UbrpdfR/RcZG9au6RRRkBqXGnUk9u/AB2aS
+ r1ZEz6SkBJnj792q0UvrWot+wU+DqGs4og3n949Zf0SLY5X5g3ZYNBICRTS7rUGPk9QC
+ vw6Pqqn4j3Kv39gr0ZY5/culLHMC/bnpZMRtrWaRscahc3sr5EqhfnGl/IKUTjVfKxbU
+ lCdw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687522865; x=1690114865;
+ d=1e100.net; s=20221208; t=1687522864; x=1690114864;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=vcsfGHCbHul0oRYFUr8ghI+TCa734UZNBqW4hxmvJxY=;
- b=a7FkHncYwQsbfTRgki0Yo7nqXgsGnPRLePkviE9ZZ8aJ0PipQ/npMG6IwBOAuavOfy
- CMbLn1jCTUjaG4MOCZIRyz/1ar2C1oo2ahv1G34lTr/WQPsGuzfTpUDbj55SYYx0Bx2b
- nqc28A9wLyXRkXAgIFabpPrSj6WTMm8Rf2KfKc9iPIbvVBXu8ipuCc0557gRi2oABoDP
- zuB4cq9ZGwtZ9/T+tCNByAzlTBEyItTTwrTODaw5GQvA1sKH21DKOWHtoIqfV+hXeIGa
- hb5qOGXog04OJhKYUVYWf28Y3K6V0OB4YYgm4LneYSLfW4/psldyGKOhK42II9pKKBHB
- YzzA==
-X-Gm-Message-State: AC+VfDw3cv3SjMdydL95Qb+i/o1lPgavSfMfCC73TPSzywCOrF9REI7n
- OKfo6SC3nKroJK0D4wvTEpJoPw==
-X-Google-Smtp-Source: ACHHUZ5aG39P4uQMRjNFgyhxWC6ERQmCkZdwsMCqk+lBg5N0swivHkUB5hRXOjfqY0mO/ONANzId6w==
-X-Received: by 2002:a5d:4905:0:b0:311:1677:a2a9 with SMTP id
- x5-20020a5d4905000000b003111677a2a9mr14375641wrq.71.1687522865540; 
- Fri, 23 Jun 2023 05:21:05 -0700 (PDT)
+ bh=IO8FBVf+cxDpmWwXUlU1UGAlcwL+PYrJLsP60QqSPVQ=;
+ b=ZXU1i7XPeBoe45ICT5sLrZEqWcSvhX8r1voSzKKY2GmpNuki5z+YLYryi9kOiDaZxb
+ XSnNNs4A21jPvs/gL3vbocYBBMkT8mjD2Z18gCkwTvRu1OSrw8ZEZpdztGs1M2oViq+H
+ Kto+/+ux7ZsoI/TcRn8cOrTUkMhAzsNHwGYOBCdbpzhuiBDGTxezkdhAQptk4WrQYIPR
+ 4AGqRhGYtbxy95c798cIaENxhqlty5Rkee175gg8DDKH9o+qUWsGue5FdXbyjaoWWGBl
+ 2KXmmHHE7D99gA/4qrRfKmza6rzc4NKUghA0qaYfI4wKSqHjvF/kfZfMRY6Jkag2pvsD
+ f65A==
+X-Gm-Message-State: AC+VfDw4Q9s0k6wReGce9jpAzgqMg3vQRp7THdZQn0pl4m04dRxkqrh0
+ hXEUVaBorkBpP9f49zij7tNoRQ==
+X-Google-Smtp-Source: ACHHUZ4cW9zbCUktJYnZALr6fnpgZu4vAdJu9wdM1hdMpPkOxay7jBgWknRyTGl/HdZaZRODev045w==
+X-Received: by 2002:a7b:c391:0:b0:3f9:b3f5:b8f with SMTP id
+ s17-20020a7bc391000000b003f9b3f50b8fmr9975932wmj.34.1687522864118; 
+ Fri, 23 Jun 2023 05:21:04 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- f4-20020a5d58e4000000b00311299df211sm9485684wrd.77.2023.06.23.05.21.02
+ o16-20020a5d6850000000b003047ae72b14sm9483364wrw.82.2023.06.23.05.21.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Fri, 23 Jun 2023 05:21:02 -0700 (PDT)
 Received: from zen.lan (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id AEA7D1FFC4;
+ by zen.linaroharston (Postfix) with ESMTP id CC4801FFC5;
  Fri, 23 Jun 2023 13:21:01 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -82,17 +82,17 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  Thomas Huth <thuth@redhat.com>, Beraldo Leal <bleal@redhat.com>,
  Laurent Vivier <lvivier@redhat.com>, Yanan Wang <wangyanan55@huawei.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH 11/26] Makefile: add lcitool-refresh to UNCHECKED_GOALS
-Date: Fri, 23 Jun 2023 13:20:45 +0100
-Message-Id: <20230623122100.1640995-12-alex.bennee@linaro.org>
+Subject: [PATCH 12/26] tests/lcitool: update to latest version
+Date: Fri, 23 Jun 2023 13:20:46 +0100
+Message-Id: <20230623122100.1640995-13-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230623122100.1640995-1-alex.bennee@linaro.org>
 References: <20230623122100.1640995-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -115,27 +115,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is yet another make target you usually run in the top level of
-the source directory.
+We need this for the riscv64 and gcc-native mappings. As the older
+alpine release has been dropped from the mappings we also need to bump
+the version of alpine we use.
 
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tests/docker/dockerfiles/alpine.docker | 4 ++--
+ tests/lcitool/libvirt-ci               | 2 +-
+ tests/lcitool/refresh                  | 2 +-
+ 3 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/Makefile b/Makefile
-index b22bf6fba1..56f165c0b2 100644
---- a/Makefile
-+++ b/Makefile
-@@ -28,7 +28,7 @@ quiet-command = $(quiet-@)$(call quiet-command-run,$1,$2,$3)
+diff --git a/tests/docker/dockerfiles/alpine.docker b/tests/docker/dockerfiles/alpine.docker
+index 0097637dca..43370f7b36 100644
+--- a/tests/docker/dockerfiles/alpine.docker
++++ b/tests/docker/dockerfiles/alpine.docker
+@@ -1,10 +1,10 @@
+ # THIS FILE WAS AUTO-GENERATED
+ #
+-#  $ lcitool dockerfile --layers all alpine-316 qemu
++#  $ lcitool dockerfile --layers all alpine-318 qemu
+ #
+ # https://gitlab.com/libvirt/libvirt-ci
  
- UNCHECKED_GOALS := TAGS gtags cscope ctags dist \
-     help check-help print-% \
--    docker docker-% vm-help vm-test vm-build-%
-+    docker docker-% lcitool-refresh vm-help vm-test vm-build-%
+-FROM docker.io/library/alpine:3.16
++FROM docker.io/library/alpine:3.18
  
- all:
- .PHONY: all clean distclean recurse-all dist msi FORCE
+ RUN apk update && \
+     apk upgrade && \
+diff --git a/tests/lcitool/libvirt-ci b/tests/lcitool/libvirt-ci
+index c8971e90ac..b0f44f929a 160000
+--- a/tests/lcitool/libvirt-ci
++++ b/tests/lcitool/libvirt-ci
+@@ -1 +1 @@
+-Subproject commit c8971e90ac169ee2b539c747f74d96c876debdf9
++Subproject commit b0f44f929a81c0a604fb7fbf8afc34d37ab0eae9
+diff --git a/tests/lcitool/refresh b/tests/lcitool/refresh
+index f1570b54df..5d36a62b10 100755
+--- a/tests/lcitool/refresh
++++ b/tests/lcitool/refresh
+@@ -115,7 +115,7 @@ try:
+     #
+     # Standard native builds
+     #
+-    generate_dockerfile("alpine", "alpine-316")
++    generate_dockerfile("alpine", "alpine-318")
+     generate_dockerfile("centos8", "centos-stream-8")
+     generate_dockerfile("debian-amd64", "debian-11",
+                         trailer="".join(debian11_extras))
 -- 
 2.39.2
 
