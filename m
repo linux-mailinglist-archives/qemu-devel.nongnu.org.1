@@ -2,53 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F85173B547
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 12:30:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BAFE73B551
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 12:30:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCe30-0002El-Nr; Fri, 23 Jun 2023 06:29:54 -0400
+	id 1qCe3t-0003eB-4T; Fri, 23 Jun 2023 06:30:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qCe2q-00026z-3q
- for qemu-devel@nongnu.org; Fri, 23 Jun 2023 06:29:40 -0400
-Received: from isrv.corpit.ru ([86.62.121.231])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qCe2o-0001hq-6E
- for qemu-devel@nongnu.org; Fri, 23 Jun 2023 06:29:35 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 2F45CE608;
- Fri, 23 Jun 2023 13:29:24 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 74A88F003;
- Fri, 23 Jun 2023 13:29:23 +0300 (MSK)
-Message-ID: <7122632b-1628-8ebf-34b6-06e4c8b1c51c@tls.msk.ru>
-Date: Fri, 23 Jun 2023 13:29:23 +0300
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qCe3l-0003cq-I6
+ for qemu-devel@nongnu.org; Fri, 23 Jun 2023 06:30:33 -0400
+Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qCe3i-00036y-Eh
+ for qemu-devel@nongnu.org; Fri, 23 Jun 2023 06:30:33 -0400
+Received: by mail-ej1-x62d.google.com with SMTP id
+ a640c23a62f3a-988a2715b8cso297044866b.0
+ for <qemu-devel@nongnu.org>; Fri, 23 Jun 2023 03:30:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1687516223; x=1690108223;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=S9ksx/UadnDs5AooqtmHod5cgh8NeEHWBTNiF5vomBc=;
+ b=un0r1xr/YYxa2UbuTt270TCXGddSL7VuxcGuJPEwOc4uKfNjNbpjari9y0EV4vAzZW
+ sDWZuMn2uha2iy7BV6MuuU+MHOzyfR58saDnegOABSWNIhVLih/iBEDw1xhfrcCa9iM8
+ vD0ujbjqvGd5EgJqekIXGK4tqG/R+13pgR2WX3kri2RGZYD1BV28tEUrIFtgK2cZrpw0
+ TSlzBmnqpJISLDK5w+gaqn7id2em5nvKiOdc+A3t/jUMXKFz+vhhdrztYk5gWW+EKcbn
+ jembeabmVnmFv6EMCgZF3OOvBPu0IAiGI6ITOVNHZmWlrE+2ZIzRFBt+osKREaUR63jz
+ nC/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1687516223; x=1690108223;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=S9ksx/UadnDs5AooqtmHod5cgh8NeEHWBTNiF5vomBc=;
+ b=JvBpwBTPSg4j090iLa83UXcNSkFoguYf9ZccX61fFmF9XLXhAWK77LdEnPKI5kVdjQ
+ 6sxH0v2JSoA6OailDtTVa5UdCGfEp331O51uQryt1LY6mxNLmEUSIRJNA1aVrf04Z3EW
+ fwwyawb+6lqCQIffzJYrH+5CxjPQuWmnXWdsZKBETtxlVo9wcQmYkuZVJqzYf0qDKBzR
+ bc4yzfzlisPXiHH/lu7iWHmld1PdYIe/oTvIIdhHP7O7DhZEP5UBjowqp+qoW9/Egzh1
+ WLoEZbPiNmKJL46ajAIxXcAjNlPPqmVY52WzOlwasvnLts/Z5Iw/6jRULZ8AfyXG4/tA
+ LNfQ==
+X-Gm-Message-State: AC+VfDw9TpmrGPznMmytoxsSXSxU0kZ5KjUzqAZxBMbtn4CzirmFByMh
+ ZDYQYVrItxpFWiGzNiLyaFvzNkSUmWnKH8/rwQgJxg==
+X-Google-Smtp-Source: ACHHUZ4ssCFxSHsO11q1x8cmRv9DzCLoK0dHKRkt8gytH1Q3U/t5hg79JC6MRiRAPmAwXsh+MkLG5sLppqfVytSB47c=
+X-Received: by 2002:a17:906:ef0a:b0:978:2b56:d76e with SMTP id
+ f10-20020a170906ef0a00b009782b56d76emr24672116ejs.12.1687516223223; Fri, 23
+ Jun 2023 03:30:23 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PULL 09/20] target/tricore: Fix out-of-bounds index in imask
- instruction
-Content-Language: en-US
-To: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
-Cc: qemu-devel@nongnu.org, Siqi Chen <coc.cyqh@gmail.com>
-References: <20230621161422.1652151-1-kbastian@mail.uni-paderborn.de>
- <20230621161422.1652151-10-kbastian@mail.uni-paderborn.de>
- <c41c4ee2-29ae-78e8-612f-2d951f359540@tls.msk.ru>
- <yury4wdzf434fmo6ty2mjmtc7u5bzg7bwak62s6us2a755tui5@5kwkzemwb6xl>
- <e2a2fb5c-906a-9c42-e120-93651d548efd@tls.msk.ru>
- <e77777fcuuipjbqhvj5u3fcix4gex55bpbo4fmg5u7j4i27ybg@hkylkdjknanz>
-From: Michael Tokarev <mjt@tls.msk.ru>
-In-Reply-To: <e77777fcuuipjbqhvj5u3fcix4gex55bpbo4fmg5u7j4i27ybg@hkylkdjknanz>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -69
-X-Spam_score: -7.0
-X-Spam_bar: -------
-X-Spam_report: (-7.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.09,
- RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+References: <20230619170913.517373-1-marcin.juszkiewicz@linaro.org>
+In-Reply-To: <20230619170913.517373-1-marcin.juszkiewicz@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 23 Jun 2023 11:30:12 +0100
+Message-ID: <CAFEAcA9pUPBx2aLtY_2DMy5t3yn=TbhFWhZbTKbXW1g-M+tnkg@mail.gmail.com>
+Subject: Re: [PATCH v2 0/1] hw/arm/sbsa-ref: add ITS support in GIC
+To: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, 
+ Shashi Mallela <shashi.mallela@linaro.org>,
+ Leif Lindholm <quic_llindhol@quicinc.com>, 
+ Radoslaw Biernacki <rad@semihalf.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ej1-x62d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -65,34 +87,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-23.06.2023 12:51, Bastian Koppelmann wrote:
+On Mon, 19 Jun 2023 at 18:09, Marcin Juszkiewicz
+<marcin.juszkiewicz@linaro.org> wrote:
+>
+> In 2021 Shashi Mallela sent v8 of GIC ITS patchset [1]. At that time it
+> was decided to do platform versioning first.
+>
+> 1. https://lore.kernel.org/qemu-devel/20210812165341.40784-8-shashi.mallela@linaro.org/
+>
+> Now we are going through our list of changes for SBSA Reference Platform
+> and GIC ITS is one of early ones. There was decision that there will be
+> no option to disable it and platform version will get a minor bump.
+>
+> This is refreshed version of v8 one from 2021. GIC ITS is placed behind
+> GIC Redistributor in memory space to allow use of older EDK2 firmware.
+>
+> New address is placed in DeviceTree for firmware to use. Due to it we
+> also bump platform version to 0.2 version.
+>
+> Trusted Firmware will read GIC ITS address and provide to EDK2 via
+> Secure Monitor Call (SMC). Same way as it is done with GIC addresses
+> already.
 
->> Is there anything else in this series worth picking up for stable, eg:
->>
->>   Fix helper_ret() not correctly restoring PSW
->>   Fix RR_JLI clobbering reg A[11]
-> 
-> These are rare cases where the guest does something wrong. It will not lead to a
-> crash of QEMU.
+Applied to target-arm.next, thanks.
 
-Ok, makes sense.
-
-
->> Please, in the future, add Cc: qemu-stable@nongnu.org for patches
->> worth to have in -stable.
-> 
-> I will do that. I'm not sure what is worth while to pick up for stable. My
-> initial thought was fixes for bugs that can lead to a crash in QEMU. Any pointer
-> would make it easier for me to decide what to CC: qemu-stable@nongnu.org for.
-
-Here we go:
-  https://www.qemu.org/docs/master/devel/stable-process.html
-
-Basically, any bugfix you, as a subsystem maintainer, think is good for stable,
-is good for stable :)  Usual tradeoff applies: more complex stuff with potential
-to break something vs seriousness of an issue.
-
-Thank you!
-
-/mjt
+-- PMM
 
