@@ -2,70 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8853073BBEB
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 17:43:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2F3D73BC01
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 17:49:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCiv9-0001do-QF; Fri, 23 Jun 2023 11:41:59 -0400
+	id 1qCj1K-0005Ev-Uv; Fri, 23 Jun 2023 11:48:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qCiuq-0001dL-Q0
- for qemu-devel@nongnu.org; Fri, 23 Jun 2023 11:41:43 -0400
-Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qCj1G-0005Em-KM
+ for qemu-devel@nongnu.org; Fri, 23 Jun 2023 11:48:18 -0400
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qCiuo-0008MV-TZ
- for qemu-devel@nongnu.org; Fri, 23 Jun 2023 11:41:40 -0400
-Received: by mail-wr1-x42b.google.com with SMTP id
- ffacd0b85a97d-307d58b3efbso795568f8f.0
- for <qemu-devel@nongnu.org>; Fri, 23 Jun 2023 08:41:38 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qCj1E-0004yx-Tc
+ for qemu-devel@nongnu.org; Fri, 23 Jun 2023 11:48:18 -0400
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-312863a983fso864556f8f.2
+ for <qemu-devel@nongnu.org>; Fri, 23 Jun 2023 08:48:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687534897; x=1690126897;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=0ehBAGjrrkyk5SNhyBclcjFfgNXByJfqpK/F+XSrmwI=;
- b=GPto7RGWPkV2F0nHpTBpmoAIFkh+/5bdWAm+/Eegd9zearUXAqhxWdlk1U1o91j0AV
- 8tjw3srkfxZIf9xNZn6Fawz65I3l+Vj+RyQF8I3w2U9/u8YH6KppHs4s6lOqEvf0SCol
- jvEjf+1iGdstqs7TUKLw8q9SHKZdJ8zQ7y6vGexgzHq3VoWwfe2BD+cZTPd/ZvXYFhph
- 7oxPApnYWI7nMAlEhOeqeGWI24CV/x/HaImeWFBeknrFh5RW5jNWyaqW5S7+0kBrWHZR
- DhuvMCyyV9qGcgXcMYGB/ZLTs4/yV3bYDJpaP1o3pmLcD5JetcJZ8Jm578mIu63AHsdk
- ZvWQ==
+ d=linaro.org; s=google; t=1687535294; x=1690127294;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Uun90XmMgtNIGN2R8MbzvADfpdj9cx5Pq5jccLYjNsM=;
+ b=tJsdW+dn2unaqx6zkSbMTi1xfY3hsSkxOPKvbTLzb2+oaaTgHH0O0SIH7Zk6GH3FQX
+ CM+PkZyrJaaI2hf/EKf0vD4jU778AX+r2eehO640QCM5uZxtSPmyO6aKw2OZEVw98NA0
+ EWxE6kbi+LJRYm24BiNR5OXPjq9qLhaqI2pkJfD79x+HOQjOqFafat3FYyWckzlBulny
+ IoFq25N+8AKpZauYcO+FATDy/Ut8ZDDG/49v0gpwsq/0zw5Q0ipNvQ13TjpDRlArpIZl
+ Zf7/BX4Go3CqgSjXElasWbIkPiVEmAa3obBky/WqrmVjctKRwWAJQvo8wE6RoCoeexho
+ uyIw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687534897; x=1690126897;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=0ehBAGjrrkyk5SNhyBclcjFfgNXByJfqpK/F+XSrmwI=;
- b=AZwT4cR7ltkMdNKIz1GnfgcveKlFu1LPVX1er9zwxWy/37W83HhAPog+aX9k5MFMi7
- TyjBdlPUpN6xsQgmG73HXumASIJGcl+CA3jsemywFZlxlfQPs7XNJi8Qv/NDx4ttBwim
- eS5bizykLfyAhhYMMFEtuaSIE+/PI4po1scV4mgWS839v/RjDL5zu8fxYdcLM2LRqhKu
- cTLVjhkZjnEnY88Ihk3Shh2MvwuTo1/iVCXvzA2MLdUlZZUIJfz9cdQ2dtdYQDldABYT
- FQ9o07iRf/xxZGhtu806RsMha2CHDiYyLFXAvbmM7I/4RkUuoSHIejDCPSmHk2GvSbsL
- KLWA==
-X-Gm-Message-State: AC+VfDwTmnxZiH+HSaTHvABE2IBE923NH8Rpk1oVhfN2BqGkR7KcVDkU
- yV/3JaYonIciy93uUqpNvIpBiJuFLOn4x20/RHg=
-X-Google-Smtp-Source: ACHHUZ5g+/Q17NHsmCrBYCwexvr5092gDZKgfoWVlj+b7Vj3Cnn/Ljl1pYQfI8hMfJWEihgZNLQfQQ==
-X-Received: by 2002:adf:e8c1:0:b0:30f:bcf3:9a30 with SMTP id
- k1-20020adfe8c1000000b0030fbcf39a30mr4372110wrn.17.1687534897464; 
- Fri, 23 Jun 2023 08:41:37 -0700 (PDT)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ d=1e100.net; s=20221208; t=1687535294; x=1690127294;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=Uun90XmMgtNIGN2R8MbzvADfpdj9cx5Pq5jccLYjNsM=;
+ b=ffc7Fj1iAaV47N42J4g/KClGfQjNTRfWiQyUDzEQoOm7ftW0qdEIDufRHd4ehQivio
+ adZaHoQx+GYmBoufLbagpMKAYr8IwV+SEOxXsaGOUU3EjzMtz+IcVa/vU3XC7jLzPZ3L
+ Pk4ugcJuriF26pK9zD82IGD6A0cNLbE/kUOZMF9heUZ7EJVlFLj13uzzpo8D0ftehNzL
+ PvBnJ9Zm3IwwqrNbLipDEcSf4PjfevdZ02e34rKlNlwMSFAIxTwveQMDLLQYb3t/47OA
+ +LiLfgYulxCxmtDMd0sGAHtBxR6/tImzO/ta6TXNNlHqRa7awpRvfD+e0kRwAzywqng5
+ fczw==
+X-Gm-Message-State: AC+VfDzqbWA/X0l6GzE6Vr/9lCGqKzfOKddeTR5qSbfbPT7EHIBf5zuH
+ wfb0FTUeqbiUAK7XLM6Q/xFAg7gWDeWNH8komVU=
+X-Google-Smtp-Source: ACHHUZ7dAn+f/Z8ii9SPB+JGcNdxPPtXCQysaJI78tTaTDuQtbFGTbuCf29wEeQZfOgXFJ9u79byVA==
+X-Received: by 2002:a5d:595a:0:b0:30d:d85c:4472 with SMTP id
+ e26-20020a5d595a000000b0030dd85c4472mr16452697wri.62.1687535294553; 
+ Fri, 23 Jun 2023 08:48:14 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- b14-20020a5d45ce000000b0031118d80246sm9830070wrs.29.2023.06.23.08.41.36
+ z5-20020a5d6545000000b003113bd9ecaesm9785206wrv.116.2023.06.23.08.48.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 23 Jun 2023 08:41:37 -0700 (PDT)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Max Filippov <jcmvbkbc@gmail.com>
-Subject: [PATCH] target/xtensa: Assert that interrupt level is within bounds
-Date: Fri, 23 Jun 2023 16:41:35 +0100
-Message-Id: <20230623154135.1930261-1-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.34.1
+ Fri, 23 Jun 2023 08:48:14 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id B14CA1FFBB;
+ Fri, 23 Jun 2023 16:48:13 +0100 (BST)
+References: <20230621111520.1390967-1-richard.henderson@linaro.org>
+User-agent: mu4e 1.11.6; emacs 29.0.92
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org
+Subject: Re: [PATCH v3] tests/plugin: Remove duplicate insn log from libinsn.so
+Date: Fri, 23 Jun 2023 16:48:08 +0100
+In-reply-to: <20230621111520.1390967-1-richard.henderson@linaro.org>
+Message-ID: <87ttuydvsy.fsf@linaro.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42b.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -88,38 +95,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In handle_interrupt() we use level as an index into the interrupt_vector[]
-array. This is safe because we have checked it against env->config->nlevel,
-but Coverity can't see that (and it is only true because each CPU config
-sets its XCHAL_NUM_INTLEVELS to something less than MAX_NLEVELS), so it
-complains about a possible array overrun (CID 1507131)
 
-Add an assert() which will make Coverity happy and catch the unlikely
-case of a mis-set XCHAL_NUM_INTLEVELS in future.
+Richard Henderson <richard.henderson@linaro.org> writes:
 
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
-NB: only tested with 'make check-avocado'. You could argue that we
-should mark the coverity issue as false-positive instead if you like.
----
- target/xtensa/exc_helper.c | 3 +++
- 1 file changed, 3 insertions(+)
+> This is a perfectly natural occurrence for x86 "rep movb",
+> where the "rep" prefix forms a counted loop of the one insn.
+>
+> During the tests/tcg/multiarch/memory test, this logging is
+> triggered over 350000 times.  Within the context of cross-i386-tci
+> build, which is already slow by nature, the logging is sufficient
+> to push the test into timeout.
+>
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 
-diff --git a/target/xtensa/exc_helper.c b/target/xtensa/exc_helper.c
-index d4823a65cda..43f6a862de2 100644
---- a/target/xtensa/exc_helper.c
-+++ b/target/xtensa/exc_helper.c
-@@ -169,6 +169,9 @@ static void handle_interrupt(CPUXtensaState *env)
-         CPUState *cs = env_cpu(env);
- 
-         if (level > 1) {
-+            /* env->config->nlevel check should have ensured this */
-+            assert(level < sizeof(env->config->interrupt_vector));
-+
-             env->sregs[EPC1 + level - 1] = env->pc;
-             env->sregs[EPS2 + level - 2] = env->sregs[PS];
-             env->sregs[PS] =
--- 
-2.34.1
+Queued to maintainer/june-2023-omnibus, thanks.
 
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
