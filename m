@@ -2,94 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 328AA73BB5D
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 17:15:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00A6173BB67
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 17:19:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCiUQ-00066R-Gk; Fri, 23 Jun 2023 11:14:22 -0400
+	id 1qCiYu-0008Sy-T0; Fri, 23 Jun 2023 11:19:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qCiUP-00062O-0v
- for qemu-devel@nongnu.org; Fri, 23 Jun 2023 11:14:21 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qCiYs-0008RP-JY
+ for qemu-devel@nongnu.org; Fri, 23 Jun 2023 11:18:59 -0400
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qCiUN-00035c-14
- for qemu-devel@nongnu.org; Fri, 23 Jun 2023 11:14:20 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-3f9c532fa45so8588675e9.2
- for <qemu-devel@nongnu.org>; Fri, 23 Jun 2023 08:14:17 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qCiYq-0004ov-QK
+ for qemu-devel@nongnu.org; Fri, 23 Jun 2023 11:18:58 -0400
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-307d20548adso772386f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 23 Jun 2023 08:18:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687533256; x=1690125256;
+ d=linaro.org; s=google; t=1687533527; x=1690125527;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=fnnKEbUvj74y6swt1Yen5ynIV0kpGjzEKPfjFjq0Wh8=;
- b=k/rjukvsLyYNZDYRZmqpjkibMcZK5loRr4qfUGqJJfcVivIw9OelHpuBRHyIhkZEW7
- S9QscsGXp9eFAhLtH4CSpSwskf0NgzK3/ARnYVPVsZ3VqAprjF6TOrvpgVjpxby+FS03
- kX1hgTowCMXS88QhG28zeyhn6LXmpVQ1ExQmnyZ4g/ncPacgG405Bv54glCJsR8ercDK
- ln1hWXAHTDq+kComd9dKyiEkRqOKBZap8jAVet6PYncRtpnLzL4SXKIC/iKE5A1bctSF
- L1Rx6Wrs1q1NsDD+zvG7lIQtxwHiDJouLgm7FZcfehqHGJnD5oDl1bDr2eFU9Exxoi+s
- jWTg==
+ bh=njCrCzkwdxHHewhkNmAyfjrE2jaXcq1sg/qlGFRUahw=;
+ b=BZ+cpK2biHykh+zB7N025zo4VSlle5Xjz/P3GEaEI9vut1elSAztpGtBm5jXWWljTs
+ mxsmW4Ne6Og1k7jprK+UL17TpiiwGCugrjx87wrhUtqy4uS6/o1pW/+WRTnreUu4Emfp
+ cpXYi4zUErVTvpGPc4cA11YDD8+ntXvE7BmGCfj4g0MESgANT1oo5wcFAotOh3B8qesG
+ irfnCGBmvv/X8hc+QCLb9ZSQlG6y60hVOlXgm26Cqi8Va1utPkyjMfQ12UJwraFo3qUO
+ uS+B3w1szz1wzPdp3cENczGC8ryX148vgnT5N15y8loOw0knAIC2a57TEgVANvk4EE3o
+ jDPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687533256; x=1690125256;
+ d=1e100.net; s=20221208; t=1687533527; x=1690125527;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=fnnKEbUvj74y6swt1Yen5ynIV0kpGjzEKPfjFjq0Wh8=;
- b=jg5jOFEqh10KCmoDIQbJAb4kBme8GZDDMh8mN6ZuopIhmp4kxogFuUjm49HWoRf9pJ
- s0evTYPwk+CQCMVhT+bUJ5Uwq/Q3DLFGjCyQghj5FoeG2mYgEjzdKsYCaRk5yIpdfRTs
- 1FRCq4FkZkZ7l/p/79YwjStBFRG1h+7bHAU2SUkMiMWZUTbL9Xf4ZKWhVSXC2bSOHdyd
- sMA2wTSeyWzSEp/pvPK0aC30ZRagJZSYKP8kYL7e5aN1+YlNYkFYiM/dYoAV0QgJjfH9
- apLtovnKwvKx0veGz2M97TRt8JWqpZ/5w2nbh+7CsSyQw+28ltKWvm60PEib40s0EHUN
- UPhQ==
-X-Gm-Message-State: AC+VfDyK9QNpewv7Sngc1f7v59zm97frD7m3CSCXXs3x1/Ib92NZPX8L
- WDl6X5a+EPFuHog6f1zD0Mdf9g==
-X-Google-Smtp-Source: ACHHUZ4qreyV1AcIE3FHgVDqR7ryKxuELlgnep9l/AqSEERbTkINCRebEkpcqvT4QfBqWWkNlzHB7Q==
-X-Received: by 2002:a1c:cc15:0:b0:3f9:bf0f:1cf5 with SMTP id
- h21-20020a1ccc15000000b003f9bf0f1cf5mr5812632wmb.20.1687533256577; 
- Fri, 23 Jun 2023 08:14:16 -0700 (PDT)
+ bh=njCrCzkwdxHHewhkNmAyfjrE2jaXcq1sg/qlGFRUahw=;
+ b=iTP6h90yuFBeHSF0hgWZOyZgp/5RIi0xLJK2kgc5QYlLwnydKJeVUnqJsO5Ct3Kutx
+ 1C6cNd916ndYQH0DrzK8XC/fcxGR+AJScoXZmC7YAIGDD0QgTQ20Kgbt85RFQb+fxBfN
+ yQoNdvpsBniPhcavO6QIHNynMUWFE8Z63/xmu46KxTZyHeS/bxXhJiCEf1aVz97XfwjI
+ UoG5ziExoeGU/dC2t7lIVnsy4U81REGu5rOE28v+nttoRncWUyrrhRSiiuTDJ/nL4o23
+ 9N/jOWKBlubX5Z90nQzxh6kystjOs0M/ZvBAnoLAd5O02IJP+jvJPef5An1t9P3QDsxN
+ npGg==
+X-Gm-Message-State: AC+VfDwp8oKMXbNm20nXKVuIT/8l6/PrsOsmsdABjfdp+0yVAVxzTkNx
+ KENqJWYm1mKQRzBYklsuhmkzkw==
+X-Google-Smtp-Source: ACHHUZ4uEh4Fy03mzccOzvgYb4yePyr4yDj9tqkUTQzBncXEejaNS5BOT7zbgbQVNuZ23k13wRAKnQ==
+X-Received: by 2002:a5d:6ad1:0:b0:2f4:4e1a:bea2 with SMTP id
+ u17-20020a5d6ad1000000b002f44e1abea2mr15028387wrw.59.1687533527682; 
+ Fri, 23 Jun 2023 08:18:47 -0700 (PDT)
 Received: from [192.168.93.175] (94.red-88-29-173.dynamicip.rima-tde.net.
  [88.29.173.94]) by smtp.gmail.com with ESMTPSA id
- u2-20020a5d5142000000b003113dc327fbsm9788630wrt.22.2023.06.23.08.14.12
+ n11-20020a5d4c4b000000b003113ccbf388sm9896662wrt.13.2023.06.23.08.18.46
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 23 Jun 2023 08:14:16 -0700 (PDT)
-Message-ID: <93fb759a-e66d-cf2b-984c-59cb3e074bd5@linaro.org>
-Date: Fri, 23 Jun 2023 17:14:11 +0200
+ Fri, 23 Jun 2023 08:18:47 -0700 (PDT)
+Message-ID: <b2b23b53-b774-4bf4-e103-4afc1b8dd909@linaro.org>
+Date: Fri, 23 Jun 2023 17:18:45 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.12.0
-Subject: Re: [PATCH 17/26] tests/avocado: update firmware to enable
- sbsa-ref/max
+Subject: Re: [PATCH] linux-user: Remove pointless NULL check in clock_adjtime
+ handling
 Content-Language: en-US
-To: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- Juan Quintela <quintela@redhat.com>, Peter Maydell
- <peter.maydell@linaro.org>, Cleber Rosa <crosa@redhat.com>,
- Darren Kenny <darren.kenny@oracle.com>, Alexandre Iooss <erdnaxe@crans.org>,
- Peter Xu <peterx@redhat.com>, qemu-arm@nongnu.org,
- Eduardo Habkost <eduardo@habkost.net>, Riku Voipio <riku.voipio@iki.fi>,
- Mahmoud Mandour <ma.mandourr@gmail.com>,
- =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Bandan Das <bsd@redhat.com>,
- Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
- Radoslaw Biernacki <rad@semihalf.com>, Alexander Bulekov <alxndr@bu.edu>,
- Leif Lindholm <quic_llindhol@quicinc.com>, Qiuhao Li
- <Qiuhao.Li@outlook.com>, Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Leonardo Bras <leobras@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
- Bin Meng <bmeng.cn@gmail.com>, Thomas Huth <thuth@redhat.com>,
- Beraldo Leal <bleal@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
- Yanan Wang <wangyanan55@huawei.com>
-References: <20230623122100.1640995-1-alex.bennee@linaro.org>
- <20230623122100.1640995-18-alex.bennee@linaro.org>
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
+Cc: Laurent Vivier <laurent@vivier.eu>
+References: <20230623144410.1837261-1-peter.maydell@linaro.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230623122100.1640995-18-alex.bennee@linaro.org>
+In-Reply-To: <20230623144410.1837261-1-peter.maydell@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -112,33 +93,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 23/6/23 14:20, Alex Bennée wrote:
-> From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+On 23/6/23 16:44, Peter Maydell wrote:
+> In the code for TARGET_NR_clock_adjtime, we set the pointer phtx to
+> the address of the local variable htx.  This means it can never be
+> NULL, but later in the code we check it for NULL anyway.  Coverity
+> complains about this (CID 1507683) because the NULL check comes after
+> a call to clock_adjtime() that assumes it is non-NULL.
 > 
-> Update prebuilt firmware images to have TF-A with FEAT_FGT support
-> enabled. This allowed us to enable test for "max" cpu in sbsa-ref
-> machine.
+> Since phtx is always &htx, and is used only in three places, it's not
+> really necessary.  Remove it, bringing the code structure in to line
+> with that for TARGET_NR_clock_adjtime64, which already uses a simple
+> '&htx' when it wants a pointer to 'htx'.
 > 
-> Signed-off-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-> Message-Id: <20230530152240.79160-1-marcin.juszkiewicz@linaro.org>
-> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 > ---
->   tests/avocado/machine_aarch64_sbsaref.py | 22 +++++++++++-----------
->   1 file changed, 11 insertions(+), 11 deletions(-)
+>   linux-user/syscall.c | 12 +++++-------
+>   1 file changed, 5 insertions(+), 7 deletions(-)
 
-
-> @@ -150,7 +150,7 @@ def test_sbsaref_alpine_linux_neoverse_n1(self):
->           """
->           self.boot_alpine_linux("neoverse-n1")
->   
-> -    @skip("requires TF-A update to handle FEAT_FGT")
-> +    @skipUnless(os.getenv("AVOCADO_TIMEOUT_EXPECTED"), "Test might timeout")
-
-Same comment as v1, we can remove the @skip* tags.
-
-Similarly to v1:
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-v1: 
-https://lore.kernel.org/qemu-devel/579fb938-dc8a-5f85-143f-644ba1f1db40@linaro.org/
 
