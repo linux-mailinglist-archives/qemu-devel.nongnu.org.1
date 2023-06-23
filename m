@@ -2,82 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB88F73B40F
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 11:47:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02BF273B42A
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 11:53:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCdNK-0004h0-To; Fri, 23 Jun 2023 05:46:44 -0400
+	id 1qCdSg-0007B8-Fi; Fri, 23 Jun 2023 05:52:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1qCdNE-0004gd-Te
- for qemu-devel@nongnu.org; Fri, 23 Jun 2023 05:46:37 -0400
-Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1qCdNC-0005gk-T9
- for qemu-devel@nongnu.org; Fri, 23 Jun 2023 05:46:36 -0400
-Received: by mail-ej1-x636.google.com with SMTP id
- a640c23a62f3a-9786fc23505so34594866b.2
- for <qemu-devel@nongnu.org>; Fri, 23 Jun 2023 02:46:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1687513593; x=1690105593;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=4/uHvrNm8MtYeDCRWzVfMske8jpmcsjh8p1nzX+pFAM=;
- b=Zuyt/Gygsor4qfYtC7Q6FGjdxoIWQUJx3zyO+tkS+enEaz9rbgg59Chh6vtE2LAEnN
- SopS/eZBkNh3VlNUBxB3H2OD4nyUmNz95EtN4DpKvvJGGiXGy+ebiDtriNtI+d0MSmLx
- 9zuawwt/q5hZ7HI2Bk41DpY0A58OOJHeWiGst+5/LWuazvyTWzlu0fdZpiSizzCA1F0n
- IJMohC1m8CQkkONzrJyL/wnRkpkdU2soQAKyQr10P1ZYES+Hf7ab4rN+518/ZEoPfbrQ
- vZ+suwxb/lPPwwsOafDKMDooXBvP+5RMyJTnuVhWID0niX2LXzIxSxxgg9EGxWl9MTwx
- 0aHg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687513593; x=1690105593;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=4/uHvrNm8MtYeDCRWzVfMske8jpmcsjh8p1nzX+pFAM=;
- b=UZxYw2tcD7sDhIFLQH4FSAFVo+5y9BYiRxFmm9xLW02GH/Sgwcer1fjJFpCEgO22iT
- KPqWxPe0+vFtbN98MvxEkTCAYfqzQaC6l1dd6BLvIxPvl221U8OUGqYAb/LdIsrTd8zJ
- AP+pN35clNyNlC5M9E4zM4lYc2+DMVbBfrVIfcZdBrGHtpIQmeUWapB+jyCT9F1x8F5Y
- KBtOhWhQmBfyL1SapyqHIunpgqmSTdrkfNPgCu/4XVz59hamIc2oh7lUAYUp/xyIY8S6
- ubJ359CYZEXkaZsxISBE96okxgs04f2uiJ12qYjRQZEN56JSzlDFaUKyXBB4RsJkMXUe
- keaw==
-X-Gm-Message-State: AC+VfDy4oPNA0o7fZ/voheRDKDcth71gZTFv3qxLCK48gc0IiNfeuOdr
- QpCAgYmmEeTmupyTPIRSbsbxCQ==
-X-Google-Smtp-Source: ACHHUZ6jm6a7WDgfNBftQxYcH4LGv3jfQ6YZGdQ03bJYI9Jnx4eGL5UTurJIff0taZQc/hoWp79Z9A==
-X-Received: by 2002:a17:906:ee83:b0:978:af9d:771d with SMTP id
- wt3-20020a170906ee8300b00978af9d771dmr20199483ejb.17.1687513592988; 
- Fri, 23 Jun 2023 02:46:32 -0700 (PDT)
-Received: from localhost (cst2-173-16.cust.vodafone.cz. [31.30.173.16])
- by smtp.gmail.com with ESMTPSA id
- la1-20020a170906ad8100b009889f31d094sm5841859ejb.43.2023.06.23.02.46.32
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 23 Jun 2023 02:46:32 -0700 (PDT)
-Date: Fri, 23 Jun 2023 11:46:31 +0200
-From: Andrew Jones <ajones@ventanamicro.com>
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
- bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
- palmer@rivosinc.com
-Subject: Re: [PATCH v3 15/19] target/riscv/cpu.c: remove priv_ver check from
- riscv_isa_string_ext()
-Message-ID: <20230623-cceea5c383211d53109bc04b@orel>
-References: <20230622135700.105383-1-dbarboza@ventanamicro.com>
- <20230622135700.105383-16-dbarboza@ventanamicro.com>
+ (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
+ id 1qCdSZ-0007AL-0N
+ for qemu-devel@nongnu.org; Fri, 23 Jun 2023 05:52:07 -0400
+Received: from zuban.uni-paderborn.de ([2001:638:502:c003::17])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
+ id 1qCdSW-0008ER-RR
+ for qemu-devel@nongnu.org; Fri, 23 Jun 2023 05:52:06 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=mail.uni-paderborn.de; s=20170601; h=In-Reply-To:Content-Type:MIME-Version:
+ References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+ Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+ List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=IsJubS1YUUAq2un8KfO0/wAHLlBFAGg9yCnGSOMTCGE=; b=jY/Isjw06oVGt/ZsA+gWpaU1eY
+ aG7R+xXX4AlhLYhplDqvoEON4QrYypFiqJ4MyCQfpRpnzNl0ULAQKTimm9cIqs9UWKyHkKMu/KTdd
+ 7MzdBBpiu1ulLvUFl7OEPuAAYVddOL/5KNVQHNRvftF3fXStWqAZ/AhbMY3S0MxFJ6Oc=;
+Date: Fri, 23 Jun 2023 11:51:54 +0200
+From: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
+To: Michael Tokarev <mjt@tls.msk.ru>
+Cc: qemu-devel@nongnu.org, Siqi Chen <coc.cyqh@gmail.com>
+Subject: Re: [PULL 09/20] target/tricore: Fix out-of-bounds index in imask
+ instruction
+Message-ID: <e77777fcuuipjbqhvj5u3fcix4gex55bpbo4fmg5u7j4i27ybg@hkylkdjknanz>
+References: <20230621161422.1652151-1-kbastian@mail.uni-paderborn.de>
+ <20230621161422.1652151-10-kbastian@mail.uni-paderborn.de>
+ <c41c4ee2-29ae-78e8-612f-2d951f359540@tls.msk.ru>
+ <yury4wdzf434fmo6ty2mjmtc7u5bzg7bwak62s6us2a755tui5@5kwkzemwb6xl>
+ <e2a2fb5c-906a-9c42-e120-93651d548efd@tls.msk.ru>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230622135700.105383-16-dbarboza@ventanamicro.com>
-Received-SPF: pass client-ip=2a00:1450:4864:20::636;
- envelope-from=ajones@ventanamicro.com; helo=mail-ej1-x636.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+In-Reply-To: <e2a2fb5c-906a-9c42-e120-93651d548efd@tls.msk.ru>
+X-IMT-Source: Extern
+X-IMT-Spam-Score: 0.0 ()
+X-IMT-rspamd-score: 4
+X-IMT-rspamd-bar: /
+X-PMX-Version: 6.4.9.2830568, Antispam-Engine: 2.7.2.2107409,
+ Antispam-Data: 2023.6.23.94217, AntiVirus-Engine: 6.0.0,
+ AntiVirus-Data: 2023.6.6.600001
+X-Sophos-SenderHistory: ip=79.202.219.6, fs=1358807, da=175122980, mc=184, sc=0,
+ hc=184, sp=0, fso=1358807, re=0, sd=0, hd=0
+X-IMT-Authenticated-Sender: kbastian@UNI-PADERBORN.DE
+Received-SPF: pass client-ip=2001:638:502:c003::17;
+ envelope-from=kbastian@mail.uni-paderborn.de; helo=zuban.uni-paderborn.de
+X-Spam_score_int: -42
+X-Spam_score: -4.3
+X-Spam_bar: ----
+X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,45 +77,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jun 22, 2023 at 10:56:56AM -0300, Daniel Henrique Barboza wrote:
-> riscv_isa_string_ext() is being used by riscv_isa_string(), which is
-> then used by boards to retrieve the 'riscv,isa' string to be written in
-> the FDT. All this happens after riscv_cpu_realize(), meaning that we're
-> already past riscv_cpu_validate_set_extensions() and, more important,
-> riscv_cpu_disable_priv_spec_isa_exts().
-> 
-> This means that all extensions that needed to be disabled due to
-> priv_spec mismatch are already disabled. Checking this again during
-> riscv_isa_string_ext() is unneeded. Remove it.
-> 
-> As a bonus, riscv_isa_string_ext() can now be used with the 'host'
-> KVM-only CPU type since it doesn't have a env->priv_ver assigned and it
-> would fail this check for no good reason.
-> 
-> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-> ---
->  target/riscv/cpu.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
-> 
-> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-> index 5a50cb1d0b..b65db165cc 100644
-> --- a/target/riscv/cpu.c
-> +++ b/target/riscv/cpu.c
-> @@ -2001,8 +2001,7 @@ static void riscv_isa_string_ext(RISCVCPU *cpu, char **isa_str,
->      int i;
->  
->      for (i = 0; i < ARRAY_SIZE(isa_edata_arr); i++) {
-> -        if (cpu->env.priv_ver >= isa_edata_arr[i].min_version &&
-> -            isa_ext_is_enabled(cpu, &isa_edata_arr[i])) {
-> +        if (isa_ext_is_enabled(cpu, &isa_edata_arr[i])) {
->              new = g_strconcat(old, "_", isa_edata_arr[i].name, NULL);
->              g_free(old);
->              old = new;
-> -- 
-> 2.41.0
->
+Hi Michael,
 
-Nice!
+On Fri, Jun 23, 2023 at 09:54:54AM +0300, Michael Tokarev wrote:
+> 22.06.2023 17:51, Bastian Koppelmann wrote:
+> ..
+> > > Is it a -stable material?
+> > 
+> > Yes. If you pick this up, make sure you also pick up https://lore.kernel.org/qemu-devel/20230621161422.1652151-1-kbastian@mail.uni-paderborn.de/T/#md18391dd165c4fc2e60ddefb886f3522e715f487
+> > which applies the same fix to other instructions.
+> 
+> Aha. "Add CHECK_REG_PAIR() for insn accessing 64 bit regs".
+> This subject suggests the patch's adding this macro, instead
+> of using it. If it were worded like "Use CHECK.. for.." instead, I'd
+> notice this one too.
+> 
+> Picked up both, thank you!
+> 
+> Is there anything else in this series worth picking up for stable, eg:
+> 
+>  Fix helper_ret() not correctly restoring PSW
+>  Fix RR_JLI clobbering reg A[11]
 
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+These are rare cases where the guest does something wrong. It will not lead to a
+crash of QEMU.
+
+> 
+> or maybe others?
+> 
+> Please, in the future, add Cc: qemu-stable@nongnu.org for patches
+> worth to have in -stable.
+
+I will do that. I'm not sure what is worth while to pick up for stable. My
+initial thought was fixes for bugs that can lead to a crash in QEMU. Any pointer
+would make it easier for me to decide what to CC: qemu-stable@nongnu.org for.
+
+Thanks,
+Bastian
 
