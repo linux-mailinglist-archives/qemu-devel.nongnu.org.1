@@ -2,84 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9541973B0EA
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 08:50:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E918773B0EB
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 08:52:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCaby-0000yD-AR; Fri, 23 Jun 2023 02:49:38 -0400
+	id 1qCadq-0003O8-3I; Fri, 23 Jun 2023 02:51:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qCabn-0000wv-Bt
- for qemu-devel@nongnu.org; Fri, 23 Jun 2023 02:49:28 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qCabl-0006aW-FU
- for qemu-devel@nongnu.org; Fri, 23 Jun 2023 02:49:27 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687502964;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=psfLqAfE0Hv4N1b6wWokyZ0g+210HhVWq4ITeVKW32k=;
- b=dmZAO7SzfXEj/iiZ4Cw35u6pPIMVECA5JrhQlYqCiFuvktOr9KofAEptc1svDT5MNbj9Kx
- dt8/Oxg4kjaTorC1JJ+ymugBXkTHRAxqN7aT7Pp1K4Z6pMhpUdC9TEJcZSPn4PEd+QoGfU
- /BfOaYrwqvEaXQBd3NgX7jYe2SX7HD4=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-594-2AJie1fzOmCIf8E2cBQogA-1; Fri, 23 Jun 2023 02:49:15 -0400
-X-MC-Unique: 2AJie1fzOmCIf8E2cBQogA-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-3f9b12b55cfso2314805e9.2
- for <qemu-devel@nongnu.org>; Thu, 22 Jun 2023 23:49:15 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qCadh-0003DE-3M
+ for qemu-devel@nongnu.org; Fri, 23 Jun 2023 02:51:27 -0400
+Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qCadf-0007Jo-EZ
+ for qemu-devel@nongnu.org; Fri, 23 Jun 2023 02:51:24 -0400
+Received: by mail-ej1-x629.google.com with SMTP id
+ a640c23a62f3a-98bcc5338d8so25876566b.1
+ for <qemu-devel@nongnu.org>; Thu, 22 Jun 2023 23:51:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1687503081; x=1690095081;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=JZVlQgSGa1azEw+UQcAuKqyuTUvhMOvEc8rWlFCfpXc=;
+ b=ybugZ7U6/A/WM4r13Uqp/f26q3HE0gSGW0aISajh4Qg+Eg2VJ+vkf63zxfLWMDtEUe
+ Yqy7qlYu9aFa0wGU970UwljYyReUBVUJ5uYornB2ZKU2EaERTE32EnNAfHDJk+fHYKF6
+ twJODxLnK+lslN0Nvj65pqB5uYU8uXdMJoFKhRv959ULRykUtlO79lYNqrxxpkGW2KaS
+ sAp7Hcw32o0uyYC6kQulpGZKnmAI+FPoXX3+1EHE0zJb/ngrCkR0VIPMt0qx6RrG8Vsc
+ ktOV0pLSjRKDihWhRbQ3d4LbhnXnIg+C5Yc3jpZJnboROWaOEwcaOGT0nthzCH2uToNO
+ 5iTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687502954; x=1690094954;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=psfLqAfE0Hv4N1b6wWokyZ0g+210HhVWq4ITeVKW32k=;
- b=Ez2obNZvMsjdMVQgomw6j9LteCnsG+7P5BNFYnxMn70bPv6YAA89dD9gx3QkV+G9Ji
- rKLd0Y9jkyK9+iZmI9FTJiavUa5Qlk27L5OOLBRr8rsOOe0E+DY94tQIP4lxxzCGZF8L
- 7ilmYz/fDe3kFktk62Wycv0YfgGdiR/Ee5vFqBZEfkjcV2NoFIl5ypFv4TlRBLHU80OQ
- GvADpK4UeAONZocOlj0UCfmSswQsulXiU8mjPDuuISZpAgZ8acdoqcw0eDHQ2p9UFkkY
- ihj6LaxvntLFa3xhYkt6ffayad7k9ck/eMB0FlZq2kDeW17DpcHKegZGRYYD6lgtBYdj
- y6Wg==
-X-Gm-Message-State: AC+VfDw9L0kK9dIWvRrhf0eKza/Vbat73rAiSKteMpewWqhxvK1TWofW
- OMIQT9EBbYnQTJBfXCeRrg1FB4fso6g1cwzq/SG9kCSnlj4a8fNRxyDQbO/SF4jrk0wkRnOlwnF
- ofjvQnyvP1BH5Gsc=
-X-Received: by 2002:a1c:4c05:0:b0:3fa:7d67:74f with SMTP id
- z5-20020a1c4c05000000b003fa7d67074fmr473861wmf.31.1687502954774; 
- Thu, 22 Jun 2023 23:49:14 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5MvKqKLcl5/pyBuiM6a5KVY+jQri0oxVYkc2s+MCJelGGuvNqRdDAKplZ3EiaJW0UucbLnyA==
-X-Received: by 2002:a1c:4c05:0:b0:3fa:7d67:74f with SMTP id
- z5-20020a1c4c05000000b003fa7d67074fmr473850wmf.31.1687502954422; 
- Thu, 22 Jun 2023 23:49:14 -0700 (PDT)
-Received: from redhat.com ([2.52.149.110]) by smtp.gmail.com with ESMTPSA id
- y20-20020a05600c365400b003f74eb308fasm1348644wmq.48.2023.06.22.23.49.12
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 22 Jun 2023 23:49:13 -0700 (PDT)
-Date: Fri, 23 Jun 2023 02:49:10 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Albert Esteve <aesteve@redhat.com>
-Cc: qemu-devel@nongnu.org, kraxel@redhat.com, marcandre.lureau@gmail.com,
- cohuck@redhat.com, Fam Zheng <fam@euphon.net>
-Subject: Re: [PATCH v3 0/4] Virtio shared dma-buf
-Message-ID: <20230623024836-mutt-send-email-mst@kernel.org>
-References: <20230524091333.201767-1-aesteve@redhat.com>
+ d=1e100.net; s=20221208; t=1687503081; x=1690095081;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=JZVlQgSGa1azEw+UQcAuKqyuTUvhMOvEc8rWlFCfpXc=;
+ b=dp94I/+mf/Hcmrl7ySJbs/KbOwzchchKazWDs80a9Gf2a6hAAjKLLa22yvBQsnD3xW
+ gsW1XG+mGEIZyzJZSCZ83lrfQsXwlLyVcmBI+pabOG+RQ5bm++WnOg5HIwrtpF/Q/6Bg
+ 7b66qD30l/tylkUXV9Fm6cfco/P2Bb6p2gw9Omy3hDmPe23dbFdRRt8wHQq3fvcnlWWc
+ UMxcNEZ7xrwys/PjjcndGXcsS9SbrcrcZWK2rNRrz2qAMKqsrDbO2Jm6VIcxTbTe29GZ
+ O307XB1bO67zkTYdzawL+29s99dgn6tHk2nJhmVGs+M3sHzAgMTC1LcWwGfrjfRDOQ82
+ mADQ==
+X-Gm-Message-State: AC+VfDzURG3nW7SBJ5yEhVHtr+/+pcRc1KTU8+Nhecrn6y9eaYUBovIP
+ zfP7zvi0bfF+b79jrDf9/uoinA==
+X-Google-Smtp-Source: ACHHUZ6N0j+1QtP0W5dn6qAnvWFn7t7FBZPZTXW7An7CEc5Vz07UKg/QJp6lHcmtSe58k8bLMYZBLQ==
+X-Received: by 2002:a17:907:6da6:b0:988:9763:951c with SMTP id
+ sb38-20020a1709076da600b009889763951cmr13096617ejc.59.1687503081591; 
+ Thu, 22 Jun 2023 23:51:21 -0700 (PDT)
+Received: from [192.168.69.129] ([176.176.168.147])
+ by smtp.gmail.com with ESMTPSA id
+ y12-20020a17090614cc00b0098951bb4dc3sm4586176ejc.184.2023.06.22.23.51.20
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 22 Jun 2023 23:51:21 -0700 (PDT)
+Message-ID: <dace2217-77a3-09c4-4541-e19b0bee9fc7@linaro.org>
+Date: Fri, 23 Jun 2023 08:51:18 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230524091333.201767-1-aesteve@redhat.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v4 08/17] tcg: Fix temporary variable in tcg_gen_gvec_andcs
+Content-Language: en-US
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Max Chou <max.chou@sifive.com>, qemu-devel@nongnu.org, qemu-riscv@nongnu.org
+References: <20230622161646.32005-1-max.chou@sifive.com>
+ <20230622161646.32005-9-max.chou@sifive.com>
+ <684ca7f1-c4f4-70f8-b92d-34b0d3336646@ventanamicro.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <684ca7f1-c4f4-70f8-b92d-34b0d3336646@ventanamicro.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::629;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ej1-x629.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,65 +96,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, May 24, 2023 at 11:13:29AM +0200, Albert Esteve wrote:
-> v1 link -> https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg00598.html
-> v2 link -> https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg04530.html
-> v2 -> v3:
->     - Change UUID hash function strategy to djb
->     - Add qemu_uuid_is_equal wrapper
+On 6/22/23 19:30, Daniel Henrique Barboza wrote:
+> 
+> 
+> On 6/22/23 13:16, Max Chou wrote:
+>> The 5th parameter of tcg_gen_gvec_2s should be replaces by the temporary
+> 
+> s/replaces/replaced
+> 
+> 
+>> tmp variable in the tcg_gen_gvec_andcs function.
+>>
+>> Signed-off-by: Max Chou <max.chou@sifive.com>
+>> ---
+> 
+> Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-Posted some minor comments. Pls address and I'll merge.
+Queued to tcg-next with the typo fixed.
 
 
-> This patch covers the required steps to add support for virtio cross-device resource sharing[1],
-> which support is already available in the kernel.
+r~
+
 > 
-> The main usecase will be sharing dma buffers from virtio-gpu devices (as the exporter
-> -see VIRTIO_GPU_CMD_RESOURCE_ASSIGN_UUID in [2]), to virtio-video (under discussion)
-> devices (as the buffer-user or importer). Therefore, even though virtio specs talk about
-> resources or objects[3], this patch adds the infrastructure with dma-bufs in mind.
-> Note that virtio specs let the devices themselves define what a vitio object is.
-> 
-> These are the main parts that are covered in the patch:
-> 
-> - Add hash_func and key_equal_func to uuid
-> - Shared resources table, to hold all resources that can be shared in the host and their assigned UUID
-> - Internal shared table API for virtio devices to add, lookup and remove resources
-> - Unit test to verify the API.
-> - New message to the vhost-user protocol to allow backend to interact with the shared
->   table API through the control socket
-> 
-> Applies cleanly to 1c12355
-> 
-> [1] - https://lwn.net/Articles/828988/
-> [2] - https://docs.oasis-open.org/virtio/virtio/v1.2/csd01/virtio-v1.2-csd01.html#x1-3730006
-> [3] - https://docs.oasis-open.org/virtio/virtio/v1.2/csd01/virtio-v1.2-csd01.html#x1-10500011
-> 
-> Albert Esteve (4):
->   uuid: add hash_func and equal_func
->   virtio-dmabuf: introduce virtio-dmabuf
->   vhost-user: add shared_object msg
->   vhost-user: refactor send_resp code
-> 
->  MAINTAINERS                               |   7 ++
->  docs/interop/vhost-user.rst               |  15 +++
->  hw/display/meson.build                    |   1 +
->  hw/display/virtio-dmabuf.c                |  90 +++++++++++++++++
->  hw/virtio/vhost-user.c                    |  90 ++++++++++++++---
->  include/hw/virtio/virtio-dmabuf.h         |  59 ++++++++++++
->  include/qemu/uuid.h                       |   2 +
->  subprojects/libvhost-user/libvhost-user.c |  88 +++++++++++++++++
->  subprojects/libvhost-user/libvhost-user.h |  56 +++++++++++
->  tests/unit/meson.build                    |   1 +
->  tests/unit/test-uuid.c                    |  27 ++++++
->  tests/unit/test-virtio-dmabuf.c           | 112 ++++++++++++++++++++++
->  util/uuid.c                               |  14 +++
->  13 files changed, 549 insertions(+), 13 deletions(-)
->  create mode 100644 hw/display/virtio-dmabuf.c
->  create mode 100644 include/hw/virtio/virtio-dmabuf.h
->  create mode 100644 tests/unit/test-virtio-dmabuf.c
-> 
-> -- 
-> 2.40.0
+>>   tcg/tcg-op-gvec.c | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/tcg/tcg-op-gvec.c b/tcg/tcg-op-gvec.c
+>> index 95a588d6d2..a062239804 100644
+>> --- a/tcg/tcg-op-gvec.c
+>> +++ b/tcg/tcg-op-gvec.c
+>> @@ -2774,7 +2774,7 @@ void tcg_gen_gvec_andcs(unsigned vece, uint32_t dofs, uint32_t aofs,
+>>       TCGv_i64 tmp = tcg_temp_ebb_new_i64();
+>>       tcg_gen_dup_i64(vece, tmp, c);
+>> -    tcg_gen_gvec_2s(dofs, aofs, oprsz, maxsz, c, &g);
+>> +    tcg_gen_gvec_2s(dofs, aofs, oprsz, maxsz, tmp, &g);
+>>       tcg_temp_free_i64(tmp);
+>>   }
 
 
