@@ -2,44 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 642B273B385
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 11:28:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4153273B38A
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 11:28:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCd4A-0002RB-QC; Fri, 23 Jun 2023 05:26:54 -0400
+	id 1qCd5P-00032g-CT; Fri, 23 Jun 2023 05:28:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=Kxto=CL=kaod.org=clg@ozlabs.org>)
- id 1qCd47-0002Qf-FU; Fri, 23 Jun 2023 05:26:51 -0400
+ id 1qCd5L-0002ty-PB; Fri, 23 Jun 2023 05:28:07 -0400
 Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
  helo=gandalf.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=Kxto=CL=kaod.org=clg@ozlabs.org>)
- id 1qCd44-0004ub-7G; Fri, 23 Jun 2023 05:26:50 -0400
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4QnX1Z1RN2z4x1f;
- Fri, 23 Jun 2023 19:26:42 +1000 (AEST)
+ id 1qCd5K-00058N-05; Fri, 23 Jun 2023 05:28:07 -0400
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4QnX371l8lz4x3k;
+ Fri, 23 Jun 2023 19:28:03 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits))
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4QnX1X5sB0z4wjB;
- Fri, 23 Jun 2023 19:26:40 +1000 (AEST)
-Message-ID: <3d5f364a-4b6d-be94-4e74-a0bb32b137ed@kaod.org>
-Date: Fri, 23 Jun 2023 11:26:36 +0200
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4QnX360RmPz4x1f;
+ Fri, 23 Jun 2023 19:28:01 +1000 (AEST)
+Message-ID: <66c9224d-6bd1-a617-7059-c629facfb833@kaod.org>
+Date: Fri, 23 Jun 2023 11:28:00 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
-Subject: Re: [RFC PATCH 1/5] target/ppc: gdbstub init spr gdb_id for all CPUs
+Subject: Re: [PATCH] ppc/pnv/pci: Clean up error messages
 Content-Language: en-US
-To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
-Cc: qemu-devel@nongnu.org, Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-References: <20230531012313.19891-1-npiggin@gmail.com>
- <20230531012313.19891-2-npiggin@gmail.com>
+To: Joel Stanley <joel@jms.id.au>, qemu-ppc@nongnu.org
+Cc: qemu-devel@nongnu.org
+References: <20230619233636.57452-1-joel@jms.id.au>
 From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20230531012313.19891-2-npiggin@gmail.com>
+In-Reply-To: <20230619233636.57452-1-joel@jms.id.au>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
@@ -66,11 +64,12 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/31/23 03:23, Nicholas Piggin wrote:
-> Make sure each CPU gets its state set up for gdb, not just the ones
-> before PowerPCCPUClass has had its gdb state set up.
+On 6/20/23 01:36, Joel Stanley wrote:
+> The phb error macros add a newline for you, so remove the second one to
+> avoid double whitespace.
 > 
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> Signed-off-by: Joel Stanley <joel@jms.id.au>
+
 
 Applied to ppc-next.
 
@@ -81,56 +80,67 @@ C.
 
 
 > ---
->   target/ppc/gdbstub.c | 30 +++++++++++++++++++-----------
->   1 file changed, 19 insertions(+), 11 deletions(-)
+>   hw/pci-host/pnv_phb4.c | 14 +++++++-------
+>   1 file changed, 7 insertions(+), 7 deletions(-)
 > 
-> diff --git a/target/ppc/gdbstub.c b/target/ppc/gdbstub.c
-> index 63c9abe4f1..ca39efdc35 100644
-> --- a/target/ppc/gdbstub.c
-> +++ b/target/ppc/gdbstub.c
-> @@ -327,6 +327,25 @@ void ppc_gdb_gen_spr_xml(PowerPCCPU *cpu)
->       unsigned int num_regs = 0;
->       int i;
+> diff --git a/hw/pci-host/pnv_phb4.c b/hw/pci-host/pnv_phb4.c
+> index 542f9e293221..6232cbeee161 100644
+> --- a/hw/pci-host/pnv_phb4.c
+> +++ b/hw/pci-host/pnv_phb4.c
+> @@ -133,13 +133,13 @@ static void pnv_phb4_rc_config_write(PnvPHB4 *phb, unsigned off,
+>       PCIDevice *pdev;
 >   
-> +    for (i = 0; i < ARRAY_SIZE(env->spr_cb); i++) {
-> +        ppc_spr_t *spr = &env->spr_cb[i];
-> +
-> +        if (!spr->name) {
-> +            continue;
-> +        }
-> +
-> +        /*
-> +         * GDB identifies registers based on the order they are
-> +         * presented in the XML. These ids will not match QEMU's
-> +         * representation (which follows the PowerISA).
-> +         *
-> +         * Store the position of the current register description so
-> +         * we can make the correspondence later.
-> +         */
-> +        spr->gdb_id = num_regs;
-> +        num_regs++;
-> +    }
-> +
->       if (pcc->gdb_spr_xml) {
+>       if (size != 4) {
+> -        phb_error(phb, "rc_config_write invalid size %d\n", size);
+> +        phb_error(phb, "rc_config_write invalid size %d", size);
 >           return;
 >       }
-> @@ -348,17 +367,6 @@ void ppc_gdb_gen_spr_xml(PowerPCCPU *cpu)
 >   
->           g_string_append_printf(xml, " bitsize=\"%d\"", TARGET_LONG_BITS);
->           g_string_append(xml, " group=\"spr\"/>");
-> -
-> -        /*
-> -         * GDB identifies registers based on the order they are
-> -         * presented in the XML. These ids will not match QEMU's
-> -         * representation (which follows the PowerISA).
-> -         *
-> -         * Store the position of the current register description so
-> -         * we can make the correspondence later.
-> -         */
-> -        spr->gdb_id = num_regs;
-> -        num_regs++;
+>       pdev = pci_find_device(pci->bus, 0, 0);
+>       if (!pdev) {
+> -        phb_error(phb, "rc_config_write device not found\n");
+> +        phb_error(phb, "rc_config_write device not found");
+>           return;
 >       }
 >   
->       g_string_append(xml, "</feature>");
+> @@ -155,13 +155,13 @@ static uint64_t pnv_phb4_rc_config_read(PnvPHB4 *phb, unsigned off,
+>       uint64_t val;
+>   
+>       if (size != 4) {
+> -        phb_error(phb, "rc_config_read invalid size %d\n", size);
+> +        phb_error(phb, "rc_config_read invalid size %d", size);
+>           return ~0ull;
+>       }
+>   
+>       pdev = pci_find_device(pci->bus, 0, 0);
+>       if (!pdev) {
+> -        phb_error(phb, "rc_config_read device not found\n");
+> +        phb_error(phb, "rc_config_read device not found");
+>           return ~0ull;
+>       }
+>   
+> @@ -1039,19 +1039,19 @@ static void pnv_pec_stk_nest_xscom_write(void *opaque, hwaddr addr,
+>           if (phb->nest_regs[PEC_NEST_STK_BAR_EN] &
+>               (PEC_NEST_STK_BAR_EN_MMIO0 |
+>                PEC_NEST_STK_BAR_EN_MMIO1)) {
+> -            phb_pec_error(pec, "Changing enabled BAR unsupported\n");
+> +            phb_pec_error(pec, "Changing enabled BAR unsupported");
+>           }
+>           phb->nest_regs[reg] = val & 0xffffffffff000000ull;
+>           break;
+>       case PEC_NEST_STK_PHB_REGS_BAR:
+>           if (phb->nest_regs[PEC_NEST_STK_BAR_EN] & PEC_NEST_STK_BAR_EN_PHB) {
+> -            phb_pec_error(pec, "Changing enabled BAR unsupported\n");
+> +            phb_pec_error(pec, "Changing enabled BAR unsupported");
+>           }
+>           phb->nest_regs[reg] = val & 0xffffffffffc00000ull;
+>           break;
+>       case PEC_NEST_STK_INT_BAR:
+>           if (phb->nest_regs[PEC_NEST_STK_BAR_EN] & PEC_NEST_STK_BAR_EN_INT) {
+> -            phb_pec_error(pec, "Changing enabled BAR unsupported\n");
+> +            phb_pec_error(pec, "Changing enabled BAR unsupported");
+>           }
+>           phb->nest_regs[reg] = val & 0xfffffff000000000ull;
+>           break;
 
 
