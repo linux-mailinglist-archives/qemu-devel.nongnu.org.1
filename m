@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2468B73B71D
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 14:24:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AD7F73B723
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 14:26:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCfnU-0003pB-M0; Fri, 23 Jun 2023 08:21:55 -0400
+	id 1qCfoV-0006an-1C; Fri, 23 Jun 2023 08:22:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qCfmo-0003kc-Ql
+ id 1qCfmo-0003kZ-Q1
  for qemu-devel@nongnu.org; Fri, 23 Jun 2023 08:21:12 -0400
-Received: from mail-lf1-x132.google.com ([2a00:1450:4864:20::132])
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qCfmi-0003gh-TU
- for qemu-devel@nongnu.org; Fri, 23 Jun 2023 08:21:09 -0400
-Received: by mail-lf1-x132.google.com with SMTP id
- 2adb3069b0e04-4f86e1bdce5so705351e87.3
+ id 1qCfmi-0003gr-Ma
+ for qemu-devel@nongnu.org; Fri, 23 Jun 2023 08:21:08 -0400
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-3110ab7110aso620325f8f.3
  for <qemu-devel@nongnu.org>; Fri, 23 Jun 2023 05:21:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1687522863; x=1690114863;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=hn+zKX2ZU5kJ7IFfmWrHts4Msqz+nCT2HShGHhdqu5E=;
- b=Hb2QKjFKhS6CN9UAy8Fe0sRyzyl/vX/Gp7kO8bmVn/wYbE3gmcd+RXla+ak7d2MQ8n
- yxgg/b6VDUyJyWviHD6V8y+G/5t47M0U/puuhb/nuyse2YJgtxCy5UL8jUzxcwAKy9b7
- A4n8uBu+pCzauRTm0cWc9+xY4+ICvU43zTDqjGrKjK2Gqod96YRaOX5MYwFMBpx2qWe5
- jZquzrgQ5+PSelCfZ8wGuD1Us1emqEo7w76BXMzeJsj5XD6wfWcvLoCEpivghayzj8RC
- xj4TERq4Us8g5803tFRnzjay6De0GPiRE2PYgOtfcBfCCc6TdEa6mjQB0WT/31LaZmUn
- aP5w==
+ bh=9WUqhetdgE59J23w7OMYoxJNBVAN+y7zryiCeyC7VBI=;
+ b=D73HOrWIhu2fC33oVmavdY6FdQfU+/K8O3x/sgrLpX75NeP8frQHts37plDdIVkd2r
+ g2clhRovLNOt+yEWxGzMRc3O1sPT500lBJkcDbJmQ1RZkHgEC9GFYvdzhD3oKuo/efiT
+ jZpDc87AlSwVEofLyIi40DYx1ZcJJKmNRX/ZFGWhb3iJ9kOPvckhl7E4+c7dxK2pp8Uz
+ UexrErdhQvBOJm479WjTZOm1by+n+SQqnak5E0aDOnO0F8sqC61Z2aCSOmweBp/pWMQC
+ phR91XCZODHtrImQ47Va3OdBiLPgQK51+N1PhC3lwSMQEA//nqkZahNSzq1RMCzXFPB8
+ YzMg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20221208; t=1687522863; x=1690114863;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=hn+zKX2ZU5kJ7IFfmWrHts4Msqz+nCT2HShGHhdqu5E=;
- b=XGzb6CUht6JABhZKFbGrftYGrQr67cgtBjc9okXmG2LiGXH0Zw2CX6yqPRoO2Yrmet
- 7dAD7rl9mAgroYKCackKDwbCtMwayLQWxaTDegzkfQ0ZkJNrmtWOmtqokufwRWZNYZE1
- /KPWDR8okEEzgGlctzHJZ0m2+3Df89K6jLP0I/1TSfoH0pF6o2Xtwj7Cc+Nw1ft+PYyX
- nTi16ChCAkRQjozpHUEGDz1c8uHO6T9CBqYHu16cVWkJWzX10NnTmddBHtfrdjDbSefv
- Z2nrI5DWbqlVN9PpXjrot2fP0sdCzTRzLWY4zfmnJJ2JRwT2yGJx4/y3iMgU0R0en1ZC
- F/rQ==
-X-Gm-Message-State: AC+VfDyHClucHcRErsf4DZSIwez68TgL4YLu0ysWrW5747yqb9qUeW/Z
- IPXJM+TB6o+wETCI26hlY/Mb5w==
-X-Google-Smtp-Source: ACHHUZ4JVY3kfqXbNdp+0RXbwPzG2sg67l4flSzexxUI+3W7pd5yaArCU6rUz/6rIKvdfx8ESkf20A==
-X-Received: by 2002:a19:791d:0:b0:4f8:6f40:4773 with SMTP id
- u29-20020a19791d000000b004f86f404773mr9242977lfc.7.1687522862905; 
- Fri, 23 Jun 2023 05:21:02 -0700 (PDT)
+ bh=9WUqhetdgE59J23w7OMYoxJNBVAN+y7zryiCeyC7VBI=;
+ b=bUnj1Dwba6QTL2CbCnxcn5xv74dzcwMHflsiXGhwN5Vc1lv2cOcevU1QxzW6sNObqb
+ 5ws5ldkdAxL5O1Smk7u5WuQWAPZEj2Z3kHzcB3ttrqW5EBALmzbnAptqVbfruj08G5ci
+ CwZEhITzySGefF1XKmbfKhiGUKysBsS2VpYufnDBSAUJ14fxQXJsiwG0YRMyDUDcW7I6
+ NyOx+ubcf1Ndjg3hoWFdzdYLo3Rj4ki5GIxZpgPl/XB9wNcGDPxRLL7pjOz7Dr+uRBdE
+ DObHceECskBijgv/T/UwlpwLS5Spls2ROcKCrNMVd8NUA7EcswBAK2t42hBcOqEVEWln
+ ORKQ==
+X-Gm-Message-State: AC+VfDxMnWV4CYZy1WFitIU3oFrQrbcpI5kfSV+uG4W+9nkgRoMFTh1h
+ 5+DntTnkZrYYu2DjMvULsj4VSw==
+X-Google-Smtp-Source: ACHHUZ78wHOFRDgFd8pur0oNNt9l2nIYhQ3p8/6zemG411mN/dWtSXsk60knAJha9XDMF8r9jgF4VQ==
+X-Received: by 2002:adf:f244:0:b0:309:4999:7549 with SMTP id
+ b4-20020adff244000000b0030949997549mr16063793wrp.46.1687522863349; 
+ Fri, 23 Jun 2023 05:21:03 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- r11-20020a5d498b000000b00307a86a4bcesm9415759wrq.35.2023.06.23.05.21.01
+ y16-20020adfd090000000b003110dc7f408sm9389685wrh.41.2023.06.23.05.21.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 23 Jun 2023 05:21:01 -0700 (PDT)
+ Fri, 23 Jun 2023 05:21:02 -0700 (PDT)
 Received: from zen.lan (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id F41251FFBF;
- Fri, 23 Jun 2023 13:21:00 +0100 (BST)
+ by zen.linaroharston (Postfix) with ESMTP id 1A50E1FFC0;
+ Fri, 23 Jun 2023 13:21:01 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -81,27 +81,25 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  Stefan Hajnoczi <stefanha@redhat.com>, Bin Meng <bmeng.cn@gmail.com>,
  Thomas Huth <thuth@redhat.com>, Beraldo Leal <bleal@redhat.com>,
  Laurent Vivier <lvivier@redhat.com>, Yanan Wang <wangyanan55@huawei.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Ani Sinha <anisinha@redhat.com>
-Subject: [PATCH 04/26] docs/devel: remind developers to run CI container
- pipeline when updating images
-Date: Fri, 23 Jun 2023 13:20:38 +0100
-Message-Id: <20230623122100.1640995-5-alex.bennee@linaro.org>
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PATCH 05/26] tests/tcg: add mechanism to handle plugin arguments
+Date: Fri, 23 Jun 2023 13:20:39 +0100
+Message-Id: <20230623122100.1640995-6-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230623122100.1640995-1-alex.bennee@linaro.org>
 References: <20230623122100.1640995-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::132;
- envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x132.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -117,41 +115,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Ani Sinha <anisinha@redhat.com>
+We recently missed a regression that should have been picked up by
+check-tcg. This was because the libmem plugin is effectively a NOP if
+the user doesn't specify the type to use.
 
-When new dependencies and packages are added to containers, its important to
-run CI container generation pipelines on gitlab to make sure that there are no
-obvious conflicts between packages that are being added and those that are
-already present. Running CI container pipelines will make sure that there are
-no such breakages before we commit the change updating the containers. Add a
-line in the documentation reminding developers to run the pipeline before
-submitting the change. It will also ease the life of the maintainers.
+Rather than changing the default behaviour add an additional expansion
+so we can take this into account in future.
 
-Signed-off-by: Ani Sinha <anisinha@redhat.com>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Message-Id: <20230506072012.10350-1-anisinha@redhat.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- docs/devel/testing.rst | 6 ++++++
- 1 file changed, 6 insertions(+)
+ tests/tcg/Makefile.target | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/docs/devel/testing.rst b/docs/devel/testing.rst
-index 203facb417..8f18052ba7 100644
---- a/docs/devel/testing.rst
-+++ b/docs/devel/testing.rst
-@@ -485,6 +485,12 @@ first to contribute the mapping to the ``libvirt-ci`` project:
-    `CI <https://www.qemu.org/docs/master/devel/ci.html>`__ documentation
-    page on how to trigger gitlab CI pipelines on your change.
+diff --git a/tests/tcg/Makefile.target b/tests/tcg/Makefile.target
+index 72876cc84e..2462c26000 100644
+--- a/tests/tcg/Makefile.target
++++ b/tests/tcg/Makefile.target
+@@ -169,13 +169,17 @@ extract-plugin = $(wordlist 2, 2, $(subst -with-, ,$1))
  
-+ * Please also trigger gitlab container generation pipelines on your change
-+   for as many OS distros as practical to make sure that there are no
-+   obvious breakages when adding the new pre-requisite. Please see
-+   `CI <https://www.qemu.org/docs/master/devel/ci.html>`__ documentation
-+   page on how to trigger gitlab CI pipelines on your change.
+ RUN_TESTS+=$(EXTRA_RUNS)
+ 
++# Some plugins need additional arguments above the default to fully
++# exercise things. We can define them on a per-test basis here.
++run-plugin-%-with-libmem.so: PLUGIN_ARGS=$(COMMA)inline=true$(COMMA)callback=true
 +
- For enterprise distros that default to old, end-of-life versions of the
- Python runtime, QEMU uses a separate set of mappings that work with more
- recent versions.  These can be found in ``tests/lcitool/mappings.yml``.
+ ifeq ($(filter %-softmmu, $(TARGET)),)
+ run-%: %
+ 	$(call run-test, $<, $(QEMU) $(QEMU_OPTS) $<)
+ 
+ run-plugin-%:
+ 	$(call run-test, $@, $(QEMU) $(QEMU_OPTS) \
+-		-plugin $(PLUGIN_LIB)/$(call extract-plugin,$@) \
++		-plugin $(PLUGIN_LIB)/$(call extract-plugin,$@)$(PLUGIN_ARGS) \
+ 		-d plugin -D $*.pout \
+ 		 $(call strip-plugin,$<))
+ else
+@@ -189,7 +193,7 @@ run-plugin-%:
+ 	$(call run-test, $@, \
+ 	  $(QEMU) -monitor none -display none \
+ 		  -chardev file$(COMMA)path=$@.out$(COMMA)id=output \
+-	   	  -plugin $(PLUGIN_LIB)/$(call extract-plugin,$@) \
++	   	  -plugin $(PLUGIN_LIB)/$(call extract-plugin,$@)$(PLUGIN_ARGS) \
+ 	    	  -d plugin -D $*.pout \
+ 		  $(QEMU_OPTS) $(call strip-plugin,$<))
+ endif
 -- 
 2.39.2
 
