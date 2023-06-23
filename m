@@ -2,76 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A725373BA97
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 16:49:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 41BC673BAC6
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 16:53:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCi5y-0002Jp-OT; Fri, 23 Jun 2023 10:49:06 -0400
+	id 1qCi8q-0003lp-Bs; Fri, 23 Jun 2023 10:52:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qCi5w-0002JN-AK
- for qemu-devel@nongnu.org; Fri, 23 Jun 2023 10:49:04 -0400
-Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qCi5u-0006EZ-LC
- for qemu-devel@nongnu.org; Fri, 23 Jun 2023 10:49:04 -0400
-Received: by mail-ed1-x534.google.com with SMTP id
- 4fb4d7f45d1cf-51bea30ccbcso734618a12.0
- for <qemu-devel@nongnu.org>; Fri, 23 Jun 2023 07:49:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687531741; x=1690123741;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=33lRUmbAB6ZBFbg+mpHxAIUCBa32sX9XnJmwcXWIF4A=;
- b=EtthK2P6AdWa3CylukHDlzkb921ywnop2rlRMkQhGJJJnq2SGevmuJX/L55nmJv/kj
- /dASmPb2LOUgof3UmETwbzLI0L6HwZ8JPVysemgOVVrbOom4MMC1TZxIjL0FskQGJFlp
- b5UNchFG51p31QpZsMNEcKfYV0jkl+jUVXsZSuUEaYkDRMLcWbrI1nSeKu+5XZCCk+fF
- rhrmNjhiYukNmAGNbdK6M9FtKv5+ZBRjioYSDjuwxH2pgkImr10cFrFvEwS7hqbcf4cN
- H6oc60tCw5JoGDuHRTaKugmNGCbZmfjYM+AVTFGmJO5C289+JxvPa4c1W1Jmr7yIar6L
- nvJQ==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qCi8n-0003iS-Bu
+ for qemu-devel@nongnu.org; Fri, 23 Jun 2023 10:52:01 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qCi8l-0007Mi-Ii
+ for qemu-devel@nongnu.org; Fri, 23 Jun 2023 10:52:01 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1687531918;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=pOlWmEmQdV3rKq8KDvAjHzqfY2QTqMt8l5WxCdIGOx8=;
+ b=KlvW6asCWFQWwwslFdrbG6k8TWU3QbNN+4HqRW6duSYbJpE8h1Hc2xWsoyRLsCj5QU+CAz
+ pWmDjHLAQN8IpQEs4z9iuf/UxF2BuIybnWHIjBgLYc6pZcjOF+P4j5/d9GW/ksMFMtBsRY
+ P3C0wZJsKTdg0546Eff2ujM5tsm5984=
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
+ [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-517-xzPG0aCkNiOJsc3jPQyPZg-1; Fri, 23 Jun 2023 10:51:56 -0400
+X-MC-Unique: xzPG0aCkNiOJsc3jPQyPZg-1
+Received: by mail-qk1-f198.google.com with SMTP id
+ af79cd13be357-76248f3057bso14041985a.1
+ for <qemu-devel@nongnu.org>; Fri, 23 Jun 2023 07:51:56 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687531741; x=1690123741;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=33lRUmbAB6ZBFbg+mpHxAIUCBa32sX9XnJmwcXWIF4A=;
- b=gBPrpzgjPUN0vtB2C+tQDMWXdzEFpCkRH41KFa7ditLS2iE5VxPQ9/7kGpIOKp9//4
- iJKYB0N6jG4MG2t15+jsc0lvweoX28JTAMgw32f51xgsfecKDZk4tHMb8uphOfhwsZls
- Ytp65qN4wykkrRkVEb8WKKuD0MpZGCcDEmfv4vPyJ4U2nIXiUHr+C7FRNvfGLIlDR3f8
- w/vrydTa1iZgtkyPoPluH58dLTdXZrJAWR7SDyKLkFKrfPNFsbsMlM3Y5eamdm15AIi7
- opK6Ruo4gb9R/wr04pqae3VmSWtJP8xTqZbYYCJwUyCAYnnmtQid0WqhO2Rnd44zrMYH
- a0Kw==
-X-Gm-Message-State: AC+VfDwPB/14Tfb7/uK/tR07YnMc/p6y+do+VvbO8xTdqdh9RLXRsoqU
- 8iYhzmPyMD/VQzOgr3Pj0sJEyyIB9celWW7Fz46+jAim30JdlCZZ
-X-Google-Smtp-Source: ACHHUZ7Z8jOiXwDuDUlY19wLITipF1zZja/iO2/HW+hyNnhOiJj69UcVi6Vw6FXWgvL1VrBW0+/OgAIzacOaqM5Q7cw=
-X-Received: by 2002:a05:6402:31f3:b0:51b:cd57:7731 with SMTP id
- dy19-20020a05640231f300b0051bcd577731mr8394619edb.20.1687531740733; Fri, 23
- Jun 2023 07:49:00 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1687531916; x=1690123916;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=pOlWmEmQdV3rKq8KDvAjHzqfY2QTqMt8l5WxCdIGOx8=;
+ b=EQT/5iP7jJk4Cn2Owg8MKZpQoocklk0tLdfRo6gCN/KlTG4jT80W8y0vxRvC3Qqq0S
+ Lx9SfiRGbDOzwswTxbcbxUIp05aEx3suze4IvXbFaAWOsWQexAWVG6/kTdaIHdAdagyW
+ I3R5dU1aTf/NFw9SU42ax8NY8CJv968Xfnt+A2rGpY6zP8ur69fON2zLzDUfyTdgMF9D
+ zqd+lQS0OnNT4NyUfl4MyyQUnlZ7mDOCCJaoRL37U+/S1DtPxH+hYOm47S5haYGVfQKo
+ NsMlPEQ/2j8KRKiZ5T7+Yva8aJ90ozicue1EoeVABkifxFPSDjt9Lr8Fm4DbYYji+CwW
+ SCRg==
+X-Gm-Message-State: AC+VfDxoR3ogXhOLqDDrkwEcmM7zInS9skeu6uApPfumwvPulV4ZtC1y
+ TyQHqmQ69e0p96oeNBhwsm9jSn6J6vv5QdKJXf5jBxwBfsB+2DPKkjdTiddF05W5O+j6X4uUsvH
+ klHKSpIZ5MLuJfR0=
+X-Received: by 2002:ac8:5842:0:b0:3f9:cb97:f15a with SMTP id
+ h2-20020ac85842000000b003f9cb97f15amr28104556qth.0.1687531915804; 
+ Fri, 23 Jun 2023 07:51:55 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ456rFIHzXRztFqYg5Md8Gfd5bNvRzqyoUeDVwcSUN7YJ7I2Q/CEz8v7Fp4jxz4wuEQyo5YNA==
+X-Received: by 2002:ac8:5842:0:b0:3f9:cb97:f15a with SMTP id
+ h2-20020ac85842000000b003f9cb97f15amr28104526qth.0.1687531915422; 
+ Fri, 23 Jun 2023 07:51:55 -0700 (PDT)
+Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
+ [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
+ w38-20020a05622a192600b003fde72a93e0sm4834488qtc.97.2023.06.23.07.51.54
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 23 Jun 2023 07:51:55 -0700 (PDT)
+Date: Fri, 23 Jun 2023 10:51:53 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+Cc: Juan Quintela <quintela@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org,
+ Markus Armbruster <armbru@redhat.com>,
+ Leonardo Bras <leobras@redhat.com>, qemu-block@nongnu.org,
+ Stefan Hajnoczi <stefanha@redhat.com>,
+ Eric Blake <eblake@redhat.com>, Fam Zheng <fam@euphon.net>,
+ Thomas Huth <thuth@redhat.com>, libvir-list@redhat.com
+Subject: Re: [RFC 4/6] migration: Deprecate -incoming <uri>
+Message-ID: <ZJWxiTZf9zNGDeky@x1n>
+References: <20230612193344.3796-1-quintela@redhat.com>
+ <20230612193344.3796-5-quintela@redhat.com> <ZId0+HYF/ETLVri3@x1n>
+ <875y7sflqb.fsf@secure.mitica>
+ <d88c707a-abd9-6c8e-907c-13a3fa9a0219@redhat.com>
+ <87wmzv7ubn.fsf@secure.mitica> <ZJQbnmbFZkY51bSy@redhat.com>
+ <ZJRuw19Rc1LlPQId@x1n> <ZJVWdgXWad2w+za3@redhat.com>
 MIME-Version: 1.0
-References: <20230302123029.153265-1-pbonzini@redhat.com>
- <20230302123029.153265-57-pbonzini@redhat.com>
-In-Reply-To: <20230302123029.153265-57-pbonzini@redhat.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 23 Jun 2023 15:48:49 +0100
-Message-ID: <CAFEAcA9KXrRscf9QK2Z5Say91KDm7xRLMZGh4A1rQ1+0TCHtcA@mail.gmail.com>
-Subject: Re: [PULL 56/62] hw/xen: Support GSI mapping to PIRQ
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, David Woodhouse <dwmw@amazon.co.uk>,
- Paul Durrant <paul@xen.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::534;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x534.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ZJVWdgXWad2w+za3@redhat.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -88,77 +109,102 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 2 Mar 2023 at 12:50, Paolo Bonzini <pbonzini@redhat.com> wrote:
->
-> From: David Woodhouse <dwmw@amazon.co.uk>
->
-> If I advertise XENFEAT_hvm_pirqs then a guest now boots successfully as
-> long as I tell it 'pci=3Dnomsi'.
->
-> [root@localhost ~]# cat /proc/interrupts
->            CPU0
->   0:         52   IO-APIC   2-edge      timer
->   1:         16  xen-pirq   1-ioapic-edge  i8042
->   4:       1534  xen-pirq   4-ioapic-edge  ttyS0
->   8:          1  xen-pirq   8-ioapic-edge  rtc0
->   9:          0  xen-pirq   9-ioapic-level  acpi
->  11:       5648  xen-pirq  11-ioapic-level  ahci[0000:00:04.0]
->  12:        257  xen-pirq  12-ioapic-edge  i8042
-> ...
->
-> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-> Reviewed-by: Paul Durrant <paul@xen.org>
+On Fri, Jun 23, 2023 at 09:23:18AM +0100, Daniel P. Berrangé wrote:
+> On Thu, Jun 22, 2023 at 11:54:43AM -0400, Peter Xu wrote:
+> > On Thu, Jun 22, 2023 at 10:59:58AM +0100, Daniel P. Berrangé wrote:
+> > > I've mentioned several times before that the user should never need to
+> > > set this multifd-channels parameter (nor many other parameters) on the
+> > > destination in the first place.
+> > > 
+> > > The QEMU migration stream should be changed to add a full
+> > > bi-directional handshake, with negotiation of most parameters.
+> > > IOW, the src QEMU should be configured with 16 channels, and
+> > > it should connect the primary control channel, and then directly
+> > > tell the dest that it wants to use 16 multifd channels.
+> > > 
+> > > If we're expecting the user to pass this info across to the dest
+> > > manually we've already spectacularly failed wrt user friendliness.
+> > 
+> > I can try to move the todo even higher.  Trying to list the initial goals
+> > here:
+> > 
+> > - One extra phase of handshake between src/dst (maybe the time to boost
+> >   QEMU_VM_FILE_VERSION) before anything else happens.
+> > 
+> > - Dest shouldn't need to apply any cap/param, it should get all from src.
+> >   Dest still need to be setup with an URI and that should be all it needs.
+> 
+> There are a few that the dest will still need set explicitly. Specifically
+> the TLS parameters - tls-authz and tls-creds, because those are both
+> related to --object parameters configured on the dst QEMU. Potentially
+> there's an argument to be made for the TLS parameters to be part fo the
+> initial 'migrate' and 'migrate-incoming' command data, as they're
+> specifically related to the connection establishment, while (most) of
+> the other params are related to the migration protocol running inside
+> the connection.
 
-Hi; Coverity points out an off-by-one error in this code
-(CID 1508128):
+Ideally we can even make tls options to be after the main connection is
+established, IOW the gnutls handshake can be part of the generic handshake.
+But yeah I agree that may contain much more work, so we may start with
+assuming the v2 handshake just happen on the tls channel built for now.
 
-> @@ -148,6 +148,9 @@ struct XenEvtchnState {
->      /* GSI =E2=86=92 PIRQ mapping (serialized) */
->      uint16_t gsi_pirq[IOAPIC_NUM_PINS];
+I think the new protocol should allow extension so when we want to move the
+tls handshake into it v2 protocol should be able to first detect src/dst
+binary support of that, and switch to that if we want - then we can even
+got a src qemu migration failure which tells "dest qemu forget to setup tls
+credentials in cmdlines", or anything wrong on dest during tls setup.
 
-The gsi_pirq[] array has IOAPIC_NUM_PINS elements...
+> 
+> A few other parameters are also related to the connection establishment,
+> most notably the enablement multifd, postcopy and postcopy-pre-empt.
 
-> +bool xen_evtchn_set_gsi(int gsi, int level)
-> +{
-> +    XenEvtchnState *s =3D xen_evtchn_singleton;
-> +    int pirq;
-> +
-> +    assert(qemu_mutex_iothread_locked());
-> +
-> +    if (!s || gsi < 0 || gsi > IOAPIC_NUM_PINS) {
+As I mentioned in the list, I plan to make this part of the default v2
+where v2 handshake will take care of managing the connections rather than
+relying on the old code.  I'm not sure how complicated it'll be, but the v2
+protocol just sounds a good fit for having such a major change on how we
+setup the channels, and chance we get all things alright from the start.
 
-...but here our guard on gsi is off-by-one, and
-allows gsi =3D=3D IOAPIC_NUM_PINS through...
+> 
+> I think with those ones we don't need to set them on the src either.
+> With the new migration handshake we should probably use multifd
+> codepaths unconditionally, with a single channel.
 
-> +        return false;
-> +    }
-> +
-> +    /*
-> +     * Check that that it *isn't* the event channel GSI, and thus
-> +     * that we are not recursing and it's safe to take s->port_lock.
-> +     *
-> +     * Locking aside, it's perfectly sane to bail out early for that
-> +     * special case, as it would make no sense for the event channel
-> +     * GSI to be routed back to event channels, when the delivery
-> +     * method is to raise the GSI... that recursion wouldn't *just*
-> +     * be a locking issue.
-> +     */
-> +    if (gsi && gsi =3D=3D s->callback_gsi) {
-> +        return false;
-> +    }
-> +
-> +    QEMU_LOCK_GUARD(&s->port_lock);
-> +
-> +    pirq =3D s->gsi_pirq[gsi];
+The v2 handshake will be beneficial to !multifd as well.  Right now I tend
+to make it also work for !multifd, e.g., it always makes sense to do a
+device tree comparision before migration, even if someone used special
+tunneling so multifd may not be able to be enabled for whatever reason, but
+as long as a return path is available so they can talk.
 
-...and we will reference off the end of the gsi_pirq[] array here.
+> By matching with the introduction of new protocol, we have a nice point
+> against which to deprecate the old non-multifd codepaths. We'll need to
+> keep the non-multifd code around *alot* longer than the normal
+> deprecation cycle though, as we need mig to/from very old QEMUs.
 
-> +    if (!pirq) {
-> +        return false;
-> +    }
+I actually had a feeling that we should always keep it..  I'm not sure
+whether we must combine a new handshake to "making multifd the default".  I
+do think we can make the !multifd path very simple though, e.g., I'd think
+we should start considering deprecate things like !multifd+compressions etc
+earlier than that.
 
-Presumably the guard should be 'gsi >=3D IOAPIC_NUM_PINS' ?
+> 
+> The enablement of postcopy could be automatic too - src & dst can
+> both detect if their host OS supports it. That would make all
+> migrations post-copy capable. The mgmt app just needs to trigger
+> the switch to post-copy mode *if* they want to use it.
 
-thanks
--- PMM
+Sounds doable.
+
+> 
+> Likewise we can just always assume postcopy-pre-empt is available.
+> 
+> I think 'return-path' becomes another one we can just assume too.
+
+Right, handshake cap (or with the new QAPI of URI replacement) should imply
+return path already.
+
+Thanks,
+
+-- 
+Peter Xu
+
 
