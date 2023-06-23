@@ -2,71 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 289DF73BA8C
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 16:46:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A725373BA97
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 16:49:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCi1t-0000Db-0B; Fri, 23 Jun 2023 10:44:53 -0400
+	id 1qCi5y-0002Jp-OT; Fri, 23 Jun 2023 10:49:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qCi1b-0000Ak-Uu
- for qemu-devel@nongnu.org; Fri, 23 Jun 2023 10:44:36 -0400
-Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+ id 1qCi5w-0002JN-AK
+ for qemu-devel@nongnu.org; Fri, 23 Jun 2023 10:49:04 -0400
+Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qCi1M-00049O-Cp
- for qemu-devel@nongnu.org; Fri, 23 Jun 2023 10:44:35 -0400
-Received: by mail-wr1-x42b.google.com with SMTP id
- ffacd0b85a97d-3113dabc549so977786f8f.1
- for <qemu-devel@nongnu.org>; Fri, 23 Jun 2023 07:44:13 -0700 (PDT)
+ id 1qCi5u-0006EZ-LC
+ for qemu-devel@nongnu.org; Fri, 23 Jun 2023 10:49:04 -0400
+Received: by mail-ed1-x534.google.com with SMTP id
+ 4fb4d7f45d1cf-51bea30ccbcso734618a12.0
+ for <qemu-devel@nongnu.org>; Fri, 23 Jun 2023 07:49:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687531452; x=1690123452;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=vEoZ1jB1oL976vNVyEoQyhbzqpIzJpu70/dSSiTM/2s=;
- b=nOyuHlK4A1QuWiv+3u12xPWRpsX97F/A3bTLIQncvYIyf5U4oD60dN9cGNiF/x/pHl
- m9QwCtkVFvOXmgNfTRXGxhIG+lWeiah/0D1XduReV8yg4IIIpeR6jyVua+/XysBDA/kR
- AIlOU2PzdohboNpIfnmZOFCaZjs8fRJDFpkg9ofxsK638voLNTzYgf9XMrg5XTbS9sRY
- HHlMSFC8VZ/P/5L7Lq0ld3o/bWoDgY1N+H3mHNPkSK9WX8ekeM+YW3v7hvf3/v1kSCBu
- 5/ZYh1BMAqC49Jvfn1KWjXjemGlIpOpUTkpWrAI/j8ycrSw1C6Pd8a0iqVYq2dTrg/KB
- SFSQ==
+ d=linaro.org; s=google; t=1687531741; x=1690123741;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=33lRUmbAB6ZBFbg+mpHxAIUCBa32sX9XnJmwcXWIF4A=;
+ b=EtthK2P6AdWa3CylukHDlzkb921ywnop2rlRMkQhGJJJnq2SGevmuJX/L55nmJv/kj
+ /dASmPb2LOUgof3UmETwbzLI0L6HwZ8JPVysemgOVVrbOom4MMC1TZxIjL0FskQGJFlp
+ b5UNchFG51p31QpZsMNEcKfYV0jkl+jUVXsZSuUEaYkDRMLcWbrI1nSeKu+5XZCCk+fF
+ rhrmNjhiYukNmAGNbdK6M9FtKv5+ZBRjioYSDjuwxH2pgkImr10cFrFvEwS7hqbcf4cN
+ H6oc60tCw5JoGDuHRTaKugmNGCbZmfjYM+AVTFGmJO5C289+JxvPa4c1W1Jmr7yIar6L
+ nvJQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687531452; x=1690123452;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=vEoZ1jB1oL976vNVyEoQyhbzqpIzJpu70/dSSiTM/2s=;
- b=g6siwGnL0Vloattdc0t61lEzEcDR9UxFv8AG7dHvK3oBclyqy7QedENzqCbVH3J4tc
- QIe+/kDTROKoqJ0iUxiPCuKr1MWCPaFjIa2Q3tu57tztI0eAg45f1Vp5BIQxuCj3K1uK
- e3adcVS69mCRE4TZsJut5dZcxMm/YzMDy2HVgosZPdudCgtRoHpeelHBSjvCK9xXYrwO
- RUQfEXzQl/mTl7R3IWNjIYWH/E6onPLgRlaX5+pPkuTYIvkfCBDWCOHC6ZkQhXKhOBF1
- QRjTLDrjoQzBjO+rLgfpnH6hqJ034ikKyIqWo/MMZ9Kgv32KvppKturoWWj8qX7bboND
- XsjA==
-X-Gm-Message-State: AC+VfDxcipNrSb/w5Ib4nRcAa/MLHaMlCeUHjyghjWLc5NT9H8+WQ+Ga
- 0OpxH8OZpIQsqFCqu6IptJygUKJl6UCPVNTuwAU=
-X-Google-Smtp-Source: ACHHUZ5dYqhfWWmk9kQLLGehyMTCkXmg/RD61bjMi0ATv3aCQfvQ+jGqgAJe2PYm46VTPEQNID7bxQ==
-X-Received: by 2002:a5d:65c9:0:b0:311:1120:f2a1 with SMTP id
- e9-20020a5d65c9000000b003111120f2a1mr23919110wrw.46.1687531451891; 
- Fri, 23 Jun 2023 07:44:11 -0700 (PDT)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- p9-20020a1c7409000000b003f8d0308604sm2631707wmc.9.2023.06.23.07.44.11
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 23 Jun 2023 07:44:11 -0700 (PDT)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Laurent Vivier <laurent@vivier.eu>
-Subject: [PATCH] linux-user: Remove pointless NULL check in clock_adjtime
- handling
-Date: Fri, 23 Jun 2023 15:44:10 +0100
-Message-Id: <20230623144410.1837261-1-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.34.1
+ d=1e100.net; s=20221208; t=1687531741; x=1690123741;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=33lRUmbAB6ZBFbg+mpHxAIUCBa32sX9XnJmwcXWIF4A=;
+ b=gBPrpzgjPUN0vtB2C+tQDMWXdzEFpCkRH41KFa7ditLS2iE5VxPQ9/7kGpIOKp9//4
+ iJKYB0N6jG4MG2t15+jsc0lvweoX28JTAMgw32f51xgsfecKDZk4tHMb8uphOfhwsZls
+ Ytp65qN4wykkrRkVEb8WKKuD0MpZGCcDEmfv4vPyJ4U2nIXiUHr+C7FRNvfGLIlDR3f8
+ w/vrydTa1iZgtkyPoPluH58dLTdXZrJAWR7SDyKLkFKrfPNFsbsMlM3Y5eamdm15AIi7
+ opK6Ruo4gb9R/wr04pqae3VmSWtJP8xTqZbYYCJwUyCAYnnmtQid0WqhO2Rnd44zrMYH
+ a0Kw==
+X-Gm-Message-State: AC+VfDwPB/14Tfb7/uK/tR07YnMc/p6y+do+VvbO8xTdqdh9RLXRsoqU
+ 8iYhzmPyMD/VQzOgr3Pj0sJEyyIB9celWW7Fz46+jAim30JdlCZZ
+X-Google-Smtp-Source: ACHHUZ7Z8jOiXwDuDUlY19wLITipF1zZja/iO2/HW+hyNnhOiJj69UcVi6Vw6FXWgvL1VrBW0+/OgAIzacOaqM5Q7cw=
+X-Received: by 2002:a05:6402:31f3:b0:51b:cd57:7731 with SMTP id
+ dy19-20020a05640231f300b0051bcd577731mr8394619edb.20.1687531740733; Fri, 23
+ Jun 2023 07:49:00 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42b.google.com
+References: <20230302123029.153265-1-pbonzini@redhat.com>
+ <20230302123029.153265-57-pbonzini@redhat.com>
+In-Reply-To: <20230302123029.153265-57-pbonzini@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 23 Jun 2023 15:48:49 +0100
+Message-ID: <CAFEAcA9KXrRscf9QK2Z5Say91KDm7xRLMZGh4A1rQ1+0TCHtcA@mail.gmail.com>
+Subject: Re: [PULL 56/62] hw/xen: Support GSI mapping to PIRQ
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, David Woodhouse <dwmw@amazon.co.uk>,
+ Paul Durrant <paul@xen.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::534;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x534.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,49 +88,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In the code for TARGET_NR_clock_adjtime, we set the pointer phtx to
-the address of the local variable htx.  This means it can never be
-NULL, but later in the code we check it for NULL anyway.  Coverity
-complains about this (CID 1507683) because the NULL check comes after
-a call to clock_adjtime() that assumes it is non-NULL.
+On Thu, 2 Mar 2023 at 12:50, Paolo Bonzini <pbonzini@redhat.com> wrote:
+>
+> From: David Woodhouse <dwmw@amazon.co.uk>
+>
+> If I advertise XENFEAT_hvm_pirqs then a guest now boots successfully as
+> long as I tell it 'pci=3Dnomsi'.
+>
+> [root@localhost ~]# cat /proc/interrupts
+>            CPU0
+>   0:         52   IO-APIC   2-edge      timer
+>   1:         16  xen-pirq   1-ioapic-edge  i8042
+>   4:       1534  xen-pirq   4-ioapic-edge  ttyS0
+>   8:          1  xen-pirq   8-ioapic-edge  rtc0
+>   9:          0  xen-pirq   9-ioapic-level  acpi
+>  11:       5648  xen-pirq  11-ioapic-level  ahci[0000:00:04.0]
+>  12:        257  xen-pirq  12-ioapic-edge  i8042
+> ...
+>
+> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+> Reviewed-by: Paul Durrant <paul@xen.org>
 
-Since phtx is always &htx, and is used only in three places, it's not
-really necessary.  Remove it, bringing the code structure in to line
-with that for TARGET_NR_clock_adjtime64, which already uses a simple
-'&htx' when it wants a pointer to 'htx'.
+Hi; Coverity points out an off-by-one error in this code
+(CID 1508128):
 
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
- linux-user/syscall.c | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+> @@ -148,6 +148,9 @@ struct XenEvtchnState {
+>      /* GSI =E2=86=92 PIRQ mapping (serialized) */
+>      uint16_t gsi_pirq[IOAPIC_NUM_PINS];
 
-diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index f2cb101d83c..7b2f9f7340e 100644
---- a/linux-user/syscall.c
-+++ b/linux-user/syscall.c
-@@ -10935,16 +10935,14 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
- #if defined(TARGET_NR_clock_adjtime) && defined(CONFIG_CLOCK_ADJTIME)
-     case TARGET_NR_clock_adjtime:
-         {
--            struct timex htx, *phtx = &htx;
-+            struct timex htx;
- 
--            if (target_to_host_timex(phtx, arg2) != 0) {
-+            if (target_to_host_timex(&htx, arg2) != 0) {
-                 return -TARGET_EFAULT;
-             }
--            ret = get_errno(clock_adjtime(arg1, phtx));
--            if (!is_error(ret) && phtx) {
--                if (host_to_target_timex(arg2, phtx) != 0) {
--                    return -TARGET_EFAULT;
--                }
-+            ret = get_errno(clock_adjtime(arg1, &htx));
-+            if (!is_error(ret) && host_to_target_timex(arg2, &htx)) {
-+                return -TARGET_EFAULT;
-             }
-         }
-         return ret;
--- 
-2.34.1
+The gsi_pirq[] array has IOAPIC_NUM_PINS elements...
 
+> +bool xen_evtchn_set_gsi(int gsi, int level)
+> +{
+> +    XenEvtchnState *s =3D xen_evtchn_singleton;
+> +    int pirq;
+> +
+> +    assert(qemu_mutex_iothread_locked());
+> +
+> +    if (!s || gsi < 0 || gsi > IOAPIC_NUM_PINS) {
+
+...but here our guard on gsi is off-by-one, and
+allows gsi =3D=3D IOAPIC_NUM_PINS through...
+
+> +        return false;
+> +    }
+> +
+> +    /*
+> +     * Check that that it *isn't* the event channel GSI, and thus
+> +     * that we are not recursing and it's safe to take s->port_lock.
+> +     *
+> +     * Locking aside, it's perfectly sane to bail out early for that
+> +     * special case, as it would make no sense for the event channel
+> +     * GSI to be routed back to event channels, when the delivery
+> +     * method is to raise the GSI... that recursion wouldn't *just*
+> +     * be a locking issue.
+> +     */
+> +    if (gsi && gsi =3D=3D s->callback_gsi) {
+> +        return false;
+> +    }
+> +
+> +    QEMU_LOCK_GUARD(&s->port_lock);
+> +
+> +    pirq =3D s->gsi_pirq[gsi];
+
+...and we will reference off the end of the gsi_pirq[] array here.
+
+> +    if (!pirq) {
+> +        return false;
+> +    }
+
+Presumably the guard should be 'gsi >=3D IOAPIC_NUM_PINS' ?
+
+thanks
+-- PMM
 
