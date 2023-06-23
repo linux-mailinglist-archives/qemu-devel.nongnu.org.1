@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3185F73B763
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 14:34:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D87A73B7DA
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 14:44:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCfxN-0002iW-9J; Fri, 23 Jun 2023 08:32:05 -0400
+	id 1qCfxO-0002lq-8U; Fri, 23 Jun 2023 08:32:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qCfx9-0001oQ-K9
+ id 1qCfx9-0001nm-CV
  for qemu-devel@nongnu.org; Fri, 23 Jun 2023 08:31:51 -0400
-Received: from mail-lf1-x135.google.com ([2a00:1450:4864:20::135])
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qCfx6-0000i6-3j
+ id 1qCfx6-0000iA-4y
  for qemu-devel@nongnu.org; Fri, 23 Jun 2023 08:31:51 -0400
-Received: by mail-lf1-x135.google.com with SMTP id
- 2adb3069b0e04-4f86e1bdce5so721989e87.3
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-3fa7eb35a13so2869615e9.0
  for <qemu-devel@nongnu.org>; Fri, 23 Jun 2023 05:31:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1687523506; x=1690115506;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=tsDph97KlzmWiyxrLtjGvlqph+Y12wRBtKMr3A9atw0=;
- b=gI7klK6by719w/enslatQyCmUwxMR0RB/81v2f1qgULxEPbyrI9eagtzK0awf0QZaF
- IVrsRwk4Dzc8yggrb3BUrd0hkyWIAh8xFiaT5M9f+XLzS1WcXlsVDBn3kJVjGcO7O0+s
- LPemFEKsSqfYDnoV7MNrg2JFlLfXSBbd+d+g2hr4pWgKqfvn924bEUTfUMlDsfe04qB0
- g5h3K8j2bQhtkxQi5uGgMJlyjEF8FzKAGl+Q+AMKADCTps2JBGm1o6HOGUPDLHzY0TDq
- j5ISeDfefKVy9We0dasyeA9FW0IBpTK4pX+e96qSOn8Mr7f0RD/9G+mKmXNy4KWgktsg
- U2Zw==
+ :reply-to; bh=g2pBrFqSLXDykV1+dGNy5GO5Jdx558VbKfiUk+ucQvg=;
+ b=E5DSMY/AFyKnyYhlP1sdhGmr6gfwWIVWfJ3C5gBgIYzY7DW5mcOYUPmFRY7rDh443i
+ Df7YJZK6Vuw3ALouaR2rsZu6+9A6wfQhgHUSQSkrAkfImF6XEMhvK7HX468El7I88NZ0
+ yiTyFZVxhJq1k+r2fU6pyOZGjxY6ps998hC0iWZ9Jv2f/ybTLnhyDB/72KBirj/8SrpI
+ wZC9W6S9JngUnAMVjbaAkYjt2SFq+c3+NYQOqKK2+yMWq7MdiHSkgypF+L9C2xQNWv4N
+ Z/kVI0ZkuXEpEXLwMCY8k9uBFOA2zx85jtCc4JQpIPcOXCxLk/RpVp/cMLw9m2ttbgPT
+ Erew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20221208; t=1687523506; x=1690115506;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=tsDph97KlzmWiyxrLtjGvlqph+Y12wRBtKMr3A9atw0=;
- b=HeLpbga8FQMuiI1M3nQ+7wh0jPIcvqxjdZt8BVEcGEE3DQbb/IAIixVO3UrZkvVOsj
- 2jmDcBcTA1PoNnIZSYZdVG9GSghYoaMaebjwuaC2gaz0+ycJc/tLkg9cSpQeKJLzNtDd
- vIpI78CFxVI+gL44GLP0ZswmHj3xWNYC5GPku+wN+A45d3n6teNvuxyV5rOWZ1vEXWc3
- 6fVQ1P+BrUWx2JT9jNQThGlHH3vX+ADxOt12IicpWtpiMXAoHcGtpsHuQUa1GGKrLP6+
- hM+fegMWk5+migpsgIZru7eW50blbTmAXU9pB/ZeX5pxUOFjy4Yn45B8lJoSW3BOMWfn
- 5+XQ==
-X-Gm-Message-State: AC+VfDx2q5uL9z+aFLZIs1x/pHHvxqXDMnw3QCj1/mgHablGy2MzbO9q
- FikNQ9xwm/Tj+HFZHlg5JjMRZHyfCcZpsRHXz90=
-X-Google-Smtp-Source: ACHHUZ69gyYxRODhLsxYyPmXANGsYxBRgKJRCvKvgshJIt1PwKqxRwZdMTO5qPhCvspRd1LNWqOM6A==
-X-Received: by 2002:ac2:4d8d:0:b0:4f8:75b0:2295 with SMTP id
- g13-20020ac24d8d000000b004f875b02295mr4327039lfe.4.1687523505895; 
- Fri, 23 Jun 2023 05:31:45 -0700 (PDT)
+ bh=g2pBrFqSLXDykV1+dGNy5GO5Jdx558VbKfiUk+ucQvg=;
+ b=ZBNk4KOkAnIEuMmDN6nyIIV9D7zkWpXqNlGvEi728ZBbAK9iAubfMceHZnYv7JBjVB
+ Mv+ymzzwQzbAY6nMNoPZUECHbggd4ceHfI4i/4PNwoCGY6f09eP5xsftoP/WTCEQr0Ac
+ feD0iB2+olLXjKKz5IinW1Gs7NFzGHkYvBNaqfbdcy9KIPjBdJ7V57+51FxznoM8LRk9
+ phQG8g1YKPhKlkYmVjkVEkDQrRABj09TI+B1VWTnAx6dJUtV7YuwWAA2JqvxGMpDJtUq
+ G0DFy80rYMImB129ng3jkGOmQ+2RPWIsexXcaVzY9q2pToy6m9D5wJc1X2ku9cn3sj1q
+ EtTw==
+X-Gm-Message-State: AC+VfDxO1xq5bnqrYOag3AtFzrts5hsOfjc4fPH+tHuho+0u5zLofI2n
+ 2oD+AVNQQlhpIzDsAAqecqoTd2Ww9l2xpTavk+8=
+X-Google-Smtp-Source: ACHHUZ46+G14lD1MXgX7s0xxE2QOJnml9Vi0651UeJAEao7RimQYrzh8lvHMgVZ37ti9flBQ15bB6A==
+X-Received: by 2002:a05:600c:21c7:b0:3f9:b0ed:b71f with SMTP id
+ x7-20020a05600c21c700b003f9b0edb71fmr3442805wmj.10.1687523506312; 
+ Fri, 23 Jun 2023 05:31:46 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- z7-20020a1c4c07000000b003f819dfa0ddsm2232622wmf.28.2023.06.23.05.31.45
+ z7-20020a1c4c07000000b003f819dfa0ddsm2232622wmf.28.2023.06.23.05.31.46
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 23 Jun 2023 05:31:45 -0700 (PDT)
+ Fri, 23 Jun 2023 05:31:46 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 18/26] target/arm: Implement GPC exceptions
-Date: Fri, 23 Jun 2023 13:31:27 +0100
-Message-Id: <20230623123135.1788191-19-peter.maydell@linaro.org>
+Subject: [PULL 19/26] target/arm: Implement the granule protection check
+Date: Fri, 23 Jun 2023 13:31:28 +0100
+Message-Id: <20230623123135.1788191-20-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230623123135.1788191-1-peter.maydell@linaro.org>
 References: <20230623123135.1788191-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::135;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x135.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,248 +92,363 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Richard Henderson <richard.henderson@linaro.org>
 
-Handle GPC Fault types in arm_deliver_fault, reporting as
-either a GPC exception at EL3, or falling through to insn
-or data aborts at various exception levels.
+Place the check at the end of get_phys_addr_with_struct,
+so that we check all physical results.
 
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20230620124418.805717-19-richard.henderson@linaro.org
+Message-id: 20230620124418.805717-20-richard.henderson@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/cpu.h            |  1 +
- target/arm/internals.h      | 27 +++++++++++
- target/arm/helper.c         |  5 ++
- target/arm/tcg/tlb_helper.c | 96 +++++++++++++++++++++++++++++++++++--
- 4 files changed, 126 insertions(+), 3 deletions(-)
+ target/arm/ptw.c | 249 +++++++++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 232 insertions(+), 17 deletions(-)
 
-diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-index 590216b8559..11c3850ad94 100644
---- a/target/arm/cpu.h
-+++ b/target/arm/cpu.h
-@@ -57,6 +57,7 @@
- #define EXCP_UNALIGNED      22   /* v7M UNALIGNED UsageFault */
- #define EXCP_DIVBYZERO      23   /* v7M DIVBYZERO UsageFault */
- #define EXCP_VSERR          24
-+#define EXCP_GPC            25   /* v9 Granule Protection Check Fault */
- /* NB: add new EXCP_ defines to the array in arm_log_exception() too */
+diff --git a/target/arm/ptw.c b/target/arm/ptw.c
+index 7c4526e2da1..6015121b99b 100644
+--- a/target/arm/ptw.c
++++ b/target/arm/ptw.c
+@@ -39,11 +39,17 @@ typedef struct S1Translate {
+     void *out_host;
+ } S1Translate;
  
- #define ARMV7M_EXCP_RESET   1
-diff --git a/target/arm/internals.h b/target/arm/internals.h
-index e3029bdc37a..0f01bc32a8a 100644
---- a/target/arm/internals.h
-+++ b/target/arm/internals.h
-@@ -358,14 +358,27 @@ typedef enum ARMFaultType {
-     ARMFault_ICacheMaint,
-     ARMFault_QEMU_NSCExec, /* v8M: NS executing in S&NSC memory */
-     ARMFault_QEMU_SFault, /* v8M: SecureFault INVTRAN, INVEP or AUVIOL */
-+    ARMFault_GPCFOnWalk,
-+    ARMFault_GPCFOnOutput,
- } ARMFaultType;
- 
-+typedef enum ARMGPCF {
-+    GPCF_None,
-+    GPCF_AddressSize,
-+    GPCF_Walk,
-+    GPCF_EABT,
-+    GPCF_Fail,
-+} ARMGPCF;
+-static bool get_phys_addr_with_struct(CPUARMState *env, S1Translate *ptw,
+-                                      target_ulong address,
+-                                      MMUAccessType access_type,
+-                                      GetPhysAddrResult *result,
+-                                      ARMMMUFaultInfo *fi);
++static bool get_phys_addr_nogpc(CPUARMState *env, S1Translate *ptw,
++                                target_ulong address,
++                                MMUAccessType access_type,
++                                GetPhysAddrResult *result,
++                                ARMMMUFaultInfo *fi);
 +
- /**
-  * ARMMMUFaultInfo: Information describing an ARM MMU Fault
-  * @type: Type of fault
-+ * @gpcf: Subtype of ARMFault_GPCFOn{Walk,Output}.
-  * @level: Table walk level (for translation, access flag and permission faults)
-  * @domain: Domain of the fault address (for non-LPAE CPUs only)
-  * @s2addr: Address that caused a fault at stage 2
-+ * @paddr: physical address that caused a fault for gpc
-+ * @paddr_space: physical address space that caused a fault for gpc
-  * @stage2: True if we faulted at stage 2
-  * @s1ptw: True if we faulted at stage 2 while doing a stage 1 page-table walk
-  * @s1ns: True if we faulted on a non-secure IPA while in secure state
-@@ -374,7 +387,10 @@ typedef enum ARMFaultType {
- typedef struct ARMMMUFaultInfo ARMMMUFaultInfo;
- struct ARMMMUFaultInfo {
-     ARMFaultType type;
-+    ARMGPCF gpcf;
-     target_ulong s2addr;
-+    target_ulong paddr;
-+    ARMSecuritySpace paddr_space;
-     int level;
-     int domain;
-     bool stage2;
-@@ -548,6 +564,17 @@ static inline uint32_t arm_fi_to_lfsc(ARMMMUFaultInfo *fi)
-     case ARMFault_Exclusive:
-         fsc = 0x35;
-         break;
-+    case ARMFault_GPCFOnWalk:
-+        assert(fi->level >= -1 && fi->level <= 3);
-+        if (fi->level < 0) {
-+            fsc = 0b100011;
-+        } else {
-+            fsc = 0b100100 | fi->level;
-+        }
-+        break;
-+    case ARMFault_GPCFOnOutput:
-+        fsc = 0b101000;
-+        break;
-     default:
-         /* Other faults can't occur in a context that requires a
-          * long-format status code.
-diff --git a/target/arm/helper.c b/target/arm/helper.c
-index f68923d73b4..323cadd3c80 100644
---- a/target/arm/helper.c
-+++ b/target/arm/helper.c
-@@ -10184,6 +10184,7 @@ void arm_log_exception(CPUState *cs)
-             [EXCP_UNALIGNED] = "v7M UNALIGNED UsageFault",
-             [EXCP_DIVBYZERO] = "v7M DIVBYZERO UsageFault",
-             [EXCP_VSERR] = "Virtual SERR",
-+            [EXCP_GPC] = "Granule Protection Check",
-         };
++static bool get_phys_addr_gpc(CPUARMState *env, S1Translate *ptw,
++                              target_ulong address,
++                              MMUAccessType access_type,
++                              GetPhysAddrResult *result,
++                              ARMMMUFaultInfo *fi);
  
-         if (idx >= 0 && idx < ARRAY_SIZE(excnames)) {
-@@ -10915,6 +10916,10 @@ static void arm_cpu_do_interrupt_aarch64(CPUState *cs)
-     }
- 
-     switch (cs->exception_index) {
-+    case EXCP_GPC:
-+        qemu_log_mask(CPU_LOG_INT, "...with MFAR 0x%" PRIx64 "\n",
-+                      env->cp15.mfar_el3);
-+        /* fall through */
-     case EXCP_PREFETCH_ABORT:
-     case EXCP_DATA_ABORT:
-         /*
-diff --git a/target/arm/tcg/tlb_helper.c b/target/arm/tcg/tlb_helper.c
-index 8df36c2cbf0..b22b2a4c6e7 100644
---- a/target/arm/tcg/tlb_helper.c
-+++ b/target/arm/tcg/tlb_helper.c
-@@ -107,17 +107,106 @@ static uint32_t compute_fsr_fsc(CPUARMState *env, ARMMMUFaultInfo *fi,
-     return fsr;
+ /* This mapping is common between ID_AA64MMFR0.PARANGE and TCR_ELx.{I}PS. */
+ static const uint8_t pamax_map[] = {
+@@ -230,6 +236,197 @@ static bool regime_translation_disabled(CPUARMState *env, ARMMMUIdx mmu_idx,
+     return (regime_sctlr(env, mmu_idx) & SCTLR_M) == 0;
  }
  
-+static bool report_as_gpc_exception(ARMCPU *cpu, int current_el,
-+                                    ARMMMUFaultInfo *fi)
++static bool granule_protection_check(CPUARMState *env, uint64_t paddress,
++                                     ARMSecuritySpace pspace,
++                                     ARMMMUFaultInfo *fi)
 +{
-+    bool ret;
++    MemTxAttrs attrs = {
++        .secure = true,
++        .space = ARMSS_Root,
++    };
++    ARMCPU *cpu = env_archcpu(env);
++    uint64_t gpccr = env->cp15.gpccr_el3;
++    unsigned pps, pgs, l0gptsz, level = 0;
++    uint64_t tableaddr, pps_mask, align, entry, index;
++    AddressSpace *as;
++    MemTxResult result;
++    int gpi;
 +
-+    switch (fi->gpcf) {
-+    case GPCF_None:
-+        return false;
-+    case GPCF_AddressSize:
-+    case GPCF_Walk:
-+    case GPCF_EABT:
-+        /* R_PYTGX: GPT faults are reported as GPC. */
-+        ret = true;
++    if (!FIELD_EX64(gpccr, GPCCR, GPC)) {
++        return true;
++    }
++
++    /*
++     * GPC Priority 1 (R_GMGRR):
++     * R_JWCSM: If the configuration of GPCCR_EL3 is invalid,
++     * the access fails as GPT walk fault at level 0.
++     */
++
++    /*
++     * Configuration of PPS to a value exceeding the implemented
++     * physical address size is invalid.
++     */
++    pps = FIELD_EX64(gpccr, GPCCR, PPS);
++    if (pps > FIELD_EX64(cpu->isar.id_aa64mmfr0, ID_AA64MMFR0, PARANGE)) {
++        goto fault_walk;
++    }
++    pps = pamax_map[pps];
++    pps_mask = MAKE_64BIT_MASK(0, pps);
++
++    switch (FIELD_EX64(gpccr, GPCCR, SH)) {
++    case 0b10: /* outer shareable */
 +        break;
-+    case GPCF_Fail:
++    case 0b00: /* non-shareable */
++    case 0b11: /* inner shareable */
++        /* Inner and Outer non-cacheable requires Outer shareable. */
++        if (FIELD_EX64(gpccr, GPCCR, ORGN) == 0 &&
++            FIELD_EX64(gpccr, GPCCR, IRGN) == 0) {
++            goto fault_walk;
++        }
++        break;
++    default:   /* reserved */
++        goto fault_walk;
++    }
++
++    switch (FIELD_EX64(gpccr, GPCCR, PGS)) {
++    case 0b00: /* 4KB */
++        pgs = 12;
++        break;
++    case 0b01: /* 64KB */
++        pgs = 16;
++        break;
++    case 0b10: /* 16KB */
++        pgs = 14;
++        break;
++    default: /* reserved */
++        goto fault_walk;
++    }
++
++    /* Note this field is read-only and fixed at reset. */
++    l0gptsz = 30 + FIELD_EX64(gpccr, GPCCR, L0GPTSZ);
++
++    /*
++     * GPC Priority 2: Secure, Realm or Root address exceeds PPS.
++     * R_CPDSB: A NonSecure physical address input exceeding PPS
++     * does not experience any fault.
++     */
++    if (paddress & ~pps_mask) {
++        if (pspace == ARMSS_NonSecure) {
++            return true;
++        }
++        goto fault_size;
++    }
++
++    /* GPC Priority 3: the base address of GPTBR_EL3 exceeds PPS. */
++    tableaddr = env->cp15.gptbr_el3 << 12;
++    if (tableaddr & ~pps_mask) {
++        goto fault_size;
++    }
++
++    /*
++     * BADDR is aligned per a function of PPS and L0GPTSZ.
++     * These bits of GPTBR_EL3 are RES0, but are not a configuration error,
++     * unlike the RES0 bits of the GPT entries (R_XNKFZ).
++     */
++    align = MAX(pps - l0gptsz + 3, 12);
++    align = MAKE_64BIT_MASK(0, align);
++    tableaddr &= ~align;
++
++    as = arm_addressspace(env_cpu(env), attrs);
++
++    /* Level 0 lookup. */
++    index = extract64(paddress, l0gptsz, pps - l0gptsz);
++    tableaddr += index * 8;
++    entry = address_space_ldq_le(as, tableaddr, attrs, &result);
++    if (result != MEMTX_OK) {
++        goto fault_eabt;
++    }
++
++    switch (extract32(entry, 0, 4)) {
++    case 1: /* block descriptor */
++        if (entry >> 8) {
++            goto fault_walk; /* RES0 bits not 0 */
++        }
++        gpi = extract32(entry, 4, 4);
++        goto found;
++    case 3: /* table descriptor */
++        tableaddr = entry & ~0xf;
++        align = MAX(l0gptsz - pgs - 1, 12);
++        align = MAKE_64BIT_MASK(0, align);
++        if (tableaddr & (~pps_mask | align)) {
++            goto fault_walk; /* RES0 bits not 0 */
++        }
++        break;
++    default: /* invalid */
++        goto fault_walk;
++    }
++
++    /* Level 1 lookup */
++    level = 1;
++    index = extract64(paddress, pgs + 4, l0gptsz - pgs - 4);
++    tableaddr += index * 8;
++    entry = address_space_ldq_le(as, tableaddr, attrs, &result);
++    if (result != MEMTX_OK) {
++        goto fault_eabt;
++    }
++
++    switch (extract32(entry, 0, 4)) {
++    case 1: /* contiguous descriptor */
++        if (entry >> 10) {
++            goto fault_walk; /* RES0 bits not 0 */
++        }
 +        /*
-+         * R_BLYPM: A GPF at EL3 is reported as insn or data abort.
-+         * R_VBZMW, R_LXHQR: A GPF at EL[0-2] is reported as a GPC
-+         * if SCR_EL3.GPF is set, otherwise an insn or data abort.
++         * Because the softmmu tlb only works on units of TARGET_PAGE_SIZE,
++         * and because we cannot invalidate by pa, and thus will always
++         * flush entire tlbs, we don't actually care about the range here
++         * and can simply extract the GPI as the result.
 +         */
-+        ret = (cpu->env.cp15.scr_el3 & SCR_GPF) && current_el != 3;
++        if (extract32(entry, 8, 2) == 0) {
++            goto fault_walk; /* reserved contig */
++        }
++        gpi = extract32(entry, 4, 4);
 +        break;
 +    default:
-+        g_assert_not_reached();
++        index = extract64(paddress, pgs, 4);
++        gpi = extract64(entry, index * 4, 4);
++        break;
 +    }
 +
-+    assert(cpu_isar_feature(aa64_rme, cpu));
-+    assert(fi->type == ARMFault_GPCFOnWalk ||
-+           fi->type == ARMFault_GPCFOnOutput);
-+    if (fi->gpcf == GPCF_AddressSize) {
-+        assert(fi->level == 0);
-+    } else {
-+        assert(fi->level >= 0 && fi->level <= 1);
++ found:
++    switch (gpi) {
++    case 0b0000: /* no access */
++        break;
++    case 0b1111: /* all access */
++        return true;
++    case 0b1000:
++    case 0b1001:
++    case 0b1010:
++    case 0b1011:
++        if (pspace == (gpi & 3)) {
++            return true;
++        }
++        break;
++    default:
++        goto fault_walk; /* reserved */
 +    }
 +
-+    return ret;
++    fi->gpcf = GPCF_Fail;
++    goto fault_common;
++ fault_eabt:
++    fi->gpcf = GPCF_EABT;
++    goto fault_common;
++ fault_size:
++    fi->gpcf = GPCF_AddressSize;
++    goto fault_common;
++ fault_walk:
++    fi->gpcf = GPCF_Walk;
++ fault_common:
++    fi->level = level;
++    fi->paddr = paddress;
++    fi->paddr_space = pspace;
++    return false;
 +}
 +
-+static unsigned encode_gpcsc(ARMMMUFaultInfo *fi)
-+{
-+    static uint8_t const gpcsc[] = {
-+        [GPCF_AddressSize] = 0b000000,
-+        [GPCF_Walk]        = 0b000100,
-+        [GPCF_Fail]        = 0b001100,
-+        [GPCF_EABT]        = 0b010100,
-+    };
-+
-+    /* Note that we've validated fi->gpcf and fi->level above. */
-+    return gpcsc[fi->gpcf] | fi->level;
-+}
-+
- static G_NORETURN
- void arm_deliver_fault(ARMCPU *cpu, vaddr addr,
-                        MMUAccessType access_type,
-                        int mmu_idx, ARMMMUFaultInfo *fi)
+ static bool S2_attrs_are_device(uint64_t hcr, uint8_t attrs)
  {
-     CPUARMState *env = &cpu->env;
--    int target_el;
-+    int target_el = exception_target_el(env);
-+    int current_el = arm_current_el(env);
-     bool same_el;
-     uint32_t syn, exc, fsr, fsc;
+     /*
+@@ -276,10 +473,10 @@ static bool S1_ptw_translate(CPUARMState *env, S1Translate *ptw,
+         };
+         GetPhysAddrResult s2 = { };
  
--    target_el = exception_target_el(env);
-+    if (report_as_gpc_exception(cpu, current_el, fi)) {
-+        target_el = 3;
-+
-+        fsr = compute_fsr_fsc(env, fi, target_el, mmu_idx, &fsc);
-+
-+        syn = syn_gpc(fi->stage2 && fi->type == ARMFault_GPCFOnWalk,
-+                      access_type == MMU_INST_FETCH,
-+                      encode_gpcsc(fi), 0, fi->s1ptw,
-+                      access_type == MMU_DATA_STORE, fsc);
-+
-+        env->cp15.mfar_el3 = fi->paddr;
-+        switch (fi->paddr_space) {
-+        case ARMSS_Secure:
-+            break;
-+        case ARMSS_NonSecure:
-+            env->cp15.mfar_el3 |= R_MFAR_NS_MASK;
-+            break;
-+        case ARMSS_Root:
-+            env->cp15.mfar_el3 |= R_MFAR_NSE_MASK;
-+            break;
-+        case ARMSS_Realm:
-+            env->cp15.mfar_el3 |= R_MFAR_NSE_MASK | R_MFAR_NS_MASK;
-+            break;
-+        default:
-+            g_assert_not_reached();
-+        }
-+
-+        exc = EXCP_GPC;
-+        goto do_raise;
-+    }
-+
-+    /* If SCR_EL3.GPF is unset, GPF may still be routed to EL2. */
-+    if (fi->gpcf == GPCF_Fail && target_el < 2) {
-+        if (arm_hcr_el2_eff(env) & HCR_GPF) {
-+            target_el = 2;
-+        }
-+    }
-+
-     if (fi->stage2) {
-         target_el = 2;
-         env->cp15.hpfar_el2 = extract64(fi->s2addr, 12, 47) << 4;
-@@ -125,8 +214,8 @@ void arm_deliver_fault(ARMCPU *cpu, vaddr addr,
-             env->cp15.hpfar_el2 |= HPFAR_NS;
+-        if (get_phys_addr_with_struct(env, &s2ptw, addr,
+-                                      MMU_DATA_LOAD, &s2, fi)) {
++        if (get_phys_addr_gpc(env, &s2ptw, addr, MMU_DATA_LOAD, &s2, fi)) {
+             goto fail;
          }
++
+         ptw->out_phys = s2.f.phys_addr;
+         pte_attrs = s2.cacheattrs.attrs;
+         ptw->out_host = NULL;
+@@ -332,6 +529,9 @@ static bool S1_ptw_translate(CPUARMState *env, S1Translate *ptw,
+ 
+  fail:
+     assert(fi->type != ARMFault_None);
++    if (fi->type == ARMFault_GPCFOnOutput) {
++        fi->type = ARMFault_GPCFOnWalk;
++    }
+     fi->s2addr = addr;
+     fi->stage2 = true;
+     fi->s1ptw = true;
+@@ -2769,7 +2969,7 @@ static bool get_phys_addr_disabled(CPUARMState *env, target_ulong address,
+                                    ARMMMUFaultInfo *fi)
+ {
+     uint8_t memattr = 0x00;    /* Device nGnRnE */
+-    uint8_t shareability = 0;  /* non-sharable */
++    uint8_t shareability = 0;  /* non-shareable */
+     int r_el;
+ 
+     switch (mmu_idx) {
+@@ -2828,7 +3028,7 @@ static bool get_phys_addr_disabled(CPUARMState *env, target_ulong address,
+             } else {
+                 memattr = 0x44;  /* Normal, NC, No */
+             }
+-            shareability = 2; /* outer sharable */
++            shareability = 2; /* outer shareable */
+         }
+         result->cacheattrs.is_s2_format = false;
+         break;
+@@ -2856,7 +3056,7 @@ static bool get_phys_addr_twostage(CPUARMState *env, S1Translate *ptw,
+     ARMSecuritySpace ipa_space;
+     uint64_t hcr;
+ 
+-    ret = get_phys_addr_with_struct(env, ptw, address, access_type, result, fi);
++    ret = get_phys_addr_nogpc(env, ptw, address, access_type, result, fi);
+ 
+     /* If S1 fails, return early.  */
+     if (ret) {
+@@ -2882,7 +3082,7 @@ static bool get_phys_addr_twostage(CPUARMState *env, S1Translate *ptw,
+     cacheattrs1 = result->cacheattrs;
+     memset(result, 0, sizeof(*result));
+ 
+-    ret = get_phys_addr_with_struct(env, ptw, ipa, access_type, result, fi);
++    ret = get_phys_addr_nogpc(env, ptw, ipa, access_type, result, fi);
+     fi->s2addr = ipa;
+ 
+     /* Combine the S1 and S2 perms.  */
+@@ -2942,7 +3142,7 @@ static bool get_phys_addr_twostage(CPUARMState *env, S1Translate *ptw,
+     return false;
+ }
+ 
+-static bool get_phys_addr_with_struct(CPUARMState *env, S1Translate *ptw,
++static bool get_phys_addr_nogpc(CPUARMState *env, S1Translate *ptw,
+                                       target_ulong address,
+                                       MMUAccessType access_type,
+                                       GetPhysAddrResult *result,
+@@ -3076,6 +3276,23 @@ static bool get_phys_addr_with_struct(CPUARMState *env, S1Translate *ptw,
      }
--    same_el = (arm_current_el(env) == target_el);
+ }
  
-+    same_el = current_el == target_el;
-     fsr = compute_fsr_fsc(env, fi, target_el, mmu_idx, &fsc);
++static bool get_phys_addr_gpc(CPUARMState *env, S1Translate *ptw,
++                              target_ulong address,
++                              MMUAccessType access_type,
++                              GetPhysAddrResult *result,
++                              ARMMMUFaultInfo *fi)
++{
++    if (get_phys_addr_nogpc(env, ptw, address, access_type, result, fi)) {
++        return true;
++    }
++    if (!granule_protection_check(env, result->f.phys_addr,
++                                  result->f.attrs.space, fi)) {
++        fi->type = ARMFault_GPCFOnOutput;
++        return true;
++    }
++    return false;
++}
++
+ bool get_phys_addr_with_secure(CPUARMState *env, target_ulong address,
+                                MMUAccessType access_type, ARMMMUIdx mmu_idx,
+                                bool is_secure, GetPhysAddrResult *result,
+@@ -3086,8 +3303,7 @@ bool get_phys_addr_with_secure(CPUARMState *env, target_ulong address,
+         .in_secure = is_secure,
+         .in_space = arm_secure_to_space(is_secure),
+     };
+-    return get_phys_addr_with_struct(env, &ptw, address, access_type,
+-                                     result, fi);
++    return get_phys_addr_gpc(env, &ptw, address, access_type, result, fi);
+ }
  
-     if (access_type == MMU_INST_FETCH) {
-@@ -143,6 +232,7 @@ void arm_deliver_fault(ARMCPU *cpu, vaddr addr,
-         exc = EXCP_DATA_ABORT;
-     }
+ bool get_phys_addr(CPUARMState *env, target_ulong address,
+@@ -3157,8 +3373,7 @@ bool get_phys_addr(CPUARMState *env, target_ulong address,
  
-+ do_raise:
-     env->exception.vaddress = addr;
-     env->exception.fsr = fsr;
-     raise_exception(env, exc, syn, target_el);
+     ptw.in_space = ss;
+     ptw.in_secure = arm_space_is_secure(ss);
+-    return get_phys_addr_with_struct(env, &ptw, address, access_type,
+-                                     result, fi);
++    return get_phys_addr_gpc(env, &ptw, address, access_type, result, fi);
+ }
+ 
+ hwaddr arm_cpu_get_phys_page_attrs_debug(CPUState *cs, vaddr addr,
+@@ -3178,7 +3393,7 @@ hwaddr arm_cpu_get_phys_page_attrs_debug(CPUState *cs, vaddr addr,
+     ARMMMUFaultInfo fi = {};
+     bool ret;
+ 
+-    ret = get_phys_addr_with_struct(env, &ptw, addr, MMU_DATA_LOAD, &res, &fi);
++    ret = get_phys_addr_gpc(env, &ptw, addr, MMU_DATA_LOAD, &res, &fi);
+     *attrs = res.f.attrs;
+ 
+     if (ret) {
 -- 
 2.34.1
 
