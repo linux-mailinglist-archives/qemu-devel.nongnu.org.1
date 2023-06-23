@@ -2,81 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9666673B803
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 14:47:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AF2573B81D
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 14:50:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCgBv-0002fT-Fr; Fri, 23 Jun 2023 08:47:07 -0400
+	id 1qCgF2-0003mK-2Q; Fri, 23 Jun 2023 08:50:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qCgBc-00027P-8K
- for qemu-devel@nongnu.org; Fri, 23 Jun 2023 08:46:53 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qCgBX-0000sv-7Z
- for qemu-devel@nongnu.org; Fri, 23 Jun 2023 08:46:44 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687524402;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=nGACEA2aET2msOqUDIABoGnBLI/7CCZG+nBmgrENL+k=;
- b=NG7XkjdPb9mLOS88eo9XMreWvAzfchImrpyytGzabfGBDOMILdUun9wN1VI2H/dmCdhB61
- dTDzL65ljPQT7/jLNF4DEbB9D6pVeNyvUiOgSLQw8yDEtEMvnD0YjIkecalZVltZ7Fkcn/
- IlW4KWdk/XDIvf48RScUpI5H/0ge7Go=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-47-VxWzc_S0MJKGCN8lzDVvDA-1; Fri, 23 Jun 2023 08:46:39 -0400
-X-MC-Unique: VxWzc_S0MJKGCN8lzDVvDA-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 118653C11A0E;
- Fri, 23 Jun 2023 12:46:38 +0000 (UTC)
-Received: from t480s.redhat.com (unknown [10.22.32.17])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 91F641121314;
- Fri, 23 Jun 2023 12:46:34 +0000 (UTC)
-From: David Hildenbrand <david@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, qemu-ppc@nongnu.org,
- Igor Mammedov <imammedo@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Xiao Guangrong <xiaoguangrong.eric@gmail.com>,
- David Hildenbrand <david@redhat.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- David Gibson <david@gibson.dropbear.id.au>,
- Eduardo Habkost <eduardo@habkost.net>, Greg Kurz <groug@kaod.org>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Song Gao <gaosong@loongson.cn>, Xiaojuan Yang <yangxiaojuan@loongson.cn>
-Subject: [PATCH v4 10/10] memory-device: Track used region size in
- DeviceMemoryState
-Date: Fri, 23 Jun 2023 14:45:53 +0200
-Message-Id: <20230623124553.400585-11-david@redhat.com>
-In-Reply-To: <20230623124553.400585-1-david@redhat.com>
-References: <20230623124553.400585-1-david@redhat.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qCgF0-0003lk-0O
+ for qemu-devel@nongnu.org; Fri, 23 Jun 2023 08:50:18 -0400
+Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qCgEy-0001oa-EA
+ for qemu-devel@nongnu.org; Fri, 23 Jun 2023 08:50:17 -0400
+Received: by mail-ed1-x531.google.com with SMTP id
+ 4fb4d7f45d1cf-51be42391a3so1217276a12.0
+ for <qemu-devel@nongnu.org>; Fri, 23 Jun 2023 05:50:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1687524615; x=1690116615;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=dq1Cu43aqN3HHE4m7iXqF8Mucg6wVGiggmuzHPd3Opo=;
+ b=TP9TnSmnFjR82TzfLRwGD53PZjDOEhdefykALqGfdmzDpDlV+qAEWK5tjIzeGei4i2
+ 22/X1iyOPOlpDHLAEJioWazYINxh9WW2xXjxKuR0BisOLxHmUpnseyaNUWNEXcxfNp70
+ 2KcJAeyy/H9NRs2ovy8fo0gvRnsvdoTwtLPMIlYss2cK7hFm4Zz2p1ZPoClkLBXzXI2e
+ o37+J0Rg+EmRZJTAn7tjkqVspYva3KXwW4O7cZvYzh1mnNHVXo5pIXfIM8FNev7gxVAH
+ MgTokL8ADh8dvyIosMV6Zj0x1VSXUdWDz61ckSRAOi3MjmjQmXh/ljfos8elgV0gnMlD
+ QMiA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1687524615; x=1690116615;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=dq1Cu43aqN3HHE4m7iXqF8Mucg6wVGiggmuzHPd3Opo=;
+ b=UGUjrOCbXfQXPO+M+44vFOCj5b1SBHv9xWnThf91bEubigyVAx3DFQhS5ZuklfY3hS
+ pSB/Ke5RapQfuqKvI6xt2FsEG4eey6WVEtPKVU44Jfhl1UDcEURGjd4PDrivScGUdXEB
+ 1VdpKzTzS1JaPAKrUq9H0Pom21p1Mxzi2Kh7ydd74Vl2ocNXjhYlBqTwQZBZrYAFZhxT
+ TcOMfD8vEvgxbyf9SVhEq7QgGYwNA8nI79AyH3wJLPSZjuIM6lixIt1o14RR3gp9FGw/
+ o3u5xEStPm+4EmJ3sxv2EFGzzoZl/63kYXuMnmUzA2mKbhcMTHg6swrdWSDVdcqEKfgz
+ z10w==
+X-Gm-Message-State: AC+VfDzg5tMPkVza3tUz8591FDOWUL9oUdZBVfzodZmTGCL7eLkuS4zR
+ t9eQczlSrbyxsnX7f1zOFERxMPqc9bNTL/oKlW73ay3bnUeg2Do8
+X-Google-Smtp-Source: ACHHUZ42nlTSjHIEEePqpUC4PuvUWrdCeJsxune8X7Y7fzGi29BqiDCgdtQHQMxC7ldSK6rL6wjQMFZHEpCv6HjHFsg=
+X-Received: by 2002:a05:6402:2683:b0:51a:4c1e:c94a with SMTP id
+ w3-20020a056402268300b0051a4c1ec94amr16232847edd.2.1687524614770; Fri, 23 Jun
+ 2023 05:50:14 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <20221216204845.19290-1-tsimpson@quicinc.com>
+ <20221216204845.19290-20-tsimpson@quicinc.com>
+In-Reply-To: <20221216204845.19290-20-tsimpson@quicinc.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 23 Jun 2023 13:50:03 +0100
+Message-ID: <CAFEAcA8gTAYQD_a85OGPMs8KgvLRBZ0vok3QL=K3N29BnuoiHw@mail.gmail.com>
+Subject: Re: [PULL 19/21] target/hexagon: import parser for idef-parser
+To: qemu-devel@nongnu.org, bcain@quicinc.com
+Cc: richard.henderson@linaro.org, philmd@linaro.org, quic_mathbern@quicinc.com,
+ stefanha@redhat.com, Anton Johansson <anjo@rev.ng>,
+ Alessandro Di Federico <ale@rev.ng>, Paolo Montesel <babush@rev.ng>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::531;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x531.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,93 +87,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Let's avoid iterating over all devices and simply track it in the
-DeviceMemoryState.
+On Fri, 16 Dec 2022 at 20:51, Taylor Simpson <tsimpson@quicinc.com> wrote:
+>
+> From: Anton Johansson <anjo@rev.ng>
+>
+> Signed-off-by: Alessandro Di Federico <ale@rev.ng>
+> Signed-off-by: Paolo Montesel <babush@rev.ng>
+> Signed-off-by: Anton Johansson <anjo@rev.ng>
+> Signed-off-by: Taylor Simpson <tsimpson@quicinc.com>
+> Reviewed-by: Taylor Simpson <tsimpson@quicinc.com>
+> Message-Id: <20220923173831.227551-10-anjo@rev.ng>
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: David Hildenbrand <david@redhat.com>
----
- hw/mem/memory-device.c | 22 +++-------------------
- include/hw/boards.h    |  2 ++
- 2 files changed, 5 insertions(+), 19 deletions(-)
+Hi; Coverity points out (CID 976926) that here:
 
-diff --git a/hw/mem/memory-device.c b/hw/mem/memory-device.c
-index 00c7755557..667d56bd29 100644
---- a/hw/mem/memory-device.c
-+++ b/hw/mem/memory-device.c
-@@ -52,28 +52,11 @@ static int memory_device_build_list(Object *obj, void *opaque)
-     return 0;
- }
- 
--static int memory_device_used_region_size(Object *obj, void *opaque)
--{
--    uint64_t *size = opaque;
--
--    if (object_dynamic_cast(obj, TYPE_MEMORY_DEVICE)) {
--        const DeviceState *dev = DEVICE(obj);
--        const MemoryDeviceState *md = MEMORY_DEVICE(obj);
--
--        if (dev->realized) {
--            *size += memory_device_get_region_size(md, &error_abort);
--        }
--    }
--
--    object_child_foreach(obj, memory_device_used_region_size, opaque);
--    return 0;
--}
--
- static void memory_device_check_addable(MachineState *ms, MemoryRegion *mr,
-                                         Error **errp)
- {
-+    const uint64_t used_region_size = ms->device_memory->used_region_size;
-     const uint64_t size = memory_region_size(mr);
--    uint64_t used_region_size = 0;
- 
-     /* we will need a new memory slot for kvm and vhost */
-     if (kvm_enabled() && !kvm_has_free_slot(ms)) {
-@@ -86,7 +69,6 @@ static void memory_device_check_addable(MachineState *ms, MemoryRegion *mr,
-     }
- 
-     /* will we exceed the total amount of memory specified */
--    memory_device_used_region_size(OBJECT(ms), &used_region_size);
-     if (used_region_size + size < used_region_size ||
-         used_region_size + size > ms->maxram_size - ms->ram_size) {
-         error_setg(errp, "not enough space, currently 0x%" PRIx64
-@@ -292,6 +274,7 @@ void memory_device_plug(MemoryDeviceState *md, MachineState *ms)
-     mr = mdc->get_memory_region(md, &error_abort);
-     g_assert(ms->device_memory);
- 
-+    ms->device_memory->used_region_size += memory_region_size(mr);
-     memory_region_add_subregion(&ms->device_memory->mr,
-                                 addr - ms->device_memory->base, mr);
-     trace_memory_device_plug(DEVICE(md)->id ? DEVICE(md)->id : "", addr);
-@@ -310,6 +293,7 @@ void memory_device_unplug(MemoryDeviceState *md, MachineState *ms)
-     g_assert(ms->device_memory);
- 
-     memory_region_del_subregion(&ms->device_memory->mr, mr);
-+    ms->device_memory->used_region_size -= memory_region_size(mr);
-     trace_memory_device_unplug(DEVICE(md)->id ? DEVICE(md)->id : "",
-                                mdc->get_addr(md));
- }
-diff --git a/include/hw/boards.h b/include/hw/boards.h
-index be06e8a41f..fcaf40b9da 100644
---- a/include/hw/boards.h
-+++ b/include/hw/boards.h
-@@ -296,11 +296,13 @@ struct MachineClass {
-  * address space for memory devices starts
-  * @mr: address space container for memory devices
-  * @dimm_size: the sum of plugged DIMMs' sizes
-+ * @used_region_size: the part of @mr already used by memory devices
-  */
- typedef struct DeviceMemoryState {
-     hwaddr base;
-     MemoryRegion mr;
-     uint64_t dimm_size;
-+    uint64_t used_region_size;
- } DeviceMemoryState;
- 
- /**
--- 
-2.40.1
+> --- /dev/null
+> +++ b/target/hexagon/idef-parser/idef-parser.y
 
+> +lvalue : FAIL
+> +         {
+> +             @1.last_column = @1.last_column;
+
+...we have coded an "x = x" assignment that has no
+effect. Was this supposed to be something else, or should it
+just be deleted?
+
+> +             yyassert(c, &@1, false, "Encountered a FAIL token as lvalue.\n");
+> +         }
+> +       | REG
+> +         {
+> +             $$ = $1;
+> +         }
+> +       | var
+> +         {
+> +             $$ = $1;
+> +         }
+> +       ;
+
+thanks
+-- PMM
 
