@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CD4573B854
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 14:58:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34B3873B855
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 14:59:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCgMC-0000O3-HZ; Fri, 23 Jun 2023 08:57:44 -0400
+	id 1qCgMD-0000P8-G4; Fri, 23 Jun 2023 08:57:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qCgLz-0000Nj-Gq; Fri, 23 Jun 2023 08:57:32 -0400
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+ id 1qCgM5-0000O8-2n; Fri, 23 Jun 2023 08:57:38 -0400
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qCgLv-0006Ki-Cu; Fri, 23 Jun 2023 08:57:30 -0400
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-1b55fc3a71cso3429725ad.2; 
- Fri, 23 Jun 2023 05:57:26 -0700 (PDT)
+ id 1qCgM3-0006Lw-78; Fri, 23 Jun 2023 08:57:36 -0400
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-1b5422163f4so4227865ad.2; 
+ Fri, 23 Jun 2023 05:57:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1687525045; x=1690117045;
+ d=gmail.com; s=20221208; t=1687525052; x=1690117052;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ZYZtbYx1tTraQPH5pnDjU5hHvHaeoahGbsVG3TIvXMg=;
- b=GsTkBAAeyWw9cvCfjF/KXwyd21YJHoMI9myzSZ3SCBkknxjrfVd9k1Fg9aXimB4tGR
- 1BuWkBH++qWsmmh8/UfkNniIGt0nTRRZ2PHoOIqO/+tQGIOExzkBvl+u+a4Fb4znlKOZ
- 8kovxhDxav9kJALTalBqbmAl0tD+XcPSOqIvw+KW10ayc4scs3wmF11zRq8W4PKcTHwa
- laYoK2GoA12nJop87L1ZnoBtplScLggNb6Qfxy3FvfiWaLdvJ/TtBpoGfKr2ljD6gMjC
- wicRh7p7DAJorpGWIBOqq8xFm5sJRpeq4xLn/aOX3HCG6vAjDSDUKhN6sxJ/JWGeqv0C
- kxxA==
+ bh=WLjwbrwCcnOwIHYqGly36m5ilqRyrKG/b9OdDLkfmVo=;
+ b=onCmxQFSjYlYAiC+Q9KjRVx4st5gL+lvipu6Qfzm30XyOQdGEWvJKgKwgIP0tL8b//
+ WQ6sG/2lzrgyy1hazDFIv6SWgoQCHE7SIpnLsB0m1+L4ko6Iv4lnIP0oz5kQ/cGfe3ap
+ L65mmHsNQog7cDdPWGURYF+a3Nj8IXm6d1G+uGaOvhZi6vk7/dxvxaP/84xCSwE/SyjM
+ mpN24cNLwd1adiHTmDaZln99X3sRTB7J13UGS/WDikF8c1179+Ld9L2yngtif2OmnBSk
+ wC5HyOZKKqYqCdeJ2CXykL8eKMQZWigqSwY+q+kj1TIEplJ5p6ZtEDR6L0fWtnAiW7Ph
+ ZWIg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687525045; x=1690117045;
+ d=1e100.net; s=20221208; t=1687525052; x=1690117052;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ZYZtbYx1tTraQPH5pnDjU5hHvHaeoahGbsVG3TIvXMg=;
- b=BtZcmlcQ9Bn4Pr9z4v8TcFrrRmr0PaU6x7thVfakRLCFnoGoxrs4QgiMxEBvctSE0i
- +InpI0nOcS1NLZog0uM8ZNroOT4L5he8B6aqV7omDALI5iOyDLIckcITr9TfSGNjyF1Z
- N9Er7DBMHhgbK8KXll9rpkctnIku3lueaDqUTQiheQHZJqDn6gKZOvS/P1vsyxaDNqXr
- /Vfu6qPuWjLg04dpfHUEYnjlpliuunl5RfqPj7AYY9lecP5IAN3EtXmIeDu/2ypqQfpz
- Q1MjPHX08g0fIIgtLYsSfFWDsoYLkM1sPcHk7uP3BUbeEDhfT/GI7lu1RKM4DWcEf2UO
- xNUw==
-X-Gm-Message-State: AC+VfDxsENbrWeIvOr7HfM1zmUg7R9WPuxtOdQAlRO4xyqSx+Nmw9uSb
- t4mc6rUNpBNP5oiaHagCzJNUFkR5DPs=
-X-Google-Smtp-Source: ACHHUZ4vOUaPfPPoZUOa//MC44t0ln7NktuWtQtxC5vIPKMvsfubCmx/OkJD3o+WRr2xdxWTQHPeMA==
-X-Received: by 2002:a17:902:778d:b0:1b0:26f0:4c8e with SMTP id
- o13-20020a170902778d00b001b026f04c8emr14235770pll.69.1687525045556; 
- Fri, 23 Jun 2023 05:57:25 -0700 (PDT)
+ bh=WLjwbrwCcnOwIHYqGly36m5ilqRyrKG/b9OdDLkfmVo=;
+ b=M8OxOTa7ST/tHnUKwh3Wx6jao7m97qilejEzio/6UZb823/wKfQC+01ao4T0CQgVQH
+ beXHivwV7omAnrlbW1fmqiuQ0IuX6yFqc99c8moRBzD2PboCdajQBRu66uqB60S8bBvu
+ fyNuB5P9BA7st3aW/emmPI5uB5pez+QOVFR2y9Rq2b4CCrrqP5FAnEMuvE9IremlnVm2
+ o6FVWv7h3tHH+40XyWQ8HpVSdBeXrfK0r0OrPZMKYH/CcZ08Vpn8rreXa+j3TapC0aWT
+ CsyZWaznl+ltmjFYrWEbMpYJfQGLUUFLz8HUL15UwIAyMOe+wk7jOTJ05GYZkDL/WXFS
+ b+Dw==
+X-Gm-Message-State: AC+VfDwlKLfoJf4Juu7gsWUZcZ974CYEjNt83b7NSwHoZeLedpgoTeWh
+ DtjSkNML8ajkgWGO09IMPq8sHKxa+Os=
+X-Google-Smtp-Source: ACHHUZ4EdfkQpEObJ2Dr5MfwBoTxg7qPgp8LSaML9GvgJUYIbSC1FZuTDdiUTgk2enuHrMqL369aTQ==
+X-Received: by 2002:a17:902:f542:b0:1b6:ba60:780e with SMTP id
+ h2-20020a170902f54200b001b6ba60780emr3869055plf.24.1687525052417; 
+ Fri, 23 Jun 2023 05:57:32 -0700 (PDT)
 Received: from wheely.local0.net (193-116-198-102.tpgi.com.au.
  [193.116.198.102]) by smtp.gmail.com with ESMTPSA id
- b12-20020a170902bd4c00b001a04d27ee92sm7141795plx.241.2023.06.23.05.57.18
+ b12-20020a170902bd4c00b001a04d27ee92sm7141795plx.241.2023.06.23.05.57.26
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 23 Jun 2023 05:57:25 -0700 (PDT)
+ Fri, 23 Jun 2023 05:57:32 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
@@ -67,17 +67,16 @@ Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Beraldo Leal <bleal@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH 1/7] target/ppc: Fix CPU reservation migration for
- record-replay
-Date: Fri, 23 Jun 2023 22:57:01 +1000
-Message-Id: <20230623125707.323517-2-npiggin@gmail.com>
+Subject: [PATCH 2/7] scripts/replay_dump.sh: Update to current rr record format
+Date: Fri, 23 Jun 2023 22:57:02 +1000
+Message-Id: <20230623125707.323517-3-npiggin@gmail.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230623125707.323517-1-npiggin@gmail.com>
 References: <20230623125707.323517-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x635.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x629.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,117 +99,144 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-ppc only migrates reserve_addr, so the destination machine can get a
-valid reservation with an incorrect reservation value of 0. Prior to
-commit 392d328abe753 ("target/ppc: Ensure stcx size matches larx"),
-this could permit a stcx. to incorrectly succeed. That commit
-inadvertently fixed that bug because the target machine starts with an
-impossible reservation size of 0, so any stcx. will fail.
-
-This behaviour is permitted by the ISA because reservation loss may
-have implementation-dependent cause. What's more, with KVM machines it
-is impossible save or reasonably restore reservation state. However if
-the vmstate is being used for record-replay, the reservation must be
-saved and restored exactly in order for execution from snapshot to
-match the record.
-
-This patch deprecates the existing incomplete reserve_addr vmstate,
-and adds a new vmstate subsection with complete reservation state.
-The new vmstate is needed only when record-replay mode is active.
+This thing seems to have fallen by the wayside. This quick hack gets
+it vaguely working with the current format. It was some use in fixing
+rr support for ppc, so maybe others will find it useful too.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/ppc/cpu.h       |  2 ++
- target/ppc/machine.c   | 26 ++++++++++++++++++++++++--
- target/ppc/translate.c |  2 ++
- 3 files changed, 28 insertions(+), 2 deletions(-)
+ scripts/replay-dump.py | 89 +++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 83 insertions(+), 6 deletions(-)
 
-diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
-index 4138a25801..0087ce66e2 100644
---- a/target/ppc/cpu.h
-+++ b/target/ppc/cpu.h
-@@ -1119,7 +1119,9 @@ struct CPUArchState {
-     target_ulong reserve_addr;   /* Reservation address */
-     target_ulong reserve_length; /* Reservation larx op size (bytes) */
-     target_ulong reserve_val;    /* Reservation value */
-+#if defined(TARGET_PPC64)
-     target_ulong reserve_val2;
-+#endif
+diff --git a/scripts/replay-dump.py b/scripts/replay-dump.py
+index 3ba97a6d30..c46ff8ffd6 100755
+--- a/scripts/replay-dump.py
++++ b/scripts/replay-dump.py
+@@ -122,12 +122,19 @@ def swallow_async_qword(eid, name, dumpfile):
+     print("  %s(%d) @ %d" % (name, eid, step_id))
+     return True
  
-     /* These are used in supervisor mode only */
-     target_ulong msr;      /* machine state register */
-diff --git a/target/ppc/machine.c b/target/ppc/machine.c
-index 134b16c625..a817532e5b 100644
---- a/target/ppc/machine.c
-+++ b/target/ppc/machine.c
-@@ -10,6 +10,7 @@
- #include "qemu/main-loop.h"
- #include "kvm_ppc.h"
- #include "power8-pmu.h"
-+#include "sysemu/replay.h"
- 
- static void post_load_update_msr(CPUPPCState *env)
- {
-@@ -671,6 +672,27 @@ static const VMStateDescription vmstate_compat = {
-     }
- };
- 
-+static bool reservation_needed(void *opaque)
-+{
-+    return (replay_mode != REPLAY_MODE_NONE);
-+}
++def swallow_bytes(eid, name, dumpfile, nr):
++    "Swallow nr bytes of data without looking at it"
++    for x in range(nr):
++         read_byte(dumpfile)
++    return True
 +
-+static const VMStateDescription vmstate_reservation = {
-+    .name = "cpu/reservation",
-+    .version_id = 1,
-+    .minimum_version_id = 1,
-+    .needed = reservation_needed,
-+    .fields = (VMStateField[]) {
-+        VMSTATE_UINTTL(env.reserve_addr, PowerPCCPU),
-+        VMSTATE_UINTTL(env.reserve_length, PowerPCCPU),
-+        VMSTATE_UINTTL(env.reserve_val, PowerPCCPU),
-+#if defined(TARGET_PPC64)
-+        VMSTATE_UINTTL(env.reserve_val2, PowerPCCPU),
-+#endif
-+        VMSTATE_END_OF_LIST()
-+    }
-+};
+ async_decode_table = [ Decoder(0, "REPLAY_ASYNC_EVENT_BH", swallow_async_qword),
+-                       Decoder(1, "REPLAY_ASYNC_INPUT", decode_unimp),
+-                       Decoder(2, "REPLAY_ASYNC_INPUT_SYNC", decode_unimp),
+-                       Decoder(3, "REPLAY_ASYNC_CHAR_READ", decode_unimp),
+-                       Decoder(4, "REPLAY_ASYNC_EVENT_BLOCK", decode_unimp),
+-                       Decoder(5, "REPLAY_ASYNC_EVENT_NET", decode_unimp),
++                       Decoder(1, "REPLAY_ASYNC_BH_ONESHOT", decode_unimp),
++                       Decoder(2, "REPLAY_ASYNC_INPUT", decode_unimp),
++                       Decoder(3, "REPLAY_ASYNC_INPUT_SYNC", decode_unimp),
++                       Decoder(4, "REPLAY_ASYNC_CHAR_READ", decode_unimp),
++                       Decoder(5, "REPLAY_ASYNC_EVENT_BLOCK", decode_unimp),
++                       Decoder(6, "REPLAY_ASYNC_EVENT_NET", decode_unimp),
+ ]
+ # See replay_read_events/replay_read_event
+ def decode_async(eid, name, dumpfile):
+@@ -156,6 +163,13 @@ def decode_audio_out(eid, name, dumpfile):
+     print_event(eid, name, "%d" % (audio_data))
+     return True
+ 
++def decode_random(eid, name, dumpfile):
++    ret = read_dword(dumpfile)
++    size = read_dword(dumpfile)
++    swallow_bytes(eid, name, dumpfile, size)
++    print_event(eid, name, "%d %d" % (ret, size))
++    return True
 +
- const VMStateDescription vmstate_ppc_cpu = {
-     .name = "cpu",
-     .version_id = 5,
-@@ -692,8 +714,7 @@ const VMStateDescription vmstate_ppc_cpu = {
-         VMSTATE_UINTTL_ARRAY(env.spr, PowerPCCPU, 1024),
-         VMSTATE_UINT64(env.spe_acc, PowerPCCPU),
+ def decode_checkpoint(eid, name, dumpfile):
+     """Decode a checkpoint.
  
--        /* Reservation */
--        VMSTATE_UINTTL(env.reserve_addr, PowerPCCPU),
-+        VMSTATE_UNUSED(sizeof(target_ulong)), /* was env.reserve_addr */
+@@ -184,6 +198,24 @@ def decode_interrupt(eid, name, dumpfile):
+     print_event(eid, name)
+     return True
  
-         /* Supervisor mode architected state */
-         VMSTATE_UINTTL(env.msr, PowerPCCPU),
-@@ -722,6 +743,7 @@ const VMStateDescription vmstate_ppc_cpu = {
-         &vmstate_tlbemb,
-         &vmstate_tlbmas,
-         &vmstate_compat,
-+        &vmstate_reservation,
-         NULL
-     }
- };
-diff --git a/target/ppc/translate.c b/target/ppc/translate.c
-index c9fb7b40a5..eb278c2683 100644
---- a/target/ppc/translate.c
-+++ b/target/ppc/translate.c
-@@ -77,7 +77,9 @@ static TCGv cpu_xer, cpu_so, cpu_ov, cpu_ca, cpu_ov32, cpu_ca32;
- static TCGv cpu_reserve;
- static TCGv cpu_reserve_length;
- static TCGv cpu_reserve_val;
-+#if defined(TARGET_PPC64)
- static TCGv cpu_reserve_val2;
-+#endif
- static TCGv cpu_fpscr;
- static TCGv_i32 cpu_access_type;
++def decode_exception(eid, name, dumpfile):
++    print_event(eid, name)
++    return True
++
++def decode_shutdown(eid, name, dumpfile):
++    print_event(eid, name)
++    return True
++
++def decode_end(eid, name, dumpfile):
++    print_event(eid, name)
++    return False
++
++def decode_char_write(eid, name, dumpfile):
++    res = read_dword(dumpfile)
++    offset = read_dword(dumpfile)
++    print_event(eid, name)
++    return True
++
+ def decode_clock(eid, name, dumpfile):
+     clock_data = read_qword(dumpfile)
+     print_event(eid, name, "0x%x" % (clock_data))
+@@ -268,6 +300,48 @@ def decode_clock(eid, name, dumpfile):
+                   Decoder(28, "EVENT_CP_RESET", decode_checkpoint),
+ ]
  
++v12_event_table = [Decoder(0, "EVENT_INSTRUCTION", decode_instruction),
++                  Decoder(1, "EVENT_INTERRUPT", decode_interrupt),
++                  Decoder(2, "EVENT_EXCEPTION", decode_exception),
++                  Decoder(3, "EVENT_ASYNC_BH", swallow_async_qword),
++                  Decoder(4, "EVENT_ASYNC_BH_ONESHOT", decode_unimp),
++                  Decoder(5, "EVENT_ASYNC_INPUT", decode_unimp),
++                  Decoder(6, "EVENT_ASYNC_INPUT_SYNC", decode_unimp),
++                  Decoder(7, "EVENT_ASYNC_CHAR_READ", decode_unimp),
++                  Decoder(8, "EVENT_ASYNC_BLOCK", decode_unimp),
++                  Decoder(9, "EVENT_ASYNC_NET", decode_unimp),
++                  Decoder(10, "EVENT_SHUTDOWN", decode_unimp),
++                  Decoder(11, "EVENT_SHUTDOWN_HOST_ERR", decode_shutdown),
++                  Decoder(12, "EVENT_SHUTDOWN_HOST_QMP_QUIT", decode_shutdown),
++                  Decoder(13, "EVENT_SHUTDOWN_HOST_QMP_RESET", decode_shutdown),
++                  Decoder(14, "EVENT_SHUTDOWN_HOST_SIGNAL", decode_shutdown),
++                  Decoder(15, "EVENT_SHUTDOWN_HOST_UI", decode_shutdown),
++                  Decoder(16, "EVENT_SHUTDOWN_GUEST_SHUTDOWN", decode_shutdown),
++                  Decoder(17, "EVENT_SHUTDOWN_GUEST_RESET", decode_shutdown),
++                  Decoder(18, "EVENT_SHUTDOWN_GUEST_PANIC", decode_shutdown),
++                  Decoder(19, "EVENT_SHUTDOWN_SUBSYS_RESET", decode_shutdown),
++                  Decoder(20, "EVENT_SHUTDOWN_SNAPSHOT_LOAD", decode_shutdown),
++                  Decoder(21, "EVENT_SHUTDOWN___MAX", decode_shutdown),
++                  Decoder(22, "EVENT_CHAR_WRITE", decode_char_write),
++                  Decoder(23, "EVENT_CHAR_READ_ALL", decode_unimp),
++                  Decoder(24, "EVENT_CHAR_READ_ALL_ERROR", decode_unimp),
++                  Decoder(25, "EVENT_AUDIO_OUT", decode_audio_out),
++                  Decoder(26, "EVENT_AUDIO_IN", decode_unimp),
++                  Decoder(27, "EVENT_RANDOM", decode_random),
++                  Decoder(28, "EVENT_CLOCK_HOST", decode_clock),
++                  Decoder(29, "EVENT_CLOCK_VIRTUAL_RT", decode_clock),
++                  Decoder(30, "EVENT_CP_CLOCK_WARP_START", decode_checkpoint),
++                  Decoder(31, "EVENT_CP_CLOCK_WARP_ACCOUNT", decode_checkpoint),
++                  Decoder(32, "EVENT_CP_RESET_REQUESTED", decode_checkpoint),
++                  Decoder(33, "EVENT_CP_SUSPEND_REQUESTED", decode_checkpoint),
++                  Decoder(34, "EVENT_CP_CLOCK_VIRTUAL", decode_checkpoint),
++                  Decoder(35, "EVENT_CP_CLOCK_HOST", decode_checkpoint),
++                  Decoder(36, "EVENT_CP_CLOCK_VIRTUAL_RT", decode_checkpoint),
++                  Decoder(37, "EVENT_CP_INIT", decode_checkpoint_init),
++                  Decoder(38, "EVENT_CP_RESET", decode_checkpoint),
++                  Decoder(39, "EVENT_END", decode_end),
++]
++
+ def parse_arguments():
+     "Grab arguments for script"
+     parser = argparse.ArgumentParser()
+@@ -285,7 +359,10 @@ def decode_file(filename):
+ 
+     print("HEADER: version 0x%x" % (version))
+ 
+-    if version == 0xe02007:
++    if version == 0xe0200c:
++        event_decode_table = v12_event_table
++        replay_state.checkpoint_start = 12
++    elif version == 0xe02007:
+         event_decode_table = v7_event_table
+         replay_state.checkpoint_start = 12
+     elif version == 0xe02006:
 -- 
 2.40.1
 
