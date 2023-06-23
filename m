@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C94E73B852
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 14:58:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA2D373B853
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 14:58:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCgMK-0000W7-QF; Fri, 23 Jun 2023 08:57:52 -0400
+	id 1qCgMQ-0000bO-JE; Fri, 23 Jun 2023 08:57:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qCgMI-0000Sn-2M; Fri, 23 Jun 2023 08:57:50 -0400
-Received: from mail-pg1-x52a.google.com ([2607:f8b0:4864:20::52a])
+ id 1qCgMO-0000YG-Fi; Fri, 23 Jun 2023 08:57:56 -0400
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qCgMG-0006Ri-7j; Fri, 23 Jun 2023 08:57:49 -0400
-Received: by mail-pg1-x52a.google.com with SMTP id
- 41be03b00d2f7-54290603887so382586a12.1; 
- Fri, 23 Jun 2023 05:57:47 -0700 (PDT)
+ id 1qCgMM-0006St-Rk; Fri, 23 Jun 2023 08:57:56 -0400
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-1b52d14df27so3232495ad.0; 
+ Fri, 23 Jun 2023 05:57:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1687525066; x=1690117066;
+ d=gmail.com; s=20221208; t=1687525073; x=1690117073;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=vPVziyxEWerMj/TzPold0Nq7Z0giPqF+Gq4GzlvWGMI=;
- b=eNCHveKUJa24DCz9/Hh2WWkkHwDJ7Lbo0o+i5RVTBnyKI+Uugp2oveX+mBY4Ovk3nr
- S2Lg/PxVYoxkAtJ6WHOhZIC0BiwG827dVz9iRgSGD+vr+Ed+yzPzHcMG98W0cDJJ3bBx
- zqo8sa9+I7L3vf39zUlpJPp7W7jRePbwS7h1opmfNL+yyDBtlqgIw1h66jwnWK5iMZzQ
- z9kvnEWgw7cnjBLw8LKV0WNxMtDWtR0jXrj6veVOoVEm3byuhCvk+9yVMX+06opBiFX/
- 99rinYQhceQAI0UQgQhS+JCH0ZRPYjb6WcG/sSLLU3GbNgZ9l3agG8VrWo39eiDQgG/b
- F20A==
+ bh=PfTBS/AlA3Z4eD6Q+vPTYsZBcNTGo2xV3qOIbiykjsY=;
+ b=lhTJ7yktpGWkCuu0QTUPYpU84/zB5b+o0KEB18IzaJahsNY7zI+F7Cfav1a1eBssaK
+ DNkE59kEYlhNlHEmKT1sZjvCpxUK7ssENMOd8nPQj4q+TjHHCsM5zzM6avPdbBj0MSTl
+ SY+c95cgYkfARC18O6TFqGQdwDQT4Sep11lgPUBw11odSV1JSRk3RGRt8kycPHr6L4hC
+ ToYZoFkgvpVOz/TgsMhD+kgSl5ubpjfk4pE43z5+nOiAFFJf8ZQNMQN3oF2v526EDgWX
+ jnuqCzc7PuzoyF8mg7vixKNEiWU3+1hMAjKQviAE0WwCkBIL3sDEgWh8OvOjqTLR7qHo
+ epxQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687525066; x=1690117066;
+ d=1e100.net; s=20221208; t=1687525073; x=1690117073;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=vPVziyxEWerMj/TzPold0Nq7Z0giPqF+Gq4GzlvWGMI=;
- b=ce8ynNRkjo90nGML4+5r2BxbbxXJ6Jsa3+bFpoDx45To36g6/f2gvqCCR1Fwlbgf+Q
- wbmlN1j5Up6GZQeO2Ihbh9eFF0FnfL6EterfvDfPOpO0ANJG4AVHzMFnn5KCl6J4lYVQ
- UnH6Pnp1FZ8C2V0bwkccuXMyal8oFvr6Nt03f1g1VHvD0vKufgKAmAS7e7ey2s+jlsfH
- idHLz5QrsVx1pnzKUWN6p3X1WbdRS/GSgEzr8y3Flm3zp9RVpY521CrQhXYPAWCQ720A
- VlhchR0ADYumfpScqTn4HHhL2+tlzlV2xlYGGgnCpx9U8VQ4OnfItZfD17Gx0RDA52oR
- tKTQ==
-X-Gm-Message-State: AC+VfDwZvhtReJRxfr4Dj44TYIo0Ks8U13UcpGqvunV7kSoPf2+D6Nue
- t2rdUUouToPvCecQCOQ2xkz43x2usHA=
-X-Google-Smtp-Source: ACHHUZ7mQMEIz053ceNHRJFcgcwKn5bCe7D2Xu+HI+Tg/FkxWdYNhNI/HAUrQm455LTmsJ6zWxZcoA==
-X-Received: by 2002:a17:902:7c92:b0:1b3:91f7:4883 with SMTP id
- y18-20020a1709027c9200b001b391f74883mr9326153pll.46.1687525066227; 
- Fri, 23 Jun 2023 05:57:46 -0700 (PDT)
+ bh=PfTBS/AlA3Z4eD6Q+vPTYsZBcNTGo2xV3qOIbiykjsY=;
+ b=JW7Eg9f2/arHxkEkHA/qvV7bh3VJ15aVsGTED80I+Sg/l3zn+Qq8rCWCXNC++78/Wh
+ NxCPhDNgj+MNpuyB2JQCZ0bjksqdDqaYzBTRV7ubZrTF4hFGqWbMqCDAELsGd3jE5BFZ
+ vP1K6HF75AOBRDVTiOJAxzKnDV1Hqd0AJKUvahOzc0gwJZHFfvOmiOP74zavZFT3DPy/
+ jzE6VyqFkxE7JA2RnJur8fvtYldVC1MjKqqX3pnzMIPIt2pOimjc76AVYC0VoYAicozR
+ dtcpo1kLkzSsVg7IgVOrWQx9ya07pGkvHw243u352IidcrCQQCEpffPloVEN72LExSzb
+ 8B1Q==
+X-Gm-Message-State: AC+VfDzJW24tCXJHUORx7m6I9FJKi3L5iqJ+ixIH/Vk8emwgSnZ6gUAq
+ Rwh/YGasw/PVV+g1sm/+0vQqMcU7Q7s=
+X-Google-Smtp-Source: ACHHUZ4jyHWlsnfqFbTdZSFGWCiQDBqIRkLDe7zlDkYXIwEPUo6cWZgUWYN4dJf0mM6mM2sCgAz3oA==
+X-Received: by 2002:a17:902:d506:b0:1b6:6c32:598b with SMTP id
+ b6-20020a170902d50600b001b66c32598bmr10927209plg.21.1687525073088; 
+ Fri, 23 Jun 2023 05:57:53 -0700 (PDT)
 Received: from wheely.local0.net (193-116-198-102.tpgi.com.au.
  [193.116.198.102]) by smtp.gmail.com with ESMTPSA id
- b12-20020a170902bd4c00b001a04d27ee92sm7141795plx.241.2023.06.23.05.57.39
+ b12-20020a170902bd4c00b001a04d27ee92sm7141795plx.241.2023.06.23.05.57.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 23 Jun 2023 05:57:46 -0700 (PDT)
+ Fri, 23 Jun 2023 05:57:52 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
@@ -67,17 +67,16 @@ Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Beraldo Leal <bleal@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH 4/7] spapr: Fix record-replay machine reset consuming too many
- events
-Date: Fri, 23 Jun 2023 22:57:04 +1000
-Message-Id: <20230623125707.323517-5-npiggin@gmail.com>
+Subject: [PATCH 5/7] target/ppc: Fix timebase reset with record-replay
+Date: Fri, 23 Jun 2023 22:57:05 +1000
+Message-Id: <20230623125707.323517-6-npiggin@gmail.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230623125707.323517-1-npiggin@gmail.com>
 References: <20230623125707.323517-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52a;
- envelope-from=npiggin@gmail.com; helo=mail-pg1-x52a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,69 +99,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-spapr_machine_reset gets a random number to populate the device-tree
-rng seed with. When loading a snapshot for record-replay, the machine
-is reset again, and that tries to consume the random event record
-again, crashing due to inconsistent record
-
-Fix this by saving the seed to populate the device tree with, and
-skipping the rng on snapshot load.
+Timebase save uses a random number for a legacy vmstate field, which
+makes rr snapshot loading unbalanced. The easiest way to deal with this
+is just to skip the rng if record-replay is active.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- hw/ppc/spapr.c         | 12 +++++++++---
- include/hw/ppc/spapr.h |  1 +
- 2 files changed, 10 insertions(+), 3 deletions(-)
+ hw/ppc/ppc.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-index d290acfa95..55948f233f 100644
---- a/hw/ppc/spapr.c
-+++ b/hw/ppc/spapr.c
-@@ -1017,7 +1017,6 @@ static void spapr_dt_chosen(SpaprMachineState *spapr, void *fdt, bool reset)
- {
-     MachineState *machine = MACHINE(spapr);
-     SpaprMachineClass *smc = SPAPR_MACHINE_GET_CLASS(machine);
--    uint8_t rng_seed[32];
-     int chosen;
- 
-     _FDT(chosen = fdt_add_subnode(fdt, 0, "chosen"));
-@@ -1095,8 +1094,7 @@ static void spapr_dt_chosen(SpaprMachineState *spapr, void *fdt, bool reset)
-         spapr_dt_ov5_platform_support(spapr, fdt, chosen);
+diff --git a/hw/ppc/ppc.c b/hw/ppc/ppc.c
+index 82e4408c5c..7b7db30f95 100644
+--- a/hw/ppc/ppc.c
++++ b/hw/ppc/ppc.c
+@@ -32,6 +32,7 @@
+ #include "qemu/main-loop.h"
+ #include "qemu/error-report.h"
+ #include "sysemu/kvm.h"
++#include "sysemu/replay.h"
+ #include "sysemu/runstate.h"
+ #include "kvm_ppc.h"
+ #include "migration/vmstate.h"
+@@ -933,8 +934,14 @@ static void timebase_save(PPCTimebase *tb)
+         return;
      }
  
--    qemu_guest_getrandom_nofail(rng_seed, sizeof(rng_seed));
--    _FDT(fdt_setprop(fdt, chosen, "rng-seed", rng_seed, sizeof(rng_seed)));
-+    _FDT(fdt_setprop(fdt, chosen, "rng-seed", spapr->fdt_rng_seed, 32));
- 
-     _FDT(spapr_dt_ovec(fdt, chosen, spapr->ov5_cas, "ibm,architecture-vec-5"));
- }
-@@ -1649,6 +1647,14 @@ static void spapr_machine_reset(MachineState *machine, ShutdownCause reason)
-     void *fdt;
-     int rc;
- 
-+    if (reason != SHUTDOWN_CAUSE_SNAPSHOT_LOAD) {
-+        /*
-+         * Record-replay snapshot load must not consume random, this was
-+         * already replayed from initial machine reset.
-+         */
-+        qemu_guest_getrandom_nofail(spapr->fdt_rng_seed, 32);
+-    /* not used anymore, we keep it for compatibility */
+-    tb->time_of_the_day_ns = qemu_clock_get_ns(QEMU_CLOCK_HOST);
++    if (replay_mode == REPLAY_MODE_NONE) {
++        /* not used anymore, we keep it for compatibility */
++        tb->time_of_the_day_ns = qemu_clock_get_ns(QEMU_CLOCK_HOST);
++    } else {
++        /* simpler for record-replay to avoid this event, compat not needed */
++        tb->time_of_the_day_ns = 0;
 +    }
 +
-     pef_kvm_reset(machine->cgs, &error_fatal);
-     spapr_caps_apply(spapr);
- 
-diff --git a/include/hw/ppc/spapr.h b/include/hw/ppc/spapr.h
-index f47e8419a5..f4bd204d86 100644
---- a/include/hw/ppc/spapr.h
-+++ b/include/hw/ppc/spapr.h
-@@ -204,6 +204,7 @@ struct SpaprMachineState {
-     uint32_t fdt_size;
-     uint32_t fdt_initial_size;
-     void *fdt_blob;
-+    uint8_t fdt_rng_seed[32];
-     long kernel_size;
-     bool kernel_le;
-     uint64_t kernel_addr;
+     /*
+      * tb_offset is only expected to be changed by QEMU so
+      * there is no need to update it from KVM here
 -- 
 2.40.1
 
