@@ -2,73 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C97A73B747
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 14:32:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EAEAD73B7DE
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 14:44:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCfx9-0001ih-6J; Fri, 23 Jun 2023 08:31:51 -0400
+	id 1qCfxI-0002Hv-Nk; Fri, 23 Jun 2023 08:32:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qCfx1-0001VE-Gv
- for qemu-devel@nongnu.org; Fri, 23 Jun 2023 08:31:43 -0400
-Received: from mail-lf1-x12c.google.com ([2a00:1450:4864:20::12c])
+ id 1qCfx2-0001Vy-EU
+ for qemu-devel@nongnu.org; Fri, 23 Jun 2023 08:31:44 -0400
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qCfwz-0000fE-Sf
- for qemu-devel@nongnu.org; Fri, 23 Jun 2023 08:31:43 -0400
-Received: by mail-lf1-x12c.google.com with SMTP id
- 2adb3069b0e04-4f866a3d8e4so745291e87.0
- for <qemu-devel@nongnu.org>; Fri, 23 Jun 2023 05:31:41 -0700 (PDT)
+ id 1qCfx0-0000fS-KY
+ for qemu-devel@nongnu.org; Fri, 23 Jun 2023 08:31:44 -0400
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-3fa71db4208so6679145e9.0
+ for <qemu-devel@nongnu.org>; Fri, 23 Jun 2023 05:31:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687523500; x=1690115500;
+ d=linaro.org; s=google; t=1687523501; x=1690115501;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=O3giUrXUWlJANB8y5onRyuiewyiTWnhkcbDMbixvBvo=;
- b=daC5cycjdy74xtObdfmz+bxrpcgKvNx/+LoT1z1cBfqn7vaCeOtTYso9WPhl2l0F3M
- PKCh+ahRtRd7A7KrNuWkgpLFx6W096Yb26mirHV+tEmoGREQWxKRMKFTpUt5h6fat28X
- LAM/aJGTehviLyvC8OTI1yS/YXHgAs6Sij4Mr6yvyI2kysr0T8g5/ZdHTNNmyBqgeCvj
- Ck1s4oIS5GkmYQg1opz5CZjz38URuCVLjr/Cx6BsSClQHSHjXFRLeUaFttmcDId0kBxr
- lGiGOB7KMgyly9GeHkpthKLrQeolusc0dH5QKVxAreShTEzVYm03DLhsG/JXulvXIwDj
- dsjA==
+ :reply-to; bh=ynUFUtXjjp3MQdkYusZ4Ei3zBNQD4GWYtDB3PcOn66Y=;
+ b=QRb1I/YMarsOSbD0eA8rVkHArCws6BmunIs1qNqC9wqDpvCsb3wio7xSvhNzemVwL9
+ GSGqNwuZRQGGc5OZNfljv/ccTo1VNe8I1Ivxuz9N8kuEUZsAQXNhlDGIiaI+r0UQXKdo
+ ee67pVuRl8/jb4Tj2pJa3cY5YpptuK2QA+Sky/bJ4ihf07dcFA7fI5pp8BzIzHNeRCau
+ MpByS0AiOnJu7FrolI+OVVXUq3GJjpjMMWTjTCO0PXTXiULT2bSQdnAi2ve1+ZsM0xKJ
+ 1wv6GUgRxgRORdGlxJFQZr+hVGS5CkoM/2zgIeWGEkbl+8EHddny3GTN8K7F3FCyl9jd
+ +/SQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687523500; x=1690115500;
+ d=1e100.net; s=20221208; t=1687523501; x=1690115501;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=O3giUrXUWlJANB8y5onRyuiewyiTWnhkcbDMbixvBvo=;
- b=aPMQ2j0O5qb2B2XQohigGR5dBUGPU3qEYzjtP7B8CLW5cxRfgCTyy/HFdLiG7WYcGa
- llV6G9U4D7flGn2zFB61MnwUALBLSldSAwCG7j3/4w+W+tZ8RkfYuqwhyAP+Oj4jIkvQ
- h4k3RQh7+P+zyM7v0AiXA/KXezSz71l3NY2ZIqV/faQnOvHJJ7tTb9XfMy78WTOHxh4w
- KYbnSPzKFt1+OFMy0N1XqHpUJQ1t5495mWxdFKx5fsfUvJBDT/s4QE40/EZ4Ra4x2oVq
- 0aqbVZrcUfEqxrqjND79lWRxZy6DWyW/kowQBaBwaI2Kq1sUYCR5hrR+V3rrccbewBdO
- joCQ==
-X-Gm-Message-State: AC+VfDxsFlwBzmanHqaUvSzcDOy88GT7d6ggNeXNaE8nZ2g3YAYgQluT
- 02WJiXbe0VdvfRKoDdiU3F/o/l/PIit7tEtbfwM=
-X-Google-Smtp-Source: ACHHUZ5LNCCJM1WyP3LllEfC9r9iHnYaC130nZfxq3ihTqdT2HUWpt1gzG3+bQ+6kS8Zm1Kg9lPMfQ==
-X-Received: by 2002:a19:710b:0:b0:4f6:2a02:fc1a with SMTP id
- m11-20020a19710b000000b004f62a02fc1amr12394407lfc.17.1687523500292; 
+ bh=ynUFUtXjjp3MQdkYusZ4Ei3zBNQD4GWYtDB3PcOn66Y=;
+ b=OTUVtd9vyo9B7N1IMhRMSgyX9wBvDQvXNMXPUoVuHVmmtX0ORPIHFR3onyZd8G9rK7
+ pBFLD56gqTT/ymuEVDBp/4XiChr3G21hh/bIZba4LRaIN37Gq9K33Ny5neY/sQC0XzSv
+ /aNTly+uHTXDqYOKMK9RxHUQE3KZjhR7B6MM3JKIT3x7aNEkuTGZrubGmVaE3rt52IaK
+ d5UL4MVMnfOA9ymdd/fnjXhj40vdIBBInPTx0GvfJtmucRV1FdouMqwne5gE7c8ghcIK
+ CYXn0yjKAs2ElvvVvA1YVjiVrNLfryYQSxcRlebm8j9y28KfXv8HbtpV8btnyLjCpQAT
+ WwMg==
+X-Gm-Message-State: AC+VfDxG1VKf3RRsuf3Mh3DkKGM6DWiWfn2YFKkhsPPlYYMOfIn7lqoB
+ o6Ntl7nB13GBkFy6r8r/82qI13F0orh9Hd3Uqdw=
+X-Google-Smtp-Source: ACHHUZ5hv0FcqOiYnjVEEhbSVb+r2HbU3cFJeAKbk/NQWhX+BlwlnDnp3bTOfGt6C9SkFUsDgBVPXw==
+X-Received: by 2002:a05:600c:3797:b0:3f8:f749:efae with SMTP id
+ o23-20020a05600c379700b003f8f749efaemr3850060wmr.33.1687523500801; 
  Fri, 23 Jun 2023 05:31:40 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- z7-20020a1c4c07000000b003f819dfa0ddsm2232622wmf.28.2023.06.23.05.31.39
+ z7-20020a1c4c07000000b003f819dfa0ddsm2232622wmf.28.2023.06.23.05.31.40
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Fri, 23 Jun 2023 05:31:40 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 06/26] include/exec/memattrs: Add two bits of space to
- MemTxAttrs
-Date: Fri, 23 Jun 2023 13:31:15 +0100
-Message-Id: <20230623123135.1788191-7-peter.maydell@linaro.org>
+Subject: [PULL 07/26] target/arm: Adjust the order of Phys and Stage2 ARMMMUIdx
+Date: Fri, 23 Jun 2023 13:31:16 +0100
+Message-Id: <20230623123135.1788191-8-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230623123135.1788191-1-peter.maydell@linaro.org>
 References: <20230623123135.1788191-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12c;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,44 +92,76 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Richard Henderson <richard.henderson@linaro.org>
 
-We will need 2 bits to represent ARMSecurityState.
-
-Do not attempt to replace or widen secure, even though it
-logically overlaps the new field -- there are uses within
-e.g. hw/block/pflash_cfi01.c, which don't know anything
-specific about ARM.
+It will be helpful to have ARMMMUIdx_Phys_* to be in the same
+relative order as ARMSecuritySpace enumerators. This requires
+the adjustment to the nstable check. While there, check for being
+in secure state rather than rely on clearing the low bit making
+no change to non-secure state.
 
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20230620124418.805717-7-richard.henderson@linaro.org
+Message-id: 20230620124418.805717-8-richard.henderson@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- include/exec/memattrs.h | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ target/arm/cpu.h | 12 ++++++------
+ target/arm/ptw.c | 12 +++++-------
+ 2 files changed, 11 insertions(+), 13 deletions(-)
 
-diff --git a/include/exec/memattrs.h b/include/exec/memattrs.h
-index 9fb98bc1efd..d04170aa27a 100644
---- a/include/exec/memattrs.h
-+++ b/include/exec/memattrs.h
-@@ -29,10 +29,17 @@ typedef struct MemTxAttrs {
-      * "didn't specify" if necessary.
-      */
-     unsigned int unspecified:1;
--    /* ARM/AMBA: TrustZone Secure access
-+    /*
-+     * ARM/AMBA: TrustZone Secure access
-      * x86: System Management Mode access
-      */
-     unsigned int secure:1;
-+    /*
-+     * ARM: ArmSecuritySpace.  This partially overlaps secure, but it is
-+     * easier to have both fields to assist code that does not understand
-+     * ARMv9 RME, or no specific knowledge of ARM at all (e.g. pflash).
-+     */
-+    unsigned int space:2;
-     /* Memory access is usermode (unprivileged) */
-     unsigned int user:1;
+diff --git a/target/arm/cpu.h b/target/arm/cpu.h
+index 125e53b83fe..b3386197759 100644
+--- a/target/arm/cpu.h
++++ b/target/arm/cpu.h
+@@ -2860,18 +2860,18 @@ typedef enum ARMMMUIdx {
+     ARMMMUIdx_E2        = 6 | ARM_MMU_IDX_A,
+     ARMMMUIdx_E3        = 7 | ARM_MMU_IDX_A,
+ 
+-    /* TLBs with 1-1 mapping to the physical address spaces. */
+-    ARMMMUIdx_Phys_NS   = 8 | ARM_MMU_IDX_A,
+-    ARMMMUIdx_Phys_S    = 9 | ARM_MMU_IDX_A,
+-
      /*
+      * Used for second stage of an S12 page table walk, or for descriptor
+      * loads during first stage of an S1 page table walk.  Note that both
+      * are in use simultaneously for SecureEL2: the security state for
+      * the S2 ptw is selected by the NS bit from the S1 ptw.
+      */
+-    ARMMMUIdx_Stage2    = 10 | ARM_MMU_IDX_A,
+-    ARMMMUIdx_Stage2_S  = 11 | ARM_MMU_IDX_A,
++    ARMMMUIdx_Stage2_S  = 8 | ARM_MMU_IDX_A,
++    ARMMMUIdx_Stage2    = 9 | ARM_MMU_IDX_A,
++
++    /* TLBs with 1-1 mapping to the physical address spaces. */
++    ARMMMUIdx_Phys_S    = 10 | ARM_MMU_IDX_A,
++    ARMMMUIdx_Phys_NS   = 11 | ARM_MMU_IDX_A,
+ 
+     /*
+      * These are not allocated TLBs and are used only for AT system
+diff --git a/target/arm/ptw.c b/target/arm/ptw.c
+index 37bcb17a9ee..3f3517f70b6 100644
+--- a/target/arm/ptw.c
++++ b/target/arm/ptw.c
+@@ -1449,16 +1449,14 @@ static bool get_phys_addr_lpae(CPUARMState *env, S1Translate *ptw,
+     descaddr |= (address >> (stride * (4 - level))) & indexmask;
+     descaddr &= ~7ULL;
+     nstable = !regime_is_stage2(mmu_idx) && extract32(tableattrs, 4, 1);
+-    if (nstable) {
++    if (nstable && ptw->in_secure) {
+         /*
+          * Stage2_S -> Stage2 or Phys_S -> Phys_NS
+-         * Assert that the non-secure idx are even, and relative order.
++         * Assert the relative order of the secure/non-secure indexes.
+          */
+-        QEMU_BUILD_BUG_ON((ARMMMUIdx_Phys_NS & 1) != 0);
+-        QEMU_BUILD_BUG_ON((ARMMMUIdx_Stage2 & 1) != 0);
+-        QEMU_BUILD_BUG_ON(ARMMMUIdx_Phys_NS + 1 != ARMMMUIdx_Phys_S);
+-        QEMU_BUILD_BUG_ON(ARMMMUIdx_Stage2 + 1 != ARMMMUIdx_Stage2_S);
+-        ptw->in_ptw_idx &= ~1;
++        QEMU_BUILD_BUG_ON(ARMMMUIdx_Phys_S + 1 != ARMMMUIdx_Phys_NS);
++        QEMU_BUILD_BUG_ON(ARMMMUIdx_Stage2_S + 1 != ARMMMUIdx_Stage2);
++        ptw->in_ptw_idx += 1;
+         ptw->in_secure = false;
+     }
+     if (!S1_ptw_translate(env, ptw, descaddr, fi)) {
 -- 
 2.34.1
 
