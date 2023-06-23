@@ -2,53 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 004E873B8AC
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 15:21:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3056F73B8AB
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 15:21:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCgiT-0004Uc-KI; Fri, 23 Jun 2023 09:20:45 -0400
+	id 1qCgiU-0004Vv-Nr; Fri, 23 Jun 2023 09:20:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qCgiM-0004Ti-FD; Fri, 23 Jun 2023 09:20:39 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qCgiK-0008IZ-1L; Fri, 23 Jun 2023 09:20:38 -0400
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.200])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Qnd8G2VRGz6J7Xv;
- Fri, 23 Jun 2023 21:17:50 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Fri, 23 Jun
- 2023 14:20:31 +0100
-Date: Fri, 23 Jun 2023 14:20:30 +0100
-To: Thomas Huth <thuth@redhat.com>
-CC: <qemu-devel@nongnu.org>, <qemu-trivial@nongnu.org>, Fan Ni
- <fan.ni@samsung.com>
-Subject: Re: [PATCH] tests/qtest/cxl-test: Clean up temporary directories
- after testing
-Message-ID: <20230623142030.00001c15@Huawei.com>
-In-Reply-To: <20230622114132.372898-1-thuth@redhat.com>
-References: <20230622114132.372898-1-thuth@redhat.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>)
+ id 1qCgiP-0004Ub-GE; Fri, 23 Jun 2023 09:20:41 -0400
+Received: from smtp-out2.suse.de ([2001:67c:2178:6::1d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>)
+ id 1qCgiN-0008JT-VL; Fri, 23 Jun 2023 09:20:41 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 05A0A1F74A;
+ Fri, 23 Jun 2023 13:20:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1687526437; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=j+IJ8jtLwuqSOHP4C2S0eixdjy6SYqxysCvXn2iIuPo=;
+ b=GrZ98AWc7fxQS+KcLR6+PX/xU5dEkYuGxaS/KaDcazfLW9u/Tap/74F3sU3/AsuU2QpMV7
+ vP1N9KF5Xm+GQTwKAlsMAnhlYs3HdInMrlt6owzdNHGiqzXWuWcfaQBBQY8Kn/2THdMeF8
+ B3OJSN5veuJrNVxJiqEGMdm6M6Bhx3Y=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1687526437;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=j+IJ8jtLwuqSOHP4C2S0eixdjy6SYqxysCvXn2iIuPo=;
+ b=FG/RQqXT5+jB1jGEM8xZsXonnotRI9zWWv3kTRa9wGtLAGEJ3s5ALgPUmyGXxS/fF90JLw
+ hyV22oHiyeSKsNCg==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 8B6CB1331F;
+ Fri, 23 Jun 2023 13:20:36 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id iN2FFSSclWQoSgAAMHmgww
+ (envelope-from <farosas@suse.de>); Fri, 23 Jun 2023 13:20:36 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
+Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org, Christophe
+ Leroy <christophe.leroy@csgroup.eu>, BALATON Zoltan <balaton@eik.bme.hu>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>, Daniel Henrique Barboza
+ <danielhb413@gmail.com>, =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>,
+ David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>
+Subject: Re: [PATCH 3/4] target/ppc: Move common check in machne check
+ handlers to a function
+In-Reply-To: <20230623081953.290875-4-npiggin@gmail.com>
+References: <20230623081953.290875-1-npiggin@gmail.com>
+ <20230623081953.290875-4-npiggin@gmail.com>
+Date: Fri, 23 Jun 2023 10:20:34 -0300
+Message-ID: <87edm2s4bh.fsf@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml500003.china.huawei.com (7.191.162.67) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
+Content-Type: text/plain
+Received-SPF: pass client-ip=2001:67c:2178:6::1d; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
 X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -61,44 +84,29 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 22 Jun 2023 13:41:32 +0200
-Thomas Huth <thuth@redhat.com> wrote:
+Nicholas Piggin <npiggin@gmail.com> writes:
 
-> It's good style to clean up temporary directories when they
-> are not needed anymore.
-> 
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> From: BALATON Zoltan <balaton@eik.bme.hu>
+>
+> All powerpc exception handlers share some code when handling machine
+> check exceptions. Move this to a common function.
+>
 
-Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Maybe Machine Check is simple enough, but this kind of sharing of code
+has historically caused pain when people want to change something for
+the modern cpus and end up affecting the old cpus by mistake.
 
-> ---
->  tests/qtest/cxl-test.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/tests/qtest/cxl-test.c b/tests/qtest/cxl-test.c
-> index edcad4a0ce..a600331843 100644
-> --- a/tests/qtest/cxl-test.c
-> +++ b/tests/qtest/cxl-test.c
-> @@ -124,6 +124,7 @@ static void cxl_t3d_deprecated(void)
->  
->      qtest_start(cmdline->str);
->      qtest_end();
-> +    rmdir(tmpfs);
->  }
->  
->  static void cxl_t3d_persistent(void)
-> @@ -138,6 +139,7 @@ static void cxl_t3d_persistent(void)
->  
->      qtest_start(cmdline->str);
->      qtest_end();
-> +    rmdir(tmpfs);
->  }
->  
->  static void cxl_t3d_volatile(void)
+There is also the inverse scenario where someone has access to the old
+HW and just want to make an one-off contribution, but the community gets
+insecure about it because it could also affect the new cpus.
 
+Then comes the obvious "solution" which is to bring in an artificial
+identifier (excp. model) to be able to have conditional code inside the
+common function. And that causes problems because no one really knows
+how it maps to actual hardware/ISA.
+
+No objection, just a little cautionary tale. =)
 
