@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7759F73B72A
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 14:27:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 67DED73B708
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 14:22:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCfoR-00065m-A5; Fri, 23 Jun 2023 08:22:51 -0400
+	id 1qCfo1-0004Vt-Tu; Fri, 23 Jun 2023 08:22:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qCfn3-0003pT-Nt
- for qemu-devel@nongnu.org; Fri, 23 Jun 2023 08:21:27 -0400
-Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
+ id 1qCfmv-0003oA-K5
+ for qemu-devel@nongnu.org; Fri, 23 Jun 2023 08:21:18 -0400
+Received: from mail-lf1-x12e.google.com ([2a00:1450:4864:20::12e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qCfmp-0003gz-V5
- for qemu-devel@nongnu.org; Fri, 23 Jun 2023 08:21:20 -0400
-Received: by mail-lf1-x134.google.com with SMTP id
- 2adb3069b0e04-4f4b2bc1565so725650e87.2
- for <qemu-devel@nongnu.org>; Fri, 23 Jun 2023 05:21:04 -0700 (PDT)
+ id 1qCfmo-0003hO-Hj
+ for qemu-devel@nongnu.org; Fri, 23 Jun 2023 08:21:15 -0400
+Received: by mail-lf1-x12e.google.com with SMTP id
+ 2adb3069b0e04-4f870247d6aso706492e87.0
+ for <qemu-devel@nongnu.org>; Fri, 23 Jun 2023 05:21:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687522863; x=1690114863;
+ d=linaro.org; s=google; t=1687522864; x=1690114864;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=FoyMsMYVxFV6o67+0YaZUwlfroq/Nmrav1p8dT4axmo=;
- b=rkmJhJvbLfSBkC6UZiSc4YpDplSh9i5qRgkDdZtpEHreHswl0y/Er9rCKE9zGXUgUp
- 58GgPUN0VMbZ3CQiLFzmHzwsvKQ0jevIw+tQbXJydKSXOJONbHm2PCU0nyZ2nuMy1SxF
- PgTZLpd/m/3SRFF3BaZLtraTM8N5lfvRBpM0W8h94CXWi4vAh5CZB0ApXtLabH20j8Gt
- 6b48w6SJQGCefb01W9njZMq5MPPn+wbscqEadXPavNC46KEnF1bQAaFV7SEQ17qk4tED
- oGiwFuptxwAU2jIewsxkuEQ+xjW91r85fAmXz5M8P7BwHbZFsTdBQsx+L+JpyQ4dHiwQ
- Cl4w==
+ bh=UiwEwjAi6lomr9E2iVsjR5pQJHgLNYXOTgd+ktx/cfE=;
+ b=u4t/Tgi8JNEuzIancjMufZUWhxuNov8a4Y93qN9/0qphNFe21QqNLKzQykIBIlUZvo
+ bVB9HvJT6CgfPh7M1SaClNkKi8buyRlhhUXAxJpKYUbk1LF6hUApYb77S1rSRV/Yu6Xb
+ vAScRVQU5irjrkcB2TtZotE3taJDDXgFzlTZvXgzKv42PbOKBs9mFN2yo+Z8kPWiEdQw
+ TZbVH2vmk4b9ymnZ8FU/+DniKH9TURSyNaICHiZstfNzi0u2Wp2unPPD90lZMDtQs0CK
+ AMIIt2OMRZP0ZIpO6Us2oVpZl0nM3WxqHlDM7E7l1B4txjhBrf0jhmvYWTch8mxeZXwK
+ ZQbQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687522863; x=1690114863;
+ d=1e100.net; s=20221208; t=1687522864; x=1690114864;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=FoyMsMYVxFV6o67+0YaZUwlfroq/Nmrav1p8dT4axmo=;
- b=Phw3RFNPvTenTnSxBk77g4IT0d9vpTgt4lA+1GPIq6+xi1ZtG2g9inhQf3A0OFbWr6
- enNiC+n0IHkTilqmwKDQMNZolG1zbUwlAZzeWs3AlpIuGAUDvdGLD4udBA0Cq3Nd7g8x
- 9xI7agq4MvzPJYaHvidHpCeG3TzUqTK/SD74Gs83OaojKbbagvXO+7dBdFc8GSTjM1D/
- Mh40DdyrzyTp7DxH539PfhjEiaZemASSGJITMR8ntnQ/jZLYUegqs/0PS8qKc3fhXi7V
- bVob4wTfmrhsh7gWJLlyAA2TQ6rjBAQExQNG79l2abyOLqLzjw1wOWPbURp8EeLAg+uG
- ROVg==
-X-Gm-Message-State: AC+VfDzHnj1JXUqOiOwxSSxv5a0N73vfta1Ws8iWlimC879lniAezDk0
- 8VHuMQf55NO7Is/p3TxQb/rhwg==
-X-Google-Smtp-Source: ACHHUZ7VdkewIlvHyP253hy5U1IFrs25E2VQQVYSKU8iLYWpsBA+29W3Z1DXYwI2UNc4izBB2SS8FA==
-X-Received: by 2002:a19:6404:0:b0:4f8:680a:68f8 with SMTP id
- y4-20020a196404000000b004f8680a68f8mr9713154lfb.41.1687522863762; 
- Fri, 23 Jun 2023 05:21:03 -0700 (PDT)
+ bh=UiwEwjAi6lomr9E2iVsjR5pQJHgLNYXOTgd+ktx/cfE=;
+ b=ai2Aq9biaspCO8GQ7THcF5vWNydviZJvaTeznlteJ5zHTkBk4JKuwxOcx1q2neKM+a
+ ko9JT5ZIOzRt6qER1NFkYEYP6eQhh1F/VkA0bk73b0rgPhROkr2E9MCImR1V5Hv3QqRt
+ zE6JhEx3U6PjpFifG3n4v3TLv6il7rgieji9y4QxtIastRkou4DKaL/DT3qqPSMxZG2N
+ muOx/YPu1QdQvC9ED4LjWZYY9iA0eGzi6WdKzi3ejouH4aR4Im+1X9M2g2bPxCCAf+Qa
+ 88w5S9iwSM3G34mwUPcC1gR1aRE91RMj5raL94tdpLm9Tv6qtGYLSm84maWrqqWmJXtX
+ VWIw==
+X-Gm-Message-State: AC+VfDzqHA9onhdOvRjehLOG1bVkoJjAH2pot9Ldchv1WkidCsnITQBC
+ mbl0Dyb+cQYmfrCqHhrzC8yEbQ==
+X-Google-Smtp-Source: ACHHUZ6KP5rN8gQgkBisVzuzyc9GNFTcPs0ncHYSDgSyb5LCquBwJPvPmc53ZTLha/ZNGXIe2sbt4Q==
+X-Received: by 2002:a19:ca02:0:b0:4f9:586b:dba1 with SMTP id
+ a2-20020a19ca02000000b004f9586bdba1mr4956649lfg.4.1687522864472; 
+ Fri, 23 Jun 2023 05:21:04 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- d11-20020a05600c3acb00b003f7f475c3bcsm4073048wms.1.2023.06.23.05.21.01
+ q19-20020a7bce93000000b003f9b53959a4sm2159572wmj.43.2023.06.23.05.21.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Fri, 23 Jun 2023 05:21:02 -0700 (PDT)
 Received: from zen.lan (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 3191B1FFC1;
+ by zen.linaroharston (Postfix) with ESMTP id 494361FFC2;
  Fri, 23 Jun 2023 13:21:01 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -82,17 +82,18 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  Thomas Huth <thuth@redhat.com>, Beraldo Leal <bleal@redhat.com>,
  Laurent Vivier <lvivier@redhat.com>, Yanan Wang <wangyanan55@huawei.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH 06/26] qemu-keymap: use modern name for Arabic keymap
-Date: Fri, 23 Jun 2023 13:20:40 +0100
-Message-Id: <20230623122100.1640995-7-alex.bennee@linaro.org>
+Subject: [PATCH 07/26] qemu-keymap: properly check return from
+ xkb_keymap_mod_get_index
+Date: Fri, 23 Jun 2023 13:20:41 +0100
+Message-Id: <20230623122100.1640995-8-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230623122100.1640995-1-alex.bennee@linaro.org>
 References: <20230623122100.1640995-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::134;
- envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x134.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::12e;
+ envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x12e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -115,25 +116,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The very old compatibility alias of "ar" has been removed from more
-modern versions of keymap. Lets move with the times.
+We can return XKB_MOD_INVALID which rightly gets flagged by sanitisers
+as an overly wide shift attempt.
 
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- pc-bios/keymaps/meson.build | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ qemu-keymap.c | 24 ++++++++++++++++--------
+ 1 file changed, 16 insertions(+), 8 deletions(-)
 
-diff --git a/pc-bios/keymaps/meson.build b/pc-bios/keymaps/meson.build
-index bff3083313..0bd8ce0077 100644
---- a/pc-bios/keymaps/meson.build
-+++ b/pc-bios/keymaps/meson.build
-@@ -1,5 +1,5 @@
- keymaps = {
--  'ar': '-l ar',
-+  'ar': '-l ara',
-   'bepo': '-l fr -v dvorak',
-   'cz': '-l cz',
-   'da': '-l dk',
+diff --git a/qemu-keymap.c b/qemu-keymap.c
+index 229866e004..8c80f7a4ed 100644
+--- a/qemu-keymap.c
++++ b/qemu-keymap.c
+@@ -140,6 +140,18 @@ static void usage(FILE *out)
+             names.options ?: "-");
+ }
+ 
++static xkb_mod_mask_t get_mod(struct xkb_keymap *map, const char *name)
++{
++    xkb_mod_index_t mod;
++    xkb_mod_mask_t mask = 0;
++
++    mod = xkb_keymap_mod_get_index(map, name);
++    if (mod != XKB_MOD_INVALID) {
++        mask = (1 << mod);
++    }
++    return mask;
++}
++
+ int main(int argc, char *argv[])
+ {
+     struct xkb_context *ctx;
+@@ -215,14 +227,10 @@ int main(int argc, char *argv[])
+                 mod, xkb_keymap_mod_get_name(map, mod));
+     }
+ 
+-    mod = xkb_keymap_mod_get_index(map, "Shift");
+-    shift = (1 << mod);
+-    mod = xkb_keymap_mod_get_index(map, "Control");
+-    ctrl = (1 << mod);
+-    mod = xkb_keymap_mod_get_index(map, "AltGr");
+-    altgr = (1 << mod);
+-    mod = xkb_keymap_mod_get_index(map, "NumLock");
+-    numlock = (1 << mod);
++    shift = get_mod(map, "Shift");
++    ctrl = get_mod(map, "Control");
++    altgr = get_mod(map, "AltGr");
++    numlock = get_mod(map, "NumLock");
+ 
+     state = xkb_state_new(map);
+     xkb_keymap_key_for_each(map, walk_map, state);
 -- 
 2.39.2
 
