@@ -2,69 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BAFE73B551
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 12:30:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D470D73B59A
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 12:42:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCe3t-0003eB-4T; Fri, 23 Jun 2023 06:30:41 -0400
+	id 1qCeDg-0005ep-FT; Fri, 23 Jun 2023 06:40:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qCe3l-0003cq-I6
- for qemu-devel@nongnu.org; Fri, 23 Jun 2023 06:30:33 -0400
-Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
+ id 1qCeDX-0005eP-LD
+ for qemu-devel@nongnu.org; Fri, 23 Jun 2023 06:40:40 -0400
+Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qCe3i-00036y-Eh
- for qemu-devel@nongnu.org; Fri, 23 Jun 2023 06:30:33 -0400
-Received: by mail-ej1-x62d.google.com with SMTP id
- a640c23a62f3a-988a2715b8cso297044866b.0
- for <qemu-devel@nongnu.org>; Fri, 23 Jun 2023 03:30:24 -0700 (PDT)
+ id 1qCeDW-0008QZ-1s
+ for qemu-devel@nongnu.org; Fri, 23 Jun 2023 06:40:39 -0400
+Received: by mail-ed1-x529.google.com with SMTP id
+ 4fb4d7f45d1cf-51bdca52424so502795a12.3
+ for <qemu-devel@nongnu.org>; Fri, 23 Jun 2023 03:40:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687516223; x=1690108223;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=S9ksx/UadnDs5AooqtmHod5cgh8NeEHWBTNiF5vomBc=;
- b=un0r1xr/YYxa2UbuTt270TCXGddSL7VuxcGuJPEwOc4uKfNjNbpjari9y0EV4vAzZW
- sDWZuMn2uha2iy7BV6MuuU+MHOzyfR58saDnegOABSWNIhVLih/iBEDw1xhfrcCa9iM8
- vD0ujbjqvGd5EgJqekIXGK4tqG/R+13pgR2WX3kri2RGZYD1BV28tEUrIFtgK2cZrpw0
- TSlzBmnqpJISLDK5w+gaqn7id2em5nvKiOdc+A3t/jUMXKFz+vhhdrztYk5gWW+EKcbn
- jembeabmVnmFv6EMCgZF3OOvBPu0IAiGI6ITOVNHZmWlrE+2ZIzRFBt+osKREaUR63jz
- nC/Q==
+ d=linaro.org; s=google; t=1687516835; x=1690108835;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=YXFZsyp/XL+X7Zfhbibx83TVd1DCnGHs3FLQL/min0U=;
+ b=ZGaQRuN7yu9Ia9+5SDW6yRmrDMgAZNgebD3zq21cwS4kSCdcwOKdPihJbkVRbkCdbk
+ 6HWioHqfhx3uxtLIdqpqOM5vIW5oCeNsJvFRKeNwbmkOm12/B6nErIx3tiuBl5NKpWYk
+ hV1b4az140L93jc7/2HfnBOE2DoxK+SoU3oZ0qYTDJCFugUBWjYz6m7hFgo8LmWvuQDp
+ EyWCljMnD0+P3tARgzZb0udcw/wbkdTLtrjTsArYllFqkLo7quVP3awydrZZPOmUDmwm
+ +DDBoE3r+kEr9e0PszauvbZ2wXowSfQHtQQkmLSObey+2rTN6RgbzJXfXLFbflp+HQoT
+ J9cA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687516223; x=1690108223;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=S9ksx/UadnDs5AooqtmHod5cgh8NeEHWBTNiF5vomBc=;
- b=JvBpwBTPSg4j090iLa83UXcNSkFoguYf9ZccX61fFmF9XLXhAWK77LdEnPKI5kVdjQ
- 6sxH0v2JSoA6OailDtTVa5UdCGfEp331O51uQryt1LY6mxNLmEUSIRJNA1aVrf04Z3EW
- fwwyawb+6lqCQIffzJYrH+5CxjPQuWmnXWdsZKBETtxlVo9wcQmYkuZVJqzYf0qDKBzR
- bc4yzfzlisPXiHH/lu7iWHmld1PdYIe/oTvIIdhHP7O7DhZEP5UBjowqp+qoW9/Egzh1
- WLoEZbPiNmKJL46ajAIxXcAjNlPPqmVY52WzOlwasvnLts/Z5Iw/6jRULZ8AfyXG4/tA
- LNfQ==
-X-Gm-Message-State: AC+VfDw9TpmrGPznMmytoxsSXSxU0kZ5KjUzqAZxBMbtn4CzirmFByMh
- ZDYQYVrItxpFWiGzNiLyaFvzNkSUmWnKH8/rwQgJxg==
-X-Google-Smtp-Source: ACHHUZ4ssCFxSHsO11q1x8cmRv9DzCLoK0dHKRkt8gytH1Q3U/t5hg79JC6MRiRAPmAwXsh+MkLG5sLppqfVytSB47c=
-X-Received: by 2002:a17:906:ef0a:b0:978:2b56:d76e with SMTP id
- f10-20020a170906ef0a00b009782b56d76emr24672116ejs.12.1687516223223; Fri, 23
- Jun 2023 03:30:23 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1687516835; x=1690108835;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=YXFZsyp/XL+X7Zfhbibx83TVd1DCnGHs3FLQL/min0U=;
+ b=LtQX7OI3xBtfTgPPduHvQcdIDb+EKkrUbAcikWxMKvq+UNMnlm8txuyWSmNIuzb4lZ
+ 1ZQSbhcYjEfCzMH7V42Y5oksZ6TYGeMaWMNs8knKHcZ6j0BlE924At2ZeTkaOhjQLA91
+ 1dCl/ipXlTGux9ZmSfyQDZsRHIYN1lPcKl2+i8HeNZdqKvd20ORqUqL6jTuoevSojWPB
+ IS0e1u+pho3OhdJoxgfsRY1aVDF73w/FIGXDcyXSvmkkHEwA2b1AAcQGGFH67POe6JoC
+ DAdGNgsOUAEqzBmDV3DTSqZZBwkI/26cZgtlPQD4nLEGNE+AU2sWn2SE24vTxcyMCzWp
+ n2ZA==
+X-Gm-Message-State: AC+VfDwaCUIIuOuEzkxxtfTcgOm42oO1THKulxVX8htDkrvVe5wOs35w
+ zee+2DdbQFvJrwb9tBEIw2ii5f+/Bml2sNzXAX+3LQ==
+X-Google-Smtp-Source: ACHHUZ7ZqMWPgNoO8OuNb/5VTaLf7NZozAS7sU2zRNgUMcxzAa5oViUN0yWh+4GnWNdvuJrDK+sd4jcO/5aTM1qZM9s=
+X-Received: by 2002:aa7:d597:0:b0:51b:ecb7:23d2 with SMTP id
+ r23-20020aa7d597000000b0051becb723d2mr2584226edq.18.1687516835730; Fri, 23
+ Jun 2023 03:40:35 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230619170913.517373-1-marcin.juszkiewicz@linaro.org>
-In-Reply-To: <20230619170913.517373-1-marcin.juszkiewicz@linaro.org>
+References: <20230620134659.817559-1-richard.henderson@linaro.org>
+In-Reply-To: <20230620134659.817559-1-richard.henderson@linaro.org>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 23 Jun 2023 11:30:12 +0100
-Message-ID: <CAFEAcA9pUPBx2aLtY_2DMy5t3yn=TbhFWhZbTKbXW1g-M+tnkg@mail.gmail.com>
-Subject: Re: [PATCH v2 0/1] hw/arm/sbsa-ref: add ITS support in GIC
-To: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+Date: Fri, 23 Jun 2023 11:40:24 +0100
+Message-ID: <CAFEAcA-uEzWRu5q39DG2LrFcZk4iKJAUfZ=VvDxfHdjN01K=Gg@mail.gmail.com>
+Subject: Re: [PATCH] target/arm: Fix sve prediate store, 8 <= VQ <= 15
+To: Richard Henderson <richard.henderson@linaro.org>
 Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, 
- Shashi Mallela <shashi.mallela@linaro.org>,
- Leif Lindholm <quic_llindhol@quicinc.com>, 
- Radoslaw Biernacki <rad@semihalf.com>
+ Mark Rutland <mark.rutland@arm.com>,
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
- envelope-from=peter.maydell@linaro.org; helo=mail-ej1-x62d.google.com
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::529;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x529.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -87,29 +88,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 19 Jun 2023 at 18:09, Marcin Juszkiewicz
-<marcin.juszkiewicz@linaro.org> wrote:
+On Tue, 20 Jun 2023 at 14:47, Richard Henderson
+<richard.henderson@linaro.org> wrote:
 >
-> In 2021 Shashi Mallela sent v8 of GIC ITS patchset [1]. At that time it
-> was decided to do platform versioning first.
+> Brown bag time: store instead of load results in uninitialized temp.
 >
-> 1. https://lore.kernel.org/qemu-devel/20210812165341.40784-8-shashi.mallela@linaro.org/
->
-> Now we are going through our list of changes for SBSA Reference Platform
-> and GIC ITS is one of early ones. There was decision that there will be
-> no option to disable it and platform version will get a minor bump.
->
-> This is refreshed version of v8 one from 2021. GIC ITS is placed behind
-> GIC Redistributor in memory space to allow use of older EDK2 firmware.
->
-> New address is placed in DeviceTree for firmware to use. Due to it we
-> also bump platform version to 0.2 version.
->
-> Trusted Firmware will read GIC ITS address and provide to EDK2 via
-> Secure Monitor Call (SMC). Same way as it is done with GIC addresses
-> already.
+> Reported-by: Mark Rutland <mark.rutland@arm.com>
+> Fixes: e6dd5e782be ("target/arm: Use tcg_gen_qemu_{ld, st}_i128 in gen_sv=
+e_{ld, st}r")
+> Tested-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> --
 
-Applied to target-arm.next, thanks.
+Applied to target-arm.next (with the subject message typo
+fixed and the Resolves: line added), thanks.
 
 -- PMM
 
