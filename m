@@ -2,75 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AF2573B81D
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 14:50:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF92073B836
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 14:51:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCgF2-0003mK-2Q; Fri, 23 Jun 2023 08:50:20 -0400
+	id 1qCgGF-0005Bp-TJ; Fri, 23 Jun 2023 08:51:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qCgF0-0003lk-0O
- for qemu-devel@nongnu.org; Fri, 23 Jun 2023 08:50:18 -0400
-Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qCgEy-0001oa-EA
- for qemu-devel@nongnu.org; Fri, 23 Jun 2023 08:50:17 -0400
-Received: by mail-ed1-x531.google.com with SMTP id
- 4fb4d7f45d1cf-51be42391a3so1217276a12.0
- for <qemu-devel@nongnu.org>; Fri, 23 Jun 2023 05:50:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687524615; x=1690116615;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=dq1Cu43aqN3HHE4m7iXqF8Mucg6wVGiggmuzHPd3Opo=;
- b=TP9TnSmnFjR82TzfLRwGD53PZjDOEhdefykALqGfdmzDpDlV+qAEWK5tjIzeGei4i2
- 22/X1iyOPOlpDHLAEJioWazYINxh9WW2xXjxKuR0BisOLxHmUpnseyaNUWNEXcxfNp70
- 2KcJAeyy/H9NRs2ovy8fo0gvRnsvdoTwtLPMIlYss2cK7hFm4Zz2p1ZPoClkLBXzXI2e
- o37+J0Rg+EmRZJTAn7tjkqVspYva3KXwW4O7cZvYzh1mnNHVXo5pIXfIM8FNev7gxVAH
- MgTokL8ADh8dvyIosMV6Zj0x1VSXUdWDz61ckSRAOi3MjmjQmXh/ljfos8elgV0gnMlD
- QMiA==
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qCgFz-0005AU-5S
+ for qemu-devel@nongnu.org; Fri, 23 Jun 2023 08:51:20 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qCgFx-00021C-J2
+ for qemu-devel@nongnu.org; Fri, 23 Jun 2023 08:51:18 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1687524677;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=lgAlc3sG2W+S9oUKWzHXDkQlvyR9ZL1B+1JLZ5SUzLY=;
+ b=BVnYK+cfSlGZiqOsFwx4dHANEOshQGSzrvC/cIGpJ7guvCIRQydf9FLdzLy7sYz4HZcpxN
+ U/YIsHiagjMelj8rSgc6dbyOajvBOunougnUfz5rQY2y/JR5nADZ/wEilrGTt8m+hFKawu
+ OpEWrbHoMcROZTlUAFMcQFCrfwPDxhM=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-619-BiM_Uv5fOHeVDe4QU96mQw-1; Fri, 23 Jun 2023 08:51:15 -0400
+X-MC-Unique: BiM_Uv5fOHeVDe4QU96mQw-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-3f8f9b50f17so3876365e9.3
+ for <qemu-devel@nongnu.org>; Fri, 23 Jun 2023 05:51:14 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687524615; x=1690116615;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20221208; t=1687524673; x=1690116673;
+ h=content-transfer-encoding:in-reply-to:organization:from:references
+ :cc:to:content-language:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=dq1Cu43aqN3HHE4m7iXqF8Mucg6wVGiggmuzHPd3Opo=;
- b=UGUjrOCbXfQXPO+M+44vFOCj5b1SBHv9xWnThf91bEubigyVAx3DFQhS5ZuklfY3hS
- pSB/Ke5RapQfuqKvI6xt2FsEG4eey6WVEtPKVU44Jfhl1UDcEURGjd4PDrivScGUdXEB
- 1VdpKzTzS1JaPAKrUq9H0Pom21p1Mxzi2Kh7ydd74Vl2ocNXjhYlBqTwQZBZrYAFZhxT
- TcOMfD8vEvgxbyf9SVhEq7QgGYwNA8nI79AyH3wJLPSZjuIM6lixIt1o14RR3gp9FGw/
- o3u5xEStPm+4EmJ3sxv2EFGzzoZl/63kYXuMnmUzA2mKbhcMTHg6swrdWSDVdcqEKfgz
- z10w==
-X-Gm-Message-State: AC+VfDzg5tMPkVza3tUz8591FDOWUL9oUdZBVfzodZmTGCL7eLkuS4zR
- t9eQczlSrbyxsnX7f1zOFERxMPqc9bNTL/oKlW73ay3bnUeg2Do8
-X-Google-Smtp-Source: ACHHUZ42nlTSjHIEEePqpUC4PuvUWrdCeJsxune8X7Y7fzGi29BqiDCgdtQHQMxC7ldSK6rL6wjQMFZHEpCv6HjHFsg=
-X-Received: by 2002:a05:6402:2683:b0:51a:4c1e:c94a with SMTP id
- w3-20020a056402268300b0051a4c1ec94amr16232847edd.2.1687524614770; Fri, 23 Jun
- 2023 05:50:14 -0700 (PDT)
+ bh=lgAlc3sG2W+S9oUKWzHXDkQlvyR9ZL1B+1JLZ5SUzLY=;
+ b=loqqNNB8JoVI5YDybpNr0mDBNtlQnuwL1/FG/VgAiXQrUXx/V5iUuhtLpDJ9fmBMH/
+ 9az5WQoE6m+zRm0c9/+3WpaAifSMnb1sV4todjpgt9BVe3z40yTYqKaCnHgs0d9fhz0R
+ 4cZ2rAHzbjHmUnaoALStRLVQ4r6mtFMe9PlGre92zl46horZuwDQJ4eEmFb2n+MmA9X9
+ ga8UQIUyRFf9vLUBxhtx9oDUm01sf4p5rpNrcwTs7mFRXDIADSyPEz6vHjIucPRxdInZ
+ vQqTWaxrERw98hEz0MGf5esyyJKJkfwShMqxr20iP2Ygr8TzrmXa6D9RgXehihuU1Tmk
+ PNUw==
+X-Gm-Message-State: AC+VfDzFIphtxRSmh0+c+NUXeST8HR/WtPIRMgPPr69kh5CyVb6v8Ktv
+ yYQIKdCAKcU9XGLhQJ3+6uNbatDpS9dQ9A1OP38XK/8tF0JtQb6hKA6rZLY05sssZvSNbPLph8A
+ 7Bza8LpsaxlT//MzremPGDvps7Ob38O3psXim3GIuUX1fVH7/dMIDAF8YYLCgR0aXH1RGdEk=
+X-Received: by 2002:a05:600c:284:b0:3fa:7dfc:411f with SMTP id
+ 4-20020a05600c028400b003fa7dfc411fmr911184wmk.23.1687524673503; 
+ Fri, 23 Jun 2023 05:51:13 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5WGCDahjAg7K4BuaHwk6XJYsJxv7B8577mpKrWg5O5/PJ7hrDhpQTjcOodh6QV7QzSNQoksw==
+X-Received: by 2002:a05:600c:284:b0:3fa:7dfc:411f with SMTP id
+ 4-20020a05600c028400b003fa7dfc411fmr911166wmk.23.1687524673129; 
+ Fri, 23 Jun 2023 05:51:13 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c729:1700:9783:58ba:9db:1221?
+ (p200300cbc7291700978358ba09db1221.dip0.t-ipconnect.de.
+ [2003:cb:c729:1700:9783:58ba:9db:1221])
+ by smtp.gmail.com with ESMTPSA id
+ k7-20020a5d5187000000b0031128382ed0sm9488345wrv.83.2023.06.23.05.51.12
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 23 Jun 2023 05:51:12 -0700 (PDT)
+Message-ID: <39b97e00-fb3c-29b2-aa1f-1de4c8094899@redhat.com>
+Date: Fri, 23 Jun 2023 14:51:11 +0200
 MIME-Version: 1.0
-References: <20221216204845.19290-1-tsimpson@quicinc.com>
- <20221216204845.19290-20-tsimpson@quicinc.com>
-In-Reply-To: <20221216204845.19290-20-tsimpson@quicinc.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 23 Jun 2023 13:50:03 +0100
-Message-ID: <CAFEAcA8gTAYQD_a85OGPMs8KgvLRBZ0vok3QL=K3N29BnuoiHw@mail.gmail.com>
-Subject: Re: [PULL 19/21] target/hexagon: import parser for idef-parser
-To: qemu-devel@nongnu.org, bcain@quicinc.com
-Cc: richard.henderson@linaro.org, philmd@linaro.org, quic_mathbern@quicinc.com,
- stefanha@redhat.com, Anton Johansson <anjo@rev.ng>,
- Alessandro Di Federico <ale@rev.ng>, Paolo Montesel <babush@rev.ng>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::531;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x531.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH v1] virtio-mem: Simplify bitmap handling and
+ virtio_mem_set_block_state()
+Content-Language: en-US
+To: qemu-devel@nongnu.org
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, Gavin Shan <gshan@redhat.com>
+References: <20230523183036.517957-1-david@redhat.com>
+From: David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+In-Reply-To: <20230523183036.517957-1-david@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -87,42 +105,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 16 Dec 2022 at 20:51, Taylor Simpson <tsimpson@quicinc.com> wrote:
->
-> From: Anton Johansson <anjo@rev.ng>
->
-> Signed-off-by: Alessandro Di Federico <ale@rev.ng>
-> Signed-off-by: Paolo Montesel <babush@rev.ng>
-> Signed-off-by: Anton Johansson <anjo@rev.ng>
-> Signed-off-by: Taylor Simpson <tsimpson@quicinc.com>
-> Reviewed-by: Taylor Simpson <tsimpson@quicinc.com>
-> Message-Id: <20220923173831.227551-10-anjo@rev.ng>
+On 23.05.23 20:30, David Hildenbrand wrote:
+> Let's separate plug and unplug handling to prepare for future changes
+> and make the code a bit easier to read -- working on block states
+> (plugged/unplugged) instead of on a bitmap.
+> 
+> Cc: "Michael S. Tsirkin" <mst@redhat.com>
+> Cc: Gavin Shan <gshan@redhat.com>
+> Signed-off-by: David Hildenbrand <david@redhat.com>
+> ---
 
-Hi; Coverity points out (CID 976926) that here:
+I queued this to
 
-> --- /dev/null
-> +++ b/target/hexagon/idef-parser/idef-parser.y
+https://github.com/davidhildenbrand/qemu.git mem-next
 
-> +lvalue : FAIL
-> +         {
-> +             @1.last_column = @1.last_column;
+-- 
+Cheers,
 
-...we have coded an "x = x" assignment that has no
-effect. Was this supposed to be something else, or should it
-just be deleted?
+David / dhildenb
 
-> +             yyassert(c, &@1, false, "Encountered a FAIL token as lvalue.\n");
-> +         }
-> +       | REG
-> +         {
-> +             $$ = $1;
-> +         }
-> +       | var
-> +         {
-> +             $$ = $1;
-> +         }
-> +       ;
-
-thanks
--- PMM
 
