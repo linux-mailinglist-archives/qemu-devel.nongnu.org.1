@@ -2,85 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A79573C4B6
-	for <lists+qemu-devel@lfdr.de>; Sat, 24 Jun 2023 01:13:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15DF673C4D2
+	for <lists+qemu-devel@lfdr.de>; Sat, 24 Jun 2023 01:37:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCpxD-00078k-Hx; Fri, 23 Jun 2023 19:12:35 -0400
+	id 1qCqJZ-0003Bt-4K; Fri, 23 Jun 2023 19:35:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qCpxA-00077t-Jd
- for qemu-devel@nongnu.org; Fri, 23 Jun 2023 19:12:32 -0400
-Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qCqJX-0003BN-LR
+ for qemu-devel@nongnu.org; Fri, 23 Jun 2023 19:35:39 -0400
+Received: from mail-ej1-x62c.google.com ([2a00:1450:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qCpx4-0004qf-7g
- for qemu-devel@nongnu.org; Fri, 23 Jun 2023 19:12:31 -0400
-Received: by mail-ej1-x631.google.com with SMTP id
- a640c23a62f3a-9741caaf9d4so113776166b.0
- for <qemu-devel@nongnu.org>; Fri, 23 Jun 2023 16:12:25 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qCqJS-00032P-2t
+ for qemu-devel@nongnu.org; Fri, 23 Jun 2023 19:35:39 -0400
+Received: by mail-ej1-x62c.google.com with SMTP id
+ a640c23a62f3a-987c932883bso139395066b.0
+ for <qemu-devel@nongnu.org>; Fri, 23 Jun 2023 16:35:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687561944; x=1690153944;
+ d=linaro.org; s=google; t=1687563332; x=1690155332;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=S/tp78wR5cCQo1o4v79lcAWZh4iL1FRFJA1Am+4OQnw=;
- b=igv69yN0YiEHUGOBlN8Kk0okmXZetn2vMNh95qk0FcnhAiRK5wPG17Nbuxb0sU1l5V
- H8TGo4LNe/VM3QTaw9v71QjJk6VoMDtHwwTR2YEzVwzHdqGEBGxzi0OkZi61TUTnocLF
- mXOrpPgqvaJeN7gG3utM80BocuOdmoRUK3IHtv5tM2Q26rtrfCfHE0SUYsEuq6ouZSYj
- uCM11WCD+tNVDwbg/xJFS/whGFDxoQzQpNYaAa59vCh6700uIT5hO/BhjAxSAkzdzwwh
- 4/Uhta0xYxA3uEi8c+hltoJMxBgYwBJjwyQogCPTp5c5pZSR4h5rVfsvCWD+97wN2IiO
- It1A==
+ bh=ngtU88/AKh/sJj4oB/DR0AoOwWGlpBrcaY0Vs20Xzao=;
+ b=hGv/3AK/HfyrDjlr2K4UJvWIWjAEel3rcdJz+R/Uk+0JPZOzAYlmh8rWsgIsIrM+jA
+ d18nq2joN0mT+iOM28oPWixutjsgyMiveFwnJze1vjqhkzTKDpvlTrBsuApOvk08zA92
+ i/A12euv8f0bo5Gi+ocflnJZNQstodeHxTaeB5AZYypX0odfDVxDQOwaLfypjsUHk8bF
+ /gW3Z/TbHVdXadt48eQL+5elhd1HT+4Vv14FY1D9A9kTrxJU41z7tP51JYYfXJZ+cVhP
+ XeN4tzvMZMnJcQxT27We6oVanqowa+cga+jpMBvkR8XmqXZAQmabqftCzvVflj2RCn56
+ 9P1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687561944; x=1690153944;
+ d=1e100.net; s=20221208; t=1687563332; x=1690155332;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=S/tp78wR5cCQo1o4v79lcAWZh4iL1FRFJA1Am+4OQnw=;
- b=P+weekf1ZfybupnDU2svCGdYFiT6G4f5h248VzKEwgv9D1/YKbbMaV+dGPuevESkJg
- OYDhnOjOJe4BZIqjr+ntyzLmfi/hhb8IbTmTCQFW8VwraUYV93BnvzdhcBNi8+2V9zR0
- Wzu+UiL4Z4Y2fsZnV6J3TGa4sdylDZ2G67FkTp3qQzloXVnj6YIapnBH7Oi+vH7KcKiu
- vbet5OSqkuwxTG/qnbkvsVeEQHMQt7pxlUXLAAROQ/4qhW0jU2TnOGHWRqa+N/UW6rYx
- HuaK4maqsPT7bv/RJcorKJtCu15rUW1Tf37Pt5iIztf10WILnJ8sBfnlJ0yc/6rSuxSq
- 8izg==
-X-Gm-Message-State: AC+VfDwx2VPLWYsacAS/Z+efYliRc0WhrC3iBFU26h1MUPkz9nCL36Ct
- fy0OwYHGkbW7CQIam96Jv0WrIv5V41a6aGee8Br6MQ==
-X-Google-Smtp-Source: ACHHUZ5/Y6IcOiGaxMhwfWT4vJ9fzCf/EuxAuUYWkg8XcZr4aEvnZw3WFyvxkoogdGuaa5DlegvBIQ==
-X-Received: by 2002:a17:906:7945:b0:982:781e:ba13 with SMTP id
- l5-20020a170906794500b00982781eba13mr22290424ejo.39.1687561944477; 
- Fri, 23 Jun 2023 16:12:24 -0700 (PDT)
+ bh=ngtU88/AKh/sJj4oB/DR0AoOwWGlpBrcaY0Vs20Xzao=;
+ b=Gd1edSg//ebW3jgc0y62F6DFpQzSgfSE9baLK2uijy/7DnBfbm15QZRV5yZOWvV45L
+ TmvSy7L6o0Mgftpssn4qjsSnGb+yjjVs3D/nGJR9LZmbdzkstfHeK8O6cASgReAmNvQW
+ XbpwbErgHQ8bqf9wZ6HIA9AqwnMGlMNdcsRWxKF3NGTTLY5YUmxqI8su+Ey2EULprdQ8
+ zUrcuGW8iR4p2c+A0KaQa0fK9cXysE0/wLBAilhROuHSckTXoWlrkMGg9J/y0JtGZd/n
+ 8A+jqdKySncYZCpBmgGMueeqjBa+G/lQRE4YlXcCmn5z1dZGFxSjosZ2RgMK6FoKTZgC
+ qD6A==
+X-Gm-Message-State: AC+VfDytJvIFjiVsEhwk26oFf9zvMLdSEFuILEdpjgZowLA7HYqpE2f4
+ qofcCCqP2G29Gf76Lul3IUTypQ==
+X-Google-Smtp-Source: ACHHUZ46jgoYXDnjQsSNSSyvuJfY0cE4Q57yhwSV82zhNuUFifx12eJmfSHK06xq86jZL2C5RT8GMQ==
+X-Received: by 2002:a17:906:5198:b0:98d:dfde:eb80 with SMTP id
+ y24-20020a170906519800b0098ddfdeeb80mr279242ejk.27.1687563332094; 
+ Fri, 23 Jun 2023 16:35:32 -0700 (PDT)
 Received: from [192.168.69.115] ([176.176.168.147])
  by smtp.gmail.com with ESMTPSA id
- qo5-20020a170907212500b00988c93c85a5sm169114ejb.183.2023.06.23.16.12.22
+ u12-20020a170906068c00b00969f25b96basm186823ejb.204.2023.06.23.16.35.29
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 23 Jun 2023 16:12:23 -0700 (PDT)
-Message-ID: <94bbfa23-836c-5e8c-db3b-2b040f3326a6@linaro.org>
-Date: Sat, 24 Jun 2023 01:12:21 +0200
+ Fri, 23 Jun 2023 16:35:31 -0700 (PDT)
+Message-ID: <cf674f48-c083-9ad9-3801-8cbd37aecbb1@linaro.org>
+Date: Sat, 24 Jun 2023 01:35:28 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.12.0
-Subject: Re: [RFC PATCH-for-8.1] accel: Remove HAX accelerator
+Subject: Re: [PATCH 0/4] target/ppc: Catch invalid real address accesses
 Content-Language: en-US
-To: qemu-devel@nongnu.org
-Cc: Thomas Huth <thuth@redhat.com>, =?UTF-8?Q?Alex_Benn=c3=a9e?=
- <alex.bennee@linaro.org>, libvir-list@redhat.com,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Claudio Fontana <cfontana@suse.de>, Paolo Bonzini <pbonzini@redhat.com>,
- Beraldo Leal <bleal@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>, Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>
-References: <20230623230837.4194-1-philmd@linaro.org>
+To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clegoate@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Nicholas Piggin <npiggin@gmail.com>
+Cc: qemu-ppc@nongnu.org, qemu-devel@nongnu.org,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ BALATON Zoltan <balaton@eik.bme.hu>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
+ David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Frederic Barrat <frederic.barrat@fr.ibm.com>
+References: <20230623081953.290875-1-npiggin@gmail.com>
+ <CAFEAcA_Brf-R12t+DKNAoygqgC-qjKJ3Wiz4ULjGHOo8_vPovw@mail.gmail.com>
+ <47197a73-b106-47d5-9502-393a6bdc9945@redhat.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230623230837.4194-1-philmd@linaro.org>
+In-Reply-To: <47197a73-b106-47d5-9502-393a6bdc9945@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::631;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x631.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62c;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62c.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -103,51 +103,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 24/6/23 01:08, Philippe Mathieu-Daudé wrote:
-> HAX is deprecated since commits 73741fda6c ("MAINTAINERS: Abort
-> HAXM maintenance") and 90c167a1da ("docs/about/deprecated: Mark
-> HAXM in QEMU as deprecated"), released in v8.0.0.
+On 23/6/23 14:37, Cédric Le Goater wrote:
+> On 6/23/23 11:10, Peter Maydell wrote:
+>> On Fri, 23 Jun 2023 at 09:21, Nicholas Piggin <npiggin@gmail.com> wrote:
+>>>
+>>> ppc has always silently ignored access to real (physical) addresses
+>>> with nothing behind it, which can make debugging difficult at times.
+>>>
+>>> It looks like the way to handle this is implement the transaction
+>>> failed call, which most target architectures do. Notably not x86
+>>> though, I wonder why?
+>>
+>> Much of this is historical legacy. QEMU originally had no
+>> concept of "the system outside the CPU returns some kind
+>> of bus error and the CPU raises an exception for it".
+>> This is turn is (I think) because the x86 PC doesn't do
+>> that: you always get back some kind of response, I think
+>> -1 on reads and writes ignored. We added the do_transaction_failed
+>> hook largely because we wanted it to give more accurate
+>> emulation of this kind of thing on Arm, but as usual with new
+>> facilities we left the other architectures to do it themselves
+>> if they wanted -- by default the behaviour remained the same.
+>> Some architectures have picked it up; some haven't.
+>>
+>> The main reason it's a bit of a pain to turn the correct
+>> handling on is because often boards don't actually implement
+>> all the devices they're supposed to. For a pile of legacy Arm
+>> boards, especially where we didn't have good test images,
+>> we use the machine flag ignore_memory_transaction_failures to
+>> retain the legacy behaviour. (This isn't great because it's
+>> pretty much going to mean we have that flag set on those
+>> boards forever because nobody is going to care enough to
+>> investigate and test.)
+>>
+>>> Other question is, sometimes I guess it's nice to avoid crashing in
+>>> order to try to quickly get past some unimplemented MMIO. Maybe a
+>>> command line option or something could turn it off? It should
+>>> probably be a QEMU-wide option if so, so that shouldn't hold this
+>>> series up, I can propose a option for that if anybody is worried
+>>> about it.
+>>
+>> I would not recommend going any further than maybe setting the
+>> ignore_memory_transaction_failures flag for boards you don't
+>> care about. (But in an ideal world, don't set it and deal with
+>> any bug reports by implementing stub versions of missing devices.
+>> Depends how confident you are in your test coverage.)
 > 
-> Per the QEMU deprecation policy, we shouldn't remove it before
-> QEMU release v8.2.0. However per the latest HAXM release (v7.8),
-> the latest QEMU supported is v7.2:
-> 
->    Note: Up to this release, HAXM supports QEMU from 2.9.0 to 7.2.0.
-> 
-> (https://github.com/intel/haxm/releases/tag/v7.8.0)
-> 
-> The next commit (https://github.com/intel/haxm/commit/da1b8ec072)
-> added:
-> 
->    HAXM v7.8.0 is our last release and we will not accept
->    pull requests or respond to issues after this.
-> 
-> As of commit b455ce4c2f, it became very hard to build and test
-> HAXM. Its previous maintainers made it clear they won't help.
-> It doesn't seem to be a very good use of QEMU maintainers to
-> spend their time in a dead project. Save our time by removing
-> this orphan zombie code before the QEMU v8.2 release.
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
+> It seems it broke the "mac99" and  powernv10 machines, using the
+> qemu-ppc-boot images which are mostly buildroot. See below for logs.
 
+Since commit 21786c7e59 ("softmmu/memory: Log invalid memory accesses")
+you can log the failed transaction with '-d guest_errors'. See for
+example commit a13bfa5a05 ("hw/mips/jazz: Map the UART devices
+unconditionally"):
 
-> diff --git a/docs/about/removed-features.rst b/docs/about/removed-features.rst
-> index 5b258b446b..cc8a1e38a9 100644
-> --- a/docs/about/removed-features.rst
-> +++ b/docs/about/removed-features.rst
-> @@ -659,15 +659,18 @@ Use ``Icelake-Server`` instead.
->   System accelerators
->   -------------------
->   
-> -Userspace local APIC with KVM (x86, removed 8.0)
-> +Userspace local APIC with KVM (x86, removed in 8.0)
->   ''''''''''''''''''''''''''''''''''''''''''''''''
+   $ qemu-system-mips64el -M magnum -d guest_errors,unimp -bios NTPROM.RAW
+   Invalid access at addr 0x80007004, size 1, region '(null)', reason: 
+rejected
+   Invalid access at addr 0x80007001, size 1, region '(null)', reason: 
+rejected
+   Invalid access at addr 0x80007002, size 1, region '(null)', reason: 
+rejected
+   Invalid access at addr 0x80007003, size 1, region '(null)', reason: 
+rejected
+   Invalid access at addr 0x80007004, size 1, region '(null)', reason: 
+rejected
 
-Oops I didn't mean to commit this line. The doc won't build with padding.
-
->   ``-M kernel-irqchip=off`` cannot be used on KVM if the CPU model includes
->   a local APIC.  The ``split`` setting is supported, as is using ``-M
->   kernel-irqchip=off`` when the CPU does not have a local APIC.
+Boards booting successfully with ignore_memory_transaction_failures
+set can often remove this flag by mapping missing accessed ranges as
+TYPE_UNIMPLEMENTED_DEVICE. (You can then log the same accesses using
+'-d unimp').
 
 
