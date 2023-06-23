@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8542373B782
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 14:37:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 520AD73B76F
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 14:35:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCfxV-0003Ij-7q; Fri, 23 Jun 2023 08:32:14 -0400
+	id 1qCfxR-00038i-RA; Fri, 23 Jun 2023 08:32:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qCfxA-0001r8-Fi
+ id 1qCfxA-0001q6-29
  for qemu-devel@nongnu.org; Fri, 23 Jun 2023 08:31:52 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qCfx7-0000ia-UW
- for qemu-devel@nongnu.org; Fri, 23 Jun 2023 08:31:52 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-3f90b4ac529so7681045e9.0
+ id 1qCfx7-0000iw-Uf
+ for qemu-devel@nongnu.org; Fri, 23 Jun 2023 08:31:51 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-3fa7eb35a13so2869855e9.0
  for <qemu-devel@nongnu.org>; Fri, 23 Jun 2023 05:31:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687523507; x=1690115507;
+ d=linaro.org; s=google; t=1687523508; x=1690115508;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=04sNTMPFwuJuDTHJisvdzy72J4iNRUKOEJ9l019SLBo=;
- b=ZGS5GTtLBagFmQ+r9FUBGxPokswGJJ/chPNqQ9m5FkAXzfWr09WausGP6SwqAaSuS4
- ag2qq5kb7IMns6aAqbE3MTu8uD4VV4k+sSjauViGO3GbGWjLAu14v0dtVoCHgp5xMegq
- nMP0fq01fRLRVtZVH7vJV/0goxbIXmC4DdzUwBwLiy9JcqpYxK0Y2/qtxv1IhrGuxUqp
- yxMY2RODPTj9miCjYCU0+vUv7JI/bzPFXQth6UxwUEDSVzWGcZ2ZvlaJ2LuD0W8rDxFh
- yvbluvO5G77msS9koWQDF8aDlE1wyW+Sud/p7vSnhxGECeklac6eMN/PCiRx9tSfYMC5
- DhyA==
+ :reply-to; bh=/rY9slj7HQ+Wg04gRHBVIfbkGCbegmJFV15q+r8/GvI=;
+ b=ZpIuUR0Ip5tL5cb46JK3kTZLzYvkj6vAaXFHxs23QEVm0Oq4NopegyeVD9w/kazAac
+ LJSZzv3BeSoE9bBlvqgie6iBvXtgLCNC8/78hnBYqJvjOrNt6ZKtujI9XXl/Pdz5WaOb
+ 8xZpA0B+ljZEiGh75DoBvxf5wNXgjfdy6STuobLaTMm538dQXcOAhgkXyZuOKpKSdX7Y
+ q+Y6IiNY4rwuU/8MyQS7Wdqyd4lE8RxCYhQTLU2UrJ4hkr829I5R019Tl56mcKCv72Ss
+ 1oImki447jDneiyRcQ+nNJwMyT/bSJ65hehVXx+g5QLvUtEbmBNQTIcfTTZkvZRglc4M
+ Wl3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687523507; x=1690115507;
+ d=1e100.net; s=20221208; t=1687523508; x=1690115508;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=04sNTMPFwuJuDTHJisvdzy72J4iNRUKOEJ9l019SLBo=;
- b=ZMh85QFURS1qNjTFRQJnoDvPp4ia8WB8uBvsUaMJcHFk4tssnz2HmPhEtiLBcR3tcz
- dwxWs7xEocH/8X2Y7XC6j+p4J1ihQ8W18jp6dXi29cjp5lcNcGdOlHdg5zN4h/z0CUDD
- Wf5b/6NdQbiVKyDNV7LVck6oSd6vpFLtgsoHdS//agS9tMyyS7nHAr2H/sy1cxaiH17W
- SrXudM05blAF7Xnf3fSdIcOW4Serh54q3mPsXlv7eL1Rp5UwAURikeyi1sURE+RSiavr
- h5t/WPk8D+LhnNxMxg47pnxliAc6r1WjbRcM2tAKZEkKnLFK0MdfQF0LyU+cHXKC7AQc
- UAgQ==
-X-Gm-Message-State: AC+VfDzCtURnAUXMOtXJ0YNc0dCisAboT8pxpwHxg9Zj5eBdh/2YzqNw
- sItOt1pD9jINuLl7Z76zLtZ2AbG0Gu00ODh+LPk=
-X-Google-Smtp-Source: ACHHUZ50soHeu9k3JhVBeJY66AdTyszrRjq0qVC/3hLv0Dyye8r/e6QjKw6tN17OQn3H9+3uVrtapw==
-X-Received: by 2002:a7b:c7c9:0:b0:3fa:7d11:ad00 with SMTP id
- z9-20020a7bc7c9000000b003fa7d11ad00mr1170879wmk.25.1687523507582; 
+ bh=/rY9slj7HQ+Wg04gRHBVIfbkGCbegmJFV15q+r8/GvI=;
+ b=Ftc1EgLS4LbNKhOsEycmEwJ79OBjEU5gGO9nN/QZ4etX6Jil9Xs3cnn+9+eNQ16upS
+ lBVWKQjVfLigcJle7xAS+7H9q2//mqhDCyKzCkrQqf97YJMzYElovSvssgX3gJo7GOTd
+ vA63u7S+uxDARIa6PrjkA6W5oRipCbY6S23VPhuuOqsA2DiB97f8AVWgagOUjEbX3ZAN
+ rh+XyChJm1pEytqND5ZtUysMSQa7ruVx8W6aONPzgiBPfl6jtV+s8CxDO5NzoxC9xA1K
+ ViwKwjTCQezQyX/2JIMwfQ6lpEW2MY24+G5lJ6Kgs1VT/qDAuUwHrIPaf21qFCAdgjVZ
+ vJZQ==
+X-Gm-Message-State: AC+VfDybljPGhv/FIV/0+j6gmk/P0Eq11C8rsKN3eiwctYPqr6F3vyRW
+ ryJWzBqzdt3L79Gn/q6eq5gHh52UJotSCsqUAWg=
+X-Google-Smtp-Source: ACHHUZ7LcfiLpdUDts370AtI82uvwmvg19GzWnGiFOggG5v6sw2yDxrD90ttnKHU9w/14PvLvXGt2g==
+X-Received: by 2002:a7b:cb9a:0:b0:3f9:a6f2:8656 with SMTP id
+ m26-20020a7bcb9a000000b003f9a6f28656mr10956245wmi.35.1687523507967; 
  Fri, 23 Jun 2023 05:31:47 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
@@ -58,18 +58,17 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Fri, 23 Jun 2023 05:31:47 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 22/26] host-utils: Avoid using __builtin_subcll on buggy
- versions of Apple Clang
-Date: Fri, 23 Jun 2023 13:31:31 +0100
-Message-Id: <20230623123135.1788191-23-peter.maydell@linaro.org>
+Subject: [PULL 23/26] target/arm: Restructure has_vfp_d32 test
+Date: Fri, 23 Jun 2023 13:31:32 +0100
+Message-Id: <20230623123135.1788191-24-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230623123135.1788191-1-peter.maydell@linaro.org>
 References: <20230623123135.1788191-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,85 +91,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We use __builtin_subcll() to do a 64-bit subtract with borrow-in and
-borrow-out when the host compiler supports it.  Unfortunately some
-versions of Apple Clang have a bug in their implementation of this
-intrinsic which means it returns the wrong value.  The effect is that
-a QEMU built with the affected compiler will hang when emulating x86
-or m68k float80 division.
+From: Richard Henderson <richard.henderson@linaro.org>
 
-The upstream LLVM issue is:
-https://github.com/llvm/llvm-project/issues/55253
+One cannot test for feature aa32_simd_r32 without first
+testing if AArch32 mode is supported at all.  This leads to
 
-The commit that introduced the bug apparently never made it into an
-upstream LLVM release without the subsequent fix
-https://github.com/llvm/llvm-project/commit/fffb6e6afdbaba563189c1f715058ed401fbc88d
-but unfortunately it did make it into Apple Clang 14.0, as shipped
-in Xcode 14.3 (14.2 is reported to be OK). The Apple bug number is
-FB12210478.
+qemu-system-aarch64: ARM CPUs must have both VFP-D32 and Neon or neither
 
-Add ifdefs to avoid use of __builtin_subcll() on Apple Clang version
-14 or greater.  There is not currently a version of Apple Clang which
-has the bug fix -- when one appears we should be able to add an upper
-bound to the ifdef condition so we can start using the builtin again.
-We make the lower bound a conservative "any Apple clang with major
-version 14 or greater" because the consequences of incorrectly
-disabling the builtin when it would work are pretty small and the
-consequences of not disabling it when we should are pretty bad.
+for Apple M1 cpus.
 
-Many thanks to those users who both reported this bug and also
-did a lot of work in identifying the root cause; in particular
-to Daniel Bertalan and osy.
+We already have a check for ARMv8-A never setting vfp-d32 true,
+so restructure the code so that AArch64 avoids the test entirely.
 
-Cc: qemu-stable@nongnu.org
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1631
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1659
+Reported-by: Mads Ynddal <mads@ynddal.dk>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Tested-by: Mads Ynddal <m.ynddal@samsung.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Cédric Le Goater <clg@kaod.org>
+Reviewed-by: Mads Ynddal <m.ynddal@samsung.com>
+Message-id: 20230619140216.402530-1-richard.henderson@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Tested-by: Daniel Bertalan <dani@danielbertalan.dev>
-Tested-by: Tested-By: Solra Bizna <solra@bizna.name>
-Message-id: 20230622130823.1631719-1-peter.maydell@linaro.org
 ---
- include/qemu/compiler.h   | 13 +++++++++++++
- include/qemu/host-utils.h |  2 +-
- 2 files changed, 14 insertions(+), 1 deletion(-)
+ target/arm/cpu.c | 28 +++++++++++++++-------------
+ 1 file changed, 15 insertions(+), 13 deletions(-)
 
-diff --git a/include/qemu/compiler.h b/include/qemu/compiler.h
-index c2f49df1f91..a309f90c768 100644
---- a/include/qemu/compiler.h
-+++ b/include/qemu/compiler.h
-@@ -184,4 +184,17 @@
- #define QEMU_DISABLE_CFI
- #endif
- 
-+/*
-+ * Apple clang version 14 has a bug in its __builtin_subcll(); define
-+ * BUILTIN_SUBCLL_BROKEN for the offending versions so we can avoid it.
-+ * When a version of Apple clang which has this bug fixed is released
-+ * we can add an upper bound to this check.
-+ * See https://gitlab.com/qemu-project/qemu/-/issues/1631
-+ * and https://gitlab.com/qemu-project/qemu/-/issues/1659 for details.
-+ * The bug never made it into any upstream LLVM releases, only Apple ones.
-+ */
-+#if defined(__apple_build_version__) && __clang_major__ >= 14
-+#define BUILTIN_SUBCLL_BROKEN
-+#endif
-+
- #endif /* COMPILER_H */
-diff --git a/include/qemu/host-utils.h b/include/qemu/host-utils.h
-index d3b4dce6a93..011618373e5 100644
---- a/include/qemu/host-utils.h
-+++ b/include/qemu/host-utils.h
-@@ -649,7 +649,7 @@ static inline uint64_t uadd64_carry(uint64_t x, uint64_t y, bool *pcarry)
-  */
- static inline uint64_t usub64_borrow(uint64_t x, uint64_t y, bool *pborrow)
- {
--#if __has_builtin(__builtin_subcll)
-+#if __has_builtin(__builtin_subcll) && !defined(BUILTIN_SUBCLL_BROKEN)
-     unsigned long long b = *pborrow;
-     x = __builtin_subcll(x, y, b, &b);
-     *pborrow = b & 1;
+diff --git a/target/arm/cpu.c b/target/arm/cpu.c
+index 842e1b53ee4..a1e77698ba2 100644
+--- a/target/arm/cpu.c
++++ b/target/arm/cpu.c
+@@ -1402,25 +1402,27 @@ void arm_cpu_post_init(Object *obj)
+      * KVM does not currently allow us to lie to the guest about its
+      * ID/feature registers, so the guest always sees what the host has.
+      */
+-    if (arm_feature(&cpu->env, ARM_FEATURE_AARCH64)
+-        ? cpu_isar_feature(aa64_fp_simd, cpu)
+-        : cpu_isar_feature(aa32_vfp, cpu)) {
+-        cpu->has_vfp = true;
+-        if (!kvm_enabled()) {
+-            qdev_property_add_static(DEVICE(obj), &arm_cpu_has_vfp_property);
++    if (arm_feature(&cpu->env, ARM_FEATURE_AARCH64)) {
++        if (cpu_isar_feature(aa64_fp_simd, cpu)) {
++            cpu->has_vfp = true;
++            cpu->has_vfp_d32 = true;
++            if (tcg_enabled() || qtest_enabled()) {
++                qdev_property_add_static(DEVICE(obj),
++                                         &arm_cpu_has_vfp_property);
++            }
+         }
+-    }
+-
+-    if (cpu->has_vfp && cpu_isar_feature(aa32_simd_r32, cpu)) {
+-        cpu->has_vfp_d32 = true;
+-        if (!kvm_enabled()) {
++    } else if (cpu_isar_feature(aa32_vfp, cpu)) {
++        cpu->has_vfp = true;
++        if (cpu_isar_feature(aa32_simd_r32, cpu)) {
++            cpu->has_vfp_d32 = true;
+             /*
+              * The permitted values of the SIMDReg bits [3:0] on
+              * Armv8-A are either 0b0000 and 0b0010. On such CPUs,
+              * make sure that has_vfp_d32 can not be set to false.
+              */
+-            if (!(arm_feature(&cpu->env, ARM_FEATURE_V8) &&
+-                  !arm_feature(&cpu->env, ARM_FEATURE_M))) {
++            if ((tcg_enabled() || qtest_enabled())
++                && !(arm_feature(&cpu->env, ARM_FEATURE_V8)
++                     && !arm_feature(&cpu->env, ARM_FEATURE_M))) {
+                 qdev_property_add_static(DEVICE(obj),
+                                          &arm_cpu_has_vfp_d32_property);
+             }
 -- 
 2.34.1
 
