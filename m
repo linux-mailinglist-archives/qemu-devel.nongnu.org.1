@@ -2,65 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02BF273B42A
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 11:53:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A837B73B444
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 11:59:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCdSg-0007B8-Fi; Fri, 23 Jun 2023 05:52:14 -0400
+	id 1qCdYi-0000gj-1C; Fri, 23 Jun 2023 05:58:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1qCdSZ-0007AL-0N
- for qemu-devel@nongnu.org; Fri, 23 Jun 2023 05:52:07 -0400
-Received: from zuban.uni-paderborn.de ([2001:638:502:c003::17])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1qCdSW-0008ER-RR
- for qemu-devel@nongnu.org; Fri, 23 Jun 2023 05:52:06 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=mail.uni-paderborn.de; s=20170601; h=In-Reply-To:Content-Type:MIME-Version:
- References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
- Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
- List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=IsJubS1YUUAq2un8KfO0/wAHLlBFAGg9yCnGSOMTCGE=; b=jY/Isjw06oVGt/ZsA+gWpaU1eY
- aG7R+xXX4AlhLYhplDqvoEON4QrYypFiqJ4MyCQfpRpnzNl0ULAQKTimm9cIqs9UWKyHkKMu/KTdd
- 7MzdBBpiu1ulLvUFl7OEPuAAYVddOL/5KNVQHNRvftF3fXStWqAZ/AhbMY3S0MxFJ6Oc=;
-Date: Fri, 23 Jun 2023 11:51:54 +0200
-From: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
-To: Michael Tokarev <mjt@tls.msk.ru>
-Cc: qemu-devel@nongnu.org, Siqi Chen <coc.cyqh@gmail.com>
-Subject: Re: [PULL 09/20] target/tricore: Fix out-of-bounds index in imask
- instruction
-Message-ID: <e77777fcuuipjbqhvj5u3fcix4gex55bpbo4fmg5u7j4i27ybg@hkylkdjknanz>
-References: <20230621161422.1652151-1-kbastian@mail.uni-paderborn.de>
- <20230621161422.1652151-10-kbastian@mail.uni-paderborn.de>
- <c41c4ee2-29ae-78e8-612f-2d951f359540@tls.msk.ru>
- <yury4wdzf434fmo6ty2mjmtc7u5bzg7bwak62s6us2a755tui5@5kwkzemwb6xl>
- <e2a2fb5c-906a-9c42-e120-93651d548efd@tls.msk.ru>
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1qCdYf-0000g1-FG
+ for qemu-devel@nongnu.org; Fri, 23 Jun 2023 05:58:25 -0400
+Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1qCdYd-0004Za-Lq
+ for qemu-devel@nongnu.org; Fri, 23 Jun 2023 05:58:25 -0400
+Received: by mail-ej1-x62a.google.com with SMTP id
+ a640c23a62f3a-98802908fedso48103166b.1
+ for <qemu-devel@nongnu.org>; Fri, 23 Jun 2023 02:58:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1687514302; x=1690106302;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=a5GWKYi79j3ikfG+l6dspI8GDixHDcu33wQUFtAOAd8=;
+ b=gs+i7qlzuAZXkq+T7FUObxdxPVKvHTl0N7THUu9benWveD1LlclwP1iyqbXb5fGx52
+ 1wLl07KQOznaYXLVdzYQ9Uo2bLeVwFtqF242qDQqyfu5+tuqSVbr271ug8ibEz4hBvJ7
+ bE8g5YTOHG+5oepL6gW4q3cPmTplLd1G+doXrzJGOPw63vKDn8gCHuWl5blgP0Fl0s6a
+ 6ObcCrg95ZvcSP1WfUF4O6MRVG1vsxx1gylZRVGOkSyLOJzjTb9k56LwE9Oa3ojDKri2
+ lqYh85OJZek8aq4lUafJAAkXnS933gw936CefceyxhNKJTGM7mX0FHU3lv/xfvKCFwyG
+ R8OQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1687514302; x=1690106302;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=a5GWKYi79j3ikfG+l6dspI8GDixHDcu33wQUFtAOAd8=;
+ b=SiV8r4wxlgYG4NzsMKEykiL/QmlRakn2TVFfrlR58DfY04b/+Lh3boQoTfp8WR9YPN
+ Hs4oLDczrDjaTpv8HvjkGxFM2G1OTqmPSVJhPX1CdwWbFzLa7uuDrtBjl00Zda164XC4
+ 3L29Yc5S5Jper3LlJ6GEUHxBExv+OMynIeiwmRtHPd2dEZ+jKkadGz3nh1uecLefukC2
+ lhT8M5Y6vHnjFVTQc2xcBX2kHHg5dTnCf781vFoVhKgO17GvW1kcpWBYIf1tH63zrAM2
+ ThyKXGM9XQEzxNCs4eFaM+PDbSLZcewXjNNKXOPrFi6qZ6NWrXr4wAGw1e8gEo9/UqZj
+ RPpg==
+X-Gm-Message-State: AC+VfDzpzQrPaWs5JL6++uqsA/hOZQkY5T27UhTcD5jlFjOjgQfbXxex
+ lSDvRwbtWVkJ3CxdAxPQ3heG1A==
+X-Google-Smtp-Source: ACHHUZ4dFX6aul+Kwui7dGbFRzkIhikjmczQf8Mq6ojjRAmn5gPk6jQqBwg9HMeMfNrGoUDP+pwWMA==
+X-Received: by 2002:a17:907:9283:b0:986:d833:3cf9 with SMTP id
+ bw3-20020a170907928300b00986d8333cf9mr15932907ejc.39.1687514301979; 
+ Fri, 23 Jun 2023 02:58:21 -0700 (PDT)
+Received: from localhost (cst2-173-16.cust.vodafone.cz. [31.30.173.16])
+ by smtp.gmail.com with ESMTPSA id
+ q25-20020a170906145900b0098503ba0db4sm5921496ejc.149.2023.06.23.02.58.21
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 23 Jun 2023 02:58:21 -0700 (PDT)
+Date: Fri, 23 Jun 2023 11:58:20 +0200
+From: Andrew Jones <ajones@ventanamicro.com>
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
+ bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
+ palmer@rivosinc.com
+Subject: Re: [PATCH v3 16/19] target/riscv/cpu.c: create KVM mock properties
+Message-ID: <20230623-421ca497f9f83486881b9d9c@orel>
+References: <20230622135700.105383-1-dbarboza@ventanamicro.com>
+ <20230622135700.105383-17-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <e2a2fb5c-906a-9c42-e120-93651d548efd@tls.msk.ru>
-X-IMT-Source: Extern
-X-IMT-Spam-Score: 0.0 ()
-X-IMT-rspamd-score: 4
-X-IMT-rspamd-bar: /
-X-PMX-Version: 6.4.9.2830568, Antispam-Engine: 2.7.2.2107409,
- Antispam-Data: 2023.6.23.94217, AntiVirus-Engine: 6.0.0,
- AntiVirus-Data: 2023.6.6.600001
-X-Sophos-SenderHistory: ip=79.202.219.6, fs=1358807, da=175122980, mc=184, sc=0,
- hc=184, sp=0, fso=1358807, re=0, sd=0, hd=0
-X-IMT-Authenticated-Sender: kbastian@UNI-PADERBORN.DE
-Received-SPF: pass client-ip=2001:638:502:c003::17;
- envelope-from=kbastian@mail.uni-paderborn.de; helo=zuban.uni-paderborn.de
-X-Spam_score_int: -42
-X-Spam_score: -4.3
-X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+In-Reply-To: <20230622135700.105383-17-dbarboza@ventanamicro.com>
+Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
+ envelope-from=ajones@ventanamicro.com; helo=mail-ej1-x62a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -77,41 +93,102 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Michael,
+On Thu, Jun 22, 2023 at 10:56:57AM -0300, Daniel Henrique Barboza wrote:
+> KVM-specific properties are being created inside target/riscv/kvm.c. But
+> at this moment we're gathering all the remaining properties from TCG and
+> adding them as is when running KVM. This creates a situation where
+> non-KVM properties are setting flags to 'true' due to its default
+> settings (e.g.  Zawrs). Users can also freely enable them via command
+> line.
+> 
+> This doesn't impact runtime per se because KVM doesn't care about these
+> flags, but code such as riscv_isa_string_ext() take those flags into
+> account. The result is that, for a KVM guest, setting non-KVM properties
+> will make them appear in the riscv,isa DT.
+> 
+> We want to keep the same API for both TCG and KVM and at the same time,
+> when running KVM, forbid non-KVM extensions to be enabled internally. We
+> accomplish both by changing riscv_cpu_add_user_properties() to add a
+> mock/no-op boolean property for every non-KVM extension in
+> riscv_cpu_extensions[]. Then, when running KVM, users are still free to
+> set extensions at will, we'll treat non-KVM extensions as a no-op, and
+> riscv_isa_string_ext() will not report bogus extensions in the DT.
+> 
+> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+> ---
+>  target/riscv/cpu.c | 36 +++++++++++++++++++++++++++++++++---
+>  1 file changed, 33 insertions(+), 3 deletions(-)
+> 
+> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> index b65db165cc..f5209f0789 100644
+> --- a/target/riscv/cpu.c
+> +++ b/target/riscv/cpu.c
+> @@ -1720,6 +1720,18 @@ static Property riscv_cpu_extensions[] = {
+>      DEFINE_PROP_END_OF_LIST(),
+>  };
+>  
+> +
+> +static void cpu_set_cfg_noop(Object *obj, Visitor *v,
+> +                             const char *name,
+> +                             void *opaque, Error **errp)
+> +{
+> +    bool value;
+> +
+> +    if (!visit_type_bool(v, name, &value, errp)) {
+> +        return;
+> +    }
+> +}
+> +
+>  /*
+>   * Add CPU properties with user-facing flags.
+>   *
+> @@ -1738,9 +1750,27 @@ static void riscv_cpu_add_user_properties(Object *obj)
+>      riscv_cpu_add_misa_properties(obj);
+>  
+>      for (prop = riscv_cpu_extensions; prop && prop->name; prop++) {
+> -        /* Check if KVM didn't create the property already */
+> -        if (object_property_find(obj, prop->name)) {
+> -            continue;
+> +        if (riscv_running_kvm()) {
+> +            /* Check if KVM didn't create the property already */
+> +            if (object_property_find(obj, prop->name)) {
+> +                continue;
+> +            }
+> +
+> +            /*
+> +             * Set every multi-letter extension that KVM doesn't
+> +             * know as a no-op. This will allow users to set values
+> +             * to them while keeping their internal state to 'false'.
+> +             *
+> +             * We're giving a pass for non-bool properties since they're
+> +             * not related to the availability of extensions and can be
+> +             * safely ignored as is.
+> +             */
+> +            if (prop->info == &qdev_prop_bool) {
+> +                object_property_add(obj, prop->name, "bool",
+> +                                    NULL, cpu_set_cfg_noop,
+> +                                    NULL, NULL);
+> +                continue;
+> +            }
+>          }
+>  
+>          qdev_property_add_static(dev, prop);
+> -- 
+> 2.41.0
+>
 
-On Fri, Jun 23, 2023 at 09:54:54AM +0300, Michael Tokarev wrote:
-> 22.06.2023 17:51, Bastian Koppelmann wrote:
-> ..
-> > > Is it a -stable material?
-> > 
-> > Yes. If you pick this up, make sure you also pick up https://lore.kernel.org/qemu-devel/20230621161422.1652151-1-kbastian@mail.uni-paderborn.de/T/#md18391dd165c4fc2e60ddefb886f3522e715f487
-> > which applies the same fix to other instructions.
-> 
-> Aha. "Add CHECK_REG_PAIR() for insn accessing 64 bit regs".
-> This subject suggests the patch's adding this macro, instead
-> of using it. If it were worded like "Use CHECK.. for.." instead, I'd
-> notice this one too.
-> 
-> Picked up both, thank you!
-> 
-> Is there anything else in this series worth picking up for stable, eg:
-> 
->  Fix helper_ret() not correctly restoring PSW
->  Fix RR_JLI clobbering reg A[11]
+I think we should actually fail with an error when the user tries to
+enable an extension KVM doesn't support. Otherwise a user may be
+confused as to why their Zawrs=on didn't provide them a machine with
+Zawrs. And, when KVM learns how to provide that support to guests
+(Zawrs is actually on my TODO...), then migrating the same VM to
+later KVM/QEMU will actually enable the feature, possibly confusing
+the guest.
 
-These are rare cases where the guest does something wrong. It will not lead to a
-crash of QEMU.
-
-> 
-> or maybe others?
-> 
-> Please, in the future, add Cc: qemu-stable@nongnu.org for patches
-> worth to have in -stable.
-
-I will do that. I'm not sure what is worth while to pick up for stable. My
-initial thought was fixes for bugs that can lead to a crash in QEMU. Any pointer
-would make it easier for me to decide what to CC: qemu-stable@nongnu.org for.
+So, we should probably just not add any extension properties to KVM
+guests which can't be enabled. Then, as we add support to KVM, we'll
+add the properties too.
 
 Thanks,
-Bastian
+drew
 
