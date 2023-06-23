@@ -2,51 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7810D73B6CF
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 13:53:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E293873B6E2
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 14:08:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCfKp-0007SM-MP; Fri, 23 Jun 2023 07:52:15 -0400
+	id 1qCfYy-0002i8-PI; Fri, 23 Jun 2023 08:06:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qCfKn-0007RQ-1z; Fri, 23 Jun 2023 07:52:13 -0400
-Received: from zero.eik.bme.hu ([152.66.115.2])
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qCfYu-0002hp-DS
+ for qemu-devel@nongnu.org; Fri, 23 Jun 2023 08:06:48 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qCfKk-0002sh-Q5; Fri, 23 Jun 2023 07:52:12 -0400
-Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id 6C6F5748A67;
- Fri, 23 Jun 2023 13:51:57 +0200 (CEST)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 36544748A66; Fri, 23 Jun 2023 13:51:57 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 3515B748A65;
- Fri, 23 Jun 2023 13:51:57 +0200 (CEST)
-Date: Fri, 23 Jun 2023 13:51:57 +0200 (CEST)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Nicholas Piggin <npiggin@gmail.com>
-cc: qemu-ppc@nongnu.org, qemu-devel@nongnu.org, 
- Christophe Leroy <christophe.leroy@csgroup.eu>, 
- Harsh Prateek Bora <harshpb@linux.ibm.com>, 
- Daniel Henrique Barboza <danielhb413@gmail.com>, 
- =?ISO-8859-15?Q?C=E9dric_Le_Goater?= <clg@kaod.org>, 
- David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>
-Subject: Re: [PATCH 4/4] target/ppc: Make checkstop stop the system
-In-Reply-To: <20230623081953.290875-5-npiggin@gmail.com>
-Message-ID: <04636e8a-de3f-d963-b64e-07cc60bc2538@eik.bme.hu>
-References: <20230623081953.290875-1-npiggin@gmail.com>
- <20230623081953.290875-5-npiggin@gmail.com>
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qCfYr-0001u0-OE
+ for qemu-devel@nongnu.org; Fri, 23 Jun 2023 08:06:48 -0400
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.206])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4QnbVc1QStz6GCgr;
+ Fri, 23 Jun 2023 20:03:36 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Fri, 23 Jun
+ 2023 13:06:22 +0100
+Date: Fri, 23 Jun 2023 13:06:22 +0100
+To: "Michael S. Tsirkin" <mst@redhat.com>
+CC: <qemu-devel@nongnu.org>, Fan Ni <fan.ni@samsung.com>,
+ <linux-cxl@vger.kernel.org>, <linuxarm@huawei.com>, Ira Weiny
+ <ira.weiny@intel.com>, Michael Roth <michael.roth@amd.com>, Philippe
+ =?ISO-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>, Dave Jiang
+ <dave.jiang@intel.com>, Markus Armbruster <armbru@redhat.com>, "Daniel P .
+ =?ISO-8859-1?Q?Berrang=E9?=" <berrange@redhat.com>, Eric Blake
+ <eblake@redhat.com>, Mike Maslenkin <mike.maslenkin@gmail.com>,
+ =?ISO-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>, "Thomas
+ Huth" <thuth@redhat.com>
+Subject: Re: [PATCH v8 0/4] hw/cxl: Poison get, inject, clear
+Message-ID: <20230623130622.00004d02@Huawei.com>
+In-Reply-To: <20230623025836-mutt-send-email-mst@kernel.org>
+References: <20230526170010.574-1-Jonathan.Cameron@huawei.com>
+ <20230623025836-mutt-send-email-mst@kernel.org>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-X-Spam-Probability: 9%
-Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
- helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml100006.china.huawei.com (7.191.160.224) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -60,90 +70,30 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 23 Jun 2023, Nicholas Piggin wrote:
-> checkstop state does not halt the system, interrupts continue to be
-> serviced, and other CPUs run.
->
-> Stop the machine with vm_stop(), and print a register dump too.
->
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
-> target/ppc/excp_helper.c | 35 +++++++++++++++++++++--------------
-> 1 file changed, 21 insertions(+), 14 deletions(-)
->
-> diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
-> index 4bfcfc3c3d..51e83d7f07 100644
-> --- a/target/ppc/excp_helper.c
-> +++ b/target/ppc/excp_helper.c
-> @@ -19,6 +19,7 @@
-> #include "qemu/osdep.h"
-> #include "qemu/main-loop.h"
-> #include "qemu/log.h"
-> +#include "sysemu/runstate.h"
-> #include "cpu.h"
-> #include "exec/exec-all.h"
-> #include "internal.h"
-> @@ -165,6 +166,24 @@ static void ppc_excp_debug_sw_tlb(CPUPPCState *env, int excp)
->              env->error_code);
-> }
->
-> +static void powerpc_checkstop(PowerPCCPU *cpu, const char *reason)
-> +{
-> +    CPUState *cs = CPU(cpu);
-> +
-> +    vm_stop(RUN_STATE_GUEST_PANICKED);
-> +
-> +    fprintf(stderr, "Entering checkstop state: %s\n", reason);
-> +    cpu_dump_state(cs, stderr, CPU_DUMP_FPU | CPU_DUMP_CCOP);
-> +    if (qemu_log_separate()) {
-> +        FILE *logfile = qemu_log_trylock();
-> +        if (logfile) {
-> +            fprintf(logfile, "Entering checkstop state: %s\n", reason);
-> +            cpu_dump_state(cs, logfile, CPU_DUMP_FPU | CPU_DUMP_CCOP);
-> +            qemu_log_unlock(logfile);
-> +        }
-> +    }
-> +}
-> +
-> #if defined(TARGET_PPC64)
-> static int powerpc_reset_wakeup(CPUState *cs, CPUPPCState *env, int excp,
->                                 target_ulong *msr)
-> @@ -406,21 +425,9 @@ static void powerpc_set_excp_state(PowerPCCPU *cpu, target_ulong vector,
->
-> static void powerpc_mcheck_test_and_checkstop(CPUPPCState *env)
-> {
-> -    CPUState *cs = env_cpu(env);
-> -
-> -    if (FIELD_EX64(env->msr, MSR, ME)) {
-> -        return;
-> -    }
-> -
-> -    /* Machine check exception is not enabled. Enter checkstop state. */
-> -    fprintf(stderr, "Machine check while not allowed. "
-> -            "Entering checkstop state\n");
-> -    if (qemu_log_separate()) {
-> -        qemu_log("Machine check while not allowed. "
-> -                 "Entering checkstop state\n");
-> +    if (!FIELD_EX64(env->msr, MSR, ME)) {
-> +        powerpc_checkstop(env_archcpu(env), "machine check with MSR[ME]=0");
+On Fri, 23 Jun 2023 02:59:44 -0400
+"Michael S. Tsirkin" <mst@redhat.com> wrote:
 
-I don't mind you twaeking the patch and renaming the function but now this 
-has become another one line function which just clutters code. Either keep 
-this together in one function or inline the if at callers, otherwise this 
-will start to look like Forth where every simple operation gets a new 
-name. :-)
+> On Fri, May 26, 2023 at 06:00:06PM +0100, Jonathan Cameron wrote:
+> > v8: Formatting fixes for QMP docs from Markus Armbruster (thanks!)  
+> 
+> This and other patches add a bunch of over-80 chars lines.  I'm not
+> going to intervene here as cxl has lots of them but maybe scan over cxl
+> codebase and shorten where appropriate.
+> Thanks!
 
-Regards,
-BALATON Zoltan
+Will add it to the todo list and will pay more attention to this for
+future series.
 
->     }
-> -    cs->halted = 1;
-> -    cpu_interrupt_exittb(cs);
-> }
->
-> static void powerpc_excp_40x(PowerPCCPU *cpu, int excp)
->
+Some annoyingly complex register names make it tricky but I'm sure we
+can do better if not necessarily perfectly!
+
+Jonathan
+
+> 
+
 
