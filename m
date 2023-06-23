@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B36173B746
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 14:32:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 076E973B7BA
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 14:42:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCfx9-0001ku-IB; Fri, 23 Jun 2023 08:31:51 -0400
+	id 1qCfxA-0001n3-9k; Fri, 23 Jun 2023 08:31:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qCfx0-0001UO-1p
- for qemu-devel@nongnu.org; Fri, 23 Jun 2023 08:31:42 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ id 1qCfx0-0001VB-Pn
+ for qemu-devel@nongnu.org; Fri, 23 Jun 2023 08:31:43 -0400
+Received: from mail-lf1-x132.google.com ([2a00:1450:4864:20::132])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qCfwx-0000eZ-TG
- for qemu-devel@nongnu.org; Fri, 23 Jun 2023 08:31:41 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-3f90b8ace97so7463235e9.2
- for <qemu-devel@nongnu.org>; Fri, 23 Jun 2023 05:31:39 -0700 (PDT)
+ id 1qCfwy-0000eq-MI
+ for qemu-devel@nongnu.org; Fri, 23 Jun 2023 08:31:42 -0400
+Received: by mail-lf1-x132.google.com with SMTP id
+ 2adb3069b0e04-4f883420152so666198e87.1
+ for <qemu-devel@nongnu.org>; Fri, 23 Jun 2023 05:31:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687523498; x=1690115498;
+ d=linaro.org; s=google; t=1687523499; x=1690115499;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=zo+TDk0MLXDiYXwRgnqOrXa14FzuNS7D0FCpuSZpwmQ=;
- b=uzxaRgaOC1OS/IcXHXTBGURJZxLadI9DseEGJFHYcLrBa9/eaIltuNN1UUluLMSuoV
- kxUNyNTpwlT5tnAxs46KALKuAALf3Frip2rvGTAQkbGWcMyJDkROk4zRslzDNgxlrCX2
- uhDWFjVX+u8HFilcqMZZEqnZLX7JIbLhhiOG5BpTrEJHAJei/o8YVHxOnA9/wl+X5h+a
- TIc46HlCyqOLf8ciyL33gn9+ARzTuk1VCWHaxpV/AdrJjIBsNC0IuSpzwkhGGl/iB7EK
- POjUrYARFbSjkhiHCr5SFkQRgXAjNPnSdfJSPAUUiN7wabfU3jc9OrTXLfmmfaASv+Mq
- 3SYg==
+ :reply-to; bh=gyvx5K62q0+FJIslCa9Rhg6S+ur4ISC9ITMvP7s+UZ0=;
+ b=vAeLU9i3kJ7j2NJSuAzVf+CJro0q0ccySBiMIRcLahhn2HDF84ViPT/r9CfW9SpoiR
+ f+Ej8HKDbrRpnhnKhSAlhD84/J1PaMultDtLlekMYcW8bRoazFIBR9KzOn31DUnIHebS
+ Rw+WgNpUMNlvK5lBU1q/xOWSFeBB3O/2h7W0+VoM37ZWRMF7o2OESbsEYnwgEHAX9r/K
+ l8P3Pb38TjGgjxRIs1ZYqGrnYkOQ1XXXTVAMKgUn+MlxAmeIMIqX8G6LYIT96bL77S+Q
+ SoCJMoVh9deQ/7E75grH+CAt2EKWYVJu+HRrJc5vWooDF7eVpewmcuR8ivTzO/fcqSYw
+ zDOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687523498; x=1690115498;
+ d=1e100.net; s=20221208; t=1687523499; x=1690115499;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=zo+TDk0MLXDiYXwRgnqOrXa14FzuNS7D0FCpuSZpwmQ=;
- b=ZAiXV0ncdI0JTbS3Qz0Mt/ZKT2yvMI3fu1ZM1JCsGyh0Dqrr/zt+ZAsImuvo4x/jhw
- Dda0VCBYa7pLd0Wh0rblzqbBCG0kzPa6VNp4PZe3obkmLrHMOPeV4S/0HKNgWqjjfA6/
- zDEp4+6xWNR/xCn2ASFPyAaqBeFsEDf0xqRQKrMgsoJatDg7NdQ+uPiOzvpf/63GZ7SQ
- OY1G1962JrDRyXbkwzHC8Tgk8uhnKwFlq4Qxzh5zbir+NrvQFWxRIutWPpEDJT2z5IhJ
- 0AB/X5l/IRR+wOcMNMQXoA0zZMgSGDPsM1TeFzjA0LcwsPhOOYiRFtyz38STBTT0ZPJM
- ycpg==
-X-Gm-Message-State: AC+VfDxhVLnjmLKV5tm+aiAU/pWYTx1pSzUDc6alC4Lw9Hf4/ov3wA7N
- ydTFc3qc+KGZrZ0adFtw9eY8qrF42i3ewjcLcNU=
-X-Google-Smtp-Source: ACHHUZ45+gMMCKyna+LUWy0WqzbbLwBhL+u8S9kVxKutXpfRoJAGdxiBqrp4nQWLsoDkOu9BH0+EKw==
-X-Received: by 2002:a05:600c:2113:b0:3fa:7dec:c4bb with SMTP id
- u19-20020a05600c211300b003fa7decc4bbmr937355wml.5.1687523498511; 
- Fri, 23 Jun 2023 05:31:38 -0700 (PDT)
+ bh=gyvx5K62q0+FJIslCa9Rhg6S+ur4ISC9ITMvP7s+UZ0=;
+ b=l6glFKzDsbpYxSYKiAigjGeKmUmzYxe39EejbO2qvUA7QCHEjMfRx68z4KHAJezLPY
+ gP/wYEQpNQTnEv9lCLW4eskPOSYoq5/mwo4y0Og+4uF2J8SpRdOTjXWzd0szs0/8iymx
+ TkNq/dgjwe29HjbTIxkBv2Tfez5EAfPi17R99HwIN0OjWY8FYD7Jzt5+FalLcHMxvNkJ
+ GF3bdrR1befyaQHA4SRFK1p/HLsX2GGzpDv9q+TIaOWmEJkTT2taefDXebAvBVelT66g
+ VMJ3NW2bgfYOmJUSAHmA6DohFyMM8T8ydjd702pZsJz3hJeQrF3s91PnVQ2y3/8u8pmD
+ 3iLg==
+X-Gm-Message-State: AC+VfDwYm3HCA7DNcvj4fWclFvBzDPaoGL56bMO3RosaneQy6fnYkjkx
+ KWMsX9dbTxsX36N+8U7J4TafkgHFXrem3E7DV/w=
+X-Google-Smtp-Source: ACHHUZ7T4mZbgyi94LRubYynBF7gvz4MchEzttKVo3bvDdrvATvCtrZqG0Q3IUGI8RxAlTnQp++wUg==
+X-Received: by 2002:a19:6d0e:0:b0:4f6:520d:6b9b with SMTP id
+ i14-20020a196d0e000000b004f6520d6b9bmr11417406lfc.60.1687523499159; 
+ Fri, 23 Jun 2023 05:31:39 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  z7-20020a1c4c07000000b003f819dfa0ddsm2232622wmf.28.2023.06.23.05.31.38
@@ -58,16 +58,16 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Fri, 23 Jun 2023 05:31:38 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 03/26] target/arm: SCR_EL3.NS may be RES1
-Date: Fri, 23 Jun 2023 13:31:12 +0100
-Message-Id: <20230623123135.1788191-4-peter.maydell@linaro.org>
+Subject: [PULL 04/26] target/arm: Add RME cpregs
+Date: Fri, 23 Jun 2023 13:31:13 +0100
+Message-Id: <20230623123135.1788191-5-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230623123135.1788191-1-peter.maydell@linaro.org>
 References: <20230623123135.1788191-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::132;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x132.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,31 +92,164 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Richard Henderson <richard.henderson@linaro.org>
 
-With RME, SEL2 must also be present to support secure state.
-The NS bit is RES1 if SEL2 is not present.
+This includes GPCCR, GPTBR, MFAR, the TLB flush insns PAALL, PAALLOS,
+RPALOS, RPAOS, and the cache flush insns CIPAPA and CIGDPAPA.
 
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20230620124418.805717-4-richard.henderson@linaro.org
+Message-id: 20230620124418.805717-5-richard.henderson@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/helper.c | 3 +++
- 1 file changed, 3 insertions(+)
+ target/arm/cpu.h    | 19 ++++++++++
+ target/arm/helper.c | 84 +++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 103 insertions(+)
 
+diff --git a/target/arm/cpu.h b/target/arm/cpu.h
+index 318d1033b87..c9c87b515df 100644
+--- a/target/arm/cpu.h
++++ b/target/arm/cpu.h
+@@ -541,6 +541,11 @@ typedef struct CPUArchState {
+         uint64_t fgt_read[2]; /* HFGRTR, HDFGRTR */
+         uint64_t fgt_write[2]; /* HFGWTR, HDFGWTR */
+         uint64_t fgt_exec[1]; /* HFGITR */
++
++        /* RME registers */
++        uint64_t gpccr_el3;
++        uint64_t gptbr_el3;
++        uint64_t mfar_el3;
+     } cp15;
+ 
+     struct {
+@@ -1055,6 +1060,7 @@ struct ArchCPU {
+     uint64_t reset_cbar;
+     uint32_t reset_auxcr;
+     bool reset_hivecs;
++    uint8_t reset_l0gptsz;
+ 
+     /*
+      * Intermediate values used during property parsing.
+@@ -2341,6 +2347,19 @@ FIELD(MVFR1, SIMDFMAC, 28, 4)
+ FIELD(MVFR2, SIMDMISC, 0, 4)
+ FIELD(MVFR2, FPMISC, 4, 4)
+ 
++FIELD(GPCCR, PPS, 0, 3)
++FIELD(GPCCR, IRGN, 8, 2)
++FIELD(GPCCR, ORGN, 10, 2)
++FIELD(GPCCR, SH, 12, 2)
++FIELD(GPCCR, PGS, 14, 2)
++FIELD(GPCCR, GPC, 16, 1)
++FIELD(GPCCR, GPCP, 17, 1)
++FIELD(GPCCR, L0GPTSZ, 20, 4)
++
++FIELD(MFAR, FPA, 12, 40)
++FIELD(MFAR, NSE, 62, 1)
++FIELD(MFAR, NS, 63, 1)
++
+ QEMU_BUILD_BUG_ON(ARRAY_SIZE(((ARMCPU *)0)->ccsidr) <= R_V7M_CSSELR_INDEX_MASK);
+ 
+ /* If adding a feature bit which corresponds to a Linux ELF
 diff --git a/target/arm/helper.c b/target/arm/helper.c
-index d2f0d9226ec..9132d4de6a4 100644
+index 9132d4de6a4..006447dde8f 100644
 --- a/target/arm/helper.c
 +++ b/target/arm/helper.c
-@@ -1855,6 +1855,9 @@ static void scr_write(CPUARMState *env, const ARMCPRegInfo *ri, uint64_t value)
-         }
-         if (cpu_isar_feature(aa64_sel2, cpu)) {
-             valid_mask |= SCR_EEL2;
-+        } else if (cpu_isar_feature(aa64_rme, cpu)) {
-+            /* With RME and without SEL2, NS is RES1 (R_GSWWH, I_DJJQJ). */
-+            value |= SCR_NS;
-         }
-         if (cpu_isar_feature(aa64_mte, cpu)) {
-             valid_mask |= SCR_ATA;
+@@ -6910,6 +6910,83 @@ static const ARMCPRegInfo sme_reginfo[] = {
+       .access = PL2_RW, .accessfn = access_esm,
+       .type = ARM_CP_CONST, .resetvalue = 0 },
+ };
++
++static void tlbi_aa64_paall_write(CPUARMState *env, const ARMCPRegInfo *ri,
++                                  uint64_t value)
++{
++    CPUState *cs = env_cpu(env);
++
++    tlb_flush(cs);
++}
++
++static void gpccr_write(CPUARMState *env, const ARMCPRegInfo *ri,
++                        uint64_t value)
++{
++    /* L0GPTSZ is RO; other bits not mentioned are RES0. */
++    uint64_t rw_mask = R_GPCCR_PPS_MASK | R_GPCCR_IRGN_MASK |
++        R_GPCCR_ORGN_MASK | R_GPCCR_SH_MASK | R_GPCCR_PGS_MASK |
++        R_GPCCR_GPC_MASK | R_GPCCR_GPCP_MASK;
++
++    env->cp15.gpccr_el3 = (value & rw_mask) | (env->cp15.gpccr_el3 & ~rw_mask);
++}
++
++static void gpccr_reset(CPUARMState *env, const ARMCPRegInfo *ri)
++{
++    env->cp15.gpccr_el3 = FIELD_DP64(0, GPCCR, L0GPTSZ,
++                                     env_archcpu(env)->reset_l0gptsz);
++}
++
++static void tlbi_aa64_paallos_write(CPUARMState *env, const ARMCPRegInfo *ri,
++                                    uint64_t value)
++{
++    CPUState *cs = env_cpu(env);
++
++    tlb_flush_all_cpus_synced(cs);
++}
++
++static const ARMCPRegInfo rme_reginfo[] = {
++    { .name = "GPCCR_EL3", .state = ARM_CP_STATE_AA64,
++      .opc0 = 3, .opc1 = 6, .crn = 2, .crm = 1, .opc2 = 6,
++      .access = PL3_RW, .writefn = gpccr_write, .resetfn = gpccr_reset,
++      .fieldoffset = offsetof(CPUARMState, cp15.gpccr_el3) },
++    { .name = "GPTBR_EL3", .state = ARM_CP_STATE_AA64,
++      .opc0 = 3, .opc1 = 6, .crn = 2, .crm = 1, .opc2 = 4,
++      .access = PL3_RW, .fieldoffset = offsetof(CPUARMState, cp15.gptbr_el3) },
++    { .name = "MFAR_EL3", .state = ARM_CP_STATE_AA64,
++      .opc0 = 3, .opc1 = 6, .crn = 6, .crm = 0, .opc2 = 5,
++      .access = PL3_RW, .fieldoffset = offsetof(CPUARMState, cp15.mfar_el3) },
++    { .name = "TLBI_PAALL", .state = ARM_CP_STATE_AA64,
++      .opc0 = 1, .opc1 = 6, .crn = 8, .crm = 7, .opc2 = 4,
++      .access = PL3_W, .type = ARM_CP_NO_RAW,
++      .writefn = tlbi_aa64_paall_write },
++    { .name = "TLBI_PAALLOS", .state = ARM_CP_STATE_AA64,
++      .opc0 = 1, .opc1 = 6, .crn = 8, .crm = 1, .opc2 = 4,
++      .access = PL3_W, .type = ARM_CP_NO_RAW,
++      .writefn = tlbi_aa64_paallos_write },
++    /*
++     * QEMU does not have a way to invalidate by physical address, thus
++     * invalidating a range of physical addresses is accomplished by
++     * flushing all tlb entries in the outer sharable domain,
++     * just like PAALLOS.
++     */
++    { .name = "TLBI_RPALOS", .state = ARM_CP_STATE_AA64,
++      .opc0 = 1, .opc1 = 6, .crn = 8, .crm = 4, .opc2 = 7,
++      .access = PL3_W, .type = ARM_CP_NO_RAW,
++      .writefn = tlbi_aa64_paallos_write },
++    { .name = "TLBI_RPAOS", .state = ARM_CP_STATE_AA64,
++      .opc0 = 1, .opc1 = 6, .crn = 8, .crm = 4, .opc2 = 3,
++      .access = PL3_W, .type = ARM_CP_NO_RAW,
++      .writefn = tlbi_aa64_paallos_write },
++    { .name = "DC_CIPAPA", .state = ARM_CP_STATE_AA64,
++      .opc0 = 1, .opc1 = 6, .crn = 7, .crm = 14, .opc2 = 1,
++      .access = PL3_W, .type = ARM_CP_NOP },
++};
++
++static const ARMCPRegInfo rme_mte_reginfo[] = {
++    { .name = "DC_CIGDPAPA", .state = ARM_CP_STATE_AA64,
++      .opc0 = 1, .opc1 = 6, .crn = 7, .crm = 14, .opc2 = 5,
++      .access = PL3_W, .type = ARM_CP_NOP },
++};
+ #endif /* TARGET_AARCH64 */
+ 
+ static void define_pmu_regs(ARMCPU *cpu)
+@@ -9130,6 +9207,13 @@ void register_cp_regs_for_features(ARMCPU *cpu)
+     if (cpu_isar_feature(aa64_fgt, cpu)) {
+         define_arm_cp_regs(cpu, fgt_reginfo);
+     }
++
++    if (cpu_isar_feature(aa64_rme, cpu)) {
++        define_arm_cp_regs(cpu, rme_reginfo);
++        if (cpu_isar_feature(aa64_mte, cpu)) {
++            define_arm_cp_regs(cpu, rme_mte_reginfo);
++        }
++    }
+ #endif
+ 
+     if (cpu_isar_feature(any_predinv, cpu)) {
 -- 
 2.34.1
 
