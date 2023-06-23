@@ -2,79 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B334573BDC4
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 19:27:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E41873BDEF
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 19:38:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCkXr-00076Q-3l; Fri, 23 Jun 2023 13:26:03 -0400
+	id 1qCkip-0003au-1Q; Fri, 23 Jun 2023 13:37:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qCkXp-00076E-Mx
- for qemu-devel@nongnu.org; Fri, 23 Jun 2023 13:26:01 -0400
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ (Exim 4.90_1) (envelope-from <groeck7@gmail.com>)
+ id 1qCkiU-0003Zm-D4; Fri, 23 Jun 2023 13:37:03 -0400
+Received: from mail-ot1-x330.google.com ([2607:f8b0:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qCkXn-0002p3-Sg
- for qemu-devel@nongnu.org; Fri, 23 Jun 2023 13:26:01 -0400
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-3129c55e1d1so1011563f8f.0
- for <qemu-devel@nongnu.org>; Fri, 23 Jun 2023 10:25:59 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <groeck7@gmail.com>)
+ id 1qCkiR-0008W7-VH; Fri, 23 Jun 2023 13:37:01 -0400
+Received: by mail-ot1-x330.google.com with SMTP id
+ 46e09a7af769-6b72329b63eso758962a34.0; 
+ Fri, 23 Jun 2023 10:36:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687541158; x=1690133158;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=cvrcpWiGwYWzRcHv5OBI4JG9Arm6PQa1vseMjAvcF0w=;
- b=WmasssQV4QzqPkS+TIJ6VRbMYKLlL0VUhbeE1nO3umZ7tVnxAfn2pQ3BTls9aFGEH4
- BIeESAqFgnpopPtzyJZFCmvQLyF+HB7QrZAxfk3G9nYQV31CCfPVDEwspSYMhwnYgkiK
- O4bE5Omil4KRs4lHYD+KvOOOul1XiLyhSBNVKjVDB9fQcTB3IK9lAj9Q5WPoUUHASfJ7
- nszYY++gGIYtiZNWqA8qcTxfosv2bCkTdZ4XJpBKEnBH811n133nGS98er1o0CqtrFIK
- DDt2SFcesOIfC0yVQIBnWhia4RLKc5HMhUcrLl5W34dduGJdO65vorjLTcYENYXTPm3P
- DC7g==
+ d=gmail.com; s=20221208; t=1687541817; x=1690133817;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date:sender
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=kvbYavrrZ/b3ZYTQHWLJz2aS3Re5dZbFrgauqNrMUZw=;
+ b=YJ+SYi/RbZe9gNYO/e2O0m/NmKr7Dlc9wKZLVKW3xXqCnSSaznZNvEhsFPS8MCok6y
+ WTtZgAGD/ZXwM0afFvfGna/WROY13qnClFi76Ek1aks0WV6vnPYLgwxxhOgAmsPcGScd
+ oi+gNv3B8MR58otMKjExKnVuD699LEfUvKMzzfNI9B634xID4QA78WK8PYWBTxLnPdUN
+ Ro+BEAcdTWDvMJTWWvXQee7jMFUZZgCkg7g5kIHeC2OK8Nrd2GaXSQu2C6HRKtpLqR3m
+ J97BbHIo9l0mmoAwjzap3njiUosaqxU6B2HZQ8PN4vrqEjh/QrEKNFM+QlG3HFbZyiFA
+ YsAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687541158; x=1690133158;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=cvrcpWiGwYWzRcHv5OBI4JG9Arm6PQa1vseMjAvcF0w=;
- b=igXgJEgOzxemSzuExjPNbjC+QgCCzgULRptEAgP5Y7OuAm1zSwzj3S2mJCNk63zsEX
- LyIM8wUBqhk/2SHJNEuuuFnbPLSTd2h58LFqQfLqVQnl7SjBAvXn/aNmqaz2OJQlNnhr
- 9Hm6CMPaO/ckD94yt+KK8VdQKSHtFIzzUNbqHhHWKhy1L5FiPTuFT4biFOX36whplxGc
- qnUSyLHhSZgG/ldp53YcNW1gIVJRptysBu7WHaA86zkwD7wjKXrdVXxDp7y/hiaJiDUM
- Wby8mWI2hHtBvsBokENyiB0AQZ3qZyxexo0eiyKryGld1oAWgJMvpPb5PfLdkBDrGlNM
- XTpw==
-X-Gm-Message-State: AC+VfDwueCSwwnOf0ahSBQokRLKNG5GoBcjMQgxiFZ8MOD1f0rvmcMNo
- f+GOwYjJ93KaX2BmDwOyg2nV3j38NX9+Mngs9cw=
-X-Google-Smtp-Source: ACHHUZ7NcByUjJCm6Ki02kYe0FR+J79Y4JsNElaaMyU67Lm2tjJdgCdkJB4iQSWjOGtNwUc55VPtNA==
-X-Received: by 2002:adf:e447:0:b0:307:cb94:85de with SMTP id
- t7-20020adfe447000000b00307cb9485demr20217918wrm.11.1687541157649; 
- Fri, 23 Jun 2023 10:25:57 -0700 (PDT)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ d=1e100.net; s=20221208; t=1687541817; x=1690133817;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date:sender
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=kvbYavrrZ/b3ZYTQHWLJz2aS3Re5dZbFrgauqNrMUZw=;
+ b=dFo2TkzgmjtHoq9lRgrkweUMN0SppUZwtqjkUjs4fpWKiQ27HgGgG7zKdFz/xx7vfI
+ EpH1wgg9vDpLwK84aZxnLJ/R8wv+qtwccdJMu4JHCSflyLRxEGvofVSCAe+pVesKtBBZ
+ 3E0eTvhzlV25cBF1Fp0c7LeDbLbWQFvI3WnJ7l3ns6PZPuVMFN89+ozZbA37sxXrS1yo
+ nYK+3C+/++SOMuYClPP+dBaOSCqGG71NghjkPZtDESb5jcIE9Kxk5v/rim64ediJ5DtF
+ YK6Ew8B+xTzSSDKbAPdcxuMwAU8e0ArUZrDljqmoDwpPGfp2RspjmqZnbXQDuueWPy+9
+ rRtw==
+X-Gm-Message-State: AC+VfDyFpblBpCKhX1CAKMPBpjaBRiXlo1/OFtRk+lcCMeXJUySWpWbq
+ 4vDkdBp9ETYHKTks+fT4Lko=
+X-Google-Smtp-Source: ACHHUZ64mtyLW8R0FEAFNatchvfldVojRuVnJWQ82OVocQKJan5+TYgU5zcHECaVxGOr4WqHY6At2g==
+X-Received: by 2002:a05:6359:282:b0:123:26fe:3346 with SMTP id
+ ek2-20020a056359028200b0012326fe3346mr16317905rwb.2.1687541817383; 
+ Fri, 23 Jun 2023 10:36:57 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
  by smtp.gmail.com with ESMTPSA id
- x14-20020adfec0e000000b0030aee3da084sm10011083wrn.49.2023.06.23.10.25.57
+ k23-20020a63f017000000b00528513c6bbcsm6642494pgh.28.2023.06.23.10.36.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 23 Jun 2023 10:25:57 -0700 (PDT)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- Thomas Huth <thuth@redhat.com>
-Subject: [PATCH] target/nios2 : Explicitly ask for target-endian loads and
- stores
-Date: Fri, 23 Jun 2023 18:25:56 +0100
-Message-Id: <20230623172556.1951974-1-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.34.1
+ Fri, 23 Jun 2023 10:36:56 -0700 (PDT)
+Date: Fri, 23 Jun 2023 10:36:55 -0700
+From: Guenter Roeck <linux@roeck-us.net>
+To: qianfan <qianfanguijin@163.com>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org,
+ Strahinja Jankovic <strahinja.p.jankovic@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Beniamino Galvani <b.galvani@gmail.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Niek Linnenbank <nieklinnenbank@gmail.com>
+Subject: Re: [PATCH v5 01/11] hw: arm: Add bananapi M2-Ultra and
+ allwinner-r40 support
+Message-ID: <b8954841-db12-46ae-b92a-d805eb446a69@roeck-us.net>
+References: <20230523100508.32564-1-qianfanguijin@163.com>
+ <20230523100508.32564-2-qianfanguijin@163.com>
+ <41e71eae-72ad-410d-9cd8-cc495c06dac4@roeck-us.net>
+ <10cf3c5e-655d-fc8b-cf48-3949588c2dcf@163.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+In-Reply-To: <10cf3c5e-655d-fc8b-cf48-3949588c2dcf@163.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::330;
+ envelope-from=groeck7@gmail.com; helo=mail-ot1-x330.google.com
+X-Spam_score_int: -12
+X-Spam_score: -1.3
+X-Spam_bar: -
+X-Spam_report: (-1.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_ENVFROM_END_DIGIT=0.25,
+ FREEMAIL_FORGED_FROMDOMAIN=0.25, FREEMAIL_FROM=0.001,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,84 +101,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When we generate code for guest loads and stores, at the moment they
-end up being requests for a host-endian access. So for target-system-nios2
-(little endian) a load like
-   ldw        r3,0(r4)
-results on an x86 host in the TCG IR
-   qemu_ld_a32_i32 r3,loc2,al+leul,0
-but on s390 it is
-   qemu_ld_a32_i32 r3,loc2,al+beul,0
+On Sun, Jun 18, 2023 at 08:40:28AM +0800, qianfan wrote:
+> 
+> 在 2023/6/18 0:29, Guenter Roeck 写道:
+> > Hi,
+> > 
+> > On Tue, May 23, 2023 at 06:04:58PM +0800, qianfanguijin@163.com wrote:
+> > > From: qianfan Zhao <qianfanguijin@163.com>
+> > > 
+> > > Allwinner R40 (sun8i) SoC features a Quad-Core Cortex-A7 ARM CPU,
+> > > and a Mali400 MP2 GPU from ARM. It's also known as the Allwinner T3
+> > > for In-Car Entertainment usage, A40i and A40pro are variants that
+> > > differ in applicable temperatures range (industrial and military).
+> > > 
+> > > Signed-off-by: qianfan Zhao <qianfanguijin@163.com>
+> > > Reviewed-by: Niek Linnenbank <nieklinnenbank@gmail.com>
+> > I tried this in mainline linux with the following command.
+> > 
+> > qemu-system-arm -M bpim2u \
+> > 	-kernel arch/arm/boot/zImage -no-reboot \
+> > 	-snapshot -drive file=rootfs-armv7a.ext2,format=raw,if=sd \
+> > 	-nic user \
+> > 	--append "root=/dev/mmcblk0 rootwait console=ttyS0,115200" \
+> > 	-dtb arch/arm/boot/dts/sun8i-r40-bananapi-m2-ultra.dtb \
+> > 	-nographic -monitor null -serial stdio
+> > 
+> > Main problem is that the SD card gets instantiated randomly to
+> > mmc0, mmc1, or mmc2, making it all but impossible to specify a
+> > root file system device. The non-instantiated cards are always
+> > reported as non-removable, including mmc0. Example:
+> > 
+> > mmc0: Failed to initialize a non-removable card
+> > 
+> > Using "-sd <file>" instead of "-drive file=<file>" does not
+> > make a difference.
+> > 
+> > I can fix (work around ?) the problem by adding the following information
+> > to the devicetree file.
+> > 
+> >          aliases {
+> >                  ethernet0 = &gmac;
+> >                  serial0 = &uart0;
+> > +               mmc0 = &mmc0;
+> > +               mmc1 = &mmc1;
+> > +               mmc2 = &mmc2;
+> >          };
+> > 
+> > Linux upstream commits fa2d0aa96941 and 2a43322ca7f3 describe the
+> > logic behind this change.
+> > 
+> > Is this a bug in the Linux kernel, or a problem with the qemu emulation ?
+> 
+> On my work, the linux kenrel doesn't startup ext4 rootfs directly, it start
+> 
+> a custom ramdisk and we can handle this in ramdisk scripts.
+> 
 
-The result is that guests don't work on big-endian hosts.
+That won't help for automated testing.
+I guess that means the answer to my question below is "no".
 
-Use the MO_TE* memops rather than the plain ones.
+Thanks,
+Guenter
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1693
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
-Presumably this got lost in a recent conversion somewhere,
-but I can't figure out where, so maybe it's been broken much
-longer...
----
- target/nios2/translate.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
-
-diff --git a/target/nios2/translate.c b/target/nios2/translate.c
-index a365ad8293b..4264c7ec6b4 100644
---- a/target/nios2/translate.c
-+++ b/target/nios2/translate.c
-@@ -436,19 +436,19 @@ static const Nios2Instruction i_type_instructions[] = {
-     INSTRUCTION_FLG(gen_cmpxxsi, TCG_COND_GE),        /* cmpgei */
-     INSTRUCTION_ILLEGAL(),
-     INSTRUCTION_ILLEGAL(),
--    INSTRUCTION_FLG(gen_ldx, MO_UW),                  /* ldhu */
-+    INSTRUCTION_FLG(gen_ldx, MO_TEUW),                /* ldhu */
-     INSTRUCTION(andi),                                /* andi */
--    INSTRUCTION_FLG(gen_stx, MO_UW),                  /* sth */
-+    INSTRUCTION_FLG(gen_stx, MO_TEUW),                /* sth */
-     INSTRUCTION_FLG(gen_bxx, TCG_COND_GE),            /* bge */
--    INSTRUCTION_FLG(gen_ldx, MO_SW),                  /* ldh */
-+    INSTRUCTION_FLG(gen_ldx, MO_TESW),                /* ldh */
-     INSTRUCTION_FLG(gen_cmpxxsi, TCG_COND_LT),        /* cmplti */
-     INSTRUCTION_ILLEGAL(),
-     INSTRUCTION_ILLEGAL(),
-     INSTRUCTION_NOP(),                                /* initda */
-     INSTRUCTION(ori),                                 /* ori */
--    INSTRUCTION_FLG(gen_stx, MO_UL),                  /* stw */
-+    INSTRUCTION_FLG(gen_stx, MO_TEUL),                /* stw */
-     INSTRUCTION_FLG(gen_bxx, TCG_COND_LT),            /* blt */
--    INSTRUCTION_FLG(gen_ldx, MO_UL),                  /* ldw */
-+    INSTRUCTION_FLG(gen_ldx, MO_TEUL),                /* ldw */
-     INSTRUCTION_FLG(gen_cmpxxsi, TCG_COND_NE),        /* cmpnei */
-     INSTRUCTION_ILLEGAL(),
-     INSTRUCTION_ILLEGAL(),
-@@ -468,19 +468,19 @@ static const Nios2Instruction i_type_instructions[] = {
-     INSTRUCTION_FLG(gen_cmpxxui, TCG_COND_GEU),       /* cmpgeui */
-     INSTRUCTION_ILLEGAL(),
-     INSTRUCTION_ILLEGAL(),
--    INSTRUCTION_FLG(gen_ldx, MO_UW),                  /* ldhuio */
-+    INSTRUCTION_FLG(gen_ldx, MO_TEUW),                /* ldhuio */
-     INSTRUCTION(andhi),                               /* andhi */
--    INSTRUCTION_FLG(gen_stx, MO_UW),                  /* sthio */
-+    INSTRUCTION_FLG(gen_stx, MO_TEUW),                /* sthio */
-     INSTRUCTION_FLG(gen_bxx, TCG_COND_GEU),           /* bgeu */
--    INSTRUCTION_FLG(gen_ldx, MO_SW),                  /* ldhio */
-+    INSTRUCTION_FLG(gen_ldx, MO_TESW),                /* ldhio */
-     INSTRUCTION_FLG(gen_cmpxxui, TCG_COND_LTU),       /* cmpltui */
-     INSTRUCTION_ILLEGAL(),
-     INSTRUCTION_UNIMPLEMENTED(),                      /* custom */
-     INSTRUCTION_NOP(),                                /* initd */
-     INSTRUCTION(orhi),                                /* orhi */
--    INSTRUCTION_FLG(gen_stx, MO_SL),                  /* stwio */
-+    INSTRUCTION_FLG(gen_stx, MO_TESL),                /* stwio */
-     INSTRUCTION_FLG(gen_bxx, TCG_COND_LTU),           /* bltu */
--    INSTRUCTION_FLG(gen_ldx, MO_UL),                  /* ldwio */
-+    INSTRUCTION_FLG(gen_ldx, MO_TEUL),                /* ldwio */
-     INSTRUCTION(rdprs),                               /* rdprs */
-     INSTRUCTION_ILLEGAL(),
-     INSTRUCTION_FLG(handle_r_type_instr, 0),          /* R-Type */
--- 
-2.34.1
-
+> > Either case, is there a way to specify a qemu command line that doesn't
+> > result in random assignments of the provided drive to mmc0/1/2 ?
+> > 
+> > Thanks,
+> > Guenter
+> 
 
