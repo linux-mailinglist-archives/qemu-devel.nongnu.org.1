@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AD7F73B723
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 14:26:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7759F73B72A
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 14:27:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCfoV-0006an-1C; Fri, 23 Jun 2023 08:22:55 -0400
+	id 1qCfoR-00065m-A5; Fri, 23 Jun 2023 08:22:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qCfmo-0003kZ-Q1
- for qemu-devel@nongnu.org; Fri, 23 Jun 2023 08:21:12 -0400
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ id 1qCfn3-0003pT-Nt
+ for qemu-devel@nongnu.org; Fri, 23 Jun 2023 08:21:27 -0400
+Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qCfmi-0003gr-Ma
- for qemu-devel@nongnu.org; Fri, 23 Jun 2023 08:21:08 -0400
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-3110ab7110aso620325f8f.3
+ id 1qCfmp-0003gz-V5
+ for qemu-devel@nongnu.org; Fri, 23 Jun 2023 08:21:20 -0400
+Received: by mail-lf1-x134.google.com with SMTP id
+ 2adb3069b0e04-4f4b2bc1565so725650e87.2
  for <qemu-devel@nongnu.org>; Fri, 23 Jun 2023 05:21:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1687522863; x=1690114863;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=9WUqhetdgE59J23w7OMYoxJNBVAN+y7zryiCeyC7VBI=;
- b=D73HOrWIhu2fC33oVmavdY6FdQfU+/K8O3x/sgrLpX75NeP8frQHts37plDdIVkd2r
- g2clhRovLNOt+yEWxGzMRc3O1sPT500lBJkcDbJmQ1RZkHgEC9GFYvdzhD3oKuo/efiT
- jZpDc87AlSwVEofLyIi40DYx1ZcJJKmNRX/ZFGWhb3iJ9kOPvckhl7E4+c7dxK2pp8Uz
- UexrErdhQvBOJm479WjTZOm1by+n+SQqnak5E0aDOnO0F8sqC61Z2aCSOmweBp/pWMQC
- phR91XCZODHtrImQ47Va3OdBiLPgQK51+N1PhC3lwSMQEA//nqkZahNSzq1RMCzXFPB8
- YzMg==
+ bh=FoyMsMYVxFV6o67+0YaZUwlfroq/Nmrav1p8dT4axmo=;
+ b=rkmJhJvbLfSBkC6UZiSc4YpDplSh9i5qRgkDdZtpEHreHswl0y/Er9rCKE9zGXUgUp
+ 58GgPUN0VMbZ3CQiLFzmHzwsvKQ0jevIw+tQbXJydKSXOJONbHm2PCU0nyZ2nuMy1SxF
+ PgTZLpd/m/3SRFF3BaZLtraTM8N5lfvRBpM0W8h94CXWi4vAh5CZB0ApXtLabH20j8Gt
+ 6b48w6SJQGCefb01W9njZMq5MPPn+wbscqEadXPavNC46KEnF1bQAaFV7SEQ17qk4tED
+ oGiwFuptxwAU2jIewsxkuEQ+xjW91r85fAmXz5M8P7BwHbZFsTdBQsx+L+JpyQ4dHiwQ
+ Cl4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20221208; t=1687522863; x=1690114863;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9WUqhetdgE59J23w7OMYoxJNBVAN+y7zryiCeyC7VBI=;
- b=bUnj1Dwba6QTL2CbCnxcn5xv74dzcwMHflsiXGhwN5Vc1lv2cOcevU1QxzW6sNObqb
- 5ws5ldkdAxL5O1Smk7u5WuQWAPZEj2Z3kHzcB3ttrqW5EBALmzbnAptqVbfruj08G5ci
- CwZEhITzySGefF1XKmbfKhiGUKysBsS2VpYufnDBSAUJ14fxQXJsiwG0YRMyDUDcW7I6
- NyOx+ubcf1Ndjg3hoWFdzdYLo3Rj4ki5GIxZpgPl/XB9wNcGDPxRLL7pjOz7Dr+uRBdE
- DObHceECskBijgv/T/UwlpwLS5Spls2ROcKCrNMVd8NUA7EcswBAK2t42hBcOqEVEWln
- ORKQ==
-X-Gm-Message-State: AC+VfDxMnWV4CYZy1WFitIU3oFrQrbcpI5kfSV+uG4W+9nkgRoMFTh1h
- 5+DntTnkZrYYu2DjMvULsj4VSw==
-X-Google-Smtp-Source: ACHHUZ78wHOFRDgFd8pur0oNNt9l2nIYhQ3p8/6zemG411mN/dWtSXsk60knAJha9XDMF8r9jgF4VQ==
-X-Received: by 2002:adf:f244:0:b0:309:4999:7549 with SMTP id
- b4-20020adff244000000b0030949997549mr16063793wrp.46.1687522863349; 
+ bh=FoyMsMYVxFV6o67+0YaZUwlfroq/Nmrav1p8dT4axmo=;
+ b=Phw3RFNPvTenTnSxBk77g4IT0d9vpTgt4lA+1GPIq6+xi1ZtG2g9inhQf3A0OFbWr6
+ enNiC+n0IHkTilqmwKDQMNZolG1zbUwlAZzeWs3AlpIuGAUDvdGLD4udBA0Cq3Nd7g8x
+ 9xI7agq4MvzPJYaHvidHpCeG3TzUqTK/SD74Gs83OaojKbbagvXO+7dBdFc8GSTjM1D/
+ Mh40DdyrzyTp7DxH539PfhjEiaZemASSGJITMR8ntnQ/jZLYUegqs/0PS8qKc3fhXi7V
+ bVob4wTfmrhsh7gWJLlyAA2TQ6rjBAQExQNG79l2abyOLqLzjw1wOWPbURp8EeLAg+uG
+ ROVg==
+X-Gm-Message-State: AC+VfDzHnj1JXUqOiOwxSSxv5a0N73vfta1Ws8iWlimC879lniAezDk0
+ 8VHuMQf55NO7Is/p3TxQb/rhwg==
+X-Google-Smtp-Source: ACHHUZ7VdkewIlvHyP253hy5U1IFrs25E2VQQVYSKU8iLYWpsBA+29W3Z1DXYwI2UNc4izBB2SS8FA==
+X-Received: by 2002:a19:6404:0:b0:4f8:680a:68f8 with SMTP id
+ y4-20020a196404000000b004f8680a68f8mr9713154lfb.41.1687522863762; 
  Fri, 23 Jun 2023 05:21:03 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- y16-20020adfd090000000b003110dc7f408sm9389685wrh.41.2023.06.23.05.21.01
+ d11-20020a05600c3acb00b003f7f475c3bcsm4073048wms.1.2023.06.23.05.21.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Fri, 23 Jun 2023 05:21:02 -0700 (PDT)
 Received: from zen.lan (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 1A50E1FFC0;
+ by zen.linaroharston (Postfix) with ESMTP id 3191B1FFC1;
  Fri, 23 Jun 2023 13:21:01 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -82,24 +82,24 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  Thomas Huth <thuth@redhat.com>, Beraldo Leal <bleal@redhat.com>,
  Laurent Vivier <lvivier@redhat.com>, Yanan Wang <wangyanan55@huawei.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH 05/26] tests/tcg: add mechanism to handle plugin arguments
-Date: Fri, 23 Jun 2023 13:20:39 +0100
-Message-Id: <20230623122100.1640995-6-alex.bennee@linaro.org>
+Subject: [PATCH 06/26] qemu-keymap: use modern name for Arabic keymap
+Date: Fri, 23 Jun 2023 13:20:40 +0100
+Message-Id: <20230623122100.1640995-7-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230623122100.1640995-1-alex.bennee@linaro.org>
 References: <20230623122100.1640995-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::134;
+ envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x134.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -115,51 +115,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We recently missed a regression that should have been picked up by
-check-tcg. This was because the libmem plugin is effectively a NOP if
-the user doesn't specify the type to use.
-
-Rather than changing the default behaviour add an additional expansion
-so we can take this into account in future.
+The very old compatibility alias of "ar" has been removed from more
+modern versions of keymap. Lets move with the times.
 
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- tests/tcg/Makefile.target | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ pc-bios/keymaps/meson.build | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tests/tcg/Makefile.target b/tests/tcg/Makefile.target
-index 72876cc84e..2462c26000 100644
---- a/tests/tcg/Makefile.target
-+++ b/tests/tcg/Makefile.target
-@@ -169,13 +169,17 @@ extract-plugin = $(wordlist 2, 2, $(subst -with-, ,$1))
- 
- RUN_TESTS+=$(EXTRA_RUNS)
- 
-+# Some plugins need additional arguments above the default to fully
-+# exercise things. We can define them on a per-test basis here.
-+run-plugin-%-with-libmem.so: PLUGIN_ARGS=$(COMMA)inline=true$(COMMA)callback=true
-+
- ifeq ($(filter %-softmmu, $(TARGET)),)
- run-%: %
- 	$(call run-test, $<, $(QEMU) $(QEMU_OPTS) $<)
- 
- run-plugin-%:
- 	$(call run-test, $@, $(QEMU) $(QEMU_OPTS) \
--		-plugin $(PLUGIN_LIB)/$(call extract-plugin,$@) \
-+		-plugin $(PLUGIN_LIB)/$(call extract-plugin,$@)$(PLUGIN_ARGS) \
- 		-d plugin -D $*.pout \
- 		 $(call strip-plugin,$<))
- else
-@@ -189,7 +193,7 @@ run-plugin-%:
- 	$(call run-test, $@, \
- 	  $(QEMU) -monitor none -display none \
- 		  -chardev file$(COMMA)path=$@.out$(COMMA)id=output \
--	   	  -plugin $(PLUGIN_LIB)/$(call extract-plugin,$@) \
-+	   	  -plugin $(PLUGIN_LIB)/$(call extract-plugin,$@)$(PLUGIN_ARGS) \
- 	    	  -d plugin -D $*.pout \
- 		  $(QEMU_OPTS) $(call strip-plugin,$<))
- endif
+diff --git a/pc-bios/keymaps/meson.build b/pc-bios/keymaps/meson.build
+index bff3083313..0bd8ce0077 100644
+--- a/pc-bios/keymaps/meson.build
++++ b/pc-bios/keymaps/meson.build
+@@ -1,5 +1,5 @@
+ keymaps = {
+-  'ar': '-l ar',
++  'ar': '-l ara',
+   'bepo': '-l fr -v dvorak',
+   'cz': '-l cz',
+   'da': '-l dk',
 -- 
 2.39.2
 
