@@ -2,64 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83C3173BB3D
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 17:12:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 328AA73BB5D
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 17:15:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCiQl-0003sh-AO; Fri, 23 Jun 2023 11:10:35 -0400
+	id 1qCiUQ-00066R-Gk; Fri, 23 Jun 2023 11:14:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qCiQj-0003rX-IX
- for qemu-devel@nongnu.org; Fri, 23 Jun 2023 11:10:33 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qCiUP-00062O-0v
+ for qemu-devel@nongnu.org; Fri, 23 Jun 2023 11:14:21 -0400
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qCiQi-0001xd-0D
- for qemu-devel@nongnu.org; Fri, 23 Jun 2023 11:10:33 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-3fa23c3e618so9603745e9.0
- for <qemu-devel@nongnu.org>; Fri, 23 Jun 2023 08:10:30 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qCiUN-00035c-14
+ for qemu-devel@nongnu.org; Fri, 23 Jun 2023 11:14:20 -0400
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-3f9c532fa45so8588675e9.2
+ for <qemu-devel@nongnu.org>; Fri, 23 Jun 2023 08:14:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687533029; x=1690125029;
+ d=linaro.org; s=google; t=1687533256; x=1690125256;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=P+Os7HA8ehxWwLwi/8yftirexa2vFomcZEFJ7Dyfx9I=;
- b=q09nR9gFP/N+6BA4yzW3d4H5b8c4iMv4sa4tO/b8t2mYRtS1msUUWO7OzpsJ8joOyU
- DuM+cxBkix0MVGdJ5y2e0C7T99z8cAtiZBY2ljPnXLLMtnb8t+Z8vcmT39VwF8CWNUfV
- 16vmy8z/83MlHJqMgHF09Wd2YMzyzZywbdIUMt+0FayihoiiUAy3VjxTAmYBpmSwYYH0
- y+vQuJFnwz4m2cP3T42QjB7/U/SEP3h95DOuABlXqOLNrlhp5+c4LqhUYDaEOWzCF7dT
- hHoGELQnzm43B/afT5npl8dPNb6+61YuI+qBGCSad25ysXdQiEbZSs1xre5z7Luf9WP7
- A3kw==
+ bh=fnnKEbUvj74y6swt1Yen5ynIV0kpGjzEKPfjFjq0Wh8=;
+ b=k/rjukvsLyYNZDYRZmqpjkibMcZK5loRr4qfUGqJJfcVivIw9OelHpuBRHyIhkZEW7
+ S9QscsGXp9eFAhLtH4CSpSwskf0NgzK3/ARnYVPVsZ3VqAprjF6TOrvpgVjpxby+FS03
+ kX1hgTowCMXS88QhG28zeyhn6LXmpVQ1ExQmnyZ4g/ncPacgG405Bv54glCJsR8ercDK
+ ln1hWXAHTDq+kComd9dKyiEkRqOKBZap8jAVet6PYncRtpnLzL4SXKIC/iKE5A1bctSF
+ L1Rx6Wrs1q1NsDD+zvG7lIQtxwHiDJouLgm7FZcfehqHGJnD5oDl1bDr2eFU9Exxoi+s
+ jWTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687533029; x=1690125029;
+ d=1e100.net; s=20221208; t=1687533256; x=1690125256;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=P+Os7HA8ehxWwLwi/8yftirexa2vFomcZEFJ7Dyfx9I=;
- b=HJtVQ91RUXEc42u7Xt8wdY4oXNgW3wImb28Eqn4ATu2+nFRs7xF/zNhdtKiMFYnxP2
- WQUgpMg5ofFFor2SJWPqsQV4n4cA+82K/fUdnl3bNsjgvjRUMCakpeBsgou6McJuqQBS
- AHJ3JhnPaTzusKdVFu6eYInXJC9lGrd+QXedgxSSXMGo1dLiESD5IpQiDGLP5b5JriGJ
- DKzLiWauNAt3tI+k1N/wXQ5Ij028KSLmxwIINdxBuAUIxALxd/+0L+8x2NfijmtFz2Od
- El2+VUzUmZlALg0DnUHoMjTYIiPSIqrlnoAlA4anEAEhl2ITFCgZaJkyhAGsSDTIdh26
- yPQg==
-X-Gm-Message-State: AC+VfDyXxSu3uEtkdZrd8YbpfqNn34Himbz2lX+3cCtfo0cFaRymaKWN
- fDXi3U/jP26pVpofJq4Pg0cQ3Q==
-X-Google-Smtp-Source: ACHHUZ4xySbNfdymxvCDpIMdVlSZhWDsKl2WKfDMeJFHcE/1iBhPaHavMX79I+gVSWIy2/FKhYP9WQ==
-X-Received: by 2002:adf:f601:0:b0:30c:2bbf:bf8b with SMTP id
- t1-20020adff601000000b0030c2bbfbf8bmr17718908wrp.69.1687533029106; 
- Fri, 23 Jun 2023 08:10:29 -0700 (PDT)
+ bh=fnnKEbUvj74y6swt1Yen5ynIV0kpGjzEKPfjFjq0Wh8=;
+ b=jg5jOFEqh10KCmoDIQbJAb4kBme8GZDDMh8mN6ZuopIhmp4kxogFuUjm49HWoRf9pJ
+ s0evTYPwk+CQCMVhT+bUJ5Uwq/Q3DLFGjCyQghj5FoeG2mYgEjzdKsYCaRk5yIpdfRTs
+ 1FRCq4FkZkZ7l/p/79YwjStBFRG1h+7bHAU2SUkMiMWZUTbL9Xf4ZKWhVSXC2bSOHdyd
+ sMA2wTSeyWzSEp/pvPK0aC30ZRagJZSYKP8kYL7e5aN1+YlNYkFYiM/dYoAV0QgJjfH9
+ apLtovnKwvKx0veGz2M97TRt8JWqpZ/5w2nbh+7CsSyQw+28ltKWvm60PEib40s0EHUN
+ UPhQ==
+X-Gm-Message-State: AC+VfDyK9QNpewv7Sngc1f7v59zm97frD7m3CSCXXs3x1/Ib92NZPX8L
+ WDl6X5a+EPFuHog6f1zD0Mdf9g==
+X-Google-Smtp-Source: ACHHUZ4qreyV1AcIE3FHgVDqR7ryKxuELlgnep9l/AqSEERbTkINCRebEkpcqvT4QfBqWWkNlzHB7Q==
+X-Received: by 2002:a1c:cc15:0:b0:3f9:bf0f:1cf5 with SMTP id
+ h21-20020a1ccc15000000b003f9bf0f1cf5mr5812632wmb.20.1687533256577; 
+ Fri, 23 Jun 2023 08:14:16 -0700 (PDT)
 Received: from [192.168.93.175] (94.red-88-29-173.dynamicip.rima-tde.net.
  [88.29.173.94]) by smtp.gmail.com with ESMTPSA id
- m4-20020a5d56c4000000b003078354f774sm9747696wrw.36.2023.06.23.08.10.25
+ u2-20020a5d5142000000b003113dc327fbsm9788630wrt.22.2023.06.23.08.14.12
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 23 Jun 2023 08:10:28 -0700 (PDT)
-Message-ID: <f93d8ea7-ddf8-fa90-2fc8-d37ed27cde21@linaro.org>
-Date: Fri, 23 Jun 2023 17:10:24 +0200
+ Fri, 23 Jun 2023 08:14:16 -0700 (PDT)
+Message-ID: <93fb759a-e66d-cf2b-984c-59cb3e074bd5@linaro.org>
+Date: Fri, 23 Jun 2023 17:14:11 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.12.0
-Subject: Re: [PATCH 11/26] Makefile: add lcitool-refresh to UNCHECKED_GOALS
+Subject: Re: [PATCH 17/26] tests/avocado: update firmware to enable
+ sbsa-ref/max
 Content-Language: en-US
 To: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
  qemu-devel@nongnu.org
@@ -82,13 +83,13 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  Beraldo Leal <bleal@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
  Yanan Wang <wangyanan55@huawei.com>
 References: <20230623122100.1640995-1-alex.bennee@linaro.org>
- <20230623122100.1640995-12-alex.bennee@linaro.org>
+ <20230623122100.1640995-18-alex.bennee@linaro.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230623122100.1640995-12-alex.bennee@linaro.org>
+In-Reply-To: <20230623122100.1640995-18-alex.bennee@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -112,15 +113,32 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 23/6/23 14:20, Alex Bennée wrote:
-> This is yet another make target you usually run in the top level of
-> the source directory.
+> From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
 > 
+> Update prebuilt firmware images to have TF-A with FEAT_FGT support
+> enabled. This allowed us to enable test for "max" cpu in sbsa-ref
+> machine.
+> 
+> Signed-off-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+> Message-Id: <20230530152240.79160-1-marcin.juszkiewicz@linaro.org>
 > Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 > ---
->   Makefile | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+>   tests/avocado/machine_aarch64_sbsaref.py | 22 +++++++++++-----------
+>   1 file changed, 11 insertions(+), 11 deletions(-)
 
+
+> @@ -150,7 +150,7 @@ def test_sbsaref_alpine_linux_neoverse_n1(self):
+>           """
+>           self.boot_alpine_linux("neoverse-n1")
+>   
+> -    @skip("requires TF-A update to handle FEAT_FGT")
+> +    @skipUnless(os.getenv("AVOCADO_TIMEOUT_EXPECTED"), "Test might timeout")
+
+Same comment as v1, we can remove the @skip* tags.
+
+Similarly to v1:
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-
+v1: 
+https://lore.kernel.org/qemu-devel/579fb938-dc8a-5f85-143f-644ba1f1db40@linaro.org/
 
