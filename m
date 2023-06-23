@@ -2,78 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E707773AF31
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 05:54:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E56C73B00B
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 07:28:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCXrU-0007ZJ-3s; Thu, 22 Jun 2023 23:53:28 -0400
+	id 1qCZJV-000396-H8; Fri, 23 Jun 2023 01:26:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qCXrR-0007Ys-RC; Thu, 22 Jun 2023 23:53:25 -0400
-Received: from mail-oi1-x22e.google.com ([2607:f8b0:4864:20::22e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qCXrQ-0008S2-0T; Thu, 22 Jun 2023 23:53:25 -0400
-Received: by mail-oi1-x22e.google.com with SMTP id
- 5614622812f47-39ecbb4c7d3so139698b6e.3; 
- Thu, 22 Jun 2023 20:53:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1687492402; x=1690084402;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=OhW3E3xWssrafYu/bX32cQW035/oY7yen0wmLDyc/ks=;
- b=Uc/ON+k4gZWQYdtmKtVmufwp1pvjbh86vs0iIdvgLla4msto8VYI6BCigWy/MfrnF6
- w/fGXuLgSzhLJ+WzO4AJnYcJWlvVUqvJbzJvOSsGULMV0MxMcOGivgehSbFh8QhdBR7x
- R5NO3bsW5IEHc7myyJSeKeXwYXp4cTmKWMJk8+keJagdDCVYUFBpHE+sSmF191mxRHkE
- ZsZYBb2qAS4gBDe6urr6+Sf7iTkeH0vP8nCRj7VZ/4AJsfc/T/ZkYxFOUUvaTI9kQgBv
- zsIo9vh0KgSgg6hqX1WdcyEDRJPe3pNRFmeP81KBf0QAJlO++VyzGJH//S0r6HumudKM
- wT9g==
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qCZJQ-00038s-3N
+ for qemu-devel@nongnu.org; Fri, 23 Jun 2023 01:26:24 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qCZJN-00068u-LZ
+ for qemu-devel@nongnu.org; Fri, 23 Jun 2023 01:26:23 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1687497980;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=/zs6aKIeDTArWOwk/nyP2xiuTpCNHXs3iqk59HLf9Vs=;
+ b=hzH6+aaJ3CJ/KZcuv48mbjmiDFDefWORr0Pm+J5VLqf+EKo18/q3wbCsmimQgfMcjVpoMy
+ Ak08HGJXtASltwz7fibgN47dUQqdTvhbguhWUerDa8qAxbMnXXs0jx6tUh33m0ruTm5S5k
+ mbcS83J5mt0hNNzlSbyRnMVKFTDMM7o=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-365-LNTmW4wOPsW_8D4ozY5Ucg-1; Fri, 23 Jun 2023 01:26:15 -0400
+X-MC-Unique: LNTmW4wOPsW_8D4ozY5Ucg-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-3fa7b245a75so1431545e9.0
+ for <qemu-devel@nongnu.org>; Thu, 22 Jun 2023 22:26:14 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687492402; x=1690084402;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=OhW3E3xWssrafYu/bX32cQW035/oY7yen0wmLDyc/ks=;
- b=TszyiTy/cI0mmYaG3AqMrLm9Ai8UT8v60/VP/TnCFFsFFMt8sO8dd9pz+RhBbeeODz
- 8LgaKZx1uUuoguubTamtBXcN/GPrsxLyGgef60RQh54ipIFcNG9DRXyuBhqKNLmEUdeq
- jnzr5D8UCxa+mCtM9JyRvTP32xshs2fB5h58JaoCXvg8l672MjJBGpvuzMmged4VEtz+
- NQ6/Umi+uSh8jMFA//QgRFADnGP35x9RqhfMOkWWgcJqzbrYtkym716WVm8qIhsiJDm4
- qUx1/z70vELc2ehdmwTXGbiioiOvvbq/WuCOtLOc6OaxwlBM6+O5SpMQlKsCurmhQ//7
- tcnQ==
-X-Gm-Message-State: AC+VfDyIlsFyeIBT3JCeZFDvk3pAOXxMl3AFTtZMAylBs6gsLknz5AQ8
- XL2ieG+hhQnaSwcYawmanTNaqwLwaOw=
-X-Google-Smtp-Source: ACHHUZ6X1dphZSbOwolh9gPeBAR/167ZoVO3GacvbVqBl7EyVrk1dskJfnCCWBjT1Oj6hecY1np0fA==
-X-Received: by 2002:a05:6808:3009:b0:398:5d57:3d08 with SMTP id
- ay9-20020a056808300900b003985d573d08mr24004774oib.37.1687492401952; 
- Thu, 22 Jun 2023 20:53:21 -0700 (PDT)
-Received: from wheely.local0.net (193-116-203-37.tpgi.com.au. [193.116.203.37])
- by smtp.gmail.com with ESMTPSA id
- 4-20020a170902ee4400b001b531e8a000sm6090192plo.157.2023.06.22.20.53.18
+ d=1e100.net; s=20221208; t=1687497973; x=1690089973;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=/zs6aKIeDTArWOwk/nyP2xiuTpCNHXs3iqk59HLf9Vs=;
+ b=Wsq5YxGy8esbSY4Fvn4YzcbUDuEb41Y3msVfzvGH0nnT8Elc7qKCkqp1uaqBzdBwOv
+ 4T4PSYRNJv3JFbYffHABqYlAQDyQ0JHClKE7487D/DvQe5/dXDAa1QVLGiqaV//tn/jF
+ cJNq+Q+ZBEqSzd7u8/iPo/uiFIqsOLrJfJlWDaEDQ/2mextsYCjD8RF2hYtktiGAADv3
+ /0tspxRRDtyVfZkU15LhYxnPwcSyt6Q98Zut3QpCXSeM13YajJgsY+nc6piUbRNQkEMy
+ YnOCPcyDzzNhBzuHJXLEvejcjG1esf9qwLHMtBLHTqGWBMpX0y9Ir5ZM8EuDYLQO1TAu
+ lMcA==
+X-Gm-Message-State: AC+VfDxwfkyIcuFPVnYk6qvmN9fzGdJrpZjHtRdFKWjpQ4F1BGcOJ92X
+ gQ8VQaZ88WntDXZgPWKXPfwk7wq8fvjQ33vJeZz6BkARJbYECYKyRmBhww9C7DcmC5EWzWQ9KZ1
+ mL1J9HpsFoYwd7MHzhU6ePz8=
+X-Received: by 2002:a05:600c:4fd2:b0:3f9:b5bb:d762 with SMTP id
+ o18-20020a05600c4fd200b003f9b5bbd762mr9936014wmq.9.1687497973608; 
+ Thu, 22 Jun 2023 22:26:13 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4fYaHejDAVCLK0dXJEtZNSTRdE6W5q7exYJOjrX9UW4bQ/6y//+eOYwyPWA84EsNadjtq9Mw==
+X-Received: by 2002:a05:600c:4fd2:b0:3f9:b5bb:d762 with SMTP id
+ o18-20020a05600c4fd200b003f9b5bbd762mr9936003wmq.9.1687497973344; 
+ Thu, 22 Jun 2023 22:26:13 -0700 (PDT)
+Received: from redhat.com ([2.52.149.110]) by smtp.gmail.com with ESMTPSA id
+ b14-20020a5d45ce000000b0031118d80246sm8567502wrs.29.2023.06.22.22.26.11
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 22 Jun 2023 20:53:21 -0700 (PDT)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-stable@nongnu.org,
- Matheus Tavares Bernardino <quic_mathbern@quicinc.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Taylor Simpson <tsimpson@quicinc.com>
-Subject: [PATCH] gdbstub: Permit reverse step/break to provide stop response
-Date: Fri, 23 Jun 2023 13:53:04 +1000
-Message-Id: <20230623035304.279833-1-npiggin@gmail.com>
-X-Mailer: git-send-email 2.40.1
+ Thu, 22 Jun 2023 22:26:12 -0700 (PDT)
+Date: Fri, 23 Jun 2023 01:26:09 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Michael Tokarev <mjt@tls.msk.ru>
+Cc: Laurent Vivier <lvivier@redhat.com>, qemu-devel@nongnu.org,
+ longpeng2@huawei.com
+Subject: Re: [PATCH] vhost: fix vhost_dev_enable_notifiers() error case
+Message-ID: <20230623012555-mutt-send-email-mst@kernel.org>
+References: <20230602162735.3670785-1-lvivier@redhat.com>
+ <89b6ba60-8744-bda5-0dfa-b653d7b3ca62@tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::22e;
- envelope-from=npiggin@gmail.com; helo=mail-oi1-x22e.google.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <89b6ba60-8744-bda5-0dfa-b653d7b3ca62@tls.msk.ru>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -90,38 +97,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The final part of the reverse step and break handling is to bring
-the machine back to a debug stop state. gdb expects a response.
+On Wed, Jun 07, 2023 at 12:32:31PM +0300, Michael Tokarev wrote:
+> 02.06.2023 19:27, Laurent Vivier wrote:
+> > in vhost_dev_enable_notifiers(), if virtio_bus_set_host_notifier(true)
+> > fails, we call vhost_dev_disable_notifiers() that executes
+> > virtio_bus_set_host_notifier(false) on all queues, even on queues that
+> > have failed to be initialized.
+> > 
+> > This triggers a core dump in memory_region_del_eventfd():
+> > 
+> >   virtio_bus_set_host_notifier: unable to init event notifier: Too many open files (-24)
+> >   vhost VQ 1 notifier binding failed: 24
+> >   .../softmmu/memory.c:2611: memory_region_del_eventfd: Assertion `i != mr->ioeventfd_nb' failed.
+> > 
+> > Fix the problem by providing to vhost_dev_disable_notifiers() the
+> > number of queues to disable.
+> > 
+> > Fixes: 8771589b6f81 ("vhost: simplify vhost_dev_enable_notifiers")
+> > Cc: longpeng2@huawei.com
+> > Signed-off-by: Laurent Vivier <lvivier@redhat.com>
+> > ---
+> >   hw/virtio/vhost.c | 65 ++++++++++++++++++++++++++---------------------
+> >   1 file changed, 36 insertions(+), 29 deletions(-)
+> 
+> Is this one a candidate for -stable?
+> 
+> The diffstat is somewhat large but it is just moving bit of code around.
 
-A gdb 'rsi' command hangs forever because the gdbstub filters out
-the response (also observable with reverse_debugging.py avocado
-tests).
+I'd say so, yes.
 
-Fix by setting allow_stop_reply for the gdb backward packets.
-
-Fixes: 758370052fb ("gdbstub: only send stop-reply packets when allowed to")
-Cc: qemu-stable@nongnu.org
-Cc: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
-Cc: Alex Bennée <alex.bennee@linaro.org>
-Cc: Taylor Simpson <tsimpson@quicinc.com>
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- gdbstub/gdbstub.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
-index be18568d0a..9496d7b175 100644
---- a/gdbstub/gdbstub.c
-+++ b/gdbstub/gdbstub.c
-@@ -1814,6 +1814,7 @@ static int gdb_handle_packet(const char *line_buf)
-                 .handler = handle_backward,
-                 .cmd = "b",
-                 .cmd_startswith = 1,
-+                .allow_stop_reply = true,
-                 .schema = "o0"
-             };
-             cmd_parser = &backward_cmd_desc;
--- 
-2.40.1
+> Thanks,
+> 
+> /mjt
 
 
