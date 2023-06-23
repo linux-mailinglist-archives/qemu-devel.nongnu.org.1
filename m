@@ -2,49 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6432273B80E
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 14:49:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BC3E73B809
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 14:48:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCgDv-0002Cl-6w; Fri, 23 Jun 2023 08:49:11 -0400
+	id 1qCgB5-0001VZ-R3; Fri, 23 Jun 2023 08:46:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <ea0958236cbc4763f42acb8f295bf389a7f06920@lizzy.crudebyte.com>)
- id 1qCgDd-00021X-Ju
- for qemu-devel@nongnu.org; Fri, 23 Jun 2023 08:48:55 -0400
-Received: from lizzy.crudebyte.com ([91.194.90.13])
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qCgAx-0001PU-Bb
+ for qemu-devel@nongnu.org; Fri, 23 Jun 2023 08:46:07 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <ea0958236cbc4763f42acb8f295bf389a7f06920@lizzy.crudebyte.com>)
- id 1qCgDa-00015f-9V
- for qemu-devel@nongnu.org; Fri, 23 Jun 2023 08:48:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=crudebyte.com; s=lizzy; h=Message-Id:Cc:To:Subject:Date:From:Content-Type:
- Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Content-ID:
- Content-Description; bh=JoW3LFALrxSY5HRyJSzGsbhFlsT8nZEDiGJfiZEMXPU=; b=UmsVW
- dnYHvNviRPFr0G9RfO6D/s1ozTnfxJDQHB8xw1SM0q31FhA0VvIiFMYQrwQYs25m4nfSW0B8pOzR4
- RsZC4QZbWhPaNwj1zKsEUcaPVnHl5/EPOsxcpJWiS/vPEU8HkXWQDx3EBDa9LeyK0NX6/Ye20gzq+
- iLXN1LjHsjw8AJOCE+Tby/3EymIhIW0G+0QxQczfQ1AsUfuWrNDGFAmwCRhCFwelh5wJmTBMynT6k
- sDbwYD7afrLmpkYP1Dw1f6OdxlHWWHRIDPsredviK2EuvO3RryUC0CC3ZVvsectWW2IYFW/tuyD9W
- vPoGcGeayr+avLsY7Jg10++28QU+A==;
-From: Christian Schoenebeck <qemu_oss@crudebyte.com>
-Date: Fri, 23 Jun 2023 14:41:15 +0200
-Subject: [PATCH v4] 9pfs: deprecate 'proxy' backend
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qCgAv-0000k8-0e
+ for qemu-devel@nongnu.org; Fri, 23 Jun 2023 08:46:07 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1687524364;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=wAfqK7I+lleT5UMiePeQ4lUaY72HL9BjLt/aG0lNx6U=;
+ b=I37XgC1lapj6m20xfnw+yIgiA8U4hDvy6/FECtZpL4k+qnL9v4ANIqS6OqpcpcM2x1K8H+
+ RHUQdgtGlKGhnibqMP5rzBccTOZ7FtWeCPyhjHiAxFOfG8pS/nHDvsg4mtBaWE2m6SNYtg
+ +ffWoUe1zZfopsUHd6N+FkY60JG45Zs=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-135-Ra25uf2zNLGwsDy8-SNZZQ-1; Fri, 23 Jun 2023 08:45:59 -0400
+X-MC-Unique: Ra25uf2zNLGwsDy8-SNZZQ-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8AD018CC201;
+ Fri, 23 Jun 2023 12:45:58 +0000 (UTC)
+Received: from t480s.redhat.com (unknown [10.22.32.17])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 65D1F1121314;
+ Fri, 23 Jun 2023 12:45:54 +0000 (UTC)
+From: David Hildenbrand <david@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Greg Kurz <groug@kaod.org>,
-    "Daniel P. Berrangé" <berrange@redhat.com>
-Message-Id: <E1qCgCZ-0001Yf-KB@lizzy.crudebyte.com>
-Received-SPF: none client-ip=91.194.90.13;
- envelope-from=ea0958236cbc4763f42acb8f295bf389a7f06920@lizzy.crudebyte.com;
- helo=lizzy.crudebyte.com
+Cc: qemu-arm@nongnu.org, qemu-ppc@nongnu.org,
+ Igor Mammedov <imammedo@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Xiao Guangrong <xiaoguangrong.eric@gmail.com>,
+ David Hildenbrand <david@redhat.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Eduardo Habkost <eduardo@habkost.net>, Greg Kurz <groug@kaod.org>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Song Gao <gaosong@loongson.cn>, Xiaojuan Yang <yangxiaojuan@loongson.cn>
+Subject: [PATCH v4 00/10] memory-device: Some cleanups
+Date: Fri, 23 Jun 2023 14:45:43 +0200
+Message-Id: <20230623124553.400585-1-david@redhat.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -60,227 +88,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-As recent CVE-2023-2861 once again showed, the 9p 'proxy' fs driver is in
-bad shape. Using the 'proxy' backend was already discouraged for safety
-reasons before and we recommended to use the 'local' backend (preferably
-in conjunction with its 'mapped' security model) instead, but now it is
-time to officially deprecate the 'proxy' backend.
+Essentially a resend with ACKs/RBs. If I don't get any more comments
+I'll queue this to my mem-next tree next week.
 
-Signed-off-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
----
- v3 -> v4:
- - MAINTAINERS: also move virtfs-proxy-helper.rst to 'obsolete' section
- - deprecated.rst: suggest virtiofsd as alternative.
- - deprecated.rst: mention a considerable future reimplementation of
-   'proxy' using 'vhost'.
- - QEMU runtime warning: merge deprecation warnings of '-virtfs proxy' and
-   '-fsdev proxy' into a single deprecation warning and mention virtiofsd
-   as alternative.
- - virtfs-proxy-helper daemon: print runtime deprecation warning here as
-   well.
- - commit log: mention 'mapped' security model.
 
- MAINTAINERS                        |  9 ++++++++-
- docs/about/deprecated.rst          | 23 +++++++++++++++++++++++
- docs/tools/virtfs-proxy-helper.rst |  3 +++
- fsdev/qemu-fsdev.c                 |  8 ++++++++
- fsdev/virtfs-proxy-helper.c        |  9 +++++++++
- hw/9pfs/9p-proxy.c                 |  5 +++++
- hw/9pfs/9p-proxy.h                 |  5 +++++
- meson.build                        |  2 +-
- qemu-options.hx                    |  6 +++++-
- 9 files changed, 67 insertions(+), 3 deletions(-)
+Working on adding multi-memslot support for virtio-mem (teaching memory
+device code about memory devices that can consume multiple memslots), I
+have some preparatory cleanups in my queue that make sense independent of
+the actual memory-device/virtio-mem extensions.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 436b3f0afe..3aa70b5c21 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -2118,13 +2118,20 @@ S: Odd Fixes
- W: https://wiki.qemu.org/Documentation/9p
- F: hw/9pfs/
- X: hw/9pfs/xen-9p*
-+X: hw/9pfs/9p-proxy*
- F: fsdev/
--F: docs/tools/virtfs-proxy-helper.rst
-+X: fsdev/virtfs-proxy-helper.c
- F: tests/qtest/virtio-9p-test.c
- F: tests/qtest/libqos/virtio-9p*
- T: git https://gitlab.com/gkurz/qemu.git 9p-next
- T: git https://github.com/cschoenebeck/qemu.git 9p.next
- 
-+virtio-9p-proxy
-+F: hw/9pfs/9p-proxy*
-+F: fsdev/virtfs-proxy-helper.c
-+F: docs/tools/virtfs-proxy-helper.rst
-+S: Obsolete
-+
- virtio-blk
- M: Stefan Hajnoczi <stefanha@redhat.com>
- L: qemu-block@nongnu.org
-diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-index 0743459862..4ce75722f3 100644
---- a/docs/about/deprecated.rst
-+++ b/docs/about/deprecated.rst
-@@ -343,6 +343,29 @@ the addition of volatile memory support, it is now necessary to distinguish
- between persistent and volatile memory backends.  As such, memdev is deprecated
- in favor of persistent-memdev.
- 
-+``-fsdev proxy`` and ``-virtfs proxy`` (since 8.1)
-+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-+
-+The 9p ``proxy`` filesystem backend driver has been deprecated and will be
-+removed (along with its proxy helper daemon) in a future version of QEMU. Please
-+use ``-fsdev local`` or ``-virtfs local`` for using the 9p ``local`` filesystem
-+backend instead, or alternatively consider deploying virtiofsd instead.
-+
-+The 9p ``proxy`` backend was originally developed as an alternative to the 9p
-+``local`` backend. The idea was to enhance security by dispatching actual low
-+level filesystem operations from 9p server (QEMU process) over to a separate
-+process (the virtfs-proxy-helper binary). However this alternative never gained
-+momentum. The proxy backend is much slower than the local backend, hasn't seen
-+any development in years, and showed to be less secure, especially due to the
-+fact that its helper daemon must be run as root, whereas with the local backend
-+QEMU is typically run as unprivileged user and allows to tighten behaviour by
-+mapping permissions et al by using its 'mapped' security model option.
-+
-+Nowadays it would make sense to reimplement the ``proxy`` backend by using
-+QEMU's ``vhost`` feature, which would eliminate the high latency costs under
-+which the 9p ``proxy`` backend currently suffers. However as of to date nobody
-+has indicated plans for such kind of reimplemention unfortunately.
-+
- 
- Block device options
- ''''''''''''''''''''
-diff --git a/docs/tools/virtfs-proxy-helper.rst b/docs/tools/virtfs-proxy-helper.rst
-index 6cdeedf8e9..bd310ebb07 100644
---- a/docs/tools/virtfs-proxy-helper.rst
-+++ b/docs/tools/virtfs-proxy-helper.rst
-@@ -9,6 +9,9 @@ Synopsis
- Description
- -----------
- 
-+NOTE: The 9p 'proxy' backend is deprecated (since QEMU 8.1) and will be
-+removed, along with this daemon, in a future version of QEMU!
-+
- Pass-through security model in QEMU 9p server needs root privilege to do
- few file operations (like chown, chmod to any mode/uid:gid).  There are two
- issues in pass-through security model:
-diff --git a/fsdev/qemu-fsdev.c b/fsdev/qemu-fsdev.c
-index 3da64e9f72..9a50ee370b 100644
---- a/fsdev/qemu-fsdev.c
-+++ b/fsdev/qemu-fsdev.c
-@@ -133,6 +133,14 @@ int qemu_fsdev_add(QemuOpts *opts, Error **errp)
-     }
- 
-     if (fsdriver) {
-+        if (strncmp(fsdriver, "proxy", 5) == 0) {
-+            warn_report(
-+                "'-fsdev proxy' and '-virtfs proxy' are deprecated, use "
-+                "'local' instead of 'proxy, or consider deploying virtiofsd "
-+                "instead"
-+            );
-+        }
-+
-         for (i = 0; i < ARRAY_SIZE(FsDrivers); i++) {
-             if (strcmp(FsDrivers[i].name, fsdriver) == 0) {
-                 break;
-diff --git a/fsdev/virtfs-proxy-helper.c b/fsdev/virtfs-proxy-helper.c
-index d9511f429c..144aaf585a 100644
---- a/fsdev/virtfs-proxy-helper.c
-+++ b/fsdev/virtfs-proxy-helper.c
-@@ -9,6 +9,11 @@
-  * the COPYING file in the top-level directory.
-  */
- 
-+/*
-+ * NOTE: The 9p 'proxy' backend is deprecated (since QEMU 8.1) and will be
-+ * removed in a future version of QEMU!
-+ */
-+
- #include "qemu/osdep.h"
- #include <glib/gstdio.h>
- #include <sys/resource.h>
-@@ -1057,6 +1062,10 @@ int main(int argc, char **argv)
-     struct statfs st_fs;
- #endif
- 
-+    fprintf(stderr, "NOTE: The 9p 'proxy' backend is deprecated (since "
-+                    "QEMU 8.1) and will be removed in a future version of "
-+                    "QEMU!\n");
-+
-     prog_name = g_path_get_basename(argv[0]);
- 
-     is_daemon = true;
-diff --git a/hw/9pfs/9p-proxy.c b/hw/9pfs/9p-proxy.c
-index 99d115ff0d..905cae6992 100644
---- a/hw/9pfs/9p-proxy.c
-+++ b/hw/9pfs/9p-proxy.c
-@@ -15,6 +15,11 @@
-  * https://wiki.qemu.org/Documentation/9p
-  */
- 
-+/*
-+ * NOTE: The 9p 'proxy' backend is deprecated (since QEMU 8.1) and will be
-+ * removed in a future version of QEMU!
-+ */
-+
- #include "qemu/osdep.h"
- #include <sys/socket.h>
- #include <sys/un.h>
-diff --git a/hw/9pfs/9p-proxy.h b/hw/9pfs/9p-proxy.h
-index b84301d001..9be4718d3e 100644
---- a/hw/9pfs/9p-proxy.h
-+++ b/hw/9pfs/9p-proxy.h
-@@ -10,6 +10,11 @@
-  * the COPYING file in the top-level directory.
-  */
- 
-+/*
-+ * NOTE: The 9p 'proxy' backend is deprecated (since QEMU 8.1) and will be
-+ * removed in a future version of QEMU!
-+ */
-+
- #ifndef QEMU_9P_PROXY_H
- #define QEMU_9P_PROXY_H
- 
-diff --git a/meson.build b/meson.build
-index 34306a6205..05c01b72bb 100644
---- a/meson.build
-+++ b/meson.build
-@@ -4170,7 +4170,7 @@ if have_block
-   summary_info += {'Block whitelist (ro)': get_option('block_drv_ro_whitelist')}
-   summary_info += {'Use block whitelist in tools': get_option('block_drv_whitelist_in_tools')}
-   summary_info += {'VirtFS (9P) support':    have_virtfs}
--  summary_info += {'VirtFS (9P) Proxy Helper support': have_virtfs_proxy_helper}
-+  summary_info += {'VirtFS (9P) Proxy Helper support (deprecated)': have_virtfs_proxy_helper}
-   summary_info += {'Live block migration': config_host_data.get('CONFIG_LIVE_BLOCK_MIGRATION')}
-   summary_info += {'replication support': config_host_data.get('CONFIG_REPLICATION')}
-   summary_info += {'bochs support':     get_option('bochs').allowed()}
-diff --git a/qemu-options.hx b/qemu-options.hx
-index b57489d7ca..3a6c7d3ef9 100644
---- a/qemu-options.hx
-+++ b/qemu-options.hx
-@@ -1735,7 +1735,9 @@ SRST
-         Accesses to the filesystem are done by QEMU.
- 
-     ``proxy``
--        Accesses to the filesystem are done by virtfs-proxy-helper(1).
-+        Accesses to the filesystem are done by virtfs-proxy-helper(1). This
-+        option is deprecated (since QEMU 8.1) and will be removed in a future
-+        version of QEMU. Use ``local`` instead.
- 
-     ``synth``
-         Synthetic filesystem, only used by QTests.
-@@ -1867,6 +1869,8 @@ SRST
- 
-     ``proxy``
-         Accesses to the filesystem are done by virtfs-proxy-helper(1).
-+        This option is deprecated (since QEMU 8.1) and will be removed in a
-+        future version of QEMU. Use ``local`` instead.
- 
-     ``synth``
-         Synthetic filesystem, only used by QTests.
+v3 -> v4:
+- Added RBs and ACKs
+
+v2 -> v3:
+- "memory-device: Introduce machine_memory_devices_init()"
+-- Declare the function in hw/boards.h
+- "hw/loongarch/virt: Use machine_memory_devices_init()"
+-- Use VIRT_HIGHMEM_BASE
+-- No need to include memory-device.h
+- "hw/i386/pc: Remove PC_MACHINE_DEVMEM_REGION_SIZ"
+-- Add more details why it's ok to the patch description
+- Adjust to memory_devices_init() -> machine_memory_devices_init()
+- Add RBs
+
+v1 -> v2:
+- Allocate ms->device_memory only if the size > 0.
+- Split it up and include more cleanups
+
+David Hildenbrand (10):
+  memory-device: Unify enabled vs. supported error messages
+  memory-device: Introduce machine_memory_devices_init()
+  hw/arm/virt: Use machine_memory_devices_init()
+  hw/ppc/spapr: Use machine_memory_devices_init()
+  hw/loongarch/virt: Use machine_memory_devices_init()
+  hw/i386/pc: Use machine_memory_devices_init()
+  hw/i386/acpi-build: Rely on machine->device_memory when building SRAT
+  hw/i386/pc: Remove PC_MACHINE_DEVMEM_REGION_SIZE
+  memory-device: Refactor memory_device_pre_plug()
+  memory-device: Track used region size in DeviceMemoryState
+
+ hw/arm/virt.c          |  9 +-----
+ hw/i386/acpi-build.c   |  9 ++----
+ hw/i386/pc.c           | 36 +++-------------------
+ hw/loongarch/virt.c    | 12 ++------
+ hw/mem/memory-device.c | 69 +++++++++++++++++++-----------------------
+ hw/ppc/spapr.c         | 37 +++++++++++-----------
+ hw/ppc/spapr_hcall.c   |  2 +-
+ include/hw/boards.h    |  4 +++
+ include/hw/i386/pc.h   |  1 -
+ 9 files changed, 67 insertions(+), 112 deletions(-)
+
 -- 
-2.30.2
+2.40.1
 
 
