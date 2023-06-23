@@ -2,67 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 950B973AE9A
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 04:26:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 41A4F73AE9C
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 04:28:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCWUI-0003hQ-5x; Thu, 22 Jun 2023 22:25:26 -0400
+	id 1qCWWw-0004dD-E5; Thu, 22 Jun 2023 22:28:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qCWUF-0003h8-LZ; Thu, 22 Jun 2023 22:25:23 -0400
-Received: from mail-ua1-x933.google.com ([2607:f8b0:4864:20::933])
+ id 1qCWWt-0004cn-Sw
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 22:28:07 -0400
+Received: from mail-vs1-xe32.google.com ([2607:f8b0:4864:20::e32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qCWUD-0002vs-MG; Thu, 22 Jun 2023 22:25:23 -0400
-Received: by mail-ua1-x933.google.com with SMTP id
- a1e0cc1a2514c-78cbc8176c7so33679241.0; 
- Thu, 22 Jun 2023 19:25:21 -0700 (PDT)
+ id 1qCWWs-0004kV-0B
+ for qemu-devel@nongnu.org; Thu, 22 Jun 2023 22:28:07 -0400
+Received: by mail-vs1-xe32.google.com with SMTP id
+ ada2fe7eead31-440bb9bad3cso19621137.0
+ for <qemu-devel@nongnu.org>; Thu, 22 Jun 2023 19:28:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1687487120; x=1690079120;
+ d=gmail.com; s=20221208; t=1687487285; x=1690079285;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ZFJ6gvOhAG5QNiKDGGglRJ492mNGYez3M3ULUZ/TUu0=;
- b=RO+C9AGd5jx5EgXqvHycn1QNnpjDfMPzh8u34cvp0pvVHTJmfWjSm8P24v6e0L98KB
- sx8TJs09qI98aVMmhb43BASkA6VehmwnEP3saGEdB+XexR4hzaLfqxWueERNuL/QDxrY
- kMzvsC8rS9xRvOheX/WpjbYeYZpDhF7Ed2DNcBGkbsuXD9Qzr/ojvWNfJFu/mYjaMfQD
- vDa61NP4/lGh8GHfCJn/uhn6HLyT++H2ckItjyAnXrKFpHJCrrOJrmyxVkZt1OvUqcds
- oManEs4uuEFmMQCdjXjiGkaE1oRx8x4py1RN8mU4wI82NNILM22e5oVjUlMJ9cFr+Y0G
- uECw==
+ bh=35uo4kRrMJGesN+36Etwg2KHM4u8XT3c+o1rXIgCamA=;
+ b=iH1lfFl9lozdLIXLHgEci2YkH1t7ImvF50AtZqsWw6smyCJ8c84S4zkSG0/tqdAfiZ
+ ZayXkcv4EnQwcFAthbQ1nQVXhbleFGbUG1xSlrctm8w3S1hAEoap5fATgjB/efoXZIaX
+ McHiyNGsGaWCGKtVbD/BjMPUY+B1s4SuT2k0cL8EiWh3pTdZZVOF9GsUU7GuorfV6FsB
+ rufW+nVdE5myfD+02778PGC4X5bvvE/dLVyPO8lXKWFIKzHGT7zxpi2xdmhONgCdH0Kp
+ BLAi4vSLgs1IWLfirogJmCqCwMfuR2St7aHL1F8Qo7ApB8M4wc4+eKxahieljLt6ci5w
+ umhA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687487120; x=1690079120;
+ d=1e100.net; s=20221208; t=1687487285; x=1690079285;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ZFJ6gvOhAG5QNiKDGGglRJ492mNGYez3M3ULUZ/TUu0=;
- b=dacABh02NNIYWjRo02UbJgnH1jXsjc4uZkjqz5EI0W360rtuiUAkc7BjPPWcQYi2zk
- 5Lg5EZ9SdIuYoL/O2PLHavsfUXn91myAaDFPCoNDbOoWQoYsZmd1HaBv5c74SBExDFx8
- 6GeDS8263ihEeAKs91de0hur/aqd6IVQ93N2zrc7rsd4uhX8vK3jGfCF3ll3a6xaH7dd
- wUMgqZ+8dMXrnn+zeTA4Lp1k08KcER6oRJQ0FK1UtuAigpj7NVSeXmbPMhWKEms2H/DL
- Xf5n3XS0ibl7NlGg0IdA2rmkpILN4PzvIqpqQP6Hx5A0CWNN2D75iA+Cn+6yghREFikU
- 9oEw==
-X-Gm-Message-State: AC+VfDzwnRTx8PmGC317lq1fgR50O+DZ7s7BFSIC17aqqnJC/4OnJ+xg
- FykkUB3+Pxx1PtkzEj3WxYwj122SmF+I4uThyIzEhu836LqB+g==
-X-Google-Smtp-Source: ACHHUZ4cw7l1MoJbMmsaE90SUEgk8/dGr3UFh5xEUngt78jlQbMv63jzF0fGJibiqPjA6s7lstDCbJPVQYqTCha4OkM=
-X-Received: by 2002:a1f:cf02:0:b0:471:849b:ae2d with SMTP id
- f2-20020a1fcf02000000b00471849bae2dmr8294626vkg.1.1687487120147; Thu, 22 Jun
- 2023 19:25:20 -0700 (PDT)
+ bh=35uo4kRrMJGesN+36Etwg2KHM4u8XT3c+o1rXIgCamA=;
+ b=Fn/PU2woMOUR1sPCOKB1G12NAtjMn5P7eur4zH4pJqxU5Pqk7qt3n83g3aCPkKypKY
+ jd7aP/VvDi5dO8EPs5qMCuUk6EgGrZlPmHI+4KRkXQ973vKaiFD4oGDNszg/dTIC+HXe
+ Rl5/Pi+ceWT1eey3qLlF+6rMuxUsG6PUsm2+LyqAmPQCG8rjpHye+4kIbQgqXhpiipLQ
+ tBtcp77k+cOKq2b93mpWCBk9q2/NJlTA7Yz+41PquMUu6kp5zAwZvo17CQNAkbo4jgIs
+ ov16+5pnuUZzMsSxAWYungqQpiXOSZwbbQKcninMqf17qRt6d2Gm0hCGSRU9kiCgP6Sf
+ hvfw==
+X-Gm-Message-State: AC+VfDxNHNQy1iYT0xfeM6KAQZpb4ZpXY7Vt7S12VxC211hpHdJXxv/N
+ EYEtGPfvOq31QoWbVUbOZgftLQgxs1BJs/a/G1lLg83RhE0tpg==
+X-Google-Smtp-Source: ACHHUZ7Q0ZWakw2Dz1X4V3pS9tvMgKaiNlbCEbS9ZgsJwf7LN/MhJDSEIUxjgjfs/94g7vTIev1ERoyXubb+bOwZK38=
+X-Received: by 2002:a1f:5fcf:0:b0:471:9378:9be1 with SMTP id
+ t198-20020a1f5fcf000000b0047193789be1mr8017474vkb.5.1687487284869; Thu, 22
+ Jun 2023 19:28:04 -0700 (PDT)
 MIME-Version: 1.0
-References: <06a4543df2aa6101ca9a48f21a3198064b4f1f87.camel@rivosinc.com>
-In-Reply-To: <06a4543df2aa6101ca9a48f21a3198064b4f1f87.camel@rivosinc.com>
+References: <87wn0obuk6.fsf@linaro.org>
+ <SN6PR02MB4205D202EFB6D6A256ECB93FB8489@SN6PR02MB4205.namprd02.prod.outlook.com>
+ <87jzwoba78.fsf@linaro.org>
+In-Reply-To: <87jzwoba78.fsf@linaro.org>
 From: Alistair Francis <alistair23@gmail.com>
-Date: Fri, 23 Jun 2023 12:24:54 +1000
-Message-ID: <CAKmqyKNpE7gCMXqWnxCp58v+aXb=hWswniOTthM7joL+E+1Q_A@mail.gmail.com>
-Subject: Re: [PATCH] linux-user/riscv: Add syscall riscv_hwprobe
-To: Robbin Ehn <rehn@rivosinc.com>
-Cc: qemu-devel@nongnu.org, palmer@rivosinc.com, laurent@vivier.eu, 
- qemu-riscv@nongnu.org, richard.henderson@linaro.org, ajones@ventanamicro.com
+Date: Fri, 23 Jun 2023 12:27:38 +1000
+Message-ID: <CAKmqyKOidBkxXzWCm8rxagTbF0bucmitrQk1kW20wDNdjqUkeA@mail.gmail.com>
+Subject: Re: How do you represent a host gcc and a cross gcc in lcitool?
+To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
+Cc: Brian Cain <bcain@quicinc.com>,
+ =?UTF-8?B?RGFuaWVsIFAuQmVycmFuZ8Op?= <berrange@redhat.com>, 
+ qemu-devel <qemu-devel@nongnu.org>, Michael Tokarev <mjt@tls.msk.ru>, 
+ Erik Skultety <eskultet@redhat.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
+ Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bin.meng@windriver.com>,
+ "Matheus Bernardino (QUIC)" <quic_mathbern@quicinc.com>, 
+ "Marco Liebel (QUIC)" <quic_mliebel@quicinc.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::933;
- envelope-from=alistair23@gmail.com; helo=mail-ua1-x933.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::e32;
+ envelope-from=alistair23@gmail.com; helo=mail-vs1-xe32.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -86,231 +95,120 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jun 19, 2023 at 6:25=E2=80=AFPM Robbin Ehn <rehn@rivosinc.com> wrot=
-e:
+On Thu, Jun 1, 2023 at 4:58=E2=80=AFAM Alex Benn=C3=A9e <alex.bennee@linaro=
+.org> wrote:
 >
-> This patch adds the new syscall for the
-> "RISC-V Hardware Probing Interface"
-> (https://docs.kernel.org/riscv/hwprobe.html).
 >
-> Reviewed-by: Palmer Dabbelt <palmer@rivosinc.com>
-> Signed-off-by: Robbin Ehn <rehn@rivosinc.com>
+> Brian Cain <bcain@quicinc.com> writes:
+>
+> >> -----Original Message-----
+> >> From: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+> >> Sent: Wednesday, May 31, 2023 6:24 AM
+> >> To: Daniel P.Berrang=C3=A9 <berrange@redhat.com>
+> >> Cc: qemu-devel <qemu-devel@nongnu.org>; Michael Tokarev
+> >> <mjt@tls.msk.ru>; Erik Skultety <eskultet@redhat.com>; Brian Cain
+> >> <bcain@quicinc.com>; Palmer Dabbelt <palmer@dabbelt.com>; Alistair Fra=
+ncis
+> >> <alistair.francis@wdc.com>; Bin Meng <bin.meng@windriver.com>
+> >> Subject: How do you represent a host gcc and a cross gcc in lcitool?
+> >>
+> >> WARNING: This email originated from outside of Qualcomm. Please be war=
+y of
+> >> any links or attachments, and do not enable macros.
+> >>
+> >> Hi,
+> >>
+> >> While trying to convert the debian-riscv64-cross docker container to a=
+n
+> >> lcitool based one I ran into a problem building QEMU. The configure st=
+ep
+> >> fails because despite cross compiling we still need a host compiler to
+> >> build the hexagon codegen tooling.
+> >
+> > I thought we'd fixed this container definition so that we only
+> > downloaded the hexagon toolchain instead? Do we really need a host
+> > compiler for that container build?
+> >
+> > Or am I misunderstanding and you're referring to features required to
+> > support idef parser? Does "hexagon codegen" refer to hexagon's TCG
+> > generation or hexagon code itself (required by tests/tcg)?
+>
+> I think so:
+>
+> #
+> #  Step 1
+> #  We use a C program to create semantics_generated.pyinc
+> #
+> gen_semantics =3D executable(
+>     'gen_semantics',
+>     'gen_semantics.c',
+>     native: true, build_by_default: false)
+>
+> semantics_generated =3D custom_target(
+>     'semantics_generated.pyinc',
+>     output: 'semantics_generated.pyinc',
+>     command: [gen_semantics, '@OUTPUT@'],
+> )
+> hexagon_ss.add(semantics_generated)
+>
+>
+> >
+> >> After scratching my head for a while I discovered we did have host GCC=
+'s
+> >> in our cross images despite there being no explicit request for them i=
+n
+> >> the docker description. It turned out that the gcovr requirement pulle=
+d
+> >> in lcov which itself had a dependency on gcc. However this is a bug:
+> >>
+> >>   https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=3D987818
+> >>
+> >> which has been fixed in bookworm (and of course sid which is the only
+> >> way we can get a riscv64 build of QEMU at the moment). Hence my hacky
+> >> attempts to get gcc via side effect of another package failed.
+> >>
+> >> Hence the question in $SUBJECT. I tried to add a mapping to lcitool fo=
+r
+> >> a pseudo hostgcc package:
+> >>
+> >> +  hostgcc:
+> >> +    default: gcc
+> >> +    pkg:
+> >> +    MacOS:
+> >> +    cross-policy-default: skip
+> >>
+> >> however this didn't work. Do we need a new mechanism for this or am I
+> >> missing a way to do this?
+> >>
+> >> RiscV guys,
+> >>
+> >> It's clear that relying on Debian Sid for the QEMU cross build for Ris=
+cV
+> >> is pretty flakey. Are you guys aware of any other distros that better
+> >> support cross compiling to a riscv64 target or is Debian still the bes=
+t
+> >> bet? Could you be persuaded to build a binary docker image with the
+> >> cross compilers and libraries required for a decent cross build as an
+> >> alternative?
 
-Thanks for the patch!
+It's probably not very helpful, but I find Arch based distros to be
+the best bet for this.
 
-Do you mind re-sending this when 6.4 comes out? I would like it in a
-kernel release before we pick it up
+Are you still looking for a Docker image? I could try and get something wor=
+king
 
 Alistair
 
-> ---
-> v1->v2: Moved to syscall.c
-> v2->v3: Separate function, get/put user
-> v3->patch
-> ---
->  linux-user/riscv/syscall32_nr.h |   1 +
->  linux-user/riscv/syscall64_nr.h |   1 +
->  linux-user/syscall.c            | 146 ++++++++++++++++++++++++++++++++
->  3 files changed, 148 insertions(+)
+> >>
+> >> Thanks,
+> >>
+> >> --
+> >> Alex Benn=C3=A9e
+> >> Virtualisation Tech Lead @ Linaro
 >
-> diff --git a/linux-user/riscv/syscall32_nr.h b/linux-user/riscv/syscall32=
-_nr.h
-> index 1327d7dffa..412e58e5b2 100644
-> --- a/linux-user/riscv/syscall32_nr.h
-> +++ b/linux-user/riscv/syscall32_nr.h
-> @@ -228,6 +228,7 @@
->  #define TARGET_NR_accept4 242
->  #define TARGET_NR_arch_specific_syscall 244
->  #define TARGET_NR_riscv_flush_icache (TARGET_NR_arch_specific_syscall + =
-15)
-> +#define TARGET_NR_riscv_hwprobe (TARGET_NR_arch_specific_syscall + 14)
->  #define TARGET_NR_prlimit64 261
->  #define TARGET_NR_fanotify_init 262
->  #define TARGET_NR_fanotify_mark 263
-> diff --git a/linux-user/riscv/syscall64_nr.h b/linux-user/riscv/syscall64=
-_nr.h
-> index 6659751933..29e1eb2075 100644
-> --- a/linux-user/riscv/syscall64_nr.h
-> +++ b/linux-user/riscv/syscall64_nr.h
-> @@ -251,6 +251,7 @@
->  #define TARGET_NR_recvmmsg 243
->  #define TARGET_NR_arch_specific_syscall 244
->  #define TARGET_NR_riscv_flush_icache (TARGET_NR_arch_specific_syscall + =
-15)
-> +#define TARGET_NR_riscv_hwprobe (TARGET_NR_arch_specific_syscall + 14)
->  #define TARGET_NR_wait4 260
->  #define TARGET_NR_prlimit64 261
->  #define TARGET_NR_fanotify_init 262
-> diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-> index f2cb101d83..55becf3666 100644
-> --- a/linux-user/syscall.c
-> +++ b/linux-user/syscall.c
-> @@ -8874,6 +8874,147 @@ static int do_getdents64(abi_long dirfd, abi_long=
- arg2, abi_long count)
->  }
->  #endif /* TARGET_NR_getdents64 */
 >
-> +#if defined(TARGET_NR_riscv_hwprobe)
-> +
-> +#define RISCV_HWPROBE_KEY_MVENDORID     0
-> +#define RISCV_HWPROBE_KEY_MARCHID       1
-> +#define RISCV_HWPROBE_KEY_MIMPID        2
-> +
-> +#define RISCV_HWPROBE_KEY_BASE_BEHAVIOR 3
-> +#define     RISCV_HWPROBE_BASE_BEHAVIOR_IMA (1 << 0)
-> +
-> +#define RISCV_HWPROBE_KEY_IMA_EXT_0     4
-> +#define     RISCV_HWPROBE_IMA_FD       (1 << 0)
-> +#define     RISCV_HWPROBE_IMA_C        (1 << 1)
-> +
-> +#define RISCV_HWPROBE_KEY_CPUPERF_0     5
-> +#define     RISCV_HWPROBE_MISALIGNED_UNKNOWN     (0 << 0)
-> +#define     RISCV_HWPROBE_MISALIGNED_EMULATED    (1 << 0)
-> +#define     RISCV_HWPROBE_MISALIGNED_SLOW        (2 << 0)
-> +#define     RISCV_HWPROBE_MISALIGNED_FAST        (3 << 0)
-> +#define     RISCV_HWPROBE_MISALIGNED_UNSUPPORTED (4 << 0)
-> +#define     RISCV_HWPROBE_MISALIGNED_MASK        (7 << 0)
-> +
-> +struct riscv_hwprobe {
-> +    abi_llong  key;
-> +    abi_ullong value;
-> +};
-> +
-> +static void risc_hwprobe_fill_pairs(CPURISCVState *env,
-> +                                    struct riscv_hwprobe *pair,
-> +                                    size_t pair_count)
-> +{
-> +    const RISCVCPUConfig *cfg =3D riscv_cpu_cfg(env);
-> +
-> +    for (; pair_count > 0; pair_count--, pair++) {
-> +        abi_llong key;
-> +        abi_ullong value;
-> +        __put_user(0, &pair->value);
-> +        __get_user(key, &pair->key);
-> +        switch (key) {
-> +        case RISCV_HWPROBE_KEY_MVENDORID:
-> +            __put_user(cfg->mvendorid, &pair->value);
-> +            break;
-> +        case RISCV_HWPROBE_KEY_MARCHID:
-> +            __put_user(cfg->marchid, &pair->value);
-> +            break;
-> +        case RISCV_HWPROBE_KEY_MIMPID:
-> +            __put_user(cfg->mimpid, &pair->value);
-> +            break;
-> +        case RISCV_HWPROBE_KEY_BASE_BEHAVIOR:
-> +            value =3D riscv_has_ext(env, RVI) &&
-> +                    riscv_has_ext(env, RVM) &&
-> +                    riscv_has_ext(env, RVA) ?
-> +                    RISCV_HWPROBE_BASE_BEHAVIOR_IMA : 0;
-> +            __put_user(value, &pair->value);
-> +            break;
-> +        case RISCV_HWPROBE_KEY_IMA_EXT_0:
-> +            value =3D riscv_has_ext(env, RVF) &&
-> +                    riscv_has_ext(env, RVD) ?
-> +                    RISCV_HWPROBE_IMA_FD : 0;
-> +            value |=3D riscv_has_ext(env, RVC) ?
-> +                     RISCV_HWPROBE_IMA_C : pair->value;
-> +            __put_user(value, &pair->value);
-> +            break;
-> +        case RISCV_HWPROBE_KEY_CPUPERF_0:
-> +            __put_user(RISCV_HWPROBE_MISALIGNED_FAST, &pair->value);
-> +            break;
-> +        default:
-> +            __put_user(-1, &pair->key);
-> +            break;
-> +        }
-> +    }
-> +}
-> +
-> +static int cpu_set_valid(abi_long arg3, abi_long arg4)
-> +{
-> +    int ret, i, tmp;
-> +    size_t host_mask_size, target_mask_size;
-> +    unsigned long *host_mask;
-> +
-> +    /*
-> +     * cpu_set_t represent CPU masks as bit masks of type unsigned long =
-*.
-> +     * arg3 contains the cpu count.
-> +     */
-> +    tmp =3D (8 * sizeof(abi_ulong));
-> +    target_mask_size =3D ((arg3 + tmp - 1) / tmp) * sizeof(abi_ulong);
-> +    host_mask_size =3D (target_mask_size + (sizeof(*host_mask) - 1)) &
-> +                     ~(sizeof(*host_mask) - 1);
-> +
-> +    host_mask =3D alloca(host_mask_size);
-> +
-> +    ret =3D target_to_host_cpu_mask(host_mask, host_mask_size,
-> +                                  arg4, target_mask_size);
-> +    if (ret !=3D 0) {
-> +        return ret;
-> +    }
-> +
-> +    for (i =3D 0 ; i < host_mask_size / sizeof(*host_mask); i++) {
-> +        if (host_mask[i] !=3D 0) {
-> +            return 0;
-> +        }
-> +    }
-> +    return -TARGET_EINVAL;
-> +}
-> +
-> +static abi_long do_riscv_hwprobe(CPUArchState *cpu_env, abi_long arg1,
-> +                                 abi_long arg2, abi_long arg3,
-> +                                 abi_long arg4, abi_long arg5)
-> +{
-> +    int ret;
-> +    struct riscv_hwprobe *host_pairs;
-> +
-> +    /* flags must be 0 */
-> +    if (arg5 !=3D 0) {
-> +        return -TARGET_EINVAL;
-> +    }
-> +
-> +    /* check cpu_set */
-> +    if (arg3 !=3D 0) {
-> +        ret =3D cpu_set_valid(arg3, arg4);
-> +        if (ret !=3D 0) {
-> +            return ret;
-> +        }
-> +    } else if (arg4 !=3D 0) {
-> +        return -TARGET_EINVAL;
-> +    }
-> +
-> +    /* no pairs */
-> +    if (arg2 =3D=3D 0) {
-> +        return 0;
-> +    }
-> +
-> +    host_pairs =3D lock_user(VERIFY_WRITE, arg1,
-> +                           sizeof(*host_pairs) * (size_t)arg2, 0);
-> +    if (host_pairs =3D=3D NULL) {
-> +        return -TARGET_EFAULT;
-> +    }
-> +    risc_hwprobe_fill_pairs(cpu_env, host_pairs, arg2);
-> +    unlock_user(host_pairs, arg1, sizeof(*host_pairs) * (size_t)arg2);
-> +    return 0;
-> +}
-> +#endif /* TARGET_NR_riscv_hwprobe */
-> +
->  #if defined(TARGET_NR_pivot_root) && defined(__NR_pivot_root)
->  _syscall2(int, pivot_root, const char *, new_root, const char *, put_old=
-)
->  #endif
-> @@ -13571,6 +13712,11 @@ static abi_long do_syscall1(CPUArchState *cpu_en=
-v, int num, abi_long arg1,
->          return ret;
->  #endif
->
-> +#if defined(TARGET_NR_riscv_hwprobe)
-> +    case TARGET_NR_riscv_hwprobe:
-> +        return do_riscv_hwprobe(cpu_env, arg1, arg2, arg3, arg4, arg5);
-> +#endif
-> +
->      default:
->          qemu_log_mask(LOG_UNIMP, "Unsupported syscall: %d\n", num);
->          return -TARGET_ENOSYS;
 > --
-> 2.39.2
->
+> Alex Benn=C3=A9e
+> Virtualisation Tech Lead @ Linaro
 >
 
