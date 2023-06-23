@@ -2,110 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 983DB73B14D
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 09:26:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AE8C73B1BD
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 09:33:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCbB7-0001Ix-Uk; Fri, 23 Jun 2023 03:25:57 -0400
+	id 1qCbHl-0003SO-GB; Fri, 23 Jun 2023 03:32:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nnmlinux@linux.vnet.ibm.com>)
- id 1qCbAz-0001Ct-Mq; Fri, 23 Jun 2023 03:25:49 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qCbHZ-0003Ra-3i
+ for qemu-devel@nongnu.org; Fri, 23 Jun 2023 03:32:37 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nnmlinux@linux.vnet.ibm.com>)
- id 1qCbAx-0008Ir-Dq; Fri, 23 Jun 2023 03:25:49 -0400
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 35N7Cchl012293; Fri, 23 Jun 2023 07:25:35 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=content-type :
- message-id : date : subject : to : cc : references : from : in-reply-to :
- mime-version; s=pp1; bh=e+N37XbP+k2La0dsROcZLR0UJIe4J21GTx+8ctDfG08=;
- b=Q30GRlESQLK5NF4J4NC8CqYuEsbw/aJ9NUO3vDXSSxT8ilB+N1uH4wIJqiHuHv32yLBW
- 3jnKFe3UetlUD+voB12G+EEtLjo/TnfnGhp1XItiJTIQ3p3KOvDORW9API9C8tCpy/bm
- reShYTskkOTljokwDATZ3NDT8ebB1+arG1jNLh+s0/brOmLONfQaahdXD7w86bjCm7t4
- umvnfW2lUDXudsY8vnZvisyknSg1LWjbTSUMypPQlD0We/GUU+l0pp1BzIAy6XMd3c1d
- Qg4pobn2sDvav3l3+rDbOz5Yr8Gz2O+liUGh64Ca40ZdyNosJoXCi5XoavMsQKWt5LXR YQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rd6t189x1-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 23 Jun 2023 07:25:34 +0000
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 35N7Dung015649;
- Fri, 23 Jun 2023 07:25:34 GMT
-Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.108])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rd6t189we-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 23 Jun 2023 07:25:33 +0000
-Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
- by ppma05fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 35N6TJKN024127;
- Fri, 23 Jun 2023 07:25:31 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
- by ppma05fra.de.ibm.com (PPS) with ESMTPS id 3r94f5312k-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 23 Jun 2023 07:25:31 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
- [10.20.54.105])
- by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 35N7PRl318875050
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 23 Jun 2023 07:25:27 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 99F7920049;
- Fri, 23 Jun 2023 07:25:27 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6EE1D20043;
- Fri, 23 Jun 2023 07:25:25 +0000 (GMT)
-Received: from [9.124.31.146] (unknown [9.124.31.146])
- by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Fri, 23 Jun 2023 07:25:25 +0000 (GMT)
-Content-Type: multipart/alternative;
- boundary="------------6yQW1MMEMOW58A5F4FVnsYRj"
-Message-ID: <1fcc0a33-5fa1-7e25-d310-3ed5c3253c5a@linux.vnet.ibm.com>
-Date: Fri, 23 Jun 2023 12:55:24 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH v3] target: ppc: Use MSR_HVB bit to get the target
- endianness for memory dump
-To: Greg Kurz <groug@kaod.org>
-Cc: Narayana Murty N <nnmlinux@linux.ibm.com>, danielhb413@gmail.com,
- clg@kaod.org, david@gibson.dropbear.id.au, npiggin@gmail.com,
- qemu-ppc@nongnu.org, qemu-devel@nongnu.org, farosas@suse.de,
- npiggin@linux.ibm.com, vaibhav@linux.ibm.com, harshpb@linux.ibm.com,
- sbhat@linux.ibm.com
-References: <20230522160242.37261-1-nnmlinux@linux.ibm.com>
- <20230522202024.735f02a6@bahia>
- <29625575-d8f1-a66a-6d5a-0ce28a486525@linux.vnet.ibm.com>
- <20230523121529.57739259@bahia>
-Content-Language: en-US
-From: Narayana Murty N <nnmlinux@linux.vnet.ibm.com>
-In-Reply-To: <20230523121529.57739259@bahia>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: ZpFYBd31_G2HnxgjQrC05W1v6l8KP36z
-X-Proofpoint-ORIG-GUID: w6GLCJZKbgoB3OlPn31qdrbJd26SVYvI
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qCbHU-0001oj-0W
+ for qemu-devel@nongnu.org; Fri, 23 Jun 2023 03:32:35 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1687505550;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=PrgkC+hw6CZTqMYG4e1ConRF0w0LTQtQZswtR9P1m7o=;
+ b=M2yrtNE0bu1uaKqcPey0yCa5ma0DnfY093Z9M+4GJG6/lTRfeOOf7oFwY6QYoxQsTLDp+q
+ 9WoJvNYW+TAaeO8AKOW2rBM8t9ITFnjgVFY/s525jg+lxJjI8Zeoo6A+0m9ATBYIaem4ct
+ f4VJ+IJryJbcs8JXMoNAONkB3/aKCdU=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-586-SkdW2DmDNaiOUX5RjHeXZg-1; Fri, 23 Jun 2023 03:32:29 -0400
+X-MC-Unique: SkdW2DmDNaiOUX5RjHeXZg-1
+Received: by mail-ed1-f72.google.com with SMTP id
+ 4fb4d7f45d1cf-51a45552177so208440a12.1
+ for <qemu-devel@nongnu.org>; Fri, 23 Jun 2023 00:32:29 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1687505548; x=1690097548;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=PrgkC+hw6CZTqMYG4e1ConRF0w0LTQtQZswtR9P1m7o=;
+ b=RO2Sy8PB2NcK7riY4Exz0wNXvaM75+rKy0g5TyoOpwYvzWJfHRFpO4Hw14wNuRr397
+ WzVgwMaIboB4zCgKujDmF3ZutdfY6KCYzNoLIKWV2/qZv4TD2Uf5quNYhghOBQ4Wl/e2
+ v4nIWyaeFvnyAKTMZtXLCLFP+1LZbBD4oVjhAcle4CW5pBTpbhwDG8lRjuIgz4t1hQQb
+ o0kPWFo+Eba/2JWwr2WFWAvTqErshjdhL1x+ksWe6qquAaURYVozCamJDO47cFlXP462
+ CROgtxPWoXbK+H3Pi/nU6vW+emd2ouwfWXyynXFWsmn94QhX/9gsdlzp+79yTVAjCHdG
+ ZbMQ==
+X-Gm-Message-State: AC+VfDybMaacHZCtQQCRg10EMGRo7dJ36uFzlMVY8umuVRIUZgS8wRWW
+ 2orb0Txs6jf6JSIUfpsn2hZTPp/X8JV5hIc1/zeu12KVGUJz6YpiwuSOTuIOgggiY9BMNps6IrT
+ JBJHMh/1FdYE6rrk=
+X-Received: by 2002:aa7:d1d7:0:b0:51b:cd07:d101 with SMTP id
+ g23-20020aa7d1d7000000b0051bcd07d101mr7405242edp.7.1687505548066; 
+ Fri, 23 Jun 2023 00:32:28 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7309l6plkisgu73hYSgdsElqtRJGYITLNRDeoqeDl/rhAJqo+53Rtv9ZCAUdv/44Z4bpwmpQ==
+X-Received: by 2002:aa7:d1d7:0:b0:51b:cd07:d101 with SMTP id
+ g23-20020aa7d1d7000000b0051bcd07d101mr7405225edp.7.1687505547631; 
+ Fri, 23 Jun 2023 00:32:27 -0700 (PDT)
+Received: from redhat.com ([176.12.150.14]) by smtp.gmail.com with ESMTPSA id
+ x7-20020aa7cd87000000b0051830f22825sm4994556edv.90.2023.06.23.00.32.25
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 23 Jun 2023 00:32:26 -0700 (PDT)
+Date: Fri, 23 Jun 2023 03:32:22 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Albert Esteve <aesteve@redhat.com>
+Cc: qemu-devel@nongnu.org, kraxel@redhat.com, marcandre.lureau@gmail.com,
+ cohuck@redhat.com, Fam Zheng <fam@euphon.net>, pbonzini@redhat.com
+Subject: Re: [PATCH v3 3/4] vhost-user: add shared_object msg
+Message-ID: <20230623033131-mutt-send-email-mst@kernel.org>
+References: <20230524091333.201767-1-aesteve@redhat.com>
+ <20230524091333.201767-4-aesteve@redhat.com>
+ <20230623024322-mutt-send-email-mst@kernel.org>
+ <CADSE00JP7N3fEM5pLYmF0WrRzcGZSeKbALXsUaFKKeOFXG9RDQ@mail.gmail.com>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-06-23_02,2023-06-22_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0
- suspectscore=0 adultscore=0 spamscore=0 mlxscore=0 clxscore=1011
- malwarescore=0 bulkscore=0 mlxlogscore=999 lowpriorityscore=0 phishscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2305260000 definitions=main-2306230063
-Received-SPF: none client-ip=148.163.156.1;
- envelope-from=nnmlinux@linux.vnet.ibm.com; helo=mx0a-001b2d01.pphosted.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CADSE00JP7N3fEM5pLYmF0WrRzcGZSeKbALXsUaFKKeOFXG9RDQ@mail.gmail.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, HTML_MESSAGE=0.001, NICE_REPLY_A=-0.09,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -121,284 +101,434 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is a multi-part message in MIME format.
---------------6yQW1MMEMOW58A5F4FVnsYRj
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+On Fri, Jun 23, 2023 at 09:19:29AM +0200, Albert Esteve wrote:
+> 
+> 
+> On Fri, Jun 23, 2023 at 8:45 AM Michael S. Tsirkin <mst@redhat.com> wrote:
+> 
+>     On Wed, May 24, 2023 at 11:13:32AM +0200, Albert Esteve wrote:
+>     > Add new vhost-user protocol message
+>     > `VHOST_USER_BACKEND_SHARED_OBJECT`. This new
+>     > message is sent from vhost-user back-ends
+>     > to interact with the virtio-dmabuf table
+>     > in order to add, remove, or lookup for
+>     > virtio dma-buf shared objects.
+>     >
+>     > The action taken in the front-end depends
+>     > on the type stored in the payload struct.
+>     >
+>     > In the libvhost-user library add helper
+>     > functions to allow sending messages to
+>     > interact with the virtio shared objects
+>     > hash table.
+>     >
+>     > Signed-off-by: Albert Esteve <aesteve@redhat.com>
+>     > ---
+>     >  docs/interop/vhost-user.rst               | 15 ++++
+>     >  hw/virtio/vhost-user.c                    | 68 ++++++++++++++++++
+>     >  subprojects/libvhost-user/libvhost-user.c | 88 +++++++++++++++++++++++
+>     >  subprojects/libvhost-user/libvhost-user.h | 56 +++++++++++++++
+>     >  4 files changed, 227 insertions(+)
+>     >
+>     > diff --git a/docs/interop/vhost-user.rst b/docs/interop/vhost-user.rst
+>     > index 5a070adbc1..d3d8db41e5 100644
+>     > --- a/docs/interop/vhost-user.rst
+>     > +++ b/docs/interop/vhost-user.rst
+>     > @@ -1528,6 +1528,21 @@ is sent by the front-end.
+>     > 
+>     >    The state.num field is currently reserved and must be set to 0.
+>     > 
+>     > +``VHOST_USER_BACKEND_SHARED_OBJECT``
+>     > +  :id: 6
+>     > +  :equivalent ioctl: N/A
+>     > +  :request payload: ``struct VhostUserShared``
+>     > +  :reply payload: ``struct VhostUserShared`` (only for ``LOOKUP``
+>     requests)
+>     > +
+>     > +  Backends that need to interact with the virtio-dmabuf shared table API
+>     > +  can send this message. The operation is determined by the ``type``
+>     member
+>     > +  of the payload struct. The valid values for the operation type are
+>     > +  ``VHOST_SHARED_OBJECT_*`` members, i.e., ``ADD``, ``LOOKUP``, and
+>     ``REMOVE``.
+>     > +  ``LOOKUP`` operations require the ``VHOST_USER_NEED_REPLY_MASK`` flag
+>     to be
+>     > +  set by the back-end, and the front-end will then send the dma-buf fd
+>     as
+>     > +  a response if the UUID matches an object in the table, or a negative
+>     value
+>     > +  otherwise.
+>     > +
+>     >  .. _reply_ack:
+>     > 
+>     >  VHOST_USER_PROTOCOL_F_REPLY_ACK
+>     > diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
+>     > index 74a2a28663..5ac5f0eafd 100644
+>     > --- a/hw/virtio/vhost-user.c
+>     > +++ b/hw/virtio/vhost-user.c
+>     > @@ -10,6 +10,7 @@
+>     > 
+>     >  #include "qemu/osdep.h"
+>     >  #include "qapi/error.h"
+>     > +#include "hw/virtio/virtio-dmabuf.h"
+>     >  #include "hw/virtio/vhost.h"
+>     >  #include "hw/virtio/vhost-user.h"
+>     >  #include "hw/virtio/vhost-backend.h"
+>     > @@ -20,6 +21,7 @@
+>     >  #include "sysemu/kvm.h"
+>     >  #include "qemu/error-report.h"
+>     >  #include "qemu/main-loop.h"
+>     > +#include "qemu/uuid.h"
+>     >  #include "qemu/sockets.h"
+>     >  #include "sysemu/runstate.h"
+>     >  #include "sysemu/cryptodev.h"
+>     > @@ -128,6 +130,7 @@ typedef enum VhostUserSlaveRequest {
+>     >      VHOST_USER_BACKEND_IOTLB_MSG = 1,
+>     >      VHOST_USER_BACKEND_CONFIG_CHANGE_MSG = 2,
+>     >      VHOST_USER_BACKEND_VRING_HOST_NOTIFIER_MSG = 3,
+>     > +    VHOST_USER_BACKEND_SHARED_OBJECT = 6,
+>     >      VHOST_USER_BACKEND_MAX
+>     >  }  VhostUserSlaveRequest;
+>     > 
+>     > @@ -190,6 +193,18 @@ typedef struct VhostUserInflight {
+>     >      uint16_t queue_size;
+>     >  } VhostUserInflight;
+>     > 
+>     > +typedef enum VhostUserSharedType {
+>     > +    VHOST_SHARED_OBJECT_ADD = 0,
+>     > +    VHOST_SHARED_OBJECT_LOOKUP,
+>     > +    VHOST_SHARED_OBJECT_REMOVE,
+>     > +} VhostUserSharedType;
+>     > +
+>     > +typedef struct VhostUserShared {
+>     > +    unsigned char uuid[16];
+>     > +    VhostUserSharedType type;
+>     > +    int dmabuf_fd;
+>     > +} VhostUserShared;
+>     > +
+>     >  typedef struct {
+>     >      VhostUserRequest request;
+>     > 
+>     > @@ -214,6 +229,7 @@ typedef union {
+>     >          VhostUserCryptoSession session;
+>     >          VhostUserVringArea area;
+>     >          VhostUserInflight inflight;
+>     > +        VhostUserShared object;
+>     >  } VhostUserPayload;
+>     > 
+>     >  typedef struct VhostUserMsg {
+>     > @@ -1582,6 +1598,52 @@ static int
+>     vhost_user_slave_handle_vring_host_notifier(struct vhost_dev *dev,
+>     >      return 0;
+>     >  }
+>     > 
+>     > +static int vhost_user_backend_handle_shared_object(VhostUserShared
+>     *object)
+>     > +{
+>     > +    QemuUUID uuid;
+> 
+>     Can we initialize it here? uuid = { .data = object->uuid } ?
+> 
+>     Also, pls put space after variable declaration.
+> 
+>     > +    memcpy(uuid.data, object->uuid, sizeof(object->uuid));
+>     > +
+>     > +    switch (object->type) {
+>     > +    case VHOST_SHARED_OBJECT_ADD:
+>     > +        return virtio_add_dmabuf(&uuid, object->dmabuf_fd);
+>     > +    case VHOST_SHARED_OBJECT_LOOKUP:
+>     > +        object->dmabuf_fd = virtio_lookup_dmabuf(&uuid);
+>     > +        if (object->dmabuf_fd < 0) {
+>     > +            return object->dmabuf_fd;
+>     > +        }
+>     > +        break;
+>     > +    case VHOST_SHARED_OBJECT_REMOVE:
+>     > +        return virtio_remove_resource(&uuid);
+>     > +    }
+>     > +
+> 
+>     I couldn't figure out why, but if I commit this then run checkpatch,
+>     like this
+>     ./scripts/checkpatch.pl HEAD~1..HEAD
+> 
+>     then it is unhappy about the : in case. Any idea why?
+> 
+> 
+> I don't see any errors / warnings. What do you get?
 
 
-On 5/23/23 15:45, Greg Kurz wrote:
-> On Tue, 23 May 2023 12:20:17 +0530
-> Narayana Murty N<nnmlinux@linux.vnet.ibm.com>  wrote:
->
->> On 5/22/23 23:50, Greg Kurz wrote:
->>> On Mon, 22 May 2023 12:02:42 -0400
->>> Narayana Murty N<nnmlinux@linux.ibm.com>   wrote:
->>>
->>>> Currently on PPC64 qemu always dumps the guest memory in
->>>> Big Endian (BE) format even though the guest running in Little Endian
->>>> (LE) mode. So crash tool fails to load the dump as illustrated below:
->>>>
->>>> Log :
->>>> $ virsh dump DOMAIN --memory-only dump.file
->>>>
->>>> Domain 'DOMAIN' dumped to dump.file
->>>>
->>>> $ crash vmlinux dump.file
->>>>
->>>> <snip>
->>>> crash 8.0.2-1.el9
->>>>
->>>> WARNING: endian mismatch:
->>>>             crash utility: little-endian
->>>>             dump.file: big-endian
->>>>
->>>> WARNING: machine type mismatch:
->>>>             crash utility: PPC64
->>>>             dump.file: (unknown)
->>>>
->>>> crash: dump.file: not a supported file format
->>>> <snip>
->>>>
->>>> This happens because cpu_get_dump_info() passes cpu->env->has_hv_mode
->>>> to function ppc_interrupts_little_endian(), the cpu->env->has_hv_mode
->>>> always set for powerNV even though the guest is not running in hv mode.
->>>> The hv mode should be taken from msr_mask MSR_HVB bit
->>>> (cpu->env.msr_mask & MSR_HVB). This patch fixes the issue by passing
->>>> MSR_HVB value to ppc_interrupts_little_endian() in order to determine
->>>> the guest endianness.
->>>>
->>>> The crash tool also expects guest kernel endianness should match the
->>>> endianness of the dump.
->>>>
->>>> The patch was tested on POWER9 box booted with Linux as host in
->>>> following cases:
->>>>
->>>> Host-Endianess Qemu-Target-Machine Qemu-Guest-Endianess  Qemu-Generated-Guest
->>>>                                                             Memory-Dump-Format
->>>> BE             powernv             LE KVM guest                 LE
->>>> BE             powernv             BE KVM guest                 BE
->>>> LE             powernv             LE KVM guest                 LE
->>>> LE             powernv             BE KVM guest                 BE
->>> I don't quite understand why KVM is mentioned with the powernv machine.
->> guest running mode was mentioned.
->>
-> QEMU cannot use KVM on the host to run a powernv machine. The
-> guest is thus necessarily running in TCG mode.
->
-> Please describe your setup and what exactly you are testing.
+15/90 Checking commit 6cd801b0656b (vhost-user: add shared_object msg)
+ERROR: spaces required around that ':' (ctx:VxE)
+#187: FILE: hw/virtio/vhost-user.c:1619:
++    case VHOST_SHARED_OBJECT_ADD:
+                                 ^
 
-described in v4.
+ERROR: spaces required around that ':' (ctx:VxE)
+#189: FILE: hw/virtio/vhost-user.c:1621:
++    case VHOST_SHARED_OBJECT_LOOKUP:
+                                    ^
 
->>> Also have you tried to dump at various moments, e.g. during skiboot
->>> and when guest is booted, as in [1] which introduced the code this
->>> patch is changing ?
->>>
->>> [1]https://github.com/qemu/qemu/commit/5609400a422809c89ea788e4d0e13124a617582e.
->>>
->>>> LE             pseries KVM         LE KVM guest                 LE
->>>> LE             pseries TCG         LE guest                     LE
->>>>
->>> Fixes: 5609400a4228 ("target/ppc: Set the correct endianness for powernv memory dumps")
->> I agree, commit 5609400a4228 fixes endianness detection only for initial stage (skiboot) till endianness switch happens.
->> However, has_hv_mode is just a capability flag which is always set based on command-line param and doesnt really represent current hv state.
->> With this patch, it relies on the current state of the hv state based on the MSR_HVB of the msr_mask.
->>
-> Yes I see what your patch is doing. The 'Fixes: 5609400a4228 ...' line is
-> intended to the changelog because it is supposedly a fix to this commit.
+ERROR: spaces required around that ':' (ctx:VxE)
+#195: FILE: hw/virtio/vhost-user.c:1627:
++    case VHOST_SHARED_OBJECT_REMOVE:
+                                    ^
 
-done
+ERROR: spaces required around that ':' (ctx:VxE)
+#234: FILE: hw/virtio/vhost-user.c:1716:
++    case VHOST_USER_BACKEND_SHARED_OBJECT:
+                                          ^
 
->>>> Signed-off-by: Narayana Murty N<nnmlinux@linux.ibm.com>
->>>> ---
->>>> Changes since V2:
->>>> commit message modified as per feedbak from Nicholas Piggin.
->>>> Changes since V1:
->>>> https://lore.kernel.org/qemu-devel/20230420145055.10196-1-nnmlinux@linux.ibm.com/
->>>> The approach to solve the issue was changed based on feedback from
->>>> Fabiano Rosas on patch V1.
->>>> ---
->>>>    target/ppc/arch_dump.c | 2 +-
->>>>    1 file changed, 1 insertion(+), 1 deletion(-)
->>>>
->>>> diff --git a/target/ppc/arch_dump.c b/target/ppc/arch_dump.c
->>>> index f58e6359d5..a8315659d9 100644
->>>> --- a/target/ppc/arch_dump.c
->>>> +++ b/target/ppc/arch_dump.c
->>>> @@ -237,7 +237,7 @@ int cpu_get_dump_info(ArchDumpInfo *info,
->>>>        info->d_machine = PPC_ELF_MACHINE;
->>>>        info->d_class = ELFCLASS;
->>>>    
->>>> -    if (ppc_interrupts_little_endian(cpu, cpu->env.has_hv_mode)) {
->>>> +    if (ppc_interrupts_little_endian(cpu, !!(cpu->env.msr_mask & MSR_HVB))) {
->>>>            info->d_endian = ELFDATA2LSB;
->>>>        } else {
->>>>            info->d_endian = ELFDATA2MSB;
---------------6yQW1MMEMOW58A5F4FVnsYRj
-Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+total: 4 errors, 0 warnings, 305 lines checked
 
-<html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  </head>
-  <body>
-    <p><br>
-    </p>
-    <div class="moz-cite-prefix">On 5/23/23 15:45, Greg Kurz wrote:<br>
-    </div>
-    <blockquote type="cite" cite="mid:20230523121529.57739259@bahia">
-      <pre class="moz-quote-pre" wrap="">On Tue, 23 May 2023 12:20:17 +0530
-Narayana Murty N <a class="moz-txt-link-rfc2396E" href="mailto:nnmlinux@linux.vnet.ibm.com">&lt;nnmlinux@linux.vnet.ibm.com&gt;</a> wrote:
 
-</pre>
-      <blockquote type="cite">
-        <pre class="moz-quote-pre" wrap="">
-On 5/22/23 23:50, Greg Kurz wrote:
-</pre>
-        <blockquote type="cite">
-          <pre class="moz-quote-pre" wrap="">On Mon, 22 May 2023 12:02:42 -0400
-Narayana Murty N<a class="moz-txt-link-rfc2396E" href="mailto:nnmlinux@linux.ibm.com">&lt;nnmlinux@linux.ibm.com&gt;</a>  wrote:
+which is wrong.
 
-</pre>
-          <blockquote type="cite">
-            <pre class="moz-quote-pre" wrap="">Currently on PPC64 qemu always dumps the guest memory in
-Big Endian (BE) format even though the guest running in Little Endian
-(LE) mode. So crash tool fails to load the dump as illustrated below:
 
-Log :
-$ virsh dump DOMAIN --memory-only dump.file
-
-Domain 'DOMAIN' dumped to dump.file
-
-$ crash vmlinux dump.file
-
-&lt;snip&gt;
-crash 8.0.2-1.el9
-
-WARNING: endian mismatch:
-           crash utility: little-endian
-           dump.file: big-endian
-
-WARNING: machine type mismatch:
-           crash utility: PPC64
-           dump.file: (unknown)
-
-crash: dump.file: not a supported file format
-&lt;snip&gt;
-
-This happens because cpu_get_dump_info() passes cpu-&gt;env-&gt;has_hv_mode
-to function ppc_interrupts_little_endian(), the cpu-&gt;env-&gt;has_hv_mode
-always set for powerNV even though the guest is not running in hv mode.
-The hv mode should be taken from msr_mask MSR_HVB bit
-(cpu-&gt;env.msr_mask &amp; MSR_HVB). This patch fixes the issue by passing
-MSR_HVB value to ppc_interrupts_little_endian() in order to determine
-the guest endianness.
-
-The crash tool also expects guest kernel endianness should match the
-endianness of the dump.
-
-The patch was tested on POWER9 box booted with Linux as host in
-following cases:
-
-Host-Endianess Qemu-Target-Machine Qemu-Guest-Endianess  Qemu-Generated-Guest
-                                                           Memory-Dump-Format
-BE             powernv             LE KVM guest                 LE
-BE             powernv             BE KVM guest                 BE
-LE             powernv             LE KVM guest                 LE
-LE             powernv             BE KVM guest                 BE
-</pre>
-          </blockquote>
-          <pre class="moz-quote-pre" wrap="">I don't quite understand why KVM is mentioned with the powernv machine.
-</pre>
-        </blockquote>
-        <pre class="moz-quote-pre" wrap="">
-guest running mode was mentioned.
-
-</pre>
-      </blockquote>
-      <pre class="moz-quote-pre" wrap="">
-QEMU cannot use KVM on the host to run a powernv machine. The
-guest is thus necessarily running in TCG mode.
-
-Please describe your setup and what exactly you are testing.
-</pre>
-    </blockquote>
-    <pre>described in v4.
-</pre>
-    <blockquote type="cite" cite="mid:20230523121529.57739259@bahia">
-      <blockquote type="cite">
-        <blockquote type="cite">
-          <pre class="moz-quote-pre" wrap="">
-Also have you tried to dump at various moments, e.g. during skiboot
-and when guest is booted, as in [1] which introduced the code this
-patch is changing ?
-
-[1]<a class="moz-txt-link-freetext" href="https://github.com/qemu/qemu/commit/5609400a422809c89ea788e4d0e13124a617582e">https://github.com/qemu/qemu/commit/5609400a422809c89ea788e4d0e13124a617582e</a>.
-
-</pre>
-          <blockquote type="cite">
-            <pre class="moz-quote-pre" wrap="">LE             pseries KVM         LE KVM guest                 LE
-LE             pseries TCG         LE guest                     LE
-
-</pre>
-          </blockquote>
-          <pre class="moz-quote-pre" wrap="">Fixes: 5609400a4228 ("target/ppc: Set the correct endianness for powernv memory dumps")
-</pre>
-        </blockquote>
-        <pre class="moz-quote-pre" wrap="">
-I agree, commit 5609400a4228 fixes endianness detection only for initial stage (skiboot) till endianness switch happens.
-However, has_hv_mode is just a capability flag which is always set based on command-line param and doesnt really represent current hv state.
-With this patch, it relies on the current state of the hv state based on the MSR_HVB of the msr_mask.
-
-</pre>
-      </blockquote>
-      <pre class="moz-quote-pre" wrap="">
-Yes I see what your patch is doing. The 'Fixes: 5609400a4228 ...' line is
-intended to the changelog because it is supposedly a fix to this commit.
-</pre>
-    </blockquote>
-    <pre>done
-</pre>
-    <blockquote type="cite" cite="mid:20230523121529.57739259@bahia">
-      <blockquote type="cite">
-        <blockquote type="cite">
-          <pre class="moz-quote-pre" wrap="">
-</pre>
-          <blockquote type="cite">
-            <pre class="moz-quote-pre" wrap="">Signed-off-by: Narayana Murty N<a class="moz-txt-link-rfc2396E" href="mailto:nnmlinux@linux.ibm.com">&lt;nnmlinux@linux.ibm.com&gt;</a>
----
-Changes since V2:
-commit message modified as per feedbak from Nicholas Piggin.
-Changes since V1:
-<a class="moz-txt-link-freetext" href="https://lore.kernel.org/qemu-devel/20230420145055.10196-1-nnmlinux@linux.ibm.com/">https://lore.kernel.org/qemu-devel/20230420145055.10196-1-nnmlinux@linux.ibm.com/</a>
-The approach to solve the issue was changed based on feedback from
-Fabiano Rosas on patch V1.
----
-  target/ppc/arch_dump.c | 2 +-
-  1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/target/ppc/arch_dump.c b/target/ppc/arch_dump.c
-index f58e6359d5..a8315659d9 100644
---- a/target/ppc/arch_dump.c
-+++ b/target/ppc/arch_dump.c
-@@ -237,7 +237,7 @@ int cpu_get_dump_info(ArchDumpInfo *info,
-      info-&gt;d_machine = PPC_ELF_MACHINE;
-      info-&gt;d_class = ELFCLASS;
-  
--    if (ppc_interrupts_little_endian(cpu, cpu-&gt;env.has_hv_mode)) {
-+    if (ppc_interrupts_little_endian(cpu, !!(cpu-&gt;env.msr_mask &amp; MSR_HVB))) {
-          info-&gt;d_endian = ELFDATA2LSB;
-      } else {
-          info-&gt;d_endian = ELFDATA2MSB;
-</pre>
-          </blockquote>
-        </blockquote>
-      </blockquote>
-    </blockquote>
-  </body>
-</html>
-
---------------6yQW1MMEMOW58A5F4FVnsYRj--
+> 
+>     > +    return 0;
+>     > +}
+>     > +
+>     > +static bool
+>     > +vhost_user_backend_send_dmabuf_fd(QIOChannel *ioc, VhostUserHeader *hdr,
+>     > +                                  VhostUserPayload *payload)
+>     > +{
+>     > +    Error *local_err = NULL;
+>     > +    struct iovec iov[2];
+>     > +    if (hdr->flags & VHOST_USER_NEED_REPLY_MASK) {
+>     > +        hdr->flags &= ~VHOST_USER_NEED_REPLY_MASK;
+>     > +        hdr->flags |= VHOST_USER_REPLY_MASK;
+>     > +
+>     > +        hdr->size = sizeof(payload->object);
+>     > +
+>     > +        iov[0].iov_base = hdr;
+>     > +        iov[0].iov_len = VHOST_USER_HDR_SIZE;
+>     > +        iov[1].iov_base = payload;
+>     > +        iov[1].iov_len = hdr->size;
+>     > +
+>     > +        if (qio_channel_writev_all(ioc, iov, ARRAY_SIZE(iov), &
+>     local_err)) {
+>     > +            error_report_err(local_err);
+>     > +            return false;
+>     > +        }
+>     > +    }
+>     > +    return true;
+>     > +}
+>     > +
+>     >  static void close_slave_channel(struct vhost_user *u)
+>     >  {
+>     >      g_source_destroy(u->slave_src);
+>     > @@ -1639,6 +1701,12 @@ static gboolean slave_read(QIOChannel *ioc,
+>     GIOCondition condition,
+>     >          ret = vhost_user_slave_handle_vring_host_notifier(dev, &
+>     payload.area,
+>     >                                                            fd ? fd[0] :
+>     -1);
+>     >          break;
+>     > +    case VHOST_USER_BACKEND_SHARED_OBJECT:
+>     > +        ret = vhost_user_backend_handle_shared_object(&payload.object);
+>     > +        if (!vhost_user_backend_send_dmabuf_fd(ioc, &hdr, &payload)) {
+>     > +            goto err;
+>     > +        }
+>     > +        break;
+>     >      default:
+>     >          error_report("Received unexpected msg type: %d.", hdr.request);
+>     >          ret = -EINVAL;
+>     > diff --git a/subprojects/libvhost-user/libvhost-user.c b/subprojects/
+>     libvhost-user/libvhost-user.c
+>     > index 8fb61e2df2..27f16d292a 100644
+>     > --- a/subprojects/libvhost-user/libvhost-user.c
+>     > +++ b/subprojects/libvhost-user/libvhost-user.c
+>     > @@ -1403,6 +1403,94 @@ bool vu_set_queue_host_notifier(VuDev *dev,
+>     VuVirtq *vq, int fd,
+>     >      return vu_process_message_reply(dev, &vmsg);
+>     >  }
+>     > 
+>     > +bool
+>     > +vu_get_shared_object(VuDev *dev, unsigned char uuid[UUID_LEN], int
+>     *dmabuf_fd)
+>     > +{
+>     > +    bool result = false;
+>     > +    VhostUserMsg msg_reply;
+>     > +    VhostUserMsg msg = {
+>     > +        .request = VHOST_USER_BACKEND_SHARED_OBJECT,
+>     > +        .size = sizeof(msg.payload.object),
+>     > +        .flags = VHOST_USER_VERSION | VHOST_USER_NEED_REPLY_MASK,
+>     > +        .payload.object = {
+>     > +            .type = VHOST_SHARED_OBJECT_LOOKUP,
+>     > +        },
+>     > +    };
+>     > +
+>     > +    memcpy(msg.payload.object.uuid, uuid, sizeof(uuid[0]) * UUID_LEN);
+>     > +
+>     > +    pthread_mutex_lock(&dev->slave_mutex);
+>     > +    if (!vu_message_write(dev, dev->slave_fd, &msg)) {
+>     > +        goto out;
+>     > +    }
+>     > +
+>     > +    if (!vu_message_read_default(dev, dev->slave_fd, &msg_reply)) {
+>     > +        goto out;
+>     > +    }
+>     > +
+>     > +    if (msg_reply.request != msg.request) {
+>     > +        DPRINT("Received unexpected msg type. Expected %d, received %d",
+>     > +               msg.request, msg_reply.request);
+>     > +        goto out;
+>     > +    }
+>     > +
+>     > +    *dmabuf_fd = msg_reply.payload.object.dmabuf_fd;
+>     > +    result = *dmabuf_fd > 0;
+>     > +out:
+>     > +    pthread_mutex_unlock(&dev->slave_mutex);
+>     > +
+>     > +    return result;
+>     > +}
+>     > +
+>     > +static bool
+>     > +vu_send_message(VuDev *dev, VhostUserMsg *vmsg)
+>     > +{
+>     > +    bool result = false;
+>     > +    pthread_mutex_lock(&dev->slave_mutex);
+>     > +    if (!vu_message_write(dev, dev->slave_fd, vmsg)) {
+>     > +        goto out;
+>     > +    }
+>     > +
+>     > +    result = true;
+>     > +out:
+>     > +    pthread_mutex_unlock(&dev->slave_mutex);
+>     > +
+>     > +    return result;
+>     > +}
+>     > +
+>     > +bool
+>     > +vu_add_shared_object(VuDev *dev, unsigned char uuid[UUID_LEN], int
+>     dmabuf_fd)
+>     > +{
+>     > +    VhostUserMsg msg = {
+>     > +        .request = VHOST_USER_BACKEND_SHARED_OBJECT,
+>     > +        .size = sizeof(msg.payload.object),
+>     > +        .flags = VHOST_USER_VERSION,
+>     > +        .payload.object = {
+>     > +            .dmabuf_fd = dmabuf_fd,
+>     > +            .type = VHOST_SHARED_OBJECT_ADD,
+>     > +        },
+>     > +    };
+>     > +    memcpy(msg.payload.object.uuid, uuid, sizeof(uuid[0]) * UUID_LEN);
+>     > +
+>     > +    return vu_send_message(dev, &msg);
+>     > +}
+>     > +
+>     > +bool
+>     > +vu_rm_shared_object(VuDev *dev, unsigned char uuid[UUID_LEN])
+>     > +{
+>     > +    VhostUserMsg msg = {
+>     > +        .request = VHOST_USER_BACKEND_SHARED_OBJECT,
+>     > +        .size = sizeof(msg.payload.object),
+>     > +        .flags = VHOST_USER_VERSION,
+>     > +        .payload.object = {
+>     > +            .type = VHOST_SHARED_OBJECT_REMOVE,
+>     > +        },
+>     > +    };
+>     > +    memcpy(msg.payload.object.uuid, uuid, sizeof(uuid[0]) * UUID_LEN);
+>     > +
+>     > +    return vu_send_message(dev, &msg);
+>     > +}
+>     > +
+>     >  static bool
+>     >  vu_set_vring_call_exec(VuDev *dev, VhostUserMsg *vmsg)
+>     >  {
+>     > diff --git a/subprojects/libvhost-user/libvhost-user.h b/subprojects/
+>     libvhost-user/libvhost-user.h
+>     > index 49208cceaa..a43d115bd7 100644
+>     > --- a/subprojects/libvhost-user/libvhost-user.h
+>     > +++ b/subprojects/libvhost-user/libvhost-user.h
+>     > @@ -119,6 +119,7 @@ typedef enum VhostUserSlaveRequest {
+>     >      VHOST_USER_BACKEND_VRING_HOST_NOTIFIER_MSG = 3,
+>     >      VHOST_USER_BACKEND_VRING_CALL = 4,
+>     >      VHOST_USER_BACKEND_VRING_ERR = 5,
+>     > +    VHOST_USER_BACKEND_SHARED_OBJECT = 6,
+>     >      VHOST_USER_BACKEND_MAX
+>     >  }  VhostUserSlaveRequest;
+>     > 
+>     > @@ -172,6 +173,20 @@ typedef struct VhostUserInflight {
+>     >      uint16_t queue_size;
+>     >  } VhostUserInflight;
+>     > 
+>     > +typedef enum VhostUserSharedType {
+>     > +    VHOST_SHARED_OBJECT_ADD = 0,
+>     > +    VHOST_SHARED_OBJECT_LOOKUP,
+>     > +    VHOST_SHARED_OBJECT_REMOVE,
+>     > +} VhostUserSharedType;
+>     > +
+>     > +#define UUID_LEN 16
+>     > +
+>     > +typedef struct VhostUserShared {
+>     > +    unsigned char uuid[UUID_LEN];
+>     > +    VhostUserSharedType type;
+>     > +    int dmabuf_fd;
+>     > +} VhostUserShared;
+>     > +
+>     >  #if defined(_WIN32) && (defined(__x86_64__) || defined(__i386__))
+>     >  # define VU_PACKED __attribute__((gcc_struct, packed))
+>     >  #else
+>     > @@ -199,6 +214,7 @@ typedef struct VhostUserMsg {
+>     >          VhostUserConfig config;
+>     >          VhostUserVringArea area;
+>     >          VhostUserInflight inflight;
+>     > +        VhostUserShared object;
+>     >      } payload;
+>     > 
+>     >      int fds[VHOST_MEMORY_BASELINE_NREGIONS];
+>     > @@ -539,6 +555,46 @@ void vu_set_queue_handler(VuDev *dev, VuVirtq *vq,
+>     >  bool vu_set_queue_host_notifier(VuDev *dev, VuVirtq *vq, int fd,
+>     >                                  int size, int offset);
+>     > 
+>     > +/**
+>     > + * vu_get_shared_object:
+>     > + * @dev: a VuDev context
+>     > + * @uuid: UUID of the shared object
+>     > + * @dmabuf_fd: output dma-buf file descriptor
+>     > + *
+>     > + * Lookup for a virtio shared object (i.e., dma-buf fd) associated with
+>     the
+>     > + * received UUID. Result, if found, is stored in the dmabuf_fd argument.
+>     > + *
+>     > + * Returns: whether the virtio object was found.
+>     > + */
+>     > +bool vu_get_shared_object(VuDev *dev, unsigned char uuid[UUID_LEN],
+>     > +                          int *dmabuf_fd);
+>     > +
+>     > +/**
+>     > + * vu_add_shared_object:
+>     > + * @dev: a VuDev context
+>     > + * @uuid: UUID of the shared object
+>     > + * @dmabuf_fd: output dma-buf file descriptor
+>     > + *
+>     > + * Stores a new shared object (i.e., dma-buf fd) in the hash table, and
+>     > + * associates it with the received UUID.
+>     > + *
+>     > + * Returns: TRUE on success, FALSE on failure.
+>     > + */
+>     > +bool vu_add_shared_object(VuDev *dev, unsigned char uuid[UUID_LEN],
+>     > +                          int dmabuf_fd);
+>     > +
+>     > +/**
+>     > + * vu_rm_shared_object:
+>     > + * @dev: a VuDev context
+>     > + * @uuid: UUID of the shared object
+>     > + *
+>     > + * Removes a shared object (i.e., dma-buf fd) associated with the
+>     > + * received UUID from the hash table.
+>     > + *
+>     > + * Returns: TRUE on success, FALSE on failure.
+>     > + */
+>     > +bool vu_rm_shared_object(VuDev *dev, unsigned char uuid[UUID_LEN]);
+>     > +
+>     >  /**
+>     >   * vu_queue_set_notification:
+>     >   * @dev: a VuDev context
+>     > --
+>     > 2.40.0
+> 
+> 
 
 
