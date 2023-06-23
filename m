@@ -2,103 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C593473B743
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 14:32:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB16A73B71B
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 14:24:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCfwe-0001Kp-VH; Fri, 23 Jun 2023 08:31:20 -0400
+	id 1qCfoO-0005Z9-BH; Fri, 23 Jun 2023 08:22:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qCfwJ-0001AR-Sp
- for qemu-devel@nongnu.org; Fri, 23 Jun 2023 08:31:01 -0400
-Received: from mail-lf1-x12d.google.com ([2a00:1450:4864:20::12d])
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1qCfnZ-00040s-Av; Fri, 23 Jun 2023 08:21:57 -0400
+Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qCfwC-0000Tw-Nq
- for qemu-devel@nongnu.org; Fri, 23 Jun 2023 08:30:57 -0400
-Received: by mail-lf1-x12d.google.com with SMTP id
- 2adb3069b0e04-4f86bc35f13so730075e87.1
- for <qemu-devel@nongnu.org>; Fri, 23 Jun 2023 05:30:52 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1qCfnX-0004YH-1s; Fri, 23 Jun 2023 08:21:57 -0400
+Received: by mail-pf1-x42d.google.com with SMTP id
+ d2e1a72fcca58-666e6541c98so401746b3a.2; 
+ Fri, 23 Jun 2023 05:21:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687523451; x=1690115451;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=z+Ft1R3JBDSn9JTJ33FIkeeIZZV1IyyGZBrwy7UUFlQ=;
- b=UrZpQuhJ+ELEtNGXLL+z+JySVvPbOrVLnheKfv0tZpfAEc4bttSAfyN5sp1TfFEy94
- bR/7Ge85dIuxeFwTrYTkfvwRzEiqbMOxjiH+b7CQOSNVGwkzt96+s8f7gDllq0x7D0+P
- HNlt+/ykaqZ2Akdl5cnjLglFlppu64x7OMCiM5NB4PFfTWxlaRBWvzE1sIng6Ovr7i47
- 0FKZDSJvZ5ERU3dZhBrB6Rfc+MDALLdfnpGY68Uq4iFpBIMY33H1s9SDBxH04VzDo8JX
- lKOAMQTn1CVdYx9OOj3xggbWREqfBK2qigxbCAFmf61rLC+dRlsukZ+pWFroD16b7PHQ
- DgGA==
+ d=gmail.com; s=20221208; t=1687522913; x=1690114913;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=3+DHoao4gFcoVl7axpVb1gNGax6mcgeLFhXC4dMUOUI=;
+ b=kljtc0xjZ/aPUJFLq1EdUIMj0kllpIp+CFurH8rN7uGSas1r72cYsDJBOO6mHiNqvO
+ skqKvzY5Rw7S4G8ySmzPhJYAJ0pS+xcPsYeQmW7m5BZYLhR4B4EFG+1Dz8rXhcBwVJ0I
+ eF/xpNuRI4fx4KKrYHOtKQrx0GPHp6W8FsLraHgNMjgo1/zfqUB5I08KzVE7/nm26+Ah
+ EloSOLgb+JjkwIYFn2pCLZN2K+yQWconR9HKExa8g1Nb0+CUYW+OzSjYZpMI3jwXeERP
+ +X0Mb0S05PBcwFoTWqM5ZZAzj2Kf4dxPBqmOuCoXsB+LqcbQB51GsXnKU3U+9k7oyTA2
+ g5LQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687523451; x=1690115451;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=z+Ft1R3JBDSn9JTJ33FIkeeIZZV1IyyGZBrwy7UUFlQ=;
- b=MCljgqjY68fAl6M2WIUTpswihzvwxZLXfi2kqNHIt7iJGOp/9mNJl2iJQrfgwwMYaF
- FMFkfzX92hVM3q00gre7G/iv7oSo3nHgKEVxuv7jz22el4tjLuXIzG4PgQFuQ7EwwoFt
- uWEzMX8H4L6mH3uNTUVY3w1Vy5z5xK2k35dv7em9xNHJ15rh0sn5G+4YAL+Dseo2kqRl
- 0Omigfs38b/na2hmdKBfpHRc98gTuKj7gEWxuv4z7aHYNFfeKrvYhap8eWxWCt7QHYhq
- yDqeuXQhT40TQjkqpHEMIN+Cv7YEqeMp5ZNH/x5EuiWhJaFVitP2+ZcycpDWxrz2TgNk
- asrQ==
-X-Gm-Message-State: AC+VfDwJ3nFmBE/jh11GWraCerzqX2g09fBgQF3sInGyn6YnJY6/wVWX
- nx+wtXz7r8EbjDeHeDx7sqDhrQ==
-X-Google-Smtp-Source: ACHHUZ5IDZKKJxx8o+7MLxaC3WhQErEVaEaa63qb4/7b7ezPo9I4dfNU4ZkXrv2VRkgO+doDwMyLMw==
-X-Received: by 2002:a19:e602:0:b0:4f9:5781:862a with SMTP id
- d2-20020a19e602000000b004f95781862amr5631412lfh.38.1687523450939; 
- Fri, 23 Jun 2023 05:30:50 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
- by smtp.gmail.com with ESMTPSA id
- 12-20020a05600c020c00b003f9bd9e3226sm2261931wmi.7.2023.06.23.05.30.49
+ d=1e100.net; s=20221208; t=1687522913; x=1690114913;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=3+DHoao4gFcoVl7axpVb1gNGax6mcgeLFhXC4dMUOUI=;
+ b=FnikS6QfHUOT7YvVEWJ4CgRKLNK42vLIc/kkEjJMxxR2Lg0CsYn94WtkrO4oXYI88p
+ hlnVHoOv47KTspM3YCQ8SDOdFdeb0oFG3ksbmUweTNSGEa0UugKyGHIq2lU4rDWiK/n7
+ fGBiv+IzBYnmXHIfEFu1AqgDdLkKSIi7OXa2REaFikCrworxtQLchTPp8VjZtrYMU4VB
+ 7u6dI8fkdTj6/uNu60xuqxkfJw0L+UFttuXAJiMguCj2FagvhRNbf6/mTrqURsqZjRvD
+ eEVwzt/aojHZPftA+SRq0QjeO2wXuC2uiLsHXwZ6QY9lVSGjBCHvnqM3P99wTO4yiUwX
+ PBfQ==
+X-Gm-Message-State: AC+VfDxddkHVvQMw7JNqZLTOKRLU4Uo3yiCWbcBbKHkk3j5/+T7yrP4A
+ Urn/UZfirM/n3Mo0LyqR5MNLNE5qa8M=
+X-Google-Smtp-Source: ACHHUZ44ma9f0MTPbsYY3PjG/BrQ3Y/NFDCTUxDmW4sOz6aNXMhUvl0AS5HOGhNdUqNQyB8mpP8jOg==
+X-Received: by 2002:a05:6a00:2384:b0:667:e17e:85b7 with SMTP id
+ f4-20020a056a00238400b00667e17e85b7mr22164854pfc.1.1687522912638; 
+ Fri, 23 Jun 2023 05:21:52 -0700 (PDT)
+Received: from wheely.local0.net (193-116-198-102.tpgi.com.au.
+ [193.116.198.102]) by smtp.gmail.com with ESMTPSA id
+ x19-20020a62fb13000000b006328ee1e56csm6015370pfm.2.2023.06.23.05.21.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 23 Jun 2023 05:30:50 -0700 (PDT)
-Received: from zen.lan (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id A2DC31FFCF;
- Fri, 23 Jun 2023 13:21:03 +0100 (BST)
-From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- Juan Quintela <quintela@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, Cleber Rosa <crosa@redhat.com>,
- Darren Kenny <darren.kenny@oracle.com>,
- Alexandre Iooss <erdnaxe@crans.org>, Peter Xu <peterx@redhat.com>,
- qemu-arm@nongnu.org, Eduardo Habkost <eduardo@habkost.net>,
- Riku Voipio <riku.voipio@iki.fi>, Mahmoud Mandour <ma.mandourr@gmail.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Bandan Das <bsd@redhat.com>,
- Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
- Radoslaw Biernacki <rad@semihalf.com>, Alexander Bulekov <alxndr@bu.edu>,
- Leif Lindholm <quic_llindhol@quicinc.com>,
- Qiuhao Li <Qiuhao.Li@outlook.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Leonardo Bras <leobras@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Stefan Hajnoczi <stefanha@redhat.com>, Bin Meng <bmeng.cn@gmail.com>,
- Thomas Huth <thuth@redhat.com>, Beraldo Leal <bleal@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>, Yanan Wang <wangyanan55@huawei.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH 26/26] docs/devel: introduce some key concepts for QOM
- development
-Date: Fri, 23 Jun 2023 13:21:00 +0100
-Message-Id: <20230623122100.1640995-27-alex.bennee@linaro.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230623122100.1640995-1-alex.bennee@linaro.org>
-References: <20230623122100.1640995-1-alex.bennee@linaro.org>
+ Fri, 23 Jun 2023 05:21:52 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: qemu-ppc@nongnu.org
+Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
+ Alexey Kardashevskiy <aik@ozlabs.ru>
+Subject: [PATCH] tests/avocado: ppc test VOF bios Linux boot
+Date: Fri, 23 Jun 2023 22:21:35 +1000
+Message-Id: <20230623122135.320261-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12d;
- envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x12d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -116,80 +91,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Using QOM correctly is increasingly important to maintaining a modern
-code base. However the current documentation skips some important
-concepts before launching into a simple example. Lets:
+VOF is the new lightweight fast pseries bios. Add a Linux boot test
+using VOF.
 
-  - at least mention properties
-  - mention TYPE_OBJECT and TYPE_DEVICE
-  - talk about why we have realize/unrealize
-  - mention the QOM tree
+More tests could be moved to use VOF becasue it's much faster, but
+just dip one toe in the water first here. SLOF should continue to be
+tested too.
 
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20230619171437.357374-6-alex.bennee@linaro.org>
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- docs/devel/qom.rst | 47 ++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 47 insertions(+)
 
-diff --git a/docs/devel/qom.rst b/docs/devel/qom.rst
-index c342ce18e3..0113afb6e6 100644
---- a/docs/devel/qom.rst
-+++ b/docs/devel/qom.rst
-@@ -13,6 +13,53 @@ features:
- - System for dynamically registering types
- - Support for single-inheritance of types
- - Multiple inheritance of stateless interfaces
-+- Mapping internal members to publicly exposed properties
-+
-+The root object class is TYPE_OBJECT which provides for the basic
-+object methods.
-+
-+The Device Class
-+================
-+
-+The TYPE_DEVICE class is the parent class for all modern devices
-+implemented in QEMU and adds some specific methods to handle QEMU
-+device model. This includes managing the lifetime of devices from
-+creation through to when they become visible to the guest and
-+eventually unrealized.
-+
-+Device Life-cycle
-+-----------------
-+
-+As class initialisation cannot fail devices have an two additional
-+methods to handle the creation of dynamic devices. The ``realize``
-+function is called with ``Error **`` pointer which should be set if
-+the device cannot complete its setup. Otherwise on successful
-+completion of the ``realize`` method the device object is added to the
-+QOM tree and made visible to the guest.
-+
-+The reverse function is ``unrealize`` and should be were clean-up
-+code lives to tidy up after the system is done with the device.
-+
-+All devices can be instantiated by C code, however only some can
-+created dynamically via the command line or monitor. Likewise only
-+some can be unplugged after creation and need an explicit
-+``unrealize`` implementation. This is determined by the
-+``user_creatable`` and ``hotpluggable`` variables in the root
-+``DeviceClass`` structure.
-+
-+The QOM tree
-+------------
-+
-+The QOM tree is a composition tree which represents all of the objects
-+that make up a QEMU "machine". You can view this tree by running
-+``info qom-tree`` in the :ref:`QEMU monitor`. It will contain both
-+objects created by the machine itself as well those created due to
-+user configuration.
-+
-+Creating a minimal device
-+=========================
-+
-+A simple minimal device implementation may look something like bellow:
+This applies on top of the SMP/SMT avocado test I sent. Just
+thought it would be a nice addition.
+
+Thanks,
+Nick
+
+ tests/avocado/ppc_pseries.py | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/tests/avocado/ppc_pseries.py b/tests/avocado/ppc_pseries.py
+index ff42c770f2..a8311e6555 100644
+--- a/tests/avocado/ppc_pseries.py
++++ b/tests/avocado/ppc_pseries.py
+@@ -29,6 +29,17 @@ def do_test_ppc64_linux_boot(self):
+                          '-append', kernel_command_line)
+         self.vm.launch()
  
- .. code-block:: c
-    :caption: Creating a minimal type
++    def test_ppc64_vof_linux_boot(self):
++        """
++        :avocado: tags=arch:ppc64
++        :avocado: tags=machine:pseries
++        """
++
++        self.vm.add_args('-machine', 'x-vof=on')
++        self.do_test_ppc64_linux_boot()
++        console_pattern = 'VFS: Cannot open root device'
++        wait_for_console_pattern(self, console_pattern, self.panic_message)
++
+     def test_ppc64_linux_boot(self):
+         """
+         :avocado: tags=arch:ppc64
 -- 
-2.39.2
+2.40.1
 
 
