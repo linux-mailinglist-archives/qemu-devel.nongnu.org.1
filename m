@@ -2,86 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6D7673B851
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 14:58:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 399CC73B860
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 15:06:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCgMk-0001G7-Pn; Fri, 23 Jun 2023 08:58:18 -0400
+	id 1qCgT6-0007SJ-6R; Fri, 23 Jun 2023 09:04:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qCgMg-0000vT-6T; Fri, 23 Jun 2023 08:58:15 -0400
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qCgT4-0007SA-N3
+ for qemu-devel@nongnu.org; Fri, 23 Jun 2023 09:04:50 -0400
+Received: from mail-lf1-x130.google.com ([2a00:1450:4864:20::130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qCgMc-0006UJ-Ml; Fri, 23 Jun 2023 08:58:13 -0400
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-1b52bf6e659so3159195ad.3; 
- Fri, 23 Jun 2023 05:58:08 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qCgT3-0007xe-0T
+ for qemu-devel@nongnu.org; Fri, 23 Jun 2023 09:04:50 -0400
+Received: by mail-lf1-x130.google.com with SMTP id
+ 2adb3069b0e04-4f871c93a5fso736709e87.2
+ for <qemu-devel@nongnu.org>; Fri, 23 Jun 2023 06:04:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1687525087; x=1690117087;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ d=linaro.org; s=google; t=1687525486; x=1690117486;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ekB+n0pvhBE4oDDClDofItiQvFeklJBwzGHlLI89v7E=;
- b=bM01o8W6fXegQg6teU++MN3kFduP79ib8cQ9oCQ8TybDYucVrpGIx9cg/5USi6Qc5V
- Z9hmAfmmSauEPEoSEsL76QVI5c8+1GWoXEoS0VxHwV06ijufiJJZ1UhZvU9iLzUwdCIw
- QWR8RTtwlZ+KH3tcewYhkrjJXE6OLrPDIVZXjl+oxZgrSGGs4SnqGgMjs3G4T7BiiPQn
- s+Jf2BrW6FfwJE8cdZcKw8oc66x7sOiUBiDdQ/PgbIjkRb/Uht6w43xgU9qT4bAU3j5X
- aGSddKdE668efaqyGKX02hwy40CCcOGi56QUHWFecDjVRcZ/epxGnA2lqesWYrksZvHd
- gMhA==
+ bh=m+Wk4PulGMyQglaBGyS5VThwTIN442ioBIvyNpWgCA4=;
+ b=Tm/1dKLQ/KVG0pI6+9reRS+ivctq0khOn5B1TYFvBZRMsJemiNTXRhAryhDlU6SudM
+ KIbgD21fgHwgaD1kDU6AiwgMbRtItUx3ZZPz7e8qUq9akMfHaE35pPKN40a0h/NHZ0eh
+ GOMgJAHkv8qQ+x6ANRlKZ+j0uSzHVmsV9xpQU3F4u0YaVjIrl7FGSiX0t6CbaC8xZPRX
+ ztisnR/F+qtM0X7zdQTQ67nA8sT+xqONCLLKOmxKJ6dpMEOmx819ilF/pSzVdglMx6bA
+ Z0beb87K3jZjp8XoZTuNJ1hSHeN0e5KLLpP3y9zTmzDIqETRAxrKyqfOSp7GE5UIqrG+
+ P57A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687525087; x=1690117087;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20221208; t=1687525486; x=1690117486;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ekB+n0pvhBE4oDDClDofItiQvFeklJBwzGHlLI89v7E=;
- b=afjkmjJvgzU+gz19vfLTNUdrVkhTyBcoTClAf99yUa5o2HvytSNBeaBw05/fMCs6iG
- mQPMDSIkj1w25v+Uyrk86/Hwc/Y3+T5lWEYgHqRAzj5zbXhMyEcbBGEG/2SKCzJfOi58
- 8uh0beMeVv7pCxRzyLjr+sB6aPKKwMl+RDhzzRyTzuIFhOMd0gQBWNIQbuDfilp3YaKn
- mQ1FVGnVh1l1bNB4hAeMLq8k/TSN7nSA8YKgQwNIh+CRwsSc6uXaLMvgArUSqmAp3XLq
- slcm3EiDrubRErRUSFme0U/PBk/JIMPVAaBBffD/4oAtIK72CJfaXo5fBkFb/weiM5vR
- HTyA==
-X-Gm-Message-State: AC+VfDzOONM6EiZc9OQVMhc7GdR78UCMzraCQeXL9INX6aeXzUevVLxD
- bICbfhzNiPK2ubrJagTxD44lbw2TE+s=
-X-Google-Smtp-Source: ACHHUZ72NqcPGF4j0qG9coVxAGsxQpD2shhae0rDv8SVsZ+LCs/W3mC4geMwZY/UbwxAH2T9/F41NA==
-X-Received: by 2002:a17:902:6b43:b0:1b6:7d4b:3f97 with SMTP id
- g3-20020a1709026b4300b001b67d4b3f97mr8970048plt.24.1687525086915; 
- Fri, 23 Jun 2023 05:58:06 -0700 (PDT)
-Received: from wheely.local0.net (193-116-198-102.tpgi.com.au.
- [193.116.198.102]) by smtp.gmail.com with ESMTPSA id
- b12-20020a170902bd4c00b001a04d27ee92sm7141795plx.241.2023.06.23.05.58.00
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 23 Jun 2023 05:58:06 -0700 (PDT)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>, John Snow <jsnow@redhat.com>,
- Cleber Rosa <crosa@redhat.com>, Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH 7/7] tests/avocado: ppc64 pseries reverse debugging test
-Date: Fri, 23 Jun 2023 22:57:07 +1000
-Message-Id: <20230623125707.323517-8-npiggin@gmail.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230623125707.323517-1-npiggin@gmail.com>
-References: <20230623125707.323517-1-npiggin@gmail.com>
+ bh=m+Wk4PulGMyQglaBGyS5VThwTIN442ioBIvyNpWgCA4=;
+ b=XcQFsb2xrgNe8WDlcCgBxPy2tI0rBP+j63lbDqWx1QsMu1AeEXjRCtJJ8RoN+04fsJ
+ 1c9A/uMhbW/8Ek52/5JU/6XSO2o1tw2bJO6Kpdb+zyI0r3dkcV4Dy51dBhL67vX9SAtE
+ rNEgC01eQiFSq7E4NunecUjm3C07q2h3SwEd9U56prlzIPfkmw7PLMwGXDr3Cl1jg0fN
+ TpdcRmzgF8GwLLWZl5edrpEc6dY6GjVXjo2ZrXBeqGuhrQMWvhBnd6u4ogW8x5NhaPW3
+ G/vTq69mQoyGR/MkBqEyZLgUREqYxSva3r8z4rRasCapg1/v3+syhVc7XOn7+2dmaJY9
+ jsCg==
+X-Gm-Message-State: AC+VfDy1fPF7PEBGIUTE/AFKQ9a00HoGMdFoOmdPSg8w3tFyme2M933w
+ kglBGmcQ7c73O3cFyJ215jaJxfd/TSGMpMpEAiJrTQ==
+X-Google-Smtp-Source: ACHHUZ58lGY/f18w3z18v/IZIURac84YC4gvK+ailZOVwmCtpyvggZri24V8Q7+LfkZPA003mWi+kq0koTMf6cch+To=
+X-Received: by 2002:a05:6512:3a8d:b0:4f9:5c6a:d4d9 with SMTP id
+ q13-20020a0565123a8d00b004f95c6ad4d9mr6416340lfu.38.1687525486538; Fri, 23
+ Jun 2023 06:04:46 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x62d.google.com
+References: <20230526153143.470745-1-eperezma@redhat.com>
+In-Reply-To: <20230526153143.470745-1-eperezma@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 23 Jun 2023 14:04:35 +0100
+Message-ID: <CAFEAcA_7C7jD5x+eT6XbheMYAESVy-VNn2RXxg4pBW9c7PN=tA@mail.gmail.com>
+Subject: Re: [PATCH v4 0/2] Move ASID test to vhost-vdpa net initialization
+To: =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>
+Cc: qemu-devel@nongnu.org, Parav Pandit <parav@mellanox.com>, 
+ "Gonglei (Arei)" <arei.gonglei@huawei.com>, longpeng2@huawei.com, 
+ Shannon Nelson <snelson@pensando.io>, Laurent Vivier <lvivier@redhat.com>,
+ si-wei.liu@oracle.com, 
+ Cindy Lu <lulu@redhat.com>, Lei Yang <leiyang@redhat.com>, 
+ Harpreet Singh Anand <hanand@xilinx.com>, Dragos Tatulea <dtatulea@nvidia.com>,
+ Stefano Garzarella <sgarzare@redhat.com>, Gautam Dawar <gdawar@xilinx.com>, 
+ Jason Wang <jasowang@redhat.com>, Liuxiangdong <liuxiangdong5@huawei.com>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, alvaro.karsz@solid-run.com, 
+ Zhu Lingshan <lingshan.zhu@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::130;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x130.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -99,69 +95,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-pseries can run reverse-debugging well enough to pass basic tests.
+On Fri, 26 May 2023 at 16:32, Eugenio P=C3=A9rez <eperezma@redhat.com> wrot=
+e:
+>
+> QEMU v8.0 is able to switch dynamically between vhost-vdpa passthrough
+> and SVQ mode as long as the net device does not have CVQ.  The net device
+> state followed (and migrated) by CVQ requires special care.
+>
+> A pre-requisite to add CVQ to that framework is to determine if devices w=
+ith
+> CVQ are migratable or not at initialization time.  The solution to it is =
+to
+> always shadow only CVQ, and vq groups and ASID are used for that.
+>
+> However, current qemu version only checks ASID at device start (as "drive=
+r set
+> DRIVER_OK status bit"), not at device initialization.  A check at
+> initialization time is required.  Otherwise, the guest would be able to s=
+et
+> and remove migration blockers at will [1].
+>
+> This series is a requisite for migration of vhost-vdpa net devices with C=
+VQ.
+> However it already makes sense by its own, as it reduces the number of io=
+ctls
+> at migration time, decreasing the error paths there.
 
-There is strangeness with reverse-continue possibly relating to a bp
-being set on the first instruction or on a snapshot, that causes
-the PC to be reported on the first instruction rather than last
-breakpoint, so a workaround is added for that for now.
+Hi -- since you're working on the net_init_vhost_vdpa() code,
+would you mind having a look at Coverity CID 1490785 ?
+This is about a leak of the vdpa_device_fd. We fixed one
+instance of that leak in commit aed5da45daf734ddc54 but
+it looks like there's still a different leak:
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- tests/avocado/reverse_debugging.py | 28 +++++++++++++++++++++++++++-
- 1 file changed, 27 insertions(+), 1 deletion(-)
+    for (i =3D 0; i < queue_pairs; i++) {
+        ncs[i] =3D net_vhost_vdpa_init(peer, TYPE_VHOST_VDPA, name,
+                                     vdpa_device_fd, i, 2, true, opts->x_sv=
+q,
+                                     iova_range, features);
+        if (!ncs[i])
+            goto err;
+    }
 
-diff --git a/tests/avocado/reverse_debugging.py b/tests/avocado/reverse_debugging.py
-index 680c314cfc..553c931994 100644
---- a/tests/avocado/reverse_debugging.py
-+++ b/tests/avocado/reverse_debugging.py
-@@ -94,7 +94,7 @@ def gdb_bstep(g):
-     def vm_get_icount(vm):
-         return vm.qmp('query-replay')['return']['icount']
- 
--    def reverse_debugging(self, shift=7, args=None):
-+    def reverse_debugging(self, shift=7, args=None, initial_skip=False):
-         logger = logging.getLogger('replay')
- 
-         # create qcow2 for snapshots
-@@ -135,6 +135,10 @@ def reverse_debugging(self, shift=7, args=None):
-             self.fail('Reverse continue is not supported by QEMU')
- 
-         logger.info('stepping forward')
-+
-+        if initial_skip:
-+            self.gdb_step(g)
-+
-         steps = []
-         # record first instruction addresses
-         for _ in range(self.STEPS):
-@@ -216,3 +220,25 @@ def test_aarch64_virt(self):
- 
-         self.reverse_debugging(
-             args=('-kernel', kernel_path))
-+
-+class ReverseDebugging_ppc64(ReverseDebugging):
-+    """
-+    :avocado: tags=accel:tcg
-+    """
-+
-+    REG_PC = 0x40
-+
-+    # unidentified gitlab timeout problem
-+    @skipIf(os.getenv('GITLAB_CI'), 'Running on GitLab')
-+    def test_ppc64_pseries(self):
-+        """
-+        :avocado: tags=arch:ppc64
-+        :avocado: tags=machine:pseries
-+        """
-+        # start with BIOS only
-+        self.endian_is_le = False
-+        # reverse-continue fails (seems to end up at the start) if a break
-+        # is put on the first instruction. initial_skip skips one before the
-+        # first bp, and it works. Could be due to break at the same icount
-+        # as the snapshot?
-+        self.reverse_debugging(initial_skip=True)
--- 
-2.40.1
+    if (has_cvq) {
+        nc =3D net_vhost_vdpa_init(peer, TYPE_VHOST_VDPA, name,
+                                 vdpa_device_fd, i, 1, false,
+                                 opts->x_svq, iova_range, features);
+        if (!nc)
+            goto err;
+    }
 
+    return 0;
+
+In this code, if queue_pairs is non-zero we will use
+vdpa_device_fd because we pass it to net_vhost_vdpa_init().
+Similarly, if has_cvq is true then we'll also use the fd.
+But if queue_pairs is zero and has_cvq is false then we
+will not do anything with the fd, and will return 0,
+leaking the file descriptor.
+
+Maybe this combination is not supposed to happen, but
+I can't see anything in vhost_vdpa_get_max_queue_pairs()
+or in this function which guards against it. If it's
+an invalid setup we should detect it and return an
+error, I think.
+
+thanks
+-- PMM
 
