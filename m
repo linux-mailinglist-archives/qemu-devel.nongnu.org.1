@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5D5A73B29A
+	by mail.lfdr.de (Postfix) with ESMTPS id EBF6173B29E
 	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 10:22:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCc20-0000iT-T2; Fri, 23 Jun 2023 04:20:36 -0400
+	id 1qCc23-0000jD-1c; Fri, 23 Jun 2023 04:20:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qCc1y-0000h6-Ei; Fri, 23 Jun 2023 04:20:34 -0400
-Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
+ id 1qCc21-0000ie-0q; Fri, 23 Jun 2023 04:20:37 -0400
+Received: from mail-pg1-x52e.google.com ([2607:f8b0:4864:20::52e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qCc1u-0002pV-LN; Fri, 23 Jun 2023 04:20:34 -0400
-Received: by mail-pf1-x433.google.com with SMTP id
- d2e1a72fcca58-66615629689so201689b3a.2; 
- Fri, 23 Jun 2023 01:20:29 -0700 (PDT)
+ id 1qCc1z-0002tB-8F; Fri, 23 Jun 2023 04:20:36 -0400
+Received: by mail-pg1-x52e.google.com with SMTP id
+ 41be03b00d2f7-543ae6ce8d1so369719a12.2; 
+ Fri, 23 Jun 2023 01:20:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1687508428; x=1690100428;
+ d=gmail.com; s=20221208; t=1687508433; x=1690100433;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=mSMu7K59gsJkKuMnSScWtyJ//9NCTa8sk+fznKryss4=;
- b=FTt9tmP5hmjg3e9iH7J5Wj5cABIWNdGjDXbPDftm7VrXLC6xoYYuCaLuEZ/fKvO4NO
- iqIfkzPIhhJUD31Yg0THYTzMEUs4kSSzf1SyJhW1r0HfeIAo0REbmUD72YohcNM+kiDp
- DewVynTDqW/Zy/WVHpS8kePOdlfCCP3GEi7Ug82RyxAmq0cbaImsTW87D3+o2M0SOOUZ
- +KSXaMoNCQ8yR03gDDE/fO+q3b4YsihzRMiEhysI9IwEmf/90hQYJI4ZYTfFmfdWS7qR
- xKGW3zAjcOOp1vV9x3QDJiVJiBngqtC0QoiG3z3DndULF9vhRyM4E5z0yDImFBVNZZC0
- 2wKw==
+ bh=TAeWCYAlTb2aqEPCBDmE25oHqVckLOxsVAOrw8DbLjI=;
+ b=EA2orlZtwtDlQ+8Kb/5mJCg6CpoiSYLkaymCe5o8ef9x3VmBHoWtV8WLv3tbxk2S+r
+ im5yxB0CC/5Qtawj9ZusIfkh9ANpOlYRec+9AtODwhn0YUyOFcgbXlEyU+XonwlrHhOc
+ 1P6Ek56nbytxiygPvqwDLjvUyoQQzMRtrzRBUpNIPqiEclSgUiVLBnwVF4QcAFd7T1aY
+ Vif1k2WlcRzlzEWLOdZcE6sJ2uCWPjI/cB+T7HCExvLgQRIIshkOsT3veTVqgG8Z9n2X
+ 9+csGe6TJ+kY0Wf+AC3IqfFnWc+/DHtmtoVRxufUVuIJA2AjDmcYKym9PbVt9qW7Dy38
+ eePQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687508428; x=1690100428;
+ d=1e100.net; s=20221208; t=1687508433; x=1690100433;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=mSMu7K59gsJkKuMnSScWtyJ//9NCTa8sk+fznKryss4=;
- b=UclMArc7TJSJvJlgnjcXcs7tP25fhosVChyZ3x4F+gT5um6lS10qLxaErFd2YkHVkY
- 63XAA5gc6bbyLlHoJavnOlotEuM0blMfH2JUHGGrpsgyaR6rYN4gEKMHcBYbtGniycPE
- e4EV9xnM3Be0JSz6Iw9jCAbDbFALG/7UA9zfsMGxn50f7aaE56OVpsO01vbXQ7MCHrMO
- mhY2UFA3D48X6c1Z0tp/KZNmpYCr+rM4Vfk9n/1iQ6stKQaOQrQr5MvjKsAvuMl5eoWV
- MK5AYUrD+91xQbMv4MybF6tRu+BlcnJ8xStqq3BeWjTdNU7OT4Wpr+ZPCewwzYF3famc
- 7PKQ==
-X-Gm-Message-State: AC+VfDzkdDT1NEW+UWlIC08+Chyz5pdcPuhagL4jJ5uqsScL0gpC+NT3
- 41cOBaKazT/fXjZwR8Gu/yhUSCpFWZ4=
-X-Google-Smtp-Source: ACHHUZ4WzmdABzN3af1zOLsg4YkJItSBELlYbfRbp1mEhy0Tkwfu0wnp8QHpoxryjvdT+QpgYGhpXQ==
-X-Received: by 2002:a05:6a00:17a6:b0:666:e954:8ab5 with SMTP id
- s38-20020a056a0017a600b00666e9548ab5mr25767770pfg.5.1687508428240; 
- Fri, 23 Jun 2023 01:20:28 -0700 (PDT)
+ bh=TAeWCYAlTb2aqEPCBDmE25oHqVckLOxsVAOrw8DbLjI=;
+ b=lApB2WLIB/j48001tLuF2jYag6+BUpvFYqob6w5pqaMiX//CrlYX+YQW/JTFk8tNK7
+ Y4ArlabuVObksbVack9bbeOnPwkilLEXTHfwxb/SuuTq43zpKwxFvx0KMjAUb2z8asLI
+ jYpItYAago8W+IpNC4IDycL+SxecEkygroC911zGOuok8hpeS1rdAWC0pgKbhBdKmwbu
+ qL9diIZNr7LJw89To2n80VHHxHnNPZ/2QjhPbLHur5xny2Ine4sTrCjZA+rdbL/r1rxW
+ PzuDiP21/biITjY4XRuzZhNris8wgjODrce79SNgmRieMksSUtxWnL12BzM/wj5P1t+V
+ xeww==
+X-Gm-Message-State: AC+VfDzK2CDgIALnnqBpl3SBmQd216NfV9JjE8+bXPR0DZ4KFDdhv/SO
+ 61/RuxwM1v3zQyAjlsvibCl+881yqeI=
+X-Google-Smtp-Source: ACHHUZ7gPaKrOKsPUH/tAHf55qI+KQ3p8W8g+fo8VuOQda4lbUHC7Ndv1cJFdRzC0q6RkYyVZmo7HQ==
+X-Received: by 2002:a05:6a21:78a9:b0:10a:cb95:5aa3 with SMTP id
+ bf41-20020a056a2178a900b0010acb955aa3mr25901059pzc.7.1687508433357; 
+ Fri, 23 Jun 2023 01:20:33 -0700 (PDT)
 Received: from wheely.local0.net ([1.146.27.231])
  by smtp.gmail.com with ESMTPSA id
- s15-20020a62e70f000000b0066884d4efdbsm5780604pfh.12.2023.06.23.01.20.23
+ s15-20020a62e70f000000b0066884d4efdbsm5780604pfh.12.2023.06.23.01.20.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 23 Jun 2023 01:20:28 -0700 (PDT)
+ Fri, 23 Jun 2023 01:20:33 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org,
@@ -63,17 +63,16 @@ Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>
-Subject: [PATCH 3/4] target/ppc: Move common check in machne check handlers to
- a function
-Date: Fri, 23 Jun 2023 18:19:52 +1000
-Message-Id: <20230623081953.290875-4-npiggin@gmail.com>
+Subject: [PATCH 4/4] target/ppc: Make checkstop stop the system
+Date: Fri, 23 Jun 2023 18:19:53 +1000
+Message-Id: <20230623081953.290875-5-npiggin@gmail.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230623081953.290875-1-npiggin@gmail.com>
 References: <20230623081953.290875-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x433.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52e;
+ envelope-from=npiggin@gmail.com; helo=mail-pg1-x52e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,186 +95,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: BALATON Zoltan <balaton@eik.bme.hu>
+checkstop state does not halt the system, interrupts continue to be
+serviced, and other CPUs run.
 
-All powerpc exception handlers share some code when handling machine
-check exceptions. Move this to a common function.
+Stop the machine with vm_stop(), and print a register dump too.
 
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
-Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
-[np: tweak subject, rename function to powerpc_mcheck_test_and_checkstop]
-Signed-off-by-by: Nicholas Piggin <npiggin@gmail.com>
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/ppc/excp_helper.c | 114 +++++++++------------------------------
- 1 file changed, 25 insertions(+), 89 deletions(-)
+ target/ppc/excp_helper.c | 35 +++++++++++++++++++++--------------
+ 1 file changed, 21 insertions(+), 14 deletions(-)
 
 diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
-index 1c26828d8b..4bfcfc3c3d 100644
+index 4bfcfc3c3d..51e83d7f07 100644
 --- a/target/ppc/excp_helper.c
 +++ b/target/ppc/excp_helper.c
-@@ -404,6 +404,25 @@ static void powerpc_set_excp_state(PowerPCCPU *cpu, target_ulong vector,
-     env->reserve_addr = -1;
+@@ -19,6 +19,7 @@
+ #include "qemu/osdep.h"
+ #include "qemu/main-loop.h"
+ #include "qemu/log.h"
++#include "sysemu/runstate.h"
+ #include "cpu.h"
+ #include "exec/exec-all.h"
+ #include "internal.h"
+@@ -165,6 +166,24 @@ static void ppc_excp_debug_sw_tlb(CPUPPCState *env, int excp)
+              env->error_code);
  }
  
-+static void powerpc_mcheck_test_and_checkstop(CPUPPCState *env)
++static void powerpc_checkstop(PowerPCCPU *cpu, const char *reason)
 +{
-+    CPUState *cs = env_cpu(env);
++    CPUState *cs = CPU(cpu);
 +
-+    if (FIELD_EX64(env->msr, MSR, ME)) {
-+        return;
-+    }
++    vm_stop(RUN_STATE_GUEST_PANICKED);
 +
-+    /* Machine check exception is not enabled. Enter checkstop state. */
-+    fprintf(stderr, "Machine check while not allowed. "
-+            "Entering checkstop state\n");
++    fprintf(stderr, "Entering checkstop state: %s\n", reason);
++    cpu_dump_state(cs, stderr, CPU_DUMP_FPU | CPU_DUMP_CCOP);
 +    if (qemu_log_separate()) {
-+        qemu_log("Machine check while not allowed. "
-+                 "Entering checkstop state\n");
++        FILE *logfile = qemu_log_trylock();
++        if (logfile) {
++            fprintf(logfile, "Entering checkstop state: %s\n", reason);
++            cpu_dump_state(cs, logfile, CPU_DUMP_FPU | CPU_DUMP_CCOP);
++            qemu_log_unlock(logfile);
++        }
 +    }
-+    cs->halted = 1;
-+    cpu_interrupt_exittb(cs);
 +}
 +
- static void powerpc_excp_40x(PowerPCCPU *cpu, int excp)
+ #if defined(TARGET_PPC64)
+ static int powerpc_reset_wakeup(CPUState *cs, CPUPPCState *env, int excp,
+                                 target_ulong *msr)
+@@ -406,21 +425,9 @@ static void powerpc_set_excp_state(PowerPCCPU *cpu, target_ulong vector,
+ 
+ static void powerpc_mcheck_test_and_checkstop(CPUPPCState *env)
  {
-     CPUState *cs = CPU(cpu);
-@@ -446,21 +465,7 @@ static void powerpc_excp_40x(PowerPCCPU *cpu, int excp)
-         srr1 = SPR_40x_SRR3;
-         break;
-     case POWERPC_EXCP_MCHECK:    /* Machine check exception                  */
--        if (!FIELD_EX64(env->msr, MSR, ME)) {
--            /*
--             * Machine check exception is not enabled.  Enter
--             * checkstop state.
--             */
--            fprintf(stderr, "Machine check while not allowed. "
--                    "Entering checkstop state\n");
--            if (qemu_log_separate()) {
--                qemu_log("Machine check while not allowed. "
--                        "Entering checkstop state\n");
--            }
--            cs->halted = 1;
--            cpu_interrupt_exittb(cs);
--        }
+-    CPUState *cs = env_cpu(env);
 -
-+        powerpc_mcheck_test_and_checkstop(env);
-         /* machine check exceptions don't have ME set */
-         new_msr &= ~((target_ulong)1 << MSR_ME);
- 
-@@ -577,21 +582,7 @@ static void powerpc_excp_6xx(PowerPCCPU *cpu, int excp)
-     case POWERPC_EXCP_CRITICAL:    /* Critical input                         */
-         break;
-     case POWERPC_EXCP_MCHECK:    /* Machine check exception                  */
--        if (!FIELD_EX64(env->msr, MSR, ME)) {
--            /*
--             * Machine check exception is not enabled.  Enter
--             * checkstop state.
--             */
--            fprintf(stderr, "Machine check while not allowed. "
--                    "Entering checkstop state\n");
--            if (qemu_log_separate()) {
--                qemu_log("Machine check while not allowed. "
--                        "Entering checkstop state\n");
--            }
--            cs->halted = 1;
--            cpu_interrupt_exittb(cs);
--        }
+-    if (FIELD_EX64(env->msr, MSR, ME)) {
+-        return;
+-    }
 -
-+        powerpc_mcheck_test_and_checkstop(env);
-         /* machine check exceptions don't have ME set */
-         new_msr &= ~((target_ulong)1 << MSR_ME);
+-    /* Machine check exception is not enabled. Enter checkstop state. */
+-    fprintf(stderr, "Machine check while not allowed. "
+-            "Entering checkstop state\n");
+-    if (qemu_log_separate()) {
+-        qemu_log("Machine check while not allowed. "
+-                 "Entering checkstop state\n");
++    if (!FIELD_EX64(env->msr, MSR, ME)) {
++        powerpc_checkstop(env_archcpu(env), "machine check with MSR[ME]=0");
+     }
+-    cs->halted = 1;
+-    cpu_interrupt_exittb(cs);
+ }
  
-@@ -750,21 +741,7 @@ static void powerpc_excp_7xx(PowerPCCPU *cpu, int excp)
- 
-     switch (excp) {
-     case POWERPC_EXCP_MCHECK:    /* Machine check exception                  */
--        if (!FIELD_EX64(env->msr, MSR, ME)) {
--            /*
--             * Machine check exception is not enabled.  Enter
--             * checkstop state.
--             */
--            fprintf(stderr, "Machine check while not allowed. "
--                    "Entering checkstop state\n");
--            if (qemu_log_separate()) {
--                qemu_log("Machine check while not allowed. "
--                        "Entering checkstop state\n");
--            }
--            cs->halted = 1;
--            cpu_interrupt_exittb(cs);
--        }
--
-+        powerpc_mcheck_test_and_checkstop(env);
-         /* machine check exceptions don't have ME set */
-         new_msr &= ~((target_ulong)1 << MSR_ME);
- 
-@@ -935,21 +912,7 @@ static void powerpc_excp_74xx(PowerPCCPU *cpu, int excp)
- 
-     switch (excp) {
-     case POWERPC_EXCP_MCHECK:    /* Machine check exception                  */
--        if (!FIELD_EX64(env->msr, MSR, ME)) {
--            /*
--             * Machine check exception is not enabled.  Enter
--             * checkstop state.
--             */
--            fprintf(stderr, "Machine check while not allowed. "
--                    "Entering checkstop state\n");
--            if (qemu_log_separate()) {
--                qemu_log("Machine check while not allowed. "
--                        "Entering checkstop state\n");
--            }
--            cs->halted = 1;
--            cpu_interrupt_exittb(cs);
--        }
--
-+        powerpc_mcheck_test_and_checkstop(env);
-         /* machine check exceptions don't have ME set */
-         new_msr &= ~((target_ulong)1 << MSR_ME);
- 
-@@ -1130,21 +1093,7 @@ static void powerpc_excp_booke(PowerPCCPU *cpu, int excp)
-         srr1 = SPR_BOOKE_CSRR1;
-         break;
-     case POWERPC_EXCP_MCHECK:    /* Machine check exception                  */
--        if (!FIELD_EX64(env->msr, MSR, ME)) {
--            /*
--             * Machine check exception is not enabled.  Enter
--             * checkstop state.
--             */
--            fprintf(stderr, "Machine check while not allowed. "
--                    "Entering checkstop state\n");
--            if (qemu_log_separate()) {
--                qemu_log("Machine check while not allowed. "
--                        "Entering checkstop state\n");
--            }
--            cs->halted = 1;
--            cpu_interrupt_exittb(cs);
--        }
--
-+        powerpc_mcheck_test_and_checkstop(env);
-         /* machine check exceptions don't have ME set */
-         new_msr &= ~((target_ulong)1 << MSR_ME);
- 
-@@ -1377,20 +1326,7 @@ static void powerpc_excp_books(PowerPCCPU *cpu, int excp)
- 
-     switch (excp) {
-     case POWERPC_EXCP_MCHECK:    /* Machine check exception                  */
--        if (!FIELD_EX64(env->msr, MSR, ME)) {
--            /*
--             * Machine check exception is not enabled.  Enter
--             * checkstop state.
--             */
--            fprintf(stderr, "Machine check while not allowed. "
--                    "Entering checkstop state\n");
--            if (qemu_log_separate()) {
--                qemu_log("Machine check while not allowed. "
--                        "Entering checkstop state\n");
--            }
--            cs->halted = 1;
--            cpu_interrupt_exittb(cs);
--        }
-+        powerpc_mcheck_test_and_checkstop(env);
-         if (env->msr_mask & MSR_HVB) {
-             /*
-              * ISA specifies HV, but can be delivered to guest with HV
+ static void powerpc_excp_40x(PowerPCCPU *cpu, int excp)
 -- 
 2.40.1
 
