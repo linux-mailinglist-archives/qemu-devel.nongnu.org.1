@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4487F73BBB1
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 17:33:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 431CD73BBD2
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 17:38:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCimK-00074Z-5J; Fri, 23 Jun 2023 11:32:52 -0400
+	id 1qCiqu-0000Fw-1g; Fri, 23 Jun 2023 11:37:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qCimI-00074P-Mq
- for qemu-devel@nongnu.org; Fri, 23 Jun 2023 11:32:50 -0400
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qCiqr-0000FE-ST
+ for qemu-devel@nongnu.org; Fri, 23 Jun 2023 11:37:33 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qCimH-0003vX-7D
- for qemu-devel@nongnu.org; Fri, 23 Jun 2023 11:32:50 -0400
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-3112d202363so837509f8f.3
- for <qemu-devel@nongnu.org>; Fri, 23 Jun 2023 08:32:48 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qCiqp-00079s-65
+ for qemu-devel@nongnu.org; Fri, 23 Jun 2023 11:37:32 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-3fa79605a3bso8073065e9.0
+ for <qemu-devel@nongnu.org>; Fri, 23 Jun 2023 08:37:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687534367; x=1690126367;
+ d=linaro.org; s=google; t=1687534649; x=1690126649;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=/wt8IUXNx2SEKkdIBG9YNVd50utkjtl8qtMQ1ymttCY=;
- b=tkmDpFIozbHyNMAH0mv/zX3iyhu7Pj65A+Ut0rsu24seJwPU92LLQeNET/bnnixVQm
- ASvkCuOO3X/tQ61PwF2kBvQDyyMKNNFVpbjqAPbjTBadCCUx//Gw73aK1LC4Aw4evQNr
- byBrwGtQ+rT1isQRCVtX9+qi0GNPPO8sooa5UZMojR9TDE+pN3c5pduc1vWX7e1vDQdm
- jEJiOB0xZgkBtXO0F5JmHWrBDSpwyWoCfIAS+6dTe7Jj7GNTqPrIoW+M/gRgzQUy8SEg
- D6EP4Wj3or8KpyqpT0Zr3YCayHRd4gxWto/rQqdY0Ni4P2pS/s8Obl7AhpxR+iyJTMkw
- Vnvw==
+ bh=JCDhBOGR9wUEmUe0obPbKzLCbCa0o8VK8ZcobAyHGvc=;
+ b=gCzrzzQgJiS4l/fz1OuhdUOROwMPTZXnliNmUo870zY/oRW4VXhjbR+KHLVoCMd03T
+ fObbEEGCi0fcvXEOdlXCKkeamLz0PnpaWymPTxoXKV6ipTqlyYQxlvzJx1SAqfWDdwZ/
+ h0tvHrnxKemlBX6KYF54bTsMdEgHh9JbHcKZXoNpkDiX2S13AqFC55ok768tH5JE3QG6
+ irn1u7IxN1m+do4DA54UkvuzvI8fQ5IvdHuSuK41zUpcN2eROJTeSeLxjXBIvxdQc09N
+ VaOzpx4Y4W+0lVKQ2s/1cuJ1rrNphs3oPQG5rY7X9/u2NL8v6oy01+jE6Hsai8l0Qx5W
+ 61lQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687534367; x=1690126367;
+ d=1e100.net; s=20221208; t=1687534649; x=1690126649;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=/wt8IUXNx2SEKkdIBG9YNVd50utkjtl8qtMQ1ymttCY=;
- b=XA8+Zxv1ztYZ6RGUOc5iltt3VxFyfaL7RldvF3gBbrwR0PNNK7zWaSikde6Me0g7l9
- PTwZW+T5LkfkUqNzM7dfAxeZrTTPT0mfQV0v0nu9uQXOHpB6koUS2uJ5yRfPrcaX+gWn
- CPBOcMCaFVe95hgsLjQQYRyG9YNXXtQ1bvPEVOz7UiFpJqoObli34XWGc1uUzfw8HWZz
- BkZTMFaqp4ABFYHG3vSctk2gcfhBH6xYcrpQwZPHZQBSr05R/IJZIAHOERmHYNBSuzZw
- dVVSSCJ2MR0/1Eb4evsu/hpOyD10sFkofleil91NkVBGpr0m1Ry+w5nHOyb236N/O6vr
- C6Mg==
-X-Gm-Message-State: AC+VfDza80THlBgJqcZXaH7Yn6qXI3nlU61TXZIXbtJ5LtBnSQBAp2H1
- +7FpCEeYC1hy6YzImiINNxsy3A==
-X-Google-Smtp-Source: ACHHUZ627jKdti6OlY8MIgR6M5bO1YzhIy9JhFzP1AkZaYN5uZu4uZjxegkq4cVCNmtp2uPCMuXFXQ==
-X-Received: by 2002:a5d:43c2:0:b0:311:1cd8:b97a with SMTP id
- v2-20020a5d43c2000000b003111cd8b97amr4307734wrr.47.1687534367680; 
- Fri, 23 Jun 2023 08:32:47 -0700 (PDT)
+ bh=JCDhBOGR9wUEmUe0obPbKzLCbCa0o8VK8ZcobAyHGvc=;
+ b=BH90LU9ulFbofQMKp5Gr9hZYkh4V+Tys6W/ga79u4vt3+Ea+aoB9dggLapzITHORRE
+ WZ+nXFbNktQOpxRftuE0lmWTZG+W+eGvRaTPHPy1MpY7V5BsHssU2fv+gxT9lipSel0J
+ 4XA+woTNTxd0WBiQ+DFafbiGtpkGVlsZeWDQfgj0dTHXBldlhBj8Yh6yd8Hdf4sUPQye
+ KUozCUCXsdsd9sXtT+KdNbTU2eAMLYUWLtDKnCTycUCAs7fs15+icup1JPcGScSssISQ
+ Iip4lrEXFFJyxIda/RDH+7+yP+IWJtmSSMutn6kk6gCpX80d9STTO6HWloR6b+n6cO5P
+ 6qYA==
+X-Gm-Message-State: AC+VfDyxRWXVYPBJ5w9F3IsCzShxrDKvLfTxUEMG1zEeubAYKB0x+cqJ
+ xkKe5mQHeh2vd9nIhRFM6rci0Q==
+X-Google-Smtp-Source: ACHHUZ5lG61WnkZ7fyF8AACrSiKiUMJuJLJeo4vdNFrsxlMQ5S67LTBbtKu1gbYaR+nUNGu+CYIGeQ==
+X-Received: by 2002:a05:600c:21d8:b0:3f9:bc32:ca6c with SMTP id
+ x24-20020a05600c21d800b003f9bc32ca6cmr8461385wmj.13.1687534649588; 
+ Fri, 23 Jun 2023 08:37:29 -0700 (PDT)
 Received: from [192.168.93.175] (94.red-88-29-173.dynamicip.rima-tde.net.
  [88.29.173.94]) by smtp.gmail.com with ESMTPSA id
- f17-20020a056000037100b00311334c7fabsm9946156wrf.16.2023.06.23.08.32.46
+ a6-20020adffac6000000b0030aefa3a957sm9834189wrs.28.2023.06.23.08.37.27
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 23 Jun 2023 08:32:47 -0700 (PDT)
-Message-ID: <1d254072-7929-8d04-4549-0bc7757ca707@linaro.org>
-Date: Fri, 23 Jun 2023 17:32:45 +0200
+ Fri, 23 Jun 2023 08:37:29 -0700 (PDT)
+Message-ID: <ca2121fd-e430-f3f7-48fa-5ff3bb6ffe7b@linaro.org>
+Date: Fri, 23 Jun 2023 17:37:25 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.12.0
-Subject: Re: [PATCH v4 3/3] softmmu/physmem: Fixup qemu_ram_block_from_host()
- documentation
+Subject: Re: [PATCH] tests/avocado: ppc test VOF bios Linux boot
 Content-Language: en-US
-To: David Hildenbrand <david@redhat.com>, qemu-devel@nongnu.org
-Cc: "Michael S. Tsirkin" <mst@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>
-References: <20230523185915.540373-1-david@redhat.com>
- <20230523185915.540373-4-david@redhat.com>
+To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
+Cc: qemu-devel@nongnu.org, Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
+ David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
+ Alexey Kardashevskiy <aik@ozlabs.ru>
+References: <20230623122135.320261-1-npiggin@gmail.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230523185915.540373-4-david@redhat.com>
+In-Reply-To: <20230623122135.320261-1-npiggin@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -96,19 +96,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 23/5/23 20:59, David Hildenbrand wrote:
-> Let's fixup the documentation (e.g., removing traces of the ram_addr
-> parameter that no longer exists) and move it to the header file while at
-> it.
+On 23/6/23 14:21, Nicholas Piggin wrote:
+> VOF is the new lightweight fast pseries bios. Add a Linux boot test
+> using VOF.
 > 
-> Suggested-by: Igor Mammedov <imammedo@redhat.com>
-> Acked-by: Igor Mammedov <imammedo@redhat.com>
-> Reviewed-by: Peter Xu <peterx@redhat.com>
-> Signed-off-by: David Hildenbrand <david@redhat.com>
+> More tests could be moved to use VOF becasue it's much faster, but
+
+Typo "because".
+
+> just dip one toe in the water first here. SLOF should continue to be
+> tested too.
+> 
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > ---
->   include/exec/cpu-common.h | 15 +++++++++++++++
->   softmmu/physmem.c         | 17 -----------------
->   2 files changed, 15 insertions(+), 17 deletions(-)
+> 
+> This applies on top of the SMP/SMT avocado test I sent. Just
+> thought it would be a nice addition.
+> 
+> Thanks,
+> Nick
+> 
+>   tests/avocado/ppc_pseries.py | 11 +++++++++++
+>   1 file changed, 11 insertions(+)
+> 
+> diff --git a/tests/avocado/ppc_pseries.py b/tests/avocado/ppc_pseries.py
+> index ff42c770f2..a8311e6555 100644
+> --- a/tests/avocado/ppc_pseries.py
+> +++ b/tests/avocado/ppc_pseries.py
+> @@ -29,6 +29,17 @@ def do_test_ppc64_linux_boot(self):
+>                            '-append', kernel_command_line)
+>           self.vm.launch()
+>   
+> +    def test_ppc64_vof_linux_boot(self):
+> +        """
+> +        :avocado: tags=arch:ppc64
+> +        :avocado: tags=machine:pseries
+
+Note, you could add 'tags:firmware:vof' if filtering to run only tests
+booting VOF is useful.
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
