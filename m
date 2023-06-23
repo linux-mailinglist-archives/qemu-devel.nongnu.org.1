@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E232873B850
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 14:58:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C94E73B852
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 14:58:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCgMF-0000Q3-Kq; Fri, 23 Jun 2023 08:57:47 -0400
+	id 1qCgMK-0000W7-QF; Fri, 23 Jun 2023 08:57:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qCgMC-0000P3-IV; Fri, 23 Jun 2023 08:57:44 -0400
-Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
+ id 1qCgMI-0000Sn-2M; Fri, 23 Jun 2023 08:57:50 -0400
+Received: from mail-pg1-x52a.google.com ([2607:f8b0:4864:20::52a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qCgMA-0006Q8-UE; Fri, 23 Jun 2023 08:57:44 -0400
-Received: by mail-pf1-x42c.google.com with SMTP id
- d2e1a72fcca58-6686c74183cso424430b3a.1; 
- Fri, 23 Jun 2023 05:57:40 -0700 (PDT)
+ id 1qCgMG-0006Ri-7j; Fri, 23 Jun 2023 08:57:49 -0400
+Received: by mail-pg1-x52a.google.com with SMTP id
+ 41be03b00d2f7-54290603887so382586a12.1; 
+ Fri, 23 Jun 2023 05:57:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1687525059; x=1690117059;
+ d=gmail.com; s=20221208; t=1687525066; x=1690117066;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Tuemuz9+yMRA0aIIj5fzqEDX8XdmM6dDu+ce4c9JhTE=;
- b=bB4r7P9DM5+cpvZJaXk+5gX55lHPBFSmgZjsJVkTfX7sMB/tidp68n8bWYyy4FTqeQ
- XhLoCo+/H6tDP3lWJ1f2NGjk5FwstPZah5hQ/US+vtoCopMcc5xuQx+nA1hw+Z+AKcVO
- 37wDGHJpT+4dEBXFiurYUs7061gKtIhQv9EaNAN23e5Bd8Tmf4clEAB3q8KnZRldmkEz
- FYrpahQws9tirQ4ELSaJFVDQRvoVvPx9LH4eM/lWAqmOkfbFuGcV7r4+Rc4BxypmS6v1
- tu/b4J/GEyFv1x9e11JBhofICt8Cu1MKC62unZ+81CaksMESpiGaFjz6SBl6qQcQieHX
- OqTQ==
+ bh=vPVziyxEWerMj/TzPold0Nq7Z0giPqF+Gq4GzlvWGMI=;
+ b=eNCHveKUJa24DCz9/Hh2WWkkHwDJ7Lbo0o+i5RVTBnyKI+Uugp2oveX+mBY4Ovk3nr
+ S2Lg/PxVYoxkAtJ6WHOhZIC0BiwG827dVz9iRgSGD+vr+Ed+yzPzHcMG98W0cDJJ3bBx
+ zqo8sa9+I7L3vf39zUlpJPp7W7jRePbwS7h1opmfNL+yyDBtlqgIw1h66jwnWK5iMZzQ
+ z9kvnEWgw7cnjBLw8LKV0WNxMtDWtR0jXrj6veVOoVEm3byuhCvk+9yVMX+06opBiFX/
+ 99rinYQhceQAI0UQgQhS+JCH0ZRPYjb6WcG/sSLLU3GbNgZ9l3agG8VrWo39eiDQgG/b
+ F20A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687525059; x=1690117059;
+ d=1e100.net; s=20221208; t=1687525066; x=1690117066;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Tuemuz9+yMRA0aIIj5fzqEDX8XdmM6dDu+ce4c9JhTE=;
- b=BBJGrlaqdZs64kv3YNkncRpAqK2d2Ck1LUn8v+861a1odEGj4BgMCBeyqis0JifP9S
- DvagqKCKMSn6wmd38z+QlOkKofOzOBvh0sIBEMYU0eIH3WPxKrX6wncx9tCrtnZWR5/d
- 1ioBxNskVWaIMvV5qnF2nNGY6q4jxv8X+ayCteImkabMjx7CXAp7hANYpnIO/Oi7evbw
- bHFR+NkZUKVzlmLRQabdGr/cblaujnYD6yzzcaaOXNOC7mhAykspBhqQKXmg3VM0EoAn
- 2zN+vSa3vN5O/jTMXwEJ/ZGa/0NXEx5SZjv8enbQAsbbZAK7SbcssO3AbHRyJOvWkExT
- 7heQ==
-X-Gm-Message-State: AC+VfDxTZ0+BnJli55VbjEEsbhIaimPoB722fqH6o+/vHZhcavslkc61
- Bi9yhmi+URyAihtbEmpEF9bvbwqgFjU=
-X-Google-Smtp-Source: ACHHUZ4TSiaX6Kevkrc3Lc13nd3arZd3KviKJoFcQnHDhswOtQtZa1y8XOXYST3MSCycXyDEXxb40g==
-X-Received: by 2002:a05:6a20:548c:b0:123:100e:c8ae with SMTP id
- i12-20020a056a20548c00b00123100ec8aemr10576577pzk.52.1687525059285; 
- Fri, 23 Jun 2023 05:57:39 -0700 (PDT)
+ bh=vPVziyxEWerMj/TzPold0Nq7Z0giPqF+Gq4GzlvWGMI=;
+ b=ce8ynNRkjo90nGML4+5r2BxbbxXJ6Jsa3+bFpoDx45To36g6/f2gvqCCR1Fwlbgf+Q
+ wbmlN1j5Up6GZQeO2Ihbh9eFF0FnfL6EterfvDfPOpO0ANJG4AVHzMFnn5KCl6J4lYVQ
+ UnH6Pnp1FZ8C2V0bwkccuXMyal8oFvr6Nt03f1g1VHvD0vKufgKAmAS7e7ey2s+jlsfH
+ idHLz5QrsVx1pnzKUWN6p3X1WbdRS/GSgEzr8y3Flm3zp9RVpY521CrQhXYPAWCQ720A
+ VlhchR0ADYumfpScqTn4HHhL2+tlzlV2xlYGGgnCpx9U8VQ4OnfItZfD17Gx0RDA52oR
+ tKTQ==
+X-Gm-Message-State: AC+VfDwZvhtReJRxfr4Dj44TYIo0Ks8U13UcpGqvunV7kSoPf2+D6Nue
+ t2rdUUouToPvCecQCOQ2xkz43x2usHA=
+X-Google-Smtp-Source: ACHHUZ7mQMEIz053ceNHRJFcgcwKn5bCe7D2Xu+HI+Tg/FkxWdYNhNI/HAUrQm455LTmsJ6zWxZcoA==
+X-Received: by 2002:a17:902:7c92:b0:1b3:91f7:4883 with SMTP id
+ y18-20020a1709027c9200b001b391f74883mr9326153pll.46.1687525066227; 
+ Fri, 23 Jun 2023 05:57:46 -0700 (PDT)
 Received: from wheely.local0.net (193-116-198-102.tpgi.com.au.
  [193.116.198.102]) by smtp.gmail.com with ESMTPSA id
- b12-20020a170902bd4c00b001a04d27ee92sm7141795plx.241.2023.06.23.05.57.33
+ b12-20020a170902bd4c00b001a04d27ee92sm7141795plx.241.2023.06.23.05.57.39
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 23 Jun 2023 05:57:39 -0700 (PDT)
+ Fri, 23 Jun 2023 05:57:46 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
@@ -67,16 +67,17 @@ Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Beraldo Leal <bleal@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH 3/7] spapr: Fix machine reset deadlock from replay-record
-Date: Fri, 23 Jun 2023 22:57:03 +1000
-Message-Id: <20230623125707.323517-4-npiggin@gmail.com>
+Subject: [PATCH 4/7] spapr: Fix record-replay machine reset consuming too many
+ events
+Date: Fri, 23 Jun 2023 22:57:04 +1000
+Message-Id: <20230623125707.323517-5-npiggin@gmail.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230623125707.323517-1-npiggin@gmail.com>
 References: <20230623125707.323517-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x42c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52a;
+ envelope-from=npiggin@gmail.com; helo=mail-pg1-x52a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,118 +100,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When the machine is reset to load a new snapshot while being debugged
-with replay-record, it is done from another thread, so the CPU does
-not run the register setting operations. Set CPU registers directly in
-machine reset.
+spapr_machine_reset gets a random number to populate the device-tree
+rng seed with. When loading a snapshot for record-replay, the machine
+is reset again, and that tries to consume the random event record
+again, crashing due to inconsistent record
+
+Fix this by saving the seed to populate the device tree with, and
+skipping the rng on snapshot load.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- hw/ppc/spapr.c         | 20 ++++++++++++++++++--
+ hw/ppc/spapr.c         | 12 +++++++++---
  include/hw/ppc/spapr.h |  1 +
- target/ppc/compat.c    | 19 +++++++++++++++++++
- target/ppc/cpu.h       |  1 +
- 4 files changed, 39 insertions(+), 2 deletions(-)
+ 2 files changed, 10 insertions(+), 3 deletions(-)
 
 diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-index 677b5eef9d..d290acfa95 100644
+index d290acfa95..55948f233f 100644
 --- a/hw/ppc/spapr.c
 +++ b/hw/ppc/spapr.c
-@@ -1317,6 +1317,22 @@ void spapr_set_all_lpcrs(target_ulong value, target_ulong mask)
-     }
- }
- 
-+/* May be used when the machine is not running */
-+void spapr_init_all_lpcrs(target_ulong value, target_ulong mask)
-+{
-+    CPUState *cs;
-+    CPU_FOREACH(cs) {
-+        PowerPCCPU *cpu = POWERPC_CPU(cs);
-+        CPUPPCState *env = &cpu->env;
-+        target_ulong lpcr;
-+
-+        lpcr = env->spr[SPR_LPCR];
-+        lpcr &= ~(LPCR_HR | LPCR_UPRT);
-+        ppc_store_lpcr(cpu, lpcr);
-+    }
-+}
-+
-+
- static bool spapr_get_pate(PPCVirtualHypervisor *vhyp, PowerPCCPU *cpu,
-                            target_ulong lpid, ppc_v3_pate_t *entry)
+@@ -1017,7 +1017,6 @@ static void spapr_dt_chosen(SpaprMachineState *spapr, void *fdt, bool reset)
  {
-@@ -1578,7 +1594,7 @@ int spapr_reallocate_hpt(SpaprMachineState *spapr, int shift, Error **errp)
+     MachineState *machine = MACHINE(spapr);
+     SpaprMachineClass *smc = SPAPR_MACHINE_GET_CLASS(machine);
+-    uint8_t rng_seed[32];
+     int chosen;
+ 
+     _FDT(chosen = fdt_add_subnode(fdt, 0, "chosen"));
+@@ -1095,8 +1094,7 @@ static void spapr_dt_chosen(SpaprMachineState *spapr, void *fdt, bool reset)
+         spapr_dt_ov5_platform_support(spapr, fdt, chosen);
      }
-     /* We're setting up a hash table, so that means we're not radix */
-     spapr->patb_entry = 0;
--    spapr_set_all_lpcrs(0, LPCR_HR | LPCR_UPRT);
-+    spapr_init_all_lpcrs(0, LPCR_HR | LPCR_UPRT);
-     return 0;
+ 
+-    qemu_guest_getrandom_nofail(rng_seed, sizeof(rng_seed));
+-    _FDT(fdt_setprop(fdt, chosen, "rng-seed", rng_seed, sizeof(rng_seed)));
++    _FDT(fdt_setprop(fdt, chosen, "rng-seed", spapr->fdt_rng_seed, 32));
+ 
+     _FDT(spapr_dt_ovec(fdt, chosen, spapr->ov5_cas, "ibm,architecture-vec-5"));
  }
+@@ -1649,6 +1647,14 @@ static void spapr_machine_reset(MachineState *machine, ShutdownCause reason)
+     void *fdt;
+     int rc;
  
-@@ -1656,7 +1672,7 @@ static void spapr_machine_reset(MachineState *machine, ShutdownCause reason)
-     spapr_ovec_cleanup(spapr->ov5_cas);
-     spapr->ov5_cas = spapr_ovec_new();
++    if (reason != SHUTDOWN_CAUSE_SNAPSHOT_LOAD) {
++        /*
++         * Record-replay snapshot load must not consume random, this was
++         * already replayed from initial machine reset.
++         */
++        qemu_guest_getrandom_nofail(spapr->fdt_rng_seed, 32);
++    }
++
+     pef_kvm_reset(machine->cgs, &error_fatal);
+     spapr_caps_apply(spapr);
  
--    ppc_set_compat_all(spapr->max_compat_pvr, &error_fatal);
-+    ppc_init_compat_all(spapr->max_compat_pvr, &error_fatal);
- 
-     /*
-      * This is fixing some of the default configuration of the XIVE
 diff --git a/include/hw/ppc/spapr.h b/include/hw/ppc/spapr.h
-index 538b2dfb89..f47e8419a5 100644
+index f47e8419a5..f4bd204d86 100644
 --- a/include/hw/ppc/spapr.h
 +++ b/include/hw/ppc/spapr.h
-@@ -1012,6 +1012,7 @@ bool spapr_check_pagesize(SpaprMachineState *spapr, hwaddr pagesize,
- #define SPAPR_OV5_XIVE_BOTH     0x80 /* Only to advertise on the platform */
- 
- void spapr_set_all_lpcrs(target_ulong value, target_ulong mask);
-+void spapr_init_all_lpcrs(target_ulong value, target_ulong mask);
- hwaddr spapr_get_rtas_addr(void);
- bool spapr_memory_hot_unplug_supported(SpaprMachineState *spapr);
- 
-diff --git a/target/ppc/compat.c b/target/ppc/compat.c
-index 7949a24f5a..ebef2cccec 100644
---- a/target/ppc/compat.c
-+++ b/target/ppc/compat.c
-@@ -229,6 +229,25 @@ int ppc_set_compat_all(uint32_t compat_pvr, Error **errp)
-     return 0;
- }
- 
-+/* To be used when the machine is not running */
-+int ppc_init_compat_all(uint32_t compat_pvr, Error **errp)
-+{
-+    CPUState *cs;
-+
-+    CPU_FOREACH(cs) {
-+        PowerPCCPU *cpu = POWERPC_CPU(cs);
-+        int ret;
-+
-+        ret = ppc_set_compat(cpu, compat_pvr, errp);
-+
-+        if (ret < 0) {
-+            return ret;
-+        }
-+    }
-+
-+    return 0;
-+}
-+
- int ppc_compat_max_vthreads(PowerPCCPU *cpu)
- {
-     const CompatInfo *compat = compat_by_pvr(cpu->compat_pvr);
-diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
-index 0087ce66e2..a0f4cec606 100644
---- a/target/ppc/cpu.h
-+++ b/target/ppc/cpu.h
-@@ -1496,6 +1496,7 @@ int ppc_set_compat(PowerPCCPU *cpu, uint32_t compat_pvr, Error **errp);
- 
- #if !defined(CONFIG_USER_ONLY)
- int ppc_set_compat_all(uint32_t compat_pvr, Error **errp);
-+int ppc_init_compat_all(uint32_t compat_pvr, Error **errp);
- #endif
- int ppc_compat_max_vthreads(PowerPCCPU *cpu);
- void ppc_compat_add_property(Object *obj, const char *name,
+@@ -204,6 +204,7 @@ struct SpaprMachineState {
+     uint32_t fdt_size;
+     uint32_t fdt_initial_size;
+     void *fdt_blob;
++    uint8_t fdt_rng_seed[32];
+     long kernel_size;
+     bool kernel_le;
+     uint64_t kernel_addr;
 -- 
 2.40.1
 
