@@ -2,103 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0123A73B77F
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 14:37:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A68DB73B71E
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 Jun 2023 14:24:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCfwc-0001H6-BM; Fri, 23 Jun 2023 08:31:18 -0400
+	id 1qCfoA-0005IQ-O3; Fri, 23 Jun 2023 08:22:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qCfwI-0001AL-AQ
- for qemu-devel@nongnu.org; Fri, 23 Jun 2023 08:31:01 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qCfwC-0000Tr-7w
- for qemu-devel@nongnu.org; Fri, 23 Jun 2023 08:30:57 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-3f9bece8d1bso7659455e9.0
- for <qemu-devel@nongnu.org>; Fri, 23 Jun 2023 05:30:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687523450; x=1690115450;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=BBI1EKXYVa+WMuYu7l3ZX5976guHRdH5nUfqC+4pCho=;
- b=TIWrp0BCzxQkJ0LPWHq/g0lwhYCV84al3ki/W6O+bDBF2xprlhhhtZGIhRrJDJ5BNL
- YR4NSNIwiOtoPvSxK1JfDL2zbpA8qN70ZVGN6qc47FoIPgtpKgg6NWxrUt4a264SU2Nq
- Vj1BgPA1FfsWm02/f0ftezMT442ZoB0R/PnGc2N+yw4TpRQ+pUckDIL+PpBrYaXwVXZ0
- 2lAYw9r+WqCIr32nMijfkjcQrEqhIME4xTtm8xOSiUNizbSy+lurCPrTosVtdV5njgOs
- j/Lzz1cALP+XNm3WqzKSjE+oa/Z/5GVzFHmEAvI/cZfJykz4JvxMQ6S8U/6p/uLntw8H
- V+eg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687523450; x=1690115450;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=BBI1EKXYVa+WMuYu7l3ZX5976guHRdH5nUfqC+4pCho=;
- b=N7etKSkSYCnkBv8zGIi8rX1WhDd357FX1DzvPSquhwzfUuj6YLAX854PVh2pYDXiTw
- lOSN7cASMs2+OVHC+7V3tw0eZiR3ubRxuAPbxSP+nGv4mcmYAH4zw38iG1Kob4wJgueB
- dbrr72orEK7JnLZFbgdfEJYRiyirIkzMD/lf7/MGInE6P/H98usjmCMWWu7CgYra17Uv
- U+LCWPveS8R6ieOraQcAQY8QmB9mJ7WHUQINEy0Y/sTOMJN7uQBdo9aVjW7JJccFWAu7
- MkdyDad3fW1BNWU9RNHrnb0r9uqQyPkEvVvOKsSVie4YxCSFTmDkvuX2cg3xhMWP93c7
- Ulfw==
-X-Gm-Message-State: AC+VfDx9EeHSo4Okrl7gkXS9AknE0a6bnzMrIsOgmPtZGxgM5Xlk/jo/
- kKnbkZLKqSLZveQkmratBi6sug==
-X-Google-Smtp-Source: ACHHUZ5x6y5RHg+K7hI4o4mRHhrA5yl7dHn5D5WFAt9joyXX5aypT5hoWX+zjQTK1eJme4/5Umk66g==
-X-Received: by 2002:a05:600c:22c1:b0:3fa:7c4f:1f18 with SMTP id
- 1-20020a05600c22c100b003fa7c4f1f18mr1343311wmg.21.1687523450542; 
- Fri, 23 Jun 2023 05:30:50 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
- by smtp.gmail.com with ESMTPSA id
- u8-20020a05600c00c800b003f70a7b4537sm2207963wmm.36.2023.06.23.05.30.48
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 23 Jun 2023 05:30:49 -0700 (PDT)
-Received: from zen.lan (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id F0DC71FFCB;
- Fri, 23 Jun 2023 13:21:02 +0100 (BST)
-From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qCfn4-0003pc-8q
+ for qemu-devel@nongnu.org; Fri, 23 Jun 2023 08:21:27 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qCfmv-0003ny-Ak
+ for qemu-devel@nongnu.org; Fri, 23 Jun 2023 08:21:23 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1687522875;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=/O01eTYetJ4kEOUzh7C1X/NfigiYJlLAlUGeC6Q7ByQ=;
+ b=QTbxytKsJP14lXBWLQRn01QxYiCqtna6yEEruw3y+1Lk/zNK+pqGyMBMqvD4U6+/W3QFjj
+ VfGSHP+uCrFd21q6OapBZfZXkRub8/IdogVKMY3S6oZOPeMYWLJAGrJCHTfFZu1k8At0uW
+ LiAefbHNJzrY8Ly3xjpVrpL3iHPGRFg=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-647-DCw_G-5WP-atOpERiYWXnQ-1; Fri, 23 Jun 2023 08:21:12 -0400
+X-MC-Unique: DCw_G-5WP-atOpERiYWXnQ-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 04D3680027F;
+ Fri, 23 Jun 2023 12:21:12 +0000 (UTC)
+Received: from t480s.redhat.com (unknown [10.22.32.17])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id E3A7D40C2063;
+ Fri, 23 Jun 2023 12:21:09 +0000 (UTC)
+From: David Hildenbrand <david@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- Juan Quintela <quintela@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, Cleber Rosa <crosa@redhat.com>,
- Darren Kenny <darren.kenny@oracle.com>,
- Alexandre Iooss <erdnaxe@crans.org>, Peter Xu <peterx@redhat.com>,
- qemu-arm@nongnu.org, Eduardo Habkost <eduardo@habkost.net>,
- Riku Voipio <riku.voipio@iki.fi>, Mahmoud Mandour <ma.mandourr@gmail.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Bandan Das <bsd@redhat.com>,
- Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
- Radoslaw Biernacki <rad@semihalf.com>, Alexander Bulekov <alxndr@bu.edu>,
- Leif Lindholm <quic_llindhol@quicinc.com>,
- Qiuhao Li <Qiuhao.Li@outlook.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
+Cc: David Hildenbrand <david@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Leonardo Bras <leobras@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Stefan Hajnoczi <stefanha@redhat.com>, Bin Meng <bmeng.cn@gmail.com>,
- Thomas Huth <thuth@redhat.com>, Beraldo Leal <bleal@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>, Yanan Wang <wangyanan55@huawei.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH 20/26] plugins: update lockstep to use g_memdup2
-Date: Fri, 23 Jun 2023 13:20:54 +0100
-Message-Id: <20230623122100.1640995-21-alex.bennee@linaro.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230623122100.1640995-1-alex.bennee@linaro.org>
-References: <20230623122100.1640995-1-alex.bennee@linaro.org>
+ Igor Mammedov <imammedo@redhat.com>, qemu-arm@nongnu.org,
+ Gavin Shan <gshan@redhat.com>
+Subject: [PATCH v2 5/7] virtio-md-pci: Support unplug requests for compatible
+ devices
+Date: Fri, 23 Jun 2023 14:20:54 +0200
+Message-Id: <20230623122056.374312-6-david@redhat.com>
+In-Reply-To: <20230623122056.374312-1-david@redhat.com>
+References: <20230623122056.374312-1-david@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x330.google.com
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -115,27 +85,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The old g_memdup is deprecated, use the replacement.
+Let's support unplug requests for virtio-md-pci devices that provide
+a unplug_request_check() callback.
 
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+We'll wire that up for virtio-mem-pci next.
+
+Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- contrib/plugins/lockstep.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/virtio/virtio-md-pci.c         | 38 +++++++++++++++++++++++++++++--
+ include/hw/virtio/virtio-md-pci.h |  3 +++
+ 2 files changed, 39 insertions(+), 2 deletions(-)
 
-diff --git a/contrib/plugins/lockstep.c b/contrib/plugins/lockstep.c
-index e36f0b9562..3614c3564c 100644
---- a/contrib/plugins/lockstep.c
-+++ b/contrib/plugins/lockstep.c
-@@ -130,7 +130,7 @@ static void report_divergance(ExecState *us, ExecState *them)
-         }
-     }
-     divergence_log = g_slist_prepend(divergence_log,
--                                     g_memdup(&divrec, sizeof(divrec)));
-+                                     g_memdup2(&divrec, sizeof(divrec)));
+diff --git a/hw/virtio/virtio-md-pci.c b/hw/virtio/virtio-md-pci.c
+index a22a259e2d..62bfb7920b 100644
+--- a/hw/virtio/virtio-md-pci.c
++++ b/hw/virtio/virtio-md-pci.c
+@@ -69,8 +69,42 @@ void virtio_md_pci_plug(VirtIOMDPCI *vmd, MachineState *ms, Error **errp)
+ void virtio_md_pci_unplug_request(VirtIOMDPCI *vmd, MachineState *ms,
+                                   Error **errp)
+ {
+-    /* We don't support hot unplug of virtio based memory devices */
+-    error_setg(errp, "virtio based memory devices cannot be unplugged.");
++    VirtIOMDPCIClass *vmdc = VIRTIO_MD_PCI_GET_CLASS(vmd);
++    DeviceState *dev = DEVICE(vmd);
++    HotplugHandler *bus_handler = qdev_get_bus_hotplug_handler(dev);
++    HotplugHandlerClass *hdc;
++    Error *local_err = NULL;
++
++    if (!vmdc->unplug_request_check) {
++        error_setg(errp, "this virtio based memory devices cannot be unplugged");
++        return;
++    }
++
++    if (!bus_handler) {
++        error_setg(errp, "hotunplug of virtio based memory devices not"
++                   "supported on this bus");
++        return;
++    }
++
++    vmdc->unplug_request_check(vmd, &local_err);
++    if (local_err) {
++        error_propagate(errp, local_err);
++        return;
++    }
++
++    /*
++     * Forward the async request or turn it into a sync request (handling it
++     * like qdev_unplug()).
++     */
++    hdc = HOTPLUG_HANDLER_GET_CLASS(bus_handler);
++    if (hdc->unplug_request) {
++        hotplug_handler_unplug_request(bus_handler, dev, &local_err);
++    } else {
++        virtio_md_pci_unplug(vmd, ms, &local_err);
++        if (!local_err) {
++            object_unparent(OBJECT(dev));
++        }
++    }
+ }
  
-     /* Output short log entry of going out of sync... */
-     if (verbose || divrec.distance == 1 || diverged) {
+ void virtio_md_pci_unplug(VirtIOMDPCI *vmd, MachineState *ms, Error **errp)
+diff --git a/include/hw/virtio/virtio-md-pci.h b/include/hw/virtio/virtio-md-pci.h
+index f9fa857aec..5912e16674 100644
+--- a/include/hw/virtio/virtio-md-pci.h
++++ b/include/hw/virtio/virtio-md-pci.h
+@@ -26,6 +26,9 @@ OBJECT_DECLARE_TYPE(VirtIOMDPCI, VirtIOMDPCIClass, VIRTIO_MD_PCI)
+ struct VirtIOMDPCIClass {
+     /* private */
+     VirtioPCIClass parent;
++
++    /* public */
++    void (*unplug_request_check)(VirtIOMDPCI *vmd, Error **errp);
+ };
+ 
+ struct VirtIOMDPCI {
 -- 
-2.39.2
+2.40.1
 
 
