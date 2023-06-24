@@ -2,84 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E094573C772
-	for <lists+qemu-devel@lfdr.de>; Sat, 24 Jun 2023 09:43:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9111773CA4C
+	for <lists+qemu-devel@lfdr.de>; Sat, 24 Jun 2023 11:52:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCxuI-0000vG-R5; Sat, 24 Jun 2023 03:42:06 -0400
+	id 1qCzuu-0003d6-3c; Sat, 24 Jun 2023 05:50:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1qCxuF-0000uN-9q
- for qemu-devel@nongnu.org; Sat, 24 Jun 2023 03:42:03 -0400
-Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1qCxu9-0006Im-27
- for qemu-devel@nongnu.org; Sat, 24 Jun 2023 03:42:02 -0400
-Received: by mail-ed1-x52d.google.com with SMTP id
- 4fb4d7f45d1cf-51bea30ccbcso1356656a12.0
- for <qemu-devel@nongnu.org>; Sat, 24 Jun 2023 00:41:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1687592515; x=1690184515;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=qhmVfOjUMWSqtK39WahiVC3cYUdp7FqW+gT317BI4zw=;
- b=DNLJDS76Is6fnQwJlIX+nBS3zIFLjoRRa3wCXzskrUi3InDQOsCa5q6iae8nnCRo5e
- E2NfGczMGQVq3A3OSOmOswzs1rd+7Pp/aPUrSuFYLn3A5SSV5cDIQdPJ/4kacs71b79Q
- SJzebHtvxRMpYniG1AJAwJ7oRq/99iGn9vLm6NjvnPOTNYX5M6P8k15rlRgmMiHegt0F
- OPfAeTw73FWfb95efwOzt2gDu+0NlSFkFIB+YfKyxKjOTNH0iLoY9bvj3wlUsbGWKVMu
- wj80eUfWywq4sZcSAAFYZJSZvT00RmiVxg7M3oyloaKDDf8ogbYxQn1cso7KEpXIdiEI
- /SzQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687592515; x=1690184515;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=qhmVfOjUMWSqtK39WahiVC3cYUdp7FqW+gT317BI4zw=;
- b=PlohACMlE5EJXywd5rUlfVejviB7e3Cbsl7kWzRcO1kjEnAv8RJtjoPaEqHNA42veI
- Z57ed0ogdVfo3GH2YnSrevm8YEnif7cjOr66Hk35aitDL5GY3k+qTQlf4z6ZAkY/hq7i
- kJ4DCZ6ib9V6BQJAT6TEwPn1YC+HSIfJbx1aHueT7r+Wl5SdK5xTQtYfwH+IqsxKeIa7
- O5bp3GkoliwEZTen8SFAyCnqYUzpYAWMuGN4SEq/mA/5xzEZxI+Gx9uElg+tZGA0rZ4Q
- 2onlP/sb2iQz+HnXF2sbHTIqPz4T6CwaMjCbC9k7QYtlh1UWxT9i+Xs3VGZIXg+MQ3MB
- 8jNg==
-X-Gm-Message-State: AC+VfDx4dCsusjN6/gKgFTqvpRbpGcmtAFdwlE+M0m1D3z5r+g4IbdE9
- S0bqWpji9vIaMNVFGvyJmiSntw==
-X-Google-Smtp-Source: ACHHUZ5JxvqeBOuq6r7SC5nlsK9jzcV5U5tos97i34Y7S4oAdX6nxFtsJRwsYnoF5HqjPJ6J8MNeHA==
-X-Received: by 2002:a17:907:c13:b0:988:aa45:806 with SMTP id
- ga19-20020a1709070c1300b00988aa450806mr15828464ejc.15.1687592515048; 
- Sat, 24 Jun 2023 00:41:55 -0700 (PDT)
-Received: from localhost (cst2-173-16.cust.vodafone.cz. [31.30.173.16])
- by smtp.gmail.com with ESMTPSA id
- qh15-20020a170906ecaf00b009885462a644sm569716ejb.215.2023.06.24.00.41.54
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 24 Jun 2023 00:41:54 -0700 (PDT)
-Date: Sat, 24 Jun 2023 09:41:53 +0200
-From: Andrew Jones <ajones@ventanamicro.com>
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
- bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
- palmer@rivosinc.com
-Subject: Re: [PATCH v3 16/19] target/riscv/cpu.c: create KVM mock properties
-Message-ID: <20230624-fad369c515a7f4edd9d21c2a@orel>
-References: <20230622135700.105383-1-dbarboza@ventanamicro.com>
- <20230622135700.105383-17-dbarboza@ventanamicro.com>
- <20230623-421ca497f9f83486881b9d9c@orel>
- <c1056ba9-4418-d6ce-536b-93155fff84a2@ventanamicro.com>
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qCzur-0003cp-Ji; Sat, 24 Jun 2023 05:50:49 -0400
+Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qCzuk-0001CC-Sx; Sat, 24 Jun 2023 05:50:49 -0400
+Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
+ by localhost (Postfix) with SMTP id 1B0C7748A77;
+ Sat, 24 Jun 2023 11:50:26 +0200 (CEST)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id C8591748A76; Sat, 24 Jun 2023 11:50:25 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id C50EF748A73;
+ Sat, 24 Jun 2023 11:50:25 +0200 (CEST)
+Date: Sat, 24 Jun 2023 11:50:25 +0200 (CEST)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>
+cc: =?ISO-8859-15?Q?C=E9dric_Le_Goater?= <clegoate@redhat.com>, 
+ Peter Maydell <peter.maydell@linaro.org>, 
+ Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org, 
+ qemu-devel@nongnu.org, Christophe Leroy <christophe.leroy@csgroup.eu>, 
+ Harsh Prateek Bora <harshpb@linux.ibm.com>, 
+ Daniel Henrique Barboza <danielhb413@gmail.com>, 
+ =?ISO-8859-15?Q?C=E9dric_Le_Goater?= <clg@kaod.org>, 
+ David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>, 
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, 
+ Frederic Barrat <frederic.barrat@fr.ibm.com>
+Subject: Re: [PATCH 0/4] target/ppc: Catch invalid real address accesses
+In-Reply-To: <cf674f48-c083-9ad9-3801-8cbd37aecbb1@linaro.org>
+Message-ID: <e9dd38cf-2dfd-a816-3b2d-4cbebc099727@eik.bme.hu>
+References: <20230623081953.290875-1-npiggin@gmail.com>
+ <CAFEAcA_Brf-R12t+DKNAoygqgC-qjKJ3Wiz4ULjGHOo8_vPovw@mail.gmail.com>
+ <47197a73-b106-47d5-9502-393a6bdc9945@redhat.com>
+ <cf674f48-c083-9ad9-3801-8cbd37aecbb1@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c1056ba9-4418-d6ce-536b-93155fff84a2@ventanamicro.com>
-Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
- envelope-from=ajones@ventanamicro.com; helo=mail-ed1-x52d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: multipart/mixed;
+ boundary="3866299591-2033448452-1687600225=:42373"
+X-Spam-Probability: 9%
+Received-SPF: pass client-ip=2001:738:2001:2001::2001;
+ envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,44 +70,97 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Jun 23, 2023 at 11:28:03AM -0300, Daniel Henrique Barboza wrote:
-...
-> > I think we should actually fail with an error when the user tries to
-> > enable an extension KVM doesn't support. Otherwise a user may be
-> > confused as to why their Zawrs=on didn't provide them a machine with
-> > Zawrs. And, when KVM learns how to provide that support to guests
-> > (Zawrs is actually on my TODO...), then migrating the same VM to
-> > later KVM/QEMU will actually enable the feature, possibly confusing
-> > the guest.
-> > 
-> > So, we should probably just not add any extension properties to KVM
-> > guests which can't be enabled. Then, as we add support to KVM, we'll
-> > add the properties too.
-> 
-> By 'extension properties' do you mean just the flags that enable/disable them,
-> like '-cpu, rawrs=<bool>', or also the other properties related to extensions
-> that KVM might not support, like 'vlen' and 'elen' from RVV? I'd say that it's
-> ok to leave things such as 'vlen' because the user won't be able to enable RVV
-> in KVM anyways.
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-Properties like 'vlen', which have a dependency on an extension, should
-probably have their own error checking at cpu finalize features time.
-I.e. if 'vlen' is present, but not V, then QEMU should complain. I see
-we don't currently do that, though.
+--3866299591-2033448452-1687600225=:42373
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8BIT
 
-> 
-> And what error do we want to throw? With this patch it's easy to just add an
-> Extension zawrs is not available using KVM" error message. Otherwise we can
-> not add the property at all and then QEMU will fail with a "property cpu.X not
-> found" type of error. Both will error out, question is whether we want to be
-> more informative about it.
+On Sat, 24 Jun 2023, Philippe Mathieu-Daudé wrote:
+> On 23/6/23 14:37, Cédric Le Goater wrote:
+>> On 6/23/23 11:10, Peter Maydell wrote:
+>>> On Fri, 23 Jun 2023 at 09:21, Nicholas Piggin <npiggin@gmail.com> wrote:
+>>>> 
+>>>> ppc has always silently ignored access to real (physical) addresses
+>>>> with nothing behind it, which can make debugging difficult at times.
+>>>> 
+>>>> It looks like the way to handle this is implement the transaction
+>>>> failed call, which most target architectures do. Notably not x86
+>>>> though, I wonder why?
+>>> 
+>>> Much of this is historical legacy. QEMU originally had no
+>>> concept of "the system outside the CPU returns some kind
+>>> of bus error and the CPU raises an exception for it".
+>>> This is turn is (I think) because the x86 PC doesn't do
+>>> that: you always get back some kind of response, I think
+>>> -1 on reads and writes ignored. We added the do_transaction_failed
+>>> hook largely because we wanted it to give more accurate
+>>> emulation of this kind of thing on Arm, but as usual with new
+>>> facilities we left the other architectures to do it themselves
+>>> if they wanted -- by default the behaviour remained the same.
+>>> Some architectures have picked it up; some haven't.
+>>> 
+>>> The main reason it's a bit of a pain to turn the correct
+>>> handling on is because often boards don't actually implement
+>>> all the devices they're supposed to. For a pile of legacy Arm
+>>> boards, especially where we didn't have good test images,
+>>> we use the machine flag ignore_memory_transaction_failures to
+>>> retain the legacy behaviour. (This isn't great because it's
+>>> pretty much going to mean we have that flag set on those
+>>> boards forever because nobody is going to care enough to
+>>> investigate and test.)
+>>> 
+>>>> Other question is, sometimes I guess it's nice to avoid crashing in
+>>>> order to try to quickly get past some unimplemented MMIO. Maybe a
+>>>> command line option or something could turn it off? It should
+>>>> probably be a QEMU-wide option if so, so that shouldn't hold this
+>>>> series up, I can propose a option for that if anybody is worried
+>>>> about it.
+>>> 
+>>> I would not recommend going any further than maybe setting the
+>>> ignore_memory_transaction_failures flag for boards you don't
+>>> care about. (But in an ideal world, don't set it and deal with
+>>> any bug reports by implementing stub versions of missing devices.
+>>> Depends how confident you are in your test coverage.)
+>> 
+>> It seems it broke the "mac99" and  powernv10 machines, using the
+>> qemu-ppc-boot images which are mostly buildroot. See below for logs.
+>
+> Since commit 21786c7e59 ("softmmu/memory: Log invalid memory accesses")
+> you can log the failed transaction with '-d guest_errors'. See for
+> example commit a13bfa5a05 ("hw/mips/jazz: Map the UART devices
 
-It's probably best to do the "not available with KVM" error by changing
-this patch from adding a no-op setter to an error-out setter. That way,
-our story that a riscv machine is the same for both KVM and TCG still
-remains, i.e. all properties are still present, but we add the honesty
-to the story that not everything works with KVM.
+This reminds me I'd still want to split this from guest_errors as 
+discussed here:
 
-Thanks,
-drew
+https://lists.nongnu.org/archive/html/qemu-devel/2023-02/msg08757.html
+
+Can we get a decision on how to call these debug options?
+
+> unconditionally"):
+>
+>  $ qemu-system-mips64el -M magnum -d guest_errors,unimp -bios NTPROM.RAW
+>  Invalid access at addr 0x80007004, size 1, region '(null)', reason: 
+> rejected
+>  Invalid access at addr 0x80007001, size 1, region '(null)', reason: 
+> rejected
+>  Invalid access at addr 0x80007002, size 1, region '(null)', reason: 
+> rejected
+>  Invalid access at addr 0x80007003, size 1, region '(null)', reason: 
+> rejected
+>  Invalid access at addr 0x80007004, size 1, region '(null)', reason: 
+> rejected
+>
+> Boards booting successfully with ignore_memory_transaction_failures
+> set can often remove this flag by mapping missing accessed ranges as
+> TYPE_UNIMPLEMENTED_DEVICE. (You can then log the same accesses using
+> '-d unimp').
+
+The mac99 may have a lot of unimplemented devices and they are also not 
+quite documented so it may even be difficult to find where they should be.
+
+Regards,
+BALATON Zoltan
+--3866299591-2033448452-1687600225=:42373--
 
