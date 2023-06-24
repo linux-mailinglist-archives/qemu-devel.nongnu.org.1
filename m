@@ -2,81 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7DDC73CA7D
-	for <lists+qemu-devel@lfdr.de>; Sat, 24 Jun 2023 12:42:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C99173CA9B
+	for <lists+qemu-devel@lfdr.de>; Sat, 24 Jun 2023 13:30:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qD0hd-0002SL-Oy; Sat, 24 Jun 2023 06:41:13 -0400
+	id 1qD1Sl-0003zZ-5S; Sat, 24 Jun 2023 07:29:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qD0hZ-0002S0-UQ
- for qemu-devel@nongnu.org; Sat, 24 Jun 2023 06:41:09 -0400
-Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qD0hW-0001Eb-T0
- for qemu-devel@nongnu.org; Sat, 24 Jun 2023 06:41:09 -0400
-Received: by mail-ed1-x52a.google.com with SMTP id
- 4fb4d7f45d1cf-51be881b425so1619932a12.1
- for <qemu-devel@nongnu.org>; Sat, 24 Jun 2023 03:41:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687603264; x=1690195264;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=jZEIAMNBiMn3g9tw5GHYioaVxbMWGakucfs09cO0ZZI=;
- b=tY43Wg/fLDAqVFp3jcZf9k55hHU/ZEy+r3vzEzj8fsLARdpSwwgaAmfFFI4CFaQWnj
- x+HFy6yq0n8cjHDY1ttxRlUvr2xpjII/x975+NqcFRWoFByxPSbHIl7UsjCrREckg9v8
- am09mp9DWn+ebi6uPl05hsqQLzleTQ7+nwQrGX+IyEsok5iGSvWK0XKTvlIMLFCvswET
- XR2xCGcj/PMCeow31be9b5wHouypHrhoyZPFNy3Rqj+hQ9gb0KrJRo+jo4faXDjT+RUu
- /XiRppkjeoyPhoIPU4Ol2VwMS2sZIo+nR4/rAxqpOaYuxcTUBmL0BDeRR/klZByOtQKT
- 7Xng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687603264; x=1690195264;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=jZEIAMNBiMn3g9tw5GHYioaVxbMWGakucfs09cO0ZZI=;
- b=Xf9WoihCF1SZ3ZLzwMS6pTFXonFdp6nugGPF1iwQ1c7uS46eCRYB3kbUrNO4aMMLWs
- bno2QnJb+DxxTFOcE4EeMsPySyGsx2XFJBYuXfgT7rJSHxFhM3i5FfpM+lJTTYKQYvsG
- lDgB8s5ihnwbf+/KGGmzXhCVuhwJy7jyT15RqlZ86Voc2UVaGShVumsXJ4HDYxOnCqsm
- Q2P62a4V5ZV7NCysu+U1Hx9ovg0ifh27yPsZE57H1yHg46X2/gZyaoKTMk1chr9RWUNf
- /C6pb9Ctsn9mHmzodtp95r7lODBdA3RHIVvvTCnONEx3plb7SgmA2m3Yfz6xgYspMDKU
- ZM9g==
-X-Gm-Message-State: AC+VfDzM/MnqfIwFBETLm6qGV8UbezAUo3fRWXRLtsy1ByPh8xUhFebB
- 7VUj6Lpd21+E5AV/xBtD+xvPxsI8dZ5OSGPcZaffrA==
-X-Google-Smtp-Source: ACHHUZ6ChzEmSnqgsU4GAXy+jJ2pQrjpGBNA63RHIgRwzxEfxhsaI6BZROPkWwGWbZH2+idQx/J8AQc5G0z0GTHZ2Nk=
-X-Received: by 2002:aa7:c40b:0:b0:51b:fa48:a3f3 with SMTP id
- j11-20020aa7c40b000000b0051bfa48a3f3mr2422687edq.18.1687603264300; Sat, 24
- Jun 2023 03:41:04 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qD1SE-0003ob-MP
+ for qemu-devel@nongnu.org; Sat, 24 Jun 2023 07:29:22 -0400
+Received: from mout.gmx.net ([212.227.17.22])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qD1SB-0001rm-SF
+ for qemu-devel@nongnu.org; Sat, 24 Jun 2023 07:29:22 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
+ s=s31663417; t=1687606156; x=1688210956; i=deller@gmx.de;
+ bh=mKPc0BwDQ588kUwJ1eBduivpwW8my9dNKTD9hZSkFGs=;
+ h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
+ b=jhiSvcemr9WblTxZkOY/fFm+xIBDy+w8FOXOpH/T71h8OTe2tLFGwoC1VFk+Ak1Zu6/GTL+
+ 3bFzNLeqjzJCqK8TaWXtDb1cTdXxnYPcDab3ds9ROimYvI6A3/QGSXZSjVjwtFjNt5oabuCvx
+ t71k4RyGRrTCocOPTDq/gArNya9ELYp4usDC+YtZL2JAJ/jHsB+GYezlE8goAO8Bnv3qHW7yb
+ np1d/dximO2AucHe/Q+DFSQYlEGyBwxkBi70/6F1RkcvvlkTbsZ7OaVMfJJEnaMPGtGD5t2ds
+ wOsRXKNTmLD89rGncr0XAHMQuscMaFPyGYl5VxViydzi/ysbqaUA==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from p100.fritz.box ([94.134.156.152]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MhU9j-1pYzXj0Gx9-00egcF; Sat, 24
+ Jun 2023 13:29:16 +0200
+From: Helge Deller <deller@gmx.de>
+To: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>
+Cc: Helge Deller <deller@gmx.de>
+Subject: [PULL 0/3] Hppa reboot fix patches
+Date: Sat, 24 Jun 2023 13:29:12 +0200
+Message-Id: <20230624112915.27033-1-deller@gmx.de>
+X-Mailer: git-send-email 2.38.1
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-References: <20230523100508.32564-1-qianfanguijin@163.com>
- <20230523100508.32564-2-qianfanguijin@163.com>
- <41e71eae-72ad-410d-9cd8-cc495c06dac4@roeck-us.net>
- <CAFEAcA8aEQWAap36CtHMrEkFQUPnDCH7=-X5+TE2GJ-qzm3Y9w@mail.gmail.com>
- <2044dc69-93de-d855-fe44-ee6f3ab3576b@roeck-us.net>
-In-Reply-To: <2044dc69-93de-d855-fe44-ee6f3ab3576b@roeck-us.net>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Sat, 24 Jun 2023 11:40:53 +0100
-Message-ID: <CAFEAcA8vtJNwbxBreDMFB6q-Z=G5FiOcWzAAz+F69A4-Er_4EA@mail.gmail.com>
-Subject: Re: [PATCH v5 01/11] hw: arm: Add bananapi M2-Ultra and allwinner-r40
- support
-To: Guenter Roeck <linux@roeck-us.net>
-Cc: qianfanguijin@163.com, qemu-arm@nongnu.org, qemu-devel@nongnu.org, 
- Strahinja Jankovic <strahinja.p.jankovic@gmail.com>,
- Beniamino Galvani <b.galvani@gmail.com>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Niek Linnenbank <nieklinnenbank@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:1SCoVw16t/524n9ZtWdXMnw3kAAWJCu2Wm9IT1UwK+1xMA9DTu3
+ gsgLHsB63xsBuV7nyoHNYF0yJQ84RSLPOktNpJAa0dwZHmVvyD32GWkO4/y2Ol1dlR6igjR
+ eiaAXFsVCJ8HsaY1nhfTf5H+y8PVxMN0gX9k82etBoteAagtRUSyJy+LkWVKIbaw8lyHb3e
+ +lrzNh7gHbSlVLeabz+1g==
+UI-OutboundReport: notjunk:1;M01:P0:s6QZahGrokU=;+CVq5HL0lgzsiM5OLcorrfhumS/
+ lChJRboUHhVB/11GHpmUxs382hXGy2vdKB2H4srzLfFv26wTIVE7vUHsLq47UDz1YIuwv8TAJ
+ RbWI2ejg+OjoqWwaN8h30lUUgSOklPF/4iSEES/jpjh2jwU1IFjKjnSsZK/V0xZ5/f7sBCUk0
+ b0usIu6rgkfp7wEgnA99exWIeuVt4u/wUawHBZaPVdriR7uCUQRXP2setNjXmw08vAU3anRDc
+ JlB5SnHl7b5aI8s0ZyXvPw2xtM3UFht0X9XGCo3Oz2qZFIOFFC5gZvFCDAiYFYzIcJmBDBjkM
+ GX20k/KC4bQJ5m5Pw/EJOETmDIXbR+cs8Yl4s76c8Ypj3fHGGS4ZU427CFmskDrFEJfBHo4Az
+ qNZIkNNhkQPZlsTLdndGUxXEzbhimQKI6x0Os4G6RzQIrCTxr4JDk51/S/skgg1BKnzy/dqbU
+ 0KLulOnaUWlay6TENmIxkTaP4NA+6jQkaFlB+t3rTL5TXZ4PsKJU8lLqSpAGhToY6XOs9vXSo
+ w37wr3rd3Y8nAxbsJHH7M36DY8nsN8IRNf8yf1c1j0K9xNvNUVWCZ/+5AWIObIoM5nAhn2sg/
+ WajUH8xSj+t1K2EbExy5w9vAo8fbRXTDoGiRrHP13Kw58xKzl7XyQivv4HJVP8Pat70rU0bf6
+ 8V3R5YXR9N7kdGu9PXIhS1z9yQfoUUpyTkrX1ULg2w67NUsBdja5V39eQYgDNf3VPcHWxXqlV
+ C2CgEWYTCW2dczyhYSNJML6xnds6YBr5HomQo17tYnrslotDaO+kXOnyqw4y/2riJbwUrRI5P
+ WqQqB4irtuSXllLkUVpYKfA3n3palNAh1RCmNDnrPITSf36KE17aS+oAsz74DDSxBpvet7jXa
+ sFfdOnLQsJV9vCvPSlnJqesRXTnJgn+YRRFNG9r5aRTUZcydFxXHO38lAjwYbDtj54e08dBWq
+ lL76s5wzWCwtM4rXufkiO90Nxe8=
+Received-SPF: pass client-ip=212.227.17.22; envelope-from=deller@gmx.de;
+ helo=mout.gmx.net
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -93,72 +84,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 23 Jun 2023 at 20:33, Guenter Roeck <linux@roeck-us.net> wrote:
->
-> On 6/23/23 10:44, Peter Maydell wrote:
-> > On Sat, 17 Jun 2023 at 17:29, Guenter Roeck <linux@roeck-us.net> wrote:
-> >>
-> >> Hi,
-> >>
-> >> On Tue, May 23, 2023 at 06:04:58PM +0800, qianfanguijin@163.com wrote:
-> >>> From: qianfan Zhao <qianfanguijin@163.com>
-> >>>
-> >>> Allwinner R40 (sun8i) SoC features a Quad-Core Cortex-A7 ARM CPU,
-> >>> and a Mali400 MP2 GPU from ARM. It's also known as the Allwinner T3
-> >>> for In-Car Entertainment usage, A40i and A40pro are variants that
-> >>> differ in applicable temperatures range (industrial and military).
-> >>>
-> >>> Signed-off-by: qianfan Zhao <qianfanguijin@163.com>
-> >>> Reviewed-by: Niek Linnenbank <nieklinnenbank@gmail.com>
-> >>
-> >> I tried this in mainline linux with the following command.
-> >>
-> >> qemu-system-arm -M bpim2u \
-> >>          -kernel arch/arm/boot/zImage -no-reboot \
-> >>          -snapshot -drive file=rootfs-armv7a.ext2,format=raw,if=sd \
-> >>          -nic user \
-> >>          --append "root=/dev/mmcblk0 rootwait console=ttyS0,115200" \
-> >>          -dtb arch/arm/boot/dts/sun8i-r40-bananapi-m2-ultra.dtb \
-> >>          -nographic -monitor null -serial stdio
-> >>
-> >> Main problem is that the SD card gets instantiated randomly to
-> >> mmc0, mmc1, or mmc2, making it all but impossible to specify a
-> >> root file system device. The non-instantiated cards are always
-> >> reported as non-removable, including mmc0. Example:
-> >>
-> >> mmc0: Failed to initialize a non-removable card
-> >
-> > Do you mean that QEMU randomly connects the SD card to
-> > a different MMC controller each time, or that Linux is
-> > randomly assigning mmc0 to a different MMC controller each
-> > time ?
-> >
->
-> Good question. Given the workaround (fix ?) I suggested is
-> in the devicetree file, I would assume it is the latter. I suspect
-> that Linux assigns drive names based on hardware detection order,
-> and that this is not deterministic for some reason. It is odd
-> because I have never experienced that with any other emulation.
+The following changes since commit c5ffd16ba4c8fd3601742cc9d2b3cff03995dd5=
+d:
 
-Yeah, I don't really understand why it would be non-deterministic.
-But it does make it sound like the right thing is for the
-device tree file to explicitly say which MMC controller is
-which -- presumably you might get unlucky with the timing
-on real hardware too.
+  Revert "cputlb: Restrict SavedIOTLB to system emulation" (2023-06-21 07:=
+19:46 +0200)
 
-> A secondary problem may be that Linux thinks that the first
-> drive is not removable, even though it is a SD drive. I  think
-> that is a problem with qemu, but I don't understand the qemu
-> code well enough to understand why. It seems that the mmc
-> capability register always has bit 8 set, even for the first
-> drive, but I don't know where/how that is set and how to
-> change it. SDHCI has the capareg property, but that isn't
-> used here (or I don't know how to use/set it).
+are available in the Git repository at:
 
-Yeah, this seems likely to be something we're getting wrong.
-I assume on other QEMU boards the SD card appears as
-removeable ?
+  https://github.com/hdeller/qemu-hppa.git tags/hppa-reboot-fix-pull-reque=
+st
 
-thanks
--- PMM
+for you to fetch changes up to b9bed0896e8352a340188e32bee69988209e4f72:
+
+  target/hppa: Update to SeaBIOS-hppa version 8 (2023-06-24 11:45:52 +0200=
+)
+
+=2D---------------------------------------------------------------
+target/hppa: Fix boot and reboot for SMP machines
+
+Fix some SMP-related boot and reboot issues with HP-UX and Linux by
+correctly initializing the CPU PSW bits, disabling data and instruction
+translations and unhalting the CPU in the qemu hppa_machine_reset()
+function.
+
+To work correctly some fixes are needed in the SeaBIOS-hppa firmware too,
+which is why this series updates it to version 8 which includes those
+fixes and enhancements:
+
+Fixes
+- boot of HP-UX with SMP, and
+- reboot of Linux and HP-UX with SMP
+
+Enhancements:
+- show qemu version in boot menu
+- adds exit menu entry in boot menu to quit emulation
+- allow to trace PCD_CHASSIS codes more specifically
+
+Signed-off-by: Helge Deller <deller@gmx.de>
+
+=2D---------------------------------------------------------------
+
+Helge Deller (3):
+  target/hppa: Fix OS reboot issues
+  target/hppa: Provide qemu version via fw_cfg to firmware
+  target/hppa: Update to SeaBIOS-hppa version 8
+
+ hw/hppa/machine.c         |  15 +++++++++++++--
+ pc-bios/hppa-firmware.img | Bin 719376 -> 720216 bytes
+ roms/seabios-hppa         |   2 +-
+ 3 files changed, 14 insertions(+), 3 deletions(-)
+
+=2D-
+2.38.1
+
 
