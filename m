@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E1D573CB5B
-	for <lists+qemu-devel@lfdr.de>; Sat, 24 Jun 2023 16:23:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CAE173CB5A
+	for <lists+qemu-devel@lfdr.de>; Sat, 24 Jun 2023 16:23:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qD49n-000204-08; Sat, 24 Jun 2023 10:22:31 -0400
+	id 1qD49t-00020V-Ii; Sat, 24 Jun 2023 10:22:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qD49k-0001za-UY
- for qemu-devel@nongnu.org; Sat, 24 Jun 2023 10:22:28 -0400
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qD49r-00020M-GL
+ for qemu-devel@nongnu.org; Sat, 24 Jun 2023 10:22:35 -0400
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qD49j-0007C4-Ba
- for qemu-devel@nongnu.org; Sat, 24 Jun 2023 10:22:28 -0400
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-311394406d0so1523708f8f.2
- for <qemu-devel@nongnu.org>; Sat, 24 Jun 2023 07:22:26 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qD49p-0007D9-SO
+ for qemu-devel@nongnu.org; Sat, 24 Jun 2023 10:22:35 -0400
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-31272fcedf6so1498139f8f.2
+ for <qemu-devel@nongnu.org>; Sat, 24 Jun 2023 07:22:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687616545; x=1690208545;
+ d=linaro.org; s=google; t=1687616552; x=1690208552;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=D+21lC+HOQ8qNUuDYixtokmJmiBo7Avq8JzwolirhIw=;
- b=oWfPeMYBI2esyVOHHcKGVQanwudcOSsjsFYTnCp2/j5UkhTs1KmIkbvbPY9Jo17lQ6
- cWycPQuiH3zQZjPsiAiW+CrnXcCrHW6+wcBFviwwgKCBhinbTuhm27k4vvCzU/1w+SgT
- B/IMD0phxuogU7Puzehfmw+VvZoi2iALcG+6qYuJQ3w32HYCwp5TEUzuARYWzl2kS8Jn
- +P3RQ5Z3UwSOolApXXxqeYseVD92PnrXftE6yB6f9o3Jr6kE3uqQ1Kzft0pqnQz+GnK7
- CII3WyJHi4THlWoSG6y6U9FeX4jV72QrXlFmWiqSQRDcp4uF8V3ad+UI4Q3OCclaX+MN
- jkUg==
+ bh=K7EMtxFF9Wpxu9VU5qA4LydL//qFFaOHuvM5w/0z3TE=;
+ b=HTc22k8Dy9heu4HAjuh+ZE0w6E4r8l1lO6BG98vvIH9vSyjzTiagteRGqR7P5wigQw
+ yLWnsu6Nol6XFAP1UcIWeMq/EJMYqP0fXB0HXWgpt+u5KgmsfTVIW4HitvQoIVcBJ7Vy
+ jAGbECvkrikgNXyDSs6y3QLGagM0zi93DoGHtOuAwobPg8Jd78uch/ddaHZTTimLcdyI
+ 6JxvITVSwK7Vd59V5KyOkdxAjrzM/gDh0dr+xFWddQBpzaP5DOmZ5+cW3eSRhAUCMjid
+ i5dg5vczrHshQlZQSa0tgUiRfCWDQBxMzoIhwTkgYeBm91hrUqfvZxCC6o4m8vbrF8Cn
+ cEPw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687616545; x=1690208545;
+ d=1e100.net; s=20221208; t=1687616552; x=1690208552;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=D+21lC+HOQ8qNUuDYixtokmJmiBo7Avq8JzwolirhIw=;
- b=OiumV7qQw4TS+PDgqBmDW2AdOm5qLaSfvvcCLGeyJEkMOGK5qESroV6zHbZtvoD0R1
- +42e1B7Xozk/8hdDBk8IYVNMQdKJlLKL2uEE9NFLfPhXnYyAVRvQTa+TAxpB1g1mbGey
- +Fx5JXaBh9CXavax3fYKCdsX3fpC3Mkl8itVIR6YK+v1X6tBnQhraQAIeyyJuLwfsT+Q
- 11hSM9NScnvOyGaNBxT7TOSZPi1YE73M/vstlYg9vE8sfiS1mr8COti29Kavw12l0ljF
- pxJgv6jEGsc5KGG52O5+eAhkX2L7eDD6BNrT+gMFQQXxoyb9kHrfITLxMa8flLC+trFV
- 7HdQ==
-X-Gm-Message-State: AC+VfDwDoxCyoqxGsNsd1A0AfhOt9pdyQRGgJWxc3pA8Fh6ytaz5gFG5
- otS6gT2Yq2bG1zLU1wfnckg/usW5j/FlC+yO9irt0g==
-X-Google-Smtp-Source: ACHHUZ4/1FH9PZA9VdR7tRA0HUPsxcUuZOjk+7f/owPi5vboDaaHvInS5xxBXy6IA82wdvZ2lvjMBA==
-X-Received: by 2002:adf:f74f:0:b0:307:9b66:f512 with SMTP id
- z15-20020adff74f000000b003079b66f512mr18409505wrp.19.1687616545505; 
- Sat, 24 Jun 2023 07:22:25 -0700 (PDT)
+ bh=K7EMtxFF9Wpxu9VU5qA4LydL//qFFaOHuvM5w/0z3TE=;
+ b=ZSbD1btHi08EFYlamt56fNR6o2w9wOehPA9787fy5itS8957TNwvLhn74JLxBBs9tE
+ P7Z/7kUXIo0NFqFsAmUtmB0FhV4YsJXwDHexpOhev2l3PYb7PD4BPqVTaze8hVoPGhwu
+ VCwkxKDYth7+J1TKdodvBsulTQ0ERAGQa0AEDb9zzXDlqj1S/j+8oOexdThaqNxvT/WV
+ WiM5aivVaxAR5O6xEiCsDwkDjLatYBPax2MzKI4B7fqA193pZtTA5TGckqG5/+a/Urxn
+ E7v38UBvCpCiHwFFzK8wMrnEnEUCHe0Pax6rp2pjCESUgzWwb32XZ96sawj/WR8OuU0c
+ aQCQ==
+X-Gm-Message-State: AC+VfDz9PFxYmumADpALwR4yzeKyiZbHKgjITegMwkBdj2m5TC9cus7y
+ HUDmDoxMO6JJNZT9FqOeSdwAiHsVIJbw3gcqjNxjng==
+X-Google-Smtp-Source: ACHHUZ7hNwaDIoA0SkyzCOHWjm+Y8Non70XLffIjVuKgAjoL1v7R8ZLnmu0gCFIEF6lBvCDqQtD0Hw==
+X-Received: by 2002:a05:6000:184:b0:309:1532:8287 with SMTP id
+ p4-20020a056000018400b0030915328287mr5342847wrx.19.1687616552185; 
+ Sat, 24 Jun 2023 07:22:32 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.217.150])
  by smtp.gmail.com with ESMTPSA id
- l13-20020a5d674d000000b003113513f491sm2203583wrw.114.2023.06.24.07.22.23
+ w7-20020a5d4047000000b003063772a55bsm2225964wrp.61.2023.06.24.07.22.30
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sat, 24 Jun 2023 07:22:25 -0700 (PDT)
+ Sat, 24 Jun 2023 07:22:31 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Sunil Muthuswamy <sunilmut@microsoft.com>,
@@ -64,17 +64,18 @@ Cc: Sunil Muthuswamy <sunilmut@microsoft.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Beraldo Leal <bleal@redhat.com>
-Subject: [PATCH 1/2] docs/devel/testing: Update the 'Docker Debugging' section
-Date: Sat, 24 Jun 2023 16:22:10 +0200
-Message-Id: <20230624142211.8888-2-philmd@linaro.org>
+Subject: [PATCH 2/2] accel: Re-enable WHPX cross-build on case sensitive
+ filesystems
+Date: Sat, 24 Jun 2023 16:22:11 +0200
+Message-Id: <20230624142211.8888-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230624142211.8888-1-philmd@linaro.org>
 References: <20230624142211.8888-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,28 +98,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since commit 93cc0506f6 ("tests/docker: Use Fedora containers
-for MinGW cross-builds in the gitlab-CI") the MinGW toolchain
-is packaged inside the fedora-win[32/64]-cross images.
+Since MinGW commit 395dcfdea ("rename hyper-v headers and def
+files to lower case") [*], WinHvPlatform.h and WinHvEmulation.h
+got respectively renamed as winhvplatform.h / winhvemulation.h.
+
+The mingw64-headers package included in the Fedora version we
+use for CI does include this commit; and meson fails to detect
+these present-but-renamed headers while cross-building (on
+case-sensitive filesystems).
+
+Use the renamed header in order to detect and successfully
+cross-build with the WHPX accelerator.
+
+Note, on Windows hosts, the libraries are still named as
+WinHvPlatform.dll and WinHvEmulation.dll, so we don't bother
+renaming the definitions used by load_whp_dispatch_fns() in
+target/i386/whpx/whpx-all.c.
+
+[*] https://sourceforge.net/p/mingw-w64/mingw-w64/ci/395dcfdea
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- docs/devel/testing.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ meson.build                      | 4 ++--
+ target/i386/whpx/whpx-internal.h | 4 ++--
+ target/i386/whpx/whpx-all.c      | 4 ++--
+ 3 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/docs/devel/testing.rst b/docs/devel/testing.rst
-index 203facb417..e85e26c4ca 100644
---- a/docs/devel/testing.rst
-+++ b/docs/devel/testing.rst
-@@ -558,7 +558,7 @@ When CI tasks, maintainers or yourself report a Docker test failure, follow the
- below steps to debug it:
+diff --git a/meson.build b/meson.build
+index 6ef78ea278..fc3c14a810 100644
+--- a/meson.build
++++ b/meson.build
+@@ -661,8 +661,8 @@ endif
+ if get_option('whpx').allowed() and targetos == 'windows'
+   if get_option('whpx').enabled() and host_machine.cpu() != 'x86_64'
+     error('WHPX requires 64-bit host')
+-  elif cc.has_header('WinHvPlatform.h', required: get_option('whpx')) and \
+-       cc.has_header('WinHvEmulation.h', required: get_option('whpx'))
++  elif cc.has_header('winhvplatform.h', required: get_option('whpx')) and \
++       cc.has_header('winhvemulation.h', required: get_option('whpx'))
+     accelerators += 'CONFIG_WHPX'
+   endif
+ endif
+diff --git a/target/i386/whpx/whpx-internal.h b/target/i386/whpx/whpx-internal.h
+index 06429d8ccd..6633e9c4ca 100644
+--- a/target/i386/whpx/whpx-internal.h
++++ b/target/i386/whpx/whpx-internal.h
+@@ -2,8 +2,8 @@
+ #define TARGET_I386_WHPX_INTERNAL_H
  
- 1. Locally reproduce the failure with the reported command line. E.g. run
--   ``make docker-test-mingw@fedora J=8``.
-+   ``make docker-test-mingw@fedora-win64-cross J=8``.
- 2. Add "V=1" to the command line, try again, to see the verbose output.
- 3. Further add "DEBUG=1" to the command line. This will pause in a shell prompt
-    in the container right before testing starts. You could either manually
+ #include <windows.h>
+-#include <WinHvPlatform.h>
+-#include <WinHvEmulation.h>
++#include <winhvplatform.h>
++#include <winhvemulation.h>
+ 
+ typedef enum WhpxBreakpointState {
+     WHPX_BP_CLEARED = 0,
+diff --git a/target/i386/whpx/whpx-all.c b/target/i386/whpx/whpx-all.c
+index 0903327ac5..9ee04ee650 100644
+--- a/target/i386/whpx/whpx-all.c
++++ b/target/i386/whpx/whpx-all.c
+@@ -31,8 +31,8 @@
+ #include "whpx-internal.h"
+ #include "whpx-accel-ops.h"
+ 
+-#include <WinHvPlatform.h>
+-#include <WinHvEmulation.h>
++#include <winhvplatform.h>
++#include <winhvemulation.h>
+ 
+ #define HYPERV_APIC_BUS_FREQUENCY      (200000000ULL)
+ 
 -- 
 2.38.1
 
