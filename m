@@ -2,64 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C99173CA9B
+	by mail.lfdr.de (Postfix) with ESMTPS id 5907A73CA9D
 	for <lists+qemu-devel@lfdr.de>; Sat, 24 Jun 2023 13:30:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qD1Sl-0003zZ-5S; Sat, 24 Jun 2023 07:29:55 -0400
+	id 1qD1Sk-0003u2-BQ; Sat, 24 Jun 2023 07:29:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qD1SE-0003ob-MP
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qD1SE-0003oh-Mo
  for qemu-devel@nongnu.org; Sat, 24 Jun 2023 07:29:22 -0400
-Received: from mout.gmx.net ([212.227.17.22])
+Received: from mout.gmx.net ([212.227.17.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qD1SB-0001rm-SF
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qD1SB-0001rn-Tw
  for qemu-devel@nongnu.org; Sat, 24 Jun 2023 07:29:22 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
  s=s31663417; t=1687606156; x=1688210956; i=deller@gmx.de;
- bh=mKPc0BwDQ588kUwJ1eBduivpwW8my9dNKTD9hZSkFGs=;
- h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
- b=jhiSvcemr9WblTxZkOY/fFm+xIBDy+w8FOXOpH/T71h8OTe2tLFGwoC1VFk+Ak1Zu6/GTL+
- 3bFzNLeqjzJCqK8TaWXtDb1cTdXxnYPcDab3ds9ROimYvI6A3/QGSXZSjVjwtFjNt5oabuCvx
- t71k4RyGRrTCocOPTDq/gArNya9ELYp4usDC+YtZL2JAJ/jHsB+GYezlE8goAO8Bnv3qHW7yb
- np1d/dximO2AucHe/Q+DFSQYlEGyBwxkBi70/6F1RkcvvlkTbsZ7OaVMfJJEnaMPGtGD5t2ds
- wOsRXKNTmLD89rGncr0XAHMQuscMaFPyGYl5VxViydzi/ysbqaUA==
+ bh=w5mqTgg/nsYXwdX7asI6ELqjL4SR8QF4EGBFuuSstB8=;
+ h=X-UI-Sender-Class:From:To:Cc:Subject:Date:In-Reply-To:References;
+ b=C/SHdsmqyQD488Z51m1/4VFdBkmR3pkdeRaARAP3Knl9O+KEeclNs2uJ/OTHyA2dpJVUcQV
+ PRQ4tUJAoQW8dBWQ9za5Gmh5X0j5Ckgq9Dvgq+ZqcEHs21IyB5zqLD1mQ8w7JDpZpTbSVNcye
+ ERXqMMdSBSqINeYWlbVzAFMvF4WARh0mol6V2OwG7t8+AkJ4aqhFYROOdMLleKpuO6/GzDvfT
+ 2CZ7hwRjpyxooaLEgbdHDNFgxSbW9tne27rjI2mZFbFEa8NH9s67lgs//JGX/VoCIWPoQFDMW
+ UAr8YhyNhSHqHb3uVg0zJgCi56tZwH0ITGSoxSleDBZqXfvHQ0cg==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
 Received: from p100.fritz.box ([94.134.156.152]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MhU9j-1pYzXj0Gx9-00egcF; Sat, 24
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1McpJq-1pd8P80s2k-00Zzn0; Sat, 24
  Jun 2023 13:29:16 +0200
 From: Helge Deller <deller@gmx.de>
 To: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>
 Cc: Helge Deller <deller@gmx.de>
-Subject: [PULL 0/3] Hppa reboot fix patches
-Date: Sat, 24 Jun 2023 13:29:12 +0200
-Message-Id: <20230624112915.27033-1-deller@gmx.de>
+Subject: [PULL 1/3] target/hppa: Fix OS reboot issues
+Date: Sat, 24 Jun 2023 13:29:13 +0200
+Message-Id: <20230624112915.27033-2-deller@gmx.de>
 X-Mailer: git-send-email 2.38.1
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <20230624112915.27033-1-deller@gmx.de>
+References: <20230624112915.27033-1-deller@gmx.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:1SCoVw16t/524n9ZtWdXMnw3kAAWJCu2Wm9IT1UwK+1xMA9DTu3
- gsgLHsB63xsBuV7nyoHNYF0yJQ84RSLPOktNpJAa0dwZHmVvyD32GWkO4/y2Ol1dlR6igjR
- eiaAXFsVCJ8HsaY1nhfTf5H+y8PVxMN0gX9k82etBoteAagtRUSyJy+LkWVKIbaw8lyHb3e
- +lrzNh7gHbSlVLeabz+1g==
-UI-OutboundReport: notjunk:1;M01:P0:s6QZahGrokU=;+CVq5HL0lgzsiM5OLcorrfhumS/
- lChJRboUHhVB/11GHpmUxs382hXGy2vdKB2H4srzLfFv26wTIVE7vUHsLq47UDz1YIuwv8TAJ
- RbWI2ejg+OjoqWwaN8h30lUUgSOklPF/4iSEES/jpjh2jwU1IFjKjnSsZK/V0xZ5/f7sBCUk0
- b0usIu6rgkfp7wEgnA99exWIeuVt4u/wUawHBZaPVdriR7uCUQRXP2setNjXmw08vAU3anRDc
- JlB5SnHl7b5aI8s0ZyXvPw2xtM3UFht0X9XGCo3Oz2qZFIOFFC5gZvFCDAiYFYzIcJmBDBjkM
- GX20k/KC4bQJ5m5Pw/EJOETmDIXbR+cs8Yl4s76c8Ypj3fHGGS4ZU427CFmskDrFEJfBHo4Az
- qNZIkNNhkQPZlsTLdndGUxXEzbhimQKI6x0Os4G6RzQIrCTxr4JDk51/S/skgg1BKnzy/dqbU
- 0KLulOnaUWlay6TENmIxkTaP4NA+6jQkaFlB+t3rTL5TXZ4PsKJU8lLqSpAGhToY6XOs9vXSo
- w37wr3rd3Y8nAxbsJHH7M36DY8nsN8IRNf8yf1c1j0K9xNvNUVWCZ/+5AWIObIoM5nAhn2sg/
- WajUH8xSj+t1K2EbExy5w9vAo8fbRXTDoGiRrHP13Kw58xKzl7XyQivv4HJVP8Pat70rU0bf6
- 8V3R5YXR9N7kdGu9PXIhS1z9yQfoUUpyTkrX1ULg2w67NUsBdja5V39eQYgDNf3VPcHWxXqlV
- C2CgEWYTCW2dczyhYSNJML6xnds6YBr5HomQo17tYnrslotDaO+kXOnyqw4y/2riJbwUrRI5P
- WqQqB4irtuSXllLkUVpYKfA3n3palNAh1RCmNDnrPITSf36KE17aS+oAsz74DDSxBpvet7jXa
- sFfdOnLQsJV9vCvPSlnJqesRXTnJgn+YRRFNG9r5aRTUZcydFxXHO38lAjwYbDtj54e08dBWq
- lL76s5wzWCwtM4rXufkiO90Nxe8=
-Received-SPF: pass client-ip=212.227.17.22; envelope-from=deller@gmx.de;
+X-Provags-ID: V03:K1:mE0zCeFA0UarYg35EtclAAbBV+krFujvtLLfwQDkLJuLnHZlv/4
+ QsaXFEUEFG9mHYvsO623+0TuT82w89anz6mIcNx79lZzHm44CMiJmlpCzdfanuyxn5a70M3
+ RBdcUUXfJzjV398+jFQEngfASOx66Wxso+fm2dF0GrgStfFp8pcum2HRcKsLAhuZcy76UTf
+ V6j/G1ml1XP0s1fBMQPfg==
+UI-OutboundReport: notjunk:1;M01:P0:xlGcGnOZkD4=;42/+3bIfV1IUoblyMqmp2kEdrCN
+ F51Jy03xszfRZNxzy6/t7ybUXS5YiWUAaGlTp4O7iYNGuvkv74afVdeGFInVxbX157HhVwkeI
+ tVeL3isJaqRL72O264xjb4lweBw1czqlt64xWwHnTyCbjI7taixMczqJpVjhCa0KRnyuWKnTv
+ 2aOLELh4xBDcvc7vVfC9pWaI7Qb94deX6O0pB/9LLLaqJiBMkpX+tRBo2SAoQRUuzHFD9dB4R
+ zE8rAlxv7ICx95Qz67lWTAtqIY8rj2Hf1gjDEaE522FChEAx1IasIgH8in8bOx++bpXk2JHuy
+ 9/o5rFreIb4DQyqwN1IcQQutqnUvdJo+lXC4OJpwhw09gU/Q6fW+qeEBck3pOVc19Qm77wyqy
+ Y9mf84hdTuKlyjCb++zNbE76v4efo600AfSVT6xqEsSxUqsh6dI7R0A2hEqalV5SpWvuQNARr
+ zztqsp/8qFoRzP62KcksNeU09WqNdZcUv7eAWMOiR3RYcmAEjbQMcuHd8/Fb3GSH7J8ebexvJ
+ fL4DZbUWGrNCwjvB5hLAMRW6HosR05LyBwQ1aDuYz1so6LaTTGij/b5MAslEnB4LVNwoOCGcM
+ kJEv7mDTYD1KOGCpDQ4e/GXcnBBaCkmV7C47PLwYBq7Iai23gJiIf3m8qvWLG+/zxvADTJTX5
+ 9928426FkKy7BM1xAfPr9UyAa7uycFQ1b96SfCcwdd2sbvK80pLXZzQgpg51OT0dQpl/a2pfR
+ amuG1+8umQb/gSwiIyck4mytSI+2BCCpOKrXkZuMezXzM6psJKoptKRKf2392llChkvzvRYi3
+ 7woeGIUeKdyfL5iyPAKDWG2u92GD5v43a8LKBOIjdZayQcHtwjTcTt5fUUYMuuxvv8B1Vo9uF
+ 6tW24oDNw9jUCNg4bgwsjE1JaMtjJHdOZdKjFV5Y3H6V3eSpwPbfs+v8WIatML8Ue8Jfye5+w
+ gS1liqfAcuErf0bsOKjJeSKi8Aw=
+Received-SPF: pass client-ip=212.227.17.21; envelope-from=deller@gmx.de;
  helo=mout.gmx.net
 X-Spam_score_int: -27
 X-Spam_score: -2.8
@@ -84,57 +85,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit c5ffd16ba4c8fd3601742cc9d2b3cff03995dd5=
-d:
+When the OS triggers a reboot, the reset helper function sends a
+qemu_system_reset_request(SHUTDOWN_CAUSE_GUEST_RESET) together with an
+EXCP_HLT exception to halt the CPUs.
 
-  Revert "cputlb: Restrict SavedIOTLB to system emulation" (2023-06-21 07:=
-19:46 +0200)
+So, at reboot when initializing the CPUs again, make sure to set all
+instruction pointers to the firmware entry point, disable any interrupts,
+disable data and instruction translations, enable PSW_Q bit  and tell qemu
+to unhalt (halted=3D0) the CPUs again.
 
-are available in the Git repository at:
-
-  https://github.com/hdeller/qemu-hppa.git tags/hppa-reboot-fix-pull-reque=
-st
-
-for you to fetch changes up to b9bed0896e8352a340188e32bee69988209e4f72:
-
-  target/hppa: Update to SeaBIOS-hppa version 8 (2023-06-24 11:45:52 +0200=
-)
-
-=2D---------------------------------------------------------------
-target/hppa: Fix boot and reboot for SMP machines
-
-Fix some SMP-related boot and reboot issues with HP-UX and Linux by
-correctly initializing the CPU PSW bits, disabling data and instruction
-translations and unhalting the CPU in the qemu hppa_machine_reset()
-function.
-
-To work correctly some fixes are needed in the SeaBIOS-hppa firmware too,
-which is why this series updates it to version 8 which includes those
-fixes and enhancements:
-
-Fixes
-- boot of HP-UX with SMP, and
-- reboot of Linux and HP-UX with SMP
-
-Enhancements:
-- show qemu version in boot menu
-- adds exit menu entry in boot menu to quit emulation
-- allow to trace PCD_CHASSIS codes more specifically
+This fixes the various reboot issues which were seen when rebooting a
+Linux VM, including the case where even the monarch CPU has been virtually
+halted from the OS (e.g. via "chcpu -d 0" inside the Linux VM).
 
 Signed-off-by: Helge Deller <deller@gmx.de>
+=2D--
+ hw/hppa/machine.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-=2D---------------------------------------------------------------
+diff --git a/hw/hppa/machine.c b/hw/hppa/machine.c
+index b00a91ecfe..9facef7f14 100644
+=2D-- a/hw/hppa/machine.c
++++ b/hw/hppa/machine.c
+@@ -418,10 +418,16 @@ static void hppa_machine_reset(MachineState *ms, Shu=
+tdownCause reason)
 
-Helge Deller (3):
-  target/hppa: Fix OS reboot issues
-  target/hppa: Provide qemu version via fw_cfg to firmware
-  target/hppa: Update to SeaBIOS-hppa version 8
+     /* Start all CPUs at the firmware entry point.
+      *  Monarch CPU will initialize firmware, secondary CPUs
+-     *  will enter a small idle look and wait for rendevouz. */
++     *  will enter a small idle loop and wait for rendevouz. */
+     for (i =3D 0; i < smp_cpus; i++) {
+-        cpu_set_pc(CPU(cpu[i]), firmware_entry);
++        CPUState *cs =3D CPU(cpu[i]);
++
++        cpu_set_pc(cs, firmware_entry);
++        cpu[i]->env.psw =3D PSW_Q;
+         cpu[i]->env.gr[5] =3D CPU_HPA + i * 0x1000;
++
++        cs->exception_index =3D -1;
++        cs->halted =3D 0;
+     }
 
- hw/hppa/machine.c         |  15 +++++++++++++--
- pc-bios/hppa-firmware.img | Bin 719376 -> 720216 bytes
- roms/seabios-hppa         |   2 +-
- 3 files changed, 14 insertions(+), 3 deletions(-)
-
+     /* already initialized by machine_hppa_init()? */
 =2D-
 2.38.1
 
