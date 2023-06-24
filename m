@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C28E73CC32
+	by mail.lfdr.de (Postfix) with ESMTPS id CABE573CC33
 	for <lists+qemu-devel@lfdr.de>; Sat, 24 Jun 2023 19:43:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qD7HJ-0006tg-GU; Sat, 24 Jun 2023 13:42:29 -0400
+	id 1qD7HR-0007NL-PY; Sat, 24 Jun 2023 13:42:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qD7HH-0006ol-Gl
- for qemu-devel@nongnu.org; Sat, 24 Jun 2023 13:42:27 -0400
-Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qD7HP-0007LW-4S
+ for qemu-devel@nongnu.org; Sat, 24 Jun 2023 13:42:35 -0400
+Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qD7HF-0006oR-N8
- for qemu-devel@nongnu.org; Sat, 24 Jun 2023 13:42:27 -0400
-Received: by mail-ej1-x631.google.com with SMTP id
- a640c23a62f3a-98dfb3f9af6so84286266b.2
- for <qemu-devel@nongnu.org>; Sat, 24 Jun 2023 10:42:25 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qD7HN-00070x-I0
+ for qemu-devel@nongnu.org; Sat, 24 Jun 2023 13:42:34 -0400
+Received: by mail-ed1-x536.google.com with SMTP id
+ 4fb4d7f45d1cf-51bee0c0acbso1695268a12.1
+ for <qemu-devel@nongnu.org>; Sat, 24 Jun 2023 10:42:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687628544; x=1690220544;
+ d=linaro.org; s=google; t=1687628551; x=1690220551;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=NN9VasAt75iFOv6bKm088IUAp3WHizK1u2macVzvnVk=;
- b=TpoTyF2JMLfTdhJFfQDIJVDl7wyit9krNMh5pkE5UD2Z85JsI+MhIJfZq4TxXmpXb/
- Jq5HiN89HJ4wr6rXLea/eWyd7618cAZZiB+S4t907FNYoN5Za7XtU53Yo99TffKFQ0cf
- 44Xmr7D3BCBiDEaJRA6+UHWtBWBj4mZwYkdJuNkFUXvTWvqPJQ+tLi4m5dnTjJoqSct8
- IsWj6zhrwB+4NlanWGr0JPLUH/XYLaVY04sIYBZkfBiSkR23DgIuGBjyK/H2gFkyPBbE
- jt5/4gwPqUFkxozHegLbIIK30roYFKpcZHG+a2L3V4oBZU7sNJ0K7b+DJi29MWniwKkO
- nrBQ==
+ bh=wDJq03Cy4udm0BY/tdQJBSn7cYSDg3Mije1czkKCJYY=;
+ b=RO2avB+FoBAH/Di/V4kIhFyDQH7uIlgC0gwfCgQrD89bwE83AmBBFg0CcRlHBZjeo8
+ xf712Qc9aR38nPiF+uDaf5yc8gD19WEsCR2svxAprxd1bFxGUA2r4lMmJIlwctgs7QkB
+ EUtMNoLLcY3J6LBbohSpdImmOm/n5GLZ+fA8stYV9O4SnDoSh8DTgNabJ/O9qfxzX4AN
+ 5t1XZJvA/e/bJFTTAZaWg85tev9gNfCnctzxCTxdaNAK3TWI6g6FLKy1iSyDWwm7ICVw
+ UkmuMgdFFe7lQAMN+uYaq3GLpkAMayp43PGSU3d6bHrT+2SGnuNJPvNFppg8VTyk9Otn
+ 2Akg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687628544; x=1690220544;
+ d=1e100.net; s=20221208; t=1687628551; x=1690220551;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=NN9VasAt75iFOv6bKm088IUAp3WHizK1u2macVzvnVk=;
- b=Wb13caU+iqKPvkKsXo1O2jr0ON3Bg49pwnBoGWx2HBeNerbcHmE2N053Nt8SJbe8pn
- buyFAv3h65w6xlVwU65W1MLSHoSYtUPsTcSFFgCUdAwle9MxcKGKj3DpCfob/Z+B66BX
- BD8aJfFeztmVGdqe7AX9zp/hLQmDrZfBN0pxj1SRm/VmFZo5JWFUeyJHhq8FZys2GMCJ
- QpOPslT0alu0gKnAkmpMGx5T5dKZ7a9AwMOyxuzzBrrqxRti/O8H+v6mwiOtQ1TwkE1C
- tGhtyg3QOKaMxGqUELyM5eE7o8614PDTFwOEZWq8HUTA6/qu7UmEcl0VpoVe7Au+crP+
- KaNw==
-X-Gm-Message-State: AC+VfDyNizGFNIvcwTawbLv3r3+87+u23rvZ4ty7/fkOmrIx5ORcd2l2
- vm8OxsRJfM+4ZIChGqxj3zT1tNJa+X1EDskmpg0=
-X-Google-Smtp-Source: ACHHUZ6JpBB7yANElxTtai7vYezx6pxHzspfxWNJcM+HOCv+99GHSiTFtorTZQaQzhh9nxIlf7DEgQ==
-X-Received: by 2002:a17:907:5c8:b0:974:7713:293f with SMTP id
- wg8-20020a17090705c800b009747713293fmr22846007ejb.41.1687628544073; 
- Sat, 24 Jun 2023 10:42:24 -0700 (PDT)
+ bh=wDJq03Cy4udm0BY/tdQJBSn7cYSDg3Mije1czkKCJYY=;
+ b=V3rLE8K1sG81Uofrb9F54dHpbjLugaLQQ754YTVJ81epiaaXzhJAmE5hDQ7AdEDasv
+ m1nXRfuvv0LaP3lDjRIFGW2wq4JvI6mBKbggnRnaXDso69Tw0INT+1khko/cDeoFAyhv
+ uSk3GanpSjnqb9EUUDf10TrNwobU41uFOR0zermH/WRTMOp6X5c1a1pBtTBdFc3f6ssZ
+ CQ89wxG1clUNoPExdjZ/UiPtZse/5Oa/NzTI/2/nhhPLv7Fyd6yEQ+73QFSKgTO4DA0P
+ LJ9yhzR8XxK3YubYtpG6Kp8DBeTKIbCD5ryfkPX3egl9PQrZ5ikx7Xp5RRvUTFs3+gyC
+ 2UXQ==
+X-Gm-Message-State: AC+VfDwPtxwW+XLXKFFj294uvexyXaYpKzak5Z6MsTaHyugtYoKKhpeV
+ HdQopE2J3g1EWCel//WZJZVqqqE2dH0FUjRvwRE=
+X-Google-Smtp-Source: ACHHUZ4FYM2a+yRGrt0ZR/p6B5z15VUL79T2BhspQcZnT7ZhY2JGOdCOYx1WSa4ydzRjjHwIT6bFeg==
+X-Received: by 2002:aa7:cb47:0:b0:51d:9130:3c54 with SMTP id
+ w7-20020aa7cb47000000b0051d91303c54mr196875edt.26.1687628551740; 
+ Sat, 24 Jun 2023 10:42:31 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.217.150])
  by smtp.gmail.com with ESMTPSA id
- i10-20020a170906250a00b0096a6be0b66dsm1102885ejb.208.2023.06.24.10.42.20
+ d15-20020a05640208cf00b0051a3e7d7996sm872902edz.83.2023.06.24.10.42.28
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sat, 24 Jun 2023 10:42:23 -0700 (PDT)
+ Sat, 24 Jun 2023 10:42:31 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: kvm@vger.kernel.org, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
@@ -69,24 +69,24 @@ Cc: kvm@vger.kernel.org, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Paul Durrant <paul@xen.org>, Reinoud Zandijk <reinoud@netbsd.org>,
  Eduardo Habkost <eduardo@habkost.net>, Cameron Esfahani <dirty@apple.com>,
  Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v3 08/16] accel: Move HAX hThread to accelerator context
-Date: Sat, 24 Jun 2023 19:41:13 +0200
-Message-Id: <20230624174121.11508-9-philmd@linaro.org>
+Subject: [PATCH v3 09/16] accel: Remove NVMM unreachable error path
+Date: Sat, 24 Jun 2023 19:41:14 +0200
+Message-Id: <20230624174121.11508-10-philmd@linaro.org>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230624174121.11508-1-philmd@linaro.org>
 References: <20230624174121.11508-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::631;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x631.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::536;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x536.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,84 +102,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-hThread variable is only used by the HAX accelerator,
-so move it to the accelerator specific context.
+g_malloc0() can not fail. Remove the unreachable error path.
+
+https://developer-old.gnome.org/glib/stable/glib-Memory-Allocation.html#glib-Memory-Allocation.description
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/hw/core/cpu.h           | 1 -
- target/i386/hax/hax-i386.h      | 3 +++
- target/i386/hax/hax-accel-ops.c | 2 +-
- target/i386/hax/hax-all.c       | 2 +-
- target/i386/hax/hax-windows.c   | 2 +-
- 5 files changed, 6 insertions(+), 4 deletions(-)
+ target/i386/nvmm/nvmm-all.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-index a7fae8571e..8b40946afc 100644
---- a/include/hw/core/cpu.h
-+++ b/include/hw/core/cpu.h
-@@ -337,7 +337,6 @@ struct CPUState {
+diff --git a/target/i386/nvmm/nvmm-all.c b/target/i386/nvmm/nvmm-all.c
+index b3c3adc59a..90e9e0a5b2 100644
+--- a/target/i386/nvmm/nvmm-all.c
++++ b/target/i386/nvmm/nvmm-all.c
+@@ -943,10 +943,6 @@ nvmm_init_vcpu(CPUState *cpu)
+     }
  
-     struct QemuThread *thread;
- #ifdef _WIN32
--    HANDLE hThread;
-     QemuSemaphore sem;
- #endif
-     int thread_id;
-diff --git a/target/i386/hax/hax-i386.h b/target/i386/hax/hax-i386.h
-index 4372ee596d..87153f40ab 100644
---- a/target/i386/hax/hax-i386.h
-+++ b/target/i386/hax/hax-i386.h
-@@ -27,6 +27,9 @@ typedef HANDLE hax_fd;
- extern struct hax_state hax_global;
+     qcpu = g_malloc0(sizeof(*qcpu));
+-    if (qcpu == NULL) {
+-        error_report("NVMM: Failed to allocate VCPU context.");
+-        return -ENOMEM;
+-    }
  
- struct AccelCPUState {
-+#ifdef _WIN32
-+    HANDLE hThread;
-+#endif
-     hax_fd fd;
-     int vcpu_id;
-     struct hax_tunnel *tunnel;
-diff --git a/target/i386/hax/hax-accel-ops.c b/target/i386/hax/hax-accel-ops.c
-index a8512efcd5..5031096760 100644
---- a/target/i386/hax/hax-accel-ops.c
-+++ b/target/i386/hax/hax-accel-ops.c
-@@ -73,7 +73,7 @@ static void hax_start_vcpu_thread(CPUState *cpu)
-                        cpu, QEMU_THREAD_JOINABLE);
-     assert(cpu->accel);
- #ifdef _WIN32
--    cpu->hThread = qemu_thread_get_handle(cpu->thread);
-+    cpu->accel->hThread = qemu_thread_get_handle(cpu->thread);
- #endif
- }
- 
-diff --git a/target/i386/hax/hax-all.c b/target/i386/hax/hax-all.c
-index 9d9011cc38..18d78e5b6b 100644
---- a/target/i386/hax/hax-all.c
-+++ b/target/i386/hax/hax-all.c
-@@ -206,7 +206,7 @@ int hax_vcpu_destroy(CPUState *cpu)
-     hax_close_fd(vcpu->fd);
-     hax_global.vm->vcpus[vcpu->vcpu_id] = NULL;
- #ifdef _WIN32
--    CloseHandle(cpu->hThread);
-+    CloseHandle(vcpu->hThread);
- #endif
-     g_free(vcpu);
-     cpu->accel = NULL;
-diff --git a/target/i386/hax/hax-windows.c b/target/i386/hax/hax-windows.c
-index bf4b0ad941..4bf6cc08d2 100644
---- a/target/i386/hax/hax-windows.c
-+++ b/target/i386/hax/hax-windows.c
-@@ -476,7 +476,7 @@ void hax_kick_vcpu_thread(CPUState *cpu)
-      */
-     cpu->exit_request = 1;
-     if (!qemu_cpu_is_self(cpu)) {
--        if (!QueueUserAPC(dummy_apc_func, cpu->hThread, 0)) {
-+        if (!QueueUserAPC(dummy_apc_func, cpu->accel->hThread, 0)) {
-             fprintf(stderr, "%s: QueueUserAPC failed with error %lu\n",
-                     __func__, GetLastError());
-             exit(1);
+     ret = nvmm_vcpu_create(mach, cpu->cpu_index, &qcpu->vcpu);
+     if (ret == -1) {
 -- 
 2.38.1
 
