@@ -2,72 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 122EA73CB73
-	for <lists+qemu-devel@lfdr.de>; Sat, 24 Jun 2023 16:51:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 595CE73CB4A
+	for <lists+qemu-devel@lfdr.de>; Sat, 24 Jun 2023 16:18:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qD4aW-0002Lr-2F; Sat, 24 Jun 2023 10:50:08 -0400
+	id 1qD44q-0000wj-90; Sat, 24 Jun 2023 10:17:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shivamvijay543@gmail.com>)
- id 1qD1uW-0004XL-5L
- for qemu-devel@nongnu.org; Sat, 24 Jun 2023 07:58:38 -0400
-Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qD44o-0000wD-Cx
+ for qemu-devel@nongnu.org; Sat, 24 Jun 2023 10:17:22 -0400
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shivamvijay543@gmail.com>)
- id 1qD1uU-0003SA-Fr
- for qemu-devel@nongnu.org; Sat, 24 Jun 2023 07:58:35 -0400
-Received: by mail-ej1-x62a.google.com with SMTP id
- a640c23a62f3a-98e109525d6so18632566b.0
- for <qemu-devel@nongnu.org>; Sat, 24 Jun 2023 04:58:33 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qD44m-0004Nc-7W
+ for qemu-devel@nongnu.org; Sat, 24 Jun 2023 10:17:21 -0400
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-3112f5ab0b1so1537222f8f.0
+ for <qemu-devel@nongnu.org>; Sat, 24 Jun 2023 07:17:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1687607912; x=1690199912;
- h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
- :date:message-id:reply-to;
- bh=5QXnT9O6JSj2dVuxeUR7mUKicEY1MUlHcAdQaFqON84=;
- b=dMroXdagjR19Nl2fTUp6oBdQi0guA6o/dkYUcUWD2gAgz3llBhR4m5nwxmwKu+8zdQ
- bH+sEMhP3nVijFhX3l9P72CHeOD2RlHUmh2brke0HXtV5EZ2onz7rjeo9MgiVO55dci8
- qlj3n8y/v9y40Bu9qeI67t4xSf5peKsYpQZLqk7s/5hxPe3tbUSNI3BMQaBY01mpQ3/b
- vyPT44gsgO0kFUum3ktBmAOF4w8Cx6eyh/saLqCmz/hblWwDEI4rKDPmPEuNNeJzM70L
- uTBR+EKe5vu/fq7w4adj5pmMMISaFZybWLtKfggNHZHN7/wJb39MpWgl6+1jJkA8hPfz
- 6Mkg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687607912; x=1690199912;
- h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+ d=linaro.org; s=google; t=1687616237; x=1690208237;
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from
+ :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=5QXnT9O6JSj2dVuxeUR7mUKicEY1MUlHcAdQaFqON84=;
- b=kN26D7DOMAiB61wusedrRt7UMDpHfeym2wn31xWOfkBqpMjl3b/A6ztI04DySUhPY2
- WnJHQSzJXIEWI05t4ElmRe8hhBLLKrHR/2HVgQHuplpvCgjRPLw9XENAFcP+ZPuULt2S
- F5fhsz45YN+/flkNV8PGTEdMZL++v33CTVW5EKPiOXeRwoJogdDtQ8BO+7tvRJhDTIhQ
- NYX9agS+U973I+CxDIeaqzF7HUr9z2Rp11a1gxixlPXimtBki0I+8T6blIMHNpFIodJm
- 8T+IUsTwGjTtY4Xxx+exAAu16zG1Bd97W2OzHjg2ntBTqF5FcOrs9Z2o4jL0vj+zftJZ
- hv7Q==
-X-Gm-Message-State: AC+VfDwBwrVB0xuxVrQ36busQEnJN+lR4CaxTMZy0QG0moN4M9vHrkMr
- yuL2kny1y3U3PSAYA7S47D9r3GwFA0uFyMbO3/wPlXstqB26VQ==
-X-Google-Smtp-Source: ACHHUZ4Tvtgwxl6kB13HlKOfHglXHD88i0ZhrXA12VCpGlTOEzgT004l2vHpnXkcT7vmInTmIsstzl/aYk0Y02kMb28=
-X-Received: by 2002:a17:906:58d2:b0:988:77f0:b671 with SMTP id
- e18-20020a17090658d200b0098877f0b671mr15094226ejs.38.1687607911648; Sat, 24
- Jun 2023 04:58:31 -0700 (PDT)
+ bh=iJi8w5BfqHV+fSoGZqMCdRbBKXM0XIPr1579lVo5n14=;
+ b=jsBD+bXrMIbX7d5vS2kCRzkJfkPaWEdz0wNaYXi70oScxgEw5hia26W3kWuz+N5+tq
+ I1ZSSjeSTBZC/QZcbATYzv7QKEKJ/cW8wHQwT5DW6nydagkENltIm7jmU2B3RIdl78um
+ KwZVlSVNsS/Mt9DWrG1n4UMo4B1apZ90ZQ97wlIf+ojhkfn71dnKII21JaMKDJfAGQx8
+ /RVV9FS73ZSVEs/JnmCum0twOVP6JYY+hqmYqv+UOQq9hOD/7V4EpJHdFTbhhVj4GrYw
+ CgVPEKtGyZa90RPzAc3wyO70ASCEnsqGc/COV+HT+xnUC7LRY5Zr74jXwnh6PKav24yf
+ 4Qfg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1687616237; x=1690208237;
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=iJi8w5BfqHV+fSoGZqMCdRbBKXM0XIPr1579lVo5n14=;
+ b=BpESn7Hrs77l0CdPbChGo1cpkf/w7F6+szXzQ3BGbObNZ7nLrFFOiOCuX+7W69odTd
+ nvSbvcKNpFg4LXgzKIHiT+D1ttcfuhr/1tw/wjJZdfxEsp7Tg99HFLfqmUTf4usdHSvi
+ HQ0ASNTWr+NuqDL1C+ib0LGI3w4vUUBt8jX4W1awP2sPu/YKwJFukdiaLaeUNTj/xd9y
+ J9gpbw1zj6nFUt0aXdJYtPSLiAf++orQQ26etCu06pux97TT7VNAgCBLJd+72aqHO2Vk
+ b9d8/0NW8QYjQf2oSQ+RYk2AXYEDwXI7cC/RBFJhEaf/DPT40azu629yYKgQvXHQDcrS
+ 4P+g==
+X-Gm-Message-State: AC+VfDxgWCPZH2pbXoAZ074lCXQ3bsWg9fs8njnjGoEGskzzUPlN9SXD
+ DcCJVvkA66v5Hdx9DDks1oRhsg==
+X-Google-Smtp-Source: ACHHUZ5oSVMsn9CUz/Q1yuXekH7uERbDA20UzQ0Zh65Jhnqmgcu7NjSNEojMdgLZ5asFzydfQHm/TQ==
+X-Received: by 2002:adf:efcc:0:b0:309:3c0c:b2c1 with SMTP id
+ i12-20020adfefcc000000b003093c0cb2c1mr17267205wrp.23.1687616237239; 
+ Sat, 24 Jun 2023 07:17:17 -0700 (PDT)
+Received: from [192.168.69.115] ([176.187.217.150])
+ by smtp.gmail.com with ESMTPSA id
+ o14-20020adfe80e000000b0031270cf1904sm2212997wrm.59.2023.06.24.07.17.15
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sat, 24 Jun 2023 07:17:16 -0700 (PDT)
+Message-ID: <588b8968-608e-6d8e-d2ef-e1ab35d72ff8@linaro.org>
+Date: Sat, 24 Jun 2023 16:17:13 +0200
 MIME-Version: 1.0
-From: Shivam <shivamvijay543@gmail.com>
-Date: Sat, 24 Jun 2023 17:28:20 +0530
-Message-ID: <CAC583hF_8Dmsd08V+=O4m=wq-rCyJZz_aA9FZGQz-J7h1vi7iQ@mail.gmail.com>
-Subject: Facing difficulties in building QEMU for windows
-To: qemu-devel@nongnu.org
-Content-Type: multipart/alternative; boundary="000000000000184b9105feded67f"
-Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
- envelope-from=shivamvijay543@gmail.com; helo=mail-ej1-x62a.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, HTML_MESSAGE=0.001,
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.12.0
+Subject: Re: [PULL 10/14] tests/docker: Remove old Debian 9 containers
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+To: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
+ peter.maydell@linaro.org
+Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?Q?Daniel_P_=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
+ Sunil Muthuswamy <sunilmut@microsoft.com>
+References: <20201002113645.17693-1-alex.bennee@linaro.org>
+ <20201002113645.17693-11-alex.bennee@linaro.org>
+ <c4782597-91f8-93c2-dea1-1b755fdec17e@linaro.org>
+In-Reply-To: <c4782597-91f8-93c2-dea1-1b755fdec17e@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42d.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Sat, 24 Jun 2023 10:50:05 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,45 +99,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000184b9105feded67f
-Content-Type: text/plain; charset="UTF-8"
+On 24/6/23 00:29, Philippe Mathieu-Daudé wrote:
+> On 2/10/20 13:36, Alex Bennée wrote:
+>> From: Thomas Huth <thuth@redhat.com>
+>>
+>> We do not support Debian 9 in QEMU anymore, and the Debian 9 containers
+>> are now no longer used in the gitlab-CI. Time to remove them.
+>>
+>> Signed-off-by: Thomas Huth <thuth@redhat.com>
+>> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+>> Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+>> Reviewed-by: Philippe Mathieu-Daudé <f4bug@amsat.org>
+>> Message-Id: <20200921174320.46062-6-thuth@redhat.com>
+>> Message-Id: <20200925154027.12672-14-alex.bennee@linaro.org>
+> 
+> 
+>> --- a/tests/docker/dockerfiles/debian-win64-cross.docker
+>> +++ /dev/null
+>> @@ -1,45 +0,0 @@
+>> -#
+>> -# Docker mingw64 cross-compiler target
+>> -#
+>> -# This docker target builds on the debian Stretch MXE base image.
+>> -#
+>> -FROM qemu/debian9-mxe
+>> -
+>> -MAINTAINER Philippe Mathieu-Daudé <f4bug@amsat.org>
+>> -
+>> -ENV TARGET x86-64
+>> -
+>> -ENV PATH $PATH:/usr/lib/mxe/usr/$TARGET-w64-mingw32.shared/bin
+>> -
+>> -ENV PKG_CONFIG_PATH \
+>> -    
+>> $PKG_CONFIG_PATH:/usr/lib/mxe/usr/$TARGET-w64-mingw32.shared/lib/pkgconfig
+>> -
+>> -RUN apt-get update && \
+>> -    DEBIAN_FRONTEND=noninteractive eatmydata \
+>> -    apt-get install -y --no-install-recommends \
+>> -        mxe-$TARGET-w64-mingw32.shared-bzip2 \
+>> -        mxe-$TARGET-w64-mingw32.shared-curl \
+>> -        mxe-$TARGET-w64-mingw32.shared-glib \
+>> -        mxe-$TARGET-w64-mingw32.shared-libgcrypt \
+>> -        mxe-$TARGET-w64-mingw32.shared-libusb1 \
+>> -        mxe-$TARGET-w64-mingw32.shared-lzo \
+>> -        mxe-$TARGET-w64-mingw32.shared-nettle \
+>> -        mxe-$TARGET-w64-mingw32.shared-ncurses \
+>> -        mxe-$TARGET-w64-mingw32.shared-nsis \
+>> -        mxe-$TARGET-w64-mingw32.shared-pixman \
+>> -        mxe-$TARGET-w64-mingw32.shared-pkgconf \
+>> -        mxe-$TARGET-w64-mingw32.shared-pthreads \
+>> -        mxe-$TARGET-w64-mingw32.shared-sdl2 \
+>> -        mxe-$TARGET-w64-mingw32.shared-sdl2-mixer \
+>> -        mxe-$TARGET-w64-mingw32.shared-sdl2-gfx \
+>> -        mxe-$TARGET-w64-mingw32.shared-zlib \
+>> -        curl && \
+>> -    curl -s -S -o 
+>> /usr/lib/mxe/usr/x86_64-w64-mingw32.shared/include/WinHvEmulation.h \
+>> -        
+>> "https://sourceforge.net/p/mingw-w64/mingw-w64/ci/master/tree/mingw-w64-headers/include/winhvemulation.h?format=raw" && \
+>> -    curl -s -S -o 
+>> /usr/lib/mxe/usr/x86_64-w64-mingw32.shared/include/WinHvPlatform.h \
+>> -        
+>> "https://sourceforge.net/p/mingw-w64/mingw-w64/ci/master/tree/mingw-w64-headers/include/winhvplatform.h?format=raw" && \
+>> -    curl -s -S -o 
+>> /usr/lib/mxe/usr/x86_64-w64-mingw32.shared/include/winhvplatformdefs.h \
+>> -        
+>> "https://sourceforge.net/p/mingw-w64/mingw-w64/ci/master/tree/mingw-w64-headers/include/winhvplatformdefs.h?format=raw"
+>> -
+>> -# Specify the cross prefix for this image (see tests/docker/common.rc)
+>> -ENV QEMU_CONFIGURE_OPTS --cross-prefix=x86_64-w64-mingw32.shared-
+> 
+> I just realized this was the image cross-building the WHPX accel.
+> 
+> Presumably we don't test it since 2.5 years.
+> 
+> Sunil, is it still working for you?
 
-I am currently following these resources to build QEMU - Hosts/W32 - QEMU
-<https://wiki.qemu.org/Hosts/W32#Native_builds_with_MSYS2>
+Nevermind, problem figured: Since this MinGW commit:
+https://sourceforge.net/p/mingw-w64/mingw-w64/ci/395dcfdea
+cross-building doesn't work anymore on case-sensitive fs.
 
-However, when starting qemu-system-aarch64.exe in a console, nothing
-happens. I expected a window showing up. Shortly after starting the exe,
-I'm getting back the prompt. Nothing printed out to the console. No
-necessary DLL is missing. What could be the problem?
-
---000000000000184b9105feded67f
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr">I am currently following these resources to build QEMU -=
-=C2=A0<a href=3D"https://wiki.qemu.org/Hosts/W32#Native_builds_with_MSYS2">=
-Hosts/W32 - QEMU</a><div><br><span style=3D"color:rgb(35,38,41);font-family=
-:-apple-system,BlinkMacSystemFont,&quot;Segoe UI Adjusted&quot;,&quot;Segoe=
- UI&quot;,&quot;Liberation Sans&quot;,sans-serif;font-size:15px">However, w=
-hen starting=C2=A0</span><code style=3D"margin:0px;border:0px;font-variant-=
-numeric:inherit;font-variant-east-asian:inherit;font-variant-alternates:inh=
-erit;font-stretch:inherit;line-height:inherit;font-kerning:inherit;font-fea=
-ture-settings:inherit;vertical-align:baseline;box-sizing:inherit;color:rgb(=
-35,38,41)">qemu-system-aarch64.exe</code><span style=3D"color:rgb(35,38,41)=
-;font-family:-apple-system,BlinkMacSystemFont,&quot;Segoe UI Adjusted&quot;=
-,&quot;Segoe UI&quot;,&quot;Liberation Sans&quot;,sans-serif;font-size:15px=
-">=C2=A0in a console, nothing happens. I expected a window showing up. Shor=
-tly after starting the exe, I&#39;m getting back the prompt. Nothing printe=
-d out to the console. No necessary DLL is missing. What could be the proble=
-m?</span><br clear=3D"all"><div><div dir=3D"ltr" class=3D"gmail_signature" =
-data-smartmail=3D"gmail_signature"><div dir=3D"ltr"><span><table cellpaddin=
-g=3D"0" cellspacing=3D"0" style=3D"color:rgb(255,255,255);font-size:medium;=
-vertical-align:-webkit-baseline-middle;font-family:Arial"><tbody><tr><td><t=
-able cellpadding=3D"0" cellspacing=3D"0" style=3D"vertical-align:-webkit-ba=
-seline-middle;font-family:Arial"><tbody><tr><td style=3D"vertical-align:top=
-"><br></td><td width=3D"46"></td><td style=3D"padding:0px;vertical-align:mi=
-ddle"><br></td></tr></tbody></table></td></tr></tbody></table></span></div>=
-</div></div></div></div>
-
---000000000000184b9105feded67f--
+Patch on the way.
 
