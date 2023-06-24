@@ -2,82 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D747F73CC94
-	for <lists+qemu-devel@lfdr.de>; Sat, 24 Jun 2023 21:30:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6204273CCA5
+	for <lists+qemu-devel@lfdr.de>; Sat, 24 Jun 2023 22:08:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qD8xU-00006I-2I; Sat, 24 Jun 2023 15:30:08 -0400
+	id 1qD9XA-0006Zj-Fs; Sat, 24 Jun 2023 16:07:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qD8xR-00005d-NV
- for qemu-devel@nongnu.org; Sat, 24 Jun 2023 15:30:05 -0400
-Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qD9X8-0006ZE-JS
+ for qemu-devel@nongnu.org; Sat, 24 Jun 2023 16:06:58 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qD8xP-0007uP-RK
- for qemu-devel@nongnu.org; Sat, 24 Jun 2023 15:30:05 -0400
-Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-313e09a5b19so595420f8f.0
- for <qemu-devel@nongnu.org>; Sat, 24 Jun 2023 12:30:02 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qD9X6-0006Ne-Gq
+ for qemu-devel@nongnu.org; Sat, 24 Jun 2023 16:06:58 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-3fa71db41b6so19158075e9.1
+ for <qemu-devel@nongnu.org>; Sat, 24 Jun 2023 13:06:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687635001; x=1690227001;
+ d=linaro.org; s=google; t=1687637214; x=1690229214;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=wU88BtO0sTwE3bYofWLDGzDhy2I29H1Da5E42WxgmXI=;
- b=FRff/0NCKZq+Z+2kV+0yF60lILVHK3p6xNMENqSiuC+XSj+o+OaJ//xMeJjOgupfUf
- XdGQ8di7r+YY861H9buAUAbkuDwEraz58wee4p/XpF47b0clCiz2JWB+/xNfB2TraexA
- UaPQAcpbdE5HqRzU9RB89W8yq26MX6hHcKYoDq0jt7/HsuXXACMd5O8IyVCTR69XJeIO
- ayMiiScxzzcHLfgR3mrkA0niZ7OAhzjgb6/qKSWZEmw2ltgzNNJ/i3Lr+ySfckF6I27f
- uSNpd5PwQYTC7lPR/OOlF1YBr55MSroJfAezjvpxarcxLGIgQ9hFdOW+o4+ZUzlm51EV
- abNw==
+ bh=suySfMWT62kPBU2z0N6L8PuJkuKeNQPE9tqzQjS0L+A=;
+ b=Wcaox1O5LulMLd04A6QYc+8ZDEUZbYMNbH656K25T8OuHdV+RACfWz0VIsBiYW22UH
+ bK7z72XIeccw/oq8T66+EegeEY+TeFt/4BRGEA57Dqibb1Mpv7L1LkblCCWT5oRJ2VQQ
+ fOtDY3XvDcKaLg7CogFwf1J7wYZEzVXIF/fR8ngSkmQ04Chd1BKdeAQzmoUMXcdDMPWA
+ Fq1ma4EQTyTZNJyEdhxMhUK3c1CDFR4i9TLPk1FaYzJgdrYEzPKC/Mc2w0Nu9NqqIMaI
+ SeFnCjAxeJHiv4HasiSADJL6B4FFMYY1TPDBRliq+UF7dvGffCXpUIoub7+UCkz/rGhW
+ szeg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687635001; x=1690227001;
+ d=1e100.net; s=20221208; t=1687637214; x=1690229214;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=wU88BtO0sTwE3bYofWLDGzDhy2I29H1Da5E42WxgmXI=;
- b=Dm6yJl/hm7Q0HF7YLid/NlLyJ7Yqnes4+kRCjWR0eX47/gOjAz0hScClGWRa8dnhJN
- 8rjarKRjgSnvc8ft5hsRFW4FzbeEg8ErxS231MeWSGDMB2MTHBf5yU+8w09wn7VEfBMQ
- tbkG+HSt67xp4lumZYQJqfE2rPfGss6CuzUEebQdSRZ1lUJ/y6FC7VqYbJQah/7Ce58C
- gq+/Xd4QKVYjlzV1UY2/4YVyOgENoIpApWhbZzuaii5LDIfXHPxdDhG3SiwjDxpRlHZg
- drON4BAR/ucrVMw5lDwby5+d0AAePBbOt1m3YpcBppL0eN4inFsPa1UjC+QqCZTyd4C3
- BOGQ==
-X-Gm-Message-State: AC+VfDxoGisRh7qOsR7YD3Enx+TTOJisD0RFQzLx48TAeg3Ukah2IMw4
- HWmzbwJpxf4S1EHF2Tm/3YO2DapxFDSkz77phN8=
-X-Google-Smtp-Source: ACHHUZ6nTOStIMehl3095EdhW2XoDDKDqOqIsM4OMFev4nU90sDjQreqrq0mopjSUIizknus+sr6wQ==
-X-Received: by 2002:a5d:4e86:0:b0:30a:e589:68a5 with SMTP id
- e6-20020a5d4e86000000b0030ae58968a5mr21340362wru.29.1687635000750; 
- Sat, 24 Jun 2023 12:30:00 -0700 (PDT)
+ bh=suySfMWT62kPBU2z0N6L8PuJkuKeNQPE9tqzQjS0L+A=;
+ b=agmE12TYPqDpFAGwDPyXG/tA1cDGUjeuJmKlGBVzifstcdk/q8oyFBnkGh9z85O4Qj
+ UGKCkUEjzbHW1w3N+BjVDZA6E+sEt9O00TYrnOiQ+wupJZ04SH+zaPdQhGyJ4IWqS8P0
+ 05a7T+/ttvU6Xth8H2OGjqD1rh/gqW8MLVT0Btsc/TK0kvtn9TixOS7elSu0P5iRHwWJ
+ UjV74hPpnelXR9ovqJR5DHT5IAbgHxgXT1OZDl7bijH6Dy9bpt2qtv+tkJgQtaI3yzOs
+ kmgDYpOXEDjABIIv7yXvTS3EXj881vRLKOQx4qUboej3bf6NLAWiZ8D6ZBN3bI/C17uF
+ Z94g==
+X-Gm-Message-State: AC+VfDzh38+3oT35skVaio8mQu1nqXVAzDJx4AXxgxAoWVKBzllakWqK
+ lHrWfNjO+DQzabiajVMsh1e8IwRzk59o4qFcszM=
+X-Google-Smtp-Source: ACHHUZ73wKJoh3RbnvgYDGczOTAqDMI3ojkgDOvZIR+87nfEX7WkZYtdfjABCVBiJNueYI5CNxkqUg==
+X-Received: by 2002:a05:600c:b51:b0:3fa:8422:1585 with SMTP id
+ k17-20020a05600c0b5100b003fa84221585mr1521249wmr.36.1687637214444; 
+ Sat, 24 Jun 2023 13:06:54 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.217.150])
  by smtp.gmail.com with ESMTPSA id
- v10-20020a5d590a000000b0030631a599a0sm2795897wrd.24.2023.06.24.12.29.58
+ m6-20020a7bcb86000000b003f80946116dsm5780464wmi.45.2023.06.24.13.06.49
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sat, 24 Jun 2023 12:30:00 -0700 (PDT)
+ Sat, 24 Jun 2023 13:06:54 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Weiwei Li <liweiwei@iscas.ac.cn>,
+Cc: Matthew Rosato <mjrosato@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>, qemu-s390x@nongnu.org,
+ Eric Farman <farman@linux.ibm.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>, qemu-riscv@nongnu.org,
- Alistair Francis <alistair.francis@wdc.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, Bin Meng <bin.meng@windriver.com>,
+ Halil Pasic <pasic@linux.ibm.com>, David Hildenbrand <david@redhat.com>,
+ Janosch Frank <frankja@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2] target/riscv: Restrict KVM-specific fields from ArchCPU
-Date: Sat, 24 Jun 2023 21:29:57 +0200
-Message-Id: <20230624192957.14067-1-philmd@linaro.org>
+Subject: [PATCH v2] hw/s390x: Move KVM specific PV from hw/ to
+ target/s390x/kvm/
+Date: Sat, 24 Jun 2023 22:06:44 +0200
+Message-Id: <20230624200644.23931-1-philmd@linaro.org>
 X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,81 +94,255 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These fields shouldn't be accessed when KVM is not available.
+Protected Virtualization (PV) is not a real hardware device:
+it is a feature of the firmware on s390x that is exposed to
+userspace via the KVM interface.
 
-Restrict the KVM timer migration state. Rename the KVM timer
-post_load() handler accordingly, because cpu_post_load() is
-too generic.
+Move the pv.c/pv.h files to target/s390x/kvm/ to make this clearer.
 
+Suggested-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
-Since v1 https://lore.kernel.org/qemu-devel/20230405160454.97436-10-philmd@linaro.org/:
-- Restrict whole vmstate_kvmtimer (thus drop Daniel's R-b)
+v1: https://lore.kernel.org/qemu-devel/20230405160454.97436-11-philmd@linaro.org/
 ---
- target/riscv/cpu.h     | 2 ++
- target/riscv/machine.c | 8 ++++++--
- 2 files changed, 8 insertions(+), 2 deletions(-)
+ MAINTAINERS                                 | 2 --
+ {include/hw/s390x => target/s390x/kvm}/pv.h | 0
+ hw/s390x/ipl.c                              | 2 +-
+ hw/s390x/s390-pci-kvm.c                     | 2 +-
+ hw/s390x/s390-virtio-ccw.c                  | 2 +-
+ hw/s390x/tod-kvm.c                          | 2 +-
+ target/s390x/arch_dump.c                    | 2 +-
+ target/s390x/cpu-sysemu.c                   | 2 +-
+ target/s390x/cpu_features.c                 | 2 +-
+ target/s390x/cpu_models.c                   | 2 +-
+ target/s390x/diag.c                         | 2 +-
+ target/s390x/helper.c                       | 2 +-
+ target/s390x/ioinst.c                       | 2 +-
+ target/s390x/kvm/kvm.c                      | 2 +-
+ {hw/s390x => target/s390x/kvm}/pv.c         | 2 +-
+ hw/s390x/meson.build                        | 1 -
+ target/s390x/kvm/meson.build                | 1 +
+ 17 files changed, 14 insertions(+), 16 deletions(-)
+ rename {include/hw/s390x => target/s390x/kvm}/pv.h (100%)
+ rename {hw/s390x => target/s390x/kvm}/pv.c (99%)
 
-diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index e3e08d315f..b1b56aa29e 100644
---- a/target/riscv/cpu.h
-+++ b/target/riscv/cpu.h
-@@ -363,12 +363,14 @@ struct CPUArchState {
-     hwaddr kernel_addr;
-     hwaddr fdt_addr;
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 1da135b0c8..5f00e2a1c3 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -451,8 +451,6 @@ S: Supported
+ F: target/s390x/kvm/
+ F: target/s390x/machine.c
+ F: target/s390x/sigp.c
+-F: hw/s390x/pv.c
+-F: include/hw/s390x/pv.h
+ F: gdb-xml/s390*.xml
+ T: git https://github.com/borntraeger/qemu.git s390-next
+ L: qemu-s390x@nongnu.org
+diff --git a/include/hw/s390x/pv.h b/target/s390x/kvm/pv.h
+similarity index 100%
+rename from include/hw/s390x/pv.h
+rename to target/s390x/kvm/pv.h
+diff --git a/hw/s390x/ipl.c b/hw/s390x/ipl.c
+index 8612684d48..515dcf51b5 100644
+--- a/hw/s390x/ipl.c
++++ b/hw/s390x/ipl.c
+@@ -26,7 +26,7 @@
+ #include "hw/s390x/vfio-ccw.h"
+ #include "hw/s390x/css.h"
+ #include "hw/s390x/ebcdic.h"
+-#include "hw/s390x/pv.h"
++#include "target/s390x/kvm/pv.h"
+ #include "hw/scsi/scsi.h"
+ #include "hw/virtio/virtio-net.h"
+ #include "ipl.h"
+diff --git a/hw/s390x/s390-pci-kvm.c b/hw/s390x/s390-pci-kvm.c
+index 9134fe185f..ff41e4106d 100644
+--- a/hw/s390x/s390-pci-kvm.c
++++ b/hw/s390x/s390-pci-kvm.c
+@@ -14,7 +14,7 @@
+ #include <linux/kvm.h>
  
-+#ifdef CONFIG_KVM
-     /* kvm timer */
-     bool kvm_timer_dirty;
-     uint64_t kvm_timer_time;
-     uint64_t kvm_timer_compare;
-     uint64_t kvm_timer_state;
-     uint64_t kvm_timer_frequency;
-+#endif /* CONFIG_KVM */
- };
+ #include "kvm/kvm_s390x.h"
+-#include "hw/s390x/pv.h"
++#include "target/s390x/kvm/pv.h"
+ #include "hw/s390x/s390-pci-bus.h"
+ #include "hw/s390x/s390-pci-kvm.h"
+ #include "hw/s390x/s390-pci-inst.h"
+diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
+index 2dece8eab8..4516d73ff5 100644
+--- a/hw/s390x/s390-virtio-ccw.c
++++ b/hw/s390x/s390-virtio-ccw.c
+@@ -42,7 +42,7 @@
+ #include "hw/s390x/tod.h"
+ #include "sysemu/sysemu.h"
+ #include "sysemu/cpus.h"
+-#include "hw/s390x/pv.h"
++#include "target/s390x/kvm/pv.h"
+ #include "migration/blocker.h"
+ #include "qapi/visitor.h"
  
- /*
-diff --git a/target/riscv/machine.c b/target/riscv/machine.c
-index 3ce2970785..d27f8a2a3a 100644
---- a/target/riscv/machine.c
-+++ b/target/riscv/machine.c
-@@ -199,7 +199,8 @@ static bool kvmtimer_needed(void *opaque)
-     return kvm_enabled();
- }
+diff --git a/hw/s390x/tod-kvm.c b/hw/s390x/tod-kvm.c
+index e2202dae2d..9588b90f2b 100644
+--- a/hw/s390x/tod-kvm.c
++++ b/hw/s390x/tod-kvm.c
+@@ -13,7 +13,7 @@
+ #include "qemu/module.h"
+ #include "sysemu/runstate.h"
+ #include "hw/s390x/tod.h"
+-#include "hw/s390x/pv.h"
++#include "target/s390x/kvm/pv.h"
+ #include "kvm/kvm_s390x.h"
  
--static int cpu_post_load(void *opaque, int version_id)
-+#ifdef CONFIG_KVM
-+static int cpu_kvmtimer_post_load(void *opaque, int version_id)
- {
-     RISCVCPU *cpu = opaque;
-     CPURISCVState *env = &cpu->env;
-@@ -213,7 +214,7 @@ static const VMStateDescription vmstate_kvmtimer = {
-     .version_id = 1,
-     .minimum_version_id = 1,
-     .needed = kvmtimer_needed,
--    .post_load = cpu_post_load,
-+    .post_load = cpu_kvmtimer_post_load,
-     .fields = (VMStateField[]) {
-         VMSTATE_UINT64(env.kvm_timer_time, RISCVCPU),
-         VMSTATE_UINT64(env.kvm_timer_compare, RISCVCPU),
-@@ -221,6 +222,7 @@ static const VMStateDescription vmstate_kvmtimer = {
-         VMSTATE_END_OF_LIST()
-     }
- };
-+#endif
+ static void kvm_s390_get_tod_raw(S390TOD *tod, Error **errp)
+diff --git a/target/s390x/arch_dump.c b/target/s390x/arch_dump.c
+index cb98f4894d..51a2116515 100644
+--- a/target/s390x/arch_dump.c
++++ b/target/s390x/arch_dump.c
+@@ -17,8 +17,8 @@
+ #include "s390x-internal.h"
+ #include "elf.h"
+ #include "sysemu/dump.h"
+-#include "hw/s390x/pv.h"
+ #include "kvm/kvm_s390x.h"
++#include "target/s390x/kvm/pv.h"
  
- static bool debug_needed(void *opaque)
- {
-@@ -409,7 +411,9 @@ const VMStateDescription vmstate_riscv_cpu = {
-         &vmstate_vector,
-         &vmstate_pointermasking,
-         &vmstate_rv128,
-+#ifdef CONFIG_KVM
-         &vmstate_kvmtimer,
-+#endif
-         &vmstate_envcfg,
-         &vmstate_debug,
-         &vmstate_smstateen,
+ struct S390xUserRegsStruct {
+     uint64_t psw[2];
+diff --git a/target/s390x/cpu-sysemu.c b/target/s390x/cpu-sysemu.c
+index 97d6c760a8..8112561e5e 100644
+--- a/target/s390x/cpu-sysemu.c
++++ b/target/s390x/cpu-sysemu.c
+@@ -33,7 +33,7 @@
+ #include "qapi/qapi-visit-run-state.h"
+ #include "sysemu/hw_accel.h"
+ 
+-#include "hw/s390x/pv.h"
++#include "target/s390x/kvm/pv.h"
+ #include "hw/boards.h"
+ #include "sysemu/sysemu.h"
+ #include "sysemu/tcg.h"
+diff --git a/target/s390x/cpu_features.c b/target/s390x/cpu_features.c
+index 2e4e11d264..ebb155ce1c 100644
+--- a/target/s390x/cpu_features.c
++++ b/target/s390x/cpu_features.c
+@@ -15,7 +15,7 @@
+ #include "qemu/module.h"
+ #include "cpu_features.h"
+ #ifndef CONFIG_USER_ONLY
+-#include "hw/s390x/pv.h"
++#include "target/s390x/kvm/pv.h"
+ #endif
+ 
+ #define DEF_FEAT(_FEAT, _NAME, _TYPE, _BIT, _DESC) \
+diff --git a/target/s390x/cpu_models.c b/target/s390x/cpu_models.c
+index ae8880e81d..42b52afdb4 100644
+--- a/target/s390x/cpu_models.c
++++ b/target/s390x/cpu_models.c
+@@ -24,7 +24,7 @@
+ #include "qemu/qemu-print.h"
+ #ifndef CONFIG_USER_ONLY
+ #include "sysemu/sysemu.h"
+-#include "hw/s390x/pv.h"
++#include "target/s390x/kvm/pv.h"
+ #endif
+ 
+ #define CPUDEF_INIT(_type, _gen, _ec_ga, _mha_pow, _hmfai, _name, _desc) \
+diff --git a/target/s390x/diag.c b/target/s390x/diag.c
+index e5f0df19e7..8ce18e08f3 100644
+--- a/target/s390x/diag.c
++++ b/target/s390x/diag.c
+@@ -19,9 +19,9 @@
+ #include "sysemu/cpus.h"
+ #include "hw/s390x/ipl.h"
+ #include "hw/s390x/s390-virtio-ccw.h"
+-#include "hw/s390x/pv.h"
+ #include "sysemu/kvm.h"
+ #include "kvm/kvm_s390x.h"
++#include "target/s390x/kvm/pv.h"
+ #include "qemu/error-report.h"
+ 
+ 
+diff --git a/target/s390x/helper.c b/target/s390x/helper.c
+index 2b363aa959..d76c06381b 100644
+--- a/target/s390x/helper.c
++++ b/target/s390x/helper.c
+@@ -24,7 +24,7 @@
+ #include "gdbstub/helpers.h"
+ #include "qemu/timer.h"
+ #include "hw/s390x/ioinst.h"
+-#include "hw/s390x/pv.h"
++#include "target/s390x/kvm/pv.h"
+ #include "sysemu/hw_accel.h"
+ #include "sysemu/runstate.h"
+ 
+diff --git a/target/s390x/ioinst.c b/target/s390x/ioinst.c
+index 053aaabb5a..bbe45a497a 100644
+--- a/target/s390x/ioinst.c
++++ b/target/s390x/ioinst.c
+@@ -16,7 +16,7 @@
+ #include "hw/s390x/ioinst.h"
+ #include "trace.h"
+ #include "hw/s390x/s390-pci-bus.h"
+-#include "hw/s390x/pv.h"
++#include "target/s390x/kvm/pv.h"
+ 
+ /* All I/O instructions but chsc use the s format */
+ static uint64_t get_address_from_regs(CPUS390XState *env, uint32_t ipb,
+diff --git a/target/s390x/kvm/kvm.c b/target/s390x/kvm/kvm.c
+index 3ac7ec9acf..a9e5880349 100644
+--- a/target/s390x/kvm/kvm.c
++++ b/target/s390x/kvm/kvm.c
+@@ -50,7 +50,7 @@
+ #include "exec/memattrs.h"
+ #include "hw/s390x/s390-virtio-ccw.h"
+ #include "hw/s390x/s390-virtio-hcall.h"
+-#include "hw/s390x/pv.h"
++#include "target/s390x/kvm/pv.h"
+ 
+ #ifndef DEBUG_KVM
+ #define DEBUG_KVM  0
+diff --git a/hw/s390x/pv.c b/target/s390x/kvm/pv.c
+similarity index 99%
+rename from hw/s390x/pv.c
+rename to target/s390x/kvm/pv.c
+index b63f3784c6..6a69be7e5c 100644
+--- a/hw/s390x/pv.c
++++ b/target/s390x/kvm/pv.c
+@@ -21,9 +21,9 @@
+ #include "qom/object_interfaces.h"
+ #include "exec/confidential-guest-support.h"
+ #include "hw/s390x/ipl.h"
+-#include "hw/s390x/pv.h"
+ #include "hw/s390x/sclp.h"
+ #include "target/s390x/kvm/kvm_s390x.h"
++#include "target/s390x/kvm/pv.h"
+ 
+ static bool info_valid;
+ static struct kvm_s390_pv_info_vm info_vm;
+diff --git a/hw/s390x/meson.build b/hw/s390x/meson.build
+index f291016fee..6fd096813a 100644
+--- a/hw/s390x/meson.build
++++ b/hw/s390x/meson.build
+@@ -22,7 +22,6 @@ s390x_ss.add(when: 'CONFIG_KVM', if_true: files(
+   'tod-kvm.c',
+   's390-skeys-kvm.c',
+   's390-stattrib-kvm.c',
+-  'pv.c',
+   's390-pci-kvm.c',
+ ))
+ s390x_ss.add(when: 'CONFIG_TCG', if_true: files(
+diff --git a/target/s390x/kvm/meson.build b/target/s390x/kvm/meson.build
+index 37253f75bf..d6aca590ae 100644
+--- a/target/s390x/kvm/meson.build
++++ b/target/s390x/kvm/meson.build
+@@ -1,5 +1,6 @@
+ 
+ s390x_ss.add(when: 'CONFIG_KVM', if_true: files(
++  'pv.c',
+   'kvm.c'
+ ), if_false: files(
+   'stubs.c'
 -- 
 2.38.1
 
