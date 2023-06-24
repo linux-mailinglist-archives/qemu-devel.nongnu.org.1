@@ -2,91 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A68373CC12
-	for <lists+qemu-devel@lfdr.de>; Sat, 24 Jun 2023 19:37:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF64173CC22
+	for <lists+qemu-devel@lfdr.de>; Sat, 24 Jun 2023 19:42:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qD7BH-0004Rz-T7; Sat, 24 Jun 2023 13:36:15 -0400
+	id 1qD7GQ-0005c1-A5; Sat, 24 Jun 2023 13:41:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qD7BG-0004RU-5j
- for qemu-devel@nongnu.org; Sat, 24 Jun 2023 13:36:14 -0400
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qD7GM-0005bg-9v
+ for qemu-devel@nongnu.org; Sat, 24 Jun 2023 13:41:30 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qD7BE-00050V-AN
- for qemu-devel@nongnu.org; Sat, 24 Jun 2023 13:36:13 -0400
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-3f900cd3f96so22579565e9.2
- for <qemu-devel@nongnu.org>; Sat, 24 Jun 2023 10:36:11 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qD7GJ-00063i-H2
+ for qemu-devel@nongnu.org; Sat, 24 Jun 2023 13:41:29 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-3fa70ec8d17so26238385e9.1
+ for <qemu-devel@nongnu.org>; Sat, 24 Jun 2023 10:41:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687628170; x=1690220170;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=GhpHbFudMkeMeL5ABLFV8K3ZpIKOcpmqDKumUJnakQo=;
- b=iHZDudCm+6Lkz6SMlioiaWU3ZPrAVeeGWydDo5XpuHV/O83QDieJ2MW8sBwc0RnJ6n
- LCyc81zygqlx89kqYh6y73/3CFk7tQWmRPaEg0IWMGey5OqegmHYQ884T0up8Qih6qtw
- X91F/O84ZOuvkgqRnEXbb0eSlQvy+5Gun1bFmcC96S2uKTlpsxgRhLma5RxvpNjRGq+2
- eDO6513hnE4ZqdmdJjRuKKPa5ge9tgFASVn2oo+300iSfP5maJ62wBUynRf7i9NYTjc6
- xdYlov0lRWMIvUULtV6NAO9JsfOyDTaiIaPiJgFXnYEpiaqfkMjDaWpUqrHvp89eWXy7
- ObVQ==
+ d=linaro.org; s=google; t=1687628485; x=1690220485;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=9DD8JyzZ0D9c0TVJWROVlnDQP9z+YeCBvlalUwzeBRo=;
+ b=S8HxrYQ2qhgw56X9JXNpzNmjfiViWtcbiWCpgQccPHZivixZ7QAzwnG0azVoU7xVwb
+ akuxl0mdCTpThLPPNG44q2zM7WFBYRf++FIjeb7OZaKYcNCoxQVVFO06aKvqykPLZlYZ
+ ZvpNiq98b5G8YgGvHvAodfNZ2LcJFFazSZG27b+pSB9bw6v7bdgijzZhhCtwRpACo7M0
+ slPhBm89C1gJKR7y1ERfGhGue/oWbU0iTwXu9x0IUylVr99MqavVrVlJRD4xj8CSGUvm
+ 6za9HdL9/cV4dMDN2/DHhAKDF5i4CxvXeVSa4T7v0NhA1XGwrIFxIoVXTwJ+ThKpvofI
+ 84Rw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687628170; x=1690220170;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=GhpHbFudMkeMeL5ABLFV8K3ZpIKOcpmqDKumUJnakQo=;
- b=ZHtd6qgMGOhP3xt3nQJxpX6vJ0cPL17IiKa4MW7yppKf+3u8iZdnvseNBXkLYusTEo
- jz00Kxb/n2rCUSaToW39XLCMHaH1HfL7FVZn+dB3zmdBgE1criXbHU8THDu4R3dx4bBy
- vIGgHK4Xg9itNe+kUvepkdQAz2P2kjcRwXzOrOKXQQSKekHZFYpyIVAOppBVmNFx3qjA
- 4GM0+YaSAnpwbMPAZzGeth1WkoTMee88T30ey8X/q6NDEgyvpJ3Trp8jOSJx+poVJrlj
- zGIDku6oFAtwuxpT/YgPbulqbLyIeQZW7LsHBVKdsrIy5f4d88wkdGIJhcAQUYx3K4iM
- 8pMg==
-X-Gm-Message-State: AC+VfDzupXEVMCyYP1QeIVXK9+Rf6ifCi993fNMpluijw/F/1kV+zZqY
- nEMLLhZmW2yYavYaN9muPKWBkQ==
-X-Google-Smtp-Source: ACHHUZ45/pSKUwN9ZWRuO9SdxWU1+R6/cc+TpuFjaseh8imD+9izPUxpPl+Hji/hbynVqoq/U2/WFA==
-X-Received: by 2002:a1c:e90d:0:b0:3f8:fc2a:c7eb with SMTP id
- q13-20020a1ce90d000000b003f8fc2ac7ebmr17083071wmc.5.1687628170299; 
- Sat, 24 Jun 2023 10:36:10 -0700 (PDT)
-Received: from [192.168.69.115] ([176.187.217.150])
+ d=1e100.net; s=20221208; t=1687628485; x=1690220485;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=9DD8JyzZ0D9c0TVJWROVlnDQP9z+YeCBvlalUwzeBRo=;
+ b=NfWKlwEMNa6J6FAo0O/eXozVYt9t/etgyQ6YR/I1AZmF71AaUqfrYuFBIIvk7IgoEa
+ pOd67xvP63dOY2OlmQ+RYQ93C3CbxFDHaZfQLsV2S7kO1uOKuOLZEU25zR59XExmakVJ
+ dqDcefVum/ZmK4t+2sYHSg/EHhdVGE8yPx18EVTQ4n1GRWlTICXyVLdbATqrQ2H+IIRD
+ DZOT+aP0Qk0CRw7lUbQNw510forNq0uElAVz/o+nx8gbv9HApAdbkK40y1C3/AkvIQaA
+ YuZL5pQRZSlXd7+zXPORf+y30iGFGGcQsnuVaIAAvHbelPcOyRedMOp5eVumS2KGAI9J
+ z94A==
+X-Gm-Message-State: AC+VfDx4K1LORUyA69atF0CNIsj6f8P/QMlQjX4LQTaaL7dfid8jDaru
+ 0KLmXp068DDSpz4zLhzEMjr6D2w1pE2FdkYARyY=
+X-Google-Smtp-Source: ACHHUZ4RU70EsAbLLa974X6kTmgNQb8jnG4vK1SD4DHwEek3Lg8HiGz7TW7mHUT/jA40wDP62z4cEA==
+X-Received: by 2002:a05:600c:2942:b0:3f7:e7a2:25f6 with SMTP id
+ n2-20020a05600c294200b003f7e7a225f6mr21913470wmd.17.1687628485030; 
+ Sat, 24 Jun 2023 10:41:25 -0700 (PDT)
+Received: from m1x-phil.lan ([176.187.217.150])
  by smtp.gmail.com with ESMTPSA id
- d9-20020a5d6dc9000000b0030ae53550f5sm2590762wrz.51.2023.06.24.10.36.07
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 24 Jun 2023 10:36:09 -0700 (PDT)
-Message-ID: <c52475f6-253f-05cf-186f-5b9e17da1dac@linaro.org>
-Date: Sat, 24 Jun 2023 19:36:06 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.12.0
-Subject: Re: [PATCH v2 07/16] accel: Rename HAX 'struct hax_vcpu_state' ->
- AccelCPUState
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: Reinoud Zandijk <reinoud@netbsd.org>, qemu-arm@nongnu.org,
- kvm@vger.kernel.org, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
+ p23-20020a1c7417000000b003f9b0f640b1sm2711760wmc.22.2023.06.24.10.41.22
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Sat, 24 Jun 2023 10:41:24 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: kvm@vger.kernel.org, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Roman Bolshakov <rbolshakov@ddn.com>, qemu-arm@nongnu.org,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Alexander Graf <agraf@csgraf.de>, xen-devel@lists.xenproject.org,
+ Sunil Muthuswamy <sunilmut@microsoft.com>,
  Anthony Perard <anthony.perard@citrix.com>,
- Yanan Wang <wangyanan55@huawei.com>, Peter Maydell
- <peter.maydell@linaro.org>, Roman Bolshakov <rbolshakov@ddn.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Paul Durrant <paul@xen.org>,
- Sunil Muthuswamy <sunilmut@microsoft.com>, Alexander Graf <agraf@csgraf.de>,
- xen-devel@lists.xenproject.org, Eduardo Habkost <eduardo@habkost.net>,
- Cameron Esfahani <dirty@apple.com>
-References: <20230622160823.71851-1-philmd@linaro.org>
- <20230622160823.71851-8-philmd@linaro.org>
- <2c0a97af-be7e-6d83-5176-ef9980c2faf0@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <2c0a97af-be7e-6d83-5176-ef9980c2faf0@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Yanan Wang <wangyanan55@huawei.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Paul Durrant <paul@xen.org>, Reinoud Zandijk <reinoud@netbsd.org>,
+ Eduardo Habkost <eduardo@habkost.net>, Cameron Esfahani <dirty@apple.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH v3 00/16] accel: Share CPUState accel context
+ (HAX/NVMM/WHPX/HVF)
+Date: Sat, 24 Jun 2023 19:41:05 +0200
+Message-Id: <20230624174121.11508-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.38.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -104,37 +100,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 22/6/23 19:46, Richard Henderson wrote:
-> On 6/22/23 18:08, Philippe Mathieu-Daudé wrote:
->> |+ struct AccelvCPUState *accel;|
-> ...
->> +typedef struct AccelCPUState {
->>      hax_fd fd;
->>      int vcpu_id;
->>      struct hax_tunnel *tunnel;
->>      unsigned char *iobuf;
->> -};
->> +} hax_vcpu_state;
-> 
-> 
-> Discussed face to face, but for the record:
-> 
-> Put the typedef in qemu/typedefs.h, so that we can use it immediately in 
-> core/cpu.h and not need to re-declare it in each accelerator.
-> 
-> Drop hax_vcpu_state typedef and just use AccelCPUState (since you have 
-> to change all of those lines anyway.  Which will eventually allow
-> 
->> +++ b/target/i386/whpx/whpx-all.c
->> @@ -2258,7 +2258,7 @@ int whpx_init_vcpu(CPUState *cpu)
->>
->>      vcpu->interruptable = true;
->>      cpu->vcpu_dirty = true;
->> -    cpu->accel = (struct hax_vcpu_state *)vcpu;
->> +    cpu->accel = (struct AccelCPUState *)vcpu;
-> 
-> this cast to go away.
+This series is part of the single binary effort.
 
-Indeed, thanks :)
+All accelerator will share their per-vCPU context in
+an opaque 'accel' pointer within the CPUState.
+
+First handle HAX/NVMM/WHPX/HVF. KVM and TCG will follow
+as two different (bigger) follow-up series.
+
+Except HVF/intel, all has been (cross-)build tested.
+
+I plan to send the PR myself.
+
+Since v2:
+- Addressed rth's review comments
+- Added rth's R-b tag
+
+Since v1:
+- Addressed rth's review comments
+- Added rth's R-b tag
+- Converted HVF intel (untested)
+- Rebased
+
+Philippe Mathieu-Daudé (16):
+  MAINTAINERS: Update Roman Bolshakov email address
+  accel: Document generic accelerator headers
+  accel: Remove unused hThread variable on TCG/WHPX
+  accel: Fix a leak on Windows HAX
+  accel: Destroy HAX vCPU threads once done
+  accel: Rename 'hax_vcpu' as 'accel' in CPUState
+  accel: Rename HAX 'struct hax_vcpu_state' -> AccelCPUState
+  accel: Move HAX hThread to accelerator context
+  accel: Remove NVMM unreachable error path
+  accel: Rename NVMM 'struct qemu_vcpu' -> AccelCPUState
+  accel: Inline NVMM get_qemu_vcpu()
+  accel: Remove WHPX unreachable error path
+  accel: Rename WHPX 'struct whpx_vcpu' -> AccelCPUState
+  accel: Inline WHPX get_whpx_vcpu()
+  accel: Rename 'cpu_state' -> 'cs'
+  accel: Rename HVF 'struct hvf_vcpu_state' -> AccelCPUState
+
+ MAINTAINERS                       |   4 +-
+ include/hw/core/cpu.h             |  10 +-
+ include/qemu/typedefs.h           |   1 +
+ include/sysemu/hax.h              |   2 +
+ include/sysemu/hvf_int.h          |   2 +-
+ include/sysemu/kvm.h              |   2 +
+ include/sysemu/nvmm.h             |   2 +
+ include/sysemu/tcg.h              |   2 +
+ include/sysemu/whpx.h             |   2 +
+ include/sysemu/xen.h              |   2 +
+ target/i386/hax/hax-i386.h        |  12 +-
+ target/i386/hvf/vmx.h             |  22 +-
+ target/i386/hvf/x86hvf.h          |  18 +-
+ accel/hvf/hvf-accel-ops.c         |  18 +-
+ accel/tcg/tcg-accel-ops-mttcg.c   |   4 -
+ accel/tcg/tcg-accel-ops-rr.c      |   3 -
+ target/arm/hvf/hvf.c              | 108 ++++-----
+ target/i386/hax/hax-accel-ops.c   |   5 +-
+ target/i386/hax/hax-all.c         |  26 ++-
+ target/i386/hax/hax-posix.c       |   4 +-
+ target/i386/hax/hax-windows.c     |   6 +-
+ target/i386/hvf/hvf.c             | 104 ++++-----
+ target/i386/hvf/x86.c             |  28 +--
+ target/i386/hvf/x86_descr.c       |  26 +--
+ target/i386/hvf/x86_emu.c         |  62 ++---
+ target/i386/hvf/x86_mmu.c         |   4 +-
+ target/i386/hvf/x86_task.c        |  10 +-
+ target/i386/hvf/x86hvf.c          | 372 +++++++++++++++---------------
+ target/i386/nvmm/nvmm-all.c       |  42 ++--
+ target/i386/whpx/whpx-accel-ops.c |   3 -
+ target/i386/whpx/whpx-all.c       |  45 ++--
+ .mailmap                          |   3 +-
+ 32 files changed, 469 insertions(+), 485 deletions(-)
+
+-- 
+2.38.1
 
 
