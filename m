@@ -2,59 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9111773CA4C
-	for <lists+qemu-devel@lfdr.de>; Sat, 24 Jun 2023 11:52:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7DDC73CA7D
+	for <lists+qemu-devel@lfdr.de>; Sat, 24 Jun 2023 12:42:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qCzuu-0003d6-3c; Sat, 24 Jun 2023 05:50:52 -0400
+	id 1qD0hd-0002SL-Oy; Sat, 24 Jun 2023 06:41:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qCzur-0003cp-Ji; Sat, 24 Jun 2023 05:50:49 -0400
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qCzuk-0001CC-Sx; Sat, 24 Jun 2023 05:50:49 -0400
-Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id 1B0C7748A77;
- Sat, 24 Jun 2023 11:50:26 +0200 (CEST)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id C8591748A76; Sat, 24 Jun 2023 11:50:25 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id C50EF748A73;
- Sat, 24 Jun 2023 11:50:25 +0200 (CEST)
-Date: Sat, 24 Jun 2023 11:50:25 +0200 (CEST)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>
-cc: =?ISO-8859-15?Q?C=E9dric_Le_Goater?= <clegoate@redhat.com>, 
- Peter Maydell <peter.maydell@linaro.org>, 
- Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org, 
- qemu-devel@nongnu.org, Christophe Leroy <christophe.leroy@csgroup.eu>, 
- Harsh Prateek Bora <harshpb@linux.ibm.com>, 
- Daniel Henrique Barboza <danielhb413@gmail.com>, 
- =?ISO-8859-15?Q?C=E9dric_Le_Goater?= <clg@kaod.org>, 
- David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>, 
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, 
- Frederic Barrat <frederic.barrat@fr.ibm.com>
-Subject: Re: [PATCH 0/4] target/ppc: Catch invalid real address accesses
-In-Reply-To: <cf674f48-c083-9ad9-3801-8cbd37aecbb1@linaro.org>
-Message-ID: <e9dd38cf-2dfd-a816-3b2d-4cbebc099727@eik.bme.hu>
-References: <20230623081953.290875-1-npiggin@gmail.com>
- <CAFEAcA_Brf-R12t+DKNAoygqgC-qjKJ3Wiz4ULjGHOo8_vPovw@mail.gmail.com>
- <47197a73-b106-47d5-9502-393a6bdc9945@redhat.com>
- <cf674f48-c083-9ad9-3801-8cbd37aecbb1@linaro.org>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qD0hZ-0002S0-UQ
+ for qemu-devel@nongnu.org; Sat, 24 Jun 2023 06:41:09 -0400
+Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qD0hW-0001Eb-T0
+ for qemu-devel@nongnu.org; Sat, 24 Jun 2023 06:41:09 -0400
+Received: by mail-ed1-x52a.google.com with SMTP id
+ 4fb4d7f45d1cf-51be881b425so1619932a12.1
+ for <qemu-devel@nongnu.org>; Sat, 24 Jun 2023 03:41:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1687603264; x=1690195264;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=jZEIAMNBiMn3g9tw5GHYioaVxbMWGakucfs09cO0ZZI=;
+ b=tY43Wg/fLDAqVFp3jcZf9k55hHU/ZEy+r3vzEzj8fsLARdpSwwgaAmfFFI4CFaQWnj
+ x+HFy6yq0n8cjHDY1ttxRlUvr2xpjII/x975+NqcFRWoFByxPSbHIl7UsjCrREckg9v8
+ am09mp9DWn+ebi6uPl05hsqQLzleTQ7+nwQrGX+IyEsok5iGSvWK0XKTvlIMLFCvswET
+ XR2xCGcj/PMCeow31be9b5wHouypHrhoyZPFNy3Rqj+hQ9gb0KrJRo+jo4faXDjT+RUu
+ /XiRppkjeoyPhoIPU4Ol2VwMS2sZIo+nR4/rAxqpOaYuxcTUBmL0BDeRR/klZByOtQKT
+ 7Xng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1687603264; x=1690195264;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=jZEIAMNBiMn3g9tw5GHYioaVxbMWGakucfs09cO0ZZI=;
+ b=Xf9WoihCF1SZ3ZLzwMS6pTFXonFdp6nugGPF1iwQ1c7uS46eCRYB3kbUrNO4aMMLWs
+ bno2QnJb+DxxTFOcE4EeMsPySyGsx2XFJBYuXfgT7rJSHxFhM3i5FfpM+lJTTYKQYvsG
+ lDgB8s5ihnwbf+/KGGmzXhCVuhwJy7jyT15RqlZ86Voc2UVaGShVumsXJ4HDYxOnCqsm
+ Q2P62a4V5ZV7NCysu+U1Hx9ovg0ifh27yPsZE57H1yHg46X2/gZyaoKTMk1chr9RWUNf
+ /C6pb9Ctsn9mHmzodtp95r7lODBdA3RHIVvvTCnONEx3plb7SgmA2m3Yfz6xgYspMDKU
+ ZM9g==
+X-Gm-Message-State: AC+VfDzM/MnqfIwFBETLm6qGV8UbezAUo3fRWXRLtsy1ByPh8xUhFebB
+ 7VUj6Lpd21+E5AV/xBtD+xvPxsI8dZ5OSGPcZaffrA==
+X-Google-Smtp-Source: ACHHUZ6ChzEmSnqgsU4GAXy+jJ2pQrjpGBNA63RHIgRwzxEfxhsaI6BZROPkWwGWbZH2+idQx/J8AQc5G0z0GTHZ2Nk=
+X-Received: by 2002:aa7:c40b:0:b0:51b:fa48:a3f3 with SMTP id
+ j11-20020aa7c40b000000b0051bfa48a3f3mr2422687edq.18.1687603264300; Sat, 24
+ Jun 2023 03:41:04 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="3866299591-2033448452-1687600225=:42373"
-X-Spam-Probability: 9%
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+References: <20230523100508.32564-1-qianfanguijin@163.com>
+ <20230523100508.32564-2-qianfanguijin@163.com>
+ <41e71eae-72ad-410d-9cd8-cc495c06dac4@roeck-us.net>
+ <CAFEAcA8aEQWAap36CtHMrEkFQUPnDCH7=-X5+TE2GJ-qzm3Y9w@mail.gmail.com>
+ <2044dc69-93de-d855-fe44-ee6f3ab3576b@roeck-us.net>
+In-Reply-To: <2044dc69-93de-d855-fe44-ee6f3ab3576b@roeck-us.net>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Sat, 24 Jun 2023 11:40:53 +0100
+Message-ID: <CAFEAcA8vtJNwbxBreDMFB6q-Z=G5FiOcWzAAz+F69A4-Er_4EA@mail.gmail.com>
+Subject: Re: [PATCH v5 01/11] hw: arm: Add bananapi M2-Ultra and allwinner-r40
+ support
+To: Guenter Roeck <linux@roeck-us.net>
+Cc: qianfanguijin@163.com, qemu-arm@nongnu.org, qemu-devel@nongnu.org, 
+ Strahinja Jankovic <strahinja.p.jankovic@gmail.com>,
+ Beniamino Galvani <b.galvani@gmail.com>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Niek Linnenbank <nieklinnenbank@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -70,97 +93,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
-
---3866299591-2033448452-1687600225=:42373
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8BIT
-
-On Sat, 24 Jun 2023, Philippe Mathieu-Daudé wrote:
-> On 23/6/23 14:37, Cédric Le Goater wrote:
->> On 6/23/23 11:10, Peter Maydell wrote:
->>> On Fri, 23 Jun 2023 at 09:21, Nicholas Piggin <npiggin@gmail.com> wrote:
->>>> 
->>>> ppc has always silently ignored access to real (physical) addresses
->>>> with nothing behind it, which can make debugging difficult at times.
->>>> 
->>>> It looks like the way to handle this is implement the transaction
->>>> failed call, which most target architectures do. Notably not x86
->>>> though, I wonder why?
->>> 
->>> Much of this is historical legacy. QEMU originally had no
->>> concept of "the system outside the CPU returns some kind
->>> of bus error and the CPU raises an exception for it".
->>> This is turn is (I think) because the x86 PC doesn't do
->>> that: you always get back some kind of response, I think
->>> -1 on reads and writes ignored. We added the do_transaction_failed
->>> hook largely because we wanted it to give more accurate
->>> emulation of this kind of thing on Arm, but as usual with new
->>> facilities we left the other architectures to do it themselves
->>> if they wanted -- by default the behaviour remained the same.
->>> Some architectures have picked it up; some haven't.
->>> 
->>> The main reason it's a bit of a pain to turn the correct
->>> handling on is because often boards don't actually implement
->>> all the devices they're supposed to. For a pile of legacy Arm
->>> boards, especially where we didn't have good test images,
->>> we use the machine flag ignore_memory_transaction_failures to
->>> retain the legacy behaviour. (This isn't great because it's
->>> pretty much going to mean we have that flag set on those
->>> boards forever because nobody is going to care enough to
->>> investigate and test.)
->>> 
->>>> Other question is, sometimes I guess it's nice to avoid crashing in
->>>> order to try to quickly get past some unimplemented MMIO. Maybe a
->>>> command line option or something could turn it off? It should
->>>> probably be a QEMU-wide option if so, so that shouldn't hold this
->>>> series up, I can propose a option for that if anybody is worried
->>>> about it.
->>> 
->>> I would not recommend going any further than maybe setting the
->>> ignore_memory_transaction_failures flag for boards you don't
->>> care about. (But in an ideal world, don't set it and deal with
->>> any bug reports by implementing stub versions of missing devices.
->>> Depends how confident you are in your test coverage.)
->> 
->> It seems it broke the "mac99" and  powernv10 machines, using the
->> qemu-ppc-boot images which are mostly buildroot. See below for logs.
+On Fri, 23 Jun 2023 at 20:33, Guenter Roeck <linux@roeck-us.net> wrote:
 >
-> Since commit 21786c7e59 ("softmmu/memory: Log invalid memory accesses")
-> you can log the failed transaction with '-d guest_errors'. See for
-> example commit a13bfa5a05 ("hw/mips/jazz: Map the UART devices
-
-This reminds me I'd still want to split this from guest_errors as 
-discussed here:
-
-https://lists.nongnu.org/archive/html/qemu-devel/2023-02/msg08757.html
-
-Can we get a decision on how to call these debug options?
-
-> unconditionally"):
+> On 6/23/23 10:44, Peter Maydell wrote:
+> > On Sat, 17 Jun 2023 at 17:29, Guenter Roeck <linux@roeck-us.net> wrote:
+> >>
+> >> Hi,
+> >>
+> >> On Tue, May 23, 2023 at 06:04:58PM +0800, qianfanguijin@163.com wrote:
+> >>> From: qianfan Zhao <qianfanguijin@163.com>
+> >>>
+> >>> Allwinner R40 (sun8i) SoC features a Quad-Core Cortex-A7 ARM CPU,
+> >>> and a Mali400 MP2 GPU from ARM. It's also known as the Allwinner T3
+> >>> for In-Car Entertainment usage, A40i and A40pro are variants that
+> >>> differ in applicable temperatures range (industrial and military).
+> >>>
+> >>> Signed-off-by: qianfan Zhao <qianfanguijin@163.com>
+> >>> Reviewed-by: Niek Linnenbank <nieklinnenbank@gmail.com>
+> >>
+> >> I tried this in mainline linux with the following command.
+> >>
+> >> qemu-system-arm -M bpim2u \
+> >>          -kernel arch/arm/boot/zImage -no-reboot \
+> >>          -snapshot -drive file=rootfs-armv7a.ext2,format=raw,if=sd \
+> >>          -nic user \
+> >>          --append "root=/dev/mmcblk0 rootwait console=ttyS0,115200" \
+> >>          -dtb arch/arm/boot/dts/sun8i-r40-bananapi-m2-ultra.dtb \
+> >>          -nographic -monitor null -serial stdio
+> >>
+> >> Main problem is that the SD card gets instantiated randomly to
+> >> mmc0, mmc1, or mmc2, making it all but impossible to specify a
+> >> root file system device. The non-instantiated cards are always
+> >> reported as non-removable, including mmc0. Example:
+> >>
+> >> mmc0: Failed to initialize a non-removable card
+> >
+> > Do you mean that QEMU randomly connects the SD card to
+> > a different MMC controller each time, or that Linux is
+> > randomly assigning mmc0 to a different MMC controller each
+> > time ?
+> >
 >
->  $ qemu-system-mips64el -M magnum -d guest_errors,unimp -bios NTPROM.RAW
->  Invalid access at addr 0x80007004, size 1, region '(null)', reason: 
-> rejected
->  Invalid access at addr 0x80007001, size 1, region '(null)', reason: 
-> rejected
->  Invalid access at addr 0x80007002, size 1, region '(null)', reason: 
-> rejected
->  Invalid access at addr 0x80007003, size 1, region '(null)', reason: 
-> rejected
->  Invalid access at addr 0x80007004, size 1, region '(null)', reason: 
-> rejected
->
-> Boards booting successfully with ignore_memory_transaction_failures
-> set can often remove this flag by mapping missing accessed ranges as
-> TYPE_UNIMPLEMENTED_DEVICE. (You can then log the same accesses using
-> '-d unimp').
+> Good question. Given the workaround (fix ?) I suggested is
+> in the devicetree file, I would assume it is the latter. I suspect
+> that Linux assigns drive names based on hardware detection order,
+> and that this is not deterministic for some reason. It is odd
+> because I have never experienced that with any other emulation.
 
-The mac99 may have a lot of unimplemented devices and they are also not 
-quite documented so it may even be difficult to find where they should be.
+Yeah, I don't really understand why it would be non-deterministic.
+But it does make it sound like the right thing is for the
+device tree file to explicitly say which MMC controller is
+which -- presumably you might get unlucky with the timing
+on real hardware too.
 
-Regards,
-BALATON Zoltan
---3866299591-2033448452-1687600225=:42373--
+> A secondary problem may be that Linux thinks that the first
+> drive is not removable, even though it is a SD drive. I  think
+> that is a problem with qemu, but I don't understand the qemu
+> code well enough to understand why. It seems that the mmc
+> capability register always has bit 8 set, even for the first
+> drive, but I don't know where/how that is set and how to
+> change it. SDHCI has the capareg property, but that isn't
+> used here (or I don't know how to use/set it).
+
+Yeah, this seems likely to be something we're getting wrong.
+I assume on other QEMU boards the SD card appears as
+removeable ?
+
+thanks
+-- PMM
 
