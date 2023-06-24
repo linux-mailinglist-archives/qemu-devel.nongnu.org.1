@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8632D73CAA7
+	by mail.lfdr.de (Postfix) with ESMTPS id 87A6573CAA8
 	for <lists+qemu-devel@lfdr.de>; Sat, 24 Jun 2023 13:51:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qD1mW-00010j-3q; Sat, 24 Jun 2023 07:50:20 -0400
+	id 1qD1mU-00010L-Fs; Sat, 24 Jun 2023 07:50:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qD1mS-0000zh-P4
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qD1mS-0000zg-PF
  for qemu-devel@nongnu.org; Sat, 24 Jun 2023 07:50:16 -0400
 Received: from mout.gmx.net ([212.227.15.15])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qD1mM-0001AU-B4
- for qemu-devel@nongnu.org; Sat, 24 Jun 2023 07:50:13 -0400
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qD1mM-0001AV-Cw
+ for qemu-devel@nongnu.org; Sat, 24 Jun 2023 07:50:14 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
  s=s31663417; t=1687607408; x=1688212208; i=deller@gmx.de;
- bh=w5mqTgg/nsYXwdX7asI6ELqjL4SR8QF4EGBFuuSstB8=;
+ bh=mmwc0+YeydBHhttdFF+mzdvUAK2itNPp02vAtTkY3c8=;
  h=X-UI-Sender-Class:From:To:Cc:Subject:Date:In-Reply-To:References;
- b=b5ZshgYFT0Ni3Xa3CbQskU+AzObq2XgoNQW4fdscR5SWDcPXU4cHl/f7RTtSCKpMqdJIQPn
- eLuzdWkA7AIA/K9KkvLOlAE5DzalRXL7Wdd/orDlo0wx/kr6syAzBTnju4sNMsyFgRTjcAgaz
- Lluzic06f6kefvygsp9WQxph6RGZXCGU53r2olBJrN3bFrhwyFDdKc4uN+Jw7DGrb7l3uuVe+
- YpL3F6QRv7Y7K0FUHkWCEsFQGMgHAf4EyFYU+kgz6/2wV+to8bM1swNCQSHiLLwXlK/0Tvqb0
- PMait1MD+9cw/Ki46FgQ4mHVm5hdcKEpzLoAz7kfbgWRbwFlG91A==
+ b=IZ8R8P4/QgF84YTYjEfAx/Ewy88vM+R5M8lsgFtVWvks4hsKTPKJcC9gENMm50U3LR+ARFl
+ Lfuc3NHYA/stkRz5W9AlTAPD8nk6QTgzT3+7gIHhlItMkNVeviVi4mWMY7bNHmeJZGXvGidBj
+ CpJE3uUBuICi5Ir9zD84gi+o4J4U71PCStbsXAvtzNEMsOOf6w+px1xouBJwTFU1fCJhtp2ks
+ 5bxc0p6w7PW7ShbfZs3NXMLjhzJNH6Ks/ZxkyQiFUYsgeUlniGEzOgJi3MpvMM/uBalDptfNn
+ B+zQ4yo9t1WP2JEeLIrY0oFyKnDWRLJsOqCdsUZygzVYx6uhLLzQ==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
 Received: from p100.fritz.box ([94.134.156.152]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1Mo6v3-1pk1sJ0AR9-00pfDP; Sat, 24
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MbAcs-1pfst60fn6-00bcbI; Sat, 24
  Jun 2023 13:50:08 +0200
 From: Helge Deller <deller@gmx.de>
 To: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>
 Cc: Helge Deller <deller@gmx.de>
-Subject: [PULL v2 1/3] target/hppa: Fix OS reboot issues
-Date: Sat, 24 Jun 2023 13:50:05 +0200
-Message-Id: <20230624115007.30332-2-deller@gmx.de>
+Subject: [PULL v2 2/3] target/hppa: Provide qemu version via fw_cfg to firmware
+Date: Sat, 24 Jun 2023 13:50:06 +0200
+Message-Id: <20230624115007.30332-3-deller@gmx.de>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230624115007.30332-1-deller@gmx.de>
 References: <20230624115007.30332-1-deller@gmx.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:izbWVq1+HgDfvahTZPCsY+RJ/JRm46Zuk+gqMTjxkAiAw4Z3CY+
- q+BrmezfA7ZNL/OhiqNP+iVf2SqhTY0mZ86atoaJ+Hg+B4P8tjw9kzezg6K5Tvl2dgH+1Xz
- 8wEoWF91JMTgQa/B8awF6VJ8pn2TvPXNtOV5hxi2RquKYjp9/z3zJxZfTjLme/FVXCO5M3b
- HRXX6ZCCUzv2X2uQYejtA==
-UI-OutboundReport: notjunk:1;M01:P0:YlUoHTy5LQI=;1xEWScq01a19lPkpJXr/jSJoQ2k
- rSbEH4S41GApiPAN9MeUHX+i8P6dqUyYW5zKqtyxrGV1KccpR8HjbNhGt8tjeiMNYLQQOOTgf
- sBT6NHIkIu9zZVrGqXZd5kvid3v+xF+2nq8ZNoteJbrFHK5E/lclCmnQ+PLOu157aeCUG+I3x
- ePNjfYAqnPwTxSoq4A5h6vsmVh71oM/xL7hIbacSstl8v9u8jMSOrQHpeV3Fd83LyJXLqG2YJ
- G/CwK0JWP2vjTBUdPHL8zDun4eqjhPW6LmioOdPmSSYOa8VbSdLSaUB3JkNI5WTHMP5H2hNed
- PJIXwordUKYw3LSHnIEzSJUl7byLjsYXfDqpcjszTEHEsJGtJcAWSxsl78YBUp0lsvmeDVoyg
- 75arQvl3O8IXItiSwkV9vLey+YHfiO1JSrWqmxfxXM78pi+ofPbsn7ohxvpsBe+blpkbr6VYW
- DmMU3icYIbPSiX0znF66QXsxduoKkXSExN4N14sw75tHLgSjcnvRSU5KIapUgBZTbGEMrhKQw
- R8f2Di1M3mGwibhYQ2UTx4A05i+peZzqnCSzEYrcOdjXo04KXpe0P7rBMUZ1AAsnUuU2S1uc5
- /x+uaJZusnoC4lwc74e9hKLzhFdlBqlH/ubo7HwQ0X66JQVP/FPAwWptWSuDH9RXEnE/mVUF9
- t/QRksnggxy3ojiFJep4Fk10hktMrnSX+KfSCyaSDTkFyilUQfPVl1tejlVjAPUjqF6qSGLgh
- 2iXkBoVL5EIG81CvdTjP3AfsNVDdIvzB8d8B1E/0rl+auiRMmq4QIhPoU5DthRduVK93jVH4r
- sLVIo375yVcaIwdmrRmcMfrBibeDogd7PwMrqBB/aQSsGlXqOnze7H64LOJSaabqMeycLFPSD
- 7W0uLfpB1MmfbTvEe6AwcgD59hcQALmNIiSbpqJejMlthdghUtnU95aYpOg/sgtTmpK9B3IjD
- Pq2QnZY5YySJ6m48HQEQPZ2tw/0=
+X-Provags-ID: V03:K1:Ctit7f49IfVbYy7T6IAX1AdDPEzSFO4v8ONRUyUj6JdmsZA7/QA
+ Za2tkbwrLjLw3am6CwJ2xvWcewFF+N9T+BSY/2kOBlnFcXzU/qpM/HUEeSUSvsIGfRimejb
+ OLauheNalDZw94GxPvVaKoHrXJCZs10rVawB97d5QOYiGrNNXFmh1fCahOPJo5oryG19buK
+ mIWBGw1I4ubbkPQx4/2Ag==
+UI-OutboundReport: notjunk:1;M01:P0:gTlhqC1qrN4=;q6O8HqkkTwWf16S9tC5zAigH3UI
+ fQbwI3KKlg/tH+9vJoIr1KG74bKJf53Y1mPio6KB7kjA+geGycvEi0ZPC0JToBu5rkAZg7Xd5
+ UApA2bulGMqreviIxss6tupRleYcgQOA9mGmbJ6JxEfp69d/yxh4jm+OLVLcMWbu7pXH25f9N
+ WWqUZSi2QQ26au5eO1Ar8MUXcqFHRtsvWIepk/VUTT1uQfNytWD6uVQ1J+mUmcNTw+6m3+0Ue
+ uoK8SI+B8QO7p1SInj+qigOS657eLrpDQkYg8/XAHplX3r2kXI+XYQlufS43Ow8XF1tgWBV/+
+ tJXU0JwOfZvmFlyAF5aFdYRJEJfKxp5mSx1f5PjvqsoRIT/Y+dRDYqqp8251tHNGeluQjGjgY
+ McfVG++pZytu8k1W/KEWuWLwke/xHaacrwTZmTujLyMuRHg2/Ud+Ni0ZYGAWfByr48Jga/him
+ WYaFiJ7C9BwCtEVEguilXdH5GTOanhxkBmqsAXRVSuAcKeVxxJGQK+aR17FXnqxl8uXqGgIjn
+ XYlf4jlmYQp9qO/8dWbnosMU4xWPRivZ48/Klw1qD/fB9gM/Y0aH5ydcrsSEnLHjoE/lu/omE
+ gJ4ZDMcoDoOBdJdOV6mM98STQXDcpjR+U+OBlG12loTz/GpfaqfvCcSGdhay1Zinw+nveSJ7I
+ M8F88JCxLJqf30XjQf6cBAZ9yRgtFquNJKiW43973OpDaBWLnKNgEdCoWyPVY0UirGuRucQpU
+ y/zvESx3eUwRUcOQ3dH0V/B4Cq6lGcObca01BJqYSnAIKhJheDLoq140QgtGuvMxPcDp3FTAq
+ rlDl8o3fuXQJDf1yeDK4nxgTEW2QTto/6VKrFvoJY9/rQKFQR5VL3S+wbwpTBGgA4ei40Z1HQ
+ 3A2s4WVoDh8AiK6i4OicgUYsrkSnr+bvrBKe/7jiHzySe5AErTj+USV71BpyADmBMS2yNYdyq
+ 4/erlJVTWRkVk5mAJichohY4b4o=
 Received-SPF: pass client-ip=212.227.15.15; envelope-from=deller@gmx.de;
  helo=mout.gmx.net
 X-Spam_score_int: -27
@@ -85,48 +85,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When the OS triggers a reboot, the reset helper function sends a
-qemu_system_reset_request(SHUTDOWN_CAUSE_GUEST_RESET) together with an
-EXCP_HLT exception to halt the CPUs.
-
-So, at reboot when initializing the CPUs again, make sure to set all
-instruction pointers to the firmware entry point, disable any interrupts,
-disable data and instruction translations, enable PSW_Q bit  and tell qemu
-to unhalt (halted=3D0) the CPUs again.
-
-This fixes the various reboot issues which were seen when rebooting a
-Linux VM, including the case where even the monarch CPU has been virtually
-halted from the OS (e.g. via "chcpu -d 0" inside the Linux VM).
+Give current QEMU version string to SeaBIOS-hppa via fw_cfg interface so
+that the firmware can show the QEMU version in the boot menu info.
 
 Signed-off-by: Helge Deller <deller@gmx.de>
 =2D--
- hw/hppa/machine.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ hw/hppa/machine.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
 diff --git a/hw/hppa/machine.c b/hw/hppa/machine.c
-index b00a91ecfe..9facef7f14 100644
+index 9facef7f14..866e11d208 100644
 =2D-- a/hw/hppa/machine.c
 +++ b/hw/hppa/machine.c
-@@ -418,10 +418,16 @@ static void hppa_machine_reset(MachineState *ms, Shu=
-tdownCause reason)
+@@ -122,6 +122,7 @@ static FWCfgState *create_fw_cfg(MachineState *ms)
+ {
+     FWCfgState *fw_cfg;
+     uint64_t val;
++    const char qemu_version[] =3D QEMU_VERSION;
 
-     /* Start all CPUs at the firmware entry point.
-      *  Monarch CPU will initialize firmware, secondary CPUs
--     *  will enter a small idle look and wait for rendevouz. */
-+     *  will enter a small idle loop and wait for rendevouz. */
-     for (i =3D 0; i < smp_cpus; i++) {
--        cpu_set_pc(CPU(cpu[i]), firmware_entry);
-+        CPUState *cs =3D CPU(cpu[i]);
-+
-+        cpu_set_pc(cs, firmware_entry);
-+        cpu[i]->env.psw =3D PSW_Q;
-         cpu[i]->env.gr[5] =3D CPU_HPA + i * 0x1000;
-+
-+        cs->exception_index =3D -1;
-+        cs->halted =3D 0;
-     }
+     fw_cfg =3D fw_cfg_init_mem(FW_CFG_IO_BASE, FW_CFG_IO_BASE + 4);
+     fw_cfg_add_i16(fw_cfg, FW_CFG_NB_CPUS, ms->smp.cpus);
+@@ -147,6 +148,10 @@ static FWCfgState *create_fw_cfg(MachineState *ms)
+     fw_cfg_add_i16(fw_cfg, FW_CFG_BOOT_DEVICE, ms->boot_config.order[0]);
+     qemu_register_boot_set(fw_cfg_boot_set, fw_cfg);
 
-     /* already initialized by machine_hppa_init()? */
++    fw_cfg_add_file(fw_cfg, "/etc/qemu-version",
++                    g_memdup(qemu_version, sizeof(qemu_version)),
++                    sizeof(qemu_version));
++
+     return fw_cfg;
+ }
+
 =2D-
 2.38.1
 
