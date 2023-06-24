@@ -2,57 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A39573CB58
-	for <lists+qemu-devel@lfdr.de>; Sat, 24 Jun 2023 16:22:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E1D573CB5B
+	for <lists+qemu-devel@lfdr.de>; Sat, 24 Jun 2023 16:23:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qD49g-0001xj-C3; Sat, 24 Jun 2023 10:22:24 -0400
+	id 1qD49n-000204-08; Sat, 24 Jun 2023 10:22:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qD49e-0001xA-2a
- for qemu-devel@nongnu.org; Sat, 24 Jun 2023 10:22:22 -0400
-Received: from mail-lf1-x130.google.com ([2a00:1450:4864:20::130])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qD49k-0001za-UY
+ for qemu-devel@nongnu.org; Sat, 24 Jun 2023 10:22:28 -0400
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qD49c-0007B3-FG
- for qemu-devel@nongnu.org; Sat, 24 Jun 2023 10:22:21 -0400
-Received: by mail-lf1-x130.google.com with SMTP id
- 2adb3069b0e04-4f87592ecaeso2251908e87.0
- for <qemu-devel@nongnu.org>; Sat, 24 Jun 2023 07:22:19 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qD49j-0007C4-Ba
+ for qemu-devel@nongnu.org; Sat, 24 Jun 2023 10:22:28 -0400
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-311394406d0so1523708f8f.2
+ for <qemu-devel@nongnu.org>; Sat, 24 Jun 2023 07:22:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687616537; x=1690208537;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=FMgEqFq2SmlukiduWNZPujfBbClcoqavfV0LzF/6hOY=;
- b=imQs+e6Uhr5f9cY5pRf8SFIXEpffPd8yIW9Y7nj6En6r5NasrOY0vZYxVepREilDqm
- mpKfPlhInK00K64No9w3wysvE/x4rnTNCm2/ERZ5+xqGaDJuOPeZF3NrD0szNcGifXNK
- 28ZarldCEv7ID0ybhk8cBL+pLIPPn6SrDKDiqLMk8C/BoLsTf/M/vKPhLSpkBCLz9MRd
- 5l0YWv9/g1YcVoCot2WHd164HnGgub53627p08YdWJF6krGMfqNMGYS9Sa2OciGYHT8G
- 01Yva4f7ymltmQmzZV2wqiE2WhlaTalsMW7TT7r1lFELIPLDV/CCT7nhn3ouPssdn0/N
- lMIQ==
+ d=linaro.org; s=google; t=1687616545; x=1690208545;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=D+21lC+HOQ8qNUuDYixtokmJmiBo7Avq8JzwolirhIw=;
+ b=oWfPeMYBI2esyVOHHcKGVQanwudcOSsjsFYTnCp2/j5UkhTs1KmIkbvbPY9Jo17lQ6
+ cWycPQuiH3zQZjPsiAiW+CrnXcCrHW6+wcBFviwwgKCBhinbTuhm27k4vvCzU/1w+SgT
+ B/IMD0phxuogU7Puzehfmw+VvZoi2iALcG+6qYuJQ3w32HYCwp5TEUzuARYWzl2kS8Jn
+ +P3RQ5Z3UwSOolApXXxqeYseVD92PnrXftE6yB6f9o3Jr6kE3uqQ1Kzft0pqnQz+GnK7
+ CII3WyJHi4THlWoSG6y6U9FeX4jV72QrXlFmWiqSQRDcp4uF8V3ad+UI4Q3OCclaX+MN
+ jkUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687616537; x=1690208537;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=FMgEqFq2SmlukiduWNZPujfBbClcoqavfV0LzF/6hOY=;
- b=Q+sIoYKPOJWcXsa3oRArz9/ymlC2YB2a1jSkR3SYRhnuLu4R9R5FMKOE3UeIdp3Sed
- EJuBcZaknK26DW3DOZ2c7wcYZyO26FGN5d2OdNINRXIv1n4FF/uCehnVBh60smlSgQ9D
- lwlkJEK6anXrnzdDEI+rQxhRSU8Zvilpmug3awCJvDr3hp4mb1f5rQd3ebsNbqFGFrkP
- aPePjj47sCo1PqoKRC27mY1UY/hpFQdScwV0aTC3r7iJwHnTw5PNdiWjJL8A+73BJKig
- NDk8pm+yNtVeCH9mBA7vZHfMORK+7bJtPo3xFj3mEuDh29wgIKZzU5m7zJ1aQLBnGYSE
- JJ3A==
-X-Gm-Message-State: AC+VfDwjx6ZQl3h4/FkqTgFeBwgOeXKDH3x/g0GXOkCpYR7ulM/JrnZu
- GLyAiJuX7OAXobBnmMy4d/W5boGRXlTvzRpTugqUJw==
-X-Google-Smtp-Source: ACHHUZ7w7oUmYP2pluvLJ8z57BHKXo2Vnnox/KstVtmpFHzIgP5xzuyjB3r4VhNujCIUDq6aiWMuiQ==
-X-Received: by 2002:a05:6512:447:b0:4f8:5fce:3683 with SMTP id
- y7-20020a056512044700b004f85fce3683mr12735569lfk.20.1687616537448; 
- Sat, 24 Jun 2023 07:22:17 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1687616545; x=1690208545;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=D+21lC+HOQ8qNUuDYixtokmJmiBo7Avq8JzwolirhIw=;
+ b=OiumV7qQw4TS+PDgqBmDW2AdOm5qLaSfvvcCLGeyJEkMOGK5qESroV6zHbZtvoD0R1
+ +42e1B7Xozk/8hdDBk8IYVNMQdKJlLKL2uEE9NFLfPhXnYyAVRvQTa+TAxpB1g1mbGey
+ +Fx5JXaBh9CXavax3fYKCdsX3fpC3Mkl8itVIR6YK+v1X6tBnQhraQAIeyyJuLwfsT+Q
+ 11hSM9NScnvOyGaNBxT7TOSZPi1YE73M/vstlYg9vE8sfiS1mr8COti29Kavw12l0ljF
+ pxJgv6jEGsc5KGG52O5+eAhkX2L7eDD6BNrT+gMFQQXxoyb9kHrfITLxMa8flLC+trFV
+ 7HdQ==
+X-Gm-Message-State: AC+VfDwDoxCyoqxGsNsd1A0AfhOt9pdyQRGgJWxc3pA8Fh6ytaz5gFG5
+ otS6gT2Yq2bG1zLU1wfnckg/usW5j/FlC+yO9irt0g==
+X-Google-Smtp-Source: ACHHUZ4/1FH9PZA9VdR7tRA0HUPsxcUuZOjk+7f/owPi5vboDaaHvInS5xxBXy6IA82wdvZ2lvjMBA==
+X-Received: by 2002:adf:f74f:0:b0:307:9b66:f512 with SMTP id
+ z15-20020adff74f000000b003079b66f512mr18409505wrp.19.1687616545505; 
+ Sat, 24 Jun 2023 07:22:25 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.217.150])
  by smtp.gmail.com with ESMTPSA id
- o23-20020a05600c379700b003f8f884ebe5sm2370287wmr.2.2023.06.24.07.22.15
+ l13-20020a5d674d000000b003113513f491sm2203583wrw.114.2023.06.24.07.22.23
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sat, 24 Jun 2023 07:22:17 -0700 (PDT)
+ Sat, 24 Jun 2023 07:22:25 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Sunil Muthuswamy <sunilmut@microsoft.com>,
@@ -63,16 +64,17 @@ Cc: Sunil Muthuswamy <sunilmut@microsoft.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Beraldo Leal <bleal@redhat.com>
-Subject: [PATCH 0/2] accel: Re-enable WHPX cross-build on case sensitive
- filesystems
-Date: Sat, 24 Jun 2023 16:22:09 +0200
-Message-Id: <20230624142211.8888-1-philmd@linaro.org>
+Subject: [PATCH 1/2] docs/devel/testing: Update the 'Docker Debugging' section
+Date: Sat, 24 Jun 2023 16:22:10 +0200
+Message-Id: <20230624142211.8888-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.38.1
+In-Reply-To: <20230624142211.8888-1-philmd@linaro.org>
+References: <20230624142211.8888-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::130;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x130.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,21 +97,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Re-enable cross-building of WHPX (via Docker images;
-also on CI).
+Since commit 93cc0506f6 ("tests/docker: Use Fedora containers
+for MinGW cross-builds in the gitlab-CI") the MinGW toolchain
+is packaged inside the fedora-win[32/64]-cross images.
 
-Only cross-built.
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ docs/devel/testing.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Philippe Mathieu-Daudé (2):
-  docs/devel/testing: Update the 'Docker Debugging' section
-  accel: Re-enable WHPX cross-build on case sensitive filesystems
-
- docs/devel/testing.rst           | 2 +-
- meson.build                      | 4 ++--
- target/i386/whpx/whpx-internal.h | 4 ++--
- target/i386/whpx/whpx-all.c      | 4 ++--
- 4 files changed, 7 insertions(+), 7 deletions(-)
-
+diff --git a/docs/devel/testing.rst b/docs/devel/testing.rst
+index 203facb417..e85e26c4ca 100644
+--- a/docs/devel/testing.rst
++++ b/docs/devel/testing.rst
+@@ -558,7 +558,7 @@ When CI tasks, maintainers or yourself report a Docker test failure, follow the
+ below steps to debug it:
+ 
+ 1. Locally reproduce the failure with the reported command line. E.g. run
+-   ``make docker-test-mingw@fedora J=8``.
++   ``make docker-test-mingw@fedora-win64-cross J=8``.
+ 2. Add "V=1" to the command line, try again, to see the verbose output.
+ 3. Further add "DEBUG=1" to the command line. This will pause in a shell prompt
+    in the container right before testing starts. You could either manually
 -- 
 2.38.1
 
