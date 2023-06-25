@@ -2,51 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AD6673CDE8
-	for <lists+qemu-devel@lfdr.de>; Sun, 25 Jun 2023 03:59:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8253473CDE5
+	for <lists+qemu-devel@lfdr.de>; Sun, 25 Jun 2023 03:59:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDF1S-0001W2-N3; Sat, 24 Jun 2023 21:58:38 -0400
+	id 1qDF1A-0001Ty-K8; Sat, 24 Jun 2023 21:58:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <bmeng@tinylab.org>)
- id 1qDF1Q-0001VM-37; Sat, 24 Jun 2023 21:58:36 -0400
-Received: from bg4.exmail.qq.com ([43.155.67.158])
+ (Exim 4.90_1) (envelope-from <bmeng@tinylab.org>) id 1qDF17-0001T0-Ua
+ for qemu-devel@nongnu.org; Sat, 24 Jun 2023 21:58:17 -0400
+Received: from bg4.exmail.qq.com ([43.154.221.58])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <bmeng@tinylab.org>)
- id 1qDF1N-0002jR-VC; Sat, 24 Jun 2023 21:58:35 -0400
-X-QQ-mid: bizesmtp75t1687658003tiodjadf
+ (Exim 4.90_1) (envelope-from <bmeng@tinylab.org>) id 1qDF13-0002gb-LF
+ for qemu-devel@nongnu.org; Sat, 24 Jun 2023 21:58:17 -0400
+X-QQ-mid: bizesmtp75t1687658007tv6bb3zl
 Received: from ubuntu.. ( [111.196.130.174]) by bizesmtp.qq.com (ESMTP) with 
- id ; Sun, 25 Jun 2023 09:53:21 +0800 (CST)
+ id ; Sun, 25 Jun 2023 09:53:26 +0800 (CST)
 X-QQ-SSF: 01200000000000E0G000000A0000000
-X-QQ-FEAT: u4LBNZ4VsNyoNjODd8HYJRozVVCthJJlT0KE8YXN553ZN1SrvIS0TednSwsLQ
- GngoHtyUUdszs5TvF87nvqBc+WW18bPE3TueH+i3HCr/nkWvrtbNXBvFNnQ1NnWoBHk7bBJ
- n9AqMY5lK7X+4EU7oiqv7B/VufTcj9CqToYiLweQLM7IxPC6Iq+p9wgAW/qO4yYEg3RuEtJ
- +W3cmFYfrom1DPtWZwhY7oQyA1NtrbrKuYivcwdB/Tu96C1u3ZuVwrjv4SdIqcwx0QIjRa5
- nUM+JeWxQPER///soHkEwcEsAh5bt/1iy0oYCV/gnOjDIjq+7RJWR0D6HLaDo2aQBLtMfYY
- lDcoxY7zQdAFSSbJOw=
+X-QQ-FEAT: I8hG9CuxGDLj7f4kG+0v55Try3Xz/Qm/c1u8+oSHIswUBrydTMnbZ17wA27ZD
+ kXXaYhJrDDLADbVlx2wAQcA/j5FaOyZcNR1azOy+Ao3Ot8TUWYTf0P8v6/Oku+cJFkHyyJG
+ CuWDd5k3yX7o0oJxZ3KzFNunKR9gaPmK3f2ZyaXGRabuYpyt6CJTySLy2ub9UmS0FWT+C8p
+ uMhgTnsi+mI5mzrWMuMuabqVVHDvLoLMJGN7QA4lRWk5bwUQxm4ULVonp8bS8202fKWaeET
+ OB7K78pmCAblrBbewb8dpPkUz9swPaTldKrEbBQ9UWx78Me8LnZYeTtl452fBnXj6umE7x0
+ WIMnpuNX0P9F1ksWMAR8rzCx4MGErI+E1blveML
 X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 17899896922838211880
+X-BIZMAIL-ID: 3478616648788255297
 From: Bin Meng <bmeng@tinylab.org>
 To: Jason Wang <jasowang@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
-Cc: Andrew Jeffery <andrew@aj.id.au>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- Dmitry Fleytman <dmitry.fleytman@gmail.com>, Helge Deller <deller@gmx.de>,
- Joel Stanley <joel@jms.id.au>,
- Richard Henderson <richard.henderson@linaro.org>, qemu-arm@nongnu.org
-Subject: [PATCH v7 0/9] net: Pad short frames for network backends
-Date: Sun, 25 Jun 2023 09:53:12 +0800
-Message-Id: <20230625015321.77987-1-bmeng@tinylab.org>
+Subject: [PATCH v7 1/9] hw/net: e1000: Remove the logic of padding short
+ frames in the receive path
+Date: Sun, 25 Jun 2023 09:53:13 +0800
+Message-Id: <20230625015321.77987-2-bmeng@tinylab.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230625015321.77987-1-bmeng@tinylab.org>
+References: <20230625015321.77987-1-bmeng@tinylab.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
 Feedback-ID: bizesmtp:tinylab.org:qybglogicsvrgz:qybglogicsvrgz7a-0
-Received-SPF: pass client-ip=43.155.67.158; envelope-from=bmeng@tinylab.org;
+Received-SPF: pass client-ip=43.154.221.58; envelope-from=bmeng@tinylab.org;
  helo=bg4.exmail.qq.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
@@ -70,80 +67,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The minimum Ethernet frame length is 60 bytes. For short frames with
-smaller length like ARP packets (only 42 bytes), on a real world NIC
-it can choose either padding its length to the minimum required 60
-bytes, or sending it out directly to the wire. Such behavior can be
-hardcoded or controled by a register bit. Similarly on the receive
-path, NICs can choose either dropping such short frames directly or
-handing them over to software to handle.
+Now that we have implemented unified short frames padding in the
+QEMU networking codes, remove the same logic in the NIC codes.
 
-On the other hand, for the network backends like SLiRP/TAP, they
-don't expose a way to control the short frame behavior. As of today
-they just send/receive data from/to the other end connected to them,
-which means any sized packet is acceptable. So they can send and
-receive short frames without any problem. It is observed that ARP
-packets sent from SLiRP/TAP are 42 bytes, and SLiRP/TAP just send
-these ARP packets to the other end which might be a NIC model that
-does not allow short frames to pass through.
+This actually reverts commit 78aeb23eded2d0b765bf9145c71f80025b568acd.
 
-To provide better compatibility, for packets sent from QEMU network
-backends like SLiRP/TAP, we change to pad short frames before sending
-it out to the other end, if the other end does not forbid it via the
-nc->do_not_pad flag. This ensures a backend as an Ethernet sender
-does not violate the spec. But with this change, the behavior of
-dropping short frames from SLiRP/TAP interfaces in the NIC model
-cannot be emulated because it always receives a packet that is spec
-complaint. The capability of sending short frames from NIC models is
-still supported and short frames can still pass through SLiRP/TAP.
+Signed-off-by: Bin Meng <bmeng@tinylab.org>
+---
 
-This series should be able to fix the issue as reported with some
-NIC models before, that ARP requests get dropped, preventing the
-guest from becoming visible on the network. It was workarounded in
-these NIC models on the receive path, that when a short frame is
-received, it is padded up to 60 bytes.
+(no changes since v1)
 
-Only the first 4 patches of the v5 series [1] were applied in QEMU 6.0,
-and the reset was said to be queued for 6.1 but for some reason they
-never landed in QEMU mainline.
+ hw/net/e1000.c | 11 +----------
+ 1 file changed, 1 insertion(+), 10 deletions(-)
 
-Hopefully this series will make it for QEMU 8.1.
-
-[1] https://lore.kernel.org/qemu-devel/859cd26a-feb2-ed62-98d5-764841a468cf@redhat.com/
-
-Changes in v7:
-- new patch: "hw/net: ftgmac100: Drop the small packet check in the receive path"
-
-Bin Meng (9):
-  hw/net: e1000: Remove the logic of padding short frames in the receive
-    path
-  hw/net: vmxnet3: Remove the logic of padding short frames in the
-    receive path
-  hw/net: i82596: Remove the logic of padding short frames in the
-    receive path
-  hw/net: ne2000: Remove the logic of padding short frames in the
-    receive path
-  hw/net: pcnet: Remove the logic of padding short frames in the receive
-    path
-  hw/net: rtl8139: Remove the logic of padding short frames in the
-    receive path
-  hw/net: sungem: Remove the logic of padding short frames in the
-    receive path
-  hw/net: sunhme: Remove the logic of padding short frames in the
-    receive path
-  hw/net: ftgmac100: Drop the small packet check in the receive path
-
- hw/net/e1000.c     | 11 +----------
- hw/net/ftgmac100.c |  8 --------
- hw/net/i82596.c    | 18 ------------------
- hw/net/ne2000.c    | 12 ------------
- hw/net/pcnet.c     |  9 ---------
- hw/net/rtl8139.c   | 12 ------------
- hw/net/sungem.c    | 14 --------------
- hw/net/sunhme.c    | 11 -----------
- hw/net/vmxnet3.c   | 10 ----------
- 9 files changed, 1 insertion(+), 104 deletions(-)
-
+diff --git a/hw/net/e1000.c b/hw/net/e1000.c
+index aae5f0bdc0..093c2d4531 100644
+--- a/hw/net/e1000.c
++++ b/hw/net/e1000.c
+@@ -888,7 +888,6 @@ e1000_receive_iov(NetClientState *nc, const struct iovec *iov, int iovcnt)
+     uint16_t vlan_special = 0;
+     uint8_t vlan_status = 0;
+     uint8_t min_buf[ETH_ZLEN];
+-    struct iovec min_iov;
+     uint8_t *filter_buf = iov->iov_base;
+     size_t size = iov_size(iov, iovcnt);
+     size_t iov_ofs = 0;
+@@ -905,15 +904,7 @@ e1000_receive_iov(NetClientState *nc, const struct iovec *iov, int iovcnt)
+         return 0;
+     }
+ 
+-    /* Pad to minimum Ethernet frame length */
+-    if (size < sizeof(min_buf)) {
+-        iov_to_buf(iov, iovcnt, 0, min_buf, size);
+-        memset(&min_buf[size], 0, sizeof(min_buf) - size);
+-        min_iov.iov_base = filter_buf = min_buf;
+-        min_iov.iov_len = size = sizeof(min_buf);
+-        iovcnt = 1;
+-        iov = &min_iov;
+-    } else if (iov->iov_len < MAXIMUM_ETHERNET_HDR_LEN) {
++    if (iov->iov_len < MAXIMUM_ETHERNET_HDR_LEN) {
+         /* This is very unlikely, but may happen. */
+         iov_to_buf(iov, iovcnt, 0, min_buf, MAXIMUM_ETHERNET_HDR_LEN);
+         filter_buf = min_buf;
 -- 
 2.34.1
 
