@@ -2,57 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0B0373CE24
-	for <lists+qemu-devel@lfdr.de>; Sun, 25 Jun 2023 04:50:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF2FD73CE4A
+	for <lists+qemu-devel@lfdr.de>; Sun, 25 Jun 2023 05:39:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDFpe-0001UE-Gy; Sat, 24 Jun 2023 22:50:30 -0400
+	id 1qDGZK-0008DQ-Mq; Sat, 24 Jun 2023 23:37:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <18622748025@163.com>)
- id 1qDFpc-0001Th-HY
- for qemu-devel@nongnu.org; Sat, 24 Jun 2023 22:50:28 -0400
-Received: from m12.mail.163.com ([220.181.12.215])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <18622748025@163.com>) id 1qDFpa-0000Cr-6O
- for qemu-devel@nongnu.org; Sat, 24 Jun 2023 22:50:28 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
- s=s110527; h=From:Subject:Date:Message-Id; bh=lHOgmtQNzLcrquol38
- mdt4/Uk3UyxUBy7BH05Y99YDw=; b=Q/YxOA2FLC+CeBRHJpTgzKtWeEWq19vquU
- W7mWwnUsEFcyaCyU9QX0eIDjFBoi/O7FyiIPjrP3tkDejYwgYYK6bGDu97iF3FE1
- eYQO5cDoqT1bHbrN65ejGPjcGDN4AgSHJfzfMuDez8cEOiZlJ4DHVZEjFed55GpJ
- 7kXVkoSPU=
-Received: from localhost.localdomain (unknown [103.3.97.171])
- by zwqz-smtp-mta-g5-2 (Coremail) with SMTP id _____wDXouRtq5dkDQ1RAw--.57513S2;
- Sun, 25 Jun 2023 10:50:22 +0800 (CST)
-From: "liguang.zhang" <18622748025@163.com>
-To: qemu-devel@nongnu.org
-Cc: pbonzini@redhat.com, alistair23@gmail.com,
- "liguang.zhang" <liguang.zhang@hexintek.com>
-Subject: [PATCH] target/riscv: fix the issue of guest reboot then no response
- or crash in kvm-mode
-Date: Sun, 25 Jun 2023 10:50:18 +0800
-Message-Id: <20230625025018.26956-1-18622748025@163.com>
-X-Mailer: git-send-email 2.17.1
-X-CM-TRANSID: _____wDXouRtq5dkDQ1RAw--.57513S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxXw17JrWrXrW5ZrWrCryDWrg_yoWrtrW8pF
- 4DCa98Cr4rt3yxJw1ftFyDJr1rW3yI9FsxArW7ur4SyF45JrZ8J3Z2k3y7Ar98GFy8urWa
- kFW5GF13uayUta7anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
- 9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07bezVbUUUUU=
-X-Originating-IP: [103.3.97.171]
-X-CM-SenderInfo: bpryljasxumiisv6il2tof0z/1tbiyA+ZWVp7KzHzOAAAs3
-Received-SPF: pass client-ip=220.181.12.215; envelope-from=18622748025@163.com;
- helo=m12.mail.163.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, FROM_LOCAL_DIGITS=0.001,
- FROM_LOCAL_HEX=0.006, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_BL=0.001,
- RCVD_IN_MSPIKE_L3=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+ (Exim 4.90_1) (envelope-from <lucas@osdyne.com>) id 1qDGZI-0008Cg-MX
+ for qemu-devel@nongnu.org; Sat, 24 Jun 2023 23:37:40 -0400
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <lucas@osdyne.com>) id 1qDGZG-0003Uo-T1
+ for qemu-devel@nongnu.org; Sat, 24 Jun 2023 23:37:40 -0400
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-6748a616e17so65439b3a.1
+ for <qemu-devel@nongnu.org>; Sat, 24 Jun 2023 20:37:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=osdyne.com; s=google; t=1687664257; x=1690256257;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=7FozYAD3aRQmMOwHSSeMHzLrKnhT1EalMpVjn2MIhRI=;
+ b=RZWgW44hOvIm6hLpvygl7krHADr2jBdA8rOxm16ZlRP/GQpWbIvaTOm+t/02XTrXht
+ 46CzIQIcGltKZ/Nl3WGAyWOheGY0GPRai9Y/ZCxA+ElZnFqB8VNQaXY1fh5ob39MemcR
+ VwvmR9VkWSWo7WvX0zQRN7nDWN0DRZusrqjv/JBAZgiH9sASs6bvr/z7dmUvY6h8sZFl
+ Rc/RYqlGOrQbtU3Lq0BXTFdxlQtDaznpVMz1M96/zhIVrYf+S1gPW7TPbwHpT45pBrtR
+ aNd+tQKv+5/gsfnefBjTvpXAhtZbJSfZt+CdxcfrwRE7B4mZHEhxq/2yOlH1IV1G7yPa
+ k/Ww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1687664257; x=1690256257;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=7FozYAD3aRQmMOwHSSeMHzLrKnhT1EalMpVjn2MIhRI=;
+ b=Xn76iAiYqaBuFmma1Rh1XnDf3pAWiEsL+5zc98KSKvS5voIVh5d6H9/ZfBK5Nm/i9i
+ jPI58aK+cFb6FzXLD3jA2smIMWSzQ9/RV6gM/XdaKrqw3kyNVDvs0mzF/CUcIWySlrO2
+ aq2Jdm417IIuVFsHJAVcPmvO56hSQBGUaNMkppHLwTDsY/HDN1dq2X5DcurLnliI5XBT
+ XVG/fyklhNLEBlD1H5gjNHi3BmbPSR0RHnuN3HG4szx7XM6UYG9KGz/j3z27Lf1k8QLL
+ NL4pm1BQ4EKjZ5LBmv4pCmYh9jGN6nXSpVbZlYpw+OkYrvVZJ7L6UDBqXleSQLY6KDn8
+ oUAA==
+X-Gm-Message-State: AC+VfDzGhqTp6cHlsSEjMl4iMZzhwDK8jousXhzfNmQqaol1C57JMsWX
+ /3Uk9KnX0ZrpN3ZtFIQqsqg3RaSaPkMFmgMVqihazQ==
+X-Google-Smtp-Source: ACHHUZ4blLpxXqlGeYC1JdPQvKHC8KxQR/Wq6pjEmW3dgjzcyJ0qgfa/zaXl2GNWnU4jrUk2GNqFz5p8DuojiET7y5o=
+X-Received: by 2002:a17:90a:6bc2:b0:262:dc59:ee64 with SMTP id
+ w60-20020a17090a6bc200b00262dc59ee64mr2049617pjj.4.1687664256975; Sat, 24 Jun
+ 2023 20:37:36 -0700 (PDT)
+MIME-Version: 1.0
+References: <20230619221819.6882-1-lucas@osdyne.com>
+ <20230620194317.45772-1-lucas@osdyne.com>
+ <CAKmqyKM1T6n3pKQV3ZuxDTHXurOOLE4W_33mk8cc9hM3cuGNpA@mail.gmail.com>
+In-Reply-To: <CAKmqyKM1T6n3pKQV3ZuxDTHXurOOLE4W_33mk8cc9hM3cuGNpA@mail.gmail.com>
+From: "Lucas C. Villa Real" <lucas@osdyne.com>
+Date: Sun, 25 Jun 2023 00:37:25 -0300
+Message-ID: <CAL+Dfo5=Zg=zvCZjTMTeU0L5kHfju8t9arOs6avURWvLYq=WFA@mail.gmail.com>
+Subject: Re: [PATCH] STM32F100: add support for external memory via FSMC
+To: Alistair Francis <alistair23@gmail.com>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, erdnaxe@crans.org, 
+ "Lucas C . Villa Real" <lucas@odsyne.com>
+Content-Type: multipart/alternative; boundary="0000000000008997e705feebf421"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
+ envelope-from=lucas@osdyne.com; helo=mail-pf1-x431.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, HTML_MESSAGE=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -68,181 +85,113 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: "liguang.zhang" <liguang.zhang@hexintek.com>
+--0000000000008997e705feebf421
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-There are two issues when rebooting a guest using KVM
-1. When the guest initiates a reboot the host is unable to stop the vcpu
-2. When running a SMP guest the qemu monitor system_reset causes a vcpu crash
+On Thu, Jun 22, 2023 at 10:37=E2=80=AFPM Alistair Francis <alistair23@gmail=
+.com>
+wrote:
 
-This can be fixed by clearing the CSR values at reset and syncing the
-MPSTATE with the host.
+> On Wed, Jun 21, 2023 at 5:44=E2=80=AFAM Lucas Villa Real <lucas@osdyne.co=
+m> wrote:
+> >
+> > Add support for FSMC on high-density STM32F100 devices and enable
+> > mapping of additional memory via the `-m SIZE` command-line option.
+> > FSMC Bank1 can address up to 4x64MB of PSRAM memory at 0x60000000.
+>
+> Thanks for the patches!
+>
 
-kernel log
-```shell
-$reboot
+You're welcome!
 
-The system is going down NOW!
-Sent SIGTERM to all processes
-logout
-Sent SIGKILL to all processes
-Requesting system reboot
 
-```
-then no response
+> >
+> > RCC is needed to enable peripheral clock for FSMC; this commit
+> > implements support for RCC through the MMIO interface.
+>
+> This should be a separate commit. The idea is to break commits up as
+> small as possible and send a patch series, this makes review much
+> easier. Each new feature should be its own commit.
+>
 
-for qemu command:
-$system_reset:
+Thanks, I'll submit a new patchset as recommended.
 
-kernel log:
-```shell
-[   53.739556] kvm [150]: VCPU exit error -95
-[   53.739563] kvm [148]: VCPU exit error -95
-[   53.739557] kvm [149]: VCPU exit error -95
-[   53.740957] kvm [149]: SEPC=0x0 SSTATUS=0x200004120 HSTATUS=0x2002001c0
-[   53.740957] kvm [148]: SEPC=0x0 SSTATUS=0x200004120 HSTATUS=0x2002001c0
-[   53.741054] kvm [148]: SCAUSE=0x14 STVAL=0x0 HTVAL=0x0 HTINST=0x0
-[   53.741058] kvm [149]: SCAUSE=0x14 STVAL=0x0 HTVAL=0x0 HTINST=0x0
-[   53.756187] kvm [150]: SEPC=0x0 SSTATUS=0x200004120 HSTATUS=0x2002001c0
-[   53.757797] kvm [150]: SCAUSE=0x14 STVAL=0x0 HTVAL=0x0 HTINST=0x0
-```
 
-solution:
+> >
+> > Last, high-density devices support up to 32KB of static SRAM, so
+> > adjust SRAM_SIZE accordingly.
+>
+> Also, can you include a link to the documentation in the commit message?
+>
 
-add reset csr and context for riscv vcpu
-qemu ioctl reset vcpu->arch.power_off state of kvm
+Absolutely.
 
-tests:
 
-qemu-system-riscv64 -M virt -bios none -kernel Image \
-   -smp 4 -enable-kvm \
-   -append "rootwait root=/dev/vda ro" \
-   -drive file=rootfs.ext2,format=raw,id=hd0 \
-   -device virtio-blk-device,drive=hd0
+> > +static const MemoryRegionOps stm32f100_rcc_ops =3D {
+> > +    .read =3D stm32f100_rcc_read,
+> > +    .write =3D stm32f100_rcc_write,
+> > +    .endianness =3D DEVICE_NATIVE_ENDIAN,
+> > +};
+>
+> This should be its own file and device that is included
+>
 
-in guest shell:
-$reboot
+Sounds good, thanks for the guidance. I'll work on this next week.
 
-qemu command:
-$system_reset
+Best regards,
+Lucas
 
----
-v3:
-- change kvm_riscv_set_mpstate_to_kvm to kvm_riscv_sync_mpstate_to_kvm
-- remove newline after if(cap_has_mp_state)
-- update submit description
+--0000000000008997e705feebf421
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: liguang.zhang <liguang.zhang@hexintek.com>
----
- target/riscv/kvm.c       | 44 +++++++++++++++++++++++++++++++++++++++-
- target/riscv/kvm_riscv.h |  1 +
- 2 files changed, 44 insertions(+), 1 deletion(-)
+<div dir=3D"ltr"><div dir=3D"ltr">On Thu, Jun 22, 2023 at 10:37=E2=80=AFPM =
+Alistair Francis &lt;<a href=3D"mailto:alistair23@gmail.com">alistair23@gma=
+il.com</a>&gt; wrote:</div><div class=3D"gmail_quote"><blockquote class=3D"=
+gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(20=
+4,204,204);padding-left:1ex">On Wed, Jun 21, 2023 at 5:44=E2=80=AFAM Lucas =
+Villa Real &lt;<a href=3D"mailto:lucas@osdyne.com" target=3D"_blank">lucas@=
+osdyne.com</a>&gt; wrote:<br>
+&gt;<br>
+&gt; Add support for FSMC on high-density STM32F100 devices and enable<br>
+&gt; mapping of additional memory via the `-m SIZE` command-line option.<br=
+>
+&gt; FSMC Bank1 can address up to 4x64MB of PSRAM memory at 0x60000000.<br>
+<br>
+Thanks for the patches!<br></blockquote><div><br></div><div>You&#39;re welc=
+ome!<br></div><div>=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"m=
+argin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left=
+:1ex">
+&gt;<br>
+&gt; RCC is needed to enable peripheral clock for FSMC; this commit<br>
+&gt; implements support for RCC through the MMIO interface.<br>
+<br>
+This should be a separate commit. The idea is to break commits up as<br>
+small as possible and send a patch series, this makes review much<br>
+easier. Each new feature should be its own commit.<br></blockquote><div>=C2=
+=A0</div><div>Thanks, I&#39;ll submit a new patchset as recommended.<br></d=
+iv><div>=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0=
+px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
+&gt;<br>
+&gt; Last, high-density devices support up to 32KB of static SRAM, so<br>
+&gt; adjust SRAM_SIZE accordingly.<br>
+<br>
+Also, can you include a link to the documentation in the commit message?<br=
+></blockquote><div><br></div><div>Absolutely.<br></div><div>=C2=A0<br></div=
+><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border=
+-left:1px solid rgb(204,204,204);padding-left:1ex">
+&gt; +static const MemoryRegionOps stm32f100_rcc_ops =3D {<br>
+&gt; +=C2=A0 =C2=A0 .read =3D stm32f100_rcc_read,<br>
+&gt; +=C2=A0 =C2=A0 .write =3D stm32f100_rcc_write,<br>
+&gt; +=C2=A0 =C2=A0 .endianness =3D DEVICE_NATIVE_ENDIAN,<br>
+&gt; +};<br>
+<br>
+This should be its own file and device that is included<br></blockquote><di=
+v>=C2=A0</div><div>Sounds good, thanks for the guidance. I&#39;ll work on t=
+his next week.<br></div></div><div class=3D"gmail_quote"><br></div><div cla=
+ss=3D"gmail_quote">Best regards,<br></div><div class=3D"gmail_quote">Lucas<=
+br></div></div>
 
-diff --git a/target/riscv/kvm.c b/target/riscv/kvm.c
-index 0f932a5b96..c478c71905 100644
---- a/target/riscv/kvm.c
-+++ b/target/riscv/kvm.c
-@@ -42,6 +42,8 @@
- #include "migration/migration.h"
- #include "sysemu/runstate.h"
- 
-+static bool cap_has_mp_state;
-+
- static uint64_t kvm_riscv_reg_id(CPURISCVState *env, uint64_t type,
-                                  uint64_t idx)
- {
-@@ -99,7 +101,7 @@ static uint64_t kvm_riscv_reg_id(CPURISCVState *env, uint64_t type,
- 
- #define KVM_RISCV_SET_TIMER(cs, env, name, reg) \
-     do { \
--        int ret = kvm_set_one_reg(cs, RISCV_TIMER_REG(env, time), &reg); \
-+        int ret = kvm_set_one_reg(cs, RISCV_TIMER_REG(env, name), &reg); \
-         if (ret) { \
-             abort(); \
-         } \
-@@ -335,6 +337,24 @@ int kvm_arch_get_registers(CPUState *cs)
-     return ret;
- }
- 
-+int kvm_riscv_sync_mpstate_to_kvm(RISCVCPU *cpu, int state)
-+{
-+    if (cap_has_mp_state) {
-+        struct kvm_mp_state mp_state = {
-+            .mp_state = state
-+        };
-+
-+        int ret = kvm_vcpu_ioctl(CPU(cpu), KVM_SET_MP_STATE, &mp_state);
-+        if (ret) {
-+            fprintf(stderr, "%s: failed to sync MP_STATE %d/%s\n",
-+                    __func__, ret, strerror(-ret));
-+            return -1;
-+        }
-+    }
-+
-+    return 0;
-+}
-+
- int kvm_arch_put_registers(CPUState *cs, int level)
- {
-     int ret = 0;
-@@ -354,6 +374,18 @@ int kvm_arch_put_registers(CPUState *cs, int level)
-         return ret;
-     }
- 
-+    if (KVM_PUT_RESET_STATE == level) {
-+        RISCVCPU *cpu = RISCV_CPU(cs);
-+        if (cs->cpu_index == 0) {
-+            ret = kvm_riscv_sync_mpstate_to_kvm(cpu, KVM_MP_STATE_RUNNABLE);
-+        } else {
-+            ret = kvm_riscv_sync_mpstate_to_kvm(cpu, KVM_MP_STATE_STOPPED);
-+        }
-+        if (ret) {
-+            return ret;
-+        }
-+    }
-+
-     return ret;
- }
- 
-@@ -428,6 +460,7 @@ int kvm_arch_add_msi_route_post(struct kvm_irq_routing_entry *route,
- 
- int kvm_arch_init(MachineState *ms, KVMState *s)
- {
-+    cap_has_mp_state = kvm_check_extension(s, KVM_CAP_MP_STATE);
-     return 0;
- }
- 
-@@ -506,10 +539,19 @@ void kvm_riscv_reset_vcpu(RISCVCPU *cpu)
-     if (!kvm_enabled()) {
-         return;
-     }
-+    for (int i=0; i<32; i++)
-+        env->gpr[i] = 0;
-     env->pc = cpu->env.kernel_addr;
-     env->gpr[10] = kvm_arch_vcpu_id(CPU(cpu)); /* a0 */
-     env->gpr[11] = cpu->env.fdt_addr;          /* a1 */
-     env->satp = 0;
-+    env->mie = 0;
-+    env->stvec = 0;
-+    env->sscratch = 0;
-+    env->sepc = 0;
-+    env->scause = 0;
-+    env->stval = 0;
-+    env->mip = 0;
- }
- 
- void kvm_riscv_set_irq(RISCVCPU *cpu, int irq, int level)
-diff --git a/target/riscv/kvm_riscv.h b/target/riscv/kvm_riscv.h
-index ed281bdce0..88aee902dd 100644
---- a/target/riscv/kvm_riscv.h
-+++ b/target/riscv/kvm_riscv.h
-@@ -21,5 +21,6 @@
- 
- void kvm_riscv_reset_vcpu(RISCVCPU *cpu);
- void kvm_riscv_set_irq(RISCVCPU *cpu, int irq, int level);
-+int kvm_riscv_sync_mpstate_to_kvm(RISCVCPU *cpu, int state);
- 
- #endif
--- 
-2.17.1
-
+--0000000000008997e705feebf421--
 
