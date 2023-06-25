@@ -2,67 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF2FD73CE4A
-	for <lists+qemu-devel@lfdr.de>; Sun, 25 Jun 2023 05:39:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D98FD73CE4B
+	for <lists+qemu-devel@lfdr.de>; Sun, 25 Jun 2023 05:43:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDGZK-0008DQ-Mq; Sat, 24 Jun 2023 23:37:42 -0400
+	id 1qDGeZ-0000sQ-9a; Sat, 24 Jun 2023 23:43:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lucas@osdyne.com>) id 1qDGZI-0008Cg-MX
- for qemu-devel@nongnu.org; Sat, 24 Jun 2023 23:37:40 -0400
-Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
+ (Exim 4.90_1) (envelope-from <lucas@osdyne.com>) id 1qDGeW-0000qm-QA
+ for qemu-devel@nongnu.org; Sat, 24 Jun 2023 23:43:04 -0400
+Received: from mail-pj1-x1033.google.com ([2607:f8b0:4864:20::1033])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <lucas@osdyne.com>) id 1qDGZG-0003Uo-T1
- for qemu-devel@nongnu.org; Sat, 24 Jun 2023 23:37:40 -0400
-Received: by mail-pf1-x431.google.com with SMTP id
- d2e1a72fcca58-6748a616e17so65439b3a.1
- for <qemu-devel@nongnu.org>; Sat, 24 Jun 2023 20:37:38 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <lucas@osdyne.com>) id 1qDGeV-00054q-7I
+ for qemu-devel@nongnu.org; Sat, 24 Jun 2023 23:43:04 -0400
+Received: by mail-pj1-x1033.google.com with SMTP id
+ 98e67ed59e1d1-25eabe8b5fcso413088a91.1
+ for <qemu-devel@nongnu.org>; Sat, 24 Jun 2023 20:43:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=osdyne.com; s=google; t=1687664257; x=1690256257;
+ d=osdyne.com; s=google; t=1687664581; x=1690256581;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=7FozYAD3aRQmMOwHSSeMHzLrKnhT1EalMpVjn2MIhRI=;
- b=RZWgW44hOvIm6hLpvygl7krHADr2jBdA8rOxm16ZlRP/GQpWbIvaTOm+t/02XTrXht
- 46CzIQIcGltKZ/Nl3WGAyWOheGY0GPRai9Y/ZCxA+ElZnFqB8VNQaXY1fh5ob39MemcR
- VwvmR9VkWSWo7WvX0zQRN7nDWN0DRZusrqjv/JBAZgiH9sASs6bvr/z7dmUvY6h8sZFl
- Rc/RYqlGOrQbtU3Lq0BXTFdxlQtDaznpVMz1M96/zhIVrYf+S1gPW7TPbwHpT45pBrtR
- aNd+tQKv+5/gsfnefBjTvpXAhtZbJSfZt+CdxcfrwRE7B4mZHEhxq/2yOlH1IV1G7yPa
- k/Ww==
+ bh=btRCrFdiAQ6utPzCLjUxjVDbNA8YKZ7oAKcDGXjmwSY=;
+ b=IX80fcd1ovjsVCfmhANr9aDzwjanWMYixNE9+YhSroY8ihZ25rnVWSnaNm2Hgq4Svz
+ O8UI/ytidCe+r7C+oM195dncJGveVAU6fHT0l1VxQJtaGLAX0x1ebQhKQtNx/XG72xRX
+ 1xer3XkDPhs2se8PcAQ9LppXtbtFoXDiNC9ZSWYuGLE5Y0thMgvkzaPXTinvXb4JLSI5
+ S+qBWkjFTa1ckXtDlxb0qgytVnlNfNKiT28vBjWTPa3o+aVxYg1FbA+k6HKqkHGUENcK
+ Q/5iJD6QRb9G9p3OtztvjKgJWs/j+XNbgKFXDfcBOY+V+cNNn6oYXyZ7ZqWL/QExxuSV
+ rxiw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687664257; x=1690256257;
+ d=1e100.net; s=20221208; t=1687664581; x=1690256581;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=7FozYAD3aRQmMOwHSSeMHzLrKnhT1EalMpVjn2MIhRI=;
- b=Xn76iAiYqaBuFmma1Rh1XnDf3pAWiEsL+5zc98KSKvS5voIVh5d6H9/ZfBK5Nm/i9i
- jPI58aK+cFb6FzXLD3jA2smIMWSzQ9/RV6gM/XdaKrqw3kyNVDvs0mzF/CUcIWySlrO2
- aq2Jdm417IIuVFsHJAVcPmvO56hSQBGUaNMkppHLwTDsY/HDN1dq2X5DcurLnliI5XBT
- XVG/fyklhNLEBlD1H5gjNHi3BmbPSR0RHnuN3HG4szx7XM6UYG9KGz/j3z27Lf1k8QLL
- NL4pm1BQ4EKjZ5LBmv4pCmYh9jGN6nXSpVbZlYpw+OkYrvVZJ7L6UDBqXleSQLY6KDn8
- oUAA==
-X-Gm-Message-State: AC+VfDzGhqTp6cHlsSEjMl4iMZzhwDK8jousXhzfNmQqaol1C57JMsWX
- /3Uk9KnX0ZrpN3ZtFIQqsqg3RaSaPkMFmgMVqihazQ==
-X-Google-Smtp-Source: ACHHUZ4blLpxXqlGeYC1JdPQvKHC8KxQR/Wq6pjEmW3dgjzcyJ0qgfa/zaXl2GNWnU4jrUk2GNqFz5p8DuojiET7y5o=
-X-Received: by 2002:a17:90a:6bc2:b0:262:dc59:ee64 with SMTP id
- w60-20020a17090a6bc200b00262dc59ee64mr2049617pjj.4.1687664256975; Sat, 24 Jun
- 2023 20:37:36 -0700 (PDT)
+ bh=btRCrFdiAQ6utPzCLjUxjVDbNA8YKZ7oAKcDGXjmwSY=;
+ b=eyNAh489+WmDZFmRH9U41gbKmU25L37BdLMxdPCLzBTSp3akvGr1kq83EDNArjIOYy
+ bdPMYbyS3XOvtAbJEa9fOZhiwGZtInYgh4JVGIuR3uRgoTirUpebENbnxJaZc67t8s8J
+ 7rBDGr+ujWHn14h65YryzvQX7WUAmpNaBDmcDuDy44UjzLzydvdjpWVyGjtxQ/rJBDBd
+ tKMgEvAsqwJUOblC4He67XjrqGZSxVZgBGPjGnIikTcb55KNk7/f5RnFzzCr92J42AOb
+ CfQJYwPpwFhYSSv4Kh5GrrDO2Z0fO6oviGsooF7Y2Xq3lA05S+08HpUTsSHe/xdqMKR0
+ y9kA==
+X-Gm-Message-State: AC+VfDy1qvbQ+YGa8Po7OsC2n55jd6wULnbdYVWa1RXLcUjjZ73eDZmS
+ 8t47iYxhVAUXC7G45Ia1N+OB0JBuGrvv51HY1cV0YQ==
+X-Google-Smtp-Source: ACHHUZ4p1qsXhcVG2Eqb9gEdt6lZ6feI3GxRXlMOzkz2oE0M32aDGru6AgywRTaVxTvNafLzYpxOBxTKiACMIeH7hbc=
+X-Received: by 2002:a17:90b:1b0c:b0:252:b342:a84a with SMTP id
+ nu12-20020a17090b1b0c00b00252b342a84amr30320376pjb.0.1687664581693; Sat, 24
+ Jun 2023 20:43:01 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230619221819.6882-1-lucas@osdyne.com>
- <20230620194317.45772-1-lucas@osdyne.com>
- <CAKmqyKM1T6n3pKQV3ZuxDTHXurOOLE4W_33mk8cc9hM3cuGNpA@mail.gmail.com>
-In-Reply-To: <CAKmqyKM1T6n3pKQV3ZuxDTHXurOOLE4W_33mk8cc9hM3cuGNpA@mail.gmail.com>
+ <CAKmqyKMGcsD7XQokTLTdr7X89WJaJq_g+7kf8Co_E-19j1J8Ww@mail.gmail.com>
+In-Reply-To: <CAKmqyKMGcsD7XQokTLTdr7X89WJaJq_g+7kf8Co_E-19j1J8Ww@mail.gmail.com>
 From: "Lucas C. Villa Real" <lucas@osdyne.com>
-Date: Sun, 25 Jun 2023 00:37:25 -0300
-Message-ID: <CAL+Dfo5=Zg=zvCZjTMTeU0L5kHfju8t9arOs6avURWvLYq=WFA@mail.gmail.com>
-Subject: Re: [PATCH] STM32F100: add support for external memory via FSMC
+Date: Sun, 25 Jun 2023 00:42:50 -0300
+Message-ID: <CAL+Dfo4pcJAcyovOVUyEcOXH7iRXeH_vnvN06ofbhqZe5d_3FA@mail.gmail.com>
+Subject: Re: [PATCH] STM32F100: support different density lines
 To: Alistair Francis <alistair23@gmail.com>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, erdnaxe@crans.org, 
- "Lucas C . Villa Real" <lucas@odsyne.com>
-Content-Type: multipart/alternative; boundary="0000000000008997e705feebf421"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
- envelope-from=lucas@osdyne.com; helo=mail-pf1-x431.google.com
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, erdnaxe@crans.org
+Content-Type: multipart/alternative; boundary="000000000000e46a2805feec0762"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1033;
+ envelope-from=lucas@osdyne.com; helo=mail-pj1-x1033.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -85,113 +83,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---0000000000008997e705feebf421
+--000000000000e46a2805feec0762
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jun 22, 2023 at 10:37=E2=80=AFPM Alistair Francis <alistair23@gmail=
+On Thu, Jun 22, 2023 at 10:30=E2=80=AFPM Alistair Francis <alistair23@gmail=
 .com>
 wrote:
 
-> On Wed, Jun 21, 2023 at 5:44=E2=80=AFAM Lucas Villa Real <lucas@osdyne.co=
-m> wrote:
-> >
-> > Add support for FSMC on high-density STM32F100 devices and enable
-> > mapping of additional memory via the `-m SIZE` command-line option.
-> > FSMC Bank1 can address up to 4x64MB of PSRAM memory at 0x60000000.
+> > +
+> > +    object_class_property_add_str(oc, "density", stm32f100_get_density=
+,
+> > +        stm32f100_set_density);
+> > +    object_class_property_set_description(oc, "density",
+> > +        "Set the STM32F100 density line device. "
+> > +        "Valid values are 'low', 'medium', and 'high' (default).");
+> >  }
 >
-> Thanks for the patches!
->
-
-You're welcome!
-
-
-> >
-> > RCC is needed to enable peripheral clock for FSMC; this commit
-> > implements support for RCC through the MMIO interface.
->
-> This should be a separate commit. The idea is to break commits up as
-> small as possible and send a patch series, this makes review much
-> easier. Each new feature should be its own commit.
+> This should be split into a separate commit from adding the machine
 >
 
-Thanks, I'll submit a new patchset as recommended.
+Ok, I'll do that.
 
 
-> >
-> > Last, high-density devices support up to 32KB of static SRAM, so
-> > adjust SRAM_SIZE accordingly.
+> Isn't this exactly the same as the stm32vldiscovery board? Which is
+> already very similar to the netduino2 machine. I'm not sure we need
+> another machine.
 >
-> Also, can you include a link to the documentation in the commit message?
->
-
-Absolutely.
-
-
-> > +static const MemoryRegionOps stm32f100_rcc_ops =3D {
-> > +    .read =3D stm32f100_rcc_read,
-> > +    .write =3D stm32f100_rcc_write,
-> > +    .endianness =3D DEVICE_NATIVE_ENDIAN,
-> > +};
->
-> This should be its own file and device that is included
+> It could make more sense to deprecate the stm32vldiscovery machine and
+> replace it with this generic one. At least we could keep everything in
+> the one file and reuse a lot of the code.
 >
 
-Sounds good, thanks for the guidance. I'll work on this next week.
+What is the protocol for deprecating a machine? Should I just submit a
+patch that removes it along with the corresponding entry in the MAINTAINERS
+file? Should I coordinate that offline with the maintainer of the machine
+that's to be retired?
 
-Best regards,
+Thanks,
 Lucas
 
---0000000000008997e705feebf421
+--000000000000e46a2805feec0762
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-<div dir=3D"ltr"><div dir=3D"ltr">On Thu, Jun 22, 2023 at 10:37=E2=80=AFPM =
-Alistair Francis &lt;<a href=3D"mailto:alistair23@gmail.com">alistair23@gma=
-il.com</a>&gt; wrote:</div><div class=3D"gmail_quote"><blockquote class=3D"=
-gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(20=
-4,204,204);padding-left:1ex">On Wed, Jun 21, 2023 at 5:44=E2=80=AFAM Lucas =
-Villa Real &lt;<a href=3D"mailto:lucas@osdyne.com" target=3D"_blank">lucas@=
-osdyne.com</a>&gt; wrote:<br>
-&gt;<br>
-&gt; Add support for FSMC on high-density STM32F100 devices and enable<br>
-&gt; mapping of additional memory via the `-m SIZE` command-line option.<br=
->
-&gt; FSMC Bank1 can address up to 4x64MB of PSRAM memory at 0x60000000.<br>
-<br>
-Thanks for the patches!<br></blockquote><div><br></div><div>You&#39;re welc=
-ome!<br></div><div>=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"m=
+<div dir=3D"ltr">On Thu, Jun 22, 2023 at 10:30=E2=80=AFPM Alistair Francis =
+&lt;<a href=3D"mailto:alistair23@gmail.com">alistair23@gmail.com</a>&gt; wr=
+ote:<div class=3D"gmail_quote"><blockquote class=3D"gmail_quote" style=3D"m=
 argin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left=
-:1ex">
-&gt;<br>
-&gt; RCC is needed to enable peripheral clock for FSMC; this commit<br>
-&gt; implements support for RCC through the MMIO interface.<br>
+:1ex">&gt; +<br>
+&gt; +=C2=A0 =C2=A0 object_class_property_add_str(oc, &quot;density&quot;, =
+stm32f100_get_density,<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 stm32f100_set_density);<br>
+&gt; +=C2=A0 =C2=A0 object_class_property_set_description(oc, &quot;density=
+&quot;,<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 &quot;Set the STM32F100 density line devi=
+ce. &quot;<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 &quot;Valid values are &#39;low&#39;, &#3=
+9;medium&#39;, and &#39;high&#39; (default).&quot;);<br>
+&gt;=C2=A0 }<br>
 <br>
-This should be a separate commit. The idea is to break commits up as<br>
-small as possible and send a patch series, this makes review much<br>
-easier. Each new feature should be its own commit.<br></blockquote><div>=C2=
-=A0</div><div>Thanks, I&#39;ll submit a new patchset as recommended.<br></d=
-iv><div>=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0=
-px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
-&gt;<br>
-&gt; Last, high-density devices support up to 32KB of static SRAM, so<br>
-&gt; adjust SRAM_SIZE accordingly.<br>
+This should be split into a separate commit from adding the machine<br></bl=
+ockquote><div><br></div><div>Ok, I&#39;ll do that.<br></div><div>=C2=A0<br>=
+</div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;b=
+order-left:1px solid rgb(204,204,204);padding-left:1ex">
+Isn&#39;t this exactly the same as the stm32vldiscovery board? Which is<br>
+already very similar to the netduino2 machine. I&#39;m not sure we need<br>
+another machine.<br>
 <br>
-Also, can you include a link to the documentation in the commit message?<br=
-></blockquote><div><br></div><div>Absolutely.<br></div><div>=C2=A0<br></div=
-><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border=
--left:1px solid rgb(204,204,204);padding-left:1ex">
-&gt; +static const MemoryRegionOps stm32f100_rcc_ops =3D {<br>
-&gt; +=C2=A0 =C2=A0 .read =3D stm32f100_rcc_read,<br>
-&gt; +=C2=A0 =C2=A0 .write =3D stm32f100_rcc_write,<br>
-&gt; +=C2=A0 =C2=A0 .endianness =3D DEVICE_NATIVE_ENDIAN,<br>
-&gt; +};<br>
-<br>
-This should be its own file and device that is included<br></blockquote><di=
-v>=C2=A0</div><div>Sounds good, thanks for the guidance. I&#39;ll work on t=
-his next week.<br></div></div><div class=3D"gmail_quote"><br></div><div cla=
-ss=3D"gmail_quote">Best regards,<br></div><div class=3D"gmail_quote">Lucas<=
-br></div></div>
+It could make more sense to deprecate the stm32vldiscovery machine and<br>
+replace it with this generic one. At least we could keep everything in<br>
+the one file and reuse a lot of the code.<br></blockquote><div><br></div><d=
+iv>What is the protocol for deprecating a machine? Should I just submit a p=
+atch that removes it along with the corresponding entry in the MAINTAINERS =
+file? Should I coordinate that offline with the maintainer of the machine t=
+hat&#39;s to be retired?</div><div><br></div><div>Thanks,</div><div>Lucas<b=
+r></div></div></div>
 
---0000000000008997e705feebf421--
+--000000000000e46a2805feec0762--
 
