@@ -2,77 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86E8973CFAC
-	for <lists+qemu-devel@lfdr.de>; Sun, 25 Jun 2023 11:19:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CBD7773CFAE
+	for <lists+qemu-devel@lfdr.de>; Sun, 25 Jun 2023 11:21:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDLth-0003jn-Qj; Sun, 25 Jun 2023 05:19:05 -0400
+	id 1qDLvY-0004Us-PK; Sun, 25 Jun 2023 05:21:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qDLtf-0003hY-Es; Sun, 25 Jun 2023 05:19:03 -0400
-Received: from mail-oi1-x231.google.com ([2607:f8b0:4864:20::231])
+ id 1qDLvW-0004UC-FY; Sun, 25 Jun 2023 05:20:58 -0400
+Received: from mail-ot1-x336.google.com ([2607:f8b0:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qDLtd-0004Ir-Ni; Sun, 25 Jun 2023 05:19:03 -0400
-Received: by mail-oi1-x231.google.com with SMTP id
- 5614622812f47-39ec45b22f6so1646088b6e.0; 
- Sun, 25 Jun 2023 02:19:00 -0700 (PDT)
+ id 1qDLvU-0004uV-UE; Sun, 25 Jun 2023 05:20:58 -0400
+Received: by mail-ot1-x336.google.com with SMTP id
+ 46e09a7af769-6b73b839025so626079a34.1; 
+ Sun, 25 Jun 2023 02:20:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1687684740; x=1690276740;
+ d=gmail.com; s=20221208; t=1687684855; x=1690276855;
  h=in-reply-to:references:to:from:subject:cc:message-id:date
  :content-transfer-encoding:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=TJf+voi6N+YE8Sch4FS4fD8XrRSVJhfO0na4gXb66tM=;
- b=Jqv5Z/D48TqFQhiAv+fc0FgSIPohyydVnrzlvOM3nbStkOtvXfMr1nQCFhjgyKti1N
- lqdvdEkLrJtPyMDwmLTLEU9wJMpJbDc7W+BYP5QT1g6h6iASFa4j+fUSTDs3IaSs1tM9
- J1ARcVdIUp/AeGxtlXovRtb2mxgZf4sjo9W1d2dh5RF9T72JIa/KTY/xR5DHPIZhB2sk
- +vsgpieBA212rLaKCTQSzCpNPtIcMu3v82H954gikRo8qkvVTh4LD0JekqSKZ5/+4Doe
- id9H1qNgdsxrd9JI7dClXRMWCyhqNyKF4TmuMq4R67x4M2oGZo8zQStcQ3Q44MFlhwFK
- TPDA==
+ bh=rkkZyPFgohN/gSy4X3XlalR0OskQqaGHyQTG4CuBUsc=;
+ b=p+GAnOyuGrFjNsEMFzjeEHmkxhuocA/1fEmzvVGRpWmKO8HW3phndcOQvKIfFJ2VtY
+ 8ZhEfqwqnG1cG4lb+lsSciRQuekrnaQaceV9/xBDyvnWH6wl+peUP/G6qQS8Q6Tm0653
+ gcN7e+5rvu1E/6/ySUNhAYQgvJ90T0EYlBpUe6EQGxM0dGiWitETO0dPk9mBAeqN9mQn
+ RBCykjRT7PnieHzB7axYleqVX3bmIg7/wt3iXolzyTyAD4lU6FXQIlnWdx6xz8EQqKKM
+ XBzOnP0RZtkASh2+8SUqgCBDFd9k2KiYhuZ9eE2ePL6p4Z6L41oLc7kRStyES04rHajG
+ 6xBA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687684740; x=1690276740;
+ d=1e100.net; s=20221208; t=1687684855; x=1690276855;
  h=in-reply-to:references:to:from:subject:cc:message-id:date
  :content-transfer-encoding:mime-version:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=TJf+voi6N+YE8Sch4FS4fD8XrRSVJhfO0na4gXb66tM=;
- b=UB4NtFioO3o+Pin1ElRDWj7/a2RPmBIqa844VoA6sMmUmIEOJjkqr/8nvURHCMjEfO
- JW9gfaXNSIvFq3x+E6E77r3XXLf+Rd39gpovuS6GQ/+pPX0GQlK2j3ug+ClXCrDwNKbG
- oDpfx3nfS/HZbnSz3KiPcuX7TPGf/j/TDBY1SvK+UDG5bDWzeXL3/U+UAmNn2XoMIz/W
- JHnLa4qXQBcXJJmdyoUiYA08PQ822iZUJw3xv9iQ8eWN4uCWRzg6C+XL8ruL1RBNoN0/
- NsXLBJ/4SjJLf3fWpdilKFwRHBs0jzcyqquIQTcM19IDqCdtpIdnRcipIlCzjsum/OeE
- qNFQ==
-X-Gm-Message-State: AC+VfDzaV6FUZQKBeyHIgQ3NvRc3xSS9pF5PNXPgL7yDeZ0ofJW0Gk+j
- 3ax6b9RHOjoa+rkFpJ+jKiE=
-X-Google-Smtp-Source: ACHHUZ5N4RRdDHRAM/5ufkfYGJSqabXcikKI6VWSk76TFB0H597CrEb72y6KH74CzrdPjY8AYmYdwg==
-X-Received: by 2002:a05:6808:179c:b0:3a1:b50d:6c9 with SMTP id
- bg28-20020a056808179c00b003a1b50d06c9mr7503182oib.7.1687684740218; 
- Sun, 25 Jun 2023 02:19:00 -0700 (PDT)
+ bh=rkkZyPFgohN/gSy4X3XlalR0OskQqaGHyQTG4CuBUsc=;
+ b=hws+gy2suIR9ohoNQFix31dbKacXxSqVpfaruZvj0XVFaLQLzWSVqG7mtnRltjISax
+ kyXM25vZ77sTGxqgif42B+6mIgnMdRMQgmUf/Dsz8cg07XMI6WvjvFJnJxU+NOpNH/yX
+ KhNjP3Oox6bNir0smtZyFoiFrrFOle9UzWPBKH+jbmLCLU95nSM3n1qvZOeaZUUz4oPE
+ ntbcNh36SOp0Apoe4PybPUPypDa8qeeEEgzpP/a4UAHqi/8r806jvoUqkJDX+298JzfV
+ sFphFKCnLhcUtOLkTb7OYOcwY8vhhHU+gl5uwHQqj/c2bmkQulkQe+BSgwFvNSdSYkkE
+ QKRg==
+X-Gm-Message-State: AC+VfDxfk4ShU11dvfY2NWZJl321WObN/kL0YWwqcHeookFqo4BGr8tT
+ NiGxWmydEyYeRbEJUEnq4x0AscfS9Rs=
+X-Google-Smtp-Source: ACHHUZ4a19+ZxJzcF8WdAh613M9Z8St1wPODhL0LSJZ0ZliwAX1hd8Yz0CpzGudu5ULuIV/UxRdFeA==
+X-Received: by 2002:a9d:5e8b:0:b0:6b2:ac44:bf88 with SMTP id
+ f11-20020a9d5e8b000000b006b2ac44bf88mr26426371otl.10.1687684855358; 
+ Sun, 25 Jun 2023 02:20:55 -0700 (PDT)
 Received: from localhost (193-116-198-102.tpgi.com.au. [193.116.198.102])
  by smtp.gmail.com with ESMTPSA id
- ip4-20020a17090b314400b0025374fedab4sm4095370pjb.22.2023.06.25.02.18.56
+ o12-20020a170902d4cc00b001b19d14a3d5sm2223044plg.68.2023.06.25.02.20.51
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 25 Jun 2023 02:18:59 -0700 (PDT)
+ Sun, 25 Jun 2023 02:20:54 -0700 (PDT)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Sun, 25 Jun 2023 19:18:53 +1000
-Message-Id: <CTLMB3E3JHJ2.FXPTKDYPPTJO@wheely>
-Cc: <qemu-ppc@nongnu.org>, <qemu-devel@nongnu.org>, "Christophe Leroy"
+Date: Sun, 25 Jun 2023 19:20:48 +1000
+Message-Id: <CTLMCKAEF701.1EU64K055P8A6@wheely>
+Cc: <qemu-devel@nongnu.org>, "Christophe Leroy"
  <christophe.leroy@csgroup.eu>, "BALATON Zoltan" <balaton@eik.bme.hu>,
  "Harsh Prateek Bora" <harshpb@linux.ibm.com>, "Daniel Henrique Barboza"
  <danielhb413@gmail.com>, =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
  "David Gibson" <david@gibson.dropbear.id.au>, "Greg Kurz" <groug@kaod.org>
-Subject: Re: [PATCH 0/4] target/ppc: Catch invalid real address accesses
+Subject: Re: [PATCH 3/4] target/ppc: Move common check in machne check
+ handlers to a function
 From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Peter Maydell" <peter.maydell@linaro.org>
+To: "Fabiano Rosas" <farosas@suse.de>, <qemu-ppc@nongnu.org>
 X-Mailer: aerc 0.15.2
 References: <20230623081953.290875-1-npiggin@gmail.com>
- <CAFEAcA_Brf-R12t+DKNAoygqgC-qjKJ3Wiz4ULjGHOo8_vPovw@mail.gmail.com>
-In-Reply-To: <CAFEAcA_Brf-R12t+DKNAoygqgC-qjKJ3Wiz4ULjGHOo8_vPovw@mail.gmail.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::231;
- envelope-from=npiggin@gmail.com; helo=mail-oi1-x231.google.com
+ <20230623081953.290875-4-npiggin@gmail.com> <87edm2s4bh.fsf@suse.de>
+In-Reply-To: <87edm2s4bh.fsf@suse.de>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::336;
+ envelope-from=npiggin@gmail.com; helo=mail-ot1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,55 +96,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri Jun 23, 2023 at 7:10 PM AEST, Peter Maydell wrote:
-> On Fri, 23 Jun 2023 at 09:21, Nicholas Piggin <npiggin@gmail.com> wrote:
+On Fri Jun 23, 2023 at 11:20 PM AEST, Fabiano Rosas wrote:
+> Nicholas Piggin <npiggin@gmail.com> writes:
+>
+> > From: BALATON Zoltan <balaton@eik.bme.hu>
 > >
-> > ppc has always silently ignored access to real (physical) addresses
-> > with nothing behind it, which can make debugging difficult at times.
+> > All powerpc exception handlers share some code when handling machine
+> > check exceptions. Move this to a common function.
 > >
-> > It looks like the way to handle this is implement the transaction
-> > failed call, which most target architectures do. Notably not x86
-> > though, I wonder why?
 >
-> Much of this is historical legacy. QEMU originally had no
-> concept of "the system outside the CPU returns some kind
-> of bus error and the CPU raises an exception for it".
-> This is turn is (I think) because the x86 PC doesn't do
-> that: you always get back some kind of response, I think
-> -1 on reads and writes ignored. We added the do_transaction_failed
-> hook largely because we wanted it to give more accurate
-> emulation of this kind of thing on Arm, but as usual with new
-> facilities we left the other architectures to do it themselves
-> if they wanted -- by default the behaviour remained the same.
-> Some architectures have picked it up; some haven't.
+> Maybe Machine Check is simple enough, but this kind of sharing of code
+> has historically caused pain when people want to change something for
+> the modern cpus and end up affecting the old cpus by mistake.
 >
-> The main reason it's a bit of a pain to turn the correct
-> handling on is because often boards don't actually implement
-> all the devices they're supposed to. For a pile of legacy Arm
-> boards, especially where we didn't have good test images,
-> we use the machine flag ignore_memory_transaction_failures to
-> retain the legacy behaviour. (This isn't great because it's
-> pretty much going to mean we have that flag set on those
-> boards forever because nobody is going to care enough to
-> investigate and test.)
+> There is also the inverse scenario where someone has access to the old
+> HW and just want to make an one-off contribution, but the community gets
+> insecure about it because it could also affect the new cpus.
 >
-> > Other question is, sometimes I guess it's nice to avoid crashing in
-> > order to try to quickly get past some unimplemented MMIO. Maybe a
-> > command line option or something could turn it off? It should
-> > probably be a QEMU-wide option if so, so that shouldn't hold this
-> > series up, I can propose a option for that if anybody is worried
-> > about it.
+> Then comes the obvious "solution" which is to bring in an artificial
+> identifier (excp. model) to be able to have conditional code inside the
+> common function. And that causes problems because no one really knows
+> how it maps to actual hardware/ISA.
 >
-> I would not recommend going any further than maybe setting the
-> ignore_memory_transaction_failures flag for boards you don't
-> care about. (But in an ideal world, don't set it and deal with
-> any bug reports by implementing stub versions of missing devices.
-> Depends how confident you are in your test coverage.)
+> No objection, just a little cautionary tale. =3D)
 
-Thanks for the background, interesting and helpful. So I think
-it is the right place for powerpc BookS 64 to hook into. Point
-taken about adding a global option for it. Will try to fix the
-known problems first, maybe it won't be too hard.
+Thanks Fabiano, good point. I know you spent a lot of work on untangling
+this mess. I'll think a bit more about it. Seems we need to at least make
+a few fixes first before we can turn this on for upstream.
 
 Thanks,
 Nick
