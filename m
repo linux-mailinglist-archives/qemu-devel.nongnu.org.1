@@ -2,72 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8271F73D022
+	by mail.lfdr.de (Postfix) with ESMTPS id 485C273D020
 	for <lists+qemu-devel@lfdr.de>; Sun, 25 Jun 2023 12:38:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDN7R-0001gD-8D; Sun, 25 Jun 2023 06:37:21 -0400
+	id 1qDN7R-0001h3-Ro; Sun, 25 Jun 2023 06:37:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qDN7J-0001fm-Eq; Sun, 25 Jun 2023 06:37:13 -0400
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+ id 1qDN7N-0001gE-3q; Sun, 25 Jun 2023 06:37:17 -0400
+Received: from mail-pg1-x531.google.com ([2607:f8b0:4864:20::531])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qDN7G-0001gV-Og; Sun, 25 Jun 2023 06:37:12 -0400
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-1b5422163f4so18726375ad.2; 
- Sun, 25 Jun 2023 03:37:09 -0700 (PDT)
+ id 1qDN7K-0001h1-4B; Sun, 25 Jun 2023 06:37:16 -0400
+Received: by mail-pg1-x531.google.com with SMTP id
+ 41be03b00d2f7-517ab9a4a13so1874477a12.1; 
+ Sun, 25 Jun 2023 03:37:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1687689428; x=1690281428;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=tb5eqhpSBrUMtUUyvYiVbs030OE5D++w6YJ7FotUsnY=;
- b=FLrMJFalREN/H9N+BpXbe2vaGFzhv1T+tFAs3PjwEh/AynjkuhmAgcJhLf0cP1EWoN
- hnpXZaM5zFIMipvYCS9l8Ha7sy9gJo0CLURcIwcgezhaQLhSromEEhUgxku7OkSSyEGX
- JTuLwEBlThs/2FpkP7phUMpOwHAeh5rWF4I+wLG4zTFNhthcuAgi7v31u02spOKtOv0H
- 6Qo4kAe1lq6d8KLjzSOWrcVfTEnUVEZBfoN5fJSclXn7TYGV+wHFWUKhveDoVtPFeiT+
- qUjnOIfRZtAkxU19MmvlhEbOSgrDYYjw4iW/UQGP5Gs7sUsLzRG+PMfPGmwW9LLoOzWY
- zsTA==
+ d=gmail.com; s=20221208; t=1687689432; x=1690281432;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=uELgOsvAtyEd8+qLxIMv+G6IGAcaUjPYJT8jTwUhjM0=;
+ b=G7bD1sQRgGxhOe30/C0VNbea1Mp9avtU6LFic5ZT5JXHwdGNdVQOUu+FIgBL07a8Q2
+ iSqKTQSW4bOOfh/lbwg4cFArXSWv75Hb9WrrLLC62cYcELLfU5RCtfUk5FD8+KyZlnWc
+ UvYB9DHn+j7Dob4UidWejTGW1FuShJyd+EQo6ZrhLEs9lQmpDtY4HDgBFofuA4p1IElr
+ dOyqVMIYXz96uLC0hQR//FqDChKiHLXwtncOIuSuz4eoSmPbF1BPcc7zPaEutaOgJaZ+
+ MnzbrMIw4Futk1Vux7OjVv9GBWJxgg/g+bSjIH9lp7Ptw8lS0YYc21HptJqSOds5S3jG
+ pRDQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687689428; x=1690281428;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=tb5eqhpSBrUMtUUyvYiVbs030OE5D++w6YJ7FotUsnY=;
- b=NkKqU9rXkXwknzjBzRFXiymoFkNllIlCoidYbb/Gz9NN5JBVINVth/GXFbysXmzRcL
- uoz8KqOr4jdcKf6Y1XTdDjcsM9ZaOzRjK8Wl2OKd80Pbhxf2GxqN8Q0O2UMpwk6oMkar
- MUHU6fwWKqN1G6eLMJMhZIvKD2DF6bby/2IS4Oc6OOi1zv57zr3i0IgPYH1BJ2JigfhB
- M4jXm7NJT+EGiyhLV+XcfpZZbx6quwtgg+83imBP+dSnOC+6o+bws5ufNTX+PAw0BnOX
- O2V/gT2MfecNsVPY7vdiMedtb1Qy1NIOixStvrMARq2hFpQ9VuzUcs3R6X1Kq6qf/3+g
- hd1w==
-X-Gm-Message-State: AC+VfDzQPmCLHOL3SIIGY7y+ltrA5q6VP3gwkwoHFf0ffZln0cR1XXz3
- 1Hl1UK/+ViAwDbr1pqE2kailY+QLo2I=
-X-Google-Smtp-Source: ACHHUZ5yqrpYQOph3RwjcPsW00VVepDbQ7Q4ablYQQw/4lptBUtEKzl7lBCnL7bKFI2L3fov0VlQ2w==
-X-Received: by 2002:a17:903:2793:b0:1b3:f8db:6f0c with SMTP id
- jw19-20020a170903279300b001b3f8db6f0cmr4079286plb.58.1687689428423; 
- Sun, 25 Jun 2023 03:37:08 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1687689432; x=1690281432;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=uELgOsvAtyEd8+qLxIMv+G6IGAcaUjPYJT8jTwUhjM0=;
+ b=bsPDu6EspPfYxrGy8rS5hr/A7NnhG945k5M7BDattUEjtS/hzIx3gWCwkz3mHRpIVw
+ Xx7cfZT4g6p5mSyWw3m3OTvLL/yhGjhmEeLfW4wC8jrQ16IgE/2h1FmoKPzUMoppQLsZ
+ tg7OllcMUmKtDl3cBTAZ+N8X1buW9tdxADZWTKw5ag82hr300B7TYZ/ceYR7By7ZxuL9
+ GGx8nYotG0w3/UTMB5dU5Mg1jM1QBMk3NyBXLFNaWoVciCRtnYScJu9yhOrnG34pYlSJ
+ 9iJA6oOIjNkapqj1PtN20o/Of20wFH17fRHCJFe72pBbJ/Xt+zk8ryWCvXJfEb/AoMTs
+ D0RA==
+X-Gm-Message-State: AC+VfDzaBggo8cbk3TWwMNZFplVXx1X/8R1FXSRRMMxfHoYyNNa0fuka
+ JrCqgj+6d7BtsnwkO9KNcbvtSb5L/mg=
+X-Google-Smtp-Source: ACHHUZ7HO0rJmhS7qg7MFdvKrsQG29nVjsJCwO81opOS2AkBKCny8HKsuVFYE7hxPb/6vEmfHTxP4g==
+X-Received: by 2002:a17:90b:3611:b0:25e:91ef:8b1f with SMTP id
+ ml17-20020a17090b361100b0025e91ef8b1fmr24457855pjb.3.1687689431754; 
+ Sun, 25 Jun 2023 03:37:11 -0700 (PDT)
 Received: from wheely.local0.net (193-116-198-102.tpgi.com.au.
  [193.116.198.102]) by smtp.gmail.com with ESMTPSA id
- n91-20020a17090a5ae400b002471deb13fcsm2299115pji.6.2023.06.25.03.37.05
+ n91-20020a17090a5ae400b002471deb13fcsm2299115pji.6.2023.06.25.03.37.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 25 Jun 2023 03:37:08 -0700 (PDT)
+ Sun, 25 Jun 2023 03:37:11 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>
-Subject: [PATCH 1/2] target/ppc: Fix icount access for some hypervisor
- instructions
-Date: Sun, 25 Jun 2023 20:36:59 +1000
-Message-Id: <20230625103700.8992-1-npiggin@gmail.com>
+Subject: [PATCH 2/2] tests/avocado: record_replay test for ppc powernv machine
+Date: Sun, 25 Jun 2023 20:37:00 +1000
+Message-Id: <20230625103700.8992-2-npiggin@gmail.com>
 X-Mailer: git-send-email 2.40.1
+In-Reply-To: <20230625103700.8992-1-npiggin@gmail.com>
+References: <20230625103700.8992-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x62e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::531;
+ envelope-from=npiggin@gmail.com; helo=mail-pg1-x531.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,74 +92,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Several instructions and register access require icount reads and are
-missing translator_io_start().
+The powernv machine can boot Linux to VFS mount with icount enabled.
+Add a test case for it.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/ppc/translate.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ tests/avocado/replay_kernel.py | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/target/ppc/translate.c b/target/ppc/translate.c
-index eb278c2683..c1c3cd8767 100644
---- a/target/ppc/translate.c
-+++ b/target/ppc/translate.c
-@@ -1177,6 +1177,7 @@ void spr_write_hmer(DisasContext *ctx, int sprn, int gprn)
+diff --git a/tests/avocado/replay_kernel.py b/tests/avocado/replay_kernel.py
+index a4dc8c0d6c..dc350fd781 100644
+--- a/tests/avocado/replay_kernel.py
++++ b/tests/avocado/replay_kernel.py
+@@ -258,6 +258,22 @@ def test_ppc64_pseries(self):
+         console_pattern = 'VFS: Cannot open root device'
+         self.run_rr(kernel_path, kernel_command_line, console_pattern)
  
- void spr_write_lpcr(DisasContext *ctx, int sprn, int gprn)
- {
-+    translator_io_start(&ctx->base);
-     gen_helper_store_lpcr(cpu_env, cpu_gpr[gprn]);
- }
- #endif /* !defined(CONFIG_USER_ONLY) */
-@@ -4002,6 +4003,7 @@ static void gen_doze(DisasContext *ctx)
-     TCGv_i32 t;
- 
-     CHK_HV(ctx);
-+    translator_io_start(&ctx->base);
-     t = tcg_constant_i32(PPC_PM_DOZE);
-     gen_helper_pminsn(cpu_env, t);
-     /* Stop translation, as the CPU is supposed to sleep from now */
-@@ -4017,6 +4019,7 @@ static void gen_nap(DisasContext *ctx)
-     TCGv_i32 t;
- 
-     CHK_HV(ctx);
-+    translator_io_start(&ctx->base);
-     t = tcg_constant_i32(PPC_PM_NAP);
-     gen_helper_pminsn(cpu_env, t);
-     /* Stop translation, as the CPU is supposed to sleep from now */
-@@ -4032,6 +4035,7 @@ static void gen_stop(DisasContext *ctx)
-     TCGv_i32 t;
- 
-     CHK_HV(ctx);
-+    translator_io_start(&ctx->base);
-     t = tcg_constant_i32(PPC_PM_STOP);
-     gen_helper_pminsn(cpu_env, t);
-     /* Stop translation, as the CPU is supposed to sleep from now */
-@@ -4047,6 +4051,7 @@ static void gen_sleep(DisasContext *ctx)
-     TCGv_i32 t;
- 
-     CHK_HV(ctx);
-+    translator_io_start(&ctx->base);
-     t = tcg_constant_i32(PPC_PM_SLEEP);
-     gen_helper_pminsn(cpu_env, t);
-     /* Stop translation, as the CPU is supposed to sleep from now */
-@@ -4062,6 +4067,7 @@ static void gen_rvwinkle(DisasContext *ctx)
-     TCGv_i32 t;
- 
-     CHK_HV(ctx);
-+    translator_io_start(&ctx->base);
-     t = tcg_constant_i32(PPC_PM_RVWINKLE);
-     gen_helper_pminsn(cpu_env, t);
-     /* Stop translation, as the CPU is supposed to sleep from now */
-@@ -4458,6 +4464,7 @@ static void gen_hrfid(DisasContext *ctx)
- #else
-     /* Restore CPU state */
-     CHK_HV(ctx);
-+    translator_io_start(&ctx->base);
-     gen_helper_hrfid(cpu_env);
-     ctx->base.is_jmp = DISAS_EXIT;
- #endif
++    def test_ppc64_powernv(self):
++        """
++        :avocado: tags=arch:ppc64
++        :avocado: tags=machine:powernv
++        :avocado: tags=accel:tcg
++        """
++        kernel_url = ('https://archives.fedoraproject.org/pub/archive'
++                      '/fedora-secondary/releases/29/Everything/ppc64le/os'
++                      '/ppc/ppc64/vmlinuz')
++        kernel_hash = '3fe04abfc852b66653b8c3c897a59a689270bc77'
++        kernel_path = self.fetch_asset(kernel_url, asset_hash=kernel_hash)
++
++        kernel_command_line = self.KERNEL_COMMON_COMMAND_LINE + 'console=tty0 console=hvc0'
++        console_pattern = 'VFS: Cannot open root device'
++        self.run_rr(kernel_path, kernel_command_line, console_pattern)
++
+     def test_m68k_q800(self):
+         """
+         :avocado: tags=arch:m68k
 -- 
 2.40.1
 
