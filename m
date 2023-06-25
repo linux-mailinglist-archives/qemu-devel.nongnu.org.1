@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B791E73CF51
+	by mail.lfdr.de (Postfix) with ESMTPS id AFBB673CF50
 	for <lists+qemu-devel@lfdr.de>; Sun, 25 Jun 2023 10:27:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDL4f-0004SX-F1; Sun, 25 Jun 2023 04:26:21 -0400
+	id 1qDL4q-0004Ud-Ge; Sun, 25 Jun 2023 04:26:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qDL4U-0004S3-Bg
- for qemu-devel@nongnu.org; Sun, 25 Jun 2023 04:26:11 -0400
-Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
+ id 1qDL4p-0004UV-Ht
+ for qemu-devel@nongnu.org; Sun, 25 Jun 2023 04:26:31 -0400
+Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qDL4P-0006ef-Eo
- for qemu-devel@nongnu.org; Sun, 25 Jun 2023 04:26:08 -0400
-Received: by mail-ed1-x52c.google.com with SMTP id
- 4fb4d7f45d1cf-51d7e8dd118so1823175a12.1
- for <qemu-devel@nongnu.org>; Sun, 25 Jun 2023 01:26:04 -0700 (PDT)
+ id 1qDL4n-0006il-Rz
+ for qemu-devel@nongnu.org; Sun, 25 Jun 2023 04:26:31 -0400
+Received: by mail-ej1-x632.google.com with SMTP id
+ a640c23a62f3a-98df6bc0048so122141466b.1
+ for <qemu-devel@nongnu.org>; Sun, 25 Jun 2023 01:26:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687681563; x=1690273563;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=XDurioBlBW0lnqV7WP6lflm6+GeOPIzqrVoBzfG/Q04=;
- b=U6pbNduIKhJDOCYCCTVkpnzTldttKfQVv/Rsb1iRPcqudkedmskloWkahWaPdLJH2m
- ChJ3qMyASuCiAB2hXMxzDlaXCmmNokJXyKqoI9wxxnkHIQNWNUShBXVi49ISYBzW/Bx6
- 3wp6d3zVv4CVNXFEzryxo9nt6dRHDgvcSNbfnmZf8SHkShYTNbJU8MrO78JYmz4Gr27F
- P9iIsVrvlGlZC1LbBsjghIzd40L6sZPPAcRCHapR52h/FmjMgfQkXU+5RRffTNVBfA8D
- sEiuSoLqykLjD7re2+7Nx+kwSP6VdSoNgOVAE30OhgLQ+CEerqEtT3eR/pkdpG4t69sP
- VWfg==
+ d=linaro.org; s=google; t=1687681588; x=1690273588;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=osu/uwRe6dqE/LoY0IkKJmIJukGR1Yt3ufispVgOBWg=;
+ b=NaHK9N2sfJATuPx4q+Ae4qNRbeG0qKwZXPi8r4M3BiunRrtatxHVjGXOmhqgSDpJvi
+ VOJU2GU5kK7klJ1rugFhHkIkcpU7BflbFSsdsyJFzYadtdLi/dssnZ/gpK+jTtzUjWMn
+ kEJT/4tbJIHN1MPbhI4AkufXBrulg1mH7N/daJqsYKNldY3wu22Sfb3Ogpx1uIFY24IM
+ /Tp2jlNmMPV1yQLXgP8Ncy3/Byy2GB+wQmOOe1I1Wy0fAAi59fGsDi9n4fdiNx/vdoRb
+ zodDnLe0EoSLD6f/vaQGZgEw54AH6h+T9tLA2f90QmA31pWF8LlOLebEZS2Mty2C5RiD
+ nYoA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687681563; x=1690273563;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20221208; t=1687681588; x=1690273588;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=XDurioBlBW0lnqV7WP6lflm6+GeOPIzqrVoBzfG/Q04=;
- b=AnhNJ3cgp4Il09Cp7d+bFKcgiK5BaN4jjLQqZz1S08xNOrYYv3xmzv4QJAOPTzMuZT
- UoCf3U1woXLmc7rPwsoGYuPKS93Ukz4XGR4spkXYsyESxMfyAofWmMUS4p+Uc+ndXoP6
- gYY/S0syB9dadHff8gRdTQjS6eUG3TU3k7yCUqJeJYtnLZPlUHXMU5QvgwocXPUpGhhF
- YCmhebST1UBNai7WvtpwaizZoEq04h/3AxeUz8JEIXH0KjuzX2GE/OIIxh/ooZkwVFtW
- VSWNJc6r9m0R5om3CiBTA98L5lYlPYVv4qMP0EMmTyZuGci7JZgKProUwKBaiGhfskWx
- iIEg==
-X-Gm-Message-State: AC+VfDxoj4I19YKu5RvitqwaUDiyQusyMNRQEprmoqEZQWoyAE/xa61x
- O13aKuEePcZg8u/w2FhLmPIQalcZ7V5WhRHfV6oL5Q==
-X-Google-Smtp-Source: ACHHUZ6KD4o8YzIMalYoMCYjT0A1YjgfiEfKTr76o7Co/k2lTghB9ztRYw4JYnHRfHv94Ofmtq7okw==
-X-Received: by 2002:aa7:d0c9:0:b0:51d:7d5a:4426 with SMTP id
- u9-20020aa7d0c9000000b0051d7d5a4426mr2417442edo.22.1687681563126; 
- Sun, 25 Jun 2023 01:26:03 -0700 (PDT)
+ bh=osu/uwRe6dqE/LoY0IkKJmIJukGR1Yt3ufispVgOBWg=;
+ b=VWYe5WcU9KDe4NS264oeKGLx1J/XVfjjzzw6yevS9+aJAkFzKQUOr0RyluLKot4F3h
+ DRDzagNnx1ZOtWSLae2rorTeBRJiK6kWxz3jWhvcS0MweqglMOfBuJ7Frz2Z3/Ppxc07
+ FnJV1BkRIfuM1dz2EydPraBgsk7gxIE47SI9tpooDHvRviavIGSUIuacm5NdZTtqWr1n
+ 5HAap8seIY0ioX0ZOzArVjDokTyBekMCgmAQ1YFSGcipYnYt+07n0F9a3zYhFjDKCQ7K
+ ddvdAF+ny4nsYZGcg7BdVi52hV5GxCYutaHmKUBNoQP/bq80xw4AWhZq4XosnlRmyN26
+ PNrg==
+X-Gm-Message-State: AC+VfDxs3zTGP0U9iNqEhrJ1bAS8DHxfZhPA+3eQ04ExlQ9pxcbUin4g
+ 0XeSlB6ZWwMDsTnZQ5AkLDkYlD1PvOnmAyZbJwai0w==
+X-Google-Smtp-Source: ACHHUZ6OmqTQYepVC4EOw+E31Nc1D/gzBWk9lCfS+ChIlctAgtgrn3jDNT2Rqa6CjOoWvGnGXPEYTQ==
+X-Received: by 2002:a17:907:968c:b0:988:b204:66a7 with SMTP id
+ hd12-20020a170907968c00b00988b20466a7mr17050418ejc.74.1687681587964; 
+ Sun, 25 Jun 2023 01:26:27 -0700 (PDT)
 Received: from [192.168.157.227] ([91.223.100.38])
  by smtp.gmail.com with ESMTPSA id
- b16-20020aa7c6d0000000b0051d7f4f32d6sm1484523eds.96.2023.06.25.01.26.01
+ z24-20020aa7cf98000000b0051bfcd3c4desm1489348edx.19.2023.06.25.01.26.26
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 25 Jun 2023 01:26:02 -0700 (PDT)
-Message-ID: <e9249b18-ffeb-ce11-1e64-85a2c992b639@linaro.org>
-Date: Sun, 25 Jun 2023 10:25:57 +0200
+ Sun, 25 Jun 2023 01:26:27 -0700 (PDT)
+Message-ID: <5d34d97b-6095-4b30-7357-91d6f25dd655@linaro.org>
+Date: Sun, 25 Jun 2023 10:26:23 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PULL 00/26] target-arm queue
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
-References: <20230623123135.1788191-1-peter.maydell@linaro.org>
+Subject: Re: [PULL v2 0/3] Hppa boot reboot fixes patches
 Content-Language: en-US
+To: Helge Deller <deller@gmx.de>, qemu-devel@nongnu.org,
+ Peter Maydell <peter.maydell@linaro.org>
+References: <20230624115007.30332-1-deller@gmx.de>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230623123135.1788191-1-peter.maydell@linaro.org>
+In-Reply-To: <20230624115007.30332-1-deller@gmx.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
- envelope-from=richard.henderson@linaro.org; helo=mail-ed1-x52c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::632;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ej1-x632.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -93,35 +94,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/23/23 14:31, Peter Maydell wrote:
-> Hi; here's a target-arm pullreq. Mostly this is RTH's FEAT_RME
-> series; there are also a handful of bug fixes including some
-> which aren't arm-specific but which it's convenient to include
-> here.
-> 
-> thanks
-> -- PMM
-> 
+On 6/24/23 13:50, Helge Deller wrote:
 > The following changes since commit b455ce4c2f300c8ba47cba7232dd03261368a4cb:
 > 
 >    Merge tag 'q800-for-8.1-pull-request' ofhttps://github.com/vivier/qemu-m68k  into staging (2023-06-22 10:18:32 +0200)
 > 
 > are available in the Git repository at:
 > 
->    https://git.linaro.org/people/pmaydell/qemu-arm.git  tags/pull-target-arm-20230623
+>    https://github.com/hdeller/qemu-hppa.git  tags/hppa-boot-reboot-fixes-pull-request
 > 
-> for you to fetch changes up to 497fad38979c16b6412388927401e577eba43d26:
+> for you to fetch changes up to 34ec3aea54368a92b62a55c656335885ba8c65ef:
 > 
->    pc-bios/keymaps: Use the official xkb name for Arabic layout, not the legacy synonym (2023-06-23 11:46:02 +0100)
+>    target/hppa: Update to SeaBIOS-hppa version 8 (2023-06-24 13:39:48 +0200)
 > 
 > ----------------------------------------------------------------
-> target-arm queue:
->   * Add (experimental) support for FEAT_RME
->   * host-utils: Avoid using __builtin_subcll on buggy versions of Apple Clang
->   * target/arm: Restructure has_vfp_d32 test
->   * hw/arm/sbsa-ref: add ITS support in SBSA GIC
->   * target/arm: Fix sve predicate store, 8 <= VQ <= 15
->   * pc-bios/keymaps: Use the official xkb name for Arabic layout, not the legacy synonym
+> target/hppa: Fix boot and reboot for SMP machines
+> 
+> Fix some SMP-related boot and reboot issues with HP-UX and Linux by
+> correctly initializing the CPU PSW bits, disabling data and instruction
+> translations and unhalting the CPU in the qemu hppa_machine_reset()
+> function.
+> 
+> To work correctly some fixes are needed in the SeaBIOS-hppa firmware too,
+> which is why this series updates it to version 8 which includes those
+> fixes and enhancements:
+> 
+> Fixes
+> - boot of HP-UX with SMP, and
+> - reboot of Linux and HP-UX with SMP
+> 
+> Enhancements:
+> - show qemu version in boot menu
+> - adds exit menu entry in boot menu to quit emulation
+> - allow to trace PCD_CHASSIS codes more specifically
+> 
+> Signed-off-by: Helge Deller<deller@gmx.de>
 
 Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/8.1 as appropriate.
 
