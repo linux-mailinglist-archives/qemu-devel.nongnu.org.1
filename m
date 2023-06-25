@@ -2,73 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12E0173D496
+	by mail.lfdr.de (Postfix) with ESMTPS id 58CF173D497
 	for <lists+qemu-devel@lfdr.de>; Sun, 25 Jun 2023 23:30:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDXGv-0005an-65; Sun, 25 Jun 2023 17:27:49 -0400
+	id 1qDXGx-0005bZ-O5; Sun, 25 Jun 2023 17:27:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <fufuyqqqqqq@gmail.com>)
- id 1qDXGt-0005aM-2E; Sun, 25 Jun 2023 17:27:47 -0400
-Received: from mail-pg1-x535.google.com ([2607:f8b0:4864:20::535])
+ id 1qDXGt-0005aV-IV
+ for qemu-devel@nongnu.org; Sun, 25 Jun 2023 17:27:47 -0400
+Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <fufuyqqqqqq@gmail.com>)
- id 1qDXGp-0003Vr-CC; Sun, 25 Jun 2023 17:27:45 -0400
-Received: by mail-pg1-x535.google.com with SMTP id
- 41be03b00d2f7-54fb3c168fcso2326469a12.0; 
- Sun, 25 Jun 2023 14:27:42 -0700 (PDT)
+ id 1qDXGr-0003WH-2j
+ for qemu-devel@nongnu.org; Sun, 25 Jun 2023 17:27:46 -0400
+Received: by mail-pl1-x62f.google.com with SMTP id
+ d9443c01a7336-1b80512a7f2so1702585ad.3
+ for <qemu-devel@nongnu.org>; Sun, 25 Jun 2023 14:27:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1687728461; x=1690320461;
+ d=gmail.com; s=20221208; t=1687728464; x=1690320464;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ELXa0RrQCUVaZ33o/5bUxq4k9BhayvG3Y38hDK3c1b8=;
- b=YvlJBQjgiPMeFSRavw8zMmmxwPjaDMpCr2Q8vcJvpEJt/SNfeA8Nj3c/Mx7lfKerM8
- wCXtStzjjG2qaoQrNaTWw8PK/DadHoExFpqRAac/MP1fCp9qyDv0sYy9h8eodqU8ISE6
- adzKOin38TAy2wcXbMtkV465M0mRbG44B4DAX1NnY5PQeBfCfNkHhoAIJ9w9Q9dJBNyH
- FngiRbjArx6ArU+QSJc/JIeD8i0D1Q4jaYuoGyijOA7CbgT7DBJcP1aYjPWWAq0+Kk2h
- oN+LQhaB5JgoqR1YMPmHE7fkUFe2K+CInWefFfvmwT+v7mIZv1EDnC9NYFdjQrlMhAPY
- aPFA==
+ bh=Mnsf664I1dbfqhlUsQXaqr8d9bhL0IvglCtYautfisc=;
+ b=QoDA6btioxfXJJ6OXh/uYSeNP6vmRt3dJn47IppYd9IYEDo4zpLzTojTCfdBd/eDl0
+ vx/Ey7uDpmNPAcPSfHOkQBI6xZMScxk+6Qwor1c60IrjuPg/w66iQnQejIysY1aNGFuN
+ lE2QWmhJ14rg8tyDFem/WyQl3UQKi+71+JHTtGmmi9wEyNRDUwm7ZEneJ0ZVxhDqiKvH
+ HKtx5qMkA26N+VpH6stF+1fts7eg/y5kreB4YywWi6k8yhldU6EgHFKqyeXMyJMRS1xr
+ 2XKg+DlUd+YaN9+GMMaocFN2IbF5CvZ0PpcteIO/IFzkc/wHZ5QOoeDuwlbSngdrYyNc
+ 5+lw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687728461; x=1690320461;
+ d=1e100.net; s=20221208; t=1687728464; x=1690320464;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ELXa0RrQCUVaZ33o/5bUxq4k9BhayvG3Y38hDK3c1b8=;
- b=lP78iAIWqaPSXPBaL43TRuNhurNP4/JExwlVVr74uu2H2C+GX+ewE3dhgKzGPkGh2H
- QxrzekWgfHnXguOto2pPqr8OMXEN+PtWLltEQdSglZGcshJyc57TPvuItERJxM9xjk99
- djTOdIvQQl2lQ/Mzt2tKVbWQW+vzqgjHIZYgn1NsBj05AjM5XKeK5aPr+dNLsH/2BBiH
- GJEaeIFEp5ozEqcj8A57D+F5PlYqZW+Wbn9nmH7K4JpAxEemcSncpXHUT5gGeLtz6gFc
- uLUdVyZHBEpVVp60shqs55XpxlMSNNH2JUP1BmFuydhV8sMGUggBJzS/cXWpg8CswoAB
- VskQ==
-X-Gm-Message-State: AC+VfDwZMgBhC9l/7FmoBhvBQ/whgbVk8slBGagAFJvz8mTvHF0x1seh
- bPPXj06eiNY+QLqYl63m+shDDPw6DlPVuOgS9Js=
-X-Google-Smtp-Source: ACHHUZ5G+4116E4lEa2fPxs4JiYcOfRCMbSV6YGVwuMCwjqIBlQ20w9cguGffZrloJ1m3Z7WhBbYIw==
-X-Received: by 2002:a17:902:ab95:b0:1b0:378e:2768 with SMTP id
- f21-20020a170902ab9500b001b0378e2768mr5641810plr.7.1687728461528; 
- Sun, 25 Jun 2023 14:27:41 -0700 (PDT)
+ bh=Mnsf664I1dbfqhlUsQXaqr8d9bhL0IvglCtYautfisc=;
+ b=Ab+HgNgV7mzloew/1x08H4AUTmrdtOCr/8KuqyNF4snV5GXkT/aoRA1x3MMJhud3E7
+ ASnSgFo7IY1o9bINguAcmKUPEyefbK1A57HUFbDH0zqi1+dsF/FG/cPqjtmjygGKA1bD
+ ZBpVec2ZLXvN91ic6J/DnCy+j5TNjCSQXOo5Yzvdz+ajn9bwbOGvXt+SkAnhbCSHFTPU
+ 9FDEjV+RE5LV0bKY94p4yLgI9cBHIeIv0OzNGW19j+Ytc+jsx1FwN+l2pUrzv0oAlbTf
+ gAJODGDPZU5+2xEJuWU9KA2E5apot5mk/N/LlZbZEt0VaQE8aVvpVwvdZnKi8s+5v2/w
+ 40sg==
+X-Gm-Message-State: AC+VfDzSqmJ9M8SgbvGEaQ6pcau42xJIKA6snrf8ClQMCu4Yvo+VeB1B
+ 7LuKFMBuKMUFzWk2qydw1/U=
+X-Google-Smtp-Source: ACHHUZ5wIWIyAYRcOrGqAH+eTfsevtq5sK6j+fomue4H+0kuSweLKDEQuSEREP+QRfxd70bhcKfdsg==
+X-Received: by 2002:a17:902:d4c7:b0:1b6:9df6:26c2 with SMTP id
+ o7-20020a170902d4c700b001b69df626c2mr4094587plg.12.1687728463835; 
+ Sun, 25 Jun 2023 14:27:43 -0700 (PDT)
 Received: from q1iq-virtual-machine.localdomain ([111.201.135.80])
  by smtp.gmail.com with ESMTPSA id
- je5-20020a170903264500b001b8004ff609sm761343plb.270.2023.06.25.14.27.39
+ je5-20020a170903264500b001b8004ff609sm761343plb.270.2023.06.25.14.27.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 25 Jun 2023 14:27:41 -0700 (PDT)
+ Sun, 25 Jun 2023 14:27:43 -0700 (PDT)
 From: Yeqi Fu <fufuyqqqqqq@gmail.com>
 To: alex.bennee@linaro.org
 Cc: richard.henderson@linaro.org, qemu-devel@nongnu.org,
- Yeqi Fu <fufuyqqqqqq@gmail.com>, Peter Maydell <peter.maydell@linaro.org>,
- qemu-arm@nongnu.org (open list:ARM TCG CPUs)
-Subject: [RFC v3 09/10] target/arm: Add support for native library calls
-Date: Mon, 26 Jun 2023 05:27:06 +0800
-Message-Id: <20230625212707.1078951-10-fufuyqqqqqq@gmail.com>
+ Yeqi Fu <fufuyqqqqqq@gmail.com>
+Subject: [RFC v3 10/10] tests/tcg/multiarch: Add nativecalls.c test
+Date: Mon, 26 Jun 2023 05:27:07 +0800
+Message-Id: <20230625212707.1078951-11-fufuyqqqqqq@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230625212707.1078951-1-fufuyqqqqqq@gmail.com>
 References: <20230625212707.1078951-1-fufuyqqqqqq@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::535;
- envelope-from=fufuyqqqqqq@gmail.com; helo=mail-pg1-x535.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
+ envelope-from=fufuyqqqqqq@gmail.com; helo=mail-pl1-x62f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,137 +93,147 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Upon encountering specialized instructions reserved for native calls,
-store the function id and argument types, then invoke helper.
+Add a test for native calls to verify the functionality of native
+functions. This requires cross-compiling test cases and building them
+as dynamically linked binaries. Also, introduce necessary system
+libraries in QEMU.
 
 Signed-off-by: Yeqi Fu <fufuyqqqqqq@gmail.com>
 ---
- target/arm/tcg/translate-a64.c | 27 ++++++++++++++++++++++++++-
- target/arm/tcg/translate.c     | 25 +++++++++++++++++++++++--
- target/arm/tcg/translate.h     |  6 ++++++
- 3 files changed, 55 insertions(+), 3 deletions(-)
+ tests/tcg/multiarch/Makefile.target      |   9 +-
+ tests/tcg/multiarch/native/nativecalls.c | 103 +++++++++++++++++++++++
+ 2 files changed, 111 insertions(+), 1 deletion(-)
+ create mode 100644 tests/tcg/multiarch/native/nativecalls.c
 
-diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index 741a608739..24a664b928 100644
---- a/target/arm/tcg/translate-a64.c
-+++ b/target/arm/tcg/translate-a64.c
-@@ -35,6 +35,7 @@
- #include "cpregs.h"
- #include "translate-a64.h"
- #include "qemu/atomic128.h"
-+#include "native/native-defs.h"
+diff --git a/tests/tcg/multiarch/Makefile.target b/tests/tcg/multiarch/Makefile.target
+index 373db69648..c4ea7117c2 100644
+--- a/tests/tcg/multiarch/Makefile.target
++++ b/tests/tcg/multiarch/Makefile.target
+@@ -128,7 +128,14 @@ run-semiconsole: semiconsole
+ run-plugin-semiconsole-with-%:
+ 	$(call skip-test, $<, "MANUAL ONLY")
  
- static TCGv_i64 cpu_X[32];
- static TCGv_i64 cpu_pc;
-@@ -2331,11 +2332,35 @@ static void disas_exc(DisasContext *s, uint32_t insn)
-         /* BRK */
-         gen_exception_bkpt_insn(s, syn_aa64_bkpt(imm16));
-         break;
--    case 2:
-+    case 2: /* HLT */
-         if (op2_ll != 0) {
-             unallocated_encoding(s);
-             break;
-         }
-+        if (native_call_enabled() && (!s->native_call_status)) {
-+            s->native_call_status = true;
-+            s->native_call_id = imm16;
-+            break;
-+        } else if (native_call_enabled() && (s->native_call_status)) {
-+            TCGv_i64 arg1 = tcg_temp_new_i64();
-+            TCGv_i64 arg2 = tcg_temp_new_i64();
-+            TCGv_i64 arg3 = tcg_temp_new_i64();
+-TESTS += semihosting semiconsole
++nativecalls: native/nativecalls.c
++	$(CC) $(CFLAGS) $(EXTRA_CFLAGS) $< -o $@ $(filter-out -static,$(LDFLAGS))
 +
-+            tcg_gen_mov_i64(arg1, cpu_reg(s, 0));
-+            tcg_gen_mov_i64(arg2, cpu_reg(s, 1));
-+            tcg_gen_mov_i64(arg3, cpu_reg(s, 2));
++run-nativecalls: nativecalls
++	$(call run-test,$<, $(QEMU) -L /usr/$(subst -gcc,,$(CC)) --native-bypass $(SRC_PATH)/build/common-user/native/$(TARGET)/libnative.so $<, \
++	"native call")
 +
-+            TCGv_i32 abi_map = tcg_constant_i32(imm16);
-+            TCGv_i32 func_id = tcg_constant_i32(s->native_call_id);
-+            TCGv_i64 res = tcg_temp_new_i64();
-+            TCGv_i32 mmu_idx = tcg_constant_i32(MMU_USER_IDX);
-+            gen_helper_native_call(res, cpu_env, arg1, arg2, arg3,
-+                                    abi_map, func_id, mmu_idx);
-+            tcg_gen_mov_i64(cpu_reg(s, 0), res);
-+            s->native_call_status = false;
-+            s->native_call_id = 0;
-+            break;
-+        }
-         /* HLT. This has two purposes.
-          * Architecturally, it is an external halting debug instruction.
-          * Since QEMU doesn't implement external debug, we treat this as
-diff --git a/target/arm/tcg/translate.c b/target/arm/tcg/translate.c
-index 7468476724..7b90ce50d0 100644
---- a/target/arm/tcg/translate.c
-+++ b/target/arm/tcg/translate.c
-@@ -34,7 +34,7 @@
- #include "exec/helper-gen.h"
- #include "exec/log.h"
- #include "cpregs.h"
--
-+#include "native/native-defs.h"
++TESTS += semihosting semiconsole nativecalls
+ endif
  
- #define ENABLE_ARCH_4T    arm_dc_feature(s, ARM_FEATURE_V4T)
- #define ENABLE_ARCH_5     arm_dc_feature(s, ARM_FEATURE_V5)
-@@ -58,6 +58,7 @@ TCGv_i32 cpu_CF, cpu_NF, cpu_VF, cpu_ZF;
- TCGv_i64 cpu_exclusive_addr;
- TCGv_i64 cpu_exclusive_val;
- 
+ # Update TESTS
+diff --git a/tests/tcg/multiarch/native/nativecalls.c b/tests/tcg/multiarch/native/nativecalls.c
+new file mode 100644
+index 0000000000..2d4ddb3a8e
+--- /dev/null
++++ b/tests/tcg/multiarch/native/nativecalls.c
+@@ -0,0 +1,103 @@
++#include <assert.h>
++#include <stdlib.h>
++#include <string.h>
 +
- #include "exec/gen-icount.h"
- 
- static const char * const regnames[] =
-@@ -1147,12 +1148,32 @@ static inline void gen_hlt(DisasContext *s, int imm)
-      * semihosting, to provide some semblance of security
-      * (and for consistency with our 32-bit semihosting).
-      */
-+    if (native_call_enabled() && (!s->native_call_status)) {
-+        s->native_call_status = true;
-+        s->native_call_id = imm;
-+        return;
-+    } else if (native_call_enabled() && (s->native_call_status)) {
-+        TCGv_i32 arg1 = load_reg(s, 0);
-+        TCGv_i32 arg2 = load_reg(s, 1);
-+        TCGv_i32 arg3 = load_reg(s, 2);
-+
-+        TCGv_i32 abi_map = tcg_constant_i32(imm);
-+        TCGv_i32 func_id = tcg_constant_i32(s->native_call_id);
-+        TCGv_i32 res = tcg_temp_new_i32();
-+        TCGv_i32 mmu_idx = tcg_constant_i32(MMU_USER_IDX);
-+        gen_helper_native_call_i32(res, cpu_env, arg1, arg2, arg3,
-+                                    abi_map, func_id, mmu_idx);
-+
-+        store_reg(s, 0, res);
-+        s->native_call_status = false;
-+        s->native_call_id = 0;
-+        return;
++void compare_memory(const void *a, const void *b, size_t n)
++{
++    const unsigned char *p1 = a;
++    const unsigned char *p2 = b;
++    for (size_t i = 0; i < n; i++) {
++        assert(p1[i] == p2[i]);
 +    }
-     if (semihosting_enabled(s->current_el == 0) &&
-         (imm == (s->thumb ? 0x3c : 0xf000))) {
-         gen_exception_internal_insn(s, EXCP_SEMIHOST);
-         return;
-     }
--
-     unallocated_encoding(s);
- }
- 
-diff --git a/target/arm/tcg/translate.h b/target/arm/tcg/translate.h
-index a9d1f4adc2..280f8ba215 100644
---- a/target/arm/tcg/translate.h
-+++ b/target/arm/tcg/translate.h
-@@ -149,6 +149,12 @@ typedef struct DisasContext {
-     int c15_cpar;
-     /* TCG op of the current insn_start.  */
-     TCGOp *insn_start;
-+    /*
-+     * Indicate whether the next instruction is a native function call (true)
-+     * or not (false).
-+     */
-+    bool native_call_status;
-+    int native_call_id;
- } DisasContext;
- 
- typedef struct DisasCompare {
++}
++
++void test_memcpy()
++{
++    char src[] = "Hello, world!";
++    char dest[20];
++    memcpy(dest, src, 13);
++    compare_memory(dest, src, 13);
++}
++
++void test_memcmp()
++{
++    char str1[] = "abc";
++    char str2[] = "abc";
++    char str3[] = "def";
++    assert(memcmp(str1, str2, 3) == 0);
++    assert(memcmp(str1, str3, 3) != 0);
++}
++
++void test_memset()
++{
++    char buffer[10];
++    memset(buffer, 'A', 10);
++    int i;
++    for (i = 0; i < 10; i++) {
++        assert(buffer[i] == 'A');
++    }
++}
++
++void test_strncpy()
++{
++    char src[] = "Hello, world!";
++    char dest[20];
++    strncpy(dest, src, 13);
++    compare_memory(dest, src, 13);
++}
++
++void test_strncmp()
++{
++    char str1[] = "abc";
++    char str2[] = "abc";
++    char str3[] = "def";
++    assert(strncmp(str1, str2, 2) == 0);
++    assert(strncmp(str1, str3, 2) != 0);
++}
++
++
++void test_strcpy()
++{
++    char src[] = "Hello, world!";
++    char dest[20];
++    strcpy(dest, src);
++    compare_memory(dest, src, 13);
++}
++
++void test_strcmp()
++{
++    char str1[] = "abc";
++    char str2[] = "abc";
++    char str3[] = "def";
++    assert(strcmp(str1, str2) == 0);
++    assert(strcmp(str1, str3) != 0);
++}
++
++void test_memcpy_bad_addr()
++{
++    char src[] = "Hello, world!";
++    char *dst = (char *)0x1;
++    memcpy(dst, src, 13);
++}
++
++void test_memset_bad_addr()
++{
++    char *dst = (char *)0x1;
++    memset(dst, 'A', 10);
++}
++
++int main()
++{
++    test_memcpy();
++    test_memcmp();
++    test_memset();
++    test_strncpy();
++    test_strncmp();
++    test_strcpy();
++    test_strcmp();
++
++    test_memcpy_bad_addr();
++    test_memset_bad_addr();
++
++    return EXIT_SUCCESS;
++}
 -- 
 2.34.1
 
