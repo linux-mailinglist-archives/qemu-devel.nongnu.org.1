@@ -2,61 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 980A373D042
-	for <lists+qemu-devel@lfdr.de>; Sun, 25 Jun 2023 13:08:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3335273D061
+	for <lists+qemu-devel@lfdr.de>; Sun, 25 Jun 2023 13:22:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDNag-0004Ps-AF; Sun, 25 Jun 2023 07:07:35 -0400
-Received: from [2001:470:142:3::10] (helo=eggs.gnu.org)
+	id 1qDNnO-0007d4-1P; Sun, 25 Jun 2023 07:20:42 -0400
+Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <luzhipeng@cestc.cn>)
- id 1qDNab-0004JY-P4
- for qemu-devel@nongnu.org; Sun, 25 Jun 2023 07:07:29 -0400
-Received: from [1.203.97.240] (helo=smtp.cecloud.com)
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <luzhipeng@cestc.cn>) id 1qDNaV-0001O5-Ru
- for qemu-devel@nongnu.org; Sun, 25 Jun 2023 07:07:29 -0400
-Received: from localhost (localhost [127.0.0.1])
- by smtp.cecloud.com (Postfix) with ESMTP id A2D02900112;
- Sun, 25 Jun 2023 19:07:16 +0800 (CST)
-X-MAIL-GRAY: 0
-X-MAIL-DELIVERY: 1
-X-ANTISPAM-LEVEL: 2
-X-ABS-CHECKED: 0
-Received: from localhost.localdomain (unknown [111.48.58.13])
- by smtp.cecloud.com (postfix) whith ESMTP id
- P2917246T281458635436400S1687691234016435_; 
- Sun, 25 Jun 2023 19:07:16 +0800 (CST)
-X-IP-DOMAINF: 1
-X-UNIQUE-TAG: <cdf6824edc609b33efe3ac1942d104cf>
-X-RL-SENDER: luzhipeng@cestc.cn
-X-SENDER: luzhipeng@cestc.cn
-X-LOGIN-NAME: luzhipeng@cestc.cn
-X-FST-TO: qemu-devel@nongnu.org
-X-RCPT-COUNT: 3
-X-SENDER-IP: 111.48.58.13
-X-ATTACHMENT-NUM: 0
-X-System-Flag: 0
-From: luzhipeng <luzhipeng@cestc.cn>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Zhipeng Lu <luzhipeng@cestc.cn>
-Subject: [PATCH] contrib/gitdm: add domain-map for Cestc
-Date: Sun, 25 Jun 2023 19:06:59 +0800
-Message-Id: <20230625110659.428-1-luzhipeng@cestc.cn>
-X-Mailer: git-send-email 2.34.0.windows.1
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qDNnL-0007cu-P1
+ for qemu-devel@nongnu.org; Sun, 25 Jun 2023 07:20:39 -0400
+Received: from mout.gmx.net ([212.227.15.19])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qDNnJ-0004V4-Uj
+ for qemu-devel@nongnu.org; Sun, 25 Jun 2023 07:20:39 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
+ s=s31663417; t=1687692035; x=1688296835; i=deller@gmx.de;
+ bh=NBZLaErKoXi6R9lc93us8yxpR1J0eRTsDhds+gIkU+4=;
+ h=X-UI-Sender-Class:Date:Subject:From:To:References:In-Reply-To;
+ b=Tr31s0Z+3b7iuh5D0l6k78qGVabMhxhh/EdYPXLIwcK3sR7zuaEkqa0dJXNERhFl2mSi+pL
+ Z03L63zpBF3dD/Tc8qRdU38lt/5X6Bx1Ys7a8S0yooDdbkj0bph3oLoriIMFAIiGNE0Ls/V5d
+ FldYlXZG2AaF8obVAzshA60Md6b9g0mSJkUOchhvxeG3Z01HIwrNVJ1wQPNdL8s+Rs/d4C7pP
+ XbS3+MDxmcukQu3fUASa/UtdOxNgk3ewkG6wRTwIF3IohX6dHI0bt+Ws065/bejbfbJBqHzSP
+ nRnRSdAiTLefE2a5hvMVN3q3wXx9uAJ8ZsgVTYlHksA/OgPDG0bA==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.20.60] ([94.134.159.92]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1M1Ycr-1qC0sq17GN-0036Wl; Sun, 25
+ Jun 2023 13:20:35 +0200
+Message-ID: <45215ee6-b36f-5c90-6937-9f45277598ea@gmx.de>
+Date: Sun, 25 Jun 2023 13:20:34 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Host-Lookup-Failed: Reverse DNS lookup failed for 1.203.97.240 (failed)
-Received-SPF: pass client-ip=1.203.97.240; envelope-from=luzhipeng@cestc.cn;
- helo=smtp.cecloud.com
-X-Spam_score_int: 0
-X-Spam_score: -0.1
-X-Spam_bar: /
-X-Spam_report: (-0.1 / 5.0 requ) BAYES_00=-1.9, HEXHASH_WORD=1, RDNS_NONE=0.793,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PULL v2 1/3] target/hppa: Fix OS reboot issues
+Content-Language: en-US
+From: Helge Deller <deller@gmx.de>
+To: Michael Tokarev <mjt@tls.msk.ru>, qemu-devel@nongnu.org,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>
+References: <20230624115007.30332-1-deller@gmx.de>
+ <20230624115007.30332-2-deller@gmx.de>
+ <c2917053-e8df-c2bc-9565-6d5f257db901@tls.msk.ru>
+ <6a7e29ed-3ce9-c228-2d29-96151a5f8ccb@gmx.de>
+In-Reply-To: <6a7e29ed-3ce9-c228-2d29-96151a5f8ccb@gmx.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:KIFuQXMsUl8T6YKWfp+Ni1CJ43Q8issECHzTq/ok7fvL1P/PkKb
+ ZqUB8JFc5Yjpno5TNmSfDgAn4DQN6VYalUguR7Dyt1xVCmoZbJGI3XFL9VujCvKKMABR8Xq
+ PpL//gixKatpI72QZkw0XZrcVUxKPbDl5cLe3KI6C3BVZck7wTBL+7PZFYPM6OjlhwRvTl8
+ ANGlhV88rhLUNW+vDHS9g==
+UI-OutboundReport: notjunk:1;M01:P0:G7OghDyHnBI=;2FMoftZf/MZdKLy3n0+BToBTiOA
+ UY/oWMuXFI8S3y6IECbzWGz4G7G/Ya6hv7iZM91+7vR0E7BW/f+yzW80OPu2rFRSzBiVS00d9
+ AaADbDTu8eYjKZr1f9+VdLWdNvLlNsfcHMC1tKn2iwnxaWAmjFTJzZLqgHgAPsCPw+kpz7cy5
+ fcrvVPrIbyVnQazIlOmVWCrdnwOPTubmzNBfwQ9sjHd2yJ1y2KKfE1AdchdRGagpGz6ZI2Y3H
+ zTaMY1i7p5yKALgWskYWxdaZ5XmtGHG8cXY87aGzolWXyE++aCW3GDFSDMwn+eucocs7pmitx
+ DAMbnyohFXze8yoxWQ/mhqs45KdIHg4ZDP2DxPNp7lqrDF/PL/e4/hd76c+gqgRk9Q0ft66DA
+ F5F+GUOjK9b/a24A8GIaudYFpJlcFVHcyxmxQgMJA7pg1pUu/mxZgpwZWRmMjNcUV2oOfqabw
+ 0uIeTcuxD5frc7N+ThPKN9TNEP2BIWittMrxM6SsorvzPzHmtO/bwgNbAih7AkGdXEmpfZLWC
+ qjL1kcemD6K80yXl3EZhYwyvFJUp6Cn1Hx0pyBY1Vg8sn9eYzSaTOzv1M3YnHx31LkPFP+akT
+ oMCkZf404Mc+YsqxXHrfIRT4Xlbuasllvk77q1qvIskS/45A2K1QxlIuE8XUoPazbqtMuNA34
+ oRMwe0TZRcI3gdxt5cAI7dI7XjxnRrqLL/0dNDGBD+quSjJ2PVAUpkOcSkDMOkeP7jGv9Qe08
+ FnPQ/fZUS0LXDS2RV6bN2DIfi/be6UyVCe0/2L2t4UmK7TegxHJdTr/cs6+0g6MxRVsjJp4S9
+ QhmtUSmj2j6F8IvEiuSUJEZl9QNJybdkWfnLsBJcmXpX1zT0O+vyew4ITYi5h9NkhYK5o/Ajp
+ FYyUkH8Ser/FB8zc27zTPeOR++dzSognUMjvoQcWNEvRanPTHIxUPN7AhcfYFpi0a+KtnFHwg
+ 1bCICQ==
+Received-SPF: pass client-ip=212.227.15.19; envelope-from=deller@gmx.de;
+ helo=mout.gmx.net
+X-Spam_score_int: -28
+X-Spam_score: -2.9
+X-Spam_bar: --
+X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ NICE_REPLY_A=-0.089, RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=-0.01,
+ RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -72,107 +91,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zhipeng Lu <luzhipeng@cestc.cn>
+On 6/25/23 12:07, Helge Deller wrote:
+> On 6/25/23 10:57, Michael Tokarev wrote:
+>> 24.06.2023 14:50, Helge Deller =D0=BF=D0=B8=D1=88=D0=B5=D1=82:
+>>> When the OS triggers a reboot, the reset helper function sends a
+>>> qemu_system_reset_request(SHUTDOWN_CAUSE_GUEST_RESET) together with an
+>>> EXCP_HLT exception to halt the CPUs.
+>>>
+>>> So, at reboot when initializing the CPUs again, make sure to set all
+>>> instruction pointers to the firmware entry point, disable any interrup=
+ts,
+>>> disable data and instruction translations, enable PSW_Q bit=C2=A0 and =
+tell qemu
+>>> to unhalt (halted=3D0) the CPUs again.
+>>>
+>>> This fixes the various reboot issues which were seen when rebooting a
+>>> Linux VM, including the case where even the monarch CPU has been virtu=
+ally
+>>> halted from the OS (e.g. via "chcpu -d 0" inside the Linux VM).
+>>
+>> Is this a -stable material?=C2=A0 It applies cleanly to 8.0 and 7.2.
+>
+> Yes, please.
+> At least for 8.0 I think it should be added.
+> I didn't tested 7.2, but can do and would prefer it if could be added th=
+ere too.
 
-Signed-off-by: Zhipeng Lu <luzhipeng@cestc.cn>
----
- contrib/gitdm/domain-map | 1 +
- meson                    | 2 +-
- qapi/block-core.json     | 3 ++-
- roms/SLOF                | 2 +-
- roms/opensbi             | 2 +-
- roms/qboot               | 2 +-
- roms/seabios             | 2 +-
- roms/seabios-hppa        | 2 +-
- roms/skiboot             | 2 +-
- tests/lcitool/libvirt-ci | 2 +-
- 10 files changed, 11 insertions(+), 9 deletions(-)
+Just tested: The patches work nicely when applied to v7.2 as well.
+Could you add them to -stable (or what is the process)?
 
-diff --git a/contrib/gitdm/domain-map b/contrib/gitdm/domain-map
-index 3727918641..e1c1bf2a31 100644
---- a/contrib/gitdm/domain-map
-+++ b/contrib/gitdm/domain-map
-@@ -7,6 +7,7 @@
- amd.com         AMD
- baidu.com       Baidu
- bytedance.com   ByteDance
-+cestc.cn        Cestc
- cmss.chinamobile.com China Mobile
- citrix.com      Citrix
- crudebyte.com   Crudebyte
-diff --git a/meson b/meson
-index 3a9b285a55..12f9f04ba0 160000
---- a/meson
-+++ b/meson
-@@ -1 +1 @@
--Subproject commit 3a9b285a55b91b53b2acda987192274352ecb5be
-+Subproject commit 12f9f04ba0decfda425dbbf9a501084c153a2d18
-diff --git a/qapi/block-core.json b/qapi/block-core.json
-index 95ac4fa634..12af36de07 100644
---- a/qapi/block-core.json
-+++ b/qapi/block-core.json
-@@ -4356,7 +4356,8 @@
-             '*read-only': 'bool',
-             '*auto-read-only': 'bool',
-             '*force-share': 'bool',
--            '*detect-zeroes': 'BlockdevDetectZeroesOptions' },
-+            '*detect-zeroes': 'BlockdevDetectZeroesOptions',
-+            '*media':'str'},
-   'discriminator': 'driver',
-   'data': {
-       'blkdebug':   'BlockdevOptionsBlkdebug',
-diff --git a/roms/SLOF b/roms/SLOF
-index 6b6c16b4b4..5b4c5acdcd 160000
---- a/roms/SLOF
-+++ b/roms/SLOF
-@@ -1 +1 @@
--Subproject commit 6b6c16b4b40763507cf1f518096f3c3883c5cf2d
-+Subproject commit 5b4c5acdcd552a4e1796aeca6bb700f6cbb0282d
-diff --git a/roms/opensbi b/roms/opensbi
-index 4489876e93..48f91ee9c9 160000
---- a/roms/opensbi
-+++ b/roms/opensbi
-@@ -1 +1 @@
--Subproject commit 4489876e933d8ba0d8bc6c64bae71e295d45faac
-+Subproject commit 48f91ee9c960f048c4a7d1da4447d31e04931e38
-diff --git a/roms/qboot b/roms/qboot
-index 8ca302e86d..a5300c4949 160000
---- a/roms/qboot
-+++ b/roms/qboot
-@@ -1 +1 @@
--Subproject commit 8ca302e86d685fa05b16e2b208888243da319941
-+Subproject commit a5300c4949b8d4de2d34bedfaed66793f48ec948
-diff --git a/roms/seabios b/roms/seabios
-index 3208b098f5..d239552ce7 160000
---- a/roms/seabios
-+++ b/roms/seabios
-@@ -1 +1 @@
--Subproject commit 3208b098f51a9ef96d0dfa71d5ec3a3eaec88f0a
-+Subproject commit d239552ce7220e448ae81f41515138f7b9e3c4db
-diff --git a/roms/seabios-hppa b/roms/seabios-hppa
-index 458626c4c6..bf3404006f 160000
---- a/roms/seabios-hppa
-+++ b/roms/seabios-hppa
-@@ -1 +1 @@
--Subproject commit 458626c4c6441045c0612f24313c7cf1f95e71c6
-+Subproject commit bf3404006fd2c832857eb57e6f853862f97dacea
-diff --git a/roms/skiboot b/roms/skiboot
-index 24a7eb3596..820d43c0a7 160000
---- a/roms/skiboot
-+++ b/roms/skiboot
-@@ -1 +1 @@
--Subproject commit 24a7eb35966d93455520bc2debdd7954314b638b
-+Subproject commit 820d43c0a7751e75a8830561f35535dfffd522bd
-diff --git a/tests/lcitool/libvirt-ci b/tests/lcitool/libvirt-ci
-index e3eb28cf2e..f83b916d5e 160000
---- a/tests/lcitool/libvirt-ci
-+++ b/tests/lcitool/libvirt-ci
-@@ -1 +1 @@
--Subproject commit e3eb28cf2e17fbcf7fe7e19505ee432b8ec5bbb5
-+Subproject commit f83b916d5efa4bd33fbf4b7ea41bf6d535cc63fb
--- 
-2.31.1
-
-
-
+Thanks,
+Helge
 
