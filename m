@@ -2,44 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A72873CDE9
-	for <lists+qemu-devel@lfdr.de>; Sun, 25 Jun 2023 04:00:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2FC673CDE6
+	for <lists+qemu-devel@lfdr.de>; Sun, 25 Jun 2023 03:59:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDF18-0001S4-7s; Sat, 24 Jun 2023 21:58:18 -0400
+	id 1qDF1T-0001WC-UL; Sat, 24 Jun 2023 21:58:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <bmeng@tinylab.org>) id 1qDF15-0001Rn-O4
- for qemu-devel@nongnu.org; Sat, 24 Jun 2023 21:58:15 -0400
+ (Exim 4.90_1) (envelope-from <bmeng@tinylab.org>)
+ id 1qDF1R-0001Vu-U2; Sat, 24 Jun 2023 21:58:37 -0400
 Received: from bg4.exmail.qq.com ([43.155.67.158])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <bmeng@tinylab.org>) id 1qDF11-0002eq-S4
- for qemu-devel@nongnu.org; Sat, 24 Jun 2023 21:58:15 -0400
-X-QQ-mid: bizesmtp75t1687658029tcx0joxp
+ (Exim 4.90_1) (envelope-from <bmeng@tinylab.org>)
+ id 1qDF1Q-0002je-5j; Sat, 24 Jun 2023 21:58:37 -0400
+X-QQ-mid: bizesmtp75t1687658032t9nasj0i
 Received: from ubuntu.. ( [111.196.130.174]) by bizesmtp.qq.com (ESMTP) with 
- id ; Sun, 25 Jun 2023 09:53:48 +0800 (CST)
-X-QQ-SSF: 01200000000000E0G000000A0000000
-X-QQ-FEAT: xwvWJGGFd7Mt4VKxOO5RGdZazMIGBw2QG/966DZi815zLglo6l8sea2PZZ+nc
- 083ZScVqWH5JKUqshro+Gs2/CcngZKOPi4egC56g/GDHs8ClOWfW0IlnVgx/gDVdy486/HB
- juYYqR6Zb32OrhzWhpHcfcqQ2w5gn8PYRF7BDnVGPmeH/nvvDkVfm6ZKumTnh8rGAOg76yb
- SmQoFyt0T2E9MzY2MGxBKzcOKgV6Ow8O2i7rKYwy9KavDSrYts22Pwp+Ujd2T0noRZ8c7GN
- 3fP6Wyc/rkkGVRFmZqSmjVXJ20wfG9QXb8eomp5mUpMDokqGO35Q1SMX1E2NqPxkkDPVWhO
- rr9McvC6aQMGxsrvXxrtu+ozDWBwknKYq4LNB1Z9toxx2g7I9I=
+ id ; Sun, 25 Jun 2023 09:53:51 +0800 (CST)
+X-QQ-SSF: 00200000000000E0G000000A0000000
+X-QQ-FEAT: t8fpqlBPu6qJ8hXdfEjkkXfPawsLS015n2oeohl4nPjBP9iT21tn36OcqKjft
+ xyGhKgQDd8mnKF+fZR0SYXnv9nWRZTfXczseblTS7f0V9HeNBDouLTXLPka4w6wcUPQomCU
+ pRR6V58VxxdC/fLZAjgzYBK3kDcckuM5DPpkqZyQyWJXk/yI+cJIcDpLuhxkv9G2m5xlrrH
+ iDjPYuuhxxLSBXEWSZwE4O6IUCiHfxc6CxQKrNiXkmvo0fzL5Toqmdrp0O0OOyArL0RjQ4y
+ 9jMdDzOHHTqfGBNCgUkum/U5R4DjE3E2sP8OUw8344WZAaIePf3n+vW4+0+3eTBkvaFANI4
+ DgUMWNbA2/wajA+b6AI63qy023BLagAMggENcR8
 X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 13973067493610353291
+X-BIZMAIL-ID: 5247651207143805087
 From: Bin Meng <bmeng@tinylab.org>
 To: Jason Wang <jasowang@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
-Subject: [PATCH v7 8/9] hw/net: sunhme: Remove the logic of padding short
- frames in the receive path
-Date: Sun, 25 Jun 2023 09:53:20 +0800
-Message-Id: <20230625015321.77987-9-bmeng@tinylab.org>
+Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Andrew Jeffery <andrew@aj.id.au>, Joel Stanley <joel@jms.id.au>,
+ qemu-arm@nongnu.org
+Subject: [PATCH v7 9/9] hw/net: ftgmac100: Drop the small packet check in the
+ receive path
+Date: Sun, 25 Jun 2023 09:53:21 +0800
+Message-Id: <20230625015321.77987-10-bmeng@tinylab.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230625015321.77987-1-bmeng@tinylab.org>
 References: <20230625015321.77987-1-bmeng@tinylab.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
 Feedback-ID: bizesmtp:tinylab.org:qybglogicsvrgz:qybglogicsvrgz7a-0
@@ -68,52 +72,39 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Now that we have implemented unified short frames padding in the
-QEMU networking codes, remove the same logic in the NIC codes.
+QEMU networking codes, the small packet check logic in the receive
+path is no longer needed.
 
+Suggested-by: Cédric Le Goater <clg@kaod.org>
 Signed-off-by: Bin Meng <bmeng@tinylab.org>
+
 ---
 
-(no changes since v1)
+Changes in v7:
+- new patch: "hw/net: ftgmac100: Drop the small packet check in the receive path"
 
- hw/net/sunhme.c | 11 -----------
- 1 file changed, 11 deletions(-)
+ hw/net/ftgmac100.c | 8 --------
+ 1 file changed, 8 deletions(-)
 
-diff --git a/hw/net/sunhme.c b/hw/net/sunhme.c
-index 1f3d8011ae..391d26fb82 100644
---- a/hw/net/sunhme.c
-+++ b/hw/net/sunhme.c
-@@ -714,8 +714,6 @@ static inline void sunhme_set_rx_ring_nr(SunHMEState *s, int i)
-     s->erxregs[HME_ERXI_RING >> 2] = ring;
- }
+diff --git a/hw/net/ftgmac100.c b/hw/net/ftgmac100.c
+index d3bf14be53..702b001be2 100644
+--- a/hw/net/ftgmac100.c
++++ b/hw/net/ftgmac100.c
+@@ -968,14 +968,6 @@ static ssize_t ftgmac100_receive(NetClientState *nc, const uint8_t *buf,
+         return -1;
+     }
  
--#define MIN_BUF_SIZE 60
--
- static ssize_t sunhme_receive(NetClientState *nc, const uint8_t *buf,
-                               size_t size)
- {
-@@ -724,7 +722,6 @@ static ssize_t sunhme_receive(NetClientState *nc, const uint8_t *buf,
-     dma_addr_t rb, addr;
-     uint32_t intstatus, status, buffer, buffersize, sum;
-     uint16_t csum;
--    uint8_t buf1[60];
-     int nr, cr, len, rxoffset, csum_offset;
- 
-     trace_sunhme_rx_incoming(size);
-@@ -775,14 +772,6 @@ static ssize_t sunhme_receive(NetClientState *nc, const uint8_t *buf,
- 
-     trace_sunhme_rx_filter_accept();
- 
--    /* If too small buffer, then expand it */
--    if (size < MIN_BUF_SIZE) {
--        memcpy(buf1, buf, size);
--        memset(buf1 + size, 0, MIN_BUF_SIZE - size);
--        buf = buf1;
--        size = MIN_BUF_SIZE;
+-    /* TODO : Pad to minimum Ethernet frame length */
+-    /* handle small packets.  */
+-    if (size < 10) {
+-        qemu_log_mask(LOG_GUEST_ERROR, "%s: dropped frame of %zd bytes\n",
+-                      __func__, size);
+-        return size;
 -    }
 -
-     rb = s->erxregs[HME_ERXI_RING >> 2] & HME_ERXI_RING_ADDR;
-     nr = sunhme_get_rx_ring_count(s);
-     cr = sunhme_get_rx_ring_nr(s);
+     if (!ftgmac100_filter(s, buf, size)) {
+         return size;
+     }
 -- 
 2.34.1
 
