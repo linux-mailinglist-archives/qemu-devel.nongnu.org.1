@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6048273D00B
-	for <lists+qemu-devel@lfdr.de>; Sun, 25 Jun 2023 12:08:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8271F73D022
+	for <lists+qemu-devel@lfdr.de>; Sun, 25 Jun 2023 12:38:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDMeO-0003VV-Tb; Sun, 25 Jun 2023 06:07:20 -0400
+	id 1qDN7R-0001gD-8D; Sun, 25 Jun 2023 06:37:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qDMeN-0003VH-Kq
- for qemu-devel@nongnu.org; Sun, 25 Jun 2023 06:07:19 -0400
-Received: from mout.gmx.net ([212.227.15.18])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qDMeL-0000eJ-M4
- for qemu-devel@nongnu.org; Sun, 25 Jun 2023 06:07:19 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
- s=s31663417; t=1687687634; x=1688292434; i=deller@gmx.de;
- bh=4xENDnCSAzFB53bT6lVAhASoKyyo1fi5wNC5voGFoDc=;
- h=X-UI-Sender-Class:Date:Subject:To:References:From:In-Reply-To;
- b=Okw1olIMSxEeCg6PM/glJ7TNLO0uvm2iweoB4B02yJxQvn71brSngoZeq2snWgq/xx35l3d
- QPGx7zecxYstgfp9zSBXuxdJFcsI1zKARkj/RCMPUezike/zNsDrbuCypayyGNLtkEjzTUCY5
- gtTrk/cblzPPEindVmcVBPEd6cuAopxoqzUSpGKiMEMfyQyNUvFo1mpsS+11jTStGwBSdGgFX
- 0ydKfM1UeG5y41Ssuw5VmTNE6RfP578bGvyCLG8HJSFJQUzTmvVQobnMkRBcfLqbXyGiZF7CS
- kngRtnsZgGrHfVpZlhTNjkrj7kUzi2+PzO4MS4wnDRoudxRPaE5A==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.60] ([94.134.159.92]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MJmKh-1qT79P2853-00K5pP; Sun, 25
- Jun 2023 12:07:14 +0200
-Message-ID: <6a7e29ed-3ce9-c228-2d29-96151a5f8ccb@gmx.de>
-Date: Sun, 25 Jun 2023 12:07:13 +0200
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1qDN7J-0001fm-Eq; Sun, 25 Jun 2023 06:37:13 -0400
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1qDN7G-0001gV-Og; Sun, 25 Jun 2023 06:37:12 -0400
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-1b5422163f4so18726375ad.2; 
+ Sun, 25 Jun 2023 03:37:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1687689428; x=1690281428;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=tb5eqhpSBrUMtUUyvYiVbs030OE5D++w6YJ7FotUsnY=;
+ b=FLrMJFalREN/H9N+BpXbe2vaGFzhv1T+tFAs3PjwEh/AynjkuhmAgcJhLf0cP1EWoN
+ hnpXZaM5zFIMipvYCS9l8Ha7sy9gJo0CLURcIwcgezhaQLhSromEEhUgxku7OkSSyEGX
+ JTuLwEBlThs/2FpkP7phUMpOwHAeh5rWF4I+wLG4zTFNhthcuAgi7v31u02spOKtOv0H
+ 6Qo4kAe1lq6d8KLjzSOWrcVfTEnUVEZBfoN5fJSclXn7TYGV+wHFWUKhveDoVtPFeiT+
+ qUjnOIfRZtAkxU19MmvlhEbOSgrDYYjw4iW/UQGP5Gs7sUsLzRG+PMfPGmwW9LLoOzWY
+ zsTA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1687689428; x=1690281428;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=tb5eqhpSBrUMtUUyvYiVbs030OE5D++w6YJ7FotUsnY=;
+ b=NkKqU9rXkXwknzjBzRFXiymoFkNllIlCoidYbb/Gz9NN5JBVINVth/GXFbysXmzRcL
+ uoz8KqOr4jdcKf6Y1XTdDjcsM9ZaOzRjK8Wl2OKd80Pbhxf2GxqN8Q0O2UMpwk6oMkar
+ MUHU6fwWKqN1G6eLMJMhZIvKD2DF6bby/2IS4Oc6OOi1zv57zr3i0IgPYH1BJ2JigfhB
+ M4jXm7NJT+EGiyhLV+XcfpZZbx6quwtgg+83imBP+dSnOC+6o+bws5ufNTX+PAw0BnOX
+ O2V/gT2MfecNsVPY7vdiMedtb1Qy1NIOixStvrMARq2hFpQ9VuzUcs3R6X1Kq6qf/3+g
+ hd1w==
+X-Gm-Message-State: AC+VfDzQPmCLHOL3SIIGY7y+ltrA5q6VP3gwkwoHFf0ffZln0cR1XXz3
+ 1Hl1UK/+ViAwDbr1pqE2kailY+QLo2I=
+X-Google-Smtp-Source: ACHHUZ5yqrpYQOph3RwjcPsW00VVepDbQ7Q4ablYQQw/4lptBUtEKzl7lBCnL7bKFI2L3fov0VlQ2w==
+X-Received: by 2002:a17:903:2793:b0:1b3:f8db:6f0c with SMTP id
+ jw19-20020a170903279300b001b3f8db6f0cmr4079286plb.58.1687689428423; 
+ Sun, 25 Jun 2023 03:37:08 -0700 (PDT)
+Received: from wheely.local0.net (193-116-198-102.tpgi.com.au.
+ [193.116.198.102]) by smtp.gmail.com with ESMTPSA id
+ n91-20020a17090a5ae400b002471deb13fcsm2299115pji.6.2023.06.25.03.37.05
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 25 Jun 2023 03:37:08 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>
+Subject: [PATCH 1/2] target/ppc: Fix icount access for some hypervisor
+ instructions
+Date: Sun, 25 Jun 2023 20:36:59 +1000
+Message-Id: <20230625103700.8992-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PULL v2 1/3] target/hppa: Fix OS reboot issues
-Content-Language: en-US
-To: Michael Tokarev <mjt@tls.msk.ru>, qemu-devel@nongnu.org,
- Peter Maydell <peter.maydell@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>
-References: <20230624115007.30332-1-deller@gmx.de>
- <20230624115007.30332-2-deller@gmx.de>
- <c2917053-e8df-c2bc-9565-6d5f257db901@tls.msk.ru>
-From: Helge Deller <deller@gmx.de>
-In-Reply-To: <c2917053-e8df-c2bc-9565-6d5f257db901@tls.msk.ru>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:+VRMs6dMdu0NowYIzTNOxsvrfEmixEW1+xgVMMw5ZZjINdz4r9p
- G8idCFZaE64ggwqWKXxBSRprbq3bvGCYOl+Uki3cv6k/TXslxt+JKqRTS73n3XtJocZPB8v
- sp27yeuTQR1tchnTtSGKU/WLztFMVFdwIIKWNH0HjVIsvTxJI2cIHP+8mwO0oJZ0Bvn6JFz
- 6pUcfuK2zUmGVrXbKAkwQ==
-UI-OutboundReport: notjunk:1;M01:P0:hXOTY+x5i+E=;Yuugx21zBX77H5uJIGu7CVHtuF6
- en0gbiHx9HTEQ+ILW8MQKBw52ASCQelDhZ6BsZvAVCxYoGpeuaRk9X6rcyJiqjO2EbNdCydr6
- +nzprYK28inU3HtJ9iR/d/KslaQEqd5Oc+LA4/8cxivnVCr4+wIWFnxaf0vVHlIb60208TBiM
- 9inBT6M4bnxjnZI/fTiVT4whpxM6ed9rcTbwJWmZmx4VBMM8L64t1l8JtMYm7fXL7lj/LbrIx
- EBkSY0oHYBA+0GtlmnPrHHO2V0Sb1h5v5zQl8JJ0fWn6sBL54ZSBs6S9JA6F0Bphac/ktEvLF
- zhjYVZDWmne6KjuRuRBFpE4wmT2NoUIDsraq5AU/wY5Veasn2114sunF3zjEiG7tZnE5sSn4q
- ePoyw6j7n0bEVk9NIk4c0iJ5GDycfNIRhUeY2BbaRCAJD19HRdbnA9UPv6j3MgM95wsj5lP1S
- izTKXUwxeNKaTPraeEQ7I4Dz7Uq92HoJds0ufAjHYlhkt3+s59lFRV8D506u/UpEvNsO6ni+t
- UjvacHTlwbyg+M+5P56GK7b/Kf26g5xegvKXwDAm40yc194fWtDwrFVSHqE1/C+55sIZLA8w9
- RCDO0nANdIRNqg8C8LSxlBRfTTmIqSxyzeh8a4pN8WSoobrZPGD2uhzxjwAQqhL5b5Hg1eMKA
- HC3egXwYbL5RLm7B/DBzaNxYEbZCNOYgQLGvXv/imF5sgpdNwJ+fxOP3+NMHish4NMIvuSlHk
- 9QRTYSBy1idhofVT9DZTtsXqMjOFgxUWc/u1ommL1P3Ijeee2FMRuvt1zpjetVA7lt6kCZFm4
- JmlC46nT9VdoqvauZX5Q8CDSxh6htkX9PSpjJxSJI2I0HulVwJ4NNpIi+DvRY7jb/Gh8g7iBt
- Ew/dk0hXQ7Tq20ybDA09M1i9jhSjcoMxot2+tlSvFSi20T3zuqXrQlMFOsOrDmUOHgLjC257t
- hiMv2g==
-Received-SPF: pass client-ip=212.227.15.18; envelope-from=deller@gmx.de;
- helo=mout.gmx.net
-X-Spam_score_int: -28
-X-Spam_score: -2.9
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x62e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -90,31 +90,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/25/23 10:57, Michael Tokarev wrote:
-> 24.06.2023 14:50, Helge Deller =D0=BF=D0=B8=D1=88=D0=B5=D1=82:
->> When the OS triggers a reboot, the reset helper function sends a
->> qemu_system_reset_request(SHUTDOWN_CAUSE_GUEST_RESET) together with an
->> EXCP_HLT exception to halt the CPUs.
->>
->> So, at reboot when initializing the CPUs again, make sure to set all
->> instruction pointers to the firmware entry point, disable any interrupt=
-s,
->> disable data and instruction translations, enable PSW_Q bit=C2=A0 and t=
-ell qemu
->> to unhalt (halted=3D0) the CPUs again.
->>
->> This fixes the various reboot issues which were seen when rebooting a
->> Linux VM, including the case where even the monarch CPU has been virtua=
-lly
->> halted from the OS (e.g. via "chcpu -d 0" inside the Linux VM).
->
-> Is this a -stable material?=C2=A0 It applies cleanly to 8.0 and 7.2.
+Several instructions and register access require icount reads and are
+missing translator_io_start().
 
-Yes, please.
-At least for 8.0 I think it should be added.
-I didn't tested 7.2, but can do and would prefer it if could be added ther=
-e too.
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+ target/ppc/translate.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-Thanks!
-Helge
+diff --git a/target/ppc/translate.c b/target/ppc/translate.c
+index eb278c2683..c1c3cd8767 100644
+--- a/target/ppc/translate.c
++++ b/target/ppc/translate.c
+@@ -1177,6 +1177,7 @@ void spr_write_hmer(DisasContext *ctx, int sprn, int gprn)
+ 
+ void spr_write_lpcr(DisasContext *ctx, int sprn, int gprn)
+ {
++    translator_io_start(&ctx->base);
+     gen_helper_store_lpcr(cpu_env, cpu_gpr[gprn]);
+ }
+ #endif /* !defined(CONFIG_USER_ONLY) */
+@@ -4002,6 +4003,7 @@ static void gen_doze(DisasContext *ctx)
+     TCGv_i32 t;
+ 
+     CHK_HV(ctx);
++    translator_io_start(&ctx->base);
+     t = tcg_constant_i32(PPC_PM_DOZE);
+     gen_helper_pminsn(cpu_env, t);
+     /* Stop translation, as the CPU is supposed to sleep from now */
+@@ -4017,6 +4019,7 @@ static void gen_nap(DisasContext *ctx)
+     TCGv_i32 t;
+ 
+     CHK_HV(ctx);
++    translator_io_start(&ctx->base);
+     t = tcg_constant_i32(PPC_PM_NAP);
+     gen_helper_pminsn(cpu_env, t);
+     /* Stop translation, as the CPU is supposed to sleep from now */
+@@ -4032,6 +4035,7 @@ static void gen_stop(DisasContext *ctx)
+     TCGv_i32 t;
+ 
+     CHK_HV(ctx);
++    translator_io_start(&ctx->base);
+     t = tcg_constant_i32(PPC_PM_STOP);
+     gen_helper_pminsn(cpu_env, t);
+     /* Stop translation, as the CPU is supposed to sleep from now */
+@@ -4047,6 +4051,7 @@ static void gen_sleep(DisasContext *ctx)
+     TCGv_i32 t;
+ 
+     CHK_HV(ctx);
++    translator_io_start(&ctx->base);
+     t = tcg_constant_i32(PPC_PM_SLEEP);
+     gen_helper_pminsn(cpu_env, t);
+     /* Stop translation, as the CPU is supposed to sleep from now */
+@@ -4062,6 +4067,7 @@ static void gen_rvwinkle(DisasContext *ctx)
+     TCGv_i32 t;
+ 
+     CHK_HV(ctx);
++    translator_io_start(&ctx->base);
+     t = tcg_constant_i32(PPC_PM_RVWINKLE);
+     gen_helper_pminsn(cpu_env, t);
+     /* Stop translation, as the CPU is supposed to sleep from now */
+@@ -4458,6 +4464,7 @@ static void gen_hrfid(DisasContext *ctx)
+ #else
+     /* Restore CPU state */
+     CHK_HV(ctx);
++    translator_io_start(&ctx->base);
+     gen_helper_hrfid(cpu_env);
+     ctx->base.is_jmp = DISAS_EXIT;
+ #endif
+-- 
+2.40.1
+
 
