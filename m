@@ -2,78 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD07373CFA7
-	for <lists+qemu-devel@lfdr.de>; Sun, 25 Jun 2023 11:16:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 86E8973CFAC
+	for <lists+qemu-devel@lfdr.de>; Sun, 25 Jun 2023 11:19:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDLqa-0002IX-Hf; Sun, 25 Jun 2023 05:15:52 -0400
+	id 1qDLth-0003jn-Qj; Sun, 25 Jun 2023 05:19:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qDLqY-0002IC-Ia; Sun, 25 Jun 2023 05:15:50 -0400
-Received: from mail-pg1-x533.google.com ([2607:f8b0:4864:20::533])
+ id 1qDLtf-0003hY-Es; Sun, 25 Jun 2023 05:19:03 -0400
+Received: from mail-oi1-x231.google.com ([2607:f8b0:4864:20::231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qDLqW-0003gi-Pa; Sun, 25 Jun 2023 05:15:50 -0400
-Received: by mail-pg1-x533.google.com with SMTP id
- 41be03b00d2f7-53482b44007so1079530a12.2; 
- Sun, 25 Jun 2023 02:15:48 -0700 (PDT)
+ id 1qDLtd-0004Ir-Ni; Sun, 25 Jun 2023 05:19:03 -0400
+Received: by mail-oi1-x231.google.com with SMTP id
+ 5614622812f47-39ec45b22f6so1646088b6e.0; 
+ Sun, 25 Jun 2023 02:19:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1687684547; x=1690276547;
- h=in-reply-to:references:cc:to:from:subject:message-id:date
+ d=gmail.com; s=20221208; t=1687684740; x=1690276740;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
  :content-transfer-encoding:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=dEG2OQ80o93SsHtSA5RPxXfNx+Eiy3DeNaRQ6sgfWg4=;
- b=RCqyv8iz77PWppsBHhcGoDHok9BWY7DJpJ5WKn03nb5xEC6age1AYfHf2Fk3N0sP0F
- 4zlcskfcYTRs4MNdVAiIhDgEKNxxHQdaceRYBXhjSFF4wCOXuvijsLJz0LvO78dPkLpn
- ovh4EdL5AXqhHvqX3sR2t1QjzBro3MQPWsWzk2ZxCL6BauvOH8Q1IViWb2mPC+zFdVSf
- 36kBFFQjs8VIdibs+NjBx2bWl/G7vOFfZwOv/glVuu9DZkddwRyBQSaq+F4b2g95WZK6
- Y5mH7C2smfpU4ItN32yIz3NmR7cYETA3e6AtwQoJdBLPOcRaDbMEaYxOZU1qfCcB3U53
- 1UCA==
+ bh=TJf+voi6N+YE8Sch4FS4fD8XrRSVJhfO0na4gXb66tM=;
+ b=Jqv5Z/D48TqFQhiAv+fc0FgSIPohyydVnrzlvOM3nbStkOtvXfMr1nQCFhjgyKti1N
+ lqdvdEkLrJtPyMDwmLTLEU9wJMpJbDc7W+BYP5QT1g6h6iASFa4j+fUSTDs3IaSs1tM9
+ J1ARcVdIUp/AeGxtlXovRtb2mxgZf4sjo9W1d2dh5RF9T72JIa/KTY/xR5DHPIZhB2sk
+ +vsgpieBA212rLaKCTQSzCpNPtIcMu3v82H954gikRo8qkvVTh4LD0JekqSKZ5/+4Doe
+ id9H1qNgdsxrd9JI7dClXRMWCyhqNyKF4TmuMq4R67x4M2oGZo8zQStcQ3Q44MFlhwFK
+ TPDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687684547; x=1690276547;
- h=in-reply-to:references:cc:to:from:subject:message-id:date
+ d=1e100.net; s=20221208; t=1687684740; x=1690276740;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
  :content-transfer-encoding:mime-version:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=dEG2OQ80o93SsHtSA5RPxXfNx+Eiy3DeNaRQ6sgfWg4=;
- b=hPGaz8onnowbvcOJrdtzS0/P1sHHu1VDb6kmh1sukSOjb6cz8Wz84uVYYoFdpQJKH/
- h0NbTYLf5nyQytJCK1lIpKZDQGNSjb0Nbz+DiJXLpOqwP0/UzuXBy/X90z2zxZUr22Vd
- I2UYOe1MBKJl3aqmKa8q6FAhaO9cJPIqiX2Pk08ql57RhrTUsuVFf7lZ1xIFzQNalRnX
- Kay9Cuorl5yzwqBP/qnX3dtW2mtCoqsm2gFXbDRiTj42AxbIR8/53sz83Bgw0lKZk48D
- wxKgKCb7oQaAtgwNdfQ1VR1rvlB2bEKF6BqPZcFoQW242XANhGS2RrNui2quZUVvsmvz
- 7C8A==
-X-Gm-Message-State: AC+VfDz9w9OyXO5cA7gFPRq7l7nvGjni0UAsIMAF6c16cYhIlcbe7cYa
- KKhMr7StBsaFQxPGqQQ2+eA=
-X-Google-Smtp-Source: ACHHUZ6kmGl73pzEjuv2I7hkTpNHzQTNDqhf0TizcJIaUNefF4C/sPx3z3TPg/N0v3SEWTROAgOogg==
-X-Received: by 2002:a17:902:d2c1:b0:1b1:e6a4:2797 with SMTP id
- n1-20020a170902d2c100b001b1e6a42797mr1484462plc.45.1687684546947; 
- Sun, 25 Jun 2023 02:15:46 -0700 (PDT)
+ bh=TJf+voi6N+YE8Sch4FS4fD8XrRSVJhfO0na4gXb66tM=;
+ b=UB4NtFioO3o+Pin1ElRDWj7/a2RPmBIqa844VoA6sMmUmIEOJjkqr/8nvURHCMjEfO
+ JW9gfaXNSIvFq3x+E6E77r3XXLf+Rd39gpovuS6GQ/+pPX0GQlK2j3ug+ClXCrDwNKbG
+ oDpfx3nfS/HZbnSz3KiPcuX7TPGf/j/TDBY1SvK+UDG5bDWzeXL3/U+UAmNn2XoMIz/W
+ JHnLa4qXQBcXJJmdyoUiYA08PQ822iZUJw3xv9iQ8eWN4uCWRzg6C+XL8ruL1RBNoN0/
+ NsXLBJ/4SjJLf3fWpdilKFwRHBs0jzcyqquIQTcM19IDqCdtpIdnRcipIlCzjsum/OeE
+ qNFQ==
+X-Gm-Message-State: AC+VfDzaV6FUZQKBeyHIgQ3NvRc3xSS9pF5PNXPgL7yDeZ0ofJW0Gk+j
+ 3ax6b9RHOjoa+rkFpJ+jKiE=
+X-Google-Smtp-Source: ACHHUZ5N4RRdDHRAM/5ufkfYGJSqabXcikKI6VWSk76TFB0H597CrEb72y6KH74CzrdPjY8AYmYdwg==
+X-Received: by 2002:a05:6808:179c:b0:3a1:b50d:6c9 with SMTP id
+ bg28-20020a056808179c00b003a1b50d06c9mr7503182oib.7.1687684740218; 
+ Sun, 25 Jun 2023 02:19:00 -0700 (PDT)
 Received: from localhost (193-116-198-102.tpgi.com.au. [193.116.198.102])
  by smtp.gmail.com with ESMTPSA id
- s14-20020a170902ea0e00b001b55fe1b471sm2192995plg.302.2023.06.25.02.15.43
+ ip4-20020a17090b314400b0025374fedab4sm4095370pjb.22.2023.06.25.02.18.56
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 25 Jun 2023 02:15:46 -0700 (PDT)
+ Sun, 25 Jun 2023 02:18:59 -0700 (PDT)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Sun, 25 Jun 2023 19:15:40 +1000
-Message-Id: <CTLM8MKHV82Y.234W43DPGDJMA@wheely>
-Subject: Re: [PATCH 4/4] target/ppc: Make checkstop stop the system
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "BALATON Zoltan" <balaton@eik.bme.hu>
+Date: Sun, 25 Jun 2023 19:18:53 +1000
+Message-Id: <CTLMB3E3JHJ2.FXPTKDYPPTJO@wheely>
 Cc: <qemu-ppc@nongnu.org>, <qemu-devel@nongnu.org>, "Christophe Leroy"
- <christophe.leroy@csgroup.eu>, "Harsh Prateek Bora"
- <harshpb@linux.ibm.com>, "Daniel Henrique Barboza" <danielhb413@gmail.com>,
- =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, "David Gibson"
- <david@gibson.dropbear.id.au>, "Greg Kurz" <groug@kaod.org>
+ <christophe.leroy@csgroup.eu>, "BALATON Zoltan" <balaton@eik.bme.hu>,
+ "Harsh Prateek Bora" <harshpb@linux.ibm.com>, "Daniel Henrique Barboza"
+ <danielhb413@gmail.com>, =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
+ "David Gibson" <david@gibson.dropbear.id.au>, "Greg Kurz" <groug@kaod.org>
+Subject: Re: [PATCH 0/4] target/ppc: Catch invalid real address accesses
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "Peter Maydell" <peter.maydell@linaro.org>
 X-Mailer: aerc 0.15.2
 References: <20230623081953.290875-1-npiggin@gmail.com>
- <20230623081953.290875-5-npiggin@gmail.com>
- <04636e8a-de3f-d963-b64e-07cc60bc2538@eik.bme.hu>
-In-Reply-To: <04636e8a-de3f-d963-b64e-07cc60bc2538@eik.bme.hu>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::533;
- envelope-from=npiggin@gmail.com; helo=mail-pg1-x533.google.com
+ <CAFEAcA_Brf-R12t+DKNAoygqgC-qjKJ3Wiz4ULjGHOo8_vPovw@mail.gmail.com>
+In-Reply-To: <CAFEAcA_Brf-R12t+DKNAoygqgC-qjKJ3Wiz4ULjGHOo8_vPovw@mail.gmail.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::231;
+ envelope-from=npiggin@gmail.com; helo=mail-oi1-x231.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,94 +95,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri Jun 23, 2023 at 9:51 PM AEST, BALATON Zoltan wrote:
-> On Fri, 23 Jun 2023, Nicholas Piggin wrote:
-> > checkstop state does not halt the system, interrupts continue to be
-> > serviced, and other CPUs run.
+On Fri Jun 23, 2023 at 7:10 PM AEST, Peter Maydell wrote:
+> On Fri, 23 Jun 2023 at 09:21, Nicholas Piggin <npiggin@gmail.com> wrote:
 > >
-> > Stop the machine with vm_stop(), and print a register dump too.
+> > ppc has always silently ignored access to real (physical) addresses
+> > with nothing behind it, which can make debugging difficult at times.
 > >
-> > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> > ---
-> > target/ppc/excp_helper.c | 35 +++++++++++++++++++++--------------
-> > 1 file changed, 21 insertions(+), 14 deletions(-)
-> >
-> > diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
-> > index 4bfcfc3c3d..51e83d7f07 100644
-> > --- a/target/ppc/excp_helper.c
-> > +++ b/target/ppc/excp_helper.c
-> > @@ -19,6 +19,7 @@
-> > #include "qemu/osdep.h"
-> > #include "qemu/main-loop.h"
-> > #include "qemu/log.h"
-> > +#include "sysemu/runstate.h"
-> > #include "cpu.h"
-> > #include "exec/exec-all.h"
-> > #include "internal.h"
-> > @@ -165,6 +166,24 @@ static void ppc_excp_debug_sw_tlb(CPUPPCState *env=
-, int excp)
-> >              env->error_code);
-> > }
-> >
-> > +static void powerpc_checkstop(PowerPCCPU *cpu, const char *reason)
-> > +{
-> > +    CPUState *cs =3D CPU(cpu);
-> > +
-> > +    vm_stop(RUN_STATE_GUEST_PANICKED);
-> > +
-> > +    fprintf(stderr, "Entering checkstop state: %s\n", reason);
-> > +    cpu_dump_state(cs, stderr, CPU_DUMP_FPU | CPU_DUMP_CCOP);
-> > +    if (qemu_log_separate()) {
-> > +        FILE *logfile =3D qemu_log_trylock();
-> > +        if (logfile) {
-> > +            fprintf(logfile, "Entering checkstop state: %s\n", reason)=
-;
-> > +            cpu_dump_state(cs, logfile, CPU_DUMP_FPU | CPU_DUMP_CCOP);
-> > +            qemu_log_unlock(logfile);
-> > +        }
-> > +    }
-> > +}
-> > +
-> > #if defined(TARGET_PPC64)
-> > static int powerpc_reset_wakeup(CPUState *cs, CPUPPCState *env, int exc=
-p,
-> >                                 target_ulong *msr)
-> > @@ -406,21 +425,9 @@ static void powerpc_set_excp_state(PowerPCCPU *cpu=
-, target_ulong vector,
-> >
-> > static void powerpc_mcheck_test_and_checkstop(CPUPPCState *env)
-> > {
-> > -    CPUState *cs =3D env_cpu(env);
-> > -
-> > -    if (FIELD_EX64(env->msr, MSR, ME)) {
-> > -        return;
-> > -    }
-> > -
-> > -    /* Machine check exception is not enabled. Enter checkstop state. =
-*/
-> > -    fprintf(stderr, "Machine check while not allowed. "
-> > -            "Entering checkstop state\n");
-> > -    if (qemu_log_separate()) {
-> > -        qemu_log("Machine check while not allowed. "
-> > -                 "Entering checkstop state\n");
-> > +    if (!FIELD_EX64(env->msr, MSR, ME)) {
-> > +        powerpc_checkstop(env_archcpu(env), "machine check with MSR[ME=
-]=3D0");
+> > It looks like the way to handle this is implement the transaction
+> > failed call, which most target architectures do. Notably not x86
+> > though, I wonder why?
 >
-> I don't mind you twaeking the patch and renaming the function but now thi=
-s=20
-> has become another one line function which just clutters code. Either kee=
-p=20
-> this together in one function or inline the if at callers, otherwise this=
-=20
-> will start to look like Forth where every simple operation gets a new=20
-> name. :-)
+> Much of this is historical legacy. QEMU originally had no
+> concept of "the system outside the CPU returns some kind
+> of bus error and the CPU raises an exception for it".
+> This is turn is (I think) because the x86 PC doesn't do
+> that: you always get back some kind of response, I think
+> -1 on reads and writes ignored. We added the do_transaction_failed
+> hook largely because we wanted it to give more accurate
+> emulation of this kind of thing on Arm, but as usual with new
+> facilities we left the other architectures to do it themselves
+> if they wanted -- by default the behaviour remained the same.
+> Some architectures have picked it up; some haven't.
+>
+> The main reason it's a bit of a pain to turn the correct
+> handling on is because often boards don't actually implement
+> all the devices they're supposed to. For a pile of legacy Arm
+> boards, especially where we didn't have good test images,
+> we use the machine flag ignore_memory_transaction_failures to
+> retain the legacy behaviour. (This isn't great because it's
+> pretty much going to mean we have that flag set on those
+> boards forever because nobody is going to care enough to
+> investigate and test.)
+>
+> > Other question is, sometimes I guess it's nice to avoid crashing in
+> > order to try to quickly get past some unimplemented MMIO. Maybe a
+> > command line option or something could turn it off? It should
+> > probably be a QEMU-wide option if so, so that shouldn't hold this
+> > series up, I can propose a option for that if anybody is worried
+> > about it.
+>
+> I would not recommend going any further than maybe setting the
+> ignore_memory_transaction_failures flag for boards you don't
+> care about. (But in an ideal world, don't set it and deal with
+> any bug reports by implementing stub versions of missing devices.
+> Depends how confident you are in your test coverage.)
 
-Yeah good point. I did want to have a powerpc_checkstop function with a
-reason because other places might start to also call it in future.
-
-As far as the machine check ME test goes... we could re-inline that I
-suppose.
+Thanks for the background, interesting and helpful. So I think
+it is the right place for powerpc BookS 64 to hook into. Point
+taken about adding a global option for it. Will try to fix the
+known problems first, maybe it won't be too hard.
 
 Thanks,
 Nick
