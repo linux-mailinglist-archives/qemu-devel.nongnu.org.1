@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACE5573D485
+	by mail.lfdr.de (Postfix) with ESMTPS id 51DE673D482
 	for <lists+qemu-devel@lfdr.de>; Sun, 25 Jun 2023 23:28:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDXGg-0005Xb-AX; Sun, 25 Jun 2023 17:27:34 -0400
+	id 1qDXGl-0005YP-Oh; Sun, 25 Jun 2023 17:27:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <fufuyqqqqqq@gmail.com>)
- id 1qDXGe-0005XS-Mu
- for qemu-devel@nongnu.org; Sun, 25 Jun 2023 17:27:32 -0400
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+ id 1qDXGi-0005Y0-DQ
+ for qemu-devel@nongnu.org; Sun, 25 Jun 2023 17:27:36 -0400
+Received: from mail-pg1-x534.google.com ([2607:f8b0:4864:20::534])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <fufuyqqqqqq@gmail.com>)
- id 1qDXGd-0003TN-39
- for qemu-devel@nongnu.org; Sun, 25 Jun 2023 17:27:32 -0400
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-1b7f223994fso9910195ad.3
- for <qemu-devel@nongnu.org>; Sun, 25 Jun 2023 14:27:30 -0700 (PDT)
+ id 1qDXGf-0003U4-TM
+ for qemu-devel@nongnu.org; Sun, 25 Jun 2023 17:27:35 -0400
+Received: by mail-pg1-x534.google.com with SMTP id
+ 41be03b00d2f7-544c0d768b9so2285847a12.0
+ for <qemu-devel@nongnu.org>; Sun, 25 Jun 2023 14:27:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1687728450; x=1690320450;
+ d=gmail.com; s=20221208; t=1687728452; x=1690320452;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=woKauxxnRk032i0YAZuB3emU7zROXu8ro6a8hM18j5o=;
- b=W7BMKYkygNUIgxVdkALyUDChWylTA2HSNwkw/Ne6r1uPqc+aBcAYBaFZC/4MAi/pZ7
- lD15tySLYLsfafVnYsCDdXbKkUzsOrOEVCIMoHwUKDW/saaT9j1EnWU0KqUT0lavNFQo
- quorygBy14C3KUQdObkRT+LEFHeTA+whZ0TX/psKPqdGqNEY4oHxyy9GniHfa3NPs69f
- coTY5/bOT7pGzcYumWq3dlGK/Dms8dgmel+FLoK+cBLFoap0Ff0Aq0+skenco5bcp+D4
- 4QzVqV9BQaJH+23s8A4+JkPOHZra+hkMpfsEnxhfR0POwqClIQAin/x9KOj6HpymNnko
- n8/Q==
+ bh=rt6ZHxAj6+7mhUCms5O9p6L2Lf2FaYgxsL9F9giKDX4=;
+ b=NylhQXo90AMxOR7Axwmel6Z3DbqRuBKHqLisVxQ3s/BpgPQFlEHYYtFRNxUV3uFHT0
+ VAg80W9lNCm0ZkekvCvR/X8P5Rq9Z64xeesikwtG6+qBPVgrQlFUnd2QYivLxvdU6miL
+ yu1Fye8VUm4QOJrnkfeno02vJHi+2vus10X1hX2DNaGfEEuJ/ru2cP8B0WPXUyJFuuGN
+ 8//GxLEBKBLs9wEnqA/Z/DWz+cNPlL4JFw4xIpdk/2BRb4XXUEx7GoKCmD7nivJD947E
+ 2gQHN5COl1NEQwbPH/gqx2WUyov8q2VkfjAM2kto0bWu9rL3lF5aGDoBL4mPMuj43vIP
+ i2kA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687728450; x=1690320450;
+ d=1e100.net; s=20221208; t=1687728452; x=1690320452;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=woKauxxnRk032i0YAZuB3emU7zROXu8ro6a8hM18j5o=;
- b=LGq05u7UKFdhWbvRcZuu8JK++jO2yVogs8mYaULW43cCfAjTg6/K51WzoSu48fauK3
- WOHXxHm+05oLKAd9j3FDZ6pVyQyujSIo8IiTjsBRBLvzCWpsR5ciZNDXXskahrmJZtX+
- KvrSWMwBT3n0Ss7fuEC4ZAbKoYHCfH9BtG5P2eVMbn0ja7/tzeZoXp3q/6lFOHdlNCt6
- t73KhvSDirCe6G5U0Jukimt/riO9wb9Wpa3rRZJzvyxdFYOXit2Of43IRb4Ttepk3cnS
- dERSRQ6ylHpF/P3uQy0QXBeJxOFt507vOq3iFAXU4U+4LpC80vWURCgAvZhChByyIEQv
- pqrA==
-X-Gm-Message-State: AC+VfDxseb81dW/hd7jMMSZVamXFNKzpUXzcTPPudMozloJw2RABhb6I
- FXe+V8iQWJzBfn0vam+9ekw=
-X-Google-Smtp-Source: ACHHUZ5z1DMD4vOLhIuw1JKfxvDTtft+ji+RICMTE3cJ6X1nW+qTuLfnM797K3LYDFaHcVxNGZlDJw==
-X-Received: by 2002:a17:902:eac4:b0:1b7:f063:301a with SMTP id
- p4-20020a170902eac400b001b7f063301amr3867022pld.24.1687728449803; 
- Sun, 25 Jun 2023 14:27:29 -0700 (PDT)
+ bh=rt6ZHxAj6+7mhUCms5O9p6L2Lf2FaYgxsL9F9giKDX4=;
+ b=BJLkkn51MoB+Pam5eIObtkOszANsmQawxo/bEgbXLPGABCg9SA9gYQ3hecrX5IwJix
+ Glw4kvcTTjVSkLZjgvyZJY1L/rFP4CjeIbTPsBd9cAM66tFqALSp8Xk0j6ayU85m6mE2
+ KAe87LCVsmeSfTMmZRH0SztsMYWhV2gGw88ouuLlLZIvth0xTqqPMdReWguYIJSL0dcb
+ h0Z2dO7FLn+OMOWJk4WfP2rkATz/LFCYocCj3uCGSQgCQ0iC0V/kow72MuFG1/+EO+7W
+ E6j0hBNlxZHiohOwHfNDccEKPzdffdPAaL+p55ry3enBbi1gxqS6CApJiE+LCn7PCnMM
+ DBlA==
+X-Gm-Message-State: AC+VfDyAHWmmkDkLgeot91bD2+4Gjc2xhdPvJsUIHcD+2lM6hmBmc3FT
+ 0WM9+tUKWF7fh8+u9C9etzg=
+X-Google-Smtp-Source: ACHHUZ4f+Cu8d1RiLxGssLRG9R2vhuDsVe1PlncUIj00IkxQJd1yLb+BEOixG485KJ71kCDG79gzTA==
+X-Received: by 2002:a17:902:c407:b0:1ac:8717:d436 with SMTP id
+ k7-20020a170902c40700b001ac8717d436mr7152313plk.60.1687728452368; 
+ Sun, 25 Jun 2023 14:27:32 -0700 (PDT)
 Received: from q1iq-virtual-machine.localdomain ([111.201.135.80])
  by smtp.gmail.com with ESMTPSA id
- je5-20020a170903264500b001b8004ff609sm761343plb.270.2023.06.25.14.27.27
+ je5-20020a170903264500b001b8004ff609sm761343plb.270.2023.06.25.14.27.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 25 Jun 2023 14:27:29 -0700 (PDT)
+ Sun, 25 Jun 2023 14:27:32 -0700 (PDT)
 From: Yeqi Fu <fufuyqqqqqq@gmail.com>
 To: alex.bennee@linaro.org
 Cc: richard.henderson@linaro.org, qemu-devel@nongnu.org,
- Yeqi Fu <fufuyqqqqqq@gmail.com>, Laurent Vivier <laurent@vivier.eu>
-Subject: [RFC v3 05/10] linux-user: Implement native-bypass option support
-Date: Mon, 26 Jun 2023 05:27:02 +0800
-Message-Id: <20230625212707.1078951-6-fufuyqqqqqq@gmail.com>
+ Yeqi Fu <fufuyqqqqqq@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>
+Subject: [RFC v3 06/10] accel/tcg: Add support for native library calls
+Date: Mon, 26 Jun 2023 05:27:03 +0800
+Message-Id: <20230625212707.1078951-7-fufuyqqqqqq@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230625212707.1078951-1-fufuyqqqqqq@gmail.com>
 References: <20230625212707.1078951-1-fufuyqqqqqq@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
- envelope-from=fufuyqqqqqq@gmail.com; helo=mail-pl1-x62d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::534;
+ envelope-from=fufuyqqqqqq@gmail.com; helo=mail-pg1-x534.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,90 +93,155 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This commit implements the -native-bypass support in linux-user. The
-native_calls_enabled() function can be true only when the
-'-native-bypass' option is given.
+This commit implements several helpers for extracting function id and
+argument types, and then using this information to invoke native functions.
 
 Signed-off-by: Yeqi Fu <fufuyqqqqqq@gmail.com>
 ---
- linux-user/main.c | 36 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 36 insertions(+)
+ accel/tcg/tcg-runtime.c       | 37 +++++++++++++++++
+ accel/tcg/tcg-runtime.h       |  4 ++
+ include/native/native-calls.h | 75 +++++++++++++++++++++++++++++++++++
+ 3 files changed, 116 insertions(+)
+ create mode 100644 include/native/native-calls.h
 
-diff --git a/linux-user/main.c b/linux-user/main.c
-index 5e6b2e1714..98e31c77d5 100644
---- a/linux-user/main.c
-+++ b/linux-user/main.c
-@@ -60,6 +60,13 @@
- #include "semihosting/semihost.h"
- #endif
- 
-+#if defined(CONFIG_NATIVE_CALL)
-+#include "native/native-defs.h"
-+
-+static const char *native_lib;
-+bool native_bypass_enabled;
-+#endif
-+
- #ifndef AT_FLAGS_PRESERVE_ARGV0
- #define AT_FLAGS_PRESERVE_ARGV0_BIT 0
- #define AT_FLAGS_PRESERVE_ARGV0 (1 << AT_FLAGS_PRESERVE_ARGV0_BIT)
-@@ -125,6 +132,7 @@ static void usage(int exitcode);
- static const char *interp_prefix = CONFIG_QEMU_INTERP_PREFIX;
- const char *qemu_uname_release;
- 
-+
- #if !defined(TARGET_DEFAULT_STACK_SIZE)
- /* XXX: on x86 MAP_GROWSDOWN only works if ESP <= address + 32, so
-    we allocate a bigger stack. Need a better solution, for example
-@@ -293,6 +301,18 @@ static void handle_arg_set_env(const char *arg)
-     free(r);
- }
- 
-+#if defined(CONFIG_NATIVE_CALL)
-+static void handle_arg_native_bypass(const char *arg)
-+{
-+    if (access(arg, F_OK) != 0) {
-+        fprintf(stderr, "native library %s does not exist\n", arg);
-+        exit(EXIT_FAILURE);
-+    }
-+    native_lib = arg;
-+    native_bypass_enabled = true;
-+}
-+#endif
-+
- static void handle_arg_unset_env(const char *arg)
+diff --git a/accel/tcg/tcg-runtime.c b/accel/tcg/tcg-runtime.c
+index e4e030043f..3f173f2a53 100644
+--- a/accel/tcg/tcg-runtime.c
++++ b/accel/tcg/tcg-runtime.c
+@@ -148,3 +148,40 @@ void HELPER(exit_atomic)(CPUArchState *env)
  {
-     char *r, *p, *token;
-@@ -522,6 +542,10 @@ static const struct qemu_argument arg_table[] = {
-      "",           "Generate a /tmp/perf-${pid}.map file for perf"},
-     {"jitdump",    "QEMU_JITDUMP",     false, handle_arg_jitdump,
-      "",           "Generate a jit-${pid}.dump file for perf"},
-+#if defined(CONFIG_NATIVE_CALL)
-+    {"native-bypass", "QEMU_NATIVE_BYPASS", true, handle_arg_native_bypass,
-+     "",           "native bypass for library calls in user mode only."},
-+#endif
-     {NULL, NULL, false, NULL, NULL, NULL}
- };
- 
-@@ -826,6 +850,18 @@ int main(int argc, char **argv, char **envp)
-         }
-     }
- 
-+#if defined(CONFIG_NATIVE_CALL)
-+    /* Set the library for native bypass  */
-+    if (native_bypass_enabled) {
-+        GString *lib = g_string_new(native_lib);
-+        lib = g_string_prepend(lib, "LD_PRELOAD=");
-+        if (envlist_appendenv(envlist, g_string_free(lib, false), ":") != 0) {
-+            fprintf(stderr,
-+                    "failed to append the native library to environment.\n");
-+            exit(EXIT_FAILURE);
-+        }
+     cpu_loop_exit_atomic(env_cpu(env), GETPC());
+ }
++
++target_ulong helper_native_call(CPUArchState *env, target_ulong arg1,
++                                target_ulong arg2, target_ulong arg3,
++                                uint32_t abi_map, uint32_t func_id, uint32_t mmu_idx)
++{
++    if (GET_ARG3(abi_map)) {
++        return do_native_3in1out(env, arg1, arg2, arg3, abi_map, func_id,
++                                 mmu_idx);
++    } else {
++        return do_native_2in1out(env, arg1, arg2, abi_map, func_id, mmu_idx);
 +    }
-+#endif
-     target_environ = envlist_to_environ(envlist, NULL);
-     envlist_free(envlist);
++}
++
++
++uint32_t helper_native_call_i32(CPUArchState *env, uint32_t arg1, uint32_t arg2,
++                                uint32_t arg3, uint32_t abi_map,
++                                uint32_t func_id, uint32_t mmu_idx)
++{
++    if (GET_ARG3(abi_map)) {
++        return do_native_3in1out(env, arg1, arg2, arg3, abi_map, func_id,
++                                 mmu_idx);
++    } else {
++        return do_native_2in1out(env, arg1, arg2, abi_map, func_id, mmu_idx);
++    }
++}
++
++uint64_t helper_native_call_i64(CPUArchState *env, uint64_t arg1, uint64_t arg2,
++                                uint64_t arg3, uint32_t abi_map,
++                                uint32_t func_id, uint32_t mmu_idx)
++{
++    if (GET_ARG3(abi_map)) {
++        return do_native_3in1out(env, arg1, arg2, arg3, abi_map, func_id,
++                                 mmu_idx);
++    } else {
++        return do_native_2in1out(env, arg1, arg2, abi_map, func_id, mmu_idx);
++    }
++}
+diff --git a/accel/tcg/tcg-runtime.h b/accel/tcg/tcg-runtime.h
+index 6f8c2061d0..3b1fe606e5 100644
+--- a/accel/tcg/tcg-runtime.h
++++ b/accel/tcg/tcg-runtime.h
+@@ -300,3 +300,7 @@ DEF_HELPER_FLAGS_4(gvec_leu32, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
+ DEF_HELPER_FLAGS_4(gvec_leu64, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
  
+ DEF_HELPER_FLAGS_5(gvec_bitsel, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, ptr, i32)
++
++DEF_HELPER_7(native_call, tl, env, tl, tl, tl, i32, i32, i32)
++DEF_HELPER_7(native_call_i32, i32, env, i32, i32, i32, i32, i32, i32)
++DEF_HELPER_7(native_call_i64, i64, env, i64, i64, i64, i32, i32, i32)
+diff --git a/include/native/native-calls.h b/include/native/native-calls.h
+new file mode 100644
+index 0000000000..5c99344a65
+--- /dev/null
++++ b/include/native/native-calls.h
+@@ -0,0 +1,75 @@
++#include "exec/cpu_ldst.h"
++#include "cpu.h"
++#include "native-defs.h"
++
++typedef uintptr_t (*nfunc_2in1out)(uintptr_t, uintptr_t);
++typedef uintptr_t (*nfunc_3in1out)(uintptr_t, uintptr_t, uintptr_t);
++
++static inline uintptr_t decode_arg(CPUArchState *env, abi_ptr arg,
++                                   uintptr_t size, uint8_t type,
++                                   uint32_t mmu_idx);
++abi_ptr do_native_2in1out(CPUArchState *env, abi_ptr arg1, abi_ptr arg2,
++                          uint32_t abi_map, uint32_t func_id, uint32_t mmu_idx);
++abi_ptr do_native_3in1out(CPUArchState *env, abi_ptr arg1, abi_ptr arg2,
++                          abi_ptr arg3, uint32_t abi_map, uint32_t func_id,
++                          uint32_t mmu_idx);
++
++nfunc_3in1out func3in1out_array[] = {
++    (nfunc_3in1out)NULL,   (nfunc_3in1out)memcpy,  (nfunc_3in1out)memcmp,
++    (nfunc_3in1out)memset, (nfunc_3in1out)strncpy, (nfunc_3in1out)strncmp,
++};
++
++nfunc_2in1out func2in1out_array[] = {
++    (nfunc_2in1out)NULL,
++    (nfunc_2in1out)strcpy,
++    (nfunc_2in1out)strcmp,
++};
++
++static inline uintptr_t decode_arg(CPUArchState *env, abi_ptr arg,
++                                   uintptr_t size, uint8_t type,
++                                   uint32_t mmu_idx)
++{
++    if (IS_ARG_PTR(type)) {
++        uintptr_t ra = GETPC();
++        void *host;
++        if (IS_ARG_WRITE(type)) {
++            host = probe_write(env, arg, size, mmu_idx, ra);
++            return (uintptr_t)host;
++        }
++        if (IS_ARG_READ(type)) {
++            host = probe_read(env, arg, size, mmu_idx, ra);
++            return (uintptr_t)host;
++        }
++        CPUState *cs = env_cpu(env);
++        return (uintptr_t)g2h(cs, arg);
++    }
++    return (uintptr_t)arg;
++}
++
++/* Currently, there is no distinction between int32, int64, and int. Their type
++ * conversions should be implemented. */
++abi_ptr do_native_3in1out(CPUArchState *env, abi_ptr arg1, abi_ptr arg2,
++                          abi_ptr arg3, uint32_t abi_map, uint32_t func_id,
++                          uint32_t mmu_idx)
++{
++    uintptr_t n = (uintptr_t)arg3;
++    uintptr_t n1 = decode_arg(env, arg1, n, GET_ARG1(abi_map), mmu_idx);
++    uintptr_t n2 = decode_arg(env, arg2, n, GET_ARG2(abi_map), mmu_idx);
++    nfunc_3in1out fn = func3in1out_array[func_id - 0x1000];
++    uintptr_t r = fn(n1, n2, n);
++    return IS_PTR_RVALUE(abi_map) ? h2g(r) : (target_ulong)r;
++}
++
++
++abi_ptr do_native_2in1out(CPUArchState *env, abi_ptr arg1, abi_ptr arg2,
++                          uint32_t abi_map, uint32_t func_id, uint32_t mmu_idx)
++{
++    CPUState *cs = env_cpu(env);
++    uintptr_t n1 =
++        IS_PTR_ARG1(abi_map) ? (uintptr_t)g2h(cs, arg1) : (uintptr_t)arg1;
++    uintptr_t n2 =
++        IS_PTR_ARG2(abi_map) ? (uintptr_t)g2h(cs, arg2) : (uintptr_t)arg2;
++    nfunc_2in1out fn = func2in1out_array[func_id - 0x2000];
++    uintptr_t r = fn(n1, n2);
++    return IS_PTR_RVALUE(abi_map) ? h2g(r) : (target_ulong)r;
++}
 -- 
 2.34.1
 
