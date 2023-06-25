@@ -2,40 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8253473CDE5
-	for <lists+qemu-devel@lfdr.de>; Sun, 25 Jun 2023 03:59:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37EEC73CDEC
+	for <lists+qemu-devel@lfdr.de>; Sun, 25 Jun 2023 04:00:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDF1A-0001Ty-K8; Sat, 24 Jun 2023 21:58:20 -0400
+	id 1qDF1A-0001U1-KJ; Sat, 24 Jun 2023 21:58:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <bmeng@tinylab.org>) id 1qDF17-0001T0-Ua
+ (Exim 4.90_1) (envelope-from <bmeng@tinylab.org>) id 1qDF17-0001SA-0z
  for qemu-devel@nongnu.org; Sat, 24 Jun 2023 21:58:17 -0400
-Received: from bg4.exmail.qq.com ([43.154.221.58])
+Received: from bg4.exmail.qq.com ([43.155.67.158])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <bmeng@tinylab.org>) id 1qDF13-0002gb-LF
- for qemu-devel@nongnu.org; Sat, 24 Jun 2023 21:58:17 -0400
-X-QQ-mid: bizesmtp75t1687658007tv6bb3zl
+ (Exim 4.90_1) (envelope-from <bmeng@tinylab.org>) id 1qDF11-0002eK-UP
+ for qemu-devel@nongnu.org; Sat, 24 Jun 2023 21:58:16 -0400
+X-QQ-mid: bizesmtp75t1687658010t8yge24h
 Received: from ubuntu.. ( [111.196.130.174]) by bizesmtp.qq.com (ESMTP) with 
- id ; Sun, 25 Jun 2023 09:53:26 +0800 (CST)
+ id ; Sun, 25 Jun 2023 09:53:29 +0800 (CST)
 X-QQ-SSF: 01200000000000E0G000000A0000000
-X-QQ-FEAT: I8hG9CuxGDLj7f4kG+0v55Try3Xz/Qm/c1u8+oSHIswUBrydTMnbZ17wA27ZD
- kXXaYhJrDDLADbVlx2wAQcA/j5FaOyZcNR1azOy+Ao3Ot8TUWYTf0P8v6/Oku+cJFkHyyJG
- CuWDd5k3yX7o0oJxZ3KzFNunKR9gaPmK3f2ZyaXGRabuYpyt6CJTySLy2ub9UmS0FWT+C8p
- uMhgTnsi+mI5mzrWMuMuabqVVHDvLoLMJGN7QA4lRWk5bwUQxm4ULVonp8bS8202fKWaeET
- OB7K78pmCAblrBbewb8dpPkUz9swPaTldKrEbBQ9UWx78Me8LnZYeTtl452fBnXj6umE7x0
- WIMnpuNX0P9F1ksWMAR8rzCx4MGErI+E1blveML
+X-QQ-FEAT: Bb328s27vVBavq88XczRmStmlatf3cf170Zeo6KewtDvz+gyHD5KjfJKxdDyY
+ z9jE0VWupRcSQepbM/6CtCRrnmDfy9MKvnnE5vy0WwzQnnsErMNeIEFZPZTFu47Qmojh3UJ
+ INJA85YwwfS5+rMI+h8TScVYodTQLOEFsOtfrh1FyXc/uK6lCD2IEQZbk0u6fG4c3HwUVAX
+ vhCM+ltBJBTvw8nfENp6PmEmTLlNag77AlBSXfmYGDZrHEUhRAlyEah/V0WrS3AdzeB1ikb
+ GXF4CPDyfHfeKuY+vtQD3JciFRhlQBiOXl3cJ2ARPmh5SPgSG4Zn3XMoDQlVdfENRHo2j7q
+ Xu6vuKu/v/a3cgavvdlzYXMU3N0GsBtPVUSv4Rt
 X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 3478616648788255297
+X-BIZMAIL-ID: 4141645967281691837
 From: Bin Meng <bmeng@tinylab.org>
 To: Jason Wang <jasowang@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
-Subject: [PATCH v7 1/9] hw/net: e1000: Remove the logic of padding short
+Cc: Dmitry Fleytman <dmitry.fleytman@gmail.com>
+Subject: [PATCH v7 2/9] hw/net: vmxnet3: Remove the logic of padding short
  frames in the receive path
-Date: Sun, 25 Jun 2023 09:53:13 +0800
-Message-Id: <20230625015321.77987-2-bmeng@tinylab.org>
+Date: Sun, 25 Jun 2023 09:53:14 +0800
+Message-Id: <20230625015321.77987-3-bmeng@tinylab.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230625015321.77987-1-bmeng@tinylab.org>
 References: <20230625015321.77987-1-bmeng@tinylab.org>
@@ -43,7 +44,7 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
 Feedback-ID: bizesmtp:tinylab.org:qybglogicsvrgz:qybglogicsvrgz7a-0
-Received-SPF: pass client-ip=43.154.221.58; envelope-from=bmeng@tinylab.org;
+Received-SPF: pass client-ip=43.155.67.158; envelope-from=bmeng@tinylab.org;
  helo=bg4.exmail.qq.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
@@ -70,45 +71,51 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Now that we have implemented unified short frames padding in the
 QEMU networking codes, remove the same logic in the NIC codes.
 
-This actually reverts commit 78aeb23eded2d0b765bf9145c71f80025b568acd.
+This actually reverts commit 40a87c6c9b11ef9c14e0301f76abf0eb2582f08e.
 
 Signed-off-by: Bin Meng <bmeng@tinylab.org>
 ---
 
 (no changes since v1)
 
- hw/net/e1000.c | 11 +----------
- 1 file changed, 1 insertion(+), 10 deletions(-)
+ hw/net/vmxnet3.c | 10 ----------
+ 1 file changed, 10 deletions(-)
 
-diff --git a/hw/net/e1000.c b/hw/net/e1000.c
-index aae5f0bdc0..093c2d4531 100644
---- a/hw/net/e1000.c
-+++ b/hw/net/e1000.c
-@@ -888,7 +888,6 @@ e1000_receive_iov(NetClientState *nc, const struct iovec *iov, int iovcnt)
-     uint16_t vlan_special = 0;
-     uint8_t vlan_status = 0;
-     uint8_t min_buf[ETH_ZLEN];
--    struct iovec min_iov;
-     uint8_t *filter_buf = iov->iov_base;
-     size_t size = iov_size(iov, iovcnt);
-     size_t iov_ofs = 0;
-@@ -905,15 +904,7 @@ e1000_receive_iov(NetClientState *nc, const struct iovec *iov, int iovcnt)
-         return 0;
+diff --git a/hw/net/vmxnet3.c b/hw/net/vmxnet3.c
+index 18b9edfdb2..5dfacb1098 100644
+--- a/hw/net/vmxnet3.c
++++ b/hw/net/vmxnet3.c
+@@ -40,7 +40,6 @@
+ 
+ #define PCI_DEVICE_ID_VMWARE_VMXNET3_REVISION 0x1
+ #define VMXNET3_MSIX_BAR_SIZE 0x2000
+-#define MIN_BUF_SIZE 60
+ 
+ /* Compatibility flags for migration */
+ #define VMXNET3_COMPAT_FLAG_OLD_MSI_OFFSETS_BIT 0
+@@ -1977,7 +1976,6 @@ vmxnet3_receive(NetClientState *nc, const uint8_t *buf, size_t size)
+ {
+     VMXNET3State *s = qemu_get_nic_opaque(nc);
+     size_t bytes_indicated;
+-    uint8_t min_buf[MIN_BUF_SIZE];
+ 
+     if (!vmxnet3_can_receive(nc)) {
+         VMW_PKPRN("Cannot receive now");
+@@ -1990,14 +1988,6 @@ vmxnet3_receive(NetClientState *nc, const uint8_t *buf, size_t size)
+         size -= sizeof(struct virtio_net_hdr);
      }
  
 -    /* Pad to minimum Ethernet frame length */
 -    if (size < sizeof(min_buf)) {
--        iov_to_buf(iov, iovcnt, 0, min_buf, size);
+-        memcpy(min_buf, buf, size);
 -        memset(&min_buf[size], 0, sizeof(min_buf) - size);
--        min_iov.iov_base = filter_buf = min_buf;
--        min_iov.iov_len = size = sizeof(min_buf);
--        iovcnt = 1;
--        iov = &min_iov;
--    } else if (iov->iov_len < MAXIMUM_ETHERNET_HDR_LEN) {
-+    if (iov->iov_len < MAXIMUM_ETHERNET_HDR_LEN) {
-         /* This is very unlikely, but may happen. */
-         iov_to_buf(iov, iovcnt, 0, min_buf, MAXIMUM_ETHERNET_HDR_LEN);
-         filter_buf = min_buf;
+-        buf = min_buf;
+-        size = sizeof(min_buf);
+-    }
+-
+     net_rx_pkt_set_packet_type(s->rx_pkt,
+         get_eth_packet_type(PKT_GET_ETH_HDR(buf)));
+ 
 -- 
 2.34.1
 
