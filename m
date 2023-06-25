@@ -2,81 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58CF173D497
-	for <lists+qemu-devel@lfdr.de>; Sun, 25 Jun 2023 23:30:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C82BA73D4AB
+	for <lists+qemu-devel@lfdr.de>; Sun, 25 Jun 2023 23:48:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDXGx-0005bZ-O5; Sun, 25 Jun 2023 17:27:51 -0400
+	id 1qDXZr-0007PE-9l; Sun, 25 Jun 2023 17:47:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fufuyqqqqqq@gmail.com>)
- id 1qDXGt-0005aV-IV
- for qemu-devel@nongnu.org; Sun, 25 Jun 2023 17:27:47 -0400
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qDXZo-0007Oy-Ps
+ for qemu-devel@nongnu.org; Sun, 25 Jun 2023 17:47:20 -0400
+Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <fufuyqqqqqq@gmail.com>)
- id 1qDXGr-0003WH-2j
- for qemu-devel@nongnu.org; Sun, 25 Jun 2023 17:27:46 -0400
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-1b80512a7f2so1702585ad.3
- for <qemu-devel@nongnu.org>; Sun, 25 Jun 2023 14:27:44 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qDXZn-00005M-4A
+ for qemu-devel@nongnu.org; Sun, 25 Jun 2023 17:47:20 -0400
+Received: by mail-ed1-x52b.google.com with SMTP id
+ 4fb4d7f45d1cf-51d7f4c1cfeso2509539a12.0
+ for <qemu-devel@nongnu.org>; Sun, 25 Jun 2023 14:47:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1687728464; x=1690320464;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Mnsf664I1dbfqhlUsQXaqr8d9bhL0IvglCtYautfisc=;
- b=QoDA6btioxfXJJ6OXh/uYSeNP6vmRt3dJn47IppYd9IYEDo4zpLzTojTCfdBd/eDl0
- vx/Ey7uDpmNPAcPSfHOkQBI6xZMScxk+6Qwor1c60IrjuPg/w66iQnQejIysY1aNGFuN
- lE2QWmhJ14rg8tyDFem/WyQl3UQKi+71+JHTtGmmi9wEyNRDUwm7ZEneJ0ZVxhDqiKvH
- HKtx5qMkA26N+VpH6stF+1fts7eg/y5kreB4YywWi6k8yhldU6EgHFKqyeXMyJMRS1xr
- 2XKg+DlUd+YaN9+GMMaocFN2IbF5CvZ0PpcteIO/IFzkc/wHZ5QOoeDuwlbSngdrYyNc
- 5+lw==
+ d=linaro.org; s=google; t=1687729637; x=1690321637;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=H5Wyi+zFwzrrGvjg/59bN6GXW/pmA6YeFDYOyatxXXU=;
+ b=P6CWl22YnGaMKIInh08tq8+1kF8rABVt4XCm5M/OhKon7CEEuWsEHCcBlHkqyF/S9f
+ p8GpUeNN8gAEyEvnAqK6PpCfMoatHAE4jjfU8lDyZ2ovhPKkeU33mWrBkhEE9rry4F6c
+ bU9mTW2MeeMmxpwrZtxuR0NJcbCid4OJ1VsY9CaX9bXvzQmtg+LhW4NP0vHn5d9ewpx4
+ MKKBTB0bVTQQtcGXnakunBhg45e4KCPhn58GG59GXSMfYh2QnQSy5aPQYmvZLawVDBdF
+ 0bYkn0hbYmpUdyssXdUp/otVg1mFjBj2qd/S2qZIQRJ2YXYOdV7SSZx0hGbb8hGMDqK8
+ 6dUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687728464; x=1690320464;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Mnsf664I1dbfqhlUsQXaqr8d9bhL0IvglCtYautfisc=;
- b=Ab+HgNgV7mzloew/1x08H4AUTmrdtOCr/8KuqyNF4snV5GXkT/aoRA1x3MMJhud3E7
- ASnSgFo7IY1o9bINguAcmKUPEyefbK1A57HUFbDH0zqi1+dsF/FG/cPqjtmjygGKA1bD
- ZBpVec2ZLXvN91ic6J/DnCy+j5TNjCSQXOo5Yzvdz+ajn9bwbOGvXt+SkAnhbCSHFTPU
- 9FDEjV+RE5LV0bKY94p4yLgI9cBHIeIv0OzNGW19j+Ytc+jsx1FwN+l2pUrzv0oAlbTf
- gAJODGDPZU5+2xEJuWU9KA2E5apot5mk/N/LlZbZEt0VaQE8aVvpVwvdZnKi8s+5v2/w
- 40sg==
-X-Gm-Message-State: AC+VfDzSqmJ9M8SgbvGEaQ6pcau42xJIKA6snrf8ClQMCu4Yvo+VeB1B
- 7LuKFMBuKMUFzWk2qydw1/U=
-X-Google-Smtp-Source: ACHHUZ5wIWIyAYRcOrGqAH+eTfsevtq5sK6j+fomue4H+0kuSweLKDEQuSEREP+QRfxd70bhcKfdsg==
-X-Received: by 2002:a17:902:d4c7:b0:1b6:9df6:26c2 with SMTP id
- o7-20020a170902d4c700b001b69df626c2mr4094587plg.12.1687728463835; 
- Sun, 25 Jun 2023 14:27:43 -0700 (PDT)
-Received: from q1iq-virtual-machine.localdomain ([111.201.135.80])
+ d=1e100.net; s=20221208; t=1687729637; x=1690321637;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=H5Wyi+zFwzrrGvjg/59bN6GXW/pmA6YeFDYOyatxXXU=;
+ b=S/ymokmpARB6JiP7tiOwMIpLfaiRb7KngkQbvTt9pNiv4aKBGpuBaOFYYAiHYhfuyn
+ vY43XsDi/9H45T4xp1EZ8VmOy44/1x2R/LGdP+bgB9aAt51u8GtBb3D3C/oqc2X3PQcI
+ 4u8mpIPnRiFxqmjg/5qkDZRLccRtUlgWu4uUiVfEddrsT3iFMQtSqgBzbqW7lQ9tZePP
+ Ozg+KRGmBLNYsmOGYz3KESBHEqNBVkabM2SVYSk6Y5plTcN0qy7UNYxiUSCiTqfb68Tg
+ n1Dh3Idqu26qj+QnePpkCrwbxv0Gl1l9SDWy5EyHxFKy/peFuEzWC6Dp0zkxZ+DQFgyA
+ 4ROg==
+X-Gm-Message-State: AC+VfDzCVnLpIAMabMPctQNiKljkgzoaYJ4L64bOvgRDRvEivDQeJ95y
+ j6tnU6wVcpfb3ch4mv+97m1WMA==
+X-Google-Smtp-Source: ACHHUZ5hwqQvgIHu/8xZAZgM6jqslH9uU101+mtgw0ZqcVBwsmnXEz1rT/MObmIeBvqQgNSUjkkLhw==
+X-Received: by 2002:a17:907:6088:b0:988:dc8e:2fec with SMTP id
+ ht8-20020a170907608800b00988dc8e2fecmr19101153ejc.36.1687729636746; 
+ Sun, 25 Jun 2023 14:47:16 -0700 (PDT)
+Received: from [192.168.69.115] ([176.187.212.184])
  by smtp.gmail.com with ESMTPSA id
- je5-20020a170903264500b001b8004ff609sm761343plb.270.2023.06.25.14.27.42
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 25 Jun 2023 14:27:43 -0700 (PDT)
-From: Yeqi Fu <fufuyqqqqqq@gmail.com>
-To: alex.bennee@linaro.org
-Cc: richard.henderson@linaro.org, qemu-devel@nongnu.org,
- Yeqi Fu <fufuyqqqqqq@gmail.com>
-Subject: [RFC v3 10/10] tests/tcg/multiarch: Add nativecalls.c test
-Date: Mon, 26 Jun 2023 05:27:07 +0800
-Message-Id: <20230625212707.1078951-11-fufuyqqqqqq@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230625212707.1078951-1-fufuyqqqqqq@gmail.com>
-References: <20230625212707.1078951-1-fufuyqqqqqq@gmail.com>
+ n17-20020a1709065e1100b00991481e7c53sm643066eju.206.2023.06.25.14.47.15
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 25 Jun 2023 14:47:16 -0700 (PDT)
+Message-ID: <36774da7-41ba-5ed1-2f7f-d15cddd6fb81@linaro.org>
+Date: Sun, 25 Jun 2023 23:47:13 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
- envelope-from=fufuyqqqqqq@gmail.com; helo=mail-pl1-x62f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.12.0
+Subject: Re: [RFC v3 03/10] build: Implement libnative library and configure
+ options
+Content-Language: en-US
+To: Yeqi Fu <fufuyqqqqqq@gmail.com>, alex.bennee@linaro.org
+Cc: richard.henderson@linaro.org, qemu-devel@nongnu.org,
+ Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Riku Voipio <riku.voipio@iki.fi>
+References: <20230625212707.1078951-1-fufuyqqqqqq@gmail.com>
+ <20230625212707.1078951-4-fufuyqqqqqq@gmail.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230625212707.1078951-4-fufuyqqqqqq@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52b.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.089,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -93,148 +96,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a test for native calls to verify the functionality of native
-functions. This requires cross-compiling test cases and building them
-as dynamically linked binaries. Also, introduce necessary system
-libraries in QEMU.
+On 25/6/23 23:27, Yeqi Fu wrote:
+> This commit implements a shared library, where native functions are
+> rewritten as specialized instructions. At runtime, user programs load
+> the shared library, and specialized instructions are executed when
+> native functions are called.
+> 
+> Signed-off-by: Yeqi Fu <fufuyqqqqqq@gmail.com>
+> ---
+>   Makefile                            |   2 +
+>   common-user/native/Makefile.include |   9 +++
+>   common-user/native/Makefile.target  |  26 +++++++
+>   common-user/native/libnative.c      | 112 ++++++++++++++++++++++++++++
+>   configure                           |  84 ++++++++++++++++-----
+>   include/native/libnative.h          |  12 +++
+>   include/native/native-defs.h        |  65 ++++++++++++++++
+>   7 files changed, 293 insertions(+), 17 deletions(-)
+>   create mode 100644 common-user/native/Makefile.include
+>   create mode 100644 common-user/native/Makefile.target
+>   create mode 100644 common-user/native/libnative.c
+>   create mode 100644 include/native/libnative.h
+>   create mode 100644 include/native/native-defs.h
 
-Signed-off-by: Yeqi Fu <fufuyqqqqqq@gmail.com>
----
- tests/tcg/multiarch/Makefile.target      |   9 +-
- tests/tcg/multiarch/native/nativecalls.c | 103 +++++++++++++++++++++++
- 2 files changed, 111 insertions(+), 1 deletion(-)
- create mode 100644 tests/tcg/multiarch/native/nativecalls.c
 
-diff --git a/tests/tcg/multiarch/Makefile.target b/tests/tcg/multiarch/Makefile.target
-index 373db69648..c4ea7117c2 100644
---- a/tests/tcg/multiarch/Makefile.target
-+++ b/tests/tcg/multiarch/Makefile.target
-@@ -128,7 +128,14 @@ run-semiconsole: semiconsole
- run-plugin-semiconsole-with-%:
- 	$(call skip-test, $<, "MANUAL ONLY")
- 
--TESTS += semihosting semiconsole
-+nativecalls: native/nativecalls.c
-+	$(CC) $(CFLAGS) $(EXTRA_CFLAGS) $< -o $@ $(filter-out -static,$(LDFLAGS))
-+
-+run-nativecalls: nativecalls
-+	$(call run-test,$<, $(QEMU) -L /usr/$(subst -gcc,,$(CC)) --native-bypass $(SRC_PATH)/build/common-user/native/$(TARGET)/libnative.so $<, \
-+	"native call")
-+
-+TESTS += semihosting semiconsole nativecalls
- endif
- 
- # Update TESTS
-diff --git a/tests/tcg/multiarch/native/nativecalls.c b/tests/tcg/multiarch/native/nativecalls.c
-new file mode 100644
-index 0000000000..2d4ddb3a8e
---- /dev/null
-+++ b/tests/tcg/multiarch/native/nativecalls.c
-@@ -0,0 +1,103 @@
-+#include <assert.h>
-+#include <stdlib.h>
-+#include <string.h>
-+
-+void compare_memory(const void *a, const void *b, size_t n)
-+{
-+    const unsigned char *p1 = a;
-+    const unsigned char *p2 = b;
-+    for (size_t i = 0; i < n; i++) {
-+        assert(p1[i] == p2[i]);
-+    }
-+}
-+
-+void test_memcpy()
-+{
-+    char src[] = "Hello, world!";
-+    char dest[20];
-+    memcpy(dest, src, 13);
-+    compare_memory(dest, src, 13);
-+}
-+
-+void test_memcmp()
-+{
-+    char str1[] = "abc";
-+    char str2[] = "abc";
-+    char str3[] = "def";
-+    assert(memcmp(str1, str2, 3) == 0);
-+    assert(memcmp(str1, str3, 3) != 0);
-+}
-+
-+void test_memset()
-+{
-+    char buffer[10];
-+    memset(buffer, 'A', 10);
-+    int i;
-+    for (i = 0; i < 10; i++) {
-+        assert(buffer[i] == 'A');
-+    }
-+}
-+
-+void test_strncpy()
-+{
-+    char src[] = "Hello, world!";
-+    char dest[20];
-+    strncpy(dest, src, 13);
-+    compare_memory(dest, src, 13);
-+}
-+
-+void test_strncmp()
-+{
-+    char str1[] = "abc";
-+    char str2[] = "abc";
-+    char str3[] = "def";
-+    assert(strncmp(str1, str2, 2) == 0);
-+    assert(strncmp(str1, str3, 2) != 0);
-+}
-+
-+
-+void test_strcpy()
-+{
-+    char src[] = "Hello, world!";
-+    char dest[20];
-+    strcpy(dest, src);
-+    compare_memory(dest, src, 13);
-+}
-+
-+void test_strcmp()
-+{
-+    char str1[] = "abc";
-+    char str2[] = "abc";
-+    char str3[] = "def";
-+    assert(strcmp(str1, str2) == 0);
-+    assert(strcmp(str1, str3) != 0);
-+}
-+
-+void test_memcpy_bad_addr()
-+{
-+    char src[] = "Hello, world!";
-+    char *dst = (char *)0x1;
-+    memcpy(dst, src, 13);
-+}
-+
-+void test_memset_bad_addr()
-+{
-+    char *dst = (char *)0x1;
-+    memset(dst, 'A', 10);
-+}
-+
-+int main()
-+{
-+    test_memcpy();
-+    test_memcmp();
-+    test_memset();
-+    test_strncpy();
-+    test_strncmp();
-+    test_strcpy();
-+    test_strcmp();
-+
-+    test_memcpy_bad_addr();
-+    test_memset_bad_addr();
-+
-+    return EXIT_SUCCESS;
-+}
--- 
-2.34.1
+> diff --git a/configure b/configure
+> index 2a556d14c9..64edbda892 100755
+> --- a/configure
+> +++ b/configure
+> @@ -1838,48 +1838,42 @@ if test "$ccache_cpp2" = "yes"; then
+>     echo "export CCACHE_CPP2=y" >> $config_host_mak
+>   fi
+>   
+> -# tests/tcg configuration
+> -(config_host_mak=tests/tcg/config-host.mak
+> -mkdir -p tests/tcg
+> -echo "# Automatically generated by configure - do not modify" > $config_host_mak
+> -echo "SRC_PATH=$source_path" >> $config_host_mak
+> -echo "HOST_CC=$host_cc" >> $config_host_mak
+> +# prepare config files for cross build
+> +config_corss_build_host_mak=cross-build/config-host.mak
+> +mkdir -p cross-build
+> +echo "# Automatically generated by configure - do not modify" > $config_corss_build_host_mak
+> +echo "SRC_PATH=$source_path" >> $config_corss_build_host_mak
+> +echo "HOST_CC=$host_cc" >> $config_corss_build_host_mak
 
+Typo "cross". Possibly part of the 'configure' changes unrelated
+to libnative could be split in a preliminary patch.
 
