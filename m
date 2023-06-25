@@ -2,83 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A7A073CED0
-	for <lists+qemu-devel@lfdr.de>; Sun, 25 Jun 2023 09:08:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B791E73CF51
+	for <lists+qemu-devel@lfdr.de>; Sun, 25 Jun 2023 10:27:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDJpa-0001t8-8q; Sun, 25 Jun 2023 03:06:42 -0400
+	id 1qDL4f-0004SX-F1; Sun, 25 Jun 2023 04:26:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1qDJpY-0001sc-NF
- for qemu-devel@nongnu.org; Sun, 25 Jun 2023 03:06:40 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1qDJpW-0004ly-Nz
- for qemu-devel@nongnu.org; Sun, 25 Jun 2023 03:06:40 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687676796;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=02CWRomy7XmMOK7/frfF4kbhLrGAkoQZ8ey2cqvI7pU=;
- b=KUMfLXGrZ44DiC4QzYZIstXYIj0efdmgtabsD7ZvwG3ucEMLO234vZu2gipLW6ysUdtl6L
- RxQyoy0UE3QnTECe33pqTyZNe3IxzgE9335K5dulYOYxdhmeQtpeyhH+Ko7y7WUvbZMrGM
- mxxSUje5kJn+13/DHdUqblKVwU4f4lo=
-Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
- [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-351-TFvMevTMPKuZ4VncsVRsGQ-1; Sun, 25 Jun 2023 03:06:34 -0400
-X-MC-Unique: TFvMevTMPKuZ4VncsVRsGQ-1
-Received: by mail-lf1-f71.google.com with SMTP id
- 2adb3069b0e04-4f0176dcc1eso1055528e87.1
- for <qemu-devel@nongnu.org>; Sun, 25 Jun 2023 00:06:34 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qDL4U-0004S3-Bg
+ for qemu-devel@nongnu.org; Sun, 25 Jun 2023 04:26:11 -0400
+Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qDL4P-0006ef-Eo
+ for qemu-devel@nongnu.org; Sun, 25 Jun 2023 04:26:08 -0400
+Received: by mail-ed1-x52c.google.com with SMTP id
+ 4fb4d7f45d1cf-51d7e8dd118so1823175a12.1
+ for <qemu-devel@nongnu.org>; Sun, 25 Jun 2023 01:26:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1687681563; x=1690273563;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=XDurioBlBW0lnqV7WP6lflm6+GeOPIzqrVoBzfG/Q04=;
+ b=U6pbNduIKhJDOCYCCTVkpnzTldttKfQVv/Rsb1iRPcqudkedmskloWkahWaPdLJH2m
+ ChJ3qMyASuCiAB2hXMxzDlaXCmmNokJXyKqoI9wxxnkHIQNWNUShBXVi49ISYBzW/Bx6
+ 3wp6d3zVv4CVNXFEzryxo9nt6dRHDgvcSNbfnmZf8SHkShYTNbJU8MrO78JYmz4Gr27F
+ P9iIsVrvlGlZC1LbBsjghIzd40L6sZPPAcRCHapR52h/FmjMgfQkXU+5RRffTNVBfA8D
+ sEiuSoLqykLjD7re2+7Nx+kwSP6VdSoNgOVAE30OhgLQ+CEerqEtT3eR/pkdpG4t69sP
+ VWfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687676793; x=1690268793;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=02CWRomy7XmMOK7/frfF4kbhLrGAkoQZ8ey2cqvI7pU=;
- b=hoLFx9D8F04/ODFjfOBHFZOabfX3MH4kmdS/ywL9R9lJrymNWMRLCD+CQDr4Mrgh4I
- yb0M55ydpbXKU5EfmV3IuMJClNNMUDvE2TMtzo5/QjuvJDbVlrbdOwwKY7G9qZpvW0Be
- izjuEmhXCFgqa/y2ISVXT9dLFCq0rto8H/wKM9TV9nr4XB9FQJyMpci9R5lxEX+vQzaQ
- zZisxzOaMuXXL+Jg8RTFCfZgIWROmcqNsApk58QWBdMM07m1m72K7jlU4LW9QdwoYVHe
- s8pta7UO5cYA3/vDCdjT+xP7tXVStR9ZU8eJluK2hHHWpfRlaww2mTw7XBVl/UulVi6i
- 5L+Q==
-X-Gm-Message-State: AC+VfDxFyJbBY430nzaIj31i/k9Zx6TO3HugXD04NiTkPrpoJCZ+KiBo
- uft3Pd2CAItczE1CdmvQ9keuFefIyX3le6OzXWPdvWTiLYqkOSDp1g2W1u0tvLR5Xx/gBOId40a
- +t8ZOZuFnOvZYo2STtTlXCOKc3T8Roh0=
-X-Received: by 2002:a05:6512:3d12:b0:4f7:557b:fca4 with SMTP id
- d18-20020a0565123d1200b004f7557bfca4mr12678426lfv.26.1687676793117; 
- Sun, 25 Jun 2023 00:06:33 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7jf6tYz/A29m7mxNSFf81g3hyZlf46Q/CHT4co4zicHOqd6vpwblluuvfleHH+5lFdymQ96OMp+k6gLU4uNn8=
-X-Received: by 2002:a05:6512:3d12:b0:4f7:557b:fca4 with SMTP id
- d18-20020a0565123d1200b004f7557bfca4mr12678421lfv.26.1687676792763; Sun, 25
- Jun 2023 00:06:32 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1687681563; x=1690273563;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=XDurioBlBW0lnqV7WP6lflm6+GeOPIzqrVoBzfG/Q04=;
+ b=AnhNJ3cgp4Il09Cp7d+bFKcgiK5BaN4jjLQqZz1S08xNOrYYv3xmzv4QJAOPTzMuZT
+ UoCf3U1woXLmc7rPwsoGYuPKS93Ukz4XGR4spkXYsyESxMfyAofWmMUS4p+Uc+ndXoP6
+ gYY/S0syB9dadHff8gRdTQjS6eUG3TU3k7yCUqJeJYtnLZPlUHXMU5QvgwocXPUpGhhF
+ YCmhebST1UBNai7WvtpwaizZoEq04h/3AxeUz8JEIXH0KjuzX2GE/OIIxh/ooZkwVFtW
+ VSWNJc6r9m0R5om3CiBTA98L5lYlPYVv4qMP0EMmTyZuGci7JZgKProUwKBaiGhfskWx
+ iIEg==
+X-Gm-Message-State: AC+VfDxoj4I19YKu5RvitqwaUDiyQusyMNRQEprmoqEZQWoyAE/xa61x
+ O13aKuEePcZg8u/w2FhLmPIQalcZ7V5WhRHfV6oL5Q==
+X-Google-Smtp-Source: ACHHUZ6KD4o8YzIMalYoMCYjT0A1YjgfiEfKTr76o7Co/k2lTghB9ztRYw4JYnHRfHv94Ofmtq7okw==
+X-Received: by 2002:aa7:d0c9:0:b0:51d:7d5a:4426 with SMTP id
+ u9-20020aa7d0c9000000b0051d7d5a4426mr2417442edo.22.1687681563126; 
+ Sun, 25 Jun 2023 01:26:03 -0700 (PDT)
+Received: from [192.168.157.227] ([91.223.100.38])
+ by smtp.gmail.com with ESMTPSA id
+ b16-20020aa7c6d0000000b0051d7f4f32d6sm1484523eds.96.2023.06.25.01.26.01
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 25 Jun 2023 01:26:02 -0700 (PDT)
+Message-ID: <e9249b18-ffeb-ce11-1e64-85a2c992b639@linaro.org>
+Date: Sun, 25 Jun 2023 10:25:57 +0200
 MIME-Version: 1.0
-References: <20230622215824.2173343-1-i.maximets@ovn.org>
-In-Reply-To: <20230622215824.2173343-1-i.maximets@ovn.org>
-From: Jason Wang <jasowang@redhat.com>
-Date: Sun, 25 Jun 2023 15:06:21 +0800
-Message-ID: <CACGkMEsXOb8wiYo9ktgqh8MqD971=ARJ_etL7MBF-uyo6qt1eA@mail.gmail.com>
-Subject: Re: [PATCH] net: add initial support for AF_XDP network backend
-To: Ilya Maximets <i.maximets@ovn.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>, 
- Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jasowang@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PULL 00/26] target-arm queue
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
+References: <20230623123135.1788191-1-peter.maydell@linaro.org>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230623123135.1788191-1-peter.maydell@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ed1-x52c.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -95,151 +93,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Jun 23, 2023 at 5:58=E2=80=AFAM Ilya Maximets <i.maximets@ovn.org> =
-wrote:
->
-> AF_XDP is a network socket family that allows communication directly
-> with the network device driver in the kernel, bypassing most or all
-> of the kernel networking stack.  In the essence, the technology is
-> pretty similar to netmap.  But, unlike netmap, AF_XDP is Linux-native
-> and works with any network interfaces without driver modifications.
-> Unlike vhost-based backends (kernel, user, vdpa), AF_XDP doesn't
-> require access to character devices or unix sockets.  Only access to
-> the network interface itself is necessary.
->
-> This patch implements a network backend that communicates with the
-> kernel by creating an AF_XDP socket.  A chunk of userspace memory
-> is shared between QEMU and the host kernel.  4 ring buffers (Tx, Rx,
-> Fill and Completion) are placed in that memory along with a pool of
-> memory buffers for the packet data.  Data transmission is done by
-> allocating one of the buffers, copying packet data into it and
-> placing the pointer into Tx ring.  After transmission, device will
-> return the buffer via Completion ring.  On Rx, device will take
-> a buffer form a pre-populated Fill ring, write the packet data into
-> it and place the buffer into Rx ring.
->
-> AF_XDP network backend takes on the communication with the host
-> kernel and the network interface and forwards packets to/from the
-> peer device in QEMU.
->
-> Usage example:
->
->   -device virtio-net-pci,netdev=3Dguest1,mac=3D00:16:35:AF:AA:5C
->   -netdev af-xdp,ifname=3Dens6f1np1,id=3Dguest1,mode=3Dnative,queues=3D1
->
-> XDP program bridges the socket with a network interface.  It can be
-> attached to the interface in 2 different modes:
->
-> 1. skb - this mode should work for any interface and doesn't require
->          driver support.  With a caveat of lower performance.
->
-> 2. native - this does require support from the driver and allows to
->             bypass skb allocation in the kernel and potentially use
->             zero-copy while getting packets in/out userspace.
->
-> By default, QEMU will try to use native mode and fall back to skb.
-> Mode can be forced via 'mode' option.  To force 'copy' even in native
-> mode, use 'force-copy=3Don' option.  This might be useful if there is
-> some issue with the driver.
->
-> Option 'queues=3DN' allows to specify how many device queues should
-> be open.  Note that all the queues that are not open are still
-> functional and can receive traffic, but it will not be delivered to
-> QEMU.  So, the number of device queues should generally match the
-> QEMU configuration, unless the device is shared with something
-> else and the traffic re-direction to appropriate queues is correctly
-> configured on a device level (e.g. with ethtool -N).
-> 'start-queue=3DM' option can be used to specify from which queue id
-> QEMU should start configuring 'N' queues.  It might also be necessary
-> to use this option with certain NICs, e.g. MLX5 NICs.  See the docs
-> for examples.
->
-> In a general case QEMU will need CAP_NET_ADMIN and CAP_SYS_ADMIN
-> capabilities in order to load default XSK/XDP programs to the
-> network interface and configure BTF maps.
+On 6/23/23 14:31, Peter Maydell wrote:
+> Hi; here's a target-arm pullreq. Mostly this is RTH's FEAT_RME
+> series; there are also a handful of bug fixes including some
+> which aren't arm-specific but which it's convenient to include
+> here.
+> 
+> thanks
+> -- PMM
+> 
+> The following changes since commit b455ce4c2f300c8ba47cba7232dd03261368a4cb:
+> 
+>    Merge tag 'q800-for-8.1-pull-request' ofhttps://github.com/vivier/qemu-m68k  into staging (2023-06-22 10:18:32 +0200)
+> 
+> are available in the Git repository at:
+> 
+>    https://git.linaro.org/people/pmaydell/qemu-arm.git  tags/pull-target-arm-20230623
+> 
+> for you to fetch changes up to 497fad38979c16b6412388927401e577eba43d26:
+> 
+>    pc-bios/keymaps: Use the official xkb name for Arabic layout, not the legacy synonym (2023-06-23 11:46:02 +0100)
+> 
+> ----------------------------------------------------------------
+> target-arm queue:
+>   * Add (experimental) support for FEAT_RME
+>   * host-utils: Avoid using __builtin_subcll on buggy versions of Apple Clang
+>   * target/arm: Restructure has_vfp_d32 test
+>   * hw/arm/sbsa-ref: add ITS support in SBSA GIC
+>   * target/arm: Fix sve predicate store, 8 <= VQ <= 15
+>   * pc-bios/keymaps: Use the official xkb name for Arabic layout, not the legacy synonym
 
-I think you mean "BPF" actually?
-
->  It is possible, however,
-> to run only with CAP_NET_RAW.
-
-Qemu often runs without any privileges, so we need to fix it.
-
-I think adding support for SCM_RIGHTS via monitor would be a way to go.
+Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/8.1 as appropriate.
 
 
-> For that to work, an external process
-> with admin capabilities will need to pre-load default XSK program
-> and pass an open file descriptor for this program's 'xsks_map' to
-> QEMU process on startup.  Network backend will need to be configured
-> with 'inhibit=3Don' to avoid loading of the programs.  The file
-> descriptor for 'xsks_map' can be passed via 'xsks-map-fd=3DN' option.
->
-> There are few performance challenges with the current network backends.
->
-> First is that they do not support IO threads.
-
-The current networking codes needs some major recatoring to support IO
-threads which I'm not sure is worthwhile.
-
-> This means that data
-> path is handled by the main thread in QEMU and may slow down other
-> work or may be slowed down by some other work.  This also means that
-> taking advantage of multi-queue is generally not possible today.
->
-> Another thing is that data path is going through the device emulation
-> code, which is not really optimized for performance.  The fastest
-> "frontend" device is virtio-net.  But it's not optimized for heavy
-> traffic either, because it expects such use-cases to be handled via
-> some implementation of vhost (user, kernel, vdpa).  In practice, we
-> have virtio notifications and rcu lock/unlock on a per-packet basis
-> and not very efficient accesses to the guest memory.  Communication
-> channels between backend and frontend devices do not allow passing
-> more than one packet at a time as well.
->
-> Some of these challenges can be avoided in the future by adding better
-> batching into device emulation or by implementing vhost-af-xdp variant.
-
-It might require you to register(pin) the whole guest memory to XSK or
-there could be a copy. Both of them are sub-optimal.
-
-A really interesting project is to do AF_XDP passthrough, then we
-don't need to care about pin and copy and we will get ultra speed in
-the guest. (But again, it might needs BPF support in virtio-net).
-
->
-> There are also a few kernel limitations.  AF_XDP sockets do not
-> support any kinds of checksum or segmentation offloading.  Buffers
-> are limited to a page size (4K), i.e. MTU is limited.  Multi-buffer
-> support is not implemented for AF_XDP today.  Also, transmission in
-> all non-zero-copy modes is synchronous, i.e. done in a syscall.
-> That doesn't allow high packet rates on virtual interfaces.
->
-> However, keeping in mind all of these challenges, current implementation
-> of the AF_XDP backend shows a decent performance while running on top
-> of a physical NIC with zero-copy support.
->
-> Test setup:
->
-> 2 VMs running on 2 physical hosts connected via ConnectX6-Dx card.
-> Network backend is configured to open the NIC directly in native mode.
-> The driver supports zero-copy.  NIC is configured to use 1 queue.
->
-> Inside a VM - iperf3 for basic TCP performance testing and dpdk-testpmd
-> for PPS testing.
->
-> iperf3 result:
->  TCP stream      : 19.1 Gbps
->
-> dpdk-testpmd (single queue, single CPU core, 64 B packets) results:
->  Tx only         : 3.4 Mpps
->  Rx only         : 2.0 Mpps
->  L2 FWD Loopback : 1.5 Mpps
-
-I don't object to merging this backend (considering we've already
-merged netmap) once the code is fine, but the number is not amazing so
-I wonder what is the use case for this backend?
-
-Thanks
+r~
 
 
