@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF39773CE23
-	for <lists+qemu-devel@lfdr.de>; Sun, 25 Jun 2023 04:50:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0B0373CE24
+	for <lists+qemu-devel@lfdr.de>; Sun, 25 Jun 2023 04:50:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDFoI-0000pS-Kz; Sat, 24 Jun 2023 22:49:06 -0400
+	id 1qDFpe-0001UE-Gy; Sat, 24 Jun 2023 22:50:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <18622748025@163.com>)
- id 1qDFoD-0000ov-5b
- for qemu-devel@nongnu.org; Sat, 24 Jun 2023 22:49:01 -0400
-Received: from m12.mail.163.com ([220.181.12.199])
+ id 1qDFpc-0001Th-HY
+ for qemu-devel@nongnu.org; Sat, 24 Jun 2023 22:50:28 -0400
+Received: from m12.mail.163.com ([220.181.12.215])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <18622748025@163.com>) id 1qDFoA-0007zx-Eu
- for qemu-devel@nongnu.org; Sat, 24 Jun 2023 22:49:00 -0400
+ (envelope-from <18622748025@163.com>) id 1qDFpa-0000Cr-6O
+ for qemu-devel@nongnu.org; Sat, 24 Jun 2023 22:50:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
- s=s110527; h=From:Subject:Date:Message-Id; bh=/oThOCj9SvEkYEE8Un
- EJeiAabcL3BWqNpZWHh263r6M=; b=BfFUPY4FbNSxq+G/2ev0qwKrNhsBwQwQ8Y
- jGIn/MCePQfdOGYreUtuK0XZchfdKgfDg4UYrSaiJDfubj2ekw4oLSahBd+gn4zr
- teUh5owcvjk6+OJHiXRx61KKc03dIkl6KRxOwWeBbwRyQitHklyQRNo1t3RNzDO/
- YED8KWPEc=
+ s=s110527; h=From:Subject:Date:Message-Id; bh=lHOgmtQNzLcrquol38
+ mdt4/Uk3UyxUBy7BH05Y99YDw=; b=Q/YxOA2FLC+CeBRHJpTgzKtWeEWq19vquU
+ W7mWwnUsEFcyaCyU9QX0eIDjFBoi/O7FyiIPjrP3tkDejYwgYYK6bGDu97iF3FE1
+ eYQO5cDoqT1bHbrN65ejGPjcGDN4AgSHJfzfMuDez8cEOiZlJ4DHVZEjFed55GpJ
+ 7kXVkoSPU=
 Received: from localhost.localdomain (unknown [103.3.97.171])
- by zwqz-smtp-mta-g0-3 (Coremail) with SMTP id _____wB3gwQOq5dkeY9gAw--.7417S2; 
- Sun, 25 Jun 2023 10:48:46 +0800 (CST)
+ by zwqz-smtp-mta-g5-2 (Coremail) with SMTP id _____wDXouRtq5dkDQ1RAw--.57513S2;
+ Sun, 25 Jun 2023 10:50:22 +0800 (CST)
 From: "liguang.zhang" <18622748025@163.com>
 To: qemu-devel@nongnu.org
 Cc: pbonzini@redhat.com, alistair23@gmail.com,
  "liguang.zhang" <liguang.zhang@hexintek.com>
 Subject: [PATCH] target/riscv: fix the issue of guest reboot then no response
  or crash in kvm-mode
-Date: Sun, 25 Jun 2023 10:48:41 +0800
-Message-Id: <20230625024841.26708-1-18622748025@163.com>
+Date: Sun, 25 Jun 2023 10:50:18 +0800
+Message-Id: <20230625025018.26956-1-18622748025@163.com>
 X-Mailer: git-send-email 2.17.1
-X-CM-TRANSID: _____wB3gwQOq5dkeY9gAw--.7417S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxXw17AF1xWr4fJrW3CFyfJFb_yoWruw13pF
- ZrCa9xCr48t3s7Jw1ftFyDXr1rW3yI9FsrArZrur4SyF45JrZ8J3WkK3y7Ar98GFyUuFWa
- kFW5GF13u3yDtaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
- 9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07beSoXUUUUU=
+X-CM-TRANSID: _____wDXouRtq5dkDQ1RAw--.57513S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxXw17JrWrXrW5ZrWrCryDWrg_yoWrtrW8pF
+ 4DCa98Cr4rt3yxJw1ftFyDJr1rW3yI9FsxArW7ur4SyF45JrZ8J3Z2k3y7Ar98GFy8urWa
+ kFW5GF13uayUta7anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+ 9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07bezVbUUUUU=
 X-Originating-IP: [103.3.97.171]
-X-CM-SenderInfo: bpryljasxumiisv6il2tof0z/1tbiPQ2ZWWI0XglHxwABsw
-Received-SPF: pass client-ip=220.181.12.199; envelope-from=18622748025@163.com;
+X-CM-SenderInfo: bpryljasxumiisv6il2tof0z/1tbiyA+ZWVp7KzHzOAAAs3
+Received-SPF: pass client-ip=220.181.12.215; envelope-from=18622748025@163.com;
  helo=m12.mail.163.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
@@ -50,8 +50,9 @@ X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, FROM_LOCAL_DIGITS=0.001,
- FROM_LOCAL_HEX=0.006, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+ FROM_LOCAL_HEX=0.006, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_BL=0.001,
+ RCVD_IN_MSPIKE_L3=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -69,9 +70,12 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: "liguang.zhang" <liguang.zhang@hexintek.com>
 
-There have a issue of guest reboot bug in kvm-mode:
-1. in guest shell just run the reboot, guest can't reboot success, and host kvm stop the vcpu schedual.
-2. for smp guest, ctrl+a+c switch to qemu command, use system_reset command to reset the guest, then vcpu crash
+There are two issues when rebooting a guest using KVM
+1. When the guest initiates a reboot the host is unable to stop the vcpu
+2. When running a SMP guest the qemu monitor system_reset causes a vcpu crash
+
+This can be fixed by clearing the CSR values at reset and syncing the
+MPSTATE with the host.
 
 kernel log
 ```shell
@@ -125,6 +129,7 @@ $system_reset
 v3:
 - change kvm_riscv_set_mpstate_to_kvm to kvm_riscv_sync_mpstate_to_kvm
 - remove newline after if(cap_has_mp_state)
+- update submit description
 
 Signed-off-by: liguang.zhang <liguang.zhang@hexintek.com>
 ---
