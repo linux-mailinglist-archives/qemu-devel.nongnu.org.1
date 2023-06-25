@@ -2,74 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83DCA73D494
-	for <lists+qemu-devel@lfdr.de>; Sun, 25 Jun 2023 23:30:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8ADE173D486
+	for <lists+qemu-devel@lfdr.de>; Sun, 25 Jun 2023 23:28:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDXGW-0005Ru-LC; Sun, 25 Jun 2023 17:27:24 -0400
+	id 1qDXGY-0005Um-PM; Sun, 25 Jun 2023 17:27:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <fufuyqqqqqq@gmail.com>)
- id 1qDXGU-0005RV-Am
- for qemu-devel@nongnu.org; Sun, 25 Jun 2023 17:27:22 -0400
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ id 1qDXGW-0005SE-Qs
+ for qemu-devel@nongnu.org; Sun, 25 Jun 2023 17:27:24 -0400
+Received: from mail-pg1-x532.google.com ([2607:f8b0:4864:20::532])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <fufuyqqqqqq@gmail.com>)
- id 1qDXGS-0003P3-J4
- for qemu-devel@nongnu.org; Sun, 25 Jun 2023 17:27:22 -0400
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-1b7e1875cc1so3075755ad.1
- for <qemu-devel@nongnu.org>; Sun, 25 Jun 2023 14:27:20 -0700 (PDT)
+ id 1qDXGV-0003Pd-57
+ for qemu-devel@nongnu.org; Sun, 25 Jun 2023 17:27:24 -0400
+Received: by mail-pg1-x532.google.com with SMTP id
+ 41be03b00d2f7-53fbf2c42bfso2267688a12.3
+ for <qemu-devel@nongnu.org>; Sun, 25 Jun 2023 14:27:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1687728439; x=1690320439;
+ d=gmail.com; s=20221208; t=1687728441; x=1690320441;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=2iJaGY1IcpK2do/l808hPeHtD6amwR97RNOTv0XTF1E=;
- b=awpdXQKtVZkYjF7hDlUbQ/jRxu8lzB+Vx+BPoVyGZ0sMaweQ3pSMREXR+tfxRKdRrV
- 5AXi0GIsSZ26rOiLIwQND8car20tVk4QVSykfJYaam0tH/p6JLV7O72G3PnFbLViSIOE
- gvfLlNbMIut4W7s27UxQVMrskRGadOMYxlvzmer1Z/KWqmPSnRnmpNaQr46qTyaxZ1/R
- jvaCU4vj+loJSV0n32j0lnZQCmHedmxMYxCEnDsGzItmXquM/mrgX3hr3J/ONItSRxJ/
- /1kzbsqTRJ7AafvcsJOcapmCllx0v8SlXH7rsk7oKG0H8UFuqjKcIQmLxefbb0UKsa9E
- uw+Q==
+ bh=45iYwMbUstRUciB1ggXmjQSsn39gdiC8XNNxy6MC88I=;
+ b=axfHZCN6cfovUyRzehrK2ZD3HIFUJg0okvHzFZluLPc5KNAkhXVBPpN+clfn0ytN0o
+ EBsCEHObvvGHh1SldU1cOe5YvoT8qF889TAMttsiULWNTKqLwdyMqr3zGRxH6/qEinFt
+ YLOj9UI240bR4VfXoy8x+CpE7yexqfYUaGmupOTTb1ua6nfob/EB1cQdRLH2sxxNyCe3
+ Y+gZxXrjRUK70eRR4KnwJI0xvtWwMqKeQDAPGyJRpH7kEX5rwx645qCJU3g4Ouo85OQw
+ rs+HF2LN8PTdv3WOf0j300ads0PdPIluahmYzlItGvq3JRfyVxDKxlNErMI+/k3m+sJi
+ 4nwA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687728439; x=1690320439;
+ d=1e100.net; s=20221208; t=1687728441; x=1690320441;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=2iJaGY1IcpK2do/l808hPeHtD6amwR97RNOTv0XTF1E=;
- b=hqyDP+qDheviK+NHV6+sW0MguoRrNSyO6GQhu2au5nBOdPw3yNv7M62Uk5XrHeiXuv
- vhxHI6xEe53W2NYCUA8fsULslbIkzTxoyhN1V71E0PR002RBrSr+QkLAqXuKj8M4IWsl
- iw2bpc5abvAXg+f9wOfpIiGCnKDT6x3Ih57jkcubiIGr3UMbxPXoZZXfhT6dlTuGMpLX
- VW4SLe+OeLqU/a+fL4ldvtH4WCwzvBCxyWKZ+4B1GK/EeIn+iM6FJGHg0PYMpI4f5e+w
- 4WvxTW9C1UKK8p2kMTicFWcJjP5Ud9hUnmC9Mf1jgiEW8Grf6cRa2TwN0Q/O0EDcqyRO
- Z/OQ==
-X-Gm-Message-State: AC+VfDy6Dad6ka4gizMXCFxvUnO9yTPLmTAoFPxDAO++g6/s7dFbN3r8
- VAMg9dF3GPn/3y7tS7z+YPnBda468tQkRnVZ
-X-Google-Smtp-Source: ACHHUZ7OLMCBsV+h0QWU0THzxWQ/vX0o0YzLRwgO4HhwyHeUsW4VsS4YfgcXxvSDqYdB0goNHPK53w==
-X-Received: by 2002:a17:903:32d2:b0:1b5:2ec:6ffb with SMTP id
- i18-20020a17090332d200b001b502ec6ffbmr3114936plr.0.1687728438727; 
- Sun, 25 Jun 2023 14:27:18 -0700 (PDT)
+ bh=45iYwMbUstRUciB1ggXmjQSsn39gdiC8XNNxy6MC88I=;
+ b=f3mERm+d152PJeddCl0g4fk8RshYTQOvoony0jvkX/lrWJhYAAhd3DvUnFa+/AmPMK
+ j2eEQutJ1kTv5QdTTZQ/5ZMdoSA2ow0MBOzQk/yuWBnWnaBikmFDVBYRKeiZ9iU0v8KS
+ 8JPodYtnkMZxp28iYtoQid9UeRm13645yopvyRXUA7qJPxPbq2F5YWEQjRlJmsaCv4bl
+ uyVcE7NjEeLCqrMWOLIHhN40h1iay33nRI+5OYb7lsLRu8Xuf8KeXCqIIaAZJZtR3gLv
+ 4SO4QkoUNv5nFBBkAqCwoxS2EIvJf4+Ye2TKUPYP9eTPY67yPHnLrtKWC/Bnltu/B45i
+ 7WNQ==
+X-Gm-Message-State: AC+VfDxszezNCfut7KDWEvaTd3boMzC4UF0O8aUTYuZkOzPz2OPmmde/
+ qLNze4fxVsIKRyiGcD0vR+0=
+X-Google-Smtp-Source: ACHHUZ6eXXrHOfwftXXwxvXTAb/fhewAKoLHGmBCrg7rRWaiUON1XDPZ6Wycd5ZAG5zXG0zsafMbPg==
+X-Received: by 2002:a17:902:cecf:b0:1af:cbb1:845 with SMTP id
+ d15-20020a170902cecf00b001afcbb10845mr7001669plg.16.1687728441675; 
+ Sun, 25 Jun 2023 14:27:21 -0700 (PDT)
 Received: from q1iq-virtual-machine.localdomain ([111.201.135.80])
  by smtp.gmail.com with ESMTPSA id
- je5-20020a170903264500b001b8004ff609sm761343plb.270.2023.06.25.14.27.17
+ je5-20020a170903264500b001b8004ff609sm761343plb.270.2023.06.25.14.27.19
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 25 Jun 2023 14:27:18 -0700 (PDT)
+ Sun, 25 Jun 2023 14:27:21 -0700 (PDT)
 From: Yeqi Fu <fufuyqqqqqq@gmail.com>
 To: alex.bennee@linaro.org
 Cc: richard.henderson@linaro.org, qemu-devel@nongnu.org,
- Yeqi Fu <fufuyqqqqqq@gmail.com>
-Subject: [RFC v3 01/10] docs: Add specification for native library calls
-Date: Mon, 26 Jun 2023 05:26:58 +0800
-Message-Id: <20230625212707.1078951-2-fufuyqqqqqq@gmail.com>
+ Yeqi Fu <fufuyqqqqqq@gmail.com>, Laurent Vivier <laurent@vivier.eu>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>
+Subject: [RFC v3 02/10] build: Add configure options for native calls
+Date: Mon, 26 Jun 2023 05:26:59 +0800
+Message-Id: <20230625212707.1078951-3-fufuyqqqqqq@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230625212707.1078951-1-fufuyqqqqqq@gmail.com>
 References: <20230625212707.1078951-1-fufuyqqqqqq@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=fufuyqqqqqq@gmail.com; helo=mail-pl1-x634.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::532;
+ envelope-from=fufuyqqqqqq@gmail.com; helo=mail-pg1-x532.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,88 +95,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Add CONFIG_NATIVE_CALL to architectures supporting native calls.
+
 Signed-off-by: Yeqi Fu <fufuyqqqqqq@gmail.com>
 ---
- docs/native_calls.txt | 70 +++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 70 insertions(+)
- create mode 100644 docs/native_calls.txt
+ configs/targets/aarch64-linux-user.mak | 1 +
+ configs/targets/arm-linux-user.mak     | 1 +
+ configs/targets/i386-linux-user.mak    | 1 +
+ configs/targets/mips-linux-user.mak    | 1 +
+ configs/targets/mips64-linux-user.mak  | 1 +
+ configs/targets/x86_64-linux-user.mak  | 1 +
+ 6 files changed, 6 insertions(+)
 
-diff --git a/docs/native_calls.txt b/docs/native_calls.txt
-new file mode 100644
-index 0000000000..8906566b13
---- /dev/null
-+++ b/docs/native_calls.txt
-@@ -0,0 +1,70 @@
-+Native Library Calls Optimization for QEMU Linux-User
-+====================
-+
-+Description
-+===========
-+When running under the linux-user mode in QEMU, the entire program,
-+including all library calls, is translated. Many well-understood
-+library functions are usually optimized for the processor they run
-+on. For example, the semantics of memcpy are well-defined and
-+optimized. Instead of translating these library functions, we can
-+call their native versions, as the runtime of library functions
-+is generally biased towards a few core functions. Thus, only a
-+small subset of functions (such as mem* and str*) would need to
-+be hooked to be useful.
-+
-+
-+Implementation
-+==============
-+This feature introduces a set of specialized instructions for native
-+calls and provides helpers to translate these instructions to
-+corresponding native functions. A shared library is also implemented,
-+where native functions are rewritten as specialized instructions.
-+At runtime, user programs load the shared library, and specialized
-+instructions are executed when native functions are called.
-+
-+The specialized instructions are implemented using architecture-
-+specific macros. These macros utilize unused or invalid opcodes or
-+instruction fields to embed the necessary information for native
-+function calls. This approach ensures that the specialized
-+instructions do not conflict with existing instructions.
-+
-+For x86 and x86_64, the implementation uses an unused opcode.
-+For arm and aarch64, the HLT instruction is used, as it is invalid in
-+userspace and has 16 bits of spare immediate data.
-+For mips and mips64, the implementation takes advantage of unused
-+bytes in the syscall instruction.
-+
-+Supported Architectures
-+=======================
-+This feature is applicable to user programs with the following
-+architectures now:
-+- x86
-+- x86_64
-+- arm
-+- aarch64
-+- mips
-+- mips64
-+
-+
-+Usage
-+=====
-+1. Install Cross-Compilation Tools
-+Cross-compilation tools are required to build the shared libraries
-+that can hook the necessary library functions. For example, a viable
-+command on Ubuntu is:
-+```
-+apt install libc6:i386 gcc-arm-linux-gnueabihf \
-+gcc-aarch64-linux-gnu gcc-mips-linux-gnu gcc-mips64-linux-gnuabi64
-+```
-+2. Locate the Compiled libnative.so
-+After compilation, the libnative.so file can be found in the
-+`./build/common-user/native/<target>-linux-user` directory.
-+
-+3. Run the Program with the `--native-bypass` Option
-+To run your program with native library bypass, use the
-+`--native-bypass` option to import libnative.so:
-+```
-+./build/qemu-<target> --native-bypass \
-+./build/common-user/native/<target>-linux-user/libnative.so ./program
-+```
+diff --git a/configs/targets/aarch64-linux-user.mak b/configs/targets/aarch64-linux-user.mak
+index ba8bc5fe3f..5a8fd98cd9 100644
+--- a/configs/targets/aarch64-linux-user.mak
++++ b/configs/targets/aarch64-linux-user.mak
+@@ -4,3 +4,4 @@ TARGET_XML_FILES= gdb-xml/aarch64-core.xml gdb-xml/aarch64-fpu.xml gdb-xml/aarch
+ TARGET_HAS_BFLT=y
+ CONFIG_SEMIHOSTING=y
+ CONFIG_ARM_COMPATIBLE_SEMIHOSTING=y
++CONFIG_NATIVE_CALL=y
+diff --git a/configs/targets/arm-linux-user.mak b/configs/targets/arm-linux-user.mak
+index 7f5d65794c..f934fb82da 100644
+--- a/configs/targets/arm-linux-user.mak
++++ b/configs/targets/arm-linux-user.mak
+@@ -5,3 +5,4 @@ TARGET_XML_FILES= gdb-xml/arm-core.xml gdb-xml/arm-vfp.xml gdb-xml/arm-vfp3.xml
+ TARGET_HAS_BFLT=y
+ CONFIG_SEMIHOSTING=y
+ CONFIG_ARM_COMPATIBLE_SEMIHOSTING=y
++CONFIG_NATIVE_CALL=y
+diff --git a/configs/targets/i386-linux-user.mak b/configs/targets/i386-linux-user.mak
+index 5b2546a430..2d8bca8f93 100644
+--- a/configs/targets/i386-linux-user.mak
++++ b/configs/targets/i386-linux-user.mak
+@@ -2,3 +2,4 @@ TARGET_ARCH=i386
+ TARGET_SYSTBL_ABI=i386
+ TARGET_SYSTBL=syscall_32.tbl
+ TARGET_XML_FILES= gdb-xml/i386-32bit.xml
++CONFIG_NATIVE_CALL=y
+diff --git a/configs/targets/mips-linux-user.mak b/configs/targets/mips-linux-user.mak
+index b4569a9893..fa005d487a 100644
+--- a/configs/targets/mips-linux-user.mak
++++ b/configs/targets/mips-linux-user.mak
+@@ -3,3 +3,4 @@ TARGET_ABI_MIPSO32=y
+ TARGET_SYSTBL_ABI=o32
+ TARGET_SYSTBL=syscall_o32.tbl
+ TARGET_BIG_ENDIAN=y
++CONFIG_NATIVE_CALL=y
+diff --git a/configs/targets/mips64-linux-user.mak b/configs/targets/mips64-linux-user.mak
+index d2ff509a11..ecfe6bcf73 100644
+--- a/configs/targets/mips64-linux-user.mak
++++ b/configs/targets/mips64-linux-user.mak
+@@ -4,3 +4,4 @@ TARGET_BASE_ARCH=mips
+ TARGET_SYSTBL_ABI=n64
+ TARGET_SYSTBL=syscall_n64.tbl
+ TARGET_BIG_ENDIAN=y
++CONFIG_NATIVE_CALL=y
+diff --git a/configs/targets/x86_64-linux-user.mak b/configs/targets/x86_64-linux-user.mak
+index 9ceefbb615..a53b017454 100644
+--- a/configs/targets/x86_64-linux-user.mak
++++ b/configs/targets/x86_64-linux-user.mak
+@@ -3,3 +3,4 @@ TARGET_BASE_ARCH=i386
+ TARGET_SYSTBL_ABI=common,64
+ TARGET_SYSTBL=syscall_64.tbl
+ TARGET_XML_FILES= gdb-xml/i386-64bit.xml
++CONFIG_NATIVE_CALL=y
 -- 
 2.34.1
 
