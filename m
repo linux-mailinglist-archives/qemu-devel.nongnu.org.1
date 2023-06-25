@@ -2,40 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64E2073CDE4
-	for <lists+qemu-devel@lfdr.de>; Sun, 25 Jun 2023 03:59:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A72873CDE9
+	for <lists+qemu-devel@lfdr.de>; Sun, 25 Jun 2023 04:00:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDF19-0001TU-W4; Sat, 24 Jun 2023 21:58:20 -0400
+	id 1qDF18-0001S4-7s; Sat, 24 Jun 2023 21:58:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <bmeng@tinylab.org>) id 1qDF16-0001S5-VS
- for qemu-devel@nongnu.org; Sat, 24 Jun 2023 21:58:16 -0400
-Received: from bg4.exmail.qq.com ([43.154.221.58])
+ (Exim 4.90_1) (envelope-from <bmeng@tinylab.org>) id 1qDF15-0001Rn-O4
+ for qemu-devel@nongnu.org; Sat, 24 Jun 2023 21:58:15 -0400
+Received: from bg4.exmail.qq.com ([43.155.67.158])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <bmeng@tinylab.org>) id 1qDF11-0002eN-S5
- for qemu-devel@nongnu.org; Sat, 24 Jun 2023 21:58:16 -0400
-X-QQ-mid: bizesmtp75t1687658026ti71bb5x
+ (Exim 4.90_1) (envelope-from <bmeng@tinylab.org>) id 1qDF11-0002eq-S4
+ for qemu-devel@nongnu.org; Sat, 24 Jun 2023 21:58:15 -0400
+X-QQ-mid: bizesmtp75t1687658029tcx0joxp
 Received: from ubuntu.. ( [111.196.130.174]) by bizesmtp.qq.com (ESMTP) with 
- id ; Sun, 25 Jun 2023 09:53:45 +0800 (CST)
+ id ; Sun, 25 Jun 2023 09:53:48 +0800 (CST)
 X-QQ-SSF: 01200000000000E0G000000A0000000
-X-QQ-FEAT: rZJGTgY0+YOT4aeamWe9qDV19geYQtYHzuUehU1vfEXvxB+tzFyd+/ZP6AC6N
- jEwv1bJJ07q/AgWFfnCD+0wyLiUqiqnjK0EuRN/pfzcV8V5ffHfZFAzMMjBh4CAz2gtIMkz
- KeZbfKhkHZXVcIOE+KvUq7yu0JHezZu/qX7ejZqrB0C4R9n6WaoIEl9TpX/7ZHUye6AY6uH
- /mePJzm4iv0S5hLuwuOreX494mFWTcXgHXlWtDRdpHxLqqgGb+FA9ZA8kp9hLFQE7ichAb3
- 8O4nO4ARlv2zw+czl+vSJ3Mz7bUoqrQOerIcrIJXi7tRqY0JmEGydG/2cz5ncB2qodL9kTu
- t2Irh2mYFf3147jcLJO4amXDtliYg4NYIxO/Fzv2hk9gWScs9c=
+X-QQ-FEAT: xwvWJGGFd7Mt4VKxOO5RGdZazMIGBw2QG/966DZi815zLglo6l8sea2PZZ+nc
+ 083ZScVqWH5JKUqshro+Gs2/CcngZKOPi4egC56g/GDHs8ClOWfW0IlnVgx/gDVdy486/HB
+ juYYqR6Zb32OrhzWhpHcfcqQ2w5gn8PYRF7BDnVGPmeH/nvvDkVfm6ZKumTnh8rGAOg76yb
+ SmQoFyt0T2E9MzY2MGxBKzcOKgV6Ow8O2i7rKYwy9KavDSrYts22Pwp+Ujd2T0noRZ8c7GN
+ 3fP6Wyc/rkkGVRFmZqSmjVXJ20wfG9QXb8eomp5mUpMDokqGO35Q1SMX1E2NqPxkkDPVWhO
+ rr9McvC6aQMGxsrvXxrtu+ozDWBwknKYq4LNB1Z9toxx2g7I9I=
 X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 15846446223525879876
+X-BIZMAIL-ID: 13973067493610353291
 From: Bin Meng <bmeng@tinylab.org>
 To: Jason Wang <jasowang@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
-Subject: [PATCH v7 7/9] hw/net: sungem: Remove the logic of padding short
+Subject: [PATCH v7 8/9] hw/net: sunhme: Remove the logic of padding short
  frames in the receive path
-Date: Sun, 25 Jun 2023 09:53:19 +0800
-Message-Id: <20230625015321.77987-8-bmeng@tinylab.org>
+Date: Sun, 25 Jun 2023 09:53:20 +0800
+Message-Id: <20230625015321.77987-9-bmeng@tinylab.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230625015321.77987-1-bmeng@tinylab.org>
 References: <20230625015321.77987-1-bmeng@tinylab.org>
@@ -43,7 +43,7 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
 Feedback-ID: bizesmtp:tinylab.org:qybglogicsvrgz:qybglogicsvrgz7a-0
-Received-SPF: pass client-ip=43.154.221.58; envelope-from=bmeng@tinylab.org;
+Received-SPF: pass client-ip=43.155.67.158; envelope-from=bmeng@tinylab.org;
  helo=bg4.exmail.qq.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
@@ -75,41 +75,45 @@ Signed-off-by: Bin Meng <bmeng@tinylab.org>
 
 (no changes since v1)
 
- hw/net/sungem.c | 14 --------------
- 1 file changed, 14 deletions(-)
+ hw/net/sunhme.c | 11 -----------
+ 1 file changed, 11 deletions(-)
 
-diff --git a/hw/net/sungem.c b/hw/net/sungem.c
-index eb01520790..103376c133 100644
---- a/hw/net/sungem.c
-+++ b/hw/net/sungem.c
-@@ -550,7 +550,6 @@ static ssize_t sungem_receive(NetClientState *nc, const uint8_t *buf,
-     PCIDevice *d = PCI_DEVICE(s);
-     uint32_t mac_crc, done, kick, max_fsize;
-     uint32_t fcs_size, ints, rxdma_cfg, rxmac_cfg, csum, coff;
--    uint8_t smallbuf[60];
-     struct gem_rxd desc;
-     uint64_t dbase, baddr;
-     unsigned int rx_cond;
-@@ -584,19 +583,6 @@ static ssize_t sungem_receive(NetClientState *nc, const uint8_t *buf,
-         return size;
-     }
+diff --git a/hw/net/sunhme.c b/hw/net/sunhme.c
+index 1f3d8011ae..391d26fb82 100644
+--- a/hw/net/sunhme.c
++++ b/hw/net/sunhme.c
+@@ -714,8 +714,6 @@ static inline void sunhme_set_rx_ring_nr(SunHMEState *s, int i)
+     s->erxregs[HME_ERXI_RING >> 2] = ring;
+ }
  
--    /* We don't drop too small frames since we get them in qemu, we pad
--     * them instead. We should probably use the min frame size register
--     * but I don't want to use a variable size staging buffer and I
--     * know both MacOS and Linux use the default 64 anyway. We use 60
--     * here to account for the non-existent FCS.
--     */
--    if (size < 60) {
--        memcpy(smallbuf, buf, size);
--        memset(&smallbuf[size], 0, 60 - size);
--        buf = smallbuf;
--        size = 60;
+-#define MIN_BUF_SIZE 60
+-
+ static ssize_t sunhme_receive(NetClientState *nc, const uint8_t *buf,
+                               size_t size)
+ {
+@@ -724,7 +722,6 @@ static ssize_t sunhme_receive(NetClientState *nc, const uint8_t *buf,
+     dma_addr_t rb, addr;
+     uint32_t intstatus, status, buffer, buffersize, sum;
+     uint16_t csum;
+-    uint8_t buf1[60];
+     int nr, cr, len, rxoffset, csum_offset;
+ 
+     trace_sunhme_rx_incoming(size);
+@@ -775,14 +772,6 @@ static ssize_t sunhme_receive(NetClientState *nc, const uint8_t *buf,
+ 
+     trace_sunhme_rx_filter_accept();
+ 
+-    /* If too small buffer, then expand it */
+-    if (size < MIN_BUF_SIZE) {
+-        memcpy(buf1, buf, size);
+-        memset(buf1 + size, 0, MIN_BUF_SIZE - size);
+-        buf = buf1;
+-        size = MIN_BUF_SIZE;
 -    }
 -
-     /* Get MAC crc */
-     mac_crc = net_crc32_le(buf, ETH_ALEN);
- 
+     rb = s->erxregs[HME_ERXI_RING >> 2] & HME_ERXI_RING_ADDR;
+     nr = sunhme_get_rx_ring_count(s);
+     cr = sunhme_get_rx_ring_nr(s);
 -- 
 2.34.1
 
