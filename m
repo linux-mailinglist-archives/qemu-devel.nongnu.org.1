@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6937173D483
+	by mail.lfdr.de (Postfix) with ESMTPS id ACE5573D485
 	for <lists+qemu-devel@lfdr.de>; Sun, 25 Jun 2023 23:28:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDXGe-0005X9-CO; Sun, 25 Jun 2023 17:27:32 -0400
+	id 1qDXGg-0005Xb-AX; Sun, 25 Jun 2023 17:27:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <fufuyqqqqqq@gmail.com>)
- id 1qDXGc-0005WY-B5
- for qemu-devel@nongnu.org; Sun, 25 Jun 2023 17:27:30 -0400
-Received: from mail-pg1-x532.google.com ([2607:f8b0:4864:20::532])
+ id 1qDXGe-0005XS-Mu
+ for qemu-devel@nongnu.org; Sun, 25 Jun 2023 17:27:32 -0400
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <fufuyqqqqqq@gmail.com>)
- id 1qDXGa-0003RG-Kk
- for qemu-devel@nongnu.org; Sun, 25 Jun 2023 17:27:30 -0400
-Received: by mail-pg1-x532.google.com with SMTP id
- 41be03b00d2f7-544c0d768b9so2285794a12.0
- for <qemu-devel@nongnu.org>; Sun, 25 Jun 2023 14:27:28 -0700 (PDT)
+ id 1qDXGd-0003TN-39
+ for qemu-devel@nongnu.org; Sun, 25 Jun 2023 17:27:32 -0400
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-1b7f223994fso9910195ad.3
+ for <qemu-devel@nongnu.org>; Sun, 25 Jun 2023 14:27:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1687728447; x=1690320447;
+ d=gmail.com; s=20221208; t=1687728450; x=1690320450;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=rpQLE595W5oqS4gd0K1Yg8xwY1BVVo0MaNKXsQUnaeY=;
- b=mKgk3wLrtCL2djrfdgTWO4ndKpe8Oow0BjJQdjTfltnQGd+B74R3f4y9H0jvS6dqu5
- kRMz0qqnJHTRzzpKa2hR5EeuNS3wCApL/xeij8kE57m+G5NuZJuO5aCzF7fhT9De+6gA
- DJvcKZtJEWixOtuvpc9T6PKzX9yl5MXeXIVeRE/9nUJnh1/imBD+o046JSYpC/5fG6Yo
- si8wf0klCsL7V4tgWmS4K0M4ErRkKBsLsKUSngIWdtWld54Nz+olxLjM8PjbUD6nIpV4
- PYTTtlof+59O4FWic5UxRSY+6Q5skIgMmvKQIjolR1eh4UEL22ZMiPz8wrLvG7hqfKFq
- WMcw==
+ bh=woKauxxnRk032i0YAZuB3emU7zROXu8ro6a8hM18j5o=;
+ b=W7BMKYkygNUIgxVdkALyUDChWylTA2HSNwkw/Ne6r1uPqc+aBcAYBaFZC/4MAi/pZ7
+ lD15tySLYLsfafVnYsCDdXbKkUzsOrOEVCIMoHwUKDW/saaT9j1EnWU0KqUT0lavNFQo
+ quorygBy14C3KUQdObkRT+LEFHeTA+whZ0TX/psKPqdGqNEY4oHxyy9GniHfa3NPs69f
+ coTY5/bOT7pGzcYumWq3dlGK/Dms8dgmel+FLoK+cBLFoap0Ff0Aq0+skenco5bcp+D4
+ 4QzVqV9BQaJH+23s8A4+JkPOHZra+hkMpfsEnxhfR0POwqClIQAin/x9KOj6HpymNnko
+ n8/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687728447; x=1690320447;
+ d=1e100.net; s=20221208; t=1687728450; x=1690320450;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=rpQLE595W5oqS4gd0K1Yg8xwY1BVVo0MaNKXsQUnaeY=;
- b=PRIaOSU+mngPANb6NjAxFOH313AnLqLIk6UOwJdkw4q6UBPOCHRimUlYkRuaNgnIWS
- jOHLrDOxZk4/dLx+jOIIWkjrZBISsOUmw4udSzH9N9x42iCy1dxwO+JhOj8rUm/ecFzk
- x+nE5WN3PSUt6wp0O09WuV96MFAcrMnRNQyBJe7Kq/x4/jfNTdrDUYzASD1UUQY6QaNd
- jitXsnXjdAxRH7es1cNYHX+pxf4Z17o54FPmicDpMGMNbUoyROIRPlezuvXinDYQIXVO
- nc2JP2K3iTC4voEHVVhuEC0+VV95MbrOLS4hZQ8OFnrKOw3saRlhKTDcyZWlVrT2AHfj
- 1hDQ==
-X-Gm-Message-State: AC+VfDxjK0zy1VvR6PV+J3bHlEIpNH17fED1S7cMTtyru6KxZ1mEpN8b
- jh+A01umpky2N0ZHtvQwC0Xf/1RKho2PlGHy
-X-Google-Smtp-Source: ACHHUZ4tupI9B4rV88jXPK11V4Mkp/r8fS66b8cVYFyQuZHHAvykl+61Gz7KQMXAWLDIf2Jqpk1gdg==
-X-Received: by 2002:a17:902:7445:b0:1b3:dcf1:97 with SMTP id
- e5-20020a170902744500b001b3dcf10097mr6607388plt.25.1687728447262; 
- Sun, 25 Jun 2023 14:27:27 -0700 (PDT)
+ bh=woKauxxnRk032i0YAZuB3emU7zROXu8ro6a8hM18j5o=;
+ b=LGq05u7UKFdhWbvRcZuu8JK++jO2yVogs8mYaULW43cCfAjTg6/K51WzoSu48fauK3
+ WOHXxHm+05oLKAd9j3FDZ6pVyQyujSIo8IiTjsBRBLvzCWpsR5ciZNDXXskahrmJZtX+
+ KvrSWMwBT3n0Ss7fuEC4ZAbKoYHCfH9BtG5P2eVMbn0ja7/tzeZoXp3q/6lFOHdlNCt6
+ t73KhvSDirCe6G5U0Jukimt/riO9wb9Wpa3rRZJzvyxdFYOXit2Of43IRb4Ttepk3cnS
+ dERSRQ6ylHpF/P3uQy0QXBeJxOFt507vOq3iFAXU4U+4LpC80vWURCgAvZhChByyIEQv
+ pqrA==
+X-Gm-Message-State: AC+VfDxseb81dW/hd7jMMSZVamXFNKzpUXzcTPPudMozloJw2RABhb6I
+ FXe+V8iQWJzBfn0vam+9ekw=
+X-Google-Smtp-Source: ACHHUZ5z1DMD4vOLhIuw1JKfxvDTtft+ji+RICMTE3cJ6X1nW+qTuLfnM797K3LYDFaHcVxNGZlDJw==
+X-Received: by 2002:a17:902:eac4:b0:1b7:f063:301a with SMTP id
+ p4-20020a170902eac400b001b7f063301amr3867022pld.24.1687728449803; 
+ Sun, 25 Jun 2023 14:27:29 -0700 (PDT)
 Received: from q1iq-virtual-machine.localdomain ([111.201.135.80])
  by smtp.gmail.com with ESMTPSA id
- je5-20020a170903264500b001b8004ff609sm761343plb.270.2023.06.25.14.27.25
+ je5-20020a170903264500b001b8004ff609sm761343plb.270.2023.06.25.14.27.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 25 Jun 2023 14:27:27 -0700 (PDT)
+ Sun, 25 Jun 2023 14:27:29 -0700 (PDT)
 From: Yeqi Fu <fufuyqqqqqq@gmail.com>
 To: alex.bennee@linaro.org
 Cc: richard.henderson@linaro.org, qemu-devel@nongnu.org,
- Yeqi Fu <fufuyqqqqqq@gmail.com>
-Subject: [RFC v3 04/10] linux-user: Implement envlist_appendenv
-Date: Mon, 26 Jun 2023 05:27:01 +0800
-Message-Id: <20230625212707.1078951-5-fufuyqqqqqq@gmail.com>
+ Yeqi Fu <fufuyqqqqqq@gmail.com>, Laurent Vivier <laurent@vivier.eu>
+Subject: [RFC v3 05/10] linux-user: Implement native-bypass option support
+Date: Mon, 26 Jun 2023 05:27:02 +0800
+Message-Id: <20230625212707.1078951-6-fufuyqqqqqq@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230625212707.1078951-1-fufuyqqqqqq@gmail.com>
 References: <20230625212707.1078951-1-fufuyqqqqqq@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::532;
- envelope-from=fufuyqqqqqq@gmail.com; helo=mail-pg1-x532.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=fufuyqqqqqq@gmail.com; helo=mail-pl1-x62d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,96 +93,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+This commit implements the -native-bypass support in linux-user. The
+native_calls_enabled() function can be true only when the
+'-native-bypass' option is given.
+
 Signed-off-by: Yeqi Fu <fufuyqqqqqq@gmail.com>
 ---
- include/qemu/envlist.h |  1 +
- util/envlist.c         | 61 ++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 62 insertions(+)
+ linux-user/main.c | 36 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 36 insertions(+)
 
-diff --git a/include/qemu/envlist.h b/include/qemu/envlist.h
-index 6006dfae44..865eb18e17 100644
---- a/include/qemu/envlist.h
-+++ b/include/qemu/envlist.h
-@@ -7,6 +7,7 @@ envlist_t *envlist_create(void);
- void envlist_free(envlist_t *);
- int envlist_setenv(envlist_t *, const char *);
- int envlist_unsetenv(envlist_t *, const char *);
-+int envlist_appendenv(envlist_t *, const char *, const char *);
- int envlist_parse_set(envlist_t *, const char *);
- int envlist_parse_unset(envlist_t *, const char *);
- char **envlist_to_environ(const envlist_t *, size_t *);
-diff --git a/util/envlist.c b/util/envlist.c
-index db937c0427..635c9c4fab 100644
---- a/util/envlist.c
-+++ b/util/envlist.c
-@@ -201,6 +201,67 @@ envlist_unsetenv(envlist_t *envlist, const char *env)
-     return (0);
+diff --git a/linux-user/main.c b/linux-user/main.c
+index 5e6b2e1714..98e31c77d5 100644
+--- a/linux-user/main.c
++++ b/linux-user/main.c
+@@ -60,6 +60,13 @@
+ #include "semihosting/semihost.h"
+ #endif
+ 
++#if defined(CONFIG_NATIVE_CALL)
++#include "native/native-defs.h"
++
++static const char *native_lib;
++bool native_bypass_enabled;
++#endif
++
+ #ifndef AT_FLAGS_PRESERVE_ARGV0
+ #define AT_FLAGS_PRESERVE_ARGV0_BIT 0
+ #define AT_FLAGS_PRESERVE_ARGV0 (1 << AT_FLAGS_PRESERVE_ARGV0_BIT)
+@@ -125,6 +132,7 @@ static void usage(int exitcode);
+ static const char *interp_prefix = CONFIG_QEMU_INTERP_PREFIX;
+ const char *qemu_uname_release;
+ 
++
+ #if !defined(TARGET_DEFAULT_STACK_SIZE)
+ /* XXX: on x86 MAP_GROWSDOWN only works if ESP <= address + 32, so
+    we allocate a bigger stack. Need a better solution, for example
+@@ -293,6 +301,18 @@ static void handle_arg_set_env(const char *arg)
+     free(r);
  }
  
-+/*
-+ * Appends environment value to envlist. If the environment
-+ * variable already exists, the new value is appended to the
-+ * existing one.
-+ *
-+ * Returns 0 in success, errno otherwise.
-+ */
-+int
-+envlist_appendenv(envlist_t *envlist, const char *env, const char *separator)
++#if defined(CONFIG_NATIVE_CALL)
++static void handle_arg_native_bypass(const char *arg)
 +{
-+    struct envlist_entry *entry = NULL;
-+    const char *eq_sign;
-+    size_t envname_len;
-+
-+    if ((envlist == NULL) || (env == NULL) || (separator == NULL)) {
-+        return (EINVAL);
++    if (access(arg, F_OK) != 0) {
++        fprintf(stderr, "native library %s does not exist\n", arg);
++        exit(EXIT_FAILURE);
 +    }
++    native_lib = arg;
++    native_bypass_enabled = true;
++}
++#endif
 +
-+    /* find out first equals sign in given env */
-+    eq_sign = strchr(env, '=');
-+    if (eq_sign == NULL) {
-+        return (EINVAL);
-+    }
-+
-+    if (strchr(eq_sign + 1, '=') != NULL) {
-+        return (EINVAL);
-+    }
-+
-+    envname_len = eq_sign - env + 1;
-+
-+    /*
-+     * If there already exists variable with given name,
-+     * we append the new value to the existing one.
-+     */
-+    for (entry = envlist->el_entries.lh_first; entry != NULL;
-+        entry = entry->ev_link.le_next) {
-+        if (strncmp(entry->ev_var, env, envname_len) == 0) {
-+            break;
+ static void handle_arg_unset_env(const char *arg)
+ {
+     char *r, *p, *token;
+@@ -522,6 +542,10 @@ static const struct qemu_argument arg_table[] = {
+      "",           "Generate a /tmp/perf-${pid}.map file for perf"},
+     {"jitdump",    "QEMU_JITDUMP",     false, handle_arg_jitdump,
+      "",           "Generate a jit-${pid}.dump file for perf"},
++#if defined(CONFIG_NATIVE_CALL)
++    {"native-bypass", "QEMU_NATIVE_BYPASS", true, handle_arg_native_bypass,
++     "",           "native bypass for library calls in user mode only."},
++#endif
+     {NULL, NULL, false, NULL, NULL, NULL}
+ };
+ 
+@@ -826,6 +850,18 @@ int main(int argc, char **argv, char **envp)
+         }
+     }
+ 
++#if defined(CONFIG_NATIVE_CALL)
++    /* Set the library for native bypass  */
++    if (native_bypass_enabled) {
++        GString *lib = g_string_new(native_lib);
++        lib = g_string_prepend(lib, "LD_PRELOAD=");
++        if (envlist_appendenv(envlist, g_string_free(lib, false), ":") != 0) {
++            fprintf(stderr,
++                    "failed to append the native library to environment.\n");
++            exit(EXIT_FAILURE);
 +        }
 +    }
-+
-+    if (entry != NULL) {
-+        char *new_env_value = NULL;
-+        size_t new_env_len = strlen(entry->ev_var) + strlen(eq_sign)
-+            + strlen(separator) + 1;
-+        new_env_value = g_malloc(new_env_len);
-+        strcpy(new_env_value, entry->ev_var);
-+        strcat(new_env_value, separator);
-+        strcat(new_env_value, eq_sign + 1);
-+        g_free((char *)entry->ev_var);
-+        entry->ev_var = new_env_value;
-+    } else {
-+        envlist->el_count++;
-+        entry = g_malloc(sizeof(*entry));
-+        entry->ev_var = g_strdup(env);
-+        QLIST_INSERT_HEAD(&envlist->el_entries, entry, ev_link);
-+    }
-+
-+    return (0);
-+}
-+
- /*
-  * Returns given envlist as array of strings (in same form that
-  * global variable environ is).  Caller must free returned memory
++#endif
+     target_environ = envlist_to_environ(envlist, NULL);
+     envlist_free(envlist);
+ 
 -- 
 2.34.1
 
