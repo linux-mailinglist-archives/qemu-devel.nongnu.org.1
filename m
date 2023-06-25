@@ -2,72 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 740D173CD46
-	for <lists+qemu-devel@lfdr.de>; Sun, 25 Jun 2023 00:27:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1E2573CD83
+	for <lists+qemu-devel@lfdr.de>; Sun, 25 Jun 2023 02:04:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDBiC-0001IC-Gc; Sat, 24 Jun 2023 18:26:32 -0400
+	id 1qDDDR-0006M8-JB; Sat, 24 Jun 2023 20:02:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <petersamir06423852@gmail.com>)
- id 1qDBVw-0007es-CZ
- for qemu-devel@nongnu.org; Sat, 24 Jun 2023 18:13:52 -0400
-Received: from mail-pj1-x1034.google.com ([2607:f8b0:4864:20::1034])
+ (Exim 4.90_1) (envelope-from <pizhenwei@bytedance.com>)
+ id 1qDDDP-0006Lv-9G
+ for qemu-devel@nongnu.org; Sat, 24 Jun 2023 20:02:51 -0400
+Received: from mail-pg1-x52e.google.com ([2607:f8b0:4864:20::52e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <petersamir06423852@gmail.com>)
- id 1qDBVu-00075g-Ms
- for qemu-devel@nongnu.org; Sat, 24 Jun 2023 18:13:52 -0400
-Received: by mail-pj1-x1034.google.com with SMTP id
- 98e67ed59e1d1-25eee11a9f1so934297a91.1
- for <qemu-devel@nongnu.org>; Sat, 24 Jun 2023 15:13:49 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <pizhenwei@bytedance.com>)
+ id 1qDDDL-0005PS-8A
+ for qemu-devel@nongnu.org; Sat, 24 Jun 2023 20:02:50 -0400
+Received: by mail-pg1-x52e.google.com with SMTP id
+ 41be03b00d2f7-54fac329a71so1058231a12.1
+ for <qemu-devel@nongnu.org>; Sat, 24 Jun 2023 17:02:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1687644828; x=1690236828;
- h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
- :date:message-id:reply-to;
- bh=8Z4/camMzfyyHAhrgARMgS1UZg6viBuFlu5avSpNLB4=;
- b=c0oHzyaxbJGuEu9bm7xrHnGv/ddBq1rYip7daAjJdRq3mYqMe6mCl6b31zwaPOESxX
- /TpriKD/vLJp6gJtRh1RXfJGdK11UVmkm6P3hu1tpwU/huI//3C+vdqqfxP6hXtX+yu5
- y+HJTQYCqn8JkSrOw0I48CroEbetpfPaRIQ+48CzMf42jMWMgMsOCa8O4ban7sPCgyff
- YyRkucW+twNWnNi+2RtXmycDbgHysw9t58BQMfr0J4XDhUJ7kG9WAIWMJ5IdH9N10lDe
- 4mYXdnUo3JYfHSYMFepF5B+3DgpcmkunwTrJ6I2RfFvdQGb8ucskjZ16LuTPerDj8QFL
- vGUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687644828; x=1690236828;
- h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+ d=bytedance.com; s=google; t=1687651358; x=1690243358;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=8Z4/camMzfyyHAhrgARMgS1UZg6viBuFlu5avSpNLB4=;
- b=FUIUBev/sgJ7gnWZtXMb4ZOPNN7nVFtXLuAnRrZu/ZyZNzmiW+jok8EVr3NtE0FKdO
- 7CbNw1Z8goLDwd+YUyWCxLp0bxFFJaEuFqbUy3XSuHr9EJB5ncwmmHpu/GtgTPJdVDLh
- jeCozwvwDM4GDl8OhQ9iHHYBIWgDS1xlOQD1DiyGQKL7DlBybVe8W3WF+CfptSwHB1D0
- /U0/HQ2lWxJ3wXjCAVXEUN9AXmyrus8mopzglxYVWWQ56wxRzLpgsn0e35WtsPh7LT3P
- iUXU4TxEW6xKKIstfZZhRBPXpboJ7E4mVQcYocy4hHFrj1836BVO61LhkrBk/2G4FPon
- T1CA==
-X-Gm-Message-State: AC+VfDxwXsFufy/t16DzHJwTS3tpAMOW2KOHWihK1a5lCIvQ7EKetoby
- vVZ21ieGlL33IOQWSTDPGnBpl2jmW5YXdU6gsxuSx+1MT+g=
-X-Google-Smtp-Source: ACHHUZ6fkXY6IlLx3D47JVKBKW+Aabf47HroaWTMszO4lH15RL9Z0JLMDhhjJzZ4GP8qFHdDHnATz/6H7T1uOae6whs=
-X-Received: by 2002:a17:90a:8a8d:b0:23d:286:47d3 with SMTP id
- x13-20020a17090a8a8d00b0023d028647d3mr19602675pjn.40.1687644828356; Sat, 24
- Jun 2023 15:13:48 -0700 (PDT)
+ bh=k0LcLl7qKKN0XH+BMTx3wAWSJazE7CfH/odpL9i7NcM=;
+ b=QGnlG7FGga8+FNb3aW0XmwOSIOLv1WSH7aTmbtMLcksQTqeIaxdC67iIevc9PbLk1O
+ 2xMVSJ2JX0J0adC+Kkdo/tO2YcDvNfe83YaqwgKTJUms7uFOVkt7eNxJJWtfbHyHdPSV
+ vg5k55ncT0JZVDD09rDCHqxq1T4orhyqZQVaPs4NX5pxAVrpJnavk8CD2onSbf/JKnaz
+ 3wrnE1dOwOBTeTvPXOqRRnDZHsay1XQ9VEkNAmp4tllewPJOK6wQy6dwiOWTvckZgY3A
+ 8RnWAAPje91z2fYt3m+QPsQ77sDcJS9U2dIsCo/IIQDAWGZgU0/3UQhtltU+aftBmnVx
+ +bsA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1687651358; x=1690243358;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=k0LcLl7qKKN0XH+BMTx3wAWSJazE7CfH/odpL9i7NcM=;
+ b=j0p2qoXu7AhCBTb7rzhroRJzmOYBOTxqck6Eo7/Sj3Z/u82qA1Zdd6ZFrPBfRLIuko
+ YmxYJkTJHvZh8y/K58yfUUAQMFKYMxcoc499XZVdD6nBWYH1ay3UW83weAVnPU8RFHla
+ 3EWzrgVpbCrXpcX7lutfOzYSakZ1xihjSyU1/P2KgpUftq17W6XY7wy34Wq2QVKuOuw5
+ M5t3gVyssqbyM60PIxpuMkfJ5TyjkZdUqLj72C2tEMypbnx/quWhfm1lvy7tgmwCcR59
+ jqY67A6mhhijcxfH2RBlzwaAqXoBKClOFMhoWcw5kJPaifRSOpu3F5HUTds/qEiDw0Ql
+ kN2g==
+X-Gm-Message-State: AC+VfDx7R7DIGBQI7bBLmgR3Av1CBFlo2BggFmto5EqgbnylrLibJ/yL
+ M1vGf7/Lie9ZLPqHc+aQynWxHg==
+X-Google-Smtp-Source: ACHHUZ5MdwEBSFBME6W/a326VEdwujvIUWe4k/5yeMZS+CUJafmyUZ0lHYhYsmzXKdAjs7+teMXCJQ==
+X-Received: by 2002:a17:902:9a02:b0:1b2:1942:9106 with SMTP id
+ v2-20020a1709029a0200b001b219429106mr928216plp.64.1687651357637; 
+ Sat, 24 Jun 2023 17:02:37 -0700 (PDT)
+Received: from [10.3.43.196] ([61.213.176.7]) by smtp.gmail.com with ESMTPSA id
+ g12-20020a170902740c00b001b6674b6140sm1661697pll.290.2023.06.24.17.02.34
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sat, 24 Jun 2023 17:02:37 -0700 (PDT)
+Message-ID: <b22dd57c-6e39-cfc7-7128-33447252468f@bytedance.com>
+Date: Sun, 25 Jun 2023 08:00:17 +0800
 MIME-Version: 1.0
-From: Peter Samir <petersamir06423852@gmail.com>
-Date: Sun, 25 Jun 2023 01:16:21 +0300
-Message-ID: <CAK-FQ7uOUhAhmgqBOv5fYukFmz-hSp=XEaeyrmiAi2_UBncU0A@mail.gmail.com>
-Subject: QEMU RISC-V
-To: qemu-devel@nongnu.org
-Content-Type: multipart/alternative; boundary="00000000000080571405fee76ed0"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1034;
- envelope-from=petersamir06423852@gmail.com; helo=mail-pj1-x1034.google.com
-X-Spam_score_int: -13
-X-Spam_score: -1.4
-X-Spam_bar: -
-X-Spam_report: (-1.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, HTML_MESSAGE=0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH] cryptodev: Handle unexpected request to avoid crash
+Content-Language: en-US
+To: mst@redhat.com
+Cc: Lei He <helei.sig11@bytedance.com>, arei.gonglei@huawei.com,
+ qemu-devel@nongnu.org, Mauro Matteo Cascella <mcascell@redhat.com>,
+ Xiao Lei <nop.leixiao@gmail.com>, Yongkang Jia <kangel@zju.edu.cn>,
+ Yiming Tao <taoym@zju.edu.cn>
+References: <20230427080509.172477-1-pizhenwei@bytedance.com>
+ <A4856378-68F6-440B-A0C8-B13EEEF452BC@bytedance.com>
+From: zhenwei pi <pizhenwei@bytedance.com>
+In-Reply-To: <A4856378-68F6-440B-A0C8-B13EEEF452BC@bytedance.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52e;
+ envelope-from=pizhenwei@bytedance.com; helo=mail-pg1-x52e.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- SUBJ_ALL_CAPS=0.5, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Sat, 24 Jun 2023 18:26:29 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,69 +97,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---00000000000080571405fee76ed0
-Content-Type: text/plain; charset="UTF-8"
+Hi Michael
 
-hello,
-I built RISC-V toolchain and QEMU as follows:
-# Install prerequisites:
-https://github.com/riscv-collab/riscv-gnu-toolchain#prerequisites
-# Install additional prerequisites:
-https://github.com/riscv-collab/riscv-gnu-toolchain/issues/1251
-git clone https://github.com/riscv-collab/riscv-gnu-toolchain
-cd riscv-gnu-toolchain
-./configure --prefix=/home/RISCV-installed-Tools --with-arch=rv32i_zicsr
---with-abi=ilp32
-make
-make build-qemu
+Could you please apply this patch?
 
+On 5/26/23 11:38, Lei He wrote:
+> 
+>> On Apr 27, 2023, at 16:05, zhenwei pi <pizhenwei@bytedance.com> wrote:
+>>
+>> Generally guest side should discover which services the device is
+>> able to offer, then do requests on device.
+>>
+>> However it's also possible to break this rule in a guest. Handle
+>> unexpected request here to avoid NULL pointer dereference.
+>>
+>> Fixes: e7a775fd ('cryptodev: Account statistics')
+>> Cc: Gonglei <arei.gonglei@huawei.com>
+>> Cc: Mauro Matteo Cascella <mcascell@redhat.com>
+>> Cc: Xiao Lei <nop.leixiao@gmail.com>
+>> Cc: Yongkang Jia <kangel@zju.edu.cn>
+>> Reported-by: Yiming Tao <taoym@zju.edu.cn>
+>> Signed-off-by: zhenwei pi <pizhenwei@bytedance.com>
+>> ---
+>> backends/cryptodev.c | 10 ++++++++++
+>> 1 file changed, 10 insertions(+)
+>>
+>> diff --git a/backends/cryptodev.c b/backends/cryptodev.c
+>> index 94ca393cee..d3fe92d8c0 100644
+>> --- a/backends/cryptodev.c
+>> +++ b/backends/cryptodev.c
+>> @@ -191,6 +191,11 @@ static int cryptodev_backend_account(CryptoDevBackend *backend,
+>>      if (algtype == QCRYPTODEV_BACKEND_ALG_ASYM) {
+>>          CryptoDevBackendAsymOpInfo *asym_op_info = op_info->u.asym_op_info;
+>>          len = asym_op_info->src_len;
+>> +
+>> +        if (unlikely(!backend->asym_stat)) {
+>> +            error_report("cryptodev: Unexpected asym operation");
+>> +            return -VIRTIO_CRYPTO_NOTSUPP;
+>> +        }
+>>          switch (op_info->op_code) {
+>>          case VIRTIO_CRYPTO_AKCIPHER_ENCRYPT:
+>>              CryptodevAsymStatIncEncrypt(backend, len);
+>> @@ -210,6 +215,11 @@ static int cryptodev_backend_account(CryptoDevBackend *backend,
+>>      } else if (algtype == QCRYPTODEV_BACKEND_ALG_SYM) {
+>>          CryptoDevBackendSymOpInfo *sym_op_info = op_info->u.sym_op_info;
+>>          len = sym_op_info->src_len;
+>> +
+>> +        if (unlikely(!backend->sym_stat)) {
+>> +            error_report("cryptodev: Unexpected sym operation");
+>> +            return -VIRTIO_CRYPTO_NOTSUPP;
+>> +        }
+>>          switch (op_info->op_code) {
+>>          case VIRTIO_CRYPTO_CIPHER_ENCRYPT:
+>>              CryptodevSymStatIncEncrypt(backend, len);
+>> -- 
+>> 2.34.1
+>>
+> 
+> Reviewed-by: Lei He <helei.sig11@bytedance.com>
+> 
+> 
+> Best regards,
+> Lei He
+> --
+> helei.sig11@bytedance.com
+> 
+> 
+> 
 
-QEMU Version:
-qemu-riscv32 version 7.1.0 (v7.1.0)
-Copyright (c) 2003-2022 Fabrice Bellard and the QEMU Project developers
-
-
-i debug as follows:
-riscv32-unknown-elf-gcc -g test.S -o test
-qemu-riscv32 -g 3333 test
-// in another terminal
-riscv32-unknown-elf-gdb test -ex "target remote :3333"
-
-but Qemu reports this error when I use CSR instructions:
-Program received signal SIGILL, Illegal instruction. main () at main.S:2 2
-main: csrw mepc, t0
-
-how to resolve this error ?
-
---00000000000080571405fee76ed0
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"auto"><div dir=3D"auto">hello,=C2=A0</div><div dir=3D"auto">I b=
-uilt RISC-V toolchain and QEMU as follows:</div><div dir=3D"auto"># Install=
- prerequisites: <a href=3D"https://github.com/riscv-collab/riscv-gnu-toolch=
-ain#prerequisites">https://github.com/riscv-collab/riscv-gnu-toolchain#prer=
-equisites</a></div><div dir=3D"auto"># Install additional prerequisites: <a=
- href=3D"https://github.com/riscv-collab/riscv-gnu-toolchain/issues/1251">h=
-ttps://github.com/riscv-collab/riscv-gnu-toolchain/issues/1251</a></div><di=
-v dir=3D"auto">git clone <a href=3D"https://github.com/riscv-collab/riscv-g=
-nu-toolchain">https://github.com/riscv-collab/riscv-gnu-toolchain</a></div>=
-<div dir=3D"auto">cd riscv-gnu-toolchain</div><div dir=3D"auto">./configure=
- --prefix=3D/home/RISCV-installed-Tools --with-arch=3Drv32i_zicsr --with-ab=
-i=3Dilp32</div><div dir=3D"auto">make</div><div dir=3D"auto">make build-qem=
-u</div><div dir=3D"auto"><br></div><div dir=3D"auto"><br></div><div dir=3D"=
-auto">QEMU Version:=C2=A0=C2=A0</div><div dir=3D"auto">qemu-riscv32 version=
- 7.1.0 (v7.1.0)</div><div dir=3D"auto">Copyright (c) 2003-2022 Fabrice Bell=
-ard and the QEMU Project developers</div><div dir=3D"auto"><br></div><div d=
-ir=3D"auto"><br></div><div dir=3D"auto">i debug as follows:</div><div dir=
-=3D"auto">riscv32-unknown-elf-gcc -g test.S -o test</div><div dir=3D"auto">=
-qemu-riscv32 -g 3333 test</div><div dir=3D"auto">// in another terminal</di=
-v><div dir=3D"auto">riscv32-unknown-elf-gdb test -ex &quot;target remote :3=
-333&quot;</div><div dir=3D"auto"><br></div><div dir=3D"auto">but Qemu repor=
-ts this error when I use CSR instructions:</div><div dir=3D"auto">Program r=
-eceived signal SIGILL, Illegal instruction. main () at main.S:2 2 main: csr=
-w mepc, t0</div><div dir=3D"auto"><br></div><div dir=3D"auto">how to resolv=
-e this error ?=C2=A0</div><div dir=3D"auto"></div></div>
-
---00000000000080571405fee76ed0--
+-- 
+zhenwei pi
 
