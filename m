@@ -2,82 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DEFE73D512
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 00:40:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C49DC73D54C
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 01:28:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDYNj-0001rd-Vy; Sun, 25 Jun 2023 18:38:56 -0400
+	id 1qDZ8Y-0001S1-Hf; Sun, 25 Jun 2023 19:27:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qDYNh-0001r4-V0
- for qemu-devel@nongnu.org; Sun, 25 Jun 2023 18:38:53 -0400
-Received: from mail-ot1-x332.google.com ([2607:f8b0:4864:20::332])
+ id 1qDZ8W-0001Rl-S5
+ for qemu-devel@nongnu.org; Sun, 25 Jun 2023 19:27:16 -0400
+Received: from mail-oi1-x231.google.com ([2607:f8b0:4864:20::231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qDYNg-0004u2-4I
- for qemu-devel@nongnu.org; Sun, 25 Jun 2023 18:38:53 -0400
-Received: by mail-ot1-x332.google.com with SMTP id
- 46e09a7af769-6b13e2af122so2070335a34.2
- for <qemu-devel@nongnu.org>; Sun, 25 Jun 2023 15:38:51 -0700 (PDT)
+ id 1qDZ8V-0002sx-2j
+ for qemu-devel@nongnu.org; Sun, 25 Jun 2023 19:27:16 -0400
+Received: by mail-oi1-x231.google.com with SMTP id
+ 5614622812f47-39e9d1bf835so1901624b6e.2
+ for <qemu-devel@nongnu.org>; Sun, 25 Jun 2023 16:27:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1687732730; x=1690324730;
+ d=ventanamicro.com; s=google; t=1687735631; x=1690327631;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=ISS/smCVifo+a+uKKirROqpR45erzvjLcgWv+GzlXpU=;
- b=bV93JcBBSJL3vrmAgaYilj/2j+dyEDJUzZ6vNrNzjuimGHH5hTA5pT1aLSdtNjSNsJ
- 0csLbzSuVwvkTjNY7in8fDLwevh+4SXcOxkK307k+RWgVZMkvCNXW+tp7d/cisoafWOE
- 80IS37KW2FiJw0JWBvz8BIzmqGqMIVNRiArMPz6+w8FlpbcHhiI2O4Imak8LzC5qTNGf
- qGFGnWN1fxRzEa4aYYYC2lW4LskqEN2tgTyvol0b3e16Gex9I1KiZHBFxFJaP0I1ejVE
- YZRfoqHjqRf0ct+aSVwoFFUgteYlqh9mlc1dmwLl0QY1NGoBaplTYNwKMXnILhtKbBJL
- fHpQ==
+ bh=gEjRHBsrr1dT9wqudUY/3yg84UNpyFKBQlvUGGHZCn8=;
+ b=F4FMPiVABSK2NsrKCC0S8ShX/jWfigGPDEtplBFXwZTzzXdlZVKv0nPTI/bmY5Ffr4
+ ++zdqvWRW0s8IyoLu7AP64N24xDWD5kzfJL+P8LUj+emKYweR3TEemOmTPdrhECXlsCi
+ ND4rG22dRY1n29URv9uXh9P9aTvhqcCFczRkzs29VXcb95KvFhtytzCOHKFjbtbu6Z3j
+ zDPV0MYgBS+eVf4aycccTCBk7AoBn42Wmau/eUm2oIg/bFk+7cxpyTyKLzE1JlTn2ptT
+ NVkkFT5LggUCa79GUz7hj4j40P0oHUxrLCKIfk66/QbWLzVicmW792LE9neGn3c+MpPT
+ zB8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687732730; x=1690324730;
+ d=1e100.net; s=20221208; t=1687735631; x=1690327631;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ISS/smCVifo+a+uKKirROqpR45erzvjLcgWv+GzlXpU=;
- b=a8A3XPdnwae1SUoczBbZBYxB5xWFDAFowmo3f4kOtOdxImyejNaDOS2Jfe6lC+C4PU
- tvHDvtLnGPTY1k9VHWYcNPJ/7x8B4YvJyj0bX9J+Z5nXM3bGQ86VeltEmX8zr/m0yVHS
- RfvE+RaOzyP23XJ++tG2aP/vTkDtRBsv7+sWE3XFZc3DlBtm8J81yGPH6uwxsr0jeIHt
- ze+mTNIxqlqgT2+RppnhYvQa8vBNQ0EGvYpr+cTAVqJm0q+A4s4hePwTh0H+CzPcq9RB
- a0p7wUB5voWrNKy8hLidvSV8cdQfa25ybu2Z/ru/KdAQ27T0rPhQP0Ms7mCiT1m+AyTR
- uP4Q==
-X-Gm-Message-State: AC+VfDxmbb3v54YIVJkuXiVyKaJaadModsUHVamWTc/yir6u9rmKvAkT
- Z2SG4l9xBEzlq2pl4lOaVdoYog==
-X-Google-Smtp-Source: ACHHUZ5Zt8Z7XfsAdPSl3iIA6X7hb7MlinhfEEJlzWZKSJUg2oPbEJNL6HRGvbk29mUOx2SZRCl1Yw==
-X-Received: by 2002:a9d:4b02:0:b0:6b7:1ae8:432e with SMTP id
- q2-20020a9d4b02000000b006b71ae8432emr8318813otf.13.1687732730378; 
- Sun, 25 Jun 2023 15:38:50 -0700 (PDT)
+ bh=gEjRHBsrr1dT9wqudUY/3yg84UNpyFKBQlvUGGHZCn8=;
+ b=XhLcMNINdQwlfSA3AHcT+EDrLR9tsk0lDe+6YkWauLaBgLZAgOMwoBtWX/OUbEuvIu
+ qKK6SGHEeztkEMrVvTZtyttPSz95arVZDdlzz3frckaB3ewqtvd82Zltp0+/vzWevNGP
+ qxYxdP8tebNOUoh3JU9OzIY+VbrDYRrFNmBwMANoj5IL2qqTK8Isr+4PLPre53RdqNfW
+ Z0Xld1dM6JhJFDWlgHP6JJaz8C0YWROew3G+I2vsQ2f/5jgsrFW53GX5ZwrKrq6heOsY
+ cBnBDfn8iVeX0nqdVE0TF4AvIj/XfhoRXKb/NbiYowX4vMQuzX6P77mcTjoirpz89Kf1
+ rU+g==
+X-Gm-Message-State: AC+VfDw6vA0lN6tFR77ksDsV92q3Hpvgzs6KphBXvYNdexLG1sc6OeW+
+ c2dejyRn6LUsrOHN6cAsl+bNoQ==
+X-Google-Smtp-Source: ACHHUZ5CvuymUtlWWzPzBakmYVKXjVsMD8OJJ7yNJnHVq42R4wuo3RB/t8kBaJUoon0D9YfnnLBlUw==
+X-Received: by 2002:a05:6808:2096:b0:3a0:6540:794c with SMTP id
+ s22-20020a056808209600b003a06540794cmr8158234oiw.19.1687735631066; 
+ Sun, 25 Jun 2023 16:27:11 -0700 (PDT)
 Received: from [192.168.68.107] (201-69-66-110.dial-up.telesp.net.br.
  [201.69.66.110]) by smtp.gmail.com with ESMTPSA id
- w19-20020a9d6393000000b006b74a5a2712sm496403otk.15.2023.06.25.15.38.47
+ i17-20020a056808031100b003a04cd0e13dsm1926417oie.9.2023.06.25.16.27.07
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 25 Jun 2023 15:38:50 -0700 (PDT)
-Message-ID: <19bcdc7d-9061-ae6a-1745-560b2b6e135b@ventanamicro.com>
-Date: Sun, 25 Jun 2023 19:38:45 -0300
+ Sun, 25 Jun 2023 16:27:10 -0700 (PDT)
+Message-ID: <0570cc14-04a4-2808-8668-446d2e6ea62d@ventanamicro.com>
+Date: Sun, 25 Jun 2023 20:27:05 -0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
-Subject: Re: [PATCH v3 12/19] target/riscv: add KVM specific MISA properties
+Subject: Re: [PATCH v2] target/riscv: Restrict KVM-specific fields from ArchCPU
 Content-Language: en-US
-To: Andrew Jones <ajones@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com,
- bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com,
- palmer@rivosinc.com
-References: <20230622135700.105383-1-dbarboza@ventanamicro.com>
- <20230622135700.105383-13-dbarboza@ventanamicro.com>
- <20230623-df5c527b7dae3e28123be577@orel>
- <6da71298-8345-f0b1-b086-830425db6ec5@ventanamicro.com>
- <20230624-bd82bafb08e5daa8fb81b72f@orel>
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Weiwei Li <liweiwei@iscas.ac.cn>,
+ Richard Henderson <richard.henderson@linaro.org>, qemu-riscv@nongnu.org,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Bin Meng <bin.meng@windriver.com>
+References: <20230624192957.14067-1-philmd@linaro.org>
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20230624-bd82bafb08e5daa8fb81b72f@orel>
+In-Reply-To: <20230624192957.14067-1-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::332;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-ot1-x332.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::231;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-oi1-x231.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -102,66 +101,83 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 
-On 6/24/23 04:32, Andrew Jones wrote:
-> On Fri, Jun 23, 2023 at 11:14:45AM -0300, Daniel Henrique Barboza wrote:
->>
->>
->> On 6/23/23 06:38, Andrew Jones wrote:
->>> On Thu, Jun 22, 2023 at 10:56:53AM -0300, Daniel Henrique Barboza wrote:
->>> ...
->>>> +#define KVM_MISA_CFG(_bit, _reg_id) \
->>>> +    {.offset = _bit, .kvm_reg_id = _reg_id}
->>>> +
->>>> +/* KVM ISA extensions */
->>>> +static KVMCPUConfig kvm_misa_ext_cfgs[] = {
->>>> +    KVM_MISA_CFG(RVA, KVM_RISCV_ISA_EXT_A),
->>>> +    KVM_MISA_CFG(RVC, KVM_RISCV_ISA_EXT_C),
->>>> +    KVM_MISA_CFG(RVD, KVM_RISCV_ISA_EXT_D),
->>>> +    KVM_MISA_CFG(RVF, KVM_RISCV_ISA_EXT_F),
->>>> +    KVM_MISA_CFG(RVH, KVM_RISCV_ISA_EXT_H),
->>>> +    KVM_MISA_CFG(RVI, KVM_RISCV_ISA_EXT_I),
->>>> +    KVM_MISA_CFG(RVM, KVM_RISCV_ISA_EXT_M),
->>>> +};
->>>> +
->>> ...
->>>> +static void kvm_riscv_add_cpu_user_properties(Object *cpu_obj)
->>>> +{
->>>> +    int i;
->>>> +
->>>> +    for (i = 0; i < ARRAY_SIZE(kvm_misa_ext_cfgs); i++) {
->>>> +        KVMCPUConfig *misa_cfg = &kvm_misa_ext_cfgs[i];
->>>> +        int bit = misa_cfg->offset;
->>>> +
->>>> +        misa_cfg->name = misa_ext_info_arr[bit].name;
->>>> +        misa_cfg->description = misa_ext_info_arr[bit].description;
->>>
->>> I'd prefer these be set by KVM_MISA_CFG(), since we can. No need to wait
->>> until runtime if we can do it at compile-time.
->>
->> The compiler will complain about "error: initializer element is not constant" and
->> the build will fail. This happens because, apparently, the compiler doesn't see the
->> imported array as a constant, regardless of the 'const' type.
->>
+On 6/24/23 16:29, Philippe Mathieu-Daudé wrote:
+> These fields shouldn't be accessed when KVM is not available.
 > 
-> You're right. Initialization the way I suggested only works when
-> everything is in the same source file. That's a pity. So we can
-> either manage it they way you've done here or the way you did
-> in a previous patch, which was to include the info array in each
-> source file by putting it in the header. I think I prefer the
-> approach you used in this version more though.
-
-Alright, let's keep this version then.
-
-Btw I just noticed that I kept your reviewed-by from the previous version in
-this patch by accident. Can you please send a r-b for this version (in case
-you agree, of course)?
-
-
-Thanks,
-
-Daniel
-
+> Restrict the KVM timer migration state. Rename the KVM timer
+> post_load() handler accordingly, because cpu_post_load() is
+> too generic.
 > 
-> Thanks,
-> drew
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+
+> Since v1 https://lore.kernel.org/qemu-devel/20230405160454.97436-10-philmd@linaro.org/:
+> - Restrict whole vmstate_kvmtimer (thus drop Daniel's R-b)
+> ---
+>   target/riscv/cpu.h     | 2 ++
+>   target/riscv/machine.c | 8 ++++++--
+>   2 files changed, 8 insertions(+), 2 deletions(-)
+> 
+> diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+> index e3e08d315f..b1b56aa29e 100644
+> --- a/target/riscv/cpu.h
+> +++ b/target/riscv/cpu.h
+> @@ -363,12 +363,14 @@ struct CPUArchState {
+>       hwaddr kernel_addr;
+>       hwaddr fdt_addr;
+>   
+> +#ifdef CONFIG_KVM
+>       /* kvm timer */
+>       bool kvm_timer_dirty;
+>       uint64_t kvm_timer_time;
+>       uint64_t kvm_timer_compare;
+>       uint64_t kvm_timer_state;
+>       uint64_t kvm_timer_frequency;
+> +#endif /* CONFIG_KVM */
+>   };
+>   
+>   /*
+> diff --git a/target/riscv/machine.c b/target/riscv/machine.c
+> index 3ce2970785..d27f8a2a3a 100644
+> --- a/target/riscv/machine.c
+> +++ b/target/riscv/machine.c
+> @@ -199,7 +199,8 @@ static bool kvmtimer_needed(void *opaque)
+>       return kvm_enabled();
+>   }
+>   
+> -static int cpu_post_load(void *opaque, int version_id)
+> +#ifdef CONFIG_KVM
+> +static int cpu_kvmtimer_post_load(void *opaque, int version_id)
+>   {
+>       RISCVCPU *cpu = opaque;
+>       CPURISCVState *env = &cpu->env;
+> @@ -213,7 +214,7 @@ static const VMStateDescription vmstate_kvmtimer = {
+>       .version_id = 1,
+>       .minimum_version_id = 1,
+>       .needed = kvmtimer_needed,
+> -    .post_load = cpu_post_load,
+> +    .post_load = cpu_kvmtimer_post_load,
+>       .fields = (VMStateField[]) {
+>           VMSTATE_UINT64(env.kvm_timer_time, RISCVCPU),
+>           VMSTATE_UINT64(env.kvm_timer_compare, RISCVCPU),
+> @@ -221,6 +222,7 @@ static const VMStateDescription vmstate_kvmtimer = {
+>           VMSTATE_END_OF_LIST()
+>       }
+>   };
+> +#endif
+>   
+>   static bool debug_needed(void *opaque)
+>   {
+> @@ -409,7 +411,9 @@ const VMStateDescription vmstate_riscv_cpu = {
+>           &vmstate_vector,
+>           &vmstate_pointermasking,
+>           &vmstate_rv128,
+> +#ifdef CONFIG_KVM
+>           &vmstate_kvmtimer,
+> +#endif
+>           &vmstate_envcfg,
+>           &vmstate_debug,
+>           &vmstate_smstateen,
 
