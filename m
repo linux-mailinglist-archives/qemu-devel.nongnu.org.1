@@ -2,81 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C99673E0A2
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 15:28:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 783E173E066
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 15:19:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDlM0-0003lp-6l; Mon, 26 Jun 2023 08:30:00 -0400
+	id 1qDlML-0004WL-KV; Mon, 26 Jun 2023 08:30:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qDlLQ-0002ra-6j
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 08:29:31 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qDlLU-0002ud-Rx
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 08:29:35 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qDlLM-00035w-Go
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 08:29:23 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qDlLS-00036X-CP
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 08:29:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687782559;
+ s=mimecast20190719; t=1687782565;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=G4bFahDJeZoMWoK8kIZQmkC6+vW0g+dat8uXM/Zt97Q=;
- b=Hskawo22iQl99DK+esX7ZungoMRqFAVBajYC7EhJsriWLCpXXB/FpdB7OtimKIJeZ01CU0
- IcLM1BhJS/jdSQac4IuF5IMplAYOpkNNZPGaskjveMKbgYF/w0FzwkWFabBDFQj5dxTKAi
- XxVmK8h6c+HlGu249qYMLuDN/MnoQjI=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=p/UK6aQi1zp/6MKRVyY3fLV1bQBOfN+OI1GJ+WI2VHU=;
+ b=UbiQM+Nz+RZnYjyib34D1jANsJ8L46RWWhTmQrXkG43vjtyBMsZ+majZGqpTn3a6p+b4Ue
+ dc/lE49StefqX5HIj1XeEOdr5eNSzGIfT9x9f8IjCyMD3OPMMb43oNKaqREc51sWZmoJON
+ Pn/TlkShDZrLl8+2I+g3m35a2o4Xv7I=
+Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
+ [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-583-sSfmeFHFMWO0tAqLwajkhg-1; Mon, 26 Jun 2023 08:29:18 -0400
-X-MC-Unique: sSfmeFHFMWO0tAqLwajkhg-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-3fa7b245a75so14507515e9.0
- for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 05:29:18 -0700 (PDT)
+ us-mta-470-XH8wV9X0NXSD-jPqPVMDiQ-1; Mon, 26 Jun 2023 08:29:24 -0400
+X-MC-Unique: XH8wV9X0NXSD-jPqPVMDiQ-1
+Received: by mail-lf1-f72.google.com with SMTP id
+ 2adb3069b0e04-4ecb00906d0so2231990e87.1
+ for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 05:29:24 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687782557; x=1690374557;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=G4bFahDJeZoMWoK8kIZQmkC6+vW0g+dat8uXM/Zt97Q=;
- b=gD2Kd8AXtdHMJbVOb2DeP7Zik6wymzZ6VoKZ9mcDLtY7TU+L64Li6thTa6pYuxM0KW
- loBKBipJqx9QjG8VkrSB2WTJErmFmSNEYezUOU4MyrMc9Bi6KboAk4oyK2ktvs9/IW7D
- l4qqE1tTn5COZNKEXh3QwLqbmcAnWxH/pbC4KmWBFwOQq8APfcfc8BEZWKQRqLvPvcW3
- sMLpjjCuqFLw+0UpqTQviJ19VyKKqzK4/8FBU6UgPqw4ofwezvIJMeD7+bfX2hSGnza1
- 1pjPsGEwijW8NirnNU/QMBx3Xz+U+3lHOTfQVx1Q4dINiSCNUlf+yI//of0ZoUoXAFwK
- muHQ==
-X-Gm-Message-State: AC+VfDx2p50q+Tl1iYGjsp1/4r1nZ3BYNfO7IS9UQFdNQiyos8Ek1u9S
- 1TymeowsSkDk97EpthgXW/it9pUwF/wq+YYedJuw4Mav8onXrOrLRbJv5OxkYZp3RK4SIJdOYSH
- K0PfBM/0SIkB2kG4DxbUwAgxHseDE+qXzJdFKGAnRfDGgWhRzoIOVe/rGuxvqnRE97sCW
-X-Received: by 2002:a05:600c:3b1f:b0:3fa:125c:8d65 with SMTP id
- m31-20020a05600c3b1f00b003fa125c8d65mr12355552wms.3.1687782556899; 
- Mon, 26 Jun 2023 05:29:16 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5ryX7WtcPFnVvmDZYqTUjibINZrdB+ircz7JhNisIQKLaYhjdH0KRnBukb/m3nDGN9YZqCXA==
-X-Received: by 2002:a05:600c:3b1f:b0:3fa:125c:8d65 with SMTP id
- m31-20020a05600c3b1f00b003fa125c8d65mr12355531wms.3.1687782556527; 
- Mon, 26 Jun 2023 05:29:16 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1687782563; x=1690374563;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=p/UK6aQi1zp/6MKRVyY3fLV1bQBOfN+OI1GJ+WI2VHU=;
+ b=aue3879HYlogO9sR3eX1AfIV+SHP32vh2nRNmP3D0cN8IuxQ/WlEPSPDbZIUEH/8u/
+ UUJqYJCP56h25mxAlAeuuR0mdX4u6ILcgLyYBqfLmiLc1iax8kUcW8NI0A2xo9seBLz7
+ BjsWiOfvKF2WuVzo/81n7XFEzjCPiLOfnbrERHl3NJhjYojF+a2cNL5Ia3MQVDGWQgPU
+ 5bH2XYYiA7aKVGYiu76U9j8m8Pe4Xf9X9j4SNQoBV3rEoREefkBtnQOKQ1ozhKfu+2L0
+ ztqSwAvw97DLsOItUTcnerJiaRTEsK0kKN/BClxF351orB+FXlBPm9x+nGN8RK87DANI
+ 8FWA==
+X-Gm-Message-State: AC+VfDznnjgoIA0oE8vrFXLmfDRctUHWWcSdF4pjVxBgj7cwdY3YUhJW
+ cMSYwhpoVGMOPuihNncRBko/BJi/GL+1vDvLFe1CbOSZGTtxfLlgHuoczIhIdpuKZquLi1KjsQo
+ xaKZ8V5LfY2fgO0rmXe5rO7eTIqpc7EGo2++avmEckvQPSNpqBjdZ2pxvHqR2DB6vyNsZ
+X-Received: by 2002:a05:6512:39cc:b0:4f9:652d:e839 with SMTP id
+ k12-20020a05651239cc00b004f9652de839mr8404629lfu.50.1687782562724; 
+ Mon, 26 Jun 2023 05:29:22 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6JYEqCW8s6dsRVRA89s0FV/LBfa6EoiScvesSPBx1SSIjHaFAakeJgH6TR41K73XcLUeRq3w==
+X-Received: by 2002:a05:6512:39cc:b0:4f9:652d:e839 with SMTP id
+ k12-20020a05651239cc00b004f9652de839mr8404614lfu.50.1687782562361; 
+ Mon, 26 Jun 2023 05:29:22 -0700 (PDT)
 Received: from redhat.com ([2.52.156.102]) by smtp.gmail.com with ESMTPSA id
- c14-20020a7bc84e000000b003f8126bcf34sm10471913wml.48.2023.06.26.05.29.15
+ v14-20020a1cf70e000000b003f9b2c602c0sm10542462wmh.37.2023.06.26.05.29.21
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 26 Jun 2023 05:29:16 -0700 (PDT)
-Date: Mon, 26 Jun 2023 08:29:14 -0400
+ Mon, 26 Jun 2023 05:29:21 -0700 (PDT)
+Date: Mon, 26 Jun 2023 08:29:19 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
- Lei Yang <leiyang@redhat.com>, Jason Wang <jasowang@redhat.com>
-Subject: [PULL 28/53] vdpa: move CVQ isolation check to net_init_vhost_vdpa
-Message-ID: <152128d646973ed298d41dafd7a5bccff43336c8.1687782442.git.mst@redhat.com>
+ BALATON Zoltan <balaton@eik.bme.hu>, Igor Mammedov <imammedo@redhat.com>,
+ Ani Sinha <anisinha@redhat.com>
+Subject: [PULL 30/53] hw/acpi: Fix PM control register access
+Message-ID: <3d563fc68732179b86eff2b87f2d7dbef150315f.1687782442.git.mst@redhat.com>
 References: <cover.1687782442.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1687782442.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -101,276 +99,102 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Eugenio Pérez <eperezma@redhat.com>
+From: BALATON Zoltan <balaton@eik.bme.hu>
 
-Evaluating it at start time instead of initialization time may make the
-guest capable of dynamically adding or removing migration blockers.
+On pegasos2 which has ACPI as part of VT8231 south bridge the board
+firmware writes PM control register by accessing the second byte so
+addr will be 1. This wasn't handled correctly and the write went to
+addr 0 instead. Remove the acpi_pm1_cnt_write() function which is used
+only once and does not take addr into account and handle non-zero
+address in acpi_pm_cnt_{read|write}. This fixes ACPI shutdown with
+pegasos2 firmware.
 
-Also, moving to initialization reduces the number of ioctls in the
-migration, reducing failure possibilities.
+The issue below is possibly related to the same memory core bug.
 
-As a drawback we need to check for CVQ isolation twice: one time with no
-MQ negotiated and another one acking it, as long as the device supports
-it.  This is because Vring ASID / group management is based on vq
-indexes, but we don't know the index of CVQ before negotiating MQ.
-
-Signed-off-by: Eugenio Pérez <eperezma@redhat.com>
-Message-Id: <20230526153143.470745-3-eperezma@redhat.com>
-Tested-by: Lei Yang <leiyang@redhat.com>
+Link: https://gitlab.com/qemu-project/qemu/-/issues/360
+Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+Message-Id: <20230607200125.A9988746377@zero.eik.bme.hu>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
 ---
- net/vhost-vdpa.c | 157 ++++++++++++++++++++++++++++++++++-------------
- 1 file changed, 113 insertions(+), 44 deletions(-)
+ hw/acpi/core.c | 56 +++++++++++++++++++++++++-------------------------
+ 1 file changed, 28 insertions(+), 28 deletions(-)
 
-diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-index 3fb833fe76..46778d5313 100644
---- a/net/vhost-vdpa.c
-+++ b/net/vhost-vdpa.c
-@@ -43,6 +43,10 @@ typedef struct VhostVDPAState {
+diff --git a/hw/acpi/core.c b/hw/acpi/core.c
+index 6da275c599..00b1e79a30 100644
+--- a/hw/acpi/core.c
++++ b/hw/acpi/core.c
+@@ -551,8 +551,35 @@ void acpi_pm_tmr_reset(ACPIREGS *ar)
+ }
  
-     /* The device always have SVQ enabled */
-     bool always_svq;
-+
-+    /* The device can isolate CVQ in its own ASID */
-+    bool cvq_isolated;
-+
-     bool started;
- } VhostVDPAState;
- 
-@@ -362,15 +366,8 @@ static NetClientInfo net_vhost_vdpa_info = {
-         .check_peer_type = vhost_vdpa_check_peer_type,
- };
- 
--/**
-- * Get vring virtqueue group
-- *
-- * @device_fd  vdpa device fd
-- * @vq_index   Virtqueue index
-- *
-- * Return -errno in case of error, or vq group if success.
-- */
--static int64_t vhost_vdpa_get_vring_group(int device_fd, unsigned vq_index)
-+static int64_t vhost_vdpa_get_vring_group(int device_fd, unsigned vq_index,
-+                                          Error **errp)
+ /* ACPI PM1aCNT */
+-static void acpi_pm1_cnt_write(ACPIREGS *ar, uint16_t val)
++void acpi_pm1_cnt_update(ACPIREGS *ar,
++                         bool sci_enable, bool sci_disable)
  {
-     struct vhost_vring_state state = {
-         .index = vq_index,
-@@ -379,8 +376,7 @@ static int64_t vhost_vdpa_get_vring_group(int device_fd, unsigned vq_index)
- 
-     if (unlikely(r < 0)) {
-         r = -errno;
--        error_report("Cannot get VQ %u group: %s", vq_index,
--                     g_strerror(errno));
-+        error_setg_errno(errp, errno, "Cannot get VQ %u group", vq_index);
-         return r;
-     }
- 
-@@ -480,9 +476,9 @@ static int vhost_vdpa_net_cvq_start(NetClientState *nc)
- {
-     VhostVDPAState *s, *s0;
-     struct vhost_vdpa *v;
--    uint64_t backend_features;
-     int64_t cvq_group;
--    int cvq_index, r;
-+    int r;
-+    Error *err = NULL;
- 
-     assert(nc->info->type == NET_CLIENT_DRIVER_VHOST_VDPA);
- 
-@@ -502,40 +498,21 @@ static int vhost_vdpa_net_cvq_start(NetClientState *nc)
-     /*
-      * If we early return in these cases SVQ will not be enabled. The migration
-      * will be blocked as long as vhost-vdpa backends will not offer _F_LOG.
--     *
--     * Calling VHOST_GET_BACKEND_FEATURES as they are not available in v->dev
--     * yet.
-      */
--    r = ioctl(v->device_fd, VHOST_GET_BACKEND_FEATURES, &backend_features);
--    if (unlikely(r < 0)) {
--        error_report("Cannot get vdpa backend_features: %s(%d)",
--            g_strerror(errno), errno);
--        return -1;
--    }
--    if (!(backend_features & BIT_ULL(VHOST_BACKEND_F_IOTLB_ASID)) ||
--        !vhost_vdpa_net_valid_svq_features(v->dev->features, NULL)) {
-+    if (!vhost_vdpa_net_valid_svq_features(v->dev->features, NULL)) {
-         return 0;
-     }
- 
--    /*
--     * Check if all the virtqueues of the virtio device are in a different vq
--     * than the last vq. VQ group of last group passed in cvq_group.
--     */
--    cvq_index = v->dev->vq_index_end - 1;
--    cvq_group = vhost_vdpa_get_vring_group(v->device_fd, cvq_index);
--    if (unlikely(cvq_group < 0)) {
--        return cvq_group;
-+    if (!s->cvq_isolated) {
-+        return 0;
-     }
--    for (int i = 0; i < cvq_index; ++i) {
--        int64_t group = vhost_vdpa_get_vring_group(v->device_fd, i);
- 
--        if (unlikely(group < 0)) {
--            return group;
--        }
--
--        if (group == cvq_group) {
--            return 0;
--        }
-+    cvq_group = vhost_vdpa_get_vring_group(v->device_fd,
-+                                           v->dev->vq_index_end - 1,
-+                                           &err);
-+    if (unlikely(cvq_group < 0)) {
-+        error_report_err(err);
-+        return cvq_group;
-     }
- 
-     r = vhost_vdpa_set_address_space_id(v, cvq_group, VHOST_VDPA_NET_CVQ_ASID);
-@@ -799,6 +776,87 @@ static const VhostShadowVirtqueueOps vhost_vdpa_net_svq_ops = {
-     .avail_handler = vhost_vdpa_net_handle_ctrl_avail,
- };
- 
-+/**
-+ * Probe if CVQ is isolated
-+ *
-+ * @device_fd         The vdpa device fd
-+ * @features          Features offered by the device.
-+ * @cvq_index         The control vq pair index
-+ *
-+ * Returns <0 in case of failure, 0 if false and 1 if true.
-+ */
-+static int vhost_vdpa_probe_cvq_isolation(int device_fd, uint64_t features,
-+                                          int cvq_index, Error **errp)
-+{
-+    uint64_t backend_features;
-+    int64_t cvq_group;
-+    uint8_t status = VIRTIO_CONFIG_S_ACKNOWLEDGE |
-+                     VIRTIO_CONFIG_S_DRIVER |
-+                     VIRTIO_CONFIG_S_FEATURES_OK;
-+    int r;
-+
-+    ERRP_GUARD();
-+
-+    r = ioctl(device_fd, VHOST_GET_BACKEND_FEATURES, &backend_features);
-+    if (unlikely(r < 0)) {
-+        error_setg_errno(errp, errno, "Cannot get vdpa backend_features");
-+        return r;
++    /* ACPI specs 3.0, 4.7.2.5 */
++    if (ar->pm1.cnt.acpi_only) {
++        return;
 +    }
 +
-+    if (!(backend_features & BIT_ULL(VHOST_BACKEND_F_IOTLB_ASID))) {
-+        return 0;
++    if (sci_enable) {
++        ar->pm1.cnt.cnt |= ACPI_BITMASK_SCI_ENABLE;
++    } else if (sci_disable) {
++        ar->pm1.cnt.cnt &= ~ACPI_BITMASK_SCI_ENABLE;
 +    }
-+
-+    r = ioctl(device_fd, VHOST_SET_FEATURES, &features);
-+    if (unlikely(r)) {
-+        error_setg_errno(errp, errno, "Cannot set features");
-+    }
-+
-+    r = ioctl(device_fd, VHOST_VDPA_SET_STATUS, &status);
-+    if (unlikely(r)) {
-+        error_setg_errno(errp, -r, "Cannot set device features");
-+        goto out;
-+    }
-+
-+    cvq_group = vhost_vdpa_get_vring_group(device_fd, cvq_index, errp);
-+    if (unlikely(cvq_group < 0)) {
-+        if (cvq_group != -ENOTSUP) {
-+            r = cvq_group;
-+            goto out;
-+        }
-+
-+        /*
-+         * The kernel report VHOST_BACKEND_F_IOTLB_ASID if the vdpa frontend
-+         * support ASID even if the parent driver does not.  The CVQ cannot be
-+         * isolated in this case.
-+         */
-+        error_free(*errp);
-+        *errp = NULL;
-+        r = 0;
-+        goto out;
-+    }
-+
-+    for (int i = 0; i < cvq_index; ++i) {
-+        int64_t group = vhost_vdpa_get_vring_group(device_fd, i, errp);
-+        if (unlikely(group < 0)) {
-+            r = group;
-+            goto out;
-+        }
-+
-+        if (group == (int64_t)cvq_group) {
-+            r = 0;
-+            goto out;
-+        }
-+    }
-+
-+    r = 1;
-+
-+out:
-+    status = 0;
-+    ioctl(device_fd, VHOST_VDPA_SET_STATUS, &status);
-+    return r;
 +}
 +
- static NetClientState *net_vhost_vdpa_init(NetClientState *peer,
-                                        const char *device,
-                                        const char *name,
-@@ -808,16 +866,26 @@ static NetClientState *net_vhost_vdpa_init(NetClientState *peer,
-                                        bool is_datapath,
-                                        bool svq,
-                                        struct vhost_vdpa_iova_range iova_range,
--                                       uint64_t features)
-+                                       uint64_t features,
-+                                       Error **errp)
- {
-     NetClientState *nc = NULL;
-     VhostVDPAState *s;
-     int ret = 0;
-     assert(name);
-+    int cvq_isolated;
++static uint64_t acpi_pm_cnt_read(void *opaque, hwaddr addr, unsigned width)
++{
++    ACPIREGS *ar = opaque;
++    return ar->pm1.cnt.cnt >> addr * 8;
++}
 +
-     if (is_datapath) {
-         nc = qemu_new_net_client(&net_vhost_vdpa_info, peer, device,
-                                  name);
-     } else {
-+        cvq_isolated = vhost_vdpa_probe_cvq_isolation(vdpa_device_fd, features,
-+                                                      queue_pair_index * 2,
-+                                                      errp);
-+        if (unlikely(cvq_isolated < 0)) {
-+            return NULL;
-+        }
++static void acpi_pm_cnt_write(void *opaque, hwaddr addr, uint64_t val,
++                              unsigned width)
++{
++    ACPIREGS *ar = opaque;
 +
-         nc = qemu_new_net_control_client(&net_vhost_vdpa_cvq_info, peer,
-                                          device, name);
-     }
-@@ -844,6 +912,7 @@ static NetClientState *net_vhost_vdpa_init(NetClientState *peer,
++    if (addr == 1) {
++        val = val << 8 | (ar->pm1.cnt.cnt & 0xff);
++    }
+     ar->pm1.cnt.cnt = val & ~(ACPI_BITMASK_SLEEP_ENABLE);
  
-         s->vhost_vdpa.shadow_vq_ops = &vhost_vdpa_net_svq_ops;
-         s->vhost_vdpa.shadow_vq_ops_opaque = s;
-+        s->cvq_isolated = cvq_isolated;
+     if (val & ACPI_BITMASK_SLEEP_ENABLE) {
+@@ -575,33 +602,6 @@ static void acpi_pm1_cnt_write(ACPIREGS *ar, uint16_t val)
+     }
+ }
  
-         /*
-          * TODO: We cannot migrate devices with CVQ as there is no way to set
-@@ -972,7 +1041,7 @@ int net_init_vhost_vdpa(const Netdev *netdev, const char *name,
-     for (i = 0; i < queue_pairs; i++) {
-         ncs[i] = net_vhost_vdpa_init(peer, TYPE_VHOST_VDPA, name,
-                                      vdpa_device_fd, i, 2, true, opts->x_svq,
--                                     iova_range, features);
-+                                     iova_range, features, errp);
-         if (!ncs[i])
-             goto err;
-     }
-@@ -980,7 +1049,7 @@ int net_init_vhost_vdpa(const Netdev *netdev, const char *name,
-     if (has_cvq) {
-         nc = net_vhost_vdpa_init(peer, TYPE_VHOST_VDPA, name,
-                                  vdpa_device_fd, i, 1, false,
--                                 opts->x_svq, iova_range, features);
-+                                 opts->x_svq, iova_range, features, errp);
-         if (!nc)
-             goto err;
-     }
+-void acpi_pm1_cnt_update(ACPIREGS *ar,
+-                         bool sci_enable, bool sci_disable)
+-{
+-    /* ACPI specs 3.0, 4.7.2.5 */
+-    if (ar->pm1.cnt.acpi_only) {
+-        return;
+-    }
+-
+-    if (sci_enable) {
+-        ar->pm1.cnt.cnt |= ACPI_BITMASK_SCI_ENABLE;
+-    } else if (sci_disable) {
+-        ar->pm1.cnt.cnt &= ~ACPI_BITMASK_SCI_ENABLE;
+-    }
+-}
+-
+-static uint64_t acpi_pm_cnt_read(void *opaque, hwaddr addr, unsigned width)
+-{
+-    ACPIREGS *ar = opaque;
+-    return ar->pm1.cnt.cnt;
+-}
+-
+-static void acpi_pm_cnt_write(void *opaque, hwaddr addr, uint64_t val,
+-                              unsigned width)
+-{
+-    acpi_pm1_cnt_write(opaque, val);
+-}
+-
+ static const MemoryRegionOps acpi_pm_cnt_ops = {
+     .read = acpi_pm_cnt_read,
+     .write = acpi_pm_cnt_write,
 -- 
 MST
 
