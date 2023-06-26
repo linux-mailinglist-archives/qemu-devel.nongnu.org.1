@@ -2,85 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C5A873DF49
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 14:32:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C406873E10C
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 15:51:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDlLw-0003G8-3X; Mon, 26 Jun 2023 08:29:56 -0400
+	id 1qDlRd-00028m-E9; Mon, 26 Jun 2023 08:35:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qDlL5-0002QS-BR
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 08:29:11 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qDlLB-0002TT-3X
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 08:29:12 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qDlL1-00032w-Su
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 08:29:01 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qDlL7-00033e-0g
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 08:29:07 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687782539;
+ s=mimecast20190719; t=1687782543;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=cmYTDPAI2xgJjGZMucMrx6UGF1BWykf5qDnfD2qNmBs=;
- b=CMdQ7W/lYiWS//lw17PD3cVnwSPJucXJ41onxsxBXHGLWADJpN+wRc/snDFBRhhccdcjXC
- K/bJid8p1BxeNbkAjhiaX2045R08thkmfP4yfJ7x2RwsW1Fzf7YjuKN4mQeKnpYDU62t4Q
- InVMi6vLK4Q7sg1hexy7fGr7YYLsmfk=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=H0oeErSXAGqtdLlL9WwcgUJY5/rn+3CrQVAQVjQGGBg=;
+ b=TjF6g1Bw9ukjDqP4XdECAE9P3dNPV9XAyNgj09483XVjKq3hhJ4jhCcz2NPJWWmE5l8Cx6
+ ovnFUXd8CxEtNFqg8oQstVwAgXCT5AoEeyiRSEbnHjPCZRNJe0uBPHaKimxx0duP0xgSYj
+ MHEj3xOHVtWgrmC23PK5R50gn5pRZJk=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-630-pE9RZE-_NxSM-k5QQK8b3A-1; Mon, 26 Jun 2023 08:28:57 -0400
-X-MC-Unique: pE9RZE-_NxSM-k5QQK8b3A-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-3fa8f8fb7b3so27935215e9.2
- for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 05:28:57 -0700 (PDT)
+ us-mta-379-ZTQjL5VXN1e6qL90vEbXEA-1; Mon, 26 Jun 2023 08:29:01 -0400
+X-MC-Unique: ZTQjL5VXN1e6qL90vEbXEA-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-3fa979d0c32so3382305e9.2
+ for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 05:29:00 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687782536; x=1690374536;
+ d=1e100.net; s=20221208; t=1687782539; x=1690374539;
  h=in-reply-to:content-transfer-encoding:content-disposition
  :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=cmYTDPAI2xgJjGZMucMrx6UGF1BWykf5qDnfD2qNmBs=;
- b=DaeNmwY3G7MivMcyJa6Z8/f9oQP0V8ycY3S1Fm792MEpO1+cZM+zvHJpByThPo6j8y
- cVZNtYjd7PPpT6d+eDPZyh7/HU1zhn6hYTu2qnN7ohw718xyxZyOYxMLp7IBTqprxPlB
- d7jfGZO9s2k1gJT8niD0L8Q173quMoA7e6IZ4eWZhD+Nj2b2ZnrrkDicvI419kXaAozk
- CFGegDLmuP8ZLN9BWQZt9Ry3Cef9g42DGLXa25NV3keWpB/Z1HJ0iJbm/6Izm0DHQN+p
- lTD3FqjwuZhyvFc7jdvNnw5i9kAM2IJAcCRVblo1YW6cMxdaj1O29eMsYrqG7fQuqyAV
- mhBQ==
-X-Gm-Message-State: AC+VfDyBuqVF3M39YwCTo1gPIl5YkypVHxpnBiUsNbFXPnliJ6j/TLGN
- 0A98UclqsvzEWLG5RzzHaPKn1TLHMixvRGELLTzW/jpoKEN7tX/TdIx6rRNPSWxV6gR0qBgFinK
- d8f2y2NmJfACYq5Eu7psp3YooXpmH/PDjRNXlAc7TBy9s+Coo0GtH949LGcpsIaPo+mBK
-X-Received: by 2002:a05:600c:28e:b0:3fa:8aed:d57f with SMTP id
- 14-20020a05600c028e00b003fa8aedd57fmr5192259wmk.24.1687782536270; 
- Mon, 26 Jun 2023 05:28:56 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7ItFnmCy4mk7X9UK0cRG8CIvcsJxajw3gfBC1SzxWeKRBpOicd4RlXn3UXR3EDEepdTuE0pg==
-X-Received: by 2002:a05:600c:28e:b0:3fa:8aed:d57f with SMTP id
- 14-20020a05600c028e00b003fa8aedd57fmr5192229wmk.24.1687782535945; 
- Mon, 26 Jun 2023 05:28:55 -0700 (PDT)
+ bh=H0oeErSXAGqtdLlL9WwcgUJY5/rn+3CrQVAQVjQGGBg=;
+ b=XKmePHPPh6Z3rOI5zs/h0o0hTaB6MxeM2AvBTFXsfhDZFHmZ+9k8lY9HNXIAmiWKWx
+ NSED+8LXEKUBpZTExSTB4c99xBjdEumDEYC24SD9LiM6GmYeLQt7rdG58CHdlxTj4flP
+ e9zA2UPT3DtoZ4075Q5u2ekH8beh3xQBmjcyoFxv6XMNKmKLeTgF29AjQj7h07FUyBH8
+ KVyTnY2B7gFGI426iZGZ27fbQOyZ7m44cQ/V/790xk/NEwmsHCjRyfAeARXiGTehMhot
+ +Wk3snhv67tDbiXxDf2kfkmhl4Q7B9pPHJAOcoBsklWwelq0Pn1QsSkVQkm+HHgNoAYZ
+ Xl2Q==
+X-Gm-Message-State: AC+VfDwBtM8BsjgXUZI7KLAbwbyH95gMHFf9rYRDFwa+ry+2bx6VmPQv
+ cfAdAXk99UKr1dop73qjPvz+BtYpFldhch5nRquEb9YkkHBYi37VP92TtT0XF58JJvZ6SYqlh4r
+ Hxx9cQhRh6cTvwRYjMBToCgqZDej7Z71dYJyp8OmnBb9F5dwqEJJpnP/Aq9O9b0E/GWIj
+X-Received: by 2002:a5d:548e:0:b0:313:ed1b:3622 with SMTP id
+ h14-20020a5d548e000000b00313ed1b3622mr2609368wrv.7.1687782539409; 
+ Mon, 26 Jun 2023 05:28:59 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7Bx3bavs2aCu91/d77ggZgWCvBtmfx6+k/B8f2EMglSXR5gq6hxYC72gxvvQm18LQof8eVaQ==
+X-Received: by 2002:a5d:548e:0:b0:313:ed1b:3622 with SMTP id
+ h14-20020a5d548e000000b00313ed1b3622mr2609347wrv.7.1687782539072; 
+ Mon, 26 Jun 2023 05:28:59 -0700 (PDT)
 Received: from redhat.com ([2.52.156.102]) by smtp.gmail.com with ESMTPSA id
- c21-20020a7bc855000000b003f8fac0ad4bsm7510243wml.17.2023.06.26.05.28.53
+ t1-20020adfe441000000b00313f45f74a8sm1706603wrm.103.2023.06.26.05.28.57
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 26 Jun 2023 05:28:55 -0700 (PDT)
-Date: Mon, 26 Jun 2023 08:28:52 -0400
+ Mon, 26 Jun 2023 05:28:58 -0700 (PDT)
+Date: Mon, 26 Jun 2023 08:28:56 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
- Thomas Huth <thuth@redhat.com>,
- Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Stefan Hajnoczi <stefanha@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
  Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- Cornelia Huck <cohuck@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
- Eric Farman <farman@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
  Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>,
- Raphael Norwitz <raphael.norwitz@nutanix.com>,
- "Gonglei (Arei)" <arei.gonglei@huawei.com>,
- Eric Auger <eric.auger@redhat.com>, qemu-block@nongnu.org,
- qemu-s390x@nongnu.org
-Subject: [PULL 21/53] hw/virtio: Remove unnecessary 'virtio-access.h' header
-Message-ID: <4ee4667ded5841ff9278d4e4a4c765a3220023bf.1687782442.git.mst@redhat.com>
+ qemu-block@nongnu.org
+Subject: [PULL 22/53] hw/virtio: Build various target-agnostic objects just
+ once
+Message-ID: <7a0903f7ea8ac7e5b3191c9a2cfd1751b153f48c.1687782442.git.mst@redhat.com>
 References: <cover.1687782442.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -89,7 +81,7 @@ Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1687782442.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -116,179 +108,105 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-None of these files use the VirtIO Load/Store API declared
-by "hw/virtio/virtio-access.h". This header probably crept
-in via copy/pasting, remove it.
-
-Note, "virtio-access.h" is target-specific, so any file
-including it also become tainted as target-specific.
+The previous commit remove the unnecessary "virtio-access.h"
+header. These files no longer have target-specific dependency.
+Move them to the generic 'softmmu_ss' source set.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Acked-by: Richard Henderson <richard.henderson@linaro.org>
-Tested-by: Thomas Huth <thuth@redhat.com>
-Message-Id: <20230524093744.88442-10-philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Message-Id: <20230524093744.88442-11-philmd@linaro.org>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- hw/block/dataplane/virtio-blk.c | 1 -
- hw/s390x/virtio-ccw.c           | 1 -
- hw/scsi/vhost-scsi.c            | 1 -
- hw/scsi/vhost-user-scsi.c       | 1 -
- hw/scsi/virtio-scsi-dataplane.c | 1 -
- hw/virtio/vdpa-dev.c            | 1 -
- hw/virtio/vhost-vdpa.c          | 1 -
- hw/virtio/vhost-vsock-common.c  | 1 -
- hw/virtio/vhost.c               | 1 -
- hw/virtio/virtio-crypto.c       | 1 -
- hw/virtio/virtio-iommu.c        | 1 -
- hw/virtio/virtio-mem.c          | 1 -
- 12 files changed, 12 deletions(-)
+ hw/block/dataplane/meson.build |  2 +-
+ hw/scsi/meson.build            | 10 +++++++---
+ hw/virtio/meson.build          | 11 ++++++-----
+ 3 files changed, 14 insertions(+), 9 deletions(-)
 
-diff --git a/hw/block/dataplane/virtio-blk.c b/hw/block/dataplane/virtio-blk.c
-index b90456c08c..c227b39408 100644
---- a/hw/block/dataplane/virtio-blk.c
-+++ b/hw/block/dataplane/virtio-blk.c
-@@ -19,7 +19,6 @@
- #include "qemu/main-loop.h"
- #include "qemu/thread.h"
- #include "qemu/error-report.h"
--#include "hw/virtio/virtio-access.h"
- #include "hw/virtio/virtio-blk.h"
- #include "virtio-blk.h"
- #include "block/aio.h"
-diff --git a/hw/s390x/virtio-ccw.c b/hw/s390x/virtio-ccw.c
-index f44de1a8c1..17c548b84f 100644
---- a/hw/s390x/virtio-ccw.c
-+++ b/hw/s390x/virtio-ccw.c
-@@ -22,7 +22,6 @@
- #include "qemu/error-report.h"
- #include "qemu/log.h"
- #include "qemu/module.h"
--#include "hw/virtio/virtio-access.h"
- #include "hw/virtio/virtio-bus.h"
- #include "hw/s390x/adapter.h"
- #include "hw/s390x/s390_flic.h"
-diff --git a/hw/scsi/vhost-scsi.c b/hw/scsi/vhost-scsi.c
-index 6a0fd0dfb1..443f67daa4 100644
---- a/hw/scsi/vhost-scsi.c
-+++ b/hw/scsi/vhost-scsi.c
-@@ -26,7 +26,6 @@
- #include "hw/virtio/vhost.h"
- #include "hw/virtio/virtio-scsi.h"
- #include "hw/virtio/virtio-bus.h"
--#include "hw/virtio/virtio-access.h"
- #include "hw/fw-path-provider.h"
- #include "hw/qdev-properties.h"
- #include "qemu/cutils.h"
-diff --git a/hw/scsi/vhost-user-scsi.c b/hw/scsi/vhost-user-scsi.c
-index b7a71a802c..ee99b19e7a 100644
---- a/hw/scsi/vhost-user-scsi.c
-+++ b/hw/scsi/vhost-user-scsi.c
-@@ -26,7 +26,6 @@
- #include "hw/virtio/vhost-backend.h"
- #include "hw/virtio/vhost-user-scsi.h"
- #include "hw/virtio/virtio.h"
--#include "hw/virtio/virtio-access.h"
- #include "chardev/char-fe.h"
- #include "sysemu/sysemu.h"
+diff --git a/hw/block/dataplane/meson.build b/hw/block/dataplane/meson.build
+index 78d7ac1a11..025b3b061b 100644
+--- a/hw/block/dataplane/meson.build
++++ b/hw/block/dataplane/meson.build
+@@ -1,2 +1,2 @@
+-specific_ss.add(when: 'CONFIG_VIRTIO_BLK', if_true: files('virtio-blk.c'))
++system_ss.add(when: 'CONFIG_VIRTIO_BLK', if_true: files('virtio-blk.c'))
+ specific_ss.add(when: 'CONFIG_XEN_BUS', if_true: files('xen-block.c'))
+diff --git a/hw/scsi/meson.build b/hw/scsi/meson.build
+index 43746700be..bb7d289aa0 100644
+--- a/hw/scsi/meson.build
++++ b/hw/scsi/meson.build
+@@ -1,5 +1,6 @@
+ scsi_ss = ss.source_set()
+ specific_scsi_ss = ss.source_set()
++virtio_scsi_ss = ss.source_set()
+ specific_virtio_scsi_ss = ss.source_set()
  
-diff --git a/hw/scsi/virtio-scsi-dataplane.c b/hw/scsi/virtio-scsi-dataplane.c
-index d55de4c8ca..1e684beebe 100644
---- a/hw/scsi/virtio-scsi-dataplane.c
-+++ b/hw/scsi/virtio-scsi-dataplane.c
-@@ -19,7 +19,6 @@
- #include "hw/scsi/scsi.h"
- #include "scsi/constants.h"
- #include "hw/virtio/virtio-bus.h"
--#include "hw/virtio/virtio-access.h"
+ scsi_ss.add(files(
+@@ -15,12 +16,15 @@ scsi_ss.add(when: 'CONFIG_MEGASAS_SCSI_PCI', if_true: files('megasas.c'))
+ scsi_ss.add(when: 'CONFIG_MPTSAS_SCSI_PCI', if_true: files('mptsas.c', 'mptconfig.c', 'mptendian.c'))
+ scsi_ss.add(when: 'CONFIG_VMW_PVSCSI_SCSI_PCI', if_true: files('vmw_pvscsi.c'))
  
- /* Context: QEMU global mutex held */
- void virtio_scsi_dataplane_setup(VirtIOSCSI *s, Error **errp)
-diff --git a/hw/virtio/vdpa-dev.c b/hw/virtio/vdpa-dev.c
-index 01b41eb0f1..e08e830006 100644
---- a/hw/virtio/vdpa-dev.c
-+++ b/hw/virtio/vdpa-dev.c
-@@ -25,7 +25,6 @@
- #include "hw/virtio/vhost.h"
- #include "hw/virtio/virtio.h"
- #include "hw/virtio/virtio-bus.h"
--#include "hw/virtio/virtio-access.h"
- #include "hw/virtio/vdpa-dev.h"
- #include "sysemu/sysemu.h"
- #include "sysemu/runstate.h"
-diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
-index b3094e8a8b..3c575a9a6e 100644
---- a/hw/virtio/vhost-vdpa.c
-+++ b/hw/virtio/vhost-vdpa.c
-@@ -26,7 +26,6 @@
- #include "cpu.h"
- #include "trace.h"
- #include "qapi/error.h"
--#include "hw/virtio/virtio-access.h"
+-specific_virtio_scsi_ss.add(files('virtio-scsi.c', 'virtio-scsi-dataplane.c'))
++virtio_scsi_ss.add(files('virtio-scsi-dataplane.c'))
++virtio_scsi_ss.add(when: 'CONFIG_VHOST_SCSI', if_true: files('vhost-scsi.c'))
++virtio_scsi_ss.add(when: 'CONFIG_VHOST_USER_SCSI', if_true: files('vhost-user-scsi.c'))
++
++specific_virtio_scsi_ss.add(files('virtio-scsi.c'))
+ specific_virtio_scsi_ss.add(when: 'CONFIG_VHOST_SCSI_COMMON', if_true: files('vhost-scsi-common.c'))
+-specific_virtio_scsi_ss.add(when: 'CONFIG_VHOST_SCSI', if_true: files('vhost-scsi.c'))
+-specific_virtio_scsi_ss.add(when: 'CONFIG_VHOST_USER_SCSI', if_true: files('vhost-user-scsi.c'))
  
- /*
-  * Return one past the end of the end of section. Be careful with uint64_t
-diff --git a/hw/virtio/vhost-vsock-common.c b/hw/virtio/vhost-vsock-common.c
-index e89af9b329..321262f6b3 100644
---- a/hw/virtio/vhost-vsock-common.c
-+++ b/hw/virtio/vhost-vsock-common.c
-@@ -12,7 +12,6 @@
- #include "standard-headers/linux/virtio_vsock.h"
- #include "qapi/error.h"
- #include "hw/virtio/virtio-bus.h"
--#include "hw/virtio/virtio-access.h"
- #include "qemu/error-report.h"
- #include "hw/qdev-properties.h"
- #include "hw/virtio/vhost.h"
-diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
-index 23da579ce2..7f3c727777 100644
---- a/hw/virtio/vhost.c
-+++ b/hw/virtio/vhost.c
-@@ -23,7 +23,6 @@
- #include "qemu/log.h"
- #include "standard-headers/linux/vhost_types.h"
- #include "hw/virtio/virtio-bus.h"
--#include "hw/virtio/virtio-access.h"
- #include "migration/blocker.h"
- #include "migration/qemu-file-types.h"
- #include "sysemu/dma.h"
-diff --git a/hw/virtio/virtio-crypto.c b/hw/virtio/virtio-crypto.c
-index c729a1f79e..a6d7e1e8ec 100644
---- a/hw/virtio/virtio-crypto.c
-+++ b/hw/virtio/virtio-crypto.c
-@@ -21,7 +21,6 @@
- #include "hw/virtio/virtio.h"
- #include "hw/virtio/virtio-crypto.h"
- #include "hw/qdev-properties.h"
--#include "hw/virtio/virtio-access.h"
- #include "standard-headers/linux/virtio_ids.h"
- #include "sysemu/cryptodev-vhost.h"
+ specific_scsi_ss.add_all(when: 'CONFIG_VIRTIO_SCSI', if_true: specific_virtio_scsi_ss)
++scsi_ss.add_all(when: 'CONFIG_VIRTIO_SCSI', if_true: virtio_scsi_ss)
  
-diff --git a/hw/virtio/virtio-iommu.c b/hw/virtio/virtio-iommu.c
-index 85905a9e3d..1bbad23f4a 100644
---- a/hw/virtio/virtio-iommu.c
-+++ b/hw/virtio/virtio-iommu.c
-@@ -32,7 +32,6 @@
- #include "standard-headers/linux/virtio_ids.h"
+ specific_scsi_ss.add(when: 'CONFIG_SPAPR_VSCSI', if_true: files('spapr_vscsi.c'))
  
- #include "hw/virtio/virtio-bus.h"
--#include "hw/virtio/virtio-access.h"
- #include "hw/virtio/virtio-iommu.h"
- #include "hw/pci/pci_bus.h"
- #include "hw/pci/pci.h"
-diff --git a/hw/virtio/virtio-mem.c b/hw/virtio/virtio-mem.c
-index 74e63bd47a..12ea58d5ad 100644
---- a/hw/virtio/virtio-mem.c
-+++ b/hw/virtio/virtio-mem.c
-@@ -20,7 +20,6 @@
- #include "sysemu/reset.h"
- #include "hw/virtio/virtio.h"
- #include "hw/virtio/virtio-bus.h"
--#include "hw/virtio/virtio-access.h"
- #include "hw/virtio/virtio-mem.h"
- #include "qapi/error.h"
- #include "qapi/visitor.h"
+diff --git a/hw/virtio/meson.build b/hw/virtio/meson.build
+index a6ea5beae7..f32b22f61b 100644
+--- a/hw/virtio/meson.build
++++ b/hw/virtio/meson.build
+@@ -2,13 +2,18 @@ softmmu_virtio_ss = ss.source_set()
+ softmmu_virtio_ss.add(files('virtio-bus.c'))
+ softmmu_virtio_ss.add(when: 'CONFIG_VIRTIO_PCI', if_true: files('virtio-pci.c'))
+ softmmu_virtio_ss.add(when: 'CONFIG_VIRTIO_MMIO', if_true: files('virtio-mmio.c'))
++softmmu_virtio_ss.add(when: 'CONFIG_VIRTIO_CRYPTO', if_true: files('virtio-crypto.c'))
++softmmu_virtio_ss.add(when: 'CONFIG_VHOST_VSOCK_COMMON', if_true: files('vhost-vsock-common.c'))
++softmmu_virtio_ss.add(when: 'CONFIG_VIRTIO_IOMMU', if_true: files('virtio-iommu.c'))
++softmmu_virtio_ss.add(when: 'CONFIG_VHOST_VDPA_DEV', if_true: files('vdpa-dev.c'))
+ 
+ specific_virtio_ss = ss.source_set()
+ specific_virtio_ss.add(files('virtio.c'))
+ specific_virtio_ss.add(files('virtio-config-io.c', 'virtio-qmp.c'))
+ 
+ if have_vhost
+-  specific_virtio_ss.add(files('vhost.c', 'vhost-backend.c', 'vhost-iova-tree.c'))
++  softmmu_virtio_ss.add(files('vhost.c'))
++  specific_virtio_ss.add(files('vhost-backend.c', 'vhost-iova-tree.c'))
+   if have_vhost_user
+     specific_virtio_ss.add(files('vhost-user.c'))
+   endif
+@@ -20,20 +25,16 @@ else
+ endif
+ 
+ specific_virtio_ss.add(when: 'CONFIG_VIRTIO_BALLOON', if_true: files('virtio-balloon.c'))
+-specific_virtio_ss.add(when: 'CONFIG_VIRTIO_CRYPTO', if_true: files('virtio-crypto.c'))
+ specific_virtio_ss.add(when: 'CONFIG_VHOST_USER_FS', if_true: files('vhost-user-fs.c'))
+ specific_virtio_ss.add(when: 'CONFIG_VIRTIO_PMEM', if_true: files('virtio-pmem.c'))
+-specific_virtio_ss.add(when: 'CONFIG_VHOST_VSOCK_COMMON', if_true: files('vhost-vsock-common.c'))
+ specific_virtio_ss.add(when: 'CONFIG_VHOST_VSOCK', if_true: files('vhost-vsock.c'))
+ specific_virtio_ss.add(when: 'CONFIG_VHOST_USER_VSOCK', if_true: files('vhost-user-vsock.c'))
+ specific_virtio_ss.add(when: 'CONFIG_VIRTIO_RNG', if_true: files('virtio-rng.c'))
+-specific_virtio_ss.add(when: 'CONFIG_VIRTIO_IOMMU', if_true: files('virtio-iommu.c'))
+ specific_virtio_ss.add(when: 'CONFIG_VIRTIO_MEM', if_true: files('virtio-mem.c'))
+ specific_virtio_ss.add(when: 'CONFIG_VHOST_USER_I2C', if_true: files('vhost-user-i2c.c'))
+ specific_virtio_ss.add(when: 'CONFIG_VHOST_USER_RNG', if_true: files('vhost-user-rng.c'))
+ specific_virtio_ss.add(when: 'CONFIG_VHOST_USER_GPIO', if_true: files('vhost-user-gpio.c'))
+ specific_virtio_ss.add(when: ['CONFIG_VIRTIO_PCI', 'CONFIG_VHOST_USER_GPIO'], if_true: files('vhost-user-gpio-pci.c'))
+-specific_virtio_ss.add(when: 'CONFIG_VHOST_VDPA_DEV', if_true: files('vdpa-dev.c'))
+ 
+ virtio_pci_ss = ss.source_set()
+ virtio_pci_ss.add(when: 'CONFIG_VHOST_VSOCK', if_true: files('vhost-vsock-pci.c'))
 -- 
 MST
 
