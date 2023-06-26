@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67A6F73EB0D
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 21:14:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C40AD73EB0C
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 21:13:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDrR5-0001Tg-Sk; Mon, 26 Jun 2023 14:59:39 -0400
+	id 1qDrR5-0001SZ-5Q; Mon, 26 Jun 2023 14:59:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qDrQm-0000rU-Bj; Mon, 26 Jun 2023 14:59:21 -0400
+ id 1qDrQm-0000rS-6t; Mon, 26 Jun 2023 14:59:21 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qDrQk-00073v-O3; Mon, 26 Jun 2023 14:59:20 -0400
+ id 1qDrQk-000741-On; Mon, 26 Jun 2023 14:59:19 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id BED10EFA5;
+ by isrv.corpit.ru (Postfix) with ESMTP id E7AA1EFA6;
  Mon, 26 Jun 2023 21:59:07 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 50204F7E4;
+ by tsrv.corpit.ru (Postfix) with SMTP id 7F26CF7E5;
  Mon, 26 Jun 2023 21:59:06 +0300 (MSK)
-Received: (nullmailer pid 1575297 invoked by uid 1000);
+Received: (nullmailer pid 1575300 invoked by uid 1000);
  Mon, 26 Jun 2023 18:59:05 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org, qemu-stable@nongnu.org
-Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Bin Meng <bin.meng@windriver.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.4 07/43] ui/sdl2: fix surface_gl_update_texture:
- Assertion 'gls' failed
-Date: Mon, 26 Jun 2023 21:58:25 +0300
-Message-Id: <20230626185902.1575177-7-mjt@tls.msk.ru>
+Cc: Bernhard Beschow <shentey@gmail.com>,
+ =?UTF-8?q?Volker=20R=C3=BCmelin?= <vr_qemu@t-online.de>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.4 08/43] ui/sdl2: Grab Alt+Tab also in fullscreen mode
+Date: Mon, 26 Jun 2023 21:58:26 +0300
+Message-Id: <20230626185902.1575177-8-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.4-20230626215033@cover.tls.msk.ru>
 References: <qemu-stable-7.2.4-20230626215033@cover.tls.msk.ru>
@@ -61,35 +61,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Marc-André Lureau <marcandre.lureau@redhat.com>
+From: Bernhard Beschow <shentey@gmail.com>
 
-Before sdl2_gl_update() is called, sdl2_gl_switch() may decide to
-destroy the console window and its associated shaders.
+By default, SDL grabs Alt+Tab only in non-fullscreen mode. This causes Alt+Tab
+to switch tasks on the host rather than in the VM in fullscreen mode while it
+switches tasks in non-fullscreen mode in the VM. Fix this confusing behavior
+by grabbing Alt+Tab in fullscreen mode, always causing tasks to be switched in
+the VM.
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1644
-Fixes: c84ab0a500a8 ("ui/console: optionally update after gfx switch")
-
-Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Tested-by: Bin Meng <bin.meng@windriver.com>
-Message-Id: <20230511074217.4171842-1-marcandre.lureau@redhat.com>
-(cherry picked from commit b3a654d82ecf276b59a67b2fd688e11a0d8a0064)
+Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+Reviewed-by: Volker Rümelin <vr_qemu@t-online.de>
+Message-Id: <20230417192139.43263-2-shentey@gmail.com>
+(cherry picked from commit efc00a37090eced53bff8b42d26991252aaacc44)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/ui/sdl2-gl.c b/ui/sdl2-gl.c
-index 39cab8cde7..bbfa70eac3 100644
---- a/ui/sdl2-gl.c
-+++ b/ui/sdl2-gl.c
-@@ -67,6 +67,10 @@ void sdl2_gl_update(DisplayChangeListener *dcl,
+diff --git a/ui/sdl2.c b/ui/sdl2.c
+index 8cb77416af..34b3f45c49 100644
+--- a/ui/sdl2.c
++++ b/ui/sdl2.c
+@@ -850,6 +850,9 @@ static void sdl2_display_init(DisplayState *ds, DisplayOptions *o)
+     SDL_SetHint(SDL_HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR, "0");
+ #endif
+     SDL_SetHint(SDL_HINT_GRAB_KEYBOARD, "1");
++#ifdef SDL_HINT_ALLOW_ALT_TAB_WHILE_GRABBED
++    SDL_SetHint(SDL_HINT_ALLOW_ALT_TAB_WHILE_GRABBED, "0");
++#endif
+     memset(&info, 0, sizeof(info));
+     SDL_VERSION(&info.version);
  
-     assert(scon->opengl);
- 
-+    if (!scon->real_window) {
-+        return;
-+    }
-+
-     SDL_GL_MakeCurrent(scon->real_window, scon->winctx);
-     surface_gl_update_texture(scon->gls, scon->surface, x, y, w, h);
-     scon->updates++;
 -- 
 2.39.2
 
