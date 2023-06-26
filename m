@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EECC73E3BA
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 17:43:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 576BF73E3A5
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 17:41:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDoK2-0000IZ-PW; Mon, 26 Jun 2023 11:40:22 -0400
+	id 1qDoL7-0001kK-8x; Mon, 26 Jun 2023 11:41:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qDoJn-0000Gu-V0
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 11:39:56 -0400
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+ id 1qDoJp-0000HO-8b
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 11:39:57 -0400
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qDoJk-0002ny-Ks
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 11:39:55 -0400
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-313f3a6db22so977629f8f.3
- for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 08:39:50 -0700 (PDT)
+ id 1qDoJk-0002o9-Lr
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 11:39:56 -0400
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-313f18f5295so1388475f8f.3
+ for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 08:39:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687793989; x=1690385989;
+ d=linaro.org; s=google; t=1687793990; x=1690385990;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Qpxr3zkfID0ollRatRL8kSP2CPxnrAD0tKJHuPeeYkc=;
- b=meS3brkLRBHFXnc1reyevzuCSUQtVC3AMhCCG8yKmR7CvKJ+OhTl3bPyHaRh4apbLv
- f8xtqXay8jkwRApXiSNMY8DG2voPEuugEQZgvqnqy//RZIKV7rmdy1YiP1LAeLODvWI+
- 3//Co2hQE64yT/quVIuYlCr7kDTHYjfCiW//1r1wZM3ra2C9K96plKJTR5sHmXYZv42d
- 7UtP0NRcCbsuM5NuTVAgXSjvfTSgzxgKfMrwaWRvnSghvbEeAk9acRHX7Ff2iVeHcnj9
- JpjqwwFsL4+g3GDKpyx1d/9Pwt/Bke7mX5OTT1kQ5Xo8ydKja6BSGIS2v8c0Al+B069x
- QyLQ==
+ bh=HG5rz65U57sVq58UVLRV5u9TWpEQiOWql+ZKzfQsiSQ=;
+ b=f+AaW4ascJw8x06Rp787solyLQSHPozmdX53zKXcx3A04gUqTOeGMN1dkAYpexSaUE
+ Tymo9IyyB0B2lrwi2ACdnjlgCvkdRaqJdw0GIpoZ9r0KfQ+roIci2kcOqTj23qXuP1O7
+ MXUWEqVfGAc6PiN9eO+SjAtBPmu9i7R1+8FAIqWBGaa35uWNMihIHbzrx0wcJQkq71cb
+ oM9F4EXtyxNHNC3mhwIZE2HTok8vtKEBuumynzIL6CkeY2RsUHqwJN9cQ79JV6g0mS1E
+ PxyJck/VHuv9oolD4k8XScf4qYMUgG48pEMAl3wddAz0GM84W3r40hiBSBXtwlESQAtc
+ Cyyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687793989; x=1690385989;
+ d=1e100.net; s=20221208; t=1687793990; x=1690385990;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Qpxr3zkfID0ollRatRL8kSP2CPxnrAD0tKJHuPeeYkc=;
- b=LeTCUE+UcSR2ffWaUo4fxwv3BpkkYq8o6J6Nr9medkVuUyBJc+stf2HVLfOC6TmS7i
- 6hCE4tklgt0HnvWzfizhGN/8v51St7hzd2c5bybNE8YzXN5sCBFsJoGxVhZ7Co2cRMpC
- f0CY6MaEEor4i+wretgS0ipf0BBrvQT+5tciSXxxWZiBTmLxi3s8W+5deqP37UHxJkFt
- GBo+arBBjHOJm3kjqmQSW92fBjhUCfPjtf3CzotECSPpZFFQ5w6tnq3sXXjCft7F0t1q
- yZ/mXKImhRQfaYF45f18/5VgqXOWv24g1n2pRh4SrRFZ1Oj41uolYn7j+xfhFR+QBD59
- GVPw==
-X-Gm-Message-State: AC+VfDy3odBgdkv1xRHCcODp/crHbNnJU8CXLhxHfm3KHCRU56R8kmjb
- r++jyIo//W/lFevqXvvwrKE+mcUi/42bMMsEaFQMWzZf
-X-Google-Smtp-Source: ACHHUZ6CgdlMdI1jn+fQjFMAH4Dsdxs/3SmMeNJCrUyG/aUTenSDoFamCavkAgL3UmAuDfqQI0lBJQ==
-X-Received: by 2002:adf:f748:0:b0:313:f00b:f03b with SMTP id
- z8-20020adff748000000b00313f00bf03bmr2949722wrp.22.1687793989667; 
- Mon, 26 Jun 2023 08:39:49 -0700 (PDT)
+ bh=HG5rz65U57sVq58UVLRV5u9TWpEQiOWql+ZKzfQsiSQ=;
+ b=UeIVdnXAE68MZJwFLvvQqYt0WeaNBzyFg5BIomXXdMeEjY/xSbQGILq/b1TtEcffib
+ ZsU4CeRVsA+ZrjyNPb36FMxI58OcwIDkbCrM8ScAoYzkZe8Gfu3SPsDAeEObSVF/0V7n
+ wu+o2zZoK/iNWzEcWkI2MZI9SJ2dfrgDwknebyzNzFgVhjpfB5+HlQWaa2QyOKqF0Bjt
+ aSncZaxkuByWinNNnlDtz79I4bmLXXKyTryT2BujK7zuDYKI+nYbMt5M8D4N0K1H7h9V
+ gfR0NtxhNJE3T1Rxr9mg0F0w+dVQSI2Os2dMC+ZOxp37fMyP5r/hdmYte+LlBBoN2+Rf
+ aNPg==
+X-Gm-Message-State: AC+VfDyn2WGm79Vb6pa9Cuj8OqdywIhYPBcs6N9Dor3M9omSAkO/bkXD
+ FK89Q2m8pB8Y24sAk0Pzh16o0sKmbXvGF4pLHOg0T2F4
+X-Google-Smtp-Source: ACHHUZ5SxM1D/tYVf+yv+KaWdz23sBBs5Sh/Iw+blVZy6zluZPbzuVrdUR6Un1Io8v5VZBdIH1tK4Q==
+X-Received: by 2002:a5d:6982:0:b0:313:e591:94ec with SMTP id
+ g2-20020a5d6982000000b00313e59194ecmr6431523wru.67.1687793990324; 
+ Mon, 26 Jun 2023 08:39:50 -0700 (PDT)
 Received: from localhost.localdomain ([139.47.42.170])
  by smtp.gmail.com with ESMTPSA id
  t1-20020adfe441000000b00313f45f74a8sm2164178wrm.103.2023.06.26.08.39.49
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 26 Jun 2023 08:39:49 -0700 (PDT)
+ Mon, 26 Jun 2023 08:39:50 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Anton Johansson <anjo@rev.ng>
-Subject: [PULL 05/22] accel/tcg/cputlb.c: Widen addr in MMULookupPageData
-Date: Mon, 26 Jun 2023 17:39:28 +0200
-Message-Id: <20230626153945.76180-6-richard.henderson@linaro.org>
+Subject: [PULL 06/22] accel/tcg/cpu-exec.c: Widen pc to vaddr
+Date: Mon, 26 Jun 2023 17:39:29 +0200
+Message-Id: <20230626153945.76180-7-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230626153945.76180-1-richard.henderson@linaro.org>
 References: <20230626153945.76180-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x435.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,155 +93,121 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Anton Johansson <anjo@rev.ng>
 
-Functions accessing MMULookupPageData are also updated.
-
 Signed-off-by: Anton Johansson <anjo@rev.ng>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20230621135633.1649-6-anjo@rev.ng>
+Message-Id: <20230621135633.1649-7-anjo@rev.ng>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- accel/tcg/cputlb.c | 30 +++++++++++++++---------------
- 1 file changed, 15 insertions(+), 15 deletions(-)
+ accel/tcg/cpu-exec.c | 34 +++++++++++++++++-----------------
+ 1 file changed, 17 insertions(+), 17 deletions(-)
 
-diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
-index ac990a1526..cc53d0fb64 100644
---- a/accel/tcg/cputlb.c
-+++ b/accel/tcg/cputlb.c
-@@ -1729,7 +1729,7 @@ bool tlb_plugin_lookup(CPUState *cpu, vaddr addr, int mmu_idx,
- typedef struct MMULookupPageData {
-     CPUTLBEntryFull *full;
-     void *haddr;
--    target_ulong addr;
-+    vaddr addr;
-     int flags;
-     int size;
- } MMULookupPageData;
-@@ -1756,7 +1756,7 @@ typedef struct MMULookupLocals {
- static bool mmu_lookup1(CPUArchState *env, MMULookupPageData *data,
-                         int mmu_idx, MMUAccessType access_type, uintptr_t ra)
- {
--    target_ulong addr = data->addr;
-+    vaddr addr = data->addr;
-     uintptr_t index = tlb_index(env, mmu_idx, addr);
-     CPUTLBEntry *entry = tlb_entry(env, mmu_idx, addr);
-     uint64_t tlb_addr = tlb_read_idx(entry, access_type);
-@@ -1796,7 +1796,7 @@ static void mmu_watch_or_dirty(CPUArchState *env, MMULookupPageData *data,
-                                MMUAccessType access_type, uintptr_t ra)
- {
-     CPUTLBEntryFull *full = data->full;
--    target_ulong addr = data->addr;
-+    vaddr addr = data->addr;
-     int flags = data->flags;
-     int size = data->size;
- 
-@@ -1827,7 +1827,7 @@ static void mmu_watch_or_dirty(CPUArchState *env, MMULookupPageData *data,
-  * Resolve the translation for the page(s) beginning at @addr, for MemOp.size
-  * bytes.  Return true if the lookup crosses a page boundary.
-  */
--static bool mmu_lookup(CPUArchState *env, target_ulong addr, MemOpIdx oi,
-+static bool mmu_lookup(CPUArchState *env, vaddr addr, MemOpIdx oi,
-                        uintptr_t ra, MMUAccessType type, MMULookupLocals *l)
- {
-     unsigned a_bits;
-@@ -2024,7 +2024,7 @@ static uint64_t do_ld_mmio_beN(CPUArchState *env, MMULookupPageData *p,
-                                MMUAccessType type, uintptr_t ra)
- {
-     CPUTLBEntryFull *full = p->full;
--    target_ulong addr = p->addr;
-+    vaddr addr = p->addr;
-     int i, size = p->size;
- 
-     QEMU_IOTHREAD_LOCK_GUARD();
-@@ -2333,7 +2333,7 @@ static uint64_t do_ld_8(CPUArchState *env, MMULookupPageData *p, int mmu_idx,
-     return ret;
+diff --git a/accel/tcg/cpu-exec.c b/accel/tcg/cpu-exec.c
+index 4d952a6cc2..ba1890a373 100644
+--- a/accel/tcg/cpu-exec.c
++++ b/accel/tcg/cpu-exec.c
+@@ -169,8 +169,8 @@ uint32_t curr_cflags(CPUState *cpu)
  }
  
--static uint8_t do_ld1_mmu(CPUArchState *env, target_ulong addr, MemOpIdx oi,
-+static uint8_t do_ld1_mmu(CPUArchState *env, vaddr addr, MemOpIdx oi,
-                           uintptr_t ra, MMUAccessType access_type)
- {
-     MMULookupLocals l;
-@@ -2352,7 +2352,7 @@ tcg_target_ulong helper_ldub_mmu(CPUArchState *env, uint64_t addr,
-     return do_ld1_mmu(env, addr, oi, retaddr, MMU_DATA_LOAD);
+ struct tb_desc {
+-    target_ulong pc;
+-    target_ulong cs_base;
++    vaddr pc;
++    uint64_t cs_base;
+     CPUArchState *env;
+     tb_page_addr_t page_addr0;
+     uint32_t flags;
+@@ -193,7 +193,7 @@ static bool tb_lookup_cmp(const void *p, const void *d)
+             return true;
+         } else {
+             tb_page_addr_t phys_page1;
+-            target_ulong virt_page1;
++            vaddr virt_page1;
+ 
+             /*
+              * We know that the first page matched, and an otherwise valid TB
+@@ -214,8 +214,8 @@ static bool tb_lookup_cmp(const void *p, const void *d)
+     return false;
  }
  
--static uint16_t do_ld2_mmu(CPUArchState *env, target_ulong addr, MemOpIdx oi,
-+static uint16_t do_ld2_mmu(CPUArchState *env, vaddr addr, MemOpIdx oi,
-                            uintptr_t ra, MMUAccessType access_type)
+-static TranslationBlock *tb_htable_lookup(CPUState *cpu, target_ulong pc,
+-                                          target_ulong cs_base, uint32_t flags,
++static TranslationBlock *tb_htable_lookup(CPUState *cpu, vaddr pc,
++                                          uint64_t cs_base, uint32_t flags,
+                                           uint32_t cflags)
  {
-     MMULookupLocals l;
-@@ -2383,7 +2383,7 @@ tcg_target_ulong helper_lduw_mmu(CPUArchState *env, uint64_t addr,
-     return do_ld2_mmu(env, addr, oi, retaddr, MMU_DATA_LOAD);
+     tb_page_addr_t phys_pc;
+@@ -238,9 +238,9 @@ static TranslationBlock *tb_htable_lookup(CPUState *cpu, target_ulong pc,
  }
  
--static uint32_t do_ld4_mmu(CPUArchState *env, target_ulong addr, MemOpIdx oi,
-+static uint32_t do_ld4_mmu(CPUArchState *env, vaddr addr, MemOpIdx oi,
-                            uintptr_t ra, MMUAccessType access_type)
+ /* Might cause an exception, so have a longjmp destination ready */
+-static inline TranslationBlock *tb_lookup(CPUState *cpu, target_ulong pc,
+-                                          target_ulong cs_base,
+-                                          uint32_t flags, uint32_t cflags)
++static inline TranslationBlock *tb_lookup(CPUState *cpu, vaddr pc,
++                                          uint64_t cs_base, uint32_t flags,
++                                          uint32_t cflags)
  {
-     MMULookupLocals l;
-@@ -2410,7 +2410,7 @@ tcg_target_ulong helper_ldul_mmu(CPUArchState *env, uint64_t addr,
-     return do_ld4_mmu(env, addr, oi, retaddr, MMU_DATA_LOAD);
+     TranslationBlock *tb;
+     CPUJumpCache *jc;
+@@ -292,13 +292,13 @@ static inline TranslationBlock *tb_lookup(CPUState *cpu, target_ulong pc,
+     return tb;
  }
  
--static uint64_t do_ld8_mmu(CPUArchState *env, target_ulong addr, MemOpIdx oi,
-+static uint64_t do_ld8_mmu(CPUArchState *env, vaddr addr, MemOpIdx oi,
-                            uintptr_t ra, MMUAccessType access_type)
+-static void log_cpu_exec(target_ulong pc, CPUState *cpu,
++static void log_cpu_exec(vaddr pc, CPUState *cpu,
+                          const TranslationBlock *tb)
  {
-     MMULookupLocals l;
-@@ -2460,7 +2460,7 @@ tcg_target_ulong helper_ldsl_mmu(CPUArchState *env, uint64_t addr,
-     return (int32_t)helper_ldul_mmu(env, addr, oi, retaddr);
+     if (qemu_log_in_addr_range(pc)) {
+         qemu_log_mask(CPU_LOG_EXEC,
+                       "Trace %d: %p [%08" PRIx64
+-                      "/" TARGET_FMT_lx "/%08x/%08x] %s\n",
++                      "/%" VADDR_PRIx "/%08x/%08x] %s\n",
+                       cpu->cpu_index, tb->tc.ptr, tb->cs_base, pc,
+                       tb->flags, tb->cflags, lookup_symbol(pc));
+ 
+@@ -323,7 +323,7 @@ static void log_cpu_exec(target_ulong pc, CPUState *cpu,
+     }
  }
  
--static Int128 do_ld16_mmu(CPUArchState *env, target_ulong addr,
-+static Int128 do_ld16_mmu(CPUArchState *env, vaddr addr,
-                           MemOpIdx oi, uintptr_t ra)
+-static bool check_for_breakpoints_slow(CPUState *cpu, target_ulong pc,
++static bool check_for_breakpoints_slow(CPUState *cpu, vaddr pc,
+                                        uint32_t *cflags)
  {
-     MMULookupLocals l;
-@@ -2617,7 +2617,7 @@ static uint64_t do_st_mmio_leN(CPUArchState *env, MMULookupPageData *p,
-                                uint64_t val_le, int mmu_idx, uintptr_t ra)
- {
-     CPUTLBEntryFull *full = p->full;
--    target_ulong addr = p->addr;
-+    vaddr addr = p->addr;
-     int i, size = p->size;
- 
-     QEMU_IOTHREAD_LOCK_GUARD();
-@@ -2808,7 +2808,7 @@ void helper_stb_mmu(CPUArchState *env, uint64_t addr, uint32_t val,
-     do_st_1(env, &l.page[0], val, l.mmu_idx, ra);
+     CPUBreakpoint *bp;
+@@ -389,7 +389,7 @@ static bool check_for_breakpoints_slow(CPUState *cpu, target_ulong pc,
+     return false;
  }
  
--static void do_st2_mmu(CPUArchState *env, target_ulong addr, uint16_t val,
-+static void do_st2_mmu(CPUArchState *env, vaddr addr, uint16_t val,
-                        MemOpIdx oi, uintptr_t ra)
+-static inline bool check_for_breakpoints(CPUState *cpu, target_ulong pc,
++static inline bool check_for_breakpoints(CPUState *cpu, vaddr pc,
+                                          uint32_t *cflags)
  {
-     MMULookupLocals l;
-@@ -2837,7 +2837,7 @@ void helper_stw_mmu(CPUArchState *env, uint64_t addr, uint32_t val,
-     do_st2_mmu(env, addr, val, oi, retaddr);
+     return unlikely(!QTAILQ_EMPTY(&cpu->breakpoints)) &&
+@@ -485,10 +485,10 @@ cpu_tb_exec(CPUState *cpu, TranslationBlock *itb, int *tb_exit)
+             cc->set_pc(cpu, last_tb->pc);
+         }
+         if (qemu_loglevel_mask(CPU_LOG_EXEC)) {
+-            target_ulong pc = log_pc(cpu, last_tb);
++            vaddr pc = log_pc(cpu, last_tb);
+             if (qemu_log_in_addr_range(pc)) {
+-                qemu_log("Stopped execution of TB chain before %p ["
+-                         TARGET_FMT_lx "] %s\n",
++                qemu_log("Stopped execution of TB chain before %p [%"
++                         VADDR_PRIx "] %s\n",
+                          last_tb->tc.ptr, pc, lookup_symbol(pc));
+             }
+         }
+@@ -882,8 +882,8 @@ static inline bool cpu_handle_interrupt(CPUState *cpu,
  }
  
--static void do_st4_mmu(CPUArchState *env, target_ulong addr, uint32_t val,
-+static void do_st4_mmu(CPUArchState *env, vaddr addr, uint32_t val,
-                        MemOpIdx oi, uintptr_t ra)
+ static inline void cpu_loop_exec_tb(CPUState *cpu, TranslationBlock *tb,
+-                                    target_ulong pc,
+-                                    TranslationBlock **last_tb, int *tb_exit)
++                                    vaddr pc, TranslationBlock **last_tb,
++                                    int *tb_exit)
  {
-     MMULookupLocals l;
-@@ -2864,7 +2864,7 @@ void helper_stl_mmu(CPUArchState *env, uint64_t addr, uint32_t val,
-     do_st4_mmu(env, addr, val, oi, retaddr);
- }
+     int32_t insns_left;
  
--static void do_st8_mmu(CPUArchState *env, target_ulong addr, uint64_t val,
-+static void do_st8_mmu(CPUArchState *env, vaddr addr, uint64_t val,
-                        MemOpIdx oi, uintptr_t ra)
- {
-     MMULookupLocals l;
-@@ -2891,7 +2891,7 @@ void helper_stq_mmu(CPUArchState *env, uint64_t addr, uint64_t val,
-     do_st8_mmu(env, addr, val, oi, retaddr);
- }
- 
--static void do_st16_mmu(CPUArchState *env, target_ulong addr, Int128 val,
-+static void do_st16_mmu(CPUArchState *env, vaddr addr, Int128 val,
-                         MemOpIdx oi, uintptr_t ra)
- {
-     MMULookupLocals l;
 -- 
 2.34.1
 
