@@ -2,62 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6764973EE2B
+	by mail.lfdr.de (Postfix) with ESMTPS id DC39673EE2E
 	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 00:01:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDuFB-0002WX-HZ; Mon, 26 Jun 2023 17:59:33 -0400
+	id 1qDuFB-0002WS-9Z; Mon, 26 Jun 2023 17:59:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qDuF9-0002WA-GU
+ id 1qDuF9-0002W8-Ar
  for qemu-devel@nongnu.org; Mon, 26 Jun 2023 17:59:31 -0400
-Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qDuF7-0004qd-IJ
+ id 1qDuF7-0004qi-IL
  for qemu-devel@nongnu.org; Mon, 26 Jun 2023 17:59:31 -0400
-Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-313f18f5295so1822416f8f.3
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-3fa8cd4a1f2so18767155e9.1
  for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 14:59:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1687816768; x=1690408768;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=gSPkroLURnMPa7ET/8pIkXYyMeYLxPA45jCOq/SyqF4=;
- b=I13FhPTBvY3GMM8Huh9rJcfbdbuznJqkPt8BEgmv1O3Fi9JrnS6xz0yqoK5uLngkxI
- pM0g1qMG8A3yHEE7d7UBJ0ZhXva9PMBJnf7QuJA0NNciXC8kocA6dFz+KrSC16p9k/VZ
- mg8uXE56Mb3oftocpWndnaw4GU20fsf7spX/ZpEZYSU6j9o8j5eJRocQSxmc5ZR5f+3o
- CkaaOQlqCe0Od+SGhITTePBH0dRzA3z6VECiSBbheUbusHdYHgjBSVMfv2M5Xy3O4rXu
- Ivs+UOvTAqe37fHODFpLaZI+lup1sbrQBAYEVxNg9spknk9zaN9xuhMaYgfQIwYa4MyC
- ZKDQ==
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=lp6KR88j71QtkzhoL0VNQhU+0wKLrKZSfG0XhX5V00g=;
+ b=M0AguOAnuCNYR9k5ZIv+tDNkU/9uW/oRYm4nIcLYgiX7lR/JskEtYdCy4MQtMpc8EU
+ jAeob/Aj+qa297NS96TGzjRyk7L76V3Vl81wbviqBXfTzMRodHmfh7M6FgX7KE0i+vf3
+ /iQrLgP4dU3Nz3LWwukjnMCguoZ4Bp09kWf7PPDk2s7xr0611QnetLHwm1DbCgpLVngC
+ abHPYl0YsX+7sOxoBlg7oC0pgupZXpg+oRfiV1IQOAWmlTuqge2Q8tq6PUCzUHuRAcHp
+ L9w3mk3nU8E5NOK6hTTqgRJr6qQBd4xr2gHgJvVGKtmoztKyOGw708k9q3BmjrpovKIM
+ ePcA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20221208; t=1687816768; x=1690408768;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=gSPkroLURnMPa7ET/8pIkXYyMeYLxPA45jCOq/SyqF4=;
- b=dzaVCqjHOHloUDIAppft/M/EzvyXbyLIXmCMhS4ybTMthWNJpttAGZ4MyQauGdKFxN
- 4wWYwqsrjJrAyOcDeMw4YixibbbhDGr7sz4gRDSQfc0wVwk5Afzg+1KwrsRl/ubtBy82
- +vlwIiPVbyuG7cBWL6CnWmEqVaGV7ZTHI9KcGcH4dtVtZ3F0GDZVgbf3F8ikJ5bJbtlG
- Llt112H25sBfzAGcOcEit3C/2T4sifIr//FiMeJ6p7akXUOOus3VxzcwWKwcMXOYhX9x
- FwRKmDBMX9kzegtBWXVelVj76g25r6JBCDz2Qg5s12dqApG2bv2s2X0i56X8fs6ZHyPL
- p46Q==
-X-Gm-Message-State: AC+VfDwO6EjtBzUVF4RZ6iLK/yjCylGCi/Uyr004JCnEt/c8RbCoh3qu
- gtBbrh1sgswncQlKZ8MK0ol2yg==
-X-Google-Smtp-Source: ACHHUZ5wqqU43NTmeTRr/f8bz8l8W4+Ha/gaBmv89DTjKzCa+AoBrcmUyY3OOcw1zVuFYc+g6i2gUw==
-X-Received: by 2002:a5d:4384:0:b0:313:f442:81f6 with SMTP id
- i4-20020a5d4384000000b00313f44281f6mr2359201wrq.7.1687816767896; 
- Mon, 26 Jun 2023 14:59:27 -0700 (PDT)
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=lp6KR88j71QtkzhoL0VNQhU+0wKLrKZSfG0XhX5V00g=;
+ b=kUZqUsRRcziBO/hoR2e9OCjjBR2A9gj6jylnvdqfDPdkb5pJ2SfJp4kL7yQJ8y+cGS
+ Nx1EnJiWr51E1yLCak4B41pUXMgIDGb7TYq2k8pyVcOKMcdfl7kXFXLcl4naTAbksgCI
+ SAIpDNJZVUK/ZZE7+DjBwUDpMhWLi08AO2vRhN1QSgBP1Z1Ao2mtlRLdQo+iuFMJuiQ7
+ uypF5eBkgC4mluAbYbH4OOEyg67iVWuNO6ambt5/Pa9qxlLrZ1ebIDATULhnJa3TZQZh
+ Zf2NPemh3PF0m6e8KgXbeUJyJlp/WjLgssCjYeQg2uToPQIcEEfaDT3ug+yRaB262DX8
+ oQiA==
+X-Gm-Message-State: AC+VfDybLOL6i5VhL9RP6vtHwC36RBi3CCiUS48HIlSmWOG7/pbfT+0C
+ i+aDLIv+k0WMecQap1W1NixTaA==
+X-Google-Smtp-Source: ACHHUZ5SLmFoAiwCGCbxAFT13p0wX/mGQtlmb0EN5BDyFmIqcGm9pk1vTwHZAlQEGDWyvWqXgHZANA==
+X-Received: by 2002:a05:600c:285:b0:3f9:d7ff:24cc with SMTP id
+ 5-20020a05600c028500b003f9d7ff24ccmr9574114wmk.34.1687816768081; 
+ Mon, 26 Jun 2023 14:59:28 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- i11-20020adfefcb000000b0030ae3a6be5bsm8456990wrp.78.2023.06.26.14.59.27
+ s6-20020a5d4ec6000000b0030ae849c70csm8468891wrv.37.2023.06.26.14.59.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Mon, 26 Jun 2023 14:59:27 -0700 (PDT)
 Received: from zen.lan (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id D9AF81FFBB;
- Mon, 26 Jun 2023 22:59:26 +0100 (BST)
+ by zen.linaroharston (Postfix) with ESMTP id 0979A1FFBC;
+ Mon, 26 Jun 2023 22:59:27 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Alexander Bulekov <alxndr@bu.edu>,
@@ -82,16 +83,17 @@ Cc: Alexander Bulekov <alxndr@bu.edu>,
  Radoslaw Biernacki <rad@semihalf.com>,
  Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
  Qiuhao Li <Qiuhao.Li@outlook.com>, Laurent Vivier <lvivier@redhat.com>
-Subject: [PATCH v2 00/26] maintainer omnibus: testing, fuzz, plugins,
- documentation
-Date: Mon, 26 Jun 2023 22:59:00 +0100
-Message-Id: <20230626215926.2522656-1-alex.bennee@linaro.org>
+Subject: [PATCH v2 01/26] gitlab: explicit set artifacts publishing criteria
+Date: Mon, 26 Jun 2023 22:59:01 +0100
+Message-Id: <20230626215926.2522656-2-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20230626215926.2522656-1-alex.bennee@linaro.org>
+References: <20230626215926.2522656-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -114,133 +116,123 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-As softfreeze is fast approaching I thought it would be work combining
-my various trees into an omnibus series to ease the review and
-merging.
+From: Daniel P. Berrangé <berrange@redhat.com>
 
-The testing updates exposed a number of latent leaks that confused the
-oss-fuzz jobs (hence the test-fuzz addition to help debug that). This
-also includes some minor plugin updates and finally some documentation
-updates that clean-up and expose the QOM and QDEV APIs which are so
-core to emulating anything in QEMU.
+If not set explicitly, gitlab assumes 'when: on_success" as the
+publishing criteria for artifacts. This is reasonable if the
+artifact is an output deliverable of the job. This is useless
+if the artifact is a log file to be used for debugging job
+failures.
 
-v2
-  - applied a bunch of review tags
-  - added missing doc suggestions from Paolo
-  - tweaked the plugin fix for CI
+This change makes the desired criteria explicit for every job
+that publishes artifacts.
 
-The following patches need review:
+Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-Id: <20230623122100.1640995-2-alex.bennee@linaro.org>
+Message-Id: <20230503145535.91325-2-berrange@redhat.com>
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+---
+ .gitlab-ci.d/buildtest-template.yml  | 4 +++-
+ .gitlab-ci.d/buildtest.yml           | 2 ++
+ .gitlab-ci.d/crossbuild-template.yml | 1 +
+ .gitlab-ci.d/crossbuilds.yml         | 2 ++
+ .gitlab-ci.d/opensbi.yml             | 1 +
+ 5 files changed, 9 insertions(+), 1 deletion(-)
 
- - qemu-keymap: properly check return from xkb_keymap_mod_get_index
-
-Alex Bennée (19):
-  gitlab: reduce testing scope of check-gcov
-  tests/tcg: add mechanism to handle plugin arguments
-  qemu-keymap: properly check return from xkb_keymap_mod_get_index
-  scripts/oss-fuzz: add a suppression for keymap
-  tests/qtests: clean-up and fix leak in generic_fuzz
-  tests/docker: add test-fuzz
-  Makefile: add lcitool-refresh to UNCHECKED_GOALS
-  tests/lcitool: update to latest version
-  tests/lcitool: add an explicit gcc-native package
-  tests/lcitool: introduce qemu-minimal
-  tests/docker: convert riscv64-cross to lcitool
-  plugins: force slow path when plugins instrument memory ops
-  plugins: fix memory leak while parsing options
-  plugins: update lockstep to use g_memdup2
-  docs/devel: add some front matter to the devel index
-  include/migration: mark vmstate_register() as a legacy function
-  include/hw/qdev-core: fixup kerneldoc annotations
-  docs/devel: split qom-api reference into new file
-  docs/devel: introduce some key concepts for QOM development
-
-Ani Sinha (1):
-  docs/devel: remind developers to run CI container pipeline when
-    updating images
-
-Daniel P. Berrangé (2):
-  gitlab: explicit set artifacts publishing criteria
-  gitlab: ensure coverage job also publishes meson log
-
-Erik Skultety (1):
-  tests/lcitool: Bump fedora container versions
-
-Marcin Juszkiewicz (1):
-  tests/avocado: update firmware to enable sbsa-ref/max
-
-Philippe Mathieu-Daudé (1):
-  docs/devel/qom.rst: Correct code style
-
-Richard Henderson (1):
-  tests/plugin: Remove duplicate insn log from libinsn.so
-
- docs/devel/index-api.rst                      |   2 +
- docs/devel/index-process.rst                  |   2 +
- docs/devel/index-tcg.rst                      |   2 +
- docs/devel/index.rst                          |  24 +-
- docs/devel/qdev-api.rst                       |   7 +
- docs/devel/qom-api.rst                        |   9 +
- docs/devel/qom.rst                            |  65 +++-
- docs/devel/tcg.rst                            |   2 +
- docs/devel/testing.rst                        |   6 +
- Makefile                                      |   2 +-
- include/exec/cpu-all.h                        |   2 +-
- include/hw/core/cpu.h                         |  17 +
- include/hw/qdev-core.h                        | 365 ++++++++++++------
- include/migration/vmstate.h                   |   9 +-
- accel/tcg/cputlb.c                            |   4 +-
- accel/tcg/user-exec.c                         |   8 +-
- contrib/plugins/cache.c                       |   2 +-
- contrib/plugins/drcov.c                       |   2 +-
- contrib/plugins/execlog.c                     |   2 +-
- contrib/plugins/hotblocks.c                   |   2 +-
- contrib/plugins/hotpages.c                    |   2 +-
- contrib/plugins/howvec.c                      |   2 +-
- contrib/plugins/hwprofile.c                   |   2 +-
- contrib/plugins/lockstep.c                    |   4 +-
- qemu-keymap.c                                 |  24 +-
- target/arm/tcg/sve_helper.c                   |   4 -
- tests/plugin/bb.c                             |   2 +-
- tests/plugin/insn.c                           |  11 +-
- tests/plugin/mem.c                            |   2 +-
- tests/plugin/syscall.c                        |   2 +-
- tests/qtest/fuzz/generic_fuzz.c               |  11 +-
- .gitlab-ci.d/buildtest-template.yml           |   4 +-
- .gitlab-ci.d/buildtest.yml                    |   7 +-
- .gitlab-ci.d/crossbuild-template.yml          |   1 +
- .gitlab-ci.d/crossbuilds.yml                  |   2 +
- .gitlab-ci.d/opensbi.yml                      |   1 +
- scripts/oss-fuzz/lsan_suppressions.txt        |   3 +
- tests/avocado/machine_aarch64_sbsaref.py      |  23 +-
- tests/docker/dockerfiles/alpine.docker        |   4 +-
- .../dockerfiles/debian-amd64-cross.docker     |   1 +
- .../dockerfiles/debian-arm64-cross.docker     |   1 +
- .../dockerfiles/debian-armel-cross.docker     |   1 +
- .../dockerfiles/debian-armhf-cross.docker     |   1 +
- .../dockerfiles/debian-mips64el-cross.docker  |   1 +
- .../dockerfiles/debian-mipsel-cross.docker    |   1 +
- .../dockerfiles/debian-ppc64el-cross.docker   |   1 +
- .../dockerfiles/debian-riscv64-cross.docker   | 119 +++---
- .../dockerfiles/debian-s390x-cross.docker     |   1 +
- .../dockerfiles/fedora-win32-cross.docker     |   5 +-
- .../dockerfiles/fedora-win64-cross.docker     |   5 +-
- tests/docker/dockerfiles/fedora.docker        |   4 +-
- tests/docker/test-fuzz                        |  28 ++
- tests/lcitool/libvirt-ci                      |   2 +-
- tests/lcitool/projects/qemu-minimal.yml       |  27 ++
- tests/lcitool/projects/qemu.yml               |   1 +
- tests/lcitool/refresh                         |  18 +-
- tests/tcg/Makefile.target                     |   8 +-
- tests/tcg/aarch64/Makefile.target             |   8 +
- tests/tcg/i386/Makefile.softmmu-target        |   9 -
- tests/tcg/i386/Makefile.target                |   6 -
- tests/tcg/x86_64/Makefile.softmmu-target      |   9 -
- 61 files changed, 632 insertions(+), 270 deletions(-)
- create mode 100644 docs/devel/qdev-api.rst
- create mode 100644 docs/devel/qom-api.rst
- create mode 100755 tests/docker/test-fuzz
- create mode 100644 tests/lcitool/projects/qemu-minimal.yml
-
+diff --git a/.gitlab-ci.d/buildtest-template.yml b/.gitlab-ci.d/buildtest-template.yml
+index 5da61f4277..f3e39b7eb1 100644
+--- a/.gitlab-ci.d/buildtest-template.yml
++++ b/.gitlab-ci.d/buildtest-template.yml
+@@ -25,6 +25,7 @@
+ # rebuilding all the object files we skip in the artifacts
+ .native_build_artifact_template:
+   artifacts:
++    when: on_success
+     expire_in: 2 days
+     paths:
+       - build
+@@ -53,6 +54,7 @@
+   extends: .common_test_job_template
+   artifacts:
+     name: "$CI_JOB_NAME-$CI_COMMIT_REF_SLUG"
++    when: always
+     expire_in: 7 days
+     paths:
+       - build/meson-logs/testlog.txt
+@@ -68,7 +70,7 @@
+     policy: pull-push
+   artifacts:
+     name: "$CI_JOB_NAME-$CI_COMMIT_REF_SLUG"
+-    when: on_failure
++    when: always
+     expire_in: 7 days
+     paths:
+       - build/tests/results/latest/results.xml
+diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
+index aa833b62ca..24bba061cd 100644
+--- a/.gitlab-ci.d/buildtest.yml
++++ b/.gitlab-ci.d/buildtest.yml
+@@ -462,6 +462,7 @@ gcov:
+   coverage: /^\s*lines:\s*\d+.\d+\%/
+   artifacts:
+     name: ${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHA}
++    when: on_success
+     expire_in: 2 days
+     reports:
+       coverage_report:
+@@ -587,6 +588,7 @@ pages:
+     - make -C build install DESTDIR=$(pwd)/temp-install
+     - mv temp-install/usr/local/share/doc/qemu/* public/
+   artifacts:
++    when: on_success
+     paths:
+       - public
+   variables:
+diff --git a/.gitlab-ci.d/crossbuild-template.yml b/.gitlab-ci.d/crossbuild-template.yml
+index 6efb0d2a54..d97611053b 100644
+--- a/.gitlab-ci.d/crossbuild-template.yml
++++ b/.gitlab-ci.d/crossbuild-template.yml
+@@ -55,6 +55,7 @@
+ .cross_test_artifacts:
+   artifacts:
+     name: "$CI_JOB_NAME-$CI_COMMIT_REF_SLUG"
++    when: always
+     expire_in: 7 days
+     paths:
+       - build/meson-logs/testlog.txt
+diff --git a/.gitlab-ci.d/crossbuilds.yml b/.gitlab-ci.d/crossbuilds.yml
+index 1e0e6c7f2c..34f9df2be9 100644
+--- a/.gitlab-ci.d/crossbuilds.yml
++++ b/.gitlab-ci.d/crossbuilds.yml
+@@ -169,6 +169,7 @@ cross-win32-system:
+     CROSS_SKIP_TARGETS: alpha-softmmu avr-softmmu hppa-softmmu m68k-softmmu
+                         microblazeel-softmmu mips64el-softmmu nios2-softmmu
+   artifacts:
++    when: on_success
+     paths:
+       - build/qemu-setup*.exe
+ 
+@@ -184,6 +185,7 @@ cross-win64-system:
+                         or1k-softmmu rx-softmmu sh4eb-softmmu sparc64-softmmu
+                         tricore-softmmu xtensaeb-softmmu
+   artifacts:
++    when: on_success
+     paths:
+       - build/qemu-setup*.exe
+ 
+diff --git a/.gitlab-ci.d/opensbi.yml b/.gitlab-ci.d/opensbi.yml
+index b4d7eef688..fd293e6c31 100644
+--- a/.gitlab-ci.d/opensbi.yml
++++ b/.gitlab-ci.d/opensbi.yml
+@@ -63,6 +63,7 @@ build-opensbi:
+   stage: build
+   needs: ['docker-opensbi']
+   artifacts:
++    when: on_success
+     paths: # 'artifacts.zip' will contains the following files:
+       - pc-bios/opensbi-riscv32-generic-fw_dynamic.bin
+       - pc-bios/opensbi-riscv64-generic-fw_dynamic.bin
 -- 
 2.39.2
 
