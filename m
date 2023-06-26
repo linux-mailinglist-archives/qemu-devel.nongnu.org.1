@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3F6A73EE3F
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 00:04:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78A6573EE3A
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 00:03:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDuFI-0002de-Tz; Mon, 26 Jun 2023 17:59:40 -0400
+	id 1qDuFN-0002ih-9g; Mon, 26 Jun 2023 17:59:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qDuFF-0002b8-DR
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 17:59:37 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ id 1qDuFH-0002cQ-CS
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 17:59:39 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qDuFB-0004sY-95
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 17:59:37 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-3fb10fd9ad3so11223735e9.0
- for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 14:59:32 -0700 (PDT)
+ id 1qDuFC-0004tK-CM
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 17:59:38 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-3fa7cd95dacso47068445e9.3
+ for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 14:59:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687816772; x=1690408772;
+ d=linaro.org; s=google; t=1687816773; x=1690408773;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=GnP8f96S0GKF3CO1A0jcmqKih6bOlzq38Er4YTCNWjo=;
- b=YVlOodutlBDwNkn+K8PQ3of4v1XKSAxgWQHSonMQUz3IVM9G5YINa1G71SPkul3aa9
- R8EP5dOcYhWMOAXIxdFFxa15XCo/XGRtAPqEO9rok8IydlTG8L2uWcoLpg+BIGdO9AvC
- 8oaj0GV9bFHRp6MG+wXmKENzjfYAEzBXrgcLcX4t7DOh+72r1MsHIQcC/NL9B9g9CKd9
- 8hJp7psSa1PXUOSCrIKzGb8hlMt6gicTdcceCkEPegDhjKFscUViCZY+AmlHrHpU7hCg
- hzcyMdR9OYy/uqjZAJxqvmyIPyb57c7oVbKjD8gP0aNMDgN/Vt4s6/SypnpGisf/3KNL
- Gr1g==
+ bh=tOV9EOnx/XHsK7XQyMJxy5drdvS9UgZO7Cmh6YX5vFY=;
+ b=Jo745IkkTZt79hmVbG7dQf8Xd6LMKCS8yA2KqCb2nnE18xOKzk8N8QlhouquZ5ZZ8Q
+ 0KK0biMES1QfPGexSqGQeaqT9FuWZ38aA4rF/BX+f/Ks4flJ3rnvH8nURKXLYwE/mEgK
+ 8UTyLK6aSD9LE+zmXVtCghlP1QdJymDJhczCvNJW0zFhahF5h2TDgi/8R/VQgTf+wBTa
+ 8TL16vo4hXbiOzvbfWpnpSkEK9OugJwU/Eq+F7rsXzmpDu0ostLkjgWy39zQMnkiUFCA
+ naJjaMv1sp0XSF5VdPAWFkWDkyitzXaM2l+RwFBNgrDmViR8FncD1V020R+4MXQHamVn
+ jaDg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687816772; x=1690408772;
+ d=1e100.net; s=20221208; t=1687816773; x=1690408773;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=GnP8f96S0GKF3CO1A0jcmqKih6bOlzq38Er4YTCNWjo=;
- b=Uh9z8rtxrZA2DDuIpmVMhck9IFCHqc7XFr+Rogo7AtvIUV5iy8xmzKj0xuHEXU0wz9
- uITvAVJ+E4c0S9yXq0/VWLO9PCqYagECmXsWZirnOXzY6eRiKOit+P4WcWMm9yZsleDK
- A0NFkt7KvGuwB1awm79r3CH1qArLVru/299YzTGbOiI2OomrKWWtHTnkBhC9J/OyLt4H
- m1SOlZ2bLpXL93BmlyYzN/JuqL42l+xvX0nXI9yOjlzP9dsW/ebLzOy32CzJ4nCToGJ2
- 5EK04gIEeLL0smlX7tddMuza2UZu3R4H7x7P7fE+fsftqyat/YzoZe4AFlfLiI5G7qzB
- jKSA==
-X-Gm-Message-State: AC+VfDzh2czbAxPT/jaWl+LupzygLhYkGrvpy2K7Z/peou7LDD25poo2
- fuqqH90BY3Eo+TEiDp28U2yYKA==
-X-Google-Smtp-Source: ACHHUZ6bBXsnXQi9BzYI73Vlanme1LzwJzymgqmCpOdhNNCHZHjq3u0xC7OnmQW7le+a5q3TimVk9Q==
-X-Received: by 2002:a7b:cd1a:0:b0:3fb:7184:53eb with SMTP id
- f26-20020a7bcd1a000000b003fb718453ebmr646459wmj.18.1687816771886; 
- Mon, 26 Jun 2023 14:59:31 -0700 (PDT)
+ bh=tOV9EOnx/XHsK7XQyMJxy5drdvS9UgZO7Cmh6YX5vFY=;
+ b=h8CY8QazwmL1oO9Vu+fA254D4XSx5jzmeHekC8Reg5yOaJWWyO/cYM5SFSWU74wyYD
+ B4uIQdHKBQXCyq7BtobJuijOmbgn3O0k7f+yWKMoXw1ow5lMdqmxnTCLs7aY6CY7OnUd
+ B0pcR21LlzaQB4ptXNoxy3uM1RPFzyKrxpGjbFAkfjHDdlNz+3Wqg62pFhZr5LqbVew0
+ jWdIooein1uDL4OFJurcO1W0f1hkdVAqkRMcHSlFwLaEnbDprE6bOJcPgIFKZNavEizP
+ sIT/teAB1s5RYrzPCBEgBcgwnA+F0wj4DlZCK1Q7i4EYuWHZ+9lQYQYxuxMI2kO+yX9A
+ aYoA==
+X-Gm-Message-State: AC+VfDxxJi0iRXyfHzxAEaIZeoFHO2cS7Dka91HAQOQbuXITtD62wWiY
+ q8uIyWjQpqamJMozrGbovsa8Ag==
+X-Google-Smtp-Source: ACHHUZ5Apys2ovPirvMWbjrK4TDCP5u305JCrR9bGNVvh5Vuhc4M/XAV99e97dTUucw8rrlMnPGqqA==
+X-Received: by 2002:a05:600c:2109:b0:3fa:88f4:575e with SMTP id
+ u9-20020a05600c210900b003fa88f4575emr4454726wml.0.1687816773032; 
+ Mon, 26 Jun 2023 14:59:33 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- l17-20020a5d5611000000b0030c6751a49dsm8364016wrv.115.2023.06.26.14.59.28
+ c25-20020a7bc019000000b003f819faff24sm11761754wmb.40.2023.06.26.14.59.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 26 Jun 2023 14:59:29 -0700 (PDT)
+ Mon, 26 Jun 2023 14:59:30 -0700 (PDT)
 Received: from zen.lan (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 9E39D1FFC2;
- Mon, 26 Jun 2023 22:59:27 +0100 (BST)
+ by zen.linaroharston (Postfix) with ESMTP id 15D3C1FFBB;
+ Mon, 26 Jun 2023 22:59:28 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Alexander Bulekov <alxndr@bu.edu>,
@@ -83,17 +83,17 @@ Cc: Alexander Bulekov <alxndr@bu.edu>,
  Radoslaw Biernacki <rad@semihalf.com>,
  Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
  Qiuhao Li <Qiuhao.Li@outlook.com>, Laurent Vivier <lvivier@redhat.com>
-Subject: [PATCH v2 07/26] scripts/oss-fuzz: add a suppression for keymap
-Date: Mon, 26 Jun 2023 22:59:07 +0100
-Message-Id: <20230626215926.2522656-8-alex.bennee@linaro.org>
+Subject: [PATCH v2 11/26] tests/lcitool: update to latest version
+Date: Mon, 26 Jun 2023 22:59:11 +0100
+Message-Id: <20230626215926.2522656-12-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230626215926.2522656-1-alex.bennee@linaro.org>
 References: <20230626215926.2522656-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -116,39 +116,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When updating to the latest fedora the santizer found more leaks
-inside xkbmap:
+We need this for the riscv64 and gcc-native mappings. As the older
+alpine release has been dropped from the mappings we also need to bump
+the version of alpine we use.
 
-  FAILED: pc-bios/keymaps/ar
-  /builds/stsquad/qemu/build-oss-fuzz/qemu-keymap -f pc-bios/keymaps/ar -l ara
-  =================================================================
-  ==3604==ERROR: LeakSanitizer: detected memory leaks
-  Direct leak of 1424 byte(s) in 1 object(s) allocated from:
-      #0 0x56316418ebec in __interceptor_calloc (/builds/stsquad/qemu/build-oss-fuzz/qemu-keymap+0x127bec) (BuildId: a2ad9da3190962acaa010fa8f44a9269f9081e1c)
-      #1 0x7f60d4dc067e  (/lib64/libxkbcommon.so.0+0x1c67e) (BuildId: b243a34e4e58e6a30b93771c256268b114d34b80)
-      #2 0x7f60d4dc2137 in xkb_keymap_new_from_names (/lib64/libxkbcommon.so.0+0x1e137) (BuildId: b243a34e4e58e6a30b93771c256268b114d34b80)
-      #3 0x5631641ca50f in main /builds/stsquad/qemu/build-oss-fuzz/../qemu-keymap.c:215:11
-
-and many more. As we can't do anything about the library add a
-suppression to keep the CI going with what its meant to be doing.
-
-Message-Id: <20230623122100.1640995-9-alex.bennee@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-Id: <20230623122100.1640995-13-alex.bennee@linaro.org>
+Acked-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- scripts/oss-fuzz/lsan_suppressions.txt | 3 +++
- 1 file changed, 3 insertions(+)
+ tests/docker/dockerfiles/alpine.docker | 4 ++--
+ tests/lcitool/libvirt-ci               | 2 +-
+ tests/lcitool/refresh                  | 2 +-
+ 3 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/scripts/oss-fuzz/lsan_suppressions.txt b/scripts/oss-fuzz/lsan_suppressions.txt
-index 02ec0a6ed5..7d90c280d0 100644
---- a/scripts/oss-fuzz/lsan_suppressions.txt
-+++ b/scripts/oss-fuzz/lsan_suppressions.txt
-@@ -1,2 +1,5 @@
- # The tcmalloc on Fedora37 confuses things
- leak:/lib64/libtcmalloc_minimal.so.4
-+
-+# libxkbcommon also leaks in qemu-keymap
-+leak:/lib64/libxkbcommon.so.0
+diff --git a/tests/docker/dockerfiles/alpine.docker b/tests/docker/dockerfiles/alpine.docker
+index 0097637dca..43370f7b36 100644
+--- a/tests/docker/dockerfiles/alpine.docker
++++ b/tests/docker/dockerfiles/alpine.docker
+@@ -1,10 +1,10 @@
+ # THIS FILE WAS AUTO-GENERATED
+ #
+-#  $ lcitool dockerfile --layers all alpine-316 qemu
++#  $ lcitool dockerfile --layers all alpine-318 qemu
+ #
+ # https://gitlab.com/libvirt/libvirt-ci
+ 
+-FROM docker.io/library/alpine:3.16
++FROM docker.io/library/alpine:3.18
+ 
+ RUN apk update && \
+     apk upgrade && \
+diff --git a/tests/lcitool/libvirt-ci b/tests/lcitool/libvirt-ci
+index c8971e90ac..b0f44f929a 160000
+--- a/tests/lcitool/libvirt-ci
++++ b/tests/lcitool/libvirt-ci
+@@ -1 +1 @@
+-Subproject commit c8971e90ac169ee2b539c747f74d96c876debdf9
++Subproject commit b0f44f929a81c0a604fb7fbf8afc34d37ab0eae9
+diff --git a/tests/lcitool/refresh b/tests/lcitool/refresh
+index f1570b54df..5d36a62b10 100755
+--- a/tests/lcitool/refresh
++++ b/tests/lcitool/refresh
+@@ -115,7 +115,7 @@ try:
+     #
+     # Standard native builds
+     #
+-    generate_dockerfile("alpine", "alpine-316")
++    generate_dockerfile("alpine", "alpine-318")
+     generate_dockerfile("centos8", "centos-stream-8")
+     generate_dockerfile("debian-amd64", "debian-11",
+                         trailer="".join(debian11_extras))
 -- 
 2.39.2
 
