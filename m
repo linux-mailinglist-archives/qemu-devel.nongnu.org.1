@@ -2,51 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D17073DC05
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 12:08:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC06273DC0C
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 12:11:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDj9D-0005Vr-US; Mon, 26 Jun 2023 06:08:39 -0400
+	id 1qDjBD-0006On-Fg; Mon, 26 Jun 2023 06:10:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <samuel.thibault@gnu.org>)
- id 1qDj90-0005UX-G4
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 06:08:27 -0400
-Received: from fencepost.gnu.org ([2001:470:142:3::e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <samuel.thibault@gnu.org>)
- id 1qDj90-0001Iz-2B; Mon, 26 Jun 2023 06:08:26 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=gnu.org;
- s=fencepost-gnu-org; h=In-Reply-To:MIME-Version:References:Subject:To:From:
- Date; bh=AWxdhxN2K0UWVyJTi4vPfWKZPw8ZcyxEvaTv1hRa7u8=; b=WBZ+sUJrRaxIO4V2+JI1
- 5EmWc8eWV30C3YtejDCGWsQzasHkas0ZzpA1mxaTdDqctqwjGbq1R/gfz+ljxTFhy+LGiFZmqBqsz
- ntW9ql+qKLLwuHGJ+UY04l/Y8vX61quYmgNhmctxhtCIa+0cm2Kv3fw7HpLp0aojvkn0zKll9s9Iu
- fNb6lYCE9Z59Gbjvk3vd9zdJpdfS6RLw4SVJL/YHzMXm8Z0Cug1ovVQXjDpaZ8SkYAutOJfccU3W7
- vOSL6jFPVw40In/lNQFswYy7UL3S4WTaM56T8RC1laot1PYEFBDP3qL/xYyFtjyorhNjUi211SuXo
- C7Uhulo7VYhvGA==;
-Received: from [91.151.117.182] (helo=begin)
- by fencepost.gnu.org with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <samuel.thibault@gnu.org>)
- id 1qDj8w-0004su-Fd; Mon, 26 Jun 2023 06:08:25 -0400
-Received: from samy by begin with local (Exim 4.96)
- (envelope-from <samuel.thibault@gnu.org>) id 1qDj8t-009Yt0-3A;
- Mon, 26 Jun 2023 12:08:19 +0200
-Date: Mon, 26 Jun 2023 12:08:19 +0200
-From: Samuel Thibault <samuel.thibault@gnu.org>
-To: Lukas Straub <lukasstraub2@web.de>
-Cc: Felix Wu <flwu@google.com>, qemu-devel@nongnu.org,
- Jason Wang <jasowang@redhat.com>
-Subject: Re: Tips for local testing guestfwd
-Message-ID: <20230626100819.vtkuuvzg376hktk2@begin>
-References: <CAJt6XFoT2irgOwtMB2qpgr3Yj6Q-zij_fpD9BL24QvFG7w3zOg@mail.gmail.com>
- <20230626114916.45355529@mobian.usb.local>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qDjAn-0006MC-57
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 06:10:19 -0400
+Received: from mail-lf1-x12d.google.com ([2a00:1450:4864:20::12d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qDjAl-0001r1-5G
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 06:10:16 -0400
+Received: by mail-lf1-x12d.google.com with SMTP id
+ 2adb3069b0e04-4f4b2bc1565so4002572e87.2
+ for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 03:10:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1687774212; x=1690366212;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=74FM579RKOmTf3FtTjRf/xU5EA/KuNtZjlzUaBEQ9kQ=;
+ b=nLE/Pm3qhLC2qx5vPyjVFKPQrxJF0K91GUhvZGs/DHxYhPV8rkozpMNmKi64J4OQDG
+ jqZ61YXBN4PsQVhzfrQdMGxeDdx0HC9R1ur7HFa6ZD055H1jBVBU/gMKMaLU1wF2l0Wj
+ dr2iytS7iEtatP2QefppN8lUThrS6jxbFW1MXMmCTavhZlNPl1e70U6avo5ighXSSPd7
+ x+XodVyxam5UDR0y2mNOGL/aUS26/1AfUqNY591YxwLmTcGDrHCwwG+RcfxO7jXFF6/m
+ UQiMBSEqfGSZX+q9u3QDw/JKJCsmtRiaRZPBP5Q+0dKfGa/5NzBn63NZeMXlg/XknLyb
+ q/Lw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1687774212; x=1690366212;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=74FM579RKOmTf3FtTjRf/xU5EA/KuNtZjlzUaBEQ9kQ=;
+ b=KNawyjLZDwzT+H8D4wfqKHPembAyzoTUy2DpmsYZbKGAQRo3r7qzInQtK98nh6JNXY
+ hNNrh6XwBUSd9en6jNqmQmyT76EwynNMEYA9TD8z7PCGF5U09pX5WEuWBHJCauxeKpAU
+ 3I7x1EJBWpZQDscU+kO1kSZHlIKZse/V/NypI4la5RHwkaxl48oL0cp49VS6EiM9IPyb
+ 2YdY6l3mLmKYxOHAaZzlJIgI1QFWnbyU/f9ApzACVYZfliFGS1GpqyiaM8SSgpQR0hSk
+ 3CnAQq2LMHWEF3BOwk2kC8jh0kAxUSaaV7hv4jEZYxn+jN0I71vZrPDqo3DCG7v2MMB6
+ oOYg==
+X-Gm-Message-State: AC+VfDxqO8RBvylfXGWKQj1qvgsdwwiUG0E1pZRJ7jgL++RKgA3yltZP
+ F3NYkWjlWa8nIGkbXPNkz0NLNA==
+X-Google-Smtp-Source: ACHHUZ6vqORSRxMfrjz7CD/A/+w802FrwEYPSRxttM5nM7zy+gOj9GIQg8wRk+pyySrD350QiwEj1A==
+X-Received: by 2002:a19:7108:0:b0:4ef:f11c:f5b0 with SMTP id
+ m8-20020a197108000000b004eff11cf5b0mr15203630lfc.54.1687774210741; 
+ Mon, 26 Jun 2023 03:10:10 -0700 (PDT)
+Received: from [192.168.157.227] (141.pool92-176-132.dynamic.orange.es.
+ [92.176.132.141]) by smtp.gmail.com with ESMTPSA id
+ j19-20020a5d4533000000b0030fafcbbd33sm6833820wra.50.2023.06.26.03.10.08
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 26 Jun 2023 03:10:10 -0700 (PDT)
+Message-ID: <93dda239-00cb-3c5a-c7c2-6ade248e147b@linaro.org>
+Date: Mon, 26 Jun 2023 12:10:05 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230626114916.45355529@mobian.usb.local>
-Organization: I am not organized
-User-Agent: NeoMutt/20170609 (1.8.3)
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v3 07/16] accel: Rename HAX 'struct hax_vcpu_state' ->
+ AccelCPUState
+Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: kvm@vger.kernel.org, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Roman Bolshakov <rbolshakov@ddn.com>, qemu-arm@nongnu.org,
+ Alexander Graf <agraf@csgraf.de>, xen-devel@lists.xenproject.org,
+ Sunil Muthuswamy <sunilmut@microsoft.com>,
+ Anthony Perard <anthony.perard@citrix.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Yanan Wang <wangyanan55@huawei.com>, Paul Durrant <paul@xen.org>,
+ Reinoud Zandijk <reinoud@netbsd.org>, Eduardo Habkost <eduardo@habkost.net>,
+ Cameron Esfahani <dirty@apple.com>, Paolo Bonzini <pbonzini@redhat.com>
+References: <20230624174121.11508-1-philmd@linaro.org>
+ <20230624174121.11508-8-philmd@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230624174121.11508-8-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::12d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-lf1-x12d.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.089,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,35 +106,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello,
+On 6/24/23 19:41, Philippe Mathieu-Daudé wrote:
+> We want all accelerators to share the same opaque pointer in
+> CPUState. Start with the HAX context, renaming its forward
+> declarated structure 'hax_vcpu_state' as 'AccelCPUState'.
+> Document the CPUState field. Directly use the typedef.
+> 
+> Remove the amusing but now unnecessary casts in NVMM / WHPX.
+> 
+> Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org>
+> ---
+>   include/hw/core/cpu.h         |  5 ++---
+>   include/qemu/typedefs.h       |  1 +
+>   target/i386/hax/hax-i386.h    |  9 +++++----
+>   target/i386/hax/hax-all.c     | 16 ++++++++--------
+>   target/i386/hax/hax-posix.c   |  4 ++--
+>   target/i386/hax/hax-windows.c |  4 ++--
+>   target/i386/nvmm/nvmm-all.c   |  2 +-
+>   target/i386/whpx/whpx-all.c   |  2 +-
+>   8 files changed, 22 insertions(+), 21 deletions(-)
 
-Felix Wu <flwu@google.com> wrote:
-> 2. I want to understand what ip I should use. Currently I have following
-> formats for the QEMU invocation in ipv6:
-> ```
-> guestfwd=tcp:[::1]:1234-tcp:[my:host:ip:from:ifconfig]:22
-> ```
-> I know the general form is `guestfwd=tcp:server:port-dev`, where
-> server:port is for guest,
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-Yes, the address to be used within the guest network. So it needs to be
-within the guest network.
-
-> Is the aforementioned invocation correct?
-
-No, because ::1 isn't in the guest network.
-
-> Or in this case [::1] is the local host address and I should put qemu
-> address for it instead?
-
-You can use whatever IP you want, as long as it's in the guest network.
-e.g. [fec0::1234] if you're with the default fec0::/64 network.
-
-> 3. Is there a default ipv6 address for QEMU instance? I think I need it in
-> the invocation.
-
-By default it's address 2 within the prefix, i.e. fec0::2 with the
-default fec0::/64 network.
-
-Samuel
+r~
 
