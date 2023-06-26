@@ -2,63 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05D2973ECFB
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 23:39:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D34C73ED0B
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 23:46:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDtux-0006Cx-Px; Mon, 26 Jun 2023 17:38:41 -0400
+	id 1qDu1l-00086J-NG; Mon, 26 Jun 2023 17:45:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berto@igalia.com>)
- id 1qDtup-0006Cf-0m; Mon, 26 Jun 2023 17:38:32 -0400
-Received: from fanzine2.igalia.com ([213.97.179.56])
+ (Exim 4.90_1) (envelope-from <SRS0=U+Ap=CO=kaod.org=clg@ozlabs.org>)
+ id 1qDu1j-00085e-4o; Mon, 26 Jun 2023 17:45:39 -0400
+Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berto@igalia.com>)
- id 1qDtun-0008DO-KE; Mon, 26 Jun 2023 17:38:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
- s=20170329;
- h=Content-Type:MIME-Version:Message-ID:Date:References:
- In-Reply-To:Subject:Cc:To:From:Sender:Reply-To:Content-Transfer-Encoding:
- Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
- Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
- List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=nQvGYahceAsuhjU9EleRIUV6q1PvCfz1pu2FtJKYJgg=; b=lokgTWM6r5WKnXVsJVL6CesWzT
- jqQLnb41ea5on3lIT0oy1CrqmgSIxQwJDI3BX9P5rWTG4/5gWp9z4TIJH8GGBqGAGcVDskkBLPizY
- F+vS9USZtza8vdweC+zP/6ykXjfZPfpN7lTEXdrHaLshGIMoelI4G3Z01IebkQ7R03218FBYb8gY3
- ryQCzZ5aQWHMRvc4wWd9GH8vPPR5Xy2RwXoLUx/qbCjxv2UCV57k7xx/7VMDZ6AuWOd+SJlSlrPmu
- 1UE36B4aRVNqSondstEeuFMj9PV4+BD+azdanq0nFcueqrbXHMoIwoTuC/V4wPQ12TE+mzXMV3g3C
- xKrhWwKg==;
-Received: from maestria.local.igalia.com ([192.168.10.14] helo=mail.igalia.com)
- by fanzine2.igalia.com with esmtps 
- (Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
- id 1qDtuj-004CiD-PQ; Mon, 26 Jun 2023 23:38:25 +0200
-Received: from gate.service.igalia.com ([192.168.21.52])
- by mail.igalia.com with esmtp (Exim)
- id 1qDtuh-00DQGE-LB; Mon, 26 Jun 2023 23:38:25 +0200
-Received: from berto by gate.service.igalia.com with local (Exim 4.94.2)
- (envelope-from <berto@igalia.com>)
- id 1qDtuh-009vU8-2I; Mon, 26 Jun 2023 21:38:23 +0000
-From: Alberto Garcia <berto@igalia.com>
-To: zhenwei pi <pizhenwei@bytedance.com>
-Cc: arei.gonglei@huawei.com, qemu-devel@nongnu.org, qemu-block@nongnu.org,
- berrange@redhat.com, zhenwei pi <pizhenwei@bytedance.com>
-Subject: Re: [PATCH 3/5] throttle: support read-only and write-only
-In-Reply-To: <20230625085631.372238-4-pizhenwei@bytedance.com>
-References: <20230625085631.372238-1-pizhenwei@bytedance.com>
- <20230625085631.372238-4-pizhenwei@bytedance.com>
-Date: Mon, 26 Jun 2023 21:38:23 +0000
-Message-ID: <w51mt0l52gg.fsf@igalia.com>
+ (Exim 4.90_1) (envelope-from <SRS0=U+Ap=CO=kaod.org=clg@ozlabs.org>)
+ id 1qDu1h-0001qC-9k; Mon, 26 Jun 2023 17:45:38 -0400
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4QqhGg5gFLz4wZv;
+ Tue, 27 Jun 2023 07:45:31 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4QqhGd2XCxz4wZr;
+ Tue, 27 Jun 2023 07:45:28 +1000 (AEST)
+Message-ID: <ecca1867-4308-5218-a5f6-9b0a93756f72@kaod.org>
+Date: Mon, 26 Jun 2023 23:45:25 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=213.97.179.56; envelope-from=berto@igalia.com;
- helo=fanzine2.igalia.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PULL 10/30] ppc/spapr: H_ENTER_NESTED should restore host XER ca
+ field
+Content-Language: en-US
+To: Michael Tokarev <mjt@tls.msk.ru>,
+ Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>
+References: <20230626055647.1147743-1-clg@kaod.org>
+ <20230626055647.1147743-11-clg@kaod.org>
+ <eb1c3b7c-5f50-7e25-ec99-3f84013e76c4@tls.msk.ru>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <eb1c3b7c-5f50-7e25-ec99-3f84013e76c4@tls.msk.ru>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=SRS0=U+Ap=CO=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, NICE_REPLY_A=-0.09, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -74,31 +69,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sun 25 Jun 2023 04:56:29 PM +08, zhenwei pi wrote:
->  void throttle_timers_attach_aio_context(ThrottleTimers *tt,
->                                          AioContext *new_context)
->  {
-> -    tt->timers[THROTTLE_TIMER_READ] =
-> -        aio_timer_new(new_context, tt->clock_type, SCALE_NS,
-> -                      tt->timer_cb[THROTTLE_TIMER_READ], tt->timer_opaque);
-> -    tt->timers[THROTTLE_TIMER_WRITE] =
-> -        aio_timer_new(new_context, tt->clock_type, SCALE_NS,
-> -                      tt->timer_cb[THROTTLE_TIMER_WRITE], tt->timer_opaque);
-> +    if (tt->timer_cb[THROTTLE_TIMER_READ]) {
-> +        tt->timers[THROTTLE_TIMER_READ] =
-> +            aio_timer_new(new_context, tt->clock_type, SCALE_NS,
-> +                          tt->timer_cb[THROTTLE_TIMER_READ], tt->timer_opaque);
-> +    }
-> +
-> +    if (tt->timer_cb[THROTTLE_TIMER_WRITE]) {
-> +        tt->timers[THROTTLE_TIMER_WRITE] =
-> +            aio_timer_new(new_context, tt->clock_type, SCALE_NS,
-> +                          tt->timer_cb[THROTTLE_TIMER_WRITE], tt->timer_opaque);
-> +    }
->  }
+On 6/26/23 14:26, Michael Tokarev wrote:
+> 26.06.2023 08:56, Cédric Le Goater wrote:
+>> From: Nicholas Piggin <npiggin@gmail.com>
+>>
+>> Fix missing env->ca restore when going from L2 back to the host.
+>>
+>> Fixes: 120f738a467 ("spapr: implement nested-hv capability for the virtual hypervisor")
+>> Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+>> Signed-off-by: Cédric Le Goater <clg@kaod.org>
+>> ---
+>>   hw/ppc/spapr_hcall.c | 1 +
+>>   1 file changed, 1 insertion(+)
+>>
+>> diff --git a/hw/ppc/spapr_hcall.c b/hw/ppc/spapr_hcall.c
+>> index b9047555757f..0582b524d108 100644
+>> --- a/hw/ppc/spapr_hcall.c
+>> +++ b/hw/ppc/spapr_hcall.c
+>> @@ -1773,6 +1773,7 @@ out_restore_l1:
+>>       env->cfar = spapr_cpu->nested_host_state->cfar;
+>>       env->xer = spapr_cpu->nested_host_state->xer;
+>>       env->so = spapr_cpu->nested_host_state->so;
+>> +    env->ca = spapr_cpu->nested_host_state->ca;
+>>       env->ov = spapr_cpu->nested_host_state->ov;
+>>       env->ov32 = spapr_cpu->nested_host_state->ov32;
+>>       env->ca32 = spapr_cpu->nested_host_state->ca32;
+> 
+> Is it -stable material too, or don't bother?
+> 120f738a467 is 7.0.
 
-If now any of the timers can be NULL, don't you want to add additional
-checks / assertions to (at least) throttle_schedule_timer() ?
+I would say so. The CPU is missing state (Carry bit) when restoring context,
+it could be important for some instructions.
 
-Berto
+Nick, did you have specific test case ?
+
+Thanks,
+
+C.
+
 
