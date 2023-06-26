@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E2F273EBCB
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B41373EBCA
 	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 22:26:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDsmH-0005t3-Lw; Mon, 26 Jun 2023 16:25:37 -0400
+	id 1qDsmH-0005uY-Sd; Mon, 26 Jun 2023 16:25:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qDsm5-0005d9-Bv
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 16:25:25 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ id 1qDsm5-0005dC-Ml
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 16:25:26 -0400
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qDsm2-00055U-Fd
+ id 1qDsm2-00055Q-GH
  for qemu-devel@nongnu.org; Mon, 26 Jun 2023 16:25:25 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-3f9b4bf99c2so48109095e9.3
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-313f3a6db22so1316646f8f.3
  for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 13:25:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1687811118; x=1690403118;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=VTHkiiEsGJjQzyOMxbcLNdH7rkjQKhZ4rW+u2UfYIYE=;
- b=MKK8zG4Q7FCjDHFPB1PNyce92Z+i1ui3ci07HtDI7m+wTT0RlHMLS6r0aDFkF72QE5
- H+pQ0lSDHUdeLayVAKcbKnxYElXJch5SO/dP5Yt9iJxhQbF6mVXofxD9wWa2HK1g5P6t
- g1DhYP/Mkl/0fNGbkQVgrLNuIMcJMFDAHUq5nPLlwKTKAvtYd7JWeTallz43Q8dT9Xq/
- G88/YFGOX27hNy9ne85XSU1wzaXWVuBBAkNDvJ16205HzFv013U+52C1grVZHkl7/K52
- kEoCG658XXoklxhW47HLz15LX0jylwmO6miqQVHRI44+oS25HaPzIqoUipbzvtf7aruS
- T4ug==
+ bh=hn+zKX2ZU5kJ7IFfmWrHts4Msqz+nCT2HShGHhdqu5E=;
+ b=rlEhtYgZC/4LHm7w+Tx/oFBYOax+Ydar4y/83sQWoE7RAwC27lNK6f2/6Ivk8JHaOi
+ NcgFkfqMY063tNjgm/xXa/Hi/zkMe5doCvIup/NeR0VgZKvXSjqlVweX9lVhPIuRXtEN
+ fwlAbibbqsEsylWCB0a30oa1svi9ftwR81qm96uzN3m/l9KyKUT6Bv1RxI3PTOnBYL+u
+ O3Iw5i3ApPy7SZEc1+n2hu0Ta1iD40h9oiDD1YhZV3CkmOEx5iEVL3hVcZiUJAiNerQr
+ 3GVgWuemE3f6NBW86mxJmvx4vWQajYXYxyKOoAiiJxQnw2FAQmZpSOAKl06t31zmQoIe
+ 7jZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20221208; t=1687811118; x=1690403118;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=VTHkiiEsGJjQzyOMxbcLNdH7rkjQKhZ4rW+u2UfYIYE=;
- b=l3FCBXoJ2bX8KFyAQrnYr1c9wlBGD0r5Ddcx1jR7BZj5ZrLRqz+gm7qVPK5tvmOYnS
- bnogwRFVQxLlNF1Lym+pr7SQLYXGBg4J64uyt9QN/Wo0mrFQ++RXGV6EpC2NpocHui4J
- mUhTEYbnay9NDBAFQWUEcG6FpDRzIBRsBfA/aBeJrUtZZxjtrF7A+AQ/+fhBZjtKNvRD
- Nvtxll2Ly86R54Kq/KXXr46ZmsR6P0edqpw9A9j2iyt504z3ftbt+cOSfyJp0bql0LBP
- zJ73frTGpFcCIBI0MeLIyU+f/rHuFWdasPtY4Qf9y2hT34h95W0Cy/a6OZelnyYCFixJ
- 62OQ==
-X-Gm-Message-State: AC+VfDzvjrB3wg1/ovLAZjjMNzPt6tsag9Gk82ITMGSS6F0k7mPqBEd2
- RsgLCzQXPt1fQDGyQUDXqg9JZA==
-X-Google-Smtp-Source: ACHHUZ7rByVNZ9USQd0sazcRQfCdEfHL5SViOE4UgA+1WQvibiSdRfBlzBhZaDGF9Fa1SRSoRXe7sQ==
-X-Received: by 2002:a1c:7507:0:b0:3f7:678c:74b0 with SMTP id
- o7-20020a1c7507000000b003f7678c74b0mr22472542wmc.12.1687811118336; 
+ bh=hn+zKX2ZU5kJ7IFfmWrHts4Msqz+nCT2HShGHhdqu5E=;
+ b=ZHKAFHEUYsc9lyDayCIX9E8r3fDeuSj1OCkSFpYF2tvrbzHh9xoYMhcidrzFKPvuZl
+ Co37SYRLjVFssr0gnH20h3zFRnceg4gtZ1ZFielSeVMSAfIsaEaMol5dKjnTm8NJZcQQ
+ ailZrFDIyrIJXYnk97C0qDJsoHrIA0yBBcypmMqSBGEiFvBFKYB2vzknyosVrBZcTtLw
+ kVkHjAHpyVcJE+CUTQQ1LbpQg1OCEI4Sg+cFSd17SRJVnbc8j4PnH6f7kxYPIrda0SJe
+ p5IvJlLH8DR1nPU/m3S/EDmmQMcxbVRwvnwynLUlHpIYKv4J9D1m4Mn6bxdkVEOh9pgd
+ 4TQw==
+X-Gm-Message-State: AC+VfDxZgVBxZpNuWlzy8M+MMlIvtZBu/iHMV/xZyknYPKYSqtUiNp7m
+ Wjgpv9gUPg/IYDPA4yDg1JCo3w==
+X-Google-Smtp-Source: ACHHUZ4PpJai4S5/hyfdf42c0Hcs5wcQ+OynL0/pARGzdiZxmzmXkgJJbKpW4Bl2dhQj0RxIx2zA6A==
+X-Received: by 2002:adf:f711:0:b0:313:e553:b858 with SMTP id
+ r17-20020adff711000000b00313e553b858mr5694878wrp.33.1687811118166; 
  Mon, 26 Jun 2023 13:25:18 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- p9-20020a05600c204900b003f93c450657sm8626035wmg.38.2023.06.26.13.25.16
+ o10-20020a5d58ca000000b0031128382ed0sm8283322wrf.83.2023.06.26.13.25.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Mon, 26 Jun 2023 13:25:17 -0700 (PDT)
 Received: from zen.lan (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 71B171FFBE;
+ by zen.linaroharston (Postfix) with ESMTP id 8A25F1FFBF;
  Mon, 26 Jun 2023 21:25:16 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -82,18 +82,19 @@ Cc: Qiuhao Li <Qiuhao.Li@outlook.com>,
  Leonardo Bras <leobras@redhat.com>, qemu-arm@nongnu.org,
  Darren Kenny <darren.kenny@oracle.com>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>
-Subject: [PATCH v2 3/6] gitlab: reduce testing scope of check-gcov
-Date: Mon, 26 Jun 2023 21:25:12 +0100
-Message-Id: <20230626202516.2507915-4-alex.bennee@linaro.org>
+ Laurent Vivier <lvivier@redhat.com>, Ani Sinha <anisinha@redhat.com>
+Subject: [PATCH v2 4/6] docs/devel: remind developers to run CI container
+ pipeline when updating images
+Date: Mon, 26 Jun 2023 21:25:13 +0100
+Message-Id: <20230626202516.2507915-5-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230626202516.2507915-1-alex.bennee@linaro.org>
 References: <20230626202516.2507915-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -116,30 +117,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This keeps timing out on gitlab due to some qtests taking a long time.
-As this is just ensuring the gcov machinery is working and not
-attempting to be comprehensive lets skip qtest in this run.
+From: Ani Sinha <anisinha@redhat.com>
 
-Message-Id: <20230623122100.1640995-4-alex.bennee@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+When new dependencies and packages are added to containers, its important to
+run CI container generation pipelines on gitlab to make sure that there are no
+obvious conflicts between packages that are being added and those that are
+already present. Running CI container pipelines will make sure that there are
+no such breakages before we commit the change updating the containers. Add a
+line in the documentation reminding developers to run the pipeline before
+submitting the change. It will also ease the life of the maintainers.
+
+Signed-off-by: Ani Sinha <anisinha@redhat.com>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Message-Id: <20230506072012.10350-1-anisinha@redhat.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- .gitlab-ci.d/buildtest.yml | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ docs/devel/testing.rst | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-index a8fd9a0c1f..77dc83a6be 100644
---- a/.gitlab-ci.d/buildtest.yml
-+++ b/.gitlab-ci.d/buildtest.yml
-@@ -454,7 +454,7 @@ gcov:
-     IMAGE: ubuntu2204
-     CONFIGURE_ARGS: --enable-gcov
-     TARGETS: aarch64-softmmu ppc64-softmmu s390x-softmmu x86_64-softmmu
--    MAKE_CHECK_ARGS: check
-+    MAKE_CHECK_ARGS: check-unit check-softfloat
-   after_script:
-     - cd build
-     - gcovr --xml-pretty --exclude-unreachable-branches --print-summary
+diff --git a/docs/devel/testing.rst b/docs/devel/testing.rst
+index 203facb417..8f18052ba7 100644
+--- a/docs/devel/testing.rst
++++ b/docs/devel/testing.rst
+@@ -485,6 +485,12 @@ first to contribute the mapping to the ``libvirt-ci`` project:
+    `CI <https://www.qemu.org/docs/master/devel/ci.html>`__ documentation
+    page on how to trigger gitlab CI pipelines on your change.
+ 
++ * Please also trigger gitlab container generation pipelines on your change
++   for as many OS distros as practical to make sure that there are no
++   obvious breakages when adding the new pre-requisite. Please see
++   `CI <https://www.qemu.org/docs/master/devel/ci.html>`__ documentation
++   page on how to trigger gitlab CI pipelines on your change.
++
+ For enterprise distros that default to old, end-of-life versions of the
+ Python runtime, QEMU uses a separate set of mappings that work with more
+ recent versions.  These can be found in ``tests/lcitool/mappings.yml``.
 -- 
 2.39.2
 
