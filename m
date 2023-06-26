@@ -2,86 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 285F173DE86
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 14:11:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38F3F73DEB7
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 14:17:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDl3e-0001pt-00; Mon, 26 Jun 2023 08:11:02 -0400
+	id 1qDl9D-0003Gc-QU; Mon, 26 Jun 2023 08:16:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1qDl3U-0001pO-95
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 08:10:53 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qDl8l-0003CR-W5
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 08:16:23 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1qDl3R-00079R-Gh
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 08:10:51 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qDl8j-0008D1-2B
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 08:16:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687781448;
+ s=mimecast20190719; t=1687781775;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=5iaVLnvWfAoBEKD546jMkx/3QayLgO/z6ZeWR9u6V7Y=;
- b=bU7Ew+taguxVWirK889ZlhLh5Ro+CbhJ3WvNZ39iqGfm0O9US8khwmjThDW1OXKTToRFWh
- TSKhVLPeQ7PV9PHGNKNfLCT6PoBoC3E3V+UFwwSTzNVsk0iCVD1nVi5hrUWPq1skJSJlkC
- WuRCu0uHgoCgnu7CKlaxuJX9Tb4Ft8Q=
-Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
- [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=IG1l/VeyGHJXZwtZnFLE3B2YAsNuWmrby75/th5bmb0=;
+ b=VycyCZTa81yz0q2GbaRBNOfyCgx5JFhGnU2yV6G8jtXE2F27lPeQRLcq1Nzl+3mq6DZdgM
+ S1B+ivIbRGeQNH6d/WqgiNtpUvLikh+Iz7C6ASVz49aYlV90egtn8+Bplny1czkCxfClvr
+ sGshllcJGKSBGuOPiQAk8oLgE9nXOlM=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-219-VxnoiyQjPH2mdCIs5CqoGA-1; Mon, 26 Jun 2023 08:10:46 -0400
-X-MC-Unique: VxnoiyQjPH2mdCIs5CqoGA-1
-Received: by mail-lj1-f197.google.com with SMTP id
- 38308e7fff4ca-2b6a10a0a76so7743081fa.3
- for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 05:10:46 -0700 (PDT)
+ us-mta-435-ltzcIxGfNQKKjhah2OvWrw-1; Mon, 26 Jun 2023 08:16:14 -0400
+X-MC-Unique: ltzcIxGfNQKKjhah2OvWrw-1
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-313f2430134so297532f8f.3
+ for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 05:16:12 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687781445; x=1690373445;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=5iaVLnvWfAoBEKD546jMkx/3QayLgO/z6ZeWR9u6V7Y=;
- b=UCmXCjd+J/EDkS3ETXuGfbb16ITaNirGRFeGMixfz97JR/T41rmM/gUhaqATmbz8hN
- kQ6IET5nWOemJ3RF2CBjW99KwU1bbklKQc2MCwLyRt5gBsElfgMdPPR2YrFW7f4oZipU
- ChOX+2Yjgsrxj38jlJQUEILnD0GEwen7KiOQBBLoEf7RMPtjKL2LzzIPDAzRAASUet8E
- TYn+Tz6wWRHK/QmzNtdG4PQK9LSfCIbahksLsrZo9PiYqTeA5pwvxsJArdptTKcelUHK
- dOsXdOZBsncBcmFqZuPBAZb2AyXw/hiCXD5mCAdxdd424SUHlrZ09KS9APs7j6nGkqWB
- Z66Q==
-X-Gm-Message-State: AC+VfDx7PIg3cXrAbTzlMJ2kM1ayhIhX6SU0Jv+Mmn0n3f9Fj0v7dMPy
- Ps9RpzIhXseBuuwc9SCwZa5dcl1K8TY4Mij1FrhNUb+E55gO1bAWTNQbozv7kODVqlmFDYj6V5R
- fGOWXtDkxmEIKsp4=
-X-Received: by 2002:a2e:9106:0:b0:2b4:6e04:7f2a with SMTP id
- m6-20020a2e9106000000b002b46e047f2amr14101112ljg.47.1687781445146; 
- Mon, 26 Jun 2023 05:10:45 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ43E8fUzANkwskzOceK2AFTIXjy7BqnZkcP6GMWk53NPbZVG6ARNhTvgNPKI8QEa2bITh6YwA==
-X-Received: by 2002:a2e:9106:0:b0:2b4:6e04:7f2a with SMTP id
- m6-20020a2e9106000000b002b46e047f2amr14101096ljg.47.1687781444777; 
- Mon, 26 Jun 2023 05:10:44 -0700 (PDT)
-Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
- [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
- p23-20020a05640210d700b0051a4c1dc813sm2772959edu.82.2023.06.26.05.10.44
+ d=1e100.net; s=20221208; t=1687781772; x=1690373772;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=IG1l/VeyGHJXZwtZnFLE3B2YAsNuWmrby75/th5bmb0=;
+ b=Pk006gVPgtj+wnUWqry6ZTv/7kQGHPsl6rcXX4PCxm60joMonl0D175vnN5D9pKS6J
+ T/VSPUkZj+a7iu6Sj6AfnonHTu90awR8RrfO7Y3PRh2xJQY130BtHWuQYCXEo4Aut2VV
+ 3s56N59JcfWcGqhAEOwouPBNNIiFhnOZ5sn59cKJbktwnHUV2DphB3Od0BZiuarCBtiC
+ 9ueRSYbDJ5Kty53O4E4i/v57LBogCA/nvgPQtCU3rSt7s+PQr9nSrBOuat8km/HziHRB
+ y24mYMFqa4aqYELpJ6ujkXILqWfQm6JzwFbJZb/pHSk9WGDn7CQO7f1WpHhFcMp0/+sn
+ 8kMA==
+X-Gm-Message-State: AC+VfDzDYm2hT3AgDzP6HjphP7fjM22LIEZPT9zxlRNUWGla9u9uhmPc
+ BQx6XT+cC5b4Wj8/ppRPhb0/ZQn3WBvBrnNuZDmbWbnspH9ysqNYhZ/ZZje6JktobbJz/WFNqtz
+ M/1c8VvxNOkiGQXc=
+X-Received: by 2002:a05:6000:1cb:b0:313:efd5:f294 with SMTP id
+ t11-20020a05600001cb00b00313efd5f294mr2179133wrx.10.1687781771999; 
+ Mon, 26 Jun 2023 05:16:11 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7ayfnW/e4Ptyhn/dM2ZhbtjS0wxUlDmpzPCwwhnhMijj76nYaxOM+9zT2jjobjExgkW4ZxmQ==
+X-Received: by 2002:a05:6000:1cb:b0:313:efd5:f294 with SMTP id
+ t11-20020a05600001cb00b00313efd5f294mr2179071wrx.10.1687781770774; 
+ Mon, 26 Jun 2023 05:16:10 -0700 (PDT)
+Received: from redhat.com ([2.52.156.102]) by smtp.gmail.com with ESMTPSA id
+ cs7-20020a056000088700b0030ada01ca78sm7266722wrb.10.2023.06.26.05.16.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 26 Jun 2023 05:10:44 -0700 (PDT)
-Date: Mon, 26 Jun 2023 14:10:43 +0200
-From: Igor Mammedov <imammedo@redhat.com>
-To: Ani Sinha <anisinha@redhat.com>
-Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>, Laurent Vivier
- <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, "Michael S.
- Tsirkin" <mst@redhat.com>, Michael Labiuk <michael.labiuk@virtuozzo.com>
-Subject: Re: [PATCH v2 4/5] tests/qtest/hd-geo-test: fix test by removing
- unnecessary pcie-root-port
-Message-ID: <20230626141043.098c3034@imammedo.users.ipa.redhat.com>
-In-Reply-To: <5B33FFEC-B67A-47EF-8867-FE84CEB93412@redhat.com>
-References: <20230622103255.267289-1-anisinha@redhat.com>
- <20230622103255.267289-5-anisinha@redhat.com>
- <20230626131547.010ccdd8@imammedo.users.ipa.redhat.com>
- <5B33FFEC-B67A-47EF-8867-FE84CEB93412@redhat.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+ Mon, 26 Jun 2023 05:16:10 -0700 (PDT)
+Date: Mon, 26 Jun 2023 08:16:06 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Jonah Palmer <jonah.palmer@oracle.com>
+Cc: qemu-devel@nongnu.org, philmd@linaro.org, laurent@vivier.eu,
+ boris.ostrovsky@oracle.com, alex.bennee@linaro.org,
+ viresh.kumar@linaro.org, armbru@redhat.com, pbonzini@redhat.com,
+ berrange@redhat.com, eduardo@habkost.net
+Subject: Re: [PATCH v2 1/2] qmp: remove virtio_list, search QOM tree instead
+Message-ID: <20230626081522-mutt-send-email-mst@kernel.org>
+References: <20230609132040.2180710-1-jonah.palmer@oracle.com>
+ <20230609132040.2180710-2-jonah.palmer@oracle.com>
+ <20230623014315-mutt-send-email-mst@kernel.org>
+ <49f01bcc-eefa-d277-93fe-e3bcbc2ccd42@oracle.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <49f01bcc-eefa-d277-93fe-e3bcbc2ccd42@oracle.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -106,103 +101,282 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 26 Jun 2023 17:01:29 +0530
-Ani Sinha <anisinha@redhat.com> wrote:
+On Mon, Jun 26, 2023 at 08:08:28AM -0400, Jonah Palmer wrote:
+> 
+> On 6/23/23 01:47, Michael S. Tsirkin wrote:
+> 
+>     On Fri, Jun 09, 2023 at 09:20:39AM -0400, Jonah Palmer wrote:
+> 
+>         The virtio_list duplicates information about virtio devices that already
+>         exist in the QOM composition tree. Instead of creating this list of
+>         realized virtio devices, search the QOM composition tree instead.
+> 
+>         This patch modifies the QMP command qmp_x_query_virtio to instead search
+>         the partial paths of '/machine/peripheral/' &
+>         '/machine/peripheral-anon/' in the QOM composition tree for virtio
+>         devices.
+> 
+>         A device is found to be a valid virtio device if (1) its canonical path
+>         is of 'TYPE_VIRTIO_DEVICE' and (2) the device has been realized.
+> 
+>         [Jonah: In the previous commit I had written that a device is found to
+>          be a valid virtio device if (1) it has a canonical path ending with
+>          'virtio-backend'.
+> 
+>          The code now determines if it's a virtio device by appending
+>          'virtio-backend' (if needed) to a given canonical path and then
+>          checking that path to see if the device is of type
+>         'TYPE_VIRTIO_DEVICE'.
+> 
+>          The patch also instead now checks to make sure it's a virtio device
+>          before attempting to check whether the device is realized or not.]
+> 
+>         Signed-off-by: Jonah Palmer <jonah.palmer@oracle.com>
+> 
+> 
+>     Could one of QMP maintainers comment on this please?
+> 
+> 
+>         ---
+>          hw/virtio/virtio-qmp.c | 128 ++++++++++++++++++++++++++---------------
+>          hw/virtio/virtio-qmp.h |   8 +--
+>          hw/virtio/virtio.c     |   6 --
+>          3 files changed, 82 insertions(+), 60 deletions(-)
+> 
+>         diff --git a/hw/virtio/virtio-qmp.c b/hw/virtio/virtio-qmp.c
+>         index b5e1835299..e936cc8ce5 100644
+>         --- a/hw/virtio/virtio-qmp.c
+>         +++ b/hw/virtio/virtio-qmp.c
+>         @@ -668,67 +668,101 @@ VirtioDeviceFeatures *qmp_decode_features(uint16_t device_id, uint64_t bitmap)
+>          VirtioInfoList *qmp_x_query_virtio(Error **errp)
+>          {
+>              VirtioInfoList *list = NULL;
+>         -    VirtioInfo *node;
+>         -    VirtIODevice *vdev;
+> 
+>         -    QTAILQ_FOREACH(vdev, &virtio_list, next) {
+>         -        DeviceState *dev = DEVICE(vdev);
+>         -        Error *err = NULL;
+>         -        QObject *obj = qmp_qom_get(dev->canonical_path, "realized", &err);
+>         -
+>         -        if (err == NULL) {
+>         -            GString *is_realized = qobject_to_json_pretty(obj, true);
+>         -            /* virtio device is NOT realized, remove it from list */
+>         -            if (!strncmp(is_realized->str, "false", 4)) {
+>         -                QTAILQ_REMOVE(&virtio_list, vdev, next);
+>         -            } else {
+>         -                node = g_new(VirtioInfo, 1);
+>         -                node->path = g_strdup(dev->canonical_path);
+>         -                node->name = g_strdup(vdev->name);
+>         -                QAPI_LIST_PREPEND(list, node);
+>         +    /* Query the QOM composition tree for virtio devices */
+>         +    qmp_set_virtio_device_list("/machine/peripheral/", &list);
+>         +    qmp_set_virtio_device_list("/machine/peripheral-anon/", &list);
+> 
+>     How sure are we these will forever be the only two places where virtio
+>     can live?
+> 
+> A virtio device will always be considered a peripheral device, right?
+> Since peripheral devices are input and/or output devices by definition.
+> 
+>         +    if (list == NULL) {
+>         +        error_setg(errp, "No virtio devices found");
+>         +        return NULL;
+>         +    }
+>         +    return list;
+>         +}
+>         +
+>         +/* qmp_set_virtio_device_list:
+>         + * @ppath: An incomplete peripheral path to search from.
+>         + * @list: A list of realized virtio devices.
+>         + * Searches a given incomplete peripheral path (e.g. '/machine/peripheral/'
+>         + * or '/machine/peripheral-anon/') for realized virtio devices and adds them
+>         + * to a given list of virtio devices.
+>         + */
+>         +void qmp_set_virtio_device_list(const char *ppath, VirtioInfoList **list)
+>         +{
+>         +    ObjectPropertyInfoList *plist;
+>         +    VirtioInfoList *node;
+>         +    Error *err = NULL;
+>         +
+>         +    /* Search an incomplete path for virtio devices */
+>         +    plist = qmp_qom_list(ppath, &err);
+>         +    if (err == NULL) {
+>         +        ObjectPropertyInfoList *start = plist;
+>         +        while (plist != NULL) {
+>         +            ObjectPropertyInfo *value = plist->value;
+>         +            GString *path = g_string_new(ppath);
+>         +            g_string_append(path, value->name);
+>         +            g_string_append(path, "/virtio-backend");
+>         +
+>         +            /* Determine if full path is a realized virtio device */
+>         +            VirtIODevice *vdev = qmp_find_virtio_device(path->str);
+>         +            if (vdev != NULL) {
+>         +                node = g_new0(VirtioInfoList, 1);
+>         +                node->value = g_new(VirtioInfo, 1);
+>         +                node->value->path = g_strdup(path->str);
+>         +                node->value->name = g_strdup(vdev->name);
+>         +                QAPI_LIST_PREPEND(*list, node->value);
+>                      }
+>         -           g_string_free(is_realized, true);
+>         +            g_string_free(path, true);
+>         +            plist = plist->next;
+>                  }
+>         -        qobject_unref(obj);
+>         +        qapi_free_ObjectPropertyInfoList(start);
+>              }
+>         -
+>         -    return list;
+>          }
+> 
+>          VirtIODevice *qmp_find_virtio_device(const char *path)
+>          {
+>         -    VirtIODevice *vdev;
+>         -
+>         -    QTAILQ_FOREACH(vdev, &virtio_list, next) {
+>         -        DeviceState *dev = DEVICE(vdev);
+>         -
+>         -        if (strcmp(dev->canonical_path, path) != 0) {
+>         -            continue;
+>         +    Error *err = NULL;
+>         +    char *basename;
+>         +
+>         +    /* Append 'virtio-backend' to path if needed */
+>         +    basename = g_path_get_basename(path);
+>         +    if (strcmp(basename, "virtio-backend")) {
+>         +        GString *temp = g_string_new(path);
+>         +        char *last = strrchr(path, '/');
+>         +        if (g_strcmp0(last, "/")) {
+>         +            g_string_append(temp, "/virtio-backend");
+>         +        } else {
+>         +            g_string_append(temp, "virtio-backend");
+>                  }
+>         +        path = g_strdup(temp->str);
+>         +        g_string_free(temp, true);
+>         +    }
+> 
+>     I don't much like the string operations. We should be able to
+>     check object types instead.
+> 
+> 
+> I don't either but in order for us to check if the object is a
+> virtio device type, we need to use the device's path ending
+> with '/virtio-backend'.
+> 
+> If there's a better method to checking this though, or perhaps
+> checking a different type, that doesn't involve string
+> manipulation, then I'm all for it.
 
-> > On 26-Jun-2023, at 4:45 PM, Igor Mammedov <imammedo@redhat.com> wrote:
-> >=20
-> > On Thu, 22 Jun 2023 16:02:54 +0530
-> > Ani Sinha <anisinha@redhat.com> wrote:
-> >  =20
-> >> A SCSI controller can be attached to a pcie-to-pci bridge which in tur=
-n can be
-> >> attached directly to the root bus (peie.0). There is no need to attach=
- a
-> >> pcie-root-port on the root bus in order to attach the pcie-ro-pci brid=
-ge.
-> >> Fix it. =20
-> >=20
-> > bridge can be both on pcie.0 or on root-port and both are valid configs.
-> > So what exactly and why we are fixing here? =20
->=20
-> If you look at the functions carefully, =E2=80=9Cbr=E2=80=9D is a pcie-ro=
-ot-port and =E2=80=9Cpcie.0=E2=80=9D is a pcie-to-pci bridge.
-> The bug here is that both the SCSI controller and the pcie-to-pci bridge =
-(pcie.0) were getting attached to the same pcie-root-port. I think the inte=
-ntion of the author was to attach the SCSI controller to pcie-to-pci bridge.
-> In any case, I do not see the reason to attach a pcie-root-port here. We =
-can attach the pcie-to-pci bridge on the RC and then attach the SCSI contro=
-llers on the bridge.
+TYPE_VIRTIO_DEVICE ?
 
-Description of what's wrong should be in commit message
-then you can follow up with a reasoning why you don't think it's worth fixi=
-ng
-and what you do to remedy situation.
 
->=20
-> >  =20
-> >>=20
-> >> CC: mst@redhat.com
-> >> CC: imammedo@redhat.com
-> >> CC: Michael Labiuk <michael.labiuk@virtuozzo.com>
-> >>=20
-> >> Signed-off-by: Ani Sinha <anisinha@redhat.com>
-> >> ---
-> >> tests/qtest/hd-geo-test.c | 18 ++++++++----------
-> >> 1 file changed, 8 insertions(+), 10 deletions(-)
-> >>=20
-> >> diff --git a/tests/qtest/hd-geo-test.c b/tests/qtest/hd-geo-test.c
-> >> index 5aa258a2b3..d08bffad91 100644
-> >> --- a/tests/qtest/hd-geo-test.c
-> >> +++ b/tests/qtest/hd-geo-test.c
-> >> @@ -784,14 +784,12 @@ static void test_override_scsi(void)
-> >>     test_override(args, "pc", expected);
-> >> }
-> >>=20
-> >> -static void setup_pci_bridge(TestArgs *args, const char *id, const ch=
-ar *rootid)
-> >> +static void setup_pci_bridge(TestArgs *args, const char *id)
-> >> {
-> >>=20
-> >> -    char *root, *br;
-> >> -    root =3D g_strdup_printf("-device pcie-root-port,id=3D%s", rootid=
-);
-> >> -    br =3D g_strdup_printf("-device pcie-pci-bridge,bus=3D%s,id=3D%s"=
-, rootid, id);
-> >> +    char *br;
-> >> +    br =3D g_strdup_printf("-device pcie-pci-bridge,bus=3Dpcie.0,id=
-=3D%s", id);
-> >>=20
-> >> -    args->argc =3D append_arg(args->argc, args->argv, ARGV_SIZE, root=
-);
-> >>     args->argc =3D append_arg(args->argc, args->argv, ARGV_SIZE, br);
-> >> }
-> >>=20
-> >> @@ -811,8 +809,8 @@ static void test_override_scsi_q35(void)
-> >>     add_drive_with_mbr(args, empty_mbr, 1);
-> >>     add_drive_with_mbr(args, empty_mbr, 1);
-> >>     add_drive_with_mbr(args, empty_mbr, 1);
-> >> -    setup_pci_bridge(args, "pcie.0", "br");
-> >> -    add_scsi_controller(args, "lsi53c895a", "br", 3);
-> >> +    setup_pci_bridge(args, "pcie-pci-br");
-> >> +    add_scsi_controller(args, "lsi53c895a", "pcie-pci-br", 3);
-> >>     add_scsi_disk(args, 0, 0, 0, 0, 0, 10000, 120, 30);
-> >>     add_scsi_disk(args, 1, 0, 0, 1, 0, 9000, 120, 30);
-> >>     add_scsi_disk(args, 2, 0, 0, 2, 0, 1, 0, 0);
-> >> @@ -868,9 +866,9 @@ static void test_override_virtio_blk_q35(void)
-> >>     };
-> >>     add_drive_with_mbr(args, empty_mbr, 1);
-> >>     add_drive_with_mbr(args, empty_mbr, 1);
-> >> -    setup_pci_bridge(args, "pcie.0", "br");
-> >> -    add_virtio_disk(args, 0, "br", 3, 10000, 120, 30);
-> >> -    add_virtio_disk(args, 1, "br", 4, 9000, 120, 30);
-> >> +    setup_pci_bridge(args, "pcie-pci-br");
-> >> +    add_virtio_disk(args, 0, "pcie-pci-br", 3, 10000, 120, 30);
-> >> +    add_virtio_disk(args, 1, "pcie-pci-br", 4, 9000, 120, 30);
-> >>     test_override(args, "q35", expected);
-> >> }
-> >>  =20
-> >  =20
->=20
+>         -        Error *err = NULL;
+>         -        QObject *obj = qmp_qom_get(dev->canonical_path, "realized", &err);
+>         -        if (err == NULL) {
+>         -            GString *is_realized = qobject_to_json_pretty(obj, true);
+>         -            /* virtio device is NOT realized, remove it from list */
+>         -            if (!strncmp(is_realized->str, "false", 4)) {
+>         -                g_string_free(is_realized, true);
+>         -                qobject_unref(obj);
+>         -                QTAILQ_REMOVE(&virtio_list, vdev, next);
+>         -                return NULL;
+>         -            }
+>         +    /* Verify the canonical path is a virtio device */
+>         +    Object *obj = object_resolve_path(path, NULL);
+>         +    if (!obj || !object_dynamic_cast(obj, TYPE_VIRTIO_DEVICE)) {
+>         +        object_unref(obj);
+>         +        return NULL;
+>         +    }
+>         +
+>         +    /* Verify the virtio device is realized */
+>         +    QObject *qobj = qmp_qom_get(path, "realized", &err);
+>         +    if (err == NULL) {
+>         +        GString *is_realized = qobject_to_json_pretty(qobj, true);
+>         +        if (!strncmp(is_realized->str, "false", 4)) {
+>                      g_string_free(is_realized, true);
+>         -        } else {
+>         -            /* virtio device doesn't exist in QOM tree */
+>         -            QTAILQ_REMOVE(&virtio_list, vdev, next);
+>         -            qobject_unref(obj);
+>         +            qobject_unref(qobj);
+>                      return NULL;
+>                  }
+>         -        /* device exists in QOM tree & is realized */
+>         -        qobject_unref(obj);
+>         -        return vdev;
+>         +        g_string_free(is_realized, true);
+>         +    } else {
+>         +        qobject_unref(qobj);
+>         +        return NULL;
+>              }
+>         -    return NULL;
+>         +    qobject_unref(qobj);
+>         +
+>         +    /* Get VirtIODevice object */
+>         +    VirtIODevice *vdev = VIRTIO_DEVICE(obj);
+>         +    return vdev;
+>          }
+> 
+>          VirtioStatus *qmp_x_query_virtio_status(const char *path, Error **errp)
+>         diff --git a/hw/virtio/virtio-qmp.h b/hw/virtio/virtio-qmp.h
+>         index 8af5f5e65a..4b2b7875b4 100644
+>         --- a/hw/virtio/virtio-qmp.h
+>         +++ b/hw/virtio/virtio-qmp.h
+>         @@ -15,13 +15,7 @@
+>          #include "hw/virtio/virtio.h"
+>          #include "hw/virtio/vhost.h"
+> 
+>         -#include "qemu/queue.h"
+>         -
+>         -typedef QTAILQ_HEAD(QmpVirtIODeviceList, VirtIODevice) QmpVirtIODeviceList;
+>         -
+>         -/* QAPI list of realized VirtIODevices */
+>         -extern QmpVirtIODeviceList virtio_list;
+>         -
+>         +void qmp_set_virtio_device_list(const char *ppath, VirtioInfoList **list);
+>          VirtIODevice *qmp_find_virtio_device(const char *path);
+>          VirtioDeviceStatus *qmp_decode_status(uint8_t bitmap);
+>          VhostDeviceProtocols *qmp_decode_protocols(uint64_t bitmap);
+>         diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
+>         index 295a603e58..83c5db3d26 100644
+>         --- a/hw/virtio/virtio.c
+>         +++ b/hw/virtio/virtio.c
+>         @@ -45,8 +45,6 @@
+>          #include "standard-headers/linux/virtio_mem.h"
+>          #include "standard-headers/linux/virtio_vsock.h"
+> 
+>         -QmpVirtIODeviceList virtio_list;
+>         -
+>          /*
+>           * Maximum size of virtio device config space
+>           */
+>         @@ -3616,7 +3614,6 @@ static void virtio_device_realize(DeviceState *dev, Error **errp)
+>              vdev->listener.commit = virtio_memory_listener_commit;
+>              vdev->listener.name = "virtio";
+>              memory_listener_register(&vdev->listener, vdev->dma_as);
+>         -    QTAILQ_INSERT_TAIL(&virtio_list, vdev, next);
+>          }
+> 
+>          static void virtio_device_unrealize(DeviceState *dev)
+>         @@ -3631,7 +3628,6 @@ static void virtio_device_unrealize(DeviceState *dev)
+>                  vdc->unrealize(dev);
+>              }
+> 
+>         -    QTAILQ_REMOVE(&virtio_list, vdev, next);
+>              g_free(vdev->bus_name);
+>              vdev->bus_name = NULL;
+>          }
+>         @@ -3805,8 +3801,6 @@ static void virtio_device_class_init(ObjectClass *klass, void *data)
+>              vdc->stop_ioeventfd = virtio_device_stop_ioeventfd_impl;
+> 
+>              vdc->legacy_features |= VIRTIO_LEGACY_FEATURES;
+>         -
+>         -    QTAILQ_INIT(&virtio_list);
+>          }
+> 
+>          bool virtio_device_ioeventfd_enabled(VirtIODevice *vdev)
+>         --
+>         2.39.3
+> 
 
 
