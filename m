@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFF4073E26A
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 16:49:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C89473E22F
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 16:32:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDlLs-0002vG-70; Mon, 26 Jun 2023 08:29:52 -0400
+	id 1qDlMU-0005S8-1U; Mon, 26 Jun 2023 08:30:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qDlKu-0002Ht-CG
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 08:28:54 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qDlL0-0002NU-LZ
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 08:29:00 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qDlKr-000310-Gc
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 08:28:50 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qDlKx-00032E-9a
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 08:28:57 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687782528;
+ s=mimecast20190719; t=1687782534;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=/lUSJaMnlnz/HAJShdhWd+2sdzRo2ASZhZzrf+rbuEM=;
- b=bY+Ob/AFYeiOYRKEUzbNBSBdzsVUK0gXec8m3w6aqSIcOl8dLo5cvd9RIgCIfrOtpQB4Ts
- i7YFXXtIXTBYxP0lndMLGs9NbgqhHyHK1wgV9ZsPPhi332aXiwrwuiu6yZqcQrUIPAS7oa
- dd5L/UlxGlzjRNOu/0Ejxgfto8Nqfnk=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=p3R7bbX1OVcHwyYU8dbH6MaxjId8JlY7Jg13CA3d3Lg=;
+ b=A+afMQ0UqVRO/Io7gVdV+QfcOxb1Jv7mNq1EiSh+lTdQ1WQdkdqcjzeC1/02oFgiwvIlPm
+ Ly8ZphUx+GIe+JXt8WaGwUpwGn8f0lRb7ds3H9khSlCEeNiqAfJ0cFn4NZuuWr2ywyCVG/
+ FfgbpDiYsgorTUwBWgYQkE/2HS7to44=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-536-uIW9Ob6PMR2HK3vz-V4YIA-1; Mon, 26 Jun 2023 08:28:47 -0400
-X-MC-Unique: uIW9Ob6PMR2HK3vz-V4YIA-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-3fb40d90456so1352805e9.0
- for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 05:28:47 -0700 (PDT)
+ us-mta-324-e7PrP15wP5qFLmZW_dgkbw-1; Mon, 26 Jun 2023 08:28:53 -0400
+X-MC-Unique: e7PrP15wP5qFLmZW_dgkbw-1
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-313f371b0d9so385488f8f.3
+ for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 05:28:53 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687782526; x=1690374526;
+ d=1e100.net; s=20221208; t=1687782532; x=1690374532;
  h=in-reply-to:content-transfer-encoding:content-disposition
  :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=/lUSJaMnlnz/HAJShdhWd+2sdzRo2ASZhZzrf+rbuEM=;
- b=VMLGgSf7x0UV4RjUP4kvUsdLi88baIMmkfBROIQCLFo758ZrzYNgEWbIpZcL3RbCiF
- 0d8Stj5trWkHr/CYr495/8fdpVslQmdTYRbXTdKPwb+5b9fhSy4oGVskOBV7nHt6Bw3Z
- W5snp9p/1afjpfHMYHSOjtGFgjznrdrLkHjxIuG1tLYS68oc4zfppzB3W83bIvsbKCw9
- 3WAAyTBu2INRGDhHUFJl30cujoPSOfZOkjT3+otAJ2wTRApe9uSr+/gpOgCm+nvTSa5N
- PpnWEUUcF4eQsPjNQDcHq0P4QMVguzrOhW//8HA396sMtN1xtD1mrzMIj5SHs49dhewf
- K5Lw==
-X-Gm-Message-State: AC+VfDxbhw2p1m20PSWKDUbjXLLsMX0B/cFXRrkVlpr7OjsGatiNhPLV
- 70l3LD6opB29aWWCYpiTQChKaKE0ATdJv4Pw9RjbGb4C8EVJarxS2D8k0mGNelHwuyzONG9Q/kG
- jvrF5Ip3ZLWI/mpjvCLnYVLU2+XozZGw3vG/JC6YTQVXo6SBVRxczTeWqlVYnrwOGsSdi
-X-Received: by 2002:a7b:c401:0:b0:3f4:2a69:409 with SMTP id
- k1-20020a7bc401000000b003f42a690409mr26793062wmi.11.1687782526135; 
- Mon, 26 Jun 2023 05:28:46 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7fxFdN41aRBm7SHVwgNoRmhkopLTVBDvTPf0WLpXVcz66w0wT1Bin8nPE9R/d8tEFvDr237Q==
-X-Received: by 2002:a7b:c401:0:b0:3f4:2a69:409 with SMTP id
- k1-20020a7bc401000000b003f42a690409mr26793047wmi.11.1687782525911; 
- Mon, 26 Jun 2023 05:28:45 -0700 (PDT)
+ bh=p3R7bbX1OVcHwyYU8dbH6MaxjId8JlY7Jg13CA3d3Lg=;
+ b=kXw4CCwjznRnHLJbakA+sB9CkxIne1OPh1ka1AWxv5VF96zCwiMHIZNjMBPuc0JyRc
+ TGuYmpL1/Fbe0SX3N6RSoEmdBP61BP8z1aBpGpOJPfsXM7dPGhU+vQdA86lD31Qj6h4t
+ /5MjSa4uVDBc+/fSyBlYvid3AH6wEn0q2mupPgwZJj8nojJytDQWNrfrssN2QJwDQqkA
+ wXgLv6so8pXbqlYjTRiLMNfEt+vn8twQr5ae+32TAo38mWOXugvV39ntQzNA+8I4Q6wJ
+ IvowcsHAxVWriemk9bKqvDBH4ejMCB0bd+nl/0ytrR9qDX8ICYosQVWoHfZIB8BZEfs1
+ /sew==
+X-Gm-Message-State: AC+VfDxKFhUrTBprzKCsJB+dEfPOP0dFOCb0o0tZciUSFy+vxIb4Zs9/
+ qwxJ92m2GwoaZjKJi47PbjymMHFupi8OSxBIMQoEkQsEfPpsfskwR9Y92WmCEVywb5NFnUhwIVa
+ zBcCJSDpxL7VQnmMKBAS3OoCL7Gw54Lpatgw5Oi+snZsxHI+FW+B+gOW+rQiwYX4MKGo8
+X-Received: by 2002:adf:f80e:0:b0:313:f3c5:dac9 with SMTP id
+ s14-20020adff80e000000b00313f3c5dac9mr1227676wrp.41.1687782531995; 
+ Mon, 26 Jun 2023 05:28:51 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7CC101Wem0BBXxxb3gOEYR8TXBR01iYeCC0mbMy2bH5DeeRiw4iNu8eBcJV+ZtyIw3X7Szfg==
+X-Received: by 2002:adf:f80e:0:b0:313:f3c5:dac9 with SMTP id
+ s14-20020adff80e000000b00313f3c5dac9mr1227660wrp.41.1687782531723; 
+ Mon, 26 Jun 2023 05:28:51 -0700 (PDT)
 Received: from redhat.com ([2.52.156.102]) by smtp.gmail.com with ESMTPSA id
- j19-20020a5d4533000000b0030aded83385sm7309811wra.27.2023.06.26.05.28.44
+ v11-20020a5d610b000000b00313e2abfb8dsm6719036wrt.92.2023.06.26.05.28.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 26 Jun 2023 05:28:45 -0700 (PDT)
-Date: Mon, 26 Jun 2023 08:28:43 -0400
+ Mon, 26 Jun 2023 05:28:51 -0700 (PDT)
+Date: Mon, 26 Jun 2023 08:28:49 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- David Hildenbrand <david@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
+ Eric Auger <eric.auger@redhat.com>,
  Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PULL 18/53] hw/virtio/virtio-mem: Use qemu_ram_get_fd() helper
-Message-ID: <21e6435066bd3818969b520b69415ba62a85cd24.1687782442.git.mst@redhat.com>
+Subject: [PULL 20/53] hw/virtio/virtio-iommu: Use target-agnostic
+ qemu_target_page_mask()
+Message-ID: <e414ed2c47da70381a66846cf9353f7612daa4b8.1687782442.git.mst@redhat.com>
 References: <cover.1687782442.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -105,33 +106,42 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Avoid accessing RAMBlock internals, use the provided
-qemu_ram_get_fd() getter to get the file descriptor.
+In order to have virtio-iommu.c become target-agnostic,
+we need to avoid using TARGET_PAGE_MASK. Get it with the
+qemu_target_page_mask() helper.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: David Hildenbrand <david@redhat.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20230524093744.88442-7-philmd@linaro.org>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
+Message-Id: <20230524093744.88442-9-philmd@linaro.org>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- hw/virtio/virtio-mem.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/virtio/virtio-iommu.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/hw/virtio/virtio-mem.c b/hw/virtio/virtio-mem.c
-index 538b695c29..74e63bd47a 100644
---- a/hw/virtio/virtio-mem.c
-+++ b/hw/virtio/virtio-mem.c
-@@ -135,7 +135,7 @@ static bool virtio_mem_has_shared_zeropage(RAMBlock *rb)
-      * anonymous RAM. In any other case, reading unplugged *can* populate a
-      * fresh page, consuming actual memory.
+diff --git a/hw/virtio/virtio-iommu.c b/hw/virtio/virtio-iommu.c
+index 1cd258135d..85905a9e3d 100644
+--- a/hw/virtio/virtio-iommu.c
++++ b/hw/virtio/virtio-iommu.c
+@@ -20,6 +20,7 @@
+ #include "qemu/osdep.h"
+ #include "qemu/log.h"
+ #include "qemu/iov.h"
++#include "exec/target_page.h"
+ #include "hw/qdev-properties.h"
+ #include "hw/virtio/virtio.h"
+ #include "sysemu/kvm.h"
+@@ -1164,7 +1165,7 @@ static void virtio_iommu_device_realize(DeviceState *dev, Error **errp)
+      * in vfio realize
       */
--    return !qemu_ram_is_shared(rb) && rb->fd < 0 &&
-+    return !qemu_ram_is_shared(rb) && qemu_ram_get_fd(rb) < 0 &&
-            qemu_ram_pagesize(rb) == qemu_real_host_page_size();
- }
- #endif /* VIRTIO_MEM_HAS_LEGACY_GUESTS */
+     s->config.bypass = s->boot_bypass;
+-    s->config.page_size_mask = TARGET_PAGE_MASK;
++    s->config.page_size_mask = qemu_target_page_mask();
+     s->config.input_range.end = UINT64_MAX;
+     s->config.domain_range.end = UINT32_MAX;
+     s->config.probe_size = VIOMMU_PROBE_SIZE;
 -- 
 MST
 
