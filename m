@@ -2,85 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 711E673DBCC
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 11:53:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3D3873DBDB
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 11:54:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDitZ-0003fC-UW; Mon, 26 Jun 2023 05:52:29 -0400
+	id 1qDiuj-0004Hq-Jw; Mon, 26 Jun 2023 05:53:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qDitX-0003eZ-SZ
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 05:52:27 -0400
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qDitS-0006Dv-FA
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 05:52:24 -0400
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-313e1c27476so1437625f8f.1
- for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 02:52:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687773140; x=1690365140;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=NC8I14ZtPyuKbAdwhwO3FPUAUk89s1EhA4fooV2IDwM=;
- b=WgCDFgvloSQ0hGN6lpY9Oy2yxxvUIehGNQhalXv5IjpGmbRO4JxaYEhVFiqMDX+teX
- N10TP0xmeQjSEunZQsQn6PNa23mzLCHJzOUwAoIQQAsFNRCWcRmV/3wWKvv2gDby7z7m
- LVKwnbuBURbZXqE7BKzvrM8MJgQQLxE0uQi7BFJtlM4PWqKE94ZAh4xcvCbnHldpISur
- LeJ1LvZj459TggunNeFB1VTyxWr87WyL2UPJLZ/QCw940vSgifOsgnerFANy0YmAQ8Yy
- Oqa+8U9cjcjThcAaqjuAD7hvV1/lto+eJwUf8WmiadFPX1YV0dd3GCwgWR+KiIUBPfYu
- bsbg==
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qDiuI-0004Bf-HV
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 05:53:19 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([216.145.221.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qDiuG-0006Ka-5x
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 05:53:14 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1687773187;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=ddK+EGqs6WzSRwm43kvZj85i0FN9T2ufit4/DylrUik=;
+ b=ZDFm1kZJoTLYkuoZFzQtixchXNzmfhyOW40028NM8LlLM6PdFZkuQR8yBGVCxN64pCLbJ1
+ oIgTZmICux0OvOtvFUmWPCtlbM94Y7vub5kQTQBr3JuUkunX2F6ZTWgiZ49wxo/pypumWI
+ WTzYJk/w+cfbsf9xE9YmBXtgya6IOOA=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-2-ihXXDGGLN8CISf2sDA-x6w-1; Mon, 26 Jun 2023 05:53:02 -0400
+X-MC-Unique: ihXXDGGLN8CISf2sDA-x6w-1
+Received: by mail-qk1-f200.google.com with SMTP id
+ af79cd13be357-7659d103147so127554985a.3
+ for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 02:53:02 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687773140; x=1690365140;
+ d=1e100.net; s=20221208; t=1687773182; x=1690365182;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=NC8I14ZtPyuKbAdwhwO3FPUAUk89s1EhA4fooV2IDwM=;
- b=XyQo95bI52sJ54YE99kc2VMT/B/b67TzmuSBmWv2nkvNyLMjVD6oplD8mXaSSjfUdp
- KHf2FAc2hah1UvDSmF3AmTQ9Xtg8vIAhmKKYG2KAjj4hvup5f0a6qDxBEUgsRUdG50/p
- rVhT9h7wUSK69VSKM44/UJ4azwZmN1u823T+mREAvYmTjsHiGoNu8qY8VidFtKEsYcNT
- cVzpGdi03aWH5JqemU4RaFrDQFITb/IfF1Yhf1mOmxVaHZcVUhb6gDL39Od1mGh082ly
- NenvhOQDkj0gojsmRGmaRGYFtfWbS+vvacFHEWQGg5G0Bn+66usPp+HLh6OAf3z4xqKr
- g6kg==
-X-Gm-Message-State: AC+VfDwuGkG+Gu7cL9NgaHhTbXUDGcynFSTHSJxLsVINPFl6eTAm3pa7
- Kp6JSGJrMWfJTHMsrZML6rTFLA==
-X-Google-Smtp-Source: ACHHUZ6wx3HKn7gu2sK2dkmmB9Kepcm2OzHRtd6COQ3B+190m5RNLigrcLvPAKiUfN/Vf7eLufoc6g==
-X-Received: by 2002:a5d:430d:0:b0:30f:d052:2edb with SMTP id
- h13-20020a5d430d000000b0030fd0522edbmr25311266wrq.35.1687773140382; 
- Mon, 26 Jun 2023 02:52:20 -0700 (PDT)
-Received: from [192.168.157.227] (141.pool92-176-132.dynamic.orange.es.
- [92.176.132.141]) by smtp.gmail.com with ESMTPSA id
- g17-20020a7bc4d1000000b003f9b1131a90sm7185423wmk.23.2023.06.26.02.52.19
+ bh=ddK+EGqs6WzSRwm43kvZj85i0FN9T2ufit4/DylrUik=;
+ b=Vp8ZhG+McxAhplpBtBVZvzcAZ20PQAZW1wB93NEA58I1vkQljw+mkpaq0PqgjKsIti
+ csnh0OHkZvI0fToPwfGWZEW6NvpgHJ6sfCcObFtyPycQj5RuskDGjJgb33iT1pu2zfL8
+ 3NhsFLaHn268V4okmqZMqdz8N6a4Rh3WhvCEw7v7gcGstDNbKJgPmtG9EdbRA8ICx+VY
+ tMUt7k7qZ2/tXrgOdWrr4xLectbiEIEu62vMhYKpReR7U9nMnWWeZsOrvzWav3l1RmD2
+ XsgV/Q6RN5nPly9pD6Pr/CNMvawYd6CFqSw2SWHyXdCHe4gFBrArNuS8o6uFj2YdXeyR
+ QsDw==
+X-Gm-Message-State: AC+VfDw+NHyCXXMQO5CElSmZW4tD6lPcU6+Sf6NvH292Eu+XXWKtkoyS
+ 5AtCs9y/wzhmKpTgagf/4b1DHaV95R+qgwsKiKC0QbOCuevbwBrZjHAARmd6P1Ugx6Yz260swO1
+ Pz/wmEKxsiJR+yCA=
+X-Received: by 2002:ac8:7fce:0:b0:3ec:d85d:2afe with SMTP id
+ b14-20020ac87fce000000b003ecd85d2afemr37940496qtk.2.1687773181683; 
+ Mon, 26 Jun 2023 02:53:01 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4lTpIjcOMYSF6bTqvSuxm6Wp4GoVCGL1xpvAr9RD/fjYl+ohXCNtEJX9Koub0f/uiJk4TULQ==
+X-Received: by 2002:ac8:7fce:0:b0:3ec:d85d:2afe with SMTP id
+ b14-20020ac87fce000000b003ecd85d2afemr37940485qtk.2.1687773181369; 
+ Mon, 26 Jun 2023 02:53:01 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:280:24f0:576b:abc6:6396:ed4a?
+ ([2a01:e0a:280:24f0:576b:abc6:6396:ed4a])
+ by smtp.gmail.com with ESMTPSA id
+ m25-20020aed27d9000000b003f364778b2bsm2897582qtg.4.2023.06.26.02.52.59
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 26 Jun 2023 02:52:19 -0700 (PDT)
-Message-ID: <539281fe-4a75-34aa-e9f1-e88056a6947a@linaro.org>
-Date: Mon, 26 Jun 2023 11:52:17 +0200
+ Mon, 26 Jun 2023 02:53:01 -0700 (PDT)
+Message-ID: <2d226d72-36b4-747c-3379-a253dc61cdf2@redhat.com>
+Date: Mon, 26 Jun 2023 11:52:58 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: RFC: bsd-user broken a while ago, is this the right fix?
+ Thunderbird/102.12.0
+Subject: Re: [PATCH 2/3] vfio/migration: Reset bytes_transferred properly
 Content-Language: en-US
-To: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- Warner Losh <imp@bsdimp.com>
-Cc: QEMU Developers <qemu-devel@nongnu.org>
-References: <CANCZdfrHEQ=dMfpKGvYBHbXMfbQb9fDQh+bkdZW0Z6zQWVVUCA@mail.gmail.com>
- <ZJlMQQP7Y8r6Wrd7@redhat.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <ZJlMQQP7Y8r6Wrd7@redhat.com>
+To: Avihai Horon <avihaih@nvidia.com>, qemu-devel@nongnu.org
+Cc: Alex Williamson <alex.williamson@redhat.com>,
+ Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Leonardo Bras <leobras@redhat.com>, Zhenzhong Duan
+ <zhenzhong.duan@intel.com>, Yishai Hadas <yishaih@nvidia.com>,
+ Jason Gunthorpe <jgg@nvidia.com>, Maor Gottlieb <maorg@nvidia.com>,
+ Kirti Wankhede <kwankhede@nvidia.com>, Tarun Gupta <targupta@nvidia.com>,
+ Joao Martins <joao.m.martins@oracle.com>
+References: <20230626082353.18535-1-avihaih@nvidia.com>
+ <20230626082353.18535-3-avihaih@nvidia.com>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>
+In-Reply-To: <20230626082353.18535-3-avihaih@nvidia.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x435.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: permerror client-ip=216.145.221.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.089,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.089, RCVD_IN_DNSWL_NONE=-0.0001, SPF_FAIL=0.001,
+ SPF_HELO_NONE=0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,129 +108,146 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/26/23 10:28, Daniel P. Berrangé wrote:
-> Just CC'ing Richard to make sure it catches his attention.
+Hello Avihai,
+
+On 6/26/23 10:23, Avihai Horon wrote:
+> Currently, VFIO bytes_transferred is not reset properly:
+> 1. bytes_transferred is not reset after a VM snapshot (so a migration
+>     following a snapshot will report incorrect value).
+> 2. bytes_transferred is a single counter for all VFIO devices, however
+>     upon migration failure it is reset multiple times, by each VFIO
+>     device.
 > 
-> On Sat, Jun 24, 2023 at 12:40:33AM -0600, Warner Losh wrote:
->> This change:
->>
->> commit f00506aeca2f6d92318967693f8da8c713c163f3
->> Merge: d37158bb242 87e303de70f
->> Author: Peter Maydell <peter.maydell@linaro.org>
->> Date:   Wed Mar 29 11:19:19 2023 +0100
->>
->>      Merge tag 'pull-tcg-20230328' of https://gitlab.com/rth7680/qemu into
->> staging
->>
->>      Use a local version of GTree [#285]
->>      Fix page_set_flags vs the last page of the address space [#1528]
->>      Re-enable gdbstub breakpoints under KVM
->>
->>      # -----BEGIN PGP SIGNATURE-----
->>      #
->>      # iQFRBAABCgA7FiEEekgeeIaLTbaoWgXAZN846K9+IV8FAmQjcLIdHHJpY2hhcmQu
->>      # aGVuZGVyc29uQGxpbmFyby5vcmcACgkQZN846K9+IV8rkgf/ZazodovRKxfaO622
->>      # mGW7ywIm+hIZYmKC7ObiMKFrBoCyeXH9yOLSx42T70QstWvBMukjovLMz1+Ttbo1
->>      # VOvpGH2B5W76l3i+muAlKxFRbBH2kMLTaL+BXtkmkL4FJ9bS8WiPApsL3lEX/q2E
->>      # 3kqaT3N3C09sWO5oVAPGTUHL0EutKhOar2VZL0+PVPFzL3BNPhnQH9QcbNvDBV3n
->>      # cx3GSXZyL7Plyi+qwsKf/3Jo+F2wr2NVf3Dqscu9T1N1kI5hSjRpwqUEJzJZ5rei
->>      # ly/gBXC/J7+WN+x+w2JlN0kWXWqC0QbDfZnj96Pd3owWZ7j4sT9zR5fcNenecxlR
->>      # 38Bo0w==
->>      # =ysF7
->>      # -----END PGP SIGNATURE-----
->>      # gpg: Signature made Tue 28 Mar 2023 23:56:50 BST
->>      # gpg:                using RSA key
->> 7A481E78868B4DB6A85A05C064DF38E8AF7E215F
->>      # gpg:                issuer "richard.henderson@linaro.org"
->>      # gpg: Good signature from "Richard Henderson <
->> richard.henderson@linaro.org>" [full]
->>      # Primary key fingerprint: 7A48 1E78 868B 4DB6 A85A  05C0 64DF 38E8
->> AF7E 215F
->>
->>      * tag 'pull-tcg-20230328' of https://gitlab.com/rth7680/qemu:
->>        softmmu: Restore use of CPU watchpoint for all accelerators
->>        softmmu/watchpoint: Add missing 'qemu/error-report.h' include
->>        softmmu: Restrict cpu_check_watchpoint / address_matches to TCG accel
->>        linux-user/arm: Take more care allocating commpage
->>        include/exec: Change reserved_va semantics to last byte
->>        linux-user: Pass last not end to probe_guest_base
->>        accel/tcg: Pass last not end to tb_invalidate_phys_range
->>        accel/tcg: Pass last not end to tb_invalidate_phys_page_range__locked
->>        accel/tcg: Pass last not end to page_collection_lock
->>        accel/tcg: Pass last not end to PAGE_FOR_EACH_TB
->>        accel/tcg: Pass last not end to page_reset_target_data
->>        accel/tcg: Pass last not end to page_set_flags
->>        linux-user: Diagnose misaligned -R size
->>        tcg: use QTree instead of GTree
->>        util: import GTree as QTree
->>
->>      Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
->>
->> breaks bsd-user. when I merge it to the bsd-user upstream blitz branch I
->> get memory allocation errors on startup. At least for armv7.
->>
->> specifically, if I back out the bsd-user part of both
->> commit 95059f9c313a7fbd7f22e4cdc1977c0393addc7b
->> Author: Richard Henderson <richard.henderson@linaro.org>
->> Date:   Mon Mar 6 01:26:29 2023 +0300
->>
->>      include/exec: Change reserved_va semantics to last byte
->>
->>      Change the semantics to be the last byte of the guest va, rather
->>      than the following byte.  This avoids some overflow conditions.
->>
->>      Reviewed-by: Philippe Mathieu-Daud<C3><A9> <philmd@linaro.org>
->>      Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
->>
->> and
->>
->> commit 49840a4a098149067789255bca6894645f411036
->> Author: Richard Henderson <richard.henderson@linaro.org>
->> Date:   Mon Mar 6 01:51:09 2023 +0300
->>
->>      accel/tcg: Pass last not end to page_set_flags
->>
->>      Pass the address of the last byte to be changed, rather than
->>      the first address past the last byte.  This avoids overflow
->>      when the last page of the address space is involved.
->>
->>      Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1528
->>      Reviewed-by: Philippe Mathieu-Daud<C3><A9> <philmd@linaro.org>
->>      Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
->>
->> things work again. If I backout parts, it fails still. If I back out only
->> one of
->> the two, but not both, then it fails.
->>
->> What's happening is that we're picking a reserved_va that's overflowing when
->> we add 1 to it. this overflow goes away if I make the overflows not
->> possible:
->> diff --git a/bsd-user/mmap.c b/bsd-user/mmap.c
->> index a88251f8705..bd86c0a8689 100644
->> --- a/bsd-user/mmap.c
->> +++ b/bsd-user/mmap.c
->> @@ -237,8 +237,8 @@ unsigned long last_brk;
->>   static abi_ulong mmap_find_vma_reserved(abi_ulong start, abi_ulong size,
->>                                           abi_ulong alignment)
->>   {
->> -    abi_ulong addr;
->> -    abi_ulong end_addr;
->> +    uint64_t addr;
->> +    uint64_t end_addr;
->>       int prot;
->>       int looped = 0;
->>
->> My question is, is this the right fix? The old code avoided the overflow in
->> two ways. 1 it set reserve_va to a page short (which if I fix that, it
->> works better, but not quite right). and it never computes an address that
->> may overflow (which the new code does without the above patch).
+> Fix it by introducing a new function vfio_reset_bytes_transferred() and
+> calling it during migration and snapshot start.
+> 
+> Remove existing bytes_transferred reset in VFIO migration state
+> notifier, which is not needed anymore.
 
-Not really correct, though it will work for the 32-bit guests.
+a Fixes: tag would be useful.
 
-You want to change end_addr to last_addr, which would be end_addr - 1, and do that 
-basically everywhere. That's the only way to avoid overflow properly, and is what I'm 
-settling on with page_set_flags et al.
+> Signed-off-by: Avihai Horon <avihaih@nvidia.com>
+> ---
+>   include/hw/vfio/vfio-common.h |  1 +
+>   migration/migration.h         |  1 +
+>   hw/vfio/migration.c           |  6 +++++-
+>   migration/migration.c         |  1 +
+>   migration/savevm.c            |  1 +
+>   migration/target.c            | 17 +++++++++++++++--
+>   6 files changed, 24 insertions(+), 3 deletions(-)
+> 
+> diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
+> index 3dc5f2104c..b4c28f318f 100644
+> --- a/include/hw/vfio/vfio-common.h
+> +++ b/include/hw/vfio/vfio-common.h
+> @@ -228,6 +228,7 @@ int vfio_block_multiple_devices_migration(Error **errp);
+>   void vfio_unblock_multiple_devices_migration(void);
+>   int vfio_block_giommu_migration(Error **errp);
+>   int64_t vfio_mig_bytes_transferred(void);
+> +void vfio_reset_bytes_transferred(void);
+>   
+>   #ifdef CONFIG_LINUX
+>   int vfio_get_region_info(VFIODevice *vbasedev, int index,
+> diff --git a/migration/migration.h b/migration/migration.h
+> index c859a0d35e..a80b22b703 100644
+> --- a/migration/migration.h
+> +++ b/migration/migration.h
+> @@ -514,6 +514,7 @@ bool migration_rate_limit(void);
+>   void migration_cancel(const Error *error);
+>   
+>   void populate_vfio_info(MigrationInfo *info);
+> +void reset_vfio_bytes_transferred(void);
+>   void postcopy_temp_page_reset(PostcopyTmpPage *tmp_page);
+>   
+>   #endif
+> diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
+> index a8bfbe4b89..79eb81dfd7 100644
+> --- a/hw/vfio/migration.c
+> +++ b/hw/vfio/migration.c
+> @@ -704,7 +704,6 @@ static void vfio_migration_state_notifier(Notifier *notifier, void *data)
+>       case MIGRATION_STATUS_CANCELLING:
+>       case MIGRATION_STATUS_CANCELLED:
+>       case MIGRATION_STATUS_FAILED:
+> -        bytes_transferred = 0;
+>           /*
+>            * If setting the device in RUNNING state fails, the device should
+>            * be reset. To do so, use ERROR state as a recover state.
+> @@ -825,6 +824,11 @@ int64_t vfio_mig_bytes_transferred(void)
+>       return bytes_transferred;
+>   }
+>   
+> +void vfio_reset_bytes_transferred(void)
+> +{
+> +    bytes_transferred = 0;
+> +}
+> +
+>   int vfio_migration_realize(VFIODevice *vbasedev, Error **errp)
+>   {
+>       int ret = -ENOTSUP;
+> diff --git a/migration/migration.c b/migration/migration.c
+> index 7653787f74..096e8191d1 100644
+> --- a/migration/migration.c
+> +++ b/migration/migration.c
+> @@ -1628,6 +1628,7 @@ static bool migrate_prepare(MigrationState *s, bool blk, bool blk_inc,
+>        */
+>       memset(&mig_stats, 0, sizeof(mig_stats));
+>       memset(&compression_counters, 0, sizeof(compression_counters));
+> +    reset_vfio_bytes_transferred();
+>   
+>       return true;
+>   }
+> diff --git a/migration/savevm.c b/migration/savevm.c
+> index cdf4793924..95c2abf47c 100644
+> --- a/migration/savevm.c
+> +++ b/migration/savevm.c
+> @@ -1622,6 +1622,7 @@ static int qemu_savevm_state(QEMUFile *f, Error **errp)
+>       migrate_init(ms);
+>       memset(&mig_stats, 0, sizeof(mig_stats));
+>       memset(&compression_counters, 0, sizeof(compression_counters));
+> +    reset_vfio_bytes_transferred();
+>       ms->to_dst_file = f;
+>   
+>       qemu_mutex_unlock_iothread();
+> diff --git a/migration/target.c b/migration/target.c
+> index 00ca007f97..f39c9a8d88 100644
+> --- a/migration/target.c
+> +++ b/migration/target.c
+> @@ -14,12 +14,25 @@
+>   #include "hw/vfio/vfio-common.h"
+>   #endif
+>   
+> +#ifdef CONFIG_VFIO
+>   void populate_vfio_info(MigrationInfo *info)
+>   {
+> -#ifdef CONFIG_VFIO
+>       if (vfio_mig_active()) {
+>           info->vfio = g_malloc0(sizeof(*info->vfio));
+>           info->vfio->transferred = vfio_mig_bytes_transferred();
+>       }
+> -#endif
+>   }
+> +
+> +void reset_vfio_bytes_transferred(void)
+> +{
+> +    vfio_reset_bytes_transferred();
+> +}
+> +#else
+> +void populate_vfio_info(MigrationInfo *info)
+> +{
+> +}
+> +
+> +void reset_vfio_bytes_transferred(void)
+> +{
+> +}
+> +#endif
+
+I would simply use static inline in migration.h if !CONFIG_VFIO.
+
+Thanks,
+
+C.
 
 
-r~
+  
+
 
