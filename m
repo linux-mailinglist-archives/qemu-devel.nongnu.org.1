@@ -2,92 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA64A73E0A4
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 15:29:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 350F273E0A6
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 15:30:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDmHc-0008Gw-E9; Mon, 26 Jun 2023 09:29:32 -0400
+	id 1qDmIQ-0000is-FZ; Mon, 26 Jun 2023 09:30:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qDmHW-0008FN-ID
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 09:29:26 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qDmHS-0000BJ-B5
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 09:29:24 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-3fa23c3e618so47419915e9.0
- for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 06:29:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687786157; x=1690378157;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=fRrPm3TKAWCdJ/yxz1AcqpmxavE4TEeChV6mFdde5r4=;
- b=Tyr4kn7iLnpQmo0TDQrGVxgP8kmSHSZ1LCf9/Rxze/aLFK+vObX93yvxFma6ipfN5e
- f+0dCs2btLYfADzQArW0JxCmvrE+bc1V3CSGmOh+zm/A+idzwRl13vZ6nN3mbSkT8RBF
- o7StiMyGNiqX2zRYKa6/qmWGYlqZ0WsyrFY2ZqvN9XP5GkcWGhK61/kc4Mq7x60EHBpC
- 7Cx7vHqGL6rBG/PyJIKOffflCOLGn2fTeZLoh+wr8G+F8FdHUofSRRNb8cOIlJUzSghV
- aBQ67Tn8vccssajyVFm56VEpjvi9WIoo2JAZRAJJncRD0PIsN/rw1sna5nfhczk3yJMl
- UaJw==
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1qDmIO-0000ii-St
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 09:30:20 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1qDmIN-0000a5-CB
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 09:30:20 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1687786218;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=pNobnUdGVAQxct8S45RqeMG4xUON4/9FHvYLt/v2Q+k=;
+ b=S0SjHPHmODOPMDIsDD33/WLS6Qn19BGHvV6llA76YWIk6K+ui7vw0liK+DszAnPqlRx48L
+ A50EqtrokGBmjBhXJVPQyrF9I6gp5dHGnN+ID2FL8pJ2YyZiVOav691kZcGrvE7OGohJNP
+ GuhLiTTe2H/A7l0hlVjxjHPl3A7Mbs4=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-617-dNT3b9aDMgCp5L4j9i7gvg-1; Mon, 26 Jun 2023 09:30:17 -0400
+X-MC-Unique: dNT3b9aDMgCp5L4j9i7gvg-1
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-987accb96dbso220132166b.2
+ for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 06:30:17 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687786157; x=1690378157;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=fRrPm3TKAWCdJ/yxz1AcqpmxavE4TEeChV6mFdde5r4=;
- b=RKvz2RYgQUD9zJXyUzFZ7MVTuZ7ISXlbf6ylHcl9WLwAA+y8B7EoCfigDzoLSZTsI2
- jj6SKxrfGfhhuvOiEK2vbZx57VFCaSqhHn+GTIygoTuensyJDy3+w8Lt1YtT9PZIMg8j
- 999M7WbSneuwxKE/KZ2CM9NvZ1pvF8nvAP6uhlRjcHK2BBASWhBGjivDKe8ojhuWOnML
- T9iwoW+eWl+Gm81g2KaAima3poFi1Pa034/iBg4x8BYrypKcYiA45J0/+XpO/A2VU92D
- msCbqOeAknamG7cWEw0DdXVvhfhXtMYDnUJbMU40Xn8VKzGR0LXK51hKWm9w9QtL90g3
- OE8Q==
-X-Gm-Message-State: AC+VfDzTUsc2WNZlLTnMBqoIVhCbgvYLGtkr1XHmGhFCLS87M4gbuyiF
- 5Q+otbiax8gsQDs0YzWhr4Y70A==
-X-Google-Smtp-Source: ACHHUZ5w3qbaGUs3bQbclvmyWMflxb7NSVkK6by6zE5YJftdHdGF60InubXcZ58ewhrf0eRFr0thiw==
-X-Received: by 2002:a1c:7906:0:b0:3f9:3853:9d6a with SMTP id
- l6-20020a1c7906000000b003f938539d6amr20769888wme.12.1687786157303; 
- Mon, 26 Jun 2023 06:29:17 -0700 (PDT)
-Received: from [192.168.1.208] ([139.47.42.170])
- by smtp.gmail.com with ESMTPSA id
- c25-20020a7bc019000000b003f819faff24sm10668454wmb.40.2023.06.26.06.29.16
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 26 Jun 2023 06:29:17 -0700 (PDT)
-Message-ID: <6828f8b7-b923-af04-2eb8-a8222f36baa4@linaro.org>
-Date: Mon, 26 Jun 2023 15:29:14 +0200
+ d=1e100.net; s=20221208; t=1687786216; x=1690378216;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=pNobnUdGVAQxct8S45RqeMG4xUON4/9FHvYLt/v2Q+k=;
+ b=DuGgQ5ruruGOEces2/kg9wig3OdGvFrGXS9gheGnDSpEiaQW21z4PWMwTRYUiF59d+
+ UAvYUO7iaGD2M7sO40m7dT0AkrV2eNidjRM1ET+yNxNyF5/2AwVcy3wKG3lhDSzHSV63
+ KSrcCikEPwvbMj7Kt0toCcd7auA8+F1Qmb7EZ3+uv9WJIB7q7gQwqYczORP14dwGFqlo
+ FZNJrfCb6KgLS7YoidRu1gxJM2EzrL93pDGhsI2Acbe8fhN9O15pMGk/qqpj1qNMj4Dj
+ sv+rv3DCSpM38qOmx2ft3vjCmDurHnQtLSYk5G221+U+24V6vSGfU2F74RHh0OZ2LsPr
+ sMVg==
+X-Gm-Message-State: AC+VfDzdupFRO9cqBHQ+UwrcCHlj9seBvOF4HvPMBKi0xbTIDBwR+vQ+
+ 0bZZIbwXbZNemUOSJN2NdrMw8LxUg0DMuSGMBC6aQ0DclRhcB0rOj3nKhuLOabMy5m38TBnM7vc
+ QhJgdVfvCuDazIQ0=
+X-Received: by 2002:a17:907:5cb:b0:988:7d68:9fee with SMTP id
+ wg11-20020a17090705cb00b009887d689feemr19548458ejb.34.1687786216176; 
+ Mon, 26 Jun 2023 06:30:16 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4mxXSlr7dbPvv2FFfboGkhntme3ef3Fd34eSg5S8HROT3Rcutoiky/kkAh25rhhT1xOCbsfA==
+X-Received: by 2002:a17:907:5cb:b0:988:7d68:9fee with SMTP id
+ wg11-20020a17090705cb00b009887d689feemr19548439ejb.34.1687786215918; 
+ Mon, 26 Jun 2023 06:30:15 -0700 (PDT)
+Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
+ [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
+ q22-20020a17090622d600b009895af2580asm3236422eja.36.2023.06.26.06.30.15
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 26 Jun 2023 06:30:15 -0700 (PDT)
+Date: Mon, 26 Jun 2023 15:30:14 +0200
+From: Igor Mammedov <imammedo@redhat.com>
+To: Ani Sinha <anisinha@redhat.com>
+Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>, Laurent Vivier
+ <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, mst@redhat.com,
+ Michael Labiuk <michael.labiuk@virtuozzo.com>
+Subject: Re: [PATCH v3 4/5] tests/qtest/hd-geo-test: fix test by removing
+ unnecessary pcie-root-port
+Message-ID: <20230626153014.15a8ec6a@imammedo.users.ipa.redhat.com>
+In-Reply-To: <20230626124306.4572-5-anisinha@redhat.com>
+References: <20230626124306.4572-1-anisinha@redhat.com>
+ <20230626124306.4572-5-anisinha@redhat.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PULL 00/30] Next patches
-To: quintela@redhat.com
-Cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
- Eric Blake <eblake@redhat.com>, Fam Zheng <fam@euphon.net>,
- Leonardo Bras <leobras@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- qemu-block@nongnu.org
-References: <20230622165527.2417-1-quintela@redhat.com>
- <1f5c4a38-6ae2-53dd-d739-65accb1d86a8@linaro.org>
- <87leg719rs.fsf@secure.mitica>
- <a614493f-1e3e-1d6b-13df-702be2b1bd8e@linaro.org>
- <874jmue5mi.fsf@secure.mitica>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <874jmue5mi.fsf@secure.mitica>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x333.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,38 +104,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/26/23 15:05, Juan Quintela wrote:
->> The "full logs" are
->>
->> https://gitlab.com/qemu-project/qemu/-/jobs/4527202764/artifacts/download?file_type=trace
+On Mon, 26 Jun 2023 18:13:05 +0530
+Ani Sinha <anisinha@redhat.com> wrote:
+
+> The test attaches both a SCSI controller and a pcie-to-pci bridge on the same
+> pcie-root-port.
+
+at slot addresses ...
+> This is incorrect since only one downstream device can be
+> attached to a pcie-root-port.
+not true in case of multifunction 
+perhaps
+  s/only one downstream device/a downstream device/
+  s/can be attached to/can be attached to slot 0/
+
+also point out mess with pcie.0 bus name used for as id for bridge.
+
+> Further, in the test scenario, there is no need
+> to attach a pcie-root-port to the root complex. A SCSI controller can be
+> attached to a pcie-to-pci bridge which in turn can be directly attached to the
+> root bus (peie.0). Fix the test and simplify it.
 > 
-> Not useful.  I was hoping that there is something like when one runs
-> ./tests/qtest/migration-test
-
-I thought I saw some patch today that to save more artifacts.
-
-But the bottom line is that we don't emit enough stuff from any of our tests to debug them 
-from logs -- we're too used to using other methods.
-
->    And I don't understand what CFI is (and I don't rule out that
->    posibility) or I can't understand how checking indirect functions call
->    can make migration-test die without a single CFI error message?
-
-CFI (control flow inspection/validation/somesuch) adds checking along call paths, which 
-may affect timing.
-
-This is almost certainly some sort of race condition.
-
-> Do we have a way to run on that image:
+> CC: mst@redhat.com
+> CC: imammedo@redhat.com
+> CC: Michael Labiuk <michael.labiuk@virtuozzo.com>
 > 
-> ./tests/qtest/migration-test
+> Signed-off-by: Ani Sinha <anisinha@redhat.com>
+> ---
+>  tests/qtest/hd-geo-test.c | 18 ++++++++----------
+>  1 file changed, 8 insertions(+), 10 deletions(-)
 > 
-> in a loop until it fails, and at least see what test is failing?
-
-Not as is, no.  You'd have to create a new CI job, and for that you'll need advice beyond 
-myself.
-
-
-r~
+> diff --git a/tests/qtest/hd-geo-test.c b/tests/qtest/hd-geo-test.c
+> index 5aa258a2b3..d08bffad91 100644
+> --- a/tests/qtest/hd-geo-test.c
+> +++ b/tests/qtest/hd-geo-test.c
+> @@ -784,14 +784,12 @@ static void test_override_scsi(void)
+>      test_override(args, "pc", expected);
+>  }
+>  
+> -static void setup_pci_bridge(TestArgs *args, const char *id, const char *rootid)
+> +static void setup_pci_bridge(TestArgs *args, const char *id)
+>  {
+>  
+> -    char *root, *br;
+> -    root = g_strdup_printf("-device pcie-root-port,id=%s", rootid);
+> -    br = g_strdup_printf("-device pcie-pci-bridge,bus=%s,id=%s", rootid, id);
+> +    char *br;
+> +    br = g_strdup_printf("-device pcie-pci-bridge,bus=pcie.0,id=%s", id);
+>  
+> -    args->argc = append_arg(args->argc, args->argv, ARGV_SIZE, root);
+>      args->argc = append_arg(args->argc, args->argv, ARGV_SIZE, br);
+>  }
+>  
+> @@ -811,8 +809,8 @@ static void test_override_scsi_q35(void)
+>      add_drive_with_mbr(args, empty_mbr, 1);
+>      add_drive_with_mbr(args, empty_mbr, 1);
+>      add_drive_with_mbr(args, empty_mbr, 1);
+> -    setup_pci_bridge(args, "pcie.0", "br");
+> -    add_scsi_controller(args, "lsi53c895a", "br", 3);
+> +    setup_pci_bridge(args, "pcie-pci-br");
+> +    add_scsi_controller(args, "lsi53c895a", "pcie-pci-br", 3);
+>      add_scsi_disk(args, 0, 0, 0, 0, 0, 10000, 120, 30);
+>      add_scsi_disk(args, 1, 0, 0, 1, 0, 9000, 120, 30);
+>      add_scsi_disk(args, 2, 0, 0, 2, 0, 1, 0, 0);
+> @@ -868,9 +866,9 @@ static void test_override_virtio_blk_q35(void)
+>      };
+>      add_drive_with_mbr(args, empty_mbr, 1);
+>      add_drive_with_mbr(args, empty_mbr, 1);
+> -    setup_pci_bridge(args, "pcie.0", "br");
+> -    add_virtio_disk(args, 0, "br", 3, 10000, 120, 30);
+> -    add_virtio_disk(args, 1, "br", 4, 9000, 120, 30);
+> +    setup_pci_bridge(args, "pcie-pci-br");
+> +    add_virtio_disk(args, 0, "pcie-pci-br", 3, 10000, 120, 30);
+> +    add_virtio_disk(args, 1, "pcie-pci-br", 4, 9000, 120, 30);
+>      test_override(args, "q35", expected);
+>  }
+>  
 
 
