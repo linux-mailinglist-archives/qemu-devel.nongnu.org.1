@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE33A73DC6A
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 12:45:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D176873DC8A
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 12:53:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDjii-0007Nx-WD; Mon, 26 Jun 2023 06:45:21 -0400
+	id 1qDjpW-0001Qh-Rn; Mon, 26 Jun 2023 06:52:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qDjic-0007Kp-K1
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 06:45:16 -0400
-Received: from mail-lj1-x234.google.com ([2a00:1450:4864:20::234])
+ id 1qDjpV-0001Q9-Ea
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 06:52:21 -0400
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qDjia-0001s5-Ev
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 06:45:14 -0400
-Received: by mail-lj1-x234.google.com with SMTP id
- 38308e7fff4ca-2b44eddb52dso45748921fa.3
- for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 03:45:11 -0700 (PDT)
+ id 1qDjpT-00037a-91
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 06:52:20 -0400
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-312824aa384so2593222f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 03:52:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687776310; x=1690368310;
- h=content-transfer-encoding:in-reply-to:from:references:to
+ d=linaro.org; s=google; t=1687776737; x=1690368737;
+ h=content-transfer-encoding:in-reply-to:references:to:from
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=72dCw6/OQqs7JI0840J/5S+u9WEFf56hu8wK7UopnZI=;
- b=hRQf2i6xHu1PWP9OemKtuTq35uoTBVXMmCTKAUm0xrexjc+C+0xHALd3i4960/ykrk
- SVxZqOlf5HGjNg1CtUSkS5bRMhv9q/5ESqorVVbXFZRC/lFwcx1YAe4a+fOn8qCE1ENz
- M5XX7+w7/LpHr85/C4q8iy7HLkdH8JvYRL5k6uccOTi69UZZTdlgRyp4M/WREfw0mKYF
- JM78d9eF76jNSFCwx1QzRHbUf1stziOCdXvt7sIXEVnmpdhEa9xMJbWj0GTcXmvjGmDx
- V71q10AKP4Krc9biERW1/wcxmEA3tgkjPRsLnTm8o/Iu3p0RH8vZ8HpG7mlydIq0UROn
- zeIg==
+ bh=BGpHfYyI0rfAiIXWy8iGVZ1aOyx0A38cePkr/L3YmZg=;
+ b=lK8U7u6nmId9hlzZ0H/jTbJHjjEH5J2i08UcQC9IFNB0CDlAgbW0h/K+9djEHqvG+v
+ lrR5UZWmGZIZRLQ6GUX3Ufi6t3pC+YjyzJIfHoUg0eagBk8aVW1t2nhyjRBrBQ+B82At
+ OuKrBvDO4gYNdoCZjzZ+GI7Qoau+zibdKovPE8/s1IVEHyy9Mwt/0s7SEoDFbZuOvCBt
+ Zbjnw9b07+REP9Nxw6WIaAeAbysVkR005r7qtDuoITkgKVZhufgbtH8BRP4w4gWEb2tc
+ DuoFG87ljlRjSNKZBSgpDSN+A5qF4aNxW934dtQ1k6BtomYA2mRKjtl+7g+6/OBeL5+1
+ 8OWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687776310; x=1690368310;
- h=content-transfer-encoding:in-reply-to:from:references:to
+ d=1e100.net; s=20221208; t=1687776737; x=1690368737;
+ h=content-transfer-encoding:in-reply-to:references:to:from
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=72dCw6/OQqs7JI0840J/5S+u9WEFf56hu8wK7UopnZI=;
- b=TEeCHK/F25z2pF5gz7YWcjUkbNzfKQSJpQhYZ+KeMeb6OmT7IOsb7/y9FKB3YufK6O
- avCX47i6FOxandl4OrjIXgACdDHlhtEfumbE0cSD32LCX4ZlK9xxOxyCGeLMVHMqHoI2
- +ZX/qtTOGufTKZa2c6ZDdlI2lHJvXwZmcgVMwn3SSzBPsbvTHgsHEq277//lCEV43bke
- NKE+6gJO1Wro0/XgsHBHYBL26E+beeqiXJnAVr2QobO8FyC0ISTNVyq8tdidI1VXxBga
- pX//5WR1HBZcSuIcgbi8Un0zqgvcEUxXsRncxB3ggWuhintJc6Z39eNkKh/p4hnF3cHK
- dwAQ==
-X-Gm-Message-State: AC+VfDwS4bN3fTsuBKu9uULhH1nrX6S3DikBBbPlYsCNJC9mApq6fHhn
- GboS8AuHRjTlfqOwczjEw1HkGw==
-X-Google-Smtp-Source: ACHHUZ7+EP8HXL4iOR4kYT1/msU2dGUgKB+4FrHmYnwOusmfQFuiR1u75maHfKs0G5Klh72gp4CngQ==
-X-Received: by 2002:a2e:9c98:0:b0:2b5:82c9:d85f with SMTP id
- x24-20020a2e9c98000000b002b582c9d85fmr9324617lji.11.1687776309889; 
- Mon, 26 Jun 2023 03:45:09 -0700 (PDT)
+ bh=BGpHfYyI0rfAiIXWy8iGVZ1aOyx0A38cePkr/L3YmZg=;
+ b=fd2+H2nmnE+rjPtneDhx5WRHXcIXY/W1ttF+HkOFLukA3p3WRnajKF9lQnJ6Fed5aC
+ THwIg5XTeblLQo3y0GZM8otpXXAq5m6A/ldNMCfDbHKJ3fZmw4oO9JmsjgzVIkf/yaVb
+ mTTrYfmah6pwPEs2l8v/laHGUa4B7przSC/jVN1y1WwfhSmXHXvdNu5WKgT40stZX5Qg
+ WTp/tR5O75a8a/ORN44ThmpcRQ/Fzjz53grgKMzf2odLueSoNE/ZBgEPpIj6eTeu39OK
+ t/KQkH9dfIViyLMEBpmja40aDN23fPt5Pw4G17gFVX618gceNtaRYaAhZtKK4H4zcZQB
+ pM4A==
+X-Gm-Message-State: AC+VfDylyczRgbrJBp0ruhG4xK6pvShULbHCmRZsWJF5I4S4PS/5kVQ4
+ R1Ae/TBBsuA+dyE7nnsvV/y0Ccmo8i6AEDuqP1v0qfUE
+X-Google-Smtp-Source: ACHHUZ6SoZk8DWeDgIIbUUiJ1QVPhO1kZgLUPUrLsLAV0mAlm/RT+IuLU+nkpWynZSvRk5/xKnzaog==
+X-Received: by 2002:adf:e7c2:0:b0:313:f347:eea0 with SMTP id
+ e2-20020adfe7c2000000b00313f347eea0mr1194849wrn.60.1687776737423; 
+ Mon, 26 Jun 2023 03:52:17 -0700 (PDT)
 Received: from [192.168.44.231] (141.pool92-176-132.dynamic.orange.es.
  [92.176.132.141]) by smtp.gmail.com with ESMTPSA id
- u8-20020a05600c00c800b003f70a7b4537sm10204408wmm.36.2023.06.26.03.45.08
+ d10-20020adfe2ca000000b0031272fced4dsm7026169wrj.52.2023.06.26.03.52.16
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 26 Jun 2023 03:45:09 -0700 (PDT)
-Message-ID: <89fa0689-f5ba-f5b3-16f2-7aa1a50077c0@linaro.org>
-Date: Mon, 26 Jun 2023 12:45:06 +0200
+ Mon, 26 Jun 2023 03:52:17 -0700 (PDT)
+Message-ID: <2d67c3a1-196e-f8b9-e172-dbcef7d01e7e@linaro.org>
+Date: Mon, 26 Jun 2023 12:52:14 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PULL 0/9] Testing / CI patches
+Subject: Re: [PATCH v3 0/5] tcg: Issue memory barriers for guest memory model
 Content-Language: en-US
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
-References: <20230626081415.64615-1-thuth@redhat.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230626081415.64615-1-thuth@redhat.com>
+To: qemu-devel@nongnu.org
+References: <20230619142333.429028-1-richard.henderson@linaro.org>
+In-Reply-To: <20230619142333.429028-1-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::234;
- envelope-from=richard.henderson@linaro.org; helo=mail-lj1-x234.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x42b.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.089,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -93,27 +94,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/26/23 10:14, Thomas Huth wrote:
-> The following changes since commit 79dbd910c9ea6ca38f8e1b2616b1e5e885b85bd3:
+On 6/19/23 16:23, Richard Henderson wrote:
+> v1: https://lore.kernel.org/qemu-devel/20210316220735.2048137-1-richard.henderson@linaro.org/
+> v2: https://lore.kernel.org/qemu-devel/20230306015710.1868853-1-richard.henderson@linaro.org/
 > 
->    Merge tag 'hppa-boot-reboot-fixes-pull-request' ofhttps://github.com/hdeller/qemu-hppa  into staging (2023-06-25 08:58:49 +0200)
+> Changes for v3:
+>    * Update for tcg-built-once.
+>    * Require TCG_GUEST_DEFAULT_MO if TARGET_SUPPORTS_MTTCG.
 > 
-> are available in the Git repository at:
 > 
->    https://gitlab.com/thuth/qemu.git  tags/pull-request-2023-06-26
+> r~
 > 
-> for you to fetch changes up to b197ea8636a18b0e2968b00c3a392bfc641b51a0:
 > 
->    tests/qtest/cxl-test: Clean up temporary directories after testing (2023-06-26 09:01:33 +0200)
+> Richard Henderson (5):
+>    target/microblaze: Define TCG_GUEST_DEFAULT_MO
+>    tcg: Do not elide memory barriers for !CF_PARALLEL in system mode
+>    tcg: Elide memory barriers implied by the host memory model
+>    tcg: Add host memory barriers to cpu_ldst.h interfaces
+>    accel/tcg: Remove check_tcg_memory_orders_compatible
 > 
-> ----------------------------------------------------------------
-> * Improve gitlab-CI with regards to handling of stable staging branches
-> * Add msys2 gitlab-CI artifacts
-> * Minor qtest fixes
+>   accel/tcg/internal.h    | 34 ++++++++++++++++++++++++++++++++++
+>   target/microblaze/cpu.h |  3 +++
+>   accel/tcg/cputlb.c      | 10 ++++++++++
+>   accel/tcg/tcg-all.c     | 39 ++++++++++-----------------------------
+>   accel/tcg/user-exec.c   | 10 ++++++++++
+>   tcg/tcg-op.c            | 20 ++++++++++++++++++--
+>   6 files changed, 85 insertions(+), 31 deletions(-)
+> 
 
-Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/8.1 as appropriate.
+Applied to tcg-next.
 
 
 r~
-
 
