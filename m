@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CC7773EB15
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 21:16:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B70B073EAE1
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 21:07:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDrTO-00018r-Ef; Mon, 26 Jun 2023 15:02:02 -0400
+	id 1qDrTJ-0000WC-LQ; Mon, 26 Jun 2023 15:01:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qDrTA-0000CW-Np; Mon, 26 Jun 2023 15:01:49 -0400
+ id 1qDrTD-0000NU-A2; Mon, 26 Jun 2023 15:01:51 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qDrT9-0007nd-5k; Mon, 26 Jun 2023 15:01:48 -0400
+ id 1qDrTB-0007oS-JZ; Mon, 26 Jun 2023 15:01:51 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 9B9C7EFC0;
+ by isrv.corpit.ru (Postfix) with ESMTP id C9E84EFC1;
  Mon, 26 Jun 2023 21:59:13 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 2DFA9F7FC;
+ by tsrv.corpit.ru (Postfix) with SMTP id 5C1C9F7FD;
  Mon, 26 Jun 2023 21:59:12 +0300 (MSK)
-Received: (nullmailer pid 1575370 invoked by uid 1000);
+Received: (nullmailer pid 1575373 invoked by uid 1000);
  Mon, 26 Jun 2023 18:59:05 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org, qemu-stable@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.4 31/43] target/arm: Fix return value from LDSMIN/LDSMAX
- 8/16 bit atomics
-Date: Mon, 26 Jun 2023 21:58:49 +0300
-Message-Id: <20230626185902.1575177-31-mjt@tls.msk.ru>
+Subject: [Stable-7.2.4 32/43] target/arm: Return correct result for LDG when
+ ATA=0
+Date: Mon, 26 Jun 2023 21:58:50 +0300
+Message-Id: <20230626185902.1575177-32-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.4-20230626215033@cover.tls.msk.ru>
 References: <qemu-stable-7.2.4-20230626215033@cover.tls.msk.ru>
@@ -63,55 +63,41 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Peter Maydell <peter.maydell@linaro.org>
 
-The atomic memory operations are supposed to return the old memory
-data value in the destination register.  This value is not
-sign-extended, even if the operation is the signed minimum or
-maximum.  (In the pseudocode for the instructions the returned data
-value is passed to ZeroExtend() to create the value in the register.)
+The LDG instruction loads the tag from a memory address (identified
+by [Xn + offset]), and then merges that tag into the destination
+register Xt. We implemented this correctly for the case when
+allocation tags are enabled, but didn't get it right when ATA=0:
+instead of merging the tag bits into Xt, we merged them into the
+memory address [Xn + offset] and then set Xt to that.
 
-We got this wrong because we were doing a 32-to-64 zero extend on the
-result for 8 and 16 bit data values, rather than the correct amount
-of zero extension.
-
-Fix the bug by using ext8u and ext16u for the MO_8 and MO_16 data
-sizes rather than ext32u.
+Merge the tag bits into the old Xt value, as they should be.
 
 Cc: qemu-stable@nongnu.org
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Fixes: c15294c1e36a7dd9b25 ("target/arm: Implement LDG, STG, ST2G instructions")
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20230602155223.2040685-2-peter.maydell@linaro.org
-(cherry picked from commit 243705aa6ea3465b20e9f5a8bfcf36d3153f3c10)
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+(cherry picked from commit 7e2788471f9e079fff696a694721a7d41a451839)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/target/arm/translate-a64.c b/target/arm/translate-a64.c
-index 2ee171f249..3c356d238f 100644
+index 3c356d238f..f0b8db7ce5 100644
 --- a/target/arm/translate-a64.c
 +++ b/target/arm/translate-a64.c
-@@ -3536,8 +3536,22 @@ static void disas_ldst_atomic(DisasContext *s, uint32_t insn,
-      */
-     fn(tcg_rt, clean_addr, tcg_rs, get_mem_index(s), mop);
- 
--    if ((mop & MO_SIGN) && size != MO_64) {
--        tcg_gen_ext32u_i64(tcg_rt, tcg_rt);
-+    if (mop & MO_SIGN) {
-+        switch (size) {
-+        case MO_8:
-+            tcg_gen_ext8u_i64(tcg_rt, tcg_rt);
-+            break;
-+        case MO_16:
-+            tcg_gen_ext16u_i64(tcg_rt, tcg_rt);
-+            break;
-+        case MO_32:
-+            tcg_gen_ext32u_i64(tcg_rt, tcg_rt);
-+            break;
-+        case MO_64:
-+            break;
-+        default:
-+            g_assert_not_reached();
-+        }
-     }
- }
- 
+@@ -4190,9 +4190,13 @@ static void disas_ldst_tag(DisasContext *s, uint32_t insn)
+         if (s->ata) {
+             gen_helper_ldg(tcg_rt, cpu_env, addr, tcg_rt);
+         } else {
++            /*
++             * Tag access disabled: we must check for aborts on the load
++             * load from [rn+offset], and then insert a 0 tag into rt.
++             */
+             clean_addr = clean_data_tbi(s, addr);
+             gen_probe_access(s, clean_addr, MMU_DATA_LOAD, MO_8);
+-            gen_address_with_allocation_tag0(tcg_rt, addr);
++            gen_address_with_allocation_tag0(tcg_rt, tcg_rt);
+         }
+     } else {
+         tcg_rt = cpu_reg_sp(s, rt);
 -- 
 2.39.2
 
