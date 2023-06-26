@@ -2,37 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A18473EA84
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 20:52:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2F4E73EAB4
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 20:58:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDrId-00049c-3r; Mon, 26 Jun 2023 14:50:55 -0400
+	id 1qDrIM-000425-LQ; Mon, 26 Jun 2023 14:50:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qDrIa-00047O-0Q; Mon, 26 Jun 2023 14:50:52 -0400
+ id 1qDrIH-00040h-BP; Mon, 26 Jun 2023 14:50:33 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qDrIY-0004ri-Dc; Mon, 26 Jun 2023 14:50:51 -0400
+ id 1qDrIF-0004kW-FW; Mon, 26 Jun 2023 14:50:33 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id BD7A4EF1D;
- Mon, 26 Jun 2023 21:50:19 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 28188EF15;
+ Mon, 26 Jun 2023 21:50:18 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 0218BF7A7;
- Mon, 26 Jun 2023 21:50:15 +0300 (MSK)
-Received: (nullmailer pid 1573960 invoked by uid 1000);
+ by tsrv.corpit.ru (Postfix) with SMTP id 1D7A9F7A8;
+ Mon, 26 Jun 2023 21:50:16 +0300 (MSK)
+Received: (nullmailer pid 1573964 invoked by uid 1000);
  Mon, 26 Jun 2023 18:50:15 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org, qemu-stable@nongnu.org
-Cc: Thomas Huth <thuth@redhat.com>,
+Cc: Thomas Huth <thuth@redhat.com>, Eldon Stegall <eldon-qemu@eldondev.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.0.3 01/54] gitlab-ci: Avoid to re-run "configure" in the
- device-crash-test jobs
-Date: Mon, 26 Jun 2023 21:49:08 +0300
-Message-Id: <20230626185002.1573836-1-mjt@tls.msk.ru>
+Subject: [Stable-8.0.3 02/54] scripts/device-crash-test: Add a parameter to
+ run with TCG only
+Date: Mon, 26 Jun 2023 21:49:09 +0300
+Message-Id: <20230626185002.1573836-2-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.0.3-20230626214235@cover.tls.msk.ru>
 References: <qemu-stable-8.0.3-20230626214235@cover.tls.msk.ru>
@@ -64,42 +65,55 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Thomas Huth <thuth@redhat.com>
 
-After "make check-venv" had been added to these jobs, they started
-to re-run "configure" each time since our logic in the makefile
-thinks that some files are out of date here. Avoid it with the same
-trick that we are using in buildtest-template.yml already by disabling
-the up-to-date check via NINJA=":".
+We're currently facing the problem that the device-crash-test script
+runs twice as long in the CI when a runner supports KVM - which sometimes
+results in a timeout of the CI job. To get a more deterministic runtime
+here, add an option to the script that allows to run it with TCG only.
 
-Fixes: 1d8cf47e5b ("tests: run 'device-crash-test' from tests/venv")
+Reported-by: Eldon Stegall <eldon-qemu@eldondev.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
-Message-Id: <20230414145845.456145-2-thuth@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-Id: <20230414145845.456145-3-thuth@redhat.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20230424092249.58552-5-alex.bennee@linaro.org>
-(cherry picked from commit 4d3bd91b26a69b39a178744d3d6e5f23050afb23)
+Message-Id: <20230424092249.58552-6-alex.bennee@linaro.org>
+(cherry picked from commit 8b869aa59109d238fd684e1ade204b6942202120)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-index ba6f551752..333eea9dd3 100644
+index 333eea9dd3..bb3650a51c 100644
 --- a/.gitlab-ci.d/buildtest.yml
 +++ b/.gitlab-ci.d/buildtest.yml
-@@ -102,7 +102,7 @@ crash-test-debian:
-     IMAGE: debian-amd64
+@@ -103,7 +103,7 @@ crash-test-debian:
    script:
      - cd build
--    - make check-venv
-+    - make NINJA=":" check-venv
-     - tests/venv/bin/python3 scripts/device-crash-test -q ./qemu-system-i386
+     - make NINJA=":" check-venv
+-    - tests/venv/bin/python3 scripts/device-crash-test -q ./qemu-system-i386
++    - tests/venv/bin/python3 scripts/device-crash-test -q --tcg-only ./qemu-system-i386
  
  build-system-fedora:
-@@ -145,7 +145,7 @@ crash-test-fedora:
-     IMAGE: fedora
-   script:
-     - cd build
--    - make check-venv
-+    - make NINJA=":" check-venv
-     - tests/venv/bin/python3 scripts/device-crash-test -q ./qemu-system-ppc
-     - tests/venv/bin/python3 scripts/device-crash-test -q ./qemu-system-riscv32
+   extends:
+diff --git a/scripts/device-crash-test b/scripts/device-crash-test
+index 73bcb98693..b74d887331 100755
+--- a/scripts/device-crash-test
++++ b/scripts/device-crash-test
+@@ -397,7 +397,7 @@ def binariesToTest(args, testcase):
  
+ 
+ def accelsToTest(args, testcase):
+-    if getBinaryInfo(args, testcase['binary']).kvm_available:
++    if getBinaryInfo(args, testcase['binary']).kvm_available and not args.tcg_only:
+         yield 'kvm'
+     yield 'tcg'
+ 
+@@ -510,6 +510,8 @@ def main():
+                         help="Full mode: test cases that are expected to fail")
+     parser.add_argument('--strict', action='store_true', dest='strict',
+                         help="Treat all warnings as fatal")
++    parser.add_argument('--tcg-only', action='store_true', dest='tcg_only',
++                        help="Only test with TCG accelerator")
+     parser.add_argument('qemu', nargs='*', metavar='QEMU',
+                         help='QEMU binary to run')
+     args = parser.parse_args()
 -- 
 2.39.2
 
