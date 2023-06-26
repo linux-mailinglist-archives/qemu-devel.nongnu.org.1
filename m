@@ -2,73 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4846A73E11D
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 15:54:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE72A73E143
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 15:57:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDlNE-0005s9-QX; Mon, 26 Jun 2023 08:31:17 -0400
+	id 1qDlOl-0007lx-7V; Mon, 26 Jun 2023 08:33:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qDlM2-0004LR-IA
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 08:30:06 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qDlMC-0004aO-Cg
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 08:30:15 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qDlLz-0003Bb-Lb
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 08:30:01 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qDlMA-0003RF-CL
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 08:30:11 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687782598;
+ s=mimecast20190719; t=1687782609;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=0Rnc7xHoIJYK78sghEjyDjdFks1hD1FeSLcyQu3JIt4=;
- b=REqqO87xTkrp02syi2eXqxm4jjg6J0v3BoPfQAB/U9uHi/QLrM1GNdnC7V8TuSVDZvMjPC
- i3vNI/I8Qd3TB8PdmpyryX8dN160k1MKspDOk8s7fjMmuFHh25IKy02R1n3G0YcJBcR4li
- BrAMP6YG3CUYvjeFuQsD8Ica0g71Z74=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=fYcNucAmy67ddGjZ1HVGjT8M/yKQGxtNy1Ul1xPHkms=;
+ b=VdhuaCiX8Ft/xaRuOJlkM715cihiSaRdrO59rufPiuhTSSws32MhN3Xu2wdhZ0H8dHMNSK
+ QMjXMYWP2SXWCs1FZ0kOELBbsNrZ79o3xiSJzNFvYKcDxZBw+gEOffBnOnsTzZjM9Msus3
+ oYbiXH7i7W+uuWmuWG9G3HBkBKe6Ue4=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-335-J_HYQ2TPNTqVY5HnSnXlAQ-1; Mon, 26 Jun 2023 08:29:55 -0400
-X-MC-Unique: J_HYQ2TPNTqVY5HnSnXlAQ-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-3fa96b67ac1so20460775e9.0
- for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 05:29:55 -0700 (PDT)
+ us-mta-173-lMloNVK8OCWD6VYTjjN7Gg-1; Mon, 26 Jun 2023 08:30:04 -0400
+X-MC-Unique: lMloNVK8OCWD6VYTjjN7Gg-1
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-313e557a824so653867f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 05:30:03 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687782594; x=1690374594;
+ d=1e100.net; s=20221208; t=1687782602; x=1690374602;
  h=in-reply-to:content-transfer-encoding:content-disposition
  :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=0Rnc7xHoIJYK78sghEjyDjdFks1hD1FeSLcyQu3JIt4=;
- b=gxvXvsavhLfwEZydUrnS6P5+pK2PjRb+HscJeOvorXzJYhhsQ9f21HXsNj1T/Sqeny
- 2Hgo8SWBXVa/xl4xkrZE0GJufudSeVjy6s/aBfBkuymq6g3IJAV7KM6yT3JMEeA6Ax7g
- 1+LEu+HVmQ76ln3e0BCyqGRFTIAny2smo87BBji2+HuJcGnxwnx/kudJUa66cIQPWsKK
- LNWVjwr2UNKZ+3iGlBZcH8UBZy/3GfuTOhQ3guf+J6KJ/4R1qtdp8fRLyzJPrK4AkWrR
- PBnvz+2klnUFCDca2H5MMi0z1aGuF6/dZY5uSP3IN0kQiL3IZe84vFeuxG4wUTmNt4fD
- 5Uhw==
-X-Gm-Message-State: AC+VfDxV+Cj6wSvDDy+ZUaNh5cIi98KMqgmTawZYR2YzmSv5LqizJN1X
- vxyz0GjuEwlzyLxhYGmbhZW8Zaq6z5WI1P76yKazx5wjlzDjK0Riip8quFAkaFP5nrFr3TeA4Vw
- ejTjWIYxb9jdws0cK94XHJilsywF6uzADLs3ye6OxdW5oGQz6+zh44s02EG9Eh8yXxdH+
-X-Received: by 2002:a05:600c:22c6:b0:3f9:b244:c294 with SMTP id
- 6-20020a05600c22c600b003f9b244c294mr25415778wmg.35.1687782594247; 
- Mon, 26 Jun 2023 05:29:54 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7AuRyQX94iFaK4IMfPFyqnrXvfpMkWiZyF1nFy0OOfaAdrErIh7hpPdNec5xKBiJ0WAW5lig==
-X-Received: by 2002:a05:600c:22c6:b0:3f9:b244:c294 with SMTP id
- 6-20020a05600c22c600b003f9b244c294mr25415762wmg.35.1687782593982; 
- Mon, 26 Jun 2023 05:29:53 -0700 (PDT)
+ bh=fYcNucAmy67ddGjZ1HVGjT8M/yKQGxtNy1Ul1xPHkms=;
+ b=LkWqMSpxwrrdcYI4yllCEosYAnzDUd5751RSI3Y090AweaXIBP7qa1cwzyGrE4MXMz
+ 6Zcky/18/xpHHa4sfp8GfzxRQVS232fU2DdP0E7gA0MxTjAFDiQGHqXjJzHkoBeEQ9gH
+ RYY5VbwnLKPnWjZTZuV6zmlCdOBYQsNcorMm+GUvHw5WsXP3F9ktvno9f5KousA3E7PG
+ v5KIVY/KBL0l5gEBp26kpkIaNPYD+DvO0gbEjjTC7B8brDp0H9GVe8qG+7AOHUZ4k8yc
+ I2qJZqNb/0L41uKVFkrdEPH4lvJTw+KH8McYmIfBxJQsyiW0u83PoFwM2OHCTDGVEPsS
+ wZ0Q==
+X-Gm-Message-State: AC+VfDwkNaKCGRiPaa8jlGYIDUOzvEr1G6PS9hvzg+CXSvvgTW5+bRUm
+ 1qg0RJzx81lfdMRrTQPF8TRu0A0906CuFdvKpGbMnxRds2ijPi4vaIxvrBKp5ITZsRdGQUpjC6l
+ fCPdE6yVo/OuXQAwzn08bB+aVkcd4+bIe4vWKwTlg1ATGBWpNHXQk2BeOtBxqX6qr+FUh
+X-Received: by 2002:adf:facc:0:b0:313:f4be:82c0 with SMTP id
+ a12-20020adffacc000000b00313f4be82c0mr1037629wrs.34.1687782602711; 
+ Mon, 26 Jun 2023 05:30:02 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6ERcErLVwS2ect6rJmCxtK4hiEIadh/nyqiL6Stztc8WyEiXYOONBaEpWmC/ZnXlCpYr4ctw==
+X-Received: by 2002:adf:facc:0:b0:313:f4be:82c0 with SMTP id
+ a12-20020adffacc000000b00313f4be82c0mr1037616wrs.34.1687782602457; 
+ Mon, 26 Jun 2023 05:30:02 -0700 (PDT)
 Received: from redhat.com ([2.52.156.102]) by smtp.gmail.com with ESMTPSA id
- 12-20020a05600c020c00b003f90ab2fff9sm7571794wmi.9.2023.06.26.05.29.52
+ r13-20020adfe68d000000b0030fb4b55c13sm7242434wrm.96.2023.06.26.05.30.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 26 Jun 2023 05:29:53 -0700 (PDT)
-Date: Mon, 26 Jun 2023 08:29:51 -0400
+ Mon, 26 Jun 2023 05:30:02 -0700 (PDT)
+Date: Mon, 26 Jun 2023 08:30:00 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Hawkins Jiawei <yin31149@gmail.com>, Lei Yang <leiyang@redhat.com>,
  Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
- Jason Wang <jasowang@redhat.com>
-Subject: [PULL 41/53] vdpa: Add vhost_vdpa_net_load_offloads()
-Message-ID: <e75db550c1526f963c9cf2196a29c0907207d619.1687782442.git.mst@redhat.com>
+ Jason Wang <jasowang@redhat.com>, Lei Yang <leiyang@redhat.com>
+Subject: [PULL 44/53] vdpa: mask _F_CTRL_GUEST_OFFLOADS for vhost vdpa devices
+Message-ID: <38bcfb9398753cfbff6baa170c0aaeee2525f90c.1687782442.git.mst@redhat.com>
 References: <cover.1687782442.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -102,82 +101,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Hawkins Jiawei <yin31149@gmail.com>
+From: Eugenio Pérez <eperezma@redhat.com>
 
-This patch introduces vhost_vdpa_net_load_offloads() to
-restore offloads state at device's startup.
+QEMU does not emulate it so it must be disabled as long as the backend
+does not support it.
 
-Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
-Message-Id: <7e2b5cad9c48c917df53d80dec27dbfeb513e1a3.1685704856.git.yin31149@gmail.com>
-Tested-by: Lei Yang <leiyang@redhat.com>
-Reviewed-by: Eugenio Pérez <eperezma@redhat.com>
-Tested-by: Eugenio Pérez <eperezma@redhat.com>
+Signed-off-by: Eugenio Pérez <eperezma@redhat.com>
+Message-Id: <20230602173328.1917385-1-eperezma@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Tested-by: Lei Yang <leiyang@redhat.com>
 ---
- net/vhost-vdpa.c | 42 ++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 42 insertions(+)
+ net/vhost-vdpa.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-index c3ef0139a6..99d0445d90 100644
+index 49221937a1..75352efa39 100644
 --- a/net/vhost-vdpa.c
 +++ b/net/vhost-vdpa.c
-@@ -664,6 +664,44 @@ static int vhost_vdpa_net_load_mq(VhostVDPAState *s,
-     return *s->status != VIRTIO_NET_OK;
- }
- 
-+static int vhost_vdpa_net_load_offloads(VhostVDPAState *s,
-+                                        const VirtIONet *n)
-+{
-+    uint64_t offloads;
-+    ssize_t dev_written;
-+
-+    if (!virtio_vdev_has_feature(&n->parent_obj,
-+                                 VIRTIO_NET_F_CTRL_GUEST_OFFLOADS)) {
-+        return 0;
-+    }
-+
-+    if (n->curr_guest_offloads == virtio_net_supported_guest_offloads(n)) {
-+        /*
-+         * According to VirtIO standard, "Upon feature negotiation
-+         * corresponding offload gets enabled to preserve
-+         * backward compatibility.".
-+         *
-+         * Therefore, there is no need to send this CVQ command if the
-+         * driver also enables all supported offloads, which aligns with
-+         * the device's defaults.
-+         *
-+         * Note that the device's defaults can mismatch the driver's
-+         * configuration only at live migration.
-+         */
-+        return 0;
-+    }
-+
-+    offloads = cpu_to_le64(n->curr_guest_offloads);
-+    dev_written = vhost_vdpa_net_load_cmd(s, VIRTIO_NET_CTRL_GUEST_OFFLOADS,
-+                                          VIRTIO_NET_CTRL_GUEST_OFFLOADS_SET,
-+                                          &offloads, sizeof(offloads));
-+    if (unlikely(dev_written < 0)) {
-+        return dev_written;
-+    }
-+
-+    return *s->status != VIRTIO_NET_OK;
-+}
-+
- static int vhost_vdpa_net_load(NetClientState *nc)
- {
-     VhostVDPAState *s = DO_UPCAST(VhostVDPAState, nc, nc);
-@@ -686,6 +724,10 @@ static int vhost_vdpa_net_load(NetClientState *nc)
-     if (unlikely(r)) {
-         return r;
-     }
-+    r = vhost_vdpa_net_load_offloads(s, n);
-+    if (unlikely(r)) {
-+        return r;
-+    }
- 
-     return 0;
- }
+@@ -58,6 +58,7 @@ const int vdpa_feature_bits[] = {
+     VIRTIO_F_VERSION_1,
+     VIRTIO_NET_F_CSUM,
+     VIRTIO_NET_F_GUEST_CSUM,
++    VIRTIO_NET_F_CTRL_GUEST_OFFLOADS,
+     VIRTIO_NET_F_GSO,
+     VIRTIO_NET_F_GUEST_TSO4,
+     VIRTIO_NET_F_GUEST_TSO6,
 -- 
 MST
 
