@@ -2,76 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B23273DBC2
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 11:51:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 711E673DBCC
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 11:53:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDird-0002MS-Uk; Mon, 26 Jun 2023 05:50:29 -0400
+	id 1qDitZ-0003fC-UW; Mon, 26 Jun 2023 05:52:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lukasstraub2@web.de>)
- id 1qDirc-0002MK-79
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 05:50:28 -0400
-Received: from mout.web.de ([212.227.15.3])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lukasstraub2@web.de>)
- id 1qDira-0005rW-A1
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 05:50:27 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
- s=s29768273; t=1687773021; x=1688377821; i=lukasstraub2@web.de;
- bh=2gyt0efEMGmdq8I9e6Chc7TncPc3Whgpg9hQvMcLEyY=;
- h=X-UI-Sender-Class:Date:From:To:Cc:Subject:In-Reply-To:References;
- b=BLJAN42WSxisNpZnXAWjL1bjlp4ezf9xBq/J9awtxdrzGfrFN3SDt+S5lWWUDLhCp5OyegR
- Mz1uYHbXsbkUYOoKhuaFIHEq/ratoqwTS7wFXi5ow5mDV719RRAa1i9cg9eBzb+3180ntpCUy
- u7odlmTEYwnW4HfkOpFWxD/wjCoD/UxI7eIFwjT80sb+urMc8kDWwcIqHcOFwwZCaLB1M3WaJ
- MP6UYnUwq7JtGG0K1fEJMnRyvBgWoNz9Sm0Y7ppxE3ABfucExSz2enrUC7RvhNegd30XHU51r
- 305nES79z4JSgyMPOID2mh5kh9zYqA/9es1R9mGHAtsN9YKe9R1A==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from mobian.usb.local ([82.207.254.108]) by smtp.web.de (mrweb005
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1MKdHE-1qU8iP0DTI-00KwwI; Mon, 26
- Jun 2023 11:50:21 +0200
-Date: Mon, 26 Jun 2023 11:49:16 +0200
-From: Lukas Straub <lukasstraub2@web.de>
-To: Felix Wu <flwu@google.com>
-Cc: qemu-devel@nongnu.org, Samuel Thibault <samuel.thibault@ens-lyon.org>,
- Jason Wang <jasowang@redhat.com>
-Subject: Re: Tips for local testing guestfwd
-Message-ID: <20230626114916.45355529@mobian.usb.local>
-In-Reply-To: <CAJt6XFoT2irgOwtMB2qpgr3Yj6Q-zij_fpD9BL24QvFG7w3zOg@mail.gmail.com>
-References: <CAJt6XFoT2irgOwtMB2qpgr3Yj6Q-zij_fpD9BL24QvFG7w3zOg@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qDitX-0003eZ-SZ
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 05:52:27 -0400
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qDitS-0006Dv-FA
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 05:52:24 -0400
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-313e1c27476so1437625f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 02:52:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1687773140; x=1690365140;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=NC8I14ZtPyuKbAdwhwO3FPUAUk89s1EhA4fooV2IDwM=;
+ b=WgCDFgvloSQ0hGN6lpY9Oy2yxxvUIehGNQhalXv5IjpGmbRO4JxaYEhVFiqMDX+teX
+ N10TP0xmeQjSEunZQsQn6PNa23mzLCHJzOUwAoIQQAsFNRCWcRmV/3wWKvv2gDby7z7m
+ LVKwnbuBURbZXqE7BKzvrM8MJgQQLxE0uQi7BFJtlM4PWqKE94ZAh4xcvCbnHldpISur
+ LeJ1LvZj459TggunNeFB1VTyxWr87WyL2UPJLZ/QCw940vSgifOsgnerFANy0YmAQ8Yy
+ Oqa+8U9cjcjThcAaqjuAD7hvV1/lto+eJwUf8WmiadFPX1YV0dd3GCwgWR+KiIUBPfYu
+ bsbg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1687773140; x=1690365140;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=NC8I14ZtPyuKbAdwhwO3FPUAUk89s1EhA4fooV2IDwM=;
+ b=XyQo95bI52sJ54YE99kc2VMT/B/b67TzmuSBmWv2nkvNyLMjVD6oplD8mXaSSjfUdp
+ KHf2FAc2hah1UvDSmF3AmTQ9Xtg8vIAhmKKYG2KAjj4hvup5f0a6qDxBEUgsRUdG50/p
+ rVhT9h7wUSK69VSKM44/UJ4azwZmN1u823T+mREAvYmTjsHiGoNu8qY8VidFtKEsYcNT
+ cVzpGdi03aWH5JqemU4RaFrDQFITb/IfF1Yhf1mOmxVaHZcVUhb6gDL39Od1mGh082ly
+ NenvhOQDkj0gojsmRGmaRGYFtfWbS+vvacFHEWQGg5G0Bn+66usPp+HLh6OAf3z4xqKr
+ g6kg==
+X-Gm-Message-State: AC+VfDwuGkG+Gu7cL9NgaHhTbXUDGcynFSTHSJxLsVINPFl6eTAm3pa7
+ Kp6JSGJrMWfJTHMsrZML6rTFLA==
+X-Google-Smtp-Source: ACHHUZ6wx3HKn7gu2sK2dkmmB9Kepcm2OzHRtd6COQ3B+190m5RNLigrcLvPAKiUfN/Vf7eLufoc6g==
+X-Received: by 2002:a5d:430d:0:b0:30f:d052:2edb with SMTP id
+ h13-20020a5d430d000000b0030fd0522edbmr25311266wrq.35.1687773140382; 
+ Mon, 26 Jun 2023 02:52:20 -0700 (PDT)
+Received: from [192.168.157.227] (141.pool92-176-132.dynamic.orange.es.
+ [92.176.132.141]) by smtp.gmail.com with ESMTPSA id
+ g17-20020a7bc4d1000000b003f9b1131a90sm7185423wmk.23.2023.06.26.02.52.19
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 26 Jun 2023 02:52:19 -0700 (PDT)
+Message-ID: <539281fe-4a75-34aa-e9f1-e88056a6947a@linaro.org>
+Date: Mon, 26 Jun 2023 11:52:17 +0200
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/jBGZHp2bkts57nSVLxug1TI";
- protocol="application/pgp-signature"; micalg=pgp-sha512
-X-Provags-ID: V03:K1:5ASuRfcF6Ttg1K4i8My1+8eJtk2EJeqU8gG40N77rep31DS6hn9
- S2J7+01Mj13a6UrykJwbOmuUGp0BY/jVwGFPM5TRqwMHi4thiyrR8scl9RVHKgOU/Xo23TJ
- EfyjwIMYrx9ySBqnXTHR8YyFLGSpROHBIlBem0K4CVHrf50twUVJp9JHLzHa3Haij91aU5s
- FwXz00cNaWs8pRcPz7yXQ==
-UI-OutboundReport: notjunk:1;M01:P0:ucO08WH8Oo0=;v8c5UvBjDulVeCRXpY+66oztMmR
- sUJEqL1pv2CFck4iy7/5DNejo3gEndwxgfp6oxvBohl9FIvPeeAVIhRqgMSZvFazcMlYswYnZ
- C5+95IiHUFUxwlThR3xpxCvvunlawXBY0Ui4tYo2nI85rc1vfCVLEzg7yrhiGHBbKOoQcK0WB
- 1sPyeVoQS4C9DTk6ja28FVR5kPCcAulh1jYf12s1ComQfVkzA8AApvz6ch+pJosXutY+q2H1E
- sRvbqqU6Q0jftglnc2qaV32fbSuzDGqxi9mfnp1JrZANQ15YE6vSDmBV10oXHa8nhCAxldmI5
- VyBZEXZ2rv7pn5lTURfbP3cO6OhU5Fvqz9fYSujhHwz+OyyOMVmIfZ2QUQ/tG3B+RDuCBQJpk
- ng9G/TYklAowvmG0/EqhLUB+V1ivA65oIF+SuSrG42fCixZTuQSFW/SYqdVArWG7tP4OAYWah
- 5wDK045+e9E7qiTvJa32N20rZ+5JdvhvNVodOXzrgDQspHGm/NUrbxmKaBeoxxyp3J4jqIcVR
- 4qYYs1b8somgTm0yAdu7PQ/0JDb+QE4ID59ktOwqwrFtdg6b/78bpaBtqTWxWBxu7d9Wdt+OH
- CMeGw/riPRDLwAAHcTDgyuOK7DWxuYWGksFxRknQc4AbS6skHKLUhD+3CRIuisPu3A6fjQPz7
- M24VzFwJhnlGMcY+VWfv9fMV9itnDHmfeC7cVl+5Mj75wchNP2rKHbq1GAT5Q3/541XbAzPbY
- 8OBs8UMH0hUlTwbS0CcAyvy6QqUN+n+kYvkFHq4vyz2rQ9mC25HQz8vEBw0pgqSYeDVAw/sDX
- hHTrRA1tnr/4H3B3DrEfbHECdbKgCURiQWgIEVoKisA2evUMf41S4EA3rYjxNQ0+6SliH166k
- Dsmkt0kLgmPvywswPuax3qOCDDaJzSBHom6UecaYVRFA8OyCmXypEd0HQK3pNZ92sf4wA7Ofs
- OmdhjoS3LF7OXXMMU/gUfMmQ8Ew=
-Received-SPF: pass client-ip=212.227.15.3; envelope-from=lukasstraub2@web.de;
- helo=mout.web.de
-X-Spam_score_int: -25
-X-Spam_score: -2.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: RFC: bsd-user broken a while ago, is this the right fix?
+Content-Language: en-US
+To: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ Warner Losh <imp@bsdimp.com>
+Cc: QEMU Developers <qemu-devel@nongnu.org>
+References: <CANCZdfrHEQ=dMfpKGvYBHbXMfbQb9fDQh+bkdZW0Z6zQWVVUCA@mail.gmail.com>
+ <ZJlMQQP7Y8r6Wrd7@redhat.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <ZJlMQQP7Y8r6Wrd7@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x435.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.089,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,69 +96,129 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---Sig_/jBGZHp2bkts57nSVLxug1TI
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+On 6/26/23 10:28, Daniel P. Berrangé wrote:
+> Just CC'ing Richard to make sure it catches his attention.
+> 
+> On Sat, Jun 24, 2023 at 12:40:33AM -0600, Warner Losh wrote:
+>> This change:
+>>
+>> commit f00506aeca2f6d92318967693f8da8c713c163f3
+>> Merge: d37158bb242 87e303de70f
+>> Author: Peter Maydell <peter.maydell@linaro.org>
+>> Date:   Wed Mar 29 11:19:19 2023 +0100
+>>
+>>      Merge tag 'pull-tcg-20230328' of https://gitlab.com/rth7680/qemu into
+>> staging
+>>
+>>      Use a local version of GTree [#285]
+>>      Fix page_set_flags vs the last page of the address space [#1528]
+>>      Re-enable gdbstub breakpoints under KVM
+>>
+>>      # -----BEGIN PGP SIGNATURE-----
+>>      #
+>>      # iQFRBAABCgA7FiEEekgeeIaLTbaoWgXAZN846K9+IV8FAmQjcLIdHHJpY2hhcmQu
+>>      # aGVuZGVyc29uQGxpbmFyby5vcmcACgkQZN846K9+IV8rkgf/ZazodovRKxfaO622
+>>      # mGW7ywIm+hIZYmKC7ObiMKFrBoCyeXH9yOLSx42T70QstWvBMukjovLMz1+Ttbo1
+>>      # VOvpGH2B5W76l3i+muAlKxFRbBH2kMLTaL+BXtkmkL4FJ9bS8WiPApsL3lEX/q2E
+>>      # 3kqaT3N3C09sWO5oVAPGTUHL0EutKhOar2VZL0+PVPFzL3BNPhnQH9QcbNvDBV3n
+>>      # cx3GSXZyL7Plyi+qwsKf/3Jo+F2wr2NVf3Dqscu9T1N1kI5hSjRpwqUEJzJZ5rei
+>>      # ly/gBXC/J7+WN+x+w2JlN0kWXWqC0QbDfZnj96Pd3owWZ7j4sT9zR5fcNenecxlR
+>>      # 38Bo0w==
+>>      # =ysF7
+>>      # -----END PGP SIGNATURE-----
+>>      # gpg: Signature made Tue 28 Mar 2023 23:56:50 BST
+>>      # gpg:                using RSA key
+>> 7A481E78868B4DB6A85A05C064DF38E8AF7E215F
+>>      # gpg:                issuer "richard.henderson@linaro.org"
+>>      # gpg: Good signature from "Richard Henderson <
+>> richard.henderson@linaro.org>" [full]
+>>      # Primary key fingerprint: 7A48 1E78 868B 4DB6 A85A  05C0 64DF 38E8
+>> AF7E 215F
+>>
+>>      * tag 'pull-tcg-20230328' of https://gitlab.com/rth7680/qemu:
+>>        softmmu: Restore use of CPU watchpoint for all accelerators
+>>        softmmu/watchpoint: Add missing 'qemu/error-report.h' include
+>>        softmmu: Restrict cpu_check_watchpoint / address_matches to TCG accel
+>>        linux-user/arm: Take more care allocating commpage
+>>        include/exec: Change reserved_va semantics to last byte
+>>        linux-user: Pass last not end to probe_guest_base
+>>        accel/tcg: Pass last not end to tb_invalidate_phys_range
+>>        accel/tcg: Pass last not end to tb_invalidate_phys_page_range__locked
+>>        accel/tcg: Pass last not end to page_collection_lock
+>>        accel/tcg: Pass last not end to PAGE_FOR_EACH_TB
+>>        accel/tcg: Pass last not end to page_reset_target_data
+>>        accel/tcg: Pass last not end to page_set_flags
+>>        linux-user: Diagnose misaligned -R size
+>>        tcg: use QTree instead of GTree
+>>        util: import GTree as QTree
+>>
+>>      Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+>>
+>> breaks bsd-user. when I merge it to the bsd-user upstream blitz branch I
+>> get memory allocation errors on startup. At least for armv7.
+>>
+>> specifically, if I back out the bsd-user part of both
+>> commit 95059f9c313a7fbd7f22e4cdc1977c0393addc7b
+>> Author: Richard Henderson <richard.henderson@linaro.org>
+>> Date:   Mon Mar 6 01:26:29 2023 +0300
+>>
+>>      include/exec: Change reserved_va semantics to last byte
+>>
+>>      Change the semantics to be the last byte of the guest va, rather
+>>      than the following byte.  This avoids some overflow conditions.
+>>
+>>      Reviewed-by: Philippe Mathieu-Daud<C3><A9> <philmd@linaro.org>
+>>      Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+>>
+>> and
+>>
+>> commit 49840a4a098149067789255bca6894645f411036
+>> Author: Richard Henderson <richard.henderson@linaro.org>
+>> Date:   Mon Mar 6 01:51:09 2023 +0300
+>>
+>>      accel/tcg: Pass last not end to page_set_flags
+>>
+>>      Pass the address of the last byte to be changed, rather than
+>>      the first address past the last byte.  This avoids overflow
+>>      when the last page of the address space is involved.
+>>
+>>      Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1528
+>>      Reviewed-by: Philippe Mathieu-Daud<C3><A9> <philmd@linaro.org>
+>>      Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+>>
+>> things work again. If I backout parts, it fails still. If I back out only
+>> one of
+>> the two, but not both, then it fails.
+>>
+>> What's happening is that we're picking a reserved_va that's overflowing when
+>> we add 1 to it. this overflow goes away if I make the overflows not
+>> possible:
+>> diff --git a/bsd-user/mmap.c b/bsd-user/mmap.c
+>> index a88251f8705..bd86c0a8689 100644
+>> --- a/bsd-user/mmap.c
+>> +++ b/bsd-user/mmap.c
+>> @@ -237,8 +237,8 @@ unsigned long last_brk;
+>>   static abi_ulong mmap_find_vma_reserved(abi_ulong start, abi_ulong size,
+>>                                           abi_ulong alignment)
+>>   {
+>> -    abi_ulong addr;
+>> -    abi_ulong end_addr;
+>> +    uint64_t addr;
+>> +    uint64_t end_addr;
+>>       int prot;
+>>       int looped = 0;
+>>
+>> My question is, is this the right fix? The old code avoided the overflow in
+>> two ways. 1 it set reserve_va to a page short (which if I fix that, it
+>> works better, but not quite right). and it never computes an address that
+>> may overflow (which the new code does without the above patch).
 
-CC'ing SLIRP and net maintainer.
+Not really correct, though it will work for the 32-bit guests.
 
-On Sun, 25 Jun 2023 22:58:36 -0700
-Felix Wu <flwu@google.com> wrote:
-
-> Hi all,
->=20
-> TL,DR: I am working on QEMU ipv6 guestfwd feature and finished coding, and
-> would like to learn the best practice to test it.
-> Context: in slirp side this task is tracking by [1].
-> Currently, I have done following:
-> i. made char parse + guestfwd functions happy with ipv6 address.
-> ii. enabled debug print and made sure the ip and port are inserted into t=
-he
-> forward list in libslirp.
-> To sufficiently verify it's working, I do have three questions:
-> 1. I want to forward a port in the guest (OS in QEMU) to a port 22 on the
-> host OS, and ssh from guest back to host,
-> does this sound reasonable? If this is not a good idea, what method is
-> recommended?
-> 2. I want to understand what ip I should use. Currently I have following
-> formats for the QEMU invocation in ipv6:
-> ```
-> guestfwd=3Dtcp:[::1]:1234-tcp:[my:host:ip:from:ifconfig]:22
-> ```
-> I know the general form is `guestfwd=3Dtcp:server:port-dev`, where
-> server:port is for guest, dev is for host.
-> Adding [] in my implementation will let QEMU know it's ipv6.
-> Is the aforementioned invocation correct? Or in this case [::1] is the
-> local host address and I should put qemu address
-> for it instead?
-> 3. Is there a default ipv6 address for QEMU instance? I think I need it in
-> the invocation.
->=20
-> Thanks in advance! Felix
->=20
-> [1]. https://gitlab.freedesktop.org/slirp/libslirp/-/issues/67
+You want to change end_addr to last_addr, which would be end_addr - 1, and do that 
+basically everywhere. That's the only way to avoid overflow properly, and is what I'm 
+settling on with page_set_flags et al.
 
 
---Sig_/jBGZHp2bkts57nSVLxug1TI
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCgAdFiEEg/qxWKDZuPtyYo+kNasLKJxdslgFAmSZXx0ACgkQNasLKJxd
-slimBRAArqjJJvStbShnMg1LcdHBYutM6gfbjzMPPFR7NSJZ8slUjMwD/5pIU6ec
-pRzwKyTzEILGt7A3ad0aXc4NrCYZiz4/peruDcTB1V0PuDjxrXCFxIx2CNH1ipk0
-9FPjq95xI+YiY85iVpPaBkQMUkhgbeuqsrCPfZk20OM6PoTLVwtzMwTOIck485hW
-UlYw7r+NlSpiplg+/Oz27eFOkUy6ce/8JG6+1mzzpYJlrJTcbBHMZpfzU9q8A1AZ
-11XlNsr4vBKUz57lw4WsqJo5cBgvjpMUxRzpDl6zZIpMdkNlHovI76HFaVQkhYuR
-4RjS/C3qOTNpkeWmDQKJyFxXXa/eZg3DfITTfQjrOheQbkcUegvVJwx4LejtxLTH
-B6RbZkUbDiz5BbOIQHyQonstoEbwFp24UYtR9t8JRAuf7PTmk/r5mKe4FTkRaTF0
-6r6cpeiEbQVWEV0T9v0rSKb5HXOaRN/xmhKmIiZNGqr9q1i4gPBfnqJdSUs75ZJx
-VfI8A326vcXJbHnChgFbz03zs63q0WoiaUoGKX/csBqChndI59UUAteX9bWZfQff
-M+Zwpxh7B+qksTR04nsJKiCGzQWPGch2s4mhFy7NjjB6dBW4tM5z6UYjllH+hPK6
-dBhBb5kvVdtUCM3Kg+COeva/Y1RfZ4j+7onmeFQA+KVvhLUECQA=
-=6URw
------END PGP SIGNATURE-----
-
---Sig_/jBGZHp2bkts57nSVLxug1TI--
+r~
 
