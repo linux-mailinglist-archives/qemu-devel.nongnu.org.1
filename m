@@ -2,82 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EDBB73E367
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 17:33:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D40673E379
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 17:36:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDoCq-0004l1-Ih; Mon, 26 Jun 2023 11:32:44 -0400
+	id 1qDoFh-0006nW-Te; Mon, 26 Jun 2023 11:35:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qDoCo-0004iu-67
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 11:32:42 -0400
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qDoCm-0001VX-7C
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 11:32:41 -0400
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-313f04ff978so1186417f8f.3
- for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 08:32:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687793558; x=1690385558;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=07YmmpvryE8y31GJXhjqvprJFldKjd8V6psOPC1D40Y=;
- b=lHxlYbXvhMTOjK6tIT9uX385aNNgyjxyghsvNlM6S5QcceeJOd/sZlbjj5BYKZKwQo
- T45QazsdS5YD4DzuYeehsoAb2DFX6URC/M/+BFbMWp/JOeTR/H+aTQFPwjPfVggr9RXW
- +99RWAbcUDXlkO5nQtM9kFlnVDzx9Wihv11+eHnHm59iQfdWNcYZmT42VRQu2P9fjenu
- PHunlsEp3IpE/O0JKPSSnL4TYs0WKwnEnOAMV99NJ7EeKMCG6RdSrJbie6pBSmic5IKx
- RPRG94Bh4d3arBEw/uy3tNVCNLYPap8dS7w9D/l1Oh7AXtjEonSVPbOeJQITG9LWDmNI
- qm1w==
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qDoFW-0006k3-P4
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 11:35:32 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qDoFT-0002Cz-NA
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 11:35:30 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1687793726;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=qO4aZAlTsWFonkxrUZF2kdlhOCoPYbdMHPz2ySgunGQ=;
+ b=KcMTIneou9wNZtIu9YXP+xw0UdspH8VjG5rF7ZLmq9DgkrxH9VRrHViWf3uKfIx0sJgkjB
+ qhM35GtJQw1p0IVEFEkcUqjCjtVzESqbqSZ1mI4a2zZkf68ysGHK8o8u+DCnLrJ2e6Yls0
+ IbY6mSgmVlqtJAnDOEgA8Nem+qLx+uY=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-644-MJAzKG2TMvGUeGKq9inSew-1; Mon, 26 Jun 2023 11:35:23 -0400
+X-MC-Unique: MJAzKG2TMvGUeGKq9inSew-1
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-313f59eba37so329594f8f.2
+ for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 08:35:23 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687793558; x=1690385558;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=07YmmpvryE8y31GJXhjqvprJFldKjd8V6psOPC1D40Y=;
- b=IEEPJsUCiX3vpEy4YxBK8QFQzrngsQPuIr9mp5dRFEGYlgkfsciJCfBpQextV0Bq9l
- T5jdXBzQc9a2ljhLWu01G9HzWLaQZNrO4E89vzZNLIdu6wK7WafegSGn9bEbCbSDjiiu
- r6uLJEc0xpbJSx0A6ritlRignBj4MijOJGFDHsxQD/P9NAV2DoBDAz5E9k1jrBGmXbbI
- 4KCBB57cgitg6IIxzYCfhPOT+aWq+Tb8djvsSw+LDjbKyX7jtqJrf1TkdZUX/XtMQyCw
- 9an29u0mvCBqabMqagrobtkrNBZ33bypHeNQET5bVaNjBH0g/zvjsn2hZjG2hMaYZ4Dh
- cM0w==
-X-Gm-Message-State: AC+VfDynHypFm19joXmEX1Ljw33zzfF2hGUrjMIcUMy9So/1n47UzMX4
- 4y0KwFCLDvVMtJtpiWBEHX6G1X+mRqGXl+lJHg3IBEA3
-X-Google-Smtp-Source: ACHHUZ43s2cj1AbLQvYUwSKKWtSheEGQI/MJfQ5n23jwJMoxenImiAXypMVl+vgtkkEW06mpU17N1w==
-X-Received: by 2002:adf:cd06:0:b0:306:46c4:d313 with SMTP id
- w6-20020adfcd06000000b0030646c4d313mr20171511wrm.28.1687793558146; 
- Mon, 26 Jun 2023 08:32:38 -0700 (PDT)
-Received: from [192.168.1.208] ([139.47.42.170])
- by smtp.gmail.com with ESMTPSA id
- m16-20020a5d6250000000b003068f5cca8csm7659023wrv.94.2023.06.26.08.32.37
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 26 Jun 2023 08:32:37 -0700 (PDT)
-Message-ID: <eb81441d-da77-e846-4aee-fe7b232e7781@linaro.org>
-Date: Mon, 26 Jun 2023 17:32:36 +0200
+ d=1e100.net; s=20221208; t=1687793722; x=1690385722;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=qO4aZAlTsWFonkxrUZF2kdlhOCoPYbdMHPz2ySgunGQ=;
+ b=kKE9gCyXeGT3PpalQiH44GpmMD9Je3VF0DBx8P1KZHmT93fAEiAWynukF4b7hkL/sv
+ pCKos323H283sIA/x7cAjvLle7J+PQq4mXNQrT37R8ESogd4VS697Zn7EndDkU9vPPDV
+ REREtQrqaF+mHNA6id3V9z2aOaT9v/q6tZgERanOag4lQ/VepGfd6dfnBowfX7+4edDp
+ EtPCIGbL1IqmGiDE9jv8p5VFYtjtb56QUOaoESlXXmhd+OuMj7i7QmpT9lrfh/eY1NSs
+ 9AYHNSjDrsF4MWguKGZEQTPLhWCiVp2fSvv3dA6ZZBubz3tKE27ER3Qw4efgOaIo2DBv
+ JuYg==
+X-Gm-Message-State: AC+VfDzhFdSDJxCY+zHJCn5bfolKqBYVmgGFwmQum+lAKDAL+8iKeSAQ
+ kyNwPeiYsX0WgJecGDJl8ezhA44kx7GzQJkNptOhSvHmZBnYhrReUFqsET0jZDE3umZQDZNGMb+
+ TNUSmp+QX2GNrkvI=
+X-Received: by 2002:a5d:4402:0:b0:30f:bb83:e6f4 with SMTP id
+ z2-20020a5d4402000000b0030fbb83e6f4mr18951502wrq.0.1687793722149; 
+ Mon, 26 Jun 2023 08:35:22 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5PLBfll/zC81ywPNSii49qFhN0nGALVSiqrQzEb8bJvdgunDtDkr8EIJF23SpTSigbP7rrQw==
+X-Received: by 2002:a5d:4402:0:b0:30f:bb83:e6f4 with SMTP id
+ z2-20020a5d4402000000b0030fbb83e6f4mr18951489wrq.0.1687793721864; 
+ Mon, 26 Jun 2023 08:35:21 -0700 (PDT)
+Received: from redhat.com ([2.52.141.236]) by smtp.gmail.com with ESMTPSA id
+ l7-20020a5d4bc7000000b003113dc327fbsm7728774wrt.22.2023.06.26.08.35.19
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 26 Jun 2023 08:35:21 -0700 (PDT)
+Date: Mon, 26 Jun 2023 11:35:16 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Ani Sinha <anisinha@redhat.com>
+Cc: qemu-devel@nongnu.org, Igor Mammedov <imammedo@redhat.com>,
+ Julia Suvorova <jusual@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>, michael.labiuk@virtuozzo.com
+Subject: Re: [PATCH v4 0/5] test and QEMU fixes to ensure proper PCIE device
+ usage
+Message-ID: <20230626110750-mutt-send-email-mst@kernel.org>
+References: <20230626135324.10687-1-anisinha@redhat.com>
+ <20230626095407-mutt-send-email-mst@kernel.org>
+ <97BD632C-527A-4FF7-9D49-DB298F761DEB@redhat.com>
+ <B8BD1664-1BAD-4D47-AE4C-FA6C3C25EBFE@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PULL 00/53] virtio,pc,pci: fixes, features, cleanups
-Content-Language: en-US
-To: "Michael S. Tsirkin" <mst@redhat.com>, qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>
-References: <cover.1687782442.git.mst@redhat.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <cover.1687782442.git.mst@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x429.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <B8BD1664-1BAD-4D47-AE4C-FA6C3C25EBFE@redhat.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,38 +101,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/26/23 14:27, Michael S. Tsirkin wrote:
-> The following changes since commit b455ce4c2f300c8ba47cba7232dd03261368a4cb:
+On Mon, Jun 26, 2023 at 07:29:26PM +0530, Ani Sinha wrote:
 > 
->    Merge tag 'q800-for-8.1-pull-request' ofhttps://github.com/vivier/qemu-m68k  into staging (2023-06-22 10:18:32 +0200)
 > 
-> are available in the Git repository at:
+> > On 26-Jun-2023, at 7:26 PM, Ani Sinha <anisinha@redhat.com> wrote:
+> > 
+> > 
+> > 
+> >> On 26-Jun-2023, at 7:24 PM, Michael S. Tsirkin <mst@redhat.com> wrote:
+> >> 
+> >> Ani, two versions a day is too much,
+> > 
+> > So you suggesting I slow down my CPU freq? :-) 
 > 
->    https://git.kernel.org/pub/scm/virt/kvm/mst/qemu.git  tags/for_upstream
-> 
-> for you to fetch changes up to 3d90d47995b83bd1edf6e756c00e74fd5ec16aee:
-> 
->    vhost-vdpa: do not cleanup the vdpa/vhost-net structures if peer nic is present (2023-06-26 08:26:40 -0400)
-> 
-> ----------------------------------------------------------------
-> virtio,pc,pci: fixes, features, cleanups
-> 
-> asymmetric crypto support for cryptodev-vhost-user
-> rom migration when rom size changes
-> poison get, inject, clear; mock cxl events and irq support for cxl
-> shadow virtqueue offload support for vhost-vdpa
-> vdpa now maps shadow vrings with MAP_SHARED
-> max_cpus went up to 1024 and we default to smbios 3.0 for pc
-> 
-> Fixes, cleanups all over the place. In particular
->      hw/acpi: Fix PM control register access
-> works around a very long standing bug in memory core.
-> 
-> Signed-off-by: Michael S. Tsirkin<mst@redhat.com>
+> Btw, the libvirt guys does this better in this respect I think. The maintainer takes the patchset but if small rework in commit logs or comments etc is needed, the maintainer does this himself and pushes the patch. That way there is less churn.
 
-Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/8.1 as appropriate.
+I can do that too sometimes. I'm less of a dictator, prefer to get
+acks from others :)
 
+> > 
+> >> pls don't unless first one
+> >> has been sent by mistake or something. then explain what
+> >> it was pls.
+> > 
+> > I did say 
+> > 
+> > v4: reword commit log for patch 4
 
-r~
+Oh, missed that. it's ok then, just make this a bit more prominent:
+note: no changes to patches, just commit log tweaks.
+
+> >> 
+> >> On Mon, Jun 26, 2023 at 07:23:19PM +0530, Ani Sinha wrote:
+> >>> Patches 1-4:
+> >>> Fix tests so that devices do not use non-zero slots on the pcie root
+> >>> ports. PCIE ports only have one slot, so PCIE devices can only be
+> >>> plugged into slot 0 on a PCIE port.
+> >>> 
+> >>> Patch 5:
+> >>> Enforce only one slot on PCIE port.
+> >>> 
+> >>> The test fixes must be applied before the QEMU change that checks for use
+> >>> of a single slot in PCIE port.
+> >>> 
+> >>> CC: mst@redhat.com
+> >>> CC: imammedo@redhat.com
+> >>> CC: jusual@redhat.com
+> >>> CC: thuth@redhat.com
+> >>> CC: lvivier@redhat.com
+> >>> CC: michael.labiuk@virtuozzo.com
+> >>> 
+> >>> Changelog:
+> >>> v4: reword commit log for patch 4.
+> >>> v3: tags added. reword the error description in patch 5. Reword commit log in patch 4. 
+> >>> v2: add hd-geo-test fix as well as the actual QEMU code fix to the patchset.
+> >>> The patches are added in the right order.
+> >>> 
+> >>> Ani Sinha (5):
+> >>> tests/acpi: allow changes in DSDT.noacpihp table blob
+> >>> tests/acpi/bios-tables-test: use the correct slot on the
+> >>>   pcie-root-port
+> >>> tests/acpi/bios-tables-test: update acpi blob q35/DSDT.noacpihp
+> >>> tests/qtest/hd-geo-test: fix incorrect pcie-root-port usage and
+> >>>   simplify test
+> >>> hw/pci: ensure PCIE devices are plugged into only slot 0 of PCIE port
+> >>> 
+> >>> hw/pci/pci.c                      |   6 ++++++
+> >>> tests/data/acpi/q35/DSDT.noacpihp | Bin 8248 -> 8241 bytes
+> >>> tests/qtest/bios-tables-test.c    |   4 ++--
+> >>> tests/qtest/hd-geo-test.c         |  18 ++++++++----------
+> >>> 4 files changed, 16 insertions(+), 12 deletions(-)
+> >>> 
+> >>> -- 
+> >>> 2.39.1
+> >> 
+> > 
 
 
