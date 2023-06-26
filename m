@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C17AF73EF24
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 01:21:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7C0D73EF2C
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 01:22:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDvWC-0004uJ-CC; Mon, 26 Jun 2023 19:21:12 -0400
+	id 1qDvWF-0004ym-LM; Mon, 26 Jun 2023 19:21:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qDvW4-0004qH-Fk
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 19:21:05 -0400
-Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qDvWC-0004wR-OX
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 19:21:12 -0400
+Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qDvW2-0000Di-Ek
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 19:21:04 -0400
-Received: by mail-ej1-x62e.google.com with SMTP id
- a640c23a62f3a-991c786369cso188694366b.1
- for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 16:21:02 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qDvWA-0000EV-Rq
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 19:21:12 -0400
+Received: by mail-ed1-x530.google.com with SMTP id
+ 4fb4d7f45d1cf-51d894b9b6cso2313298a12.3
+ for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 16:21:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687821661; x=1690413661;
+ d=linaro.org; s=google; t=1687821667; x=1690413667;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ej5Xh4tK5Znew3wbqsmSt33zNquywgTDjMkZ8SQXxw8=;
- b=dTeDBtdqurZXkIBVdly07E7Qx5yBNOOOQX7+eP0pijvcaZ9A/J0ZiiA8XhdYr4zaf+
- H6QBuSsT88Sy1EFZkiPP8ci2lMy5s1vZ3/zUKxzbufcXPtrYRF/5KcIhU9xUBJM1PcOE
- 31n24MXl/yfjrTT4iFsXB8WIP6spnlkuFxAbyZVTVVEEPuJbUXfHq9aPzKSMHBmrerlU
- zWP3Q5v418TPPyMIZr/BxN08X0DzN3dU7CM03ic7hLTHACdaevUXZyJXqp8N5Jzb6yyb
- uxF+MAna7Ye78uFkeLVZFq5ZxgplOABkOTDIIE1K9o2FqgE0I+5P/hFqaOPywfY7L3qb
- q8sQ==
+ bh=Y5G3GZnisObOugerwvl7UVGEu2t0avWriP2R6IveebM=;
+ b=WoLMAr+CiJgH4B1qgk83JpNhJB6Anw1PEQbSOH75xrkn4K9fOj93grM/N+PxivWbrU
+ xO/K6z230taLvqq3Mh7TpjyC5FyePvSLv5GsoEFSNwyjZIV2Qacc/l17KP/qkWq6C1re
+ +HJpvwUSkpoQDan70CBkQxNhOAqE/eJLeSev4hMughTYeMUfPV1vCB93eD2K5FyFLtzp
+ pUjDu1CIf9TrQSPxigQFI1zfth9fw17R10Hfrs512BzTu9zA9DuqNf6CHOe5MIov7JGZ
+ 82boGt6vwPSObe6ow5UKccJOB820mbia4TFQisPAClK8T5dn4QYWv3IBjW+cE3ghAoKF
+ q6hQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687821661; x=1690413661;
+ d=1e100.net; s=20221208; t=1687821667; x=1690413667;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ej5Xh4tK5Znew3wbqsmSt33zNquywgTDjMkZ8SQXxw8=;
- b=bgTIVwKmyn7gDQAWrfn6nG77IIqQKyJeFBbKjEBmTzLp0mH1YpdYaqqlp3xEtn+0TG
- 5haJKXfwxtMmgJeD37Dradd5WHQyt3ep1Ptr7G2O7vY5ENDgBnO+5tAQZFbMerJlT1dw
- Iz0LonUEMlcfU6LxGdKltlnyL2yxdZC2I7z1VQOBthZE/SLXWUOTbtteksB2YnK8tp1E
- JUBWJkMabTIEWAIfteeDYmlxHQIe6Wqvq08PYUd3spnJPSCaFVJftvo7VMVIQQFLZEjm
- e/HhLBebyWZRh7Pa1XvLiXXgooDsF6VQNv4nds86CGUbSGXP4UNmcAtYYVN/9rW6jcCZ
- lwSw==
-X-Gm-Message-State: AC+VfDwc7KifcHU6LqXm/0KO3LPmqHhXadUrifZjjga8QkmTCr1ivBIE
- zAYC8tCceXFP1iBuJ0mlYknsBusU3wHun2wtUWI=
-X-Google-Smtp-Source: ACHHUZ4P8rgAruWOEKj6qsYlIcmUwTNzwrVb+wwFBZkYDotDMpTwgypGL73c8Q/BblgU4cFHNVkb1A==
-X-Received: by 2002:a17:907:84d:b0:978:6be4:7efa with SMTP id
- ww13-20020a170907084d00b009786be47efamr25181345ejb.18.1687821660932; 
- Mon, 26 Jun 2023 16:21:00 -0700 (PDT)
+ bh=Y5G3GZnisObOugerwvl7UVGEu2t0avWriP2R6IveebM=;
+ b=VcaEpgynrP4M3uWrAR9j71Kg2uYK8HpIks0QVFPIjNi6jvJ1FLsS7oGXu2iBAHC1Yh
+ XGN8A/TsDr+p+drcm/jGcPXeB/qUeO+CAlZDetCqjZUMPAbEowCjJGr1t/hTAXN/+HSk
+ FSa/j/a+K1DjaQRLdOEEHyDSLh8HMMDy5LNjhJryjk2Wns+Jjr1U1Dr0ychFTfdgsjIB
+ 7n18Hh57i+hmOALW+I03teNnqOrY7fk6YcilBeFcGdZRkLQDbMjkA7tPhUaShs2IQ5/M
+ iLirfVvkJYUsP+a79wR9Z0AEj6fjjUroVRPx4f171TOv9XHFOr046Z92ppEQQmAaY5T5
+ EJBQ==
+X-Gm-Message-State: AC+VfDyrp7LmrLFRz38YTuSmhinDTXPLB8ILEHXPDaMwyoso/tqk5AwX
+ VfT3EDI8sLE1EfMzECYmQUWk7lIT40B9yptHbM8=
+X-Google-Smtp-Source: ACHHUZ58GdSTaP+DLnF9cLEnkuzjvcgNgocGoqCWJKkZH3weS5u2v8um5FaknaOsz9DJsOwGg9i5qg==
+X-Received: by 2002:a17:907:8a05:b0:992:13c7:563 with SMTP id
+ sc5-20020a1709078a0500b0099213c70563mr116433ejc.75.1687821667596; 
+ Mon, 26 Jun 2023 16:21:07 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.199.226])
  by smtp.gmail.com with ESMTPSA id
- a18-20020a1709063a5200b00988f168811bsm3792372ejf.135.2023.06.26.16.20.59
+ k19-20020a1709061c1300b00988b32160dfsm3739150ejg.222.2023.06.26.16.21.05
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 26 Jun 2023 16:21:00 -0700 (PDT)
+ Mon, 26 Jun 2023 16:21:07 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Bin Meng <bin.meng@windriver.com>,
@@ -66,18 +66,18 @@ Cc: Bin Meng <bin.meng@windriver.com>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Weiwei Li <liweiwei@iscas.ac.cn>, qemu-riscv@nongnu.org
-Subject: [PATCH 08/16] target/riscv: Move TCG-specific cpu_get_tb_cpu_state()
- to tcg/cpu.c
-Date: Tue, 27 Jun 2023 01:19:59 +0200
-Message-Id: <20230626232007.8933-9-philmd@linaro.org>
+Subject: [PATCH 09/16] target/riscv: Expose some 'trigger' prototypes from
+ debug.c
+Date: Tue, 27 Jun 2023 01:20:00 +0200
+Message-Id: <20230626232007.8933-10-philmd@linaro.org>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230626232007.8933-1-philmd@linaro.org>
 References: <20230626232007.8933-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::530;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x530.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,223 +100,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+We want to extract TCG-specific code from debug.c, but some
+functions call get_trigger_type() / do_trigger_action().
+Expose these prototypes in "debug.h".
+
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/riscv/cpu_helper.c    | 83 ------------------------------
- target/riscv/tcg/cpu.c       | 97 ++++++++++++++++++++++++++++++++++++
- target/riscv/tcg/meson.build |  1 +
- 3 files changed, 98 insertions(+), 83 deletions(-)
- create mode 100644 target/riscv/tcg/cpu.c
+ target/riscv/debug.h | 4 ++++
+ target/riscv/debug.c | 5 ++---
+ 2 files changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
-index cc0050d110..a1501fea76 100644
---- a/target/riscv/cpu_helper.c
-+++ b/target/riscv/cpu_helper.c
-@@ -63,89 +63,6 @@ int riscv_cpu_mmu_index(CPURISCVState *env, bool ifetch)
- #endif
+diff --git a/target/riscv/debug.h b/target/riscv/debug.h
+index c471748d5a..65cd45b8f3 100644
+--- a/target/riscv/debug.h
++++ b/target/riscv/debug.h
+@@ -147,4 +147,8 @@ void riscv_trigger_init(CPURISCVState *env);
+ 
+ bool riscv_itrigger_enabled(CPURISCVState *env);
+ void riscv_itrigger_update_priv(CPURISCVState *env);
++
++target_ulong get_trigger_type(CPURISCVState *env, target_ulong trigger_index);
++void do_trigger_action(CPURISCVState *env, target_ulong trigger_index);
++
+ #endif /* RISCV_DEBUG_H */
+diff --git a/target/riscv/debug.c b/target/riscv/debug.c
+index 75ee1c4971..5676f2c57e 100644
+--- a/target/riscv/debug.c
++++ b/target/riscv/debug.c
+@@ -88,8 +88,7 @@ static inline target_ulong extract_trigger_type(CPURISCVState *env,
+     }
  }
  
--void cpu_get_tb_cpu_state(CPURISCVState *env, target_ulong *pc,
--                          target_ulong *cs_base, uint32_t *pflags)
--{
--    CPUState *cs = env_cpu(env);
--    RISCVCPU *cpu = RISCV_CPU(cs);
--    RISCVExtStatus fs, vs;
--    uint32_t flags = 0;
--
--    *pc = env->xl == MXL_RV32 ? env->pc & UINT32_MAX : env->pc;
--    *cs_base = 0;
--
--    if (cpu->cfg.ext_zve32f) {
--        /*
--         * If env->vl equals to VLMAX, we can use generic vector operation
--         * expanders (GVEC) to accerlate the vector operations.
--         * However, as LMUL could be a fractional number. The maximum
--         * vector size can be operated might be less than 8 bytes,
--         * which is not supported by GVEC. So we set vl_eq_vlmax flag to true
--         * only when maxsz >= 8 bytes.
--         */
--        uint32_t vlmax = vext_get_vlmax(cpu, env->vtype);
--        uint32_t sew = FIELD_EX64(env->vtype, VTYPE, VSEW);
--        uint32_t maxsz = vlmax << sew;
--        bool vl_eq_vlmax = (env->vstart == 0) && (vlmax == env->vl) &&
--                           (maxsz >= 8);
--        flags = FIELD_DP32(flags, TB_FLAGS, VILL, env->vill);
--        flags = FIELD_DP32(flags, TB_FLAGS, SEW, sew);
--        flags = FIELD_DP32(flags, TB_FLAGS, LMUL,
--                           FIELD_EX64(env->vtype, VTYPE, VLMUL));
--        flags = FIELD_DP32(flags, TB_FLAGS, VL_EQ_VLMAX, vl_eq_vlmax);
--        flags = FIELD_DP32(flags, TB_FLAGS, VTA,
--                           FIELD_EX64(env->vtype, VTYPE, VTA));
--        flags = FIELD_DP32(flags, TB_FLAGS, VMA,
--                           FIELD_EX64(env->vtype, VTYPE, VMA));
--        flags = FIELD_DP32(flags, TB_FLAGS, VSTART_EQ_ZERO, env->vstart == 0);
--    } else {
--        flags = FIELD_DP32(flags, TB_FLAGS, VILL, 1);
--    }
--
--#ifdef CONFIG_USER_ONLY
--    fs = EXT_STATUS_DIRTY;
--    vs = EXT_STATUS_DIRTY;
--#else
--    flags = FIELD_DP32(flags, TB_FLAGS, PRIV, env->priv);
--
--    flags |= cpu_mmu_index(env, 0);
--    fs = get_field(env->mstatus, MSTATUS_FS);
--    vs = get_field(env->mstatus, MSTATUS_VS);
--
--    if (env->virt_enabled) {
--        flags = FIELD_DP32(flags, TB_FLAGS, VIRT_ENABLED, 1);
--        /*
--         * Merge DISABLED and !DIRTY states using MIN.
--         * We will set both fields when dirtying.
--         */
--        fs = MIN(fs, get_field(env->mstatus_hs, MSTATUS_FS));
--        vs = MIN(vs, get_field(env->mstatus_hs, MSTATUS_VS));
--    }
--
--    /* With Zfinx, floating point is enabled/disabled by Smstateen. */
--    if (!riscv_has_ext(env, RVF)) {
--        fs = (smstateen_acc_ok(env, 0, SMSTATEEN0_FCSR) == RISCV_EXCP_NONE)
--             ? EXT_STATUS_DIRTY : EXT_STATUS_DISABLED;
--    }
--
--    if (cpu->cfg.debug && !icount_enabled()) {
--        flags = FIELD_DP32(flags, TB_FLAGS, ITRIGGER, env->itrigger_enabled);
--    }
--#endif
--
--    flags = FIELD_DP32(flags, TB_FLAGS, FS, fs);
--    flags = FIELD_DP32(flags, TB_FLAGS, VS, vs);
--    flags = FIELD_DP32(flags, TB_FLAGS, XL, env->xl);
--    if (env->cur_pmmask != 0) {
--        flags = FIELD_DP32(flags, TB_FLAGS, PM_MASK_ENABLED, 1);
--    }
--    if (env->cur_pmbase != 0) {
--        flags = FIELD_DP32(flags, TB_FLAGS, PM_BASE_ENABLED, 1);
--    }
--
--    *pflags = flags;
--}
--
- void riscv_cpu_update_mask(CPURISCVState *env)
+-static inline target_ulong get_trigger_type(CPURISCVState *env,
+-                                            target_ulong trigger_index)
++target_ulong get_trigger_type(CPURISCVState *env, target_ulong trigger_index)
  {
-     target_ulong mask = 0, base = 0;
-diff --git a/target/riscv/tcg/cpu.c b/target/riscv/tcg/cpu.c
-new file mode 100644
-index 0000000000..b5d32729f2
---- /dev/null
-+++ b/target/riscv/tcg/cpu.c
-@@ -0,0 +1,97 @@
-+/*
-+ * RISC-V CPU helpers (TCG specific)
-+ *
-+ * Copyright (c) 2016-2017 Sagar Karandikar, sagark@eecs.berkeley.edu
-+ * Copyright (c) 2017-2018 SiFive, Inc.
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "cpu.h"
-+#ifndef CONFIG_USER_ONLY
-+#include "sysemu/cpu-timers.h"
-+#endif
-+
-+void cpu_get_tb_cpu_state(CPURISCVState *env, target_ulong *pc,
-+                          target_ulong *cs_base, uint32_t *pflags)
-+{
-+    CPUState *cs = env_cpu(env);
-+    RISCVCPU *cpu = RISCV_CPU(cs);
-+    RISCVExtStatus fs, vs;
-+    uint32_t flags = 0;
-+
-+    *pc = env->xl == MXL_RV32 ? env->pc & UINT32_MAX : env->pc;
-+    *cs_base = 0;
-+
-+    if (cpu->cfg.ext_zve32f) {
-+        /*
-+         * If env->vl equals to VLMAX, we can use generic vector operation
-+         * expanders (GVEC) to accerlate the vector operations.
-+         * However, as LMUL could be a fractional number. The maximum
-+         * vector size can be operated might be less than 8 bytes,
-+         * which is not supported by GVEC. So we set vl_eq_vlmax flag to true
-+         * only when maxsz >= 8 bytes.
-+         */
-+        uint32_t vlmax = vext_get_vlmax(cpu, env->vtype);
-+        uint32_t sew = FIELD_EX64(env->vtype, VTYPE, VSEW);
-+        uint32_t maxsz = vlmax << sew;
-+        bool vl_eq_vlmax = (env->vstart == 0) && (vlmax == env->vl) &&
-+                           (maxsz >= 8);
-+        flags = FIELD_DP32(flags, TB_FLAGS, VILL, env->vill);
-+        flags = FIELD_DP32(flags, TB_FLAGS, SEW, sew);
-+        flags = FIELD_DP32(flags, TB_FLAGS, LMUL,
-+                           FIELD_EX64(env->vtype, VTYPE, VLMUL));
-+        flags = FIELD_DP32(flags, TB_FLAGS, VL_EQ_VLMAX, vl_eq_vlmax);
-+        flags = FIELD_DP32(flags, TB_FLAGS, VTA,
-+                           FIELD_EX64(env->vtype, VTYPE, VTA));
-+        flags = FIELD_DP32(flags, TB_FLAGS, VMA,
-+                           FIELD_EX64(env->vtype, VTYPE, VMA));
-+        flags = FIELD_DP32(flags, TB_FLAGS, VSTART_EQ_ZERO, env->vstart == 0);
-+    } else {
-+        flags = FIELD_DP32(flags, TB_FLAGS, VILL, 1);
-+    }
-+
-+#ifdef CONFIG_USER_ONLY
-+    fs = EXT_STATUS_DIRTY;
-+    vs = EXT_STATUS_DIRTY;
-+#else
-+    flags = FIELD_DP32(flags, TB_FLAGS, PRIV, env->priv);
-+
-+    flags |= cpu_mmu_index(env, 0);
-+    fs = get_field(env->mstatus, MSTATUS_FS);
-+    vs = get_field(env->mstatus, MSTATUS_VS);
-+
-+    if (env->virt_enabled) {
-+        flags = FIELD_DP32(flags, TB_FLAGS, VIRT_ENABLED, 1);
-+        /*
-+         * Merge DISABLED and !DIRTY states using MIN.
-+         * We will set both fields when dirtying.
-+         */
-+        fs = MIN(fs, get_field(env->mstatus_hs, MSTATUS_FS));
-+        vs = MIN(vs, get_field(env->mstatus_hs, MSTATUS_VS));
-+    }
-+
-+    /* With Zfinx, floating point is enabled/disabled by Smstateen. */
-+    if (!riscv_has_ext(env, RVF)) {
-+        fs = (smstateen_acc_ok(env, 0, SMSTATEEN0_FCSR) == RISCV_EXCP_NONE)
-+             ? EXT_STATUS_DIRTY : EXT_STATUS_DISABLED;
-+    }
-+
-+    if (cpu->cfg.debug && !icount_enabled()) {
-+        flags = FIELD_DP32(flags, TB_FLAGS, ITRIGGER, env->itrigger_enabled);
-+    }
-+#endif
-+
-+    flags = FIELD_DP32(flags, TB_FLAGS, FS, fs);
-+    flags = FIELD_DP32(flags, TB_FLAGS, VS, vs);
-+    flags = FIELD_DP32(flags, TB_FLAGS, XL, env->xl);
-+    if (env->cur_pmmask != 0) {
-+        flags = FIELD_DP32(flags, TB_FLAGS, PM_MASK_ENABLED, 1);
-+    }
-+    if (env->cur_pmbase != 0) {
-+        flags = FIELD_DP32(flags, TB_FLAGS, PM_BASE_ENABLED, 1);
-+    }
-+
-+    *pflags = flags;
-+}
-diff --git a/target/riscv/tcg/meson.build b/target/riscv/tcg/meson.build
-index 65670493b1..a615aafd9a 100644
---- a/target/riscv/tcg/meson.build
-+++ b/target/riscv/tcg/meson.build
-@@ -8,6 +8,7 @@ gen = [
- riscv_ss.add(when: 'CONFIG_TCG', if_true: gen)
+     return extract_trigger_type(env, env->tdata1[trigger_index]);
+ }
+@@ -217,7 +216,7 @@ static inline void warn_always_zero_bit(target_ulong val, target_ulong mask,
+     }
+ }
  
- riscv_ss.add(when: 'CONFIG_TCG', if_true: files(
-+  'cpu.c',
-   'fpu_helper.c',
-   'op_helper.c',
-   'vector_helper.c',
+-static void do_trigger_action(CPURISCVState *env, target_ulong trigger_index)
++void do_trigger_action(CPURISCVState *env, target_ulong trigger_index)
+ {
+     trigger_action_t action = get_trigger_action(env, trigger_index);
+ 
 -- 
 2.38.1
 
