@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9475E73EA89
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 20:53:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E1F7373EA85
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 20:52:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDrJ8-0004Yt-QY; Mon, 26 Jun 2023 14:51:26 -0400
+	id 1qDrJD-0004fu-4R; Mon, 26 Jun 2023 14:51:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qDrJ3-0004Wo-Re; Mon, 26 Jun 2023 14:51:21 -0400
+ id 1qDrJA-0004eF-67; Mon, 26 Jun 2023 14:51:28 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qDrJ1-00050C-SS; Mon, 26 Jun 2023 14:51:21 -0400
+ id 1qDrJ4-00050p-Ir; Mon, 26 Jun 2023 14:51:27 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 00297EF26;
- Mon, 26 Jun 2023 21:50:20 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 2727EEF27;
+ Mon, 26 Jun 2023 21:50:21 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 4884FF7B5;
+ by tsrv.corpit.ru (Postfix) with SMTP id 9838EF7B6;
  Mon, 26 Jun 2023 21:50:19 +0300 (MSK)
-Received: (nullmailer pid 1574003 invoked by uid 1000);
+Received: (nullmailer pid 1574006 invoked by uid 1000);
  Mon, 26 Jun 2023 18:50:16 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org, qemu-stable@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
+Cc: Ilya Leoshkevich <iii@linux.ibm.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.0.3 15/54] target/arm: Explicitly select short-format FSR
- for M-profile
-Date: Mon, 26 Jun 2023 21:49:22 +0300
-Message-Id: <20230626185002.1573836-15-mjt@tls.msk.ru>
+ Thomas Huth <thuth@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.0.3 16/54] tests/tcg/s390x: Test EXECUTE of relative
+ branches
+Date: Mon, 26 Jun 2023 21:49:23 +0300
+Message-Id: <20230626185002.1573836-16-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.0.3-20230626214235@cover.tls.msk.ru>
 References: <qemu-stable-8.0.3-20230626214235@cover.tls.msk.ru>
@@ -61,81 +61,194 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+From: Ilya Leoshkevich <iii@linux.ibm.com>
 
-For M-profile, there is no guest-facing A-profile format FSR, but we
-still use the env->exception.fsr field to pass fault information from
-the point where a fault is raised to the code in
-arm_v7m_cpu_do_interrupt() which interprets it and sets the M-profile
-specific fault status registers.  So it doesn't matter whether we
-fill in env->exception.fsr in the short format or the LPAE format, as
-long as both sides agree.  As it happens arm_v7m_cpu_do_interrupt()
-assumes short-form.
+Add a small test to prevent regressions.
 
-In compute_fsr_fsc() we weren't explicitly choosing short-form for
-M-profile, but instead relied on it falling out in the wash because
-arm_s1_regime_using_lpae_format() would be false.  This was broken in
-commit 452c67a4 when we added v8R support, because we said "PMSAv8 is
-always LPAE format" (as it is for v8R), forgetting that we were
-implicitly using this code path on M-profile. At that point we would
-hit a g_assert_not_reached():
- ERROR:../../target/arm/internals.h:549:arm_fi_to_lfsc: code should not be reached
-
-#7  0x0000555555e055f7 in arm_fi_to_lfsc (fi=0x7fffecff9a90) at ../../target/arm/internals.h:549
-#8  0x0000555555e05a27 in compute_fsr_fsc (env=0x555557356670, fi=0x7fffecff9a90, target_el=1, mmu_idx=1, ret_fsc=0x7fffecff9a1c)
-    at ../../target/arm/tlb_helper.c:95
-#9  0x0000555555e05b62 in arm_deliver_fault (cpu=0x555557354800, addr=268961344, access_type=MMU_INST_FETCH, mmu_idx=1, fi=0x7fffecff9a90)
-    at ../../target/arm/tlb_helper.c:132
-#10 0x0000555555e06095 in arm_cpu_tlb_fill (cs=0x555557354800, address=268961344, size=1, access_type=MMU_INST_FETCH, mmu_idx=1, probe=false, retaddr=0)
-    at ../../target/arm/tlb_helper.c:260
-
-The specific assertion changed when commit fcc7404eff24b4c added
-"assert not M-profile" to arm_is_secure_below_el3(), because the
-conditions being checked in compute_fsr_fsc() include
-arm_el_is_aa64(), which will end up calling arm_is_secure_below_el3()
-and asserting before we try to call arm_fi_to_lfsc():
-
-#7  0x0000555555efaf43 in arm_is_secure_below_el3 (env=0x5555574665a0) at ../../target/arm/cpu.h:2396
-#8  0x0000555555efb103 in arm_is_el2_enabled (env=0x5555574665a0) at ../../target/arm/cpu.h:2448
-#9  0x0000555555efb204 in arm_el_is_aa64 (env=0x5555574665a0, el=1) at ../../target/arm/cpu.h:2509
-#10 0x0000555555efbdfd in compute_fsr_fsc (env=0x5555574665a0, fi=0x7fffecff99e0, target_el=1, mmu_idx=1, ret_fsc=0x7fffecff996c)
-
-Avoid the assertion and the incorrect FSR format selection by
-explicitly making M-profile use the short-format in this function.
-
-Fixes: 452c67a42704 ("target/arm: Enable TTBCR_EAE for ARMv8-R AArch32")a
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1658
-Cc: qemu-stable@nongnu.org
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20230523131726.866635-1-peter.maydell@linaro.org
-(cherry picked from commit d7fe699be54b2cbb8e4ee37b63588b3458a49da7)
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Acked-by: Richard Henderson <richard.henderson@linaro.org>
+Message-Id: <20230426235813.198183-3-iii@linux.ibm.com>
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+(cherry picked from commit bfa72590df14e4c94c03d2464f3abe18bf2e5dac)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+(Mjt: forgotten testcase for commit b858c53ef632b80f3269773a18b17639b1eec62c)
 
-diff --git a/target/arm/tcg/tlb_helper.c b/target/arm/tcg/tlb_helper.c
-index 31eb77f7df..7166923ebf 100644
---- a/target/arm/tcg/tlb_helper.c
-+++ b/target/arm/tcg/tlb_helper.c
-@@ -68,8 +68,17 @@ static uint32_t compute_fsr_fsc(CPUARMState *env, ARMMMUFaultInfo *fi,
-     ARMMMUIdx arm_mmu_idx = core_to_arm_mmu_idx(env, mmu_idx);
-     uint32_t fsr, fsc;
+diff --git a/tests/tcg/s390x/Makefile.target b/tests/tcg/s390x/Makefile.target
+index 0031868b13..23dc8b6a63 100644
+--- a/tests/tcg/s390x/Makefile.target
++++ b/tests/tcg/s390x/Makefile.target
+@@ -34,6 +34,7 @@ TESTS+=cdsg
+ TESTS+=chrl
+ TESTS+=rxsbg
+ TESTS+=ex-relative-long
++TESTS+=ex-branch
  
--    if (target_el == 2 || arm_el_is_aa64(env, target_el) ||
--        arm_s1_regime_using_lpae_format(env, arm_mmu_idx)) {
-+    /*
-+     * For M-profile there is no guest-facing FSR. We compute a
-+     * short-form value for env->exception.fsr which we will then
-+     * examine in arm_v7m_cpu_do_interrupt(). In theory we could
-+     * use the LPAE format instead as long as both bits of code agree
-+     * (and arm_fi_to_lfsc() handled the M-profile specific
-+     * ARMFault_QEMU_NSCExec and ARMFault_QEMU_SFault cases).
-+     */
-+    if (!arm_feature(env, ARM_FEATURE_M) &&
-+        (target_el == 2 || arm_el_is_aa64(env, target_el) ||
-+         arm_s1_regime_using_lpae_format(env, arm_mmu_idx))) {
-         /*
-          * LPAE format fault status register : bottom 6 bits are
-          * status code in the same form as needed for syndrome
+ cdsg: CFLAGS+=-pthread
+ cdsg: LDFLAGS+=-pthread
+diff --git a/tests/tcg/s390x/ex-branch.c b/tests/tcg/s390x/ex-branch.c
+new file mode 100644
+index 0000000000..c606719152
+--- /dev/null
++++ b/tests/tcg/s390x/ex-branch.c
+@@ -0,0 +1,158 @@
++/* Check EXECUTE with relative branch instructions as targets. */
++#include <assert.h>
++#include <stdbool.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++
++struct test {
++    const char *name;
++    void (*func)(long *link, long *magic);
++    long exp_link;
++};
++
++/* Branch instructions and their expected effects. */
++#define LINK_64(test) ((long)test ## _exp_link)
++#define LINK_NONE(test) -1L
++#define FOR_EACH_INSN(F)                                                       \
++    F(bras,  "%[link]",     LINK_64)                                           \
++    F(brasl, "%[link]",     LINK_64)                                           \
++    F(brc,   "0x8",         LINK_NONE)                                         \
++    F(brcl,  "0x8",         LINK_NONE)                                         \
++    F(brct,  "%%r0",        LINK_NONE)                                         \
++    F(brctg, "%%r0",        LINK_NONE)                                         \
++    F(brxh,  "%%r2,%%r0",   LINK_NONE)                                         \
++    F(brxhg, "%%r2,%%r0",   LINK_NONE)                                         \
++    F(brxle, "%%r0,%%r1",   LINK_NONE)                                         \
++    F(brxlg, "%%r0,%%r1",   LINK_NONE)                                         \
++    F(crj,   "%%r0,%%r0,8", LINK_NONE)                                         \
++    F(cgrj,  "%%r0,%%r0,8", LINK_NONE)                                         \
++    F(cij,   "%%r0,0,8",    LINK_NONE)                                         \
++    F(cgij,  "%%r0,0,8",    LINK_NONE)                                         \
++    F(clrj,  "%%r0,%%r0,8", LINK_NONE)                                         \
++    F(clgrj, "%%r0,%%r0,8", LINK_NONE)                                         \
++    F(clij,  "%%r0,0,8",    LINK_NONE)                                         \
++    F(clgij, "%%r0,0,8",    LINK_NONE)
++
++#define INIT_TEST                                                              \
++    "xgr %%r0,%%r0\n"  /* %r0 = 0; %cc = 0 */                                  \
++    "lghi %%r1,1\n"    /* %r1 = 1 */                                           \
++    "lghi %%r2,2\n"    /* %r2 = 2 */
++
++#define CLOBBERS_TEST "cc", "0", "1", "2"
++
++#define DEFINE_TEST(insn, args, exp_link)                                      \
++    extern char insn ## _exp_link[];                                           \
++    static void test_ ## insn(long *link, long *magic)                         \
++    {                                                                          \
++        asm(INIT_TEST                                                          \
++            #insn " " args ",0f\n"                                             \
++            ".globl " #insn "_exp_link\n"                                      \
++            #insn "_exp_link:\n"                                               \
++            ".org . + 90\n"                                                    \
++            "0: lgfi %[magic],0x12345678\n"                                    \
++            : [link] "+r" (*link)                                              \
++            , [magic] "+r" (*magic)                                            \
++            : : CLOBBERS_TEST);                                                \
++    }                                                                          \
++    extern char ex_ ## insn ## _exp_link[];                                    \
++    static void test_ex_ ## insn(long *link, long *magic)                      \
++    {                                                                          \
++        unsigned long target;                                                  \
++                                                                               \
++        asm(INIT_TEST                                                          \
++            "larl %[target],0f\n"                                              \
++            "ex %%r0,0(%[target])\n"                                           \
++            ".globl ex_" #insn "_exp_link\n"                                   \
++            "ex_" #insn "_exp_link:\n"                                         \
++            ".org . + 60\n"                                                    \
++            "0: " #insn " " args ",1f\n"                                       \
++            ".org . + 120\n"                                                   \
++            "1: lgfi %[magic],0x12345678\n"                                    \
++            : [target] "=r" (target)                                           \
++            , [link] "+r" (*link)                                              \
++            , [magic] "+r" (*magic)                                            \
++            : : CLOBBERS_TEST);                                                \
++    }                                                                          \
++    extern char exrl_ ## insn ## _exp_link[];                                  \
++    static void test_exrl_ ## insn(long *link, long *magic)                    \
++    {                                                                          \
++        asm(INIT_TEST                                                          \
++            "exrl %%r0,0f\n"                                                   \
++            ".globl exrl_" #insn "_exp_link\n"                                 \
++            "exrl_" #insn "_exp_link:\n"                                       \
++            ".org . + 60\n"                                                    \
++            "0: " #insn " " args ",1f\n"                                       \
++            ".org . + 120\n"                                                   \
++            "1: lgfi %[magic],0x12345678\n"                                    \
++            : [link] "+r" (*link)                                              \
++            , [magic] "+r" (*magic)                                            \
++            : : CLOBBERS_TEST);                                                \
++    }
++
++/* Test functions. */
++FOR_EACH_INSN(DEFINE_TEST)
++
++/* Test definitions. */
++#define REGISTER_TEST(insn, args, _exp_link)                                   \
++    {                                                                          \
++        .name = #insn,                                                         \
++        .func = test_ ## insn,                                                 \
++        .exp_link = (_exp_link(insn)),                                         \
++    },                                                                         \
++    {                                                                          \
++        .name = "ex " #insn,                                                   \
++        .func = test_ex_ ## insn,                                              \
++        .exp_link = (_exp_link(ex_ ## insn)),                                  \
++    },                                                                         \
++    {                                                                          \
++        .name = "exrl " #insn,                                                 \
++        .func = test_exrl_ ## insn,                                            \
++        .exp_link = (_exp_link(exrl_ ## insn)),                                \
++    },
++
++static const struct test tests[] = {
++    FOR_EACH_INSN(REGISTER_TEST)
++};
++
++int main(int argc, char **argv)
++{
++    const struct test *test;
++    int ret = EXIT_SUCCESS;
++    bool verbose = false;
++    long link, magic;
++    size_t i;
++
++    for (i = 1; i < argc; i++) {
++        if (strcmp(argv[i], "-v") == 0) {
++            verbose = true;
++        }
++    }
++
++    for (i = 0; i < sizeof(tests) / sizeof(tests[0]); i++) {
++        test = &tests[i];
++        if (verbose) {
++            fprintf(stderr, "[ RUN      ] %s\n", test->name);
++        }
++        link = -1;
++        magic = -1;
++        test->func(&link, &magic);
++#define ASSERT_EQ(expected, actual) do {                                       \
++    if (expected != actual) {                                                  \
++        fprintf(stderr, "%s: " #expected " (0x%lx) != " #actual " (0x%lx)\n",  \
++                test->name, expected, actual);                                 \
++        ret = EXIT_FAILURE;                                                    \
++    }                                                                          \
++} while (0)
++        ASSERT_EQ(test->exp_link, link);
++        ASSERT_EQ(0x12345678L, magic);
++#undef ASSERT_EQ
++    }
++
++    if (verbose) {
++        fprintf(stderr, ret == EXIT_SUCCESS ? "[  PASSED  ]\n" :
++                                              "[  FAILED  ]\n");
++    }
++
++    return ret;
++}
 -- 
 2.39.2
 
