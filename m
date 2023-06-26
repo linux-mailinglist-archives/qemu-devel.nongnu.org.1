@@ -2,96 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6795973DD96
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 13:32:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B88FF73DDB6
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 13:34:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDkRw-0008GB-FS; Mon, 26 Jun 2023 07:32:05 -0400
+	id 1qDkU1-0001CT-Et; Mon, 26 Jun 2023 07:34:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qDkRX-0008BO-QR
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 07:31:40 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <qemu_oss@crudebyte.com>)
+ id 1qDkTz-0001CK-US
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 07:34:11 -0400
+Received: from kylie.crudebyte.com ([5.189.157.229])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qDkRW-0006KT-3o
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 07:31:39 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687779097;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=pPS8iR5Ae2WoIMGpyRN+RfBUm0Wj/BxQfnN2bY00loo=;
- b=cD7e5zI4ifzXh1574a65+Z6OUjABpSuGyBDPZ2jPkp0NuZAe/vFAigEEXfVIe3LdV7MgqY
- rZ6CNJGHMuBnXCeo7awz2yX2thf1GLhiwrXJt/aLpcwIwJwjUvcHsjj+nYMMWCpApUG0WF
- 5BReLYPr+B024zjkRXh27gDacPrUYjI=
-Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com
- [209.85.210.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-580-ELMfzTy7NCylFfUF30bEDw-1; Mon, 26 Jun 2023 07:31:35 -0400
-X-MC-Unique: ELMfzTy7NCylFfUF30bEDw-1
-Received: by mail-pf1-f200.google.com with SMTP id
- d2e1a72fcca58-668728bb904so2775577b3a.2
- for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 04:31:35 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687779094; x=1690371094;
- h=to:references:message-id:content-transfer-encoding:cc:date
- :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=pPS8iR5Ae2WoIMGpyRN+RfBUm0Wj/BxQfnN2bY00loo=;
- b=PPzNN5w7y70f0vh49xV3k4UBFIf/gyeV4fntp1JvFVauRHnqA4ZWtggqnVXT+o4uIF
- uAk+6VihddgZsC34DnLu2gI1kJRztq4c6dUcTWXb3BzuGgFL0MyFq8k+M7fc/zMXdO/i
- FqN0dEJhdjoLvs8n15sEtz7oY4eCrS4cFNg1uj6SdZSGUoMRlHQBJE0lJeFRcP0N2NLc
- yJBpvO8BkUhx/b17FNf1zzXy/QBzV2PQf1ZGx6IrNDT8mh9LNh954FcLWClv/orgnPNH
- ykVNbGwXqzwGipstNDSQd+DNQVTiBVsyNB902nHzogtxzo2F7KWOZgez3GJKtZ1qIbfu
- aVPQ==
-X-Gm-Message-State: AC+VfDwPuDqXUpgCIj5MamLKwx2M1qycxFpau9YVTjPAu6qIKKxAXxJs
- e69FVJfH9BAjapRmUaD0cj88IubcAd6UPvm7GFPWJYWfPTEqWai7C3Cy+W8lJaOy8UhLYyCU4wm
- R8csgCaxPlsJi02o=
-X-Received: by 2002:a05:6a00:21d1:b0:66a:3289:5bf8 with SMTP id
- t17-20020a056a0021d100b0066a32895bf8mr19508148pfj.2.1687779094280; 
- Mon, 26 Jun 2023 04:31:34 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5ZTz8blZNG46/AadOGRGBHVthbgq0Gm3y+eLg0wPNimwD/VgA5sANnxIDAPTWyzztYDo1KSw==
-X-Received: by 2002:a05:6a00:21d1:b0:66a:3289:5bf8 with SMTP id
- t17-20020a056a0021d100b0066a32895bf8mr19508132pfj.2.1687779093958; 
- Mon, 26 Jun 2023 04:31:33 -0700 (PDT)
-Received: from smtpclient.apple ([115.96.139.77])
- by smtp.gmail.com with ESMTPSA id
- u23-20020a62ed17000000b0064d74808738sm3583893pfh.214.2023.06.26.04.31.31
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Mon, 26 Jun 2023 04:31:33 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.3\))
-Subject: Re: [PATCH v2 4/5] tests/qtest/hd-geo-test: fix test by removing
- unnecessary pcie-root-port
-From: Ani Sinha <anisinha@redhat.com>
-In-Reply-To: <20230626131547.010ccdd8@imammedo.users.ipa.redhat.com>
-Date: Mon, 26 Jun 2023 17:01:29 +0530
-Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Michael Labiuk <michael.labiuk@virtuozzo.com>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <5B33FFEC-B67A-47EF-8867-FE84CEB93412@redhat.com>
-References: <20230622103255.267289-1-anisinha@redhat.com>
- <20230622103255.267289-5-anisinha@redhat.com>
- <20230626131547.010ccdd8@imammedo.users.ipa.redhat.com>
-To: Igor Mammedov <imammedo@redhat.com>
-X-Mailer: Apple Mail (2.3696.120.41.1.3)
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+ (Exim 4.90_1) (envelope-from <qemu_oss@crudebyte.com>)
+ id 1qDkTw-0006dQ-WD
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 07:34:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
+ MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+ Content-ID:Content-Description;
+ bh=wBt5f1KOXMArQkQa73/f5V3hSqHe5s0Qz39MTU3CQX4=; b=M4mwyGCXxDqNsx7snnKzVRWqsX
+ bEB5ysTHeQFH5RqIzh3j5Qcivb2TjSf1nJQgmC+wtZY4BxRSXxc+wk4QdbkISg/G4WMj+c+mkSlUx
+ nkT96Qe3MWtC9I2gQjtAGWCmueXHmEL8dGF6RvMS1B6lajwM4rt8/asSa8BEYpNWhOHaxykrQNTRB
+ Qv0GRJGFl3EIzlZRfsrlQDpbsvSItFEvFsvwmNfA5qIrHCr33GEHsUiliRt+riHrpm1WV9K3Vq3b3
+ 5683zhV3NVgBx9p/HAktnOpRUL9o02mR6aMiEB7dr0tM4zIQo4PiSWxBHyyeGKjV9o3WgCbLGinNq
+ uwzB48lroysOEjWwmeKyvc4Y2ROvsBxt0gVdvddAyCLinhcVPEpX4LfNzq3sU9vmZKKSonNcLk44H
+ US2fcN3TqTMR4foKNBvrE8gSf8TUo/6dEHHoKlw1sAp4Qp/dsM+LphS9V6+LickI/5HOKkqVtetAV
+ 5DT9iu0bcqm/KbuWgdsIzWs5/lABfgM+su1q63+nzHfI+esMyxTaNfndHg1p61c+OlfjBH4BBAQEW
+ yB9CdyiDOXmkuspIdrig6LE6JWuYal5VW3uDPyJwoRizsWo1t5xeW54OOyDhLuh+gceKXtor6Cqw2
+ xOHWYco+4geqWIzxbqSDwVfl0rafUjQxQ1mesxo+s=;
+From: Christian Schoenebeck <qemu_oss@crudebyte.com>
+To: qemu-devel@nongnu.org
+Cc: Daniel =?ISO-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
+ Greg Kurz <groug@kaod.org>
+Subject: Re: [PATCH v4] 9pfs: deprecate 'proxy' backend
+Date: Mon, 26 Jun 2023 13:34:04 +0200
+Message-ID: <6206528.av61RLu0rh@silver>
+In-Reply-To: <20230626092735.2b27565e@bahia>
+References: <E1qCgCZ-0001Yf-KB@lizzy.crudebyte.com>
+ <20230626092735.2b27565e@bahia>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+Received-SPF: pass client-ip=5.189.157.229;
+ envelope-from=qemu_oss@crudebyte.com; helo=kylie.crudebyte.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,97 +68,258 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Monday, June 26, 2023 9:27:35 AM CEST Greg Kurz wrote:
+> On Fri, 23 Jun 2023 14:41:15 +0200
+> Christian Schoenebeck <qemu_oss@crudebyte.com> wrote:
+> 
+> > As recent CVE-2023-2861 once again showed, the 9p 'proxy' fs driver is in
+> > bad shape. Using the 'proxy' backend was already discouraged for safety
+> > reasons before and we recommended to use the 'local' backend (preferably
+> > in conjunction with its 'mapped' security model) instead, but now it is
+> > time to officially deprecate the 'proxy' backend.
+> > 
+> > Signed-off-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
+> > ---
+> >  v3 -> v4:
+> >  - MAINTAINERS: also move virtfs-proxy-helper.rst to 'obsolete' section
+> >  - deprecated.rst: suggest virtiofsd as alternative.
+> >  - deprecated.rst: mention a considerable future reimplementation of
+> >    'proxy' using 'vhost'.
+> >  - QEMU runtime warning: merge deprecation warnings of '-virtfs proxy' and
+> >    '-fsdev proxy' into a single deprecation warning and mention virtiofsd
+> >    as alternative.
+> >  - virtfs-proxy-helper daemon: print runtime deprecation warning here as
+> >    well.
+> >  - commit log: mention 'mapped' security model.
+> > 
+> >  MAINTAINERS                        |  9 ++++++++-
+> >  docs/about/deprecated.rst          | 23 +++++++++++++++++++++++
+> >  docs/tools/virtfs-proxy-helper.rst |  3 +++
+> >  fsdev/qemu-fsdev.c                 |  8 ++++++++
+> >  fsdev/virtfs-proxy-helper.c        |  9 +++++++++
+> >  hw/9pfs/9p-proxy.c                 |  5 +++++
+> >  hw/9pfs/9p-proxy.h                 |  5 +++++
+> >  meson.build                        |  2 +-
+> >  qemu-options.hx                    |  6 +++++-
+> >  9 files changed, 67 insertions(+), 3 deletions(-)
+> > 
+> > diff --git a/MAINTAINERS b/MAINTAINERS
+> > index 436b3f0afe..3aa70b5c21 100644
+> > --- a/MAINTAINERS
+> > +++ b/MAINTAINERS
+> > @@ -2118,13 +2118,20 @@ S: Odd Fixes
+> >  W: https://wiki.qemu.org/Documentation/9p
+> >  F: hw/9pfs/
+> >  X: hw/9pfs/xen-9p*
+> > +X: hw/9pfs/9p-proxy*
+> >  F: fsdev/
+> > -F: docs/tools/virtfs-proxy-helper.rst
+> > +X: fsdev/virtfs-proxy-helper.c
+> >  F: tests/qtest/virtio-9p-test.c
+> >  F: tests/qtest/libqos/virtio-9p*
+> >  T: git https://gitlab.com/gkurz/qemu.git 9p-next
+> >  T: git https://github.com/cschoenebeck/qemu.git 9p.next
+> >  
+> > +virtio-9p-proxy
+> > +F: hw/9pfs/9p-proxy*
+> > +F: fsdev/virtfs-proxy-helper.c
+> > +F: docs/tools/virtfs-proxy-helper.rst
+> > +S: Obsolete
+> > +
+> >  virtio-blk
+> >  M: Stefan Hajnoczi <stefanha@redhat.com>
+> >  L: qemu-block@nongnu.org
+> > diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+> > index 0743459862..4ce75722f3 100644
+> > --- a/docs/about/deprecated.rst
+> > +++ b/docs/about/deprecated.rst
+> > @@ -343,6 +343,29 @@ the addition of volatile memory support, it is now necessary to distinguish
+> >  between persistent and volatile memory backends.  As such, memdev is deprecated
+> >  in favor of persistent-memdev.
+> >  
+> > +``-fsdev proxy`` and ``-virtfs proxy`` (since 8.1)
+> > +^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> > +
+> > +The 9p ``proxy`` filesystem backend driver has been deprecated and will be
+> > +removed (along with its proxy helper daemon) in a future version of QEMU. Please
+> > +use ``-fsdev local`` or ``-virtfs local`` for using the 9p ``local`` filesystem
+> > +backend instead, or alternatively consider deploying virtiofsd instead.
+> 
+> Maybe drop the first "instead" to avoid repetition ?
 
+Right, makes sense.
 
-> On 26-Jun-2023, at 4:45 PM, Igor Mammedov <imammedo@redhat.com> wrote:
->=20
-> On Thu, 22 Jun 2023 16:02:54 +0530
-> Ani Sinha <anisinha@redhat.com> wrote:
->=20
->> A SCSI controller can be attached to a pcie-to-pci bridge which in =
-turn can be
->> attached directly to the root bus (peie.0). There is no need to =
-attach a
->> pcie-root-port on the root bus in order to attach the pcie-ro-pci =
-bridge.
->> Fix it.
->=20
-> bridge can be both on pcie.0 or on root-port and both are valid =
-configs.
-> So what exactly and why we are fixing here?
+> > +
+> > +The 9p ``proxy`` backend was originally developed as an alternative to the 9p
+> > +``local`` backend. The idea was to enhance security by dispatching actual low
+> > +level filesystem operations from 9p server (QEMU process) over to a separate
+> > +process (the virtfs-proxy-helper binary). However this alternative never gained
+> > +momentum. The proxy backend is much slower than the local backend, hasn't seen
+> > +any development in years, and showed to be less secure, especially due to the
+> > +fact that its helper daemon must be run as root, whereas with the local backend
+> > +QEMU is typically run as unprivileged user and allows to tighten behaviour by
+> > +mapping permissions et al by using its 'mapped' security model option.
+> > +
+> > +Nowadays it would make sense to reimplement the ``proxy`` backend by using
+> > +QEMU's ``vhost`` feature, which would eliminate the high latency costs under
+> > +which the 9p ``proxy`` backend currently suffers. However as of to date nobody
+> > +has indicated plans for such kind of reimplemention unfortunately.
+> > +
+> >  
+> >  Block device options
+> >  ''''''''''''''''''''
+> > diff --git a/docs/tools/virtfs-proxy-helper.rst b/docs/tools/virtfs-proxy-helper.rst
+> > index 6cdeedf8e9..bd310ebb07 100644
+> > --- a/docs/tools/virtfs-proxy-helper.rst
+> > +++ b/docs/tools/virtfs-proxy-helper.rst
+> > @@ -9,6 +9,9 @@ Synopsis
+> >  Description
+> >  -----------
+> >  
+> > +NOTE: The 9p 'proxy' backend is deprecated (since QEMU 8.1) and will be
+> > +removed, along with this daemon, in a future version of QEMU!
+> > +
+> >  Pass-through security model in QEMU 9p server needs root privilege to do
+> >  few file operations (like chown, chmod to any mode/uid:gid).  There are two
+> >  issues in pass-through security model:
+> > diff --git a/fsdev/qemu-fsdev.c b/fsdev/qemu-fsdev.c
+> > index 3da64e9f72..9a50ee370b 100644
+> > --- a/fsdev/qemu-fsdev.c
+> > +++ b/fsdev/qemu-fsdev.c
+> > @@ -133,6 +133,14 @@ int qemu_fsdev_add(QemuOpts *opts, Error **errp)
+> >      }
+> >  
+> >      if (fsdriver) {
+> > +        if (strncmp(fsdriver, "proxy", 5) == 0) {
+> > +            warn_report(
+> > +                "'-fsdev proxy' and '-virtfs proxy' are deprecated, use "
+> > +                "'local' instead of 'proxy, or consider deploying virtiofsd "
+> > +                "instead"
+> 
+> Ditto.
 
-If you look at the functions carefully, =E2=80=9Cbr=E2=80=9D is a =
-pcie-root-port and =E2=80=9Cpcie.0=E2=80=9D is a pcie-to-pci bridge.
-The bug here is that both the SCSI controller and the pcie-to-pci bridge =
-(pcie.0) were getting attached to the same pcie-root-port. I think the =
-intention of the author was to attach the SCSI controller to pcie-to-pci =
-bridge.
-In any case, I do not see the reason to attach a pcie-root-port here. We =
-can attach the pcie-to-pci bridge on the RC and then attach the SCSI =
-controllers on the bridge.
+Mja, this is a bit different. I can't just drop the first 'instead' as it's
+directly followed by 'proxy'.
 
->=20
->>=20
->> CC: mst@redhat.com
->> CC: imammedo@redhat.com
->> CC: Michael Labiuk <michael.labiuk@virtuozzo.com>
->>=20
->> Signed-off-by: Ani Sinha <anisinha@redhat.com>
->> ---
->> tests/qtest/hd-geo-test.c | 18 ++++++++----------
->> 1 file changed, 8 insertions(+), 10 deletions(-)
->>=20
->> diff --git a/tests/qtest/hd-geo-test.c b/tests/qtest/hd-geo-test.c
->> index 5aa258a2b3..d08bffad91 100644
->> --- a/tests/qtest/hd-geo-test.c
->> +++ b/tests/qtest/hd-geo-test.c
->> @@ -784,14 +784,12 @@ static void test_override_scsi(void)
->>     test_override(args, "pc", expected);
->> }
->>=20
->> -static void setup_pci_bridge(TestArgs *args, const char *id, const =
-char *rootid)
->> +static void setup_pci_bridge(TestArgs *args, const char *id)
->> {
->>=20
->> -    char *root, *br;
->> -    root =3D g_strdup_printf("-device pcie-root-port,id=3D%s", =
-rootid);
->> -    br =3D g_strdup_printf("-device pcie-pci-bridge,bus=3D%s,id=3D%s",=
- rootid, id);
->> +    char *br;
->> +    br =3D g_strdup_printf("-device =
-pcie-pci-bridge,bus=3Dpcie.0,id=3D%s", id);
->>=20
->> -    args->argc =3D append_arg(args->argc, args->argv, ARGV_SIZE, =
-root);
->>     args->argc =3D append_arg(args->argc, args->argv, ARGV_SIZE, br);
->> }
->>=20
->> @@ -811,8 +809,8 @@ static void test_override_scsi_q35(void)
->>     add_drive_with_mbr(args, empty_mbr, 1);
->>     add_drive_with_mbr(args, empty_mbr, 1);
->>     add_drive_with_mbr(args, empty_mbr, 1);
->> -    setup_pci_bridge(args, "pcie.0", "br");
->> -    add_scsi_controller(args, "lsi53c895a", "br", 3);
->> +    setup_pci_bridge(args, "pcie-pci-br");
->> +    add_scsi_controller(args, "lsi53c895a", "pcie-pci-br", 3);
->>     add_scsi_disk(args, 0, 0, 0, 0, 0, 10000, 120, 30);
->>     add_scsi_disk(args, 1, 0, 0, 1, 0, 9000, 120, 30);
->>     add_scsi_disk(args, 2, 0, 0, 2, 0, 1, 0, 0);
->> @@ -868,9 +866,9 @@ static void test_override_virtio_blk_q35(void)
->>     };
->>     add_drive_with_mbr(args, empty_mbr, 1);
->>     add_drive_with_mbr(args, empty_mbr, 1);
->> -    setup_pci_bridge(args, "pcie.0", "br");
->> -    add_virtio_disk(args, 0, "br", 3, 10000, 120, 30);
->> -    add_virtio_disk(args, 1, "br", 4, 9000, 120, 30);
->> +    setup_pci_bridge(args, "pcie-pci-br");
->> +    add_virtio_disk(args, 0, "pcie-pci-br", 3, 10000, 120, 30);
->> +    add_virtio_disk(args, 1, "pcie-pci-br", 4, 9000, 120, 30);
->>     test_override(args, "q35", expected);
->> }
->>=20
->=20
+I rephrase the end to
+
+  '... , or consider deploying virtiofsd as alternative to 9p'.
+
+I wanted to make clear that this requires more than just replacing one CL
+argument.
+
+> 
+> LGTM.
+> 
+> Reviewed-by: Greg Kurz <groug@kaod.org>
+
+Thanks!
+
+> 
+> > +            );
+> > +        }
+> > +
+> >          for (i = 0; i < ARRAY_SIZE(FsDrivers); i++) {
+> >              if (strcmp(FsDrivers[i].name, fsdriver) == 0) {
+> >                  break;
+> > diff --git a/fsdev/virtfs-proxy-helper.c b/fsdev/virtfs-proxy-helper.c
+> > index d9511f429c..144aaf585a 100644
+> > --- a/fsdev/virtfs-proxy-helper.c
+> > +++ b/fsdev/virtfs-proxy-helper.c
+> > @@ -9,6 +9,11 @@
+> >   * the COPYING file in the top-level directory.
+> >   */
+> >  
+> > +/*
+> > + * NOTE: The 9p 'proxy' backend is deprecated (since QEMU 8.1) and will be
+> > + * removed in a future version of QEMU!
+> > + */
+> > +
+> >  #include "qemu/osdep.h"
+> >  #include <glib/gstdio.h>
+> >  #include <sys/resource.h>
+> > @@ -1057,6 +1062,10 @@ int main(int argc, char **argv)
+> >      struct statfs st_fs;
+> >  #endif
+> >  
+> > +    fprintf(stderr, "NOTE: The 9p 'proxy' backend is deprecated (since "
+> > +                    "QEMU 8.1) and will be removed in a future version of "
+> > +                    "QEMU!\n");
+> > +
+> >      prog_name = g_path_get_basename(argv[0]);
+> >  
+> >      is_daemon = true;
+> > diff --git a/hw/9pfs/9p-proxy.c b/hw/9pfs/9p-proxy.c
+> > index 99d115ff0d..905cae6992 100644
+> > --- a/hw/9pfs/9p-proxy.c
+> > +++ b/hw/9pfs/9p-proxy.c
+> > @@ -15,6 +15,11 @@
+> >   * https://wiki.qemu.org/Documentation/9p
+> >   */
+> >  
+> > +/*
+> > + * NOTE: The 9p 'proxy' backend is deprecated (since QEMU 8.1) and will be
+> > + * removed in a future version of QEMU!
+> > + */
+> > +
+> >  #include "qemu/osdep.h"
+> >  #include <sys/socket.h>
+> >  #include <sys/un.h>
+> > diff --git a/hw/9pfs/9p-proxy.h b/hw/9pfs/9p-proxy.h
+> > index b84301d001..9be4718d3e 100644
+> > --- a/hw/9pfs/9p-proxy.h
+> > +++ b/hw/9pfs/9p-proxy.h
+> > @@ -10,6 +10,11 @@
+> >   * the COPYING file in the top-level directory.
+> >   */
+> >  
+> > +/*
+> > + * NOTE: The 9p 'proxy' backend is deprecated (since QEMU 8.1) and will be
+> > + * removed in a future version of QEMU!
+> > + */
+> > +
+> >  #ifndef QEMU_9P_PROXY_H
+> >  #define QEMU_9P_PROXY_H
+> >  
+> > diff --git a/meson.build b/meson.build
+> > index 34306a6205..05c01b72bb 100644
+> > --- a/meson.build
+> > +++ b/meson.build
+> > @@ -4170,7 +4170,7 @@ if have_block
+> >    summary_info += {'Block whitelist (ro)': get_option('block_drv_ro_whitelist')}
+> >    summary_info += {'Use block whitelist in tools': get_option('block_drv_whitelist_in_tools')}
+> >    summary_info += {'VirtFS (9P) support':    have_virtfs}
+> > -  summary_info += {'VirtFS (9P) Proxy Helper support': have_virtfs_proxy_helper}
+> > +  summary_info += {'VirtFS (9P) Proxy Helper support (deprecated)': have_virtfs_proxy_helper}
+> >    summary_info += {'Live block migration': config_host_data.get('CONFIG_LIVE_BLOCK_MIGRATION')}
+> >    summary_info += {'replication support': config_host_data.get('CONFIG_REPLICATION')}
+> >    summary_info += {'bochs support':     get_option('bochs').allowed()}
+> > diff --git a/qemu-options.hx b/qemu-options.hx
+> > index b57489d7ca..3a6c7d3ef9 100644
+> > --- a/qemu-options.hx
+> > +++ b/qemu-options.hx
+> > @@ -1735,7 +1735,9 @@ SRST
+> >          Accesses to the filesystem are done by QEMU.
+> >  
+> >      ``proxy``
+> > -        Accesses to the filesystem are done by virtfs-proxy-helper(1).
+> > +        Accesses to the filesystem are done by virtfs-proxy-helper(1). This
+> > +        option is deprecated (since QEMU 8.1) and will be removed in a future
+> > +        version of QEMU. Use ``local`` instead.
+> >  
+> >      ``synth``
+> >          Synthetic filesystem, only used by QTests.
+> > @@ -1867,6 +1869,8 @@ SRST
+> >  
+> >      ``proxy``
+> >          Accesses to the filesystem are done by virtfs-proxy-helper(1).
+> > +        This option is deprecated (since QEMU 8.1) and will be removed in a
+> > +        future version of QEMU. Use ``local`` instead.
+> >  
+> >      ``synth``
+> >          Synthetic filesystem, only used by QTests.
+> 
+> 
+
 
 
