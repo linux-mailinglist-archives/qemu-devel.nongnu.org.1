@@ -2,41 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 436BE73EB0B
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 21:13:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 224BF73EADD
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 21:05:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDrRr-0004EC-IL; Mon, 26 Jun 2023 15:00:27 -0400
+	id 1qDrRv-0004mr-U3; Mon, 26 Jun 2023 15:00:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qDrRl-0003nw-VH; Mon, 26 Jun 2023 15:00:23 -0400
+ id 1qDrRn-0003yL-RI; Mon, 26 Jun 2023 15:00:23 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qDrRj-0007Ub-8M; Mon, 26 Jun 2023 15:00:20 -0400
+ id 1qDrRl-0007VL-W4; Mon, 26 Jun 2023 15:00:23 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 668EFEFB4;
- Mon, 26 Jun 2023 21:59:10 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 127EBEFB5;
+ Mon, 26 Jun 2023 21:59:11 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id C97A7F7F0;
- Mon, 26 Jun 2023 21:59:08 +0300 (MSK)
-Received: (nullmailer pid 1575333 invoked by uid 1000);
+ by tsrv.corpit.ru (Postfix) with SMTP id 26D49F7F1;
+ Mon, 26 Jun 2023 21:59:09 +0300 (MSK)
+Received: (nullmailer pid 1575336 invoked by uid 1000);
  Mon, 26 Jun 2023 18:59:05 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org, qemu-stable@nongnu.org
-Cc: Ilya Leoshkevich <iii@linux.ibm.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+Cc: Ilya Leoshkevich <iii@linux.ibm.com>, David Hildenbrand <david@redhat.com>,
  Thomas Huth <thuth@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.4 19/43] tests/tcg/s390x: Test single-stepping SVC
-Date: Mon, 26 Jun 2023 21:58:37 +0300
-Message-Id: <20230626185902.1575177-19-mjt@tls.msk.ru>
+Subject: [Stable-7.2.4 20/43] s390x/tcg: Fix CPU address returned by STIDP
+Date: Mon, 26 Jun 2023 21:58:38 +0300
+Message-Id: <20230626185902.1575177-20-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.4-20230626215033@cover.tls.msk.ru>
 References: <qemu-stable-7.2.4-20230626215033@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -63,133 +61,66 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Ilya Leoshkevich <iii@linux.ibm.com>
 
-Add a small test to prevent regressions.
+In qemu-user-s390x, /proc/cpuinfo contains:
 
+	processor 0: version = 00,  identification = 000000,  machine = 8561
+	processor 1: version = 00,  identification = 400000,  machine = 8561
+
+The highest nibble is supposed to contain the CPU address, but it's off
+by 2 bits. Fix the shift value and provide a symbolic constant for it.
+
+With the fix we get:
+
+	processor 0: version = 00,  identification = 000000,  machine = 8561
+	processor 1: version = 00,  identification = 100000,  machine = 8561
+
+Fixes: 076d4d39b65f ("s390x/cpumodel: wire up cpu type + id for TCG")
+Reviewed-by: David Hildenbrand <david@redhat.com>
 Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Acked-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20230510230213.330134-3-iii@linux.ibm.com>
+Message-Id: <20230605113950.1169228-2-iii@linux.ibm.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
-(cherry picked from commit be4a4cb429617a8b6893733b37b6203e4b7bf35b)
+(cherry picked from commit 71b11cbe1c34411238703abe24bfaf2e9712c30d)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/tests/tcg/s390x/Makefile.target b/tests/tcg/s390x/Makefile.target
-index 514ecce87d..cb90d4183d 100644
---- a/tests/tcg/s390x/Makefile.target
-+++ b/tests/tcg/s390x/Makefile.target
-@@ -56,7 +56,16 @@ run-gdbstub-signals-s390x: signals-s390x
- 		--bin $< --test $(S390X_SRC)/gdbstub/test-signals-s390x.py, \
- 	mixing signals and debugging)
- 
--EXTRA_RUNS += run-gdbstub-signals-s390x
-+hello-s390x-asm: CFLAGS+=-nostdlib
-+
-+run-gdbstub-svc: hello-s390x-asm
-+	$(call run-test, $@, $(GDB_SCRIPT) \
-+		--gdb $(HAVE_GDB_BIN) \
-+		--qemu $(QEMU) --qargs "$(QEMU_OPTS)" \
-+		--bin $< --test $(S390X_SRC)/gdbstub/test-svc.py, \
-+	single-stepping svc)
-+
-+EXTRA_RUNS += run-gdbstub-signals-s390x run-gdbstub-svc
- endif
- 
- # MVX versions of sha512
-diff --git a/tests/tcg/s390x/gdbstub/test-svc.py b/tests/tcg/s390x/gdbstub/test-svc.py
-new file mode 100644
-index 0000000000..7851ca7284
---- /dev/null
-+++ b/tests/tcg/s390x/gdbstub/test-svc.py
-@@ -0,0 +1,64 @@
-+"""Test single-stepping SVC.
-+
-+This runs as a sourced script (via -x, via run-test.py)."""
-+from __future__ import print_function
-+import gdb
-+import sys
-+
-+
-+n_failures = 0
-+
-+
-+def report(cond, msg):
-+    """Report success/fail of a test"""
-+    if cond:
-+        print("PASS: {}".format(msg))
-+    else:
-+        print("FAIL: {}".format(msg))
-+        global n_failures
-+        n_failures += 1
-+
-+
-+def run_test():
-+    """Run through the tests one by one"""
-+    report("lghi\t" in gdb.execute("x/i $pc", False, True), "insn #1")
-+    gdb.execute("si")
-+    report("larl\t" in gdb.execute("x/i $pc", False, True), "insn #2")
-+    gdb.execute("si")
-+    report("lghi\t" in gdb.execute("x/i $pc", False, True), "insn #3")
-+    gdb.execute("si")
-+    report("svc\t" in gdb.execute("x/i $pc", False, True), "insn #4")
-+    gdb.execute("si")
-+    report("xgr\t" in gdb.execute("x/i $pc", False, True), "insn #5")
-+    gdb.execute("si")
-+    report("svc\t" in gdb.execute("x/i $pc", False, True), "insn #6")
-+    gdb.execute("si")
-+
-+
-+def main():
-+    """Prepare the environment and run through the tests"""
-+    try:
-+        inferior = gdb.selected_inferior()
-+        print("ATTACHED: {}".format(inferior.architecture().name()))
-+    except (gdb.error, AttributeError):
-+        print("SKIPPING (not connected)")
-+        exit(0)
-+
-+    if gdb.parse_and_eval('$pc') == 0:
-+        print("SKIP: PC not set")
-+        exit(0)
-+
-+    try:
-+        # These are not very useful in scripts
-+        gdb.execute("set pagination off")
-+        gdb.execute("set confirm off")
-+
-+        # Run the actual tests
-+        run_test()
-+    except gdb.error:
-+        report(False, "GDB Exception: {}".format(sys.exc_info()[0]))
-+    print("All tests complete: %d failures" % n_failures)
-+    exit(n_failures)
-+
-+
-+main()
-diff --git a/tests/tcg/s390x/hello-s390x-asm.S b/tests/tcg/s390x/hello-s390x-asm.S
-new file mode 100644
-index 0000000000..2e9faa1604
---- /dev/null
-+++ b/tests/tcg/s390x/hello-s390x-asm.S
-@@ -0,0 +1,20 @@
+diff --git a/target/s390x/cpu_models.c b/target/s390x/cpu_models.c
+index c3a4f80633..a85c56b4ee 100644
+--- a/target/s390x/cpu_models.c
++++ b/target/s390x/cpu_models.c
+@@ -604,8 +604,8 @@ void s390_realize_cpu_model(CPUState *cs, Error **errp)
+ #if !defined(CONFIG_USER_ONLY)
+     cpu->env.cpuid = s390_cpuid_from_cpu_model(cpu->model);
+     if (tcg_enabled()) {
+-        /* basic mode, write the cpu address into the first 4 bit of the ID */
+-        cpu->env.cpuid = deposit64(cpu->env.cpuid, 54, 4, cpu->env.core_id);
++        cpu->env.cpuid = deposit64(cpu->env.cpuid, CPU_PHYS_ADDR_SHIFT,
++                                   CPU_PHYS_ADDR_BITS, cpu->env.core_id);
+     }
+ #endif
+ }
+diff --git a/target/s390x/cpu_models.h b/target/s390x/cpu_models.h
+index fb1adc8b21..cc7305ec21 100644
+--- a/target/s390x/cpu_models.h
++++ b/target/s390x/cpu_models.h
+@@ -96,10 +96,18 @@ static inline bool s390_known_cpu_type(uint16_t type)
+ {
+     return s390_get_gen_for_cpu_type(type) != 0;
+ }
++#define CPU_ID_SHIFT 32
++#define CPU_ID_BITS 24
 +/*
-+ * Hello, World! in assembly.
++ * When cpu_id_format is 0 (basic mode), the leftmost 4 bits of cpu_id contain
++ * the rightmost 4 bits of the physical CPU address.
 + */
-+
-+.globl _start
-+_start:
-+
-+/* puts("Hello, World!"); */
-+lghi %r2,1
-+larl %r3,foo
-+lghi %r4,foo_end-foo
-+svc 4
-+
-+/* exit(0); */
-+xgr %r2,%r2
-+svc 1
-+
-+.align 2
-+foo: .asciz "Hello, World!\n"
-+foo_end:
++#define CPU_PHYS_ADDR_BITS 4
++#define CPU_PHYS_ADDR_SHIFT (CPU_ID_SHIFT + CPU_ID_BITS - CPU_PHYS_ADDR_BITS)
+ static inline uint64_t s390_cpuid_from_cpu_model(const S390CPUModel *model)
+ {
+     return ((uint64_t)model->cpu_ver << 56) |
+-           ((uint64_t)model->cpu_id << 32) |
++           ((uint64_t)model->cpu_id << CPU_ID_SHIFT) |
+            ((uint64_t)model->def->type << 16) |
+            (model->def->gen == 7 ? 0 : (uint64_t)model->cpu_id_format << 15);
+ }
 -- 
 2.39.2
 
