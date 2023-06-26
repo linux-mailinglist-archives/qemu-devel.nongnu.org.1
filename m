@@ -2,93 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 212BF73E076
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FC8573E077
 	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 15:20:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDm8F-0007NP-5A; Mon, 26 Jun 2023 09:19:51 -0400
+	id 1qDm8h-0007UY-Lo; Mon, 26 Jun 2023 09:20:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qDm7u-0007L4-63
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 09:19:33 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qDm8d-0007Ts-E5
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 09:20:15 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qDm7r-0006Zb-Dt
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 09:19:29 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qDm8b-0006eI-Gy
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 09:20:15 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687785566;
+ s=mimecast20190719; t=1687785611;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=uw4Ghipn/md9Ju4eYIYem92Up4Q6wlDsSsgH91hl/t4=;
- b=PvKl3cTx43lZ/MSqaEd+43jiqAIpNeJgSi6wYmUcySj/BJ+l574atra3oEyAYSJqV1x1kz
- 0JCN0wsD9U/vbTKF5TE8ZB30WbyfP64Q0uDI+GGdYIH9Ia65ugY+K7nQ4iB60DuTNrFtz8
- yfMN1PFIRPxih68aS/9SbPlui6PutN0=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=5SIHcRSu5RS08qxVIJkI2u2EDrCC22Bh55Dd5dt/Czw=;
+ b=GVP0iDVz6HgxeCN2BLbShTjkuIvBT7BEeHKKbquV7PPnE3jG+32YJpA8jde59fxrTzJm81
+ /WGgMO4tORFzfWVclhRLwjylngoruXkAaaHEmbofWvxhzQEsZ3RTjW74RA40ptghSjMqZL
+ +tG/EGh2/gzmFLypqFcr5QyKcgMTSkU=
+Received: from mail-oi1-f198.google.com (mail-oi1-f198.google.com
+ [209.85.167.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-259-8poo939hOsiqmVNtK6FPYQ-1; Mon, 26 Jun 2023 09:19:24 -0400
-X-MC-Unique: 8poo939hOsiqmVNtK6FPYQ-1
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-313ead680efso665285f8f.1
- for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 06:19:24 -0700 (PDT)
+ us-mta-582-28H_1zcdNaSiwL-9pOFFXA-1; Mon, 26 Jun 2023 09:20:09 -0400
+X-MC-Unique: 28H_1zcdNaSiwL-9pOFFXA-1
+Received: by mail-oi1-f198.google.com with SMTP id
+ 5614622812f47-39eced1ce28so2858009b6e.3
+ for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 06:20:09 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687785563; x=1690377563;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=uw4Ghipn/md9Ju4eYIYem92Up4Q6wlDsSsgH91hl/t4=;
- b=RNWYU3jg2BoVbqZJOJi6SABUSju2UHW25KFGiiOPhWlb1dDatq/+I/n4w/8hDsxSQa
- APuVMr2phICmhDtP/Iuu+26fceDjyK00oDEu/dE4vIqVutmfFMhjUN7T0DuSyZaYxtHP
- k3fxXawZPawA+lW/vcVx2V1+RftJgG4u9mTh2BsJ4CkAv9Cj1fjeMg315MuKJ5Wy0yRq
- 8n9UvQq7W5eYmx3sanbh+dRYWMAN0GGkJVy+rf6lUBVM8vI1c8vqzpn9hIKH3O6LjIe0
- Z7As0lCU2NC43Uu6DO573VrkNVlqqPexYjWSMpAaKPsplgoHL+n/RR0+H+7Af7xKAmlH
- gmEQ==
-X-Gm-Message-State: AC+VfDxDCpMWffz4+MBx7LXUeq8304bCZmkpj8t2Ni0xC/AJhpv5gEa1
- 8Mvop4ZeK413CADQtyMvdWAhLwX0+pWujl3UI7YtBxK1JUaPW8ikqo6Q+H9T5HY3vws0daDUDQD
- cd2IKEvJw3fcFJqsfQygyWHY=
-X-Received: by 2002:adf:ea45:0:b0:30f:df4e:217d with SMTP id
- j5-20020adfea45000000b0030fdf4e217dmr24801088wrn.6.1687785563219; 
- Mon, 26 Jun 2023 06:19:23 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7TmaABalUetlEJi+TqMTidWiRXSMa/3aNzmqyi9TEcQTPUsam3hOsdt2ibAT2YX/NhzrxNcQ==
-X-Received: by 2002:adf:ea45:0:b0:30f:df4e:217d with SMTP id
- j5-20020adfea45000000b0030fdf4e217dmr24801066wrn.6.1687785562800; 
- Mon, 26 Jun 2023 06:19:22 -0700 (PDT)
-Received: from redhat.com ([2.52.156.102]) by smtp.gmail.com with ESMTPSA id
- m9-20020adff389000000b00313f551b032sm1614640wro.53.2023.06.26.06.19.20
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 26 Jun 2023 06:19:22 -0700 (PDT)
-Date: Mon, 26 Jun 2023 09:19:18 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Ani Sinha <anisinha@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
- =?iso-8859-1?Q?=22Daniel_P=2E_Berrang=E9=22?= <berrange@redhat.com>,
- Thomas Huth <thuth@redhat.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Igor Mammedov <imammedo@redhat.com>,
- Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
- qemu-devel@nongnu.org
-Subject: Re: [PATCH v3] acpi/tests/bios-tables-test: make iasl tool handling
- simpler
-Message-ID: <20230626091206-mutt-send-email-mst@kernel.org>
-References: <20230522103039.19111-1-anisinha@redhat.com>
- <20230626084401-mutt-send-email-mst@kernel.org>
- <9B31F63A-164A-42EF-9387-1F6A56BC9BEA@redhat.com>
+ d=1e100.net; s=20221208; t=1687785609; x=1690377609;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=5SIHcRSu5RS08qxVIJkI2u2EDrCC22Bh55Dd5dt/Czw=;
+ b=RzXRCQlns8JMTul9x5Z0dVb0aD8ImfEU5oYGTGdM/9vy8zEM9zqMY1NG0O1XCGhIEq
+ QrOP0kWjn8Njwz7DmVbtElfTL8vXvlyAuxbl5IPcsNqpwpStd77ZmTgcjaFQd9YsSteA
+ OhzGWbRFm3kdtQV1lVI+N9XJgQnCnmiPfniO+YdjKEbjpwyORRknUErLkYJdSJ9Z4RWT
+ uKZZel+eg/2h6yWP9ZbbEvW5EsmCOpSLLnOZieCOJLvM1Aa4epOEcJ2pYv1IMz9kkdZS
+ 0Kdwskht6lOs6pF0LznMm1Vy3ldJ1JFxWyQB8z4fuxd7V4kLcvBHz240sGoI1gl9PNzp
+ wMzA==
+X-Gm-Message-State: AC+VfDzOvYGeKjrT2nGGwxijEep2EOBEPR7ZQccF3Jp3bYXSoYH3pgXE
+ zo3+IxbzhtnuFhWZi/7crqXwPBtID5Qg959+Chkm5QLFFa3Zk+wJteCMWu2oLk5RK1wP84OE8RH
+ 89lc6d45JjxcUsFT6+1/4MJ8=
+X-Received: by 2002:a05:6808:f12:b0:399:169:75d4 with SMTP id
+ m18-20020a0568080f1200b00399016975d4mr30096083oiw.36.1687785608870; 
+ Mon, 26 Jun 2023 06:20:08 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4hibKouGLVQB3koiCawODqYIm2rOjTmxf04RwHxU/zSQdZysFWy4Mf821oqgqkThFAZk9MgA==
+X-Received: by 2002:a05:6808:f12:b0:399:169:75d4 with SMTP id
+ m18-20020a0568080f1200b00399016975d4mr30096060oiw.36.1687785608631; 
+ Mon, 26 Jun 2023 06:20:08 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:280:24f0:576b:abc6:6396:ed4a?
+ ([2a01:e0a:280:24f0:576b:abc6:6396:ed4a])
+ by smtp.gmail.com with ESMTPSA id
+ fa14-20020a05622a4cce00b003ff1f891206sm3025259qtb.61.2023.06.26.06.20.06
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 26 Jun 2023 06:20:08 -0700 (PDT)
+Message-ID: <cd94caa3-cb16-f44e-6ffc-2e8fc37e9441@redhat.com>
+Date: Mon, 26 Jun 2023 15:20:05 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9B31F63A-164A-42EF-9387-1F6A56BC9BEA@redhat.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH 3/3] vfio/migration: Make VFIO migration non-experimental
+Content-Language: en-US
+To: Avihai Horon <avihaih@nvidia.com>, qemu-devel@nongnu.org
+Cc: Alex Williamson <alex.williamson@redhat.com>,
+ Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Leonardo Bras <leobras@redhat.com>, Zhenzhong Duan
+ <zhenzhong.duan@intel.com>, Yishai Hadas <yishaih@nvidia.com>,
+ Jason Gunthorpe <jgg@nvidia.com>, Maor Gottlieb <maorg@nvidia.com>,
+ Kirti Wankhede <kwankhede@nvidia.com>, Tarun Gupta <targupta@nvidia.com>,
+ Joao Martins <joao.m.martins@oracle.com>
+References: <20230626082353.18535-1-avihaih@nvidia.com>
+ <20230626082353.18535-4-avihaih@nvidia.com>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>
+In-Reply-To: <20230626082353.18535-4-avihaih@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -105,247 +108,150 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jun 26, 2023 at 06:33:14PM +0530, Ani Sinha wrote:
-> 
-> 
-> > On 26-Jun-2023, at 6:28 PM, Michael S. Tsirkin <mst@redhat.com> wrote:
-> > 
-> > On Mon, May 22, 2023 at 04:00:39PM +0530, Ani Sinha wrote:
-> >> Currently the meson based QEMU build process locates the iasl binary from the
-> >> current PATH and other locations [1] and uses that to set CONFIG_IASL in
-> >> config-host.h header.This is then used at compile time by bios-tables-test to
-> >> set iasl path.
-> >> 
-> >> This has two disadvantages:
-> >> - If iasl was not previously installed in the PATH, one has to install iasl
-> >>   and rebuild QEMU in order to regenerate the header and pick up the found
-> >>   iasl location. One cannot simply use the existing bios-tables-test binary
-> >>   because CONFIG_IASL is only set during the QEMU build time by meson and
-> >>   then bios-tables-test has to be rebuilt with CONFIG_IASL set in order to
-> >>   use iasl.
-> >> - Sometimes, the stock iasl that comes with distributions is simply not good
-> >>   enough because it does not support the latest ACPI changes - newly
-> >>   introduced tables or new table attributes etc. In order to test ACPI code
-> >>   in QEMU, one has to clone the latest acpica upstream repository and
-> >>   rebuild iasl in order to get support for it. In those cases, one may want
-> >>   the test to use the iasl binary from a non-standard location.
-> >> 
-> >> In order to overcome the above two disadvantages, we set a default iasl path
-> >> as "/usr/bin/iasl". bios-tables-test also checks for the environment variable
-> >> IASL_PATH that can be set by the developer. IASL_PATH passed from the
-> >> environment overrides the default path. This way developers can point
-> >> IASL_PATH environment variable to a possibly a non-standard custom build
-> >> binary and quickly run bios-tables-test without rebuilding. If the default
-> >> path of iasl changes, one simply needs to update the default path and rebuild
-> >> just the test, not whole QEMU.
-> >> 
-> >> [1] https://mesonbuild.com/Reference-manual_functions.html#find_program
-> >> 
-> >> CC: alex.bennee@linaro.org
-> >> CC: pbonzini@redhat.com
-> >> Signed-off-by: Ani Sinha <anisinha@redhat.com>
-> > 
-> > I don't much like environment variables since they are
-> > not discoverable.
-> 
-> I do have this:
-> 
-> +                " Set IASL_PATH environment variable to the path of iasl binary\n"
-> +                " if iasl is installed somewhere other than %s.\n",
+Hello Avihai,
 
-You only see this if there's a diff.
-
-And then people stick this in their scripts and are scratching their
-heads trying to figure out why is a wrong iasl running.  Or someone
-comes up with a different use for IASL_PATH and they conflict.
-
+On 6/26/23 10:23, Avihai Horon wrote:
+> The major parts of VFIO migration are supported today in QEMU. This
+> includes basic VFIO migration, device dirty page tracking and precopy
+> support.
 > 
-> > My preference would be to have
-> > configure output CONFIG_IASL to a new header
-> > (e.g. config-bios-tables-test.h ?)
-> > 
-> > meson then will be smart enough not to rebuild everything
-> > if you just change this singe flag.
-> > 
-> > 
-> >> ---
-> >> meson.build                    | 10 ----------
-> >> meson_options.txt              |  2 --
-> >> scripts/meson-buildoptions.sh  |  2 --
-> >> tests/qtest/bios-tables-test.c | 28 ++++++++++++++++++++--------
-> >> 4 files changed, 20 insertions(+), 22 deletions(-)
-> >> 
-> >> changelog:
-> >> v3: incorporated suggestion from MST. Simplify it even more and
-> >> remove all dependency with meson build system. Set a default iasl
-> >> path which can be overridden by an environment variable.
-> >> 
-> >> v2:
-> >> addressed comments from v1. CONFIG_IASL is now an environment
-> >> variable and no new environment variable is introduced.
-> >> Top level meson.build now does not set CONFIG_IASL in the
-> >> platform header. References to iasl has been removed from other
-> >> files. Test doc is updated. For example:
-> >> 
-> >> "to see ASL diff between mismatched files install IASL, set CONFIG_IASL environment variable to the path of iasl binary,
-> >> and run 'QTEST_QEMU_BINARY=<path to QEMU binary to test> V=1 ./tests/qtest/bios-tables-test' from build directory.
-> >> Alternatively run 'V=1 make check-qtest -B' from build dir."
-> >> 
-> >> 
-> >> One drawback of this approach is that meson overrides the values
-> >> of environment variables that are passed from the OS command line
-> >> with the values it sets. So if CONFIG_IASL is passed as an
-> >> env variable by the developer while running "make check-qtest" and
-> >> meson finds iasl in the path, meson will override the value the
-> >> developer provided with the one that it found. I have not seen a
-> >> way to check for OS env from meson.build like we do os.environ.get()
-> >> in python.
-> >> Other than the above, other cases are tested. In absence of iasl,
-> >> the developer can provide their own CONFIG_IASL and path to a custom
-> >> binary and the test picks it up when run from make check-qtest.
-> >> Once iasl is installed, make check-qtest -B will force meson to
-> >> retest iasl path and pass it to the test as an enviroinment.
-> >> When running the test directly, one has to explicitly pass the path
-> >> of iasl in the commnand line as no meson is involved there. There is
-> >> no automatic PATH discovery in the test.
-> >> 
-> >> diff --git a/meson.build b/meson.build
-> >> index 25a4b9f2c1..18c7b669d9 100644
-> >> --- a/meson.build
-> >> +++ b/meson.build
-> >> @@ -179,12 +179,6 @@ if 'dtrace' in get_option('trace_backends')
-> >>   endif
-> >> endif
-> >> 
-> >> -if get_option('iasl') == ''
-> >> -  iasl = find_program('iasl', required: false)
-> >> -else
-> >> -  iasl = find_program(get_option('iasl'), required: true)
-> >> -endif
-> >> -
-> >> ##################
-> >> # Compiler flags #
-> >> ##################
-> >> @@ -1791,9 +1785,6 @@ foreach k : get_option('trace_backends')
-> >> endforeach
-> >> config_host_data.set_quoted('CONFIG_TRACE_FILE', get_option('trace_file'))
-> >> config_host_data.set_quoted('CONFIG_TLS_PRIORITY', get_option('tls_priority'))
-> >> -if iasl.found()
-> >> -  config_host_data.set_quoted('CONFIG_IASL', iasl.full_path())
-> >> -endif
-> >> config_host_data.set_quoted('CONFIG_BINDIR', get_option('prefix') / get_option('bindir'))
-> >> config_host_data.set_quoted('CONFIG_PREFIX', get_option('prefix'))
-> >> config_host_data.set_quoted('CONFIG_QEMU_CONFDIR', get_option('prefix') / qemu_confdir)
-> >> @@ -3761,7 +3752,6 @@ summary_info += {'sphinx-build':      sphinx_build}
-> >> if config_host.has_key('HAVE_GDB_BIN')
-> >>   summary_info += {'gdb':             config_host['HAVE_GDB_BIN']}
-> >> endif
-> >> -summary_info += {'iasl':              iasl}
-> >> summary_info += {'genisoimage':       config_host['GENISOIMAGE']}
-> >> if targetos == 'windows' and have_ga
-> >>   summary_info += {'wixl':            wixl}
-> >> diff --git a/meson_options.txt b/meson_options.txt
-> >> index d8330a1f71..9149df8004 100644
-> >> --- a/meson_options.txt
-> >> +++ b/meson_options.txt
-> >> @@ -14,8 +14,6 @@ option('smbd', type : 'string', value : '',
-> >>        description: 'Path to smbd for slirp networking')
-> >> option('sphinx_build', type : 'string', value : 'sphinx-build',
-> >>        description: 'Use specified sphinx-build for building document')
-> >> -option('iasl', type : 'string', value : '',
-> >> -       description: 'Path to ACPI disassembler')
-> >> option('tls_priority', type : 'string', value : 'NORMAL',
-> >>        description: 'Default TLS protocol/cipher priority string')
-> >> option('default_devices', type : 'boolean', value : true,
-> >> diff --git a/scripts/meson-buildoptions.sh b/scripts/meson-buildoptions.sh
-> >> index 2805d1c145..98ca2e53af 100644
-> >> --- a/scripts/meson-buildoptions.sh
-> >> +++ b/scripts/meson-buildoptions.sh
-> >> @@ -48,7 +48,6 @@ meson_options_help() {
-> >>   printf "%s\n" '                           dtrace/ftrace/log/nop/simple/syslog/ust)'
-> >>   printf "%s\n" '  --firmwarepath=VALUES    search PATH for firmware files [share/qemu-'
-> >>   printf "%s\n" '                           firmware]'
-> >> -  printf "%s\n" '  --iasl=VALUE             Path to ACPI disassembler'
-> >>   printf "%s\n" '  --includedir=VALUE       Header file directory [include]'
-> >>   printf "%s\n" '  --interp-prefix=VALUE    where to find shared libraries etc., use %M for'
-> >>   printf "%s\n" '                           cpu name [/usr/gnemul/qemu-%M]'
-> >> @@ -304,7 +303,6 @@ _meson_option_parse() {
-> >>     --disable-hexagon-idef-parser) printf "%s" -Dhexagon_idef_parser=false ;;
-> >>     --enable-hvf) printf "%s" -Dhvf=enabled ;;
-> >>     --disable-hvf) printf "%s" -Dhvf=disabled ;;
-> >> -    --iasl=*) quote_sh "-Diasl=$2" ;;
-> >>     --enable-iconv) printf "%s" -Diconv=enabled ;;
-> >>     --disable-iconv) printf "%s" -Diconv=disabled ;;
-> >>     --includedir=*) quote_sh "-Dincludedir=$2" ;;
-> >> diff --git a/tests/qtest/bios-tables-test.c b/tests/qtest/bios-tables-test.c
-> >> index 7fd88b0e9c..570f2d714d 100644
-> >> --- a/tests/qtest/bios-tables-test.c
-> >> +++ b/tests/qtest/bios-tables-test.c
-> >> @@ -69,6 +69,7 @@
-> >> #define MACHINE_Q35 "q35"
-> >> 
-> >> #define ACPI_REBUILD_EXPECTED_AML "TEST_ACPI_REBUILD_AML"
-> >> +#define DEFAULT_IASL_PATH "/usr/bin/iasl"
-> >> 
-> >> #define OEM_ID             "TEST"
-> >> #define OEM_TABLE_ID       "OEM"
-> >> @@ -102,11 +103,7 @@ typedef struct {
-> >> 
-> >> static char disk[] = "tests/acpi-test-disk-XXXXXX";
-> >> static const char *data_dir = "tests/data/acpi";
-> >> -#ifdef CONFIG_IASL
-> >> -static const char *iasl = CONFIG_IASL;
-> >> -#else
-> >> -static const char *iasl;
-> >> -#endif
-> >> +static const char *iasl = DEFAULT_IASL_PATH;
-> >> 
-> >> static int verbosity_level;
-> >> 
-> >> @@ -441,6 +438,14 @@ static void test_acpi_asl(test_data *data)
-> >>     test_data exp_data = {};
-> >>     gboolean exp_err, err, all_tables_match = true;
-> >> 
-> >> +    if (getenv("IASL_PATH")) {
-> >> +        iasl = getenv("IASL_PATH");
-> >> +    }
-> >> +
-> >> +    if (access(iasl, F_OK | X_OK) < 0) {
-> >> +        iasl = NULL;
-> >> +    }
-> >> +
-> >>     exp_data.tables = load_expected_aml(data);
-> >>     dump_aml_files(data, false);
-> >>     for (i = 0; i < data->tables->len; ++i) {
-> >> @@ -473,6 +478,10 @@ static void test_acpi_asl(test_data *data)
-> >>             continue;
-> >>         }
-> >> 
-> >> +        if (iasl && verbosity_level >= 2) {
-> >> +            fprintf(stderr, "Using iasl: %s\n", iasl);
-> >> +        }
-> >> +
-> >>         err = load_asl(data->tables, sdt);
-> >>         asl = normalize_asl(sdt->asl);
-> >> 
-> >> @@ -528,9 +537,12 @@ static void test_acpi_asl(test_data *data)
-> >>         g_string_free(exp_asl, true);
-> >>     }
-> >>     if (!iasl && !all_tables_match) {
-> >> -        fprintf(stderr, "to see ASL diff between mismatched files install IASL,"
-> >> -                " rebuild QEMU from scratch and re-run tests with V=1"
-> >> -                " environment variable set");
-> >> +        fprintf(stderr, "to see ASL diff between mismatched files install\n"
-> >> +                " IASL & re-run the test with V=1 environment variable set.\n"
-> >> +                " Set IASL_PATH environment variable to the path of iasl binary\n"
-> >> +                " if iasl is installed somewhere other than %s.\n",
-> >> +                DEFAULT_IASL_PATH
-> >> +                );
-> >>     }
-> >>     g_assert(all_tables_match);
-> >> 
-> >> -- 
-> >> 2.39.1
-> > 
+> Thus, at this point in time, it seems appropriate to make VFIO migration
+> non-experimental: remove the x prefix from enable_migration property,
+> change it to ON_OFF_AUTO and let the default value be AUTO.
+> 
+> In addition, make the following adjustments:
+> 1. Require device dirty tracking support when enable_migration is AUTO
+>     (i.e., not explicitly enabled). This is because device dirty tracking
+>     is currently the only method to do dirty page tracking, which is
+>     essential for migrating in a reasonable downtime. 
+
+hmm, I don't think QEMU should decide to disable a feature for all
+devices supposedly because it could be slow for some. That's too
+restrictive. What about devices with have small states ? for which
+the downtime would be reasonable even without device dirty tracking
+support.
+
+
+> Setting
+>     enable_migration to ON will not require device dirty tracking.
+> 2. Make migration blocker messages more elaborate.
+> 3. Remove error prints in vfio_migration_query_flags().
+> 4. Remove a redundant assignment in vfio_migration_realize().
+> 
+> Signed-off-by: Avihai Horon <avihaih@nvidia.com>
+> ---
+>   include/hw/vfio/vfio-common.h |  2 +-
+>   hw/vfio/migration.c           | 29 ++++++++++++++++-------------
+>   hw/vfio/pci.c                 |  4 ++--
+>   3 files changed, 19 insertions(+), 16 deletions(-)
+> 
+> diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
+> index b4c28f318f..387eabde60 100644
+> --- a/include/hw/vfio/vfio-common.h
+> +++ b/include/hw/vfio/vfio-common.h
+> @@ -139,7 +139,7 @@ typedef struct VFIODevice {
+>       bool needs_reset;
+>       bool no_mmap;
+>       bool ram_block_discard_allowed;
+> -    bool enable_migration;
+> +    OnOffAuto enable_migration;
+>       VFIODeviceOps *ops;
+>       unsigned int num_irqs;
+>       unsigned int num_regions;
+> diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
+> index 79eb81dfd7..d8e0848635 100644
+> --- a/hw/vfio/migration.c
+> +++ b/hw/vfio/migration.c
+> @@ -731,14 +731,6 @@ static int vfio_migration_query_flags(VFIODevice *vbasedev, uint64_t *mig_flags)
+>       feature->argsz = sizeof(buf);
+>       feature->flags = VFIO_DEVICE_FEATURE_GET | VFIO_DEVICE_FEATURE_MIGRATION;
+>       if (ioctl(vbasedev->fd, VFIO_DEVICE_FEATURE, feature)) {
+> -        if (errno == ENOTTY) {
+> -            error_report("%s: VFIO migration is not supported in kernel",
+> -                         vbasedev->name);
+> -        } else {
+> -            error_report("%s: Failed to query VFIO migration support, err: %s",
+> -                         vbasedev->name, strerror(errno));
+> -        }
+> -
+>           return -errno;
+>       }
+>   
+> @@ -831,14 +823,28 @@ void vfio_reset_bytes_transferred(void)
+>   
+>   int vfio_migration_realize(VFIODevice *vbasedev, Error **errp)
+>   {
+> -    int ret = -ENOTSUP;
+> +    int ret;
+>   
+> -    if (!vbasedev->enable_migration) {
+> +    if (vbasedev->enable_migration == ON_OFF_AUTO_OFF) {
+> +        error_setg(&vbasedev->migration_blocker,
+> +                   "%s: Migration is disabled for VFIO device", vbasedev->name);
+>           goto add_blocker;
+>       }
+>   
+>       ret = vfio_migration_init(vbasedev);
+>       if (ret) {
+
+It would be good to keep the message for 'errno == ENOTTY' as it was in
+vfio_migration_query_flags(). When migration fails, it is an important
+information to know that it is because the VFIO PCI host device driver
+doesn't support the feature. The root cause could be deep below in FW or
+how the VF was set up.
+
+> +        error_setg(&vbasedev->migration_blocker,
+> +                   "%s: Migration couldn't be initialized for VFIO device, "
+> +                   "err: %d (%s)",
+> +                   vbasedev->name, ret, strerror(-ret));
+> +        goto add_blocker;
+> +    }
+> +
+> +    if (vbasedev->enable_migration == ON_OFF_AUTO_AUTO &&
+> +        !vbasedev->dirty_pages_supported) {
+
+I don't agree with this test.
+
+> +        error_setg(&vbasedev->migration_blocker,
+> +                   "%s: VFIO device doesn't support device dirty tracking",
+> +                   vbasedev->name);
+>           goto add_blocker;
+>       }
+I agree that with ON_OFF_AUTO_AUTO, errors at realize time should be recorded
+in a migration blocker. What about the ON_OFF_AUTO_ON case ? If migration was
+explicitly requested for the device and the conditions on the host are not met,
+I think realize should fail and the machine abort.
+
+Thanks,
+
+C.
+
+
+
+> @@ -856,9 +862,6 @@ int vfio_migration_realize(VFIODevice *vbasedev, Error **errp)
+>       return 0;
+>   
+>   add_blocker:
+> -    error_setg(&vbasedev->migration_blocker,
+> -               "VFIO device doesn't support migration");
+> -
+>       ret = migrate_add_blocker(vbasedev->migration_blocker, errp);
+>       if (ret < 0) {
+>           error_free(vbasedev->migration_blocker);
+> diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+> index 73874a94de..48584e3b01 100644
+> --- a/hw/vfio/pci.c
+> +++ b/hw/vfio/pci.c
+> @@ -3347,8 +3347,8 @@ static Property vfio_pci_dev_properties[] = {
+>                       VFIO_FEATURE_ENABLE_REQ_BIT, true),
+>       DEFINE_PROP_BIT("x-igd-opregion", VFIOPCIDevice, features,
+>                       VFIO_FEATURE_ENABLE_IGD_OPREGION_BIT, false),
+> -    DEFINE_PROP_BOOL("x-enable-migration", VFIOPCIDevice,
+> -                     vbasedev.enable_migration, false),
+> +    DEFINE_PROP_ON_OFF_AUTO("enable-migration", VFIOPCIDevice,
+> +                            vbasedev.enable_migration, ON_OFF_AUTO_AUTO),
+>       DEFINE_PROP_BOOL("x-no-mmap", VFIOPCIDevice, vbasedev.no_mmap, false),
+>       DEFINE_PROP_BOOL("x-balloon-allowed", VFIOPCIDevice,
+>                        vbasedev.ram_block_discard_allowed, false),
 
 
