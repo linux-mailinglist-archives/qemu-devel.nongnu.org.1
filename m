@@ -2,70 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F151073E045
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 15:14:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7918873E050
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 15:16:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDm2a-0001To-4P; Mon, 26 Jun 2023 09:14:00 -0400
+	id 1qDm4L-0003Pl-6v; Mon, 26 Jun 2023 09:15:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
- id 1qDm2O-0001L4-FL; Mon, 26 Jun 2023 09:13:49 -0400
-Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
- id 1qDm2L-00051w-HW; Mon, 26 Jun 2023 09:13:47 -0400
-Received: by mail-ej1-x62b.google.com with SMTP id
- a640c23a62f3a-98df6bc0048so257710566b.1; 
- Mon, 26 Jun 2023 06:13:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=jms.id.au; s=google; t=1687785223; x=1690377223;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=IPGa6l7CEQ/9n5OV+kLLjjRXIgkLg9+aV5jo1rPYVF0=;
- b=Qeu+yfazjlUBRhTjHflcv5GH16FYwQLex5SnJYhxEP2j6dpYvZvCNgUOiKD8dpUbjr
- r0qcQtq49nLvD4n7oSnuoqIuNI5EfzRCibDdVNGBlBUkmwdPBEqTuKsE/e0qPabE3bpI
- TKPAqNyBE2Blb0rByuXZxqCRxSzlQkaAMHyLw=
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1qDm4D-0003J1-AW
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 09:15:42 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1qDm4B-0005Z9-5z
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 09:15:40 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1687785337;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=jqE6L9equjuRDpXRwMcpi501KIIiUiTT7qGfw8nB+oI=;
+ b=XyHIO8P01mXZ+J/iomgFDNRwZsylytF27bMFzRqLz0g5cE3Eipwt4gP5D+lN8RncC2aF15
+ 7rXxoEf4YDI3GMVzZ21e5cAboW5qmodqQstlKsWK2gNluVcBzqxlMA4+sPWj88PWw9XUix
+ ntV2wmkmJkHGVv7fGFdrh1dPRSsGMeM=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-333-4VF5H5TDOkqXOJeKL_MzCw-1; Mon, 26 Jun 2023 09:15:34 -0400
+X-MC-Unique: 4VF5H5TDOkqXOJeKL_MzCw-1
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-98933d4d4c1so202214966b.0
+ for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 06:15:33 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687785223; x=1690377223;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=IPGa6l7CEQ/9n5OV+kLLjjRXIgkLg9+aV5jo1rPYVF0=;
- b=ezODo2FP7vrNV6ISFmlI9pxIENAwEYgxleGo1Ic+xshQ6hz8VGSD5uYBUr4B43ff73
- s3jxCuLuG7ioLNLWsSanGM/WgCmfyJnHFUAczHQhp+LNANOATIxt4Gq1xsHpwGEZsT31
- 8QUgDv7mOQV5TJTnBu7IgidxCGdy0ykPayiu/wuUcbMYhHxmlY5abH17L4Nm7zXssUSy
- os2vpDCxQH4mS2DSHC2hxzg5A7VS3Gsr2HBpAYWAxD9ajpy9hRiWY2ytcoM0D/xRH/1q
- DW7bQ89oqAZ+1Ym2gqIOUHROhAZFIXRle3l1b2zNfpQ7E+//UonBlJp+CJTua87Vd8fO
- 3tfw==
-X-Gm-Message-State: AC+VfDwErMX6qHBfz0NNWaiRu+0d3Y0W0oTxx411X6c0wrSeAXUrhbo8
- lRCe6WWPwjpQfUgmu7ElDo9GRGrwPkmRSvhDMJA=
-X-Google-Smtp-Source: ACHHUZ4H3Em4qLyuqCArk7C8ms4SkpE/ViI9bL2VRyF8vwqho5UTZm0yAlfcYcpQtEHjnsXw9Fxks+R3qADz+R7BhGk=
-X-Received: by 2002:a17:907:6d1a:b0:988:6193:29d8 with SMTP id
- sa26-20020a1709076d1a00b00988619329d8mr19954666ejc.57.1687785222641; Mon, 26
- Jun 2023 06:13:42 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1687785332; x=1690377332;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=jqE6L9equjuRDpXRwMcpi501KIIiUiTT7qGfw8nB+oI=;
+ b=PbkOOo37TC2H/H5WfjdlXtd+t65uS7knkRQH7LEzVysaawfWrEvt+KRS4uF7Mx4kwZ
+ Vb3GWfDI3gAHU8PFHss73A0R7YA126umrZMINQeM96YcQrDNYyR1N31sZ1eneOmJIJzG
+ XFKWuXCreuSHaq2XiUf3skAQ6cTMjFWGq5xl9J0S8i0xenRRksGosytfuCkNJZlUtvJt
+ JKu6FdKcFl/DpVqvJYwfet7Qk/zL4YPjyCwhpTn3Hl97tlcqYuh2E71XIyrXd2wXoBdZ
+ rX/oT0j4cgp8BAqJ4F1+IuyMKnr0UUXQ05l0g1UN+eHEdpftLybQUxLhH7KnralE39oo
+ /lJg==
+X-Gm-Message-State: AC+VfDyr3nJMQQYy3gfXmIcJoOR2Alypt9BUEkdIv0GAce9LMwjG3PBn
+ OxZ+8f48FN087xjldmTwklPG296hDzBeSVLkwNJNmb4xkCJDYU80jDAc74b9VKzLjzAQZRbeOsh
+ mN3Y3oFO0M3izCaU=
+X-Received: by 2002:a17:907:72c2:b0:991:b2a2:e424 with SMTP id
+ du2-20020a17090772c200b00991b2a2e424mr2514224ejc.76.1687785332289; 
+ Mon, 26 Jun 2023 06:15:32 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5nczV1kXduCoDaRY3jzA7r0c1XLIWMrZF2IDwHRqLp0K02eXE0sQqyJFQKaBP8ln/mYlg+rg==
+X-Received: by 2002:a17:907:72c2:b0:991:b2a2:e424 with SMTP id
+ du2-20020a17090772c200b00991b2a2e424mr2514207ejc.76.1687785332050; 
+ Mon, 26 Jun 2023 06:15:32 -0700 (PDT)
+Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
+ [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
+ e2-20020a170906080200b00986f9c830efsm3255022ejd.156.2023.06.26.06.15.31
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 26 Jun 2023 06:15:31 -0700 (PDT)
+Date: Mon, 26 Jun 2023 15:15:30 +0200
+From: Igor Mammedov <imammedo@redhat.com>
+To: Tao Su <tao1.su@linux.intel.com>
+Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, xiaoyao.li@intel.com,
+ lei4.wang@intel.com, qian.wen@intel.com
+Subject: Re: [PATCH 5/7] target/i386: Add few security fix bits in
+ ARCH_CAPABILITIES into SapphireRapids CPU model
+Message-ID: <20230626151530.24524700@imammedo.users.ipa.redhat.com>
+In-Reply-To: <20230616032311.19137-6-tao1.su@linux.intel.com>
+References: <20230616032311.19137-1-tao1.su@linux.intel.com>
+ <20230616032311.19137-6-tao1.su@linux.intel.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-References: <20230625201628.65231-1-npiggin@gmail.com>
-In-Reply-To: <20230625201628.65231-1-npiggin@gmail.com>
-From: Joel Stanley <joel@jms.id.au>
-Date: Mon, 26 Jun 2023 13:13:30 +0000
-Message-ID: <CACPK8XfHik2p4hD1pvD7OziSAipC0O29GHzV32qfbVRYUkMHbw@mail.gmail.com>
-Subject: Re: [PATCH] sungem: Add WOL MMIO
-To: Nicholas Piggin <npiggin@gmail.com>
-Cc: Jason Wang <jasowang@redhat.com>, qemu-devel@nongnu.org,
- qemu-ppc@nongnu.org, =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
- envelope-from=joel.stan@gmail.com; helo=mail-ej1-x62b.google.com
-X-Spam_score_int: -13
-X-Spam_score: -1.4
-X-Spam_bar: -
-X-Spam_report: (-1.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, FREEMAIL_FORGED_FROMDOMAIN=0.249,
- FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.249,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01, URIBL_CSS=0.1 autolearn=no autolearn_force=no
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,134 +103,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sun, 25 Jun 2023 at 20:17, Nicholas Piggin <npiggin@gmail.com> wrote:
->
-> Apple sungem devices are expected to have WOL MMIO registers.
-> Add a region to prevent transaction failures, and implement the
-> WOL-disable CSR write because the Linux driver reset writes
-> this.
->
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+On Fri, 16 Jun 2023 11:23:09 +0800
+Tao Su <tao1.su@linux.intel.com> wrote:
 
-Reviewed-by: Joel Stanley <joel@jms.id.au>
+> From: Lei Wang <lei4.wang@intel.com>
+> 
+> Latest stepping (8) of SapphireRapids has bit 13, 14 and 15 of
+> MSR_IA32_ARCH_CAPABILITIES enabled, which are related to some security
+> fixes.
+> 
+> Add version 2 of SapphireRapids CPU model with those bits enabled also.
 
+don't we need to update stepping value to 8 as well?
+
+> 
+> Signed-off-by: Lei Wang <lei4.wang@intel.com>
+> Signed-off-by: Tao Su <tao1.su@linux.intel.com>
 > ---
-> This fixes the failed MMIO error in the Linux sungem driver reset
-> when it clears the WOL CSR.
->
-> Thanks,
-> Nick
->
->  hw/net/sungem.c     | 52 +++++++++++++++++++++++++++++++++++++++++++++
->  hw/net/trace-events |  2 ++
->  2 files changed, 54 insertions(+)
->
-> diff --git a/hw/net/sungem.c b/hw/net/sungem.c
-> index eb01520790..e0e8e5ae41 100644
-> --- a/hw/net/sungem.c
-> +++ b/hw/net/sungem.c
-> @@ -107,6 +107,15 @@ OBJECT_DECLARE_SIMPLE_TYPE(SunGEMState, SUNGEM)
->  #define RXDMA_FTAG        0x0110UL    /* RX FIFO Tag */
->  #define RXDMA_FSZ         0x0120UL    /* RX FIFO Size */
->
-> +/* WOL Registers */
-> +#define SUNGEM_MMIO_WOL_SIZE   0x14
-> +
-> +#define WOL_MATCH0        0x0000UL
-> +#define WOL_MATCH1        0x0004UL
-> +#define WOL_MATCH2        0x0008UL
-> +#define WOL_MCOUNT        0x000CUL
-> +#define WOL_WAKECSR       0x0010UL
-> +
->  /* MAC Registers */
->  #define SUNGEM_MMIO_MAC_SIZE   0x200
->
-> @@ -168,6 +177,7 @@ OBJECT_DECLARE_SIMPLE_TYPE(SunGEMState, SUNGEM)
->  #define SUNGEM_MMIO_PCS_SIZE   0x60
->  #define PCS_MIISTAT       0x0004UL    /* PCS MII Status Register */
->  #define PCS_ISTAT         0x0018UL    /* PCS Interrupt Status Reg */
-> +
->  #define PCS_SSTATE        0x005CUL    /* Serialink State Register */
->
->  /* Descriptors */
-> @@ -200,6 +210,7 @@ struct SunGEMState {
->      MemoryRegion greg;
->      MemoryRegion txdma;
->      MemoryRegion rxdma;
-> +    MemoryRegion wol;
->      MemoryRegion mac;
->      MemoryRegion mif;
->      MemoryRegion pcs;
-> @@ -1076,6 +1087,43 @@ static const MemoryRegionOps sungem_mmio_rxdma_ops = {
->      },
->  };
->
-> +static void sungem_mmio_wol_write(void *opaque, hwaddr addr, uint64_t val,
-> +                                    unsigned size)
-> +{
-> +    trace_sungem_mmio_wol_write(addr, val);
-> +
-> +    switch (addr) {
-> +    case WOL_WAKECSR:
-> +        if (val != 0) {
-> +            qemu_log_mask(LOG_UNIMP, "sungem: WOL not supported\n");
+>  target/i386/cpu.c | 13 +++++++++++--
+>  1 file changed, 11 insertions(+), 2 deletions(-)
+> 
+> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+> index b5321240c6..f84fd20bb1 100644
+> --- a/target/i386/cpu.c
+> +++ b/target/i386/cpu.c
+> @@ -3854,8 +3854,17 @@ static const X86CPUDefinition builtin_x86_defs[] = {
+>          .model_id = "Intel Xeon Processor (SapphireRapids)",
+>          .versions = (X86CPUVersionDefinition[]) {
+>              { .version = 1 },
+> -            { /* end of list */ },
+> -        },
+> +            {
+> +                .version = 2,
+> +                .props = (PropValue[]) {
+> +                    { "sbdr-ssdp-no", "on" },
+> +                    { "fbsdp-no", "on" },
+> +                    { "psdp-no", "on" },
+> +                    { /* end of list */ }
+> +                }
+> +            },
+> +            { /* end of list */ }
 > +        }
-> +        break;
-> +    default:
-> +        qemu_log_mask(LOG_UNIMP, "sungem: WOL not supported\n");
-> +    }
-> +}
-> +
-> +static uint64_t sungem_mmio_wol_read(void *opaque, hwaddr addr, unsigned size)
-> +{
-> +    uint32_t val = -1;
-> +
-> +    qemu_log_mask(LOG_UNIMP, "sungem: WOL not supported\n");
-> +
-> +    trace_sungem_mmio_wol_read(addr, val);
-> +
-> +    return val;
-> +}
-> +
-> +static const MemoryRegionOps sungem_mmio_wol_ops = {
-> +    .read = sungem_mmio_wol_read,
-> +    .write = sungem_mmio_wol_write,
-> +    .endianness = DEVICE_LITTLE_ENDIAN,
-> +    .impl = {
-> +        .min_access_size = 4,
-> +        .max_access_size = 4,
-> +    },
-> +};
-> +
->  static void sungem_mmio_mac_write(void *opaque, hwaddr addr, uint64_t val,
->                                    unsigned size)
->  {
-> @@ -1344,6 +1392,10 @@ static void sungem_realize(PCIDevice *pci_dev, Error **errp)
->                            "sungem.rxdma", SUNGEM_MMIO_RXDMA_SIZE);
->      memory_region_add_subregion(&s->sungem, 0x4000, &s->rxdma);
->
-> +    memory_region_init_io(&s->wol, OBJECT(s), &sungem_mmio_wol_ops, s,
-> +                          "sungem.wol", SUNGEM_MMIO_WOL_SIZE);
-> +    memory_region_add_subregion(&s->sungem, 0x3000, &s->wol);
-> +
->      memory_region_init_io(&s->mac, OBJECT(s), &sungem_mmio_mac_ops, s,
->                            "sungem.mac", SUNGEM_MMIO_MAC_SIZE);
->      memory_region_add_subregion(&s->sungem, 0x6000, &s->mac);
-> diff --git a/hw/net/trace-events b/hw/net/trace-events
-> index e4a98b2c7d..930e5b4293 100644
-> --- a/hw/net/trace-events
-> +++ b/hw/net/trace-events
-> @@ -350,6 +350,8 @@ sungem_mmio_txdma_write(uint64_t addr, uint64_t val) "MMIO txdma write to 0x%"PR
->  sungem_mmio_txdma_read(uint64_t addr, uint64_t val) "MMIO txdma read from 0x%"PRIx64" val=0x%"PRIx64
->  sungem_mmio_rxdma_write(uint64_t addr, uint64_t val) "MMIO rxdma write to 0x%"PRIx64" val=0x%"PRIx64
->  sungem_mmio_rxdma_read(uint64_t addr, uint64_t val) "MMIO rxdma read from 0x%"PRIx64" val=0x%"PRIx64
-> +sungem_mmio_wol_write(uint64_t addr, uint64_t val) "MMIO wol write to 0x%"PRIx64" val=0x%"PRIx64
-> +sungem_mmio_wol_read(uint64_t addr, uint64_t val) "MMIO wol read from 0x%"PRIx64" val=0x%"PRIx64
->  sungem_mmio_mac_write(uint64_t addr, uint64_t val) "MMIO mac write to 0x%"PRIx64" val=0x%"PRIx64
->  sungem_mmio_mac_read(uint64_t addr, uint64_t val) "MMIO mac read from 0x%"PRIx64" val=0x%"PRIx64
->  sungem_mmio_mif_write(uint64_t addr, uint64_t val) "MMIO mif write to 0x%"PRIx64" val=0x%"PRIx64
-> --
-> 2.40.1
->
->
+>      },
+>      {
+>          .name = "Denverton",
+
 
