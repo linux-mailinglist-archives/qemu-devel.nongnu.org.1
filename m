@@ -2,33 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C64673E442
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 18:10:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB8C773E43F
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 18:09:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDoli-0004D3-6V; Mon, 26 Jun 2023 12:08:46 -0400
+	id 1qDoli-0004D6-Am; Mon, 26 Jun 2023 12:08:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
- id 1qDole-0004Ad-DN; Mon, 26 Jun 2023 12:08:42 -0400
+ id 1qDolf-0004BA-QN; Mon, 26 Jun 2023 12:08:43 -0400
 Received: from relay.virtuozzo.com ([130.117.225.111])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
- id 1qDolc-0001gm-Rh; Mon, 26 Jun 2023 12:08:42 -0400
+ id 1qDold-0001gl-9l; Mon, 26 Jun 2023 12:08:43 -0400
 Received: from dev005.ch-qa.vzint.dev ([172.29.1.10])
  by relay.virtuozzo.com with esmtp (Exim 4.96)
- (envelope-from <andrey.drobyshev@virtuozzo.com>) id 1qDoka-00DiMx-12;
+ (envelope-from <andrey.drobyshev@virtuozzo.com>) id 1qDoka-00DiMx-1D;
  Mon, 26 Jun 2023 18:08:27 +0200
 To: qemu-block@nongnu.org,
 	qemu-stable@nongnu.org
 Cc: qemu-devel@nongnu.org, kwolf@redhat.com, hreitz@redhat.com,
  vsementsov@yandex-team.ru, eblake@redhat.com,
  andrey.drobyshev@virtuozzo.com, den@virtuozzo.com
-Subject: [PATCH 0/3] block: align CoR requests to subclusters
-Date: Mon, 26 Jun 2023 19:08:31 +0300
-Message-Id: <20230626160834.696680-1-andrey.drobyshev@virtuozzo.com>
+Subject: [PATCH 1/3] block: add subcluster_size field to BlockDriverInfo
+Date: Mon, 26 Jun 2023 19:08:32 +0300
+Message-Id: <20230626160834.696680-2-andrey.drobyshev@virtuozzo.com>
 X-Mailer: git-send-email 2.39.3
+In-Reply-To: <20230626160834.696680-1-andrey.drobyshev@virtuozzo.com>
+References: <20230626160834.696680-1-andrey.drobyshev@virtuozzo.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=130.117.225.111;
@@ -55,36 +57,66 @@ From:  Andrey Drobyshev via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series makes IO requests performed with copy-on-read to be aligned
-to subclusters rather than clusters.  It also affects mirror job requests
-alignment.
+This is going to be used in the subsequent commit as requests alignment
+(in particular, during copy-on-read).  This value only makes sense for
+the formats which support subclusters (currently QCOW2 only).  If this
+field isn't set by driver's own bdrv_get_info() implementation, we
+simply set it equal to the cluster size thus treating each cluster as having
+a single subcluster.
 
-The initial reason for that change is the following crash discovered:
+Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+---
+ block.c                      | 7 +++++++
+ block/qcow2.c                | 1 +
+ include/block/block-common.h | 5 +++++
+ 3 files changed, 13 insertions(+)
 
-qemu-img create -f qcow2 base.qcow2 64K
-qemu-img create -f qcow2 -o extended_l2=on,backing_file=base.qcow2,backing_fmt=qcow2 img.qcow2 64K
-qemu-io -c "write -P 0xaa 0 2K" img.qcow2
-qemu-io -C -c "read -P 0x00 2K 62K" img.qcow2
-
-qemu-io: ../block/io.c:1236: bdrv_co_do_copy_on_readv: Assertion `skip_bytes < pnum' failed.
-
-This change in alignment fixes the crash and adds test case covering it.
-
-Andrey Drobyshev (3):
-  block: add subcluster_size field to BlockDriverInfo
-  block/io: align requests to subcluster_size
-  tests/qemu-iotests/197: add testcase for CoR with subclusters
-
- block.c                      |  6 +++++
- block/io.c                   | 50 ++++++++++++++++++------------------
- block/mirror.c               |  8 +++---
- block/qcow2.c                |  1 +
- include/block/block-common.h |  4 +++
- include/block/block-io.h     |  2 +-
- tests/qemu-iotests/197       | 29 +++++++++++++++++++++
- tests/qemu-iotests/197.out   | 24 +++++++++++++++++
- 8 files changed, 94 insertions(+), 30 deletions(-)
-
+diff --git a/block.c b/block.c
+index 0637265c26..4fe1743cfb 100644
+--- a/block.c
++++ b/block.c
+@@ -6392,6 +6392,13 @@ int coroutine_fn bdrv_co_get_info(BlockDriverState *bs, BlockDriverInfo *bdi)
+     }
+     memset(bdi, 0, sizeof(*bdi));
+     ret = drv->bdrv_co_get_info(bs, bdi);
++    if (bdi->subcluster_size == 0) {
++        /*
++         * If the driver left this unset, subclusters either not supported.
++         * Then it is safe to treat each cluster as having only one subcluster.
++         */
++        bdi->subcluster_size = bdi->cluster_size;
++    }
+     if (ret < 0) {
+         return ret;
+     }
+diff --git a/block/qcow2.c b/block/qcow2.c
+index e23edd48c2..94b8d0e1c2 100644
+--- a/block/qcow2.c
++++ b/block/qcow2.c
+@@ -5197,6 +5197,7 @@ qcow2_co_get_info(BlockDriverState *bs, BlockDriverInfo *bdi)
+ {
+     BDRVQcow2State *s = bs->opaque;
+     bdi->cluster_size = s->cluster_size;
++    bdi->subcluster_size = s->subcluster_size;
+     bdi->vm_state_offset = qcow2_vm_state_offset(s);
+     bdi->is_dirty = s->incompatible_features & QCOW2_INCOMPAT_DIRTY;
+     return 0;
+diff --git a/include/block/block-common.h b/include/block/block-common.h
+index e15395f2cb..df5ffc8d09 100644
+--- a/include/block/block-common.h
++++ b/include/block/block-common.h
+@@ -132,6 +132,11 @@ typedef struct BlockZoneWps {
+ typedef struct BlockDriverInfo {
+     /* in bytes, 0 if irrelevant */
+     int cluster_size;
++    /*
++     * A fraction of cluster_size, if supported (currently QCOW2 only); if
++     * disabled or unsupported, set equal to cluster_size.
++     */
++    int subcluster_size;
+     /* offset at which the VM state can be saved (0 if not possible) */
+     int64_t vm_state_offset;
+     bool is_dirty;
 -- 
 2.39.3
 
