@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4AE973D904
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 09:59:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B5AB73D907
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 10:00:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDh8J-0001Y5-C5; Mon, 26 Jun 2023 03:59:35 -0400
+	id 1qDh8o-0002lf-7Q; Mon, 26 Jun 2023 04:00:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qDh8D-0001XN-Kv
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 03:59:30 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ id 1qDh8m-0002lL-Nj
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 04:00:04 -0400
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qDh8A-0005Ie-KJ
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 03:59:28 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-3f9bdb01ec0so37109785e9.2
- for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 00:59:26 -0700 (PDT)
+ id 1qDh8l-0005VV-0c
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 04:00:04 -0400
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-3128fcd58f3so3596363f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 01:00:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687766365; x=1690358365;
+ d=linaro.org; s=google; t=1687766401; x=1690358401;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=82JviyxFOfNWY+QpxIM4vqHQzV+G/ZWEUCh2G+cl6Ls=;
- b=Va1uk72/q3aRS9wd82O3cU2BVNrJjABOx/Q4a0RyDchYnsshSZPx5lEYKlw+buPgL8
- QG+eeqNGhjFfTQR0x24NGqALT5migAoNq5jG/lWIo3wwi1De2fFyk4c4irIU0pFrhm4C
- 5Djw73mD1toIurznyYzO93fl7a9LSqnGpSdSlPg4BAcw9V92eJd2X9xdaGgKmDYswUfi
- RbWeDbcTx2nH4Uew+rnv7nzAvYEOLzlOFQ/10BcXvqo+c244um7Ky/5e0K7IPL53m3J+
- 5xmhjC2Q7xdUw+omkdfmIFIfwBpIJkbxu0+7J5mmlsh6i+2N/MMFw0rW6n7sZcdjSGz3
- Wppg==
+ bh=hy7c0DsZKMxve5yBHkUFYNt1FdKf5og6FsP6ARfi7WU=;
+ b=OaYiLBXgIur3xXWnrZlPpy0aAedNH/2QcLIUpqaoLln080onmqf1PsbuvZG2FyMwC3
+ JYjAPTR+tDRbyJUDK3aiJkR1hj2gfjE8eio8yVAzIKlJJcOgkpn9QH/EVqgmXJJ2knjt
+ IhzbIGvi6RjQ3lFG27+Tyi6mMC9JclaN8UmFum+kkbbyzl5sOyirdSgAanVMphzCCIbD
+ PXBu9p0zs+jH4HQqMvNfEw3oJ+JB/PXumcIAl5dQRFVaG1Xr62e0RaJEejgCI46lRwjk
+ 4hsFyuQTvedhpUn3mtAKnIBn1bX6zwrgY9i6UvU07/jMWCZ+wgT5od66fqiYqyDzeze9
+ hJYw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687766365; x=1690358365;
+ d=1e100.net; s=20221208; t=1687766401; x=1690358401;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=82JviyxFOfNWY+QpxIM4vqHQzV+G/ZWEUCh2G+cl6Ls=;
- b=hseUei99mHas6xW+PqCjsHutmgqN3xvTpb7rlgs9AgJ9HnY1I5iGRzNf4pkn4lX8xy
- lC+IQ1aEHPYs+dJ3kXzDu/JRdpYM8DTdbBWnUOFUtAzZYtix1dTb+HjYXBZqcg68kvu9
- lkRdYY2tLHuRvOCh9n3XkbCqudneep1k7BRMoM8Sz9wbI1U2XaUvOZMa860id0I4PdiO
- IBV4a53KL2WcztyyGR263czuKp4jp+edEogIwNmaLDL6uiOWOKNHj1GoRwNzahMNyAeE
- WYSFXpEXm0C+xObPGnToGxQLzPeeYq4M4NtzBsKSYxfsOOieRqpNeCbbEGXePZDtQobi
- 1GAg==
-X-Gm-Message-State: AC+VfDw3JkdxiCrUhhkCFBv0Oi0uAhI8L015bIOGuw0lbasrONSJTlca
- u8+FMBqPgVnQ4nKNjQIk9CiK3Q==
-X-Google-Smtp-Source: ACHHUZ6spqsJSyi1rB5f6gTfVrbnmcRQAsQGxWmX+Q2KrNeX+4+UxYaQlO4Vlodj+gD3vHj5YrC+Ww==
-X-Received: by 2002:a05:600c:ad7:b0:3f9:991:61da with SMTP id
- c23-20020a05600c0ad700b003f9099161damr18754727wmr.39.1687766364875; 
- Mon, 26 Jun 2023 00:59:24 -0700 (PDT)
+ bh=hy7c0DsZKMxve5yBHkUFYNt1FdKf5og6FsP6ARfi7WU=;
+ b=EeSzIUvPx5FwMe7mlcI7b/ab97VDlu5/oWPuamNulOkDtFxeLzLM/tW+BVxpHyRHVz
+ rgGrOGVJQQ++wBooDjTSYVFyBiFoYfKOs3+VQz5BtEF2CLLxYQXsCQIgnKhnAs1oPcTv
+ 4P+R/qj7IaGYVrTaTYYB/eLIjGUJTBAfJmEsnfqnvc5B6Xce0P6UGAVEEQFsJ3hYeG2N
+ Lfjx9+3g89IUK5L39lH+93c/Cbb+FMBmB22Vtg8FEiJO8XfOS1ZtjQIZ/KwpeBvukf0P
+ HRsmY04KvNM06E34ST1+B63j2r1qe+hL5elAXyYN0OCSXcJJMMb2jh86vmFRtKrzOSl5
+ C9Eg==
+X-Gm-Message-State: AC+VfDwRhID6ookudB3lEJCvVc/T9KhJfd0qAQZGRcfEGscZCTG7A3hx
+ byaAQhEukQkLXQv0d2gL8cSiWg==
+X-Google-Smtp-Source: ACHHUZ4laLjtXICoz5giuBkITSM0J7HqAOFrhpYpl5GvMYhB3u811fDHq+0NTd9O1MWHsMAdjFwrww==
+X-Received: by 2002:adf:de88:0:b0:313:edaa:2504 with SMTP id
+ w8-20020adfde88000000b00313edaa2504mr3061550wrl.25.1687766401264; 
+ Mon, 26 Jun 2023 01:00:01 -0700 (PDT)
 Received: from [192.168.1.208] ([139.47.42.170])
  by smtp.gmail.com with ESMTPSA id
- v4-20020a05600c214400b003fa95890484sm2378288wml.20.2023.06.26.00.59.24
+ a1-20020a5d4561000000b0030e5a63e2dbsm6592567wrc.80.2023.06.26.01.00.00
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 26 Jun 2023 00:59:24 -0700 (PDT)
-Message-ID: <67f63484-a8ed-ae69-9eae-024e889bd23c@linaro.org>
-Date: Mon, 26 Jun 2023 09:59:22 +0200
+ Mon, 26 Jun 2023 01:00:00 -0700 (PDT)
+Message-ID: <9862c370-248d-dae5-7537-1c7dad9e263b@linaro.org>
+Date: Mon, 26 Jun 2023 09:59:59 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PATCH 02/26] gitlab: ensure coverage job also publishes meson log
+Subject: Re: [PATCH 03/26] gitlab: reduce testing scope of check-gcov
 Content-Language: en-US
 To: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
  qemu-devel@nongnu.org
 References: <20230623122100.1640995-1-alex.bennee@linaro.org>
- <20230623122100.1640995-3-alex.bennee@linaro.org>
+ <20230623122100.1640995-4-alex.bennee@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230623122100.1640995-3-alex.bennee@linaro.org>
+In-Reply-To: <20230623122100.1640995-4-alex.bennee@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -96,17 +96,14 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 6/23/23 14:20, Alex Bennée wrote:
-> From: Daniel P. Berrangé <berrange@redhat.com>
+> This keeps timing out on gitlab due to some qtests taking a long time.
+> As this is just ensuring the gcov machinery is working and not
+> attempting to be comprehensive lets skip qtest in this run.
 > 
-> The coverage job wants to publish a coverage report on success, but the
-> tests might fail and in that case we need the meson logs for debugging.
-> 
-> Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-> Message-Id: <20230503145535.91325-3-berrange@redhat.com>
 > Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 > ---
->   .gitlab-ci.d/buildtest.yml | 5 ++++-
->   1 file changed, 4 insertions(+), 1 deletion(-)
+>   .gitlab-ci.d/buildtest.yml | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
