@@ -2,44 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7F2373EAC6
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 21:00:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B02E73EA9D
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 20:56:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDrN8-0003cy-Em; Mon, 26 Jun 2023 14:55:34 -0400
+	id 1qDrNB-0003uz-54; Mon, 26 Jun 2023 14:55:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qDrLO-0001pN-Pk; Mon, 26 Jun 2023 14:53:51 -0400
+ id 1qDrLS-0001rP-BY; Mon, 26 Jun 2023 14:53:53 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qDrLM-0005SO-Qp; Mon, 26 Jun 2023 14:53:46 -0400
+ id 1qDrLP-0005T9-D3; Mon, 26 Jun 2023 14:53:48 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 76B47EF3D;
+ by isrv.corpit.ru (Postfix) with ESMTP id E6607EF3E;
  Mon, 26 Jun 2023 21:50:27 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 14124F7CC;
+ by tsrv.corpit.ru (Postfix) with SMTP id B5F9CF7CD;
  Mon, 26 Jun 2023 21:50:25 +0300 (MSK)
-Received: (nullmailer pid 1574073 invoked by uid 1000);
+Received: (nullmailer pid 1574076 invoked by uid 1000);
  Mon, 26 Jun 2023 18:50:16 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org, qemu-stable@nongnu.org
-Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- Steven Lee <steven_lee@aspeedtech.com>, Joel Stanley <joel@jms.id.au>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Thomas Huth <thuth@redhat.com>, Francisco Iglesias <frasse.iglesias@gmail.com>,
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.0.3 38/54] aspeed/hace: Initialize g_autofree pointer
-Date: Mon, 26 Jun 2023 21:49:45 +0300
-Message-Id: <20230626185002.1573836-38-mjt@tls.msk.ru>
+Subject: [Stable-8.0.3 39/54] target/arm: Fix return value from LDSMIN/LDSMAX
+ 8/16 bit atomics
+Date: Mon, 26 Jun 2023 21:49:46 +0300
+Message-Id: <20230626185002.1573836-39-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.0.3-20230626214235@cover.tls.msk.ru>
 References: <qemu-stable-8.0.3-20230626214235@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -64,44 +61,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Cédric Le Goater <clg@kaod.org>
+From: Peter Maydell <peter.maydell@linaro.org>
 
-As mentioned in docs/devel/style.rst "Automatic memory deallocation":
+The atomic memory operations are supposed to return the old memory
+data value in the destination register.  This value is not
+sign-extended, even if the operation is the signed minimum or
+maximum.  (In the pseudocode for the instructions the returned data
+value is passed to ZeroExtend() to create the value in the register.)
 
-* Variables declared with g_auto* MUST always be initialized,
-  otherwise the cleanup function will use uninitialized stack memory
+We got this wrong because we were doing a 32-to-64 zero extend on the
+result for 8 and 16 bit data values, rather than the correct amount
+of zero extension.
 
-This avoids QEMU to coredump when running the "hash test" command
-under Zephyr.
+Fix the bug by using ext8u and ext16u for the MO_8 and MO_16 data
+sizes rather than ext32u.
 
-Cc: Steven Lee <steven_lee@aspeedtech.com>
-Cc: Joel Stanley <joel@jms.id.au>
 Cc: qemu-stable@nongnu.org
-Fixes: c5475b3f9a ("hw: Model ASPEED's Hash and Crypto Engine")
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Francisco Iglesias <frasse.iglesias@gmail.com>
-Message-Id: <20230421131547.2177449-1-clg@kaod.org>
-Signed-off-by: Cédric Le Goater <clg@kaod.org>
-Reviewed-by: Joel Stanley <joel@jms.id.au>
-Signed-off-by: Cédric Le Goater <clg@kaod.org>
-(cherry picked from commit c8f48b120b31f6bbe33135ef5d478e485c37e3c2)
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-id: 20230602155223.2040685-2-peter.maydell@linaro.org
+(cherry picked from commit 243705aa6ea3465b20e9f5a8bfcf36d3153f3c10)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/misc/aspeed_hace.c b/hw/misc/aspeed_hace.c
-index 12a761f1f5..b07506ec04 100644
---- a/hw/misc/aspeed_hace.c
-+++ b/hw/misc/aspeed_hace.c
-@@ -189,7 +189,7 @@ static void do_hash_operation(AspeedHACEState *s, int algo, bool sg_mode,
-                               bool acc_mode)
- {
-     struct iovec iov[ASPEED_HACE_MAX_SG];
--    g_autofree uint8_t *digest_buf;
-+    g_autofree uint8_t *digest_buf = NULL;
-     size_t digest_len = 0;
-     int niov = 0;
-     int i;
+diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
+index dff391bfe2..3cb5128135 100644
+--- a/target/arm/tcg/translate-a64.c
++++ b/target/arm/tcg/translate-a64.c
+@@ -3438,8 +3438,22 @@ static void disas_ldst_atomic(DisasContext *s, uint32_t insn,
+      */
+     fn(tcg_rt, clean_addr, tcg_rs, get_mem_index(s), mop);
+ 
+-    if ((mop & MO_SIGN) && size != MO_64) {
+-        tcg_gen_ext32u_i64(tcg_rt, tcg_rt);
++    if (mop & MO_SIGN) {
++        switch (size) {
++        case MO_8:
++            tcg_gen_ext8u_i64(tcg_rt, tcg_rt);
++            break;
++        case MO_16:
++            tcg_gen_ext16u_i64(tcg_rt, tcg_rt);
++            break;
++        case MO_32:
++            tcg_gen_ext32u_i64(tcg_rt, tcg_rt);
++            break;
++        case MO_64:
++            break;
++        default:
++            g_assert_not_reached();
++        }
+     }
+ }
+ 
 -- 
 2.39.2
 
