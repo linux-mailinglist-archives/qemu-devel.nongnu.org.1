@@ -2,94 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B44073D9D9
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 10:34:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74E7973D9F1
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 10:38:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDhfd-0005Wi-LN; Mon, 26 Jun 2023 04:34:01 -0400
+	id 1qDhjk-0000XP-Iv; Mon, 26 Jun 2023 04:38:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qDhfR-0005P7-P8
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 04:33:50 -0400
-Received: from mail-lj1-x235.google.com ([2a00:1450:4864:20::235])
+ id 1qDhja-0000Wv-BW
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 04:38:06 -0400
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qDhfP-0005jS-OQ
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 04:33:49 -0400
-Received: by mail-lj1-x235.google.com with SMTP id
- 38308e7fff4ca-2b69e6cce7dso13182571fa.2
- for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 01:33:47 -0700 (PDT)
+ id 1qDhjU-0006aL-84
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 04:38:03 -0400
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-313df030ccaso2592918f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 01:37:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687768426; x=1690360426;
+ d=linaro.org; s=google; t=1687768678; x=1690360678;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=57OuGhGvNeFjSxOym8U/poa3TljwCBqLYA/QxJygo4Q=;
- b=MqAStT0zGRAfQRbfYpGJJvZ71MzYK+dtQtwtoE23pnaHXKswHGm/6U3tuR6qmVisgd
- Pnfgv3uUFFgT47ag/9YVNchlGfrtU8oxoW6Fakox1trFzLLtOIHi8aMKbtuJomn9aMhE
- B0dp6+2UjWjm9i0YHHE3hUzyT5FKzizJpxGj0QiZwN1eEOCftt3ym5NqIw7+LrqV+918
- HuqR/HO6sNB8VwVS6nXJ9h45TTZC6NTtSNLHTRBO00cqQ3XGIz2zTylWjiZ/kiIy5AV7
- 89nP/3zk6kjuYadZN1iKXvTlTO/fDE2cxHt9qUiSIsgDYBTb7Z1fQgkWHoWmlMcLTQdK
- v7CQ==
+ bh=T6Xq8YdmsRT+TYXM68KwwuCP9fDryuTb/8QHBalT+9A=;
+ b=aJZKRctIwf+fwqtPIixhn+/QbFmhrtDnDxZEkNGu4GoP7UqcHslW8ytLBLfUtu8mOH
+ NaWzKRcyHUg+HMJa4veXGwI8XmozCnIYdQZieYlDPMTwMSDHLc2QTVNj+D06e3vAgXH5
+ yMi5QNrj5bzdeh6+D3qFexEP/y+ok2jPCsnL0HECaM+2UAguyXYC27ELfHB3xPQd00WS
+ HlNv0VlbUPh5l0MbS7nOWpEL7/1KAiA/MbSYXGN6VZVbmphDxbYbedgxvOJ2v7RpTYg9
+ MFotcK8kvXkxdfvA2yK2baYIIJnSyH4pOckpueGlrenlkiCiBmsODhmykW18On36P22c
+ Cmcw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687768426; x=1690360426;
+ d=1e100.net; s=20221208; t=1687768678; x=1690360678;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=57OuGhGvNeFjSxOym8U/poa3TljwCBqLYA/QxJygo4Q=;
- b=Pq/JSFj9ZdY24zgJLObxSdCoDgX0YBLut6w9/1dCF1fn1tEAaH11B10sxNB7CnOXAC
- yvxDWK3psNKRIClChakEgitM5ccN79K1f+BKCDaz+hefMg1MLA1pG7iQb4Ze7wD2Ee1x
- xJczHK83+cXTUHabdVa0/p0M55KzrqNtSMJSc+7QwkZZQgaCssR5SZ0VUTlydIQso5qL
- Wi36+AHx7Bd9lfOb9eA0hTaI+C3eHv1OmlNAZg1fej4Q30uqcFiq5imNPmE8NL1E4957
- X9BUcmjwalcsK4I/3D/ncjDE0vEu837NHVJJk0ff455Gmbj82/5g4GM4dtQkvKv6BZOO
- nodg==
-X-Gm-Message-State: AC+VfDwBnh05D2DTz79Q3rB6d7114CsaqGs8N2kljk1CQ8vpdpD8Nt0a
- FfaBrLvX7+keZwmNp7ptWmfKaA==
-X-Google-Smtp-Source: ACHHUZ4+cvh3wrLsamQLNOXGy1YHIUA/u5PV5xzBOC2A/XvZ2tslkmtbdKu5ajqhuSyiP8y7qbf81A==
-X-Received: by 2002:a2e:9849:0:b0:2b5:1b80:2640 with SMTP id
- e9-20020a2e9849000000b002b51b802640mr11604718ljj.29.1687768426014; 
- Mon, 26 Jun 2023 01:33:46 -0700 (PDT)
+ bh=T6Xq8YdmsRT+TYXM68KwwuCP9fDryuTb/8QHBalT+9A=;
+ b=QzPi34axnINTYSIYkC1EdQH6vzCNOQHaf9Lgybz4WxkrAuI3aHXQO2SVMz/UbJBXvk
+ KzkWg2q5BbUuZEm0KZKBDgt++/WQfURCZv4gWC0xzYo0WP9f8h9HzqB4Z8ytck7rXX1X
+ /Zjv7iyRn9nFU3A9U8xFhOvrpGxGoyPK2MdI5RFUi0+Kw7uC5uT+myRJalP5ad/QyNzL
+ V0g6FU8B5Lf7iqPwXBuUz9iwXPfW3w8gufOwmdRV5PqCY9O4tWRoiOFqmiR7vXsuKmio
+ Y6A6apFU+TH/za5eNg6gDENwHpKvTmWlSfaCNLHKLdLZII8Xl0RkF/yMszX5kf9aK7EF
+ QcRQ==
+X-Gm-Message-State: AC+VfDwrgu0kRf7hMy/nVMCZ+SkBElnW0t+Rq61Xt7l6hJsf8Qy6o5s2
+ PqgSDJrB9Sy7qCqIduG8atMts2RNLO+FijxH/jal6G7e
+X-Google-Smtp-Source: ACHHUZ64zJ9q49L/IAtKVdTsAXpk4CxuQaCO7gBXuXtaqeaUjJVL9oLfT6QoEbfchmRHCZ8Tm17SLw==
+X-Received: by 2002:a5d:6106:0:b0:313:ec5d:95b5 with SMTP id
+ v6-20020a5d6106000000b00313ec5d95b5mr3100226wrt.60.1687768678204; 
+ Mon, 26 Jun 2023 01:37:58 -0700 (PDT)
 Received: from [192.168.1.208] ([139.47.42.170])
  by smtp.gmail.com with ESMTPSA id
- m24-20020a7bcb98000000b003f727764b10sm7008620wmi.4.2023.06.26.01.33.44
+ b3-20020a056000054300b002c70ce264bfsm6700158wrf.76.2023.06.26.01.37.57
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 26 Jun 2023 01:33:45 -0700 (PDT)
-Message-ID: <9146533e-d7c4-7ccf-935c-4b1eccd4980a@linaro.org>
-Date: Mon, 26 Jun 2023 10:33:43 +0200
+ Mon, 26 Jun 2023 01:37:57 -0700 (PDT)
+Message-ID: <4e8c6fa7-90e1-de33-17f6-63b2fd08181a@linaro.org>
+Date: Mon, 26 Jun 2023 10:37:56 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [RFC PATCH-for-8.1] accel: Remove HAX accelerator
+Subject: Re: [PULL 00/30] ppc queue
 Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Thomas Huth <thuth@redhat.com>, =?UTF-8?Q?Alex_Benn=c3=a9e?=
- <alex.bennee@linaro.org>, libvir-list@redhat.com,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Claudio Fontana <cfontana@suse.de>, Paolo Bonzini <pbonzini@redhat.com>,
- Beraldo Leal <bleal@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Yanan Wang <wangyanan55@huawei.com>,
- Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>
-References: <20230623230837.4194-1-philmd@linaro.org>
+To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
+ Daniel Henrique Barboza <danielhb413@gmail.com>
+References: <20230626055647.1147743-1-clg@kaod.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230623230837.4194-1-philmd@linaro.org>
+In-Reply-To: <20230626055647.1147743-1-clg@kaod.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::235;
- envelope-from=richard.henderson@linaro.org; helo=mail-lj1-x235.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x431.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.089,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,82 +95,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/24/23 01:08, Philippe Mathieu-Daudé wrote:
-> HAX is deprecated since commits 73741fda6c ("MAINTAINERS: Abort
-> HAXM maintenance") and 90c167a1da ("docs/about/deprecated: Mark
-> HAXM in QEMU as deprecated"), released in v8.0.0.
+On 6/26/23 07:56, Cédric Le Goater wrote:
+> The following changes since commit 79dbd910c9ea6ca38f8e1b2616b1e5e885b85bd3:
 > 
-> Per the QEMU deprecation policy, we shouldn't remove it before
-> QEMU release v8.2.0. However per the latest HAXM release (v7.8),
-> the latest QEMU supported is v7.2:
+>    Merge tag 'hppa-boot-reboot-fixes-pull-request' of https://github.com/hdeller/qemu-hppa into staging (2023-06-25 08:58:49 +0200)
 > 
->    Note: Up to this release, HAXM supports QEMU from 2.9.0 to 7.2.0.
+> are available in the Git repository at:
 > 
-> (https://github.com/intel/haxm/releases/tag/v7.8.0)
+>    https://github.com/legoater/qemu/ tags/pull-ppc-20230626
 > 
-> The next commit (https://github.com/intel/haxm/commit/da1b8ec072)
-> added:
+> for you to fetch changes up to 5eb63b88d0ac259c2f49e62b6dcc6527a5caf255:
 > 
->    HAXM v7.8.0 is our last release and we will not accept
->    pull requests or respond to issues after this.
+>    tests/avocado: ppc test VOF bios Linux boot (2023-06-25 22:41:31 +0200)
 > 
-> As of commit b455ce4c2f, it became very hard to build and test
-> HAXM. Its previous maintainers made it clear they won't help.
-> It doesn't seem to be a very good use of QEMU maintainers to
-> spend their time in a dead project. Save our time by removing
-> this orphan zombie code before the QEMU v8.2 release.
+> ----------------------------------------------------------------
+> ppc queue:
 > 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->   MAINTAINERS                                   |    8 -
->   docs/about/build-platforms.rst                |    2 +-
->   docs/about/deprecated.rst                     |    6 -
->   docs/about/removed-features.rst               |    9 +-
->   docs/system/introduction.rst                  |    3 -
->   meson.build                                   |    7 -
->   include/exec/poison.h                         |    1 -
->   include/hw/core/cpu.h                         |    2 +-
->   include/sysemu/hax.h                          |   49 -
->   include/sysemu/hw_accel.h                     |    1 -
->   target/i386/hax/hax-accel-ops.h               |   31 -
->   target/i386/hax/hax-i386.h                    |   98 --
->   target/i386/hax/hax-interface.h               |  369 ------
->   target/i386/hax/hax-posix.h                   |   61 -
->   target/i386/hax/hax-windows.h                 |   88 --
->   accel/stubs/hax-stub.c                        |   24 -
->   hw/intc/apic_common.c                         |    3 +-
->   softmmu/cpus.c                                |    6 -
->   softmmu/vl.c                                  |    6 -
->   target/i386/hax/hax-accel-ops.c               |  105 --
->   target/i386/hax/hax-all.c                     | 1141 -----------------
->   target/i386/hax/hax-mem.c                     |  323 -----
->   target/i386/hax/hax-posix.c                   |  305 -----
->   target/i386/hax/hax-windows.c                 |  485 -------
->   accel/stubs/meson.build                       |    1 -
->   meson_options.txt                             |    2 -
->   qemu-options.hx                               |    8 +-
->   .../ci/org.centos/stream/8/x86_64/configure   |    1 -
->   scripts/meson-buildoptions.sh                 |    3 -
->   target/i386/hax/meson.build                   |    7 -
->   target/i386/meson.build                       |    1 -
->   31 files changed, 13 insertions(+), 3143 deletions(-)
->   delete mode 100644 include/sysemu/hax.h
->   delete mode 100644 target/i386/hax/hax-accel-ops.h
->   delete mode 100644 target/i386/hax/hax-i386.h
->   delete mode 100644 target/i386/hax/hax-interface.h
->   delete mode 100644 target/i386/hax/hax-posix.h
->   delete mode 100644 target/i386/hax/hax-windows.h
->   delete mode 100644 accel/stubs/hax-stub.c
->   delete mode 100644 target/i386/hax/hax-accel-ops.c
->   delete mode 100644 target/i386/hax/hax-all.c
->   delete mode 100644 target/i386/hax/hax-mem.c
->   delete mode 100644 target/i386/hax/hax-posix.c
->   delete mode 100644 target/i386/hax/hax-windows.c
->   delete mode 100644 target/i386/hax/meson.build
+> * New maintainers
+> * Nested implementation cleanups
+> * Various cleanups of the CPU implementation
+> * SMT support for pseries
+> * Improvements of the XIVE2 TIMA modeling
+> * Extra avocado tests for pseries
 
-
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/8.1 as appropriate.
 
 
 r~
+
 
