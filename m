@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5EB073EE46
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 00:05:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46C5173EE64
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 00:08:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDuJB-0004Rw-Fk; Mon, 26 Jun 2023 18:03:42 -0400
+	id 1qDuJS-0005cF-Nf; Mon, 26 Jun 2023 18:03:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qDuIW-0002nC-TY
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 18:03:04 -0400
-Received: from mail-oa1-x31.google.com ([2001:4860:4864:20::31])
+ id 1qDuIY-0002o7-Ai
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 18:03:06 -0400
+Received: from mail-oa1-x2c.google.com ([2001:4860:4864:20::2c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qDuIT-00060S-9w
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 18:03:00 -0400
-Received: by mail-oa1-x31.google.com with SMTP id
- 586e51a60fabf-1b049163c93so1009932fac.3
- for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 15:02:55 -0700 (PDT)
+ id 1qDuIV-000613-78
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 18:03:02 -0400
+Received: by mail-oa1-x2c.google.com with SMTP id
+ 586e51a60fabf-1b014f0b9aeso2245492fac.2
+ for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 15:02:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1687816975; x=1690408975;
+ d=ventanamicro.com; s=google; t=1687816977; x=1690408977;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=r1WWgmo1mkeGq0qzH7Narq1efKsxRi4LFqATFKy8YLA=;
- b=Bpi9w7dmZZnDqzGsXglTKTi0O12CJYJxTvDuA3P/2AiUlphzgR23+jl88D/8kywDCL
- Pi9ssHgr+Ccj64sc5jhCAPUnap+3ZV5hN7Nt/FIFKgLqZySs9NlWe9uZMh/0DA+r6mQB
- sqgywB67vYNJSuuYKb8U4aJy4etxvz4UROXqyZoIPq+iy4gZzi6F1GFxf/qtIn7Y1y7i
- GOmz+MfW6WaVLkstl6xavQ9CICB/zA/pWUFYyZfGyH9NRnnERu2L1FvaDG3ABKzIVmV1
- gUtSAZpyTTSAl0FyUUufMz23ROVCUBrivLyFTrMp+f1yZHzCeHwUjT2kCpWpeKmnoxem
- X+HQ==
+ bh=veNPdoP0KMiS6MurmQQ4EerCcRcND9mpTP9rXWTlN60=;
+ b=hp7y1kSpfrUF1PBEqp1Xr2y9irc6b6g8GTTAL1qkrSKS2Szommgx/Z9ajylminWpME
+ kAeYnBG/muC7XPGr1rfLf/b1xYZBBVLiVajkwxEXyfLeQVd9+U4ZQPWdJ8G3KfddCpkx
+ xLv5AFN0eQc0HIvdLhpbW4zmCj7914zHtI1urmiQfxMHti+eHJ10g5gttt//THcNz2MG
+ U7zz068Et1JkmwlaPltezQ+ILiXhLiaOLD6BXF9mDPo5Rp7vCXj5M5I8KFBu/u9lTBSl
+ kwL1ARRrdxa9/4XQyAnkgWJVN3rsCzzUceu00d+acRfalHO350eMJikaI0gWxqIpPHjj
+ klRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687816975; x=1690408975;
+ d=1e100.net; s=20221208; t=1687816977; x=1690408977;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=r1WWgmo1mkeGq0qzH7Narq1efKsxRi4LFqATFKy8YLA=;
- b=RfbXJzMuKjharLjRZGQu5NUtY9SSJWmN5TTHKiYPcFdSQf6Ty1HEfF80+0NiaLn+wa
- QgVv6JBzKldcpxfD+XplI1WbTtLsCZBjTxuXVKnjpbanV0Ins0+SGNZqfmTQcZH9tgs7
- IIhxBbJKzDxJXK1i+Dj47A4dPu3CqdPdX4EWT2Kbg0D13LOP86jXDXQRG+w2SNra8fIy
- dO3ZDFJm+xQ/HtYegg66rhFstMTgs7f5/ZnIHJu5xz0QhwUysxddCmAQyGvCAupo3X6W
- qgxirxvB3xHxxlstPYqcgPNWEmZNlZvJs8MwTSjEXSCdA+yLFc67PFLu2J48r0wdmAxl
- HwOg==
-X-Gm-Message-State: AC+VfDzovmxXqShqN3h0iLdF2lCSEuxKiayPQZBXFqYYNfsixNZyDWdT
- u7504fe5nspMelAmMg8AgWrgITT+qOmk3BxLlFQ=
-X-Google-Smtp-Source: ACHHUZ7xEV6lUgDHQn2ibPZj8LRaWRgByV9GJ7JwoVM9J9+kSbmxagYMyiHKFD0MysGmgiIxuww5IA==
-X-Received: by 2002:a05:6870:e503:b0:1a9:dbe9:82df with SMTP id
- y3-20020a056870e50300b001a9dbe982dfmr16950804oag.26.1687816974820; 
- Mon, 26 Jun 2023 15:02:54 -0700 (PDT)
+ bh=veNPdoP0KMiS6MurmQQ4EerCcRcND9mpTP9rXWTlN60=;
+ b=mD6gAqcWQTj1rXYPpTWGdrLcjd+hVIp1ZJWqDUr6J2idkhgbb83AKE61Vh98h6Rd5h
+ yg+YQ40YFjcgU7LFT/gMnggr0LkYSKSadZ2KGTQ27VbNmwWl3im8uNVaEZ2chVJ82lzT
+ wVALsJTtZj2WiJiLWHIKpzHbAPCa1tYA3Z+9jq4QhnGaV6m76jCHgAn5Ga86wApbU7F1
+ 6wf3WCyZUt+1oXQbKfMgsU2qMzYAmGGI3zQajK1xOVee+ypWQV7X7VT6CPAQwjOq1CdX
+ 1++CP3ebFWdPMYPYsCGu4pO1NG2pp2kQA+aMUepragfU2/41M2rJQa63/Y8BixahT9ff
+ 9i2A==
+X-Gm-Message-State: AC+VfDzYQXJSjPh3UO5OzO+Fh97dBFyvFD8NX0ghOHkbkHHQQK+6z9sH
+ swk6rxJg/THnMegjc9LTq7foF1ElllEtyFa6J40=
+X-Google-Smtp-Source: ACHHUZ6xGwOtwQ2/cCHSrHfaEXePAWnx1lbeqk8rnFAOJCFS9Y+YOtP7MWIEGZoznWFSwdO1m8OUZQ==
+X-Received: by 2002:a05:6870:7345:b0:1b0:4eb2:cc7f with SMTP id
+ r5-20020a056870734500b001b04eb2cc7fmr1669929oal.55.1687816977670; 
+ Mon, 26 Jun 2023 15:02:57 -0700 (PDT)
 Received: from grind.dc1.ventanamicro.com
  (201-69-66-110.dial-up.telesp.net.br. [201.69.66.110])
  by smtp.gmail.com with ESMTPSA id
- m12-20020a056870a10c00b001b03fbfa0c5sm1831419oae.39.2023.06.26.15.02.52
+ m12-20020a056870a10c00b001b03fbfa0c5sm1831419oae.39.2023.06.26.15.02.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 26 Jun 2023 15:02:54 -0700 (PDT)
+ Mon, 26 Jun 2023 15:02:57 -0700 (PDT)
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
  liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
  ajones@ventanamicro.com,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH v4 14/19] target/riscv/kvm.c: add multi-letter extension KVM
- properties
-Date: Mon, 26 Jun 2023 19:02:04 -0300
-Message-ID: <20230626220209.22142-15-dbarboza@ventanamicro.com>
+Subject: [PATCH v4 15/19] target/riscv/cpu.c: remove priv_ver check from
+ riscv_isa_string_ext()
+Date: Mon, 26 Jun 2023 19:02:05 -0300
+Message-ID: <20230626220209.22142-16-dbarboza@ventanamicro.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230626220209.22142-1-dbarboza@ventanamicro.com>
 References: <20230626220209.22142-1-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::31;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-oa1-x31.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::2c;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-oa1-x2c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,191 +96,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Let's add KVM user properties for the multi-letter extensions that KVM
-currently supports: zicbom, zicboz, zihintpause, zbb, ssaia, sstc,
-svinval and svpbmt.
+riscv_isa_string_ext() is being used by riscv_isa_string(), which is
+then used by boards to retrieve the 'riscv,isa' string to be written in
+the FDT. All this happens after riscv_cpu_realize(), meaning that we're
+already past riscv_cpu_validate_set_extensions() and, more important,
+riscv_cpu_disable_priv_spec_isa_exts().
 
-As with MISA extensions, we're using the KVMCPUConfig type to hold
-information about the state of each extension. However, multi-letter
-extensions have more cases to cover than MISA extensions, so we're
-adding an extra 'supported' flag as well. This flag will reflect if a
-given extension is supported by KVM, i.e. KVM knows how to handle it.
-This is determined during KVM extension discovery in
-kvm_riscv_init_multiext_cfg(), where we test for EINVAL errors. Any
-other error different from EINVAL will cause an abort.
+This means that all extensions that needed to be disabled due to
+priv_spec mismatch are already disabled. Checking this again during
+riscv_isa_string_ext() is unneeded. Remove it.
 
-The use of the 'user_set' is similar to what we already do with MISA
-extensions: the flag set only if the user is changing the extension
-state.
-
-The 'supported' flag will be used later on to make an exception for
-users that are disabling multi-letter extensions that are unknown to
-KVM.
+As a bonus, riscv_isa_string_ext() can now be used with the 'host'
+KVM-only CPU type since it doesn't have a env->priv_ver assigned and it
+would fail this check for no good reason.
 
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
 ---
- target/riscv/kvm.c | 119 +++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 119 insertions(+)
+ target/riscv/cpu.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/target/riscv/kvm.c b/target/riscv/kvm.c
-index cb511ea8f1..376bbc68b4 100644
---- a/target/riscv/kvm.c
-+++ b/target/riscv/kvm.c
-@@ -113,6 +113,7 @@ typedef struct KVMCPUConfig {
-     target_ulong offset;
-     int kvm_reg_id;
-     bool user_set;
-+    bool supported;
- } KVMCPUConfig;
- 
- #define KVM_MISA_CFG(_bit, _reg_id) \
-@@ -197,6 +198,81 @@ static void kvm_riscv_update_cpu_misa_ext(RISCVCPU *cpu, CPUState *cs)
-     }
- }
- 
-+#define CPUCFG(_prop) offsetof(struct RISCVCPUConfig, _prop)
-+
-+#define KVM_EXT_CFG(_name, _prop, _reg_id) \
-+    {.name = _name, .offset = CPUCFG(_prop), \
-+     .kvm_reg_id = _reg_id}
-+
-+static KVMCPUConfig kvm_multi_ext_cfgs[] = {
-+    KVM_EXT_CFG("zicbom", ext_icbom, KVM_RISCV_ISA_EXT_ZICBOM),
-+    KVM_EXT_CFG("zicboz", ext_icboz, KVM_RISCV_ISA_EXT_ZICBOZ),
-+    KVM_EXT_CFG("zihintpause", ext_zihintpause, KVM_RISCV_ISA_EXT_ZIHINTPAUSE),
-+    KVM_EXT_CFG("zbb", ext_zbb, KVM_RISCV_ISA_EXT_ZBB),
-+    KVM_EXT_CFG("ssaia", ext_ssaia, KVM_RISCV_ISA_EXT_SSAIA),
-+    KVM_EXT_CFG("sstc", ext_sstc, KVM_RISCV_ISA_EXT_SSTC),
-+    KVM_EXT_CFG("svinval", ext_svinval, KVM_RISCV_ISA_EXT_SVINVAL),
-+    KVM_EXT_CFG("svpbmt", ext_svpbmt, KVM_RISCV_ISA_EXT_SVPBMT),
-+};
-+
-+static void kvm_cpu_cfg_set(RISCVCPU *cpu, KVMCPUConfig *multi_ext,
-+                            uint32_t val)
-+{
-+    int cpu_cfg_offset = multi_ext->offset;
-+    bool *ext_enabled = (void *)&cpu->cfg + cpu_cfg_offset;
-+
-+    *ext_enabled = val;
-+}
-+
-+static uint32_t kvm_cpu_cfg_get(RISCVCPU *cpu,
-+                                KVMCPUConfig *multi_ext)
-+{
-+    int cpu_cfg_offset = multi_ext->offset;
-+    bool *ext_enabled = (void *)&cpu->cfg + cpu_cfg_offset;
-+
-+    return *ext_enabled;
-+}
-+
-+static void kvm_cpu_set_multi_ext_cfg(Object *obj, Visitor *v,
-+                                      const char *name,
-+                                      void *opaque, Error **errp)
-+{
-+    KVMCPUConfig *multi_ext_cfg = opaque;
-+    RISCVCPU *cpu = RISCV_CPU(obj);
-+    bool value, host_val;
-+
-+    if (!visit_type_bool(v, name, &value, errp)) {
-+        return;
-+    }
-+
-+    host_val = kvm_cpu_cfg_get(cpu, multi_ext_cfg);
-+
-+    /*
-+     * Ignore if the user is setting the same value
-+     * as the host.
-+     */
-+    if (value == host_val) {
-+        return;
-+    }
-+
-+    if (!multi_ext_cfg->supported) {
-+        /*
-+         * Error out if the user is trying to enable an
-+         * extension that KVM doesn't support. Ignore
-+         * option otherwise.
-+         */
-+        if (value) {
-+            error_setg(errp, "KVM does not support disabling extension %s",
-+                       multi_ext_cfg->name);
-+        }
-+
-+        return;
-+    }
-+
-+    multi_ext_cfg->user_set = true;
-+    kvm_cpu_cfg_set(cpu, multi_ext_cfg, value);
-+}
-+
- static void kvm_riscv_add_cpu_user_properties(Object *cpu_obj)
- {
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index 5a50cb1d0b..b65db165cc 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -2001,8 +2001,7 @@ static void riscv_isa_string_ext(RISCVCPU *cpu, char **isa_str,
      int i;
-@@ -215,6 +291,15 @@ static void kvm_riscv_add_cpu_user_properties(Object *cpu_obj)
-         object_property_set_description(cpu_obj, misa_cfg->name,
-                                         misa_cfg->description);
-     }
-+
-+    for (i = 0; i < ARRAY_SIZE(kvm_multi_ext_cfgs); i++) {
-+        KVMCPUConfig *multi_cfg = &kvm_multi_ext_cfgs[i];
-+
-+        object_property_add(cpu_obj, multi_cfg->name, "bool",
-+                            NULL,
-+                            kvm_cpu_set_multi_ext_cfg,
-+                            NULL, multi_cfg);
-+    }
- }
  
- static int kvm_riscv_get_regs_core(CPUState *cs)
-@@ -530,6 +615,39 @@ static void kvm_riscv_init_misa_ext_mask(RISCVCPU *cpu,
-     env->misa_ext = env->misa_ext_mask;
- }
- 
-+static void kvm_riscv_init_multiext_cfg(RISCVCPU *cpu, KVMScratchCPU *kvmcpu)
-+{
-+    CPURISCVState *env = &cpu->env;
-+    uint64_t val;
-+    int i, ret;
-+
-+    for (i = 0; i < ARRAY_SIZE(kvm_multi_ext_cfgs); i++) {
-+        KVMCPUConfig *multi_ext_cfg = &kvm_multi_ext_cfgs[i];
-+        struct kvm_one_reg reg;
-+
-+        reg.id = kvm_riscv_reg_id(env, KVM_REG_RISCV_ISA_EXT,
-+                                  multi_ext_cfg->kvm_reg_id);
-+        reg.addr = (uint64_t)&val;
-+        ret = ioctl(kvmcpu->cpufd, KVM_GET_ONE_REG, &reg);
-+        if (ret != 0) {
-+            if (ret == -EINVAL) {
-+                /* Silently default to 'false' if KVM does not support it. */
-+                multi_ext_cfg->supported = false;
-+                val = false;
-+            } else {
-+                error_report("Unable to read ISA_EXT KVM register %s, "
-+                             "error %d", multi_ext_cfg->name, ret);
-+                kvm_riscv_destroy_scratch_vcpu(kvmcpu);
-+                exit(EXIT_FAILURE);
-+            }
-+        } else {
-+            multi_ext_cfg->supported = true;
-+        }
-+
-+        kvm_cpu_cfg_set(cpu, multi_ext_cfg, val);
-+    }
-+}
-+
- void kvm_riscv_init_user_properties(Object *cpu_obj)
- {
-     RISCVCPU *cpu = RISCV_CPU(cpu_obj);
-@@ -542,6 +660,7 @@ void kvm_riscv_init_user_properties(Object *cpu_obj)
-     kvm_riscv_add_cpu_user_properties(cpu_obj);
-     kvm_riscv_init_machine_ids(cpu, &kvmcpu);
-     kvm_riscv_init_misa_ext_mask(cpu, &kvmcpu);
-+    kvm_riscv_init_multiext_cfg(cpu, &kvmcpu);
- 
-     kvm_riscv_destroy_scratch_vcpu(&kvmcpu);
- }
+     for (i = 0; i < ARRAY_SIZE(isa_edata_arr); i++) {
+-        if (cpu->env.priv_ver >= isa_edata_arr[i].min_version &&
+-            isa_ext_is_enabled(cpu, &isa_edata_arr[i])) {
++        if (isa_ext_is_enabled(cpu, &isa_edata_arr[i])) {
+             new = g_strconcat(old, "_", isa_edata_arr[i].name, NULL);
+             g_free(old);
+             old = new;
 -- 
 2.41.0
 
