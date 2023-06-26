@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14B4973D8E6
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 09:53:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DDB673D8F9
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 09:57:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDh2T-0006Ea-6e; Mon, 26 Jun 2023 03:53:33 -0400
+	id 1qDh5O-0000Ww-C2; Mon, 26 Jun 2023 03:56:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qDh2P-00066H-GA
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 03:53:29 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ id 1qDh5N-0000We-8C
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 03:56:33 -0400
+Received: from mail-lf1-x12a.google.com ([2a00:1450:4864:20::12a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qDh2N-0003tP-NX
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 03:53:29 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-313e09a5b19so1386559f8f.0
- for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 00:53:27 -0700 (PDT)
+ id 1qDh5L-0004qN-GF
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 03:56:32 -0400
+Received: by mail-lf1-x12a.google.com with SMTP id
+ 2adb3069b0e04-4f76a0a19d4so3800592e87.2
+ for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 00:56:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687766006; x=1690358006;
+ d=linaro.org; s=google; t=1687766189; x=1690358189;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=b+OwqEuZSQCh1epzPZvNFCjAs5pq4CFsJoIgAGZbGZU=;
- b=PFongND+z04vB2erWS0QlhLFVIXJ0QdlhbfzBVW/hOp80EHZ8FdPXhZZuQ1h2iXktg
- +2LPRdAev190VFYEgdZAlYGE2lWabC/oniEvgO59CI5AfBt+knUCTRhb9/XKH25K4lwB
- 0yBXwdeXi5y72yTmO8pjtW5lSv16BxtcLthmyCAvlSVO65GyrVJDd0VEnsum45NJfi7P
- 1iuycJexcaoJE6tbAVd3BDNVrF+qpMHIh4zxdabMYBFT0PwO6RxCk1XC9X+P97xmv+PZ
- NAmhmK4IEP3diP+F8adhSc9NqWsWRqJzKGPU7QzYtT5avqxK0uwT4tMyF+hb6WqVggkT
- 5Neg==
+ bh=RGGiuHJsxSKHXwFRhpPmNrzFRVpLiuJtVbKciQK45qI=;
+ b=qx06lioubOsMpallcGuWkukIobW+SQsj93QJKSZEhQRwSHZtVOITmFIjxfqyvjPPFu
+ GWuElB99FOE3VzgAQAaRMWkAZCIVbcdjFA6Q97Zj3V04mEUtmfHeH3+9mQfDpT1c3TOv
+ 1az8p3v0jYSRKno+riYAuBQoaXFcyXoUqGyBidNmIKw+ceplYLe2eh+NJn337+UvhSf6
+ ZjyZOArpGmtiuKyaFgUs3ClAhH/brExOfwyVQrPK+YHfVnOma7P+LMxSo7KLEUmiF8ql
+ AWzEGpMIq+mUaQPKUvDm4GHcjhG90Z9O8udXWu4VJAQg7E/Mch5UKTOvOJz2hiIJ7ApR
+ U1Aw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687766006; x=1690358006;
+ d=1e100.net; s=20221208; t=1687766189; x=1690358189;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=b+OwqEuZSQCh1epzPZvNFCjAs5pq4CFsJoIgAGZbGZU=;
- b=IZLIOh799WuNhXO9Lj8LUzYo20gE6DwxmjoNzpN/gNtsjEn3KO8L8GckkCIWQ7fyPS
- pDxCzzlBi7S83sMNTJBcmGEqUusxCa/Of8iyQM7b+Uhs5jyGEKFCmmfnx0l7liUM6Z5+
- k9tj+O3MAoqX0bzCt0mLUUCp7rdft+ZjtZyQBSbIASNauzqvxPxkbUIqRkjpKWpKLZ6j
- mTtxtAVABuF8I5scGHghW6xD8eJxwzVZNTKA1dNC/7Ln5GSF9BV/IHsTexA16wZ/nYff
- YSR7wp/3m1kzPfIomJc7ZtvZStl1xFZ0nbSeXAaJfGDtY7yjUwXfdT4i8cR6fAfg65aX
- 3LvA==
-X-Gm-Message-State: AC+VfDyjnXK2k66oaQ1mB5VfEsiKBPu3wPJsp4Eg6auiHAG5vYY1E556
- EJAOnGfmBo3wFeM8MbM/4CBIPQ==
-X-Google-Smtp-Source: ACHHUZ67sQuaOVfSBbnRqDuaYGTU+R6c3Jf6MSbc8P4rpPlc7vBfa6oprwbPnWzDKMJ0IT6XlP69Mw==
-X-Received: by 2002:a5d:45c3:0:b0:311:1944:ad33 with SMTP id
- b3-20020a5d45c3000000b003111944ad33mr23568468wrs.12.1687766006137; 
- Mon, 26 Jun 2023 00:53:26 -0700 (PDT)
+ bh=RGGiuHJsxSKHXwFRhpPmNrzFRVpLiuJtVbKciQK45qI=;
+ b=h6GlVb2PrEh70PPFIonTV5OQIgpK3gXqd+iffiXVxylcutaX5afwRiXml0Wml18z6t
+ iRXmTYg3+zxnGk338hBzISBGf3xdjMyixHfBHhx7zK6j574A9qQ04AGxNjqn6rO61N4u
+ PCc+Jjt0a3q68XAHt1DyWfDws5KDcMbz8+mE20FDw/3PwhPfEUf/mkICnMtPi9OU/fkZ
+ AHuf7MRHk/0JSRBHJXXc9PVYhM0Wl1Skw2tGKutQsqMLFBxzNzQ7MZnRMhhhpwD9eI9K
+ Ckc1uBsNpAc8VibaLjXVa92Z6648pwJLR46qkZFHB0Qr1JY2VWh6JRBh5syNIh+4Bsvg
+ +ifQ==
+X-Gm-Message-State: AC+VfDwJqxu26dJCI2UIdxVJDEoZ8KzbWCOkHSWDFG0wN/QYVkkM2NFG
+ rzEPhCteBP7U7TIG60JMeASAtzs2DO1PCmC5KVckFSW+
+X-Google-Smtp-Source: ACHHUZ7XufVP27HsZvCL4Oj+jVBYjAO/ScjosQSd8F4NEjAnXbtGabY73Dj7EhFabbriseYW3nWryQ==
+X-Received: by 2002:ac2:5bca:0:b0:4f8:67e7:8a1c with SMTP id
+ u10-20020ac25bca000000b004f867e78a1cmr7208815lfn.45.1687766189112; 
+ Mon, 26 Jun 2023 00:56:29 -0700 (PDT)
 Received: from [192.168.1.208] ([139.47.42.170])
  by smtp.gmail.com with ESMTPSA id
- u13-20020a5d514d000000b0030e56a9ff25sm6480072wrt.31.2023.06.26.00.53.25
+ 10-20020a05600c230a00b003f7eeec829asm6867901wmo.10.2023.06.26.00.56.28
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 26 Jun 2023 00:53:25 -0700 (PDT)
-Message-ID: <239cd146-c616-4fc7-7dfb-5052dbbb3a76@linaro.org>
-Date: Mon, 26 Jun 2023 09:53:24 +0200
+ Mon, 26 Jun 2023 00:56:28 -0700 (PDT)
+Message-ID: <20254de7-920d-a8c9-becd-892496d7801d@linaro.org>
+Date: Mon, 26 Jun 2023 09:56:27 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PATCH v3 08/11] target/i386: AMD only supports SYSENTER/SYSEXIT
- in 32-bit mode
+Subject: Re: [PATCH v3 11/11] target/i386: implement SYSCALL/SYSRET in 32-bit
+ emulators
 Content-Language: en-US
 To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
 References: <20230623131711.96775-1-pbonzini@redhat.com>
- <20230623131711.96775-9-pbonzini@redhat.com>
+ <20230623131711.96775-12-pbonzini@redhat.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230623131711.96775-9-pbonzini@redhat.com>
+In-Reply-To: <20230623131711.96775-12-pbonzini@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x431.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::12a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-lf1-x12a.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -96,48 +96,28 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 6/23/23 15:17, Paolo Bonzini wrote:
+> AMD supports both 32-bit and 64-bit SYSCALL/SYSRET, but the TCG only
+> exposes it for 64-bit targets.  For system emulation just reuse the
+> helper; for user-mode emulation the ABI is the same as "int $80".
+> 
+> The BSDs does not support any fast system call mechanism in 32-bit
+> mode so add to bsd-user the same stub that FreeBSD has for 64-bit
+> compatibility mode.
+> 
 > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 > ---
->   target/i386/tcg/translate.c | 10 ++++++----
->   1 file changed, 6 insertions(+), 4 deletions(-)
+>   bsd-user/i386/target_arch_cpu.h     |  4 ++++
+>   linux-user/i386/cpu_loop.c          | 13 +++++++++----
+>   target/i386/cpu.c                   |  4 ++--
+>   target/i386/helper.h                |  2 --
+>   target/i386/tcg/seg_helper.c        |  7 +++++--
+>   target/i386/tcg/sysemu/seg_helper.c |  7 ++++---
+>   target/i386/tcg/translate.c         |  2 --
+>   target/i386/tcg/user/seg_helper.c   |  2 --
+>   8 files changed, 24 insertions(+), 17 deletions(-)
 
-I guess we have no other vendors except Intel and AMD...
-
-Acked-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
 
 r~
-
-> 
-> diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
-> index ed4016f554b..a20b5af71e7 100644
-> --- a/target/i386/tcg/translate.c
-> +++ b/target/i386/tcg/translate.c
-> @@ -5669,9 +5669,10 @@ static bool disas_insn(DisasContext *s, CPUState *cpu)
->           s->base.is_jmp = DISAS_NORETURN;
->           break;
->       case 0x134: /* sysenter */
-> -        /* For Intel SYSENTER is valid on 64-bit */
-> -        if (CODE64(s) && env->cpuid_vendor1 != CPUID_VENDOR_INTEL_1)
-> +        /* For AMD SYSENTER is not valid in long mode */
-> +        if (LMA(s) && env->cpuid_vendor1 != CPUID_VENDOR_INTEL_1) {
->               goto illegal_op;
-> +        }
->           if (!PE(s)) {
->               gen_exception_gpf(s);
->           } else {
-> @@ -5680,9 +5681,10 @@ static bool disas_insn(DisasContext *s, CPUState *cpu)
->           }
->           break;
->       case 0x135: /* sysexit */
-> -        /* For Intel SYSEXIT is valid on 64-bit */
-> -        if (CODE64(s) && env->cpuid_vendor1 != CPUID_VENDOR_INTEL_1)
-> +        /* For AMD SYSEXIT is not valid in long mode */
-> +        if (LMA(s) && env->cpuid_vendor1 != CPUID_VENDOR_INTEL_1) {
->               goto illegal_op;
-> +        }
->           if (!PE(s)) {
->               gen_exception_gpf(s);
->           } else {
-
 
