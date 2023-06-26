@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63F8573EA82
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 20:52:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5079B73EAD5
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 21:04:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDrIT-00042o-Hy; Mon, 26 Jun 2023 14:50:46 -0400
+	id 1qDrIX-00044Z-Pk; Mon, 26 Jun 2023 14:50:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qDrIN-00042I-AD; Mon, 26 Jun 2023 14:50:39 -0400
+ id 1qDrIR-00043P-8j; Mon, 26 Jun 2023 14:50:43 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qDrIK-0004nn-DT; Mon, 26 Jun 2023 14:50:39 -0400
+ id 1qDrIP-0004ov-6L; Mon, 26 Jun 2023 14:50:42 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id AE597EF18;
+ by isrv.corpit.ru (Postfix) with ESMTP id C68CAEF19;
  Mon, 26 Jun 2023 21:50:18 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 9AE25F7AB;
+ by tsrv.corpit.ru (Postfix) with SMTP id C1B8CF7AC;
  Mon, 26 Jun 2023 21:50:16 +0300 (MSK)
-Received: (nullmailer pid 1573973 invoked by uid 1000);
+Received: (nullmailer pid 1573976 invoked by uid 1000);
  Mon, 26 Jun 2023 18:50:15 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org, qemu-stable@nongnu.org
 Cc: Erico Nunes <ernunes@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.0.3 05/54] ui/gtk: fix passing y0_top parameter to scanout
-Date: Mon, 26 Jun 2023 21:49:12 +0300
-Message-Id: <20230626185002.1573836-5-mjt@tls.msk.ru>
+ Vivek Kasireddy <vivek.kasireddy@intel.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.0.3 06/54] ui/gtk: use widget size for cursor motion event
+Date: Mon, 26 Jun 2023 21:49:13 +0300
+Message-Id: <20230626185002.1573836-6-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.0.3-20230626214235@cover.tls.msk.ru>
 References: <qemu-stable-8.0.3-20230626214235@cover.tls.msk.ru>
@@ -63,45 +63,49 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Erico Nunes <ernunes@redhat.com>
 
-The dmabuf->y0_top flag is passed to .dpy_gl_scanout_dmabuf(), however
-in the gtk ui both implementations dropped it when doing the next
-scanout_texture call.
-
-Fixes flipped linux console using vhost-user-gpu with the gtk ui
-display.
+The gd_motion_event size has some calculations for the cursor position,
+which also take into account things like different size of the
+framebuffer compared to the window size.
+The use of window size makes things more difficult though, as at least
+in the case of Wayland includes the size of ui elements like a menu bar
+at the top of the window. This leads to a wrong position calculation by
+a few pixels.
+Fix it by using the size of the widget, which already returns the size
+of the actual space to render the framebuffer.
 
 Signed-off-by: Erico Nunes <ernunes@redhat.com>
 Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Message-Id: <20230220175605.43759-1-ernunes@redhat.com>
-(cherry picked from commit 94400fa53f81c9f58ad88cf3f3e7ea89ec423d39)
+Acked-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
+Message-Id: <20230320160856.364319-1-ernunes@redhat.com>
+(cherry picked from commit 2f31663ed4b5631b5e1c79f5cdd6463e55410eb8)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/ui/gtk-egl.c b/ui/gtk-egl.c
-index e84431790c..557668e418 100644
---- a/ui/gtk-egl.c
-+++ b/ui/gtk-egl.c
-@@ -256,7 +256,7 @@ void gd_egl_scanout_dmabuf(DisplayChangeListener *dcl,
-     }
+diff --git a/ui/gtk.c b/ui/gtk.c
+index f16e0f8dee..0a9f24ee0a 100644
+--- a/ui/gtk.c
++++ b/ui/gtk.c
+@@ -869,7 +869,6 @@ static gboolean gd_motion_event(GtkWidget *widget, GdkEventMotion *motion,
+ {
+     VirtualConsole *vc = opaque;
+     GtkDisplayState *s = vc->s;
+-    GdkWindow *window;
+     int x, y;
+     int mx, my;
+     int fbh, fbw;
+@@ -882,10 +881,9 @@ static gboolean gd_motion_event(GtkWidget *widget, GdkEventMotion *motion,
+     fbw = surface_width(vc->gfx.ds) * vc->gfx.scale_x;
+     fbh = surface_height(vc->gfx.ds) * vc->gfx.scale_y;
  
-     gd_egl_scanout_texture(dcl, dmabuf->texture,
--                           false, dmabuf->width, dmabuf->height,
-+                           dmabuf->y0_top, dmabuf->width, dmabuf->height,
-                            0, 0, dmabuf->width, dmabuf->height);
+-    window = gtk_widget_get_window(vc->gfx.drawing_area);
+-    ww = gdk_window_get_width(window);
+-    wh = gdk_window_get_height(window);
+-    ws = gdk_window_get_scale_factor(window);
++    ww = gtk_widget_get_allocated_width(widget);
++    wh = gtk_widget_get_allocated_height(widget);
++    ws = gtk_widget_get_scale_factor(widget);
  
-     if (dmabuf->allow_fences) {
-diff --git a/ui/gtk-gl-area.c b/ui/gtk-gl-area.c
-index 7696df1f6b..c384a1516b 100644
---- a/ui/gtk-gl-area.c
-+++ b/ui/gtk-gl-area.c
-@@ -298,7 +298,7 @@ void gd_gl_area_scanout_dmabuf(DisplayChangeListener *dcl,
-     }
- 
-     gd_gl_area_scanout_texture(dcl, dmabuf->texture,
--                               false, dmabuf->width, dmabuf->height,
-+                               dmabuf->y0_top, dmabuf->width, dmabuf->height,
-                                0, 0, dmabuf->width, dmabuf->height);
- 
-     if (dmabuf->allow_fences) {
+     mx = my = 0;
+     if (ww > fbw) {
 -- 
 2.39.2
 
