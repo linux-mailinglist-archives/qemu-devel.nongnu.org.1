@@ -2,77 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B760B73D911
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 10:03:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8734773D912
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 10:03:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDhBS-0003qx-7A; Mon, 26 Jun 2023 04:02:50 -0400
+	id 1qDhBf-0003ss-46; Mon, 26 Jun 2023 04:03:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qDhBO-0003q5-WB
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 04:02:47 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
+ id 1qDhBa-0003sG-WF
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 04:02:59 -0400
+Received: from mail-il1-x135.google.com ([2607:f8b0:4864:20::135])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qDhBM-0006OE-Js
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 04:02:46 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-3fa93d61d48so9849285e9.0
- for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 01:02:40 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
+ id 1qDhBV-0006Sr-UP
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 04:02:56 -0400
+Received: by mail-il1-x135.google.com with SMTP id
+ e9e14a558f8ab-345ad94db0aso1450315ab.1
+ for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 01:02:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687766559; x=1690358559;
- h=content-transfer-encoding:in-reply-to:from:references:to
+ d=sifive.com; s=google; t=1687766571; x=1690358571;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=BBsywvgrie/RYW0fnLWguUN0R4taO5ncR8t93HmWJnQ=;
- b=safoOg1VdJCEByWRGqW65xUXEZ5wRO42ez2h7f64zlRecY9r1ey0gCUB7Yssdej1AO
- bKC0eQ/i2crbep/MmIvE82zknm+6gk5aDNVRbduzoZH1bR64r9McDHb+drk8T86l5XIl
- nDhYiYwC6CZfQJtsUhQhgwlEv62XMKHajHRKs8lMdZ4F2ebB4C9tUYMf5QLwKEgbYyTJ
- 5fzfYWZtW5pGT/tJplMp82AcsH6Wwm5ZyyaPpi8UqoO4jUEQ4AQbcFtbUDf+WdTb2SEN
- EiozcPhLKZyDjyIw5i/skXfRGhZ2MmmF51SO8x/nX46O9j2gLuwGtcnCU/gySJgkAeDa
- Uvvg==
+ bh=MvkjMPRn1ycbgvwekgZMshuyjatEUBQBC8wNlNdbf0Y=;
+ b=FqEKi6aGTj/tPH6pE9A2yT2Z95ibvrQB2++8pEkDi9YEcGYSK0VE5LpS1z4unj9ke1
+ 1uYvjsSFDGMNYVwIo6x9RWXz/ssw7Ig1LphnkZNNP5ouz7braqD4ibOA61c8hKVnfnRA
+ UuCPgfCFxVtec2zcwb0TZxmK30dtEfv+pviNX63sfLDDkHqM4bOYinYgbHoT8j9cfg7A
+ ZS6cw0VuMAwjcgccnRRBQyJFp5GUct0ovrJool351+LdI1gWU8+NbCRIV6pyVqmuwLWb
+ 37cZazofhZjm4/3QICATc1Ry192XUC6JIUnpVPd+LOnfI/Qvgrgvq3i4LYo0lbvli0FJ
+ zIQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687766559; x=1690358559;
- h=content-transfer-encoding:in-reply-to:from:references:to
+ d=1e100.net; s=20221208; t=1687766571; x=1690358571;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=BBsywvgrie/RYW0fnLWguUN0R4taO5ncR8t93HmWJnQ=;
- b=XOvXtFznWF4zFOAnVO3MUd+HiPgz6FGgoAb8WfjAkrzfdYljMQWb83mqI61N9qcs46
- OX9r1Mw/5+RnmHjmThiUCRVMb08sJ/fMqAKUXeLX6njkRkpy4+9kmWulqe+Nl3LBho3I
- +VI2wyYtLrOpRM/6QahfdG+HofgJ0kiWXIJacvl+8n//VNskZzVVkGv9GtQDwS5lH4FT
- mwCym8fz+J96wl9SPTQRUzYArcZlHlrlrHeBETlyIAcq2HqkAxWBKAS8OsL10jTj+6zj
- 5c8c3gVh+Kx7XD9l0QsNl/PLVszH9OIMDrsJDIq759g97wyE0hCDzsA7n+YHBtCTl5i2
- epag==
-X-Gm-Message-State: AC+VfDxz7op1vK/XrfH6g7q41nnk27uRGt0UYKy0JlY4owQZnhLNiRZF
- r1b+2ebX8XgOrkIH6hqDDO7bU4oilfUB5WfVWCQd2Lft
-X-Google-Smtp-Source: ACHHUZ4PxHJhBmCliVOp/tUPQyRpeQuDRAAROS1+2QD/qFFrnjpFwlVKuKGyuAoVofQVBsLmL01ziw==
-X-Received: by 2002:a05:600c:219:b0:3fa:8956:22c7 with SMTP id
- 25-20020a05600c021900b003fa895622c7mr3090277wmi.33.1687766559577; 
- Mon, 26 Jun 2023 01:02:39 -0700 (PDT)
-Received: from [192.168.1.208] ([139.47.42.170])
- by smtp.gmail.com with ESMTPSA id
- t8-20020a1c7708000000b003f50d6ee334sm6745305wmi.47.2023.06.26.01.02.39
+ bh=MvkjMPRn1ycbgvwekgZMshuyjatEUBQBC8wNlNdbf0Y=;
+ b=F2JNnNrs7NlQEjzmnhSrf14NT7AlWrmulh3agCmVoqXhVquN+vNIzurTJSaMlQdihC
+ zDPTWHodrqGlqQTekoc84mURLgvrXWjlhX1Mq7auQR0+ElA6kDvalt+NAK9eJ5TB+OXR
+ 4mt6MXGa3PEvRI7epwE40roDr6VMAJi2kKlFytsOaGU0XyPXvzz+GMotQxV+pBPA75BS
+ o1wFxIxd9cvoYk/gzqlJaJ5xuDXLX8/Q0tAiYPkZaa7yh11rPaPBoNWAdYKoeR+fB5j0
+ L7bMnvIDCRtVRh3u2PN5U8GsXC+u7+SnnIbauvkDrJBKmr8X1ZdNsBQLnMpK6br8BzPO
+ 33/g==
+X-Gm-Message-State: AC+VfDw7Ae6it/6dTt9fNgoOu7x4x4s9wf0UHCEEzu/xTSQVzeRwvVwQ
+ EoGZAH2POsPCCYwZyRGArHi5UA==
+X-Google-Smtp-Source: ACHHUZ5udQtK28UzxHmB7VPIzpOziv0zxM+0VhiDTEXrrcPvboyGHBSGh+eLXrX0ZEQ5LpqTR/AuAA==
+X-Received: by 2002:a92:daca:0:b0:345:7c3a:e68 with SMTP id
+ o10-20020a92daca000000b003457c3a0e68mr4711475ilq.1.1687766571617; 
+ Mon, 26 Jun 2023 01:02:51 -0700 (PDT)
+Received: from [192.168.100.101] (59-124-168-89.hinet-ip.hinet.net.
+ [59.124.168.89]) by smtp.gmail.com with ESMTPSA id
+ v1-20020a634641000000b00548fb73874asm3475358pgk.37.2023.06.26.01.02.49
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 26 Jun 2023 01:02:39 -0700 (PDT)
-Message-ID: <cb5b1b8b-12a0-cd5b-4c90-a525e488f815@linaro.org>
-Date: Mon, 26 Jun 2023 10:02:37 +0200
+ Mon, 26 Jun 2023 01:02:51 -0700 (PDT)
+Message-ID: <0be48869-7df8-bb81-be01-eb0ac2e7428e@sifive.com>
+Date: Mon, 26 Jun 2023 16:02:48 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH 08/26] scripts/oss-fuzz: add a suppression for keymap
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.12.0
+Subject: Re: [PATCH v4 10/17] target/riscv: Add Zvkned ISA extension support
 Content-Language: en-US
-To: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
- qemu-devel@nongnu.org
-References: <20230623122100.1640995-1-alex.bennee@linaro.org>
- <20230623122100.1640995-9-alex.bennee@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230623122100.1640995-9-alex.bennee@linaro.org>
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org,
+ qemu-riscv@nongnu.org
+Cc: dbarboza@ventanamicro.com, Nazar Kazakov <nazar.kazakov@codethink.co.uk>, 
+ Lawrence Hunter <lawrence.hunter@codethink.co.uk>,
+ William Salmon <will.salmon@codethink.co.uk>,
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Kiran Ostrolenk <kiran.ostrolenk@codethink.co.uk>
+References: <20230622161646.32005-1-max.chou@sifive.com>
+ <20230622161646.32005-11-max.chou@sifive.com>
+ <323d7da1-3e66-bf22-42c1-1afa4df3aeb4@linaro.org>
+From: Max Chou <max.chou@sifive.com>
+In-Reply-To: <323d7da1-3e66-bf22-42c1-1afa4df3aeb4@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::135;
+ envelope-from=max.chou@sifive.com; helo=mail-il1-x135.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -95,29 +104,267 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/23/23 14:20, Alex Bennée wrote:
-> When updating to the latest fedora the santizer found more leaks
-> inside xkbmap:
-> 
->    FAILED: pc-bios/keymaps/ar
->    /builds/stsquad/qemu/build-oss-fuzz/qemu-keymap -f pc-bios/keymaps/ar -l ara
->    =================================================================
->    ==3604==ERROR: LeakSanitizer: detected memory leaks
->    Direct leak of 1424 byte(s) in 1 object(s) allocated from:
->        #0 0x56316418ebec in __interceptor_calloc (/builds/stsquad/qemu/build-oss-fuzz/qemu-keymap+0x127bec) (BuildId: a2ad9da3190962acaa010fa8f44a9269f9081e1c)
->        #1 0x7f60d4dc067e  (/lib64/libxkbcommon.so.0+0x1c67e) (BuildId: b243a34e4e58e6a30b93771c256268b114d34b80)
->        #2 0x7f60d4dc2137 in xkb_keymap_new_from_names (/lib64/libxkbcommon.so.0+0x1e137) (BuildId: b243a34e4e58e6a30b93771c256268b114d34b80)
->        #3 0x5631641ca50f in main /builds/stsquad/qemu/build-oss-fuzz/../qemu-keymap.c:215:11
-> 
-> and many more. As we can't do anything about the library add a
-> suppression to keep the CI going with what its meant to be doing.
-> 
-> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-> ---
->   scripts/oss-fuzz/lsan_suppressions.txt | 3 +++
->   1 file changed, 3 insertions(+)
+On 2023/6/23 3:33 PM, Richard Henderson wrote:
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+> On 6/22/23 18:16, Max Chou wrote:
+>> --- a/target/riscv/vcrypto_helper.c
+>> +++ b/target/riscv/vcrypto_helper.c
+>> @@ -22,6 +22,7 @@
+>>   #include "qemu/bitops.h"
+>>   #include "qemu/bswap.h"
+>>   #include "cpu.h"
+>> +#include "crypto/aes.h"
+>>   #include "exec/memop.h"
+>>   #include "exec/exec-all.h"
+>>   #include "exec/helper-proto.h"
+>> @@ -195,3 +196,310 @@ RVVCALL(OPIVX2, vwsll_vx_w, WOP_UUU_W, H8, H4, 
+>> DO_SLL)
+>>   GEN_VEXT_VX(vwsll_vx_b, 2)
+>>   GEN_VEXT_VX(vwsll_vx_h, 4)
+>>   GEN_VEXT_VX(vwsll_vx_w, 8)
+>> +
+>> +static inline void aes_sub_bytes(uint8_t round_state[4][4])
+>> +{
+>> +    for (int j = 0; j < 16; j++) {
+>> +        round_state[j / 4][j % 4] = AES_sbox[round_state[j / 4][j % 
+>> 4]];
+>> +    }
+>> +}
+>> +
+>> +static inline void aes_shift_bytes(uint8_t round_state[4][4])
+>> +{
+>> +    uint8_t temp;
+>> +    temp = round_state[0][1];
+>> +    round_state[0][1] = round_state[1][1];
+>> +    round_state[1][1] = round_state[2][1];
+>> +    round_state[2][1] = round_state[3][1];
+>> +    round_state[3][1] = temp;
+>> +    temp = round_state[0][2];
+>> +    round_state[0][2] = round_state[2][2];
+>> +    round_state[2][2] = temp;
+>> +    temp = round_state[1][2];
+>> +    round_state[1][2] = round_state[3][2];
+>> +    round_state[3][2] = temp;
+>> +    temp = round_state[0][3];
+>> +    round_state[0][3] = round_state[3][3];
+>> +    round_state[3][3] = round_state[2][3];
+>> +    round_state[2][3] = round_state[1][3];
+>> +    round_state[1][3] = temp;
+>> +}
+>> +
+>> +static inline void xor_round_key(uint8_t round_state[4][4], uint8_t 
+>> *round_key)
+>> +{
+>> +    for (int j = 0; j < 16; j++) {
+>> +        round_state[j / 4][j % 4] = round_state[j / 4][j % 4] ^ 
+>> (round_key)[j];
+>> +    }
+>> +}
+>> +
+>> +static inline void aes_inv_sub_bytes(uint8_t round_state[4][4])
+>> +{
+>> +    for (int j = 0; j < 16; j++) {
+>> +        round_state[j / 4][j % 4] = AES_isbox[round_state[j / 4][j % 
+>> 4]];
+>> +    }
+>> +}
+>> +
+>> +static inline void aes_inv_shift_bytes(uint8_t round_state[4][4])
+>> +{
+>> +    uint8_t temp;
+>> +    temp = round_state[3][1];
+>> +    round_state[3][1] = round_state[2][1];
+>> +    round_state[2][1] = round_state[1][1];
+>> +    round_state[1][1] = round_state[0][1];
+>> +    round_state[0][1] = temp;
+>> +    temp = round_state[0][2];
+>> +    round_state[0][2] = round_state[2][2];
+>> +    round_state[2][2] = temp;
+>> +    temp = round_state[1][2];
+>> +    round_state[1][2] = round_state[3][2];
+>> +    round_state[3][2] = temp;
+>> +    temp = round_state[0][3];
+>> +    round_state[0][3] = round_state[1][3];
+>> +    round_state[1][3] = round_state[2][3];
+>> +    round_state[2][3] = round_state[3][3];
+>> +    round_state[3][3] = temp;
+>> +}
+>> +
+>> +static inline uint8_t xtime(uint8_t x)
+>> +{
+>> +    return (x << 1) ^ (((x >> 7) & 1) * 0x1b);
+>> +}
+>> +
+>> +static inline uint8_t multiply(uint8_t x, uint8_t y)
+>> +{
+>> +    return (((y & 1) * x) ^ ((y >> 1 & 1) * xtime(x)) ^
+>> +            ((y >> 2 & 1) * xtime(xtime(x))) ^
+>> +            ((y >> 3 & 1) * xtime(xtime(xtime(x)))) ^
+>> +            ((y >> 4 & 1) * xtime(xtime(xtime(xtime(x))))));
+>> +}
+>> +
+>> +static inline void aes_inv_mix_cols(uint8_t round_state[4][4])
+>> +{
+>> +    uint8_t a, b, c, d;
+>> +    for (int j = 0; j < 4; ++j) {
+>> +        a = round_state[j][0];
+>> +        b = round_state[j][1];
+>> +        c = round_state[j][2];
+>> +        d = round_state[j][3];
+>> +        round_state[j][0] = multiply(a, 0x0e) ^ multiply(b, 0x0b) ^
+>> +                            multiply(c, 0x0d) ^ multiply(d, 0x09);
+>> +        round_state[j][1] = multiply(a, 0x09) ^ multiply(b, 0x0e) ^
+>> +                            multiply(c, 0x0b) ^ multiply(d, 0x0d);
+>> +        round_state[j][2] = multiply(a, 0x0d) ^ multiply(b, 0x09) ^
+>> +                            multiply(c, 0x0e) ^ multiply(d, 0x0b);
+>> +        round_state[j][3] = multiply(a, 0x0b) ^ multiply(b, 0x0d) ^
+>> +                            multiply(c, 0x09) ^ multiply(d, 0x0e);
+>> +    }
+>> +}
+>> +
+>> +static inline void aes_mix_cols(uint8_t round_state[4][4])
+>> +{
+>> +    uint8_t a, b;
+>> +    for (int j = 0; j < 4; ++j) {
+>> +        a = round_state[j][0];
+>> +        b = round_state[j][0] ^ round_state[j][1] ^ round_state[j][2] ^
+>> +            round_state[j][3];
+>> +        round_state[j][0] ^= xtime(round_state[j][0] ^ 
+>> round_state[j][1]) ^ b;
+>> +        round_state[j][1] ^= xtime(round_state[j][1] ^ 
+>> round_state[j][2]) ^ b;
+>> +        round_state[j][2] ^= xtime(round_state[j][2] ^ 
+>> round_state[j][3]) ^ b;
+>> +        round_state[j][3] ^= xtime(round_state[j][3] ^ a) ^ b;
+>> +    }
+>> +}
+>> +
+>> +#define GEN_ZVKNED_HELPER_VV(NAME, 
+>> ...)                                   \
+>> +    void HELPER(NAME)(void *vd_vptr, void *vs2_vptr, CPURISCVState 
+>> *env,  \
+>> +                      uint32_t 
+>> desc)                                      \
+>> + { \
+>> +        uint64_t *vd = 
+>> vd_vptr;                                           \
+>> +        uint64_t *vs2 = 
+>> vs2_vptr;                                         \
+>> +        uint32_t vl = 
+>> env->vl;                                            \
+>> +        uint32_t total_elems = vext_get_total_elems(env, desc, 
+>> 4);        \
+>> +        uint32_t vta = 
+>> vext_vta(desc);                                    \
+>> + \
+>> +        for (uint32_t i = env->vstart / 4; i < env->vl / 4; i++) 
+>> {        \
+>> +            uint64_t round_key[2] = 
+>> {                                     \
+>> +                cpu_to_le64(vs2[i * 2 + 
+>> 0]),                              \
+>> +                cpu_to_le64(vs2[i * 2 + 
+>> 1]),                              \
+>> + };                                                            \
+>> +            uint8_t 
+>> round_state[4][4];                                    \
+>> +            cpu_to_le64s(vd + i * 2 + 
+>> 0);                                 \
+>> +            cpu_to_le64s(vd + i * 2 + 
+>> 1);                                 \
+>> +            for (int j = 0; j < 16; j++) 
+>> {                                \
+>> +                round_state[j / 4][j % 4] = ((uint8_t *)(vd + i * 
+>> 2))[j]; \
+>> + }                                                             \
+>> + __VA_ARGS__;                                                  \
+>> +            for (int j = 0; j < 16; j++) 
+>> {                                \
+>> +                ((uint8_t *)(vd + i * 2))[j] = round_state[j / 4][j 
+>> % 4]; \
+>> + }                                                             \
+>> +            le64_to_cpus(vd + i * 2 + 
+>> 0);                                 \
+>> +            le64_to_cpus(vd + i * 2 + 
+>> 1);                                 \
+>> + } \
+>> +        env->vstart = 
+>> 0;                                                  \
+>> +        /* set tail elements to 1s 
+>> */                                     \
+>> +        vext_set_elems_1s(vd, vta, vl * 4, total_elems * 
+>> 4);              \
+>> +    }
+>> +
+>> +#define GEN_ZVKNED_HELPER_VS(NAME, 
+>> ...)                                   \
+>> +    void HELPER(NAME)(void *vd_vptr, void *vs2_vptr, CPURISCVState 
+>> *env,  \
+>> +                      uint32_t 
+>> desc)                                      \
+>> + { \
+>> +        uint64_t *vd = 
+>> vd_vptr;                                           \
+>> +        uint64_t *vs2 = 
+>> vs2_vptr;                                         \
+>> +        uint32_t vl = 
+>> env->vl;                                            \
+>> +        uint32_t total_elems = vext_get_total_elems(env, desc, 
+>> 4);        \
+>> +        uint32_t vta = 
+>> vext_vta(desc);                                    \
+>> + \
+>> +        for (uint32_t i = env->vstart / 4; i < env->vl / 4; i++) 
+>> {        \
+>> +            uint64_t round_key[2] = 
+>> {                                     \
+>> + cpu_to_le64(vs2[0]),                                      \
+>> + cpu_to_le64(vs2[1]),                                      \
+>> + };                                                            \
+>> +            uint8_t 
+>> round_state[4][4];                                    \
+>> +            cpu_to_le64s(vd + i * 2 + 
+>> 0);                                 \
+>> +            cpu_to_le64s(vd + i * 2 + 
+>> 1);                                 \
+>> +            for (int j = 0; j < 16; j++) 
+>> {                                \
+>> +                round_state[j / 4][j % 4] = ((uint8_t *)(vd + i * 
+>> 2))[j]; \
+>> + }                                                             \
+>> + __VA_ARGS__;                                                  \
+>> +            for (int j = 0; j < 16; j++) 
+>> {                                \
+>> +                ((uint8_t *)(vd + i * 2))[j] = round_state[j / 4][j 
+>> % 4]; \
+>> + }                                                             \
+>> +            le64_to_cpus(vd + i * 2 + 
+>> 0);                                 \
+>> +            le64_to_cpus(vd + i * 2 + 
+>> 1);                                 \
+>> + } \
+>> +        env->vstart = 
+>> 0;                                                  \
+>> +        /* set tail elements to 1s 
+>> */                                     \
+>> +        vext_set_elems_1s(vd, vta, vl * 4, total_elems * 
+>> 4);              \
+>> +    }
+>
+> See
+>
+> https://lore.kernel.org/qemu-devel/20230620110758.787479-1-richard.henderson@linaro.org/ 
+>
+>
+> which should greatly simplify all of this.
+>
+>
+> r~
+Thanks a lot.
 
-r~
+I'll update the patch set for this.
+
+With regards,
+Max
+
 
