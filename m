@@ -2,82 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C5B373DBB9
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 11:49:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B23273DBC2
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 11:51:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDiqI-0000tO-Mc; Mon, 26 Jun 2023 05:49:06 -0400
+	id 1qDird-0002MS-Uk; Mon, 26 Jun 2023 05:50:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qDiqC-0000so-Ge
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 05:49:00 -0400
-Received: from mail-lf1-x129.google.com ([2a00:1450:4864:20::129])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qDiqA-0005X7-UV
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 05:49:00 -0400
-Received: by mail-lf1-x129.google.com with SMTP id
- 2adb3069b0e04-4f95bf5c493so3658262e87.3
- for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 02:48:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687772936; x=1690364936;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=RDhjahAYLLrUZxk6r7ttJp+ZHRYzhlgzDSThomtqVs4=;
- b=TBUmtop3RuNrC5afc32zRkSBlnJ2gLcGFiWoTsrtS6HaqSTiQVZbqk83T+CHU8rn8K
- VRRvpFtxxqcdEuBryK/fh9a9pfCrEGApQw7d87YqI80YhA+3IITbz2vlsiRw4hS61x3T
- UHDBuBmtte05QUe6evnjOHqgkdVCc6X0PLFcVW2r6FU6Y5EHk0zRd49cNur0yxHQOcNJ
- IuC/cr/8FTTDEKa/gfDMuJPQRRbp6bVfGPcoPi5Z07NdB4Ocjud1RLKRGKP1Dth75GBe
- Yus8HYlzVOz+YXJr7oGTnXPPowWmqiRcXv7YCcRgXRTY5tzctka69D1ffJ3Tl0R6Iiu2
- 4v7A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687772936; x=1690364936;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=RDhjahAYLLrUZxk6r7ttJp+ZHRYzhlgzDSThomtqVs4=;
- b=C5VjD9mQczbdoROdmRZ1qD+wfMwVTd1r1XohBsI28LRrjmSYmtXeqc5X1ZKazMMBPn
- Wz0zx0rafmsm4AJzH21dyRGPbaVAY3BT9CQ1MTlGMA3X0MsrPC955Z3LyYFAoJQGJh2X
- 8AZ1NuLMISd8TwSUhdW/AL5NXFf9s6z6Zy6PPSGK7J0TABh2uNolgPqRpgYYwN9YCNut
- P2VaJZV0EEx41wdbt89knTZxC6HXpdhshIe09gXNIoTOUb0Syw/lGJ1Bd5rThJREJ89/
- Z5f3XXuywOmGEoci+0ula2N672Cn1FIZq3ama9IQueG2wqQwbnzN6TCyRxaZt4ODsuCV
- oWzQ==
-X-Gm-Message-State: AC+VfDySrx/vjYdHqUNhKgPPC67TMGs/vmW05K7eXpeogMs18M7orQxn
- +mtGxvlBijtzO4Ywo0uNmYlmHA==
-X-Google-Smtp-Source: ACHHUZ6546wvRjK5vjrubRir2ay0EGlc2kQlvXPjt+UbBBzU2WIcih7DUoF8wrtuW65l+ljL5/Y/Tg==
-X-Received: by 2002:a05:6512:3455:b0:4fb:7447:e71a with SMTP id
- j21-20020a056512345500b004fb7447e71amr1149391lfr.63.1687772935667; 
- Mon, 26 Jun 2023 02:48:55 -0700 (PDT)
-Received: from [192.168.69.115] ([176.187.199.226])
- by smtp.gmail.com with ESMTPSA id
- n10-20020a1c720a000000b003fa96620b23sm2443558wmc.12.2023.06.26.02.48.54
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 26 Jun 2023 02:48:55 -0700 (PDT)
-Message-ID: <b7a68894-c992-3845-754c-1fdf655ad3fe@linaro.org>
-Date: Mon, 26 Jun 2023 11:48:52 +0200
+ (Exim 4.90_1) (envelope-from <lukasstraub2@web.de>)
+ id 1qDirc-0002MK-79
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 05:50:28 -0400
+Received: from mout.web.de ([212.227.15.3])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <lukasstraub2@web.de>)
+ id 1qDira-0005rW-A1
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 05:50:27 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+ s=s29768273; t=1687773021; x=1688377821; i=lukasstraub2@web.de;
+ bh=2gyt0efEMGmdq8I9e6Chc7TncPc3Whgpg9hQvMcLEyY=;
+ h=X-UI-Sender-Class:Date:From:To:Cc:Subject:In-Reply-To:References;
+ b=BLJAN42WSxisNpZnXAWjL1bjlp4ezf9xBq/J9awtxdrzGfrFN3SDt+S5lWWUDLhCp5OyegR
+ Mz1uYHbXsbkUYOoKhuaFIHEq/ratoqwTS7wFXi5ow5mDV719RRAa1i9cg9eBzb+3180ntpCUy
+ u7odlmTEYwnW4HfkOpFWxD/wjCoD/UxI7eIFwjT80sb+urMc8kDWwcIqHcOFwwZCaLB1M3WaJ
+ MP6UYnUwq7JtGG0K1fEJMnRyvBgWoNz9Sm0Y7ppxE3ABfucExSz2enrUC7RvhNegd30XHU51r
+ 305nES79z4JSgyMPOID2mh5kh9zYqA/9es1R9mGHAtsN9YKe9R1A==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from mobian.usb.local ([82.207.254.108]) by smtp.web.de (mrweb005
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1MKdHE-1qU8iP0DTI-00KwwI; Mon, 26
+ Jun 2023 11:50:21 +0200
+Date: Mon, 26 Jun 2023 11:49:16 +0200
+From: Lukas Straub <lukasstraub2@web.de>
+To: Felix Wu <flwu@google.com>
+Cc: qemu-devel@nongnu.org, Samuel Thibault <samuel.thibault@ens-lyon.org>,
+ Jason Wang <jasowang@redhat.com>
+Subject: Re: Tips for local testing guestfwd
+Message-ID: <20230626114916.45355529@mobian.usb.local>
+In-Reply-To: <CAJt6XFoT2irgOwtMB2qpgr3Yj6Q-zij_fpD9BL24QvFG7w3zOg@mail.gmail.com>
+References: <CAJt6XFoT2irgOwtMB2qpgr3Yj6Q-zij_fpD9BL24QvFG7w3zOg@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.12.0
-Subject: Re: [PATCH] pnv/xive2: Allow indirect TIMA accesses of all sizes
-Content-Language: en-US
-To: Frederic Barrat <fbarrat@linux.ibm.com>, clg@kaod.org,
- danielhb413@gmail.com, qemu-ppc@nongnu.org, qemu-devel@nongnu.org
-Cc: npiggin@gmail.com
-References: <20230626094057.1192473-1-fbarrat@linux.ibm.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230626094057.1192473-1-fbarrat@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::129;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x129.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: multipart/signed; boundary="Sig_/jBGZHp2bkts57nSVLxug1TI";
+ protocol="application/pgp-signature"; micalg=pgp-sha512
+X-Provags-ID: V03:K1:5ASuRfcF6Ttg1K4i8My1+8eJtk2EJeqU8gG40N77rep31DS6hn9
+ S2J7+01Mj13a6UrykJwbOmuUGp0BY/jVwGFPM5TRqwMHi4thiyrR8scl9RVHKgOU/Xo23TJ
+ EfyjwIMYrx9ySBqnXTHR8YyFLGSpROHBIlBem0K4CVHrf50twUVJp9JHLzHa3Haij91aU5s
+ FwXz00cNaWs8pRcPz7yXQ==
+UI-OutboundReport: notjunk:1;M01:P0:ucO08WH8Oo0=;v8c5UvBjDulVeCRXpY+66oztMmR
+ sUJEqL1pv2CFck4iy7/5DNejo3gEndwxgfp6oxvBohl9FIvPeeAVIhRqgMSZvFazcMlYswYnZ
+ C5+95IiHUFUxwlThR3xpxCvvunlawXBY0Ui4tYo2nI85rc1vfCVLEzg7yrhiGHBbKOoQcK0WB
+ 1sPyeVoQS4C9DTk6ja28FVR5kPCcAulh1jYf12s1ComQfVkzA8AApvz6ch+pJosXutY+q2H1E
+ sRvbqqU6Q0jftglnc2qaV32fbSuzDGqxi9mfnp1JrZANQ15YE6vSDmBV10oXHa8nhCAxldmI5
+ VyBZEXZ2rv7pn5lTURfbP3cO6OhU5Fvqz9fYSujhHwz+OyyOMVmIfZ2QUQ/tG3B+RDuCBQJpk
+ ng9G/TYklAowvmG0/EqhLUB+V1ivA65oIF+SuSrG42fCixZTuQSFW/SYqdVArWG7tP4OAYWah
+ 5wDK045+e9E7qiTvJa32N20rZ+5JdvhvNVodOXzrgDQspHGm/NUrbxmKaBeoxxyp3J4jqIcVR
+ 4qYYs1b8somgTm0yAdu7PQ/0JDb+QE4ID59ktOwqwrFtdg6b/78bpaBtqTWxWBxu7d9Wdt+OH
+ CMeGw/riPRDLwAAHcTDgyuOK7DWxuYWGksFxRknQc4AbS6skHKLUhD+3CRIuisPu3A6fjQPz7
+ M24VzFwJhnlGMcY+VWfv9fMV9itnDHmfeC7cVl+5Mj75wchNP2rKHbq1GAT5Q3/541XbAzPbY
+ 8OBs8UMH0hUlTwbS0CcAyvy6QqUN+n+kYvkFHq4vyz2rQ9mC25HQz8vEBw0pgqSYeDVAw/sDX
+ hHTrRA1tnr/4H3B3DrEfbHECdbKgCURiQWgIEVoKisA2evUMf41S4EA3rYjxNQ0+6SliH166k
+ Dsmkt0kLgmPvywswPuax3qOCDDaJzSBHom6UecaYVRFA8OyCmXypEd0HQK3pNZ92sf4wA7Ofs
+ OmdhjoS3LF7OXXMMU/gUfMmQ8Ew=
+Received-SPF: pass client-ip=212.227.15.3; envelope-from=lukasstraub2@web.de;
+ helo=mout.web.de
+X-Spam_score_int: -25
+X-Spam_score: -2.6
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.089,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,56 +87,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 26/6/23 11:40, Frederic Barrat wrote:
-> Booting linux on the powernv10 machine logs a few errors like:
-> 
-> Invalid read at addr 0x38, size 1, region 'xive-ic-tm-indirect', reason: invalid size (min:8 max:8)
-> Invalid write at addr 0x38, size 1, region 'xive-ic-tm-indirect', reason: invalid size (min:8 max:8)
-> Invalid read at addr 0x38, size 1, region 'xive-ic-tm-indirect', reason: invalid size (min:8 max:8)
-> 
-> Those errors happen when linux is resetting XIVE. We're trying to
-> read/write the enablement bit for the hardware context and qemu
-> doesn't allow indirect TIMA accesses of less than 8 bytes. Direct TIMA
-> access can go through though, as well as indirect TIMA accesses on P9.
-> So even though there are some restrictions regarding the address/size
-> combinations for TIMA access, the example above is perfectly valid.
-> 
-> This patch lets indirect TIMA accesses of all sizes go through. The
-> special operations will be intercepted and the default "raw" handlers
-> will pick up all other requests and complain about invalid sizes as
-> appropriate.
-> 
-> Tested-by: Nicholas Piggin <npiggin@gmail.com>
-> Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
-> ---
->   hw/intc/pnv_xive2.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/hw/intc/pnv_xive2.c b/hw/intc/pnv_xive2.c
-> index ed438a20ed..e8ab176de6 100644
-> --- a/hw/intc/pnv_xive2.c
-> +++ b/hw/intc/pnv_xive2.c
-> @@ -1644,11 +1644,11 @@ static const MemoryRegionOps pnv_xive2_ic_tm_indirect_ops = {
->       .write = pnv_xive2_ic_tm_indirect_write,
->       .endianness = DEVICE_BIG_ENDIAN,
->       .valid = {
-> -        .min_access_size = 8,
-> +        .min_access_size = 1,
+--Sig_/jBGZHp2bkts57nSVLxug1TI
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-Maybe. Is there a bus involved in between?
+CC'ing SLIRP and net maintainer.
 
-What about other I/O regions?
+On Sun, 25 Jun 2023 22:58:36 -0700
+Felix Wu <flwu@google.com> wrote:
 
->           .max_access_size = 8,
->       },
->       .impl = {
-> -        .min_access_size = 8,
-> +        .min_access_size = 1,
+> Hi all,
+>=20
+> TL,DR: I am working on QEMU ipv6 guestfwd feature and finished coding, and
+> would like to learn the best practice to test it.
+> Context: in slirp side this task is tracking by [1].
+> Currently, I have done following:
+> i. made char parse + guestfwd functions happy with ipv6 address.
+> ii. enabled debug print and made sure the ip and port are inserted into t=
+he
+> forward list in libslirp.
+> To sufficiently verify it's working, I do have three questions:
+> 1. I want to forward a port in the guest (OS in QEMU) to a port 22 on the
+> host OS, and ssh from guest back to host,
+> does this sound reasonable? If this is not a good idea, what method is
+> recommended?
+> 2. I want to understand what ip I should use. Currently I have following
+> formats for the QEMU invocation in ipv6:
+> ```
+> guestfwd=3Dtcp:[::1]:1234-tcp:[my:host:ip:from:ifconfig]:22
+> ```
+> I know the general form is `guestfwd=3Dtcp:server:port-dev`, where
+> server:port is for guest, dev is for host.
+> Adding [] in my implementation will let QEMU know it's ipv6.
+> Is the aforementioned invocation correct? Or in this case [::1] is the
+> local host address and I should put qemu address
+> for it instead?
+> 3. Is there a default ipv6 address for QEMU instance? I think I need it in
+> the invocation.
+>=20
+> Thanks in advance! Felix
+>=20
+> [1]. https://gitlab.freedesktop.org/slirp/libslirp/-/issues/67
 
-Unlikely. This is for the handler implementation, not related to HW.
 
->           .max_access_size = 8,
->       },
->   };
+--Sig_/jBGZHp2bkts57nSVLxug1TI
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
 
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEEg/qxWKDZuPtyYo+kNasLKJxdslgFAmSZXx0ACgkQNasLKJxd
+slimBRAArqjJJvStbShnMg1LcdHBYutM6gfbjzMPPFR7NSJZ8slUjMwD/5pIU6ec
+pRzwKyTzEILGt7A3ad0aXc4NrCYZiz4/peruDcTB1V0PuDjxrXCFxIx2CNH1ipk0
+9FPjq95xI+YiY85iVpPaBkQMUkhgbeuqsrCPfZk20OM6PoTLVwtzMwTOIck485hW
+UlYw7r+NlSpiplg+/Oz27eFOkUy6ce/8JG6+1mzzpYJlrJTcbBHMZpfzU9q8A1AZ
+11XlNsr4vBKUz57lw4WsqJo5cBgvjpMUxRzpDl6zZIpMdkNlHovI76HFaVQkhYuR
+4RjS/C3qOTNpkeWmDQKJyFxXXa/eZg3DfITTfQjrOheQbkcUegvVJwx4LejtxLTH
+B6RbZkUbDiz5BbOIQHyQonstoEbwFp24UYtR9t8JRAuf7PTmk/r5mKe4FTkRaTF0
+6r6cpeiEbQVWEV0T9v0rSKb5HXOaRN/xmhKmIiZNGqr9q1i4gPBfnqJdSUs75ZJx
+VfI8A326vcXJbHnChgFbz03zs63q0WoiaUoGKX/csBqChndI59UUAteX9bWZfQff
+M+Zwpxh7B+qksTR04nsJKiCGzQWPGch2s4mhFy7NjjB6dBW4tM5z6UYjllH+hPK6
+dBhBb5kvVdtUCM3Kg+COeva/Y1RfZ4j+7onmeFQA+KVvhLUECQA=
+=6URw
+-----END PGP SIGNATURE-----
+
+--Sig_/jBGZHp2bkts57nSVLxug1TI--
 
