@@ -2,81 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2A8773DBA2
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 11:42:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C5B373DBB9
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 11:49:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDijx-0006pd-5f; Mon, 26 Jun 2023 05:42:33 -0400
+	id 1qDiqI-0000tO-Mc; Mon, 26 Jun 2023 05:49:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qDijd-0006n5-V2
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 05:42:15 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qDijc-0003oX-Dc
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 05:42:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687772531;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=aeLIyTH2mrFHC6WR9s4v1St847wIkkzaY3fZ7zbs+FQ=;
- b=DKkDfvpubz2Mtc9J3mbK1TAHEWVzO16oYQPSM9v0kDpuXOzwtajwUl7krO+p5VlW7KWlIm
- bHzyYfekg5GLZbeeItMLcZR+wb5h3KRo3d72U6dwcMzSY9VH3vt/rM2aD0keF1FBbPMno3
- 3uCIkg98ikYaNT+1BuXjcIZNjok+0Gk=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-646-cqJPKdtTORGTbt76xeIevg-1; Mon, 26 Jun 2023 05:42:09 -0400
-X-MC-Unique: cqJPKdtTORGTbt76xeIevg-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 443FE3802263;
- Mon, 26 Jun 2023 09:42:09 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.55])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id B8F761121319;
- Mon, 26 Jun 2023 09:42:08 +0000 (UTC)
-Date: Mon, 26 Jun 2023 10:42:06 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Henrik Carlqvist <hc981@poolhem.se>
-Cc: qemu-devel@nongnu.org, mark.cave-ayland@ilande.co.uk
-Subject: Re: [PATCH v8] Emulate dip switch language layout settings on SUN
- keyboard
-Message-ID: <ZJldbvheYwLOOcIx@redhat.com>
-References: <20230430225533.1a57879a.hc981@poolhem.se>
- <20230608181439.7ea3a5c5.hc981@poolhem.se>
- <4e8f027a-ca00-c54f-ef2f-f0df1f5b2f9e@ilande.co.uk>
- <20230610122912.0fc157de.hc981@poolhem.se>
- <20230611014751.22f22674.hc94@poolhem.se>
- <ZJFv4Hq8RMVOUum/@redhat.com>
- <20230620215043.6124c450.hc94@poolhem.se>
- <ZJKiGBJNQa5Kx+Dg@redhat.com>
- <20230621201447.712ec73a.hc94@poolhem.se>
- <20230623203007.56d3d182.hc981@poolhem.se>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qDiqC-0000so-Ge
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 05:49:00 -0400
+Received: from mail-lf1-x129.google.com ([2a00:1450:4864:20::129])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qDiqA-0005X7-UV
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 05:49:00 -0400
+Received: by mail-lf1-x129.google.com with SMTP id
+ 2adb3069b0e04-4f95bf5c493so3658262e87.3
+ for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 02:48:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1687772936; x=1690364936;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=RDhjahAYLLrUZxk6r7ttJp+ZHRYzhlgzDSThomtqVs4=;
+ b=TBUmtop3RuNrC5afc32zRkSBlnJ2gLcGFiWoTsrtS6HaqSTiQVZbqk83T+CHU8rn8K
+ VRRvpFtxxqcdEuBryK/fh9a9pfCrEGApQw7d87YqI80YhA+3IITbz2vlsiRw4hS61x3T
+ UHDBuBmtte05QUe6evnjOHqgkdVCc6X0PLFcVW2r6FU6Y5EHk0zRd49cNur0yxHQOcNJ
+ IuC/cr/8FTTDEKa/gfDMuJPQRRbp6bVfGPcoPi5Z07NdB4Ocjud1RLKRGKP1Dth75GBe
+ Yus8HYlzVOz+YXJr7oGTnXPPowWmqiRcXv7YCcRgXRTY5tzctka69D1ffJ3Tl0R6Iiu2
+ 4v7A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1687772936; x=1690364936;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=RDhjahAYLLrUZxk6r7ttJp+ZHRYzhlgzDSThomtqVs4=;
+ b=C5VjD9mQczbdoROdmRZ1qD+wfMwVTd1r1XohBsI28LRrjmSYmtXeqc5X1ZKazMMBPn
+ Wz0zx0rafmsm4AJzH21dyRGPbaVAY3BT9CQ1MTlGMA3X0MsrPC955Z3LyYFAoJQGJh2X
+ 8AZ1NuLMISd8TwSUhdW/AL5NXFf9s6z6Zy6PPSGK7J0TABh2uNolgPqRpgYYwN9YCNut
+ P2VaJZV0EEx41wdbt89knTZxC6HXpdhshIe09gXNIoTOUb0Syw/lGJ1Bd5rThJREJ89/
+ Z5f3XXuywOmGEoci+0ula2N672Cn1FIZq3ama9IQueG2wqQwbnzN6TCyRxaZt4ODsuCV
+ oWzQ==
+X-Gm-Message-State: AC+VfDySrx/vjYdHqUNhKgPPC67TMGs/vmW05K7eXpeogMs18M7orQxn
+ +mtGxvlBijtzO4Ywo0uNmYlmHA==
+X-Google-Smtp-Source: ACHHUZ6546wvRjK5vjrubRir2ay0EGlc2kQlvXPjt+UbBBzU2WIcih7DUoF8wrtuW65l+ljL5/Y/Tg==
+X-Received: by 2002:a05:6512:3455:b0:4fb:7447:e71a with SMTP id
+ j21-20020a056512345500b004fb7447e71amr1149391lfr.63.1687772935667; 
+ Mon, 26 Jun 2023 02:48:55 -0700 (PDT)
+Received: from [192.168.69.115] ([176.187.199.226])
+ by smtp.gmail.com with ESMTPSA id
+ n10-20020a1c720a000000b003fa96620b23sm2443558wmc.12.2023.06.26.02.48.54
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 26 Jun 2023 02:48:55 -0700 (PDT)
+Message-ID: <b7a68894-c992-3845-754c-1fdf655ad3fe@linaro.org>
+Date: Mon, 26 Jun 2023 11:48:52 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230623203007.56d3d182.hc981@poolhem.se>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -30
-X-Spam_score: -3.1
-X-Spam_bar: ---
-X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.12.0
+Subject: Re: [PATCH] pnv/xive2: Allow indirect TIMA accesses of all sizes
+Content-Language: en-US
+To: Frederic Barrat <fbarrat@linux.ibm.com>, clg@kaod.org,
+ danielhb413@gmail.com, qemu-ppc@nongnu.org, qemu-devel@nongnu.org
+Cc: npiggin@gmail.com
+References: <20230626094057.1192473-1-fbarrat@linux.ibm.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230626094057.1192473-1-fbarrat@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::129;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x129.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.089,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,56 +90,59 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Jun 23, 2023 at 08:30:07PM +0200, Henrik Carlqvist wrote:
-> SUN Type 4, 5 and 5c keyboards have dip switches to choose the language layout 
-> of the keyboard. Solaris makes an ioctl to query the value of the dipswitches 
-> and uses that value to select keyboard layout.  Also the SUN bios like the one 
-> in the file ss5.bin uses this value to support at least some keyboard layouts. 
-> However, the OpenBIOS provided with qemu is hardcoded to always use an US 
-> keyboard layout.
+On 26/6/23 11:40, Frederic Barrat wrote:
+> Booting linux on the powernv10 machine logs a few errors like:
 > 
-> Before this patch, qemu allways gave dip switch value 0x21 (US keyboard),
-> this patch uses a command line switch like
-> "-global escc.chnA-sunkbd-layout=de" to select dip switch value. A table is
-> used to lookup values from arguments like:
+> Invalid read at addr 0x38, size 1, region 'xive-ic-tm-indirect', reason: invalid size (min:8 max:8)
+> Invalid write at addr 0x38, size 1, region 'xive-ic-tm-indirect', reason: invalid size (min:8 max:8)
+> Invalid read at addr 0x38, size 1, region 'xive-ic-tm-indirect', reason: invalid size (min:8 max:8)
 > 
-> -global escc.chnA-sunkbd-layout=fr
-> -global escc.chnA-sunkbd-layout=es
+> Those errors happen when linux is resetting XIVE. We're trying to
+> read/write the enablement bit for the hardware context and qemu
+> doesn't allow indirect TIMA accesses of less than 8 bytes. Direct TIMA
+> access can go through though, as well as indirect TIMA accesses on P9.
+> So even though there are some restrictions regarding the address/size
+> combinations for TIMA access, the example above is perfectly valid.
 > 
-> But the patch also accepts numeric dip switch values directly:
+> This patch lets indirect TIMA accesses of all sizes go through. The
+> special operations will be intercepted and the default "raw" handlers
+> will pick up all other requests and complain about invalid sizes as
+> appropriate.
 > 
-> -global escc.chnA-sunkbd-layout=0x2b
-> -global escc.chnA-sunkbd-layout=43
-> 
-> Both values above are the same and select swedish keyboard as explained in
-> table 3-15 at
-> https://docs.oracle.com/cd/E19683-01/806-6642/new-43/index.html
-> 
-> Unless you want to do a full Solaris installation but happen to have
-> access to a Sun bios file, the easiest way to test that the patch works
-> is to:
-> 
-> qemu-system-sparc -global escc.chnA-sunkbd-layout=sv -bios /path/to/ss5.bin
-> 
-> If you already happen to have a Solaris installation in a qemu disk image
-> file you can easily try different keyboard layouts after this patch is
-> applied.
-> 
-> Signed-off-by: Henrik Carlqvist <hc1245@poolhem.se>
+> Tested-by: Nicholas Piggin <npiggin@gmail.com>
+> Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
 > ---
+>   hw/intc/pnv_xive2.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/hw/intc/pnv_xive2.c b/hw/intc/pnv_xive2.c
+> index ed438a20ed..e8ab176de6 100644
+> --- a/hw/intc/pnv_xive2.c
+> +++ b/hw/intc/pnv_xive2.c
+> @@ -1644,11 +1644,11 @@ static const MemoryRegionOps pnv_xive2_ic_tm_indirect_ops = {
+>       .write = pnv_xive2_ic_tm_indirect_write,
+>       .endianness = DEVICE_BIG_ENDIAN,
+>       .valid = {
+> -        .min_access_size = 8,
+> +        .min_access_size = 1,
 
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Maybe. Is there a bus involved in between?
 
+What about other I/O regions?
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+>           .max_access_size = 8,
+>       },
+>       .impl = {
+> -        .min_access_size = 8,
+> +        .min_access_size = 1,
+
+Unlikely. This is for the handler implementation, not related to HW.
+
+>           .max_access_size = 8,
+>       },
+>   };
 
 
