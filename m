@@ -2,39 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E93ED73EAC7
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 21:00:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 685BA73EAA0
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 20:56:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDrN9-0003lX-Ku; Mon, 26 Jun 2023 14:55:35 -0400
+	id 1qDrNC-00044j-Fl; Mon, 26 Jun 2023 14:55:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qDrMR-00020Z-Oo; Mon, 26 Jun 2023 14:54:51 -0400
+ id 1qDrMS-00021w-9F; Mon, 26 Jun 2023 14:54:52 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qDrLu-0005jp-IX; Mon, 26 Jun 2023 14:54:20 -0400
+ id 1qDrME-0005k5-RN; Mon, 26 Jun 2023 14:54:40 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id E1E48EF44;
- Mon, 26 Jun 2023 21:50:29 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 16646EF45;
+ Mon, 26 Jun 2023 21:50:30 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 6DBB2F7D3;
+ by tsrv.corpit.ru (Postfix) with SMTP id A54BEF7D4;
  Mon, 26 Jun 2023 21:50:28 +0300 (MSK)
-Received: (nullmailer pid 1574094 invoked by uid 1000);
+Received: (nullmailer pid 1574097 invoked by uid 1000);
  Mon, 26 Jun 2023 18:50:16 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org, qemu-stable@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Daniel Bertalan <dani@danielbertalan.dev>,
- "Tested-By : Solra Bizna" <solra@bizna.name>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.0.3 45/54] host-utils: Avoid using __builtin_subcll on
- buggy versions of Apple Clang
-Date: Mon, 26 Jun 2023 21:49:52 +0300
-Message-Id: <20230626185002.1573836-45-mjt@tls.msk.ru>
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.0.3 46/54] pc-bios/keymaps: Use the official xkb name for
+ Arabic layout, not the legacy synonym
+Date: Mon, 26 Jun 2023 21:49:53 +0300
+Message-Id: <20230626185002.1573836-46-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.0.3-20230626214235@cover.tls.msk.ru>
 References: <qemu-stable-8.0.3-20230626214235@cover.tls.msk.ru>
@@ -66,83 +66,54 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Peter Maydell <peter.maydell@linaro.org>
 
-We use __builtin_subcll() to do a 64-bit subtract with borrow-in and
-borrow-out when the host compiler supports it.  Unfortunately some
-versions of Apple Clang have a bug in their implementation of this
-intrinsic which means it returns the wrong value.  The effect is that
-a QEMU built with the affected compiler will hang when emulating x86
-or m68k float80 division.
+The xkb official name for the Arabic keyboard layout is 'ara'.
+However xkb has for at least the past 15 years also permitted it to
+be named via the legacy synonym 'ar'.  In xkeyboard-config 2.39 this
+synoynm was removed, which breaks compilation of QEMU:
 
-The upstream LLVM issue is:
-https://github.com/llvm/llvm-project/issues/55253
+FAILED: pc-bios/keymaps/ar
+/home/fred/qemu-git/src/qemu/build-full/qemu-keymap -f pc-bios/keymaps/ar -l ar
+xkbcommon: ERROR: Couldn't find file "symbols/ar" in include paths
+xkbcommon: ERROR: 1 include paths searched:
+xkbcommon: ERROR: 	/usr/share/X11/xkb
+xkbcommon: ERROR: 3 include paths could not be added:
+xkbcommon: ERROR: 	/home/fred/.config/xkb
+xkbcommon: ERROR: 	/home/fred/.xkb
+xkbcommon: ERROR: 	/etc/xkb
+xkbcommon: ERROR: Abandoning symbols file "(unnamed)"
+xkbcommon: ERROR: Failed to compile xkb_symbols
+xkbcommon: ERROR: Failed to compile keymap
 
-The commit that introduced the bug apparently never made it into an
-upstream LLVM release without the subsequent fix
-https://github.com/llvm/llvm-project/commit/fffb6e6afdbaba563189c1f715058ed401fbc88d
-but unfortunately it did make it into Apple Clang 14.0, as shipped
-in Xcode 14.3 (14.2 is reported to be OK). The Apple bug number is
-FB12210478.
+The upstream xkeyboard-config change removing the compat
+mapping is:
+https://gitlab.freedesktop.org/xkeyboard-config/xkeyboard-config/-/commit/470ad2cd8fea84d7210377161d86b31999bb5ea6
 
-Add ifdefs to avoid use of __builtin_subcll() on Apple Clang version
-14 or greater.  There is not currently a version of Apple Clang which
-has the bug fix -- when one appears we should be able to add an upper
-bound to the ifdef condition so we can start using the builtin again.
-We make the lower bound a conservative "any Apple clang with major
-version 14 or greater" because the consequences of incorrectly
-disabling the builtin when it would work are pretty small and the
-consequences of not disabling it when we should are pretty bad.
-
-Many thanks to those users who both reported this bug and also
-did a lot of work in identifying the root cause; in particular
-to Daniel Bertalan and osy.
+Make QEMU always ask for the 'ara' xkb layout, which should work on
+both older and newer xkeyboard-config.  We leave the QEMU name for
+this keyboard layout as 'ar'; it is not the only one where our name
+for it deviates from the xkb standard name.
 
 Cc: qemu-stable@nongnu.org
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1631
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1659
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Tested-by: Daniel Bertalan <dani@danielbertalan.dev>
-Tested-by: Tested-By: Solra Bizna <solra@bizna.name>
-Message-id: 20230622130823.1631719-1-peter.maydell@linaro.org
-(cherry picked from commit b0438861efe1dfbdfdd9fa1d9aa05100d37ea8ee)
+Message-id: 20230620162024.1132013-1-peter.maydell@linaro.org
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1709
+(cherry picked from commit 497fad38979c16b6412388927401e577eba43d26)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/include/qemu/compiler.h b/include/qemu/compiler.h
-index c2f49df1f9..a309f90c76 100644
---- a/include/qemu/compiler.h
-+++ b/include/qemu/compiler.h
-@@ -184,4 +184,17 @@
- #define QEMU_DISABLE_CFI
- #endif
- 
-+/*
-+ * Apple clang version 14 has a bug in its __builtin_subcll(); define
-+ * BUILTIN_SUBCLL_BROKEN for the offending versions so we can avoid it.
-+ * When a version of Apple clang which has this bug fixed is released
-+ * we can add an upper bound to this check.
-+ * See https://gitlab.com/qemu-project/qemu/-/issues/1631
-+ * and https://gitlab.com/qemu-project/qemu/-/issues/1659 for details.
-+ * The bug never made it into any upstream LLVM releases, only Apple ones.
-+ */
-+#if defined(__apple_build_version__) && __clang_major__ >= 14
-+#define BUILTIN_SUBCLL_BROKEN
-+#endif
-+
- #endif /* COMPILER_H */
-diff --git a/include/qemu/host-utils.h b/include/qemu/host-utils.h
-index 3ce62bf4a5..6519238774 100644
---- a/include/qemu/host-utils.h
-+++ b/include/qemu/host-utils.h
-@@ -595,7 +595,7 @@ static inline uint64_t uadd64_carry(uint64_t x, uint64_t y, bool *pcarry)
-  */
- static inline uint64_t usub64_borrow(uint64_t x, uint64_t y, bool *pborrow)
- {
--#if __has_builtin(__builtin_subcll)
-+#if __has_builtin(__builtin_subcll) && !defined(BUILTIN_SUBCLL_BROKEN)
-     unsigned long long b = *pborrow;
-     x = __builtin_subcll(x, y, b, &b);
-     *pborrow = b & 1;
+diff --git a/pc-bios/keymaps/meson.build b/pc-bios/keymaps/meson.build
+index 158a3b410c..1cbcdebefa 100644
+--- a/pc-bios/keymaps/meson.build
++++ b/pc-bios/keymaps/meson.build
+@@ -1,5 +1,5 @@
+ keymaps = {
+-  'ar': '-l ar',
++  'ar': '-l ara',
+   'bepo': '-l fr -v dvorak',
+   'cz': '-l cz',
+   'da': '-l dk',
 -- 
 2.39.2
 
