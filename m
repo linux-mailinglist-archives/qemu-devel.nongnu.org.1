@@ -2,82 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F5FF73DD28
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 13:19:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9205B73DD2A
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 13:19:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDkC2-0003lo-7y; Mon, 26 Jun 2023 07:15:38 -0400
+	id 1qDkCX-0004MB-TX; Mon, 26 Jun 2023 07:16:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qDkBz-0003fn-RS
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 07:15:35 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1qDkCK-00044s-4x
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 07:15:59 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qDkBx-0000vr-Ky
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 07:15:35 -0400
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1qDkCI-00016e-3c
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 07:15:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687778133;
+ s=mimecast20190719; t=1687778152;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Ath+2F7qJveL8sgT+2ECYF27f9KTqV0CItidFFplvAo=;
- b=PJJxY7b0k0lncq25OvxvgzYCMkGXjBYigDOfBEuOJIVQU8KaWiaYr6PojFzMTX5VcR4Sq7
- LWGhYX40eMlkY40ysJwGKvvmgOVFQOuoe111MRu/h0BgCfg1VvXyJkvmSqsSW3r55QQeqk
- yPj7K/NnDLFqKgdHGR55c6wjWfWYlyk=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=/F+r2FbWayY/UkpMGwi9VME8vci8sLOZ9VBIe03wo8I=;
+ b=iKEzGCtnR/gZDMaeWLlU68aIdYsQYctLUvmHFFx4lLin7CxKgwzSQTSn84wqtL5Rlw0ZBJ
+ nRVXCoNjGvLzr4ngkGDnupgngJRxCkz8ak1UqsKbRYMfThVltb/gZ2AlOo/HmaliP8zC7v
+ r+Uv55J67qmn1X4Z8yeAtFJg9aMXW2s=
+Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
+ [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-325-wkMPgA4gNiOGjhnICYijVA-1; Mon, 26 Jun 2023 07:15:31 -0400
-X-MC-Unique: wkMPgA4gNiOGjhnICYijVA-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-3fa8562f6cdso6838975e9.0
- for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 04:15:30 -0700 (PDT)
+ us-mta-614-kizkV7vyO2iU6f-hNQeA_w-1; Mon, 26 Jun 2023 07:15:51 -0400
+X-MC-Unique: kizkV7vyO2iU6f-hNQeA_w-1
+Received: by mail-lj1-f200.google.com with SMTP id
+ 38308e7fff4ca-2b626e49e46so13104931fa.1
+ for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 04:15:51 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687778114; x=1690370114;
+ d=1e100.net; s=20221208; t=1687778148; x=1690370148;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Ath+2F7qJveL8sgT+2ECYF27f9KTqV0CItidFFplvAo=;
- b=Q8ON22zIEEe2nXtn5gwXAzfwsiFovFCYB3jAtjf2kuQoHpkfJ2di6zsffWlKETmeMw
- qGZg1ASOKhNYadRCcNOoYLxcq3TH99XR5Cv1s75lHtKbbbvRnKDpFINGBAVtr0wEHb0I
- mrJdpTg5hTsrsf0gxKjCez/I53hyWRXIe6LsootKAIdk2xj8VbYeu2iWMMaJ/9OHotZq
- EuZF2w0pUuKvQU0uUMSEpNtOO0VHvBIRGqI5vokuMj1OC6ErhIuWclhQq79/v9qadmk3
- c9iz2q05acK16xwdOjD94eyd41Z7qhlDPqmnPdb9qMyvfD+r8rWBuDNQ1befV/cvT2yC
- H1zg==
-X-Gm-Message-State: AC+VfDxol1FrPA8KFilgyXjmjouCaO193ypnUnj+ZgKOpoBiYJQdE4d4
- doTqnlb+5CSOhS/RTFQV+dsgjsUXohhQ3AI1TTPrFay+xtRS3jMKS/9wo1h/F3TgiiACF2bfM3a
- CD8av7Kgd1EbUDja7+DG9wf61iRoFRM4+JOzrKNV09So9ASXiP9JA6ZXFipFGJhf388AMhKlQuf
- E=
-X-Received: by 2002:a7b:c8c9:0:b0:3f9:82f:bad5 with SMTP id
- f9-20020a7bc8c9000000b003f9082fbad5mr17574630wml.35.1687778114362; 
- Mon, 26 Jun 2023 04:15:14 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5ZhH1IdDj5/52AsPvaf+66M4haJQwShcVe7RM0FwpI9/5lCfBrTjEDYvO5YSTlHQ9VR4D7Ag==
-X-Received: by 2002:a7b:c8c9:0:b0:3f9:82f:bad5 with SMTP id
- f9-20020a7bc8c9000000b003f9082fbad5mr17574613wml.35.1687778114020; 
- Mon, 26 Jun 2023 04:15:14 -0700 (PDT)
-Received: from [192.168.10.118] ([2001:b07:6468:f312:5e2c:eb9a:a8b6:fd3e])
- by smtp.gmail.com with ESMTPSA id
- c6-20020a05600c0ac600b003f9c0a7c6bcsm7471459wmr.0.2023.06.26.04.15.12
+ bh=/F+r2FbWayY/UkpMGwi9VME8vci8sLOZ9VBIe03wo8I=;
+ b=NV55qAj6PMgh6gitBpi42KH4ykRbOSBQIRgqfjGgVGNM7WFgxDPpL+Uw9netDseT6L
+ N+FNlzB1eKivRYLy9ZEoz6zJwjnRS9X0e3ZlsLlh8h73/GYMQTZ8T3nRwzm5Pf0ZQH1G
+ 8ZGTzMioiar4SmFDf+hZCUsMW+b1+WaauVtSrVwxI4fp38TMXoY7eaPPIPgLFXviFpCP
+ s4a7lpbESwW4k4EruWNVJttiL5o9pKg8gTg9FJgyWWKb9s8HyJScxzhCR1/ncp0m7LvG
+ MA2M+n3wOG3TOy0tXS8lc3KVOOE/Q9mEOCcGbkrYhaKcXkoPa/XV40A21ZXjwx8nGvqC
+ 2vuA==
+X-Gm-Message-State: AC+VfDycK0kuFMN5JfWSsARVfCQ0NDYmwtyvmhc39DfN1yNRDIduDU3l
+ D2oawzE4KoLxYPHahPBg4MvF1Iey1zwUngx/2nY4V+CezMzG5VZgURVT94TsPO+6vGUM66Og/+G
+ oblwuBpuXljpauw7p1G88qpY=
+X-Received: by 2002:a2e:9b4e:0:b0:2b3:4e76:9c6a with SMTP id
+ o14-20020a2e9b4e000000b002b34e769c6amr19079657ljj.39.1687778148779; 
+ Mon, 26 Jun 2023 04:15:48 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4Bu2sq9/H1+LSlpKnBP3dKOk7f6jQfs7Rc5CPUMAgYtAz9UFPjiiCma2+pJKsDsIrYAj7xAg==
+X-Received: by 2002:a2e:9b4e:0:b0:2b3:4e76:9c6a with SMTP id
+ o14-20020a2e9b4e000000b002b34e769c6amr19079644ljj.39.1687778148495; 
+ Mon, 26 Jun 2023 04:15:48 -0700 (PDT)
+Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
+ [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
+ i7-20020aa7c9c7000000b0051a3334f873sm2674287edt.89.2023.06.26.04.15.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 26 Jun 2023 04:15:12 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-Subject: [PULL 18/18] git-submodule.sh: allow running in validate mode without
- previous update
-Date: Mon, 26 Jun 2023 13:14:45 +0200
-Message-ID: <20230626111445.163573-19-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626111445.163573-1-pbonzini@redhat.com>
-References: <20230626111445.163573-1-pbonzini@redhat.com>
+ Mon, 26 Jun 2023 04:15:47 -0700 (PDT)
+Date: Mon, 26 Jun 2023 13:15:47 +0200
+From: Igor Mammedov <imammedo@redhat.com>
+To: Ani Sinha <anisinha@redhat.com>
+Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>, Laurent Vivier
+ <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, mst@redhat.com,
+ Michael Labiuk <michael.labiuk@virtuozzo.com>
+Subject: Re: [PATCH v2 4/5] tests/qtest/hd-geo-test: fix test by removing
+ unnecessary pcie-root-port
+Message-ID: <20230626131547.010ccdd8@imammedo.users.ipa.redhat.com>
+In-Reply-To: <20230622103255.267289-5-anisinha@redhat.com>
+References: <20230622103255.267289-1-anisinha@redhat.com>
+ <20230622103255.267289-5-anisinha@redhat.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -102,151 +104,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The call to git-submodule.sh done in configure may happen without a
-previous checkout of the roms/SLOF submodule, or even without a
-previous run of the script.
+On Thu, 22 Jun 2023 16:02:54 +0530
+Ani Sinha <anisinha@redhat.com> wrote:
 
-So, handle creating a .git-submodule-status file even in validate
-mode.  If git is absent, ensure that all passed directories exists
-(because you should be in a fresh untar and will not have stale
-arguments to git-submodule.sh) but do no other checks.  If git
-is present, ensure that .git-submodule-status contains an entry
-for all submodules passed on the command line.
+> A SCSI controller can be attached to a pcie-to-pci bridge which in turn can be
+> attached directly to the root bus (peie.0). There is no need to attach a
+> pcie-root-port on the root bus in order to attach the pcie-ro-pci bridge.
+> Fix it.
 
-With this change, "ignore" mode is not needed anymore.
+bridge can be both on pcie.0 or on root-port and both are valid configs.
+So what exactly and why we are fixing here?
 
-Reported-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-Fixes: b11f9bd96f4 ("configure: move SLOF submodule handling to pc-bios/s390-ccw", 2023-06-06)
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- configure                |  2 +-
- scripts/git-submodule.sh | 73 ++++++++++++++++++++++------------------
- 2 files changed, 42 insertions(+), 33 deletions(-)
-
-diff --git a/configure b/configure
-index 86363a7e508..2b41c49c0d1 100755
---- a/configure
-+++ b/configure
-@@ -758,7 +758,7 @@ done
- 
- if ! test -e "$source_path/.git"
- then
--    git_submodules_action="ignore"
-+    git_submodules_action="validate"
- fi
- 
- # test for any invalid configuration combinations
-diff --git a/scripts/git-submodule.sh b/scripts/git-submodule.sh
-index 11fad2137cd..335f7f5fdf8 100755
---- a/scripts/git-submodule.sh
-+++ b/scripts/git-submodule.sh
-@@ -9,13 +9,22 @@ command=$1
- shift
- maybe_modules="$@"
- 
--# if not running in a git checkout, do nothing
--test "$command" = "ignore" && exit 0
--
-+test -z "$maybe_modules" && exit 0
- test -z "$GIT" && GIT=$(command -v git)
- 
- cd "$(dirname "$0")/.."
- 
-+no_git_error=
-+if ! test -e ".git"; then
-+    no_git_error='no git checkout exists'
-+elif test -z "$GIT"; then
-+    no_git_error='git binary not found'
-+fi
-+
-+is_git() {
-+    test -z "$no_git_error"
-+}
-+
- update_error() {
-     echo "$0: $*"
-     echo
-@@ -34,7 +43,7 @@ update_error() {
- }
- 
- validate_error() {
--    if test "$1" = "validate"; then
-+    if is_git && test "$1" = "validate"; then
-         echo "GIT submodules checkout is out of date, and submodules"
-         echo "configured for validate only. Please run"
-         echo "  scripts/git-submodule.sh update $maybe_modules"
-@@ -51,42 +60,42 @@ check_updated() {
-     test "$CURSTATUS" = "$OLDSTATUS"
- }
- 
--if test -n "$maybe_modules" && ! test -e ".git"
--then
--    echo "$0: unexpectedly called with submodules but no git checkout exists"
--    exit 1
-+if is_git; then
-+    test -e $substat || touch $substat
-+    modules=""
-+    for m in $maybe_modules
-+    do
-+        $GIT submodule status $m 1> /dev/null 2>&1
-+        if test $? = 0
-+        then
-+            modules="$modules $m"
-+            grep $m $substat > /dev/null 2>&1 || $GIT submodule status $module >> $substat
-+        else
-+            echo "warn: ignoring non-existent submodule $m"
-+        fi
-+    done
-+else
-+    modules=$maybe_modules
- fi
- 
--if test -n "$maybe_modules" && test -z "$GIT"
--then
--    echo "$0: unexpectedly called with submodules but git binary not found"
--    exit 1
--fi
--
--modules=""
--for m in $maybe_modules
--do
--    $GIT submodule status $m 1> /dev/null 2>&1
--    if test $? = 0
--    then
--        modules="$modules $m"
--    else
--        echo "warn: ignoring non-existent submodule $m"
--    fi
--done
--
- case "$command" in
- status|validate)
--    test -f "$substat" || validate_error "$command"
--    test -z "$maybe_modules" && exit 0
-     for module in $modules; do
--        check_updated $module || validate_error "$command"
-+        if is_git; then
-+            check_updated $module || validate_error "$command"
-+        elif ! (set xyz "$module"/* && test -e "$2"); then
-+            # The directory does not exist or it contains no files
-+            echo "$0: sources not available for $module and $no_git_error"
-+            validate_error "$command"
-+        fi
-     done
--    exit 0
-     ;;
-+
- update)
--    test -e $substat || touch $substat
--    test -z "$maybe_modules" && exit 0
-+    is_git || {
-+        echo "$0: unexpectedly called with submodules but $no_git_error"
-+        exit 1
-+    }
- 
-     $GIT submodule update --init $modules 1>/dev/null
-     test $? -ne 0 && update_error "failed to update modules"
--- 
-2.41.0
+> 
+> CC: mst@redhat.com
+> CC: imammedo@redhat.com
+> CC: Michael Labiuk <michael.labiuk@virtuozzo.com>
+> 
+> Signed-off-by: Ani Sinha <anisinha@redhat.com>
+> ---
+>  tests/qtest/hd-geo-test.c | 18 ++++++++----------
+>  1 file changed, 8 insertions(+), 10 deletions(-)
+> 
+> diff --git a/tests/qtest/hd-geo-test.c b/tests/qtest/hd-geo-test.c
+> index 5aa258a2b3..d08bffad91 100644
+> --- a/tests/qtest/hd-geo-test.c
+> +++ b/tests/qtest/hd-geo-test.c
+> @@ -784,14 +784,12 @@ static void test_override_scsi(void)
+>      test_override(args, "pc", expected);
+>  }
+>  
+> -static void setup_pci_bridge(TestArgs *args, const char *id, const char *rootid)
+> +static void setup_pci_bridge(TestArgs *args, const char *id)
+>  {
+>  
+> -    char *root, *br;
+> -    root = g_strdup_printf("-device pcie-root-port,id=%s", rootid);
+> -    br = g_strdup_printf("-device pcie-pci-bridge,bus=%s,id=%s", rootid, id);
+> +    char *br;
+> +    br = g_strdup_printf("-device pcie-pci-bridge,bus=pcie.0,id=%s", id);
+>  
+> -    args->argc = append_arg(args->argc, args->argv, ARGV_SIZE, root);
+>      args->argc = append_arg(args->argc, args->argv, ARGV_SIZE, br);
+>  }
+>  
+> @@ -811,8 +809,8 @@ static void test_override_scsi_q35(void)
+>      add_drive_with_mbr(args, empty_mbr, 1);
+>      add_drive_with_mbr(args, empty_mbr, 1);
+>      add_drive_with_mbr(args, empty_mbr, 1);
+> -    setup_pci_bridge(args, "pcie.0", "br");
+> -    add_scsi_controller(args, "lsi53c895a", "br", 3);
+> +    setup_pci_bridge(args, "pcie-pci-br");
+> +    add_scsi_controller(args, "lsi53c895a", "pcie-pci-br", 3);
+>      add_scsi_disk(args, 0, 0, 0, 0, 0, 10000, 120, 30);
+>      add_scsi_disk(args, 1, 0, 0, 1, 0, 9000, 120, 30);
+>      add_scsi_disk(args, 2, 0, 0, 2, 0, 1, 0, 0);
+> @@ -868,9 +866,9 @@ static void test_override_virtio_blk_q35(void)
+>      };
+>      add_drive_with_mbr(args, empty_mbr, 1);
+>      add_drive_with_mbr(args, empty_mbr, 1);
+> -    setup_pci_bridge(args, "pcie.0", "br");
+> -    add_virtio_disk(args, 0, "br", 3, 10000, 120, 30);
+> -    add_virtio_disk(args, 1, "br", 4, 9000, 120, 30);
+> +    setup_pci_bridge(args, "pcie-pci-br");
+> +    add_virtio_disk(args, 0, "pcie-pci-br", 3, 10000, 120, 30);
+> +    add_virtio_disk(args, 1, "pcie-pci-br", 4, 9000, 120, 30);
+>      test_override(args, "q35", expected);
+>  }
+>  
 
 
