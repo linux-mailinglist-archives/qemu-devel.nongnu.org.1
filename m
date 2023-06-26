@@ -2,83 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7918873E050
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 15:16:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 212BF73E076
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 15:20:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDm4L-0003Pl-6v; Mon, 26 Jun 2023 09:15:49 -0400
+	id 1qDm8F-0007NP-5A; Mon, 26 Jun 2023 09:19:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1qDm4D-0003J1-AW
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 09:15:42 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qDm7u-0007L4-63
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 09:19:33 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1qDm4B-0005Z9-5z
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 09:15:40 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qDm7r-0006Zb-Dt
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 09:19:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687785337;
+ s=mimecast20190719; t=1687785566;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=jqE6L9equjuRDpXRwMcpi501KIIiUiTT7qGfw8nB+oI=;
- b=XyHIO8P01mXZ+J/iomgFDNRwZsylytF27bMFzRqLz0g5cE3Eipwt4gP5D+lN8RncC2aF15
- 7rXxoEf4YDI3GMVzZ21e5cAboW5qmodqQstlKsWK2gNluVcBzqxlMA4+sPWj88PWw9XUix
- ntV2wmkmJkHGVv7fGFdrh1dPRSsGMeM=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=uw4Ghipn/md9Ju4eYIYem92Up4Q6wlDsSsgH91hl/t4=;
+ b=PvKl3cTx43lZ/MSqaEd+43jiqAIpNeJgSi6wYmUcySj/BJ+l574atra3oEyAYSJqV1x1kz
+ 0JCN0wsD9U/vbTKF5TE8ZB30WbyfP64Q0uDI+GGdYIH9Ia65ugY+K7nQ4iB60DuTNrFtz8
+ yfMN1PFIRPxih68aS/9SbPlui6PutN0=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-333-4VF5H5TDOkqXOJeKL_MzCw-1; Mon, 26 Jun 2023 09:15:34 -0400
-X-MC-Unique: 4VF5H5TDOkqXOJeKL_MzCw-1
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-98933d4d4c1so202214966b.0
- for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 06:15:33 -0700 (PDT)
+ us-mta-259-8poo939hOsiqmVNtK6FPYQ-1; Mon, 26 Jun 2023 09:19:24 -0400
+X-MC-Unique: 8poo939hOsiqmVNtK6FPYQ-1
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-313ead680efso665285f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 06:19:24 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687785332; x=1690377332;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=jqE6L9equjuRDpXRwMcpi501KIIiUiTT7qGfw8nB+oI=;
- b=PbkOOo37TC2H/H5WfjdlXtd+t65uS7knkRQH7LEzVysaawfWrEvt+KRS4uF7Mx4kwZ
- Vb3GWfDI3gAHU8PFHss73A0R7YA126umrZMINQeM96YcQrDNYyR1N31sZ1eneOmJIJzG
- XFKWuXCreuSHaq2XiUf3skAQ6cTMjFWGq5xl9J0S8i0xenRRksGosytfuCkNJZlUtvJt
- JKu6FdKcFl/DpVqvJYwfet7Qk/zL4YPjyCwhpTn3Hl97tlcqYuh2E71XIyrXd2wXoBdZ
- rX/oT0j4cgp8BAqJ4F1+IuyMKnr0UUXQ05l0g1UN+eHEdpftLybQUxLhH7KnralE39oo
- /lJg==
-X-Gm-Message-State: AC+VfDyr3nJMQQYy3gfXmIcJoOR2Alypt9BUEkdIv0GAce9LMwjG3PBn
- OxZ+8f48FN087xjldmTwklPG296hDzBeSVLkwNJNmb4xkCJDYU80jDAc74b9VKzLjzAQZRbeOsh
- mN3Y3oFO0M3izCaU=
-X-Received: by 2002:a17:907:72c2:b0:991:b2a2:e424 with SMTP id
- du2-20020a17090772c200b00991b2a2e424mr2514224ejc.76.1687785332289; 
- Mon, 26 Jun 2023 06:15:32 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5nczV1kXduCoDaRY3jzA7r0c1XLIWMrZF2IDwHRqLp0K02eXE0sQqyJFQKaBP8ln/mYlg+rg==
-X-Received: by 2002:a17:907:72c2:b0:991:b2a2:e424 with SMTP id
- du2-20020a17090772c200b00991b2a2e424mr2514207ejc.76.1687785332050; 
- Mon, 26 Jun 2023 06:15:32 -0700 (PDT)
-Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
- [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
- e2-20020a170906080200b00986f9c830efsm3255022ejd.156.2023.06.26.06.15.31
+ d=1e100.net; s=20221208; t=1687785563; x=1690377563;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=uw4Ghipn/md9Ju4eYIYem92Up4Q6wlDsSsgH91hl/t4=;
+ b=RNWYU3jg2BoVbqZJOJi6SABUSju2UHW25KFGiiOPhWlb1dDatq/+I/n4w/8hDsxSQa
+ APuVMr2phICmhDtP/Iuu+26fceDjyK00oDEu/dE4vIqVutmfFMhjUN7T0DuSyZaYxtHP
+ k3fxXawZPawA+lW/vcVx2V1+RftJgG4u9mTh2BsJ4CkAv9Cj1fjeMg315MuKJ5Wy0yRq
+ 8n9UvQq7W5eYmx3sanbh+dRYWMAN0GGkJVy+rf6lUBVM8vI1c8vqzpn9hIKH3O6LjIe0
+ Z7As0lCU2NC43Uu6DO573VrkNVlqqPexYjWSMpAaKPsplgoHL+n/RR0+H+7Af7xKAmlH
+ gmEQ==
+X-Gm-Message-State: AC+VfDxDCpMWffz4+MBx7LXUeq8304bCZmkpj8t2Ni0xC/AJhpv5gEa1
+ 8Mvop4ZeK413CADQtyMvdWAhLwX0+pWujl3UI7YtBxK1JUaPW8ikqo6Q+H9T5HY3vws0daDUDQD
+ cd2IKEvJw3fcFJqsfQygyWHY=
+X-Received: by 2002:adf:ea45:0:b0:30f:df4e:217d with SMTP id
+ j5-20020adfea45000000b0030fdf4e217dmr24801088wrn.6.1687785563219; 
+ Mon, 26 Jun 2023 06:19:23 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7TmaABalUetlEJi+TqMTidWiRXSMa/3aNzmqyi9TEcQTPUsam3hOsdt2ibAT2YX/NhzrxNcQ==
+X-Received: by 2002:adf:ea45:0:b0:30f:df4e:217d with SMTP id
+ j5-20020adfea45000000b0030fdf4e217dmr24801066wrn.6.1687785562800; 
+ Mon, 26 Jun 2023 06:19:22 -0700 (PDT)
+Received: from redhat.com ([2.52.156.102]) by smtp.gmail.com with ESMTPSA id
+ m9-20020adff389000000b00313f551b032sm1614640wro.53.2023.06.26.06.19.20
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 26 Jun 2023 06:15:31 -0700 (PDT)
-Date: Mon, 26 Jun 2023 15:15:30 +0200
-From: Igor Mammedov <imammedo@redhat.com>
-To: Tao Su <tao1.su@linux.intel.com>
-Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, xiaoyao.li@intel.com,
- lei4.wang@intel.com, qian.wen@intel.com
-Subject: Re: [PATCH 5/7] target/i386: Add few security fix bits in
- ARCH_CAPABILITIES into SapphireRapids CPU model
-Message-ID: <20230626151530.24524700@imammedo.users.ipa.redhat.com>
-In-Reply-To: <20230616032311.19137-6-tao1.su@linux.intel.com>
-References: <20230616032311.19137-1-tao1.su@linux.intel.com>
- <20230616032311.19137-6-tao1.su@linux.intel.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+ Mon, 26 Jun 2023 06:19:22 -0700 (PDT)
+Date: Mon, 26 Jun 2023 09:19:18 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Ani Sinha <anisinha@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
+ =?iso-8859-1?Q?=22Daniel_P=2E_Berrang=E9=22?= <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Igor Mammedov <imammedo@redhat.com>,
+ Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+ qemu-devel@nongnu.org
+Subject: Re: [PATCH v3] acpi/tests/bios-tables-test: make iasl tool handling
+ simpler
+Message-ID: <20230626091206-mutt-send-email-mst@kernel.org>
+References: <20230522103039.19111-1-anisinha@redhat.com>
+ <20230626084401-mutt-send-email-mst@kernel.org>
+ <9B31F63A-164A-42EF-9387-1F6A56BC9BEA@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9B31F63A-164A-42EF-9387-1F6A56BC9BEA@redhat.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -103,49 +105,247 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 16 Jun 2023 11:23:09 +0800
-Tao Su <tao1.su@linux.intel.com> wrote:
+On Mon, Jun 26, 2023 at 06:33:14PM +0530, Ani Sinha wrote:
+> 
+> 
+> > On 26-Jun-2023, at 6:28 PM, Michael S. Tsirkin <mst@redhat.com> wrote:
+> > 
+> > On Mon, May 22, 2023 at 04:00:39PM +0530, Ani Sinha wrote:
+> >> Currently the meson based QEMU build process locates the iasl binary from the
+> >> current PATH and other locations [1] and uses that to set CONFIG_IASL in
+> >> config-host.h header.This is then used at compile time by bios-tables-test to
+> >> set iasl path.
+> >> 
+> >> This has two disadvantages:
+> >> - If iasl was not previously installed in the PATH, one has to install iasl
+> >>   and rebuild QEMU in order to regenerate the header and pick up the found
+> >>   iasl location. One cannot simply use the existing bios-tables-test binary
+> >>   because CONFIG_IASL is only set during the QEMU build time by meson and
+> >>   then bios-tables-test has to be rebuilt with CONFIG_IASL set in order to
+> >>   use iasl.
+> >> - Sometimes, the stock iasl that comes with distributions is simply not good
+> >>   enough because it does not support the latest ACPI changes - newly
+> >>   introduced tables or new table attributes etc. In order to test ACPI code
+> >>   in QEMU, one has to clone the latest acpica upstream repository and
+> >>   rebuild iasl in order to get support for it. In those cases, one may want
+> >>   the test to use the iasl binary from a non-standard location.
+> >> 
+> >> In order to overcome the above two disadvantages, we set a default iasl path
+> >> as "/usr/bin/iasl". bios-tables-test also checks for the environment variable
+> >> IASL_PATH that can be set by the developer. IASL_PATH passed from the
+> >> environment overrides the default path. This way developers can point
+> >> IASL_PATH environment variable to a possibly a non-standard custom build
+> >> binary and quickly run bios-tables-test without rebuilding. If the default
+> >> path of iasl changes, one simply needs to update the default path and rebuild
+> >> just the test, not whole QEMU.
+> >> 
+> >> [1] https://mesonbuild.com/Reference-manual_functions.html#find_program
+> >> 
+> >> CC: alex.bennee@linaro.org
+> >> CC: pbonzini@redhat.com
+> >> Signed-off-by: Ani Sinha <anisinha@redhat.com>
+> > 
+> > I don't much like environment variables since they are
+> > not discoverable.
+> 
+> I do have this:
+> 
+> +                " Set IASL_PATH environment variable to the path of iasl binary\n"
+> +                " if iasl is installed somewhere other than %s.\n",
 
-> From: Lei Wang <lei4.wang@intel.com>
-> 
-> Latest stepping (8) of SapphireRapids has bit 13, 14 and 15 of
-> MSR_IA32_ARCH_CAPABILITIES enabled, which are related to some security
-> fixes.
-> 
-> Add version 2 of SapphireRapids CPU model with those bits enabled also.
+You only see this if there's a diff.
 
-don't we need to update stepping value to 8 as well?
+And then people stick this in their scripts and are scratching their
+heads trying to figure out why is a wrong iasl running.  Or someone
+comes up with a different use for IASL_PATH and they conflict.
 
 > 
-> Signed-off-by: Lei Wang <lei4.wang@intel.com>
-> Signed-off-by: Tao Su <tao1.su@linux.intel.com>
-> ---
->  target/i386/cpu.c | 13 +++++++++++--
->  1 file changed, 11 insertions(+), 2 deletions(-)
-> 
-> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-> index b5321240c6..f84fd20bb1 100644
-> --- a/target/i386/cpu.c
-> +++ b/target/i386/cpu.c
-> @@ -3854,8 +3854,17 @@ static const X86CPUDefinition builtin_x86_defs[] = {
->          .model_id = "Intel Xeon Processor (SapphireRapids)",
->          .versions = (X86CPUVersionDefinition[]) {
->              { .version = 1 },
-> -            { /* end of list */ },
-> -        },
-> +            {
-> +                .version = 2,
-> +                .props = (PropValue[]) {
-> +                    { "sbdr-ssdp-no", "on" },
-> +                    { "fbsdp-no", "on" },
-> +                    { "psdp-no", "on" },
-> +                    { /* end of list */ }
-> +                }
-> +            },
-> +            { /* end of list */ }
-> +        }
->      },
->      {
->          .name = "Denverton",
+> > My preference would be to have
+> > configure output CONFIG_IASL to a new header
+> > (e.g. config-bios-tables-test.h ?)
+> > 
+> > meson then will be smart enough not to rebuild everything
+> > if you just change this singe flag.
+> > 
+> > 
+> >> ---
+> >> meson.build                    | 10 ----------
+> >> meson_options.txt              |  2 --
+> >> scripts/meson-buildoptions.sh  |  2 --
+> >> tests/qtest/bios-tables-test.c | 28 ++++++++++++++++++++--------
+> >> 4 files changed, 20 insertions(+), 22 deletions(-)
+> >> 
+> >> changelog:
+> >> v3: incorporated suggestion from MST. Simplify it even more and
+> >> remove all dependency with meson build system. Set a default iasl
+> >> path which can be overridden by an environment variable.
+> >> 
+> >> v2:
+> >> addressed comments from v1. CONFIG_IASL is now an environment
+> >> variable and no new environment variable is introduced.
+> >> Top level meson.build now does not set CONFIG_IASL in the
+> >> platform header. References to iasl has been removed from other
+> >> files. Test doc is updated. For example:
+> >> 
+> >> "to see ASL diff between mismatched files install IASL, set CONFIG_IASL environment variable to the path of iasl binary,
+> >> and run 'QTEST_QEMU_BINARY=<path to QEMU binary to test> V=1 ./tests/qtest/bios-tables-test' from build directory.
+> >> Alternatively run 'V=1 make check-qtest -B' from build dir."
+> >> 
+> >> 
+> >> One drawback of this approach is that meson overrides the values
+> >> of environment variables that are passed from the OS command line
+> >> with the values it sets. So if CONFIG_IASL is passed as an
+> >> env variable by the developer while running "make check-qtest" and
+> >> meson finds iasl in the path, meson will override the value the
+> >> developer provided with the one that it found. I have not seen a
+> >> way to check for OS env from meson.build like we do os.environ.get()
+> >> in python.
+> >> Other than the above, other cases are tested. In absence of iasl,
+> >> the developer can provide their own CONFIG_IASL and path to a custom
+> >> binary and the test picks it up when run from make check-qtest.
+> >> Once iasl is installed, make check-qtest -B will force meson to
+> >> retest iasl path and pass it to the test as an enviroinment.
+> >> When running the test directly, one has to explicitly pass the path
+> >> of iasl in the commnand line as no meson is involved there. There is
+> >> no automatic PATH discovery in the test.
+> >> 
+> >> diff --git a/meson.build b/meson.build
+> >> index 25a4b9f2c1..18c7b669d9 100644
+> >> --- a/meson.build
+> >> +++ b/meson.build
+> >> @@ -179,12 +179,6 @@ if 'dtrace' in get_option('trace_backends')
+> >>   endif
+> >> endif
+> >> 
+> >> -if get_option('iasl') == ''
+> >> -  iasl = find_program('iasl', required: false)
+> >> -else
+> >> -  iasl = find_program(get_option('iasl'), required: true)
+> >> -endif
+> >> -
+> >> ##################
+> >> # Compiler flags #
+> >> ##################
+> >> @@ -1791,9 +1785,6 @@ foreach k : get_option('trace_backends')
+> >> endforeach
+> >> config_host_data.set_quoted('CONFIG_TRACE_FILE', get_option('trace_file'))
+> >> config_host_data.set_quoted('CONFIG_TLS_PRIORITY', get_option('tls_priority'))
+> >> -if iasl.found()
+> >> -  config_host_data.set_quoted('CONFIG_IASL', iasl.full_path())
+> >> -endif
+> >> config_host_data.set_quoted('CONFIG_BINDIR', get_option('prefix') / get_option('bindir'))
+> >> config_host_data.set_quoted('CONFIG_PREFIX', get_option('prefix'))
+> >> config_host_data.set_quoted('CONFIG_QEMU_CONFDIR', get_option('prefix') / qemu_confdir)
+> >> @@ -3761,7 +3752,6 @@ summary_info += {'sphinx-build':      sphinx_build}
+> >> if config_host.has_key('HAVE_GDB_BIN')
+> >>   summary_info += {'gdb':             config_host['HAVE_GDB_BIN']}
+> >> endif
+> >> -summary_info += {'iasl':              iasl}
+> >> summary_info += {'genisoimage':       config_host['GENISOIMAGE']}
+> >> if targetos == 'windows' and have_ga
+> >>   summary_info += {'wixl':            wixl}
+> >> diff --git a/meson_options.txt b/meson_options.txt
+> >> index d8330a1f71..9149df8004 100644
+> >> --- a/meson_options.txt
+> >> +++ b/meson_options.txt
+> >> @@ -14,8 +14,6 @@ option('smbd', type : 'string', value : '',
+> >>        description: 'Path to smbd for slirp networking')
+> >> option('sphinx_build', type : 'string', value : 'sphinx-build',
+> >>        description: 'Use specified sphinx-build for building document')
+> >> -option('iasl', type : 'string', value : '',
+> >> -       description: 'Path to ACPI disassembler')
+> >> option('tls_priority', type : 'string', value : 'NORMAL',
+> >>        description: 'Default TLS protocol/cipher priority string')
+> >> option('default_devices', type : 'boolean', value : true,
+> >> diff --git a/scripts/meson-buildoptions.sh b/scripts/meson-buildoptions.sh
+> >> index 2805d1c145..98ca2e53af 100644
+> >> --- a/scripts/meson-buildoptions.sh
+> >> +++ b/scripts/meson-buildoptions.sh
+> >> @@ -48,7 +48,6 @@ meson_options_help() {
+> >>   printf "%s\n" '                           dtrace/ftrace/log/nop/simple/syslog/ust)'
+> >>   printf "%s\n" '  --firmwarepath=VALUES    search PATH for firmware files [share/qemu-'
+> >>   printf "%s\n" '                           firmware]'
+> >> -  printf "%s\n" '  --iasl=VALUE             Path to ACPI disassembler'
+> >>   printf "%s\n" '  --includedir=VALUE       Header file directory [include]'
+> >>   printf "%s\n" '  --interp-prefix=VALUE    where to find shared libraries etc., use %M for'
+> >>   printf "%s\n" '                           cpu name [/usr/gnemul/qemu-%M]'
+> >> @@ -304,7 +303,6 @@ _meson_option_parse() {
+> >>     --disable-hexagon-idef-parser) printf "%s" -Dhexagon_idef_parser=false ;;
+> >>     --enable-hvf) printf "%s" -Dhvf=enabled ;;
+> >>     --disable-hvf) printf "%s" -Dhvf=disabled ;;
+> >> -    --iasl=*) quote_sh "-Diasl=$2" ;;
+> >>     --enable-iconv) printf "%s" -Diconv=enabled ;;
+> >>     --disable-iconv) printf "%s" -Diconv=disabled ;;
+> >>     --includedir=*) quote_sh "-Dincludedir=$2" ;;
+> >> diff --git a/tests/qtest/bios-tables-test.c b/tests/qtest/bios-tables-test.c
+> >> index 7fd88b0e9c..570f2d714d 100644
+> >> --- a/tests/qtest/bios-tables-test.c
+> >> +++ b/tests/qtest/bios-tables-test.c
+> >> @@ -69,6 +69,7 @@
+> >> #define MACHINE_Q35 "q35"
+> >> 
+> >> #define ACPI_REBUILD_EXPECTED_AML "TEST_ACPI_REBUILD_AML"
+> >> +#define DEFAULT_IASL_PATH "/usr/bin/iasl"
+> >> 
+> >> #define OEM_ID             "TEST"
+> >> #define OEM_TABLE_ID       "OEM"
+> >> @@ -102,11 +103,7 @@ typedef struct {
+> >> 
+> >> static char disk[] = "tests/acpi-test-disk-XXXXXX";
+> >> static const char *data_dir = "tests/data/acpi";
+> >> -#ifdef CONFIG_IASL
+> >> -static const char *iasl = CONFIG_IASL;
+> >> -#else
+> >> -static const char *iasl;
+> >> -#endif
+> >> +static const char *iasl = DEFAULT_IASL_PATH;
+> >> 
+> >> static int verbosity_level;
+> >> 
+> >> @@ -441,6 +438,14 @@ static void test_acpi_asl(test_data *data)
+> >>     test_data exp_data = {};
+> >>     gboolean exp_err, err, all_tables_match = true;
+> >> 
+> >> +    if (getenv("IASL_PATH")) {
+> >> +        iasl = getenv("IASL_PATH");
+> >> +    }
+> >> +
+> >> +    if (access(iasl, F_OK | X_OK) < 0) {
+> >> +        iasl = NULL;
+> >> +    }
+> >> +
+> >>     exp_data.tables = load_expected_aml(data);
+> >>     dump_aml_files(data, false);
+> >>     for (i = 0; i < data->tables->len; ++i) {
+> >> @@ -473,6 +478,10 @@ static void test_acpi_asl(test_data *data)
+> >>             continue;
+> >>         }
+> >> 
+> >> +        if (iasl && verbosity_level >= 2) {
+> >> +            fprintf(stderr, "Using iasl: %s\n", iasl);
+> >> +        }
+> >> +
+> >>         err = load_asl(data->tables, sdt);
+> >>         asl = normalize_asl(sdt->asl);
+> >> 
+> >> @@ -528,9 +537,12 @@ static void test_acpi_asl(test_data *data)
+> >>         g_string_free(exp_asl, true);
+> >>     }
+> >>     if (!iasl && !all_tables_match) {
+> >> -        fprintf(stderr, "to see ASL diff between mismatched files install IASL,"
+> >> -                " rebuild QEMU from scratch and re-run tests with V=1"
+> >> -                " environment variable set");
+> >> +        fprintf(stderr, "to see ASL diff between mismatched files install\n"
+> >> +                " IASL & re-run the test with V=1 environment variable set.\n"
+> >> +                " Set IASL_PATH environment variable to the path of iasl binary\n"
+> >> +                " if iasl is installed somewhere other than %s.\n",
+> >> +                DEFAULT_IASL_PATH
+> >> +                );
+> >>     }
+> >>     g_assert(all_tables_match);
+> >> 
+> >> -- 
+> >> 2.39.1
+> > 
 
 
