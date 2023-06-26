@@ -2,41 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2FF273EB03
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 21:13:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F61073EAF5
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 21:11:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDrU9-0003gG-HC; Mon, 26 Jun 2023 15:02:49 -0400
+	id 1qDrUD-0003kn-0i; Mon, 26 Jun 2023 15:02:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qDrU7-0003dY-Ch; Mon, 26 Jun 2023 15:02:47 -0400
+ id 1qDrU8-0003h4-Sk; Mon, 26 Jun 2023 15:02:48 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qDrU5-0007zd-NF; Mon, 26 Jun 2023 15:02:47 -0400
+ id 1qDrU7-000806-Av; Mon, 26 Jun 2023 15:02:48 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 8A164EFCC;
+ by isrv.corpit.ru (Postfix) with ESMTP id B48A0EFCD;
  Mon, 26 Jun 2023 21:59:15 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 1D7B9F806;
+ by tsrv.corpit.ru (Postfix) with SMTP id 4A617F807;
  Mon, 26 Jun 2023 21:59:14 +0300 (MSK)
-Received: (nullmailer pid 1575400 invoked by uid 1000);
+Received: (nullmailer pid 1575403 invoked by uid 1000);
  Mon, 26 Jun 2023 18:59:05 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org, qemu-stable@nongnu.org
-Cc: Prasad Pandit <pjp@fedoraproject.org>,
- "Michael S . Tsirkin" <mst@redhat.com>, Peter Xu <peterx@redhat.com>,
- Jason Wang <jasowang@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.4 41/43] vhost: release memory_listener object in error
- path
-Date: Mon, 26 Jun 2023 21:58:59 +0300
-Message-Id: <20230626185902.1575177-41-mjt@tls.msk.ru>
+Cc: =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ Lei Yang <leiyang@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.4 42/43] vdpa: fix not using CVQ buffer in case of error
+Date: Mon, 26 Jun 2023 21:59:00 +0300
+Message-Id: <20230626185902.1575177-42-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.4-20230626215033@cover.tls.msk.ru>
 References: <qemu-stable-7.2.4-20230626215033@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -61,53 +61,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Prasad Pandit <pjp@fedoraproject.org>
+From: Eugenio Pérez <eperezma@redhat.com>
 
-vhost_dev_start function does not release memory_listener object
-in case of an error. This may crash the guest when vhost is unable
-to set memory table:
+Bug introducing when refactoring.  Otherway, the guest never received
+the used buffer.
 
-  stack trace of thread 125653:
-  Program terminated with signal SIGSEGV, Segmentation fault
-  #0  memory_listener_register (qemu-kvm + 0x6cda0f)
-  #1  vhost_dev_start (qemu-kvm + 0x699301)
-  #2  vhost_net_start (qemu-kvm + 0x45b03f)
-  #3  virtio_net_set_status (qemu-kvm + 0x665672)
-  #4  qmp_set_link (qemu-kvm + 0x548fd5)
-  #5  net_vhost_user_event (qemu-kvm + 0x552c45)
-  #6  tcp_chr_connect (qemu-kvm + 0x88d473)
-  #7  tcp_chr_new_client (qemu-kvm + 0x88cf83)
-  #8  tcp_chr_accept (qemu-kvm + 0x88b429)
-  #9  qio_net_listener_channel_func (qemu-kvm + 0x7ac07c)
-  #10 g_main_context_dispatch (libglib-2.0.so.0 + 0x54e2f)
-
-Release memory_listener objects in the error path.
-
-Signed-off-by: Prasad Pandit <pjp@fedoraproject.org>
-Message-Id: <20230529114333.31686-2-ppandit@redhat.com>
+Fixes: be4278b65fc1 ("vdpa: extract vhost_vdpa_net_cvq_add from vhost_vdpa_net_handle_ctrl_avail")
+Signed-off-by: Eugenio Pérez <eperezma@redhat.com>
+Message-Id: <20230602173451.1917999-1-eperezma@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Reviewed-by: Peter Xu <peterx@redhat.com>
-Fixes: c471ad0e9b ("vhost_net: device IOTLB support")
-Cc: qemu-stable@nongnu.org
 Acked-by: Jason Wang <jasowang@redhat.com>
-(cherry picked from commit 1e3ffb34f764f8ac4c003b2b2e6a775b2b073a16)
+Tested-by: Lei Yang <leiyang@redhat.com>
+(cherry picked from commit d45243bcfc61a3c34f96a4fc34bffcb9929daba0)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
-index fdcd1a8fdf..f38997b3f6 100644
---- a/hw/virtio/vhost.c
-+++ b/hw/virtio/vhost.c
-@@ -1934,6 +1934,9 @@ fail_vq:
+diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+index 2b4b85d8f8..71a7dd1586 100644
+--- a/net/vhost-vdpa.c
++++ b/net/vhost-vdpa.c
+@@ -500,7 +500,7 @@ static int vhost_vdpa_net_handle_ctrl_avail(VhostShadowVirtqueue *svq,
      }
  
- fail_mem:
-+    if (vhost_dev_has_iommu(hdev)) {
-+        memory_listener_unregister(&hdev->iommu_listener);
-+    }
- fail_features:
-     vdev->vhost_started = false;
-     hdev->started = false;
+     if (*s->status != VIRTIO_NET_OK) {
+-        return VIRTIO_NET_ERR;
++        goto out;
+     }
+ 
+     status = VIRTIO_NET_ERR;
 -- 
 2.39.2
 
