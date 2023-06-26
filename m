@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D44E773EF30
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 01:23:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0888273EF2E
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 01:23:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDvWp-0006tx-Ot; Mon, 26 Jun 2023 19:21:51 -0400
+	id 1qDvWv-0007Y0-26; Mon, 26 Jun 2023 19:21:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qDvWn-0006lt-6n
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 19:21:49 -0400
-Received: from mail-lj1-x232.google.com ([2a00:1450:4864:20::232])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qDvWs-0007Nb-PA
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 19:21:54 -0400
+Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qDvWk-0000L2-VQ
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 19:21:48 -0400
-Received: by mail-lj1-x232.google.com with SMTP id
- 38308e7fff4ca-2b698937f85so36526831fa.2
- for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 16:21:46 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qDvWq-0000Lz-VU
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 19:21:54 -0400
+Received: by mail-ej1-x62b.google.com with SMTP id
+ a640c23a62f3a-98de21518fbso360417566b.0
+ for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 16:21:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687821705; x=1690413705;
+ d=linaro.org; s=google; t=1687821711; x=1690413711;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=4zj8kiNSf4zOVBRmaIbE7s7TNCE9jUZ9Fb7cv7kKoN8=;
- b=mUMyMdkpXZlZOkwqKRhDSRrKPzHZ4mi6GF2+P+1pEQJQLxqN9wRchyQs6vVdtXpdqj
- ezqPYqhn21ZRcOyyTlrqZylQYvFCQ88ZqNW4hgyUtmJwIdNw6TAB3CUZgr2emn4TZQrn
- t522ERmBSlqzhexXRX+9kv67BNyBywN8LBbwJmLLpdYB5BFKRO3oVcCmZxDDksX9dF6i
- yWHyplE7v/qGbJ8eB9RPK6NQfQ3Z2nY4jZBIT7F7A6qqojgktLQEu9GBoxYKAxrI1R5M
- b6/7skHVsbDgRsr9CaV3yIijIoxPLRmHf7yC/MhTCui7qCPyPjVYbuviV0q1RWOLnHLe
- ON8w==
+ bh=VxVrz8p5o31xt6Yxv58riTEL3xKqDEOgIygHH7bVYSY=;
+ b=m7PMxgOsmssfOK7t8kTnNDai/QpDt3NdPap7WcqMRJOLBldpBSsrE6FP7vv0xYvg6+
+ xcrPAtgLwPRFj00skvqgJfTqcC6dUn5mccnsXSO/pRvRNwRMgoe10OqhqOpCCx2jTjx/
+ l4bcEFq39b0Hw7DP+iGG22iKbIksJc8XptHxAjuU5LIFtWjhw3UuFoVEaNFvYvizqhZb
+ tq0SzfBqbYUaSfurJF9zdLYKdoV8Vskr6FQe+tc+vzOxk8V+/O7NmqEY2N8qxqEBobMV
+ PqGSDnufyYChdcdfpQisASxq2iciqxzvZg+vNYmxNySnGlsh7fKQ9ZLuzXqvn+DLsLcs
+ pFgA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687821705; x=1690413705;
+ d=1e100.net; s=20221208; t=1687821711; x=1690413711;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=4zj8kiNSf4zOVBRmaIbE7s7TNCE9jUZ9Fb7cv7kKoN8=;
- b=afZN1uxP9fWFS2Os/jL4jDlDR90cQ0L4G0DkTCkB7KLwG00Guy0TicUOGGI4gOSonk
- MPXjmtIE1LuMLr7lj6klnshHKcGU8ppYzbuBo55u+0TVQDo48NBtYffET+x/KMYWTiIK
- WeT6PwQXRl3gba30Lx4pbVHeB13RQTH7zeBLwdP7WmvrjqA5LzDnSZAJrKb80ouKu87y
- OGXx291FUQzWA8bimr07ACQ9UlbHGspn8IE9cSINKIVgaUAuj9zucx2mqVPkBIHgFIRv
- aIR2ocjc7j0HGQ364fo7NXN8Zlk4yMEeix+H4lsW7AdW+jDu63zeVB7KLNwbSorhklID
- /E+Q==
-X-Gm-Message-State: AC+VfDyZmlETSizc3mMnMlqksAb7St2cSoibPNUPVHpw8s9VsICsmXNh
- nZ5n9ejDhW7K2xkCoG2VY164syWvBfwxZDZUap4=
-X-Google-Smtp-Source: ACHHUZ567FMfIYKiiz2M9olBgqdphBexRaZ9/LIUXgA+0/kuM38ER+J0hMg5gU/XkRJjXxSmK9e7zw==
-X-Received: by 2002:a05:651c:102a:b0:2b6:a23c:580 with SMTP id
- w10-20020a05651c102a00b002b6a23c0580mr2169142ljm.5.1687821705062; 
- Mon, 26 Jun 2023 16:21:45 -0700 (PDT)
+ bh=VxVrz8p5o31xt6Yxv58riTEL3xKqDEOgIygHH7bVYSY=;
+ b=gUnk9lDkDx/gA0zNynmCbYt+5WZXPD6k+1PziXsqQAWGVLxTFnCIFfa5ELw8ma2VeU
+ W6v7eDU51uJOIy8aq3urBVQi/sJmQYhyrDA0xlkPUbpDj/GTX0/UoZPpTBE8tRrfzquG
+ vRfDvHBr1jTuP9AmhxmQPskn9gE2z3nlhG6blsWInhnVxpSnFehYqYmK6ReLy30pPQV3
+ 2PHZ3gR8+H+l7UXb23241Q9lhJYCGjbj6/GNsWG2SCnfOY91LbIuaxn1XvF++04xQ3rI
+ Ka09iEVK06AS9EIPdtCRtbPwt9IIj/WTqjk65uGNz41CtriqXsZPOsYhNPWIuRk/emgj
+ NJDg==
+X-Gm-Message-State: AC+VfDxf0FhMNwrF78S3I4THr3/DihWiBgQXryMJLBrVes1LXdZabePi
+ dfuvhpOznqw49j6yrV9rxTwr/kr86G4xase9B7I=
+X-Google-Smtp-Source: ACHHUZ4EaElgZML1hLHKYA8CswyRRmQJwYRoHGyWpgDYyy9aiFgM/jZSaH202xLJm0T04dBh/7CnwQ==
+X-Received: by 2002:a17:906:6a07:b0:989:a806:d197 with SMTP id
+ qw7-20020a1709066a0700b00989a806d197mr15375737ejc.3.1687821711418; 
+ Mon, 26 Jun 2023 16:21:51 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.199.226])
  by smtp.gmail.com with ESMTPSA id
- y3-20020aa7c243000000b0051bdf152295sm3247783edo.76.2023.06.26.16.21.43
+ pg9-20020a170907204900b00988aff89806sm3889316ejb.14.2023.06.26.16.21.49
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 26 Jun 2023 16:21:44 -0700 (PDT)
+ Mon, 26 Jun 2023 16:21:51 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Bin Meng <bin.meng@windriver.com>,
@@ -66,18 +66,18 @@ Cc: Bin Meng <bin.meng@windriver.com>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Weiwei Li <liweiwei@iscas.ac.cn>, qemu-riscv@nongnu.org
-Subject: [PATCH 15/16] target/riscv: Restrict TCG-specific prototype
- declarations
-Date: Tue, 27 Jun 2023 01:20:06 +0200
-Message-Id: <20230626232007.8933-16-philmd@linaro.org>
+Subject: [PATCH 16/16] gitlab-ci.d/crossbuilds: Add KVM riscv64 cross-build
+ jobs
+Date: Tue, 27 Jun 2023 01:20:07 +0200
+Message-Id: <20230626232007.8933-17-philmd@linaro.org>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230626232007.8933-1-philmd@linaro.org>
 References: <20230626232007.8933-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::232;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x232.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,100 +100,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Add a new job to cross-build the riscv64 target without
+the TCG accelerator (IOW: only KVM accelerator enabled).
+
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/riscv/cpu.h |  3 +++
- target/riscv/cpu.c | 11 +++++++++++
- 2 files changed, 14 insertions(+)
+ .gitlab-ci.d/crossbuilds.yml | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index 5945e13fe0..8f16655041 100644
---- a/target/riscv/cpu.h
-+++ b/target/riscv/cpu.h
-@@ -474,7 +474,10 @@ RISCVException smstateen_acc_ok(CPURISCVState *env, int index, uint64_t bit);
+diff --git a/.gitlab-ci.d/crossbuilds.yml b/.gitlab-ci.d/crossbuilds.yml
+index 1e0e6c7f2c..5b72df4090 100644
+--- a/.gitlab-ci.d/crossbuilds.yml
++++ b/.gitlab-ci.d/crossbuilds.yml
+@@ -129,6 +129,14 @@ cross-riscv64-user:
+   variables:
+     IMAGE: debian-riscv64-cross
  
- void riscv_cpu_set_mode(CPURISCVState *env, target_ulong newpriv);
- 
-+#ifdef CONFIG_TCG
- void riscv_translate_init(void);
-+#endif
++cross-riscv64-kvm-only:
++  extends: .cross_accel_build_job
++  needs:
++    job: riscv64-debian-cross-container
++  variables:
++    IMAGE: debian-riscv64-cross
++    EXTRA_CONFIGURE_OPTS: --disable-tcg --without-default-features
 +
- G_NORETURN void riscv_raise_exception(CPURISCVState *env,
-                                       uint32_t exception, uintptr_t pc);
- 
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index a1513bf5cc..2371bdd68a 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -37,7 +37,9 @@
- #include "hw/qdev-properties.h"
- #include "migration/vmstate.h"
- #include "fpu/softfloat-helpers.h"
-+#ifdef CONFIG_TCG
- #include "tcg/tcg.h"
-+#endif
- 
- /* RISC-V CPU definitions */
- 
-@@ -724,6 +726,7 @@ static vaddr riscv_cpu_get_pc(CPUState *cs)
-     return env->pc;
- }
- 
-+#ifdef CONFIG_TCG
- static void riscv_cpu_synchronize_from_tb(CPUState *cs,
-                                           const TranslationBlock *tb)
- {
-@@ -741,6 +744,7 @@ static void riscv_cpu_synchronize_from_tb(CPUState *cs,
-         }
-     }
- }
-+#endif
- 
- static bool riscv_cpu_has_work(CPUState *cs)
- {
-@@ -757,6 +761,7 @@ static bool riscv_cpu_has_work(CPUState *cs)
- #endif
- }
- 
-+#ifdef CONFIG_TCG
- static void riscv_restore_state_to_opc(CPUState *cs,
-                                        const TranslationBlock *tb,
-                                        const uint64_t *data)
-@@ -779,6 +784,7 @@ static void riscv_restore_state_to_opc(CPUState *cs,
-     }
-     env->bins = data[1];
- }
-+#endif
- 
- static void riscv_cpu_reset_hold(Object *obj)
- {
-@@ -1785,6 +1791,8 @@ static const struct SysemuCPUOps riscv_sysemu_ops = {
- };
- #endif
- 
-+#ifdef CONFIG_TCG
-+
- #include "hw/core/tcg-cpu-ops.h"
- 
- static const struct TCGCPUOps riscv_tcg_ops = {
-@@ -1803,6 +1811,7 @@ static const struct TCGCPUOps riscv_tcg_ops = {
-     .debug_check_watchpoint = riscv_cpu_debug_check_watchpoint,
- #endif /* !CONFIG_USER_ONLY */
- };
-+#endif /* CONFIG_TCG */
- 
- static void riscv_cpu_class_init(ObjectClass *c, void *data)
- {
-@@ -1833,7 +1842,9 @@ static void riscv_cpu_class_init(ObjectClass *c, void *data)
- #endif
-     cc->gdb_arch_name = riscv_gdb_arch_name;
-     cc->gdb_get_dynamic_xml = riscv_gdb_get_dynamic_xml;
-+#ifdef CONFIG_TCG
-     cc->tcg_ops = &riscv_tcg_ops;
-+#endif /* CONFIG_TCG */
- 
-     device_class_set_props(dc, riscv_cpu_properties);
- }
+ cross-s390x-system:
+   extends: .cross_system_build_job
+   needs:
 -- 
 2.38.1
 
