@@ -2,72 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CD5773D809
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 08:51:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5948073D803
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 08:51:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDg2x-0006Ab-HX; Mon, 26 Jun 2023 02:49:59 -0400
+	id 1qDg3B-0006CQ-Eb; Mon, 26 Jun 2023 02:50:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shahuang@redhat.com>)
- id 1qDg2s-00069B-Gm
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 02:49:56 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shahuang@redhat.com>)
- id 1qDg2o-0004Qv-73
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 02:49:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687762189;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=NMHucQZ4M31K7QXIgHBtRlKVAlpmIjZVnWfneYhxS0Q=;
- b=ZWseVts0Cg4wEHpuAbkToBoVB8rMliPH6l1HtdfGnfLipltTPhMyZ30UirBpWFL/0NBQXL
- e+RlyQZyRNRaDkKrJqfoCsuGxcdoodaiokQNyjzj9XHoO7UtnnU4vSrop4PsU24sStBz5L
- pA3RiG4d8n5eDZ6XwIjI8kOhSdtLGxY=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-182-ByhBcNp3OFuVvfR_Cy2dMg-1; Mon, 26 Jun 2023 02:49:44 -0400
-X-MC-Unique: ByhBcNp3OFuVvfR_Cy2dMg-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A1D2B90ED33;
- Mon, 26 Jun 2023 06:49:43 +0000 (UTC)
-Received: from virt-mtcollins-01.lab.eng.rdu2.redhat.com
- (virt-mtcollins-01.lab.eng.rdu2.redhat.com [10.8.1.196])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 9452C200B677;
- Mon, 26 Jun 2023 06:49:43 +0000 (UTC)
-From: Shaoqin Huang <shahuang@redhat.com>
-To: qemu-devel@nongnu.org,
-	qemu-arm@nongnu.org
-Cc: oliver.upton@linux.dev, salil.mehta@huawei.com, james.morse@arm.com,
- gshan@redhat.com, Shaoqin Huang <shahuang@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org
-Subject: [PATCH v1 5/5] arm/kvm: add support for userspace psci calls handling
-Date: Mon, 26 Jun 2023 02:49:09 -0400
-Message-Id: <20230626064910.1787255-6-shahuang@redhat.com>
-In-Reply-To: <20230626064910.1787255-1-shahuang@redhat.com>
-References: <20230626064910.1787255-1-shahuang@redhat.com>
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qDg39-0006By-6P
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 02:50:11 -0400
+Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qDg37-0004hz-4l
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 02:50:10 -0400
+Received: by mail-ej1-x629.google.com with SMTP id
+ a640c23a62f3a-98e39784a85so197797066b.1
+ for <qemu-devel@nongnu.org>; Sun, 25 Jun 2023 23:50:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1687762207; x=1690354207;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=3kPqGOLOlPXUgswAx72tUX/dQ7UDQYLySrxPAMlH95Y=;
+ b=iiFaNQy5ITqFJ3ZE5tUb56HTkzW3uhC/Ou4C2ejMmoAS88oyYDxKSyB7j5fNDw+SDE
+ xu2mJAyl0mwemXsmD/LA6k2q98A08tOP+YyN5djQ5qa4yrAoNlAp3YNbPaWE0v3iMkIs
+ GlQr940Vciy4E7hEtDVKmbjE/lZxcEtJrk696bLWSv0PlFiYE7uT9KyLaEiDxSzGoYCO
+ 8QNJi5/34lTEZsPg2/Ge8hrZAR7xtRKy2rOpBtOuNE160beKhhZ+ZdHugqHoNVYl5obg
+ ocQI82AiltmBQp9RNmSBEO8GodN2tYF9rH7BichVrmOEbVkv5lfU2ZFRF2QsSblURe3o
+ udZw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1687762207; x=1690354207;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=3kPqGOLOlPXUgswAx72tUX/dQ7UDQYLySrxPAMlH95Y=;
+ b=ViqTW8ErQCoRjD7FZXYNoZh+HMw68fBq6TeDUAT0sRVHS6MBpvuwbzKdfvJs6gp2At
+ E7zWRkF4HSPXe4nYJo3EzXIjv5StH0vDkXnfxs0PgirirEafNGrgBqe7QXaZ6Ae237+Y
+ sr11EpyQ1K55C4ahvRvhY3hWeYaXcFKnuWJEu1iHF0evT/U9BNGgznbDG7qc+/DlunAb
+ ckb8fQ1JdEdjW2OOsWGKi6vgp9/kw+srsR5/7hmTCHZJtooKyvckVOo6wAdJX1srqlhw
+ usbNOF2Xe4VZsKzGVvG662TNihU5EJUR2CH1UOYfBeQjXNzitKOmYajv/7G8xWujOZgA
+ Q/mQ==
+X-Gm-Message-State: AC+VfDxZfbccLmIotQsO0Ym5pCO5F19z2Op03PF8tMDqHE7RTQW8yZqH
+ wfrO8KDswky0apPAoW+3OzLj6Te8KxM=
+X-Google-Smtp-Source: ACHHUZ4XGG80qetg8j+7WJlR+7d7vPnWa5W+YR6rhMeFQSlxsF3oHjdPN5+CuXy/GDKT6DeQunwD9w==
+X-Received: by 2002:a17:907:944c:b0:953:834d:899b with SMTP id
+ dl12-20020a170907944c00b00953834d899bmr31123183ejc.29.1687762206631; 
+ Sun, 25 Jun 2023 23:50:06 -0700 (PDT)
+Received: from [127.0.0.1] (dynamic-077-191-176-230.77.191.pool.telefonica.de.
+ [77.191.176.230]) by smtp.gmail.com with ESMTPSA id
+ rn19-20020a170906d93300b0098822e05eddsm2850374ejb.100.2023.06.25.23.50.05
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 25 Jun 2023 23:50:06 -0700 (PDT)
+Date: Mon, 26 Jun 2023 06:50:02 +0000
+From: Bernhard Beschow <shentey@gmail.com>
+To: Igor Mammedov <imammedo@redhat.com>
+CC: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Eduardo Habkost <eduardo@habkost.net>
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_15/15=5D_hw/i386/pc=5Fpiix=3A_Mo?=
+ =?US-ASCII?Q?ve_i440fx=27_realize_near_its_qdev=5Fnew=28=29?=
+In-Reply-To: <20230613115250.08e03e9b@imammedo.users.ipa.redhat.com>
+References: <20230611103412.12109-1-shentey@gmail.com>
+ <20230611103412.12109-16-shentey@gmail.com>
+ <20230612165155.087ba275@imammedo.users.ipa.redhat.com>
+ <20230612172119.5b9e6d7e@imammedo.users.ipa.redhat.com>
+ <4F200210-F39C-49CD-B7FD-AF9F556C8493@gmail.com>
+ <20230613115250.08e03e9b@imammedo.users.ipa.redhat.com>
+Message-ID: <89C3A050-4FA6-45B0-96B3-9040A7476DC1@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=shahuang@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -30
-X-Spam_score: -3.1
-X-Spam_bar: ---
-X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::629;
+ envelope-from=shentey@gmail.com; helo=mail-ej1-x629.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,206 +100,228 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use the SMCCC filter to start sending psci calls to userspace, qemu will
-need to handle the psci calls. In qemu, reuse the psci handler which
-used for tcg, while use it, we need to take care the reset vcpu process
-which will reset the vcpu register and grab all vcpu locks when reset
-gicv3.
 
-So when reset vcpu, we need to mark it as dirty to force the vcpu to
-sync its register to kvm, and when reset gicv3, we need to pause all
-vcpus to grab the all vcpu locks, thus when handling the psci CPU_ON
-call, the vcpu can be successfuly boot up.
 
-Signed-off-by: Shaoqin Huang <shahuang@redhat.com>
----
- hw/intc/arm_gicv3_kvm.c | 10 +++++
- target/arm/kvm.c        | 94 ++++++++++++++++++++++++++++++++++++++++-
- 2 files changed, 103 insertions(+), 1 deletion(-)
+Am 13=2E Juni 2023 09:52:50 UTC schrieb Igor Mammedov <imammedo@redhat=2Ec=
+om>:
+>On Mon, 12 Jun 2023 17:49:10 +0000
+>Bernhard Beschow <shentey@gmail=2Ecom> wrote:
+>
+>> Am 12=2E Juni 2023 15:21:19 UTC schrieb Igor Mammedov <imammedo@redhat=
+=2Ecom>:
+>> >On Mon, 12 Jun 2023 16:51:55 +0200
+>> >Igor Mammedov <imammedo@redhat=2Ecom> wrote:
+>> > =20
+>> >> On Sun, 11 Jun 2023 12:34:12 +0200
+>> >> Bernhard Beschow <shentey@gmail=2Ecom> wrote:
+>> >>  =20
+>> >> > I440FX realization is currently mixed with PIIX3 creation=2E Furth=
+ermore, it is
+>> >> > common practice to only set properties between a device's qdev_new=
+() and
+>> >> > qdev_realize()=2E Clean up to resolve both issues=2E
+>> >> >=20
+>> >> > Since I440FX spawns a PCI bus let's also move the pci_bus initiali=
+zation there=2E
+>> >> >=20
+>> >> > Note that when running `qemu-system-x86_64 -M pc -S` before and af=
+ter this
+>> >> > patch, `info mtree` in the QEMU console doesn't show any differenc=
+es except that
+>> >> > the ordering is different=2E
+>> >> >=20
+>> >> > Signed-off-by: Bernhard Beschow <shentey@gmail=2Ecom>
+>> >> > ---
+>> >> >  hw/i386/pc_piix=2Ec | 57 ++++++++++++++++++++++++----------------=
+-------
+>> >> >  1 file changed, 29 insertions(+), 28 deletions(-)
+>> >> >=20
+>> >> > diff --git a/hw/i386/pc_piix=2Ec b/hw/i386/pc_piix=2Ec
+>> >> > index 22173b122b=2E=2E23b9725c94 100644
+>> >> > --- a/hw/i386/pc_piix=2Ec
+>> >> > +++ b/hw/i386/pc_piix=2Ec
+>> >> > @@ -126,7 +126,6 @@ static void pc_init1(MachineState *machine,
+>> >> >      MemoryRegion *rom_memory;
+>> >> >      ram_addr_t lowmem;
+>> >> >      uint64_t hole64_size;
+>> >> > -    Object *i440fx_host;
+>> >> > =20
+>> >> >      /*
+>> >> >       * Calculate ram split, for memory below and above 4G=2E  It'=
+s a bit
+>> >> > @@ -198,17 +197,43 @@ static void pc_init1(MachineState *machine,
+>> >> >      }
+>> >> > =20
+>> >> >      if (pcmc->pci_enabled) {
+>> >> > +        Object *phb;
+>> >> > +
+>> >> >          pci_memory =3D g_new(MemoryRegion, 1);
+>> >> >          memory_region_init(pci_memory, NULL, "pci", UINT64_MAX);
+>> >> >          rom_memory =3D pci_memory;
+>> >> > -        i440fx_host =3D OBJECT(qdev_new(host_type));
+>> >> > -        hole64_size =3D object_property_get_uint(i440fx_host,
+>> >> > +
+>> >> > +        phb =3D OBJECT(qdev_new(host_type));
+>> >> > +        object_property_add_child(OBJECT(machine), "i440fx", phb)=
+;
+>> >> > +        object_property_set_link(phb, PCI_HOST_PROP_RAM_MEM,
+>> >> > +                                 OBJECT(ram_memory), &error_fatal=
+);
+>> >> > +        object_property_set_link(phb, PCI_HOST_PROP_PCI_MEM,
+>> >> > +                                 OBJECT(pci_memory), &error_fatal=
+);
+>> >> > +        object_property_set_link(phb, PCI_HOST_PROP_SYSTEM_MEM,
+>> >> > +                                 OBJECT(system_memory), &error_fa=
+tal);
+>> >> > +        object_property_set_link(phb, PCI_HOST_PROP_IO_MEM,
+>> >> > +                                 OBJECT(system_io), &error_fatal)=
+;
+>> >> > +        object_property_set_uint(phb, PCI_HOST_BELOW_4G_MEM_SIZE,
+>> >> > +                                 x86ms->below_4g_mem_size, &error=
+_fatal);
+>> >> > +        object_property_set_uint(phb, PCI_HOST_ABOVE_4G_MEM_SIZE,
+>> >> > +                                 x86ms->above_4g_mem_size, &error=
+_fatal);
+>> >> > +        object_property_set_str(phb, I440FX_HOST_PROP_PCI_TYPE, p=
+ci_type,
+>> >> > +                                &error_fatal);
+>> >> > +        sysbus_realize_and_unref(SYS_BUS_DEVICE(phb), &error_fata=
+l);
+>> >> > +
+>> >> > +        pci_bus =3D PCI_BUS(qdev_get_child_bus(DEVICE(phb), "pci=
+=2E0"));
+>> >> > +        pci_bus_map_irqs(pci_bus,
+>> >> > +                         xen_enabled() ? xen_pci_slot_get_pirq
+>> >> > +                                       : pc_pci_slot_get_pirq);
+>> >> > +        pcms->bus =3D pci_bus;
+>> >> > +
+>> >> > +        hole64_size =3D object_property_get_uint(phb,
+>> >> >                                                 PCI_HOST_PROP_PCI_=
+HOLE64_SIZE,
+>> >> >                                                 &error_abort);   =
+=20
+>> >>=20
+>> >> before patch memory region links were set after the original
+>> >> regions were initialized by pc_memory_init(), but after this
+>> >> patch you 1st set links and only later pc_memory_init()=2E
+>> >> I doesn't look to me as a safe thing to do=2E =20
+>> >
+>> >or maybe it doesn't matter, but still I have hard time
+>> >convincing myself that it is so=2E  =20
+>>=20
+>> AFAICS both pc_memory_init() and i440fx_pcihost_realize() rely on memor=
+y_region_init*() having been called on these pointers already=2E All they s=
+eem to do is adding their sub regions=2E The order in which this happens se=
+ems to be irrelevant, otherwise we'd see changes in the QOM console calls I=
+ guess=2E
+>
+>that's why I said it might not matter, but  =2E=2E=2E
+>the thing is that now mapping into AS happens in reversed order
+>and with overlapped mappings reversed I'm quite unsure if
+>that is correct=2E
 
-diff --git a/hw/intc/arm_gicv3_kvm.c b/hw/intc/arm_gicv3_kvm.c
-index 72ad916d3d..e42898c1d6 100644
---- a/hw/intc/arm_gicv3_kvm.c
-+++ b/hw/intc/arm_gicv3_kvm.c
-@@ -24,6 +24,7 @@
- #include "hw/intc/arm_gicv3_common.h"
- #include "qemu/error-report.h"
- #include "qemu/module.h"
-+#include "sysemu/cpus.h"
- #include "sysemu/kvm.h"
- #include "sysemu/runstate.h"
- #include "kvm_arm.h"
-@@ -695,10 +696,19 @@ static void arm_gicv3_icc_reset(CPUARMState *env, const ARMCPRegInfo *ri)
-         return;
-     }
- 
-+    /*
-+     * When handling psci call in userspace like cpu hotplug, this shall be called
-+     * when other vcpus might be running. Host kernel KVM to handle device
-+     * access of IOCTLs KVM_{GET|SET}_DEVICE_ATTR might fail due to inability to
-+     * grab vcpu locks for all the vcpus. Hence, we need to pause all vcpus to
-+     * facilitate locking within host.
-+     */
-+    pause_all_vcpus();
-     /* Initialize to actual HW supported configuration */
-     kvm_device_access(s->dev_fd, KVM_DEV_ARM_VGIC_GRP_CPU_SYSREGS,
-                       KVM_VGIC_ATTR(ICC_CTLR_EL1, c->gicr_typer),
-                       &c->icc_ctlr_el1[GICV3_NS], false, &error_abort);
-+    resume_all_vcpus();
- 
-     c->icc_ctlr_el1[GICV3_S] = c->icc_ctlr_el1[GICV3_NS];
- }
-diff --git a/target/arm/kvm.c b/target/arm/kvm.c
-index 579c6edd49..d2857a8499 100644
---- a/target/arm/kvm.c
-+++ b/target/arm/kvm.c
-@@ -10,6 +10,7 @@
- 
- #include "qemu/osdep.h"
- #include <asm-arm64/kvm.h>
-+#include <linux/psci.h>
- #include <linux/arm-smccc.h>
- #include <sys/ioctl.h>
- 
-@@ -251,7 +252,29 @@ int kvm_arm_get_max_vm_ipa_size(MachineState *ms, bool *fixed_ipa)
- 
- static int kvm_arm_init_smccc_filter(KVMState *s)
- {
-+    unsigned int i;
-     int ret = 0;
-+    struct kvm_smccc_filter filter_ranges[] = {
-+        {
-+            .base           = KVM_PSCI_FN_BASE,
-+            .nr_functions   = 4,
-+            .action         = KVM_SMCCC_FILTER_DENY,
-+        },
-+        {
-+            .base           = PSCI_0_2_FN_BASE,
-+            .nr_functions   = 0x20,
-+            .action         = KVM_SMCCC_FILTER_FWD_TO_USER,
-+        },
-+        {
-+            .base           = PSCI_0_2_FN64_BASE,
-+            .nr_functions   = 0x20,
-+            .action         = KVM_SMCCC_FILTER_FWD_TO_USER,
-+        },
-+    };
-+    struct kvm_device_attr attr = {
-+        .group = KVM_ARM_VM_SMCCC_CTRL,
-+        .attr = KVM_ARM_VM_SMCCC_FILTER,
-+    };
- 
-     if (kvm_vm_check_attr(s, KVM_ARM_VM_SMCCC_CTRL, KVM_ARM_VM_SMCCC_FILTER)) {
-         error_report("ARM SMCCC filter not supported");
-@@ -259,6 +282,16 @@ static int kvm_arm_init_smccc_filter(KVMState *s)
-         goto out;
-     }
- 
-+    for (i = 0; i < ARRAY_SIZE(filter_ranges); i++) {
-+        attr.addr = (uint64_t)&filter_ranges[i];
-+
-+        ret = kvm_vm_ioctl(s, KVM_SET_DEVICE_ATTR, &attr);
-+        if (ret < 0) {
-+            error_report("KVM_SET_DEVICE_ATTR failed when SMCCC init");
-+            goto out;
-+        }
-+    }
-+
- out:
-     return ret;
- }
-@@ -654,6 +687,14 @@ void kvm_arm_reset_vcpu(ARMCPU *cpu)
-      * for the same reason we do so in kvm_arch_get_registers().
-      */
-     write_list_to_cpustate(cpu);
-+
-+    /*
-+     * When enabled userspace psci call handling, qemu will reset the vcpu if
-+     * it's PSCI CPU_ON call. Since this will reset the vcpu register and
-+     * power_state, we should sync these state to kvm, so manually set the
-+     * vcpu_dirty to force the qemu to put register to kvm.
-+     */
-+    CPU(cpu)->vcpu_dirty = true;
- }
- 
- /*
-@@ -932,6 +973,51 @@ static int kvm_arm_handle_dabt_nisv(CPUState *cs, uint64_t esr_iss,
-     return -1;
- }
- 
-+static int kvm_arm_handle_psci(CPUState *cs, struct kvm_run *run)
-+{
-+    if (run->hypercall.flags & KVM_HYPERCALL_EXIT_SMC) {
-+        cs->exception_index = EXCP_SMC;
-+    } else {
-+        cs->exception_index = EXCP_HVC;
-+    }
-+
-+    qemu_mutex_lock_iothread();
-+    arm_cpu_do_interrupt(cs);
-+    qemu_mutex_unlock_iothread();
-+
-+    /*
-+     * We need to exit the run loop to have the chance to execute the
-+     * qemu_wait_io_event() which will execute the psci function which queued in
-+     * the cpu work queue.
-+     */
-+    return EXCP_INTERRUPT;
-+}
-+
-+static int kvm_arm_handle_std_call(CPUState *cs, struct kvm_run *run,
-+                                   struct arm_smccc_res *res,
-+                                   bool *sync_reg)
-+{
-+    uint32_t fn = run->hypercall.nr;
-+    int ret = 0;
-+
-+    switch (ARM_SMCCC_FUNC_NUM(fn)) {
-+    /* PSCI */
-+    case 0x00 ... 0x1F:
-+        /*
-+         * We will reuse the psci handler, but the handler directly get psci
-+         * call parameter from register, and write the return value to register.
-+         * So we no need to sync the value in arm_smccc_res.
-+         */
-+        *sync_reg = false;
-+        ret = kvm_arm_handle_psci(cs, run);
-+        break;
-+    default:
-+        break;
-+    }
-+
-+    return ret;
-+}
-+
- static void kvm_arm_smccc_return_result(CPUState *cs, struct arm_smccc_res *res)
- {
-     ARMCPU *cpu = ARM_CPU(cs);
-@@ -949,16 +1035,22 @@ static int kvm_arm_handle_hypercall(CPUState *cs, struct kvm_run *run)
-     struct arm_smccc_res res = {
-         .a0     = SMCCC_RET_NOT_SUPPORTED,
-     };
-+    bool sync_reg = true;
-     int ret = 0;
- 
-     kvm_cpu_synchronize_state(cs);
- 
-     switch (ARM_SMCCC_OWNER_NUM(fn)) {
-+    case ARM_SMCCC_OWNER_STANDARD:
-+        ret = kvm_arm_handle_std_call(cs, run, &res, &sync_reg);
-+        break;
-     default:
-         break;
-     }
- 
--    kvm_arm_smccc_return_result(cs, &res);
-+    if (sync_reg) {
-+        kvm_arm_smccc_return_result(cs, &res);
-+    }
- 
-     return ret;
- }
--- 
-2.39.1
+Hi Igor,
 
+sorry for the late answer=2E I think I have missed your reply so far due t=
+o KVM forum ;)
+
+The order in which the overlapped mappings are added shouldn't matter as l=
+ong as different priorities are supplied=2E AFAIR adding overlapping region=
+s with the same priority would be a programming mistake (in existing code)=
+=2E To rule this out I compared the memory mappings before and after the pa=
+tch and put the result in the commit message=2E It was the same for `info m=
+tree -f`: no difference except the order of the printout=2E
+
+I might be able to send an updated version of this series later today=2E I=
+f you'd have further comments after it is out we can continue discussing th=
+ere=2E
+
+Best regards,
+Bernhard
+
+>
+>>=20
+>> > =20
+>> >>  =20
+>> >> >      } else {   =20
+>> >>=20
+>> >>  =20
+>> >> >          pci_memory =3D NULL;
+>> >> >          rom_memory =3D system_memory;
+>> >> > -        i440fx_host =3D NULL;
+>> >> > +        pci_bus =3D NULL;
+>> >> >          hole64_size =3D 0;   =20
+>> >>=20
+>> >> is it possible to turn these into initializers, and get rid of=20
+>> >> 'else'  branch? =20
+>>=20
+>> Sure, this is possible=2E I'd add another patch before this one=2E
+>>=20
+>> Best regards,
+>> Bernhard
+>> >>  =20
+>> >> >      }
+>> >> > =20
+>> >> > @@ -243,29 +268,6 @@ static void pc_init1(MachineState *machine,
+>> >> >          PIIX3State *piix3;
+>> >> >          PCIDevice *pci_dev;
+>> >> > =20
+>> >> > -        object_property_add_child(OBJECT(machine), "i440fx", i440=
+fx_host);
+>> >> > -        object_property_set_link(i440fx_host, PCI_HOST_PROP_RAM_M=
+EM,
+>> >> > -                                 OBJECT(ram_memory), &error_fatal=
+);
+>> >> > -        object_property_set_link(i440fx_host, PCI_HOST_PROP_PCI_M=
+EM,
+>> >> > -                                 OBJECT(pci_memory), &error_fatal=
+);
+>> >> > -        object_property_set_link(i440fx_host, PCI_HOST_PROP_SYSTE=
+M_MEM,
+>> >> > -                                 OBJECT(system_memory), &error_fa=
+tal);
+>> >> > -        object_property_set_link(i440fx_host, PCI_HOST_PROP_IO_ME=
+M,
+>> >> > -                                 OBJECT(system_io), &error_fatal)=
+;
+>> >> > -        object_property_set_uint(i440fx_host, PCI_HOST_BELOW_4G_M=
+EM_SIZE,
+>> >> > -                                 x86ms->below_4g_mem_size, &error=
+_fatal);
+>> >> > -        object_property_set_uint(i440fx_host, PCI_HOST_ABOVE_4G_M=
+EM_SIZE,
+>> >> > -                                 x86ms->above_4g_mem_size, &error=
+_fatal);
+>> >> > -        object_property_set_str(i440fx_host, I440FX_HOST_PROP_PCI=
+_TYPE,
+>> >> > -                                pci_type, &error_fatal);
+>> >> > -        sysbus_realize_and_unref(SYS_BUS_DEVICE(i440fx_host), &er=
+ror_fatal);
+>> >> > -
+>> >> > -        pci_bus =3D PCI_BUS(qdev_get_child_bus(DEVICE(i440fx_host=
+), "pci=2E0"));
+>> >> > -        pci_bus_map_irqs(pci_bus,
+>> >> > -                         xen_enabled() ? xen_pci_slot_get_pirq
+>> >> > -                                       : pc_pci_slot_get_pirq);
+>> >> > -        pcms->bus =3D pci_bus;
+>> >> > -
+>> >> >          pci_dev =3D pci_create_simple_multifunction(pci_bus, -1, =
+true,
+>> >> >                                                    TYPE_PIIX3_DEVI=
+CE);
+>> >> > =20
+>> >> > @@ -290,7 +292,6 @@ static void pc_init1(MachineState *machine,
+>> >> >          rtc_state =3D ISA_DEVICE(object_resolve_path_component(OB=
+JECT(pci_dev),
+>> >> >                                                               "rtc=
+"));
+>> >> >      } else {
+>> >> > -        pci_bus =3D NULL;
+>> >> >          isa_bus =3D isa_bus_new(NULL, system_memory, system_io,
+>> >> >                                &error_abort);
+>> >> >     =20
+>> >>  =20
+>> > =20
+>>=20
+>
 
