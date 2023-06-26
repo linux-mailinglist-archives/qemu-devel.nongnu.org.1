@@ -2,61 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C03DF73E0E6
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 15:43:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B9BF273E0E9
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 15:43:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDmUV-00077K-Px; Mon, 26 Jun 2023 09:42:51 -0400
+	id 1qDmVF-00085q-HZ; Mon, 26 Jun 2023 09:43:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1qDmUS-00076Z-QU; Mon, 26 Jun 2023 09:42:48 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1qDmVC-00085f-U2
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 09:43:34 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1qDmUP-0003XK-MG; Mon, 26 Jun 2023 09:42:48 -0400
-Received: from lhrpeml500006.china.huawei.com (unknown [172.18.147.226])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4QqTV23PlNz67qq2;
- Mon, 26 Jun 2023 21:39:38 +0800 (CST)
-Received: from lhrpeml500001.china.huawei.com (7.191.163.213) by
- lhrpeml500006.china.huawei.com (7.191.161.198) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Mon, 26 Jun 2023 14:42:34 +0100
-Received: from lhrpeml500001.china.huawei.com ([7.191.163.213]) by
- lhrpeml500001.china.huawei.com ([7.191.163.213]) with mapi id 15.01.2507.027; 
- Mon, 26 Jun 2023 14:42:34 +0100
-To: Shaoqin Huang <shahuang@redhat.com>, "qemu-devel@nongnu.org"
- <qemu-devel@nongnu.org>, "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>
-CC: "oliver.upton@linux.dev" <oliver.upton@linux.dev>, "james.morse@arm.com"
- <james.morse@arm.com>, "gshan@redhat.com" <gshan@redhat.com>, Cornelia Huck
- <cohuck@redhat.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "Michael S.
- Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, Peter Maydell
- <peter.maydell@linaro.org>, Salil Mehta <salil.mehta@opnsrc.net>
-Subject: RE: [PATCH v1 0/5] target/arm: Handle psci calls in userspace
-Thread-Topic: [PATCH v1 0/5] target/arm: Handle psci calls in userspace
-Thread-Index: AQHZp/pp444fl0T5A0KjPRKELV/ZGK+dFe3A
-Date: Mon, 26 Jun 2023 13:42:34 +0000
-Message-ID: <9df973ede74e4757b510f26cd5786036@huawei.com>
-References: <20230626064910.1787255-1-shahuang@redhat.com>
-In-Reply-To: <20230626064910.1787255-1-shahuang@redhat.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.48.157.164]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1qDmVB-0003k9-CJ
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 09:43:34 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1687787012;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=vWc8G89X5Eh/bGYQWX+/pk0R9UU3KpM6XJG0IVz62RI=;
+ b=b9c+QR+PY9LD4T1W3BZgzg0eoiD5eW/cxqKQHPshxQPUI0IvwyPa5EykH6+UhkuoMg0KyG
+ kasFFCY58XwQoZep7J8bJ5g+QmfmiJ/vyErSmhy6L27Gp9v90QLuvBq7OEIgRjAUeQGtmd
+ vt3CApW0bj6+auTEkqeXOH+ZbQyYpa0=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-55-bedyYlVnOUqIV9NkG36bfA-1; Mon, 26 Jun 2023 09:43:28 -0400
+X-MC-Unique: bedyYlVnOUqIV9NkG36bfA-1
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-987ffac39e3so222253666b.0
+ for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 06:43:28 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1687787007; x=1690379007;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=vWc8G89X5Eh/bGYQWX+/pk0R9UU3KpM6XJG0IVz62RI=;
+ b=XCWh6XdQVPQzL+u51uzBn2+6H4akkU7hPN/IlC+GTJyVnCQenGUu3QB0XyUKfMo7X+
+ YShd/J0RjxnNhm4Z9cMZtB0AYB2s2GNmYZhtWwLpvHOmwFZggj7pjDNSgFyirGsT35CU
+ FHwYVKJlz63W8Dv0ZCEzlmgoDKLR0DOBdPr933EP3rrGl3XUvqVjIlZhYOoa+Si7YH3v
+ Slljsagk320QOs37HskRAsiVRQ5fMCAwNwuq13GCMGalsi8bOL1i551WbaKSwkbAXoix
+ mN6dt0RJqTMXi5H163tuVghasayV6D/X3R1LNM2Rj7A9BA0okbH2rLKrdEnq7PK8T5Zu
+ Xunw==
+X-Gm-Message-State: AC+VfDxgYOEhmkoRjQ4LxqBrWyYYH9ISKg3yx/1hfkRS0Z7NpY0flXVd
+ x3bOjlF/3K7/zArWh1W4INcxMhE+MvnR4iLg31E4cHjZUkIwJ1kUTLJZsfj+f+1CYPQzfgFcKG5
+ Fo+rhXoF5bvWKQCE=
+X-Received: by 2002:a17:907:3e87:b0:991:f427:2fe8 with SMTP id
+ hs7-20020a1709073e8700b00991f4272fe8mr480006ejc.2.1687787007528; 
+ Mon, 26 Jun 2023 06:43:27 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ65gcK0t+cccsNlUktpjDKWFdTL210OfGnXHGFHi/it+PQXajv5jyEm+Df/WXGwj/dSpngV5A==
+X-Received: by 2002:a17:907:3e87:b0:991:f427:2fe8 with SMTP id
+ hs7-20020a1709073e8700b00991f4272fe8mr479991ejc.2.1687787007273; 
+ Mon, 26 Jun 2023 06:43:27 -0700 (PDT)
+Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
+ [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
+ l8-20020a170906414800b0098e2969ed44sm2257896ejk.45.2023.06.26.06.43.26
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 26 Jun 2023 06:43:26 -0700 (PDT)
+Date: Mon, 26 Jun 2023 15:43:25 +0200
+From: Igor Mammedov <imammedo@redhat.com>
+To: Zhao Liu <zhao1.liu@linux.intel.com>
+Cc: "Michael S . Tsirkin" <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>, Yanan Wang <wangyanan55@huawei.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Philippe =?UTF-8?B?TWF0?=
+ =?UTF-8?B?aGlldS1EYXVkw6k=?= <philmd@linaro.org>, qemu-devel@nongnu.org,
+ Zhenyu Wang <zhenyu.z.wang@intel.com>, Zhao Liu <zhao1.liu@intel.com>
+Subject: Re: [PATCH v3 1/4] machine: Add helpers to get cores/threads per
+ socket
+Message-ID: <20230626154325.28697e88@imammedo.users.ipa.redhat.com>
+In-Reply-To: <20230620103958.3907565-2-zhao1.liu@linux.intel.com>
+References: <20230620103958.3907565-1-zhao1.liu@linux.intel.com>
+ <20230620103958.3907565-2-zhao1.liu@linux.intel.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=salil.mehta@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -69,53 +103,58 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Salil Mehta <salil.mehta@huawei.com>
-From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-> From: Shaoqin Huang <shahuang@redhat.com>
-> Sent: Monday, June 26, 2023 7:49 AM
-> To: qemu-devel@nongnu.org; qemu-arm@nongnu.org
-> Cc: oliver.upton@linux.dev; Salil Mehta <salil.mehta@huawei.com>;
-> james.morse@arm.com; gshan@redhat.com; Shaoqin Huang <shahuang@redhat.com=
->;
-> Cornelia Huck <cohuck@redhat.com>; kvm@vger.kernel.org; Michael S. Tsirki=
-n
-> <mst@redhat.com>; Paolo Bonzini <pbonzini@redhat.com>; Peter Maydell
-> <peter.maydell@linaro.org>
-> Subject: [PATCH v1 0/5] target/arm: Handle psci calls in userspace
->=20
-> The userspace SMCCC call filtering[1] provides the ability to forward the=
- SMCCC
-> calls to the userspace. The vCPU hotplug[2] would be the first legitimate=
- use
-> case to handle the psci calls in userspace, thus the vCPU hotplug can den=
-y the
-> PSCI_ON call if the vCPU is not present now.
->=20
-> This series try to enable the userspace SMCCC call filtering, thus can ha=
-ndle
-> the SMCCC call in userspace. The first enabled SMCCC call is psci call, b=
-y using
-> the new added option 'user-smccc', we can enable handle psci calls in use=
-rspace.
->=20
-> qemu-system-aarch64 -machine virt,user-smccc=3Don
->=20
-> This series reuse the qemu implementation of the psci handling, thus the
-> handling process is very simple. But when handling psci in userspace when=
- using
-> kvm, the reset vcpu process need to be taking care, the detail is include=
-d in
-> the patch05.
+On Tue, 20 Jun 2023 18:39:55 +0800
+Zhao Liu <zhao1.liu@linux.intel.com> wrote:
 
-This change in intended for VCPU Hotplug and we are duplicating the code
-we are working on. Unless this change is also intended for any other
-feature I would request you to defer this.
+> From: Zhao Liu <zhao1.liu@intel.com>
+> 
+> The number of cores/threads per socket are needed for smbios, and are
+> also useful for other modules.
+> 
+> Provide the helpers to wrap the calculation of cores/threads per socket
+> so that we can avoid calculation errors caused by other modules miss
+> topology changes.
+> 
+> Suggested-by: Igor Mammedov <imammedo@redhat.com>
+> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+> ---
+> v3:
+>  * The new patch to wrap the calculation of cores/threads per socket.
+> ---
+>  include/hw/boards.h | 12 ++++++++++++
+>  1 file changed, 12 insertions(+)
+> 
+> diff --git a/include/hw/boards.h b/include/hw/boards.h
+> index a385010909d5..40ee22fd93e3 100644
+> --- a/include/hw/boards.h
+> +++ b/include/hw/boards.h
+> @@ -384,6 +384,18 @@ struct MachineState {
+>      } \
+>      type_init(machine_initfn##_register_types)
+>  
+> +static inline
+> +unsigned int machine_topo_get_cores_per_socket(const MachineState *ms)
+> +{
+> +    return ms->smp.cores * ms->smp.clusters * ms->smp.dies;
+> +}
+> +
+> +static inline
+> +unsigned int machine_topo_get_threads_per_socket(const MachineState *ms)
+> +{
+> +    return ms->smp.threads * machine_topo_get_cores_per_socket(ms);
+> +}
 
+I'd put those before/after machine_parse_smp_config
+, just declarations.
 
-Thanks
-Salil
+And put definitions into hw/core/machine-smp.c again close to machine_parse_smp_config
+
+> +
+>  extern GlobalProperty hw_compat_8_0[];
+>  extern const size_t hw_compat_8_0_len;
+>  
 
 
