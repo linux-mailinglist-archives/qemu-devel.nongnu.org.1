@@ -2,104 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E6A773E294
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 16:55:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 712C373E2C9
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 17:06:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDnbv-0006Bw-1t; Mon, 26 Jun 2023 10:54:35 -0400
+	id 1qDnmK-0003Jw-A7; Mon, 26 Jun 2023 11:05:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <borntraeger@linux.ibm.com>)
- id 1qDnbs-0006Bh-7h; Mon, 26 Jun 2023 10:54:32 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1qDnmI-0003I0-2l
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 11:05:18 -0400
+Received: from rev.ng ([5.9.113.41])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <borntraeger@linux.ibm.com>)
- id 1qDnbp-0001w5-Hi; Mon, 26 Jun 2023 10:54:31 -0400
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 35QEes7h024717; Mon, 26 Jun 2023 14:54:19 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=lsBzG9OpdEr2fWOQw8j5i0mv0Dop1a2UkXHXzMHa+UM=;
- b=cS4qVHKhIwXAvyqQtdwq5D0iJQKygyu3+E7T4tLnkXrkO247fW0VO8b2pdZ8r8V3XdVe
- J8TZY46fEjyZOaHsBwHFmWhrJpVG5khsfmZ75nmeVQhJUZ7urIrUl53CTuWCSPaUbT6y
- UsxcuMB5dsPmoV93PWDDUMIgIYp3juDh86foom/1IpU98zmRnEU0ZQ/FTDTwnGbRS8M1
- dwI1XY3/Q7s2+04MDuxMNFlgHIQDemI2W0igy07m8F1aDRgORNoX2Zotb49mnXScZSfd
- 43c7g4AfdG3rYVmS2IeicQGYTVN7S1O6Yc56KJ9sKFAH2pO5uAKf3nKpzSTdGrWQn35B nw== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rfcccrnc2-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 26 Jun 2023 14:54:18 +0000
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 35QEfiIR028220;
- Mon, 26 Jun 2023 14:54:18 GMT
-Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.70])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rfcccrnb6-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 26 Jun 2023 14:54:18 +0000
-Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
- by ppma01fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 35Q2U9Mf012264;
- Mon, 26 Jun 2023 14:54:15 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
- by ppma01fra.de.ibm.com (PPS) with ESMTPS id 3rdr451068-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 26 Jun 2023 14:54:15 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com
- [10.20.54.101])
- by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 35QEsDCP11403836
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 26 Jun 2023 14:54:13 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6C1ED20043;
- Mon, 26 Jun 2023 14:54:13 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0DBEC20040;
- Mon, 26 Jun 2023 14:54:13 +0000 (GMT)
-Received: from [9.171.45.40] (unknown [9.171.45.40])
- by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Mon, 26 Jun 2023 14:54:12 +0000 (GMT)
-Message-ID: <a807476d-fe97-3c05-32d2-371b0a82b92a@linux.ibm.com>
-Date: Mon, 26 Jun 2023 16:54:12 +0200
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1qDnmG-0004FL-5N
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 11:05:17 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
+ s=dkim; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:References:
+ Cc:To:Subject:Reply-To:MIME-Version:Date:Message-ID:Sender:Content-ID:
+ Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+ :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+ List-Post:List-Owner:List-Archive;
+ bh=ioN8bPOZdbS8oYst2XqiZcCud6wwWAqUaRrNNSb/6nw=; b=VyTOBAhB0d0M5YFgwafH9/pd7f
+ DSLaybd/68GU3HICGquwIOP15RR9gdf0e3DOUpGogbzOc2aeTmVlbhUABWR5mQqeQW6+e7wadlWBv
+ MGDPP2Zyja0fa9s7VUXRa2JH7YC/W+ODUULc8irSk/m1frlDr1YxRAApoOOPxTRSDGUw=;
+Message-ID: <031ec8fa-4c1d-f3a0-45d5-77d3cbc126c5@rev.ng>
+Date: Mon, 26 Jun 2023 17:04:56 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH 3/4] pc-bios/s390-ccw: Move the stack array into start.S
+ Thunderbird/102.12.0
+Subject: Re: [PATCH v3 11/12] accel/tcg: Replace target_ulong with vaddr in
+ page_*()
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: ale@rev.ng, pbonzini@redhat.com, eduardo@habkost.net, philmd@linaro.org,
+ marcel.apfelbaum@gmail.com, wangyanan55@huawei.com
+References: <20230621135633.1649-1-anjo@rev.ng>
+ <20230621135633.1649-12-anjo@rev.ng>
+ <98f4a7b1-bd4b-7975-cf39-8c5a10df5150@linaro.org>
 Content-Language: en-US
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
-Cc: qemu-s390x@nongnu.org, mrezanin@redhat.com,
- =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-References: <20230626132138.87668-1-thuth@redhat.com>
- <20230626132138.87668-4-thuth@redhat.com>
-From: Christian Borntraeger <borntraeger@linux.ibm.com>
-In-Reply-To: <20230626132138.87668-4-thuth@redhat.com>
+Organization: rev.ng
+In-Reply-To: <98f4a7b1-bd4b-7975-cf39-8c5a10df5150@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: EuhSQDBsvrdvBfx-yPglFJ_uShAidi18
-X-Proofpoint-GUID: 65EsWO0st5PJiGXeIU7f6f6NSlhQs0YM
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-06-26_11,2023-06-26_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 adultscore=0
- mlxscore=0 spamscore=0 phishscore=0 malwarescore=0 suspectscore=0
- mlxlogscore=999 lowpriorityscore=0 clxscore=1015 impostorscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2305260000 definitions=main-2306260131
-Received-SPF: pass client-ip=148.163.156.1;
- envelope-from=borntraeger@linux.ibm.com; helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=5.9.113.41; envelope-from=anjo@rev.ng; helo=rev.ng
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -112,28 +63,63 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  anjo@rev.ng
+X-ACL-Warn: ,  Anton Johansson <anjo@rev.ng>
+From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
-Am 26.06.23 um 15:21 schrieb Thomas Huth:
+On 6/26/23 15:59, Richard Henderson wrote:
+> On 6/21/23 15:56, Anton Johansson via wrote:
+>> Use vaddr for guest virtual addresses for functions dealing with page
+>> flags.
+>>
+>> Signed-off-by: Anton Johansson <anjo@rev.ng>
+>> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+>> ---
+>>   accel/tcg/user-exec.c        | 44 +++++++++++++++++-------------------
+>>   include/exec/cpu-all.h       | 10 ++++----
+>>   include/exec/translate-all.h |  2 +-
+>>   3 files changed, 27 insertions(+), 29 deletions(-)
+>
+> This causes other failures, such as
+>
+> https://gitlab.com/rth7680/qemu/-/jobs/4540151776#L4468
+>
+> qemu-hppa: ../accel/tcg/user-exec.c:490: page_set_flags: Assertion 
+> `last <= GUEST_ADDR_MAX' failed.
+>
+> which is caused by
+>
+> #8  0x00005555556e5b77 in do_shmat (cpu_env=cpu_env@entry=0x555556274378,
+>     shmid=54, shmaddr=<optimized out>, shmflg=0)
+>     at ../src/linux-user/syscall.c:4598
+>
+> 4598        page_set_flags(raddr, raddr + shm_info.shm_segsz - 1,
+> 4599                       PAGE_VALID | PAGE_RESET | PAGE_READ |
+> 4600                       (shmflg & SHM_RDONLY ? 0 : PAGE_WRITE));
+>
+> The host shm_info.shm_segsz is uint64_t, which means that the whole 
+> expression gets converted to uint64_t.  With this patch, it is not 
+> properly truncated to a guest address.
+>
+> In this particular case, raddr is signed (abi_long), which is a 
+> mistake.  Fixing that avoids this particular error.
+>
+> But since user-only is outside of the scope of this work, I'm going to 
+> drop this patch for now.
+>
+>
+> r~
+My bad! I saw the CI failure post-rebase but didn't look closely enough, 
+I saw a build-user failure in the branch I was based on
+and assumed they were related.
 
-> diff --git a/pc-bios/s390-ccw/start.S b/pc-bios/s390-ccw/start.S
-> index 29b0a9ece0..47ef6e8aa8 100644
-> --- a/pc-bios/s390-ccw/start.S
-> +++ b/pc-bios/s390-ccw/start.S
-> @@ -120,3 +120,8 @@ external_new_mask:
->       .quad   0x0000000180000000
->   io_new_mask:
->       .quad   0x0000000180000000
-> +
-> +.bss
-> +
-> +    .align  16
-> +    .lcomm  stack,STACK_SIZE
+Thanks for the explanation, makes sense!:)
 
-IIRC, the ELF ABI defines the stack to be 8 byte aligned, but 16 certainly does not hurt.
-
-Acked-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+-- 
+Anton Johansson,
+rev.ng Labs Srl.
 
 
