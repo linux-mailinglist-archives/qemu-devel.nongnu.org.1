@@ -2,68 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADB4573E5BA
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 18:48:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 447F373E5DB
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 18:55:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDpNg-0001XL-Me; Mon, 26 Jun 2023 12:48:00 -0400
+	id 1qDpU9-0007K4-6g; Mon, 26 Jun 2023 12:54:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ernunes@redhat.com>)
- id 1qDpNe-0001Vt-Pe
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 12:47:58 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ernunes@redhat.com>)
- id 1qDpNd-0002DV-63
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 12:47:58 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687798076;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=o8HpeGkkRf8eFnhSKYeoXx4UEgSpblYZ1KWtTpUNkcc=;
- b=UQkUIu9EGkzRkYnwJEIGvG9BMprS2ZaAuvApHV2I8vgkg/7B8PTgmjyWJsz/uPeUkJh9P1
- 5Mz5cnjihpyeZ9U8b5WIkcQS0EY/DgIW/Soew4a/0MY1NXEogRj/9Bu8Tyv3CFWlDCU7TK
- CQ5sioA5N6+kqsPBAVpn3ZjdZpuHXJQ=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-179-Gp9ro20FOwirnX0cVHYjOQ-1; Mon, 26 Jun 2023 12:47:53 -0400
-X-MC-Unique: Gp9ro20FOwirnX0cVHYjOQ-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E85B790ED53
- for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 16:47:37 +0000 (UTC)
-Received: from centennial.enunes.eu.com (unknown [10.67.24.36])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 61C0A1121330;
- Mon, 26 Jun 2023 16:47:33 +0000 (UTC)
-From: Erico Nunes <ernunes@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: marcandre.lureau@redhat.com, mst@redhat.com, kraxel@redhat.com,
- Erico Nunes <ernunes@redhat.com>
-Subject: [PATCH v4 4/4] vhost-user-gpu: implement get_edid frontend feature
-Date: Mon, 26 Jun 2023 18:47:08 +0200
-Message-Id: <20230626164708.1163239-5-ernunes@redhat.com>
-In-Reply-To: <20230626164708.1163239-1-ernunes@redhat.com>
-References: <20230626164708.1163239-1-ernunes@redhat.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qDpU7-0007Jf-GK
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 12:54:39 -0400
+Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qDpU5-0003Yk-Sp
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 12:54:39 -0400
+Received: by mail-ed1-x52e.google.com with SMTP id
+ 4fb4d7f45d1cf-51d9124e1baso2823301a12.2
+ for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 09:54:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1687798476; x=1690390476;
+ h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=PGewk6oFRCd9wb6nf6Zn3+P/Ru/5xZ+/jSUK5MxHbko=;
+ b=DROc6YTLOqhmbtuEd8peNXSXj3XMIKTOIa2+szNWR/tAOoJ3AYuRM8+DVnnRGHOUbT
+ EfpYKDArGKElj2FkPANDQeKZSR7gprBoZ5y3VLzzSSNeRtYV+HIO52Whch3x+aQ7YydZ
+ e8ehiU0jks8rMn/OPn5qpBIWhZog0/cvrtKaE+cZhjM9k5G0AblPCHM030zs7986q1I+
+ RD4fpz+veXysY1/0Ljdv2BuhCHOVoyQFnn3Mape1OuOBlPnHmQqJqfrXmFcvJycBOO+Q
+ Zo87XJntNzKxDuASXM60xpndfeoUcNDkNcV6vDV11YBhkGsF28U2UFq8lAnmo2FzN9hg
+ nWEQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1687798476; x=1690390476;
+ h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=PGewk6oFRCd9wb6nf6Zn3+P/Ru/5xZ+/jSUK5MxHbko=;
+ b=les+EcoLifnet6TJOQH/lYWyD12LJBfK0VdOTPOBtt2l0mj8uH84mWvpsd4ZMHff5Q
+ VM7pbGSEciv94IK9zwZLcXTyu2XRDcuAIG9ZoN7sJecr0cpUsAKfrQ2b/fKfPTdmMstB
+ P9CFYj7/DpAFWBCqZRRx8j4KYUfZsMLrKAsFVKkEKuFoB8AUIyy0TjGs2Grd3aqKFBL0
+ mcPsnChWL9hldjhT6Ra3RcvvYCyy1nJpMOGg6esfBGycE4S+Zh7CZyrZqxDpsynD5GS7
+ gkhCDiip8HQ3G0YMLzMpfhNrEijvbCtjJSn53XK6d0VTupcp5ggLsbJLnDeIRSCmfnNK
+ rAGg==
+X-Gm-Message-State: AC+VfDx2ROfCjBbhi/ecS6cSsovhMxLmCwuQKiBMn0h2JWkIVFbsoRPb
+ InvzuLyrmQKwN81Lz5tJj0yGAIk7JsF/0CkondblAoCw8c+oS3uh
+X-Google-Smtp-Source: ACHHUZ6wG37/rRRy8gNfeTxKZtV6WDc0a9LIv04sHM7gS7FeVMn3K1mtV8BEHb6jLGFiD08lwOr/gnHIoO5aYcWMBLc=
+X-Received: by 2002:aa7:cb45:0:b0:51b:fd29:b502 with SMTP id
+ w5-20020aa7cb45000000b0051bfd29b502mr6110126edt.35.1687798476049; Mon, 26 Jun
+ 2023 09:54:36 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=ernunes@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 26 Jun 2023 17:54:25 +0100
+Message-ID: <CAFEAcA-TNaJzMPGCMEN-erSc1bQ4myq6SyiRDHY7_7fKLdqyQg@mail.gmail.com>
+Subject: which CPUs should call aarch64_add_{sve,pauth,sme}_properties() ?
+To: QEMU Developers <qemu-devel@nongnu.org>
+Cc: Richard Henderson <richard.henderson@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -80,94 +81,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Implement the frontend side of the get_edid feature in the qemu
-vhost-user-gpu frontend device.
+At the moment:
+ * aarch64_a64fx_initfn() calls aarch64_add_sve_properties()
+ * aarch64_max_tcg_initfn() calls all of
+   aarch64_add_pauth_properties(), aarch64_add_sve_properties(),
+   aarch64_add_sme_properties()
 
-Signed-off-by: Erico Nunes <ernunes@redhat.com>
-Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
----
- hw/display/vhost-user-gpu.c | 32 ++++++++++++++++++++++++++++++++
- 1 file changed, 32 insertions(+)
+and it happens that (ignoring 'max') we only have a64fx implementing SVE
+and no CPUs implementing Pauth or SME yet.
 
-diff --git a/hw/display/vhost-user-gpu.c b/hw/display/vhost-user-gpu.c
-index 15f9d99d09..543ea92721 100644
---- a/hw/display/vhost-user-gpu.c
-+++ b/hw/display/vhost-user-gpu.c
-@@ -31,6 +31,7 @@ typedef enum VhostUserGpuRequest {
-     VHOST_USER_GPU_UPDATE,
-     VHOST_USER_GPU_DMABUF_SCANOUT,
-     VHOST_USER_GPU_DMABUF_UPDATE,
-+    VHOST_USER_GPU_GET_EDID,
- } VhostUserGpuRequest;
- 
- typedef struct VhostUserGpuDisplayInfoReply {
-@@ -78,6 +79,10 @@ typedef struct VhostUserGpuDMABUFScanout {
-     int fd_drm_fourcc;
- } QEMU_PACKED VhostUserGpuDMABUFScanout;
- 
-+typedef struct VhostUserGpuEdidRequest {
-+    uint32_t scanout_id;
-+} QEMU_PACKED VhostUserGpuEdidRequest;
-+
- typedef struct VhostUserGpuMsg {
-     uint32_t request; /* VhostUserGpuRequest */
-     uint32_t flags;
-@@ -88,6 +93,8 @@ typedef struct VhostUserGpuMsg {
-         VhostUserGpuScanout scanout;
-         VhostUserGpuUpdate update;
-         VhostUserGpuDMABUFScanout dmabuf_scanout;
-+        VhostUserGpuEdidRequest edid_req;
-+        struct virtio_gpu_resp_edid resp_edid;
-         struct virtio_gpu_resp_display_info display_info;
-         uint64_t u64;
-     } payload;
-@@ -99,6 +106,8 @@ static VhostUserGpuMsg m __attribute__ ((unused));
- 
- #define VHOST_USER_GPU_MSG_FLAG_REPLY 0x4
- 
-+#define VHOST_USER_GPU_PROTOCOL_F_EDID 0
-+
- static void vhost_user_gpu_update_blocked(VhostUserGPU *g, bool blocked);
- 
- static void
-@@ -161,6 +170,9 @@ vhost_user_gpu_handle_display(VhostUserGPU *g, VhostUserGpuMsg *msg)
-             .request = msg->request,
-             .flags = VHOST_USER_GPU_MSG_FLAG_REPLY,
-             .size = sizeof(uint64_t),
-+            .payload = {
-+                .u64 = (1 << VHOST_USER_GPU_PROTOCOL_F_EDID)
-+            }
-         };
- 
-         vhost_user_gpu_send_msg(g, &reply);
-@@ -184,6 +196,26 @@ vhost_user_gpu_handle_display(VhostUserGPU *g, VhostUserGpuMsg *msg)
-         vhost_user_gpu_send_msg(g, &reply);
-         break;
-     }
-+    case VHOST_USER_GPU_GET_EDID: {
-+        VhostUserGpuEdidRequest *m = &msg->payload.edid_req;
-+        struct virtio_gpu_resp_edid resp = { {} };
-+        VhostUserGpuMsg reply = {
-+            .request = msg->request,
-+            .flags = VHOST_USER_GPU_MSG_FLAG_REPLY,
-+            .size = sizeof(reply.payload.resp_edid),
-+        };
-+
-+        if (m->scanout_id >= g->parent_obj.conf.max_outputs) {
-+            error_report("invalid scanout: %d", m->scanout_id);
-+            break;
-+        }
-+
-+        resp.hdr.type = VIRTIO_GPU_RESP_OK_EDID;
-+        virtio_gpu_base_generate_edid(VIRTIO_GPU_BASE(g), m->scanout_id, &resp);
-+        memcpy(&reply.payload.resp_edid, &resp, sizeof(resp));
-+        vhost_user_gpu_send_msg(g, &reply);
-+        break;
-+    }
-     case VHOST_USER_GPU_SCANOUT: {
-         VhostUserGpuScanout *m = &msg->payload.scanout;
- 
--- 
-2.40.1
+Is the idea that all CPUs (both ones trying to match real hardware
+and ones which are QEMU-specific like 'max') should call these
+functions to set up the properties if they exist? Or is the idea
+that 'max' is special and match-real-hardware CPUs don't need the
+user-facing configurability?
 
+If the former, maybe it would be better to put these in
+arm_cpu_post_init() so they're automatically called if the CPU
+specific initfn set the ID register value that indicates the
+presence of pauth/sve/sme.
+
+If the latter, A64FX is an odd-one-out for creating the SVE props.
+
+I ask because Neoverse-V1 has both SVE and Pauth, and I'm not
+sure if its init fn should be calling these functions.
+
+thanks
+-- PMM
 
