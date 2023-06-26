@@ -2,55 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D44673D777
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 08:02:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F1A873D76B
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 07:59:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDfEd-0003eo-8z; Mon, 26 Jun 2023 01:57:59 -0400
+	id 1qDfFB-00044j-Ci; Mon, 26 Jun 2023 01:58:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=U+Ap=CO=kaod.org=clg@ozlabs.org>)
- id 1qDfEU-0003V0-1t; Mon, 26 Jun 2023 01:57:51 -0400
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
+ id 1qDfEW-0003WF-5C; Mon, 26 Jun 2023 01:57:53 -0400
+Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=U+Ap=CO=kaod.org=clg@ozlabs.org>)
- id 1qDfEQ-0007Sd-9Q; Mon, 26 Jun 2023 01:57:48 -0400
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4QqHF34ZdKz4wb5;
- Mon, 26 Jun 2023 15:57:43 +1000 (AEST)
+ id 1qDfEU-0007Vd-3W; Mon, 26 Jun 2023 01:57:51 -0400
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4QqHF63Jvdz4wZy;
+ Mon, 26 Jun 2023 15:57:46 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4QqHF10l1Qz4wb1;
- Mon, 26 Jun 2023 15:57:40 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4QqHF41T1Tz4wb1;
+ Mon, 26 Jun 2023 15:57:43 +1000 (AEST)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
 To: Richard Henderson <richard.henderson@linaro.org>
 Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
- Nicholas Piggin <npiggin@gmail.com>, Fabiano Rosas <farosas@suse.de>,
+ Nicholas Piggin <npiggin@gmail.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-Subject: [PULL 16/30] target/ppc: Add SRR1 prefix indication to interrupt
- handlers
-Date: Mon, 26 Jun 2023 07:56:33 +0200
-Message-ID: <20230626055647.1147743-17-clg@kaod.org>
+Subject: [PULL 17/30] target/ppc: Implement HEIR SPR
+Date: Mon, 26 Jun 2023 07:56:34 +0200
+Message-ID: <20230626055647.1147743-18-clg@kaod.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230626055647.1147743-1-clg@kaod.org>
 References: <20230626055647.1147743-1-clg@kaod.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+Received-SPF: pass client-ip=150.107.74.76;
  envelope-from=SRS0=U+Ap=CO=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -39
-X-Spam_score: -4.0
-X-Spam_bar: ----
-X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -68,185 +66,134 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Nicholas Piggin <npiggin@gmail.com>
 
-ISA v3.1 introduced prefix instructions. Among the changes, various
-synchronous interrupts report whether they were caused by a prefix
-instruction in (H)SRR1.
+The hypervisor emulation assistance interrupt modifies HEIR to
+contain the value of the instruction which caused the exception.
 
-The case of instruction fetch that causes an HDSI due to access of a
-process-scoped table faulting on the partition scoped translation is the
-tricky one. As with ISIs and HISIs, this does not try to set the prefix
-bit because there is no instruction image to be loaded. The HDSI needs
-the originating access type to be passed through to the handler to
-distinguish this from HDSIs that fault translating process scoped tables
-originating from a load or store instruction (in that case the prefix
-bit should be provided).
+Only TCG raises HEAI interrupts so this can be made TCG-only.
 
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-[ clg: checkpatch issues ]
 Signed-off-by: Cédric Le Goater <clg@kaod.org>
 ---
- target/ppc/excp_helper.c | 73 +++++++++++++++++++++++++++++++++++++++-
- target/ppc/mmu-radix64.c | 14 ++++++--
- 2 files changed, 83 insertions(+), 4 deletions(-)
+ target/ppc/cpu.h         |  1 +
+ target/ppc/cpu_init.c    | 23 +++++++++++++++++++++++
+ target/ppc/excp_helper.c | 17 ++++++++++++++++-
+ 3 files changed, 40 insertions(+), 1 deletion(-)
 
+diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
+index 0ee2adc105a9..054edf3c8014 100644
+--- a/target/ppc/cpu.h
++++ b/target/ppc/cpu.h
+@@ -1647,6 +1647,7 @@ void ppc_compat_add_property(Object *obj, const char *name,
+ #define SPR_HMER              (0x150)
+ #define SPR_HMEER             (0x151)
+ #define SPR_PCR               (0x152)
++#define SPR_HEIR              (0x153)
+ #define SPR_BOOKE_LPIDR       (0x152)
+ #define SPR_BOOKE_TCR         (0x154)
+ #define SPR_BOOKE_TLB0PS      (0x158)
+diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
+index 7bce421a7cd8..dccc06405381 100644
+--- a/target/ppc/cpu_init.c
++++ b/target/ppc/cpu_init.c
+@@ -1630,6 +1630,7 @@ static void register_8xx_sprs(CPUPPCState *env)
+  * HSRR0   => SPR 314 (Power 2.04 hypv)
+  * HSRR1   => SPR 315 (Power 2.04 hypv)
+  * LPIDR   => SPR 317 (970)
++ * HEIR    => SPR 339 (Power 2.05 hypv) (64-bit reg from 3.1)
+  * EPR     => SPR 702 (Power 2.04 emb)
+  * perf    => 768-783 (Power 2.04)
+  * perf    => 784-799 (Power 2.04)
+@@ -5523,6 +5524,24 @@ static void register_power6_common_sprs(CPUPPCState *env)
+                  0x00000000);
+ }
+ 
++static void register_HEIR32_spr(CPUPPCState *env)
++{
++    spr_register_hv(env, SPR_HEIR, "HEIR",
++                 SPR_NOACCESS, SPR_NOACCESS,
++                 SPR_NOACCESS, SPR_NOACCESS,
++                 &spr_read_generic, &spr_write_generic32,
++                 0x00000000);
++}
++
++static void register_HEIR64_spr(CPUPPCState *env)
++{
++    spr_register_hv(env, SPR_HEIR, "HEIR",
++                 SPR_NOACCESS, SPR_NOACCESS,
++                 SPR_NOACCESS, SPR_NOACCESS,
++                 &spr_read_generic, &spr_write_generic,
++                 0x00000000);
++}
++
+ static void register_power8_tce_address_control_sprs(CPUPPCState *env)
+ {
+     spr_register_kvm(env, SPR_TAR, "TAR",
+@@ -5951,6 +5970,7 @@ static void init_proc_POWER7(CPUPPCState *env)
+     register_power5p_ear_sprs(env);
+     register_power5p_tb_sprs(env);
+     register_power6_common_sprs(env);
++    register_HEIR32_spr(env);
+     register_power6_dbg_sprs(env);
+     register_power7_book4_sprs(env);
+ 
+@@ -6073,6 +6093,7 @@ static void init_proc_POWER8(CPUPPCState *env)
+     register_power5p_ear_sprs(env);
+     register_power5p_tb_sprs(env);
+     register_power6_common_sprs(env);
++    register_HEIR32_spr(env);
+     register_power6_dbg_sprs(env);
+     register_power8_tce_address_control_sprs(env);
+     register_power8_ids_sprs(env);
+@@ -6235,6 +6256,7 @@ static void init_proc_POWER9(CPUPPCState *env)
+     register_power5p_ear_sprs(env);
+     register_power5p_tb_sprs(env);
+     register_power6_common_sprs(env);
++    register_HEIR32_spr(env);
+     register_power6_dbg_sprs(env);
+     register_power8_tce_address_control_sprs(env);
+     register_power8_ids_sprs(env);
+@@ -6427,6 +6449,7 @@ static void init_proc_POWER10(CPUPPCState *env)
+     register_power5p_ear_sprs(env);
+     register_power5p_tb_sprs(env);
+     register_power6_common_sprs(env);
++    register_HEIR64_spr(env);
+     register_power6_dbg_sprs(env);
+     register_power8_tce_address_control_sprs(env);
+     register_power8_ids_sprs(env);
 diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
-index a2801f6e6b6a..847f8a33beba 100644
+index 847f8a33beba..2a0070cf4378 100644
 --- a/target/ppc/excp_helper.c
 +++ b/target/ppc/excp_helper.c
-@@ -28,6 +28,7 @@
- #include "trace.h"
- 
- #ifdef CONFIG_TCG
-+#include "sysemu/tcg.h"
- #include "exec/helper-proto.h"
- #include "exec/cpu_ldst.h"
- #endif
-@@ -141,7 +142,7 @@ static inline bool insn_need_byteswap(CPUArchState *env)
-     return !!(env->msr & ((target_ulong)1 << MSR_LE));
- }
- 
--static uint32_t ppc_ldl_code(CPUArchState *env, hwaddr addr)
-+static uint32_t ppc_ldl_code(CPUArchState *env, abi_ptr addr)
- {
-     uint32_t insn = cpu_ldl_code(env, addr);
- 
-@@ -1348,6 +1349,72 @@ static bool books_vhyp_handles_hv_excp(PowerPCCPU *cpu)
-     return false;
- }
- 
-+#ifdef CONFIG_TCG
-+static bool is_prefix_insn(CPUPPCState *env, uint32_t insn)
-+{
-+    if (!(env->insns_flags2 & PPC2_ISA310)) {
-+        return false;
-+    }
-+    return ((insn & 0xfc000000) == 0x04000000);
-+}
-+
-+static bool is_prefix_insn_excp(PowerPCCPU *cpu, int excp)
-+{
-+    CPUPPCState *env = &cpu->env;
-+
-+    if (!tcg_enabled()) {
-+        /*
-+         * This does not load instructions and set the prefix bit correctly
-+         * for injected interrupts with KVM. That may have to be discovered
-+         * and set by the KVM layer before injecting.
-+         */
-+        return false;
-+    }
-+
-+    switch (excp) {
-+    case POWERPC_EXCP_HDSI:
-+        /* HDSI PRTABLE_FAULT has the originating access type in error_code */
-+        if ((env->spr[SPR_HDSISR] & DSISR_PRTABLE_FAULT) &&
-+            (env->error_code == MMU_INST_FETCH)) {
-+            /*
-+             * Fetch failed due to partition scope translation, so prefix
-+             * indication is not relevant (and attempting to load the
-+             * instruction at NIP would cause recursive faults with the same
-+             * translation).
-+             */
-+            break;
-+        }
-+        /* fall through */
-+    case POWERPC_EXCP_MCHECK:
-+    case POWERPC_EXCP_DSI:
-+    case POWERPC_EXCP_DSEG:
-+    case POWERPC_EXCP_ALIGN:
-+    case POWERPC_EXCP_PROGRAM:
-+    case POWERPC_EXCP_FPU:
-+    case POWERPC_EXCP_TRACE:
-+    case POWERPC_EXCP_HV_EMU:
-+    case POWERPC_EXCP_VPU:
-+    case POWERPC_EXCP_VSXU:
-+    case POWERPC_EXCP_FU:
-+    case POWERPC_EXCP_HV_FU: {
-+        uint32_t insn = ppc_ldl_code(env, env->nip);
-+        if (is_prefix_insn(env, insn)) {
-+            return true;
-+        }
-+        break;
-+    }
-+    default:
-+        break;
-+    }
-+    return false;
-+}
-+#else
-+static bool is_prefix_insn_excp(PowerPCCPU *cpu, int excp)
-+{
-+    return false;
-+}
-+#endif
-+
- static void powerpc_excp_books(PowerPCCPU *cpu, int excp)
- {
-     CPUState *cs = CPU(cpu);
-@@ -1395,6 +1462,10 @@ static void powerpc_excp_books(PowerPCCPU *cpu, int excp)
- 
-     vector |= env->excp_prefix;
- 
-+    if (is_prefix_insn_excp(cpu, excp)) {
-+        msr |= PPC_BIT(34);
-+    }
-+
-     switch (excp) {
-     case POWERPC_EXCP_MCHECK:    /* Machine check exception                  */
-         if (!FIELD_EX64(env->msr, MSR, ME)) {
-diff --git a/target/ppc/mmu-radix64.c b/target/ppc/mmu-radix64.c
-index 1fc1ba3ecf22..920084bd8ff2 100644
---- a/target/ppc/mmu-radix64.c
-+++ b/target/ppc/mmu-radix64.c
-@@ -145,6 +145,13 @@ static void ppc_radix64_raise_hsi(PowerPCCPU *cpu, MMUAccessType access_type,
-     CPUState *cs = CPU(cpu);
-     CPUPPCState *env = &cpu->env;
- 
-+    env->error_code = 0;
-+    if (cause & DSISR_PRTABLE_FAULT) {
-+        /* HDSI PRTABLE_FAULT gets the originating access type in error_code */
-+        env->error_code = access_type;
-+        access_type = MMU_DATA_LOAD;
-+    }
-+
-     qemu_log_mask(CPU_LOG_MMU, "%s for %s @0x%"VADDR_PRIx" 0x%"
-                   HWADDR_PRIx" cause %08x\n",
-                   __func__, access_str(access_type),
-@@ -166,7 +173,6 @@ static void ppc_radix64_raise_hsi(PowerPCCPU *cpu, MMUAccessType access_type,
-         env->spr[SPR_HDSISR] = cause;
-         env->spr[SPR_HDAR] = eaddr;
-         env->spr[SPR_ASDR] = g_raddr;
--        env->error_code = 0;
+@@ -1642,13 +1642,28 @@ static void powerpc_excp_books(PowerPCCPU *cpu, int excp)
+     case POWERPC_EXCP_HDECR:     /* Hypervisor decrementer exception         */
+     case POWERPC_EXCP_HDSI:      /* Hypervisor data storage exception        */
+     case POWERPC_EXCP_SDOOR_HV:  /* Hypervisor Doorbell interrupt            */
+-    case POWERPC_EXCP_HV_EMU:
+     case POWERPC_EXCP_HVIRT:     /* Hypervisor virtualization                */
+         srr0 = SPR_HSRR0;
+         srr1 = SPR_HSRR1;
+         new_msr |= (target_ulong)MSR_HVB;
+         new_msr |= env->msr & ((target_ulong)1 << MSR_RI);
          break;
-     default:
-         g_assert_not_reached();
-@@ -369,13 +375,14 @@ static bool validate_pate(PowerPCCPU *cpu, uint64_t lpid, ppc_v3_pate_t *pate)
- }
- 
- static int ppc_radix64_partition_scoped_xlate(PowerPCCPU *cpu,
--                                              MMUAccessType access_type,
-+                                              MMUAccessType orig_access_type,
-                                               vaddr eaddr, hwaddr g_raddr,
-                                               ppc_v3_pate_t pate,
-                                               hwaddr *h_raddr, int *h_prot,
-                                               int *h_page_size, bool pde_addr,
-                                               int mmu_idx, bool guest_visible)
- {
-+    MMUAccessType access_type = orig_access_type;
-     int fault_cause = 0;
-     hwaddr pte_addr;
-     uint64_t pte;
-@@ -404,7 +411,8 @@ static int ppc_radix64_partition_scoped_xlate(PowerPCCPU *cpu,
-             fault_cause |= DSISR_PRTABLE_FAULT;
-         }
-         if (guest_visible) {
--            ppc_radix64_raise_hsi(cpu, access_type, eaddr, g_raddr, fault_cause);
-+            ppc_radix64_raise_hsi(cpu, orig_access_type,
-+                                  eaddr, g_raddr, fault_cause);
-         }
-         return 1;
-     }
++#ifdef CONFIG_TCG
++    case POWERPC_EXCP_HV_EMU: {
++        uint32_t insn = ppc_ldl_code(env, env->nip);
++        env->spr[SPR_HEIR] = insn;
++        if (is_prefix_insn(env, insn)) {
++            uint32_t insn2 = ppc_ldl_code(env, env->nip + 4);
++            env->spr[SPR_HEIR] <<= 32;
++            env->spr[SPR_HEIR] |= insn2;
++        }
++        srr0 = SPR_HSRR0;
++        srr1 = SPR_HSRR1;
++        new_msr |= (target_ulong)MSR_HVB;
++        new_msr |= env->msr & ((target_ulong)1 << MSR_RI);
++        break;
++    }
++#endif
+     case POWERPC_EXCP_VPU:       /* Vector unavailable exception             */
+     case POWERPC_EXCP_VSXU:       /* VSX unavailable exception               */
+     case POWERPC_EXCP_FU:         /* Facility unavailable exception          */
 -- 
 2.41.0
 
