@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33DAA73DF6D
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 14:39:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4846A73E11D
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 15:54:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDlO2-0007Hh-Pb; Mon, 26 Jun 2023 08:32:07 -0400
+	id 1qDlNE-0005s9-QX; Mon, 26 Jun 2023 08:31:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qDlLx-0003l5-5K
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 08:29:57 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qDlM2-0004LR-IA
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 08:30:06 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qDlLv-0003Al-9O
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 08:29:56 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qDlLz-0003Bb-Lb
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 08:30:01 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687782594;
+ s=mimecast20190719; t=1687782598;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=lzBqSnaL1TseZeUKYXPr1J0Ht1sohs9lQERlrrRFx0s=;
- b=gP2I8VMbuYSJrHmjxh2+n5aKg4dornAvO/ar4qGm2Vsdbj5h0RwNnzT9omXU7tz0cY6Zx4
- Fgzlx85UIyAywczQubP3fq1u6+8NRy1YC2UhxCguVsExnloNTW2umAp2+JNo30Gfxpex9w
- F3u36p9ok1E/cSfrYa7BiaaTjvRlnqY=
-Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
- [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=0Rnc7xHoIJYK78sghEjyDjdFks1hD1FeSLcyQu3JIt4=;
+ b=REqqO87xTkrp02syi2eXqxm4jjg6J0v3BoPfQAB/U9uHi/QLrM1GNdnC7V8TuSVDZvMjPC
+ i3vNI/I8Qd3TB8PdmpyryX8dN160k1MKspDOk8s7fjMmuFHh25IKy02R1n3G0YcJBcR4li
+ BrAMP6YG3CUYvjeFuQsD8Ica0g71Z74=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-354-PTtjwPMfO0aS-GvnzhOigQ-1; Mon, 26 Jun 2023 08:29:53 -0400
-X-MC-Unique: PTtjwPMfO0aS-GvnzhOigQ-1
-Received: by mail-lf1-f69.google.com with SMTP id
- 2adb3069b0e04-4edc7ab63ccso2163036e87.3
- for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 05:29:52 -0700 (PDT)
+ us-mta-335-J_HYQ2TPNTqVY5HnSnXlAQ-1; Mon, 26 Jun 2023 08:29:55 -0400
+X-MC-Unique: J_HYQ2TPNTqVY5HnSnXlAQ-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-3fa96b67ac1so20460775e9.0
+ for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 05:29:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687782591; x=1690374591;
+ d=1e100.net; s=20221208; t=1687782594; x=1690374594;
  h=in-reply-to:content-transfer-encoding:content-disposition
  :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=lzBqSnaL1TseZeUKYXPr1J0Ht1sohs9lQERlrrRFx0s=;
- b=edkmLFsns6UNkaxYdf+W9Vm9gxMNFCpxb79FKarC6U1t43Dn0Lw8edjKDBE3oyOpXh
- hmyzT/4w+TrCWWVs2MbF52d3WUhYg19l4r0gsBqtb1gel5xabXBwjOPD/B4PQD6dTjl1
- cInlRSE069A79kocmSda2w6vDU3oTJltWz2x7NjzHZXfw+XYeLI3jaQZ8MkO14ndwMCl
- EfHaJGWTh7K/dGmvQU/+k3OIEjc/+MWr4uHHfRaVXqMEvatBdsSbTvuVpLG5yWW6SmhX
- +6CqZFoO7waVbxPBuQKln0ginREAzgR+b4vJVjaXVfr8pa6MlDUIPtUZZRBMAUn91uCT
- lGRg==
-X-Gm-Message-State: AC+VfDx8zm89yUCs2eRSB1sVfJUPKYdx5wKiUs1AQaiQmTyeP+1gty49
- czb6Re4nJsQyAIprf6BOK3DSRdsls4GYJroyadV0Ttp8vmeHyePKVJiQGJqbioWfnvwH6UNNAQl
- 4BiQwqPN8XKzvTyf1GBuEA6SxtEyQ6fPuZ7EluhiskGyGKFDLGPAT5rXrgwpqo48e57A0
-X-Received: by 2002:a05:6512:214c:b0:4f9:61a2:3592 with SMTP id
- s12-20020a056512214c00b004f961a23592mr6414650lfr.35.1687782591172; 
- Mon, 26 Jun 2023 05:29:51 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6my+CRhbN7WrZrl+Chzb/BDP67sRz6nn3/r92FcZhY8/dK/P9+kQU8vaZsaVHQTd7T6lz/Cg==
-X-Received: by 2002:a05:6512:214c:b0:4f9:61a2:3592 with SMTP id
- s12-20020a056512214c00b004f961a23592mr6414631lfr.35.1687782590920; 
- Mon, 26 Jun 2023 05:29:50 -0700 (PDT)
+ bh=0Rnc7xHoIJYK78sghEjyDjdFks1hD1FeSLcyQu3JIt4=;
+ b=gxvXvsavhLfwEZydUrnS6P5+pK2PjRb+HscJeOvorXzJYhhsQ9f21HXsNj1T/Sqeny
+ 2Hgo8SWBXVa/xl4xkrZE0GJufudSeVjy6s/aBfBkuymq6g3IJAV7KM6yT3JMEeA6Ax7g
+ 1+LEu+HVmQ76ln3e0BCyqGRFTIAny2smo87BBji2+HuJcGnxwnx/kudJUa66cIQPWsKK
+ LNWVjwr2UNKZ+3iGlBZcH8UBZy/3GfuTOhQ3guf+J6KJ/4R1qtdp8fRLyzJPrK4AkWrR
+ PBnvz+2klnUFCDca2H5MMi0z1aGuF6/dZY5uSP3IN0kQiL3IZe84vFeuxG4wUTmNt4fD
+ 5Uhw==
+X-Gm-Message-State: AC+VfDxV+Cj6wSvDDy+ZUaNh5cIi98KMqgmTawZYR2YzmSv5LqizJN1X
+ vxyz0GjuEwlzyLxhYGmbhZW8Zaq6z5WI1P76yKazx5wjlzDjK0Riip8quFAkaFP5nrFr3TeA4Vw
+ ejTjWIYxb9jdws0cK94XHJilsywF6uzADLs3ye6OxdW5oGQz6+zh44s02EG9Eh8yXxdH+
+X-Received: by 2002:a05:600c:22c6:b0:3f9:b244:c294 with SMTP id
+ 6-20020a05600c22c600b003f9b244c294mr25415778wmg.35.1687782594247; 
+ Mon, 26 Jun 2023 05:29:54 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7AuRyQX94iFaK4IMfPFyqnrXvfpMkWiZyF1nFy0OOfaAdrErIh7hpPdNec5xKBiJ0WAW5lig==
+X-Received: by 2002:a05:600c:22c6:b0:3f9:b244:c294 with SMTP id
+ 6-20020a05600c22c600b003f9b244c294mr25415762wmg.35.1687782593982; 
+ Mon, 26 Jun 2023 05:29:53 -0700 (PDT)
 Received: from redhat.com ([2.52.156.102]) by smtp.gmail.com with ESMTPSA id
- h10-20020a5d504a000000b00313e8dc7facsm5445758wrt.116.2023.06.26.05.29.49
+ 12-20020a05600c020c00b003f90ab2fff9sm7571794wmi.9.2023.06.26.05.29.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 26 Jun 2023 05:29:50 -0700 (PDT)
-Date: Mon, 26 Jun 2023 08:29:48 -0400
+ Mon, 26 Jun 2023 05:29:53 -0700 (PDT)
+Date: Mon, 26 Jun 2023 08:29:51 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Hawkins Jiawei <yin31149@gmail.com>, Lei Yang <leiyang@redhat.com>,
  Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
  Jason Wang <jasowang@redhat.com>
-Subject: [PULL 40/53] virtio-net: expose virtio_net_supported_guest_offloads()
-Message-ID: <34110c875edb84a2b066683e1d52a554cf95b6c0.1687782442.git.mst@redhat.com>
+Subject: [PULL 41/53] vdpa: Add vhost_vdpa_net_load_offloads()
+Message-ID: <e75db550c1526f963c9cf2196a29c0907207d619.1687782442.git.mst@redhat.com>
 References: <cover.1687782442.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -77,7 +77,7 @@ Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1687782442.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -104,54 +104,80 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Hawkins Jiawei <yin31149@gmail.com>
 
-To support restoring offloads state in vdpa, it is necessary to
-expose the function virtio_net_supported_guest_offloads().
-
-According to VirtIO standard, "Upon feature negotiation
-corresponding offload gets enabled to preserve backward compatibility.".
-Therefore, QEMU uses this function to get the device supported offloads.
-This allows QEMU to know the device's defaults and skip the control
-message sending if these defaults align with the driver's configuration.
-
-Note that the device's defaults can mismatch the driver's configuration
-only at live migration.
+This patch introduces vhost_vdpa_net_load_offloads() to
+restore offloads state at device's startup.
 
 Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
-Message-Id: <43679506f3f039a7aa2bdd5b49785107b5dfd7d4.1685704856.git.yin31149@gmail.com>
+Message-Id: <7e2b5cad9c48c917df53d80dec27dbfeb513e1a3.1685704856.git.yin31149@gmail.com>
 Tested-by: Lei Yang <leiyang@redhat.com>
 Reviewed-by: Eugenio Pérez <eperezma@redhat.com>
 Tested-by: Eugenio Pérez <eperezma@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- include/hw/virtio/virtio-net.h | 1 +
- hw/net/virtio-net.c            | 2 +-
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ net/vhost-vdpa.c | 42 ++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 42 insertions(+)
 
-diff --git a/include/hw/virtio/virtio-net.h b/include/hw/virtio/virtio-net.h
-index ef234ffe7e..5f5dcb4572 100644
---- a/include/hw/virtio/virtio-net.h
-+++ b/include/hw/virtio/virtio-net.h
-@@ -227,5 +227,6 @@ size_t virtio_net_handle_ctrl_iov(VirtIODevice *vdev,
-                                   unsigned out_num);
- void virtio_net_set_netclient_name(VirtIONet *n, const char *name,
-                                    const char *type);
-+uint64_t virtio_net_supported_guest_offloads(const VirtIONet *n);
- 
- #endif
-diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
-index 7b27dad6c4..7e8897a8bc 100644
---- a/hw/net/virtio-net.c
-+++ b/hw/net/virtio-net.c
-@@ -874,7 +874,7 @@ static uint64_t virtio_net_guest_offloads_by_features(uint32_t features)
-     return guest_offloads_mask & features;
+diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+index c3ef0139a6..99d0445d90 100644
+--- a/net/vhost-vdpa.c
++++ b/net/vhost-vdpa.c
+@@ -664,6 +664,44 @@ static int vhost_vdpa_net_load_mq(VhostVDPAState *s,
+     return *s->status != VIRTIO_NET_OK;
  }
  
--static inline uint64_t virtio_net_supported_guest_offloads(const VirtIONet *n)
-+uint64_t virtio_net_supported_guest_offloads(const VirtIONet *n)
++static int vhost_vdpa_net_load_offloads(VhostVDPAState *s,
++                                        const VirtIONet *n)
++{
++    uint64_t offloads;
++    ssize_t dev_written;
++
++    if (!virtio_vdev_has_feature(&n->parent_obj,
++                                 VIRTIO_NET_F_CTRL_GUEST_OFFLOADS)) {
++        return 0;
++    }
++
++    if (n->curr_guest_offloads == virtio_net_supported_guest_offloads(n)) {
++        /*
++         * According to VirtIO standard, "Upon feature negotiation
++         * corresponding offload gets enabled to preserve
++         * backward compatibility.".
++         *
++         * Therefore, there is no need to send this CVQ command if the
++         * driver also enables all supported offloads, which aligns with
++         * the device's defaults.
++         *
++         * Note that the device's defaults can mismatch the driver's
++         * configuration only at live migration.
++         */
++        return 0;
++    }
++
++    offloads = cpu_to_le64(n->curr_guest_offloads);
++    dev_written = vhost_vdpa_net_load_cmd(s, VIRTIO_NET_CTRL_GUEST_OFFLOADS,
++                                          VIRTIO_NET_CTRL_GUEST_OFFLOADS_SET,
++                                          &offloads, sizeof(offloads));
++    if (unlikely(dev_written < 0)) {
++        return dev_written;
++    }
++
++    return *s->status != VIRTIO_NET_OK;
++}
++
+ static int vhost_vdpa_net_load(NetClientState *nc)
  {
-     VirtIODevice *vdev = VIRTIO_DEVICE(n);
-     return virtio_net_guest_offloads_by_features(vdev->guest_features);
+     VhostVDPAState *s = DO_UPCAST(VhostVDPAState, nc, nc);
+@@ -686,6 +724,10 @@ static int vhost_vdpa_net_load(NetClientState *nc)
+     if (unlikely(r)) {
+         return r;
+     }
++    r = vhost_vdpa_net_load_offloads(s, n);
++    if (unlikely(r)) {
++        return r;
++    }
+ 
+     return 0;
+ }
 -- 
 MST
 
