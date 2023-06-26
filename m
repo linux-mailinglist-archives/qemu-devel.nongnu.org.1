@@ -2,84 +2,105 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0DAC73E222
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 16:28:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 356A273E265
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 16:47:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDnBm-0002cq-96; Mon, 26 Jun 2023 10:27:34 -0400
+	id 1qDnUE-0001hD-FP; Mon, 26 Jun 2023 10:46:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qDnBk-0002cd-JG
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 10:27:32 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qDnBi-00057E-NV
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 10:27:32 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-3fa99742be2so9083085e9.1
- for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 07:27:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687789648; x=1690381648;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=yzcmpLbpW5Li73i7EDCKCZGiH1BxBBkBULzrNMVXdCQ=;
- b=lG0t66UFJUhtch2JfGXZMTPKbuZxgUNNcbcnIuYWHYlmApGBlfFmWUrFrxyKjtWmZ6
- k/fa7zl3jkTl9MQCM/hqR9VYoNe+cHN9arQWiL0n14ZB0gnV2GTvvV3k8QtQlGC04txi
- CXBJfeA8nhFgkUwkFwhztyHBlOIyH8du2zpj26Z9oogXH0zJ8Fq+AoxnJDirkv42YdB/
- ZNQ/j4JK+7a4P1KlqmHwkhaHNdlBJTvCmV1rA4MjYp/KFLv49VGqKrz0dfVG9i8M6Lt/
- f4GCGf0TLrH+Tl1BZpIBUd6otpBfK/RYJIkMJLAkVjWcHO/RsCF3q58TIgdVR0lNIDJG
- H0zw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687789648; x=1690381648;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=yzcmpLbpW5Li73i7EDCKCZGiH1BxBBkBULzrNMVXdCQ=;
- b=fHezshHtVlgOLipUKFw/nVF22fpYl80wDRSoq5LBM9sQrf2Os+xDUXVF6lU4E7LG3J
- CvgJ1p4olo0osoJzXUCzKlRZP2w/3AYm/0H+4OXHUBHvvaVGuW1s/WbfZPlaRhu6AFAv
- lrzHi/pYsGe8rp9nUCMW1JBLl126MJEhPz0gBi/f2jdub2fJIpnHpUB4s0EpHvY70EXO
- 3hV0DwDpPo25nt41jEEsaVRZXS1ku5klMfoezJrNUZJ764AZqCVs1+px/OexiYTYfND2
- wAgWjwpeDeFjWScGURwTKWrDAH0MydpXNM79GLyTguXzJw7uJ9chFJaYKf2rAlDFq5A8
- uq0w==
-X-Gm-Message-State: AC+VfDwFgvE2zPi2Anvm0gfxqvc6l1HIv5UKpW5iFXrz/CIpPuieGLeY
- PNTZArNJ7xFFFSkpvIovs3sJsw==
-X-Google-Smtp-Source: ACHHUZ6EpUkev7oh9VbQdDbJdpKn68zbJjhahpgJEw3VstJecKFtZ9pOs7NfdtscsEnDUs7VBnSbKA==
-X-Received: by 2002:a1c:7911:0:b0:3fa:8b53:81d with SMTP id
- l17-20020a1c7911000000b003fa8b53081dmr3352183wme.16.1687789647763; 
- Mon, 26 Jun 2023 07:27:27 -0700 (PDT)
-Received: from [192.168.1.208] ([139.47.42.170])
- by smtp.gmail.com with ESMTPSA id
- k22-20020a05600c0b5600b003fb40f5f553sm804411wmr.31.2023.06.26.07.27.27
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 26 Jun 2023 07:27:27 -0700 (PDT)
-Message-ID: <ba59ed3c-c530-aeab-1c20-0f37f35fafd6@linaro.org>
-Date: Mon, 26 Jun 2023 16:27:25 +0200
+ (Exim 4.90_1) (envelope-from <borntraeger@linux.ibm.com>)
+ id 1qDnUC-0001f1-7e; Mon, 26 Jun 2023 10:46:36 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <borntraeger@linux.ibm.com>)
+ id 1qDnU9-0000ad-Rh; Mon, 26 Jun 2023 10:46:35 -0400
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 35QEZuD7027810; Mon, 26 Jun 2023 14:46:23 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=nKi6QESeFNWFqKPvk9GVysO/NQnPUa49igV/R7sT+AU=;
+ b=H5dnAOqEzbYHzwnqt1KNVFxFEtuaSsIp6wEMA7qs2vmapc7hFXgXoChHjdaScC9Yd5WB
+ pzPDb5fADY4aOk1d0yfHFDkdBSY9V/UVTw/aij1FWi143xF7jzIGtEXsbqyip725+l6R
+ mBw02NB89e4juoLK7U48R2PMDMlw8nMOJKUYSqTFNiCY1TtT5wUVYOHv0ZqqKhUpeJLL
+ EEFuIPRO0lNCrfbhW9X0CgKcAdlbSZFB0cXpv0SL1pFPrMMItrsUY/tpWXLG2iRqLsVo
+ TB3PIleOb8XPY6RoTB8xP6yOPjzpzXQ6yVyGxq/Wfm8hlvsMDBUGjtmL8zfySwYLy7v7 8Q== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rfcck8n07-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 26 Jun 2023 14:46:22 +0000
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 35QEa0RC028129;
+ Mon, 26 Jun 2023 14:46:22 GMT
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.99])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rfcck8mxx-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 26 Jun 2023 14:46:22 +0000
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+ by ppma04ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 35Q2tUpe002029;
+ Mon, 26 Jun 2023 14:46:19 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+ by ppma04ams.nl.ibm.com (PPS) with ESMTPS id 3rdr4517xh-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 26 Jun 2023 14:46:19 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com
+ [10.20.54.101])
+ by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 35QEkHOa23593480
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 26 Jun 2023 14:46:17 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4E58320043;
+ Mon, 26 Jun 2023 14:46:17 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C229D20040;
+ Mon, 26 Jun 2023 14:46:16 +0000 (GMT)
+Received: from [9.171.45.40] (unknown [9.171.45.40])
+ by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Mon, 26 Jun 2023 14:46:16 +0000 (GMT)
+Message-ID: <0beb8843-994c-b883-31e8-3a9542a90a74@linux.ibm.com>
+Date: Mon, 26 Jun 2023 16:46:16 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH qemu v4 1/2] target/arm: Handle IC IVAU to improve
- compatibility with JITs
+ Thunderbird/102.10.0
+Subject: Re: [PATCH 2/4] pc-bios/s390-ccw: Provide space for initial stack
+ frame in start.S
+To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
+Cc: qemu-s390x@nongnu.org, mrezanin@redhat.com,
+ =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+References: <20230626132138.87668-1-thuth@redhat.com>
+ <20230626132138.87668-3-thuth@redhat.com>
 Content-Language: en-US
-To: ~jhogberg <john.hogberg@ericsson.com>, qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org
-References: <168778890374.24232.3402138851538068785-1@git.sr.ht>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <168778890374.24232.3402138851538068785-1@git.sr.ht>
+From: Christian Borntraeger <borntraeger@linux.ibm.com>
+In-Reply-To: <20230626132138.87668-3-thuth@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x334.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 0yZpXhmBssUo2IvXqFIAGV77T5sxOjmp
+X-Proofpoint-ORIG-GUID: PE_1RbA20jBEumhUSxfx_8Eye6IUTl-p
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-06-26_11,2023-06-26_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 phishscore=0
+ clxscore=1011 bulkscore=0 mlxlogscore=999 spamscore=0 lowpriorityscore=0
+ adultscore=0 suspectscore=0 malwarescore=0 impostorscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2305260000 definitions=main-2306260131
+Received-SPF: pass client-ip=148.163.156.1;
+ envelope-from=borntraeger@linux.ibm.com; helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,69 +116,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/8/23 19:49, ~jhogberg wrote:
-> From: John Högberg <john.hogberg@ericsson.com>
+Am 26.06.23 um 15:21 schrieb Thomas Huth:
+> Providing the space of a stack frame is the duty of the caller,
+> so we should reserve 160 bytes before jumping into the main function.
+> Otherwise the main() function might write past the stack array.
 > 
-> Unlike architectures with precise self-modifying code semantics
-> (e.g. x86) ARM processors do not maintain coherency for instruction
-> execution and memory, requiring an instruction synchronization
-> barrier on every core that will execute the new code, and on many
-> models also the explicit use of cache management instructions.
+> While we're at it, add a proper STACK_SIZE macro for the stack size
+> instead of using magic numbers (this is also required for the following
+> patch).
 > 
-> While this is required to make JITs work on actual hardware, QEMU
-> has gotten away with not handling this since it does not emulate
-> caches, and unconditionally invalidates code whenever the softmmu
-> or the user-mode page protection logic detects that code has been
-> modified.
-> 
-> Unfortunately the latter does not work in the face of dual-mapped
-> code (a common W^X workaround), where one page is executable and
-> the other is writable: user-mode has no way to connect one with the
-> other as that is only known to the kernel and the emulated
-> application.
-> 
-> This commit works around the issue by telling software that
-> instruction cache invalidation is required by clearing the
-> CPR_EL0.DIC flag (regardless of whether the emulated processor
-> needs it), and then invalidating code in IC IVAU instructions.
-> 
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1034
-> 
-> Co-authored-by: Richard Henderson <richard.henderson@linaro.org>
-> Signed-off-by: John Högberg <john.hogberg@ericsson.com>
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
 > ---
->   target/arm/cpu.c    | 13 +++++++++++++
->   target/arm/helper.c | 47 ++++++++++++++++++++++++++++++++++++++++++---
->   2 files changed, 57 insertions(+), 3 deletions(-)
+>   pc-bios/s390-ccw/start.S | 4 +++-
+>   1 file changed, 3 insertions(+), 1 deletion(-)
 > 
-> diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-> index 4d5bb57f07..b82fb46157 100644
-> --- a/target/arm/cpu.c
-> +++ b/target/arm/cpu.c
-> @@ -1674,6 +1674,19 @@ static void arm_cpu_realizefn(DeviceState *dev, Error **errp)
->           return;
->       }
+> diff --git a/pc-bios/s390-ccw/start.S b/pc-bios/s390-ccw/start.S
+> index d29de09cc6..29b0a9ece0 100644
+> --- a/pc-bios/s390-ccw/start.S
+> +++ b/pc-bios/s390-ccw/start.S
+> @@ -10,10 +10,12 @@
+>    * directory.
+>    */
 >   
-> +    /*
-> +     * User mode relies on IC IVAU instructions to catch modification of
-> +     * dual-mapped code.
-> +     *
-> +     * Clear CTR_EL0.DIC to ensure that software that honors these flags uses
-> +     * IC IVAU even if the emulated processor does not normally require it.
-> +     */
-> +#ifdef CONFIG_USER_ONLY
-> +    if (arm_feature(env, ARM_FEATURE_AARCH64)) {
-> +        cpu->ctr = FIELD_DP64(cpu->ctr, CTR_EL0, DIC, 0);
-> +    }
-> +#endif
+> +#define STACK_SIZE 0x8000
+> +
+>       .globl _start
+>   _start:
+>   
+> -    larl    %r15,stack + 0x8000     /* Set up stack */
+> +    larl    %r15,stack + STACK_SIZE - 160   /* Set up stack */
 
-No need to check for aarch64 -- the bit is present at the same location with the same 
-meaning in the v8 aarch32 view: "CTR".  (Prior to v8, this bit was part of the Format 
-field, and had value 0 for v6 and v7, so still no need to check before writing this zero.)
-
-Otherwise,
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-
-
-r~
+Reviewed-by: Christian Borntraeger <borntraeger@linux.ibm.com>
 
