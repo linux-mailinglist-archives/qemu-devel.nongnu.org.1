@@ -2,35 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9636273EAC9
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 21:00:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3895573EA92
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 20:55:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDrIa-00047L-VF; Mon, 26 Jun 2023 14:50:53 -0400
+	id 1qDrId-0004A1-FI; Mon, 26 Jun 2023 14:50:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qDrIW-00044p-JZ; Mon, 26 Jun 2023 14:50:49 -0400
+ id 1qDrIa-00047U-6U; Mon, 26 Jun 2023 14:50:52 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qDrIT-0004qT-Mu; Mon, 26 Jun 2023 14:50:48 -0400
+ id 1qDrIY-0004rk-FU; Mon, 26 Jun 2023 14:50:51 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 85CA1EF1C;
+ by isrv.corpit.ru (Postfix) with ESMTP id C3194EF1E;
  Mon, 26 Jun 2023 21:50:19 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 69D3FF7AF;
+ by tsrv.corpit.ru (Postfix) with SMTP id B8FA2F7B0;
  Mon, 26 Jun 2023 21:50:17 +0300 (MSK)
-Received: (nullmailer pid 1573985 invoked by uid 1000);
+Received: (nullmailer pid 1573988 invoked by uid 1000);
  Mon, 26 Jun 2023 18:50:15 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org, qemu-stable@nongnu.org
-Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+Cc: Bernhard Beschow <shentey@gmail.com>,
+ =?UTF-8?q?Volker=20R=C3=BCmelin?= <vr_qemu@t-online.de>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.0.3 09/54] ui/dbus: fix compilation when GBM && !OPENGL
-Date: Mon, 26 Jun 2023 21:49:16 +0300
-Message-Id: <20230626185002.1573836-9-mjt@tls.msk.ru>
+Subject: [Stable-8.0.3 10/54] ui/sdl2: Grab Alt+Tab also in fullscreen mode
+Date: Mon, 26 Jun 2023 21:49:17 +0300
+Message-Id: <20230626185002.1573836-10-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.0.3-20230626214235@cover.tls.msk.ru>
 References: <qemu-stable-8.0.3-20230626214235@cover.tls.msk.ru>
@@ -60,67 +61,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Marc-André Lureau <marcandre.lureau@redhat.com>
+From: Bernhard Beschow <shentey@gmail.com>
 
-commit 4814d3cbf ("ui/dbus: restrict opengl to gbm-enabled config")
-assumes that whenever GBM is available, OpenGL is. This is not always
-the case, let's further restrict opengl-related paths and fix some
-compilation issues.
+By default, SDL grabs Alt+Tab only in non-fullscreen mode. This causes Alt+Tab
+to switch tasks on the host rather than in the VM in fullscreen mode while it
+switches tasks in non-fullscreen mode in the VM. Fix this confusing behavior
+by grabbing Alt+Tab in fullscreen mode, always causing tasks to be switched in
+the VM.
 
-Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Message-Id: <20230515132348.1024663-1-marcandre.lureau@redhat.com>
-(cherry picked from commit 0b31e48d62c8f3a282d1bffbcc0e90200df9f9f0)
+Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+Reviewed-by: Volker Rümelin <vr_qemu@t-online.de>
+Message-Id: <20230417192139.43263-2-shentey@gmail.com>
+(cherry picked from commit efc00a37090eced53bff8b42d26991252aaacc44)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/ui/dbus-listener.c b/ui/dbus-listener.c
-index 911acdc529..defe2220c0 100644
---- a/ui/dbus-listener.c
-+++ b/ui/dbus-listener.c
-@@ -50,7 +50,7 @@ struct _DBusDisplayListener {
+diff --git a/ui/sdl2.c b/ui/sdl2.c
+index b12dec4caf..8af8b89f1d 100644
+--- a/ui/sdl2.c
++++ b/ui/sdl2.c
+@@ -856,6 +856,9 @@ static void sdl2_display_init(DisplayState *ds, DisplayOptions *o)
+     SDL_SetHint(SDL_HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR, "0");
+ #endif
+     SDL_SetHint(SDL_HINT_GRAB_KEYBOARD, "1");
++#ifdef SDL_HINT_ALLOW_ALT_TAB_WHILE_GRABBED
++    SDL_SetHint(SDL_HINT_ALLOW_ALT_TAB_WHILE_GRABBED, "0");
++#endif
+     memset(&info, 0, sizeof(info));
+     SDL_VERSION(&info.version);
  
- G_DEFINE_TYPE(DBusDisplayListener, dbus_display_listener, G_TYPE_OBJECT)
- 
--#ifdef CONFIG_GBM
-+#if defined(CONFIG_OPENGL) && defined(CONFIG_GBM)
- static void dbus_update_gl_cb(GObject *source_object,
-                            GAsyncResult *res,
-                            gpointer user_data)
-@@ -239,7 +239,7 @@ static void dbus_refresh(DisplayChangeListener *dcl)
-     graphic_hw_update(dcl->con);
- }
- 
--#ifdef CONFIG_GBM
-+#if defined(CONFIG_OPENGL) && defined(CONFIG_GBM)
- static void dbus_gl_gfx_update(DisplayChangeListener *dcl,
-                                int x, int y, int w, int h)
- {
-@@ -302,7 +302,7 @@ static void dbus_gfx_update(DisplayChangeListener *dcl,
-         DBUS_DEFAULT_TIMEOUT, NULL, NULL, NULL);
- }
- 
--#ifdef CONFIG_GBM
-+#if defined(CONFIG_OPENGL) && defined(CONFIG_GBM)
- static void dbus_gl_gfx_switch(DisplayChangeListener *dcl,
-                                struct DisplaySurface *new_surface)
- {
-@@ -369,7 +369,7 @@ static void dbus_cursor_define(DisplayChangeListener *dcl,
-         NULL);
- }
- 
--#ifdef CONFIG_GBM
-+#if defined(CONFIG_OPENGL) && defined(CONFIG_GBM)
- const DisplayChangeListenerOps dbus_gl_dcl_ops = {
-     .dpy_name                = "dbus-gl",
-     .dpy_gfx_update          = dbus_gl_gfx_update,
-@@ -417,7 +417,7 @@ dbus_display_listener_constructed(GObject *object)
-     DBusDisplayListener *ddl = DBUS_DISPLAY_LISTENER(object);
- 
-     ddl->dcl.ops = &dbus_dcl_ops;
--#ifdef CONFIG_GBM
-+#if defined(CONFIG_OPENGL) && defined(CONFIG_GBM)
-     if (display_opengl) {
-         ddl->dcl.ops = &dbus_gl_dcl_ops;
-     }
 -- 
 2.39.2
 
