@@ -2,81 +2,105 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84F0273EE37
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 00:03:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EFE773EE3C
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 00:03:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDuI4-0001a7-AH; Mon, 26 Jun 2023 18:02:32 -0400
+	id 1qDuFE-0002ZH-9N; Mon, 26 Jun 2023 17:59:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qDuHq-0001Kx-Uj
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 18:02:20 -0400
-Received: from mail-oa1-x30.google.com ([2001:4860:4864:20::30])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qDuFC-0002Xt-1t
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 17:59:34 -0400
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qDuHo-0005qR-WD
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 18:02:18 -0400
-Received: by mail-oa1-x30.google.com with SMTP id
- 586e51a60fabf-1b055510c9dso528577fac.0
- for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 15:02:16 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qDuF8-0004r6-Ib
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 17:59:33 -0400
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-3fb4146e8ceso8165485e9.0
+ for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 14:59:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1687816935; x=1690408935;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=dnfNaO/obmacoJFfINopOu8v1OhB9d/fUeu6hywHkbM=;
- b=kNNNHdgDnlx/Y+Sjdwf3D0Jgb1VOvdvvIYF58CnqkRhv+JuvTodvttfwkYLbMh7pnJ
- lXmtddWB7jniFONps4Db/9HfhpLOIUM58DDSoeGJ5Q4LoWqNtLGglME6JbelKJ8rZCr8
- zHkbdfP7Ql32AA0gLv5fdsyI5wHz1GZuxUUbFG8WpTf1jBmwwEfNKUVw4RHHkRvlpvHt
- 27uGzUqccG8OWumqoLHJp4JzVbnp9TmuQ2y7VnoOOJQlizZBBp3tn96fr7jM4pYPZCeI
- av9u8v4+uQMHPZWhjIwW9PazFQWZViFquqNd3s2YdF+25bXFKxYmDWsrt8lrtPATTsW/
- 5Rcg==
+ d=linaro.org; s=google; t=1687816769; x=1690408769;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=VTHkiiEsGJjQzyOMxbcLNdH7rkjQKhZ4rW+u2UfYIYE=;
+ b=A+Mfv9E4rUR1HCI7ba2cUzk7VUKCYbIWzmM+xo41K+TzesAzamKSzB9bZX1rNSDixh
+ S5g2vycEzctJiZW5nmksQZTY9eBLAbxeXWiqaMVtjFioasIv/KP+AGdDF2u2vUZn3psB
+ Q6gwYgJMwTRzbl1DDLIfzqkEJ9im5PUSwkhZ/hCuCVpqvv+SGE/2p6gsc+v8gYomz3mx
+ hkOGorZHVOHs/vF1C+OtSKBUW6gC1EpU3KrCgoCiXkdngbs68VjciPp3hvvNb0VKPe2E
+ Py4EufdzHj5T+9ImpgcFrRhzRGavRzm6/H5Nlev35Uc1sUP4cJBiFwdFQ+OeVxO/elvC
+ P+aw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687816935; x=1690408935;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=dnfNaO/obmacoJFfINopOu8v1OhB9d/fUeu6hywHkbM=;
- b=QPVJn2hJoxf76eJUlFgMoekFy6DugbULOqIR5PN++ECenjzmvgm7YAMLHomr9LH23n
- E29LF95u8H61+E+9yqHcSot66vNJhvZJXOo1yr3iwfMbsv/Qgv6xZ9sOxJW9Bk+CYgXM
- sd1eKUfLkqGvbq/OzemQ/jn/s9u+Y3MGM6Ajg7Y5F6iYbniSNIy5zLZeBNX53uA/PFrk
- nCd5apkY6Moj+qLdgXmeUUlQd6NRD3Z/WJGnA6ufoBfT8hDyz8Op5ZRXpbxM2yr9DsBN
- o9iStrJyuFhSZH5yn0qmKFGktWQwlOhaq7OaCujhqF4Dk4tIkHF3gccYZah0Po+sTmIO
- 3Z9g==
-X-Gm-Message-State: AC+VfDyNgspYcD+w1tpNUg4y7HnnmO82PxL+moML6PI7J8cziQ0L+bRM
- G0yxuI9qSxj1BZECFUA9iI8BM6Rk3i5RgHUwmaU=
-X-Google-Smtp-Source: ACHHUZ5/L7pk7KYuUNrItyGLzLUMpj/PFnpVehTReklc+PCMdEzwrejBPpvv6xW054jqAKdRPQAKIw==
-X-Received: by 2002:a05:6871:4c4:b0:1b0:454b:1c3d with SMTP id
- n4-20020a05687104c400b001b0454b1c3dmr2517247oai.36.1687816935195; 
- Mon, 26 Jun 2023 15:02:15 -0700 (PDT)
-Received: from grind.dc1.ventanamicro.com
- (201-69-66-110.dial-up.telesp.net.br. [201.69.66.110])
+ d=1e100.net; s=20221208; t=1687816769; x=1690408769;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=VTHkiiEsGJjQzyOMxbcLNdH7rkjQKhZ4rW+u2UfYIYE=;
+ b=L3OX2mJ3/vdXkgRUU8+Rg4dgeY9WN5Ndm7YNlAH10/UY5K804+1TO9NwNABNl6G8db
+ Tfbo9U6PvKrWIms+nCTee+JwwS8pMiHVvUkcIkg28kQl9JFyehEU0eQ0dPKTTTc4AIQ8
+ ssFfN+TgYFU6T7HxjbRceic7AnyeykHneGVPQMP5GUuiT7Ctrs1AqoNxOXApUpUeTnVX
+ 7ZwPzRDQT0fU0duQkaJBPeq5u8Hoj5BjIAHOi9wiQOdlKoqHeIot7kimGdGpIc876MQK
+ CGKEQine5mHemuoc6kxMy8roV4PLZx9XSY/mukpnT+R00vVWvSX2oqCKWbD/PLT89kAE
+ t5/Q==
+X-Gm-Message-State: AC+VfDwWWPfgtITKZbE5o0jB91VfxiYfaVRVSPyw5M8rLDMldIIC1Gtr
+ pdWyZag/xYiToPOZf2wdrqjBhw==
+X-Google-Smtp-Source: ACHHUZ4f7DsAVNL1p/Gd5UN5mKmETs3rmK+Hg+2obZlKKtefCDZeOBaorrS9pDR3OI6KNSOeGBDe2g==
+X-Received: by 2002:a1c:e90d:0:b0:3f8:fc2a:c7eb with SMTP id
+ q13-20020a1ce90d000000b003f8fc2ac7ebmr21467501wmc.5.1687816769143; 
+ Mon, 26 Jun 2023 14:59:29 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- m12-20020a056870a10c00b001b03fbfa0c5sm1831419oae.39.2023.06.26.15.02.12
+ e15-20020adfe7cf000000b0030aed4223e0sm8419202wrn.105.2023.06.26.14.59.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 26 Jun 2023 15:02:14 -0700 (PDT)
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+ Mon, 26 Jun 2023 14:59:28 -0700 (PDT)
+Received: from zen.lan (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id 3A4331FFBE;
+ Mon, 26 Jun 2023 22:59:27 +0100 (BST)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
- liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
- ajones@ventanamicro.com,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH v4 00/19] target/riscv, KVM: fixes and enhancements
-Date: Mon, 26 Jun 2023 19:01:50 -0300
-Message-ID: <20230626220209.22142-1-dbarboza@ventanamicro.com>
-X-Mailer: git-send-email 2.41.0
+Cc: Alexander Bulekov <alxndr@bu.edu>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Juan Quintela <quintela@redhat.com>, Alexandre Iooss <erdnaxe@crans.org>,
+ Thomas Huth <thuth@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Leif Lindholm <quic_llindhol@quicinc.com>,
+ Riku Voipio <riku.voipio@iki.fi>, Peter Maydell <peter.maydell@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Bandan Das <bsd@redhat.com>,
+ Leonardo Bras <leobras@redhat.com>, Cleber Rosa <crosa@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Beraldo Leal <bleal@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Peter Xu <peterx@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>, Yanan Wang <wangyanan55@huawei.com>,
+ Eduardo Habkost <eduardo@habkost.net>, Bin Meng <bmeng.cn@gmail.com>,
+ qemu-arm@nongnu.org, Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Darren Kenny <darren.kenny@oracle.com>,
+ Radoslaw Biernacki <rad@semihalf.com>,
+ Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
+ Qiuhao Li <Qiuhao.Li@outlook.com>, Laurent Vivier <lvivier@redhat.com>
+Subject: [PATCH v2 03/26] gitlab: reduce testing scope of check-gcov
+Date: Mon, 26 Jun 2023 22:59:03 +0100
+Message-Id: <20230626215926.2522656-4-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20230626215926.2522656-1-alex.bennee@linaro.org>
+References: <20230626215926.2522656-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::30;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-oa1-x30.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,60 +116,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+This keeps timing out on gitlab due to some qtests taking a long time.
+As this is just ensuring the gcov machinery is working and not
+attempting to be comprehensive lets skip qtest in this run.
 
-This version has a change requested by Andrew in patch 16.
+Message-Id: <20230623122100.1640995-4-alex.bennee@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+---
+ .gitlab-ci.d/buildtest.yml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-All patches aside from patch 16 are acked/reviewed.
-
-Changes from v3:
-- patch 16:
-  - error out with a "extension <name> is not available with KVM"
-- v3 link: https://lists.gnu.org/archive/html/qemu-devel/2023-06/msg04575.html
-
-Daniel Henrique Barboza (19):
-  target/riscv: skip features setup for KVM CPUs
-  hw/riscv/virt.c: skip 'mmu-type' FDT if satp mode not set
-  target/riscv/cpu.c: restrict 'mvendorid' value
-  target/riscv/cpu.c: restrict 'mimpid' value
-  target/riscv/cpu.c: restrict 'marchid' value
-  target/riscv: use KVM scratch CPUs to init KVM properties
-  target/riscv: read marchid/mimpid in kvm_riscv_init_machine_ids()
-  target/riscv: handle mvendorid/marchid/mimpid for KVM CPUs
-  linux-headers: Update to v6.4-rc1
-  target/riscv/kvm.c: init 'misa_ext_mask' with scratch CPU
-  target/riscv/cpu: add misa_ext_info_arr[]
-  target/riscv: add KVM specific MISA properties
-  target/riscv/kvm.c: update KVM MISA bits
-  target/riscv/kvm.c: add multi-letter extension KVM properties
-  target/riscv/cpu.c: remove priv_ver check from riscv_isa_string_ext()
-  target/riscv/cpu.c: create KVM mock properties
-  target/riscv: update multi-letter extension KVM properties
-  target/riscv/kvm.c: add kvmconfig_get_cfg_addr() helper
-  target/riscv/kvm.c: read/write (cbom|cboz)_blocksize in KVM
-
- hw/riscv/virt.c                               |  14 +-
- include/standard-headers/linux/const.h        |   2 +-
- include/standard-headers/linux/virtio_blk.h   |  18 +-
- .../standard-headers/linux/virtio_config.h    |   6 +
- include/standard-headers/linux/virtio_net.h   |   1 +
- linux-headers/asm-arm64/kvm.h                 |  33 ++
- linux-headers/asm-riscv/kvm.h                 |  53 +-
- linux-headers/asm-riscv/unistd.h              |   9 +
- linux-headers/asm-s390/unistd_32.h            |   1 +
- linux-headers/asm-s390/unistd_64.h            |   1 +
- linux-headers/asm-x86/kvm.h                   |   3 +
- linux-headers/linux/const.h                   |   2 +-
- linux-headers/linux/kvm.h                     |  12 +-
- linux-headers/linux/psp-sev.h                 |   7 +
- linux-headers/linux/userfaultfd.h             |  17 +-
- target/riscv/cpu.c                            | 286 ++++++++--
- target/riscv/cpu.h                            |  11 +-
- target/riscv/kvm.c                            | 499 +++++++++++++++++-
- target/riscv/kvm_riscv.h                      |   1 +
- 19 files changed, 895 insertions(+), 81 deletions(-)
-
+diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
+index a8fd9a0c1f..77dc83a6be 100644
+--- a/.gitlab-ci.d/buildtest.yml
++++ b/.gitlab-ci.d/buildtest.yml
+@@ -454,7 +454,7 @@ gcov:
+     IMAGE: ubuntu2204
+     CONFIGURE_ARGS: --enable-gcov
+     TARGETS: aarch64-softmmu ppc64-softmmu s390x-softmmu x86_64-softmmu
+-    MAKE_CHECK_ARGS: check
++    MAKE_CHECK_ARGS: check-unit check-softfloat
+   after_script:
+     - cd build
+     - gcovr --xml-pretty --exclude-unreachable-branches --print-summary
 -- 
-2.41.0
+2.39.2
 
 
