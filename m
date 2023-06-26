@@ -2,38 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 519A273EB11
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 21:15:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F67973EAFD
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 21:12:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDrRi-0003Gt-3O; Mon, 26 Jun 2023 15:00:18 -0400
+	id 1qDrRs-0004Hb-RB; Mon, 26 Jun 2023 15:00:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qDrRG-0001xM-8G; Mon, 26 Jun 2023 14:59:50 -0400
+ id 1qDrRJ-00027X-TS; Mon, 26 Jun 2023 14:59:57 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qDrRE-0007As-5C; Mon, 26 Jun 2023 14:59:49 -0400
+ id 1qDrRH-0007BY-0N; Mon, 26 Jun 2023 14:59:53 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 6279DEFAF;
+ by isrv.corpit.ru (Postfix) with ESMTP id 8D213EFB0;
  Mon, 26 Jun 2023 21:59:09 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id F0205F7EB;
- Mon, 26 Jun 2023 21:59:07 +0300 (MSK)
-Received: (nullmailer pid 1575318 invoked by uid 1000);
+ by tsrv.corpit.ru (Postfix) with SMTP id 22EB9F7EC;
+ Mon, 26 Jun 2023 21:59:08 +0300 (MSK)
+Received: (nullmailer pid 1575321 invoked by uid 1000);
  Mon, 26 Jun 2023 18:59:05 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org, qemu-stable@nongnu.org
-Cc: Ilya Leoshkevich <iii@linux.ibm.com>,
+Cc: Ilya Leoshkevich <iii@linux.ibm.com>, David Hildenbrand <david@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- David Hildenbrand <david@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.4 14/43] target/s390x: Fix LCBB overwriting the top 32
- bits
-Date: Mon, 26 Jun 2023 21:58:32 +0300
-Message-Id: <20230626185902.1575177-14-mjt@tls.msk.ru>
+ Thomas Huth <thuth@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.4 15/43] tests/tcg/s390x: Test LCBB
+Date: Mon, 26 Jun 2023 21:58:33 +0300
+Message-Id: <20230626185902.1575177-15-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.4-20230626215033@cover.tls.msk.ru>
 References: <qemu-stable-7.2.4-20230626215033@cover.tls.msk.ru>
@@ -64,32 +62,86 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Ilya Leoshkevich <iii@linux.ibm.com>
 
-LCBB is supposed to overwrite only the bottom 32 bits, but QEMU
-erroneously overwrites the entire register.
+Add a test to prevent regressions.
 
-Fixes: 6d9303322ed9 ("s390x/tcg: Implement LOAD COUNT TO BLOCK BOUNDARY")
 Cc: qemu-stable@nongnu.org
 Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Message-Id: <20230526181240.1425579-2-iii@linux.ibm.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-Id: <20230526181240.1425579-3-iii@linux.ibm.com>
 Reviewed-by: David Hildenbrand <david@redhat.com>
+Acked-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
-(cherry picked from commit 079181b9bc60389e106009a1530d3cc42256f567)
+(cherry picked from commit 05d000fb4dcac4bc02ffa08fcf14b51683b878f6)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/s390x/tcg/insn-data.h.inc b/target/s390x/tcg/insn-data.h.inc
-index 13ffdda4da..9f0d6380be 100644
---- a/target/s390x/tcg/insn-data.h.inc
-+++ b/target/s390x/tcg/insn-data.h.inc
-@@ -486,7 +486,7 @@
-     F(0xb343, LCXBR,   RRE,   Z,   x2h, x2l, new_P, x1, negf128, f128, IF_BFP)
-     F(0xb373, LCDFR,   RRE,   FPSSH, 0, f2, new, f1, negf64, 0, IF_AFP1 | IF_AFP2)
- /* LOAD COUNT TO BLOCK BOUNDARY */
--    C(0xe727, LCBB,    RXE,   V,   la2, 0, r1, 0, lcbb, 0)
-+    C(0xe727, LCBB,    RXE,   V,   la2, 0, new, r1_32, lcbb, 0)
- /* LOAD HALFWORD */
-     C(0xb927, LHR,     RRE,   EI,  0, r2_16s, 0, r1_32, mov2, 0)
-     C(0xb907, LGHR,    RRE,   EI,  0, r2_16s, 0, r1, mov2, 0)
+diff --git a/tests/tcg/s390x/Makefile.target b/tests/tcg/s390x/Makefile.target
+index 07fcc6d0ce..24576fda22 100644
+--- a/tests/tcg/s390x/Makefile.target
++++ b/tests/tcg/s390x/Makefile.target
+@@ -26,6 +26,7 @@ TESTS+=branch-relative-long
+ TESTS+=noexec
+ 
+ Z13_TESTS=vistr
++Z13_TESTS+=lcbb
+ $(Z13_TESTS): CFLAGS+=-march=z13 -O2
+ TESTS+=$(Z13_TESTS)
+ 
+diff --git a/tests/tcg/s390x/lcbb.c b/tests/tcg/s390x/lcbb.c
+new file mode 100644
+index 0000000000..8d368e0998
+--- /dev/null
++++ b/tests/tcg/s390x/lcbb.c
+@@ -0,0 +1,51 @@
++/*
++ * Test the LCBB instruction.
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++#include <assert.h>
++#include <stdlib.h>
++
++static inline __attribute__((__always_inline__)) void
++lcbb(long *r1, void *dxb2, int m3, int *cc)
++{
++    asm("lcbb %[r1],%[dxb2],%[m3]\n"
++        "ipm %[cc]"
++        : [r1] "+r" (*r1), [cc] "=r" (*cc)
++        : [dxb2] "R" (*(char *)dxb2), [m3] "i" (m3)
++        : "cc");
++    *cc = (*cc >> 28) & 3;
++}
++
++static char buf[0x1000] __attribute__((aligned(0x1000)));
++
++static inline __attribute__((__always_inline__)) void
++test_lcbb(void *p, int m3, int exp_r1, int exp_cc)
++{
++    long r1 = 0xfedcba9876543210;
++    int cc;
++
++    lcbb(&r1, p, m3, &cc);
++    assert(r1 == (0xfedcba9800000000 | exp_r1));
++    assert(cc == exp_cc);
++}
++
++int main(void)
++{
++    test_lcbb(&buf[0],    0, 16, 0);
++    test_lcbb(&buf[63],   0,  1, 3);
++    test_lcbb(&buf[0],    1, 16, 0);
++    test_lcbb(&buf[127],  1,  1, 3);
++    test_lcbb(&buf[0],    2, 16, 0);
++    test_lcbb(&buf[255],  2,  1, 3);
++    test_lcbb(&buf[0],    3, 16, 0);
++    test_lcbb(&buf[511],  3,  1, 3);
++    test_lcbb(&buf[0],    4, 16, 0);
++    test_lcbb(&buf[1023], 4,  1, 3);
++    test_lcbb(&buf[0],    5, 16, 0);
++    test_lcbb(&buf[2047], 5,  1, 3);
++    test_lcbb(&buf[0],    6, 16, 0);
++    test_lcbb(&buf[4095], 6,  1, 3);
++
++    return EXIT_SUCCESS;
++}
 -- 
 2.39.2
 
