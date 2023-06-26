@@ -2,83 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0F1F73D955
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 10:14:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E75F73D97A
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 10:17:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDhMh-00041v-Pw; Mon, 26 Jun 2023 04:14:27 -0400
+	id 1qDhNA-0004OH-0x; Mon, 26 Jun 2023 04:14:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qDhMe-00041Z-SA
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 04:14:24 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qDhMX-0000sO-Ug
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 04:14:23 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-3fa8cd4a1c0so11118115e9.1
- for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 01:14:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687767253; x=1690359253;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=FaNXnhQtfxVrjkr0JiGgbTSmQ6f0idMuGlXkbfil3rw=;
- b=zF+XmA/EmK1hKE74PSiFgm2ckKqaHm0mqz5TVJLCrlPsEocU7Iuu9tz0JI36+n5Fu9
- QeAnInzL9IsEizbUpVtd5fMFsLUgfu6XjVDYWNN4DS0w5m0dJm7mCRxsDBNac60tjkee
- GnujhZYUrXNalqACqUtSQrh3KfEbHyx1LXEKHlS2hOo1OLvmO7wsnhN3NE8FrpYF6iGD
- ZaxeogCSgTlwi+nD1zoRhWmSjvX5ia2iUMBN0g4qnH4ntAxFu+J6Y0C82OyyyX/Fp/3O
- vT8srHOGCI2n7dSUa2qqAg2HyFQ8YLNeg+r0pi7HygyU6M9oCGFWlPojkLszn8zePf2N
- al9A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687767253; x=1690359253;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=FaNXnhQtfxVrjkr0JiGgbTSmQ6f0idMuGlXkbfil3rw=;
- b=CywMJ8UkrbGavaVSty3JYl+cRTy0TPTeik+jqB5bFhHYnn9OT4IK8nGEJjtq+0HZ2/
- SDNjTlo5vBLssxOLCiIsLGFOGUn7t1yKy2MdJUe2RjSIW86VCgtofNb8QD3xBA4MDy0t
- NNJ9xKY1h9gWVFOex/bE20+QfP6pGKFF0MEapR8MFb9rWIFyMOFBvggUmREOLnEu5Hca
- +OIjRU1biKnKB+WAR6GqO2XCN2P8hC0zCKnW2rzK6LY+6Z//dh6WZEzX2q1ZpL1+D6/6
- z1zv3tmMJhmcD1rD8sx2H2aopUGJWN+w0fS58nV/iY3LZst0c4j0uEugUdgFGhuDGoYx
- Yhzg==
-X-Gm-Message-State: AC+VfDx6XRqQK8cYviF+xpzpWDdKnIvYqmYhWFA/Y1uneHZ7/Wq2+rZe
- AjPDrZIGp03w4de0frXcjinCaw==
-X-Google-Smtp-Source: ACHHUZ6PCmyy/biK3qQ/Xxmf3Vpd9OTo9KzZX7Yk57ceTSDUliO0XISGgGWNhHjYH6T281ftEVE1Ng==
-X-Received: by 2002:a05:600c:2113:b0:3fa:7dfb:b7b9 with SMTP id
- u19-20020a05600c211300b003fa7dfbb7b9mr6897912wml.41.1687767253079; 
- Mon, 26 Jun 2023 01:14:13 -0700 (PDT)
-Received: from [192.168.1.208] ([139.47.42.170])
- by smtp.gmail.com with ESMTPSA id
- p22-20020a05600c205600b003f8044b3436sm9756158wmg.23.2023.06.26.01.14.12
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 26 Jun 2023 01:14:12 -0700 (PDT)
-Message-ID: <cd82df1c-5b3e-269d-84ed-c9e09d8e070c@linaro.org>
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qDhMt-00047C-8K
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 04:14:40 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qDhMo-0000u2-K8
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 04:14:36 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1687767274;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=TazGcgv5qeRtQZu0prMFRkDBJ/LlymJ73WvCmik5s68=;
+ b=HPej/ML9azBdpFG6fQFxDFqqT58hFTeEPKaqMbEKOvWZDJ2jSN5LGHkBL1H8MHhPCVunrc
+ KU0YUiW8VmblNkT1S0URYGldjyRDljI0HWb+iaIGb0a6gVdXleNseFmtt0D8Nk/s5NrYrL
+ K9uYjuF7GZEKR/VUbJIjLeYvwt/WBl8=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-189-mMQNR6R1P4GoXzuYXEmiEw-1; Mon, 26 Jun 2023 04:14:30 -0400
+X-MC-Unique: mMQNR6R1P4GoXzuYXEmiEw-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 567073810D37;
+ Mon, 26 Jun 2023 08:14:30 +0000 (UTC)
+Received: from thuth.com (unknown [10.39.193.57])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 4864E492B01;
+ Mon, 26 Jun 2023 08:14:29 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: qemu-devel@nongnu.org,
+	Richard Henderson <richard.henderson@linaro.org>
+Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [PULL 5/9] gitlab: avoid extra pipelines for tags and stable branches
 Date: Mon, 26 Jun 2023 10:14:11 +0200
+Message-Id: <20230626081415.64615-6-thuth@redhat.com>
+In-Reply-To: <20230626081415.64615-1-thuth@redhat.com>
+References: <20230626081415.64615-1-thuth@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH 15/26] tests/lcitool: introduce qemu-minimal
-Content-Language: en-US
-To: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
- qemu-devel@nongnu.org
-References: <20230623122100.1640995-1-alex.bennee@linaro.org>
- <20230623122100.1640995-16-alex.bennee@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230623122100.1640995-16-alex.bennee@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x331.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.089,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -30
+X-Spam_score: -3.1
+X-Spam_bar: ---
+X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -95,33 +79,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/23/23 14:20, Alex Bennée wrote:
-> This is a very bare bones set of dependencies for a minimal build of
-> QEMU. This will be useful for bootstrapping cross compile images based
-> on things like Debian Sid where stuff isn't always in sync.
-> 
-> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-> ---
->   tests/lcitool/projects/qemu-minimal.yml | 23 +++++++++++++++++++++++
->   1 file changed, 23 insertions(+)
->   create mode 100644 tests/lcitool/projects/qemu-minimal.yml
-> 
-> diff --git a/tests/lcitool/projects/qemu-minimal.yml b/tests/lcitool/projects/qemu-minimal.yml
-> new file mode 100644
-> index 0000000000..507f1f6881
-> --- /dev/null
-> +++ b/tests/lcitool/projects/qemu-minimal.yml
-> @@ -0,0 +1,23 @@
-> +# Very minimal set of qemu packages, used for early bootstrap
+From: Daniel P. Berrangé <berrange@redhat.com>
 
-"early bootstrap" doesn't seem like the right phrase.
+In upstream context we only run pipelines on staging branches, and
+limited publishing jobs on the default branch.
 
-At least it reminds me of gcc building itself once, so that you can then do it again with 
-the full environment.  But we aren't going to do that.  We just want to sanity check that 
-some host-specific bits don't contain typos or get bitrotten.
+We don't want to run pipelines on stable branches, or tags, because
+the content will have already been tested on a staging branch before
+getting pushed.
 
-Perhaps "used for minimal cross-compile sanity checks"?
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
+Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+Message-Id: <20230608164018.2520330-5-berrange@redhat.com>
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+---
+ .gitlab-ci.d/base.yml | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
+diff --git a/.gitlab-ci.d/base.yml b/.gitlab-ci.d/base.yml
+index f379c182a7..999149852e 100644
+--- a/.gitlab-ci.d/base.yml
++++ b/.gitlab-ci.d/base.yml
+@@ -33,6 +33,14 @@ variables:
+     # want jobs to run
+     #############################################################
+ 
++    # Never run jobs upstream on stable branch, staging branch jobs already ran
++    - if: '$CI_PROJECT_NAMESPACE == $QEMU_CI_UPSTREAM && $CI_COMMIT_BRANCH =~ /^stable-/'
++      when: never
++
++    # Never run jobs upstream on tags, staging branch jobs already ran
++    - if: '$CI_PROJECT_NAMESPACE == $QEMU_CI_UPSTREAM && $CI_COMMIT_TAG'
++      when: never
++
+     # Cirrus jobs can't run unless the creds / target repo are set
+     - if: '$QEMU_JOB_CIRRUS && ($CIRRUS_GITHUB_REPO == null || $CIRRUS_API_TOKEN == null)'
+       when: never
+-- 
+2.39.3
 
-r~
 
