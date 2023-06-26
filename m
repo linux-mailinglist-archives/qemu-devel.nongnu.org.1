@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7BD673EAA7
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 20:57:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EB6073EA97
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 20:55:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDrKy-0000SG-V1; Mon, 26 Jun 2023 14:53:21 -0400
+	id 1qDrLJ-00011Q-Mt; Mon, 26 Jun 2023 14:53:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qDrKQ-0000K0-4c; Mon, 26 Jun 2023 14:52:47 -0400
+ id 1qDrKQ-0000K1-4m; Mon, 26 Jun 2023 14:52:47 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qDrKO-0005H8-Is; Mon, 26 Jun 2023 14:52:45 -0400
+ id 1qDrKO-0005HL-Iv; Mon, 26 Jun 2023 14:52:45 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 7173DEF32;
+ by isrv.corpit.ru (Postfix) with ESMTP id A11CDEF33;
  Mon, 26 Jun 2023 21:50:23 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id E2105F7C1;
- Mon, 26 Jun 2023 21:50:21 +0300 (MSK)
-Received: (nullmailer pid 1574040 invoked by uid 1000);
+ by tsrv.corpit.ru (Postfix) with SMTP id 35106F7C2;
+ Mon, 26 Jun 2023 21:50:22 +0300 (MSK)
+Received: (nullmailer pid 1574043 invoked by uid 1000);
  Mon, 26 Jun 2023 18:50:16 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org, qemu-stable@nongnu.org
-Cc: David Woodhouse <dwmw@amazon.co.uk>,
- Peter Maydell <peter.maydell@linaro.org>, Paul Durrant <paul@xen.org>,
+Cc: David Woodhouse <dwmw@amazon.co.uk>, Paul Durrant <paul@xen.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
  Anthony PERARD <anthony.perard@citrix.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.0.3 27/54] hw/xen: Fix memory leak in libxenstore_open()
- for Xen
-Date: Mon, 26 Jun 2023 21:49:34 +0300
-Message-Id: <20230626185002.1573836-27-mjt@tls.msk.ru>
+Subject: [Stable-8.0.3 28/54] hw/xen: Fix broken check for invalid state in
+ xs_be_open()
+Date: Mon, 26 Jun 2023 21:49:35 +0300
+Message-Id: <20230626185002.1573836-28-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.0.3-20230626214235@cover.tls.msk.ru>
 References: <qemu-stable-8.0.3-20230626214235@cover.tls.msk.ru>
@@ -63,35 +63,31 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: David Woodhouse <dwmw@amazon.co.uk>
 
-There was a superfluous allocation of the XS handle, leading to it
-being leaked on both the error path and the success path (where it gets
-allocated again).
+Coverity points out that if (!s && !s->impl) isn't really what we intended
+to do here. CID 1508131.
 
-Spotted by Coverity (CID 1508098).
-
-Fixes: ba2a92db1ff6 ("hw/xen: Add xenstore operations to allow redirection to internal emulation")
-Suggested-by: Peter Maydell <peter.maydell@linaro.org>
+Fixes: 032475127225 ("hw/xen: Add emulated implementation of XenStore operations")
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Paul Durrant <paul@xen.org>
-Message-Id: <20230412185102.441523-3-dwmw2@infradead.org>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Message-Id: <20230412185102.441523-6-dwmw2@infradead.org>
 Signed-off-by: Anthony PERARD <anthony.perard@citrix.com>
-(cherry picked from commit 8442232eba1b041b379ca5845df8252c1e905e43)
+(cherry picked from commit c9bdfe8d587c1a6a8fc2e0ff97343745a9f5f247)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/xen/xen-operations.c b/hw/xen/xen-operations.c
-index 4b78fbf4bd..3d213d28df 100644
---- a/hw/xen/xen-operations.c
-+++ b/hw/xen/xen-operations.c
-@@ -287,7 +287,7 @@ static void watch_event(void *opaque)
- static struct qemu_xs_handle *libxenstore_open(void)
- {
-     struct xs_handle *xsh = xs_open(0);
--    struct qemu_xs_handle *h = g_new0(struct qemu_xs_handle, 1);
-+    struct qemu_xs_handle *h;
+diff --git a/hw/i386/kvm/xen_xenstore.c b/hw/i386/kvm/xen_xenstore.c
+index 900679af8a..65f91e87d7 100644
+--- a/hw/i386/kvm/xen_xenstore.c
++++ b/hw/i386/kvm/xen_xenstore.c
+@@ -1688,7 +1688,7 @@ static struct qemu_xs_handle *xs_be_open(void)
+     XenXenstoreState *s = xen_xenstore_singleton;
+     struct qemu_xs_handle *h;
  
-     if (!xsh) {
+-    if (!s && !s->impl) {
++    if (!s || !s->impl) {
+         errno = -ENOSYS;
          return NULL;
+     }
 -- 
 2.39.2
 
