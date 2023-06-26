@@ -2,73 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69D7A73E226
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 16:30:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47D8773E263
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 16:47:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDlNU-0006Ia-FO; Mon, 26 Jun 2023 08:31:32 -0400
+	id 1qDlNP-0006Di-U7; Mon, 26 Jun 2023 08:31:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qDlM7-0004Wa-I5
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qDlM7-0004Wb-Qc
  for qemu-devel@nongnu.org; Mon, 26 Jun 2023 08:30:10 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qDlM4-0003EA-4v
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qDlM6-0003JO-0A
  for qemu-devel@nongnu.org; Mon, 26 Jun 2023 08:30:07 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687782602;
+ s=mimecast20190719; t=1687782604;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=5K8h8NuJsIBhqIKCTOJ4P7gYMHEPEK+cfHdE8tyjHlA=;
- b=Q3RoEjLOmMnF8CGTi97CF/AkJuDBRUVZ9CewsovXe/kBte/PscKdQBlf33uopF+9KwfUom
- Jh6C9101u/8fdqHEdy9epltyd11EqITaA8jU09qoJe89jlLTJCP2W4W1Q+jxt6llnYorHA
- l8R/l1z5SD96lzOohdtW47xt0gCoue0=
-Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
- [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=AciTnBuftzpXPPCO+R3LnCnQ4nRx1NsyQcNXImLvWes=;
+ b=QafdhjwRBdmjL3RYVxdmRiM9ckDmCOejBhCCrc8EisRF0JGhAQzUBQZbgXlBOAmFtzWzpt
+ +AdU5If4cRckmRZBZqGs7As5Wyo+cBZA/fGMcRk5R3Cr0FMyd0G/lnOh7IFWA+QsvvWv+k
+ RGHykIDa8V9GmLyG8Teq46qEtjX4pFw=
+Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
+ [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-206-7XFAwCbaN2aDq911qa_SxA-1; Mon, 26 Jun 2023 08:29:58 -0400
-X-MC-Unique: 7XFAwCbaN2aDq911qa_SxA-1
-Received: by mail-lf1-f71.google.com with SMTP id
- 2adb3069b0e04-4f8727c7fb6so2241980e87.0
- for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 05:29:58 -0700 (PDT)
+ us-mta-180-1FIgXKV_NniU6SkcrKHnIQ-1; Mon, 26 Jun 2023 08:30:03 -0400
+X-MC-Unique: 1FIgXKV_NniU6SkcrKHnIQ-1
+Received: by mail-lf1-f70.google.com with SMTP id
+ 2adb3069b0e04-4f3932e595dso2517676e87.1
+ for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 05:30:01 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687782597; x=1690374597;
+ d=1e100.net; s=20221208; t=1687782600; x=1690374600;
  h=in-reply-to:content-transfer-encoding:content-disposition
  :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=5K8h8NuJsIBhqIKCTOJ4P7gYMHEPEK+cfHdE8tyjHlA=;
- b=LHo1q520Si3VHusRnqoVGbJ0P2TfBmrTXthz8P4wVAtXouxnKSuO1HEv5CeUVDWX1A
- 8yc6JGOi4ju4V/EfnX2SBvvgJn5Nkdix2iY7fnCwDvvXDoz93wgEMEJM3yTsZqFIl1hk
- Nzv2tRevltP9PgA4FikqUGlHTlROYkjZhxx1f9ka6eXAFDaeX6YL9nFuPFrNa/2vDoFx
- HExG2O5IJFvmktwgb/vepiHKPn9wyviIAtIgj5cu4oWLpLicOF+7X8vvKW7MAO9Uq7yg
- Tb8cxyQ/9/JJV7PW9XZJHiGsSS/Q9iMgJuyuROPECCqUbE6QY+51OaGjCjWTPJ4+aRlw
- NbrA==
-X-Gm-Message-State: AC+VfDw7DyLM4QJM5RhPfDobjdYoydwQesF8IptxLhEduPsWC4O4Dfk5
- t/Q7hhVUxmhkIr2XMmpMmyH3JjhbuTElRnVqb+T8lzbI6cn/TamWVWSBBOwXL4w/2cdEjoJmode
- HHNOp3miUw1hVBD1SIBLQnjFm7jQ0dxX6ESmUnbFLANGSen3PRnS+fADyAvYLgBcASfy2
-X-Received: by 2002:ac2:4bd0:0:b0:4fb:b11:c99e with SMTP id
- o16-20020ac24bd0000000b004fb0b11c99emr2159960lfq.56.1687782597178; 
- Mon, 26 Jun 2023 05:29:57 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5E3+DNbZ68UKyDbSk8nLGPaRex0ubDulc6bb7cnPYyjH5jYBa3edP8wdBJePKseswpGOXrwQ==
-X-Received: by 2002:ac2:4bd0:0:b0:4fb:b11:c99e with SMTP id
- o16-20020ac24bd0000000b004fb0b11c99emr2159944lfq.56.1687782596945; 
- Mon, 26 Jun 2023 05:29:56 -0700 (PDT)
+ bh=AciTnBuftzpXPPCO+R3LnCnQ4nRx1NsyQcNXImLvWes=;
+ b=Z9LriOfq9YQ3jn6OSiXwDX0dop5dsKal5S34YA3xCH5UITaEfN3k6zqVAQ3cLJ65FU
+ gu59Qj3mIzNnWdGiSsdJK7CGhnn6uMUJfsXpCLBzY9gwhMtBEKQHf6U60Lper/1FMtE3
+ gL1RcxwsMT/1e5725zju1DvRVQiq5oGvAYDXczK7DjRWB3gFKfVQQX4hn55svhNEWUuU
+ b6TI85WpDl1tsGYb/g09ANskseaw/PFhkx46n5NUhmsavWVCqJoORHFV/8D6hVviRV8S
+ GwZQuLE7SJnPJ7EW8YtKqMMeKMshShAkj5ZHewqqhFvdXWbtKSQy4Tbf7PinD3a/74Mj
+ xLnw==
+X-Gm-Message-State: AC+VfDwhnLd1In0KAEfil/gJmT4rCYRVBmQEaMQuo6XqFywB7Oauo+Ff
+ mIn+D7fitSeM0lfw5RhY7pOhtpty/eGJP9PrJO5uKX7map6WMO1z18VMbpyZhNvB5Xm3MKaPXPl
+ 8no5e9puQjAYoNhCOlheSFZWd83Kwtexj3tUsLoiYeYflVMlenvTUFtp2ysc8KUP6ks9R
+X-Received: by 2002:a05:6512:2343:b0:4fa:9817:c1da with SMTP id
+ p3-20020a056512234300b004fa9817c1damr2577166lfu.21.1687782599944; 
+ Mon, 26 Jun 2023 05:29:59 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6uycp+gGk9kPuiZbfcML67Gp2i7fGbUMkx6V3rOw0pfOelSUzwn/oLNJsLFq1eZZrayA4MMw==
+X-Received: by 2002:a05:6512:2343:b0:4fa:9817:c1da with SMTP id
+ p3-20020a056512234300b004fa9817c1damr2577143lfu.21.1687782599594; 
+ Mon, 26 Jun 2023 05:29:59 -0700 (PDT)
 Received: from redhat.com ([2.52.156.102]) by smtp.gmail.com with ESMTPSA id
- k37-20020a05600c1ca500b003f9b3829269sm16961699wms.2.2023.06.26.05.29.55
+ 12-20020a05600c020c00b003f90ab2fff9sm7572011wmi.9.2023.06.26.05.29.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 26 Jun 2023 05:29:56 -0700 (PDT)
-Date: Mon, 26 Jun 2023 08:29:54 -0400
+ Mon, 26 Jun 2023 05:29:59 -0700 (PDT)
+Date: Mon, 26 Jun 2023 08:29:57 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Hawkins Jiawei <yin31149@gmail.com>,
- Jason Wang <jasowang@redhat.com>, Lei Yang <leiyang@redhat.com>,
- Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>
-Subject: [PULL 42/53] vdpa: Allow VIRTIO_NET_F_CTRL_GUEST_OFFLOADS in SVQ
-Message-ID: <5b57ecdebc26e94fb45006f9a69dec853d1d0c72.1687782442.git.mst@redhat.com>
+ Laurent Vivier <lvivier@redhat.com>, longpeng2@huawei.com,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 43/53] vhost: fix vhost_dev_enable_notifiers() error case
+Message-ID: <c02b8159149fc8a89d299abc2c1a54b856b5378b.1687782442.git.mst@redhat.com>
 References: <cover.1687782442.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -102,34 +101,123 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Hawkins Jiawei <yin31149@gmail.com>
+From: Laurent Vivier <lvivier@redhat.com>
 
-Enable SVQ with VIRTIO_NET_F_CTRL_GUEST_OFFLOADS feature.
+in vhost_dev_enable_notifiers(), if virtio_bus_set_host_notifier(true)
+fails, we call vhost_dev_disable_notifiers() that executes
+virtio_bus_set_host_notifier(false) on all queues, even on queues that
+have failed to be initialized.
 
-Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Message-Id: <778d642ecae6deed8a218b0e6232e4d7bb96b439.1685704856.git.yin31149@gmail.com>
-Tested-by: Lei Yang <leiyang@redhat.com>
-Reviewed-by: Eugenio Pérez <eperezma@redhat.com>
-Tested-by: Eugenio Pérez <eperezma@redhat.com>
+This triggers a core dump in memory_region_del_eventfd():
+
+ virtio_bus_set_host_notifier: unable to init event notifier: Too many open files (-24)
+ vhost VQ 1 notifier binding failed: 24
+ .../softmmu/memory.c:2611: memory_region_del_eventfd: Assertion `i != mr->ioeventfd_nb' failed.
+
+Fix the problem by providing to vhost_dev_disable_notifiers() the
+number of queues to disable.
+
+Fixes: 8771589b6f81 ("vhost: simplify vhost_dev_enable_notifiers")
+Cc: longpeng2@huawei.com
+Signed-off-by: Laurent Vivier <lvivier@redhat.com>
+Message-Id: <20230602162735.3670785-1-lvivier@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- net/vhost-vdpa.c | 1 +
- 1 file changed, 1 insertion(+)
+ hw/virtio/vhost.c | 65 ++++++++++++++++++++++++++---------------------
+ 1 file changed, 36 insertions(+), 29 deletions(-)
 
-diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-index 99d0445d90..49221937a1 100644
---- a/net/vhost-vdpa.c
-+++ b/net/vhost-vdpa.c
-@@ -89,6 +89,7 @@ const int vdpa_feature_bits[] = {
- static const uint64_t vdpa_svq_device_features =
-     BIT_ULL(VIRTIO_NET_F_CSUM) |
-     BIT_ULL(VIRTIO_NET_F_GUEST_CSUM) |
-+    BIT_ULL(VIRTIO_NET_F_CTRL_GUEST_OFFLOADS) |
-     BIT_ULL(VIRTIO_NET_F_MTU) |
-     BIT_ULL(VIRTIO_NET_F_MAC) |
-     BIT_ULL(VIRTIO_NET_F_GUEST_TSO4) |
+diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
+index fb7abc9769..d116c2d6a1 100644
+--- a/hw/virtio/vhost.c
++++ b/hw/virtio/vhost.c
+@@ -1530,6 +1530,40 @@ void vhost_dev_cleanup(struct vhost_dev *hdev)
+     memset(hdev, 0, sizeof(struct vhost_dev));
+ }
+ 
++static void vhost_dev_disable_notifiers_nvqs(struct vhost_dev *hdev,
++                                             VirtIODevice *vdev,
++                                             unsigned int nvqs)
++{
++    BusState *qbus = BUS(qdev_get_parent_bus(DEVICE(vdev)));
++    int i, r;
++
++    /*
++     * Batch all the host notifiers in a single transaction to avoid
++     * quadratic time complexity in address_space_update_ioeventfds().
++     */
++    memory_region_transaction_begin();
++
++    for (i = 0; i < nvqs; ++i) {
++        r = virtio_bus_set_host_notifier(VIRTIO_BUS(qbus), hdev->vq_index + i,
++                                         false);
++        if (r < 0) {
++            error_report("vhost VQ %d notifier cleanup failed: %d", i, -r);
++        }
++        assert(r >= 0);
++    }
++
++    /*
++     * The transaction expects the ioeventfds to be open when it
++     * commits. Do it now, before the cleanup loop.
++     */
++    memory_region_transaction_commit();
++
++    for (i = 0; i < nvqs; ++i) {
++        virtio_bus_cleanup_host_notifier(VIRTIO_BUS(qbus), hdev->vq_index + i);
++    }
++    virtio_device_release_ioeventfd(vdev);
++}
++
+ /* Stop processing guest IO notifications in qemu.
+  * Start processing them in vhost in kernel.
+  */
+@@ -1559,7 +1593,7 @@ int vhost_dev_enable_notifiers(struct vhost_dev *hdev, VirtIODevice *vdev)
+         if (r < 0) {
+             error_report("vhost VQ %d notifier binding failed: %d", i, -r);
+             memory_region_transaction_commit();
+-            vhost_dev_disable_notifiers(hdev, vdev);
++            vhost_dev_disable_notifiers_nvqs(hdev, vdev, i);
+             return r;
+         }
+     }
+@@ -1576,34 +1610,7 @@ int vhost_dev_enable_notifiers(struct vhost_dev *hdev, VirtIODevice *vdev)
+  */
+ void vhost_dev_disable_notifiers(struct vhost_dev *hdev, VirtIODevice *vdev)
+ {
+-    BusState *qbus = BUS(qdev_get_parent_bus(DEVICE(vdev)));
+-    int i, r;
+-
+-    /*
+-     * Batch all the host notifiers in a single transaction to avoid
+-     * quadratic time complexity in address_space_update_ioeventfds().
+-     */
+-    memory_region_transaction_begin();
+-
+-    for (i = 0; i < hdev->nvqs; ++i) {
+-        r = virtio_bus_set_host_notifier(VIRTIO_BUS(qbus), hdev->vq_index + i,
+-                                         false);
+-        if (r < 0) {
+-            error_report("vhost VQ %d notifier cleanup failed: %d", i, -r);
+-        }
+-        assert (r >= 0);
+-    }
+-
+-    /*
+-     * The transaction expects the ioeventfds to be open when it
+-     * commits. Do it now, before the cleanup loop.
+-     */
+-    memory_region_transaction_commit();
+-
+-    for (i = 0; i < hdev->nvqs; ++i) {
+-        virtio_bus_cleanup_host_notifier(VIRTIO_BUS(qbus), hdev->vq_index + i);
+-    }
+-    virtio_device_release_ioeventfd(vdev);
++    vhost_dev_disable_notifiers_nvqs(hdev, vdev, hdev->nvqs);
+ }
+ 
+ /* Test and clear event pending status.
 -- 
 MST
 
