@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C40AD73EB0C
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 21:13:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0550773EACA
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 21:00:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDrR5-0001SZ-5Q; Mon, 26 Jun 2023 14:59:39 -0400
+	id 1qDrRC-0001b3-5C; Mon, 26 Jun 2023 14:59:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qDrQm-0000rS-6t; Mon, 26 Jun 2023 14:59:21 -0400
+ id 1qDrQo-0000tS-V1; Mon, 26 Jun 2023 14:59:24 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qDrQk-000741-On; Mon, 26 Jun 2023 14:59:19 -0400
+ id 1qDrQn-00074y-Hy; Mon, 26 Jun 2023 14:59:22 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id E7AA1EFA6;
- Mon, 26 Jun 2023 21:59:07 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 1CF60EFA7;
+ Mon, 26 Jun 2023 21:59:08 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 7F26CF7E5;
+ by tsrv.corpit.ru (Postfix) with SMTP id A7463F7E6;
  Mon, 26 Jun 2023 21:59:06 +0300 (MSK)
-Received: (nullmailer pid 1575300 invoked by uid 1000);
+Received: (nullmailer pid 1575303 invoked by uid 1000);
  Mon, 26 Jun 2023 18:59:05 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org, qemu-stable@nongnu.org
 Cc: Bernhard Beschow <shentey@gmail.com>,
  =?UTF-8?q?Volker=20R=C3=BCmelin?= <vr_qemu@t-online.de>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.4 08/43] ui/sdl2: Grab Alt+Tab also in fullscreen mode
-Date: Mon, 26 Jun 2023 21:58:26 +0300
-Message-Id: <20230626185902.1575177-8-mjt@tls.msk.ru>
+Subject: [Stable-7.2.4 09/43] ui/sdl2: Grab Alt+F4 also under Windows
+Date: Mon, 26 Jun 2023 21:58:27 +0300
+Message-Id: <20230626185902.1575177-9-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.4-20230626215033@cover.tls.msk.ru>
 References: <qemu-stable-7.2.4-20230626215033@cover.tls.msk.ru>
@@ -63,29 +63,25 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Bernhard Beschow <shentey@gmail.com>
 
-By default, SDL grabs Alt+Tab only in non-fullscreen mode. This causes Alt+Tab
-to switch tasks on the host rather than in the VM in fullscreen mode while it
-switches tasks in non-fullscreen mode in the VM. Fix this confusing behavior
-by grabbing Alt+Tab in fullscreen mode, always causing tasks to be switched in
-the VM.
+SDL doesn't grab Alt+F4 under Windows by default. Pressing Alt+F4 thus closes
+the VM immediately without confirmation, possibly leading to data loss. Fix
+this by always grabbing Alt+F4 on Windows hosts, too.
 
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 Reviewed-by: Volker Rümelin <vr_qemu@t-online.de>
-Message-Id: <20230417192139.43263-2-shentey@gmail.com>
-(cherry picked from commit efc00a37090eced53bff8b42d26991252aaacc44)
+Message-Id: <20230417192139.43263-3-shentey@gmail.com>
+(cherry picked from commit 083db9db44c89d7ea7f81844302194d708bcff2b)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/ui/sdl2.c b/ui/sdl2.c
-index 8cb77416af..34b3f45c49 100644
+index 34b3f45c49..b483a51fb7 100644
 --- a/ui/sdl2.c
 +++ b/ui/sdl2.c
-@@ -850,6 +850,9 @@ static void sdl2_display_init(DisplayState *ds, DisplayOptions *o)
-     SDL_SetHint(SDL_HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR, "0");
+@@ -853,6 +853,7 @@ static void sdl2_display_init(DisplayState *ds, DisplayOptions *o)
+ #ifdef SDL_HINT_ALLOW_ALT_TAB_WHILE_GRABBED
+     SDL_SetHint(SDL_HINT_ALLOW_ALT_TAB_WHILE_GRABBED, "0");
  #endif
-     SDL_SetHint(SDL_HINT_GRAB_KEYBOARD, "1");
-+#ifdef SDL_HINT_ALLOW_ALT_TAB_WHILE_GRABBED
-+    SDL_SetHint(SDL_HINT_ALLOW_ALT_TAB_WHILE_GRABBED, "0");
-+#endif
++    SDL_SetHint(SDL_HINT_WINDOWS_NO_CLOSE_ON_ALT_F4, "1");
      memset(&info, 0, sizeof(info));
      SDL_VERSION(&info.version);
  
