@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABE2A73E0F0
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 15:45:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 122BD73E100
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 15:49:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDmWb-0000nt-Qo; Mon, 26 Jun 2023 09:45:01 -0400
+	id 1qDmZu-0002Dr-8i; Mon, 26 Jun 2023 09:48:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1qDmWY-0000eX-O0
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 09:44:58 -0400
+ id 1qDmZs-0002DS-0o
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 09:48:24 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1qDmWU-00040w-KX
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 09:44:58 -0400
+ id 1qDmZq-00057f-DF
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 09:48:23 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687787094;
+ s=mimecast20190719; t=1687787301;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=uCgVvJUMW41t+j1uqyDhcHOCiMVKWRMvaEXaLAB2Z6A=;
- b=b/yTUwa0G617XTEhlc9bX+HrLWpDKQU4GPdIziba+Rtj9+VWFmg84Ic7H6bPUGQVnTsJkP
- jyjibelGuQLvgIBsTEbHgeQLl+XZkq+ERpag7SNmSYmA3xTWXiKoeGeBx7E4ySwaZMzMlU
- EzLtVqV9n+EZVOCgf4nlgds1ayfGuRw=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=EOIPsro+RnMpGMZCoPUgAfihsrkd5HEoKxKvLoL5Tw0=;
+ b=eqA4iCY7VWarO7+Lb6V7NI56PYzbmn7EkVOUnc+0nis3Qjk8mmp9K0tJB9k+sLANz9RePX
+ 5b/UXYz0lOq9dTf0xw81bIC1isKjz2HZtDx9XJDPQDl4C8BtQId8JGRgoXs59yJM8daYFn
+ JtUckxRT5m5QUHFisre9NDAzCpGYHKs=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-215-6OrBSZh1OXO1aBQs9Ms8_Q-1; Mon, 26 Jun 2023 09:44:52 -0400
-X-MC-Unique: 6OrBSZh1OXO1aBQs9Ms8_Q-1
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-987e47d2e81so258344066b.1
- for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 06:44:52 -0700 (PDT)
+ us-mta-215-FN32Pe5LNfeOd_Bk4OHxVw-1; Mon, 26 Jun 2023 09:48:19 -0400
+X-MC-Unique: FN32Pe5LNfeOd_Bk4OHxVw-1
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-98e1085308eso206236466b.0
+ for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 06:48:19 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687787091; x=1690379091;
+ d=1e100.net; s=20221208; t=1687787298; x=1690379298;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=uCgVvJUMW41t+j1uqyDhcHOCiMVKWRMvaEXaLAB2Z6A=;
- b=fDremb4f9W7EzZ7/qghQ/6M3XS/JjN0bv/OXYVV0fMWmpIRTxmDSJaQ6PPBlYmkZhY
- dxMVQcwbuV8UZIXp1Bg5I3E7yOQBCdWtYxKaAOz9/u+FerjXlSlMro+5ZYHRvb2LxFxE
- sZdEjf4RSJtpL1UDW3SltnaVKuPKT3zbeup33WT//xqW+9HCRlERGPmN8ZRWU8vmn6hv
- z/57He9YRhFFkz+XW6yc/P4BKEL/1SyhSlKez3Af7zcIuxmyJ20w/y9UJhemhtdHFQfz
- eAtm0YmSWNwBQSfUSx1sqy6tosRT+wiP1yGAHLMcryR6mU57jAbogKRoR3MbE4qvZKe0
- qF/Q==
-X-Gm-Message-State: AC+VfDwJNBhau2VmxE1OB6IJfu1cRrrYS1wQyPqz+CwbS0IxpLnxKi6x
- PVVavorT4+aEGQ6zEBbRc3ZipHxn/sX1KA/rOhFxYlzUxYat5PcxbpUlBZ4dk1pXipaNy+3lVjB
- wOoNc0HmCF+DrId8=
-X-Received: by 2002:a17:907:70d:b0:979:65f0:cced with SMTP id
- xb13-20020a170907070d00b0097965f0ccedmr24143252ejb.17.1687787091335; 
- Mon, 26 Jun 2023 06:44:51 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ56ZgTexylMj0IfLQKPJpuCXlrv/p/59vvclnswTcAqZZ+Cg/DWTqsg4kk9/bEpNoSG2vK0Lw==
-X-Received: by 2002:a17:907:70d:b0:979:65f0:cced with SMTP id
- xb13-20020a170907070d00b0097965f0ccedmr24143246ejb.17.1687787091098; 
- Mon, 26 Jun 2023 06:44:51 -0700 (PDT)
+ bh=EOIPsro+RnMpGMZCoPUgAfihsrkd5HEoKxKvLoL5Tw0=;
+ b=WwdwDpRKjKDoXF/lLfdJ5fpuS862jzhy4USTXHJSaKOtF35f8/c3Z6NXWwEvajX1fs
+ 3dQs9pbDkdLF6nsVJeZPMnAhgFWHp00ZxGPsEU/0r8gk5Gf7CFlmj0tTmOwwvOSSZkSX
+ XDmxfq6OzNxi1Ru2VmL7f6Ki2HVu80ndE//TaE71s5c/C/E1BSehTJ+zJVaYvrKlhgmW
+ c7Lij7Jg5019Lot9HXEW+LcEgsu3YRUpXkFjzuSuV7UJJO6VEpQsIz3TSmUMWJ46C8Tf
+ LNs7/YahzAPO2Npo+sNTYqzNiI6GxtA0yBlPVoy+HQh3HbfrMz+z5P2+OVyQb3fqc/00
+ QpnA==
+X-Gm-Message-State: AC+VfDyzphCyo99CHtBXwkFAMaKsrHfzHIUDC/IZGnSdB0zcz96Y3Iio
+ 1lgZcl13bjob74xpnoigCCwdI//zsB/Z0dsfSr3sD+9ic/S2YWX7xbiGCQzxp2bgWDwRFkZ/fhA
+ bxKQbrBofRIoIly8=
+X-Received: by 2002:a17:907:7ba5:b0:982:4b35:c0b6 with SMTP id
+ ne37-20020a1709077ba500b009824b35c0b6mr28336310ejc.1.1687787298587; 
+ Mon, 26 Jun 2023 06:48:18 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ586HFmaW+siWA/0kSOtl2wIf8eyQXrTmeo4wg+5QjmgWsYOlsJQ8a/WzdJqcHgOXCYWwdl7g==
+X-Received: by 2002:a17:907:7ba5:b0:982:4b35:c0b6 with SMTP id
+ ne37-20020a1709077ba500b009824b35c0b6mr28336289ejc.1.1687787298345; 
+ Mon, 26 Jun 2023 06:48:18 -0700 (PDT)
 Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
  [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
- q26-20020a1709060e5a00b00991fa596931sm95648eji.147.2023.06.26.06.44.50
+ l24-20020a1709060e1800b009783791b1a1sm3265020eji.121.2023.06.26.06.48.17
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 26 Jun 2023 06:44:50 -0700 (PDT)
-Date: Mon, 26 Jun 2023 15:44:49 +0200
+ Mon, 26 Jun 2023 06:48:17 -0700 (PDT)
+Date: Mon, 26 Jun 2023 15:48:17 +0200
 From: Igor Mammedov <imammedo@redhat.com>
 To: Zhao Liu <zhao1.liu@linux.intel.com>
 Cc: "Michael S . Tsirkin" <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>,
@@ -71,11 +71,10 @@ Cc: "Michael S . Tsirkin" <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Philippe =?UTF-8?B?TWF0?=
  =?UTF-8?B?aGlldS1EYXVkw6k=?= <philmd@linaro.org>, qemu-devel@nongnu.org,
  Zhenyu Wang <zhenyu.z.wang@intel.com>, Zhao Liu <zhao1.liu@intel.com>
-Subject: Re: [PATCH v3 3/4] hw/smbios: Fix thread count in type4
-Message-ID: <20230626154449.72874e21@imammedo.users.ipa.redhat.com>
-In-Reply-To: <20230620103958.3907565-4-zhao1.liu@linux.intel.com>
+Subject: Re: [PATCH v3 0/4] hw/smbios: Cleanup topology related variables
+Message-ID: <20230626154817.60613bc5@imammedo.users.ipa.redhat.com>
+In-Reply-To: <20230620103958.3907565-1-zhao1.liu@linux.intel.com>
 References: <20230620103958.3907565-1-zhao1.liu@linux.intel.com>
- <20230620103958.3907565-4-zhao1.liu@linux.intel.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -105,72 +104,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 20 Jun 2023 18:39:57 +0800
+On Tue, 20 Jun 2023 18:39:54 +0800
 Zhao Liu <zhao1.liu@linux.intel.com> wrote:
 
 > From: Zhao Liu <zhao1.liu@intel.com>
 > 
-> From SMBIOS 3.0 specification, thread count field means:
+> Hi all,
 > 
-> Thread Count is the total number of threads detected by the BIOS for
-> this processor socket. It is a processor-wide count, not a
-> thread-per-core count. [1]
+> This is my v3 patch series based on 48ab886d3da4f ("Merge tag 'pull-
+> target-arm-20230619' of https://git.linaro.org/people/pmaydell/qemu-arm
+> into staging").
 > 
-> So here we should use threads per socket other than threads per core.
+> Compared with v2 [1], v3 introduces 2 helpers to wrap the calculation of
+> threads/cores per socket so that smbios can use these 2 helpers directly
+> to avoid calculation error caused by missing topology changes.
 > 
-> [1] SMBIOS 3.0.0, section 7.5.8, Processor Information - Thread Count
-> 
-> Fixes: c97294ec1b9e ("SMBIOS: Build aggregate smbios tables and entry point")
-> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-> ---
-> v3:
->  * Use the wrapped hepler to get threads per socket.
-> 
-> v2:
->  * Rename cpus_per_socket to threads_per_socket.
->  * Add the comment about smp.max_cpus. Thread count and core count will
->    be calculated in 2 ways and will add a sanity check to ensure we
->    don't miss any topology level.
-> ---
->  hw/smbios/smbios.c | 7 +++++--
->  1 file changed, 5 insertions(+), 2 deletions(-)
-> 
-> diff --git a/hw/smbios/smbios.c b/hw/smbios/smbios.c
-> index d67415d44dd8..3aae9328c014 100644
-> --- a/hw/smbios/smbios.c
-> +++ b/hw/smbios/smbios.c
-> @@ -713,6 +713,7 @@ static void smbios_build_type_4_table(MachineState *ms, unsigned instance)
->  {
->      char sock_str[128];
->      size_t tbl_len = SMBIOS_TYPE_4_LEN_V28;
-> +    unsigned threads_per_socket;
->  
->      if (smbios_ep_type == SMBIOS_ENTRY_POINT_TYPE_64) {
->          tbl_len = SMBIOS_TYPE_4_LEN_V30;
-> @@ -747,17 +748,19 @@ static void smbios_build_type_4_table(MachineState *ms, unsigned instance)
->      SMBIOS_TABLE_SET_STR(4, asset_tag_number_str, type4.asset);
->      SMBIOS_TABLE_SET_STR(4, part_number_str, type4.part);
->  
-> +    threads_per_socket = machine_topo_get_threads_per_socket(ms);
-                                ^^^^
-Are there any other places we can clean up and reuse this wrapper?
+> Also due to the introduction of these two helpers, I involve more people
+> for review of this v3.
 
-> +
->      t->core_count = (ms->smp.cores > 255) ? 0xFF : ms->smp.cores;
->      t->core_enabled = t->core_count;
->  
-> -    t->thread_count = (ms->smp.threads > 255) ? 0xFF : ms->smp.threads;
-> +    t->thread_count = (threads_per_socket > 255) ? 0xFF : threads_per_socket;
->  
->      t->processor_characteristics = cpu_to_le16(0x02); /* Unknown */
->      t->processor_family2 = cpu_to_le16(0x01); /* Other */
->  
->      if (tbl_len == SMBIOS_TYPE_4_LEN_V30) {
->          t->core_count2 = t->core_enabled2 = cpu_to_le16(ms->smp.cores);
-> -        t->thread_count2 = cpu_to_le16(ms->smp.threads);
-> +        t->thread_count2 = cpu_to_le16(threads_per_socket);
->      }
->  
->      SMBIOS_BUILD_TABLE_POST;
+other than nitpicking in patch 1/4, the series looks good to me.
+
+> 
+> 
+> Introduction
+> ============
+> 
+> This patchset is split from my previous hybrid topology RFC [2].
+> 
+> There are three places for topology-related cleanup:
+> 
+> 1. Fix the calculation of the number of sockets.
+> 
+>    Due to the misuse of the smp.cpus variable and the change in the
+>    meaning of smp.cores, the calculation of socket number in smbios is
+>    incorrect. This can be fixed by using smp.sockets directly.
+> 
+> 2. Fix core count in type4.
+> 
+>    The meaning of smp.cores changed so that the calculation of cores
+>    per socket became wrong.
+> 
+>    v3 introduces the helper "machine_topo_get_cores_per_socket()" to
+>    wrap the calculation of cores per socket. This can help other modules
+>    avoid calculation error caused by missing topology changes.
+> 
+> 3. Fix thread count in type4.
+> 
+>    I also found that the definition of thread count in type4 doesn't
+>    match the spec (smbios 3.0.0) and cleaned it up as well.
+> 
+>    Similar to core count, v3 uses a new helper to fix this.
+> 
+> [1]: https://lists.gnu.org/archive/html/qemu-devel/2023-06/msg00072.html
+> [2]: https://mail.gnu.org/archive/html/qemu-devel/2023-02/msg03205.html
+> 
+> 
+> Regards,
+> Zhao
+> 
+> ---
+> Zhao Liu (4):
+>   machine: Add helpers to get cores/threads per socket
+>   hw/smbios: Fix smbios_smp_sockets caculation
+>   hw/smbios: Fix thread count in type4
+>   hw/smbios: Fix core count in type4
+> 
+>  hw/smbios/smbios.c  | 16 ++++++++++------
+>  include/hw/boards.h | 12 ++++++++++++
+>  2 files changed, 22 insertions(+), 6 deletions(-)
+> 
 
 
