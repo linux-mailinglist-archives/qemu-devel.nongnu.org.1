@@ -2,78 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E95573DD18
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 13:16:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13E3F73DD17
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 13:16:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDkBN-0002ty-DN; Mon, 26 Jun 2023 07:14:57 -0400
+	id 1qDkBO-0002ui-8v; Mon, 26 Jun 2023 07:14:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qDkBJ-0002sz-SX
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 07:14:53 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1qDkBL-0002tl-50
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 07:14:55 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qDkBI-0000X1-1L
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 07:14:53 -0400
+ id 1qDkBJ-0000XB-7y
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 07:14:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1687778091;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:  content-type:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=Cg5YbdFiOsUl6WPQcsfSv3GFMwpsdbkqfBKYblRo38M=;
- b=GVQh9rXCf3QQYuqQZJr/V+TIQYT8Pt1Iemy00QBlUOj6BhllTk4Vzx6iyvG+Qzt8TFdKBs
- DyH9Ej+cvafBTlP1Gb/sGXl8/yeW5TBhpP2U+xMnz3ma7Z8PIESvEhlPlWcEf8f2ErsEHw
- 1SZGageSCYkBD5BkxB5NvyyBngqrn5Q=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=wRAc6f7nKmkBx5cWgWSx5rm/aX7MA5Hq+gKL60VbYs8=;
+ b=IcQAE5Ox08DsmiN1JCn1pUSRK+ZH6HLHlxIYn5p63JZoTYf/Kcn/0bqXYdpKzeDklbWk7j
+ z+XNPkbfrF4O18YGh3KT/k9Vl2c8DdWwkQsbJbEJlVPFovasOvuEOiNEK3KAGU0IhUzoWq
+ N5mbQfx6J5wPKBTPYs/U8+nIZx1sBhE=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-330-86ybIdAzPY2jjUCvFvA4CQ-1; Mon, 26 Jun 2023 07:14:48 -0400
-X-MC-Unique: 86ybIdAzPY2jjUCvFvA4CQ-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-3f5df65f9f4so18207255e9.2
- for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 04:14:48 -0700 (PDT)
+ us-mta-383-7YsDpl3EOOCAUPR4oviztg-1; Mon, 26 Jun 2023 07:14:50 -0400
+X-MC-Unique: 7YsDpl3EOOCAUPR4oviztg-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-3fa7b245a75so14101575e9.0
+ for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 04:14:50 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687778087; x=1690370087;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Cg5YbdFiOsUl6WPQcsfSv3GFMwpsdbkqfBKYblRo38M=;
- b=BBDE6NfDpVOQJ5Inhz1LzdkYlxFmWOamPZp6z19YqY6mW9hOOvt0ZUtSGfsoJk/GvJ
- 51oj/qArIuqoAr/r4AGzyPRCsNSUtwbgE4+4AKQshIS0+/8PNCDo/WjF+SZY5JhflpZO
- hoveCH7LNrAT4eB4zo2how3SQIu253zeha5rlqQar8UX/PEKH2OFNCbWhJhDI/RNjcIz
- X5n16ZEGcxk1lZ8W9WspK/0Inqg7SxWJfFudLhqODABWkfepwXGvqp1Sqn05oeVYmmHU
- iF60+O7sTsSlImgxr7ThavDgHQWaQZfTG7wR4MLpfdltxQL3/s4x8/3eDR0SvHY+YBLl
- 8pIQ==
-X-Gm-Message-State: AC+VfDxjwBeBwYDdzOU4mvLzMNwXCUoPnKe4OEwTUrcfZbdYZuASlSQE
- 0BhxPI0AZY9THWnbEuIpGX55FaEFzfZltqQ92tPg+HFdRePGxftvt0HvJl8yUvQqHyslFCoIu04
- k3R/R9lzlBdKpYbs9IuMVY/H+Acj9M2cF4SJ6tYeo6Dt43SEUsurBvpvNanrDMwWu3U8z/g8CY4
- g=
-X-Received: by 2002:a05:600c:2903:b0:3fa:7fb2:c927 with SMTP id
- i3-20020a05600c290300b003fa7fb2c927mr5970523wmd.39.1687778087287; 
- Mon, 26 Jun 2023 04:14:47 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6LGfnLMjk8iGRxzmBl7J/c4jiYy6nfp5kNwif1A44vfDa4MB+vut4gRagIt5HPkVcKLf+jVA==
-X-Received: by 2002:a05:600c:2903:b0:3fa:7fb2:c927 with SMTP id
- i3-20020a05600c290300b003fa7fb2c927mr5970507wmd.39.1687778086789; 
- Mon, 26 Jun 2023 04:14:46 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1687778088; x=1690370088;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=wRAc6f7nKmkBx5cWgWSx5rm/aX7MA5Hq+gKL60VbYs8=;
+ b=XJbg8Q4QUh2FvXzmrxJcRiYB7CWPhEDJk8HzGOkch/B43EuGnn+mVcBInhYFhvwLOI
+ Bu9ladilSXP3QlZRmHxViwrEvIbNgTwjgbhdvo+tFlT77z0FWlXlhHW9wA57rk6I1wO1
+ xBSQgE3swhwozevcDdI4rBxKgY4LViIb8T8+9UEqxzIeVbC2Z/J9PaZaW0GCh4FTfNPu
+ VfGen1yLTd9jOuGa04KwhpKUIMnPggnbw5DKuVqJGoqtPzqmYBVqPpDEXE01X8m/mPra
+ VkCxqlHw+3SKSBCzpBsh+wv4zr7eF4BF/mVvElOJbFMyqcfylShfplXuei1kjQBOXhV6
+ xs2A==
+X-Gm-Message-State: AC+VfDyH3/2VVsZ67mC8t0yyIPdMPDu9yl57Trh5dCirVxn2srT/1KPp
+ arqKH/epLe+P36wdRuXxTNgCjAff3ou82p9fCM+sL8VfiKN86TdAG/Bku1hRiyFoQUYeLW0+pz6
+ s0dnNxNHqaQwjkfoSlM2l+BiPW/TqcLmDZbQaJEbSHMYYuVxz6u7LW6TEYD4z38/spp1NOt6DMi
+ s=
+X-Received: by 2002:a05:600c:10d1:b0:3f7:a20a:561d with SMTP id
+ l17-20020a05600c10d100b003f7a20a561dmr27128677wmd.8.1687778088622; 
+ Mon, 26 Jun 2023 04:14:48 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6/QZzGNfz4wlk4+aVy1mQhS+9gAE3qsDvnz9NeLI0owx9NmxLfupAL7JjY51eMKrqsYuieqQ==
+X-Received: by 2002:a05:600c:10d1:b0:3f7:a20a:561d with SMTP id
+ l17-20020a05600c10d100b003f7a20a561dmr27128655wmd.8.1687778088224; 
+ Mon, 26 Jun 2023 04:14:48 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:5e2c:eb9a:a8b6:fd3e])
  by smtp.gmail.com with ESMTPSA id
- y17-20020a1c4b11000000b003f9b24cf881sm10292771wma.16.2023.06.26.04.14.46
- for <qemu-devel@nongnu.org>
+ l21-20020a7bc455000000b003fa95c466a1sm2937195wmi.5.2023.06.26.04.14.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 26 Jun 2023 04:14:46 -0700 (PDT)
+ Mon, 26 Jun 2023 04:14:47 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 00/18] Misc, i386 patches for 2023-06-26
-Date: Mon, 26 Jun 2023 13:14:27 +0200
-Message-ID: <20230626111445.163573-1-pbonzini@redhat.com>
+Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Subject: [PULL 01/18] build: further refine build.ninja rules
+Date: Mon, 26 Jun 2023 13:14:28 +0200
+Message-ID: <20230626111445.163573-2-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20230626111445.163573-1-pbonzini@redhat.com>
+References: <20230626111445.163573-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -98,75 +101,96 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 79dbd910c9ea6ca38f8e1b2616b1e5e885b85bd3:
+In commit b0fcc6fc7fc1 ("build: rebuild build.ninja using
+"meson setup --reconfigure"", 2023-05-19) I changed the build.ninja
+rule in the Makefile to use "meson setup" so that the Makefile would
+pick up a changed path to the meson binary.
 
-  Merge tag 'hppa-boot-reboot-fixes-pull-request' of https://github.com/hdeller/qemu-hppa into staging (2023-06-25 08:58:49 +0200)
+However, there was a reason why build.ninja was rebuilt using $(NINJA)
+itself.  Namely, ninja has its own cache of file modification times,
+and if it does not know about the modification that was done outside
+its control, it will *also* try to regenerate build.ninja.  This can be
+simply by running "make" on a fresh tree immediately after "configure";
+that will trigger an unnecessary meson run.
 
-are available in the Git repository at:
+So, apply a refinement to the rule in order to cover both cases:
 
-  https://gitlab.com/bonzini/qemu.git tags/for-upstream
+- track the meson binary that was used (and that is embedded in
+  build.ninja's reconfigure rules); to do this, write build.ninja.stamp
+  right after executing meson successfully
 
-for you to fetch changes up to 8edddaa23d75c57e093d99bf098a39f8cbd227c7:
+- if it changed, force usage of "$(MESON) setup --reconfigure" to
+  update the path in the reconfigure rule
 
-  git-submodule.sh: allow running in validate mode without previous update (2023-06-26 10:23:56 +0200)
+- if it didn't change, use "$(NINJA) build.ninja" just like before
+  commit b0fcc6fc7fc1.
 
-----------------------------------------------------------------
-* kvm: reuse per-vcpu stats fd to avoid vcpu interruption
-* Validate cluster and NUMA node boundary on ARM and RISC-V
-* various small TCG features from newer processors
-* Remove dubious 'event_notifier-posix.c' include
-* fix git-submodule.sh in releases
+Reported-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Tested-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ Makefile  | 17 +++++++++++++----
+ configure |  1 +
+ 2 files changed, 14 insertions(+), 4 deletions(-)
 
-----------------------------------------------------------------
-Gavin Shan (3):
-      numa: Validate cluster and NUMA node boundary if required
-      hw/arm: Validate cluster and NUMA node boundary
-      hw/riscv: Validate cluster and NUMA node boundary
-
-Marcelo Tosatti (1):
-      kvm: reuse per-vcpu stats fd to avoid vcpu interruption
-
-Paolo Bonzini (13):
-      build: further refine build.ninja rules
-      target/i386: fix INVD vmexit
-      target/i386: TCG supports 3DNow! prefetch(w)
-      target/i386: TCG supports RDSEED
-      target/i386: do not accept RDSEED if CPUID bit absent
-      target/i386: TCG supports XSAVEERPTR
-      target/i386: TCG supports WBNOINVD
-      target/i386: Intel only supports SYSCALL/SYSRET in long mode
-      target/i386: AMD only supports SYSENTER/SYSEXIT in 32-bit mode
-      target/i386: sysret and sysexit are privileged
-      target/i386: implement RDPID in TCG
-      target/i386: implement SYSCALL/SYSRET in 32-bit emulators
-      git-submodule.sh: allow running in validate mode without previous update
-
-Philippe Mathieu-Daudé (1):
-      hw/remote/proxy: Remove dubious 'event_notifier-posix.c' include
-
- Makefile                            | 17 +++++++--
- accel/kvm/kvm-all.c                 | 30 +++++++--------
- bsd-user/i386/target_arch_cpu.h     |  4 ++
- configure                           |  3 +-
- hw/arm/sbsa-ref.c                   |  2 +
- hw/arm/virt.c                       |  2 +
- hw/core/machine.c                   | 42 +++++++++++++++++++++
- hw/remote/proxy.c                   |  1 -
- hw/riscv/spike.c                    |  2 +
- hw/riscv/virt.c                     |  2 +
- include/hw/boards.h                 |  1 +
- include/hw/core/cpu.h               |  1 +
- linux-user/i386/cpu_loop.c          |  9 +++--
- meson.build                         |  2 +
- scripts/git-submodule.sh            | 73 +++++++++++++++++++++----------------
- target/i386/cpu.c                   | 31 ++++++++++++----
- target/i386/helper.h                |  4 +-
- target/i386/tcg/misc_helper.c       | 21 ++++++++---
- target/i386/tcg/seg_helper.c        |  7 +++-
- target/i386/tcg/sysemu/seg_helper.c |  7 ++--
- target/i386/tcg/translate.c         | 55 +++++++++++++++++++++-------
- target/i386/tcg/user/seg_helper.c   |  2 -
- 22 files changed, 224 insertions(+), 94 deletions(-)
+diff --git a/Makefile b/Makefile
+index b22bf6fba12..804a5681e0a 100644
+--- a/Makefile
++++ b/Makefile
+@@ -83,16 +83,17 @@ config-host.mak: $(SRC_PATH)/configure $(SRC_PATH)/scripts/meson-buildoptions.sh
+ 	@if test -f meson-private/coredata.dat; then \
+ 	  ./config.status --skip-meson; \
+ 	else \
+-	  ./config.status && touch build.ninja.stamp; \
++	  ./config.status; \
+ 	fi
+ 
+ # 2. meson.stamp exists if meson has run at least once (so ninja reconfigure
+ # works), but otherwise never needs to be updated
++
+ meson-private/coredata.dat: meson.stamp
+ meson.stamp: config-host.mak
+ 	@touch meson.stamp
+ 
+-# 3. ensure generated build files are up-to-date
++# 3. ensure meson-generated build files are up-to-date
+ 
+ ifneq ($(NINJA),)
+ Makefile.ninja: build.ninja
+@@ -106,11 +107,19 @@ Makefile.ninja: build.ninja
+ endif
+ 
+ ifneq ($(MESON),)
+-# A separate rule is needed for Makefile dependencies to avoid -n
++# The path to meson always points to pyvenv/bin/meson, but the absolute
++# paths could change.  In that case, force a regeneration of build.ninja.
++# Note that this invocation of $(NINJA), just like when Make rebuilds
++# Makefiles, does not include -n.
+ build.ninja: build.ninja.stamp
+ $(build-files):
+ build.ninja.stamp: meson.stamp $(build-files)
+-	$(MESON) setup --reconfigure $(SRC_PATH) && touch $@
++	@if test "$$(cat build.ninja.stamp)" = "$(MESON)" && test -n "$(NINJA)"; then \
++	  $(NINJA) build.ninja; \
++	else \
++	  echo "$(MESON) setup --reconfigure $(SRC_PATH)"; \
++	  $(MESON) setup --reconfigure $(SRC_PATH); \
++	fi && echo "$(MESON)" > $@
+ 
+ Makefile.mtest: build.ninja scripts/mtest2make.py
+ 	$(MESON) introspect --targets --tests --benchmarks | $(PYTHON) scripts/mtest2make.py > $@
+diff --git a/configure b/configure
+index 01a53576a7d..86363a7e508 100755
+--- a/configure
++++ b/configure
+@@ -1895,6 +1895,7 @@ if test "$skip_meson" = no; then
+   if test "$?" -ne 0 ; then
+       error_exit "meson setup failed"
+   fi
++  echo "$meson" > build.ninja.stamp
+ else
+   if test -f meson-private/cmd_line.txt; then
+     # Adjust old command line options that were removed
 -- 
 2.41.0
 
