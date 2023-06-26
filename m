@@ -2,70 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4814673DF74
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 14:41:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C485C73DF54
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 14:35:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDlPD-0000Mc-1j; Mon, 26 Jun 2023 08:33:21 -0400
+	id 1qDlP4-00086i-78; Mon, 26 Jun 2023 08:33:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qDlN5-00063z-3a
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 08:31:07 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qDlN7-00063d-3p
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 08:31:09 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qDlMj-0003iZ-SZ
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 08:30:47 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qDlMX-0003eo-Fr
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 08:30:35 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687782645;
+ s=mimecast20190719; t=1687782632;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=am5myhsqD+fEwFvcZjXyQzYIV9qRjvKXNDjfcB6tC8s=;
- b=Yvqp5kDlm+FXp6V5X/0BnZ9AAxlrb8xD2yXqyUiJXAi4offze1CfpKgc/OpagvG2pj51+X
- 52DbxTjFvfLSBUzUmco0awozSMdLdyuTKOynCFGZqQsOMZK/rXgaADieDbpCsDE/Go/w47
- KivWnJMugxCBPz2H8wtrvFqlcGU42K0=
-Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
- [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=MfTq664tRB0XDVL6rfL33AvwxgaTAAG2vIPXXYsJwuY=;
+ b=iB7XZWaxfpCIC20YmqucYb3xirafvqQfCPcjYxQzqpniGt1xmLoywSXSPW1wIvg8DpQWM2
+ k+UMmM1SsMpLH+OmL3PUjptmnAnIPJDHNM7OR6mcnHUYddZMEZRKFfiqQZGs/bGWVhU8lZ
+ Mq7vSxnEO2eJzYflWdsdWkgzzhyyUVA=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-38-8gHaMsGkO2-kvvryVi0INw-1; Mon, 26 Jun 2023 08:30:43 -0400
-X-MC-Unique: 8gHaMsGkO2-kvvryVi0INw-1
-Received: by mail-lj1-f197.google.com with SMTP id
- 38308e7fff4ca-2b479d12b31so23025071fa.3
- for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 05:30:43 -0700 (PDT)
+ us-mta-359-et-ELGxhOtG4l6PVzi19bw-1; Mon, 26 Jun 2023 08:30:31 -0400
+X-MC-Unique: et-ELGxhOtG4l6PVzi19bw-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-3f9b8c230f5so13106525e9.1
+ for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 05:30:31 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687782627; x=1690374627;
+ d=1e100.net; s=20221208; t=1687782630; x=1690374630;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=am5myhsqD+fEwFvcZjXyQzYIV9qRjvKXNDjfcB6tC8s=;
- b=jC5Fl/SgoeFMbCUznEpZStykOLvLGizdfVRLg/zolILP26Sn0Xh4G+IjrueJ0n24Vm
- UMtNCqVHMD7USxapS4eA2WLqe+sGa4tZRon8/+r48P8Vx/7uRpuK4oPly2nez2+d6gaN
- IWYEJwcZoSa0pTVVzN9N4cPxDt0SDBDUWjmT5oWjVSjfyGeKuj41RzQB3FC3skZei0gv
- W3U6YjgM4dcipGWNdBMtwvT+Ff6TYyxHKWETxXOu3KU+jZW8svipAtnQ7L1c+Icj/vB3
- 8V0EheqNeYr9aMvQzh32AvZ8+yBXFsYaLFAU09+HmvQTM1oRpwru4+X5O6azMi20r7Li
- d36w==
-X-Gm-Message-State: AC+VfDxuISz58SgIKYzETSorN9q41VJt7acgmMOPKcpIgrLxOcAlIcn3
- XOI5a2eX2eTIwggeX3jvvZ1nsUwdiSSpHv8oYLZ8Hm7MPBfIkPS9EGl6ZUNfL6/1SjMhxfns0B0
- EalcW6lRLdJAd4kPEg8IvBeDQAn67zSyhDMTHwD/VO4d5ZDRk7nq0NOn/pksKcqeYIjuD
-X-Received: by 2002:a05:6512:b86:b0:4fb:7666:3bc0 with SMTP id
- b6-20020a0565120b8600b004fb76663bc0mr1260130lfv.47.1687782626865; 
- Mon, 26 Jun 2023 05:30:26 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ4Dbpbz+kRgmg53qnrJxccE80t/Qeb83yDoU/q2OEhUg1IMwd+/nfxVfNlbnvncuUtwvHS2ow==
-X-Received: by 2002:a05:6512:b86:b0:4fb:7666:3bc0 with SMTP id
- b6-20020a0565120b8600b004fb76663bc0mr1260109lfv.47.1687782626472; 
- Mon, 26 Jun 2023 05:30:26 -0700 (PDT)
+ bh=MfTq664tRB0XDVL6rfL33AvwxgaTAAG2vIPXXYsJwuY=;
+ b=LANqjrLp0cGOEUc9wha4hXPIqTB4XClITnhDReOwe3xp+O8emHxX2LWDlMhHNPeHFb
+ TB4YdMQ1yHgbD8qNYoN3bZheOhqEKXq9euwRoCStYIikhDJIMppBBkWMVcGMLj6c2WQ6
+ qAWbYbmBh+ta0Z4B+UsdkCcEewdNi5Yii4LjpN22xNs54Zm9wNP0YhwIp1XHbbJbxs8T
+ cao5/KGbIN9bnIF9+seoN9DrtYixhTS6OpB6Z+W7vr9x1N7ETf6PmPrykUyUP7WHZUOq
+ M18HXrs152M6xEnuw6E78+0UGnY+t4/T1VZOpsFh04OO6bjbSlW7jhYEgbiRVV7roawr
+ RCMA==
+X-Gm-Message-State: AC+VfDyQ6l9+WPVnjAOnlfnYkYt6leuARl9mFbCF8hBWQHTOlnxyE/KB
+ /JTlBxj0QDrH4u2UKBPfUq1hGY702wf2GfSEhhkQyS6OITTikP3IoVEs11Cror7AYKOiZ9f6Z+M
+ oJggGFAo+JnYFWgRRmW8jQbt3BYzsa0C0LiH/9LmlRTHwjhUzDiiJpw0JFQ8lGszwR1ML
+X-Received: by 2002:a05:600c:2054:b0:3fb:973:fdba with SMTP id
+ p20-20020a05600c205400b003fb0973fdbamr832632wmg.31.1687782629886; 
+ Mon, 26 Jun 2023 05:30:29 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7zlzT7rY2Ldb/qpiQYWXjDADGuVI508JSgE89n+Who07mFzNZyaRQCqbsd/+Ne0nduWb1JpQ==
+X-Received: by 2002:a05:600c:2054:b0:3fb:973:fdba with SMTP id
+ p20-20020a05600c205400b003fb0973fdbamr832616wmg.31.1687782629590; 
+ Mon, 26 Jun 2023 05:30:29 -0700 (PDT)
 Received: from redhat.com ([2.52.156.102]) by smtp.gmail.com with ESMTPSA id
- g17-20020a7bc4d1000000b003f9b1131a90sm7615633wmk.23.2023.06.26.05.30.25
+ m19-20020a7bce13000000b003f41bb52834sm10466606wmc.38.2023.06.26.05.30.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 26 Jun 2023 05:30:26 -0700 (PDT)
-Date: Mon, 26 Jun 2023 08:30:24 -0400
+ Mon, 26 Jun 2023 05:30:29 -0700 (PDT)
+Date: Mon, 26 Jun 2023 08:30:26 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>, Ani Sinha <anisinha@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>, Jason Wang <jasowang@redhat.com>
-Subject: [PULL 52/53] vhost_net: add an assertion for TAP client backends
-Message-ID: <0af710813dcde638379e3bece8f9b1bde31af2f6.1687782442.git.mst@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Ani Sinha <anisinha@redhat.com>, imammedo@redhat.com,
+ jusual@redhat.com, mst@redhat.com, Jason Wang <jasowang@redhat.com>
+Subject: [PULL 53/53] vhost-vdpa: do not cleanup the vdpa/vhost-net
+ structures if peer nic is present
+Message-ID: <3d90d47995b83bd1edf6e756c00e74fd5ec16aee.1687782442.git.mst@redhat.com>
 References: <cover.1687782442.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -73,7 +75,7 @@ Content-Disposition: inline
 In-Reply-To: <cover.1687782442.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -100,31 +102,56 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Ani Sinha <anisinha@redhat.com>
 
-An assertion was missing for tap vhost backends that enforces a non-null
-reference from get_vhost_net(). Both vhost-net-user and vhost-net-vdpa
-enforces this. Enforce the same for tap. Unit tests pass with this change.
+When a peer nic is still attached to the vdpa backend, it is too early to free
+up the vhost-net and vdpa structures. If these structures are freed here, then
+QEMU crashes when the guest is being shut down. The following call chain
+would result in an assertion failure since the pointer returned from
+vhost_vdpa_get_vhost_net() would be NULL:
 
+do_vm_stop() -> vm_state_notify() -> virtio_set_status() ->
+virtio_net_vhost_status() -> get_vhost_net().
+
+Therefore, we defer freeing up the structures until at guest shutdown
+time when qemu_cleanup() calls net_cleanup() which then calls
+qemu_del_net_client() which would eventually call vhost_vdpa_cleanup()
+again to free up the structures. This time, the loop in net_cleanup()
+ensures that vhost_vdpa_cleanup() will be called one last time when
+all the peer nics are detached and freed.
+
+All unit tests pass with this change.
+
+CC: imammedo@redhat.com
+CC: jusual@redhat.com
+CC: mst@redhat.com
+Fixes: CVE-2023-3301
+Resolves: https://bugzilla.redhat.com/show_bug.cgi?id=2128929
 Signed-off-by: Ani Sinha <anisinha@redhat.com>
-Message-Id: <20230619041501.111655-1-anisinha@redhat.com>
+Message-Id: <20230619065209.442185-1-anisinha@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Reviewed-by: Laurent Vivier <lvivier@redhat.com>
 ---
- hw/net/vhost_net.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/vhost-vdpa.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/hw/net/vhost_net.c b/hw/net/vhost_net.c
-index c4eecc6f36..6db23ca323 100644
---- a/hw/net/vhost_net.c
-+++ b/hw/net/vhost_net.c
-@@ -507,6 +507,7 @@ VHostNetState *get_vhost_net(NetClientState *nc)
-     switch (nc->info->type) {
-     case NET_CLIENT_DRIVER_TAP:
-         vhost_net = tap_get_vhost_net(nc);
-+        assert(vhost_net);
-         break;
- #ifdef CONFIG_VHOST_NET_USER
-     case NET_CLIENT_DRIVER_VHOST_USER:
+diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+index 9e92b3558c..e19ab063fa 100644
+--- a/net/vhost-vdpa.c
++++ b/net/vhost-vdpa.c
+@@ -207,6 +207,14 @@ static void vhost_vdpa_cleanup(NetClientState *nc)
+ {
+     VhostVDPAState *s = DO_UPCAST(VhostVDPAState, nc, nc);
+ 
++    /*
++     * If a peer NIC is attached, do not cleanup anything.
++     * Cleanup will happen as a part of qemu_cleanup() -> net_cleanup()
++     * when the guest is shutting down.
++     */
++    if (nc->peer && nc->peer->info->type == NET_CLIENT_DRIVER_NIC) {
++        return;
++    }
+     munmap(s->cvq_cmd_out_buffer, vhost_vdpa_net_cvq_cmd_page_len());
+     munmap(s->status, vhost_vdpa_net_cvq_cmd_page_len());
+     if (s->vhost_net) {
 -- 
 MST
 
