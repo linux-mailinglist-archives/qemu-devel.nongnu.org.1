@@ -2,39 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E20B73EA81
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 20:52:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5000C73EAD8
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 21:05:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDrIL-00041V-Vz; Mon, 26 Jun 2023 14:50:38 -0400
+	id 1qDrIX-00044f-UV; Mon, 26 Jun 2023 14:50:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qDrIH-00040o-KS; Mon, 26 Jun 2023 14:50:33 -0400
+ id 1qDrIO-00042Z-19; Mon, 26 Jun 2023 14:50:40 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qDrIF-0004kX-FS; Mon, 26 Jun 2023 14:50:33 -0400
+ id 1qDrIM-0004na-Df; Mon, 26 Jun 2023 14:50:39 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 748BCEF16;
+ by isrv.corpit.ru (Postfix) with ESMTP id 9B1A0EF17;
  Mon, 26 Jun 2023 21:50:18 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 4A553F7A9;
+ by tsrv.corpit.ru (Postfix) with SMTP id 7605BF7AA;
  Mon, 26 Jun 2023 21:50:16 +0300 (MSK)
-Received: (nullmailer pid 1573967 invoked by uid 1000);
+Received: (nullmailer pid 1573970 invoked by uid 1000);
  Mon, 26 Jun 2023 18:50:15 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org, qemu-stable@nongnu.org
-Cc: Richard Purdie <richard.purdie@linuxfoundation.org>,
- Matheus Ferst <matheus.ferst@eldorado.org.br>,
- Richard Henderson <richard.henderson@linaro.org>,
+Cc: Bernhard Beschow <shentey@gmail.com>,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.0.3 03/54] target/ppc: Fix fallback to MFSS for MFFS*
- instructions on pre 3.0 ISAs
-Date: Mon, 26 Jun 2023 21:49:10 +0300
-Message-Id: <20230626185002.1573836-3-mjt@tls.msk.ru>
+Subject: [Stable-8.0.3 04/54] hw/ppc/prep: Fix wiring of PIC -> CPU interrupt
+Date: Mon, 26 Jun 2023 21:49:11 +0300
+Message-Id: <20230626185002.1573836-4-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.0.3-20230626214235@cover.tls.msk.ru>
 References: <qemu-stable-8.0.3-20230626214235@cover.tls.msk.ru>
@@ -63,139 +60,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Richard Purdie <richard.purdie@linuxfoundation.org>
+From: Bernhard Beschow <shentey@gmail.com>
 
-The following commits changed the code such that the fallback to MFSS for MFFSCRN,
-MFFSCRNI, MFFSCE and MFFSL on pre 3.0 ISAs was removed and became an illegal instruction:
+Commit cef2e7148e32 ("hw/isa/i82378: Remove intermediate IRQ forwarder")
+passes s->cpu_intr to i8259_init() in i82378_realize() directly. However, s-
+>cpu_intr isn't initialized yet since that happens after the south bridge's
+pci_realize_and_unref() in board code. Fix this by initializing s->cpu_intr
+before realizing the south bridge.
 
-  bf8adfd88b547680aa857c46098f3a1e94373160 - target/ppc: Move mffscrn[i] to decodetree
-  394c2e2fda70da722f20fb60412d6c0ca4bfaa03 - target/ppc: Move mffsce to decodetree
-  3e5bce70efe6bd1f684efbb21fd2a316cbf0657e - target/ppc: Move mffsl to decodetree
-
-The hardware will handle them as a MFFS instruction as the code did previously.
-This means applications that were segfaulting under qemu when encountering these
-instructions which is used in glibc libm functions for example.
-
-The fallback for MFFSCDRN and MFFSCDRNI added in a later patch was also missing.
-
-This patch restores the fallback to MFSS for these instructions on pre 3.0s ISAs
-as the hardware decoder would, fixing the segfaulting libm code. It doesn't have
-the fallback for 3.0 onwards to match hardware behaviour.
-
-Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
-Reviewed-by: Matheus Ferst <matheus.ferst@eldorado.org.br>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20230510111913.1718734-1-richard.purdie@linuxfoundation.org>
+Fixes: cef2e7148e32 ("hw/isa/i82378: Remove intermediate IRQ forwarder")
+Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+Reviewed-by: Daniel Henrique Barboza <danielhb413@gmail.com>
+Message-Id: <20230304114043.121024-4-shentey@gmail.com>
 Signed-off-by: Daniel Henrique Barboza <danielhb413@gmail.com>
-(cherry picked from commit 5260ecffd24e36c029849f379c8b9cc3d099c879)
+(cherry picked from commit 2237af5e60ada06d90bf714e85523deafd936b9b)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/ppc/insn32.decode b/target/ppc/insn32.decode
-index f8f589e9fd..4fcf3af8d0 100644
---- a/target/ppc/insn32.decode
-+++ b/target/ppc/insn32.decode
-@@ -390,13 +390,19 @@ SETNBCR         011111 ..... ..... ----- 0111100000 -   @X_bi
+diff --git a/hw/ppc/prep.c b/hw/ppc/prep.c
+index d00280c0f8..cfa47c1e44 100644
+--- a/hw/ppc/prep.c
++++ b/hw/ppc/prep.c
+@@ -270,9 +270,11 @@ static void ibm_40p_init(MachineState *machine)
+     }
  
- ### Move To/From FPSCR
- 
--MFFS            111111 ..... 00000 ----- 1001000111 .   @X_t_rc
--MFFSCE          111111 ..... 00001 ----- 1001000111 -   @X_t
--MFFSCRN         111111 ..... 10110 ..... 1001000111 -   @X_tb
--MFFSCDRN        111111 ..... 10100 ..... 1001000111 -   @X_tb
--MFFSCRNI        111111 ..... 10111 ---.. 1001000111 -   @X_imm2
--MFFSCDRNI       111111 ..... 10101 --... 1001000111 -   @X_imm3
--MFFSL           111111 ..... 11000 ----- 1001000111 -   @X_t
-+{
-+  # Before Power ISA v3.0, MFFS bits 11~15 were reserved and should be ignored
-+  MFFS_ISA207     111111 ..... ----- ----- 1001000111 .   @X_t_rc
-+  [
-+    MFFS            111111 ..... 00000 ----- 1001000111 .   @X_t_rc
-+    MFFSCE          111111 ..... 00001 ----- 1001000111 -   @X_t
-+    MFFSCRN         111111 ..... 10110 ..... 1001000111 -   @X_tb
-+    MFFSCDRN        111111 ..... 10100 ..... 1001000111 -   @X_tb
-+    MFFSCRNI        111111 ..... 10111 ---.. 1001000111 -   @X_imm2
-+    MFFSCDRNI       111111 ..... 10101 --... 1001000111 -   @X_imm3
-+    MFFSL           111111 ..... 11000 ----- 1001000111 -   @X_t
-+  ]
-+}
- 
- ### Decimal Floating-Point Arithmetic Instructions
- 
-diff --git a/target/ppc/translate/fp-impl.c.inc b/target/ppc/translate/fp-impl.c.inc
-index 57d8437851..874774eade 100644
---- a/target/ppc/translate/fp-impl.c.inc
-+++ b/target/ppc/translate/fp-impl.c.inc
-@@ -568,6 +568,22 @@ static void store_fpscr_masked(TCGv_i64 fpscr, uint64_t clear_mask,
-     gen_helper_store_fpscr(cpu_env, fpscr_masked, st_mask);
- }
- 
-+static bool trans_MFFS_ISA207(DisasContext *ctx, arg_X_t_rc *a)
-+{
-+    if (!(ctx->insns_flags2 & PPC2_ISA300)) {
-+        /*
-+         * Before Power ISA v3.0, MFFS bits 11~15 were reserved, any instruction
-+         * with OPCD=63 and XO=583 should be decoded as MFFS.
-+         */
-+        return trans_MFFS(ctx, a);
-+    }
-+    /*
-+     * For Power ISA v3.0+, return false and let the pattern group
-+     * select the correct instruction.
-+     */
-+    return false;
-+}
+     /* PCI -> ISA bridge */
+-    i82378_dev = DEVICE(pci_create_simple(pci_bus, PCI_DEVFN(11, 0), "i82378"));
++    i82378_dev = DEVICE(pci_new(PCI_DEVFN(11, 0), "i82378"));
+     qdev_connect_gpio_out(i82378_dev, 0,
+                           qdev_get_gpio_in(DEVICE(cpu), PPC6xx_INPUT_INT));
++    qdev_realize_and_unref(i82378_dev, BUS(pci_bus), &error_fatal);
 +
- static bool trans_MFFS(DisasContext *ctx, arg_X_t_rc *a)
- {
-     REQUIRE_FPU(ctx);
-@@ -584,7 +600,6 @@ static bool trans_MFFSCE(DisasContext *ctx, arg_X_t *a)
- {
-     TCGv_i64 fpscr;
+     sysbus_connect_irq(pcihost, 0, qdev_get_gpio_in(i82378_dev, 15));
+     isa_bus = ISA_BUS(qdev_get_child_bus(i82378_dev, "isa.0"));
  
--    REQUIRE_INSNS_FLAGS2(ctx, ISA300);
-     REQUIRE_FPU(ctx);
- 
-     gen_reset_fpstatus();
-@@ -597,7 +612,6 @@ static bool trans_MFFSCRN(DisasContext *ctx, arg_X_tb *a)
- {
-     TCGv_i64 t1, fpscr;
- 
--    REQUIRE_INSNS_FLAGS2(ctx, ISA300);
-     REQUIRE_FPU(ctx);
- 
-     t1 = tcg_temp_new_i64();
-@@ -614,7 +628,6 @@ static bool trans_MFFSCDRN(DisasContext *ctx, arg_X_tb *a)
- {
-     TCGv_i64 t1, fpscr;
- 
--    REQUIRE_INSNS_FLAGS2(ctx, ISA300);
-     REQUIRE_FPU(ctx);
- 
-     t1 = tcg_temp_new_i64();
-@@ -631,7 +644,6 @@ static bool trans_MFFSCRNI(DisasContext *ctx, arg_X_imm2 *a)
- {
-     TCGv_i64 t1, fpscr;
- 
--    REQUIRE_INSNS_FLAGS2(ctx, ISA300);
-     REQUIRE_FPU(ctx);
- 
-     t1 = tcg_temp_new_i64();
-@@ -647,7 +659,6 @@ static bool trans_MFFSCDRNI(DisasContext *ctx, arg_X_imm3 *a)
- {
-     TCGv_i64 t1, fpscr;
- 
--    REQUIRE_INSNS_FLAGS2(ctx, ISA300);
-     REQUIRE_FPU(ctx);
- 
-     t1 = tcg_temp_new_i64();
-@@ -661,7 +672,6 @@ static bool trans_MFFSCDRNI(DisasContext *ctx, arg_X_imm3 *a)
- 
- static bool trans_MFFSL(DisasContext *ctx, arg_X_t *a)
- {
--    REQUIRE_INSNS_FLAGS2(ctx, ISA300);
-     REQUIRE_FPU(ctx);
- 
-     gen_reset_fpstatus();
 -- 
 2.39.2
 
