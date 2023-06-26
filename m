@@ -2,93 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9205B73DD2A
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 13:19:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E39B573DD6C
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 13:26:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDkCX-0004MB-TX; Mon, 26 Jun 2023 07:16:09 -0400
+	id 1qDkLt-0002r7-HC; Mon, 26 Jun 2023 07:25:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1qDkCK-00044s-4x
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 07:15:59 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <fbarrat@linux.ibm.com>)
+ id 1qDkLq-0002qD-VC; Mon, 26 Jun 2023 07:25:46 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1qDkCI-00016e-3c
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 07:15:55 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687778152;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=/F+r2FbWayY/UkpMGwi9VME8vci8sLOZ9VBIe03wo8I=;
- b=iKEzGCtnR/gZDMaeWLlU68aIdYsQYctLUvmHFFx4lLin7CxKgwzSQTSn84wqtL5Rlw0ZBJ
- nRVXCoNjGvLzr4ngkGDnupgngJRxCkz8ak1UqsKbRYMfThVltb/gZ2AlOo/HmaliP8zC7v
- r+Uv55J67qmn1X4Z8yeAtFJg9aMXW2s=
-Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
- [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-614-kizkV7vyO2iU6f-hNQeA_w-1; Mon, 26 Jun 2023 07:15:51 -0400
-X-MC-Unique: kizkV7vyO2iU6f-hNQeA_w-1
-Received: by mail-lj1-f200.google.com with SMTP id
- 38308e7fff4ca-2b626e49e46so13104931fa.1
- for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 04:15:51 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687778148; x=1690370148;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=/F+r2FbWayY/UkpMGwi9VME8vci8sLOZ9VBIe03wo8I=;
- b=NV55qAj6PMgh6gitBpi42KH4ykRbOSBQIRgqfjGgVGNM7WFgxDPpL+Uw9netDseT6L
- N+FNlzB1eKivRYLy9ZEoz6zJwjnRS9X0e3ZlsLlh8h73/GYMQTZ8T3nRwzm5Pf0ZQH1G
- 8ZGTzMioiar4SmFDf+hZCUsMW+b1+WaauVtSrVwxI4fp38TMXoY7eaPPIPgLFXviFpCP
- s4a7lpbESwW4k4EruWNVJttiL5o9pKg8gTg9FJgyWWKb9s8HyJScxzhCR1/ncp0m7LvG
- MA2M+n3wOG3TOy0tXS8lc3KVOOE/Q9mEOCcGbkrYhaKcXkoPa/XV40A21ZXjwx8nGvqC
- 2vuA==
-X-Gm-Message-State: AC+VfDycK0kuFMN5JfWSsARVfCQ0NDYmwtyvmhc39DfN1yNRDIduDU3l
- D2oawzE4KoLxYPHahPBg4MvF1Iey1zwUngx/2nY4V+CezMzG5VZgURVT94TsPO+6vGUM66Og/+G
- oblwuBpuXljpauw7p1G88qpY=
-X-Received: by 2002:a2e:9b4e:0:b0:2b3:4e76:9c6a with SMTP id
- o14-20020a2e9b4e000000b002b34e769c6amr19079657ljj.39.1687778148779; 
- Mon, 26 Jun 2023 04:15:48 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ4Bu2sq9/H1+LSlpKnBP3dKOk7f6jQfs7Rc5CPUMAgYtAz9UFPjiiCma2+pJKsDsIrYAj7xAg==
-X-Received: by 2002:a2e:9b4e:0:b0:2b3:4e76:9c6a with SMTP id
- o14-20020a2e9b4e000000b002b34e769c6amr19079644ljj.39.1687778148495; 
- Mon, 26 Jun 2023 04:15:48 -0700 (PDT)
-Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
- [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
- i7-20020aa7c9c7000000b0051a3334f873sm2674287edt.89.2023.06.26.04.15.47
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 26 Jun 2023 04:15:47 -0700 (PDT)
-Date: Mon, 26 Jun 2023 13:15:47 +0200
-From: Igor Mammedov <imammedo@redhat.com>
-To: Ani Sinha <anisinha@redhat.com>
-Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>, Laurent Vivier
- <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, mst@redhat.com,
- Michael Labiuk <michael.labiuk@virtuozzo.com>
-Subject: Re: [PATCH v2 4/5] tests/qtest/hd-geo-test: fix test by removing
- unnecessary pcie-root-port
-Message-ID: <20230626131547.010ccdd8@imammedo.users.ipa.redhat.com>
-In-Reply-To: <20230622103255.267289-5-anisinha@redhat.com>
-References: <20230622103255.267289-1-anisinha@redhat.com>
- <20230622103255.267289-5-anisinha@redhat.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+ (Exim 4.90_1) (envelope-from <fbarrat@linux.ibm.com>)
+ id 1qDkLo-0003vD-CF; Mon, 26 Jun 2023 07:25:46 -0400
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 35QBGPWK012433; Mon, 26 Jun 2023 11:25:38 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=4UC+0kCIY7O3VKmo7/CzrL8jrjSmy+xIlVws0grDQYQ=;
+ b=SH2OUJl2zs3U9i/vGMBt6l4u5wFInt09N3LdFo9aJUWuHVX+ma6qUcTGmnPB6ZLwX4Ft
+ uv86xyVv8+6MjHhFOLAKvf/wMsGKbkuKGZmrASm/eqC2luCg7ptKYHeeW7DdiK3mMW1F
+ 3ZJt6vnk7fFUwBTdKQ7EMva+4KvZtgcQUV1EOLvaXUmf7TeQCy/2u25rB9aEefK/JM3z
+ g4T1wJ551KHzleLJ4NhZnDd1EbhWSOTWK555CrM9FNn6PPhVfKQAUGCdE8bkHnXvmLj/
+ L+7YAG9uMih3VSbwN9cWaTxzZbdbIFH9xtVbwoNwyHfL8WVIDTBZhseeAG5yi70LkkLc 5A== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rf9nhr6cb-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 26 Jun 2023 11:25:38 +0000
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 35QBGrtq014444;
+ Mon, 26 Jun 2023 11:25:37 GMT
+Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.107])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rf9nhr6bq-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 26 Jun 2023 11:25:37 +0000
+Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
+ by ppma03fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 35Q7uvXY032598;
+ Mon, 26 Jun 2023 11:25:35 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+ by ppma03fra.de.ibm.com (PPS) with ESMTPS id 3rdr450vmu-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 26 Jun 2023 11:25:34 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com
+ [10.20.54.106])
+ by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 35QBPWdl21693142
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 26 Jun 2023 11:25:32 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9909520043;
+ Mon, 26 Jun 2023 11:25:32 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 19EFB20040;
+ Mon, 26 Jun 2023 11:25:32 +0000 (GMT)
+Received: from [9.171.45.146] (unknown [9.171.45.146])
+ by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Mon, 26 Jun 2023 11:25:31 +0000 (GMT)
+Message-ID: <e808c49d-2ea0-6773-a524-1b5939fec90a@linux.ibm.com>
+Date: Mon, 26 Jun 2023 13:25:31 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH] pnv/xive2: Allow indirect TIMA accesses of all sizes
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>, clg@kaod.org, 
+ danielhb413@gmail.com, qemu-ppc@nongnu.org, qemu-devel@nongnu.org
+Cc: npiggin@gmail.com
+References: <20230626094057.1192473-1-fbarrat@linux.ibm.com>
+ <b7a68894-c992-3845-754c-1fdf655ad3fe@linaro.org>
+Content-Language: en-US
+From: Frederic Barrat <fbarrat@linux.ibm.com>
+In-Reply-To: <b7a68894-c992-3845-754c-1fdf655ad3fe@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: gbSXzDoz_CvBPYMJzUuG0deLxAlwCQRX
+X-Proofpoint-GUID: ZpRvR_En4HxD_3rkTyuQonYFudAa544t
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-06-26_07,2023-06-26_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 phishscore=0
+ mlxscore=0 impostorscore=0 suspectscore=0 priorityscore=1501
+ malwarescore=0 bulkscore=0 clxscore=1015 mlxlogscore=917 adultscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2305260000 definitions=main-2306260100
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=fbarrat@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,72 +115,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 22 Jun 2023 16:02:54 +0530
-Ani Sinha <anisinha@redhat.com> wrote:
 
-> A SCSI controller can be attached to a pcie-to-pci bridge which in turn can be
-> attached directly to the root bus (peie.0). There is no need to attach a
-> pcie-root-port on the root bus in order to attach the pcie-ro-pci bridge.
-> Fix it.
 
-bridge can be both on pcie.0 or on root-port and both are valid configs.
-So what exactly and why we are fixing here?
-
+On 26/06/2023 11:48, Philippe Mathieu-Daudé wrote:
+> On 26/6/23 11:40, Frederic Barrat wrote:
+>> Booting linux on the powernv10 machine logs a few errors like:
+>>
+>> Invalid read at addr 0x38, size 1, region 'xive-ic-tm-indirect', 
+>> reason: invalid size (min:8 max:8)
+>> Invalid write at addr 0x38, size 1, region 'xive-ic-tm-indirect', 
+>> reason: invalid size (min:8 max:8)
+>> Invalid read at addr 0x38, size 1, region 'xive-ic-tm-indirect', 
+>> reason: invalid size (min:8 max:8)
+>>
+>> Those errors happen when linux is resetting XIVE. We're trying to
+>> read/write the enablement bit for the hardware context and qemu
+>> doesn't allow indirect TIMA accesses of less than 8 bytes. Direct TIMA
+>> access can go through though, as well as indirect TIMA accesses on P9.
+>> So even though there are some restrictions regarding the address/size
+>> combinations for TIMA access, the example above is perfectly valid.
+>>
+>> This patch lets indirect TIMA accesses of all sizes go through. The
+>> special operations will be intercepted and the default "raw" handlers
+>> will pick up all other requests and complain about invalid sizes as
+>> appropriate.
+>>
+>> Tested-by: Nicholas Piggin <npiggin@gmail.com>
+>> Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
+>> ---
+>>   hw/intc/pnv_xive2.c | 4 ++--
+>>   1 file changed, 2 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/hw/intc/pnv_xive2.c b/hw/intc/pnv_xive2.c
+>> index ed438a20ed..e8ab176de6 100644
+>> --- a/hw/intc/pnv_xive2.c
+>> +++ b/hw/intc/pnv_xive2.c
+>> @@ -1644,11 +1644,11 @@ static const MemoryRegionOps 
+>> pnv_xive2_ic_tm_indirect_ops = {
+>>       .write = pnv_xive2_ic_tm_indirect_write,
+>>       .endianness = DEVICE_BIG_ENDIAN,
+>>       .valid = {
+>> -        .min_access_size = 8,
+>> +        .min_access_size = 1,
 > 
-> CC: mst@redhat.com
-> CC: imammedo@redhat.com
-> CC: Michael Labiuk <michael.labiuk@virtuozzo.com>
+> Maybe. Is there a bus involved in between?
 > 
-> Signed-off-by: Ani Sinha <anisinha@redhat.com>
-> ---
->  tests/qtest/hd-geo-test.c | 18 ++++++++----------
->  1 file changed, 8 insertions(+), 10 deletions(-)
-> 
-> diff --git a/tests/qtest/hd-geo-test.c b/tests/qtest/hd-geo-test.c
-> index 5aa258a2b3..d08bffad91 100644
-> --- a/tests/qtest/hd-geo-test.c
-> +++ b/tests/qtest/hd-geo-test.c
-> @@ -784,14 +784,12 @@ static void test_override_scsi(void)
->      test_override(args, "pc", expected);
->  }
->  
-> -static void setup_pci_bridge(TestArgs *args, const char *id, const char *rootid)
-> +static void setup_pci_bridge(TestArgs *args, const char *id)
->  {
->  
-> -    char *root, *br;
-> -    root = g_strdup_printf("-device pcie-root-port,id=%s", rootid);
-> -    br = g_strdup_printf("-device pcie-pci-bridge,bus=%s,id=%s", rootid, id);
-> +    char *br;
-> +    br = g_strdup_printf("-device pcie-pci-bridge,bus=pcie.0,id=%s", id);
->  
-> -    args->argc = append_arg(args->argc, args->argv, ARGV_SIZE, root);
->      args->argc = append_arg(args->argc, args->argv, ARGV_SIZE, br);
->  }
->  
-> @@ -811,8 +809,8 @@ static void test_override_scsi_q35(void)
->      add_drive_with_mbr(args, empty_mbr, 1);
->      add_drive_with_mbr(args, empty_mbr, 1);
->      add_drive_with_mbr(args, empty_mbr, 1);
-> -    setup_pci_bridge(args, "pcie.0", "br");
-> -    add_scsi_controller(args, "lsi53c895a", "br", 3);
-> +    setup_pci_bridge(args, "pcie-pci-br");
-> +    add_scsi_controller(args, "lsi53c895a", "pcie-pci-br", 3);
->      add_scsi_disk(args, 0, 0, 0, 0, 0, 10000, 120, 30);
->      add_scsi_disk(args, 1, 0, 0, 1, 0, 9000, 120, 30);
->      add_scsi_disk(args, 2, 0, 0, 2, 0, 1, 0, 0);
-> @@ -868,9 +866,9 @@ static void test_override_virtio_blk_q35(void)
->      };
->      add_drive_with_mbr(args, empty_mbr, 1);
->      add_drive_with_mbr(args, empty_mbr, 1);
-> -    setup_pci_bridge(args, "pcie.0", "br");
-> -    add_virtio_disk(args, 0, "br", 3, 10000, 120, 30);
-> -    add_virtio_disk(args, 1, "br", 4, 9000, 120, 30);
-> +    setup_pci_bridge(args, "pcie-pci-br");
-> +    add_virtio_disk(args, 0, "pcie-pci-br", 3, 10000, 120, 30);
-> +    add_virtio_disk(args, 1, "pcie-pci-br", 4, 9000, 120, 30);
->      test_override(args, "q35", expected);
->  }
->  
+> What about other I/O regions?
 
+
+XIVE is attached to the main system bus and the CPU can trigger 1, 2, 4 
+and 8-byte accesses. The TIMA is a part of XIVE which supports various 
+size of mmio operations, all the way down to byte operations. It 
+actually relies on it.
+
+There are 2 memory regions where we want to allow byte-access. One, 
+known as TIMA direct access, already allows access with min size = 1. 
+I'm just aligning the other one, known as TIMA indirect access, to do 
+the same, since it's what the hardware allows.
+This is similar to what we had on P9 and both regions are already 
+defined with min size = 1 there. So it really looks like what I'm 
+changing here was just an oversight.
+
+
+>>           .max_access_size = 8,
+>>       },
+>>       .impl = {
+>> -        .min_access_size = 8,
+>> +        .min_access_size = 1,
+> 
+> Unlikely. This is for the handler implementation, not related to HW.
+
+
+The handlers for the TIMA regions are aware of the size of the access, 
+and behave differently based on it (see xive_tm_find_op() for example). 
+So I think this is correct. Let me know if I'm missing something here.
+
+   Fred
+
+
+
+>>           .max_access_size = 8,
+>>       },
+>>   };
+> 
 
