@@ -2,34 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF9E773EB07
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 21:13:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B49C073EAF7
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 21:11:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDrSQ-0007zg-TE; Mon, 26 Jun 2023 15:01:08 -0400
+	id 1qDrTM-0000yt-3g; Mon, 26 Jun 2023 15:02:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qDrSG-0007Gm-76; Mon, 26 Jun 2023 15:00:52 -0400
+ id 1qDrSi-0008SP-Lm; Mon, 26 Jun 2023 15:01:23 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qDrSE-0007gv-Cw; Mon, 26 Jun 2023 15:00:51 -0400
+ id 1qDrSa-0007hW-6v; Mon, 26 Jun 2023 15:01:20 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 753D9EFBA;
+ by isrv.corpit.ru (Postfix) with ESMTP id 8E789EFBB;
  Mon, 26 Jun 2023 21:59:12 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id DA129F7F6;
- Mon, 26 Jun 2023 21:59:10 +0300 (MSK)
-Received: (nullmailer pid 1575351 invoked by uid 1000);
+ by tsrv.corpit.ru (Postfix) with SMTP id 1CDF4F7F7;
+ Mon, 26 Jun 2023 21:59:11 +0300 (MSK)
+Received: (nullmailer pid 1575354 invoked by uid 1000);
  Mon, 26 Jun 2023 18:59:05 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org, qemu-stable@nongnu.org
-Cc: Anastasia Belova <abelova@astralinux.ru>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.4 25/43] vnc: move assert in vnc_worker_thread_loop
-Date: Mon, 26 Jun 2023 21:58:43 +0300
-Message-Id: <20230626185902.1575177-25-mjt@tls.msk.ru>
+Cc: Nicholas Piggin <npiggin@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.4 26/43] target/ppc: Fix lqarx to set cpu_reserve
+Date: Mon, 26 Jun 2023 21:58:44 +0300
+Message-Id: <20230626185902.1575177-26-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.4-20230626215033@cover.tls.msk.ru>
 References: <qemu-stable-7.2.4-20230626215033@cover.tls.msk.ru>
@@ -58,37 +61,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Anastasia Belova <abelova@astralinux.ru>
+From: Nicholas Piggin <npiggin@gmail.com>
 
-job may be NULL if queue->exit is true. Check
-it before dereference job.
+lqarx does not set cpu_reserve, which causes stqcx. to never succeed.
 
-Fixes: f31f9c1080 ("vnc: add magic cookie to VncState")
-Signed-off-by: Anastasia Belova <abelova@astralinux.ru>
-Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org
+Fixes: 94bf2658676 ("target/ppc: Use atomic load for LQ and LQARX")
+Fixes: 57b38ffd0c6 ("target/ppc: Use tcg_gen_qemu_{ld,st}_i128 for LQARX, LQ, STQ")
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-Id: <20230605025445.161932-1-npiggin@gmail.com>
+Signed-off-by: Daniel Henrique Barboza <danielhb413@gmail.com>
+(cherry picked from commit e025e8f5a8a7e32409bb4c7c509d752486113188)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-(cherry picked from commit bdfca8a22f41e7ad47fd2dac71e4d1387e2c0d4e)
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/ui/vnc-jobs.c b/ui/vnc-jobs.c
-index 886f9bf611..fcca7ec632 100644
---- a/ui/vnc-jobs.c
-+++ b/ui/vnc-jobs.c
-@@ -250,12 +250,13 @@ static int vnc_worker_thread_loop(VncJobQueue *queue)
-     /* Here job can only be NULL if queue->exit is true */
-     job = QTAILQ_FIRST(&queue->jobs);
-     vnc_unlock_queue(queue);
--    assert(job->vs->magic == VNC_MAGIC);
- 
-     if (queue->exit) {
-         return -1;
+diff --git a/target/ppc/translate.c b/target/ppc/translate.c
+index 19c1d17cb0..1de7eca9c4 100644
+--- a/target/ppc/translate.c
++++ b/target/ppc/translate.c
+@@ -3972,6 +3972,7 @@ static void gen_lqarx(DisasContext *ctx)
      }
+     tcg_temp_free(EA);
  
-+    assert(job->vs->magic == VNC_MAGIC);
-+
-     vnc_lock_output(job->vs);
-     if (job->vs->ioc == NULL || job->vs->abort == true) {
-         vnc_unlock_output(job->vs);
++    tcg_gen_mov_tl(cpu_reserve, EA);
+     tcg_gen_st_tl(hi, cpu_env, offsetof(CPUPPCState, reserve_val));
+     tcg_gen_st_tl(lo, cpu_env, offsetof(CPUPPCState, reserve_val2));
+ }
 -- 
 2.39.2
 
