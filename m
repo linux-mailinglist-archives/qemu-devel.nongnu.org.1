@@ -2,75 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9388F73DF3E
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 14:30:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7815573DF73
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 14:41:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDlLv-0003Dc-Nd; Mon, 26 Jun 2023 08:29:55 -0400
+	id 1qDlMV-0005eE-LY; Mon, 26 Jun 2023 08:30:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qDlLM-0002hy-9K
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 08:29:26 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qDlLP-0002pP-QH
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 08:29:29 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qDlLG-00035P-JJ
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 08:29:17 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qDlLJ-00035h-8a
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 08:29:20 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687782554;
+ s=mimecast20190719; t=1687782556;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=cqGaDSnZccD0ikwcRDWj815DiMnuX6iQ2kN0X0ER5Dk=;
- b=V5Qkiwh2sM6Z0WOaz+iZZgJXUsqRukH+xqj/gvrSzbE2rQE5Gke7VduXP5ftqpMxzWcbE0
- uvoMUupt3J4hx01emu4ExHW8ZlelfPigzG5NUiqrC129IH3be4kCXLsSIZVy5lX3USljXA
- CBo+06ExUa6YvW0YdDqwiNhadEz+3Hg=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=fXU90TCrPGTJYXwM0DjJPPrOfmo7FHnSBsI1Li4hHxI=;
+ b=MsyJVi+LZN7G+JhpSqvfXO5tnNR4/guQCfqR/kKdKe6O0c5XVlm29sXyVRhaBMK+6ZRss9
+ +YTaQMao7fd46jnh0FMVQHAUmjnkUp3veNkR7z9/3LhJdMgOFCVpHiaAoqbLdOIabehHlG
+ g4ctb72bG7xIyHeXX/Z+pAljlbYHG9g=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-55-T962emIsNgSvGqmy2vY1MQ-1; Mon, 26 Jun 2023 08:29:12 -0400
-X-MC-Unique: T962emIsNgSvGqmy2vY1MQ-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-3fa8f8fb7b3so27938555e9.2
- for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 05:29:12 -0700 (PDT)
+ us-mta-49-y1Unr-5yP8qh8-uGAN_28w-1; Mon, 26 Jun 2023 08:29:15 -0400
+X-MC-Unique: y1Unr-5yP8qh8-uGAN_28w-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-3f814f78af2so13116045e9.0
+ for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 05:29:15 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687782551; x=1690374551;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=cqGaDSnZccD0ikwcRDWj815DiMnuX6iQ2kN0X0ER5Dk=;
- b=NX1ILUR0joXURB15cEW2mUV8ts7TeHR3jVz/24EODqlHOE9whZdZyIKBwq/79CzoHA
- vqenIpds7JeF5mrofAEbqL/VB5YA1M5xpfNfJNnrQWOKIwgciHIMOjwn3TR2o0lXl1kl
- bdrNnuY9b6/dE6vCh3RsbQsITmSLMNqJSkNdH5lDMoOsjtM7OGu4798zrciZK9AklvMM
- 9Bh6AFbrsKIu9cUOeuO2Tq4dZbzNlGZzhZGuCQ+oT1qSKaLlUneYknHTcUPoJfteAcyT
- pY9jmiH9FgslURrasyMaTgmRWe+hdEaQoUYXxN7gaC0rsHhFq+x3IPTQ59rpZv639klR
- 4vqg==
-X-Gm-Message-State: AC+VfDwV9d8WJwtqyj3LFUOOPzAkV9DsNBon1Epd/BrTM7XQqmlWbS4H
- eXu6klWuAfrt3KPqYLTQTK0oH4QDhauonjWE8X9CnDKR/UQCXCtVz7NRiVRs2kJNVc+i01p33dX
- 8F0BHaHk1pXQEU8ay1IlVeCkrPTJB18bNucTEoUVVDUgejpOkw1PGRTdjX34bDO6ZcLTs
-X-Received: by 2002:a7b:c051:0:b0:3f6:1474:905 with SMTP id
- u17-20020a7bc051000000b003f614740905mr31768613wmc.29.1687782551154; 
- Mon, 26 Jun 2023 05:29:11 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5AuUBfg9tNLl6cA+demAJ79ns6JqjNYh6xNDrcd8C1GUxRIrRSLeU9HTalOY5cH91vVYxRjA==
-X-Received: by 2002:a7b:c051:0:b0:3f6:1474:905 with SMTP id
- u17-20020a7bc051000000b003f614740905mr31768597wmc.29.1687782550883; 
- Mon, 26 Jun 2023 05:29:10 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1687782554; x=1690374554;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=fXU90TCrPGTJYXwM0DjJPPrOfmo7FHnSBsI1Li4hHxI=;
+ b=VYFrHx60e9uRE56AokKgvkbMYhCAlWPeMbOBXVEfpIzc+HnPUceXOi1oSBY24F3mIC
+ L3QUrYJDzgU9TGnktNoAU2vss7IvI8DhnyR4Dj3YNfeuY9emzlysM4he7juZVPJv51dU
+ liHAiGvWBoWDflrliPQBraFZ1EdE974+DnrUtZCRMR0J7nEp6uJfDY8os1buCT+x8daH
+ 1HFO66biDd7ghkqBB1a4ajkVGmQ4+/ePtMQ9SMAr7MWKb2HkYQV/yVrO52I6lQwpdwSb
+ SM20GWBXid9q7uw7xcp7kcwfPR4KcEZxjSTGJM0qX2qtZUefmwlnPs2ayH13g7McfWYt
+ 0qFg==
+X-Gm-Message-State: AC+VfDxy2ZupwYyupvpE8XaOIKjS0xFRgaoAqDeV5cEGRpdkzj42YdWs
+ KW1P+1nWBmea9/YP1yTcXgxaX020W9W7eaS/xVwIBl4EeNA1XmADafr7QMIwTqIMrellUKxPt73
+ usTlyylf86frpfOEfm0n3hywCDVMu26VkvNdbgmB9Occe3S67NfIqVzjy54q89sK0+VUT
+X-Received: by 2002:a05:600c:2204:b0:3fa:8db4:91ec with SMTP id
+ z4-20020a05600c220400b003fa8db491ecmr2409540wml.10.1687782553958; 
+ Mon, 26 Jun 2023 05:29:13 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7yQcKQX++d4QM53cylS2Kk+92ukcHM0rFU4P6sy6fzGSG4gYYsmaSjDUZn5IGEPD0Aez0XBg==
+X-Received: by 2002:a05:600c:2204:b0:3fa:8db4:91ec with SMTP id
+ z4-20020a05600c220400b003fa8db491ecmr2409526wml.10.1687782553638; 
+ Mon, 26 Jun 2023 05:29:13 -0700 (PDT)
 Received: from redhat.com ([2.52.156.102]) by smtp.gmail.com with ESMTPSA id
- v2-20020a5d6782000000b00313f5babb18sm1326446wru.9.2023.06.26.05.29.09
+ i7-20020adfdec7000000b00313dfe954ecsm7160021wrn.11.2023.06.26.05.29.12
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 26 Jun 2023 05:29:10 -0700 (PDT)
-Date: Mon, 26 Jun 2023 08:29:08 -0400
+ Mon, 26 Jun 2023 05:29:13 -0700 (PDT)
+Date: Mon, 26 Jun 2023 08:29:11 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- David Hildenbrand <david@redhat.com>, Gavin Shan <gshan@redhat.com>
-Subject: [PULL 26/53] virtio-mem: Simplify bitmap handling and
- virtio_mem_set_block_state()
-Message-ID: <25c893037b89ddd4e42927a2a9b524dbbc0c34a3.1687782442.git.mst@redhat.com>
+ Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>,
+ Jason Wang <jasowang@redhat.com>, Lei Yang <leiyang@redhat.com>
+Subject: [PULL 27/53] vdpa: return errno in vhost_vdpa_get_vring_group error
+Message-ID: <0f2bb0bf38b04e9dfdc32ce5c762dd317f5a4c5a.1687782442.git.mst@redhat.com>
 References: <cover.1687782442.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1687782442.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
@@ -99,200 +102,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: David Hildenbrand <david@redhat.com>
+From: Eugenio Pérez <eperezma@redhat.com>
 
-Let's separate plug and unplug handling to prepare for future changes
-and make the code a bit easier to read -- working on block states
-(plugged/unplugged) instead of on a bitmap.
+We need to tell in the caller, as some errors are expected in a normal
+workflow.  In particular, parent drivers in recent kernels with
+VHOST_BACKEND_F_IOTLB_ASID may not support vring groups.  In that case,
+-ENOTSUP is returned.
 
-Cc: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Gavin Shan <gshan@redhat.com>
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Message-Id: <20230523183036.517957-1-david@redhat.com>
+This is the case of vp_vdpa in Linux 6.2.
+
+Next patches in this series will use that information to know if it must
+abort or not.  Also, next patches return properly an errp instead of
+printing with error_report.
+
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Signed-off-by: Eugenio Pérez <eperezma@redhat.com>
+Message-Id: <20230526153143.470745-2-eperezma@redhat.com>
+Tested-by: Lei Yang <leiyang@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/virtio/virtio-mem.c | 112 +++++++++++++++++++++++------------------
- 1 file changed, 64 insertions(+), 48 deletions(-)
+ net/vhost-vdpa.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/hw/virtio/virtio-mem.c b/hw/virtio/virtio-mem.c
-index 12ea58d5ad..ec0ae32589 100644
---- a/hw/virtio/virtio-mem.c
-+++ b/hw/virtio/virtio-mem.c
-@@ -398,33 +398,46 @@ static void virtio_mem_notify_unplug_all(VirtIOMEM *vmem)
-     }
- }
+diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+index 37cdc84562..3fb833fe76 100644
+--- a/net/vhost-vdpa.c
++++ b/net/vhost-vdpa.c
+@@ -362,6 +362,14 @@ static NetClientInfo net_vhost_vdpa_info = {
+         .check_peer_type = vhost_vdpa_check_peer_type,
+ };
  
--static bool virtio_mem_test_bitmap(const VirtIOMEM *vmem, uint64_t start_gpa,
--                                   uint64_t size, bool plugged)
-+static bool virtio_mem_is_range_plugged(const VirtIOMEM *vmem,
-+                                        uint64_t start_gpa, uint64_t size)
++/**
++ * Get vring virtqueue group
++ *
++ * @device_fd  vdpa device fd
++ * @vq_index   Virtqueue index
++ *
++ * Return -errno in case of error, or vq group if success.
++ */
+ static int64_t vhost_vdpa_get_vring_group(int device_fd, unsigned vq_index)
  {
-     const unsigned long first_bit = (start_gpa - vmem->addr) / vmem->block_size;
-     const unsigned long last_bit = first_bit + (size / vmem->block_size) - 1;
-     unsigned long found_bit;
+     struct vhost_vring_state state = {
+@@ -370,6 +378,7 @@ static int64_t vhost_vdpa_get_vring_group(int device_fd, unsigned vq_index)
+     int r = ioctl(device_fd, VHOST_VDPA_GET_VRING_GROUP, &state);
  
-     /* We fake a shorter bitmap to avoid searching too far. */
--    if (plugged) {
--        found_bit = find_next_zero_bit(vmem->bitmap, last_bit + 1, first_bit);
--    } else {
--        found_bit = find_next_bit(vmem->bitmap, last_bit + 1, first_bit);
--    }
-+    found_bit = find_next_zero_bit(vmem->bitmap, last_bit + 1, first_bit);
-     return found_bit > last_bit;
- }
- 
--static void virtio_mem_set_bitmap(VirtIOMEM *vmem, uint64_t start_gpa,
--                                  uint64_t size, bool plugged)
-+static bool virtio_mem_is_range_unplugged(const VirtIOMEM *vmem,
-+                                          uint64_t start_gpa, uint64_t size)
-+{
-+    const unsigned long first_bit = (start_gpa - vmem->addr) / vmem->block_size;
-+    const unsigned long last_bit = first_bit + (size / vmem->block_size) - 1;
-+    unsigned long found_bit;
-+
-+    /* We fake a shorter bitmap to avoid searching too far. */
-+    found_bit = find_next_bit(vmem->bitmap, last_bit + 1, first_bit);
-+    return found_bit > last_bit;
-+}
-+
-+static void virtio_mem_set_range_plugged(VirtIOMEM *vmem, uint64_t start_gpa,
-+                                         uint64_t size)
- {
-     const unsigned long bit = (start_gpa - vmem->addr) / vmem->block_size;
-     const unsigned long nbits = size / vmem->block_size;
- 
--    if (plugged) {
--        bitmap_set(vmem->bitmap, bit, nbits);
--    } else {
--        bitmap_clear(vmem->bitmap, bit, nbits);
--    }
-+    bitmap_set(vmem->bitmap, bit, nbits);
-+}
-+
-+static void virtio_mem_set_range_unplugged(VirtIOMEM *vmem, uint64_t start_gpa,
-+                                           uint64_t size)
-+{
-+    const unsigned long bit = (start_gpa - vmem->addr) / vmem->block_size;
-+    const unsigned long nbits = size / vmem->block_size;
-+
-+    bitmap_clear(vmem->bitmap, bit, nbits);
- }
- 
- static void virtio_mem_send_response(VirtIOMEM *vmem, VirtQueueElement *elem,
-@@ -474,6 +487,7 @@ static int virtio_mem_set_block_state(VirtIOMEM *vmem, uint64_t start_gpa,
- {
-     const uint64_t offset = start_gpa - vmem->addr;
-     RAMBlock *rb = vmem->memdev->mr.ram_block;
-+    int ret = 0;
- 
-     if (virtio_mem_is_busy()) {
-         return -EBUSY;
-@@ -484,42 +498,43 @@ static int virtio_mem_set_block_state(VirtIOMEM *vmem, uint64_t start_gpa,
-             return -EBUSY;
-         }
-         virtio_mem_notify_unplug(vmem, offset, size);
--    } else {
--        int ret = 0;
-+        virtio_mem_set_range_unplugged(vmem, start_gpa, size);
-+        return 0;
-+    }
- 
--        if (vmem->prealloc) {
--            void *area = memory_region_get_ram_ptr(&vmem->memdev->mr) + offset;
--            int fd = memory_region_get_fd(&vmem->memdev->mr);
--            Error *local_err = NULL;
-+    if (vmem->prealloc) {
-+        void *area = memory_region_get_ram_ptr(&vmem->memdev->mr) + offset;
-+        int fd = memory_region_get_fd(&vmem->memdev->mr);
-+        Error *local_err = NULL;
- 
--            qemu_prealloc_mem(fd, area, size, 1, NULL, &local_err);
--            if (local_err) {
--                static bool warned;
-+        qemu_prealloc_mem(fd, area, size, 1, NULL, &local_err);
-+        if (local_err) {
-+            static bool warned;
- 
--                /*
--                 * Warn only once, we don't want to fill the log with these
--                 * warnings.
--                 */
--                if (!warned) {
--                    warn_report_err(local_err);
--                    warned = true;
--                } else {
--                    error_free(local_err);
--                }
--                ret = -EBUSY;
-+            /*
-+             * Warn only once, we don't want to fill the log with these
-+             * warnings.
-+             */
-+            if (!warned) {
-+                warn_report_err(local_err);
-+                warned = true;
-+            } else {
-+                error_free(local_err);
-             }
--        }
--        if (!ret) {
--            ret = virtio_mem_notify_plug(vmem, offset, size);
--        }
--
--        if (ret) {
--            /* Could be preallocation or a notifier populated memory. */
--            ram_block_discard_range(vmem->memdev->mr.ram_block, offset, size);
--            return -EBUSY;
-+            ret = -EBUSY;
-         }
-     }
--    virtio_mem_set_bitmap(vmem, start_gpa, size, plug);
-+
-+    if (!ret) {
-+        ret = virtio_mem_notify_plug(vmem, offset, size);
-+    }
-+    if (ret) {
-+        /* Could be preallocation or a notifier populated memory. */
-+        ram_block_discard_range(vmem->memdev->mr.ram_block, offset, size);
-+        return -EBUSY;
-+    }
-+
-+    virtio_mem_set_range_plugged(vmem, start_gpa, size);
-     return 0;
- }
- 
-@@ -538,7 +553,8 @@ static int virtio_mem_state_change_request(VirtIOMEM *vmem, uint64_t gpa,
-     }
- 
-     /* test if really all blocks are in the opposite state */
--    if (!virtio_mem_test_bitmap(vmem, gpa, size, !plug)) {
-+    if ((plug && !virtio_mem_is_range_unplugged(vmem, gpa, size)) ||
-+        (!plug && !virtio_mem_is_range_plugged(vmem, gpa, size))) {
-         return VIRTIO_MEM_RESP_ERROR;
-     }
- 
-@@ -651,9 +667,9 @@ static void virtio_mem_state_request(VirtIOMEM *vmem, VirtQueueElement *elem,
-         return;
-     }
- 
--    if (virtio_mem_test_bitmap(vmem, gpa, size, true)) {
-+    if (virtio_mem_is_range_plugged(vmem, gpa, size)) {
-         resp.u.state.state = cpu_to_le16(VIRTIO_MEM_STATE_PLUGGED);
--    } else if (virtio_mem_test_bitmap(vmem, gpa, size, false)) {
-+    } else if (virtio_mem_is_range_unplugged(vmem, gpa, size)) {
-         resp.u.state.state = cpu_to_le16(VIRTIO_MEM_STATE_UNPLUGGED);
-     } else {
-         resp.u.state.state = cpu_to_le16(VIRTIO_MEM_STATE_MIXED);
-@@ -1372,7 +1388,7 @@ static bool virtio_mem_rdm_is_populated(const RamDiscardManager *rdm,
-         return false;
-     }
- 
--    return virtio_mem_test_bitmap(vmem, start_gpa, end_gpa - start_gpa, true);
-+    return virtio_mem_is_range_plugged(vmem, start_gpa, end_gpa - start_gpa);
- }
- 
- struct VirtIOMEMReplayData {
+     if (unlikely(r < 0)) {
++        r = -errno;
+         error_report("Cannot get VQ %u group: %s", vq_index,
+                      g_strerror(errno));
+         return r;
 -- 
 MST
 
