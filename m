@@ -2,76 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FF8673DF3B
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 14:30:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E9D773DF6E
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 14:40:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDlKr-0001vO-Pg; Mon, 26 Jun 2023 08:28:50 -0400
+	id 1qDlLu-00038p-18; Mon, 26 Jun 2023 08:29:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qDlKc-0001q6-LJ
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 08:28:34 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qDlKh-00020q-OR
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 08:28:45 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qDlKa-0002mm-JN
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 08:28:34 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qDlKf-0002rS-RH
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 08:28:39 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687782511;
+ s=mimecast20190719; t=1687782517;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=HpijCPbqmV8/82Yuz6YLQPDKA9gyZY4F7fQYMz5NMV0=;
- b=fVlpWfKt8ZE9yVs6IDeUlnRnRtyo0YASW72CQOYmtnSdbxgcuKQtaRP+O/joPrRTXh6uGM
- IzBx0KjaTQ+54v4bUVOZZGgNbrubsY2A2dFEY0ccNTBUTzhsI0UXdX7cauU2hCuJoL9FLF
- EI2/QpHWT5ap4gWvNohdg+gu5I6NG6o=
-Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
- [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=I0c/2TSZTwjPfy5oknVtffw6zqqXBeJNU6cIu4XphFk=;
+ b=LN2U5uoDyu53/ZTHfEwNxecoAb/BzWGjx6XN3nUnIcr+l1A0jDwJoHU+a47fkVFX/Vlq05
+ XPMdzC3Owc9/UNeDnsjtdEyPf/T59bPmA3u7qbv+JxAFGrsBSr627G1KxA91oBXUDPZvNQ
+ KUiFqMMK1le2fuA+2t5781/Q74FYQns=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-454-eGjlKC-aNMSauQY3Q1qmnw-1; Mon, 26 Jun 2023 08:28:30 -0400
-X-MC-Unique: eGjlKC-aNMSauQY3Q1qmnw-1
-Received: by mail-lf1-f71.google.com with SMTP id
- 2adb3069b0e04-4f3932e595dso2516089e87.1
- for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 05:28:30 -0700 (PDT)
+ us-mta-670-cuMu1rp3PcO9JrAuNzkiSA-1; Mon, 26 Jun 2023 08:28:35 -0400
+X-MC-Unique: cuMu1rp3PcO9JrAuNzkiSA-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-3f9d7ff4b6aso19857675e9.1
+ for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 05:28:35 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687782508; x=1690374508;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=HpijCPbqmV8/82Yuz6YLQPDKA9gyZY4F7fQYMz5NMV0=;
- b=j/NB5ycTc1QGARV+7rUNhYBehe91uVL5RJUcDCJB8cyamK0b5Z1gK4PDkC8IStE8Rb
- L+aw8fCi477SUshEJNgsUsjlobLmlnS+ahN1AB9JcTmy5SeL0e7xRgkTqMF77D6TjIu3
- CfcmURZioul9Z/kWvcSRI5F+alykjntCUrlCt0+UfnpyGZsQnksiDMUQigKvkXl2uG3G
- aloaiZCXTNl4GuvdcOyE9+CrzytQw/QVogYMkEwztDwxUCTDjUm2PUstxxM4x177Ru3/
- rROLQkYYd0ORvs3Cnjbut9JoPkLY2mqtauLh+KmXYTrFP7VaMfHwhkSw4p0MrfaJnuF0
- XMMw==
-X-Gm-Message-State: AC+VfDxe2J4r9e20RpDAdlF4mm/3beBoZygmnlSUued4Xz6GSiBpuhid
- 1EJpivfZC17urSeiW76fepl6bXdfzwYqzQ6VEukH7OAM1PKOqD23aRLZDVUAZ/m95dzdbAWl3t5
- 7s3KzKkE+rh7+WA41WEhlTT7BB78Xo2+hwxQWMfhuG5ETWXVX9QRD7mvxmOi9Qo27AptU
-X-Received: by 2002:a19:6918:0:b0:4f8:7556:23eb with SMTP id
- e24-20020a196918000000b004f8755623ebmr11807974lfc.39.1687782508473; 
- Mon, 26 Jun 2023 05:28:28 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ61JZ9npbgcU5MTbby1wX0cl8dcdczPPgkuF6YipqAl4OLXwLheXyvPKXkBlkvPaGKtCl8Iow==
-X-Received: by 2002:a19:6918:0:b0:4f8:7556:23eb with SMTP id
- e24-20020a196918000000b004f8755623ebmr11807951lfc.39.1687782508135; 
- Mon, 26 Jun 2023 05:28:28 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1687782514; x=1690374514;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=I0c/2TSZTwjPfy5oknVtffw6zqqXBeJNU6cIu4XphFk=;
+ b=WNHyolQgWOtmlQZB5AhzyHtN7+Q89daom90kfHWB2ubnaX1eOKS1QhXS/tfiyOizX/
+ 1+UrKPo5CP/GN9BY1IiklrBaIy2dYfR19g4XZvQiDpfx/lrVWasf3MXUlZW8kblWsety
+ PGN2TQIEIsoNYHO+B3IjEe5191iVlsaE2HRniM+wxWNf6AeuoFPldn8hCfuckGliX9HH
+ 8tJuRnmDzzGG+31H6F7AnWCvuyoSR8xum4mNey4QRgpBXnQj1IW8v2xapMg02iKp3uva
+ dmTYNnPQCNbJ6LYh6uURdSOoiMPpEv8kmKaGSYH+rmSxCyZIngKjSGT/txzvNDTxeqts
+ oqkA==
+X-Gm-Message-State: AC+VfDxgQmE27fmyXLCkpnVqh/YCGKkR13Qk4edj4xbn3J4y08g6pIyi
+ 1OPoogr/dLlczJg8KiH/O7j1eD/gyHcnklJeT/TN+JddQE8/xm9an5BUukXVvfwaG2B7ZoJAYst
+ MDeY4vJkOaoGNr6hXgdZRHwTal2E+fXZlXgiH5bHw3ktlY1ieeJLEcN312U3SsLgWf4OY
+X-Received: by 2002:a1c:f70d:0:b0:3f7:3685:1e10 with SMTP id
+ v13-20020a1cf70d000000b003f736851e10mr22378325wmh.40.1687782514372; 
+ Mon, 26 Jun 2023 05:28:34 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ658bWNkubd5ISDcHjNYxMp2YimZXxTgdBfkawPhYJ+L2Wj/lh7QHqB4kii5x0BuGxk1wxtJg==
+X-Received: by 2002:a1c:f70d:0:b0:3f7:3685:1e10 with SMTP id
+ v13-20020a1cf70d000000b003f736851e10mr22378313wmh.40.1687782514119; 
+ Mon, 26 Jun 2023 05:28:34 -0700 (PDT)
 Received: from redhat.com ([2.52.156.102]) by smtp.gmail.com with ESMTPSA id
- z7-20020a05600c220700b003fa999cefc0sm1874055wml.36.2023.06.26.05.28.26
+ d11-20020a05600c3acb00b003f7f475c3bcsm11415769wms.1.2023.06.26.05.28.32
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 26 Jun 2023 05:28:27 -0700 (PDT)
-Date: Mon, 26 Jun 2023 08:28:25 -0400
+ Mon, 26 Jun 2023 05:28:33 -0700 (PDT)
+Date: Mon, 26 Jun 2023 08:28:31 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Gowrishankar Muthukrishnan <gmuthukrishn@marvell.com>,
- "Gonglei (Arei)" <arei.gonglei@huawei.com>,
- Zhenwei Pi <pizhenwei@bytedance.com>
-Subject: [PULL 12/53] cryptodev-vhost-user: add asymmetric crypto support
-Message-ID: <5c33f9783ace0b5e077060b220978d94fecb3e81.1687782442.git.mst@redhat.com>
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>
+Subject: [PULL 14/53] hw/scsi: Introduce VHOST_SCSI_COMMON symbol in Kconfig
+Message-ID: <8f691f1cb76f0591874e91eb18569a150bb3cfe0.1687782442.git.mst@redhat.com>
 References: <cover.1687782442.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1687782442.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
@@ -100,168 +104,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Gowrishankar Muthukrishnan <gmuthukrishn@marvell.com>
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Add asymmetric crypto support in vhost_user backend.
+Instead of adding 'vhost-scsi-common.c' twice (for VHOST_SCSI and
+VHOST_USER_SCSI), have it depend on VHOST_SCSI_COMMON, selected by
+both symbols.
 
-Signed-off-by: Gowrishankar Muthukrishnan <gmuthukrishn@marvell.com>
-Message-Id: <20230516083139.2349744-1-gmuthukrishn@marvell.com>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-Id: <20230524093744.88442-3-philmd@linaro.org>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- backends/cryptodev-vhost-user.c |  9 ++--
- hw/virtio/vhost-user.c          | 75 +++++++++++++++++++++++++++------
- 2 files changed, 66 insertions(+), 18 deletions(-)
+ hw/scsi/Kconfig     | 6 ++++++
+ hw/scsi/meson.build | 6 ++++--
+ 2 files changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/backends/cryptodev-vhost-user.c b/backends/cryptodev-vhost-user.c
-index b1d9eb735f..c3283ba84a 100644
---- a/backends/cryptodev-vhost-user.c
-+++ b/backends/cryptodev-vhost-user.c
-@@ -232,9 +232,9 @@ static void cryptodev_vhost_user_init(
-     backend->conf.max_auth_key_len = VHOST_USER_MAX_AUTH_KEY_LEN;
- }
+diff --git a/hw/scsi/Kconfig b/hw/scsi/Kconfig
+index e7b34dc8e2..1feab84c4c 100644
+--- a/hw/scsi/Kconfig
++++ b/hw/scsi/Kconfig
+@@ -48,13 +48,19 @@ config VIRTIO_SCSI
+     depends on VIRTIO
+     select SCSI
  
--static int64_t cryptodev_vhost_user_sym_create_session(
-+static int64_t cryptodev_vhost_user_crypto_create_session(
-            CryptoDevBackend *backend,
--           CryptoDevBackendSymSessionInfo *sess_info,
-+           CryptoDevBackendSessionInfo *sess_info,
-            uint32_t queue_index, Error **errp)
- {
-     CryptoDevBackendClient *cc =
-@@ -266,18 +266,17 @@ static int cryptodev_vhost_user_create_session(
-            void *opaque)
- {
-     uint32_t op_code = sess_info->op_code;
--    CryptoDevBackendSymSessionInfo *sym_sess_info;
-     int64_t ret;
-     Error *local_error = NULL;
-     int status;
++config VHOST_SCSI_COMMON
++    bool
++    depends on VIRTIO
++
+ config VHOST_SCSI
+     bool
+     default y
++    select VHOST_SCSI_COMMON
+     depends on VIRTIO && VHOST_KERNEL
  
-     switch (op_code) {
-     case VIRTIO_CRYPTO_CIPHER_CREATE_SESSION:
-+    case VIRTIO_CRYPTO_AKCIPHER_CREATE_SESSION:
-     case VIRTIO_CRYPTO_HASH_CREATE_SESSION:
-     case VIRTIO_CRYPTO_MAC_CREATE_SESSION:
-     case VIRTIO_CRYPTO_AEAD_CREATE_SESSION:
--        sym_sess_info = &sess_info->u.sym_sess_info;
--        ret = cryptodev_vhost_user_sym_create_session(backend, sym_sess_info,
-+        ret = cryptodev_vhost_user_crypto_create_session(backend, sess_info,
-                    queue_index, &local_error);
-         break;
+ config VHOST_USER_SCSI
+     bool
+     # Only PCI devices are provided for now
+     default y if VIRTIO_PCI
++    select VHOST_SCSI_COMMON
+     depends on VIRTIO && VHOST_USER && LINUX
+diff --git a/hw/scsi/meson.build b/hw/scsi/meson.build
+index 7a1e7f13f0..2a005420d2 100644
+--- a/hw/scsi/meson.build
++++ b/hw/scsi/meson.build
+@@ -17,8 +17,10 @@ specific_scsi_ss = ss.source_set()
  
-diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
-index 74a2a28663..2ad75a7964 100644
---- a/hw/virtio/vhost-user.c
-+++ b/hw/virtio/vhost-user.c
-@@ -11,6 +11,7 @@
- #include "qemu/osdep.h"
- #include "qapi/error.h"
- #include "hw/virtio/vhost.h"
-+#include "hw/virtio/virtio-crypto.h"
- #include "hw/virtio/vhost-user.h"
- #include "hw/virtio/vhost-backend.h"
- #include "hw/virtio/virtio.h"
-@@ -163,13 +164,24 @@ typedef struct VhostUserConfig {
+ virtio_scsi_ss = ss.source_set()
+ virtio_scsi_ss.add(files('virtio-scsi.c', 'virtio-scsi-dataplane.c'))
+-virtio_scsi_ss.add(when: 'CONFIG_VHOST_SCSI', if_true: files('vhost-scsi-common.c', 'vhost-scsi.c'))
+-virtio_scsi_ss.add(when: 'CONFIG_VHOST_USER_SCSI', if_true: files('vhost-scsi-common.c', 'vhost-user-scsi.c'))
++
++virtio_scsi_ss.add(when: 'CONFIG_VHOST_SCSI_COMMON', if_true: files('vhost-scsi-common.c'))
++virtio_scsi_ss.add(when: 'CONFIG_VHOST_SCSI', if_true: files('vhost-scsi.c'))
++virtio_scsi_ss.add(when: 'CONFIG_VHOST_USER_SCSI', if_true: files('vhost-user-scsi.c'))
+ specific_scsi_ss.add_all(when: 'CONFIG_VIRTIO_SCSI', if_true: virtio_scsi_ss)
  
- #define VHOST_CRYPTO_SYM_HMAC_MAX_KEY_LEN    512
- #define VHOST_CRYPTO_SYM_CIPHER_MAX_KEY_LEN  64
-+#define VHOST_CRYPTO_ASYM_MAX_KEY_LEN  1024
- 
- typedef struct VhostUserCryptoSession {
-+    uint64_t op_code;
-+    union {
-+        struct {
-+            CryptoDevBackendSymSessionInfo session_setup_data;
-+            uint8_t key[VHOST_CRYPTO_SYM_CIPHER_MAX_KEY_LEN];
-+            uint8_t auth_key[VHOST_CRYPTO_SYM_HMAC_MAX_KEY_LEN];
-+        } sym;
-+        struct {
-+            CryptoDevBackendAsymSessionInfo session_setup_data;
-+            uint8_t key[VHOST_CRYPTO_ASYM_MAX_KEY_LEN];
-+        } asym;
-+    } u;
-+
-     /* session id for success, -1 on errors */
-     int64_t session_id;
--    CryptoDevBackendSymSessionInfo session_setup_data;
--    uint8_t key[VHOST_CRYPTO_SYM_CIPHER_MAX_KEY_LEN];
--    uint8_t auth_key[VHOST_CRYPTO_SYM_HMAC_MAX_KEY_LEN];
- } VhostUserCryptoSession;
- 
- static VhostUserConfig c __attribute__ ((unused));
-@@ -2357,7 +2369,7 @@ static int vhost_user_crypto_create_session(struct vhost_dev *dev,
-     int ret;
-     bool crypto_session = virtio_has_feature(dev->protocol_features,
-                                        VHOST_USER_PROTOCOL_F_CRYPTO_SESSION);
--    CryptoDevBackendSymSessionInfo *sess_info = session_info;
-+    CryptoDevBackendSessionInfo *backend_info = session_info;
-     VhostUserMsg msg = {
-         .hdr.request = VHOST_USER_CREATE_CRYPTO_SESSION,
-         .hdr.flags = VHOST_USER_VERSION,
-@@ -2371,16 +2383,53 @@ static int vhost_user_crypto_create_session(struct vhost_dev *dev,
-         return -ENOTSUP;
-     }
- 
--    memcpy(&msg.payload.session.session_setup_data, sess_info,
--              sizeof(CryptoDevBackendSymSessionInfo));
--    if (sess_info->key_len) {
--        memcpy(&msg.payload.session.key, sess_info->cipher_key,
--               sess_info->key_len);
--    }
--    if (sess_info->auth_key_len > 0) {
--        memcpy(&msg.payload.session.auth_key, sess_info->auth_key,
--               sess_info->auth_key_len);
-+    if (backend_info->op_code == VIRTIO_CRYPTO_AKCIPHER_CREATE_SESSION) {
-+        CryptoDevBackendAsymSessionInfo *sess = &backend_info->u.asym_sess_info;
-+        size_t keylen;
-+
-+        memcpy(&msg.payload.session.u.asym.session_setup_data, sess,
-+               sizeof(CryptoDevBackendAsymSessionInfo));
-+        if (sess->keylen) {
-+            keylen = sizeof(msg.payload.session.u.asym.key);
-+            if (sess->keylen > keylen) {
-+                error_report("Unsupported asymmetric key size");
-+                return -ENOTSUP;
-+            }
-+
-+            memcpy(&msg.payload.session.u.asym.key, sess->key,
-+                   sess->keylen);
-+        }
-+    } else {
-+        CryptoDevBackendSymSessionInfo *sess = &backend_info->u.sym_sess_info;
-+        size_t keylen;
-+
-+        memcpy(&msg.payload.session.u.sym.session_setup_data, sess,
-+               sizeof(CryptoDevBackendSymSessionInfo));
-+        if (sess->key_len) {
-+            keylen = sizeof(msg.payload.session.u.sym.key);
-+            if (sess->key_len > keylen) {
-+                error_report("Unsupported cipher key size");
-+                return -ENOTSUP;
-+            }
-+
-+            memcpy(&msg.payload.session.u.sym.key, sess->cipher_key,
-+                   sess->key_len);
-+        }
-+
-+        if (sess->auth_key_len > 0) {
-+            keylen = sizeof(msg.payload.session.u.sym.auth_key);
-+            if (sess->auth_key_len > keylen) {
-+                error_report("Unsupported auth key size");
-+                return -ENOTSUP;
-+            }
-+
-+            memcpy(&msg.payload.session.u.sym.auth_key, sess->auth_key,
-+                   sess->auth_key_len);
-+        }
-     }
-+
-+    msg.payload.session.op_code = backend_info->op_code;
-+    msg.payload.session.session_id = backend_info->session_id;
-     ret = vhost_user_write(dev, &msg, NULL, 0);
-     if (ret < 0) {
-         error_report("vhost_user_write() return %d, create session failed",
+ specific_scsi_ss.add(when: 'CONFIG_SPAPR_VSCSI', if_true: files('spapr_vscsi.c'))
 -- 
 MST
 
