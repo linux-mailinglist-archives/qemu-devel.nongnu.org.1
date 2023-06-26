@@ -2,168 +2,169 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D435273DE80
+	by mail.lfdr.de (Postfix) with ESMTPS id D215573DE7F
 	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 14:10:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDl1Y-00085H-TP; Mon, 26 Jun 2023 08:08:52 -0400
+	id 1qDl1u-00086a-2U; Mon, 26 Jun 2023 08:09:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
- id 1qDl1W-00083P-4o
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 08:08:50 -0400
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
+ id 1qDl1Z-00085e-IP
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 08:08:57 -0400
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
- id 1qDl1S-0006P3-LP
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 08:08:49 -0400
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
+ id 1qDl1W-0006V5-Lx
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 08:08:53 -0400
+Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
  by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 35QBO8JM011697; Mon, 26 Jun 2023 12:08:37 GMT
+ 35QBOdlp012177; Mon, 26 Jun 2023 12:08:45 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
  h=content-type :
  message-id : date : subject : to : cc : references : from : in-reply-to :
  mime-version; s=corp-2023-03-30;
- bh=VbA4jbCGOX37Gds8sPLQ9rO6WzkMInsT07/PNditbZU=;
- b=32R878xE38kdhJU/57+11FlQmmmIdW35c8QPgQvr7j6/Jfu+vxoeENT/ZikodDSTTlG/
- 5vzADCDZSb9fSBYSw9UHeG3MJmmSNs3VNx0kG+tHOqXDuUa2xYm+/CcvE6JLYr6eaV4F
- lJ4VaE+WGtrmH3AGUkIdKrmr9Inynmmlcu0jxH5frsNSuZJCFXhgyKUHsQ0gq2NN7QNb
- pfwWW7YkGj2OUp5tXhPMR4ioJGdW7xdsFl7EMQymcLdX/nsJSpuks9R+njWk9ym8+RId
- bGVOMZS0chSKt4fSNWbN3+2nyxUd7lphfhJVXYUmwSWXVpdMimsaTrBi3040QO31vSzd fw== 
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
- (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3rdq932g27-1
+ bh=Qa7U4C7Sqjbx9KTk78qf1vxpHd3VpNAIyow2NdY9A7w=;
+ b=JjtWNpEwtQ8/+DmvPgZqw5gnuaq1CnJFmFH3R0TIM5jjD9P6S35Y64x/pXabGBAvCT+x
+ lae+75FBc3Jk3VjXOHvBsH3jrC59vnm1sdG+3Os6E5H9SINmppH6cbDLHOP/G/O6nWML
+ xaNmB5EE3XyYNXdVBcQB+48/MxeJqS8e6pvRWVgtuAA+q49M3PS1DUu7Y5txbTF6iYFT
+ Rm9+utsRDsj6ar+po4LSkmJbLLE463RWXSKS8bX54U3zAm80lgzxPkfU8t6bGn5p/VuR
+ Fd9MXfX6kJUnh3nHBVdzYFvRCTUTQXhoCge1R6ofcJUp40fQK5MWHRyvef/jvtuHxT0m xQ== 
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3rdq30tkr0-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 26 Jun 2023 12:08:36 +0000
+ Mon, 26 Jun 2023 12:08:45 +0000
 Received: from pps.filterd
- (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 35QBNQ33026420; Mon, 26 Jun 2023 12:08:36 GMT
+ (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
+ with ESMTP id 35QC4j29005097; Mon, 26 Jun 2023 12:08:44 GMT
 Received: from nam10-dm6-obe.outbound.protection.outlook.com
- (mail-dm6nam10lp2100.outbound.protection.outlook.com [104.47.58.100])
- by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 3rdpx9fx93-1
+ (mail-dm6nam10lp2102.outbound.protection.outlook.com [104.47.58.102])
+ by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
+ 3rdpx906qd-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 26 Jun 2023 12:08:35 +0000
+ Mon, 26 Jun 2023 12:08:43 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=fPABsRHs54kSNezquP2sruY+0MABMT11ReSWHE5xrPn8xpltUgEPHqp99bOJ5++ep33r6OA/SJHl6VsXtzoxFpoYS6MQt1Ln8xhEEZoVuLb8YObuqinsm9ItJ4ef8uI21X6O8OBbkaeCogRnfd0oZp2whtDq8MmBAmufyoE/2NAjhh+MrS6H1HhtQwgq5B9xO0LgjA4sRF2UUJphovQtdhf9tiL1qSOOuvg+x1aDWHJCbnJwnPkQwv0CyohMFZxzEiQCE0lGUuKtw5vHru1R+FG75/oz2mbcaAe1k2zDYp5ik8PYtJ4Qkn2Xf46dha2xfyMjynr+p0h+c5lJWElA/g==
+ b=DPE+W+jsoKGG7jF4h0Tf0grpXH8AzO2rR6XUjAOzODctlej/1Vepf7zbjx9NSa0eG9xbXTcVhaMOEHDpmSHbBudUbb1bPKApcr+9CRO2OagL7J/NLmD0WNvwEaAdn1Pz8R8lw9XQxm9ZLkvPt4xOkamuv9jVPPP+3wpzjHxhlo+CFi9GivLE2ifQcBlP0wtCfMEj1vYxAk5HM6aW/SHtpR++Sitn2sDFUWU2wqELGTfSNlOCZ1ZfAzEGxs6tgDBZn/R36odghJHlwsJCTCEqb/eXs2F36axSex1vDgdq/qN5pX3EjqxlrcXv9+mVo1SoFVSU+eXpYP1D0m4KumS14A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=VbA4jbCGOX37Gds8sPLQ9rO6WzkMInsT07/PNditbZU=;
- b=CRI61u2Iq44YqnELMfLIQkxaETeiH7V5VBT3FzBquxRWSrPh8zeJRkQmBJyeh1/sZLTCPW9agbAGTU0q1XEXOEobVrEtAIzITlc6cDlRzg649YcxnYbkyZCwSGn0fj2w5veLXE9uXVxyYCRumcoV30pIX4SAnW48MQdZgtqpCp5q9Ejt7D4yhz0h+Wlo5Zox5Fm6ww3fPQqng82p0AlARvVrjXJTVFchUySQ809/BTs+21cnqOwnhyJQA9dO9kwxSa3ojhOMwylEgVnsyY65+9cLMqhKUwxJMB9RAyphzCfUYf/96SO78vrhncqCxVD+B76W5I6KYInI4PMX84xxMg==
+ bh=Qa7U4C7Sqjbx9KTk78qf1vxpHd3VpNAIyow2NdY9A7w=;
+ b=n+yqdEAFmBT3bBa4T+XT0CMnLcSw1dTaXQ9JvuixyJbM4Yek4JBYl0Vp3x8MlkjprbVvRTnaA1AD4e+AkBK3z0YWXHWaCGaNq5TzZcvNCvKX2YljmZPR+7trux1B5WRX5tJ/rys/8m65f91uoyBTTlYtEKTaksbub3UEM3s1D8TJDY6zlqFjsTYIVv1Ix2ewxnB/T87dtmOwxKANSzBms0nOAS7ixPkJLQnUrwVlK8oJj1xjMM06qLcUr5KPwIdicRRrYoAcvWUkrP8fwAd93p8F9fkd8tsFeJayZ5NYRcX/WB7C+oDGspZxXvrNWytPojdrLsOPbkowwQFdmPKFRg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
  dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=VbA4jbCGOX37Gds8sPLQ9rO6WzkMInsT07/PNditbZU=;
- b=yniFEhiLjyrg+YcaK+GRHl1pTXCLVN3DhPwTbgdMgl7Nbz5aPaSq+zPv9Zlv1aTn3zXfFv15fEQRfuIpYefto5khY9QsoBg59zF5Tik4V1gNF97jTKNtfjs3AwdwfyWp5o8AyO5uvu/zeL8jS1jwYSsJMSiqXYMgnhc7dZcVRkQ=
+ bh=Qa7U4C7Sqjbx9KTk78qf1vxpHd3VpNAIyow2NdY9A7w=;
+ b=H5SP0YrOyMiUkA0ubAjiyk7Kbb5VAYBoaO02aPcfmkkT6bJ1BoPXvHAfyqSyVqpY2u/LxqQ92ciHzC+krOOqKRrBmC2mVj86j0cM5i6+9F+j3uPyZSc6s7OiXxIBC6F4giVcviCJgYRvWtvdkSctoa7mZMRlQFHD2Kk9lzmYZik=
 Received: from PH0PR10MB4664.namprd10.prod.outlook.com (2603:10b6:510:41::11)
  by MN0PR10MB5935.namprd10.prod.outlook.com (2603:10b6:208:3cd::8)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6521.26; Mon, 26 Jun
- 2023 12:08:33 +0000
+ 2023 12:08:41 +0000
 Received: from PH0PR10MB4664.namprd10.prod.outlook.com
  ([fe80::917c:eeb4:5b13:a1ef]) by PH0PR10MB4664.namprd10.prod.outlook.com
  ([fe80::917c:eeb4:5b13:a1ef%2]) with mapi id 15.20.6521.026; Mon, 26 Jun 2023
- 12:08:32 +0000
+ 12:08:41 +0000
 Content-Type: multipart/alternative;
- boundary="------------IzfoPO7iJM608nVh9ZpFMOoU"
-Message-ID: <49f01bcc-eefa-d277-93fe-e3bcbc2ccd42@oracle.com>
-Date: Mon, 26 Jun 2023 08:08:28 -0400
+ boundary="------------WOx2W01rDaTFKwr7I9d583Fa"
+Message-ID: <f7ec13ba-25bc-e145-396f-48005a225f17@oracle.com>
+Date: Mon, 26 Jun 2023 08:08:37 -0400
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PATCH v2 1/2] qmp: remove virtio_list, search QOM tree instead
+Subject: Re: [PATCH v2 2/2] qmp: update virtio feature maps, vhost-user-gpio
+ instrospection
+Content-Language: en-US
 To: "Michael S. Tsirkin" <mst@redhat.com>
 Cc: qemu-devel@nongnu.org, philmd@linaro.org, laurent@vivier.eu,
  boris.ostrovsky@oracle.com, alex.bennee@linaro.org,
  viresh.kumar@linaro.org, armbru@redhat.com, pbonzini@redhat.com,
  berrange@redhat.com, eduardo@habkost.net
 References: <20230609132040.2180710-1-jonah.palmer@oracle.com>
- <20230609132040.2180710-2-jonah.palmer@oracle.com>
- <20230623014315-mutt-send-email-mst@kernel.org>
-Content-Language: en-US
+ <20230609132040.2180710-3-jonah.palmer@oracle.com>
+ <20230623013300-mutt-send-email-mst@kernel.org>
 From: Jonah Palmer <jonah.palmer@oracle.com>
-In-Reply-To: <20230623014315-mutt-send-email-mst@kernel.org>
-X-ClientProxiedBy: BL1P222CA0012.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:208:2c7::17) To PH0PR10MB4664.namprd10.prod.outlook.com
+In-Reply-To: <20230623013300-mutt-send-email-mst@kernel.org>
+X-ClientProxiedBy: BL1P222CA0022.NAMP222.PROD.OUTLOOK.COM
+ (2603:10b6:208:2c7::27) To PH0PR10MB4664.namprd10.prod.outlook.com
  (2603:10b6:510:41::11)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: PH0PR10MB4664:EE_|MN0PR10MB5935:EE_
-X-MS-Office365-Filtering-Correlation-Id: 634d9a68-9501-4513-a1cd-08db763e0f63
+X-MS-Office365-Filtering-Correlation-Id: 0aae1858-413e-4024-ab3a-08db763e14c0
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: K4JIhEXRLyrIEzNhs8VZRPHXdEonLAJjuWlo/N/xG3Pl1zlaiUoBiyojC7hwrIb4SS3lNI7Agj5YJuI0HP9W+O4KOCqfe8HNfaYHqmoCavUYeOm+Ugqq4FT4GLO3ljlEmcvqTudv38a7Ce62bFMcqYdjf5SahepAopYHaU8M2y2Idxa0luU1KRWDnigqGF2FwTIiyHzWf4H3u9B8MSQaR6yyFvP2EZbqM9HxiBudElpPZNLK3w08BDCfKFgS2sxlsuGH5XjeiaEwbz2izm0QprIVxWaWytvw1KirmEtnNMwNy2hQfGjPrZbvoUqkllKcaTTjnDh6gc37do3cLkmQQk5VEYq3wDY3fdfe+dwL6I4M1rSvDt1rctacG5l+65hw0x44FK1vUHCMk2zQyxVK5Css/hx2jb6EmOTr6hxE0+xz41b8MjNZkInIMwioAa5TwRsJAT15TT8oQHYaIopUSSSMl4fYsed+ySJodYNmuCHA668p5jo8CsRlbjpHJKz0JlOJoUZz0e4SPVOqpH17Out43K4M2/ww2LRUfGsB+7QncYfjGqzZgAFaXHzYleYNEd8w0dTN9DXH3KQ2seIZEIbbixu61bg+OOWnpxtKs2VkjRAgcxb20Rziogz7dO3Ek3P9vOfdC55d7xNAG992ow==
+X-Microsoft-Antispam-Message-Info: S5KsCovXY6TpEJUjlpdGP2SOAz9+fdFTAdHswTrI73VTlCUIXKOtIHddEwMd0EUIVKa2xyRaWGPLv6eHInFeShMMSFA91MMfnInR88mPL98qRQNAVmBStlLkwJZbM3KkQDz4hqK1iA1EYXM+HaoMEvSiPKjaz90CMb5KN9CQSH/Zatmoo99g1GPWTEsKrKhh0GAeXONzgBixABXF8024wUKq9k3tm3UIyGfIPYC1MZ6xRHdS2DwFG6xEbQm3oyF/1TbVMwKnrDzvXgZDNbD1ENWschWaw6Jc7fHoPJeJCg8S6rZxVUJCwzU+Us4o7mDAwCDVTYp2rMvDWENCn7StTigma5xJJ6Pu1z6sMukSrfwWj4hxYjQhA8MwI369khoDdQVvj0XJaacDOeIgo8q8vH7bv4eTT0W5gYXj9lk16nuAVKDIfMW+bWP1i6TsiEU1V7M6sOu+JmIHPgAEwgyMP6F+EbH+eFiKWyGtAdjGHPK4dtTYMk4MaTjmCGjRxFojM8LoZMGqpDB6fCMS/wFhuO6NH0Zc66+3vE5UGABZWEFJXzKHBNsxfN0x+fksXDWg+7jdcNxjns2NW2e4oAky0/4CRTWn5VjfuEBZUV6MHXNRmm8E2VAWy4lRGjyoBnE4OOR+neq0P6iysqU3bUvxng==
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:PH0PR10MB4664.namprd10.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230028)(346002)(366004)(376002)(396003)(39860400002)(136003)(451199021)(2906002)(30864003)(6486002)(33964004)(6666004)(38100700002)(2616005)(83380400001)(6512007)(6506007)(26005)(53546011)(186003)(41300700001)(31696002)(86362001)(478600001)(316002)(36756003)(66556008)(4326008)(66946007)(6916009)(66476007)(44832011)(31686004)(7416002)(5660300002)(8676002)(8936002)(43740500002)(45980500001);
+ SFS:(13230028)(346002)(366004)(376002)(396003)(39860400002)(136003)(451199021)(2906002)(30864003)(6486002)(33964004)(6666004)(38100700002)(2616005)(83380400001)(6512007)(6506007)(26005)(53546011)(186003)(41300700001)(31696002)(86362001)(478600001)(316002)(36756003)(66556008)(4326008)(66946007)(6916009)(66476007)(15650500001)(44832011)(31686004)(7416002)(5660300002)(8676002)(8936002)(43740500002)(45980500001);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?YlRJMnNXcXNjR0EzNFlLc3VXUWQ0YjV5Vkh2MjR5d2xSVWVORlc3eWZhZGZ0?=
- =?utf-8?B?S2VqUGNVMSs5bVZGRFoyOVozbkdJVG9UTHQ3Rk9nb1R5OUZ0RHdUQ1U0eEtV?=
- =?utf-8?B?STZMa1NLMGg5VDJaSEpnWUU3cXZZL1liYmFlWnRxSWFoQ3l2OU9TdGcvOFVY?=
- =?utf-8?B?MkloclMxMU5ZSWh2OCtUbk1aSDVQaEhzaUs5R0NaOXNIS1ZKOW1LQ3lYYzBT?=
- =?utf-8?B?ZmVIYzdyV2p1ZmNWeHI0dGhiWklINFFheEtWb0dvTlZveU12S0xuU1k3aU5n?=
- =?utf-8?B?VGZoeUIraGR6Z0c2QUQ2MW1EeTR6eTUxb1VobEI4R1BHOWVRY1RzMXprcmNB?=
- =?utf-8?B?d25iMUxLMmxhWFVndFo4dEt4dTdhdjhTdVVqVXl2dUlpZncyVUlZdDlZQ2xh?=
- =?utf-8?B?b2VYN3NSbDNESVdvdkNmVFJQdXJiV25tLzV6anhVeHlKdGRxTnRTdk1SNHlF?=
- =?utf-8?B?OFFSUzVMMkxwajZQU2M3Mk9yaVNsUUVZUFF3Y0F2Zm85VmIyVWhZTmlFdFdI?=
- =?utf-8?B?U0RDUDhaQkwzZTJaV0FkbUpPNGhDQlRuenhjaERQdDBaYy94enJsVlBQQ0s1?=
- =?utf-8?B?WGNnUkJlRUZrQWJGYWlDT3ZEOThaM1Q1Y1pLZEgwVkFUdW84K2MrWHdXWDBG?=
- =?utf-8?B?QWh0ZDJ6b2pBRXFiQTdGNGYwejI3WDNBcjZ4SWRWYWpuK0dXYTllWTlldGgz?=
- =?utf-8?B?eW9BTXdZeFV1OXFSVzgxQTJjZ0ZJVkR4L1FER2tHV3RaaW15SXZLRDdGVU1H?=
- =?utf-8?B?OXp1RERkcUpJNVU1NWNaOFFBcEdVNGVjbDJ3aXdQRjlGdTMzK3R6UmFzTGJU?=
- =?utf-8?B?amlqb0JuOURUbnc3M24zc2pmYU9rcjkxVjNTaEZGN0RhZUpGdkdNOG9yc1Fa?=
- =?utf-8?B?eG5YeFpTdVpTdm9CNG1VSnFoTncxWDFVK2JOZEplV2dDUVBQeDAzT3hpaHBo?=
- =?utf-8?B?eHpxY0FzN3cyZGwyTmhEaU5iTlI3RUEzSmJZajRsaU1UMXh6WHJHR1NLaEpv?=
- =?utf-8?B?MitkVDhZNDZ4VnJJc29VRXN4L09ZcFhnYUpOVW1YNjRwNGtzcFQyNy9vWXBH?=
- =?utf-8?B?REFpUTdKWGJyRXJFRzdNTi8zMEhoRWpTY2lEb1RSYThmeGZ3VDJzcWMyL0VP?=
- =?utf-8?B?elJFM2xUZy9XMFNHaGhGalFWUGkxcFgrU3UveDgwd21CRnFkVWxnNGowZHgz?=
- =?utf-8?B?YU5SOXFJczhCMG5NKzlyaW5HK21KSzc5bzQyY2g5SlBKdVdzZkVocVpiN1Bh?=
- =?utf-8?B?UW9IVjNNT01ZNkh6ZGowM0VqYmNLTEEwTTgybUg0dHA4b0paZlhEU01nRVpM?=
- =?utf-8?B?a2FBdHloMk9FSnVBdnhsVXJ5UDczMHZPRXJNeVBnR0R4QkswQmQ1clRWU1FF?=
- =?utf-8?B?OFRQNDlvTjBMUURhS2JlNEp1RURXcW13SzZrR00rbUxUUFVUSG1CVzgwbWJR?=
- =?utf-8?B?TlFKT29VQloxWmd3eSsyMkdVN2x0NEdhTGxSZ2dmU0V4NGs2R3JNRE9Vb29B?=
- =?utf-8?B?NnJaMjhKY3JRZkdjc1h6cWxseEw1V2ZJR0FZUTlPMnlNOEYxeWVMcEd4L0xh?=
- =?utf-8?B?MlRwZ1haTmViTFBIUEV4OU04Q21SREkzMHR5Rm9IMGwzaG1hK1JRcWVpbjBL?=
- =?utf-8?B?a1o2dk5wTEI0Y2lrQjlFUC9jNkJrNTdFeFRxL21ERTExb0Y2RDYxRXVycE01?=
- =?utf-8?B?V09FMXdOSlFyaGZPc3pkWFZpcUxhMDlCQXJ1MjdMTnp3T2VuUHh2MFBkY0VK?=
- =?utf-8?B?dHVjM2dXK3BpdDNOVFRLeXJJZ3lHRGU0NkZMTlp3N0ZGalY3cXlOdkJja1JK?=
- =?utf-8?B?Q0FpWVJSL01iNlBqQi9uV1hRTUxIazhEY29YRkFXMWRYczE5aUZpK2piQ3pl?=
- =?utf-8?B?aFFWanNOWGFEajFxSURDc3F1NkxZRnJzSzVucy85ZkJhTHFpd2g5UHRJd3No?=
- =?utf-8?B?aS9lM1J3aHdQNjRsUGRjQXZyQURSYjJUL3FlS2dONWIxU09TOVIwdE02M1Bm?=
- =?utf-8?B?ekJja3JqMGZ4Z25kaGlkYnA1VUFibVJGQjIrUkRBWE5ra0RQc0FLRWJFNnJF?=
- =?utf-8?B?cUlRcjYxTG9mOHZDNE9Cd01iTnJVcHhuelJ4R2ViMGl0RmdteFk0QnR6YlNN?=
- =?utf-8?Q?vRI/8ePoYObMVxvhYuErWMbZy?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?UlBCL3ZKaDJXT3oxbHZIenk3ZzNZeTN3VEVVSkNQMEp5MFIyeko2OHYvYm50?=
+ =?utf-8?B?VWY0MGgwaUh3aHp3bHNMUTNHR1BNUGdYWGpiZHh4OStSOVBhQzJ3NXBqeC9T?=
+ =?utf-8?B?MUxYd3daV1BObitjb1ZRd3ZYTjdEQVRGeDVqY2ZZaXBZUGE2KzhWUER6cUxT?=
+ =?utf-8?B?Wm4yYVQrY2lIYlZlLzgrdzgvZTFHWTBvMkVvL1JDNUcxNWZsbzgyM1dmYnZJ?=
+ =?utf-8?B?c1pnVXR3dkdYekVZMXFsVTJiWUxUWWl1bFNQWXJSUW9aMTlxTm9mMGNETVFr?=
+ =?utf-8?B?RW9aMnVYQVpPK1hyQUNxY1lYUjhXcXNESzBRYVdKS3MwakRXOXU1TFdUSXR6?=
+ =?utf-8?B?SlpXNHdNVjViWWdwN0szTXZsWjN3QjZkWmpsemxWK2pqeURBUitTLzh5a2dp?=
+ =?utf-8?B?bFBDVVR1enRrMklvVUswdkZNYXVGVlJ4dHo3L0o5dHl6SWc0ZVBTeHVZRzFr?=
+ =?utf-8?B?dGZ2K05jRTJHUjVHc3FiVHU2eExvaE5XN0x3cy9ZUjlTZHNjTDYzb3VDZTVl?=
+ =?utf-8?B?Tm1pWW1OVXFsY1RFNmhsNE5mMGlYWTdwOHNENzVUR3AvQnVmYjRJdkpVUE95?=
+ =?utf-8?B?M3dRVDRGZzd4WUZGU2pqYUZHRVJkV3N4L3dqVU4wa1NVVXIzdlBkb2Qxbnlq?=
+ =?utf-8?B?ZzN0dEVwbnFVVjFiek8zMHRUTVlqN2VTN21GRjBIcjhDV0l5d2l2bjhwcHl3?=
+ =?utf-8?B?T1cxWlVDOTB0UWF6UmlRa3RWZlJYM0pJRThFblFsUGdYZ09aTW5CWktXcWhL?=
+ =?utf-8?B?NS9LT2Fkb0Rvb3hqMk8vYSt1REl1cWVmU0hvaElSVi9FWkFBY0N2TDNWOW4r?=
+ =?utf-8?B?bW5WWGE1Y3BOSnI4UCs4ZmlvT1pQd085amJRRDA5cE9QcGwwR1FJNW9QS1Zy?=
+ =?utf-8?B?bk43dDQzdGJqdVFoSnhMRFk0VEpXQkY4M01XMG1yejF5ZFFMTFZuVjg5OE1R?=
+ =?utf-8?B?OW5aWFFkdGlJZDFGaWdybzBrSVdSckcvVlJtaW5QTnpjYnIvTWtTbks1eDcy?=
+ =?utf-8?B?aTNyRHlhaCs2cHFsSmw4WVNrM3FlOWV4Z1FxMjlCcWN3eUsvV0RFZDdjN1pW?=
+ =?utf-8?B?c2tmZGRnWnJSc3plTzI3OU1sckRDVGhOMTdCQWt6VWNOOUoyU1FqNmluUmJz?=
+ =?utf-8?B?eVVKSXRJRCttLzJheDB2cUlhak1BWHBETkYvTTNwZnZ0UUthL0l6dVlQbVR1?=
+ =?utf-8?B?RHRBSjIyVmVGYUtQU1ZQN2xnbTg2bm9VN2huSnJ0d2djWVY0OGUrVDVWcFpE?=
+ =?utf-8?B?dlNzbmJvNElFN0plc3c4TGRoVnpNOXEweDhMRk5LZWFUTVNSQVNkZjJXMGRZ?=
+ =?utf-8?B?SDFNSWRnMXhWRzVPSUNIbzZqR0tWeVoxa3d1ZEcydGVFeXlWUlMxYkYwRExz?=
+ =?utf-8?B?eG81eDZDOFByblZ2em81am1rd1FCVlhCaEx1RW9YVlI1bVJHVGF5NDN5VDRz?=
+ =?utf-8?B?Q09LcHZWakVhWlNWK2JZQlJMdzNTZER2WHVFZXdZSnBERDMvV0FDZWI5SWh3?=
+ =?utf-8?B?UDVJSlJlSUJudXFaU1FseFVPYWluSVVjc1lYb1pLR2hlY1cvMXRQUy84UTFs?=
+ =?utf-8?B?WnA5cVI1K0RLT3lURTFPaTRiOEpUSEJwaTkyYzJ1NGxGbnNXUmcvb0pXUEVo?=
+ =?utf-8?B?YlNGQVlOTmd4bDFoN0xtV1RXMHdYc2hWN2VuODR6UlRRdXlTTVpZbm56TDVo?=
+ =?utf-8?B?RU5PQUxhSzlwQ3g1eVByOERRalh5ZTBydWEyNGZtZXkvR0w4b1B3Ymk2Z2lZ?=
+ =?utf-8?B?aXNxYXhiTlJmRkZKQ3RXblRoZStWM25iNkVxNTJvRGZXaEo0MlpXeFVsR013?=
+ =?utf-8?B?Q0doYUxXM0kwdVN4NHFnYUlKM1VZQnJtRW03Y2hRNzVYd2Z4VThSYWVLRWlT?=
+ =?utf-8?B?VnFEVFdqVnVhV0lrTldBV2RJaDFNTHBTMzJUQ1BHQ0dObGl1MFhLbkF6RVFK?=
+ =?utf-8?B?NGlZTDVpbGNJQkp0azZEbTM5VzlnSGErMGkrTmpycHk2V2NRbEtKZlMvSGRO?=
+ =?utf-8?B?TjQ0YWNNSytxbXdhbTIrZ1htYkllT092M3BpMkZGV0dNbEdaWEJFbFh3MjI5?=
+ =?utf-8?B?a2Ntd0pUU0xxNE5xaDRrZFlLcG5ZZ010cVdOMUUxYlpDY1Q3MUNYS0dlNG03?=
+ =?utf-8?Q?TiWvxUCOVnOGsNqNPb5dE3znA?=
 X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: TbGk8shmPBSaXHhiSRLy8GpTqAZsjBCY5DVFW0/eyiKYXu18m0fxFYCuU0cktrLYikfJxZd2tLCDrrYX5Os0Cun688urdam+oU+E587rpj7+aInvjNbOGZ1AGozsgICvuPlLV8GBFJ2Vc598k3jJ4Bx0TaZu249lCYe8blKLJ60yP1m2F0oWUv/LZsFElPyZivsVrggOj4QGGSyMoGPsEXTVpCJLnizgN6KnzfKMgXDQ/kCK1/XwLUbUPNONqiyBrSgN+2cC8HRQxERcmPOhvlSJdk2j2FZFXp+A3JWKGGJUB9AXiU4MmLu2iUjfxnVprPbeDCiYbwuSqMm0GjQFUrqXdevPVnxTBlt5xEgKolT7Q2Z+yH2lgCRwvGzn4T3IEhbooRO5waniZHs3Y1/jipL7wVVdg9RYAkXADcvqEjziWAkbpt+sbsDyMIvjfMai9Ne9yWUqVpHPPnSe/tjyFd9S+7ym5nR2WgSn5MnDf5gbBZPorve6TYsJ1+agUtiq9ZjoEUfrSWu1OrN7C1cCcFnn7WBdYlQyis2VGA2JxfMHW/95MDBvD0T0xFypeKOWUgZb35VFOmm6IAIIivGrcAj0UBrP77mZnzYZwQ02WVD6V+5evCBmz0aVDWdjY7X/6Ek7c7XJqMPmG3UER6dTDqjWh0BIJGEN6HzPyICKzkAMEQH4iN53LkGokr9KB9/l9eI7BRUzjbbzmXnQUF3nE0O04QSN4/cWlOUrqqsUexjVGcheca46AAevr+GSBGcTiYkc1lMzXt7+VlgScYY5gXBk61hQax69n8kzG6L/crpn941MEfqH4dZKgAxB6yCfLTLMCcULzaOV+Y3RfEKnhNU07Cfd8ZG3MQqxKqybu+DK54bEOby2F97yzHLuKn/p
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: KbiqXoZN/ECqGzgj7VMWCo4pNZJVgicsqBCLx4YwqErAy/oLlBKUJwz8O+rse2AxYSCy3AYvJ0IgNTvYFOcYCXLExoaVqbwZmPL5CTbUqew1ejC/zsHqpOuuRhuAcwYVehaZzfhcIs/RnzefOx2+XidK8g0iNyZrU128OaE4zjs1CpHI24bQG6tCNB2XpjrB6BubFqApl5m5f3NNvnc2jSKGiHnVA+7KhL1QXebSh3kvYMVfUlIXHoDXXjC/jcCGI7pYclFaP/eQ/wGC3YJBhJU+yRst4J1kZnp56aYz/EQUAEhYMT5ALh7oeeqG2mLK+IiD3u2/9ac0bWOWTwYIqvAwuQHuXIIim2UbJDzRUfANf7PCD6uK/qRfWFzNZcozjXklt/fSq10fkYffUzl3p7z59blA9LJ3hjmu1dpGqkaMiq9PtqdfdPuhKydyTwZ1b1c2TweeARt/n7BeKYTQbQth1iSuiVm5K5yIcmnou4kNOgBc9a0NVPCYrRfufTW9e567f4ey3wtOWpI3tiEht+yUCTvJH3jDNxc7veELe25Q4N362bRGZSjwajkhG6MUNAVRCUIvj6xt/6c/AWOJDGt9RF7NIoGOlYFRYsjrbvPtXiuKqsxE+xXXEbblEuRQLyRIbOSCiJQ1wqUnQYZlmJ2kfL6j9NHtjlxJG+AgYsN3YCpaDBwGntUAtX29SszQ2bQeJpMV8hmp3k4sjiS2c+xn+OqcY0yoZs7CJnvGfyGQRiVkNBBU5W5AdpVkU1Z1X39eMsvEHVDRT0z1Pt0U+2Y5MK2nV5Z/H+10Bd7d2uHwpzxTsTtxOup1+aLKWvEMTElJRiPll1ACEwMLSHR+JGF3lrWV5ADdIwjCWwMRH7cW6/SddaA/Z7hnRr3L/j7f
 X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 634d9a68-9501-4513-a1cd-08db763e0f63
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0aae1858-413e-4024-ab3a-08db763e14c0
 X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB4664.namprd10.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Jun 2023 12:08:32.3312 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Jun 2023 12:08:41.2884 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: AqpNp30ADyet2qL2w4+Q7EIVWlmvr0NStNRNRA9xwKg++s3ZI51bzyA6jY5vPW20NGIyC5B56F/am43Crnf6Bg==
+X-MS-Exchange-CrossTenant-UserPrincipalName: aLT3fuToMuBUhFd8LO3JJuSvl+yQ7erZkIdWw+yIMfEJI+ACH1aUXyNZfmRSdW+cB6s7ClR3TDh8mEtMRqIfJg==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR10MB5935
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
  definitions=2023-06-26_09,2023-06-26_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
- spamscore=0
- mlxlogscore=999 malwarescore=0 phishscore=0 bulkscore=0 suspectscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2305260000 definitions=main-2306260109
-X-Proofpoint-ORIG-GUID: TlEfE20RcnAHTzRbLXy1Rvmyi3yldogg
-X-Proofpoint-GUID: TlEfE20RcnAHTzRbLXy1Rvmyi3yldogg
-Received-SPF: pass client-ip=205.220.177.32;
- envelope-from=jonah.palmer@oracle.com; helo=mx0b-00069f02.pphosted.com
+ malwarescore=0 mlxscore=0
+ mlxlogscore=999 bulkscore=0 spamscore=0 phishscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2305260000
+ definitions=main-2306260109
+X-Proofpoint-ORIG-GUID: xhMn4hm6aGrVd21v9hWAPbG-N835sAAl
+X-Proofpoint-GUID: xhMn4hm6aGrVd21v9hWAPbG-N835sAAl
+Received-SPF: pass client-ip=205.220.165.32;
+ envelope-from=jonah.palmer@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -28
 X-Spam_score: -2.9
 X-Spam_bar: --
@@ -187,276 +188,267 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---------------IzfoPO7iJM608nVh9ZpFMOoU
+--------------WOx2W01rDaTFKwr7I9d583Fa
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 6/23/23 01:47, Michael S. Tsirkin wrote:
+On 6/23/23 01:43, Michael S. Tsirkin wrote:
 
-> On Fri, Jun 09, 2023 at 09:20:39AM -0400, Jonah Palmer wrote:
->> The virtio_list duplicates information about virtio devices that already
->> exist in the QOM composition tree. Instead of creating this list of
->> realized virtio devices, search the QOM composition tree instead.
+> On Fri, Jun 09, 2023 at 09:20:40AM -0400, Jonah Palmer wrote:
+>> Add new virtio transport feature to transport feature map:
+>>   - VIRTIO_F_RING_RESET
 >>
->> This patch modifies the QMP command qmp_x_query_virtio to instead search
->> the partial paths of '/machine/peripheral/' &
->> '/machine/peripheral-anon/' in the QOM composition tree for virtio
->> devices.
+>> Add new vhost-user protocol feature to vhost-user protocol feature map
+>> and enumeration:
+>>   - VHOST_USER_PROTOCOL_F_STATUS
 >>
->> A device is found to be a valid virtio device if (1) its canonical path
->> is of 'TYPE_VIRTIO_DEVICE' and (2) the device has been realized.
+>> Add new virtio device features for several virtio devices to their
+>> respective feature mappings:
 >>
->> [Jonah: In the previous commit I had written that a device is found to
->>   be a valid virtio device if (1) it has a canonical path ending with
->>   'virtio-backend'.
+>> virtio-blk:
+>>   - VIRTIO_BLK_F_SECURE_ERASE
 >>
->>   The code now determines if it's a virtio device by appending
->>   'virtio-backend' (if needed) to a given canonical path and then
->>   checking that path to see if the device is of type
->> 'TYPE_VIRTIO_DEVICE'.
+>> virtio-net:
+>>   - VIRTIO_NET_F_NOTF_COAL
+>>   - VIRTIO_NET_F_GUEST_USO4
+>>   - VIRTIO_NET_F_GUEST_USO6
+>>   - VIRTIO_NET_F_HOST_USO
 >>
->>   The patch also instead now checks to make sure it's a virtio device
->>   before attempting to check whether the device is realized or not.]
+>> virtio/vhost-user-gpio:
+>>   - VIRTIO_GPIO_F_IRQ
+>>   - VHOST_F_LOG_ALL
+>>   - VHOST_USER_F_PROTOCOL_FEATURES
+>>
+>> virtio-bt:
+>>   - VIRTIO_BT_F_VND_HCI
+>>   - VIRTIO_BT_F_MSFT_EXT
+>>   - VIRTIO_BT_F_AOSP_EXT
+>>   - VIRTIO_BT_F_CONFIG_V2
+>>
+>> virtio-scmi:
+>>   - VIRTIO_SCMI_F_P2A_CHANNELS
+>>   - VIRTIO_SCMI_F_SHARED_MEMORY
+>>
+>> Add support for introspection on vhost-user-gpio devices.
 >>
 >> Signed-off-by: Jonah Palmer<jonah.palmer@oracle.com>
+> Thanks for the patch! Some comments:
 >
-> Could one of QMP maintainers comment on this please?
 >
 >> ---
->>   hw/virtio/virtio-qmp.c | 128 ++++++++++++++++++++++++++---------------
->>   hw/virtio/virtio-qmp.h |   8 +--
->>   hw/virtio/virtio.c     |   6 --
->>   3 files changed, 82 insertions(+), 60 deletions(-)
+>>   hw/virtio/vhost-user-gpio.c |  7 ++++
+>>   hw/virtio/virtio-qmp.c      | 79 +++++++++++++++++++++++++++++++++++--
+>>   2 files changed, 83 insertions(+), 3 deletions(-)
 >>
->> diff --git a/hw/virtio/virtio-qmp.c b/hw/virtio/virtio-qmp.c
->> index b5e1835299..e936cc8ce5 100644
->> --- a/hw/virtio/virtio-qmp.c
->> +++ b/hw/virtio/virtio-qmp.c
->> @@ -668,67 +668,101 @@ VirtioDeviceFeatures *qmp_decode_features(uint16_t device_id, uint64_t bitmap)
->>   VirtioInfoList *qmp_x_query_virtio(Error **errp)
->>   {
->>       VirtioInfoList *list = NULL;
->> -    VirtioInfo *node;
->> -    VirtIODevice *vdev;
+>> diff --git a/hw/virtio/vhost-user-gpio.c b/hw/virtio/vhost-user-gpio.c
+>> index d6927b610a..e88ca5370f 100644
+>> --- a/hw/virtio/vhost-user-gpio.c
+>> +++ b/hw/virtio/vhost-user-gpio.c
+>> @@ -205,6 +205,12 @@ static void vu_gpio_guest_notifier_mask(VirtIODevice *vdev, int idx, bool mask)
+>>       vhost_virtqueue_mask(&gpio->vhost_dev, vdev, idx, mask);
+>>   }
 >>   
->> -    QTAILQ_FOREACH(vdev, &virtio_list, next) {
->> -        DeviceState *dev = DEVICE(vdev);
->> -        Error *err = NULL;
->> -        QObject *obj = qmp_qom_get(dev->canonical_path, "realized", &err);
->> -
->> -        if (err == NULL) {
->> -            GString *is_realized = qobject_to_json_pretty(obj, true);
->> -            /* virtio device is NOT realized, remove it from list */
->> -            if (!strncmp(is_realized->str, "false", 4)) {
->> -                QTAILQ_REMOVE(&virtio_list, vdev, next);
->> -            } else {
->> -                node = g_new(VirtioInfo, 1);
->> -                node->path = g_strdup(dev->canonical_path);
->> -                node->name = g_strdup(vdev->name);
->> -                QAPI_LIST_PREPEND(list, node);
->> +    /* Query the QOM composition tree for virtio devices */
->> +    qmp_set_virtio_device_list("/machine/peripheral/", &list);
->> +    qmp_set_virtio_device_list("/machine/peripheral-anon/", &list);
-> How sure are we these will forever be the only two places where virtio
-> can live?
-
-A virtio device will always be considered a peripheral device, right?
-Since peripheral devices are input and/or output devices by definition.
-
->> +    if (list == NULL) {
->> +        error_setg(errp, "No virtio devices found");
->> +        return NULL;
->> +    }
->> +    return list;
+>> +static struct vhost_dev *vu_gpio_get_vhost(VirtIODevice *vdev)
+>> +{
+>> +    VHostUserGPIO *gpio = VHOST_USER_GPIO(vdev);
+>> +    return &gpio->vhost_dev;
 >> +}
 >> +
->> +/* qmp_set_virtio_device_list:
->> + * @ppath: An incomplete peripheral path to search from.
->> + * @list: A list of realized virtio devices.
->> + * Searches a given incomplete peripheral path (e.g. '/machine/peripheral/'
->> + * or '/machine/peripheral-anon/') for realized virtio devices and adds them
->> + * to a given list of virtio devices.
->> + */
->> +void qmp_set_virtio_device_list(const char *ppath, VirtioInfoList **list)
->> +{
->> +    ObjectPropertyInfoList *plist;
->> +    VirtioInfoList *node;
->> +    Error *err = NULL;
->> +
->> +    /* Search an incomplete path for virtio devices */
->> +    plist = qmp_qom_list(ppath, &err);
->> +    if (err == NULL) {
->> +        ObjectPropertyInfoList *start = plist;
->> +        while (plist != NULL) {
->> +            ObjectPropertyInfo *value = plist->value;
->> +            GString *path = g_string_new(ppath);
->> +            g_string_append(path, value->name);
->> +            g_string_append(path, "/virtio-backend");
->> +
->> +            /* Determine if full path is a realized virtio device */
->> +            VirtIODevice *vdev = qmp_find_virtio_device(path->str);
->> +            if (vdev != NULL) {
->> +                node = g_new0(VirtioInfoList, 1);
->> +                node->value = g_new(VirtioInfo, 1);
->> +                node->value->path = g_strdup(path->str);
->> +                node->value->name = g_strdup(vdev->name);
->> +                QAPI_LIST_PREPEND(*list, node->value);
->>               }
->> -           g_string_free(is_realized, true);
->> +            g_string_free(path, true);
->> +            plist = plist->next;
->>           }
->> -        qobject_unref(obj);
->> +        qapi_free_ObjectPropertyInfoList(start);
->>       }
->> -
->> -    return list;
->>   }
->>   
->>   VirtIODevice *qmp_find_virtio_device(const char *path)
+>>   static void do_vhost_user_cleanup(VirtIODevice *vdev, VHostUserGPIO *gpio)
 >>   {
->> -    VirtIODevice *vdev;
->> -
->> -    QTAILQ_FOREACH(vdev, &virtio_list, next) {
->> -        DeviceState *dev = DEVICE(vdev);
->> -
->> -        if (strcmp(dev->canonical_path, path) != 0) {
->> -            continue;
->> +    Error *err = NULL;
->> +    char *basename;
->> +
->> +    /* Append 'virtio-backend' to path if needed */
->> +    basename = g_path_get_basename(path);
->> +    if (strcmp(basename, "virtio-backend")) {
->> +        GString *temp = g_string_new(path);
->> +        char *last = strrchr(path, '/');
->> +        if (g_strcmp0(last, "/")) {
->> +            g_string_append(temp, "/virtio-backend");
->> +        } else {
->> +            g_string_append(temp, "virtio-backend");
->>           }
->> +        path = g_strdup(temp->str);
->> +        g_string_free(temp, true);
->> +    }
-> I don't much like the string operations. We should be able to
-> check object types instead.
+>>       virtio_delete_queue(gpio->command_vq);
+>> @@ -413,6 +419,7 @@ static void vu_gpio_class_init(ObjectClass *klass, void *data)
+>>       vdc->get_config = vu_gpio_get_config;
+>>       vdc->set_status = vu_gpio_set_status;
+>>       vdc->guest_notifier_mask = vu_gpio_guest_notifier_mask;
+>> +    vdc->get_vhost = vu_gpio_get_vhost;
+>>   }
+>>   
+>>   static const TypeInfo vu_gpio_info = {
+>> diff --git a/hw/virtio/virtio-qmp.c b/hw/virtio/virtio-qmp.c
+>> index e936cc8ce5..140c420d87 100644
+>> --- a/hw/virtio/virtio-qmp.c
+>> +++ b/hw/virtio/virtio-qmp.c
+>> @@ -53,6 +53,7 @@ enum VhostUserProtocolFeature {
+>>       VHOST_USER_PROTOCOL_F_RESET_DEVICE = 13,
+>>       VHOST_USER_PROTOCOL_F_INBAND_NOTIFICATIONS = 14,
+>>       VHOST_USER_PROTOCOL_F_CONFIGURE_MEM_SLOTS = 15,
+>> +    VHOST_USER_PROTOCOL_F_STATUS = 16,
+>>       VHOST_USER_PROTOCOL_F_MAX
+>>   };
+>>
+> OMG I just realized that by now we have accumulated each value
+> in 4 places! This is really badly asking to be moved
+> to a header. Not sure what to do about the document yet
+> but that will at least get us down to two.
+>    
+
+I can add this in another patch as a part of this series.
+
+>> @@ -79,6 +80,8 @@ static const qmp_virtio_feature_map_t virtio_transport_map[] = {
+>>               "VIRTIO_F_ORDER_PLATFORM: Memory accesses ordered by platform"),
+>>       FEATURE_ENTRY(VIRTIO_F_SR_IOV, \
+>>               "VIRTIO_F_SR_IOV: Device supports single root I/O virtualization"),
+>> +    FEATURE_ENTRY(VIRTIO_F_RING_RESET, \
+>> +            "VIRTIO_F_RING_RESET: Driver can reset individual VQs"),
+>>       /* Virtio ring transport features */
+>>       FEATURE_ENTRY(VIRTIO_RING_F_INDIRECT_DESC, \
+>>               "VIRTIO_RING_F_INDIRECT_DESC: Indirect descriptors supported"),
+>> @@ -134,6 +137,9 @@ static const qmp_virtio_feature_map_t vhost_user_protocol_map[] = {
+>>       FEATURE_ENTRY(VHOST_USER_PROTOCOL_F_CONFIGURE_MEM_SLOTS, \
+>>               "VHOST_USER_PROTOCOL_F_CONFIGURE_MEM_SLOTS: Configuration for "
+>>               "memory slots supported"),
+>> +    FEATURE_ENTRY(VHOST_USER_PROTOCOL_F_STATUS, \
+>> +            "VHOST_USER_PROTOCOL_F_STATUS: Querying and notifying back-end "
+>> +            "device statuses supported"),
+> status - there's only one per device
+
+Will change, thanks!
+
+>>       { -1, "" }
+>>   };
+>>   
+>> @@ -176,6 +182,8 @@ static const qmp_virtio_feature_map_t virtio_blk_feature_map[] = {
+>>               "VIRTIO_BLK_F_DISCARD: Discard command supported"),
+>>       FEATURE_ENTRY(VIRTIO_BLK_F_WRITE_ZEROES, \
+>>               "VIRTIO_BLK_F_WRITE_ZEROES: Write zeroes command supported"),
+>> +    FEATURE_ENTRY(VIRTIO_BLK_F_SECURE_ERASE, \
+>> +            "VIRTIO_BLK_F_SECURE_ERASE: Secure erase supported"),
+>>       FEATURE_ENTRY(VIRTIO_BLK_F_ZONED, \
+>>               "VIRTIO_BLK_F_ZONED: Zoned block devices"),
+>>   #ifndef VIRTIO_BLK_NO_LEGACY
+>> @@ -299,6 +307,14 @@ static const qmp_virtio_feature_map_t virtio_net_feature_map[] = {
+>>       FEATURE_ENTRY(VIRTIO_NET_F_CTRL_MAC_ADDR, \
+>>               "VIRTIO_NET_F_CTRL_MAC_ADDR: MAC address set through control "
+>>               "channel"),
+>> +    FEATURE_ENTRY(VIRTIO_NET_F_NOTF_COAL, \
+>> +            "VIRTIO_NET_F_NOTF_COAL: Device supports coalescing notifications"),
+>> +    FEATURE_ENTRY(VIRTIO_NET_F_GUEST_USO4, \
+>> +            "VIRTIO_NET_F_GUEST_USO4: Driver can receive USOv4"),
+>> +    FEATURE_ENTRY(VIRTIO_NET_F_GUEST_USO6, \
+>> +            "VIRTIO_NET_F_GUEST_USO4: Driver can receive USOv6"),
+>> +    FEATURE_ENTRY(VIRTIO_NET_F_HOST_USO, \
+>> +            "VIRTIO_NET_F_HOST_USO: Device can receive USO"),
+>>       FEATURE_ENTRY(VIRTIO_NET_F_HASH_REPORT, \
+>>               "VIRTIO_NET_F_HASH_REPORT: Hash reporting supported"),
+>>       FEATURE_ENTRY(VIRTIO_NET_F_RSS, \
+>> @@ -469,6 +485,48 @@ static const qmp_virtio_feature_map_t virtio_rng_feature_map[] = {
+>>   };
+>>   #endif
+>>   
+>> +/* virtio/vhost-gpio features mapping */
+>> +#ifdef CONFIG_VIRTIO_GPIO
+> Where's this coming from?
 >
-I don't either but in order for us to check if the object is a
-virtio device type, we need to use the device's path ending
-with '/virtio-backend'.
+Ah, this should probably be CONFIG_VHOST_USER_GPIO instead I believe.
 
-If there's a better method to checking this though, or perhaps
-checking a different type, that doesn't involve string
-manipulation, then I'm all for it.
+As for the other two...
 
->> -        Error *err = NULL;
->> -        QObject *obj = qmp_qom_get(dev->canonical_path, "realized", &err);
->> -        if (err == NULL) {
->> -            GString *is_realized = qobject_to_json_pretty(obj, true);
->> -            /* virtio device is NOT realized, remove it from list */
->> -            if (!strncmp(is_realized->str, "false", 4)) {
->> -                g_string_free(is_realized, true);
->> -                qobject_unref(obj);
->> -                QTAILQ_REMOVE(&virtio_list, vdev, next);
->> -                return NULL;
->> -            }
->> +    /* Verify the canonical path is a virtio device */
->> +    Object *obj = object_resolve_path(path, NULL);
->> +    if (!obj || !object_dynamic_cast(obj, TYPE_VIRTIO_DEVICE)) {
->> +        object_unref(obj);
->> +        return NULL;
->> +    }
+>> +static const qmp_virtio_feature_map_t virtio_gpio_feature_map[] = {
+>> +    FEATURE_ENTRY(VIRTIO_GPIO_F_IRQ, \
+>> +            "VIRTIO_GPIO_F_IRQ: Device supports interrupts on GPIO lines"),
+>> +    FEATURE_ENTRY(VHOST_F_LOG_ALL, \
+>> +            "VHOST_F_LOG_ALL: Logging write descriptors supported"),
+>> +    FEATURE_ENTRY(VHOST_USER_F_PROTOCOL_FEATURES, \
+>> +            "VHOST_USER_F_PROTOCOL_FEATURES: Vhost-user protocol features "
+>> +            "negotiation supported"),
+>> +    { -1, "" }
+>> +};
+>> +#endif
 >> +
->> +    /* Verify the virtio device is realized */
->> +    QObject *qobj = qmp_qom_get(path, "realized", &err);
->> +    if (err == NULL) {
->> +        GString *is_realized = qobject_to_json_pretty(qobj, true);
->> +        if (!strncmp(is_realized->str, "false", 4)) {
->>               g_string_free(is_realized, true);
->> -        } else {
->> -            /* virtio device doesn't exist in QOM tree */
->> -            QTAILQ_REMOVE(&virtio_list, vdev, next);
->> -            qobject_unref(obj);
->> +            qobject_unref(qobj);
->>               return NULL;
->>           }
->> -        /* device exists in QOM tree & is realized */
->> -        qobject_unref(obj);
->> -        return vdev;
->> +        g_string_free(is_realized, true);
->> +    } else {
->> +        qobject_unref(qobj);
->> +        return NULL;
->>       }
->> -    return NULL;
->> +    qobject_unref(qobj);
+>> +/* virtio-bluetooth features mapping */
+>> +#ifdef CONFIG_VIRTIO_BT
+> Where's this coming from?
+>
+This is coming from... nowhere!
+
+My apologies. I forgot to check if any of these virtio devices were
+actually being declared as objects (via. OBJECT_DECLARE_SIMPLE_TYPE).
+
+I will revert these changes for virtio-bt & virtio-scmi and be more
+careful to check for these in the future. Thank you for pointing this
+out.
+
+>> +static const qmp_virtio_feature_map_t virtio_bt_feature_map[] = {
+>> +    FEATURE_ENTRY(VIRTIO_BT_F_VND_HCI, \
+>> +            "VIRTIO_BT_F_VND_HCI: Vendor command supported"),
+>> +    FEATURE_ENTRY(VIRTIO_BT_F_MSFT_EXT, \
+>> +            "VIRTIO_BT_F_MSFT_EXT: MSFT vendor supported"),
+>> +    FEATURE_ENTRY(VIRTIO_BT_F_AOSP_EXT, \
+>> +            "VIRTIO_BT_F_AOSP_EXT: AOSP vendor supported"),
+>> +    FEATURE_ENTRY(VIRTIO_BT_F_CONFIG_V2, \
+>> +            "VIRTIO_BT_F_CONFIG_V2: Using v2 configuration"),
+>> +    { -1, "" }
+>> +};
+>> +#endif
 >> +
->> +    /* Get VirtIODevice object */
->> +    VirtIODevice *vdev = VIRTIO_DEVICE(obj);
->> +    return vdev;
->>   }
->>   
->>   VirtioStatus *qmp_x_query_virtio_status(const char *path, Error **errp)
->> diff --git a/hw/virtio/virtio-qmp.h b/hw/virtio/virtio-qmp.h
->> index 8af5f5e65a..4b2b7875b4 100644
->> --- a/hw/virtio/virtio-qmp.h
->> +++ b/hw/virtio/virtio-qmp.h
->> @@ -15,13 +15,7 @@
->>   #include "hw/virtio/virtio.h"
->>   #include "hw/virtio/vhost.h"
->>   
->> -#include "qemu/queue.h"
->> -
->> -typedef QTAILQ_HEAD(QmpVirtIODeviceList, VirtIODevice) QmpVirtIODeviceList;
->> -
->> -/* QAPI list of realized VirtIODevices */
->> -extern QmpVirtIODeviceList virtio_list;
->> -
->> +void qmp_set_virtio_device_list(const char *ppath, VirtioInfoList **list);
->>   VirtIODevice *qmp_find_virtio_device(const char *path);
->>   VirtioDeviceStatus *qmp_decode_status(uint8_t bitmap);
->>   VhostDeviceProtocols *qmp_decode_protocols(uint64_t bitmap);
->> diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
->> index 295a603e58..83c5db3d26 100644
->> --- a/hw/virtio/virtio.c
->> +++ b/hw/virtio/virtio.c
->> @@ -45,8 +45,6 @@
->>   #include "standard-headers/linux/virtio_mem.h"
->>   #include "standard-headers/linux/virtio_vsock.h"
->>   
->> -QmpVirtIODeviceList virtio_list;
->> -
->>   /*
->>    * Maximum size of virtio device config space
->>    */
->> @@ -3616,7 +3614,6 @@ static void virtio_device_realize(DeviceState *dev, Error **errp)
->>       vdev->listener.commit = virtio_memory_listener_commit;
->>       vdev->listener.name = "virtio";
->>       memory_listener_register(&vdev->listener, vdev->dma_as);
->> -    QTAILQ_INSERT_TAIL(&virtio_list, vdev, next);
->>   }
->>   
->>   static void virtio_device_unrealize(DeviceState *dev)
->> @@ -3631,7 +3628,6 @@ static void virtio_device_unrealize(DeviceState *dev)
->>           vdc->unrealize(dev);
->>       }
->>   
->> -    QTAILQ_REMOVE(&virtio_list, vdev, next);
->>       g_free(vdev->bus_name);
->>       vdev->bus_name = NULL;
->>   }
->> @@ -3805,8 +3801,6 @@ static void virtio_device_class_init(ObjectClass *klass, void *data)
->>       vdc->stop_ioeventfd = virtio_device_stop_ioeventfd_impl;
->>   
->>       vdc->legacy_features |= VIRTIO_LEGACY_FEATURES;
->> -
->> -    QTAILQ_INIT(&virtio_list);
->>   }
->>   
->>   bool virtio_device_ioeventfd_enabled(VirtIODevice *vdev)
+>> +/* virtio-scmi features mapping */
+>> +#ifdef CONFIG_VIRTIO_SCMI
+> Where's this coming from?
+
+Will revert this. See comment above.
+
+>> +static const qmp_virtio_feature_map_t virtio_scmi_feature_map[] = {
+>> +    FEATURE_ENTRY(VIRTIO_SCMI_F_P2A_CHANNELS, \
+>> +            "VIRTIO_SCMI_F_P2A_CHANNELS: SCMI notifications or delayed "
+>> +            "responses implemented"),
+>> +    FEATURE_ENTRY(VIRTIO_SCMI_F_SHARED_MEMORY, \
+>> +            "VIRTIO_SCMI_F_SHARED_MEMORY: SCMI shared memory region statistics "
+>> +            "implemented"),
+>> +    { -1, "" }
+>> +};
+>> +#endif
+>> +
+>>   #define CONVERT_FEATURES(type, map, is_status, bitmap)   \
+>>       ({                                                   \
+>>           type *list = NULL;                               \
+>> @@ -625,6 +683,24 @@ VirtioDeviceFeatures *qmp_decode_features(uint16_t device_id, uint64_t bitmap)
+>>           features->dev_features =
+>>               CONVERT_FEATURES(strList, virtio_rng_feature_map, 0, bitmap);
+>>           break;
+>> +#endif
+>> +#ifdef CONFIG_VIRTIO_GPIO
+>> +    case VIRTIO_ID_GPIO:
+>> +        features->dev_features =
+>> +            CONVERT_FEATURES(strList, virtio_gpio_feature_map, 0, bitmap);
+>> +        break;
+>> +#endif
+>> +#ifdef CONFIG_VIRTIO_BT
+>> +    case VIRTIO_ID_BT:
+>> +        features->dev_features =
+>> +            CONVERT_FEATURES(strList, virtio_bt_feature_map, 0, bitmap);
+>> +        break;
+>> +#endif
+>> +#ifdef CONFIG_VIRTIO_SCMI
+>> +    case VIRTIO_ID_SCMI:
+>> +        features->dev_features =
+>> +            CONVERT_FEATURES(strList, virtio_scmi_feature_map, 0, bitmap);
+>> +        break;
+>>   #endif
+>>       /* No features */
+>>       case VIRTIO_ID_9P:
+>> @@ -640,18 +716,15 @@ VirtioDeviceFeatures *qmp_decode_features(uint16_t device_id, uint64_t bitmap)
+>>       case VIRTIO_ID_SIGNAL_DIST:
+>>       case VIRTIO_ID_PSTORE:
+>>       case VIRTIO_ID_SOUND:
+>> -    case VIRTIO_ID_BT:
+>>       case VIRTIO_ID_RPMB:
+>>       case VIRTIO_ID_VIDEO_ENCODER:
+>>       case VIRTIO_ID_VIDEO_DECODER:
+>> -    case VIRTIO_ID_SCMI:
+>>       case VIRTIO_ID_NITRO_SEC_MOD:
+>>       case VIRTIO_ID_WATCHDOG:
+>>       case VIRTIO_ID_CAN:
+>>       case VIRTIO_ID_DMABUF:
+>>       case VIRTIO_ID_PARAM_SERV:
+>>       case VIRTIO_ID_AUDIO_POLICY:
+>> -    case VIRTIO_ID_GPIO:
+>>           break;
+>>       default:
+>>           g_assert_not_reached();
 >> -- 
 >> 2.39.3
---------------IzfoPO7iJM608nVh9ZpFMOoU
+--------------WOx2W01rDaTFKwr7I9d583Fa
 Content-Type: text/html; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
@@ -467,294 +459,312 @@ Content-Transfer-Encoding: 7bit
     <pre>
 </pre>
     <div class="moz-cite-prefix">
-      <pre>On 6/23/23 01:47, Michael S. Tsirkin wrote:</pre>
+      <pre>On 6/23/23 01:43, Michael S. Tsirkin wrote:</pre>
     </div>
-    <blockquote type="cite" cite="mid:20230623014315-mutt-send-email-mst@kernel.org">
-      <pre class="moz-quote-pre" wrap="">On Fri, Jun 09, 2023 at 09:20:39AM -0400, Jonah Palmer wrote:
+    <blockquote type="cite" cite="mid:20230623013300-mutt-send-email-mst@kernel.org">
+      <pre class="moz-quote-pre" wrap="">On Fri, Jun 09, 2023 at 09:20:40AM -0400, Jonah Palmer wrote:
 </pre>
       <blockquote type="cite">
-        <pre class="moz-quote-pre" wrap="">The virtio_list duplicates information about virtio devices that already
-exist in the QOM composition tree. Instead of creating this list of
-realized virtio devices, search the QOM composition tree instead.
+        <pre class="moz-quote-pre" wrap="">Add new virtio transport feature to transport feature map:
+ - VIRTIO_F_RING_RESET
 
-This patch modifies the QMP command qmp_x_query_virtio to instead search
-the partial paths of '/machine/peripheral/' &amp;
-'/machine/peripheral-anon/' in the QOM composition tree for virtio
-devices.
+Add new vhost-user protocol feature to vhost-user protocol feature map
+and enumeration:
+ - VHOST_USER_PROTOCOL_F_STATUS
 
-A device is found to be a valid virtio device if (1) its canonical path
-is of 'TYPE_VIRTIO_DEVICE' and (2) the device has been realized.
+Add new virtio device features for several virtio devices to their
+respective feature mappings:
 
-[Jonah: In the previous commit I had written that a device is found to
- be a valid virtio device if (1) it has a canonical path ending with
- 'virtio-backend'.
+virtio-blk:
+ - VIRTIO_BLK_F_SECURE_ERASE
 
- The code now determines if it's a virtio device by appending
- 'virtio-backend' (if needed) to a given canonical path and then
- checking that path to see if the device is of type
-'TYPE_VIRTIO_DEVICE'.
+virtio-net:
+ - VIRTIO_NET_F_NOTF_COAL
+ - VIRTIO_NET_F_GUEST_USO4
+ - VIRTIO_NET_F_GUEST_USO6
+ - VIRTIO_NET_F_HOST_USO
 
- The patch also instead now checks to make sure it's a virtio device
- before attempting to check whether the device is realized or not.]
+virtio/vhost-user-gpio:
+ - VIRTIO_GPIO_F_IRQ
+ - VHOST_F_LOG_ALL
+ - VHOST_USER_F_PROTOCOL_FEATURES
+
+virtio-bt:
+ - VIRTIO_BT_F_VND_HCI
+ - VIRTIO_BT_F_MSFT_EXT
+ - VIRTIO_BT_F_AOSP_EXT
+ - VIRTIO_BT_F_CONFIG_V2
+
+virtio-scmi:
+ - VIRTIO_SCMI_F_P2A_CHANNELS
+ - VIRTIO_SCMI_F_SHARED_MEMORY
+
+Add support for introspection on vhost-user-gpio devices.
 
 Signed-off-by: Jonah Palmer <a class="moz-txt-link-rfc2396E" href="mailto:jonah.palmer@oracle.com">&lt;jonah.palmer@oracle.com&gt;</a>
 </pre>
       </blockquote>
       <pre class="moz-quote-pre" wrap="">
+Thanks for the patch! Some comments:
 
-Could one of QMP maintainers comment on this please?
 
 </pre>
       <blockquote type="cite">
         <pre class="moz-quote-pre" wrap="">---
- hw/virtio/virtio-qmp.c | 128 ++++++++++++++++++++++++++---------------
- hw/virtio/virtio-qmp.h |   8 +--
- hw/virtio/virtio.c     |   6 --
- 3 files changed, 82 insertions(+), 60 deletions(-)
+ hw/virtio/vhost-user-gpio.c |  7 ++++
+ hw/virtio/virtio-qmp.c      | 79 +++++++++++++++++++++++++++++++++++--
+ 2 files changed, 83 insertions(+), 3 deletions(-)
 
-diff --git a/hw/virtio/virtio-qmp.c b/hw/virtio/virtio-qmp.c
-index b5e1835299..e936cc8ce5 100644
---- a/hw/virtio/virtio-qmp.c
-+++ b/hw/virtio/virtio-qmp.c
-@@ -668,67 +668,101 @@ VirtioDeviceFeatures *qmp_decode_features(uint16_t device_id, uint64_t bitmap)
- VirtioInfoList *qmp_x_query_virtio(Error **errp)
- {
-     VirtioInfoList *list = NULL;
--    VirtioInfo *node;
--    VirtIODevice *vdev;
+diff --git a/hw/virtio/vhost-user-gpio.c b/hw/virtio/vhost-user-gpio.c
+index d6927b610a..e88ca5370f 100644
+--- a/hw/virtio/vhost-user-gpio.c
++++ b/hw/virtio/vhost-user-gpio.c
+@@ -205,6 +205,12 @@ static void vu_gpio_guest_notifier_mask(VirtIODevice *vdev, int idx, bool mask)
+     vhost_virtqueue_mask(&amp;gpio-&gt;vhost_dev, vdev, idx, mask);
+ }
  
--    QTAILQ_FOREACH(vdev, &amp;virtio_list, next) {
--        DeviceState *dev = DEVICE(vdev);
--        Error *err = NULL;
--        QObject *obj = qmp_qom_get(dev-&gt;canonical_path, &quot;realized&quot;, &amp;err);
--
--        if (err == NULL) {
--            GString *is_realized = qobject_to_json_pretty(obj, true);
--            /* virtio device is NOT realized, remove it from list */
--            if (!strncmp(is_realized-&gt;str, &quot;false&quot;, 4)) {
--                QTAILQ_REMOVE(&amp;virtio_list, vdev, next);
--            } else {
--                node = g_new(VirtioInfo, 1);
--                node-&gt;path = g_strdup(dev-&gt;canonical_path);
--                node-&gt;name = g_strdup(vdev-&gt;name);
--                QAPI_LIST_PREPEND(list, node);
-+    /* Query the QOM composition tree for virtio devices */
-+    qmp_set_virtio_device_list(&quot;/machine/peripheral/&quot;, &amp;list);
-+    qmp_set_virtio_device_list(&quot;/machine/peripheral-anon/&quot;, &amp;list);
-</pre>
-      </blockquote>
-      <pre class="moz-quote-pre" wrap="">
-How sure are we these will forever be the only two places where virtio
-can live?
-</pre>
-    </blockquote>
-    <pre>A virtio device will always be considered a peripheral device, right?
-Since peripheral devices are input and/or output devices by definition.
-</pre>
-    <blockquote type="cite" cite="mid:20230623014315-mutt-send-email-mst@kernel.org">
-      <pre class="moz-quote-pre" wrap="">
-</pre>
-      <blockquote type="cite">
-        <pre class="moz-quote-pre" wrap="">+    if (list == NULL) {
-+        error_setg(errp, &quot;No virtio devices found&quot;);
-+        return NULL;
-+    }
-+    return list;
++static struct vhost_dev *vu_gpio_get_vhost(VirtIODevice *vdev)
++{
++    VHostUserGPIO *gpio = VHOST_USER_GPIO(vdev);
++    return &amp;gpio-&gt;vhost_dev;
 +}
 +
-+/* qmp_set_virtio_device_list:
-+ * @ppath: An incomplete peripheral path to search from.
-+ * @list: A list of realized virtio devices.
-+ * Searches a given incomplete peripheral path (e.g. '/machine/peripheral/'
-+ * or '/machine/peripheral-anon/') for realized virtio devices and adds them
-+ * to a given list of virtio devices.
-+ */
-+void qmp_set_virtio_device_list(const char *ppath, VirtioInfoList **list)
-+{
-+    ObjectPropertyInfoList *plist;
-+    VirtioInfoList *node;
-+    Error *err = NULL;
-+
-+    /* Search an incomplete path for virtio devices */
-+    plist = qmp_qom_list(ppath, &amp;err);
-+    if (err == NULL) {
-+        ObjectPropertyInfoList *start = plist;
-+        while (plist != NULL) {
-+            ObjectPropertyInfo *value = plist-&gt;value;
-+            GString *path = g_string_new(ppath);
-+            g_string_append(path, value-&gt;name);
-+            g_string_append(path, &quot;/virtio-backend&quot;);
-+
-+            /* Determine if full path is a realized virtio device */
-+            VirtIODevice *vdev = qmp_find_virtio_device(path-&gt;str);
-+            if (vdev != NULL) {
-+                node = g_new0(VirtioInfoList, 1);
-+                node-&gt;value = g_new(VirtioInfo, 1);
-+                node-&gt;value-&gt;path = g_strdup(path-&gt;str);
-+                node-&gt;value-&gt;name = g_strdup(vdev-&gt;name);
-+                QAPI_LIST_PREPEND(*list, node-&gt;value);
-             }
--           g_string_free(is_realized, true);
-+            g_string_free(path, true);
-+            plist = plist-&gt;next;
-         }
--        qobject_unref(obj);
-+        qapi_free_ObjectPropertyInfoList(start);
-     }
--
--    return list;
+ static void do_vhost_user_cleanup(VirtIODevice *vdev, VHostUserGPIO *gpio)
+ {
+     virtio_delete_queue(gpio-&gt;command_vq);
+@@ -413,6 +419,7 @@ static void vu_gpio_class_init(ObjectClass *klass, void *data)
+     vdc-&gt;get_config = vu_gpio_get_config;
+     vdc-&gt;set_status = vu_gpio_set_status;
+     vdc-&gt;guest_notifier_mask = vu_gpio_guest_notifier_mask;
++    vdc-&gt;get_vhost = vu_gpio_get_vhost;
  }
  
- VirtIODevice *qmp_find_virtio_device(const char *path)
- {
--    VirtIODevice *vdev;
--
--    QTAILQ_FOREACH(vdev, &amp;virtio_list, next) {
--        DeviceState *dev = DEVICE(vdev);
--
--        if (strcmp(dev-&gt;canonical_path, path) != 0) {
--            continue;
-+    Error *err = NULL;
-+    char *basename;
-+
-+    /* Append 'virtio-backend' to path if needed */
-+    basename = g_path_get_basename(path);
-+    if (strcmp(basename, &quot;virtio-backend&quot;)) {
-+        GString *temp = g_string_new(path);
-+        char *last = strrchr(path, '/');
-+        if (g_strcmp0(last, &quot;/&quot;)) {
-+            g_string_append(temp, &quot;/virtio-backend&quot;);
-+        } else {
-+            g_string_append(temp, &quot;virtio-backend&quot;);
-         }
-+        path = g_strdup(temp-&gt;str);
-+        g_string_free(temp, true);
-+    }
+ static const TypeInfo vu_gpio_info = {
+diff --git a/hw/virtio/virtio-qmp.c b/hw/virtio/virtio-qmp.c
+index e936cc8ce5..140c420d87 100644
+--- a/hw/virtio/virtio-qmp.c
++++ b/hw/virtio/virtio-qmp.c
+@@ -53,6 +53,7 @@ enum VhostUserProtocolFeature {
+     VHOST_USER_PROTOCOL_F_RESET_DEVICE = 13,
+     VHOST_USER_PROTOCOL_F_INBAND_NOTIFICATIONS = 14,
+     VHOST_USER_PROTOCOL_F_CONFIGURE_MEM_SLOTS = 15,
++    VHOST_USER_PROTOCOL_F_STATUS = 16,
+     VHOST_USER_PROTOCOL_F_MAX
+ };
+
 </pre>
       </blockquote>
       <pre class="moz-quote-pre" wrap="">
-I don't much like the string operations. We should be able to
-check object types instead.
-
-</pre>
+OMG I just realized that by now we have accumulated each value
+in 4 places! This is really badly asking to be moved
+to a header. Not sure what to do about the document yet
+but that will at least get us down to two.
+  </pre>
     </blockquote>
-    <pre>I don't either but in order for us to check if the object is a
-virtio device type, we need to use the device's path ending
-with '/virtio-backend'.
-
-If there's a better method to checking this though, or perhaps
-checking a different type, that doesn't involve string
-manipulation, then I'm all for it.
+    <pre>I can add this in another patch as a part of this series.
 </pre>
-    <blockquote type="cite" cite="mid:20230623014315-mutt-send-email-mst@kernel.org">
+    <blockquote type="cite" cite="mid:20230623013300-mutt-send-email-mst@kernel.org">
       <pre class="moz-quote-pre" wrap="">
 </pre>
       <blockquote type="cite">
-        <pre class="moz-quote-pre" wrap="">-        Error *err = NULL;
--        QObject *obj = qmp_qom_get(dev-&gt;canonical_path, &quot;realized&quot;, &amp;err);
--        if (err == NULL) {
--            GString *is_realized = qobject_to_json_pretty(obj, true);
--            /* virtio device is NOT realized, remove it from list */
--            if (!strncmp(is_realized-&gt;str, &quot;false&quot;, 4)) {
--                g_string_free(is_realized, true);
--                qobject_unref(obj);
--                QTAILQ_REMOVE(&amp;virtio_list, vdev, next);
--                return NULL;
--            }
-+    /* Verify the canonical path is a virtio device */
-+    Object *obj = object_resolve_path(path, NULL);
-+    if (!obj || !object_dynamic_cast(obj, TYPE_VIRTIO_DEVICE)) {
-+        object_unref(obj);
-+        return NULL;
-+    }
+        <pre class="moz-quote-pre" wrap="">@@ -79,6 +80,8 @@ static const qmp_virtio_feature_map_t virtio_transport_map[] = {
+             &quot;VIRTIO_F_ORDER_PLATFORM: Memory accesses ordered by platform&quot;),
+     FEATURE_ENTRY(VIRTIO_F_SR_IOV, \
+             &quot;VIRTIO_F_SR_IOV: Device supports single root I/O virtualization&quot;),
++    FEATURE_ENTRY(VIRTIO_F_RING_RESET, \
++            &quot;VIRTIO_F_RING_RESET: Driver can reset individual VQs&quot;),
+     /* Virtio ring transport features */
+     FEATURE_ENTRY(VIRTIO_RING_F_INDIRECT_DESC, \
+             &quot;VIRTIO_RING_F_INDIRECT_DESC: Indirect descriptors supported&quot;),
+@@ -134,6 +137,9 @@ static const qmp_virtio_feature_map_t vhost_user_protocol_map[] = {
+     FEATURE_ENTRY(VHOST_USER_PROTOCOL_F_CONFIGURE_MEM_SLOTS, \
+             &quot;VHOST_USER_PROTOCOL_F_CONFIGURE_MEM_SLOTS: Configuration for &quot;
+             &quot;memory slots supported&quot;),
++    FEATURE_ENTRY(VHOST_USER_PROTOCOL_F_STATUS, \
++            &quot;VHOST_USER_PROTOCOL_F_STATUS: Querying and notifying back-end &quot;
++            &quot;device statuses supported&quot;),
+</pre>
+      </blockquote>
+      <pre class="moz-quote-pre" wrap="">
+status - there's only one per device
+</pre>
+    </blockquote>
+    <pre>Will change, thanks!
+</pre>
+    <blockquote type="cite" cite="mid:20230623013300-mutt-send-email-mst@kernel.org">
+      <pre class="moz-quote-pre" wrap="">
+</pre>
+      <blockquote type="cite">
+        <pre class="moz-quote-pre" wrap="">     { -1, &quot;&quot; }
+ };
+ 
+@@ -176,6 +182,8 @@ static const qmp_virtio_feature_map_t virtio_blk_feature_map[] = {
+             &quot;VIRTIO_BLK_F_DISCARD: Discard command supported&quot;),
+     FEATURE_ENTRY(VIRTIO_BLK_F_WRITE_ZEROES, \
+             &quot;VIRTIO_BLK_F_WRITE_ZEROES: Write zeroes command supported&quot;),
++    FEATURE_ENTRY(VIRTIO_BLK_F_SECURE_ERASE, \
++            &quot;VIRTIO_BLK_F_SECURE_ERASE: Secure erase supported&quot;),
+     FEATURE_ENTRY(VIRTIO_BLK_F_ZONED, \
+             &quot;VIRTIO_BLK_F_ZONED: Zoned block devices&quot;),
+ #ifndef VIRTIO_BLK_NO_LEGACY
+</pre>
+      </blockquote>
+      <pre class="moz-quote-pre" wrap="">
+</pre>
+      <blockquote type="cite">
+        <pre class="moz-quote-pre" wrap="">@@ -299,6 +307,14 @@ static const qmp_virtio_feature_map_t virtio_net_feature_map[] = {
+     FEATURE_ENTRY(VIRTIO_NET_F_CTRL_MAC_ADDR, \
+             &quot;VIRTIO_NET_F_CTRL_MAC_ADDR: MAC address set through control &quot;
+             &quot;channel&quot;),
++    FEATURE_ENTRY(VIRTIO_NET_F_NOTF_COAL, \
++            &quot;VIRTIO_NET_F_NOTF_COAL: Device supports coalescing notifications&quot;),
++    FEATURE_ENTRY(VIRTIO_NET_F_GUEST_USO4, \
++            &quot;VIRTIO_NET_F_GUEST_USO4: Driver can receive USOv4&quot;),
++    FEATURE_ENTRY(VIRTIO_NET_F_GUEST_USO6, \
++            &quot;VIRTIO_NET_F_GUEST_USO4: Driver can receive USOv6&quot;),
++    FEATURE_ENTRY(VIRTIO_NET_F_HOST_USO, \
++            &quot;VIRTIO_NET_F_HOST_USO: Device can receive USO&quot;),
+     FEATURE_ENTRY(VIRTIO_NET_F_HASH_REPORT, \
+             &quot;VIRTIO_NET_F_HASH_REPORT: Hash reporting supported&quot;),
+     FEATURE_ENTRY(VIRTIO_NET_F_RSS, \
+@@ -469,6 +485,48 @@ static const qmp_virtio_feature_map_t virtio_rng_feature_map[] = {
+ };
+ #endif
+ 
++/* virtio/vhost-gpio features mapping */
++#ifdef CONFIG_VIRTIO_GPIO
+</pre>
+      </blockquote>
+      <pre class="moz-quote-pre" wrap="">
+Where's this coming from?
+
+</pre>
+    </blockquote>
+    <pre>Ah, this should probably be CONFIG_VHOST_USER_GPIO instead I believe.
+
+As for the other two...
+</pre>
+    <blockquote type="cite" cite="mid:20230623013300-mutt-send-email-mst@kernel.org">
+      <blockquote type="cite">
+        <pre class="moz-quote-pre" wrap="">+static const qmp_virtio_feature_map_t virtio_gpio_feature_map[] = {
++    FEATURE_ENTRY(VIRTIO_GPIO_F_IRQ, \
++            &quot;VIRTIO_GPIO_F_IRQ: Device supports interrupts on GPIO lines&quot;),
++    FEATURE_ENTRY(VHOST_F_LOG_ALL, \
++            &quot;VHOST_F_LOG_ALL: Logging write descriptors supported&quot;),
++    FEATURE_ENTRY(VHOST_USER_F_PROTOCOL_FEATURES, \
++            &quot;VHOST_USER_F_PROTOCOL_FEATURES: Vhost-user protocol features &quot;
++            &quot;negotiation supported&quot;),
++    { -1, &quot;&quot; }
++};
++#endif
 +
-+    /* Verify the virtio device is realized */
-+    QObject *qobj = qmp_qom_get(path, &quot;realized&quot;, &amp;err);
-+    if (err == NULL) {
-+        GString *is_realized = qobject_to_json_pretty(qobj, true);
-+        if (!strncmp(is_realized-&gt;str, &quot;false&quot;, 4)) {
-             g_string_free(is_realized, true);
--        } else {
--            /* virtio device doesn't exist in QOM tree */
--            QTAILQ_REMOVE(&amp;virtio_list, vdev, next);
--            qobject_unref(obj);
-+            qobject_unref(qobj);
-             return NULL;
-         }
--        /* device exists in QOM tree &amp; is realized */
--        qobject_unref(obj);
--        return vdev;
-+        g_string_free(is_realized, true);
-+    } else {
-+        qobject_unref(qobj);
-+        return NULL;
-     }
--    return NULL;
-+    qobject_unref(qobj);
++/* virtio-bluetooth features mapping */
++#ifdef CONFIG_VIRTIO_BT
+</pre>
+      </blockquote>
+      <pre class="moz-quote-pre" wrap="">
+Where's this coming from?
+
+</pre>
+    </blockquote>
+    <pre>This is coming from... nowhere!
+
+My apologies. I forgot to check if any of these virtio devices were
+actually being declared as objects (via. OBJECT_DECLARE_SIMPLE_TYPE).
+
+I will revert these changes for virtio-bt &amp; virtio-scmi and be more
+careful to check for these in the future. Thank you for pointing this
+out.
+</pre>
+    <blockquote type="cite" cite="mid:20230623013300-mutt-send-email-mst@kernel.org">
+      <pre class="moz-quote-pre" wrap="">
+</pre>
+      <blockquote type="cite">
+        <pre class="moz-quote-pre" wrap="">+static const qmp_virtio_feature_map_t virtio_bt_feature_map[] = {
++    FEATURE_ENTRY(VIRTIO_BT_F_VND_HCI, \
++            &quot;VIRTIO_BT_F_VND_HCI: Vendor command supported&quot;),
++    FEATURE_ENTRY(VIRTIO_BT_F_MSFT_EXT, \
++            &quot;VIRTIO_BT_F_MSFT_EXT: MSFT vendor supported&quot;),
++    FEATURE_ENTRY(VIRTIO_BT_F_AOSP_EXT, \
++            &quot;VIRTIO_BT_F_AOSP_EXT: AOSP vendor supported&quot;),
++    FEATURE_ENTRY(VIRTIO_BT_F_CONFIG_V2, \
++            &quot;VIRTIO_BT_F_CONFIG_V2: Using v2 configuration&quot;),
++    { -1, &quot;&quot; }
++};
++#endif
 +
-+    /* Get VirtIODevice object */
-+    VirtIODevice *vdev = VIRTIO_DEVICE(obj);
-+    return vdev;
- }
- 
- VirtioStatus *qmp_x_query_virtio_status(const char *path, Error **errp)
-diff --git a/hw/virtio/virtio-qmp.h b/hw/virtio/virtio-qmp.h
-index 8af5f5e65a..4b2b7875b4 100644
---- a/hw/virtio/virtio-qmp.h
-+++ b/hw/virtio/virtio-qmp.h
-@@ -15,13 +15,7 @@
- #include &quot;hw/virtio/virtio.h&quot;
- #include &quot;hw/virtio/vhost.h&quot;
- 
--#include &quot;qemu/queue.h&quot;
--
--typedef QTAILQ_HEAD(QmpVirtIODeviceList, VirtIODevice) QmpVirtIODeviceList;
--
--/* QAPI list of realized VirtIODevices */
--extern QmpVirtIODeviceList virtio_list;
--
-+void qmp_set_virtio_device_list(const char *ppath, VirtioInfoList **list);
- VirtIODevice *qmp_find_virtio_device(const char *path);
- VirtioDeviceStatus *qmp_decode_status(uint8_t bitmap);
- VhostDeviceProtocols *qmp_decode_protocols(uint64_t bitmap);
-diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
-index 295a603e58..83c5db3d26 100644
---- a/hw/virtio/virtio.c
-+++ b/hw/virtio/virtio.c
-@@ -45,8 +45,6 @@
- #include &quot;standard-headers/linux/virtio_mem.h&quot;
- #include &quot;standard-headers/linux/virtio_vsock.h&quot;
- 
--QmpVirtIODeviceList virtio_list;
--
- /*
-  * Maximum size of virtio device config space
-  */
-@@ -3616,7 +3614,6 @@ static void virtio_device_realize(DeviceState *dev, Error **errp)
-     vdev-&gt;listener.commit = virtio_memory_listener_commit;
-     vdev-&gt;listener.name = &quot;virtio&quot;;
-     memory_listener_register(&amp;vdev-&gt;listener, vdev-&gt;dma_as);
--    QTAILQ_INSERT_TAIL(&amp;virtio_list, vdev, next);
- }
- 
- static void virtio_device_unrealize(DeviceState *dev)
-@@ -3631,7 +3628,6 @@ static void virtio_device_unrealize(DeviceState *dev)
-         vdc-&gt;unrealize(dev);
-     }
- 
--    QTAILQ_REMOVE(&amp;virtio_list, vdev, next);
-     g_free(vdev-&gt;bus_name);
-     vdev-&gt;bus_name = NULL;
- }
-@@ -3805,8 +3801,6 @@ static void virtio_device_class_init(ObjectClass *klass, void *data)
-     vdc-&gt;stop_ioeventfd = virtio_device_stop_ioeventfd_impl;
- 
-     vdc-&gt;legacy_features |= VIRTIO_LEGACY_FEATURES;
--
--    QTAILQ_INIT(&amp;virtio_list);
- }
- 
- bool virtio_device_ioeventfd_enabled(VirtIODevice *vdev)
++/* virtio-scmi features mapping */
++#ifdef CONFIG_VIRTIO_SCMI
+</pre>
+      </blockquote>
+      <pre class="moz-quote-pre" wrap="">
+Where's this coming from?
+</pre>
+    </blockquote>
+    <pre>Will revert this. See comment above.
+</pre>
+    <blockquote type="cite" cite="mid:20230623013300-mutt-send-email-mst@kernel.org">
+      <pre class="moz-quote-pre" wrap="">
+</pre>
+      <blockquote type="cite">
+        <pre class="moz-quote-pre" wrap="">+static const qmp_virtio_feature_map_t virtio_scmi_feature_map[] = {
++    FEATURE_ENTRY(VIRTIO_SCMI_F_P2A_CHANNELS, \
++            &quot;VIRTIO_SCMI_F_P2A_CHANNELS: SCMI notifications or delayed &quot;
++            &quot;responses implemented&quot;),
++    FEATURE_ENTRY(VIRTIO_SCMI_F_SHARED_MEMORY, \
++            &quot;VIRTIO_SCMI_F_SHARED_MEMORY: SCMI shared memory region statistics &quot;
++            &quot;implemented&quot;),
++    { -1, &quot;&quot; }
++};
++#endif
++
+ #define CONVERT_FEATURES(type, map, is_status, bitmap)   \
+     ({                                                   \
+         type *list = NULL;                               \
+@@ -625,6 +683,24 @@ VirtioDeviceFeatures *qmp_decode_features(uint16_t device_id, uint64_t bitmap)
+         features-&gt;dev_features =
+             CONVERT_FEATURES(strList, virtio_rng_feature_map, 0, bitmap);
+         break;
++#endif
++#ifdef CONFIG_VIRTIO_GPIO
++    case VIRTIO_ID_GPIO:
++        features-&gt;dev_features =
++            CONVERT_FEATURES(strList, virtio_gpio_feature_map, 0, bitmap);
++        break;
++#endif
++#ifdef CONFIG_VIRTIO_BT
++    case VIRTIO_ID_BT:
++        features-&gt;dev_features =
++            CONVERT_FEATURES(strList, virtio_bt_feature_map, 0, bitmap);
++        break;
++#endif
++#ifdef CONFIG_VIRTIO_SCMI
++    case VIRTIO_ID_SCMI:
++        features-&gt;dev_features =
++            CONVERT_FEATURES(strList, virtio_scmi_feature_map, 0, bitmap);
++        break;
+ #endif
+     /* No features */
+     case VIRTIO_ID_9P:
+@@ -640,18 +716,15 @@ VirtioDeviceFeatures *qmp_decode_features(uint16_t device_id, uint64_t bitmap)
+     case VIRTIO_ID_SIGNAL_DIST:
+     case VIRTIO_ID_PSTORE:
+     case VIRTIO_ID_SOUND:
+-    case VIRTIO_ID_BT:
+     case VIRTIO_ID_RPMB:
+     case VIRTIO_ID_VIDEO_ENCODER:
+     case VIRTIO_ID_VIDEO_DECODER:
+-    case VIRTIO_ID_SCMI:
+     case VIRTIO_ID_NITRO_SEC_MOD:
+     case VIRTIO_ID_WATCHDOG:
+     case VIRTIO_ID_CAN:
+     case VIRTIO_ID_DMABUF:
+     case VIRTIO_ID_PARAM_SERV:
+     case VIRTIO_ID_AUDIO_POLICY:
+-    case VIRTIO_ID_GPIO:
+         break;
+     default:
+         g_assert_not_reached();
 -- 
 2.39.3
 </pre>
@@ -765,5 +775,5 @@ index 295a603e58..83c5db3d26 100644
   </body>
 </html>
 
---------------IzfoPO7iJM608nVh9ZpFMOoU--
+--------------WOx2W01rDaTFKwr7I9d583Fa--
 
