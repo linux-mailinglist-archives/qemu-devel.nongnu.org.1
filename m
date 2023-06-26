@@ -2,69 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7DE773D784
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 08:05:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0511673D7B5
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 08:20:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDfFc-0006Vx-2t; Mon, 26 Jun 2023 01:59:00 -0400
+	id 1qDfYp-0006I4-0W; Mon, 26 Jun 2023 02:18:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <flwu@google.com>) id 1qDfFV-0006An-6Z
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 01:58:55 -0400
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <flwu@google.com>) id 1qDfFT-0007r1-12
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 01:58:52 -0400
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-311394406d0so2391931f8f.2
- for <qemu-devel@nongnu.org>; Sun, 25 Jun 2023 22:58:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20221208; t=1687759128; x=1690351128;
- h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
- :date:message-id:reply-to;
- bh=gNyRnvGL8Sl91bWJVZRjV4lwFGyjAAmu8ggpp8qFns0=;
- b=tDf7nbrKrrrBPX5n9gQkhXELueB0R7yWxNiT5z++7L7MCqeM5TGAA2RR65PehH/9KK
- nLPGD/bUh4QXZnM4U8NODcIROnsiVZKeHk8W+/YRPGeGK8y1cPR6yubRGVAwmU2PPwGB
- j+DFPNF41V+koqUPpQPj38eSci2g1f07aJ2wGYtauP6gKca7FNzD7n5yuuj4P90HPMkK
- IMm0J8eKmwAXdVMzkVD0aUiz6Obs6FKdvaemCkPfiVo6/stuHeYmMVB4H56drK/9fovV
- lUPdup5WuLYSz1xmYMH56z0G6qLgBIp8V8mDaRUNpPWWG2byBKSzzBmqP7cqMazTqFMn
- 1Zpw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687759128; x=1690351128;
- h=to:subject:message-id:date:from:mime-version:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=gNyRnvGL8Sl91bWJVZRjV4lwFGyjAAmu8ggpp8qFns0=;
- b=b5IdwnUi6P13E8YUYTnr7oY8AZBIReQr4p1u4eWq7B8yHzl8XCDRgVx7G+WbUQ+K/X
- NzdD1VhKWrWiGXYYYMuZZZjdpq5IKrcs62xiLFv4ox2NSpMaG2NsnX2kbs6ssk/bYJDt
- UuDfjRkYwjWOzNDLWcpVpCmkNrVwdtcb5rRJSgsyZhQCMGQej2ZPUpnKuKfpx/NjwYsz
- JuGb6epYSpLGwDD8kFVqOlmIdusxstTv9tgc0Oh3sCDjYeWVw5IuHHJccKor8wjAac0B
- pLeg+MpzYLB5fq2C18icC2U1BmzDUOUGicohZebrJNcp3II7Qk4jTDtAurglYFMzfVjT
- Algw==
-X-Gm-Message-State: AC+VfDz4e4csPOUB3vH1GVhv44j1dorWNZ1gz4OxHS4ZAJOYLLMUCugQ
- VwU67D/pNMhIQwf3PVNOzWVXHHiIF+xiYyOEGg0iTmQUHRIBjyJxZNFhJg==
-X-Google-Smtp-Source: ACHHUZ7GMh8xwk1gqJOULUj9Oskt5pCam72NSIOrydZAL4veJABnrk0oW3VvvEBqYQmHjOw3XkznPcFbD4CX0vXNmRg=
-X-Received: by 2002:a5d:618b:0:b0:313:f366:2c69 with SMTP id
- j11-20020a5d618b000000b00313f3662c69mr498985wru.46.1687759127713; Sun, 25 Jun
- 2023 22:58:47 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <SRS0=U+Ap=CO=kaod.org=clg@ozlabs.org>)
+ id 1qDfYW-0006CG-KX; Mon, 26 Jun 2023 02:18:38 -0400
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
+ helo=gandalf.ozlabs.org)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <SRS0=U+Ap=CO=kaod.org=clg@ozlabs.org>)
+ id 1qDfYU-0004BQ-EK; Mon, 26 Jun 2023 02:18:32 -0400
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4QqHht613Xz4wb3;
+ Mon, 26 Jun 2023 16:18:22 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits))
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4QqHhr1Qbvz4wZr;
+ Mon, 26 Jun 2023 16:18:19 +1000 (AEST)
+Message-ID: <eed9ab9e-9fe6-45a7-7cf7-4f465a3839dd@kaod.org>
+Date: Mon, 26 Jun 2023 08:18:18 +0200
 MIME-Version: 1.0
-From: Felix Wu <flwu@google.com>
-Date: Sun, 25 Jun 2023 22:58:36 -0700
-Message-ID: <CAJt6XFoT2irgOwtMB2qpgr3Yj6Q-zij_fpD9BL24QvFG7w3zOg@mail.gmail.com>
-Subject: Tips for local testing guestfwd
-To: qemu-devel@nongnu.org
-Content-Type: multipart/alternative; boundary="00000000000046a4c005ff020b50"
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=flwu@google.com; helo=mail-wr1-x435.google.com
-X-Spam_score_int: -175
-X-Spam_score: -17.6
-X-Spam_bar: -----------------
-X-Spam_report: (-17.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- ENV_AND_HDR_SPF_MATCH=-0.5, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- USER_IN_DEF_DKIM_WL=-7.5,
- USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: qemu-system-ppc64 option -smp 2 broken with commit
+ 20b6643324a79860dcdfe811ffe4a79942bca21e
+Content-Language: en-US
+To: Anushree Mathur <anushree.mathur@linux.vnet.ibm.com>
+Cc: qemu-ppc@nongnu.org, qemu-devel@nongnu.org,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Nicholas Piggin <npiggin@gmail.com>, harshpb@linux.ibm.com,
+ richard.henderson@linaro.org, alex.bennee@linaro.org
+References: <8780abd9-59ef-c452-bfee-c3bfbf275e51@linux.vnet.ibm.com>
+ <a474146f-cd1d-b91a-eefd-596a1d08f772@kaod.org>
+ <2bfdaf0e-4da6-00a4-aa2b-4615b05179be@linux.vnet.ibm.com>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <2bfdaf0e-4da6-00a4-aa2b-4615b05179be@linux.vnet.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+ envelope-from=SRS0=U+Ap=CO=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -40
+X-Spam_score: -4.1
+X-Spam_bar: ----
+X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, NICE_REPLY_A=-0.089,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,70 +71,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---00000000000046a4c005ff020b50
-Content-Type: text/plain; charset="UTF-8"
+Hello Anushree
 
-Hi all,
 
-TL,DR: I am working on QEMU ipv6 guestfwd feature and finished coding, and
-would like to learn the best practice to test it.
-Context: in slirp side this task is tracking by [1].
-Currently, I have done following:
-i. made char parse + guestfwd functions happy with ipv6 address.
-ii. enabled debug print and made sure the ip and port are inserted into the
-forward list in libslirp.
-To sufficiently verify it's working, I do have three questions:
-1. I want to forward a port in the guest (OS in QEMU) to a port 22 on the
-host OS, and ssh from guest back to host,
-does this sound reasonable? If this is not a good idea, what method is
-recommended?
-2. I want to understand what ip I should use. Currently I have following
-formats for the QEMU invocation in ipv6:
-```
-guestfwd=tcp:[::1]:1234-tcp:[my:host:ip:from:ifconfig]:22
-```
-I know the general form is `guestfwd=tcp:server:port-dev`, where
-server:port is for guest, dev is for host.
-Adding [] in my implementation will let QEMU know it's ipv6.
-Is the aforementioned invocation correct? Or in this case [::1] is the
-local host address and I should put qemu address
-for it instead?
-3. Is there a default ipv6 address for QEMU instance? I think I need it in
-the invocation.
+> Hello Cedric,
+>
+> As per your mail, I have created the gitlab issue https://gitlab.com/qemu-project/qemu/-/issues/1726.
 
-Thanks in advance! Felix
+Alex had a request for the bug report. If you have to time to provide
+the data, it should help analyzing the issue.
 
-[1]. https://gitlab.freedesktop.org/slirp/libslirp/-/issues/67
+Thanks,
 
---00000000000046a4c005ff020b50
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+C.
 
-<div dir=3D"ltr">Hi all,<div><br></div><div>TL,DR: I am working on QEMU ipv=
-6 guestfwd feature and finished coding, and would like to learn the best pr=
-actice to test it.</div><div>Context: in slirp side this task is tracking b=
-y [1].</div><div>Currently, I have done following:</div><div>i. made char p=
-arse + guestfwd functions happy with ipv6 address.</div><div>ii. enabled de=
-bug print and made sure the ip and port are inserted into the forward list =
-in libslirp.</div><div>To sufficiently verify it&#39;s working, I do have t=
-hree questions:</div><div>1. I want to forward a port in the guest (OS in Q=
-EMU) to a port 22 on the host OS, and ssh from guest back to host,</div><di=
-v>does this sound reasonable? If this is not a good idea, what method is re=
-commended?</div><div><font face=3D"arial, sans-serif">2. I want to understa=
-nd what ip I should=C2=A0use. Currently I have following formats for the QE=
-MU invocation in ipv6:</font></div><div><font face=3D"arial, sans-serif">``=
-`</font></div><div>guestfwd=3Dtcp:[::1]:1234-tcp:[my:host:ip:from:ifconfig]=
-:22</div><div><span style=3D"font-family:arial,sans-serif">```</span><br></=
-div><div>I know the general form is `guestfwd=3Dtcp:server:port-dev`, where=
- server:port is for guest, dev is for host.</div><div>Adding [] in my imple=
-mentation will let QEMU know it&#39;s ipv6.=C2=A0=C2=A0</div><div>Is the af=
-orementioned invocation correct? Or in this case [::1] is the local host ad=
-dress and I should put qemu address</div><div>for it instead?</div><div>3. =
-Is there a default ipv6 address for QEMU instance? I think I need it in the=
- invocation.</div><div><br></div><div>Thanks in advance! Felix</div><div><b=
-r></div><div>[1].=C2=A0<a href=3D"https://gitlab.freedesktop.org/slirp/libs=
-lirp/-/issues/67">https://gitlab.freedesktop.org/slirp/libslirp/-/issues/67=
-</a></div></div>
-
---00000000000046a4c005ff020b50--
 
