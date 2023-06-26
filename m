@@ -2,97 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 188C873EBC3
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 22:25:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78D5F73EBCF
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 22:26:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDsk1-00035F-JJ; Mon, 26 Jun 2023 16:23:17 -0400
+	id 1qDsmE-0005eD-F1; Mon, 26 Jun 2023 16:25:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qDsjw-00033l-TQ
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 16:23:12 -0400
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ id 1qDsm2-0005ad-Nz
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 16:25:22 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qDsju-0004bo-DP
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 16:23:12 -0400
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-31297125334so3263933f8f.0
- for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 13:23:09 -0700 (PDT)
+ id 1qDsly-00054v-Kh
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 16:25:21 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-3f9b0f139feso52409705e9.3
+ for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 13:25:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687810988; x=1690402988;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Oh7orIRxmqAh9touFfIQ3i81Vq6+d6bKsd0MmZRWUFE=;
- b=ZFWzYW3JVsSTnWB98K1Eg9az/UgnELKL/7gnktU/PpEMxPJyx4wewe0M3D/tjFRcsp
- zDjpWRUpGP0uIz0Uv73CZ0y8A6TjcVVF2p4pTpV89tl0wyWvz2Becf+o7xSpYSmijl+S
- S3JyOXMOgeX3TzHQid2lEq9wMAuVPUwema9/0Z4pF5+rtUXtyVn5365r/Lzuej/U7kDN
- DvxK8fQ8CohsWsBmeZPobjlksCV7KSWo6mxmuTQJSRZAEyHjemWSi8VEAqkCN248VifY
- 26OO1Xx87ZBh2BKRnSucNZXxLh9ifGzfUzcXu1QepsFDLBbSpzf+e+rsj0eKU7QCkyFa
- Ob4w==
+ d=linaro.org; s=google; t=1687811117; x=1690403117;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=kufkpJWCHS04RR7Yrd43QCoxh136iqjolM/phbA6kXE=;
+ b=v7M8dMsRRVKgEjWC8W82Bhlz7CVa4cJWktVnRqo0NxCjKTo9yOhjvSJbfVYHNrRX0w
+ JH9si5A4XIIhDdDK8FVxI19iHG6xOBhfuaNEuAx9ISB967xpowAaNNwMt2D56/A7RbNl
+ cBPCGI9z1bn2pkRp7pBaGA6bqV9a07XSzODksgkoKVjRcsVfJrd2i0DtFU6Wfm6vkG6f
+ jHm0u2rsYsOlUoFUxX6Z9SghAA/6dbyg2lNrPMvYBDGUZ2GUvJWfyRLUjHtkMUJ0yeDs
+ RWOJiVKZz/R/VOwouDfAMx6MabWbIEbwFoqGcTSGgRcdb0OfdLC3kmz4ODeXy/h/g7Ev
+ F/gw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687810988; x=1690402988;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=Oh7orIRxmqAh9touFfIQ3i81Vq6+d6bKsd0MmZRWUFE=;
- b=LxYI26lD3YYmi7jruCc4bZ1GbyXxAEoLAej9P8Iy4PMS4laW/4BG/jvxybDlbzYSoC
- jMpngWFGfhcSayopRx7G+4nXYZqLEMaGR0t7A4Ho4HPrrLG7DGBmzSRoNKSI933618T3
- ncigZLvRZc1YNn9upBbotNTw/v2I+6gDBvDff+Sp0rg6lCIJEDaTrbLK0BZ6uk0SCTrU
- wq8zutqm+I82Gg/Fcg66BzZ58WeAtHskG7kWHP34hK68Htr4NBwiNhGVzEn/BXAYFunR
- 43UbGVtimAzv0zprntuoZSXWgWk1tN7eJP0DrYOyBYo9w3VDvMC5LfKRXiHmd8lYAwz6
- 1LZw==
-X-Gm-Message-State: AC+VfDy2uc1z9KHBbXXwmxCsNuAeCXP2dpiOHWDiH0D8AxqqxRsxIQlz
- 7ZlO5Gj/Hnnv6C80k4AsY+82xA==
-X-Google-Smtp-Source: ACHHUZ7fQpa4969tiXnoT6HgwW2GpyBFDSsIxueIHdewArHlGcJPFRRphW8/Ali/DuQoTHMtK5StXQ==
-X-Received: by 2002:a5d:45c9:0:b0:313:e88d:e6d3 with SMTP id
- b9-20020a5d45c9000000b00313e88de6d3mr6429956wrs.14.1687810988572; 
- Mon, 26 Jun 2023 13:23:08 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1687811117; x=1690403117;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=kufkpJWCHS04RR7Yrd43QCoxh136iqjolM/phbA6kXE=;
+ b=gVScsbo2UEGzHd2r4JOkjRL+54SbR822PV6attSnJ+02OelwsqNZHqB+7Kw0oc8oJU
+ Ixs4/qNRm7mlSw2LKKrqPp7t5azClZTLr5hwXzYm/oaTDS6FlDHmtRAPJyCHNa3MDihj
+ I19S/LWsXgvd2EgRSyASZRiuG/W3aW2MvAJ3pe2AqGE9UlO4vpaqifIuiMQiFqpaxvyp
+ nq9o0cm1PXclDBBAgo2qKZt2kI+/65uhoWIrLqQY/grJVH+2nWa9A/KKxweXvwzR78Pk
+ LC1ejnVZFd58AdjffCDjb16uA0Gxcq6UGoUtaL+orl4OpAH7Fjc0ib+0ldD/wbs6WSbp
+ wonQ==
+X-Gm-Message-State: AC+VfDxaDGwgUnBG4id4Ywjlh4bmAE6runyMTiwlBpwzfWsiZK3GZUyQ
+ WEgzoY94XA6RiHIpw6hGYgAQGg==
+X-Google-Smtp-Source: ACHHUZ45k9Y0UuzlsK+70a17pa7g8CJFwx6KFQFiWILsEVbpRMH/jA1c/t7pu4RSWm8iptu8LA3ZEw==
+X-Received: by 2002:adf:e791:0:b0:313:f124:aa53 with SMTP id
+ n17-20020adfe791000000b00313f124aa53mr3200306wrm.45.1687811116929; 
+ Mon, 26 Jun 2023 13:25:16 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- j9-20020a5d4649000000b0031118d80246sm8278477wrs.29.2023.06.26.13.23.08
+ d17-20020adffbd1000000b002fb60c7995esm8347280wrs.8.2023.06.26.13.25.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 26 Jun 2023 13:23:08 -0700 (PDT)
-Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 7DB6E1FFBB;
- Mon, 26 Jun 2023 21:23:07 +0100 (BST)
-References: <20230623122100.1640995-1-alex.bennee@linaro.org>
- <20230623122100.1640995-8-alex.bennee@linaro.org>
- <CAFEAcA8QX55yeTb+DFxwzd=ntOS8nH95xtQKPNGLiQRvC1=Fcg@mail.gmail.com>
-User-agent: mu4e 1.11.7; emacs 29.0.92
-From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- Juan Quintela <quintela@redhat.com>, Cleber Rosa <crosa@redhat.com>,
- Darren Kenny <darren.kenny@oracle.com>, Alexandre Iooss
- <erdnaxe@crans.org>, Peter Xu <peterx@redhat.com>, qemu-arm@nongnu.org,
- Eduardo Habkost <eduardo@habkost.net>, Riku Voipio <riku.voipio@iki.fi>,
- Mahmoud Mandour <ma.mandourr@gmail.com>, =?utf-8?Q?Daniel_P=2E_Berrang?=
- =?utf-8?Q?=C3=A9?=
- <berrange@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, Bandan Das
- <bsd@redhat.com>, Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
- Radoslaw Biernacki <rad@semihalf.com>, Alexander Bulekov <alxndr@bu.edu>,
- Leif Lindholm <quic_llindhol@quicinc.com>, Qiuhao Li
- <Qiuhao.Li@outlook.com>, Wainer dos Santos Moschetta
- <wainersm@redhat.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Leonardo Bras <leobras@redhat.com>, Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, Stefan Hajnoczi <stefanha@redhat.com>, Bin Meng
- <bmeng.cn@gmail.com>, Thomas Huth <thuth@redhat.com>, Beraldo Leal
- <bleal@redhat.com>, Laurent Vivier <lvivier@redhat.com>, Yanan Wang
- <wangyanan55@huawei.com>
-Subject: Re: [PATCH 07/26] qemu-keymap: properly check return from
- xkb_keymap_mod_get_index
-Date: Mon, 26 Jun 2023 21:21:14 +0100
-In-reply-to: <CAFEAcA8QX55yeTb+DFxwzd=ntOS8nH95xtQKPNGLiQRvC1=Fcg@mail.gmail.com>
-Message-ID: <87zg4m0y8k.fsf@linaro.org>
+ Mon, 26 Jun 2023 13:25:16 -0700 (PDT)
+Received: from zen.lan (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id 1C0751FFBB;
+ Mon, 26 Jun 2023 21:25:16 +0100 (BST)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Qiuhao Li <Qiuhao.Li@outlook.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Stefan Hajnoczi <stefanha@redhat.com>, Juan Quintela <quintela@redhat.com>,
+ Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>, Alexandre Iooss <erdnaxe@crans.org>,
+ Peter Xu <peterx@redhat.com>, Yanan Wang <wangyanan55@huawei.com>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Bin Meng <bmeng.cn@gmail.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Beraldo Leal <bleal@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Leif Lindholm <quic_llindhol@quicinc.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Riku Voipio <riku.voipio@iki.fi>, Cleber Rosa <crosa@redhat.com>,
+ Alexander Bulekov <alxndr@bu.edu>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Radoslaw Biernacki <rad@semihalf.com>, Bandan Das <bsd@redhat.com>,
+ Leonardo Bras <leobras@redhat.com>, qemu-arm@nongnu.org,
+ Darren Kenny <darren.kenny@oracle.com>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>
+Subject: [PATCH v2 0/6] maintainer omnibus: testing, fuzz, plugins,
+ documentation
+Date: Mon, 26 Jun 2023 21:25:09 +0100
+Message-Id: <20230626202516.2507915-1-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42d.google.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -115,57 +114,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+As softfreeze is fast approaching I thought it would be work combining
+my various trees into an omnibus series to ease the review and
+merging.
 
-Peter Maydell <peter.maydell@linaro.org> writes:
+The testing updates exposed a number of latent leaks that confused the
+oss-fuzz jobs (hence the test-fuzz addition to help debug that). This
+also includes some minor plugin updates and finally some documentation
+updates that clean-up and expose the QOM and QDEV APIs which are so
+core to emulating anything in QEMU.
 
-> On Fri, 23 Jun 2023 at 13:21, Alex Benn=C3=A9e <alex.bennee@linaro.org> w=
-rote:
->>
->> We can return XKB_MOD_INVALID which rightly gets flagged by sanitisers
->> as an overly wide shift attempt.
->>
->> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
->
-> Same comments as on the first version of this patch:
-> looks OK code-wise, but have you eyeballed the output?
+v2
+  - applied a bunch of review tags
+  - added missing doc suggestions from Paolo
+  - tweaked the plugin fix for CI
 
-I've eyeballed it but practically it doesn't seem to make any difference
-to the output:
+The following patches need review:
 
-  =F0=9F=95=9921:20:36 alex@zen:qemu.git/builds/all  (399fc0c) (REBASING 2/=
-22) [$!?]=20
-  =E2=9E=9C  diff -ub gb.before gb.after
-  =F0=9F=95=9921:20:43 alex@zen:qemu.git/builds/all  (399fc0c) (REBASING 2/=
-22) [$!?]=20
-  =E2=9E=9C  diff -ub ara.before ara.after
+ - qemu-keymap: properly check return from xkb_keymap_mod_get_index
 
-> Does the keyboard layout that triggers this have no
-> AltGr at all, or does it call it by a different name?
+Alex Bennée (3):
+  gitlab: reduce testing scope of check-gcov
+  tests/tcg: add mechanism to handle plugin arguments
+  qemu-keymap: properly check return from xkb_keymap_mod_get_index
 
-Certainly not ara or gb:
+Ani Sinha (1):
+  docs/devel: remind developers to run CI container pipeline when
+    updating images
 
-  9: Alt
-23:#    11: LAlt
-24:#    12: RAlt
-29:#    17: AltGr
-294:Alt_L 0x38
-1711:Alt_R 0xb8
-=F0=9F=95=9921:22:14 alex@zen:qemu.git/builds/all  (399fc0c) (REBASING 2/22=
-) [$!?]=20
-=E2=9E=9C  ag "Alt" gb.after=20
-21:#     9: Alt
-23:#    11: LAlt
-24:#    12: RAlt
-29:#    17: AltGr
-338:Alt_L 0x38
-1757:Alt_R 0xb8
+Daniel P. Berrangé (2):
+  gitlab: explicit set artifacts publishing criteria
+  gitlab: ensure coverage job also publishes meson log
 
->
-> thanks
-> -- PMM
+ docs/devel/testing.rst               |  6 ++++++
+ qemu-keymap.c                        | 24 ++++++++++++++++--------
+ .gitlab-ci.d/buildtest-template.yml  |  4 +++-
+ .gitlab-ci.d/buildtest.yml           |  7 ++++++-
+ .gitlab-ci.d/crossbuild-template.yml |  1 +
+ .gitlab-ci.d/crossbuilds.yml         |  2 ++
+ .gitlab-ci.d/opensbi.yml             |  1 +
+ tests/tcg/Makefile.target            |  8 ++++++--
+ 8 files changed, 41 insertions(+), 12 deletions(-)
 
+-- 
+2.39.2
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
 
