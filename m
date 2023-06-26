@@ -2,38 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01D7773D769
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 07:58:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CFA7E73D778
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 08:02:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDfEZ-0003bV-U0; Mon, 26 Jun 2023 01:57:55 -0400
+	id 1qDfEq-0003jM-VW; Mon, 26 Jun 2023 01:58:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=U+Ap=CO=kaod.org=clg@ozlabs.org>)
- id 1qDfE4-0003K3-Aa; Mon, 26 Jun 2023 01:57:24 -0400
+ id 1qDfEM-0003Pv-4z; Mon, 26 Jun 2023 01:57:43 -0400
 Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
  helo=gandalf.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=U+Ap=CO=kaod.org=clg@ozlabs.org>)
- id 1qDfE2-0007Ia-JW; Mon, 26 Jun 2023 01:57:24 -0400
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4QqHDd480Nz4wZy;
- Mon, 26 Jun 2023 15:57:21 +1000 (AEST)
+ id 1qDfEK-0007QF-Dm; Mon, 26 Jun 2023 01:57:41 -0400
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4QqHDx54Jnz4wb3;
+ Mon, 26 Jun 2023 15:57:37 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4QqHDb4Hwnz4wb3;
- Mon, 26 Jun 2023 15:57:19 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4QqHDt5zGCz4wb1;
+ Mon, 26 Jun 2023 15:57:34 +1000 (AEST)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
 To: Richard Henderson <richard.henderson@linaro.org>
 Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Nicholas Piggin <npiggin@gmail.com>, Fabiano Rosas <farosas@suse.de>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-Subject: [PULL 09/30] target/ppc: Fix timer register accessors when !KVM
-Date: Mon, 26 Jun 2023 07:56:26 +0200
-Message-ID: <20230626055647.1147743-10-clg@kaod.org>
+Subject: [PULL 14/30] target/ppc: Fix instruction loading endianness in
+ alignment interrupt
+Date: Mon, 26 Jun 2023 07:56:31 +0200
+Message-ID: <20230626055647.1147743-15-clg@kaod.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230626055647.1147743-1-clg@kaod.org>
 References: <20230626055647.1147743-1-clg@kaod.org>
@@ -64,51 +67,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When the Timer Control and Timer Status registers are modified, avoid
-calling the KVM backend when not available
+From: Nicholas Piggin <npiggin@gmail.com>
 
+powerpc ifetch endianness depends on MSR[LE] so it has to byteswap
+after cpu_ldl_code(). This corrects DSISR bits in alignment
+interrupts when running in little endian mode.
+
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 Signed-off-by: Cédric Le Goater <clg@kaod.org>
 ---
- target/ppc/kvm.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ target/ppc/excp_helper.c | 22 +++++++++++++++++++++-
+ 1 file changed, 21 insertions(+), 1 deletion(-)
 
-diff --git a/target/ppc/kvm.c b/target/ppc/kvm.c
-index a7f2de9d1018..a8a935e26726 100644
---- a/target/ppc/kvm.c
-+++ b/target/ppc/kvm.c
-@@ -1728,6 +1728,10 @@ int kvmppc_or_tsr_bits(PowerPCCPU *cpu, uint32_t tsr_bits)
-         .addr = (uintptr_t) &bits,
-     };
- 
-+    if (!kvm_enabled()) {
-+        return 0;
-+    }
-+
-     return kvm_vcpu_ioctl(cs, KVM_SET_ONE_REG, &reg);
+diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
+index 12d8a7257b29..a2801f6e6b6a 100644
+--- a/target/ppc/excp_helper.c
++++ b/target/ppc/excp_helper.c
+@@ -133,6 +133,26 @@ static void dump_hcall(CPUPPCState *env)
+                   env->nip);
  }
  
-@@ -1741,6 +1745,10 @@ int kvmppc_clear_tsr_bits(PowerPCCPU *cpu, uint32_t tsr_bits)
-         .addr = (uintptr_t) &bits,
-     };
- 
-+    if (!kvm_enabled()) {
-+        return 0;
++#ifdef CONFIG_TCG
++/* Return true iff byteswap is needed to load instruction */
++static inline bool insn_need_byteswap(CPUArchState *env)
++{
++    /* SYSTEM builds TARGET_BIG_ENDIAN. Need to swap when MSR[LE] is set */
++    return !!(env->msr & ((target_ulong)1 << MSR_LE));
++}
++
++static uint32_t ppc_ldl_code(CPUArchState *env, hwaddr addr)
++{
++    uint32_t insn = cpu_ldl_code(env, addr);
++
++    if (insn_need_byteswap(env)) {
++        insn = bswap32(insn);
 +    }
 +
-     return kvm_vcpu_ioctl(cs, KVM_SET_ONE_REG, &reg);
- }
- 
-@@ -1755,6 +1763,10 @@ int kvmppc_set_tcr(PowerPCCPU *cpu)
-         .addr = (uintptr_t) &tcr,
-     };
- 
-+    if (!kvm_enabled()) {
-+        return 0;
-+    }
++    return insn;
++}
++#endif
 +
-     return kvm_vcpu_ioctl(cs, KVM_SET_ONE_REG, &reg);
- }
+ static void ppc_excp_debug_sw_tlb(CPUPPCState *env, int excp)
+ {
+     const char *es;
+@@ -3104,7 +3124,7 @@ void ppc_cpu_do_unaligned_access(CPUState *cs, vaddr vaddr,
  
+     /* Restore state and reload the insn we executed, for filling in DSISR.  */
+     cpu_restore_state(cs, retaddr);
+-    insn = cpu_ldl_code(env, env->nip);
++    insn = ppc_ldl_code(env, env->nip);
+ 
+     switch (env->mmu_model) {
+     case POWERPC_MMU_SOFT_4xx:
 -- 
 2.41.0
 
