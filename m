@@ -2,176 +2,142 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D215573DE7F
+	by mail.lfdr.de (Postfix) with ESMTPS id B900273DE7E
 	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 14:10:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDl1u-00086a-2U; Mon, 26 Jun 2023 08:09:14 -0400
+	id 1qDl21-00088H-7a; Mon, 26 Jun 2023 08:09:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
- id 1qDl1Z-00085e-IP
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 08:08:57 -0400
-Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
+ (Exim 4.90_1) (envelope-from <avihaih@nvidia.com>)
+ id 1qDl1s-00087j-Dw
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 08:09:13 -0400
+Received: from mail-dm6nam12on20614.outbound.protection.outlook.com
+ ([2a01:111:f400:fe59::614]
+ helo=NAM12-DM6-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
- id 1qDl1W-0006V5-Lx
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 08:08:53 -0400
-Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 35QBOdlp012177; Mon, 26 Jun 2023 12:08:45 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=content-type :
- message-id : date : subject : to : cc : references : from : in-reply-to :
- mime-version; s=corp-2023-03-30;
- bh=Qa7U4C7Sqjbx9KTk78qf1vxpHd3VpNAIyow2NdY9A7w=;
- b=JjtWNpEwtQ8/+DmvPgZqw5gnuaq1CnJFmFH3R0TIM5jjD9P6S35Y64x/pXabGBAvCT+x
- lae+75FBc3Jk3VjXOHvBsH3jrC59vnm1sdG+3Os6E5H9SINmppH6cbDLHOP/G/O6nWML
- xaNmB5EE3XyYNXdVBcQB+48/MxeJqS8e6pvRWVgtuAA+q49M3PS1DUu7Y5txbTF6iYFT
- Rm9+utsRDsj6ar+po4LSkmJbLLE463RWXSKS8bX54U3zAm80lgzxPkfU8t6bGn5p/VuR
- Fd9MXfX6kJUnh3nHBVdzYFvRCTUTQXhoCge1R6ofcJUp40fQK5MWHRyvef/jvtuHxT0m xQ== 
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
- (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3rdq30tkr0-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 26 Jun 2023 12:08:45 +0000
-Received: from pps.filterd
- (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 35QC4j29005097; Mon, 26 Jun 2023 12:08:44 GMT
-Received: from nam10-dm6-obe.outbound.protection.outlook.com
- (mail-dm6nam10lp2102.outbound.protection.outlook.com [104.47.58.102])
- by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 3rdpx906qd-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 26 Jun 2023 12:08:43 +0000
+ (Exim 4.90_1) (envelope-from <avihaih@nvidia.com>)
+ id 1qDl1p-0006cy-BO
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 08:09:11 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=DPE+W+jsoKGG7jF4h0Tf0grpXH8AzO2rR6XUjAOzODctlej/1Vepf7zbjx9NSa0eG9xbXTcVhaMOEHDpmSHbBudUbb1bPKApcr+9CRO2OagL7J/NLmD0WNvwEaAdn1Pz8R8lw9XQxm9ZLkvPt4xOkamuv9jVPPP+3wpzjHxhlo+CFi9GivLE2ifQcBlP0wtCfMEj1vYxAk5HM6aW/SHtpR++Sitn2sDFUWU2wqELGTfSNlOCZ1ZfAzEGxs6tgDBZn/R36odghJHlwsJCTCEqb/eXs2F36axSex1vDgdq/qN5pX3EjqxlrcXv9+mVo1SoFVSU+eXpYP1D0m4KumS14A==
+ b=cD6mdWPlEHg1bGlHF3nzzEyvlb5JxW+tUyRhaakT9CVNtqsvy2OLgKei3ylxz+ddSl0SW2B+PaxJwWCRb5n0/kl+K+nFjVn+99zxG+XF5gUKO6KxutA+f6ZVZEAZCq2Q3LDZ3p+mRsKTqxhZJ1ikGUL+0+AZbWQ+ZZnOyFqS3xKIdH4ErG83mLyta1t56AIUEgFFeHWRUoul+n5MhLsLCe7SKf7g74Nax3rgCxbuCMiWFdFHe0H7oNKpl+WrrT5dG551xCE0leduRIdKdpn3DYGGz3dJ7m/ONNiGNkvDUDZGLgwwpDSMoZG6pYxxDUUrvz2DPUwrwYlDqbqgBOfa2w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Qa7U4C7Sqjbx9KTk78qf1vxpHd3VpNAIyow2NdY9A7w=;
- b=n+yqdEAFmBT3bBa4T+XT0CMnLcSw1dTaXQ9JvuixyJbM4Yek4JBYl0Vp3x8MlkjprbVvRTnaA1AD4e+AkBK3z0YWXHWaCGaNq5TzZcvNCvKX2YljmZPR+7trux1B5WRX5tJ/rys/8m65f91uoyBTTlYtEKTaksbub3UEM3s1D8TJDY6zlqFjsTYIVv1Ix2ewxnB/T87dtmOwxKANSzBms0nOAS7ixPkJLQnUrwVlK8oJj1xjMM06qLcUr5KPwIdicRRrYoAcvWUkrP8fwAd93p8F9fkd8tsFeJayZ5NYRcX/WB7C+oDGspZxXvrNWytPojdrLsOPbkowwQFdmPKFRg==
+ bh=fBjQaA9lj/yI2rdjC1S+eEL3+1iJhjXiusc7uJdzdeQ=;
+ b=igChaOfWg5Zehuxf2pcU2t/zALZG5ATPih5bc2yvPJDTT8U7SHkNiXHk1rLjdLIFBSfFsQC3OnQbqn8EbywnxGzmMWRPD2fCNWT1Les0DsmH9VSrsW40OsOpz3WvgwXCVfWVzFdD9RGu9lgXMWt5pUTNa/qs5P0RYAzZol1XuNCX+QGNiLjiOc0xKA8vXsLF2g6YcIBXqQhbN2Dm8sM5zL+yBa43s9hLzTeyVs6/TR+2znlXgXnif6LYNjCASJpl92gXIzsjBpW70Itro2WL4LthrrbviqZ6biU2j6e4x0B+bleU05CHYb21EFAh9/hJ6cUM5EDWQTz1PlPGu3H8vw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Qa7U4C7Sqjbx9KTk78qf1vxpHd3VpNAIyow2NdY9A7w=;
- b=H5SP0YrOyMiUkA0ubAjiyk7Kbb5VAYBoaO02aPcfmkkT6bJ1BoPXvHAfyqSyVqpY2u/LxqQ92ciHzC+krOOqKRrBmC2mVj86j0cM5i6+9F+j3uPyZSc6s7OiXxIBC6F4giVcviCJgYRvWtvdkSctoa7mZMRlQFHD2Kk9lzmYZik=
-Received: from PH0PR10MB4664.namprd10.prod.outlook.com (2603:10b6:510:41::11)
- by MN0PR10MB5935.namprd10.prod.outlook.com (2603:10b6:208:3cd::8)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6521.26; Mon, 26 Jun
- 2023 12:08:41 +0000
-Received: from PH0PR10MB4664.namprd10.prod.outlook.com
- ([fe80::917c:eeb4:5b13:a1ef]) by PH0PR10MB4664.namprd10.prod.outlook.com
- ([fe80::917c:eeb4:5b13:a1ef%2]) with mapi id 15.20.6521.026; Mon, 26 Jun 2023
- 12:08:41 +0000
-Content-Type: multipart/alternative;
- boundary="------------WOx2W01rDaTFKwr7I9d583Fa"
-Message-ID: <f7ec13ba-25bc-e145-396f-48005a225f17@oracle.com>
-Date: Mon, 26 Jun 2023 08:08:37 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH v2 2/2] qmp: update virtio feature maps, vhost-user-gpio
- instrospection
+ bh=fBjQaA9lj/yI2rdjC1S+eEL3+1iJhjXiusc7uJdzdeQ=;
+ b=Gbe+TrPqtNr4dWlQ05RS6CnPGziU5nGFr30irb8BeskytHnu32RzruYGJvKgHHSoENbpTAqIO4IaOyIa1yKYptscchshqVz7dXpsIOKRTeE6ijCwLPaDPBt0VbdZNixPXJ1j0WfFqgQ4zH9RLfTIV1Z5vpr7kkxqvpKVKD5l4/N0YMGWkpCMfZsQyg3qME80pHAkdkicm7bwjyp738H+1K1UG0FCn7NjMpvMzh2DLdLcac5djby6ylZSft3PaLapxtNH1KTYX2rE4zOOPJOhOsEHSr9jusJ08aeCNnBC22mRrtkS1tCrnPJ1/IQk4EY+1pzRpa+UAprDOXlt0iXhMw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DM6PR12MB5549.namprd12.prod.outlook.com (2603:10b6:5:209::13)
+ by MW3PR12MB4540.namprd12.prod.outlook.com (2603:10b6:303:52::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6521.24; Mon, 26 Jun
+ 2023 12:09:03 +0000
+Received: from DM6PR12MB5549.namprd12.prod.outlook.com
+ ([fe80::dbd4:621f:5387:9e2b]) by DM6PR12MB5549.namprd12.prod.outlook.com
+ ([fe80::dbd4:621f:5387:9e2b%6]) with mapi id 15.20.6521.024; Mon, 26 Jun 2023
+ 12:09:03 +0000
+Message-ID: <9f9576bf-081d-5a9b-7698-5055c3b6ee28@nvidia.com>
+Date: Mon, 26 Jun 2023 15:08:55 +0300
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH 2/3] vfio/migration: Reset bytes_transferred properly
 Content-Language: en-US
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: qemu-devel@nongnu.org, philmd@linaro.org, laurent@vivier.eu,
- boris.ostrovsky@oracle.com, alex.bennee@linaro.org,
- viresh.kumar@linaro.org, armbru@redhat.com, pbonzini@redhat.com,
- berrange@redhat.com, eduardo@habkost.net
-References: <20230609132040.2180710-1-jonah.palmer@oracle.com>
- <20230609132040.2180710-3-jonah.palmer@oracle.com>
- <20230623013300-mutt-send-email-mst@kernel.org>
-From: Jonah Palmer <jonah.palmer@oracle.com>
-In-Reply-To: <20230623013300-mutt-send-email-mst@kernel.org>
-X-ClientProxiedBy: BL1P222CA0022.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:208:2c7::27) To PH0PR10MB4664.namprd10.prod.outlook.com
- (2603:10b6:510:41::11)
+To: qemu-devel@nongnu.org
+Cc: Alex Williamson <alex.williamson@redhat.com>,
+ =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>,
+ Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Leonardo Bras <leobras@redhat.com>, Zhenzhong Duan
+ <zhenzhong.duan@intel.com>, Yishai Hadas <yishaih@nvidia.com>,
+ Jason Gunthorpe <jgg@nvidia.com>, Maor Gottlieb <maorg@nvidia.com>,
+ Kirti Wankhede <kwankhede@nvidia.com>, Tarun Gupta <targupta@nvidia.com>,
+ Joao Martins <joao.m.martins@oracle.com>
+References: <20230626082353.18535-1-avihaih@nvidia.com>
+ <20230626082353.18535-3-avihaih@nvidia.com>
+From: Avihai Horon <avihaih@nvidia.com>
+In-Reply-To: <20230626082353.18535-3-avihaih@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR2P281CA0094.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:9b::20) To DM6PR12MB5549.namprd12.prod.outlook.com
+ (2603:10b6:5:209::13)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR10MB4664:EE_|MN0PR10MB5935:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0aae1858-413e-4024-ab3a-08db763e14c0
+X-MS-TrafficTypeDiagnostic: DM6PR12MB5549:EE_|MW3PR12MB4540:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7eb43278-9a03-4546-38a1-08db763e21bd
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: S5KsCovXY6TpEJUjlpdGP2SOAz9+fdFTAdHswTrI73VTlCUIXKOtIHddEwMd0EUIVKa2xyRaWGPLv6eHInFeShMMSFA91MMfnInR88mPL98qRQNAVmBStlLkwJZbM3KkQDz4hqK1iA1EYXM+HaoMEvSiPKjaz90CMb5KN9CQSH/Zatmoo99g1GPWTEsKrKhh0GAeXONzgBixABXF8024wUKq9k3tm3UIyGfIPYC1MZ6xRHdS2DwFG6xEbQm3oyF/1TbVMwKnrDzvXgZDNbD1ENWschWaw6Jc7fHoPJeJCg8S6rZxVUJCwzU+Us4o7mDAwCDVTYp2rMvDWENCn7StTigma5xJJ6Pu1z6sMukSrfwWj4hxYjQhA8MwI369khoDdQVvj0XJaacDOeIgo8q8vH7bv4eTT0W5gYXj9lk16nuAVKDIfMW+bWP1i6TsiEU1V7M6sOu+JmIHPgAEwgyMP6F+EbH+eFiKWyGtAdjGHPK4dtTYMk4MaTjmCGjRxFojM8LoZMGqpDB6fCMS/wFhuO6NH0Zc66+3vE5UGABZWEFJXzKHBNsxfN0x+fksXDWg+7jdcNxjns2NW2e4oAky0/4CRTWn5VjfuEBZUV6MHXNRmm8E2VAWy4lRGjyoBnE4OOR+neq0P6iysqU3bUvxng==
+X-Microsoft-Antispam-Message-Info: wQQv6rGwXq2BGC+HHTIaVoLxQdpQw1J5/yjNyxCQxpxklnp4gYgARBrC1V5JDMsfVTobXUFK97pXsjieaWFm+Mm/Zo8bU136AMgJX35XjmmNQ/MoSEWZFoj/9XUVz/ky6FXkZ4w+nwQmMRJjixbQhINEuJe6f4JzHSQtrt2DR+dmrOt7ukRwkZGHglfquoH0kRQZ/toQfmREyQnWCql2wDycqbUcIle1Mbu0/UCE2Rf73hioekFSvTIVa1jZvYHMVoEvIZc47xpUr8uPUfAu7zt5+0mOuiLRNDboKjyt7GBLx1pG1us94edzRsA8KobgWHwtbAETqsmlt30NlkHem/XX3M24oInda3ld5LqrgMRcPVNRDphrxBoUskk8khm2G9O+W46RcAwcp6/e61vuA9/eQhaHDB2a/AkTNowPklbALZ++r5vgo0KwaGsLG7kQ3P+U5QTOBEm3+N6BmVrNEKaQ96/mb0HwRkGoo60nf/i26b2ZkJ5dF0AjwXxHtVbz/aG9l6dan0z4IixpyoPCIqR/b6LBf/s1JN++5xPp4UxrPdf1XHhWIMm0GQlwmcpMTFJM+NncVEy7ilYMZl2yaLVnhjTDkOApapdVhc+5rLBx0ZFo4BCPjT+LiEA9WQ/h/FvVZuNA7z8yFEurS07Qxg==
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:PH0PR10MB4664.namprd10.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230028)(346002)(366004)(376002)(396003)(39860400002)(136003)(451199021)(2906002)(30864003)(6486002)(33964004)(6666004)(38100700002)(2616005)(83380400001)(6512007)(6506007)(26005)(53546011)(186003)(41300700001)(31696002)(86362001)(478600001)(316002)(36756003)(66556008)(4326008)(66946007)(6916009)(66476007)(15650500001)(44832011)(31686004)(7416002)(5660300002)(8676002)(8936002)(43740500002)(45980500001);
+ IPV:NLI; SFV:NSPM; H:DM6PR12MB5549.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230028)(4636009)(396003)(366004)(39860400002)(136003)(346002)(376002)(451199021)(2906002)(6486002)(6666004)(38100700002)(2616005)(83380400001)(6506007)(26005)(53546011)(186003)(31696002)(86362001)(41300700001)(54906003)(478600001)(66556008)(66476007)(6916009)(66946007)(4326008)(316002)(36756003)(8936002)(6512007)(31686004)(8676002)(5660300002)(43740500002)(45980500001);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?UlBCL3ZKaDJXT3oxbHZIenk3ZzNZeTN3VEVVSkNQMEp5MFIyeko2OHYvYm50?=
- =?utf-8?B?VWY0MGgwaUh3aHp3bHNMUTNHR1BNUGdYWGpiZHh4OStSOVBhQzJ3NXBqeC9T?=
- =?utf-8?B?MUxYd3daV1BObitjb1ZRd3ZYTjdEQVRGeDVqY2ZZaXBZUGE2KzhWUER6cUxT?=
- =?utf-8?B?Wm4yYVQrY2lIYlZlLzgrdzgvZTFHWTBvMkVvL1JDNUcxNWZsbzgyM1dmYnZJ?=
- =?utf-8?B?c1pnVXR3dkdYekVZMXFsVTJiWUxUWWl1bFNQWXJSUW9aMTlxTm9mMGNETVFr?=
- =?utf-8?B?RW9aMnVYQVpPK1hyQUNxY1lYUjhXcXNESzBRYVdKS3MwakRXOXU1TFdUSXR6?=
- =?utf-8?B?SlpXNHdNVjViWWdwN0szTXZsWjN3QjZkWmpsemxWK2pqeURBUitTLzh5a2dp?=
- =?utf-8?B?bFBDVVR1enRrMklvVUswdkZNYXVGVlJ4dHo3L0o5dHl6SWc0ZVBTeHVZRzFr?=
- =?utf-8?B?dGZ2K05jRTJHUjVHc3FiVHU2eExvaE5XN0x3cy9ZUjlTZHNjTDYzb3VDZTVl?=
- =?utf-8?B?Tm1pWW1OVXFsY1RFNmhsNE5mMGlYWTdwOHNENzVUR3AvQnVmYjRJdkpVUE95?=
- =?utf-8?B?M3dRVDRGZzd4WUZGU2pqYUZHRVJkV3N4L3dqVU4wa1NVVXIzdlBkb2Qxbnlq?=
- =?utf-8?B?ZzN0dEVwbnFVVjFiek8zMHRUTVlqN2VTN21GRjBIcjhDV0l5d2l2bjhwcHl3?=
- =?utf-8?B?T1cxWlVDOTB0UWF6UmlRa3RWZlJYM0pJRThFblFsUGdYZ09aTW5CWktXcWhL?=
- =?utf-8?B?NS9LT2Fkb0Rvb3hqMk8vYSt1REl1cWVmU0hvaElSVi9FWkFBY0N2TDNWOW4r?=
- =?utf-8?B?bW5WWGE1Y3BOSnI4UCs4ZmlvT1pQd085amJRRDA5cE9QcGwwR1FJNW9QS1Zy?=
- =?utf-8?B?bk43dDQzdGJqdVFoSnhMRFk0VEpXQkY4M01XMG1yejF5ZFFMTFZuVjg5OE1R?=
- =?utf-8?B?OW5aWFFkdGlJZDFGaWdybzBrSVdSckcvVlJtaW5QTnpjYnIvTWtTbks1eDcy?=
- =?utf-8?B?aTNyRHlhaCs2cHFsSmw4WVNrM3FlOWV4Z1FxMjlCcWN3eUsvV0RFZDdjN1pW?=
- =?utf-8?B?c2tmZGRnWnJSc3plTzI3OU1sckRDVGhOMTdCQWt6VWNOOUoyU1FqNmluUmJz?=
- =?utf-8?B?eVVKSXRJRCttLzJheDB2cUlhak1BWHBETkYvTTNwZnZ0UUthL0l6dVlQbVR1?=
- =?utf-8?B?RHRBSjIyVmVGYUtQU1ZQN2xnbTg2bm9VN2huSnJ0d2djWVY0OGUrVDVWcFpE?=
- =?utf-8?B?dlNzbmJvNElFN0plc3c4TGRoVnpNOXEweDhMRk5LZWFUTVNSQVNkZjJXMGRZ?=
- =?utf-8?B?SDFNSWRnMXhWRzVPSUNIbzZqR0tWeVoxa3d1ZEcydGVFeXlWUlMxYkYwRExz?=
- =?utf-8?B?eG81eDZDOFByblZ2em81am1rd1FCVlhCaEx1RW9YVlI1bVJHVGF5NDN5VDRz?=
- =?utf-8?B?Q09LcHZWakVhWlNWK2JZQlJMdzNTZER2WHVFZXdZSnBERDMvV0FDZWI5SWh3?=
- =?utf-8?B?UDVJSlJlSUJudXFaU1FseFVPYWluSVVjc1lYb1pLR2hlY1cvMXRQUy84UTFs?=
- =?utf-8?B?WnA5cVI1K0RLT3lURTFPaTRiOEpUSEJwaTkyYzJ1NGxGbnNXUmcvb0pXUEVo?=
- =?utf-8?B?YlNGQVlOTmd4bDFoN0xtV1RXMHdYc2hWN2VuODR6UlRRdXlTTVpZbm56TDVo?=
- =?utf-8?B?RU5PQUxhSzlwQ3g1eVByOERRalh5ZTBydWEyNGZtZXkvR0w4b1B3Ymk2Z2lZ?=
- =?utf-8?B?aXNxYXhiTlJmRkZKQ3RXblRoZStWM25iNkVxNTJvRGZXaEo0MlpXeFVsR013?=
- =?utf-8?B?Q0doYUxXM0kwdVN4NHFnYUlKM1VZQnJtRW03Y2hRNzVYd2Z4VThSYWVLRWlT?=
- =?utf-8?B?VnFEVFdqVnVhV0lrTldBV2RJaDFNTHBTMzJUQ1BHQ0dObGl1MFhLbkF6RVFK?=
- =?utf-8?B?NGlZTDVpbGNJQkp0azZEbTM5VzlnSGErMGkrTmpycHk2V2NRbEtKZlMvSGRO?=
- =?utf-8?B?TjQ0YWNNSytxbXdhbTIrZ1htYkllT092M3BpMkZGV0dNbEdaWEJFbFh3MjI5?=
- =?utf-8?B?a2Ntd0pUU0xxNE5xaDRrZFlLcG5ZZ010cVdOMUUxYlpDY1Q3MUNYS0dlNG03?=
- =?utf-8?Q?TiWvxUCOVnOGsNqNPb5dE3znA?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: KbiqXoZN/ECqGzgj7VMWCo4pNZJVgicsqBCLx4YwqErAy/oLlBKUJwz8O+rse2AxYSCy3AYvJ0IgNTvYFOcYCXLExoaVqbwZmPL5CTbUqew1ejC/zsHqpOuuRhuAcwYVehaZzfhcIs/RnzefOx2+XidK8g0iNyZrU128OaE4zjs1CpHI24bQG6tCNB2XpjrB6BubFqApl5m5f3NNvnc2jSKGiHnVA+7KhL1QXebSh3kvYMVfUlIXHoDXXjC/jcCGI7pYclFaP/eQ/wGC3YJBhJU+yRst4J1kZnp56aYz/EQUAEhYMT5ALh7oeeqG2mLK+IiD3u2/9ac0bWOWTwYIqvAwuQHuXIIim2UbJDzRUfANf7PCD6uK/qRfWFzNZcozjXklt/fSq10fkYffUzl3p7z59blA9LJ3hjmu1dpGqkaMiq9PtqdfdPuhKydyTwZ1b1c2TweeARt/n7BeKYTQbQth1iSuiVm5K5yIcmnou4kNOgBc9a0NVPCYrRfufTW9e567f4ey3wtOWpI3tiEht+yUCTvJH3jDNxc7veELe25Q4N362bRGZSjwajkhG6MUNAVRCUIvj6xt/6c/AWOJDGt9RF7NIoGOlYFRYsjrbvPtXiuKqsxE+xXXEbblEuRQLyRIbOSCiJQ1wqUnQYZlmJ2kfL6j9NHtjlxJG+AgYsN3YCpaDBwGntUAtX29SszQ2bQeJpMV8hmp3k4sjiS2c+xn+OqcY0yoZs7CJnvGfyGQRiVkNBBU5W5AdpVkU1Z1X39eMsvEHVDRT0z1Pt0U+2Y5MK2nV5Z/H+10Bd7d2uHwpzxTsTtxOup1+aLKWvEMTElJRiPll1ACEwMLSHR+JGF3lrWV5ADdIwjCWwMRH7cW6/SddaA/Z7hnRr3L/j7f
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0aae1858-413e-4024-ab3a-08db763e14c0
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB4664.namprd10.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?TG5BR21QVlJpcC8xSkFBTlFnMGx0S1NndHNSbVZIbmhOUHJ1NzlwaUt2TjhK?=
+ =?utf-8?B?MG11MURlK0ZOTjJrQmhBcm5SV0NpcldXRlJSV2xqSUFJR3dybnpDKzh0WHdx?=
+ =?utf-8?B?ODdiMGp2dnMzVklPVnJyN3pXRWI0SUFMKzBOQ0NpQWNERFhaaDFScUJWWHYy?=
+ =?utf-8?B?Si9ycndHVTBBbE51dlFVMEtsN0J1SzZldEtMY1BLUFhyN2hLcFRIMEY3SjA1?=
+ =?utf-8?B?WkV6aW43RWxqVndMZ2EySk9PMStNN2hpaGVyekVta0hiVGZ2K3MyWWJIcDAv?=
+ =?utf-8?B?Q3lWbVdWVjN1MVY2ZDBJdGtxd05xOGlFcGhkaTlLcFY5c2pMMndRRzB0YkNr?=
+ =?utf-8?B?VWlKMGptK1kwS2FYaTVWYTZvMVZINGdXR0NYS21JeFFaWE5xN2h5ZjdOMEFU?=
+ =?utf-8?B?djZUai9QcEpOYlE3WWRwZ0V4Z2RzWS9XQ3d3Y0M4NmtMN0dYU0ErZWRrS3Rs?=
+ =?utf-8?B?aXZ4WEVvSVQwaVloZjBrckVXdFR4WHppRDFwc1djcHhZclhjMis1NHFHUGM4?=
+ =?utf-8?B?ZFF5cEhOcXJuMlVhNkZWREdPTlVkbkZlT1g4V1ZDTTQxaVdwdCs4SjM4dW5r?=
+ =?utf-8?B?dnV1a3lSMmM3TVZhOVlhMVNCd3dBQ241ZkFNUFlTOHNTOWNPdUZmTWF2YlIw?=
+ =?utf-8?B?aTRST3YzYnB5SGFHTlhWdkoxQVBnNnczbzlyYlh0aFZidGE4OWhhOFloZXRx?=
+ =?utf-8?B?RnltaHNCcHUwekdjbERQKzZqUndFdlpwNXdkQkQ5eVFQZnVyVnQ3UExVa0Fv?=
+ =?utf-8?B?NjNPTmk5M29SdDBsT0RtRmlBOW4yNTlPVDluWHBTZ1dYRGlkZUgrYlFKUS9l?=
+ =?utf-8?B?WjExNVpENlN3RlNLVFhWMEw1K01KVEc2VThiVWd1VXBGbFdsdVBzT0J4TkxS?=
+ =?utf-8?B?U0N6ak52QS9qendkRkhFMDh2L1hsNTRsOXBia1FIcEVWNDNqYkxtV09XRURW?=
+ =?utf-8?B?OHBIaU45ak5KZFFKK1gzaG9nbnN2YlprYXBwYmI4aFUrZVRqTGg2RGlmVEhY?=
+ =?utf-8?B?ekI5Q1FTamNKUzhQQnpJSDlPNEVwTVZXUE5ERXMvRnhvdG4vNWtlNW5BYVND?=
+ =?utf-8?B?V1Z3Nk1JWWJoQ1M5Y1BkMHpyU3IwSWdrczlIZkpoVHBGOUt4ejcwS2MrMmpv?=
+ =?utf-8?B?ZnZlMEd1eE1BZ0swMnVnbGpIMFZNbjRYSW5QakI2LzBuR3dxY0JVZTlPVnc2?=
+ =?utf-8?B?b2NLSk5xMzVyb1VOMVBpL1NxbnNvdlorc3Q1aTdlUXRqTUVYT2RmQ2hkLzYr?=
+ =?utf-8?B?NjQ1UDk4V1Q4QittdEZrUk5QdlhzeTgwUlBQcnhWb2tMNTd5eU1scEkzeW1L?=
+ =?utf-8?B?akN5M3dEUkJwTllHNm5ES3llSTRWenVPVFYrMjljdDEwN3dRZHNQM3FMbXFL?=
+ =?utf-8?B?MjlQVUl3amV6ajNzdkdzUWZkbDBTMWtqTW1VUGkvc0owUkxBYUNuU21zMHds?=
+ =?utf-8?B?VFk0OUpzZGt5cXovWDRVamZiTmdXNDhPRFhPc01ZOFd3VkFBK2lwMHI3Nisv?=
+ =?utf-8?B?MlJrclZTaUdjczNoRTlEeVRsdDZCRE0vbjNyYm0vRm8xVEpGY1NzalJuY1dX?=
+ =?utf-8?B?Q0k3cDFwMWFHeUpwT0RYdUNUL2wvRGVtYkxJdFJKYXVwcVdzNFh0MWdhcnp3?=
+ =?utf-8?B?MjhYVDVjSldNbjdNTk5PVTllamFETlp1emRnOTkyM0p2VTVnK2EwTENrSFJK?=
+ =?utf-8?B?QmYwRElTb1c2azQyS21wNElONStlcUlaWGtGOExSNzNzWUhWckJkS2VMbkhN?=
+ =?utf-8?B?Zi9hSmhIQjRVVmJKYVB3M2Z2U2Y1Y2hLVURYNXVueVFwR3dIR1JFTS8yL3Ju?=
+ =?utf-8?B?eDBidlgrRXE3amJRU25MMmFEMDNhaGxleDBkTkhrcXAvUTdLaTVrWmF6bmc0?=
+ =?utf-8?B?TGZjWkdGcG8vN1ZGUVQ0MW9EblFBWmZiRW9FQzhwVWdicVhSdEk4OFM4djlt?=
+ =?utf-8?B?Rk1iZStaMlFvQmIvUjZON21vVTMwckVSdUNhREo3NmdBNTJDVWV1SExsaDh3?=
+ =?utf-8?B?TWZNODZqZk53WVM1b2prMUFacU5oakg5QmZDMHFWaE1DOTU4cGZoNGl6Nm9S?=
+ =?utf-8?B?aXZlaUk1dUxnOThYeDVGeWtaQ1BlWnBOZlZqZ3pvbmNMMi8zZFNhYzJzZFVJ?=
+ =?utf-8?Q?iO0ZlVMUZogXMcaub3+8xcC6n?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7eb43278-9a03-4546-38a1-08db763e21bd
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB5549.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Jun 2023 12:08:41.2884 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Jun 2023 12:09:03.1697 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: aLT3fuToMuBUhFd8LO3JJuSvl+yQ7erZkIdWw+yIMfEJI+ACH1aUXyNZfmRSdW+cB6s7ClR3TDh8mEtMRqIfJg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR10MB5935
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-06-26_09,2023-06-26_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
- malwarescore=0 mlxscore=0
- mlxlogscore=999 bulkscore=0 spamscore=0 phishscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2305260000
- definitions=main-2306260109
-X-Proofpoint-ORIG-GUID: xhMn4hm6aGrVd21v9hWAPbG-N835sAAl
-X-Proofpoint-GUID: xhMn4hm6aGrVd21v9hWAPbG-N835sAAl
-Received-SPF: pass client-ip=205.220.165.32;
- envelope-from=jonah.palmer@oracle.com; helo=mx0a-00069f02.pphosted.com
-X-Spam_score_int: -28
-X-Spam_score: -2.9
+X-MS-Exchange-CrossTenant-UserPrincipalName: O5KiV8WIaZj2J2NCqlVzmqWUq6y/3Wh39Pm65Tj+6PIiIJDCIQNCoMyyQ1G8aElyLmBK+1yasXJyYIkoqRthXg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW3PR12MB4540
+Received-SPF: softfail client-ip=2a01:111:f400:fe59::614;
+ envelope-from=avihaih@nvidia.com;
+ helo=NAM12-DM6-obe.outbound.protection.outlook.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, HTML_MESSAGE=0.001,
- NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.09, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -188,592 +154,138 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---------------WOx2W01rDaTFKwr7I9d583Fa
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
-On 6/23/23 01:43, Michael S. Tsirkin wrote:
-
-> On Fri, Jun 09, 2023 at 09:20:40AM -0400, Jonah Palmer wrote:
->> Add new virtio transport feature to transport feature map:
->>   - VIRTIO_F_RING_RESET
->>
->> Add new vhost-user protocol feature to vhost-user protocol feature map
->> and enumeration:
->>   - VHOST_USER_PROTOCOL_F_STATUS
->>
->> Add new virtio device features for several virtio devices to their
->> respective feature mappings:
->>
->> virtio-blk:
->>   - VIRTIO_BLK_F_SECURE_ERASE
->>
->> virtio-net:
->>   - VIRTIO_NET_F_NOTF_COAL
->>   - VIRTIO_NET_F_GUEST_USO4
->>   - VIRTIO_NET_F_GUEST_USO6
->>   - VIRTIO_NET_F_HOST_USO
->>
->> virtio/vhost-user-gpio:
->>   - VIRTIO_GPIO_F_IRQ
->>   - VHOST_F_LOG_ALL
->>   - VHOST_USER_F_PROTOCOL_FEATURES
->>
->> virtio-bt:
->>   - VIRTIO_BT_F_VND_HCI
->>   - VIRTIO_BT_F_MSFT_EXT
->>   - VIRTIO_BT_F_AOSP_EXT
->>   - VIRTIO_BT_F_CONFIG_V2
->>
->> virtio-scmi:
->>   - VIRTIO_SCMI_F_P2A_CHANNELS
->>   - VIRTIO_SCMI_F_SHARED_MEMORY
->>
->> Add support for introspection on vhost-user-gpio devices.
->>
->> Signed-off-by: Jonah Palmer<jonah.palmer@oracle.com>
-> Thanks for the patch! Some comments:
+On 26/06/2023 11:23, Avihai Horon wrote:
+> Currently, VFIO bytes_transferred is not reset properly:
+> 1. bytes_transferred is not reset after a VM snapshot (so a migration
+>     following a snapshot will report incorrect value).
+> 2. bytes_transferred is a single counter for all VFIO devices, however
+>     upon migration failure it is reset multiple times, by each VFIO
+>     device.
 >
+> Fix it by introducing a new function vfio_reset_bytes_transferred() and
+> calling it during migration and snapshot start.
 >
->> ---
->>   hw/virtio/vhost-user-gpio.c |  7 ++++
->>   hw/virtio/virtio-qmp.c      | 79 +++++++++++++++++++++++++++++++++++--
->>   2 files changed, 83 insertions(+), 3 deletions(-)
->>
->> diff --git a/hw/virtio/vhost-user-gpio.c b/hw/virtio/vhost-user-gpio.c
->> index d6927b610a..e88ca5370f 100644
->> --- a/hw/virtio/vhost-user-gpio.c
->> +++ b/hw/virtio/vhost-user-gpio.c
->> @@ -205,6 +205,12 @@ static void vu_gpio_guest_notifier_mask(VirtIODevice *vdev, int idx, bool mask)
->>       vhost_virtqueue_mask(&gpio->vhost_dev, vdev, idx, mask);
->>   }
->>   
->> +static struct vhost_dev *vu_gpio_get_vhost(VirtIODevice *vdev)
->> +{
->> +    VHostUserGPIO *gpio = VHOST_USER_GPIO(vdev);
->> +    return &gpio->vhost_dev;
->> +}
->> +
->>   static void do_vhost_user_cleanup(VirtIODevice *vdev, VHostUserGPIO *gpio)
->>   {
->>       virtio_delete_queue(gpio->command_vq);
->> @@ -413,6 +419,7 @@ static void vu_gpio_class_init(ObjectClass *klass, void *data)
->>       vdc->get_config = vu_gpio_get_config;
->>       vdc->set_status = vu_gpio_set_status;
->>       vdc->guest_notifier_mask = vu_gpio_guest_notifier_mask;
->> +    vdc->get_vhost = vu_gpio_get_vhost;
->>   }
->>   
->>   static const TypeInfo vu_gpio_info = {
->> diff --git a/hw/virtio/virtio-qmp.c b/hw/virtio/virtio-qmp.c
->> index e936cc8ce5..140c420d87 100644
->> --- a/hw/virtio/virtio-qmp.c
->> +++ b/hw/virtio/virtio-qmp.c
->> @@ -53,6 +53,7 @@ enum VhostUserProtocolFeature {
->>       VHOST_USER_PROTOCOL_F_RESET_DEVICE = 13,
->>       VHOST_USER_PROTOCOL_F_INBAND_NOTIFICATIONS = 14,
->>       VHOST_USER_PROTOCOL_F_CONFIGURE_MEM_SLOTS = 15,
->> +    VHOST_USER_PROTOCOL_F_STATUS = 16,
->>       VHOST_USER_PROTOCOL_F_MAX
->>   };
->>
-> OMG I just realized that by now we have accumulated each value
-> in 4 places! This is really badly asking to be moved
-> to a header. Not sure what to do about the document yet
-> but that will at least get us down to two.
->    
+> Remove existing bytes_transferred reset in VFIO migration state
+> notifier, which is not needed anymore.
 
-I can add this in another patch as a part of this series.
+Forgot fixes tag:
 
->> @@ -79,6 +80,8 @@ static const qmp_virtio_feature_map_t virtio_transport_map[] = {
->>               "VIRTIO_F_ORDER_PLATFORM: Memory accesses ordered by platform"),
->>       FEATURE_ENTRY(VIRTIO_F_SR_IOV, \
->>               "VIRTIO_F_SR_IOV: Device supports single root I/O virtualization"),
->> +    FEATURE_ENTRY(VIRTIO_F_RING_RESET, \
->> +            "VIRTIO_F_RING_RESET: Driver can reset individual VQs"),
->>       /* Virtio ring transport features */
->>       FEATURE_ENTRY(VIRTIO_RING_F_INDIRECT_DESC, \
->>               "VIRTIO_RING_F_INDIRECT_DESC: Indirect descriptors supported"),
->> @@ -134,6 +137,9 @@ static const qmp_virtio_feature_map_t vhost_user_protocol_map[] = {
->>       FEATURE_ENTRY(VHOST_USER_PROTOCOL_F_CONFIGURE_MEM_SLOTS, \
->>               "VHOST_USER_PROTOCOL_F_CONFIGURE_MEM_SLOTS: Configuration for "
->>               "memory slots supported"),
->> +    FEATURE_ENTRY(VHOST_USER_PROTOCOL_F_STATUS, \
->> +            "VHOST_USER_PROTOCOL_F_STATUS: Querying and notifying back-end "
->> +            "device statuses supported"),
-> status - there's only one per device
+Fixes: 3710586caa5d ("qapi: Add VFIO devices migration stats in 
+Migration stats")
 
-Will change, thanks!
-
->>       { -1, "" }
->>   };
->>   
->> @@ -176,6 +182,8 @@ static const qmp_virtio_feature_map_t virtio_blk_feature_map[] = {
->>               "VIRTIO_BLK_F_DISCARD: Discard command supported"),
->>       FEATURE_ENTRY(VIRTIO_BLK_F_WRITE_ZEROES, \
->>               "VIRTIO_BLK_F_WRITE_ZEROES: Write zeroes command supported"),
->> +    FEATURE_ENTRY(VIRTIO_BLK_F_SECURE_ERASE, \
->> +            "VIRTIO_BLK_F_SECURE_ERASE: Secure erase supported"),
->>       FEATURE_ENTRY(VIRTIO_BLK_F_ZONED, \
->>               "VIRTIO_BLK_F_ZONED: Zoned block devices"),
->>   #ifndef VIRTIO_BLK_NO_LEGACY
->> @@ -299,6 +307,14 @@ static const qmp_virtio_feature_map_t virtio_net_feature_map[] = {
->>       FEATURE_ENTRY(VIRTIO_NET_F_CTRL_MAC_ADDR, \
->>               "VIRTIO_NET_F_CTRL_MAC_ADDR: MAC address set through control "
->>               "channel"),
->> +    FEATURE_ENTRY(VIRTIO_NET_F_NOTF_COAL, \
->> +            "VIRTIO_NET_F_NOTF_COAL: Device supports coalescing notifications"),
->> +    FEATURE_ENTRY(VIRTIO_NET_F_GUEST_USO4, \
->> +            "VIRTIO_NET_F_GUEST_USO4: Driver can receive USOv4"),
->> +    FEATURE_ENTRY(VIRTIO_NET_F_GUEST_USO6, \
->> +            "VIRTIO_NET_F_GUEST_USO4: Driver can receive USOv6"),
->> +    FEATURE_ENTRY(VIRTIO_NET_F_HOST_USO, \
->> +            "VIRTIO_NET_F_HOST_USO: Device can receive USO"),
->>       FEATURE_ENTRY(VIRTIO_NET_F_HASH_REPORT, \
->>               "VIRTIO_NET_F_HASH_REPORT: Hash reporting supported"),
->>       FEATURE_ENTRY(VIRTIO_NET_F_RSS, \
->> @@ -469,6 +485,48 @@ static const qmp_virtio_feature_map_t virtio_rng_feature_map[] = {
->>   };
->>   #endif
->>   
->> +/* virtio/vhost-gpio features mapping */
->> +#ifdef CONFIG_VIRTIO_GPIO
-> Where's this coming from?
+> Signed-off-by: Avihai Horon <avihaih@nvidia.com>
+> ---
+>   include/hw/vfio/vfio-common.h |  1 +
+>   migration/migration.h         |  1 +
+>   hw/vfio/migration.c           |  6 +++++-
+>   migration/migration.c         |  1 +
+>   migration/savevm.c            |  1 +
+>   migration/target.c            | 17 +++++++++++++++--
+>   6 files changed, 24 insertions(+), 3 deletions(-)
 >
-Ah, this should probably be CONFIG_VHOST_USER_GPIO instead I believe.
-
-As for the other two...
-
->> +static const qmp_virtio_feature_map_t virtio_gpio_feature_map[] = {
->> +    FEATURE_ENTRY(VIRTIO_GPIO_F_IRQ, \
->> +            "VIRTIO_GPIO_F_IRQ: Device supports interrupts on GPIO lines"),
->> +    FEATURE_ENTRY(VHOST_F_LOG_ALL, \
->> +            "VHOST_F_LOG_ALL: Logging write descriptors supported"),
->> +    FEATURE_ENTRY(VHOST_USER_F_PROTOCOL_FEATURES, \
->> +            "VHOST_USER_F_PROTOCOL_FEATURES: Vhost-user protocol features "
->> +            "negotiation supported"),
->> +    { -1, "" }
->> +};
->> +#endif
->> +
->> +/* virtio-bluetooth features mapping */
->> +#ifdef CONFIG_VIRTIO_BT
-> Where's this coming from?
->
-This is coming from... nowhere!
-
-My apologies. I forgot to check if any of these virtio devices were
-actually being declared as objects (via. OBJECT_DECLARE_SIMPLE_TYPE).
-
-I will revert these changes for virtio-bt & virtio-scmi and be more
-careful to check for these in the future. Thank you for pointing this
-out.
-
->> +static const qmp_virtio_feature_map_t virtio_bt_feature_map[] = {
->> +    FEATURE_ENTRY(VIRTIO_BT_F_VND_HCI, \
->> +            "VIRTIO_BT_F_VND_HCI: Vendor command supported"),
->> +    FEATURE_ENTRY(VIRTIO_BT_F_MSFT_EXT, \
->> +            "VIRTIO_BT_F_MSFT_EXT: MSFT vendor supported"),
->> +    FEATURE_ENTRY(VIRTIO_BT_F_AOSP_EXT, \
->> +            "VIRTIO_BT_F_AOSP_EXT: AOSP vendor supported"),
->> +    FEATURE_ENTRY(VIRTIO_BT_F_CONFIG_V2, \
->> +            "VIRTIO_BT_F_CONFIG_V2: Using v2 configuration"),
->> +    { -1, "" }
->> +};
->> +#endif
->> +
->> +/* virtio-scmi features mapping */
->> +#ifdef CONFIG_VIRTIO_SCMI
-> Where's this coming from?
-
-Will revert this. See comment above.
-
->> +static const qmp_virtio_feature_map_t virtio_scmi_feature_map[] = {
->> +    FEATURE_ENTRY(VIRTIO_SCMI_F_P2A_CHANNELS, \
->> +            "VIRTIO_SCMI_F_P2A_CHANNELS: SCMI notifications or delayed "
->> +            "responses implemented"),
->> +    FEATURE_ENTRY(VIRTIO_SCMI_F_SHARED_MEMORY, \
->> +            "VIRTIO_SCMI_F_SHARED_MEMORY: SCMI shared memory region statistics "
->> +            "implemented"),
->> +    { -1, "" }
->> +};
->> +#endif
->> +
->>   #define CONVERT_FEATURES(type, map, is_status, bitmap)   \
->>       ({                                                   \
->>           type *list = NULL;                               \
->> @@ -625,6 +683,24 @@ VirtioDeviceFeatures *qmp_decode_features(uint16_t device_id, uint64_t bitmap)
->>           features->dev_features =
->>               CONVERT_FEATURES(strList, virtio_rng_feature_map, 0, bitmap);
->>           break;
->> +#endif
->> +#ifdef CONFIG_VIRTIO_GPIO
->> +    case VIRTIO_ID_GPIO:
->> +        features->dev_features =
->> +            CONVERT_FEATURES(strList, virtio_gpio_feature_map, 0, bitmap);
->> +        break;
->> +#endif
->> +#ifdef CONFIG_VIRTIO_BT
->> +    case VIRTIO_ID_BT:
->> +        features->dev_features =
->> +            CONVERT_FEATURES(strList, virtio_bt_feature_map, 0, bitmap);
->> +        break;
->> +#endif
->> +#ifdef CONFIG_VIRTIO_SCMI
->> +    case VIRTIO_ID_SCMI:
->> +        features->dev_features =
->> +            CONVERT_FEATURES(strList, virtio_scmi_feature_map, 0, bitmap);
->> +        break;
->>   #endif
->>       /* No features */
->>       case VIRTIO_ID_9P:
->> @@ -640,18 +716,15 @@ VirtioDeviceFeatures *qmp_decode_features(uint16_t device_id, uint64_t bitmap)
->>       case VIRTIO_ID_SIGNAL_DIST:
->>       case VIRTIO_ID_PSTORE:
->>       case VIRTIO_ID_SOUND:
->> -    case VIRTIO_ID_BT:
->>       case VIRTIO_ID_RPMB:
->>       case VIRTIO_ID_VIDEO_ENCODER:
->>       case VIRTIO_ID_VIDEO_DECODER:
->> -    case VIRTIO_ID_SCMI:
->>       case VIRTIO_ID_NITRO_SEC_MOD:
->>       case VIRTIO_ID_WATCHDOG:
->>       case VIRTIO_ID_CAN:
->>       case VIRTIO_ID_DMABUF:
->>       case VIRTIO_ID_PARAM_SERV:
->>       case VIRTIO_ID_AUDIO_POLICY:
->> -    case VIRTIO_ID_GPIO:
->>           break;
->>       default:
->>           g_assert_not_reached();
->> -- 
->> 2.39.3
---------------WOx2W01rDaTFKwr7I9d583Fa
-Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-
-<html><head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  </head>
-  <body>
-    <pre>
-</pre>
-    <div class="moz-cite-prefix">
-      <pre>On 6/23/23 01:43, Michael S. Tsirkin wrote:</pre>
-    </div>
-    <blockquote type="cite" cite="mid:20230623013300-mutt-send-email-mst@kernel.org">
-      <pre class="moz-quote-pre" wrap="">On Fri, Jun 09, 2023 at 09:20:40AM -0400, Jonah Palmer wrote:
-</pre>
-      <blockquote type="cite">
-        <pre class="moz-quote-pre" wrap="">Add new virtio transport feature to transport feature map:
- - VIRTIO_F_RING_RESET
-
-Add new vhost-user protocol feature to vhost-user protocol feature map
-and enumeration:
- - VHOST_USER_PROTOCOL_F_STATUS
-
-Add new virtio device features for several virtio devices to their
-respective feature mappings:
-
-virtio-blk:
- - VIRTIO_BLK_F_SECURE_ERASE
-
-virtio-net:
- - VIRTIO_NET_F_NOTF_COAL
- - VIRTIO_NET_F_GUEST_USO4
- - VIRTIO_NET_F_GUEST_USO6
- - VIRTIO_NET_F_HOST_USO
-
-virtio/vhost-user-gpio:
- - VIRTIO_GPIO_F_IRQ
- - VHOST_F_LOG_ALL
- - VHOST_USER_F_PROTOCOL_FEATURES
-
-virtio-bt:
- - VIRTIO_BT_F_VND_HCI
- - VIRTIO_BT_F_MSFT_EXT
- - VIRTIO_BT_F_AOSP_EXT
- - VIRTIO_BT_F_CONFIG_V2
-
-virtio-scmi:
- - VIRTIO_SCMI_F_P2A_CHANNELS
- - VIRTIO_SCMI_F_SHARED_MEMORY
-
-Add support for introspection on vhost-user-gpio devices.
-
-Signed-off-by: Jonah Palmer <a class="moz-txt-link-rfc2396E" href="mailto:jonah.palmer@oracle.com">&lt;jonah.palmer@oracle.com&gt;</a>
-</pre>
-      </blockquote>
-      <pre class="moz-quote-pre" wrap="">
-Thanks for the patch! Some comments:
-
-
-</pre>
-      <blockquote type="cite">
-        <pre class="moz-quote-pre" wrap="">---
- hw/virtio/vhost-user-gpio.c |  7 ++++
- hw/virtio/virtio-qmp.c      | 79 +++++++++++++++++++++++++++++++++++--
- 2 files changed, 83 insertions(+), 3 deletions(-)
-
-diff --git a/hw/virtio/vhost-user-gpio.c b/hw/virtio/vhost-user-gpio.c
-index d6927b610a..e88ca5370f 100644
---- a/hw/virtio/vhost-user-gpio.c
-+++ b/hw/virtio/vhost-user-gpio.c
-@@ -205,6 +205,12 @@ static void vu_gpio_guest_notifier_mask(VirtIODevice *vdev, int idx, bool mask)
-     vhost_virtqueue_mask(&amp;gpio-&gt;vhost_dev, vdev, idx, mask);
- }
- 
-+static struct vhost_dev *vu_gpio_get_vhost(VirtIODevice *vdev)
-+{
-+    VHostUserGPIO *gpio = VHOST_USER_GPIO(vdev);
-+    return &amp;gpio-&gt;vhost_dev;
-+}
-+
- static void do_vhost_user_cleanup(VirtIODevice *vdev, VHostUserGPIO *gpio)
- {
-     virtio_delete_queue(gpio-&gt;command_vq);
-@@ -413,6 +419,7 @@ static void vu_gpio_class_init(ObjectClass *klass, void *data)
-     vdc-&gt;get_config = vu_gpio_get_config;
-     vdc-&gt;set_status = vu_gpio_set_status;
-     vdc-&gt;guest_notifier_mask = vu_gpio_guest_notifier_mask;
-+    vdc-&gt;get_vhost = vu_gpio_get_vhost;
- }
- 
- static const TypeInfo vu_gpio_info = {
-diff --git a/hw/virtio/virtio-qmp.c b/hw/virtio/virtio-qmp.c
-index e936cc8ce5..140c420d87 100644
---- a/hw/virtio/virtio-qmp.c
-+++ b/hw/virtio/virtio-qmp.c
-@@ -53,6 +53,7 @@ enum VhostUserProtocolFeature {
-     VHOST_USER_PROTOCOL_F_RESET_DEVICE = 13,
-     VHOST_USER_PROTOCOL_F_INBAND_NOTIFICATIONS = 14,
-     VHOST_USER_PROTOCOL_F_CONFIGURE_MEM_SLOTS = 15,
-+    VHOST_USER_PROTOCOL_F_STATUS = 16,
-     VHOST_USER_PROTOCOL_F_MAX
- };
-
-</pre>
-      </blockquote>
-      <pre class="moz-quote-pre" wrap="">
-OMG I just realized that by now we have accumulated each value
-in 4 places! This is really badly asking to be moved
-to a header. Not sure what to do about the document yet
-but that will at least get us down to two.
-  </pre>
-    </blockquote>
-    <pre>I can add this in another patch as a part of this series.
-</pre>
-    <blockquote type="cite" cite="mid:20230623013300-mutt-send-email-mst@kernel.org">
-      <pre class="moz-quote-pre" wrap="">
-</pre>
-      <blockquote type="cite">
-        <pre class="moz-quote-pre" wrap="">@@ -79,6 +80,8 @@ static const qmp_virtio_feature_map_t virtio_transport_map[] = {
-             &quot;VIRTIO_F_ORDER_PLATFORM: Memory accesses ordered by platform&quot;),
-     FEATURE_ENTRY(VIRTIO_F_SR_IOV, \
-             &quot;VIRTIO_F_SR_IOV: Device supports single root I/O virtualization&quot;),
-+    FEATURE_ENTRY(VIRTIO_F_RING_RESET, \
-+            &quot;VIRTIO_F_RING_RESET: Driver can reset individual VQs&quot;),
-     /* Virtio ring transport features */
-     FEATURE_ENTRY(VIRTIO_RING_F_INDIRECT_DESC, \
-             &quot;VIRTIO_RING_F_INDIRECT_DESC: Indirect descriptors supported&quot;),
-@@ -134,6 +137,9 @@ static const qmp_virtio_feature_map_t vhost_user_protocol_map[] = {
-     FEATURE_ENTRY(VHOST_USER_PROTOCOL_F_CONFIGURE_MEM_SLOTS, \
-             &quot;VHOST_USER_PROTOCOL_F_CONFIGURE_MEM_SLOTS: Configuration for &quot;
-             &quot;memory slots supported&quot;),
-+    FEATURE_ENTRY(VHOST_USER_PROTOCOL_F_STATUS, \
-+            &quot;VHOST_USER_PROTOCOL_F_STATUS: Querying and notifying back-end &quot;
-+            &quot;device statuses supported&quot;),
-</pre>
-      </blockquote>
-      <pre class="moz-quote-pre" wrap="">
-status - there's only one per device
-</pre>
-    </blockquote>
-    <pre>Will change, thanks!
-</pre>
-    <blockquote type="cite" cite="mid:20230623013300-mutt-send-email-mst@kernel.org">
-      <pre class="moz-quote-pre" wrap="">
-</pre>
-      <blockquote type="cite">
-        <pre class="moz-quote-pre" wrap="">     { -1, &quot;&quot; }
- };
- 
-@@ -176,6 +182,8 @@ static const qmp_virtio_feature_map_t virtio_blk_feature_map[] = {
-             &quot;VIRTIO_BLK_F_DISCARD: Discard command supported&quot;),
-     FEATURE_ENTRY(VIRTIO_BLK_F_WRITE_ZEROES, \
-             &quot;VIRTIO_BLK_F_WRITE_ZEROES: Write zeroes command supported&quot;),
-+    FEATURE_ENTRY(VIRTIO_BLK_F_SECURE_ERASE, \
-+            &quot;VIRTIO_BLK_F_SECURE_ERASE: Secure erase supported&quot;),
-     FEATURE_ENTRY(VIRTIO_BLK_F_ZONED, \
-             &quot;VIRTIO_BLK_F_ZONED: Zoned block devices&quot;),
- #ifndef VIRTIO_BLK_NO_LEGACY
-</pre>
-      </blockquote>
-      <pre class="moz-quote-pre" wrap="">
-</pre>
-      <blockquote type="cite">
-        <pre class="moz-quote-pre" wrap="">@@ -299,6 +307,14 @@ static const qmp_virtio_feature_map_t virtio_net_feature_map[] = {
-     FEATURE_ENTRY(VIRTIO_NET_F_CTRL_MAC_ADDR, \
-             &quot;VIRTIO_NET_F_CTRL_MAC_ADDR: MAC address set through control &quot;
-             &quot;channel&quot;),
-+    FEATURE_ENTRY(VIRTIO_NET_F_NOTF_COAL, \
-+            &quot;VIRTIO_NET_F_NOTF_COAL: Device supports coalescing notifications&quot;),
-+    FEATURE_ENTRY(VIRTIO_NET_F_GUEST_USO4, \
-+            &quot;VIRTIO_NET_F_GUEST_USO4: Driver can receive USOv4&quot;),
-+    FEATURE_ENTRY(VIRTIO_NET_F_GUEST_USO6, \
-+            &quot;VIRTIO_NET_F_GUEST_USO4: Driver can receive USOv6&quot;),
-+    FEATURE_ENTRY(VIRTIO_NET_F_HOST_USO, \
-+            &quot;VIRTIO_NET_F_HOST_USO: Device can receive USO&quot;),
-     FEATURE_ENTRY(VIRTIO_NET_F_HASH_REPORT, \
-             &quot;VIRTIO_NET_F_HASH_REPORT: Hash reporting supported&quot;),
-     FEATURE_ENTRY(VIRTIO_NET_F_RSS, \
-@@ -469,6 +485,48 @@ static const qmp_virtio_feature_map_t virtio_rng_feature_map[] = {
- };
- #endif
- 
-+/* virtio/vhost-gpio features mapping */
-+#ifdef CONFIG_VIRTIO_GPIO
-</pre>
-      </blockquote>
-      <pre class="moz-quote-pre" wrap="">
-Where's this coming from?
-
-</pre>
-    </blockquote>
-    <pre>Ah, this should probably be CONFIG_VHOST_USER_GPIO instead I believe.
-
-As for the other two...
-</pre>
-    <blockquote type="cite" cite="mid:20230623013300-mutt-send-email-mst@kernel.org">
-      <blockquote type="cite">
-        <pre class="moz-quote-pre" wrap="">+static const qmp_virtio_feature_map_t virtio_gpio_feature_map[] = {
-+    FEATURE_ENTRY(VIRTIO_GPIO_F_IRQ, \
-+            &quot;VIRTIO_GPIO_F_IRQ: Device supports interrupts on GPIO lines&quot;),
-+    FEATURE_ENTRY(VHOST_F_LOG_ALL, \
-+            &quot;VHOST_F_LOG_ALL: Logging write descriptors supported&quot;),
-+    FEATURE_ENTRY(VHOST_USER_F_PROTOCOL_FEATURES, \
-+            &quot;VHOST_USER_F_PROTOCOL_FEATURES: Vhost-user protocol features &quot;
-+            &quot;negotiation supported&quot;),
-+    { -1, &quot;&quot; }
-+};
-+#endif
-+
-+/* virtio-bluetooth features mapping */
-+#ifdef CONFIG_VIRTIO_BT
-</pre>
-      </blockquote>
-      <pre class="moz-quote-pre" wrap="">
-Where's this coming from?
-
-</pre>
-    </blockquote>
-    <pre>This is coming from... nowhere!
-
-My apologies. I forgot to check if any of these virtio devices were
-actually being declared as objects (via. OBJECT_DECLARE_SIMPLE_TYPE).
-
-I will revert these changes for virtio-bt &amp; virtio-scmi and be more
-careful to check for these in the future. Thank you for pointing this
-out.
-</pre>
-    <blockquote type="cite" cite="mid:20230623013300-mutt-send-email-mst@kernel.org">
-      <pre class="moz-quote-pre" wrap="">
-</pre>
-      <blockquote type="cite">
-        <pre class="moz-quote-pre" wrap="">+static const qmp_virtio_feature_map_t virtio_bt_feature_map[] = {
-+    FEATURE_ENTRY(VIRTIO_BT_F_VND_HCI, \
-+            &quot;VIRTIO_BT_F_VND_HCI: Vendor command supported&quot;),
-+    FEATURE_ENTRY(VIRTIO_BT_F_MSFT_EXT, \
-+            &quot;VIRTIO_BT_F_MSFT_EXT: MSFT vendor supported&quot;),
-+    FEATURE_ENTRY(VIRTIO_BT_F_AOSP_EXT, \
-+            &quot;VIRTIO_BT_F_AOSP_EXT: AOSP vendor supported&quot;),
-+    FEATURE_ENTRY(VIRTIO_BT_F_CONFIG_V2, \
-+            &quot;VIRTIO_BT_F_CONFIG_V2: Using v2 configuration&quot;),
-+    { -1, &quot;&quot; }
-+};
-+#endif
-+
-+/* virtio-scmi features mapping */
-+#ifdef CONFIG_VIRTIO_SCMI
-</pre>
-      </blockquote>
-      <pre class="moz-quote-pre" wrap="">
-Where's this coming from?
-</pre>
-    </blockquote>
-    <pre>Will revert this. See comment above.
-</pre>
-    <blockquote type="cite" cite="mid:20230623013300-mutt-send-email-mst@kernel.org">
-      <pre class="moz-quote-pre" wrap="">
-</pre>
-      <blockquote type="cite">
-        <pre class="moz-quote-pre" wrap="">+static const qmp_virtio_feature_map_t virtio_scmi_feature_map[] = {
-+    FEATURE_ENTRY(VIRTIO_SCMI_F_P2A_CHANNELS, \
-+            &quot;VIRTIO_SCMI_F_P2A_CHANNELS: SCMI notifications or delayed &quot;
-+            &quot;responses implemented&quot;),
-+    FEATURE_ENTRY(VIRTIO_SCMI_F_SHARED_MEMORY, \
-+            &quot;VIRTIO_SCMI_F_SHARED_MEMORY: SCMI shared memory region statistics &quot;
-+            &quot;implemented&quot;),
-+    { -1, &quot;&quot; }
-+};
-+#endif
-+
- #define CONVERT_FEATURES(type, map, is_status, bitmap)   \
-     ({                                                   \
-         type *list = NULL;                               \
-@@ -625,6 +683,24 @@ VirtioDeviceFeatures *qmp_decode_features(uint16_t device_id, uint64_t bitmap)
-         features-&gt;dev_features =
-             CONVERT_FEATURES(strList, virtio_rng_feature_map, 0, bitmap);
-         break;
-+#endif
-+#ifdef CONFIG_VIRTIO_GPIO
-+    case VIRTIO_ID_GPIO:
-+        features-&gt;dev_features =
-+            CONVERT_FEATURES(strList, virtio_gpio_feature_map, 0, bitmap);
-+        break;
-+#endif
-+#ifdef CONFIG_VIRTIO_BT
-+    case VIRTIO_ID_BT:
-+        features-&gt;dev_features =
-+            CONVERT_FEATURES(strList, virtio_bt_feature_map, 0, bitmap);
-+        break;
-+#endif
-+#ifdef CONFIG_VIRTIO_SCMI
-+    case VIRTIO_ID_SCMI:
-+        features-&gt;dev_features =
-+            CONVERT_FEATURES(strList, virtio_scmi_feature_map, 0, bitmap);
-+        break;
- #endif
-     /* No features */
-     case VIRTIO_ID_9P:
-@@ -640,18 +716,15 @@ VirtioDeviceFeatures *qmp_decode_features(uint16_t device_id, uint64_t bitmap)
-     case VIRTIO_ID_SIGNAL_DIST:
-     case VIRTIO_ID_PSTORE:
-     case VIRTIO_ID_SOUND:
--    case VIRTIO_ID_BT:
-     case VIRTIO_ID_RPMB:
-     case VIRTIO_ID_VIDEO_ENCODER:
-     case VIRTIO_ID_VIDEO_DECODER:
--    case VIRTIO_ID_SCMI:
-     case VIRTIO_ID_NITRO_SEC_MOD:
-     case VIRTIO_ID_WATCHDOG:
-     case VIRTIO_ID_CAN:
-     case VIRTIO_ID_DMABUF:
-     case VIRTIO_ID_PARAM_SERV:
-     case VIRTIO_ID_AUDIO_POLICY:
--    case VIRTIO_ID_GPIO:
-         break;
-     default:
-         g_assert_not_reached();
--- 
-2.39.3
-</pre>
-      </blockquote>
-      <pre class="moz-quote-pre" wrap="">
-</pre>
-    </blockquote>
-  </body>
-</html>
-
---------------WOx2W01rDaTFKwr7I9d583Fa--
+> diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
+> index 3dc5f2104c..b4c28f318f 100644
+> --- a/include/hw/vfio/vfio-common.h
+> +++ b/include/hw/vfio/vfio-common.h
+> @@ -228,6 +228,7 @@ int vfio_block_multiple_devices_migration(Error **errp);
+>   void vfio_unblock_multiple_devices_migration(void);
+>   int vfio_block_giommu_migration(Error **errp);
+>   int64_t vfio_mig_bytes_transferred(void);
+> +void vfio_reset_bytes_transferred(void);
+>   
+>   #ifdef CONFIG_LINUX
+>   int vfio_get_region_info(VFIODevice *vbasedev, int index,
+> diff --git a/migration/migration.h b/migration/migration.h
+> index c859a0d35e..a80b22b703 100644
+> --- a/migration/migration.h
+> +++ b/migration/migration.h
+> @@ -514,6 +514,7 @@ bool migration_rate_limit(void);
+>   void migration_cancel(const Error *error);
+>   
+>   void populate_vfio_info(MigrationInfo *info);
+> +void reset_vfio_bytes_transferred(void);
+>   void postcopy_temp_page_reset(PostcopyTmpPage *tmp_page);
+>   
+>   #endif
+> diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
+> index a8bfbe4b89..79eb81dfd7 100644
+> --- a/hw/vfio/migration.c
+> +++ b/hw/vfio/migration.c
+> @@ -704,7 +704,6 @@ static void vfio_migration_state_notifier(Notifier *notifier, void *data)
+>       case MIGRATION_STATUS_CANCELLING:
+>       case MIGRATION_STATUS_CANCELLED:
+>       case MIGRATION_STATUS_FAILED:
+> -        bytes_transferred = 0;
+>           /*
+>            * If setting the device in RUNNING state fails, the device should
+>            * be reset. To do so, use ERROR state as a recover state.
+> @@ -825,6 +824,11 @@ int64_t vfio_mig_bytes_transferred(void)
+>       return bytes_transferred;
+>   }
+>   
+> +void vfio_reset_bytes_transferred(void)
+> +{
+> +    bytes_transferred = 0;
+> +}
+> +
+>   int vfio_migration_realize(VFIODevice *vbasedev, Error **errp)
+>   {
+>       int ret = -ENOTSUP;
+> diff --git a/migration/migration.c b/migration/migration.c
+> index 7653787f74..096e8191d1 100644
+> --- a/migration/migration.c
+> +++ b/migration/migration.c
+> @@ -1628,6 +1628,7 @@ static bool migrate_prepare(MigrationState *s, bool blk, bool blk_inc,
+>        */
+>       memset(&mig_stats, 0, sizeof(mig_stats));
+>       memset(&compression_counters, 0, sizeof(compression_counters));
+> +    reset_vfio_bytes_transferred();
+>   
+>       return true;
+>   }
+> diff --git a/migration/savevm.c b/migration/savevm.c
+> index cdf4793924..95c2abf47c 100644
+> --- a/migration/savevm.c
+> +++ b/migration/savevm.c
+> @@ -1622,6 +1622,7 @@ static int qemu_savevm_state(QEMUFile *f, Error **errp)
+>       migrate_init(ms);
+>       memset(&mig_stats, 0, sizeof(mig_stats));
+>       memset(&compression_counters, 0, sizeof(compression_counters));
+> +    reset_vfio_bytes_transferred();
+>       ms->to_dst_file = f;
+>   
+>       qemu_mutex_unlock_iothread();
+> diff --git a/migration/target.c b/migration/target.c
+> index 00ca007f97..f39c9a8d88 100644
+> --- a/migration/target.c
+> +++ b/migration/target.c
+> @@ -14,12 +14,25 @@
+>   #include "hw/vfio/vfio-common.h"
+>   #endif
+>   
+> +#ifdef CONFIG_VFIO
+>   void populate_vfio_info(MigrationInfo *info)
+>   {
+> -#ifdef CONFIG_VFIO
+>       if (vfio_mig_active()) {
+>           info->vfio = g_malloc0(sizeof(*info->vfio));
+>           info->vfio->transferred = vfio_mig_bytes_transferred();
+>       }
+> -#endif
+>   }
+> +
+> +void reset_vfio_bytes_transferred(void)
+> +{
+> +    vfio_reset_bytes_transferred();
+> +}
+> +#else
+> +void populate_vfio_info(MigrationInfo *info)
+> +{
+> +}
+> +
+> +void reset_vfio_bytes_transferred(void)
+> +{
+> +}
+> +#endif
 
