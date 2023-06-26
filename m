@@ -2,54 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4D2F73E08C
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 15:23:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DE1373E08E
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 15:23:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDmAN-0001HA-W0; Mon, 26 Jun 2023 09:22:04 -0400
+	id 1qDmAN-0001G7-Dp; Mon, 26 Jun 2023 09:22:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qDmAD-0001AA-KH
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 09:21:53 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qDmAE-0001Bt-UW
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 09:21:59 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qDmAA-00077T-Bl
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 09:21:53 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qDmAA-000784-Qc
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 09:21:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687785705;
+ s=mimecast20190719; t=1687785710;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=TowY0FZgNOtcPunsVw6eULcXK+gfyPUAzjBPKhMlVKg=;
- b=HbDBztrihbfz3iMRAgX5j+ABc07y+Y7XNK30lDHzt+FlVgQJlp0mWUe8Y+9cxsrKDrtwQa
- HGE9NneTwKKc8/DcXbEEqL4UomTKui3dAOVjGmXxujMir7GvAavfQH7KjR7OHVe238BLHy
- hMRXby9AKLkWYx/XqiZvIxd5J2qK9xk=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=dWRy1ksAsummucnx7NYUcmOpyTJTYc9CHbUopFlDLQM=;
+ b=dKCfc/qah0wmKw+IOO61YolRvjYKiBTD8qJ3DWxTWzHonS2ajxEGFfO/3ULiZtzug5i/YD
+ WfXM1gnbuUx9L4F3oD+ZW6Se6WSDhJLPGMd5J5m2+hmyrX7IfCbg4+dK7cJVqR81zvSKOG
+ NozHinjIoVmgKQXgHSZfKKKDerhmrUY=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-272-W5xmyDPeNmadaXu5NxvucQ-1; Mon, 26 Jun 2023 09:21:42 -0400
-X-MC-Unique: W5xmyDPeNmadaXu5NxvucQ-1
+ us-mta-627-AxTbrPg0PSmkgaCFuLGSmw-1; Mon, 26 Jun 2023 09:21:43 -0400
+X-MC-Unique: AxTbrPg0PSmkgaCFuLGSmw-1
 Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
  [10.11.54.3])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 94097104458A;
- Mon, 26 Jun 2023 13:21:41 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 127E4280AA32;
+ Mon, 26 Jun 2023 13:21:43 +0000 (UTC)
 Received: from thuth.com (unknown [10.39.193.57])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 5BA221121319;
- Mon, 26 Jun 2023 13:21:40 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id DA6EE1121319;
+ Mon, 26 Jun 2023 13:21:41 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-s390x@nongnu.org, Christian Borntraeger <borntraeger@linux.ibm.com>,
  mrezanin@redhat.com, =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-Subject: [PATCH 0/4] pc-bios/s390-ccw: Fixes and improvements for start.S
-Date: Mon, 26 Jun 2023 15:21:34 +0200
-Message-Id: <20230626132138.87668-1-thuth@redhat.com>
+Subject: [PATCH 1/4] pc-bios/s390-ccw: Fix indentation in start.S
+Date: Mon, 26 Jun 2023 15:21:35 +0200
+Message-Id: <20230626132138.87668-2-thuth@redhat.com>
+In-Reply-To: <20230626132138.87668-1-thuth@redhat.com>
+References: <20230626132138.87668-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -74,32 +77,200 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Main motivation of this series was a bug that showed up when compiling
-with Clang 16 and binutils 2.40 (which has been reported in Fedora ELN, see
-https://bugzilla.redhat.com/show_bug.cgi?id=2216662). This is fixed in
-the fourth patch.
+start.S is currently indented with a mixture of spaces and tabs, which
+is quite ugly. QEMU coding style says indentation should be 4 spaces,
+and this is also what we are using in the assembler files in the
+tests/tcg/s390x/ folder already, so let's adjust start.S accordingly.
 
-While working on this issue, I came accross some other issues which I
-address in the first three patches:
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+---
+ pc-bios/s390-ccw/start.S | 136 +++++++++++++++++++--------------------
+ 1 file changed, 68 insertions(+), 68 deletions(-)
 
-- Indentation is a mixture between tabs and spaces in start.S (patch 1)
-- We do not set up a stack frame for the main() function, which could
-  cause memory corruption (patch 2)
-- The stack is declared in multiple places, though it's only needed
-  in start.S (patch 3)
-
-Thomas Huth (4):
-  pc-bios/s390-ccw: Fix indentation in start.S
-  pc-bios/s390-ccw: Provide space for initial stack frame in start.S
-  pc-bios/s390-ccw: Move the stack array into start.S
-  pc-bios/s390-ccw: Don't use __bss_start with the "larl" instruction
-
- pc-bios/s390-ccw/s390-ccw.h |   1 -
- pc-bios/s390-ccw/main.c     |   1 -
- pc-bios/s390-ccw/netmain.c  |   1 -
- pc-bios/s390-ccw/start.S    | 143 +++++++++++++++++++-----------------
- 4 files changed, 75 insertions(+), 71 deletions(-)
-
+diff --git a/pc-bios/s390-ccw/start.S b/pc-bios/s390-ccw/start.S
+index 6072906df4..d29de09cc6 100644
+--- a/pc-bios/s390-ccw/start.S
++++ b/pc-bios/s390-ccw/start.S
+@@ -10,37 +10,37 @@
+  * directory.
+  */
+ 
+-        .globl _start
++    .globl _start
+ _start:
+ 
+-	larl   %r15, stack + 0x8000	/* Set up stack */
++    larl    %r15,stack + 0x8000     /* Set up stack */
+ 
+-	/* clear bss */
+-	larl %r2, __bss_start
+-	larl %r3, _end
+-	slgr %r3, %r2		/* get sizeof bss */
+-	ltgr	%r3,%r3 	/* bss empty? */
+-	jz	done
+-	aghi	%r3,-1
+-	srlg	%r4,%r3,8	/* how many 256 byte chunks? */
+-	ltgr	%r4,%r4
+-	lgr	%r1,%r2
+-	jz	remainder
++    /* clear bss */
++    larl    %r2,__bss_start
++    larl    %r3,_end
++    slgr    %r3,%r2    /* get sizeof bss */
++    ltgr    %r3,%r3    /* bss empty? */
++    jz      done
++    aghi    %r3,-1
++    srlg    %r4,%r3,8  /* how many 256 byte chunks? */
++    ltgr    %r4,%r4
++    lgr     %r1,%r2
++    jz      remainder
+ loop:
+-	xc	0(256,%r1),0(%r1)
+-	la	%r1,256(%r1)
+-	brctg	%r4,loop
++    xc      0(256,%r1),0(%r1)
++    la      %r1,256(%r1)
++    brctg   %r4,loop
+ remainder:
+-	larl	%r2,memsetxc
+-	ex	%r3,0(%r2)
++    larl    %r2,memsetxc
++    ex      %r3,0(%r2)
+ done:
+-        /* set up a pgm exception disabled wait psw */
+-        larl	%r2, disabled_wait_psw
+-        mvc	0x01d0(16), 0(%r2)
+-        j      main		/* And call C */
++    /* set up a pgm exception disabled wait psw */
++    larl    %r2,disabled_wait_psw
++    mvc     0x01d0(16),0(%r2)
++    j       main       /* And call C */
+ 
+ memsetxc:
+-	xc	0(1,%r1),0(%r1)
++    xc      0(1,%r1),0(%r1)
+ 
+ 
+ /*
+@@ -48,11 +48,11 @@ memsetxc:
+  *
+  * stops the current guest cpu.
+  */
+-	.globl disabled_wait
++    .globl disabled_wait
+ disabled_wait:
+-	larl	%r1,disabled_wait_psw
+-	lpswe	0(%r1)
+-1:	j	1b
++    larl    %r1,disabled_wait_psw
++    lpswe   0(%r1)
++1:  j       1b
+ 
+ 
+ /*
+@@ -60,61 +60,61 @@ disabled_wait:
+  *
+  * eats one sclp interrupt
+  */
+-        .globl consume_sclp_int
++    .globl consume_sclp_int
+ consume_sclp_int:
+-        /* enable service interrupts in cr0 */
+-        stctg   %c0,%c0,0(%r15)
+-        oi      6(%r15),0x2
+-        lctlg   %c0,%c0,0(%r15)
+-        /* prepare external call handler */
+-        larl %r1, external_new_code
+-        stg %r1, 0x1b8
+-        larl %r1, external_new_mask
+-        mvc 0x1b0(8),0(%r1)
+-        /* load enabled wait PSW */
+-        larl %r1, enabled_wait_psw
+-        lpswe 0(%r1)
++    /* enable service interrupts in cr0 */
++    stctg   %c0,%c0,0(%r15)
++    oi      6(%r15),0x2
++    lctlg   %c0,%c0,0(%r15)
++    /* prepare external call handler */
++    larl    %r1,external_new_code
++    stg     %r1,0x1b8
++    larl    %r1,external_new_mask
++    mvc     0x1b0(8),0(%r1)
++    /* load enabled wait PSW */
++    larl    %r1,enabled_wait_psw
++    lpswe   0(%r1)
+ 
+ /*
+  * void consume_io_int(void)
+  *
+  * eats one I/O interrupt
+  */
+-        .globl consume_io_int
++    .globl consume_io_int
+ consume_io_int:
+-        /* enable I/O interrupts in cr6 */
+-        stctg %c6,%c6,0(%r15)
+-        oi    4(%r15), 0xff
+-        lctlg %c6,%c6,0(%r15)
+-        /* prepare i/o call handler */
+-        larl  %r1, io_new_code
+-        stg   %r1, 0x1f8
+-        larl  %r1, io_new_mask
+-        mvc   0x1f0(8),0(%r1)
+-        /* load enabled wait PSW */
+-        larl  %r1, enabled_wait_psw
+-        lpswe 0(%r1)
++    /* enable I/O interrupts in cr6 */
++    stctg   %c6,%c6,0(%r15)
++    oi      4(%r15), 0xff
++    lctlg   %c6,%c6,0(%r15)
++    /* prepare i/o call handler */
++    larl    %r1,io_new_code
++    stg     %r1,0x1f8
++    larl    %r1,io_new_mask
++    mvc     0x1f0(8),0(%r1)
++    /* load enabled wait PSW */
++    larl    %r1,enabled_wait_psw
++    lpswe   0(%r1)
+ 
+ external_new_code:
+-        /* disable service interrupts in cr0 */
+-        stctg   %c0,%c0,0(%r15)
+-        ni      6(%r15),0xfd
+-        lctlg   %c0,%c0,0(%r15)
+-        br      %r14
++    /* disable service interrupts in cr0 */
++    stctg   %c0,%c0,0(%r15)
++    ni      6(%r15),0xfd
++    lctlg   %c0,%c0,0(%r15)
++    br      %r14
+ 
+ io_new_code:
+-        /* disable I/O interrupts in cr6 */
+-        stctg %c6,%c6,0(%r15)
+-        ni    4(%r15), 0x00
+-        lctlg %c6,%c6,0(%r15)
+-        br    %r14
++    /* disable I/O interrupts in cr6 */
++    stctg   %c6,%c6,0(%r15)
++    ni      4(%r15),0x00
++    lctlg   %c6,%c6,0(%r15)
++    br      %r14
+ 
+-        .align  8
++    .align  8
+ disabled_wait_psw:
+-        .quad   0x0002000180000000,0x0000000000000000
++    .quad   0x0002000180000000,0x0000000000000000
+ enabled_wait_psw:
+-        .quad   0x0302000180000000,0x0000000000000000
++    .quad   0x0302000180000000,0x0000000000000000
+ external_new_mask:
+-        .quad   0x0000000180000000
++    .quad   0x0000000180000000
+ io_new_mask:
+-        .quad   0x0000000180000000
++    .quad   0x0000000180000000
 -- 
 2.39.3
 
