@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C986A73EE31
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 00:01:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3805073EE2A
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 00:01:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDuFJ-0002e1-Ob; Mon, 26 Jun 2023 17:59:41 -0400
+	id 1qDuFJ-0002dp-8Y; Mon, 26 Jun 2023 17:59:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qDuFF-0002bL-Qo
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 17:59:37 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ id 1qDuFE-0002aa-Uy
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 17:59:36 -0400
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qDuFB-0004sb-CW
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 17:59:37 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-3112f5ab0b1so3467222f8f.0
+ id 1qDuFA-0004s9-Fs
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 17:59:36 -0400
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-3fa99742af9so13350205e9.2
  for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 14:59:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687816772; x=1690408772;
+ d=linaro.org; s=google; t=1687816771; x=1690408771;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=I9YIwoz2syzBIvgIfb1KrTiedkOwekCcwMFZMGMcvn4=;
- b=mvNbMpVtxraiXaBijebT9NTHWo812zjH8dn9J+Mp5IevPCqj7ULih+qHuLBH0DIsnb
- IoNazy2T+5Xl4DcYh+lWwyww8zcM7YWRbkkjcorwgLewZzCQhZyTpzkrvrZQVtPn9qHn
- yahX6PbFA1decuaHUwWv01wIPB+nd/CDZP8x4DGUcY5eZOLMU4dubzL0T0+Xg0/Pc1Oj
- y6BZ4TEhTrvc5jCFryNyUaK1R/z0qI0yhRSHa+kErxJPUM+2aydpHtuBTm+Qs0TXpkuA
- 7FE7xTOv4fQabLS9gnvKq1tTj/uOtkl6e+xvjeA4Db2BgPA9qZ4V3CPNtKbCn9GGVH8c
- SLhg==
+ bh=cCVrBcA62K9RLf5e56Guknvwd44ZoDW7Y93GujqWZjQ=;
+ b=y4cWEPo7e4u0mgr0SUohceoPO7QQiLIHO5sWxD8mrpnSuo98WJjvCJ0ZbIlSPjk14s
+ L3rFJNirp+f0GaoMaJOU9OJdo1k20U77/V5xJw2LJRJ/uRr+pVLh6xoZwMAnE0ND6yWt
+ l+aVsPIjFRikBRE0jM6GPH5nhnKreYZHUDZIspWNzCMVWipYdKH+H3R3wJdSq2UpbxqJ
+ JYZcklhmSQ5G+wLy9FoStOvIjWr+CCe/kBRQvXtfQ2JxThj4L3QSdv8cFDDHD6JFPDcD
+ tpde7PJRL1pqp/ZU1UXQFIz0GCQlhRLJTs8X7byCrFCGEh2ObcLf6fPIQZ6IPe/Fs5lM
+ 6pgQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687816772; x=1690408772;
+ d=1e100.net; s=20221208; t=1687816771; x=1690408771;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=I9YIwoz2syzBIvgIfb1KrTiedkOwekCcwMFZMGMcvn4=;
- b=iqHYvgs/8sdkKh1+EGA0rUGIZH0PnXL6jS9olZ5GptcdltfonLfwEabm5BhVO0SN9N
- lys7xp30WQi2Jq91JqOdWw8gf6yQQMUl9JKdzz5MnLGZLg1rlG+Wh9h+MWWMW4Q4faXX
- jolvtZIUwH51h21nRnSlN9+ot3e8ElxostohJYHBBnX8MNNFngozNUGyyCkpSbzoVryH
- o0Vg1REfTYmzj+7hh0Z7RFjx3dayyFAqjrmupm49pqUnkip8OvBh0zUvBkZag6alZTum
- PQCUBnKlbbB+d6BR87F/KmH09MdFnJFcU2X44vCgD66CsE3HO/kb7mVONVJSJVUF+fYz
- Fs9A==
-X-Gm-Message-State: AC+VfDwRP5HEyUbEL1/8vS8TWEatxaXhyrX5rQKktO2tBKnx50A1FexZ
- ClDpLvv238e7ug5dzci7AjsBUg==
-X-Google-Smtp-Source: ACHHUZ70ajcmsQsC+vJBTBZooz4AiLJ2sd0gRl/RTPCMCMR+PhR4PGsSXqK9WjYAz0hH+oz78BRs8A==
-X-Received: by 2002:a5d:6884:0:b0:311:1101:abb7 with SMTP id
- h4-20020a5d6884000000b003111101abb7mr19425826wru.65.1687816772103; 
- Mon, 26 Jun 2023 14:59:32 -0700 (PDT)
+ bh=cCVrBcA62K9RLf5e56Guknvwd44ZoDW7Y93GujqWZjQ=;
+ b=b66xnS9VewmpiOyxSojPD86lw5IVp3YfJ1WnukqJErZXpThnJ2M8UEZD3uzdx0bziZ
+ qk4GHqiSEdH8fEU+z89fkiXGRVIeFKLx5vDFlHeI7PrCo/0QfDB9EFAULpbLz6nrj7hE
+ y3aDdZwOgbB+t99oJlZCVuuYa6bj/82+YN2V/17DC3lyVzC7nBm5WklMqM0u+0Fk7/oz
+ zHnvp3JWMKzXhtm8kC/N6BPIC/vU+Dkw8PVoSD6xTCwvx9eyEzIc08nugMmDkvfOqPUX
+ MJz/90v1l6Tb8ALn444faKLt3TlQfAsVYi2j9F/ne20HkVama9TO7sbpAWk2NhYNSLiq
+ NtDw==
+X-Gm-Message-State: AC+VfDzqW1LJJNpGna35cKCbOZst1+2n4TCEeAoLkpaBQsWPe2D+3UmX
+ 2V/L3n63Fzgkns7InO8p5sct/w==
+X-Google-Smtp-Source: ACHHUZ7U9v8V7yzcARQ2QzEcbSrCRvQC3r7hzO8JciyPynNOsOHF2nZ2JeuXX7oEBAQNaCS/FT7saQ==
+X-Received: by 2002:a7b:c399:0:b0:3fa:9590:a365 with SMTP id
+ s25-20020a7bc399000000b003fa9590a365mr2927101wmj.17.1687816771132; 
+ Mon, 26 Jun 2023 14:59:31 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- l17-20020a5d5611000000b0030c6751a49dsm8364006wrv.115.2023.06.26.14.59.28
+ k26-20020a7bc41a000000b003f080b2f9f4sm11751894wmi.27.2023.06.26.14.59.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Mon, 26 Jun 2023 14:59:29 -0700 (PDT)
 Received: from zen.lan (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 6EAC81FFC0;
+ by zen.linaroharston (Postfix) with ESMTP id B91EB1FFC3;
  Mon, 26 Jun 2023 22:59:27 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -83,24 +83,24 @@ Cc: Alexander Bulekov <alxndr@bu.edu>,
  Radoslaw Biernacki <rad@semihalf.com>,
  Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
  Qiuhao Li <Qiuhao.Li@outlook.com>, Laurent Vivier <lvivier@redhat.com>
-Subject: [PATCH v2 05/26] tests/tcg: add mechanism to handle plugin arguments
-Date: Mon, 26 Jun 2023 22:59:05 +0100
-Message-Id: <20230626215926.2522656-6-alex.bennee@linaro.org>
+Subject: [PATCH v2 08/26] tests/qtests: clean-up and fix leak in generic_fuzz
+Date: Mon, 26 Jun 2023 22:59:08 +0100
+Message-Id: <20230626215926.2522656-9-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230626215926.2522656-1-alex.bennee@linaro.org>
 References: <20230626215926.2522656-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x431.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -116,52 +116,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We recently missed a regression that should have been picked up by
-check-tcg. This was because the libmem plugin is effectively a NOP if
-the user doesn't specify the type to use.
+An update to the clang tooling detects more issues with the code
+including a memory leak from the g_string_new() allocation. Clean up
+the code with g_autoptr and use ARRAY_SIZE while we are at it.
 
-Rather than changing the default behaviour add an additional expansion
-so we can take this into account in future.
-
-Message-Id: <20230623122100.1640995-6-alex.bennee@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- tests/tcg/Makefile.target | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ tests/qtest/fuzz/generic_fuzz.c | 11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
-diff --git a/tests/tcg/Makefile.target b/tests/tcg/Makefile.target
-index 72876cc84e..2462c26000 100644
---- a/tests/tcg/Makefile.target
-+++ b/tests/tcg/Makefile.target
-@@ -169,13 +169,17 @@ extract-plugin = $(wordlist 2, 2, $(subst -with-, ,$1))
+diff --git a/tests/qtest/fuzz/generic_fuzz.c b/tests/qtest/fuzz/generic_fuzz.c
+index c525d22951..a4841181cc 100644
+--- a/tests/qtest/fuzz/generic_fuzz.c
++++ b/tests/qtest/fuzz/generic_fuzz.c
+@@ -954,17 +954,14 @@ static void register_generic_fuzz_targets(void)
+             .crossover = generic_fuzz_crossover
+     });
  
- RUN_TESTS+=$(EXTRA_RUNS)
+-    GString *name;
++    g_autoptr(GString) name = g_string_new("");
+     const generic_fuzz_config *config;
  
-+# Some plugins need additional arguments above the default to fully
-+# exercise things. We can define them on a per-test basis here.
-+run-plugin-%-with-libmem.so: PLUGIN_ARGS=$(COMMA)inline=true$(COMMA)callback=true
-+
- ifeq ($(filter %-softmmu, $(TARGET)),)
- run-%: %
- 	$(call run-test, $<, $(QEMU) $(QEMU_OPTS) $<)
- 
- run-plugin-%:
- 	$(call run-test, $@, $(QEMU) $(QEMU_OPTS) \
--		-plugin $(PLUGIN_LIB)/$(call extract-plugin,$@) \
-+		-plugin $(PLUGIN_LIB)/$(call extract-plugin,$@)$(PLUGIN_ARGS) \
- 		-d plugin -D $*.pout \
- 		 $(call strip-plugin,$<))
- else
-@@ -189,7 +193,7 @@ run-plugin-%:
- 	$(call run-test, $@, \
- 	  $(QEMU) -monitor none -display none \
- 		  -chardev file$(COMMA)path=$@.out$(COMMA)id=output \
--	   	  -plugin $(PLUGIN_LIB)/$(call extract-plugin,$@) \
-+	   	  -plugin $(PLUGIN_LIB)/$(call extract-plugin,$@)$(PLUGIN_ARGS) \
- 	    	  -d plugin -D $*.pout \
- 		  $(QEMU_OPTS) $(call strip-plugin,$<))
- endif
+-    for (int i = 0;
+-         i < sizeof(predefined_configs) / sizeof(generic_fuzz_config);
+-         i++) {
++    for (int i = 0; i < ARRAY_SIZE(predefined_configs); i++) {
+         config = predefined_configs + i;
+-        name = g_string_new("generic-fuzz");
+-        g_string_append_printf(name, "-%s", config->name);
++        g_string_printf(name, "generic-fuzz-%s", config->name);
+         fuzz_add_target(&(FuzzTarget){
+-                .name = name->str,
++                .name = g_strdup(name->str),
+                 .description = "Predefined generic-fuzz config.",
+                 .get_init_cmdline = generic_fuzz_predefined_config_cmdline,
+                 .pre_fuzz = generic_pre_fuzz,
 -- 
 2.39.2
 
