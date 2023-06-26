@@ -2,86 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19A6873DB8C
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 11:38:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0246873DBA0
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 11:42:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDig0-0004rk-E0; Mon, 26 Jun 2023 05:38:28 -0400
+	id 1qDiiu-0005vU-Rl; Mon, 26 Jun 2023 05:41:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qDifj-0004rJ-Sq
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 05:38:14 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <fbarrat@linux.ibm.com>)
+ id 1qDiig-0005tI-Il; Mon, 26 Jun 2023 05:41:14 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qDifi-0002v5-HN
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 05:38:11 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687772290;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=eX8/+mHTPXUo0VjkApxipjdlErCELqUlZimb8rVXppo=;
- b=RkhxLYzdnpSijSphSZ/DV7P15/xPadTd3FOExEzHLkB49oa6Nuv2n9YEFBgryn7ycGyWr6
- TjyL0CimoVwQJo21ILvV84Jb8Jyf2HWgGEAwxt1F9TKtH4rezMWhFm4NLfxr6/ycsvwHac
- gzqMbHRs/k8b/RSraBL/+UfT8WuJXZU=
-Received: from mail-ua1-f70.google.com (mail-ua1-f70.google.com
- [209.85.222.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-588-EfPldMOyN2SERYpK1_839w-1; Mon, 26 Jun 2023 05:38:08 -0400
-X-MC-Unique: EfPldMOyN2SERYpK1_839w-1
-Received: by mail-ua1-f70.google.com with SMTP id
- a1e0cc1a2514c-78ce07296b4so173228241.1
- for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 02:38:08 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687772287; x=1690364287;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=eX8/+mHTPXUo0VjkApxipjdlErCELqUlZimb8rVXppo=;
- b=Q/jHq4Si8eX1UFu0eCsLcpdebpRotE+c4p41Quoj9f0Rd8tp3VevyzA33wEEeO867a
- G50oP+konaejCDvKdq6gHkNMJtN5cXeqZIORi2x73MeIYJ1hiRDfOor9rFEYqx0soPhL
- roJD2l3lyNSsaaegvpN54O6hrxFn+jg1iwtslITGSHYaLmWwo2BNA/QP/xTs+S86c7/4
- tAPjhVeebRqdYVrmfHJtPVRw2r+eKK4P6TUAqlC02GZBXUeskKCeDSpHyNXliqCkHbPn
- ct3EFQBlRgcAP/QSRFR3ogZrF0so/l+dnWf9LF52BIwYZhyPQ/P4MF8nUx7mpUSjdEYV
- qIeA==
-X-Gm-Message-State: AC+VfDzZ6jVZZtG3puD2NY/Ordgk9XBk+ny87cWr2cCJvi0dcraApkz/
- ZqZJ2A84qYQWh9C6CvnrJR7kgS2+xeDxtknynkiAMe7sBommp/hMLa5Aydmuk9ui8pWcmdFvvIh
- n05//qWkLY+rzeO6n1eabGc7yWTe3mIDcgvWRK0U=
-X-Received: by 2002:a67:ce91:0:b0:443:5632:66de with SMTP id
- c17-20020a67ce91000000b00443563266demr610492vse.16.1687772287678; 
- Mon, 26 Jun 2023 02:38:07 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7DZnpB1E4hbTO9q0QKK+qu0F5LWPT2ydxDA3hArtbQJbipA+HacdNIE7V6vC3FXlA5stsrnrVJU+STvQC6qTs=
-X-Received: by 2002:a67:ce91:0:b0:443:5632:66de with SMTP id
- c17-20020a67ce91000000b00443563266demr610488vse.16.1687772287392; Mon, 26 Jun
- 2023 02:38:07 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <fbarrat@linux.ibm.com>)
+ id 1qDiia-0003cC-Kb; Mon, 26 Jun 2023 05:41:14 -0400
+Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 35Q9Ht6P032361; Mon, 26 Jun 2023 09:41:03 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=TiY0DQVP5dH+DDqsZnBCOk5f5mMCCoYxSu+mLoNBWwY=;
+ b=iechHMCKvnE96Rcf2c/YkCB/+C9Pbz0G6lpZFBS17HKGPJca9TxUE1eg8wpafOZuSjRc
+ Q3ZsFvmtLnCfeDscDesciaDOQB2MCfnRi5Xs+AtsuTWwqoOji3ySHI+8tHojjRjDpROa
+ 2MXSKXfXiYkZUYobN5wBc34YgS1gBerVQeBSDBSrmXPps8vak0xSsuYEGwRfArxZHaLZ
+ oqblxOsOBjiiW7szMXo/KGRIqPm8e78AI0sd0Cnf4G/Ake1vZx09IcQ5nMMFJr5jvmac
+ oGz2vrChV8Pfsua2NBCg++q7WuVpHll57xJndx3j12TFDC4H0ytW2ZiEuzqoEFq1Wxam 1g== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rf7wu0k5x-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 26 Jun 2023 09:41:03 +0000
+Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 35Q9IB4J002218;
+ Mon, 26 Jun 2023 09:41:02 GMT
+Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.108])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rf7wu0k55-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 26 Jun 2023 09:41:02 +0000
+Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
+ by ppma05fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 35Q3KfZf005065;
+ Mon, 26 Jun 2023 09:41:01 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+ by ppma05fra.de.ibm.com (PPS) with ESMTPS id 3rdr458ueq-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 26 Jun 2023 09:41:00 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com
+ [10.20.54.104])
+ by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 35Q9ewWX42992354
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 26 Jun 2023 09:40:58 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7D1C820049;
+ Mon, 26 Jun 2023 09:40:58 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0FD4F20040;
+ Mon, 26 Jun 2023 09:40:58 +0000 (GMT)
+Received: from borneo.ibmuc.com (unknown [9.171.45.146])
+ by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Mon, 26 Jun 2023 09:40:57 +0000 (GMT)
+From: Frederic Barrat <fbarrat@linux.ibm.com>
+To: clg@kaod.org, danielhb413@gmail.com, qemu-ppc@nongnu.org,
+ qemu-devel@nongnu.org
+Cc: npiggin@gmail.com
+Subject: [PATCH] pnv/xive2: Allow indirect TIMA accesses of all sizes
+Date: Mon, 26 Jun 2023 11:40:57 +0200
+Message-ID: <20230626094057.1192473-1-fbarrat@linux.ibm.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-References: <20230626083317.144746-1-pbonzini@redhat.com>
- <ZJlYbXKwd4SxoaxY@redhat.com>
- <CABgObfa2ft-j0CdDyV78awrKu1nowXDSVxeqtQoFG_+qOp=6tw@mail.gmail.com>
- <ZJlcC0Qd7v71yuJm@redhat.com>
-In-Reply-To: <ZJlcC0Qd7v71yuJm@redhat.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Mon, 26 Jun 2023 11:37:54 +0200
-Message-ID: <CABgObfZTA+Wbnkfz2WESTKbPjttdOM1DeikZJEYMJjs405tvkw@mail.gmail.com>
-Subject: Re: [PATCH v2 0/3] target/i386: allow using named CPU modeles with
- user mode emulation
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -30
-X-Spam_score: -3.1
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: StUKvFVBztvzlWniGWrLSKseOEGtf9fH
+X-Proofpoint-GUID: LAEMRryoBFtbunqLBhHjapPuCcP5imAq
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-06-26_06,2023-06-22_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ impostorscore=0 bulkscore=0 mlxscore=0 adultscore=0 clxscore=1015
+ malwarescore=0 phishscore=0 spamscore=0 suspectscore=0 lowpriorityscore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2305260000 definitions=main-2306260086
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=fbarrat@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -29
+X-Spam_score: -3.0
 X-Spam_bar: ---
-X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-3.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H5=-1,
+ RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -98,26 +108,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jun 26, 2023 at 11:36=E2=80=AFAM Daniel P. Berrang=C3=A9 <berrange@=
-redhat.com> wrote:
-> > > If someone wants Nehalem then they should be using qemu-x86_64.
-> > > If someone wants qemu-i386 then they should be using an older
-> > > named CPU model predating 'lm'.
-> >
-> > What you write is true for qemu-system-*, but the problem is that
-> > qemu-user binaries are only able to run one ELF target. qemu-x86_64 is
-> > not able to run i386 binaries, unlike a 64-bit kernel; and that's
-> > really intrinsic in the design of qemu-user because implementing
-> > multiple ABIs (including multiple definitions of structs and syscall
-> > numbers) would require compiling the same files multiple times.
->
-> Oh, right, yes, ignore my comment.
+Booting linux on the powernv10 machine logs a few errors like:
 
-By the way it's possible that the above comment would not be true
-anymore with the "one binary" work that is going on (though I'm not
-sure if that applies to system emulation only). However, the effect on
-speed for 32-bit hosts remains true until we ditch them altogether.
+Invalid read at addr 0x38, size 1, region 'xive-ic-tm-indirect', reason: invalid size (min:8 max:8)
+Invalid write at addr 0x38, size 1, region 'xive-ic-tm-indirect', reason: invalid size (min:8 max:8)
+Invalid read at addr 0x38, size 1, region 'xive-ic-tm-indirect', reason: invalid size (min:8 max:8)
 
-Paolo
+Those errors happen when linux is resetting XIVE. We're trying to
+read/write the enablement bit for the hardware context and qemu
+doesn't allow indirect TIMA accesses of less than 8 bytes. Direct TIMA
+access can go through though, as well as indirect TIMA accesses on P9.
+So even though there are some restrictions regarding the address/size
+combinations for TIMA access, the example above is perfectly valid.
+
+This patch lets indirect TIMA accesses of all sizes go through. The
+special operations will be intercepted and the default "raw" handlers
+will pick up all other requests and complain about invalid sizes as
+appropriate.
+
+Tested-by: Nicholas Piggin <npiggin@gmail.com>
+Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
+---
+ hw/intc/pnv_xive2.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/hw/intc/pnv_xive2.c b/hw/intc/pnv_xive2.c
+index ed438a20ed..e8ab176de6 100644
+--- a/hw/intc/pnv_xive2.c
++++ b/hw/intc/pnv_xive2.c
+@@ -1644,11 +1644,11 @@ static const MemoryRegionOps pnv_xive2_ic_tm_indirect_ops = {
+     .write = pnv_xive2_ic_tm_indirect_write,
+     .endianness = DEVICE_BIG_ENDIAN,
+     .valid = {
+-        .min_access_size = 8,
++        .min_access_size = 1,
+         .max_access_size = 8,
+     },
+     .impl = {
+-        .min_access_size = 8,
++        .min_access_size = 1,
+         .max_access_size = 8,
+     },
+ };
+-- 
+2.41.0
 
 
