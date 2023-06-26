@@ -2,37 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C5AC73EAC8
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 21:00:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D82773EACD
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 21:00:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDrNU-0006aJ-CL; Mon, 26 Jun 2023 14:55:56 -0400
+	id 1qDrNI-0004hX-B4; Mon, 26 Jun 2023 14:55:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qDrMk-0002hy-HS; Mon, 26 Jun 2023 14:55:12 -0400
+ id 1qDrMm-0002l2-Ny; Mon, 26 Jun 2023 14:55:14 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qDrMi-0005nx-Bx; Mon, 26 Jun 2023 14:55:10 -0400
+ id 1qDrMk-00062u-M9; Mon, 26 Jun 2023 14:55:12 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 14069EF4A;
+ by isrv.corpit.ru (Postfix) with ESMTP id 5E27CEF4B;
  Mon, 26 Jun 2023 21:50:31 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 7F4F3F7D9;
+ by tsrv.corpit.ru (Postfix) with SMTP id CA989F7DA;
  Mon, 26 Jun 2023 21:50:29 +0300 (MSK)
-Received: (nullmailer pid 1574112 invoked by uid 1000);
+Received: (nullmailer pid 1574115 invoked by uid 1000);
  Mon, 26 Jun 2023 18:50:16 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org, qemu-stable@nongnu.org
 Cc: Prasad Pandit <pjp@fedoraproject.org>,
  "Michael S . Tsirkin" <mst@redhat.com>, Peter Xu <peterx@redhat.com>,
  Jason Wang <jasowang@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.0.3 51/54] vhost: release memory_listener object in error
- path
-Date: Mon, 26 Jun 2023 21:49:58 +0300
-Message-Id: <20230626185002.1573836-51-mjt@tls.msk.ru>
+Subject: [Stable-8.0.3 52/54] vhost: release virtqueue objects in error path
+Date: Mon, 26 Jun 2023 21:49:59 +0300
+Message-Id: <20230626185002.1573836-52-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.0.3-20230626214235@cover.tls.msk.ru>
 References: <qemu-stable-8.0.3-20230626214235@cover.tls.msk.ru>
@@ -63,51 +62,35 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Prasad Pandit <pjp@fedoraproject.org>
 
-vhost_dev_start function does not release memory_listener object
-in case of an error. This may crash the guest when vhost is unable
-to set memory table:
-
-  stack trace of thread 125653:
-  Program terminated with signal SIGSEGV, Segmentation fault
-  #0  memory_listener_register (qemu-kvm + 0x6cda0f)
-  #1  vhost_dev_start (qemu-kvm + 0x699301)
-  #2  vhost_net_start (qemu-kvm + 0x45b03f)
-  #3  virtio_net_set_status (qemu-kvm + 0x665672)
-  #4  qmp_set_link (qemu-kvm + 0x548fd5)
-  #5  net_vhost_user_event (qemu-kvm + 0x552c45)
-  #6  tcp_chr_connect (qemu-kvm + 0x88d473)
-  #7  tcp_chr_new_client (qemu-kvm + 0x88cf83)
-  #8  tcp_chr_accept (qemu-kvm + 0x88b429)
-  #9  qio_net_listener_channel_func (qemu-kvm + 0x7ac07c)
-  #10 g_main_context_dispatch (libglib-2.0.so.0 + 0x54e2f)
-
-Release memory_listener objects in the error path.
+vhost_dev_start function does not release virtqueue objects when
+event_notifier_init() function fails. Release virtqueue objects
+and log a message about function failure.
 
 Signed-off-by: Prasad Pandit <pjp@fedoraproject.org>
-Message-Id: <20230529114333.31686-2-ppandit@redhat.com>
+Message-Id: <20230529114333.31686-3-ppandit@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Fixes: f9a09ca3ea ("vhost: add support for configure interrupt")
 Reviewed-by: Peter Xu <peterx@redhat.com>
-Fixes: c471ad0e9b ("vhost_net: device IOTLB support")
 Cc: qemu-stable@nongnu.org
 Acked-by: Jason Wang <jasowang@redhat.com>
-(cherry picked from commit 1e3ffb34f764f8ac4c003b2b2e6a775b2b073a16)
+(cherry picked from commit 77ece20ba04582d94c345ac0107ddff2fd18d27a)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
-index a266396576..7c87f1328b 100644
+index 7c87f1328b..58bd9ab82a 100644
 --- a/hw/virtio/vhost.c
 +++ b/hw/virtio/vhost.c
-@@ -2018,6 +2018,9 @@ fail_vq:
+@@ -1956,7 +1956,8 @@ int vhost_dev_start(struct vhost_dev *hdev, VirtIODevice *vdev, bool vrings)
+     r = event_notifier_init(
+         &hdev->vqs[VHOST_QUEUE_NUM_CONFIG_INR].masked_config_notifier, 0);
+     if (r < 0) {
+-        return r;
++        VHOST_OPS_DEBUG(r, "event_notifier_init failed");
++        goto fail_vq;
      }
- 
- fail_mem:
-+    if (vhost_dev_has_iommu(hdev)) {
-+        memory_listener_unregister(&hdev->iommu_listener);
-+    }
- fail_features:
-     vdev->vhost_started = false;
-     hdev->started = false;
+     event_notifier_test_and_clear(
+         &hdev->vqs[VHOST_QUEUE_NUM_CONFIG_INR].masked_config_notifier);
 -- 
 2.39.2
 
