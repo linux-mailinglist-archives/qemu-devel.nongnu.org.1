@@ -2,68 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 847E473D89F
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 09:36:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B763773D8BF
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 09:47:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDgkf-0003Hi-ID; Mon, 26 Jun 2023 03:35:11 -0400
+	id 1qDgvA-0008Sj-LP; Mon, 26 Jun 2023 03:46:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
- id 1qDgkO-0003Gy-Ca
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 03:34:52 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qDgug-0008QE-J8
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 03:45:34 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
- id 1qDgkM-0007Bt-K7
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 03:34:51 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qDgub-0001tq-0q
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 03:45:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687764890;
+ s=mimecast20190719; t=1687765522;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=AQ20tqluCUPiBweXBreptWK4nKIzY34W/6VGJH4xikg=;
- b=K/n+Q9gxLJy5juuRi3t9CcoeVWsEDNRO1SZQiik6u0XWdxfELakL4W1roHnYDXhxe7VQSc
- 0P7p16APfLBRkfkjIFGFYWTcjGucWILWMiw8nSnG4FOjwNdVVy9Mt0neA8zC5ZdRUuHiuS
- KR/arsT3Mr/zQgJ8gS6B4EBtps39eKo=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-157-47_6e2b2N-2oKOY1nX8bkQ-1; Mon, 26 Jun 2023 03:34:43 -0400
-X-MC-Unique: 47_6e2b2N-2oKOY1nX8bkQ-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D7A6A80027F;
- Mon, 26 Jun 2023 07:34:42 +0000 (UTC)
-Received: from localhost.localdomain (unknown [10.45.225.38])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 64EC3492B03;
- Mon, 26 Jun 2023 07:34:41 +0000 (UTC)
-From: Albert Esteve <aesteve@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: marcandre.lureau@gmail.com, "Michael S. Tsirkin" <mst@redhat.com>,
- cohuck@redhat.com, Albert Esteve <aesteve@redhat.com>,
- Fam Zheng <fam@euphon.net>, kraxel@redhat.com
-Subject: [PATCH v4 4/4] vhost-user: refactor send_resp code
-Date: Mon, 26 Jun 2023 09:34:26 +0200
-Message-Id: <20230626073426.285659-5-aesteve@redhat.com>
-In-Reply-To: <20230626073426.285659-1-aesteve@redhat.com>
-References: <20230626073426.285659-1-aesteve@redhat.com>
+ bh=w9f5v7MfXUgmJJxiLeQFkqHqneWRAAj0HrQQkEsmFD4=;
+ b=XFaPMVasAQkxIDdjXYQeb4cYiwh6l2VveI/JtFs9N8VSiFlk91D+qlRjO6DOI0j0SxXW9p
+ 15jmBigaLiPtAKi2/3unIyt3gG14e900Fogvw/zvGmchdAzUoR95UwZYTc03/4fEtVS/Fj
+ D6ZlECmG1qncxQR1Bl6cj0bI6boKOjs=
+Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
+ [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-563-BgPwWpBqNnCM7HFuZM2ghA-1; Mon, 26 Jun 2023 03:45:20 -0400
+X-MC-Unique: BgPwWpBqNnCM7HFuZM2ghA-1
+Received: by mail-lf1-f69.google.com with SMTP id
+ 2adb3069b0e04-4fb76659d44so411159e87.3
+ for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 00:45:20 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1687765519; x=1690357519;
+ h=content-transfer-encoding:in-reply-to:organization:from:references
+ :cc:to:content-language:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=w9f5v7MfXUgmJJxiLeQFkqHqneWRAAj0HrQQkEsmFD4=;
+ b=SGlwY+vExZYUZ+rH0L5A7m6ncw7RbRFYG/RGkqMsWJhhH1pcL+F65kSSaA6tBlpQH8
+ Ow0WuLfLOYYt7uJXfKcdwvX2fCCCGmQa1XugIxZSU2xirJkZeTw15W5+HZ76DhE/+JyW
+ IW7BMq/Y3CRy62zLsrkL9sXxNFtviMJUj3xamTd20F2J1wa/1F3RnVccUvPzz3lHr99k
+ ZYWJkbELuDxZoUL/ugdwvr7/pMzDnYOaoxMBLZxvxnKibwbuvbaHvm87O0InTmJayZ6/
+ PLZQJfDe9XC5aUNF684pgt3UhHalBe38NPTR7r/EEyOkhhNgBod7E4vvMBWV3/65rYgd
+ hKWw==
+X-Gm-Message-State: AC+VfDy8/Yl40avEqz0fv74qGMmvlmoFdt4OtlWM7DftQajYPaElU/bh
+ gNQ4w+Qr9x5oV6Kkgfo4MNfLxW8HMxOG45bS+vqA8u+BdoJKs09E1jQJuS6FTw8cgg0uIoEga/7
+ d8dq5Wc50BVI0uxk=
+X-Received: by 2002:ac2:4bcf:0:b0:4f9:644c:1ec5 with SMTP id
+ o15-20020ac24bcf000000b004f9644c1ec5mr7173986lfq.36.1687765519215; 
+ Mon, 26 Jun 2023 00:45:19 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5QXiiLfCk16Utn3COsWOD2U3LgOzlvD068xFlujMX7Hjcj7M1HwZ0LlsOZhHfoipcPkSdiAg==
+X-Received: by 2002:ac2:4bcf:0:b0:4f9:644c:1ec5 with SMTP id
+ o15-20020ac24bcf000000b004f9644c1ec5mr7173972lfq.36.1687765518876; 
+ Mon, 26 Jun 2023 00:45:18 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c74b:7300:2ef6:6cd6:703c:e498?
+ (p200300cbc74b73002ef66cd6703ce498.dip0.t-ipconnect.de.
+ [2003:cb:c74b:7300:2ef6:6cd6:703c:e498])
+ by smtp.gmail.com with ESMTPSA id
+ b3-20020adfe303000000b0030fd03e3d25sm6524572wrj.75.2023.06.26.00.45.18
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 26 Jun 2023 00:45:18 -0700 (PDT)
+Message-ID: <6a701609-e041-787d-d9c9-3d85ef2a8bb3@redhat.com>
+Date: Mon, 26 Jun 2023 09:45:17 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=aesteve@redhat.com;
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH v1] virtio-mem: Simplify bitmap handling and
+ virtio_mem_set_block_state()
+Content-Language: en-US
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: qemu-devel@nongnu.org, Gavin Shan <gshan@redhat.com>
+References: <20230523183036.517957-1-david@redhat.com>
+ <39b97e00-fb3c-29b2-aa1f-1de4c8094899@redhat.com>
+ <20230625170601-mutt-send-email-mst@kernel.org>
+From: David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+In-Reply-To: <20230625170601-mutt-send-email-mst@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -30
-X-Spam_score: -3.1
+X-Spam_score_int: -31
+X-Spam_score: -3.2
 X-Spam_bar: ---
-X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ NICE_REPLY_A=-0.089, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=-1,
+ RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -80,94 +107,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Refactor code to send response message so that
-all common parts both for the common REPLY_ACK
-case, and other data responses, can call it and
-avoid code repetition.
+On 25.06.23 23:06, Michael S. Tsirkin wrote:
+> On Fri, Jun 23, 2023 at 02:51:11PM +0200, David Hildenbrand wrote:
+>> On 23.05.23 20:30, David Hildenbrand wrote:
+>>> Let's separate plug and unplug handling to prepare for future changes
+>>> and make the code a bit easier to read -- working on block states
+>>> (plugged/unplugged) instead of on a bitmap.
+>>>
+>>> Cc: "Michael S. Tsirkin" <mst@redhat.com>
+>>> Cc: Gavin Shan <gshan@redhat.com>
+>>> Signed-off-by: David Hildenbrand <david@redhat.com>
+>>> ---
+>>
+>> I queued this to
+>>
+>> https://github.com/davidhildenbrand/qemu.git mem-next
+>>
+>> -- 
+>> Cheers,
+>>
+>> David / dhildenb
+> 
+> oh I queued this too.
+> Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 
-Signed-off-by: Albert Esteve <aesteve@redhat.com>
----
- hw/virtio/vhost-user.c | 44 ++++++++++++++++--------------------------
- 1 file changed, 17 insertions(+), 27 deletions(-)
+Good, I'll wait for your next pull request. If it's included there, 
+perfect :)
 
-diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
-index e340c39a19..f2b224b5a3 100644
---- a/hw/virtio/vhost-user.c
-+++ b/hw/virtio/vhost-user.c
-@@ -1612,32 +1612,34 @@ vhost_user_backend_handle_shared_object_remove(VhostUserShared *object)
-     return virtio_remove_resource(&uuid);
- }
- 
--static bool
--vhost_user_backend_send_dmabuf_fd(QIOChannel *ioc, VhostUserHeader *hdr,
--                                  VhostUserPayload *payload)
-+static bool vhost_user_send_resp(QIOChannel *ioc, VhostUserHeader *hdr,
-+                                 VhostUserPayload *payload)
- {
-     Error *local_err = NULL;
--    struct iovec iov[2];
-+    struct iovec iov[] = {
-+        { .iov_base = hdr,      .iov_len = VHOST_USER_HDR_SIZE },
-+        { .iov_base = payload,  .iov_len = hdr->size },
-+    };
- 
--    if (hdr->flags & VHOST_USER_NEED_REPLY_MASK) {
--        hdr->flags &= ~VHOST_USER_NEED_REPLY_MASK;
--    }
-+    hdr->flags &= ~VHOST_USER_NEED_REPLY_MASK;
-     hdr->flags |= VHOST_USER_REPLY_MASK;
- 
--    hdr->size = sizeof(payload->u64);
--
--    iov[0].iov_base = hdr;
--    iov[0].iov_len = VHOST_USER_HDR_SIZE;
--    iov[1].iov_base = payload;
--    iov[1].iov_len = hdr->size;
--
-     if (qio_channel_writev_all(ioc, iov, ARRAY_SIZE(iov), &local_err)) {
-         error_report_err(local_err);
-         return false;
-     }
-+
-     return true;
- }
- 
-+static bool
-+vhost_user_backend_send_dmabuf_fd(QIOChannel *ioc, VhostUserHeader *hdr,
-+                                  VhostUserPayload *payload)
-+{
-+    hdr->size = sizeof(payload->u64);
-+    return vhost_user_send_resp(ioc, hdr, payload);
-+}
-+
- static int
- vhost_user_backend_handle_shared_object_lookup(struct vhost_user *u,
-                                                QIOChannel *ioc,
-@@ -1748,22 +1750,10 @@ static gboolean slave_read(QIOChannel *ioc, GIOCondition condition,
-      * directly in their request handlers.
-      */
-     if (hdr.flags & VHOST_USER_NEED_REPLY_MASK) {
--        struct iovec iovec[2];
--
--
--        hdr.flags &= ~VHOST_USER_NEED_REPLY_MASK;
--        hdr.flags |= VHOST_USER_REPLY_MASK;
--
-         payload.u64 = !!ret;
-         hdr.size = sizeof(payload.u64);
- 
--        iovec[0].iov_base = &hdr;
--        iovec[0].iov_len = VHOST_USER_HDR_SIZE;
--        iovec[1].iov_base = &payload;
--        iovec[1].iov_len = hdr.size;
--
--        if (qio_channel_writev_all(ioc, iovec, ARRAY_SIZE(iovec), &local_err)) {
--            error_report_err(local_err);
-+        if (!vhost_user_send_resp(ioc, &hdr, &payload)) {
-             goto err;
-         }
-     }
 -- 
-2.40.0
+Cheers,
+
+David / dhildenb
 
 
