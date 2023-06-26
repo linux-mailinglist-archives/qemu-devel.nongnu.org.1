@@ -2,51 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 282F173E403
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 17:54:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 81FC073E41A
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 18:03:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDoWm-00015x-A9; Mon, 26 Jun 2023 11:53:20 -0400
+	id 1qDogK-0006g5-Bm; Mon, 26 Jun 2023 12:03:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qDoWZ-00015Y-IQ
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 11:53:08 -0400
-Received: from isrv.corpit.ru ([86.62.121.231])
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1qDofp-0006Dg-FO
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 12:02:45 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qDoWX-0005uY-Ht
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 11:53:07 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 2E608EE9F;
- Mon, 26 Jun 2023 18:53:03 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id EBEB0F750;
- Mon, 26 Jun 2023 18:53:01 +0300 (MSK)
-Message-ID: <bd539426-a69c-9cbc-5f24-4fbe5a236fd6@tls.msk.ru>
-Date: Mon, 26 Jun 2023 18:53:01 +0300
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1qDofn-0007x3-S8
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 12:02:41 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1687795359;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=rndfCe1AHJVkGmEEW/Tgel/sotCE0o96ZaTS3rzE4K0=;
+ b=ca91tyjUdJPRG9PPCcXg38Up4ahk4O1qX637uA9Ua7Sy2L52DmOPCPFVEqMOY6+oBjRAOP
+ HHhgqwRBaPd8+HulqFRFOr/knbFGY7eqlUZp935b4k/X6DXikz863vU8QCSaoMKfGJ3w3u
+ sza/vMe6glqNVT9fPZZhwCU0UWbxr9M=
+Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com
+ [209.85.215.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-338-OXqQw86pNsinUe7FhMlpmg-1; Mon, 26 Jun 2023 12:02:32 -0400
+X-MC-Unique: OXqQw86pNsinUe7FhMlpmg-1
+Received: by mail-pg1-f198.google.com with SMTP id
+ 41be03b00d2f7-54ff478ab88so1189965a12.1
+ for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 09:02:14 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1687795329; x=1690387329;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=rndfCe1AHJVkGmEEW/Tgel/sotCE0o96ZaTS3rzE4K0=;
+ b=ln0AERck5K6OfD+51oACOyoH4GcS5vSfLgQcXXYgJ1KZFPvujrNald/d6b7XZ6Uet8
+ ClTiZ/jCZOJgaEtch5B3wwoO429EUrWXpcyJXTgFJpdw7xqFdNZgTB4ouZYxlDDfUefc
+ j5xTCnSxB+DlpkobI0M7YgzNsDZOtg1h7kL+rf5Z99k1Eu+asFryALzP9lp/wbph69g9
+ uRAXRqhMukTBXClkoQFDNDMXfoeTncGrNE06Mp3mcmVlzmqByDvmBJdcGervPyGs44J6
+ 3V0V2p4E1hiabhR48FceiORI/jBOiN/femeQ/MS8+ac1fSqEpYCggVfN7K4j2LX4tIs3
+ BpGA==
+X-Gm-Message-State: AC+VfDyAZ6tH9Wra6Pkpxpm0kwg08TlT9YSja78m4z6tYuqX+QYtlsw9
+ oD7Ytz2lDcgLXLwil6Yj7UQsgfoLGbMIML9vZiAskRRXpLtvyCwVhK9I+I7IAi/v3XYratvRj4r
+ AXM8Ww3WuqSU9atZmmN5afj/tu/TF+kVWK0cE7/vtHAE7wYMMq3bse5exaeBjurVo4KmtqV0yWh
+ M=
+X-Received: by 2002:a05:6a20:7347:b0:111:ee3b:59b1 with SMTP id
+ v7-20020a056a20734700b00111ee3b59b1mr23294569pzc.2.1687795328900; 
+ Mon, 26 Jun 2023 09:02:08 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6r7aFuZVK64suj0gQscplxCOyPdkPguA384Jk4D88Zl6iTYBW1y9vGTHNd3kGcuYU3zyZpcA==
+X-Received: by 2002:a05:6a20:7347:b0:111:ee3b:59b1 with SMTP id
+ v7-20020a056a20734700b00111ee3b59b1mr23294529pzc.2.1687795328461; 
+ Mon, 26 Jun 2023 09:02:08 -0700 (PDT)
+Received: from localhost.localdomain ([115.96.139.77])
+ by smtp.googlemail.com with ESMTPSA id
+ l23-20020a62be17000000b0065ebeb9bb23sm4120174pff.149.2023.06.26.09.02.05
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 26 Jun 2023 09:02:08 -0700 (PDT)
+From: Ani Sinha <anisinha@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Ani Sinha <anisinha@redhat.com>, mst@redhat.com, imammedo@redhat.com,
+ jusual@redhat.com, thuth@redhat.com, lvivier@redhat.com,
+ michael.labiuk@virtuozzo.com
+Subject: [PATCH v5 0/5] test and QEMU fixes to ensure proper PCIE device usage
+Date: Mon, 26 Jun 2023 21:31:51 +0530
+Message-Id: <20230626160156.3938-1-anisinha@redhat.com>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PULL 53/53] vhost-vdpa: do not cleanup the vdpa/vhost-net
- structures if peer nic is present
-Content-Language: en-US
-To: "Michael S. Tsirkin" <mst@redhat.com>, qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>, Ani Sinha
- <anisinha@redhat.com>, imammedo@redhat.com, jusual@redhat.com,
- Jason Wang <jasowang@redhat.com>
-References: <cover.1687782442.git.mst@redhat.com>
- <3d90d47995b83bd1edf6e756c00e74fd5ec16aee.1687782442.git.mst@redhat.com>
-From: Michael Tokarev <mjt@tls.msk.ru>
-In-Reply-To: <3d90d47995b83bd1edf6e756c00e74fd5ec16aee.1687782442.git.mst@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -69
-X-Spam_score: -7.0
-X-Spam_bar: -------
-X-Spam_report: (-7.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.09,
- RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -63,67 +99,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-26.06.2023 15:30, Michael S. Tsirkin wrote:
-> From: Ani Sinha <anisinha@redhat.com>
-> 
-> When a peer nic is still attached to the vdpa backend, it is too early to free
-> up the vhost-net and vdpa structures. If these structures are freed here, then
-> QEMU crashes when the guest is being shut down. The following call chain
-> would result in an assertion failure since the pointer returned from
-> vhost_vdpa_get_vhost_net() would be NULL:
-> 
-> do_vm_stop() -> vm_state_notify() -> virtio_set_status() ->
-> virtio_net_vhost_status() -> get_vhost_net().
-> 
-> Therefore, we defer freeing up the structures until at guest shutdown
-> time when qemu_cleanup() calls net_cleanup() which then calls
-> qemu_del_net_client() which would eventually call vhost_vdpa_cleanup()
-> again to free up the structures. This time, the loop in net_cleanup()
-> ensures that vhost_vdpa_cleanup() will be called one last time when
-> all the peer nics are detached and freed.
-> 
-> All unit tests pass with this change.
-> 
-> CC: imammedo@redhat.com
-> CC: jusual@redhat.com
-> CC: mst@redhat.com
-> Fixes: CVE-2023-3301
-> Resolves: https://bugzilla.redhat.com/show_bug.cgi?id=2128929
-> Signed-off-by: Ani Sinha <anisinha@redhat.com>
-> Message-Id: <20230619065209.442185-1-anisinha@redhat.com>
-> Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-> ---
->   net/vhost-vdpa.c | 8 ++++++++
->   1 file changed, 8 insertions(+)
-> 
-> diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-> index 9e92b3558c..e19ab063fa 100644
-> --- a/net/vhost-vdpa.c
-> +++ b/net/vhost-vdpa.c
-> @@ -207,6 +207,14 @@ static void vhost_vdpa_cleanup(NetClientState *nc)
->   {
->       VhostVDPAState *s = DO_UPCAST(VhostVDPAState, nc, nc);
->   
-> +    /*
-> +     * If a peer NIC is attached, do not cleanup anything.
-> +     * Cleanup will happen as a part of qemu_cleanup() -> net_cleanup()
-> +     * when the guest is shutting down.
-> +     */
-> +    if (nc->peer && nc->peer->info->type == NET_CLIENT_DRIVER_NIC) {
-> +        return;
-> +    }
->       munmap(s->cvq_cmd_out_buffer, vhost_vdpa_net_cvq_cmd_page_len());
->       munmap(s->status, vhost_vdpa_net_cvq_cmd_page_len());
->       if (s->vhost_net) {
+Patches 1-4:
+Fix tests so that devices do not use non-zero slots on the pcie root
+ports. PCIE ports only have one slot, so PCIE devices can only be
+plugged into slot 0 on a PCIE port.
+
+Patch 5:
+Enforce only one slot on PCIE port.
+
+The test fixes must be applied before the QEMU change that checks for use
+of a single slot in PCIE port.
+
+CC: mst@redhat.com
+CC: imammedo@redhat.com
+CC: jusual@redhat.com
+CC: thuth@redhat.com
+CC: lvivier@redhat.com
+CC: michael.labiuk@virtuozzo.com
+
+Changelog:
+=========
+v5: no code changes - correct a mistake in the commit log message.
+
+v4: reword commit log for patch 4.
+
+v3: tags added. reword the error description in patch 5. Reword commit log in patch 4. 
+
+v2: add hd-geo-test fix as well as the actual QEMU code fix to the patchset.
+The patches are added in the right order.
 
 
-Given the CVE# attached, is it a -stable material?
-The same change can be applied to 8.0 and even to 7.2, with slight difference
-in context (using qemu_vfree() instead of munmap() for cvq_cmd_out_buffer etc).
-The original bugreport is about qemu 7.1.
+Ani Sinha (4):
+  tests/acpi: allow changes in DSDT.noacpihp table blob
+  tests/acpi/bios-tables-test: use the correct slot on the
+    pcie-root-port
+  tests/acpi/bios-tables-test: update acpi blob q35/DSDT.noacpihp
+  tests/qtest/hd-geo-test: fix incorrect pcie-root-port usage and
+    simplify test
 
-Thanks,
+Peter Maydell (1):
+  Revert "cputlb: Restrict SavedIOTLB to system emulation"
 
-/mjt
+ include/hw/core/cpu.h             |   6 ++----
+ tests/data/acpi/q35/DSDT.noacpihp | Bin 8248 -> 8241 bytes
+ tests/qtest/bios-tables-test.c    |   4 ++--
+ tests/qtest/hd-geo-test.c         |  18 ++++++++----------
+ 4 files changed, 12 insertions(+), 16 deletions(-)
+
+-- 
+2.39.1
+
 
