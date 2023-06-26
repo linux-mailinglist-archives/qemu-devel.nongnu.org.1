@@ -2,87 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20A2473E422
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 18:04:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 546D073E42C
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 18:06:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDohT-00020B-Ih; Mon, 26 Jun 2023 12:04:23 -0400
+	id 1qDojj-0002wp-5e; Mon, 26 Jun 2023 12:06:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qDohR-0001sp-Jz
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 12:04:21 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1qDojg-0002uu-Qj
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 12:06:40 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qDohP-000076-RX
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 12:04:21 -0400
+ id 1qDojf-0001Cn-8n
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 12:06:40 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687795459;
+ s=mimecast20190719; t=1687795598;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Rio/lHTgxG5eWIkogsBHhG3sZrnHfdBrp3YkQqLAUW4=;
- b=XYkXWbkWcTSxNw2CBao8JYn6vXiHm4SRLCfxtwraA6OMHahgYusSzZv5m50mKp5sMRPA1n
- ci5YFILodClXhZKYg36sxphq4Sr4+JLVTpKJqDrXZKyqJZf+EUYBKKw6VyP1wyWBXQpSAm
- XUOArQisex9iNmEDiQ5akrYd0xYUKnU=
-Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com
- [209.85.215.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=IKkP/SlfJ+rAKzK8U2VAaeYfAniZnzDyd1ocjUJ4kDU=;
+ b=PUVTitEJSg+qW6dd1HK4WmHRHtv0gGlan/rcTcfUNUkAl4tCyfGJbmBlRt1yaloB1gif2D
+ x7mI4LZnfEFIy6FR5bEKywhI1PafUbrhzc7Bv+l3LORJaNzum459QaQktdHG9SaDuFquv7
+ IJAFi6PeoqXkvetewI9NXOdHl907OGA=
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
+ [209.85.214.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-544-0YAm04LJPwqNDRtJ0LN59g-1; Mon, 26 Jun 2023 12:04:11 -0400
-X-MC-Unique: 0YAm04LJPwqNDRtJ0LN59g-1
-Received: by mail-pg1-f197.google.com with SMTP id
- 41be03b00d2f7-53fd224ad48so1449662a12.2
- for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 09:04:04 -0700 (PDT)
+ us-mta-301-muuBmfBzP16mMG7QATWRMg-1; Mon, 26 Jun 2023 12:06:31 -0400
+X-MC-Unique: muuBmfBzP16mMG7QATWRMg-1
+Received: by mail-pl1-f198.google.com with SMTP id
+ d9443c01a7336-1b7ea1595b4so7117955ad.2
+ for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 09:06:30 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687795443; x=1690387443;
+ d=1e100.net; s=20221208; t=1687795588; x=1690387588;
  h=to:references:message-id:content-transfer-encoding:cc:date
  :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Rio/lHTgxG5eWIkogsBHhG3sZrnHfdBrp3YkQqLAUW4=;
- b=C5B4bwGgzwi+MYpsZJhzkaV2cLnUcOUj/tcdxdsFMVgqJd1lD3kjA+dGetFL7S9ihJ
- rNuHFDp0UZDxgSAKODsgGogmVTMKaWUNBhMtdHRS/MKqz1Zi9aHtSt8x74BJrxZo2JkD
- 8ptznLhH3GoVDhW6293AXrmKz3nqfEaF9QVX0L3G6nL7Znp/lojx3Ldpjl4AmAcsspKj
- N1kQqm57o6N5BwqGmJYXkyPwkudLgk2N7SHbnT60HFx80zm7BxYmxOpYLMHK55XX1z3C
- pp0oMeL1izOo8lrMN+SXm1/YEfNgGX0i4tV+mf794nFqsG2HD/WlTdUz9X4Oe76m4erR
- AYhA==
-X-Gm-Message-State: AC+VfDzQSdBDK411YgE97VNDIdoS+y5dHfD/rUXH07oDOM7hfD+zSg+Y
- iajD85+eOZxCF0yET+vRRyzNhz2EsFSxEzg9k9dji6fKBPp2mEbFWuu5tS4PJ+nr5o8f2udoY12
- TYFn4//02566CNKI=
-X-Received: by 2002:a17:90a:f3cc:b0:262:ea30:2cb8 with SMTP id
- ha12-20020a17090af3cc00b00262ea302cb8mr2453376pjb.20.1687795443268; 
- Mon, 26 Jun 2023 09:04:03 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6vPxFl54EuQEj3Gs81XBP268rWDX7F8MGav8HUBzqQeTEtl6D0xSJrPVDijkA9GfGpRap4kQ==
-X-Received: by 2002:a17:90a:f3cc:b0:262:ea30:2cb8 with SMTP id
- ha12-20020a17090af3cc00b00262ea302cb8mr2453363pjb.20.1687795443018; 
- Mon, 26 Jun 2023 09:04:03 -0700 (PDT)
+ bh=IKkP/SlfJ+rAKzK8U2VAaeYfAniZnzDyd1ocjUJ4kDU=;
+ b=IOXFnllIxYGh80KpJS0FUki1hBvwAh/23//jf2p9tqUFTODIHBZ6R0nPC9kK/qAlsi
+ jTuEn04auW6tXuA+mFery819D2XaWXJWhSqbUBoqv6Z1BC+zwoyeLXmvZulwFg63I0wL
+ 65sYg8X/f6mOuDgak6c+dQy5eEvdc8x7pxFY2eiOi97eeYd1lCKwcHcM0yHFK20H1u6w
+ Y6hytD1fpjLFih0wk8LZpKtqKOb32C90x+Cc8sr/M582vROILyitKjEV1vZNTfHL1CA7
+ ZATZNArFtndfPRCGnMEdtbJQNEghUW3PunW28d9uk0yz5G8fEW4M3BjQtSo4XoeL3cfc
+ tg/g==
+X-Gm-Message-State: AC+VfDwZD7c6LACy9p16t5ZaUwhACEWWrjYzt3LOPb9mJwuXiTUoRmpF
+ AxQtn3L9csOiZoaTgCIIHNMEEBoEIbV2gRXxxjYke2f6rRQw3Q7ByWZJFEc8a8Ysg05bO12/Cwf
+ nZZbx03o181ntBqUKQ+WB3M0h2AvDfvo04+/E5LleD5b+TmgTfKJsRlvpvXYWlab6zihJQiWert
+ c=
+X-Received: by 2002:a17:903:2452:b0:1b7:cee1:60c4 with SMTP id
+ l18-20020a170903245200b001b7cee160c4mr4863029pls.59.1687795588731; 
+ Mon, 26 Jun 2023 09:06:28 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4jIu11UTuObDCnZdP1db8Jkeu/EYV2X1xHOv/YBcqUzht952dCRcZ+gLlalBYX8Ty9A6gv3g==
+X-Received: by 2002:a17:903:2452:b0:1b7:cee1:60c4 with SMTP id
+ l18-20020a170903245200b001b7cee160c4mr4863000pls.59.1687795588326; 
+ Mon, 26 Jun 2023 09:06:28 -0700 (PDT)
 Received: from smtpclient.apple ([115.96.139.77])
  by smtp.gmail.com with ESMTPSA id
- fs2-20020a17090af28200b0025bf330903esm5310174pjb.1.2023.06.26.09.04.00
+ jf5-20020a170903268500b001b7eeffbdbfsm3421442plb.261.2023.06.26.09.06.25
  (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Mon, 26 Jun 2023 09:04:02 -0700 (PDT)
+ Mon, 26 Jun 2023 09:06:28 -0700 (PDT)
 Content-Type: text/plain;
-	charset=us-ascii
+	charset=utf-8
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.3\))
-Subject: Re: [PATCH v4 4/5] tests/qtest/hd-geo-test: fix incorrect
- pcie-root-port usage and simplify test
+Subject: Re: [PATCH v5 0/5] test and QEMU fixes to ensure proper PCIE device
+ usage
 From: Ani Sinha <anisinha@redhat.com>
-In-Reply-To: <20230626162246.0ba91051@imammedo.users.ipa.redhat.com>
-Date: Mon, 26 Jun 2023 21:33:56 +0530
-Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Michael Labiuk <michael.labiuk@virtuozzo.com>
+In-Reply-To: <20230626160156.3938-1-anisinha@redhat.com>
+Date: Mon, 26 Jun 2023 21:36:23 +0530
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ Julia Suvorova <jusual@redhat.com>, thuth@redhat.com, lvivier@redhat.com,
+ michael.labiuk@virtuozzo.com
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <6D730B89-EA1C-4799-85FA-C8EBC831D61B@redhat.com>
-References: <20230626135324.10687-1-anisinha@redhat.com>
- <20230626135324.10687-5-anisinha@redhat.com>
- <20230626162246.0ba91051@imammedo.users.ipa.redhat.com>
-To: Igor Mammedov <imammedo@redhat.com>
+Message-Id: <22568A8B-2ABB-44F0-89A6-6338A91E4382@redhat.com>
+References: <20230626160156.3938-1-anisinha@redhat.com>
+To: qemu-devel@nongnu.org
 X-Mailer: Apple Mail (2.3696.120.41.1.3)
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=anisinha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -107,104 +105,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Scratch this =E2=80=A6 I will resend =E2=80=A6
 
 
-> On 26-Jun-2023, at 7:52 PM, Igor Mammedov <imammedo@redhat.com> wrote:
+> On 26-Jun-2023, at 9:31 PM, Ani Sinha <anisinha@redhat.com> wrote:
 >=20
-> On Mon, 26 Jun 2023 19:23:23 +0530
-> Ani Sinha <anisinha@redhat.com> wrote:
+> Patches 1-4:
+> Fix tests so that devices do not use non-zero slots on the pcie root
+> ports. PCIE ports only have one slot, so PCIE devices can only be
+> plugged into slot 0 on a PCIE port.
 >=20
->> The test attaches both a SCSI controller and a pcie-to-pci bridge on =
-the same
->> pcie-root-port on slot 0.
-> statement is right only for bridge, while it's still incorrect for =
-storage part
-> (see add_scsi_controller/add_virtio_disk)
-> they try to use slot !0
-
-Grr! Sorry about this, not sure what I was thinking.
-Juggling too many things.
-
-Patchset V5 sent.
-
+> Patch 5:
+> Enforce only one slot on PCIE port.
 >=20
->> This is incorrect since a single downstream device
->> can be attached to a non-multifunction pcie-root-port on slot 0.
+> The test fixes must be applied before the QEMU change that checks for =
+use
+> of a single slot in PCIE port.
 >=20
->> Additionally
->> using pcie.0 as id for pcie-root-port is incorrect as that id is =
-reserved
->> only for the root bus.
-> ack on this part
+> CC: mst@redhat.com
+> CC: imammedo@redhat.com
+> CC: jusual@redhat.com
+> CC: thuth@redhat.com
+> CC: lvivier@redhat.com
+> CC: michael.labiuk@virtuozzo.com
 >=20
->> In the test scenario, there is no need to attach a pcie-root-port to =
-the
->> root complex. A SCSI controller can be attached to a pcie-to-pci =
-bridge
->> which can then be directly attached to the root bus (pcie.0).
->>=20
->> Fix the test and simplify it.
->>=20
->> CC: mst@redhat.com
->> CC: imammedo@redhat.com
->> CC: Michael Labiuk <michael.labiuk@virtuozzo.com>
->>=20
->> Signed-off-by: Ani Sinha <anisinha@redhat.com>
->> ---
->> tests/qtest/hd-geo-test.c | 18 ++++++++----------
->> 1 file changed, 8 insertions(+), 10 deletions(-)
->>=20
->> diff --git a/tests/qtest/hd-geo-test.c b/tests/qtest/hd-geo-test.c
->> index 5aa258a2b3..d08bffad91 100644
->> --- a/tests/qtest/hd-geo-test.c
->> +++ b/tests/qtest/hd-geo-test.c
->> @@ -784,14 +784,12 @@ static void test_override_scsi(void)
->>     test_override(args, "pc", expected);
->> }
->>=20
->> -static void setup_pci_bridge(TestArgs *args, const char *id, const =
-char *rootid)
->> +static void setup_pci_bridge(TestArgs *args, const char *id)
->> {
->>=20
->> -    char *root, *br;
->> -    root =3D g_strdup_printf("-device pcie-root-port,id=3D%s", =
-rootid);
->> -    br =3D g_strdup_printf("-device pcie-pci-bridge,bus=3D%s,id=3D%s",=
- rootid, id);
->> +    char *br;
->> +    br =3D g_strdup_printf("-device =
-pcie-pci-bridge,bus=3Dpcie.0,id=3D%s", id);
->>=20
->> -    args->argc =3D append_arg(args->argc, args->argv, ARGV_SIZE, =
-root);
->>     args->argc =3D append_arg(args->argc, args->argv, ARGV_SIZE, br);
->> }
->>=20
->> @@ -811,8 +809,8 @@ static void test_override_scsi_q35(void)
->>     add_drive_with_mbr(args, empty_mbr, 1);
->>     add_drive_with_mbr(args, empty_mbr, 1);
->>     add_drive_with_mbr(args, empty_mbr, 1);
->> -    setup_pci_bridge(args, "pcie.0", "br");
->> -    add_scsi_controller(args, "lsi53c895a", "br", 3);
->> +    setup_pci_bridge(args, "pcie-pci-br");
->> +    add_scsi_controller(args, "lsi53c895a", "pcie-pci-br", 3);
->>     add_scsi_disk(args, 0, 0, 0, 0, 0, 10000, 120, 30);
->>     add_scsi_disk(args, 1, 0, 0, 1, 0, 9000, 120, 30);
->>     add_scsi_disk(args, 2, 0, 0, 2, 0, 1, 0, 0);
->> @@ -868,9 +866,9 @@ static void test_override_virtio_blk_q35(void)
->>     };
->>     add_drive_with_mbr(args, empty_mbr, 1);
->>     add_drive_with_mbr(args, empty_mbr, 1);
->> -    setup_pci_bridge(args, "pcie.0", "br");
->> -    add_virtio_disk(args, 0, "br", 3, 10000, 120, 30);
->> -    add_virtio_disk(args, 1, "br", 4, 9000, 120, 30);
->> +    setup_pci_bridge(args, "pcie-pci-br");
->> +    add_virtio_disk(args, 0, "pcie-pci-br", 3, 10000, 120, 30);
->> +    add_virtio_disk(args, 1, "pcie-pci-br", 4, 9000, 120, 30);
->>     test_override(args, "q35", expected);
->> }
->>=20
+> Changelog:
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D
+> v5: no code changes - correct a mistake in the commit log message.
+>=20
+> v4: reword commit log for patch 4.
+>=20
+> v3: tags added. reword the error description in patch 5. Reword commit =
+log in patch 4.=20
+>=20
+> v2: add hd-geo-test fix as well as the actual QEMU code fix to the =
+patchset.
+> The patches are added in the right order.
+>=20
+>=20
+> Ani Sinha (4):
+>  tests/acpi: allow changes in DSDT.noacpihp table blob
+>  tests/acpi/bios-tables-test: use the correct slot on the
+>    pcie-root-port
+>  tests/acpi/bios-tables-test: update acpi blob q35/DSDT.noacpihp
+>  tests/qtest/hd-geo-test: fix incorrect pcie-root-port usage and
+>    simplify test
+>=20
+> Peter Maydell (1):
+>  Revert "cputlb: Restrict SavedIOTLB to system emulation"
+>=20
+> include/hw/core/cpu.h             |   6 ++----
+> tests/data/acpi/q35/DSDT.noacpihp | Bin 8248 -> 8241 bytes
+> tests/qtest/bios-tables-test.c    |   4 ++--
+> tests/qtest/hd-geo-test.c         |  18 ++++++++----------
+> 4 files changed, 12 insertions(+), 16 deletions(-)
+>=20
+> --=20
+> 2.39.1
 >=20
 
 
