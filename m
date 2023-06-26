@@ -2,67 +2,113 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48D2173E084
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 15:22:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 26F5173E0A3
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 15:29:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDmAM-0001FL-0M; Mon, 26 Jun 2023 09:22:02 -0400
+	id 1qDmGC-000718-32; Mon, 26 Jun 2023 09:28:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qDmAD-00018v-H4
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 09:21:53 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qDmG9-00070L-AD
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 09:28:01 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qDmAA-00077y-Bi
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 09:21:53 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qDmG7-0008Ss-Pw
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 09:28:01 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687785709;
+ s=mimecast20190719; t=1687786078;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=nto+TK2+mqa60zhuesXHXkq+lj+CXR/7b9JLIIpf5kw=;
- b=hKKOrzf7/o3jOdp9Ekoh9pQGyvF9EWL2DFpk7O5nOjM0veWsjWiH6cd467qoTzOUfgWy7m
- m/9MXz+Z0LDgK7NiKqMiguX+ut/YQxYRMhJX473VSWQtoma1qUcKa+EbhYEYxSHQ6l6Iqp
- xwrEMVofjOIsCocNdBJL2CJZd7YM84I=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-235-FHgDxLYxNn6alapAtjmuEQ-1; Mon, 26 Jun 2023 09:21:47 -0400
-X-MC-Unique: FHgDxLYxNn6alapAtjmuEQ-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4EBE88C80E6;
- Mon, 26 Jun 2023 13:21:47 +0000 (UTC)
-Received: from thuth.com (unknown [10.39.193.57])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 4D5EA1121319;
- Mon, 26 Jun 2023 13:21:46 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-s390x@nongnu.org, Christian Borntraeger <borntraeger@linux.ibm.com>,
- mrezanin@redhat.com, =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-Subject: [PATCH 4/4] pc-bios/s390-ccw: Don't use __bss_start with the "larl"
- instruction
-Date: Mon, 26 Jun 2023 15:21:38 +0200
-Message-Id: <20230626132138.87668-5-thuth@redhat.com>
-In-Reply-To: <20230626132138.87668-1-thuth@redhat.com>
-References: <20230626132138.87668-1-thuth@redhat.com>
+ bh=OtKrSIn4YG4Jneb8ljOeRTxWL6q5v4yI+SCt392+1vA=;
+ b=H6ulSTE/HxqM5fgw5yO7oi9tmEq1N8MDE532o7XU+n+IqjmXTAyE/VLJTiXuXKV8oGnJr7
+ zmTd4CdZkqbHrKhLJNK3xQJF5iDYltW+hmYIKoezfKOlzzzElPy7kMxwnnlghnpl+j8Adq
+ 9dyR8jNnHY9dNbAzhOLJQ8xh3JjfQXA=
+Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
+ [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-356-kk05hx-4NTGpLagAiwEXDg-1; Mon, 26 Jun 2023 09:27:56 -0400
+X-MC-Unique: kk05hx-4NTGpLagAiwEXDg-1
+Received: by mail-lf1-f70.google.com with SMTP id
+ 2adb3069b0e04-4fb76659cacso725348e87.1
+ for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 06:27:56 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1687786075; x=1690378075;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=OtKrSIn4YG4Jneb8ljOeRTxWL6q5v4yI+SCt392+1vA=;
+ b=k//ADZKKOjOmXRFqeUG7eouLlh5iEd8RFXA3J/Mh+iptTPcZ6yumQmEWZ73sGc2yit
+ RaDxYtYbXDfmuuK87ugRP/wGsh3kjMQ+wdpB4DgM76J3XPec1thoibB8oYgTLW+p76vY
+ rTXuiNTvgt8wce6gGK6HmktOZmj03/XCTxHSaOIynilT4jAUWKSmA5BFUI7lRmc2LTSl
+ tWT8bjZrAmhowUb3iMBTXcCT9ykY33FMjTAptjfXGHrgX9jDGkEwtpsZ275wXD6/u/MM
+ KLp/97TrKFWLzKjlpe0s6991XQnOY0YaWSubDmWgH4ACUSUcFeNXlk/Vg3eJXyaYdqZq
+ LpQw==
+X-Gm-Message-State: AC+VfDxYwqiCzIX/nj/JandkQ8+2Pr17c+AXEYkqqUMhxm08aa+OIsXJ
+ KEnG9BYW2PYNJUKWjyw10bT9aj3x5Y/g0PH5MVHSJTQb8YkLp8xe/4UXJpatYeTye7pJ9VkPa1N
+ 4KUe6xsTR5XpkN1M=
+X-Received: by 2002:a19:7b02:0:b0:4f6:1b45:e8aa with SMTP id
+ w2-20020a197b02000000b004f61b45e8aamr16840691lfc.50.1687786075284; 
+ Mon, 26 Jun 2023 06:27:55 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ796QqiBwj9PLSMQWWBzPFKJZPEzBo27YtRtf+X8hLEV/52l5ftenpRkgS+W8oWsLBCp6udiw==
+X-Received: by 2002:a19:7b02:0:b0:4f6:1b45:e8aa with SMTP id
+ w2-20020a197b02000000b004f61b45e8aamr16840645lfc.50.1687786074903; 
+ Mon, 26 Jun 2023 06:27:54 -0700 (PDT)
+Received: from ?IPV6:2001:b07:6468:f312:5e2c:eb9a:a8b6:fd3e?
+ ([2001:b07:6468:f312:5e2c:eb9a:a8b6:fd3e])
+ by smtp.googlemail.com with ESMTPSA id
+ o11-20020a05600c378b00b003fa95f328afsm3136331wmr.29.2023.06.26.06.27.50
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 26 Jun 2023 06:27:54 -0700 (PDT)
+Message-ID: <0c245101-77cf-9e9a-3c84-0293a75125b6@redhat.com>
+Date: Mon, 26 Jun 2023 15:27:49 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH 26/26] docs/devel: introduce some key concepts for QOM
+ development
+To: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ Juan Quintela <quintela@redhat.com>, Peter Maydell
+ <peter.maydell@linaro.org>, Cleber Rosa <crosa@redhat.com>,
+ Darren Kenny <darren.kenny@oracle.com>, Alexandre Iooss <erdnaxe@crans.org>,
+ Peter Xu <peterx@redhat.com>, qemu-arm@nongnu.org,
+ Eduardo Habkost <eduardo@habkost.net>, Riku Voipio <riku.voipio@iki.fi>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>,
+ =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ Bandan Das <bsd@redhat.com>,
+ Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
+ Radoslaw Biernacki <rad@semihalf.com>, Alexander Bulekov <alxndr@bu.edu>,
+ Leif Lindholm <quic_llindhol@quicinc.com>, Qiuhao Li
+ <Qiuhao.Li@outlook.com>, Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Leonardo Bras <leobras@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Stefan Hajnoczi <stefanha@redhat.com>, Bin Meng <bmeng.cn@gmail.com>,
+ Thomas Huth <thuth@redhat.com>, Beraldo Leal <bleal@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>, Yanan Wang <wangyanan55@huawei.com>
+References: <20230623122100.1640995-1-alex.bennee@linaro.org>
+ <20230623122100.1640995-27-alex.bennee@linaro.org>
+Content-Language: en-US
+From: Paolo Bonzini <pbonzini@redhat.com>
+In-Reply-To: <20230623122100.1640995-27-alex.bennee@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,45 +124,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-start.S currently cannot be compiled with Clang 16 and binutils 2.40:
+On 6/23/23 14:21, Alex Bennée wrote:
+> Using QOM correctly is increasingly important to maintaining a modern
+> code base. However the current documentation skips some important
+> concepts before launching into a simple example. Lets:
+> 
+>    - at least mention properties
+>    - mention TYPE_OBJECT and TYPE_DEVICE
+>    - talk about why we have realize/unrealize
+>    - mention the QOM tree
+> 
+> Signed-off-by: Alex Bennée<alex.bennee@linaro.org>
+> Message-Id:<20230619171437.357374-6-alex.bennee@linaro.org>
 
- ld: start.o(.text+0x8): misaligned symbol `__bss_start' (0xc1e5) for
-     relocation R_390_PC32DBL
+There were review comments on this series that haven't been applied.
 
-According to the built-in linker script of ld, the symbol __bss_start
-can actually point *before* the .bss section and does not need to have
-any alignment, so in certain situations (like when using the internal
-assembler of Clang), the __bss_start symbol can indeed be unaligned
-and thus it is not suitable for being used with the "larl" instruction
-that needs an address that is at least aligned to halfwords.
-The problem went unnoticed so far since binutils <= 2.39 did not
-check the alignment, but starting with binutils 2.40, such unaligned
-addresses are now refused.
-
-Fix it by using the real start address of the .bss section instead.
-
-Buglink: https://bugzilla.redhat.com/show_bug.cgi?id=2216662
-Reported-by: Miroslav Rezanina <mrezanin@redhat.com>
-Suggested-by: Nick Clifton <nickc@redhat.com>
-Signed-off-by: Thomas Huth <thuth@redhat.com>
----
- pc-bios/s390-ccw/start.S | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/pc-bios/s390-ccw/start.S b/pc-bios/s390-ccw/start.S
-index 47ef6e8aa8..6747d4c600 100644
---- a/pc-bios/s390-ccw/start.S
-+++ b/pc-bios/s390-ccw/start.S
-@@ -18,7 +18,7 @@ _start:
-     larl    %r15,stack + STACK_SIZE - 160   /* Set up stack */
- 
-     /* clear bss */
--    larl    %r2,__bss_start
-+    larl    %r2,.bss
-     larl    %r3,_end
-     slgr    %r3,%r2    /* get sizeof bss */
-     ltgr    %r3,%r3    /* bss empty? */
--- 
-2.39.3
+Paolo
 
 
