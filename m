@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B02773E3B8
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 17:43:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E9E873E3D4
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 17:46:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDoK2-0000IS-QJ; Mon, 26 Jun 2023 11:40:22 -0400
+	id 1qDoKZ-0000PG-P5; Mon, 26 Jun 2023 11:40:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qDoJn-0000Gm-RA
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 11:39:56 -0400
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ id 1qDoJq-0000Ie-82
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 11:39:59 -0400
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qDoJk-0002oI-Ki
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 11:39:55 -0400
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-313f58d6652so810884f8f.2
+ id 1qDoJl-0002q0-AP
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 11:39:57 -0400
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-313f363a6f1so1043038f8f.1
  for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 08:39:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1687793991; x=1690385991;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Kv3gPH6s0OE3PjFPgTi8pMQisc8pYxjYjhVnRHERxkM=;
- b=eTQucsj4gU+DI+WKrTP0xa7hB2fAmZ7TmmLODDcs/OCW55DGiCT0WYsyQD6DDbDlWZ
- sdzXuXawbuXRlSKgMuKPAopn5S96Z+Oovskq2ouQI3ny0h8fcvzovDPkVtieBuOjAP7g
- 4EGVjB+2+sKptmIjnH8xxiavD1hVR0H6sjjR1ip/92029P8Wb8ZCx3ajLxX039HnqQ1d
- P5iMPPKM0tAyixbPOeu+9r5HGnVzC0Z0dDE5EXt0ct+NDZ4t8450S0Kwjuuqr6Cd9fsH
- RZPiGdh9BmctiBJGNM1JzGe3yZHfUd6TJIstjF88wNJyNOQEKeCPAF2sZQllbMKWYZ0t
- yMKw==
+ bh=127W7wRPbfPQOykLNoSBb4NbL3xPnrED2pwGlM7FDmI=;
+ b=DGEoL4kZUJug8GivfqPyYyJrVh1wB+EvziHjvvlnNcvReJODYZi7iFNNUy709oHqwO
+ lpF+McSzJfOHaeqnnvp3c8tZkQ/y4EOT0mC5os2cmHAZYAN3WgZcBWs4+Ddez1+MCm/N
+ G0E12nUPx+U21XFlIOGqZQvusqjgXPatGpdk2TmNNKQd+YpvNEjHjsZEXlcXrgaQ3A1r
+ sQP1qLARZmlbC58xkZInKEKqVNBVvQphKS1kia5HVUztOSRF2nV5Gh77o1GGrfqyhKnu
+ ltLr+9etvtcd0zjr49bKrCz4sD1QaYfKShqNre7iB6BzlWCgtl73mtrGGgiUQwqKnkBa
+ McSQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20221208; t=1687793991; x=1690385991;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Kv3gPH6s0OE3PjFPgTi8pMQisc8pYxjYjhVnRHERxkM=;
- b=APblx4QHek0Td23x41GUpms10enP+Gw38hY5wuOqQpaF90LS58WnMu93wq/3jOhYd7
- uxJyZ6cJGbEjN11zGjN05Lv3mntzsKIG45XMSMBOIAgQrmdbIZmVO342DF7/Y8HKMYRx
- rQaVhI7dRCSnRyYEh0ALZWstKAn4pCcFaA6rXWbXe4F9jfEkilZUxak5nkrtxmJeI6ke
- 9NKxja9NVhHREyWwTZL1XVY+PjKbZxAq0IORlFNNjvYSfaEBsZwG5N/+Hzxq8wFnuyX2
- njkolSTbHajNdia0SXb1fqDTGQoKJ9WcysAbJDBJFBI/b+t7fbn/VkRdzFLcgdoTO0yz
- rsdw==
-X-Gm-Message-State: AC+VfDxmEid2rfFzf6udcTF0cOfTHTf15lU69DUsG6ZVAG1GMBeQPrn2
- jcTDJeUzXvnqFp5Bik/0XAzDDqRWrLesdfPmFMDL6M9F
-X-Google-Smtp-Source: ACHHUZ6eCdjr2EILHVhBukJ1617ala/81tYqNoy3o7oLa97foMN1x87LetvB2VQslqBA5iceSXFw2g==
-X-Received: by 2002:a5d:468d:0:b0:30a:f2a0:64fa with SMTP id
- u13-20020a5d468d000000b0030af2a064famr25636524wrq.10.1687793990871; 
- Mon, 26 Jun 2023 08:39:50 -0700 (PDT)
+ bh=127W7wRPbfPQOykLNoSBb4NbL3xPnrED2pwGlM7FDmI=;
+ b=GG79wONojNcrNONn85falvK/R8bo9lOfLh1Z5tibF/jAn987u5G13Lsq8LeQOwknIL
+ vuvlv5a2+RtGeu3C+MS/fyWOyYvsgQIbn1+drwVOVyiRdPJrkRVHBZKlMlm3qnHduSG1
+ TI5l+Z/KVukaSrYDRO+1J/ao0BKUBaaKpvdQRHOBo6xBdMkccdjVb+UqprIeQYFukAJE
+ mr9WL8q28MaCoaU/VovoVhHTBYz/ULvUFgBkugHC6tkMFzlP0XJpajgNJTwIju6ZCMop
+ 3dyYgm5BoAxn4iFxwERJ2BNwgkomIBzDHdunOspJoiRBTAXJQUeiJa1Va62traxUrgQM
+ siFw==
+X-Gm-Message-State: AC+VfDy0S5yMFmBfLHF7drKKW9ldd2WSfNY4m5kIzb0Akee//f6oiwqs
+ kOcaxJajeISZYtoeeTnVv24TiWXjgj6uKmuOZ6wpJ9Hk
+X-Google-Smtp-Source: ACHHUZ6vMKjQgUQdKSD00pxRru7Ld8/KGU0cUswhvpo8L9H4gVf/P631fci0KxiEgWXK3h17ROQ2Mw==
+X-Received: by 2002:a5d:4f11:0:b0:313:dfa2:1a85 with SMTP id
+ c17-20020a5d4f11000000b00313dfa21a85mr5605363wru.27.1687793991507; 
+ Mon, 26 Jun 2023 08:39:51 -0700 (PDT)
 Received: from localhost.localdomain ([139.47.42.170])
  by smtp.gmail.com with ESMTPSA id
- t1-20020adfe441000000b00313f45f74a8sm2164178wrm.103.2023.06.26.08.39.50
+ t1-20020adfe441000000b00313f45f74a8sm2164178wrm.103.2023.06.26.08.39.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 26 Jun 2023 08:39:50 -0700 (PDT)
+ Mon, 26 Jun 2023 08:39:51 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Anton Johansson <anjo@rev.ng>
-Subject: [PULL 07/22] accel/tcg: Widen pc to vaddr in CPUJumpCache
-Date: Mon, 26 Jun 2023 17:39:30 +0200
-Message-Id: <20230626153945.76180-8-richard.henderson@linaro.org>
+Subject: [PULL 08/22] accel: Replace target_ulong with vaddr in probe_*()
+Date: Mon, 26 Jun 2023 17:39:31 +0200
+Message-Id: <20230626153945.76180-9-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230626153945.76180-1-richard.henderson@linaro.org>
 References: <20230626153945.76180-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x436.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,87 +93,200 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Anton Johansson <anjo@rev.ng>
 
-Related functions dealing with the jump cache are also updated.
+Functions for probing memory accesses (and functions that call these)
+are updated to take a vaddr for guest virtual addresses over
+target_ulong.
 
 Signed-off-by: Anton Johansson <anjo@rev.ng>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20230621135633.1649-8-anjo@rev.ng>
+Message-Id: <20230621135633.1649-9-anjo@rev.ng>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- accel/tcg/tb-hash.h      | 12 ++++++------
- accel/tcg/tb-jmp-cache.h |  2 +-
- accel/tcg/cputlb.c       |  2 +-
- 3 files changed, 8 insertions(+), 8 deletions(-)
+ include/exec/exec-all.h | 14 +++++++-------
+ accel/stubs/tcg-stub.c  |  4 ++--
+ accel/tcg/cputlb.c      | 12 ++++++------
+ accel/tcg/user-exec.c   |  8 ++++----
+ 4 files changed, 19 insertions(+), 19 deletions(-)
 
-diff --git a/accel/tcg/tb-hash.h b/accel/tcg/tb-hash.h
-index 2ba2193731..a0c61f25cd 100644
---- a/accel/tcg/tb-hash.h
-+++ b/accel/tcg/tb-hash.h
-@@ -35,16 +35,16 @@
- #define TB_JMP_ADDR_MASK (TB_JMP_PAGE_SIZE - 1)
- #define TB_JMP_PAGE_MASK (TB_JMP_CACHE_SIZE - TB_JMP_PAGE_SIZE)
+diff --git a/include/exec/exec-all.h b/include/exec/exec-all.h
+index f5508e242b..cc1c3556f6 100644
+--- a/include/exec/exec-all.h
++++ b/include/exec/exec-all.h
+@@ -413,16 +413,16 @@ static inline void tlb_flush_range_by_mmuidx_all_cpus_synced(CPUState *cpu,
+  * Finally, return the host address for a page that is backed by RAM,
+  * or NULL if the page requires I/O.
+  */
+-void *probe_access(CPUArchState *env, target_ulong addr, int size,
++void *probe_access(CPUArchState *env, vaddr addr, int size,
+                    MMUAccessType access_type, int mmu_idx, uintptr_t retaddr);
  
--static inline unsigned int tb_jmp_cache_hash_page(target_ulong pc)
-+static inline unsigned int tb_jmp_cache_hash_page(vaddr pc)
+-static inline void *probe_write(CPUArchState *env, target_ulong addr, int size,
++static inline void *probe_write(CPUArchState *env, vaddr addr, int size,
+                                 int mmu_idx, uintptr_t retaddr)
  {
--    target_ulong tmp;
-+    vaddr tmp;
-     tmp = pc ^ (pc >> (TARGET_PAGE_BITS - TB_JMP_PAGE_BITS));
-     return (tmp >> (TARGET_PAGE_BITS - TB_JMP_PAGE_BITS)) & TB_JMP_PAGE_MASK;
+     return probe_access(env, addr, size, MMU_DATA_STORE, mmu_idx, retaddr);
  }
  
--static inline unsigned int tb_jmp_cache_hash_func(target_ulong pc)
-+static inline unsigned int tb_jmp_cache_hash_func(vaddr pc)
+-static inline void *probe_read(CPUArchState *env, target_ulong addr, int size,
++static inline void *probe_read(CPUArchState *env, vaddr addr, int size,
+                                int mmu_idx, uintptr_t retaddr)
  {
--    target_ulong tmp;
-+    vaddr tmp;
-     tmp = pc ^ (pc >> (TARGET_PAGE_BITS - TB_JMP_PAGE_BITS));
-     return (((tmp >> (TARGET_PAGE_BITS - TB_JMP_PAGE_BITS)) & TB_JMP_PAGE_MASK)
-            | (tmp & TB_JMP_ADDR_MASK));
-@@ -53,7 +53,7 @@ static inline unsigned int tb_jmp_cache_hash_func(target_ulong pc)
- #else
+     return probe_access(env, addr, size, MMU_DATA_LOAD, mmu_idx, retaddr);
+@@ -447,7 +447,7 @@ static inline void *probe_read(CPUArchState *env, target_ulong addr, int size,
+  * Do handle clean pages, so exclude TLB_NOTDIRY from the returned flags.
+  * For simplicity, all "mmio-like" flags are folded to TLB_MMIO.
+  */
+-int probe_access_flags(CPUArchState *env, target_ulong addr, int size,
++int probe_access_flags(CPUArchState *env, vaddr addr, int size,
+                        MMUAccessType access_type, int mmu_idx,
+                        bool nonfault, void **phost, uintptr_t retaddr);
  
- /* In user-mode we can get better hashing because we do not have a TLB */
--static inline unsigned int tb_jmp_cache_hash_func(target_ulong pc)
-+static inline unsigned int tb_jmp_cache_hash_func(vaddr pc)
+@@ -460,7 +460,7 @@ int probe_access_flags(CPUArchState *env, target_ulong addr, int size,
+  * and must be consumed or copied immediately, before any further
+  * access or changes to TLB @mmu_idx.
+  */
+-int probe_access_full(CPUArchState *env, target_ulong addr, int size,
++int probe_access_full(CPUArchState *env, vaddr addr, int size,
+                       MMUAccessType access_type, int mmu_idx,
+                       bool nonfault, void **phost,
+                       CPUTLBEntryFull **pfull, uintptr_t retaddr);
+@@ -581,7 +581,7 @@ struct MemoryRegionSection *iotlb_to_section(CPUState *cpu,
+  *
+  * Note: this function can trigger an exception.
+  */
+-tb_page_addr_t get_page_addr_code_hostp(CPUArchState *env, target_ulong addr,
++tb_page_addr_t get_page_addr_code_hostp(CPUArchState *env, vaddr addr,
+                                         void **hostp);
+ 
+ /**
+@@ -596,7 +596,7 @@ tb_page_addr_t get_page_addr_code_hostp(CPUArchState *env, target_ulong addr,
+  * Note: this function can trigger an exception.
+  */
+ static inline tb_page_addr_t get_page_addr_code(CPUArchState *env,
+-                                                target_ulong addr)
++                                                vaddr addr)
  {
-     return (pc ^ (pc >> TB_JMP_CACHE_BITS)) & (TB_JMP_CACHE_SIZE - 1);
+     return get_page_addr_code_hostp(env, addr, NULL);
  }
-@@ -61,7 +61,7 @@ static inline unsigned int tb_jmp_cache_hash_func(target_ulong pc)
- #endif /* CONFIG_SOFTMMU */
- 
- static inline
--uint32_t tb_hash_func(tb_page_addr_t phys_pc, target_ulong pc,
-+uint32_t tb_hash_func(tb_page_addr_t phys_pc, vaddr pc,
-                       uint32_t flags, uint64_t flags2, uint32_t cf_mask)
+diff --git a/accel/stubs/tcg-stub.c b/accel/stubs/tcg-stub.c
+index 0998e601ad..a9e7a2d5b4 100644
+--- a/accel/stubs/tcg-stub.c
++++ b/accel/stubs/tcg-stub.c
+@@ -26,14 +26,14 @@ void tcg_flush_jmp_cache(CPUState *cpu)
  {
-     return qemu_xxhash8(phys_pc, pc, flags2, flags, cf_mask);
-diff --git a/accel/tcg/tb-jmp-cache.h b/accel/tcg/tb-jmp-cache.h
-index bee87eb840..bb424c8a05 100644
---- a/accel/tcg/tb-jmp-cache.h
-+++ b/accel/tcg/tb-jmp-cache.h
-@@ -21,7 +21,7 @@ struct CPUJumpCache {
-     struct rcu_head rcu;
-     struct {
-         TranslationBlock *tb;
--        target_ulong pc;
-+        vaddr pc;
-     } array[TB_JMP_CACHE_SIZE];
- };
+ }
  
+-int probe_access_flags(CPUArchState *env, target_ulong addr, int size,
++int probe_access_flags(CPUArchState *env, vaddr addr, int size,
+                        MMUAccessType access_type, int mmu_idx,
+                        bool nonfault, void **phost, uintptr_t retaddr)
+ {
+      g_assert_not_reached();
+ }
+ 
+-void *probe_access(CPUArchState *env, target_ulong addr, int size,
++void *probe_access(CPUArchState *env, vaddr addr, int size,
+                    MMUAccessType access_type, int mmu_idx, uintptr_t retaddr)
+ {
+      /* Handled by hardware accelerator. */
 diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
-index cc53d0fb64..bdf400f6e6 100644
+index bdf400f6e6..d873e58a5d 100644
 --- a/accel/tcg/cputlb.c
 +++ b/accel/tcg/cputlb.c
-@@ -99,7 +99,7 @@ static void tlb_window_reset(CPUTLBDesc *desc, int64_t ns,
-     desc->window_max_entries = max_entries;
+@@ -1499,7 +1499,7 @@ static void notdirty_write(CPUState *cpu, vaddr mem_vaddr, unsigned size,
+     }
  }
  
--static void tb_jmp_cache_clear_page(CPUState *cpu, target_ulong page_addr)
-+static void tb_jmp_cache_clear_page(CPUState *cpu, vaddr page_addr)
+-static int probe_access_internal(CPUArchState *env, target_ulong addr,
++static int probe_access_internal(CPUArchState *env, vaddr addr,
+                                  int fault_size, MMUAccessType access_type,
+                                  int mmu_idx, bool nonfault,
+                                  void **phost, CPUTLBEntryFull **pfull,
+@@ -1508,7 +1508,7 @@ static int probe_access_internal(CPUArchState *env, target_ulong addr,
+     uintptr_t index = tlb_index(env, mmu_idx, addr);
+     CPUTLBEntry *entry = tlb_entry(env, mmu_idx, addr);
+     uint64_t tlb_addr = tlb_read_idx(entry, access_type);
+-    target_ulong page_addr = addr & TARGET_PAGE_MASK;
++    vaddr page_addr = addr & TARGET_PAGE_MASK;
+     int flags = TLB_FLAGS_MASK;
+ 
+     if (!tlb_hit_page(tlb_addr, page_addr)) {
+@@ -1551,7 +1551,7 @@ static int probe_access_internal(CPUArchState *env, target_ulong addr,
+     return flags;
+ }
+ 
+-int probe_access_full(CPUArchState *env, target_ulong addr, int size,
++int probe_access_full(CPUArchState *env, vaddr addr, int size,
+                       MMUAccessType access_type, int mmu_idx,
+                       bool nonfault, void **phost, CPUTLBEntryFull **pfull,
+                       uintptr_t retaddr)
+@@ -1568,7 +1568,7 @@ int probe_access_full(CPUArchState *env, target_ulong addr, int size,
+     return flags;
+ }
+ 
+-int probe_access_flags(CPUArchState *env, target_ulong addr, int size,
++int probe_access_flags(CPUArchState *env, vaddr addr, int size,
+                        MMUAccessType access_type, int mmu_idx,
+                        bool nonfault, void **phost, uintptr_t retaddr)
  {
-     CPUJumpCache *jc = cpu->tb_jmp_cache;
-     int i, i0;
+@@ -1589,7 +1589,7 @@ int probe_access_flags(CPUArchState *env, target_ulong addr, int size,
+     return flags;
+ }
+ 
+-void *probe_access(CPUArchState *env, target_ulong addr, int size,
++void *probe_access(CPUArchState *env, vaddr addr, int size,
+                    MMUAccessType access_type, int mmu_idx, uintptr_t retaddr)
+ {
+     CPUTLBEntryFull *full;
+@@ -1648,7 +1648,7 @@ void *tlb_vaddr_to_host(CPUArchState *env, abi_ptr addr,
+  * NOTE: This function will trigger an exception if the page is
+  * not executable.
+  */
+-tb_page_addr_t get_page_addr_code_hostp(CPUArchState *env, target_ulong addr,
++tb_page_addr_t get_page_addr_code_hostp(CPUArchState *env, vaddr addr,
+                                         void **hostp)
+ {
+     CPUTLBEntryFull *full;
+diff --git a/accel/tcg/user-exec.c b/accel/tcg/user-exec.c
+index dc8d6b5d40..d71e26a7b5 100644
+--- a/accel/tcg/user-exec.c
++++ b/accel/tcg/user-exec.c
+@@ -721,7 +721,7 @@ int page_unprotect(target_ulong address, uintptr_t pc)
+     return current_tb_invalidated ? 2 : 1;
+ }
+ 
+-static int probe_access_internal(CPUArchState *env, target_ulong addr,
++static int probe_access_internal(CPUArchState *env, vaddr addr,
+                                  int fault_size, MMUAccessType access_type,
+                                  bool nonfault, uintptr_t ra)
+ {
+@@ -759,7 +759,7 @@ static int probe_access_internal(CPUArchState *env, target_ulong addr,
+     cpu_loop_exit_sigsegv(env_cpu(env), addr, access_type, maperr, ra);
+ }
+ 
+-int probe_access_flags(CPUArchState *env, target_ulong addr, int size,
++int probe_access_flags(CPUArchState *env, vaddr addr, int size,
+                        MMUAccessType access_type, int mmu_idx,
+                        bool nonfault, void **phost, uintptr_t ra)
+ {
+@@ -771,7 +771,7 @@ int probe_access_flags(CPUArchState *env, target_ulong addr, int size,
+     return flags;
+ }
+ 
+-void *probe_access(CPUArchState *env, target_ulong addr, int size,
++void *probe_access(CPUArchState *env, vaddr addr, int size,
+                    MMUAccessType access_type, int mmu_idx, uintptr_t ra)
+ {
+     int flags;
+@@ -783,7 +783,7 @@ void *probe_access(CPUArchState *env, target_ulong addr, int size,
+     return size ? g2h(env_cpu(env), addr) : NULL;
+ }
+ 
+-tb_page_addr_t get_page_addr_code_hostp(CPUArchState *env, target_ulong addr,
++tb_page_addr_t get_page_addr_code_hostp(CPUArchState *env, vaddr addr,
+                                         void **hostp)
+ {
+     int flags;
 -- 
 2.34.1
 
