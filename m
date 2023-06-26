@@ -2,51 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1759573D977
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 10:17:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B670E73D96D
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 10:16:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDhNC-0004WF-Tg; Mon, 26 Jun 2023 04:14:58 -0400
+	id 1qDhNC-0004TZ-HM; Mon, 26 Jun 2023 04:14:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qDhMy-00048r-1E
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qDhMw-00048c-Po
  for qemu-devel@nongnu.org; Mon, 26 Jun 2023 04:14:44 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qDhMw-0000vC-4C
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 04:14:43 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qDhMt-0000ua-0A
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 04:14:41 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687767279;
+ s=mimecast20190719; t=1687767276;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=tOTSVubMMOfnZhhVegCH6pd4EEGN70ANxvmCQ6gJpqc=;
- b=Zt5U0gN+ZLTf3vISaPXEDIQcdj8wEcnklNVw50zZQDbCmaFqg/CEMeJXlZ1uRGQ9BenZSJ
- nWf9adayNI6nflqIuN7+VVOcvFwZdi0va1JSNHCPZaM93yFjZfD/Tval6ndvfBm64z+RXp
- 1pLv7fGKYZrjOotO30Z8X3Za2UsOko8=
+ bh=L8ts4wySEGlRUW7ZCYHkGEV3e7MW06AlcphsL3xUgNc=;
+ b=b1j7Q1WW9JU4ABJXYg7jImk2pw2tG2NA6z0qUTFZxSj3ODNbmnWDoR4fao6V3nevu8xG2c
+ B5N2nU04iQoWg3sOlu+wj7oYoZlD7e+oSBUIQIrUUi/Dg0qhso2DmGiWwpkvZX9Nq7Po40
+ CkpOPnojFXLdJrYPoE0EygsfHk9H9W8=
 Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
  [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-312-39fd5GepOk2dA7Paysiyow-1; Mon, 26 Jun 2023 04:14:32 -0400
-X-MC-Unique: 39fd5GepOk2dA7Paysiyow-1
+ us-mta-394-14eg5EuaOMaJYwioYHZ0Hw-1; Mon, 26 Jun 2023 04:14:32 -0400
+X-MC-Unique: 14eg5EuaOMaJYwioYHZ0Hw-1
 Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
  [10.11.54.9])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 774603810D28;
- Mon, 26 Jun 2023 08:14:31 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8C9193810D29;
+ Mon, 26 Jun 2023 08:14:32 +0000 (UTC)
 Received: from thuth.com (unknown [10.39.193.57])
- by smtp.corp.redhat.com (Postfix) with ESMTP id B5100492B01;
- Mon, 26 Jun 2023 08:14:30 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id B8986492B01;
+ Mon, 26 Jun 2023 08:14:31 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org,
 	Richard Henderson <richard.henderson@linaro.org>
-Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PULL 6/9] gitlab: support disabling job auto-run in upstream
-Date: Mon, 26 Jun 2023 10:14:12 +0200
-Message-Id: <20230626081415.64615-7-thuth@redhat.com>
+Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
+Subject: [PULL 7/9] gitlab-ci: grab msys2 meson-logs as artifacts
+Date: Mon, 26 Jun 2023 10:14:13 +0200
+Message-Id: <20230626081415.64615-8-thuth@redhat.com>
 In-Reply-To: <20230626081415.64615-1-thuth@redhat.com>
 References: <20230626081415.64615-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -78,44 +78,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Daniel P. Berrangé <berrange@redhat.com>
+From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-In forks QEMU_CI=1 can be used to create a pipeline but not auto-run any
-jobs. In upstream jobs always auto-run, which is equiv of QEMU_CI=2.
+Rename build directory to "build", like most other CI builds.
 
-This supports setting QEMU_CI=1 in upstream, to disable job auto-run.
-This can be used to preserve CI minutes if repushing a branch to staging
-with a specific fix that only needs testing in limited scenarios.
-
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-Message-Id: <20230608164018.2520330-6-berrange@redhat.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Message-Id: <20230620153720.514882-2-marcandre.lureau@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- .gitlab-ci.d/base.yml | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ .gitlab-ci.d/windows.yml | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/.gitlab-ci.d/base.yml b/.gitlab-ci.d/base.yml
-index 999149852e..188a770799 100644
---- a/.gitlab-ci.d/base.yml
-+++ b/.gitlab-ci.d/base.yml
-@@ -109,6 +109,16 @@ variables:
-     - if: '$QEMU_CI != "2" && $CI_PROJECT_NAMESPACE != $QEMU_CI_UPSTREAM'
-       when: manual
- 
-+    # Upstream pipeline jobs start automatically unless told not to
-+    # by setting QEMU_CI=1
-+    - if: '$QEMU_CI == "1" && $CI_PROJECT_NAMESPACE == $QEMU_CI_UPSTREAM && $CI_COMMIT_BRANCH =~ /staging-[[:digit:]]+\.[[:digit:]]/'
-+      when: manual
-+      variables:
-+        QEMU_CI_CONTAINER_TAG: $CI_COMMIT_REF_SLUG
-+
-+    - if: '$QEMU_CI == "1" && $CI_PROJECT_NAMESPACE == $QEMU_CI_UPSTREAM'
-+      when: manual
-+
-     # Jobs can run if any jobs they depend on were successful
-     - if: '$QEMU_JOB_SKIPPED && $CI_PROJECT_NAMESPACE == $QEMU_CI_UPSTREAM && $CI_COMMIT_BRANCH =~ /staging-[[:digit:]]+\.[[:digit:]]/'
-       when: on_success
+diff --git a/.gitlab-ci.d/windows.yml b/.gitlab-ci.d/windows.yml
+index 472bacd2e2..d45794463a 100644
+--- a/.gitlab-ci.d/windows.yml
++++ b/.gitlab-ci.d/windows.yml
+@@ -11,6 +11,11 @@
+   needs: []
+   stage: build
+   timeout: 80m
++  artifacts:
++    name: "$CI_JOB_NAME-$CI_COMMIT_REF_SLUG"
++    expire_in: 7 days
++    paths:
++      - build/meson-logs/testlog.txt
+   before_script:
+   - If ( !(Test-Path -Path msys64\var\cache ) ) {
+       mkdir msys64\var\cache
+@@ -65,8 +70,8 @@ msys2-64bit:
+   - $env:CHERE_INVOKING = 'yes'  # Preserve the current working directory
+   - $env:MSYSTEM = 'MINGW64'     # Start a 64-bit MinGW environment
+   - $env:MSYS = 'winsymlinks:native' # Enable native Windows symlink
+-  - mkdir output
+-  - cd output
++  - mkdir build
++  - cd build
+   # Note: do not remove "--without-default-devices"!
+   # commit 9f8e6cad65a6 ("gitlab-ci: Speed up the msys2-64bit job by using --without-default-devices"
+   # changed to compile QEMU with the --without-default-devices switch
+@@ -115,8 +120,8 @@ msys2-32bit:
+   - $env:CHERE_INVOKING = 'yes'  # Preserve the current working directory
+   - $env:MSYSTEM = 'MINGW32'     # Start a 32-bit MinGW environment
+   - $env:MSYS = 'winsymlinks:native' # Enable native Windows symlink
+-  - mkdir output
+-  - cd output
++  - mkdir build
++  - cd build
+   - ..\msys64\usr\bin\bash -lc '../configure --target-list=ppc64-softmmu
+                                 --enable-fdt=system'
+   - ..\msys64\usr\bin\bash -lc 'make'
 -- 
 2.39.3
 
