@@ -2,90 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06D1273E014
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 15:04:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC71F73E02B
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 15:05:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDlsU-0004ZB-Uy; Mon, 26 Jun 2023 09:03:34 -0400
+	id 1qDluB-0005yU-Vt; Mon, 26 Jun 2023 09:05:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qDlsS-0004Xe-Kc
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 09:03:32 -0400
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qDluA-0005y5-1s
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 09:05:18 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qDlsQ-00037A-65
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 09:03:32 -0400
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qDlu7-0003WG-Vr
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 09:05:17 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687784607;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ s=mimecast20190719; t=1687784715;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=E+nad8v8oTTDwvdFUdstR+5+qk/NeFORinwUBzdMfco=;
- b=CJRUAlkpxdb2sWUdXyMIlnZQr64xJDDFpv/SyQr7BEWBlzWPwk9xAc5ITLBwpU7+FHkkNy
- a1LNm590W/1xQcI9nixIMwDer2LScUhPUPa02/pldB8zIca1Y1mjJsOOY5aO+4pfX2KNpG
- sA08JyNvVIdvT5nVzeyde3o//Ti1v84=
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
- [209.85.216.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=LYgvXwSo6PLsXiTDj5TKXdE/RXoujd+8Bg6x0ZyjD34=;
+ b=iXg+2o0DsBSbQ+Q7VaMO8pZWviLgLnVab/mEWX32aUuSJcohE5NpIRx0fz/kffiNW0YcRb
+ cYzooW1MTCknqp7MvEjptkR5AxNobsKBbTvXZzm9tEYtAcrEvJ04Op1U7kPMnhD85zn3uQ
+ hiaRGxZXamDyah89qcHuq/UZz8cWxc4=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-217-Amj4cfSSOfGmQpNj1UCSmg-1; Mon, 26 Jun 2023 09:03:23 -0400
-X-MC-Unique: Amj4cfSSOfGmQpNj1UCSmg-1
-Received: by mail-pj1-f69.google.com with SMTP id
- 98e67ed59e1d1-262f7a3bc80so628826a91.3
- for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 06:03:21 -0700 (PDT)
+ us-mta-141-6OQ1hjC6Mw2NS6Mb1rlang-1; Mon, 26 Jun 2023 09:05:14 -0400
+X-MC-Unique: 6OQ1hjC6Mw2NS6Mb1rlang-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-3fb40d90456so1562845e9.0
+ for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 06:05:13 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687784600; x=1690376600;
- h=to:references:message-id:content-transfer-encoding:cc:date
- :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=E+nad8v8oTTDwvdFUdstR+5+qk/NeFORinwUBzdMfco=;
- b=K3AHDYd/gGADsK6+c8D7L/9I9VX40tzzMXRBiPJmfDNDLJiQ5u7cUJ8WPK1T4lgHuR
- Suvx9vCDEzA0un7ROtDGuBMAoj28+5oek7f8dctm9ukow6VLzLZ5mWRAZmzP3jtiXT3S
- dnDGC0ZqzEKhTrETeOIrw+wF0zHETtOlYr2p31nVaq7MMlQM05NOgjftCwd1bjMFkYcP
- HfdZe0WDe2yMJDq4ZMWBdNI0yW3o8bE1DbdQScO5xUP66TJ3NBf4L/rmMU2tYTNq/4WE
- qaAjvJfrSV/XPf0IgbJxR9SAVzfgoj4c9/JgObbXuC6Rsk3+bUrJFbIAJv+R/tllnVkz
- t0Qw==
-X-Gm-Message-State: AC+VfDxHzz275GjWmahVY+N+mrNHov5dqSslKqiJQ6ttt426H6DSecNj
- KzT6LFNE/HAc7Hzrm8rUg7Xyi1HQkOYvGH6jOEXwgslSjvN3xBxTY3MOZmmjLd+fo9K+sVkAogi
- ejNYWi3hYRNbHdv0=
-X-Received: by 2002:a17:90b:1d03:b0:25e:a057:afa with SMTP id
- on3-20020a17090b1d0300b0025ea0570afamr21626144pjb.13.1687784600596; 
- Mon, 26 Jun 2023 06:03:20 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5bQW7S5PelqQoTR9Np48l1jQuhfgmhiJPMDHpsrBpE6c7xVzOyQlLw+M27jHCT8ZKYHCgKpw==
-X-Received: by 2002:a17:90b:1d03:b0:25e:a057:afa with SMTP id
- on3-20020a17090b1d0300b0025ea0570afamr21626109pjb.13.1687784600116; 
- Mon, 26 Jun 2023 06:03:20 -0700 (PDT)
-Received: from smtpclient.apple ([115.96.139.77])
- by smtp.gmail.com with ESMTPSA id
- ev6-20020a17090aeac600b00259980d373dsm6204225pjb.1.2023.06.26.06.03.16
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Mon, 26 Jun 2023 06:03:19 -0700 (PDT)
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.3\))
-Subject: Re: [PATCH v3] acpi/tests/bios-tables-test: make iasl tool handling
- simpler
-From: Ani Sinha <anisinha@redhat.com>
-In-Reply-To: <20230626084401-mutt-send-email-mst@kernel.org>
-Date: Mon, 26 Jun 2023 18:33:14 +0530
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- =?utf-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- =?utf-8?B?IkRhbmllbCBQLiBCZXJyYW5nw6ki?= <berrange@redhat.com>,
- Thomas Huth <thuth@redhat.com>,
- =?utf-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Igor Mammedov <imammedo@redhat.com>,
- =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- qemu-devel@nongnu.org
+ d=1e100.net; s=20221208; t=1687784713; x=1690376713;
+ h=content-transfer-encoding:mime-version:message-id:date:reply-to
+ :user-agent:references:in-reply-to:subject:cc:to:from
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=LYgvXwSo6PLsXiTDj5TKXdE/RXoujd+8Bg6x0ZyjD34=;
+ b=MVD9iQJHd0KOwTLPkD4v2nygDSBns07CLwwZqIIzRH53pb7jndFNGJ8VgHTP62IKl1
+ iUySvei8zRok414RY4+13CeaCF8oGpc5bi6dZ0dHD8j+n/IZdlxAtkGchyYssLhuL1tO
+ 5yw0AaCjESofKTPQvXomlYwWORWUj025CUrchRdeln+E+HfHh9uMga2FJLHrG8QCMnGK
+ N8r/cwnDjlZCvELQlP8j1F69kZhILxth5aCy99p5G5X45Usm8BFXT6+f3Uwxot9PwFM6
+ eqDuKm3coeS0cPkkL8NqSETrwYURoIgPHjXMcBYymI5SDmI37krI7mpgXISzSaTuPDwv
+ se6A==
+X-Gm-Message-State: AC+VfDyfu68DoYqSWp6LAVWrsLM24WZNlraB6m2rdCJYUcLTRQCKx91/
+ 2FIjblJgXINGgl9ZuKlJtBqBR4Ja1xJlc7brhbG29enbBykBxwc978j9Etlmhh/vC7/DtwB+XUY
+ PcZOKxux1Dx7pZSc=
+X-Received: by 2002:a5d:6b92:0:b0:313:ef28:d3d6 with SMTP id
+ n18-20020a5d6b92000000b00313ef28d3d6mr3274870wrx.6.1687784711700; 
+ Mon, 26 Jun 2023 06:05:11 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4tfBfRDYagxov6VWBTK9bmyhtaGHqKxHzShqs6bzOPbA3Ewt2U5gHd/f1VauFZ6rRqyOXa/Q==
+X-Received: by 2002:a5d:6b92:0:b0:313:ef28:d3d6 with SMTP id
+ n18-20020a5d6b92000000b00313ef28d3d6mr3274839wrx.6.1687784711325; 
+ Mon, 26 Jun 2023 06:05:11 -0700 (PDT)
+Received: from redhat.com (static-92-120-85-188.ipcom.comunitel.net.
+ [188.85.120.92]) by smtp.gmail.com with ESMTPSA id
+ w10-20020a1cf60a000000b003f9bd9e3226sm7668163wmc.7.2023.06.26.06.05.09
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 26 Jun 2023 06:05:10 -0700 (PDT)
+From: Juan Quintela <quintela@redhat.com>
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org,  Peter Xu <peterx@redhat.com>,  Paolo Bonzini
+ <pbonzini@redhat.com>,  Stefan Hajnoczi <stefanha@redhat.com>,  Thomas
+ Huth <thuth@redhat.com>,  Laurent Vivier <lvivier@redhat.com>,  Eric Blake
+ <eblake@redhat.com>,  Fam Zheng <fam@euphon.net>,  Leonardo Bras
+ <leobras@redhat.com>,  Markus Armbruster <armbru@redhat.com>,
+ qemu-block@nongnu.org
+Subject: Re: [PULL 00/30] Next patches
+In-Reply-To: <a614493f-1e3e-1d6b-13df-702be2b1bd8e@linaro.org> (Richard
+ Henderson's message of "Mon, 26 Jun 2023 08:37:10 +0200")
+References: <20230622165527.2417-1-quintela@redhat.com>
+ <1f5c4a38-6ae2-53dd-d739-65accb1d86a8@linaro.org>
+ <87leg719rs.fsf@secure.mitica>
+ <a614493f-1e3e-1d6b-13df-702be2b1bd8e@linaro.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+Date: Mon, 26 Jun 2023 15:05:09 +0200
+Message-ID: <874jmue5mi.fsf@secure.mitica>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <9B31F63A-164A-42EF-9387-1F6A56BC9BEA@redhat.com>
-References: <20230522103039.19111-1-anisinha@redhat.com>
- <20230626084401-mutt-send-email-mst@kernel.org>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-X-Mailer: Apple Mail (2.3696.120.41.1.3)
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=anisinha@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -94,7 +94,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,283 +107,190 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Richard Henderson <richard.henderson@linaro.org> wrote:
+> On 6/26/23 00:01, Juan Quintela wrote:
+>> Richard Henderson <richard.henderson@linaro.org> wrote:
+>>> On 6/22/23 18:54, Juan Quintela wrote:
+>>>> The following changes since commit b455ce4c2f300c8ba47cba7232dd0326136=
+8a4cb:
+>>>>     Merge tag 'q800-for-8.1-pull-request'
+>>>> ofhttps://github.com/vivier/qemu-m68k  into staging (2023-06-22
+>>>> 10:18:32 +0200)
+>>>> are available in the Git repository at:
+>>>>     https://gitlab.com/juan.quintela/qemu.git  tags/next-pull-request
+>>>> for you to fetch changes up to
+>>>> 23e4307eadc1497bd0a11ca91041768f15963b68:
+>>>>     migration/rdma: Split qemu_fopen_rdma() into input/output
+>>>> functions (2023-06-22 18:11:58 +0200)
+>>>> ----------------------------------------------------------------
+>>>> Migration Pull request (20230621) take 2
+>>>> In this pull request the only change is fixing 32 bits complitaion
+>>>> issue.
+>>>> Please apply.
+>>>> [take 1]
+>>>> - fix for multifd thread creation (fabiano)
+>>>> - dirtylimity (hyman)
+>>>>     * migration-test will go on next PULL request, as it has failures.
+>>>> - Improve error description (tejus)
+>>>> - improve -incoming and set parameters before calling incoming (wei)
+>>>> - migration atomic counters reviewed patches (quintela)
+>>>> - migration-test refacttoring reviewed (quintela)
+>>>
+>>> New failure with check-cfi-x86_64:
+>>>
+>>> https://gitlab.com/qemu-project/qemu/-/jobs/4527202764#L188
+>> First of all, is there a way to get to the test log?  In particular,
+>> I
+>> am interested in knowing at least what test has failed (yes,
+>> migration-test don't tell you much more).
+>> After a bit more wrestling, I have been able to get things compiling
+>> with this command:
+>> $ /mnt/code/qemu/full/configure --enable-cfi
+>> --target-list=3Dx86_64-softmmu --enable-cfi-debug --cc=3Dclang --cxx=3Dc=
+lang++
+>> --disable-docs --enable-safe-stack --disable-slirp
+>> It should basically be the one that check-cfi-x86_64 is using if I
+>> understand the build recipes correctly (that is a BIG IF).
+>> And it passes for me with flying colors.
+>> Here I have Fedora38, builder has F37.
+>>=20
+>>> /builds/qemu-project/qemu/build/pyvenv/bin/meson test  --no-rebuild -t
+>>> 0  --num-processes 1 --print-errorlogs
+>>>    1/350 qemu:qtest+qtest-x86_64 / qtest-x86_64/qom-test
+>>>    OK 6.55s   8 subtests passed
+>>> =E2=96=B6   2/350 ERROR:../tests/qtest/migration-test.c:320:check_guest=
+s_ram:
+>>> assertion failed: (bad =3D=3D 0) ERROR
+>>>    2/350 qemu:qtest+qtest-x86_64 / qtest-x86_64/migration-test
+>>>    ERROR 151.99s   killed by signal 6 SIGABRT
+>>>>>>
+>>>      G_TEST_DBUS_DAEMON=3D/builds/qemu-project/qemu/tests/dbus-vmstate-=
+daemon.sh
+>>>      MALLOC_PERTURB_=3D3 QTEST_QEMU_IMG=3D./qemu-img
+>>>      QTEST_QEMU_STORAGE_DAEMON_BINARY=3D./storage-daemon/qemu-storage-d=
+aemon
+>>>      QTEST_QEMU_BINARY=3D./qemu-system-x86_64
+>>>      /builds/qemu-project/qemu/build/tests/qtest/migration-test --tap
+>>>     -k
+>>> =E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=
+=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=
+=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=
+=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=
+=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95 =E2=9C=80  =E2=80=95=E2=80=95=E2=80=
+=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=
+=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=
+=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=
+=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=
+=E2=80=95
+>>> stderr:
+>>> qemu-system-x86_64: Unable to read from socket: Connection reset by peer
+>> This is the interesting bit, why is the conection closed.
+>>=20
+>>> Memory content inconsistency at 4f65000 first_byte =3D 30 last_byte =3D=
+ 2f
+>>> current =3D 88 hit_edge =3D 1
+>>> **
+>>> ERROR:../tests/qtest/migration-test.c:320:check_guests_ram: assertion f=
+ailed: (bad =3D=3D 0)
+>>>
+>>> (test program exited with status code -6)
+>> This makes zero sense, except if we haven't migrated all the guest
+>> state, that it is what it has happened.
+>> Is there a place on the web interface to see the full logs?  Or that
+>> is
+>> the only thing that the CI system stores?
+>
+> The "full logs" are
+>
+> https://gitlab.com/qemu-project/qemu/-/jobs/4527202764/artifacts/download=
+?file_type=3Dtrace
 
+Not useful.  I was hoping that there is something like when one runs
+./tests/qtest/migration-test
 
-> On 26-Jun-2023, at 6:28 PM, Michael S. Tsirkin <mst@redhat.com> wrote:
->=20
-> On Mon, May 22, 2023 at 04:00:39PM +0530, Ani Sinha wrote:
->> Currently the meson based QEMU build process locates the iasl binary =
-from the
->> current PATH and other locations [1] and uses that to set CONFIG_IASL =
-in
->> config-host.h header.This is then used at compile time by =
-bios-tables-test to
->> set iasl path.
->>=20
->> This has two disadvantages:
->> - If iasl was not previously installed in the PATH, one has to =
-install iasl
->>   and rebuild QEMU in order to regenerate the header and pick up the =
-found
->>   iasl location. One cannot simply use the existing bios-tables-test =
-binary
->>   because CONFIG_IASL is only set during the QEMU build time by meson =
-and
->>   then bios-tables-test has to be rebuilt with CONFIG_IASL set in =
-order to
->>   use iasl.
->> - Sometimes, the stock iasl that comes with distributions is simply =
-not good
->>   enough because it does not support the latest ACPI changes - newly
->>   introduced tables or new table attributes etc. In order to test =
-ACPI code
->>   in QEMU, one has to clone the latest acpica upstream repository and
->>   rebuild iasl in order to get support for it. In those cases, one =
-may want
->>   the test to use the iasl binary from a non-standard location.
->>=20
->> In order to overcome the above two disadvantages, we set a default =
-iasl path
->> as "/usr/bin/iasl". bios-tables-test also checks for the environment =
-variable
->> IASL_PATH that can be set by the developer. IASL_PATH passed from the
->> environment overrides the default path. This way developers can point
->> IASL_PATH environment variable to a possibly a non-standard custom =
-build
->> binary and quickly run bios-tables-test without rebuilding. If the =
-default
->> path of iasl changes, one simply needs to update the default path and =
-rebuild
->> just the test, not whole QEMU.
->>=20
->> [1] =
-https://mesonbuild.com/Reference-manual_functions.html#find_program
->>=20
->> CC: alex.bennee@linaro.org
->> CC: pbonzini@redhat.com
->> Signed-off-by: Ani Sinha <anisinha@redhat.com>
->=20
-> I don't much like environment variables since they are
-> not discoverable.
+Anyways, to make things faster:
 
-I do have this:
+- created
+  /mnt/code/qemu/full/configure --enable-cfi
+    --target-list=3Dx86_64-softmmu --enable-cfi-debug --cc=3Dclang --cxx=3D=
+clang++
+    --disable-docs --enable-safe-stack --disable-slirp
 
-+                " Set IASL_PATH environment variable to the path of =
-iasl binary\n"
-+                " if iasl is installed somewhere other than %s.\n",
+  worked as a charm.
 
+- Your test run:
 
-> My preference would be to have
-> configure output CONFIG_IASL to a new header
-> (e.g. config-bios-tables-test.h ?)
->=20
-> meson then will be smart enough not to rebuild everything
-> if you just change this singe flag.
->=20
->=20
->> ---
->> meson.build                    | 10 ----------
->> meson_options.txt              |  2 --
->> scripts/meson-buildoptions.sh  |  2 --
->> tests/qtest/bios-tables-test.c | 28 ++++++++++++++++++++--------
->> 4 files changed, 20 insertions(+), 22 deletions(-)
->>=20
->> changelog:
->> v3: incorporated suggestion from MST. Simplify it even more and
->> remove all dependency with meson build system. Set a default iasl
->> path which can be overridden by an environment variable.
->>=20
->> v2:
->> addressed comments from v1. CONFIG_IASL is now an environment
->> variable and no new environment variable is introduced.
->> Top level meson.build now does not set CONFIG_IASL in the
->> platform header. References to iasl has been removed from other
->> files. Test doc is updated. For example:
->>=20
->> "to see ASL diff between mismatched files install IASL, set =
-CONFIG_IASL environment variable to the path of iasl binary,
->> and run 'QTEST_QEMU_BINARY=3D<path to QEMU binary to test> V=3D1 =
-./tests/qtest/bios-tables-test' from build directory.
->> Alternatively run 'V=3D1 make check-qtest -B' from build dir."
->>=20
->>=20
->> One drawback of this approach is that meson overrides the values
->> of environment variables that are passed from the OS command line
->> with the values it sets. So if CONFIG_IASL is passed as an
->> env variable by the developer while running "make check-qtest" and
->> meson finds iasl in the path, meson will override the value the
->> developer provided with the one that it found. I have not seen a
->> way to check for OS env from meson.build like we do os.environ.get()
->> in python.
->> Other than the above, other cases are tested. In absence of iasl,
->> the developer can provide their own CONFIG_IASL and path to a custom
->> binary and the test picks it up when run from make check-qtest.
->> Once iasl is installed, make check-qtest -B will force meson to
->> retest iasl path and pass it to the test as an enviroinment.
->> When running the test directly, one has to explicitly pass the path
->> of iasl in the commnand line as no meson is involved there. There is
->> no automatic PATH discovery in the test.
->>=20
->> diff --git a/meson.build b/meson.build
->> index 25a4b9f2c1..18c7b669d9 100644
->> --- a/meson.build
->> +++ b/meson.build
->> @@ -179,12 +179,6 @@ if 'dtrace' in get_option('trace_backends')
->>   endif
->> endif
->>=20
->> -if get_option('iasl') =3D=3D ''
->> -  iasl =3D find_program('iasl', required: false)
->> -else
->> -  iasl =3D find_program(get_option('iasl'), required: true)
->> -endif
->> -
->> ##################
->> # Compiler flags #
->> ##################
->> @@ -1791,9 +1785,6 @@ foreach k : get_option('trace_backends')
->> endforeach
->> config_host_data.set_quoted('CONFIG_TRACE_FILE', =
-get_option('trace_file'))
->> config_host_data.set_quoted('CONFIG_TLS_PRIORITY', =
-get_option('tls_priority'))
->> -if iasl.found()
->> -  config_host_data.set_quoted('CONFIG_IASL', iasl.full_path())
->> -endif
->> config_host_data.set_quoted('CONFIG_BINDIR', get_option('prefix') / =
-get_option('bindir'))
->> config_host_data.set_quoted('CONFIG_PREFIX', get_option('prefix'))
->> config_host_data.set_quoted('CONFIG_QEMU_CONFDIR', =
-get_option('prefix') / qemu_confdir)
->> @@ -3761,7 +3752,6 @@ summary_info +=3D {'sphinx-build':      =
-sphinx_build}
->> if config_host.has_key('HAVE_GDB_BIN')
->>   summary_info +=3D {'gdb':             config_host['HAVE_GDB_BIN']}
->> endif
->> -summary_info +=3D {'iasl':              iasl}
->> summary_info +=3D {'genisoimage':       config_host['GENISOIMAGE']}
->> if targetos =3D=3D 'windows' and have_ga
->>   summary_info +=3D {'wixl':            wixl}
->> diff --git a/meson_options.txt b/meson_options.txt
->> index d8330a1f71..9149df8004 100644
->> --- a/meson_options.txt
->> +++ b/meson_options.txt
->> @@ -14,8 +14,6 @@ option('smbd', type : 'string', value : '',
->>        description: 'Path to smbd for slirp networking')
->> option('sphinx_build', type : 'string', value : 'sphinx-build',
->>        description: 'Use specified sphinx-build for building =
-document')
->> -option('iasl', type : 'string', value : '',
->> -       description: 'Path to ACPI disassembler')
->> option('tls_priority', type : 'string', value : 'NORMAL',
->>        description: 'Default TLS protocol/cipher priority string')
->> option('default_devices', type : 'boolean', value : true,
->> diff --git a/scripts/meson-buildoptions.sh =
-b/scripts/meson-buildoptions.sh
->> index 2805d1c145..98ca2e53af 100644
->> --- a/scripts/meson-buildoptions.sh
->> +++ b/scripts/meson-buildoptions.sh
->> @@ -48,7 +48,6 @@ meson_options_help() {
->>   printf "%s\n" '                           =
-dtrace/ftrace/log/nop/simple/syslog/ust)'
->>   printf "%s\n" '  --firmwarepath=3DVALUES    search PATH for =
-firmware files [share/qemu-'
->>   printf "%s\n" '                           firmware]'
->> -  printf "%s\n" '  --iasl=3DVALUE             Path to ACPI =
-disassembler'
->>   printf "%s\n" '  --includedir=3DVALUE       Header file directory =
-[include]'
->>   printf "%s\n" '  --interp-prefix=3DVALUE    where to find shared =
-libraries etc., use %M for'
->>   printf "%s\n" '                           cpu name =
-[/usr/gnemul/qemu-%M]'
->> @@ -304,7 +303,6 @@ _meson_option_parse() {
->>     --disable-hexagon-idef-parser) printf "%s" =
--Dhexagon_idef_parser=3Dfalse ;;
->>     --enable-hvf) printf "%s" -Dhvf=3Denabled ;;
->>     --disable-hvf) printf "%s" -Dhvf=3Ddisabled ;;
->> -    --iasl=3D*) quote_sh "-Diasl=3D$2" ;;
->>     --enable-iconv) printf "%s" -Diconv=3Denabled ;;
->>     --disable-iconv) printf "%s" -Diconv=3Ddisabled ;;
->>     --includedir=3D*) quote_sh "-Dincludedir=3D$2" ;;
->> diff --git a/tests/qtest/bios-tables-test.c =
-b/tests/qtest/bios-tables-test.c
->> index 7fd88b0e9c..570f2d714d 100644
->> --- a/tests/qtest/bios-tables-test.c
->> +++ b/tests/qtest/bios-tables-test.c
->> @@ -69,6 +69,7 @@
->> #define MACHINE_Q35 "q35"
->>=20
->> #define ACPI_REBUILD_EXPECTED_AML "TEST_ACPI_REBUILD_AML"
->> +#define DEFAULT_IASL_PATH "/usr/bin/iasl"
->>=20
->> #define OEM_ID             "TEST"
->> #define OEM_TABLE_ID       "OEM"
->> @@ -102,11 +103,7 @@ typedef struct {
->>=20
->> static char disk[] =3D "tests/acpi-test-disk-XXXXXX";
->> static const char *data_dir =3D "tests/data/acpi";
->> -#ifdef CONFIG_IASL
->> -static const char *iasl =3D CONFIG_IASL;
->> -#else
->> -static const char *iasl;
->> -#endif
->> +static const char *iasl =3D DEFAULT_IASL_PATH;
->>=20
->> static int verbosity_level;
->>=20
->> @@ -441,6 +438,14 @@ static void test_acpi_asl(test_data *data)
->>     test_data exp_data =3D {};
->>     gboolean exp_err, err, all_tables_match =3D true;
->>=20
->> +    if (getenv("IASL_PATH")) {
->> +        iasl =3D getenv("IASL_PATH");
->> +    }
->> +
->> +    if (access(iasl, F_OK | X_OK) < 0) {
->> +        iasl =3D NULL;
->> +    }
->> +
->>     exp_data.tables =3D load_expected_aml(data);
->>     dump_aml_files(data, false);
->>     for (i =3D 0; i < data->tables->len; ++i) {
->> @@ -473,6 +478,10 @@ static void test_acpi_asl(test_data *data)
->>             continue;
->>         }
->>=20
->> +        if (iasl && verbosity_level >=3D 2) {
->> +            fprintf(stderr, "Using iasl: %s\n", iasl);
->> +        }
->> +
->>         err =3D load_asl(data->tables, sdt);
->>         asl =3D normalize_asl(sdt->asl);
->>=20
->> @@ -528,9 +537,12 @@ static void test_acpi_asl(test_data *data)
->>         g_string_free(exp_asl, true);
->>     }
->>     if (!iasl && !all_tables_match) {
->> -        fprintf(stderr, "to see ASL diff between mismatched files =
-install IASL,"
->> -                " rebuild QEMU from scratch and re-run tests with =
-V=3D1"
->> -                " environment variable set");
->> +        fprintf(stderr, "to see ASL diff between mismatched files =
-install\n"
->> +                " IASL & re-run the test with V=3D1 environment =
-variable set.\n"
->> +                " Set IASL_PATH environment variable to the path of =
-iasl binary\n"
->> +                " if iasl is installed somewhere other than %s.\n",
->> +                DEFAULT_IASL_PATH
->> +                );
->>     }
->>     g_assert(all_tables_match);
->>=20
->> --=20
->> 2.39.1
->=20
+   qemu-system-x86_64: Unable to read from socket: Connection reset by peer
+   one of the sides die, so anything else after that don't matter.
+
+  And I don't understand what CFI is (and I don't rule out that
+  posibility) or I can't understand how checking indirect functions call
+  can make migration-test die without a single CFI error message?
+
+- I tried myself CI pipeline, some exact source:
+
+  https://gitlab.com/juan.quintela/qemu/-/commit/23e4307eadc1497bd0a11ca910=
+41768f15963b68/pipelines?ref=3Dsent%2Fmigration-20230621b
+
+This is what fails:
+
+https://gitlab.com/juan.quintela/qemu/-/jobs/4527782025
+16/395 ERROR:../tests/qtest/qos-test.c:191:subprocess_run_one_test: child p=
+rocess (/x86_64/pc/i440FX-pcihost/pci-bus-pc/pci-bus/virtio-net-pci/virtio-=
+net/virtio-net-tests/vhost-user/reconnect/subprocess [4569]) failed unexpec=
+tedly ERROR=20=20=20=20=20=20=20=20=20
+ 16/395 qemu:qtest+qtest-x86_64 / qtest-x86_64/qos-test                    =
+ERROR          27.46s   killed by signal 6 SIGABRT
+>>> MALLOC_PERTURB_=3D92 QTEST_QEMU_STORAGE_DAEMON_BINARY=3D./storage-daemo=
+n/qemu-storage-daemon QTEST_QEMU_BINARY=3D./qemu-system-x86_64 QTEST_QEMU_I=
+MG=3D./qemu-img G_TEST_DBUS_DAEMON=3D/builds/juan.quintela/qemu/tests/dbus-=
+vmstate-daemon.sh /builds/juan.quintela/qemu/build/tests/qtest/qos-test --t=
+ap -k
+=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=
+=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=
+=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=
+=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=
+=80=95=E2=80=95=E2=80=95=E2=80=95 =E2=9C=80  =E2=80=95=E2=80=95=E2=80=95=E2=
+=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=
+=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=
+=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=
+=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=
+=95
+stderr:
+Vhost user backend fails to broadcast fake RARP
+qemu-system-x86_64: -chardev socket,id=3Dchr-reconnect,path=3D/tmp/vhost-te=
+st-8XUX61/reconnect.sock,server=3Don: info: QEMU waiting for connection on:=
+ disconnected:unix:/tmp/vhost-test-8XUX61/reconnect.sock,server=3Don
+qemu-system-x86_64: Failed to set msg fds.
+qemu-system-x86_64: vhost VQ 0 ring restore failed: -22: Invalid argument (=
+22)
+qemu-system-x86_64: Failed to set msg fds.
+qemu-system-x86_64: vhost VQ 1 ring restore failed: -22: Invalid argument (=
+22)
+**
+ERROR:../tests/qtest/vhost-user-test.c:890:wait_for_rings_started: assertio=
+n failed (ctpop64(s->rings) =3D=3D count): (1 =3D=3D 2)
+**
+ERROR:../tests/qtest/qos-test.c:191:subprocess_run_one_test: child
+process
+(/x86_64/pc/i440FX-pcihost/pci-bus-pc/pci-bus/virtio-net-pci/virtio-net/vir=
+tio-net-tests/vhost-user/reconnect/subprocess
+[4569]) failed unexpectedly
+
+vhost?  virtio-queue?  in a non migration test?
+
+I don't know what is going on, but this is weird.
+
+Do we have a way to run on that image:
+
+./tests/qtest/migration-test
+
+in a loop until it fails, and at least see what test is failing?
+
+Later, Juan.
 
 
