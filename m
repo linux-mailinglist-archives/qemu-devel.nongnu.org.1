@@ -2,37 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B904673EAB5
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 20:58:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CEE273EACF
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 21:00:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDrJa-0005Jl-Nu; Mon, 26 Jun 2023 14:51:54 -0400
+	id 1qDrJg-0005nx-1C; Mon, 26 Jun 2023 14:52:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qDrJX-0005G8-R4; Mon, 26 Jun 2023 14:51:51 -0400
+ id 1qDrJb-0005ZL-Rf; Mon, 26 Jun 2023 14:51:55 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qDrJW-00053m-3o; Mon, 26 Jun 2023 14:51:51 -0400
+ id 1qDrJZ-00054K-Ue; Mon, 26 Jun 2023 14:51:55 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id E7E98EF2B;
- Mon, 26 Jun 2023 21:50:21 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 22899EF2C;
+ Mon, 26 Jun 2023 21:50:22 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 784A5F7BA;
+ by tsrv.corpit.ru (Postfix) with SMTP id AB723F7BB;
  Mon, 26 Jun 2023 21:50:20 +0300 (MSK)
-Received: (nullmailer pid 1574018 invoked by uid 1000);
+Received: (nullmailer pid 1574021 invoked by uid 1000);
  Mon, 26 Jun 2023 18:50:16 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org, qemu-stable@nongnu.org
-Cc: Ilya Leoshkevich <iii@linux.ibm.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- David Hildenbrand <david@redhat.com>, Thomas Huth <thuth@redhat.com>,
+Cc: Ilya Leoshkevich <iii@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.0.3 20/54] tests/tcg/s390x: Test LOCFHR
-Date: Mon, 26 Jun 2023 21:49:27 +0300
-Message-Id: <20230626185002.1573836-20-mjt@tls.msk.ru>
+Subject: [Stable-8.0.3 21/54] linux-user/s390x: Fix single-stepping SVC
+Date: Mon, 26 Jun 2023 21:49:28 +0300
+Message-Id: <20230626185002.1573836-21-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.0.3-20230626214235@cover.tls.msk.ru>
 References: <qemu-stable-8.0.3-20230626214235@cover.tls.msk.ru>
@@ -63,64 +61,36 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Ilya Leoshkevich <iii@linux.ibm.com>
 
-Add a small test to prevent regressions.
+Currently single-stepping SVC executes two instructions. The reason is
+that EXCP_DEBUG for the SVC instruction itself is masked by EXCP_SVC.
+Fix by re-raising EXCP_DEBUG.
 
-Cc: qemu-stable@nongnu.org
 Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Message-Id: <20230526181240.1425579-5-iii@linux.ibm.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: David Hildenbrand <david@redhat.com>
+Message-Id: <20230510230213.330134-2-iii@linux.ibm.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
-(cherry picked from commit 230976232f4fcdc205d6ec53ec9f3804b28dc1e7)
+(cherry picked from commit 01b9990a3fb84bb9a14017255ab1a4fa86588215)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/tests/tcg/s390x/Makefile.target b/tests/tcg/s390x/Makefile.target
-index 4ed07c6ab0..b14c0bd84b 100644
---- a/tests/tcg/s390x/Makefile.target
-+++ b/tests/tcg/s390x/Makefile.target
-@@ -48,6 +48,7 @@ TESTS += $(PGM_SPECIFICATION_TESTS)
+diff --git a/linux-user/s390x/cpu_loop.c b/linux-user/s390x/cpu_loop.c
+index 285bc60071..8b7ac2879e 100644
+--- a/linux-user/s390x/cpu_loop.c
++++ b/linux-user/s390x/cpu_loop.c
+@@ -86,6 +86,15 @@ void cpu_loop(CPUS390XState *env)
+             } else if (ret != -QEMU_ESIGRETURN) {
+                 env->regs[2] = ret;
+             }
++
++            if (unlikely(cs->singlestep_enabled)) {
++                /*
++                 * cpu_tb_exec() did not raise EXCP_DEBUG, because it has seen
++                 * that EXCP_SVC was already pending.
++                 */
++                cs->exception_index = EXCP_DEBUG;
++            }
++
+             break;
  
- Z13_TESTS=vistr
- Z13_TESTS+=lcbb
-+Z13_TESTS+=locfhr
- $(Z13_TESTS): CFLAGS+=-march=z13 -O2
- TESTS+=$(Z13_TESTS)
- 
-diff --git a/tests/tcg/s390x/locfhr.c b/tests/tcg/s390x/locfhr.c
-new file mode 100644
-index 0000000000..ab9ff6e449
---- /dev/null
-+++ b/tests/tcg/s390x/locfhr.c
-@@ -0,0 +1,29 @@
-+/*
-+ * Test the LOCFHR instruction.
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+#include <assert.h>
-+#include <stdlib.h>
-+
-+static inline __attribute__((__always_inline__)) long
-+locfhr(long r1, long r2, int m3, int cc)
-+{
-+    cc <<= 28;
-+    asm("spm %[cc]\n"
-+        "locfhr %[r1],%[r2],%[m3]\n"
-+        : [r1] "+r" (r1)
-+        : [cc] "r" (cc), [r2] "r" (r2), [m3] "i" (m3)
-+        : "cc");
-+    return r1;
-+}
-+
-+int main(void)
-+{
-+    assert(locfhr(0x1111111122222222, 0x3333333344444444, 8, 0) ==
-+           0x3333333322222222);
-+    assert(locfhr(0x5555555566666666, 0x7777777788888888, 11, 1) ==
-+           0x5555555566666666);
-+
-+    return EXIT_SUCCESS;
-+}
+         case EXCP_DEBUG:
 -- 
 2.39.2
 
