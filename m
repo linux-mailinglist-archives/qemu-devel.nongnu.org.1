@@ -2,53 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8DC473DC65
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 12:44:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE33A73DC6A
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 12:45:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDjgA-0006BI-Fl; Mon, 26 Jun 2023 06:42:42 -0400
+	id 1qDjii-0007Nx-WD; Mon, 26 Jun 2023 06:45:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=U+Ap=CO=kaod.org=clg@ozlabs.org>)
- id 1qDjg6-0006B0-54; Mon, 26 Jun 2023 06:42:38 -0400
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=U+Ap=CO=kaod.org=clg@ozlabs.org>)
- id 1qDjg2-0001MR-Iy; Mon, 26 Jun 2023 06:42:37 -0400
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4QqPYc0Hxnz4wZx;
- Mon, 26 Jun 2023 20:42:28 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4QqPYY4HRNz4w23;
- Mon, 26 Jun 2023 20:42:25 +1000 (AEST)
-Message-ID: <ec69ce13-d4ad-6180-4d5a-77b449165eac@kaod.org>
-Date: Mon, 26 Jun 2023 12:42:22 +0200
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qDjic-0007Kp-K1
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 06:45:16 -0400
+Received: from mail-lj1-x234.google.com ([2a00:1450:4864:20::234])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qDjia-0001s5-Ev
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 06:45:14 -0400
+Received: by mail-lj1-x234.google.com with SMTP id
+ 38308e7fff4ca-2b44eddb52dso45748921fa.3
+ for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 03:45:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1687776310; x=1690368310;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=72dCw6/OQqs7JI0840J/5S+u9WEFf56hu8wK7UopnZI=;
+ b=hRQf2i6xHu1PWP9OemKtuTq35uoTBVXMmCTKAUm0xrexjc+C+0xHALd3i4960/ykrk
+ SVxZqOlf5HGjNg1CtUSkS5bRMhv9q/5ESqorVVbXFZRC/lFwcx1YAe4a+fOn8qCE1ENz
+ M5XX7+w7/LpHr85/C4q8iy7HLkdH8JvYRL5k6uccOTi69UZZTdlgRyp4M/WREfw0mKYF
+ JM78d9eF76jNSFCwx1QzRHbUf1stziOCdXvt7sIXEVnmpdhEa9xMJbWj0GTcXmvjGmDx
+ V71q10AKP4Krc9biERW1/wcxmEA3tgkjPRsLnTm8o/Iu3p0RH8vZ8HpG7mlydIq0UROn
+ zeIg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1687776310; x=1690368310;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=72dCw6/OQqs7JI0840J/5S+u9WEFf56hu8wK7UopnZI=;
+ b=TEeCHK/F25z2pF5gz7YWcjUkbNzfKQSJpQhYZ+KeMeb6OmT7IOsb7/y9FKB3YufK6O
+ avCX47i6FOxandl4OrjIXgACdDHlhtEfumbE0cSD32LCX4ZlK9xxOxyCGeLMVHMqHoI2
+ +ZX/qtTOGufTKZa2c6ZDdlI2lHJvXwZmcgVMwn3SSzBPsbvTHgsHEq277//lCEV43bke
+ NKE+6gJO1Wro0/XgsHBHYBL26E+beeqiXJnAVr2QobO8FyC0ISTNVyq8tdidI1VXxBga
+ pX//5WR1HBZcSuIcgbi8Un0zqgvcEUxXsRncxB3ggWuhintJc6Z39eNkKh/p4hnF3cHK
+ dwAQ==
+X-Gm-Message-State: AC+VfDwS4bN3fTsuBKu9uULhH1nrX6S3DikBBbPlYsCNJC9mApq6fHhn
+ GboS8AuHRjTlfqOwczjEw1HkGw==
+X-Google-Smtp-Source: ACHHUZ7+EP8HXL4iOR4kYT1/msU2dGUgKB+4FrHmYnwOusmfQFuiR1u75maHfKs0G5Klh72gp4CngQ==
+X-Received: by 2002:a2e:9c98:0:b0:2b5:82c9:d85f with SMTP id
+ x24-20020a2e9c98000000b002b582c9d85fmr9324617lji.11.1687776309889; 
+ Mon, 26 Jun 2023 03:45:09 -0700 (PDT)
+Received: from [192.168.44.231] (141.pool92-176-132.dynamic.orange.es.
+ [92.176.132.141]) by smtp.gmail.com with ESMTPSA id
+ u8-20020a05600c00c800b003f70a7b4537sm10204408wmm.36.2023.06.26.03.45.08
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 26 Jun 2023 03:45:09 -0700 (PDT)
+Message-ID: <89fa0689-f5ba-f5b3-16f2-7aa1a50077c0@linaro.org>
+Date: Mon, 26 Jun 2023 12:45:06 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH] pnv/xive2: Allow indirect TIMA accesses of all sizes
-To: Frederic Barrat <fbarrat@linux.ibm.com>, danielhb413@gmail.com,
- qemu-ppc@nongnu.org, qemu-devel@nongnu.org
-Cc: npiggin@gmail.com
-References: <20230626094057.1192473-1-fbarrat@linux.ibm.com>
+ Thunderbird/102.11.0
+Subject: Re: [PULL 0/9] Testing / CI patches
 Content-Language: en-US
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20230626094057.1192473-1-fbarrat@linux.ibm.com>
+To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
+References: <20230626081415.64615-1-thuth@redhat.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230626081415.64615-1-thuth@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
- envelope-from=SRS0=U+Ap=CO=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -40
-X-Spam_score: -4.1
-X-Spam_bar: ----
-X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, NICE_REPLY_A=-0.089,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::234;
+ envelope-from=richard.henderson@linaro.org; helo=mail-lj1-x234.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.089,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -65,61 +93,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/26/23 11:40, Frederic Barrat wrote:
-> Booting linux on the powernv10 machine logs a few errors like:
+On 6/26/23 10:14, Thomas Huth wrote:
+> The following changes since commit 79dbd910c9ea6ca38f8e1b2616b1e5e885b85bd3:
 > 
-> Invalid read at addr 0x38, size 1, region 'xive-ic-tm-indirect', reason: invalid size (min:8 max:8)
-> Invalid write at addr 0x38, size 1, region 'xive-ic-tm-indirect', reason: invalid size (min:8 max:8)
-> Invalid read at addr 0x38, size 1, region 'xive-ic-tm-indirect', reason: invalid size (min:8 max:8)
+>    Merge tag 'hppa-boot-reboot-fixes-pull-request' ofhttps://github.com/hdeller/qemu-hppa  into staging (2023-06-25 08:58:49 +0200)
 > 
-> Those errors happen when linux is resetting XIVE. We're trying to
-> read/write the enablement bit for the hardware context and qemu
-> doesn't allow indirect TIMA accesses of less than 8 bytes. Direct TIMA
-> access can go through though, as well as indirect TIMA accesses on P9.
-> So even though there are some restrictions regarding the address/size
-> combinations for TIMA access, the example above is perfectly valid.
+> are available in the Git repository at:
 > 
-> This patch lets indirect TIMA accesses of all sizes go through. The
-> special operations will be intercepted and the default "raw" handlers
-> will pick up all other requests and complain about invalid sizes as
-> appropriate.
+>    https://gitlab.com/thuth/qemu.git  tags/pull-request-2023-06-26
 > 
-> Tested-by: Nicholas Piggin <npiggin@gmail.com>
-> Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
-> ---
->   hw/intc/pnv_xive2.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
+> for you to fetch changes up to b197ea8636a18b0e2968b00c3a392bfc641b51a0:
 > 
-> diff --git a/hw/intc/pnv_xive2.c b/hw/intc/pnv_xive2.c
-> index ed438a20ed..e8ab176de6 100644
-> --- a/hw/intc/pnv_xive2.c
-> +++ b/hw/intc/pnv_xive2.c
-> @@ -1644,11 +1644,11 @@ static const MemoryRegionOps pnv_xive2_ic_tm_indirect_ops = {
->       .write = pnv_xive2_ic_tm_indirect_write,
->       .endianness = DEVICE_BIG_ENDIAN,
->       .valid = {
-> -        .min_access_size = 8,
-> +        .min_access_size = 1,
->           .max_access_size = 8,
->       },
->       .impl = {
-> -        .min_access_size = 8,
-> +        .min_access_size = 1,
->           .max_access_size = 8,
->       },
->   };
+>    tests/qtest/cxl-test: Clean up temporary directories after testing (2023-06-26 09:01:33 +0200)
+> 
+> ----------------------------------------------------------------
+> * Improve gitlab-CI with regards to handling of stable staging branches
+> * Add msys2 gitlab-CI artifacts
+> * Minor qtest fixes
+
+Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/8.1 as appropriate.
 
 
-This makes the TM indirect ops and the TM direct ops similar on P10.
-Same as P9
-
-LGTM,
-
-
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
-
-Thanks,
-
-C.
+r~
 
 
