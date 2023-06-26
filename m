@@ -2,34 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56D9873EAD3
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 21:04:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2FF273EB03
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 21:13:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDrU7-0003Ta-0C; Mon, 26 Jun 2023 15:02:47 -0400
+	id 1qDrU9-0003gG-HC; Mon, 26 Jun 2023 15:02:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qDrTl-0002ZS-LM; Mon, 26 Jun 2023 15:02:26 -0400
+ id 1qDrU7-0003dY-Ch; Mon, 26 Jun 2023 15:02:47 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qDrTk-0007z8-5v; Mon, 26 Jun 2023 15:02:25 -0400
+ id 1qDrU5-0007zd-NF; Mon, 26 Jun 2023 15:02:47 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 5D03FEFCB;
+ by isrv.corpit.ru (Postfix) with ESMTP id 8A164EFCC;
  Mon, 26 Jun 2023 21:59:15 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id E3C73F805;
- Mon, 26 Jun 2023 21:59:13 +0300 (MSK)
-Received: (nullmailer pid 1575397 invoked by uid 1000);
+ by tsrv.corpit.ru (Postfix) with SMTP id 1D7B9F806;
+ Mon, 26 Jun 2023 21:59:14 +0300 (MSK)
+Received: (nullmailer pid 1575400 invoked by uid 1000);
  Mon, 26 Jun 2023 18:59:05 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org, qemu-stable@nongnu.org
-Cc: Helge Deller <deller@gmx.de>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.4 40/43] target/hppa: Update to SeaBIOS-hppa version 8
-Date: Mon, 26 Jun 2023 21:58:58 +0300
-Message-Id: <20230626185902.1575177-40-mjt@tls.msk.ru>
+Cc: Prasad Pandit <pjp@fedoraproject.org>,
+ "Michael S . Tsirkin" <mst@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Jason Wang <jasowang@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.4 41/43] vhost: release memory_listener object in error
+ path
+Date: Mon, 26 Jun 2023 21:58:59 +0300
+Message-Id: <20230626185902.1575177-41-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.4-20230626215033@cover.tls.msk.ru>
 References: <qemu-stable-7.2.4-20230626215033@cover.tls.msk.ru>
@@ -58,33 +61,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Helge Deller <deller@gmx.de>
+From: Prasad Pandit <pjp@fedoraproject.org>
 
-Update SeaBIOS-hppa to version 8.
+vhost_dev_start function does not release memory_listener object
+in case of an error. This may crash the guest when vhost is unable
+to set memory table:
 
-Fixes:
-- boot of HP-UX with SMP, and
-- reboot of Linux and HP-UX with SMP
+  stack trace of thread 125653:
+  Program terminated with signal SIGSEGV, Segmentation fault
+  #0  memory_listener_register (qemu-kvm + 0x6cda0f)
+  #1  vhost_dev_start (qemu-kvm + 0x699301)
+  #2  vhost_net_start (qemu-kvm + 0x45b03f)
+  #3  virtio_net_set_status (qemu-kvm + 0x665672)
+  #4  qmp_set_link (qemu-kvm + 0x548fd5)
+  #5  net_vhost_user_event (qemu-kvm + 0x552c45)
+  #6  tcp_chr_connect (qemu-kvm + 0x88d473)
+  #7  tcp_chr_new_client (qemu-kvm + 0x88cf83)
+  #8  tcp_chr_accept (qemu-kvm + 0x88b429)
+  #9  qio_net_listener_channel_func (qemu-kvm + 0x7ac07c)
+  #10 g_main_context_dispatch (libglib-2.0.so.0 + 0x54e2f)
 
-Enhancements:
-- show qemu version in boot menu
-- adds exit menu entry in boot menu to quit emulation
-- allow to trace PCD_CHASSIS codes & machine run status
+Release memory_listener objects in the error path.
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-(cherry picked from commit 34ec3aea54368a92b62a55c656335885ba8c65ef)
+Signed-off-by: Prasad Pandit <pjp@fedoraproject.org>
+Message-Id: <20230529114333.31686-2-ppandit@redhat.com>
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Reviewed-by: Peter Xu <peterx@redhat.com>
+Fixes: c471ad0e9b ("vhost_net: device IOTLB support")
+Cc: qemu-stable@nongnu.org
+Acked-by: Jason Wang <jasowang@redhat.com>
+(cherry picked from commit 1e3ffb34f764f8ac4c003b2b2e6a775b2b073a16)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/pc-bios/hppa-firmware.img b/pc-bios/hppa-firmware.img
-index e7660b0458..0fa3808f16 100644
-Binary files a/pc-bios/hppa-firmware.img and b/pc-bios/hppa-firmware.img differ
-diff --git a/roms/seabios-hppa b/roms/seabios-hppa
-index 1cfbe76ff6..673d2595d4 160000
---- a/roms/seabios-hppa
-+++ b/roms/seabios-hppa
-@@ -1 +1 @@
--Subproject commit 1cfbe76ff625fce9ed5991f7e13d80ffec900f40
-+Subproject commit 673d2595d4f773cc266cbf8dbaf2f475a6adb949
+diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
+index fdcd1a8fdf..f38997b3f6 100644
+--- a/hw/virtio/vhost.c
++++ b/hw/virtio/vhost.c
+@@ -1934,6 +1934,9 @@ fail_vq:
+     }
+ 
+ fail_mem:
++    if (vhost_dev_has_iommu(hdev)) {
++        memory_listener_unregister(&hdev->iommu_listener);
++    }
+ fail_features:
+     vdev->vhost_started = false;
+     hdev->started = false;
 -- 
 2.39.2
 
