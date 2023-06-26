@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89F0273DF6B
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 14:39:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AD3C73DF31
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 14:29:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDlKY-0001hO-L7; Mon, 26 Jun 2023 08:28:30 -0400
+	id 1qDlKc-0001km-0E; Mon, 26 Jun 2023 08:28:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qDlKW-0001cP-6p
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 08:28:28 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qDlKZ-0001iS-9M
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 08:28:31 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qDlKU-0002l8-1a
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 08:28:27 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qDlKX-0002lh-Au
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 08:28:31 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687782505;
+ s=mimecast20190719; t=1687782508;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=+QhAsN/XuaZ11bEG8Ru5fkaUsTR7CPbUnVIC/HsX/ME=;
- b=AOscxSQj3kzAXYrqsFv8YHUwKD/AyIamJ7W0xzbCSJfcNt9FSLM8jPuQBDEGFjGcWRzJ3Q
- E7PyQsbnNykGHZAzlUFBbxlS6KiTLNVCA/1clTBx3BorzYllqELClMsBSM0zlDtAWpHako
- qjhiEC7rfIout6hJUnLDP0Vrq86bMdw=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=CvHv0xRrL+n4gHBfU6fz1bd4t5h8JYvFuitEDaGVga0=;
+ b=Yq/BB65R5DXAY0JqHqfHHV+R5kRX5XRMN811zfgW6EYPSu8Mk8UMVdk952/pB9rAUwbuoZ
+ NlsGiiLSCA2FeTemNErijAAwvCCOyAvIIoBAwxV9oRqGse4IulI1imvk3leR6jopM63nB9
+ 7vsgJ7fMt+mpR7Kj38abNC4oJPEHa3M=
+Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
+ [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-499-IVt0GAgINWSTlOVyATWCAA-1; Mon, 26 Jun 2023 08:28:23 -0400
-X-MC-Unique: IVt0GAgINWSTlOVyATWCAA-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-3f9b003507bso15727315e9.0
- for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 05:28:23 -0700 (PDT)
+ us-mta-13-3Ly1rWS_OlSZ-iHBWYTRnQ-1; Mon, 26 Jun 2023 08:28:27 -0400
+X-MC-Unique: 3Ly1rWS_OlSZ-iHBWYTRnQ-1
+Received: by mail-lj1-f199.google.com with SMTP id
+ 38308e7fff4ca-2b620465d0eso11924351fa.0
+ for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 05:28:27 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687782502; x=1690374502;
+ d=1e100.net; s=20221208; t=1687782505; x=1690374505;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=+QhAsN/XuaZ11bEG8Ru5fkaUsTR7CPbUnVIC/HsX/ME=;
- b=EWfpTgehMs41lzz5oc+ZKaIWDsUl2E7p8Z52yha0WdD/RF6WZ8FuaL/Ok6mPsD8g5e
- qd0Pw/I+NFQ7FAxsxekMSDsdPowx+9MkZMGYAo+uXo8Slt8RXGqStBU5geUweGObdDkK
- VuDW0rFfXan8lyB/IWqJRtD697ghnvlXaA9k8GlcD8xst4fUpAw67D4Jsom/pGR27lT2
- CmJww4QIihkIRfKwHaC5PlU08s2gCqyC6VL1EFg+jjKlb5ef5SQHkwcTAvboMOhb8Ft0
- j2nT9dkC0tB8veExhiumeqbE1/8kPc6+IDIR2SVV/YMy40+pTdi261TaX59eyO2uc9sq
- uqNg==
-X-Gm-Message-State: AC+VfDxmafN0qzZ03dQMXNyjQ27rLUdX4oOYa44XA65qPwKWTuKGaaUn
- O2MHOOD8S+dbPyI7E28phx7ytngx8sSo8EGm96fXcbxMGLUwnpS2ZqGsM6mebjDVzGOib0lw9x2
- palMPDIxu7Xekdr7FashLQmE0lyb2BeZsZ6Dq9fIp5iu0GDlbpm/MecKvrjyjdloud1So
-X-Received: by 2002:a05:600c:2119:b0:3fb:407e:9b31 with SMTP id
- u25-20020a05600c211900b003fb407e9b31mr542960wml.37.1687782502091; 
- Mon, 26 Jun 2023 05:28:22 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ72B8bFPZaL8BkUvfbAuUoozMVOmyjVFb018ko+Klw5mrWAF0+TRsaGuTvxwSJ1EDaeizwcEw==
-X-Received: by 2002:a05:600c:2119:b0:3fb:407e:9b31 with SMTP id
- u25-20020a05600c211900b003fb407e9b31mr542935wml.37.1687782501490; 
- Mon, 26 Jun 2023 05:28:21 -0700 (PDT)
+ bh=CvHv0xRrL+n4gHBfU6fz1bd4t5h8JYvFuitEDaGVga0=;
+ b=mIWSZewfIAQWRYSAi002RkH0eqg/6IAt2n6YYZTyIplDBhmzzhKzevIEVuQyMP+CFC
+ OuHG278rMc+NGkMg9D6d2Lt1bhBkW309ccdSkw/cHMK3gviHEEW2Gouqpg4xSyWuFNbQ
+ Hoc3Zo1kolcoko8EpZ0+uddlnreUKKQVKfd/rxl9mRJw0YspDcKN5IH/jMkJV1dC8xJA
+ WFgN9UBpIwAgsoJS4aseewpuzkoFuahJJ322lyWrSGWllmFa2MKAjJ/XAfJWntv9Nx3x
+ Zbq7TLFX8Ih/ZORfAKEKVem2sCyaOxQNhr5R0PBwSRtVPpFu3oViZhf4vl95/140LO13
+ HvpQ==
+X-Gm-Message-State: AC+VfDy3BOIssCnZt2foYC63s26LJ4NqepuJJustyWn6VFOb3Ah2pjAM
+ 7AhHeL0/axCXkjIdqeTv2JphTnXQP8l+lKNQn2hVrBcvTGHPLP/iQil9ZilPpBFhKEFo61oXQFv
+ cXjMJCRpIv1xM0jp99u7A0CsKQD51kvZg5i3C634ej6t2RtikVSZnj6SmxSaVYyz627Xy
+X-Received: by 2002:ac2:5de6:0:b0:4f7:6976:2070 with SMTP id
+ z6-20020ac25de6000000b004f769762070mr16090142lfq.40.1687782505598; 
+ Mon, 26 Jun 2023 05:28:25 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4TidHk/DVMiErVZn5VKGYv8G149EwkYEMljrTvIrfqRETKCjYRYLJRxI45YgbMV34JPiiUyw==
+X-Received: by 2002:ac2:5de6:0:b0:4f7:6976:2070 with SMTP id
+ z6-20020ac25de6000000b004f769762070mr16090117lfq.40.1687782504927; 
+ Mon, 26 Jun 2023 05:28:24 -0700 (PDT)
 Received: from redhat.com ([2.52.156.102]) by smtp.gmail.com with ESMTPSA id
- a10-20020a1cf00a000000b003f8fb02c413sm7600506wmb.8.2023.06.26.05.28.19
+ t12-20020a7bc3cc000000b003f604793989sm10297184wmj.18.2023.06.26.05.28.23
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 26 Jun 2023 05:28:21 -0700 (PDT)
-Date: Mon, 26 Jun 2023 08:28:18 -0400
+ Mon, 26 Jun 2023 05:28:24 -0700 (PDT)
+Date: Mon, 26 Jun 2023 08:28:21 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Jonathan Cameron <Jonathan.Cameron@huawei.com>,
  Markus Armbruster <armbru@redhat.com>, Fan Ni <fan.ni@samsung.com>,
  Ira Weiny <ira.weiny@intel.com>, Eric Blake <eblake@redhat.com>
-Subject: [PULL 10/53] hw/cxl/events: Add injection of DRAM events
-Message-ID: <b90a324eda7113b62b558aad43e2166eb52567d2.1687782442.git.mst@redhat.com>
+Subject: [PULL 11/53] hw/cxl/events: Add injection of Memory Module Events
+Message-ID: <bafe03083255da3a053144b77a5fbc7dbf9494f3.1687782442.git.mst@redhat.com>
 References: <cover.1687782442.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -102,196 +102,160 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Defined in CXL r3.0 8.2.9.2.1.2 DRAM Event Record, this event
-provides information related to DRAM devices.
+These events include a copy of the device health information at the
+time of the event. Actually using the emulated device health would
+require a lot of controls to manipulate that state.  Given the aim
+of this injection code is to just test the flows when events occur,
+inject the contents of the device health state as well.
 
-Example injection command in QMP:
-
-{ "execute": "cxl-inject-dram-event",
-    "arguments": {
-        "path": "/machine/peripheral/cxl-mem0",
-        "log": "informational",
-        "flags": 1,
-        "dpa": 1000,
-        "descriptor": 3,
-        "type": 3,
-        "transaction-type": 192,
-        "channel": 3,
-        "rank": 17,
-        "nibble-mask": 37421234,
-        "bank-group": 7,
-        "bank": 11,
-        "row": 2,
-        "column": 77,
-        "correction-mask": [33, 44, 55,66]
-    }}
+Future work may add more sophisticate device health emulation
+including direct generation of these records when events occur
+(such as a temperature threshold being crossed).  That does not
+reduce the usefulness of this more basic generation of the events.
 
 Acked-by: Markus Armbruster <armbru@redhat.com>
 Reviewed-by: Fan Ni <fan.ni@samsung.com>
 Reviewed-by: Ira Weiny <ira.weiny@intel.com>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Message-Id: <20230530133603.16934-7-Jonathan.Cameron@huawei.com>
+Message-Id: <20230530133603.16934-8-Jonathan.Cameron@huawei.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- qapi/cxl.json               |  61 +++++++++++++++++++
- include/hw/cxl/cxl_events.h |  23 +++++++
- hw/mem/cxl_type3.c          | 116 ++++++++++++++++++++++++++++++++++++
- hw/mem/cxl_type3_stubs.c    |  13 ++++
- 4 files changed, 213 insertions(+)
+ qapi/cxl.json               | 53 +++++++++++++++++++++++++++++++
+ include/hw/cxl/cxl_events.h | 19 ++++++++++++
+ hw/mem/cxl_type3.c          | 62 +++++++++++++++++++++++++++++++++++++
+ hw/mem/cxl_type3_stubs.c    | 12 +++++++
+ 4 files changed, 146 insertions(+)
 
 diff --git a/qapi/cxl.json b/qapi/cxl.json
-index d509430844..2ad310387c 100644
+index 2ad310387c..d5b5293eb5 100644
 --- a/qapi/cxl.json
 +++ b/qapi/cxl.json
-@@ -79,6 +79,67 @@
-             '*channel': 'uint8', '*rank': 'uint8',
-             '*device': 'uint32', '*component-id': 'str' } }
+@@ -140,6 +140,59 @@
+             '*column': 'uint16', '*correction-mask': [ 'uint64' ]
+            }}
  
 +##
-+# @cxl-inject-dram-event:
++# @cxl-inject-memory-module-event:
 +#
-+# Inject an event record for a DRAM Event (CXL r3.0 8.2.9.2.1.2).
-+# This event type is reported via one of the event logs specified via
-+# the log parameter.
++# Inject an event record for a Memory Module Event (CXL r3.0
++# 8.2.9.2.1.3).  This event includes a copy of the Device Health
++# info at the time of the event.
 +#
 +# @path: CXL type 3 device canonical QOM path
 +#
-+# @log: Event log to add the event to
++# @log: Event Log to add the event to
 +#
 +# @flags: Event Record Flags.  See CXL r3.0 Table 8-42 Common Event
 +#     Record Format, Event Record Flags for subfield definitions.
 +#
-+# @dpa: Device Physical Address (relative to @path device).  Note
-+#     lower bits include some flags.  See CXL r3.0 Table 8-44 DRAM
-+#     Event Record, Physical Address.
++# @type: Device Event Type.  See CXL r3.0 Table 8-45 Memory Module
++#     Event Record for bit definitions for bit definiions.
 +#
-+# @descriptor: Memory Event Descriptor with additional memory event
-+#     information.  See CXL r3.0 Table 8-44 DRAM Event Record, Memory
-+#     Event Descriptor for bit definitions.
++# @health-status: Overall health summary bitmap.  See CXL r3.0 Table
++#     8-100 Get Health Info Output Payload, Health Status for bit
++#     definitions.
 +#
-+# @type: Type of memory event that occurred.  See CXL r3.0 Table 8-44
-+#     DRAM Event Record, Memory Event Type for possible values.
++# @media-status: Overall media health summary.  See CXL r3.0 Table
++#     8-100 Get Health Info Output Payload, Media Status for bit
++#     definitions.
 +#
-+# @transaction-type: Type of first transaction that caused the event
-+#     to occur.  See CXL r3.0 Table 8-44 DRAM Event Record,
-+#     Transaction Type for possible values.
++# @additional-status: See CXL r3.0 Table 8-100 Get Health Info Output
++#     Payload, Additional Status for subfield definitions.
 +#
-+# @channel: The channel of the memory event location.  A channel is an
-+#     interface that can be independently accessed for a transaction.
++# @life-used: Percentage (0-100) of factory expected life span.
 +#
-+# @rank: The rank of the memory event location.  A rank is a set of
-+#     memory devices on a channel that together execute a transaction.
++# @temperature: Device temperature in degrees Celsius.
 +#
-+# @nibble-mask: Identifies one or more nibbles that the error affects
++# @dirty-shutdown-count: Number of times the device has been unable
++#     to determine whether data loss may have occurred.
 +#
-+# @bank-group: Bank group of the memory event location, incorporating
-+#     a number of Banks.
++# @corrected-volatile-error-count: Total number of correctable errors
++#     in volatile memory.
 +#
-+# @bank: Bank of the memory event location.  A single bank is accessed
-+#     per read or write of the memory.
-+#
-+# @row: Row address within the DRAM.
-+#
-+# @column: Column address within the DRAM.
-+#
-+# @correction-mask: Bits within each nibble.  Used in order of bits
-+#     set in the nibble-mask.  Up to 4 nibbles may be covered.
++# @corrected-persistent-error-count: Total number of correctable
++#     errors in persistent memory
 +#
 +# Since: 8.1
 +##
-+{ 'command': 'cxl-inject-dram-event',
-+  'data': { 'path': 'str', 'log': 'CxlEventLog', 'flags': 'uint8',
-+            'dpa': 'uint64', 'descriptor': 'uint8',
-+            'type': 'uint8', 'transaction-type': 'uint8',
-+            '*channel': 'uint8', '*rank': 'uint8', '*nibble-mask': 'uint32',
-+            '*bank-group': 'uint8', '*bank': 'uint8', '*row': 'uint32',
-+            '*column': 'uint16', '*correction-mask': [ 'uint64' ]
-+           }}
++{ 'command': 'cxl-inject-memory-module-event',
++  'data': { 'path': 'str', 'log': 'CxlEventLog', 'flags' : 'uint8',
++            'type': 'uint8', 'health-status': 'uint8',
++            'media-status': 'uint8', 'additional-status': 'uint8',
++            'life-used': 'uint8', 'temperature' : 'int16',
++            'dirty-shutdown-count': 'uint32',
++            'corrected-volatile-error-count': 'uint32',
++            'corrected-persistent-error-count': 'uint32'
++            }}
 +
  ##
  # @cxl-inject-poison:
  #
 diff --git a/include/hw/cxl/cxl_events.h b/include/hw/cxl/cxl_events.h
-index b189193f4c..a39e30d973 100644
+index a39e30d973..089ba2091f 100644
 --- a/include/hw/cxl/cxl_events.h
 +++ b/include/hw/cxl/cxl_events.h
-@@ -123,4 +123,27 @@ typedef struct CXLEventGenMedia {
-     uint8_t reserved[CXL_EVENT_GEN_MED_RES_SIZE];
- } QEMU_PACKED CXLEventGenMedia;
+@@ -146,4 +146,23 @@ typedef struct CXLEventDram {
+     uint8_t reserved[0x17];
+ } QEMU_PACKED CXLEventDram;
  
 +/*
-+ * DRAM Event Record
-+ * CXL Rev 3.0 Section 8.2.9.2.1.2: Table 8-44
++ * Memory Module Event Record
++ * CXL Rev 3.0 Section 8.2.9.2.1.3: Table 8-45
 + * All fields little endian.
 + */
-+typedef struct CXLEventDram {
++typedef struct CXLEventMemoryModule {
 +    CXLEventRecordHdr hdr;
-+    uint64_t phys_addr;
-+    uint8_t descriptor;
 +    uint8_t type;
-+    uint8_t transaction_type;
-+    uint16_t validity_flags;
-+    uint8_t channel;
-+    uint8_t rank;
-+    uint8_t nibble_mask[3];
-+    uint8_t bank_group;
-+    uint8_t bank;
-+    uint8_t row[3];
-+    uint16_t column;
-+    uint64_t correction_mask[4];
-+    uint8_t reserved[0x17];
-+} QEMU_PACKED CXLEventDram;
++    uint8_t health_status;
++    uint8_t media_status;
++    uint8_t additional_status;
++    uint8_t life_used;
++    int16_t temperature;
++    uint32_t dirty_shutdown_count;
++    uint32_t corrected_volatile_error_count;
++    uint32_t corrected_persistent_error_count;
++    uint8_t reserved[0x3d];
++} QEMU_PACKED CXLEventMemoryModule;
 +
  #endif /* CXL_EVENTS_H */
 diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
-index b1618779d2..3c07b1b7a3 100644
+index 3c07b1b7a3..4e314748d3 100644
 --- a/hw/mem/cxl_type3.c
 +++ b/hw/mem/cxl_type3.c
-@@ -1196,6 +1196,11 @@ static const QemuUUID gen_media_uuid = {
-                  0x85, 0xa9, 0x08, 0x8b, 0x16, 0x21, 0xeb, 0xa6),
+@@ -1201,6 +1201,11 @@ static const QemuUUID dram_uuid = {
+                  0x4e, 0x9b, 0xfb, 0x5c, 0x96, 0x24),
  };
  
-+static const QemuUUID dram_uuid = {
-+    .data = UUID(0x601dcbb3, 0x9c06, 0x4eab, 0xb8, 0xaf,
-+                 0x4e, 0x9b, 0xfb, 0x5c, 0x96, 0x24),
++static const QemuUUID memory_module_uuid = {
++    .data = UUID(0xfe927475, 0xdd59, 0x4339, 0xa5, 0x86,
++                 0x79, 0xba, 0xb1, 0x13, 0xb7, 0x74),
 +};
 +
  #define CXL_GMER_VALID_CHANNEL                          BIT(0)
  #define CXL_GMER_VALID_RANK                             BIT(1)
  #define CXL_GMER_VALID_DEVICE                           BIT(2)
-@@ -1292,6 +1297,117 @@ void qmp_cxl_inject_general_media_event(const char *path, CxlEventLog log,
-     }
+@@ -1408,6 +1413,63 @@ void qmp_cxl_inject_dram_event(const char *path, CxlEventLog log, uint8_t flags,
+     return;
  }
  
-+#define CXL_DRAM_VALID_CHANNEL                          BIT(0)
-+#define CXL_DRAM_VALID_RANK                             BIT(1)
-+#define CXL_DRAM_VALID_NIBBLE_MASK                      BIT(2)
-+#define CXL_DRAM_VALID_BANK_GROUP                       BIT(3)
-+#define CXL_DRAM_VALID_BANK                             BIT(4)
-+#define CXL_DRAM_VALID_ROW                              BIT(5)
-+#define CXL_DRAM_VALID_COLUMN                           BIT(6)
-+#define CXL_DRAM_VALID_CORRECTION_MASK                  BIT(7)
-+
-+void qmp_cxl_inject_dram_event(const char *path, CxlEventLog log, uint8_t flags,
-+                               uint64_t dpa, uint8_t descriptor,
-+                               uint8_t type, uint8_t transaction_type,
-+                               bool has_channel, uint8_t channel,
-+                               bool has_rank, uint8_t rank,
-+                               bool has_nibble_mask, uint32_t nibble_mask,
-+                               bool has_bank_group, uint8_t bank_group,
-+                               bool has_bank, uint8_t bank,
-+                               bool has_row, uint32_t row,
-+                               bool has_column, uint16_t column,
-+                               bool has_correction_mask, uint64List *correction_mask,
-+                               Error **errp)
++void qmp_cxl_inject_memory_module_event(const char *path, CxlEventLog log,
++                                        uint8_t flags, uint8_t type,
++                                        uint8_t health_status,
++                                        uint8_t media_status,
++                                        uint8_t additional_status,
++                                        uint8_t life_used,
++                                        int16_t temperature,
++                                        uint32_t dirty_shutdown_count,
++                                        uint32_t corrected_volatile_error_count,
++                                        uint32_t corrected_persistent_error_count,
++                                        Error **errp)
 +{
 +    Object *obj = object_resolve_path(path, NULL);
-+    CXLEventDram dram;
-+    CXLEventRecordHdr *hdr = &dram.hdr;
++    CXLEventMemoryModule module;
++    CXLEventRecordHdr *hdr = &module.hdr;
 +    CXLDeviceState *cxlds;
 +    CXLType3Dev *ct3d;
-+    uint16_t valid_flags = 0;
 +    uint8_t enc_log;
 +    int rc;
 +
@@ -313,91 +277,47 @@ index b1618779d2..3c07b1b7a3 100644
 +    }
 +    enc_log = rc;
 +
-+    memset(&dram, 0, sizeof(dram));
-+    cxl_assign_event_header(hdr, &dram_uuid, flags, sizeof(dram),
++    memset(&module, 0, sizeof(module));
++    cxl_assign_event_header(hdr, &memory_module_uuid, flags, sizeof(module),
 +                            cxl_device_get_timestamp(&ct3d->cxl_dstate));
-+    stq_le_p(&dram.phys_addr, dpa);
-+    dram.descriptor = descriptor;
-+    dram.type = type;
-+    dram.transaction_type = transaction_type;
 +
-+    if (has_channel) {
-+        dram.channel = channel;
-+        valid_flags |= CXL_DRAM_VALID_CHANNEL;
-+    }
++    module.type = type;
++    module.health_status = health_status;
++    module.media_status = media_status;
++    module.additional_status = additional_status;
++    module.life_used = life_used;
++    stw_le_p(&module.temperature, temperature);
++    stl_le_p(&module.dirty_shutdown_count, dirty_shutdown_count);
++    stl_le_p(&module.corrected_volatile_error_count, corrected_volatile_error_count);
++    stl_le_p(&module.corrected_persistent_error_count, corrected_persistent_error_count);
 +
-+    if (has_rank) {
-+        dram.rank = rank;
-+        valid_flags |= CXL_DRAM_VALID_RANK;
-+    }
-+
-+    if (has_nibble_mask) {
-+        st24_le_p(dram.nibble_mask, nibble_mask);
-+        valid_flags |= CXL_DRAM_VALID_NIBBLE_MASK;
-+    }
-+
-+    if (has_bank_group) {
-+        dram.bank_group = bank_group;
-+        valid_flags |= CXL_DRAM_VALID_BANK_GROUP;
-+    }
-+
-+    if (has_bank) {
-+        dram.bank = bank;
-+        valid_flags |= CXL_DRAM_VALID_BANK;
-+    }
-+
-+    if (has_row) {
-+        st24_le_p(dram.row, row);
-+        valid_flags |= CXL_DRAM_VALID_ROW;
-+    }
-+
-+    if (has_column) {
-+        stw_le_p(&dram.column, column);
-+        valid_flags |= CXL_DRAM_VALID_COLUMN;
-+    }
-+
-+    if (has_correction_mask) {
-+        int count = 0;
-+        while (correction_mask && count < 4) {
-+            stq_le_p(&dram.correction_mask[count],
-+                     correction_mask->value);
-+            count++;
-+            correction_mask = correction_mask->next;
-+        }
-+        valid_flags |= CXL_DRAM_VALID_CORRECTION_MASK;
-+    }
-+
-+    stw_le_p(&dram.validity_flags, valid_flags);
-+
-+    if (cxl_event_insert(cxlds, enc_log, (CXLEventRecordRaw *)&dram)) {
++    if (cxl_event_insert(cxlds, enc_log, (CXLEventRecordRaw *)&module)) {
 +        cxl_event_irq_assert(ct3d);
 +    }
-+    return;
 +}
 +
  static void ct3_class_init(ObjectClass *oc, void *data)
  {
      DeviceClass *dc = DEVICE_CLASS(oc);
 diff --git a/hw/mem/cxl_type3_stubs.c b/hw/mem/cxl_type3_stubs.c
-index 4dfbdf9268..e904c5d089 100644
+index e904c5d089..f3e4a9fa72 100644
 --- a/hw/mem/cxl_type3_stubs.c
 +++ b/hw/mem/cxl_type3_stubs.c
-@@ -13,6 +13,19 @@ void qmp_cxl_inject_general_media_event(const char *path, CxlEventLog log,
-                                         const char *component_id,
-                                         Error **errp) {}
+@@ -26,6 +26,18 @@ void qmp_cxl_inject_dram_event(const char *path, CxlEventLog log, uint8_t flags,
+                                bool has_correction_mask, uint64List *correction_mask,
+                                Error **errp) {}
  
-+void qmp_cxl_inject_dram_event(const char *path, CxlEventLog log, uint8_t flags,
-+                               uint64_t dpa, uint8_t descriptor,
-+                               uint8_t type, uint8_t transaction_type,
-+                               bool has_channel, uint8_t channel,
-+                               bool has_rank, uint8_t rank,
-+                               bool has_nibble_mask, uint32_t nibble_mask,
-+                               bool has_bank_group, uint8_t bank_group,
-+                               bool has_bank, uint8_t bank,
-+                               bool has_row, uint32_t row,
-+                               bool has_column, uint16_t column,
-+                               bool has_correction_mask, uint64List *correction_mask,
-+                               Error **errp) {}
++void qmp_cxl_inject_memory_module_event(const char *path, CxlEventLog log,
++                                        uint8_t flags, uint8_t type,
++                                        uint8_t health_status,
++                                        uint8_t media_status,
++                                        uint8_t additional_status,
++                                        uint8_t life_used,
++                                        int16_t temperature,
++                                        uint32_t dirty_shutdown_count,
++                                        uint32_t corrected_volatile_error_count,
++                                        uint32_t corrected_persistent_error_count,
++                                        Error **errp) {}
 +
  void qmp_cxl_inject_poison(const char *path, uint64_t start, uint64_t length,
                             Error **errp)
