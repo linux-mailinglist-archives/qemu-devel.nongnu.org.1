@@ -2,36 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51EC473EA9A
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 20:55:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FA6673EA98
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 20:55:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDrLg-0001SE-7Z; Mon, 26 Jun 2023 14:54:05 -0400
+	id 1qDrLJ-0000y6-47; Mon, 26 Jun 2023 14:53:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qDrKT-0000Lf-4G; Mon, 26 Jun 2023 14:52:49 -0400
+ id 1qDrKT-0000Mf-F7; Mon, 26 Jun 2023 14:52:49 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qDrKR-0005KN-Hb; Mon, 26 Jun 2023 14:52:48 -0400
+ id 1qDrKR-0005KP-LZ; Mon, 26 Jun 2023 14:52:48 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 9170EEF34;
+ by isrv.corpit.ru (Postfix) with ESMTP id AFE4AEF35;
  Mon, 26 Jun 2023 21:50:24 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 60442F7C3;
+ by tsrv.corpit.ru (Postfix) with SMTP id B50EDF7C4;
  Mon, 26 Jun 2023 21:50:22 +0300 (MSK)
-Received: (nullmailer pid 1574046 invoked by uid 1000);
+Received: (nullmailer pid 1574049 invoked by uid 1000);
  Mon, 26 Jun 2023 18:50:16 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org, qemu-stable@nongnu.org
-Cc: Jagannathan Raman <jag.raman@oracle.com>,
- Markus Armbruster <armbru@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
+Cc: Mark Somerville <mark@qpok.net>, Konstantin Kostiuk <kkostiuk@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.0.3 29/54] docs: fix multi-process QEMU documentation
-Date: Mon, 26 Jun 2023 21:49:36 +0300
-Message-Id: <20230626185002.1573836-29-mjt@tls.msk.ru>
+Subject: [Stable-8.0.3 30/54] qga: Fix suspend on Linux guests without systemd
+Date: Mon, 26 Jun 2023 21:49:37 +0300
+Message-Id: <20230626185002.1573836-30-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.0.3-20230626214235@cover.tls.msk.ru>
 References: <qemu-stable-8.0.3-20230626214235@cover.tls.msk.ru>
@@ -60,29 +59,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jagannathan Raman <jag.raman@oracle.com>
+From: Mark Somerville <mark@qpok.net>
 
-Fix a typo in the system documentation for multi-process QEMU.
+Allow the Linux guest agent to attempt each of the suspend methods
+(systemctl, pm-* and writing to /sys) in turn.
 
-Signed-off-by: Jagannathan Raman <jag.raman@oracle.com>
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-(cherry picked from commit 7771e8b86335968ee46538d1afd44246e7a062bc)
+Prior to this guests without systemd failed to suspend due to
+`guest_suspend` returning early regardless of the return value of
+`systemd_supports_mode`.
+
+Signed-off-by: Mark Somerville <mark@qpok.net>
+Reviewed-by: Konstantin Kostiuk <kkostiuk@redhat.com>
+Signed-off-by: Konstantin Kostiuk <kkostiuk@redhat.com>
+(cherry picked from commit 86dcb6ab9b603450eb6d896cdc95286de2c7d561)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/docs/system/multi-process.rst b/docs/system/multi-process.rst
-index 16f0352416..2008a67809 100644
---- a/docs/system/multi-process.rst
-+++ b/docs/system/multi-process.rst
-@@ -4,7 +4,7 @@ Multi-process QEMU
- ==================
+diff --git a/qga/commands-posix.c b/qga/commands-posix.c
+index 079689d79a..59e7154af4 100644
+--- a/qga/commands-posix.c
++++ b/qga/commands-posix.c
+@@ -1918,10 +1918,10 @@ static void guest_suspend(SuspendMode mode, Error **errp)
+     if (systemd_supports_mode(mode, &local_err)) {
+         mode_supported = true;
+         systemd_suspend(mode, &local_err);
+-    }
  
- This document describes how to configure and use multi-process qemu.
--For the design document refer to docs/devel/qemu-multiprocess.
-+For the design document refer to docs/devel/multi-process.rst.
+-    if (!local_err) {
+-        return;
++        if (!local_err) {
++            return;
++        }
+     }
  
- 1) Configuration
- ----------------
+     error_free(local_err);
+@@ -1930,10 +1930,10 @@ static void guest_suspend(SuspendMode mode, Error **errp)
+     if (pmutils_supports_mode(mode, &local_err)) {
+         mode_supported = true;
+         pmutils_suspend(mode, &local_err);
+-    }
+ 
+-    if (!local_err) {
+-        return;
++        if (!local_err) {
++            return;
++        }
+     }
+ 
+     error_free(local_err);
 -- 
 2.39.2
 
