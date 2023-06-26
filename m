@@ -2,95 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6A3273E0E3
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 15:42:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C03DF73E0E6
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 15:43:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDmTK-0005UN-DZ; Mon, 26 Jun 2023 09:41:38 -0400
+	id 1qDmUV-00077K-Px; Mon, 26 Jun 2023 09:42:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clegoate@redhat.com>)
- id 1qDmT7-0005P4-Um
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 09:41:27 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
+ id 1qDmUS-00076Z-QU; Mon, 26 Jun 2023 09:42:48 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clegoate@redhat.com>)
- id 1qDmT6-0003Jm-G5
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 09:41:25 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687786883;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=SesPdDB5G7wLG5jzAVmKUYNLiBdJAPCjiw273zB6iAk=;
- b=IwIXwfV4AWY41hDb/Wd8Z8ryx0BNsSI8+qoZzoOLvJwwNlKA+Mmyuv8IYZIGEvfZBgLSLt
- SRIGSHAxJy/Akgsj6M/h62G7T4hUPORmfZRTAvWEug6f5jwHAgRbqblSIfl5BjSnFGY2gV
- MNsmjMYYei43UqD+0iCzRgpTEBtFilI=
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
- [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-272-FEsqVSQxOEOa4F9N3w0Rsw-1; Mon, 26 Jun 2023 09:41:22 -0400
-X-MC-Unique: FEsqVSQxOEOa4F9N3w0Rsw-1
-Received: by mail-qv1-f69.google.com with SMTP id
- 6a1803df08f44-62fe5abe808so17831726d6.1
- for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 06:41:21 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687786881; x=1690378881;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=SesPdDB5G7wLG5jzAVmKUYNLiBdJAPCjiw273zB6iAk=;
- b=jmuGI+7VuqaMGVUYiE8qwUCmKRq/2sQ4d8w5hv205d98LubTqJ1Geg3Z45/BitJnTe
- KXEDpFcJsYPBRXRlP9IvJwmaXDIrLrvCXMywM4WgmlckLdyNZOLi614qhWY9rmyu/759
- G4YcMr3TUqCbgbjAhZC5P5pEeYTtqre7ZEPxiNts0UKViauD1+isHmMcypgshze1uJKB
- hcvuwh8vzYun75QX96odeF4GoXRNx13F9LGmmHovLVTj5ATBmX7yaEiCNiKcYIsuPCut
- phIvoLjEZ5cNA2SY5JCL7X5A+xq/qi+2vWh6QFibr4c/URV6kNUxVNAuWmPfMdQ4geZD
- wgwQ==
-X-Gm-Message-State: AC+VfDzeJnHcBbbvTipw5py+YScDMmfzLjeNI/EcgwbbyEO/HZ++CISI
- Ee/EC0LM8U3VKG3wqcqRVRr6EXf/1uW1LJpsqYt9T0D72v6e7jrX7Ta5opX8gxRVM/I/bBMa/g8
- o+x5y35JsUmW4JGc=
-X-Received: by 2002:ad4:576e:0:b0:62d:e6f1:6bea with SMTP id
- r14-20020ad4576e000000b0062de6f16beamr28826816qvx.10.1687786881537; 
- Mon, 26 Jun 2023 06:41:21 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5KtnlG9BCTVfS5tgi0KIoecbpmcxjkgTfwjT2n7RGY+LOlHTUFzv3WiFphyb/OTZ/HlVPeSQ==
-X-Received: by 2002:ad4:576e:0:b0:62d:e6f1:6bea with SMTP id
- r14-20020ad4576e000000b0062de6f16beamr28826803qvx.10.1687786881318; 
- Mon, 26 Jun 2023 06:41:21 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:280:24f0:576b:abc6:6396:ed4a?
- ([2a01:e0a:280:24f0:576b:abc6:6396:ed4a])
- by smtp.gmail.com with ESMTPSA id
- dk13-20020a056214092d00b005dd8b9345besm3196677qvb.86.2023.06.26.06.41.19
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 26 Jun 2023 06:41:20 -0700 (PDT)
-Message-ID: <6542ed31-8986-c6f1-5d5a-69cd4ce9c6c0@redhat.com>
-Date: Mon, 26 Jun 2023 15:41:18 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH 2/4] pc-bios/s390-ccw: Provide space for initial stack
- frame in start.S
+ (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
+ id 1qDmUP-0003XK-MG; Mon, 26 Jun 2023 09:42:48 -0400
+Received: from lhrpeml500006.china.huawei.com (unknown [172.18.147.226])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4QqTV23PlNz67qq2;
+ Mon, 26 Jun 2023 21:39:38 +0800 (CST)
+Received: from lhrpeml500001.china.huawei.com (7.191.163.213) by
+ lhrpeml500006.china.huawei.com (7.191.161.198) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27; Mon, 26 Jun 2023 14:42:34 +0100
+Received: from lhrpeml500001.china.huawei.com ([7.191.163.213]) by
+ lhrpeml500001.china.huawei.com ([7.191.163.213]) with mapi id 15.01.2507.027; 
+ Mon, 26 Jun 2023 14:42:34 +0100
+To: Shaoqin Huang <shahuang@redhat.com>, "qemu-devel@nongnu.org"
+ <qemu-devel@nongnu.org>, "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>
+CC: "oliver.upton@linux.dev" <oliver.upton@linux.dev>, "james.morse@arm.com"
+ <james.morse@arm.com>, "gshan@redhat.com" <gshan@redhat.com>, Cornelia Huck
+ <cohuck@redhat.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "Michael S.
+ Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, Peter Maydell
+ <peter.maydell@linaro.org>, Salil Mehta <salil.mehta@opnsrc.net>
+Subject: RE: [PATCH v1 0/5] target/arm: Handle psci calls in userspace
+Thread-Topic: [PATCH v1 0/5] target/arm: Handle psci calls in userspace
+Thread-Index: AQHZp/pp444fl0T5A0KjPRKELV/ZGK+dFe3A
+Date: Mon, 26 Jun 2023 13:42:34 +0000
+Message-ID: <9df973ede74e4757b510f26cd5786036@huawei.com>
+References: <20230626064910.1787255-1-shahuang@redhat.com>
+In-Reply-To: <20230626064910.1787255-1-shahuang@redhat.com>
+Accept-Language: en-US
 Content-Language: en-US
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
-Cc: qemu-s390x@nongnu.org, Christian Borntraeger <borntraeger@linux.ibm.com>, 
- mrezanin@redhat.com, =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-References: <20230626132138.87668-1-thuth@redhat.com>
- <20230626132138.87668-3-thuth@redhat.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clegoate@redhat.com>
-In-Reply-To: <20230626132138.87668-3-thuth@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clegoate@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.48.157.164]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=salil.mehta@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,48 +69,53 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Salil Mehta <salil.mehta@huawei.com>
+From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/26/23 15:21, Thomas Huth wrote:
-> Providing the space of a stack frame is the duty of the caller,
-> so we should reserve 160 bytes before jumping into the main function.
-> Otherwise the main() function might write past the stack array.
-> 
-> While we're at it, add a proper STACK_SIZE macro for the stack size
-> instead of using magic numbers (this is also required for the following
-> patch).
-> 
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> From: Shaoqin Huang <shahuang@redhat.com>
+> Sent: Monday, June 26, 2023 7:49 AM
+> To: qemu-devel@nongnu.org; qemu-arm@nongnu.org
+> Cc: oliver.upton@linux.dev; Salil Mehta <salil.mehta@huawei.com>;
+> james.morse@arm.com; gshan@redhat.com; Shaoqin Huang <shahuang@redhat.com=
+>;
+> Cornelia Huck <cohuck@redhat.com>; kvm@vger.kernel.org; Michael S. Tsirki=
+n
+> <mst@redhat.com>; Paolo Bonzini <pbonzini@redhat.com>; Peter Maydell
+> <peter.maydell@linaro.org>
+> Subject: [PATCH v1 0/5] target/arm: Handle psci calls in userspace
+>=20
+> The userspace SMCCC call filtering[1] provides the ability to forward the=
+ SMCCC
+> calls to the userspace. The vCPU hotplug[2] would be the first legitimate=
+ use
+> case to handle the psci calls in userspace, thus the vCPU hotplug can den=
+y the
+> PSCI_ON call if the vCPU is not present now.
+>=20
+> This series try to enable the userspace SMCCC call filtering, thus can ha=
+ndle
+> the SMCCC call in userspace. The first enabled SMCCC call is psci call, b=
+y using
+> the new added option 'user-smccc', we can enable handle psci calls in use=
+rspace.
+>=20
+> qemu-system-aarch64 -machine virt,user-smccc=3Don
+>=20
+> This series reuse the qemu implementation of the psci handling, thus the
+> handling process is very simple. But when handling psci in userspace when=
+ using
+> kvm, the reset vcpu process need to be taking care, the detail is include=
+d in
+> the patch05.
+
+This change in intended for VCPU Hotplug and we are duplicating the code
+we are working on. Unless this change is also intended for any other
+feature I would request you to defer this.
 
 
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
-
-Thanks,
-
-C.
-
-> ---
->   pc-bios/s390-ccw/start.S | 4 +++-
->   1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/pc-bios/s390-ccw/start.S b/pc-bios/s390-ccw/start.S
-> index d29de09cc6..29b0a9ece0 100644
-> --- a/pc-bios/s390-ccw/start.S
-> +++ b/pc-bios/s390-ccw/start.S
-> @@ -10,10 +10,12 @@
->    * directory.
->    */
->   
-> +#define STACK_SIZE 0x8000
-> +
->       .globl _start
->   _start:
->   
-> -    larl    %r15,stack + 0x8000     /* Set up stack */
-> +    larl    %r15,stack + STACK_SIZE - 160   /* Set up stack */
->   
->       /* clear bss */
->       larl    %r2,__bss_start
+Thanks
+Salil
 
 
