@@ -2,84 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0340A73EF18
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 01:16:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C84673EF26
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 01:22:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDvQV-0002uC-Dq; Mon, 26 Jun 2023 19:15:19 -0400
+	id 1qDvVW-0004aH-3S; Mon, 26 Jun 2023 19:20:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qDvQT-0002ty-9e; Mon, 26 Jun 2023 19:15:17 -0400
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qDvVJ-0004Ys-NX
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 19:20:21 -0400
+Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qDvQR-00078e-GZ; Mon, 26 Jun 2023 19:15:16 -0400
-Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-1b7e1875cc1so11078465ad.1; 
- Mon, 26 Jun 2023 16:15:14 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qDvVH-0008Bm-26
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 19:20:17 -0400
+Received: by mail-ej1-x62e.google.com with SMTP id
+ a640c23a62f3a-98df3dea907so348893166b.3
+ for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 16:20:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1687821313; x=1690413313;
- h=in-reply-to:references:subject:cc:to:from:message-id:date
- :content-transfer-encoding:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=q/jsPJ+XUXjceBl6ow61h+SxSjDUMKs9dHFQhCR15cA=;
- b=HbFETgKRAfgDziLWoduwULsmsKOwNgeG7kjBrDpwaTn9jUXlYeHfRsiTf+3Wc+7VSR
- B1pYYEkZW+ZNlQzMDJucG93sQzqvT08PMtX0htUbfCpIslkN//4SLsTJvTwxMIHgEDkq
- ooyzjrxX/GC9f+UYYh+oRXw5I46xIfUZWKXlCes2gydPRlr1zvk4Ea8MrBegS5TN26g8
- X0mQ2tqhZWOeB48h5NP8eFvbooFp28oOFYB7dWc59xS8WaNFtvF1LmMla1iyHZLuR8Zy
- owiydECQDF6EVxQfodnikb6AQgtAjNVVnoNF1PKp+3H5M2sluelWPcDh4pxNSlbkwgpI
- pdOg==
+ d=linaro.org; s=google; t=1687821611; x=1690413611;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Wv9Tq5llbl/sjP52djumXiDvzm3itZBu/GStUzP7o5Y=;
+ b=Na1hPYzB8PgQSQ40PeilqNmyYUXY1NeW0ffvN9IpsQ89e1gH1bZoEDZwVM4iZmE0DV
+ y8XPg9jQUfgQFWE+Su2SWViRR+HbLZJqx6UUg1BD5VUJG3xL58gIXqEKlBIBjBk+z17K
+ fGPufHaraI42OwOSVoQ7IemNSAjPH2dkEncwRw4cAE5bmBQFoJ9ik3JE/UzjYpx6LI/L
+ /XXY+3YZx7OIeDUBuu51n9mj8xE6t4p7ezlkrkBewMrMPO1W+sU+d0HitD6Ci37f/vr1
+ 2Kpm5CVyuxmw83+Ix00+1sWfYAmhbcqt40DSUwhspdB5A1+Ihb4BtBkZ73VAYMZEeige
+ VgOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687821313; x=1690413313;
- h=in-reply-to:references:subject:cc:to:from:message-id:date
- :content-transfer-encoding:mime-version:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=q/jsPJ+XUXjceBl6ow61h+SxSjDUMKs9dHFQhCR15cA=;
- b=BdoTVrz6LMliCg0hT5O2m4DfzoApYsKWoDkDzmAe/DUkOTQUXtR7ZvHQ7EPx6dEGh1
- stOQez1wTN14yAYD3T3MPaF9C/vhLf7HlYYjfeTjET0uWRgbWO8/E41hNwMxjV1MmnH1
- PTfJwFTdKrPQKux1flFaTEMpmQfIwvgMxsSOKEAMTe8c9slm8/OlkoJjmYG3eMP5j0SK
- uNpsRgHwycBKRlswJNLfG4KBD1gwic5tye/OLfus1CiRPhLN9xOhYVVKbyqM9uOa3Spw
- +YjlYjXTU2AJ6P54yRqGzCr8qF80OuA1GvTHMts2r1Ve6wvYlEkwjxMkYoRe+vhbjdgg
- /+zA==
-X-Gm-Message-State: AC+VfDxC0CM91e7KKlfK7/rEaO+INSbtT9YDd/26M8LqdBNIf4+3uuJt
- AG6VTOKi7SVv6szcipR8Evg=
-X-Google-Smtp-Source: ACHHUZ4v1PLf+8MzNKQ2OIHrzLOWyXcV8Pcj/FM02ofZq/AjVL8ynOjeGhuZnkKJo0WwarVL03oyuQ==
-X-Received: by 2002:a17:902:a414:b0:1b8:e2a:9ef0 with SMTP id
- p20-20020a170902a41400b001b80e2a9ef0mr2100423plq.32.1687821313145; 
- Mon, 26 Jun 2023 16:15:13 -0700 (PDT)
-Received: from localhost (14-200-238-131.tpgi.com.au. [14.200.238.131])
+ d=1e100.net; s=20221208; t=1687821611; x=1690413611;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Wv9Tq5llbl/sjP52djumXiDvzm3itZBu/GStUzP7o5Y=;
+ b=Q/bg1m//hbyKkf8TE5zdTGF/H6Ypmnj7BwgS3oIw80tXz+kD/Badof1kiDS57gQLbT
+ e10SutFIzXxB+8JS2Q7K/BmD2drrxKUHBuIXoqtZq1ZMdtN383+ZOYXHSOxdD/eawiOH
+ gehqQsKdL2JlIj00RCRSq8+nr4bMu0DKty5+p1o+rTmB2xPXRR0fWmpbCtVUcaNwZYqv
+ u9qNo1xUuLdzFU/I7HDnbyKFjj6ED9Rg8Q96jkuKetmmvOmRK6FcroysW0bmbkNyw4aM
+ f2q4smQKlOnBOB25a2H07sCZ2IZ+ZH0vzCIXvjssOTWNoaJgd3IZuqBPXMuCdEVZRCBY
+ zeFw==
+X-Gm-Message-State: AC+VfDz8ZHTNHy4eBRMa4+wbx9PN7WzxFRhJ4s4Cj0l7Br6sxJ5xAEq8
+ K+Gc+2VvFS4WhErzNNu454tQ/oUTXNoBaodJi0M=
+X-Google-Smtp-Source: ACHHUZ7FKhx9jL0e3rcwBXPfHjgjyNhrauyvegSoZM4UDZzPaP1LL1cn7TBke9uCBg/D/LFZ7f7suQ==
+X-Received: by 2002:a17:907:368c:b0:982:2586:f85 with SMTP id
+ bi12-20020a170907368c00b0098225860f85mr25253076ejc.65.1687821610863; 
+ Mon, 26 Jun 2023 16:20:10 -0700 (PDT)
+Received: from m1x-phil.lan ([176.187.199.226])
  by smtp.gmail.com with ESMTPSA id
- jl23-20020a170903135700b001aafa2e212esm4665463plb.52.2023.06.26.16.15.09
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 26 Jun 2023 16:15:12 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 27 Jun 2023 09:15:06 +1000
-Message-Id: <CTMYPVXCDUD5.3RP8ZKFAIJ3ZV@wheely>
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, "Michael Tokarev"
- <mjt@tls.msk.ru>, "Richard Henderson" <richard.henderson@linaro.org>
-Cc: <qemu-devel@nongnu.org>, <qemu-ppc@nongnu.org>, "Daniel Henrique
- Barboza" <danielhb413@gmail.com>, "Harsh Prateek Bora"
- <harshpb@linux.ibm.com>
-Subject: Re: [PULL 10/30] ppc/spapr: H_ENTER_NESTED should restore host XER
- ca field
-X-Mailer: aerc 0.15.2
-References: <20230626055647.1147743-1-clg@kaod.org>
- <20230626055647.1147743-11-clg@kaod.org>
- <eb1c3b7c-5f50-7e25-ec99-3f84013e76c4@tls.msk.ru>
- <ecca1867-4308-5218-a5f6-9b0a93756f72@kaod.org>
-In-Reply-To: <ecca1867-4308-5218-a5f6-9b0a93756f72@kaod.org>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x629.google.com
+ ck18-20020a170906c45200b0098e38d2e584sm2599001ejb.43.2023.06.26.16.20.08
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Mon, 26 Jun 2023 16:20:10 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Bin Meng <bin.meng@windriver.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, Beraldo Leal <bleal@redhat.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Weiwei Li <liweiwei@iscas.ac.cn>, qemu-riscv@nongnu.org
+Subject: [PATCH 00/16] target/riscv: Allow building without TCG (KVM-only so
+ far)
+Date: Tue, 27 Jun 2023 01:19:51 +0200
+Message-Id: <20230626232007.8933-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.38.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -97,54 +97,119 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue Jun 27, 2023 at 7:45 AM AEST, C=C3=A9dric Le Goater wrote:
-> On 6/26/23 14:26, Michael Tokarev wrote:
-> > 26.06.2023 08:56, C=C3=A9dric Le Goater wrote:
-> >> From: Nicholas Piggin <npiggin@gmail.com>
-> >>
-> >> Fix missing env->ca restore when going from L2 back to the host.
-> >>
-> >> Fixes: 120f738a467 ("spapr: implement nested-hv capability for the vir=
-tual hypervisor")
-> >> Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
-> >> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> >> Signed-off-by: C=C3=A9dric Le Goater <clg@kaod.org>
-> >> ---
-> >> =C2=A0 hw/ppc/spapr_hcall.c | 1 +
-> >> =C2=A0 1 file changed, 1 insertion(+)
-> >>
-> >> diff --git a/hw/ppc/spapr_hcall.c b/hw/ppc/spapr_hcall.c
-> >> index b9047555757f..0582b524d108 100644
-> >> --- a/hw/ppc/spapr_hcall.c
-> >> +++ b/hw/ppc/spapr_hcall.c
-> >> @@ -1773,6 +1773,7 @@ out_restore_l1:
-> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 env->cfar =3D spapr_cpu->nested_host_st=
-ate->cfar;
-> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 env->xer =3D spapr_cpu->nested_host_sta=
-te->xer;
-> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 env->so =3D spapr_cpu->nested_host_stat=
-e->so;
-> >> +=C2=A0=C2=A0=C2=A0 env->ca =3D spapr_cpu->nested_host_state->ca;
-> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 env->ov =3D spapr_cpu->nested_host_stat=
-e->ov;
-> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 env->ov32 =3D spapr_cpu->nested_host_st=
-ate->ov32;
-> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 env->ca32 =3D spapr_cpu->nested_host_st=
-ate->ca32;
-> >=20
-> > Is it -stable material too, or don't bother?
-> > 120f738a467 is 7.0.
->
-> I would say so. The CPU is missing state (Carry bit) when restoring conte=
-xt,
-> it could be important for some instructions.
->
-> Nick, did you have specific test case ?
+Hi,
 
-No I just found it when doing the conversion to the new host save
-structure. Now I think about it again, XER is volatile across hcalls
-in general so I think the patch is not fixing any practical bug.
+this series reorder TCG specific code in order to easily
+build a KVM-only binary. sysemu specific code is also
+moved around, to help noticing invalid uses from user
+emulation. Last patch adds a new job to our CI to avoid
+this to bitrot.
 
-Thanks,
-Nick
+Please review,
+
+Phil.
+
+Philippe Mathieu-Daudé (16):
+  target/riscv: Remove unused 'instmap.h' header in translate.c
+  target/riscv: Restrict KVM-specific fields from ArchCPU
+  target/riscv: Restrict sysemu specific header to user emulation
+  target/riscv: Restrict 'rv128' machine to TCG accelerator
+  target/riscv: Move sysemu-specific files to target/riscv/sysemu/
+  target/riscv: Restrict riscv_cpu_do_interrupt() to sysemu
+  target/riscv: Move TCG-specific files to target/riscv/tcg/
+  target/riscv: Move TCG-specific cpu_get_tb_cpu_state() to tcg/cpu.c
+  target/riscv: Expose some 'trigger' prototypes from debug.c
+  target/riscv: Extract TCG-specific code from debug.c
+  target/riscv: Move sysemu-specific debug files to target/riscv/sysemu/
+  target/riscv: Expose riscv_cpu_pending_to_irq() from cpu_helper.c
+  target/riscv: Move TCG/sysemu-specific code to tcg/sysemu/cpu_helper.c
+  target/riscv: Move sysemu-specific code to sysemu/cpu_helper.c
+  target/riscv: Restrict TCG-specific prototype declarations
+  gitlab-ci.d/crossbuilds: Add KVM riscv64 cross-build jobs
+
+ target/riscv/cpu.h                            |   29 +-
+ target/riscv/internals.h                      |    4 +
+ target/riscv/{ => sysemu}/debug.h             |    6 +
+ target/riscv/{ => sysemu}/instmap.h           |    0
+ target/riscv/{ => sysemu}/kvm_riscv.h         |    0
+ target/riscv/{ => sysemu}/pmp.h               |    0
+ target/riscv/{ => sysemu}/pmu.h               |    0
+ target/riscv/{ => sysemu}/time_helper.h       |    0
+ target/riscv/{ => tcg}/XVentanaCondOps.decode |    0
+ target/riscv/{ => tcg}/insn16.decode          |    0
+ target/riscv/{ => tcg}/insn32.decode          |    0
+ target/riscv/{ => tcg}/xthead.decode          |    0
+ hw/riscv/virt.c                               |    2 +-
+ target/riscv/cpu.c                            |   35 +-
+ target/riscv/cpu_helper.c                     | 1692 +----------------
+ target/riscv/csr.c                            |    6 +-
+ target/riscv/{ => sysemu}/arch_dump.c         |    0
+ target/riscv/sysemu/cpu_helper.c              |  863 +++++++++
+ target/riscv/{ => sysemu}/debug.c             |  153 +-
+ target/riscv/{ => sysemu}/kvm-stub.c          |    0
+ target/riscv/{ => sysemu}/kvm.c               |    0
+ target/riscv/{ => sysemu}/machine.c           |    8 +-
+ target/riscv/{ => sysemu}/monitor.c           |    0
+ target/riscv/{ => sysemu}/pmp.c               |    0
+ target/riscv/{ => sysemu}/pmu.c               |    0
+ target/riscv/{ => sysemu}/riscv-qmp-cmds.c    |    0
+ target/riscv/{ => sysemu}/time_helper.c       |    0
+ target/riscv/{ => tcg}/bitmanip_helper.c      |    0
+ target/riscv/tcg/cpu.c                        |   97 +
+ target/riscv/{ => tcg}/crypto_helper.c        |    0
+ target/riscv/{ => tcg}/fpu_helper.c           |    0
+ target/riscv/{ => tcg}/m128_helper.c          |    0
+ target/riscv/{ => tcg}/op_helper.c            |    0
+ target/riscv/tcg/sysemu/cpu_helper.c          |  766 ++++++++
+ target/riscv/tcg/sysemu/debug.c               |  165 ++
+ target/riscv/tcg/tcg-stub.c                   |   31 +
+ target/riscv/{ => tcg}/translate.c            |    1 -
+ target/riscv/{ => tcg}/vector_helper.c        |    0
+ target/riscv/{ => tcg}/zce_helper.c           |    0
+ .gitlab-ci.d/crossbuilds.yml                  |    8 +
+ target/riscv/meson.build                      |   33 +-
+ target/riscv/sysemu/meson.build               |   14 +
+ target/riscv/tcg/meson.build                  |   22 +
+ target/riscv/tcg/sysemu/meson.build           |    4 +
+ 44 files changed, 2046 insertions(+), 1893 deletions(-)
+ rename target/riscv/{ => sysemu}/debug.h (96%)
+ rename target/riscv/{ => sysemu}/instmap.h (100%)
+ rename target/riscv/{ => sysemu}/kvm_riscv.h (100%)
+ rename target/riscv/{ => sysemu}/pmp.h (100%)
+ rename target/riscv/{ => sysemu}/pmu.h (100%)
+ rename target/riscv/{ => sysemu}/time_helper.h (100%)
+ rename target/riscv/{ => tcg}/XVentanaCondOps.decode (100%)
+ rename target/riscv/{ => tcg}/insn16.decode (100%)
+ rename target/riscv/{ => tcg}/insn32.decode (100%)
+ rename target/riscv/{ => tcg}/xthead.decode (100%)
+ rename target/riscv/{ => sysemu}/arch_dump.c (100%)
+ create mode 100644 target/riscv/sysemu/cpu_helper.c
+ rename target/riscv/{ => sysemu}/debug.c (83%)
+ rename target/riscv/{ => sysemu}/kvm-stub.c (100%)
+ rename target/riscv/{ => sysemu}/kvm.c (100%)
+ rename target/riscv/{ => sysemu}/machine.c (98%)
+ rename target/riscv/{ => sysemu}/monitor.c (100%)
+ rename target/riscv/{ => sysemu}/pmp.c (100%)
+ rename target/riscv/{ => sysemu}/pmu.c (100%)
+ rename target/riscv/{ => sysemu}/riscv-qmp-cmds.c (100%)
+ rename target/riscv/{ => sysemu}/time_helper.c (100%)
+ rename target/riscv/{ => tcg}/bitmanip_helper.c (100%)
+ create mode 100644 target/riscv/tcg/cpu.c
+ rename target/riscv/{ => tcg}/crypto_helper.c (100%)
+ rename target/riscv/{ => tcg}/fpu_helper.c (100%)
+ rename target/riscv/{ => tcg}/m128_helper.c (100%)
+ rename target/riscv/{ => tcg}/op_helper.c (100%)
+ create mode 100644 target/riscv/tcg/sysemu/cpu_helper.c
+ create mode 100644 target/riscv/tcg/sysemu/debug.c
+ create mode 100644 target/riscv/tcg/tcg-stub.c
+ rename target/riscv/{ => tcg}/translate.c (99%)
+ rename target/riscv/{ => tcg}/vector_helper.c (100%)
+ rename target/riscv/{ => tcg}/zce_helper.c (100%)
+ create mode 100644 target/riscv/sysemu/meson.build
+ create mode 100644 target/riscv/tcg/meson.build
+ create mode 100644 target/riscv/tcg/sysemu/meson.build
+
+-- 
+2.38.1
+
 
