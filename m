@@ -2,84 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F8FC73E255
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 16:42:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF01273E223
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 16:28:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDlZq-0000FD-SS; Mon, 26 Jun 2023 08:44:18 -0400
+	id 1qDllU-0000x6-24; Mon, 26 Jun 2023 08:56:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qDlZI-0007fH-Ex
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 08:43:44 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1qDllR-0000wj-DJ
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 08:56:17 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qDlZG-0006tU-MW
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 08:43:44 -0400
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1qDllP-0001aY-AV
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 08:56:17 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687783421;
+ s=mimecast20190719; t=1687784174;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=HFaGSHVuQ/MJdrogUY2Zw/pcgRXL686O5bdoo9qhITc=;
- b=QFzM/kWGQwqQU2GnCATxEnsxpzHIeNYE3dpuf9J/REzYFafpL58ZGMayrsBT8Rg++ZYr7D
- 8mOVzKswuJ8l8aVu9FVxh96vLAN+4bNKQswDsOd71zd9ezIcA+PaxeucFg/nOKdlu7BU9Z
- wYkqDgdZSAgJQkbK1HPlENrsTAVPSC4=
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com
- [209.85.214.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=cepU3SwVaAUlUazj6UKyDLib0U2BU3yI44wbcdh72+g=;
+ b=GJnOsRPU1LrK5MCyoZ8VN8lHWQeNiNE4FQNu5a6Ob5vFf+BPd7d+LLaTNbxsvcGCS77mh0
+ /urZKmaSrfbGW9f+ynXr+wy6RGV+DjXsb5T+YNB21bkRsc6KgCp1oA/c/0iOoBC5vxsx+o
+ JrVClFyQoCdhGlKUJUuCk3iS8pqAzGA=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-617-yRDWorS2N7uoDxNIbWnTug-1; Mon, 26 Jun 2023 08:43:40 -0400
-X-MC-Unique: yRDWorS2N7uoDxNIbWnTug-1
-Received: by mail-pl1-f199.google.com with SMTP id
- d9443c01a7336-1b508a0873eso14367865ad.3
- for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 05:43:40 -0700 (PDT)
+ us-mta-642-YGAq6kvVNFyXI8Lky-GHVw-1; Mon, 26 Jun 2023 08:56:12 -0400
+X-MC-Unique: YGAq6kvVNFyXI8Lky-GHVw-1
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-978a991c3f5so256566466b.0
+ for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 05:56:12 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687783418; x=1690375418;
+ d=1e100.net; s=20221208; t=1687784171; x=1690376171;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=HFaGSHVuQ/MJdrogUY2Zw/pcgRXL686O5bdoo9qhITc=;
- b=EqdsGeObnBR1tTA2BkPStha2gKJjSSGgiNvFh6YD08J3DacZ6AaagTCYfQRoFYdmq2
- Jj7dwkfb/YILUfmjxHG0XzuezrjldjXZcSTIuRCpZgqIs4rYIpZem8pGvStfolcuhEsK
- 55qx35+FeNtye67mMOhJTgL8h/m4nYp8KSXU34BvcAE1kRXY1EvgeYnjwJ9uFG7kv1/L
- ORBuiVj1WmkjS7oJRFUe59pa53SNCUouLJ96mg3yAW+H4bc2lKf1mlJ6Lc1zzh7fMJhD
- IkgWUmaXlzTbc8CssQPlyhm3qXQgd6eiEpWDdFYOx1KAkFuo4o09EQlSKeIdZ5oyEq8u
- dNIQ==
-X-Gm-Message-State: AC+VfDwPGhain8gbcg3S/KgM6YRjQBc9XKvYJVP06AsukagRDbx2nxJq
- tMTbSsvyQVillg8GiV4JH4SaaVw+z3Ii00mK5LxQTnQTj34SNslIIqHF9E0IW+hg6iex6Jb2MRG
- q9AHVt8/P3iVUAdEV0VLJpf6tUxgkm9PKSQrvwnLn7P4wJtGg9RJBQjxMYKyGvGwv9H6bmQoh1j
- I=
-X-Received: by 2002:a17:902:bb87:b0:1b8:535:57e2 with SMTP id
- m7-20020a170902bb8700b001b8053557e2mr1717526pls.69.1687783418632; 
- Mon, 26 Jun 2023 05:43:38 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5pxuHABGpn0cq0FCVDk6frUup04N3Qt7m7OKPdpV4EIKQiXeBDOZfr9j962nwv4G2pkMOPGQ==
-X-Received: by 2002:a17:902:bb87:b0:1b8:535:57e2 with SMTP id
- m7-20020a170902bb8700b001b8053557e2mr1717512pls.69.1687783418288; 
- Mon, 26 Jun 2023 05:43:38 -0700 (PDT)
-Received: from localhost.localdomain ([115.96.139.77])
- by smtp.googlemail.com with ESMTPSA id
- j22-20020a170902759600b001b3c892c367sm4111671pll.63.2023.06.26.05.43.35
+ bh=cepU3SwVaAUlUazj6UKyDLib0U2BU3yI44wbcdh72+g=;
+ b=TB/cG9xp2cKX4s3lKCoB2t5v8XXoGCA8qxfe+MNAgsuuHnG32VrYXvbTQULvgRrdXl
+ he+rCx4HPYhmtCI/8rvSRMwQHvwIl5xD1sfgN599hBh9bbg51/e9mmqTXknknMeKIqT5
+ Wh1oByWiPI0ati1XSI3OrDHWu2OfDRWK9RstclF+nFX8bYcjUAN2n+G+iu3q5HAMWhuW
+ WDjCmhu+MdCty2uTqdSSSMHXtzKv57cHZnkUP4TTt1YjPYlZBtAS6gGUXzyBaee436pw
+ l+u4pAx4MIYQetkMF/WcR0mkuWV1cQfq+g74ugA6Z+XC7yhGEQzf6MAX7q+m/jOyVrYY
+ 5ekw==
+X-Gm-Message-State: AC+VfDzu3xmiMoTgbFP8UwB12urX64k5JsYPNJGpiQz83/GB70oXfWv2
+ bZpZWZVNxguWXY01vHHYvEWC/18zeA0jFmB3iAfECcVfDA5Fuu/OBX+GLSXUGKHLSsyuhdZ1aDz
+ HgKnU28krJGHMRDk=
+X-Received: by 2002:a17:907:160c:b0:991:e849:e13b with SMTP id
+ hb12-20020a170907160c00b00991e849e13bmr934332ejc.10.1687784171674; 
+ Mon, 26 Jun 2023 05:56:11 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ54AxJPW+QbvYcQ8+OxDhmIvhHrGa73CQYeRp6CmYkIrnzxL/v3xrEmDhruNMeiSDFJF67c7A==
+X-Received: by 2002:a17:907:160c:b0:991:e849:e13b with SMTP id
+ hb12-20020a170907160c00b00991e849e13bmr934316ejc.10.1687784171337; 
+ Mon, 26 Jun 2023 05:56:11 -0700 (PDT)
+Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
+ [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
+ ci8-20020a170906c34800b00982d0563b11sm3244300ejb.197.2023.06.26.05.56.10
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 26 Jun 2023 05:43:37 -0700 (PDT)
-From: Ani Sinha <anisinha@redhat.com>
-To: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Cc: Ani Sinha <anisinha@redhat.com>,
-	jusual@redhat.com,
-	imammedo@redhat.com
-Subject: [PATCH v3 5/5] hw/pci: ensure PCIE devices are plugged into only slot
- 0 of PCIE port
-Date: Mon, 26 Jun 2023 18:13:06 +0530
-Message-Id: <20230626124306.4572-6-anisinha@redhat.com>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <20230626124306.4572-1-anisinha@redhat.com>
-References: <20230626124306.4572-1-anisinha@redhat.com>
+ Mon, 26 Jun 2023 05:56:10 -0700 (PDT)
+Date: Mon, 26 Jun 2023 14:56:10 +0200
+From: Igor Mammedov <imammedo@redhat.com>
+To: Tao Su <tao1.su@linux.intel.com>
+Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, xiaoyao.li@intel.com,
+ lei4.wang@intel.com, qian.wen@intel.com
+Subject: Re: [PATCH 6/7] target/i386: Add new CPU model EmeraldRapids
+Message-ID: <20230626145610.64405831@imammedo.users.ipa.redhat.com>
+In-Reply-To: <20230616032311.19137-7-tao1.su@linux.intel.com>
+References: <20230616032311.19137-1-tao1.su@linux.intel.com>
+ <20230616032311.19137-7-tao1.su@linux.intel.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=anisinha@redhat.com;
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -87,8 +85,8 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ UPPERCASE_50_75=0.008 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,43 +102,181 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-PCI Express ports only have one slot, so PCI Express devices can only be
-plugged into slot 0 on a PCIE port. Enforce it.
+On Fri, 16 Jun 2023 11:23:10 +0800
+Tao Su <tao1.su@linux.intel.com> wrote:
 
-CC: jusual@redhat.com
-CC: imammedo@redhat.com
-Resolves: https://bugzilla.redhat.com/show_bug.cgi?id=2128929
-Signed-off-by: Ani Sinha <anisinha@redhat.com>
-Reviewed-by: Julia Suvorova <jusual@redhat.com>
----
- hw/pci/pci.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+> From: Qian Wen <qian.wen@intel.com>
+> 
+> Emerald Rapids (EMR) is the next generation of Xeon server processor
+> after Sapphire Rapids (SPR).
+> 
+> Currently, regarding the feature set that can be exposed to guest, there
+> isn't any one new comparing with SPR cpu model, except that EMR has a
+> different model number.
+> 
+> Though it's practicable to define EMR as an alias of a new version of
+> SPR by only updating the model number and model name, it loses the
+> flexibility when new version of EMR cpu model are needed for adding new
+> features (that hasn't virtalized/supported by KVM yet).
 
-diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-index bf38905b7d..426af133b0 100644
---- a/hw/pci/pci.c
-+++ b/hw/pci/pci.c
-@@ -64,6 +64,7 @@ bool pci_available = true;
- static char *pcibus_get_dev_path(DeviceState *dev);
- static char *pcibus_get_fw_dev_path(DeviceState *dev);
- static void pcibus_reset(BusState *qbus);
-+static bool pcie_has_upstream_port(PCIDevice *dev);
- 
- static Property pci_props[] = {
-     DEFINE_PROP_PCI_DEVFN("addr", PCIDevice, devfn, -1),
-@@ -1189,6 +1190,11 @@ static PCIDevice *do_pci_register_device(PCIDevice *pci_dev,
-                    name);
- 
-        return NULL;
-+    } else if (pcie_has_upstream_port(pci_dev) && PCI_SLOT(devfn)) {
-+        error_setg(errp, "PCI: slot %d is not valid for %s,"
-+                   " parent device only allows plugging into slot 0.",
-+                   PCI_SLOT(devfn), name);
-+        return NULL;
-     }
- 
-     pci_dev->devfn = devfn;
--- 
-2.39.1
+Which begs a question, why do we need EMR model (or alias) at all
+if it's the same as SPR at the moment.
+
+Make new features supported 1st and only then introduce a new CPU model.
+
+> 
+> So just add EMR as a standalone cpu model.
+> 
+> Signed-off-by: Qian Wen <qian.wen@intel.com>
+> Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> Signed-off-by: Tao Su <tao1.su@linux.intel.com>
+> ---
+> Changes to original patch
+> (https://lore.kernel.org/qemu-devel/20230515025308.1050277-1-qian.wen@intel.com/)
+> 
+> - Add MSR_ARCH_CAP_SBDR_SSDP_NO, MSR_ARCH_CAP_FBSDP_NO and
+>   MSR_ARCH_CAP_PSDP_NO
+> ---
+>  target/i386/cpu.c | 127 ++++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 127 insertions(+)
+> 
+> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+> index f84fd20bb1..7faf6dfaee 100644
+> --- a/target/i386/cpu.c
+> +++ b/target/i386/cpu.c
+> @@ -3866,6 +3866,133 @@ static const X86CPUDefinition builtin_x86_defs[] = {
+>              { /* end of list */ }
+>          }
+>      },
+> +    {
+> +        .name = "EmeraldRapids",
+> +        .level = 0x20,
+> +        .vendor = CPUID_VENDOR_INTEL,
+> +        .family = 6,
+> +        .model = 207,
+> +        .stepping = 1,
+> +        .features[FEAT_1_EDX] =
+> +            CPUID_FP87 | CPUID_VME | CPUID_DE | CPUID_PSE | CPUID_TSC |
+> +            CPUID_MSR | CPUID_PAE | CPUID_MCE | CPUID_CX8 | CPUID_APIC |
+> +            CPUID_SEP | CPUID_MTRR | CPUID_PGE | CPUID_MCA | CPUID_CMOV |
+> +            CPUID_PAT | CPUID_PSE36 | CPUID_CLFLUSH | CPUID_MMX | CPUID_FXSR |
+> +            CPUID_SSE | CPUID_SSE2,
+> +        .features[FEAT_1_ECX] =
+> +            CPUID_EXT_SSE3 | CPUID_EXT_PCLMULQDQ | CPUID_EXT_SSSE3 |
+> +            CPUID_EXT_FMA | CPUID_EXT_CX16 | CPUID_EXT_PCID | CPUID_EXT_SSE41 |
+> +            CPUID_EXT_SSE42 | CPUID_EXT_X2APIC | CPUID_EXT_MOVBE |
+> +            CPUID_EXT_POPCNT | CPUID_EXT_TSC_DEADLINE_TIMER | CPUID_EXT_AES |
+> +            CPUID_EXT_XSAVE | CPUID_EXT_AVX | CPUID_EXT_F16C | CPUID_EXT_RDRAND,
+> +        .features[FEAT_8000_0001_EDX] =
+> +            CPUID_EXT2_SYSCALL | CPUID_EXT2_NX | CPUID_EXT2_PDPE1GB |
+> +            CPUID_EXT2_RDTSCP | CPUID_EXT2_LM,
+> +        .features[FEAT_8000_0001_ECX] =
+> +            CPUID_EXT3_LAHF_LM | CPUID_EXT3_ABM | CPUID_EXT3_3DNOWPREFETCH,
+> +        .features[FEAT_8000_0008_EBX] =
+> +            CPUID_8000_0008_EBX_WBNOINVD,
+> +        .features[FEAT_7_0_EBX] =
+> +            CPUID_7_0_EBX_FSGSBASE | CPUID_7_0_EBX_BMI1 | CPUID_7_0_EBX_HLE |
+> +            CPUID_7_0_EBX_AVX2 | CPUID_7_0_EBX_SMEP | CPUID_7_0_EBX_BMI2 |
+> +            CPUID_7_0_EBX_ERMS | CPUID_7_0_EBX_INVPCID | CPUID_7_0_EBX_RTM |
+> +            CPUID_7_0_EBX_AVX512F | CPUID_7_0_EBX_AVX512DQ |
+> +            CPUID_7_0_EBX_RDSEED | CPUID_7_0_EBX_ADX | CPUID_7_0_EBX_SMAP |
+> +            CPUID_7_0_EBX_AVX512IFMA | CPUID_7_0_EBX_CLFLUSHOPT |
+> +            CPUID_7_0_EBX_CLWB | CPUID_7_0_EBX_AVX512CD | CPUID_7_0_EBX_SHA_NI |
+> +            CPUID_7_0_EBX_AVX512BW | CPUID_7_0_EBX_AVX512VL,
+> +        .features[FEAT_7_0_ECX] =
+> +            CPUID_7_0_ECX_AVX512_VBMI | CPUID_7_0_ECX_UMIP | CPUID_7_0_ECX_PKU |
+> +            CPUID_7_0_ECX_AVX512_VBMI2 | CPUID_7_0_ECX_GFNI |
+> +            CPUID_7_0_ECX_VAES | CPUID_7_0_ECX_VPCLMULQDQ |
+> +            CPUID_7_0_ECX_AVX512VNNI | CPUID_7_0_ECX_AVX512BITALG |
+> +            CPUID_7_0_ECX_AVX512_VPOPCNTDQ | CPUID_7_0_ECX_LA57 |
+> +            CPUID_7_0_ECX_RDPID | CPUID_7_0_ECX_BUS_LOCK_DETECT,
+> +        .features[FEAT_7_0_EDX] =
+> +            CPUID_7_0_EDX_FSRM | CPUID_7_0_EDX_SERIALIZE |
+> +            CPUID_7_0_EDX_TSX_LDTRK | CPUID_7_0_EDX_AMX_BF16 |
+> +            CPUID_7_0_EDX_AVX512_FP16 | CPUID_7_0_EDX_AMX_TILE |
+> +            CPUID_7_0_EDX_AMX_INT8 | CPUID_7_0_EDX_SPEC_CTRL |
+> +            CPUID_7_0_EDX_ARCH_CAPABILITIES | CPUID_7_0_EDX_SPEC_CTRL_SSBD,
+> +        .features[FEAT_ARCH_CAPABILITIES] =
+> +            MSR_ARCH_CAP_RDCL_NO | MSR_ARCH_CAP_IBRS_ALL |
+> +            MSR_ARCH_CAP_SKIP_L1DFL_VMENTRY | MSR_ARCH_CAP_MDS_NO |
+> +            MSR_ARCH_CAP_PSCHANGE_MC_NO | MSR_ARCH_CAP_TAA_NO |
+> +            MSR_ARCH_CAP_SBDR_SSDP_NO | MSR_ARCH_CAP_FBSDP_NO |
+> +            MSR_ARCH_CAP_PSDP_NO,
+> +        .features[FEAT_XSAVE] =
+> +            CPUID_XSAVE_XSAVEOPT | CPUID_XSAVE_XSAVEC |
+> +            CPUID_XSAVE_XGETBV1 | CPUID_XSAVE_XSAVES | CPUID_D_1_EAX_XFD,
+> +        .features[FEAT_6_EAX] =
+> +            CPUID_6_EAX_ARAT,
+> +        .features[FEAT_7_1_EAX] =
+> +            CPUID_7_1_EAX_AVX_VNNI | CPUID_7_1_EAX_AVX512_BF16 |
+> +            CPUID_7_1_EAX_FZRM | CPUID_7_1_EAX_FSRS | CPUID_7_1_EAX_FSRC,
+> +        .features[FEAT_VMX_BASIC] =
+> +            MSR_VMX_BASIC_INS_OUTS | MSR_VMX_BASIC_TRUE_CTLS,
+> +        .features[FEAT_VMX_ENTRY_CTLS] =
+> +            VMX_VM_ENTRY_LOAD_DEBUG_CONTROLS | VMX_VM_ENTRY_IA32E_MODE |
+> +            VMX_VM_ENTRY_LOAD_IA32_PERF_GLOBAL_CTRL |
+> +            VMX_VM_ENTRY_LOAD_IA32_PAT | VMX_VM_ENTRY_LOAD_IA32_EFER,
+> +        .features[FEAT_VMX_EPT_VPID_CAPS] =
+> +            MSR_VMX_EPT_EXECONLY |
+> +            MSR_VMX_EPT_PAGE_WALK_LENGTH_4 | MSR_VMX_EPT_PAGE_WALK_LENGTH_5 |
+> +            MSR_VMX_EPT_WB | MSR_VMX_EPT_2MB | MSR_VMX_EPT_1GB |
+> +            MSR_VMX_EPT_INVEPT | MSR_VMX_EPT_AD_BITS |
+> +            MSR_VMX_EPT_INVEPT_SINGLE_CONTEXT | MSR_VMX_EPT_INVEPT_ALL_CONTEXT |
+> +            MSR_VMX_EPT_INVVPID | MSR_VMX_EPT_INVVPID_SINGLE_ADDR |
+> +            MSR_VMX_EPT_INVVPID_SINGLE_CONTEXT |
+> +            MSR_VMX_EPT_INVVPID_ALL_CONTEXT |
+> +            MSR_VMX_EPT_INVVPID_SINGLE_CONTEXT_NOGLOBALS,
+> +        .features[FEAT_VMX_EXIT_CTLS] =
+> +            VMX_VM_EXIT_SAVE_DEBUG_CONTROLS |
+> +            VMX_VM_EXIT_LOAD_IA32_PERF_GLOBAL_CTRL |
+> +            VMX_VM_EXIT_ACK_INTR_ON_EXIT | VMX_VM_EXIT_SAVE_IA32_PAT |
+> +            VMX_VM_EXIT_LOAD_IA32_PAT | VMX_VM_EXIT_SAVE_IA32_EFER |
+> +            VMX_VM_EXIT_LOAD_IA32_EFER | VMX_VM_EXIT_SAVE_VMX_PREEMPTION_TIMER,
+> +        .features[FEAT_VMX_MISC] =
+> +            MSR_VMX_MISC_STORE_LMA | MSR_VMX_MISC_ACTIVITY_HLT |
+> +            MSR_VMX_MISC_VMWRITE_VMEXIT,
+> +        .features[FEAT_VMX_PINBASED_CTLS] =
+> +            VMX_PIN_BASED_EXT_INTR_MASK | VMX_PIN_BASED_NMI_EXITING |
+> +            VMX_PIN_BASED_VIRTUAL_NMIS | VMX_PIN_BASED_VMX_PREEMPTION_TIMER |
+> +            VMX_PIN_BASED_POSTED_INTR,
+> +        .features[FEAT_VMX_PROCBASED_CTLS] =
+> +            VMX_CPU_BASED_VIRTUAL_INTR_PENDING |
+> +            VMX_CPU_BASED_USE_TSC_OFFSETING | VMX_CPU_BASED_HLT_EXITING |
+> +            VMX_CPU_BASED_INVLPG_EXITING | VMX_CPU_BASED_MWAIT_EXITING |
+> +            VMX_CPU_BASED_RDPMC_EXITING | VMX_CPU_BASED_RDTSC_EXITING |
+> +            VMX_CPU_BASED_CR3_LOAD_EXITING | VMX_CPU_BASED_CR3_STORE_EXITING |
+> +            VMX_CPU_BASED_CR8_LOAD_EXITING | VMX_CPU_BASED_CR8_STORE_EXITING |
+> +            VMX_CPU_BASED_TPR_SHADOW | VMX_CPU_BASED_VIRTUAL_NMI_PENDING |
+> +            VMX_CPU_BASED_MOV_DR_EXITING | VMX_CPU_BASED_UNCOND_IO_EXITING |
+> +            VMX_CPU_BASED_USE_IO_BITMAPS | VMX_CPU_BASED_MONITOR_TRAP_FLAG |
+> +            VMX_CPU_BASED_USE_MSR_BITMAPS | VMX_CPU_BASED_MONITOR_EXITING |
+> +            VMX_CPU_BASED_PAUSE_EXITING |
+> +            VMX_CPU_BASED_ACTIVATE_SECONDARY_CONTROLS,
+> +        .features[FEAT_VMX_SECONDARY_CTLS] =
+> +            VMX_SECONDARY_EXEC_VIRTUALIZE_APIC_ACCESSES |
+> +            VMX_SECONDARY_EXEC_ENABLE_EPT | VMX_SECONDARY_EXEC_DESC |
+> +            VMX_SECONDARY_EXEC_RDTSCP |
+> +            VMX_SECONDARY_EXEC_VIRTUALIZE_X2APIC_MODE |
+> +            VMX_SECONDARY_EXEC_ENABLE_VPID | VMX_SECONDARY_EXEC_WBINVD_EXITING |
+> +            VMX_SECONDARY_EXEC_UNRESTRICTED_GUEST |
+> +            VMX_SECONDARY_EXEC_APIC_REGISTER_VIRT |
+> +            VMX_SECONDARY_EXEC_VIRTUAL_INTR_DELIVERY |
+> +            VMX_SECONDARY_EXEC_RDRAND_EXITING |
+> +            VMX_SECONDARY_EXEC_ENABLE_INVPCID |
+> +            VMX_SECONDARY_EXEC_ENABLE_VMFUNC | VMX_SECONDARY_EXEC_SHADOW_VMCS |
+> +            VMX_SECONDARY_EXEC_RDSEED_EXITING | VMX_SECONDARY_EXEC_ENABLE_PML |
+> +            VMX_SECONDARY_EXEC_XSAVES,
+> +        .features[FEAT_VMX_VMFUNC] =
+> +            MSR_VMX_VMFUNC_EPT_SWITCHING,
+> +        .xlevel = 0x80000008,
+> +        .model_id = "Intel Xeon Processor (EmeraldRapids)",
+> +        .versions = (X86CPUVersionDefinition[]) {
+> +            { .version = 1 },
+> +            { /* end of list */ },
+> +        },
+> +    },
+>      {
+>          .name = "Denverton",
+>          .level = 21,
 
 
