@@ -2,42 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7770173EA96
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 20:55:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49E2F73EAB1
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 20:58:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDrM8-0001qj-Jc; Mon, 26 Jun 2023 14:54:35 -0400
+	id 1qDrML-0001vo-B4; Mon, 26 Jun 2023 14:54:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qDrKq-0000mb-Oz; Mon, 26 Jun 2023 14:53:17 -0400
+ id 1qDrKw-0000qV-Nk; Mon, 26 Jun 2023 14:53:20 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qDrKo-0005LG-RC; Mon, 26 Jun 2023 14:53:12 -0400
+ id 1qDrKs-0005PH-3o; Mon, 26 Jun 2023 14:53:18 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id E3DC9EF37;
- Mon, 26 Jun 2023 21:50:24 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 0135AEF38;
+ Mon, 26 Jun 2023 21:50:25 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 47B02F7C6;
+ by tsrv.corpit.ru (Postfix) with SMTP id 7694DF7C7;
  Mon, 26 Jun 2023 21:50:23 +0300 (MSK)
-Received: (nullmailer pid 1574055 invoked by uid 1000);
+Received: (nullmailer pid 1574058 invoked by uid 1000);
  Mon, 26 Jun 2023 18:50:16 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org, qemu-stable@nongnu.org
-Cc: Mattias Nissler <mnissler@rivosinc.com>,
- Jagannathan Raman <jag.raman@oracle.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.0.3 32/54] hw/remote: Fix vfu_cfg trace offset format
-Date: Mon, 26 Jun 2023 21:49:39 +0300
-Message-Id: <20230626185002.1573836-32-mjt@tls.msk.ru>
+Cc: Anastasia Belova <abelova@astralinux.ru>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.0.3 33/54] vnc: move assert in vnc_worker_thread_loop
+Date: Mon, 26 Jun 2023 21:49:40 +0300
+Message-Id: <20230626185002.1573836-33-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.0.3-20230626214235@cover.tls.msk.ru>
 References: <qemu-stable-8.0.3-20230626214235@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -62,34 +58,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Mattias Nissler <mnissler@rivosinc.com>
+From: Anastasia Belova <abelova@astralinux.ru>
 
-The printed offset value is prefixed with 0x, but was actually printed
-in decimal. To spare others the confusion, adjust the format specifier
-to hexadecimal.
+job may be NULL if queue->exit is true. Check
+it before dereference job.
 
-Signed-off-by: Mattias Nissler <mnissler@rivosinc.com>
-Reviewed-by: Jagannathan Raman <jag.raman@oracle.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Fixes: f31f9c1080 ("vnc: add magic cookie to VncState")
+Signed-off-by: Anastasia Belova <abelova@astralinux.ru>
+Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-(cherry picked from commit 5fb9e8295531f957cf7ac20e89736c8963a25e04)
+(cherry picked from commit bdfca8a22f41e7ad47fd2dac71e4d1387e2c0d4e)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/remote/trace-events b/hw/remote/trace-events
-index c167b3c7a5..0d1b7d56a5 100644
---- a/hw/remote/trace-events
-+++ b/hw/remote/trace-events
-@@ -5,8 +5,8 @@ mpqemu_recv_io_error(int cmd, int size, int nfds) "failed to receive %d size %d,
+diff --git a/ui/vnc-jobs.c b/ui/vnc-jobs.c
+index 886f9bf611..fcca7ec632 100644
+--- a/ui/vnc-jobs.c
++++ b/ui/vnc-jobs.c
+@@ -250,12 +250,13 @@ static int vnc_worker_thread_loop(VncJobQueue *queue)
+     /* Here job can only be NULL if queue->exit is true */
+     job = QTAILQ_FIRST(&queue->jobs);
+     vnc_unlock_queue(queue);
+-    assert(job->vs->magic == VNC_MAGIC);
  
- # vfio-user-obj.c
- vfu_prop(const char *prop, const char *val) "vfu: setting %s as %s"
--vfu_cfg_read(uint32_t offset, uint32_t val) "vfu: cfg: 0x%u -> 0x%x"
--vfu_cfg_write(uint32_t offset, uint32_t val) "vfu: cfg: 0x%u <- 0x%x"
-+vfu_cfg_read(uint32_t offset, uint32_t val) "vfu: cfg: 0x%x -> 0x%x"
-+vfu_cfg_write(uint32_t offset, uint32_t val) "vfu: cfg: 0x%x <- 0x%x"
- vfu_dma_register(uint64_t gpa, size_t len) "vfu: registering GPA 0x%"PRIx64", %zu bytes"
- vfu_dma_unregister(uint64_t gpa) "vfu: unregistering GPA 0x%"PRIx64""
- vfu_bar_register(int i, uint64_t addr, uint64_t size) "vfu: BAR %d: addr 0x%"PRIx64" size 0x%"PRIx64""
+     if (queue->exit) {
+         return -1;
+     }
+ 
++    assert(job->vs->magic == VNC_MAGIC);
++
+     vnc_lock_output(job->vs);
+     if (job->vs->ioc == NULL || job->vs->abort == true) {
+         vnc_unlock_output(job->vs);
 -- 
 2.39.2
 
