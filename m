@@ -2,74 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6F5973E092
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 15:24:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C090573E0E8
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 15:43:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDlNo-0006Tb-P2; Mon, 26 Jun 2023 08:31:54 -0400
+	id 1qDlNa-0006Qy-P3; Mon, 26 Jun 2023 08:31:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qDlME-0004ab-6s
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 08:30:17 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qDlMO-0005CN-OB
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 08:30:24 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qDlMC-0003TU-2m
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 08:30:13 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qDlML-0003Yb-S5
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 08:30:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687782611;
+ s=mimecast20190719; t=1687782620;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=XW1yczzSwWWDigtQnZw3yk+r1NAQ2QkzD7hi2j1+cLQ=;
- b=M2VT5yBjKi/VUW0obXBaGqwP4XNIbCihd7NOXedyvUja8findWwiBhgKYmT1cqvfXkqPBG
- 0pXRuikUuY4eSC3yLjcYH20ax4QZUd8uNNVtpozplBYd9OPzn/+RiASK2IxbpUZ6PysZ5r
- MCPBH8RCYvmZCnE6OQXMvo7eCTV3gSE=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=+soq26ZepC8faaYCkqmuSnarz0mIzjpYMkOIqTdrGHs=;
+ b=MLWPQQupHnpgofXPRcYMZfkELirAh76M4+dQ3Y8CNEPhnQMmdzzbkEHFW/nIQs8Px8pCQG
+ ddY9wJFu6NERlSM/teQrdbmDGGxM4pv9/LlbAFYGxL2Xni5Ls2mE5/FFIJOMZ4kwwCBglG
+ Io1mfBJ7YUgYdwFfmEMxANa/B4Jur1o=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-618-_oQwmYOCO8KnnRMiZ3GEqQ-1; Mon, 26 Jun 2023 08:30:09 -0400
-X-MC-Unique: _oQwmYOCO8KnnRMiZ3GEqQ-1
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-313f5021d9bso248002f8f.2
- for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 05:30:09 -0700 (PDT)
+ us-mta-194-u9HwtRNAMVy9wwCi3LYC1w-1; Mon, 26 Jun 2023 08:30:19 -0400
+X-MC-Unique: u9HwtRNAMVy9wwCi3LYC1w-1
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-3112808cd0cso2052279f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 05:30:19 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687782608; x=1690374608;
+ d=1e100.net; s=20221208; t=1687782618; x=1690374618;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=XW1yczzSwWWDigtQnZw3yk+r1NAQ2QkzD7hi2j1+cLQ=;
- b=BPiy57+I9rW1GKW+SoiEi7J+VuJrQboOPYf32u+C9XSbexK13ZY1ORGx1RzGmDyfne
- J049U/TgGmLFZrSnr9CwxRR7CSLjNzP4QoRYThfHlQHthBXJiinaaa2j8Iw7yBsCpxPz
- ELiRvyxG7kMevGoI7KdrDX9QbvQNLXglGAM7lxqf9dRtO0kFk2I4mgZBrGYFsRkq75Jn
- Z6FAQZqWnOWofutOfslLVDgtPBX/ulso7v9F6qjMwTTSIY3KAlYesfhjf2zDzh9nHPZ+
- QsM/EBWZLgGlTVcS3pTk266oVl5Ehz+cxh4DF8FsU5EjkXZutyUzE64mslS0qQM4hvPZ
- F+cQ==
-X-Gm-Message-State: AC+VfDwuQiQfnzd6IBypS34SAPzFVriIG2DXSlkZjWYtH6LTMF/Gubop
- FXNhFMlzKpLTuLfbti3oISB14Aa3IkIB8CBTV3ZjXzrJc2/+xRZEGPW36+wnrqm/1UViHs6KB/s
- Fv9EXU+TeACF0NIJySb42h+hdCTgbf0iaQ6qOl1Fo+3wVAl17jhYKW7r1JKIkbItqSSSB
-X-Received: by 2002:a5d:4e8f:0:b0:30f:bf2e:4b99 with SMTP id
- e15-20020a5d4e8f000000b0030fbf2e4b99mr19622262wru.49.1687782608199; 
- Mon, 26 Jun 2023 05:30:08 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7RxNIEGTQPzDRapji3CzDC5tYJysZNShIucZQPbUk8fY2ypND2DMAknnwsWZp/Fm4kesVT9Q==
-X-Received: by 2002:a5d:4e8f:0:b0:30f:bf2e:4b99 with SMTP id
- e15-20020a5d4e8f000000b0030fbf2e4b99mr19622241wru.49.1687782607890; 
- Mon, 26 Jun 2023 05:30:07 -0700 (PDT)
+ bh=+soq26ZepC8faaYCkqmuSnarz0mIzjpYMkOIqTdrGHs=;
+ b=MffPbTVIacVx4uynFwWSsOmT7gbDbU/TDcObYXJiYuOWvCj1fI/JrIRkSA2D1w/EMP
+ u7UgfB7Ti2OJ+L+++RnjmdEGY4zkwqGtakpzpYkEDjI/Ko/A/Wgo9hVzzYVs3vxdy/X7
+ w1sjhpFlbe855TnXVVBvmsP+OFZ/P/KTzk92ASVzgkwDRh0nLL6IZLQgGy1bkjejvhwt
+ VLo2pXsuOx1h4dapqZmZkNwI2ZrTz7pV+zoOwUcEpF3L0FwKL8I/pFu5kdmwqqesPrF1
+ 3QYsuncoldrvlgXpBDZeU/ulL1xrpg36dlcEqfL6oUiWpuFLGnsisoqYudh8I4n/U6XQ
+ HZYQ==
+X-Gm-Message-State: AC+VfDyoV9fS6PFd7zSGb3p19B9i/3FVoRPftX914GwzG2M/h04MvfpN
+ wXHHu2VN1dKzlXG8PSk96OqcbeQ6zOSBkYo61i/u7k/GH18UcmoHkfx77dKf1jbxFEEzwhVhqvm
+ 7CrrpKP8aZ85qX88NDy0moWGlYcJrv6fzKKFF7iXf9u6lQwgNH5ln9cDUjq024hUocZMi
+X-Received: by 2002:adf:e74f:0:b0:313:f7a1:3d8d with SMTP id
+ c15-20020adfe74f000000b00313f7a13d8dmr455873wrn.63.1687782618092; 
+ Mon, 26 Jun 2023 05:30:18 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6zSsOySa/hgu19pzZuqG+orkFzEXYHtK7AewnxoMA2dBMyNU3vUNii4lWoH1KPhmWezESXEA==
+X-Received: by 2002:adf:e74f:0:b0:313:f7a1:3d8d with SMTP id
+ c15-20020adfe74f000000b00313f7a13d8dmr455843wrn.63.1687782617631; 
+ Mon, 26 Jun 2023 05:30:17 -0700 (PDT)
 Received: from redhat.com ([2.52.156.102]) by smtp.gmail.com with ESMTPSA id
- z3-20020a5d4d03000000b0030aec5e020fsm7224686wrt.86.2023.06.26.05.30.06
+ s8-20020adff808000000b00313e23edbd5sm6840751wrp.102.2023.06.26.05.30.15
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 26 Jun 2023 05:30:07 -0700 (PDT)
-Date: Mon, 26 Jun 2023 08:30:05 -0400
+ Mon, 26 Jun 2023 05:30:17 -0700 (PDT)
+Date: Mon, 26 Jun 2023 08:30:14 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
- Igor Mammedov <imammedo@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Zhenzhong Duan <zhenzhong.duan@intel.com>,
+ Peter Xu <peterx@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PULL 46/53] hw/i386/pc: Clean up pc_machine_initfn
-Message-ID: <b7a738e59121b0e98bba00bbe60273a431d26977.1687782442.git.mst@redhat.com>
+ Eduardo Habkost <eduardo@habkost.net>
+Subject: [PULL 49/53] intel_iommu: Fix a potential issue in VFIO dirty page
+ sync
+Message-ID: <d9acc3fa87f9e6cbedd6702f6d042ffe81a40b49.1687782442.git.mst@redhat.com>
 References: <cover.1687782442.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -102,32 +104,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
+From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 
-To use the newly introduced PC machine class local variable.
+Peter Xu found a potential issue:
 
-Suggested-by: Igor Mammedov <imammedo@redhat.com>
-Signed-off-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
-Message-Id: <20230609164107.23404-1-suravee.suthikulpanit@amd.com>
+"The other thing is when I am looking at the new code I found that we
+actually extended the replay() to be used also in dirty tracking of vfio,
+in vfio_sync_dirty_bitmap().  For that maybe it's already broken if
+unmap_all() because afaiu log_sync() can be called in migration thread
+anytime during DMA so I think it means the device is prone to DMA with the
+IOMMU pgtable quickly erased and rebuilt here, which means the DMA could
+fail unexpectedly.  Copy Alex, Kirti and Neo."
+
+Fix it by replacing the unmap_all() to only evacuate the iova tree
+(keeping all host mappings untouched, IOW, don't notify UNMAP), and
+do a full resync in page walk which will notify all existing mappings
+as MAP. This way we don't interrupt with any existing mapping if there
+is (e.g. for the dirty sync case), meanwhile we keep sync too to latest
+(for moving a vfio device into an existing iommu group).
+
+Suggested-by: Peter Xu <peterx@redhat.com>
+Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+Reviewed-by: Peter Xu <peterx@redhat.com>
+Message-Id: <20230615032626.314476-2-zhenzhong.duan@intel.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/i386/pc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/i386/intel_iommu.c | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index 8d37567e08..f01d7de5ad 100644
---- a/hw/i386/pc.c
-+++ b/hw/i386/pc.c
-@@ -1867,7 +1867,7 @@ static void pc_machine_initfn(Object *obj)
-     pcms->smbios_entry_point_type = pcmc->default_smbios_ep_type;
+diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
+index 94d52f4205..34af12f392 100644
+--- a/hw/i386/intel_iommu.c
++++ b/hw/i386/intel_iommu.c
+@@ -3825,13 +3825,10 @@ static void vtd_iommu_replay(IOMMUMemoryRegion *iommu_mr, IOMMUNotifier *n)
+     IntelIOMMUState *s = vtd_as->iommu_state;
+     uint8_t bus_n = pci_bus_num(vtd_as->bus);
+     VTDContextEntry ce;
++    DMAMap map = { .iova = 0, .size = HWADDR_MAX };
  
-     /* acpi build is enabled by default if machine supports it */
--    pcms->acpi_build_enabled = PC_MACHINE_GET_CLASS(pcms)->has_acpi_build;
-+    pcms->acpi_build_enabled = pcmc->has_acpi_build;
-     pcms->smbus_enabled = true;
-     pcms->sata_enabled = true;
-     pcms->i8042_enabled = true;
+-    /*
+-     * The replay can be triggered by either a invalidation or a newly
+-     * created entry. No matter what, we release existing mappings
+-     * (it means flushing caches for UNMAP-only registers).
+-     */
+-    vtd_address_space_unmap(vtd_as, n);
++    /* replay is protected by BQL, page walk will re-setup it safely */
++    iova_tree_remove(vtd_as->iova_tree, map);
+ 
+     if (vtd_dev_to_context_entry(s, bus_n, vtd_as->devfn, &ce) == 0) {
+         trace_vtd_replay_ce_valid(s->root_scalable ? "scalable mode" :
 -- 
 MST
 
