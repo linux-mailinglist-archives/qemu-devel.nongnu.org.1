@@ -2,39 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CEE273EACF
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 21:00:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9714C73EA91
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 20:55:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDrJg-0005nx-1C; Mon, 26 Jun 2023 14:52:00 -0400
+	id 1qDrJy-0007Rc-Ln; Mon, 26 Jun 2023 14:52:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qDrJb-0005ZL-Rf; Mon, 26 Jun 2023 14:51:55 -0400
+ id 1qDrJv-0007Hx-Ok; Mon, 26 Jun 2023 14:52:15 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qDrJZ-00054K-Ue; Mon, 26 Jun 2023 14:51:55 -0400
+ id 1qDrJt-00054R-W5; Mon, 26 Jun 2023 14:52:15 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 22899EF2C;
+ by isrv.corpit.ru (Postfix) with ESMTP id 59264EF2D;
  Mon, 26 Jun 2023 21:50:22 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id AB723F7BB;
+ by tsrv.corpit.ru (Postfix) with SMTP id DA37BF7BC;
  Mon, 26 Jun 2023 21:50:20 +0300 (MSK)
-Received: (nullmailer pid 1574021 invoked by uid 1000);
+Received: (nullmailer pid 1574024 invoked by uid 1000);
  Mon, 26 Jun 2023 18:50:16 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org, qemu-stable@nongnu.org
-Cc: Ilya Leoshkevich <iii@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.0.3 21/54] linux-user/s390x: Fix single-stepping SVC
-Date: Mon, 26 Jun 2023 21:49:28 +0300
-Message-Id: <20230626185002.1573836-21-mjt@tls.msk.ru>
+Cc: Ilya Leoshkevich <iii@linux.ibm.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.0.3 22/54] tests/tcg/s390x: Test single-stepping SVC
+Date: Mon, 26 Jun 2023 21:49:29 +0300
+Message-Id: <20230626185002.1573836-22-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.0.3-20230626214235@cover.tls.msk.ru>
 References: <qemu-stable-8.0.3-20230626214235@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -61,36 +63,133 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Ilya Leoshkevich <iii@linux.ibm.com>
 
-Currently single-stepping SVC executes two instructions. The reason is
-that EXCP_DEBUG for the SVC instruction itself is masked by EXCP_SVC.
-Fix by re-raising EXCP_DEBUG.
+Add a small test to prevent regressions.
 
 Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Message-Id: <20230510230213.330134-2-iii@linux.ibm.com>
+Acked-by: Alex Bennée <alex.bennee@linaro.org>
+Message-Id: <20230510230213.330134-3-iii@linux.ibm.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
-(cherry picked from commit 01b9990a3fb84bb9a14017255ab1a4fa86588215)
+(cherry picked from commit be4a4cb429617a8b6893733b37b6203e4b7bf35b)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/linux-user/s390x/cpu_loop.c b/linux-user/s390x/cpu_loop.c
-index 285bc60071..8b7ac2879e 100644
---- a/linux-user/s390x/cpu_loop.c
-+++ b/linux-user/s390x/cpu_loop.c
-@@ -86,6 +86,15 @@ void cpu_loop(CPUS390XState *env)
-             } else if (ret != -QEMU_ESIGRETURN) {
-                 env->regs[2] = ret;
-             }
-+
-+            if (unlikely(cs->singlestep_enabled)) {
-+                /*
-+                 * cpu_tb_exec() did not raise EXCP_DEBUG, because it has seen
-+                 * that EXCP_SVC was already pending.
-+                 */
-+                cs->exception_index = EXCP_DEBUG;
-+            }
-+
-             break;
+diff --git a/tests/tcg/s390x/Makefile.target b/tests/tcg/s390x/Makefile.target
+index b14c0bd84b..a2a15c4a23 100644
+--- a/tests/tcg/s390x/Makefile.target
++++ b/tests/tcg/s390x/Makefile.target
+@@ -77,7 +77,16 @@ run-gdbstub-signals-s390x: signals-s390x
+ 		--bin $< --test $(S390X_SRC)/gdbstub/test-signals-s390x.py, \
+ 	mixing signals and debugging)
  
-         case EXCP_DEBUG:
+-EXTRA_RUNS += run-gdbstub-signals-s390x
++hello-s390x-asm: CFLAGS+=-nostdlib
++
++run-gdbstub-svc: hello-s390x-asm
++	$(call run-test, $@, $(GDB_SCRIPT) \
++		--gdb $(HAVE_GDB_BIN) \
++		--qemu $(QEMU) --qargs "$(QEMU_OPTS)" \
++		--bin $< --test $(S390X_SRC)/gdbstub/test-svc.py, \
++	single-stepping svc)
++
++EXTRA_RUNS += run-gdbstub-signals-s390x run-gdbstub-svc
+ endif
+ 
+ # MVX versions of sha512
+diff --git a/tests/tcg/s390x/gdbstub/test-svc.py b/tests/tcg/s390x/gdbstub/test-svc.py
+new file mode 100644
+index 0000000000..7851ca7284
+--- /dev/null
++++ b/tests/tcg/s390x/gdbstub/test-svc.py
+@@ -0,0 +1,64 @@
++"""Test single-stepping SVC.
++
++This runs as a sourced script (via -x, via run-test.py)."""
++from __future__ import print_function
++import gdb
++import sys
++
++
++n_failures = 0
++
++
++def report(cond, msg):
++    """Report success/fail of a test"""
++    if cond:
++        print("PASS: {}".format(msg))
++    else:
++        print("FAIL: {}".format(msg))
++        global n_failures
++        n_failures += 1
++
++
++def run_test():
++    """Run through the tests one by one"""
++    report("lghi\t" in gdb.execute("x/i $pc", False, True), "insn #1")
++    gdb.execute("si")
++    report("larl\t" in gdb.execute("x/i $pc", False, True), "insn #2")
++    gdb.execute("si")
++    report("lghi\t" in gdb.execute("x/i $pc", False, True), "insn #3")
++    gdb.execute("si")
++    report("svc\t" in gdb.execute("x/i $pc", False, True), "insn #4")
++    gdb.execute("si")
++    report("xgr\t" in gdb.execute("x/i $pc", False, True), "insn #5")
++    gdb.execute("si")
++    report("svc\t" in gdb.execute("x/i $pc", False, True), "insn #6")
++    gdb.execute("si")
++
++
++def main():
++    """Prepare the environment and run through the tests"""
++    try:
++        inferior = gdb.selected_inferior()
++        print("ATTACHED: {}".format(inferior.architecture().name()))
++    except (gdb.error, AttributeError):
++        print("SKIPPING (not connected)")
++        exit(0)
++
++    if gdb.parse_and_eval('$pc') == 0:
++        print("SKIP: PC not set")
++        exit(0)
++
++    try:
++        # These are not very useful in scripts
++        gdb.execute("set pagination off")
++        gdb.execute("set confirm off")
++
++        # Run the actual tests
++        run_test()
++    except gdb.error:
++        report(False, "GDB Exception: {}".format(sys.exc_info()[0]))
++    print("All tests complete: %d failures" % n_failures)
++    exit(n_failures)
++
++
++main()
+diff --git a/tests/tcg/s390x/hello-s390x-asm.S b/tests/tcg/s390x/hello-s390x-asm.S
+new file mode 100644
+index 0000000000..2e9faa1604
+--- /dev/null
++++ b/tests/tcg/s390x/hello-s390x-asm.S
+@@ -0,0 +1,20 @@
++/*
++ * Hello, World! in assembly.
++ */
++
++.globl _start
++_start:
++
++/* puts("Hello, World!"); */
++lghi %r2,1
++larl %r3,foo
++lghi %r4,foo_end-foo
++svc 4
++
++/* exit(0); */
++xgr %r2,%r2
++svc 1
++
++.align 2
++foo: .asciz "Hello, World!\n"
++foo_end:
 -- 
 2.39.2
 
