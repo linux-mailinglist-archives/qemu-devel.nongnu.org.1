@@ -2,82 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C5D173E075
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 15:20:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4D2F73E08C
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 15:23:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDm8p-0007Vh-Qz; Mon, 26 Jun 2023 09:20:27 -0400
+	id 1qDmAN-0001HA-W0; Mon, 26 Jun 2023 09:22:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1qDm8f-0007UP-Ih
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 09:20:19 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qDmAD-0001AA-KH
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 09:21:53 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1qDm8c-0006eV-JM
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 09:20:16 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qDmAA-00077T-Bl
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 09:21:53 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687785613;
+ s=mimecast20190719; t=1687785705;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Er7uzBZRbs1PMd3Z0u/O9jmhnMkuSK2O8BjmBb7/asU=;
- b=PPMHpB+mS926Ak0vun77h3ZPURRSQcWktBLllzzxueIeDXn6GoZsKMyk5mAN0tbKOisxmy
- QxsFrG99PViMvody+c3Z/WKYTK3E6XaR8UGNE8xiF2QJqG2b/wfOSyaN7brjOjnHrNfj1M
- 6r4OceT/RgtsvWbTF2yBSMm0MiI0UFw=
-Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
- [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-154-oIb3QIjdNL-LfehEaT174w-1; Mon, 26 Jun 2023 09:20:12 -0400
-X-MC-Unique: oIb3QIjdNL-LfehEaT174w-1
-Received: by mail-lj1-f197.google.com with SMTP id
- 38308e7fff4ca-2b6a2a5f08aso7619061fa.2
- for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 06:20:12 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687785611; x=1690377611;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Er7uzBZRbs1PMd3Z0u/O9jmhnMkuSK2O8BjmBb7/asU=;
- b=cuDa+QDwjCDAHFWPKk+7sO7NkeFFDObkjaCW5ZhawW0F5oXKly7gj0djwGBzj+npA3
- wTqESR23x2w1u5X3rDkz3/IHBHbOGrGpnvvKzGFHZ+IquX2tZWrgoZOqsjJ2sR/2dv6C
- 2GYaJTIeaJwVIGWSxghrj/ssPglii/NWB55ad3r7LRIe5GyyDMeEzwOgVvK+gvLvWiyh
- 4GKesMnR9A+Sr+CejLtkP6wtMvlVeKHligBtM07lbTkGh2WCaDce5r6B2R/V1li+fc2h
- nFwprxXNXDxksROdNmEWYyhp1J/aEKYvvwNaiHR7HMXPd5t9Bv6dbWDfOuWkmLQNTG22
- SQAQ==
-X-Gm-Message-State: AC+VfDyIecneeCt92mzecfg/meoC0WCJVaj3EAUSbkNcEZ1NrcYR6DnD
- fo1zB5KjQeTcLvxEoDTxQmwkhySBgAqW0i6TtBj9gS9gReDx29bwXTXjYIOMDlAU6oA+ZbuqYLD
- V+8QsHp2Cq7VcSDw=
-X-Received: by 2002:a2e:2c0f:0:b0:2b4:765b:f6f0 with SMTP id
- s15-20020a2e2c0f000000b002b4765bf6f0mr15203470ljs.28.1687785610807; 
- Mon, 26 Jun 2023 06:20:10 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5cJY7EHBRbeXtVCbuy2X9pxgzmJbwpPSUGb/pBs8/d+Id2YG3dWEq+XG3j5aJk7Sfvzy4RYA==
-X-Received: by 2002:a2e:2c0f:0:b0:2b4:765b:f6f0 with SMTP id
- s15-20020a2e2c0f000000b002b4765bf6f0mr15203444ljs.28.1687785610394; 
- Mon, 26 Jun 2023 06:20:10 -0700 (PDT)
-Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
- [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
- f25-20020aa7d859000000b0051d946ae298sm1768005eds.69.2023.06.26.06.20.09
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 26 Jun 2023 06:20:09 -0700 (PDT)
-Date: Mon, 26 Jun 2023 15:20:09 +0200
-From: Igor Mammedov <imammedo@redhat.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>, BALATON
- Zoltan <balaton@eik.bme.hu>, Ani Sinha <anisinha@redhat.com>
-Subject: Re: [PULL 30/53] hw/acpi: Fix PM control register access
-Message-ID: <20230626152009.13c7b66a@imammedo.users.ipa.redhat.com>
-In-Reply-To: <3d563fc68732179b86eff2b87f2d7dbef150315f.1687782442.git.mst@redhat.com>
-References: <cover.1687782442.git.mst@redhat.com>
- <3d563fc68732179b86eff2b87f2d7dbef150315f.1687782442.git.mst@redhat.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=TowY0FZgNOtcPunsVw6eULcXK+gfyPUAzjBPKhMlVKg=;
+ b=HbDBztrihbfz3iMRAgX5j+ABc07y+Y7XNK30lDHzt+FlVgQJlp0mWUe8Y+9cxsrKDrtwQa
+ HGE9NneTwKKc8/DcXbEEqL4UomTKui3dAOVjGmXxujMir7GvAavfQH7KjR7OHVe238BLHy
+ hMRXby9AKLkWYx/XqiZvIxd5J2qK9xk=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-272-W5xmyDPeNmadaXu5NxvucQ-1; Mon, 26 Jun 2023 09:21:42 -0400
+X-MC-Unique: W5xmyDPeNmadaXu5NxvucQ-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 94097104458A;
+ Mon, 26 Jun 2023 13:21:41 +0000 (UTC)
+Received: from thuth.com (unknown [10.39.193.57])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 5BA221121319;
+ Mon, 26 Jun 2023 13:21:40 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-s390x@nongnu.org, Christian Borntraeger <borntraeger@linux.ibm.com>,
+ mrezanin@redhat.com, =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
+Subject: [PATCH 0/4] pc-bios/s390-ccw: Fixes and improvements for start.S
+Date: Mon, 26 Jun 2023 15:21:34 +0200
+Message-Id: <20230626132138.87668-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -86,7 +58,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,108 +74,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 26 Jun 2023 08:29:19 -0400
-"Michael S. Tsirkin" <mst@redhat.com> wrote:
+Main motivation of this series was a bug that showed up when compiling
+with Clang 16 and binutils 2.40 (which has been reported in Fedora ELN, see
+https://bugzilla.redhat.com/show_bug.cgi?id=2216662). This is fixed in
+the fourth patch.
 
-> From: BALATON Zoltan <balaton@eik.bme.hu>
-> 
-> On pegasos2 which has ACPI as part of VT8231 south bridge the board
-> firmware writes PM control register by accessing the second byte so
-> addr will be 1. This wasn't handled correctly and the write went to
-> addr 0 instead. Remove the acpi_pm1_cnt_write() function which is used
-> only once and does not take addr into account and handle non-zero
-> address in acpi_pm_cnt_{read|write}. This fixes ACPI shutdown with
-> pegasos2 firmware.
-> 
-> The issue below is possibly related to the same memory core bug.
-> 
-> Link: https://gitlab.com/qemu-project/qemu/-/issues/360
-> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
-> Message-Id: <20230607200125.A9988746377@zero.eik.bme.hu>
-> Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+While working on this issue, I came accross some other issues which I
+address in the first three patches:
 
-Somewhere you lost mine
-Reviewed-by: Igor Mammedov <imammedo@redhat.com>
+- Indentation is a mixture between tabs and spaces in start.S (patch 1)
+- We do not set up a stack frame for the main() function, which could
+  cause memory corruption (patch 2)
+- The stack is declared in multiple places, though it's only needed
+  in start.S (patch 3)
 
-> ---
->  hw/acpi/core.c | 56 +++++++++++++++++++++++++-------------------------
->  1 file changed, 28 insertions(+), 28 deletions(-)
-> 
-> diff --git a/hw/acpi/core.c b/hw/acpi/core.c
-> index 6da275c599..00b1e79a30 100644
-> --- a/hw/acpi/core.c
-> +++ b/hw/acpi/core.c
-> @@ -551,8 +551,35 @@ void acpi_pm_tmr_reset(ACPIREGS *ar)
->  }
->  
->  /* ACPI PM1aCNT */
-> -static void acpi_pm1_cnt_write(ACPIREGS *ar, uint16_t val)
-> +void acpi_pm1_cnt_update(ACPIREGS *ar,
-> +                         bool sci_enable, bool sci_disable)
->  {
-> +    /* ACPI specs 3.0, 4.7.2.5 */
-> +    if (ar->pm1.cnt.acpi_only) {
-> +        return;
-> +    }
-> +
-> +    if (sci_enable) {
-> +        ar->pm1.cnt.cnt |= ACPI_BITMASK_SCI_ENABLE;
-> +    } else if (sci_disable) {
-> +        ar->pm1.cnt.cnt &= ~ACPI_BITMASK_SCI_ENABLE;
-> +    }
-> +}
-> +
-> +static uint64_t acpi_pm_cnt_read(void *opaque, hwaddr addr, unsigned width)
-> +{
-> +    ACPIREGS *ar = opaque;
-> +    return ar->pm1.cnt.cnt >> addr * 8;
-> +}
-> +
-> +static void acpi_pm_cnt_write(void *opaque, hwaddr addr, uint64_t val,
-> +                              unsigned width)
-> +{
-> +    ACPIREGS *ar = opaque;
-> +
-> +    if (addr == 1) {
-> +        val = val << 8 | (ar->pm1.cnt.cnt & 0xff);
-> +    }
->      ar->pm1.cnt.cnt = val & ~(ACPI_BITMASK_SLEEP_ENABLE);
->  
->      if (val & ACPI_BITMASK_SLEEP_ENABLE) {
-> @@ -575,33 +602,6 @@ static void acpi_pm1_cnt_write(ACPIREGS *ar, uint16_t val)
->      }
->  }
->  
-> -void acpi_pm1_cnt_update(ACPIREGS *ar,
-> -                         bool sci_enable, bool sci_disable)
-> -{
-> -    /* ACPI specs 3.0, 4.7.2.5 */
-> -    if (ar->pm1.cnt.acpi_only) {
-> -        return;
-> -    }
-> -
-> -    if (sci_enable) {
-> -        ar->pm1.cnt.cnt |= ACPI_BITMASK_SCI_ENABLE;
-> -    } else if (sci_disable) {
-> -        ar->pm1.cnt.cnt &= ~ACPI_BITMASK_SCI_ENABLE;
-> -    }
-> -}
-> -
-> -static uint64_t acpi_pm_cnt_read(void *opaque, hwaddr addr, unsigned width)
-> -{
-> -    ACPIREGS *ar = opaque;
-> -    return ar->pm1.cnt.cnt;
-> -}
-> -
-> -static void acpi_pm_cnt_write(void *opaque, hwaddr addr, uint64_t val,
-> -                              unsigned width)
-> -{
-> -    acpi_pm1_cnt_write(opaque, val);
-> -}
-> -
->  static const MemoryRegionOps acpi_pm_cnt_ops = {
->      .read = acpi_pm_cnt_read,
->      .write = acpi_pm_cnt_write,
+Thomas Huth (4):
+  pc-bios/s390-ccw: Fix indentation in start.S
+  pc-bios/s390-ccw: Provide space for initial stack frame in start.S
+  pc-bios/s390-ccw: Move the stack array into start.S
+  pc-bios/s390-ccw: Don't use __bss_start with the "larl" instruction
+
+ pc-bios/s390-ccw/s390-ccw.h |   1 -
+ pc-bios/s390-ccw/main.c     |   1 -
+ pc-bios/s390-ccw/netmain.c  |   1 -
+ pc-bios/s390-ccw/start.S    | 143 +++++++++++++++++++-----------------
+ 4 files changed, 75 insertions(+), 71 deletions(-)
+
+-- 
+2.39.3
 
 
