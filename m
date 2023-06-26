@@ -2,76 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CD5473DF28
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 14:28:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 81E2873DFED
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 15:00:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDlK4-0000m0-6X; Mon, 26 Jun 2023 08:28:00 -0400
+	id 1qDlK3-0000lf-V9; Mon, 26 Jun 2023 08:27:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qDlK2-0000kv-8M
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qDlK1-0000jy-Vs
  for qemu-devel@nongnu.org; Mon, 26 Jun 2023 08:27:58 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qDlJz-0002Wm-V9
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qDlK0-0002X1-5Y
  for qemu-devel@nongnu.org; Mon, 26 Jun 2023 08:27:57 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687782474;
+ s=mimecast20190719; t=1687782475;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=QQ+RfgosE+mQmXsVbzxSBFhDToj/4Aei5xcx9C9DDDE=;
- b=S98AKzJ1xlvM49kmcQLQ7vx5AxPdLiWz6r4TftR5dTRJpadMHRm6qDAGx4YREVFMSUn8R2
- HUAZFwkxH/OyE7s2ELQ+e/c45/QBOCrFl1GYrPP6wxKKrHP+amwRx2FAV0ORF9wcCuq/aa
- ZEIQTeoV0J/q9lSqJiHXiptWsbsJxto=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=0Af6at3fsIEuuqbjTx7xlWdUMwOaCT0ky+V/sNrkOzw=;
+ b=RbBkmZ8GYdIJ/n7TvDZvJUOpTX79gs6FfRBZf/xNAV6NwulsWAenxnL7Pa57acpaaMb6x3
+ qfHjWQhOlnXwdulSV6kd2GJOyDn9IAKPUEGmOQOgaj+BTO5fthobeuZRLvZnjifJriS8un
+ zh1d8qvqYcssA6MA71RyNYhgwBxhiSA=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-577-qKRO9eqAOwSmjjiX-hdipA-1; Mon, 26 Jun 2023 08:27:51 -0400
-X-MC-Unique: qKRO9eqAOwSmjjiX-hdipA-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-3f5df65fa35so12960815e9.3
- for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 05:27:51 -0700 (PDT)
+ us-mta-488-or3VkmzUPeKGa3G1okYAww-1; Mon, 26 Jun 2023 08:27:54 -0400
+X-MC-Unique: or3VkmzUPeKGa3G1okYAww-1
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-313c930ee0eso1071344f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 05:27:53 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687782470; x=1690374470;
- h=content-transfer-encoding:content-disposition:mime-version
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=QQ+RfgosE+mQmXsVbzxSBFhDToj/4Aei5xcx9C9DDDE=;
- b=Z8Bc6DKWMQNpbqjJEgemjTHfXYySL3FwB9fWblLc9jroTQJHSLo9eWLFzsQrknk45s
- Sot/CLlYWMSFlN5Ki2H9AiVeAM3zju8/Whc9CBfKJkQrTUMdOgxLhUOKjWuiI5HrnKSo
- sAHYCyIVqjpQYh33vWmSAq6jfjn0+ve2tgonkplxKmnS8+XHn+qlm5wp6/ToB7HDSziZ
- 0Jj1aEbrH+dpvm7MCTfFb/avGdOdT+qV+9KG0MuLSK9Pi99Cmzu3d79dOz5rj3T9kb4M
- VXGXBmrsui1zgx8sdFLBjm/88cre9cq+jYfvqjETXBjxRRkrDigcyzUqpb54kOP/bqnG
- FRCA==
-X-Gm-Message-State: AC+VfDxjpx3FAkGxkE3hrHURHFPSFcrBXw1kXGEhKhG+JAD5AtK2i93F
- mvuwicXme28xgADjbZIRHe1Tjj/7LEbk3gAVJkh4mQSn0HkyQJKRX2wlf6qBpmSyq7OQSRMLjxa
- WgzAHvwmC0LnPGm5OVwdpUVHNXJEkPNk1RSM4QisMNBK6fCzDyNVVl5gfAdy4duMUh+Mh
-X-Received: by 2002:a1c:740e:0:b0:3fa:984d:7e9f with SMTP id
- p14-20020a1c740e000000b003fa984d7e9fmr1126275wmc.6.1687782469880; 
- Mon, 26 Jun 2023 05:27:49 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6Lhr/gTZIO6Mg/Q8FyOYCzJhXjNDpYT0H2SQxhlIG5y1koztnOWkkjsIoLBjw/z2eSM6O1dw==
-X-Received: by 2002:a1c:740e:0:b0:3fa:984d:7e9f with SMTP id
- p14-20020a1c740e000000b003fa984d7e9fmr1126260wmc.6.1687782469489; 
- Mon, 26 Jun 2023 05:27:49 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1687782472; x=1690374472;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=0Af6at3fsIEuuqbjTx7xlWdUMwOaCT0ky+V/sNrkOzw=;
+ b=l9ej23obwoaVXf4bahd3/Q/o7Ih6olsyjownEn6vJiXu1hwPoYGQ3rHGcBLg789Yyy
+ wLELIqIUSV9AVJpENUxYEgOhM53tVNAUicWx2S6gPr4Qffidh5oQ8hUL7viuUfLKAV65
+ oGShaTDfFlPnp8lwKqVcAhpbJ80vUxtxXa5UbbqrMCIYiOTsv96vWaKRie86Z1GGc4B0
+ LcAMQw879ayV5HVU2jyRPBhPABjxzYX3U9H1z9x5uNKMS6cEuGqV5rd38Ntdp+aXjbzz
+ fKyyfbQW/tXRU6emvS50kLI8JIkLHMAeXA2VtgMLQcRminL1oXZgS1LI0APKrfKcCBGm
+ S7Sw==
+X-Gm-Message-State: AC+VfDwG0oJvLXj4hQ+31oRzh826gAWT3Szfeux5KUC/gBPs3lyE/rSF
+ ZcAKkYtnTQxZ5t4+Z/GlRarI5BZ7zExBSStCwzb8S3/woAJsntN3QUrXCqKUkkcLex7+HDLPBQu
+ 6YxEmtk8xBR2xwgUS4Znr6w4kKCt0c4GASust+mZ3+Y9pgaJVeHJswfZtCnWHu92KPBCy
+X-Received: by 2002:adf:fa06:0:b0:30f:be04:5b5e with SMTP id
+ m6-20020adffa06000000b0030fbe045b5emr18267180wrr.37.1687782472606; 
+ Mon, 26 Jun 2023 05:27:52 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5uMYw/TxDROijUdI1EzBOUH3Bwe5cP7iUQP4ZBE0DHkDQ/D/vBgKHO1OdQO6pC9WmowfKFnQ==
+X-Received: by 2002:adf:fa06:0:b0:30f:be04:5b5e with SMTP id
+ m6-20020adffa06000000b0030fbe045b5emr18267164wrr.37.1687782472295; 
+ Mon, 26 Jun 2023 05:27:52 -0700 (PDT)
 Received: from redhat.com ([2.52.156.102]) by smtp.gmail.com with ESMTPSA id
- p8-20020a7bcc88000000b003fb225d414fsm1224710wma.21.2023.06.26.05.27.48
+ v10-20020a5d590a000000b0030631a599a0sm7233459wrd.24.2023.06.26.05.27.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 26 Jun 2023 05:27:49 -0700 (PDT)
-Date: Mon, 26 Jun 2023 08:27:47 -0400
+ Mon, 26 Jun 2023 05:27:51 -0700 (PDT)
+Date: Mon, 26 Jun 2023 08:27:49 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>
-Subject: [PULL 00/53] virtio,pc,pci: fixes, features, cleanups
-Message-ID: <cover.1687782442.git.mst@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Ira Weiny <ira.weiny@intel.com>, Fan Ni <fan.ni@samsung.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Thomas Huth <thuth@redhat.com>
+Subject: [PULL 01/53] bswap: Add the ability to store to an unaligned 24 bit
+ field
+Message-ID: <14180d6221502bd4b9d96fa5f1065e7cda4bcf00.1687782442.git.mst@redhat.com>
+References: <cover.1687782442.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <cover.1687782442.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -96,184 +105,124 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit b455ce4c2f300c8ba47cba7232dd03261368a4cb:
+From: Ira Weiny <ira.weiny@intel.com>
 
-  Merge tag 'q800-for-8.1-pull-request' of https://github.com/vivier/qemu-m68k into staging (2023-06-22 10:18:32 +0200)
+CXL has 24 bit unaligned fields which need to be stored to.  CXL is
+specified as little endian.
 
-are available in the Git repository at:
+Define st24_le_p() and the supporting functions to store such a field
+from a 32 bit host native value.
 
-  https://git.kernel.org/pub/scm/virt/kvm/mst/qemu.git tags/for_upstream
+The use of b, w, l, q as the size specifier is limiting.  So "24" was
+used for the size part of the function name.
 
-for you to fetch changes up to 3d90d47995b83bd1edf6e756c00e74fd5ec16aee:
-
-  vhost-vdpa: do not cleanup the vdpa/vhost-net structures if peer nic is present (2023-06-26 08:26:40 -0400)
-
-----------------------------------------------------------------
-virtio,pc,pci: fixes, features, cleanups
-
-asymmetric crypto support for cryptodev-vhost-user
-rom migration when rom size changes
-poison get, inject, clear; mock cxl events and irq support for cxl
-shadow virtqueue offload support for vhost-vdpa
-vdpa now maps shadow vrings with MAP_SHARED
-max_cpus went up to 1024 and we default to smbios 3.0 for pc
-
-Fixes, cleanups all over the place. In particular
-    hw/acpi: Fix PM control register access
-works around a very long standing bug in memory core.
-
+Reviewed-by: Fan Ni <fan.ni@samsung.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Message-Id: <20230526170010.574-2-Jonathan.Cameron@huawei.com>
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+---
+ include/qemu/bswap.h        | 25 +++++++++++++++++++++++++
+ docs/devel/loads-stores.rst |  2 ++
+ 2 files changed, 27 insertions(+)
 
-----------------------------------------------------------------
-Ani Sinha (2):
-      vhost_net: add an assertion for TAP client backends
-      vhost-vdpa: do not cleanup the vdpa/vhost-net structures if peer nic is present
-
-BALATON Zoltan (1):
-      hw/acpi: Fix PM control register access
-
-David Hildenbrand (1):
-      virtio-mem: Simplify bitmap handling and virtio_mem_set_block_state()
-
-Eugenio Pérez (7):
-      vdpa: return errno in vhost_vdpa_get_vring_group error
-      vdpa: move CVQ isolation check to net_init_vhost_vdpa
-      vdpa: do not block migration if device has cvq and x-svq=on
-      vdpa: reorder vhost_vdpa_net_cvq_cmd_page_len function
-      vdpa: map shadow vrings with MAP_SHARED
-      vdpa: mask _F_CTRL_GUEST_OFFLOADS for vhost vdpa devices
-      vdpa: fix not using CVQ buffer in case of error
-
-Gowrishankar Muthukrishnan (1):
-      cryptodev-vhost-user: add asymmetric crypto support
-
-Hawkins Jiawei (6):
-      include/hw/virtio: make some VirtIODevice const
-      vdpa: reuse virtio_vdev_has_feature()
-      hw/net/virtio-net: make some VirtIONet const
-      virtio-net: expose virtio_net_supported_guest_offloads()
-      vdpa: Add vhost_vdpa_net_load_offloads()
-      vdpa: Allow VIRTIO_NET_F_CTRL_GUEST_OFFLOADS in SVQ
-
-Ira Weiny (5):
-      bswap: Add the ability to store to an unaligned 24 bit field
-      hw/cxl/events: Add event status register
-      hw/cxl/events: Wire up get/clear event mailbox commands
-      hw/cxl/events: Add event interrupt support
-      hw/cxl/events: Add injection of General Media Events
-
-Jonathan Cameron (6):
-      hw/cxl: QMP based poison injection support
-      hw/cxl: Add poison injection via the mailbox.
-      hw/cxl: Add clear poison mailbox command support.
-      hw/cxl: Move CXLRetCode definition to cxl_device.h
-      hw/cxl/events: Add injection of DRAM events
-      hw/cxl/events: Add injection of Memory Module Events
-
-Laurent Vivier (1):
-      vhost: fix vhost_dev_enable_notifiers() error case
-
-Manos Pitsidianakis (1):
-      vhost-user: fully use new backend/frontend naming
-
-Michael S. Tsirkin (1):
-      tests/data/acpi: update after SMBIOS 2.0 change
-
-Philippe Mathieu-Daudé (10):
-      softmmu: Introduce qemu_target_page_mask() helper
-      hw/scsi: Introduce VHOST_SCSI_COMMON symbol in Kconfig
-      hw/scsi: Rearrange meson.build
-      hw/scsi: Rename target-specific source set as 'specific_virtio_scsi_ss'
-      hw/virtio: Introduce VHOST_VSOCK_COMMON symbol in Kconfig
-      hw/virtio/virtio-mem: Use qemu_ram_get_fd() helper
-      hw/virtio/vhost-vsock: Include missing 'virtio/virtio-bus.h' header
-      hw/virtio/virtio-iommu: Use target-agnostic qemu_target_page_mask()
-      hw/virtio: Remove unnecessary 'virtio-access.h' header
-      hw/virtio: Build various target-agnostic objects just once
-
-Prasad J Pandit (2):
-      vhost: release memory_listener object in error path
-      vhost: release virtqueue objects in error path
-
-Stefan Hajnoczi (1):
-      virtio-scsi: avoid dangling host notifier in ->ioeventfd_stop()
-
-Suravee Suthikulpanit (3):
-      hw/i386/pc: Default to use SMBIOS 3.0 for newer machine models
-      pc: q35: Bump max_cpus to 1024
-      hw/i386/pc: Clean up pc_machine_initfn
-
-Vladimir Sementsov-Ogievskiy (1):
-      pci: ROM preallocation for incoming migration
-
-Zhenwei Pi (1):
-      cryptodev: fix memory leak during stats query
-
-Zhenzhong Duan (3):
-      intel_iommu: Fix a potential issue in VFIO dirty page sync
-      intel_iommu: Fix flag check in replay
-      intel_iommu: Fix address space unmap
-
- qapi/cxl.json                             | 209 ++++++++++++++++
- include/exec/target_page.h                |   1 +
- include/hw/cxl/cxl.h                      |   1 +
- include/hw/cxl/cxl_device.h               | 101 +++++++-
- include/hw/cxl/cxl_events.h               | 168 +++++++++++++
- include/hw/i386/pc.h                      |   1 +
- include/hw/virtio/vhost-backend.h         |   2 +-
- include/hw/virtio/virtio-net.h            |   1 +
- include/hw/virtio/virtio.h                |   2 +-
- include/qemu/bswap.h                      |  25 ++
- subprojects/libvhost-user/libvhost-user.h |  20 +-
- backends/cryptodev-vhost-user.c           |   9 +-
- backends/cryptodev.c                      |   2 +-
- block/export/vhost-user-blk-server.c      |   2 +-
- contrib/vhost-user-blk/vhost-user-blk.c   |   2 +-
- hw/acpi/core.c                            |  56 ++---
- hw/block/dataplane/virtio-blk.c           |   1 -
- hw/block/vhost-user-blk.c                 |   2 +-
- hw/cxl/cxl-device-utils.c                 |  43 +++-
- hw/cxl/cxl-events.c                       | 248 +++++++++++++++++++
- hw/cxl/cxl-mailbox-utils.c                | 382 +++++++++++++++++++++++++----
- hw/display/vhost-user-gpu.c               |   2 +-
- hw/i386/intel_iommu.c                     |  13 +-
- hw/i386/pc.c                              |   6 +-
- hw/i386/pc_piix.c                         |   5 +
- hw/i386/pc_q35.c                          |   8 +-
- hw/input/vhost-user-input.c               |   2 +-
- hw/mem/cxl_type3.c                        | 385 +++++++++++++++++++++++++++++-
- hw/mem/cxl_type3_stubs.c                  |  41 ++++
- hw/net/vhost_net.c                        |   1 +
- hw/net/virtio-net.c                       |   6 +-
- hw/pci/pci.c                              |  79 +++---
- hw/s390x/virtio-ccw.c                     |   1 -
- hw/scsi/vhost-scsi.c                      |   1 -
- hw/scsi/vhost-user-scsi.c                 |   1 -
- hw/scsi/virtio-scsi-dataplane.c           |   1 -
- hw/scsi/virtio-scsi.c                     |  20 +-
- hw/virtio/vdpa-dev.c                      |   3 +-
- hw/virtio/vhost-shadow-virtqueue.c        |  18 +-
- hw/virtio/vhost-user.c                    | 127 +++++++---
- hw/virtio/vhost-vdpa.c                    |   1 -
- hw/virtio/vhost-vsock-common.c            |   2 +-
- hw/virtio/vhost.c                         |  72 +++---
- hw/virtio/virtio-crypto.c                 |   1 -
- hw/virtio/virtio-iommu.c                  |   4 +-
- hw/virtio/virtio-mem.c                    | 115 +++++----
- hw/virtio/virtio-qmp.c                    |   2 +-
- net/vhost-vdpa.c                          | 269 +++++++++++++++------
- softmmu/physmem.c                         |   5 +
- subprojects/libvhost-user/libvhost-user.c |  54 ++---
- docs/devel/loads-stores.rst               |   2 +
- hw/block/dataplane/meson.build            |   2 +-
- hw/cxl/meson.build                        |   1 +
- hw/scsi/Kconfig                           |   6 +
- hw/scsi/meson.build                       |  20 +-
- hw/virtio/Kconfig                         |   6 +
- hw/virtio/meson.build                     |  14 +-
- tests/data/acpi/q35/SSDT.dimmpxm          | Bin 1815 -> 1815 bytes
- 58 files changed, 2166 insertions(+), 408 deletions(-)
- create mode 100644 include/hw/cxl/cxl_events.h
- create mode 100644 hw/cxl/cxl-events.c
+diff --git a/include/qemu/bswap.h b/include/qemu/bswap.h
+index 15a78c0db5..933a66ee87 100644
+--- a/include/qemu/bswap.h
++++ b/include/qemu/bswap.h
+@@ -8,11 +8,23 @@
+ #undef  bswap64
+ #define bswap64(_x) __builtin_bswap64(_x)
+ 
++static inline uint32_t bswap24(uint32_t x)
++{
++    return (((x & 0x000000ffU) << 16) |
++            ((x & 0x0000ff00U) <<  0) |
++            ((x & 0x00ff0000U) >> 16));
++}
++
+ static inline void bswap16s(uint16_t *s)
+ {
+     *s = __builtin_bswap16(*s);
+ }
+ 
++static inline void bswap24s(uint32_t *s)
++{
++    *s = bswap24(*s & 0x00ffffffU);
++}
++
+ static inline void bswap32s(uint32_t *s)
+ {
+     *s = __builtin_bswap32(*s);
+@@ -26,11 +38,13 @@ static inline void bswap64s(uint64_t *s)
+ #if HOST_BIG_ENDIAN
+ #define be_bswap(v, size) (v)
+ #define le_bswap(v, size) glue(__builtin_bswap, size)(v)
++#define le_bswap24(v) bswap24(v)
+ #define be_bswaps(v, size)
+ #define le_bswaps(p, size) \
+             do { *p = glue(__builtin_bswap, size)(*p); } while (0)
+ #else
+ #define le_bswap(v, size) (v)
++#define le_bswap24(v) (v)
+ #define be_bswap(v, size) glue(__builtin_bswap, size)(v)
+ #define le_bswaps(v, size)
+ #define be_bswaps(p, size) \
+@@ -176,6 +190,7 @@ CPU_CONVERT(le, 64, uint64_t)
+  * size is:
+  *   b: 8 bits
+  *   w: 16 bits
++ *   24: 24 bits
+  *   l: 32 bits
+  *   q: 64 bits
+  *
+@@ -248,6 +263,11 @@ static inline void stw_he_p(void *ptr, uint16_t v)
+     __builtin_memcpy(ptr, &v, sizeof(v));
+ }
+ 
++static inline void st24_he_p(void *ptr, uint32_t v)
++{
++    __builtin_memcpy(ptr, &v, 3);
++}
++
+ static inline int ldl_he_p(const void *ptr)
+ {
+     int32_t r;
+@@ -297,6 +317,11 @@ static inline void stw_le_p(void *ptr, uint16_t v)
+     stw_he_p(ptr, le_bswap(v, 16));
+ }
+ 
++static inline void st24_le_p(void *ptr, uint32_t v)
++{
++    st24_he_p(ptr, le_bswap24(v));
++}
++
+ static inline void stl_le_p(void *ptr, uint32_t v)
+ {
+     stl_he_p(ptr, le_bswap(v, 32));
+diff --git a/docs/devel/loads-stores.rst b/docs/devel/loads-stores.rst
+index d2cefc77a2..dab6dfa0ac 100644
+--- a/docs/devel/loads-stores.rst
++++ b/docs/devel/loads-stores.rst
+@@ -36,6 +36,7 @@ store: ``st{size}_{endian}_p(ptr, val)``
+ ``size``
+  - ``b`` : 8 bits
+  - ``w`` : 16 bits
++ - ``24`` : 24 bits
+  - ``l`` : 32 bits
+  - ``q`` : 64 bits
+ 
+@@ -65,6 +66,7 @@ of size ``sz`` bytes.
+ Regexes for git grep
+  - ``\<ld[us]\?[bwlq]\(_[hbl]e\)\?_p\>``
+  - ``\<st[bwlq]\(_[hbl]e\)\?_p\>``
++ - ``\<st24\(_[hbl]e\)\?_p\>``
+  - ``\<ldn_\([hbl]e\)?_p\>``
+  - ``\<stn_\([hbl]e\)?_p\>``
+ 
+-- 
+MST
 
 
