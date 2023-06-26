@@ -2,75 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E58D273DF6C
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 14:39:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4814673DF74
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 14:41:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDlO4-0007fC-14; Mon, 26 Jun 2023 08:32:08 -0400
+	id 1qDlPD-0000Mc-1j; Mon, 26 Jun 2023 08:33:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qDlMT-0005iA-Cn
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 08:30:29 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qDlN5-00063z-3a
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 08:31:07 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qDlMR-0003aG-Bw
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 08:30:28 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qDlMj-0003iZ-SZ
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 08:30:47 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687782626;
+ s=mimecast20190719; t=1687782645;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=Y/mhZ4QWgJNUg3jo6CnB3dDNtW+V95gDB4rMrHURtvQ=;
- b=PWA2nQHqAO0QEIPLm20seSTmZlzfipmZWHHh0WIkoMlkeF04K7isBEFoojS3GsZeXY61c8
- aG1eU2U8N5obBeTYU3seb83gbtNu5Yzrk9grIE/XyBEM8MjTeHXjF3amT8j5opluMxgIQE
- cWJXIssIx3BmnpMZIpHbAQOJ5BR928w=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=am5myhsqD+fEwFvcZjXyQzYIV9qRjvKXNDjfcB6tC8s=;
+ b=Yvqp5kDlm+FXp6V5X/0BnZ9AAxlrb8xD2yXqyUiJXAi4offze1CfpKgc/OpagvG2pj51+X
+ 52DbxTjFvfLSBUzUmco0awozSMdLdyuTKOynCFGZqQsOMZK/rXgaADieDbpCsDE/Go/w47
+ KivWnJMugxCBPz2H8wtrvFqlcGU42K0=
+Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
+ [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-474-R4e_EnHsOrGjaCmaOi417g-1; Mon, 26 Jun 2023 08:30:25 -0400
-X-MC-Unique: R4e_EnHsOrGjaCmaOi417g-1
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-3128319d532so2450596f8f.2
- for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 05:30:25 -0700 (PDT)
+ us-mta-38-8gHaMsGkO2-kvvryVi0INw-1; Mon, 26 Jun 2023 08:30:43 -0400
+X-MC-Unique: 8gHaMsGkO2-kvvryVi0INw-1
+Received: by mail-lj1-f197.google.com with SMTP id
+ 38308e7fff4ca-2b479d12b31so23025071fa.3
+ for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 05:30:43 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687782624; x=1690374624;
+ d=1e100.net; s=20221208; t=1687782627; x=1690374627;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Y/mhZ4QWgJNUg3jo6CnB3dDNtW+V95gDB4rMrHURtvQ=;
- b=D7tYjBX6W7AMBgMwk4ntjakZC7Um1QMS+z3uVwpiitGQJE5mBdwvOUR4EfOZDo8MBw
- ZCeG9oTOdBKtgZ8OGP+J1N7DI3lq8Tt87N+yEeZACHOsvgRiyn4OFfnbmcL/WsVvzUcp
- Aor8A5jHwxd3dY3YOx2VPqYQaQnS3216rJzAi/nutmPP9j9Ky8Gpnt5jgZjWRAeVIFN4
- wL8sTt6mROIpd2ZUdUDXjMgqmPCv7+1hSc0kh/5GoxIdhsTuqI+aiiZozoCGR35tPXi1
- pwMnuoTeCzR3mPkKzC3BMJxzpeNvImU6uTElZg1cmEMl/Hpd/GGNlViT7U7gPPhVNusJ
- VZ+g==
-X-Gm-Message-State: AC+VfDy9lesbFiohoZXjvzYVb/CBPeIxlQBGpqgLjg0x4s1eQmmdwVm0
- 9yXTqSj18ANzXkJT6vh2kk4sAdkQ8krfMBk4RSMPhkaziUL/kbG7ozFUyV3Fzo7fOQ1tk763L6n
- +9zrtq1IvpQb/9bNhSZdSpTQOV49gyo07+zWzKFeNKG8/C2xJKBF1nCqaEhviea/PHaWS
-X-Received: by 2002:a05:6000:42:b0:313:e2c4:7bd1 with SMTP id
- k2-20020a056000004200b00313e2c47bd1mr5649805wrx.42.1687782623974; 
- Mon, 26 Jun 2023 05:30:23 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7TV1EBgns2sFka4Z9o4Hklnhp5jXOiTWmJori+94UHuWt1NGhCKQNiCQ7dz3MQqqZ7zRit2g==
-X-Received: by 2002:a05:6000:42:b0:313:e2c4:7bd1 with SMTP id
- k2-20020a056000004200b00313e2c47bd1mr5649787wrx.42.1687782623652; 
- Mon, 26 Jun 2023 05:30:23 -0700 (PDT)
+ bh=am5myhsqD+fEwFvcZjXyQzYIV9qRjvKXNDjfcB6tC8s=;
+ b=jC5Fl/SgoeFMbCUznEpZStykOLvLGizdfVRLg/zolILP26Sn0Xh4G+IjrueJ0n24Vm
+ UMtNCqVHMD7USxapS4eA2WLqe+sGa4tZRon8/+r48P8Vx/7uRpuK4oPly2nez2+d6gaN
+ IWYEJwcZoSa0pTVVzN9N4cPxDt0SDBDUWjmT5oWjVSjfyGeKuj41RzQB3FC3skZei0gv
+ W3U6YjgM4dcipGWNdBMtwvT+Ff6TYyxHKWETxXOu3KU+jZW8svipAtnQ7L1c+Icj/vB3
+ 8V0EheqNeYr9aMvQzh32AvZ8+yBXFsYaLFAU09+HmvQTM1oRpwru4+X5O6azMi20r7Li
+ d36w==
+X-Gm-Message-State: AC+VfDxuISz58SgIKYzETSorN9q41VJt7acgmMOPKcpIgrLxOcAlIcn3
+ XOI5a2eX2eTIwggeX3jvvZ1nsUwdiSSpHv8oYLZ8Hm7MPBfIkPS9EGl6ZUNfL6/1SjMhxfns0B0
+ EalcW6lRLdJAd4kPEg8IvBeDQAn67zSyhDMTHwD/VO4d5ZDRk7nq0NOn/pksKcqeYIjuD
+X-Received: by 2002:a05:6512:b86:b0:4fb:7666:3bc0 with SMTP id
+ b6-20020a0565120b8600b004fb76663bc0mr1260130lfv.47.1687782626865; 
+ Mon, 26 Jun 2023 05:30:26 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4Dbpbz+kRgmg53qnrJxccE80t/Qeb83yDoU/q2OEhUg1IMwd+/nfxVfNlbnvncuUtwvHS2ow==
+X-Received: by 2002:a05:6512:b86:b0:4fb:7666:3bc0 with SMTP id
+ b6-20020a0565120b8600b004fb76663bc0mr1260109lfv.47.1687782626472; 
+ Mon, 26 Jun 2023 05:30:26 -0700 (PDT)
 Received: from redhat.com ([2.52.156.102]) by smtp.gmail.com with ESMTPSA id
- u14-20020adfdb8e000000b003112ab916cdsm7357579wri.73.2023.06.26.05.30.22
+ g17-20020a7bc4d1000000b003f9b1131a90sm7615633wmk.23.2023.06.26.05.30.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 26 Jun 2023 05:30:23 -0700 (PDT)
-Date: Mon, 26 Jun 2023 08:30:20 -0400
+ Mon, 26 Jun 2023 05:30:26 -0700 (PDT)
+Date: Mon, 26 Jun 2023 08:30:24 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- Zhenzhong Duan <zhenzhong.duan@intel.com>,
- Peter Xu <peterx@redhat.com>, Jason Wang <jasowang@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>
-Subject: [PULL 51/53] intel_iommu: Fix address space unmap
-Message-ID: <0dd5bcd98d5a89f833c7d06b28ad92965874bc72.1687782442.git.mst@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>, Ani Sinha <anisinha@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>, Jason Wang <jasowang@redhat.com>
+Subject: [PULL 52/53] vhost_net: add an assertion for TAP client backends
+Message-ID: <0af710813dcde638379e3bece8f9b1bde31af2f6.1687782442.git.mst@redhat.com>
 References: <cover.1687782442.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -103,38 +98,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zhenzhong Duan <zhenzhong.duan@intel.com>
+From: Ani Sinha <anisinha@redhat.com>
 
-During address space unmap, corresponding IOVA tree entries are
-also removed. But DMAMap is set beyond notifier's scope by 1, so
-in theory there is possibility to remove a continuous entry above
-the notifier's scope but falling in adjacent notifier's scope.
+An assertion was missing for tap vhost backends that enforces a non-null
+reference from get_vhost_net(). Both vhost-net-user and vhost-net-vdpa
+enforces this. Enforce the same for tap. Unit tests pass with this change.
 
-There is no issue currently as no use cases allocate notifiers
-continuously, but let's be robust.
-
-Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-Reviewed-by: Peter Xu <peterx@redhat.com>
-Message-Id: <20230615032626.314476-4-zhenzhong.duan@intel.com>
+Signed-off-by: Ani Sinha <anisinha@redhat.com>
+Message-Id: <20230619041501.111655-1-anisinha@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Reviewed-by: Laurent Vivier <lvivier@redhat.com>
 ---
- hw/i386/intel_iommu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/net/vhost_net.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-index f046f85913..dcc334060c 100644
---- a/hw/i386/intel_iommu.c
-+++ b/hw/i386/intel_iommu.c
-@@ -3791,7 +3791,7 @@ static void vtd_address_space_unmap(VTDAddressSpace *as, IOMMUNotifier *n)
-                              n->start, size);
- 
-     map.iova = n->start;
--    map.size = size;
-+    map.size = size - 1; /* Inclusive */
-     iova_tree_remove(as->iova_tree, map);
- }
- 
+diff --git a/hw/net/vhost_net.c b/hw/net/vhost_net.c
+index c4eecc6f36..6db23ca323 100644
+--- a/hw/net/vhost_net.c
++++ b/hw/net/vhost_net.c
+@@ -507,6 +507,7 @@ VHostNetState *get_vhost_net(NetClientState *nc)
+     switch (nc->info->type) {
+     case NET_CLIENT_DRIVER_TAP:
+         vhost_net = tap_get_vhost_net(nc);
++        assert(vhost_net);
+         break;
+ #ifdef CONFIG_VHOST_NET_USER
+     case NET_CLIENT_DRIVER_VHOST_USER:
 -- 
 MST
 
