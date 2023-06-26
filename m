@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49BEA73EE74
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 00:10:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F56273EE5F
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 00:08:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDuMT-0004UC-U5; Mon, 26 Jun 2023 18:07:06 -0400
+	id 1qDuML-0003xG-7v; Mon, 26 Jun 2023 18:06:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qDuLO-0003BT-R0
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 18:06:04 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ id 1qDuLN-0003B9-5a
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 18:06:02 -0400
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qDuLJ-00071p-Dm
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 18:05:58 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-3fa8cd4a113so17176685e9.2
- for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 15:05:52 -0700 (PDT)
+ id 1qDuLH-000715-AL
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 18:05:56 -0400
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-307d20548adso3504584f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 15:05:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687817151; x=1690409151;
+ d=linaro.org; s=google; t=1687817149; x=1690409149;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=5iMtZ+QxrIdtSm3RSwhWDx4L6tPX96mwOLg/Wme4Yys=;
- b=mXj/AcoO36v9I9gg+XNKQD4oEPUngzrjeVqDU5I8lUH7IscD3QB95PwW/GnCzoumI+
- rAEKJwLpLs65OJZp0zmBkSl2dQ99E0XItDOxJpmx+Y03sopi5NVBE7wWpp80RT6vtpB2
- Fk5jlIpcFYxai42CVaorjK0hIPgutMaEV++jynyS3121fVlS5R8rUI5dmNfQLVrMyCUJ
- OIZ5M3iygOAUGniqoH65oMwUedcdjkZWQizP/6DmmF+psqOFgTSyYCuYyQG2ljz6jIYe
- AxsbyarBMB16MPyjIGmQZjhpLqZpVPN9gTiy48HQBwq3rLu6RX1OwngpybaXzOV8dY+g
- P6VQ==
+ bh=bRHf9h4G/bLvyIWMS65t7lGQ8fTomW8W7GqhcAfU7Pw=;
+ b=brGcfdTz7xr3Ga32f4sU/4Z91NcHjo+pIUzY/6Vu0rneSXMf37avVqxo3Bvm8V2VgO
+ 5cOzTJ2T9kimhBDB6qkBA6/1DREmUNdHLCNSVSJAmndmqLIXay96EE6CdIZPL/gZccMc
+ tT+/ulfdp59+yw0QyPMpDwAV10cCS+KkthQ3Rbysy4N3W15j682sSLI5+0I6gethSIU/
+ ri+uePHyUJB9EbKqZAvy3iWtobjfl+oMKOrMz47FPtBjmdaStTTNXZMnU38sJfuiDUgy
+ slwfYJe4kHl+jLiMeyedIIztcHjbAcV2HxmWnVgMHVQMt4EIC3Ft4J2yNk1SE2QyISXO
+ GKcw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687817151; x=1690409151;
+ d=1e100.net; s=20221208; t=1687817149; x=1690409149;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=5iMtZ+QxrIdtSm3RSwhWDx4L6tPX96mwOLg/Wme4Yys=;
- b=YsTpRUmbdu9BSF/Wvp7Fen9JICYZQOSonZDm9bMh4DVvxHLZxXYk4dVpQ+8Qp/WFsE
- ELZ5JH6hURlb50v2LiGmrr9Z74pxloUrFc0DTzOLfg7vYfiNX/HcyxYzagwCqiNsIjWa
- 3Jn222RwbJTfLxQQ37wuWZtuy/iR2pRnIbgG32nEa+JbyVhpMtu2VWnw9kfgnxwGPIDQ
- sUyzzpTkp7EOV8vy6tfaenRQfPrUnIBroTdH/q57TRUkxpfcsal1wTM87iRmSEOETAOo
- IV+aMNCBXxV0/XckdtoKo7M0pbK5ntX1psRgDbv+JFah3CxxTcWCq85pdGosOImsu4u9
- Ki8w==
-X-Gm-Message-State: AC+VfDyAYGR6IY+jTQ3uiS+cWW01eNh+Dii7Yzk1lBTz1lTB7oa2m6aP
- YXqRbeGnoDIyEU6tXxm2JNpGYKqQNcf7v8LcNvE=
-X-Google-Smtp-Source: ACHHUZ6r0dyGM79hvmoaKBTrtpN+AQtFmmZuuUc80cU8oNE5+mcCswo7y09+4L0GxwIN9vuRNLx1mw==
-X-Received: by 2002:a05:600c:230b:b0:3fa:8874:fe69 with SMTP id
- 11-20020a05600c230b00b003fa8874fe69mr4027230wmo.29.1687817151393; 
- Mon, 26 Jun 2023 15:05:51 -0700 (PDT)
+ bh=bRHf9h4G/bLvyIWMS65t7lGQ8fTomW8W7GqhcAfU7Pw=;
+ b=PC3xqfCPOegBlELdrEgUjmakjm9yEAjwu2AA93n//afapJnOZEz3alFdHbDVkcpAH2
+ R64EUSCBXWB9UARVKtKE1NMcHe0+8LNLNpa0ierh/qgylOYqljZlsCcSdHT/ZJXmqXj8
+ JmF3ArXX6RrcoS4iYqiglFWnGkmrru9W6rOCco0qM6lXnTgnly3zOrovur+2EMmUO/YH
+ hcRw5JA75vNgyv0alBsivApsHatwoOjSv3sZ5CI8v0Wn3Z2d500pp8Rg2qL9eIWoU6nH
+ zlXmD60Zf34UiRPgzTYxdp0ljNGqM9QHYd4Bqw+yUr5rX3J5qvgjiIEeXeiDK3Pft7B/
+ 1etw==
+X-Gm-Message-State: AC+VfDzYEf+s7068DHUNc9nO171VokoIt0jcYgYpnzKVNXZ7jG+RNdIQ
+ byIXs/+3pCrGVdO9WzczmCSECg==
+X-Google-Smtp-Source: ACHHUZ5dRwh23s0EHeLza5zqm4lzsrPXJoBYBleqls9ic+ve8UIZUShQOZrW2ytj7yN2lXO+sQV3sg==
+X-Received: by 2002:a5d:4e8f:0:b0:30f:bf2e:4b99 with SMTP id
+ e15-20020a5d4e8f000000b0030fbf2e4b99mr20610579wru.49.1687817149379; 
+ Mon, 26 Jun 2023 15:05:49 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- z24-20020a05600c221800b003fa96fe2bd9sm3901038wml.22.2023.06.26.15.05.49
+ da16-20020a056000197000b0031274a184d5sm8519676wrb.109.2023.06.26.15.05.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 26 Jun 2023 15:05:50 -0700 (PDT)
+ Mon, 26 Jun 2023 15:05:49 -0700 (PDT)
 Received: from zen.lan (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id E54811FFCF;
- Mon, 26 Jun 2023 22:59:29 +0100 (BST)
+ by zen.linaroharston (Postfix) with ESMTP id 1111D1FFD0;
+ Mon, 26 Jun 2023 22:59:30 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Alexander Bulekov <alxndr@bu.edu>,
@@ -83,25 +83,25 @@ Cc: Alexander Bulekov <alxndr@bu.edu>,
  Radoslaw Biernacki <rad@semihalf.com>,
  Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
  Qiuhao Li <Qiuhao.Li@outlook.com>, Laurent Vivier <lvivier@redhat.com>
-Subject: [PATCH v2 25/26] docs/devel: introduce some key concepts for QOM
- development
-Date: Mon, 26 Jun 2023 22:59:25 +0100
-Message-Id: <20230626215926.2522656-26-alex.bennee@linaro.org>
+Subject: [PATCH v2 26/26] tests/plugin: Remove duplicate insn log from
+ libinsn.so
+Date: Mon, 26 Jun 2023 22:59:26 +0100
+Message-Id: <20230626215926.2522656-27-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230626215926.2522656-1-alex.bennee@linaro.org>
 References: <20230626215926.2522656-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -117,140 +117,108 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Using QOM correctly is increasingly important to maintaining a modern
-code base. However the current documentation skips some important
-concepts before launching into a simple example. Lets:
+From: Richard Henderson <richard.henderson@linaro.org>
 
-  - at least mention properties
-  - mention TYPE_OBJECT and TYPE_DEVICE
-  - talk about why we have realize/unrealize
-  - mention the QOM tree
-  - lightly re-arrange the order we mention things
+This is a perfectly natural occurrence for x86 "rep movb",
+where the "rep" prefix forms a counted loop of the one insn.
 
+During the tests/tcg/multiarch/memory test, this logging is
+triggered over 350000 times.  Within the context of cross-i386-tci
+build, which is already slow by nature, the logging is sufficient
+to push the test into timeout.
+
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Message-Id: <20230621111520.1390967-1-richard.henderson@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20230619171437.357374-6-alex.bennee@linaro.org>
-
 ---
-v3
-  - moved around as per Paolo's review
----
- docs/devel/qom.rst | 58 +++++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 52 insertions(+), 6 deletions(-)
+ tests/plugin/insn.c                      | 9 +--------
+ tests/tcg/i386/Makefile.softmmu-target   | 9 ---------
+ tests/tcg/i386/Makefile.target           | 6 ------
+ tests/tcg/x86_64/Makefile.softmmu-target | 9 ---------
+ 4 files changed, 1 insertion(+), 32 deletions(-)
 
-diff --git a/docs/devel/qom.rst b/docs/devel/qom.rst
-index c342ce18e3..0b506426d7 100644
---- a/docs/devel/qom.rst
-+++ b/docs/devel/qom.rst
-@@ -13,6 +13,24 @@ features:
- - System for dynamically registering types
- - Support for single-inheritance of types
- - Multiple inheritance of stateless interfaces
-+- Mapping internal members to publicly exposed properties
+diff --git a/tests/plugin/insn.c b/tests/plugin/insn.c
+index e251a84d86..5fd3017c2b 100644
+--- a/tests/plugin/insn.c
++++ b/tests/plugin/insn.c
+@@ -19,7 +19,6 @@ QEMU_PLUGIN_EXPORT int qemu_plugin_version = QEMU_PLUGIN_VERSION;
+ #define MAX_CPUS 8 /* lets not go nuts */
+ 
+ typedef struct {
+-    uint64_t last_pc;
+     uint64_t insn_count;
+ } InstructionCount;
+ 
+@@ -51,13 +50,7 @@ static void vcpu_insn_exec_before(unsigned int cpu_index, void *udata)
+ {
+     unsigned int i = cpu_index % MAX_CPUS;
+     InstructionCount *c = &counts[i];
+-    uint64_t this_pc = GPOINTER_TO_UINT(udata);
+-    if (this_pc == c->last_pc) {
+-        g_autofree gchar *out = g_strdup_printf("detected repeat execution @ 0x%"
+-                                                PRIx64 "\n", this_pc);
+-        qemu_plugin_outs(out);
+-    }
+-    c->last_pc = this_pc;
 +
-+The root object class is TYPE_OBJECT which provides for the basic
-+object methods.
-+
-+The QOM tree
-+============
-+
-+The QOM tree is a composition tree which represents all of the objects
-+that make up a QEMU "machine". You can view this tree by running
-+``info qom-tree`` in the :ref:`QEMU monitor`. It will contain both
-+objects created by the machine itself as well those created due to
-+user configuration.
-+
-+Creating a QOM class
-+====================
-+
-+A simple minimal device implementation may look something like bellow:
+     c->insn_count++;
+ }
  
- .. code-block:: c
-    :caption: Creating a minimal type
-@@ -48,6 +66,12 @@ In the above example, we create a simple type that is described by #TypeInfo.
- #TypeInfo describes information about the type including what it inherits
- from, the instance and class size, and constructor/destructor hooks.
+diff --git a/tests/tcg/i386/Makefile.softmmu-target b/tests/tcg/i386/Makefile.softmmu-target
+index ed922d59c8..5266f2335a 100644
+--- a/tests/tcg/i386/Makefile.softmmu-target
++++ b/tests/tcg/i386/Makefile.softmmu-target
+@@ -33,14 +33,5 @@ EXTRA_RUNS+=$(MULTIARCH_RUNS)
  
-+The TYPE_DEVICE class is the parent class for all modern devices
-+implemented in QEMU and adds some specific methods to handle QEMU
-+device model. This includes managing the lifetime of devices from
-+creation through to when they become visible to the guest and
-+eventually unrealized.
-+
- Alternatively several static types could be registered using helper macro
- DEFINE_TYPES()
+ memory: CFLAGS+=-DCHECK_UNALIGNED=1
  
-@@ -98,7 +122,7 @@ when the object is needed.
-    module_obj(TYPE_MY_DEVICE);
+-# non-inline runs will trigger the duplicate instruction heuristics in libinsn.so
+-run-plugin-%-with-libinsn.so:
+-	$(call run-test, $@, \
+-	  $(QEMU) -monitor none -display none \
+-		  -chardev file$(COMMA)path=$@.out$(COMMA)id=output \
+-                  -plugin ../../plugin/libinsn.so$(COMMA)inline=on \
+-	    	  -d plugin -D $*-with-libinsn.so.pout \
+-		  $(QEMU_OPTS) $*)
+-
+ # Running
+ QEMU_OPTS+=-device isa-debugcon,chardev=output -device isa-debug-exit,iobase=0xf4,iosize=0x4 -kernel
+diff --git a/tests/tcg/i386/Makefile.target b/tests/tcg/i386/Makefile.target
+index 821822ed0c..f2ee7a4db7 100644
+--- a/tests/tcg/i386/Makefile.target
++++ b/tests/tcg/i386/Makefile.target
+@@ -63,12 +63,6 @@ else
+ SKIP_I386_TESTS+=test-i386-fprem
+ endif
  
- Class Initialization
--====================
-+--------------------
+-# non-inline runs will trigger the duplicate instruction heuristics in libinsn.so
+-run-plugin-%-with-libinsn.so:
+-	$(call run-test, $@, $(QEMU) $(QEMU_OPTS) \
+-	       -plugin ../../plugin/libinsn.so$(COMMA)inline=on \
+-	       -d plugin -D $*-with-libinsn.so.pout $*)
+-
+ # Update TESTS
+ I386_TESTS:=$(filter-out $(SKIP_I386_TESTS), $(ALL_X86_TESTS))
+ TESTS=$(MULTIARCH_TESTS) $(I386_TESTS)
+diff --git a/tests/tcg/x86_64/Makefile.softmmu-target b/tests/tcg/x86_64/Makefile.softmmu-target
+index 7207fee94c..1bd763f2e6 100644
+--- a/tests/tcg/x86_64/Makefile.softmmu-target
++++ b/tests/tcg/x86_64/Makefile.softmmu-target
+@@ -33,14 +33,5 @@ EXTRA_RUNS+=$(MULTIARCH_RUNS)
  
- Before an object is initialized, the class for the object must be
- initialized.  There is only one class object for all instance objects
-@@ -168,7 +192,7 @@ will also have a wrapper function to call it easily:
-    }
+ memory: CFLAGS+=-DCHECK_UNALIGNED=1
  
- Interfaces
--==========
-+----------
- 
- Interfaces allow a limited form of multiple inheritance.  Instances are
- similar to normal types except for the fact that are only defined by
-@@ -182,7 +206,7 @@ an argument to a method on its corresponding SomethingIfClass, or to
- dynamically cast it to an object that implements the interface.
- 
- Methods
--=======
-+-------
- 
- A *method* is a function within the namespace scope of
- a class. It usually operates on the object instance by passing it as a
-@@ -275,8 +299,8 @@ Alternatively, object_class_by_name() can be used to obtain the class and
- its non-overridden methods for a specific type. This would correspond to
- ``MyClass::method(...)`` in C++.
- 
--The first example of such a QOM method was #CPUClass.reset,
--another example is #DeviceClass.realize.
-+One example of such methods is ``DeviceClass.reset``. More examples
-+can be found at :ref:`device-life-cycle`.
- 
- Standard type declaration and definition macros
- ===============================================
-@@ -382,10 +406,32 @@ OBJECT_DEFINE_ABSTRACT_TYPE() macro can be used instead:
-    OBJECT_DEFINE_ABSTRACT_TYPE(MyDevice, my_device,
-                                MY_DEVICE, DEVICE)
- 
-+.. _device-life-cycle:
-+
-+Device Life-cycle
-+=================
-+
-+As class initialisation cannot fail devices have an two additional
-+methods to handle the creation of dynamic devices. The ``realize``
-+function is called with ``Error **`` pointer which should be set if
-+the device cannot complete its setup. Otherwise on successful
-+completion of the ``realize`` method the device object is added to the
-+QOM tree and made visible to the guest.
-+
-+The reverse function is ``unrealize`` and should be were clean-up
-+code lives to tidy up after the system is done with the device.
-+
-+All devices can be instantiated by C code, however only some can
-+created dynamically via the command line or monitor.
- 
-+Likewise only some can be unplugged after creation and need an
-+explicit ``unrealize`` implementation. This is determined by the
-+``user_creatable`` variable in the root ``DeviceClass`` structure.
-+Devices can only be unplugged if their ``parent_bus`` has a registered
-+``HotplugHandler``.
- 
- API Reference
---------------
-+=============
- 
- See the :ref:`QOM API<qom-api>` and :ref:`QDEV API<qdev-api>`
- documents for the complete API description.
+-# non-inline runs will trigger the duplicate instruction heuristics in libinsn.so
+-run-plugin-%-with-libinsn.so:
+-	$(call run-test, $@, \
+-	  $(QEMU) -monitor none -display none \
+-		  -chardev file$(COMMA)path=$@.out$(COMMA)id=output \
+-                  -plugin ../../plugin/libinsn.so$(COMMA)inline=on \
+-	    	  -d plugin -D $*-with-libinsn.so.pout \
+-		  $(QEMU_OPTS) $*)
+-
+ # Running
+ QEMU_OPTS+=-device isa-debugcon,chardev=output -device isa-debug-exit,iobase=0xf4,iosize=0x4 -kernel
 -- 
 2.39.2
 
