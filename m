@@ -2,86 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56F4773E157
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 16:00:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3992573E160
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 16:01:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDmkq-0005dg-Ow; Mon, 26 Jun 2023 09:59:44 -0400
+	id 1qDmmG-0007K2-T3; Mon, 26 Jun 2023 10:01:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qDmko-0005dF-RR
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 09:59:42 -0400
-Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qDmmE-0007IK-Ob
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 10:01:10 -0400
+Received: from mail-lj1-x236.google.com ([2a00:1450:4864:20::236])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qDmkn-0007eK-1R
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 09:59:42 -0400
-Received: by mail-wr1-x42b.google.com with SMTP id
- ffacd0b85a97d-313f363a6f1so905189f8f.1
- for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 06:59:40 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qDmmB-0008FV-6E
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 10:01:10 -0400
+Received: by mail-lj1-x236.google.com with SMTP id
+ 38308e7fff4ca-2b69ff54321so17129801fa.2
+ for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 07:01:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687787979; x=1690379979;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=qG+cGB9l3NF1JXUtt4vTsDiGdvEOXy9H7M9M7poWpQs=;
- b=hKGBOq94PbFY2sWsqD0Rih3tHpvHZAVzjlhQslnwU8wBDIBMVuBDYVeLNBulfz0yuD
- qFhAN0K7BClbg1bG0uc7ulGkPYI0qbgX/SdPGqAxnN4OX97ti+O8eHxvYsCLHZSx2+N5
- qTQJinYc98BflDoo4oid6Cu+EgOdlbgXnjvOqgQb51UNcto1s2hLPrgtYO0OQYyurfhw
- EXGrhbtIIcuclqqiZ0LH9BQMW+FKWV1hHl+L26SDH0o8bfDENZ5Gp+PpLBIgvnGnVjaR
- 67rgNO64Yo7VRmxU6dXuXaAO8FOXSIklqghfVVXD+x/ErGJEfyPGa0h1BPhqoLPbMtcm
- uh/Q==
+ d=linaro.org; s=google; t=1687788065; x=1690380065;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=9Gnxy0hWR1/A5L1cIpllCbYRoWI9TM+IkHpFErpq5tE=;
+ b=R9iTzQKrLZN9EImzzrqs1FViq9Y3gKYXKx3PGMXZNwDBq0/Ax0COmtAzOgWSnLJY7i
+ 4dbtOW9+/JFNwBE6ASbAkUtitpGSuEV7UktDOGzlGS1Vqujoo+5iNYF8/ClFM4Q529TX
+ bRjqCOOHkOCMSPsGGHp4KrMCfBImegcxgrem/U7eC5efux4N+7xOTLNsn4twUPHd+ey0
+ mGgb6fx4vWx88g8KTpGe2ldYXzg3JiAGyCRU2WqLBHJM6Fsvgnof80lOib1f3XRI2Cis
+ vlkDJbNpI3bydjH20flsjIIYUaO87/AByrM79LtIlOCe4etbx3ht5X0BaDq6Y2cMoTYL
+ jKyQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687787979; x=1690379979;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=qG+cGB9l3NF1JXUtt4vTsDiGdvEOXy9H7M9M7poWpQs=;
- b=U3B1iIwN9uBI4yB9vt2H+ZFkgLBTMAt52YEcsqelNFE//mo4KuowyU/19ONS7u1toM
- FXBWo8UAWNmqFGUUxsrb9HBPlaYKf5qA1vwiC56gPWFqUA337z6Caqb0r2yIFrCl1EiY
- gakmP3Fh0I4sGCbpW34PESm6b//eEOxqpByP/BEYkFezaKkgQHnCa6qjB6q+xPWhmnl2
- lif1GVhHTWEcvwxGR9ZKjP1VUOcdwRrH4ezXGGel8UhBTRY2AopFPb0IjAR2mYfetENX
- uMCoOKG4780GTZMDxkngw3Lpa0hul30XX51KE7agl882R7S2w66qApi6ZvSh/y0ZnebR
- hNVg==
-X-Gm-Message-State: AC+VfDz8wxkOkOpGDfjY/nl1c6azmAr3PMjbccjEGuGji+356W+4RwzN
- 2CuE9KP2u9K0HB23zYX6fI2gaA==
-X-Google-Smtp-Source: ACHHUZ5Q++GvjDLRV6oH12FHL67LjTjEsA+SoVEEl39PkA9vl/PvI87inxqSZgfsL/T+NJk7tK7BBg==
-X-Received: by 2002:adf:f887:0:b0:313:e08e:5599 with SMTP id
- u7-20020adff887000000b00313e08e5599mr5800228wrp.67.1687787979446; 
- Mon, 26 Jun 2023 06:59:39 -0700 (PDT)
-Received: from [192.168.1.208] ([139.47.42.170])
+ d=1e100.net; s=20221208; t=1687788065; x=1690380065;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=9Gnxy0hWR1/A5L1cIpllCbYRoWI9TM+IkHpFErpq5tE=;
+ b=AiQiT/Jy2b9O5lbcFUrpjaMwmwTcf8FgQzOiMX1WX0l2jX5XhRmRRs+PBVuqPED3LR
+ eLEyb1uz/r3H9eqWSegVsPZYxpTTuWWCfq9P+yCLXQj5UXJTilBuGKbq5r7gUg8Uw6Of
+ iBTVzbDqrUy7C5ZPAyXRzK6aZOXihRKP08b7kzzx/XZ5QhRlSt5fSJRaWsyeWXcbyRkH
+ 9X66sRIFTTLug80XYN/8Q6thcJSc+JK+Nyk6gZnalpxlqs8hDl0Cs5/KhjvKF27kGgoN
+ q0ZJPkOLWs61MV6DFhDuuMzLN5BCQAhsd7+6KuvBXGhWQxt6kDq9JhBI1mYqpEVo8njC
+ 2a4g==
+X-Gm-Message-State: AC+VfDzEmt5K0Wi2Cj76mofZsKf5Gsj5CQxbRq8oJvrGhAvop8YVif9g
+ sh0vKUiy7I0zmA3DAnR69dB8doTtCnDzzlCnICg=
+X-Google-Smtp-Source: ACHHUZ40Vno7LYKsPIgueWl6jp4ZXkmJT0KoMdBEsWlINvYf08yMEuKPNFzhZ0wDLTOJWFAJSNdVxQ==
+X-Received: by 2002:a2e:9d4e:0:b0:2b4:67e0:4ce0 with SMTP id
+ y14-20020a2e9d4e000000b002b467e04ce0mr13941443ljj.44.1687788064758; 
+ Mon, 26 Jun 2023 07:01:04 -0700 (PDT)
+Received: from m1x-phil.lan ([176.187.199.226])
  by smtp.gmail.com with ESMTPSA id
- h10-20020a5d504a000000b00313e8dc7facsm5669322wrt.116.2023.06.26.06.59.38
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 26 Jun 2023 06:59:39 -0700 (PDT)
-Message-ID: <98f4a7b1-bd4b-7975-cf39-8c5a10df5150@linaro.org>
-Date: Mon, 26 Jun 2023 15:59:37 +0200
+ c6-20020a170906340600b0098dd26c6e95sm3267799ejb.42.2023.06.26.07.01.02
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Mon, 26 Jun 2023 07:01:03 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: qemu-ppc@nongnu.org, =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Greg Kurz <groug@kaod.org>, Thomas Huth <thuth@redhat.com>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH] target/ppc: Only generate decodetree files when TCG is enabled
+Date: Mon, 26 Jun 2023 16:01:00 +0200
+Message-Id: <20230626140100.67941-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH v3 11/12] accel/tcg: Replace target_ulong with vaddr in
- page_*()
-Content-Language: en-US
-To: Anton Johansson <anjo@rev.ng>, qemu-devel@nongnu.org
-Cc: ale@rev.ng, pbonzini@redhat.com, eduardo@habkost.net, philmd@linaro.org,
- marcel.apfelbaum@gmail.com, wangyanan55@huawei.com
-References: <20230621135633.1649-1-anjo@rev.ng>
- <20230621135633.1649-12-anjo@rev.ng>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230621135633.1649-12-anjo@rev.ng>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
- envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x42b.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::236;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x236.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,44 +92,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/21/23 15:56, Anton Johansson via wrote:
-> Use vaddr for guest virtual addresses for functions dealing with page
-> flags.
-> 
-> Signed-off-by: Anton Johansson <anjo@rev.ng>
-> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->   accel/tcg/user-exec.c        | 44 +++++++++++++++++-------------------
->   include/exec/cpu-all.h       | 10 ++++----
->   include/exec/translate-all.h |  2 +-
->   3 files changed, 27 insertions(+), 29 deletions(-)
+No need to generate TCG-specific decodetree files
+when TCG is disabled.
 
-This causes other failures, such as
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ target/ppc/meson.build | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-https://gitlab.com/rth7680/qemu/-/jobs/4540151776#L4468
+diff --git a/target/ppc/meson.build b/target/ppc/meson.build
+index a69f174f41..4c2635039e 100644
+--- a/target/ppc/meson.build
++++ b/target/ppc/meson.build
+@@ -28,7 +28,7 @@ gen = [
+                      extra_args: ['--static-decode=decode_insn64',
+                                   '--insnwidth=64']),
+ ]
+-ppc_ss.add(gen)
++ppc_ss.add(when: 'CONFIG_TCG', if_true: gen)
+ 
+ ppc_ss.add(when: 'CONFIG_KVM', if_true: files('kvm.c'), if_false: files('kvm-stub.c'))
+ ppc_ss.add(when: 'CONFIG_USER_ONLY', if_true: files('user_only_helper.c'))
+-- 
+2.38.1
 
-qemu-hppa: ../accel/tcg/user-exec.c:490: page_set_flags: Assertion `last <= 
-GUEST_ADDR_MAX' failed.
-
-which is caused by
-
-#8  0x00005555556e5b77 in do_shmat (cpu_env=cpu_env@entry=0x555556274378,
-     shmid=54, shmaddr=<optimized out>, shmflg=0)
-     at ../src/linux-user/syscall.c:4598
-
-4598	    page_set_flags(raddr, raddr + shm_info.shm_segsz - 1,
-4599	                   PAGE_VALID | PAGE_RESET | PAGE_READ |
-4600	                   (shmflg & SHM_RDONLY ? 0 : PAGE_WRITE));
-
-The host shm_info.shm_segsz is uint64_t, which means that the whole expression gets 
-converted to uint64_t.  With this patch, it is not properly truncated to a guest address.
-
-In this particular case, raddr is signed (abi_long), which is a mistake.  Fixing that 
-avoids this particular error.
-
-But since user-only is outside of the scope of this work, I'm going to drop this patch for 
-now.
-
-
-r~
 
