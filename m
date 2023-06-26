@@ -2,81 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1DCF73DCC1
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 13:03:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E84C573DCF3
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 13:10:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDk00-0004ye-Pz; Mon, 26 Jun 2023 07:03:12 -0400
+	id 1qDk5b-00088P-Ac; Mon, 26 Jun 2023 07:08:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1qDjzs-0004wi-Iz
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 07:03:04 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qDk5Z-00088A-94
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 07:08:57 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1qDjzr-0005pp-4g
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 07:03:04 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qDk5X-0007mW-Pb
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 07:08:56 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687777382;
+ s=mimecast20190719; t=1687777734;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=RSbelXSGkZatYXZTq1CoarB3jMapbBN0ctpePyJCYWw=;
- b=LM9ATc6FktUtyyAEq0CiklyOPqztqKiVdDuAhj5X5aED9grKZ8rziFL5eaYO3jMeXnXvQt
- 9Rv0SXaVgJQuDujdHjcWSBsolFOr9sf1oduqTYlxL/TFWN5mqBzlenEyAMDeRzX5KfnQEs
- 1GGXR2L+eg0I/p+rTGjbmnx6D2e9NRY=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
+ b=WG9+BBE8CXVoyKDKk+FBT7RW+HntthsngNBEcCVWSB1kHDoaD+rDl3d6w4HKYcQik27lj5
+ /90tQ7MC3IPrP6UPBpPdu/oXx2Pyg3jKa5Fhbd5K77sKzWC5hYBu+bLPFL6VxUHUY5Itn/
+ SjV+XGqbhUHUM5pudXJSzUoIc1DAvDY=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-498-A30KB7bUMl2QNXE7WfOnNA-1; Mon, 26 Jun 2023 07:03:00 -0400
-X-MC-Unique: A30KB7bUMl2QNXE7WfOnNA-1
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-987e47d2e81so248973666b.1
- for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 04:03:00 -0700 (PDT)
+ us-mta-628-sICPFWzCOPu9XkmvTHcVmw-1; Mon, 26 Jun 2023 07:08:52 -0400
+X-MC-Unique: sICPFWzCOPu9XkmvTHcVmw-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-3fa88a6a185so9803935e9.0
+ for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 04:08:51 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687777379; x=1690369379;
+ d=1e100.net; s=20221208; t=1687777730; x=1690369730;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=RSbelXSGkZatYXZTq1CoarB3jMapbBN0ctpePyJCYWw=;
- b=En2fwFCSQ1DoMyu2ktd2KxT9NjUi1NBToUqhWZqdmxcFHlcR9/pl6YQE6thassMEBt
- gedjAfFAoHpeEAk6b0a9hAZhiMwIhoZ8A5H+aFYL/vjmDsb2KP2kPJ0MsLWG49yk+dD8
- R9kCLDnVrJy5hdHJpD1vBTG+j6cLK49d6ubbwMpi9V0XGwrSeFVGxJp+1JXeHi7pzHgG
- HhhiE+b32x+aoYHSVDuHgqPhf4a5DsSXMHXkKd5EVWIHmWzGKy8QTYdOh5crTrSjv8aM
- vizCOuD3OtyxLlG91Xt3R5gw91nar1PDmSJSdwkGIIDaNOysMiPujB1zkwt12eZrsBJj
- DXdw==
-X-Gm-Message-State: AC+VfDxtnsVyV9LzyluRorzP+mZ8kMKkTjeGl2VZpFgaUVNkhOe1CVkQ
- vajBW0maExAt2Kf8Arg5hW0ju9V1JWGw9wX13hCaemI2/W9BIsmAa0n3sBVqzzoGeV11GNmtUEa
- yR63MVoMipCg/6Yk=
-X-Received: by 2002:a17:907:745:b0:978:928:3b99 with SMTP id
- xc5-20020a170907074500b0097809283b99mr24146084ejb.46.1687777379582; 
- Mon, 26 Jun 2023 04:02:59 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7VHt9WgETP7RZqO623bkejnUj1iiZAlJpU909VlhcUydZWDAnocWj5D5jQEfpnHqmAirmq4w==
-X-Received: by 2002:a17:907:745:b0:978:928:3b99 with SMTP id
- xc5-20020a170907074500b0097809283b99mr24146075ejb.46.1687777379388; 
- Mon, 26 Jun 2023 04:02:59 -0700 (PDT)
-Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
- [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
- l24-20020a1709060e1800b009783791b1a1sm3107948eji.121.2023.06.26.04.02.58
+ bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
+ b=f5x+J45jHxtg0VjB+FDkK3qNTICOhSYun9JGedeb6Q1gS+7n/C+ZzXPjp4wzmMaZNR
+ aQMEMWLod11Mm3oRiVYM1BPcdnjFGdZf4qYS9BW44/cFgAM/icrk2dEHOJrq6nrIyRMk
+ DJsOyvARZaVzM04cLL0U+vJYvF+xv8gOVcHQJLm3vxgRSsBGSL85TxJlG3zlKcdRZ6mS
+ KOY/pyo0o7rur4jmkP6GTyOdOW5Bh62c9Ue4hS4XvG8IUAD3j+r93H4qCWIAjVGykSDM
+ 6Kjsb5jTXIquBphfZONbrs6bhO6UjeRZzj47QjEJyw4JEedF41n1/IgJ97hDyaakX/3V
+ NjdQ==
+X-Gm-Message-State: AC+VfDz1eyOQats4Fqnr7oJKV9MlBp+ao63ODhlG+tsorlzQmIhQaDfe
+ fUybpCir9Kq+Rcf2QD5QVOndb/YRaMI6oKyCRqOZlERbQ1RCZMKtwr949NedZHfEsd2nA6I9b/H
+ MtFYNEwhegmhnU3XqOqguDeg=
+X-Received: by 2002:a1c:f70d:0:b0:3f7:3685:1e10 with SMTP id
+ v13-20020a1cf70d000000b003f736851e10mr22240208wmh.40.1687777730236; 
+ Mon, 26 Jun 2023 04:08:50 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4L7gXjwNP3JXt/0pBfGSmlEZeXCePa3tNm79WC9E44Pgkcm4ZSaQwhG0G/wDQNKmXxw3jkfA==
+X-Received: by 2002:a1c:f70d:0:b0:3f7:3685:1e10 with SMTP id
+ v13-20020a1cf70d000000b003f736851e10mr22240198wmh.40.1687777729920; 
+ Mon, 26 Jun 2023 04:08:49 -0700 (PDT)
+Received: from [192.168.10.118] ([2001:b07:6468:f312:5e2c:eb9a:a8b6:fd3e])
+ by smtp.gmail.com with ESMTPSA id
+ h2-20020a1ccc02000000b003fa74bff02asm7318317wmb.26.2023.06.26.04.08.49
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 26 Jun 2023 04:02:58 -0700 (PDT)
-Date: Mon, 26 Jun 2023 13:02:58 +0200
-From: Igor Mammedov <imammedo@redhat.com>
-To: Ani Sinha <anisinha@redhat.com>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, qemu-devel@nongnu.org
-Subject: Re: [PATCH 1/3] tests/acpi: allow changes in DSDT.noacpihp table blob
-Message-ID: <20230626130258.6a4e5f75@imammedo.users.ipa.redhat.com>
-In-Reply-To: <20230621140723.462220-2-anisinha@redhat.com>
-References: <20230621140723.462220-1-anisinha@redhat.com>
- <20230621140723.462220-2-anisinha@redhat.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+ Mon, 26 Jun 2023 04:08:49 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: Nicholas Piggin <npiggin@gmail.com>
+Cc: qemu-devel@nongnu.org
+Subject: Re: [PATCH RFC] icount: don't adjust virtual time backwards after warp
+Date: Mon, 26 Jun 2023 13:08:47 +0200
+Message-ID: <20230626110847.162190-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20230625083731.3108-1-npiggin@gmail.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -101,26 +99,8 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 21 Jun 2023 19:37:21 +0530
-Ani Sinha <anisinha@redhat.com> wrote:
+Queued, thanks.
 
-> We are going to fix bio-tables-test in the next patch and hence need to
-> make sure the acpi tests continue to pass.
-> 
-> Signed-off-by: Ani Sinha <anisinha@redhat.com>
-
-Acked-by: Igor Mammedov <imammedo@redhat.com>
-
-> ---
->  tests/qtest/bios-tables-test-allowed-diff.h | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
-> index dfb8523c8b..31df9c6187 100644
-> --- a/tests/qtest/bios-tables-test-allowed-diff.h
-> +++ b/tests/qtest/bios-tables-test-allowed-diff.h
-> @@ -1 +1,2 @@
->  /* List of comma-separated changed AML files to ignore */
-> +"tests/data/acpi/q35/DSDT.noacpihp",
+Paolo
 
 
