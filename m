@@ -2,79 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 783E173E066
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 15:19:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8922873DF66
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 14:37:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDlML-0004WL-KV; Mon, 26 Jun 2023 08:30:21 -0400
+	id 1qDlMP-000538-Ta; Mon, 26 Jun 2023 08:30:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qDlLU-0002ud-Rx
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 08:29:35 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qDlLc-0002vR-I1
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 08:29:46 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qDlLS-00036X-CP
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 08:29:28 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qDlLX-000370-8M
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 08:29:32 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687782565;
+ s=mimecast20190719; t=1687782570;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=p/UK6aQi1zp/6MKRVyY3fLV1bQBOfN+OI1GJ+WI2VHU=;
- b=UbiQM+Nz+RZnYjyib34D1jANsJ8L46RWWhTmQrXkG43vjtyBMsZ+majZGqpTn3a6p+b4Ue
- dc/lE49StefqX5HIj1XeEOdr5eNSzGIfT9x9f8IjCyMD3OPMMb43oNKaqREc51sWZmoJON
- Pn/TlkShDZrLl8+2I+g3m35a2o4Xv7I=
-Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
- [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=SKjaIiozkxiRm9mjEi731tOdTERFV0G/Qnvcg4DvbFQ=;
+ b=JiysKUaWmYAzwRnEQ6qlSNB44QfVJ5Dtr/W7wyhXno8tGWQFtD4c3n2vQtt6ngGgJYa0zh
+ zqtc74AH9SH5GBHynnkvhTltedBzHJX2x35WaavfLuu/h/vKOxjCWzZ7JNJo39qqlYayu3
+ 9/mWo69et1eS2sVIQfhrQpjwVEfEIXE=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-470-XH8wV9X0NXSD-jPqPVMDiQ-1; Mon, 26 Jun 2023 08:29:24 -0400
-X-MC-Unique: XH8wV9X0NXSD-jPqPVMDiQ-1
-Received: by mail-lf1-f72.google.com with SMTP id
- 2adb3069b0e04-4ecb00906d0so2231990e87.1
- for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 05:29:24 -0700 (PDT)
+ us-mta-625-7k5VDobnPuKvdaWafq-htw-1; Mon, 26 Jun 2023 08:29:27 -0400
+X-MC-Unique: 7k5VDobnPuKvdaWafq-htw-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-3f81f4a7596so23990445e9.1
+ for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 05:29:27 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687782563; x=1690374563;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=p/UK6aQi1zp/6MKRVyY3fLV1bQBOfN+OI1GJ+WI2VHU=;
- b=aue3879HYlogO9sR3eX1AfIV+SHP32vh2nRNmP3D0cN8IuxQ/WlEPSPDbZIUEH/8u/
- UUJqYJCP56h25mxAlAeuuR0mdX4u6ILcgLyYBqfLmiLc1iax8kUcW8NI0A2xo9seBLz7
- BjsWiOfvKF2WuVzo/81n7XFEzjCPiLOfnbrERHl3NJhjYojF+a2cNL5Ia3MQVDGWQgPU
- 5bH2XYYiA7aKVGYiu76U9j8m8Pe4Xf9X9j4SNQoBV3rEoREefkBtnQOKQ1ozhKfu+2L0
- ztqSwAvw97DLsOItUTcnerJiaRTEsK0kKN/BClxF351orB+FXlBPm9x+nGN8RK87DANI
- 8FWA==
-X-Gm-Message-State: AC+VfDznnjgoIA0oE8vrFXLmfDRctUHWWcSdF4pjVxBgj7cwdY3YUhJW
- cMSYwhpoVGMOPuihNncRBko/BJi/GL+1vDvLFe1CbOSZGTtxfLlgHuoczIhIdpuKZquLi1KjsQo
- xaKZ8V5LfY2fgO0rmXe5rO7eTIqpc7EGo2++avmEckvQPSNpqBjdZ2pxvHqR2DB6vyNsZ
-X-Received: by 2002:a05:6512:39cc:b0:4f9:652d:e839 with SMTP id
- k12-20020a05651239cc00b004f9652de839mr8404629lfu.50.1687782562724; 
- Mon, 26 Jun 2023 05:29:22 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6JYEqCW8s6dsRVRA89s0FV/LBfa6EoiScvesSPBx1SSIjHaFAakeJgH6TR41K73XcLUeRq3w==
-X-Received: by 2002:a05:6512:39cc:b0:4f9:652d:e839 with SMTP id
- k12-20020a05651239cc00b004f9652de839mr8404614lfu.50.1687782562361; 
- Mon, 26 Jun 2023 05:29:22 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1687782566; x=1690374566;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=SKjaIiozkxiRm9mjEi731tOdTERFV0G/Qnvcg4DvbFQ=;
+ b=BsYo+JcSX/JJ67uhDC15+47mQYPQSj4FRy0oVx1z9rBe67P0BFjdOTDEPBgMi6x3wH
+ QP5oeuaEpc5u9uroUXzeqtx+tAzvZaJlHNh2Mo85JAN5Knz4knM8SEMMwJSo8T7FvwN+
+ KBRYr6RhyqlIhF0lA8Gevfsu4NFc5oBmDMxi9jM/J+mAKOVSxInLpquqKjJVBuHBBa8f
+ 4+HWvqnK6T/WSxknAlzOgASdtuWjQGo3sif1PyLxzWD3HC9eNS4fNlk1Ec/e9GvnWBNg
+ 0cxLqVO7kXKd+YeAV/Bj0Hbumn61cqBb8cxjDGuv9l7brW075aWApjAp/agzPftIGhWX
+ 91pg==
+X-Gm-Message-State: AC+VfDzDvhIaCgeJhh7exNwie2dCI9jhu3YXxROCOkeNaPbJ0QZwUTQl
+ nBbQaBM5rt5C8RAnrKa+XnSLi4iq56nGVLsBCuJeRHQP6ZcfRf2N8X+v3WqukTSJsHjFQXn6qFh
+ UhXtiz636BHxIAGmmkFHM5+RzXByjr9eylFw9OJstZsiqVUNiYHPM8YgMec4saT01ZXOl
+X-Received: by 2002:a7b:c342:0:b0:3f4:d18f:b2fb with SMTP id
+ l2-20020a7bc342000000b003f4d18fb2fbmr26607580wmj.8.1687782565859; 
+ Mon, 26 Jun 2023 05:29:25 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5LCmjQ8rBuQ9VMgsMf8S6ZuzWKRBFdsL0Af6fubNnslju45pXWIh/mb/rpq6p1T6iz4EgZJQ==
+X-Received: by 2002:a7b:c342:0:b0:3f4:d18f:b2fb with SMTP id
+ l2-20020a7bc342000000b003f4d18fb2fbmr26607561wmj.8.1687782565508; 
+ Mon, 26 Jun 2023 05:29:25 -0700 (PDT)
 Received: from redhat.com ([2.52.156.102]) by smtp.gmail.com with ESMTPSA id
- v14-20020a1cf70e000000b003f9b2c602c0sm10542462wmh.37.2023.06.26.05.29.21
+ y12-20020a7bcd8c000000b003fa79af15c7sm10624349wmj.2.2023.06.26.05.29.23
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 26 Jun 2023 05:29:21 -0700 (PDT)
-Date: Mon, 26 Jun 2023 08:29:19 -0400
+ Mon, 26 Jun 2023 05:29:25 -0700 (PDT)
+Date: Mon, 26 Jun 2023 08:29:22 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- BALATON Zoltan <balaton@eik.bme.hu>, Igor Mammedov <imammedo@redhat.com>,
+ Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+ Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Ani Sinha <anisinha@redhat.com>
-Subject: [PULL 30/53] hw/acpi: Fix PM control register access
-Message-ID: <3d563fc68732179b86eff2b87f2d7dbef150315f.1687782442.git.mst@redhat.com>
+Subject: [PULL 31/53] hw/i386/pc: Default to use SMBIOS 3.0 for newer machine
+ models
+Message-ID: <59c230dab17176f798fb938ba4318543d9cf31d8.1687782442.git.mst@redhat.com>
 References: <cover.1687782442.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1687782442.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -99,102 +107,119 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: BALATON Zoltan <balaton@eik.bme.hu>
+From: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
 
-On pegasos2 which has ACPI as part of VT8231 south bridge the board
-firmware writes PM control register by accessing the second byte so
-addr will be 1. This wasn't handled correctly and the write went to
-addr 0 instead. Remove the acpi_pm1_cnt_write() function which is used
-only once and does not take addr into account and handle non-zero
-address in acpi_pm_cnt_{read|write}. This fixes ACPI shutdown with
-pegasos2 firmware.
+Currently, pc-q35 and pc-i44fx machine models are default to use SMBIOS 2.8
+(32-bit entry point). Since SMBIOS 3.0 (64-bit entry point) is now fully
+supported since QEMU 7.0, default to use SMBIOS 3.0 for newer machine
+models. This is necessary to avoid the following message when launching
+a VM with large number of vcpus.
 
-The issue below is possibly related to the same memory core bug.
+   "SMBIOS 2.1 table length 66822 exceeds 65535"
 
-Link: https://gitlab.com/qemu-project/qemu/-/issues/360
-Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
-Message-Id: <20230607200125.A9988746377@zero.eik.bme.hu>
+Signed-off-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
+Message-Id: <20230607205717.737749-2-suravee.suthikulpanit@amd.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Reviewed-by: Igor Mammedov <imammedo@redhat.com>
 ---
- hw/acpi/core.c | 56 +++++++++++++++++++++++++-------------------------
- 1 file changed, 28 insertions(+), 28 deletions(-)
+ include/hw/i386/pc.h                        | 1 +
+ tests/qtest/bios-tables-test-allowed-diff.h | 1 +
+ hw/i386/pc.c                                | 4 +++-
+ hw/i386/pc_piix.c                           | 5 +++++
+ hw/i386/pc_q35.c                            | 5 +++++
+ 5 files changed, 15 insertions(+), 1 deletion(-)
 
-diff --git a/hw/acpi/core.c b/hw/acpi/core.c
-index 6da275c599..00b1e79a30 100644
---- a/hw/acpi/core.c
-+++ b/hw/acpi/core.c
-@@ -551,8 +551,35 @@ void acpi_pm_tmr_reset(ACPIREGS *ar)
- }
+diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
+index c661e9cc80..6eec0fc51d 100644
+--- a/include/hw/i386/pc.h
++++ b/include/hw/i386/pc.h
+@@ -110,6 +110,7 @@ struct PCMachineClass {
+     bool smbios_defaults;
+     bool smbios_legacy_mode;
+     bool smbios_uuid_encoded;
++    SmbiosEntryPointType default_smbios_ep_type;
  
- /* ACPI PM1aCNT */
--static void acpi_pm1_cnt_write(ACPIREGS *ar, uint16_t val)
-+void acpi_pm1_cnt_update(ACPIREGS *ar,
-+                         bool sci_enable, bool sci_disable)
+     /* RAM / address space compat: */
+     bool gigabyte_align;
+diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
+index dfb8523c8b..81148a604f 100644
+--- a/tests/qtest/bios-tables-test-allowed-diff.h
++++ b/tests/qtest/bios-tables-test-allowed-diff.h
+@@ -1 +1,2 @@
+ /* List of comma-separated changed AML files to ignore */
++"tests/data/acpi/q35/SSDT.dimmpxm",
+diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+index fc52772fdd..8d37567e08 100644
+--- a/hw/i386/pc.c
++++ b/hw/i386/pc.c
+@@ -1856,6 +1856,7 @@ static void pc_machine_set_max_fw_size(Object *obj, Visitor *v,
+ static void pc_machine_initfn(Object *obj)
  {
-+    /* ACPI specs 3.0, 4.7.2.5 */
-+    if (ar->pm1.cnt.acpi_only) {
-+        return;
-+    }
-+
-+    if (sci_enable) {
-+        ar->pm1.cnt.cnt |= ACPI_BITMASK_SCI_ENABLE;
-+    } else if (sci_disable) {
-+        ar->pm1.cnt.cnt &= ~ACPI_BITMASK_SCI_ENABLE;
-+    }
-+}
-+
-+static uint64_t acpi_pm_cnt_read(void *opaque, hwaddr addr, unsigned width)
-+{
-+    ACPIREGS *ar = opaque;
-+    return ar->pm1.cnt.cnt >> addr * 8;
-+}
-+
-+static void acpi_pm_cnt_write(void *opaque, hwaddr addr, uint64_t val,
-+                              unsigned width)
-+{
-+    ACPIREGS *ar = opaque;
-+
-+    if (addr == 1) {
-+        val = val << 8 | (ar->pm1.cnt.cnt & 0xff);
-+    }
-     ar->pm1.cnt.cnt = val & ~(ACPI_BITMASK_SLEEP_ENABLE);
+     PCMachineState *pcms = PC_MACHINE(obj);
++    PCMachineClass *pcmc = PC_MACHINE_GET_CLASS(pcms);
  
-     if (val & ACPI_BITMASK_SLEEP_ENABLE) {
-@@ -575,33 +602,6 @@ static void acpi_pm1_cnt_write(ACPIREGS *ar, uint16_t val)
-     }
+ #ifdef CONFIG_VMPORT
+     pcms->vmport = ON_OFF_AUTO_AUTO;
+@@ -1863,7 +1864,7 @@ static void pc_machine_initfn(Object *obj)
+     pcms->vmport = ON_OFF_AUTO_OFF;
+ #endif /* CONFIG_VMPORT */
+     pcms->max_ram_below_4g = 0; /* use default */
+-    pcms->smbios_entry_point_type = SMBIOS_ENTRY_POINT_TYPE_32;
++    pcms->smbios_entry_point_type = pcmc->default_smbios_ep_type;
+ 
+     /* acpi build is enabled by default if machine supports it */
+     pcms->acpi_build_enabled = PC_MACHINE_GET_CLASS(pcms)->has_acpi_build;
+@@ -1975,6 +1976,7 @@ static void pc_machine_class_init(ObjectClass *oc, void *data)
+     mc->nvdimm_supported = true;
+     mc->smp_props.dies_supported = true;
+     mc->default_ram_id = "pc.ram";
++    pcmc->default_smbios_ep_type = SMBIOS_ENTRY_POINT_TYPE_64;
+ 
+     object_class_property_add(oc, PC_MACHINE_MAX_RAM_BELOW_4G, "size",
+         pc_machine_get_max_ram_below_4g, pc_machine_set_max_ram_below_4g,
+diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
+index 44146e6ff5..f9947fbc10 100644
+--- a/hw/i386/pc_piix.c
++++ b/hw/i386/pc_piix.c
+@@ -506,11 +506,16 @@ DEFINE_I440FX_MACHINE(v8_1, "pc-i440fx-8.1", NULL,
+ 
+ static void pc_i440fx_8_0_machine_options(MachineClass *m)
+ {
++    PCMachineClass *pcmc = PC_MACHINE_CLASS(m);
++
+     pc_i440fx_8_1_machine_options(m);
+     m->alias = NULL;
+     m->is_default = false;
+     compat_props_add(m->compat_props, hw_compat_8_0, hw_compat_8_0_len);
+     compat_props_add(m->compat_props, pc_compat_8_0, pc_compat_8_0_len);
++
++    /* For pc-i44fx-8.0 and older, use SMBIOS 2.8 by default */
++    pcmc->default_smbios_ep_type = SMBIOS_ENTRY_POINT_TYPE_32;
  }
  
--void acpi_pm1_cnt_update(ACPIREGS *ar,
--                         bool sci_enable, bool sci_disable)
--{
--    /* ACPI specs 3.0, 4.7.2.5 */
--    if (ar->pm1.cnt.acpi_only) {
--        return;
--    }
--
--    if (sci_enable) {
--        ar->pm1.cnt.cnt |= ACPI_BITMASK_SCI_ENABLE;
--    } else if (sci_disable) {
--        ar->pm1.cnt.cnt &= ~ACPI_BITMASK_SCI_ENABLE;
--    }
--}
--
--static uint64_t acpi_pm_cnt_read(void *opaque, hwaddr addr, unsigned width)
--{
--    ACPIREGS *ar = opaque;
--    return ar->pm1.cnt.cnt;
--}
--
--static void acpi_pm_cnt_write(void *opaque, hwaddr addr, uint64_t val,
--                              unsigned width)
--{
--    acpi_pm1_cnt_write(opaque, val);
--}
--
- static const MemoryRegionOps acpi_pm_cnt_ops = {
-     .read = acpi_pm_cnt_read,
-     .write = acpi_pm_cnt_write,
+ DEFINE_I440FX_MACHINE(v8_0, "pc-i440fx-8.0", NULL,
+diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
+index a9a59ed42b..cf68b80974 100644
+--- a/hw/i386/pc_q35.c
++++ b/hw/i386/pc_q35.c
+@@ -387,10 +387,15 @@ DEFINE_Q35_MACHINE(v8_1, "pc-q35-8.1", NULL,
+ 
+ static void pc_q35_8_0_machine_options(MachineClass *m)
+ {
++    PCMachineClass *pcmc = PC_MACHINE_CLASS(m);
++
+     pc_q35_8_1_machine_options(m);
+     m->alias = NULL;
+     compat_props_add(m->compat_props, hw_compat_8_0, hw_compat_8_0_len);
+     compat_props_add(m->compat_props, pc_compat_8_0, pc_compat_8_0_len);
++
++    /* For pc-q35-8.0 and older, use SMBIOS 2.8 by default */
++    pcmc->default_smbios_ep_type = SMBIOS_ENTRY_POINT_TYPE_32;
+ }
+ 
+ DEFINE_Q35_MACHINE(v8_0, "pc-q35-8.0", NULL,
 -- 
 MST
 
