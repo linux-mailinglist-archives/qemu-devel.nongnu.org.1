@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75DFA73E3CA
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 17:45:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CEF0073E3C7
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 17:44:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDoKc-0000x1-W9; Mon, 26 Jun 2023 11:40:47 -0400
+	id 1qDoLH-0001pn-DB; Mon, 26 Jun 2023 11:41:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qDoJq-0000Ih-PU
+ id 1qDoJq-0000Ii-Vk
  for qemu-devel@nongnu.org; Mon, 26 Jun 2023 11:39:59 -0400
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qDoJm-0002qW-Ao
+ id 1qDoJm-0002qd-Jj
  for qemu-devel@nongnu.org; Mon, 26 Jun 2023 11:39:58 -0400
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-31272fcedf6so3089533f8f.2
- for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 08:39:53 -0700 (PDT)
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-312863a983fso3978437f8f.2
+ for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 08:39:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687793992; x=1690385992;
+ d=linaro.org; s=google; t=1687793993; x=1690385993;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=D5gCGUwlOFGdwfouX0s3t3cVRatFD3jwnMU9iqEUDZU=;
- b=mgwwmfnjJf4P6Tv5k0w5OC+N+x7k7rQJfkyWAKLReucNrEUGpEm/lbUZ4EQPSIrOm2
- W1IsjFNuFQgK4xPhHde1nCDqZJH36W6LAvZtZxX16OZmKuds6CqWA1rkn5DZNjzwRjZr
- EY5YqaZzsji101Fzv2/chFfJM/1/UWz8+eEigZyALo06AczxHlpcYCnd7ci50j53yt0S
- 2d93dBTwvIfNSP4sdVpe35ufNR2m6JCA2ZtDeOkeYQsflihJFgzBiVhEloM3er4schlw
- rPRS2tPRxB78P2uiqa0kiqeqccZG00yO2pyTsXn2/EvH9julXQyF2aTZoyO+EvfvLxRo
- UqXg==
+ bh=qfNF0XMtfGM0LprKOtGtXD7cr7UhlGd46dndzk9ShbU=;
+ b=IXRDGB/ZDsukMsYNv3CqymgM2RCrePZ3YzaA0FuJxNDemMgLhpEcKyPdK0fkM7ffLO
+ C7R1gj+Ill8PIAyq83HDWOOBj6S2BDEmGQvnuXnzkYT9PT2ltxdR+yQ+Qd2oOvSN4thf
+ /QiBUzG35GFXuqpUE5bRFk9DXZnW99wBRYdy5CdgSwjqmEQbO0qhMm11avpRV9/7jRK6
+ XfxzNc82wsKeV041gLMb4y4HR5gcMomoZu8Lf4xE9NBuq0r7X7yrLzPM2er7tRlifJxD
+ CBU36ZD5XSHIJozZL3eVMW0+snu+eHYDHGl5BB9rFmLrOxIaA1tu5xpCbP4DbMhA6iHj
+ F0Yg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687793992; x=1690385992;
+ d=1e100.net; s=20221208; t=1687793993; x=1690385993;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=D5gCGUwlOFGdwfouX0s3t3cVRatFD3jwnMU9iqEUDZU=;
- b=E1zE5tkVJ8wEVsEoHwtJrxleaMW7mOlAhjiMBhruPLKXZJiKa+ihWtiUMI575GsHOO
- BRqrouExsBMA3wwymp0PTxLRsdHtrVOd3lyurwekdloOGgusAug1eISR02/TNSgOlpHL
- hOaZEFhx2RSLpL7xCKt/Xif8qUicp+MZEaeOMzUhLUsC/dS7XQF6Fvj3FIbFeyqdOcHa
- avM1ba3bGXrBmHMRZVP3PCHLhcdGFOWaAE9ke2WO+mJmHNCWFOPI0rykhtDE3+zONEvU
- Fc5sm1ylXUihs11H9CId5cfCOHgEMpNb60ZzHjtbJ8gzuvaaKknn9xLjvq2MZGkcUMyS
- g3jg==
-X-Gm-Message-State: AC+VfDxOolZvfcKxifuG+I63K8hxhqXQsuPXFLzRFGhuCSTD6+SZjn6d
- QNQYamSP5fgys1UBueOpjhAshaNsiMAFQWU+DL8H+9XP
-X-Google-Smtp-Source: ACHHUZ40slkW82pVm54m64eG+QfKibaEDlxFeYWR/RG6WsEWjRXgXgRjf31/ks01f9K5fEYSHpEvWg==
-X-Received: by 2002:a05:6000:8d:b0:311:db0:8aff with SMTP id
- m13-20020a056000008d00b003110db08affmr8544716wrx.70.1687793992609; 
- Mon, 26 Jun 2023 08:39:52 -0700 (PDT)
+ bh=qfNF0XMtfGM0LprKOtGtXD7cr7UhlGd46dndzk9ShbU=;
+ b=WAAnzlECLwHHb5eBDHQBe3T2lgI9uwLciaZUPjsHhQXTnHMfGIqwvpIXH7oDXLM8QR
+ /EpvZ8YfYNg1ZEnaCIPuNV8/uuUpD+KXJ6y9GvY9oCrlYYLai5dtNJTeIO5MzysbtzJF
+ Nm9XoAK+joaP6QwY2j5L/PaF7Mv+Mr0OBRkEnHZZ2jtS06IXbhohB0ZjIB/R5X72MwTA
+ 6F5P0+/me8+7+Exe1Q4OVS1VYo2vtjbnv42zCIKmpe+WGdQIXg10lujGoxvg6KeHHKxp
+ SbyR+ehv5p5UkIz7kn7FP+fWj0vuLRALabtO4E1z7MSItS2vEjJO2lueH5vSSC/HY8Zs
+ UnBQ==
+X-Gm-Message-State: AC+VfDxIMdvd/2RhVXFNSuDtRzJYRkGZRtwVIkqK7zAkPp9FerwbU/Qk
+ P2Qn/wrSupKldpopy1mBa/uuLMPuKOHillQwyxnMNDXA
+X-Google-Smtp-Source: ACHHUZ4KS76rDkerPUGpLMVMhMJGMpqhQd/HasjrDgbz0jbEa7W9lLRlRVhzP+Xe1HbaTQt8InEvAw==
+X-Received: by 2002:a5d:6785:0:b0:313:f990:c631 with SMTP id
+ v5-20020a5d6785000000b00313f990c631mr118388wru.44.1687793993236; 
+ Mon, 26 Jun 2023 08:39:53 -0700 (PDT)
 Received: from localhost.localdomain ([139.47.42.170])
  by smtp.gmail.com with ESMTPSA id
  t1-20020adfe441000000b00313f45f74a8sm2164178wrm.103.2023.06.26.08.39.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 26 Jun 2023 08:39:52 -0700 (PDT)
+ Mon, 26 Jun 2023 08:39:53 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Anton Johansson <anjo@rev.ng>
-Subject: [PULL 10/22] accel/tcg: Replace target_ulong with vaddr in
- translator_*()
-Date: Mon, 26 Jun 2023 17:39:33 +0200
-Message-Id: <20230626153945.76180-11-richard.henderson@linaro.org>
+Subject: [PULL 11/22] cpu: Replace target_ulong with hwaddr in
+ tb_invalidate_phys_addr()
+Date: Mon, 26 Jun 2023 17:39:34 +0200
+Message-Id: <20230626153945.76180-12-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230626153945.76180-1-richard.henderson@linaro.org>
 References: <20230626153945.76180-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x432.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,79 +94,41 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Anton Johansson <anjo@rev.ng>
 
-Use vaddr for guest virtual address in translator_use_goto_tb() and
-translator_loop().
-
 Signed-off-by: Anton Johansson <anjo@rev.ng>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20230621135633.1649-11-anjo@rev.ng>
+Message-Id: <20230621135633.1649-13-anjo@rev.ng>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/exec/translator.h |  6 +++---
- accel/tcg/translator.c    | 10 +++++-----
- 2 files changed, 8 insertions(+), 8 deletions(-)
+ include/exec/exec-all.h | 2 +-
+ cpu.c                   | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/exec/translator.h b/include/exec/translator.h
-index 224ae14aa7..a53d3243d4 100644
---- a/include/exec/translator.h
-+++ b/include/exec/translator.h
-@@ -142,8 +142,8 @@ typedef struct TranslatorOps {
-  * - When too many instructions have been translated.
-  */
- void translator_loop(CPUState *cpu, TranslationBlock *tb, int *max_insns,
--                     target_ulong pc, void *host_pc,
--                     const TranslatorOps *ops, DisasContextBase *db);
-+                     vaddr pc, void *host_pc, const TranslatorOps *ops,
-+                     DisasContextBase *db);
+diff --git a/include/exec/exec-all.h b/include/exec/exec-all.h
+index cc1c3556f6..200c27eadf 100644
+--- a/include/exec/exec-all.h
++++ b/include/exec/exec-all.h
+@@ -526,7 +526,7 @@ uint32_t curr_cflags(CPUState *cpu);
  
- /**
-  * translator_use_goto_tb
-@@ -153,7 +153,7 @@ void translator_loop(CPUState *cpu, TranslationBlock *tb, int *max_insns,
-  * Return true if goto_tb is allowed between the current TB
-  * and the destination PC.
-  */
--bool translator_use_goto_tb(DisasContextBase *db, target_ulong dest);
-+bool translator_use_goto_tb(DisasContextBase *db, vaddr dest);
- 
- /**
-  * translator_io_start
-diff --git a/accel/tcg/translator.c b/accel/tcg/translator.c
-index 918a455e73..0fd9efceba 100644
---- a/accel/tcg/translator.c
-+++ b/accel/tcg/translator.c
-@@ -117,7 +117,7 @@ static void gen_tb_end(const TranslationBlock *tb, uint32_t cflags,
-     }
+ /* TranslationBlock invalidate API */
+ #if defined(CONFIG_USER_ONLY)
+-void tb_invalidate_phys_addr(target_ulong addr);
++void tb_invalidate_phys_addr(hwaddr addr);
+ #else
+ void tb_invalidate_phys_addr(AddressSpace *as, hwaddr addr, MemTxAttrs attrs);
+ #endif
+diff --git a/cpu.c b/cpu.c
+index 65ebaf8159..1c948d1161 100644
+--- a/cpu.c
++++ b/cpu.c
+@@ -293,7 +293,7 @@ void list_cpus(void)
  }
  
--bool translator_use_goto_tb(DisasContextBase *db, target_ulong dest)
-+bool translator_use_goto_tb(DisasContextBase *db, vaddr dest)
+ #if defined(CONFIG_USER_ONLY)
+-void tb_invalidate_phys_addr(target_ulong addr)
++void tb_invalidate_phys_addr(hwaddr addr)
  {
-     /* Suppress goto_tb if requested. */
-     if (tb_cflags(db->tb) & CF_NO_GOTO_TB) {
-@@ -129,8 +129,8 @@ bool translator_use_goto_tb(DisasContextBase *db, target_ulong dest)
- }
- 
- void translator_loop(CPUState *cpu, TranslationBlock *tb, int *max_insns,
--                     target_ulong pc, void *host_pc,
--                     const TranslatorOps *ops, DisasContextBase *db)
-+                     vaddr pc, void *host_pc, const TranslatorOps *ops,
-+                     DisasContextBase *db)
- {
-     uint32_t cflags = tb_cflags(tb);
-     TCGOp *icount_start_insn;
-@@ -235,10 +235,10 @@ void translator_loop(CPUState *cpu, TranslationBlock *tb, int *max_insns,
- }
- 
- static void *translator_access(CPUArchState *env, DisasContextBase *db,
--                               target_ulong pc, size_t len)
-+                               vaddr pc, size_t len)
- {
-     void *host;
--    target_ulong base, end;
-+    vaddr base, end;
-     TranslationBlock *tb;
- 
-     tb = db->tb;
+     mmap_lock();
+     tb_invalidate_phys_page(addr);
 -- 
 2.34.1
 
