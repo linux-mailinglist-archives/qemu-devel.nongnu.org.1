@@ -2,53 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 063AC73D77C
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 08:03:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D22EB73D786
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 08:06:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDfFC-0004Sk-2i; Mon, 26 Jun 2023 01:58:34 -0400
+	id 1qDfFY-0005mQ-53; Mon, 26 Jun 2023 01:58:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=U+Ap=CO=kaod.org=clg@ozlabs.org>)
- id 1qDfEj-0003w7-IG; Mon, 26 Jun 2023 01:58:10 -0400
-Received: from gandalf.ozlabs.org ([150.107.74.76])
+ id 1qDfEv-000463-0o; Mon, 26 Jun 2023 01:58:24 -0400
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
+ helo=gandalf.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=U+Ap=CO=kaod.org=clg@ozlabs.org>)
- id 1qDfEh-0007cL-Fj; Mon, 26 Jun 2023 01:58:05 -0400
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4QqHFP11Lsz4wb4;
- Mon, 26 Jun 2023 15:58:01 +1000 (AEST)
+ id 1qDfEr-0007fE-Fw; Mon, 26 Jun 2023 01:58:15 -0400
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4QqHFZ5H1xz4wZy;
+ Mon, 26 Jun 2023 15:58:10 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4QqHFL6Dh4z4wb3;
- Mon, 26 Jun 2023 15:57:58 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4QqHFX3QHsz4wb1;
+ Mon, 26 Jun 2023 15:58:08 +1000 (AEST)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
 To: Richard Henderson <richard.henderson@linaro.org>
 Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
  Nicholas Piggin <npiggin@gmail.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-Subject: [PULL 22/30] target/ppc: Add support for SMT CTRL register
-Date: Mon, 26 Jun 2023 07:56:39 +0200
-Message-ID: <20230626055647.1147743-23-clg@kaod.org>
+Subject: [PULL 25/30] spapr: TCG allow up to 8-thread SMT on POWER8 and newer
+ CPUs
+Date: Mon, 26 Jun 2023 07:56:42 +0200
+Message-ID: <20230626055647.1147743-26-clg@kaod.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230626055647.1147743-1-clg@kaod.org>
 References: <20230626055647.1147743-1-clg@kaod.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=150.107.74.76;
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
  envelope-from=SRS0=U+Ap=CO=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+X-Spam_score_int: -39
+X-Spam_score: -4.0
+X-Spam_bar: ----
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -66,106 +68,111 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Nicholas Piggin <npiggin@gmail.com>
 
-A relatively simple case to begin with, CTRL is a SMT shared register
-where reads and writes need to synchronise against state changes by
-other threads in the core.
+PPC TCG supports SMT CPU configurations for non-hypervisor state, so
+permit POWER8-10 pseries machines to enable SMT.
 
-Atomic serialisation operations are used to achieve this.
+This requires PIR and TIR be set, because that's how sibling thread
+matching is done by TCG.
+
+spapr's nested-HV capability does not currently coexist with SMT, so
+that combination is prohibited (interestingly somewhat analogous to
+LPAR-per-core mode on real hardware which also does not support KVM).
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 Reviewed-by: Cédric Le Goater <clg@kaod.org>
+[ clg: Also test smp_threads when checking for POWER8 CPU and above ]
 Signed-off-by: Cédric Le Goater <clg@kaod.org>
 ---
- target/ppc/helper.h      |  2 ++
- target/ppc/misc_helper.c | 25 +++++++++++++++++++++++++
- target/ppc/translate.c   | 18 +++++++++++++++++-
- 3 files changed, 44 insertions(+), 1 deletion(-)
+ hw/ppc/spapr.c          | 17 +++++++++++++----
+ hw/ppc/spapr_caps.c     | 14 ++++++++++++++
+ hw/ppc/spapr_cpu_core.c |  7 +++++--
+ 3 files changed, 32 insertions(+), 6 deletions(-)
 
-diff --git a/target/ppc/helper.h b/target/ppc/helper.h
-index 38efbc351c69..fda40b8a60dd 100644
---- a/target/ppc/helper.h
-+++ b/target/ppc/helper.h
-@@ -704,6 +704,8 @@ DEF_HELPER_3(store_dcr, void, env, tl, tl)
+diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
+index 8e7d497f25fa..54dbfd7fe983 100644
+--- a/hw/ppc/spapr.c
++++ b/hw/ppc/spapr.c
+@@ -2525,10 +2525,19 @@ static void spapr_set_vsmt_mode(SpaprMachineState *spapr, Error **errp)
+     int ret;
+     unsigned int smp_threads = ms->smp.threads;
  
- DEF_HELPER_2(load_dump_spr, void, env, i32)
- DEF_HELPER_2(store_dump_spr, void, env, i32)
-+DEF_HELPER_3(spr_write_CTRL, void, env, i32, tl)
+-    if (tcg_enabled() && (smp_threads > 1)) {
+-        error_setg(errp, "TCG cannot support more than 1 thread/core "
+-                   "on a pseries machine");
+-        return;
++    if (tcg_enabled()) {
++        if (smp_threads > 1 &&
++            !ppc_type_check_compat(ms->cpu_type, CPU_POWERPC_LOGICAL_2_07, 0,
++                                   spapr->max_compat_pvr)) {
++            error_setg(errp, "TCG only supports SMT on POWER8 or newer CPUs");
++            return;
++        }
 +
- DEF_HELPER_4(fscr_facility_check, void, env, i32, i32, i32)
- DEF_HELPER_4(msr_facility_check, void, env, i32, i32, i32)
- DEF_HELPER_FLAGS_1(load_tbl, TCG_CALL_NO_RWG, tl, env)
-diff --git a/target/ppc/misc_helper.c b/target/ppc/misc_helper.c
-index 40ddc5c08c6a..a058eb24cdc0 100644
---- a/target/ppc/misc_helper.c
-+++ b/target/ppc/misc_helper.c
-@@ -43,6 +43,31 @@ void helper_store_dump_spr(CPUPPCState *env, uint32_t sprn)
-              env->spr[sprn]);
++        if (smp_threads > 8) {
++            error_setg(errp, "TCG cannot support more than 8 threads/core "
++                       "on a pseries machine");
++            return;
++        }
+     }
+     if (!is_power_of_2(smp_threads)) {
+         error_setg(errp, "Cannot support %d threads/core on a pseries "
+diff --git a/hw/ppc/spapr_caps.c b/hw/ppc/spapr_caps.c
+index 3fd45a6decc2..5a0755d34fbe 100644
+--- a/hw/ppc/spapr_caps.c
++++ b/hw/ppc/spapr_caps.c
+@@ -473,6 +473,20 @@ static void cap_nested_kvm_hv_apply(SpaprMachineState *spapr,
+                 error_append_hint(errp,
+                                   "Try appending -machine cap-nested-hv=off\n");
+         }
++    } else if (tcg_enabled()) {
++        MachineState *ms = MACHINE(spapr);
++        unsigned int smp_threads = ms->smp.threads;
++
++        /*
++         * Nested-HV vCPU env state to L2, so SMT-shared SPR updates, for
++         * example, do not necessarily update the correct SPR value on sibling
++         * threads that are in a different guest/host context.
++         */
++        if (smp_threads > 1) {
++            error_setg(errp, "TCG does not support nested-HV with SMT");
++            error_append_hint(errp, "Try appending -machine cap-nested-hv=off "
++                                    "or use threads=1 with -smp\n");
++        }
+     }
  }
  
-+void helper_spr_write_CTRL(CPUPPCState *env, uint32_t sprn,
-+                           target_ulong val)
-+{
-+    CPUState *cs = env_cpu(env);
-+    CPUState *ccs;
-+    uint32_t run = val & 1;
-+    uint32_t ts, ts_mask;
-+
-+    assert(sprn == SPR_CTRL);
-+
-+    env->spr[sprn] &= ~1U;
-+    env->spr[sprn] |= run;
-+
-+    ts_mask = ~(1U << (8 + env->spr[SPR_TIR]));
-+    ts = run << (8 + env->spr[SPR_TIR]);
-+
-+    THREAD_SIBLING_FOREACH(cs, ccs) {
-+        CPUPPCState *cenv = &POWERPC_CPU(ccs)->env;
-+
-+        cenv->spr[sprn] &= ts_mask;
-+        cenv->spr[sprn] |= ts;
-+    }
-+}
-+
-+
- #ifdef TARGET_PPC64
- static void raise_hv_fu_exception(CPUPPCState *env, uint32_t bit,
-                                   const char *caller, uint32_t cause,
-diff --git a/target/ppc/translate.c b/target/ppc/translate.c
-index 7d8877b3dcfd..c321a39027a3 100644
---- a/target/ppc/translate.c
-+++ b/target/ppc/translate.c
-@@ -438,7 +438,7 @@ void spr_write_generic32(DisasContext *ctx, int sprn, int gprn)
- #endif
+diff --git a/hw/ppc/spapr_cpu_core.c b/hw/ppc/spapr_cpu_core.c
+index 9b88dd549a6c..a4e3c2fadd60 100644
+--- a/hw/ppc/spapr_cpu_core.c
++++ b/hw/ppc/spapr_cpu_core.c
+@@ -255,7 +255,7 @@ static void spapr_cpu_core_unrealize(DeviceState *dev)
  }
  
--void spr_write_CTRL(DisasContext *ctx, int sprn, int gprn)
-+static void spr_write_CTRL_ST(DisasContext *ctx, int sprn, int gprn)
+ static bool spapr_realize_vcpu(PowerPCCPU *cpu, SpaprMachineState *spapr,
+-                               SpaprCpuCore *sc, Error **errp)
++                               SpaprCpuCore *sc, int thread_index, Error **errp)
  {
-     /* This does not implement >1 thread */
-     TCGv t0 = tcg_temp_new();
-@@ -447,6 +447,22 @@ void spr_write_CTRL(DisasContext *ctx, int sprn, int gprn)
-     tcg_gen_shli_tl(t1, t0, 8); /* Duplicate the bit in TS */
-     tcg_gen_or_tl(t1, t1, t0);
-     gen_store_spr(sprn, t1);
-+}
-+
-+void spr_write_CTRL(DisasContext *ctx, int sprn, int gprn)
-+{
-+    if (!(ctx->flags & POWERPC_FLAG_SMT)) {
-+        spr_write_CTRL_ST(ctx, sprn, gprn);
-+        goto out;
-+    }
-+
-+    if (!gen_serialize(ctx)) {
-+        return;
-+    }
-+
-+    gen_helper_spr_write_CTRL(cpu_env, tcg_constant_i32(sprn),
-+                              cpu_gpr[gprn]);
-+out:
-     spr_store_dump_spr(sprn);
+     CPUPPCState *env = &cpu->env;
+     CPUState *cs = CPU(cpu);
+@@ -267,6 +267,9 @@ static bool spapr_realize_vcpu(PowerPCCPU *cpu, SpaprMachineState *spapr,
+     cpu_ppc_set_vhyp(cpu, PPC_VIRTUAL_HYPERVISOR(spapr));
+     kvmppc_set_papr(cpu);
  
-     /*
++    env->spr_cb[SPR_PIR].default_value = cs->cpu_index;
++    env->spr_cb[SPR_TIR].default_value = thread_index;
++
+     /* Set time-base frequency to 512 MHz. vhyp must be set first. */
+     cpu_ppc_tb_init(env, SPAPR_TIMEBASE_FREQ);
+ 
+@@ -337,7 +340,7 @@ static void spapr_cpu_core_realize(DeviceState *dev, Error **errp)
+     for (i = 0; i < cc->nr_threads; i++) {
+         sc->threads[i] = spapr_create_vcpu(sc, i, errp);
+         if (!sc->threads[i] ||
+-            !spapr_realize_vcpu(sc->threads[i], spapr, sc, errp)) {
++            !spapr_realize_vcpu(sc->threads[i], spapr, sc, i, errp)) {
+             spapr_cpu_core_unrealize(dev);
+             return;
+         }
 -- 
 2.41.0
 
