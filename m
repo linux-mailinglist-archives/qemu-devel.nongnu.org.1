@@ -2,90 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3638973D7D0
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 08:38:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 468A173D802
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 08:51:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDfqh-0003fH-5s; Mon, 26 Jun 2023 02:37:19 -0400
+	id 1qDg2v-00069i-69; Mon, 26 Jun 2023 02:49:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qDfqf-0003eq-Of
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 02:37:17 -0400
-Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qDfqd-0000ui-IX
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 02:37:17 -0400
-Received: by mail-lf1-x134.google.com with SMTP id
- 2adb3069b0e04-4fb41682472so1164755e87.2
- for <qemu-devel@nongnu.org>; Sun, 25 Jun 2023 23:37:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687761433; x=1690353433;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=GPz8/V17VD8qdtZV6+3P5oo02FRjvvImb1FS+IkpNN8=;
- b=Jq6hdNB02BR9J8cQrZUkGQHAb9FWNoJq1L4mN4EvgBIgXqdXcSVvJE4eq0r7m0VvsD
- zPCbz5F8UipxfA1dadBbq7aiAS+yeqmHJDLrKmjuYc3XYSgdS1vTDw+U71KSzWnI4NB9
- +Mw6kGGuihgKshweNP81z3omHcs+Z+ilUSYTOeHB/aZ+SBYKp8/54IG4Rzg6B9s0yzcm
- a28aKOMJHD9Wu1RssxhpuEeLoBWM57fbf8iAqr+9i0yeyOTd3aOj7n55NeYsTlDWZ5CR
- ri1jqQHDczfgpkqhasV240fYJob/ydzlGSTicOIo6u/JfH1jYCi7rwzx1sxIuXZlG20E
- Ia6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687761433; x=1690353433;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=GPz8/V17VD8qdtZV6+3P5oo02FRjvvImb1FS+IkpNN8=;
- b=jtgI7TtqzA8iwR0XEFqiXi0EphAqRByEHAKvbM7bct1uAUXe+p6aQTGedOovQPuTo1
- EIG9bUYsJtLASDYoE9fRy5v44pM9z3JTjB3LE+Ze5AeTtYnnJfyGnhZSV7bPSZkDncVx
- ZTbO5Dtr6dwsFsBbTtkMoxy8bgRkaiERIGRVYG1Q8PJXxCKyYu/kXgTulkjg7aacQrLf
- a0G+qFTZ7m3gm3tYnrGX7z4yhmhQYw9ApDLkSLa6Es8ZuOo42f/EOa35X8lDEwh2ZY8l
- QWnNi3noQsDMRK6UGUylAekOi6/lO5bpDr4eBjgftLLA5Mm5o0FI7ypT6IwC8aq+Q8kn
- M3nQ==
-X-Gm-Message-State: AC+VfDwpkZcRNnYQXyAKgvLEktYrmqtG5K1l5CFEpPM7pnl694TTwrrU
- 0YwZCULHtqDGl2Kfs6iD61yoZw==
-X-Google-Smtp-Source: ACHHUZ6StoQChb5zgJxa7/0r83FiOu0AiFnt6Q0ReBl1Jpj+MJdv9CeQLgCknDQFJLzWcp1/PLM9ZQ==
-X-Received: by 2002:a19:e602:0:b0:4f9:5711:2eb8 with SMTP id
- d2-20020a19e602000000b004f957112eb8mr9357245lfh.33.1687761433236; 
- Sun, 25 Jun 2023 23:37:13 -0700 (PDT)
-Received: from [192.168.1.208] ([139.47.42.170])
- by smtp.gmail.com with ESMTPSA id
- w10-20020a1cf60a000000b003f9bd9e3226sm6625406wmc.7.2023.06.25.23.37.12
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 25 Jun 2023 23:37:12 -0700 (PDT)
-Message-ID: <a614493f-1e3e-1d6b-13df-702be2b1bd8e@linaro.org>
-Date: Mon, 26 Jun 2023 08:37:10 +0200
+ (Exim 4.90_1) (envelope-from <shahuang@redhat.com>)
+ id 1qDg2p-00068B-Qz
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 02:49:51 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <shahuang@redhat.com>)
+ id 1qDg2m-0004Q7-BH
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 02:49:51 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1687762187;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=fYvIEwyzzG4pXA1ioSf53LM7nWsz6glb/hBkt2gcd0A=;
+ b=Q9fPc1GMnk7jXDxvZTt+C1BVrzc9dlQTBptcpb88yxzLHtPWT/NE36S21lAdkdza4nl0Sr
+ CX2l8JguBT+AYxOWk8VLTeUyps6nLoU2hn4V9geA6VqkPXiaW5ZK4k+vCXEja1HQlKjLSu
+ f71v0QybZPIIvgH7NQmQK0bccmZh3E4=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-152-Ci1AyDDlMq-nIANg3maySQ-1; Mon, 26 Jun 2023 02:49:43 -0400
+X-MC-Unique: Ci1AyDDlMq-nIANg3maySQ-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C2AB4185A794;
+ Mon, 26 Jun 2023 06:49:42 +0000 (UTC)
+Received: from virt-mtcollins-01.lab.eng.rdu2.redhat.com
+ (virt-mtcollins-01.lab.eng.rdu2.redhat.com [10.8.1.196])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 923F6200C0CD;
+ Mon, 26 Jun 2023 06:49:42 +0000 (UTC)
+From: Shaoqin Huang <shahuang@redhat.com>
+To: qemu-devel@nongnu.org,
+	qemu-arm@nongnu.org
+Cc: oliver.upton@linux.dev, salil.mehta@huawei.com, james.morse@arm.com,
+ gshan@redhat.com, Shaoqin Huang <shahuang@redhat.com>,
+ Cornelia Huck <cohuck@redhat.com>, kvm@vger.kernel.org,
+ "Michael S. Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>
+Subject: [PATCH v1 0/5] target/arm: Handle psci calls in userspace
+Date: Mon, 26 Jun 2023 02:49:04 -0400
+Message-Id: <20230626064910.1787255-1-shahuang@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PULL 00/30] Next patches
-To: quintela@redhat.com
-Cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
- Eric Blake <eblake@redhat.com>, Fam Zheng <fam@euphon.net>,
- Leonardo Bras <leobras@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- qemu-block@nongnu.org
-References: <20230622165527.2417-1-quintela@redhat.com>
- <1f5c4a38-6ae2-53dd-d739-65accb1d86a8@linaro.org>
- <87leg719rs.fsf@secure.mitica>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <87leg719rs.fsf@secure.mitica>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::134;
- envelope-from=richard.henderson@linaro.org; helo=mail-lf1-x134.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.089,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=shahuang@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -30
+X-Spam_score: -3.1
+X-Spam_bar: ---
+X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,92 +81,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/26/23 00:01, Juan Quintela wrote:
-> Richard Henderson <richard.henderson@linaro.org> wrote:
->> On 6/22/23 18:54, Juan Quintela wrote:
->>> The following changes since commit b455ce4c2f300c8ba47cba7232dd03261368a4cb:
->>>     Merge tag 'q800-for-8.1-pull-request'
->>> ofhttps://github.com/vivier/qemu-m68k  into staging (2023-06-22
->>> 10:18:32 +0200)
->>> are available in the Git repository at:
->>>     https://gitlab.com/juan.quintela/qemu.git  tags/next-pull-request
->>> for you to fetch changes up to
->>> 23e4307eadc1497bd0a11ca91041768f15963b68:
->>>     migration/rdma: Split qemu_fopen_rdma() into input/output
->>> functions (2023-06-22 18:11:58 +0200)
->>> ----------------------------------------------------------------
->>> Migration Pull request (20230621) take 2
->>> In this pull request the only change is fixing 32 bits complitaion
->>> issue.
->>> Please apply.
->>> [take 1]
->>> - fix for multifd thread creation (fabiano)
->>> - dirtylimity (hyman)
->>>     * migration-test will go on next PULL request, as it has failures.
->>> - Improve error description (tejus)
->>> - improve -incoming and set parameters before calling incoming (wei)
->>> - migration atomic counters reviewed patches (quintela)
->>> - migration-test refacttoring reviewed (quintela)
->>
->> New failure with check-cfi-x86_64:
->>
->> https://gitlab.com/qemu-project/qemu/-/jobs/4527202764#L188
-> 
-> First of all, is there a way to get to the test log?  In particular, I
-> am interested in knowing at least what test has failed (yes,
-> migration-test don't tell you much more).
-> 
-> After a bit more wrestling, I have been able to get things compiling
-> with this command:
-> 
-> $ /mnt/code/qemu/full/configure --enable-cfi
-> --target-list=x86_64-softmmu --enable-cfi-debug --cc=clang --cxx=clang++
-> --disable-docs --enable-safe-stack --disable-slirp
-> 
-> It should basically be the one that check-cfi-x86_64 is using if I
-> understand the build recipes correctly (that is a BIG IF).
-> 
-> And it passes for me with flying colors.
-> Here I have Fedora38, builder has F37.
-> 
->> /builds/qemu-project/qemu/build/pyvenv/bin/meson test  --no-rebuild -t
->> 0  --num-processes 1 --print-errorlogs
->>    1/350 qemu:qtest+qtest-x86_64 / qtest-x86_64/qom-test
->>    OK 6.55s   8 subtests passed
->> ▶   2/350 ERROR:../tests/qtest/migration-test.c:320:check_guests_ram:
->> assertion failed: (bad == 0) ERROR
->>    2/350 qemu:qtest+qtest-x86_64 / qtest-x86_64/migration-test
->>    ERROR 151.99s   killed by signal 6 SIGABRT
->>>>>
->>      G_TEST_DBUS_DAEMON=/builds/qemu-project/qemu/tests/dbus-vmstate-daemon.sh
->>      MALLOC_PERTURB_=3 QTEST_QEMU_IMG=./qemu-img
->>      QTEST_QEMU_STORAGE_DAEMON_BINARY=./storage-daemon/qemu-storage-daemon
->>      QTEST_QEMU_BINARY=./qemu-system-x86_64
->>      /builds/qemu-project/qemu/build/tests/qtest/migration-test --tap
->>     -k
->> ――――――――――――――――――――――――――――――――――――― ✀  ―――――――――――――――――――――――――――――――――――――
->> stderr:
->> qemu-system-x86_64: Unable to read from socket: Connection reset by peer
-> 
-> This is the interesting bit, why is the conection closed.
-> 
->> Memory content inconsistency at 4f65000 first_byte = 30 last_byte = 2f
->> current = 88 hit_edge = 1
->> **
->> ERROR:../tests/qtest/migration-test.c:320:check_guests_ram: assertion failed: (bad == 0)
->>
->> (test program exited with status code -6)
-> 
-> This makes zero sense, except if we haven't migrated all the guest
-> state, that it is what it has happened.
-> 
-> Is there a place on the web interface to see the full logs?  Or that is
-> the only thing that the CI system stores?
+The userspace SMCCC call filtering[1] provides the ability to forward the SMCCC
+calls to the userspace. The vCPU hotplug[2] would be the first legitimate use
+case to handle the psci calls in userspace, thus the vCPU hotplug can deny the
+PSCI_ON call if the vCPU is not present now.
 
-The "full logs" are
+This series try to enable the userspace SMCCC call filtering, thus can handle
+the SMCCC call in userspace. The first enabled SMCCC call is psci call, by using
+the new added option 'user-smccc', we can enable handle psci calls in userspace.
 
-https://gitlab.com/qemu-project/qemu/-/jobs/4527202764/artifacts/download?file_type=trace
+qemu-system-aarch64 -machine virt,user-smccc=on
 
+This series reuse the qemu implementation of the psci handling, thus the
+handling process is very simple. But when handling psci in userspace when using
+kvm, the reset vcpu process need to be taking care, the detail is included in
+the patch05.
 
-r~
+[1] lore.kernel.org/20230404154050.2270077-1-oliver.upton@linux.dev
+[2] lore.kernel.org/20230203135043.409192-1-james.morse@arm.com
+
+Shaoqin Huang (5):
+  linux-headers: Update to v6.4-rc7
+  linux-headers: Import arm-smccc.h from Linux v6.4-rc7
+  target/arm: make psci call can be used by kvm
+  arm/kvm: add skeleton implementation for userspace SMCCC call handling
+  arm/kvm: add support for userspace psci calls handling
+
+ docs/system/arm/virt.rst                      |   4 +
+ hw/arm/virt.c                                 |  21 ++
+ hw/intc/arm_gicv3_kvm.c                       |  10 +
+ include/hw/arm/virt.h                         |   1 +
+ include/standard-headers/linux/const.h        |   2 +-
+ include/standard-headers/linux/virtio_blk.h   |  18 +-
+ .../standard-headers/linux/virtio_config.h    |   6 +
+ include/standard-headers/linux/virtio_net.h   |   1 +
+ linux-headers/asm-arm64/kvm.h                 |  33 +++
+ linux-headers/asm-riscv/kvm.h                 |  53 +++-
+ linux-headers/asm-riscv/unistd.h              |   9 +
+ linux-headers/asm-s390/unistd_32.h            |   1 +
+ linux-headers/asm-s390/unistd_64.h            |   1 +
+ linux-headers/asm-x86/kvm.h                   |   3 +
+ linux-headers/linux/arm-smccc.h               | 240 ++++++++++++++++++
+ linux-headers/linux/const.h                   |   2 +-
+ linux-headers/linux/kvm.h                     |  12 +-
+ linux-headers/linux/psp-sev.h                 |   7 +
+ linux-headers/linux/userfaultfd.h             |  17 +-
+ target/arm/helper.c                           |   3 +-
+ target/arm/kvm.c                              | 146 +++++++++++
+ 21 files changed, 573 insertions(+), 17 deletions(-)
+ create mode 100644 linux-headers/linux/arm-smccc.h
+
+base-commit: e3660cc1e3cb136af50c0eaaeac27943c2438d1d
+-- 
+2.39.1
+
 
