@@ -2,42 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FE1573EAFE
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 21:12:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9661B73EAE8
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 21:09:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDrN7-0003Tf-7N; Mon, 26 Jun 2023 14:55:33 -0400
+	id 1qDrN2-0003Ao-N7; Mon, 26 Jun 2023 14:55:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qDrMF-0001vs-Jp; Mon, 26 Jun 2023 14:54:40 -0400
+ id 1qDrMP-0001ye-3E; Mon, 26 Jun 2023 14:54:49 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qDrLn-0005Uz-T8; Mon, 26 Jun 2023 14:54:13 -0400
+ id 1qDrLn-0005V0-SF; Mon, 26 Jun 2023 14:54:13 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 0C0B0EF40;
+ by isrv.corpit.ru (Postfix) with ESMTP id 418D8EF41;
  Mon, 26 Jun 2023 21:50:29 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 6BE54F7CF;
+ by tsrv.corpit.ru (Postfix) with SMTP id C36D1F7D0;
  Mon, 26 Jun 2023 21:50:27 +0300 (MSK)
-Received: (nullmailer pid 1574082 invoked by uid 1000);
+Received: (nullmailer pid 1574085 invoked by uid 1000);
  Mon, 26 Jun 2023 18:50:16 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org, qemu-stable@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Guenter Roeck <linux@roeck-us.net>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.0.3 41/54] hw/intc/allwinner-a10-pic: Handle IRQ levels
- other than 0 or 1
-Date: Mon, 26 Jun 2023 21:49:48 +0300
-Message-Id: <20230626185002.1573836-41-mjt@tls.msk.ru>
+Cc: Peter Maydell <peter.maydell@linaro.org>, Joel Stanley <joel@jms.id.au>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.0.3 42/54] hw/timer/nrf51_timer: Don't lose time when timer
+ is queried in tight loop
+Date: Mon, 26 Jun 2023 21:49:49 +0300
+Message-Id: <20230626185002.1573836-42-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.0.3-20230626214235@cover.tls.msk.ru>
 References: <qemu-stable-8.0.3-20230626214235@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -64,42 +62,50 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Peter Maydell <peter.maydell@linaro.org>
 
-In commit 2c5fa0778c3b430 we fixed an endianness bug in the Allwinner
-A10 PIC model; however in the process we introduced a regression.
-This is because the old code was robust against the incoming 'level'
-argument being something other than 0 or 1, whereas the new code was
-not.
+The nrf51_timer has a free-running counter which we implement using
+the pattern of using two fields (update_counter_ns, counter) to track
+the last point at which we calculated the counter value, and the
+counter value at that time.  Then we can find the current counter
+value by converting the difference in wall-clock time between then
+and now to a tick count that we need to add to the counter value.
 
-In particular, the allwinner-sdhost code treats its IRQ line
-as 0-vs-non-0 rather than 0-vs-1, so when the SD controller
-set its IRQ line for any reason other than transmit the
-interrupt controller would ignore it. The observed effect
-was a guest timeout when rebooting the guest kernel.
+Unfortunately the nrf51_timer's implementation of this has a bug
+which means it loses time every time update_counter() is called.
+After updating s->counter it always sets s->update_counter_ns to
+'now', even though the actual point when s->counter hit the new value
+will be some point in the past (half a tick, say).  In the worst case
+(guest code in a tight loop reading the counter, icount mode) the
+counter is continually queried less than a tick after it was last
+read, so s->counter never advances but s->update_counter_ns does, and
+the guest never makes forward progress.
 
-Handle level values other than 0 or 1, to restore the old
-behaviour.
+The fix for this is to only advance update_counter_ns to the
+timestamp of the last tick, not all the way to 'now'.  (This is the
+pattern used in hw/misc/mps2-fpgaio.c's counter.)
 
-Fixes: 2c5fa0778c3b430 ("hw/intc/allwinner-a10-pic: Don't use set_bit()/clear_bit()")
-(Mjt:  af08c70ef5204fe in stable-8.0)
 Cc: qemu-stable@nongnu.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Tested-by: Guenter Roeck <linux@roeck-us.net>
-Message-id: 20230606104609.3692557-2-peter.maydell@linaro.org
-(cherry picked from commit f837b468cdaa7e736b5385c7dc4f8c5adcad3bf1)
+Reviewed-by: Joel Stanley <joel@jms.id.au>
+Message-id: 20230606134917.3782215-1-peter.maydell@linaro.org
+(cherry picked from commit d2f9a79a8cf6ab992e1d0f27ad05b3e582d2b18a)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/intc/allwinner-a10-pic.c b/hw/intc/allwinner-a10-pic.c
-index 4875e68ba6..d0bf8d545b 100644
---- a/hw/intc/allwinner-a10-pic.c
-+++ b/hw/intc/allwinner-a10-pic.c
-@@ -51,7 +51,7 @@ static void aw_a10_pic_set_irq(void *opaque, int irq, int level)
-     AwA10PICState *s = opaque;
-     uint32_t *pending_reg = &s->irq_pending[irq / 32];
+diff --git a/hw/timer/nrf51_timer.c b/hw/timer/nrf51_timer.c
+index 42be79c736..50c6772383 100644
+--- a/hw/timer/nrf51_timer.c
++++ b/hw/timer/nrf51_timer.c
+@@ -45,7 +45,12 @@ static uint32_t update_counter(NRF51TimerState *s, int64_t now)
+     uint32_t ticks = ns_to_ticks(s, now - s->update_counter_ns);
  
--    *pending_reg = deposit32(*pending_reg, irq % 32, 1, level);
-+    *pending_reg = deposit32(*pending_reg, irq % 32, 1, !!level);
-     aw_a10_pic_update(s);
+     s->counter = (s->counter + ticks) % BIT(bitwidths[s->bitmode]);
+-    s->update_counter_ns = now;
++    /*
++     * Only advance the sync time to the timestamp of the last tick,
++     * not all the way to 'now', so we don't lose time if we do
++     * multiple resyncs in a single tick.
++     */
++    s->update_counter_ns += ticks_to_ns(s, ticks);
+     return ticks;
  }
  
 -- 
