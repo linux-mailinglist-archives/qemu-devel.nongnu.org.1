@@ -2,61 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78D5F73EBCF
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 22:26:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7282873EBCD
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 22:26:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDsmE-0005eD-F1; Mon, 26 Jun 2023 16:25:34 -0400
+	id 1qDsmE-0005eB-Fp; Mon, 26 Jun 2023 16:25:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qDsm2-0005ad-Nz
+ id 1qDsm0-0005aP-Pe
  for qemu-devel@nongnu.org; Mon, 26 Jun 2023 16:25:22 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qDsly-00054v-Kh
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 16:25:21 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-3f9b0f139feso52409705e9.3
+ id 1qDsly-000550-Kh
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 16:25:20 -0400
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-313e12db357so4046618f8f.0
  for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 13:25:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1687811117; x=1690403117;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=kufkpJWCHS04RR7Yrd43QCoxh136iqjolM/phbA6kXE=;
- b=v7M8dMsRRVKgEjWC8W82Bhlz7CVa4cJWktVnRqo0NxCjKTo9yOhjvSJbfVYHNrRX0w
- JH9si5A4XIIhDdDK8FVxI19iHG6xOBhfuaNEuAx9ISB967xpowAaNNwMt2D56/A7RbNl
- cBPCGI9z1bn2pkRp7pBaGA6bqV9a07XSzODksgkoKVjRcsVfJrd2i0DtFU6Wfm6vkG6f
- jHm0u2rsYsOlUoFUxX6Z9SghAA/6dbyg2lNrPMvYBDGUZ2GUvJWfyRLUjHtkMUJ0yeDs
- RWOJiVKZz/R/VOwouDfAMx6MabWbIEbwFoqGcTSGgRcdb0OfdLC3kmz4ODeXy/h/g7Ev
- F/gw==
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=lp6KR88j71QtkzhoL0VNQhU+0wKLrKZSfG0XhX5V00g=;
+ b=YNUvfeAsZnV6/D+m7nIKOhHvM//ambdKCHNu2NuJLqSCW6R7qjNRtBh8+1Gbbju8je
+ 59akoxOgEOFIczhZCF5+VbHdwqnrEYHtPLAQkVcd8+1boQPAqo2RouW8Qw9Fq6zotyC+
+ TLOzwMpx/6hrBqKeiqqp3gyJO5XyDfOUduBi7VhiVr7USBEZCFZXkASoO1FLaQp5zGOo
+ aZFY7OD6J5kyuwO7TjQMUY1o8t42EOwP66Vr+1SWi3ghxfn9kJJ1LOc+ZNymLFWeK2kK
+ 3ypSMtE8kDpX1jaY57KCTDRryZuhgzixifvPbu5RzteEZh2kSemD0yhYTTl4qKRlzxRL
+ NLqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20221208; t=1687811117; x=1690403117;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=kufkpJWCHS04RR7Yrd43QCoxh136iqjolM/phbA6kXE=;
- b=gVScsbo2UEGzHd2r4JOkjRL+54SbR822PV6attSnJ+02OelwsqNZHqB+7Kw0oc8oJU
- Ixs4/qNRm7mlSw2LKKrqPp7t5azClZTLr5hwXzYm/oaTDS6FlDHmtRAPJyCHNa3MDihj
- I19S/LWsXgvd2EgRSyASZRiuG/W3aW2MvAJ3pe2AqGE9UlO4vpaqifIuiMQiFqpaxvyp
- nq9o0cm1PXclDBBAgo2qKZt2kI+/65uhoWIrLqQY/grJVH+2nWa9A/KKxweXvwzR78Pk
- LC1ejnVZFd58AdjffCDjb16uA0Gxcq6UGoUtaL+orl4OpAH7Fjc0ib+0ldD/wbs6WSbp
- wonQ==
-X-Gm-Message-State: AC+VfDxaDGwgUnBG4id4Ywjlh4bmAE6runyMTiwlBpwzfWsiZK3GZUyQ
- WEgzoY94XA6RiHIpw6hGYgAQGg==
-X-Google-Smtp-Source: ACHHUZ45k9Y0UuzlsK+70a17pa7g8CJFwx6KFQFiWILsEVbpRMH/jA1c/t7pu4RSWm8iptu8LA3ZEw==
-X-Received: by 2002:adf:e791:0:b0:313:f124:aa53 with SMTP id
- n17-20020adfe791000000b00313f124aa53mr3200306wrm.45.1687811116929; 
- Mon, 26 Jun 2023 13:25:16 -0700 (PDT)
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=lp6KR88j71QtkzhoL0VNQhU+0wKLrKZSfG0XhX5V00g=;
+ b=EyRpdKxPB0T95ya3clLVxIziLbQLBdluhPWOGkEiLv9vdbII8K6rhIC+DwnEMkT3BO
+ 3DP3jMoTKbp1GYObB2L0uNp11pJov1DxK16mpE9wEnCavHES7p54mNGICb85K0cCmgJE
+ BYa5+/LwAFomDY4N0BuT/GFne8a7mvXmw+9X7l35JLscjc24V5u8OQGFf/Q5///XlDvK
+ 5ZwcLvBq94BrWzabRAUCjBLivhiHVov9xcamaUOSROrBz0WI5kh7jvEytGZfABcPVDLl
+ lSu1mu6fiWonAkbGqIyQwnAQX8qwnlUF/D5W+l/SCtzWRnfDMTJyewp+rJBS2aB/9ryR
+ tRcw==
+X-Gm-Message-State: AC+VfDyF3+wRaOkmgTnWgYe/pGLZAsBR61bb7aLnbaUVX1EBhTD8hx3v
+ H3aY6SBRCxNUnBoMQUQEQmLyUg==
+X-Google-Smtp-Source: ACHHUZ5417vKcdfoQDXWpn45rLUWM3KElM+aZCLyvqw37LblVv1hJGTKdujRMn7ebfnvK4HAjnLgGg==
+X-Received: by 2002:adf:efca:0:b0:313:f6fc:1f48 with SMTP id
+ i10-20020adfefca000000b00313f6fc1f48mr1804084wrp.14.1687811117190; 
+ Mon, 26 Jun 2023 13:25:17 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- d17-20020adffbd1000000b002fb60c7995esm8347280wrs.8.2023.06.26.13.25.16
+ v2-20020a5d6102000000b003127a21e986sm8193795wrt.104.2023.06.26.13.25.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Mon, 26 Jun 2023 13:25:16 -0700 (PDT)
 Received: from zen.lan (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 1C0751FFBB;
+ by zen.linaroharston (Postfix) with ESMTP id 3FA4E1FFBC;
  Mon, 26 Jun 2023 21:25:16 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -82,16 +83,17 @@ Cc: Qiuhao Li <Qiuhao.Li@outlook.com>,
  Darren Kenny <darren.kenny@oracle.com>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Laurent Vivier <lvivier@redhat.com>
-Subject: [PATCH v2 0/6] maintainer omnibus: testing, fuzz, plugins,
- documentation
-Date: Mon, 26 Jun 2023 21:25:09 +0100
-Message-Id: <20230626202516.2507915-1-alex.bennee@linaro.org>
+Subject: [PATCH v2 1/6] gitlab: explicit set artifacts publishing criteria
+Date: Mon, 26 Jun 2023 21:25:10 +0100
+Message-Id: <20230626202516.2507915-2-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20230626202516.2507915-1-alex.bennee@linaro.org>
+References: <20230626202516.2507915-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -114,48 +116,123 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-As softfreeze is fast approaching I thought it would be work combining
-my various trees into an omnibus series to ease the review and
-merging.
+From: Daniel P. Berrangé <berrange@redhat.com>
 
-The testing updates exposed a number of latent leaks that confused the
-oss-fuzz jobs (hence the test-fuzz addition to help debug that). This
-also includes some minor plugin updates and finally some documentation
-updates that clean-up and expose the QOM and QDEV APIs which are so
-core to emulating anything in QEMU.
+If not set explicitly, gitlab assumes 'when: on_success" as the
+publishing criteria for artifacts. This is reasonable if the
+artifact is an output deliverable of the job. This is useless
+if the artifact is a log file to be used for debugging job
+failures.
 
-v2
-  - applied a bunch of review tags
-  - added missing doc suggestions from Paolo
-  - tweaked the plugin fix for CI
+This change makes the desired criteria explicit for every job
+that publishes artifacts.
 
-The following patches need review:
+Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-Id: <20230623122100.1640995-2-alex.bennee@linaro.org>
+Message-Id: <20230503145535.91325-2-berrange@redhat.com>
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+---
+ .gitlab-ci.d/buildtest-template.yml  | 4 +++-
+ .gitlab-ci.d/buildtest.yml           | 2 ++
+ .gitlab-ci.d/crossbuild-template.yml | 1 +
+ .gitlab-ci.d/crossbuilds.yml         | 2 ++
+ .gitlab-ci.d/opensbi.yml             | 1 +
+ 5 files changed, 9 insertions(+), 1 deletion(-)
 
- - qemu-keymap: properly check return from xkb_keymap_mod_get_index
-
-Alex Bennée (3):
-  gitlab: reduce testing scope of check-gcov
-  tests/tcg: add mechanism to handle plugin arguments
-  qemu-keymap: properly check return from xkb_keymap_mod_get_index
-
-Ani Sinha (1):
-  docs/devel: remind developers to run CI container pipeline when
-    updating images
-
-Daniel P. Berrangé (2):
-  gitlab: explicit set artifacts publishing criteria
-  gitlab: ensure coverage job also publishes meson log
-
- docs/devel/testing.rst               |  6 ++++++
- qemu-keymap.c                        | 24 ++++++++++++++++--------
- .gitlab-ci.d/buildtest-template.yml  |  4 +++-
- .gitlab-ci.d/buildtest.yml           |  7 ++++++-
- .gitlab-ci.d/crossbuild-template.yml |  1 +
- .gitlab-ci.d/crossbuilds.yml         |  2 ++
- .gitlab-ci.d/opensbi.yml             |  1 +
- tests/tcg/Makefile.target            |  8 ++++++--
- 8 files changed, 41 insertions(+), 12 deletions(-)
-
+diff --git a/.gitlab-ci.d/buildtest-template.yml b/.gitlab-ci.d/buildtest-template.yml
+index 5da61f4277..f3e39b7eb1 100644
+--- a/.gitlab-ci.d/buildtest-template.yml
++++ b/.gitlab-ci.d/buildtest-template.yml
+@@ -25,6 +25,7 @@
+ # rebuilding all the object files we skip in the artifacts
+ .native_build_artifact_template:
+   artifacts:
++    when: on_success
+     expire_in: 2 days
+     paths:
+       - build
+@@ -53,6 +54,7 @@
+   extends: .common_test_job_template
+   artifacts:
+     name: "$CI_JOB_NAME-$CI_COMMIT_REF_SLUG"
++    when: always
+     expire_in: 7 days
+     paths:
+       - build/meson-logs/testlog.txt
+@@ -68,7 +70,7 @@
+     policy: pull-push
+   artifacts:
+     name: "$CI_JOB_NAME-$CI_COMMIT_REF_SLUG"
+-    when: on_failure
++    when: always
+     expire_in: 7 days
+     paths:
+       - build/tests/results/latest/results.xml
+diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
+index aa833b62ca..24bba061cd 100644
+--- a/.gitlab-ci.d/buildtest.yml
++++ b/.gitlab-ci.d/buildtest.yml
+@@ -462,6 +462,7 @@ gcov:
+   coverage: /^\s*lines:\s*\d+.\d+\%/
+   artifacts:
+     name: ${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHA}
++    when: on_success
+     expire_in: 2 days
+     reports:
+       coverage_report:
+@@ -587,6 +588,7 @@ pages:
+     - make -C build install DESTDIR=$(pwd)/temp-install
+     - mv temp-install/usr/local/share/doc/qemu/* public/
+   artifacts:
++    when: on_success
+     paths:
+       - public
+   variables:
+diff --git a/.gitlab-ci.d/crossbuild-template.yml b/.gitlab-ci.d/crossbuild-template.yml
+index 6efb0d2a54..d97611053b 100644
+--- a/.gitlab-ci.d/crossbuild-template.yml
++++ b/.gitlab-ci.d/crossbuild-template.yml
+@@ -55,6 +55,7 @@
+ .cross_test_artifacts:
+   artifacts:
+     name: "$CI_JOB_NAME-$CI_COMMIT_REF_SLUG"
++    when: always
+     expire_in: 7 days
+     paths:
+       - build/meson-logs/testlog.txt
+diff --git a/.gitlab-ci.d/crossbuilds.yml b/.gitlab-ci.d/crossbuilds.yml
+index 1e0e6c7f2c..34f9df2be9 100644
+--- a/.gitlab-ci.d/crossbuilds.yml
++++ b/.gitlab-ci.d/crossbuilds.yml
+@@ -169,6 +169,7 @@ cross-win32-system:
+     CROSS_SKIP_TARGETS: alpha-softmmu avr-softmmu hppa-softmmu m68k-softmmu
+                         microblazeel-softmmu mips64el-softmmu nios2-softmmu
+   artifacts:
++    when: on_success
+     paths:
+       - build/qemu-setup*.exe
+ 
+@@ -184,6 +185,7 @@ cross-win64-system:
+                         or1k-softmmu rx-softmmu sh4eb-softmmu sparc64-softmmu
+                         tricore-softmmu xtensaeb-softmmu
+   artifacts:
++    when: on_success
+     paths:
+       - build/qemu-setup*.exe
+ 
+diff --git a/.gitlab-ci.d/opensbi.yml b/.gitlab-ci.d/opensbi.yml
+index b4d7eef688..fd293e6c31 100644
+--- a/.gitlab-ci.d/opensbi.yml
++++ b/.gitlab-ci.d/opensbi.yml
+@@ -63,6 +63,7 @@ build-opensbi:
+   stage: build
+   needs: ['docker-opensbi']
+   artifacts:
++    when: on_success
+     paths: # 'artifacts.zip' will contains the following files:
+       - pc-bios/opensbi-riscv32-generic-fw_dynamic.bin
+       - pc-bios/opensbi-riscv64-generic-fw_dynamic.bin
 -- 
 2.39.2
 
