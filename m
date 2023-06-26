@@ -2,43 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 926DF73EB0F
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 21:14:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0668873EAE5
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 21:08:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDrR0-0001AU-5g; Mon, 26 Jun 2023 14:59:34 -0400
+	id 1qDrR2-0001J5-W5; Mon, 26 Jun 2023 14:59:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qDrQb-0000nW-MC; Mon, 26 Jun 2023 14:59:12 -0400
+ id 1qDrQe-0000o9-Ne; Mon, 26 Jun 2023 14:59:12 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qDrQZ-00071D-Ah; Mon, 26 Jun 2023 14:59:09 -0400
+ id 1qDrQd-000729-47; Mon, 26 Jun 2023 14:59:12 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id B4A55EFA0;
+ by isrv.corpit.ru (Postfix) with ESMTP id E03B7EFA1;
  Mon, 26 Jun 2023 21:59:06 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 4104AF7DF;
+ by tsrv.corpit.ru (Postfix) with SMTP id 6ECBCF7E0;
  Mon, 26 Jun 2023 21:59:05 +0300 (MSK)
-Received: (nullmailer pid 1575282 invoked by uid 1000);
+Received: (nullmailer pid 1575285 invoked by uid 1000);
  Mon, 26 Jun 2023 18:59:05 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org, qemu-stable@nongnu.org
-Cc: Thomas Huth <thuth@redhat.com>, Eldon Stegall <eldon-qemu@eldondev.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+Cc: Bernhard Beschow <shentey@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.4 02/43] scripts/device-crash-test: Add a parameter to
- run with TCG only
-Date: Mon, 26 Jun 2023 21:58:20 +0300
-Message-Id: <20230626185902.1575177-2-mjt@tls.msk.ru>
+Subject: [Stable-7.2.4 03/43] hw/ppc/prep: Fix wiring of PIC -> CPU interrupt
+Date: Mon, 26 Jun 2023 21:58:21 +0300
+Message-Id: <20230626185902.1575177-3-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.4-20230626215033@cover.tls.msk.ru>
 References: <qemu-stable-7.2.4-20230626215033@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -63,57 +60,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Huth <thuth@redhat.com>
+From: Bernhard Beschow <shentey@gmail.com>
 
-We're currently facing the problem that the device-crash-test script
-runs twice as long in the CI when a runner supports KVM - which sometimes
-results in a timeout of the CI job. To get a more deterministic runtime
-here, add an option to the script that allows to run it with TCG only.
+Commit cef2e7148e32 ("hw/isa/i82378: Remove intermediate IRQ forwarder")
+passes s->cpu_intr to i8259_init() in i82378_realize() directly. However, s-
+>cpu_intr isn't initialized yet since that happens after the south bridge's
+pci_realize_and_unref() in board code. Fix this by initializing s->cpu_intr
+before realizing the south bridge.
 
-Reported-by: Eldon Stegall <eldon-qemu@eldondev.com>
-Signed-off-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <20230414145845.456145-3-thuth@redhat.com>
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20230424092249.58552-6-alex.bennee@linaro.org>
-(cherry picked from commit 8b869aa59109d238fd684e1ade204b6942202120)
+Fixes: cef2e7148e32 ("hw/isa/i82378: Remove intermediate IRQ forwarder")
+Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+Reviewed-by: Daniel Henrique Barboza <danielhb413@gmail.com>
+Message-Id: <20230304114043.121024-4-shentey@gmail.com>
+Signed-off-by: Daniel Henrique Barboza <danielhb413@gmail.com>
+(cherry picked from commit 2237af5e60ada06d90bf714e85523deafd936b9b)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-index 38d95c8487..10886bb414 100644
---- a/.gitlab-ci.d/buildtest.yml
-+++ b/.gitlab-ci.d/buildtest.yml
-@@ -110,7 +110,7 @@ crash-test-debian:
-   script:
-     - cd build
-     - make NINJA=":" check-venv
--    - tests/venv/bin/python3 scripts/device-crash-test -q ./qemu-system-i386
-+    - tests/venv/bin/python3 scripts/device-crash-test -q --tcg-only ./qemu-system-i386
+diff --git a/hw/ppc/prep.c b/hw/ppc/prep.c
+index fcbe4c5837..ec8d9584fb 100644
+--- a/hw/ppc/prep.c
++++ b/hw/ppc/prep.c
+@@ -271,9 +271,11 @@ static void ibm_40p_init(MachineState *machine)
+     }
  
- build-system-fedora:
-   extends: .native_build_job_template
-diff --git a/scripts/device-crash-test b/scripts/device-crash-test
-index 73bcb98693..b74d887331 100755
---- a/scripts/device-crash-test
-+++ b/scripts/device-crash-test
-@@ -397,7 +397,7 @@ def binariesToTest(args, testcase):
+     /* PCI -> ISA bridge */
+-    i82378_dev = DEVICE(pci_create_simple(pci_bus, PCI_DEVFN(11, 0), "i82378"));
++    i82378_dev = DEVICE(pci_new(PCI_DEVFN(11, 0), "i82378"));
+     qdev_connect_gpio_out(i82378_dev, 0,
+                           qdev_get_gpio_in(DEVICE(cpu), PPC6xx_INPUT_INT));
++    qdev_realize_and_unref(i82378_dev, BUS(pci_bus), &error_fatal);
++
+     sysbus_connect_irq(pcihost, 0, qdev_get_gpio_in(i82378_dev, 15));
+     isa_bus = ISA_BUS(qdev_get_child_bus(i82378_dev, "isa.0"));
  
- 
- def accelsToTest(args, testcase):
--    if getBinaryInfo(args, testcase['binary']).kvm_available:
-+    if getBinaryInfo(args, testcase['binary']).kvm_available and not args.tcg_only:
-         yield 'kvm'
-     yield 'tcg'
- 
-@@ -510,6 +510,8 @@ def main():
-                         help="Full mode: test cases that are expected to fail")
-     parser.add_argument('--strict', action='store_true', dest='strict',
-                         help="Treat all warnings as fatal")
-+    parser.add_argument('--tcg-only', action='store_true', dest='tcg_only',
-+                        help="Only test with TCG accelerator")
-     parser.add_argument('qemu', nargs='*', metavar='QEMU',
-                         help='QEMU binary to run')
-     args = parser.parse_args()
 -- 
 2.39.2
 
