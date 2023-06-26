@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7C3D73EA9B
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 20:56:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BFBCE73EA90
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 20:55:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDrK2-0007kl-OG; Mon, 26 Jun 2023 14:52:22 -0400
+	id 1qDrKV-00006K-9D; Mon, 26 Jun 2023 14:52:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qDrJz-0007cF-9r; Mon, 26 Jun 2023 14:52:19 -0400
+ id 1qDrK2-0007ok-GI; Mon, 26 Jun 2023 14:52:22 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qDrJx-0005Cz-DA; Mon, 26 Jun 2023 14:52:18 -0400
+ id 1qDrK0-0005EN-Md; Mon, 26 Jun 2023 14:52:22 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id B0D5CEF2F;
+ by isrv.corpit.ru (Postfix) with ESMTP id EC18BEF30;
  Mon, 26 Jun 2023 21:50:22 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 53BEFF7BE;
+ by tsrv.corpit.ru (Postfix) with SMTP id 746E9F7BF;
  Mon, 26 Jun 2023 21:50:21 +0300 (MSK)
-Received: (nullmailer pid 1574030 invoked by uid 1000);
+Received: (nullmailer pid 1574033 invoked by uid 1000);
  Mon, 26 Jun 2023 18:50:16 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org, qemu-stable@nongnu.org
 Cc: Ilya Leoshkevich <iii@linux.ibm.com>, David Hildenbrand <david@redhat.com>,
  Thomas Huth <thuth@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.0.3 24/54] tests/tcg/s390x: Test MXDB and MXDBR
-Date: Mon, 26 Jun 2023 21:49:31 +0300
-Message-Id: <20230626185002.1573836-24-mjt@tls.msk.ru>
+Subject: [Stable-8.0.3 25/54] s390x/tcg: Fix CPU address returned by STIDP
+Date: Mon, 26 Jun 2023 21:49:32 +0300
+Message-Id: <20230626185002.1573836-25-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.0.3-20230626214235@cover.tls.msk.ru>
 References: <qemu-stable-8.0.3-20230626214235@cover.tls.msk.ru>
@@ -61,64 +61,66 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Ilya Leoshkevich <iii@linux.ibm.com>
 
-Add a small test to prevent regressions.
+In qemu-user-s390x, /proc/cpuinfo contains:
 
-Cc: qemu-stable@nongnu.org
+	processor 0: version = 00,  identification = 000000,  machine = 8561
+	processor 1: version = 00,  identification = 400000,  machine = 8561
+
+The highest nibble is supposed to contain the CPU address, but it's off
+by 2 bits. Fix the shift value and provide a symbolic constant for it.
+
+With the fix we get:
+
+	processor 0: version = 00,  identification = 000000,  machine = 8561
+	processor 1: version = 00,  identification = 100000,  machine = 8561
+
+Fixes: 076d4d39b65f ("s390x/cpumodel: wire up cpu type + id for TCG")
+Reviewed-by: David Hildenbrand <david@redhat.com>
 Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Message-Id: <20230601223027.795501-3-iii@linux.ibm.com>
-Acked-by: David Hildenbrand <david@redhat.com>
+Message-Id: <20230605113950.1169228-2-iii@linux.ibm.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
-(cherry picked from commit 2b956244a9d1b18b9653bf7453870c2d10df2427)
+(cherry picked from commit 71b11cbe1c34411238703abe24bfaf2e9712c30d)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/tests/tcg/s390x/Makefile.target b/tests/tcg/s390x/Makefile.target
-index a2a15c4a23..85abfbb98c 100644
---- a/tests/tcg/s390x/Makefile.target
-+++ b/tests/tcg/s390x/Makefile.target
-@@ -35,6 +35,7 @@ TESTS+=chrl
- TESTS+=rxsbg
- TESTS+=ex-relative-long
- TESTS+=ex-branch
-+TESTS+=mxdb
- 
- cdsg: CFLAGS+=-pthread
- cdsg: LDFLAGS+=-pthread
-diff --git a/tests/tcg/s390x/mxdb.c b/tests/tcg/s390x/mxdb.c
-new file mode 100644
-index 0000000000..ae922559d3
---- /dev/null
-+++ b/tests/tcg/s390x/mxdb.c
-@@ -0,0 +1,30 @@
+diff --git a/target/s390x/cpu_models.c b/target/s390x/cpu_models.c
+index 457b5cb10c..ae8880e81d 100644
+--- a/target/s390x/cpu_models.c
++++ b/target/s390x/cpu_models.c
+@@ -607,8 +607,8 @@ void s390_realize_cpu_model(CPUState *cs, Error **errp)
+ #if !defined(CONFIG_USER_ONLY)
+     cpu->env.cpuid = s390_cpuid_from_cpu_model(cpu->model);
+     if (tcg_enabled()) {
+-        /* basic mode, write the cpu address into the first 4 bit of the ID */
+-        cpu->env.cpuid = deposit64(cpu->env.cpuid, 54, 4, cpu->env.core_id);
++        cpu->env.cpuid = deposit64(cpu->env.cpuid, CPU_PHYS_ADDR_SHIFT,
++                                   CPU_PHYS_ADDR_BITS, cpu->env.core_id);
+     }
+ #endif
+ }
+diff --git a/target/s390x/cpu_models.h b/target/s390x/cpu_models.h
+index fb1adc8b21..cc7305ec21 100644
+--- a/target/s390x/cpu_models.h
++++ b/target/s390x/cpu_models.h
+@@ -96,10 +96,18 @@ static inline bool s390_known_cpu_type(uint16_t type)
+ {
+     return s390_get_gen_for_cpu_type(type) != 0;
+ }
++#define CPU_ID_SHIFT 32
++#define CPU_ID_BITS 24
 +/*
-+ * Test the MXDB and MXDBR instructions.
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
++ * When cpu_id_format is 0 (basic mode), the leftmost 4 bits of cpu_id contain
++ * the rightmost 4 bits of the physical CPU address.
 + */
-+#include <assert.h>
-+#include <stdlib.h>
-+
-+int main(void)
-+{
-+    union {
-+        double d[2];
-+        long double ld;
-+    } a;
-+    double b;
-+
-+    a.d[0] = 1.2345;
-+    a.d[1] = 999;
-+    b = 6.789;
-+    asm("mxdb %[a],%[b]" : [a] "+f" (a.ld) : [b] "R" (b));
-+    assert(a.ld > 8.38 && a.ld < 8.39);
-+
-+    a.d[0] = 1.2345;
-+    a.d[1] = 999;
-+    b = 6.789;
-+    asm("mxdbr %[a],%[b]" : [a] "+f" (a.ld) : [b] "f" (b));
-+    assert(a.ld > 8.38 && a.ld < 8.39);
-+
-+    return EXIT_SUCCESS;
-+}
++#define CPU_PHYS_ADDR_BITS 4
++#define CPU_PHYS_ADDR_SHIFT (CPU_ID_SHIFT + CPU_ID_BITS - CPU_PHYS_ADDR_BITS)
+ static inline uint64_t s390_cpuid_from_cpu_model(const S390CPUModel *model)
+ {
+     return ((uint64_t)model->cpu_ver << 56) |
+-           ((uint64_t)model->cpu_id << 32) |
++           ((uint64_t)model->cpu_id << CPU_ID_SHIFT) |
+            ((uint64_t)model->def->type << 16) |
+            (model->def->gen == 7 ? 0 : (uint64_t)model->cpu_id_format << 15);
+ }
 -- 
 2.39.2
 
