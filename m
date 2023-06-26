@@ -2,84 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33EE573DB69
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 11:29:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7920773DB7A
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 11:35:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDiWE-00013E-W3; Mon, 26 Jun 2023 05:28:23 -0400
+	id 1qDic3-0002cl-4j; Mon, 26 Jun 2023 05:34:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qDiWB-00012p-QV
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 05:28:19 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qDiWA-0000sN-EA
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 05:28:19 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687771697;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=EhmAWT7uZJerclNaWqthTbAc0Vtt93e8ajC09PiYkKs=;
- b=U9RDG9HUmPY9S6GARV4yIwNKzHYIqkzWkGjBxjbZzLwaWfPQXAvrJ/KayxUHP1qjtFWrsW
- gM8RAO0G8/q/0NjzgmzzfvhkXHPgne7CWGjrtLRA6XqFeXBnDwn5BgP+PUvdWz5JONJXpB
- TSeSS9i9aSdWOywfv//Qv/XPQDT7wwU=
-Received: from mail-ua1-f72.google.com (mail-ua1-f72.google.com
- [209.85.222.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-512-FIid0kppOrSOO34pB7mjcA-1; Mon, 26 Jun 2023 05:28:14 -0400
-X-MC-Unique: FIid0kppOrSOO34pB7mjcA-1
-Received: by mail-ua1-f72.google.com with SMTP id
- a1e0cc1a2514c-78f229627adso327646241.0
- for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 02:28:14 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1qDiby-0002by-Cs; Mon, 26 Jun 2023 05:34:19 -0400
+Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1qDibw-00025U-6R; Mon, 26 Jun 2023 05:34:17 -0400
+Received: by mail-pf1-x42a.google.com with SMTP id
+ d2e1a72fcca58-666e6ecb52dso1284708b3a.2; 
+ Mon, 26 Jun 2023 02:34:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1687772053; x=1690364053;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=eW15eKBe9Bt15o5KjTb/As2EuSBzaz+HD6L8Bkh/djU=;
+ b=ZmoTohx6CjgXEbrK1JJM/RLqFzZqR2D8c6aRrO1zVcM92/KyDlvqATihFMPY8tU84F
+ V7argdcO+6/Marm25cW9y9Ao8TV7GLDxDm3gNGPnS1Bp0sQCvoRKwOVRMH5LcNSLLd0J
+ KWoowJva3wqdRi0YhRE9BxqYpIuAvQcoJCCZuaZcqL3R4Oq4JEXyqikPfKnQ56Xj7mfp
+ MxCKwAK7U/J3kgnBBdV2/72dKZVP+0uHA2nKbaRb5Tx0LbDJGNfL07Q2VuMJ1m8J5y6Y
+ KD9y3GKhbCieQ7igh8MKUT+tKy0imKyKG6+taj3ISoQrX1SmyAbzxdRNUdWV+HbLKTgi
+ 8KNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687771694; x=1690363694;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=EhmAWT7uZJerclNaWqthTbAc0Vtt93e8ajC09PiYkKs=;
- b=dELVid3Tr/1me9McLctphQ0K89bqa9sMIIAxuPqnhz4K0gKnAQ/39IB5eTp/ydXFY2
- I/+1Nfj7t4pGkZeI8IR4GI/+/zOBESDKHnYdFpEfekLhZQHAJE2+05No9TEbYcMF2/ZX
- XioupgLk2TlT6/yyx9loXtgMI3Wm9tAusXFzfbFqZJI0DVzRCo1q434wCg7UTGelMkP6
- 4EecVIBQmrnS/bxOA3qCX8xIyBuHA2NCXYL4GuyZq2fdTWbIQ/hZuYMx4qnetFHQG1eP
- FkWl/4Qi03W1MLyD2mrxfBaL+WeolQExfFsMExYjRV2Bs+EktMbHAcXzdMXnTNjuL8Rf
- +7AA==
-X-Gm-Message-State: AC+VfDwSKRIyVRHHXQAWib7CYn/nPDlJx4/WzdfGAk9W4AEDjWuS1Ei7
- 6mweuP/9r8B3Nj6NkchYei+fQEnFxGlmea5fAWi0Z8qx66r6cRCN5UIHPd8cn3qvUPAnVS2DMIW
- OBIP5r4Yr0ByfVawtrOZD1iyQBEi7Xa8=
-X-Received: by 2002:a05:6102:3025:b0:440:cde6:b37e with SMTP id
- v5-20020a056102302500b00440cde6b37emr9238091vsa.33.1687771694286; 
- Mon, 26 Jun 2023 02:28:14 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5C+A+R3YqiO/lPzh+z6MFaUIYpxlEcM3hsDjlszNPWV9ujwjLz5ErPz48QlYCC9vCnJNxD6gxHJApQfJMeWlM=
-X-Received: by 2002:a05:6102:3025:b0:440:cde6:b37e with SMTP id
- v5-20020a056102302500b00440cde6b37emr9238088vsa.33.1687771694065; Mon, 26 Jun
- 2023 02:28:14 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230626083317.144746-1-pbonzini@redhat.com>
- <ZJlYbXKwd4SxoaxY@redhat.com>
-In-Reply-To: <ZJlYbXKwd4SxoaxY@redhat.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Mon, 26 Jun 2023 11:27:54 +0200
-Message-ID: <CABgObfa2ft-j0CdDyV78awrKu1nowXDSVxeqtQoFG_+qOp=6tw@mail.gmail.com>
-Subject: Re: [PATCH v2 0/3] target/i386: allow using named CPU modeles with
- user mode emulation
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
+ d=1e100.net; s=20221208; t=1687772053; x=1690364053;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=eW15eKBe9Bt15o5KjTb/As2EuSBzaz+HD6L8Bkh/djU=;
+ b=lHUbuKkPDNIwbBDPZcv5GkPgiIjvYM4Y6iQEGj5NIkt8gVlgiK6yw8GuAVrby5Urw/
+ E8qcBy3zElvI944g28cW3gEZ9yNpNR6aeT2noqsP34bHVvVn1EJOf7g7FVUaYk2gRwbo
+ +/p5aOF2VEjyaCyaTOD4nkgHUdQphSPnbU5R2gYvnYzhoQw3/ILaNZVGCf8SWPJckHhk
+ ampA/rmC+C8RepT6QVGyCZ26DWV8b/iH8DZi4Pytdz+cuwzoswud1bC6Cx/jzUUbi788
+ /mHcDRQEHBNkmv2G5t9CyhFWjs10OEfZSKgfV5NnvSYX5rhbK31dr4td5XEKevnLcSLC
+ oI+Q==
+X-Gm-Message-State: AC+VfDxNe9euQi6ThKOm3XBaDf/TpvreArKj+kDOQPlB/h5OSVsbPaU9
+ c8SIP+yQIUQhPUdStRw6RLc=
+X-Google-Smtp-Source: ACHHUZ4nwE/SZgfUDGXSdHsG77ml1E8Ci1ZL4v6mWtJwlp3FK+nmhy29isjwmjxqz2/ZkmVFhVzX2A==
+X-Received: by 2002:a05:6a00:2482:b0:66a:6339:e909 with SMTP id
+ c2-20020a056a00248200b0066a6339e909mr8388114pfv.11.1687772053163; 
+ Mon, 26 Jun 2023 02:34:13 -0700 (PDT)
+Received: from localhost (14-200-238-131.tpgi.com.au. [14.200.238.131])
+ by smtp.gmail.com with ESMTPSA id
+ h20-20020aa786d4000000b00677af363905sm1280931pfo.59.2023.06.26.02.34.06
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 26 Jun 2023 02:34:12 -0700 (PDT)
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -30
-X-Spam_score: -3.1
-X-Spam_bar: ---
-X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 26 Jun 2023 19:34:03 +1000
+Message-Id: <CTMH98YLMT2F.2C2Q4KXXZMEB1@wheely>
+Cc: <qemu-ppc@nongnu.org>, "Daniel Henrique Barboza"
+ <danielhb413@gmail.com>, =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
+ "David Gibson" <david@gibson.dropbear.id.au>, "Greg Kurz" <groug@kaod.org>,
+ "Harsh Prateek Bora" <harshpb@linux.ibm.com>, "John Snow"
+ <jsnow@redhat.com>, "Cleber Rosa" <crosa@redhat.com>, "Pavel Dovgalyuk"
+ <pavel.dovgaluk@ispras.ru>, "Paolo Bonzini" <pbonzini@redhat.com>,
+ =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, "Wainer dos
+ Santos Moschetta" <wainersm@redhat.com>, "Beraldo Leal" <bleal@redhat.com>,
+ "Peter Maydell" <peter.maydell@linaro.org>, "Richard Henderson"
+ <richard.henderson@linaro.org>
+Subject: Re: [PATCH 7/7] tests/avocado: ppc64 pseries reverse debugging test
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "Pavel Dovgalyuk" <pavel.dovgalyuk@ispras.ru>, <qemu-devel@nongnu.org>
+X-Mailer: aerc 0.15.2
+References: <20230623125707.323517-1-npiggin@gmail.com>
+ <20230623125707.323517-8-npiggin@gmail.com>
+ <74691561-c288-abf5-9673-6e230d55b813@ispras.ru>
+In-Reply-To: <74691561-c288-abf5-9673-6e230d55b813@ispras.ru>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x42a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,43 +101,88 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jun 26, 2023 at 11:20=E2=80=AFAM Daniel P. Berrang=C3=A9 <berrange@=
-redhat.com> wrote:
-> > - for qemu-i386, the issue is that this emulator is restricted to runni=
-ng
-> >   programs on a 32-bit processor, even though it is actually emulating
-> >   programs that use the 32-bit kernel ABI on any processor.  The behavi=
-or
-> >   the processor in compatibility (32-bit CS, EFER.LMA=3D1) mode is most=
-ly
-> >   the same as when EFER.LMA=3D0 and the little code that is needed to h=
-andle
-> >   64-bit ring-0 is even present in the qemu-i386 binary, just hidden
-> >   behind checks for HF_LMA_MASK.  So, LM can also be treated as a featu=
-re
-> >   that is only relevant in kernel mode; not entirely, so this cannot ye=
-t
-> >   be extended to bsd-user, but the required changes are minimal.
+On Mon Jun 26, 2023 at 5:49 PM AEST, Pavel Dovgalyuk wrote:
+> On 23.06.2023 15:57, Nicholas Piggin wrote:
+> > pseries can run reverse-debugging well enough to pass basic tests.
+> >=20
+> > There is strangeness with reverse-continue possibly relating to a bp
+> > being set on the first instruction or on a snapshot, that causes
+> > the PC to be reported on the first instruction rather than last
+> > breakpoint, so a workaround is added for that for now.
 >
-> IMHO in this case we should hard block all named CPUs with
-> 'lm' set from qemu-i386. It only makes sense to use named CPU
-> models that were actually from the 32-bit era with qemu-i386.
+> It means that the test reveals some kind of a bug in PPC debugging=20
+> server implementation.
+> In this case it is better to fix that instead of adding workaround.
+
+I agree, and I'm trying to find the cause it hasn't been easy. I
+thought the test was still interesting because it otherwise seems
+to work well, but hopefully I can find the issue before long.
+
+Thanks,
+Nick
+
 >
-> If someone wants Nehalem then they should be using qemu-x86_64.
-> If someone wants qemu-i386 then they should be using an older
-> named CPU model predating 'lm'.
-
-What you write is true for qemu-system-*, but the problem is that
-qemu-user binaries are only able to run one ELF target. qemu-x86_64 is
-not able to run i386 binaries, unlike a 64-bit kernel; and that's
-really intrinsic in the design of qemu-user because implementing
-multiple ABIs (including multiple definitions of structs and syscall
-numbers) would require compiling the same files multiple times.
-
-Also, when using qemu-i386 on a (non-x86) 32-bit host you really do
-not need the performance penalty of 64-on-32 emulation to run 32-bit
-binaries.
-
-Paolo
+> >=20
+> > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> > ---
+> >   tests/avocado/reverse_debugging.py | 28 +++++++++++++++++++++++++++-
+> >   1 file changed, 27 insertions(+), 1 deletion(-)
+> >=20
+> > diff --git a/tests/avocado/reverse_debugging.py b/tests/avocado/reverse=
+_debugging.py
+> > index 680c314cfc..553c931994 100644
+> > --- a/tests/avocado/reverse_debugging.py
+> > +++ b/tests/avocado/reverse_debugging.py
+> > @@ -94,7 +94,7 @@ def gdb_bstep(g):
+> >       def vm_get_icount(vm):
+> >           return vm.qmp('query-replay')['return']['icount']
+> >  =20
+> > -    def reverse_debugging(self, shift=3D7, args=3DNone):
+> > +    def reverse_debugging(self, shift=3D7, args=3DNone, initial_skip=
+=3DFalse):
+> >           logger =3D logging.getLogger('replay')
+> >  =20
+> >           # create qcow2 for snapshots
+> > @@ -135,6 +135,10 @@ def reverse_debugging(self, shift=3D7, args=3DNone=
+):
+> >               self.fail('Reverse continue is not supported by QEMU')
+> >  =20
+> >           logger.info('stepping forward')
+> > +
+> > +        if initial_skip:
+> > +            self.gdb_step(g)
+> > +
+> >           steps =3D []
+> >           # record first instruction addresses
+> >           for _ in range(self.STEPS):
+> > @@ -216,3 +220,25 @@ def test_aarch64_virt(self):
+> >  =20
+> >           self.reverse_debugging(
+> >               args=3D('-kernel', kernel_path))
+> > +
+> > +class ReverseDebugging_ppc64(ReverseDebugging):
+> > +    """
+> > +    :avocado: tags=3Daccel:tcg
+> > +    """
+> > +
+> > +    REG_PC =3D 0x40
+> > +
+> > +    # unidentified gitlab timeout problem
+> > +    @skipIf(os.getenv('GITLAB_CI'), 'Running on GitLab')
+> > +    def test_ppc64_pseries(self):
+> > +        """
+> > +        :avocado: tags=3Darch:ppc64
+> > +        :avocado: tags=3Dmachine:pseries
+> > +        """
+> > +        # start with BIOS only
+> > +        self.endian_is_le =3D False
+> > +        # reverse-continue fails (seems to end up at the start) if a b=
+reak
+> > +        # is put on the first instruction. initial_skip skips one befo=
+re the
+> > +        # first bp, and it works. Could be due to break at the same ic=
+ount
+> > +        # as the snapshot?
+> > +        self.reverse_debugging(initial_skip=3DTrue)
 
 
