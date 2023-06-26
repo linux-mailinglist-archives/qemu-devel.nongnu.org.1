@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A88C73DD1A
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 13:17:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25F2973DD10
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 13:15:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDkBj-0002zM-Ch; Mon, 26 Jun 2023 07:15:19 -0400
+	id 1qDkBk-00034J-BI; Mon, 26 Jun 2023 07:15:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qDkBY-0002xA-C7
+ id 1qDkBY-0002xB-Ga
  for qemu-devel@nongnu.org; Mon, 26 Jun 2023 07:15:08 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qDkBU-0000ZL-23
+ id 1qDkBU-0000ZR-AN
  for qemu-devel@nongnu.org; Mon, 26 Jun 2023 07:15:06 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687778102;
+ s=mimecast20190719; t=1687778103;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=M480NKZDd+FJKbtXpXl/j5rkv8yel0iAbn92O5C8mB0=;
- b=NqaW3LQtRGj9Ppm4Gc0z+zWSIVY6heer7EeAYENl1mwdv/xkv45+TEr+T9S4arSeu5AACe
- EAEsAvtzwSmCAbScCk988UHOsb2Hob8OHYdXWQ9ZX4FiMWSkoqUUeKAh1n2C3TxE25XCWS
- 0fuFl2gZz88GGsyHOtFa/dCugUN22wA=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=0W8NdMue2w0PHMCwCzmpD+VGR+2VHcU3d8NE23hGmkY=;
+ b=N+8NoOkeOFIzvIBt84N7U0nBaxBjjLu5KRa/XC1t0t/ACmGEFhRx0vfiHJwiQTywdh+PWV
+ kEbA//TRMK6rNhZAToSBm2tAj0hts2Zq9BZe1tpJxk0ASreT0mEfw75bOWkEAqb2FCGLTV
+ pgu80PvDtsBNZGkhG+Zp3arD1f7iDJo=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-265-khKdxonAN_G6bwbVaP_ewQ-1; Mon, 26 Jun 2023 07:15:00 -0400
-X-MC-Unique: khKdxonAN_G6bwbVaP_ewQ-1
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-30e4943ca7fso1184893f8f.3
- for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 04:15:00 -0700 (PDT)
+ us-mta-389-Vg0qnGHoOluZUTd1Ho93sw-1; Mon, 26 Jun 2023 07:15:02 -0400
+X-MC-Unique: Vg0qnGHoOluZUTd1Ho93sw-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-3fb40d0623bso1078545e9.1
+ for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 04:15:02 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687778099; x=1690370099;
+ d=1e100.net; s=20221208; t=1687778101; x=1690370101;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=M480NKZDd+FJKbtXpXl/j5rkv8yel0iAbn92O5C8mB0=;
- b=Qrf6XygP5tnM/gWp8tJScDsIWuXEaHOLq3XbeDizCuNE2MWl01IfF3F2U9tvGzLL8t
- 60lbaCW5nbFnB5ckTSlmoWYmameHJuxdSVQFH54c+D83VUiba6VffIEnDhbsXGN6jisA
- iOdeID0FQtgEVxXMtnPCyzVUH4YpG1IHZ5Um83OGWiDAfcAtAKdPgktvh7oVtSFgX2Xd
- ONbE8H0L8B2AJOmpFZ7tK3x2vy8zandox66095xy2sDZgL2005UpUiWXJpwU29EGoPyJ
- 8JUDR5jqs0oEEd/utUAfVstocI3OYauOpeIQ8QjdMdWnoZ2oJ7bwJkHSE7lqDxBxT5ZQ
- 8u/w==
-X-Gm-Message-State: AC+VfDxHLl/nayFuYEwq35C7iGCLulD9Jc4TfnoqP8wG45p6OhkcB0rA
- AtGpaeqZOVstAmBsSaf9lBJz6nVXSQ2nxA6XuXFhuJf/iu64nCJ0arV2xs0/srmMJfidzvq01Q5
- bqkeoXiQnMPWgCw2qq7ER/T575hahfa4PIVhWQplhRbjd26p5vHt3XFNBOF/N2rWEdKsc7H1lrb
- M=
-X-Received: by 2002:adf:ffce:0:b0:30f:b045:8b60 with SMTP id
- x14-20020adfffce000000b0030fb0458b60mr18551376wrs.69.1687778099466; 
- Mon, 26 Jun 2023 04:14:59 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5F8E0D/C7fm/e/ceYTcyh72DlhtYw06wdIam0JVPFv/7xE43ns9LB158oQPvJMcDzX6o1/Aw==
-X-Received: by 2002:adf:ffce:0:b0:30f:b045:8b60 with SMTP id
- x14-20020adfffce000000b0030fb0458b60mr18551363wrs.69.1687778099195; 
- Mon, 26 Jun 2023 04:14:59 -0700 (PDT)
+ bh=0W8NdMue2w0PHMCwCzmpD+VGR+2VHcU3d8NE23hGmkY=;
+ b=RHFzuPUzCgaAKTCrYg7bfuIoOaV0rB16TpYgxgOp1Mu+DUQ3XGxk3mO9Pac9awgPlH
+ BKyE7XtG3y3+uNUMltATiAKbIWflylZDc4G9vLGdAUwHgMLmQWbbK3Bo/a79qxn9elXf
+ +tUNf3pmYapV4UD920hrB7fImOyfrqDtotOzT6ghjqXiWkEW2XVpKhVb4K1elvQROEIY
+ i6jQqdZ8lP02vPPGrx/Y6EPZ2rr7vcmaPgaPwi8bFd3k/xyzx+gnfTbrXq13D2BPr+jL
+ X2WYmBJhvLyvSst6gH05whFmg0DaU8h3TW7t6Nvs8fATj2lO2QOaT25QVX2MyBUGREca
+ 8E8w==
+X-Gm-Message-State: AC+VfDy6ehR6VVbrB2dsyPXmce6OJcAgdjBE59Ju2OsW6Nhfx5ReZ9P1
+ QMwGdEHnBb7NEiyUs2QvGMH605tSVePmY+M03Bb1TzbwPQT1prT0+gFDOV7l1XdjjfPpFjgwmDs
+ B74cIq+AMoEiSajSiUESUNmMeizBjltmJ91zpgQ7d00gszP9TAeK5YWKABmEWloQym1ln/qffrM
+ Q=
+X-Received: by 2002:a1c:ed10:0:b0:3f7:e660:cdc5 with SMTP id
+ l16-20020a1ced10000000b003f7e660cdc5mr25211542wmh.9.1687778100895; 
+ Mon, 26 Jun 2023 04:15:00 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7qMb//GePSK234b6jmqJny3RPXng8f8aKGZiJquZ2QmGrwljhE9T6OcFsO3rN/1EjNqnc+nQ==
+X-Received: by 2002:a1c:ed10:0:b0:3f7:e660:cdc5 with SMTP id
+ l16-20020a1ced10000000b003f7e660cdc5mr25211529wmh.9.1687778100632; 
+ Mon, 26 Jun 2023 04:15:00 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:5e2c:eb9a:a8b6:fd3e])
  by smtp.gmail.com with ESMTPSA id
- i13-20020a5d522d000000b003119633ecb5sm7100579wra.88.2023.06.26.04.14.57
+ y17-20020a1c4b11000000b003f90a604885sm7373639wma.34.2023.06.26.04.14.59
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 26 Jun 2023 04:14:58 -0700 (PDT)
+ Mon, 26 Jun 2023 04:15:00 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 08/18] target/i386: TCG supports 3DNow! prefetch(w)
-Date: Mon, 26 Jun 2023 13:14:35 +0200
-Message-ID: <20230626111445.163573-9-pbonzini@redhat.com>
+Subject: [PULL 09/18] target/i386: TCG supports RDSEED
+Date: Mon, 26 Jun 2023 13:14:36 +0200
+Message-ID: <20230626111445.163573-10-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230626111445.163573-1-pbonzini@redhat.com>
 References: <20230626111445.163573-1-pbonzini@redhat.com>
@@ -101,30 +101,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The AMD prefetch(w) instructions have not been deprecated together with the rest
-of 3DNow!, and in fact are even supported by newer Intel processor.  Mark them
-as supported by TCG, as it supports all of 3DNow!.
+TCG implements RDSEED, and in fact uses qcrypto_random_bytes which is
+secure enough to match hardware behavior.  Expose it to guests.
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/cpu.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ target/i386/cpu.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
 diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 1242bd541a5..ff3dcd02dcb 100644
+index ff3dcd02dcb..fc4246223d4 100644
 --- a/target/i386/cpu.c
 +++ b/target/i386/cpu.c
-@@ -647,7 +647,8 @@ void x86_cpu_vendor_words2str(char *dst, uint32_t vendor1,
-           CPUID_EXT2_3DNOW | CPUID_EXT2_3DNOWEXT | CPUID_EXT2_PDPE1GB | \
-           TCG_EXT2_X86_64_FEATURES)
- #define TCG_EXT3_FEATURES (CPUID_EXT3_LAHF_LM | CPUID_EXT3_SVM | \
--          CPUID_EXT3_CR8LEG | CPUID_EXT3_ABM | CPUID_EXT3_SSE4A)
-+          CPUID_EXT3_CR8LEG | CPUID_EXT3_ABM | CPUID_EXT3_SSE4A | \
-+          CPUID_EXT3_3DNOWPREFETCH)
- #define TCG_EXT4_FEATURES 0
- #define TCG_SVM_FEATURES (CPUID_SVM_NPT | CPUID_SVM_VGIF | \
-           CPUID_SVM_SVME_ADDR_CHK)
+@@ -657,11 +657,10 @@ void x86_cpu_vendor_words2str(char *dst, uint32_t vendor1,
+           CPUID_7_0_EBX_BMI1 | CPUID_7_0_EBX_BMI2 | CPUID_7_0_EBX_ADX | \
+           CPUID_7_0_EBX_PCOMMIT | CPUID_7_0_EBX_CLFLUSHOPT |            \
+           CPUID_7_0_EBX_CLWB | CPUID_7_0_EBX_MPX | CPUID_7_0_EBX_FSGSBASE | \
+-          CPUID_7_0_EBX_ERMS | CPUID_7_0_EBX_AVX2)
++          CPUID_7_0_EBX_ERMS | CPUID_7_0_EBX_AVX2 | CPUID_7_0_EBX_RDSEED)
+           /* missing:
+           CPUID_7_0_EBX_HLE
+-          CPUID_7_0_EBX_INVPCID, CPUID_7_0_EBX_RTM,
+-          CPUID_7_0_EBX_RDSEED */
++          CPUID_7_0_EBX_INVPCID, CPUID_7_0_EBX_RTM */
+ #define TCG_7_0_ECX_FEATURES (CPUID_7_0_ECX_UMIP | CPUID_7_0_ECX_PKU | \
+           /* CPUID_7_0_ECX_OSPKE is dynamic */ \
+           CPUID_7_0_ECX_LA57 | CPUID_7_0_ECX_PKS | CPUID_7_0_ECX_VAES)
 -- 
 2.41.0
 
