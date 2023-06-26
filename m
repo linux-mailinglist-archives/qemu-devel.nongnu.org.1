@@ -2,81 +2,113 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55EC773E3E6
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 17:48:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E63473E3E3
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 17:48:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDoKs-0001QU-5c; Mon, 26 Jun 2023 11:41:02 -0400
+	id 1qDoO9-0005qR-Fh; Mon, 26 Jun 2023 11:44:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qDoK0-0000L5-1C
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 11:40:08 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qDoJx-0002tQ-0z
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 11:40:07 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-31297125334so2982238f8f.0
- for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 08:40:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687794000; x=1690386000;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Hw+j4cSax+vSnxcR+a5aYOGnySUJZmXer1KgvbIDXQM=;
- b=ZMwziPnqiDpNVb12vvx6CXVV81n6d3gQAck/i8+8upRueImH4L6qwrT6ZFtVH4GfQf
- js+LQnVgUsG4sM9o7ZxkIjq6e5KHazEavoE8wt+ah4owuyBVxWHZHM7UT9RKeID5zjUK
- XF1zne+2kY+O7Job54H5M6xX7hLW5OtNpGa+iXnFF050i92eN0nIHfWrHXz5XBEFw5fj
- SHAZuFXOiYUd/Xhons0uSt5pbdNaBw6ic5fJvA2T2dKTy7xHCLWhRU7ahadKULS4Qg+b
- HHIdl0oXDjyGKI1csIe4iMGcJ+kA36YMEE1K45Nrf398D89S8DLoFmbAQXLYLvZS0Hy9
- 5GMQ==
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qDoNz-0005hC-Fy
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 11:44:15 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qDoNx-0003mS-NR
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 11:44:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1687794247;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=7jbtZMjs4+6nWM78/SqZzXJgRhpc/5PUhvaBpcR47zo=;
+ b=MsRrOS64NT/BtO/ddCXR60TarHQxQH3lyYZaajxkjJck+AJVuiorPR0Gr/oQmLn1GRarAK
+ s5UG61E1NZuVnN79vG8Y2hJi7ozY7R7tuR45HjhIlmgjhcMEXsjpCsI8XuARPXWxs2Yknj
+ Ihe30vw+EvXixQLIYxZOFKc58T2h/OQ=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-478-xeDZaGUqOgOGRUsVYp-nfg-1; Mon, 26 Jun 2023 11:44:04 -0400
+X-MC-Unique: xeDZaGUqOgOGRUsVYp-nfg-1
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-313f371b0d9so493750f8f.3
+ for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 08:44:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687794000; x=1690386000;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Hw+j4cSax+vSnxcR+a5aYOGnySUJZmXer1KgvbIDXQM=;
- b=lbKe18ky7fQtuOUMs2ZeuMLUxmSdOSAl0riIwIFgr9FCJsTzrWeQzsSyRpWjvvwPMV
- xCW/pDm6KJjujVNMLrtZFLG6W2Gs62QKJC7uPcuy9jY/MEE59FXKVtVwK1+xu7zuCGow
- g+Q79N2NH5QU+d6+8K7gPlnBTN6ZwGrI0h2yFACxC/CN9P1m4uRdRh3ATNgNViAu4U0p
- ge0kAawMqESFB6nWGBc39wfh/pPEWuFagOAeKw1ZDkZ5fFRT+4cDrV9CgtHLFtYLH80W
- QBwMdXaxQOB7MTh8fIm2zKp52rGaugyqDD7YkskP+bXlVMo8fqH4EZdknlq5rpaYsCbn
- 2qJw==
-X-Gm-Message-State: AC+VfDyMMXAPsgijcc5jRHcPQQrYg+DIGAHF3n1Ymd66a39aDxGBoEOp
- H4TO8HXXwr+ffd8HUOE1CydrYyI4UcXnV0pSa878Cdfp
-X-Google-Smtp-Source: ACHHUZ7ooT0KTzoPMDj8YNbvVtYBwlLv/f9mIyZR2yCqwMsInoIRRkFut2RWLbljz5Ah3e7+7UeWEg==
-X-Received: by 2002:adf:e5c7:0:b0:30a:e3bb:ba8b with SMTP id
- a7-20020adfe5c7000000b0030ae3bbba8bmr32068274wrn.29.1687794000440; 
- Mon, 26 Jun 2023 08:40:00 -0700 (PDT)
-Received: from localhost.localdomain ([139.47.42.170])
- by smtp.gmail.com with ESMTPSA id
- t1-20020adfe441000000b00313f45f74a8sm2164178wrm.103.2023.06.26.08.39.59
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 26 Jun 2023 08:40:00 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 22/22] accel/tcg: Renumber TLB_DISCARD_WRITE
-Date: Mon, 26 Jun 2023 17:39:45 +0200
-Message-Id: <20230626153945.76180-23-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230626153945.76180-1-richard.henderson@linaro.org>
-References: <20230626153945.76180-1-richard.henderson@linaro.org>
+ d=1e100.net; s=20221208; t=1687794243; x=1690386243;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=7jbtZMjs4+6nWM78/SqZzXJgRhpc/5PUhvaBpcR47zo=;
+ b=UMbzlXaXI6aZ0nrmPSTq6r45oRZwX3VwUTWBnf8Xz5vLcY9gnp9+5dbYRimBObMrc6
+ LTV1Y12jXkVqGdMVG6vmMG5Qi+PT7CS+HOgpBhoLbK+Hhu3sDSnli6Nw1aovczJDYBcd
+ tebZv4dMBMwGtN5LjauPcVkXEirJB1vL305DqpzBxb76uanaZCAE5KqZJnJxhOrsDRFJ
+ bhNnSkYPI2JSvBq4oYFUgaPtvEdU5pql0MQzHOBSB7bq6vblzJK40OjXnda5yYRhmNzF
+ FkirmBlVJZuo8x0Hjt4NyumsTHi2eN4DqPKFcWSVCZFDN2RmXQVHqECoeRZNt9ojkvgQ
+ v2LQ==
+X-Gm-Message-State: AC+VfDyyz2tY7BeuKkoYaJr0bpPHscVOwz/X9oFVEjgf2JuvF08iNhWz
+ hPw6vfiajX66ho7JncrhtHt2Mzlv/t16rXHzznCcYphA1UJJWRJ+Yb+FeX1O+KaD7NrpLUO9ixv
+ dVKVffFejzlwV6KA=
+X-Received: by 2002:a5d:6506:0:b0:313:e953:65d0 with SMTP id
+ x6-20020a5d6506000000b00313e95365d0mr4528127wru.28.1687794243569; 
+ Mon, 26 Jun 2023 08:44:03 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5m/PBKfz3iOkbn0KyI7D9fXRx7Og9JCCyBYhoSxcpLoA84NS7IfJzRAtgHI3LOCL4aWeoisA==
+X-Received: by 2002:a5d:6506:0:b0:313:e953:65d0 with SMTP id
+ x6-20020a5d6506000000b00313e95365d0mr4528113wru.28.1687794243255; 
+ Mon, 26 Jun 2023 08:44:03 -0700 (PDT)
+Received: from ?IPV6:2001:b07:6468:f312:5e2c:eb9a:a8b6:fd3e?
+ ([2001:b07:6468:f312:5e2c:eb9a:a8b6:fd3e])
+ by smtp.googlemail.com with ESMTPSA id
+ v10-20020a5d590a000000b002fda1b12a0bsm7816243wrd.2.2023.06.26.08.44.01
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 26 Jun 2023 08:44:02 -0700 (PDT)
+Message-ID: <875b2da3-3f9e-b0b2-3ed0-4c09310c6c0c@redhat.com>
+Date: Mon, 26 Jun 2023 17:43:59 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH 26/26] docs/devel: introduce some key concepts for QOM
+ development
+Content-Language: en-US
+To: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
+ Juan Quintela <quintela@redhat.com>, Peter Maydell
+ <peter.maydell@linaro.org>, Cleber Rosa <crosa@redhat.com>,
+ Darren Kenny <darren.kenny@oracle.com>, Alexandre Iooss <erdnaxe@crans.org>,
+ Peter Xu <peterx@redhat.com>, qemu-arm@nongnu.org,
+ Eduardo Habkost <eduardo@habkost.net>, Riku Voipio <riku.voipio@iki.fi>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>,
+ =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ Bandan Das <bsd@redhat.com>,
+ Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
+ Radoslaw Biernacki <rad@semihalf.com>, Alexander Bulekov <alxndr@bu.edu>,
+ Leif Lindholm <quic_llindhol@quicinc.com>, Qiuhao Li
+ <Qiuhao.Li@outlook.com>, Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Leonardo Bras <leobras@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Stefan Hajnoczi <stefanha@redhat.com>, Bin Meng <bmeng.cn@gmail.com>,
+ Thomas Huth <thuth@redhat.com>, Beraldo Leal <bleal@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>, Yanan Wang <wangyanan55@huawei.com>
+References: <20230623122100.1640995-1-alex.bennee@linaro.org>
+ <20230623122100.1640995-27-alex.bennee@linaro.org>
+ <0c245101-77cf-9e9a-3c84-0293a75125b6@redhat.com> <87cz1i2vhg.fsf@linaro.org>
+From: Paolo Bonzini <pbonzini@redhat.com>
+In-Reply-To: <87cz1i2vhg.fsf@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x431.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,47 +124,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Move to fill a hole in the set of bits.
-Reduce the total number of tlb bits by 1.
+On 6/26/23 15:39, Alex Bennée wrote:
+>> There were review comments on this series that haven't been applied.
+> Sorry I'd missed those. I've fixed that for the respin which is
+> currently checking on CI.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- include/exec/cpu-all.h | 4 ++--
- tcg/tcg-op-ldst.c      | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+Still not exactly what I asked for; please remove the "The Device Class" 
+heading (just the heading, the content is good there) and change "API 
+Reference" to an "======" heading.
 
-diff --git a/include/exec/cpu-all.h b/include/exec/cpu-all.h
-index b5618613cc..8018ce783e 100644
---- a/include/exec/cpu-all.h
-+++ b/include/exec/cpu-all.h
-@@ -325,10 +325,10 @@ CPUArchState *cpu_copy(CPUArchState *env);
- #define TLB_NOTDIRTY        (1 << (TARGET_PAGE_BITS_MIN - 2))
- /* Set if TLB entry is an IO callback.  */
- #define TLB_MMIO            (1 << (TARGET_PAGE_BITS_MIN - 3))
-+/* Set if TLB entry writes ignored.  */
-+#define TLB_DISCARD_WRITE   (1 << (TARGET_PAGE_BITS_MIN - 4))
- /* Set if the slow path must be used; more flags in CPUTLBEntryFull. */
- #define TLB_FORCE_SLOW      (1 << (TARGET_PAGE_BITS_MIN - 5))
--/* Set if TLB entry writes ignored.  */
--#define TLB_DISCARD_WRITE   (1 << (TARGET_PAGE_BITS_MIN - 6))
- 
- /*
-  * Use this mask to check interception with an alignment mask
-diff --git a/tcg/tcg-op-ldst.c b/tcg/tcg-op-ldst.c
-index a4f51bfb6e..0fcc1618e5 100644
---- a/tcg/tcg-op-ldst.c
-+++ b/tcg/tcg-op-ldst.c
-@@ -39,7 +39,7 @@ static void check_max_alignment(unsigned a_bits)
-      * The requested alignment cannot overlap the TLB flags.
-      * FIXME: Must keep the count up-to-date with "exec/cpu-all.h".
-      */
--    tcg_debug_assert(a_bits + 6 <= tcg_ctx->page_bits);
-+    tcg_debug_assert(a_bits + 5 <= tcg_ctx->page_bits);
- #endif
- }
- 
--- 
-2.34.1
+Thanks,
+
+Paolo
 
 
