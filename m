@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7814973EE34
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 00:02:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C438E73EE2C
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 00:01:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDuFP-0002kN-8x; Mon, 26 Jun 2023 17:59:47 -0400
+	id 1qDuFP-0002kV-7r; Mon, 26 Jun 2023 17:59:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qDuFJ-0002eY-Ga
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 17:59:41 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ id 1qDuFK-0002gO-76
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 17:59:42 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qDuFD-0004tx-QQ
+ id 1qDuFE-0004un-FE
  for qemu-devel@nongnu.org; Mon, 26 Jun 2023 17:59:41 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-3fa8cd4a1c0so20546905e9.1
- for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 14:59:35 -0700 (PDT)
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-3fa99742be2so14461075e9.1
+ for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 14:59:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687816774; x=1690408774;
+ d=linaro.org; s=google; t=1687816775; x=1690408775;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=YjcBvoRPGdwmtkpSOh5Jr/t8a2L1GvJT/Iq1phAB7S4=;
- b=KPW+eUKmw1l8sruLv3Qt8aqy6+c3M0ixzQLgE8zmdgukNFyLoZ66Cvzvl51MWQ4dWj
- nhQ6vKNXKSwMHYVxDkg4W6PlA0SnkkAtAof6R2VspDBDkASUqWRqKSa9Hu7SDEByta23
- i/t4YPl29Sj2I/qLlB6aG2p7uRUJbh8h9x6LFqfEoo80ixZbFxMHpOKi/SDDK8h/0zG0
- NOZ1rLUFNJaD+fCDX4IEvJlAWdQv6K5N0sO1v8gYBWMou/CQ+c2wtvIL0M+BcMVUTaPc
- b4pcVMATx+k4F/O0XqVC7Dgjdl4/nhV6LnE2hzleKv04XoeX00xkHjUkKJdnBuDULlzX
- S6rg==
+ bh=AouWM1m7VIgcxf/wQ9k/4ktgNJVDqALSrdqBKb0paEY=;
+ b=fY6BUgKC6JbIlKSwRFP4CZsDSYFDw+GCPyGvkhP+csObfxgbiH9l7fBPw6DAMU3HhW
+ pCxsLuYkWdvgaElpn55poamF1PrLHAinrMpr25SWmycaqZHZVEytuG1P8vkjsn+TePrm
+ ZNzksos+pWaIAzbSGDmNlKDW7zyvpo/37oPkoGVEABUE2T6PH1YZ3Ix0B+1jre2Md1BJ
+ 4scqYOFdTnCyhgBG9PoicI0NknlxPF3dIyr4OCIo5/JQ5AbNDKbBQKEEOaRTcaXtAQ23
+ EOx9ENdGFKZn3vW5jkXFAqBf/3TiJ8FY+agHwsuNEOhxyoM0jyiP4yrx9Ir4G0NAQwev
+ o2nw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687816774; x=1690408774;
+ d=1e100.net; s=20221208; t=1687816775; x=1690408775;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=YjcBvoRPGdwmtkpSOh5Jr/t8a2L1GvJT/Iq1phAB7S4=;
- b=flGghJJQDAT851HPJfyecSnEg8odTtswQjvUHEu2h3TBsLxj1JYZR8D426s/yWhvIA
- ZC7XiFxNYDSwKnQ4gBf8VAnNvuS/IlQ46qgExpF0MUZ4On4Vo/v5Wlq0DvQDIr57jTj6
- vM9wb59muMRSjV3rwE97tWVFojItJNX+Sy+j4eG5SgfcxF8WaNi+b8LemuGzXCY/KF/E
- S6dtoRtuEJJOBQ+rmEdX2p6RpiGOA/0MI8/eZLJoJgmJijueZ/0bQgB05hojsMrwG26s
- /GnofuU90p+PQc15/EylMwjQMEUfHrTssJTY0gQrSgGFT9B4SET7xCCVEnC9FKOsXfxb
- b/Lg==
-X-Gm-Message-State: AC+VfDzLE8OGYB0iWP3dYgMvVvchypWxJeZX229YF2K4Y43iReaFL15e
- KSD0tztCc34Il50iB6HNXKHRFw==
-X-Google-Smtp-Source: ACHHUZ5sWJw1Vy1weM47Qm58ZpQOAyB1GajsIE7f/16Us/5ESY4wmYXIB6VTp83G+1g2WjZvsJL6cw==
-X-Received: by 2002:a1c:790b:0:b0:3fa:9554:fb2d with SMTP id
- l11-20020a1c790b000000b003fa9554fb2dmr3236023wme.35.1687816773992; 
- Mon, 26 Jun 2023 14:59:33 -0700 (PDT)
+ bh=AouWM1m7VIgcxf/wQ9k/4ktgNJVDqALSrdqBKb0paEY=;
+ b=fVz05PkyBBPCaK/lJN62KgQrFBUaVeTKREU8k7QATUsQUHO5JYWtt3iS4K8JhME7oZ
+ nplmg9ZIAvneDfcc2jF7dYco++P8nqIIhXVLmnq8pRGUWLJB5InjNsg4zzt4TNrGw2mc
+ KxIGjjR+QxrhTBWNuGybwWISao9xomlYSr9eHsqmd6TXrEYvdyt5TPTRlturghxhptg7
+ UGzNdGrlRqjcSDcYmtHTpf5xHrC5VfUg0Mr8M5OifXLFNFfPbGk+YtKFRIGQLoywJzm1
+ ZMZEaDED1cGAnpOVqsZNFatMjVWVN+YR5fTtH/8uJZRYu8z6uXeUqC1AbnizI4dSZWvM
+ ot3g==
+X-Gm-Message-State: AC+VfDzLzpKtUNgVZCjMXv4EPAC90e6egKNIHpZXNPeLfbyCVEQKtrHX
+ 7P5XOO07gLj4bZLxP2XsyN2fkA==
+X-Google-Smtp-Source: ACHHUZ6ZPNTyIqHjgsbakmlEpviCQECSa2B8ZaXZZRsPhJhiyE2eWv+PRyW91sp6bQ7kMw2pJBZRNg==
+X-Received: by 2002:a05:600c:221a:b0:3fb:a1d9:ede8 with SMTP id
+ z26-20020a05600c221a00b003fba1d9ede8mr170099wml.10.1687816775142; 
+ Mon, 26 Jun 2023 14:59:35 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- z12-20020a05600c114c00b003f8d0308616sm8825948wmz.32.2023.06.26.14.59.29
+ s25-20020a7bc399000000b003fa96fe2bebsm3889438wmj.41.2023.06.26.14.59.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 26 Jun 2023 14:59:31 -0700 (PDT)
+ Mon, 26 Jun 2023 14:59:34 -0700 (PDT)
 Received: from zen.lan (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 673D21FFBD;
+ by zen.linaroharston (Postfix) with ESMTP id B6F8F1FFC8;
  Mon, 26 Jun 2023 22:59:28 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -83,24 +83,24 @@ Cc: Alexander Bulekov <alxndr@bu.edu>,
  Radoslaw Biernacki <rad@semihalf.com>,
  Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
  Qiuhao Li <Qiuhao.Li@outlook.com>, Laurent Vivier <lvivier@redhat.com>
-Subject: [PATCH v2 13/26] tests/lcitool: add an explicit gcc-native package
-Date: Mon, 26 Jun 2023 22:59:13 +0100
-Message-Id: <20230626215926.2522656-14-alex.bennee@linaro.org>
+Subject: [PATCH v2 16/26] tests/avocado: update firmware to enable sbsa-ref/max
+Date: Mon, 26 Jun 2023 22:59:16 +0100
+Message-Id: <20230626215926.2522656-17-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230626215926.2522656-1-alex.bennee@linaro.org>
 References: <20230626215926.2522656-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -116,163 +116,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We need a native compiler to build the hexagon codegen tools. In our
-current images we already have a gcc as a side effect of a broken
-dependency between gcovr and lcov but this will be fixed when we move
-to bookworm. See
-https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=987818 for details.
+From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
 
-Update the packages while we are at it.
+Update prebuilt firmware images to have TF-A with FEAT_FGT support
+enabled. This allowed us to enable test for "max" cpu in sbsa-ref
+machine.
 
-Message-Id: <20230623122100.1640995-15-alex.bennee@linaro.org>
-Acked-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+Message-Id: <20230530152240.79160-1-marcin.juszkiewicz@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
----
- tests/docker/dockerfiles/debian-amd64-cross.docker    | 1 +
- tests/docker/dockerfiles/debian-arm64-cross.docker    | 1 +
- tests/docker/dockerfiles/debian-armel-cross.docker    | 1 +
- tests/docker/dockerfiles/debian-armhf-cross.docker    | 1 +
- tests/docker/dockerfiles/debian-mips64el-cross.docker | 1 +
- tests/docker/dockerfiles/debian-mipsel-cross.docker   | 1 +
- tests/docker/dockerfiles/debian-ppc64el-cross.docker  | 1 +
- tests/docker/dockerfiles/debian-s390x-cross.docker    | 1 +
- tests/docker/dockerfiles/fedora-win32-cross.docker    | 1 +
- tests/docker/dockerfiles/fedora-win64-cross.docker    | 1 +
- tests/lcitool/projects/qemu.yml                       | 1 +
- 11 files changed, 11 insertions(+)
 
-diff --git a/tests/docker/dockerfiles/debian-amd64-cross.docker b/tests/docker/dockerfiles/debian-amd64-cross.docker
-index 40a2b6acc4..016c2321f1 100644
---- a/tests/docker/dockerfiles/debian-amd64-cross.docker
-+++ b/tests/docker/dockerfiles/debian-amd64-cross.docker
-@@ -24,6 +24,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       exuberant-ctags \
-                       findutils \
-                       flex \
-+                      gcc \
-                       gcovr \
-                       gettext \
-                       git \
-diff --git a/tests/docker/dockerfiles/debian-arm64-cross.docker b/tests/docker/dockerfiles/debian-arm64-cross.docker
-index c99300bbfa..3c114efa11 100644
---- a/tests/docker/dockerfiles/debian-arm64-cross.docker
-+++ b/tests/docker/dockerfiles/debian-arm64-cross.docker
-@@ -24,6 +24,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       exuberant-ctags \
-                       findutils \
-                       flex \
-+                      gcc \
-                       gcovr \
-                       gettext \
-                       git \
-diff --git a/tests/docker/dockerfiles/debian-armel-cross.docker b/tests/docker/dockerfiles/debian-armel-cross.docker
-index 5db5c78b31..dfbd47db89 100644
---- a/tests/docker/dockerfiles/debian-armel-cross.docker
-+++ b/tests/docker/dockerfiles/debian-armel-cross.docker
-@@ -24,6 +24,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       exuberant-ctags \
-                       findutils \
-                       flex \
-+                      gcc \
-                       gcovr \
-                       gettext \
-                       git \
-diff --git a/tests/docker/dockerfiles/debian-armhf-cross.docker b/tests/docker/dockerfiles/debian-armhf-cross.docker
-index ae6600b25f..4e0084e896 100644
---- a/tests/docker/dockerfiles/debian-armhf-cross.docker
-+++ b/tests/docker/dockerfiles/debian-armhf-cross.docker
-@@ -24,6 +24,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       exuberant-ctags \
-                       findutils \
-                       flex \
-+                      gcc \
-                       gcovr \
-                       gettext \
-                       git \
-diff --git a/tests/docker/dockerfiles/debian-mips64el-cross.docker b/tests/docker/dockerfiles/debian-mips64el-cross.docker
-index daa2d48e36..88adf333e9 100644
---- a/tests/docker/dockerfiles/debian-mips64el-cross.docker
-+++ b/tests/docker/dockerfiles/debian-mips64el-cross.docker
-@@ -24,6 +24,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       exuberant-ctags \
-                       findutils \
-                       flex \
-+                      gcc \
-                       gcovr \
-                       gettext \
-                       git \
-diff --git a/tests/docker/dockerfiles/debian-mipsel-cross.docker b/tests/docker/dockerfiles/debian-mipsel-cross.docker
-index 5af04e2054..256e8b5dfe 100644
---- a/tests/docker/dockerfiles/debian-mipsel-cross.docker
-+++ b/tests/docker/dockerfiles/debian-mipsel-cross.docker
-@@ -24,6 +24,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       exuberant-ctags \
-                       findutils \
-                       flex \
-+                      gcc \
-                       gcovr \
-                       gettext \
-                       git \
-diff --git a/tests/docker/dockerfiles/debian-ppc64el-cross.docker b/tests/docker/dockerfiles/debian-ppc64el-cross.docker
-index 1eeba7fcab..4d19cd2bd7 100644
---- a/tests/docker/dockerfiles/debian-ppc64el-cross.docker
-+++ b/tests/docker/dockerfiles/debian-ppc64el-cross.docker
-@@ -24,6 +24,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       exuberant-ctags \
-                       findutils \
-                       flex \
-+                      gcc \
-                       gcovr \
-                       gettext \
-                       git \
-diff --git a/tests/docker/dockerfiles/debian-s390x-cross.docker b/tests/docker/dockerfiles/debian-s390x-cross.docker
-index 52e89a6dab..642bbde3d1 100644
---- a/tests/docker/dockerfiles/debian-s390x-cross.docker
-+++ b/tests/docker/dockerfiles/debian-s390x-cross.docker
-@@ -24,6 +24,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       exuberant-ctags \
-                       findutils \
-                       flex \
-+                      gcc \
-                       gcovr \
-                       gettext \
-                       git \
-diff --git a/tests/docker/dockerfiles/fedora-win32-cross.docker b/tests/docker/dockerfiles/fedora-win32-cross.docker
-index a0a3cd9e5b..e3dfd68bed 100644
---- a/tests/docker/dockerfiles/fedora-win32-cross.docker
-+++ b/tests/docker/dockerfiles/fedora-win32-cross.docker
-@@ -29,6 +29,7 @@ exec "$@"\n' > /usr/bin/nosync && \
-                diffutils \
-                findutils \
-                flex \
-+               gcc \
-                gcovr \
-                git \
-                glib2-devel \
-diff --git a/tests/docker/dockerfiles/fedora-win64-cross.docker b/tests/docker/dockerfiles/fedora-win64-cross.docker
-index b6c1a6a339..0e15c9643a 100644
---- a/tests/docker/dockerfiles/fedora-win64-cross.docker
-+++ b/tests/docker/dockerfiles/fedora-win64-cross.docker
-@@ -29,6 +29,7 @@ exec "$@"\n' > /usr/bin/nosync && \
-                diffutils \
-                findutils \
-                flex \
-+               gcc \
-                gcovr \
-                git \
-                glib2-devel \
-diff --git a/tests/lcitool/projects/qemu.yml b/tests/lcitool/projects/qemu.yml
-index 566db8313b..21fd3d2cf9 100644
---- a/tests/lcitool/projects/qemu.yml
-+++ b/tests/lcitool/projects/qemu.yml
-@@ -24,6 +24,7 @@ packages:
-  - fuse3
-  - g++
-  - gcc
-+ - gcc-native
-  - gcovr
-  - gettext
-  - glib2
+---
+v3
+  - re-enable for CI
+---
+ tests/avocado/machine_aarch64_sbsaref.py | 23 ++++++++++-------------
+ 1 file changed, 10 insertions(+), 13 deletions(-)
+
+diff --git a/tests/avocado/machine_aarch64_sbsaref.py b/tests/avocado/machine_aarch64_sbsaref.py
+index 0a79fa7ab6..cce6ef9f65 100644
+--- a/tests/avocado/machine_aarch64_sbsaref.py
++++ b/tests/avocado/machine_aarch64_sbsaref.py
+@@ -29,23 +29,23 @@ def fetch_firmware(self):
+         """
+         Flash volumes generated using:
+ 
+-        - Fedora GNU Toolchain version 12.2.1 20220819 (Red Hat Cross 12.2.1-2)
++        - Fedora GNU Toolchain version 13.1.1 20230511 (Red Hat 13.1.1-2)
+ 
+         - Trusted Firmware-A
+-          https://github.com/ARM-software/arm-trusted-firmware/tree/5fdb2e54
++          https://github.com/ARM-software/arm-trusted-firmware/tree/c0d8ee38
+ 
+         - Tianocore EDK II
+-          https://github.com/tianocore/edk2/tree/494127613b
+-          https://github.com/tianocore/edk2-non-osi/tree/41876073
+-          https://github.com/tianocore/edk2-platforms/tree/8efa4f42
++          https://github.com/tianocore/edk2/tree/0f9283429dd4
++          https://github.com/tianocore/edk2-non-osi/tree/f0bb00937ad6
++          https://github.com/tianocore/edk2-platforms/tree/7880b92e2a04
+         """
+ 
+         # Secure BootRom (TF-A code)
+         fs0_xz_url = (
+-            "https://fileserver.linaro.org/s/ATnSmq6k8SoXgbH/"
++            "https://fileserver.linaro.org/s/HrYMCjP7MEccjRP/"
+             "download/SBSA_FLASH0.fd.xz"
+         )
+-        fs0_xz_hash = "a210a09692bcbe0a3743ffd0df44e80e0c7ad8ab"
++        fs0_xz_hash = "447eff64a90b84ce47703c6ec41fbfc25befaaea"
+         tar_xz_path = self.fetch_asset(fs0_xz_url, asset_hash=fs0_xz_hash)
+         archive.extract(tar_xz_path, self.workdir)
+         fs0_path = os.path.join(self.workdir, "SBSA_FLASH0.fd")
+@@ -93,15 +93,15 @@ def test_sbsaref_edk2_firmware(self):
+ 
+         # AP Trusted ROM
+         wait_for_console_pattern(self, "Booting Trusted Firmware")
+-        wait_for_console_pattern(self, "BL1: v2.8(release):v2.8")
++        wait_for_console_pattern(self, "BL1: v2.9(release):v2.9")
+         wait_for_console_pattern(self, "BL1: Booting BL2")
+ 
+         # Trusted Boot Firmware
+-        wait_for_console_pattern(self, "BL2: v2.8(release)")
++        wait_for_console_pattern(self, "BL2: v2.9(release)")
+         wait_for_console_pattern(self, "Booting BL31")
+ 
+         # EL3 Runtime Software
+-        wait_for_console_pattern(self, "BL31: v2.8(release)")
++        wait_for_console_pattern(self, "BL31: v2.9(release)")
+ 
+         # Non-trusted Firmware
+         wait_for_console_pattern(self, "UEFI firmware (version 1.0")
+@@ -136,21 +136,18 @@ def boot_alpine_linux(self, cpu):
+         self.vm.launch()
+         wait_for_console_pattern(self, "Welcome to Alpine Linux 3.17")
+ 
+-    @skipUnless(os.getenv("AVOCADO_TIMEOUT_EXPECTED"), "Test might timeout")
+     def test_sbsaref_alpine_linux_cortex_a57(self):
+         """
+         :avocado: tags=cpu:cortex-a57
+         """
+         self.boot_alpine_linux("cortex-a57")
+ 
+-    @skipUnless(os.getenv("AVOCADO_TIMEOUT_EXPECTED"), "Test might timeout")
+     def test_sbsaref_alpine_linux_neoverse_n1(self):
+         """
+         :avocado: tags=cpu:max
+         """
+         self.boot_alpine_linux("neoverse-n1")
+ 
+-    @skip("requires TF-A update to handle FEAT_FGT")
+     def test_sbsaref_alpine_linux_max(self):
+         """
+         :avocado: tags=cpu:max
 -- 
 2.39.2
 
