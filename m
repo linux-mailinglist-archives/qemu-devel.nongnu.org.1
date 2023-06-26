@@ -2,36 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 697E373EAA1
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 20:57:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62F4473EAB2
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 20:58:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDrIg-0004C2-QS; Mon, 26 Jun 2023 14:50:58 -0400
+	id 1qDrIh-0004CY-VX; Mon, 26 Jun 2023 14:51:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qDrId-0004AQ-6q; Mon, 26 Jun 2023 14:50:55 -0400
+ id 1qDrIe-0004BN-PG; Mon, 26 Jun 2023 14:50:56 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qDrIb-0004t4-FI; Mon, 26 Jun 2023 14:50:54 -0400
+ id 1qDrIc-0004t9-1O; Mon, 26 Jun 2023 14:50:56 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id E57DBEF1F;
- Mon, 26 Jun 2023 21:50:19 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 0776EEF20;
+ Mon, 26 Jun 2023 21:50:20 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 227C9F7B1;
+ by tsrv.corpit.ru (Postfix) with SMTP id 6B79DF7B2;
  Mon, 26 Jun 2023 21:50:18 +0300 (MSK)
-Received: (nullmailer pid 1573991 invoked by uid 1000);
- Mon, 26 Jun 2023 18:50:15 -0000
+Received: (nullmailer pid 1573994 invoked by uid 1000);
+ Mon, 26 Jun 2023 18:50:16 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org, qemu-stable@nongnu.org
-Cc: Bernhard Beschow <shentey@gmail.com>,
- =?UTF-8?q?Volker=20R=C3=BCmelin?= <vr_qemu@t-online.de>,
+Cc: =?UTF-8?q?Volker=20R=C3=BCmelin?= <vr_qemu@t-online.de>,
+ Bernhard Beschow <shentey@gmail.com>, Thomas Huth <thuth@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.0.3 11/54] ui/sdl2: Grab Alt+F4 also under Windows
-Date: Mon, 26 Jun 2023 21:49:18 +0300
-Message-Id: <20230626185002.1573836-11-mjt@tls.msk.ru>
+Subject: [Stable-8.0.3 12/54] ui/sdl2: disable SDL_HINT_GRAB_KEYBOARD on
+ Windows
+Date: Mon, 26 Jun 2023 21:49:19 +0300
+Message-Id: <20230626185002.1573836-12-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.0.3-20230626214235@cover.tls.msk.ru>
 References: <qemu-stable-8.0.3-20230626214235@cover.tls.msk.ru>
@@ -61,30 +62,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Bernhard Beschow <shentey@gmail.com>
+From: Volker Rümelin <vr_qemu@t-online.de>
 
-SDL doesn't grab Alt+F4 under Windows by default. Pressing Alt+F4 thus closes
-the VM immediately without confirmation, possibly leading to data loss. Fix
-this by always grabbing Alt+F4 on Windows hosts, too.
+Windows sends an extra left control key up/down input event for
+every right alt key up/down input event for keyboards with
+international layout. Since commit 830473455f ("ui/sdl2: fix
+handling of AltGr key on Windows") QEMU uses a Windows low level
+keyboard hook procedure to reliably filter out the special left
+control key and to grab the keyboard on Windows.
 
-Signed-off-by: Bernhard Beschow <shentey@gmail.com>
-Reviewed-by: Volker Rümelin <vr_qemu@t-online.de>
-Message-Id: <20230417192139.43263-3-shentey@gmail.com>
-(cherry picked from commit 083db9db44c89d7ea7f81844302194d708bcff2b)
+The SDL2 version 2.0.16 introduced its own Windows low level
+keyboard hook procedure to grab the keyboard. Windows calls this
+callback before the QEMU keyboard hook procedure. This disables
+the special left control key filter when the keyboard is grabbed.
+
+To fix the problem, disable the SDL2 Windows low level keyboard
+hook procedure.
+
+Reported-by: Bernhard Beschow <shentey@gmail.com>
+Signed-off-by: Volker Rümelin <vr_qemu@t-online.de>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Tested-by: Bernhard Beschow <shentey@gmail.com>
+Message-Id: <20230418062823.5683-1-vr_qemu@t-online.de>
+(cherry picked from commit 1dfea3f212e43bfd59d1e1f40b9776db440b211f)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/ui/sdl2.c b/ui/sdl2.c
-index 8af8b89f1d..00aadfae37 100644
+index 00aadfae37..9d703200bf 100644
 --- a/ui/sdl2.c
 +++ b/ui/sdl2.c
-@@ -859,6 +859,7 @@ static void sdl2_display_init(DisplayState *ds, DisplayOptions *o)
+@@ -855,7 +855,10 @@ static void sdl2_display_init(DisplayState *ds, DisplayOptions *o)
+ #ifdef SDL_HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR /* only available since SDL 2.0.8 */
+     SDL_SetHint(SDL_HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR, "0");
+ #endif
++#ifndef CONFIG_WIN32
++    /* QEMU uses its own low level keyboard hook procecure on Windows */
+     SDL_SetHint(SDL_HINT_GRAB_KEYBOARD, "1");
++#endif
  #ifdef SDL_HINT_ALLOW_ALT_TAB_WHILE_GRABBED
      SDL_SetHint(SDL_HINT_ALLOW_ALT_TAB_WHILE_GRABBED, "0");
  #endif
-+    SDL_SetHint(SDL_HINT_WINDOWS_NO_CLOSE_ON_ALT_F4, "1");
-     memset(&info, 0, sizeof(info));
-     SDL_VERSION(&info.version);
- 
 -- 
 2.39.2
 
