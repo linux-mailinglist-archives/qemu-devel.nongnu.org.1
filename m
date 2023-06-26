@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDD7D73EAED
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 21:09:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56D9873EAD3
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 21:04:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDrU5-0003Ie-7s; Mon, 26 Jun 2023 15:02:45 -0400
+	id 1qDrU7-0003Ta-0C; Mon, 26 Jun 2023 15:02:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qDrTk-0002TF-39; Mon, 26 Jun 2023 15:02:24 -0400
+ id 1qDrTl-0002ZS-LM; Mon, 26 Jun 2023 15:02:26 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qDrTi-0007ye-D7; Mon, 26 Jun 2023 15:02:23 -0400
+ id 1qDrTk-0007z8-5v; Mon, 26 Jun 2023 15:02:25 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 2FAC3EFC9;
+ by isrv.corpit.ru (Postfix) with ESMTP id 5D03FEFCB;
  Mon, 26 Jun 2023 21:59:15 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id BDF66F804;
+ by tsrv.corpit.ru (Postfix) with SMTP id E3C73F805;
  Mon, 26 Jun 2023 21:59:13 +0300 (MSK)
-Received: (nullmailer pid 1575394 invoked by uid 1000);
+Received: (nullmailer pid 1575397 invoked by uid 1000);
  Mon, 26 Jun 2023 18:59:05 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org, qemu-stable@nongnu.org
 Cc: Helge Deller <deller@gmx.de>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.4 39/43] target/hppa: New SeaBIOS-hppa version 7
-Date: Mon, 26 Jun 2023 21:58:57 +0300
-Message-Id: <20230626185902.1575177-39-mjt@tls.msk.ru>
+Subject: [Stable-7.2.4 40/43] target/hppa: Update to SeaBIOS-hppa version 8
+Date: Mon, 26 Jun 2023 21:58:58 +0300
+Message-Id: <20230626185902.1575177-40-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.4-20230626215033@cover.tls.msk.ru>
 References: <qemu-stable-7.2.4-20230626215033@cover.tls.msk.ru>
@@ -60,28 +60,31 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Helge Deller <deller@gmx.de>
 
-Update SeaBIOS-hppa to version 7 which fixes a boot problem
-with Debian-12 install CD images.
+Update SeaBIOS-hppa to version 8.
 
-The problem with Debian-12 is, that the ramdisc got bigger
-than what the firmware could load in one call to the LSI
-scsi driver.
+Fixes:
+- boot of HP-UX with SMP, and
+- reboot of Linux and HP-UX with SMP
+
+Enhancements:
+- show qemu version in boot menu
+- adds exit menu entry in boot menu to quit emulation
+- allow to trace PCD_CHASSIS codes & machine run status
 
 Signed-off-by: Helge Deller <deller@gmx.de>
-(cherry picked from commit bb9c998ca9343d445c76b69fa15dea9db692f526)
+(cherry picked from commit 34ec3aea54368a92b62a55c656335885ba8c65ef)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-(Mjt: pick this one before picking next 34ec3aea54368a92b6 "SeaBIOS-hppa version 8")
 
 diff --git a/pc-bios/hppa-firmware.img b/pc-bios/hppa-firmware.img
-index b2cbb71ee0..e7660b0458 100644
+index e7660b0458..0fa3808f16 100644
 Binary files a/pc-bios/hppa-firmware.img and b/pc-bios/hppa-firmware.img differ
 diff --git a/roms/seabios-hppa b/roms/seabios-hppa
-index 458626c4c6..1cfbe76ff6 160000
+index 1cfbe76ff6..673d2595d4 160000
 --- a/roms/seabios-hppa
 +++ b/roms/seabios-hppa
 @@ -1 +1 @@
--Subproject commit 458626c4c6441045c0612f24313c7cf1f95e71c6
-+Subproject commit 1cfbe76ff625fce9ed5991f7e13d80ffec900f40
+-Subproject commit 1cfbe76ff625fce9ed5991f7e13d80ffec900f40
++Subproject commit 673d2595d4f773cc266cbf8dbaf2f475a6adb949
 -- 
 2.39.2
 
