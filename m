@@ -2,88 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C485C73DF54
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 14:35:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30B0673E069
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 Jun 2023 15:20:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDlP4-00086i-78; Mon, 26 Jun 2023 08:33:11 -0400
+	id 1qDlUL-0005xk-Tc; Mon, 26 Jun 2023 08:38:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qDlN7-00063d-3p
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 08:31:09 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qDlMX-0003eo-Fr
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 08:30:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687782632;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=MfTq664tRB0XDVL6rfL33AvwxgaTAAG2vIPXXYsJwuY=;
- b=iB7XZWaxfpCIC20YmqucYb3xirafvqQfCPcjYxQzqpniGt1xmLoywSXSPW1wIvg8DpQWM2
- k+UMmM1SsMpLH+OmL3PUjptmnAnIPJDHNM7OR6mcnHUYddZMEZRKFfiqQZGs/bGWVhU8lZ
- Mq7vSxnEO2eJzYflWdsdWkgzzhyyUVA=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-359-et-ELGxhOtG4l6PVzi19bw-1; Mon, 26 Jun 2023 08:30:31 -0400
-X-MC-Unique: et-ELGxhOtG4l6PVzi19bw-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-3f9b8c230f5so13106525e9.1
- for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 05:30:31 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687782630; x=1690374630;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qDlUG-0005rQ-1U
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 08:38:32 -0400
+Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qDlUD-0005Oh-MN
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 08:38:31 -0400
+Received: by mail-ed1-x531.google.com with SMTP id
+ 4fb4d7f45d1cf-51d7f4c1cfeso3281397a12.0
+ for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 05:38:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1687783107; x=1690375107;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=MfTq664tRB0XDVL6rfL33AvwxgaTAAG2vIPXXYsJwuY=;
- b=LANqjrLp0cGOEUc9wha4hXPIqTB4XClITnhDReOwe3xp+O8emHxX2LWDlMhHNPeHFb
- TB4YdMQ1yHgbD8qNYoN3bZheOhqEKXq9euwRoCStYIikhDJIMppBBkWMVcGMLj6c2WQ6
- qAWbYbmBh+ta0Z4B+UsdkCcEewdNi5Yii4LjpN22xNs54Zm9wNP0YhwIp1XHbbJbxs8T
- cao5/KGbIN9bnIF9+seoN9DrtYixhTS6OpB6Z+W7vr9x1N7ETf6PmPrykUyUP7WHZUOq
- M18HXrs152M6xEnuw6E78+0UGnY+t4/T1VZOpsFh04OO6bjbSlW7jhYEgbiRVV7roawr
- RCMA==
-X-Gm-Message-State: AC+VfDyQ6l9+WPVnjAOnlfnYkYt6leuARl9mFbCF8hBWQHTOlnxyE/KB
- /JTlBxj0QDrH4u2UKBPfUq1hGY702wf2GfSEhhkQyS6OITTikP3IoVEs11Cror7AYKOiZ9f6Z+M
- oJggGFAo+JnYFWgRRmW8jQbt3BYzsa0C0LiH/9LmlRTHwjhUzDiiJpw0JFQ8lGszwR1ML
-X-Received: by 2002:a05:600c:2054:b0:3fb:973:fdba with SMTP id
- p20-20020a05600c205400b003fb0973fdbamr832632wmg.31.1687782629886; 
- Mon, 26 Jun 2023 05:30:29 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7zlzT7rY2Ldb/qpiQYWXjDADGuVI508JSgE89n+Who07mFzNZyaRQCqbsd/+Ne0nduWb1JpQ==
-X-Received: by 2002:a05:600c:2054:b0:3fb:973:fdba with SMTP id
- p20-20020a05600c205400b003fb0973fdbamr832616wmg.31.1687782629590; 
- Mon, 26 Jun 2023 05:30:29 -0700 (PDT)
-Received: from redhat.com ([2.52.156.102]) by smtp.gmail.com with ESMTPSA id
- m19-20020a7bce13000000b003f41bb52834sm10466606wmc.38.2023.06.26.05.30.28
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 26 Jun 2023 05:30:29 -0700 (PDT)
-Date: Mon, 26 Jun 2023 08:30:26 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- Ani Sinha <anisinha@redhat.com>, imammedo@redhat.com,
- jusual@redhat.com, mst@redhat.com, Jason Wang <jasowang@redhat.com>
-Subject: [PULL 53/53] vhost-vdpa: do not cleanup the vdpa/vhost-net
- structures if peer nic is present
-Message-ID: <3d90d47995b83bd1edf6e756c00e74fd5ec16aee.1687782442.git.mst@redhat.com>
-References: <cover.1687782442.git.mst@redhat.com>
+ bh=8ni86dvHD4BwWEdLQGUae2Lgg0E4k1u8amOK/2u0rXw=;
+ b=ab0G21Z+y8LiZ3ooonG6mGcOpbPrQaTAXIRQgjyN3704+Ei9FYMGPR/RlxvCoUfwrE
+ jZ6E+lhhyyy1RxwjhVb5bysdGskXWgeZGKTFnqBy340loVBo2L/qvURZg970wLyRtZat
+ PYNKAeDqZBBJlOawipOnKjs3zWDdFvf6waKHHLDm2sqckz1XfBJAB4VsuSo9gbXyDjcg
+ zW0y5zqzORMA7aX/FskGe4XG1LwvkLDVLQDXyiDGDVdCzHv1Gb8vHe2kSvK/3+qk/vhN
+ awZU5Am1SCha4aH4DCOjOX53Uoa7DrFRFf8alE8A3Ngm2zT2Fks2s9ov45RocjHmhWzT
+ +noA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1687783107; x=1690375107;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=8ni86dvHD4BwWEdLQGUae2Lgg0E4k1u8amOK/2u0rXw=;
+ b=bNRpB4xM9FADTbyyh8udj2nt7WUvJMwwYLjbntXliCJXcNgvCmag8tHlwJpw4ugeRm
+ ZxvrqLMkpegS3C6H5G0PlREpoghnAAZ8qpGpI3sugLe5Ymygzff0lcW7Bz+CyysjeRxZ
+ vfdOWs9iaokEA2U04uJiQpgU5BbUYa+/4j7UXqFhJZp15YjhSd/ugB1by1K/e7H7K7Sb
+ bcF0lYiBtibXys14k/KqqJG+YMvAckOCRuMaPyeNSzq0GegIz7TSZ6ByMAnOM1varg53
+ FQJe+EORGQ2w8E9aRIRBC8trAzFYHlql8dyDB0L9HhedRHuBbPowiY4tKDkgaZLt32Qj
+ 0qEg==
+X-Gm-Message-State: AC+VfDwq0fJwuXCWKynOqFZb0/g2uwFduRB/srrWPI3XcYdLNS/izrCS
+ xIr9GwczKlNEq5mtXUPxEgB0iNVy94G9AcW/yT6FuDcrQLaDk8Oo
+X-Google-Smtp-Source: ACHHUZ5CKKU7In03WCL+GMC25Ca6LBYBWNkVxspfkUveEE2GpnmMIUb3icnQVBsGU7u0aGyp2NTgqORiI4o13ucNKeA=
+X-Received: by 2002:a05:6402:1601:b0:51b:e89e:a846 with SMTP id
+ f1-20020a056402160100b0051be89ea846mr9682073edv.19.1687783107503; Mon, 26 Jun
+ 2023 05:38:27 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1687782442.git.mst@redhat.com>
-X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
-X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <168722304495.6281.8113287217736957231-0@git.sr.ht>
+ <168722304495.6281.8113287217736957231-1@git.sr.ht>
+In-Reply-To: <168722304495.6281.8113287217736957231-1@git.sr.ht>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 26 Jun 2023 13:38:16 +0100
+Message-ID: <CAFEAcA8Ttt=6mt_1X3u6F2ngFoD_9hRw72r=87ybpbeeodrBLw@mail.gmail.com>
+Subject: Re: [PATCH qemu v3 1/2] target/arm: Handle IC IVAU to improve
+ compatibility with JITs
+To: "~jhogberg" <john.hogberg@ericsson.com>
+Cc: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::531;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x531.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -100,59 +88,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Ani Sinha <anisinha@redhat.com>
+On Tue, 20 Jun 2023 at 02:04, ~jhogberg <jhogberg@git.sr.ht> wrote:
+>
+> From: John H=C3=B6gberg <john.hogberg@ericsson.com>
+>
+> Unlike architectures with precise self-modifying code semantics
+> (e.g. x86) ARM processors do not maintain coherency for instruction
+> execution and memory, and require the explicit use of cache
+> management instructions as well as an instruction barrier to make
+> code updates visible (the latter on every core that is going to
+> execute said code).
 
-When a peer nic is still attached to the vdpa backend, it is too early to free
-up the vhost-net and vdpa structures. If these structures are freed here, then
-QEMU crashes when the guest is being shut down. The following call chain
-would result in an assertion failure since the pointer returned from
-vhost_vdpa_get_vhost_net() would be NULL:
+This is implementation-dependent : if the
+implementation reports CTR_EL0.{DIC,IDC} =3D=3D {1,1} then
+it doesn't need icache invalidation or data cache clean
+to provide data-to-instruction or instruction-to-data
+coherence. This is currently not true for any CPU QEMU
+models, but the Neoverse-V1 (which I'm about to send a patch
+for) can do this. (It's also tempting to make 'max' set
+these bits, which would save the guest some effort in
+doing cache ops which we NOP anyway.)
 
-do_vm_stop() -> vm_state_notify() -> virtio_set_status() ->
-virtio_net_vhost_status() -> get_vhost_net().
+So maybe we should also force CTR_EL0.DIC to 0 in user-mode
+so that the guest won't decide based on the value of that bit
+that it doesn't need to issue the IC IVAU ?
+arm_cpu_realizefn() would be the place to do this, I think.
 
-Therefore, we defer freeing up the structures until at guest shutdown
-time when qemu_cleanup() calls net_cleanup() which then calls
-qemu_del_net_client() which would eventually call vhost_vdpa_cleanup()
-again to free up the structures. This time, the loop in net_cleanup()
-ensures that vhost_vdpa_cleanup() will be called one last time when
-all the peer nics are detached and freed.
-
-All unit tests pass with this change.
-
-CC: imammedo@redhat.com
-CC: jusual@redhat.com
-CC: mst@redhat.com
-Fixes: CVE-2023-3301
-Resolves: https://bugzilla.redhat.com/show_bug.cgi?id=2128929
-Signed-off-by: Ani Sinha <anisinha@redhat.com>
-Message-Id: <20230619065209.442185-1-anisinha@redhat.com>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
----
- net/vhost-vdpa.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
-
-diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-index 9e92b3558c..e19ab063fa 100644
---- a/net/vhost-vdpa.c
-+++ b/net/vhost-vdpa.c
-@@ -207,6 +207,14 @@ static void vhost_vdpa_cleanup(NetClientState *nc)
- {
-     VhostVDPAState *s = DO_UPCAST(VhostVDPAState, nc, nc);
- 
-+    /*
-+     * If a peer NIC is attached, do not cleanup anything.
-+     * Cleanup will happen as a part of qemu_cleanup() -> net_cleanup()
-+     * when the guest is shutting down.
-+     */
-+    if (nc->peer && nc->peer->info->type == NET_CLIENT_DRIVER_NIC) {
-+        return;
-+    }
-     munmap(s->cvq_cmd_out_buffer, vhost_vdpa_net_cvq_cmd_page_len());
-     munmap(s->status, vhost_vdpa_net_cvq_cmd_page_len());
-     if (s->vhost_net) {
--- 
-MST
-
+thanks
+-- PMM
 
