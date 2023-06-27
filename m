@@ -2,80 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90F9773EFA6
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 02:25:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ADF4C73EFE3
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 02:56:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDwUW-0004lT-Sv; Mon, 26 Jun 2023 20:23:32 -0400
+	id 1qDwyh-0003F6-RG; Mon, 26 Jun 2023 20:54:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1qDwUT-0004lJ-4H
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 20:23:29 -0400
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1qDwUP-00047F-30
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 20:23:27 -0400
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-1b80bce2592so8147295ad.2
- for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 17:23:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1687825401; x=1690417401;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=vkR+aXtbcLQFi+Ub06iKUMr1Y/Aix+/+v5uVmme69LI=;
- b=i68lB+/WLF+RcB5VgLj3n+ns4TCBSZwRrervwKiLr89dPFLq1PYw1N1zFgndmLo1+q
- 5cJ6zMEZn/d5cgRQUJ88bi/qn6MUcCBQIiogQgvjWIkNfgmHzrulnAg+KhqE7XU2R1Z8
- g60h/eE09BybvSFeQ186t6ZsJier7pKIyauG1nV38EYNVMvlkbSjQcxkC7jjHNIrIP7j
- 7wB4lZP7t0IGOdvLBX61OanqvRkuIV1OMk9AOhN18q8OPfSFU7Imbm4wwrs9EyXi5Nj6
- KKdxeVdmbeTuRKlWKAA6YVvip8qxS4DUWR9/5g+ow5AN22QDtJxQnhCz+BdhIqfswuLl
- pi4Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687825401; x=1690417401;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=vkR+aXtbcLQFi+Ub06iKUMr1Y/Aix+/+v5uVmme69LI=;
- b=V4RYClhBroOFOEpHNlYwfdtkdBg3zO33ql1PPsBfUnH91cNVU9nv7677Le61ZAQvcI
- abSXQLRcGPs8P6pvIwGDuDPLGOcvrFgpwW5MzwZ4qZLE0+v9tYYlaG+FE1DorlACfDvs
- QmlUqUInoqb1rL51hr3c52MrChgu/h26t4QdSn5jmrKzV5r3Vo7E5ul7IITDJeAK3zw9
- GmQhjYVQ1MlZk30G0PYDy+otHWENZhVSOL7Gz6NplIQ5Ic+XbWpaZZkwxKEUxRAQYnw4
- Jykbp8/LF8PLm36/uew5L0J3cCe7pohixvp39gxnDgNxW4qF/rgw3lMpwkL20Qb7q1dg
- huOw==
-X-Gm-Message-State: AC+VfDx7rI7cMYoJNesSTnxAhIR6uUIL9BE5N9jJ6bMatuCpfuTVuObh
- nKKOIVYFDIWdmG5XXZfu4nk=
-X-Google-Smtp-Source: ACHHUZ4UyICnYODFBwKfuTn+NoZfMb8XykvSU4do8gTCkVEV0C6MzyB8mK152wYWjcyvzpDPoRNZ3A==
-X-Received: by 2002:a17:902:d2c4:b0:1b3:e802:5de6 with SMTP id
- n4-20020a170902d2c400b001b3e8025de6mr7018933plc.29.1687825400809; 
- Mon, 26 Jun 2023 17:23:20 -0700 (PDT)
-Received: from localhost (14-200-238-131.tpgi.com.au. [14.200.238.131])
- by smtp.gmail.com with ESMTPSA id
- u12-20020a170902e5cc00b001aae625e422sm3080295plf.37.2023.06.26.17.23.19
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 26 Jun 2023 17:23:20 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+ (Exim 4.90_1) (envelope-from <dongwon.kim@intel.com>)
+ id 1qDwyf-0003Ey-B3
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 20:54:41 -0400
+Received: from mga02.intel.com ([134.134.136.20])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <dongwon.kim@intel.com>)
+ id 1qDwyc-000194-VW
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 20:54:41 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1687827278; x=1719363278;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=BkFEIohU/c/73IIEDDdeS0g8VwJ++s9LnOtogmOtBn8=;
+ b=V4XBIYGosJeXd1IV5bn4gc0ot3JqPWiZeAD5+FSFjDW12rCM3L1PpZ0Y
+ qSk68cSixoQMFzHZmjkd+q8UNeEOYv640tAfXHRt2KK6ePy8oa3SMJ3wt
+ SwDa/Q/MMREnhs1m5WaD6pc3LAbzIYv7zsgm/xATvcMnx5TlbYCBgArDE
+ VFzBXL9rwhfbdD5msJdMHlwBcS9xMlmsZqZlImp+NhjDp9LVtnA51iN5i
+ fQ9WIXI9lfRyPO+8GhhQwig7+LQfG1fZy3H8NY7DnmbXy8GDN5EzO5/yj
+ pP4tHKdLIt4MhYdTQWh14Kt1jZvbyayfxeNRCCQ5gsuVtdORyB8ZtY2DD A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10753"; a="351218044"
+X-IronPort-AV: E=Sophos;i="6.01,161,1684825200"; d="scan'208";a="351218044"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+ by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Jun 2023 17:54:36 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10753"; a="719583349"
+X-IronPort-AV: E=Sophos;i="6.01,161,1684825200"; d="scan'208";a="719583349"
+Received: from dongwonk-z390-aorus-ultra-intel-gfx.fm.intel.com
+ ([10.105.129.122])
+ by fmsmga007.fm.intel.com with ESMTP; 26 Jun 2023 17:54:36 -0700
+From: Dongwon Kim <dongwon.kim@intel.com>
+To: qemu-devel@nongnu.org
+Cc: Dongwon Kim <dongwon.kim@intel.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Vivek Kasireddy <vivek.kasireddy@intel.com>
+Subject: [PATCH v2] virtio-gpu: OUT_OF_MEMORY if failing to create udmabuf
+Date: Mon, 26 Jun 2023 17:34:53 -0700
+Message-Id: <20230627003453.5321-1-dongwon.kim@intel.com>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <CAJ+F1CJhDBPHY12xYh74g1t6K+WXhZ2ThKFw09QDNnTNA49RzQ@mail.gmail.com>
+References: <CAJ+F1CJhDBPHY12xYh74g1t6K+WXhZ2ThKFw09QDNnTNA49RzQ@mail.gmail.com>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 27 Jun 2023 10:23:16 +1000
-Message-Id: <CTN062Y7XSEI.8B1BEBDJPZWU@wheely>
-Cc: <qemu-devel@nongnu.org>
-Subject: Re: [PATCH RFC] icount: don't adjust virtual time backwards after warp
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Paolo Bonzini" <pbonzini@redhat.com>
-X-Mailer: aerc 0.15.2
-References: <20230625083731.3108-1-npiggin@gmail.com>
- <20230626110847.162190-1-pbonzini@redhat.com>
- <CABgObfanTTyz47UKbYbRqk-6xsntpRpK359vvmh0CuX3+o6k4Q@mail.gmail.com>
-In-Reply-To: <CABgObfanTTyz47UKbYbRqk-6xsntpRpK359vvmh0CuX3+o6k4Q@mail.gmail.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x62c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=134.134.136.20;
+ envelope-from=dongwon.kim@intel.com; helo=mga02.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -92,15 +80,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon Jun 26, 2023 at 9:09 PM AEST, Paolo Bonzini wrote:
-> On Mon, Jun 26, 2023 at 1:08=E2=80=AFPM Paolo Bonzini <pbonzini@redhat.co=
-m> wrote:
-> > Queued, thanks.
->
-> Hmm, almost, can you provide the Signed-off-by?
+Respond with VIRTIO_GPU_RESP_ERR_OUT_OF_MEMORY if it fails to create
+an udmabuf for the blob resource.
 
-Sure, give me a bit and I'll make up a better changelog and patch.
+v2: consolidated return statments and removed an unnecessary style change
 
-Thanks,
-Nick
+Cc: Gerd Hoffmann <kraxel@redhat.com>
+Cc: Marc-André Lureau <marcandre.lureau@redhat.com>
+Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>
+Signed-off-by: Dongwon Kim <dongwon.kim@intel.com>
+---
+ hw/display/virtio-gpu.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
+index 66cddd94d9..ce019941b8 100644
+--- a/hw/display/virtio-gpu.c
++++ b/hw/display/virtio-gpu.c
+@@ -634,8 +634,10 @@ static void virtio_gpu_do_set_scanout(VirtIOGPU *g,
+         if (console_has_gl(scanout->con)) {
+             if (!virtio_gpu_update_dmabuf(g, scanout_id, res, fb, r)) {
+                 virtio_gpu_update_scanout(g, scanout_id, res, r);
+-                return;
++            } else {
++                *error = VIRTIO_GPU_RESP_ERR_OUT_OF_MEMORY;
+             }
++            return;
+         }
+ 
+         data = res->blob;
+-- 
+2.34.1
+
 
