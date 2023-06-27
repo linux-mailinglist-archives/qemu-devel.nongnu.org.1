@@ -2,78 +2,105 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD4E773F69C
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 10:16:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AB8773F715
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 10:27:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qE3r0-0007wP-AC; Tue, 27 Jun 2023 04:15:14 -0400
+	id 1qE425-0002H2-Ro; Tue, 27 Jun 2023 04:26:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qE3qu-0007vH-Rs; Tue, 27 Jun 2023 04:15:10 -0400
-Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
+ (Exim 4.90_1) (envelope-from <mhartmay@linux.ibm.com>)
+ id 1qE423-0002Gi-3W; Tue, 27 Jun 2023 04:26:39 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qE3qs-0004zB-9A; Tue, 27 Jun 2023 04:15:08 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
- In-Reply-To:References:Cc:To:From:MIME-Version:Date:Message-ID:Sender:
- Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
- :Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
- List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=te3X7NQwXzh9x5NgolpA7pMbN1IBEw4iUNQgTP2flio=; b=mVRW2JgyFCEtW+jTu6MqwZK0Zq
- V/mwPXH/tjXjTtjQvvQt75GI6dTNZ2KfP9PL15xJrDdTF5Do24EJfuCuorAK+RJDUVZ7Q3YKXqpPO
- lC/EjXbP3jpWy4d7DDWUKrcw1Lrbm61oKBI4HXk5iqeIVeVzSvsQaRVQkoWqRGJ/Pi8JRXdCGUvB2
- q5vGtajy2/MiQ/S/wQiP1zEYRVLDlrXKpPcmMrOH7ylC/K465H45RusDqfg/TUWUkl0g8/hL7n2du
- /C4WMh5U9VVb8j1IBKCxAytTlHo3oIv166AVZTpWF/XQBxQ27A86assi3J/C2QK0qnLxcsYjkHkdL
- roMZgxjqYJhaMcY/6l/MJUgWFNzu822xvUVaRmbzanlBTIWlg9u+Lt6BNO4vNKtzJKL9sMCJao8GM
- w1VhQSgUuizdzgPiT8sDA3VYPtZtNt7tUZBso5Zg31x9V3xZDRLWoeSQf90IN4r5KS2zg7rIRzZfE
- jlLwPik2cG+9fKK/2Lj0sTZYVC9y5cnqikKdFz+Y1YK1UB7NowSKulTxBWSXslIeBuY26LrTrAKh4
- VZskGrksmXocU/S4g9NvFX2UFJBMRfPH1zsoOEdC+n2z5xLRiqCENQzU7VxPGUG/hFmkiB1CXuzI/
- JKGpDigD+cCBuR3uWMJUn7e/9ElSUM7iILQFaUwCM=;
-Received: from host86-130-37-216.range86-130.btcentralplus.com
- ([86.130.37.216] helo=[10.8.0.6])
- by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qE3qe-0002ZN-8U; Tue, 27 Jun 2023 09:14:52 +0100
-Message-ID: <cefdeb3f-3442-ede4-3e5d-6a4a99b38293@ilande.co.uk>
-Date: Tue, 27 Jun 2023 09:14:55 +0100
+ (Exim 4.90_1) (envelope-from <mhartmay@linux.ibm.com>)
+ id 1qE420-0008B4-LR; Tue, 27 Jun 2023 04:26:38 -0400
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 35R8HhkX013435; Tue, 27 Jun 2023 08:26:31 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : in-reply-to : references : date : message-id : mime-version :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=HtzG+Nn/kCLer3i5MBmA9ueQHmgYhlfFfFyzTno2Nb8=;
+ b=MZ2Zp+Kbk5fUkWGmTHn0lOAhGyZcZSyZFMAIWnVblLgV4UUq8jZZAYr5uuLpoYs/kh/T
+ y5ZwqYwmGHYE6IlMbWQ1dLHXhtkT4h2bPjDO0Vy0hsj6uT1oCPIB0zfNMapDykmN/UkA
+ SDwThQcN9gY6oSFuTFU62/F7gFZGsWhYf59tQ1JIeD0eKLoepiDs88PyX1Mx205FkbrM
+ HZ9geVnX5ktE+rMW6F8LeGceUcsXGe7+ET+ylODrIGRWlnDXluAXfRuatbEbCQ03y4CM
+ 7ZYI98rV8MeSl3RbF6g4MGO9SomBTl14etpGXRgQml0OjKuTOIeShv5Rda7k1a2tSrkg bQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rfv4fg66d-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 27 Jun 2023 08:26:31 +0000
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 35R8LXPH026663;
+ Tue, 27 Jun 2023 08:26:31 GMT
+Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.72])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rfv4fg65g-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 27 Jun 2023 08:26:31 +0000
+Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
+ by ppma06fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 35R7KKOm000764;
+ Tue, 27 Jun 2023 08:26:28 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+ by ppma06fra.de.ibm.com (PPS) with ESMTPS id 3rdqre1b6r-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 27 Jun 2023 08:26:28 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com
+ [10.20.54.106])
+ by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 35R8QOH656033590
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 27 Jun 2023 08:26:24 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B0BA420043;
+ Tue, 27 Jun 2023 08:26:24 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id F025E20040;
+ Tue, 27 Jun 2023 08:26:23 +0000 (GMT)
+Received: from li-1de7cd4c-3205-11b2-a85c-d27f97db1fe1.ibm.com (unknown
+ [9.171.44.52]) by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+ Tue, 27 Jun 2023 08:26:23 +0000 (GMT)
+From: "Marc Hartmayer" <mhartmay@linux.ibm.com>
+To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
+Cc: qemu-s390x@nongnu.org, Christian Borntraeger <borntraeger@linux.ibm.com>,
+ mrezanin@redhat.com, Richard Henderson <richard.henderson@linaro.org>,
+ =?utf-8?Q?C=C3=A9dric?= Le Goater <clegoate@redhat.com>,
+ Janosch Frank <frankja@linux.ibm.com>, "Jason J . Herne"
+ <jjherne@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>, Claudio
+ Imbrenda <imbrenda@linux.ibm.com>
+Subject: Re: [PATCH v2 2/4] pc-bios/s390-ccw: Provide space for initial
+ stack frame in start.S
+In-Reply-To: <20230627074703.99608-3-thuth@redhat.com>
+References: <20230627074703.99608-1-thuth@redhat.com>
+ <20230627074703.99608-3-thuth@redhat.com>
+Date: Tue, 27 Jun 2023 10:26:22 +0200
+Message-ID: <877crp9uq9.fsf@li-1de7cd4c-3205-11b2-a85c-d27f97db1fe1.ibm.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
- =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clegoate@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, Nicholas Piggin <npiggin@gmail.com>
-Cc: qemu-ppc@nongnu.org, qemu-devel@nongnu.org,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- BALATON Zoltan <balaton@eik.bme.hu>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
- Frederic Barrat <frederic.barrat@fr.ibm.com>
-References: <20230623081953.290875-1-npiggin@gmail.com>
- <CAFEAcA_Brf-R12t+DKNAoygqgC-qjKJ3Wiz4ULjGHOo8_vPovw@mail.gmail.com>
- <47197a73-b106-47d5-9502-393a6bdc9945@redhat.com>
- <966b3fce-512d-f122-e76e-efded0db9731@kaod.org>
-Content-Language: en-US
-In-Reply-To: <966b3fce-512d-f122-e76e-efded0db9731@kaod.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 86.130.37.216
-X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: Re: [PATCH 0/4] target/ppc: Catch invalid real address accesses
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
-Received-SPF: pass client-ip=2001:41c9:1:41f::167;
- envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: FFhFwH6a8TNe91z_7867r95MOZcl-gDc
+X-Proofpoint-GUID: gPtv28wR6HK3ygn7u1FTVbvM9h5zok1T
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-06-27_04,2023-06-26_03,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1011 phishscore=0
+ malwarescore=0 bulkscore=0 impostorscore=0 lowpriorityscore=0
+ mlxlogscore=999 suspectscore=0 priorityscore=1501 mlxscore=0 spamscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2305260000 definitions=main-2306270076
+Received-SPF: pass client-ip=148.163.156.1;
+ envelope-from=mhartmay@linux.ibm.com; helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -90,129 +117,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 26/06/2023 14:35, Cédric Le Goater wrote:
+Thomas Huth <thuth@redhat.com> writes:
 
-> On 6/23/23 14:37, Cédric Le Goater wrote:
->> On 6/23/23 11:10, Peter Maydell wrote:
->>> On Fri, 23 Jun 2023 at 09:21, Nicholas Piggin <npiggin@gmail.com> wrote:
->>>>
->>>> ppc has always silently ignored access to real (physical) addresses
->>>> with nothing behind it, which can make debugging difficult at times.
->>>>
->>>> It looks like the way to handle this is implement the transaction
->>>> failed call, which most target architectures do. Notably not x86
->>>> though, I wonder why?
->>>
->>> Much of this is historical legacy. QEMU originally had no
->>> concept of "the system outside the CPU returns some kind
->>> of bus error and the CPU raises an exception for it".
->>> This is turn is (I think) because the x86 PC doesn't do
->>> that: you always get back some kind of response, I think
->>> -1 on reads and writes ignored. We added the do_transaction_failed
->>> hook largely because we wanted it to give more accurate
->>> emulation of this kind of thing on Arm, but as usual with new
->>> facilities we left the other architectures to do it themselves
->>> if they wanted -- by default the behaviour remained the same.
->>> Some architectures have picked it up; some haven't.
->>>
->>> The main reason it's a bit of a pain to turn the correct
->>> handling on is because often boards don't actually implement
->>> all the devices they're supposed to. For a pile of legacy Arm
->>> boards, especially where we didn't have good test images,
->>> we use the machine flag ignore_memory_transaction_failures to
->>> retain the legacy behaviour. (This isn't great because it's
->>> pretty much going to mean we have that flag set on those
->>> boards forever because nobody is going to care enough to
->>> investigate and test.)
->>>
->>>> Other question is, sometimes I guess it's nice to avoid crashing in
->>>> order to try to quickly get past some unimplemented MMIO. Maybe a
->>>> command line option or something could turn it off? It should
->>>> probably be a QEMU-wide option if so, so that shouldn't hold this
->>>> series up, I can propose a option for that if anybody is worried
->>>> about it.
->>>
->>> I would not recommend going any further than maybe setting the
->>> ignore_memory_transaction_failures flag for boards you don't
->>> care about. (But in an ideal world, don't set it and deal with
->>> any bug reports by implementing stub versions of missing devices.
->>> Depends how confident you are in your test coverage.)
->>
->> It seems it broke the "mac99" and  powernv10 machines, using the
->> qemu-ppc-boot images which are mostly buildroot. See below for logs.
->>
->> Adding Mark for further testing on Mac OS.
-> 
-> 
-> Mac OS 9.2 fails to boot with a popup saying :
->          Sorry, a system error occured.
->          "Sound Manager"
->            address error
->          To temporarily turn off extensions, restart and
->          hold down the shift key
-> 
-> 
-> Darwin and Mac OSX look OK.
+> Providing the space of a stack frame is the duty of the caller,
+> so we should reserve 160 bytes before jumping into the main function.
+> Otherwise the main() function might write past the stack array.
+>
+> While we're at it, add a proper STACK_SIZE macro for the stack size
+> instead of using magic numbers (this is also required for the following
+> patch).
+>
+> Reviewed-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+> Reviewed-by: C=C3=A9dric Le Goater <clg@redhat.com>
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> ---
+>  pc-bios/s390-ccw/start.S | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+>
+> diff --git a/pc-bios/s390-ccw/start.S b/pc-bios/s390-ccw/start.S
+> index d29de09cc6..29b0a9ece0 100644
+> --- a/pc-bios/s390-ccw/start.S
+> +++ b/pc-bios/s390-ccw/start.S
+> @@ -10,10 +10,12 @@
+>   * directory.
+>   */
+>=20=20
+> +#define STACK_SIZE 0x8000
+> +
+>      .globl _start
+>  _start:
+>=20=20
+> -    larl    %r15,stack + 0x8000     /* Set up stack */
+> +    larl    %r15,stack + STACK_SIZE - 160   /* Set up stack */
+                                         ^^^
+                                         You can also add a macro for this
+                                         - e.g. STACK_FRAME_SIZE.
 
-My guess would be that MacOS 9.2 is trying to access the sound chip registers which 
-isn't implemented in QEMU for the moment (I have a separate screamer branch 
-available, but it's not ready for primetime yet). In theory they shouldn't be 
-accessed at all because the sound device isn't present in the OpenBIOS device tree, 
-but this is all fairly old stuff.
+Besides that,
+Reviewed-by: Marc Hartmayer <mhartmay@linux.ibm.com>
 
-Does implementing the sound registers using a dummy device help at all?
+>=20=20
+>      /* clear bss */
+>      larl    %r2,__bss_start
+> --=20
+> 2.39.3
+>
+--=20
+Kind regards / Beste Gr=C3=BC=C3=9Fe
+   Marc Hartmayer
 
-
-diff --git a/hw/misc/macio/macio.c b/hw/misc/macio/macio.c
-index 265c0bbd8d..e55f938da7 100644
---- a/hw/misc/macio/macio.c
-+++ b/hw/misc/macio/macio.c
-@@ -26,6 +26,7 @@
-  #include "qemu/osdep.h"
-  #include "qapi/error.h"
-  #include "qemu/module.h"
-+#include "hw/misc/unimp.h"
-  #include "hw/misc/macio/cuda.h"
-  #include "hw/pci/pci.h"
-  #include "hw/ppc/mac_dbdma.h"
-@@ -94,6 +95,7 @@ static bool macio_common_realize(PCIDevice *d, Error **errp)
-  {
-      MacIOState *s = MACIO(d);
-      SysBusDevice *sbd;
-+    DeviceState *dev;
-
-      if (!qdev_realize(DEVICE(&s->dbdma), BUS(&s->macio_bus), errp)) {
-          return false;
-@@ -102,6 +104,14 @@ static bool macio_common_realize(PCIDevice *d, Error **errp)
-      memory_region_add_subregion(&s->bar, 0x08000,
-                                  sysbus_mmio_get_region(sbd, 0));
-
-+    dev = qdev_new(TYPE_UNIMPLEMENTED_DEVICE);
-+    qdev_prop_set_string(dev, "name", "screamer");
-+    qdev_prop_set_uint64(dev, "size", 0x1000);
-+    sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
-+    sbd = SYS_BUS_DEVICE(dev);
-+    memory_region_add_subregion(&s->bar, 0x14000,
-+                                sysbus_mmio_get_region(sbd, 0));
-+
-      qdev_prop_set_uint32(DEVICE(&s->escc), "disabled", 0);
-      qdev_prop_set_uint32(DEVICE(&s->escc), "frequency", ESCC_CLOCK);
-      qdev_prop_set_uint32(DEVICE(&s->escc), "it_shift", 4);
-diff --git a/include/hw/misc/macio/macio.h b/include/hw/misc/macio/macio.h
-index 86df2c2b60..1894178a68 100644
---- a/include/hw/misc/macio/macio.h
-+++ b/include/hw/misc/macio/macio.h
-@@ -109,6 +109,7 @@ struct MacIOState {
-      PMUState pmu;
-      DBDMAState dbdma;
-      ESCCState escc;
-+    MemoryRegion screamer;
-      uint64_t frequency;
-  };
-
-
-
-ATB,
-
-Mark.
+IBM Deutschland Research & Development GmbH
+Vorsitzender des Aufsichtsrats: Gregor Pillen=20
+Gesch=C3=A4ftsf=C3=BChrung: David Faller
+Sitz der Gesellschaft: B=C3=B6blingen
+Registergericht: Amtsgericht Stuttgart, HRB 243294
 
