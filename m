@@ -2,64 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 204F0740571
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D8D0740570
 	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 23:07:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEFsh-0006uQ-Kc; Tue, 27 Jun 2023 17:05:47 -0400
+	id 1qEFtU-00070O-N7; Tue, 27 Jun 2023 17:06:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qEFsf-0006tw-4p
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 17:05:45 -0400
-Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qEFtK-0006yj-Uc
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 17:06:28 -0400
+Received: from mail-lj1-x236.google.com ([2a00:1450:4864:20::236])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qEFsd-0000KS-Kc
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 17:05:44 -0400
-Received: by mail-ej1-x62d.google.com with SMTP id
- a640c23a62f3a-991f956fb5aso216125466b.0
- for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 14:05:43 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qEFtJ-0000vT-Aj
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 17:06:26 -0400
+Received: by mail-lj1-x236.google.com with SMTP id
+ 38308e7fff4ca-2b6adef5c22so19936831fa.3
+ for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 14:06:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687899942; x=1690491942;
+ d=linaro.org; s=google; t=1687899983; x=1690491983;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=CGduznZ6msReTC2l/W5laHQoA+Ocs8N2FoxqJmlTDEQ=;
- b=X7L5E/lXPJXq83d7YOX7xyIKEurOFoq2WxZ+4xY9X3+tzsvn8GclrOEvVxA3/d8/ud
- hPrke1X/KuDbfXZUbubbZ0vGkKp2iMIKfbPb/fmULBzkqJU7SzieHz8mhr9eQh7/rjIw
- 4JLIBRACg7r37sKS2MpgUA4qkZYV/UUtHoMVrNBBi6m5OBVt4GZFB05FEvLYbm3F+T0o
- Hb6mqxM4dCPsQXZwxMsL7iRYNzOxC5EQRV8YxnRuWfvnPtYipNn0Wa8l6JcO5tuo2Nd+
- 8PHfc+f9tbpbHONh//KTCBjF+7B65iS41GY7JAgmBWIXXibJjpFqhOalHxZ9T6QSdCui
- qpYw==
+ bh=s+mxbvopcN8GhtyLQyosyHXduhB/LupAIEMRtR9S99Q=;
+ b=kGS7onlOB4geoA/XdBFX+p9ywgVLF+Ya/yS6AYbiWQ3Xgp6uN1THRCrVkIka9JD4mp
+ b70qbTp/o2pi4aEyOgieWX9iRjSyOlECI194uURJy+fl81Y9zly2XBy6RuPQ5ijBYg5c
+ M8UKlf3+EhUjg94e4WBLY3oQ3HlUp0uGVTYhkI3G9pAYEN3rFjQCH+nJU91vcMRRKd7C
+ 7MWmwJa7GuX1EnyuPL1JvXFwZe3sWCfoQfGJu2MHkIFYh2BwwQSw9+YocBrLlXr7h9aP
+ wlRm4/lpfie9khCsw78VqX2lMDrU8smc3KCzHfaFCKz4U467lYZF8WjIhKw2lhBTNkWg
+ feOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687899942; x=1690491942;
+ d=1e100.net; s=20221208; t=1687899983; x=1690491983;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=CGduznZ6msReTC2l/W5laHQoA+Ocs8N2FoxqJmlTDEQ=;
- b=NQxjK9FlvUQP2Mn7z8wszeTdbMoH1MImBdGXH/+vT3pJOb9gPGjMJxvPVZjUBzf+Wa
- eEAYnelIOTgAGMd2xLzHuBz7+aBRpxtadmbgafY8tyIqbyis4Cl6lQFwSB2F8Q1X2xMZ
- jt8fmniB6ODsPa36nyAZyyk/ybEUU5Rva8dccyNP4m3Xfsu+JNs51p1/JDpOAzjcOiUO
- a7HW3j9LdSTyWcaxNe8lH3u3SRcgVkuLc0yN3K5cHtk7t4BQFZnHNDAJXzFjZdDym0Cz
- qb6+lLMpLfZLJDyPfJvE3xfxahbnq72+HszxFD3NKxqV9oe+2WUfXdQ+Tf1p6WaVkPDY
- w8Zw==
-X-Gm-Message-State: AC+VfDwKV9UUObXEwK6p9ChY+I+MhuBr8T4OKbnliBqKDRSSFmdFG8Sh
- uZGRlXnb6TD/JIfPSV063N5G3w==
-X-Google-Smtp-Source: ACHHUZ7r61k51kP1rADSd3wJYhKUMWcbe/ZN4zhv3p4NZ3fddNPWA468zULzMw+sn73J1fSUmRs0cw==
-X-Received: by 2002:a17:906:6a08:b0:992:44ae:45dc with SMTP id
- qw8-20020a1709066a0800b0099244ae45dcmr1386691ejc.44.1687899941931; 
- Tue, 27 Jun 2023 14:05:41 -0700 (PDT)
+ bh=s+mxbvopcN8GhtyLQyosyHXduhB/LupAIEMRtR9S99Q=;
+ b=eidhTEeBk9KUpp2yD4wnJuHq0uZQtKjR0mV2MBdYJqrzLFGWXuZ53+VYPU5VzTZpO6
+ 9wS5ckYdcqmHfHQVfNDF6ZKdu2xsXPOO+Ejxu2nW8G2PSogtQ3w+smRQnRuxx5QheGqI
+ 0sWr0VAUbQTOIcMYehcu8sb42ufQuzekYlkaIrPJ7j1VUpmw6Kc+ASueSEE/rZ1uVfWm
+ zSL9zwV/6Gn5jCE3mawhgNDOtW0qlqAe8ul8zDejVHgjTquCl4VucBmWRcneODA723w5
+ eJFuyMJYQ4P5HZA0QJT8BkCWnKpFVWQv7AA5nqMtySu5kghRLaffnZ9ndjd7YxEH65hC
+ JgwA==
+X-Gm-Message-State: AC+VfDxXJxPFMgVzo4hamcjr5Egm50BgJZof8gstSJmndB935cpCxE3X
+ dC5/ri3REnROSbFyPO2i6oOLgw==
+X-Google-Smtp-Source: ACHHUZ4f1qVZ7/fRnZpaOeLsDQGLZvHLPTnJxTFvEeLT0DrtxXdqmDDvsfFz2vgB/xxlaYc+bToM2Q==
+X-Received: by 2002:a05:651c:90:b0:2b6:b672:5924 with SMTP id
+ 16-20020a05651c009000b002b6b6725924mr1623810ljq.5.1687899983545; 
+ Tue, 27 Jun 2023 14:06:23 -0700 (PDT)
 Received: from [192.168.69.115] ([176.187.199.204])
  by smtp.gmail.com with ESMTPSA id
- gl24-20020a170906e0d800b0098e48ad11f0sm3429574ejb.106.2023.06.27.14.05.38
+ ce23-20020a170906b25700b009920f18a5f0sm1266693ejb.185.2023.06.27.14.06.20
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 27 Jun 2023 14:05:41 -0700 (PDT)
-Message-ID: <fcc0e5cd-46e3-91c6-960e-f545836c34d7@linaro.org>
-Date: Tue, 27 Jun 2023 23:05:36 +0200
+ Tue, 27 Jun 2023 14:06:22 -0700 (PDT)
+Message-ID: <cafa811a-0212-36c3-4f93-b4937c7617c4@linaro.org>
+Date: Tue, 27 Jun 2023 23:06:19 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.12.0
-Subject: Re: [PATCH v3 19/36] plugins: update lockstep to use g_memdup2
+Subject: Re: [PATCH v3 16/36] tests/avocado: update firmware to enable
+ sbsa-ref/max
 Content-Language: en-US
 To: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
  qemu-devel@nongnu.org
@@ -81,13 +82,13 @@ Cc: Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Laurent Vivier <lvivier@redhat.com>, Qiuhao Li <Qiuhao.Li@outlook.com>,
  Mahmoud Mandour <ma.mandourr@gmail.com>, Riku Voipio <riku.voipio@iki.fi>
 References: <20230627160943.2956928-1-alex.bennee@linaro.org>
- <20230627160943.2956928-20-alex.bennee@linaro.org>
+ <20230627160943.2956928-17-alex.bennee@linaro.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230627160943.2956928-20-alex.bennee@linaro.org>
+In-Reply-To: <20230627160943.2956928-17-alex.bennee@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::236;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x236.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -111,16 +112,23 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 27/6/23 18:09, Alex Bennée wrote:
-> The old g_memdup is deprecated, use the replacement.
+> From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
 > 
-> Message-Id: <20230623122100.1640995-21-alex.bennee@linaro.org>
-> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+> Update prebuilt firmware images to have TF-A with FEAT_FGT support
+> enabled. This allowed us to enable test for "max" cpu in sbsa-ref
+> machine.
+> 
+> Signed-off-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+> Message-Id: <20230530152240.79160-1-marcin.juszkiewicz@linaro.org>
 > Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+> 
 > ---
->   contrib/plugins/lockstep.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+> v3
+>    - re-enable for CI
+> ---
+>   tests/avocado/machine_aarch64_sbsaref.py | 23 ++++++++++-------------
+>   1 file changed, 10 insertions(+), 13 deletions(-)
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
 
 
