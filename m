@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 563F273FCE2
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 15:32:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C8D4D73FCE3
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 15:33:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qE8nh-0008JV-GV; Tue, 27 Jun 2023 09:32:09 -0400
+	id 1qE8ng-0008JT-Ou; Tue, 27 Jun 2023 09:32:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jason.chien@sifive.com>)
- id 1qE3SR-0002px-Hg
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 03:49:51 -0400
-Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
+ id 1qE4yH-0002qQ-FL
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 05:26:49 -0400
+Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <jason.chien@sifive.com>)
- id 1qE3SP-0006Aa-VN
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 03:49:51 -0400
-Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-1b7f68f1c9eso21224935ad.2
- for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 00:49:49 -0700 (PDT)
+ id 1qE4yF-0006Kk-PN
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 05:26:49 -0400
+Received: by mail-pf1-x434.google.com with SMTP id
+ d2e1a72fcca58-666e5f0d60bso2144207b3a.3
+ for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 02:26:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1687852188; x=1690444188;
+ d=sifive.com; s=google; t=1687858006; x=1690450006;
  h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=c9EpieEvbwRuonLUO4ZFLZ77OR4kXPqxojCQI1x4UU4=;
- b=aP9L6RdMnqgJU8Fw7Ig8f4ynFw8Kcn5UIgz8vI0/uMQHvlJP0CCWwRnRZkA08/4rhW
- xm1k3OnUhRpqpUMAmMBD3fHX5U7Cm4o7BXcaer2MVchV2fZTSDJ32tKYZeck+coUrdyA
- +KDz+S3qWRwe0RoN1J7chN7jRdqxdBO94pHZ5lSRU5ksMji4BX9rzwEiIH4VrdZ6KL4j
- CWgPe25NyTMhQSsp3eo3SOMVH80fR9+FXo8hgCW3GNtxgPqKJK4CXeFMOxf1m8qIVUN+
- /7P5qirEteYyUH6kRc3ZhJaevk0b9hl7wbWS5E6N/R5QcQ7kDpmwhShUlDoHfGiBP9M8
- k4aw==
+ bh=Rg3+TYiUGGtXCa2HJSu+sTNdB9A34AYrcg2a2JyRsck=;
+ b=ZuGN+Bt4FX2QTlS3/8Wze1FSx2S09cudvbjm31XNpIhp6JGKBLff5fYwboVS9eA2pJ
+ CdxWFio4QIYN0OkSWHC8PgmuxH1DtT5vOPaZAQmYKCPP8a2FMo271pt5py+YQEF+yBBa
+ 0Yd86WHis/f21avk9o9razLPbk9M4Bpnudv5GhvaaNY81r4OE/OASw2fAYmps14h/85J
+ SKLhTnrl06pDM72/N0EMJrYncXMdRLu0G4jpw5jnrghCkhDEv0xkzFNN6eNjh/lcLT2A
+ sTbx6lSWDUe4HhEvecAvPn21j8qAauEGqrOHMqHth2TZfj5oRdBH+N53i22+yhEalCyA
+ A2+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687852188; x=1690444188;
+ d=1e100.net; s=20221208; t=1687858006; x=1690450006;
  h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=c9EpieEvbwRuonLUO4ZFLZ77OR4kXPqxojCQI1x4UU4=;
- b=RfCgf4BlF55aoxzGg7HVcgS/azm0deCwbnHXuNTtTCqFFkTuw89uEOsj3SiH10Tw4W
- 7JtNehh2zAUNB/8Dyblj/U3uYhY2mEMKRY8RXlPnG4fu165md7/bRJbu/7qifMGsmfrC
- 1X5KMPfnaPAS2YarfFaGw+nfWTsOywnBufVI4PPXOpwLlrZPLy1lLnm0OPoqTq3XH4YB
- vxWePx+runf7FnW0pOEOvGEYUHZN/EKGnKW071WaBKOhygLA99uoMk/z40TD97XSZ2G7
- 7GorwBVROfZzEbfWw3sfoVURHJ2Cnd4YubhKMMgdIMTn3BrM4zVm9XkeZO8/twoig7NU
- IMVw==
-X-Gm-Message-State: AC+VfDwuawk5XWNWli3o8vIUSl5FI0zvriYhIfnCYElVoqxptO0B+yH3
- Z2L8ZUxK1+NDI7EDbE6cZU+zhh2dd1rAS+scVXt2/Exz/dYXXa015qgEqvwqO/6IQuoUZL+peBl
- lPG7Q+P1zn3S+c1Ns1Rkk13SCj02ESGDw7KkJgnbircLQzDL4N+/PXdKFb7xmAD1XoCaQgmV5LS
- E68dTt
-X-Google-Smtp-Source: ACHHUZ7Bjc6I4sweo1EVoVgYZjkfWzbVAnfoGXNoaf7fatDXg2lsYjOPGdZlfDQHyB6VNCgmaf99jA==
-X-Received: by 2002:a17:902:b497:b0:1b7:f73d:524 with SMTP id
- y23-20020a170902b49700b001b7f73d0524mr5935185plr.43.1687852187851; 
- Tue, 27 Jun 2023 00:49:47 -0700 (PDT)
+ bh=Rg3+TYiUGGtXCa2HJSu+sTNdB9A34AYrcg2a2JyRsck=;
+ b=Hoy1bIuVk//zYKRNhfLrMAGDZuipKxvK6VeRa/AYLt8KmR3DtN2OLuNk2+t42/3CZb
+ qgLD/ic5FcDz6J185ixCy4j8wxHbCZsATHT6fPZcYT3rvABX6im2laFoR9aoSZkaSHSp
+ 7BQZIoxE4xdT2uO8mzhTFfm5Gpo3z+Eu6mFyyWRURdGm9+cjnRq82girR3ev8ANQVQg9
+ STrHHsoAWizmh4BxgCEWD8NG1ag818NCD8Y9oWX+TPzYXaZ2L8YAlw8t9llXE3qsBoF+
+ ijVv1Ul2hGJN+QopvG5J8SaOEJ4m7+HRcEENcd7BpoaAL8udsnEDWTl3FnBiOJj8ikHC
+ fE/g==
+X-Gm-Message-State: AC+VfDz8jIF8jFVj00hs3rm19cbMRn8H2czYcuwH4gTS+87OvGuWM6V5
+ iJv3JcG+D9yuvu37x+LuqWO3zK2i3W19o2zCbLgKuqxP1bc9s06pSym+ZgrWFwj3HD6PZ/pTCli
+ gdb6H5npH9i9DBcb8yOQRDNSCvip1vRHcxZ+YMTP2UFRhZ3CRw7ZY6waLHoJvLz8aetyPfXz2xz
+ GArb/+
+X-Google-Smtp-Source: ACHHUZ71oZEqQXIn2yb4B4Q7oa0LfUfDriTE0yzn10EcQFDh21HiWQesh4NXbijbzL3LVEPhO7BVCA==
+X-Received: by 2002:a05:6a20:3ca7:b0:121:bc20:f6c8 with SMTP id
+ b39-20020a056a203ca700b00121bc20f6c8mr20923230pzj.18.1687858005710; 
+ Tue, 27 Jun 2023 02:26:45 -0700 (PDT)
 Received: from hsinchu26.internal.sifive.com
  (59-124-168-89.hinet-ip.hinet.net. [59.124.168.89])
  by smtp.gmail.com with ESMTPSA id
- t4-20020a170902a5c400b001b077301a58sm5360714plq.79.2023.06.27.00.49.45
+ r2-20020a62e402000000b006783ee5df8asm2737738pfh.189.2023.06.27.02.26.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 27 Jun 2023 00:49:47 -0700 (PDT)
+ Tue, 27 Jun 2023 02:26:45 -0700 (PDT)
 From: Jason Chien <jason.chien@sifive.com>
 To: qemu-devel@nongnu.org,
 	qemu-riscv@nongnu.org
@@ -65,13 +65,12 @@ Cc: Jason Chien <jason.chien@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>,
  Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
-Subject: [PATCH] target/riscv: Set the correct exception for implict G-stage
- translation fail
-Date: Tue, 27 Jun 2023 07:48:52 +0000
-Message-Id: <20230627074915.7686-1-jason.chien@sifive.com>
+Subject: [RFC PATCH] target/riscv: Add Zihintntl extension ISA string to DTS
+Date: Tue, 27 Jun 2023 09:26:29 +0000
+Message-Id: <20230627092631.22286-1-jason.chien@sifive.com>
 X-Mailer: git-send-email 2.17.1
-Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
- envelope-from=jason.chien@sifive.com; helo=mail-pl1-x632.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
+ envelope-from=jason.chien@sifive.com; helo=mail-pf1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,35 +94,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The privileged spec states:
-For a memory access made to support VS-stage address translation (such as
-to read/write a VS-level page table), permissions are checked as though
-for a load or store, not for the original access type. However, any
-exception is always reported for the original access type (instruction,
-load, or store/AMO).
+RVA23 Profiles states:
+The RVA23 profiles are intended to be used for 64-bit application
+processors that will run rich OS stacks from standard binary OS
+distributions and with a substantial number of third-party binary user
+applications that will be supported over a considerable length of time
+in the field.
 
-The current implementation converts the access type to LOAD if implicit
-G-stage translation fails which results in only reporting "Load guest-page
-fault". This commit removes the convertion of access type, so the reported
-exception conforms to the spec.
+The chapter 4 of the unprivileged spec introduces the Zihintntl extension
+and Zihintntl is a mandatory extension presented in RVA23 Profiles, whose
+targeting software stacks includes Linux. Thus the DTS should contain
+the Zihintntl ISA string in order to pass to Linux.
+
+The unprivileged spec states:
+Like any HINTs, these instructions may be freely ignored. Hence, although
+they are described in terms of cache-based memory hierarchies, they do not
+mandate the provision of caches.
+
+These instructions are encoded with used opcode, which QEMU already
+supports, and QEMU does not emulate cache, therefore we just need to add
+a new property for the extension.
 
 Signed-off-by: Jason Chien <jason.chien@sifive.com>
 ---
- target/riscv/cpu_helper.c | 1 -
- 1 file changed, 1 deletion(-)
+ target/riscv/cpu.c     | 2 ++
+ target/riscv/cpu_cfg.h | 1 +
+ 2 files changed, 3 insertions(+)
 
-diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
-index a944f25694..ff2a1469dc 100644
---- a/target/riscv/cpu_helper.c
-+++ b/target/riscv/cpu_helper.c
-@@ -1277,7 +1277,6 @@ bool riscv_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
-         if (ret == TRANSLATE_G_STAGE_FAIL) {
-             first_stage_error = false;
-             two_stage_indirect_error = true;
--            access_type = MMU_DATA_LOAD;
-         }
- 
-         qemu_log_mask(CPU_LOG_MMU,
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index 881bddf393..aa99781f17 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -81,6 +81,7 @@ static const struct isa_ext_data isa_edata_arr[] = {
+     ISA_EXT_DATA_ENTRY(zicond, PRIV_VERSION_1_12_0, ext_zicond),
+     ISA_EXT_DATA_ENTRY(zicsr, PRIV_VERSION_1_10_0, ext_icsr),
+     ISA_EXT_DATA_ENTRY(zifencei, PRIV_VERSION_1_10_0, ext_ifencei),
++    ISA_EXT_DATA_ENTRY(zihintntl, PRIV_VERSION_1_10_0, ext_zihintntl),
+     ISA_EXT_DATA_ENTRY(zihintpause, PRIV_VERSION_1_10_0, ext_zihintpause),
+     ISA_EXT_DATA_ENTRY(zawrs, PRIV_VERSION_1_12_0, ext_zawrs),
+     ISA_EXT_DATA_ENTRY(zfh, PRIV_VERSION_1_11_0, ext_zfh),
+@@ -1598,6 +1599,7 @@ static Property riscv_cpu_extensions[] = {
+     DEFINE_PROP_BOOL("sscofpmf", RISCVCPU, cfg.ext_sscofpmf, false),
+     DEFINE_PROP_BOOL("Zifencei", RISCVCPU, cfg.ext_ifencei, true),
+     DEFINE_PROP_BOOL("Zicsr", RISCVCPU, cfg.ext_icsr, true),
++    DEFINE_PROP_BOOL("Zihintntl", RISCVCPU, cfg.ext_zihintntl, false),
+     DEFINE_PROP_BOOL("Zihintpause", RISCVCPU, cfg.ext_zihintpause, true),
+     DEFINE_PROP_BOOL("Zawrs", RISCVCPU, cfg.ext_zawrs, true),
+     DEFINE_PROP_BOOL("Zfh", RISCVCPU, cfg.ext_zfh, false),
+diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
+index c4a627d335..c7da2facef 100644
+--- a/target/riscv/cpu_cfg.h
++++ b/target/riscv/cpu_cfg.h
+@@ -66,6 +66,7 @@ struct RISCVCPUConfig {
+     bool ext_icbom;
+     bool ext_icboz;
+     bool ext_zicond;
++    bool ext_zihintntl;
+     bool ext_zihintpause;
+     bool ext_smstateen;
+     bool ext_sstc;
 -- 
 2.17.1
 
