@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB44174007B
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 18:11:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48B0B740095
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 18:13:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEBGS-00007n-0K; Tue, 27 Jun 2023 12:10:00 -0400
+	id 1qEBGa-0000kt-DF; Tue, 27 Jun 2023 12:10:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qEBGN-0008Hb-Ny
+ id 1qEBGN-0008Hl-QL
  for qemu-devel@nongnu.org; Tue, 27 Jun 2023 12:09:55 -0400
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qEBGH-0005oC-Qb
+ id 1qEBGH-0005nw-S4
  for qemu-devel@nongnu.org; Tue, 27 Jun 2023 12:09:55 -0400
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-313e714342cso3812898f8f.0
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-313f18f5295so2735943f8f.3
  for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 09:09:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1687882188; x=1690474188;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=OoH/DOZFZDe6ZD+LHfFvG2TjLm3SJ3G2i0MfunKyFLs=;
- b=GZDB24tUP16+wbjP14G/r3MTxXacPNS1ryHB55f7dww87AElnA5OMgA+A/IHe73dsG
- crD1e0SXM7zIDZXo6LWHxx6/xj+zTQAdVRP3uZ9E7n/NvIYpdeWY3vkJ0DkuWEUY3Ss/
- Ngyjm/grXi0UYBjdf59JpbF8WZN9cRR/9g7ssuoKnI6h3i3GbFIOEXxI9EPw3hF8hw0d
- zlfS/DyQl+uorChPjjC0hhxfOqn9k0LngzH2T1xcKwMzhmo/P+KEWBRuo6ZoDNerGCgH
- dvrB+eZTTYq1NNt/RXL/d4AX3zSjfTVswlXRubVZ6X5VcZzsCL+MfZlMAS7jJRwlaMkm
- B8sA==
+ bh=cf5ti9xDtG3D2s3Jcs/OJus8Ga0lob29HRcRChdiZSs=;
+ b=uAA9Wc3BHGhSifP+YwBHCxbLaCw9OF5tJ3c0nSaPINAhkDGACtO6o25z9+fkUr5f84
+ fT7Ax1fymNtsXLoFRGfCZwgeaDrfEy9PvNy52CD/beq6BFUugXAw6zQDs50IutX6xPVV
+ tCt/r6YWSHCVmSrWhD7NOjIMFkyPdLqe5wW3Yqg4mKS8lPeaHHipb8oBAXJ84LjoWkom
+ k1eQI8k3C11T6q/eZpM9KS8qY/rEp/4tEsgNuqURrVBUQ8nxrP6pZdp2yZYq8WImMJCa
+ oTue+vRMoYzJqMDhNxxJ9AJdO4EPEOgDODpTT+1fgNvd7+JLOipzLOzgKhg/HdEREFRV
+ 5ZtQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20221208; t=1687882188; x=1690474188;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=OoH/DOZFZDe6ZD+LHfFvG2TjLm3SJ3G2i0MfunKyFLs=;
- b=QbV0ZjLTSGM2YXqDfcNMkwBGJhYBnJE31soAhhbYAYJMGspAPfMctskFiM26I77Old
- 5FouElMrUtUnfWY/3FCY/vs+AR/GHvHflme0/Zk3IQpYhsI0d72OkxWhyYvgPHkgYRHi
- 4jx3eruFnYssZoI3IFHdNyM6+CdWdcEZYoSN7VonTOolvaq8ENldt6iBHGjROlNI9YfD
- Nq9i/3WmC2PDWA2H8dRNWUNG/+xKdUA1+qBhwP2Bkp12CjRSIXvRUJsNef8jrmlg18JH
- MA0WV+cgU0DYcfxaVfn8pVXx0Axpi+BT98opJ0oH7ShGmNUNqXLvn+meRooIjXdbxL2G
- QnoA==
-X-Gm-Message-State: AC+VfDzdZx8tpZdCye4Qylo+q2F7yPrJgZwCmVZ459rsAGotmzgvtV5P
- ibs8Q6RhrSvSeJpJibiqV8Ujqg==
-X-Google-Smtp-Source: ACHHUZ4tODe2u9L9D4/sqnZJ5dx3/Fd/bisKwCXYS6xZp8NulWJieYAFkfYHSrD44BdRCrAC9RN2sQ==
-X-Received: by 2002:adf:da45:0:b0:312:8e63:71c with SMTP id
- r5-20020adfda45000000b003128e63071cmr15491827wrl.32.1687882188292; 
+ bh=cf5ti9xDtG3D2s3Jcs/OJus8Ga0lob29HRcRChdiZSs=;
+ b=gfYaYNQhZFcX8Aqk8Xa13IKkGX2mfXjQJoYExwi5Bu0R1aOLkrHwRyNOJBRrmlCsOn
+ cL15+/Zm/Dt15onSmkxTSweq4/RKKnphgpnZ67dbksrCWk7dSGdOXZSWrQh0WkAYCmxC
+ LmkBweAvI7ZpLfN9uy/V8Kdx4getZxMzezXSSC0Tj2MNUJiOaOn212e58E6VqLqWvbAR
+ twAsjAOMg23UbemaWHl6OkJgx1LnqB2KyqI/1Gv4JFfrAFmcM9EOBkqdjT3docNRV7vM
+ 5HUsPibiKcHEfX/0zmHRNksf3KV0YoXgkuFyV678iBPhOE6A+KVIl09MZ6fyTfUbukWm
+ DrxA==
+X-Gm-Message-State: AC+VfDx+yMGJMZys2wOiu34PDxNStb1RqLB8/oRx356LvqLlwCbvmQar
+ oTK878M3uDd3DC7UxpqVgin0EA==
+X-Google-Smtp-Source: ACHHUZ62C090FJDDn+BYBmn7eAXqWwYUXs7bXDsWjlGApbu+gQQEQOJHsPCPsdwMmutL9kUOGn43QQ==
+X-Received: by 2002:adf:f787:0:b0:311:f77:6a91 with SMTP id
+ q7-20020adff787000000b003110f776a91mr26071425wrp.31.1687882188070; 
  Tue, 27 Jun 2023 09:09:48 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- l7-20020a5d4bc7000000b003113dc327fbsm10833942wrt.22.2023.06.27.09.09.45
+ bf11-20020a0560001ccb00b003062b2c5255sm10812234wrb.40.2023.06.27.09.09.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 27 Jun 2023 09:09:46 -0700 (PDT)
 Received: from zen.lan (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id D88D01FFC5;
+ by zen.linaroharston (Postfix) with ESMTP id F25DE1FFBC;
  Tue, 27 Jun 2023 17:09:44 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -82,17 +82,17 @@ Cc: Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Laurent Vivier <lvivier@redhat.com>, Qiuhao Li <Qiuhao.Li@outlook.com>,
  Mahmoud Mandour <ma.mandourr@gmail.com>, Riku Voipio <riku.voipio@iki.fi>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH v3 09/36] tests/docker: add test-fuzz
-Date: Tue, 27 Jun 2023 17:09:16 +0100
-Message-Id: <20230627160943.2956928-10-alex.bennee@linaro.org>
+Subject: [PATCH v3 10/36] Makefile: add lcitool-refresh to UNCHECKED_GOALS
+Date: Tue, 27 Jun 2023 17:09:17 +0100
+Message-Id: <20230627160943.2956928-11-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230627160943.2956928-1-alex.bennee@linaro.org>
 References: <20230627160943.2956928-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -115,69 +115,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Running the fuzzer requires some hoop jumping and some problems only
-show up in containers. This basically replicates the build-oss-fuzz
-job from our CI so we can run in the same containers we use in CI.
+This is yet another make target you usually run in the top level of
+the source directory.
 
-Message-Id: <20230626215926.2522656-10-alex.bennee@linaro.org>
-Reviewed-by: Alexander Bulekov <alxndr@bu.edu>
+Message-Id: <20230623122100.1640995-12-alex.bennee@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-
 ---
-v3
- - checkpatch cleanups
----
- MAINTAINERS            |  1 +
- tests/docker/test-fuzz | 28 ++++++++++++++++++++++++++++
- 2 files changed, 29 insertions(+)
- create mode 100755 tests/docker/test-fuzz
+ Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index e07746ac7d..3cfc389db0 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -3106,6 +3106,7 @@ R: Qiuhao Li <Qiuhao.Li@outlook.com>
- S: Maintained
- F: tests/qtest/fuzz/
- F: tests/qtest/fuzz-*test.c
-+F: tests/docker/test-fuzz
- F: scripts/oss-fuzz/
- F: hw/mem/sparse-mem.c
- F: docs/devel/fuzzing.rst
-diff --git a/tests/docker/test-fuzz b/tests/docker/test-fuzz
-new file mode 100755
-index 0000000000..7e506ae1f6
---- /dev/null
-+++ b/tests/docker/test-fuzz
-@@ -0,0 +1,28 @@
-+#!/bin/bash -e
-+#
-+# Compile and check with oss-fuzz.
-+#
-+# Copyright (c) 2023 Linaro Ltd.
-+#
-+# Authors:
-+#  Alex Bennée <alex.bennee@linaro.org>
-+#
-+# SPDX-License-Identifier: GPL-2.0-or-later
-+
-+. common.rc
-+
-+requires_binary clang
-+
-+# the build script runs out of $src so we need to copy across
-+cd "$BUILD_DIR"
-+cp -a $QEMU_SRC .
-+cd src
-+mkdir build-oss-fuzz
-+export LSAN_OPTIONS=suppressions=scripts/oss-fuzz/lsan_suppressions.txt
-+env CC="clang" CXX="clang++" CFLAGS="-fsanitize=address" ./scripts/oss-fuzz/build.sh
-+export ASAN_OPTIONS="fast_unwind_on_malloc=0"
-+for fuzzer in $(find ./build-oss-fuzz/DEST_DIR/ -executable -type f | grep -v slirp); do
-+        grep "LLVMFuzzerTestOneInput" ${fuzzer} > /dev/null 2>&1 || continue ;
-+        echo Testing ${fuzzer} ... ;
-+        "${fuzzer}" -runs=1 -seed=1 || exit 1 ;
-+done
+diff --git a/Makefile b/Makefile
+index 804a5681e0..5d48dfac18 100644
+--- a/Makefile
++++ b/Makefile
+@@ -28,7 +28,7 @@ quiet-command = $(quiet-@)$(call quiet-command-run,$1,$2,$3)
+ 
+ UNCHECKED_GOALS := TAGS gtags cscope ctags dist \
+     help check-help print-% \
+-    docker docker-% vm-help vm-test vm-build-%
++    docker docker-% lcitool-refresh vm-help vm-test vm-build-%
+ 
+ all:
+ .PHONY: all clean distclean recurse-all dist msi FORCE
 -- 
 2.39.2
 
