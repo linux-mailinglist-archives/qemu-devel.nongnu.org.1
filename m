@@ -2,65 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C6AA73FBA6
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 14:04:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D07173FBA5
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 14:04:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qE7QD-0008Ad-KX; Tue, 27 Jun 2023 08:03:49 -0400
+	id 1qE7QL-0008DB-HC; Tue, 27 Jun 2023 08:03:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=ApJ+=CP=kaod.org=clg@ozlabs.org>)
- id 1qE7QB-00089g-9L; Tue, 27 Jun 2023 08:03:47 -0400
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qE7QJ-0008CT-Op
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 08:03:55 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=ApJ+=CP=kaod.org=clg@ozlabs.org>)
- id 1qE7Q8-0007j6-Hz; Tue, 27 Jun 2023 08:03:47 -0400
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4Qr3Jq0cblz4wqV;
- Tue, 27 Jun 2023 22:03:39 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Qr3Jj699jz4wZv;
- Tue, 27 Jun 2023 22:03:33 +1000 (AEST)
-Message-ID: <ce56f339-461f-0854-cd4e-03ec750d6770@kaod.org>
-Date: Tue, 27 Jun 2023 14:03:30 +0200
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qE7QI-0007rv-AA
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 08:03:55 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1687867433;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=wiCYqtda/6YCcYnUC2sP9jMKLvHDPYKWY72i0MyCwcc=;
+ b=cuRnS10cJUqye7EAsbjxEW68z2TEX3nurZ+14ZYA6ac4tB/7aJStqMXgED75bOkiIPe1Ze
+ v6ANx0ANYG7RyPmKmXg/GilwZtKprwsyyEWlPG1lAemhwJd8MC+FFMbg7beR4Ok4LBWQk6
+ r4yOIRok0VI762/DvHa+20rW/2Hkd0w=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-352-DskaassONOGloB84xHBnAg-1; Tue, 27 Jun 2023 08:03:51 -0400
+X-MC-Unique: DskaassONOGloB84xHBnAg-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-3f9b5cc7298so19430685e9.3
+ for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 05:03:51 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1687867430; x=1690459430;
+ h=mime-version:message-id:date:reply-to:user-agent:references
+ :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=wiCYqtda/6YCcYnUC2sP9jMKLvHDPYKWY72i0MyCwcc=;
+ b=hsO6KZtcP6z/GfhmSMGgJOVNO3QU+urwNkDMMVYws7nFpLcfstmpWvDXvdvc5CNwZ9
+ uZQBblFH0yWewvnrWtY6gKbqN1cWkTmGSyBd4IO8suB1B+UgywPo307glYj3ugeVXBJM
+ LMX+nx1wMWlz5ECNeEIW5rb15qc1YN+Ot2BeRdMK/+uFScOnw9BfmywpGyVjQN8IMHry
+ VQ3l8GwKPq/dJwDb19MAjF4Ygu/FhO5pLiAtR7V+NKdaGDrqlxTzszEPmDzpT5Tg7vT6
+ mu5EfXTcOvROCzyhYmuonOGYssF5MRkW99XV1uvLofrMH2wSwAD6yN6eR7Zkj6OoMhnq
+ VEEg==
+X-Gm-Message-State: AC+VfDyw5EBfJAoPb4r9VBtcu9zVtjmvRY2hY6bp8z5ISVAhqT8vd2US
+ /xUC3u78TyjzC9FKEpLDI0AAxz49wUGEc9O43ESJKvmdPjiV1KgtGmGpZgNAv2nIibGzKIoJi8X
+ ORTHOvyXT49TLHeE=
+X-Received: by 2002:a05:600c:21d1:b0:3fa:a6ce:54ad with SMTP id
+ x17-20020a05600c21d100b003faa6ce54admr3105035wmj.6.1687867430416; 
+ Tue, 27 Jun 2023 05:03:50 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6eRQ13eF2x5JIGqbu3K5jCxF1PmvC2bg///dzbg68GrEk2XdynvMTYQalFgWlOGsD4C2LCjQ==
+X-Received: by 2002:a05:600c:21d1:b0:3fa:a6ce:54ad with SMTP id
+ x17-20020a05600c21d100b003faa6ce54admr3105016wmj.6.1687867430108; 
+ Tue, 27 Jun 2023 05:03:50 -0700 (PDT)
+Received: from redhat.com (static-92-120-85-188.ipcom.comunitel.net.
+ [188.85.120.92]) by smtp.gmail.com with ESMTPSA id
+ m6-20020a7bce06000000b003f733c1129fsm1819713wmc.33.2023.06.27.05.03.49
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 27 Jun 2023 05:03:49 -0700 (PDT)
+From: Juan Quintela <quintela@redhat.com>
+To: Thomas Huth <thuth@redhat.com>
+Cc: qemu-devel@nongnu.org,  qemu-s390x@nongnu.org,  Christian Borntraeger
+ <borntraeger@linux.ibm.com>,  Eric Farman <farman@linux.ibm.com>,  Claudio
+ Imbrenda <imbrenda@linux.ibm.com>,  cohuck@redhat.com
+Subject: Re: [PATCH] pc-bios/s390-ccw: Get rid of the the __u* types
+In-Reply-To: <20230627114101.122231-1-thuth@redhat.com> (Thomas Huth's message
+ of "Tue, 27 Jun 2023 13:41:01 +0200")
+References: <20230627114101.122231-1-thuth@redhat.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+Date: Tue, 27 Jun 2023 14:03:48 +0200
+Message-ID: <87ttutaz8b.fsf@secure.mitica>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH 0/4] target/ppc: Catch invalid real address accesses
-Content-Language: en-US
-To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clegoate@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, Nicholas Piggin <npiggin@gmail.com>
-Cc: qemu-ppc@nongnu.org, qemu-devel@nongnu.org,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- BALATON Zoltan <balaton@eik.bme.hu>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
- Frederic Barrat <frederic.barrat@fr.ibm.com>
-References: <20230623081953.290875-1-npiggin@gmail.com>
- <CAFEAcA_Brf-R12t+DKNAoygqgC-qjKJ3Wiz4ULjGHOo8_vPovw@mail.gmail.com>
- <47197a73-b106-47d5-9502-393a6bdc9945@redhat.com>
- <966b3fce-512d-f122-e76e-efded0db9731@kaod.org>
- <cefdeb3f-3442-ede4-3e5d-6a4a99b38293@ilande.co.uk>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <cefdeb3f-3442-ede4-3e5d-6a4a99b38293@ilande.co.uk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
- envelope-from=SRS0=ApJ+=CP=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -40
-X-Spam_score: -4.1
-X-Spam_bar: ----
-X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, NICE_REPLY_A=-0.103,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -73,85 +98,21 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
->> Mac OS 9.2 fails to boot with a popup saying :
->>          Sorry, a system error occured.
->>          "Sound Manager"
->>            address error
->>          To temporarily turn off extensions, restart and
->>          hold down the shift key
->>
->>
->> Darwin and Mac OSX look OK.
-> 
-> My guess would be that MacOS 9.2 is trying to access the sound chip registers which isn't implemented in QEMU for the moment (I have a separate screamer branch available, but it's not ready for primetime yet). In theory they shouldn't be accessed at all because the sound device isn't present in the OpenBIOS device tree, but this is all fairly old stuff.
-> 
-> Does implementing the sound registers using a dummy device help at all?
+Thomas Huth <thuth@redhat.com> wrote:
+> Using types starting with double underscores should be avoided since these
+> names are marked as reserved by the C standard. The corresponding Linux
+> kernel header file has also been changed accordingly a long time ago:
+>
+>  https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/diff/drivers/s390/cio/cio.h?id=cd6b4f27b9bb2a
+>
+> So we should get rid of the __u* in the s390-ccw bios now finally, too.
+>
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
 
-Nope. OS 9 loops earlier (little black/white disk spinning).
-
-Thanks,
-
-C.
-
-
-
-  
-> 
-> 
-> diff --git a/hw/misc/macio/macio.c b/hw/misc/macio/macio.c
-> index 265c0bbd8d..e55f938da7 100644
-> --- a/hw/misc/macio/macio.c
-> +++ b/hw/misc/macio/macio.c
-> @@ -26,6 +26,7 @@
->   #include "qemu/osdep.h"
->   #include "qapi/error.h"
->   #include "qemu/module.h"
-> +#include "hw/misc/unimp.h"
->   #include "hw/misc/macio/cuda.h"
->   #include "hw/pci/pci.h"
->   #include "hw/ppc/mac_dbdma.h"
-> @@ -94,6 +95,7 @@ static bool macio_common_realize(PCIDevice *d, Error **errp)
->   {
->       MacIOState *s = MACIO(d);
->       SysBusDevice *sbd;
-> +    DeviceState *dev;
-> 
->       if (!qdev_realize(DEVICE(&s->dbdma), BUS(&s->macio_bus), errp)) {
->           return false;
-> @@ -102,6 +104,14 @@ static bool macio_common_realize(PCIDevice *d, Error **errp)
->       memory_region_add_subregion(&s->bar, 0x08000,
->                                   sysbus_mmio_get_region(sbd, 0));
-> 
-> +    dev = qdev_new(TYPE_UNIMPLEMENTED_DEVICE);
-> +    qdev_prop_set_string(dev, "name", "screamer");
-> +    qdev_prop_set_uint64(dev, "size", 0x1000);
-> +    sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
-> +    sbd = SYS_BUS_DEVICE(dev);
-> +    memory_region_add_subregion(&s->bar, 0x14000,
-> +                                sysbus_mmio_get_region(sbd, 0));
-> +
->       qdev_prop_set_uint32(DEVICE(&s->escc), "disabled", 0);
->       qdev_prop_set_uint32(DEVICE(&s->escc), "frequency", ESCC_CLOCK);
->       qdev_prop_set_uint32(DEVICE(&s->escc), "it_shift", 4);
-> diff --git a/include/hw/misc/macio/macio.h b/include/hw/misc/macio/macio.h
-> index 86df2c2b60..1894178a68 100644
-> --- a/include/hw/misc/macio/macio.h
-> +++ b/include/hw/misc/macio/macio.h
-> @@ -109,6 +109,7 @@ struct MacIOState {
->       PMUState pmu;
->       DBDMAState dbdma;
->       ESCCState escc;
-> +    MemoryRegion screamer;
->       uint64_t frequency;
->   };
-> 
-> 
-> 
-> ATB,
-> 
-> Mark.
+Reviewed-by: Juan Quintela <quintela@redhat.com>
 
 
