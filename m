@@ -2,81 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3237273F7FD
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 10:59:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0C7173F80D
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 11:03:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qE4X5-00050q-FX; Tue, 27 Jun 2023 04:58:43 -0400
+	id 1qE4an-0006Lz-JF; Tue, 27 Jun 2023 05:02:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qE4X2-00050d-O1
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 04:58:40 -0400
-Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qE4X1-0008QR-4Y
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 04:58:40 -0400
-Received: by mail-ej1-x630.google.com with SMTP id
- a640c23a62f3a-98bcc533490so514606666b.0
- for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 01:58:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687856317; x=1690448317;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=lTkFsMFL8CFY8Jn/2f8V7sFGv37JQm4tx8kMvD2VQxI=;
- b=qjx/+fct5ogr6kV6RLuKLwVT+31ygDqUCKPqvzA+nobBK7cOTItwjZZnNxbN49fn+A
- mpUcdhZCUzN2/bioOi7K0QiMSSxJbhBRN0WvkW7tjaYVPEe9BUx0nQsrLW05qFRdxuLx
- och0Hf+zyeTL0zyrqiSO4m8SgMIRX8/nXD/YX7fkUQ4mRSsm2oejOHtvYYMQNwqb35HC
- rtC2VUMYM1wQsmdyFy3tzVcBOGi16g0Up3GwcppDJLJDvUYeOTk4KeMwGImXAzMoMUQv
- fMAlWCfn2csuKZEeyWvVQAKCAoKwirv6Qj35lV1r2fdwTxUeyT4DD85i/tjWfYrBPsMq
- wQ/A==
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1qE4al-0006Ln-FU
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 05:02:32 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1qE4aj-0000j2-Pg
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 05:02:31 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1687856548;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Xeu3pvJsdFTo5dxZbtJwgs+ZMWREuP96B9eVu7oMbiI=;
+ b=aHlYXHik860KMkS19aOuBLLfvQIQnay4GlqB0zXjUuqJYp2273z/eaLvdm8+3ChUmL5HWw
+ O4bRrF9UtLLG7RQ1ZZRb5Fzn+46ufnVQx+CjhXvvWd7V5sAw7lM+s/ZrkLrfqsSAyPTMnb
+ c55JX93D1N0LwTRbNUA2AxdJ8nKWKT4=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-550-cEEJC-JyP_uDp9moSbcHOw-1; Tue, 27 Jun 2023 05:02:27 -0400
+X-MC-Unique: cEEJC-JyP_uDp9moSbcHOw-1
+Received: by mail-ed1-f70.google.com with SMTP id
+ 4fb4d7f45d1cf-51bfc9242fdso2980385a12.1
+ for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 02:02:26 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687856317; x=1690448317;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=lTkFsMFL8CFY8Jn/2f8V7sFGv37JQm4tx8kMvD2VQxI=;
- b=gaFHlDgiFqUzmHXbN3wP4MeclDyj++8qaiNR8a5q1KmK32/ipzmshydHeHXzU6om3V
- BU3V5LZTrMgKAzx7Cxcc0Q0CypCWK7iu4hwzXCA/aHclhjnCNAh6/47F0fUqwJLNgT2f
- QO+DgAk3iVkPN5kgS5ETN4vqqoxehYETBxr565kgyJFk1E6hz1eiV6OxxvwIw95PjmOh
- En8mGgnaAPmldUn9RfLDILs94nJohjlONRGXdGvIUws6PNX3ljpTuVvz7ytjXCFzF9Ud
- Oph5/YDYkMORoaYaVBTp+RouZ/H0j4tlJ67g6khyCUNRQCWve9xxELl+LFNdiqWkpy08
- z8xw==
-X-Gm-Message-State: AC+VfDxq6TWt71FiMKFZj0v9Cvi8YERdYEtM149SZw+CVkgZcB0QoxvI
- 9Mvy+pnJMn++RX5v/tLrxBKZAU5+Dtv49bd289o=
-X-Google-Smtp-Source: ACHHUZ5xhJvGRAiANWreS7bFUNotSS0zUaddKCv8ayB4kk75wXJIiwkS9t06Gy1ioHINR8lkRkwfDA==
-X-Received: by 2002:a17:907:da1:b0:992:1bb2:61d6 with SMTP id
- go33-20020a1709070da100b009921bb261d6mr983316ejc.8.1687856317159; 
- Tue, 27 Jun 2023 01:58:37 -0700 (PDT)
-Received: from [192.168.69.115] ([176.187.199.204])
- by smtp.gmail.com with ESMTPSA id
- k21-20020a170906055500b009890e402a6bsm4234670eja.221.2023.06.27.01.58.36
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 27 Jun 2023 01:58:36 -0700 (PDT)
-Message-ID: <1a3fefd1-fb3a-1e38-8938-ff3de9cc4dc8@linaro.org>
-Date: Tue, 27 Jun 2023 10:58:34 +0200
+ d=1e100.net; s=20221208; t=1687856545; x=1690448545;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Xeu3pvJsdFTo5dxZbtJwgs+ZMWREuP96B9eVu7oMbiI=;
+ b=IZjsrsPNaHlcHD0qbcYep2RGqivP27Ss9Lx+rIy+6EVZXGXp3Z/H9P3wcdqX2PiaKh
+ tMZaFv8JjugJkPFMhnfev0sYckSk/E8zRpa1Nqprm4AzLKlcm88SgcIWLaf9+WXZQuxJ
+ cFD6+/TUj3EwvqTzUrT26UKkPTWNSkVcZBE3OObORUvrvm1e7Vc7F8a6XzQZ6t+uUHLO
+ 80+RkJI964sg+0+Kh1EeBMgfHoRfX4Clvhl1mE+XP/8g0COBo0E48+eiI1L6nnaEKesO
+ tPrLt8a//jFbSoTVFb7zUdDOPbst4crclgqlMKRd60zBwOlMutjUEjNyLeGLHqpaOFdf
+ +YAg==
+X-Gm-Message-State: AC+VfDzYoJiPrFK0XWqqO1AOB/M13bqLyvNJsBX7DU2hnKtelaf7EM9b
+ 0Fc08HMiv287eZmhjkoKYlGvFwEM0tn6dIdaBrsMPSuBTej/Al94pNnvgbw5wN7szgcZMFrkR0M
+ FSVBO16E4Atii33E=
+X-Received: by 2002:aa7:dc1a:0:b0:50b:c630:a956 with SMTP id
+ b26-20020aa7dc1a000000b0050bc630a956mr20046860edu.17.1687856545571; 
+ Tue, 27 Jun 2023 02:02:25 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5j+HJS7qbcsQ5vyXjB1kBm/QEwYdEwI8IrShn5U6peat9c1Cv/+/lTg3AZ4XA4X+PIa40Dzg==
+X-Received: by 2002:aa7:dc1a:0:b0:50b:c630:a956 with SMTP id
+ b26-20020aa7dc1a000000b0050bc630a956mr20046845edu.17.1687856545328; 
+ Tue, 27 Jun 2023 02:02:25 -0700 (PDT)
+Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
+ [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
+ c11-20020aa7c74b000000b0051d96edccc7sm2257890eds.46.2023.06.27.02.02.24
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 27 Jun 2023 02:02:24 -0700 (PDT)
+Date: Tue, 27 Jun 2023 11:02:24 +0200
+From: Igor Mammedov <imammedo@redhat.com>
+To: Ani Sinha <anisinha@redhat.com>
+Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>, Marcel
+ Apfelbaum <marcel.apfelbaum@gmail.com>, jusual@redhat.com
+Subject: Re: [RESEND PATCH v5 5/5] hw/pci: ensure PCIE devices are plugged
+ into only slot 0 of PCIE port
+Message-ID: <20230627110224.36fa1b06@imammedo.users.ipa.redhat.com>
+In-Reply-To: <20230626161244.4145-6-anisinha@redhat.com>
+References: <20230626161244.4145-1-anisinha@redhat.com>
+ <20230626161244.4145-6-anisinha@redhat.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.12.0
-Subject: Re: [PATCH v2 3/8] target/sparc: Drop inline markers from translate.c
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: mark.cave-ayland@ilande.co.uk
-References: <20230621180607.1516336-1-richard.henderson@linaro.org>
- <20230621180607.1516336-4-richard.henderson@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230621180607.1516336-4-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::630;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x630.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -93,18 +103,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 21/6/23 20:06, Richard Henderson wrote:
-> Let the compiler decide about inlining.
+On Mon, 26 Jun 2023 21:42:44 +0530
+Ani Sinha <anisinha@redhat.com> wrote:
 
-Should we clean that automatically with scripts and forbid via
-checkpatch?
+> PCI Express ports only have one slot, so PCI Express devices can only be
+> plugged into slot 0 on a PCIE port. Enforce it.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+btw, previously you mentioned ARI.
+So if we turn it on, wouldn't this patch actually become regression?
 
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> 
+> CC: jusual@redhat.com
+> CC: imammedo@redhat.com
+> Resolves: https://bugzilla.redhat.com/show_bug.cgi?id=2128929
+> Signed-off-by: Ani Sinha <anisinha@redhat.com>
+> Reviewed-by: Julia Suvorova <jusual@redhat.com>
 > ---
->   target/sparc/translate.c | 237 ++++++++++++++++++---------------------
->   1 file changed, 111 insertions(+), 126 deletions(-)
-
+>  hw/pci/pci.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
+> 
+> diff --git a/hw/pci/pci.c b/hw/pci/pci.c
+> index bf38905b7d..426af133b0 100644
+> --- a/hw/pci/pci.c
+> +++ b/hw/pci/pci.c
+> @@ -64,6 +64,7 @@ bool pci_available = true;
+>  static char *pcibus_get_dev_path(DeviceState *dev);
+>  static char *pcibus_get_fw_dev_path(DeviceState *dev);
+>  static void pcibus_reset(BusState *qbus);
+> +static bool pcie_has_upstream_port(PCIDevice *dev);
+>  
+>  static Property pci_props[] = {
+>      DEFINE_PROP_PCI_DEVFN("addr", PCIDevice, devfn, -1),
+> @@ -1189,6 +1190,11 @@ static PCIDevice *do_pci_register_device(PCIDevice *pci_dev,
+>                     name);
+>  
+>         return NULL;
+> +    } else if (pcie_has_upstream_port(pci_dev) && PCI_SLOT(devfn)) {
+> +        error_setg(errp, "PCI: slot %d is not valid for %s,"
+> +                   " parent device only allows plugging into slot 0.",
+> +                   PCI_SLOT(devfn), name);
+> +        return NULL;
+>      }
+>  
+>      pci_dev->devfn = devfn;
 
 
