@@ -2,166 +2,107 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDE4D73F8B6
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 11:28:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6FDD73F8CC
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 11:30:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qE4z7-0003fm-70; Tue, 27 Jun 2023 05:27:41 -0400
+	id 1qE51e-00052i-Ct; Tue, 27 Jun 2023 05:30:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <weijiang.yang@intel.com>)
- id 1qE4z4-0003d2-HL
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 05:27:38 -0400
-Received: from mga12.intel.com ([192.55.52.136])
+ (Exim 4.90_1) (envelope-from <imbrenda@linux.ibm.com>)
+ id 1qE51M-00050B-E5; Tue, 27 Jun 2023 05:30:00 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <weijiang.yang@intel.com>)
- id 1qE4z0-0006No-So
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 05:27:38 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1687858054; x=1719394054;
- h=message-id:date:subject:to:cc:references:from:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=0AR2PmQw68vTNHPnCWtopbF+saq8Y/b19y3YAH3AGaA=;
- b=L7Ze7bN65SV72la+Wkqm019ehkB9T60erry49l9zD2N/nGYmqmXG/bdm
- FbQVJlBMMy4s0H7NDC20vhf3+1KSV5K1s+yuRmxXhkOiBdSR9IXFlF0Jx
- RsQF7VnJAkYr2N5QIb4qHFitBBZv38bFbd/TiP98+PfVxtanhQuashsgn
- mEgMRu12yVZvjKATDkkFGxbTSJzoQhy38CrNN+7rtTXpw2QSOmy7a8ZDf
- ipFDCnvvLJdhWhAAUBCYETPytOD+BVrpWeLtVWVPTHRi044efr34DnT91
- jNnRH3J9CtmbT143ACr7dP2Ew39xC3BfIQzVpQLtsJ3ZLnXhyTit9vPdL Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10753"; a="341112674"
-X-IronPort-AV: E=Sophos;i="6.01,162,1684825200"; d="scan'208";a="341112674"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
- by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Jun 2023 02:26:54 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10753"; a="746133753"
-X-IronPort-AV: E=Sophos;i="6.01,162,1684825200"; d="scan'208";a="746133753"
-Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
- by orsmga008.jf.intel.com with ESMTP; 27 Jun 2023 02:26:52 -0700
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Tue, 27 Jun 2023 02:26:53 -0700
-Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27 via Frontend Transport; Tue, 27 Jun 2023 02:26:53 -0700
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (104.47.55.100)
- by edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.23; Tue, 27 Jun 2023 02:26:50 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=kjnzk2I1xGHybBB8Tb41cGINjDQ91r/C8tiBwqxKuh56d4axgw21IKDihn8/bCNGlXFBodKzNzEz4eSOFKBxgSoK6h4IlE7qESSu0pGSVDJxYfIoW5fwwT0jEbFI6NeJhWr5+HWcHY9jpZWC9hTl+yiTlZFdop1jQ7bh8dLsXsL0Dfs0NEaTXY83AIUZjWv7hY2xbaFeGr1C7hVSXIRYZSIBhbPoNIJBULkKFrc5RDSk8xF8IEGnp+sCNbg6pe0kjVOhpmSSqWk1VOGZYB9NMcum4w/J9ffAi4+TWcmWuPVLCRnCYrMLARLJrr3kQhonx3lHqYLudX2N8cMiGe9/iw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ODHqgUOVW5tDmpyhYjnKLbENDpzCJyiohv8+6tN9fyE=;
- b=daKRdUlqHE4PUJ0cpHzSihEgHFuNnv+/TB9XrscSa6kNxD7rCsqKYL0iwgLkeVjYLnerJph1tO9mxemXj9lk8Cbq8jKFUyFr3eNVjtPILVs2McEBIPow1fAEdePRw0mlXaaXX7dgErdFWJUhyTmaoWEL87ElvorDWnwVuylgCDcYXD05heyZSevHnka9/RQDw/jskVGw9NRRHj6SDafxWxpaufvOvqBSWrV4WfbxDeThSJFHbcgqGa+Yyqy3J1HToON0nBa86YQN9QqJTFSGBpuWXRvKTyqZD1IW61y9t8eyUbiYr1l1WzhXEQ142RvxmYBZWSsWJAIzNrGybNMiqQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH0PR11MB4965.namprd11.prod.outlook.com (2603:10b6:510:34::7)
- by DM4PR11MB8228.namprd11.prod.outlook.com (2603:10b6:8:180::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6521.26; Tue, 27 Jun
- 2023 09:26:48 +0000
-Received: from PH0PR11MB4965.namprd11.prod.outlook.com
- ([fe80::4707:8818:a403:f7a9]) by PH0PR11MB4965.namprd11.prod.outlook.com
- ([fe80::4707:8818:a403:f7a9%6]) with mapi id 15.20.6521.023; Tue, 27 Jun 2023
- 09:26:48 +0000
-Message-ID: <c19d87ed-387c-93a4-7b15-ba94e6763402@intel.com>
-Date: Tue, 27 Jun 2023 17:26:38 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH v2 1/3] i386/cpuid: Decrease cpuid_i when skipping CPUID
- leaf 1F
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-CC: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "qemu-devel@nongnu.org"
- <qemu-devel@nongnu.org>, Marcelo Tosatti <mtosatti@redhat.com>, Paolo Bonzini
- <pbonzini@redhat.com>
-References: <20230613131929.720453-1-xiaoyao.li@intel.com>
- <20230613131929.720453-2-xiaoyao.li@intel.com>
-Content-Language: en-US
-From: "Yang, Weijiang" <weijiang.yang@intel.com>
-In-Reply-To: <20230613131929.720453-2-xiaoyao.li@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SI2PR06CA0004.apcprd06.prod.outlook.com
- (2603:1096:4:186::20) To PH0PR11MB4965.namprd11.prod.outlook.com
- (2603:10b6:510:34::7)
+ (Exim 4.90_1) (envelope-from <imbrenda@linux.ibm.com>)
+ id 1qE51K-0006nU-F5; Tue, 27 Jun 2023 05:30:00 -0400
+Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 35R9Gdl9004026; Tue, 27 Jun 2023 09:29:56 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=date : from : to : cc :
+ subject : message-id : in-reply-to : references : mime-version :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=x606jwniIKW2Tcq8Fz6dT8e4QPuMoks1nFu47AIpEmU=;
+ b=rHQ/xVZWkmLkYKTw7mAT8LwF/LVYjfoinZM0nsKzMqn87Z00PlISgfxPT+ig03It6d0D
+ yrVM5K78GOwtRstjqZxzaNMPk3vBMDNL1pn2Od7tj9ZlQV3RuRTw+puFo2yY2YAiy+wY
+ 1SfmoLtRjuaHXCJcMmVrILPICbKdmaCfc0MBdECnH+HlPYMnCZ6ylPF5hDp4NdLVkssm
+ DDDcjtUO+++g6mqpsbCfC7h4vdhiIvyncEQY+rIvzhzy6XLo0ySCvMy9fHIxmLx1o9ez
+ SOPqOoiJKp+DJzOezqNXPCM6SLbT/wlVluT+D9fumDL0otJD2qI6HIQFWzpYBeQoOTNH Mg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rfw0d0a4s-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 27 Jun 2023 09:29:56 +0000
+Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 35R9K2Ex015625;
+ Tue, 27 Jun 2023 09:29:56 GMT
+Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.108])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rfw0d0a4a-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 27 Jun 2023 09:29:55 +0000
+Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
+ by ppma05fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 35R4mKxS010013;
+ Tue, 27 Jun 2023 09:29:54 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+ by ppma05fra.de.ibm.com (PPS) with ESMTPS id 3rdr459c0e-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 27 Jun 2023 09:29:53 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com
+ [10.20.54.102])
+ by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 35R9ToEG24707756
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 27 Jun 2023 09:29:50 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 726F220040;
+ Tue, 27 Jun 2023 09:29:50 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 30A112004B;
+ Tue, 27 Jun 2023 09:29:50 +0000 (GMT)
+Received: from p-imbrenda (unknown [9.152.224.66])
+ by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Tue, 27 Jun 2023 09:29:50 +0000 (GMT)
+Date: Tue, 27 Jun 2023 11:27:14 +0200
+From: Claudio Imbrenda <imbrenda@linux.ibm.com>
+To: Thomas Huth <thuth@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-s390x@nongnu.org, Christian Borntraeger
+ <borntraeger@linux.ibm.com>, mrezanin@redhat.com, Richard Henderson
+ <richard.henderson@linaro.org>, =?UTF-8?B?Q8OpZHJpYw==?= Le Goater
+ <clegoate@redhat.com>, Janosch Frank <frankja@linux.ibm.com>, "Jason J .
+ Herne" <jjherne@linux.ibm.com>, Marc Hartmayer <mhartmay@linux.ibm.com>,
+ Eric Farman <farman@linux.ibm.com>
+Subject: Re: [PATCH v2 1/4] pc-bios/s390-ccw: Fix indentation in start.S
+Message-ID: <20230627112714.2b7e263f@p-imbrenda>
+In-Reply-To: <20230627074703.99608-2-thuth@redhat.com>
+References: <20230627074703.99608-1-thuth@redhat.com>
+ <20230627074703.99608-2-thuth@redhat.com>
+Organization: IBM
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR11MB4965:EE_|DM4PR11MB8228:EE_
-X-MS-Office365-Filtering-Correlation-Id: ed32a058-1f07-44c4-fdbb-08db76f0a19a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: bcTeqDN0/5xLZcrXjIBudpmv67Hm/Ve3g0KqyVkojgLz4oNZoSqB0LQpPIOlPQNf42ZAh4ZHsjQYiHnoweWrr/MIWBR4nRjqwtJSBh/ylK7JDvxI70ZKJRRm0pnAb+3ZMggqOXLvvBa5JHHanQ7n7TJuwd7NTtPR2jhlx+NQzSvfspan7+nbvBFizqR8bMPrn9126ByRfIT+se6gW7HcFLIPVgThwCeS9cRciV8DXGSwTSQsIMM3wVAmkzfp4xLptVL01JldQ4tyYt8s6qBLEGJhs4qmvp79JsZ7zEK88f/xaqh+k87N9i4HnULm6qtopGRetiFQ6hAgsBo9y/jcyAszTCTyqRV8YPLwZwg4lE15y9G8C7pF8S5qvUk3WcgY6vCsbh9FRWbj0iGHFMMe1nAZ7KtgrY7hqwpfeKgmXmZAjSZGkD419jvWloQUjgSERwGcBHCHAOJIb/f3ScWO3YuP01H1iOea2nisUgbe50nV9SaYNhYkYaidpcaLXJFPlRV3yCjkWHxyzM6ousUlEN1TVtUDF2x3/W2QzHKcz7Qz/B8b/z4HMGBys7ZtaTJ16iIsCALAlZ5hMAlmK1n3zUwGjsF71dzoJykP2OYItxmAf26JvGL6oZY7TjwBLqjUZRwto0P4pANFJw+WEU6FRA==
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:PH0PR11MB4965.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230028)(136003)(366004)(376002)(39860400002)(396003)(346002)(451199021)(2906002)(4744005)(186003)(6486002)(82960400001)(38100700002)(2616005)(6666004)(6506007)(6512007)(53546011)(26005)(37006003)(31696002)(41300700001)(54906003)(86362001)(316002)(478600001)(36756003)(66556008)(4326008)(66946007)(66476007)(6636002)(31686004)(5660300002)(8676002)(8936002)(6862004)(43740500002)(45980500001);
- DIR:OUT; SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?VmpkUEg5UmVhakM3VmQ4OWRiUWxQNnRXT1c1S1lZdkFkc2puQXVzNnlOMlVj?=
- =?utf-8?B?Mjg3TUtrMDdrdmJHVEtacUFhYjhKc09lRUVHeXFnblRTdzlIbEd2aWtQM2RU?=
- =?utf-8?B?WmlMN3JZL2ltaDJyZExPcTRmRXdqV3orWC9NYitiZUd2Z1VHOUhNYXFVTVFX?=
- =?utf-8?B?NkxoYVFkeUtEbFpxUkd5dGg2NDZYd3BENVQwMXBTNFNsejRNSjN6SzIvTTVv?=
- =?utf-8?B?T3dTTEplbVRzdmx3WUFQWEdjSGlSVUtDTGxEb1dsZGN0N0dpa3dkeXdFc2NM?=
- =?utf-8?B?dThaZm9QTFhWcENBVExLRTFPV2RUK2VKb3VWdmF0TWdtclh2OXNlVTRZRWYv?=
- =?utf-8?B?clhXVmpyL2xUTThvZ044aGNaM2FYWVdJdVNFZGwyRUR0S1ZPSTR3aHk1TFYw?=
- =?utf-8?B?NitKL2g4RXlGblovcmF5dFh3cldFYzc5ZTVmY3Erbmgvdk5ZMm1NenJPUzQv?=
- =?utf-8?B?VkxBN2pDbkE3eWgrQTc1TUtSN0puRmNpcEtPSHJEVW1FMEE2VEVPZXJGNlFO?=
- =?utf-8?B?dGRhWENRTDRXNkdPZGEvQ1BhNGF6dHNld0dCbG9rYjVFa1k0ZUF1WUU4cXFW?=
- =?utf-8?B?TGQxVVN3aGNHMWRBRVFkbysweDhSaDR4ekJnQUtkZEl4S3F1S2UwY2N3enU3?=
- =?utf-8?B?TnVsWUxIckJvN1dCU1pkazFwQzhRQUNjM0VaLzY4SHpMemhLZEROZHZEMzFR?=
- =?utf-8?B?WUVXV0pHcnFlc0hvZFZtVGx0S2grNFNOTXBIR09rYW0xZmp6TzlxZ3dndXQz?=
- =?utf-8?B?aGFPdDNXNjVBNklVNGZVa0hhUUdVc3BNaVViRGtIZ1I0eVdSck9zTVVFUGQz?=
- =?utf-8?B?aTIvcm84OWIrdDcwY1pSWFNvcllFY1NpMWtKeU40N0t2QWs4VVYzNDlNb2o3?=
- =?utf-8?B?REZocm9WMUlFckZZQm1EZnJKT0E1QXRtMHdrcTV3clMyamVEMjcyQ0U3eDBt?=
- =?utf-8?B?YWxjV1JCaGZ6b29hOEI4RUlXZVZ0N3k2OG55N1pKY0lQZ2NFcXVDMTFSY3Qw?=
- =?utf-8?B?aUJjR0x1emZ2WmZTRUIxN3lMVG1SdXJNUEZFOHVsSmpmYm4xQUlIamtKaUdH?=
- =?utf-8?B?K0tMWnN2bXpwc0MyVEV3bzlQVFpXZ2pQUnV2b3ZYajRQNW9TYWVmNGpMY3RH?=
- =?utf-8?B?N1FCa05MSlhSbllIaTlQSzBXSVFsb0FGU04xeDhkTjBmT2huQVVFTmJpNWtL?=
- =?utf-8?B?Q0VUUXlkQWJhVDJwZ1BHQ0FlckxhTEdNN1RYdW11VlZTQms2US9vYTZlODRk?=
- =?utf-8?B?eVdqcWlHNkF3V0U4Um9ndkp1R09qaWZHRktwUWQxNk5lQ1BURU5QZEZZdzdU?=
- =?utf-8?B?UUUwMUtubWwvMG02L2RVVTlSTlJ4dmw0UTZqQWdyak1sc2taa1I0RFE2eU9B?=
- =?utf-8?B?aTNiV0tJLzZsTEpSekZJMjdkT2pUR3dZdDZhcmIxMFpVYWpSVGJHaWV5ZXlp?=
- =?utf-8?B?bGJDZXRZK2loSHJBSlo3bXVUb2hIYlZNWm9EUytkejhLWGFKMjUvdzZiN1o4?=
- =?utf-8?B?eXk4Y1d6aGkycWdNaUdpSUxoUmNEeHVnaGNWMGhrODMvbDVhb0JVbmxIUi9S?=
- =?utf-8?B?MVFpOGZTV052R3l3K0RDS3AvYTZZZERVb2RDL3pnMEt5NjZ5ZkNadGtsT1hk?=
- =?utf-8?B?dGQxWm9kMFVLQ2FjTGttU3d0dzU2WW04UWdrQnpNMHZQQzVueW8xV2psWnJn?=
- =?utf-8?B?RVE0UStreC8xbmhvK0hCTmRrVlloRkRSM1dTdks4YW5rWUgyNGljSmVCWXE4?=
- =?utf-8?B?VWVhZ25wbkY0NmVIOHREby85QjRjYkFvYlU2alVTSjFWaDk2K2d0b1ZLa2tZ?=
- =?utf-8?B?S3dkYmNTYStrZFJDaVpOV2p3RmhIdXA2Z2FFV0lGL0FqMEdKdEJCK2dPWjdX?=
- =?utf-8?B?c2phVWZuU0paSjdMSkVUdWJtdDZsNUtWaGhPNCtmYUsyMmxIaWYrTk83cXNm?=
- =?utf-8?B?WGdCZER3KzR5Q0pNTlNEZ1FLd0E4Q1pDUkV5ejNSRllpbTJWTXJFYjFlRkZ1?=
- =?utf-8?B?dWhSUnd1SFdkcjRJQmV6WGM2TFdtS2EzeHZDOG9uRk1ZQW44QjBvZW5SVzdj?=
- =?utf-8?B?b2MyOW9MdUxKakh5NlRHSXNUN2tyazlYbWk2V2tCdmdheW5vV2MvYlVGbGlG?=
- =?utf-8?B?MnNaV0JMNHFrSmFNbnFaWmR5TUxQRm5FNS9LWlRMMEZCdDVOaVE5RGZVUmNn?=
- =?utf-8?B?TGc9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: ed32a058-1f07-44c4-fdbb-08db76f0a19a
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR11MB4965.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Jun 2023 09:26:48.2795 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 5Q38DxlfRLZ/bWeuxo0LYI70a8vHUjtX8/rN4AXuKh4FYqVYOSFVCKGvjklb1mr3EXjJeVi8EDnGGXX/3mS0ug==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB8228
-X-OriginatorOrg: intel.com
-Received-SPF: pass client-ip=192.55.52.136;
- envelope-from=weijiang.yang@intel.com; helo=mga12.intel.com
-X-Spam_score_int: -44
-X-Spam_score: -4.5
-X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: qDLfMaN8IuSLA4SP42ISjcti2paIymTv
+X-Proofpoint-ORIG-GUID: TsTIqWsdhb6eC70C27yNKh4S4kW4KzeT
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-06-27_05,2023-06-26_03,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 adultscore=0
+ spamscore=0 lowpriorityscore=0 impostorscore=0 priorityscore=1501
+ bulkscore=0 mlxlogscore=999 clxscore=1015 mlxscore=0 malwarescore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2305260000 definitions=main-2306270086
+Received-SPF: pass client-ip=148.163.158.5;
+ envelope-from=imbrenda@linux.ibm.com; helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -177,38 +118,206 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Tue, 27 Jun 2023 09:47:00 +0200
+Thomas Huth <thuth@redhat.com> wrote:
 
-On 6/13/2023 9:19 PM, Xiaoyao Li wrote:
-> Decrease array index cpuid_i when CPUID leaf 1F is skipped, otherwise it
-> will get an all zero'ed CPUID entry with leaf 0 and subleaf 0. It
-> conflicts with correct leaf 0.
+> start.S is currently indented with a mixture of spaces and tabs, which
+> is quite ugly. QEMU coding style says indentation should be 4 spaces,
+> and this is also what we are using in the assembler files in the
+> tests/tcg/s390x/ folder already, so let's adjust start.S accordingly.
+>=20
+> Reviewed-by: C=C3=A9dric Le Goater <clg@redhat.com>
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
 
-Maybe change the commit log like this:
+Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
 
-Exiting code misses a decrement of cpuid_i when skip left 0x1F, so 
-there's a blank CPUID
-
-entry(with all fields stuffed 0s) left in the CPUID array.  Fix the 
-issue to avoid the blank slot.
-
-Reviewed-by:Yang Weijiang <weijiang.yang@intel.com>
-
->
-> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 > ---
->   target/i386/kvm/kvm.c | 1 +
->   1 file changed, 1 insertion(+)
->
-> diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-> index de531842f6b1..afa97799d89a 100644
-> --- a/target/i386/kvm/kvm.c
-> +++ b/target/i386/kvm/kvm.c
-> @@ -1956,6 +1956,7 @@ int kvm_arch_init_vcpu(CPUState *cs)
->           }
->           case 0x1f:
->               if (env->nr_dies < 2) {
-> +                cpuid_i--;
->                   break;
->               }
->               /* fallthrough */
+>  pc-bios/s390-ccw/start.S | 136 +++++++++++++++++++--------------------
+>  1 file changed, 68 insertions(+), 68 deletions(-)
+>=20
+> diff --git a/pc-bios/s390-ccw/start.S b/pc-bios/s390-ccw/start.S
+> index 6072906df4..d29de09cc6 100644
+> --- a/pc-bios/s390-ccw/start.S
+> +++ b/pc-bios/s390-ccw/start.S
+> @@ -10,37 +10,37 @@
+>   * directory.
+>   */
+> =20
+> -        .globl _start
+> +    .globl _start
+>  _start:
+> =20
+> -	larl   %r15, stack + 0x8000	/* Set up stack */
+> +    larl    %r15,stack + 0x8000     /* Set up stack */
+> =20
+> -	/* clear bss */
+> -	larl %r2, __bss_start
+> -	larl %r3, _end
+> -	slgr %r3, %r2		/* get sizeof bss */
+> -	ltgr	%r3,%r3 	/* bss empty? */
+> -	jz	done
+> -	aghi	%r3,-1
+> -	srlg	%r4,%r3,8	/* how many 256 byte chunks? */
+> -	ltgr	%r4,%r4
+> -	lgr	%r1,%r2
+> -	jz	remainder
+> +    /* clear bss */
+> +    larl    %r2,__bss_start
+> +    larl    %r3,_end
+> +    slgr    %r3,%r2    /* get sizeof bss */
+> +    ltgr    %r3,%r3    /* bss empty? */
+> +    jz      done
+> +    aghi    %r3,-1
+> +    srlg    %r4,%r3,8  /* how many 256 byte chunks? */
+> +    ltgr    %r4,%r4
+> +    lgr     %r1,%r2
+> +    jz      remainder
+>  loop:
+> -	xc	0(256,%r1),0(%r1)
+> -	la	%r1,256(%r1)
+> -	brctg	%r4,loop
+> +    xc      0(256,%r1),0(%r1)
+> +    la      %r1,256(%r1)
+> +    brctg   %r4,loop
+>  remainder:
+> -	larl	%r2,memsetxc
+> -	ex	%r3,0(%r2)
+> +    larl    %r2,memsetxc
+> +    ex      %r3,0(%r2)
+>  done:
+> -        /* set up a pgm exception disabled wait psw */
+> -        larl	%r2, disabled_wait_psw
+> -        mvc	0x01d0(16), 0(%r2)
+> -        j      main		/* And call C */
+> +    /* set up a pgm exception disabled wait psw */
+> +    larl    %r2,disabled_wait_psw
+> +    mvc     0x01d0(16),0(%r2)
+> +    j       main       /* And call C */
+> =20
+>  memsetxc:
+> -	xc	0(1,%r1),0(%r1)
+> +    xc      0(1,%r1),0(%r1)
+> =20
+> =20
+>  /*
+> @@ -48,11 +48,11 @@ memsetxc:
+>   *
+>   * stops the current guest cpu.
+>   */
+> -	.globl disabled_wait
+> +    .globl disabled_wait
+>  disabled_wait:
+> -	larl	%r1,disabled_wait_psw
+> -	lpswe	0(%r1)
+> -1:	j	1b
+> +    larl    %r1,disabled_wait_psw
+> +    lpswe   0(%r1)
+> +1:  j       1b
+> =20
+> =20
+>  /*
+> @@ -60,61 +60,61 @@ disabled_wait:
+>   *
+>   * eats one sclp interrupt
+>   */
+> -        .globl consume_sclp_int
+> +    .globl consume_sclp_int
+>  consume_sclp_int:
+> -        /* enable service interrupts in cr0 */
+> -        stctg   %c0,%c0,0(%r15)
+> -        oi      6(%r15),0x2
+> -        lctlg   %c0,%c0,0(%r15)
+> -        /* prepare external call handler */
+> -        larl %r1, external_new_code
+> -        stg %r1, 0x1b8
+> -        larl %r1, external_new_mask
+> -        mvc 0x1b0(8),0(%r1)
+> -        /* load enabled wait PSW */
+> -        larl %r1, enabled_wait_psw
+> -        lpswe 0(%r1)
+> +    /* enable service interrupts in cr0 */
+> +    stctg   %c0,%c0,0(%r15)
+> +    oi      6(%r15),0x2
+> +    lctlg   %c0,%c0,0(%r15)
+> +    /* prepare external call handler */
+> +    larl    %r1,external_new_code
+> +    stg     %r1,0x1b8
+> +    larl    %r1,external_new_mask
+> +    mvc     0x1b0(8),0(%r1)
+> +    /* load enabled wait PSW */
+> +    larl    %r1,enabled_wait_psw
+> +    lpswe   0(%r1)
+> =20
+>  /*
+>   * void consume_io_int(void)
+>   *
+>   * eats one I/O interrupt
+>   */
+> -        .globl consume_io_int
+> +    .globl consume_io_int
+>  consume_io_int:
+> -        /* enable I/O interrupts in cr6 */
+> -        stctg %c6,%c6,0(%r15)
+> -        oi    4(%r15), 0xff
+> -        lctlg %c6,%c6,0(%r15)
+> -        /* prepare i/o call handler */
+> -        larl  %r1, io_new_code
+> -        stg   %r1, 0x1f8
+> -        larl  %r1, io_new_mask
+> -        mvc   0x1f0(8),0(%r1)
+> -        /* load enabled wait PSW */
+> -        larl  %r1, enabled_wait_psw
+> -        lpswe 0(%r1)
+> +    /* enable I/O interrupts in cr6 */
+> +    stctg   %c6,%c6,0(%r15)
+> +    oi      4(%r15), 0xff
+> +    lctlg   %c6,%c6,0(%r15)
+> +    /* prepare i/o call handler */
+> +    larl    %r1,io_new_code
+> +    stg     %r1,0x1f8
+> +    larl    %r1,io_new_mask
+> +    mvc     0x1f0(8),0(%r1)
+> +    /* load enabled wait PSW */
+> +    larl    %r1,enabled_wait_psw
+> +    lpswe   0(%r1)
+> =20
+>  external_new_code:
+> -        /* disable service interrupts in cr0 */
+> -        stctg   %c0,%c0,0(%r15)
+> -        ni      6(%r15),0xfd
+> -        lctlg   %c0,%c0,0(%r15)
+> -        br      %r14
+> +    /* disable service interrupts in cr0 */
+> +    stctg   %c0,%c0,0(%r15)
+> +    ni      6(%r15),0xfd
+> +    lctlg   %c0,%c0,0(%r15)
+> +    br      %r14
+> =20
+>  io_new_code:
+> -        /* disable I/O interrupts in cr6 */
+> -        stctg %c6,%c6,0(%r15)
+> -        ni    4(%r15), 0x00
+> -        lctlg %c6,%c6,0(%r15)
+> -        br    %r14
+> +    /* disable I/O interrupts in cr6 */
+> +    stctg   %c6,%c6,0(%r15)
+> +    ni      4(%r15),0x00
+> +    lctlg   %c6,%c6,0(%r15)
+> +    br      %r14
+> =20
+> -        .align  8
+> +    .align  8
+>  disabled_wait_psw:
+> -        .quad   0x0002000180000000,0x0000000000000000
+> +    .quad   0x0002000180000000,0x0000000000000000
+>  enabled_wait_psw:
+> -        .quad   0x0302000180000000,0x0000000000000000
+> +    .quad   0x0302000180000000,0x0000000000000000
+>  external_new_mask:
+> -        .quad   0x0000000180000000
+> +    .quad   0x0000000180000000
+>  io_new_mask:
+> -        .quad   0x0000000180000000
+> +    .quad   0x0000000180000000
+
 
