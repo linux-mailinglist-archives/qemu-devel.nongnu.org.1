@@ -2,73 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A5DB73F7F0
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 10:57:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3237273F7FD
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 10:59:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qE4VW-00048U-GA; Tue, 27 Jun 2023 04:57:06 -0400
+	id 1qE4X5-00050q-FX; Tue, 27 Jun 2023 04:58:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1qE4VQ-00047y-LM
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 04:57:01 -0400
-Received: from mail-oa1-x29.google.com ([2001:4860:4864:20::29])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qE4X2-00050d-O1
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 04:58:40 -0400
+Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1qE4VO-0008C9-2l
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 04:56:59 -0400
-Received: by mail-oa1-x29.google.com with SMTP id
- 586e51a60fabf-1a28de15c8aso4061211fac.2
- for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 01:56:57 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qE4X1-0008QR-4Y
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 04:58:40 -0400
+Received: by mail-ej1-x630.google.com with SMTP id
+ a640c23a62f3a-98bcc533490so514606666b.0
+ for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 01:58:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1687856216; x=1690448216;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=qlXVO+p/e8/qPARrLoujHM/77BruZ4xR27xhkiJKcqw=;
- b=sM+9aorPBrEMwE4JxE5w1a4vDcr7/BOELSXmyoAx3QtWe9vr9/RK7MeKSNJXPS7WgZ
- gft/JSfKMEGkaAO6DoyaSH0F/LLHbz1h+2YGySNzWaP5zifndHTa1TfL8cTXYenRdsw0
- nk4LmuGVlLuWtlqtec44jjlbLWOi7z4NIqcncEwRDprsITvVTUmlIXzgyHFaaCP7gQlQ
- nhyyj4K8ksteZiP0KX2x9Aiq0WtVOHfegucLQt2TosEhHztafISow0Vytg6f9AK/u1nq
- koCKTQ2hPQPhe2FT2tGrjSZOYXDbmvHuJr9hhpeS4f9NeBkkjXmsKqEbWWG83laozZa2
- icxA==
+ d=linaro.org; s=google; t=1687856317; x=1690448317;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=lTkFsMFL8CFY8Jn/2f8V7sFGv37JQm4tx8kMvD2VQxI=;
+ b=qjx/+fct5ogr6kV6RLuKLwVT+31ygDqUCKPqvzA+nobBK7cOTItwjZZnNxbN49fn+A
+ mpUcdhZCUzN2/bioOi7K0QiMSSxJbhBRN0WvkW7tjaYVPEe9BUx0nQsrLW05qFRdxuLx
+ och0Hf+zyeTL0zyrqiSO4m8SgMIRX8/nXD/YX7fkUQ4mRSsm2oejOHtvYYMQNwqb35HC
+ rtC2VUMYM1wQsmdyFy3tzVcBOGi16g0Up3GwcppDJLJDvUYeOTk4KeMwGImXAzMoMUQv
+ fMAlWCfn2csuKZEeyWvVQAKCAoKwirv6Qj35lV1r2fdwTxUeyT4DD85i/tjWfYrBPsMq
+ wQ/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687856216; x=1690448216;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=qlXVO+p/e8/qPARrLoujHM/77BruZ4xR27xhkiJKcqw=;
- b=aBTM8Z3QIW5KaKGIvSt9KK8guLeAY6sWD5HllutwaZpDMk2Q2Qxz5P8cmmKcjdCCWp
- Pq9jFyu4BYQjxuHCWQwv9HSCc3xljoqV/SiG0auyh2IAOS/ZOJZbo3gzQDVl/p8E9C+8
- P54CXBAYmnb/2ReuglUQfNVNK1G4z9hZKUQwpcAAIBLN5EbU5KztQ+eJ6lkDHYWOJ3Yx
- 78EWvAefvdwbXCljhIF4nIC9Or/xurlX0TKNW3AJbUN/MjycMg/iKAHEF3PFaHnzaNjg
- 07No9AYGrjl37/KsoBGEeX1ee//p33ib81DzDmJIcT0yuv+bQ3CwOXphWkKeIHfSbOZS
- Bozw==
-X-Gm-Message-State: AC+VfDxhbWq05b4Q4tt1eLKfnjo/PX5C/lvww0RYEd51w9LRt7CdVizQ
- 6rsYCyE182xGtEgdEQyCh6J3DofYTmAJFrXxnMU=
-X-Google-Smtp-Source: ACHHUZ61yf6k/ECi8IzGX9NnijmaBgaa9jGWZtOJG9LeqTo5KgprXFUheygUZqt3GxSQATzbho96VI3PExOK8dM0BYo=
-X-Received: by 2002:a05:6870:9202:b0:1b0:57f8:daaf with SMTP id
- e2-20020a056870920200b001b057f8daafmr2135017oaf.18.1687856216331; Tue, 27 Jun
- 2023 01:56:56 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1687856317; x=1690448317;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=lTkFsMFL8CFY8Jn/2f8V7sFGv37JQm4tx8kMvD2VQxI=;
+ b=gaFHlDgiFqUzmHXbN3wP4MeclDyj++8qaiNR8a5q1KmK32/ipzmshydHeHXzU6om3V
+ BU3V5LZTrMgKAzx7Cxcc0Q0CypCWK7iu4hwzXCA/aHclhjnCNAh6/47F0fUqwJLNgT2f
+ QO+DgAk3iVkPN5kgS5ETN4vqqoxehYETBxr565kgyJFk1E6hz1eiV6OxxvwIw95PjmOh
+ En8mGgnaAPmldUn9RfLDILs94nJohjlONRGXdGvIUws6PNX3ljpTuVvz7ytjXCFzF9Ud
+ Oph5/YDYkMORoaYaVBTp+RouZ/H0j4tlJ67g6khyCUNRQCWve9xxELl+LFNdiqWkpy08
+ z8xw==
+X-Gm-Message-State: AC+VfDxq6TWt71FiMKFZj0v9Cvi8YERdYEtM149SZw+CVkgZcB0QoxvI
+ 9Mvy+pnJMn++RX5v/tLrxBKZAU5+Dtv49bd289o=
+X-Google-Smtp-Source: ACHHUZ5xhJvGRAiANWreS7bFUNotSS0zUaddKCv8ayB4kk75wXJIiwkS9t06Gy1ioHINR8lkRkwfDA==
+X-Received: by 2002:a17:907:da1:b0:992:1bb2:61d6 with SMTP id
+ go33-20020a1709070da100b009921bb261d6mr983316ejc.8.1687856317159; 
+ Tue, 27 Jun 2023 01:58:37 -0700 (PDT)
+Received: from [192.168.69.115] ([176.187.199.204])
+ by smtp.gmail.com with ESMTPSA id
+ k21-20020a170906055500b009890e402a6bsm4234670eja.221.2023.06.27.01.58.36
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 27 Jun 2023 01:58:36 -0700 (PDT)
+Message-ID: <1a3fefd1-fb3a-1e38-8938-ff3de9cc4dc8@linaro.org>
+Date: Tue, 27 Jun 2023 10:58:34 +0200
 MIME-Version: 1.0
-References: <20230622215824.2173343-1-i.maximets@ovn.org>
-In-Reply-To: <20230622215824.2173343-1-i.maximets@ovn.org>
-From: Stefan Hajnoczi <stefanha@gmail.com>
-Date: Tue, 27 Jun 2023 10:56:43 +0200
-Message-ID: <CAJSP0QV5pjCxXm9U0FPYxBWKAyyLmTmWx4YcGfVtumSatJNW7g@mail.gmail.com>
-Subject: Re: [PATCH] net: add initial support for AF_XDP network backend
-To: Ilya Maximets <i.maximets@ovn.org>
-Cc: Jason Wang <jasowang@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
- Eric Blake <eblake@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
- qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2001:4860:4864:20::29;
- envelope-from=stefanha@gmail.com; helo=mail-oa1-x29.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.12.0
+Subject: Re: [PATCH v2 3/8] target/sparc: Drop inline markers from translate.c
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: mark.cave-ayland@ilande.co.uk
+References: <20230621180607.1516336-1-richard.henderson@linaro.org>
+ <20230621180607.1516336-4-richard.henderson@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230621180607.1516336-4-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::630;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x630.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -86,27 +93,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Can multiple VMs share a host netdev by filtering incoming traffic
-based on each VM's MAC address and directing it to the appropriate
-XSK? If yes, then I think AF_XDP is interesting when SR-IOV or similar
-hardware features are not available.
+On 21/6/23 20:06, Richard Henderson wrote:
+> Let the compiler decide about inlining.
 
-The idea of an AF_XDP passthrough device seems interesting because it
-would minimize the overhead and avoid some of the existing software
-limitations (mostly in QEMU's networking subsystem) that you
-described. I don't know whether the AF_XDP API is suitable or can be
-extended to build a hardware emulation interface, but it seems
-plausible. When Stefano Garzarella played with io_uring passthrough
-into the guest, one of the issues was guest memory translation (since
-the guest doesn't use host userspace virtual addresses). I guess
-AF_XDP would need an API for adding/removing memory translations or
-operate in a mode where addresses are relative offsets from the start
-of the umem regions (but this may be impractical if it limits where
-the guest can allocate packet payload buffers).
+Should we clean that automatically with scripts and forbid via
+checkpatch?
 
-Whether you pursue the passthrough approach or not, making -netdev
-af-xdp work in an environment where QEMU runs unprivileged seems like
-the most important practical issue to solve.
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Stefan
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>   target/sparc/translate.c | 237 ++++++++++++++++++---------------------
+>   1 file changed, 111 insertions(+), 126 deletions(-)
+
+
 
