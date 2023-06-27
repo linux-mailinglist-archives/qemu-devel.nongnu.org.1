@@ -2,98 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FF7773FBB1
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 14:08:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C57E573FBC6
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 14:10:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qE7UW-0002m4-Jf; Tue, 27 Jun 2023 08:08:16 -0400
+	id 1qE7WD-00047z-Ok; Tue, 27 Jun 2023 08:10:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <olaf@aepfle.de>) id 1qE7UT-0002kW-Lf
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 08:08:13 -0400
-Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.50])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <olaf@aepfle.de>) id 1qE7UR-0000jP-Ku
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 08:08:13 -0400
-ARC-Seal: i=1; a=rsa-sha256; t=1687867672; cv=none;
- d=strato.com; s=strato-dkim-0002;
- b=Z5J84F76Y2pHDpWAhgTn6P9MzSnJwW7BZNFyhgbvF6ZKXCmKqpanCgWh+Tha+o8p6H
- la1V6F6y0Zv+UOAGS8FH6T7gqGtDruj/jASYfp+kxJx0PuqOoBDQ9YAGO2XHDWV7jgNi
- mmUm36um7yIr3HAkRoKij37ivmC//79pvApzPsqJOLUjF9PrzcLkXcbTzT32OLmweLRf
- U5j89NZtEHb3KBoSo6utv1kyk/K6WtZVWkti94estXLkVBOY56D1y6G1lJAto/viK1+M
- lzyt1wgRogpKImbzv/mibhPgH/D2dsiszn3NbcT5MgBoaLkw9V5VvgRCFCFZvMts0Kr/
- UUFg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1687867672;
- s=strato-dkim-0002; d=strato.com;
- h=References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
- From:Subject:Sender;
- bh=tx8S908wrSoiDBE8MNdPbWlWFv0DUqhlBPowJD3iDxY=;
- b=A+LQU8cNhOkdi5EoI3u4TaM9wEhatrZovAwl2zaByL+6NzgBh64Xy9CIos/qj+IsTp
- 22/sDF4KE0Z3JxrWYkLUe0LZIcy8O1GqvxAOoJneoq+t4wEu5HoP1SjgW0wOM6O5uACY
- 4thS931rEL93JKJ8slvlsc5EQ8OUBkxUuSf8co9qpVlxLZxjQ34mVMqfw6hh0Yu96CPD
- CNVfKGy6mVbcI8DhC9UKnsVXP5FgIwiCHzD/BL7tNo13HoXf5qZnzmWFKrJrPf494X5d
- A5cwHz2qjEX59s7DekEzcEwIv2XbJ3QGR2i37jzS94JkFlweHPw7TWnk45HGLw2JUUYc
- IAnQ==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1687867672;
- s=strato-dkim-0002; d=aepfle.de;
- h=References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
- From:Subject:Sender;
- bh=tx8S908wrSoiDBE8MNdPbWlWFv0DUqhlBPowJD3iDxY=;
- b=LTGZ8IIDUZBcJg+kznzXi/ilPFivPQ1cekWdtvb1EpOp+IPn29VhdfSyyCK+A3U8lw
- jO7RgR0rSdHefHA9/C4oLAF0zEdR/WH67K3dR/tqWMaNul6ugMt7u9/dWXcVg9Xgyxv0
- 9fHxSJaoAZwYgSDi1Nq1n++OlsCwxPhjdms43poCxCQZQT2bBsd6U6AxPJqZyqThZ+RF
- IytYm/eEjFAvz7lWQ2ZLl/3jx7t8/dT4QG+YAmCoffOBK7X/L1L/XI80i48iQE9GD9Y6
- igKNdn+NwAj/kYPpcBzpT3/Dpf/PBgYftql14+I5l+VaHIpHObXVPnnTz5G7gZYXm0TD
- on7A==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1687867672;
- s=strato-dkim-0003; d=aepfle.de;
- h=References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
- From:Subject:Sender;
- bh=tx8S908wrSoiDBE8MNdPbWlWFv0DUqhlBPowJD3iDxY=;
- b=P4uUlc5zpulTSMQrewpzWItDt5YZulGrPs3FvKjFCffo+f8/z9S/XpBgRwVpBR1oaR
- WqbdLpKtfMTo8GH897Cw==
-X-RZG-AUTH: ":P2EQZWCpfu+qG7CngxMFH1J+3q8wa/QLpd5ylWvMDX3y/OuD5rXWiuRyeUQh3GC6w0BTiV2X9kN/WAr0rdTE7oY1qJzPNA=="
-Received: from sender by smtp.strato.de (RZmta 49.6.0 AUTH)
- with ESMTPSA id y5401az5RC7qlTW
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
- (Client did not present a certificate);
- Tue, 27 Jun 2023 14:07:52 +0200 (CEST)
-Date: Tue, 27 Jun 2023 14:07:40 +0200
-From: Olaf Hering <olaf@aepfle.de>
-To: Bernhard Beschow <shentey@gmail.com>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, John Snow
- <jsnow@redhat.com>, xen-devel@lists.xenproject.org, Stefano Stabellini
- <sstabellini@kernel.org>
-Subject: Re: [PATCH v2] piix: fix regression during unplug in Xen HVM domUs
-Message-ID: <20230627140740.2736f6e8.olaf@aepfle.de>
-In-Reply-To: <5DB37FA5-41DF-4ED6-8C8A-CDDD6F276F42@gmail.com>
-References: <20210317070046.17860-1-olaf@aepfle.de>
- <4441d32f-bd52-9408-cabc-146b59f0e4dc@redhat.com>
- <20210325121219.7b5daf76.olaf@aepfle.de>
- <dae251e1-f808-708e-902c-05cfcbbea9cf@redhat.com>
- <20230509225818.GA16290@aepfle.de>
- <20230626231901.5b5d11c1.olaf@aepfle.de>
- <c939b695-2b68-085a-0f19-108ecdcc1a05@redhat.com>
- <5DB37FA5-41DF-4ED6-8C8A-CDDD6F276F42@gmail.com>
-X-Mailer: Claws Mail 20230601T090920.68bc28c0 hat ein Softwareproblem,
- kann man nichts machen.
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qE7W7-00043C-IR
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 08:09:56 -0400
+Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qE7W5-0001Bg-Q3
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 08:09:55 -0400
+Received: by mail-ed1-x536.google.com with SMTP id
+ 4fb4d7f45d1cf-51cff235226so6354875a12.0
+ for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 05:09:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1687867792; x=1690459792;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=+DIaJEZZkOj6A00vEClo2ROUXdo+5TvBnx+ed4rFkjo=;
+ b=aUf1F8YTSrliqLbZaIwP/C1vZSFnKd5vMbWOYd4Dy46rWyFJJYvdw4PkN8HAgu6CaC
+ /F/ORDSELJoXTa/G1XMalSh9UZntJEDIpAdS+zaJQjkyvH9yPXfvcKwVzJ9/DgYBN9pG
+ US1L5M8y4/W6gJVGDI9dhrSxC4DU3jkNIkbF1lwjW12m2p84x2KsiLRrKGmwZ5ZnIiBS
+ hGvlkb2nBzpRY5A/IrwZslXfoBaeqMG408g74H+iaVmrPSXA1Co1ft606q3YJamVql+G
+ mYwpeEib0i9H3pK1EcQvqM5aJkoTCbASMeTnbvKnKOPFOv5UPnyLzLDTSzg0bITBsOOY
+ Ap4Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1687867792; x=1690459792;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=+DIaJEZZkOj6A00vEClo2ROUXdo+5TvBnx+ed4rFkjo=;
+ b=KOdwUBJOFec4xaXK0sc9bgPqLXocG5E/U3kn+FJVaYB8EIfTb8XY+1YsiDzaWMsQJg
+ lWleb0yXnq0NeRVINOF04+CqxP/pyx70eL08f2ph97OE+IpOTBZqJGVke0Lk48BTtQXV
+ 7RKoU5JkuZoUgeKXt1yn49Ce4hM22d21MvnybCyQhANXH4Hon3JMwu852T0k+PbwRnHc
+ 4yUbOXodppoAJhDH7tqID0b5xXfGrp4y10kEhKOXAwtoUfoxPhGocsqctUkEh8ZuDVDD
+ G/uTp2Ot915kSqwSUpd1ScU707x/szfPr9Ld7W1U5sFTylPy1cA5AZWFZtZ3RkpF+aG+
+ q8XQ==
+X-Gm-Message-State: AC+VfDx8MgHy/ZXITz4cZw4qo5nYWV16dN5gcLGe3imsSIzdn/kOiHW7
+ lPjnHD5EhDT66Kfos8803zrIhxnTSMVV+n4hhQQPeFHA9G115lO/
+X-Google-Smtp-Source: ACHHUZ5wishnr9HWmj5U+NvuxY0SmTSliAs2eyfFJkb2ZqymO1XafzRtPilb27RqQfXER5h3CHk5eEJsCjog9zsxCSg=
+X-Received: by 2002:a05:6402:4302:b0:514:a21b:f137 with SMTP id
+ m2-20020a056402430200b00514a21bf137mr34020656edc.6.1687867791961; Tue, 27 Jun
+ 2023 05:09:51 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/1+315bbqjMVp=z=Vx.W5NN2";
- protocol="application/pgp-signature"; micalg=pgp-sha256
-Content-Transfer-Encoding: 7bit
-Received-SPF: none client-ip=85.215.255.50; envelope-from=olaf@aepfle.de;
- helo=mo4-p01-ob.smtp.rzone.de
+References: <20210510125340.903323-1-anthony.perard@citrix.com>
+ <20210510125340.903323-4-anthony.perard@citrix.com>
+ <CAFEAcA-ZxRW-+ttyfZj1hSAZyDbYj6Mbvs=KsG6Sfg6QTdKhrg@mail.gmail.com>
+In-Reply-To: <CAFEAcA-ZxRW-+ttyfZj1hSAZyDbYj6Mbvs=KsG6Sfg6QTdKhrg@mail.gmail.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 27 Jun 2023 13:09:40 +0100
+Message-ID: <CAFEAcA_NmutsbheVL27d8ZUNZ_MYC+bC6bWjZA+-n+xqdBMKXA@mail.gmail.com>
+Subject: Re: [PULL 3/3] xen-block: Use specific blockdev driver
+To: qemu-devel@nongnu.org
+Cc: Anthony PERARD <anthony.perard@citrix.com>,
+ David Woodhouse <dwmw2@infradead.org>, Paul Durrant <paul@xen.org>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::536;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x536.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_PASS=-0.001, SPF_NONE=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -110,41 +87,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---Sig_/1+315bbqjMVp=z=Vx.W5NN2
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+On Fri, 2 Jun 2023 at 18:04, Peter Maydell <peter.maydell@linaro.org> wrote:
+>
+> On Mon, 10 May 2021 at 13:53, Anthony PERARD <anthony.perard@citrix.com> wrote:
+> >
+> > ... when a xen-block backend instance is created via xenstore.
+> >
+> > Following 8d17adf34f50 ("block: remove support for using "file" driver
+> > with block/char devices"), using the "file" blockdev driver for
+> > everything doesn't work anymore, we need to use the "host_device"
+> > driver when the disk image is a block device and "file" driver when it
+> > is a regular file.
+> >
+> > Signed-off-by: Anthony PERARD <anthony.perard@citrix.com>
+> > Acked-by: Paul Durrant <paul@xen.org>
+> > Message-Id: <20210430163432.468894-1-anthony.perard@citrix.com>
+> > Signed-off-by: Anthony PERARD <anthony.perard@citrix.com>
+>
+> Hi; Coverity points out (CID 1508722) that this introduces a
+> memory leak in the new error codepath:
 
-Tue, 27 Jun 2023 10:12:50 +0000 Bernhard Beschow <shentey@gmail.com>:
+I just realized I forgot to cc the current Xen maintainers,
+so I'm doing that now. I think the fix for this leak should
+be fairly straightforward.
 
-> The BAR is a 32 bit register whose default value is 0x00000001. I think w=
-hat's supposed to happen here is a pci_set_long() rather than a pci_set_byt=
-e().
+> > ---
+> >  hw/block/xen-block.c | 14 +++++++++++++-
+> >  1 file changed, 13 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/hw/block/xen-block.c b/hw/block/xen-block.c
+> > index 83754a4344..674953f1ad 100644
+> > --- a/hw/block/xen-block.c
+> > +++ b/hw/block/xen-block.c
+> > @@ -728,6 +728,8 @@ static XenBlockDrive *xen_block_drive_create(const char *id,
+> >      XenBlockDrive *drive = NULL;
+> >      QDict *file_layer;
+> >      QDict *driver_layer;
+> > +    struct stat st;
+> > +    int rc;
+> >
+> >      if (params) {
+> >          char **v = g_strsplit(params, ":", 2);
+> > @@ -761,7 +763,17 @@ static XenBlockDrive *xen_block_drive_create(const char *id,
+> >      file_layer = qdict_new();
+> >      driver_layer = qdict_new();
+>
+> You can see here that we allocate file_layer and driver_layer
+> as new qdict objects...
+>
+> >
+> > -    qdict_put_str(file_layer, "driver", "file");
+> > +    rc = stat(filename, &st);
+> > +    if (rc) {
+> > +        error_setg_errno(errp, errno, "Could not stat file '%s'", filename);
+> > +        goto done;
+>
+> ...but here if the stat() fails we will bail out to
+> the 'done' label, and the code there does not dereference
+> these qdicts, so they will leak.
+>
+> The easy fix is to move the two calls to qdict_new() to
+> below this if() rather than above it.
+>
+> > +    }
+> > +    if (S_ISBLK(st.st_mode)) {
+> > +        qdict_put_str(file_layer, "driver", "host_device");
+> > +    } else {
+> > +        qdict_put_str(file_layer, "driver", "file");
+> > +    }
+> > +
+> >      qdict_put_str(file_layer, "filename", filename);
+> >      g_free(filename);
 
-Indeed, the u32 at that address changes from c121 to c101 with the current =
-code.
-
-Olaf
-
---Sig_/1+315bbqjMVp=z=Vx.W5NN2
-Content-Type: application/pgp-signature
-Content-Description: Digitale Signatur von OpenPGP
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEE97o7Um30LT3B+5b/86SN7mm1DoAFAmSa0QwACgkQ86SN7mm1
-DoCGbg/+KP49nafrg8nrPI64mYG580E7pJzqqzgHClvUn7NqE+jBpQ+P3rom9Yxo
-5sUx/U8WVYHF8NJM4Hyik3nbpIUindEmg6Y4hBFOSC+rHB+XFzjpnsudno5YDWKh
-AEFFXEIbzA2ckQJ6/Vu4EZ/8zDKA8C6HY5yGhICk25X5ESFfkJG5sKcrmfB/MhIQ
-UOOsrWkk3fV+xBHW8U94+P6zSJ8UMEHHick1pP/csIrK1VqUgPcg+nLL/JI5oCiS
-XqzzQvEsp7H+tq1q42syxXytNtdAoOJ9kTI0/teKOUqykwJwEHLIGxM40KGO1ZWM
-DY6XcPZAiRmrhHqaMw+Z/4ilcRyn5a8yY8uZZqF7b8jYIRUgMCYeqJY8ZyzjRiJt
-+M8uRzcM5lotYjv3+bNEOlfhKWZ4uzxNlSsg3At1Yolw1LbtoRtOE+I1Q2up2EZM
-JpDjaxcnUalJa9NdbCElgd3gM6fATSb5W/wDhm71NiJ0BK/8WHuoLLArFma47GcD
-7vBaFl0fMTXsMeabH2eFP4cg0KgeUzK76SvQn2YaAkThUZTwvXvdMqq3vTuRsG1m
-F4JS+2smXhFv3N2lXBSyWqyi8rU/y3sI/e22BTKpsh1AE41nqIVIIMyr0xoHXBwX
-HTaYjY/jGdSJz8yeBZFwo9/pHrpu3wG3yqCDz0LA55zWtwcZbD4=
-=WuKj
------END PGP SIGNATURE-----
-
---Sig_/1+315bbqjMVp=z=Vx.W5NN2--
+thanks
+-- PMM
 
