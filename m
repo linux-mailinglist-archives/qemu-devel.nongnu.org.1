@@ -2,84 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8D4D73FCE3
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 15:33:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D00EE73FBA1
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 14:03:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qE8ng-0008JT-Ou; Tue, 27 Jun 2023 09:32:08 -0400
+	id 1qE7Ph-0007Qe-63; Tue, 27 Jun 2023 08:03:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jason.chien@sifive.com>)
- id 1qE4yH-0002qQ-FL
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 05:26:49 -0400
-Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <jason.chien@sifive.com>)
- id 1qE4yF-0006Kk-PN
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 05:26:49 -0400
-Received: by mail-pf1-x434.google.com with SMTP id
- d2e1a72fcca58-666e5f0d60bso2144207b3a.3
- for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 02:26:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1687858006; x=1690450006;
- h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Rg3+TYiUGGtXCa2HJSu+sTNdB9A34AYrcg2a2JyRsck=;
- b=ZuGN+Bt4FX2QTlS3/8Wze1FSx2S09cudvbjm31XNpIhp6JGKBLff5fYwboVS9eA2pJ
- CdxWFio4QIYN0OkSWHC8PgmuxH1DtT5vOPaZAQmYKCPP8a2FMo271pt5py+YQEF+yBBa
- 0Yd86WHis/f21avk9o9razLPbk9M4Bpnudv5GhvaaNY81r4OE/OASw2fAYmps14h/85J
- SKLhTnrl06pDM72/N0EMJrYncXMdRLu0G4jpw5jnrghCkhDEv0xkzFNN6eNjh/lcLT2A
- sTbx6lSWDUe4HhEvecAvPn21j8qAauEGqrOHMqHth2TZfj5oRdBH+N53i22+yhEalCyA
- A2+Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687858006; x=1690450006;
- h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Rg3+TYiUGGtXCa2HJSu+sTNdB9A34AYrcg2a2JyRsck=;
- b=Hoy1bIuVk//zYKRNhfLrMAGDZuipKxvK6VeRa/AYLt8KmR3DtN2OLuNk2+t42/3CZb
- qgLD/ic5FcDz6J185ixCy4j8wxHbCZsATHT6fPZcYT3rvABX6im2laFoR9aoSZkaSHSp
- 7BQZIoxE4xdT2uO8mzhTFfm5Gpo3z+Eu6mFyyWRURdGm9+cjnRq82girR3ev8ANQVQg9
- STrHHsoAWizmh4BxgCEWD8NG1ag818NCD8Y9oWX+TPzYXaZ2L8YAlw8t9llXE3qsBoF+
- ijVv1Ul2hGJN+QopvG5J8SaOEJ4m7+HRcEENcd7BpoaAL8udsnEDWTl3FnBiOJj8ikHC
- fE/g==
-X-Gm-Message-State: AC+VfDz8jIF8jFVj00hs3rm19cbMRn8H2czYcuwH4gTS+87OvGuWM6V5
- iJv3JcG+D9yuvu37x+LuqWO3zK2i3W19o2zCbLgKuqxP1bc9s06pSym+ZgrWFwj3HD6PZ/pTCli
- gdb6H5npH9i9DBcb8yOQRDNSCvip1vRHcxZ+YMTP2UFRhZ3CRw7ZY6waLHoJvLz8aetyPfXz2xz
- GArb/+
-X-Google-Smtp-Source: ACHHUZ71oZEqQXIn2yb4B4Q7oa0LfUfDriTE0yzn10EcQFDh21HiWQesh4NXbijbzL3LVEPhO7BVCA==
-X-Received: by 2002:a05:6a20:3ca7:b0:121:bc20:f6c8 with SMTP id
- b39-20020a056a203ca700b00121bc20f6c8mr20923230pzj.18.1687858005710; 
- Tue, 27 Jun 2023 02:26:45 -0700 (PDT)
-Received: from hsinchu26.internal.sifive.com
- (59-124-168-89.hinet-ip.hinet.net. [59.124.168.89])
- by smtp.gmail.com with ESMTPSA id
- r2-20020a62e402000000b006783ee5df8asm2737738pfh.189.2023.06.27.02.26.43
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 27 Jun 2023 02:26:45 -0700 (PDT)
-From: Jason Chien <jason.chien@sifive.com>
-To: qemu-devel@nongnu.org,
-	qemu-riscv@nongnu.org
-Cc: Jason Chien <jason.chien@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
-Subject: [RFC PATCH] target/riscv: Add Zihintntl extension ISA string to DTS
-Date: Tue, 27 Jun 2023 09:26:29 +0000
-Message-Id: <20230627092631.22286-1-jason.chien@sifive.com>
-X-Mailer: git-send-email 2.17.1
-Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
- envelope-from=jason.chien@sifive.com; helo=mail-pf1-x434.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+ (Exim 4.90_1) (envelope-from <farman@linux.ibm.com>)
+ id 1qE7Pd-0007P3-4c; Tue, 27 Jun 2023 08:03:14 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <farman@linux.ibm.com>)
+ id 1qE7Pa-0007as-Sx; Tue, 27 Jun 2023 08:03:12 -0400
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 35RBlhcC021846; Tue, 27 Jun 2023 12:03:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=aJReNsBJEEGQAsTab4bdyL5gcvsPvB8HZmW6KswA7nk=;
+ b=jc+xBX6/gVFu3p5rFgB+GRv+I8iQ6jD9mjE0rtNkCHPyRTOMJoU8EG6FGwc8Z6FiH0Un
+ gCA3I3WyccBdoeu23iUNeQTGeISF9lHPSAUgs2E7c6nt7hpTCUw/cdZEStESvSVv0Ivj
+ aH7tEKzx3eKLqk4heh9GQGBJHhJ8FGyLnnE72/jw8clDu6geKCGkNfkDTJxGADNW+gVu
+ 5i2X1SjJFxqCb4jVlZI9EvRVNbf6FiGhWTzTsCFa24STkxzzmDCndBbUlRsd3z4yG3hj
+ QFzz3D7iKaf97j5HEaALcA62Ky/dahMWt+V3Imb6aX9Z938ViBIZFGNDGsNsFV0AF8jW Mg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rfy6y0cfx-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 27 Jun 2023 12:03:08 +0000
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 35RBog1V028679;
+ Tue, 27 Jun 2023 12:03:08 GMT
+Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com
+ [169.63.121.186])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rfy6y0cf2-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 27 Jun 2023 12:03:08 +0000
+Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
+ by ppma03wdc.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 35RAs6ac027909;
+ Tue, 27 Jun 2023 12:03:07 GMT
+Received: from smtprelay05.wdc07v.mail.ibm.com ([9.208.129.117])
+ by ppma03wdc.us.ibm.com (PPS) with ESMTPS id 3rdr45gd1f-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 27 Jun 2023 12:03:06 +0000
+Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com
+ [10.241.53.104])
+ by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 35RC35nj61342206
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 27 Jun 2023 12:03:05 GMT
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1D3DF5805D;
+ Tue, 27 Jun 2023 12:03:05 +0000 (GMT)
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7F59258056;
+ Tue, 27 Jun 2023 12:03:04 +0000 (GMT)
+Received: from li-479af74c-31f9-11b2-a85c-e4ddee11713b.ibm.com (unknown
+ [9.61.34.238]) by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Tue, 27 Jun 2023 12:03:04 +0000 (GMT)
+Message-ID: <3c7d925e0d0f4750a678aa1d7f3270a9ba58abab.camel@linux.ibm.com>
+Subject: Re: [PATCH] pc-bios/s390-ccw: Get rid of the the __u* types
+From: Eric Farman <farman@linux.ibm.com>
+To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
+Cc: qemu-s390x@nongnu.org, Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Claudio Imbrenda <imbrenda@linux.ibm.com>, cohuck@redhat.com,
+ Juan Quintela <quintela@redhat.com>
+Date: Tue, 27 Jun 2023 08:03:04 -0400
+In-Reply-To: <20230627114101.122231-1-thuth@redhat.com>
+References: <20230627114101.122231-1-thuth@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.48.3 (3.48.3-1.fc38) 
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: wb1WdPz6F6KTFQS7QY21QkTWccm4RaEb
+X-Proofpoint-GUID: zzUuvis1JAvKDpMujtaQcIhCqh2xmEF1
+Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-06-27_07,2023-06-27_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ adultscore=0 clxscore=1015 impostorscore=0 phishscore=0 mlxscore=0
+ mlxlogscore=755 malwarescore=0 bulkscore=0 lowpriorityscore=0 spamscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2305260000 definitions=main-2306270106
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=farman@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Tue, 27 Jun 2023 09:32:05 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,66 +114,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-RVA23 Profiles states:
-The RVA23 profiles are intended to be used for 64-bit application
-processors that will run rich OS stacks from standard binary OS
-distributions and with a substantial number of third-party binary user
-applications that will be supported over a considerable length of time
-in the field.
+On Tue, 2023-06-27 at 13:41 +0200, Thomas Huth wrote:
+> Using types starting with double underscores should be avoided since
+> these
+> names are marked as reserved by the C standard. The corresponding
+> Linux
+> kernel header file has also been changed accordingly a long time ago:
+>=20
+> =C2=A0
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/dif
+> f/drivers/s390/cio/cio.h?id=3Dcd6b4f27b9bb2a
+>=20
+> So we should get rid of the __u* in the s390-ccw bios now finally,
+> too.
+>=20
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> ---
+> =C2=A0Based-on: <20230510143925.4094-4-quintela@redhat.com>
+>=20
+> =C2=A0pc-bios/s390-ccw/cio.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 232 ++++++++=
+++++++++++----------------
+> --
+> =C2=A0pc-bios/s390-ccw/s390-ccw.h |=C2=A0=C2=A0 4 -
+> =C2=A02 files changed, 116 insertions(+), 120 deletions(-)
 
-The chapter 4 of the unprivileged spec introduces the Zihintntl extension
-and Zihintntl is a mandatory extension presented in RVA23 Profiles, whose
-targeting software stacks includes Linux. Thus the DTS should contain
-the Zihintntl ISA string in order to pass to Linux.
+Thanks for the based-on hint.
 
-The unprivileged spec states:
-Like any HINTs, these instructions may be freely ignored. Hence, although
-they are described in terms of cache-based memory hierarchies, they do not
-mandate the provision of caches.
-
-These instructions are encoded with used opcode, which QEMU already
-supports, and QEMU does not emulate cache, therefore we just need to add
-a new property for the extension.
-
-Signed-off-by: Jason Chien <jason.chien@sifive.com>
----
- target/riscv/cpu.c     | 2 ++
- target/riscv/cpu_cfg.h | 1 +
- 2 files changed, 3 insertions(+)
-
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 881bddf393..aa99781f17 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -81,6 +81,7 @@ static const struct isa_ext_data isa_edata_arr[] = {
-     ISA_EXT_DATA_ENTRY(zicond, PRIV_VERSION_1_12_0, ext_zicond),
-     ISA_EXT_DATA_ENTRY(zicsr, PRIV_VERSION_1_10_0, ext_icsr),
-     ISA_EXT_DATA_ENTRY(zifencei, PRIV_VERSION_1_10_0, ext_ifencei),
-+    ISA_EXT_DATA_ENTRY(zihintntl, PRIV_VERSION_1_10_0, ext_zihintntl),
-     ISA_EXT_DATA_ENTRY(zihintpause, PRIV_VERSION_1_10_0, ext_zihintpause),
-     ISA_EXT_DATA_ENTRY(zawrs, PRIV_VERSION_1_12_0, ext_zawrs),
-     ISA_EXT_DATA_ENTRY(zfh, PRIV_VERSION_1_11_0, ext_zfh),
-@@ -1598,6 +1599,7 @@ static Property riscv_cpu_extensions[] = {
-     DEFINE_PROP_BOOL("sscofpmf", RISCVCPU, cfg.ext_sscofpmf, false),
-     DEFINE_PROP_BOOL("Zifencei", RISCVCPU, cfg.ext_ifencei, true),
-     DEFINE_PROP_BOOL("Zicsr", RISCVCPU, cfg.ext_icsr, true),
-+    DEFINE_PROP_BOOL("Zihintntl", RISCVCPU, cfg.ext_zihintntl, false),
-     DEFINE_PROP_BOOL("Zihintpause", RISCVCPU, cfg.ext_zihintpause, true),
-     DEFINE_PROP_BOOL("Zawrs", RISCVCPU, cfg.ext_zawrs, true),
-     DEFINE_PROP_BOOL("Zfh", RISCVCPU, cfg.ext_zfh, false),
-diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
-index c4a627d335..c7da2facef 100644
---- a/target/riscv/cpu_cfg.h
-+++ b/target/riscv/cpu_cfg.h
-@@ -66,6 +66,7 @@ struct RISCVCPUConfig {
-     bool ext_icbom;
-     bool ext_icboz;
-     bool ext_zicond;
-+    bool ext_zihintntl;
-     bool ext_zihintpause;
-     bool ext_smstateen;
-     bool ext_sstc;
--- 
-2.17.1
-
+Reviewed-by: Eric Farman <farman@linux.ibm.com>
 
