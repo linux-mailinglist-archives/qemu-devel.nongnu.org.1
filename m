@@ -2,85 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD88573F500
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 08:56:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 90C7573F505
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 09:01:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qE2cS-00013Q-Bk; Tue, 27 Jun 2023 02:56:08 -0400
+	id 1qE2gn-0002Io-Pr; Tue, 27 Jun 2023 03:00:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qE2cQ-000134-EB
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 02:56:06 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qE2gl-0002H7-6k
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 03:00:35 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qE2cP-0004Pm-06
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 02:56:06 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qE2gj-0006CS-1q
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 03:00:34 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687848964;
+ s=mimecast20190719; t=1687849231;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=QsIUKaCmvN9NltOg+X5q0IH1iCVUdH+kPCho75Ry2so=;
- b=WalYDP3OZ+qqsKSJZC3+MQ2U7+uRrochOk3jTpmPpa2EJxDSSU+SZ+KJ4fbhWN73Ch9xFR
- YsPF2pESV++oosq892JwJqsYTfKuiMhp+cAfDyIBTWp1UfkTAvG403pN+O54w2iqo5ATNW
- MQntM0Tp3DO+DEFTZpCrqEDwMLAlXPg=
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
- [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=lYcF3+P1zCPxumvuID3WLXhdl7cW70OI4glzMlXgk8Y=;
+ b=fDA2sHRo/qZ6x7J2RMqAgTYqhAjzvLE7lec7cPvlmwTVvkxCLujznjO4Myk0rZd6Mfdg1Z
+ UW2P7h1LhAk8FiO2WXtHHPvfQ+9PrIvg/3Qt6lnPjlziC19L6fMUYKalBaRwvETVLTnY1r
+ jmREp+R46jzh17NY6gEetfyUE7qq1Tw=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-178-H0YdZwZMMbikdTLVsiJLVQ-1; Tue, 27 Jun 2023 02:56:03 -0400
-X-MC-Unique: H0YdZwZMMbikdTLVsiJLVQ-1
-Received: by mail-qk1-f198.google.com with SMTP id
- af79cd13be357-766b225954aso172897185a.0
- for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 23:56:02 -0700 (PDT)
+ us-mta-368-4yzxIORiPluYzwu2Yr1Sdg-1; Tue, 27 Jun 2023 03:00:29 -0400
+X-MC-Unique: 4yzxIORiPluYzwu2Yr1Sdg-1
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-30932d15a30so3006195f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 00:00:29 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687848962; x=1690440962;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20221208; t=1687849228; x=1690441228;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=QsIUKaCmvN9NltOg+X5q0IH1iCVUdH+kPCho75Ry2so=;
- b=IfXVzO94IHR4dA6DeBX8YeQBjhE6uJ3ZkqXyGUgkPfJtg/RZDoUx82quzDY5AZuWCN
- s367hPls7PtGqCtkwNc2R8UCRYd1QuvxxfwCwwIwNfCrKaAywpOUlBKUKQ+iBpmGW23v
- f8knwwq5+PA41cJbcv+7FzTFREHJfK0wVa7mp23BGEV3Vb//nijswi66fN7UatUiLkTx
- dG13HS3C0VSAVA1m8+TRgcFQ0ttfVSrm80lCFJDWHsXgLmFunqUZ0DKYTzEkI7YQ+7S0
- 74rWGMNhQS0vO0y36JhDSHFvJDFVyzxW98QIOb3ZRxTmvgnynz8l6NpOKT6vZdLvaSve
- PzeA==
-X-Gm-Message-State: AC+VfDxOW5oXlo9uZXsEE50Qu4csRn1Yryn54lRLMOVmZMeyVGUhkUPt
- xr0UVaa27VMw/r3231Uvo+Ya7u5/ixsmfgeMxQ5CoVNBJZHOvsZMAQEM59yMUJKMUFpjhROTYCF
- nh8DEjNLUgNMjMdw=
-X-Received: by 2002:a05:620a:4144:b0:765:740f:4897 with SMTP id
- k4-20020a05620a414400b00765740f4897mr10028123qko.64.1687848962566; 
- Mon, 26 Jun 2023 23:56:02 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ712CX1BGwqCiUuT5fQEOQkz9i0snpmB6xkzjYsbtXTuP3x0sP4pPM8WC2fQ6gOp1Rx75nAPA==
-X-Received: by 2002:a05:620a:4144:b0:765:740f:4897 with SMTP id
- k4-20020a05620a414400b00765740f4897mr10028113qko.64.1687848962324; 
- Mon, 26 Jun 2023 23:56:02 -0700 (PDT)
-Received: from [192.168.0.5] (ip-109-43-179-172.web.vodafone.de.
- [109.43.179.172]) by smtp.gmail.com with ESMTPSA id
- z22-20020ae9c116000000b0075c9e048b19sm3615421qki.29.2023.06.26.23.56.00
+ bh=lYcF3+P1zCPxumvuID3WLXhdl7cW70OI4glzMlXgk8Y=;
+ b=akJIbCKfGTVQAVe64Pbq9WzAPUB12QkEAp1Av2FGouCdpaWbwndiqUIcKIcOsuIvYh
+ bobTQ1gAOVNpCFxB1je1acqcmoTWtn9mOnoco/GV1Qe2KX2uWW7b6jMOYIGGJtM7Bpxf
+ zNv4tFIrQC3V5MOf1718C85abSrd6spGhHp4eww2YvOd7hdtYoYH+28S4ZP0QA0RsLoo
+ hiVPjaFPJYMRlniN3Tdt9XoO7OzGNqJ/KMCxNVbE4DB6oH3DA0xw4YmlFjK02i/sQ/v+
+ 6JBg14Jm+7+pqcV9R35OzTRLknRuafkbBcxo2i1hrkeaVNrx/Bwf0BcSqShZhIRCtfbE
+ OwCw==
+X-Gm-Message-State: AC+VfDw3XjppSqObpNox4vwjmO7zMTLTFC6u31LzhvmLy7fsjFmAhUge
+ BtYPLmHFHR6SH2NdkQbOfbmjTazxYeQ3tTJP0abt5kRMplBMNlVe7hHAV9dI6+SttUjPenRrflR
+ jfPUedaREQaKJRC0=
+X-Received: by 2002:adf:fe43:0:b0:313:ec16:b243 with SMTP id
+ m3-20020adffe43000000b00313ec16b243mr6756984wrs.47.1687849228235; 
+ Tue, 27 Jun 2023 00:00:28 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6R8Wd/UgUTmWUAbfNASZX6eFsESefiBs8mdSI7/54GvinnpZBNr/v8DfZhH0fZMU+KRpw0JQ==
+X-Received: by 2002:adf:fe43:0:b0:313:ec16:b243 with SMTP id
+ m3-20020adffe43000000b00313ec16b243mr6756970wrs.47.1687849227973; 
+ Tue, 27 Jun 2023 00:00:27 -0700 (PDT)
+Received: from ?IPV6:2001:b07:6468:f312:9af8:e5f5:7516:fa89?
+ ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
+ by smtp.googlemail.com with ESMTPSA id
+ w7-20020a5d4047000000b003063772a55bsm9426660wrp.61.2023.06.27.00.00.27
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 26 Jun 2023 23:56:01 -0700 (PDT)
-Message-ID: <c103e9e4-7487-5cff-ce36-52e48d9c936f@redhat.com>
-Date: Tue, 27 Jun 2023 08:55:59 +0200
+ Tue, 27 Jun 2023 00:00:27 -0700 (PDT)
+Message-ID: <8edd4b7f-5c6b-db99-a838-484cb49bcb27@redhat.com>
+Date: Tue, 27 Jun 2023 09:00:26 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH 3/4] pc-bios/s390-ccw: Move the stack array into start.S
+ Thunderbird/102.12.0
+Subject: Re: [PATCH] icount: don't adjust virtual time backwards after warp
+To: Nicholas Piggin <npiggin@gmail.com>
+Cc: qemu-devel@nongnu.org, qemu-stable <qemu-stable@nongnu.org>
+References: <20230627061406.241847-1-npiggin@gmail.com>
 Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>,
- Christian Borntraeger <borntraeger@linux.ibm.com>, qemu-devel@nongnu.org
-Cc: qemu-s390x@nongnu.org, mrezanin@redhat.com,
- =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-References: <20230626132138.87668-1-thuth@redhat.com>
- <20230626132138.87668-4-thuth@redhat.com>
- <a807476d-fe97-3c05-32d2-371b0a82b92a@linux.ibm.com>
- <a7ebe361-6b16-2af9-0dfe-ae2e06b6a819@linaro.org>
-From: Thomas Huth <thuth@redhat.com>
-In-Reply-To: <a7ebe361-6b16-2af9-0dfe-ae2e06b6a819@linaro.org>
+From: Paolo Bonzini <pbonzini@redhat.com>
+In-Reply-To: <20230627061406.241847-1-npiggin@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -105,45 +103,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 26/06/2023 17.25, Richard Henderson wrote:
-> On 6/26/23 16:54, Christian Borntraeger wrote:
->>
->> Am 26.06.23 um 15:21 schrieb Thomas Huth:
->>
->>> diff --git a/pc-bios/s390-ccw/start.S b/pc-bios/s390-ccw/start.S
->>> index 29b0a9ece0..47ef6e8aa8 100644
->>> --- a/pc-bios/s390-ccw/start.S
->>> +++ b/pc-bios/s390-ccw/start.S
->>> @@ -120,3 +120,8 @@ external_new_mask:
->>>       .quad   0x0000000180000000
->>>   io_new_mask:
->>>       .quad   0x0000000180000000
->>> +
->>> +.bss
->>> +
->>> +    .align  16
->>> +    .lcomm  stack,STACK_SIZE
->>
->> IIRC, the ELF ABI defines the stack to be 8 byte aligned, but 16 certainly 
->> does not hurt.
+On 6/27/23 08:14, Nicholas Piggin wrote:
+> The icount-based QEMU_CLOCK_VIRTUAL runs ahead of the RT clock at times.
+> When warping, it is possible it is still ahead at the end of the warp,
+> which causes icount adaptive mode to adjust it backward. This can result
+> in the machine observing time going backwards.
 > 
-> This doesn't do what you think it does.
-> 
-> .lcomm produces a COMMON symbol, which is merged with .bss at link time.  
-> Thus the .align does nothing.  Even switching to .bss section does nothing 
-> here.
-> 
-> You want
-> 
-> .bss
->      .align 16
-> stack:
->      .space    STACK_SIZE
->      .size    stack, STACK_SIZE
+> Prevent this by clamping adaptive adjustment to 0 at minimum.
 
-Oh, thanks! I'll fix it in v2.
+Queued, thanks.
 
-  Thomas
+Paolo
 
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+>   softmmu/icount.c | 9 +++++++--
+>   1 file changed, 7 insertions(+), 2 deletions(-)
+> 
+> diff --git a/softmmu/icount.c b/softmmu/icount.c
+> index 4504433e16..486ea7ef41 100644
+> --- a/softmmu/icount.c
+> +++ b/softmmu/icount.c
+> @@ -259,11 +259,16 @@ static void icount_warp_rt(void)
+>           warp_delta = clock - timers_state.vm_clock_warp_start;
+>           if (icount_enabled() == 2) {
+>               /*
+> -             * In adaptive mode, do not let QEMU_CLOCK_VIRTUAL run too
+> -             * far ahead of real time.
+> +             * In adaptive mode, do not let QEMU_CLOCK_VIRTUAL run too far
+> +             * ahead of real time (it might already be ahead so careful not
+> +             * to go backwards).
+>                */
+>               int64_t cur_icount = icount_get_locked();
+>               int64_t delta = clock - cur_icount;
+> +
+> +            if (delta < 0) {
+> +                delta = 0;
+> +            }
+>               warp_delta = MIN(warp_delta, delta);
+>           }
+>           qatomic_set_i64(&timers_state.qemu_icount_bias,
 
 
