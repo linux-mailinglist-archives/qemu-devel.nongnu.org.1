@@ -2,86 +2,174 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19E2E73F104
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 04:56:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EBE7B73F107
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 04:56:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDyr8-0004uZ-VE; Mon, 26 Jun 2023 22:55:02 -0400
+	id 1qDysI-0005U5-Rt; Mon, 26 Jun 2023 22:56:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1qDyr6-0004uE-63
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 22:55:00 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([216.145.221.124])
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1qDysF-0005Sj-48
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 22:56:11 -0400
+Received: from mga12.intel.com ([192.55.52.136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1qDyr2-0002Fj-Ho
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 22:54:58 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687834493;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=T3XNn9DieGotzzZLytMyx94bq8tN9zyLYDAZV+FLNcw=;
- b=GIEtt7fS9KT9yv5/UT3oeE//i7x+od1280SzehURWzsIyj9KnvHQCzychcWVZszTtilUia
- 3m5DGbhhnoHCYRQreK9srHPCKdyj3fqKB8bXtA6V/2I3eXvlf8nMgsZR2G13CRKuck+YFV
- t20JexRSKFS9T40cKpJ6tI5eNzQn/6k=
-Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
- [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-2-UwslIDwMO_WoZRS5FW_DbQ-1; Mon, 26 Jun 2023 22:54:51 -0400
-X-MC-Unique: UwslIDwMO_WoZRS5FW_DbQ-1
-Received: by mail-lf1-f70.google.com with SMTP id
- 2adb3069b0e04-4fb3f3a87d4so1002730e87.1
- for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 19:54:51 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687834490; x=1690426490;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=T3XNn9DieGotzzZLytMyx94bq8tN9zyLYDAZV+FLNcw=;
- b=g7g6GRJ6kAyXk4Ilu6S0nfqzTHGUilz38X89MVxFWShyAIgVkp7KbHTFsmZ5LEu5Fw
- Z7UkNzYQK0Wulo5C/a04O7203CLqkvr2heDBF+xgyn7GUAW4ZkG4e7+0sjUPt9oA6gw3
- RoJXeqf0CMIA9YX+2MTYTJ4qWrmX7M+noWlgsupmolYz8DzWTgzEUwSJO2jHG1VEWc7L
- ycxRox/q6yQPm5aNoiwtUciX2qPkZrIeZB5TcG6LiGnKQ5qFQejdT/gtRHS6Jbyap9xw
- +11N8OYPjJvLtqvUYhi37j4DTksjolOgLWaiM3ipvFbEjVNslYBUXTskfm93d6QEF2kl
- 7A+g==
-X-Gm-Message-State: AC+VfDy1X4V2nnMqeykT0zzUygWK7nwQpfePsWH07GhH5ZrvWlLkCl6G
- dKTPnZ79wk97oAJ4uDxF2+vgdLnFLLeeiT01i46a2+NyI0N/Xv3KAdoBRCFtbhWWpJPSs5Yf1Ji
- CnC8cLkVC7QNJoM/PsBtdePT9+Pa8xoY=
-X-Received: by 2002:a19:5007:0:b0:4f8:52a8:d123 with SMTP id
- e7-20020a195007000000b004f852a8d123mr10473757lfb.12.1687834490193; 
- Mon, 26 Jun 2023 19:54:50 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5TPkMm7wUnTZ4iAfeRTzh6FZ8cIBzwBC2k0q/AHDRpEEMIWUVhnjvmIb+k3deF26Mj0LWqpJxsCQQrXsD/vw0=
-X-Received: by 2002:a19:5007:0:b0:4f8:52a8:d123 with SMTP id
- e7-20020a195007000000b004f852a8d123mr10473750lfb.12.1687834489770; Mon, 26
- Jun 2023 19:54:49 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1qDysC-0002aO-Ht
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 22:56:10 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1687834568; x=1719370568;
+ h=from:to:cc:subject:date:message-id:references:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=+kSM/8hGhHb+okFym1HEx0kc7BtOojdKTjLofe9HpTY=;
+ b=iYl7Lotp1B6q3a7x+rekVAbMB/YE4QXYJMdReEozGAhbf5EklsWuiBF6
+ ma5hD34nROq6Ptd1SGtsSpHdnqslRDUgflwtgR1vNmLBoKtFTuBJHih9b
+ 2OVE/io0sqgwcvF81DQznZJNKurrGzGVyn35EVlPa137w8zNUvHu5kGAw
+ f403Aou8nzomQmplQycYLqtIAqHtzt2NqiTt2GJAZuUShRKFHW75G4PCt
+ +R8/wfIFgl6C8a7uxAaCu0Va4ym0yd9kqu736l2YCGaoheVq2EE6/gL5n
+ CpMgJ3d6NIpVjK6mxaJaGYbxiGeqcIulnUkz8UdXzICwHJ683iviuH5GW A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10753"; a="341040010"
+X-IronPort-AV: E=Sophos;i="6.01,161,1684825200"; d="scan'208";a="341040010"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+ by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Jun 2023 19:56:05 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10753"; a="806286291"
+X-IronPort-AV: E=Sophos;i="6.01,161,1684825200"; d="scan'208";a="806286291"
+Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
+ by FMSMGA003.fm.intel.com with ESMTP; 26 Jun 2023 19:56:05 -0700
+Received: from fmsmsx612.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27; Mon, 26 Jun 2023 19:56:05 -0700
+Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx612.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27; Mon, 26 Jun 2023 19:56:05 -0700
+Received: from fmsedg602.ED.cps.intel.com (10.1.192.136) by
+ fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27 via Frontend Transport; Mon, 26 Jun 2023 19:56:05 -0700
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (104.47.55.105)
+ by edgegateway.intel.com (192.55.55.71) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.23; Mon, 26 Jun 2023 19:56:04 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=GjDQTMykh4nGNgtTBBfezUtOEa7CyGUs4I7LYtch6gjMgDf9wTJWaPeZ1yTeUKdB4A3sJ5kPPqwD5jzO66JuRxGfd3HK4HrKT1A1PQu/mjIY662xwPwhLzQeNrIwctI7kH77ysdTCzm5SwC02xlLFR8130oqOcZwyZgTqSvGoidJXtL993PJwddeENBTdlADIEo2FZm1J5zIZyuL9pEwMEDJO3OCCLtq66ZbTu/IkfUBZQLSnxmQaLAYJM8/I7DrlI4SDkJc4Q3R6xjy/w31ukFvGeWxtUPWpQyBye0Tm8NK8/UP/wD2ZFJBXNnLn4JUiXRIodg+2yfv+5sB3A9bZw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=+kSM/8hGhHb+okFym1HEx0kc7BtOojdKTjLofe9HpTY=;
+ b=gvbIpOaFzf9UEM6iXtQ3KY38Bojp+ia7fSbTBeWIGqycwaCHp+G0kvEtk3iMO+fnCz7zSb2myZsE91/FCRzAOeIhGaRyCGnxQ4Z6IWGr+wHG+n2/NxwIxpK+Ay0SGTHOxZV8vSjxTibL6Db+yal8qQjBplYwLe3QaKBuuWZVRl17a/nQE52KAhZclalI3hwVt/wO+IFQRozsmhEdVDmlGNejibARDVznTAW9A59njE8Z4ljIKasoz9IbDzLSJNxZE2YSLkPH2b46TKZEYOmcsyJPLRmJD8+5c/mTauGqaT/LMeNKKb5TFFVZtL47l5nn1elWND1fLx7InMdLI6ut1A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from SJ0PR11MB6744.namprd11.prod.outlook.com (2603:10b6:a03:47d::10)
+ by PH8PR11MB7024.namprd11.prod.outlook.com (2603:10b6:510:220::19)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6521.23; Tue, 27 Jun
+ 2023 02:55:56 +0000
+Received: from SJ0PR11MB6744.namprd11.prod.outlook.com
+ ([fe80::da0a:8aab:d75b:55f1]) by SJ0PR11MB6744.namprd11.prod.outlook.com
+ ([fe80::da0a:8aab:d75b:55f1%5]) with mapi id 15.20.6521.024; Tue, 27 Jun 2023
+ 02:55:56 +0000
+From: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>
+To: "Martins, Joao" <joao.m.martins@oracle.com>, Avihai Horon
+ <avihaih@nvidia.com>
+CC: "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
+ "clg@redhat.com" <clg@redhat.com>, "Peng, Chao P" <chao.p.peng@intel.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+Subject: RE: [PATCH v3 3/3] vfio/migration: vfio/migration: Refactor and fix
+ print of "Migration disabled"
+Thread-Topic: [PATCH v3 3/3] vfio/migration: vfio/migration: Refactor and fix
+ print of "Migration disabled"
+Thread-Index: AQHZpBiDMAK8vCWoSUWN+eGvuOKtiq+c2rIAgAAMTICAARVJUA==
+Date: Tue, 27 Jun 2023 02:55:56 +0000
+Message-ID: <SJ0PR11MB6744F88600646B8FD4E7F5019227A@SJ0PR11MB6744.namprd11.prod.outlook.com>
+References: <20230621080204.420723-1-zhenzhong.duan@intel.com>
+ <20230621080204.420723-4-zhenzhong.duan@intel.com>
+ <c8583433-9b9f-4380-8076-8ca623b66770@nvidia.com>
+ <3afe5106-414e-5a3d-4a15-3992f80fac5b@oracle.com>
+In-Reply-To: <3afe5106-414e-5a3d-4a15-3992f80fac5b@oracle.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SJ0PR11MB6744:EE_|PH8PR11MB7024:EE_
+x-ms-office365-filtering-correlation-id: a75395b8-d8b4-43d4-8192-08db76ba0794
+x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: d100+qLmtskJJXP/WZ5FM2typ09vl0fnlqhcxue0gF+zGkPkOf6Nufu9Ic5fdiOuGgjF0J426R5ZeRNe65HzRC//bWZjWL97svimTMM0lD24m7KnRyhifpILS7R1i+visZTI8PEUqM++n0SBWpMDpv3aszRDfRw8P6S6OdaYB8EQVKa4vVTW8A3R0kpKWTtrtv+FAnmCQoGMqe2hxwJxK7W9AX0zX9gLBK6O3VMtO7GxIY8Ghb35La4/1DjgrliAQxfbWL14OgQ9lMiJGMDEBV4FQ2kq0EMgwGOT+zBjbVbsJjchmReSYIxBLhiNVRKIanF+faSH+1ca0TUDOH8H5hBG80T6AKXxoVCnwvkPvTgQBByYvWhF9krZyx93x1rIOOMq/C7x67OTsTIsLILLLEsVotsn+9gDjiVlXWcBi/+Tkvj6iPn2Obrglz3kz1aMHBO+cTO1hA/cOYDsOORPmmjn183RlM1D0ZhxAtdWUOtH9F40SsgoOo+KTp3xLPYnz3Cr0JvxE/iTHTnF4gi+evd+waBHVCPQDOVNcJwh0ls/tdtiOG2ODnUtMJVyniZ8mv0XDow7fTAdbU0GTJESjB+1Y9ZeLnu3p+VlavSr8iZGOi5oYUbwlcihTkwaJOpw
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:SJ0PR11MB6744.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230028)(396003)(366004)(136003)(346002)(39860400002)(376002)(451199021)(66446008)(53546011)(33656002)(52536014)(5660300002)(64756008)(66556008)(86362001)(66476007)(41300700001)(8936002)(8676002)(76116006)(38100700002)(316002)(82960400001)(4326008)(122000001)(55016003)(38070700005)(66946007)(9686003)(6506007)(26005)(2906002)(478600001)(186003)(7696005)(71200400001)(54906003)(110136005)(83380400001);
+ DIR:OUT; SFP:1102; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?dGNmbWVPQmJlT1E0RXRaeURoUjhadEluMHI0cG9ybUh3UEpoOE9USHF0b2FK?=
+ =?utf-8?B?MTdtVFBjM1dGTG5aTC9XS240M0ZGQy9iRkFKYm0zdjZqVnJKeUJOTmJwWk5x?=
+ =?utf-8?B?QmVJb05uV1RmcWxRYVFjaWl1U1ZVaWdkL25iS0F2SDcwbkFWVS80WXJkWGIy?=
+ =?utf-8?B?TWRPbXFzT3k1dnVoQUh6cE5yTjR2Z3BFV3ZPdFFlckczTXF5cGY1NnFZMXJ6?=
+ =?utf-8?B?cS9QTGdzdVJsRnM1NEthdFlvKzBsdHV5d0lQN1l4ejFwVnlsZEludXlMRTQ0?=
+ =?utf-8?B?NmlodnFWb3V1MzFkYkw0MzIzK1ZrNzB6SlhPc0pZRmF1WjBncG1teGRRTlVt?=
+ =?utf-8?B?dzBZRWpDTGcwMzRZL0ZKc090aDVvN0ltT2ZMeHBVd1YrTE5JekVJVWlOam9o?=
+ =?utf-8?B?cE9Ha1RGWGV5VDNkL21BN0t5ajdOdWV1c0owaHQ5YTRLV2VSVThIa1QvYUdU?=
+ =?utf-8?B?Y2tJREtTeXorOWFvRVp4RC95RkxSY0lCdGdGSGZRcndsakhQQjU4Z0x5T3lP?=
+ =?utf-8?B?emVFajdmNTJia3pSWkVteFl0MEdOWGczSTJtVWtrZUNjbnFLZWJ3Tys4a25Y?=
+ =?utf-8?B?WmZNTlZQYUNteEd4K0M1d3k2aGcrdjJEamJ0V3AxeWJGSkVOVlRFQWJhN1U5?=
+ =?utf-8?B?OWRJQmxNWER5SjB0WVcvbHRKQUgzU0k5WnVLdklkeWx4SFpoU1ovMURUcW1Y?=
+ =?utf-8?B?LzVaalRFQmxyTGJKM21qMytUcmdiVU9mZGxWTzFDQ3NxYzYxRGJITkhBK1Jh?=
+ =?utf-8?B?cHNoY1U1dXBOOGZjaEtub2c4c3NqVDZZSHl6L0VrZEVGdWpjRkF5ZGkyd2Vz?=
+ =?utf-8?B?MDhiOWxmWEdveWVpUUltR1NYOW5ZcXA5cTFISlpiVEhZWkZUdy9aMHRjMjEx?=
+ =?utf-8?B?VmcvQUQyaW9CYU9tNkJHTEVBVHlNb3YvcGxwYWE3enJWd040eGYzdytBTEJ1?=
+ =?utf-8?B?WnptNms4Q0VuVmVXM3J5NmpwZ1haU08xNmt1U3NXSExmWnJuWUYwdFFXTXVU?=
+ =?utf-8?B?b21qWG1ZbUp3UmtiU21WUkFxdEFybXJ0OXZYSHRvR1orVmF0eHFsNDB1WmJq?=
+ =?utf-8?B?NWs1SjZzL2Q4eHdBdmt0T2lZUkdlUitQZUVWdG5ZanVyYk1vejFHVnBiZ2E5?=
+ =?utf-8?B?d2F5NEJITVBEK2xvNXlJUG5HMnNOcnVEeVR2Wkh4c3lsWnVvY2tKY3NDL0FJ?=
+ =?utf-8?B?UCtGNUJjNzYvVk14VFNpbS9KaU1rWk1lTmlHZlY3Ni9pQ3dHemJSMzJLZWJr?=
+ =?utf-8?B?M3ZOcHpQdHJ6VHF6UjVNVWhTNWRPY2tvWlp0ZUptWDhUWWRSNmRPRkZpUWJD?=
+ =?utf-8?B?am52SEtTd1BxRW4rRkZNYkJHK294M0NSU1g3SUNIaExJYTU2cmJUUUJGU2J5?=
+ =?utf-8?B?Q0pnRStwV1VZOUlOZ0d1Rm0vTkFZQkh5bStHV1hmaHU2WTF2MkFIVDFIUlhR?=
+ =?utf-8?B?Nlg4YmRuZldPekI0MFRjYVZ4azJCZ1Q3Skw4cE5HN21XczFyQUtvUzR4cnBj?=
+ =?utf-8?B?MmFsUzRTUElTTlM4RmN1SlJTMVJYeWtaSytWclA1aERJYllyNUk0aVhHUlFW?=
+ =?utf-8?B?RWEwN2FvdjMxWGIwN3ZCN2tmYUx0MFVWWDVVcUJKTDJZOU9DclBueE1mMGlq?=
+ =?utf-8?B?ejZydDZmL1YzcjdRdUpsODBDVG9ob1daOGt5TGFmZnpCVTNqQkYyVnJNSnpL?=
+ =?utf-8?B?RTU3RU9CMnhZWkdrM0R2alBDTklpU0dMTTVSMHVuYjlQc3NBcFBJNnhRK1M0?=
+ =?utf-8?B?eHBpV3pMWmt5ZEZtUzZqWXB5TWJEQ0JDZjgvQmVkNE1naGllUExKTWRmbWF4?=
+ =?utf-8?B?TUJVL1czQTVPYWNZVjI4QjZEZWY2Q1dKTTNITDlFRzFGeURYeFBCN244NFcx?=
+ =?utf-8?B?NTR6SXh1YllQVmFtaC9LNGJ3Y2xySjN4VGRGbkZhNkVqc2lkZkUyNnJaQjdj?=
+ =?utf-8?B?NUZudFg2NVNBaGYxdjZHQmtYbC82bTJ4MldSNEpITGZyc3YwVlhQeUE5QzJi?=
+ =?utf-8?B?NXNzc3AzV0pNSHpIajFIYkoxSkdOdVI1RjZVLzNHd2pzUU5MbUlLZW82YWFY?=
+ =?utf-8?B?VCtLcHhySnlyeTRCeTJnRm83R0VkK0x0ZTNTSkhQRUVaWXNvVy91aUdJTk8v?=
+ =?utf-8?Q?2Dt9Tpg/ODFZtKrBTiR6obPo7?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-References: <20230622215824.2173343-1-i.maximets@ovn.org>
- <CACGkMEsXOb8wiYo9ktgqh8MqD971=ARJ_etL7MBF-uyo6qt1eA@mail.gmail.com>
- <CACGkMEuyq+5_cqx4T03fcaLOGUCrKLZn51sZxNSXyZq8CqLXTg@mail.gmail.com>
- <93a056c4-b6d3-5491-0c1f-7f58e9f9d1ad@ovn.org>
-In-Reply-To: <93a056c4-b6d3-5491-0c1f-7f58e9f9d1ad@ovn.org>
-From: Jason Wang <jasowang@redhat.com>
-Date: Tue, 27 Jun 2023 10:54:38 +0800
-Message-ID: <CACGkMEuaUTGeCYfH-MbtX_79scN-CkBmFMcY0fwKo4vO_9cn4w@mail.gmail.com>
-Subject: Re: [PATCH] net: add initial support for AF_XDP network backend
-To: Ilya Maximets <i.maximets@ovn.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>, 
- Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: permerror client-ip=216.145.221.124;
- envelope-from=jasowang@redhat.com; helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB6744.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a75395b8-d8b4-43d4-8192-08db76ba0794
+X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Jun 2023 02:55:56.6151 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Ksb1aTsExOxX4DwOKgVcLuKlEVxlMV6+qdxlh6+G4Vul/OOFSrbkuue4Y/bL3Vtf9i+zH7TgR3bfj4Et89my1wBeKWieww8umw7o3nPuvmg=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR11MB7024
+X-OriginatorOrg: intel.com
+Received-SPF: pass client-ip=192.55.52.136;
+ envelope-from=zhenzhong.duan@intel.com; helo=mga12.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_FAIL=0.001, SPF_HELO_NONE=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,271 +185,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jun 26, 2023 at 9:17=E2=80=AFPM Ilya Maximets <i.maximets@ovn.org> =
-wrote:
->
-> On 6/26/23 08:32, Jason Wang wrote:
-> > On Sun, Jun 25, 2023 at 3:06=E2=80=AFPM Jason Wang <jasowang@redhat.com=
-> wrote:
-> >>
-> >> On Fri, Jun 23, 2023 at 5:58=E2=80=AFAM Ilya Maximets <i.maximets@ovn.=
-org> wrote:
-> >>>
-> >>> AF_XDP is a network socket family that allows communication directly
-> >>> with the network device driver in the kernel, bypassing most or all
-> >>> of the kernel networking stack.  In the essence, the technology is
-> >>> pretty similar to netmap.  But, unlike netmap, AF_XDP is Linux-native
-> >>> and works with any network interfaces without driver modifications.
-> >>> Unlike vhost-based backends (kernel, user, vdpa), AF_XDP doesn't
-> >>> require access to character devices or unix sockets.  Only access to
-> >>> the network interface itself is necessary.
-> >>>
-> >>> This patch implements a network backend that communicates with the
-> >>> kernel by creating an AF_XDP socket.  A chunk of userspace memory
-> >>> is shared between QEMU and the host kernel.  4 ring buffers (Tx, Rx,
-> >>> Fill and Completion) are placed in that memory along with a pool of
-> >>> memory buffers for the packet data.  Data transmission is done by
-> >>> allocating one of the buffers, copying packet data into it and
-> >>> placing the pointer into Tx ring.  After transmission, device will
-> >>> return the buffer via Completion ring.  On Rx, device will take
-> >>> a buffer form a pre-populated Fill ring, write the packet data into
-> >>> it and place the buffer into Rx ring.
-> >>>
-> >>> AF_XDP network backend takes on the communication with the host
-> >>> kernel and the network interface and forwards packets to/from the
-> >>> peer device in QEMU.
-> >>>
-> >>> Usage example:
-> >>>
-> >>>   -device virtio-net-pci,netdev=3Dguest1,mac=3D00:16:35:AF:AA:5C
-> >>>   -netdev af-xdp,ifname=3Dens6f1np1,id=3Dguest1,mode=3Dnative,queues=
-=3D1
-> >>>
-> >>> XDP program bridges the socket with a network interface.  It can be
-> >>> attached to the interface in 2 different modes:
-> >>>
-> >>> 1. skb - this mode should work for any interface and doesn't require
-> >>>          driver support.  With a caveat of lower performance.
-> >>>
-> >>> 2. native - this does require support from the driver and allows to
-> >>>             bypass skb allocation in the kernel and potentially use
-> >>>             zero-copy while getting packets in/out userspace.
-> >>>
-> >>> By default, QEMU will try to use native mode and fall back to skb.
-> >>> Mode can be forced via 'mode' option.  To force 'copy' even in native
-> >>> mode, use 'force-copy=3Don' option.  This might be useful if there is
-> >>> some issue with the driver.
-> >>>
-> >>> Option 'queues=3DN' allows to specify how many device queues should
-> >>> be open.  Note that all the queues that are not open are still
-> >>> functional and can receive traffic, but it will not be delivered to
-> >>> QEMU.  So, the number of device queues should generally match the
-> >>> QEMU configuration, unless the device is shared with something
-> >>> else and the traffic re-direction to appropriate queues is correctly
-> >>> configured on a device level (e.g. with ethtool -N).
-> >>> 'start-queue=3DM' option can be used to specify from which queue id
-> >>> QEMU should start configuring 'N' queues.  It might also be necessary
-> >>> to use this option with certain NICs, e.g. MLX5 NICs.  See the docs
-> >>> for examples.
-> >>>
-> >>> In a general case QEMU will need CAP_NET_ADMIN and CAP_SYS_ADMIN
-> >>> capabilities in order to load default XSK/XDP programs to the
-> >>> network interface and configure BTF maps.
-> >>
-> >> I think you mean "BPF" actually?
->
-> "BPF Type Format maps" kind of makes some sense, but yes. :)
->
-> >>
-> >>>  It is possible, however,
-> >>> to run only with CAP_NET_RAW.
-> >>
-> >> Qemu often runs without any privileges, so we need to fix it.
-> >>
-> >> I think adding support for SCM_RIGHTS via monitor would be a way to go=
-.
->
-> I looked through the code and it seems like we can run completely
-> non-privileged as far as kernel concerned.  We'll need an API
-> modification in libxdp though.
->
-> The thing is, IIUC, the only syscall that requires CAP_NET_RAW is
-> a base socket creation.  Binding and other configuration doesn't
-> require any privileges.  So, we could create a socket externally
-> and pass it to QEMU.
-
-That's the way TAP works for example.
-
->  Should work, unless it's an oversight from
-> the kernel side that needs to be patched. :)  libxdp doesn't have
-> a way to specify externally created socket today, so we'll need
-> to change that.  Should be easy to do though.  I can explore.
-
-Please do that.
-
->
-> In case the bind syscall will actually need CAP_NET_RAW for some
-> reason, we could change the kernel and allow non-privileged bind
-> by utilizing, e.g. SO_BINDTODEVICE.  i.e., let the privileged
-> process bind the socket to a particular device, so QEMU can't
-> bind it to a random one.  Might be a good use case to allow even
-> if not strictly necessary.
-
-Yes.
-
->
-> >>
-> >>
-> >>> For that to work, an external process
-> >>> with admin capabilities will need to pre-load default XSK program
-> >>> and pass an open file descriptor for this program's 'xsks_map' to
-> >>> QEMU process on startup.  Network backend will need to be configured
-> >>> with 'inhibit=3Don' to avoid loading of the programs.  The file
-> >>> descriptor for 'xsks_map' can be passed via 'xsks-map-fd=3DN' option.
-> >>>
-> >>> There are few performance challenges with the current network backend=
-s.
-> >>>
-> >>> First is that they do not support IO threads.
-> >>
-> >> The current networking codes needs some major recatoring to support IO
-> >> threads which I'm not sure is worthwhile.
-> >>
-> >>> This means that data
-> >>> path is handled by the main thread in QEMU and may slow down other
-> >>> work or may be slowed down by some other work.  This also means that
-> >>> taking advantage of multi-queue is generally not possible today.
-> >>>
-> >>> Another thing is that data path is going through the device emulation
-> >>> code, which is not really optimized for performance.  The fastest
-> >>> "frontend" device is virtio-net.  But it's not optimized for heavy
-> >>> traffic either, because it expects such use-cases to be handled via
-> >>> some implementation of vhost (user, kernel, vdpa).  In practice, we
-> >>> have virtio notifications and rcu lock/unlock on a per-packet basis
-> >>> and not very efficient accesses to the guest memory.  Communication
-> >>> channels between backend and frontend devices do not allow passing
-> >>> more than one packet at a time as well.
-> >>>
-> >>> Some of these challenges can be avoided in the future by adding bette=
-r
-> >>> batching into device emulation or by implementing vhost-af-xdp varian=
-t.
-> >>
-> >> It might require you to register(pin) the whole guest memory to XSK or
-> >> there could be a copy. Both of them are sub-optimal.
->
-> A single copy by itself shouldn't be a huge problem, right?
-
-Probably.
-
-> vhost-user and -kernel do copy packets.
->
-> >>
-> >> A really interesting project is to do AF_XDP passthrough, then we
-> >> don't need to care about pin and copy and we will get ultra speed in
-> >> the guest. (But again, it might needs BPF support in virtio-net).
->
-> I suppose, if we're doing pass-through we need a new device type and a
-> driver in the kernel/dpdk.  There is no point pretending it's a
-> virtio-net and translating between different ring layouts.
-
-Yes.
-
->  Or is there?
->
-> >>
-> >>>
-> >>> There are also a few kernel limitations.  AF_XDP sockets do not
-> >>> support any kinds of checksum or segmentation offloading.  Buffers
-> >>> are limited to a page size (4K), i.e. MTU is limited.  Multi-buffer
-> >>> support is not implemented for AF_XDP today.  Also, transmission in
-> >>> all non-zero-copy modes is synchronous, i.e. done in a syscall.
-> >>> That doesn't allow high packet rates on virtual interfaces.
-> >>>
-> >>> However, keeping in mind all of these challenges, current implementat=
-ion
-> >>> of the AF_XDP backend shows a decent performance while running on top
-> >>> of a physical NIC with zero-copy support.
-> >>>
-> >>> Test setup:
-> >>>
-> >>> 2 VMs running on 2 physical hosts connected via ConnectX6-Dx card.
-> >>> Network backend is configured to open the NIC directly in native mode=
-.
-> >>> The driver supports zero-copy.  NIC is configured to use 1 queue.
-> >>>
-> >>> Inside a VM - iperf3 for basic TCP performance testing and dpdk-testp=
-md
-> >>> for PPS testing.
-> >>>
-> >>> iperf3 result:
-> >>>  TCP stream      : 19.1 Gbps
-> >>>
-> >>> dpdk-testpmd (single queue, single CPU core, 64 B packets) results:
-> >>>  Tx only         : 3.4 Mpps
-> >>>  Rx only         : 2.0 Mpps
-> >>>  L2 FWD Loopback : 1.5 Mpps
-> >>
-> >> I don't object to merging this backend (considering we've already
-> >> merged netmap) once the code is fine, but the number is not amazing so
-> >> I wonder what is the use case for this backend?
->
-> I don't think there is a use case right now that would significantly bene=
-fit
-> from the current implementation, so I'm fine if the merge is postponed.
-
-Just to be clear, I don't want to postpone this if we decide to
-invest/enhance it. I will go through the codes and get back.
-
-> It is noticeably more performant than a tap with vhost=3Don in terms of P=
-PS.
-> So, that might be one case.  Taking into account that just rcu lock and
-> unlock in virtio-net code takes more time than a packet copy, some batchi=
-ng
-> on QEMU side should improve performance significantly.  And it shouldn't =
-be
-> too hard to implement.
->
-> Performance over virtual interfaces may potentially be improved by creati=
-ng
-> a kernel thread for async Tx.  Similarly to what io_uring allows.  Curren=
-tly
-> Tx on non-zero-copy interfaces is synchronous, and that doesn't allow to
-> scale well.
-
-Interestingly, actually, there are a lot of "duplication" between
-io_uring and AF_XDP:
-
-1) both have similar memory model (user register)
-2) both use ring for communication
-
-I wonder if we can let io_uring talks directly to AF_XDP.
-
->
-> So, I do think that there is a potential in this backend.
->
-> The main benefit, assuming we can reach performance comparable with other
-> high-performance backends (vhost-user), I think, is the fact that it's
-> Linux-native and doesn't require talking with any other devices
-> (like chardevs/sockets), except for a network interface itself. i.e. it
-> could be easier to manage in complex environments.
-
-Yes.
-
->
-> > A more ambitious method is to reuse DPDK via dedicated threads, then
-> > we can reuse any of its PMD like AF_XDP.
->
-> Linking with DPDK will make configuration much more complex.  I don't
-> think it makes sense to bring it in for AF_XDP specifically.  Might be
-> a separate project though, sure.
-
-Right.
-
-Thanks
-
->
-> Best regards, Ilya Maximets.
->
-
+DQoNCj4tLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPkZyb206IEpvYW8gTWFydGlucyA8am9h
+by5tLm1hcnRpbnNAb3JhY2xlLmNvbT4NCj5TZW50OiBNb25kYXksIEp1bmUgMjYsIDIwMjMgNjox
+OSBQTQ0KPlRvOiBBdmloYWkgSG9yb24gPGF2aWhhaWhAbnZpZGlhLmNvbT47IER1YW4sIFpoZW56
+aG9uZw0KPjx6aGVuemhvbmcuZHVhbkBpbnRlbC5jb20+DQo+Q2M6IGFsZXgud2lsbGlhbXNvbkBy
+ZWRoYXQuY29tOyBjbGdAcmVkaGF0LmNvbTsgUGVuZywgQ2hhbyBQDQo+PGNoYW8ucC5wZW5nQGlu
+dGVsLmNvbT47IHFlbXUtZGV2ZWxAbm9uZ251Lm9yZw0KPlN1YmplY3Q6IFJlOiBbUEFUQ0ggdjMg
+My8zXSB2ZmlvL21pZ3JhdGlvbjogdmZpby9taWdyYXRpb246IFJlZmFjdG9yIGFuZCBmaXgNCj5w
+cmludCBvZiAiTWlncmF0aW9uIGRpc2FibGVkIg0KPg0KPg0KPg0KPk9uIDI2LzA2LzIwMjMgMTA6
+MzQsIEF2aWhhaSBIb3JvbiB3cm90ZToNCj4+DQo+PiBPbiAyMS8wNi8yMDIzIDExOjAyLCBaaGVu
+emhvbmcgRHVhbiB3cm90ZToNCi4uLg0KPj4+IC12b2lkIHZmaW9fbWlncmF0aW9uX2ZpbmFsaXpl
+KHZvaWQpDQo+Pj4gK2Jvb2wgdmZpb19ibG9ja19naW9tbXVfbWlncmF0aW9uKFZGSU9EZXZpY2Ug
+KnZiYXNlZGV2KQ0KPj4+IMKgIHsNCj4+PiAtwqDCoMKgIGlmICghZ2lvbW11X21pZ3JhdGlvbl9i
+bG9ja2VyIHx8DQo+Pj4gLcKgwqDCoMKgwqDCoMKgIHZmaW9fdmlvbW11X3ByZXNldCgpKSB7DQo+
+Pj4gLcKgwqDCoMKgwqDCoMKgIHJldHVybjsNCj4+PiAtwqDCoMKgIH0NCj4+PiAtDQo+Pj4gLcKg
+wqDCoCBtaWdyYXRlX2RlbF9ibG9ja2VyKGdpb21tdV9taWdyYXRpb25fYmxvY2tlcik7DQo+Pj4g
+LcKgwqDCoCBlcnJvcl9mcmVlKGdpb21tdV9taWdyYXRpb25fYmxvY2tlcik7DQo+Pj4gLcKgwqDC
+oCBnaW9tbXVfbWlncmF0aW9uX2Jsb2NrZXIgPSBOVUxMOw0KPj4+ICvCoMKgwqAgcmV0dXJuIHZi
+YXNlZGV2LT5ncm91cC0+Y29udGFpbmVyLT5zcGFjZS0+YXMgIT0NCj4+PiArJmFkZHJlc3Nfc3Bh
+Y2VfbWVtb3J5Ow0KPj4+IMKgIH0NCj4+DQo+PiBJIGd1ZXNzIHZmaW9fYmxvY2tfZ2lvbW11X21p
+Z3JhdGlvbiBjYW4gYmUgbW92ZWQgdG8gbWlncmF0aW9uLmMgYW5kDQo+bWFkZSBzdGF0aWM/DQo+
+PiBBbHRob3VnaCBKb2FvJ3MgdklPTU1VIHNlcmllcyB3aWxsIHByb2JhYmx5IGNoYW5nZSB0aGF0
+IGJhY2sgbGF0ZXIgaW4gc29tZQ0KPndheS4NCj4+DQo+SSBndWVzcyBpdCBtYWtlcyBzZW5zZSAt
+LSB0aGUgdGhpbmcgdGhhdCB3YXMgdGllaW5nIGhpbSB3YXMgdGhlIGdsb2JhbCBtaWdyYXRpb24N
+Cj5ibG9ja2VyLCB3aGljaCBpcyBub3cgY29uc29saWRhdGVkIGludG8gdGhlIG1haW4gbWlncmF0
+aW9uIGJsb2NrZXIuDQo+DQo+TXkgdklPTU1VIHNlcmllcyB3aWxsIHJlbGF4IHRoaXMgY29uZGl0
+aW9uIHllcyAoc3RpbGwgc2FtZSBwZXItZGV2aWNlIHNjb3BlKS4NCj5BbmQgSSB3aWxsIG5lZWQg
+dG8gY2hlY2sgdGhlIG1heGltdW0gSU9WQSBpbiB0aGUgdklPTU1VLiBCdXQgaXQncyBuZXcgY29k
+ZQ0KPkkgY2FuIGFkanVzdCBhbmQgWmhlbnpob25nIHNob3VsZG4ndCB3b3JyeSBhYm91dCB0aGUg
+dklPTU1VIGZ1dHVyZSBzdHVmZg0KQSBiaXQgY29uZnVzZWQsIHlvdSBhZ3JlZWQgdG8gbW92ZSB2
+ZmlvX2Jsb2NrX2dpb21tdV9taWdyYXRpb24gaW50byBtaWdyYXRpb24uYw0KDQo+YnV0IEkgZG9u
+J3QgZXhwZWN0IHRvIGluZmx1ZW5jZSBsb2NhdGlvbiwgc2F5IGlmIGl0IGdldHMgbW92ZWQgaW50
+byBtaWdyYXRpb24uYw0KYW5kIGZpbmFsIGRlY2lzaW9uIGlzIG5vIG1vdmUgZm9yIGluZmx1ZW5j
+aW5nIGxvY2F0aW9uIHJlYXNvbj8gRG8gSSBtaXN1bmRlcnN0YW5kPw0KDQpUaGFua3MNClpoZW56
+aG9uZw0K
 
