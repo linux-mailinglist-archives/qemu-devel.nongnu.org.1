@@ -2,88 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DB1A73FF70
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 17:15:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F1D073FF8E
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 17:21:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEAOh-0003It-B9; Tue, 27 Jun 2023 11:14:27 -0400
+	id 1qEAUJ-0006de-3n; Tue, 27 Jun 2023 11:20:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qEAOe-0003EA-Rv
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 11:14:25 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qEAOV-00058m-DK
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 11:14:21 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-3fa9850bfd9so22823275e9.0
- for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 08:14:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687878853; x=1690470853;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
- :message-id:reply-to;
- bh=7RyMnAjjBSSOq3zaTdvT972DJCcOcquWn/+qjsJsWNU=;
- b=jY+MrflDodJ5iCExLF5jEzXFBNDtiensxy8gsQZSCl5vUmcMyKYahWjIk0eOykjc5v
- tNcucAslRMvAU2KA66kuSDQtzdG5UnZQfRKQpkpAWLrn9P8OGH41oYAQ0MysGOsZHbI8
- miMpmb84nG9x2RJhEur9gd+5+Es+rW6h7L4AkHBxlJOxdKnH9gvoDCG0XYIgVPcaYl15
- fXPMJNJx04qMgZYn91SasnETwqrlYy09UXGrf+fMYrsP3Hf6foskNlcWBrTmiW09GTyd
- rkw+sX69n3wxqsBhhW2a0qpHt+lU0g+6n3jQlEsegNVtJLyFZ70XHILlszNebkE+V6Tc
- KoOA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687878853; x=1690470853;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=7RyMnAjjBSSOq3zaTdvT972DJCcOcquWn/+qjsJsWNU=;
- b=Z8TZU3dLibWcQz6sIJEP19XYQ43o8gHA3biKRUnlIOPG3U3u4qJ4zMseAji84Fn8iR
- GTISJ35xgGLhnAs9BeYLPco6cQLxwnr9olu3D98MPvXveCIfjzomagb+7rfUtzrfdTHt
- 0Xo4+U+sA5Nrl/pmpQVS+AvnExxgA2h0PZIwxWUNQ04s/p1Cxh5R9OJchIQNzdysPpkO
- AlFPxtoi2Luitfa4bqXQEFf/F8YSfIrWitc4gOM4HMuUTpXJldpczA9CXGZBanSkPo22
- WXGpCT7PGLuK9ng+SiHUmE9LE5SXV0IukmlnusAhd2zLQkIzBWk7eZBrWl5dyedycwO3
- ewsw==
-X-Gm-Message-State: AC+VfDyNGDeF1rcpEyD2dipN1DYMwER+vg8OsEvRktC6G64+1L+VgZV1
- 6kEgCjP7Z68x7HabDXRrZ100jg==
-X-Google-Smtp-Source: ACHHUZ5+t9nRUwpOJCcnGV46wvX95Rs5MyD4JyYJXJO1uJq7lQbVKVCGfmycsDaOthezRHqF0Tm6Og==
-X-Received: by 2002:a7b:c456:0:b0:3fa:7b1b:4adc with SMTP id
- l22-20020a7bc456000000b003fa7b1b4adcmr8174172wmi.39.1687878853059; 
- Tue, 27 Jun 2023 08:14:13 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
- by smtp.gmail.com with ESMTPSA id
- s24-20020a7bc398000000b003fb9ebb6b88sm2749606wmj.39.2023.06.27.08.14.12
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 27 Jun 2023 08:14:12 -0700 (PDT)
-Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 39A1E1FFBB;
- Tue, 27 Jun 2023 16:14:12 +0100 (BST)
-References: <20230621203627.1808446-1-iii@linux.ibm.com>
-User-agent: mu4e 1.11.7; emacs 29.0.92
-From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Ilya Leoshkevich <iii@linux.ibm.com>
-Cc: Laurent Vivier <laurent@vivier.eu>, Peter Maydell
- <peter.maydell@linaro.org>, Richard Henderson
- <richard.henderson@linaro.org>, David Hildenbrand <david@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-s390x@nongnu.org
-Subject: Re: [PATCH v4 0/8] gdbstub: Add support for info proc mappings
-Date: Tue, 27 Jun 2023 16:14:01 +0100
-In-reply-to: <20230621203627.1808446-1-iii@linux.ibm.com>
-Message-ID: <87h6qtym2j.fsf@linaro.org>
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1qEAUG-0006dI-Q8; Tue, 27 Jun 2023 11:20:12 -0400
+Received: from forwardcorp1c.mail.yandex.net ([178.154.239.200])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1qEAUC-0006jV-M9; Tue, 27 Jun 2023 11:20:11 -0400
+Received: from mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net
+ [IPv6:2a02:6b8:c14:750a:0:640:e46:0])
+ by forwardcorp1c.mail.yandex.net (Yandex) with ESMTP id 56B3060180;
+ Tue, 27 Jun 2023 18:19:56 +0300 (MSK)
+Received: from [IPV6:2a02:6b8:b081:b68e::1:39] (unknown
+ [2a02:6b8:b081:b68e::1:39])
+ by mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id tJN9Q50OfGk0-hjoDvhkF; Tue, 27 Jun 2023 18:19:55 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; 
+ t=1687879195; bh=k/hLuuV5g4E+hInvgx4kDlYB88uThru5XWHvSuE3Ku8=;
+ h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+ b=VK3adJORBC7i3nQNWKoV3CYtghjFZLpLk01e135MkpkYWp4S2iRDkLHy0lcWH/yy7
+ PgnO/Ir7EfZcMQyleRkaLPBGLsOk0A19d2nL3jn1DMJRxy9FiZ/UAuVTHHMJwmUsIK
+ hA7ENxq7d4zdN04zojiJtEmCApEPF7NR5HKTXx/I=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+Message-ID: <399962eb-b05a-b7c8-ffa9-a09c94e0a22c@yandex-team.ru>
+Date: Tue, 27 Jun 2023 18:19:54 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.0
+Subject: Re: [Libguestfs] [PATCH v4 23/24] nbd/server: Prepare for per-request
+ filtering of BLOCK_STATUS
+Content-Language: en-US
+To: Eric Blake <eblake@redhat.com>, qemu-devel@nongnu.org
+Cc: Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ libguestfs@redhat.com, qemu-block@nongnu.org
+References: <20230608135653.2918540-1-eblake@redhat.com>
+ <20230608135653.2918540-24-eblake@redhat.com>
+ <r3yru7q3g27ou4r4f3fmdxlilmhmvliksy6zovyh5zia35j3in@cijsy333zbvr>
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+In-Reply-To: <r3yru7q3g27ou4r4f3fmdxlilmhmvliksy6zovyh5zia35j3in@cijsy333zbvr>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=178.154.239.200;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1c.mail.yandex.net
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.103,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,40 +77,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 08.06.23 22:15, Eric Blake wrote:
+> On Thu, Jun 08, 2023 at 08:56:52AM -0500, Eric Blake wrote:
+>> The next commit will add support for the optional extension
+>> NBD_CMD_FLAG_PAYLOAD during NBD_CMD_BLOCK_STATUS, where the client can
+>> request that the server only return a subset of negotiated contexts,
+>> rather than all contexts.  To make that task easier, this patch
+>> populates the list of contexts to return on a per-command basis (for
+>> now, identical to the full set of negotiated contexts).
+>>
+>> Signed-off-by: Eric Blake <eblake@redhat.com>
+>> ---
+>>
+> 
+>> +++ b/nbd/server.c
+>> @@ -2491,6 +2491,8 @@ static int coroutine_fn nbd_co_receive_request(NBDRequestData *req, NBDRequest *
+>>               error_setg(errp, "No memory");
+>>               return -ENOMEM;
+>>           }
+>> +    } else if (request->type == NBD_CMD_BLOCK_STATUS) {
+>> +        request->contexts = &client->contexts;
+>>       }
+> 
+> THere are paths where request->contexts is left NULL but request->type
+> was set...
+> 
+>> @@ -2841,6 +2848,11 @@ static coroutine_fn void nbd_trip(void *opaque)
+>>       } else {
+>>           ret = nbd_handle_request(client, &request, req->data, &local_err);
+>>       }
+>> +    if (request.type == NBD_CMD_BLOCK_STATUS &&
+>> +        request.contexts != &client->contexts) {
+>> +        g_free(request.contexts->bitmaps);
+>> +        g_free(request.contexts);
+>> +    }
+> 
+> so I think this also needs to be tweaked to check that
+> request.contexts is non-NULL before dereferencing to free bitmaps.
+> 
 
-Ilya Leoshkevich <iii@linux.ibm.com> writes:
+agree (and I missed this during my review :)
 
-> v3: https://lists.gnu.org/archive/html/qemu-devel/2023-06/msg01311.html
-> v3 -> v4: Fix the 32-bit build (Alex).
->           Enable the test on all architectures and ignore certain
->           expected failures (Alex). I tried this with the latest
->           gdb-multiarch and it works. The only skip is on x86_64,
->           as expected.
->
-> v2: https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg06837.html
-> v2 -> v3: Use openat() instead of safe_openat() (new patch: 2/8).
->           Add /proc/self/smaps emulation (new patch: 3/8).
->           With these 2 changes, the minor issues previously mentioned in
->           the patch 6/8 are gone.
->
-> v1: https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg02614.html
-> v1 -> v2: Reword the 5/6 commit message (Dominik).
->           Add R-bs.
->           Patches that need review:
->           4/6 gdbstub: Add support for info proc mappings
->           6/6 tests/tcg: Add a test for info proc mappings
->
-> Hi,
->
-> this series partially implements the Host I/O feature of the GDB Remote
-> Serial Protocol in order to make generate-core-file work with qemu-user.
-> It borrows heavily from the abandoned patch by Dominik [1], hence 4/6
-> carries the respective Co-developed-by: tag. I also peeked at
-> gdbserver/hostio.cc quite a few times.
+suggest:
 
-Queued to gdbstub/next, thanks.
+if (request.contexts && request.contexts != &client->contexts) {
+   g_free(..)
+   g_free(..)
+}
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+
+-- 
+Best regards,
+Vladimir
+
 
