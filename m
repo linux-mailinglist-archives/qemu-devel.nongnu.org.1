@@ -2,99 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFA3A73FB47
+	by mail.lfdr.de (Postfix) with ESMTPS id D56ED73FB48
 	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 13:42:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qE741-0005q3-VK; Tue, 27 Jun 2023 07:40:53 -0400
+	id 1qE74Z-00061x-Gj; Tue, 27 Jun 2023 07:41:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <olaf@aepfle.de>) id 1qE73z-0005ma-Cv
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 07:40:51 -0400
-Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.51])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qE74L-0005yy-5F
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 07:41:17 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <olaf@aepfle.de>) id 1qE73x-0002H8-3h
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 07:40:51 -0400
-ARC-Seal: i=1; a=rsa-sha256; t=1687866030; cv=none;
- d=strato.com; s=strato-dkim-0002;
- b=Oycm2VcwANSg283vPXjXFfOfEYI4mX0rMOypTsUMKITbLIxtoMVdkMT5w0TDfKIvMn
- x1FhfV+McbAw8YQfrEgz2xHHzwPw60cXsCHOkvFDiSAsw/Nz4XpWeksBB1xjcu+lzWAQ
- yyvFShfwWzVnkh2mB6iI3GF4OA6HDSWLzQr6aYm4RihtQsDA6tnjzsWcfaLkfTUD7St3
- p067LJRqj6unJBmnQAsELGBgoSrE8kUmp26zdLwX3pTRi/KjSMhlzgtsTE4AjQBnOlht
- 3LAOxV1so8t4Pdvps97y73bu6UaTjHLWNJtz2wATTQIPfxGN0O97gDV33sBRarc4PlY2
- 9swQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1687866030;
- s=strato-dkim-0002; d=strato.com;
- h=References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
- From:Subject:Sender;
- bh=7r7Vjrw1pT3+QPmalZ8Jntj7FY0ixbMGjMuzuV9qPEE=;
- b=sDwbQu/UIoacr023i8yOcxth2qqqPqSSNFo7V6umDgYLvI5U9KlWTjq02Iptzk4qPi
- W1t3wFRIMWnpi/REvbgA/c6o/3bGpOZfrFt8lL65ymiVvjN+Euy6Q4WJttjtbWtAKxMF
- Nd0jW3jPv6IM3pXgvF5V4bcmYN202jSZbMf4+1hNbl1ERewX9cGfmBGeSxgbgGym6agW
- LR6MX3sjiJzu2pgve8XHJwVjoeNN5KEdUacIEqDT3erjMRhWVZSpzkSo+cQik2SJvHZP
- bpHRK3J0xWYC2qJxUN+t9TkLT2WoaJGJyFs/1qAI29JbcpMP64Nidhm2V+uyJipJ9+mh
- ZCXw==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1687866030;
- s=strato-dkim-0002; d=aepfle.de;
- h=References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
- From:Subject:Sender;
- bh=7r7Vjrw1pT3+QPmalZ8Jntj7FY0ixbMGjMuzuV9qPEE=;
- b=WJjTwo9I+vTHWQ9zk2BvfgEJ/1POJVlt8n3H0L3heQDE3YJvzYDjU05fPj8B9eLYKd
- 8fGSJts2F2TUzLGkZv/RQG97iM+a6hVP+YCkFlto8xEDcKiXiAlZ/42GsfrqfJxD+NrO
- KI+xQGQT185Vp330AiLMn8AkqxpURoV13elk4maxWWKgDxO0aC407E/J11+hJZ0TjhTC
- GB/POTA70mKJaWk/qi+lpXk+Aa828duBDvrillbJZptKSLBPAcNuqJKAWY5Z+iPPoAlL
- u18q9kVc7DdRthevphTCIvmVE/ptZRjgVxhRkfliRvFkm9gmJacEy+hvATfXJl3YOg5h
- t8jQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1687866030;
- s=strato-dkim-0003; d=aepfle.de;
- h=References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
- From:Subject:Sender;
- bh=7r7Vjrw1pT3+QPmalZ8Jntj7FY0ixbMGjMuzuV9qPEE=;
- b=U2LFzJk8D3WdR4FR4eO2htNO+6bCj49iMYTpAXye4lZs8R4VIt2NNhoBPz5B5UVIiQ
- SI2ngtioGjUY1dC4ESCg==
-X-RZG-AUTH: ":P2EQZWCpfu+qG7CngxMFH1J+3q8wa/QLpd5ylWvMDX3y/OuD5rXWiuRyeUQh3GC6w0BTiV2X9kN/WAr0rdTE7oY1qJzPNA=="
-Received: from sender by smtp.strato.de (RZmta 49.6.0 AUTH)
- with ESMTPSA id y5401az5RBeUlKX
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
- (Client did not present a certificate);
- Tue, 27 Jun 2023 13:40:30 +0200 (CEST)
-Date: Tue, 27 Jun 2023 13:40:28 +0200
-From: Olaf Hering <olaf@aepfle.de>
-To: Bernhard Beschow <shentey@gmail.com>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, John Snow
- <jsnow@redhat.com>, xen-devel@lists.xenproject.org, Stefano Stabellini
- <sstabellini@kernel.org>
-Subject: Re: [PATCH v2] piix: fix regression during unplug in Xen HVM domUs
-Message-ID: <20230627134028.648924f4.olaf@aepfle.de>
-In-Reply-To: <5DB37FA5-41DF-4ED6-8C8A-CDDD6F276F42@gmail.com>
-References: <20210317070046.17860-1-olaf@aepfle.de>
- <4441d32f-bd52-9408-cabc-146b59f0e4dc@redhat.com>
- <20210325121219.7b5daf76.olaf@aepfle.de>
- <dae251e1-f808-708e-902c-05cfcbbea9cf@redhat.com>
- <20230509225818.GA16290@aepfle.de>
- <20230626231901.5b5d11c1.olaf@aepfle.de>
- <c939b695-2b68-085a-0f19-108ecdcc1a05@redhat.com>
- <5DB37FA5-41DF-4ED6-8C8A-CDDD6F276F42@gmail.com>
-X-Mailer: Claws Mail 20230601T090920.68bc28c0 hat ein Softwareproblem,
- kann man nichts machen.
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qE74I-0002Ls-DD
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 07:41:12 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1687866069;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=fHYr+pQ3wd0gYpfPBNoY56EkIsTLkAVX+AlF8ulhdfc=;
+ b=TDyJcyuJGNwFyp3fDLavrnZ0Znavc+D/5LotaXfORvcWUj6QharARRuez97mwMOlgU40rW
+ C1qutpj/Oca/MLWIJQtC1S797NwlDqgk3R2MTm2DJ3yNIKIfUQXcp77RK+XpwrhR7vP7xj
+ cInfHWyFC2RTK8n8ENLqDAAiYHiN2Fs=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-581-URtHWzAiOEu942jxv_E1qQ-1; Tue, 27 Jun 2023 07:41:06 -0400
+X-MC-Unique: URtHWzAiOEu942jxv_E1qQ-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id ABE93185A791;
+ Tue, 27 Jun 2023 11:41:05 +0000 (UTC)
+Received: from thuth.com (unknown [10.39.192.242])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 9D3172166B25;
+ Tue, 27 Jun 2023 11:41:03 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-s390x@nongnu.org, Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Eric Farman <farman@linux.ibm.com>,
+ Claudio Imbrenda <imbrenda@linux.ibm.com>, cohuck@redhat.com,
+ Juan Quintela <quintela@redhat.com>
+Subject: [PATCH] pc-bios/s390-ccw: Get rid of the the __u* types
+Date: Tue, 27 Jun 2023 13:41:01 +0200
+Message-Id: <20230627114101.122231-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/JIfyy9HKszghr4sGGJ93kPh";
- protocol="application/pgp-signature"; micalg=pgp-sha256
-Content-Transfer-Encoding: 7bit
-Received-SPF: none client-ip=85.215.255.51; envelope-from=olaf@aepfle.de;
- helo=mo4-p01-ob.smtp.rzone.de
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_PASS=-0.001, SPF_NONE=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -111,43 +76,352 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---Sig_/JIfyy9HKszghr4sGGJ93kPh
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+Using types starting with double underscores should be avoided since these
+names are marked as reserved by the C standard. The corresponding Linux
+kernel header file has also been changed accordingly a long time ago:
 
-Tue, 27 Jun 2023 10:12:50 +0000 Bernhard Beschow <shentey@gmail.com>:
+ https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/diff/drivers/s390/cio/cio.h?id=cd6b4f27b9bb2a
 
-> Bits 4..15 represent the BAR address, and pci_set_byte() only clears bits=
- 4..7, leaving bits 8..15 unchanged. Perhaps this causes the BAR to be move=
-d into the UHCI region? Does changing the call to pci_set_long() fix the pr=
-oblem?
+So we should get rid of the __u* in the s390-ccw bios now finally, too.
 
-Thanks, it seems this fixes the issue. Let me verify this with a clean buil=
-d.
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+---
+ Based-on: <20230510143925.4094-4-quintela@redhat.com>
 
+ pc-bios/s390-ccw/cio.h      | 232 ++++++++++++++++++------------------
+ pc-bios/s390-ccw/s390-ccw.h |   4 -
+ 2 files changed, 116 insertions(+), 120 deletions(-)
 
-Olaf
+diff --git a/pc-bios/s390-ccw/s390-ccw.h b/pc-bios/s390-ccw/s390-ccw.h
+index efeb449572..c977a52b50 100644
+--- a/pc-bios/s390-ccw/s390-ccw.h
++++ b/pc-bios/s390-ccw/s390-ccw.h
+@@ -17,10 +17,6 @@ typedef unsigned char      u8;
+ typedef unsigned short     u16;
+ typedef unsigned int       u32;
+ typedef unsigned long long u64;
+-typedef unsigned char      __u8;
+-typedef unsigned short     __u16;
+-typedef unsigned int       __u32;
+-typedef unsigned long long __u64;
+ 
+ #define true 1
+ #define false 0
+diff --git a/pc-bios/s390-ccw/cio.h b/pc-bios/s390-ccw/cio.h
+index 88a88adfd2..8b18153deb 100644
+--- a/pc-bios/s390-ccw/cio.h
++++ b/pc-bios/s390-ccw/cio.h
+@@ -17,32 +17,32 @@
+  * path management control word
+  */
+ struct pmcw {
+-    __u32 intparm;      /* interruption parameter */
+-    __u32 qf:1;         /* qdio facility */
+-    __u32 w:1;
+-    __u32 isc:3;        /* interruption subclass */
+-    __u32 res5:3;       /* reserved zeros */
+-    __u32 ena:1;        /* enabled */
+-    __u32 lm:2;         /* limit mode */
+-    __u32 mme:2;        /* measurement-mode enable */
+-    __u32 mp:1;         /* multipath mode */
+-    __u32 tf:1;         /* timing facility */
+-    __u32 dnv:1;        /* device number valid */
+-    __u32 dev:16;       /* device number */
+-    __u8  lpm;          /* logical path mask */
+-    __u8  pnom;         /* path not operational mask */
+-    __u8  lpum;         /* last path used mask */
+-    __u8  pim;          /* path installed mask */
+-    __u16 mbi;          /* measurement-block index */
+-    __u8  pom;          /* path operational mask */
+-    __u8  pam;          /* path available mask */
+-    __u8  chpid[8];     /* CHPID 0-7 (if available) */
+-    __u32 unused1:8;    /* reserved zeros */
+-    __u32 st:3;         /* subchannel type */
+-    __u32 unused2:18;   /* reserved zeros */
+-    __u32 mbfc:1;       /* measurement block format control */
+-    __u32 xmwme:1;      /* extended measurement word mode enable */
+-    __u32 csense:1;     /* concurrent sense; can be enabled ...*/
++    u32 intparm;        /* interruption parameter */
++    u32 qf:1;           /* qdio facility */
++    u32 w:1;
++    u32 isc:3;          /* interruption subclass */
++    u32 res5:3;         /* reserved zeros */
++    u32 ena:1;          /* enabled */
++    u32 lm:2;           /* limit mode */
++    u32 mme:2;          /* measurement-mode enable */
++    u32 mp:1;           /* multipath mode */
++    u32 tf:1;           /* timing facility */
++    u32 dnv:1;          /* device number valid */
++    u32 dev:16;         /* device number */
++    u8  lpm;            /* logical path mask */
++    u8  pnom;           /* path not operational mask */
++    u8  lpum;           /* last path used mask */
++    u8  pim;            /* path installed mask */
++    u16 mbi;            /* measurement-block index */
++    u8  pom;            /* path operational mask */
++    u8  pam;            /* path available mask */
++    u8  chpid[8];       /* CHPID 0-7 (if available) */
++    u32 unused1:8;      /* reserved zeros */
++    u32 st:3;           /* subchannel type */
++    u32 unused2:18;     /* reserved zeros */
++    u32 mbfc:1;         /* measurement block format control */
++    u32 xmwme:1;        /* extended measurement word mode enable */
++    u32 csense:1;       /* concurrent sense; can be enabled ...*/
+                         /*  ... per MSCH, however, if facility */
+                         /*  ... is not installed, this results */
+                         /*  ... in an operand exception.       */
+@@ -50,24 +50,24 @@ struct pmcw {
+ 
+ /* Target SCHIB configuration. */
+ struct schib_config {
+-    __u64 mba;
+-    __u32 intparm;
+-    __u16 mbi;
+-    __u32 isc:3;
+-    __u32 ena:1;
+-    __u32 mme:2;
+-    __u32 mp:1;
+-    __u32 csense:1;
+-    __u32 mbfc:1;
++    u64 mba;
++    u32 intparm;
++    u16 mbi;
++    u32 isc:3;
++    u32 ena:1;
++    u32 mme:2;
++    u32 mp:1;
++    u32 csense:1;
++    u32 mbfc:1;
+ } __attribute__ ((packed));
+ 
+ struct scsw {
+-    __u16 flags;
+-    __u16 ctrl;
+-    __u32 cpa;
+-    __u8 dstat;
+-    __u8 cstat;
+-    __u16 count;
++    u16 flags;
++    u16 ctrl;
++    u32 cpa;
++    u8 dstat;
++    u8 cstat;
++    u16 count;
+ } __attribute__ ((packed));
+ 
+ /* Function Control */
+@@ -117,42 +117,42 @@ struct scsw {
+ typedef struct schib {
+     struct pmcw pmcw;     /* path management control word */
+     struct scsw scsw;     /* subchannel status word */
+-    __u64 mba;            /* measurement block address */
+-    __u8 mda[4];          /* model dependent area */
++    u64 mba;              /* measurement block address */
++    u8 mda[4];            /* model dependent area */
+ } __attribute__ ((packed, aligned(4))) Schib;
+ 
+ typedef struct subchannel_id {
+     union {
+         struct {
+-            __u16 cssid:8;
+-            __u16 reserved:4;
+-            __u16 m:1;
+-            __u16 ssid:2;
+-            __u16 one:1;
++            u16 cssid:8;
++            u16 reserved:4;
++            u16 m:1;
++            u16 ssid:2;
++            u16 one:1;
+         };
+-        __u16 sch_id;
++        u16 sch_id;
+     };
+-    __u16 sch_no;
++    u16 sch_no;
+ } __attribute__ ((packed, aligned(4))) SubChannelId;
+ 
+ struct chsc_header {
+-    __u16 length;
+-    __u16 code;
++    u16 length;
++    u16 code;
+ } __attribute__((packed));
+ 
+ typedef struct chsc_area_sda {
+     struct chsc_header request;
+-    __u8 reserved1:4;
+-    __u8 format:4;
+-    __u8 reserved2;
+-    __u16 operation_code;
+-    __u32 reserved3;
+-    __u32 reserved4;
+-    __u32 operation_data_area[252];
++    u8 reserved1:4;
++    u8 format:4;
++    u8 reserved2;
++    u16 operation_code;
++    u32 reserved3;
++    u32 reserved4;
++    u32 operation_data_area[252];
+     struct chsc_header response;
+-    __u32 reserved5:4;
+-    __u32 format2:4;
+-    __u32 reserved6:24;
++    u32 reserved5:4;
++    u32 format2:4;
++    u32 reserved6:24;
+ } __attribute__((packed)) ChscAreaSda;
+ 
+ /*
+@@ -160,37 +160,37 @@ typedef struct chsc_area_sda {
+  */
+ struct tpi_info {
+     struct subchannel_id schid;
+-    __u32 intparm;      /* interruption parameter */
+-    __u32 adapter_IO:1;
+-    __u32 reserved2:1;
+-    __u32 isc:3;
+-    __u32 reserved3:12;
+-    __u32 int_type:3;
+-    __u32 reserved4:12;
++    u32 intparm;      /* interruption parameter */
++    u32 adapter_IO:1;
++    u32 reserved2:1;
++    u32 isc:3;
++    u32 reserved3:12;
++    u32 int_type:3;
++    u32 reserved4:12;
+ } __attribute__ ((packed, aligned(4)));
+ 
+ /* channel command word (format 0) */
+ typedef struct ccw0 {
+-    __u8 cmd_code;
+-    __u32 cda:24;
+-    __u32 chainData:1;
+-    __u32 chain:1;
+-    __u32 sli:1;
+-    __u32 skip:1;
+-    __u32 pci:1;
+-    __u32 ida:1;
+-    __u32 suspend:1;
+-    __u32 mida:1;
+-    __u8 reserved;
+-    __u16 count;
++    u8 cmd_code;
++    u32 cda:24;
++    u32 chainData:1;
++    u32 chain:1;
++    u32 sli:1;
++    u32 skip:1;
++    u32 pci:1;
++    u32 ida:1;
++    u32 suspend:1;
++    u32 mida:1;
++    u8 reserved;
++    u16 count;
+ } __attribute__ ((packed, aligned(8))) Ccw0;
+ 
+ /* channel command word (format 1) */
+ typedef struct ccw1 {
+-    __u8 cmd_code;
+-    __u8 flags;
+-    __u16 count;
+-    __u32 cda;
++    u8 cmd_code;
++    u8 flags;
++    u16 count;
++    u32 cda;
+ } __attribute__ ((packed, aligned(8))) Ccw1;
+ 
+ /* do_cio() CCW formats */
+@@ -234,31 +234,31 @@ typedef struct ccw1 {
+  * Command-mode operation request block
+  */
+ typedef struct cmd_orb {
+-    __u32 intparm;    /* interruption parameter */
+-    __u32 key:4;      /* flags, like key, suspend control, etc. */
+-    __u32 spnd:1;     /* suspend control */
+-    __u32 res1:1;     /* reserved */
+-    __u32 mod:1;      /* modification control */
+-    __u32 sync:1;     /* synchronize control */
+-    __u32 fmt:1;      /* format control */
+-    __u32 pfch:1;     /* prefetch control */
+-    __u32 isic:1;     /* initial-status-interruption control */
+-    __u32 alcc:1;     /* address-limit-checking control */
+-    __u32 ssic:1;     /* suppress-suspended-interr. control */
+-    __u32 res2:1;     /* reserved */
+-    __u32 c64:1;      /* IDAW/QDIO 64 bit control  */
+-    __u32 i2k:1;      /* IDAW 2/4kB block size control */
+-    __u32 lpm:8;      /* logical path mask */
+-    __u32 ils:1;      /* incorrect length */
+-    __u32 zero:6;     /* reserved zeros */
+-    __u32 orbx:1;     /* ORB extension control */
+-    __u32 cpa;    /* channel program address */
++    u32 intparm;    /* interruption parameter */
++    u32 key:4;      /* flags, like key, suspend control, etc. */
++    u32 spnd:1;     /* suspend control */
++    u32 res1:1;     /* reserved */
++    u32 mod:1;      /* modification control */
++    u32 sync:1;     /* synchronize control */
++    u32 fmt:1;      /* format control */
++    u32 pfch:1;     /* prefetch control */
++    u32 isic:1;     /* initial-status-interruption control */
++    u32 alcc:1;     /* address-limit-checking control */
++    u32 ssic:1;     /* suppress-suspended-interr. control */
++    u32 res2:1;     /* reserved */
++    u32 c64:1;      /* IDAW/QDIO 64 bit control  */
++    u32 i2k:1;      /* IDAW 2/4kB block size control */
++    u32 lpm:8;      /* logical path mask */
++    u32 ils:1;      /* incorrect length */
++    u32 zero:6;     /* reserved zeros */
++    u32 orbx:1;     /* ORB extension control */
++    u32 cpa;        /* channel program address */
+ }  __attribute__ ((packed, aligned(4))) CmdOrb;
+ 
+ struct ciw {
+-    __u8 type;
+-    __u8 command;
+-    __u16 count;
++    u8 type;
++    u8 command;
++    u16 count;
+ };
+ 
+ #define CU_TYPE_UNKNOWN         0x0000
+@@ -271,12 +271,12 @@ struct ciw {
+  */
+ typedef struct senseid {
+     /* common part */
+-    __u8  reserved;   /* always 0x'FF' */
+-    __u16 cu_type;    /* control unit type */
+-    __u8  cu_model;   /* control unit model */
+-    __u16 dev_type;   /* device type */
+-    __u8  dev_model;  /* device model */
+-    __u8  unused;     /* padding byte */
++    u8  reserved;   /* always 0x'FF' */
++    u16 cu_type;    /* control unit type */
++    u8  cu_model;   /* control unit model */
++    u16 dev_type;   /* device type */
++    u8  dev_model;  /* device model */
++    u8  unused;     /* padding byte */
+     /* extended part */
+     struct ciw ciw[62];
+ }  __attribute__ ((packed, aligned(4))) SenseId;
+@@ -342,9 +342,9 @@ typedef struct SenseDataEckdDasd {
+ /* interruption response block */
+ typedef struct irb {
+     struct scsw scsw;
+-    __u32 esw[5];
+-    __u32 ecw[8];
+-    __u32 emw[8];
++    u32 esw[5];
++    u32 ecw[8];
++    u32 emw[8];
+ }  __attribute__ ((packed, aligned(4))) Irb;
+ 
+ /* Used for SEEK ccw commands */
+-- 
+2.39.3
 
---Sig_/JIfyy9HKszghr4sGGJ93kPh
-Content-Type: application/pgp-signature
-Content-Description: Digitale Signatur von OpenPGP
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEE97o7Um30LT3B+5b/86SN7mm1DoAFAmSayqwACgkQ86SN7mm1
-DoCD2A//eY3W0UJDn5/pvvsnpT3NQHRDbW9+K55otIvepS72amDYfnZOvZi+hSzy
-gUqcSYMOLbanHOtV6OQgWfj18tCAZ7CpQ5qGK3kjtvPJ8TLJnzMKsgNTS4Kmzse0
-Z3jJ2tJVMsDS5in5dDrsSHvLVGbb/Kcm3mCCl/ahf6nbqYmqJ2MO8IF0Td2khWH8
-tX79p/cANEpNJIriCRb/hiNnuvlQr7WF6HxvaYPMibtyH4bE9FehV9maOWIMwnw5
-GeAqSbr5xVRbw4bT3xKaw95cRi1gwLqWVr6QOWI7kbMSL/lPvwLXyLDTfSCh7iXj
-H95TwjniQwHW7hKG1+NRSaEPh5AzFDKbQzmJPjC5x+CS1iN8ud4vAknihMn8qDu1
-vMyMAi3xsYcrS7DuDrXbcfygSS/yGbU3ejflwQqdgOPBJhBqLbpeQ3VmjiCURpSp
-21/pZJvvHkwn9Y9qdC2FjtkM13cxMgKIqk00dVYtmdaFwSgA0F5+aj75JUhWxeIF
-uiwBMJR0IsIP+1CmxfF9jJQiJhMe88oWBEiYpakqkxuYzGaGqoG+eGD5+LMnqOEH
-y7eQCwAjXZBpjb28qQE1oVR3nRRiDyE5vLUu8iqlZ+7ho/YV917vVd43szD44xH0
-GIF1t8AJ9dldDHXtPijpIT7ngD9v4PhcujxmPK9EplU/w5ggdbc=
-=8mEl
------END PGP SIGNATURE-----
-
---Sig_/JIfyy9HKszghr4sGGJ93kPh--
 
