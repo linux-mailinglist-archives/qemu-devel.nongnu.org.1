@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81F117400B0
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 18:18:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EE207400A5
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 18:17:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEBMN-0001BT-Kh; Tue, 27 Jun 2023 12:16:07 -0400
+	id 1qEBML-000170-7M; Tue, 27 Jun 2023 12:16:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qEBMI-00012z-MP
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 12:16:02 -0400
-Received: from mail-lf1-x133.google.com ([2a00:1450:4864:20::133])
+ id 1qEBMH-00011p-BL
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 12:16:01 -0400
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qEBMA-00088J-Gs
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 12:16:02 -0400
-Received: by mail-lf1-x133.google.com with SMTP id
- 2adb3069b0e04-4f865f0e16cso6543638e87.3
- for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 09:15:52 -0700 (PDT)
+ id 1qEBMA-00087D-Gz
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 12:16:00 -0400
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-3fa96fd79f0so32712355e9.3
+ for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 09:15:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687882551; x=1690474551;
+ d=linaro.org; s=google; t=1687882549; x=1690474549;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=vvgukf2r/kz3Y+kIcG+gDWEsWDEFvjX8X24ODyGYeGY=;
- b=ErM9F2iwYIT4I5Wc99hl/3FeC3hQTqGEZZYKxHbe870Iyn6HivIDKLhWoQZb/XMu7M
- HsmmJ4I/dtEZtWkVLe/tAMkU6HQ4I42RWB5Se/TZQUXCNGd179pOZiQ9FRSqXKyLKqfW
- eZpXQnerd9kx88wLIp/SOLQ6F5XdXgCAmoqIVoLhLnopOeLCvmOg9Qmj+JiACikFbReA
- qPO2i9NMTcFjStxEJC/aveHuJO/yO27BbTDdXctcA9goIH8ZeA7IigeAy5jxIjN+mENh
- ueYLKtB1helOX5/ksEgRdWDiy7GjBM3pb9igtwDSMLNaMVzy1InDc5+TCIiAtRm35Kfg
- FsLQ==
+ bh=eCS1WP/4CzEo+1xOyZvf30/WwlM8X9DNuki85IAdOWI=;
+ b=kMgCZIKARsYeLXIUoi0iIZ5bHtOUqNrlk7Tu9jd4+JgreQn7ZnStKnqzgMww7WigLI
+ zQzDjjdHrx1WFaXA20vlxih6Gw0RLw6z7WlJc3Hn3AOeUHmsu7RGDall3S8HscBMqILk
+ zqTpCcCnP0HZjyw2VWzds7hSWZcSlas7TFwusMCgmN4Y0vkynfKDN+z5ulNctEpYjtmB
+ dr/fIHtTPZtC3NBtiJHg6ROr020Qu1HZ7mHcv3h4KK3zGZH6lNJiLWpPHUC9UDAldh5H
+ WaYTwAxxzahYBf7NVKnfv3h8vctII1yjFBgcaClsQAdmLRvEyiC5pWAZSWKl3RiydFj8
+ 8YWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687882551; x=1690474551;
+ d=1e100.net; s=20221208; t=1687882549; x=1690474549;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=vvgukf2r/kz3Y+kIcG+gDWEsWDEFvjX8X24ODyGYeGY=;
- b=X6UUw4YrOqmu1zOz17d0ftnysn14yteESrA+qBiFqepjiyRp99Ens8DsooblTn1IlK
- 8HnoajCbCaAvnXeSN1xbkxdDmBbF7YsfoDJYzdqX37qrZNygAbSC7MlHOHd3/JXhIXAc
- 7I2QIlXARCmtIiyKiNetrOZhN5x3Fiyt4yA71rhCVOwPkSKx9ZKXwRdejDGek1o2pBNS
- rmF2gE2fbGxzQLWP3erMYRTZjv6SXrg/z9mLkqY6PtKacA7sEM+oA3aMs6otcdWdHaOd
- 8szjWoUAcGOCSBwzS4DBEZl7cwf+Pp8u3qyAQ7h184rudZ8saMi9UD5QapfWhMfDZwGT
- HYQg==
-X-Gm-Message-State: AC+VfDzfnytzaTYub4+YkqzE0rrp8n4/cxFpUMErY9x8mj31QMI+YUAY
- jpLpKy/xt/U7DzgVvaj3Y9dk9A==
-X-Google-Smtp-Source: ACHHUZ4Fn4K+L5jQAlbc6d8zmu2TjY55wT3xFYSP9PrmwCZIQwuiB/OKAOkZIO5vssO9LKtBf2vH+w==
-X-Received: by 2002:a19:c206:0:b0:4fa:3a0:2257 with SMTP id
- l6-20020a19c206000000b004fa03a02257mr5139619lfc.5.1687882551301; 
- Tue, 27 Jun 2023 09:15:51 -0700 (PDT)
+ bh=eCS1WP/4CzEo+1xOyZvf30/WwlM8X9DNuki85IAdOWI=;
+ b=S1qQQsXlznNvgTvmKP/2T2Msd4tTec4dAjHEKH6dSPzyGDsX5c1/4261Gqk8S98xpZ
+ mNu60ExfozwlRT9p2Lg5HN23YDlL/P7j24bZr+t3QldoUUF7eaCnUzthwZ5AfXv1qSa9
+ Bf1e77Ba/t74ZLZyO6RqYSMnTov4SqDK+EmtFl4TWOZnRxFEWK3OMoNMW7a51vQJIhPg
+ MgV+t6wTcmglwY091qUCCez2kDLznsGJ2nfKZyhYelABRcnw9QSRChaGNI9F4pXakVZX
+ FzpkAMCVtsyrbqOYyXCjWiAPk55/4MhF4GFsH1s0MgCPxaErk4zOmILsrwSl71D8sD/i
+ ofIQ==
+X-Gm-Message-State: AC+VfDxwaH7FR4qK+SJjWNmpUcts5lFO02Ze48BGizubt0PbMlGRK1LG
+ dupYdB7BpwxcCKOelJLkpX6/OQ==
+X-Google-Smtp-Source: ACHHUZ5k1a8u2bSzzFeUQkOQBamj396tvw0nY0EGc7zYdZXXMnXQDuCOnlq4mKJ1G1nqJ7RSyB82KQ==
+X-Received: by 2002:a1c:ed0b:0:b0:3f5:fff8:d4f3 with SMTP id
+ l11-20020a1ced0b000000b003f5fff8d4f3mr36066448wmh.7.1687882549365; 
+ Tue, 27 Jun 2023 09:15:49 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- y12-20020a05600c364c00b003f7f249e7dfsm14308607wmq.4.2023.06.27.09.15.49
+ u6-20020a05600c210600b003fafe32c8f6sm5024518wml.10.2023.06.27.09.15.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 27 Jun 2023 09:15:50 -0700 (PDT)
+ Tue, 27 Jun 2023 09:15:48 -0700 (PDT)
 Received: from zen.lan (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 3AAB01FFC6;
+ by zen.linaroharston (Postfix) with ESMTP id 573621FFD5;
  Tue, 27 Jun 2023 17:09:47 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -81,25 +81,27 @@ Cc: Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Leif Lindholm <quic_llindhol@quicinc.com>,
  Laurent Vivier <lvivier@redhat.com>, Qiuhao Li <Qiuhao.Li@outlook.com>,
  Mahmoud Mandour <ma.mandourr@gmail.com>, Riku Voipio <riku.voipio@iki.fi>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH v3 28/36] gdbstub: clean-up vcont handling to avoid goto
-Date: Tue, 27 Jun 2023 17:09:35 +0100
-Message-Id: <20230627160943.2956928-29-alex.bennee@linaro.org>
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Ilya Leoshkevich <iii@linux.ibm.com>
+Subject: [PATCH v3 29/36] linux-user: Expose do_guest_openat() and
+ do_guest_readlink()
+Date: Tue, 27 Jun 2023 17:09:36 +0100
+Message-Id: <20230627160943.2956928-30-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230627160943.2956928-1-alex.bennee@linaro.org>
 References: <20230627160943.2956928-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::133;
- envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x133.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -115,113 +117,128 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We can handle all the error exit cases by using g_autofree() for the
-one thing that needs cleaning up on the exit.
+From: Ilya Leoshkevich <iii@linux.ibm.com>
 
+These functions will be required by the GDB stub in order to provide
+the guest view of /proc to GDB.
+
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-Id: <20230621203627.1808446-2-iii@linux.ibm.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- gdbstub/gdbstub.c | 28 +++++++++-------------------
- 1 file changed, 9 insertions(+), 19 deletions(-)
+ linux-user/qemu.h    |  3 +++
+ linux-user/syscall.c | 54 ++++++++++++++++++++++++++++----------------
+ 2 files changed, 38 insertions(+), 19 deletions(-)
 
-diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
-index 9496d7b175..49143c7d83 100644
---- a/gdbstub/gdbstub.c
-+++ b/gdbstub/gdbstub.c
-@@ -573,7 +573,6 @@ static int gdb_handle_vcont(const char *p)
+diff --git a/linux-user/qemu.h b/linux-user/qemu.h
+index 92f9f5af41..a5830ec239 100644
+--- a/linux-user/qemu.h
++++ b/linux-user/qemu.h
+@@ -165,6 +165,9 @@ typedef struct TaskState {
+ } TaskState;
+ 
+ abi_long do_brk(abi_ulong new_brk);
++int do_guest_openat(CPUArchState *cpu_env, int dirfd, const char *pathname,
++                    int flags, mode_t mode);
++ssize_t do_guest_readlink(const char *pathname, char *buf, size_t bufsiz);
+ 
+ /* user access */
+ 
+diff --git a/linux-user/syscall.c b/linux-user/syscall.c
+index f2cb101d83..fa83737192 100644
+--- a/linux-user/syscall.c
++++ b/linux-user/syscall.c
+@@ -8448,7 +8448,8 @@ static int open_hardware(CPUArchState *cpu_env, int fd)
+ }
+ #endif
+ 
+-static int do_openat(CPUArchState *cpu_env, int dirfd, const char *pathname, int flags, mode_t mode)
++int do_guest_openat(CPUArchState *cpu_env, int dirfd, const char *pathname,
++                    int flags, mode_t mode)
  {
-     int res, signal = 0;
-     char cur_action;
--    char *newstates;
-     unsigned long tmp;
-     uint32_t pid, tid;
-     GDBProcess *process;
-@@ -581,7 +580,7 @@ static int gdb_handle_vcont(const char *p)
-     GDBThreadIdKind kind;
-     unsigned int max_cpus = gdb_get_max_cpus();
-     /* uninitialised CPUs stay 0 */
--    newstates = g_new0(char, max_cpus);
-+    g_autofree char *newstates = g_new0(char, max_cpus);
- 
-     /* mark valid CPUs with 1 */
-     CPU_FOREACH(cpu) {
-@@ -597,8 +596,7 @@ static int gdb_handle_vcont(const char *p)
-     res = 0;
-     while (*p) {
-         if (*p++ != ';') {
--            res = -ENOTSUP;
--            goto out;
-+            return -ENOTSUP;
-         }
- 
-         cur_action = *p++;
-@@ -606,13 +604,12 @@ static int gdb_handle_vcont(const char *p)
-             cur_action = qemu_tolower(cur_action);
-             res = qemu_strtoul(p, &p, 16, &tmp);
-             if (res) {
--                goto out;
-+                return res;
-             }
-             signal = gdb_signal_to_target(tmp);
-         } else if (cur_action != 'c' && cur_action != 's') {
-             /* unknown/invalid/unsupported command */
--            res = -ENOTSUP;
--            goto out;
-+            return -ENOTSUP;
-         }
- 
-         if (*p == '\0' || *p == ';') {
-@@ -625,14 +622,12 @@ static int gdb_handle_vcont(const char *p)
-         } else if (*p++ == ':') {
-             kind = read_thread_id(p, &p, &pid, &tid);
-         } else {
--            res = -ENOTSUP;
--            goto out;
-+            return -ENOTSUP;
-         }
- 
-         switch (kind) {
-         case GDB_READ_THREAD_ERR:
--            res = -EINVAL;
--            goto out;
-+            return -EINVAL;
- 
-         case GDB_ALL_PROCESSES:
-             cpu = gdb_first_attached_cpu();
-@@ -649,8 +644,7 @@ static int gdb_handle_vcont(const char *p)
-             process = gdb_get_process(pid);
- 
-             if (!process->attached) {
--                res = -EINVAL;
--                goto out;
-+                return -EINVAL;
-             }
- 
-             cpu = get_first_cpu_in_process(process);
-@@ -668,8 +662,7 @@ static int gdb_handle_vcont(const char *p)
- 
-             /* invalid CPU/thread specified */
-             if (!cpu) {
--                res = -EINVAL;
--                goto out;
-+                return -EINVAL;
-             }
- 
-             /* only use if no previous match occourred */
-@@ -679,12 +672,9 @@ static int gdb_handle_vcont(const char *p)
-             break;
-         }
-     }
-+
-     gdbserver_state.signal = signal;
-     gdb_continue_partial(newstates);
--
--out:
--    g_free(newstates);
--
-     return res;
+     struct fake_open {
+         const char *filename;
+@@ -8520,6 +8521,36 @@ static int do_openat(CPUArchState *cpu_env, int dirfd, const char *pathname, int
+     return safe_openat(dirfd, path(pathname), flags, mode);
  }
  
++ssize_t do_guest_readlink(const char *pathname, char *buf, size_t bufsiz)
++{
++    ssize_t ret;
++
++    if (!pathname || !buf) {
++        errno = EFAULT;
++        return -1;
++    }
++
++    if (!bufsiz) {
++        /* Short circuit this for the magic exe check. */
++        errno = EINVAL;
++        return -1;
++    }
++
++    if (is_proc_myself((const char *)pathname, "exe")) {
++        /*
++         * Don't worry about sign mismatch as earlier mapping
++         * logic would have thrown a bad address error.
++         */
++        ret = MIN(strlen(exec_path), bufsiz);
++        /* We cannot NUL terminate the string. */
++        memcpy(buf, exec_path, ret);
++    } else {
++        ret = readlink(path(pathname), buf, bufsiz);
++    }
++
++    return ret;
++}
++
+ static int do_execveat(CPUArchState *cpu_env, int dirfd,
+                        abi_long pathname, abi_long guest_argp,
+                        abi_long guest_envp, int flags)
+@@ -8994,7 +9025,7 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
+     case TARGET_NR_open:
+         if (!(p = lock_user_string(arg1)))
+             return -TARGET_EFAULT;
+-        ret = get_errno(do_openat(cpu_env, AT_FDCWD, p,
++        ret = get_errno(do_guest_openat(cpu_env, AT_FDCWD, p,
+                                   target_to_host_bitmask(arg2, fcntl_flags_tbl),
+                                   arg3));
+         fd_trans_unregister(ret);
+@@ -9004,7 +9035,7 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
+     case TARGET_NR_openat:
+         if (!(p = lock_user_string(arg2)))
+             return -TARGET_EFAULT;
+-        ret = get_errno(do_openat(cpu_env, arg1, p,
++        ret = get_errno(do_guest_openat(cpu_env, arg1, p,
+                                   target_to_host_bitmask(arg3, fcntl_flags_tbl),
+                                   arg4));
+         fd_trans_unregister(ret);
+@@ -10229,22 +10260,7 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
+             void *p2;
+             p = lock_user_string(arg1);
+             p2 = lock_user(VERIFY_WRITE, arg2, arg3, 0);
+-            if (!p || !p2) {
+-                ret = -TARGET_EFAULT;
+-            } else if (!arg3) {
+-                /* Short circuit this for the magic exe check. */
+-                ret = -TARGET_EINVAL;
+-            } else if (is_proc_myself((const char *)p, "exe")) {
+-                /*
+-                 * Don't worry about sign mismatch as earlier mapping
+-                 * logic would have thrown a bad address error.
+-                 */
+-                ret = MIN(strlen(exec_path), arg3);
+-                /* We cannot NUL terminate the string. */
+-                memcpy(p2, exec_path, ret);
+-            } else {
+-                ret = get_errno(readlink(path(p), p2, arg3));
+-            }
++            ret = get_errno(do_guest_readlink(p, p2, arg3));
+             unlock_user(p2, arg2, ret);
+             unlock_user(p, arg1, 0);
+         }
 -- 
 2.39.2
 
