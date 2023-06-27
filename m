@@ -2,67 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 881AC73F36C
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 06:34:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FA2973F374
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 06:35:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qE0OE-0003b1-4q; Tue, 27 Jun 2023 00:33:18 -0400
+	id 1qE0QL-0004Jd-Lt; Tue, 27 Jun 2023 00:35:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <tao1.su@linux.intel.com>)
- id 1qE0No-0003Z4-5p
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 00:32:55 -0400
-Received: from mga11.intel.com ([192.55.52.93])
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1qE0QD-0004Iv-0s
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 00:35:22 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <tao1.su@linux.intel.com>)
- id 1qE0Nm-0007Np-AD
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 00:32:51 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1687840370; x=1719376370;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=nvSMkMUYRPWtpfBX4q4yiKo0rjOAz8xze8ZXSR/YlL8=;
- b=C+LUEO1oUHyRUwoDKkjPa5o11FhnqIX181dQ+bBHGcqJ1r336UFirvBM
- N71CurAeGNKTzVATzburBdsNeD459x7atlA7sY7ZDOnwDePAMf/6b3GVz
- nDvetkUyTHyKM5MmCA8RfiLfudPVlpvlXFV9HJQXpVZjJcClxTfrtr8m4
- UgS50M7ZWfSACsQ34SagY6sW/doI5xCE8sS7MxVeU+40Kqtg/2n9Qvk21
- dhQvnUV4E8OW7zXheepgB4osuBZhp04hhPwEr4fAUUwokJS0ec6dudjZw
- nPRgnra6g4R6xzmH7o2LpJ0H9h/PWCkbCPclAVJiJi+TSSM2u/4rjl0Ng g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10753"; a="358970606"
-X-IronPort-AV: E=Sophos;i="6.01,161,1684825200"; d="scan'208";a="358970606"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
- by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Jun 2023 21:32:48 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10753"; a="963019081"
-X-IronPort-AV: E=Sophos;i="6.01,161,1684825200"; d="scan'208";a="963019081"
-Received: from linux.bj.intel.com ([10.238.156.127])
- by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Jun 2023 21:32:46 -0700
-Date: Tue, 27 Jun 2023 12:31:03 +0800
-From: Tao Su <tao1.su@linux.intel.com>
-To: Igor Mammedov <imammedo@redhat.com>
-Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, xiaoyao.li@intel.com,
- lei4.wang@intel.com, qian.wen@intel.com
-Subject: Re: [PATCH 3/7] target/i386: Allow MCDT_NO if host supports
-Message-ID: <ZJpmB5iHZQ+XfSuc@linux.bj.intel.com>
-References: <20230616032311.19137-1-tao1.su@linux.intel.com>
- <20230616032311.19137-4-tao1.su@linux.intel.com>
- <20230626150312.5edefe7b@imammedo.users.ipa.redhat.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230626150312.5edefe7b@imammedo.users.ipa.redhat.com>
-Received-SPF: none client-ip=192.55.52.93;
- envelope-from=tao1.su@linux.intel.com; helo=mga11.intel.com
-X-Spam_score_int: -42
-X-Spam_score: -4.3
-X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1qE0QA-0007sP-U0
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 00:35:20 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1687840516;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=hbixdtDYLseCrbR7xGI0f5d+yBIotHo7BkYDQ6lEWQQ=;
+ b=CxyXG78DG8TsPxZB0Ny2uq3YA2xMddEoHNlrcH24ZjcSAQI9fN4ZuM45sN5pVqvQvQCY4D
+ PCyfj+02qlHHrsKcsyLYYn47AL55pkJXn9NjrCxxyoIerVw3Ms4LaOT4uecs+whRMyQZyg
+ yj8JdSVLnh68oPFSFmI78Ajaj0Jf8zQ=
+Received: from mail-oa1-f72.google.com (mail-oa1-f72.google.com
+ [209.85.160.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-280-t1l9VZEyN0umjTANUP749A-1; Tue, 27 Jun 2023 00:35:14 -0400
+X-MC-Unique: t1l9VZEyN0umjTANUP749A-1
+Received: by mail-oa1-f72.google.com with SMTP id
+ 586e51a60fabf-1b03f7fb970so1445363fac.1
+ for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 21:35:14 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1687840514; x=1690432514;
+ h=to:references:message-id:content-transfer-encoding:cc:date
+ :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=hbixdtDYLseCrbR7xGI0f5d+yBIotHo7BkYDQ6lEWQQ=;
+ b=XrXvXGoyQFvnarhXh+0g3W64n39S5+lD+nBgTG0bKdzI1revKYM0mk762Vmvo1QmNn
+ vg8TlMbPyRkMKNOSPF2gb0WKV3VcwYba2eWf0qeRuGNQ6pu9XnQv1P7At00cRuNK506l
+ O0MLTi8uinvtrUHXE7MKs+n4oA9nhtVlGP+C4G6FA8+wCzl7OxMyhYPVg1pB2GxuQNUA
+ BaxI+9JnGBF7evT07wBjLUawNw++yiWpg3mZQCqovmjpE5tXib3OSd0F8RWLzt+ixTOv
+ N/JwmrU/pBYHofpy6IW35MLnCHOWxm0xPBf548G9NnE0z11WAyQDiulaunVfbbFYNgIR
+ NynQ==
+X-Gm-Message-State: AC+VfDztjpUY6n3HDxUxeOrKPoVJUepEUVr+2cT+QNvJxv3CftMA1Ebp
+ OmL9uEK99A+2vLLInroONIMG+S+mkOp8B7NNGnwXQn8CSMIVX145b0t06masEV2WraMxvBoGEcU
+ tN8EXbLZIJi8SEl4=
+X-Received: by 2002:a05:6870:a441:b0:1b0:4469:1cc3 with SMTP id
+ n1-20020a056870a44100b001b044691cc3mr2814174oal.58.1687840513930; 
+ Mon, 26 Jun 2023 21:35:13 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4yHxieW5+mculIiYyHcEFO61pP9JBRgv9YvDDPNYXYsWQWywFGMLgSdzk6IJYm+vy5ezB1Vg==
+X-Received: by 2002:a05:6870:a441:b0:1b0:4469:1cc3 with SMTP id
+ n1-20020a056870a44100b001b044691cc3mr2814162oal.58.1687840513624; 
+ Mon, 26 Jun 2023 21:35:13 -0700 (PDT)
+Received: from smtpclient.apple ([116.73.132.30])
+ by smtp.gmail.com with ESMTPSA id
+ q14-20020a63f94e000000b005143448896csm4833186pgk.58.2023.06.26.21.35.10
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Mon, 26 Jun 2023 21:35:13 -0700 (PDT)
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.3\))
+Subject: Re: [PULL 53/53] vhost-vdpa: do not cleanup the vdpa/vhost-net
+ structures if peer nic is present
+From: Ani Sinha <anisinha@redhat.com>
+In-Reply-To: <bd539426-a69c-9cbc-5f24-4fbe5a236fd6@tls.msk.ru>
+Date: Tue, 27 Jun 2023 10:05:07 +0530
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, qemu-devel@nongnu.org,
+ Peter Maydell <peter.maydell@linaro.org>, imammedo@redhat.com,
+ jusual@redhat.com, Jason Wang <jasowang@redhat.com>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <8F194DEA-910C-4734-9184-C74A99BB9CF0@redhat.com>
+References: <cover.1687782442.git.mst@redhat.com>
+ <3d90d47995b83bd1edf6e756c00e74fd5ec16aee.1687782442.git.mst@redhat.com>
+ <bd539426-a69c-9cbc-5f24-4fbe5a236fd6@tls.msk.ru>
+To: Michael Tokarev <mjt@tls.msk.ru>
+X-Mailer: Apple Mail (2.3696.120.41.1.3)
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -79,44 +106,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jun 26, 2023 at 03:03:12PM +0200, Igor Mammedov wrote:
-> On Fri, 16 Jun 2023 11:23:07 +0800
-> Tao Su <tao1.su@linux.intel.com> wrote:
-> 
-> > MCDT_NO bit indicates HW contains the security fix and doesn't need to
-> > be mitigated to avoid data-dependent behaviour for certain instructions.
-> > It needs no hypervisor support. Treat it as supported regardless of what
-> > KVM reports.
-> > 
-> > Signed-off-by: Tao Su <tao1.su@linux.intel.com>
-> > Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
-> > ---
-> >  target/i386/kvm/kvm.c | 5 +++++
-> >  1 file changed, 5 insertions(+)
-> > 
-> > diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-> > index de531842f6..4defd8b479 100644
-> > --- a/target/i386/kvm/kvm.c
-> > +++ b/target/i386/kvm/kvm.c
-> > @@ -432,6 +432,11 @@ uint32_t kvm_arch_get_supported_cpuid(KVMState *s, uint32_t function,
-> >          uint32_t eax;
-> >          host_cpuid(7, 1, &eax, &unused, &unused, &unused);
-> >          ret |= eax & (CPUID_7_1_EAX_FZRM | CPUID_7_1_EAX_FSRS | CPUID_7_1_EAX_FSRC);
-> > +    } else if (function == 7 && index == 2 && reg == R_EDX) {
-> 
-> > +        /* Not new instructions, just an optimization.  */
-> comment doesn't make much sense to me, just drop it or
-> describe what MCDT_NO is/mitigates.
 
-Ok, I will drop it in the next version, thanks!
 
-> 
-> > +        uint32_t edx;
-> > +        host_cpuid(7, 2, &unused, &unused, &unused, &edx);
-> > +        ret |= edx & CPUID_7_2_EDX_MCDT_NO;
-> >      } else if (function == 0xd && index == 0 &&
-> >                 (reg == R_EAX || reg == R_EDX)) {
-> >          /*
-> 
-> 
+> On 26-Jun-2023, at 9:23 PM, Michael Tokarev <mjt@tls.msk.ru> wrote:
+>=20
+> 26.06.2023 15:30, Michael S. Tsirkin wrote:
+>> From: Ani Sinha <anisinha@redhat.com>
+>> When a peer nic is still attached to the vdpa backend, it is too =
+early to free
+>> up the vhost-net and vdpa structures. If these structures are freed =
+here, then
+>> QEMU crashes when the guest is being shut down. The following call =
+chain
+>> would result in an assertion failure since the pointer returned from
+>> vhost_vdpa_get_vhost_net() would be NULL:
+>> do_vm_stop() -> vm_state_notify() -> virtio_set_status() ->
+>> virtio_net_vhost_status() -> get_vhost_net().
+>> Therefore, we defer freeing up the structures until at guest shutdown
+>> time when qemu_cleanup() calls net_cleanup() which then calls
+>> qemu_del_net_client() which would eventually call =
+vhost_vdpa_cleanup()
+>> again to free up the structures. This time, the loop in net_cleanup()
+>> ensures that vhost_vdpa_cleanup() will be called one last time when
+>> all the peer nics are detached and freed.
+>> All unit tests pass with this change.
+>> CC: imammedo@redhat.com
+>> CC: jusual@redhat.com
+>> CC: mst@redhat.com
+>> Fixes: CVE-2023-3301
+>> Resolves: https://bugzilla.redhat.com/show_bug.cgi?id=3D2128929
+>> Signed-off-by: Ani Sinha <anisinha@redhat.com>
+>> Message-Id: <20230619065209.442185-1-anisinha@redhat.com>
+>> Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+>> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+>> ---
+>>  net/vhost-vdpa.c | 8 ++++++++
+>>  1 file changed, 8 insertions(+)
+>> diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+>> index 9e92b3558c..e19ab063fa 100644
+>> --- a/net/vhost-vdpa.c
+>> +++ b/net/vhost-vdpa.c
+>> @@ -207,6 +207,14 @@ static void vhost_vdpa_cleanup(NetClientState =
+*nc)
+>>  {
+>>      VhostVDPAState *s =3D DO_UPCAST(VhostVDPAState, nc, nc);
+>>  +    /*
+>> +     * If a peer NIC is attached, do not cleanup anything.
+>> +     * Cleanup will happen as a part of qemu_cleanup() -> =
+net_cleanup()
+>> +     * when the guest is shutting down.
+>> +     */
+>> +    if (nc->peer && nc->peer->info->type =3D=3D =
+NET_CLIENT_DRIVER_NIC) {
+>> +        return;
+>> +    }
+>>      munmap(s->cvq_cmd_out_buffer, =
+vhost_vdpa_net_cvq_cmd_page_len());
+>>      munmap(s->status, vhost_vdpa_net_cvq_cmd_page_len());
+>>      if (s->vhost_net) {
+>=20
+>=20
+> Given the CVE# attached, is it a -stable material?
+> The same change can be applied to 8.0 and even to 7.2, with slight =
+difference
+> in context (using qemu_vfree() instead of munmap() for =
+cvq_cmd_out_buffer etc).
+> The original bugreport is about qemu 7.1.
+
+Yes I think it can be applied to 7.2 and 8.0. I back ported the patch on =
+stable-8.0 and tested it and it seems to fix the issue. I have not =
+tested on 7.2.
+
+
 
