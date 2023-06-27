@@ -2,100 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DCCC73F5ED
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 09:44:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7143373F5F7
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 09:47:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qE3MT-0005xR-VS; Tue, 27 Jun 2023 03:43:41 -0400
+	id 1qE3Q3-0007pm-Mw; Tue, 27 Jun 2023 03:47:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qE3ML-0005wH-Oh
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 03:43:33 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qE3Pz-0007pG-MD
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 03:47:21 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qE3MK-0004ba-7b
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 03:43:33 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qE3Px-0005o0-D1
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 03:47:18 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687851811;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=n0MhEYloR0BYkYXG4ibAxX0xwlzTpW1u+g01Xv7K5Es=;
- b=R/ccfTHTnCmUz/G2jrcMLAZoI/fYgMVNMK9W4YO8GqQwN78oPrMIJh7a90W27R2y5pjDCk
- FsV3O2mEamtV1v8IQlrJMy0/XRAwT8yLeprMZOrzGrNTSPMAqPvDHHUGPwEeYFfi0aKEva
- mqFlhyL4yl1Dt/sru8aafIabwlz7awc=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-354-H-K_aqlvP2GLaix9sVKo7w-1; Tue, 27 Jun 2023 03:43:29 -0400
-X-MC-Unique: H-K_aqlvP2GLaix9sVKo7w-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-3f9d7ff4b6aso25008645e9.1
- for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 00:43:29 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687851808; x=1690443808;
- h=content-transfer-encoding:mime-version:message-id:date:reply-to
- :user-agent:references:in-reply-to:subject:cc:to:from
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=n0MhEYloR0BYkYXG4ibAxX0xwlzTpW1u+g01Xv7K5Es=;
- b=ETRD508jTQcU9adPZb0C0p6DCjUVXBc6jNbk9LCk12RHpaJY+/cFnzW/owTbD2cHUn
- 3BlPbEiycyNzJrTxpUPXoZU6CajySco8sGlQ//LNj0N+qmV4E+OP0Pob5he+UpnDg0Xf
- Q7WATgiHwrpVx4ETytEuo1OPNVP4qxrtaDNegpx6X6uzLVrbSZUWVCn5XHD6BUZnhhCF
- htjensbRGVonLUKZZeTWTChNifrkpFGRXWymmU2fNEWGUVJp+R7WfSPqS0rGJ+bqspnv
- KXehu2XmeS2GPeUipySxHi1N7qTmrBk9LXqBRCIvENnzVMSiLLRj67Sj8nU4M5vmozKR
- lAYA==
-X-Gm-Message-State: AC+VfDzd98d1sDO9CbBd4QMrxhdpIwYLHT219yQdROOBgosj8BVcoAdM
- c3nGsGd/S+Qqpy3V0ca+xBmFUoZPYv8htEoSx4fWJFxWSFREyONi5tp7Er9AqYWhTACAJCZIy+r
- THmIqhFLHZIa4McU=
-X-Received: by 2002:a1c:7212:0:b0:3f5:146a:c79d with SMTP id
- n18-20020a1c7212000000b003f5146ac79dmr25514800wmc.15.1687851808687; 
- Tue, 27 Jun 2023 00:43:28 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7ailfbybY75q/MrfgDLdpXdHf2ofeU91DqVzNBaDwgsufXC91jJ622QHPyucEfp0lW+DtGfA==
-X-Received: by 2002:a1c:7212:0:b0:3f5:146a:c79d with SMTP id
- n18-20020a1c7212000000b003f5146ac79dmr25514754wmc.15.1687851808326; 
- Tue, 27 Jun 2023 00:43:28 -0700 (PDT)
-Received: from redhat.com (static-92-120-85-188.ipcom.comunitel.net.
- [188.85.120.92]) by smtp.gmail.com with ESMTPSA id
- y17-20020a1c4b11000000b003f9b24cf881sm12745516wma.16.2023.06.27.00.43.27
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 27 Jun 2023 00:43:27 -0700 (PDT)
-From: Juan Quintela <quintela@redhat.com>
-To: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org,  Alexander Bulekov <alxndr@bu.edu>,  Daniel P.
- =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>,  Alexandre Iooss
- <erdnaxe@crans.org>, Thomas Huth <thuth@redhat.com>,  Marcel Apfelbaum
- <marcel.apfelbaum@gmail.com>,  Leif Lindholm <quic_llindhol@quicinc.com>,
- Riku Voipio <riku.voipio@iki.fi>,  Peter Maydell
- <peter.maydell@linaro.org>,  Paolo Bonzini <pbonzini@redhat.com>,  Bandan
- Das <bsd@redhat.com>,  Leonardo Bras <leobras@redhat.com>,  Cleber Rosa
- <crosa@redhat.com>,  Richard Henderson <richard.henderson@linaro.org>,
- Beraldo Leal <bleal@redhat.com>,  Peter Xu <peterx@redhat.com>,  Philippe
- =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Mahmoud Mandour
- <ma.mandourr@gmail.com>,  Stefan Hajnoczi <stefanha@redhat.com>,  Yanan
- Wang <wangyanan55@huawei.com>,  Eduardo Habkost <eduardo@habkost.net>,
- Bin Meng <bmeng.cn@gmail.com>,  qemu-arm@nongnu.org,  Wainer dos Santos
- Moschetta <wainersm@redhat.com>,  Darren Kenny <darren.kenny@oracle.com>,
- Radoslaw Biernacki <rad@semihalf.com>,  Marcin Juszkiewicz
- <marcin.juszkiewicz@linaro.org>,  Qiuhao Li <Qiuhao.Li@outlook.com>,
- Laurent Vivier <lvivier@redhat.com>
-Subject: Re: [PATCH v2 08/26] tests/qtests: clean-up and fix leak in
- generic_fuzz
-In-Reply-To: <20230626215926.2522656-9-alex.bennee@linaro.org> ("Alex
- =?utf-8?Q?Benn=C3=A9e=22's?= message of "Mon, 26 Jun 2023 22:59:08 +0100")
-References: <20230626215926.2522656-1-alex.bennee@linaro.org>
- <20230626215926.2522656-9-alex.bennee@linaro.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
-Date: Tue, 27 Jun 2023 09:43:26 +0200
-Message-ID: <87h6qtcpup.fsf@secure.mitica>
+ s=mimecast20190719; t=1687852036;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=/i10SF7CtUYEzFvQdKcxm77yBlkHJE4lvNpKPJa7kxQ=;
+ b=AhB/0GetNtfdnozSDcpdGw8FtB9yMWvPlRjh7hRAb3vQvDIZ1Up+iYUJ67j3xI/TOGKoks
+ mIxAMqgZ3PykpbQT9CIkEnb6PqSiuSQwUHMFg+nHuavCii+O5RYrYRBz0o5a/dvunk6Z3U
+ ow3xe1mUDgrD20GfMwuTc4VhAKDFu6Q=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-154-Cc8MiIW4PlWFxa-NGiPmFA-1; Tue, 27 Jun 2023 03:47:11 -0400
+X-MC-Unique: Cc8MiIW4PlWFxa-NGiPmFA-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4E6AF8C7C23;
+ Tue, 27 Jun 2023 07:47:10 +0000 (UTC)
+Received: from thuth.com (unknown [10.39.192.242])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 3C8BC401061;
+ Tue, 27 Jun 2023 07:47:05 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-s390x@nongnu.org, Christian Borntraeger <borntraeger@linux.ibm.com>,
+ mrezanin@redhat.com, Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clegoate@redhat.com>,
+ Janosch Frank <frankja@linux.ibm.com>,
+ "Jason J . Herne" <jjherne@linux.ibm.com>,
+ Marc Hartmayer <mhartmay@linux.ibm.com>,
+ Eric Farman <farman@linux.ibm.com>,
+ Claudio Imbrenda <imbrenda@linux.ibm.com>
+Subject: [PATCH v2 0/4] pc-bios/s390-ccw: Fixes and improvements for start.S
+Date: Tue, 27 Jun 2023 09:46:59 +0200
+Message-Id: <20230627074703.99608-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -104,7 +65,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -117,76 +78,42 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Alex Benn=C3=A9e <alex.bennee@linaro.org> wrote:
-> An update to the clang tooling detects more issues with the code
-> including a memory leak from the g_string_new() allocation. Clean up
-> the code with g_autoptr and use ARRAY_SIZE while we are at it.
->
-> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
-> ---
->  tests/qtest/fuzz/generic_fuzz.c | 11 ++++-------
->  1 file changed, 4 insertions(+), 7 deletions(-)
->
-> diff --git a/tests/qtest/fuzz/generic_fuzz.c b/tests/qtest/fuzz/generic_f=
-uzz.c
-> index c525d22951..a4841181cc 100644
-> --- a/tests/qtest/fuzz/generic_fuzz.c
-> +++ b/tests/qtest/fuzz/generic_fuzz.c
-> @@ -954,17 +954,14 @@ static void register_generic_fuzz_targets(void)
->              .crossover =3D generic_fuzz_crossover
->      });
->=20=20
-> -    GString *name;
-> +    g_autoptr(GString) name =3D g_string_new("");
->      const generic_fuzz_config *config;
->=20=20
-> -    for (int i =3D 0;
-> -         i < sizeof(predefined_configs) / sizeof(generic_fuzz_config);
-> -         i++) {
-> +    for (int i =3D 0; i < ARRAY_SIZE(predefined_configs); i++) {
->          config =3D predefined_configs + i;
-> -        name =3D g_string_new("generic-fuzz");
-> -        g_string_append_printf(name, "-%s", config->name);
-> +        g_string_printf(name, "generic-fuzz-%s", config->name);
->          fuzz_add_target(&(FuzzTarget){
-> -                .name =3D name->str,
-> +                .name =3D g_strdup(name->str),
->                  .description =3D "Predefined generic-fuzz config.",
->                  .get_init_cmdline =3D generic_fuzz_predefined_config_cmd=
-line,
->                  .pre_fuzz =3D generic_pre_fuzz,
+Main motivation of this series was a bug that showed up when compiling
+with Clang 16 and binutils 2.40 (which has been reported in Fedora ELN, see
+https://bugzilla.redhat.com/show_bug.cgi?id=2216662). This is fixed in
+the fourth patch. I checked with "objdump" that the change is fine, indeed.
 
-Once that you are here, what about?
-(Yes, I didn't care about the ARRAY_SIZE) but you got the idea.
+While working on this issue, I came accross some other issues which I
+address in the first three patches:
 
-Reviewed-by: Juan Quintela <quintela@redhat.com>
+- Indentation is a mixture between tabs and spaces in start.S (patch 1)
+- We do not set up a stack frame for the main() function, which could
+  cause memory corruption (patch 2)
+- The stack is declared in multiple places, though it's only needed
+  in start.S (patch 3)
 
-To your proposal with/without the change that I proposse.
+v2:
+- Use ".space" instead of ".lcomm" in the third patch to make sure
+  that the alignment is really taken into consideration (thanks Richard)
+- Alignment of 8 should be enough in the third patch (thank Christian)
+- Added Reviewed-bys from v1
 
-modified   tests/qtest/fuzz/generic_fuzz.c
-@@ -954,17 +954,14 @@ static void register_generic_fuzz_targets(void)
-             .crossover =3D generic_fuzz_crossover
-     });
-=20
--    GString *name;
-     const generic_fuzz_config *config;
-=20
-     for (int i =3D 0;
-          i < sizeof(predefined_configs) / sizeof(generic_fuzz_config);
-          i++) {
-         config =3D predefined_configs + i;
--        name =3D g_string_new("generic-fuzz");
--        g_string_append_printf(name, "-%s", config->name);
-         fuzz_add_target(&(FuzzTarget){
--                .name =3D name->str,
-+                .name =3D g_strdup_printf("generic-fuzz-%s", config->name),
-                 .description =3D "Predefined generic-fuzz config.",
-                 .get_init_cmdline =3D generic_fuzz_predefined_config_cmdli=
-ne,
-                 .pre_fuzz =3D generic_pre_fuzz,
+Thomas Huth (4):
+  pc-bios/s390-ccw: Fix indentation in start.S
+  pc-bios/s390-ccw: Provide space for initial stack frame in start.S
+  pc-bios/s390-ccw: Move the stack array into start.S
+  pc-bios/s390-ccw: Don't use __bss_start with the "larl" instruction
+
+ pc-bios/s390-ccw/s390-ccw.h |   1 -
+ pc-bios/s390-ccw/main.c     |   1 -
+ pc-bios/s390-ccw/netmain.c  |   1 -
+ pc-bios/s390-ccw/start.S    | 144 +++++++++++++++++++-----------------
+ 4 files changed, 76 insertions(+), 71 deletions(-)
+
+-- 
+2.39.3
 
 
