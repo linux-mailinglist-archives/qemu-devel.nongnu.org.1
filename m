@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EB5B73F3D9
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 07:10:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C906173F3EE
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 07:29:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qE0wn-0000UV-3R; Tue, 27 Jun 2023 01:09:01 -0400
+	id 1qE1FI-0004GP-Ew; Tue, 27 Jun 2023 01:28:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pizhenwei@bytedance.com>)
- id 1qE0wk-0000U0-R3
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 01:08:58 -0400
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ id 1qE1F7-0004Ft-Qf
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 01:27:57 -0400
+Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pizhenwei@bytedance.com>)
- id 1qE0wi-0008Qu-38
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 01:08:58 -0400
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-1b7ffab7ff1so11099925ad.2
- for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 22:08:50 -0700 (PDT)
+ id 1qE1F5-0006Lj-2N
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 01:27:57 -0400
+Received: by mail-pf1-x430.google.com with SMTP id
+ d2e1a72fcca58-6687096c6ddso2029230b3a.0
+ for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 22:27:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bytedance.com; s=google; t=1687842529; x=1690434529;
+ d=bytedance.com; s=google; t=1687843670; x=1690435670;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=q3An3x9ao6JufZBLh7jFTgrkDm+dcUB/1q0yje+8I+I=;
- b=LhLuy27hwaXBPsizMkdQAjQISXhOYwHQP50EZVTyXLo/mLFus3p4iVOaBog6tZnG4D
- mLkdWg1Pa7Kx5zpTwa6Un4p0Hd9kS94jpMbxbI+URJ0mbvWoTVBF5aoSEZyxV3HfRsZ/
- 7HD3x6AIMmkOyIDdzt0obYUREml74zikBvdKg1S4C4PaYiXvC5MoL3vvpy8EwJLvo2Fw
- t6vD5mzfY4XySx1qvlzcP7CqCJiPaDE/+c1ivfQRkFazudPyPLxk2ngxPkJI6zwQP/fS
- j+OZ72ToEyR8PVamNDFR0xkCwtQjl2sHFJx+D+WaDvOwQ/+wjJ07Xm8MhkPmrPvpKQ1i
- bq7g==
+ bh=UDs4epmdppMC6/ESsY2p75c6fCIsSHDos2liM9u3poQ=;
+ b=KgvgI7i3wnF5bDugNdHmadLq5O58A+iMT6shvkNoJistocJ0uip2tj1qYTDI2F4TN+
+ z3HxJ/XSubU+zzewHGjlxTuTYWEJSfZnMPyjmR6eBndzIJxPBoxc0h3XkWAdeprmH7AV
+ YNyfsY43Oz17Jm6tYgYD8XuCrgLnpowld6xmb+7dTXnCLb2h6Ps7ELNY099zfT7l11fb
+ CsPhurP1sE/A1VAaa7UuxLXY8KcJhRMmfAmNHACtqRNZkB9y/Pc4h2FVZMvKU1oaqEYi
+ LP+u5NImiBeE5t3aWBSWIcLmDhaGjBEpLtIjfZJuh8aiFaeBsDk2b+r1VdcLWOnR/2yP
+ hK7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687842529; x=1690434529;
+ d=1e100.net; s=20221208; t=1687843670; x=1690435670;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=q3An3x9ao6JufZBLh7jFTgrkDm+dcUB/1q0yje+8I+I=;
- b=eCeZbHlUkg/1aVV3MtUQSIyNx+F6e2ADRP2d+JtV5Na916XzX3erYzt0FWHSee1iCU
- NSI5cOTFGbaET87lbbiLpyL8QIuGCk3XNGcekY7lvX6zqqBqpt2tR27WKZQsIuPc/db6
- au+bxu8QPnrAcIWU2G/DG24sijXBTLO8NOdhqZclCDy6Xv3JovrsSlsrP9r+UqKbJPcW
- IjPM3CI2P0RfylTShDCEDxYSoUmx+/0tpBVJXRZEd6CqVElUaiRnc/uhXXdqjk+kl+6a
- 41vyeIiYH1H1eg7CbNcN6o0B4ScahUrtb7NDphLEZmGBaR39xtjm3M/2CCNifsg5d6Vs
- fFsw==
-X-Gm-Message-State: AC+VfDy+qI9FxSumxRUxhj6xvGipIi6R+6zSF5DP1DwVieOmJaFU3UE/
- qEehM7FK1AlXy69bJd1zFakTjXaFeaDAKy+mv0w=
-X-Google-Smtp-Source: ACHHUZ7mLsMZMlXfzCkU3UOqtAzbLWd8yXtAYCyNRvsAzzLIHLY1OWdNRrBSsZ0aV/NsWwaEd+3yjA==
-X-Received: by 2002:a17:902:d2ca:b0:1a6:45e5:a26a with SMTP id
- n10-20020a170902d2ca00b001a645e5a26amr6397344plc.27.1687842528938; 
- Mon, 26 Jun 2023 22:08:48 -0700 (PDT)
-Received: from [10.3.43.196] ([61.213.176.14])
+ bh=UDs4epmdppMC6/ESsY2p75c6fCIsSHDos2liM9u3poQ=;
+ b=kG2i1BhObwsKymYQNKf67kWpCra9ssxtz2xIxKv/xAJOluDgRFn0x/XDqUZuF6rOyj
+ Kezx5wnoBdKVY16mQxe/02zgneVBxyGE1862hmKMVIl1Sh1fj20HcHZyCZM9KjdZFOWB
+ kn7oDAZSGFh6kkemTZcVPv0qVS8f7ERp1x1L1mYy6kpRV5nrvA+l0iA57PFl0RbgXVnC
+ fmF49AnlmCXXX8DiiRKGCMKEYT9FHUAuKf0XeMUmJtmgufT9UyRvAmWsPU3pJFAE6CEg
+ b/OBmRG4xXxwug6z3QUg1XgbgD5qBeeRNqTnJ949iZPAEH2/1OwGXERKfVHLG+T3ajsu
+ qRzA==
+X-Gm-Message-State: AC+VfDyjo38WcguU3zKMum3V5acEBWl+CGFMB2K9ma/HaN07Rjs9AlU3
+ chq+3oKA+cYbDyDNVgzC0+K+eouX4I7snSjg6Yo=
+X-Google-Smtp-Source: ACHHUZ6n/woMVMQLfuz4la95ZoC3WuepNLuCcFaenNijYj/lu2ifA2MIKQVn7zu+dFvhO1MpvxDgwA==
+X-Received: by 2002:a05:6a00:2382:b0:668:8703:a5d4 with SMTP id
+ f2-20020a056a00238200b006688703a5d4mr20745376pfc.31.1687843669995; 
+ Mon, 26 Jun 2023 22:27:49 -0700 (PDT)
+Received: from [10.3.43.196] ([61.213.176.11])
  by smtp.gmail.com with ESMTPSA id
- h8-20020a170902b94800b001b02df0ddbbsm4956813pls.275.2023.06.26.22.08.47
+ q28-20020a635c1c000000b00548d361c137sm4894383pgb.61.2023.06.26.22.27.48
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 26 Jun 2023 22:08:48 -0700 (PDT)
-Message-ID: <3afd638e-e16a-5f75-7d38-9b5cbeba1efc@bytedance.com>
-Date: Tue, 27 Jun 2023 13:06:29 +0800
+ Mon, 26 Jun 2023 22:27:49 -0700 (PDT)
+Message-ID: <3d1a4195-1a99-5e5c-cd58-78f32c7df126@bytedance.com>
+Date: Tue, 27 Jun 2023 13:25:30 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.10.0
-Subject: Re: Re: [PATCH 1/5] throttle: introduce enum ThrottleTimerType
+Subject: Re: Re: [PATCH 3/5] throttle: support read-only and write-only
 Content-Language: en-US
 To: Alberto Garcia <berto@igalia.com>
-Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org
+Cc: qemu-devel@nongnu.org
 References: <20230625085631.372238-1-pizhenwei@bytedance.com>
- <20230625085631.372238-2-pizhenwei@bytedance.com>
- <w51y1k55333.fsf@igalia.com>
+ <20230625085631.372238-4-pizhenwei@bytedance.com>
+ <w51mt0l52gg.fsf@igalia.com>
 From: zhenwei pi <pizhenwei@bytedance.com>
-In-Reply-To: <w51y1k55333.fsf@igalia.com>
+In-Reply-To: <w51mt0l52gg.fsf@igalia.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=pizhenwei@bytedance.com; helo=mail-pl1-x62b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
+ envelope-from=pizhenwei@bytedance.com; helo=mail-pf1-x430.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -98,36 +98,36 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 
-On 6/27/23 05:24, Alberto Garcia wrote:
-> On Sun 25 Jun 2023 04:56:27 PM +08, zhenwei pi wrote:
->> Use enum ThrottleTimerType instead of number index.
+On 6/27/23 05:38, Alberto Garcia wrote:
+> On Sun 25 Jun 2023 04:56:29 PM +08, zhenwei pi wrote:
+>>   void throttle_timers_attach_aio_context(ThrottleTimers *tt,
+>>                                           AioContext *new_context)
+>>   {
+>> -    tt->timers[THROTTLE_TIMER_READ] =
+>> -        aio_timer_new(new_context, tt->clock_type, SCALE_NS,
+>> -                      tt->timer_cb[THROTTLE_TIMER_READ], tt->timer_opaque);
+>> -    tt->timers[THROTTLE_TIMER_WRITE] =
+>> -        aio_timer_new(new_context, tt->clock_type, SCALE_NS,
+>> -                      tt->timer_cb[THROTTLE_TIMER_WRITE], tt->timer_opaque);
+>> +    if (tt->timer_cb[THROTTLE_TIMER_READ]) {
+>> +        tt->timers[THROTTLE_TIMER_READ] =
+>> +            aio_timer_new(new_context, tt->clock_type, SCALE_NS,
+>> +                          tt->timer_cb[THROTTLE_TIMER_READ], tt->timer_opaque);
+>> +    }
+>> +
+>> +    if (tt->timer_cb[THROTTLE_TIMER_WRITE]) {
+>> +        tt->timers[THROTTLE_TIMER_WRITE] =
+>> +            aio_timer_new(new_context, tt->clock_type, SCALE_NS,
+>> +                          tt->timer_cb[THROTTLE_TIMER_WRITE], tt->timer_opaque);
+>> +    }
+>>   }
 > 
->> +typedef enum {
->> +    THROTTLE_TIMER_READ = 0,
->> +    THROTTLE_TIMER_WRITE,
->> +    THROTTLE_TIMER_MAX
->> +} ThrottleTimerType;
-> 
-> If you're doing this I suppose you could also change 'bool is_write'
-> with something like 'ThrottleTimerType timer', i.e
-> 
-> static bool throttle_compute_timer(ThrottleState *ts,
->                                     ThrottleTimerType timer,
->                                     int64_t now,
->                                     int64_t *next_timestamp)
+> If now any of the timers can be NULL, don't you want to add additional
+> checks / assertions to (at least) throttle_schedule_timer() ?
 > 
 > Berto
 
-Hi,
-
-Right, it's in my plan. But I prefer to do this in a followup patch 
-after this series applies. Because this API leads changes from other 
-subsystems.
-
-By the way, I prepare to rename 'THROTTLE_TIMER_READ' to 'THROTTLE_READ' 
-in next version.
-
-Do you have any suggestion?
+OK.
 
 -- 
 zhenwei pi
