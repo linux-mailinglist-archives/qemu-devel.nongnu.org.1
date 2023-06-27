@@ -2,84 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C906173F3EE
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 07:29:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 09B9773F421
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 07:56:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qE1FI-0004GP-Ew; Tue, 27 Jun 2023 01:28:08 -0400
+	id 1qE1ew-0008OI-Ql; Tue, 27 Jun 2023 01:54:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pizhenwei@bytedance.com>)
- id 1qE1F7-0004Ft-Qf
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 01:27:57 -0400
-Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pizhenwei@bytedance.com>)
- id 1qE1F5-0006Lj-2N
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 01:27:57 -0400
-Received: by mail-pf1-x430.google.com with SMTP id
- d2e1a72fcca58-6687096c6ddso2029230b3a.0
- for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 22:27:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bytedance.com; s=google; t=1687843670; x=1690435670;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=UDs4epmdppMC6/ESsY2p75c6fCIsSHDos2liM9u3poQ=;
- b=KgvgI7i3wnF5bDugNdHmadLq5O58A+iMT6shvkNoJistocJ0uip2tj1qYTDI2F4TN+
- z3HxJ/XSubU+zzewHGjlxTuTYWEJSfZnMPyjmR6eBndzIJxPBoxc0h3XkWAdeprmH7AV
- YNyfsY43Oz17Jm6tYgYD8XuCrgLnpowld6xmb+7dTXnCLb2h6Ps7ELNY099zfT7l11fb
- CsPhurP1sE/A1VAaa7UuxLXY8KcJhRMmfAmNHACtqRNZkB9y/Pc4h2FVZMvKU1oaqEYi
- LP+u5NImiBeE5t3aWBSWIcLmDhaGjBEpLtIjfZJuh8aiFaeBsDk2b+r1VdcLWOnR/2yP
- hK7A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687843670; x=1690435670;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=UDs4epmdppMC6/ESsY2p75c6fCIsSHDos2liM9u3poQ=;
- b=kG2i1BhObwsKymYQNKf67kWpCra9ssxtz2xIxKv/xAJOluDgRFn0x/XDqUZuF6rOyj
- Kezx5wnoBdKVY16mQxe/02zgneVBxyGE1862hmKMVIl1Sh1fj20HcHZyCZM9KjdZFOWB
- kn7oDAZSGFh6kkemTZcVPv0qVS8f7ERp1x1L1mYy6kpRV5nrvA+l0iA57PFl0RbgXVnC
- fmF49AnlmCXXX8DiiRKGCMKEYT9FHUAuKf0XeMUmJtmgufT9UyRvAmWsPU3pJFAE6CEg
- b/OBmRG4xXxwug6z3QUg1XgbgD5qBeeRNqTnJ949iZPAEH2/1OwGXERKfVHLG+T3ajsu
- qRzA==
-X-Gm-Message-State: AC+VfDyjo38WcguU3zKMum3V5acEBWl+CGFMB2K9ma/HaN07Rjs9AlU3
- chq+3oKA+cYbDyDNVgzC0+K+eouX4I7snSjg6Yo=
-X-Google-Smtp-Source: ACHHUZ6n/woMVMQLfuz4la95ZoC3WuepNLuCcFaenNijYj/lu2ifA2MIKQVn7zu+dFvhO1MpvxDgwA==
-X-Received: by 2002:a05:6a00:2382:b0:668:8703:a5d4 with SMTP id
- f2-20020a056a00238200b006688703a5d4mr20745376pfc.31.1687843669995; 
- Mon, 26 Jun 2023 22:27:49 -0700 (PDT)
-Received: from [10.3.43.196] ([61.213.176.11])
- by smtp.gmail.com with ESMTPSA id
- q28-20020a635c1c000000b00548d361c137sm4894383pgb.61.2023.06.26.22.27.48
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 26 Jun 2023 22:27:49 -0700 (PDT)
-Message-ID: <3d1a4195-1a99-5e5c-cd58-78f32c7df126@bytedance.com>
-Date: Tue, 27 Jun 2023 13:25:30 +0800
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1qE1eu-0008Nu-Et
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 01:54:36 -0400
+Received: from mga17.intel.com ([192.55.52.151])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1qE1es-0007Y9-GA
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 01:54:36 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1687845274; x=1719381274;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=JSF71seKDeA9bs5dSy1qTmZB63n+TDG4sfcfVWxfYeg=;
+ b=gWoaV4BlUCUq56BVfXXuBXv63+xqOOyMddhnv690/0Bn64pLjhMq28mW
+ yOt4aWRqnu83zNXZUq0r/DvjHZJ7DH+G1ka7af7rpeBR8zlPzDUe1g927
+ aBiGQa2HNFWT0DzFiH4kilGBuo8R7645bdJ63og9/GeH9EDNbhgpm6b2A
+ y3lEed58Vd18OKfV610cFGQjdGN0GcHt+6SGUpi1+WvGJXmXvx1BE+wy+
+ sJtwlGBICLc4L6hiMH1wgciCT5QUiaHavVv6f9gOzEyMzYhfwZSUa6tyR
+ iZmG3q3sDku5Wa22SBVoerzvD54pqHiRMTvRxX8bvylAPvWNRmUwWkRoG Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10753"; a="341823395"
+X-IronPort-AV: E=Sophos;i="6.01,161,1684825200"; d="scan'208";a="341823395"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+ by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Jun 2023 22:54:28 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10753"; a="666571631"
+X-IronPort-AV: E=Sophos;i="6.01,161,1684825200"; d="scan'208";a="666571631"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.255.29.206])
+ ([10.255.29.206])
+ by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Jun 2023 22:54:26 -0700
+Message-ID: <c18ebbaf-0ea8-3cd5-9fb8-6e63add59fba@intel.com>
+Date: Tue, 27 Jun 2023 13:54:23 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: Re: [PATCH 3/5] throttle: support read-only and write-only
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Firefox/102.0 Thunderbird/102.12.0
+Subject: Re: [PATCH 6/7] target/i386: Add new CPU model EmeraldRapids
 Content-Language: en-US
-To: Alberto Garcia <berto@igalia.com>
-Cc: qemu-devel@nongnu.org
-References: <20230625085631.372238-1-pizhenwei@bytedance.com>
- <20230625085631.372238-4-pizhenwei@bytedance.com>
- <w51mt0l52gg.fsf@igalia.com>
-From: zhenwei pi <pizhenwei@bytedance.com>
-In-Reply-To: <w51mt0l52gg.fsf@igalia.com>
+To: Igor Mammedov <imammedo@redhat.com>, Tao Su <tao1.su@linux.intel.com>
+Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, lei4.wang@intel.com,
+ qian.wen@intel.com
+References: <20230616032311.19137-1-tao1.su@linux.intel.com>
+ <20230616032311.19137-7-tao1.su@linux.intel.com>
+ <20230626145610.64405831@imammedo.users.ipa.redhat.com>
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20230626145610.64405831@imammedo.users.ipa.redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
- envelope-from=pizhenwei@bytedance.com; helo=mail-pf1-x430.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=192.55.52.151; envelope-from=xiaoyao.li@intel.com;
+ helo=mga17.intel.com
+X-Spam_score_int: -44
+X-Spam_score: -4.5
+X-Spam_bar: ----
+X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.001, NICE_REPLY_A=-0.09,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,39 +84,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-On 6/27/23 05:38, Alberto Garcia wrote:
-> On Sun 25 Jun 2023 04:56:29 PM +08, zhenwei pi wrote:
->>   void throttle_timers_attach_aio_context(ThrottleTimers *tt,
->>                                           AioContext *new_context)
->>   {
->> -    tt->timers[THROTTLE_TIMER_READ] =
->> -        aio_timer_new(new_context, tt->clock_type, SCALE_NS,
->> -                      tt->timer_cb[THROTTLE_TIMER_READ], tt->timer_opaque);
->> -    tt->timers[THROTTLE_TIMER_WRITE] =
->> -        aio_timer_new(new_context, tt->clock_type, SCALE_NS,
->> -                      tt->timer_cb[THROTTLE_TIMER_WRITE], tt->timer_opaque);
->> +    if (tt->timer_cb[THROTTLE_TIMER_READ]) {
->> +        tt->timers[THROTTLE_TIMER_READ] =
->> +            aio_timer_new(new_context, tt->clock_type, SCALE_NS,
->> +                          tt->timer_cb[THROTTLE_TIMER_READ], tt->timer_opaque);
->> +    }
->> +
->> +    if (tt->timer_cb[THROTTLE_TIMER_WRITE]) {
->> +        tt->timers[THROTTLE_TIMER_WRITE] =
->> +            aio_timer_new(new_context, tt->clock_type, SCALE_NS,
->> +                          tt->timer_cb[THROTTLE_TIMER_WRITE], tt->timer_opaque);
->> +    }
->>   }
+On 6/26/2023 8:56 PM, Igor Mammedov wrote:
+> On Fri, 16 Jun 2023 11:23:10 +0800
+> Tao Su<tao1.su@linux.intel.com>  wrote:
 > 
-> If now any of the timers can be NULL, don't you want to add additional
-> checks / assertions to (at least) throttle_schedule_timer() ?
+>> From: Qian Wen<qian.wen@intel.com>
+>>
+>> Emerald Rapids (EMR) is the next generation of Xeon server processor
+>> after Sapphire Rapids (SPR).
+>>
+>> Currently, regarding the feature set that can be exposed to guest, there
+>> isn't any one new comparing with SPR cpu model, except that EMR has a
+>> different model number.
+>>
+>> Though it's practicable to define EMR as an alias of a new version of
+>> SPR by only updating the model number and model name, it loses the
+>> flexibility when new version of EMR cpu model are needed for adding new
+>> features (that hasn't virtalized/supported by KVM yet).
+> Which begs a question, why do we need EMR model (or alias) at all
+> if it's the same as SPR at the moment.
 > 
-> Berto
+> Make new features supported 1st and only then introduce a new CPU model.
+> 
 
-OK.
+Even if no new feature (that can be virtualized and exposed to guest) in 
+EMR compared to SPR in the end, I think it still makes sense to provide 
+a dedicated EMR CPU model in QEMU. Because
+1) User will know EMR, Intel's next generation of Xeon after SRP, is 
+supported by QEMU, via -cpu ?/ -cpu help;
+2) It's convenient for user to create an EMR VM. People may not care 
+that much what the difference between "-cpu SapphireRapids" with "-cpu 
+EmeraldRapids", while they do want to create an VM which shows the CPU 
+is EmeraldRapids.
 
--- 
-zhenwei pi
 
