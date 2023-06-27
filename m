@@ -2,100 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26D0C73FDB5
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 16:22:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1407573FDBA
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 16:23:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qE9Yp-0004BS-1s; Tue, 27 Jun 2023 10:20:51 -0400
+	id 1qE9aw-0005N1-BE; Tue, 27 Jun 2023 10:23:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
- id 1qE9Yn-0004Ag-7X
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 10:20:49 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1qE9aO-0005Ig-Ut; Tue, 27 Jun 2023 10:22:29 -0400
+Received: from forwardcorp1b.mail.yandex.net ([178.154.239.136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
- id 1qE9Yh-0001MO-So
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 10:20:48 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687875640;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=X4B9HhYckq2f62suCcF97qJgQQ7/rsojYJ9RLs1kHsc=;
- b=WcIl0CKfAlKDttGyInLYdcQ7AqJsHMO6rvrK/u4RDTYJZXnsPabe07/Vta4kdHl8lbUaHC
- kMDWTCiypry7OsNm60cRl0VPQCBx4CVGRlLquwS8VuNv87aJZ6Bj5MPq1TWbTUEJxtDMhk
- BAyw3ear85qUEflFliqYz1RqoSLhXhA=
-Received: from mail-io1-f69.google.com (mail-io1-f69.google.com
- [209.85.166.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-441-cYm0bBZyM7iVLw4ZCX7wow-1; Tue, 27 Jun 2023 10:20:27 -0400
-X-MC-Unique: cYm0bBZyM7iVLw4ZCX7wow-1
-Received: by mail-io1-f69.google.com with SMTP id
- ca18e2360f4ac-780c2585057so357674639f.0
- for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 07:20:16 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687875616; x=1690467616;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=X4B9HhYckq2f62suCcF97qJgQQ7/rsojYJ9RLs1kHsc=;
- b=cblJ1HP/8rcwDytght2hQwzT8kECN8wYxDsikSfBAQTKkxj+drlH4ASd54hRvBxuu5
- 83XkdIIAOGuMRTQ6LZ1EFxJ9+WocaSznC7wwsXHfQqLTy6HvkUyxOLdBQeoPyNJR9LIi
- MZ1ZDVfMxVrQf97jz6Lxt2/1hd/tBEyw9MCZnbL08T1E/Rs0+BT1mkspCA6bfv+NR6g8
- NQ7k4AJ8VOXuToMgzq4gtEWCeZVZJHrrkHu7HRvI7l3EZJS2wICwC0MIKjtbi8jpb6kM
- GFRNBWdR0ZnvOXyYdAnuee80WOqMCt8Zh653gIt/Kyv+ysACmPnEjfzS8uipWltdxOwI
- pHZQ==
-X-Gm-Message-State: AC+VfDzArv3SirioLsFI8w71p8ihHQVFw8Ngao61eBLsJBH3pZdDqnGp
- IJisFA5J1KVJIQXuTLFe4nr9mX1y/03kX6LwvC5JuAXHijunEBLoE/bWlr2mG+XTQfr4FGyFp7+
- tUdTJnjPldGLUO6c=
-X-Received: by 2002:a5d:96c1:0:b0:76f:1664:672 with SMTP id
- r1-20020a5d96c1000000b0076f16640672mr31281002iol.13.1687875615914; 
- Tue, 27 Jun 2023 07:20:15 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6XgHLwm5pMYdIFkPhqSKyXpeqttzk8WSOP3lFwcyFA/Yo3F9keKE/Sz/B8e3upZxnTjOsMtA==
-X-Received: by 2002:a5d:96c1:0:b0:76f:1664:672 with SMTP id
- r1-20020a5d96c1000000b0076f16640672mr31280969iol.13.1687875615578; 
- Tue, 27 Jun 2023 07:20:15 -0700 (PDT)
-Received: from redhat.com ([38.15.36.239]) by smtp.gmail.com with ESMTPSA id
- l14-20020a02a88e000000b00423076f5442sm941122jam.2.2023.06.27.07.20.14
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 27 Jun 2023 07:20:14 -0700 (PDT)
-Date: Tue, 27 Jun 2023 08:20:13 -0600
-From: Alex Williamson <alex.williamson@redhat.com>
-To: Avihai Horon <avihaih@nvidia.com>
-Cc: =?UTF-8?B?Q8OpZHJpYw==?= Le Goater <clg@redhat.com>, Joao Martins
- <joao.m.martins@oracle.com>, Juan Quintela <quintela@redhat.com>, Peter Xu
- <peterx@redhat.com>, Leonardo Bras <leobras@redhat.com>, Zhenzhong Duan
- <zhenzhong.duan@intel.com>, Yishai Hadas <yishaih@nvidia.com>, Jason
- Gunthorpe <jgg@nvidia.com>, Maor Gottlieb <maorg@nvidia.com>, Kirti
- Wankhede <kwankhede@nvidia.com>, Tarun Gupta <targupta@nvidia.com>,
- qemu-devel@nongnu.org
-Subject: Re: [PATCH 3/3] vfio/migration: Make VFIO migration non-experimental
-Message-ID: <20230627082013.384810ca.alex.williamson@redhat.com>
-In-Reply-To: <976b7037-ee62-f86d-5772-6a2deca0816d@nvidia.com>
-References: <20230626082353.18535-1-avihaih@nvidia.com>
- <20230626082353.18535-4-avihaih@nvidia.com>
- <cd94caa3-cb16-f44e-6ffc-2e8fc37e9441@redhat.com>
- <62b1ce2a-8191-fc6b-c7b7-e4c787deacf5@oracle.com>
- <78ef9a6d-25ac-e0ac-ca52-5a0673df661e@redhat.com>
- <20230626112729.06dc48d8.alex.williamson@redhat.com>
- <976b7037-ee62-f86d-5772-6a2deca0816d@nvidia.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.35; x86_64-redhat-linux-gnu)
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1qE9aJ-0001dT-Ma; Tue, 27 Jun 2023 10:22:28 -0400
+Received: from mail-nwsmtp-smtp-corp-main-44.iva.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-44.iva.yp-c.yandex.net
+ [IPv6:2a02:6b8:c0c:a49a:0:640:edd6:0])
+ by forwardcorp1b.mail.yandex.net (Yandex) with ESMTP id 2B4A66188F;
+ Tue, 27 Jun 2023 17:22:11 +0300 (MSK)
+Received: from [IPV6:2a02:6b8:b081:b68e::1:39] (unknown
+ [2a02:6b8:b081:b68e::1:39])
+ by mail-nwsmtp-smtp-corp-main-44.iva.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id 9MMvC40OceA0-Yma1yPHA; Tue, 27 Jun 2023 17:22:10 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; 
+ t=1687875730; bh=sMRHzgDvqcgQxuqBBuuQ3vHusVhgp1XecMvQkHNddSk=;
+ h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+ b=yv+LmQeHppvsB5EVZFYl/3A9iFxr2eY16SCIQ4BlR60w15e5OtUcOCzSMDBZsS8FY
+ olmLOzoaDXhjyPhQBiT9pkbMTjoO692zhTt4R4mZvKPtVEvJ102vj2qvTTdJntfcC5
+ RcJIUxnAKLLKmkqbOmIDGuYGpj16pe6ran/21GUY=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-44.iva.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+Message-ID: <22e76783-92bb-50ca-798e-a849a337ee4d@yandex-team.ru>
+Date: Tue, 27 Jun 2023 17:22:09 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124;
- envelope-from=alex.williamson@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.0
+Subject: Re: [PATCH v4 19/24] nbd/client: Initial support for extended headers
+Content-Language: en-US
+To: Eric Blake <eblake@redhat.com>, qemu-devel@nongnu.org
+Cc: qemu-block@nongnu.org, libguestfs@redhat.com,
+ Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>
+References: <20230608135653.2918540-1-eblake@redhat.com>
+ <20230608135653.2918540-20-eblake@redhat.com>
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+In-Reply-To: <20230608135653.2918540-20-eblake@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=178.154.239.136;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.103,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -112,212 +75,272 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 27 Jun 2023 11:00:46 +0300
-Avihai Horon <avihaih@nvidia.com> wrote:
+On 08.06.23 16:56, Eric Blake wrote:
+> Update the client code to be able to send an extended request, and
+> parse an extended header from the server.  Note that since we reject
+> any structured reply with a too-large payload, we can always normalize
+> a valid header back into the compact form, so that the caller need not
+> deal with two branches of a union.  Still, until a later patch lets
+> the client negotiate extended headers, the code added here should not
+> be reached.  Note that because of the different magic numbers, it is
+> just as easy to trace and then tolerate a non-compliant server sending
+> the wrong header reply as it would be to insist that the server is
+> compliant.
+> 
+> Signed-off-by: Eric Blake <eblake@redhat.com>
+> ---
+> 
+> v4: split off errp handling to separate patch [Vladimir], better
+> function naming [Vladimir]
+> ---
+>   include/block/nbd.h |   3 +-
+>   block/nbd.c         |   2 +-
+>   nbd/client.c        | 100 +++++++++++++++++++++++++++++---------------
+>   nbd/trace-events    |   3 +-
+>   4 files changed, 72 insertions(+), 36 deletions(-)
+> 
+> diff --git a/include/block/nbd.h b/include/block/nbd.h
+> index dc05f5981fb..af80087e2cd 100644
+> --- a/include/block/nbd.h
+> +++ b/include/block/nbd.h
+> @@ -389,7 +389,8 @@ int nbd_init(int fd, QIOChannelSocket *sioc, NBDExportInfo *info,
+>                Error **errp);
+>   int nbd_send_request(QIOChannel *ioc, NBDRequest *request);
+>   int coroutine_fn nbd_receive_reply(BlockDriverState *bs, QIOChannel *ioc,
+> -                                   NBDReply *reply, Error **errp);
+> +                                   NBDReply *reply, NBDMode mode,
+> +                                   Error **errp);
+>   int nbd_client(int fd);
+>   int nbd_disconnect(int fd);
+>   int nbd_errno_to_system_errno(int err);
+> diff --git a/block/nbd.c b/block/nbd.c
+> index c17ce935f17..e281fac43d1 100644
+> --- a/block/nbd.c
+> +++ b/block/nbd.c
+> @@ -459,7 +459,7 @@ static coroutine_fn int nbd_receive_replies(BDRVNBDState *s, uint64_t cookie,
+> 
+>           /* We are under mutex and cookie is 0. We have to do the dirty work. */
+>           assert(s->reply.cookie == 0);
+> -        ret = nbd_receive_reply(s->bs, s->ioc, &s->reply, errp);
+> +        ret = nbd_receive_reply(s->bs, s->ioc, &s->reply, s->info.mode, errp);
+>           if (ret == 0) {
+>               ret = -EIO;
+>               error_setg(errp, "server dropped connection");
+> diff --git a/nbd/client.c b/nbd/client.c
+> index 1495a9b0ab1..a4598a95427 100644
+> --- a/nbd/client.c
+> +++ b/nbd/client.c
+> @@ -1352,22 +1352,29 @@ int nbd_disconnect(int fd)
+> 
+>   int nbd_send_request(QIOChannel *ioc, NBDRequest *request)
+>   {
+> -    uint8_t buf[NBD_REQUEST_SIZE];
+> +    uint8_t buf[NBD_EXTENDED_REQUEST_SIZE];
+> +    size_t len;
+> 
+> -    assert(request->mode <= NBD_MODE_STRUCTURED); /* TODO handle extended */
+> -    assert(request->len <= UINT32_MAX);
+>       trace_nbd_send_request(request->from, request->len, request->cookie,
+>                              request->flags, request->type,
+>                              nbd_cmd_lookup(request->type));
+> 
+> -    stl_be_p(buf, NBD_REQUEST_MAGIC);
+>       stw_be_p(buf + 4, request->flags);
+>       stw_be_p(buf + 6, request->type);
+>       stq_be_p(buf + 8, request->cookie);
+>       stq_be_p(buf + 16, request->from);
+> -    stl_be_p(buf + 24, request->len);
+> +    if (request->mode >= NBD_MODE_EXTENDED) {
+> +        stl_be_p(buf, NBD_EXTENDED_REQUEST_MAGIC);
+> +        stq_be_p(buf + 24, request->len);
+> +        len = NBD_EXTENDED_REQUEST_SIZE;
+> +    } else {
+> +        assert(request->len <= UINT32_MAX);
+> +        stl_be_p(buf, NBD_REQUEST_MAGIC);
+> +        stl_be_p(buf + 24, request->len);
+> +        len = NBD_REQUEST_SIZE;
+> +    }
+> 
+> -    return nbd_write(ioc, buf, sizeof(buf), NULL);
+> +    return nbd_write(ioc, buf, len, NULL);
+>   }
+> 
+>   /* nbd_receive_simple_reply
+> @@ -1394,30 +1401,36 @@ static int nbd_receive_simple_reply(QIOChannel *ioc, NBDSimpleReply *reply,
+>       return 0;
+>   }
+> 
+> -/* nbd_receive_structured_reply_chunk
+> +/* nbd_receive_reply_chunk_header
+>    * Read structured reply chunk except magic field (which should be already
+> - * read).
+> + * read).  Normalize into the compact form.
+>    * Payload is not read.
+>    */
+> -static int nbd_receive_structured_reply_chunk(QIOChannel *ioc,
+> -                                              NBDStructuredReplyChunk *chunk,
+> -                                              Error **errp)
+> +static int nbd_receive_reply_chunk_header(QIOChannel *ioc, NBDReply *chunk,
+> +                                          Error **errp)
+>   {
+>       int ret;
+> +    size_t len;
+> +    uint64_t payload_len;
+> 
+> -    assert(chunk->magic == NBD_STRUCTURED_REPLY_MAGIC);
+> +    if (chunk->magic == NBD_STRUCTURED_REPLY_MAGIC) {
+> +        len = sizeof(chunk->structured);
+> +    } else {
+> +        assert(chunk->magic == NBD_EXTENDED_REPLY_MAGIC);
+> +        len = sizeof(chunk->extended);
+> +    }
+> 
+>       ret = nbd_read(ioc, (uint8_t *)chunk + sizeof(chunk->magic),
+> -                   sizeof(*chunk) - sizeof(chunk->magic), "structured chunk",
+> +                   len - sizeof(chunk->magic), "structured chunk",
+>                      errp);
+>       if (ret < 0) {
+>           return ret;
+>       }
+> 
+> -    chunk->flags = be16_to_cpu(chunk->flags);
+> -    chunk->type = be16_to_cpu(chunk->type);
+> -    chunk->cookie = be64_to_cpu(chunk->cookie);
+> -    chunk->length = be32_to_cpu(chunk->length);
+> +    /* flags, type, and cookie occupy same space between forms */
+> +    chunk->structured.flags = be16_to_cpu(chunk->structured.flags);
+> +    chunk->structured.type = be16_to_cpu(chunk->structured.type);
+> +    chunk->structured.cookie = be64_to_cpu(chunk->structured.cookie);
+> 
+>       /*
+>        * Because we use BLOCK_STATUS with REQ_ONE, and cap READ requests
+> @@ -1425,11 +1438,20 @@ static int nbd_receive_structured_reply_chunk(QIOChannel *ioc,
+>        * this.  Even if we stopped using REQ_ONE, sane servers will cap
+>        * the number of extents they return for block status.
+>        */
+> -    if (chunk->length > NBD_MAX_BUFFER_SIZE + sizeof(NBDStructuredReadData)) {
+> +    if (chunk->magic == NBD_STRUCTURED_REPLY_MAGIC) {
+> +        payload_len = be32_to_cpu(chunk->structured.length);
+> +    } else {
+> +        /* For now, we are ignoring the extended header offset. */
+> +        payload_len = be64_to_cpu(chunk->extended.length);
+> +        chunk->magic = NBD_STRUCTURED_REPLY_MAGIC;
+> +    }
+> +    if (payload_len > NBD_MAX_BUFFER_SIZE + sizeof(NBDStructuredReadData)) {
+>           error_setg(errp, "server chunk %" PRIu32 " (%s) payload is too long",
+> -                   chunk->type, nbd_rep_lookup(chunk->type));
+> +                   chunk->structured.type,
+> +                   nbd_rep_lookup(chunk->structured.type));
+>           return -EINVAL;
+>       }
+> +    chunk->structured.length = payload_len;
+> 
+>       return 0;
+>   }
+> @@ -1476,19 +1498,21 @@ nbd_read_eof(BlockDriverState *bs, QIOChannel *ioc, void *buffer, size_t size,
+> 
+>   /* nbd_receive_reply
+>    *
+> - * Decreases bs->in_flight while waiting for a new reply. This yield is where
+> - * we wait indefinitely and the coroutine must be able to be safely reentered
+> - * for nbd_client_attach_aio_context().
+> + * Wait for a new reply. If this yields, the coroutine must be able to be
+> + * safely reentered for nbd_client_attach_aio_context().  @mode determines
+> + * which reply magic we are expecting, although this normalizes the result
+> + * so that the caller only has to work with compact headers.
+>    *
+>    * Returns 1 on success
+> - *         0 on eof, when no data was read (errp is not set)
+> - *         negative errno on failure (errp is set)
+> + *         0 on eof, when no data was read
+> + *         negative errno on failure
+>    */
+>   int coroutine_fn nbd_receive_reply(BlockDriverState *bs, QIOChannel *ioc,
+> -                                   NBDReply *reply, Error **errp)
+> +                                   NBDReply *reply, NBDMode mode, Error **errp)
+>   {
+>       int ret;
+>       const char *type;
+> +    uint32_t expected;
+> 
+>       ret = nbd_read_eof(bs, ioc, &reply->magic, sizeof(reply->magic), errp);
+>       if (ret <= 0) {
+> @@ -1497,8 +1521,13 @@ int coroutine_fn nbd_receive_reply(BlockDriverState *bs, QIOChannel *ioc,
+> 
+>       reply->magic = be32_to_cpu(reply->magic);
+> 
+> +    /* Diagnose but accept wrong-width header */
+>       switch (reply->magic) {
+>       case NBD_SIMPLE_REPLY_MAGIC:
+> +        if (mode >= NBD_MODE_EXTENDED) {
+> +            trace_nbd_receive_wrong_header(reply->magic,
+> +                                           nbd_mode_lookup(mode));
+> +        }
+>           ret = nbd_receive_simple_reply(ioc, &reply->simple, errp);
+>           if (ret < 0) {
+>               break;
+> @@ -1508,23 +1537,28 @@ int coroutine_fn nbd_receive_reply(BlockDriverState *bs, QIOChannel *ioc,
+>                                          reply->cookie);
+>           break;
+>       case NBD_STRUCTURED_REPLY_MAGIC:
+> -        ret = nbd_receive_structured_reply_chunk(ioc, &reply->structured, errp);
+> +    case NBD_EXTENDED_REPLY_MAGIC:
+> +        expected = mode >= NBD_MODE_EXTENDED ? NBD_EXTENDED_REPLY_MAGIC
+> +            : NBD_STRUCTURED_REPLY_MAGIC;
+> +        if (reply->magic != expected) {
+> +            trace_nbd_receive_wrong_header(reply->magic,
+> +                                           nbd_mode_lookup(mode));
+> +        }
+> +        ret = nbd_receive_reply_chunk_header(ioc, reply, errp);
+>           if (ret < 0) {
+>               break;
+>           }
 
-> On 26/06/2023 20:27, Alex Williamson wrote:
-> > External email: Use caution opening links or attachments
-> >
-> >
-> > On Mon, 26 Jun 2023 17:26:42 +0200
-> > C=C3=A9dric Le Goater <clg@redhat.com> wrote:
-> > =20
-> >> On 6/26/23 15:40, Joao Martins wrote: =20
-> >>> On 26/06/2023 14:20, C=C3=A9dric Le Goater wrote: =20
-> >>>> Hello Avihai,
-> >>>>
-> >>>> On 6/26/23 10:23, Avihai Horon wrote: =20
-> >>>>> The major parts of VFIO migration are supported today in QEMU. This
-> >>>>> includes basic VFIO migration, device dirty page tracking and preco=
-py
-> >>>>> support.
-> >>>>>
-> >>>>> Thus, at this point in time, it seems appropriate to make VFIO migr=
-ation
-> >>>>> non-experimental: remove the x prefix from enable_migration propert=
-y,
-> >>>>> change it to ON_OFF_AUTO and let the default value be AUTO.
-> >>>>>
-> >>>>> In addition, make the following adjustments:
-> >>>>> 1. Require device dirty tracking support when enable_migration is A=
-UTO
-> >>>>>       (i.e., not explicitly enabled). This is because device dirty =
-tracking
-> >>>>>       is currently the only method to do dirty page tracking, which=
- is
-> >>>>>       essential for migrating in a reasonable downtime. =20
-> >>>> hmm, I don't think QEMU should decide to disable a feature for all
-> >>>> devices supposedly because it could be slow for some. That's too
-> >>>> restrictive. What about devices with have small states ? for which
-> >>>> the downtime would be reasonable even without device dirty tracking
-> >>>> support.
-> >>>> =20
-> >>> device dirty tracking refers to the ability to tracking dirty IOVA us=
-ed by the
-> >>> device which will DMA into RAM. It is required because the
-> >>> consequence/alternative is to transfer all RAM in stop copy phase. De=
-vice state
-> >>> size at that point is the least of our problems downtime wise. =20
-> >> Arg. thanks for reminding me. I tend to take this for granted ... =20
-> > My initial reaction was the same, for instance we could have a non-DMA
-> > device (ex. PCI serial card) that supports migration w/o dirty
-> > tracking, but QEMU cannot assume the device doesn't do DMA, nor is it
-> > worth our time to monitor whether bus-master is ever enabled for the
-> > device, so QEMU needs to assume all memory that's DMA accessible for
-> > the device is perpetually dirty.  Also, if such a corner case existed
-> > for a non-DMA migratable device, the easier path is simply to require
-> > dirty tracking stubs in the variant driver to report no memory dirtied.
-> > =20
-> >>> I can imagine that allowing without dirty tracking is useful for deve=
-loper
-> >>> testing of the suspend/device-state flows, but as real default (auto)=
- is very
-> >>> questionable to let it go through without dirty tracking. When we hav=
-e IOMMUFD
-> >>> dirty tracking that's when we can relieve this restriction as a defau=
-lt.
-> >>>
-> >>> But then note that (...)
-> >>> =20
-> >>>>> Setting
-> >>>>>       enable_migration to ON will not require device dirty tracking=
-. =20
-> >>> (...) this lets it ignore dirty tracking as you would like.
-> >>>
-> >>> =20
-> >>>>> 2. Make migration blocker messages more elaborate.
-> >>>>> 3. Remove error prints in vfio_migration_query_flags().
-> >>>>> 4. Remove a redundant assignment in vfio_migration_realize().
-> >>>>>
-> >>>>> Signed-off-by: Avihai Horon <avihaih@nvidia.com>
-> >>>>> ---
-> >>>>>     include/hw/vfio/vfio-common.h |=C2=A0 2 +-
-> >>>>>     hw/vfio/migration.c           | 29 ++++++++++++++++-------------
-> >>>>>     hw/vfio/pci.c                 |=C2=A0 4 ++--
-> >>>>>     3 files changed, 19 insertions(+), 16 deletions(-)
-> >>>>>
-> >>>>> diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-c=
-ommon.h
-> >>>>> index b4c28f318f..387eabde60 100644
-> >>>>> --- a/include/hw/vfio/vfio-common.h
-> >>>>> +++ b/include/hw/vfio/vfio-common.h
-> >>>>> @@ -139,7 +139,7 @@ typedef struct VFIODevice {
-> >>>>>         bool needs_reset;
-> >>>>>         bool no_mmap;
-> >>>>>         bool ram_block_discard_allowed;
-> >>>>> -    bool enable_migration;
-> >>>>> +    OnOffAuto enable_migration;
-> >>>>>         VFIODeviceOps *ops;
-> >>>>>         unsigned int num_irqs;
-> >>>>>         unsigned int num_regions;
-> >>>>> diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
-> >>>>> index 79eb81dfd7..d8e0848635 100644
-> >>>>> --- a/hw/vfio/migration.c
-> >>>>> +++ b/hw/vfio/migration.c
-> >>>>> @@ -731,14 +731,6 @@ static int vfio_migration_query_flags(VFIODevi=
-ce
-> >>>>> *vbasedev, uint64_t *mig_flags)
-> >>>>>         feature->argsz =3D sizeof(buf);
-> >>>>>         feature->flags =3D VFIO_DEVICE_FEATURE_GET | VFIO_DEVICE_FE=
-ATURE_MIGRATION;
-> >>>>>         if (ioctl(vbasedev->fd, VFIO_DEVICE_FEATURE, feature)) {
-> >>>>> -        if (errno =3D=3D ENOTTY) {
-> >>>>> -            error_report("%s: VFIO migration is not supported in k=
-ernel",
-> >>>>> -                         vbasedev->name);
-> >>>>> -        } else {
-> >>>>> -            error_report("%s: Failed to query VFIO migration suppo=
-rt, err: %s",
-> >>>>> -                         vbasedev->name, strerror(errno));
-> >>>>> -        }
-> >>>>> -
-> >>>>>             return -errno;
-> >>>>>         }
-> >>>>>     @@ -831,14 +823,28 @@ void vfio_reset_bytes_transferred(void)
-> >>>>>       int vfio_migration_realize(VFIODevice *vbasedev, Error **errp)
-> >>>>>     {
-> >>>>> -    int ret =3D -ENOTSUP;
-> >>>>> +    int ret;
-> >>>>>     -    if (!vbasedev->enable_migration) {
-> >>>>> +    if (vbasedev->enable_migration =3D=3D ON_OFF_AUTO_OFF) {
-> >>>>> +        error_setg(&vbasedev->migration_blocker,
-> >>>>> +                   "%s: Migration is disabled for VFIO device", vb=
-asedev->name);
-> >>>>>             goto add_blocker;
-> >>>>>         }
-> >>>>>           ret =3D vfio_migration_init(vbasedev);
-> >>>>>         if (ret) { =20
-> >>>> It would be good to keep the message for 'errno =3D=3D ENOTTY' as it=
- was in
-> >>>> vfio_migration_query_flags(). When migration fails, it is an importa=
-nt
-> >>>> information to know that it is because the VFIO PCI host device driv=
-er
-> >>>> doesn't support the feature. The root cause could be deep below in F=
-W or
-> >>>> how the VF was set up.
-> >>>> =20
-> >>> +1 As I have been in this rabbit hole =20
->=20
-> Sure, I will add it.
->=20
-> >>> =20
-> >>>>> +        error_setg(&vbasedev->migration_blocker,
-> >>>>> +                   "%s: Migration couldn't be initialized for VFIO=
- device, "
-> >>>>> +                   "err: %d (%s)",
-> >>>>> +                   vbasedev->name, ret, strerror(-ret));
-> >>>>> +        goto add_blocker;
-> >>>>> +    }
-> >>>>> +
-> >>>>> +    if (vbasedev->enable_migration =3D=3D ON_OFF_AUTO_AUTO &&
-> >>>>> +        !vbasedev->dirty_pages_supported) { =20
-> >>>> I don't agree with this test.
-> >>>> =20
-> >>> The alternative right now is perceptual dirty tracking. How is that O=
-K as a
-> >>> default? It's not like we have even an option :(
-> >>>
-> >>> Maybe perhaps you refer to avoid strongly enforcing *always* it to al=
-low testing
-> >>> of the non dirty tracking parts? Maybe when you 'force' enabling with
-> >>> enable-migration=3Don is when you ignore the dirty tracking which is =
-what this is
-> >>> doing. =20
-> >>
-> >> I see ON_OFF_AUTO_ON as a way to abort the machine startup while
-> >> ON_OFF_AUTO_AUTO would let it run but block migration. =20
-> > Agreed.  There's a little bit of redundancy between the device-level
-> > "enable-migration=3Don" option and the global "-only-migratable" option
-> > relative to preventing machine startup, but it also doesn't make sense
-> > to me if the device-level option let realize complete successfully if
-> > the device doesn't support or fails migration setup.  So I think we'd
-> > generally rely on using the -only-migratable option with the default
-> > ON_OFF_AUTO_AUTO value, allow the ON_OFF_AUTO_ON value to enable
-> > dis-recommended support, and live with the redundancy that it should
-> > also cause the device realize to fail if migration is not supported.
-> > Thanks,
-> >
-> > Alex =20
->=20
-> OK.
->=20
-> When enable_migration=3DAUTO we allow blockers.
-> When enable_migration=3DON we don't allow blockers and instead prevent=20
-> realization of VFIO device.
->=20
-> Regarding device dirty tracking, we keep current behavior, right?
-> That is:
-> When enable_migration=3DAUTO we block migration if device dirty tracking=
-=20
-> is not supported.
-> When enable_migration=3DON we allow migration even if device dirty=20
-> tracking is not supported (in which case DMA-able memory will be=20
-> perpetually dirtied).
+maybe
 
-Yes, and I think we'd be justified in logging a warning when migration
-is enabled without any dirty page tracking support.  Thanks,
+assert(reply->magic == NBD_STRUCTURED_REPLY_MAGIC)
 
-Alex
+>           type = nbd_reply_type_lookup(reply->structured.type);
+> -        trace_nbd_receive_structured_reply_chunk(reply->structured.flags,
+> -                                                 reply->structured.type, type,
+> -                                                 reply->structured.cookie,
+> -                                                 reply->structured.length);
+> +        trace_nbd_receive_reply_chunk_header(reply->structured.flags,
+> +                                             reply->structured.type, type,
+> +                                             reply->structured.cookie,
+> +                                             reply->structured.length);
+>           break;
+>       default:
+> +        trace_nbd_receive_wrong_header(reply->magic, nbd_mode_lookup(mode));
+>           error_setg(errp, "invalid magic (got 0x%" PRIx32 ")", reply->magic);
+>           return -EINVAL;
+>       }
+> -    if (ret < 0) {
+> -        return ret;
+> -    }
+
+hmm, mistake? Seems, we'll return 1 on error with set errp this way
+
+> 
+>       return 1;
+>   }
+> diff --git a/nbd/trace-events b/nbd/trace-events
+> index 6a34d7f027a..51bfb129c95 100644
+> --- a/nbd/trace-events
+> +++ b/nbd/trace-events
+> @@ -33,7 +33,8 @@ nbd_client_clear_queue(void) "Clearing NBD queue"
+>   nbd_client_clear_socket(void) "Clearing NBD socket"
+>   nbd_send_request(uint64_t from, uint64_t len, uint64_t cookie, uint16_t flags, uint16_t type, const char *name) "Sending request to server: { .from = %" PRIu64", .len = %" PRIu64 ", .cookie = %" PRIu64 ", .flags = 0x%" PRIx16 ", .type = %" PRIu16 " (%s) }"
+>   nbd_receive_simple_reply(int32_t error, const char *errname, uint64_t cookie) "Got simple reply: { .error = %" PRId32 " (%s), cookie = %" PRIu64" }"
+> -nbd_receive_structured_reply_chunk(uint16_t flags, uint16_t type, const char *name, uint64_t cookie, uint32_t length) "Got structured reply chunk: { flags = 0x%" PRIx16 ", type = %d (%s), cookie = %" PRIu64 ", length = %" PRIu32 " }"
+> +nbd_receive_reply_chunk_header(uint16_t flags, uint16_t type, const char *name, uint64_t cookie, uint32_t length) "Got reply chunk header: { flags = 0x%" PRIx16 ", type = %d (%s), cookie = %" PRIu64 ", length = %" PRIu32 " }"
+> +nbd_receive_wrong_header(uint32_t magic, const char *mode) "Server sent unexpected magic 0x%" PRIx32 " for negotiated mode %s"
+> 
+>   # common.c
+>   nbd_unknown_error(int err) "Squashing unexpected error %d to EINVAL"
+
+-- 
+Best regards,
+Vladimir
 
 
