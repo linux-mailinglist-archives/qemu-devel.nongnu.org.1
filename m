@@ -2,92 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9703A73FFE7
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 17:40:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2364674000B
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 17:49:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEAmW-0003eY-FH; Tue, 27 Jun 2023 11:39:04 -0400
+	id 1qEAvE-0000IM-B2; Tue, 27 Jun 2023 11:48:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quic_llindhol@quicinc.com>)
- id 1qEAmU-0003cG-Bv; Tue, 27 Jun 2023 11:39:02 -0400
-Received: from mx0b-0031df01.pphosted.com ([205.220.180.131])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qEAvC-0000GJ-2r
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 11:48:02 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quic_llindhol@quicinc.com>)
- id 1qEAmS-0004dX-91; Tue, 27 Jun 2023 11:39:02 -0400
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
- by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 35REd3Zf007112; Tue, 27 Jun 2023 15:38:57 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com;
- h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=C9XtCg7ib6Y1so2sFbQZ4q+7D9uO9H50xx2zsF5d9XM=;
- b=U+hZJG8Zmy84QA4zQSHUya4VAR5Xy/jhjOmGmxBnPZ70qCYjfATtzuJ+XaZ9J/DBZoj0
- PBFz200T2L0n7pobo+zpEFcFiaZ246QVsCHemovaDu5fMOnYR/0xutOtVpExj4QMbqbP
- VRUUE+Q7f9GmO560CNWgxSEev+vgfc8iZUXHhROh3V5BRpQ1EcKTCieQg/b965WJ9Y3i
- p81JeAUbZxFD25qnhxUhsZilHnocTl4J2gFhCrJqYEO5xwsOAqjrhfVo6y35aQ4Azvaq
- TXRQmf6mttxaU1jtEcN9rcNLVeOeRc2qfgMn7XG9X8Dl61G99NHieWX3SR5Wbleu4ptk og== 
-Received: from nasanppmta04.qualcomm.com (i-global254.qualcomm.com
- [199.106.103.254])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3rfrdt9bd1-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 27 Jun 2023 15:38:57 +0000
-Received: from nasanex01c.na.qualcomm.com (nasanex01c.na.qualcomm.com
- [10.45.79.139])
- by NASANPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 35RFctmN020253
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 27 Jun 2023 15:38:55 GMT
-Received: from [10.111.135.140] (10.80.80.8) by nasanex01c.na.qualcomm.com
- (10.45.79.139) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.42; Tue, 27 Jun
- 2023 08:38:54 -0700
-Message-ID: <16bc062c-f479-54b2-1435-f4ce53e30f2f@quicinc.com>
-Date: Tue, 27 Jun 2023 16:38:52 +0100
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qEAvA-0007ao-Bv
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 11:48:01 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1687880877;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=7kj9vriGLxM9EGYgOi+U7/NpP+xrnlS9zuBzhIIV4co=;
+ b=gvqKd1NITLg+ZHPXtz6lqfjcnDd0SspqwpjO7NxVHKbZSA1eb+qOR5lFU++LGNmthSo5O1
+ VkZv7yvexBT/8K/R2ZJFJxU+hcfXcYDQIoH9mPrBYysseaswUwP7fxHY0Quhcla3MyWbVG
+ sI/UDsf5CesMqGJAnQlbKvH5emwPLh8=
+Received: from mail-vs1-f69.google.com (mail-vs1-f69.google.com
+ [209.85.217.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-150-HwHXZ2MZPaSX7xmgFUDVeQ-1; Tue, 27 Jun 2023 11:47:55 -0400
+X-MC-Unique: HwHXZ2MZPaSX7xmgFUDVeQ-1
+Received: by mail-vs1-f69.google.com with SMTP id
+ ada2fe7eead31-4409a468a30so502269137.0
+ for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 08:47:55 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1687880875; x=1690472875;
+ h=content-transfer-encoding:in-reply-to:content-language:references
+ :cc:to:from:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=7kj9vriGLxM9EGYgOi+U7/NpP+xrnlS9zuBzhIIV4co=;
+ b=Ni5ZAVV2M7s38uf9uj+AW+jBWOdyAAyfL0MfCHnwHcw8bC0eAXSOoEam6nKRbyyOaI
+ AJEh9wRZMKf4+8e+0WZmnXiMRumvm6uLFjWTTEq8ZqybyUVQJr8o4r0MCftUgmdle9if
+ IBqAkOh44DEoRnY9A3KJo+nkLg3AvBgkB71eDD8HbCZBXG23fJTdYAmCuvTrsYHI4oAj
+ 19QQkvAu/IZiWa3SufgPyrCPD71hpR2P8CnatWapLDoI4+hThuZOfBNRaK1U9fS+gXDj
+ 2N/RNu4L4aRCi+Qp3mx1JJXgEE/dDSXvUQBYG3d7MP5/O+OofW0QirCkEVmjI9DXsZIX
+ 4rmQ==
+X-Gm-Message-State: AC+VfDw7zydGkc6mt+RSPHnNvL6ZV0BxDGfOu/S7Il6ta1BnYqfAWW9y
+ RYT3Bee9afvNgc8adyKNSx3mQQoSlS5yo5v/tED6U5zLKU1Vgmvyum2mH2V/A84CI3k2rqwqvWR
+ zwTEp+qleW74EuFY96Yn6Qcr7elmxBGb3OhKp/qikJi0CHIbnU1rvnCY5Q9ogMqIkQ97u8Ng=
+X-Received: by 2002:a67:ea8f:0:b0:443:6b64:aed4 with SMTP id
+ f15-20020a67ea8f000000b004436b64aed4mr3209798vso.26.1687880874914; 
+ Tue, 27 Jun 2023 08:47:54 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6amZi7jdPz1smVfMSDUGUBdkiJgHwmCirs1KXmqhfJjOcjDVdp/CyElO+C68Tp83quRoSTRw==
+X-Received: by 2002:a67:ea8f:0:b0:443:6b64:aed4 with SMTP id
+ f15-20020a67ea8f000000b004436b64aed4mr3209771vso.26.1687880874481; 
+ Tue, 27 Jun 2023 08:47:54 -0700 (PDT)
+Received: from [192.168.8.100] (tmo-097-60.customers.d1-online.com.
+ [80.187.97.60]) by smtp.gmail.com with ESMTPSA id
+ dz11-20020ad4588b000000b006263a9e7c63sm4572042qvb.104.2023.06.27.08.47.51
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 27 Jun 2023 08:47:53 -0700 (PDT)
+Message-ID: <12762727-f870-64c3-e39a-8be2187382ba@redhat.com>
+Date: Tue, 27 Jun 2023 17:47:49 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH 1/1] hw/arm/sbsa-ref: add PCIe node into DT
-To: Peter Maydell <peter.maydell@linaro.org>
-CC: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
- <qemu-devel@nongnu.org>, Radoslaw Biernacki <rad@semihalf.com>,
- <qemu-arm@nongnu.org>
-References: <20230626075207.623535-1-marcin.juszkiewicz@linaro.org>
- <CAFEAcA-K_2SLxbq90TpUyzLpiC0U2WVJe7ffaC_TH66K-=GV4A@mail.gmail.com>
- <b26c98d3-3e9f-331e-acbd-ae0c451e0ed3@quicinc.com>
- <CAFEAcA_rg4CbE1Y9mTQmPs_KBqb-S=3Z5Hh78gbVUD6R7DR0hg@mail.gmail.com>
- <d8e93b7b-5e86-5e26-21cd-fefb76f88204@quicinc.com>
- <CAFEAcA8L--h_3QvKff66mw3VG7G__hwv=syw2hU2Qby8jkJPRw@mail.gmail.com>
-From: Leif Lindholm <quic_llindhol@quicinc.com>
-In-Reply-To: <CAFEAcA8L--h_3QvKff66mw3VG7G__hwv=syw2hU2Qby8jkJPRw@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v2 3/4] pc-bios/s390-ccw: Move the stack array into start.S
+From: Thomas Huth <thuth@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-s390x@nongnu.org, Christian Borntraeger <borntraeger@linux.ibm.com>, 
+ mrezanin@redhat.com, Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clegoate@redhat.com>,
+ Janosch Frank <frankja@linux.ibm.com>,
+ "Jason J . Herne" <jjherne@linux.ibm.com>,
+ Marc Hartmayer <mhartmay@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>,
+ Claudio Imbrenda <imbrenda@linux.ibm.com>
+References: <20230627074703.99608-1-thuth@redhat.com>
+ <20230627074703.99608-4-thuth@redhat.com>
+Content-Language: en-US
+In-Reply-To: <20230627074703.99608-4-thuth@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nasanex01c.na.qualcomm.com (10.45.79.139)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
- signatures=585085
-X-Proofpoint-ORIG-GUID: rxwCvJcb6RHxlKTCBZ1EQyZc8RwvAXlS
-X-Proofpoint-GUID: rxwCvJcb6RHxlKTCBZ1EQyZc8RwvAXlS
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-06-27_10,2023-06-27_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- impostorscore=0 suspectscore=0 phishscore=0 mlxlogscore=999
- lowpriorityscore=0 clxscore=1015 adultscore=0 mlxscore=0 bulkscore=0
- spamscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2305260000 definitions=main-2306270143
-Received-SPF: pass client-ip=205.220.180.131;
- envelope-from=quic_llindhol@quicinc.com; helo=mx0b-0031df01.pphosted.com
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.103,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.103, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -104,108 +107,102 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023-06-27 15:27, Peter Maydell wrote:
->> Serious question: would it be preferable if we moved to a custom DT node
->> where we stick everything in as KEY=VALUE pairs to reduce this confusion?
+On 27/06/2023 09.47, Thomas Huth wrote:
+> The stack array is only referenced from the start-up code (which is
+> shared between the s390-ccw.img and the s390-netboot.img), but it is
+> currently declared twice, once in main.c and once in netmain.c.
+> It makes more sense to declare this in start.S instead - which will
+> also be helpful in the next patch, since we need to mention the .bss
+> section in start.S in that patch.
 > 
-> I don't really mind, I just want it to be clear what is going on here
-> so that when I'm reviewing patches I have a design I can keep in mind.
-
-No, I totally understand that. I'm just feeling that the call we made to 
-use DT to pass this information tends to put everyone's mind into the 
-wrong state when reviewing.
-
-> The way this was presented to me originally, at least as I recall
-> it, was "this board will work the way that real hardware does, ie
-> the firmware knows what hardware it was built for".
- >
-> In that
-> setup QEMU doesn't need to tell the firmware anything, except
-> a very limited set of things which it's more convenient to have
-> flexible and specifiable on the QEMU command line, like number of
-> CPUs and size of RAM. And that's what the comments in the source say
-> at the moment:
+> While we're at it, let's also drop the huge alignment of the stack,
+> since there is no technical requirement for aligning it to page
+> boundaries.
 > 
-> /*
->   * Firmware on this machine only uses ACPI table to load OS, these limited
->   * device tree nodes are just to let firmware know the info which varies from
->   * command line parameters, so it is not necessary to be fully compatible
->   * with the kernel CPU and NUMA binding rules.
->   */
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> ---
+>   pc-bios/s390-ccw/s390-ccw.h | 1 -
+>   pc-bios/s390-ccw/main.c     | 1 -
+>   pc-bios/s390-ccw/netmain.c  | 1 -
+>   pc-bios/s390-ccw/start.S    | 6 ++++++
+>   4 files changed, 6 insertions(+), 3 deletions(-)
 > 
-> So that's the design I've been implicitly reviewing these changes
-> against.
+> diff --git a/pc-bios/s390-ccw/s390-ccw.h b/pc-bios/s390-ccw/s390-ccw.h
+> index b88e0550ab..91afcbbca9 100644
+> --- a/pc-bios/s390-ccw/s390-ccw.h
+> +++ b/pc-bios/s390-ccw/s390-ccw.h
+> @@ -55,7 +55,6 @@ void consume_io_int(void);
+>   /* main.c */
+>   void write_subsystem_identification(void);
+>   void write_iplb_location(void);
+> -extern char stack[PAGE_SIZE * 8] __attribute__((__aligned__(PAGE_SIZE)));
+>   unsigned int get_loadparm_index(void);
+>   void main(void);
+>   
+> diff --git a/pc-bios/s390-ccw/main.c b/pc-bios/s390-ccw/main.c
+> index a2def83e82..5506798098 100644
+> --- a/pc-bios/s390-ccw/main.c
+> +++ b/pc-bios/s390-ccw/main.c
+> @@ -17,7 +17,6 @@
+>   #include "virtio-scsi.h"
+>   #include "dasd-ipl.h"
+>   
+> -char stack[PAGE_SIZE * 8] __attribute__((__aligned__(PAGE_SIZE)));
+>   static SubChannelId blk_schid = { .one = 1 };
+>   static char loadparm_str[LOADPARM_LEN + 1];
+>   QemuIplParameters qipl;
+> diff --git a/pc-bios/s390-ccw/netmain.c b/pc-bios/s390-ccw/netmain.c
+> index 056e93a818..5cd619b2d6 100644
+> --- a/pc-bios/s390-ccw/netmain.c
+> +++ b/pc-bios/s390-ccw/netmain.c
+> @@ -50,7 +50,6 @@ void write_iplb_location(void) {}
+>   /* STSI 3.2.2 offset of first vmdb + offset of uuid inside vmdb */
+>   #define STSI322_VMDB_UUID_OFFSET ((8 + 12) * 4)
+>   
+> -char stack[PAGE_SIZE * 8] __attribute__((aligned(PAGE_SIZE)));
+>   IplParameterBlock iplb __attribute__((aligned(PAGE_SIZE)));
+>   static char cfgbuf[2048];
+>   
+> diff --git a/pc-bios/s390-ccw/start.S b/pc-bios/s390-ccw/start.S
+> index 29b0a9ece0..111dea261b 100644
+> --- a/pc-bios/s390-ccw/start.S
+> +++ b/pc-bios/s390-ccw/start.S
+> @@ -120,3 +120,9 @@ external_new_mask:
+>       .quad   0x0000000180000000
+>   io_new_mask:
+>       .quad   0x0000000180000000
+> +
+> +.bss
+> +    .align  8
+> +stack:
+> +    .space  STACK_SIZE
+> +    .size   stack,STACK_SIZE
 
-I still agree fully with the above. But possibly I meant less by what I 
-said than you heard. Human language, eh?
+Sigh, I missed that one of the tcg tests includes start.S ...
+I'll include this hunk on top of this patch to get it fixed:
 
-The only things that *need* hardcoding really are:
-- What (family of) platform(s) is this? (sbsa-ref)
-- Start of Secure memory.
-- Start of Non-secure memory.
-- Mechanism by which to receive platform configuration data that might
-   differ at runtime.
+diff --git a/tests/tcg/s390x/head64.S b/tests/tcg/s390x/head64.S
+--- a/tests/tcg/s390x/head64.S
++++ b/tests/tcg/s390x/head64.S
+@@ -8,6 +8,8 @@
+  #include "../../../pc-bios/s390-ccw/start.S"
+  #undef main
+  
++.text
++
+  main_pre:
+      aghi %r15,-160                     /* reserve stack for C code */
+      brasl %r14,sclp_setup
+@@ -24,8 +26,3 @@ success_psw:
+      .quad 0x2000180000000,0xfff        /* see is_special_wait_psw() */
+  failure_psw:
+      .quad 0x2000180000000,0            /* disabled wait */
+-
+-    .section .bss
+-    .align 0x1000
+-stack:
+-    .skip 0x8000
 
-Admittedly, using QEMU gives us more flexibility than would be likely in 
-a real platform - like specifying any supported CPU that can access the 
-whole address map. A real platform would be very unlikely to have 
-runtime detection for everything from Cortex-A57 to Neoverse-N2 - but 
-it's genuinely useful for our (non-platform-specific) firmware 
-development to be able to do that.
-
-> It is pretty surprising to me to hear that in real-world systems
-> the firmware is not built to know exactly where its UART, USB
-> controller, etc are and that it is instead asking some board
-> management controller chip for all this information and being
-> fully-flexible in the firmware that runs on the application CPU,
-> but I have zero experience in that area so that's just my
-> lack of knowledge speaking.
-
-As an example, in said previous design we were prototyping having the 
-ability to hold PCIe space inside 48 bits (to work with non-LPA2-aware
-operating systems utilising 4k pages) and having a software-configurable 
-option to expand into 52 bits (enabling more space for both DRAM and 
-PCIe), where an LPA2-aware (or 64k-paged) OS was used.
-
-The addresses (from the application processor's perspective) of certain 
-other i/o blocks were also ultimately decided by a microcontroller 
-programming the CMN. So even if we "decided" on locations for them and 
-stuck to those for simplicity, they weren't actually hard-wired.
-
-> If there's a standard/common protocol for how the BMC communicates
-> that info to the application-CPU firmware then it might be
-> less confusing to use it, I guess. But I'm not inherently
-> opposed to putting this stuff in a dtb-format blob.
-
-Not really. If anything I'm hoping to inspire standardisation along 
-those axes by having libraries available to just plug in.
-
-> (Side note: is the commit message line "Trusted Firmware will
-> read it and provide to next firmware level." intended to
-> mean "TF will take this dtb node and pass it on", or merely
-> "TF will take the information in this dtb node and use
-> it to construct or modify the ACPI tables it passes to the
-> next level"?)
-
-The latter.
-We're kind of working our way backwards towards the design we ultimately 
-want, so the DT was originally placed in NS DRAM since that let us reuse 
-more of the mach-virt code in edk2 rather than needing to rewrite 
-everything to get anything working.
-
-Now we're getting versioning in place, we will eventually deprecate that 
-and move the DT to Secure DRAM, dropping access to it for Non-secure 
-firmware. But we never exposed the DT to the OS as a configuration 
-table, it was always used to generate the bits of ACPI that weren't just 
-hardcoded.
-
-/
-     Leif
-
-
-
-/
-     Leif
-
+  Thomas
 
 
