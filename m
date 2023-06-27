@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BACE73F8CF
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 11:31:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3298773F8C8
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 11:30:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qE51c-00051X-EN; Tue, 27 Jun 2023 05:30:17 -0400
+	id 1qE51h-00055T-3I; Tue, 27 Jun 2023 05:30:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <imbrenda@linux.ibm.com>)
- id 1qE51M-00050A-B3; Tue, 27 Jun 2023 05:30:00 -0400
+ id 1qE51P-00051h-PU; Tue, 27 Jun 2023 05:30:04 -0400
 Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <imbrenda@linux.ibm.com>)
- id 1qE51K-0006nA-CA; Tue, 27 Jun 2023 05:30:00 -0400
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+ id 1qE51N-0006pp-QR; Tue, 27 Jun 2023 05:30:03 -0400
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 35R9Lvti002832; Tue, 27 Jun 2023 09:29:54 GMT
+ 35R9IISl023600; Tue, 27 Jun 2023 09:29:58 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=date : from : to : cc :
  subject : message-id : in-reply-to : references : mime-version :
  content-type : content-transfer-encoding; s=pp1;
- bh=r/EvpMD9Ts7C4H9mdgA6fXolIjIEW5oauDpMjB2/7mo=;
- b=o2Otrh07rvE/gangUsLSDYiuVndVTYDU3FEzXNaWN2dZdNEa5u5m6oMSpAV9kDGoSQIm
- rvvLVbIeb4GM8/3QKNLXCgqarW5I3bQOkEfMuwET23OlNdQvXKgT0DEAWLkGaXu19GFq
- mMBhT87vU0htzLA2jb9aGYBLMVwa3oRtNHBfrkjtv6TbNKv7+5CLOGklTetgxqUue+Z5
- tnEUeMBQ6MIoixMJaim86fCCP5Lc2iLfmY9g51VOlayjVOpEj0oCqXw8j9WnQXAF0JYs
- 1xV2UAvPtuqr75j77m7uY9/br6RQEhnr5c1qYQPQGVM9LXR0PUh3QxKlMI1a3hiWJM+d OQ== 
+ bh=M0im3BXmgP7t93pwzG2xJVerSxZvLUvNt8+eepFRAOI=;
+ b=bFUg6rGz/+RwnIYZ1xdBHTCYeAXYPU4jn1clcgcbVSlchGYEwxMnuTNvdjKVJGOPB1fe
+ lAPQ608nB0WysrRB4YTy+lMbia8ie/PNFs/vvuwmpFh2J4VwB4LcV8AgVUPfS/7HLbJY
+ QQGbgVA2gIrX9qyR4h2v9/KjHMiiCfaGUruZBANL0tLcl9sc6+ksI/Fmob1CnvSFIme9
+ X5wF7YaBuXdOq1JGVExLVlBkonDIq9cdfLewO4sIxVHtc69epJMvENG9DZjPuvYdCYNk
+ Yp5I+rEC4FgfFCUPDpwRG0G8HhUs4cQq6JfUQzuwQ8nxTi8+nvL7ARHYCWa77LEc8P7Y hw== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rfw2v04vr-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rfw0xr8m6-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 27 Jun 2023 09:29:53 +0000
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 35R9ONFP012595;
- Tue, 27 Jun 2023 09:29:53 GMT
-Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.108])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rfw2v04v7-1
+ Tue, 27 Jun 2023 09:29:58 +0000
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 35R9KG8f029992;
+ Tue, 27 Jun 2023 09:29:58 GMT
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.98])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rfw0xr8km-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 27 Jun 2023 09:29:52 +0000
-Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
- by ppma05fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 35R4GHCD018106;
- Tue, 27 Jun 2023 09:29:50 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
- by ppma05fra.de.ibm.com (PPS) with ESMTPS id 3rdr459c0d-1
+ Tue, 27 Jun 2023 09:29:57 +0000
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+ by ppma03ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 35R3GAFg008662;
+ Tue, 27 Jun 2023 09:29:55 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+ by ppma03ams.nl.ibm.com (PPS) with ESMTPS id 3rdr451rtx-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 27 Jun 2023 09:29:50 +0000
+ Tue, 27 Jun 2023 09:29:55 +0000
 Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com
  [10.20.54.102])
- by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 35R9TlLR21693158
+ by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 35R9Tquv53674298
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 27 Jun 2023 09:29:47 GMT
+ Tue, 27 Jun 2023 09:29:52 GMT
 Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1528420043;
- Tue, 27 Jun 2023 09:29:47 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 3247B20043;
+ Tue, 27 Jun 2023 09:29:52 +0000 (GMT)
 Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B17BC20040;
- Tue, 27 Jun 2023 09:29:46 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id D9E2320040;
+ Tue, 27 Jun 2023 09:29:51 +0000 (GMT)
 Received: from p-imbrenda (unknown [9.152.224.66])
  by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Tue, 27 Jun 2023 09:29:46 +0000 (GMT)
-Date: Tue, 27 Jun 2023 11:27:40 +0200
+ Tue, 27 Jun 2023 09:29:51 +0000 (GMT)
+Date: Tue, 27 Jun 2023 11:28:13 +0200
 From: Claudio Imbrenda <imbrenda@linux.ibm.com>
 To: Thomas Huth <thuth@redhat.com>
 Cc: qemu-devel@nongnu.org, qemu-s390x@nongnu.org, Christian Borntraeger
@@ -72,29 +72,28 @@ Cc: qemu-devel@nongnu.org, qemu-s390x@nongnu.org, Christian Borntraeger
  <clegoate@redhat.com>, Janosch Frank <frankja@linux.ibm.com>, "Jason J .
  Herne" <jjherne@linux.ibm.com>, Marc Hartmayer <mhartmay@linux.ibm.com>,
  Eric Farman <farman@linux.ibm.com>
-Subject: Re: [PATCH v2 2/4] pc-bios/s390-ccw: Provide space for initial
- stack frame in start.S
-Message-ID: <20230627112740.7359b02b@p-imbrenda>
-In-Reply-To: <20230627074703.99608-3-thuth@redhat.com>
+Subject: Re: [PATCH v2 3/4] pc-bios/s390-ccw: Move the stack array into start.S
+Message-ID: <20230627112813.1bebddfd@p-imbrenda>
+In-Reply-To: <20230627074703.99608-4-thuth@redhat.com>
 References: <20230627074703.99608-1-thuth@redhat.com>
- <20230627074703.99608-3-thuth@redhat.com>
+ <20230627074703.99608-4-thuth@redhat.com>
 Organization: IBM
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: kNGtX-qGSj6vHug4qLjhyBTYYQQUu8CS
-X-Proofpoint-GUID: tYnO_SREQ3ucGDA3VTggJGQE9t85xJ8O
+X-Proofpoint-GUID: 7M8o7lLqv1QSb9gnatDdptk8dKJ_0jNN
+X-Proofpoint-ORIG-GUID: Qty6Kr6J6eqCpBmaVSdZkYadvs0sgJaE
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
  definitions=2023-06-27_05,2023-06-26_03,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- impostorscore=0 mlxscore=0 bulkscore=0 malwarescore=0 spamscore=0
- adultscore=0 lowpriorityscore=0 mlxlogscore=999 phishscore=0
- suspectscore=0 clxscore=1011 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2305260000 definitions=main-2306270086
+ mlxscore=0 bulkscore=0
+ phishscore=0 clxscore=1015 adultscore=0 priorityscore=1501 mlxlogscore=999
+ spamscore=0 impostorscore=0 lowpriorityscore=0 suspectscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2305260000 definitions=main-2306270086
 Received-SPF: pass client-ip=148.163.156.1;
  envelope-from=imbrenda@linux.ibm.com; helo=mx0a-001b2d01.pphosted.com
 X-Spam_score_int: -19
@@ -119,47 +118,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 27 Jun 2023 09:47:01 +0200
+On Tue, 27 Jun 2023 09:47:02 +0200
 Thomas Huth <thuth@redhat.com> wrote:
 
-> Providing the space of a stack frame is the duty of the caller,
-> so we should reserve 160 bytes before jumping into the main function.
-> Otherwise the main() function might write past the stack array.
->=20
-> While we're at it, add a proper STACK_SIZE macro for the stack size
-> instead of using magic numbers (this is also required for the following
-> patch).
->=20
-> Reviewed-by: Christian Borntraeger <borntraeger@linux.ibm.com>
-> Reviewed-by: C=C3=A9dric Le Goater <clg@redhat.com>
+> The stack array is only referenced from the start-up code (which is
+> shared between the s390-ccw.img and the s390-netboot.img), but it is
+> currently declared twice, once in main.c and once in netmain.c.
+> It makes more sense to declare this in start.S instead - which will
+> also be helpful in the next patch, since we need to mention the .bss
+> section in start.S in that patch.
+> 
+> While we're at it, let's also drop the huge alignment of the stack,
+> since there is no technical requirement for aligning it to page
+> boundaries.
+> 
 > Signed-off-by: Thomas Huth <thuth@redhat.com>
-
-
-with Marc's suggestion applied:
 
 Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
 
 > ---
->  pc-bios/s390-ccw/start.S | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
->=20
+>  pc-bios/s390-ccw/s390-ccw.h | 1 -
+>  pc-bios/s390-ccw/main.c     | 1 -
+>  pc-bios/s390-ccw/netmain.c  | 1 -
+>  pc-bios/s390-ccw/start.S    | 6 ++++++
+>  4 files changed, 6 insertions(+), 3 deletions(-)
+> 
+> diff --git a/pc-bios/s390-ccw/s390-ccw.h b/pc-bios/s390-ccw/s390-ccw.h
+> index b88e0550ab..91afcbbca9 100644
+> --- a/pc-bios/s390-ccw/s390-ccw.h
+> +++ b/pc-bios/s390-ccw/s390-ccw.h
+> @@ -55,7 +55,6 @@ void consume_io_int(void);
+>  /* main.c */
+>  void write_subsystem_identification(void);
+>  void write_iplb_location(void);
+> -extern char stack[PAGE_SIZE * 8] __attribute__((__aligned__(PAGE_SIZE)));
+>  unsigned int get_loadparm_index(void);
+>  void main(void);
+>  
+> diff --git a/pc-bios/s390-ccw/main.c b/pc-bios/s390-ccw/main.c
+> index a2def83e82..5506798098 100644
+> --- a/pc-bios/s390-ccw/main.c
+> +++ b/pc-bios/s390-ccw/main.c
+> @@ -17,7 +17,6 @@
+>  #include "virtio-scsi.h"
+>  #include "dasd-ipl.h"
+>  
+> -char stack[PAGE_SIZE * 8] __attribute__((__aligned__(PAGE_SIZE)));
+>  static SubChannelId blk_schid = { .one = 1 };
+>  static char loadparm_str[LOADPARM_LEN + 1];
+>  QemuIplParameters qipl;
+> diff --git a/pc-bios/s390-ccw/netmain.c b/pc-bios/s390-ccw/netmain.c
+> index 056e93a818..5cd619b2d6 100644
+> --- a/pc-bios/s390-ccw/netmain.c
+> +++ b/pc-bios/s390-ccw/netmain.c
+> @@ -50,7 +50,6 @@ void write_iplb_location(void) {}
+>  /* STSI 3.2.2 offset of first vmdb + offset of uuid inside vmdb */
+>  #define STSI322_VMDB_UUID_OFFSET ((8 + 12) * 4)
+>  
+> -char stack[PAGE_SIZE * 8] __attribute__((aligned(PAGE_SIZE)));
+>  IplParameterBlock iplb __attribute__((aligned(PAGE_SIZE)));
+>  static char cfgbuf[2048];
+>  
 > diff --git a/pc-bios/s390-ccw/start.S b/pc-bios/s390-ccw/start.S
-> index d29de09cc6..29b0a9ece0 100644
+> index 29b0a9ece0..111dea261b 100644
 > --- a/pc-bios/s390-ccw/start.S
 > +++ b/pc-bios/s390-ccw/start.S
-> @@ -10,10 +10,12 @@
->   * directory.
->   */
-> =20
-> +#define STACK_SIZE 0x8000
+> @@ -120,3 +120,9 @@ external_new_mask:
+>      .quad   0x0000000180000000
+>  io_new_mask:
+>      .quad   0x0000000180000000
 > +
->      .globl _start
->  _start:
-> =20
-> -    larl    %r15,stack + 0x8000     /* Set up stack */
-> +    larl    %r15,stack + STACK_SIZE - 160   /* Set up stack */
-> =20
->      /* clear bss */
->      larl    %r2,__bss_start
+> +.bss
+> +    .align  8
+> +stack:
+> +    .space  STACK_SIZE
+> +    .size   stack,STACK_SIZE
 
 
