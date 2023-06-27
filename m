@@ -2,76 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3A5A73FB22
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 13:31:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CDAD73FB2A
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 13:33:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qE6tm-00028T-IC; Tue, 27 Jun 2023 07:30:18 -0400
+	id 1qE6wP-0003PJ-Q1; Tue, 27 Jun 2023 07:33:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qE6tk-00028A-5M
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 07:30:16 -0400
-Received: from mail-lj1-x22b.google.com ([2a00:1450:4864:20::22b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qE6ti-0008OB-EN
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 07:30:15 -0400
-Received: by mail-lj1-x22b.google.com with SMTP id
- 38308e7fff4ca-2b6a5fd1f46so25143041fa.1
- for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 04:30:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687865412; x=1690457412;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=sqUzKr1ko1evPEzZPV3C25X3jPFar6TzejIIDDS8NBo=;
- b=fPWLfGjZzHvKfrRZcmQDH3BmBddetX21pXGFmXRFCAYkR8GqWvd7cUreaKOrl8bpCY
- 4kcdAcaFf25nZg+qXFxRbl/Ut8g+J1+pGlXuge6pCizQNg9FhLVh22g5TZD9ys+ksU1Y
- Fqg4ayvSS5XhF4IsYFPJ84ROKzXM6kEWrC5P7GxsyERClctfc7D9XuUG5j2YT+ZC4kuA
- aYX/M/35E1oecfEj+NeB9yRfAi0ZIEP+ROMFR4dRdOyFk9/OAODrvQkhJHXSKXXeRRdp
- JzD7YULQdwy4o3XqARWf43PFWV63H/6COYybTrZGShiXv7By3+Rf58fWZ9bzqHpvuFfO
- oDYg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687865412; x=1690457412;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=sqUzKr1ko1evPEzZPV3C25X3jPFar6TzejIIDDS8NBo=;
- b=cup8mabIG+M/wd1j6geGgmLs2WQUQfY2C4gjcEMGSvzIMaEiH00jYgxmM9nUxIfb9W
- b6yG9ffEOHBL5/ujguE4vHB7PXYsHqxchrtHpwHG2NYRyYtQI4O4cafGMbe6xo/71Wr5
- HtDTT+2+8Ge9Oetyaif/mqxHZvZhDmJ9qm67U4LMC/YnolwtgyToKPVaAqjxgmMDgOOB
- 7jrmE62YMx3xuArgmDmVfIE6xs9qMByi/yK+cAI4kzPjLvuBUOSjYvldFAfUV8+elXX6
- +a2rAguxxNLJwX8IayprNRg/SRIFYOy3A2bopyEbHNVgmZk/W4hXs5wshN+lA5D63h4J
- LGlg==
-X-Gm-Message-State: AC+VfDzlxfK+hDMaQs/RxPKoRY0lJhU8YH0/TwV9djIjPxRvH7FAAyfl
- arliVCZ26dVTLKGPWxqxb05GQxqIMcUpDdCKPcW12Q==
-X-Google-Smtp-Source: ACHHUZ4XRQ6JeZcCxhK1ZXgeBn5QwZVWBpTpwH3EvfzVEPCngiDq5ranoHeKLKHXShPwag9BJRcMtKYr1qASKmvt6G8=
-X-Received: by 2002:a2e:94d0:0:b0:2b4:7f66:8c89 with SMTP id
- r16-20020a2e94d0000000b002b47f668c89mr18320369ljh.38.1687865412054; Tue, 27
- Jun 2023 04:30:12 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <olaf@aepfle.de>) id 1qE6wE-0003NI-O2
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 07:32:54 -0400
+Received: from mo4-p00-ob.smtp.rzone.de ([85.215.255.24])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <olaf@aepfle.de>) id 1qE6wC-0000Tx-60
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 07:32:49 -0400
+ARC-Seal: i=1; a=rsa-sha256; t=1687865562; cv=none;
+ d=strato.com; s=strato-dkim-0002;
+ b=JHvG/liOOg9x6bnQUkcNB+uwuHKGh19BHSc2yGolHCmpCFwyM8g+cf4fSLIGrYPcIQ
+ 3zl9J56v0bksT6YYxzGc2W3LtPYwxVO+Zs0J1YhjEiY8GfKRUFBRqXtfJFGMCg05nlbe
+ 4TXF0N/UXVkykrOYwwwXaCiKYRhsWarEC94uXqKMeGApd7ReA5NKGyrQ9c0cUAy4EOTH
+ 9zYhp8eIHBGPmkWqKa6NO8RH51VvPMTKJqVWd2kTg2hWtFiDFcNYVYQTbmYZsA+61aAE
+ imj/+hoV2GEICOIv/FR/WHCRH0sl11I+W+EjzKuP+QJX8H9Xqmu95QWpLu8uVw7jb0kc
+ Rkdw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1687865562;
+ s=strato-dkim-0002; d=strato.com;
+ h=References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
+ From:Subject:Sender;
+ bh=3wLDUR1nX20PA1ahDWpaygAfJBpRhBHco6snOa6yefU=;
+ b=Pff1dk9aKUS7uTsYK9YBps7/+OabGa4UyCXeC274kjdOQFiM9jOJxti9Cl3qWrNIes
+ 2pRI9IIUJ06WXXz1oAPlXDk8datpiYAFw8gsylcAZ565s4gBhOHMumKDe2IRRgOdvfbF
+ glfDrVxJoc6tKG0CKoveHrtQFKDtEXy+08zloJtGTydraFc17Wx3TdW63fd7M3G3qC4K
+ M6j/qyrDwwqWYNEOian0QwooYM7Wq3s3gst0N7ecrn1iII3hEs4tTBG3k/x/SZG+SkhT
+ +YgjqsJ+uUXGDfchK3xPjtPiT+RxZ/lO5ES3oW5YQSON5WsZBZfRPN366A6h9XeplfJ5
+ ktGw==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo00
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1687865562;
+ s=strato-dkim-0002; d=aepfle.de;
+ h=References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
+ From:Subject:Sender;
+ bh=3wLDUR1nX20PA1ahDWpaygAfJBpRhBHco6snOa6yefU=;
+ b=HialoChl9s6Ch3YWMLvvcUSZ0m95Wzq3PsoRwJPTv2DWMjx14jpopvL7CtUEDAcCwZ
+ jzNvCZK63rrgvs0HBNx2FDfg44Q0Q2xEvH55rCuBW3YaBEz7TPazUOyjAF0IkOaFzXT3
+ /hSZIPB9PaxD89PR6HIsVAhEOCNa/fnX8H/PzmCOgdVaqIsTKFaF/SLO/QmPSlYRUihv
+ X9H2BGqeDjsZ0pwJRmORh/T7ZcxDv9DcehQ0AYLF4TEA/pCqDjMjJZ+m8frcjiJA8FCZ
+ hJQiZt+N0R87MP1h2bGeHuOwWC5zWFoqvTEVXL+i5NpfJhjjb1k4xAo5sPz3J/AxlnkU
+ 4f4w==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1687865562;
+ s=strato-dkim-0003; d=aepfle.de;
+ h=References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
+ From:Subject:Sender;
+ bh=3wLDUR1nX20PA1ahDWpaygAfJBpRhBHco6snOa6yefU=;
+ b=jUs35QFYM0UDsF3kErXrKoeYeOdy/tHUl251QMJjmDdApYUsQCVK8SnoFwdxpDwqXM
+ nSng0EHsy7BbFM1iT0Aw==
+X-RZG-AUTH: ":P2EQZWCpfu+qG7CngxMFH1J+3q8wa/QLpd5ylWvMDX3y/OuD5rXWiuRyeUQh3GC6w0BTiV2X9kN/WAr0rdTE7oY1qJzPNA=="
+Received: from sender by smtp.strato.de (RZmta 49.6.0 AUTH)
+ with ESMTPSA id y5401az5RBWglIF
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+ (Client did not present a certificate);
+ Tue, 27 Jun 2023 13:32:42 +0200 (CEST)
+Date: Tue, 27 Jun 2023 13:32:34 +0200
+From: Olaf Hering <olaf@aepfle.de>
+To: Paolo Bonzini <pbonzini@redhat.com>, John Snow <jsnow@redhat.com>
+Cc: xen-devel@lists.xenproject.org, Stefano Stabellini
+ <sstabellini@kernel.org>, qemu-devel@nongnu.org
+Subject: Re: [PATCH v2] piix: fix regression during unplug in Xen HVM domUs
+Message-ID: <20230627133234.400a2ec7.olaf@aepfle.de>
+In-Reply-To: <20230626231901.5b5d11c1.olaf@aepfle.de>
+References: <20210317070046.17860-1-olaf@aepfle.de>
+ <4441d32f-bd52-9408-cabc-146b59f0e4dc@redhat.com>
+ <20210325121219.7b5daf76.olaf@aepfle.de>
+ <dae251e1-f808-708e-902c-05cfcbbea9cf@redhat.com>
+ <20230509225818.GA16290@aepfle.de>
+ <20230626231901.5b5d11c1.olaf@aepfle.de>
+X-Mailer: Claws Mail 20230601T090920.68bc28c0 hat ein Softwareproblem,
+ kann man nichts machen.
 MIME-Version: 1.0
-References: <cover.1687782442.git.mst@redhat.com>
- <152128d646973ed298d41dafd7a5bccff43336c8.1687782442.git.mst@redhat.com>
-In-Reply-To: <152128d646973ed298d41dafd7a5bccff43336c8.1687782442.git.mst@redhat.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 27 Jun 2023 12:30:01 +0100
-Message-ID: <CAFEAcA8mNRZL2hQoRxtz1rKqbNS4srbSXY-paBQjPqbEXXE0SQ@mail.gmail.com>
-Subject: Re: [PULL 28/53] vdpa: move CVQ isolation check to net_init_vhost_vdpa
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: qemu-devel@nongnu.org, =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>,
- Lei Yang <leiyang@redhat.com>, Jason Wang <jasowang@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::22b;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x22b.google.com
+Content-Type: multipart/signed; boundary="Sig_/FGoC2=mDpSn8iKH.kGPuoRS";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
+Content-Transfer-Encoding: 7bit
+Received-SPF: none client-ip=85.215.255.24; envelope-from=olaf@aepfle.de;
+ helo=mo4-p00-ob.smtp.rzone.de
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_PASS=-0.001, SPF_NONE=0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -88,79 +107,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 26 Jun 2023 at 13:29, Michael S. Tsirkin <mst@redhat.com> wrote:
->
-> From: Eugenio P=C3=A9rez <eperezma@redhat.com>
->
-> Evaluating it at start time instead of initialization time may make the
-> guest capable of dynamically adding or removing migration blockers.
->
-> Also, moving to initialization reduces the number of ioctls in the
-> migration, reducing failure possibilities.
->
-> As a drawback we need to check for CVQ isolation twice: one time with no
-> MQ negotiated and another one acking it, as long as the device supports
-> it.  This is because Vring ASID / group management is based on vq
-> indexes, but we don't know the index of CVQ before negotiating MQ.
+--Sig_/FGoC2=mDpSn8iKH.kGPuoRS
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-I was looking at this code because of a Coverity report.
-That turned out to be a false positive, but I did notice
-something here that looks like it might be wrong:
+Mon, 26 Jun 2023 23:19:01 +0200 Olaf Hering <olaf@aepfle.de>:
 
->
-> +/**
-> + * Probe if CVQ is isolated
-> + *
-> + * @device_fd         The vdpa device fd
-> + * @features          Features offered by the device.
-> + * @cvq_index         The control vq pair index
-> + *
-> + * Returns <0 in case of failure, 0 if false and 1 if true.
-> + */
-> +static int vhost_vdpa_probe_cvq_isolation(int device_fd, uint64_t featur=
-es,
-> +                                          int cvq_index, Error **errp)
-> +{
-> +    uint64_t backend_features;
-> +    int64_t cvq_group;
-> +    uint8_t status =3D VIRTIO_CONFIG_S_ACKNOWLEDGE |
-> +                     VIRTIO_CONFIG_S_DRIVER |
-> +                     VIRTIO_CONFIG_S_FEATURES_OK;
-> +    int r;
-> +
-> +    ERRP_GUARD();
-> +
-> +    r =3D ioctl(device_fd, VHOST_GET_BACKEND_FEATURES, &backend_features=
-);
-> +    if (unlikely(r < 0)) {
-> +        error_setg_errno(errp, errno, "Cannot get vdpa backend_features"=
-);
-> +        return r;
-> +    }
-> +
-> +    if (!(backend_features & BIT_ULL(VHOST_BACKEND_F_IOTLB_ASID))) {
-> +        return 0;
-> +    }
-> +
-> +    r =3D ioctl(device_fd, VHOST_SET_FEATURES, &features);
-> +    if (unlikely(r)) {
-> +        error_setg_errno(errp, errno, "Cannot set features");
+> So far I was unable to decipher how the pci_set_word calls can
+> possibly affect the outcome and the owner of memory_region_ops_read.
 
-Shouldn't we have a 'return r' (or maybe a 'goto out') here ?
-Otherwise we'll just plough onward and attempt to continue
-execution...
+It is enough to return from piix_ide_reset right after
+pci_set_word(pci_conf + PCI_COMMAND, 0) to trigger the issue.
 
-> +    }
-> +
-> +    r =3D ioctl(device_fd, VHOST_VDPA_SET_STATUS, &status);
-> +    if (unlikely(r)) {
-> +        error_setg_errno(errp, -r, "Cannot set device features");
 
-Isn't this trying to set device status, not features ?
+One thing which was not mentioned yet: the order in which kernel drivers
+are loaded matters. Usually it is xen-platform-pci/uhci-hcd/ata_piix.
 
-> +        goto out;
-> +    }
+When uhci loads, it scans the USB bus, finds the tablet, loads usbhid.
+While this happens, ata_piix loads. It finds the PCI device in state
+disabled. The PCI code enables the device. On the qemu side this ends
+up in pci_default_write_config for PCI device "piix3-ide" with addr=3D4,
+val=3D1, len=3D2. This calls pci_update_mappings, which for region #4
+changes the addr from 0xc120 to 0xc100. This causes the issue. Now
+usbhid tries to use the USB bus, but uhci_irq fails.
 
-thanks
--- PMM
+If ata_piix is not loaded, uhci works.
+If ata_piix is loaded before uhci-hcd, the USB bus can not be scanned,
+udev is killed after a timeout and boot proceeds.
+If usbhid is loaded before ata_piix, USB bus discovery usually finishes
+before ata_piix enables its PCI device, boot proceeds.
+
+
+Olaf
+
+--Sig_/FGoC2=mDpSn8iKH.kGPuoRS
+Content-Type: application/pgp-signature
+Content-Description: Digitale Signatur von OpenPGP
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEE97o7Um30LT3B+5b/86SN7mm1DoAFAmSayNIACgkQ86SN7mm1
+DoBqPA//dGvrfziGG00PI5ukQu5SnCSppRsgQehXnpEajUx7U9nGEVo3TW9+gGVq
+TuPxxstwUwZkmrfAIwKTX32LEGlDswOt7+mzDruAR4mmdwu3B1niqdyFwFRlwRCc
+cdMSesNCwhUBxcvdYCofmwurVJhGccEpGWbttXcSTqF6bQztDds3N2b9n1ixwVkW
+tHLcuOpTUC8i+sWe26w4MuVQF0A/aYKmIMw4WU5RcDFcAjQWrmb5qcOe6/HIWGW/
+N0WBkBy90DkAOEIV9l1jeSVoy5E2Lhrhp0nyR0srPH+RCu8ELQ771mTYQ4co0Duf
+CZcXRsji3yI8PL2g514tJGbsEsn7ZgOEbtDKoqUizi3VhaumRpZCAoKTG8VnYVd0
+qrw/X4aAU9cH3LL5qxBMsoMEntjmK5+dbZf7iDwQ2QitSsIPWONN/X9KJMV8vmuv
+hRxPV+JuQ2qLW8ynMictmd24LhQzDwsFIXktk4NCDdvfXnOJMXH8i2ppgsG7yf3v
+CnbgJ+U2bVc0c9+z/F4Cc9Yd6psdb9m8OCcV9hd5aMloJnJ9gB9xJI/oiaXj8LKR
+y6nTuN4vp/jEwh4/sQ2qhGhsDurGpJPIcYGieWnKQzPYnRsl1ZjZyvTX/aOvnhPG
+Cp6KHHdCxSv4K4BIVyLaAArluBIi/MuT1uuXEWGi9BFDsWgk5pY=
+=lOjw
+-----END PGP SIGNATURE-----
+
+--Sig_/FGoC2=mDpSn8iKH.kGPuoRS--
 
