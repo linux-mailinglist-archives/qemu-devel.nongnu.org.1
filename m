@@ -2,75 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 482AA73FAC3
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 13:07:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB1A573FADA
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 13:15:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qE6Wb-00060d-Cv; Tue, 27 Jun 2023 07:06:21 -0400
+	id 1qE6fN-0002zg-IR; Tue, 27 Jun 2023 07:15:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qE6WV-00060F-Lb
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 07:06:15 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ id 1qE6fI-0002yz-Va
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 07:15:21 -0400
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qE6WT-0002Nd-Dp
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 07:06:15 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-3112f256941so3970621f8f.1
- for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 04:06:02 -0700 (PDT)
+ id 1qE6fH-0004i3-At
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 07:15:20 -0400
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-312826ffedbso4903689f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 04:15:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687863960; x=1690455960;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=7NEGw3MmnLBEc4mR4nWzFGOUShsvbkyyXww1ZRv5cX8=;
- b=LJa+hZNSoL3v4QS/ymLRzswq8+iPvostUBzYICz/WQIcGbGVHBnNpyosMsIh5xkHdN
- grHuhg7V4CqdUGdWRfS9sfIiGBtnpGNOeoUOyNmaJ4DsHemUndklcT3rq36KhDJJDbku
- +Y7zAHEmaPzKcSrau/2Jcb1NpxobDH2RbOCuRVhQoHthTME9Di1O5/46vIPz4AVmnvDr
- JhHRPAUDtOEjB7DVB3PY8vKXG8jX5az1iR2URA17/OcfTF4FVBAD3z8K8ixB9f4EXnp0
- hLWPa5KaQP0kb+BoQpY4Z6rC61gbd2976sb1pZDxc+CxuIJPAaRDh/PvdPEnVMPzFkv3
- umKw==
+ d=linaro.org; s=google; t=1687864517; x=1690456517;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=KpOzSrkNnZ2g7eu+NUnEYfEGBT0SGZZEcJkSuYkv2Xo=;
+ b=XBWTPXkgvjCS/n4+rtpUGxIHt85B7Lm0cpQF7Wr5ibWqsnm7GqIAM4vsn0Qb5Ybijf
+ ZQvQOgWm9yTrZKaq/v0CndN+j7wxMRLvGikLK/RczLE3QhgGEhswLlYFjVwXU6fFBV07
+ fUgTHmeJm3iNQsPeYFPeoLnaKC5Yos8lAkaeD0RMdn8Nm4Diq65KpqTOKuMy94Q3P/Ur
+ VQB0/UuHE/u+lT+Qnr3H5fC9Eq1gkXZUJyJUotG644YZkyIz9gWjB8VLtmWKQE/e0Xev
+ RD9rC59Ikuw92lKhr9hCtdUxU5P+Gd9sQ06nWyGw6ZOm51d+3yLWIH59zqDixdCyquMG
+ ko/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687863960; x=1690455960;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=7NEGw3MmnLBEc4mR4nWzFGOUShsvbkyyXww1ZRv5cX8=;
- b=SlOqYBaRIPajYTYqRZOC0XvYguwy+bGnJ4GjZuVj/FUPXvCFrKGJa3J+W7MHUgMIfc
- eT2lGXG3RXayhY7eZ/cMrLCUDxfGByfF/PDU7Vxyr/jZ2SV5rITn75hhfsVZnnrxDf0o
- /1c4QAZJ4t6xGKBvwvzo/3fTxyt5N0R343N5z/lZ35pB5PakFo1dAP2lWJuUmpVtDRY2
- QtDZJOnYB+Z4/1pUJ2xSdpufrvnTVOwpp8XRkh207aO4YL2alEoJO1uPFzKMillKoj1G
- Q3E/N3tOogbtiqbmbWrjI7J6aBQRL155QjwUu3kboFX2vwWZqJm31gcZfLcRDMdJGxHy
- GGaw==
-X-Gm-Message-State: AC+VfDylyGBzYDoJxp6of1WzLHsqaKJEOxaz/FmmOeKguTMFd3Hxd+Vz
- CImUD/YjDGy2PBhc2cY2E/Yu+A==
-X-Google-Smtp-Source: ACHHUZ5HMV006CE2N413OQd1ovR6huTKJUPqhe6ZO8FPvRQZ3zSB8FhzToqebAruRw8AVSoUVbNP7g==
-X-Received: by 2002:a5d:4447:0:b0:313:fd26:6ff4 with SMTP id
- x7-20020a5d4447000000b00313fd266ff4mr1447217wrr.23.1687863960486; 
- Tue, 27 Jun 2023 04:06:00 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1687864517; x=1690456517;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=KpOzSrkNnZ2g7eu+NUnEYfEGBT0SGZZEcJkSuYkv2Xo=;
+ b=eTZktsG+9TX/zqooAMbDtPEXw1kTne5/LOAloiUEGrSRIPNUbtVr7DtSNMusVqu4IR
+ vDf55C67M9jlRD3x4wNDzL2uxjFQ3Qjfp/BW1k9ToPIKVHyDWamwAtowxwnO2owH3CQW
+ EsYN3ci7ycxW22brlYinjWwoL7K1YKM6But3ExXJ1dKK0ZLPYCCNK1ICgP6UmlP+umnX
+ UIAHiE5v9BcEfrnQ5CizKwA6FoMLmegbA+GBI5veK6NUxrs9Kj46TB5NZlw35Jh/zOrl
+ Am9wPzbbIzRPOmDQWlwCQgy4KivMsGDomB0ojm/y+mZIs0/alH5jUJpObktOA1qdPnxz
+ ODew==
+X-Gm-Message-State: AC+VfDykEYW1HjYr6D4Xo7qFQ+kwJ5eJVve5pGHy/536AgnN396yuWDC
+ 3M4rnV8Qc3GVVdWcImnWVvZX9BZO49ocwahH7T4=
+X-Google-Smtp-Source: ACHHUZ4J5uB0z1JRt+//2e0ILgW+mWy5YTzMYMz4cwwt8adwBmfty0ph82ZzfgFbpMm2rjB+smMGzw==
+X-Received: by 2002:adf:e549:0:b0:313:e9f6:3378 with SMTP id
+ z9-20020adfe549000000b00313e9f63378mr6553570wrm.4.1687864517106; 
+ Tue, 27 Jun 2023 04:15:17 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- u12-20020adfdd4c000000b0030903d44dbcsm10152261wrm.33.2023.06.27.04.06.00
+ v1-20020adfe281000000b00311299df211sm10145459wri.77.2023.06.27.04.15.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 27 Jun 2023 04:06:00 -0700 (PDT)
-Received: from zen.lan (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id AA09B1FFBB;
- Tue, 27 Jun 2023 12:05:59 +0100 (BST)
-From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [RFC PATCH] gdbstub: clean-up vcont handling to avoid goto
-Date: Tue, 27 Jun 2023 12:05:53 +0100
-Message-Id: <20230627110553.2697758-1-alex.bennee@linaro.org>
-X-Mailer: git-send-email 2.39.2
+ Tue, 27 Jun 2023 04:15:16 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id 4D2FF1FFBB;
+ Tue, 27 Jun 2023 12:15:16 +0100 (BST)
+References: <20230626215926.2522656-1-alex.bennee@linaro.org>
+ <20230626215926.2522656-7-alex.bennee@linaro.org>
+ <32624588-a714-6317-77e3-39ce7cdaa8db@linaro.org>
+ <87v8f91b4f.fsf@linaro.org>
+ <CAFEAcA_cOT9phmZevCz6mu+4U92sk9SeBsP-eux3w-c3tDcToA@mail.gmail.com>
+User-agent: mu4e 1.11.7; emacs 29.0.92
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Subject: Re: [PATCH v2 06/26] qemu-keymap: properly check return from
+ xkb_keymap_mod_get_index
+Date: Tue, 27 Jun 2023 12:10:20 +0100
+In-reply-to: <CAFEAcA_cOT9phmZevCz6mu+4U92sk9SeBsP-eux3w-c3tDcToA@mail.gmail.com>
+Message-ID: <87ttutyx4r.fsf@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x431.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,113 +100,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We can handle all the error exit cases by using g_autofree() for the
-one thing that needs cleaning up on the exit.
 
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
----
- gdbstub/gdbstub.c | 28 +++++++++-------------------
- 1 file changed, 9 insertions(+), 19 deletions(-)
+Peter Maydell <peter.maydell@linaro.org> writes:
 
-diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
-index 9496d7b175..49143c7d83 100644
---- a/gdbstub/gdbstub.c
-+++ b/gdbstub/gdbstub.c
-@@ -573,7 +573,6 @@ static int gdb_handle_vcont(const char *p)
- {
-     int res, signal = 0;
-     char cur_action;
--    char *newstates;
-     unsigned long tmp;
-     uint32_t pid, tid;
-     GDBProcess *process;
-@@ -581,7 +580,7 @@ static int gdb_handle_vcont(const char *p)
-     GDBThreadIdKind kind;
-     unsigned int max_cpus = gdb_get_max_cpus();
-     /* uninitialised CPUs stay 0 */
--    newstates = g_new0(char, max_cpus);
-+    g_autofree char *newstates = g_new0(char, max_cpus);
- 
-     /* mark valid CPUs with 1 */
-     CPU_FOREACH(cpu) {
-@@ -597,8 +596,7 @@ static int gdb_handle_vcont(const char *p)
-     res = 0;
-     while (*p) {
-         if (*p++ != ';') {
--            res = -ENOTSUP;
--            goto out;
-+            return -ENOTSUP;
-         }
- 
-         cur_action = *p++;
-@@ -606,13 +604,12 @@ static int gdb_handle_vcont(const char *p)
-             cur_action = qemu_tolower(cur_action);
-             res = qemu_strtoul(p, &p, 16, &tmp);
-             if (res) {
--                goto out;
-+                return res;
-             }
-             signal = gdb_signal_to_target(tmp);
-         } else if (cur_action != 'c' && cur_action != 's') {
-             /* unknown/invalid/unsupported command */
--            res = -ENOTSUP;
--            goto out;
-+            return -ENOTSUP;
-         }
- 
-         if (*p == '\0' || *p == ';') {
-@@ -625,14 +622,12 @@ static int gdb_handle_vcont(const char *p)
-         } else if (*p++ == ':') {
-             kind = read_thread_id(p, &p, &pid, &tid);
-         } else {
--            res = -ENOTSUP;
--            goto out;
-+            return -ENOTSUP;
-         }
- 
-         switch (kind) {
-         case GDB_READ_THREAD_ERR:
--            res = -EINVAL;
--            goto out;
-+            return -EINVAL;
- 
-         case GDB_ALL_PROCESSES:
-             cpu = gdb_first_attached_cpu();
-@@ -649,8 +644,7 @@ static int gdb_handle_vcont(const char *p)
-             process = gdb_get_process(pid);
- 
-             if (!process->attached) {
--                res = -EINVAL;
--                goto out;
-+                return -EINVAL;
-             }
- 
-             cpu = get_first_cpu_in_process(process);
-@@ -668,8 +662,7 @@ static int gdb_handle_vcont(const char *p)
- 
-             /* invalid CPU/thread specified */
-             if (!cpu) {
--                res = -EINVAL;
--                goto out;
-+                return -EINVAL;
-             }
- 
-             /* only use if no previous match occourred */
-@@ -679,12 +672,9 @@ static int gdb_handle_vcont(const char *p)
-             break;
-         }
-     }
-+
-     gdbserver_state.signal = signal;
-     gdb_continue_partial(newstates);
--
--out:
--    g_free(newstates);
--
-     return res;
- }
- 
--- 
-2.39.2
+> On Tue, 27 Jun 2023 at 10:57, Alex Benn=C3=A9e <alex.bennee@linaro.org> w=
+rote:
+>> Ahh in the other thread. No change, it looks like AltGr just doesn't
+>> exist for some keymaps:
+>>
+>>   =F0=9F=95=9921:20:36 alex@zen:qemu.git/builds/all  (399fc0c) (REBASING=
+ 2/22) [$!?]
+>>   =E2=9E=9C  diff -ub gb.before gb.after
+>>   =F0=9F=95=9921:20:43 alex@zen:qemu.git/builds/all  (399fc0c) (REBASING=
+ 2/22) [$!?]
+>>   =E2=9E=9C  diff -ub ara.before ara.after
+>>   =F0=9F=95=9921:20:50 alex@zen:qemu.git/builds/all  (399fc0c) (REBASING=
+ 2/22) [$!?]
+>>   =E2=9E=9C  ag "Alt" ara.after
+>>   21:#     9: Alt
+>>   23:#    11: LAlt
+>>   24:#    12: RAlt
+>>   29:#    17: AltGr
+>>   294:Alt_L 0x38
+>>   1711:Alt_R 0xb8
+>>   =F0=9F=95=9921:22:14 alex@zen:qemu.git/builds/all  (399fc0c) (REBASING=
+ 2/22) [$!?]
+>>   =E2=9E=9C  ag "Alt" gb.after
+>>   21:#     9: Alt
+>>   23:#    11: LAlt
+>>   24:#    12: RAlt
+>>   29:#    17: AltGr
+>>   338:Alt_L 0x38
+>>   1757:Alt_R 0xb8
+>
+> I'm having some difficulty interpreting this output. It
+> seems to show that there is an AltGr modifier in both
+> mappings (that's why it appears in the modifier listing).
+> And for me (xkeyboard-config 2.33) in the gb mapping it's
+> used too:
+>
+> # evdev 2 (0x2), QKeyCode "1", number 0x2
+> 1 0x02
+> exclam 0x02 shift
+> onesuperior 0x02 altgr
+> exclamdown 0x02 shift altgr
+>
+> (i.e. the '1' key is 1 with no modifiers, ! with shift,
+> superscript-1 with altgr, and inverted exclamation mark
+> with shift-altgr).
+>
+> The 'ara' keymap likewise has and uses altgr:
+> # evdev 2 (0x2), QKeyCode "1", number 0x2
+> 1 0x02
+> exclam 0x02 shift
+> Arabic_1 0x02 altgr
 
+Ahh right I see those too.
+
+>
+> So on the machines where we were running into this,
+> what's the version of xkeyboard-config and do we
+> output the same mapping as we do on machines with
+> the older xkeyboard-config ?
+
+2.35 I think:
+
+ii  xkb-data                       2.35.1-1                    all         =
+ X Keyboard Extension (XKB) configuration data
+
+>
+> thanks
+> -- PMM
+
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
