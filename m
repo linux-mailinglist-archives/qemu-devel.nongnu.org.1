@@ -2,66 +2,109 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AD7073F4D0
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 08:50:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 790EA73F4D1
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 08:51:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qE2WI-00079u-OR; Tue, 27 Jun 2023 02:49:46 -0400
+	id 1qE2Xg-0007xf-HG; Tue, 27 Jun 2023 02:51:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=ApJ+=CP=kaod.org=clg@ozlabs.org>)
- id 1qE2WD-00077q-7t; Tue, 27 Jun 2023 02:49:41 -0400
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qE2Xd-0007wr-DF
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 02:51:10 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=ApJ+=CP=kaod.org=clg@ozlabs.org>)
- id 1qE2WB-0001Qc-DC; Tue, 27 Jun 2023 02:49:40 -0400
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4QqwLG4qrdz4wZr;
- Tue, 27 Jun 2023 16:49:26 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4QqwL96wk2z4wb4;
- Tue, 27 Jun 2023 16:49:21 +1000 (AEST)
-Message-ID: <91257780-42ef-5a6b-d200-29b39e05a119@kaod.org>
-Date: Tue, 27 Jun 2023 08:49:18 +0200
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qE2Xb-0002P3-ES
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 02:51:09 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1687848666;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=8esWfM1EaffvtAcKYoSgMPRWQGQ589HABPWbkZrMFT8=;
+ b=W3KjCkQ+QFLX6AHTD7TKQyiugm26oYVfr97HhG8sAwLL028XEJedPAx5T1qHje5gATd7k3
+ UmcOJ8CHH5H6rz2MzMhMlAbWLiZTJer6CpqaI5SmiyvAEFSljlqEPh5mEns/N759i63nl1
+ WdY/S+gzWeScOM5PcBtoNzVERZg2bgA=
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
+ [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-86-XL9sn-ujOTiRMkUKVrKe8g-1; Tue, 27 Jun 2023 02:51:04 -0400
+X-MC-Unique: XL9sn-ujOTiRMkUKVrKe8g-1
+Received: by mail-qv1-f71.google.com with SMTP id
+ 6a1803df08f44-635dba99f82so27684786d6.3
+ for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 23:51:04 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1687848664; x=1690440664;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=8esWfM1EaffvtAcKYoSgMPRWQGQ589HABPWbkZrMFT8=;
+ b=g+9kCjPr4UfHqikgEcsKXJwR9CXw5U29aBuywVXvCCEdm9Kz/dzqGcUofMciRhMY3y
+ CDYLbOGvMWLyti3DFtfxU2uDuGYJjJTB/aj8+DBDZsbjTW1VXi/Hbmn4pfokls1vM4xX
+ feFj/5jAVM4gV/3wTCAFTHaEoHByCcH42R2MR9v7e7hGWuoaY8E2H2Qje6ulUuA6LESq
+ 66H0W+B/fOXJlKRquOorLP2XcDEzDGsKbc0ps3HOhdC4G7iyBovdj48EV1hRjuy2IFSu
+ I5V8+J17tJtHyDpxI+onXThvR4pU+bDV+1KSSQ41iHw41+wa2j/5bm6Xs5BKSgeR0c+2
+ uyOQ==
+X-Gm-Message-State: AC+VfDyDOm2huf1HGiPYGsD0qRpM90yOr4QoLPip+w4xFv7i/ztIaKYs
+ XLacnaq0SJXCQ+P+yHVyjmiNNNSv+cwAT+pLKzuUnYtM3kNT0FxkUrtVhfd3EfBvo2ND+VYjdt8
+ //7scJvMZ3euoP7s=
+X-Received: by 2002:a05:6214:1d0b:b0:62f:eae4:b2cd with SMTP id
+ e11-20020a0562141d0b00b0062feae4b2cdmr40354978qvd.16.1687848664058; 
+ Mon, 26 Jun 2023 23:51:04 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4PX4tSRMgw7l4NAvD44tp/8//1j3H6w2iQPREHY+YnaFP06nJBs9UvIqHmvsovFqmRpAOwZg==
+X-Received: by 2002:a05:6214:1d0b:b0:62f:eae4:b2cd with SMTP id
+ e11-20020a0562141d0b00b0062feae4b2cdmr40354954qvd.16.1687848663857; 
+ Mon, 26 Jun 2023 23:51:03 -0700 (PDT)
+Received: from [192.168.0.5] (ip-109-43-179-172.web.vodafone.de.
+ [109.43.179.172]) by smtp.gmail.com with ESMTPSA id
+ pv16-20020ad45490000000b0063019b482f8sm4159639qvb.85.2023.06.26.23.50.59
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 26 Jun 2023 23:51:03 -0700 (PDT)
+Message-ID: <8d6492f6-7558-b496-c8c0-54591ddae777@redhat.com>
+Date: Tue, 27 Jun 2023 08:50:57 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH 0/4] target/ppc: Catch invalid real address accesses
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v2 06/26] qemu-keymap: properly check return from
+ xkb_keymap_mod_get_index
+To: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Alexander Bulekov <alxndr@bu.edu>,
+ =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ Juan Quintela <quintela@redhat.com>, Alexandre Iooss <erdnaxe@crans.org>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Leif Lindholm <quic_llindhol@quicinc.com>, Riku Voipio <riku.voipio@iki.fi>,
+ Peter Maydell <peter.maydell@linaro.org>, Paolo Bonzini
+ <pbonzini@redhat.com>, Bandan Das <bsd@redhat.com>,
+ Leonardo Bras <leobras@redhat.com>, Cleber Rosa <crosa@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Beraldo Leal <bleal@redhat.com>, Peter Xu <peterx@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>, Yanan Wang <wangyanan55@huawei.com>,
+ Eduardo Habkost <eduardo@habkost.net>, Bin Meng <bmeng.cn@gmail.com>,
+ qemu-arm@nongnu.org, Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Darren Kenny <darren.kenny@oracle.com>, Radoslaw Biernacki
+ <rad@semihalf.com>, Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
+ Qiuhao Li <Qiuhao.Li@outlook.com>, Laurent Vivier <lvivier@redhat.com>
+References: <20230626215926.2522656-1-alex.bennee@linaro.org>
+ <20230626215926.2522656-7-alex.bennee@linaro.org>
 Content-Language: en-US
-To: Nicholas Piggin <npiggin@gmail.com>,
- =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clegoate@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-ppc@nongnu.org, qemu-devel@nongnu.org,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- BALATON Zoltan <balaton@eik.bme.hu>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Frederic Barrat <frederic.barrat@fr.ibm.com>
-References: <20230623081953.290875-1-npiggin@gmail.com>
- <CAFEAcA_Brf-R12t+DKNAoygqgC-qjKJ3Wiz4ULjGHOo8_vPovw@mail.gmail.com>
- <47197a73-b106-47d5-9502-393a6bdc9945@redhat.com>
- <966b3fce-512d-f122-e76e-efded0db9731@kaod.org>
- <CTMZ0C10RKTF.3SZX1ZENHXLGY@wheely>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <CTMZ0C10RKTF.3SZX1ZENHXLGY@wheely>
+From: Thomas Huth <thuth@redhat.com>
+In-Reply-To: <20230626215926.2522656-7-alex.bennee@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
- envelope-from=SRS0=ApJ+=CP=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -40
-X-Spam_score: -4.1
-X-Spam_bar: ----
-X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, NICE_REPLY_A=-0.09,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -77,35 +120,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
->>> It seems it broke the "mac99" and  powernv10 machines, using the
->>> qemu-ppc-boot images which are mostly buildroot. See below for logs.
->>>
->>> Adding Mark for further testing on Mac OS.
->>    
->>
->> Mac OS 9.2 fails to boot with a popup saying :
->>          
->>           Sorry, a system error occured.
->>           "Sound Manager"
->>             address error
->>           To temporarily turn off extensions, restart and
->>           hold down the shift key
->>
->>
->> Darwin and Mac OSX look OK.
+On 26/06/2023 23.59, Alex Bennée wrote:
+> We can return XKB_MOD_INVALID which rightly gets flagged by sanitisers
+> as an overly wide shift attempt.
 > 
-> Might have to to restrict it to POWER machines for now then. Seems like
-> it will break working systems.
-> 
-> We could just log a guest error for the others.
+> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+> ---
+>   qemu-keymap.c | 24 ++++++++++++++++--------
+>   1 file changed, 16 insertions(+), 8 deletions(-)
 
-The "mac99" and powernv machines run fine now with the patches you
-and Fred just sent. There is a "fix" window after soft freeze when
-we can set the 'ignore_memory_transaction_failures' flag as Peter
-suggested.
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
-Thanks,
-
-C.
 
 
