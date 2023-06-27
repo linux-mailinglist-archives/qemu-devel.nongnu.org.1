@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84AD173F367
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 06:30:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 881AC73F36C
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 06:34:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qE0KN-0002XC-2j; Tue, 27 Jun 2023 00:29:19 -0400
+	id 1qE0OE-0003b1-4q; Tue, 27 Jun 2023 00:33:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <tao1.su@linux.intel.com>)
- id 1qE0KI-0002Wm-QA
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 00:29:14 -0400
+ id 1qE0No-0003Z4-5p
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 00:32:55 -0400
 Received: from mga11.intel.com ([192.55.52.93])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <tao1.su@linux.intel.com>)
- id 1qE0KG-0006YH-Kx
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 00:29:14 -0400
+ id 1qE0Nm-0007Np-AD
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 00:32:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1687840152; x=1719376152;
+ t=1687840370; x=1719376370;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=1xxAI78+kvfipU16nfnafHfLLbRV4S+gqXTbiOXyGmw=;
- b=N31pjeGxn85Tv/6qo+MaqTuHmtVhiiDonHto9N/d2FcXLt+c+K5G/+tK
- 5QLYtDE0ujErubhUG4Qa/4Y7SoDsolUgl1T3LrYroFK6hzyjVfYhbhB3W
- wHLFlt51QbTB+kXrKiTMl4r2uf85AiFUtP+oyYkl6epa6uBxsopYZsck7
- n9g14O4t7NWcn2pQbuq3l8vu21gpgQwzU0C1JKCoyedsACC0twH64wPqI
- tXjfyKJ9lGjtbGfKMv73dKSlIlwOnc16SafaLHoCibD1nHQc7ZKJ/Ja/+
- HqJBNd7dxcs+JBGfqfvriDjym5ZYsajoOG/3xPIwcJJ2pWi6SHprg7/pk w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10753"; a="358970257"
-X-IronPort-AV: E=Sophos;i="6.01,161,1684825200"; d="scan'208";a="358970257"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
+ bh=nvSMkMUYRPWtpfBX4q4yiKo0rjOAz8xze8ZXSR/YlL8=;
+ b=C+LUEO1oUHyRUwoDKkjPa5o11FhnqIX181dQ+bBHGcqJ1r336UFirvBM
+ N71CurAeGNKTzVATzburBdsNeD459x7atlA7sY7ZDOnwDePAMf/6b3GVz
+ nDvetkUyTHyKM5MmCA8RfiLfudPVlpvlXFV9HJQXpVZjJcClxTfrtr8m4
+ UgS50M7ZWfSACsQ34SagY6sW/doI5xCE8sS7MxVeU+40Kqtg/2n9Qvk21
+ dhQvnUV4E8OW7zXheepgB4osuBZhp04hhPwEr4fAUUwokJS0ec6dudjZw
+ nPRgnra6g4R6xzmH7o2LpJ0H9h/PWCkbCPclAVJiJi+TSSM2u/4rjl0Ng g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10753"; a="358970606"
+X-IronPort-AV: E=Sophos;i="6.01,161,1684825200"; d="scan'208";a="358970606"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Jun 2023 21:29:08 -0700
+ 26 Jun 2023 21:32:48 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10753"; a="746067009"
-X-IronPort-AV: E=Sophos;i="6.01,161,1684825200"; d="scan'208";a="746067009"
+X-IronPort-AV: E=McAfee;i="6600,9927,10753"; a="963019081"
+X-IronPort-AV: E=Sophos;i="6.01,161,1684825200"; d="scan'208";a="963019081"
 Received: from linux.bj.intel.com ([10.238.156.127])
- by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Jun 2023 21:29:04 -0700
-Date: Tue, 27 Jun 2023 12:27:19 +0800
+ by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Jun 2023 21:32:46 -0700
+Date: Tue, 27 Jun 2023 12:31:03 +0800
 From: Tao Su <tao1.su@linux.intel.com>
 To: Igor Mammedov <imammedo@redhat.com>
 Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, xiaoyao.li@intel.com,
  lei4.wang@intel.com, qian.wen@intel.com
-Subject: Re: [PATCH 1/7] target/i386: Add FEAT_7_1_EDX to adjust feature level
-Message-ID: <ZJplJ+feTMppRWt3@linux.bj.intel.com>
+Subject: Re: [PATCH 3/7] target/i386: Allow MCDT_NO if host supports
+Message-ID: <ZJpmB5iHZQ+XfSuc@linux.bj.intel.com>
 References: <20230616032311.19137-1-tao1.su@linux.intel.com>
- <20230616032311.19137-2-tao1.su@linux.intel.com>
- <20230626143915.34d5712b@imammedo.users.ipa.redhat.com>
+ <20230616032311.19137-4-tao1.su@linux.intel.com>
+ <20230626150312.5edefe7b@imammedo.users.ipa.redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230626143915.34d5712b@imammedo.users.ipa.redhat.com>
+In-Reply-To: <20230626150312.5edefe7b@imammedo.users.ipa.redhat.com>
 Received-SPF: none client-ip=192.55.52.93;
  envelope-from=tao1.su@linux.intel.com; helo=mga11.intel.com
 X-Spam_score_int: -42
@@ -79,51 +79,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jun 26, 2023 at 02:39:15PM +0200, Igor Mammedov wrote:
-> On Fri, 16 Jun 2023 11:23:05 +0800
+On Mon, Jun 26, 2023 at 03:03:12PM +0200, Igor Mammedov wrote:
+> On Fri, 16 Jun 2023 11:23:07 +0800
 > Tao Su <tao1.su@linux.intel.com> wrote:
 > 
-> > Considering the case of FEAT_7_1_EAX being 0 and FEAT_7_1_EDX being
-> > non-zero,
-> Can you clarify when/why that happens?
-
-When start a VM on GraniteRapids using '-cpu host', we can see two leafs CPUID_7_0
-and CPUID_7_1 in VM, because both CPUID_7_1_EAX and CPUID_7_1_EDX have non-zero value:
-0x00000007 0x01: eax=0x00201c30 edx=0x00004000
-
-But if we minus all FEAT_7_1_EAX features using
-'-cpu host,-avx-vnni,-avx512-bf16,-fzrm,-fsrs,-fsrc,-amx-fp16', we can't get CPUID_7_1
-leaf even though CPUID_7_1_EDX has non-zero value, so it is necessary to update
-cpuid_level_func7 by CPUID_7_1_EDX.
-
-Thanks,
-Tao
-
-> 
-> > guest may report wrong maximum number sub-leaves in leaf
-> > 07H. So add FEAT_7_1_EDX to adjust feature level.
-> > 
-> > Fixes: eaaa197d5b11 ("target/i386: Add support for AVX-VNNI-INT8 in CPUID
-> > enumeration")
+> > MCDT_NO bit indicates HW contains the security fix and doesn't need to
+> > be mitigated to avoid data-dependent behaviour for certain instructions.
+> > It needs no hypervisor support. Treat it as supported regardless of what
+> > KVM reports.
 > > 
 > > Signed-off-by: Tao Su <tao1.su@linux.intel.com>
 > > Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 > > ---
-> >  target/i386/cpu.c | 1 +
-> >  1 file changed, 1 insertion(+)
+> >  target/i386/kvm/kvm.c | 5 +++++
+> >  1 file changed, 5 insertions(+)
 > > 
-> > diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-> > index 1242bd541a..e8a70c35d2 100644
-> > --- a/target/i386/cpu.c
-> > +++ b/target/i386/cpu.c
-> > @@ -6778,6 +6778,7 @@ void x86_cpu_expand_features(X86CPU *cpu, Error **errp)
-> >          x86_cpu_adjust_feat_level(cpu, FEAT_6_EAX);
-> >          x86_cpu_adjust_feat_level(cpu, FEAT_7_0_ECX);
-> >          x86_cpu_adjust_feat_level(cpu, FEAT_7_1_EAX);
-> > +        x86_cpu_adjust_feat_level(cpu, FEAT_7_1_EDX);
-> >          x86_cpu_adjust_feat_level(cpu, FEAT_8000_0001_EDX);
-> >          x86_cpu_adjust_feat_level(cpu, FEAT_8000_0001_ECX);
-> >          x86_cpu_adjust_feat_level(cpu, FEAT_8000_0007_EDX);
+> > diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+> > index de531842f6..4defd8b479 100644
+> > --- a/target/i386/kvm/kvm.c
+> > +++ b/target/i386/kvm/kvm.c
+> > @@ -432,6 +432,11 @@ uint32_t kvm_arch_get_supported_cpuid(KVMState *s, uint32_t function,
+> >          uint32_t eax;
+> >          host_cpuid(7, 1, &eax, &unused, &unused, &unused);
+> >          ret |= eax & (CPUID_7_1_EAX_FZRM | CPUID_7_1_EAX_FSRS | CPUID_7_1_EAX_FSRC);
+> > +    } else if (function == 7 && index == 2 && reg == R_EDX) {
+> 
+> > +        /* Not new instructions, just an optimization.  */
+> comment doesn't make much sense to me, just drop it or
+> describe what MCDT_NO is/mitigates.
+
+Ok, I will drop it in the next version, thanks!
+
+> 
+> > +        uint32_t edx;
+> > +        host_cpuid(7, 2, &unused, &unused, &unused, &edx);
+> > +        ret |= edx & CPUID_7_2_EDX_MCDT_NO;
+> >      } else if (function == 0xd && index == 0 &&
+> >                 (reg == R_EAX || reg == R_EDX)) {
+> >          /*
 > 
 > 
 
