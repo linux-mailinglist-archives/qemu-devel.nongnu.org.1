@@ -2,78 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F049773FF9B
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 17:26:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9703A73FFE7
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 17:40:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEAZs-0007mN-C4; Tue, 27 Jun 2023 11:26:00 -0400
+	id 1qEAmW-0003eY-FH; Tue, 27 Jun 2023 11:39:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>)
- id 1qEAZg-0007lR-LV; Tue, 27 Jun 2023 11:25:49 -0400
-Received: from smtp-out2.suse.de ([195.135.220.29])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>)
- id 1qEAZe-0000Je-2o; Tue, 27 Jun 2023 11:25:48 -0400
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 463AA1F8B6;
- Tue, 27 Jun 2023 15:25:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1687879544; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=BJyJwHDcnAGSyIkTPF/s+U+G4ty4b5iosZthWmu9Jpg=;
- b=UiDO6uqasU1OA0+Z5d5WhfiuGfMxUlBXC42wDNqXw6YkPsqE0b1Uxjc7wyl3PH4aukLUmS
- ytjHG0WNPjvGO3CdgWt0ZOHZX7mOFzK0naH/QP6bkeCOWi7oup89ioh9qPV/sJb7E1vWXD
- e5/gcTXFqExdgOeCRem4N+kU6Nk9fFg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1687879544;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=BJyJwHDcnAGSyIkTPF/s+U+G4ty4b5iosZthWmu9Jpg=;
- b=X2ZxhXKd9B4PYYaESpACNw7YipjieC8q2Eu+itByWhDmIePqnMdWjskPdqLi0YaP0t/7Jv
- Se2izeUuYH07GkCQ==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id CA27113276;
- Tue, 27 Jun 2023 15:25:43 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id j7zuJHf/mmSAKwAAMHmgww
- (envelope-from <farosas@suse.de>); Tue, 27 Jun 2023 15:25:43 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org
-Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org, Daniel
- Henrique Barboza <danielhb413@gmail.com>, =?utf-8?Q?C=C3=A9dric?= Le Goater
- <clg@kaod.org>,
- David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>
-Subject: Re: [PATCH v2 4/4] target/ppc: Implement attn instruction on BookS
- 64-bit processors
-In-Reply-To: <20230627134644.260663-5-npiggin@gmail.com>
-References: <20230627134644.260663-1-npiggin@gmail.com>
- <20230627134644.260663-5-npiggin@gmail.com>
-Date: Tue, 27 Jun 2023 12:25:41 -0300
-Message-ID: <87352dexl6.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <quic_llindhol@quicinc.com>)
+ id 1qEAmU-0003cG-Bv; Tue, 27 Jun 2023 11:39:02 -0400
+Received: from mx0b-0031df01.pphosted.com ([205.220.180.131])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <quic_llindhol@quicinc.com>)
+ id 1qEAmS-0004dX-91; Tue, 27 Jun 2023 11:39:02 -0400
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+ by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 35REd3Zf007112; Tue, 27 Jun 2023 15:38:57 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=C9XtCg7ib6Y1so2sFbQZ4q+7D9uO9H50xx2zsF5d9XM=;
+ b=U+hZJG8Zmy84QA4zQSHUya4VAR5Xy/jhjOmGmxBnPZ70qCYjfATtzuJ+XaZ9J/DBZoj0
+ PBFz200T2L0n7pobo+zpEFcFiaZ246QVsCHemovaDu5fMOnYR/0xutOtVpExj4QMbqbP
+ VRUUE+Q7f9GmO560CNWgxSEev+vgfc8iZUXHhROh3V5BRpQ1EcKTCieQg/b965WJ9Y3i
+ p81JeAUbZxFD25qnhxUhsZilHnocTl4J2gFhCrJqYEO5xwsOAqjrhfVo6y35aQ4Azvaq
+ TXRQmf6mttxaU1jtEcN9rcNLVeOeRc2qfgMn7XG9X8Dl61G99NHieWX3SR5Wbleu4ptk og== 
+Received: from nasanppmta04.qualcomm.com (i-global254.qualcomm.com
+ [199.106.103.254])
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3rfrdt9bd1-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 27 Jun 2023 15:38:57 +0000
+Received: from nasanex01c.na.qualcomm.com (nasanex01c.na.qualcomm.com
+ [10.45.79.139])
+ by NASANPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 35RFctmN020253
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 27 Jun 2023 15:38:55 GMT
+Received: from [10.111.135.140] (10.80.80.8) by nasanex01c.na.qualcomm.com
+ (10.45.79.139) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.42; Tue, 27 Jun
+ 2023 08:38:54 -0700
+Message-ID: <16bc062c-f479-54b2-1435-f4ce53e30f2f@quicinc.com>
+Date: Tue, 27 Jun 2023 16:38:52 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=195.135.220.29; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH 1/1] hw/arm/sbsa-ref: add PCIe node into DT
+To: Peter Maydell <peter.maydell@linaro.org>
+CC: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
+ <qemu-devel@nongnu.org>, Radoslaw Biernacki <rad@semihalf.com>,
+ <qemu-arm@nongnu.org>
+References: <20230626075207.623535-1-marcin.juszkiewicz@linaro.org>
+ <CAFEAcA-K_2SLxbq90TpUyzLpiC0U2WVJe7ffaC_TH66K-=GV4A@mail.gmail.com>
+ <b26c98d3-3e9f-331e-acbd-ae0c451e0ed3@quicinc.com>
+ <CAFEAcA_rg4CbE1Y9mTQmPs_KBqb-S=3Z5Hh78gbVUD6R7DR0hg@mail.gmail.com>
+ <d8e93b7b-5e86-5e26-21cd-fefb76f88204@quicinc.com>
+ <CAFEAcA8L--h_3QvKff66mw3VG7G__hwv=syw2hU2Qby8jkJPRw@mail.gmail.com>
+From: Leif Lindholm <quic_llindhol@quicinc.com>
+In-Reply-To: <CAFEAcA8L--h_3QvKff66mw3VG7G__hwv=syw2hU2Qby8jkJPRw@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nasanex01c.na.qualcomm.com (10.45.79.139)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
+ signatures=585085
+X-Proofpoint-ORIG-GUID: rxwCvJcb6RHxlKTCBZ1EQyZc8RwvAXlS
+X-Proofpoint-GUID: rxwCvJcb6RHxlKTCBZ1EQyZc8RwvAXlS
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-06-27_10,2023-06-27_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ impostorscore=0 suspectscore=0 phishscore=0 mlxlogscore=999
+ lowpriorityscore=0 clxscore=1015 adultscore=0 mlxscore=0 bulkscore=0
+ spamscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2305260000 definitions=main-2306270143
+Received-SPF: pass client-ip=205.220.180.131;
+ envelope-from=quic_llindhol@quicinc.com; helo=mx0b-0031df01.pphosted.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.103,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -90,144 +104,108 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Nicholas Piggin <npiggin@gmail.com> writes:
+On 2023-06-27 15:27, Peter Maydell wrote:
+>> Serious question: would it be preferable if we moved to a custom DT node
+>> where we stick everything in as KEY=VALUE pairs to reduce this confusion?
+> 
+> I don't really mind, I just want it to be clear what is going on here
+> so that when I'm reviewing patches I have a design I can keep in mind.
 
-> attn is an implementation-specific instruction that on POWER (and G5/
-> 970) can be enabled with a HID bit (disabled =3D illegal), and executing
-> it causes the host processor to stop and the service processor to be
-> notified. Generally used for debugging.
->
-> Implement attn and make it checkstop the system, which should be good
-> enough for QEMU debugging.
->
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
-> Since v1:
-> - New patch that also uses checkstop function. Works with skiboot.
->
->  target/ppc/cpu.h         |  2 ++
->  target/ppc/excp_helper.c | 28 ++++++++++++++++++++++++++++
->  target/ppc/helper.h      |  2 ++
->  target/ppc/translate.c   |  7 +++++++
->  4 files changed, 39 insertions(+)
->
-> diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
-> index 94497aa115..f6e93dec5f 100644
-> --- a/target/ppc/cpu.h
-> +++ b/target/ppc/cpu.h
-> @@ -2116,6 +2116,8 @@ void ppc_compat_add_property(Object *obj, const cha=
-r *name,
->  #define HID0_NAP            (1 << 22)           /* pre-2.06 */
->  #define HID0_HILE           PPC_BIT(19) /* POWER8 */
->  #define HID0_POWER9_HILE    PPC_BIT(4)
-> +#define HID0_ENABLE_ATTN    PPC_BIT(31) /* POWER8 */
-> +#define HID0_POWER9_ENABLE_ATTN PPC_BIT(3)
->=20=20
->  /***********************************************************************=
-******/
->  /* PowerPC Instructions types definitions                               =
-     */
-> diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
-> index 28d8a9b212..f46fdd2ee6 100644
-> --- a/target/ppc/excp_helper.c
-> +++ b/target/ppc/excp_helper.c
-> @@ -208,6 +208,34 @@ static void powerpc_checkstop(CPUPPCState *env, cons=
-t char *reason)
->  }
->=20=20
->  #if defined(TARGET_PPC64)
-> +void helper_attn(CPUPPCState *env)
-> +{
-> +    CPUState *cs =3D env_cpu(env);
-> +    target_ulong hid0_attn =3D 0;
-> +
-> +    switch (env->excp_model) {
-> +    case POWERPC_EXCP_970:
-> +    case POWERPC_EXCP_POWER7:
-> +    case POWERPC_EXCP_POWER8:
-> +        hid0_attn =3D HID0_ENABLE_ATTN;
-> +        break;
-> +    case POWERPC_EXCP_POWER9:
-> +    case POWERPC_EXCP_POWER10:
-> +        hid0_attn =3D HID0_POWER9_ENABLE_ATTN;
-> +        break;
-> +    default:
-> +        break;
-> +    }
+No, I totally understand that. I'm just feeling that the call we made to 
+use DT to pass this information tends to put everyone's mind into the 
+wrong state when reviewing.
 
-There's some precedent for checking HID bits using a cpu class
-function. See pcc->check_pow, check_pow_hid0() and
-check_pow_hid0_74xx(). I find it a bit nicer because the class carries
-all the data so it's easier to move code around.
+> The way this was presented to me originally, at least as I recall
+> it, was "this board will work the way that real hardware does, ie
+> the firmware knows what hardware it was built for".
+ >
+> In that
+> setup QEMU doesn't need to tell the firmware anything, except
+> a very limited set of things which it's more convenient to have
+> flexible and specifiable on the QEMU command line, like number of
+> CPUs and size of RAM. And that's what the comments in the source say
+> at the moment:
+> 
+> /*
+>   * Firmware on this machine only uses ACPI table to load OS, these limited
+>   * device tree nodes are just to let firmware know the info which varies from
+>   * command line parameters, so it is not necessary to be fully compatible
+>   * with the kernel CPU and NUMA binding rules.
+>   */
+> 
+> So that's the design I've been implicitly reviewing these changes
+> against.
 
-> +
-> +    if (env->spr[SPR_HID0] & hid0_attn) {
-> +        powerpc_checkstop(env, "host executed attn");
-> +        cpu_loop_exit_noexc(cs);
-> +    } else {
-> +        raise_exception_err(env, POWERPC_EXCP_HV_EMU,
-> +                            POWERPC_EXCP_INVAL | POWERPC_EXCP_INVAL_INVA=
-L);
-> +    }
-> +}
-> +
->  static int powerpc_reset_wakeup(CPUState *cs, CPUPPCState *env, int excp,
->                                  target_ulong *msr)
->  {
-> diff --git a/target/ppc/helper.h b/target/ppc/helper.h
-> index fda40b8a60..50bb105c08 100644
-> --- a/target/ppc/helper.h
-> +++ b/target/ppc/helper.h
-> @@ -812,3 +812,5 @@ DEF_HELPER_4(DSCLIQ, void, env, fprp, fprp, i32)
->=20=20
->  DEF_HELPER_1(tbegin, void, env)
->  DEF_HELPER_FLAGS_1(fixup_thrm, TCG_CALL_NO_RWG, void, env)
-> +
-> +DEF_HELPER_1(attn, void, env)
-> diff --git a/target/ppc/translate.c b/target/ppc/translate.c
-> index 372ee600b2..4e9e606d77 100644
-> --- a/target/ppc/translate.c
-> +++ b/target/ppc/translate.c
-> @@ -6382,6 +6382,12 @@ static void gen_dform3D(DisasContext *ctx)
->  }
->=20=20
->  #if defined(TARGET_PPC64)
-> +/* attn */
-> +static void gen_attn(DisasContext *ctx)
-> +{
-> +    gen_helper_attn(cpu_env);
+I still agree fully with the above. But possibly I meant less by what I 
+said than you heard. Human language, eh?
 
-In another incarnation of this patch, C=C3=A9dric had a check for the
-privilege level and linux-user:
+The only things that *need* hardcoding really are:
+- What (family of) platform(s) is this? (sbsa-ref)
+- Start of Secure memory.
+- Start of Non-secure memory.
+- Mechanism by which to receive platform configuration data that might
+   differ at runtime.
 
-+static void gen_attn(DisasContext *ctx)
-+{
-+ #if defined(CONFIG_USER_ONLY)
-+    GEN_PRIV;
-+#else
-+    CHK_SV;
-+
-+    gen_helper_attn(cpu_env, cpu_gpr[3]);
-+    ctx->base.is_jmp =3D DISAS_NORETURN;
-+#endif
-+}
+Admittedly, using QEMU gives us more flexibility than would be likely in 
+a real platform - like specifying any supported CPU that can access the 
+whole address map. A real platform would be very unlikely to have 
+runtime detection for everything from Cortex-A57 to Neoverse-N2 - but 
+it's genuinely useful for our (non-platform-specific) firmware 
+development to be able to do that.
 
-> +}
-> +
->  /* brd */
->  static void gen_brd(DisasContext *ctx)
->  {
-> @@ -6413,6 +6419,7 @@ static void gen_brh(DisasContext *ctx)
->=20=20
->  static opcode_t opcodes[] =3D {
->  #if defined(TARGET_PPC64)
-> +GEN_HANDLER_E(attn, 0x00, 0x00, 0x08, 0xFFFFFDFF, PPC_NONE,
->  PPC2_ISA207S),
+> It is pretty surprising to me to hear that in real-world systems
+> the firmware is not built to know exactly where its UART, USB
+> controller, etc are and that it is instead asking some board
+> management controller chip for all this information and being
+> fully-flexible in the firmware that runs on the application CPU,
+> but I have zero experience in that area so that's just my
+> lack of knowledge speaking.
 
-Aren't you missing the 970 with this? Maybe worth a insns_flag2 flag
-just for the attn?
+As an example, in said previous design we were prototyping having the 
+ability to hold PCIe space inside 48 bits (to work with non-LPA2-aware
+operating systems utilising 4k pages) and having a software-configurable 
+option to expand into 52 bits (enabling more space for both DRAM and 
+PCIe), where an LPA2-aware (or 64k-paged) OS was used.
 
->  GEN_HANDLER_E(brd, 0x1F, 0x1B, 0x05, 0x0000F801, PPC_NONE, PPC2_ISA310),
->  GEN_HANDLER_E(brw, 0x1F, 0x1B, 0x04, 0x0000F801, PPC_NONE, PPC2_ISA310),
->  GEN_HANDLER_E(brh, 0x1F, 0x1B, 0x06, 0x0000F801, PPC_NONE, PPC2_ISA310),
+The addresses (from the application processor's perspective) of certain 
+other i/o blocks were also ultimately decided by a microcontroller 
+programming the CMN. So even if we "decided" on locations for them and 
+stuck to those for simplicity, they weren't actually hard-wired.
+
+> If there's a standard/common protocol for how the BMC communicates
+> that info to the application-CPU firmware then it might be
+> less confusing to use it, I guess. But I'm not inherently
+> opposed to putting this stuff in a dtb-format blob.
+
+Not really. If anything I'm hoping to inspire standardisation along 
+those axes by having libraries available to just plug in.
+
+> (Side note: is the commit message line "Trusted Firmware will
+> read it and provide to next firmware level." intended to
+> mean "TF will take this dtb node and pass it on", or merely
+> "TF will take the information in this dtb node and use
+> it to construct or modify the ACPI tables it passes to the
+> next level"?)
+
+The latter.
+We're kind of working our way backwards towards the design we ultimately 
+want, so the DT was originally placed in NS DRAM since that let us reuse 
+more of the mach-virt code in edk2 rather than needing to rewrite 
+everything to get anything working.
+
+Now we're getting versioning in place, we will eventually deprecate that 
+and move the DT to Secure DRAM, dropping access to it for Non-secure 
+firmware. But we never exposed the DT to the OS as a configuration 
+table, it was always used to generate the bits of ACPI that weren't just 
+hardcoded.
+
+/
+     Leif
+
+
+
+/
+     Leif
+
+
 
