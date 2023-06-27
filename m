@@ -2,85 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33DD173FB6A
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 13:53:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A71A173FB7B
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 13:55:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qE7Eu-00025c-Pa; Tue, 27 Jun 2023 07:52:08 -0400
+	id 1qE7Hw-000788-Sp; Tue, 27 Jun 2023 07:55:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qE7Er-000248-V2
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 07:52:05 -0400
-Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qE7Eq-0004oK-Cj
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 07:52:05 -0400
-Received: by mail-ed1-x52b.google.com with SMTP id
- 4fb4d7f45d1cf-51d805cb33aso4575520a12.3
- for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 04:52:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687866723; x=1690458723;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Exw+JZXOL4uO7+3m9iYv0CMoNufl6q663SemmcVGUDs=;
- b=D243fL8YZ2ilzOwTH/R8fl1t9I9RYRViHPE68ZXBeP+S469Nr7nvuq4AqADY5HOsyu
- zq9quS90T8MgbQ7+yyRMLjcPtSE347AwW60WlQ5t5OYGSNaz7KMjHMqpR7rujdO0iMOA
- aryT5Wtx7M4p6y+JSfmdYDUCxAileqJkzUDSh09Pd7zzPJF5NxyXSdYhWqjSx0z7vcH6
- 7COGTXxcsk0Z+/cqu6QwPo0GsQRk5kPyiXvWmbRjqTvBaPU8ZKuhCKlUhnOUzOGLhqBL
- sIRRkvo2lkxuucS9iU0L65KEQvNQJP1J0HA58464MLtV2nvdEqSTC3ASlRMC5nMBKKHW
- ZlWA==
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qE7Hr-00077d-Ns
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 07:55:11 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qE7Hp-0005bE-WC
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 07:55:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1687866907;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=YWHeAtibBRNqgmjJtrNvcwigYKgFzcSTmxW61KlvnY4=;
+ b=NB9UvJJAfL5rksCMZjd1sEbMtkA1wc4CNPiHKjb+7KBv5+JCPMM09gLy4Bicj0Z4GomICP
+ cZP3+i0gaEZq8N8aNTuHNR685QEvi0rog9tu7S/DY9FbJaH4j0F6Yl6L2zS9do8WAbjZiy
+ TjLdkduFa9hfJt5ILHqKYRAjnndKXms=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-192-j9_IY4EIODeq3RcDRuJUAg-1; Tue, 27 Jun 2023 07:55:06 -0400
+X-MC-Unique: j9_IY4EIODeq3RcDRuJUAg-1
+Received: by mail-qv1-f69.google.com with SMTP id
+ 6a1803df08f44-635e664d2f8so18325296d6.3
+ for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 04:55:06 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687866723; x=1690458723;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Exw+JZXOL4uO7+3m9iYv0CMoNufl6q663SemmcVGUDs=;
- b=doK12Wtnfms1jq4fX5v4uUZQlWiSCnGENYPd8VoAIuHp72tQAEsw/0iIiOQl7jGyWf
- xCHSDLRQO+qwGJs6mznxnAnb8XQCt4jRu3HXYUaRB25MbHG/bIpjxnCXyCwkdy3yXiaH
- ByrF0jWTfZNt0ZDY8P6D74+HVPbI8cwuFZsQA7wCWz+ri33qkwzdMGBhTDiOSLoUvdrl
- umpZATDojRuEUN7200LbVGg/3PjfqwWdO4Y6od0SVZUp+GMLrqqv4RuyKjpT//YuY2BA
- TuQQQt0sg+O2OmSSGi2VzEmc3QfUOUolhIycBtvOUIYqvSbXPNYEhnybBur+fzBos8vS
- jRDQ==
-X-Gm-Message-State: AC+VfDyzttgdXULpvY2b/Wl+GoSFE7YVBe1x//CYpqaFx0ZJa+eaomN2
- 0hfhb04wWkaOZzqlwJVGf6FzG68qVHOGIJjlN1A=
-X-Google-Smtp-Source: ACHHUZ6uCsnqM9P3N/MzuPiI6BmEG2Gg8wTsAU8ZrHvRjeKw1Voa0SIfZlyjcTP+MPN77umcbDZmgA==
-X-Received: by 2002:a05:6402:498:b0:519:b784:b157 with SMTP id
- k24-20020a056402049800b00519b784b157mr20050286edv.12.1687866722978; 
- Tue, 27 Jun 2023 04:52:02 -0700 (PDT)
-Received: from m1x-phil.lan ([176.187.199.204])
- by smtp.gmail.com with ESMTPSA id
- q14-20020a056402040e00b0051d890b2407sm3384524edv.81.2023.06.27.04.52.01
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 27 Jun 2023 04:52:02 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: David Gibson <david@gibson.dropbear.id.au>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, qemu-ppc@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>, Greg Kurz <groug@kaod.org>,
- kvm@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v3 6/6] target/ppc: Remove pointless checks of
- CONFIG_USER_ONLY in 'kvm_ppc.h'
-Date: Tue, 27 Jun 2023 13:51:24 +0200
-Message-Id: <20230627115124.19632-7-philmd@linaro.org>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20230627115124.19632-1-philmd@linaro.org>
-References: <20230627115124.19632-1-philmd@linaro.org>
+ d=1e100.net; s=20221208; t=1687866906; x=1690458906;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=YWHeAtibBRNqgmjJtrNvcwigYKgFzcSTmxW61KlvnY4=;
+ b=SyXxRV96nT3q5YsxoA477CBoh8zZ0YPT1OGGaLWfCz3ZVKmJlVz9Pu9u1IpR15gZTD
+ MKBS2agjwj68qtiSbHNFdqSNj1fX8OKD/WF5eL75FV/0RjrJb34dG90EA2q8hmIJ80x8
+ fdy3gSizJte67eKbT6e03HxbaVtL9Y18bCq+fWzxv3IiIGlVs1eZkELQVBDtIJeiGJXt
+ B+IIo0PF0230RyRkdRFdctnj9QzAEFJv8zQe7Eykh+DBUfIKIqKtJ9ZQ9ccJbqJ31sSr
+ CjyQtuCFvfHC7SRk72dG8numbqGb3hYrKrUMaqI1qNMK6bSgPFMXXV961ztGme/am11y
+ nJ1Q==
+X-Gm-Message-State: AC+VfDw/UZedeg9UXg8GIwrCp99WXQwGgNamAmYKe3Xc56bZDb2Bxio6
+ 5LtOLr9pH28OCx5VT68KKTL8DmVr7Uuyiw4mZh/l85nk9pjWYpFJmOK/pO1issOHlYPcSBmJKLn
+ o/LGNKFx0GDQtG1U=
+X-Received: by 2002:a05:6214:48a:b0:62f:eff9:1b8b with SMTP id
+ pt10-20020a056214048a00b0062feff91b8bmr44566689qvb.31.1687866906059; 
+ Tue, 27 Jun 2023 04:55:06 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ718tqXloUSa3woXome95OZJGn+WhNoohfQhydojR0OUwNqehiC4IGVHs6nd7t7DpUOBjEjPg==
+X-Received: by 2002:a05:6214:48a:b0:62f:eff9:1b8b with SMTP id
+ pt10-20020a056214048a00b0062feff91b8bmr44566677qvb.31.1687866905823; 
+ Tue, 27 Jun 2023 04:55:05 -0700 (PDT)
+Received: from [192.168.0.5] (ip-109-43-179-172.web.vodafone.de.
+ [109.43.179.172]) by smtp.gmail.com with ESMTPSA id
+ i6-20020a0cfcc6000000b006302207bd51sm4388396qvq.107.2023.06.27.04.55.03
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 27 Jun 2023 04:55:05 -0700 (PDT)
+Message-ID: <43fda03b-bb93-bd90-5ba9-9e03de879698@redhat.com>
+Date: Tue, 27 Jun 2023 13:55:02 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v2 2/4] pc-bios/s390-ccw: Provide space for initial stack
+ frame in start.S
+Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Marc Hartmayer <mhartmay@linux.ibm.com>, qemu-devel@nongnu.org
+Cc: qemu-s390x@nongnu.org, Christian Borntraeger <borntraeger@linux.ibm.com>, 
+ mrezanin@redhat.com, Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clegoate@redhat.com>,
+ Janosch Frank <frankja@linux.ibm.com>,
+ "Jason J . Herne" <jjherne@linux.ibm.com>, Eric Farman
+ <farman@linux.ibm.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>
+References: <20230627074703.99608-1-thuth@redhat.com>
+ <20230627074703.99608-3-thuth@redhat.com>
+ <877crp9uq9.fsf@li-1de7cd4c-3205-11b2-a85c-d27f97db1fe1.ibm.com>
+ <511457be-fa9b-bcfc-447d-bb79f7873a55@linaro.org>
+From: Thomas Huth <thuth@redhat.com>
+In-Reply-To: <511457be-fa9b-bcfc-447d-bb79f7873a55@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.103, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,49 +110,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- target/ppc/kvm_ppc.h | 5 -----
- 1 file changed, 5 deletions(-)
+On 27/06/2023 11.14, Philippe Mathieu-Daudé wrote:
+> On 27/6/23 10:26, Marc Hartmayer wrote:
+>> Thomas Huth <thuth@redhat.com> writes:
+>>
+>>> Providing the space of a stack frame is the duty of the caller,
+>>> so we should reserve 160 bytes before jumping into the main function.
+>>> Otherwise the main() function might write past the stack array.
+>>>
+>>> While we're at it, add a proper STACK_SIZE macro for the stack size
+>>> instead of using magic numbers (this is also required for the following
+>>> patch).
+>>>
+>>> Reviewed-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+>>> Reviewed-by: Cédric Le Goater <clg@redhat.com>
+>>> Signed-off-by: Thomas Huth <thuth@redhat.com>
+>>> ---
+>>>   pc-bios/s390-ccw/start.S | 4 +++-
+>>>   1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> 
+>>> +#define STACK_SIZE 0x8000
+>>> +
+>>>       .globl _start
+>>>   _start:
+>>> -    larl    %r15,stack + 0x8000     /* Set up stack */
+>>> +    larl    %r15,stack + STACK_SIZE - 160   /* Set up stack */
+>>                                           ^^^
+>>                                           You can also add a macro for this
+>>                                           - e.g. STACK_FRAME_SIZE.
+> 
+> Yes please :) No need to respin.
 
-diff --git a/target/ppc/kvm_ppc.h b/target/ppc/kvm_ppc.h
-index 901e188c9a..6a4dd9c560 100644
---- a/target/ppc/kvm_ppc.h
-+++ b/target/ppc/kvm_ppc.h
-@@ -42,7 +42,6 @@ int kvmppc_booke_watchdog_enable(PowerPCCPU *cpu);
- target_ulong kvmppc_configure_v3_mmu(PowerPCCPU *cpu,
-                                      bool radix, bool gtse,
-                                      uint64_t proc_tbl);
--#ifndef CONFIG_USER_ONLY
- bool kvmppc_spapr_use_multitce(void);
- int kvmppc_spapr_enable_inkernel_multitce(void);
- void *kvmppc_create_spapr_tce(uint32_t liobn, uint32_t page_shift,
-@@ -52,7 +51,6 @@ int kvmppc_remove_spapr_tce(void *table, int pfd, uint32_t window_size);
- int kvmppc_reset_htab(int shift_hint);
- uint64_t kvmppc_vrma_limit(unsigned int hash_shift);
- bool kvmppc_has_cap_spapr_vfio(void);
--#endif /* !CONFIG_USER_ONLY */
- bool kvmppc_has_cap_epr(void);
- int kvmppc_define_rtas_kernel_token(uint32_t token, const char *function);
- int kvmppc_get_htab_fd(bool write, uint64_t index, Error **errp);
-@@ -262,7 +260,6 @@ static inline void kvmppc_set_reg_tb_offset(PowerPCCPU *cpu, int64_t tb_offset)
- {
- }
- 
--#ifndef CONFIG_USER_ONLY
- static inline bool kvmppc_spapr_use_multitce(void)
- {
-     return false;
-@@ -322,8 +319,6 @@ static inline void kvmppc_write_hpte(hwaddr ptex, uint64_t pte0, uint64_t pte1)
-     abort();
- }
- 
--#endif /* !CONFIG_USER_ONLY */
--
- static inline bool kvmppc_has_cap_epr(void)
- {
-     return false;
--- 
-2.38.1
+Ok, I'll add:
+
+diff --git a/pc-bios/s390-ccw/start.S b/pc-bios/s390-ccw/start.S
+--- a/pc-bios/s390-ccw/start.S
++++ b/pc-bios/s390-ccw/start.S
+@@ -10,12 +10,13 @@
+   * directory.
+   */
+  
+-#define STACK_SIZE 0x8000
++#define STACK_SIZE        0x8000
++#define STACK_FRAME_SIZE  160
+  
+      .globl _start
+  _start:
+  
+-    larl    %r15,stack + STACK_SIZE - 160   /* Set up stack */
++    larl    %r15,stack + STACK_SIZE - STACK_FRAME_SIZE   /* Set up stack */
+  
+      /* clear bss */
+      larl    %r2,.bss
+
+Thanks,
+  Thomas
 
 
