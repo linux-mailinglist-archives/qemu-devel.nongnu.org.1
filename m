@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E66E67400BD
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 18:18:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A0787400A3
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 18:16:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEBMI-000122-5j; Tue, 27 Jun 2023 12:16:02 -0400
+	id 1qEBMH-00011G-GN; Tue, 27 Jun 2023 12:16:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qEBME-0000yo-MB
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 12:15:58 -0400
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+ id 1qEBMF-0000z2-Ed
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 12:15:59 -0400
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qEBMA-000896-Ga
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 12:15:58 -0400
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-3113dabc549so6452493f8f.1
+ id 1qEBMA-000894-Gj
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 12:15:59 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-3fa96fd79feso28513345e9.2
  for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 09:15:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1687882553; x=1690474553;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=3JC9WCIJtw9nwrfN71qlgt4usYXlUperbuOAmE+qnSw=;
- b=cQJnroOavKx8Pi3iD1Ye5zaJPQqpPiCCs9yFwr+io/Tzq1k1aPbKpuG71g7SvrfLjo
- uE82mjE8RQCXYQA6f3xHuCQCxhvzvKLASsTZx1vN/nOhNHMSP0hK4FzUvDvkkAPChcvk
- PXoDR4kSYDlUm1HeHkHTT8DeYhRqkOiq5NiIkRg2mvVBcXsTepKg8X+yPUFKbuPaxzJ7
- RQmTw3zmErlcG6FTuvpcv9h9GZMuOQkD8+GFHgNkxJENJzdxkpLoPMJ6LFB+2N5Gpqjm
- kvzV+84L+orzmx2M0AXP9CqSbZrwah7N5aP5WxOMsFXTFcm/VFp+KjcLF/g7h4J6Qpbt
- HQMA==
+ bh=MH8q2iOgTUeX14EJZw8vp3pnXPRkiEedRymAvSCpuUo=;
+ b=DdoZxOLN+AvjXoCRjUIs4sxtM6xjeJtnVRAiZaPPV/Af6XT+Ht3QnEGPuV0BPQ3BC3
+ DCksIEuF/7WM78vkBqJ/lpXOdWc+Gf3xGT84ZjSOP144lEvGDqLuZybzwKgfcfsHgjMs
+ kwe7eTmWGFUAiiZ8Hl6kyRXwBtH6FGSz8yfM9g2MHdmQOtA33Tynkq/7Vsd+U/vlSVK0
+ cknZz9qFxB4wY8BKaXlAQYD2fgxXKPWP74ygjHKRCx4QvkBDgMZgl/IbsRo83r6jtWGi
+ +f6YCASZhM1lPFuOWMHcoRYzzgvcez1l5duW8Ohraz3lhV3yFLS7mqQmeiFOC+zznouD
+ q9ag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20221208; t=1687882553; x=1690474553;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=3JC9WCIJtw9nwrfN71qlgt4usYXlUperbuOAmE+qnSw=;
- b=OYY+jtS1jlsTtCz/XFWQhSUF/Y7NwPUikLea83LixyVbbEN4nTmQ30lXbk4s4OUJSa
- iQI/uaJiv4aSNPUM89xpdQtGv6iqL9pnCsaTiC7LB6Nb7JNEr0JohW4/3hLB5qJff9VB
- c8L2z55WIhuKRBmxYFeJvo91YEiunf23FJgXS1AfI/4euttMZil50jV2U6vV5YAtNiYf
- 8aSzXQg6+A2OdTAlcW4ny9jl84vQz6UjR6AF7onp6plG6Sz095qf5SYmD3Ma90drUGXe
- QQUuyX1tD1YOSP7pu9PEGjAiuCATzgeflxiik9OcHaYabT30XTYYT4gV/58LubQ4KMBU
- jkCA==
-X-Gm-Message-State: AC+VfDwAS1v29LGgkwYQGLkUFc9x99+JqPX8nPCMMFuVBIvfu1ppcZ6x
- 5zh2G8hKJ9yvtFyk4wa/+4QXGw==
-X-Google-Smtp-Source: ACHHUZ7XkeBjDKZZFWlaWHkTm65v0s0YiGu67s0CQqQSi3bYpR2Wxn96ozJ6Hqm0mstIfmhAoDzeFg==
-X-Received: by 2002:a05:6000:545:b0:313:ef93:9257 with SMTP id
- b5-20020a056000054500b00313ef939257mr7900702wrf.32.1687882552006; 
+ bh=MH8q2iOgTUeX14EJZw8vp3pnXPRkiEedRymAvSCpuUo=;
+ b=J5Z/v2BCqPlFb0AKFYos+F5e/9j0rmcwY22WIO98k/7i6yOQS9yYZFNc66a7E3gRPB
+ toCr7Tl3m8RMY+c8zgQLPdIWpxtZkRnd0jGYszd8reXJjdI0uLY/u+98/pCVgBO7zcwS
+ Hy53tCz+rMyFz9FRCUhENsS0Nea39zlmK8vadQCQHOFhH+JnIxeAPl+dNAXATghjD1vS
+ bT/78gAXWZUXpXnHSdrPxsIz6qSkCQyrGbsj/x8+sSAXgtUHvp1f5UMf1H2R26/jWXfm
+ 5VB5wPmepN4h9vJtNC2U3QodPUkZU4zbt7ztShVdvyXyRrYWPdoNovGFMCKX/eu9DvV2
+ JLZA==
+X-Gm-Message-State: AC+VfDxKBljCiheBW3wBCIjOoe5HpUVQQUPsMpJYzK/Z51LKBSltji+8
+ Ku0stsrZQYAjLuqDGZPtSWQmQg==
+X-Google-Smtp-Source: ACHHUZ753D9V94g9P81TcGZiVxNVmg9lchUPmPANFuoQ6KFdLKZLydzthzpXYwgQyeRE5Mzk9jDlkg==
+X-Received: by 2002:a1c:791a:0:b0:3fa:76e2:e6d5 with SMTP id
+ l26-20020a1c791a000000b003fa76e2e6d5mr12256709wme.37.1687882552815; 
  Tue, 27 Jun 2023 09:15:52 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- r11-20020adfce8b000000b00313f3c11512sm5416736wrn.89.2023.06.27.09.15.49
+ i5-20020a05600c290500b003f9b66a9376sm14234527wmd.42.2023.06.27.09.15.49
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 27 Jun 2023 09:15:50 -0700 (PDT)
 Received: from zen.lan (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id A9AE51FFD0;
+ by zen.linaroharston (Postfix) with ESMTP id C99821FFC1;
  Tue, 27 Jun 2023 17:09:46 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -81,26 +81,25 @@ Cc: Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Leif Lindholm <quic_llindhol@quicinc.com>,
  Laurent Vivier <lvivier@redhat.com>, Qiuhao Li <Qiuhao.Li@outlook.com>,
  Mahmoud Mandour <ma.mandourr@gmail.com>, Riku Voipio <riku.voipio@iki.fi>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH v3 23/36] docs/devel/qom.rst: Correct code style
-Date: Tue, 27 Jun 2023 17:09:30 +0100
-Message-Id: <20230627160943.2956928-24-alex.bennee@linaro.org>
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PATCH v3 24/36] docs/devel: split qom-api reference into new file
+Date: Tue, 27 Jun 2023 17:09:31 +0100
+Message-Id: <20230627160943.2956928-25-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230627160943.2956928-1-alex.bennee@linaro.org>
 References: <20230627160943.2956928-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x434.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -116,47 +115,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <philmd@linaro.org>
+Lets try and keep the overview of the sub-system digestible by
+splitting the core API stuff into a separate file. As QOM and QDEV
+work together we should also try and enumerate the qdev_ functions.
 
-Per commit 067109a11c ("docs/devel: mention the spacing requirement
-for QOM"):
-
-  For a storage structure the first declaration should always be
-  called “parent_obj” and for a class structure the first member
-  should always be called “parent_class”
-
-Adapt the QOM rST document accordingly.
-
-Reported-by: BALATON Zoltan <balaton@eik.bme.hu>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <20230622101717.70468-1-philmd@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
----
- docs/devel/qom.rst | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Message-Id: <20230619171437.357374-5-alex.bennee@linaro.org>
 
+---
+v2
+  - also include qdev API
+---
+ docs/devel/index-api.rst | 2 ++
+ docs/devel/qdev-api.rst  | 7 +++++++
+ docs/devel/qom-api.rst   | 9 +++++++++
+ docs/devel/qom.rst       | 3 ++-
+ 4 files changed, 20 insertions(+), 1 deletion(-)
+ create mode 100644 docs/devel/qdev-api.rst
+ create mode 100644 docs/devel/qom-api.rst
+
+diff --git a/docs/devel/index-api.rst b/docs/devel/index-api.rst
+index 7108821746..539ad29c21 100644
+--- a/docs/devel/index-api.rst
++++ b/docs/devel/index-api.rst
+@@ -11,5 +11,7 @@ generated from in-code annotations to function prototypes.
+    loads-stores
+    memory
+    modules
++   qom-api
++   qdev-api
+    ui
+    zoned-storage
+diff --git a/docs/devel/qdev-api.rst b/docs/devel/qdev-api.rst
+new file mode 100644
+index 0000000000..3f35eea025
+--- /dev/null
++++ b/docs/devel/qdev-api.rst
+@@ -0,0 +1,7 @@
++.. _qdev-api:
++
++================================
++QEMU Device (qdev) API Reference
++================================
++
++.. kernel-doc:: include/hw/qdev-core.h
+diff --git a/docs/devel/qom-api.rst b/docs/devel/qom-api.rst
+new file mode 100644
+index 0000000000..ed1f17e797
+--- /dev/null
++++ b/docs/devel/qom-api.rst
+@@ -0,0 +1,9 @@
++.. _qom-api:
++
++=====================================
++QEMU Object Model (QOM) API Reference
++=====================================
++
++This is the complete API documentation for :ref:`qom`.
++
++.. kernel-doc:: include/qom/object.h
 diff --git a/docs/devel/qom.rst b/docs/devel/qom.rst
-index c9237950d0..2828843058 100644
+index 2828843058..c342ce18e3 100644
 --- a/docs/devel/qom.rst
 +++ b/docs/devel/qom.rst
-@@ -26,7 +26,7 @@ features:
-    typedef DeviceClass MyDeviceClass;
-    typedef struct MyDevice
-    {
--       DeviceState parent;
-+       DeviceState parent_obj;
+@@ -387,4 +387,5 @@ OBJECT_DEFINE_ABSTRACT_TYPE() macro can be used instead:
+ API Reference
+ -------------
  
-        int reg0, reg1, reg2;
-    } MyDevice;
-@@ -147,7 +147,7 @@ will also have a wrapper function to call it easily:
- 
-    typedef struct MyDeviceClass
-    {
--       DeviceClass parent;
-+       DeviceClass parent_class;
- 
-        void (*frobnicate) (MyDevice *obj);
-    } MyDeviceClass;
+-.. kernel-doc:: include/qom/object.h
++See the :ref:`QOM API<qom-api>` and :ref:`QDEV API<qdev-api>`
++documents for the complete API description.
 -- 
 2.39.2
 
