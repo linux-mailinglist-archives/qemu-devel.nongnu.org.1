@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C842B74007A
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 18:11:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 188E074005F
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 18:08:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEBE5-0000KZ-DY; Tue, 27 Jun 2023 12:07:33 -0400
+	id 1qEBDm-0000DL-83; Tue, 27 Jun 2023 12:07:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qEBDh-00009i-QL
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 12:07:09 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ id 1qEBDi-0000AT-5n
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 12:07:10 -0400
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qEBDd-00057K-H4
+ id 1qEBDd-00056c-Qh
  for qemu-devel@nongnu.org; Tue, 27 Jun 2023 12:07:09 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-3fb10fd9ae9so21485895e9.2
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-313f3a6db22so2318764f8f.3
  for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 09:07:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687882024; x=1690474024;
+ d=linaro.org; s=google; t=1687882023; x=1690474023;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=I9YIwoz2syzBIvgIfb1KrTiedkOwekCcwMFZMGMcvn4=;
- b=BImmWDS1AhWeNAqHgZ1mRvKhHyuW1pnoYGmQZkwgX/zB/yNEaqmpiJgy0CHvx1K/Et
- +ajzyDCHkA166ee0WMRI8OJM8PJ0MsRF3edfl0KYyLw9p0jqbiMfZteslS1LuuA07CY5
- e5KKch2klLZlL6RK+2N2X9c44mV6F/ilBqMN/IN7CTR3l4320qF6cmrLjcBceVCWKDYA
- J7Rf1lX8T4iQ9cjztdBPtrzH19j3wr7xj036eD2IxDpnzxYsMvGVgvGK0oHoj7V5ra6g
- mn75riyd20SG5ceftVFOZ0iBrA5lgu9GF3om0CSSWS4c6zhsLpxas+Q7Blc7YqrHyrgL
- WPNw==
+ bh=JwYXISrmUwYEeEBYbvf+rC+BgUtqy99AwD9pTl/rVpc=;
+ b=LIJa8T/zlasl7a+2JlP0u6PEaw3nKQzMEaYwVuJjnL7qMpS3ibTjBE0Yu5buCy9Y8I
+ gGQv72WZReSg2PR6g94UQAlAZQbucKAAMEmHYmZqsl87TuaPlkngR4u5mW3xDQFwSTTV
+ YGt2bxvchx7aYR8z1CAyT5JZHO2gWEjH3VrXVfX3Sm/1GPymmdpJzB36Q2f50f5fi1dk
+ 0cKeKzOpXc61qPtQHlYyocaMc3YeQSAbbUJ6HZ9yNMaeY4IYmXGDyTZ49Y0NoATX6gl9
+ 9PrO/ZG1XC/UCl+DApg0KuPQRCYWZU/FrKyP/FVykDBcb3pu2/Lp1ARDZ19OwMppSCRY
+ Kl6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687882024; x=1690474024;
+ d=1e100.net; s=20221208; t=1687882023; x=1690474023;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=I9YIwoz2syzBIvgIfb1KrTiedkOwekCcwMFZMGMcvn4=;
- b=UuVGHImzD+XinOv9EFV1TC5fjpUeWwDGOWhXzXWswuqMSWfAnGC1NimEAoDflrGaVc
- Gqvbz0CJOyLPkW3fRHkFVTsoodqh8Q9r0yxsiWtJXovI/kcbOYNdNKxh9Zv+O35bKw40
- ngaXGsRd7nRKEJqkh0EMArDRd7GJ0KdpGXfgn4tHCOPim7uzdpbvNlHd8qOjqKU6Wt7X
- 5oZzRKabvxp8Sw5BpfjyQQZDCUm3GXlO3zkuVlQAmhZnVP+At3fJk46AgKbDnBmS4eWb
- oLC5iwCUWGrMNo2oO8q7PmjppZ+zG+2dRLMoIUGRfoXUwgtVIp1jDG+zDYu92Gn/sJ2m
- uDlA==
-X-Gm-Message-State: AC+VfDy7DuyaYyGshgJwMCZ4WaKPmF52EroT/oNJX5/Kidt5hX5mWN0O
- 12zZV2SQpHzd9tS4tIhR5EvDFw==
-X-Google-Smtp-Source: ACHHUZ7BJ/6PgkuFZ2869z/nhSS5OfNm1ZDqZiZGNo12WTaRJLkHGws3+ejvEhjWRa5t37wKO8EeLA==
-X-Received: by 2002:a05:600c:ad4:b0:3f9:b8b8:20df with SMTP id
- c20-20020a05600c0ad400b003f9b8b820dfmr15197504wmr.33.1687882023856; 
+ bh=JwYXISrmUwYEeEBYbvf+rC+BgUtqy99AwD9pTl/rVpc=;
+ b=GGguAuYq/ebEiefd/2x8cp4HUcaDc6ddQjto8xCa+1f1zoHTQsk7TGU+IEC8Ko8lCm
+ TLLIioqzAV4/1Zf2sqnj+VNMXNsnnLoY4FLb9eFahI2HW86S7JgZwHAUUSz96SL/ayC6
+ CzEc0v1vt97+KQMdKi6nX8awlo2HvRgy6LQ7LW/ko41QfOX5bQWCT6MOkWcg4s0izIyt
+ Cc44RTQ8eDxipeMVGW0RIgUXW/FPoLc9A/EmbSHOcS4AhcY3WXglJGhe3XdvoRwfMLwW
+ yGEs+rSH5MvpqzIG45R7Lp+m5eiH51W/+BV5Z9TuJaN+YYm0anE1Ehuv5LlOH8agZ5Jf
+ L65Q==
+X-Gm-Message-State: AC+VfDwuf7awsl5QuD7/gmssojsJMZ4iekkpkdMn9SB6AqIbsICpzvum
+ Ab4bN1j4T1U9iaSbzHUa/GvYpQ==
+X-Google-Smtp-Source: ACHHUZ5ha1PZ85+cv5ooNAcB86Dkb9AZ2ZLxhBNifBBAcOCOh3NkNsxLj6wWYf0DRgL2E6ea/4w9hg==
+X-Received: by 2002:a05:6000:42:b0:313:e2c4:7bc2 with SMTP id
+ k2-20020a056000004200b00313e2c47bc2mr9321794wrx.53.1687882023743; 
  Tue, 27 Jun 2023 09:07:03 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- m21-20020a7bca55000000b003f4248dcfcbsm14145540wml.30.2023.06.27.09.07.01
+ s7-20020adfeb07000000b0030ae901bc54sm10780158wrn.62.2023.06.27.09.07.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 27 Jun 2023 09:07:03 -0700 (PDT)
 Received: from zen.lan (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 5968A1FFC0;
+ by zen.linaroharston (Postfix) with ESMTP id 7154C1FFC1;
  Tue, 27 Jun 2023 17:07:01 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -85,24 +85,25 @@ Cc: qemu-arm@nongnu.org, Riku Voipio <riku.voipio@iki.fi>,
  Laurent Vivier <lvivier@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Alexander Bulekov <alxndr@bu.edu>
-Subject: [PATCH v3 05/36] tests/tcg: add mechanism to handle plugin arguments
-Date: Tue, 27 Jun 2023 17:06:29 +0100
-Message-Id: <20230627160700.2955547-6-alex.bennee@linaro.org>
+Subject: [PATCH v3 06/36] qemu-keymap: properly check return from
+ xkb_keymap_mod_get_index
+Date: Tue, 27 Jun 2023 17:06:30 +0100
+Message-Id: <20230627160700.2955547-7-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230627160700.2955547-1-alex.bennee@linaro.org>
 References: <20230627160700.2955547-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -118,52 +119,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We recently missed a regression that should have been picked up by
-check-tcg. This was because the libmem plugin is effectively a NOP if
-the user doesn't specify the type to use.
+We can return XKB_MOD_INVALID for AltGr which rightly gets flagged by
+sanitisers as an overly wide shift attempt. Properly check the return
+type and leave the bitmap as zero in that case. Tested output before
+and after is unchanged with the gb and ara keymaps.
 
-Rather than changing the default behaviour add an additional expansion
-so we can take this into account in future.
-
-Message-Id: <20230623122100.1640995-6-alex.bennee@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Juan Quintela <quintela@redhat.com>
 ---
- tests/tcg/Makefile.target | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ qemu-keymap.c | 24 ++++++++++++++++--------
+ 1 file changed, 16 insertions(+), 8 deletions(-)
 
-diff --git a/tests/tcg/Makefile.target b/tests/tcg/Makefile.target
-index 72876cc84e..2462c26000 100644
---- a/tests/tcg/Makefile.target
-+++ b/tests/tcg/Makefile.target
-@@ -169,13 +169,17 @@ extract-plugin = $(wordlist 2, 2, $(subst -with-, ,$1))
+diff --git a/qemu-keymap.c b/qemu-keymap.c
+index 229866e004..8c80f7a4ed 100644
+--- a/qemu-keymap.c
++++ b/qemu-keymap.c
+@@ -140,6 +140,18 @@ static void usage(FILE *out)
+             names.options ?: "-");
+ }
  
- RUN_TESTS+=$(EXTRA_RUNS)
- 
-+# Some plugins need additional arguments above the default to fully
-+# exercise things. We can define them on a per-test basis here.
-+run-plugin-%-with-libmem.so: PLUGIN_ARGS=$(COMMA)inline=true$(COMMA)callback=true
++static xkb_mod_mask_t get_mod(struct xkb_keymap *map, const char *name)
++{
++    xkb_mod_index_t mod;
++    xkb_mod_mask_t mask = 0;
 +
- ifeq ($(filter %-softmmu, $(TARGET)),)
- run-%: %
- 	$(call run-test, $<, $(QEMU) $(QEMU_OPTS) $<)
++    mod = xkb_keymap_mod_get_index(map, name);
++    if (mod != XKB_MOD_INVALID) {
++        mask = (1 << mod);
++    }
++    return mask;
++}
++
+ int main(int argc, char *argv[])
+ {
+     struct xkb_context *ctx;
+@@ -215,14 +227,10 @@ int main(int argc, char *argv[])
+                 mod, xkb_keymap_mod_get_name(map, mod));
+     }
  
- run-plugin-%:
- 	$(call run-test, $@, $(QEMU) $(QEMU_OPTS) \
--		-plugin $(PLUGIN_LIB)/$(call extract-plugin,$@) \
-+		-plugin $(PLUGIN_LIB)/$(call extract-plugin,$@)$(PLUGIN_ARGS) \
- 		-d plugin -D $*.pout \
- 		 $(call strip-plugin,$<))
- else
-@@ -189,7 +193,7 @@ run-plugin-%:
- 	$(call run-test, $@, \
- 	  $(QEMU) -monitor none -display none \
- 		  -chardev file$(COMMA)path=$@.out$(COMMA)id=output \
--	   	  -plugin $(PLUGIN_LIB)/$(call extract-plugin,$@) \
-+	   	  -plugin $(PLUGIN_LIB)/$(call extract-plugin,$@)$(PLUGIN_ARGS) \
- 	    	  -d plugin -D $*.pout \
- 		  $(QEMU_OPTS) $(call strip-plugin,$<))
- endif
+-    mod = xkb_keymap_mod_get_index(map, "Shift");
+-    shift = (1 << mod);
+-    mod = xkb_keymap_mod_get_index(map, "Control");
+-    ctrl = (1 << mod);
+-    mod = xkb_keymap_mod_get_index(map, "AltGr");
+-    altgr = (1 << mod);
+-    mod = xkb_keymap_mod_get_index(map, "NumLock");
+-    numlock = (1 << mod);
++    shift = get_mod(map, "Shift");
++    ctrl = get_mod(map, "Control");
++    altgr = get_mod(map, "AltGr");
++    numlock = get_mod(map, "NumLock");
+ 
+     state = xkb_state_new(map);
+     xkb_keymap_key_for_each(map, walk_map, state);
 -- 
 2.39.2
 
