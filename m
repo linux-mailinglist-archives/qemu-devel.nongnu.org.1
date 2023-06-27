@@ -2,68 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38B4873F4CE
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 08:49:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AD7073F4D0
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 08:50:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qE2VU-0006Tk-3a; Tue, 27 Jun 2023 02:48:56 -0400
+	id 1qE2WI-00079u-OR; Tue, 27 Jun 2023 02:49:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qE2VR-0006SB-Ra; Tue, 27 Jun 2023 02:48:53 -0400
-Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
+ (Exim 4.90_1) (envelope-from <SRS0=ApJ+=CP=kaod.org=clg@ozlabs.org>)
+ id 1qE2WD-00077q-7t; Tue, 27 Jun 2023 02:49:41 -0400
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
+ helo=gandalf.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qE2VQ-0001FF-EV; Tue, 27 Jun 2023 02:48:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
- In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
- Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
- :Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
- List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=rrEY2KdN2MuFce9gQbYhlHMrKp0zGXSMuX8BBHFXGHk=; b=HPuzbFAjTDdQt7HYxeptFGjla0
- ovMELe+ifJRTxCyQnLpSwxQUnFMdoKjTq7gFKv7jCIjbmqlwi8aU7qFoujNjWnji+79Uj1xhBwgUY
- 3E3vWSH3sIfdYKhmLWc9bOQGMlF5mHU6bZg9mSA5DPFC/0uKrf5UTiqhxhc6FosD274FRwhLwrqEs
- QaIu/GXHcPL4PSG2j0nXhaKNeFvJw5//YbSKjIxuzipwF9LHC5Kg9tc2PydOcImkXuqoZVK34UkLQ
- dL/XgzA09m8nGAJ4PrYcsAJ6l/jL6DEAg05NWvAmrsE5vZ8eg6mM/q8bKNWx2yqnDF89a1WkMjhvX
- HLsnUkBnXdHDW8SZMzsbBHK5/7Bi7l6CmpNBrLe7i2rXhO7bAKsoqUNbcmXH7e37WGOt8FDOkdSja
- QsfqGV7AdpcKZS9WHOt5p5dfU9CfttAxQBk7u/HZ1YnHmojnfg2g6Vw5k7VWYdtSZNDqXmDyMT8ZU
- AR+H0GioLlZR2nXQqVY++941120ozoybiA/sdih46Qacr/Gklzb76YWIky3bng+s/FmdRkaD31sdY
- bzfaGbGqXei+LaCCFzvjJGIi+S0tTFG/Y1RH6WVLgd8dgx8dFniRGB2lwuA/H/itrDqXI3IiuwHHS
- CCGUDqs8nS6k+gUYqNMsiQXB0bG11y08wmL9Zenjk=;
-Received: from [2a00:23c4:8bad:df00:f732:dd76:7417:d15b]
- by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qE2V4-000223-8I; Tue, 27 Jun 2023 07:48:34 +0100
-Message-ID: <75a93dde-e236-6afd-40b9-26d08094ab3a@ilande.co.uk>
-Date: Tue, 27 Jun 2023 07:48:37 +0100
+ (Exim 4.90_1) (envelope-from <SRS0=ApJ+=CP=kaod.org=clg@ozlabs.org>)
+ id 1qE2WB-0001Qc-DC; Tue, 27 Jun 2023 02:49:40 -0400
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4QqwLG4qrdz4wZr;
+ Tue, 27 Jun 2023 16:49:26 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4QqwL96wk2z4wb4;
+ Tue, 27 Jun 2023 16:49:21 +1000 (AEST)
+Message-ID: <91257780-42ef-5a6b-d200-29b39e05a119@kaod.org>
+Date: Tue, 27 Jun 2023 08:49:18 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
+ Thunderbird/102.12.0
+Subject: Re: [PATCH 0/4] target/ppc: Catch invalid real address accesses
 Content-Language: en-US
-To: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org
-Cc: atar4qemu@gmail.com, =?UTF-8?B?SmFrdWIgSmVybcOhxZk=?= <jakub@jermar.eu>,
- qemu-stable@nongnu.org
-References: <20230515151104.1350155-1-armbru@redhat.com>
-From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-In-Reply-To: <20230515151104.1350155-1-armbru@redhat.com>
+To: Nicholas Piggin <npiggin@gmail.com>,
+ =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clegoate@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-ppc@nongnu.org, qemu-devel@nongnu.org,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ BALATON Zoltan <balaton@eik.bme.hu>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Frederic Barrat <frederic.barrat@fr.ibm.com>
+References: <20230623081953.290875-1-npiggin@gmail.com>
+ <CAFEAcA_Brf-R12t+DKNAoygqgC-qjKJ3Wiz4ULjGHOo8_vPovw@mail.gmail.com>
+ <47197a73-b106-47d5-9502-393a6bdc9945@redhat.com>
+ <966b3fce-512d-f122-e76e-efded0db9731@kaod.org>
+ <CTMZ0C10RKTF.3SZX1ZENHXLGY@wheely>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <CTMZ0C10RKTF.3SZX1ZENHXLGY@wheely>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a00:23c4:8bad:df00:f732:dd76:7417:d15b
-X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: Re: [PATCH] Revert "hw/sparc64/niagara: Use blk_name() instead of
- open-coding it"
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
-Received-SPF: pass client-ip=2001:41c9:1:41f::167;
- envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+ envelope-from=SRS0=ApJ+=CP=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -40
+X-Spam_score: -4.1
+X-Spam_bar: ----
+X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, NICE_REPLY_A=-0.09,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -80,52 +77,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 15/05/2023 16:11, Markus Armbruster wrote:
-
-> This reverts commit 1881f336a33a8a99cb17ab1c57ed953682e8e107.
+>>> It seems it broke the "mac99" and  powernv10 machines, using the
+>>> qemu-ppc-boot images which are mostly buildroot. See below for logs.
+>>>
+>>> Adding Mark for further testing on Mac OS.
+>>    
+>>
+>> Mac OS 9.2 fails to boot with a popup saying :
+>>          
+>>           Sorry, a system error occured.
+>>           "Sound Manager"
+>>             address error
+>>           To temporarily turn off extensions, restart and
+>>           hold down the shift key
+>>
+>>
+>> Darwin and Mac OSX look OK.
 > 
-> This commit breaks "-drive if=pflash,readonly=on,file=image.iso".  It
-> claims to merely replace an open-coded version of blk_name() by a
-> call, but that's not the case.  Sorry for the inconvenience!
+> Might have to to restrict it to POWER machines for now then. Seems like
+> it will break working systems.
 > 
-> Reported-by: Jakub Jermář <jakub@jermar.eu>
-> Cc: qemu-stable@nongnu.org
-> Signed-off-by: Markus Armbruster <armbru@redhat.com>
-> ---
->   hw/sparc64/niagara.c | 6 ++++--
->   1 file changed, 4 insertions(+), 2 deletions(-)
-> 
-> diff --git a/hw/sparc64/niagara.c b/hw/sparc64/niagara.c
-> index 6725cc61fd..ab3c4ec346 100644
-> --- a/hw/sparc64/niagara.c
-> +++ b/hw/sparc64/niagara.c
-> @@ -23,6 +23,7 @@
->    */
->   
->   #include "qemu/osdep.h"
-> +#include "block/block_int-common.h"
->   #include "qemu/units.h"
->   #include "cpu.h"
->   #include "hw/boards.h"
-> @@ -143,9 +144,10 @@ static void niagara_init(MachineState *machine)
->               memory_region_add_subregion(get_system_memory(),
->                                           NIAGARA_VDISK_BASE, &s->vdisk_ram);
->               dinfo->is_default = 1;
-> -            rom_add_file_fixed(blk_name(blk), NIAGARA_VDISK_BASE, -1);
-> +            rom_add_file_fixed(blk_bs(blk)->filename, NIAGARA_VDISK_BASE, -1);
->           } else {
-> -            error_report("could not load ram disk '%s'", blk_name(blk));
-> +            error_report("could not load ram disk '%s'",
-> +                         blk_bs(blk)->filename);
->               exit(1);
->           }
->       }
+> We could just log a guest error for the others.
 
-Thanks - I've queued this to my qemu-sparc branch.
+The "mac99" and powernv machines run fine now with the patches you
+and Fred just sent. There is a "fix" window after soft freeze when
+we can set the 'ignore_memory_transaction_failures' flag as Peter
+suggested.
 
+Thanks,
 
-ATB,
-
-Mark.
+C.
 
 
