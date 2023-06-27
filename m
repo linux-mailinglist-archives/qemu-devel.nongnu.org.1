@@ -2,85 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D244073F4FC
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 08:55:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD88573F500
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 08:56:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qE2bt-0000cV-5L; Tue, 27 Jun 2023 02:55:33 -0400
+	id 1qE2cS-00013Q-Bk; Tue, 27 Jun 2023 02:56:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qE2bo-0000c8-7S
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 02:55:28 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qE2bm-00047R-Kw
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 02:55:27 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-312824aa384so3648600f8f.1
- for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 23:55:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687848925; x=1690440925;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=8OLqYsHzPkoP3ZyodIdvHCkU3VVBtipdh5+Ak9HVdLM=;
- b=X8TuqN4ryjbJTX1l4E5GwNKOAt62ExmnDJ/UEadj1Q6D9W5OFaDcWrDPeXZMYAL6+A
- WZCNbjiIOwkyFFvQJWaR5R7vHyb7YqciGb5i67UV3whPB7JBm2MDIJfWsCZTcG7riWgJ
- I4wJVzXv3WlOdT2jCVUG/zZUKnRKCrlGpJ4sn5zWOTkppeFCz368Ww6y+NNi0EnhyGNV
- A48JHjSiTL4Y/wn1h6TBnpaTDLFMbFWovZQufWaV7Kqq4AiH4BFgu7NwyNSOqdbKmYYr
- vsFTXkkUQIJnmv2YjqueEmm3YmKrEreGLq9OJek2j11Uahs2rlD32VQfTgXWVdCa6h/p
- 7ehQ==
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qE2cQ-000134-EB
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 02:56:06 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qE2cP-0004Pm-06
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 02:56:06 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1687848964;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=QsIUKaCmvN9NltOg+X5q0IH1iCVUdH+kPCho75Ry2so=;
+ b=WalYDP3OZ+qqsKSJZC3+MQ2U7+uRrochOk3jTpmPpa2EJxDSSU+SZ+KJ4fbhWN73Ch9xFR
+ YsPF2pESV++oosq892JwJqsYTfKuiMhp+cAfDyIBTWp1UfkTAvG403pN+O54w2iqo5ATNW
+ MQntM0Tp3DO+DEFTZpCrqEDwMLAlXPg=
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
+ [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-178-H0YdZwZMMbikdTLVsiJLVQ-1; Tue, 27 Jun 2023 02:56:03 -0400
+X-MC-Unique: H0YdZwZMMbikdTLVsiJLVQ-1
+Received: by mail-qk1-f198.google.com with SMTP id
+ af79cd13be357-766b225954aso172897185a.0
+ for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 23:56:02 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687848925; x=1690440925;
+ d=1e100.net; s=20221208; t=1687848962; x=1690440962;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=8OLqYsHzPkoP3ZyodIdvHCkU3VVBtipdh5+Ak9HVdLM=;
- b=jRnvR4fbphqU6quuNfehz0LN1OAT7aSGoyY6zDMBO8xJdJ3zjZed7Njo79AbtnfPX3
- gHnikTmi9W3YQhZ49XOAGq7As5/+l6ifr5dgEc9Qiu+oH80K8kg6YUjqDOulUFzQyFZ+
- HVAVhwZHoeMoLyor69wUOukmq0qnvdndb+q8F/UqVM0YhLLPJzlnS3+ZMTU5hld4VXzW
- baPlPNJJE5JkStPqdlvSULTW5UB+kzvFkDokkNkmhO9a/wpPGHsJ0qPmz/EhWsszocXy
- vMSJdtT3NTYtiwgfqqhojAQB7iU7EPWOuGNMNl0woahF7AfslQAKeGhw4ZbOGmjMt4it
- L/Cg==
-X-Gm-Message-State: AC+VfDwaQ1h9jsxCTO+yLiTq7anm2tl4hfp7EfdFo2STRwfMPmc493CJ
- D76QwGNXqoz6nzo2vZLfFELxRA==
-X-Google-Smtp-Source: ACHHUZ4SE6JT7htgzUhnSxShOI9jnMKO/VPQEjT4my9vdObnQ1Jf/f4yD8aXmT+aqy2+TLgllS06QA==
-X-Received: by 2002:a5d:68c6:0:b0:313:e952:e500 with SMTP id
- p6-20020a5d68c6000000b00313e952e500mr4365944wrw.7.1687848925103; 
- Mon, 26 Jun 2023 23:55:25 -0700 (PDT)
-Received: from [192.168.157.227] ([139.47.41.103])
- by smtp.gmail.com with ESMTPSA id
- f18-20020adff452000000b003113b3bc9d7sm9428137wrp.32.2023.06.26.23.55.24
+ bh=QsIUKaCmvN9NltOg+X5q0IH1iCVUdH+kPCho75Ry2so=;
+ b=IfXVzO94IHR4dA6DeBX8YeQBjhE6uJ3ZkqXyGUgkPfJtg/RZDoUx82quzDY5AZuWCN
+ s367hPls7PtGqCtkwNc2R8UCRYd1QuvxxfwCwwIwNfCrKaAywpOUlBKUKQ+iBpmGW23v
+ f8knwwq5+PA41cJbcv+7FzTFREHJfK0wVa7mp23BGEV3Vb//nijswi66fN7UatUiLkTx
+ dG13HS3C0VSAVA1m8+TRgcFQ0ttfVSrm80lCFJDWHsXgLmFunqUZ0DKYTzEkI7YQ+7S0
+ 74rWGMNhQS0vO0y36JhDSHFvJDFVyzxW98QIOb3ZRxTmvgnynz8l6NpOKT6vZdLvaSve
+ PzeA==
+X-Gm-Message-State: AC+VfDxOW5oXlo9uZXsEE50Qu4csRn1Yryn54lRLMOVmZMeyVGUhkUPt
+ xr0UVaa27VMw/r3231Uvo+Ya7u5/ixsmfgeMxQ5CoVNBJZHOvsZMAQEM59yMUJKMUFpjhROTYCF
+ nh8DEjNLUgNMjMdw=
+X-Received: by 2002:a05:620a:4144:b0:765:740f:4897 with SMTP id
+ k4-20020a05620a414400b00765740f4897mr10028123qko.64.1687848962566; 
+ Mon, 26 Jun 2023 23:56:02 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ712CX1BGwqCiUuT5fQEOQkz9i0snpmB6xkzjYsbtXTuP3x0sP4pPM8WC2fQ6gOp1Rx75nAPA==
+X-Received: by 2002:a05:620a:4144:b0:765:740f:4897 with SMTP id
+ k4-20020a05620a414400b00765740f4897mr10028113qko.64.1687848962324; 
+ Mon, 26 Jun 2023 23:56:02 -0700 (PDT)
+Received: from [192.168.0.5] (ip-109-43-179-172.web.vodafone.de.
+ [109.43.179.172]) by smtp.gmail.com with ESMTPSA id
+ z22-20020ae9c116000000b0075c9e048b19sm3615421qki.29.2023.06.26.23.56.00
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 26 Jun 2023 23:55:24 -0700 (PDT)
-Message-ID: <32624588-a714-6317-77e3-39ce7cdaa8db@linaro.org>
-Date: Tue, 27 Jun 2023 08:55:22 +0200
+ Mon, 26 Jun 2023 23:56:01 -0700 (PDT)
+Message-ID: <c103e9e4-7487-5cff-ce36-52e48d9c936f@redhat.com>
+Date: Tue, 27 Jun 2023 08:55:59 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PATCH v2 06/26] qemu-keymap: properly check return from
- xkb_keymap_mod_get_index
+Subject: Re: [PATCH 3/4] pc-bios/s390-ccw: Move the stack array into start.S
 Content-Language: en-US
-To: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>
-References: <20230626215926.2522656-1-alex.bennee@linaro.org>
- <20230626215926.2522656-7-alex.bennee@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230626215926.2522656-7-alex.bennee@linaro.org>
+To: Richard Henderson <richard.henderson@linaro.org>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>, qemu-devel@nongnu.org
+Cc: qemu-s390x@nongnu.org, mrezanin@redhat.com,
+ =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+References: <20230626132138.87668-1-thuth@redhat.com>
+ <20230626132138.87668-4-thuth@redhat.com>
+ <a807476d-fe97-3c05-32d2-371b0a82b92a@linux.ibm.com>
+ <a7ebe361-6b16-2af9-0dfe-ae2e06b6a819@linaro.org>
+From: Thomas Huth <thuth@redhat.com>
+In-Reply-To: <a7ebe361-6b16-2af9-0dfe-ae2e06b6a819@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x431.google.com
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -97,38 +105,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/26/23 23:59, Alex Bennée wrote:
-> We can return XKB_MOD_INVALID which rightly gets flagged by sanitisers
-> as an overly wide shift attempt.
+On 26/06/2023 17.25, Richard Henderson wrote:
+> On 6/26/23 16:54, Christian Borntraeger wrote:
+>>
+>> Am 26.06.23 um 15:21 schrieb Thomas Huth:
+>>
+>>> diff --git a/pc-bios/s390-ccw/start.S b/pc-bios/s390-ccw/start.S
+>>> index 29b0a9ece0..47ef6e8aa8 100644
+>>> --- a/pc-bios/s390-ccw/start.S
+>>> +++ b/pc-bios/s390-ccw/start.S
+>>> @@ -120,3 +120,8 @@ external_new_mask:
+>>>       .quad   0x0000000180000000
+>>>   io_new_mask:
+>>>       .quad   0x0000000180000000
+>>> +
+>>> +.bss
+>>> +
+>>> +    .align  16
+>>> +    .lcomm  stack,STACK_SIZE
+>>
+>> IIRC, the ELF ABI defines the stack to be 8 byte aligned, but 16 certainly 
+>> does not hurt.
 > 
-> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-> ---
->   qemu-keymap.c | 24 ++++++++++++++++--------
->   1 file changed, 16 insertions(+), 8 deletions(-)
+> This doesn't do what you think it does.
 > 
-> diff --git a/qemu-keymap.c b/qemu-keymap.c
-> index 229866e004..8c80f7a4ed 100644
-> --- a/qemu-keymap.c
-> +++ b/qemu-keymap.c
-> @@ -140,6 +140,18 @@ static void usage(FILE *out)
->               names.options ?: "-");
->   }
->   
-> +static xkb_mod_mask_t get_mod(struct xkb_keymap *map, const char *name)
-> +{
-> +    xkb_mod_index_t mod;
-> +    xkb_mod_mask_t mask = 0;
-> +
-> +    mod = xkb_keymap_mod_get_index(map, name);
-> +    if (mod != XKB_MOD_INVALID) {
-> +        mask = (1 << mod);
-> +    }
-> +    return mask;
-> +}
+> .lcomm produces a COMMON symbol, which is merged with .bss at link time.  
+> Thus the .align does nothing.  Even switching to .bss section does nothing 
+> here.
+> 
+> You want
+> 
+> .bss
+>      .align 16
+> stack:
+>      .space    STACK_SIZE
+>      .size    stack, STACK_SIZE
 
-You have yet to answer Peter's question -- asked twice -- about what changes in the 
-keymaps with this. If nothing, should it in fact be an assert instead?
+Oh, thanks! I'll fix it in v2.
+
+  Thomas
 
 
-r~
 
