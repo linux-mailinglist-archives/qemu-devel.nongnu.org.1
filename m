@@ -2,95 +2,107 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECBAA73FC12
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 14:39:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 956A673FC1D
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 14:43:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qE7y9-0003UU-RF; Tue, 27 Jun 2023 08:38:53 -0400
+	id 1qE81A-0005Lz-CO; Tue, 27 Jun 2023 08:42:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1qE7y7-0003U9-T0
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 08:38:51 -0400
+ (Exim 4.90_1) (envelope-from <clegoate@redhat.com>)
+ id 1qE817-0005La-VJ
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 08:41:57 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1qE7y5-0008Am-On
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 08:38:51 -0400
+ (Exim 4.90_1) (envelope-from <clegoate@redhat.com>)
+ id 1qE816-00014F-1r
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 08:41:57 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687869528;
+ s=mimecast20190719; t=1687869715;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=1S9TitJCsbSqsj4GY6YGvC85kEdx0AGbL8dUgQyLqwc=;
- b=c0RvVgkp6+LzLXs1la+hgGanppoRIG35tdlbgBlztbPYaCN6PKPZXlTQIC3ewV1N4QrqCW
- InKGJDRIXhiED5PIbBpwvXt+shVTawXBC/cvVCCMSE8qg5K1KIOlWa6E9dsHoQA6rJ6TPV
- auNbvrSPnlxXz00e4g4CnC/dUb5mhB8=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=5YsXZ1rNS4BTe6puW+gYVb288uKJ+VeL5XVX1ZacTUk=;
+ b=Ya7NIQtdPzCJMLv5Cit3BhuYwhDHgB/klcLg4sshW3jTLdYuKtxZwGuu4bmCDox2gsxpRb
+ 0xjIZ5Q+adwrS/+R3SpgRpA99K7uqLCc5FQGuFUSMK3DMb350LrH1RDf4X6RwxoniZm+p8
+ K8xumvloKG/qYdiRs9Ty5ZqIRP3TnG8=
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
+ [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-649-tOg1VAOgO8aw7iWS9PGfTQ-1; Tue, 27 Jun 2023 08:38:47 -0400
-X-MC-Unique: tOg1VAOgO8aw7iWS9PGfTQ-1
-Received: by mail-ed1-f72.google.com with SMTP id
- 4fb4d7f45d1cf-51a5c1e9fbdso5326587a12.1
- for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 05:38:47 -0700 (PDT)
+ us-mta-463-yDdoOinFO3apRYSg0gImPQ-1; Tue, 27 Jun 2023 08:41:54 -0400
+X-MC-Unique: yDdoOinFO3apRYSg0gImPQ-1
+Received: by mail-qv1-f71.google.com with SMTP id
+ 6a1803df08f44-635a3b9d24eso28710776d6.0
+ for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 05:41:54 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687869526; x=1690461526;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=1S9TitJCsbSqsj4GY6YGvC85kEdx0AGbL8dUgQyLqwc=;
- b=Wq/j/F4hxkoyMhNVNulSYsdfsaGebGwDDRLDKN0qsxJMURBgaww/adCUW9VWwRDyuV
- 4SlQP133gI9XMwibSJ3eXtcH0ml/RZMV1hzX/tqZzNWYKAiEeeStjAYik8lTK8RDcIbS
- aoE/yxTM01t0EDxvRO4LsQGXoL1+QXj8KyasR2AVwkMDL7pUqXll5oDQs+bTwcJ7sy/f
- P2hxA1Fkhegxj2HE2Y7A9VFTRfOVkP++LsDlz6Moh7TSb+stYt8okDjpe/dZevD2H9mC
- In6zh6bEzjIekTGs/1TyPVmHMb0AUHzYJTaue94D2FLW9RseeXQxIVNqrYDmmxJ5Rq9C
- PsWQ==
-X-Gm-Message-State: AC+VfDxZ1w/9dGU+cP3ulwCGz7+CmVfIC35swqPDVcZ7lnWQ062lkXca
- nCqjvqJdVm/+emuYlyucmMbDoc9WEuC6qd6qvZgN8HHX4UBiWl58DLgzW+djf6Z+CsX6Fxbyroe
- Jb1d4CdgER1ZJjjY=
-X-Received: by 2002:a05:6402:18c:b0:518:741e:9314 with SMTP id
- r12-20020a056402018c00b00518741e9314mr30670921edv.11.1687869526129; 
- Tue, 27 Jun 2023 05:38:46 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ4TkIKnzblY+GByMGumzOzcDtA64y2UykFZ1UBkvZNJbYrJx9Nrl/cD4nhjfs11Sxfyy/rHvg==
-X-Received: by 2002:a05:6402:18c:b0:518:741e:9314 with SMTP id
- r12-20020a056402018c00b00518741e9314mr30670906edv.11.1687869525850; 
- Tue, 27 Jun 2023 05:38:45 -0700 (PDT)
-Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
- [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
- d15-20020a05640208cf00b0051a3e7d7996sm3782999edz.83.2023.06.27.05.38.44
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 27 Jun 2023 05:38:45 -0700 (PDT)
-Date: Tue, 27 Jun 2023 14:38:44 +0200
-From: Igor Mammedov <imammedo@redhat.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Ani Sinha <anisinha@redhat.com>, qemu-devel@nongnu.org, Marcel Apfelbaum
- <marcel.apfelbaum@gmail.com>, jusual@redhat.com
-Subject: Re: [RESEND PATCH v5 5/5] hw/pci: ensure PCIE devices are plugged
- into only slot 0 of PCIE port
-Message-ID: <20230627143844.514594e8@imammedo.users.ipa.redhat.com>
-In-Reply-To: <20230627081835-mutt-send-email-mst@kernel.org>
-References: <20230626161244.4145-1-anisinha@redhat.com>
- <20230626161244.4145-6-anisinha@redhat.com>
- <20230627110224.36fa1b06@imammedo.users.ipa.redhat.com>
- <A085E1C1-244C-4ED3-AC9A-17497BA66255@redhat.com>
- <20230627135849.37e52f87@imammedo.users.ipa.redhat.com>
- <20230627081835-mutt-send-email-mst@kernel.org>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+ d=1e100.net; s=20221208; t=1687869713; x=1690461713;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=5YsXZ1rNS4BTe6puW+gYVb288uKJ+VeL5XVX1ZacTUk=;
+ b=OEcm3blGtgTaRdfXaCzfIyprrtuRvPgshoyBmX7R5VknXPHzQyb1UMTubviQrZ4CN2
+ 8u5O/e2hJtwt/G0SuVxTmWZJYW+fjT4DzMVYLb3YghGY3URIc4uCF5chq2yAQN2lia2+
+ R82/m3/5yBly3ToXeSgr2s/0CUs3JMqKHlyMewbPJoXDcVWtj/BpsLuIgjKVlvbXAh+R
+ MxRXcBQDdRQjfEgYSCAqAcMWA/bW7NDVHjkS6KMMxBzm4wJqeLnjcsq+nJUBTnloKycy
+ nIqWvzyUYRiuH068LFX7BNF4RXSewdu3VNdQmC7lumEko5adBrR8dTUKSwETNNqpIFaJ
+ z08Q==
+X-Gm-Message-State: AC+VfDytNBPNS1Z5f3gNgpWlholfqPDJsNIIiZ3BZntQAaeZ0iuxK0Or
+ ZLSkM88/6qSmO2VQbD6j3fRXadhgLeaVCJF5Zcam+M2cojKZ7ddvssFHbCvjV+e959ux4NihCF6
+ F4BOO5Txl0+E05co=
+X-Received: by 2002:a05:6214:2129:b0:635:da2a:4706 with SMTP id
+ r9-20020a056214212900b00635da2a4706mr8551278qvc.15.1687869713585; 
+ Tue, 27 Jun 2023 05:41:53 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6Gxbr2Hg8+S1y752ieHqYp5TBWQdwreGhGTUDOuZuUALoht5/xvOS9/kxSJrzlMZWdhBp4AQ==
+X-Received: by 2002:a05:6214:2129:b0:635:da2a:4706 with SMTP id
+ r9-20020a056214212900b00635da2a4706mr8551260qvc.15.1687869713333; 
+ Tue, 27 Jun 2023 05:41:53 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:280:24f0:576b:abc6:6396:ed4a?
+ ([2a01:e0a:280:24f0:576b:abc6:6396:ed4a])
+ by smtp.gmail.com with ESMTPSA id
+ du7-20020a05621409a700b006301d31e315sm4532680qvb.10.2023.06.27.05.41.51
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 27 Jun 2023 05:41:52 -0700 (PDT)
+Message-ID: <d9b7499f-f462-79b3-e9e8-25a14a3b538d@redhat.com>
+Date: Tue, 27 Jun 2023 14:41:49 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH 0/4] target/ppc: Catch invalid real address accesses
+Content-Language: en-US
+To: Howard Spoelstra <hsp.cat7@gmail.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Cc: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
+ Peter Maydell <peter.maydell@linaro.org>, Nicholas Piggin
+ <npiggin@gmail.com>, qemu-ppc@nongnu.org, qemu-devel@nongnu.org,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ BALATON Zoltan <balaton@eik.bme.hu>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
+ Frederic Barrat <frederic.barrat@fr.ibm.com>
+References: <20230623081953.290875-1-npiggin@gmail.com>
+ <CAFEAcA_Brf-R12t+DKNAoygqgC-qjKJ3Wiz4ULjGHOo8_vPovw@mail.gmail.com>
+ <47197a73-b106-47d5-9502-393a6bdc9945@redhat.com>
+ <966b3fce-512d-f122-e76e-efded0db9731@kaod.org>
+ <cefdeb3f-3442-ede4-3e5d-6a4a99b38293@ilande.co.uk>
+ <CABLmASF92ux10=D5MJ4Ax3FbCi4digWJajHy4VE1fNUL9bOJxA@mail.gmail.com>
+ <8e3010d8-9ca7-c834-3348-e11060c53f8a@ilande.co.uk>
+ <CABLmASFsWK9Bg_bo=kC9C_8EnLpoVJKtqg0ca8gv1YdrffQSAw@mail.gmail.com>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clegoate@redhat.com>
+In-Reply-To: <CABLmASFsWK9Bg_bo=kC9C_8EnLpoVJKtqg0ca8gv1YdrffQSAw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clegoate@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ NICE_REPLY_A=-0.103, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -107,76 +119,133 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 27 Jun 2023 08:23:25 -0400
-"Michael S. Tsirkin" <mst@redhat.com> wrote:
-
-> On Tue, Jun 27, 2023 at 01:58:49PM +0200, Igor Mammedov wrote:
-> > On Tue, 27 Jun 2023 15:23:04 +0530
-> > Ani Sinha <anisinha@redhat.com> wrote:
-> >   
-> > > > On 27-Jun-2023, at 2:32 PM, Igor Mammedov <imammedo@redhat.com> wrote:
-> > > > 
-> > > > On Mon, 26 Jun 2023 21:42:44 +0530
-> > > > Ani Sinha <anisinha@redhat.com> wrote:
-> > > >     
-> > > >> PCI Express ports only have one slot, so PCI Express devices can only be
-> > > >> plugged into slot 0 on a PCIE port. Enforce it.    
-> > > > 
-> > > > btw, previously you mentioned ARI.
-> > > > So if we turn it on, wouldn't this patch actually become regression?    
-> > > 
-> > > If ARI breaks this, it will break other areas in QEMU too, ex anywhere pci_get_function_0() is used.
-> > > Regardless, I think at least the tests are worth fixing, particularly the mess with hd-geo-test.  
-> > 
-> > I'm fine with this patch if you test it with ARI enabled and it won't break
-> > something that has been working before this patch. Just mention what testing
-> > you've done in commit message.  
+On 6/27/23 14:05, Howard Spoelstra wrote:
 > 
-> Oh yes. That's why it was checking !vf originally. It's because the most
-> common use of ARI is SRIOV, so it works a a kind of hack.
+> 
+> On Tue, Jun 27, 2023 at 1:24 PM Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk <mailto:mark.cave-ayland@ilande.co.uk>> wrote:
+> 
+>     On 27/06/2023 11:28, Howard Spoelstra wrote:
+> 
+>      > On Tue, Jun 27, 2023 at 10:15 AM Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk <mailto:mark.cave-ayland@ilande.co.uk>
+>      > <mailto:mark.cave-ayland@ilande.co.uk <mailto:mark.cave-ayland@ilande.co.uk>>> wrote:
+>      >
+>      >     On 26/06/2023 14:35, Cédric Le Goater wrote:
+>      >
+>      >      > On 6/23/23 14:37, Cédric Le Goater wrote:
+>      >      >> On 6/23/23 11:10, Peter Maydell wrote:
+>      >      >>> On Fri, 23 Jun 2023 at 09:21, Nicholas Piggin <npiggin@gmail.com <mailto:npiggin@gmail.com>
+>      >     <mailto:npiggin@gmail.com <mailto:npiggin@gmail.com>>> wrote:
+>      >      >>>>
+>      >      >>>> ppc has always silently ignored access to real (physical) addresses
+>      >      >>>> with nothing behind it, which can make debugging difficult at times.
+>      >      >>>>
+>      >      >>>> It looks like the way to handle this is implement the transaction
+>      >      >>>> failed call, which most target architectures do. Notably not x86
+>      >      >>>> though, I wonder why?
+>      >      >>>
+>      >      >>> Much of this is historical legacy. QEMU originally had no
+>      >      >>> concept of "the system outside the CPU returns some kind
+>      >      >>> of bus error and the CPU raises an exception for it".
+>      >      >>> This is turn is (I think) because the x86 PC doesn't do
+>      >      >>> that: you always get back some kind of response, I think
+>      >      >>> -1 on reads and writes ignored. We added the do_transaction_failed
+>      >      >>> hook largely because we wanted it to give more accurate
+>      >      >>> emulation of this kind of thing on Arm, but as usual with new
+>      >      >>> facilities we left the other architectures to do it themselves
+>      >      >>> if they wanted -- by default the behaviour remained the same.
+>      >      >>> Some architectures have picked it up; some haven't.
+>      >      >>>
+>      >      >>> The main reason it's a bit of a pain to turn the correct
+>      >      >>> handling on is because often boards don't actually implement
+>      >      >>> all the devices they're supposed to. For a pile of legacy Arm
+>      >      >>> boards, especially where we didn't have good test images,
+>      >      >>> we use the machine flag ignore_memory_transaction_failures to
+>      >      >>> retain the legacy behaviour. (This isn't great because it's
+>      >      >>> pretty much going to mean we have that flag set on those
+>      >      >>> boards forever because nobody is going to care enough to
+>      >      >>> investigate and test.)
+>      >      >>>
+>      >      >>>> Other question is, sometimes I guess it's nice to avoid crashing in
+>      >      >>>> order to try to quickly get past some unimplemented MMIO. Maybe a
+>      >      >>>> command line option or something could turn it off? It should
+>      >      >>>> probably be a QEMU-wide option if so, so that shouldn't hold this
+>      >      >>>> series up, I can propose a option for that if anybody is worried
+>      >      >>>> about it.
+>      >      >>>
+>      >      >>> I would not recommend going any further than maybe setting the
+>      >      >>> ignore_memory_transaction_failures flag for boards you don't
+>      >      >>> care about. (But in an ideal world, don't set it and deal with
+>      >      >>> any bug reports by implementing stub versions of missing devices.
+>      >      >>> Depends how confident you are in your test coverage.)
+>      >      >>
+>      >      >> It seems it broke the "mac99" and  powernv10 machines, using the
+>      >      >> qemu-ppc-boot images which are mostly buildroot. See below for logs.
+>      >      >>
+>      >      >> Adding Mark for further testing on Mac OS.
+>      >      >
+>      >      >
+>      >      > Mac OS 9.2 fails to boot with a popup saying :
+>      >      >          Sorry, a system error occured.
+>      >      >          "Sound Manager"
+>      >      >            address error
+>      >      >          To temporarily turn off extensions, restart and
+>      >      >          hold down the shift key
+>      >      >
+>      >      >
+>      >      > Darwin and Mac OSX look OK.
+>      >
+>      >     My guess would be that MacOS 9.2 is trying to access the sound chip registers which
+>      >     isn't implemented in QEMU for the moment (I have a separate screamer branch
+>      >     available, but it's not ready for primetime yet). In theory they shouldn't be
+>      >     accessed at all because the sound device isn't present in the OpenBIOS device tree,
+>      >     but this is all fairly old stuff.
+>      >
+>      >     Does implementing the sound registers using a dummy device help at all?
+>      >
+>      >
+>      > My uneducated guess is that you stumbled on a longstanding, but intermittently
+>      > occurring, issue specific to Mac OS 9.2 related to sound support over USB in Apple
+>      > monitors.
+> 
+>     I'm not sure I understand this: are there non-standard command line options being
+>     used here other than "qemu-system-ppc -M mac99 -cdrom macos92.iso -boot d"?
+> 
+> 
+> 
+> It must be my windows host ;-)
+> 
+> qemu-system-ppc.exe -M mac99,via=pmu -cdrom C:\mac-iso\9.2.2.iso -boot d -L pc-bios
+> crashes Mac OS with an address error. (with unpatched and patched builds).
 
-should we check for ARI cap instead of vf hack?
-why we haven't that from the beginning?
+Same on Linux. I get an invalid opcode. QEMU 7.2 work fine though.
+
+C.
+
+
 
 > 
-> > >   
-> > > >     
-> > > >> 
-> > > >> CC: jusual@redhat.com
-> > > >> CC: imammedo@redhat.com
-> > > >> Resolves: https://bugzilla.redhat.com/show_bug.cgi?id=2128929
-> > > >> Signed-off-by: Ani Sinha <anisinha@redhat.com>
-> > > >> Reviewed-by: Julia Suvorova <jusual@redhat.com>
-> > > >> ---
-> > > >> hw/pci/pci.c | 6 ++++++
-> > > >> 1 file changed, 6 insertions(+)
-> > > >> 
-> > > >> diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-> > > >> index bf38905b7d..426af133b0 100644
-> > > >> --- a/hw/pci/pci.c
-> > > >> +++ b/hw/pci/pci.c
-> > > >> @@ -64,6 +64,7 @@ bool pci_available = true;
-> > > >> static char *pcibus_get_dev_path(DeviceState *dev);
-> > > >> static char *pcibus_get_fw_dev_path(DeviceState *dev);
-> > > >> static void pcibus_reset(BusState *qbus);
-> > > >> +static bool pcie_has_upstream_port(PCIDevice *dev);
-> > > >> 
-> > > >> static Property pci_props[] = {
-> > > >>     DEFINE_PROP_PCI_DEVFN("addr", PCIDevice, devfn, -1),
-> > > >> @@ -1189,6 +1190,11 @@ static PCIDevice *do_pci_register_device(PCIDevice *pci_dev,
-> > > >>                    name);
-> > > >> 
-> > > >>        return NULL;
-> > > >> +    } else if (pcie_has_upstream_port(pci_dev) && PCI_SLOT(devfn)) {
-> > > >> +        error_setg(errp, "PCI: slot %d is not valid for %s,"
-> > > >> +                   " parent device only allows plugging into slot 0.",
-> > > >> +                   PCI_SLOT(devfn), name);
-> > > >> +        return NULL;
-> > > >>     }
-> > > >> 
-> > > >>     pci_dev->devfn = devfn;    
-> > > >     
-> > >   
+> qemu-system-ppc.exe -M mac99 -hda C:\mac-hd\9.2.2-clean.img -boot c -L pc-bios sometimes crashes with an illegal instruction.
+> 
+> qemu-system-ppc.exe -M mac99,via=pmu -hda C:\mac-hd\9.2.2-clean.img -boot c -L pc-bios sometimes crashes with Sound manager address error.
+> (with both patched and non-patched versions).
+> 
+> Best,
+> Howard
+> 
+> 
+>      > I believe It is not fixed by the patch set from the 23 of june, I still get system
+>      > errors when running Mac OS 9.2 with the mac99 machine after applying them.
+>      > Mac OS 9.2 has required mac99,via=pmu for a long time now to always boot
+>      > successfully. (while 9.0.4 requires mac99 to boot, due to an undiagnosed OHCI USB
+>      > problem with the specific drivers that ship with it.)  ;-)
+> 
+>     I always test MacOS 9.2 boot both with and without via=pmu for my OpenBIOS tests, so
+>     I'd expect this to work unless a regression has slipped in?
+> 
+> 
+>     ATB,
+> 
+>     Mark.
 > 
 
 
