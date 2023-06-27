@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 932C57400A1
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 18:16:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 692457400AF
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 18:18:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEBMV-0001Ku-Ot; Tue, 27 Jun 2023 12:16:17 -0400
+	id 1qEBMG-0000zx-Oh; Tue, 27 Jun 2023 12:16:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qEBMK-00017Z-OC
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 12:16:04 -0400
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ id 1qEBME-0000y9-1I
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 12:15:58 -0400
+Received: from mail-lf1-x12d.google.com ([2a00:1450:4864:20::12d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qEBMB-00089v-Oa
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 12:16:04 -0400
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-313e09a5b19so23736f8f.0
- for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 09:15:55 -0700 (PDT)
+ id 1qEBM8-00087M-Tk
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 12:15:57 -0400
+Received: by mail-lf1-x12d.google.com with SMTP id
+ 2adb3069b0e04-4f973035d60so6282343e87.3
+ for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 09:15:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687882554; x=1690474554;
+ d=linaro.org; s=google; t=1687882549; x=1690474549;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=XTGDyBwpOUnJ81QARU+1/OI2J0gTxsiGK9l42g4HfaQ=;
- b=pCejVcqPGQxvYe8n4oFODd6R3PVt1ZZO2lw77skvQoRyC14sfdGyUjWuy3QGGrZmf7
- sVx6kNDl8KpPiE2hfEQSETYRXOieevhsUCDHJERYlqsgXj+OZ39XwVA9cHyD7c1pSUKw
- 6cYhOu8hbeh56m6Bqgojq8d4NusoOnvC0E07pDbgjOGGt4N7swRppKj3yx/NA1FZtflh
- KHS2szQhKmSmDZRzzobkz+NaH43CusyC3tJZXos2RDqgkQ+S3uj6VU5qr3Y7bAq0Y8T8
- 30fgQxKTNxWe2F2n7SR+7KVP7F1qUY0LLPvVRN7fmNTgeBn846orY3Ej0JkdnnaRRqSK
- dhXg==
+ bh=1/YdtjXXo0e3CzVmNtcCXnVaZZ7ekw+aGjDVemCbNnQ=;
+ b=NMBk7ziGTqFekAol9iS/ZfDQgdosHXTAj5emIIWYF6BkCrWy282cAY/StBSGAtNcRI
+ w2TpYbbA66jFvWkMHeI8JcsP4iDy+yi7QKnhILoVcDEdqaoZ4GTOmUHwh4rd06165+PX
+ BwE695mYIq07uU8oP6tTfaeVw9TSGh/OSfRXp1YrIFD2M2sA4FM0T+Sb3D95V9pNeIYv
+ wYUV7AgyaAnW5N94fG+r577zQXGk7ufWd9iMcUspKkFLQV58o2DHXLVacBf7Z5dFfBkd
+ 8Ce8g3+w8LduqDxhRbFWQzMHmGcsRpEOfvFhgh+OH3eNej5azu4/xrMN0+HeUZROxU7f
+ /sKQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687882554; x=1690474554;
+ d=1e100.net; s=20221208; t=1687882549; x=1690474549;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=XTGDyBwpOUnJ81QARU+1/OI2J0gTxsiGK9l42g4HfaQ=;
- b=ikzPtnfT6TXnNyre+JHpT/2x38mwRrDTr73bk2UyofhwgAHea+s+DZ2rDqDdVVFNZ3
- AmktsZOgs+VEX5wiG5ymncTdVesAsN4Esp8s/c8+QfUOsNVgTmGlIm+cJKItqCYUmR8B
- QyWLX9LPxqHKdtZ1deFYu7zOtFcu8a1DRCOMGugwOn/iZUv24yXViRJj3bzo7FYnMV/k
- 2Ew5Jd2wjMTT+2Y5INug8wSNHhLZZmf1g6WM0VreebNRtA73GZwr75fuFmMJWOPWv60v
- u4EO7AjQpzjJPF63I3I5WKpIIL9GxEWDV+JdIVUC+NMAXcQVXngnyDpCpRtNNjC5LMTt
- i/OA==
-X-Gm-Message-State: AC+VfDx8pzkWvvgLL3BOckuTwEhSxhPFOkFQQecUQEmFHYfjXZ7GIl8G
- lP4rJC3KpJWo3w0ZuUtkT7/7ug==
-X-Google-Smtp-Source: ACHHUZ5MDo42ueo1GNps3I0eEt8E00poCRNwesNK3GkO5HQH6CQFy062xP3k0wstSVjCq+BmTAu+Bw==
-X-Received: by 2002:a05:6000:1206:b0:313:f977:479f with SMTP id
- e6-20020a056000120600b00313f977479fmr3352329wrx.20.1687882554217; 
- Tue, 27 Jun 2023 09:15:54 -0700 (PDT)
+ bh=1/YdtjXXo0e3CzVmNtcCXnVaZZ7ekw+aGjDVemCbNnQ=;
+ b=J09s2hI3Ao7w3ZjZVywIqehUfLuxTIah/6TdwICSIAdFi1SxBu9W+XCWqN9SbVz9vg
+ U4j6lZqmd6Zf/utY9eoL/kL3fv3lCitJvlE2i0OxONQGKmZM0XKrqYomtKmWpikTWGfX
+ aPGrWW17fb3EYWHOR49p+voKvj8DoZdnk5G2WjbdwtsyU1ZHP6t/HYysUjvbEg30/h6r
+ BOB0nuQuGTURAE9noDRb8+/fOuOh+5B2cwXbrVHuk3HGlQQEgb7CLBn4mledbwwVn+ZB
+ nMYu2nagMhSfoVPUDPsPswtj6z5FI5FLuQhBa82r2IT8yXxCcgkxxxBmtwP9cPcOQrEv
+ hSDQ==
+X-Gm-Message-State: AC+VfDxMRhqfv+omq+jx5277u7cfdUvmGrcNdTCsgfvDugtHF2HWIK9z
+ OAOvpXprZosXYjPBpFJQZTq2Qg==
+X-Google-Smtp-Source: ACHHUZ4fCc/4niMbcLJav+I6bWWkuxWogaXgsA7T6j79z/HVwspYzz5Jt4/k2gxGTk6UFA49DB4LNw==
+X-Received: by 2002:a05:6512:3b0b:b0:4fb:81f2:4228 with SMTP id
+ f11-20020a0565123b0b00b004fb81f24228mr2704299lfv.31.1687882549560; 
+ Tue, 27 Jun 2023 09:15:49 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- c1-20020a056000104100b0031402a910edsm1501373wrx.86.2023.06.27.09.15.51
+ a10-20020a05600c224a00b003faef96ee78sm5067377wmm.33.2023.06.27.09.15.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 27 Jun 2023 09:15:53 -0700 (PDT)
+ Tue, 27 Jun 2023 09:15:49 -0700 (PDT)
 Received: from zen.lan (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 2026A1FFCB;
+ by zen.linaroharston (Postfix) with ESMTP id 3A7141FFCD;
  Tue, 27 Jun 2023 17:09:46 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -82,24 +82,24 @@ Cc: Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Laurent Vivier <lvivier@redhat.com>, Qiuhao Li <Qiuhao.Li@outlook.com>,
  Mahmoud Mandour <ma.mandourr@gmail.com>, Riku Voipio <riku.voipio@iki.fi>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH v3 18/36] plugins: fix memory leak while parsing options
-Date: Tue, 27 Jun 2023 17:09:25 +0100
-Message-Id: <20230627160943.2956928-19-alex.bennee@linaro.org>
+Subject: [PATCH v3 19/36] plugins: update lockstep to use g_memdup2
+Date: Tue, 27 Jun 2023 17:09:26 +0100
+Message-Id: <20230627160943.2956928-20-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230627160943.2956928-1-alex.bennee@linaro.org>
 References: <20230627160943.2956928-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::12d;
+ envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x12d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -115,202 +115,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It was hard to track down this leak as it was an internal allocation
-by glib and the backtraces did not give much away. The autofree was
-freeing the allocation with g_free() but not taking care of the
-individual strings. They should have been freed with g_strfreev()
-instead.
+The old g_memdup is deprecated, use the replacement.
 
-Searching the glib source code for the correct string free function
-led to:
-
-  G_DEFINE_AUTO_CLEANUP_FREE_FUNC(GStrv, g_strfreev, NULL)
-
-and indeed if you read to the bottom of the documentation page you
-will find:
-
-  typedef gchar** GStrv;
-
-  A typedef alias for gchar**. This is mostly useful when used together with g_auto().
-
-So fix up all the g_autofree g_strsplit case that smugly thought they
-had de-allocation covered.
-
+Message-Id: <20230623122100.1640995-21-alex.bennee@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20230623122100.1640995-20-alex.bennee@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- contrib/plugins/cache.c     | 2 +-
- contrib/plugins/drcov.c     | 2 +-
- contrib/plugins/execlog.c   | 2 +-
- contrib/plugins/hotblocks.c | 2 +-
- contrib/plugins/hotpages.c  | 2 +-
- contrib/plugins/howvec.c    | 2 +-
- contrib/plugins/hwprofile.c | 2 +-
- contrib/plugins/lockstep.c  | 2 +-
- tests/plugin/bb.c           | 2 +-
- tests/plugin/insn.c         | 2 +-
- tests/plugin/mem.c          | 2 +-
- tests/plugin/syscall.c      | 2 +-
- 12 files changed, 12 insertions(+), 12 deletions(-)
+ contrib/plugins/lockstep.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/contrib/plugins/cache.c b/contrib/plugins/cache.c
-index 2e25184a7f..5036213f1b 100644
---- a/contrib/plugins/cache.c
-+++ b/contrib/plugins/cache.c
-@@ -772,7 +772,7 @@ int qemu_plugin_install(qemu_plugin_id_t id, const qemu_info_t *info,
- 
-     for (i = 0; i < argc; i++) {
-         char *opt = argv[i];
--        g_autofree char **tokens = g_strsplit(opt, "=", 2);
-+        g_auto(GStrv) tokens = g_strsplit(opt, "=", 2);
- 
-         if (g_strcmp0(tokens[0], "iblksize") == 0) {
-             l1_iblksize = STRTOLL(tokens[1]);
-diff --git a/contrib/plugins/drcov.c b/contrib/plugins/drcov.c
-index b4a855adaf..686ae0a537 100644
---- a/contrib/plugins/drcov.c
-+++ b/contrib/plugins/drcov.c
-@@ -148,7 +148,7 @@ int qemu_plugin_install(qemu_plugin_id_t id, const qemu_info_t *info,
-                         int argc, char **argv)
- {
-     for (int i = 0; i < argc; i++) {
--        g_autofree char **tokens = g_strsplit(argv[i], "=", 2);
-+        g_auto(GStrv) tokens = g_strsplit(argv[i], "=", 2);
-         if (g_strcmp0(tokens[0], "filename") == 0) {
-             file_name = g_strdup(tokens[1]);
-         }
-diff --git a/contrib/plugins/execlog.c b/contrib/plugins/execlog.c
-index e255bd21fd..7129d526f8 100644
---- a/contrib/plugins/execlog.c
-+++ b/contrib/plugins/execlog.c
-@@ -227,7 +227,7 @@ QEMU_PLUGIN_EXPORT int qemu_plugin_install(qemu_plugin_id_t id,
- 
-     for (int i = 0; i < argc; i++) {
-         char *opt = argv[i];
--        g_autofree char **tokens = g_strsplit(opt, "=", 2);
-+        g_auto(GStrv) tokens = g_strsplit(opt, "=", 2);
-         if (g_strcmp0(tokens[0], "ifilter") == 0) {
-             parse_insn_match(tokens[1]);
-         } else if (g_strcmp0(tokens[0], "afilter") == 0) {
-diff --git a/contrib/plugins/hotblocks.c b/contrib/plugins/hotblocks.c
-index 062200a7a4..6b74d25fea 100644
---- a/contrib/plugins/hotblocks.c
-+++ b/contrib/plugins/hotblocks.c
-@@ -135,7 +135,7 @@ int qemu_plugin_install(qemu_plugin_id_t id, const qemu_info_t *info,
- {
-     for (int i = 0; i < argc; i++) {
-         char *opt = argv[i];
--        g_autofree char **tokens = g_strsplit(opt, "=", 2);
-+        g_auto(GStrv) tokens = g_strsplit(opt, "=", 2);
-         if (g_strcmp0(tokens[0], "inline") == 0) {
-             if (!qemu_plugin_bool_parse(tokens[0], tokens[1], &do_inline)) {
-                 fprintf(stderr, "boolean argument parsing failed: %s\n", opt);
-diff --git a/contrib/plugins/hotpages.c b/contrib/plugins/hotpages.c
-index 0d12910af6..8316ae50c7 100644
---- a/contrib/plugins/hotpages.c
-+++ b/contrib/plugins/hotpages.c
-@@ -169,7 +169,7 @@ int qemu_plugin_install(qemu_plugin_id_t id, const qemu_info_t *info,
- 
-     for (i = 0; i < argc; i++) {
-         char *opt = argv[i];
--        g_autofree char **tokens = g_strsplit(opt, "=", -1);
-+        g_auto(GStrv) tokens = g_strsplit(opt, "=", -1);
- 
-         if (g_strcmp0(tokens[0], "sortby") == 0) {
-             if (g_strcmp0(tokens[1], "reads") == 0) {
-diff --git a/contrib/plugins/howvec.c b/contrib/plugins/howvec.c
-index 4a5ec3d936..0ed01ea931 100644
---- a/contrib/plugins/howvec.c
-+++ b/contrib/plugins/howvec.c
-@@ -333,7 +333,7 @@ QEMU_PLUGIN_EXPORT int qemu_plugin_install(qemu_plugin_id_t id,
- 
-     for (i = 0; i < argc; i++) {
-         char *p = argv[i];
--        g_autofree char **tokens = g_strsplit(p, "=", -1);
-+        g_auto(GStrv) tokens = g_strsplit(p, "=", -1);
-         if (g_strcmp0(tokens[0], "inline") == 0) {
-             if (!qemu_plugin_bool_parse(tokens[0], tokens[1], &do_inline)) {
-                 fprintf(stderr, "boolean argument parsing failed: %s\n", p);
-diff --git a/contrib/plugins/hwprofile.c b/contrib/plugins/hwprofile.c
-index 691d4edb0c..739ac0c66b 100644
---- a/contrib/plugins/hwprofile.c
-+++ b/contrib/plugins/hwprofile.c
-@@ -263,7 +263,7 @@ int qemu_plugin_install(qemu_plugin_id_t id, const qemu_info_t *info,
- 
-     for (i = 0; i < argc; i++) {
-         char *opt = argv[i];
--        g_autofree char **tokens = g_strsplit(opt, "=", 2);
-+        g_auto(GStrv) tokens = g_strsplit(opt, "=", 2);
- 
-         if (g_strcmp0(tokens[0], "track") == 0) {
-             if (g_strcmp0(tokens[1], "read") == 0) {
 diff --git a/contrib/plugins/lockstep.c b/contrib/plugins/lockstep.c
-index a41ffe83fa..e36f0b9562 100644
+index e36f0b9562..3614c3564c 100644
 --- a/contrib/plugins/lockstep.c
 +++ b/contrib/plugins/lockstep.c
-@@ -323,7 +323,7 @@ QEMU_PLUGIN_EXPORT int qemu_plugin_install(qemu_plugin_id_t id,
+@@ -130,7 +130,7 @@ static void report_divergance(ExecState *us, ExecState *them)
+         }
+     }
+     divergence_log = g_slist_prepend(divergence_log,
+-                                     g_memdup(&divrec, sizeof(divrec)));
++                                     g_memdup2(&divrec, sizeof(divrec)));
  
-     for (i = 0; i < argc; i++) {
-         char *p = argv[i];
--        g_autofree char **tokens = g_strsplit(p, "=", 2);
-+        g_auto(GStrv) tokens = g_strsplit(p, "=", 2);
- 
-         if (g_strcmp0(tokens[0], "verbose") == 0) {
-             if (!qemu_plugin_bool_parse(tokens[0], tokens[1], &verbose)) {
-diff --git a/tests/plugin/bb.c b/tests/plugin/bb.c
-index 7d470a1011..df50d1fd3b 100644
---- a/tests/plugin/bb.c
-+++ b/tests/plugin/bb.c
-@@ -104,7 +104,7 @@ QEMU_PLUGIN_EXPORT int qemu_plugin_install(qemu_plugin_id_t id,
- 
-     for (i = 0; i < argc; i++) {
-         char *opt = argv[i];
--        g_autofree char **tokens = g_strsplit(opt, "=", 2);
-+        g_auto(GStrv) tokens = g_strsplit(opt, "=", 2);
-         if (g_strcmp0(tokens[0], "inline") == 0) {
-             if (!qemu_plugin_bool_parse(tokens[0], tokens[1], &do_inline)) {
-                 fprintf(stderr, "boolean argument parsing failed: %s\n", opt);
-diff --git a/tests/plugin/insn.c b/tests/plugin/insn.c
-index 9bd6e44f73..5fd3017c2b 100644
---- a/tests/plugin/insn.c
-+++ b/tests/plugin/insn.c
-@@ -189,7 +189,7 @@ QEMU_PLUGIN_EXPORT int qemu_plugin_install(qemu_plugin_id_t id,
- {
-     for (int i = 0; i < argc; i++) {
-         char *opt = argv[i];
--        g_autofree char **tokens = g_strsplit(opt, "=", 2);
-+        g_auto(GStrv) tokens = g_strsplit(opt, "=", 2);
-         if (g_strcmp0(tokens[0], "inline") == 0) {
-             if (!qemu_plugin_bool_parse(tokens[0], tokens[1], &do_inline)) {
-                 fprintf(stderr, "boolean argument parsing failed: %s\n", opt);
-diff --git a/tests/plugin/mem.c b/tests/plugin/mem.c
-index 4570f7d815..f3b9f696a0 100644
---- a/tests/plugin/mem.c
-+++ b/tests/plugin/mem.c
-@@ -83,7 +83,7 @@ QEMU_PLUGIN_EXPORT int qemu_plugin_install(qemu_plugin_id_t id,
- 
-     for (int i = 0; i < argc; i++) {
-         char *opt = argv[i];
--        g_autofree char **tokens = g_strsplit(opt, "=", 2);
-+        g_auto(GStrv) tokens = g_strsplit(opt, "=", 2);
- 
-         if (g_strcmp0(tokens[0], "haddr") == 0) {
-             if (!qemu_plugin_bool_parse(tokens[0], tokens[1], &do_haddr)) {
-diff --git a/tests/plugin/syscall.c b/tests/plugin/syscall.c
-index 96040c578f..72e1a5bf90 100644
---- a/tests/plugin/syscall.c
-+++ b/tests/plugin/syscall.c
-@@ -121,7 +121,7 @@ QEMU_PLUGIN_EXPORT int qemu_plugin_install(qemu_plugin_id_t id,
- 
-     for (int i = 0; i < argc; i++) {
-         char *opt = argv[i];
--        g_autofree char **tokens = g_strsplit(opt, "=", 2);
-+        g_auto(GStrv) tokens = g_strsplit(opt, "=", 2);
- 
-         if (g_strcmp0(tokens[0], "print") == 0) {
-             if (!qemu_plugin_bool_parse(tokens[0], tokens[1], &do_print)) {
+     /* Output short log entry of going out of sync... */
+     if (verbose || divrec.distance == 1 || diverged) {
 -- 
 2.39.2
 
