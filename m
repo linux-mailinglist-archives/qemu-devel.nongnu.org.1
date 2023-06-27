@@ -2,106 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6FDD73F8CC
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 11:30:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D251C73F8B5
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 11:27:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qE51e-00052i-Ct; Tue, 27 Jun 2023 05:30:20 -0400
+	id 1qE4yt-0003M1-Cy; Tue, 27 Jun 2023 05:27:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imbrenda@linux.ibm.com>)
- id 1qE51M-00050B-E5; Tue, 27 Jun 2023 05:30:00 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imbrenda@linux.ibm.com>)
- id 1qE51K-0006nU-F5; Tue, 27 Jun 2023 05:30:00 -0400
-Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 35R9Gdl9004026; Tue, 27 Jun 2023 09:29:56 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=date : from : to : cc :
- subject : message-id : in-reply-to : references : mime-version :
- content-type : content-transfer-encoding; s=pp1;
- bh=x606jwniIKW2Tcq8Fz6dT8e4QPuMoks1nFu47AIpEmU=;
- b=rHQ/xVZWkmLkYKTw7mAT8LwF/LVYjfoinZM0nsKzMqn87Z00PlISgfxPT+ig03It6d0D
- yrVM5K78GOwtRstjqZxzaNMPk3vBMDNL1pn2Od7tj9ZlQV3RuRTw+puFo2yY2YAiy+wY
- 1SfmoLtRjuaHXCJcMmVrILPICbKdmaCfc0MBdECnH+HlPYMnCZ6ylPF5hDp4NdLVkssm
- DDDcjtUO+++g6mqpsbCfC7h4vdhiIvyncEQY+rIvzhzy6XLo0ySCvMy9fHIxmLx1o9ez
- SOPqOoiJKp+DJzOezqNXPCM6SLbT/wlVluT+D9fumDL0otJD2qI6HIQFWzpYBeQoOTNH Mg== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rfw0d0a4s-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 27 Jun 2023 09:29:56 +0000
-Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 35R9K2Ex015625;
- Tue, 27 Jun 2023 09:29:56 GMT
-Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.108])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rfw0d0a4a-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 27 Jun 2023 09:29:55 +0000
-Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
- by ppma05fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 35R4mKxS010013;
- Tue, 27 Jun 2023 09:29:54 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
- by ppma05fra.de.ibm.com (PPS) with ESMTPS id 3rdr459c0e-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 27 Jun 2023 09:29:53 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com
- [10.20.54.102])
- by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 35R9ToEG24707756
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 27 Jun 2023 09:29:50 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 726F220040;
- Tue, 27 Jun 2023 09:29:50 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 30A112004B;
- Tue, 27 Jun 2023 09:29:50 +0000 (GMT)
-Received: from p-imbrenda (unknown [9.152.224.66])
- by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Tue, 27 Jun 2023 09:29:50 +0000 (GMT)
-Date: Tue, 27 Jun 2023 11:27:14 +0200
-From: Claudio Imbrenda <imbrenda@linux.ibm.com>
-To: Thomas Huth <thuth@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-s390x@nongnu.org, Christian Borntraeger
- <borntraeger@linux.ibm.com>, mrezanin@redhat.com, Richard Henderson
- <richard.henderson@linaro.org>, =?UTF-8?B?Q8OpZHJpYw==?= Le Goater
- <clegoate@redhat.com>, Janosch Frank <frankja@linux.ibm.com>, "Jason J .
- Herne" <jjherne@linux.ibm.com>, Marc Hartmayer <mhartmay@linux.ibm.com>,
- Eric Farman <farman@linux.ibm.com>
-Subject: Re: [PATCH v2 1/4] pc-bios/s390-ccw: Fix indentation in start.S
-Message-ID: <20230627112714.2b7e263f@p-imbrenda>
-In-Reply-To: <20230627074703.99608-2-thuth@redhat.com>
-References: <20230627074703.99608-1-thuth@redhat.com>
- <20230627074703.99608-2-thuth@redhat.com>
-Organization: IBM
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qE4yq-0003IG-UG
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 05:27:24 -0400
+Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qE4yp-0006Qk-4X
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 05:27:24 -0400
+Received: by mail-ed1-x534.google.com with SMTP id
+ 4fb4d7f45d1cf-51d805cb33aso4418089a12.3
+ for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 02:27:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1687858041; x=1690450041;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=+fMux/8SBuG7Ns+WLkwo7HjnOMz6k6/JvvcW5tQxzus=;
+ b=UKHl6K3qzgXAHQ/sKkVpAoQi+Kx72ujxeXt3XVaGjiJ/iN6YSoHpImK4KHznpGt3eZ
+ /BpYI1BoJAbCiazURT8izoCbYYuaEPyycoh5j+dSU7ZzeLLxD2F5/RNCeb1JheZP1DcA
+ oFHT/Ki0f26kk0C+GVShiRMhAta5BhNYUi1hq44H49D3CvANt4HbNu9pYWnYfR9sDqfF
+ j5Sr3E/CBmeOjikiAGM5zFTy50bHnJ8e8nAck9BX1AuNYiZL5cMIGXw/eoBTiOolIlwR
+ vlxmNK56Rezh/xQlGWCq8MoXWBlj/PyfoZChqj4DQwk9vqs+Oalp6EvvdtXXbLUWErDG
+ KCOA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1687858041; x=1690450041;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=+fMux/8SBuG7Ns+WLkwo7HjnOMz6k6/JvvcW5tQxzus=;
+ b=gw7YvQYNXk1+zFdmJNBZ73PSvLJ/H1BZkXT9CD1u0zuxtQjXRV1SBozqdubHdIf3BA
+ b/bt51k0ZUjqZZYFVGql0TKokOER0QrlSwzgPNIMT3fj5WcN3sePtRtrf1w96G6BA6FW
+ lVlxqwG8Wyc2dmI32kV3IyUvZWxmb1oZCr1gsC3P8HV2gAYIfjMMxiNawMj17O4H4I+3
+ jcuQEUxpJzf4Jh3qH0yg+dEvnzRbZuHg8kKFQYxrE+imEIYMUZhuvD4+618QMd+skVn1
+ oSXXNG0H14Y1TWUpqvJbfgqHukxzPeQGBkshlz/T6KdVgWY8tmn2DVA6WxjfmXU0eDVf
+ OU7g==
+X-Gm-Message-State: AC+VfDxVXeEMsymyZij57mWiZxLqKiOpAMntRHsMli5IloiBZmSBUdus
+ jsFQVwx7OxH9CFCAlAuKHclqlw==
+X-Google-Smtp-Source: ACHHUZ4I1ER+RSUCQ7zFkQh3qWPSf7qPwTtp0GaE0bh5ep1Rvv/JDquP599akd45dRYB2PzfEIKlqQ==
+X-Received: by 2002:a17:907:6d8c:b0:992:1b2:4090 with SMTP id
+ sb12-20020a1709076d8c00b0099201b24090mr2266456ejc.64.1687858041367; 
+ Tue, 27 Jun 2023 02:27:21 -0700 (PDT)
+Received: from [192.168.69.115] ([176.187.199.204])
+ by smtp.gmail.com with ESMTPSA id
+ j9-20020a170906050900b00989027eb30asm4314548eja.158.2023.06.27.02.27.20
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 27 Jun 2023 02:27:20 -0700 (PDT)
+Message-ID: <006a9651-db64-de90-c41e-aff7cfbaac54@linaro.org>
+Date: Tue, 27 Jun 2023 11:27:18 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: qDLfMaN8IuSLA4SP42ISjcti2paIymTv
-X-Proofpoint-ORIG-GUID: TsTIqWsdhb6eC70C27yNKh4S4kW4KzeT
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-06-27_05,2023-06-26_03,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 adultscore=0
- spamscore=0 lowpriorityscore=0 impostorscore=0 priorityscore=1501
- bulkscore=0 mlxlogscore=999 clxscore=1015 mlxscore=0 malwarescore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2305260000 definitions=main-2306270086
-Received-SPF: pass client-ip=148.163.158.5;
- envelope-from=imbrenda@linux.ibm.com; helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.12.0
+Subject: Re: [PATCH 3/4] target/alpha: Use float64_to_int64_modulo for CVTTQ
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: christoph.muellner@vrull.eu, alex.bennee@linaro.org
+References: <20230527141910.1885950-1-richard.henderson@linaro.org>
+ <20230527141910.1885950-4-richard.henderson@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230527141910.1885950-4-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::534;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x534.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H5=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -118,206 +93,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 27 Jun 2023 09:47:00 +0200
-Thomas Huth <thuth@redhat.com> wrote:
-
-> start.S is currently indented with a mixture of spaces and tabs, which
-> is quite ugly. QEMU coding style says indentation should be 4 spaces,
-> and this is also what we are using in the assembler files in the
-> tests/tcg/s390x/ folder already, so let's adjust start.S accordingly.
->=20
-> Reviewed-by: C=C3=A9dric Le Goater <clg@redhat.com>
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
-
-Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-
+On 27/5/23 16:19, Richard Henderson wrote:
+> For the most part we can use the new generic routine,
+> though exceptions need some post-processing to sort
+> invalid from integer overflow.
+> 
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->  pc-bios/s390-ccw/start.S | 136 +++++++++++++++++++--------------------
->  1 file changed, 68 insertions(+), 68 deletions(-)
->=20
-> diff --git a/pc-bios/s390-ccw/start.S b/pc-bios/s390-ccw/start.S
-> index 6072906df4..d29de09cc6 100644
-> --- a/pc-bios/s390-ccw/start.S
-> +++ b/pc-bios/s390-ccw/start.S
-> @@ -10,37 +10,37 @@
->   * directory.
->   */
-> =20
-> -        .globl _start
-> +    .globl _start
->  _start:
-> =20
-> -	larl   %r15, stack + 0x8000	/* Set up stack */
-> +    larl    %r15,stack + 0x8000     /* Set up stack */
-> =20
-> -	/* clear bss */
-> -	larl %r2, __bss_start
-> -	larl %r3, _end
-> -	slgr %r3, %r2		/* get sizeof bss */
-> -	ltgr	%r3,%r3 	/* bss empty? */
-> -	jz	done
-> -	aghi	%r3,-1
-> -	srlg	%r4,%r3,8	/* how many 256 byte chunks? */
-> -	ltgr	%r4,%r4
-> -	lgr	%r1,%r2
-> -	jz	remainder
-> +    /* clear bss */
-> +    larl    %r2,__bss_start
-> +    larl    %r3,_end
-> +    slgr    %r3,%r2    /* get sizeof bss */
-> +    ltgr    %r3,%r3    /* bss empty? */
-> +    jz      done
-> +    aghi    %r3,-1
-> +    srlg    %r4,%r3,8  /* how many 256 byte chunks? */
-> +    ltgr    %r4,%r4
-> +    lgr     %r1,%r2
-> +    jz      remainder
->  loop:
-> -	xc	0(256,%r1),0(%r1)
-> -	la	%r1,256(%r1)
-> -	brctg	%r4,loop
-> +    xc      0(256,%r1),0(%r1)
-> +    la      %r1,256(%r1)
-> +    brctg   %r4,loop
->  remainder:
-> -	larl	%r2,memsetxc
-> -	ex	%r3,0(%r2)
-> +    larl    %r2,memsetxc
-> +    ex      %r3,0(%r2)
->  done:
-> -        /* set up a pgm exception disabled wait psw */
-> -        larl	%r2, disabled_wait_psw
-> -        mvc	0x01d0(16), 0(%r2)
-> -        j      main		/* And call C */
-> +    /* set up a pgm exception disabled wait psw */
-> +    larl    %r2,disabled_wait_psw
-> +    mvc     0x01d0(16),0(%r2)
-> +    j       main       /* And call C */
-> =20
->  memsetxc:
-> -	xc	0(1,%r1),0(%r1)
-> +    xc      0(1,%r1),0(%r1)
-> =20
-> =20
->  /*
-> @@ -48,11 +48,11 @@ memsetxc:
->   *
->   * stops the current guest cpu.
->   */
-> -	.globl disabled_wait
-> +    .globl disabled_wait
->  disabled_wait:
-> -	larl	%r1,disabled_wait_psw
-> -	lpswe	0(%r1)
-> -1:	j	1b
-> +    larl    %r1,disabled_wait_psw
-> +    lpswe   0(%r1)
-> +1:  j       1b
-> =20
-> =20
->  /*
-> @@ -60,61 +60,61 @@ disabled_wait:
->   *
->   * eats one sclp interrupt
->   */
-> -        .globl consume_sclp_int
-> +    .globl consume_sclp_int
->  consume_sclp_int:
-> -        /* enable service interrupts in cr0 */
-> -        stctg   %c0,%c0,0(%r15)
-> -        oi      6(%r15),0x2
-> -        lctlg   %c0,%c0,0(%r15)
-> -        /* prepare external call handler */
-> -        larl %r1, external_new_code
-> -        stg %r1, 0x1b8
-> -        larl %r1, external_new_mask
-> -        mvc 0x1b0(8),0(%r1)
-> -        /* load enabled wait PSW */
-> -        larl %r1, enabled_wait_psw
-> -        lpswe 0(%r1)
-> +    /* enable service interrupts in cr0 */
-> +    stctg   %c0,%c0,0(%r15)
-> +    oi      6(%r15),0x2
-> +    lctlg   %c0,%c0,0(%r15)
-> +    /* prepare external call handler */
-> +    larl    %r1,external_new_code
-> +    stg     %r1,0x1b8
-> +    larl    %r1,external_new_mask
-> +    mvc     0x1b0(8),0(%r1)
-> +    /* load enabled wait PSW */
-> +    larl    %r1,enabled_wait_psw
-> +    lpswe   0(%r1)
-> =20
->  /*
->   * void consume_io_int(void)
->   *
->   * eats one I/O interrupt
->   */
-> -        .globl consume_io_int
-> +    .globl consume_io_int
->  consume_io_int:
-> -        /* enable I/O interrupts in cr6 */
-> -        stctg %c6,%c6,0(%r15)
-> -        oi    4(%r15), 0xff
-> -        lctlg %c6,%c6,0(%r15)
-> -        /* prepare i/o call handler */
-> -        larl  %r1, io_new_code
-> -        stg   %r1, 0x1f8
-> -        larl  %r1, io_new_mask
-> -        mvc   0x1f0(8),0(%r1)
-> -        /* load enabled wait PSW */
-> -        larl  %r1, enabled_wait_psw
-> -        lpswe 0(%r1)
-> +    /* enable I/O interrupts in cr6 */
-> +    stctg   %c6,%c6,0(%r15)
-> +    oi      4(%r15), 0xff
-> +    lctlg   %c6,%c6,0(%r15)
-> +    /* prepare i/o call handler */
-> +    larl    %r1,io_new_code
-> +    stg     %r1,0x1f8
-> +    larl    %r1,io_new_mask
-> +    mvc     0x1f0(8),0(%r1)
-> +    /* load enabled wait PSW */
-> +    larl    %r1,enabled_wait_psw
-> +    lpswe   0(%r1)
-> =20
->  external_new_code:
-> -        /* disable service interrupts in cr0 */
-> -        stctg   %c0,%c0,0(%r15)
-> -        ni      6(%r15),0xfd
-> -        lctlg   %c0,%c0,0(%r15)
-> -        br      %r14
-> +    /* disable service interrupts in cr0 */
-> +    stctg   %c0,%c0,0(%r15)
-> +    ni      6(%r15),0xfd
-> +    lctlg   %c0,%c0,0(%r15)
-> +    br      %r14
-> =20
->  io_new_code:
-> -        /* disable I/O interrupts in cr6 */
-> -        stctg %c6,%c6,0(%r15)
-> -        ni    4(%r15), 0x00
-> -        lctlg %c6,%c6,0(%r15)
-> -        br    %r14
-> +    /* disable I/O interrupts in cr6 */
-> +    stctg   %c6,%c6,0(%r15)
-> +    ni      4(%r15),0x00
-> +    lctlg   %c6,%c6,0(%r15)
-> +    br      %r14
-> =20
-> -        .align  8
-> +    .align  8
->  disabled_wait_psw:
-> -        .quad   0x0002000180000000,0x0000000000000000
-> +    .quad   0x0002000180000000,0x0000000000000000
->  enabled_wait_psw:
-> -        .quad   0x0302000180000000,0x0000000000000000
-> +    .quad   0x0302000180000000,0x0000000000000000
->  external_new_mask:
-> -        .quad   0x0000000180000000
-> +    .quad   0x0000000180000000
->  io_new_mask:
-> -        .quad   0x0000000180000000
-> +    .quad   0x0000000180000000
+>   target/alpha/fpu_helper.c | 85 +++++++++------------------------------
+>   1 file changed, 18 insertions(+), 67 deletions(-)
+
+To the best of my knowledge...
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
