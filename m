@@ -2,83 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0C7173F80D
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 11:03:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3AD073F841
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 11:07:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qE4an-0006Lz-JF; Tue, 27 Jun 2023 05:02:33 -0400
+	id 1qE4fS-0007Zg-Ee; Tue, 27 Jun 2023 05:07:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1qE4al-0006Ln-FU
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 05:02:32 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qE4fM-0007ZG-Oj
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 05:07:16 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1qE4aj-0000j2-Pg
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 05:02:31 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qE4fL-0002CB-4Q
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 05:07:16 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687856548;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Xeu3pvJsdFTo5dxZbtJwgs+ZMWREuP96B9eVu7oMbiI=;
- b=aHlYXHik860KMkS19aOuBLLfvQIQnay4GlqB0zXjUuqJYp2273z/eaLvdm8+3ChUmL5HWw
- O4bRrF9UtLLG7RQ1ZZRb5Fzn+46ufnVQx+CjhXvvWd7V5sAw7lM+s/ZrkLrfqsSAyPTMnb
- c55JX93D1N0LwTRbNUA2AxdJ8nKWKT4=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-550-cEEJC-JyP_uDp9moSbcHOw-1; Tue, 27 Jun 2023 05:02:27 -0400
-X-MC-Unique: cEEJC-JyP_uDp9moSbcHOw-1
-Received: by mail-ed1-f70.google.com with SMTP id
- 4fb4d7f45d1cf-51bfc9242fdso2980385a12.1
- for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 02:02:26 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687856545; x=1690448545;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Xeu3pvJsdFTo5dxZbtJwgs+ZMWREuP96B9eVu7oMbiI=;
- b=IZjsrsPNaHlcHD0qbcYep2RGqivP27Ss9Lx+rIy+6EVZXGXp3Z/H9P3wcdqX2PiaKh
- tMZaFv8JjugJkPFMhnfev0sYckSk/E8zRpa1Nqprm4AzLKlcm88SgcIWLaf9+WXZQuxJ
- cFD6+/TUj3EwvqTzUrT26UKkPTWNSkVcZBE3OObORUvrvm1e7Vc7F8a6XzQZ6t+uUHLO
- 80+RkJI964sg+0+Kh1EeBMgfHoRfX4Clvhl1mE+XP/8g0COBo0E48+eiI1L6nnaEKesO
- tPrLt8a//jFbSoTVFb7zUdDOPbst4crclgqlMKRd60zBwOlMutjUEjNyLeGLHqpaOFdf
- +YAg==
-X-Gm-Message-State: AC+VfDzYoJiPrFK0XWqqO1AOB/M13bqLyvNJsBX7DU2hnKtelaf7EM9b
- 0Fc08HMiv287eZmhjkoKYlGvFwEM0tn6dIdaBrsMPSuBTej/Al94pNnvgbw5wN7szgcZMFrkR0M
- FSVBO16E4Atii33E=
-X-Received: by 2002:aa7:dc1a:0:b0:50b:c630:a956 with SMTP id
- b26-20020aa7dc1a000000b0050bc630a956mr20046860edu.17.1687856545571; 
- Tue, 27 Jun 2023 02:02:25 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5j+HJS7qbcsQ5vyXjB1kBm/QEwYdEwI8IrShn5U6peat9c1Cv/+/lTg3AZ4XA4X+PIa40Dzg==
-X-Received: by 2002:aa7:dc1a:0:b0:50b:c630:a956 with SMTP id
- b26-20020aa7dc1a000000b0050bc630a956mr20046845edu.17.1687856545328; 
- Tue, 27 Jun 2023 02:02:25 -0700 (PDT)
-Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
- [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
- c11-20020aa7c74b000000b0051d96edccc7sm2257890eds.46.2023.06.27.02.02.24
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 27 Jun 2023 02:02:24 -0700 (PDT)
-Date: Tue, 27 Jun 2023 11:02:24 +0200
-From: Igor Mammedov <imammedo@redhat.com>
-To: Ani Sinha <anisinha@redhat.com>
-Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>, Marcel
- Apfelbaum <marcel.apfelbaum@gmail.com>, jusual@redhat.com
-Subject: Re: [RESEND PATCH v5 5/5] hw/pci: ensure PCIE devices are plugged
- into only slot 0 of PCIE port
-Message-ID: <20230627110224.36fa1b06@imammedo.users.ipa.redhat.com>
-In-Reply-To: <20230626161244.4145-6-anisinha@redhat.com>
-References: <20230626161244.4145-1-anisinha@redhat.com>
- <20230626161244.4145-6-anisinha@redhat.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+ s=mimecast20190719; t=1687856834;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=S+F0G+LAo/nfdsXPynSvGMd8iWuNylZQ5ATQzTgQzRw=;
+ b=CVmdkxPfbex7dSgCM19qaKYrS+bLOwbeONtUuUurFuf5M5IcTgJ8kxGGI1YvyMJtH/7hRY
+ sF0bZjq3CiHAPsqVDupO9SMtJnck9/LAjleDfLSagw4r7/E55WyJhciBclN92veSPpxIPt
+ TYQhDUjUoBPcLZqxV1t8+zjDcfnr/o0=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-374-i-2uuOZLMwWCtYcMIYtGZw-1; Tue, 27 Jun 2023 05:07:12 -0400
+X-MC-Unique: i-2uuOZLMwWCtYcMIYtGZw-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 262683C100BE;
+ Tue, 27 Jun 2023 09:07:12 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.48])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id D6B9CF5CD4;
+ Tue, 27 Jun 2023 09:07:10 +0000 (UTC)
+Date: Tue, 27 Jun 2023 10:07:08 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>,
+ Peter Xu <peterx@redhat.com>, Steve Sistare <steven.sistare@oracle.com>,
+ Nikolay Borisov <nborisov@suse.com>,
+ Leonardo Bras <leobras@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH 6/6] tests/qtest: migration-test: Add tests for
+ file-based migration
+Message-ID: <ZJqmvBzeZox2nrXs@redhat.com>
+References: <20230626182210.8792-1-farosas@suse.de>
+ <20230626182210.8792-7-farosas@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230626182210.8792-7-farosas@suse.de>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -100,51 +82,101 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 26 Jun 2023 21:42:44 +0530
-Ani Sinha <anisinha@redhat.com> wrote:
-
-> PCI Express ports only have one slot, so PCI Express devices can only be
-> plugged into slot 0 on a PCIE port. Enforce it.
-
-btw, previously you mentioned ARI.
-So if we turn it on, wouldn't this patch actually become regression?
-
+On Mon, Jun 26, 2023 at 03:22:10PM -0300, Fabiano Rosas wrote:
+> From: Nikolay Borisov <nborisov@suse.com>
 > 
-> CC: jusual@redhat.com
-> CC: imammedo@redhat.com
-> Resolves: https://bugzilla.redhat.com/show_bug.cgi?id=2128929
-> Signed-off-by: Ani Sinha <anisinha@redhat.com>
-> Reviewed-by: Julia Suvorova <jusual@redhat.com>
+> Add basic tests for file-based migration.
+> 
+> Signed-off-by: Nikolay Borisov <nborisov@suse.com>
+> Signed-off-by: Fabiano Rosas <farosas@suse.de>
 > ---
->  hw/pci/pci.c | 6 ++++++
->  1 file changed, 6 insertions(+)
+>  tests/qtest/migration-test.c | 66 ++++++++++++++++++++++++++++++++++++
+>  1 file changed, 66 insertions(+)
 > 
-> diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-> index bf38905b7d..426af133b0 100644
-> --- a/hw/pci/pci.c
-> +++ b/hw/pci/pci.c
-> @@ -64,6 +64,7 @@ bool pci_available = true;
->  static char *pcibus_get_dev_path(DeviceState *dev);
->  static char *pcibus_get_fw_dev_path(DeviceState *dev);
->  static void pcibus_reset(BusState *qbus);
-> +static bool pcie_has_upstream_port(PCIDevice *dev);
+> diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
+> index acb778a8cd..5a77257a53 100644
+> --- a/tests/qtest/migration-test.c
+> +++ b/tests/qtest/migration-test.c
+> @@ -763,6 +763,7 @@ static void test_migrate_end(QTestState *from, QTestState *to, bool test_dest)
+>      cleanup("migsocket");
+>      cleanup("src_serial");
+>      cleanup("dest_serial");
+> +    cleanup("migfile");
+>  }
 >  
->  static Property pci_props[] = {
->      DEFINE_PROP_PCI_DEVFN("addr", PCIDevice, devfn, -1),
-> @@ -1189,6 +1190,11 @@ static PCIDevice *do_pci_register_device(PCIDevice *pci_dev,
->                     name);
+>  #ifdef CONFIG_GNUTLS
+> @@ -1460,11 +1461,28 @@ static void test_precopy_common(MigrateCommon *args)
+>               */
+>              wait_for_migration_complete(from);
 >  
->         return NULL;
-> +    } else if (pcie_has_upstream_port(pci_dev) && PCI_SLOT(devfn)) {
-> +        error_setg(errp, "PCI: slot %d is not valid for %s,"
-> +                   " parent device only allows plugging into slot 0.",
-> +                   PCI_SLOT(devfn), name);
-> +        return NULL;
->      }
+> +            /*
+> +             * For file based migration the target must begin its
+> +             * migration after the source has finished.
+> +             */
+> +            if (strstr(connect_uri, "file:")) {
+> +                migrate_incoming_qmp(to, connect_uri, "{}");
+> +            }
+> +
+>              if (!got_src_stop) {
+>                  qtest_qmp_eventwait(from, "STOP");
+>              }
+>          } else {
+>              wait_for_migration_complete(from);
+> +
+> +            /*
+> +             * For file based migration the target must begin its
+> +             * migration after the source has finished.
+> +             */
+> +            if (strstr(connect_uri, "file:")) {
+> +                migrate_incoming_qmp(to, connect_uri, "{}");
+> +            }
+> +
+>              /*
+>               * Must wait for dst to finish reading all incoming
+>               * data on the socket before issuing 'cont' otherwise
+> @@ -1682,6 +1700,46 @@ static void test_precopy_unix_compress_nowait(void)
+>      test_precopy_common(&args);
+>  }
 >  
->      pci_dev->devfn = devfn;
+> +static void test_precopy_file(void)
+> +{
+> +    g_autofree char *uri = g_strdup_printf("file:%s/migfile", tmpfs);
+
+There's no unlink(), so I presume you're relying on the entire 'tmpfs'
+being recursively deleted ?
+
+> +    MigrateCommon args = {
+> +        .connect_uri = uri,
+> +        .listen_uri = "defer",
+> +    };
+> +
+> +    test_precopy_common(&args);
+> +}
+> +
+> +static void test_precopy_file_offset(void)
+> +{
+> +    g_autofree char *uri = g_strdup_printf("file:%s/migfile,offset=0x1000",
+> +                                           tmpfs);
+> +    MigrateCommon args = {
+> +        .connect_uri = uri,
+> +        .listen_uri = "defer",
+> +    };
+> +
+> +    test_precopy_common(&args);
+
+There ought to be something here that values 0->0x1000 bytes are
+all zeroes in the file.
+
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
