@@ -2,91 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6929B73FDCF
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 16:28:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F110673FDDA
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 16:32:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qE9gI-0008PD-Or; Tue, 27 Jun 2023 10:28:34 -0400
+	id 1qE9is-0002v2-PN; Tue, 27 Jun 2023 10:31:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qE9gE-0008Md-D0
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 10:28:31 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qE9gC-0002fB-IH
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 10:28:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687876107;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=vvvscHzt1utXqCNTvP6wbT+IqhFDhB8L9MDimQ3bhEE=;
- b=G7pEd8ikUz0psecRjJ65RDfsBfR39syqlxXMTUpBr/8cny9WX7xvQz5+gKKMKCT26NxJoi
- d11AzkAE209x8hpvRBpb0DJ6+aqaD5EtukYRi+VKrgVLup+n5a2kU134kemaVYm8qJsdEI
- W5h4ny541QorMY+8aFGKNHhi32EIci4=
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
- [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-523-9diK7FooMIyYtGK5eFQG6w-1; Tue, 27 Jun 2023 10:28:09 -0400
-X-MC-Unique: 9diK7FooMIyYtGK5eFQG6w-1
-Received: by mail-qk1-f199.google.com with SMTP id
- af79cd13be357-765a23de186so269396085a.3
- for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 07:28:04 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qE9iq-0002uj-Rn
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 10:31:12 -0400
+Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qE9ip-0003KV-1C
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 10:31:12 -0400
+Received: by mail-ej1-x62a.google.com with SMTP id
+ a640c23a62f3a-991e69499d1so202103766b.2
+ for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 07:31:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1687876269; x=1690468269;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=wWh3wbLWDZw0Yq2Bc0d2ZHSKMF/ZCOBFVqmG1YYYJ28=;
+ b=hfk69eC/TXZo3H0i0o5v7pli1F+nmb+qLPViUc0NAjl0QOv85RvHhO6LssCBpYc7o5
+ 9EaABn4ECkipuK51l/vA4gv+qAEIyhlIqA9HSrSN+sgFWzt0d02MBrQP9eeXC2vnQ+Py
+ 4CoC1HpbpX6RdY8H26JFun89rpZuk6p7Nx1shIVoGvxjebgOsCb3VsLVdJu38W46Ualf
+ HzZPYiXSnfuSOozldHXeVOqxgREjBANMJJ4fsuT59J+g6+cpP3HHplN04qBSVdq1MMpu
+ ZWWYawC+mmlvgQGuKtd73FyALR96tzW0LoFH9r81njCqChrFYy3Pyngehcqs9rtwil58
+ gnXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687876084; x=1690468084;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=vvvscHzt1utXqCNTvP6wbT+IqhFDhB8L9MDimQ3bhEE=;
- b=EkyrVvipkjBW8WhPxg3AeRbK2DB/wPLrRqyQYCMvY0AXftJfMAdFQ2MbC3IuYttKo9
- IasBApPqDB0iEYNSVn1swpeF8RQQ0JJZ7bQLfZKtb1azU/cqfAlf5mSc77phBMSS/Tup
- Twsr1c6F94EC2BNy+NByOgyBm6QhYnootyxAp2TBpmV7PM5NEqp0BBlkRukF5mV/4fbg
- MuhotcVkuOh+4+98fmsMz2CEPnDsfJQw9hGHtQTTPiuHmire3W162F3G+BVz9nZflt22
- q2HuuUSk//apiwg0gG7WbL/OakmdmbZ13PdkC5s6vCC+HAz0RKwhNgzUMCpR9zetmSBP
- bctg==
-X-Gm-Message-State: AC+VfDzkrIDglFxSqsjtn3qBP9dyKRcYQNkkBOAamtXtXAtOoesYDkAV
- ZJzFMBtjpUM4OsGTeka/DdGzyFjg4cv3Xonh2U5hiS24htbNf9unDlCvhg+e6lhixenSvwKUpwr
- rbNjxTEwkxUOtgUMndfvmGUClmQ==
-X-Received: by 2002:a05:620a:6014:b0:767:fbe:f4b with SMTP id
- dw20-20020a05620a601400b007670fbe0f4bmr1698900qkb.72.1687876084054; 
- Tue, 27 Jun 2023 07:28:04 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6+05H1ai9lN4NyiEGF13YZGlfYSh5zysdzXlm/4o/FrAsyuSB5RF0RZFgTPZ7nQgLdgI0bgA==
-X-Received: by 2002:a05:620a:6014:b0:767:fbe:f4b with SMTP id
- dw20-20020a05620a601400b007670fbe0f4bmr1698881qkb.72.1687876083793; 
- Tue, 27 Jun 2023 07:28:03 -0700 (PDT)
-Received: from redhat.com ([45.144.113.5]) by smtp.gmail.com with ESMTPSA id
- o7-20020a05620a130700b007653ea031a5sm3982528qkj.90.2023.06.27.07.28.01
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 27 Jun 2023 07:28:03 -0700 (PDT)
-Date: Tue, 27 Jun 2023 10:27:58 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Igor Mammedov <imammedo@redhat.com>
-Cc: Ani Sinha <anisinha@redhat.com>, qemu-devel@nongnu.org,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, jusual@redhat.com
-Subject: Re: [RESEND PATCH v5 5/5] hw/pci: ensure PCIE devices are plugged
- into only slot 0 of PCIE port
-Message-ID: <20230627102318-mutt-send-email-mst@kernel.org>
-References: <20230626161244.4145-1-anisinha@redhat.com>
- <20230626161244.4145-6-anisinha@redhat.com>
- <20230627110224.36fa1b06@imammedo.users.ipa.redhat.com>
- <A085E1C1-244C-4ED3-AC9A-17497BA66255@redhat.com>
- <20230627135849.37e52f87@imammedo.users.ipa.redhat.com>
- <20230627081835-mutt-send-email-mst@kernel.org>
- <20230627143844.514594e8@imammedo.users.ipa.redhat.com>
+ d=1e100.net; s=20221208; t=1687876269; x=1690468269;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=wWh3wbLWDZw0Yq2Bc0d2ZHSKMF/ZCOBFVqmG1YYYJ28=;
+ b=HIatXunKFtGZO1OdN3GUW2t35JAEupU2ctyuxS6VcW5KAssZi60UWRblBk5IDeOQuS
+ mnQuN+9komXj1xjYCdOyIC8cno01HYMjIPmBNO/pSkwopKQ1u/Es+GkIsknVaP7R9Gxc
+ Byr/e1M48fzSMqfciBk8Zx6kKgCY1vN9qgK59y/c2kGRaXIjE2oDubfxX9c8zQo/aagY
+ NzlWar4Us+V48/D6qDwfPojZkgnCsqIhkCLp3NG0N9Dz7oh3Pg5ni9Q+2EIQUW8HnVTz
+ RYJGU4cn0lPqgKfgHVqVoltm+xzSL1rvKWuakESItnUNY67yys23NBbiWozrs/fGXLAh
+ 7CmA==
+X-Gm-Message-State: AC+VfDzgEpMC27VTj2Bm3Avy8B7nSO46JrwTwnPV5H/00inyqn2i/EWd
+ ArLfs+6a5F+B/vWAEqhjIWxBwA==
+X-Google-Smtp-Source: ACHHUZ5Wv6Dz5ATY8ECZMCYPN6BHfb45Nveaq4T2+IYJbvkIVrg97Pc97telh1RSebYWrMF2XB68qQ==
+X-Received: by 2002:a17:907:934e:b0:989:5d0:3189 with SMTP id
+ bv14-20020a170907934e00b0098905d03189mr21833116ejc.33.1687876269517; 
+ Tue, 27 Jun 2023 07:31:09 -0700 (PDT)
+Received: from [192.168.69.115] ([176.187.199.204])
+ by smtp.gmail.com with ESMTPSA id
+ c15-20020a170906170f00b00986211f35bdsm4577382eje.80.2023.06.27.07.31.08
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 27 Jun 2023 07:31:09 -0700 (PDT)
+Message-ID: <30946e95-4ce8-485c-35c5-daa60ccb187c@linaro.org>
+Date: Tue, 27 Jun 2023 16:31:07 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230627143844.514594e8@imammedo.users.ipa.redhat.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.12.0
+Subject: Re: Is it possible to boot a riscv32 guest on riscv64 host using KVM?
+Content-Language: en-US
+To: Anup Patel <anup@brainfault.org>
+Cc: Yifei Jiang <jiangyifei@huawei.com>, Mingwang Li <limingwang@huawei.com>, 
+ Alistair Francis <alistair.francis@wdc.com>,
+ qemu-riscv <qemu-riscv@nongnu.org>, QEMU Developers <qemu-devel@nongnu.org>,
+ Paolo Bonzini <pbonzini@redhat.com>
+References: <deda3e29-654a-5a60-98bf-b97b0ada570e@linaro.org>
+ <CAAhSdy2JeRHeeoEc1XKQhPO3aDz4YKeyQsPT4S8yKJcYTA+AiQ@mail.gmail.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <CAAhSdy2JeRHeeoEc1XKQhPO3aDz4YKeyQsPT4S8yKJcYTA+AiQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62a.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.103,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -103,82 +96,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jun 27, 2023 at 02:38:44PM +0200, Igor Mammedov wrote:
-> On Tue, 27 Jun 2023 08:23:25 -0400
-> "Michael S. Tsirkin" <mst@redhat.com> wrote:
+On 27/6/23 15:24, Anup Patel wrote:
+> On Mon, Jun 26, 2023 at 4:57 PM Philippe Mathieu-Daudé
+> <philmd@linaro.org> wrote:
+>>
+>> Hi,
+>>
+>> I'm working on a tree-wide accelerator refactor and want
+>> to run various configs to be sure I didn't broke anything.
+>>
+>> QEMU theoretically supports running a riscv32 guest using
+>> KVM on a riscv64 host, however the documentation I'm finding
+>> only refers to riscv64 guests:
+>> https://github.com/kvm-riscv/howto/wiki
+>>
+>> So I wonder, is this a valid / supported config? If so,
+>> do you mind helping me with pointing me to a guest image
+>> and its command line?
 > 
-> > On Tue, Jun 27, 2023 at 01:58:49PM +0200, Igor Mammedov wrote:
-> > > On Tue, 27 Jun 2023 15:23:04 +0530
-> > > Ani Sinha <anisinha@redhat.com> wrote:
-> > >   
-> > > > > On 27-Jun-2023, at 2:32 PM, Igor Mammedov <imammedo@redhat.com> wrote:
-> > > > > 
-> > > > > On Mon, 26 Jun 2023 21:42:44 +0530
-> > > > > Ani Sinha <anisinha@redhat.com> wrote:
-> > > > >     
-> > > > >> PCI Express ports only have one slot, so PCI Express devices can only be
-> > > > >> plugged into slot 0 on a PCIE port. Enforce it.    
-> > > > > 
-> > > > > btw, previously you mentioned ARI.
-> > > > > So if we turn it on, wouldn't this patch actually become regression?    
-> > > > 
-> > > > If ARI breaks this, it will break other areas in QEMU too, ex anywhere pci_get_function_0() is used.
-> > > > Regardless, I think at least the tests are worth fixing, particularly the mess with hd-geo-test.  
-> > > 
-> > > I'm fine with this patch if you test it with ARI enabled and it won't break
-> > > something that has been working before this patch. Just mention what testing
-> > > you've done in commit message.  
-> > 
-> > Oh yes. That's why it was checking !vf originally. It's because the most
-> > common use of ARI is SRIOV, so it works a a kind of hack.
+> Currently, we only support running rv64 guest on rv64 host
+> and rv32 guest on rv32 host.
+
+Good news, less configs to test!
+
+Thank you,
+
+Phil.
+
+> In the future, we might support running rv32 guest on rv64 host
+> but as of now we don't see a strong push for it.
 > 
-> should we check for ARI cap instead of vf hack?
-> why we haven't that from the beginning?
-
-Maybe. ARI is a capability, driver has to activate it, so it's not 100%
-It does not help that our ARI implementation is broken in several
-places.
-
-
-> > 
-> > > >   
-> > > > >     
-> > > > >> 
-> > > > >> CC: jusual@redhat.com
-> > > > >> CC: imammedo@redhat.com
-> > > > >> Resolves: https://bugzilla.redhat.com/show_bug.cgi?id=2128929
-> > > > >> Signed-off-by: Ani Sinha <anisinha@redhat.com>
-> > > > >> Reviewed-by: Julia Suvorova <jusual@redhat.com>
-> > > > >> ---
-> > > > >> hw/pci/pci.c | 6 ++++++
-> > > > >> 1 file changed, 6 insertions(+)
-> > > > >> 
-> > > > >> diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-> > > > >> index bf38905b7d..426af133b0 100644
-> > > > >> --- a/hw/pci/pci.c
-> > > > >> +++ b/hw/pci/pci.c
-> > > > >> @@ -64,6 +64,7 @@ bool pci_available = true;
-> > > > >> static char *pcibus_get_dev_path(DeviceState *dev);
-> > > > >> static char *pcibus_get_fw_dev_path(DeviceState *dev);
-> > > > >> static void pcibus_reset(BusState *qbus);
-> > > > >> +static bool pcie_has_upstream_port(PCIDevice *dev);
-> > > > >> 
-> > > > >> static Property pci_props[] = {
-> > > > >>     DEFINE_PROP_PCI_DEVFN("addr", PCIDevice, devfn, -1),
-> > > > >> @@ -1189,6 +1190,11 @@ static PCIDevice *do_pci_register_device(PCIDevice *pci_dev,
-> > > > >>                    name);
-> > > > >> 
-> > > > >>        return NULL;
-> > > > >> +    } else if (pcie_has_upstream_port(pci_dev) && PCI_SLOT(devfn)) {
-> > > > >> +        error_setg(errp, "PCI: slot %d is not valid for %s,"
-> > > > >> +                   " parent device only allows plugging into slot 0.",
-> > > > >> +                   PCI_SLOT(devfn), name);
-> > > > >> +        return NULL;
-> > > > >>     }
-> > > > >> 
-> > > > >>     pci_dev->devfn = devfn;    
-> > > > >     
-> > > >   
-> > 
+> Regards,
+> Anup
+> 
+>>
+>> Thanks,
+>>
+>> Phil.
 
 
