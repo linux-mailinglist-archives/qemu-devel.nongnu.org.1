@@ -2,87 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73D3073FD84
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 16:13:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DFF7F73FD8B
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 16:15:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qE9R8-0007So-FH; Tue, 27 Jun 2023 10:12:54 -0400
+	id 1qE9Sp-0001r1-3x; Tue, 27 Jun 2023 10:14:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <tommy.wu@sifive.com>)
- id 1qE9R3-0007RE-EL
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 10:12:49 -0400
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+ id 1qE9Sm-0001q9-P4
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 10:14:36 -0400
+Received: from mail-ua1-x930.google.com ([2607:f8b0:4864:20::930])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <tommy.wu@sifive.com>)
- id 1qE9Qs-0007Rm-FB
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 10:12:43 -0400
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-1b7fef01fe4so14248965ad.0
- for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 07:12:27 -0700 (PDT)
+ id 1qE9Sk-0007sW-Ns
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 10:14:36 -0400
+Received: by mail-ua1-x930.google.com with SMTP id
+ a1e0cc1a2514c-786e637f06dso1418499241.2
+ for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 07:14:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1687875146; x=1690467146;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=hdi3bp4NyVKnkfK4LslSYMBZhhwBPEF1WpTjTv9MA/4=;
- b=Jscau6IVlgaodKDW3c+cHaf4ILKjqz2Xg6FSRyU6UPWpIj4pALQivb3FDM3qC3yDTX
- d7d2JRieq1gX9JghJWh6Wf8f/uZdHdndhtGC+RqgyPfZmJl7NY1WFpaxNijVt+Td3gfe
- h6Zf++jyQFJdKDBGOq17Amhmki+C72IcuIkdVCImLBk8/ASLZOVX4Eqs4n4nqhk0h2np
- XKYA6ernWz/FIbjnf/LvRFOvB2iO6IHHxVB7dQ9Hg0AXfWCjA0igPBQyOrsz0sIQTqo2
- qkby4huQZazBt/arp3RqS84CVSutJ09zL8eAXEHCvOL3IQ66oOb/uofHEe1nC+OBSc2W
- UFkg==
+ d=sifive.com; s=google; t=1687875273; x=1690467273;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=TGn1co+5gjEkoV6mjWMcrEZWQMIJS6X7hIs85QmOjtA=;
+ b=mrkOxV2AmZF4IXzSYUSrRJA8tBc0OfWId4wP7DUAIbP+YJrc6lUAAwSWf9Yz9zL2Op
+ GX6kXrVJX8w/b2EobvcqayypxCGpCHnFMDfGDUSm+j7cOJaA5WmDKDxtDGriIQC1b1F3
+ Lap1S8In133dpRSt/Om6+6A1quDauYEw13qoY2UJF5XFBseXiKoOOeFsWPBAbKz2urKI
+ LQwflmQrDJM852i2mvQUJETN59wpRnF06/sCUYasZWzPVQu/FXYsRJGYVcQxMWbKKfEx
+ wl/KiTXvoEesM9JdR49PoN8hOdYx8+qaa2ci1DVI3XbIRmK8344gbpSma1Ix9NTazpEI
+ ypjA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687875146; x=1690467146;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=hdi3bp4NyVKnkfK4LslSYMBZhhwBPEF1WpTjTv9MA/4=;
- b=LBU690wFvi0WnIYTA/fZsogSeXctrMCUy1lIpod2iy1+66m30599qGPFHsVAGwPYd7
- 6+8UvzbE4uhKL4ZyW5bSfdNqvmkgcAnzHiXFZu9xBdmy/3bGJTGnmStfm/SlLOco39wT
- 2+UQZZKItQcqV3hIpJQIYKpIbPLfsaknb+KjvKAUfSOlIga7Ml9FegQdf78he+VRP0xt
- UfriUiXTtaLzjgOuKzHxNryvCNCnQQkwf8aGYd8M8+svF7QEYzIu4v0tEteTrJuZNDTl
- FtDFPVUgVBbnmCiv9rzXD9mkACJ4ukOdZXxhyk0yYxYA7lAMqo7N/pyzq2Nm+w/CvojC
- CXfQ==
-X-Gm-Message-State: AC+VfDwNXVc9Au/n2AMRaZoM9gPgWe23UBV3o8AcW8ZWgNfb2zMxrdQ+
- +2aZTWPQOKUTrj72TAaDEDTzg3lYoP2DKK6Z1rfM4RyXMbYOQCrXUzq1Pl59EIa07p/QWwGbBaP
- 0brFdN8pZfDef5bQxANsUn4+88+yM+54OtJnyvStyV/iZcYVBkpY3x/3KUzfnOYz8s953ETVH2h
- hL
-X-Google-Smtp-Source: ACHHUZ63Cp5S210EVcY0O4Ygzss0UjFalJ4zZed/7rtlrMfDJBj+PGL63sz0DAfVCLJf8JXtnmzy3w==
-X-Received: by 2002:a17:902:b608:b0:1b5:fb8:a821 with SMTP id
- b8-20020a170902b60800b001b50fb8a821mr5582590pls.13.1687875145782; 
- Tue, 27 Jun 2023 07:12:25 -0700 (PDT)
-Received: from sw05.internal.sifive.com ([64.62.193.194])
- by smtp.gmail.com with ESMTPSA id
- e16-20020a17090301d000b001b69303db65sm6080441plh.26.2023.06.27.07.12.24
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 27 Jun 2023 07:12:25 -0700 (PDT)
-From: Tommy Wu <tommy.wu@sifive.com>
-To: qemu-devel@nongnu.org,
-	qemu-riscv@nongnu.org
-Cc: alistair.francis@wdc.com, palmer@dabbelt.com, bin.meng@windriver.com,
- jim.shu@sifive.com, frank.chang@sifive.com, liweiwei@iscas.ac.cn,
- philmd@linaro.org, Tommy Wu <tommy.wu@sifive.com>,
- Thomas Huth <thuth@redhat.com>
-Subject: [PATCH v6 3/3] tests/qtest: sifive-e-aon-watchdog-test.c: Add QTest
- of watchdog of sifive_e
-Date: Tue, 27 Jun 2023 07:12:16 -0700
-Message-Id: <20230627141216.3962299-4-tommy.wu@sifive.com>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20230627141216.3962299-1-tommy.wu@sifive.com>
-References: <20230627141216.3962299-1-tommy.wu@sifive.com>
+ d=1e100.net; s=20221208; t=1687875273; x=1690467273;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=TGn1co+5gjEkoV6mjWMcrEZWQMIJS6X7hIs85QmOjtA=;
+ b=ks4+Od5ET8H5zOLCmi37Q1T8JOYb+jx1TEHX4odxIvG9371kABZnEMZCX1Ctd7qIoJ
+ drE2DC0uOdDvjQDEfzhQRphjX6+30wHLsSaGslR82pqik9QWbi1H+VBh6692md1+paHa
+ CT1LQyiVluRWZw5tTBLM7cY1MOAtZ0bsrOxnXavhsE2+6I7QEMIAI8EtXdc7PdWXljtL
+ NunYTDkB2blTb1fPW0ZGH145C0S4FGsqyAHuQ8jFbz2lttK3M4CCGFOs+gu19zKW9oAT
+ PUaLs8l9HSQjtnLdTCV+3rlewCPzW1MsCHBeHrTHuwufURjjQRcz7Fo1TMImj8ZC/Ety
+ nZ4w==
+X-Gm-Message-State: AC+VfDxk+h60IlUOM0uXiqPkZVX5pb7m+IRtFc4auLtbQsRt0dX28gRA
+ A5FN0aT3/UiurIi0OuKEKZmgVdXWKn+gFlRFSx/gzg==
+X-Google-Smtp-Source: ACHHUZ7vQMzAf3z8bECThlKKqGxP0qHxuMp5HQ+qz7GnUIXSUCdZQ87fsOilQ7DmPdHOKCiwyIq3xQsCAVb4GZz3DVs=
+X-Received: by 2002:a67:cd97:0:b0:443:6052:43ae with SMTP id
+ r23-20020a67cd97000000b00443605243aemr3733691vsl.24.1687875273374; Tue, 27
+ Jun 2023 07:14:33 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
- envelope-from=tommy.wu@sifive.com; helo=mail-pl1-x62c.google.com
+References: <20230608164542.3675619-1-tommy.wu@sifive.com>
+ <CAKmqyKMKB2c+cfYFdPCwcst10hO7Zn7juB+u5ScV2gBTw=cjbg@mail.gmail.com>
+In-Reply-To: <CAKmqyKMKB2c+cfYFdPCwcst10hO7Zn7juB+u5ScV2gBTw=cjbg@mail.gmail.com>
+From: Tommy Wu <tommy.wu@sifive.com>
+Date: Tue, 27 Jun 2023 22:14:26 +0800
+Message-ID: <CANj3q_mvkoGv2UQLdUHw9YLDVEn5_EwWx-=r1ouJqm52XGPRHg@mail.gmail.com>
+Subject: Re: [PATCH v5 0/3] Implement the watchdog timer of HiFive 1 rev b.
+To: Alistair Francis <alistair23@gmail.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
+ palmer@dabbelt.com, bin.meng@windriver.com, jim.shu@sifive.com, 
+ frank.chang@sifive.com, liweiwei@iscas.ac.cn, philmd@linaro.org
+Content-Type: multipart/alternative; boundary="00000000000018522105ff1d16cb"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::930;
+ envelope-from=tommy.wu@sifive.com; helo=mail-ua1-x930.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, HTML_MESSAGE=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,490 +87,178 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add some simple tests of the watchdog timer in the always-on domain device
-of HiFive 1 rev b.
+--00000000000018522105ff1d16cb
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Tommy Wu <tommy.wu@sifive.com>
-Reviewed-by: Frank Chang <frank.chang@sifive.com>
-Acked-by: Thomas Huth <thuth@redhat.com>
-Acked-by: Alistair Francis <alistair.francis@wdc.com>
----
- tests/qtest/meson.build                  |   3 +
- tests/qtest/sifive-e-aon-watchdog-test.c | 450 +++++++++++++++++++++++
- 2 files changed, 453 insertions(+)
- create mode 100644 tests/qtest/sifive-e-aon-watchdog-test.c
+Hi Alistair,
+Thanks for the suggestion! I've rebased and sent patch v6.
 
-diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-index 5fa6833ad7..eb8d153a65 100644
---- a/tests/qtest/meson.build
-+++ b/tests/qtest/meson.build
-@@ -234,6 +234,9 @@ qtests_s390x = \
-    'cpu-plug-test',
-    'migration-test']
- 
-+qtests_riscv32 = \
-+  (config_all_devices.has_key('CONFIG_SIFIVE_E_AON') ? ['sifive-e-aon-watchdog-test'] : [])
-+
- qos_test_ss = ss.source_set()
- qos_test_ss.add(
-   'ac97-test.c',
-diff --git a/tests/qtest/sifive-e-aon-watchdog-test.c b/tests/qtest/sifive-e-aon-watchdog-test.c
-new file mode 100644
-index 0000000000..1f313d16ad
---- /dev/null
-+++ b/tests/qtest/sifive-e-aon-watchdog-test.c
-@@ -0,0 +1,450 @@
-+/*
-+ * QTest testcase for the watchdog timer of HiFive 1 rev b.
-+ *
-+ * Copyright (c) 2023 SiFive, Inc.
-+ *
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms and conditions of the GNU General Public License,
-+ * version 2 or later, as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope it will be useful, but WITHOUT
-+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
-+ * more details.
-+ *
-+ * You should have received a copy of the GNU General Public License along with
-+ * this program.  If not, see <http://www.gnu.org/licenses/>.
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "qemu/timer.h"
-+#include "qemu/bitops.h"
-+#include "libqtest.h"
-+#include "hw/registerfields.h"
-+#include "hw/misc/sifive_e_aon.h"
-+
-+FIELD(AON_WDT_WDOGCFG, SCALE, 0, 4)
-+FIELD(AON_WDT_WDOGCFG, RSVD0, 4, 4)
-+FIELD(AON_WDT_WDOGCFG, RSTEN, 8, 1)
-+FIELD(AON_WDT_WDOGCFG, ZEROCMP, 9, 1)
-+FIELD(AON_WDT_WDOGCFG, RSVD1, 10, 2)
-+FIELD(AON_WDT_WDOGCFG, EN_ALWAYS, 12, 1)
-+FIELD(AON_WDT_WDOGCFG, EN_CORE_AWAKE, 13, 1)
-+FIELD(AON_WDT_WDOGCFG, RSVD2, 14, 14)
-+FIELD(AON_WDT_WDOGCFG, IP0, 28, 1)
-+FIELD(AON_WDT_WDOGCFG, RSVD3, 29, 3)
-+
-+#define WDOG_BASE (0x10000000)
-+#define WDOGCFG (0x0)
-+#define WDOGCOUNT (0x8)
-+#define WDOGS (0x10)
-+#define WDOGFEED (0x18)
-+#define WDOGKEY (0x1c)
-+#define WDOGCMP0 (0x20)
-+
-+#define SIFIVE_E_AON_WDOGKEY (0x51F15E)
-+#define SIFIVE_E_AON_WDOGFEED (0xD09F00D)
-+#define SIFIVE_E_LFCLK_DEFAULT_FREQ (32768)
-+
-+static void test_init(QTestState *qts)
-+{
-+    qtest_writel(qts, WDOG_BASE + WDOGKEY, SIFIVE_E_AON_WDOGKEY);
-+    qtest_writel(qts, WDOG_BASE + WDOGCOUNT, 0);
-+
-+    qtest_writel(qts, WDOG_BASE + WDOGKEY, SIFIVE_E_AON_WDOGKEY);
-+    qtest_writel(qts, WDOG_BASE + WDOGCFG, 0);
-+
-+    qtest_writel(qts, WDOG_BASE + WDOGKEY, SIFIVE_E_AON_WDOGKEY);
-+    qtest_writel(qts, WDOG_BASE + WDOGCMP0, 0xBEEF);
-+}
-+
-+static void test_wdogcount(void)
-+{
-+    uint64_t tmp;
-+    QTestState *qts = qtest_init("-machine sifive_e");
-+
-+    test_init(qts);
-+
-+    tmp = qtest_readl(qts, WDOG_BASE + WDOGCOUNT);
-+    qtest_writel(qts, WDOG_BASE + WDOGCOUNT, 0xBEEF);
-+    g_assert(qtest_readl(qts, WDOG_BASE + WDOGCOUNT) == tmp);
-+
-+    qtest_writel(qts, WDOG_BASE + WDOGKEY, SIFIVE_E_AON_WDOGKEY);
-+    qtest_writel(qts, WDOG_BASE + WDOGCOUNT, 0xBEEF);
-+    g_assert(0xBEEF == qtest_readl(qts, WDOG_BASE + WDOGCOUNT));
-+
-+    qtest_writel(qts, WDOG_BASE + WDOGKEY, SIFIVE_E_AON_WDOGKEY);
-+    qtest_writel(qts, WDOG_BASE + WDOGCOUNT, 0xAAAAAAAA);
-+    g_assert(0x2AAAAAAA == qtest_readl(qts, WDOG_BASE + WDOGCOUNT));
-+
-+    qtest_writel(qts, WDOG_BASE + WDOGKEY, SIFIVE_E_AON_WDOGKEY);
-+    qtest_writel(qts, WDOG_BASE + WDOGFEED, 0xAAAAAAAA);
-+    g_assert(0x2AAAAAAA == qtest_readl(qts, WDOG_BASE + WDOGCOUNT));
-+
-+    qtest_writel(qts, WDOG_BASE + WDOGKEY, SIFIVE_E_AON_WDOGKEY);
-+    qtest_writel(qts, WDOG_BASE + WDOGFEED, SIFIVE_E_AON_WDOGFEED);
-+    g_assert(0 == qtest_readl(qts, WDOG_BASE + WDOGCOUNT));
-+
-+    qtest_quit(qts);
-+}
-+
-+static void test_wdogcfg(void)
-+{
-+    uint32_t tmp_cfg;
-+    QTestState *qts = qtest_init("-machine sifive_e");
-+
-+    test_init(qts);
-+
-+    tmp_cfg = qtest_readl(qts, WDOG_BASE + WDOGCFG);
-+    qtest_writel(qts, WDOG_BASE + WDOGCFG, 0xFFFFFFFF);
-+    g_assert(qtest_readl(qts, WDOG_BASE + WDOGCFG) == tmp_cfg);
-+
-+    qtest_writel(qts, WDOG_BASE + WDOGKEY, SIFIVE_E_AON_WDOGKEY);
-+    qtest_writel(qts, WDOG_BASE + WDOGCFG, 0xFFFFFFFF);
-+    g_assert(0xFFFFFFFF == qtest_readl(qts, WDOG_BASE + WDOGCFG));
-+
-+    tmp_cfg = qtest_readl(qts, WDOG_BASE + WDOGCFG);
-+    g_assert(15 == FIELD_EX32(tmp_cfg, AON_WDT_WDOGCFG, SCALE));
-+    g_assert(1 == FIELD_EX32(tmp_cfg, AON_WDT_WDOGCFG, RSTEN));
-+    g_assert(1 == FIELD_EX32(tmp_cfg, AON_WDT_WDOGCFG, ZEROCMP));
-+    g_assert(1 == FIELD_EX32(tmp_cfg, AON_WDT_WDOGCFG, EN_ALWAYS));
-+    g_assert(1 == FIELD_EX32(tmp_cfg, AON_WDT_WDOGCFG, EN_CORE_AWAKE));
-+    g_assert(1 == FIELD_EX32(tmp_cfg, AON_WDT_WDOGCFG, IP0));
-+
-+    qtest_writel(qts, WDOG_BASE + WDOGKEY, SIFIVE_E_AON_WDOGKEY);
-+    qtest_writel(qts, WDOG_BASE + WDOGCFG, 0);
-+    tmp_cfg = qtest_readl(qts, WDOG_BASE + WDOGCFG);
-+    g_assert(0 == FIELD_EX32(tmp_cfg, AON_WDT_WDOGCFG, SCALE));
-+    g_assert(0 == FIELD_EX32(tmp_cfg, AON_WDT_WDOGCFG, RSTEN));
-+    g_assert(0 == FIELD_EX32(tmp_cfg, AON_WDT_WDOGCFG, ZEROCMP));
-+    g_assert(0 == FIELD_EX32(tmp_cfg, AON_WDT_WDOGCFG, EN_ALWAYS));
-+    g_assert(0 == FIELD_EX32(tmp_cfg, AON_WDT_WDOGCFG, EN_CORE_AWAKE));
-+    g_assert(0 == FIELD_EX32(tmp_cfg, AON_WDT_WDOGCFG, IP0));
-+    g_assert(0 == qtest_readl(qts, WDOG_BASE + WDOGCFG));
-+
-+    qtest_quit(qts);
-+}
-+
-+static void test_wdogcmp0(void)
-+{
-+    uint32_t tmp;
-+    QTestState *qts = qtest_init("-machine sifive_e");
-+
-+    test_init(qts);
-+
-+    tmp = qtest_readl(qts, WDOG_BASE + WDOGCMP0);
-+    qtest_writel(qts, WDOG_BASE + WDOGCMP0, 0xBEEF);
-+    g_assert(qtest_readl(qts, WDOG_BASE + WDOGCMP0) == tmp);
-+
-+    qtest_writel(qts, WDOG_BASE + WDOGKEY, SIFIVE_E_AON_WDOGKEY);
-+    qtest_writel(qts, WDOG_BASE + WDOGCMP0, 0xBEEF);
-+    g_assert(0xBEEF == qtest_readl(qts, WDOG_BASE + WDOGCMP0));
-+
-+    qtest_quit(qts);
-+}
-+
-+static void test_wdogkey(void)
-+{
-+    QTestState *qts = qtest_init("-machine sifive_e");
-+
-+    test_init(qts);
-+
-+    g_assert(0 == qtest_readl(qts, WDOG_BASE + WDOGKEY));
-+
-+    qtest_writel(qts, WDOG_BASE + WDOGKEY, 0xFFFF);
-+    g_assert(0 == qtest_readl(qts, WDOG_BASE + WDOGKEY));
-+
-+    qtest_writel(qts, WDOG_BASE + WDOGKEY, SIFIVE_E_AON_WDOGKEY);
-+    g_assert(1 == qtest_readl(qts, WDOG_BASE + WDOGKEY));
-+
-+    qtest_writel(qts, WDOG_BASE + WDOGFEED, 0xAAAAAAAA);
-+    g_assert(0 == qtest_readl(qts, WDOG_BASE + WDOGKEY));
-+
-+    qtest_quit(qts);
-+}
-+
-+static void test_wdogfeed(void)
-+{
-+    QTestState *qts = qtest_init("-machine sifive_e");
-+
-+    test_init(qts);
-+
-+    g_assert(0 == qtest_readl(qts, WDOG_BASE + WDOGFEED));
-+
-+    qtest_writel(qts, WDOG_BASE + WDOGFEED, 0xFFFF);
-+    g_assert(0 == qtest_readl(qts, WDOG_BASE + WDOGFEED));
-+
-+    qtest_quit(qts);
-+}
-+
-+static void test_scaled_wdogs(void)
-+{
-+    uint32_t cfg;
-+    uint32_t fake_count = 0x12345678;
-+    QTestState *qts = qtest_init("-machine sifive_e");
-+
-+    test_init(qts);
-+
-+    qtest_writel(qts, WDOG_BASE + WDOGKEY, SIFIVE_E_AON_WDOGKEY);
-+    qtest_writel(qts, WDOG_BASE + WDOGCOUNT, fake_count);
-+    g_assert(qtest_readl(qts, WDOG_BASE + WDOGCOUNT) == fake_count);
-+    g_assert((uint16_t)qtest_readl(qts, WDOG_BASE + WDOGS) ==
-+             (uint16_t)fake_count);
-+
-+    for (int i = 0; i < 16; i++) {
-+        cfg = qtest_readl(qts, WDOG_BASE + WDOGCFG);
-+        cfg = FIELD_DP32(cfg, AON_WDT_WDOGCFG, SCALE, i);
-+        qtest_writel(qts, WDOG_BASE + WDOGKEY, SIFIVE_E_AON_WDOGKEY);
-+        qtest_writel(qts, WDOG_BASE + WDOGCFG, cfg);
-+        g_assert((uint16_t)qtest_readl(qts, WDOG_BASE + WDOGS) ==
-+                 (uint16_t)(fake_count >>
-+                            FIELD_EX32(cfg, AON_WDT_WDOGCFG, SCALE)));
-+    }
-+
-+    qtest_quit(qts);
-+}
-+
-+static void test_watchdog(void)
-+{
-+    uint32_t cfg;
-+    QTestState *qts = qtest_init("-machine sifive_e");
-+
-+    test_init(qts);
-+
-+    qtest_writel(qts, WDOG_BASE + WDOGKEY, SIFIVE_E_AON_WDOGKEY);
-+    qtest_writel(qts, WDOG_BASE + WDOGCMP0, SIFIVE_E_LFCLK_DEFAULT_FREQ);
-+
-+    cfg = qtest_readl(qts, WDOG_BASE + WDOGCFG);
-+    cfg = FIELD_DP32(cfg, AON_WDT_WDOGCFG, SCALE, 0);
-+    cfg = FIELD_DP32(cfg, AON_WDT_WDOGCFG, EN_ALWAYS, 1);
-+    qtest_writel(qts, WDOG_BASE + WDOGKEY, SIFIVE_E_AON_WDOGKEY);
-+    qtest_writel(qts, WDOG_BASE + WDOGCFG, cfg);
-+
-+    qtest_clock_step(qts, NANOSECONDS_PER_SECOND);
-+
-+    g_assert(qtest_readl(qts, WDOG_BASE + WDOGCOUNT) ==
-+             SIFIVE_E_LFCLK_DEFAULT_FREQ);
-+    g_assert(qtest_readl(qts, WDOG_BASE + WDOGS) ==
-+             SIFIVE_E_LFCLK_DEFAULT_FREQ);
-+
-+    cfg = qtest_readl(qts, WDOG_BASE + WDOGCFG);
-+    g_assert(0 == FIELD_EX32(cfg, AON_WDT_WDOGCFG, SCALE));
-+    g_assert(0 == FIELD_EX32(cfg, AON_WDT_WDOGCFG, RSTEN));
-+    g_assert(0 == FIELD_EX32(cfg, AON_WDT_WDOGCFG, ZEROCMP));
-+    g_assert(1 == FIELD_EX32(cfg, AON_WDT_WDOGCFG, EN_ALWAYS));
-+    g_assert(0 == FIELD_EX32(cfg, AON_WDT_WDOGCFG, EN_CORE_AWAKE));
-+    g_assert(1 == FIELD_EX32(cfg, AON_WDT_WDOGCFG, IP0));
-+
-+    qtest_writel(qts, WDOG_BASE + WDOGKEY, SIFIVE_E_AON_WDOGKEY);
-+    qtest_writel(qts, WDOG_BASE + WDOGCOUNT, 0);
-+    cfg = FIELD_DP32(cfg, AON_WDT_WDOGCFG, IP0, 0);
-+    qtest_writel(qts, WDOG_BASE + WDOGKEY, SIFIVE_E_AON_WDOGKEY);
-+    qtest_writel(qts, WDOG_BASE + WDOGCFG, cfg);
-+    cfg = qtest_readl(qts, WDOG_BASE + WDOGCFG);
-+    g_assert(0 == FIELD_EX32(cfg, AON_WDT_WDOGCFG, IP0));
-+
-+    qtest_quit(qts);
-+}
-+
-+static void test_scaled_watchdog(void)
-+{
-+    uint32_t cfg;
-+    QTestState *qts = qtest_init("-machine sifive_e");
-+
-+    test_init(qts);
-+
-+    qtest_writel(qts, WDOG_BASE + WDOGKEY, SIFIVE_E_AON_WDOGKEY);
-+    qtest_writel(qts, WDOG_BASE + WDOGCMP0, 10);
-+
-+    cfg = qtest_readl(qts, WDOG_BASE + WDOGCFG);
-+    cfg = FIELD_DP32(cfg, AON_WDT_WDOGCFG, SCALE, 15);
-+    cfg = FIELD_DP32(cfg, AON_WDT_WDOGCFG, EN_ALWAYS, 1);
-+    qtest_writel(qts, WDOG_BASE + WDOGKEY, SIFIVE_E_AON_WDOGKEY);
-+    qtest_writel(qts, WDOG_BASE + WDOGCFG, cfg);
-+
-+    qtest_clock_step(qts, NANOSECONDS_PER_SECOND * 10);
-+
-+    g_assert(qtest_readl(qts, WDOG_BASE + WDOGCOUNT) ==
-+             SIFIVE_E_LFCLK_DEFAULT_FREQ * 10);
-+
-+    g_assert(10 == qtest_readl(qts, WDOG_BASE + WDOGS));
-+
-+    cfg = qtest_readl(qts, WDOG_BASE + WDOGCFG);
-+    g_assert(15 == FIELD_EX32(cfg, AON_WDT_WDOGCFG, SCALE));
-+    g_assert(0 == FIELD_EX32(cfg, AON_WDT_WDOGCFG, RSTEN));
-+    g_assert(0 == FIELD_EX32(cfg, AON_WDT_WDOGCFG, ZEROCMP));
-+    g_assert(1 == FIELD_EX32(cfg, AON_WDT_WDOGCFG, EN_ALWAYS));
-+    g_assert(0 == FIELD_EX32(cfg, AON_WDT_WDOGCFG, EN_CORE_AWAKE));
-+    g_assert(1 == FIELD_EX32(cfg, AON_WDT_WDOGCFG, IP0));
-+
-+    qtest_writel(qts, WDOG_BASE + WDOGKEY, SIFIVE_E_AON_WDOGKEY);
-+    qtest_writel(qts, WDOG_BASE + WDOGCOUNT, 0);
-+    cfg = FIELD_DP32(cfg, AON_WDT_WDOGCFG, IP0, 0);
-+    qtest_writel(qts, WDOG_BASE + WDOGKEY, SIFIVE_E_AON_WDOGKEY);
-+    qtest_writel(qts, WDOG_BASE + WDOGCFG, cfg);
-+    cfg = qtest_readl(qts, WDOG_BASE + WDOGCFG);
-+    g_assert(0 == FIELD_EX32(cfg, AON_WDT_WDOGCFG, IP0));
-+
-+    qtest_quit(qts);
-+}
-+
-+static void test_periodic_int(void)
-+{
-+    uint32_t cfg;
-+    QTestState *qts = qtest_init("-machine sifive_e");
-+
-+    test_init(qts);
-+
-+    qtest_writel(qts, WDOG_BASE + WDOGKEY, SIFIVE_E_AON_WDOGKEY);
-+    qtest_writel(qts, WDOG_BASE + WDOGCMP0, SIFIVE_E_LFCLK_DEFAULT_FREQ);
-+
-+    cfg = qtest_readl(qts, WDOG_BASE + WDOGCFG);
-+    cfg = FIELD_DP32(cfg, AON_WDT_WDOGCFG, SCALE, 0);
-+    cfg = FIELD_DP32(cfg, AON_WDT_WDOGCFG, ZEROCMP, 1);
-+    cfg = FIELD_DP32(cfg, AON_WDT_WDOGCFG, EN_ALWAYS, 1);
-+    qtest_writel(qts, WDOG_BASE + WDOGKEY, SIFIVE_E_AON_WDOGKEY);
-+    qtest_writel(qts, WDOG_BASE + WDOGCFG, cfg);
-+
-+    qtest_clock_step(qts, NANOSECONDS_PER_SECOND);
-+
-+    g_assert(0 == qtest_readl(qts, WDOG_BASE + WDOGCOUNT));
-+    g_assert(0 == qtest_readl(qts, WDOG_BASE + WDOGS));
-+
-+    cfg = qtest_readl(qts, WDOG_BASE + WDOGCFG);
-+    g_assert(0 == FIELD_EX32(cfg, AON_WDT_WDOGCFG, SCALE));
-+    g_assert(0 == FIELD_EX32(cfg, AON_WDT_WDOGCFG, RSTEN));
-+    g_assert(1 == FIELD_EX32(cfg, AON_WDT_WDOGCFG, ZEROCMP));
-+    g_assert(1 == FIELD_EX32(cfg, AON_WDT_WDOGCFG, EN_ALWAYS));
-+    g_assert(0 == FIELD_EX32(cfg, AON_WDT_WDOGCFG, EN_CORE_AWAKE));
-+    g_assert(1 == FIELD_EX32(cfg, AON_WDT_WDOGCFG, IP0));
-+
-+    cfg = FIELD_DP32(cfg, AON_WDT_WDOGCFG, IP0, 0);
-+    qtest_writel(qts, WDOG_BASE + WDOGKEY, SIFIVE_E_AON_WDOGKEY);
-+    qtest_writel(qts, WDOG_BASE + WDOGCFG, cfg);
-+    cfg = qtest_readl(qts, WDOG_BASE + WDOGCFG);
-+    g_assert(0 == FIELD_EX32(cfg, AON_WDT_WDOGCFG, IP0));
-+
-+    qtest_clock_step(qts, NANOSECONDS_PER_SECOND);
-+
-+    g_assert(0 == qtest_readl(qts, WDOG_BASE + WDOGCOUNT));
-+    g_assert(0 == qtest_readl(qts, WDOG_BASE + WDOGS));
-+
-+    cfg = qtest_readl(qts, WDOG_BASE + WDOGCFG);
-+    g_assert(0 == FIELD_EX32(cfg, AON_WDT_WDOGCFG, SCALE));
-+    g_assert(0 == FIELD_EX32(cfg, AON_WDT_WDOGCFG, RSTEN));
-+    g_assert(1 == FIELD_EX32(cfg, AON_WDT_WDOGCFG, ZEROCMP));
-+    g_assert(1 == FIELD_EX32(cfg, AON_WDT_WDOGCFG, EN_ALWAYS));
-+    g_assert(0 == FIELD_EX32(cfg, AON_WDT_WDOGCFG, EN_CORE_AWAKE));
-+    g_assert(1 == FIELD_EX32(cfg, AON_WDT_WDOGCFG, IP0));
-+
-+    cfg = FIELD_DP32(cfg, AON_WDT_WDOGCFG, IP0, 0);
-+    qtest_writel(qts, WDOG_BASE + WDOGKEY, SIFIVE_E_AON_WDOGKEY);
-+    qtest_writel(qts, WDOG_BASE + WDOGCFG, cfg);
-+    cfg = qtest_readl(qts, WDOG_BASE + WDOGCFG);
-+    g_assert(0 == FIELD_EX32(cfg, AON_WDT_WDOGCFG, IP0));
-+
-+    qtest_quit(qts);
-+}
-+
-+static void test_enable_disable(void)
-+{
-+    uint32_t cfg;
-+    QTestState *qts = qtest_init("-machine sifive_e");
-+
-+    test_init(qts);
-+
-+    qtest_writel(qts, WDOG_BASE + WDOGKEY, SIFIVE_E_AON_WDOGKEY);
-+    qtest_writel(qts, WDOG_BASE + WDOGCMP0, 10);
-+
-+    cfg = qtest_readl(qts, WDOG_BASE + WDOGCFG);
-+    cfg = FIELD_DP32(cfg, AON_WDT_WDOGCFG, SCALE, 15);
-+    cfg = FIELD_DP32(cfg, AON_WDT_WDOGCFG, EN_ALWAYS, 1);
-+    qtest_writel(qts, WDOG_BASE + WDOGKEY, SIFIVE_E_AON_WDOGKEY);
-+    qtest_writel(qts, WDOG_BASE + WDOGCFG, cfg);
-+
-+    qtest_clock_step(qts, NANOSECONDS_PER_SECOND * 2);
-+
-+    g_assert(qtest_readl(qts, WDOG_BASE + WDOGCOUNT) ==
-+             SIFIVE_E_LFCLK_DEFAULT_FREQ * 2);
-+    g_assert(2 == qtest_readl(qts, WDOG_BASE + WDOGS));
-+
-+    cfg = qtest_readl(qts, WDOG_BASE + WDOGCFG);
-+    g_assert(15 == FIELD_EX32(cfg, AON_WDT_WDOGCFG, SCALE));
-+    g_assert(0 == FIELD_EX32(cfg, AON_WDT_WDOGCFG, RSTEN));
-+    g_assert(0 == FIELD_EX32(cfg, AON_WDT_WDOGCFG, ZEROCMP));
-+    g_assert(1 == FIELD_EX32(cfg, AON_WDT_WDOGCFG, EN_ALWAYS));
-+    g_assert(0 == FIELD_EX32(cfg, AON_WDT_WDOGCFG, EN_CORE_AWAKE));
-+    g_assert(0 == FIELD_EX32(cfg, AON_WDT_WDOGCFG, IP0));
-+
-+    qtest_writel(qts, WDOG_BASE + WDOGKEY, SIFIVE_E_AON_WDOGKEY);
-+    cfg = FIELD_DP32(cfg, AON_WDT_WDOGCFG, EN_ALWAYS, 0);
-+    qtest_writel(qts, WDOG_BASE + WDOGCFG, cfg);
-+
-+    qtest_clock_step(qts, NANOSECONDS_PER_SECOND * 8);
-+
-+    g_assert(qtest_readl(qts, WDOG_BASE + WDOGCOUNT) ==
-+             SIFIVE_E_LFCLK_DEFAULT_FREQ * 2);
-+    g_assert(2 == qtest_readl(qts, WDOG_BASE + WDOGS));
-+
-+    cfg = qtest_readl(qts, WDOG_BASE + WDOGCFG);
-+    g_assert(15 == FIELD_EX32(cfg, AON_WDT_WDOGCFG, SCALE));
-+    g_assert(0 == FIELD_EX32(cfg, AON_WDT_WDOGCFG, RSTEN));
-+    g_assert(0 == FIELD_EX32(cfg, AON_WDT_WDOGCFG, ZEROCMP));
-+    g_assert(0 == FIELD_EX32(cfg, AON_WDT_WDOGCFG, EN_ALWAYS));
-+    g_assert(0 == FIELD_EX32(cfg, AON_WDT_WDOGCFG, EN_CORE_AWAKE));
-+    g_assert(0 == FIELD_EX32(cfg, AON_WDT_WDOGCFG, IP0));
-+
-+    cfg = FIELD_DP32(cfg, AON_WDT_WDOGCFG, EN_ALWAYS, 1);
-+    qtest_writel(qts, WDOG_BASE + WDOGKEY, SIFIVE_E_AON_WDOGKEY);
-+    qtest_writel(qts, WDOG_BASE + WDOGCFG, cfg);
-+
-+    qtest_clock_step(qts, NANOSECONDS_PER_SECOND * 8);
-+
-+    g_assert(qtest_readl(qts, WDOG_BASE + WDOGCOUNT) ==
-+             SIFIVE_E_LFCLK_DEFAULT_FREQ * 10);
-+    g_assert(10 == qtest_readl(qts, WDOG_BASE + WDOGS));
-+
-+    cfg = qtest_readl(qts, WDOG_BASE + WDOGCFG);
-+    g_assert(15 == FIELD_EX32(cfg, AON_WDT_WDOGCFG, SCALE));
-+    g_assert(0 == FIELD_EX32(cfg, AON_WDT_WDOGCFG, RSTEN));
-+    g_assert(0 == FIELD_EX32(cfg, AON_WDT_WDOGCFG, ZEROCMP));
-+    g_assert(1 == FIELD_EX32(cfg, AON_WDT_WDOGCFG, EN_ALWAYS));
-+    g_assert(0 == FIELD_EX32(cfg, AON_WDT_WDOGCFG, EN_CORE_AWAKE));
-+    g_assert(1 == FIELD_EX32(cfg, AON_WDT_WDOGCFG, IP0));
-+
-+    qtest_writel(qts, WDOG_BASE + WDOGKEY, SIFIVE_E_AON_WDOGKEY);
-+    qtest_writel(qts, WDOG_BASE + WDOGCOUNT, 0);
-+    cfg = FIELD_DP32(cfg, AON_WDT_WDOGCFG, IP0, 0);
-+    qtest_writel(qts, WDOG_BASE + WDOGKEY, SIFIVE_E_AON_WDOGKEY);
-+    qtest_writel(qts, WDOG_BASE + WDOGCFG, cfg);
-+    cfg = qtest_readl(qts, WDOG_BASE + WDOGCFG);
-+    g_assert(0 == FIELD_EX32(cfg, AON_WDT_WDOGCFG, IP0));
-+
-+    qtest_quit(qts);
-+}
-+
-+int main(int argc, char *argv[])
-+{
-+    g_test_init(&argc, &argv, NULL);
-+    qtest_add_func("/sifive-e-aon-watchdog-test/wdogcount",
-+                   test_wdogcount);
-+    qtest_add_func("/sifive-e-aon-watchdog-test/wdogcfg",
-+                   test_wdogcfg);
-+    qtest_add_func("/sifive-e-aon-watchdog-test/wdogcmp0",
-+                   test_wdogcmp0);
-+    qtest_add_func("/sifive-e-aon-watchdog-test/wdogkey",
-+                   test_wdogkey);
-+    qtest_add_func("/sifive-e-aon-watchdog-test/wdogfeed",
-+                   test_wdogfeed);
-+    qtest_add_func("/sifive-e-aon-watchdog-test/scaled_wdogs",
-+                   test_scaled_wdogs);
-+    qtest_add_func("/sifive-e-aon-watchdog-test/watchdog",
-+                   test_watchdog);
-+    qtest_add_func("/sifive-e-aon-watchdog-test/scaled_watchdog",
-+                   test_scaled_watchdog);
-+    qtest_add_func("/sifive-e-aon-watchdog-test/periodic_int",
-+                   test_periodic_int);
-+    qtest_add_func("/sifive-e-aon-watchdog-test/enable_disable",
-+                   test_enable_disable);
-+    return g_test_run();
-+}
--- 
-2.31.1
+Best Regards,
+Tommy
 
+On Thu, Jun 22, 2023 at 10:10=E2=80=AFAM Alistair Francis <alistair23@gmail=
+.com>
+wrote:
+
+> On Fri, Jun 9, 2023 at 2:46=E2=80=AFAM Tommy Wu <tommy.wu@sifive.com> wro=
+te:
+> >
+> > The HiFive 1 rev b includes a watchdog module based on a 32-bit
+> > counter. The watchdog timer is in the always-on domain device of
+> > HiFive 1 rev b, so this patch added the AON device to the sifive_e
+> > machine. This patch only implemented the functionality of the
+> > watchdog timer, not all the functionality of the AON device.
+> >
+> > You can test the patchset by the QTest
+> tests/qtest/sifive-e-aon-watchdog-test.c
+> >
+> > Changes since v1 ( Thank Alistair for the feedback ):
+> > - Use the register field macro.
+> > - Delete the public create function. The board creates the aon device
+> itself.
+> > - Keep all variable declarations at the top of the code block.
+> >
+> > Changes since v2 ( Thank Alistair for the feedback ):
+> > - Delete the declaration and definition of the create function.
+> >
+> > Changes since v3 ( Thank Alistair and Thomas for the feedback ):
+> > - Use `device_class_set_props()` for the properties in sifive_e_aon
+> device.
+> > - Add SPDX identifier in QTEST.
+> > - Use libqtest.h in QTEST.
+> > - Let the statements on one line as long as they still fit into 80
+> columns.
+> >
+> > Changes since v4 ( Thank Phil for the feedback ):
+> > - Improve code style consistency.
+> > - Move the timer create function to the sifive_e_aon_init.
+> > - Allocate the sifive_e_aon device state in the SoC.
+> >
+> > Tommy Wu (3):
+> >   hw/misc: sifive_e_aon: Support the watchdog timer of HiFive 1 rev b.
+> >   hw/riscv: sifive_e: Support the watchdog timer of HiFive 1 rev b.
+> >   tests/qtest: sifive-e-aon-watchdog-test.c: Add QTest of watchdog of
+> >     sifive_e
+>
+> Do you mind rebasing this on
+> https://github.com/alistair23/qemu/tree/riscv-to-apply.next ? Then I
+> will apply it
+>
+> Alistair
+>
+> >
+> >  hw/misc/Kconfig                          |   3 +
+> >  hw/misc/meson.build                      |   1 +
+> >  hw/misc/sifive_e_aon.c                   | 319 ++++++++++++++++
+> >  hw/riscv/Kconfig                         |   1 +
+> >  hw/riscv/sifive_e.c                      |  17 +-
+> >  include/hw/misc/sifive_e_aon.h           |  60 +++
+> >  include/hw/riscv/sifive_e.h              |   9 +-
+> >  tests/qtest/meson.build                  |   3 +
+> >  tests/qtest/sifive-e-aon-watchdog-test.c | 450 +++++++++++++++++++++++
+> >  9 files changed, 858 insertions(+), 5 deletions(-)
+> >  create mode 100644 hw/misc/sifive_e_aon.c
+> >  create mode 100644 include/hw/misc/sifive_e_aon.h
+> >  create mode 100644 tests/qtest/sifive-e-aon-watchdog-test.c
+> >
+> > --
+> > 2.27.0
+> >
+> >
+>
+
+--00000000000018522105ff1d16cb
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">Hi=C2=A0Alistair,<br>Thanks for the suggestion! I&#39;ve r=
+ebased and sent patch v6.<br><br><div>Best Regards,</div><div>Tommy</div></=
+div><br><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On=
+ Thu, Jun 22, 2023 at 10:10=E2=80=AFAM Alistair Francis &lt;<a href=3D"mail=
+to:alistair23@gmail.com">alistair23@gmail.com</a>&gt; wrote:<br></div><bloc=
+kquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:=
+1px solid rgb(204,204,204);padding-left:1ex">On Fri, Jun 9, 2023 at 2:46=E2=
+=80=AFAM Tommy Wu &lt;<a href=3D"mailto:tommy.wu@sifive.com" target=3D"_bla=
+nk">tommy.wu@sifive.com</a>&gt; wrote:<br>
+&gt;<br>
+&gt; The HiFive 1 rev b includes a watchdog module based on a 32-bit<br>
+&gt; counter. The watchdog timer is in the always-on domain device of<br>
+&gt; HiFive 1 rev b, so this patch added the AON device to the sifive_e<br>
+&gt; machine. This patch only implemented the functionality of the<br>
+&gt; watchdog timer, not all the functionality of the AON device.<br>
+&gt;<br>
+&gt; You can test the patchset by the QTest tests/qtest/sifive-e-aon-watchd=
+og-test.c<br>
+&gt;<br>
+&gt; Changes since v1 ( Thank Alistair for the feedback ):<br>
+&gt; - Use the register field macro.<br>
+&gt; - Delete the public create function. The board creates the aon device =
+itself.<br>
+&gt; - Keep all variable declarations at the top of the code block.<br>
+&gt;<br>
+&gt; Changes since v2 ( Thank Alistair for the feedback ):<br>
+&gt; - Delete the declaration and definition of the create function.<br>
+&gt;<br>
+&gt; Changes since v3 ( Thank Alistair and Thomas for the feedback ):<br>
+&gt; - Use `device_class_set_props()` for the properties in sifive_e_aon de=
+vice.<br>
+&gt; - Add SPDX identifier in QTEST.<br>
+&gt; - Use libqtest.h in QTEST.<br>
+&gt; - Let the statements on one line as long as they still fit into 80 col=
+umns.<br>
+&gt;<br>
+&gt; Changes since v4 ( Thank Phil for the feedback ):<br>
+&gt; - Improve code style consistency.<br>
+&gt; - Move the timer create function to the sifive_e_aon_init.<br>
+&gt; - Allocate the sifive_e_aon device state in the SoC.<br>
+&gt;<br>
+&gt; Tommy Wu (3):<br>
+&gt;=C2=A0 =C2=A0hw/misc: sifive_e_aon: Support the watchdog timer of HiFiv=
+e 1 rev b.<br>
+&gt;=C2=A0 =C2=A0hw/riscv: sifive_e: Support the watchdog timer of HiFive 1=
+ rev b.<br>
+&gt;=C2=A0 =C2=A0tests/qtest: sifive-e-aon-watchdog-test.c: Add QTest of wa=
+tchdog of<br>
+&gt;=C2=A0 =C2=A0 =C2=A0sifive_e<br>
+<br>
+Do you mind rebasing this on<br>
+<a href=3D"https://github.com/alistair23/qemu/tree/riscv-to-apply.next" rel=
+=3D"noreferrer" target=3D"_blank">https://github.com/alistair23/qemu/tree/r=
+iscv-to-apply.next</a> ? Then I<br>
+will apply it<br>
+<br>
+Alistair<br>
+<br>
+&gt;<br>
+&gt;=C2=A0 hw/misc/Kconfig=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 |=C2=A0 =C2=A03 +<br>
+&gt;=C2=A0 hw/misc/meson.build=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 |=C2=A0 =C2=A01 +<br>
+&gt;=C2=A0 hw/misc/sifive_e_aon.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0| 319 ++++++++++++++++<br>
+&gt;=C2=A0 hw/riscv/Kconfig=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0|=C2=A0 =C2=A01 +<br>
+&gt;=C2=A0 hw/riscv/sifive_e.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 |=C2=A0 17 +-<br>
+&gt;=C2=A0 include/hw/misc/sifive_e_aon.h=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0|=C2=A0 60 +++<br>
+&gt;=C2=A0 include/hw/riscv/sifive_e.h=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 |=C2=A0 =C2=A09 +-<br>
+&gt;=C2=A0 tests/qtest/meson.build=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 =C2=A0 =C2=A0 |=C2=A0 =C2=A03 +<br>
+&gt;=C2=A0 tests/qtest/sifive-e-aon-watchdog-test.c | 450 +++++++++++++++++=
+++++++<br>
+&gt;=C2=A0 9 files changed, 858 insertions(+), 5 deletions(-)<br>
+&gt;=C2=A0 create mode 100644 hw/misc/sifive_e_aon.c<br>
+&gt;=C2=A0 create mode 100644 include/hw/misc/sifive_e_aon.h<br>
+&gt;=C2=A0 create mode 100644 tests/qtest/sifive-e-aon-watchdog-test.c<br>
+&gt;<br>
+&gt; --<br>
+&gt; 2.27.0<br>
+&gt;<br>
+&gt;<br>
+</blockquote></div>
+
+--00000000000018522105ff1d16cb--
 
