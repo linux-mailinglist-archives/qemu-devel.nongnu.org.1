@@ -2,91 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D75774020F
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 19:22:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99AF67401FF
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 19:20:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qECO3-00059t-7I; Tue, 27 Jun 2023 13:21:55 -0400
+	id 1qECKl-00062x-CO; Tue, 27 Jun 2023 13:18:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
- id 1qECNx-000596-QP
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 13:21:49 -0400
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
- id 1qECNv-0007Xj-0B
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 13:21:49 -0400
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-1b80512a7f2so16316435ad.3
- for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 10:21:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1687886505; x=1690478505;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=ocgcj9ocFz4dGLxQbcdzreMDkT8Xly2z25jNP5RA0Ro=;
- b=dDz9KhwaYAeWxiyhwhKOVbfLU+6o3tRSTZ9P4n1EhxDSsGne1Fg8HlS37KriqTr7SU
- vJD2/uitqtzBIY8eBBuu95/tutj98g/Bpx52/6giUD6tr72oY8BEa9iNKuGya4KFZ1T7
- MhYYOmGb2NTZO+8EshUKtQKNPTocIQ/XPoNKXJfv2n0ycSN+zSLUc0TkOOi02hacO1jU
- mhdrsO7zKC4l37UP1bzIRtPZPjh3gcDakMQ1amX1r9AnNyPR5T/xjVlHnlBQ0SVHs893
- vUujWaZsSseo3Ei4oz6DeLGpKr4UhRqVVj0tqM5fJLktHHc0nV31AX5zVsZxHqsdSoeU
- M5MA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687886505; x=1690478505;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=ocgcj9ocFz4dGLxQbcdzreMDkT8Xly2z25jNP5RA0Ro=;
- b=CXiIIP02ibPhodl6/ZDtrI1Q51waHmnzv40vkD7V8h12ScFQdFNveougnDgLnqhPTx
- MnT4J79Is7CYgqLPy4i4SSZgPzBJxrqPBmlz4pKJRTO+01ECMm7LwNDuONsJmFPUppHp
- gDLe/NWK6+hdvbExYIRsV/tNr0G3sf4zG7ftA0j4KdU0JylWe4RPUt1BZ7UkREzY4oGn
- y70IT7bYvmv+v6nkuDcmiMcvwGuJii65FkJ7zm+sLol2NQiq8y4QhrrbAmLw2AzzYO4t
- JGqmlA3OrtAXk+xk6A7LshoquX+CE30rSu79Gmg+AWlMlFL1lwGj4j/pHsKVt8wyFpb8
- 9ZPg==
-X-Gm-Message-State: AC+VfDzlmzUBFOlUziALvLy/hl1CT4PsllHLtO1Skj1Bs0LHuQiWMok4
- dVn+mz2n+qD43euKpIPpYCus26j4CFY09173a5qr0jaIhIGVVQjC13It5AHwqrhCj3qNebVAKJo
- yQZv2QZJwRsfS7MRrbvRd1G5eNE2haFGTVqab47BXcJ51kqgEEKCO6OIqwtEdW7cRSSF6gIwOrU
- rrhh0=
-X-Google-Smtp-Source: ACHHUZ4weljTMb51E3SnfFpLgJUc2iXFwjFoOxIXuOKPDdiqGLZzXrvTl82J07/c9aXvmbEyPF/2CA==
-X-Received: by 2002:a17:902:dad1:b0:1b5:5e7a:8505 with SMTP id
- q17-20020a170902dad100b001b55e7a8505mr10327626plx.4.1687886505093; 
- Tue, 27 Jun 2023 10:21:45 -0700 (PDT)
-Received: from MaxdeMBP.localdomain (125-228-20-175.hinet-ip.hinet.net.
- [125.228.20.175]) by smtp.gmail.com with ESMTPSA id
- jb13-20020a170903258d00b001b8052d58a0sm3796145plb.305.2023.06.27.10.21.42
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 27 Jun 2023 10:21:44 -0700 (PDT)
-From: Max Chou <max.chou@sifive.com>
-To: qemu-devel@nongnu.org,
-	qemu-riscv@nongnu.org
-Cc: dbarboza@ventanamicro.com, Dickon Hood <dickon.hood@codethink.co.uk>,
- Nazar Kazakov <nazar.kazakov@codethink.co.uk>,
- William Salmon <will.salmon@codethink.co.uk>,
- Kiran Ostrolenk <kiran.ostrolenk@codethink.co.uk>,
- Max Chou <max.chou@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Lawrence Hunter <lawrence.hunter@codethink.co.uk>
-Subject: [PATCH v5 08/15] target/riscv: Add Zvbb ISA extension support
-Date: Wed, 28 Jun 2023 01:17:39 +0800
-Message-Id: <20230627171759.64653-9-max.chou@sifive.com>
-X-Mailer: git-send-email 2.39.2 (Apple Git-143)
-In-Reply-To: <20230627171759.64653-1-max.chou@sifive.com>
-References: <20230627171759.64653-1-max.chou@sifive.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
- envelope-from=max.chou@sifive.com; helo=mail-pl1-x636.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+ (Exim 4.90_1) (envelope-from <hc981@poolhem.se>) id 1qECKa-0005xv-Hy
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 13:18:20 -0400
+Received: from mailout12.inleed.net ([2a0b:dc80:cafe:112::1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <hc981@poolhem.se>) id 1qECKX-0006Ot-2k
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 13:18:20 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=poolhem.se; 
+ s=x;
+ h=Content-Transfer-Encoding:Content-Type:Mime-Version:References:
+ In-Reply-To:Message-Id:Subject:Cc:To:From:Date:Sender:Reply-To:Content-ID:
+ Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+ :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+ List-Post:List-Owner:List-Archive;
+ bh=vZNom1S9UEKkFH3jeHCnReQzdj9+4WycGzz9hGTRgzU=; b=P6+yZ2CJV+Lw1zMHLVy8vibBQj
+ /CkF/acatMxO1erz0K8Y3wlV0eCZ3FZq1vjX3Tqt9m2ddDZ06zuXmo3XCmF8FaXgHB24jeKiWYwMS
+ BYVc6n6BDZvfwOCGTYjfqjHLPnpIRGvxn8psAdcoKamRbH41mFsC/G2/j16m5OePJiw0o6IoqE4DR
+ 0NKdK38k0/rlFUgsMXLRDfCCdoFmjXMJuJzSzc/TS2LdjwEqr2AvuzjpBimzVNuwYIv5jA0F7EE+w
+ FQhjuwwRV7V17HJDH6zTA85PvV9djvJeRdeWqXyNqQppZV1nGa13D5dsicNSqg9sr4fYO+KJNCIUK
+ 8Pi9j9jQ==;
+Received: from [213.115.245.47] (helo=balrog.lkp.se)
+ by ns12.inleed.net with esmtpa (Exim 4.96-58-g4e9ed49f8)
+ (envelope-from <hc981@poolhem.se>) id 1qECKV-00DylI-2W;
+ Tue, 27 Jun 2023 19:18:15 +0200
+Date: Tue, 27 Jun 2023 19:18:09 +0200
+From: Henrik Carlqvist <hc981@poolhem.se>
+To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Cc: berrange@redhat.com, qemu-devel@nongnu.org
+Subject: Re: [PATCH v8] Emulate dip switch language layout settings on SUN
+ keyboard
+Message-Id: <20230627191809.66da4f26.hc981@poolhem.se>
+In-Reply-To: <ac53e898-a50c-bbde-4232-541547d1ec82@ilande.co.uk>
+References: <20230328191958.3e3eb5e4.hc981@poolhem.se>
+ <ZCMq/imcAq0ApLQp@redhat.com>
+ <20230328221608.328ab80f.hc981@poolhem.se>
+ <20230430225533.1a57879a.hc981@poolhem.se>
+ <20230608181439.7ea3a5c5.hc981@poolhem.se>
+ <4e8f027a-ca00-c54f-ef2f-f0df1f5b2f9e@ilande.co.uk>
+ <20230610122912.0fc157de.hc981@poolhem.se>
+ <20230611014751.22f22674.hc94@poolhem.se>
+ <ZJFv4Hq8RMVOUum/@redhat.com>
+ <20230620215043.6124c450.hc94@poolhem.se>
+ <ZJKiGBJNQa5Kx+Dg@redhat.com>
+ <20230621201447.712ec73a.hc94@poolhem.se>
+ <20230623203007.56d3d182.hc981@poolhem.se>
+ <ac53e898-a50c-bbde-4232-541547d1ec82@ilande.co.uk>
+X-Mailer: Sylpheed version 0.9.7 (GTK+ 1.2.10; i686-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Authenticated-Id: henrik@poolhem.se
+Received-SPF: none client-ip=2a0b:dc80:cafe:112::1;
+ envelope-from=hc981@poolhem.se; helo=mailout12.inleed.net
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.103,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,533 +84,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Dickon Hood <dickon.hood@codethink.co.uk>
+On Tue, 27 Jun 2023 07:33:46 +0100
+Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk> wrote:
+> I think this is about ready to merge: the only thing I'd like to change is
+> to swap unsigned char to uint8_t in the signature of
+> sunkbd_layout_dip_switch(), but I can fix that up myself and queue it to my
+> qemu-sparc branch.
 
-This commit adds support for the Zvbb vector-crypto extension, which
-consists of the following instructions:
+Thanks for accepting my patch! Please let me know if you want me to do
+anything more!
 
-* vrol.[vv,vx]
-* vror.[vv,vx,vi]
-* vbrev8.v
-* vrev8.v
-* vandn.[vv,vx]
-* vbrev.v
-* vclz.v
-* vctz.v
-* vcpop.v
-* vwsll.[vv,vx,vi]
-
-Translation functions are defined in
-`target/riscv/insn_trans/trans_rvvk.c.inc` and helpers are defined in
-`target/riscv/vcrypto_helper.c`.
-
-Co-authored-by: Nazar Kazakov <nazar.kazakov@codethink.co.uk>
-Co-authored-by: William Salmon <will.salmon@codethink.co.uk>
-Co-authored-by: Kiran Ostrolenk <kiran.ostrolenk@codethink.co.uk>
-[max.chou@sifive.com: Fix imm mode of vror.vi]
-Signed-off-by: Nazar Kazakov <nazar.kazakov@codethink.co.uk>
-Signed-off-by: William Salmon <will.salmon@codethink.co.uk>
-Signed-off-by: Kiran Ostrolenk <kiran.ostrolenk@codethink.co.uk>
-Signed-off-by: Dickon Hood <dickon.hood@codethink.co.uk>
-Signed-off-by: Max Chou <max.chou@sifive.com>
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-[max.chou@sifive.com: Exposed x-zvbb property]
----
- target/riscv/cpu.c                       |  12 ++
- target/riscv/cpu_cfg.h                   |   1 +
- target/riscv/helper.h                    |  62 +++++++++
- target/riscv/insn32.decode               |  20 +++
- target/riscv/insn_trans/trans_rvvk.c.inc | 164 +++++++++++++++++++++++
- target/riscv/vcrypto_helper.c            | 138 +++++++++++++++++++
- 6 files changed, 397 insertions(+)
-
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 174ae9fe1a..7e24eef3f1 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -111,6 +111,7 @@ static const struct isa_ext_data isa_edata_arr[] = {
-     ISA_EXT_DATA_ENTRY(zksed, PRIV_VERSION_1_12_0, ext_zksed),
-     ISA_EXT_DATA_ENTRY(zksh, PRIV_VERSION_1_12_0, ext_zksh),
-     ISA_EXT_DATA_ENTRY(zkt, PRIV_VERSION_1_12_0, ext_zkt),
-+    ISA_EXT_DATA_ENTRY(zvbb, PRIV_VERSION_1_12_0, ext_zvbb),
-     ISA_EXT_DATA_ENTRY(zvbc, PRIV_VERSION_1_12_0, ext_zvbc),
-     ISA_EXT_DATA_ENTRY(zve32f, PRIV_VERSION_1_10_0, ext_zve32f),
-     ISA_EXT_DATA_ENTRY(zve64f, PRIV_VERSION_1_10_0, ext_zve64f),
-@@ -1185,6 +1186,16 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
-         return;
-     }
- 
-+    /*
-+     * In principle Zve*x would also suffice here, were they supported
-+     * in qemu
-+     */
-+    if (cpu->cfg.ext_zvbb && !cpu->cfg.ext_zve32f) {
-+        error_setg(errp,
-+                   "Vector crypto extensions require V or Zve* extensions");
-+        return;
-+    }
-+
-     if (cpu->cfg.ext_zvbc && !cpu->cfg.ext_zve64f) {
-         error_setg(errp, "Zvbc extension requires V or Zve64{f,d} extensions");
-         return;
-@@ -1690,6 +1701,7 @@ static Property riscv_cpu_extensions[] = {
-     DEFINE_PROP_BOOL("x-zvfhmin", RISCVCPU, cfg.ext_zvfhmin, false),
- 
-     /* Vector cryptography extensions */
-+    DEFINE_PROP_BOOL("x-zvbb", RISCVCPU, cfg.ext_zvbb, false),
-     DEFINE_PROP_BOOL("x-zvbc", RISCVCPU, cfg.ext_zvbc, false),
- 
-     DEFINE_PROP_END_OF_LIST(),
-diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
-index b6e9bd2e99..0d43281dd7 100644
---- a/target/riscv/cpu_cfg.h
-+++ b/target/riscv/cpu_cfg.h
-@@ -83,6 +83,7 @@ struct RISCVCPUConfig {
-     bool ext_zve32f;
-     bool ext_zve64f;
-     bool ext_zve64d;
-+    bool ext_zvbb;
-     bool ext_zvbc;
-     bool ext_zmmul;
-     bool ext_zvfh;
-diff --git a/target/riscv/helper.h b/target/riscv/helper.h
-index be0f0f1058..fbb0ceca81 100644
---- a/target/riscv/helper.h
-+++ b/target/riscv/helper.h
-@@ -1159,3 +1159,65 @@ DEF_HELPER_6(vclmul_vv, void, ptr, ptr, ptr, ptr, env, i32)
- DEF_HELPER_6(vclmul_vx, void, ptr, ptr, tl, ptr, env, i32)
- DEF_HELPER_6(vclmulh_vv, void, ptr, ptr, ptr, ptr, env, i32)
- DEF_HELPER_6(vclmulh_vx, void, ptr, ptr, tl, ptr, env, i32)
-+
-+DEF_HELPER_6(vror_vv_b, void, ptr, ptr, ptr, ptr, env, i32)
-+DEF_HELPER_6(vror_vv_h, void, ptr, ptr, ptr, ptr, env, i32)
-+DEF_HELPER_6(vror_vv_w, void, ptr, ptr, ptr, ptr, env, i32)
-+DEF_HELPER_6(vror_vv_d, void, ptr, ptr, ptr, ptr, env, i32)
-+
-+DEF_HELPER_6(vror_vx_b, void, ptr, ptr, tl, ptr, env, i32)
-+DEF_HELPER_6(vror_vx_h, void, ptr, ptr, tl, ptr, env, i32)
-+DEF_HELPER_6(vror_vx_w, void, ptr, ptr, tl, ptr, env, i32)
-+DEF_HELPER_6(vror_vx_d, void, ptr, ptr, tl, ptr, env, i32)
-+
-+DEF_HELPER_6(vrol_vv_b, void, ptr, ptr, ptr, ptr, env, i32)
-+DEF_HELPER_6(vrol_vv_h, void, ptr, ptr, ptr, ptr, env, i32)
-+DEF_HELPER_6(vrol_vv_w, void, ptr, ptr, ptr, ptr, env, i32)
-+DEF_HELPER_6(vrol_vv_d, void, ptr, ptr, ptr, ptr, env, i32)
-+
-+DEF_HELPER_6(vrol_vx_b, void, ptr, ptr, tl, ptr, env, i32)
-+DEF_HELPER_6(vrol_vx_h, void, ptr, ptr, tl, ptr, env, i32)
-+DEF_HELPER_6(vrol_vx_w, void, ptr, ptr, tl, ptr, env, i32)
-+DEF_HELPER_6(vrol_vx_d, void, ptr, ptr, tl, ptr, env, i32)
-+
-+DEF_HELPER_5(vrev8_v_b, void, ptr, ptr, ptr, env, i32)
-+DEF_HELPER_5(vrev8_v_h, void, ptr, ptr, ptr, env, i32)
-+DEF_HELPER_5(vrev8_v_w, void, ptr, ptr, ptr, env, i32)
-+DEF_HELPER_5(vrev8_v_d, void, ptr, ptr, ptr, env, i32)
-+DEF_HELPER_5(vbrev8_v_b, void, ptr, ptr, ptr, env, i32)
-+DEF_HELPER_5(vbrev8_v_h, void, ptr, ptr, ptr, env, i32)
-+DEF_HELPER_5(vbrev8_v_w, void, ptr, ptr, ptr, env, i32)
-+DEF_HELPER_5(vbrev8_v_d, void, ptr, ptr, ptr, env, i32)
-+DEF_HELPER_5(vbrev_v_b, void, ptr, ptr, ptr, env, i32)
-+DEF_HELPER_5(vbrev_v_h, void, ptr, ptr, ptr, env, i32)
-+DEF_HELPER_5(vbrev_v_w, void, ptr, ptr, ptr, env, i32)
-+DEF_HELPER_5(vbrev_v_d, void, ptr, ptr, ptr, env, i32)
-+
-+DEF_HELPER_5(vclz_v_b, void, ptr, ptr, ptr, env, i32)
-+DEF_HELPER_5(vclz_v_h, void, ptr, ptr, ptr, env, i32)
-+DEF_HELPER_5(vclz_v_w, void, ptr, ptr, ptr, env, i32)
-+DEF_HELPER_5(vclz_v_d, void, ptr, ptr, ptr, env, i32)
-+DEF_HELPER_5(vctz_v_b, void, ptr, ptr, ptr, env, i32)
-+DEF_HELPER_5(vctz_v_h, void, ptr, ptr, ptr, env, i32)
-+DEF_HELPER_5(vctz_v_w, void, ptr, ptr, ptr, env, i32)
-+DEF_HELPER_5(vctz_v_d, void, ptr, ptr, ptr, env, i32)
-+DEF_HELPER_5(vcpop_v_b, void, ptr, ptr, ptr, env, i32)
-+DEF_HELPER_5(vcpop_v_h, void, ptr, ptr, ptr, env, i32)
-+DEF_HELPER_5(vcpop_v_w, void, ptr, ptr, ptr, env, i32)
-+DEF_HELPER_5(vcpop_v_d, void, ptr, ptr, ptr, env, i32)
-+
-+DEF_HELPER_6(vwsll_vv_b, void, ptr, ptr, ptr, ptr, env, i32)
-+DEF_HELPER_6(vwsll_vv_h, void, ptr, ptr, ptr, ptr, env, i32)
-+DEF_HELPER_6(vwsll_vv_w, void, ptr, ptr, ptr, ptr, env, i32)
-+DEF_HELPER_6(vwsll_vx_b, void, ptr, ptr, tl, ptr, env, i32)
-+DEF_HELPER_6(vwsll_vx_h, void, ptr, ptr, tl, ptr, env, i32)
-+DEF_HELPER_6(vwsll_vx_w, void, ptr, ptr, tl, ptr, env, i32)
-+
-+DEF_HELPER_6(vandn_vv_b, void, ptr, ptr, ptr, ptr, env, i32)
-+DEF_HELPER_6(vandn_vv_h, void, ptr, ptr, ptr, ptr, env, i32)
-+DEF_HELPER_6(vandn_vv_w, void, ptr, ptr, ptr, ptr, env, i32)
-+DEF_HELPER_6(vandn_vv_d, void, ptr, ptr, ptr, ptr, env, i32)
-+DEF_HELPER_6(vandn_vx_b, void, ptr, ptr, tl, ptr, env, i32)
-+DEF_HELPER_6(vandn_vx_h, void, ptr, ptr, tl, ptr, env, i32)
-+DEF_HELPER_6(vandn_vx_w, void, ptr, ptr, tl, ptr, env, i32)
-+DEF_HELPER_6(vandn_vx_d, void, ptr, ptr, tl, ptr, env, i32)
-diff --git a/target/riscv/insn32.decode b/target/riscv/insn32.decode
-index 52cd92e262..aa6d3185a2 100644
---- a/target/riscv/insn32.decode
-+++ b/target/riscv/insn32.decode
-@@ -37,6 +37,7 @@
- %imm_u    12:s20                 !function=ex_shift_12
- %imm_bs   30:2                   !function=ex_shift_3
- %imm_rnum 20:4
-+%imm_z6   26:1 15:5
- 
- # Argument sets:
- &empty
-@@ -82,6 +83,7 @@
- @r_vm    ...... vm:1 ..... ..... ... ..... ....... &rmrr %rs2 %rs1 %rd
- @r_vm_1  ...... . ..... ..... ... ..... .......    &rmrr vm=1 %rs2 %rs1 %rd
- @r_vm_0  ...... . ..... ..... ... ..... .......    &rmrr vm=0 %rs2 %rs1 %rd
-+@r2_zimm6  ..... . vm:1 ..... ..... ... ..... .......  &rmrr %rs2 rs1=%imm_z6 %rd
- @r2_zimm11 . zimm:11  ..... ... ..... ....... %rs1 %rd
- @r2_zimm10 .. zimm:10  ..... ... ..... ....... %rs1 %rd
- @r2_s    .......   ..... ..... ... ..... ....... %rs2 %rs1
-@@ -914,3 +916,21 @@ vclmul_vv   001100 . ..... ..... 010 ..... 1010111 @r_vm
- vclmul_vx   001100 . ..... ..... 110 ..... 1010111 @r_vm
- vclmulh_vv  001101 . ..... ..... 010 ..... 1010111 @r_vm
- vclmulh_vx  001101 . ..... ..... 110 ..... 1010111 @r_vm
-+
-+# *** Zvbb vector crypto extension ***
-+vrol_vv     010101 . ..... ..... 000 ..... 1010111 @r_vm
-+vrol_vx     010101 . ..... ..... 100 ..... 1010111 @r_vm
-+vror_vv     010100 . ..... ..... 000 ..... 1010111 @r_vm
-+vror_vx     010100 . ..... ..... 100 ..... 1010111 @r_vm
-+vror_vi     01010. . ..... ..... 011 ..... 1010111 @r2_zimm6
-+vbrev8_v    010010 . ..... 01000 010 ..... 1010111 @r2_vm
-+vrev8_v     010010 . ..... 01001 010 ..... 1010111 @r2_vm
-+vandn_vv    000001 . ..... ..... 000 ..... 1010111 @r_vm
-+vandn_vx    000001 . ..... ..... 100 ..... 1010111 @r_vm
-+vbrev_v     010010 . ..... 01010 010 ..... 1010111 @r2_vm
-+vclz_v      010010 . ..... 01100 010 ..... 1010111 @r2_vm
-+vctz_v      010010 . ..... 01101 010 ..... 1010111 @r2_vm
-+vcpop_v     010010 . ..... 01110 010 ..... 1010111 @r2_vm
-+vwsll_vv    110101 . ..... ..... 000 ..... 1010111 @r_vm
-+vwsll_vx    110101 . ..... ..... 100 ..... 1010111 @r_vm
-+vwsll_vi    110101 . ..... ..... 011 ..... 1010111 @r_vm
-diff --git a/target/riscv/insn_trans/trans_rvvk.c.inc b/target/riscv/insn_trans/trans_rvvk.c.inc
-index 552b08a2fd..0e4b337613 100644
---- a/target/riscv/insn_trans/trans_rvvk.c.inc
-+++ b/target/riscv/insn_trans/trans_rvvk.c.inc
-@@ -60,3 +60,167 @@ static bool vclmul_vx_check(DisasContext *s, arg_rmrr *a)
- 
- GEN_VX_MASKED_TRANS(vclmul_vx, vclmul_vx_check)
- GEN_VX_MASKED_TRANS(vclmulh_vx, vclmul_vx_check)
-+
-+/*
-+ * Zvbb
-+ */
-+
-+#define GEN_OPIVI_GVEC_TRANS_CHECK(NAME, IMM_MODE, OPIVX, SUF, CHECK)   \
-+    static bool trans_##NAME(DisasContext *s, arg_rmrr *a)              \
-+    {                                                                   \
-+        if (CHECK(s, a)) {                                              \
-+            static gen_helper_opivx *const fns[4] = {                   \
-+                gen_helper_##OPIVX##_b,                                 \
-+                gen_helper_##OPIVX##_h,                                 \
-+                gen_helper_##OPIVX##_w,                                 \
-+                gen_helper_##OPIVX##_d,                                 \
-+            };                                                          \
-+            return do_opivi_gvec(s, a, tcg_gen_gvec_##SUF, fns[s->sew], \
-+                                 IMM_MODE);                             \
-+        }                                                               \
-+        return false;                                                   \
-+    }
-+
-+#define GEN_OPIVV_GVEC_TRANS_CHECK(NAME, SUF, CHECK)                     \
-+    static bool trans_##NAME(DisasContext *s, arg_rmrr *a)               \
-+    {                                                                    \
-+        if (CHECK(s, a)) {                                               \
-+            static gen_helper_gvec_4_ptr *const fns[4] = {               \
-+                gen_helper_##NAME##_b,                                   \
-+                gen_helper_##NAME##_h,                                   \
-+                gen_helper_##NAME##_w,                                   \
-+                gen_helper_##NAME##_d,                                   \
-+            };                                                           \
-+            return do_opivv_gvec(s, a, tcg_gen_gvec_##SUF, fns[s->sew]); \
-+        }                                                                \
-+        return false;                                                    \
-+    }
-+
-+#define GEN_OPIVX_GVEC_SHIFT_TRANS_CHECK(NAME, SUF, CHECK)       \
-+    static bool trans_##NAME(DisasContext *s, arg_rmrr *a)       \
-+    {                                                            \
-+        if (CHECK(s, a)) {                                       \
-+            static gen_helper_opivx *const fns[4] = {            \
-+                gen_helper_##NAME##_b,                           \
-+                gen_helper_##NAME##_h,                           \
-+                gen_helper_##NAME##_w,                           \
-+                gen_helper_##NAME##_d,                           \
-+            };                                                   \
-+            return do_opivx_gvec_shift(s, a, tcg_gen_gvec_##SUF, \
-+                                       fns[s->sew]);             \
-+        }                                                        \
-+        return false;                                            \
-+    }
-+
-+static bool zvbb_vv_check(DisasContext *s, arg_rmrr *a)
-+{
-+    return opivv_check(s, a) && s->cfg_ptr->ext_zvbb == true;
-+}
-+
-+static bool zvbb_vx_check(DisasContext *s, arg_rmrr *a)
-+{
-+    return opivx_check(s, a) && s->cfg_ptr->ext_zvbb == true;
-+}
-+
-+/* vrol.v[vx] */
-+GEN_OPIVV_GVEC_TRANS_CHECK(vrol_vv, rotlv, zvbb_vv_check)
-+GEN_OPIVX_GVEC_SHIFT_TRANS_CHECK(vrol_vx, rotls, zvbb_vx_check)
-+
-+/* vror.v[vxi] */
-+GEN_OPIVV_GVEC_TRANS_CHECK(vror_vv, rotrv, zvbb_vv_check)
-+GEN_OPIVX_GVEC_SHIFT_TRANS_CHECK(vror_vx, rotrs, zvbb_vx_check)
-+GEN_OPIVI_GVEC_TRANS_CHECK(vror_vi, IMM_TRUNC_SEW, vror_vx, rotri, zvbb_vx_check)
-+
-+#define GEN_OPIVX_GVEC_TRANS_CHECK(NAME, SUF, CHECK)                     \
-+    static bool trans_##NAME(DisasContext *s, arg_rmrr *a)               \
-+    {                                                                    \
-+        if (CHECK(s, a)) {                                               \
-+            static gen_helper_opivx *const fns[4] = {                    \
-+                gen_helper_##NAME##_b,                                   \
-+                gen_helper_##NAME##_h,                                   \
-+                gen_helper_##NAME##_w,                                   \
-+                gen_helper_##NAME##_d,                                   \
-+            };                                                           \
-+            return do_opivx_gvec(s, a, tcg_gen_gvec_##SUF, fns[s->sew]); \
-+        }                                                                \
-+        return false;                                                    \
-+    }
-+
-+/* vandn.v[vx] */
-+GEN_OPIVV_GVEC_TRANS_CHECK(vandn_vv, andc, zvbb_vv_check)
-+GEN_OPIVX_GVEC_TRANS_CHECK(vandn_vx, andcs, zvbb_vx_check)
-+
-+#define GEN_OPIV_TRANS(NAME, CHECK)                                        \
-+    static bool trans_##NAME(DisasContext *s, arg_rmr *a)                  \
-+    {                                                                      \
-+        if (CHECK(s, a)) {                                                 \
-+            uint32_t data = 0;                                             \
-+            static gen_helper_gvec_3_ptr *const fns[4] = {                 \
-+                gen_helper_##NAME##_b,                                     \
-+                gen_helper_##NAME##_h,                                     \
-+                gen_helper_##NAME##_w,                                     \
-+                gen_helper_##NAME##_d,                                     \
-+            };                                                             \
-+            TCGLabel *over = gen_new_label();                              \
-+            tcg_gen_brcond_tl(TCG_COND_GEU, cpu_vstart, cpu_vl, over);     \
-+                                                                           \
-+            data = FIELD_DP32(data, VDATA, VM, a->vm);                     \
-+            data = FIELD_DP32(data, VDATA, LMUL, s->lmul);                 \
-+            data = FIELD_DP32(data, VDATA, VTA, s->vta);                   \
-+            data = FIELD_DP32(data, VDATA, VTA_ALL_1S, s->cfg_vta_all_1s); \
-+            data = FIELD_DP32(data, VDATA, VMA, s->vma);                   \
-+            tcg_gen_gvec_3_ptr(vreg_ofs(s, a->rd), vreg_ofs(s, 0),         \
-+                               vreg_ofs(s, a->rs2), cpu_env,               \
-+                               s->cfg_ptr->vlen / 8, s->cfg_ptr->vlen / 8, \
-+                               data, fns[s->sew]);                         \
-+            mark_vs_dirty(s);                                              \
-+            gen_set_label(over);                                           \
-+            return true;                                                   \
-+        }                                                                  \
-+        return false;                                                      \
-+    }
-+
-+static bool zvbb_opiv_check(DisasContext *s, arg_rmr *a)
-+{
-+    return s->cfg_ptr->ext_zvbb == true &&
-+           require_rvv(s) &&
-+           vext_check_isa_ill(s) &&
-+           vext_check_ss(s, a->rd, a->rs2, a->vm);
-+}
-+
-+GEN_OPIV_TRANS(vbrev8_v, zvbb_opiv_check)
-+GEN_OPIV_TRANS(vrev8_v, zvbb_opiv_check)
-+GEN_OPIV_TRANS(vbrev_v, zvbb_opiv_check)
-+GEN_OPIV_TRANS(vclz_v, zvbb_opiv_check)
-+GEN_OPIV_TRANS(vctz_v, zvbb_opiv_check)
-+GEN_OPIV_TRANS(vcpop_v, zvbb_opiv_check)
-+
-+static bool vwsll_vv_check(DisasContext *s, arg_rmrr *a)
-+{
-+    return s->cfg_ptr->ext_zvbb && opivv_widen_check(s, a);
-+}
-+
-+static bool vwsll_vx_check(DisasContext *s, arg_rmrr *a)
-+{
-+    return s->cfg_ptr->ext_zvbb && opivx_widen_check(s, a);
-+}
-+
-+/* OPIVI without GVEC IR */
-+#define GEN_OPIVI_WIDEN_TRANS(NAME, IMM_MODE, OPIVX, CHECK)                  \
-+    static bool trans_##NAME(DisasContext *s, arg_rmrr *a)                   \
-+    {                                                                        \
-+        if (CHECK(s, a)) {                                                   \
-+            static gen_helper_opivx *const fns[3] = {                        \
-+                gen_helper_##OPIVX##_b,                                      \
-+                gen_helper_##OPIVX##_h,                                      \
-+                gen_helper_##OPIVX##_w,                                      \
-+            };                                                               \
-+            return opivi_trans(a->rd, a->rs1, a->rs2, a->vm, fns[s->sew], s, \
-+                               IMM_MODE);                                    \
-+        }                                                                    \
-+        return false;                                                        \
-+    }
-+
-+GEN_OPIVV_WIDEN_TRANS(vwsll_vv, vwsll_vv_check)
-+GEN_OPIVX_WIDEN_TRANS(vwsll_vx, vwsll_vx_check)
-+GEN_OPIVI_WIDEN_TRANS(vwsll_vi, IMM_ZX, vwsll_vx, vwsll_vx_check)
-diff --git a/target/riscv/vcrypto_helper.c b/target/riscv/vcrypto_helper.c
-index 8b7c63d499..11239b59d6 100644
---- a/target/riscv/vcrypto_helper.c
-+++ b/target/riscv/vcrypto_helper.c
-@@ -20,6 +20,7 @@
- #include "qemu/osdep.h"
- #include "qemu/host-utils.h"
- #include "qemu/bitops.h"
-+#include "qemu/bswap.h"
- #include "cpu.h"
- #include "exec/memop.h"
- #include "exec/exec-all.h"
-@@ -57,3 +58,140 @@ RVVCALL(OPIVV2, vclmulh_vv, OP_UUU_D, H8, H8, H8, clmulh64)
- GEN_VEXT_VV(vclmulh_vv, 8)
- RVVCALL(OPIVX2, vclmulh_vx, OP_UUU_D, H8, H8, clmulh64)
- GEN_VEXT_VX(vclmulh_vx, 8)
-+
-+RVVCALL(OPIVV2, vror_vv_b, OP_UUU_B, H1, H1, H1, ror8)
-+RVVCALL(OPIVV2, vror_vv_h, OP_UUU_H, H2, H2, H2, ror16)
-+RVVCALL(OPIVV2, vror_vv_w, OP_UUU_W, H4, H4, H4, ror32)
-+RVVCALL(OPIVV2, vror_vv_d, OP_UUU_D, H8, H8, H8, ror64)
-+GEN_VEXT_VV(vror_vv_b, 1)
-+GEN_VEXT_VV(vror_vv_h, 2)
-+GEN_VEXT_VV(vror_vv_w, 4)
-+GEN_VEXT_VV(vror_vv_d, 8)
-+
-+RVVCALL(OPIVX2, vror_vx_b, OP_UUU_B, H1, H1, ror8)
-+RVVCALL(OPIVX2, vror_vx_h, OP_UUU_H, H2, H2, ror16)
-+RVVCALL(OPIVX2, vror_vx_w, OP_UUU_W, H4, H4, ror32)
-+RVVCALL(OPIVX2, vror_vx_d, OP_UUU_D, H8, H8, ror64)
-+GEN_VEXT_VX(vror_vx_b, 1)
-+GEN_VEXT_VX(vror_vx_h, 2)
-+GEN_VEXT_VX(vror_vx_w, 4)
-+GEN_VEXT_VX(vror_vx_d, 8)
-+
-+RVVCALL(OPIVV2, vrol_vv_b, OP_UUU_B, H1, H1, H1, rol8)
-+RVVCALL(OPIVV2, vrol_vv_h, OP_UUU_H, H2, H2, H2, rol16)
-+RVVCALL(OPIVV2, vrol_vv_w, OP_UUU_W, H4, H4, H4, rol32)
-+RVVCALL(OPIVV2, vrol_vv_d, OP_UUU_D, H8, H8, H8, rol64)
-+GEN_VEXT_VV(vrol_vv_b, 1)
-+GEN_VEXT_VV(vrol_vv_h, 2)
-+GEN_VEXT_VV(vrol_vv_w, 4)
-+GEN_VEXT_VV(vrol_vv_d, 8)
-+
-+RVVCALL(OPIVX2, vrol_vx_b, OP_UUU_B, H1, H1, rol8)
-+RVVCALL(OPIVX2, vrol_vx_h, OP_UUU_H, H2, H2, rol16)
-+RVVCALL(OPIVX2, vrol_vx_w, OP_UUU_W, H4, H4, rol32)
-+RVVCALL(OPIVX2, vrol_vx_d, OP_UUU_D, H8, H8, rol64)
-+GEN_VEXT_VX(vrol_vx_b, 1)
-+GEN_VEXT_VX(vrol_vx_h, 2)
-+GEN_VEXT_VX(vrol_vx_w, 4)
-+GEN_VEXT_VX(vrol_vx_d, 8)
-+
-+static uint64_t brev8(uint64_t val)
-+{
-+    val = ((val & 0x5555555555555555ull) << 1) |
-+          ((val & 0xAAAAAAAAAAAAAAAAull) >> 1);
-+    val = ((val & 0x3333333333333333ull) << 2) |
-+          ((val & 0xCCCCCCCCCCCCCCCCull) >> 2);
-+    val = ((val & 0x0F0F0F0F0F0F0F0Full) << 4) |
-+          ((val & 0xF0F0F0F0F0F0F0F0ull) >> 4);
-+
-+    return val;
-+}
-+
-+RVVCALL(OPIVV1, vbrev8_v_b, OP_UU_B, H1, H1, brev8)
-+RVVCALL(OPIVV1, vbrev8_v_h, OP_UU_H, H2, H2, brev8)
-+RVVCALL(OPIVV1, vbrev8_v_w, OP_UU_W, H4, H4, brev8)
-+RVVCALL(OPIVV1, vbrev8_v_d, OP_UU_D, H8, H8, brev8)
-+GEN_VEXT_V(vbrev8_v_b, 1)
-+GEN_VEXT_V(vbrev8_v_h, 2)
-+GEN_VEXT_V(vbrev8_v_w, 4)
-+GEN_VEXT_V(vbrev8_v_d, 8)
-+
-+#define DO_IDENTITY(a) (a)
-+RVVCALL(OPIVV1, vrev8_v_b, OP_UU_B, H1, H1, DO_IDENTITY)
-+RVVCALL(OPIVV1, vrev8_v_h, OP_UU_H, H2, H2, bswap16)
-+RVVCALL(OPIVV1, vrev8_v_w, OP_UU_W, H4, H4, bswap32)
-+RVVCALL(OPIVV1, vrev8_v_d, OP_UU_D, H8, H8, bswap64)
-+GEN_VEXT_V(vrev8_v_b, 1)
-+GEN_VEXT_V(vrev8_v_h, 2)
-+GEN_VEXT_V(vrev8_v_w, 4)
-+GEN_VEXT_V(vrev8_v_d, 8)
-+
-+#define DO_ANDN(a, b) ((a) & ~(b))
-+RVVCALL(OPIVV2, vandn_vv_b, OP_UUU_B, H1, H1, H1, DO_ANDN)
-+RVVCALL(OPIVV2, vandn_vv_h, OP_UUU_H, H2, H2, H2, DO_ANDN)
-+RVVCALL(OPIVV2, vandn_vv_w, OP_UUU_W, H4, H4, H4, DO_ANDN)
-+RVVCALL(OPIVV2, vandn_vv_d, OP_UUU_D, H8, H8, H8, DO_ANDN)
-+GEN_VEXT_VV(vandn_vv_b, 1)
-+GEN_VEXT_VV(vandn_vv_h, 2)
-+GEN_VEXT_VV(vandn_vv_w, 4)
-+GEN_VEXT_VV(vandn_vv_d, 8)
-+
-+RVVCALL(OPIVX2, vandn_vx_b, OP_UUU_B, H1, H1, DO_ANDN)
-+RVVCALL(OPIVX2, vandn_vx_h, OP_UUU_H, H2, H2, DO_ANDN)
-+RVVCALL(OPIVX2, vandn_vx_w, OP_UUU_W, H4, H4, DO_ANDN)
-+RVVCALL(OPIVX2, vandn_vx_d, OP_UUU_D, H8, H8, DO_ANDN)
-+GEN_VEXT_VX(vandn_vx_b, 1)
-+GEN_VEXT_VX(vandn_vx_h, 2)
-+GEN_VEXT_VX(vandn_vx_w, 4)
-+GEN_VEXT_VX(vandn_vx_d, 8)
-+
-+RVVCALL(OPIVV1, vbrev_v_b, OP_UU_B, H1, H1, revbit8)
-+RVVCALL(OPIVV1, vbrev_v_h, OP_UU_H, H2, H2, revbit16)
-+RVVCALL(OPIVV1, vbrev_v_w, OP_UU_W, H4, H4, revbit32)
-+RVVCALL(OPIVV1, vbrev_v_d, OP_UU_D, H8, H8, revbit64)
-+GEN_VEXT_V(vbrev_v_b, 1)
-+GEN_VEXT_V(vbrev_v_h, 2)
-+GEN_VEXT_V(vbrev_v_w, 4)
-+GEN_VEXT_V(vbrev_v_d, 8)
-+
-+RVVCALL(OPIVV1, vclz_v_b, OP_UU_B, H1, H1, clz8)
-+RVVCALL(OPIVV1, vclz_v_h, OP_UU_H, H2, H2, clz16)
-+RVVCALL(OPIVV1, vclz_v_w, OP_UU_W, H4, H4, clz32)
-+RVVCALL(OPIVV1, vclz_v_d, OP_UU_D, H8, H8, clz64)
-+GEN_VEXT_V(vclz_v_b, 1)
-+GEN_VEXT_V(vclz_v_h, 2)
-+GEN_VEXT_V(vclz_v_w, 4)
-+GEN_VEXT_V(vclz_v_d, 8)
-+
-+RVVCALL(OPIVV1, vctz_v_b, OP_UU_B, H1, H1, ctz8)
-+RVVCALL(OPIVV1, vctz_v_h, OP_UU_H, H2, H2, ctz16)
-+RVVCALL(OPIVV1, vctz_v_w, OP_UU_W, H4, H4, ctz32)
-+RVVCALL(OPIVV1, vctz_v_d, OP_UU_D, H8, H8, ctz64)
-+GEN_VEXT_V(vctz_v_b, 1)
-+GEN_VEXT_V(vctz_v_h, 2)
-+GEN_VEXT_V(vctz_v_w, 4)
-+GEN_VEXT_V(vctz_v_d, 8)
-+
-+RVVCALL(OPIVV1, vcpop_v_b, OP_UU_B, H1, H1, ctpop8)
-+RVVCALL(OPIVV1, vcpop_v_h, OP_UU_H, H2, H2, ctpop16)
-+RVVCALL(OPIVV1, vcpop_v_w, OP_UU_W, H4, H4, ctpop32)
-+RVVCALL(OPIVV1, vcpop_v_d, OP_UU_D, H8, H8, ctpop64)
-+GEN_VEXT_V(vcpop_v_b, 1)
-+GEN_VEXT_V(vcpop_v_h, 2)
-+GEN_VEXT_V(vcpop_v_w, 4)
-+GEN_VEXT_V(vcpop_v_d, 8)
-+
-+#define DO_SLL(N, M) (N << (M & (sizeof(N) * 8 - 1)))
-+RVVCALL(OPIVV2, vwsll_vv_b, WOP_UUU_B, H2, H1, H1, DO_SLL)
-+RVVCALL(OPIVV2, vwsll_vv_h, WOP_UUU_H, H4, H2, H2, DO_SLL)
-+RVVCALL(OPIVV2, vwsll_vv_w, WOP_UUU_W, H8, H4, H4, DO_SLL)
-+GEN_VEXT_VV(vwsll_vv_b, 2)
-+GEN_VEXT_VV(vwsll_vv_h, 4)
-+GEN_VEXT_VV(vwsll_vv_w, 8)
-+
-+RVVCALL(OPIVX2, vwsll_vx_b, WOP_UUU_B, H2, H1, DO_SLL)
-+RVVCALL(OPIVX2, vwsll_vx_h, WOP_UUU_H, H4, H2, DO_SLL)
-+RVVCALL(OPIVX2, vwsll_vx_w, WOP_UUU_W, H8, H4, DO_SLL)
-+GEN_VEXT_VX(vwsll_vx_b, 2)
-+GEN_VEXT_VX(vwsll_vx_h, 4)
-+GEN_VEXT_VX(vwsll_vx_w, 8)
--- 
-2.31.1
-
+Best regards Henrik
 
