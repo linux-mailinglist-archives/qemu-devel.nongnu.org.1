@@ -2,173 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF68D73F0ED
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 04:47:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19E2E73F104
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 04:56:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDyis-0001ol-JZ; Mon, 26 Jun 2023 22:46:30 -0400
+	id 1qDyr8-0004uZ-VE; Mon, 26 Jun 2023 22:55:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1qDyin-0001o8-Lo
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 22:46:29 -0400
-Received: from mga06b.intel.com ([134.134.136.31] helo=mga06.intel.com)
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1qDyr6-0004uE-63
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 22:55:00 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([216.145.221.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1qDyik-0000f8-UA
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 22:46:25 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1687833982; x=1719369982;
- h=from:to:cc:subject:date:message-id:references:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=M41XQx8O4pqCFLtwXgKzbagWSJiL2piFBvv63LcvumY=;
- b=aGZBGmCJCiy5K8IiPYYhsVn8KePZYbTd53wBSLVujzs2hcZU4z3/edb+
- fIdcMnx3W6i0vMHtL8UH1B1fNfHVzODAMLv+2iJN5r66fq0ueCqoLBZ4a
- +tWo35sgxTgFSLwsBSfvJ0MVhlsxhPue7VI6hcbUPqmO2u9s2u+kKIC5W
- 0cL4355U8oIipclJXLKVkc4oTU1b8/ktlYKhVf7++KD6Py2AYtCLa6qvW
- ok9B+wLwW8AJlCKXPhJBY9+jlUblZnUrZ9coomGDhJqLLkXeN8ggXuZA7
- yMQkFOMooHQPaACy4ei/7P1cwW4Da/QWWjb9dfid2CC71QsnFjix3dHfM A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10753"; a="425119668"
-X-IronPort-AV: E=Sophos;i="6.01,161,1684825200"; d="scan'208";a="425119668"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
- by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Jun 2023 19:46:16 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10753"; a="716371250"
-X-IronPort-AV: E=Sophos;i="6.01,161,1684825200"; d="scan'208";a="716371250"
-Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
- by orsmga002.jf.intel.com with ESMTP; 26 Jun 2023 19:46:16 -0700
-Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
- ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Mon, 26 Jun 2023 19:46:16 -0700
-Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
- ORSMSX611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Mon, 26 Jun 2023 19:46:15 -0700
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27 via Frontend Transport; Mon, 26 Jun 2023 19:46:15 -0700
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (104.47.55.109)
- by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.23; Mon, 26 Jun 2023 19:46:15 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Z46FicLItSPp1X8jz5MS32HOgQzWnGIY5R9eSm8ElQ07PMvVVvhyCEY/6Cu5OhiO9BVgTlR0fWbjuE27kahWYaDOlhLH1hdK7ChyU3BWQq1PvaQ1/HgZzJ1qr7VaMC67AxckTWnkBJy4kLlScU8O2EFM7c0f7ucPHyxNyb9eSDWihGFSfT4q7bBenaValXEDR+yqOc4BXXY+Jrut1o8de+jqX1moD5hjK9uRaLP00MgBNcGDrQVTbHe6Ya2CpOergy9JlaLjFZXfUWmcSTlcax86oFHtk8kCHRITu8NqACDYyIlDZRr6oI6UOjy336uRhlNqZFLtXxQh6tBAfVxnqg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=M41XQx8O4pqCFLtwXgKzbagWSJiL2piFBvv63LcvumY=;
- b=Q4ahKjRf6b4WNqzVKcjck/9dFzxtAz0xYrb8Bu43lUwV8ZgNzljdNieza1hQD+3Vvj50tHgOwFT2/d+9JqxWwaObMVX+tV5ChBSE2+HdTrj8usDdEf6jiPLmwRrq2UypNP1irL52enzLuVl6rCEO8ISjDxhUyMQju3Ihe7NUaxrDCfmiVSmUAcRqEKChAMv7e5I5Kt0UXPeKHKE9etclya+sg6Di9YAga1qP/nO6l1iYNDinORDmWu6WMUndjQ9aYBfE67pkrfYzucR6QRad5Ge3y9WNqulpgngkvkesQguK2pDUXK2QX90r5mCaQbUyuWYD6C6dvd+FOTgnkXq2kg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from SJ0PR11MB6744.namprd11.prod.outlook.com (2603:10b6:a03:47d::10)
- by BL1PR11MB5237.namprd11.prod.outlook.com (2603:10b6:208:310::10)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6521.26; Tue, 27 Jun
- 2023 02:46:07 +0000
-Received: from SJ0PR11MB6744.namprd11.prod.outlook.com
- ([fe80::da0a:8aab:d75b:55f1]) by SJ0PR11MB6744.namprd11.prod.outlook.com
- ([fe80::da0a:8aab:d75b:55f1%5]) with mapi id 15.20.6521.024; Tue, 27 Jun 2023
- 02:46:07 +0000
-From: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>
-To: Avihai Horon <avihaih@nvidia.com>, "qemu-devel@nongnu.org"
- <qemu-devel@nongnu.org>
-CC: "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
- "clg@redhat.com" <clg@redhat.com>, "Martins, Joao"
- <joao.m.martins@oracle.com>, "Peng, Chao P" <chao.p.peng@intel.com>
-Subject: RE: [PATCH v3 3/3] vfio/migration: vfio/migration: Refactor and fix
- print of "Migration disabled"
-Thread-Topic: [PATCH v3 3/3] vfio/migration: vfio/migration: Refactor and fix
- print of "Migration disabled"
-Thread-Index: AQHZpBiDMAK8vCWoSUWN+eGvuOKtiq+c2rIAgAAWRUA=
-Date: Tue, 27 Jun 2023 02:46:07 +0000
-Message-ID: <SJ0PR11MB67447187172BF9485D86F78F9227A@SJ0PR11MB6744.namprd11.prod.outlook.com>
-References: <20230621080204.420723-1-zhenzhong.duan@intel.com>
- <20230621080204.420723-4-zhenzhong.duan@intel.com>
- <c8583433-9b9f-4380-8076-8ca623b66770@nvidia.com>
-In-Reply-To: <c8583433-9b9f-4380-8076-8ca623b66770@nvidia.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SJ0PR11MB6744:EE_|BL1PR11MB5237:EE_
-x-ms-office365-filtering-correlation-id: e2c4cf67-a08a-4749-6383-08db76b8a878
-x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: RguaLZnCx6iL7VQlgiT8jiKTsv5eByjtL//CtsilyfDe8KTw/OR6h+krVMZt1EVUK5fFDsZSceSWLTp2DVy3zFsEyfFGos/1H51K3m5QhJ6A05nmDS7MshqR22PPjuVNruYkPhjP1/UIJqSbjTicx5vWXEQ6i5YZMIRXkIccF7kXC75OnLxqAEmSMOtu7I/cCT7nEQRyu2/pn5ZwtboDxl5FYzMeVYeR+Mm+zFOY7WVAerrzt/4AwbfD0yYHOhq+NNN3Mx9Bm9o4Qu2b/2pvAArg/nip8wPT2US2tNPZIBxaSqHQBVJE8gmPUDIEQvuh5d76qt/Crstk3Qo3upd76/3Z45c1Hf+GeiLAMVsOInOI3oiUiCh9gmbUi9bS6rw7P9szBeII0DrPMewwz7mm2yHGcoLBDXKqCiVQD1BZxAtUleW/ID+cHLr8A7SWpXA8/Rqxs7BB57hA4Mw1PWY/MKoHOPjlzdWF+KXwk3dOnQorAfSa3xLY+lemlBLzLqrdZTThbFDpXMTYbfPR5xK27t2RHH7rw5gfkdpRmUFShxaHtgpz/UR1mWk+uKV1ONY0w0bvQX1Dy8ziCb3a0xmnB5ChMIqdRqBN2/OEG6pPDQ90ixODD0RMnCMZzNT6c2A+
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SJ0PR11MB6744.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230028)(39860400002)(346002)(136003)(366004)(376002)(396003)(451199021)(33656002)(38100700002)(52536014)(86362001)(41300700001)(5660300002)(66476007)(8936002)(64756008)(66446008)(38070700005)(66556008)(8676002)(66946007)(122000001)(316002)(4326008)(76116006)(55016003)(82960400001)(478600001)(107886003)(6506007)(2906002)(186003)(9686003)(71200400001)(26005)(7696005)(110136005)(83380400001)(54906003);
- DIR:OUT; SFP:1102; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?VGlzNU85MTZRUHlYekVWNGVGTENDYW1YWFRseUtMeE93dlg3RnhxZjFIakJl?=
- =?utf-8?B?L3V6eDB1LzhkbDZHQWdPRG4xM2J4bGxvMVJhekUvck5IUHoxL3ZsbXJVSXI1?=
- =?utf-8?B?SHR5NzN3NkpZb3BqdDhEOTJZTmNQNVVEbXlTTU1TSWpEMUFnQ1VQMnNCZ3k2?=
- =?utf-8?B?RXJHVFZtRWFRVEg2dk5QaFVHQzUxS3VwSEs1V2RXK2JrZnZVc0xxQzNieUVj?=
- =?utf-8?B?SUFTalBBcU1tTWtDUTRpSVVIMzAzM0RiMERndGIxaVE0amRYUzNpanVzYXp4?=
- =?utf-8?B?VU1ENnVselVhZFJ3Q0JHYVRiOXJjaW9CK0ptRExLNkI0Q0tOMjYxbWRrMEth?=
- =?utf-8?B?NHlSYnovKy9JaFNCaWd0dzNmUkxYaG1FM25pZ040OFVtMkhld3RJejlPZE9K?=
- =?utf-8?B?Zzh6YmwxVzJJV0RMUmF3bTNaRjNlOE4zN2xld3QvWHVDVXJDTGRUYkY5cU5D?=
- =?utf-8?B?dWRqSjlGRWJEY1dnbjM1Qk1vZ2pwLzM3UEthVk0ydzFwdTJkS2tnOVRpUFlJ?=
- =?utf-8?B?S2VrZWtsWU01cjh5Rk9Kbnc4Tm1BR29LNGpPOWJkVVVnUWJmZEphUmdGS1N6?=
- =?utf-8?B?VndEamZiTkpCY2kvQ1pLYWJlRW1Rc0RXVUZ0YnQrVE1PbEFEYS9Eam93WDlT?=
- =?utf-8?B?cnR4U25JSFYwaExhMHVaQkNHbVFVL29VeWl3b0xFUi8rbDM4QktqVGdHdHo4?=
- =?utf-8?B?RVJGRVQwVWJ2cVl1SytVaVRqSmNvRGlyU2J6c2M5Yy9CNm5LTk5SSnUxOEJW?=
- =?utf-8?B?Z0tEMXd4Sk91YXdLU212MnQyenZGWFBDRlpGTjlqbm1obCtKY0xoTmFHc2dH?=
- =?utf-8?B?UlRRN1hiV3NaOE91ajRjYnBnVDNNeGZ4MndTaDRrZnVJdlNNRk9PQnYyanN4?=
- =?utf-8?B?SjFPMWxtTzlLZ0xOa0xWQzdSODJJK1U0WTNOUUM2RmR4UXV4YjJiMTZyMVNI?=
- =?utf-8?B?QUNWMndyVml5QXE2SzBYVzRwV0pHSzJtYWZ1Q09DeG5pRXZRTC9wM0g4RnVj?=
- =?utf-8?B?UTZjVW5ZM0s2Vnh6dzlOWk42Z1c4SnFqY05TSnlYT2Vod3cvNnhGT3FMYjhl?=
- =?utf-8?B?Q0JDaUdHalNsUnc1aDdpUzJnN1NGa1gxOU1ic0hXOUpoOVFzQ3hPVDMrS0Jj?=
- =?utf-8?B?NmxpUGJCMTEvNmFnTjNaeW1iL0ZlWUhud3RaZkE2bEZCLzdGSUNvL2lZa0Rk?=
- =?utf-8?B?b1U1Sjc5ZDJRVHNDMTdQRDlBR0Y4aXJrdXVsSmk2cGhCSXMzWXRtdTIzVkJ0?=
- =?utf-8?B?ZlFpRlhxcnJRNHBWWXQ2Mlk3WlE2QTVSanZSSVVpTCtCZmJKQVFpOVdjY1lo?=
- =?utf-8?B?UXdPQmFpSkVjL2dnbHEraklRNk1ORlpUMEZPQy9nR3hSR3kxdFRQekFGSnQr?=
- =?utf-8?B?ZU9aTkRSYkYvTHp5Skg1NlQrYVg1dnREanRmVXdUS2RiMWF5Wm5zQ2F1NjNP?=
- =?utf-8?B?OXZ4Z0hsclE1VDVzS0Jnc0RYWitCbWtGbHZuSGVQQnhGN3NaRmFFR3h5UnNo?=
- =?utf-8?B?RThZc0ZpTHFRSm9xbjdOM3BPeWMwZ1FrYU80R0J2ZjEzcE1oSHR2WldWRFN1?=
- =?utf-8?B?MmFSS09IU1BQbmNvVWlFWWRNOVlINHF5d2hKTm1UQzhJWERlV0NidzF6OTRT?=
- =?utf-8?B?MW9Na0pWejd1VGxVVXN5bCswVEhZL1MyQUkrVElnUTNyaGM1YmJvN3piWWFX?=
- =?utf-8?B?SndxUmJ2bGJwN1NOU0ppbXJoZXlESC9DOXZpTGhjSEN0NWlSekIveis0VXZT?=
- =?utf-8?B?aTRBY0k4TUNSTjJjRVFvd0ZPNFBGaCtRSzJSczNTem03U3JldW9QK0xETVJW?=
- =?utf-8?B?azNZUzdWSEJ1UE16SmVUY2VpNGVtUWdpWnN6a1BRZEFsNHlTcjFKdmdZWUlt?=
- =?utf-8?B?anhwS2o1MzRHN1RqdjJHeUlqekt0WW9vL09tdnR2SEh3Q1ZQWDdVVVk1ZkR6?=
- =?utf-8?B?OUFSVC9wdllZdXJRd2JIb1FPeStCQkordjluR3FZTU9lNWFPY3FnV2hyWXhl?=
- =?utf-8?B?L1dTQmFXU3RScGJSYUdac1RLdzVWVkdtZGpxNW1XTElaWFFFZ0RtNU9NL2dl?=
- =?utf-8?B?T3lJS09qMWh2V0Z3SHptWVU2cnFyTEx2QmpXYWZ5WlMrQ01FcFpnalBJVzVL?=
- =?utf-8?Q?vsguHXxo/jI2r4rCBl0JunIyz?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1qDyr2-0002Fj-Ho
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 22:54:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1687834493;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=T3XNn9DieGotzzZLytMyx94bq8tN9zyLYDAZV+FLNcw=;
+ b=GIEtt7fS9KT9yv5/UT3oeE//i7x+od1280SzehURWzsIyj9KnvHQCzychcWVZszTtilUia
+ 3m5DGbhhnoHCYRQreK9srHPCKdyj3fqKB8bXtA6V/2I3eXvlf8nMgsZR2G13CRKuck+YFV
+ t20JexRSKFS9T40cKpJ6tI5eNzQn/6k=
+Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
+ [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-2-UwslIDwMO_WoZRS5FW_DbQ-1; Mon, 26 Jun 2023 22:54:51 -0400
+X-MC-Unique: UwslIDwMO_WoZRS5FW_DbQ-1
+Received: by mail-lf1-f70.google.com with SMTP id
+ 2adb3069b0e04-4fb3f3a87d4so1002730e87.1
+ for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 19:54:51 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1687834490; x=1690426490;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=T3XNn9DieGotzzZLytMyx94bq8tN9zyLYDAZV+FLNcw=;
+ b=g7g6GRJ6kAyXk4Ilu6S0nfqzTHGUilz38X89MVxFWShyAIgVkp7KbHTFsmZ5LEu5Fw
+ Z7UkNzYQK0Wulo5C/a04O7203CLqkvr2heDBF+xgyn7GUAW4ZkG4e7+0sjUPt9oA6gw3
+ RoJXeqf0CMIA9YX+2MTYTJ4qWrmX7M+noWlgsupmolYz8DzWTgzEUwSJO2jHG1VEWc7L
+ ycxRox/q6yQPm5aNoiwtUciX2qPkZrIeZB5TcG6LiGnKQ5qFQejdT/gtRHS6Jbyap9xw
+ +11N8OYPjJvLtqvUYhi37j4DTksjolOgLWaiM3ipvFbEjVNslYBUXTskfm93d6QEF2kl
+ 7A+g==
+X-Gm-Message-State: AC+VfDy1X4V2nnMqeykT0zzUygWK7nwQpfePsWH07GhH5ZrvWlLkCl6G
+ dKTPnZ79wk97oAJ4uDxF2+vgdLnFLLeeiT01i46a2+NyI0N/Xv3KAdoBRCFtbhWWpJPSs5Yf1Ji
+ CnC8cLkVC7QNJoM/PsBtdePT9+Pa8xoY=
+X-Received: by 2002:a19:5007:0:b0:4f8:52a8:d123 with SMTP id
+ e7-20020a195007000000b004f852a8d123mr10473757lfb.12.1687834490193; 
+ Mon, 26 Jun 2023 19:54:50 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5TPkMm7wUnTZ4iAfeRTzh6FZ8cIBzwBC2k0q/AHDRpEEMIWUVhnjvmIb+k3deF26Mj0LWqpJxsCQQrXsD/vw0=
+X-Received: by 2002:a19:5007:0:b0:4f8:52a8:d123 with SMTP id
+ e7-20020a195007000000b004f852a8d123mr10473750lfb.12.1687834489770; Mon, 26
+ Jun 2023 19:54:49 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB6744.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e2c4cf67-a08a-4749-6383-08db76b8a878
-X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Jun 2023 02:46:07.5028 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: zcS+JQK+5gYz4RYzi01DMmAk0gQFqLVJi6mwtHYH001p9xKHD9zWaMhX2boqmpAoCYVZA+9IlHffi3oHZpAf/2/wwrhDI/K9jB+Lj3CORg0=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR11MB5237
-X-OriginatorOrg: intel.com
-Received-SPF: pass client-ip=134.134.136.31;
- envelope-from=zhenzhong.duan@intel.com; helo=mga06.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+References: <20230622215824.2173343-1-i.maximets@ovn.org>
+ <CACGkMEsXOb8wiYo9ktgqh8MqD971=ARJ_etL7MBF-uyo6qt1eA@mail.gmail.com>
+ <CACGkMEuyq+5_cqx4T03fcaLOGUCrKLZn51sZxNSXyZq8CqLXTg@mail.gmail.com>
+ <93a056c4-b6d3-5491-0c1f-7f58e9f9d1ad@ovn.org>
+In-Reply-To: <93a056c4-b6d3-5491-0c1f-7f58e9f9d1ad@ovn.org>
+From: Jason Wang <jasowang@redhat.com>
+Date: Tue, 27 Jun 2023 10:54:38 +0800
+Message-ID: <CACGkMEuaUTGeCYfH-MbtX_79scN-CkBmFMcY0fwKo4vO_9cn4w@mail.gmail.com>
+Subject: Re: [PATCH] net: add initial support for AF_XDP network backend
+To: Ilya Maximets <i.maximets@ovn.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>, 
+ Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: permerror client-ip=216.145.221.124;
+ envelope-from=jasowang@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_FAIL=0.001, SPF_HELO_NONE=0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -184,150 +97,271 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-DQoNCj4tLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPkZyb206IEF2aWhhaSBIb3JvbiA8YXZp
-aGFpaEBudmlkaWEuY29tPg0KPlNlbnQ6IE1vbmRheSwgSnVuZSAyNiwgMjAyMyA1OjM1IFBNDQo+
-VG86IER1YW4sIFpoZW56aG9uZyA8emhlbnpob25nLmR1YW5AaW50ZWwuY29tPjsgcWVtdS0NCj5k
-ZXZlbEBub25nbnUub3JnDQo+Q2M6IGFsZXgud2lsbGlhbXNvbkByZWRoYXQuY29tOyBjbGdAcmVk
-aGF0LmNvbTsgTWFydGlucywgSm9hbw0KPjxqb2FvLm0ubWFydGluc0BvcmFjbGUuY29tPjsgUGVu
-ZywgQ2hhbyBQIDxjaGFvLnAucGVuZ0BpbnRlbC5jb20+DQo+U3ViamVjdDogUmU6IFtQQVRDSCB2
-MyAzLzNdIHZmaW8vbWlncmF0aW9uOiB2ZmlvL21pZ3JhdGlvbjogUmVmYWN0b3IgYW5kIGZpeA0K
-PnByaW50IG9mICJNaWdyYXRpb24gZGlzYWJsZWQiDQo+DQo+DQo+T24gMjEvMDYvMjAyMyAxMTow
-MiwgWmhlbnpob25nIER1YW4gd3JvdGU6DQo+PiBFeHRlcm5hbCBlbWFpbDogVXNlIGNhdXRpb24g
-b3BlbmluZyBsaW5rcyBvciBhdHRhY2htZW50cw0KPj4NCj4+DQo+PiBUaGlzIHBhdGNoIHJlZmFj
-dG9ycyB2ZmlvX21pZ3JhdGlvbl9yZWFsaXplKCkgYW5kIGl0cyBkZXBlbmRlbmQgY29kZQ0KPj4g
-YXMgZm9sbG93czoNCj4+DQo+PiAxLiBJdCdzIHJlZHVuZGFudCBpbiB2ZmlvX21pZ3JhdGlvbl9y
-ZWFsaXplKCkgdG8gcmVnaXN0ZXJzIG11bHRpcGxlIGJsb2NrZXJzLA0KPj4gICAgIGUuZzogdklP
-TU1VIGJsb2NrZXIgY2FuIGJlIHJlZmFjdG9yZWQgYXMgcGVyIGRldmljZSBibG9ja2VyLg0KPj4g
-Mi4gQ2hhbmdlIHZmaW9fYmxvY2tfZ2lvbW11X21pZ3JhdGlvbigpIHRvIGJlIG9ubHkgYSBwZXIg
-ZGV2aWNlIGNoZWNrZXIuDQo+PiAzLiBSZW1vdmUgZ2xvYmFsIHZJT01NVSBibG9ja2VyIHJlbGF0
-ZWQgc3R1ZmYsIGUuZzoNCj4+ICAgICBnaW9tbXVfbWlncmF0aW9uX2Jsb2NrZXIsIHZmaW9fdW5i
-bG9ja19naW9tbXVfbWlncmF0aW9uKCksDQo+PiAgICAgdmZpb192aW9tbXVfcHJlc2V0KCkgYW5k
-IHZmaW9fbWlncmF0aW9uX2ZpbmFsaXplKCkgNC4gQ2hhbmdlDQo+PiB2ZmlvX21pZ3JhdGlvbl9y
-ZWFsaXplKCkgYW5kIGRlcGVuZGVudCB2ZmlvX2Jsb2NrXypfbWlncmF0aW9uKCkgdG8NCj4+ICAg
-ICByZXR1cm4gYm9vbCB0eXBlLg0KPj4gNS4gQ2hhbmdlIHRvIHByaW50ICJNaWdyYXRpb24gZGlz
-YWJsZWQiIG9ubHkgYWZ0ZXIgYWRkaW5nIGJsb2NrZXIgc3VjY2VlZC4NCj4+IDYuIEFkZCBkZXZp
-Y2UgbmFtZSB0byBlcnJwIHNvICJpbmZvIG1pZ3JhdGUiIGNvdWxkIGJlIG1vcmUgaW5mb3JtYXRp
-dmUuDQo+Pg0KPj4gbWlncmF0ZV9hZGRfYmxvY2tlcigpIHJldHVybnMgMCB3aGVuIHN1Y2Nlc3Nm
-dWxseSBhZGRpbmcgdGhlIG1pZ3JhdGlvbg0KPmJsb2NrZXIuDQo+PiBIb3dldmVyLCB0aGUgY2Fs
-bGVyIG9mIHZmaW9fbWlncmF0aW9uX3JlYWxpemUoKSBjb25zaWRlcnMgdGhhdA0KPj4gbWlncmF0
-aW9uIHdhcyBibG9ja2VkIHdoZW4gdGhlIGxhdHRlciByZXR1cm5lZCBhbiBlcnJvci4gV2hhdCBt
-YXR0ZXJzDQo+PiBmb3IgbWlncmF0aW9uIGlzIHRoYXQgdGhlIGJsb2NrZXIgaXMgYWRkZWQgaW4g
-Y29yZSBtaWdyYXRpb24sIHNvIHRoaXMNCj4+IGNsZWFucyB1cCB1c2FiaWxpdHkgc3VjaCB0aGF0
-IHVzZXIgc2VlcyAiTWlncmF0ZSBkaXNhYmxlZCIgd2hlbiBhbnkgb2YgdGhlDQo+dmZpbyBtaWdy
-YXRpb24gYmxvY2tlcnMgYXJlIGFjdGl2ZS4NCj4+DQo+PiBTaWduZWQtb2ZmLWJ5OiBaaGVuemhv
-bmcgRHVhbiA8emhlbnpob25nLmR1YW5AaW50ZWwuY29tPg0KPj4gLS0tDQo+PiAgIGh3L3ZmaW8v
-Y29tbW9uLmMgICAgICAgICAgICAgIHwgNTQgKysrKystLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0NCj4+ICAgaHcvdmZpby9taWdyYXRpb24uYyAgICAgICAgICAgfCAzNyArKysrKysrKysr
-Ky0tLS0tLS0tLS0tLS0NCj4+ICAgaHcvdmZpby9wY2kuYyAgICAgICAgICAgICAgICAgfCAgNCAr
-LS0NCj4+ICAgaW5jbHVkZS9ody92ZmlvL3ZmaW8tY29tbW9uLmggfCAgNyArKy0tLQ0KPj4gICA0
-IGZpbGVzIGNoYW5nZWQsIDI5IGluc2VydGlvbnMoKyksIDczIGRlbGV0aW9ucygtKQ0KPj4NCj4+
-IGRpZmYgLS1naXQgYS9ody92ZmlvL2NvbW1vbi5jIGIvaHcvdmZpby9jb21tb24uYyBpbmRleA0K
-Pj4gZmE4ZmQ5NDliMWNmLi5jYzVmNGU4MDUzNDEgMTAwNjQ0DQo+PiAtLS0gYS9ody92ZmlvL2Nv
-bW1vbi5jDQo+PiArKysgYi9ody92ZmlvL2NvbW1vbi5jDQo+PiBAQCAtMzYyLDggKzM2Miw2IEBA
-IGJvb2wgdmZpb19taWdfYWN0aXZlKHZvaWQpDQo+PiAgIH0NCj4+DQo+PiAgIHN0YXRpYyBFcnJv
-ciAqbXVsdGlwbGVfZGV2aWNlc19taWdyYXRpb25fYmxvY2tlcjsNCj4+IC1zdGF0aWMgRXJyb3Ig
-Kmdpb21tdV9taWdyYXRpb25fYmxvY2tlcjsNCj4+IC0NCj4+ICAgc3RhdGljIHVuc2lnbmVkIGlu
-dCB2ZmlvX21pZ3JhdGFibGVfZGV2aWNlX251bSh2b2lkKQ0KPj4gICB7DQo+PiAgICAgICBWRklP
-R3JvdXAgKmdyb3VwOw0KPj4gQEAgLTM4MSwxMyArMzc5LDEzIEBAIHN0YXRpYyB1bnNpZ25lZCBp
-bnQNCj52ZmlvX21pZ3JhdGFibGVfZGV2aWNlX251bSh2b2lkKQ0KPj4gICAgICAgcmV0dXJuIGRl
-dmljZV9udW07DQo+PiAgIH0NCj4+DQo+PiAtaW50IHZmaW9fYmxvY2tfbXVsdGlwbGVfZGV2aWNl
-c19taWdyYXRpb24oRXJyb3IgKiplcnJwKQ0KPj4gK2Jvb2wgdmZpb19ibG9ja19tdWx0aXBsZV9k
-ZXZpY2VzX21pZ3JhdGlvbihFcnJvciAqKmVycnApDQo+PiAgIHsNCj4+ICAgICAgIGludCByZXQ7
-DQo+Pg0KPj4gICAgICAgaWYgKG11bHRpcGxlX2RldmljZXNfbWlncmF0aW9uX2Jsb2NrZXIgfHwN
-Cj4+ICAgICAgICAgICB2ZmlvX21pZ3JhdGFibGVfZGV2aWNlX251bSgpIDw9IDEpIHsNCj4+IC0g
-ICAgICAgIHJldHVybiAwOw0KPj4gKyAgICAgICAgcmV0dXJuIHRydWU7DQo+PiAgICAgICB9DQo+
-Pg0KPj4gICAgICAgZXJyb3Jfc2V0ZygmbXVsdGlwbGVfZGV2aWNlc19taWdyYXRpb25fYmxvY2tl
-ciwNCj4+IEBAIC0zOTcsOSArMzk1LDExIEBAIGludCB2ZmlvX2Jsb2NrX211bHRpcGxlX2Rldmlj
-ZXNfbWlncmF0aW9uKEVycm9yDQo+KiplcnJwKQ0KPj4gICAgICAgaWYgKHJldCA8IDApIHsNCj4+
-ICAgICAgICAgICBlcnJvcl9mcmVlKG11bHRpcGxlX2RldmljZXNfbWlncmF0aW9uX2Jsb2NrZXIp
-Ow0KPj4gICAgICAgICAgIG11bHRpcGxlX2RldmljZXNfbWlncmF0aW9uX2Jsb2NrZXIgPSBOVUxM
-Ow0KPj4gKyAgICB9IGVsc2Ugew0KPj4gKyAgICAgICAgZXJyb3JfcmVwb3J0KCJNaWdyYXRpb24g
-ZGlzYWJsZWQsIG5vdCBzdXBwb3J0IG11bHRpcGxlIFZGSU8NCj4+ICsgZGV2aWNlcyIpOw0KPj4g
-ICAgICAgfQ0KPj4NCj4+IC0gICAgcmV0dXJuIHJldDsNCj4+ICsgICAgcmV0dXJuICFyZXQ7DQo+
-PiAgIH0NCj4+DQo+PiAgIHZvaWQgdmZpb191bmJsb2NrX211bHRpcGxlX2RldmljZXNfbWlncmF0
-aW9uKHZvaWQpDQo+PiBAQCAtNDE0LDQ5ICs0MTQsOSBAQCB2b2lkIHZmaW9fdW5ibG9ja19tdWx0
-aXBsZV9kZXZpY2VzX21pZ3JhdGlvbih2b2lkKQ0KPj4gICAgICAgbXVsdGlwbGVfZGV2aWNlc19t
-aWdyYXRpb25fYmxvY2tlciA9IE5VTEw7DQo+PiAgIH0NCj4+DQo+PiAtc3RhdGljIGJvb2wgdmZp
-b192aW9tbXVfcHJlc2V0KHZvaWQpDQo+PiAtew0KPj4gLSAgICBWRklPQWRkcmVzc1NwYWNlICpz
-cGFjZTsNCj4+IC0NCj4+IC0gICAgUUxJU1RfRk9SRUFDSChzcGFjZSwgJnZmaW9fYWRkcmVzc19z
-cGFjZXMsIGxpc3QpIHsNCj4+IC0gICAgICAgIGlmIChzcGFjZS0+YXMgIT0gJmFkZHJlc3Nfc3Bh
-Y2VfbWVtb3J5KSB7DQo+PiAtICAgICAgICAgICAgcmV0dXJuIHRydWU7DQo+PiAtICAgICAgICB9
-DQo+PiAtICAgIH0NCj4+IC0NCj4+IC0gICAgcmV0dXJuIGZhbHNlOw0KPj4gLX0NCj4+IC0NCj4+
-IC1pbnQgdmZpb19ibG9ja19naW9tbXVfbWlncmF0aW9uKEVycm9yICoqZXJycCkgLXsNCj4+IC0g
-ICAgaW50IHJldDsNCj4+IC0NCj4+IC0gICAgaWYgKGdpb21tdV9taWdyYXRpb25fYmxvY2tlciB8
-fA0KPj4gLSAgICAgICAgIXZmaW9fdmlvbW11X3ByZXNldCgpKSB7DQo+PiAtICAgICAgICByZXR1
-cm4gMDsNCj4+IC0gICAgfQ0KPj4gLQ0KPj4gLSAgICBlcnJvcl9zZXRnKCZnaW9tbXVfbWlncmF0
-aW9uX2Jsb2NrZXIsDQo+PiAtICAgICAgICAgICAgICAgIk1pZ3JhdGlvbiBpcyBjdXJyZW50bHkg
-bm90IHN1cHBvcnRlZCB3aXRoIHZJT01NVSBlbmFibGVkIik7DQo+PiAtICAgIHJldCA9IG1pZ3Jh
-dGVfYWRkX2Jsb2NrZXIoZ2lvbW11X21pZ3JhdGlvbl9ibG9ja2VyLCBlcnJwKTsNCj4+IC0gICAg
-aWYgKHJldCA8IDApIHsNCj4+IC0gICAgICAgIGVycm9yX2ZyZWUoZ2lvbW11X21pZ3JhdGlvbl9i
-bG9ja2VyKTsNCj4+IC0gICAgICAgIGdpb21tdV9taWdyYXRpb25fYmxvY2tlciA9IE5VTEw7DQo+
-PiAtICAgIH0NCj4+IC0NCj4+IC0gICAgcmV0dXJuIHJldDsNCj4+IC19DQo+PiAtDQo+PiAtdm9p
-ZCB2ZmlvX21pZ3JhdGlvbl9maW5hbGl6ZSh2b2lkKQ0KPj4gK2Jvb2wgdmZpb19ibG9ja19naW9t
-bXVfbWlncmF0aW9uKFZGSU9EZXZpY2UgKnZiYXNlZGV2KQ0KPj4gICB7DQo+PiAtICAgIGlmICgh
-Z2lvbW11X21pZ3JhdGlvbl9ibG9ja2VyIHx8DQo+PiAtICAgICAgICB2ZmlvX3Zpb21tdV9wcmVz
-ZXQoKSkgew0KPj4gLSAgICAgICAgcmV0dXJuOw0KPj4gLSAgICB9DQo+PiAtDQo+PiAtICAgIG1p
-Z3JhdGVfZGVsX2Jsb2NrZXIoZ2lvbW11X21pZ3JhdGlvbl9ibG9ja2VyKTsNCj4+IC0gICAgZXJy
-b3JfZnJlZShnaW9tbXVfbWlncmF0aW9uX2Jsb2NrZXIpOw0KPj4gLSAgICBnaW9tbXVfbWlncmF0
-aW9uX2Jsb2NrZXIgPSBOVUxMOw0KPj4gKyAgICByZXR1cm4gdmJhc2VkZXYtPmdyb3VwLT5jb250
-YWluZXItPnNwYWNlLT5hcyAhPQ0KPj4gKyAmYWRkcmVzc19zcGFjZV9tZW1vcnk7DQo+PiAgIH0N
-Cj4NCj5JIGd1ZXNzIHZmaW9fYmxvY2tfZ2lvbW11X21pZ3JhdGlvbiBjYW4gYmUgbW92ZWQgdG8g
-bWlncmF0aW9uLmMgYW5kIG1hZGUNCj5zdGF0aWM/DQo+QWx0aG91Z2ggSm9hbydzIHZJT01NVSBz
-ZXJpZXMgd2lsbCBwcm9iYWJseSBjaGFuZ2UgdGhhdCBiYWNrIGxhdGVyIGluIHNvbWUNCj53YXku
-DQpHb29kIGlkZWEsIHdpbGwgZG8uDQoNCj4NCj4+DQo+PiAgIHN0YXRpYyB2b2lkIHZmaW9fc2V0
-X21pZ3JhdGlvbl9lcnJvcihpbnQgZXJyKQ0KPj4gZGlmZiAtLWdpdCBhL2h3L3ZmaW8vbWlncmF0
-aW9uLmMgYi9ody92ZmlvL21pZ3JhdGlvbi5jDQo+PiBpbmRleCA2YjU4ZGRkYjg4NTkuLjc2MjEw
-NzRmMTU2ZCAxMDA2NDQNCj4+IC0tLSBhL2h3L3ZmaW8vbWlncmF0aW9uLmMNCj4+ICsrKyBiL2h3
-L3ZmaW8vbWlncmF0aW9uLmMNCj4+IEBAIC02MzIsNDIgKzYzMiwzOSBAQCBpbnQ2NF90IHZmaW9f
-bWlnX2J5dGVzX3RyYW5zZmVycmVkKHZvaWQpDQo+PiAgICAgICByZXR1cm4gYnl0ZXNfdHJhbnNm
-ZXJyZWQ7DQo+PiAgIH0NCj4+DQo+PiAtaW50IHZmaW9fbWlncmF0aW9uX3JlYWxpemUoVkZJT0Rl
-dmljZSAqdmJhc2VkZXYsIEVycm9yICoqZXJycCkNCj4+ICsvKiBSZXR1cm4gdHJ1ZSB3aGVuIGVp
-dGhlciBtaWdyYXRpb24gaW5pdGlhbGl6ZWQgb3IgYmxvY2tlciByZWdpc3RlcmVkICovDQo+PiAr
-Ym9vbCB2ZmlvX21pZ3JhdGlvbl9yZWFsaXplKFZGSU9EZXZpY2UgKnZiYXNlZGV2LCBFcnJvciAq
-KmVycnApDQo+PiAgIHsNCj4+IC0gICAgaW50IHJldCA9IC1FTk9UU1VQOw0KPj4gKyAgICBpbnQg
-cmV0Ow0KPj4NCj4+IC0gICAgaWYgKCF2YmFzZWRldi0+ZW5hYmxlX21pZ3JhdGlvbikgew0KPj4g
-KyAgICBpZiAoIXZiYXNlZGV2LT5lbmFibGVfbWlncmF0aW9uIHx8IHZmaW9fbWlncmF0aW9uX2lu
-aXQodmJhc2VkZXYpKSB7DQo+PiArICAgICAgICBlcnJvcl9zZXRnKCZ2YmFzZWRldi0+bWlncmF0
-aW9uX2Jsb2NrZXIsDQo+PiArICAgICAgICAgICAgICAgICAgICJWRklPIGRldmljZSAlcyBkb2Vz
-bid0IHN1cHBvcnQgbWlncmF0aW9uIiwgdmJhc2VkZXYtPm5hbWUpOw0KPj4gICAgICAgICAgIGdv
-dG8gYWRkX2Jsb2NrZXI7DQo+PiAgICAgICB9DQo+Pg0KPj4gLSAgICByZXQgPSB2ZmlvX21pZ3Jh
-dGlvbl9pbml0KHZiYXNlZGV2KTsNCj4+IC0gICAgaWYgKHJldCkgew0KPj4gLSAgICAgICAgZ290
-byBhZGRfYmxvY2tlcjsNCj4+IC0gICAgfQ0KPj4gLQ0KPj4gLSAgICByZXQgPSB2ZmlvX2Jsb2Nr
-X211bHRpcGxlX2RldmljZXNfbWlncmF0aW9uKGVycnApOw0KPj4gLSAgICBpZiAocmV0KSB7DQo+
-PiAtICAgICAgICByZXR1cm4gcmV0Ow0KPj4gKyAgICBpZiAoIXZmaW9fYmxvY2tfbXVsdGlwbGVf
-ZGV2aWNlc19taWdyYXRpb24oZXJycCkpIHsNCj4+ICsgICAgICAgIHJldHVybiBmYWxzZTsNCj4+
-ICAgICAgIH0NCj4+DQo+PiAtICAgIHJldCA9IHZmaW9fYmxvY2tfZ2lvbW11X21pZ3JhdGlvbihl
-cnJwKTsNCj4+IC0gICAgaWYgKHJldCkgew0KPj4gLSAgICAgICAgcmV0dXJuIHJldDsNCj4+ICsg
-ICAgaWYgKHZmaW9fYmxvY2tfZ2lvbW11X21pZ3JhdGlvbih2YmFzZWRldikpIHsNCj4+ICsgICAg
-ICAgIGVycm9yX3NldGcoJnZiYXNlZGV2LT5taWdyYXRpb25fYmxvY2tlciwNCj4+ICsgICAgICAg
-ICAgICAgICAgICAgIk1pZ3JhdGlvbiBpcyBjdXJyZW50bHkgbm90IHN1cHBvcnRlZCBvbiAlcyAi
-DQo+PiArICAgICAgICAgICAgICAgICAgICJ3aXRoIHZJT01NVSBlbmFibGVkIiwgdmJhc2VkZXYt
-Pm5hbWUpOw0KPj4gKyAgICAgICAgZ290byBhZGRfYmxvY2tlcjsNCj4+ICAgICAgIH0NCj4+DQo+
-PiAtICAgIHRyYWNlX3ZmaW9fbWlncmF0aW9uX3Byb2JlKHZiYXNlZGV2LT5uYW1lKTsNCj4+IC0g
-ICAgcmV0dXJuIDA7DQo+PiArICAgIHJldHVybiB0cnVlOw0KPj4NCj4+ICAgYWRkX2Jsb2NrZXI6
-DQo+PiAtICAgIGVycm9yX3NldGcoJnZiYXNlZGV2LT5taWdyYXRpb25fYmxvY2tlciwNCj4+IC0g
-ICAgICAgICAgICAgICAiVkZJTyBkZXZpY2UgZG9lc24ndCBzdXBwb3J0IG1pZ3JhdGlvbiIpOw0K
-Pj4gLQ0KPj4gICAgICAgcmV0ID0gbWlncmF0ZV9hZGRfYmxvY2tlcih2YmFzZWRldi0+bWlncmF0
-aW9uX2Jsb2NrZXIsIGVycnApOw0KPj4gICAgICAgaWYgKHJldCA8IDApIHsNCj4+ICAgICAgICAg
-ICBlcnJvcl9mcmVlKHZiYXNlZGV2LT5taWdyYXRpb25fYmxvY2tlcik7DQo+PiAgICAgICAgICAg
-dmJhc2VkZXYtPm1pZ3JhdGlvbl9ibG9ja2VyID0gTlVMTDsNCj4+ICsgICAgfSBlbHNlIHsNCj4+
-ICsgICAgICAgIGVycm9yX3JlcG9ydCgiJXM6IE1pZ3JhdGlvbiBkaXNhYmxlZCIsIHZiYXNlZGV2
-LT5uYW1lKTsNCj4NCj5XaGVuIHgtZW5hYmxlLW1pZ3JhdGlvbj1vZmYsICJNaWdyYXRpb24gZGlz
-YWJsZWQiIGVycm9yIHdpbGwgYmUgcHJpbnRlZCwNCj5idXQgdGhpcyBpcyB0aGUgZXhwZWN0ZWQg
-YmVoYXZpb3IsIHNvIHdlIHNob3VsZCBub3QgcHJpbnQgaXQgaW4gdGhpcyBjYXNlLg0KTWFrZSBz
-ZW5zZSwgd2lsbCBkby4NCg0KPg0KPj4gICAgICAgfQ0KPj4gLSAgICByZXR1cm4gcmV0Ow0KPj4g
-KyAgICByZXR1cm4gIXJldDsNCj4+ICAgfQ0KPj4NCj4+ICAgdm9pZCB2ZmlvX21pZ3JhdGlvbl9l
-eGl0KFZGSU9EZXZpY2UgKnZiYXNlZGV2KQ0KPj4gZGlmZiAtLWdpdCBhL2h3L3ZmaW8vcGNpLmMg
-Yi9ody92ZmlvL3BjaS5jDQo+PiBpbmRleCA4MmM0Y2Y0Zjc2MDkuLjA2MWNhOTZjYmNlMiAxMDA2
-NDQNCj4+IC0tLSBhL2h3L3ZmaW8vcGNpLmMNCj4+ICsrKyBiL2h3L3ZmaW8vcGNpLmMNCj4+IEBA
-IC0zMjA5LDcgKzMyMDksOCBAQCBzdGF0aWMgdm9pZCB2ZmlvX3JlYWxpemUoUENJRGV2aWNlICpw
-ZGV2LCBFcnJvcg0KPioqZXJycCkNCj4+ICAgICAgIGlmICghcGRldi0+ZmFpbG92ZXJfcGFpcl9p
-ZCkgew0KPj4gICAgICAgICAgIHJldCA9IHZmaW9fbWlncmF0aW9uX3JlYWxpemUodmJhc2VkZXYs
-IGVycnApOw0KPj4gICAgICAgICAgIGlmIChyZXQpIHsNCj4+IC0gICAgICAgICAgICBlcnJvcl9y
-ZXBvcnQoIiVzOiBNaWdyYXRpb24gZGlzYWJsZWQiLCB2YmFzZWRldi0+bmFtZSk7DQo+PiArICAg
-ICAgICAgICAgdHJhY2VfdmZpb19taWdyYXRpb25fcHJvYmUodmJhc2VkZXYtPm5hbWUpOw0KPg0K
-PldoaWxlIHdlIGFyZSBoZXJlLCBsZXQncyByZW5hbWUgdHJhY2VfdmZpb19taWdyYXRpb25fcHJv
-YmUoKSB0bw0KPnRyYWNlX3ZmaW9fbWlncmF0aW9uX3JlYWxpemUoKSAoSSBjYW4gZG8gaXQgdG9v
-IGluIG15IHNlcmllcykuDQpHb29kIGZpbmRpbmcsIHdpbGwgZG8uDQoNClRoYW5rcw0KWmhlbnpo
-b25nDQo=
+On Mon, Jun 26, 2023 at 9:17=E2=80=AFPM Ilya Maximets <i.maximets@ovn.org> =
+wrote:
+>
+> On 6/26/23 08:32, Jason Wang wrote:
+> > On Sun, Jun 25, 2023 at 3:06=E2=80=AFPM Jason Wang <jasowang@redhat.com=
+> wrote:
+> >>
+> >> On Fri, Jun 23, 2023 at 5:58=E2=80=AFAM Ilya Maximets <i.maximets@ovn.=
+org> wrote:
+> >>>
+> >>> AF_XDP is a network socket family that allows communication directly
+> >>> with the network device driver in the kernel, bypassing most or all
+> >>> of the kernel networking stack.  In the essence, the technology is
+> >>> pretty similar to netmap.  But, unlike netmap, AF_XDP is Linux-native
+> >>> and works with any network interfaces without driver modifications.
+> >>> Unlike vhost-based backends (kernel, user, vdpa), AF_XDP doesn't
+> >>> require access to character devices or unix sockets.  Only access to
+> >>> the network interface itself is necessary.
+> >>>
+> >>> This patch implements a network backend that communicates with the
+> >>> kernel by creating an AF_XDP socket.  A chunk of userspace memory
+> >>> is shared between QEMU and the host kernel.  4 ring buffers (Tx, Rx,
+> >>> Fill and Completion) are placed in that memory along with a pool of
+> >>> memory buffers for the packet data.  Data transmission is done by
+> >>> allocating one of the buffers, copying packet data into it and
+> >>> placing the pointer into Tx ring.  After transmission, device will
+> >>> return the buffer via Completion ring.  On Rx, device will take
+> >>> a buffer form a pre-populated Fill ring, write the packet data into
+> >>> it and place the buffer into Rx ring.
+> >>>
+> >>> AF_XDP network backend takes on the communication with the host
+> >>> kernel and the network interface and forwards packets to/from the
+> >>> peer device in QEMU.
+> >>>
+> >>> Usage example:
+> >>>
+> >>>   -device virtio-net-pci,netdev=3Dguest1,mac=3D00:16:35:AF:AA:5C
+> >>>   -netdev af-xdp,ifname=3Dens6f1np1,id=3Dguest1,mode=3Dnative,queues=
+=3D1
+> >>>
+> >>> XDP program bridges the socket with a network interface.  It can be
+> >>> attached to the interface in 2 different modes:
+> >>>
+> >>> 1. skb - this mode should work for any interface and doesn't require
+> >>>          driver support.  With a caveat of lower performance.
+> >>>
+> >>> 2. native - this does require support from the driver and allows to
+> >>>             bypass skb allocation in the kernel and potentially use
+> >>>             zero-copy while getting packets in/out userspace.
+> >>>
+> >>> By default, QEMU will try to use native mode and fall back to skb.
+> >>> Mode can be forced via 'mode' option.  To force 'copy' even in native
+> >>> mode, use 'force-copy=3Don' option.  This might be useful if there is
+> >>> some issue with the driver.
+> >>>
+> >>> Option 'queues=3DN' allows to specify how many device queues should
+> >>> be open.  Note that all the queues that are not open are still
+> >>> functional and can receive traffic, but it will not be delivered to
+> >>> QEMU.  So, the number of device queues should generally match the
+> >>> QEMU configuration, unless the device is shared with something
+> >>> else and the traffic re-direction to appropriate queues is correctly
+> >>> configured on a device level (e.g. with ethtool -N).
+> >>> 'start-queue=3DM' option can be used to specify from which queue id
+> >>> QEMU should start configuring 'N' queues.  It might also be necessary
+> >>> to use this option with certain NICs, e.g. MLX5 NICs.  See the docs
+> >>> for examples.
+> >>>
+> >>> In a general case QEMU will need CAP_NET_ADMIN and CAP_SYS_ADMIN
+> >>> capabilities in order to load default XSK/XDP programs to the
+> >>> network interface and configure BTF maps.
+> >>
+> >> I think you mean "BPF" actually?
+>
+> "BPF Type Format maps" kind of makes some sense, but yes. :)
+>
+> >>
+> >>>  It is possible, however,
+> >>> to run only with CAP_NET_RAW.
+> >>
+> >> Qemu often runs without any privileges, so we need to fix it.
+> >>
+> >> I think adding support for SCM_RIGHTS via monitor would be a way to go=
+.
+>
+> I looked through the code and it seems like we can run completely
+> non-privileged as far as kernel concerned.  We'll need an API
+> modification in libxdp though.
+>
+> The thing is, IIUC, the only syscall that requires CAP_NET_RAW is
+> a base socket creation.  Binding and other configuration doesn't
+> require any privileges.  So, we could create a socket externally
+> and pass it to QEMU.
+
+That's the way TAP works for example.
+
+>  Should work, unless it's an oversight from
+> the kernel side that needs to be patched. :)  libxdp doesn't have
+> a way to specify externally created socket today, so we'll need
+> to change that.  Should be easy to do though.  I can explore.
+
+Please do that.
+
+>
+> In case the bind syscall will actually need CAP_NET_RAW for some
+> reason, we could change the kernel and allow non-privileged bind
+> by utilizing, e.g. SO_BINDTODEVICE.  i.e., let the privileged
+> process bind the socket to a particular device, so QEMU can't
+> bind it to a random one.  Might be a good use case to allow even
+> if not strictly necessary.
+
+Yes.
+
+>
+> >>
+> >>
+> >>> For that to work, an external process
+> >>> with admin capabilities will need to pre-load default XSK program
+> >>> and pass an open file descriptor for this program's 'xsks_map' to
+> >>> QEMU process on startup.  Network backend will need to be configured
+> >>> with 'inhibit=3Don' to avoid loading of the programs.  The file
+> >>> descriptor for 'xsks_map' can be passed via 'xsks-map-fd=3DN' option.
+> >>>
+> >>> There are few performance challenges with the current network backend=
+s.
+> >>>
+> >>> First is that they do not support IO threads.
+> >>
+> >> The current networking codes needs some major recatoring to support IO
+> >> threads which I'm not sure is worthwhile.
+> >>
+> >>> This means that data
+> >>> path is handled by the main thread in QEMU and may slow down other
+> >>> work or may be slowed down by some other work.  This also means that
+> >>> taking advantage of multi-queue is generally not possible today.
+> >>>
+> >>> Another thing is that data path is going through the device emulation
+> >>> code, which is not really optimized for performance.  The fastest
+> >>> "frontend" device is virtio-net.  But it's not optimized for heavy
+> >>> traffic either, because it expects such use-cases to be handled via
+> >>> some implementation of vhost (user, kernel, vdpa).  In practice, we
+> >>> have virtio notifications and rcu lock/unlock on a per-packet basis
+> >>> and not very efficient accesses to the guest memory.  Communication
+> >>> channels between backend and frontend devices do not allow passing
+> >>> more than one packet at a time as well.
+> >>>
+> >>> Some of these challenges can be avoided in the future by adding bette=
+r
+> >>> batching into device emulation or by implementing vhost-af-xdp varian=
+t.
+> >>
+> >> It might require you to register(pin) the whole guest memory to XSK or
+> >> there could be a copy. Both of them are sub-optimal.
+>
+> A single copy by itself shouldn't be a huge problem, right?
+
+Probably.
+
+> vhost-user and -kernel do copy packets.
+>
+> >>
+> >> A really interesting project is to do AF_XDP passthrough, then we
+> >> don't need to care about pin and copy and we will get ultra speed in
+> >> the guest. (But again, it might needs BPF support in virtio-net).
+>
+> I suppose, if we're doing pass-through we need a new device type and a
+> driver in the kernel/dpdk.  There is no point pretending it's a
+> virtio-net and translating between different ring layouts.
+
+Yes.
+
+>  Or is there?
+>
+> >>
+> >>>
+> >>> There are also a few kernel limitations.  AF_XDP sockets do not
+> >>> support any kinds of checksum or segmentation offloading.  Buffers
+> >>> are limited to a page size (4K), i.e. MTU is limited.  Multi-buffer
+> >>> support is not implemented for AF_XDP today.  Also, transmission in
+> >>> all non-zero-copy modes is synchronous, i.e. done in a syscall.
+> >>> That doesn't allow high packet rates on virtual interfaces.
+> >>>
+> >>> However, keeping in mind all of these challenges, current implementat=
+ion
+> >>> of the AF_XDP backend shows a decent performance while running on top
+> >>> of a physical NIC with zero-copy support.
+> >>>
+> >>> Test setup:
+> >>>
+> >>> 2 VMs running on 2 physical hosts connected via ConnectX6-Dx card.
+> >>> Network backend is configured to open the NIC directly in native mode=
+.
+> >>> The driver supports zero-copy.  NIC is configured to use 1 queue.
+> >>>
+> >>> Inside a VM - iperf3 for basic TCP performance testing and dpdk-testp=
+md
+> >>> for PPS testing.
+> >>>
+> >>> iperf3 result:
+> >>>  TCP stream      : 19.1 Gbps
+> >>>
+> >>> dpdk-testpmd (single queue, single CPU core, 64 B packets) results:
+> >>>  Tx only         : 3.4 Mpps
+> >>>  Rx only         : 2.0 Mpps
+> >>>  L2 FWD Loopback : 1.5 Mpps
+> >>
+> >> I don't object to merging this backend (considering we've already
+> >> merged netmap) once the code is fine, but the number is not amazing so
+> >> I wonder what is the use case for this backend?
+>
+> I don't think there is a use case right now that would significantly bene=
+fit
+> from the current implementation, so I'm fine if the merge is postponed.
+
+Just to be clear, I don't want to postpone this if we decide to
+invest/enhance it. I will go through the codes and get back.
+
+> It is noticeably more performant than a tap with vhost=3Don in terms of P=
+PS.
+> So, that might be one case.  Taking into account that just rcu lock and
+> unlock in virtio-net code takes more time than a packet copy, some batchi=
+ng
+> on QEMU side should improve performance significantly.  And it shouldn't =
+be
+> too hard to implement.
+>
+> Performance over virtual interfaces may potentially be improved by creati=
+ng
+> a kernel thread for async Tx.  Similarly to what io_uring allows.  Curren=
+tly
+> Tx on non-zero-copy interfaces is synchronous, and that doesn't allow to
+> scale well.
+
+Interestingly, actually, there are a lot of "duplication" between
+io_uring and AF_XDP:
+
+1) both have similar memory model (user register)
+2) both use ring for communication
+
+I wonder if we can let io_uring talks directly to AF_XDP.
+
+>
+> So, I do think that there is a potential in this backend.
+>
+> The main benefit, assuming we can reach performance comparable with other
+> high-performance backends (vhost-user), I think, is the fact that it's
+> Linux-native and doesn't require talking with any other devices
+> (like chardevs/sockets), except for a network interface itself. i.e. it
+> could be easier to manage in complex environments.
+
+Yes.
+
+>
+> > A more ambitious method is to reuse DPDK via dedicated threads, then
+> > we can reuse any of its PMD like AF_XDP.
+>
+> Linking with DPDK will make configuration much more complex.  I don't
+> think it makes sense to bring it in for AF_XDP specifically.  Might be
+> a separate project though, sure.
+
+Right.
+
+Thanks
+
+>
+> Best regards, Ilya Maximets.
+>
+
 
