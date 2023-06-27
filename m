@@ -2,97 +2,177 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1047C73FA95
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 12:55:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0563273FA9D
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 12:57:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qE6Ku-0002YB-CU; Tue, 27 Jun 2023 06:54:16 -0400
+	id 1qE6Nn-0003Y4-E5; Tue, 27 Jun 2023 06:57:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qE6Ks-0002Xs-9I
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 06:54:14 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <joao.m.martins@oracle.com>)
+ id 1qE6Nk-0003Xc-Tr
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 06:57:12 -0400
+Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qE6Kq-0007xh-Fn
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 06:54:14 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687863250;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=pRWQ3EAcg/ScWAEolZdUPFRwO5MNLXlzHOZC3m5BB6I=;
- b=GJl1E+RBQKdzfsakmzXm6Y8pejHQDkTnUXjMdWsTYJBtFvM8wWQacSpK1mnu2Sceija4Hc
- NzXZDfoNTFH+CsKXdIVgCSdsGgUeDxwQ/m4FGMWy1/S4wWWxVjmbZn5uNQ0jfRECF4T/oN
- dz7IXrxJkoUPlgsbvOfEUyG8z8b2LCY=
-Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
- [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-568-Ix_kN0fjOcKw1qdt6KxTdw-1; Tue, 27 Jun 2023 06:54:09 -0400
-X-MC-Unique: Ix_kN0fjOcKw1qdt6KxTdw-1
-Received: by mail-qt1-f199.google.com with SMTP id
- d75a77b69052e-402cd359b19so2064961cf.2
- for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 03:54:09 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687863249; x=1690455249;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=pRWQ3EAcg/ScWAEolZdUPFRwO5MNLXlzHOZC3m5BB6I=;
- b=fJC4CFgmaclCUanS9wXCr9bUeMH0Lugcgdpof93USqrDF+NNCdPuyqiWworcDsb3Rr
- whgpV40UFTHAFsNa5ihvzLB7ijcL00+/h+CvnsD7E2QGV56AtoB6AIQAv/bD5uEPo5AL
- 4X5VwgNPhQg7VePoP9/M8hVoJW3w8J1RH7iPcFOkYzR0KRS0TUbkl2Gw0eP8+NVoVnsR
- cDK8SjmocHpTX7wZYuROHjlgvrwlSfOEaadUW1F0VCz8w0YRg2dZQfU7jegg3lALkeGV
- f0VHPDe5fum4Fpi4VbXwlOts3ul2RSZbouosYPgxQqQ8eUCQ5xTD0uGkd3WiU/qFhseX
- 27dQ==
-X-Gm-Message-State: AC+VfDxm0+ZRI5iJt0oY87dkb10t7i9lsTKhgiF7/PV/u5uy60CdnRYS
- zPz8j0ntxwkE+ekC0dUCDrPjKBcmqOD3qFOhqd8pMv9neSSM8YEYFCl/FCzGcyF+7w1VKPml4dm
- Q313favPcO34ERvQ=
-X-Received: by 2002:a05:622a:1104:b0:3ff:25d0:d291 with SMTP id
- e4-20020a05622a110400b003ff25d0d291mr29536477qty.47.1687863248850; 
- Tue, 27 Jun 2023 03:54:08 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7ApVCV+SgAfEGW0ETq0ZrO7c/sBsnda1sVFvl1ZOdNwOy3EdiISPRzwAms3wFoSWTzflGgKQ==
-X-Received: by 2002:a05:622a:1104:b0:3ff:25d0:d291 with SMTP id
- e4-20020a05622a110400b003ff25d0d291mr29536460qty.47.1687863248567; 
- Tue, 27 Jun 2023 03:54:08 -0700 (PDT)
-Received: from [192.168.0.5] (ip-109-43-179-172.web.vodafone.de.
- [109.43.179.172]) by smtp.gmail.com with ESMTPSA id
- j3-20020ac85c43000000b003ef189ffa82sm4354947qtj.90.2023.06.27.03.54.05
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 27 Jun 2023 03:54:08 -0700 (PDT)
-Message-ID: <e8188ec7-f722-850c-30be-397c4c62ec2e@redhat.com>
-Date: Tue, 27 Jun 2023 12:54:04 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH v2 4/4] pc-bios/s390-ccw: Don't use __bss_start with the
- "larl" instruction
+ (Exim 4.90_1) (envelope-from <joao.m.martins@oracle.com>)
+ id 1qE6Ni-000099-EO
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 06:57:12 -0400
+Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 35R8Dke7026013; Tue, 27 Jun 2023 10:57:07 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ h=message-id : date :
+ subject : to : cc : references : from : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=corp-2023-03-30;
+ bh=NvOvoCx+wY/RVo9VnqkDpjVUUIImqeKppVsbc0+ihe0=;
+ b=T/tmR3cXwbacA+TnmQovXou0RxoxLXuayLpdcMsaFk+tFTiXW4acpfJwIqTY5YHKIW9P
+ 6Z77NyIHLTbmEJ3pSOFaa+1MBpIx3kOmpP7GMYT3PIKFEafrc7gskdeqwbdUrGneGcf6
+ 5FwTjai8lXClez8LT5uZQSNhgrvJXgRA9gTRezYvy17cwcoVk3I5B6WbwNg5orx7tinr
+ s/6m6gLKygJzHIhhD13ZB/3nYCRrf7eFZKzMG92cfnfi6V5mJU8PD1lhfbO+3EfJx7OH
+ 4lc3lIWUxKX3XXwb0Z/cLl7JWTFxAnt6RZdgUkkO+V1XNa984t/1Lzt1WmUzFVhZtWMl nw== 
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3rf40e2wty-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 27 Jun 2023 10:57:06 +0000
+Received: from pps.filterd
+ (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
+ with ESMTP id 35R9fFNB003960; Tue, 27 Jun 2023 10:57:06 GMT
+Received: from nam12-mw2-obe.outbound.protection.outlook.com
+ (mail-mw2nam12lp2040.outbound.protection.outlook.com [104.47.66.40])
+ by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
+ 3rdpxab4df-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 27 Jun 2023 10:57:06 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=OoRS8DlmXvWHS4gyAPbJhUjYJjPYFF3tgAxycXb1EQ65b0Gsyavf73FsH6beJu6TF3D4rKgUfk+kTedQq1FUThTeEiqMTVSOPSpOVDifMJhQgjEq19EUWkppFin9hwU0ToCe3nwS5llebcZ2SdtK7gaQgfnUyr313RhnwX3lYbx6NM8ny5B+xKPZ9/WAQOetE5Jr2e8h/JV9hg/CJfAfLrsA7YZdspHg/B1nv9jHqUViPtBF5GbmMKHqnphSEsuzK85U++6z66dek1ZNntqIpKpHtwEHHW8l2Wm8q0aClIKRlB2ztEwypA3rj10MjxWzCZZEnVv4Yq1fWbywIOXn0A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=NvOvoCx+wY/RVo9VnqkDpjVUUIImqeKppVsbc0+ihe0=;
+ b=iuQZHd5PahTEhrOdZpWUAEANHM9KvtdDg3k27WZw22HT4jglH+PubD37+yIGoCduqDXHTjlHjqfVRIP7kqbwLZTr8AG0kkfPol5xP8Uig5bcEo5JYxFygwWZ6IguMbs8+BI1Yu/9cr72JemlKcrUZYPVD7uMlesjmGDdQZzJaI+ecyD66I1V597U+bvsI+3gLsOvcdxTdpOFbHhI/ht8hLTIK5/OXo8QFXiwWGOTrB7j2IqBrM4xhEQCBDLoQqQSr8tS5P7R76ffBQohj4oHt72/UKn1wsduolMr4IQGIftlEfkSLdAaxdi9kif+Fz6W/HIIq50SGVMw0OSoMWxS2w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=NvOvoCx+wY/RVo9VnqkDpjVUUIImqeKppVsbc0+ihe0=;
+ b=mqk/tGvNDEFpvAu/2SMzXIBElbSLoVSQBDTU4WvpynnjHFOPnImfetX+c+JfmIFnRxNjSeweJEZxY0m/zMGKIj9NWsezPr7tz3J8DUBaM4XDGqmcT0K0zTvBJSlZag8w44As/Ai5wm34MCLTtpazpV+baThFxJcfCTB7jiO7W3c=
+Received: from BLAPR10MB4835.namprd10.prod.outlook.com (2603:10b6:208:331::11)
+ by SJ1PR10MB5978.namprd10.prod.outlook.com (2603:10b6:a03:45f::20)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6521.24; Tue, 27 Jun
+ 2023 10:57:03 +0000
+Received: from BLAPR10MB4835.namprd10.prod.outlook.com
+ ([fe80::f7ba:4a04:3f37:6d0f]) by BLAPR10MB4835.namprd10.prod.outlook.com
+ ([fe80::f7ba:4a04:3f37:6d0f%5]) with mapi id 15.20.6521.026; Tue, 27 Jun 2023
+ 10:57:03 +0000
+Message-ID: <bbdf6724-4c5c-cb93-9da3-c28d3b75620a@oracle.com>
+Date: Tue, 27 Jun 2023 11:56:57 +0100
+Subject: Re: [PATCH v3 3/3] vfio/migration: vfio/migration: Refactor and fix
+ print of "Migration disabled"
 Content-Language: en-US
-To: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Cc: qemu-devel@nongnu.org, qemu-s390x@nongnu.org,
- Christian Borntraeger <borntraeger@linux.ibm.com>, mrezanin@redhat.com,
- Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clegoate@redhat.com>,
- Janosch Frank <frankja@linux.ibm.com>,
- "Jason J . Herne" <jjherne@linux.ibm.com>,
- Marc Hartmayer <mhartmay@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>
-References: <20230627074703.99608-1-thuth@redhat.com>
- <20230627074703.99608-5-thuth@redhat.com>
- <20230627112939.7366916c@p-imbrenda>
-From: Thomas Huth <thuth@redhat.com>
-In-Reply-To: <20230627112939.7366916c@p-imbrenda>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
+ Avihai Horon <avihaih@nvidia.com>
+Cc: "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
+ "clg@redhat.com" <clg@redhat.com>, "Peng, Chao P" <chao.p.peng@intel.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+References: <20230621080204.420723-1-zhenzhong.duan@intel.com>
+ <20230621080204.420723-4-zhenzhong.duan@intel.com>
+ <c8583433-9b9f-4380-8076-8ca623b66770@nvidia.com>
+ <3afe5106-414e-5a3d-4a15-3992f80fac5b@oracle.com>
+ <SJ0PR11MB6744F88600646B8FD4E7F5019227A@SJ0PR11MB6744.namprd11.prod.outlook.com>
+From: Joao Martins <joao.m.martins@oracle.com>
+In-Reply-To: <SJ0PR11MB6744F88600646B8FD4E7F5019227A@SJ0PR11MB6744.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+X-ClientProxiedBy: AM8P190CA0012.EURP190.PROD.OUTLOOK.COM
+ (2603:10a6:20b:219::17) To BLAPR10MB4835.namprd10.prod.outlook.com
+ (2603:10b6:208:331::11)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BLAPR10MB4835:EE_|SJ1PR10MB5978:EE_
+X-MS-Office365-Filtering-Correlation-Id: 48dfd662-0674-46b1-1b06-08db76fd3d64
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 7Jyu49XQvcQ02XdrRyPtfhEd8TMb2HNjPJWQ7uS+NEfu+IH5CDBP7ep6Wc665X/kdukg3Xt1ytCFYv+O8OyTb/xoRbhzLMqeasotPcq/pyHWbpgnt5+wZZq0tiAalJGF3iKIKX4qzJPzd9IUtM9JEQsUcpvy4NY8kq4c+AHtasHcQebIbw8I5Pkr1EmFm564bNdYxevJTW9XvGlWSOT4BzNrcQ2AEnGivAw2pF+KBKQjyuwcHp7Mssb33f6JSfxbpDQyl0K6GzGc3BDk3wdBM2ZrzNU4H5TpVDjJmmm+nGJTJ4qiBHixgdQVxxLFM+Z2vRVnNiCmRZvRRNkY6rZo5qRa0Wg4tQThDG8HsQUa417AD/6IojsvFKz0p5YL3V0iMIOpKa31Y0vQ86KqUVL3dtYkAqpE5SflvmBtZ4nDlddxb8dfbF10y9fXoe5v1yS5fF0my2B+ovBhed/3oNbx1s1zmPA8nuMkphqEx9QW0j568CQP/t3GptuTZQhNLE6beN0DFuXXnRkr926dhtbaETrwkg9MUUqaIjDKm/fJA5ffC4WIQrBxnw7zBwwm3W2UWFCjxcsJzrxsXI45sEhMJuW9Yy0/rtGEH2ZXQ9C0LXg=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:BLAPR10MB4835.namprd10.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230028)(376002)(39860400002)(346002)(366004)(396003)(136003)(451199021)(66556008)(66476007)(6506007)(36756003)(966005)(110136005)(6666004)(54906003)(478600001)(2616005)(83380400001)(26005)(186003)(53546011)(2906002)(6486002)(5660300002)(316002)(66946007)(31696002)(38100700002)(8676002)(86362001)(8936002)(41300700001)(4326008)(31686004)(6512007)(45980500001);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Y3VTcyt2VkNhcHAyRlJTZVdHQXJTdmxoN21KMWI4ZHNDQU05Ym53ZUxXSDI1?=
+ =?utf-8?B?QS9yNG94R3h4cnN4RE5ndkYzQUZYUVhVOUUybjl6cU9XaGtZU3hOSmE5SHlr?=
+ =?utf-8?B?aFMxT0lyeXlXaWdFRDJyeTltMTNVWVByRy95SGRmRUs0bC8xMi8zaHhIVkhW?=
+ =?utf-8?B?VFNZWVlNa2VTdGxYVEJGZHNFQklmckZTc1RuNHdyaE9ZL2w4bGtveFVIaXRj?=
+ =?utf-8?B?aTlENHZ3cXRqNmQ3TlErQjlxSlB4akFYTTdpa0xaVmNuWEptWnFDS3lYVkpx?=
+ =?utf-8?B?SWtBeisrL291TWUyaHF0NUpZVFlNZlVBTW1sZGcwQ3g4SGhudHZrR1Noc2lF?=
+ =?utf-8?B?ZXFzZWcwWXNHTHhabzJQaU8wQXhBbjVGUHdaL09oNEVNTi85YVRrRXNtVXZx?=
+ =?utf-8?B?cUwreGdNU3BRQytZSGJsaUt2VGJlR255VXV5RmExektYc2JuRUVCSm9RWTFm?=
+ =?utf-8?B?dnROUHU4c1I4b0NudHhuUk1lZEhUSXRObUVsbWI5QXAzSWtTaDhtelVYclYy?=
+ =?utf-8?B?eTRrMmVMT0x3czhJUVVxVVJjdThyZ3czMjlhT3pnSWtWV2wzOGpSWWRCRFNz?=
+ =?utf-8?B?WUwyK281MGMrTjhGcWJXb2F3dHc4OVRibE9vSE1IZ3YwVi96Q2Y5Wkp4Ym9C?=
+ =?utf-8?B?MGs1NFltT05hem1RTWRSejhjUTR4SnE4MEMvZm1hb3hsWGlRRVVxVXNyZWtZ?=
+ =?utf-8?B?S3cvMjg4NE1GdThwWVM5WmJIT3JYMUd3NjR3NkJVNHBUOGVnREtTYUt3azQy?=
+ =?utf-8?B?SktjUTF1OEJ4alFXM3BkMU9lY1pIR25OQ3VpcXppQzd1VGlIYlUveTM2dmJm?=
+ =?utf-8?B?ZHRmUjlRSk14NC81bTdGVFZSbW5YNnRGMHorRjZ5R0JqY1JieURDdlpMZ0hJ?=
+ =?utf-8?B?ajhvTDhCSTlXSGdjb3h6cVpPYmRJZ2R3ajErZm03d0lpTHpScmZNdC92djBF?=
+ =?utf-8?B?akhDZit5NzhUT2cveUtHeGFQS1llRnBHOGU0T0VFS282MUpNdVd6VFk5Q3Vv?=
+ =?utf-8?B?anJVR0xDTExiNmFNK1M0Q2xxc0g1UFJSa0tNRGVsNm1CSURHUk1ZUGMrYUp3?=
+ =?utf-8?B?dGprODZraVY2ek9VYUxTMlhBSktXVExHSURKL296NUFsdVRrb3N1WHc2RG1S?=
+ =?utf-8?B?L29xOGVEWDNjYmdkVDJmVzArb1ZWMjRLRG9SekdXZUdoV014VzQ5eStBblJX?=
+ =?utf-8?B?Nm0yN1gwSHN1Zmx2a05WSWQ3YVJ6RlNtZmlGRDNOaUJRL01DdUt6VE5FVE9t?=
+ =?utf-8?B?U1FxRVVxR0U3WjNSQWM1NVp0cFVTeWF5N2lRN1FveHY4TkYzWWpSRVRJakk0?=
+ =?utf-8?B?c1YzOE5PL2RBQ1BJZjdnU0NFQTJPT3BiczMvQ2NwOUN1UkRuTHN6cE9xTTdy?=
+ =?utf-8?B?RVFtWDh3RjBZMHc1eW14dTVGQkQzd0N6ZnhtVDQrdWgxOHNkWEpXeXJQSnc1?=
+ =?utf-8?B?K1VXK3BrMXBqdGxkK1c5TzRNREE4T3pzMm9qQ0xNSjNWcHBZMUoyOHNmc2Qw?=
+ =?utf-8?B?aXdHUDA0bVkvWVZBckNWM3lIbmhBRGJTWmZ6QzNiTjJwZHBCajRMR0hXejcz?=
+ =?utf-8?B?U3c0bHJhZzVXRWswQUlCUEp0YndTSHRUTjZVREtUUDY1MFN6YXh6RWdQMEZQ?=
+ =?utf-8?B?VHg1T2NRUG1Jcm52empuVktuWk9NUnVzVnpKYmFvNWdieFp5RjVKTE1PTEJ0?=
+ =?utf-8?B?NjJ4ZDB5T3VRNCtxMlN1WVUzK1V3M1c5SG5wSzczb0VzU0txdDc4cXdqNi8v?=
+ =?utf-8?B?dGlxTFErR1pGVzRtVFpNdENsQXRPZkZ6Ymc0QzNWc01laWNDd1pKdGliTDBF?=
+ =?utf-8?B?TTVHVklNLzdDdlFiVCs0TWVYQXZvb2JCRGlhVGhWNzJSS0VCRWltZmpQRXpI?=
+ =?utf-8?B?QU85elFqd3V3RTBneFUxd3ZhbHJmMnlUNmFoYTVLRkwvVkpCSnZFSzVRM0VY?=
+ =?utf-8?B?SjV3RlZpUnpPNmlhQjl0MHlVdWRlclIzd0tSaXUzbGhGQ3VnWmJ2RGJha1I0?=
+ =?utf-8?B?MzU3VFdwRTFJVjhkcUUvb09BVlNnN0V3SEhaQmJQWHdBVm01SGJUR3gvRmh6?=
+ =?utf-8?B?VktOSUtaVjJuMXY2Zk1pYWRtY2crYW5DVWhjWTZzZzU0d0dxS1pvWFVpc0Jj?=
+ =?utf-8?B?alFFVHRlc25FUFdDdklqWFVtdzBkVWhWS2ZQeU5VR3dyeGg0RFhRWEoyNTJ2?=
+ =?utf-8?B?TFE9PQ==?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: mM4iwLRcp0UJ4LpEIpZlU7SvXBZzNCDyDFNGuNmzgvTuw6bbDlU8Tvqw7YSAZQP0IherXRw1pPWgvQHLH1f/pHp/e+f+ZB++87JA5PigHTxxRUETTTCmrhex2VNLV1evXq2/My2o2z+Ur5KMW5Cu7SaLqGm6+SNH3PVgShTHgK8IYafJ3D0vOYEf32YE2MzO/oEZKTKxghV5W//EzVeAHM1r8+RAXCv/d9shiZFgDZskU87X9jQ1cwzIGZjAxDBJMr2aU0khreB63BX/l2Gu10u1CN9RILh5JGrvNwDQSrPiu0KU7iTbtYKxlIaBYqm6/P80BeECfX7OB0+e46ETB3B+d6h6NbbedtrTvRUP6fvM+5IZNfyj6tKx5xxWTVQkIiPd0SFznbHH3q955GYAEoyTcIIwUhAqaVVscGNNPratPSxXW3+gLQrEcOeubhxlbOkGWP3KyRQePhbMmW6vQApI/xNAKv6V8IVcQQv3OhCTQcxVXUoxNSM1RYmaH2RNUWK33o1mwi+PNhM+djCQ2eItI0E7mR4gKzAWQyaA3KLEzVq09B0G70iN6JHAcLUuxkhdGC2WSMQRVqeiseXpLXEFfKkUFeD1vngdWYdRr+fzGxO5c3chE+RepcodXeFQjoQJ8gdV9tKE40TBGbKsKscgAYHWEpMKE5vNidZArbdrvToYPspJvNIquKDN3lVeRuLz0Kd/sYmlRWMT2uyi2LXAde263lRfdloAPaO4c9SOUPvgUXervkUL5GrtZoJgUIt+vaQsKu3YcGDbverFkkMEijH9hgURpRJ7Ayd8380rsJtor/eaX0aus4THR9cS++spKCpJmO5ezkVop1BI/Q==
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 48dfd662-0674-46b1-1b06-08db76fd3d64
+X-MS-Exchange-CrossTenant-AuthSource: BLAPR10MB4835.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Jun 2023 10:57:03.3615 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: PPOdhCPZMMKQi7td49siOAUdu/Defm62+WfMX027TBSw7kkyphFDMG/gIXQIq2GUXyg3ZvOHcChu1apRoE+ihVn1j4WWGrQy4CkM9VIIgig=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ1PR10MB5978
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-06-27_06,2023-06-27_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
+ malwarescore=0 mlxscore=0
+ mlxlogscore=999 bulkscore=0 spamscore=0 phishscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2305260000
+ definitions=main-2306270100
+X-Proofpoint-GUID: U9yb4n685AnbJs4Ty8wgKWK_x4oXYSdI
+X-Proofpoint-ORIG-GUID: U9yb4n685AnbJs4Ty8wgKWK_x4oXYSdI
+Received-SPF: pass client-ip=205.220.177.32;
+ envelope-from=joao.m.martins@oracle.com; helo=mx0b-00069f02.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -109,88 +189,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 27/06/2023 11.29, Claudio Imbrenda wrote:
-> On Tue, 27 Jun 2023 09:47:03 +0200
-> Thomas Huth <thuth@redhat.com> wrote:
+On 27/06/2023 03:55, Duan, Zhenzhong wrote:
+>> I guess it makes sense -- the thing that was tieing him was the global migration
+>> blocker, which is now consolidated into the main migration blocker.
+>>
+>> My vIOMMU series will relax this condition yes (still same per-device scope).
+>> And I will need to check the maximum IOVA in the vIOMMU. But it's new code
+>> I can adjust and Zhenzhong shouldn't worry about the vIOMMU future stuff
+> A bit confused, you agreed to move vfio_block_giommu_migration into migration.c
 > 
->> start.S currently cannot be compiled with Clang 16 and binutils 2.40:
->>
->>   ld: start.o(.text+0x8): misaligned symbol `__bss_start' (0xc1e5) for
->>       relocation R_390_PC32DBL
->>
->> According to the built-in linker script of ld, the symbol __bss_start
->> can actually point *before* the .bss section and does not need to have
->> any alignment, so in certain situations (like when using the internal
->> assembler of Clang), the __bss_start symbol can indeed be unaligned
->> and thus it is not suitable for being used with the "larl" instruction
->> that needs an address that is at least aligned to halfwords.
->> The problem went unnoticed so far since binutils <= 2.39 did not
->> check the alignment, but starting with binutils 2.40, such unaligned
->> addresses are now refused.
->>
->> Fix it by using the real start address of the .bss section instead.
->>
->> Buglink: https://bugzilla.redhat.com/show_bug.cgi?id=2216662
->> Reported-by: Miroslav Rezanina <mrezanin@redhat.com>
->> Suggested-by: Nick Clifton <nickc@redhat.com>
->> Signed-off-by: Thomas Huth <thuth@redhat.com>
->> ---
->>   pc-bios/s390-ccw/start.S | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/pc-bios/s390-ccw/start.S b/pc-bios/s390-ccw/start.S
->> index 111dea261b..a63c4e3ff2 100644
->> --- a/pc-bios/s390-ccw/start.S
->> +++ b/pc-bios/s390-ccw/start.S
->> @@ -18,7 +18,7 @@ _start:
->>       larl    %r15,stack + STACK_SIZE - 160   /* Set up stack */
->>   
->>       /* clear bss */
->> -    larl    %r2,__bss_start
->> +    larl    %r2,.bss
->>       larl    %r3,_end
-> 
-> since we are here, do you have guarantees that _end is always correctly
-> aligned?
+>> but I don't expect to influence location, say if it gets moved into migration.c
+> and final decision is no move for influencing location reason? Do I misunderstand?
 
-Yes, you can see the internal linker script by running
-"ld --verbose", and there I get:
+Sorry for the confusion.
 
-   ...
-   .data1          : { *(.data1) }
-   _edata = .; PROVIDE (edata = .);
-   . = .;
-   __bss_start = .;
-   .bss            :
-   {
-    *(.dynbss)
-    *(.bss .bss.* .gnu.linkonce.b.*)
-    *(COMMON)
-    /* Align here to ensure that the .bss section occupies space up to
-       _end.  Align after .bss to ensure correct alignment even if the
-       .bss section disappears because there are no input sections.
-       FIXME: Why do we need it? When there is no .bss section, we do not
-       pad the .data section.  */
-    . = ALIGN(. != 0 ? 64 / 8 : 1);
-   }
-   . = ALIGN(64 / 8);
-   . = SEGMENT_START("ldata-segment", .);
-   . = ALIGN(64 / 8);
-   _end = .; PROVIDE (end = .);
-   . = DATA_SEGMENT_END (.);
-   ...
+The thing is that I will need 'similar code' to test if a vIOMMU is enabled or
+not. The reason being that dirty tracking will need this to understand what to
+track meaning to decide whether we track the whole address space or just the
+linear map[0]. And all that code is in common, not migration.c and where I use
+it will have to look at all address spaces (because dirty tracking is started
+for all devices, so there's no vbasedev to look at).
 
-As you can see, there is no alignment in front of
-__bss_start, but there is alignment in front of
-__end.
+Eventually after the vIOMMU stuff, the migration blocker condition will look
+more or less like this:
 
-> if so:
-> 
-> Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+	return (!vfio_viommu_preset(vbasedev) ||
+		(vfio_viommu_preset(vbasedev) &&
+		 !vfio_viommu_get_max_iova(&max)))
 
-Thanks!
+Whereby vfio_viommu_preset(vbasedev) is what you currently call
+vfio_block_giommu_migration(vbasedev) in current patch. So perhaps I would say
+to leave it in common.c and rename it to vfio_viommu_preset(vbasedev) with a
+comment on top for /* Block migration with a vIOMMU */
 
-  Thomas
+Then when the time comes I can introduce in my vIOMMU series a
+vfio_viommu_possible() [or some other name] when starting dirty tracking which
+looks all VFIOAddressSpaces and reuses your vfio_viommu_preset(vbasedev). This
+should cover current and future needs, without going to great extents beyond the
+purpose of this patch?
 
-
+[0]
+https://lore.kernel.org/qemu-devel/20230622214845.3980-13-joao.m.martins@oracle.com/#iZ31hw:vfio:common.c
 
