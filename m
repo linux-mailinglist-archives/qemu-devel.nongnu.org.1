@@ -2,57 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A73B73FDE0
+	by mail.lfdr.de (Postfix) with ESMTPS id 02FB373FDDF
 	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 16:33:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qE9kK-00041A-Hy; Tue, 27 Jun 2023 10:32:44 -0400
+	id 1qE9kT-00042u-5q; Tue, 27 Jun 2023 10:32:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qE9kI-00040e-PA
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 10:32:42 -0400
-Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qE9kQ-00042E-AG
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 10:32:50 -0400
+Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qE9kH-0003aL-4V
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 10:32:42 -0400
-Received: by mail-ej1-x62d.google.com with SMTP id
- a640c23a62f3a-98e011f45ffso333612166b.3
- for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 07:32:40 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qE9kN-0003cG-Sa
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 10:32:50 -0400
+Received: by mail-ej1-x62f.google.com with SMTP id
+ a640c23a62f3a-9922d6f003cso83290466b.0
+ for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 07:32:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687876359; x=1690468359;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=yXF/f9t11zAakpvjOX4nDrtnLXHNdzigFTidlmb+aUY=;
- b=LQHHK8u4R1ctyBaBMB8vnFgcgXerPU+61dRqHkMPCrIJYghNCth9RtJiDhuqP0I6eJ
- nTPSIQJx3Yat0uRIw0Tm4NJ/QVDVlM/u1KLdrhfOQIyuhj2WlKRGcoBmfx7QC8zM0rgH
- r9M6kEsK+SQyYbhJAgSfzprjw1vaxgE03d/H1pC3egtt+OOnyyr1mrWmJyVge+Rrlb2C
- THSCwElliI4If6Hr0O10e9tEUHXoJywMR0DITYD8wExJMLLaIDkANxocfYmxr5UMha9U
- LOMiggZiodPypnqSbzghbZKEgm2VxiJIT2PlK4OHDEzBvaZ3cg3Ub8hEll9oFsENcXh4
- SNYA==
+ d=linaro.org; s=google; t=1687876366; x=1690468366;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=y72Cvu7+GGKH51wZ4ZTPnItUIyTNc7r63P3IdRE4o+o=;
+ b=MztS8j7tLpzm56SqQpg7rc7fo6nwwsdVX1hBIumipRYBDODwklz1pxxzzxrOTaXGuq
+ OJ6WS4isrkZ2jTgrLZ45tuQqE4N/vPiJNlLHRinRgaRRdZ4qMVKCKdrB9+3jHXOmUwXx
+ b5SQSsJZmqNgrSpf6FhzL9lxxpvh4VrqzT84TPxrxKCJk/YdaZKVItCzC8jMf/8LrAca
+ nEzLUfg1ho0ZYrLLWJBLJAk3jzMAmi5F74HF1VWb2viL4OxZjE28dpEnB9OiU+jnP42+
+ EsxZ0hErStDpZjiX3AywyQqkK0P4TdHvAoPi1wlZKS3r8W6kn1aSymOCC6JDjinBhVdJ
+ aXfw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687876359; x=1690468359;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=yXF/f9t11zAakpvjOX4nDrtnLXHNdzigFTidlmb+aUY=;
- b=N1wrLS8Da10nrnKAsrNDqtAK9sxaVOmh5Q82zbm+GQCikmbWhRA0FmjvOXhJWll22j
- 0iYw6BqFPDIO/KhcrqaHemxR689OiD1/+PsuGlisVITT/moSDF/A0yKd915hobZgNTHD
- HY6sVWJbACYnQtMmLkwc03QinLnvPyCdFca82151ON/tjV2PzAqoYmy84GHkTOWUHkxB
- BOF+G4e/sWN+3IQCJRkLraAg81Qekucye6f0enoPr8NvADUYsbwdYuVMKUBctH0Alcsk
- xJWo7ACPaViSoKHEmDlLV8PmdJ1+NDuu84i+y8jukFOzKbp0PIST+grlciqlGOqead5l
- faUA==
-X-Gm-Message-State: AC+VfDywT1GnQI87pikq+vUOU7KkTWqkLpiu7zLpHLANHcQhdGe+r1ey
- fGKHtAHyc+X2lSZB+CYNGd9wN0fqdJVw2I8SqG0=
-X-Google-Smtp-Source: ACHHUZ7agzdM9Dedx+yKJmJVGN3r3Xb00OXtCRck4mDcWPTGYGfERVO6owTNh5AtEL3cH+xhr6ZfYg==
-X-Received: by 2002:a17:907:a061:b0:991:fd87:169e with SMTP id
- ia1-20020a170907a06100b00991fd87169emr2306237ejc.8.1687876359432; 
- Tue, 27 Jun 2023 07:32:39 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1687876366; x=1690468366;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=y72Cvu7+GGKH51wZ4ZTPnItUIyTNc7r63P3IdRE4o+o=;
+ b=gdtfZJIkyfZWbDgZ28pFeujwAPGt88FcUv1ekfgT0UbcRU9EmjJCd5vLMtkr2uVeMj
+ x6jL8eiNPEppnWd6QSVxKneFYmh+IK1TN4BMw6ulL9josmfjHU3M4Ek2TSnhB7HJRnHY
+ agx/SR8nvmnWsXLiJZFi7gwxpQdRfx+jk0HpM781QsdQgxqyr0ch4w+vJQ4LO6rqVJnP
+ 1eMnafHWdAX7wkhFMPT/KaF3rudPlJQdBLOCkrbQO0zvL069x4wzOSV0xvH9A8sqmlKc
+ R1HTP08pOX/0biLIfI9bphnYURolFiF/VjVPcBZakalR5+xYz2q9UtA93RbfvIWbTzkg
+ WJwA==
+X-Gm-Message-State: AC+VfDzuA8n0v1oEJ6PXjRrJ3vE4Il6pOdTdZstR4rRgUY7zzvNsx9l0
+ y0JKTs4SzVgzJFJfSOiwN4ecoXhKaVQjNOS0LfU=
+X-Google-Smtp-Source: ACHHUZ6i9BHvtFNXhZ3RkKuYWusx/WasaAnWMdOPkSkWknXDKSepYWk+KXa6CY215zaQOMuiOfOiAA==
+X-Received: by 2002:a17:907:724a:b0:987:16f5:692f with SMTP id
+ ds10-20020a170907724a00b0098716f5692fmr25811436ejc.44.1687876365924; 
+ Tue, 27 Jun 2023 07:32:45 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.199.204])
  by smtp.gmail.com with ESMTPSA id
- re3-20020a170906d8c300b00977ca5de275sm4690670ejb.13.2023.06.27.07.32.37
+ r24-20020a1709067fd800b009890f2c4cf9sm4627699ejs.79.2023.06.27.07.32.43
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 27 Jun 2023 07:32:38 -0700 (PDT)
+ Tue, 27 Jun 2023 07:32:45 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Alistair Francis <alistair.francis@wdc.com>,
@@ -65,15 +66,18 @@ Cc: Alistair Francis <alistair.francis@wdc.com>,
  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-riscv@nongnu.org
-Subject: [PATCH 0/2] target/riscv: Only build qemu-system-riscv$$ on rv$$ host
-Date: Tue, 27 Jun 2023 16:32:33 +0200
-Message-Id: <20230627143235.29947-1-philmd@linaro.org>
+Subject: [PATCH 1/2] target/riscv: Only unify 'riscv32/64' -> 'riscv' for host
+ cpu in meson
+Date: Tue, 27 Jun 2023 16:32:34 +0200
+Message-Id: <20230627143235.29947-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.38.1
+In-Reply-To: <20230627143235.29947-1-philmd@linaro.org>
+References: <20230627143235.29947-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,32 +100,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Per Anup Patel in [*]:
+We want to keep the ability to distinct between 32/64-bit host.
 
- > Currently, we only support running rv64 guest on rv64 host
- > and rv32 guest on rv32 host.
- >
- > In the future, we might support running rv32 guest on rv64
- > host but as of now we don't see a strong push for it.
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ meson.build | 11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
-Therefore, when only using the KVM accelerator it is pointless
-to build qemu-system-riscv32 on a rv64 host (or qemu-system-riscv64
-on a rv32 host). Restrict meson to only build the correct binary,
-avoiding to waste ressources building unusable code.
-
-[*] https://lore.kernel.org/qemu-devel/CAAhSdy2JeRHeeoEc1XKQhPO3aDz4YKeyQsPT4S8yKJcYTA+AiQ@mail.gmail.com/
-
-Based-on: <20230626232007.8933-1-philmd@linaro.org>
-"target/riscv: Allow building without TCG (KVM-only so far)"
-https://lore.kernel.org/qemu-devel/20230626232007.8933-1-philmd@linaro.org/
-
-Philippe Mathieu-Daudé (2):
-  target/riscv: Only unify 'riscv32/64' -> 'riscv' for host cpu in meson
-  target/riscv: Only build KVM guest with same wordsize as host
-
- meson.build | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
-
+diff --git a/meson.build b/meson.build
+index fc3c14a810..649de244c6 100644
+--- a/meson.build
++++ b/meson.build
+@@ -55,16 +55,11 @@ qapi_trace_events = []
+ 
+ bsd_oses = ['gnu/kfreebsd', 'freebsd', 'netbsd', 'openbsd', 'dragonfly', 'darwin']
+ supported_oses = ['windows', 'freebsd', 'netbsd', 'openbsd', 'darwin', 'sunos', 'linux']
+-supported_cpus = ['ppc', 'ppc64', 's390x', 'riscv', 'x86', 'x86_64',
++supported_cpus = ['ppc', 'ppc64', 's390x', 'riscv32', 'riscv64', 'x86', 'x86_64',
+   'arm', 'aarch64', 'loongarch64', 'mips', 'mips64', 'sparc64']
+ 
+ cpu = host_machine.cpu_family()
+ 
+-# Unify riscv* to a single family.
+-if cpu in ['riscv32', 'riscv64']
+-  cpu = 'riscv'
+-endif
+-
+ target_dirs = config_host['TARGET_DIRS'].split()
+ have_linux_user = false
+ have_bsd_user = false
+@@ -99,6 +94,8 @@ elif cpu == 'x86'
+   host_arch = 'i386'
+ elif cpu == 'mips64'
+   host_arch = 'mips'
++elif cpu in ['riscv32', 'riscv64']
++  host_arch = 'riscv'
+ else
+   host_arch = cpu
+ endif
+@@ -113,7 +110,7 @@ elif cpu in ['ppc', 'ppc64']
+   kvm_targets = ['ppc-softmmu', 'ppc64-softmmu']
+ elif cpu in ['mips', 'mips64']
+   kvm_targets = ['mips-softmmu', 'mipsel-softmmu', 'mips64-softmmu', 'mips64el-softmmu']
+-elif cpu in ['riscv']
++elif cpu in ['riscv32', 'riscv64']
+   kvm_targets = ['riscv32-softmmu', 'riscv64-softmmu']
+ else
+   kvm_targets = []
 -- 
 2.38.1
 
