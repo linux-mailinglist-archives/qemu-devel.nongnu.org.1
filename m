@@ -2,94 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B527F73FB7E
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 13:56:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4311F73FB7F
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 13:57:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qE7Id-0000ET-Vw; Tue, 27 Jun 2023 07:56:00 -0400
+	id 1qE7Jp-0001Id-V6; Tue, 27 Jun 2023 07:57:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qE7Ib-0008MW-1K
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 07:55:57 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qE7IY-0005m0-Vm
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 07:55:56 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687866954;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=YfCwiNFGT8ZcZi/m0yNbERH3+kyV/v29K+vn34rAQYQ=;
- b=DBsTxK0fnBxXHJLqiz8crmGPf9hWrfTTBojcDLe3lxwJPYVGyPPIGrMUXb4ZP7fn5xeALe
- a5OeXLUM+cBbmOh/qtQhRvLFqDfOvNzLzLLXBdVMZuv1EGFXAQfYnqoBtcFfvdCrD2zUZK
- EBQok81ZDuuu5ZToEa7W8lQU9IDCyEg=
-Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com
- [209.85.210.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-551-OoS4R2GRNM69nLI3O5FV2Q-1; Tue, 27 Jun 2023 07:55:52 -0400
-X-MC-Unique: OoS4R2GRNM69nLI3O5FV2Q-1
-Received: by mail-pf1-f200.google.com with SMTP id
- d2e1a72fcca58-66872bfa48aso3872122b3a.0
- for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 04:55:52 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qE7Jk-0001HJ-W3
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 07:57:10 -0400
+Received: from mail-lj1-x229.google.com ([2a00:1450:4864:20::229])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qE7Ji-00060t-Ki
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 07:57:08 -0400
+Received: by mail-lj1-x229.google.com with SMTP id
+ 38308e7fff4ca-2b5c231f842so41942751fa.2
+ for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 04:57:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1687867024; x=1690459024;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=yJMsxsrrc0QKrPx72tF09MaSXOeDUyQgUy0Eu6ihfio=;
+ b=NhL8RCQ4mH5ubxQVwUNMqvEuPxLnLOkkKlRDg1ZLJbdM+WrJHtW8BQ7MAOWzY49TLb
+ OAcB8gJDZap576E/NQ71mgGtHHUx9xZw+zP1FCKLHqhgdkpqeqd7OEQAfDKV3bViwBLz
+ PpkOIqbpw8WDGKeaicXt6ZVab6t7fBRLHlVtYDOaUoBNm6/SoSbuhhccCKIfrwsABvxr
+ qWsjJQiKZLrIOYpO93fjLvpc8YeZIkfu4oSTvDm3aqBnmWEGMDMgRVaW1wk1AdgSLoVL
+ wCCNdZWw8Rnqoe2LK9EiylLf2o0iJp5pJ2XO9lm3hceYkzr+WhrD6WMCqWaLePIKvAKk
+ v8oQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687866936; x=1690458936;
- h=to:references:message-id:content-transfer-encoding:cc:date
- :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=YfCwiNFGT8ZcZi/m0yNbERH3+kyV/v29K+vn34rAQYQ=;
- b=kkNzRDMvNvQq9pf5ahuvjvmPWrKbTbc95Iqrh4grzSJ37mwv9aoGEb1Yl4JIGvWJ+b
- rHfdIE5RWAZ/yML42+KR2K+SzpGHHVdRVYaNi2FTQAOFNQ4NPKbNK2XS6ZnANpjoHC3u
- R3gALrpYMnOasR+zrqPXC8I07dM+OIzWTqpoCjXHvva6WAMga4aCNJMzp1oqvbBRGMDB
- j415BS6qm9pnkNwHYgBv2SnYcJX6yTwAa6kSkHuVk5/Q5+U0bfDgc5/qitoGf6u632E8
- 2jfyeF6gXOP31a+NplyEQguMnRPrpUdxnkc+oik46Pp4vbrcPU2FmRevn8L/eL8xauYF
- Y9Dg==
-X-Gm-Message-State: AC+VfDwkEy+oVMJbo65d3SnEq+doHejcKo1LjHe3V+KOAsOq4766X19H
- THXaBMTePPK3MYJikm6LzkFzkhwncZCjYwB+ftIrg/rbFcGESAwk+Hg+ansItay8nL0j9NWnmuF
- 8x6eeW3nXXl5gRTk=
-X-Received: by 2002:a05:6a00:2351:b0:668:6445:8931 with SMTP id
- j17-20020a056a00235100b0066864458931mr38750465pfj.29.1687866936362; 
- Tue, 27 Jun 2023 04:55:36 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ654SC9EdN4F3pfXQhN/QAVdHmdttgc+KxFqda7HpJV/qqDZTcHctMaMDg/Hm+ulpQd7vccNA==
-X-Received: by 2002:a05:6a00:2351:b0:668:6445:8931 with SMTP id
- j17-20020a056a00235100b0066864458931mr38750442pfj.29.1687866936052; 
- Tue, 27 Jun 2023 04:55:36 -0700 (PDT)
-Received: from smtpclient.apple ([116.73.132.30])
+ d=1e100.net; s=20221208; t=1687867024; x=1690459024;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=yJMsxsrrc0QKrPx72tF09MaSXOeDUyQgUy0Eu6ihfio=;
+ b=D2w90OrwYeah7Qdj8m98+ZIg4RxPB1hQqNzv0h83o9fUAAc0g5bymkDXiY7PEHMOAk
+ k9x0M0P3zBN3tOT/FQ1AAs4M7FR7PFTLjjotg1dBUlNKltXsJCxdN+j9KJqxIn0dZGMQ
+ RNWO201h5qV3wpM9oKyeCgGA33tpH7VM6GFvxjs2P+m3/VcKKHlqoBlAd7ZJKh7Uw/7G
+ fob84SZXPqc/cqdP/18KM6Fm7AVEpI2L6FWBZq0sBCGCxXXw8RejOiNhOMoWWgBj3OKg
+ 4MPusjE0nNQXoxQ6VHtDMHM0qLRe/itDjZuMbQnE2ZRmUkVlkI9lxcAd/5K2jdy/xhdd
+ +h5g==
+X-Gm-Message-State: AC+VfDxKyyjvI7n0ftwgFO62IN+dP63W5JK8o/xhk/5FXxKeaGLoi7u+
+ qQF1CtKfbQX+GVHoSth0DiubNw==
+X-Google-Smtp-Source: ACHHUZ5FSc1JPwuGCcjTbxIdrWt06tN9iNduQ4SkaLJLO+NJP26UgXIaFe12ib+xU6Kbn4xZPjDTaA==
+X-Received: by 2002:a19:505d:0:b0:4f8:5ede:d447 with SMTP id
+ z29-20020a19505d000000b004f85eded447mr15548001lfj.28.1687867023559; 
+ Tue, 27 Jun 2023 04:57:03 -0700 (PDT)
+Received: from [192.168.1.208] ([139.47.41.103])
  by smtp.gmail.com with ESMTPSA id
- j21-20020aa783d5000000b006580e98326esm5319097pfn.42.2023.06.27.04.55.33
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Tue, 27 Jun 2023 04:55:35 -0700 (PDT)
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.3\))
-Subject: Re: [RESEND PATCH v5 5/5] hw/pci: ensure PCIE devices are plugged
- into only slot 0 of PCIE port
-From: Ani Sinha <anisinha@redhat.com>
-In-Reply-To: <A085E1C1-244C-4ED3-AC9A-17497BA66255@redhat.com>
-Date: Tue, 27 Jun 2023 17:25:31 +0530
-Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, jusual@redhat.com
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <B4205666-B3CC-4BAF-9CE5-BF36BBCD50F4@redhat.com>
-References: <20230626161244.4145-1-anisinha@redhat.com>
- <20230626161244.4145-6-anisinha@redhat.com>
- <20230627110224.36fa1b06@imammedo.users.ipa.redhat.com>
- <A085E1C1-244C-4ED3-AC9A-17497BA66255@redhat.com>
-To: Igor Mammedov <imammedo@redhat.com>
-X-Mailer: Apple Mail (2.3696.120.41.1.3)
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=anisinha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+ d11-20020a1c730b000000b003fb416d732csm2984850wmb.6.2023.06.27.04.57.03
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 27 Jun 2023 04:57:03 -0700 (PDT)
+Message-ID: <2a81d229-a2f7-2b4d-b32a-6dc418698c5e@linaro.org>
+Date: Tue, 27 Jun 2023 13:57:01 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v2 0/8] target/sparc: Use tcg_gen_lookup_and_goto_ptr
+Content-Language: en-US
+To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+References: <20230621180607.1516336-1-richard.henderson@linaro.org>
+ <2f11ee14-9bf2-85fe-581c-e3024efd2124@ilande.co.uk>
+ <c83c2500-08d1-bb03-24d6-990a2f07b01b@ilande.co.uk>
+ <35013658-5131-19f6-c95a-c74b73f90ecc@linaro.org>
+ <56781cd7-f0cd-3fbb-855f-de0e89b98984@ilande.co.uk>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <56781cd7-f0cd-3fbb-855f-de0e89b98984@ilande.co.uk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::229;
+ envelope-from=richard.henderson@linaro.org; helo=mail-lj1-x229.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.103,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -106,82 +99,119 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 6/27/23 13:19, Mark Cave-Ayland wrote:
+> On 27/06/2023 10:37, Philippe Mathieu-Daudé wrote:
+> 
+>> On 27/6/23 08:46, Mark Cave-Ayland wrote:
+>>> On 22/06/2023 13:26, Mark Cave-Ayland wrote:
+>>>
+>>>> On 21/06/2023 19:05, Richard Henderson wrote:
+>>>>
+>>>>> Changes from v1:
+>>>>>    * Split into teeny weeny pieces.
+>>>>>
+>>>>>    * It turns out the sparc_tr_tb_stop hunk of v1 was buggy,
+>>>>>      in that things that are not simple branches use DYNAMIC_PC,
+>>>>>      e.g. the RETT (return from trap) instruction.
+>>>>>
+>>>>>      Introduce DYNAMIC_PC_LOOKUP to distinguish the couple of
+>>>>>      places where we have a dynamic pc, but no other change
+>>>>>      of state (conditional branches, JMPL, RETURN).
+>>>>>
+>>>>>    * Drop the change for WRFPRS, because it's too infrequent.
+>>>>>      The WRASI change affects memcpy/memset, so that's more important.
+>>>>>
+>>>>> Boots Mark's sol8 install cdrom.  :-)
+>>>>>
+>>>>> Top of the profile changes from
+>>>>>
+>>>>>      41.55%  qemu-system-sparc              [.] cpu_exec_loop
+>>>>>      14.02%  qemu-system-sparc              [.] cpu_tb_exec
+>>>>>       8.74%  qemu-system-sparc              [.] tb_lookup
+>>>>>       2.11%  qemu-system-sparc              [.] tcg_splitwx_to_rw
+>>>>>       1.63%  memfd:tcg-jit (deleted)        [.] 0x0000000000000004
+>>>>>
+>>>>> to
+>>>>>
+>>>>>      31.59%  qemu-system-sparc              [.] helper_lookup_tb_ptr
+>>>>>      17.79%  qemu-system-sparc              [.] tb_lookup
+>>>>>       5.38%  qemu-system-sparc              [.] compute_all_sub
+>>>>>       2.38%  qemu-system-sparc              [.] helper_compute_psr
+>>>>>       2.36%  qemu-system-sparc              [.] helper_check_align
+>>>>>       1.79%  memfd:tcg-jit (deleted)        [.] 0x000000000063fc8e
+>>>>>
+>>>>> This probably indicates that cpu_get_tb_cpu_state could be
+>>>>> improved to not consume so much overhead.
+>>>>
+>>>> Nice! I've just run this through all of my sun4m/sun4u/sun4v test images and I don't 
+>>>> see any regressions with v2. The guests feel noticeably more responsive too :)
+>>>>
+>>>> Tested-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+>>>>
+>>>> I've skimmed the patches and without looking in too much detail they seem to be okay 
+>>>> so I'm happy to give:
+>>>>
+>>>> Acked-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+>>>>
+>>>> Side note: the niagara tests require the patch at 
+>>>> https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg03537.html which still hasn't 
+>>>> been merged yet.
+>>>>
+>>>>> Richard Henderson (8):
+>>>>>    target/sparc: Use tcg_gen_lookup_and_goto_ptr in gen_goto_tb
+>>>>>    target/sparc: Fix npc comparison in sparc_tr_insn_start
+>>>>>    target/sparc: Drop inline markers from translate.c
+>>>>>    target/sparc: Introduce DYNAMIC_PC_LOOKUP
+>>>>>    target/sparc: Use DYNAMIC_PC_LOOKUP for conditional branches
+>>>>>    target/sparc: Use DYNAMIC_PC_LOOKUP for JMPL
+>>>>>    target/sparc: Use DYNAMIC_PC_LOOKUP for v9 RETURN
+>>>>>    target/sparc: Use tcg_gen_lookup_and_goto_ptr for v9 WRASI
+>>>>>
+>>>>>   target/sparc/translate.c | 410 ++++++++++++++++++++++-----------------
+>>>>>   1 file changed, 233 insertions(+), 177 deletions(-)
+>>>
+>>> I've just noticed during testing there is an issue with this series when used with a 
+>>> real SS-5 PROM image (I was using OpenBIOS for my previous tests) which causes it to 
+>>> assert() almost immediately on startup:
+>>>
+>>> $ ./qemu-system-sparc -bios ss5.bin
+>>> ERROR:../target/sparc/translate.c:5695:sparc_tr_tb_stop: code should not be reached
+>>> Bail out! ERROR:../target/sparc/translate.c:5695:sparc_tr_tb_stop: code should not be 
+>>> reached
+>>> Aborted
+>>
+>> Could you try this fix:
+>>
+>> -- >8 --
+>> --- a/target/sparc/translate.c
+>> +++ b/target/sparc/translate.c
+>> @@ -5682,5 +5682,5 @@ static void sparc_tr_tb_stop(DisasContextBase *dcbase, CPUState *cs)
+>>
+>>           save_npc(dc);
+>> -        switch (dc->npc) {
+>> +        switch (dc->npc & 3) {
+>>           case DYNAMIC_PC_LOOKUP:
+>>               if (may_lookup) {
+>> ---
+>>
+>> ?
+> 
+> Unfortunately that doesn't fix the issue. A quick lunchtime debugging session with 
+> printf() shows this just before the assert() fires:
+> 
+> ### dc->pc: 0x3
+> ### dc->npc: 0xffd26c70
+> **
+> ERROR:../target/sparc/translate.c:5699:sparc_tr_tb_stop: code should not be reached
+> Bail out! ERROR:../target/sparc/translate.c:5699:sparc_tr_tb_stop: code should not be reached
+> Aborted
+
+That makes no sense -- dynamic lookup pc with static npc?
+
+Of course this happens before in_asm dump, so can you use -singlestep to figure out what 
+pc, and thence instruction for which this is happening?
 
 
-> On 27-Jun-2023, at 3:23 PM, Ani Sinha <anisinha@redhat.com> wrote:
->=20
->=20
->=20
->> On 27-Jun-2023, at 2:32 PM, Igor Mammedov <imammedo@redhat.com> =
-wrote:
->>=20
->> On Mon, 26 Jun 2023 21:42:44 +0530
->> Ani Sinha <anisinha@redhat.com> wrote:
->>=20
->>> PCI Express ports only have one slot, so PCI Express devices can =
-only be
->>> plugged into slot 0 on a PCIE port. Enforce it.
->>=20
->> btw, previously you mentioned ARI.
->> So if we turn it on, wouldn't this patch actually become regression?
-
-Looking at =
-https://pcisig.com/sites/default/files/specification_documents/ECN-alt-rid=
--interpretation-070604.pdf, section 7.23, seems a root port does not =
-support ARI but it can support ARI forwarding capability (section =
-7.8.5).
-Also with ARI enabled, the device cannot have a non-zero device number. =
-Also, shouldn't any code path that uses PCI_SLOT() should probably also =
-check for ARI if it wants to be ARI complaint?
-
-Anyways these are just facts I could find but I am not sure if this =
-would answer your above question.
-
->=20
-> If ARI breaks this, it will break other areas in QEMU too, ex anywhere =
-pci_get_function_0() is used.
-> Regardless, I think at least the tests are worth fixing, particularly =
-the mess with hd-geo-test.
->=20
->>=20
->>>=20
->>> CC: jusual@redhat.com
->>> CC: imammedo@redhat.com
->>> Resolves: https://bugzilla.redhat.com/show_bug.cgi?id=3D2128929
->>> Signed-off-by: Ani Sinha <anisinha@redhat.com>
->>> Reviewed-by: Julia Suvorova <jusual@redhat.com>
->>> ---
->>> hw/pci/pci.c | 6 ++++++
->>> 1 file changed, 6 insertions(+)
->>>=20
->>> diff --git a/hw/pci/pci.c b/hw/pci/pci.c
->>> index bf38905b7d..426af133b0 100644
->>> --- a/hw/pci/pci.c
->>> +++ b/hw/pci/pci.c
->>> @@ -64,6 +64,7 @@ bool pci_available =3D true;
->>> static char *pcibus_get_dev_path(DeviceState *dev);
->>> static char *pcibus_get_fw_dev_path(DeviceState *dev);
->>> static void pcibus_reset(BusState *qbus);
->>> +static bool pcie_has_upstream_port(PCIDevice *dev);
->>>=20
->>> static Property pci_props[] =3D {
->>>    DEFINE_PROP_PCI_DEVFN("addr", PCIDevice, devfn, -1),
->>> @@ -1189,6 +1190,11 @@ static PCIDevice =
-*do_pci_register_device(PCIDevice *pci_dev,
->>>                   name);
->>>=20
->>>       return NULL;
->>> +    } else if (pcie_has_upstream_port(pci_dev) && PCI_SLOT(devfn)) =
-{
->>> +        error_setg(errp, "PCI: slot %d is not valid for %s,"
->>> +                   " parent device only allows plugging into slot =
-0.",
->>> +                   PCI_SLOT(devfn), name);
->>> +        return NULL;
->>>    }
->>>=20
->>>    pci_dev->devfn =3D devfn;
->>=20
->=20
+r~
 
 
