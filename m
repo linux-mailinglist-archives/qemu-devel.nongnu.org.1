@@ -2,91 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C75D173FC22
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 14:44:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 90B9873FC33
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 14:52:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qE82i-0006kI-DQ; Tue, 27 Jun 2023 08:43:36 -0400
+	id 1qE8AR-0003J2-9N; Tue, 27 Jun 2023 08:51:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qE82f-0006fr-MW
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 08:43:33 -0400
-Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qE8AO-0003Ij-SK
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 08:51:32 -0400
+Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qE82d-0001Zt-Ej
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 08:43:33 -0400
-Received: by mail-ej1-x630.google.com with SMTP id
- a640c23a62f3a-98e0c1d5289so397271766b.2
- for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 05:43:30 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qE8AL-0003x8-PS
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 08:51:32 -0400
+Received: by mail-ed1-x531.google.com with SMTP id
+ 4fb4d7f45d1cf-51d80c5c834so5750129a12.1
+ for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 05:51:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687869809; x=1690461809;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=1mTG0cvKU+zMeoqHlEai9X0XN4bdRY0Fj+S2ZVFglsw=;
- b=JGscvSjGoIt5zVRLMj+z4pQB3/0FtPmXup22DqGc0zhhp0riN4aIMg20E/BBLW2E98
- WdgKEMXAsf/vjSlW+0rzfMzh92/bntJIhsUWrs+pYQ2RCqNBJn7CruxkEX4Num2CPpjq
- Cu1VAziumpAykPKlGGwPoVrLybX8oEiiXC+oMQ6cOOpJ6MspwTxN5xTynf2HfJc/4PuS
- agFOT6HJF3FjtKyGBOUzZ4+wnAxZAWbCIkMijKhC8/MTL7fmrPW4o1umQGjvwNPZj3qk
- Dv8C/gAh/xvAnE5RsFwiY2mA4XOXlcUBSuvjWJC3jAaqrWkQFNjoTjLU6ISTyg2Xge7U
- FZ4A==
+ d=linaro.org; s=google; t=1687870288; x=1690462288;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=o0L0dRE9bMRfCfCRYqs+jE+kdeiZ7fWkAOI/bfCX2sU=;
+ b=dFbeQfKUJsPPzlymgn220SgwrwuMw+CBtZT9vVxPYB3mJQLRs1YJF+iTgUYd6Dxqak
+ srB+tvKB4j2C+lmsHvP4Vcy6jVE70artuqC42BQkbJx0UinXtLHm5phZ6aSIov6BAJ3/
+ IJ2iR+P5tCZ4RbWrGKwl3C30APvcko+Dqs+eZamS9gOSHNABf58BnhTC4vJ5CBd3tOR0
+ hNbzDPqpqRi4TH5cVA4QkuJqCiXz7viATyjPjyqkAR6xC5TJn/D3hYjylAhuEx47j0RY
+ 6BqOhxWE9B+kxr1uaRuMq+lItGepCIx7WAaJAGXcqT7CcBpRXu5YFIrESYSzZSfCBTIo
+ 10bg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687869809; x=1690461809;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=1mTG0cvKU+zMeoqHlEai9X0XN4bdRY0Fj+S2ZVFglsw=;
- b=RgF54Ar1RJQ6OWzGU8jWAYZKdj9NEVLeMS/ZeoveGMjdnacDIhrHTCZePSBAkInPd/
- UHXbZ6OB1f271YcSQytTy1nkeS8wU/htQSwiH5jj5kD4bZz0fnjLMxFPuMOJyRDum0fw
- 0DlapQQJHBHPV2vDhdA9KeEuuRG+a5QlOz6f1eUDJTJ99pHgdMAK3GpmHZGHSZBUpvQR
- LM7WFvzSeUbHlo6sYR+Axl24DtsRnVTLRCTcX96wrFobva2l/i8cYCLoS3TtbMbi3YG/
- WC9+OKV/F4ofoDTWf5d6JKLZ3BJCPQGx+oWA/ILFBMD6NbXTDPcaUPS6jA44FA2xYwNC
- ICOQ==
-X-Gm-Message-State: AC+VfDw9iJIv3Zg/SuRVwMubYYIX3cKFWAs1vUfuRB9CyDymC0s2V+8b
- 8+BHCJr2gMrXMF+9vdtKgcQuS29hzZKfrfUEjQM=
-X-Google-Smtp-Source: ACHHUZ7fuT0GL83RVg8Gj86ErRvzE6j5P8CLlQ8jWsCVG81jwLRBBrRfpqNvsX0LXyM1vFUtszJWyg==
-X-Received: by 2002:a17:907:a42c:b0:991:bf04:204f with SMTP id
- sg44-20020a170907a42c00b00991bf04204fmr5098434ejc.60.1687869809706; 
- Tue, 27 Jun 2023 05:43:29 -0700 (PDT)
-Received: from [192.168.69.115] ([176.187.199.204])
- by smtp.gmail.com with ESMTPSA id
- k19-20020a1709061c1300b0098dd3981be9sm4477872ejg.224.2023.06.27.05.43.27
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 27 Jun 2023 05:43:29 -0700 (PDT)
-Message-ID: <7b6c659f-a9d3-c883-ff53-3226c8d31bb8@linaro.org>
-Date: Tue, 27 Jun 2023 14:43:26 +0200
+ d=1e100.net; s=20221208; t=1687870288; x=1690462288;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=o0L0dRE9bMRfCfCRYqs+jE+kdeiZ7fWkAOI/bfCX2sU=;
+ b=Hi0XuSEYJss7Z5XraEiZcSyqy4QhmVqDJyzvXLDOUeYCQhrzoBXs0eCMsJtfus5An4
+ v4TRIZ9IjHlT8r1wi9s4OKY2/sBfPu/U7MCANgFyPBoSkNspeW23atJgo1YS52vQjJlP
+ N63SdDpaMNgIxogqCRVC5TkKd+K0YYSd8YSTlv3adN9epAdR0vocOO5wq28GIRsquxOm
+ +UVr2W0UIgTGUg23rhjE4sOcrSjazZsAPtoOwNe2/IssVvRGjjOO3AAiT+dy9/YzCbdn
+ kOqRZ7siHpXPXlnZ3ltXXtxDjPhhmO+ZgbgpjGPzXv6AqPyuI87DrEhyg0ITAAP/bnbP
+ CdUA==
+X-Gm-Message-State: AC+VfDyX1K824dq4GglHh7RXwzqzSHUFWAZdG0qcX3XpMKxGjd/8OTZm
+ NAjJhcywwefrHbEMt1gc+aCAPnj4dhMHo+zkM07nwaIA/ajtTI4H
+X-Google-Smtp-Source: ACHHUZ4XFlQ/DD+colcJ2bVhTbF8gcN7Oh+bCV1nYifVC+udXxNnKyNYPeVBskaviZpb2hYZ8BXG4iZkCbx2HyJnyaM=
+X-Received: by 2002:a05:6402:5241:b0:51a:4d22:dadc with SMTP id
+ t1-20020a056402524100b0051a4d22dadcmr27235833edd.12.1687870287991; Tue, 27
+ Jun 2023 05:51:27 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.12.0
-Subject: Re: [PATCH v3 16/16] accel: Rename HVF 'struct hvf_vcpu_state' ->
- AccelCPUState
-Content-Language: en-US
-To: qemu-devel@nongnu.org
-Cc: kvm@vger.kernel.org, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Roman Bolshakov <rbolshakov@ddn.com>, qemu-arm@nongnu.org,
- Richard Henderson <richard.henderson@linaro.org>,
- Alexander Graf <agraf@csgraf.de>, xen-devel@lists.xenproject.org,
- Sunil Muthuswamy <sunilmut@microsoft.com>,
- Anthony Perard <anthony.perard@citrix.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Yanan Wang <wangyanan55@huawei.com>, Paul Durrant <paul@xen.org>,
- Reinoud Zandijk <reinoud@netbsd.org>, Eduardo Habkost <eduardo@habkost.net>,
- Cameron Esfahani <dirty@apple.com>, Paolo Bonzini <pbonzini@redhat.com>
-References: <20230624174121.11508-1-philmd@linaro.org>
- <20230624174121.11508-17-philmd@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230624174121.11508-17-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::630;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x630.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+References: <20230622151201.1578522-1-richard.henderson@linaro.org>
+ <20230622151201.1578522-2-richard.henderson@linaro.org>
+In-Reply-To: <20230622151201.1578522-2-richard.henderson@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 27 Jun 2023 13:51:17 +0100
+Message-ID: <CAFEAcA-t4=HsmM_XCQx0uEDzA-Ux+RYx17ySvimiNgXqep3Bgw@mail.gmail.com>
+Subject: Re: [PATCH 1/4] target/arm: Avoid splitting Zregs across lines in dump
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::531;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x531.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.103,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -104,37 +85,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 24/6/23 19:41, Philippe Mathieu-Daudé wrote:
-> We want all accelerators to share the same opaque pointer in
-> CPUState.
-> 
-> Rename the 'hvf_vcpu_state' structure as 'AccelCPUState'.
-> 
-> Use the generic 'accel' field of CPUState instead of 'hvf'.
-> 
-> Replace g_malloc0() by g_new0() for readability.
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
-> Not even built on x86!
+On Thu, 22 Jun 2023 at 16:12, Richard Henderson
+<richard.henderson@linaro.org> wrote:
+>
+> Allow the line length to extend to 548 columns.  While annoyingly wide,
+> it's still less confusing than the continuations we print.  Also, the
+> default VL used by Linux (and max for A64FX) uses only 140 columns.
+>
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 
-Per IRC chat:
-Tested-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
-> ---
->   include/hw/core/cpu.h       |   4 -
->   include/sysemu/hvf_int.h    |   2 +-
->   target/i386/hvf/vmx.h       |  22 ++--
->   accel/hvf/hvf-accel-ops.c   |  18 ++--
->   target/arm/hvf/hvf.c        | 108 +++++++++----------
->   target/i386/hvf/hvf.c       | 104 +++++++++---------
->   target/i386/hvf/x86.c       |  28 ++---
->   target/i386/hvf/x86_descr.c |  26 ++---
->   target/i386/hvf/x86_emu.c   |  62 +++++------
->   target/i386/hvf/x86_mmu.c   |   4 +-
->   target/i386/hvf/x86_task.c  |  10 +-
->   target/i386/hvf/x86hvf.c    | 208 ++++++++++++++++++------------------
->   12 files changed, 296 insertions(+), 300 deletions(-)
-
+thanks
+-- PMM
 
