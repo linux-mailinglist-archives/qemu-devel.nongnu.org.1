@@ -2,84 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87807740438
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 22:04:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A0177404F6
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 22:26:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEEtv-0007Wp-Tc; Tue, 27 Jun 2023 16:03:00 -0400
+	id 1qEFFM-0004Ah-UD; Tue, 27 Jun 2023 16:25:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qEEtl-0007VL-Lw
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 16:02:51 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1qEFFI-0004AF-Q5; Tue, 27 Jun 2023 16:25:05 -0400
+Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qEEtj-00045d-H0
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 16:02:49 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687896163;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=YI60VpPo4QGWdntLzh3iVQG5OACNlE3Pl+fCaaIP/E4=;
- b=RaABsWm1w++NoalvqfCo8koLaq3oITFi0ezJ/6rIraUAOEhxkPenClW5PalVnKB/XPwO+b
- R5AkXX7m+bXf4J7MUrV20YQiTsAR/S54d22PY24WAd0NqVKaJ+XoALo1iNyZasqytPQ+kv
- MqEM5qxJ3w81TJOr0zGkNmZmwmFa4DQ=
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
- [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-70-f1-IfeRVOFKt2cSa-pNCUQ-1; Tue, 27 Jun 2023 16:02:29 -0400
-X-MC-Unique: f1-IfeRVOFKt2cSa-pNCUQ-1
-Received: by mail-qk1-f199.google.com with SMTP id
- af79cd13be357-76716078e78so11389185a.1
- for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 13:02:25 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687896145; x=1690488145;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=YI60VpPo4QGWdntLzh3iVQG5OACNlE3Pl+fCaaIP/E4=;
- b=Q6ghE+FFYmQnQrH1OfOFxz7nsHbAq9JRG5Cy6YFm7nJiiNVY87X+PnvU41yImpzJmz
- 7bZyRZtJ/s/juUeOzdjR+cMdzUQepOH1gi8M85gLqm08ywznrmYqm0qfYcUx0XAc6iQO
- 7AjzbBGp3wpXrE6M1gyh8XcroH9mTgHZuzIKgBgYlqh+MXGrjufZ919kah8h2MSLd1Vp
- 8MuOyozeL+buvxZjPp9kZbEG5goUfOYTDdiqhA3TvHd0CgB3rN4J7zKEfGvEma7TbxiN
- vdujlvcHKELX1jJGQnsDbGsg45IiPwHFli3W5W+glYaGHHlD3QerIjhpBwsaPfNSdH9B
- hSCw==
-X-Gm-Message-State: AC+VfDy5ukjbIyScyc7sUBkhrUtPm2huKolSZ02nA2vnoWWk4+Ic84z+
- w1evrgskenZCqAtyInw/iZCafLMkZPSgve10ZOj0x4P2MkOx+bm7MDzLVSjqfiV9m+jlIFZWazk
- 9Ogl1aKjWQ+4GNNeqFwJZrhcODqNsoA4vPQkgXaQt7WhvPGVXzuWO2KuWK/nO1IzLGdr3TlOA
-X-Received: by 2002:a05:620a:4484:b0:762:63b:e10b with SMTP id
- x4-20020a05620a448400b00762063be10bmr4397842qkp.1.1687896145095; 
- Tue, 27 Jun 2023 13:02:25 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5DT3DwxkZ/rHo6fbECoHMQLpvR3ie7OHyvbdec5HBlQQpR8LZgZr4zHhW46B0cZ20686ynog==
-X-Received: by 2002:a05:620a:4484:b0:762:63b:e10b with SMTP id
- x4-20020a05620a448400b00762063be10bmr4397807qkp.1.1687896144718; 
- Tue, 27 Jun 2023 13:02:24 -0700 (PDT)
-Received: from x1n.redhat.com
- (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com. [99.254.144.39])
- by smtp.gmail.com with ESMTPSA id
- j15-20020a05620a000f00b007578622c861sm4248617qki.108.2023.06.27.13.02.23
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 27 Jun 2023 13:02:24 -0700 (PDT)
-From: Peter Xu <peterx@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Leonardo Bras Soares Passos <lsoaresp@redhat.com>, peterx@redhat.com,
- Juan Quintela <quintela@redhat.com>
-Subject: [PATCH] docs/migration: Update postcopy bits
-Date: Tue, 27 Jun 2023 16:02:22 -0400
-Message-Id: <20230627200222.557529-1-peterx@redhat.com>
-X-Mailer: git-send-email 2.40.1
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1qEFF6-0006LI-Cf; Tue, 27 Jun 2023 16:24:54 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
+ In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
+ Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+ :Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+ List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=JHeqH5mRkRGfeiFSko6R5wIOJNPyazQPPSU2Yqbbq/E=; b=Sn4Jfu/mPTFbBj58WpuzYU/fQJ
+ gse/26G20sHqUQE4Rh2FI73MK/pNOtoFFIKdwi84Gv79vDnuzNWrpmd4jNj8660sqa7LzvEs1aKZk
+ pa/CXLlDGR2mc5jY1sXsZyfa9Wxk0za8RwMaz3ixOTXZn5ih4YypdCeeoT+hBTtiHGkdt0Rpgj8uQ
+ YMYp+dG3lcH80DxMuh0nzIcy1fHld7eOgPykGb5nud372vrvCFtilC7twYVPWzLi8r4F/tA6UvVsl
+ s3jbFwIh6dLlE5qzU648I08PbkNNJvQ5kBqaciAyuJ/yvr3EZFWqGTAHD98bo559QMN3KcsKf7102
+ jEj7F+xaegKPAUqjkr2SyCp/bE7pWVN7JTePX+osBYX4CFjTKDlh+mskfoR5U47thfitHVeAWAtkQ
+ 9p1o762uiwd3bwmtmtlF88KuEspeOn69RAZqOxSWtqMwyrl/M5+74PApOwdPLvaE08SJYPIc0dekc
+ 40XrPg963a1SUgLtzHBfjgXqJiootXGG1T23Em7QJrsZOnlWs/J5x+m2jydgSc3hMvJpmSdLQ28GV
+ msIVZF+nF7oZjqSJI1khZq/WY2kG9+9tb7RnI1HqUHacR1l0RNs3EtvyVe1uWd4pBrr/A2wKjsFkN
+ 7d5fTHb2EJLOVp8oJjx/A0PgCpL8UJDIDlb38DNlY=;
+Received: from [2a00:23c4:8bad:df00:f732:dd76:7417:d15b]
+ by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1qEFEp-0006jd-2H; Tue, 27 Jun 2023 21:24:35 +0100
+Message-ID: <82f73027-c219-c759-8d02-66b6161deb81@ilande.co.uk>
+Date: Tue, 27 Jun 2023 21:24:41 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Content-Language: en-US
+To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
+ =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clegoate@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Nicholas Piggin <npiggin@gmail.com>
+Cc: qemu-ppc@nongnu.org, qemu-devel@nongnu.org,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ BALATON Zoltan <balaton@eik.bme.hu>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
+ Frederic Barrat <frederic.barrat@fr.ibm.com>
+References: <20230623081953.290875-1-npiggin@gmail.com>
+ <CAFEAcA_Brf-R12t+DKNAoygqgC-qjKJ3Wiz4ULjGHOo8_vPovw@mail.gmail.com>
+ <47197a73-b106-47d5-9502-393a6bdc9945@redhat.com>
+ <966b3fce-512d-f122-e76e-efded0db9731@kaod.org>
+ <cefdeb3f-3442-ede4-3e5d-6a4a99b38293@ilande.co.uk>
+ <ce56f339-461f-0854-cd4e-03ec750d6770@kaod.org>
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+In-Reply-To: <ce56f339-461f-0854-cd4e-03ec750d6770@kaod.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-SA-Exim-Connect-IP: 2a00:23c4:8bad:df00:f732:dd76:7417:d15b
+X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
+Subject: Re: [PATCH 0/4] target/ppc: Catch invalid real address accesses
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
+Received-SPF: pass client-ip=2001:41c9:1:41f::167;
+ envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.103,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -97,141 +91,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We have postcopy recovery but not reflected in the document, do an update
-for that.
+On 27/06/2023 13:03, Cédric Le Goater wrote:
 
-Add a very small section on postcopy preempt.
+>>> Mac OS 9.2 fails to boot with a popup saying :
+>>>          Sorry, a system error occured.
+>>>          "Sound Manager"
+>>>            address error
+>>>          To temporarily turn off extensions, restart and
+>>>          hold down the shift key
+>>>
+>>>
+>>> Darwin and Mac OSX look OK.
+>>
+>> My guess would be that MacOS 9.2 is trying to access the sound chip registers which 
+>> isn't implemented in QEMU for the moment (I have a separate screamer branch 
+>> available, but it's not ready for primetime yet). In theory they shouldn't be 
+>> accessed at all because the sound device isn't present in the OpenBIOS device tree, 
+>> but this is all fairly old stuff.
+>>
+>> Does implementing the sound registers using a dummy device help at all?
+> 
+> Nope. OS 9 loops earlier (little black/white disk spinning).
+> 
+> Thanks,
+> 
+> C.
 
-Touch up the pagemap section, dropping the unsent map because it's already
-been dropped in the source code in commit 1e7cf8c323 ("migration/postcopy:
-unsentmap is not necessary for postcopy").
+Hmmm that's annoying. Another one to add to the TODO list then...
 
-Signed-off-by: Peter Xu <peterx@redhat.com>
----
- docs/devel/migration.rst | 89 +++++++++++++++++++++++++++++-----------
- 1 file changed, 65 insertions(+), 24 deletions(-)
 
-diff --git a/docs/devel/migration.rst b/docs/devel/migration.rst
-index 6f65c23b47..6ed485ae38 100644
---- a/docs/devel/migration.rst
-+++ b/docs/devel/migration.rst
-@@ -721,6 +721,42 @@ processing.
-    is no longer used by migration, while the listen thread carries on servicing
-    page data until the end of migration.
- 
-+Postcopy Recovery
-+-----------------
-+
-+Comparing to precopy, postcopy is special on error handlings.  When any
-+error happens (in this case, mostly network errors), QEMU cannot easily
-+fail a migration because VM data resides in both source and destination
-+QEMU instances.  On the other hand, when issue happens QEMU on both sides
-+will go into a paused state.  It'll need a recovery phase to continue a
-+paused postcopy migration.
-+
-+The recovery phase normally contains a few steps:
-+
-+  - When network issue occurs, both QEMU will go into PAUSED state
-+
-+  - When the network is recovered (or a new network is provided), the admin
-+    can setup the new channel for migration using QMP command
-+    'migrate-recover' on destination node, preparing for a resume.
-+
-+  - On source host, the admin can continue the interrupted postcopy
-+    migration using QMP command 'migrate' with resume=true flag set.
-+
-+  - After the connection is re-established, QEMU will continue the postcopy
-+    migration on both sides.
-+
-+During a paused postcopy migration, the VM can logically still continue
-+running, and it will not be impacted from any page access to pages that
-+were already migrated to destination VM before the interruption happens.
-+However, if any of the missing pages got accessed on destination VM, the VM
-+thread will be halted waiting for the page to be migrated, it means it can
-+be halted until the recovery is complete.
-+
-+The impact of accessing missing pages can be relevant to different
-+configurations of the guest.  For example, when with async page fault
-+enabled, logically the guest can proactively schedule out the threads
-+accessing missing pages.
-+
- Postcopy states
- ---------------
- 
-@@ -765,36 +801,31 @@ ADVISE->DISCARD->LISTEN->RUNNING->END
-     (although it can't do the cleanup it would do as it
-     finishes a normal migration).
- 
-+ - Paused
-+
-+    Postcopy can run into a paused state (normally on both sides when
-+    happens), where all threads will be temporarily halted mostly due to
-+    network errors.  When reaching paused state, migration will make sure
-+    the qemu binary on both sides maintain the data without corrupting
-+    the VM.  To continue the migration, the admin needs to fix the
-+    migration channel using the QMP command 'migrate-recover' on the
-+    destination node, then resume the migration using QMP command 'migrate'
-+    again on source node, with resume=true flag set.
-+
-  - End
- 
-     The listen thread can now quit, and perform the cleanup of migration
-     state, the migration is now complete.
- 
--Source side page maps
-----------------------
-+Source side page map
-+--------------------
- 
--The source side keeps two bitmaps during postcopy; 'the migration bitmap'
--and 'unsent map'.  The 'migration bitmap' is basically the same as in
--the precopy case, and holds a bit to indicate that page is 'dirty' -
--i.e. needs sending.  During the precopy phase this is updated as the CPU
--dirties pages, however during postcopy the CPUs are stopped and nothing
--should dirty anything any more.
--
--The 'unsent map' is used for the transition to postcopy. It is a bitmap that
--has a bit cleared whenever a page is sent to the destination, however during
--the transition to postcopy mode it is combined with the migration bitmap
--to form a set of pages that:
--
--   a) Have been sent but then redirtied (which must be discarded)
--   b) Have not yet been sent - which also must be discarded to cause any
--      transparent huge pages built during precopy to be broken.
--
--Note that the contents of the unsentmap are sacrificed during the calculation
--of the discard set and thus aren't valid once in postcopy.  The dirtymap
--is still valid and is used to ensure that no page is sent more than once.  Any
--request for a page that has already been sent is ignored.  Duplicate requests
--such as this can happen as a page is sent at about the same time the
--destination accesses it.
-+The 'migration bitmap' in postcopy is basically the same as in the precopy,
-+where each of the bit to indicate that page is 'dirty' - i.e. needs
-+sending.  During the precopy phase this is updated as the CPU dirties
-+pages, however during postcopy the CPUs are stopped and nothing should
-+dirty anything any more. Instead, dirty bits are cleared when the relevant
-+pages are sent during postcopy.
- 
- Postcopy with hugepages
- -----------------------
-@@ -853,6 +884,16 @@ Retro-fitting postcopy to existing clients is possible:
-      guest memory access is made while holding a lock then all other
-      threads waiting for that lock will also be blocked.
- 
-+Postcopy Preemption Mode
-+------------------------
-+
-+Postcopy preempt is a new capability introduced in 8.0 QEMU release, it
-+allows urgent pages (those got page fault requested from destination QEMU
-+explicitly) to be sent in a separate preempt channel, rather than queued in
-+the background migration channel.  Anyone who cares about latencies of page
-+faults during a postcopy migration should enable this feature.  By default,
-+it's not enabled.
-+
- Firmware
- ========
- 
--- 
-2.40.1
+ATB,
+
+Mark.
 
 
