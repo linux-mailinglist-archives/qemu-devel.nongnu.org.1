@@ -2,107 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A606173FA6B
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 12:46:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4201A73FA7C
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 12:48:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qE6Bl-0006Ie-GB; Tue, 27 Jun 2023 06:44:49 -0400
+	id 1qE6FE-0007m1-16; Tue, 27 Jun 2023 06:48:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farman@linux.ibm.com>)
- id 1qE6Be-0006IK-Jw; Tue, 27 Jun 2023 06:44:43 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farman@linux.ibm.com>)
- id 1qE6Bb-0005pT-Uc; Tue, 27 Jun 2023 06:44:42 -0400
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 35RAgEQQ005702; Tue, 27 Jun 2023 10:44:37 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=1wanP/TzcUkgkdeZoX1md4u65vGodaLm5nCGObUXLcE=;
- b=Lfb3XF7vUX9C0jeg7vJN5DhvQMdXf5q/qmYjB6BKNRMNalUKWRpk8A976ePVk+uzdqJU
- YWu2XUIOQZ1de6azGsxTQFGZNllz0jHzsX+VMg6Aq5zHoqMLM9TtgRHscetliNDZz07s
- c1UlfJBexQYloz5tP8Ef6HDmu/4nBBh9xIcqbfsf6i2yED6VDEleFOd222yBTgBJa4pB
- kNd6HSv2LeeLijuc9qi4EykTjSGXY3yrF64kOOp6BzzgzCappUZ6iXmarUoD0WTgd1Dw
- Zm0chgKL0QzMbck0sSxJUgEFd9RNRQ1Ic+J/ZDjfDiM+cRkyzYvKIWTmuOTfMduMS3NK Zg== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rfwvrgc7x-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 27 Jun 2023 10:44:37 +0000
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 35RAh2Yl007804;
- Tue, 27 Jun 2023 10:44:36 GMT
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.10])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rfwvrgc7j-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 27 Jun 2023 10:44:36 +0000
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
- by ppma02dal.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 35R8V5tU008272;
- Tue, 27 Jun 2023 10:44:36 GMT
-Received: from smtprelay06.dal12v.mail.ibm.com ([9.208.130.100])
- by ppma02dal.us.ibm.com (PPS) with ESMTPS id 3rdr460vvq-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 27 Jun 2023 10:44:36 +0000
-Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com
- [10.39.53.233])
- by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 35RAiYsw59900168
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 27 Jun 2023 10:44:34 GMT
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7C60C5803F;
- Tue, 27 Jun 2023 10:44:34 +0000 (GMT)
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3982C5804E;
- Tue, 27 Jun 2023 10:44:33 +0000 (GMT)
-Received: from li-479af74c-31f9-11b2-a85c-e4ddee11713b.ibm.com (unknown
- [9.61.34.238]) by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Tue, 27 Jun 2023 10:44:33 +0000 (GMT)
-Message-ID: <29d58ab7ad21e359ca0e499b8c109530d8c1395d.camel@linux.ibm.com>
-Subject: Re: [PATCH v2 4/4] pc-bios/s390-ccw: Don't use __bss_start with the
- "larl" instruction
-From: Eric Farman <farman@linux.ibm.com>
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
-Cc: qemu-s390x@nongnu.org, Christian Borntraeger <borntraeger@linux.ibm.com>,
- mrezanin@redhat.com, Richard Henderson <richard.henderson@linaro.org>,
- =?ISO-8859-1?Q?C=E9dric?= Le Goater <clegoate@redhat.com>,
- Janosch Frank <frankja@linux.ibm.com>, "Jason J .
- Herne" <jjherne@linux.ibm.com>, Marc Hartmayer <mhartmay@linux.ibm.com>,
- Claudio Imbrenda <imbrenda@linux.ibm.com>
-Date: Tue, 27 Jun 2023 06:44:32 -0400
-In-Reply-To: <20230627074703.99608-5-thuth@redhat.com>
-References: <20230627074703.99608-1-thuth@redhat.com>
- <20230627074703.99608-5-thuth@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.48.3 (3.48.3-1.fc38) 
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: NUmDjkB07CNg-D-jdK0GtxTXteLFt700
-X-Proofpoint-GUID: ujSXCGEjwC-uGoV5P6K5awhHIuwuHF9i
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qE6FB-0007lL-VZ
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 06:48:21 -0400
+Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qE6FA-0006pR-Er
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 06:48:21 -0400
+Received: by mail-ed1-x536.google.com with SMTP id
+ 4fb4d7f45d1cf-51d804c7d14so3636941a12.3
+ for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 03:48:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1687862898; x=1690454898;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=aCvwh8ISYeNmmapRBIHhlct0MLWF0qCkci0E1akVbJw=;
+ b=lMzOuLMGoXLx8nHitgq3lg8p09BO/DMT0u5t5TzZe0wJQoj+DxNEX10i9Z84p3AD9O
+ ZEbmPiE4UmLi4m4VGgl5x355KYYnqYZLY5Qt5SBtuPKUQGk5g4BkABNaQuPV9u6gBAtn
+ ySB31F/uoWXWZ2B/BND1KgOY+skoeWkuYf2raEXE16CFrVLwBih8/9MTvR94JipK3i7n
+ F1aq+I2o7SeJgT3w86CSw4qrhPMbYra3fqkWhadciNWPzDy2UcymVavf25x9CaLuNszE
+ vTA1jI+8iI3qaWIfdhG/XF/+7rG4E8F0BkY++0wZd+3GiH9qPje2xnXaPFbzsnsIHI6R
+ 456w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1687862898; x=1690454898;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=aCvwh8ISYeNmmapRBIHhlct0MLWF0qCkci0E1akVbJw=;
+ b=jnWZQm6lUIh+VlwILw2YtMm78Dri+S0DGmZUdPgWWhUclhAoXqiRPmuWguA9qdesW3
+ ZEchlqkRC9qobWJkLqXHuYZu6OXSAXRGhsFbeMw7kRw5IVmW6gh4d8yp97fdZfJriP48
+ 720lDA2+AfZST1ZvDDySWuMseI5prNSv7e1estQVp2SiBhD4Hj8fDF1i4r9eQ+cFvb7E
+ pXcQu9A4G8nai9L7TKmGjSK3rVWnAXuvLwI+mDe+1eoXlnyp/rhhHxGFHtRSSmm5Xj13
+ jsSZSUmt9eilBkh/DYpnH5MRkf1JUs15ew5Lgj/sNaevuz3avWtWIhVUwX0PucID2im3
+ Pc1g==
+X-Gm-Message-State: AC+VfDyp5YBL+dY0FWBqtp+ghfkfGQ/ptCkiFFphdzmhqjIXlnQJNc72
+ aT6Uw/l90USdJySlL6dQjHer7y94R3HKsmpS27HPCA==
+X-Google-Smtp-Source: ACHHUZ5jj4hJpqOSavWDIJIebDBaod3mKU6LjvKcTks8+tZmnhee/9Ili5Xw3ZwOPfV0gLuLfP4Dd1sdIhzSj9EUfaE=
+X-Received: by 2002:aa7:cf1a:0:b0:51d:91d2:335b with SMTP id
+ a26-20020aa7cf1a000000b0051d91d2335bmr5143205edy.1.1687862898657; Tue, 27 Jun
+ 2023 03:48:18 -0700 (PDT)
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-06-27_06,2023-06-27_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 mlxscore=0
- lowpriorityscore=0 bulkscore=0 adultscore=0 suspectscore=0 mlxlogscore=890
- impostorscore=0 spamscore=0 malwarescore=0 priorityscore=1501 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2305260000
- definitions=main-2306270096
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=farman@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+References: <20230623035304.279833-1-npiggin@gmail.com>
+ <5a4ff40f5adc9aa4a1b173fdfb4e179a53c922f3.1687522225.git.quic_mathbern@quicinc.com>
+In-Reply-To: <5a4ff40f5adc9aa4a1b173fdfb4e179a53c922f3.1687522225.git.quic_mathbern@quicinc.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 27 Jun 2023 11:48:07 +0100
+Message-ID: <CAFEAcA-jxGXzkyti3k-P=fOwcmJ+fSa1abKFvNHodYzA+VS+bA@mail.gmail.com>
+Subject: Re: [PATCH] gdbstub: Permit reverse step/break to provide stop
+ response
+To: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
+Cc: npiggin@gmail.com, alex.bennee@linaro.org, qemu-devel@nongnu.org, 
+ qemu-stable@nongnu.org, tsimpson@quicinc.com
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::536;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x536.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H5=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -119,33 +87,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 2023-06-27 at 09:47 +0200, Thomas Huth wrote:
-> start.S currently cannot be compiled with Clang 16 and binutils 2.40:
->=20
-> =C2=A0ld: start.o(.text+0x8): misaligned symbol `__bss_start' (0xc1e5) for
-> =C2=A0=C2=A0=C2=A0=C2=A0 relocation R_390_PC32DBL
->=20
-> According to the built-in linker script of ld, the symbol __bss_start
-> can actually point *before* the .bss section and does not need to
-> have
-> any alignment, so in certain situations (like when using the internal
-> assembler of Clang), the __bss_start symbol can indeed be unaligned
-> and thus it is not suitable for being used with the "larl"
-> instruction
-> that needs an address that is at least aligned to halfwords.
-> The problem went unnoticed so far since binutils <=3D 2.39 did not
-> check the alignment, but starting with binutils 2.40, such unaligned
-> addresses are now refused.
->=20
-> Fix it by using the real start address of the .bss section instead.
->=20
-> Buglink: https://bugzilla.redhat.com/show_bug.cgi?id=3D2216662
-> Reported-by: Miroslav Rezanina <mrezanin@redhat.com>
-> Suggested-by: Nick Clifton <nickc@redhat.com>
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
-> ---
-> =C2=A0pc-bios/s390-ccw/start.S | 2 +-
-> =C2=A01 file changed, 1 insertion(+), 1 deletion(-)
+On Fri, 23 Jun 2023 at 13:19, Matheus Tavares Bernardino
+<quic_mathbern@quicinc.com> wrote:
+>
+> > Nicholas Piggin <npiggin@gmail.com> wrote:
+> >
+> > The final part of the reverse step and break handling is to bring
+> > the machine back to a debug stop state. gdb expects a response.
+> >
+> > A gdb 'rsi' command hangs forever because the gdbstub filters out
+> > the response (also observable with reverse_debugging.py avocado
+> > tests).
+> >
+> > Fix by setting allow_stop_reply for the gdb backward packets.
+>
+> Ah, it's interesting that [1] doesn't include 'bc' and 'bs' in the list
+> of cmds that may respond with a stop-reply packet:
+>
+>     "The 'C', 'c', 'S', 's', 'vCont', 'vAttach', 'vRun', 'vStopped', and
+>     '?' packets can receive any of the below as a reply."
+>
+> But their definitions at [2] do say the following:
+>
+>     'bc' (and 'bc')
+>     [...]
+>     Reply: See Stop Reply Packets, for the reply specifications.
+>
+> So I guess the list from [1] is not exhaustive. Anyway, thanks for the
+> fix!
 
-Reviewed-by: Eric Farman <farman@linux.ibm.com>
+That looks like it's probably a gdb docs bug (forgetting to
+update that list when the bc/bs packets were added); we
+should probably report that to upstream gdb.
+
+thanks
+-- PMM
 
