@@ -2,127 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85C6274055B
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 22:59:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2C2874055C
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 23:00:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEFlO-0003h8-6c; Tue, 27 Jun 2023 16:58:14 -0400
+	id 1qEFma-0004JI-DS; Tue, 27 Jun 2023 16:59:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nifan@outlook.com>) id 1qEFlD-0003gr-6A
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 16:58:04 -0400
-Received: from mail-tyzapc01olkn2034.outbound.protection.outlook.com
- ([40.92.107.34] helo=APC01-TYZ-obe.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nifan@outlook.com>) id 1qEFl8-0006Fp-Mk
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 16:58:01 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=TmWkxzWlJRLl7c344STgd/oA42XFYUIi86tJzQjLiaZE1L5ob8vKb9fBTuLlOfgLbLBA69rCtxLfph6VXSuxsJz4uNIW+L5jIoCn83HpwPoT/uGHWrSTrzGersvgKoLghyeiR5djcEfSe1GbHsWi93fOYhHOCXRjhQVMirr0zXj6KIhusMWrJzvmoqg9T433gpayLcJzWDizpm2YOV51FAL16Eua/iIDGJewv3FQ34j75L/WuM/JA8AeWiBxdfbTG4K6iW1nAZzgOEk2Wr1sSDTAbMp/f9ASL2HgpGrbAeWgqcXcmYFxuQ0STr+NOAIhwmYtnn0f5gTF/6591Y8AWA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=NkK52er+SV68jxT7K1+niT1C6qy93CapmraJbO4fHB8=;
- b=PK2igGtxWI2eJxUo2eIe5Obhb2ovsUjp7Sw1gWUZ8qsprT56uu3xaswnvrcBGKTuCtdsLljq/MCx9B2skEKfcOkqjt6pNKu3Eca0lGVWWqf3USoHSJU+0+c+lz3BuHE/BoCMZ/vCPVm5Qgp531GdZH5YiY5p0j3PrcDrwwUoi+Wcgmvsw1/7VLPy7tUVNMYSSDbKm9WQMdLauWGShsLlTpzRbAEpjL46RDs7pW3aMlDPl6HkzBDPMAFWHni5KIXM3tmVgGKQ1yDqnMEaX3XCrM8EBNg048lTCesybYotLgM0Y0HpIo66xVGRo2tw3F1aJR40X/ftZYilmeMtlEdnag==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=NkK52er+SV68jxT7K1+niT1C6qy93CapmraJbO4fHB8=;
- b=gIdxgsAR6FpNfy55P47XK7k8kUkDf4V2uBNWVv5Vt2aeQ7hXg9UQi7bSVOqdIvugp7SmOPSqQ/OrVq+uIYjg1c0GGjFgrEy6rzXWOBm1UhRYANWLlrrSPl9mxN2o2zBdhylSXYT2LDH5u0NCmpPmXAtN0YrkeXRF0TdXpvoOS+4t516PX8jpHHuCxwb3x+nq0N4RmBLGLDz/N8e0Q7z7jDZE5gek5DqaLJ/gti64thWaBg7ZgLhyH5jJ+kWoSOtKEOf90pVr759u68FlQ4lqrFMAR3dry1mUpkG4Wno/hHdFgOHVmxW8nqu1xAFdwBC4SAUrzRKiJgRYzNBp6z+lXA==
-Received: from SG2PR06MB3397.apcprd06.prod.outlook.com (2603:1096:4:7a::17) by
- TY0PR06MB5777.apcprd06.prod.outlook.com (2603:1096:400:270::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6521.23; Tue, 27 Jun
- 2023 20:52:43 +0000
-Received: from SG2PR06MB3397.apcprd06.prod.outlook.com
- ([fe80::33a7:c9e1:75ae:3227]) by SG2PR06MB3397.apcprd06.prod.outlook.com
- ([fe80::33a7:c9e1:75ae:3227%4]) with mapi id 15.20.6521.026; Tue, 27 Jun 2023
- 20:52:43 +0000
-Date: Tue, 27 Jun 2023 13:52:25 -0700
-From: "nifan@outlook.com" <nifan@outlook.com>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Fan Ni <fan.ni@samsung.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
- "gregory.price@memverge.com" <gregory.price@memverge.com>,
- "hchkuo@avery-design.com.tw" <hchkuo@avery-design.com.tw>,
- "cbrowy@avery-design.com" <cbrowy@avery-design.com>,
- "ira.weiny@intel.com" <ira.weiny@intel.com>,
- "dan.j.williams@intel.com" <dan.j.williams@intel.com>,
- Adam Manzanares <a.manzanares@samsung.com>,
- "dave@stgolabs.net" <dave@stgolabs.net>,
- "nmtadam.samsung@gmail.com" <nmtadam.samsung@gmail.com>,
- navneet.singh@intel.com
-Subject: Re: [Qemu RFC 0/7] Early enabling of DCD emulation in Qemu
-Message-ID: <SG2PR06MB33970B719515271CBD0303E5B227A@SG2PR06MB3397.apcprd06.prod.outlook.com>
-References: <CGME20230511175641uscas1p2b1877f9179709b69e293acdd7e57104c@uscas1p2.samsung.com>
- <20230511175609.2091136-1-fan.ni@samsung.com>
- <20230515140036.00003301@Huawei.com>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230515140036.00003301@Huawei.com>
-X-TMN: [zmaMoHEcKn88ne3C8Ry6azTK7V8N6grK]
-X-ClientProxiedBy: CH2PR08CA0001.namprd08.prod.outlook.com
- (2603:10b6:610:5a::11) To SG2PR06MB3397.apcprd06.prod.outlook.com
- (2603:1096:4:7a::17)
-X-Microsoft-Original-Message-ID: <ZJtMCRxJCuFmmS/d@outlook.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qEFmX-0004Ia-Uw
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 16:59:25 -0400
+Received: from mail-lf1-x12e.google.com ([2a00:1450:4864:20::12e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qEFmV-0006fm-IN
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 16:59:24 -0400
+Received: by mail-lf1-x12e.google.com with SMTP id
+ 2adb3069b0e04-4f957a45b10so6876018e87.0
+ for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 13:59:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1687899561; x=1690491561;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Yidl49e7SEX3FKciW4n8kmUz7l6Uk5DcFSetIMs3Dr8=;
+ b=Um1/Yn6fcwXhs+v5nF9abuOe/DteLuM6gHG4wm53p/5DWMCsmSd/lg0V8kfM06o81j
+ tGoX/R+HusSbZ3DJNdILm5ezm8IH9HDxn5jQWk7l48/7uY9+NBzQkpftxbB2vWt0q5r9
+ Bqlk9T8hTnlOkdAooDNQkUJlshYvHMl3tBHVrZbi3Y6FcfHxkCXIH6yvowfCT9nkU9UP
+ sF91vx5/o9JVUyE+X0EOHzi0kU8exs/p7LcjdWK5ItGqKEFZybYbXJ/iMgCDuNxHPplo
+ nrkZHgc2LfInUfzBkkYpL33POTcMyL29g1nkncupN8FaoJGMxNaMfMRWjmz9nCUi0sl3
+ 7FsQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1687899561; x=1690491561;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Yidl49e7SEX3FKciW4n8kmUz7l6Uk5DcFSetIMs3Dr8=;
+ b=IwI9bxwvewZigRvzVLOdieAw3fwrIVtgRvtdBoUD0nU2x5XlDGCJpxALCxn98F6BQB
+ AUvurd5JKQx6IA3Sfs6ccmNiC2dv1lRH3nN+IZ79da5Yh5xblnfuwZPB743aVPFat83k
+ yqf9veJclSBjo1ydcs7aInv6hyLVjmsFNmqtF39wkUCPKuakCKEuXUe+PdN1f3YCttgy
+ cLrw/XEAyDDmtjemGnltdNFMuAKob9vtaFUz2POoPjbKrt++MRoN2XHb3Au73I0jCL/P
+ XM9RvKTVE2uQDlztYCxgjR9fkiI9Y7WIDjAntaYZnH0G6HHCuojBiKCMKs7w1HpMzZeq
+ OHdQ==
+X-Gm-Message-State: AC+VfDx/wn7soCUXB3QhKaY7FnqhOfXrYzfYkLd1eFNJTrAnyNv571Q5
+ 9hUUx6Fqm2NU9zSPR/ztVlb0Yw==
+X-Google-Smtp-Source: ACHHUZ7pcyWiHq5LsB0xZ5pckygbSRtDI/tEu5aa716RQG1EEuWA2HvBlLFwojgpVZG3HS9Inpprbw==
+X-Received: by 2002:a19:ca16:0:b0:4f8:5ab0:68c4 with SMTP id
+ a22-20020a19ca16000000b004f85ab068c4mr16012708lfg.59.1687899560874; 
+ Tue, 27 Jun 2023 13:59:20 -0700 (PDT)
+Received: from [192.168.69.115] ([176.187.199.204])
+ by smtp.gmail.com with ESMTPSA id
+ b3-20020aa7cd03000000b0051be5bbce23sm4113903edw.35.2023.06.27.13.59.17
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 27 Jun 2023 13:59:20 -0700 (PDT)
+Message-ID: <d662e5eb-5716-164a-9d06-a105d2ad94a1@linaro.org>
+Date: Tue, 27 Jun 2023 22:59:16 +0200
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SG2PR06MB3397:EE_|TY0PR06MB5777:EE_
-X-MS-Office365-Filtering-Correlation-Id: b3ac0abd-5852-4835-ae38-08db775073c1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: S0thiMGx7a2vjkNnLCsEZh8v5pq1Zzbb9wKIsY1sCGbWf3o+PVqPkhDu08OLPfXneV1g0bAUTqqMDnqlYEpveTtjIE+nRgzqLtJQjx/i426nZRe7KT7xbDOY3NqM8kx7ddUiX+7HNxJnolG4uoX0dA0KfV1C7pZxogmJ9+EapqX2zvAlDLNDSxEO5ULaIULzTLrfYMLGIZEgVC0zmpAG+tM5fy3mnGvOI4Ttg5lzymNd45pfwHzMtyYkVK7TZA+beeedr7ioZXnkXrw3DN+kUrv6QrpbR5Yx1uNFkbfhlpkC5rVA6aXCZGsNFrpzaAzuOg5wZP4g+rnhqGvG44wr85wZfN9I3dyLusmSmqjfWd9Vs5vv5wcUOEM46xBZpAfgMrHKmZZRFK2DR260yxDZKogYq+hntuOHY7B6WweUL14K/KmDMhHWE3pU6yY7em68QYyAhDvjCSvpcqsh0WHmxOZLdDFoU7pyyPlswnj712Ig3VMa6yN8zPXaoU/xnABd+zwybf8RXpBsUtcxpQMyk8Tnnoev6hYiSjqgMm2THA4fF0fJXJR9x+5qcrnGrd4KSG07IqDnBevsKwrx+cVtVg==
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?eE1CVWVHdE0rMDJvZm9ESkVnOHBxZ2lFM1hBUHEvU2lYbVZRcDNkMVduL1Vn?=
- =?utf-8?B?ZWVxRkp5aTllMTNPRCtac3VleEswVElNdXY1bGtCb2dtRUM1ZE1PL0F4OWVB?=
- =?utf-8?B?R2lzVzlLVEg1Vm95NjliVzR1cDMzQks3US9BVFhJL2JuRFJqMWlSbUo5eWFm?=
- =?utf-8?B?VkhmeFQ0K2tTdmVIYnNRclNrOXhhcDhKM1VHdVRDOWx4MTUySDJZSVJFclo0?=
- =?utf-8?B?cUNtd3hVYUJTRk8yWk9JN3kxeE5tcmFFQUVTaGthdzV3U3p1d1dyRkpEZHp5?=
- =?utf-8?B?U1FIWlVtRjcxTnBHcUk4ZlRqNVRnM1gzMmM1WnEweFluTmxhSXZrVVpackg2?=
- =?utf-8?B?SXlydjhsSzM5V2kvdm9ROXV5dHF4cm04L1VBcWhtQ0VWSHZPS01wK0lxOUox?=
- =?utf-8?B?Q0NXSkt4NVQrVW9SOWxvQUdERDBkUHErOElsTW1nblp0aVhnWldhTERHSWRq?=
- =?utf-8?B?Z2FGYnRXWDdrYkMzbFg4Ym5aQWpVUnl2a1pUR2xXUklUdDBjaFpJTmpHMU5m?=
- =?utf-8?B?Q0huT053WWhManhHb0o2VHhnUzl5SEUrTjRpOHgrM3psQmpXaXhqeFRQZFdl?=
- =?utf-8?B?ZlU5Wnc1NzVuZy9WWkUwTE9sR01JZTBzYlMrV0QwYlhXcXNoeUtZQ29ZOGNY?=
- =?utf-8?B?aGNKZHJSNHFuWm5aUmQwSzhzSllNZmVhbjAyZDNDeDdNaEVpempEMElqQUJL?=
- =?utf-8?B?RkNOdVJad1VOelNHSjljbEF6Z0lnVHhDbHJFOGJZU0gxUjBUU0ppMXVDSE9y?=
- =?utf-8?B?M2JqREk4UTFEYkxNbVMvV1luZFRGTWRPd3l6WDBmVGlCYzhtcHJsUm5iWXJl?=
- =?utf-8?B?T3BUeUYrK2I4Mlo0aFgrRE80TWp6c0RZRCtPaDg0aVZQaUMxTFhDaVZuWHRy?=
- =?utf-8?B?UVdoSXdrU2JneTEzbUwvVHd6cUVnMGl3YlpOU0Jra0tOQ1JGclI1cmJ3V0tL?=
- =?utf-8?B?R29iOThiR2ZuVFJ3R1M2aFh1ZmRCMjllOTEralVHOUw4ekw5dlJGTHMvY0RX?=
- =?utf-8?B?d25rTGtVZTkydFdjYWRNN2g2dkE1bktCbmZQZXZMcENkNzU1NlNMMXdCUnUy?=
- =?utf-8?B?QmJqTFlSckRVbEN0UE5rQ2RjcVB4WFJaWHA1bW0xbGswZGZSNENyNDhrZXJt?=
- =?utf-8?B?SEpwZ3poME5HNWNURFRDWjNHazVyYm9mUmp0TFNjRE1YL3VmRWt1QzZoTzRB?=
- =?utf-8?B?elp2YkcrclBBTndVMDl3cjRBMVJJZDJldnRzaVFWRkdHM2ppRFZEU1hlUnV0?=
- =?utf-8?B?V2ZQTTl1OTgyNjdtWVRZa01qd1U0UEdSVHI0OUNRT0V5Sk8yV0NGMnlKREZE?=
- =?utf-8?B?QjJYeHFwa0tTTWJPT0J1VGxUT2EvYlY2dWlIOGxIM1IvSnFOdFRrK1YvMXMz?=
- =?utf-8?B?c1RjZmFMVmdlVTBqN3RoOWZvMUdiRTJXRDl6TnNzZXBFNUlJR2lnZXRoV0hN?=
- =?utf-8?B?Qkh4L1NRVjQ2ejZxak4vYUhCU1dhTU1ocVBRWG5JclJ2aTM0RDhkMWl1Tytn?=
- =?utf-8?B?MUpPa2pWOHMwbWx6NGFnYlJCM2tIL2I0SlB0VmlLeitYbDJFY2FJSTV0MnBN?=
- =?utf-8?B?ZDZ3UmprcW5haWRLT0poQjlUR3NWRElreldLaCtjSEdqUlRSajdIdjY1NWV1?=
- =?utf-8?B?UzJuTGdIbWUzK2NjRm9xMmtCajZvbnc9PQ==?=
-X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b3ac0abd-5852-4835-ae38-08db775073c1
-X-MS-Exchange-CrossTenant-AuthSource: SG2PR06MB3397.apcprd06.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Jun 2023 20:52:43.2035 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TY0PR06MB5777
-Received-SPF: pass client-ip=40.92.107.34; envelope-from=nifan@outlook.com;
- helo=APC01-TYZ-obe.outbound.protection.outlook.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.12.0
+Subject: Re: [PATCH v3 32/36] gdbstub: Expose gdb_get_process() and
+ gdb_get_first_cpu_in_process()
+Content-Language: en-US
+To: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Juan Quintela <quintela@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Cleber Rosa <crosa@redhat.com>, Leonardo Bras <leobras@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
+ Bin Meng <bmeng.cn@gmail.com>, Yanan Wang <wangyanan55@huawei.com>,
+ Darren Kenny <darren.kenny@oracle.com>, Alexander Bulekov <alxndr@bu.edu>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Peter Xu <peterx@redhat.com>,
+ Radoslaw Biernacki <rad@semihalf.com>, Laurent Vivier <laurent@vivier.eu>,
+ Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ qemu-arm@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>, Bandan Das
+ <bsd@redhat.com>, =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?=
+ <berrange@redhat.com>, Alexandre Iooss <erdnaxe@crans.org>,
+ Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
+ Leif Lindholm <quic_llindhol@quicinc.com>,
+ Laurent Vivier <lvivier@redhat.com>, Qiuhao Li <Qiuhao.Li@outlook.com>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>, Riku Voipio <riku.voipio@iki.fi>,
+ Ilya Leoshkevich <iii@linux.ibm.com>
+References: <20230627160943.2956928-1-alex.bennee@linaro.org>
+ <20230627160943.2956928-33-alex.bennee@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230627160943.2956928-33-alex.bennee@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::12e;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x12e.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001, T_PDS_OTHER_BAD_TLD=0.01,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.103,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -138,267 +112,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The 05/15/2023 14:00, Jonathan Cameron wrote:
-> On Thu, 11 May 2023 17:56:40 +0000
-> Fan Ni <fan.ni@samsung.com> wrote:
+On 27/6/23 18:09, Alex Bennée wrote:
+> From: Ilya Leoshkevich <iii@linux.ibm.com>
 > 
-> > Since the early draft of DCD support in kernel is out
-> > (https://lore.kernel.org/linux-cxl/20230417164126.GA1904906@bgt-140510-bm03/T/#t),
-> > this patch series provide dcd emulation in qemu so people who are interested
-> > can have an early try. It is noted that the patch series may need to be updated
-> > accordingly if the kernel side implementation changes.
-> > 
-> > To support DCD emulation, the patch series add DCD related mailbox command
-> > support (CXL Spec 3.0: 8.2.9.8.9), and extend the cxl type3 memory device
-> > with dynamic capacity extent and region representative.
-> > To support read/write to the dynamic capacity of the device, a host backend
-> > is provided and necessary check mechnism is added to ensure the dynamic
-> > capacity accessed is backed with active dc extents.
-> > Currently FM related mailbox commands (cxl spec 3.0: 7.6.7.6) is not supported
-> > , but we add two qmp interfaces for adding/releasing dynamic capacity extents.
-> > Also, the support for multiple hosts sharing the same DCD case is missing.
-> > 
-> > Things we can try with the patch series together with kernel dcd code:
-> > 1. Create DC regions to cover the address range of the dynamic capacity
-> > regions.
-> > 2. Add/release dynamic capacity extents to the device and notify the
-> > kernel.
-> > 3. Test kernel side code to accept added dc extents and create dax devices,
-> > and release dc extents and notify the device
-> > 4. Online the memory range backed with dc extents and let application use
-> > them.
-> > 
-> > The patch series is based on Jonathan's local qemu branch:
-> > https://gitlab.com/jic23/qemu/-/tree/cxl-2023-02-28
-> > 
-> > Simple tests peformed with the patch series:
-> > 1 Install cxl modules:
-> > 
-> > modprobe -a cxl_acpi cxl_core cxl_pci cxl_port cxl_mem
-> > 
-> > 2 Create dc regions:
-> > 
-> > region=$(cat /sys/bus/cxl/devices/decoder0.0/create_dc_region)
-> > echo $region> /sys/bus/cxl/devices/decoder0.0/create_dc_region
-> > echo 256 > /sys/bus/cxl/devices/$region/interleave_granularity
-> > echo 1 > /sys/bus/cxl/devices/$region/interleave_ways
-> > echo "dc" >/sys/bus/cxl/devices/decoder2.0/mode
-> > echo 0x10000000 >/sys/bus/cxl/devices/decoder2.0/dpa_size
-> > echo 0x10000000 > /sys/bus/cxl/devices/$region/size
-> > echo  "decoder2.0" > /sys/bus/cxl/devices/$region/target0
-> > echo 1 > /sys/bus/cxl/devices/$region/commit
-> > echo $region > /sys/bus/cxl/drivers/cxl_region/bind
-> > 
-> > /home/fan/cxl/tools-and-scripts# cxl list
-> > [
-> >   {
-> >     "memdevs":[
-> >       {
-> >         "memdev":"mem0",
-> >         "pmem_size":536870912,
-> >         "ram_size":0,
-> >         "serial":0,
-> >         "host":"0000:0d:00.0"
-> >       }
-> >     ]
-> >   },
-> >   {
-> >     "regions":[
-> >       {
-> >         "region":"region0",
-> >         "resource":45365592064,
-> >         "size":268435456,
-> >         "interleave_ways":1,
-> >         "interleave_granularity":256,
-> >         "decode_state":"commit"
-> >       }
-> >     ]
-> >   }
-> > ]
-> > 
-> > 3 Add two dc extents (128MB each) through qmp interface
-> > 
-> > { "execute": "qmp_capabilities" }
-> > 
-> > { "execute": "cxl-add-dynamic-capacity-event",
-> > 	"arguments": {
-> > 		 "path": "/machine/peripheral/cxl-pmem0",
-> > 		"region-id" : 0,
-> > 		 "num-extent": 2,
-> > 		"dpa":0,
-> > 		"extent-len": 128
-> > 	}
-> > }
-> > 
-> > /home/fan/cxl/tools-and-scripts# lsmem
-> > RANGE                                  SIZE   STATE REMOVABLE   BLOCK
-> > 0x0000000000000000-0x000000007fffffff    2G  online       yes    0-15
-> > 0x0000000100000000-0x000000027fffffff    6G  online       yes   32-79
-> > 0x0000000a90000000-0x0000000a9fffffff  256M offline           338-339
-> > 
-> > Memory block size:       128M
-> > Total online memory:       8G
-> > Total offline memory:    256M
-> > 
-> > 
-> > 4.Online the momory with 'daxctl online-memory dax0.0' to online the memory
-> > 
-> > /home/fan/cxl/ndctl# ./build/daxctl/daxctl online-memory dax0.0
-> > [  230.730553] Fallback order for Node 0: 0 1
-> > [  230.730825] Fallback order for Node 1: 1 0
-> > [  230.730953] Built 2 zonelists, mobility grouping on.  Total pages: 2042541
-> > [  230.731110] Policy zone: Normal
-> > onlined memory for 1 device
-> > 
-> > root@bgt-140510-bm03:/home/fan/cxl/ndctl# lsmem
-> > RANGE                                  SIZE   STATE REMOVABLE BLOCK
-> > 0x0000000000000000-0x000000007fffffff    2G  online       yes  0-15
-> > 0x0000000100000000-0x000000027fffffff    6G  online       yes 32-79
-> > 0x0000000a90000000-0x0000000a97ffffff  128M  online       yes   338
-> > 0x0000000a98000000-0x0000000a9fffffff  128M offline             339
-> > 
-> > Memory block size:       128M
-> > Total online memory:     8.1G
-> > Total offline memory:    128M
-> > 
-> > 5 using dc extents as regular memory
-> > 
-> > /home/fan/cxl/ndctl# numactl --membind=1 ls
-> > CONTRIBUTING.md  README.md  clean_config.sh  cscope.out   git-version-gen
-> > ndctl	       scripts	test.h      version.h.in COPYING		 acpi.h
-> > config.h.meson   cxl	  make-git-snapshot.sh	ndctl.spec.in  sles	tools
-> > Documentation	 build	    contrib	     daxctl	  meson.build		rhel
-> > tags	topology.png LICENSES	 ccan	    cscope.files
-> > git-version  meson_options.txt	rpmbuild.sh    test	util
-> > 
-> > 
-> > QEMU command line cxl configuration:
-> > 
-> > RP1="-object memory-backend-file,id=cxl-mem1,share=on,mem-path=/tmp/cxltest.raw,size=512M \
-> > -object memory-backend-file,id=cxl-mem2,share=on,mem-path=/tmp/cxltest2.raw,size=512M \
-> > -object memory-backend-file,id=cxl-lsa1,share=on,mem-path=/tmp/lsa.raw,size=512M \
-> > -device pxb-cxl,bus_nr=12,bus=pcie.0,id=cxl.1 \
-> > -device cxl-rp,port=0,bus=cxl.1,id=root_port13,chassis=0,slot=2 \
-> > -device cxl-type3,bus=root_port13,memdev=cxl-mem1,lsa=cxl-lsa1,dc-memdev=cxl-mem2,id=cxl-pmem0,num-dc-regions=1\
-> > -M cxl-fmw.0.targets.0=cxl.1,cxl-fmw.0.size=4G,cxl-fmw.0.interleave-granularity=8k"
-> > 
-> > 
-> > Kernel DCD support used to test the changes
-> > 
-> > The code is tested with the posted kernel dcd support:
-> > https://git.kernel.org/pub/scm/linux/kernel/git/cxl/cxl.git/log/?h=for-6.5/dcd-preview
-> > 
+> These functions will be needed by user-target.c in order to retrieve
+> the name of the executable.
 > 
-> Very nice!  +CC Navneet who may want to comment on the below (and the
-> emulation as well)
+> Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+> Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+> Message-Id: <20230621203627.1808446-5-iii@linux.ibm.com>
+> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+> ---
+>   gdbstub/internals.h |  2 ++
+>   gdbstub/gdbstub.c   | 16 ++++++++--------
+>   2 files changed, 10 insertions(+), 8 deletions(-)
 > 
-> I've not had a chance to look at the code on the kernel side yet.
+> diff --git a/gdbstub/internals.h b/gdbstub/internals.h
+> index 33d21d6488..25e4d5eeaa 100644
+> --- a/gdbstub/internals.h
+> +++ b/gdbstub/internals.h
+> @@ -129,6 +129,8 @@ void gdb_read_byte(uint8_t ch);
+>    */
+>   bool gdb_got_immediate_ack(void);
+>   /* utility helpers */
+> +GDBProcess *gdb_get_process(uint32_t pid);
+> +CPUState *gdb_get_first_cpu_in_process(GDBProcess *process);
 
-Thanks Jonathan for all the comments for the series, will reflect them
-in the next version.
+It would be nice to have documentation for public API.
+Can be amended later, so:
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Fan
+>   CPUState *gdb_first_attached_cpu(void);
+>   void gdb_append_thread_id(CPUState *cpu, GString *buf);
+>   int gdb_get_cpu_index(CPUState *cpu);
 
-> 
-> 
-> > commit: f425bc34c600e2a3721d6560202962ec41622815
-> > 
-> > To make the test work, we have made the following changes to the above kernel commit:
-> > 
-> > diff --git a/drivers/cxl/core/mbox.c b/drivers/cxl/core/mbox.c
-> > index 5f04bbc18af5..5f421d3c5cef 100644
-> > --- a/drivers/cxl/core/mbox.c
-> > +++ b/drivers/cxl/core/mbox.c
-> > @@ -68,6 +68,7 @@ static struct cxl_mem_command cxl_mem_commands[CXL_MEM_COMMAND_ID_MAX] = {
-> >  	CXL_CMD(SCAN_MEDIA, 0x11, 0, 0),
-> >  	CXL_CMD(GET_SCAN_MEDIA, 0, CXL_VARIABLE_PAYLOAD, 0),
-> >  	CXL_CMD(GET_DC_EXTENT_LIST, 0x8, CXL_VARIABLE_PAYLOAD, 0),
-> > +	CXL_CMD(GET_DC_CONFIG, 0x2, CXL_VARIABLE_PAYLOAD, 0),
-> >  };
-> >  
-> >  /*
-> > diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
-> > index 291c716abd49..ae10e3cf43a1 100644
-> > --- a/drivers/cxl/core/region.c
-> > +++ b/drivers/cxl/core/region.c
-> > @@ -194,7 +194,7 @@ static int cxl_region_manage_dc(struct cxl_region *cxlr)
-> >  		}
-> >  		cxlds->dc_list_gen_num = extent_gen_num;
-> >  		dev_dbg(cxlds->dev, "No of preallocated extents :%d\n", rc);
-> > -		enable_irq(cxlds->cxl_irq[CXL_EVENT_TYPE_DCD]);
-> > +		/*enable_irq(cxlds->cxl_irq[CXL_EVENT_TYPE_DCD]);*/
-> 
-> Some race condition that means we need to enable the DCD event earlier?
-> 
-> >  	}
-> >  	return 0;
-> >  err:
-> > @@ -2810,7 +2810,8 @@ int cxl_add_dc_extent(struct cxl_dev_state *cxlds, struct resource *alloc_dpa_re
-> >  				dev_dax->align, memremap_compat_align()))) {
-> >  		rc = alloc_dev_dax_range(dev_dax, hpa,
-> >  					resource_size(alloc_dpa_res));
-> > -		return rc;
-> > +		if (rc)
-> > +			return rc;
-> 
-> No idea on this one as it's in the code I haven't looked at yet!
-> 
-> >  	}
-> >  
-> >  	rc = xa_insert(&cxlr_dc->dax_dev_list, hpa, dev_dax, GFP_KERNEL);
-> > diff --git a/drivers/cxl/pci.c b/drivers/cxl/pci.c
-> > index 9e45b1056022..653bec203838 100644
-> > --- a/drivers/cxl/pci.c
-> > +++ b/drivers/cxl/pci.c
-> > @@ -659,7 +659,7 @@ static int cxl_event_irqsetup(struct cxl_dev_state *cxlds)
-> >  
-> >  	/* Driver enables DCD interrupt after creating the dc cxl_region */
-> >  	rc = cxl_event_req_irq(cxlds, policy.dyncap_settings, CXL_EVENT_TYPE_DCD,
-> > -					IRQF_SHARED | IRQF_ONESHOT | IRQF_NO_AUTOEN);
-> > +					IRQF_SHARED | IRQF_ONESHOT);
-> 
-> This will be otherside of the removal of the enable above.
-> 
-> >  	if (rc) {
-> >  		dev_err(cxlds->dev, "Failed to get interrupt for event dc log\n");
-> >  		return rc;
-> > diff --git a/include/uapi/linux/cxl_mem.h b/include/uapi/linux/cxl_mem.h
-> > index 6ca85861750c..910a48259239 100644
-> > --- a/include/uapi/linux/cxl_mem.h
-> > +++ b/include/uapi/linux/cxl_mem.h
-> > @@ -47,6 +47,7 @@
-> >  	___C(SCAN_MEDIA, "Scan Media"),                                   \
-> >  	___C(GET_SCAN_MEDIA, "Get Scan Media Results"),                   \
-> >  	___C(GET_DC_EXTENT_LIST, "Get dynamic capacity extents"),         \
-> > +	___C(GET_DC_CONFIG, "Get dynamic capacity configuration"),         \
-> >  	___C(MAX, "invalid / last command")
-> >  
-> >  #define ___C(a, b) CXL_MEM_COMMAND_ID_##a
-> > 
-> > 
-> > 
-> > Fan Ni (7):
-> >   hw/cxl/cxl-mailbox-utils: Add dc_event_log_size field to output
-> >     payload of identify memory device command
-> >   hw/cxl/cxl-mailbox-utils: Add dynamic capacity region representative
-> >     and mailbox command support
-> >   hw/mem/cxl_type3: Add a parameter to pass number of DC regions the
-> >     device supports in qemu command line
-> >   hw/mem/cxl_type3: Add DC extent representative to cxl type3 device
-> >   hw/cxl/cxl-mailbox-utils: Add mailbox commands to support add/release
-> >     dynamic capacity response
-> >   Add qmp interfaces to add/release dynamic capacity extents
-> >   hw/mem/cxl_type3: add read/write support to dynamic capacity
-> > 
-> >  hw/cxl/cxl-mailbox-utils.c  | 389 +++++++++++++++++++++++++++-
-> >  hw/mem/cxl_type3.c          | 492 +++++++++++++++++++++++++++++++-----
-> >  include/hw/cxl/cxl_device.h |  50 +++-
-> >  include/hw/cxl/cxl_events.h |  16 ++
-> >  qapi/cxl.json               |  44 ++++
-> >  5 files changed, 924 insertions(+), 67 deletions(-)
-> > 
-> 
-
--- 
-Fan Ni <nifan@outlook.com>
 
