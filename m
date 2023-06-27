@@ -2,170 +2,109 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1B7573F8C9
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 11:30:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F25D73F8CD
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 11:30:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qE51G-0004vH-C4; Tue, 27 Jun 2023 05:29:54 -0400
+	id 1qE51e-00052g-BM; Tue, 27 Jun 2023 05:30:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <weijiang.yang@intel.com>)
- id 1qE51E-0004ut-9k
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 05:29:52 -0400
-Received: from mga05.intel.com ([192.55.52.43])
+ (Exim 4.90_1) (envelope-from <imbrenda@linux.ibm.com>)
+ id 1qE51N-000516-RI; Tue, 27 Jun 2023 05:30:02 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <weijiang.yang@intel.com>)
- id 1qE51C-0006lM-JQ
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 05:29:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1687858190; x=1719394190;
- h=message-id:date:subject:to:cc:references:from:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=VVjIuBjURl6xwY/HPyS0vLCNY6xA0IVDrtmFe8nFlS4=;
- b=ECxGdnUEENL87nja6AmpELaviHKCJVLRuSnzyBNB8KkVeCcxLGlylgzo
- T8Gv1MmDjOpC5AbOqJxK/4PxG04bgM/6GFbyvqoxr7mmRlxuLXqDlzuiN
- AA3xJ/6O+rXT1BvGV41u9iVxgHjRKak81nYoRQHjU2fGYnj6LWCjBb6zj
- 6C3sHZv9giXwZyM+SAo77/dEnmJR0cckUBpIswzWDAnGiOj3ePlXtR50Q
- 6IVCh61auAm/hYVtbQHM8pmvu4t3kmbhwZYDK9iog4464ciroRK3zsfe/
- pYKTQVfWjKFoMWCD1KT1x0LfN0b/DCjKouE8cSl2Lp11pdrBWdQmVPs3T Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10753"; a="447907882"
-X-IronPort-AV: E=Sophos;i="6.01,162,1684825200"; d="scan'208";a="447907882"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
- by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Jun 2023 02:29:34 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10753"; a="806398197"
-X-IronPort-AV: E=Sophos;i="6.01,162,1684825200"; d="scan'208";a="806398197"
-Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
- by FMSMGA003.fm.intel.com with ESMTP; 27 Jun 2023 02:29:34 -0700
-Received: from fmsmsx611.amr.corp.intel.com (10.18.126.91) by
- fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Tue, 27 Jun 2023 02:29:34 -0700
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx611.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Tue, 27 Jun 2023 02:29:33 -0700
-Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27 via Frontend Transport; Tue, 27 Jun 2023 02:29:33 -0700
-Received: from NAM04-MW2-obe.outbound.protection.outlook.com (104.47.73.169)
- by edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.27; Tue, 27 Jun 2023 02:29:33 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Dx6SHg9GSJfEdXx8ciuMQUL/+zbsAW5V9ueY3GHSIHFPxYFpJ0UbSv1iX11QAcVp5VZKBwKCWlJyEqR9O3LAps0LevybiBWfP7dkHK8T0lRX2PCsVGo3vQegIFkY58FhzH5pvztQyvs/30UwE6lNMimynbNCK0fOwNJp7xQrx6qhz4jTKeASBVUnyuvPTeWxLIpG0vLJ1+m3dbq6QBQN6EWETy8ThaCKbsC9wVaoDdbIzG5XeQ2rWVq3+zsSoPyV757H9s7FSRQyWEAIRXfaUOZD+Fd6RCh8e+hds9Qq1MU3n2XZ/oRSLcSVk9IP7S6FaUwxyaZuM9Js4DiT8aHaKg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jGjhcKVzUYX1fKInDdIlBPAsK11hCsShmKqb4mMiWmY=;
- b=II77A4zvNHqh26r6ks/WRJVsD8wITcVIm6xvbNCTD/JsQ8fsltSO6rZ8cyMMzKVhe8NNn4hLxQJAOk6xTgCXCPcjN/WyNLUcr6UznfcmiC3INM2ET/7xhTxsD8p9uZ6C8JJZgWPT+o+4ZX656pJXYKZJrDglNjZ8loz+m+rdXwRKF+IhCDAo1YW7OwnGR3CJ5bEI3cLnUq83J6Qt5zGMPCejG7S0+i4983OYM3OruVEYqFnBgrGMf/u7NW9UFnlkrXDN6kdXdNGAWOSFN4jIhbmbedZOl6kruql4wm9klbbME+8Inu1YEvoE6Kkq4IEym4iYoPMt/AIeOsTuZYmYRw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH0PR11MB4965.namprd11.prod.outlook.com (2603:10b6:510:34::7)
- by SN7PR11MB7043.namprd11.prod.outlook.com (2603:10b6:806:29a::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6521.23; Tue, 27 Jun
- 2023 09:29:31 +0000
-Received: from PH0PR11MB4965.namprd11.prod.outlook.com
- ([fe80::4707:8818:a403:f7a9]) by PH0PR11MB4965.namprd11.prod.outlook.com
- ([fe80::4707:8818:a403:f7a9%6]) with mapi id 15.20.6521.023; Tue, 27 Jun 2023
- 09:29:31 +0000
-Message-ID: <0d230f89-363f-3088-331e-d72638029e2a@intel.com>
-Date: Tue, 27 Jun 2023 17:29:21 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH v2 2/3] i386/cpuid: Remove subleaf constraint on CPUID
- leaf 1F
-Content-Language: en-US
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-CC: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "qemu-devel@nongnu.org"
- <qemu-devel@nongnu.org>, Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti
- <mtosatti@redhat.com>
-References: <20230613131929.720453-1-xiaoyao.li@intel.com>
- <20230613131929.720453-3-xiaoyao.li@intel.com>
-From: "Yang, Weijiang" <weijiang.yang@intel.com>
-In-Reply-To: <20230613131929.720453-3-xiaoyao.li@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+ (Exim 4.90_1) (envelope-from <imbrenda@linux.ibm.com>)
+ id 1qE51K-0006nS-O6; Tue, 27 Jun 2023 05:30:01 -0400
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 35R9Lv7K002837; Tue, 27 Jun 2023 09:29:55 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=date : from : to : cc :
+ subject : message-id : in-reply-to : references : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=6M0msjcWR1Gj17Yy9kJ9nmjPy6YI6N0KvOefuWJvbrU=;
+ b=kg6Mo9xBiP58h11RS4t0gkcDYPWffnGamjUbX+G7WjLt6kwqzO8WRIzSoUi//ElzgODA
+ hD3dcL47BFK0atuSpZo26xHjDa8mRKKEG4jdB/u8Mu38fQlZNEm3cW04c8FBETb8pxRQ
+ H3hbgalRf81OQRkBArgBLctP9AOz1NzfH8PKMmS4JHhpM3PTz6qC6Uj0vJcZDASyT2qB
+ x5GxEt8dJi/DRyDqiizToQY6jBZhdj47EaI2j5q3D5t6rwtecwPr67CJW3HHBtOz/RQP
+ BKrjGAavTi7r4fnjykcdxg1NGAVkiVfLCgIxI4dHPjoUOGTxDzPKqhcUGVV2wjPIV8JX WA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rfw2v04wd-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 27 Jun 2023 09:29:55 +0000
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 35R9N9Od009554;
+ Tue, 27 Jun 2023 09:29:54 GMT
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.102])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rfw2v04vk-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 27 Jun 2023 09:29:54 +0000
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+ by ppma06ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 35QLkXB5013753;
+ Tue, 27 Jun 2023 09:29:52 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+ by ppma06ams.nl.ibm.com (PPS) with ESMTPS id 3rdqre1rq8-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 27 Jun 2023 09:29:52 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com
+ [10.20.54.102])
+ by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 35R9TmdM13894152
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 27 Jun 2023 09:29:48 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CD4A020040;
+ Tue, 27 Jun 2023 09:29:48 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 81E5320043;
+ Tue, 27 Jun 2023 09:29:48 +0000 (GMT)
+Received: from p-imbrenda (unknown [9.152.224.66])
+ by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Tue, 27 Jun 2023 09:29:48 +0000 (GMT)
+Date: Tue, 27 Jun 2023 11:29:39 +0200
+From: Claudio Imbrenda <imbrenda@linux.ibm.com>
+To: Thomas Huth <thuth@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-s390x@nongnu.org, Christian Borntraeger
+ <borntraeger@linux.ibm.com>, mrezanin@redhat.com, Richard Henderson
+ <richard.henderson@linaro.org>, =?UTF-8?B?Q8OpZHJpYw==?= Le Goater
+ <clegoate@redhat.com>, Janosch Frank <frankja@linux.ibm.com>, "Jason J .
+ Herne" <jjherne@linux.ibm.com>, Marc Hartmayer <mhartmay@linux.ibm.com>,
+ Eric Farman <farman@linux.ibm.com>
+Subject: Re: [PATCH v2 4/4] pc-bios/s390-ccw: Don't use __bss_start with the
+ "larl" instruction
+Message-ID: <20230627112939.7366916c@p-imbrenda>
+In-Reply-To: <20230627074703.99608-5-thuth@redhat.com>
+References: <20230627074703.99608-1-thuth@redhat.com>
+ <20230627074703.99608-5-thuth@redhat.com>
+Organization: IBM
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+Content-Type: text/plain; charset=US-ASCII
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: HI9QcHg_7f4_TpXaMiomdvt2T8aHuH2i
+X-Proofpoint-GUID: f6LqqQnRaaW7HHjjIjNzjVN-a6kTFvbw
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SG2PR06CA0216.apcprd06.prod.outlook.com
- (2603:1096:4:68::24) To PH0PR11MB4965.namprd11.prod.outlook.com
- (2603:10b6:510:34::7)
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR11MB4965:EE_|SN7PR11MB7043:EE_
-X-MS-Office365-Filtering-Correlation-Id: 126905aa-68a9-45d4-f6d8-08db76f102d5
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: EYyvDMuAvdem9WfYNZk/n9Q7VEh2tjAUJGlxMGm2CaDAi7755k8sq6RDdBtswqoVDqqup4MYewQfvVoDY2rKpo5v6xlmE3DiA70uAie97tZ4gMb7FPHHCQYlE/HvNpfGuri/eRJvCNE4bU8NJFqsCtkOgXwiNOmOuwipPaFNxyr5mQ2lEAlJVvAy7Iw840NOvR8k+M3KDuJShQdkl0udcgEm82m24nt90gieE48V/Q1W4YqlwXRJWOMqDjlPm6aNDX7CO+ZUAI4Vyr70NhbciRkPBox1/CRiBLBXl6gHoWYVL+MIvjD2blycWVYIcA+x//Dxt7aOJo21g/C9K3Udj+PtN2CSmTh2Ot1CLJRg3KuyzloMJwjHdk2HJG0mVT6QgXtDBaLRDcobFrIOBKYzlpuyWRwfFQyPnG7SG42nowLvUNbsbGheHpXkbqy84gnUeG8CcNv+6tKwHbJ1HI7Ktehl+Efthd7BNEfRkCoSqXf6cWDZQhaHktAXBXM3BNjiP5h7L0vTWXgYPCHU/urLTdVQt06D19DSCZI4+qccVdqBxz8VMoXc1hoDLO6+ib2jjdPR6ls9AScx3BnZlAaMjVsgYadhuUfvlYGDrGw2lJ8/1G/reDPFjXEWD6wTZtYsrvwdt/T56tZ2OB+7yFKKxQ==
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:PH0PR11MB4965.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230028)(376002)(396003)(366004)(39860400002)(136003)(346002)(451199021)(54906003)(2906002)(4744005)(6666004)(6486002)(38100700002)(2616005)(83380400001)(82960400001)(26005)(6506007)(186003)(53546011)(31696002)(86362001)(41300700001)(37006003)(478600001)(6862004)(66556008)(6636002)(66946007)(66476007)(316002)(4326008)(36756003)(6512007)(5660300002)(31686004)(8676002)(8936002)(45980500001)(43740500002);
- DIR:OUT; SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?WXlwK09Id3RCVDRFbXVOdGt1ODZQdVZzMzZoZDljcm1YRlBOUmRJblpyamU4?=
- =?utf-8?B?QmVXbDZvYVVPcHhjT0MyUlkxWUgveEUyY0ZsQ3RwbGYveW84cWJMOGRXYnpB?=
- =?utf-8?B?MjhKNWduYkVQT2ZQdXdIZUl4MElvTzNxYzdtY29kVmt2WS9obmV1eVN0T0Jr?=
- =?utf-8?B?THo2cjJ2dFNZeTIwOUFOUGFCbEZ5MXdMNWx5M0FzZUYvbk9SR3VEQVdLTHhT?=
- =?utf-8?B?UGROMjliVDZub1RPbE9FQ0FwRHoxRWFkZTVYSmFkT0xwN1RBckROem5iaGVi?=
- =?utf-8?B?MFdyb3g2d1o3YlZDb3hJcDFyblI0Tzh6YUNMZjJqZTFNNVUvR09hTE9Zanla?=
- =?utf-8?B?ZU5tQUJSenlkSURMY2locWc2UjFRTU93eTZDL244aGQ3VHZlUnZIUEhqeEZM?=
- =?utf-8?B?MXRiOHNZS2tqVHFSdHQ3ODB2MHl5WVlteFBRTmlPbEwwQkYxYXdHWDA1ekN2?=
- =?utf-8?B?UFA3QzYwNlJTSzB2Q0tJTHdKVVZmNlp2NGdKVjREY0dOdlg2MEVVaWJ2bHVG?=
- =?utf-8?B?SmJ3WWNRb3ZETER6WG5xY3JmSDhjV2UxeVIzei9vUlJHei9XNmZzbTFscHRj?=
- =?utf-8?B?N2NwbWFQUHl0VG5kc010QU85eWpBVmxGRSs1R0xsY05JbzdJMytuN2Qxc1hx?=
- =?utf-8?B?SmhpQ2VPODU3TXVxUzRNbkZlNWNzS0JlQ2N0Sm9qU2FKU3ltVHB4YWkzUTdu?=
- =?utf-8?B?WWdYYkVKZmZmcVc0Qkdicm5qT1R4cjFISnRrQzR2ZjRGOWhUYk95MUYxS1FF?=
- =?utf-8?B?U082bExpRlBsUENhTTJQazZKWVFqamQyQWxYLzh0dTlRSHg3cTBKZGtXQytF?=
- =?utf-8?B?ajBCVjF1ZzBXUVFFblNFRkkvbEVjN0czdTlsNGxkdllvM1dKTGdIV3RVMlVr?=
- =?utf-8?B?dy9CQVViYzgvZ1VjbmdIaktEVkdXMTFKR3pjY2FwVkFnOGxkY0xyY0Y5Y0J1?=
- =?utf-8?B?cHFqVFM4b0dWUHFwMGt6MjcwZ1hzUXF3d1VzUHhrTzFSeTk0Y3dpcEZNeHda?=
- =?utf-8?B?ZnlCUTFjcE9zeXBpbjgyaXJiVHlGTjlVNHZNc2x5T2FpNGllb3Y2eHVYeFN2?=
- =?utf-8?B?MXdCQmJ1YzJ6TjdJc2p2SFNpcDJvU0JPMUhVeHBGbGdTQ29KZnhXb2tvR3lx?=
- =?utf-8?B?Q25Zb2FvUzBRVnMxRHRBQ1RpYmxhMlgvVHVCQ0xvbEpVc2EreEZpRWpxUm10?=
- =?utf-8?B?eG9qeHVxTXVabklPdnhaVVRRM1NDcGd4R2F6WWR2cU96ZGFBSUdpS3UyMWpy?=
- =?utf-8?B?YkdpbEtyWERVa3hZMld3L0Z3S29MZUE2SXoxWjhDalpOaVZlaVlBN2Z4dFRT?=
- =?utf-8?B?TG91S0Exc0VIWGh6K1J1YXE0cGVvOTQzZ1Y4VG04empXVVBHZ3JOM2l2WWwr?=
- =?utf-8?B?NmRuQzZSUElST1dnVFhQak1kNXJMRDRGOWoybGVaQTQ3NkVRTkhMMTUrS2pY?=
- =?utf-8?B?d1VtY2dwVDNGYU14N05hNDRpckZ6RndhL05JUy9Gd2QzdHlGT1YzVEd2cGw0?=
- =?utf-8?B?LytuK2xER2RXY2UvYXMzTGxIODhDN1pQcHVZYVBhQ2c4UjBZVWpxc1ZzQStE?=
- =?utf-8?B?WXNqNFRkZFFMUHZIZ0xPV0xjYTRUUWpmQklhaE4yUDRSYU1LNURWUUpVRGYz?=
- =?utf-8?B?UHdmanF4QWo0Ujd5bjI0RkNCT0k3S2pieTJlWU5Lb0ZHMmRvOSt3ZnR5djVo?=
- =?utf-8?B?cUVJckd4NVdzRlRmT1ZiTFlKVWRoTFVKYUtPdSt4NndEbk9GSllZbDNLTGVj?=
- =?utf-8?B?blJVUThnYUcwcU1xOUJrRHlpNGF6NUlDYlJ5ZUlEUnB6KzZ1cHZwWlc0dXdv?=
- =?utf-8?B?N3NaU2kwUUlHWkRoNStnNW9DOVZFVGRONWQ3YUdHUTFlNFc2UEFrVmlxQ1hJ?=
- =?utf-8?B?Q0hzeVhFd2FXY1Y1S0YvcHhwSFJsaFlocTQ3QktqT3lYUjR0c2V1NEVEV1dD?=
- =?utf-8?B?ZUR4SDdtenJLV2ZjNmpUcDZoUEF1SUE5NWFESWtYcVovU0RNN2tYZXFFRGdR?=
- =?utf-8?B?bGt1TUtuS2ZpVjJKL2tBeVhLMTk4V1VkOVRJU1AyWWhieG91RnY1cXpYWjhL?=
- =?utf-8?B?NjJYdlR6cU9FbU1LMmlvMU1jenk5QzRDWlpjb3VOeDlSVTlpSjdoN2pTMmRC?=
- =?utf-8?B?cUNNSUVwdWkrQ1RjWHBTNS9UVUp4M2g4V1JhMFBtTFRsYWdFTUVCQndWWG9V?=
- =?utf-8?B?blE9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 126905aa-68a9-45d4-f6d8-08db76f102d5
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR11MB4965.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Jun 2023 09:29:31.3409 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: cIfCqArG4EIBUSX9Lso8zZALVnHyoyxNirqxjpOXAHsPstem+BagUulW1cRMRPUVp7oHSrD9NpxHkD0RWBgPsg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR11MB7043
-X-OriginatorOrg: intel.com
-Received-SPF: pass client-ip=192.55.52.43;
- envelope-from=weijiang.yang@intel.com; helo=mga05.intel.com
-X-Spam_score_int: -44
-X-Spam_score: -4.5
-X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-06-27_05,2023-06-26_03,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ impostorscore=0 mlxscore=0 bulkscore=0 malwarescore=0 spamscore=0
+ adultscore=0 lowpriorityscore=0 mlxlogscore=999 phishscore=0
+ suspectscore=0 clxscore=1015 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2305260000 definitions=main-2306270086
+Received-SPF: pass client-ip=148.163.156.1;
+ envelope-from=imbrenda@linux.ibm.com; helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -181,29 +120,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/13/2023 9:19 PM, Xiaoyao Li wrote:
+On Tue, 27 Jun 2023 09:47:03 +0200
+Thomas Huth <thuth@redhat.com> wrote:
 
-> No such constraint that subleaf index needs to be less than 64.
->
-> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> start.S currently cannot be compiled with Clang 16 and binutils 2.40:
+> 
+>  ld: start.o(.text+0x8): misaligned symbol `__bss_start' (0xc1e5) for
+>      relocation R_390_PC32DBL
+> 
+> According to the built-in linker script of ld, the symbol __bss_start
+> can actually point *before* the .bss section and does not need to have
+> any alignment, so in certain situations (like when using the internal
+> assembler of Clang), the __bss_start symbol can indeed be unaligned
+> and thus it is not suitable for being used with the "larl" instruction
+> that needs an address that is at least aligned to halfwords.
+> The problem went unnoticed so far since binutils <= 2.39 did not
+> check the alignment, but starting with binutils 2.40, such unaligned
+> addresses are now refused.
+> 
+> Fix it by using the real start address of the .bss section instead.
+> 
+> Buglink: https://bugzilla.redhat.com/show_bug.cgi?id=2216662
+> Reported-by: Miroslav Rezanina <mrezanin@redhat.com>
+> Suggested-by: Nick Clifton <nickc@redhat.com>
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
 > ---
->   target/i386/kvm/kvm.c | 4 ----
->   1 file changed, 4 deletions(-)
->
-> diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-> index afa97799d89a..d7e235ce35a6 100644
-> --- a/target/i386/kvm/kvm.c
-> +++ b/target/i386/kvm/kvm.c
-> @@ -1968,10 +1968,6 @@ int kvm_arch_init_vcpu(CPUState *cs)
->                       break;
->                   }
->   
-> -                if (i == 0x1f && j == 64) {
-> -                    break;
-> -                }
-> -
->                   c->function = i;
->                   c->flags = KVM_CPUID_FLAG_SIGNIFCANT_INDEX;
->                   c->index = j;
-Reviewed-by:Yang Weijiang <weijiang.yang@intel.com>
+>  pc-bios/s390-ccw/start.S | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/pc-bios/s390-ccw/start.S b/pc-bios/s390-ccw/start.S
+> index 111dea261b..a63c4e3ff2 100644
+> --- a/pc-bios/s390-ccw/start.S
+> +++ b/pc-bios/s390-ccw/start.S
+> @@ -18,7 +18,7 @@ _start:
+>      larl    %r15,stack + STACK_SIZE - 160   /* Set up stack */
+>  
+>      /* clear bss */
+> -    larl    %r2,__bss_start
+> +    larl    %r2,.bss
+>      larl    %r3,_end
+
+since we are here, do you have guarantees that _end is always correctly
+aligned?
+
+if so:
+
+Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+
+>      slgr    %r3,%r2    /* get sizeof bss */
+>      ltgr    %r3,%r3    /* bss empty? */
+
 
