@@ -2,75 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E12373FC08
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 14:36:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A698773FC0A
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 14:37:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qE7v9-00018j-Pz; Tue, 27 Jun 2023 08:35:47 -0400
+	id 1qE7wF-0002Ul-NX; Tue, 27 Jun 2023 08:36:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qE7v6-00017c-P0
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 08:35:44 -0400
-Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qE7wC-0002U9-S3
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 08:36:52 -0400
+Received: from smtp-out1.suse.de ([195.135.220.28])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qE7v3-0007Ia-Sn
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 08:35:44 -0400
-Received: by mail-ej1-x633.google.com with SMTP id
- a640c23a62f3a-98dfb3f9af6so515039266b.2
- for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 05:35:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687869340; x=1690461340;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=LDusC5fYPzsABGWCU1hmNmySIBrIbdI+94aWrncPMh8=;
- b=gUX6EX3VBZHwlotgbnWvm5aTAQJdTLcphhNpnDGSJX7ECVxcTbibEEc8icLr1M1dZE
- Ll8UznRQ/u4vyaR/Yhqs8Y3FwHgcUd+p/HaKt/bYwZUwl/N5XX4A7Q+TGO78Mrvk+K/i
- BSxe6k9pzDXFJXMFcGl/oQWVdTEnbcTX2VvgbBoplC+TW60UgKjDc3HIUqqN9RSPYu+M
- IxUeivmVPucGEPGNkK6wjywgeiFxOShely+nZ8FW7+DFF0Ui9IKSFEvTHUgP9Bwvw9Rb
- X0gZjjuk5qcUMyMYo+xxCAquGSitOlT+GOwOlBRgkMUzc/whDQ9DzE2ITylWWBQ07pzo
- 1TeA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687869340; x=1690461340;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=LDusC5fYPzsABGWCU1hmNmySIBrIbdI+94aWrncPMh8=;
- b=cWP36xSMb/XVQobIWozbpiA10mD51Vy0GSK3676ZuebvC74OpQXsXa/+MWToo+dHSt
- wfuXhO+vRMVXE59RePDyI1Q/xEqwY4JkxYzqhUmH8F8690tVakxxFAqRVGteRhSRuzPZ
- daXfjaDPDiv57wjvoHvS4DGlmFdJEdX6kd7Od0NzSnXx4wM5uj0vPrr7dp1NMqpmS1Pg
- Z13Hga7noJn9BW9sfJ8RbpdH86HyebAhIH7KXULlBG0T3wLWvsc8rizNd03ccpDe4E4d
- FLECEExN2hFMyODuPdGN2GNH7Dqi6Edg7gpKfo+UHMTeIyVk/jnTi2HMa1OjazrLnp1T
- fjFA==
-X-Gm-Message-State: AC+VfDyVdxEZMPutTa8ysczic4XR+1bHIw4XjAmS19aoUrOh5PRDapOz
- K7yepfzpK+J3V8mofnZPAPTp7KQmCzdTRvLFhvgxSA==
-X-Google-Smtp-Source: ACHHUZ5Nd6tbQ+YVg7s1yWV0uEyM4ZkDIcAjVl4uhLR0sZ5DQtu/kwv4htQDge4r82UNHE47olzu5TdK8vEMOSZK8kQ=
-X-Received: by 2002:a05:6402:5157:b0:51d:a724:48d6 with SMTP id
- n23-20020a056402515700b0051da72448d6mr1628664edd.37.1687869340270; Tue, 27
- Jun 2023 05:35:40 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qE7wB-0007V5-8F
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 08:36:52 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 8277121852;
+ Tue, 27 Jun 2023 12:36:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1687869407; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=5Td5PVgZSGwcUg/3aaRPs8tx1+oEGCdoksl0AOfnc+U=;
+ b=XY7Yiu3gLwn167a7qjvVnIJuK7Y7R4RyKTUlREAknaxtwQdXq31k+qe1tlMktllwblK0FY
+ gqnynGnaXIuIRtRcbvT6BeJ42eiZyJOlumh+YZa+M4llQMJJFbXH6sW/K9iY6PD7KitrO0
+ jNEBJW/3oJlUFAEJt143+3wMqqU66nI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1687869407;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=5Td5PVgZSGwcUg/3aaRPs8tx1+oEGCdoksl0AOfnc+U=;
+ b=9T0Q12wH+is0fg9aKB/r2Ybal6sDFD+3LSSJekPvSddRLgxSwHqSr9AAGl2AT73mgrdImo
+ yEpls4cxxevkpZBQ==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 13FD213462;
+ Tue, 27 Jun 2023 12:36:46 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id QtiiM97XmmRhTQAAMHmgww
+ (envelope-from <farosas@suse.de>); Tue, 27 Jun 2023 12:36:46 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: quintela@redhat.com
+Cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>, Steve Sistare
+ <steven.sistare@oracle.com>, =?utf-8?Q?Daniel_P_=2E_Berrang=C3=A9?=
+ <berrange@redhat.com>, Leonardo Bras <leobras@redhat.com>
+Subject: Re: [PATCH 1/6] migration: Set migration status early in incoming side
+In-Reply-To: <877crpclrn.fsf@secure.mitica>
+References: <20230626182210.8792-1-farosas@suse.de>
+ <20230626182210.8792-2-farosas@suse.de> <877crpclrn.fsf@secure.mitica>
+Date: Tue, 27 Jun 2023 09:36:44 -0300
+Message-ID: <878rc59j4z.fsf@suse.de>
 MIME-Version: 1.0
-References: <20230621103847.447508-1-wangyuquan1236@phytium.com.cn>
-In-Reply-To: <20230621103847.447508-1-wangyuquan1236@phytium.com.cn>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 27 Jun 2023 13:35:29 +0100
-Message-ID: <CAFEAcA86sw7aCehmYHogpn=D_kXd0cAohj2_jP3dwwLyNrh_HA@mail.gmail.com>
-Subject: Re: [PATCH v5 0/1] hw/arm/sbsa-ref: use XHCI to replace EHCI
-To: Yuquan Wang <wangyuquan1236@phytium.com.cn>
-Cc: rad@semihalf.com, pbonzini@redhat.com, marcin.juszkiewicz@linaro.org, 
- quic_llindhol@quicinc.com, chenbaozi@phytium.com.cn, qemu-arm@nongnu.org, 
- qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::633;
- envelope-from=peter.maydell@linaro.org; helo=mail-ej1-x633.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Type: text/plain
+Received-SPF: pass client-ip=195.135.220.28; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,33 +84,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 21 Jun 2023 at 11:39, Yuquan Wang <wangyuquan1236@phytium.com.cn> wrote:
+Juan Quintela <quintela@redhat.com> writes:
+
+> Fabiano Rosas <farosas@suse.de> wrote:
+>> We are sending a migration event of MIGRATION_STATUS_SETUP at
+>> qemu_start_incoming_migration but never actually setting the state.
+>>
+>> This creates a window between qmp_migrate_incoming and
+>> process_incoming_migration_co where the migration status is still
+>> MIGRATION_STATUS_NONE. Calling query-migrate during this time will
+>> return an empty response even though the incoming migration command
+>> has already been issued.
+>>
+>> Commit 7cf1fe6d68 ("migration: Add migration events on target side")
+>> has added support to the 'events' capability to the incoming part of
+>> migration, but chose to send the SETUP event without setting the
+>> state. I'm assuming this was a mistake.
+>>
+>> To avoid introducing a change in behavior, we need to keep sending the
+>> SETUP event, even if the 'events' capability is not set.
+>>
+>> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+>> ---
+>>  migration/migration.c | 17 +++++++++++++++--
+>>  1 file changed, 15 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/migration/migration.c b/migration/migration.c
+>> index 7c8292d4d4..562b78261d 100644
+>> --- a/migration/migration.c
+>> +++ b/migration/migration.c
+>> @@ -424,13 +424,26 @@ void migrate_add_address(SocketAddress *address)
+>>  static void qemu_start_incoming_migration(const char *uri, Error **errp)
+>>  {
+>>      const char *p = NULL;
+>> +    MigrationIncomingState *mis = migration_incoming_get_current();
+>>  
+>>      /* URI is not suitable for migration? */
+>>      if (!migration_channels_and_uri_compatible(uri, errp)) {
+>>          return;
+>>      }
+>>  
+>> -    qapi_event_send_migration(MIGRATION_STATUS_SETUP);
+>> +    migrate_set_state(&mis->state, MIGRATION_STATUS_NONE,
+>> +                      MIGRATION_STATUS_SETUP);
+>> +    /*
+>> +     * QMP clients should have set the 'events' migration capability
+>> +     * if they want to receive this event, in which case the
+>> +     * migrate_set_state() call above will have already sent the
+>> +     * event. We still need to send the event for compatibility even
+>> +     * if migration events are disabled.
+>> +     */
+>> +    if (!migrate_events()) {
+>> +        qapi_event_send_migration(MIGRATION_STATUS_SETUP);
+>> +    }
 >
-> Please review the change.
->  - sbsa-ref: Replace EHCI with XHCI on sysbus.
+> Can we add and test for a property here, so we can drop this at some
+> point in the future?
 >
-> This work bumps the platform version directly to 0.3 because
-> the addition of ITS will take sbsa-ref to 0.2 version.
->
-> Yuquan Wang (1):
->   hw/arm/sbsa-ref: use XHCI to replace EHCI
 
-I'm going to treat the testing/review that happened on previous
-versions as sufficiently applicable to this one (since the
-patch didn't really change in that aspect) and not wait around
-for fresh Tested-by/Reviewed-by tags here.
+Yes, I'll add for v2.
 
-Since we now have a place in sbsa.rst for noting what
-changes between platform versions I added an entry for 0.3:
-
-+0.3
-+  The USB controller is an XHCI device, not EHCI
-
-and I tweaked the commit message to explicitly note that
-old versions of firmware/kernel continue to work even with
-this change.
-
-Applied to target-arm.next, thanks.
-
--- PMM
+Thanks
 
