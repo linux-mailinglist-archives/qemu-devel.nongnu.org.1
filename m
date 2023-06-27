@@ -2,92 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0882273F7C2
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 10:50:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EBF6E73F7D9
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 10:54:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qE4OA-0000Kv-B2; Tue, 27 Jun 2023 04:49:30 -0400
+	id 1qE4SM-0001K5-6v; Tue, 27 Jun 2023 04:53:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1qE4O7-0000KQ-KL
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 04:49:27 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1qE4O6-0006Xr-0Q
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 04:49:27 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687855765;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=F5mVdOoeYXIvQeqbhxL1c/b6l61NRusvAL31vzLjCrw=;
- b=LIvKN7Bt7A8c7y+s2qhtwZ0CgEAbeIdmNNFN2wKNRltGSPzkvwJinBcij2DukxzjtHSa6G
- Te/EjMkWty48SRzH2NMbRl/r1CPBPEYP/nh9YO8ZwtIrWN0EVpGuyhjkCqE6lo7r8MoVtl
- AciVKwegJ9oadMsUgWS11fCULQ76zHI=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-414-ZWn-6NTIPB-_xeZp5oSDEw-1; Tue, 27 Jun 2023 04:49:21 -0400
-X-MC-Unique: ZWn-6NTIPB-_xeZp5oSDEw-1
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-98890dda439so276767266b.1
- for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 01:49:21 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
+ id 1qE4SH-0001Jb-58; Tue, 27 Jun 2023 04:53:45 -0400
+Received: from mail-lj1-x22f.google.com ([2a00:1450:4864:20::22f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
+ id 1qE4SD-0007MB-0F; Tue, 27 Jun 2023 04:53:44 -0400
+Received: by mail-lj1-x22f.google.com with SMTP id
+ 38308e7fff4ca-2b6985de215so39343381fa.2; 
+ Tue, 27 Jun 2023 01:53:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1687856018; x=1690448018;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=r8sxooeCQNyX9OssLkScD8eC7GVeBvHkWyEWq4a1Vsc=;
+ b=k4g4J5lMTzA/RVk/4WiTFC6LTh5fSkl4t9qw/p3EWj+gpXUIAI6Y9NU/tknhwFi0vd
+ lsshpmeqXUHYBNVttVKBwD+UqinnBLJTeKtH7iWfsK5u1gLm4ZuU9PRQGR2ntF2JyEHr
+ UyAineyF++JJOB3leM5prKaA0jBycGCyWs4Wd4Usmrs08QThByAwRx3RBzI5wynMW0UP
+ 48Vz2IRevjWG0kBAy0GSbMqDyavfGuL5KLNn3mRr4c7OQxXsRcAQULl36t8rwEwDTCTl
+ Wnh9gt6pwUVAesNUMHXsJIrUPAe3DdegB0DvY7i9b7zof9k2KygozyT+V3R1MKJtLaAl
+ NrmQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687855760; x=1690447760;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20221208; t=1687856018; x=1690448018;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=F5mVdOoeYXIvQeqbhxL1c/b6l61NRusvAL31vzLjCrw=;
- b=h0MDcPCVHKhj/4ejiApdhcQ8JjRuAEFbAfGgFkHOnudHLh+3W7QWLmwJSEtHopewzs
- UShsSEW8rtFyrfpRuWUXvDFCefbAR+VzfWv1HRPLDwr99vQXZxf4tCHqnEFeikLJA0xn
- HmX14KwD3BAJ2OvPPTyCT3Tv2OnQsohcFDppIBgbwLFa2CaJ6wfXqsIDJuEuvxvI1FLU
- ySRLigWqG8Zr9j9BYR9K13/oVhCpO9S4U86pk+Q9FgZx3DQmBM4cRbjKSf5vz0uUXb20
- uWD92jzBIY/lOFD1SmkwMU95owPKpoPv/RLyjAJ0buXWyRq4GpfuiG1lacbJkXg1DPBQ
- ZA/g==
-X-Gm-Message-State: AC+VfDzo9eg33QJT4iQuKowEWujHxMd1RDcHO7ezGC0KqTpzh6NqPmED
- Tfmoi+0PWi+hkzRIlZykyay+w0b5hpSB9o/8jS16SncL5/TSFmVGcfJLj+mlRnlvXqxDrteDoAb
- 6/ssU2gm5dyzs/dU=
-X-Received: by 2002:a17:907:928a:b0:988:c3f9:3ad6 with SMTP id
- bw10-20020a170907928a00b00988c3f93ad6mr20752240ejc.42.1687855760633; 
- Tue, 27 Jun 2023 01:49:20 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ79FDqTtWaRk+iADYA1vt7+EaBjyKJNJeqPQG9GENxQuOsQ6bextc8mbf6qY/ocaKEBxEWg8g==
-X-Received: by 2002:a17:907:928a:b0:988:c3f9:3ad6 with SMTP id
- bw10-20020a170907928a00b00988c3f93ad6mr20752227ejc.42.1687855760315; 
- Tue, 27 Jun 2023 01:49:20 -0700 (PDT)
-Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
- [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
- r18-20020a170906c29200b0098d295d5908sm4236718ejz.46.2023.06.27.01.49.19
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 27 Jun 2023 01:49:19 -0700 (PDT)
-Date: Tue, 27 Jun 2023 10:49:18 +0200
-From: Igor Mammedov <imammedo@redhat.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Tao Su <tao1.su@linux.intel.com>, qemu-devel@nongnu.org,
- pbonzini@redhat.com, lei4.wang@intel.com, qian.wen@intel.com
-Subject: Re: [PATCH 6/7] target/i386: Add new CPU model EmeraldRapids
-Message-ID: <20230627104918.1a2152c6@imammedo.users.ipa.redhat.com>
-In-Reply-To: <c18ebbaf-0ea8-3cd5-9fb8-6e63add59fba@intel.com>
-References: <20230616032311.19137-1-tao1.su@linux.intel.com>
- <20230616032311.19137-7-tao1.su@linux.intel.com>
- <20230626145610.64405831@imammedo.users.ipa.redhat.com>
- <c18ebbaf-0ea8-3cd5-9fb8-6e63add59fba@intel.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+ bh=r8sxooeCQNyX9OssLkScD8eC7GVeBvHkWyEWq4a1Vsc=;
+ b=S7wjMCSW/OMIzBDIokzJO5XNIwuPwdXl4+3QNEbaMFDYX3tpLuCrhKn1CjxE+AtE5M
+ bb4A6BWpJ5xXpWAVgRAemp4zhPGkDxYaScGFkJ7QEXllanKBuhm9QXiNClNzA/nOpRnr
+ PvpB6xFfQuiYvqsxRTsok4Qdbv7JdAr5NY9FvbITu12UzjLa2gd7+VfcylVvOuKhMEgm
+ top+zhTxnQkslbNTzQUIW981J4jOunOpks4kRbqa62lMTgSuB+7lG7N5h62aNDtdV4Ur
+ q2TA8HiGsAAwf8jeQXc8VomQK7HS3jhjMNzLI2q0w/ryL5/5Iw8lN03+4VrsucXtIFMQ
+ nSUA==
+X-Gm-Message-State: AC+VfDwZDh4ap9AIA5NljIivTufsJMtSKWHTHW0BmOZLwI3kPDT3+lEl
+ JLhij1BTBvQh2aO90V9NFPg04P8xFaxVujPPLfk=
+X-Google-Smtp-Source: ACHHUZ4aZnOzYLxRZ2pdX7+0GS4S2c4/qBwwFtd85NlDmyFGpgyV4QTIeMyygRIxzDiiAePqOXdQcNtFm2NoKEG1BfM=
+X-Received: by 2002:a2e:7e11:0:b0:2b5:95a8:412b with SMTP id
+ z17-20020a2e7e11000000b002b595a8412bmr7413957ljc.52.1687856017238; Tue, 27
+ Jun 2023 01:53:37 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+References: <20230622010651.22698-1-yin31149@gmail.com>
+ <CAJaqyWfr6XTz7qhMfYR7kJW_A409N7x6hcYQd2ypUD_p6kyc_g@mail.gmail.com>
+ <CAKrof1O12p=7zf5jzJca0mtcyoYJHiR-5ubYLD1Q0aszWaKhoQ@mail.gmail.com>
+ <CAJaqyWeRy5c6KngJBSXO6cisvQzoqXgTGJ3BDneS2zVT6PpvJg@mail.gmail.com>
+In-Reply-To: <CAJaqyWeRy5c6KngJBSXO6cisvQzoqXgTGJ3BDneS2zVT6PpvJg@mail.gmail.com>
+From: Hawkins Jiawei <yin31149@gmail.com>
+Date: Tue, 27 Jun 2023 16:53:25 +0800
+Message-ID: <CAKrof1P7MZ_F8m6FbVw20-GAEYQ_pwNE=QFTSbkxNbdUANN3aQ@mail.gmail.com>
+Subject: Re: [PATCH] vdpa: Increase out buffer size for CVQ commands
+To: Eugenio Perez Martin <eperezma@redhat.com>
+Cc: jasowang@redhat.com, mst@redhat.com, qemu-devel@nongnu.org, 
+ qemu-stable@nongnu.org, 18801353760@163.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::22f;
+ envelope-from=yin31149@gmail.com; helo=mail-lj1-x22f.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -104,58 +89,201 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 27 Jun 2023 13:54:23 +0800
-Xiaoyao Li <xiaoyao.li@intel.com> wrote:
-
-> On 6/26/2023 8:56 PM, Igor Mammedov wrote:
-> > On Fri, 16 Jun 2023 11:23:10 +0800
-> > Tao Su<tao1.su@linux.intel.com>  wrote:
-> >   
-> >> From: Qian Wen<qian.wen@intel.com>
-> >>
-> >> Emerald Rapids (EMR) is the next generation of Xeon server processor
-> >> after Sapphire Rapids (SPR).
-> >>
-> >> Currently, regarding the feature set that can be exposed to guest, there
-> >> isn't any one new comparing with SPR cpu model, except that EMR has a
-> >> different model number.
-> >>
-> >> Though it's practicable to define EMR as an alias of a new version of
-> >> SPR by only updating the model number and model name, it loses the
-> >> flexibility when new version of EMR cpu model are needed for adding new
-> >> features (that hasn't virtalized/supported by KVM yet).  
-> > Which begs a question, why do we need EMR model (or alias) at all
-> > if it's the same as SPR at the moment.
-> > 
-> > Make new features supported 1st and only then introduce a new CPU model.
-> >   
-> 
-> Even if no new feature (that can be virtualized and exposed to guest) in 
-> EMR compared to SPR in the end, I think it still makes sense to provide 
-> a dedicated EMR CPU model in QEMU. Because
-> 1) User will know EMR, Intel's next generation of Xeon after SRP, is 
-> supported by QEMU, via -cpu ?/ -cpu help;
-
-I don't see any benefits in misleading user by showing EMR model which is
-nothing else but SPR one.
-On negative side you would increase maintenance burden by introducing
-extra versions of CPU model later. Which by itself is abusing versioning,
-mainly used for fixing CPU bugs, by using it for adding new features.
-
-> 2) It's convenient for user to create an EMR VM. People may not care 
-> that much what the difference between "-cpu SapphireRapids" with "-cpu 
-> EmeraldRapids", while they do want to create an VM which shows the CPU 
-> is EmeraldRapids.
+On 2023/6/26 17:08, Eugenio Perez Martin wrote:
+> On Mon, Jun 26, 2023 at 10:26=E2=80=AFAM Hawkins Jiawei <yin31149@gmail.c=
+om> wrote:
+>>
+>> On 2023/6/25 18:48, Eugenio Perez Martin wrote:
+>>> On Thu, Jun 22, 2023 at 3:07=E2=80=AFAM Hawkins Jiawei <yin31149@gmail.=
+com> wrote:
+>>>>
+>>>> According to the VirtIO standard, "Since there are no guarantees,
+>>>> it can use a hash filter or silently switch to
+>>>> allmulti or promiscuous mode if it is given too many addresses."
+>>>> To achive this, QEMU ignores MAC addresses and marks `mac_table.x_over=
+flow`
+>>>> in the device internal state in virtio_net_handle_mac()
+>>>> if the guest sets more than `MAC_TABLE_ENTRIES` MAC addresses
+>>>> for the filter table.
+>>>>
+>>>> However, the problem is that QEMU never marks the `mac_table.x_overflo=
+w`
+>>>> for the vdpa device internal state when the guest sets more than
+>>>> `MAC_TABLE_ENTRIES` MAC addresses.
+>>>>
+>>>> To be more specific, currently QEMU offers a buffer size of
+>>>> vhost_vdpa_net_cvq_cmd_len() for CVQ commands, which represents the si=
+ze of
+>>>> VIRTIO_NET_CTRL_MAC_TABLE_SET command with a maximum `MAC_TABLE_ENTRIE=
+S`
+>>>> MAC addresses.
+>>>>
+>>>> Consequently, if the guest sets more than `MAC_TABLE_ENTRIES` MAC addr=
+esses,
+>>>> QEMU truncates the CVQ command data and copies this incomplete command
+>>>> into the out buffer. In this situation, virtio_net_handle_mac() fails =
+the
+>>>> integrity check and returns VIRTIO_NET_ERR instead of marking
+>>>> `mac_table.x_overflow` and returning VIRTIO_NET_OK, since the copied
+>>>> CVQ command in the buffer is incomplete and flawed.
+>>>>
+>>>> This patch solves this problem by increasing the buffer size to
+>>>> vhost_vdpa_net_cvq_cmd_page_len(), which represents the size of the bu=
+ffer
+>>>> that is allocated and mmaped. Therefore, everything should work correc=
+tly
+>>>> as long as the guest sets fewer than `(vhost_vdpa_net_cvq_cmd_page_len=
+() -
+>>>> sizeof(struct virtio_net_ctrl_hdr)
+>>>> - 2 * sizeof(struct virtio_net_ctrl_mac)) / ETH_ALEN` MAC addresses.
+>>>>
+>>>> Considering the highly unlikely scenario for the guest setting more th=
+an
+>>>> that number of MAC addresses for the filter table, this patch should
+>>>> work fine for the majority of cases. If there is a need for more than =
+thoes
+>>>> entries, we can increase the value for vhost_vdpa_net_cvq_cmd_page_len=
+()
+>>>> in the future, mapping more than one page for command output.
+>>>>
+>>>> Fixes: 7a7f87e94c ("vdpa: Move command buffers map to start of net dev=
+ice")
+>>>> Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
+>>>> ---
+>>>>    net/vhost-vdpa.c | 11 ++++++++++-
+>>>>    1 file changed, 10 insertions(+), 1 deletion(-)
+>>>>
+>>>> diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+>>>> index 5a72204899..ecfa8852b5 100644
+>>>> --- a/net/vhost-vdpa.c
+>>>> +++ b/net/vhost-vdpa.c
+>>>> @@ -784,9 +784,18 @@ static int vhost_vdpa_net_handle_ctrl_avail(Vhost=
+ShadowVirtqueue *svq,
+>>>>        };
+>>>>        ssize_t dev_written =3D -EINVAL;
+>>>>
+>>>> +    /*
+>>>> +     * This code truncates the VIRTIO_NET_CTRL_MAC_TABLE_SET CVQ comm=
+and
+>>>> +     * and prevents QEMU from marking `mac_table.x_overflow` in the d=
+evice
+>>>> +     * internal state in virtio_net_handle_mac() if the guest sets mo=
+re than
+>>>> +     * `(vhost_vdpa_net_cvq_cmd_page_len() - sizeof(struct virtio_net=
+_ctrl_hdr)
+>>>> +     * - 2 * sizeof(struct virtio_net_ctrl_mac)) / ETH_ALEN` MAC addr=
+esses for
+>>>> +     * filter table.
+>>>> +     * However, this situation is considered rare, so it is acceptabl=
+e.
+>>>
+>>> I think we can also fix this situation. If it fits in one page, we can
+>>> still send the same page to the device and virtio_net_handle_ctrl_iov.
+>>> If it does not fit in one page, we can clear all mac filters with
+>>> VIRTIO_NET_CTRL_RX_ALLUNI and / or VIRTIO_NET_CTRL_RX_ALLMULTI.
+>>
+>> Hi Eugenio,
+>>
+>> Thank you for your review.
+>>
+>> However, it appears that the approach may not resolve the situation.
+>>
+>> When the CVQ command exceeds one page,
+>> vhost_vdpa_net_handle_ctrl_avail() truncates the command, resulting in a
+>> malformed SVQ command being received by the hardware, which in turn
+>> triggers an error acknowledgement to QEMU.
+>>
 >
-My guess would be is that you need guest to show EMR for developing EMR
-features/guest bringup, in that case do it in your fork, and once
-support is actually ready publish completed patches for it.
+> If that happens we can sanitize the copied cmd buffer. Let's start
+> with an overflowed unicast table first.
+>
+> To configure the device we need to transform the command to
+> VIRTIO_NET_CTRL_RX_ALLUNI, as we cannot copy all the table to the out
+> cmd page. If that succeeds, we can continue to register that in the
+> VirtIONet struct.
+>
+>   We can copy the first MAC_TABLE_ENTRIES + 1 entries and set entries =3D
+> (MAC_TABLE_ENTRIES + 1), and then use that buffer to call
+> virtio_net_handle_ctrl_iov. That sets VirtIONet.uni_overflow =3D true
+> and VirtIONet.all_uni =3D false.
+>
+> We need to handle the multicast addresses in a similar way, but we can
+> find cases where only multicast addresses overflow.
+>
+> In future series we can improve the situation:
+> * Allocating bigger out buffers so more mac addresses fit in it.
+> * Mapping also guest pages in CVQ, so the real device is able to read
+> the full table but VirtIONet only stores the first MAC_TABLE_ENTRIES
+> or .uni_overflow =3D 1.
+>
+> But I think it should be enough at this point.
 
-To exaggerate you reasoning further, we should create CPU models for
-all future planned Intel/AMD CPU as a one of currently existing in
-QEMU right now and then sometime in future implement features that
-actually make those models what they should be.
+Yes, I think this is a good method to update the device internal state
+to align with the VirtIO standard when the VIRTIO_NET_CTRL_MAC_TABLE_SET
+CVQ command does not fit in one page.
 
-It's downright confusing for user, so I'd object to this approach.
+But it seems that we should update the device internal state only when
+the hardware successfully receives this CVQ command. Once the hardware
+set the VIRTIO_NET_ERR to this CVQ command, we should not change the
+device internal state.
 
+To be more specific, there are two scenarios to consider:
+
+- If the CVQ command fits within a single page, the function
+vhost_vdpa_net_handle_ctrl_avail() can offer a buffer with the fully
+copied CVQ command. In this case, everything should work smoothly.
+
+- If the CVQ command does not fit within a single page, the function
+vhost_vdpa_net_handle_ctrl_avail() can only provide a buffer with the
+truncated CVQ command. When this buffer is sent to the vpda device, the
+device fails to accept this CVQ command and keeps its state unchanged
+due to the malformed CVQ. As a result, the device sets the ack
+VIRTIO_NET_ERR.
+
+   Consequently, vhost_vdpa_net_handle_ctrl_avail() should immediately
+return and keep the device internal state unchanged because the vdpa
+device returns VIRTIO_NET_ERR, indicating that the hardware did not
+modify the state in this CVQ command.
+
+Therefore, it appears that whenever the VIRTIO_NET_CTRL_MAC_TABLE_SET
+CVQ command does not fit in one page, we should not update the device
+internal state, because vdpa hardware always fails to accept this CVQ
+command due to truncation.
+
+Thanks!
+
+
+
+>
+> Thanks!
+>
+>> So if CVQ command exceeds one page, vhost_vdpa_net_handle_ctrl_avail()
+>> should not update the device internal state because the SVQ command
+>> fails.(Please correct me if I am wrong)
+>>
+>> It appears that my commit message and comments did not take this into
+>> account. I will refactor them in the v2 patch..
+>>
+>> Thanks!
+>>
+>>
+>>>
+>>> Thanks!
+>>>
+>>>> +     */
+>>>>        out.iov_len =3D iov_to_buf(elem->out_sg, elem->out_num, 0,
+>>>>                                 s->cvq_cmd_out_buffer,
+>>>> -                             vhost_vdpa_net_cvq_cmd_len());
+>>>> +                             vhost_vdpa_net_cvq_cmd_page_len());
+>>>>        if (*(uint8_t *)s->cvq_cmd_out_buffer =3D=3D VIRTIO_NET_CTRL_AN=
+NOUNCE) {
+>>>>            /*
+>>>>             * Guest announce capability is emulated by qemu, so don't =
+forward to
+>>>> --
+>>>> 2.25.1
+>>>>
+>>>
+>>
+>
 
