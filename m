@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F1267400B3
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 18:18:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9949D7400B2
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 18:18:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEBMI-00012A-7r; Tue, 27 Jun 2023 12:16:02 -0400
+	id 1qEBMT-0001Ez-M6; Tue, 27 Jun 2023 12:16:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qEBMF-0000zG-LG
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 12:15:59 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ id 1qEBMM-0001BB-U3
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 12:16:06 -0400
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qEBMA-000875-Gr
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 12:15:59 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-3fa99f6a4a1so23990345e9.3
- for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 09:15:51 -0700 (PDT)
+ id 1qEBMC-0008AL-Rr
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 12:16:06 -0400
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-3fa8cd4a113so26733435e9.2
+ for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 09:15:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687882549; x=1690474549;
+ d=linaro.org; s=google; t=1687882555; x=1690474555;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=o2j+D2PwWEutlmPyNeR3NDR8AmnsEBx5K3Su+X1Sj40=;
- b=ZJ8eRjevcYv2JS00nU0r4e6yJLCfvoajGbqg/DIDLDO3mGcm8Hs10nhplmmZOi5424
- kYhvdga1lM8nl2IMqjbjoA1EkZP4auTXKvYv64JsFXcL74Of0sS8nKxieQqgVk16fpmV
- sh9DkYQwSKZBnhwgiPlVsuD2mwttTIUKeXKxacbDELdPUWDCupS02PGQfn/JRmj6DuF/
- 09LKyxE6qsE4rXl5h5sdoYi5Xynq4iG9Y7F8vcuJQAUIzzkVpU18HDN0erZKbdIcw80x
- p3FqEr2C+jzvX+I/hhSu2tomCTx6hiFkSo34BVJ8XvlHz2vk4w+bDe0dszW662BeXgUI
- 2q4Q==
+ bh=SZAOTeGGrKkzwQAvWZdxb45rty8GpJ035mBrUTHulE4=;
+ b=W/lOWDTR0Dz0qqO6kVc6rJyLGlUlJ4USiuOjkMXtjP8A+I2WoIq7eUgZm34pAkHFIc
+ nza6zBCTf9K6eapcd3ijJ2AGPEIKxJV2E1DHClx5GQ+Gsb7RVM9Z3XIb5J74sWSTIdXO
+ B0W54qk3boxwnFMXy+agcAhAkPLOtkb80jp0XEI5jlyz20tID097S2kzZb3Rwfd8PLK/
+ 5exjB5+fpZybcLdqHKnKNdISdaSuuIGczypVLks7UaY8ZLSL45kvMKU+HZYdkx4Wfb5g
+ 1Js8D7zRDNvIrEFR5mxHM5Q7H7mHmxjaaqQzHStLPfwy4GSLlGcLZBzwpTXcfixsyaGC
+ CpSg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687882549; x=1690474549;
+ d=1e100.net; s=20221208; t=1687882555; x=1690474555;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=o2j+D2PwWEutlmPyNeR3NDR8AmnsEBx5K3Su+X1Sj40=;
- b=QqXPob8a30e7YYbNePBic9Bu2v9duLpgXDSLMHfP2K7R4BVQYP4jFdPxe3wgPOuwWc
- B1t/jkmffk0ieS5Zxkf5pT8LmiKlC0ewdfbZAlppAqfTmXvmBmqr3O3QmBKUshBGtlEq
- 0B/Hz27m+CwNOUWE651vVVyNXSC7hGfK3YUBpDK8701ndh1EE/BmTFK738ywlaDZvWC8
- H3JfjNrXabM0UHgHKJzCNkTu/l8+ayaM2LfA5T9o38V6ujFizOBBeqo5IOMAVbjcIYV0
- Y20BRVtIwDWvOuwO68fioHEjsdXM5TF9/tGds3fxXTQPhTR3/sy1gfZSfBLHL13+olyG
- ugjw==
-X-Gm-Message-State: AC+VfDx5Jy1J4tmdgpB+TduytTpqzezHjPJsaRdlF9wolupsFXtVLG5Z
- X8d3A16+7Yebv4jBI35RGp2hRQ==
-X-Google-Smtp-Source: ACHHUZ5z/02MdX+mfg2+taZqQOMxvMYiFssmGA4JcAx8khO5KfxdUGY5DOe8ImGpmeRSBFzXV1TmLQ==
-X-Received: by 2002:adf:ee51:0:b0:311:13a7:2d87 with SMTP id
- w17-20020adfee51000000b0031113a72d87mr29879739wro.66.1687882549148; 
- Tue, 27 Jun 2023 09:15:49 -0700 (PDT)
+ bh=SZAOTeGGrKkzwQAvWZdxb45rty8GpJ035mBrUTHulE4=;
+ b=aevanKcdRyiP9zBCmZAZqmNDu3VtIi4DmMGTjbyXKT0nF61WDPiamBdYxM5T0TrpEL
+ HsbBkhdg9yobSN1nVIFAVtvbCKw2JCRqcc6sQOTJZse8rCigeBS3BG0kKVU4JHLA9OPz
+ mVz070Jm4IuH5lJJLGZS0RFWqT56pd0zi/KaP7YF/VFmM5M6gGzzJrhzJz2KoIUOnBH9
+ jxNZUjtAvcbWtOuUsy76ydC0tL/1NQyl+uGlOlFoYyJgFk5dYHCyEh0njoJVS4ioz1vT
+ 9y9Fp+RnIwEICilICvJqTjBbVkn/WKMW4TNddAeuT/zKl17bq48CG0lwlkZr3gmAAXkd
+ Fa9g==
+X-Gm-Message-State: AC+VfDw3CErr//tJB94mLuDOwzuvp7KWgAutizy7wOPBBSUIqehcAv3F
+ 5hDbmO0aVNbZAbTCp3yIUrVr/w==
+X-Google-Smtp-Source: ACHHUZ5U8K6T/ZfrDW4JZD2tsTit+9eSeb0Bk97nI2N+OTTdHrivay5+WCA+thaScTqTWdNvrQZ8vA==
+X-Received: by 2002:a05:600c:230b:b0:3fa:8874:fe69 with SMTP id
+ 11-20020a05600c230b00b003fa8874fe69mr5892547wmo.29.1687882555030; 
+ Tue, 27 Jun 2023 09:15:55 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- s4-20020adfea84000000b002ca864b807csm11119526wrm.0.2023.06.27.09.15.48
+ y17-20020a1c4b11000000b003f90a604885sm11275804wma.34.2023.06.27.09.15.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 27 Jun 2023 09:15:48 -0700 (PDT)
+ Tue, 27 Jun 2023 09:15:53 -0700 (PDT)
 Received: from zen.lan (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 5B0DA1FFCE;
+ by zen.linaroharston (Postfix) with ESMTP id 732AB1FFC0;
  Tue, 27 Jun 2023 17:09:46 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -82,24 +82,25 @@ Cc: Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Laurent Vivier <lvivier@redhat.com>, Qiuhao Li <Qiuhao.Li@outlook.com>,
  Mahmoud Mandour <ma.mandourr@gmail.com>, Riku Voipio <riku.voipio@iki.fi>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH v3 20/36] docs/devel: add some front matter to the devel index
-Date: Tue, 27 Jun 2023 17:09:27 +0100
-Message-Id: <20230627160943.2956928-21-alex.bennee@linaro.org>
+Subject: [PATCH v3 21/36] include/migration: mark vmstate_register() as a
+ legacy function
+Date: Tue, 27 Jun 2023 17:09:28 +0100
+Message-Id: <20230627160943.2956928-22-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230627160943.2956928-1-alex.bennee@linaro.org>
 References: <20230627160943.2956928-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -115,91 +116,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Give an overview of the most useful bits of the devel documentation to
-read depending on what the developer wants to do.
+Mention that QOM-ified devices already have support for registering
+the description.
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Juan Quintela <quintela@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Acked-by: Peter Xu <peterx@redhat.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20230623122100.1640995-22-alex.bennee@linaro.org>
+Message-Id: <20230619171437.357374-3-alex.bennee@linaro.org>
 
 ---
-v2
-  - removed excessive start
+v3
+  - checkpatch cleanups
 ---
- docs/devel/index-process.rst |  2 ++
- docs/devel/index-tcg.rst     |  2 ++
- docs/devel/index.rst         | 24 ++++++++++++++++++++++--
- docs/devel/tcg.rst           |  2 ++
- 4 files changed, 28 insertions(+), 2 deletions(-)
+ include/migration/vmstate.h | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/docs/devel/index-process.rst b/docs/devel/index-process.rst
-index d50dd74c3e..362f97ee30 100644
---- a/docs/devel/index-process.rst
-+++ b/docs/devel/index-process.rst
-@@ -1,3 +1,5 @@
-+.. _development_process:
-+
- QEMU Community Processes
- ------------------------
+diff --git a/include/migration/vmstate.h b/include/migration/vmstate.h
+index 084f5e784a..d1b8abe08d 100644
+--- a/include/migration/vmstate.h
++++ b/include/migration/vmstate.h
+@@ -1209,7 +1209,15 @@ int vmstate_register_with_alias_id(VMStateIf *obj, uint32_t instance_id,
+                                    int required_for_version,
+                                    Error **errp);
  
-diff --git a/docs/devel/index-tcg.rst b/docs/devel/index-tcg.rst
-index b44ff8b5a4..a992844e5c 100644
---- a/docs/devel/index-tcg.rst
-+++ b/docs/devel/index-tcg.rst
-@@ -1,3 +1,5 @@
-+.. _tcg:
-+
- TCG Emulation
- -------------
- 
-diff --git a/docs/devel/index.rst b/docs/devel/index.rst
-index 09cfb322be..abf60457c2 100644
---- a/docs/devel/index.rst
-+++ b/docs/devel/index.rst
-@@ -2,10 +2,30 @@
- Developer Information
- ---------------------
- 
--This section of the manual documents various parts of the internals of QEMU.
--You only need to read it if you are interested in reading or
-+This section of the manual documents various parts of the internals of
-+QEMU. You only need to read it if you are interested in reading or
- modifying QEMU's source code.
- 
-+QEMU is a large and mature project with a number of complex subsystems
-+that can be overwhelming to understand. The development documentation
-+is not comprehensive but hopefully presents enough to get you started.
-+If there are areas that are unclear please reach out either via the
-+IRC channel or mailing list and hopefully we can improve the
-+documentation for future developers.
-+
-+All developers will want to familiarise themselves with
-+:ref:`development_process` and how the community interacts. Please pay
-+particular attention to the :ref:`coding-style` and
-+:ref:`submitting-a-patch` sections to avoid common pitfalls.
-+
-+If you wish to implement a new hardware model you will want to read
-+through the :ref:`qom` documentation to understand how QEMU's object
-+model works.
-+
-+Those wishing to enhance or add new CPU emulation capabilities will
-+want to read our :ref:`tcg` documentation, especially the overview of
-+the :ref:`tcg_internals`.
-+
- .. toctree::
-    :maxdepth: 1
- 
-diff --git a/docs/devel/tcg.rst b/docs/devel/tcg.rst
-index b4096a17df..2786f2f679 100644
---- a/docs/devel/tcg.rst
-+++ b/docs/devel/tcg.rst
-@@ -1,3 +1,5 @@
-+.. _tcg_internals:
-+
- ====================
- Translator Internals
- ====================
+-/* Returns: 0 on success, -1 on failure */
++/**
++ * vmstate_register() - legacy function to register state
++ * serialisation description
++ *
++ * New code shouldn't be using this function as QOM-ified devices have
++ * dc->vmsd to store the serialisation description.
++ *
++ * Returns: 0 on success, -1 on failure
++ */
+ static inline int vmstate_register(VMStateIf *obj, int instance_id,
+                                    const VMStateDescription *vmsd,
+                                    void *opaque)
 -- 
 2.39.2
 
