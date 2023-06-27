@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5479B73FB6D
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 13:53:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E79273FB6F
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 13:53:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qE7Ec-0001uE-IT; Tue, 27 Jun 2023 07:51:50 -0400
+	id 1qE7Ef-0001up-MX; Tue, 27 Jun 2023 07:51:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qE7EW-0001s8-HZ
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 07:51:45 -0400
-Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qE7Ea-0001tw-Mz
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 07:51:48 -0400
+Received: from mail-ej1-x62c.google.com ([2a00:1450:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qE7ET-0004jc-Eu
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 07:51:42 -0400
-Received: by mail-ej1-x629.google.com with SMTP id
- a640c23a62f3a-991fe70f21bso133754666b.3
- for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 04:51:41 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qE7EZ-0004kQ-66
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 07:51:48 -0400
+Received: by mail-ej1-x62c.google.com with SMTP id
+ a640c23a62f3a-986d8332f50so561017766b.0
+ for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 04:51:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687866699; x=1690458699;
+ d=linaro.org; s=google; t=1687866705; x=1690458705;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=5EM+qSWWOslftV8HcBXpILD27b+3+W5mkalItnU32xI=;
- b=zK/wO1TEMHYu1s8XH1PAIG4ggr3gqj0hxpHfpqqesgDccWWASPBRBwTqjxvaLS7OM/
- RhMBJrthSW8x7Vdiz/3rk8ib0FJBohtxOdjRkOHHxTNXzMH+9mJodaN5iBmJDghhQe6C
- aVf9y97NdoZtReSmqCSzF/SPOBoo2Rjd66wYrVJqBLCSDW5Y7Tb/1uD2lswOQV6Uqs7r
- jnrJYC9q6Z3xfVRXCLZ6b7P1d9qfr1IAeVNRqpWnYkEGqA9L6MTYjxDAlFpbQ2oSEOZ6
- On/49dj0L5K/TeWwyPNO6VoamET9qq1TBnwFBHI8G5Y7JBnd3tCu6O2RlijPXj4RAXqe
- gaEA==
+ bh=wwRqncGBMw48ZRHZQQygcwpEXInzVqgYCZMTOEm7gro=;
+ b=mnixBROMk4W/E5oZOyhcDKzrHtFUiMXo/SHSOVZCdjVa4W+QHAk1YP6JN0WdriXCRg
+ 7kgoxdRSdpXiXm9/tuZtgVuUAVG4ULDZsoY7BNnEAtsId8Zrgl3kiwhYh8lszegl3BbK
+ eboQUwrTSJ19pIAC5BvplUdAQ5sUlzxk+8+17nFe/f8c02iQ5HztThoAHTWuKxBxryTN
+ vQz3qYE32MLVfAyKfOuC1Jf5fuf2ID3FOaFQZuzkK/hinGVcshX/IMsG6Y03ITu8CKRp
+ tLJv9jBxZg9m/AMaSr9x1W1DFD3qMA1U+SUcDCepP90EDHA7/670RNlWEjyMxhvaXW6J
+ bCDQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687866699; x=1690458699;
+ d=1e100.net; s=20221208; t=1687866705; x=1690458705;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=5EM+qSWWOslftV8HcBXpILD27b+3+W5mkalItnU32xI=;
- b=I8FpUhTDNUHhwnll75rqgNtsaesvmkZ0WZn9E1M233YsxfdmKbfAtbjsOjUoJC6G/B
- Yatv74/BAFRg2XByClKQ/MHM1pRwPvIQkLdm1avY/6HN/SOOUR4Axh4umKfVKUIu+XEr
- rV0BWZ5S3wehOLgEzz4x6OnfQjN0jJysfOqEoEBJjGOAdcU3G7TaQc/Po5QXhY64jJpi
- aIk9/U6OBoctOCi4RS0vjYTgErpzqNcwwCSKsSnJruJNgSr0n0zEkXLNUh1ftZYJ7/fO
- mhOLgUfv11SIfhmqL8u0n6bpeJIFaqPu0woBFOBm9lDcSsWmFRvaH4MDFrcJIfQhvqXs
- vziQ==
-X-Gm-Message-State: AC+VfDxq1NPdj2FmNARCxJSYBzVrmiWAwN50kDjdm4rqiho8aZgqh17d
- eJEbiH6+SGNluLTh5tfvtKloIlSlDfHUgd4Uaqs=
-X-Google-Smtp-Source: ACHHUZ6IqFkk/UBT9Y/2spa5T+pGGl9y+Nj7mw+jrVqROYCX1zp6Lg0qSp29vM1gcaCZRbjsPfXHcA==
-X-Received: by 2002:a17:906:684c:b0:98e:4c96:6e18 with SMTP id
- a12-20020a170906684c00b0098e4c966e18mr4150187ejs.5.1687866699521; 
- Tue, 27 Jun 2023 04:51:39 -0700 (PDT)
+ bh=wwRqncGBMw48ZRHZQQygcwpEXInzVqgYCZMTOEm7gro=;
+ b=CT1Z6ZdiqxVsY8ax7EfjPMPXKb2lDH31ImAroP7FI2yM6UbBm4gMl8/h3+pHZVXc1Y
+ hnv+SPhdFXY3N2CqsTmuddBhdsYYFoeBu+thBkFePcOGagUEWVGUj6N51hCHfoEiZUAx
+ 9uu9DMtdYKUGUInsG4HEknHD6OM/kaZpkcfJeBuW6C0N8qTFGNQv2FnFOdKwcDdYvpgQ
+ 8iJ4pMzokj7gHgxyg/52dDtTnHPrSgpVmr5fYuqF/sLj6r4jGzJ3AkkwZTUzhjn1Ko2a
+ sA/aSXUQvvUKL1VG5GcWDbFgZNQL79x9+/OQ5jLh/aN9+d5goWUrezPjFynoXfjFY5ov
+ Kucg==
+X-Gm-Message-State: AC+VfDyMgv7hGZbZdhAHhiXTvhVB67lP06i5OEgLy8Uf4o/dn1KVj5d0
+ xtMN1MYFMslkDYPgJVZACpY5UFYxfZQtILkhVL4=
+X-Google-Smtp-Source: ACHHUZ6xLnSQ/b3U5NJqWbrTuz86G0gbNTSsjgso5M/VhbPKvGVEY9yrkxTf9DH2qSNmGFKSSTxcGw==
+X-Received: by 2002:a17:906:6a04:b0:988:a837:327a with SMTP id
+ qw4-20020a1709066a0400b00988a837327amr22018537ejc.44.1687866705562; 
+ Tue, 27 Jun 2023 04:51:45 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.199.204])
  by smtp.gmail.com with ESMTPSA id
- ce23-20020a170906b25700b009920f18a5f0sm791874ejb.185.2023.06.27.04.51.38
+ h14-20020a17090634ce00b0098238141deasm4478624ejb.90.2023.06.27.04.51.44
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 27 Jun 2023 04:51:39 -0700 (PDT)
+ Tue, 27 Jun 2023 04:51:45 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: David Gibson <david@gibson.dropbear.id.au>,
@@ -62,17 +62,17 @@ Cc: David Gibson <david@gibson.dropbear.id.au>,
  Paolo Bonzini <pbonzini@redhat.com>, Greg Kurz <groug@kaod.org>,
  kvm@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v3 2/6] target/ppc: Reorder #ifdef'ry in kvm_ppc.h
-Date: Tue, 27 Jun 2023 13:51:20 +0200
-Message-Id: <20230627115124.19632-3-philmd@linaro.org>
+Subject: [PATCH v3 3/6] target/ppc: Move CPU QOM definitions to cpu-qom.h
+Date: Tue, 27 Jun 2023 13:51:21 +0200
+Message-Id: <20230627115124.19632-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230627115124.19632-1-philmd@linaro.org>
 References: <20230627115124.19632-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::629;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x629.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62c;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,100 +95,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Keep a single if/else/endif block checking CONFIG_KVM.
-
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/ppc/kvm_ppc.h | 62 ++++++++++++++++++++------------------------
- 1 file changed, 28 insertions(+), 34 deletions(-)
+ target/ppc/cpu-qom.h | 5 +++++
+ target/ppc/cpu.h     | 6 ------
+ 2 files changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/target/ppc/kvm_ppc.h b/target/ppc/kvm_ppc.h
-index 2e395416f0..49954a300b 100644
---- a/target/ppc/kvm_ppc.h
-+++ b/target/ppc/kvm_ppc.h
-@@ -93,7 +93,34 @@ void kvmppc_set_reg_tb_offset(PowerPCCPU *cpu, int64_t tb_offset);
+diff --git a/target/ppc/cpu-qom.h b/target/ppc/cpu-qom.h
+index 9666f54f65..c2bff349cc 100644
+--- a/target/ppc/cpu-qom.h
++++ b/target/ppc/cpu-qom.h
+@@ -31,6 +31,11 @@
  
- int kvm_handle_nmi(PowerPCCPU *cpu, struct kvm_run *run);
+ OBJECT_DECLARE_CPU_TYPE(PowerPCCPU, PowerPCCPUClass, POWERPC_CPU)
  
--#else
-+#define kvmppc_eieio() \
-+    do {                                          \
-+        if (kvm_enabled()) {                          \
-+            asm volatile("eieio" : : : "memory"); \
-+        } \
-+    } while (0)
++#define POWERPC_CPU_TYPE_SUFFIX "-" TYPE_POWERPC_CPU
++#define POWERPC_CPU_TYPE_NAME(model) model POWERPC_CPU_TYPE_SUFFIX
++#define CPU_RESOLVING_TYPE TYPE_POWERPC_CPU
++#define cpu_list ppc_cpu_list
 +
-+/* Store data cache blocks back to memory */
-+static inline void kvmppc_dcbst_range(PowerPCCPU *cpu, uint8_t *addr, int len)
-+{
-+    uint8_t *p;
-+
-+    for (p = addr; p < addr + len; p += cpu->env.dcache_line_size) {
-+        asm volatile("dcbst 0,%0" : : "r"(p) : "memory");
-+    }
-+}
-+
-+/* Invalidate instruction cache blocks */
-+static inline void kvmppc_icbi_range(PowerPCCPU *cpu, uint8_t *addr, int len)
-+{
-+    uint8_t *p;
-+
-+    for (p = addr; p < addr + len; p += cpu->env.icache_line_size) {
-+        asm volatile("icbi 0,%0" : : "r"(p));
-+    }
-+}
-+
-+#else /* !CONFIG_KVM */
+ ObjectClass *ppc_cpu_class_by_name(const char *name);
  
- static inline uint32_t kvmppc_get_tbfreq(void)
- {
-@@ -440,10 +467,6 @@ static inline bool kvmppc_pvr_workaround_required(PowerPCCPU *cpu)
-     return false;
- }
+ typedef struct CPUArchState CPUPPCState;
+diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
+index af12c93ebc..e91e1774e5 100644
+--- a/target/ppc/cpu.h
++++ b/target/ppc/cpu.h
+@@ -1468,12 +1468,6 @@ static inline uint64_t ppc_dump_gpr(CPUPPCState *env, int gprn)
+ int ppc_dcr_read(ppc_dcr_t *dcr_env, int dcrn, uint32_t *valp);
+ int ppc_dcr_write(ppc_dcr_t *dcr_env, int dcrn, uint32_t val);
  
--#endif
+-#define POWERPC_CPU_TYPE_SUFFIX "-" TYPE_POWERPC_CPU
+-#define POWERPC_CPU_TYPE_NAME(model) model POWERPC_CPU_TYPE_SUFFIX
+-#define CPU_RESOLVING_TYPE TYPE_POWERPC_CPU
 -
--#ifndef CONFIG_KVM
+-#define cpu_list ppc_cpu_list
 -
- #define kvmppc_eieio() do { } while (0)
- 
- static inline void kvmppc_dcbst_range(PowerPCCPU *cpu, uint8_t *addr, int len)
-@@ -454,35 +477,6 @@ static inline void kvmppc_icbi_range(PowerPCCPU *cpu, uint8_t *addr, int len)
- {
- }
- 
--#else   /* CONFIG_KVM */
--
--#define kvmppc_eieio() \
--    do {                                          \
--        if (kvm_enabled()) {                          \
--            asm volatile("eieio" : : : "memory"); \
--        } \
--    } while (0)
--
--/* Store data cache blocks back to memory */
--static inline void kvmppc_dcbst_range(PowerPCCPU *cpu, uint8_t *addr, int len)
--{
--    uint8_t *p;
--
--    for (p = addr; p < addr + len; p += cpu->env.dcache_line_size) {
--        asm volatile("dcbst 0,%0" : : "r"(p) : "memory");
--    }
--}
--
--/* Invalidate instruction cache blocks */
--static inline void kvmppc_icbi_range(PowerPCCPU *cpu, uint8_t *addr, int len)
--{
--    uint8_t *p;
--
--    for (p = addr; p < addr + len; p += cpu->env.icache_line_size) {
--        asm volatile("icbi 0,%0" : : "r"(p));
--    }
--}
--
- #endif  /* CONFIG_KVM */
- 
- #endif /* KVM_PPC_H */
+ /* MMU modes definitions */
+ #define MMU_USER_IDX 0
+ static inline int cpu_mmu_index(CPUPPCState *env, bool ifetch)
 -- 
 2.38.1
 
