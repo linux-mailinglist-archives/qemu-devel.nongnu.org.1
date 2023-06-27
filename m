@@ -2,94 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F98373FB8A
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 13:59:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0174A73FB9F
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 14:02:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qE7LU-0002eC-H7; Tue, 27 Jun 2023 07:58:56 -0400
+	id 1qE7O1-0004yH-6z; Tue, 27 Jun 2023 08:01:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1qE7LT-0002dn-9X
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 07:58:55 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <groug@kaod.org>)
+ id 1qE7Nw-0004tz-3U; Tue, 27 Jun 2023 08:01:29 -0400
+Received: from 3.mo548.mail-out.ovh.net ([188.165.32.156])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1qE7LR-0006Hi-Kp
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 07:58:55 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687867133;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=HGwD2f3IYeCYv4HumCrhp7dhD0eVzg7wlP4QIoBlgvM=;
- b=PipcLyatL/lQFA+F9dac035Zcw3vmVy3pkeSWG2ZsdjaPpo60oJUnIOCh6duzpRzNSKtMO
- WfaGRzGtX2/pCDT99kYzIhIEEku8Gh2+/PdFH3DPvsd9XOGfGJRt6tpyMNmQgW383aCfPz
- MjQ0W3vvzOTjqnE94shcHfqEawHzDG8=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-464-EN7T-peJOOmF3iXW1W_nYg-1; Tue, 27 Jun 2023 07:58:51 -0400
-X-MC-Unique: EN7T-peJOOmF3iXW1W_nYg-1
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-97542592eb9so246126766b.2
- for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 04:58:51 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687867130; x=1690459130;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=HGwD2f3IYeCYv4HumCrhp7dhD0eVzg7wlP4QIoBlgvM=;
- b=b57/fnUiXiWd7g1lx3BANBiYFZ/6p07HNW+4aMkzwqIBQVyG/KLIEJ1I1Alc8etcME
- +ngLnJhDoO83MNfyxzwGCPfTM6t66Y9TFhSoNugaWenRtYHOB2BrYx+GJS3EsduGKg13
- A0W8AXEbEyddaRwIlpzUE0zxSdOJF1K8M3V6Ea7cVlxNWrL/cLVz6RNh4C/LqoeERXvq
- X3wkfdhdS35rVSmkowAsz3CTsore7vne6MZxtSNmjV+h5G6i4PuF5lqKW36/mplhCr2u
- 7FmdeyuMEr4h6ClIua4htj50bym6OBsK0SRUb1QfhtryeG0jWxzofCUnqFE3fv5v/MXs
- DP9Q==
-X-Gm-Message-State: AC+VfDzqtObObzYm58lMgRefkxD48jPmR69PcXCgE+F/OW26Jb0qj5gr
- X2xVtZFiMpjmJeprtCYYeDE17cCmGjJTa9J+MGIEd2/agiuepmikm4uyAqTsDVlHw9sMzYyoD5i
- pcI59HuXdOUQEJ7w=
-X-Received: by 2002:a17:907:26c3:b0:987:8c40:c1d5 with SMTP id
- bp3-20020a17090726c300b009878c40c1d5mr25375357ejc.27.1687867130494; 
- Tue, 27 Jun 2023 04:58:50 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ47w8TbY3BBWfDe83LgU8PsyweKOu+9CRsuLPZZC/PLKp4PCCMgdghx8h4sVtLhYbYASRV9Wg==
-X-Received: by 2002:a17:907:26c3:b0:987:8c40:c1d5 with SMTP id
- bp3-20020a17090726c300b009878c40c1d5mr25375343ejc.27.1687867130222; 
- Tue, 27 Jun 2023 04:58:50 -0700 (PDT)
-Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
- [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
- pv18-20020a170907209200b0098dc18c1429sm4447320ejb.209.2023.06.27.04.58.49
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 27 Jun 2023 04:58:49 -0700 (PDT)
-Date: Tue, 27 Jun 2023 13:58:49 +0200
-From: Igor Mammedov <imammedo@redhat.com>
-To: Ani Sinha <anisinha@redhat.com>
-Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>, Marcel
- Apfelbaum <marcel.apfelbaum@gmail.com>, jusual@redhat.com
-Subject: Re: [RESEND PATCH v5 5/5] hw/pci: ensure PCIE devices are plugged
- into only slot 0 of PCIE port
-Message-ID: <20230627135849.37e52f87@imammedo.users.ipa.redhat.com>
-In-Reply-To: <A085E1C1-244C-4ED3-AC9A-17497BA66255@redhat.com>
-References: <20230626161244.4145-1-anisinha@redhat.com>
- <20230626161244.4145-6-anisinha@redhat.com>
- <20230627110224.36fa1b06@imammedo.users.ipa.redhat.com>
- <A085E1C1-244C-4ED3-AC9A-17497BA66255@redhat.com>
+ (Exim 4.90_1) (envelope-from <groug@kaod.org>)
+ id 1qE7Nt-00071S-Fs; Tue, 27 Jun 2023 08:01:27 -0400
+Received: from mxplan5.mail.ovh.net (unknown [10.109.156.219])
+ by mo548.mail-out.ovh.net (Postfix) with ESMTPS id 5751C21CCC;
+ Tue, 27 Jun 2023 12:01:12 +0000 (UTC)
+Received: from kaod.org (37.59.142.103) by DAG6EX1.mxp5.local (172.16.2.51)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Tue, 27 Jun
+ 2023 14:01:11 +0200
+Authentication-Results: garm.ovh; auth=pass
+ (GARM-103G00568f225bf-2d73-4b42-8894-5cc3bd32619f,
+ 99E0F7EF6683FA3DAC855764D3D51AADECA7BC73) smtp.auth=groug@kaod.org
+X-OVh-ClientIp: 78.197.208.248
+Date: Tue, 27 Jun 2023 14:01:10 +0200
+From: Greg Kurz <groug@kaod.org>
+To: Philippe =?UTF-8?B?TWF0aGlldS1EYXVkw6k=?= <philmd@linaro.org>
+CC: <qemu-devel@nongnu.org>, <qemu-ppc@nongnu.org>, "=?UTF-8?B?Q8OpZHJpYw==?=
+ Le Goater" <clg@kaod.org>, David Gibson <david@gibson.dropbear.id.au>,
+ "Daniel Henrique Barboza" <danielhb413@gmail.com>, Thomas Huth
+ <thuth@redhat.com>, Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH] target/ppc: Only generate decodetree files when TCG is
+ enabled
+Message-ID: <20230627140110.7307ea26@bahia>
+In-Reply-To: <20230626140100.67941-1-philmd@linaro.org>
+References: <20230626140100.67941-1-philmd@linaro.org>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Originating-IP: [37.59.142.103]
+X-ClientProxiedBy: DAG8EX2.mxp5.local (172.16.2.72) To DAG6EX1.mxp5.local
+ (172.16.2.51)
+X-Ovh-Tracer-GUID: cca13b69-4891-4f6e-9c37-db4c81eaba65
+X-Ovh-Tracer-Id: 14954202565595994476
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedviedrtddtgddthecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfgjfhfogggtgfhisehtqhertdertdejnecuhfhrohhmpefirhgvghcumfhurhiiuceoghhrohhugheskhgrohgurdhorhhgqeenucggtffrrghtthgvrhhnpeeuueeijedtleeluedthfetjeffieetffeuvefffeeftedvieefueejgfdugeetueenucfkphepuddvjedrtddrtddruddpfeejrdehledrudegvddruddtfedpjeekrdduleejrddvtdekrddvgeeknecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepuddvjedrtddrtddruddpmhgrihhlfhhrohhmpeeoghhrohhugheskhgrohgurdhorhhgqedpnhgspghrtghpthhtohepuddprhgtphhtthhopehphhhilhhmugeslhhinhgrrhhordhorhhgpdhqvghmuhdquggvvhgvlhesnhhonhhgnhhurdhorhhgpdhqvghmuhdqphhptgesnhhonhhgnhhurdhorhhgpdgurghvihgusehgihgsshhonhdrughrohhpsggvrghrrdhiugdrrghupdgurghnihgvlhhhsgegudefsehgmhgrihhlrdgtohhmpdhthhhuthhhsehrvgguhhgrthdrtghomhdpnhhpihhgghhinhesghhmrghilhdrtghomhdptghlgheskhgrohgurdhorhhgpdfovfetjfhoshhtpehmohehge
+ ekpdhmohguvgepshhmthhpohhuth
+Received-SPF: pass client-ip=188.165.32.156; envelope-from=groug@kaod.org;
+ helo=3.mo548.mail-out.ovh.net
+X-Spam_score_int: -5
+X-Spam_score: -0.6
+X-Spam_bar: /
+X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_BL_SPAMCOP_NET=1.347,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,64 +75,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 27 Jun 2023 15:23:04 +0530
-Ani Sinha <anisinha@redhat.com> wrote:
+On Mon, 26 Jun 2023 16:01:00 +0200
+Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> wrote:
 
-> > On 27-Jun-2023, at 2:32 PM, Igor Mammedov <imammedo@redhat.com> wrote:
-> > 
-> > On Mon, 26 Jun 2023 21:42:44 +0530
-> > Ani Sinha <anisinha@redhat.com> wrote:
-> >   
-> >> PCI Express ports only have one slot, so PCI Express devices can only be
-> >> plugged into slot 0 on a PCIE port. Enforce it.  
-> > 
-> > btw, previously you mentioned ARI.
-> > So if we turn it on, wouldn't this patch actually become regression?  
-> 
-> If ARI breaks this, it will break other areas in QEMU too, ex anywhere pci_get_function_0() is used.
-> Regardless, I think at least the tests are worth fixing, particularly the mess with hd-geo-test.
+> No need to generate TCG-specific decodetree files
+> when TCG is disabled.
+>=20
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> ---
 
-I'm fine with this patch if you test it with ARI enabled and it won't break
-something that has been working before this patch. Just mention what testing
-you've done in commit message.
+Reviewed-by: Greg Kurz <groug@kaod.org>
 
-> 
-> >   
-> >> 
-> >> CC: jusual@redhat.com
-> >> CC: imammedo@redhat.com
-> >> Resolves: https://bugzilla.redhat.com/show_bug.cgi?id=2128929
-> >> Signed-off-by: Ani Sinha <anisinha@redhat.com>
-> >> Reviewed-by: Julia Suvorova <jusual@redhat.com>
-> >> ---
-> >> hw/pci/pci.c | 6 ++++++
-> >> 1 file changed, 6 insertions(+)
-> >> 
-> >> diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-> >> index bf38905b7d..426af133b0 100644
-> >> --- a/hw/pci/pci.c
-> >> +++ b/hw/pci/pci.c
-> >> @@ -64,6 +64,7 @@ bool pci_available = true;
-> >> static char *pcibus_get_dev_path(DeviceState *dev);
-> >> static char *pcibus_get_fw_dev_path(DeviceState *dev);
-> >> static void pcibus_reset(BusState *qbus);
-> >> +static bool pcie_has_upstream_port(PCIDevice *dev);
-> >> 
-> >> static Property pci_props[] = {
-> >>     DEFINE_PROP_PCI_DEVFN("addr", PCIDevice, devfn, -1),
-> >> @@ -1189,6 +1190,11 @@ static PCIDevice *do_pci_register_device(PCIDevice *pci_dev,
-> >>                    name);
-> >> 
-> >>        return NULL;
-> >> +    } else if (pcie_has_upstream_port(pci_dev) && PCI_SLOT(devfn)) {
-> >> +        error_setg(errp, "PCI: slot %d is not valid for %s,"
-> >> +                   " parent device only allows plugging into slot 0.",
-> >> +                   PCI_SLOT(devfn), name);
-> >> +        return NULL;
-> >>     }
-> >> 
-> >>     pci_dev->devfn = devfn;  
-> >   
-> 
+>  target/ppc/meson.build | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/target/ppc/meson.build b/target/ppc/meson.build
+> index a69f174f41..4c2635039e 100644
+> --- a/target/ppc/meson.build
+> +++ b/target/ppc/meson.build
+> @@ -28,7 +28,7 @@ gen =3D [
+>                       extra_args: ['--static-decode=3Ddecode_insn64',
+>                                    '--insnwidth=3D64']),
+>  ]
+> -ppc_ss.add(gen)
+> +ppc_ss.add(when: 'CONFIG_TCG', if_true: gen)
+> =20
+>  ppc_ss.add(when: 'CONFIG_KVM', if_true: files('kvm.c'), if_false: files(=
+'kvm-stub.c'))
+>  ppc_ss.add(when: 'CONFIG_USER_ONLY', if_true: files('user_only_helper.c'=
+))
 
+
+
+--=20
+Greg
 
