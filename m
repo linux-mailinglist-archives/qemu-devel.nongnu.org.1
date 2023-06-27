@@ -2,67 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81FA173FBD2
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 14:13:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E961D73FBDF
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 14:19:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qE7YZ-0005JD-Iv; Tue, 27 Jun 2023 08:12:27 -0400
+	id 1qE7eL-0007Af-MS; Tue, 27 Jun 2023 08:18:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qE7YW-0005Ii-4Y
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 08:12:24 -0400
-Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
+ id 1qE7eK-0007A1-3I
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 08:18:24 -0400
+Received: from mail-lj1-x235.google.com ([2a00:1450:4864:20::235])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qE7YU-00023L-Dp
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 08:12:23 -0400
-Received: by mail-ed1-x52b.google.com with SMTP id
- 4fb4d7f45d1cf-51d810010deso3014671a12.0
- for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 05:12:21 -0700 (PDT)
+ id 1qE7eF-0002yG-C4
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 08:18:21 -0400
+Received: by mail-lj1-x235.google.com with SMTP id
+ 38308e7fff4ca-2b699284ff4so43304611fa.2
+ for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 05:18:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687867941; x=1690459941;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=+R0bx70T6FRoSzBP92juYNpgA41gealJZHkeJuD1QBk=;
- b=O1yZm554d1l/tG5AFVhQxYYr74GDUBmbAOH6uAFlO9BB49CNYiD+YkQAlXmYH7YAyf
- KVxpMbmdbKHFQEdi+oJXD3OBbgIgEXdj+0ecgzrcjbutzLOwgHF/H4sWu8n5AymjFPai
- MtK30tQplVD3HmmGfW21CjBQzLCNN/jc23/HOKFwLnT1Tn/GKGCKuZENefIz4I0xzZV0
- QsD+bEJZO+bbbwiM9XNl/DQSajiNPahdr7RGvWe9EMxEpwSGf5iQEe9mSDT2Wtw6ZLPI
- ZBk08H8LVRuopQAhDFBiUaVNL19cQnyA0y5Jnw3PvnmgQonACtnR7BCCi2UUsZ1Kq6oL
- 1Aew==
+ d=linaro.org; s=google; t=1687868297; x=1690460297;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=q9CKyDDLdNVAY7Na0lCbm2OKOo0ud7z20ESMUW/hXkE=;
+ b=LG6yVvPG35mwWTjBN75rVfssYZpW32GBCT1sORIsp5g1BG5yBidtdcNpEwr/T4fscA
+ X6Kq/5ic2hEzyT8aNS8+Cksemx9J0RutXCADhug5hKzhS5d/xGwMrHKMNtt7xuQfDOGL
+ rm3K6vnFoyJlaCRrWdViCu4yx2WyNJFjoPJmDKL6N3jd4jPf4OGK8MPIz90yHupqSSUM
+ y66tmFgmiGbsRl2aUwoRbXTPdnxjMVjUL2fJYgua1qXhJR+NQeD/4nGPgZBMbvKVINg8
+ LNbP9n4zeszO7rE1SctkSk8QLJ+Nryj8L1fquGMyMVI2uBiqjy/CbZdzHsXy+r7pve+x
+ exow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687867941; x=1690459941;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=+R0bx70T6FRoSzBP92juYNpgA41gealJZHkeJuD1QBk=;
- b=dqxr0xPvWMgFTyZNV11XgcIIz3cXmsOd3ffQvqMkYDr48wtZ17KQctAihZg4mSCAO1
- NSwlu90kcRjsaBVO4qe4GbfGsJieW+FatRpzPdlbM8ILTrOkqhYKqrJoGuZinoui0Rgf
- XoivONz4u0OEim2KAkZW+8+yj41x76a3KxL1kWJ6FYSXQnUTV+qKaKSuGgFNGPopuDCW
- FZcOzhw0RoR9X5vKTWTIDIMHa2dJMmO7y4Y5T2B14JGJaX6ofncEHCfMVwNY+5F4Pzo1
- 0M3fjZctcjut5I3QwL8feWsHrlDTv+7XMsz4sL6NfpH6qLkJxi7x0f8QfWL36JbJ7iid
- Apgw==
-X-Gm-Message-State: AC+VfDzBqSupyGJ+CEw+d58vVzxJ6fsNE04jWBfciFvcGKavsmy5bi//
- B+2VYrM0eYl9Xte77kg4xr+zPyBSkRlxzIoiCeJ3lzqhLtdZrwUC
-X-Google-Smtp-Source: ACHHUZ428kLCWSwvD9zcLmEQukBcQG8vNufUD8orO/1AyLFYRLCE2kcmpnkBgHwij1at2w6Nd9O9iWRdLSU4uC7KvoE=
-X-Received: by 2002:aa7:d405:0:b0:51d:907d:b927 with SMTP id
- z5-20020aa7d405000000b0051d907db927mr4636805edq.11.1687867940809; Tue, 27 Jun
- 2023 05:12:20 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1687868297; x=1690460297;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=q9CKyDDLdNVAY7Na0lCbm2OKOo0ud7z20ESMUW/hXkE=;
+ b=h3S5GZphsv0jE/G6v3rNEC9YDXNDrzAoT3bWVUqSGL7Vuwcupl4qDnq715hvHz/R0D
+ AHwWWUqx4+0XCYkOZMicow5sykdGJ96Ou8a4+SQDw4lhXlx7yp8+nMseOtbh+e3NRHue
+ OL8Fzxlgyy4+lk3FR/3pO40oQ/VBfPt2a6vDlminRIh61TaOv7v8rBdmqDXW0LJ7iTrR
+ qryb5rHYntBDtPLA72bBYYx8FPrdS/geY96D0+1GGvTXMPNTLXBPNnM7oMsaC+q6XJuR
+ rTzOmvrDeDIukyxUbIrRUPADrnbk207HoKWTYNIwMULW20wusJ4bQ6B2f2Pp1OBLqt0H
+ 4Wyg==
+X-Gm-Message-State: AC+VfDzLW5PAiKw5foR/+Um63t+NSpGfWrKQiY8NeU71ltBTrNdsQ6aX
+ DTMmaJL6NwdqKsSvsbQev/WzJ6A7Xtxg58nL98FQ/g==
+X-Google-Smtp-Source: ACHHUZ7n5E/WGjITRiBPkG7pLBazPOvI3t3ai0EuuALk7Rk2W5G3EGIDYZyJNoXa9A2DOtF+aJon7BgwiE+JX8nonPQ=
+X-Received: by 2002:a05:6512:1319:b0:4f8:6625:f2ca with SMTP id
+ x25-20020a056512131900b004f86625f2camr10168587lfu.61.1687868297382; Tue, 27
+ Jun 2023 05:18:17 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230626075207.623535-1-marcin.juszkiewicz@linaro.org>
-In-Reply-To: <20230626075207.623535-1-marcin.juszkiewicz@linaro.org>
+References: <CAC583hE_ZXqA4ZkA2OfYYULzPAD+mJOHqvZuJxevyae8eT74rg@mail.gmail.com>
+In-Reply-To: <CAC583hE_ZXqA4ZkA2OfYYULzPAD+mJOHqvZuJxevyae8eT74rg@mail.gmail.com>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 27 Jun 2023 13:12:09 +0100
-Message-ID: <CAFEAcA-K_2SLxbq90TpUyzLpiC0U2WVJe7ffaC_TH66K-=GV4A@mail.gmail.com>
-Subject: Re: [PATCH 1/1] hw/arm/sbsa-ref: add PCIe node into DT
-To: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-Cc: qemu-devel@nongnu.org, Leif Lindholm <quic_llindhol@quicinc.com>, 
- Radoslaw Biernacki <rad@semihalf.com>, qemu-arm@nongnu.org
+Date: Tue, 27 Jun 2023 13:18:06 +0100
+Message-ID: <CAFEAcA-iXJRiKs5ZRC=_1fP63difCrQZEFjt75FxuiokS41LXA@mail.gmail.com>
+Subject: Re: Request for Assistance: Adding I2C Support in QEMU for Raspberry
+ Pi (BCM2835 Peripherals)
+To: Shivam <shivamvijay543@gmail.com>
+Cc: qemu-devel@nongnu.org, philmd@linaro.org
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52b.google.com
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::235;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x235.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -85,50 +87,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 26 Jun 2023 at 08:52, Marcin Juszkiewicz
-<marcin.juszkiewicz@linaro.org> wrote:
->
-> Add PCI Express information into DeviceTree as part of SBSA-REF
-> versioning.
->
-> Trusted Firmware will read it and provide to next firmware level.
->
-> Signed-off-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-> ---
->  hw/arm/sbsa-ref.c | 20 ++++++++++++++++++++
->  1 file changed, 20 insertions(+)
->
-> diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
-> index 0639f97dd5..b87d2ee3b2 100644
-> --- a/hw/arm/sbsa-ref.c
-> +++ b/hw/arm/sbsa-ref.c
-> @@ -171,6 +171,25 @@ static uint64_t sbsa_ref_cpu_mp_affinity(SBSAMachineState *sms, int idx)
->      return arm_cpu_mp_affinity(idx, clustersz);
->  }
->
-> +static void sbsa_fdt_add_pcie_node(SBSAMachineState *sms)
-> +{
-> +    char *nodename;
-> +
-> +    nodename = g_strdup_printf("/pcie");
-> +    qemu_fdt_add_subnode(sms->fdt, nodename);
-> +    qemu_fdt_setprop_sized_cells(sms->fdt, nodename, "reg",
-> +                                 2, sbsa_ref_memmap[SBSA_PCIE_ECAM].base,
-> +                                 2, sbsa_ref_memmap[SBSA_PCIE_ECAM].size,
-> +                                 2, sbsa_ref_memmap[SBSA_PCIE_PIO].base,
-> +                                 2, sbsa_ref_memmap[SBSA_PCIE_PIO].size,
-> +                                 2, sbsa_ref_memmap[SBSA_PCIE_MMIO].base,
-> +                                 2, sbsa_ref_memmap[SBSA_PCIE_MMIO].size,
-> +                                 2, sbsa_ref_memmap[SBSA_PCIE_MMIO_HIGH].base,
-> +                                 2, sbsa_ref_memmap[SBSA_PCIE_MMIO_HIGH].size);
-> +
-> +    g_free(nodename);
+On Wed, 21 Jun 2023 at 06:01, Shivam <shivamvijay543@gmail.com> wrote:
+> I hope this email finds you well. I am reaching out to seek guidance and =
+assistance regarding a project I am working on involving the addition of I2=
+C support in QEMU for the Raspberry Pi, specifically targeting the BCM2835 =
+peripherals.
 
+Hi! Thanks for having a look at implementing this.
 
-Why do we need to do this? The firmware should just
-know exactly where the PCIE windows are, the same way
-it knows where the flash, the UART, the RTC etc etc
-all are in the memory map.
+> I have been studying the BCM2835 datasheet to familiarize myself with the=
+ I2C device registers and their functionalities. Currently, I have started =
+implementing the i2c controller for bcm2835, but now couldn't able to get t=
+he feel that how should I integrate it with the BCM2835 Soc.(bcm2835_periph=
+eral.c)
+
+You should be able to follow the same pattern as with
+other devices that are in that SoC, like the 'aux'
+or 'rng' devices:
+ * your source file is integrated into the build/kconfig
+   system, and implements the new device
+ * you have a header file that defines things like the
+   type macros and struct
+ * you modify the bcm2835_peripherals.c file to
+   initialize, realize and wire up the new device,
+   similarly to how it handles the other devices it has
+
+You'll want to do this all on a git branch, so you can
+split it up into different patches (eg "create new
+device"; "add new device to the SoC"). When you get
+to a state where you'd like us to take a look at it,
+that will be more convenient for us if you send it as a
+series of patches, rather than attaching individual source
+files to an email.
+
+(We have some notes about patch submission here
+https://www.qemu.org/docs/master/devel/submitting-a-patch.html
+if you haven't found that page already).
 
 thanks
 -- PMM
