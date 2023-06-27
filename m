@@ -2,71 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 755AA73FCEB
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 15:37:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EE8973FD27
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 15:48:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qE8sC-0002wc-Kw; Tue, 27 Jun 2023 09:36:48 -0400
+	id 1qE92E-0005RV-A5; Tue, 27 Jun 2023 09:47:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qE8rz-0002vt-Bp
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 09:36:36 -0400
-Received: from mail-lj1-x22d.google.com ([2a00:1450:4864:20::22d])
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1qE928-0005Ps-Jt; Tue, 27 Jun 2023 09:47:05 -0400
+Received: from mail-oi1-x232.google.com ([2607:f8b0:4864:20::232])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qE8ru-0007Dr-KS
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 09:36:31 -0400
-Received: by mail-lj1-x22d.google.com with SMTP id
- 38308e7fff4ca-2b6a1fe5845so33890281fa.3
- for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 06:36:30 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1qE927-0001Im-0A; Tue, 27 Jun 2023 09:47:04 -0400
+Received: by mail-oi1-x232.google.com with SMTP id
+ 5614622812f47-3a3373211a1so285234b6e.0; 
+ Tue, 27 Jun 2023 06:47:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687872988; x=1690464988;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=8fhC9xcnQDDjFbdwaTPtk8/MTt695a6dEAOZPv7zGQo=;
- b=CKr0UdM3OzuXK1JKPU56QzaEVn9KgCTB/Jp543Ck2/b1QcZj8Lx3cNZSPML+jsVHhD
- VvvSOqGnhxGOFByV/n1eMj/ltOo/EsGvdhX92hOym7JIng5yxq+OQhtmXwfmXMQL/wFs
- NKv8/uns102Ns2w6T7pAN42wnIxDF6+qP3/c3NH2kpJTb9RtF19YrtIBCdbqESNm06ca
- ops2kxCOQ/STkmwyQXUd1gEsnQN5JZWkunU1D+wowfcrhCRa0zc4eX7y4waXnfmWSZg5
- DurlEjtfhYuCYdqGsrEoUUFAYPg82N2AvjsqooGt8Fq9tkODD/rT+ygFd4azd0+B8+az
- PR+g==
+ d=gmail.com; s=20221208; t=1687873620; x=1690465620;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Kyep1n3Keean0L8NM8PiGLccMF8dyHy+RpfGW9V1U4s=;
+ b=Tkc6DP7Yt/D+rTtCqnkfKf8yD0HgXymWysAEKx31qSXJLy4h0mRCBAPsTvK0WX+iAP
+ jW3HJFG7KNZuBAUNPS398jT92gqCwRSlHZWh1DZYp+SJKmXFlkuRdoGFuUeqxndqrywR
+ 2kfmc4if01Zq9I7Qtmp7s5pgBZ/KYoe3EmN+4UxsIGsLj5bW+IrhJEydnqZ8/XxykSJ8
+ qd5OwKOBWLPRjWYBsQaHgcryURyCoTNGfjcw4KHhlkJ3LNPWD03VRu4QCf6M1rdvgQps
+ 0rCvnoYDlPH51NO2c6udPCjKmT4HHznzpN0EEAHChPKd2qtZQPDCcV2XEmziDRrNxSEd
+ WhkQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687872988; x=1690464988;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20221208; t=1687873620; x=1690465620;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=8fhC9xcnQDDjFbdwaTPtk8/MTt695a6dEAOZPv7zGQo=;
- b=UVeFcBxIHYObNoLe0sESJR67ylo9sRRtNEJ1ZF2nhOK1B5KWf/2xFa2dp53qYhhayq
- xACgeEsUXcpIvF33nDxcifuPtYuWBxweGOlHIr0spY1HEbRtiG5c9tPY2NXfW91BVJvt
- b5Wh1qPFF+Ly/BPDfdlKrb7Ipl+Eba+5hdbzfzrVj4ITsfHwJYXCe1slTzJkjajDi2VX
- lFuQK79YiuRY4QCoiQP3FuvR8D791bTuKXSFrOhvH+2qjO142p+PdpMuqf+q+B2RIiZ4
- Y2JyfKAxk6qg0gAO1q2eaFHI4qGjr5s8V0t9EE8Ouij+Z/rO+xIJt4XaGTc7UzylTLr+
- fHtg==
-X-Gm-Message-State: AC+VfDx72efglrjjA+BdvR3a8ylz1v9T4HVp65s5kOew2lJV79llKHrv
- acy1iY+TMtdnHBbmI3J0vaaRRpHDSW8oC0jRL9GA1w==
-X-Google-Smtp-Source: ACHHUZ7lM4hRzvzU56o5t3GXWTXrNXY1mD25KiuafWkWKpACizu2/fIcsr5KRHtDsXDoN1qZIVd62h7DMP1LLh/+xp8=
-X-Received: by 2002:a2e:9d19:0:b0:2b5:8153:deb3 with SMTP id
- t25-20020a2e9d19000000b002b58153deb3mr12511414lji.4.1687872987731; Tue, 27
- Jun 2023 06:36:27 -0700 (PDT)
+ bh=Kyep1n3Keean0L8NM8PiGLccMF8dyHy+RpfGW9V1U4s=;
+ b=YJJo4tWmLKxtPuFCPVg4KMINtbDcT9jEmk6sYbe4e0c4Zonh9AM5qhsKUOFfq6/7lw
+ Z3de3/lYbytij/Y6UTysn2xIKkBtA7K8HH64z8VeadW1j3wo/uY8mohzojX1/uBD57nw
+ YxuXjopmdqgj7XN65dSeDYZ43Wy2JXYsDnmIVHG8wwZeLkDw82bJt6fxUPdMjJF2wDJv
+ AADkfFrpITxRhWpSUf9Kczoh+/2H0XSIXlPxDbrv/dNOVH/f4ocPWhF8WKqG9PPuOz87
+ sGcThhVxzlSYCPzVFADnuF8Ww02iu5p+Ccyb3w2qP30RoioMEnos30qkqYzvnybW30FR
+ P5YA==
+X-Gm-Message-State: AC+VfDygpOfTJRSm+D1FZVDEbCkiXvoWvWNBIUKJz6zx3w7EdhKFXGmG
+ Lpev6+5ptB0bM2o6y8ab+NuFst7iV1I=
+X-Google-Smtp-Source: ACHHUZ4zwn1CVILBRHTub4QDNc2wf6U5vB28tOHkxXezLecKAh8Pq/GDoRc2vAbgiNZZfyrX3HVMQw==
+X-Received: by 2002:a05:6808:2392:b0:39c:475e:d78a with SMTP id
+ bp18-20020a056808239200b0039c475ed78amr39612490oib.17.1687873620238; 
+ Tue, 27 Jun 2023 06:47:00 -0700 (PDT)
+Received: from wheely.local0.net (193-116-109-121.tpgi.com.au.
+ [193.116.109.121]) by smtp.gmail.com with ESMTPSA id
+ d9-20020a63f249000000b0051eff0a70d7sm5741384pgk.94.2023.06.27.06.46.56
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 27 Jun 2023 06:46:59 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>
+Subject: [PATCH v2 0/4] target/ppc: Catch invalid real address accesses
+Date: Tue, 27 Jun 2023 23:46:40 +1000
+Message-Id: <20230627134644.260663-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-References: <20230622151201.1578522-1-richard.henderson@linaro.org>
-In-Reply-To: <20230622151201.1578522-1-richard.henderson@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 27 Jun 2023 14:36:16 +0100
-Message-ID: <CAFEAcA-LNDGcddHiTOuyc7XcaSS4KWMFYu_-532rfjcvF5_c7g@mail.gmail.com>
-Subject: Re: [PATCH 0/4] target/arm: Fix SME full tile indexing
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::22d;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x22d.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::232;
+ envelope-from=npiggin@gmail.com; helo=mail-oi1-x232.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -84,16 +90,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 22 Jun 2023 at 16:12, Richard Henderson
-<richard.henderson@linaro.org> wrote:
->
-> Fix #1620 and add its test case.
-> Several cleanups to aid debugging ZA[].  :-)
+Since v1 I squashed a patch (and wrapper function) out, removed 970
+to POWER8 invalid real address checkstop, added attn implementation to
+demonstrate sharing of checkstop, and made some fixes to checkstop
+mechanism so it stops on the instruction causing it.
 
-I'm going to apply patches 1,2 and 4 to target-arm.next.
-I've tagged 4 as cc: qemu-stable (but will remove that if
-you disagree).
+Thanks,
+Nick
 
-thanks
--- PMM
+
+BALATON Zoltan (1):
+  target/ppc: Move common check in machine check handlers to a function
+
+Nicholas Piggin (3):
+  target/ppc: Machine check on invalid real address access on POWER9/10
+  target/ppc: Make checkstop actually stop the system
+  target/ppc: Implement attn instruction on BookS 64-bit processors
+
+ target/ppc/cpu.h         |   2 +
+ target/ppc/cpu_init.c    |   1 +
+ target/ppc/excp_helper.c | 181 ++++++++++++++++++++++-----------------
+ target/ppc/helper.h      |   2 +
+ target/ppc/internal.h    |   5 ++
+ target/ppc/translate.c   |   7 ++
+ 6 files changed, 121 insertions(+), 77 deletions(-)
+
+-- 
+2.40.1
+
 
