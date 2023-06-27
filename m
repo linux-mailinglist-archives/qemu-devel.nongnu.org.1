@@ -2,61 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3656D73FC88
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 15:11:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6779C73FC78
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 15:10:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qE8M2-00007t-M8; Tue, 27 Jun 2023 09:03:34 -0400
+	id 1qE8M4-00008F-E4; Tue, 27 Jun 2023 09:03:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qE8Ly-00005s-7A
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 09:03:31 -0400
+ id 1qE8M0-00006R-7O
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 09:03:32 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qE8Lu-00077W-QT
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 09:03:29 -0400
+ id 1qE8Lv-00079S-Pa
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 09:03:31 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687871004;
+ s=mimecast20190719; t=1687871006;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=E2I87G2v8H723uGWkAnAPdM92zLKP2WkUN6HDpeAYak=;
- b=OtkiHUc0M+qpLp9WVGDjART1vYkYfgN83jfNYSLB7SkJmCZmoZ5AUqWkZqBjlS9qGXf89I
- x5Y+VjnSJsYxzfpuHI2VpC0S4GLdgnzBHdjVohcE6Bzfj7cwhoKQVUVXunvIM35BWy9RkI
- av32tQ/TR0iCbsx9V0ssXoIZnqL0rJk=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=9Vzzn6tUFrjan4BZgfFPWCPjeNGkv0pevKvaUz08Xb4=;
+ b=YKBWtxwQasSh/JFNBbRCkhRyXPOgYmXcqLwQ9vczam5++jgGNSl7RNwk/Pr7eRVNfUNKNz
+ nvGwQFb21V/+sQxar1yJLvIrzw7iw8OwzRsdiWSoneGSL/dP3kY0Ai9tey5ldwyOlOKlfP
+ tQjAY+Y0lnx8pEIjqkyeExQt0LZf+3o=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-394-1vc4BpI_Ozu1GEKtCPQG5g-1; Tue, 27 Jun 2023 09:03:20 -0400
-X-MC-Unique: 1vc4BpI_Ozu1GEKtCPQG5g-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
+ us-mta-662-sRBmmjD_M-anMQ7lij5nXQ-1; Tue, 27 Jun 2023 09:03:18 -0400
+X-MC-Unique: sRBmmjD_M-anMQ7lij5nXQ-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1EAC510504C4;
- Tue, 27 Jun 2023 13:03:12 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 51AFC3C1CB01;
+ Tue, 27 Jun 2023 13:03:14 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.36])
- by smtp.corp.redhat.com (Postfix) with ESMTP id A2A4040C2063;
- Tue, 27 Jun 2023 13:03:11 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 87B70200A3AD;
+ Tue, 27 Jun 2023 13:03:13 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PULL 19/33] tests: make dbus-display-test work on win32
-Date: Tue, 27 Jun 2023 15:02:16 +0200
-Message-ID: <20230627130231.1614896-20-marcandre.lureau@redhat.com>
+ Gerd Hoffmann <kraxel@redhat.com>
+Subject: [PULL 20/33] ui/dbus: introduce "Interfaces" properties
+Date: Tue, 27 Jun 2023 15:02:17 +0200
+Message-ID: <20230627130231.1614896-21-marcandre.lureau@redhat.com>
 In-Reply-To: <20230627130231.1614896-1-marcandre.lureau@redhat.com>
 References: <20230627130231.1614896-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
 Received-SPF: pass client-ip=170.10.133.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -85,123 +84,235 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Acked-by: Thomas Huth <thuth@redhat.com>
-Message-Id: <20230606115658.677673-8-marcandre.lureau@redhat.com>
----
- tests/qtest/dbus-display-test.c | 43 ++++++++++++++++++++++++++++++---
- tests/qtest/meson.build         |  2 +-
- 2 files changed, 41 insertions(+), 4 deletions(-)
+This property is similar to ``org.freedesktop.DBus.Interfaces`` property
+on the bus interface: it's an array of strings listing the extra
+interfaces and capabilities available, in a convenient way.
 
-diff --git a/tests/qtest/dbus-display-test.c b/tests/qtest/dbus-display-test.c
-index fef025ac6f..21edaa1e32 100644
---- a/tests/qtest/dbus-display-test.c
-+++ b/tests/qtest/dbus-display-test.c
-@@ -1,4 +1,5 @@
- #include "qemu/osdep.h"
-+#include "qemu/sockets.h"
- #include "qemu/dbus.h"
- #include "qemu/sockets.h"
- #include <gio/gio.h>
-@@ -14,7 +15,11 @@ test_dbus_p2p_from_fd(int fd)
-     g_autoptr(GSocketConnection) socketc = NULL;
-     GDBusConnection *conn;
+Most interfaces are implicit, as they are required. For
+``org/qemu/Display1_$id``, we can list the Keyboard And Mouse
+interfaces. Those could be optional.
+
+Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Message-Id: <20230606115658.677673-9-marcandre.lureau@redhat.com>
+---
+ ui/dbus-console.c    |   7 +++
+ ui/dbus-display1.xml | 118 ++++++++++++++++++++++++++++++++++++++++++-
+ 2 files changed, 123 insertions(+), 2 deletions(-)
+
+diff --git a/ui/dbus-console.c b/ui/dbus-console.c
+index 4a1c1fb55e..aaa9d3b0b3 100644
+--- a/ui/dbus-console.c
++++ b/ui/dbus-console.c
+@@ -537,6 +537,12 @@ dbus_display_console_new(DBusDisplay *display, QemuConsole *con)
+     char device_addr[256] = "";
+     DBusDisplayConsole *ddc;
+     int idx, i;
++    const char *interfaces[] = {
++        "org.qemu.Display1.Keyboard",
++        "org.qemu.Display1.Mouse",
++        "org.qemu.Display1.MultiTouch",
++        NULL
++    };
  
-+#ifdef WIN32
-+    socket = g_socket_new_from_fd(_get_osfhandle(fd), &err);
-+#else
-     socket = g_socket_new_from_fd(fd, &err);
-+#endif
-     g_assert_no_error(err);
- 
-     socketc = g_socket_connection_factory_create_connection(socket);
-@@ -126,7 +131,10 @@ test_dbus_console_registered(GObject *source_object,
- 
-     qemu_dbus_display1_console_call_register_listener_finish(
-         QEMU_DBUS_DISPLAY1_CONSOLE(source_object),
--        NULL, res, &err);
-+#ifndef WIN32
-+        NULL,
-+#endif
-+        res, &err);
-     g_assert_no_error(err);
- 
-     test->listener_conn = g_thread_join(test->thread);
-@@ -145,17 +153,25 @@ test_dbus_display_console(void)
-     g_autoptr(GError) err = NULL;
-     g_autoptr(GDBusConnection) conn = NULL;
-     g_autoptr(QemuDBusDisplay1ConsoleProxy) console = NULL;
--    g_autoptr(GUnixFDList) fd_list = NULL;
-     g_autoptr(GMainLoop) loop = NULL;
-     QTestState *qts = NULL;
--    int pair[2], idx;
-+    int pair[2];
-     TestDBusConsoleRegister test;
-+#ifdef WIN32
-+    WSAPROTOCOL_INFOW info;
-+    g_autoptr(GVariant) listener = NULL;
-+#else
-+    g_autoptr(GUnixFDList) fd_list = NULL;
-+    int idx;
-+#endif
- 
-     test_setup(&qts, &conn);
- 
-     g_assert_cmpint(qemu_socketpair(AF_UNIX, SOCK_STREAM, 0, pair), ==, 0);
-+#ifndef WIN32
-     fd_list = g_unix_fd_list_new();
-     idx = g_unix_fd_list_append(fd_list, pair[1], NULL);
-+#endif
- 
-     console = QEMU_DBUS_DISPLAY1_CONSOLE_PROXY(
-         qemu_dbus_display1_console_proxy_new_sync(
-@@ -171,12 +187,33 @@ test_dbus_display_console(void)
-     test.thread = g_thread_new(NULL, test_dbus_p2p_server_setup_thread,
-                                GINT_TO_POINTER(pair[0]));
- 
-+#ifdef WIN32
-+    if (WSADuplicateSocketW(_get_osfhandle(pair[1]),
-+                            GetProcessId((HANDLE) qtest_pid(qts)),
-+                            &info) == SOCKET_ERROR)
-+    {
-+        g_autofree char *emsg = g_win32_error_message(WSAGetLastError());
-+        g_error("WSADuplicateSocket failed: %s", emsg);
-+    }
-+    close(pair[1]);
-+    listener = g_variant_new_fixed_array(G_VARIANT_TYPE_BYTE,
-+                                         &info,
-+                                         sizeof(info),
-+                                         1);
-+#endif
+     assert(display);
+     assert(con);
+@@ -561,6 +567,7 @@ dbus_display_console_new(DBusDisplay *display, QemuConsole *con)
+         "width", qemu_console_get_width(con, 0),
+         "height", qemu_console_get_height(con, 0),
+         "device-address", device_addr,
++        "interfaces", interfaces,
+         NULL);
+     g_object_connect(ddc->iface,
+         "swapped-signal::handle-register-listener",
+diff --git a/ui/dbus-display1.xml b/ui/dbus-display1.xml
+index cd596f774e..06e8779c04 100644
+--- a/ui/dbus-display1.xml
++++ b/ui/dbus-display1.xml
+@@ -26,6 +26,20 @@
+         The list of consoles available on ``/org/qemu/Display1/Console_$id``.
+     -->
+     <property name="ConsoleIDs" type="au" access="read"/>
 +
-     qemu_dbus_display1_console_call_register_listener(
-         QEMU_DBUS_DISPLAY1_CONSOLE(console),
-+#ifdef WIN32
-+        listener,
-+#else
-         g_variant_new_handle(idx),
-+#endif
-         G_DBUS_CALL_FLAGS_NONE,
-         -1,
-+#ifndef WIN32
-         fd_list,
-+#endif
-         NULL,
-         test_dbus_console_registered,
-         &test);
-diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-index 5fa6833ad7..74630f6672 100644
---- a/tests/qtest/meson.build
-+++ b/tests/qtest/meson.build
-@@ -104,7 +104,7 @@ qtests_i386 = \
-    'numa-test'
-   ]
++    <!--
++        Interfaces:
++
++        This property lists extra interfaces provided by the
++        /org/qemu/Display1/VM object, and can be used to detect
++        the capabilities with which they are communicating.
++
++        Unlike the standard D-Bus Introspectable interface, querying this
++        property does not require parsing XML.
++
++        (earlier version of the display interface do not provide this property)
++    -->
++    <property name="Interfaces" type="as" access="read"/>
+   </interface>
  
--if dbus_display and targetos != 'windows'
-+if dbus_display
-   qtests_i386 += ['dbus-display-test']
- endif
+   <!--
+@@ -127,12 +141,27 @@
+         The device address (ex: "pci/0000/02.0").
+     -->
+     <property name="DeviceAddress" type="s" access="read"/>
++
++    <!--
++        Interfaces:
++
++        This property lists extra interfaces provided by the
++        ``/org/qemu/Display1/Console_$id`` object, and can be used to detect the
++        capabilities with which they are communicating.
++
++        Unlike the standard D-Bus Introspectable interface, querying this
++        property does not require parsing XML.
++
++        (earlier version of the display interface do not provide this property)
++    -->
++    <property name="Interfaces" type="as" access="read"/>
+   </interface>
  
+   <!--
+       org.qemu.Display1.Keyboard:
+ 
+-      This interface in implemented on ``/org/qemu/Display1/Console_$id`` (see
++      This interface is optionally implemented on
++      ``/org/qemu/Display1/Console_$id`` (see
+       :dbus:iface:`~org.qemu.Display1.Console`).
+   -->
+   <interface name="org.qemu.Display1.Keyboard">
+@@ -171,7 +200,8 @@
+   <!--
+       org.qemu.Display1.Mouse:
+ 
+-      This interface in implemented on ``/org/qemu/Display1/Console_$id`` (see
++      This interface is optionally implemented on
++      ``/org/qemu/Display1/Console_$id`` (see
+       :dbus:iface:`~org.qemu.Display1.Console` documentation).
+ 
+       .. _dbus-button-values:
+@@ -425,6 +455,20 @@
+         <annotation name="org.gtk.GDBus.C.ForceGVariant" value="true"/>
+       </arg>
+     </method>
++
++    <!--
++        Interfaces:
++
++        This property lists extra interfaces provided by the
++        /org/qemu/Display1/Listener object, and can be used to detect
++        the capabilities with which they are communicating.
++
++        Unlike the standard D-Bus Introspectable interface, querying this
++        property does not require parsing XML.
++
++        (earlier version of the display interface do not provide this property)
++    -->
++    <property name="Interfaces" type="as" access="read"/>
+   </interface>
+ 
+   <!--
+@@ -522,6 +566,20 @@
+         <annotation name="org.gtk.GDBus.C.ForceGVariant" value="true"/>
+       </arg>
+     </method>
++
++    <!--
++        Interfaces:
++
++        This property lists extra interfaces provided by the
++        /org/qemu/Display1/Clipboard object, and can be used to detect
++        the capabilities with which they are communicating.
++
++        Unlike the standard D-Bus Introspectable interface, querying this
++        property does not require parsing XML.
++
++        (earlier version of the display interface do not provide this property)
++    -->
++    <property name="Interfaces" type="as" access="read"/>
+   </interface>
+ 
+   <!--
+@@ -571,6 +629,20 @@
+       <arg type="h" name="listener" direction="in"/>
+       <?endif?>
+     </method>
++
++    <!--
++        Interfaces:
++
++        This property lists extra interfaces provided by the
++        /org/qemu/Display1/Audio object, and can be used to detect
++        the capabilities with which they are communicating.
++
++        Unlike the standard D-Bus Introspectable interface, querying this
++        property does not require parsing XML.
++
++        (earlier version of the display interface do not provide this property)
++    -->
++    <property name="Interfaces" type="as" access="read"/>
+   </interface>
+ 
+   <!--
+@@ -657,6 +729,20 @@
+         <annotation name="org.gtk.GDBus.C.ForceGVariant" value="true"/>
+       </arg>
+     </method>
++
++    <!--
++        Interfaces:
++
++        This property lists extra interfaces provided by the
++        /org/qemu/Display1/AudioOutListener object, and can be used to detect
++        the capabilities with which they are communicating.
++
++        Unlike the standard D-Bus Introspectable interface, querying this
++        property does not require parsing XML.
++
++        (earlier version of the display interface do not provide this property)
++    -->
++    <property name="Interfaces" type="as" access="read"/>
+   </interface>
+ 
+   <!--
+@@ -745,6 +831,20 @@
+         <annotation name="org.gtk.GDBus.C.ForceGVariant" value="true"/>
+       </arg>
+     </method>
++
++    <!--
++        Interfaces:
++
++        This property lists extra interfaces provided by the
++        /org/qemu/Display1/AudioInListener object, and can be used to detect
++        the capabilities with which they are communicating.
++
++        Unlike the standard D-Bus Introspectable interface, querying this
++        property does not require parsing XML.
++
++        (earlier version of the display interface do not provide this property)
++    -->
++    <property name="Interfaces" type="as" access="read"/>
+   </interface>
+ 
+   <!--
+@@ -826,5 +926,19 @@
+         The D-Bus unique name of the registered handler.
+     -->
+     <property name="Owner" type="s" access="read"/>
++
++    <!--
++        Interfaces:
++
++        This property lists extra interfaces provided by the
++        ``/org/qemu/Display1/Chardev_$i`` object, and can be used to detect
++        the capabilities with which they are communicating.
++
++        Unlike the standard D-Bus Introspectable interface, querying this
++        property does not require parsing XML.
++
++        (earlier version of the display interface do not provide this property)
++    -->
++    <property name="Interfaces" type="as" access="read"/>
+   </interface>
+ </node>
 -- 
 2.41.0
 
