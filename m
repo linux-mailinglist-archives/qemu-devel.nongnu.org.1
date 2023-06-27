@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40D8B73F4CB
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 08:48:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38B4873F4CE
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 08:49:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qE2Tf-0005id-Cg; Tue, 27 Jun 2023 02:47:03 -0400
+	id 1qE2VU-0006Tk-3a; Tue, 27 Jun 2023 02:48:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qE2Tc-0005iP-Ky
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 02:47:00 -0400
+ id 1qE2VR-0006SB-Ra; Tue, 27 Jun 2023 02:48:53 -0400
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qE2Ta-0000ka-Pi
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 02:47:00 -0400
+ id 1qE2VQ-0001FF-EV; Tue, 27 Jun 2023 02:48:53 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
- In-Reply-To:References:To:From:MIME-Version:Date:Message-ID:Sender:Reply-To:
- Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
- Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+ In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
+ Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+ :Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
  List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=zGVNbCEgWXttzElrvU/OXi/u10uIXmfia4NH6NikXNU=; b=rnFGPkGwrDvqSgIYqgHG80A8a4
- LwvIyxa2IwaAz0eUsL3+HgiOAZU4hWEVDvvx4cVPYfM1wf0FGX6zF2urxrvVbnjGWg791CQ6Rlb0A
- HQETxAqmgfAvyyfsOODoH+41vlz/Pbx8NdLf7zxxpsPksNnpWOGqFGG88tUcX/e5XEZbPqFoijNjP
- kCowJjQteJJM1Z/MlqXLlsq8JQSELYM0aXR9qg2LeJtvEb9QLZbYsaanq3T9Zkex6rzjm08CE+oO0
- tKHS4oLvb6ZMeMvVyMC6fnv/DZ8U3Bdqxh0wRPnvQcQzqYWJUmphCzKkj/bY0/Y/nY53pGsf5oq6I
- Kmxx8X7dkkxk+7cNlgwnioepb7OXT30Lg0n3XLsY+YTt+ufT9XQ1MB0+4ocPBHjDFVvKJjhSPN9rr
- r44amc0YEFRKS3TAskTMbhlf6eEThlp5Y/a4dMqfIcYU8ylouGUnYQQf5Hy7VAYLmVaFz4Kg7YGae
- NkDdn321Y9r5F/uERcIWOoP5e9laP3CWNQlE2/EmtJ/a5QsLyHYRyoa5bx4h6qe/XHdgkxDNC9DI9
- Ie26p7+voUmkQKeAtqBbZQXIjkuLC2Wzsj6E0WX26VLB6ZT7cqwWrULerDE7PTseMcBqkmjziVhNA
- PNnLHlrU84MsqJZF1sIvyxgUYxsJdq7JjEv2dUPTA=;
+ bh=rrEY2KdN2MuFce9gQbYhlHMrKp0zGXSMuX8BBHFXGHk=; b=HPuzbFAjTDdQt7HYxeptFGjla0
+ ovMELe+ifJRTxCyQnLpSwxQUnFMdoKjTq7gFKv7jCIjbmqlwi8aU7qFoujNjWnji+79Uj1xhBwgUY
+ 3E3vWSH3sIfdYKhmLWc9bOQGMlF5mHU6bZg9mSA5DPFC/0uKrf5UTiqhxhc6FosD274FRwhLwrqEs
+ QaIu/GXHcPL4PSG2j0nXhaKNeFvJw5//YbSKjIxuzipwF9LHC5Kg9tc2PydOcImkXuqoZVK34UkLQ
+ dL/XgzA09m8nGAJ4PrYcsAJ6l/jL6DEAg05NWvAmrsE5vZ8eg6mM/q8bKNWx2yqnDF89a1WkMjhvX
+ HLsnUkBnXdHDW8SZMzsbBHK5/7Bi7l6CmpNBrLe7i2rXhO7bAKsoqUNbcmXH7e37WGOt8FDOkdSja
+ QsfqGV7AdpcKZS9WHOt5p5dfU9CfttAxQBk7u/HZ1YnHmojnfg2g6Vw5k7VWYdtSZNDqXmDyMT8ZU
+ AR+H0GioLlZR2nXQqVY++941120ozoybiA/sdih46Qacr/Gklzb76YWIky3bng+s/FmdRkaD31sdY
+ bzfaGbGqXei+LaCCFzvjJGIi+S0tTFG/Y1RH6WVLgd8dgx8dFniRGB2lwuA/H/itrDqXI3IiuwHHS
+ CCGUDqs8nS6k+gUYqNMsiQXB0bG11y08wmL9Zenjk=;
 Received: from [2a00:23c4:8bad:df00:f732:dd76:7417:d15b]
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qE2TL-00021K-18; Tue, 27 Jun 2023 07:46:47 +0100
-Message-ID: <c83c2500-08d1-bb03-24d6-990a2f07b01b@ilande.co.uk>
-Date: Tue, 27 Jun 2023 07:46:49 +0100
+ id 1qE2V4-000223-8I; Tue, 27 Jun 2023 07:48:34 +0100
+Message-ID: <75a93dde-e236-6afd-40b9-26d08094ab3a@ilande.co.uk>
+Date: Tue, 27 Jun 2023 07:48:37 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.10.0
 Content-Language: en-US
+To: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org
+Cc: atar4qemu@gmail.com, =?UTF-8?B?SmFrdWIgSmVybcOhxZk=?= <jakub@jermar.eu>,
+ qemu-stable@nongnu.org
+References: <20230515151104.1350155-1-armbru@redhat.com>
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-References: <20230621180607.1516336-1-richard.henderson@linaro.org>
- <2f11ee14-9bf2-85fe-581c-e3024efd2124@ilande.co.uk>
-In-Reply-To: <2f11ee14-9bf2-85fe-581c-e3024efd2124@ilande.co.uk>
+In-Reply-To: <20230515151104.1350155-1-armbru@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a00:23c4:8bad:df00:f732:dd76:7417:d15b
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: Re: [PATCH v2 0/8] target/sparc: Use tcg_gen_lookup_and_goto_ptr
+Subject: Re: [PATCH] Revert "hw/sparc64/niagara: Use blk_name() instead of
+ open-coding it"
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -80,82 +80,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 22/06/2023 13:26, Mark Cave-Ayland wrote:
+On 15/05/2023 16:11, Markus Armbruster wrote:
 
-> On 21/06/2023 19:05, Richard Henderson wrote:
+> This reverts commit 1881f336a33a8a99cb17ab1c57ed953682e8e107.
 > 
->> Changes from v1:
->>    * Split into teeny weeny pieces.
->>
->>    * It turns out the sparc_tr_tb_stop hunk of v1 was buggy,
->>      in that things that are not simple branches use DYNAMIC_PC,
->>      e.g. the RETT (return from trap) instruction.
->>
->>      Introduce DYNAMIC_PC_LOOKUP to distinguish the couple of
->>      places where we have a dynamic pc, but no other change
->>      of state (conditional branches, JMPL, RETURN).
->>
->>    * Drop the change for WRFPRS, because it's too infrequent.
->>      The WRASI change affects memcpy/memset, so that's more important.
->>
->> Boots Mark's sol8 install cdrom.  :-)
->>
->> Top of the profile changes from
->>
->>      41.55%  qemu-system-sparc              [.] cpu_exec_loop
->>      14.02%  qemu-system-sparc              [.] cpu_tb_exec
->>       8.74%  qemu-system-sparc              [.] tb_lookup
->>       2.11%  qemu-system-sparc              [.] tcg_splitwx_to_rw
->>       1.63%  memfd:tcg-jit (deleted)        [.] 0x0000000000000004
->>
->> to
->>
->>      31.59%  qemu-system-sparc              [.] helper_lookup_tb_ptr
->>      17.79%  qemu-system-sparc              [.] tb_lookup
->>       5.38%  qemu-system-sparc              [.] compute_all_sub
->>       2.38%  qemu-system-sparc              [.] helper_compute_psr
->>       2.36%  qemu-system-sparc              [.] helper_check_align
->>       1.79%  memfd:tcg-jit (deleted)        [.] 0x000000000063fc8e
->>
->> This probably indicates that cpu_get_tb_cpu_state could be
->> improved to not consume so much overhead.
+> This commit breaks "-drive if=pflash,readonly=on,file=image.iso".  It
+> claims to merely replace an open-coded version of blk_name() by a
+> call, but that's not the case.  Sorry for the inconvenience!
 > 
-> Nice! I've just run this through all of my sun4m/sun4u/sun4v test images and I don't 
-> see any regressions with v2. The guests feel noticeably more responsive too :)
+> Reported-by: Jakub Jermář <jakub@jermar.eu>
+> Cc: qemu-stable@nongnu.org
+> Signed-off-by: Markus Armbruster <armbru@redhat.com>
+> ---
+>   hw/sparc64/niagara.c | 6 ++++--
+>   1 file changed, 4 insertions(+), 2 deletions(-)
 > 
-> Tested-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-> 
-> I've skimmed the patches and without looking in too much detail they seem to be okay 
-> so I'm happy to give:
-> 
-> Acked-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-> 
-> Side note: the niagara tests require the patch at 
-> https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg03537.html which still 
-> hasn't been merged yet.
-> 
->> Richard Henderson (8):
->>    target/sparc: Use tcg_gen_lookup_and_goto_ptr in gen_goto_tb
->>    target/sparc: Fix npc comparison in sparc_tr_insn_start
->>    target/sparc: Drop inline markers from translate.c
->>    target/sparc: Introduce DYNAMIC_PC_LOOKUP
->>    target/sparc: Use DYNAMIC_PC_LOOKUP for conditional branches
->>    target/sparc: Use DYNAMIC_PC_LOOKUP for JMPL
->>    target/sparc: Use DYNAMIC_PC_LOOKUP for v9 RETURN
->>    target/sparc: Use tcg_gen_lookup_and_goto_ptr for v9 WRASI
->>
->>   target/sparc/translate.c | 410 ++++++++++++++++++++++-----------------
->>   1 file changed, 233 insertions(+), 177 deletions(-)
+> diff --git a/hw/sparc64/niagara.c b/hw/sparc64/niagara.c
+> index 6725cc61fd..ab3c4ec346 100644
+> --- a/hw/sparc64/niagara.c
+> +++ b/hw/sparc64/niagara.c
+> @@ -23,6 +23,7 @@
+>    */
+>   
+>   #include "qemu/osdep.h"
+> +#include "block/block_int-common.h"
+>   #include "qemu/units.h"
+>   #include "cpu.h"
+>   #include "hw/boards.h"
+> @@ -143,9 +144,10 @@ static void niagara_init(MachineState *machine)
+>               memory_region_add_subregion(get_system_memory(),
+>                                           NIAGARA_VDISK_BASE, &s->vdisk_ram);
+>               dinfo->is_default = 1;
+> -            rom_add_file_fixed(blk_name(blk), NIAGARA_VDISK_BASE, -1);
+> +            rom_add_file_fixed(blk_bs(blk)->filename, NIAGARA_VDISK_BASE, -1);
+>           } else {
+> -            error_report("could not load ram disk '%s'", blk_name(blk));
+> +            error_report("could not load ram disk '%s'",
+> +                         blk_bs(blk)->filename);
+>               exit(1);
+>           }
+>       }
 
-I've just noticed during testing there is an issue with this series when used with a 
-real SS-5 PROM image (I was using OpenBIOS for my previous tests) which causes it to 
-assert() almost immediately on startup:
-
-$ ./qemu-system-sparc -bios ss5.bin
-ERROR:../target/sparc/translate.c:5695:sparc_tr_tb_stop: code should not be reached
-Bail out! ERROR:../target/sparc/translate.c:5695:sparc_tr_tb_stop: code should not be 
-reached
-Aborted
+Thanks - I've queued this to my qemu-sparc branch.
 
 
 ATB,
