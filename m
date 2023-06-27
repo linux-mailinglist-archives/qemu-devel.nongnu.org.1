@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33718740066
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 18:09:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7B51740062
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 18:09:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEBDn-0000ET-HM; Tue, 27 Jun 2023 12:07:15 -0400
+	id 1qEBDw-0000Ir-Kv; Tue, 27 Jun 2023 12:07:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qEBDe-000092-VL
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 12:07:07 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ id 1qEBDg-00009d-US
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 12:07:09 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qEBDb-00055x-GH
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 12:07:06 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-3f90b8ace97so64168375e9.2
- for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 09:07:03 -0700 (PDT)
+ id 1qEBDc-00056P-Kb
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 12:07:08 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-3fbab489490so3609765e9.1
+ for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 09:07:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687882022; x=1690474022;
+ d=linaro.org; s=google; t=1687882023; x=1690474023;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=PkkwaC5weGbOgI6TyHV8oGFM7+1AeUMfWTRfSlmxtvc=;
- b=e5d3YYQj7/zoKz5nduBkPvRVT48ov8rDmTZNfhWDFYZ3QWAonn1VFnFbkRYr9ccL3g
- NVQU3mYHZgnFWIHfxEl9ynLLKQx/PmU7onsgYhRitN4ZTZ+SnIaY2550DMXen87CN+DQ
- JQU91i6BcwmR5ERbOYwqkJ8ebSyUKyByj9h69pbbnwRKQJb3VidTn2mPKKFfaGEyk+6Q
- GoYSeWOD4e8mBvn9+S0PwOoLs7kwJs32fPDq9Q9W8XeF1rbT5ORXnQQwNg8cdRovZIrj
- RhVeheRidtl0xSwrTWJ8A1h24Z1VnQBuWWV1rcsqmylYJ7GnLWS2/rCoFa9E/UaXRBHu
- WMsA==
+ bh=VTHkiiEsGJjQzyOMxbcLNdH7rkjQKhZ4rW+u2UfYIYE=;
+ b=N6whGesPH7klh/0MAJIQ/977PbeomWSVI02jLAM5i+Me3dW499smPi7P2NSLCgQHqw
+ zA6mvsPcklBe/AOiBfJ4QVmHg7TGRo84e5+yo2k87UzLpy6hs2QzCyfLEo50dufwh+Wn
+ nfWaQ56CtEYc99IFj981I7zqfXj6xDaugXpeVsgzlgs/44+fBtXwGsqpQP6iLRnzvhxC
+ h1XEYeth7Bmoz3okTx2ppkqHU9Jq3IpytWI9fN9m2lRdeJ3vziCOrn+6E8TQvrX8yv+Y
+ 8kmq5eqDPksBNYf/bgAFSZ9rHsgRwsLQnQCIUiy+KAFA77eLhdgvaqYu/7WYZaamDpft
+ eK+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687882022; x=1690474022;
+ d=1e100.net; s=20221208; t=1687882023; x=1690474023;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=PkkwaC5weGbOgI6TyHV8oGFM7+1AeUMfWTRfSlmxtvc=;
- b=M/hlcHRgDG6iUaqTVjY0MfMFY0M/spsxayt/rTtOFXGXPy090DZ2e3W5XSNlQ10BLq
- 9793UYfS+/c1ORmoVn5oArKBV+nADozzkBhENFNGOvCrUOcJuDzEPKAEgUe0m7FEX6lM
- UAS/aKfUMEu2rhjSbsrGxg02iBBg0/7n22+nvM0rg6bDM0iDNXkJUBIYJOH0ZBZiotu0
- Cz/I5uCWHT1V9ZbWImmjWWBKF9kB0ud14uvVmNx0tP1gz2rHp5WTFjn7SfX6dB9AT2mW
- 4DnfI1CZ8iWju7FaOCCgwyg3O2A6rH1Kbvwe+MKvWbK6O5+lVPxJTku8fyNzJ4tY9xkC
- IHBQ==
-X-Gm-Message-State: AC+VfDwYKBtV5gruIF1e+I5+TqajAttWg50hQY/3YFDkyag37Zw4nXtd
- Fn54Pdnk3gFm0rFpjvd9XLBEEA==
-X-Google-Smtp-Source: ACHHUZ7RsVo16w1vK5PhAuR4twiRw3BBVr2ozf2ZHbo0Y1SEmMuDQxshdgR4OPvmokwepNQflDJpmw==
-X-Received: by 2002:a7b:c8c9:0:b0:3f9:b8df:26ae with SMTP id
- f9-20020a7bc8c9000000b003f9b8df26aemr17695408wml.34.1687882022063; 
- Tue, 27 Jun 2023 09:07:02 -0700 (PDT)
+ bh=VTHkiiEsGJjQzyOMxbcLNdH7rkjQKhZ4rW+u2UfYIYE=;
+ b=EnxREw98UhyjfDYe3rxlPGpeMs1pZ86xjgA4SWcg/uLZyXvwv6UNXxIAcHt/7kpvpu
+ BppxOYBYOW0LXJdHY6M2yir0NvMCHLqoQgHbysESM7VysgomDvDmGC82mnY4NmGsjtD6
+ dB8Az/L6+Bn3jfQrcIWUssLBQQuCJinFxorV0tYt/217dumwOKUcGiGg2YhouIT4YWoy
+ lru9SLAMrOpEuzFSyTe3x01wdOaYhv1sAx0TpUwJ46gp/yRAwHYN8W0RgTzx3b++LVmB
+ zlmp+rFr6ONd0acO45yshOGrkKKoSkGKlIiHa2NcrrOVgYC272DnaHOxk7ZXkOPjYWNj
+ 1pAQ==
+X-Gm-Message-State: AC+VfDyRTW7iBi66ZVmGXT4YeGtdzNnpzSFxTQoZUyT3NECbTluVTXIa
+ GQwKrugGUTC04rUWNg6GoIUclA==
+X-Google-Smtp-Source: ACHHUZ57YEFIpzt3ZbaDGLDM3SPY7uXERhM8Lko35dj7odXw7/SP9inr/ywpbT5QpyrtkIhZpcUO8g==
+X-Received: by 2002:a1c:791a:0:b0:3fa:76e2:e6d5 with SMTP id
+ l26-20020a1c791a000000b003fa76e2e6d5mr12235133wme.37.1687882023113; 
+ Tue, 27 Jun 2023 09:07:03 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- cx16-20020a056000093000b00301a351a8d6sm10926631wrb.84.2023.06.27.09.07.01
+ z3-20020a5d4c83000000b0030497b3224bsm10775476wrs.64.2023.06.27.09.07.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 27 Jun 2023 09:07:01 -0700 (PDT)
 Received: from zen.lan (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 1024D1FFBD;
+ by zen.linaroharston (Postfix) with ESMTP id 28B171FFBE;
  Tue, 27 Jun 2023 17:07:01 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -85,24 +85,24 @@ Cc: qemu-arm@nongnu.org, Riku Voipio <riku.voipio@iki.fi>,
  Laurent Vivier <lvivier@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Alexander Bulekov <alxndr@bu.edu>
-Subject: [PATCH v3 02/36] gitlab: ensure coverage job also publishes meson log
-Date: Tue, 27 Jun 2023 17:06:26 +0100
-Message-Id: <20230627160700.2955547-3-alex.bennee@linaro.org>
+Subject: [PATCH v3 03/36] gitlab: reduce testing scope of check-gcov
+Date: Tue, 27 Jun 2023 17:06:27 +0100
+Message-Id: <20230627160700.2955547-4-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230627160700.2955547-1-alex.bennee@linaro.org>
 References: <20230627160700.2955547-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -118,38 +118,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Daniel P. Berrangé <berrange@redhat.com>
+This keeps timing out on gitlab due to some qtests taking a long time.
+As this is just ensuring the gcov machinery is working and not
+attempting to be comprehensive lets skip qtest in this run.
 
-The coverage job wants to publish a coverage report on success, but the
-tests might fail and in that case we need the meson logs for debugging.
-
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+Message-Id: <20230623122100.1640995-4-alex.bennee@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20230623122100.1640995-3-alex.bennee@linaro.org>
-Message-Id: <20230503145535.91325-3-berrange@redhat.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- .gitlab-ci.d/buildtest.yml | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ .gitlab-ci.d/buildtest.yml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-index 24bba061cd..a8fd9a0c1f 100644
+index a8fd9a0c1f..77dc83a6be 100644
 --- a/.gitlab-ci.d/buildtest.yml
 +++ b/.gitlab-ci.d/buildtest.yml
-@@ -462,9 +462,12 @@ gcov:
-   coverage: /^\s*lines:\s*\d+.\d+\%/
-   artifacts:
-     name: ${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHA}
--    when: on_success
-+    when: always
-     expire_in: 2 days
-+    paths:
-+      - build/meson-logs/testlog.txt
-     reports:
-+      junit: build/meson-logs/testlog.junit.xml
-       coverage_report:
-         coverage_format: cobertura
-         path: build/coverage.xml
+@@ -454,7 +454,7 @@ gcov:
+     IMAGE: ubuntu2204
+     CONFIGURE_ARGS: --enable-gcov
+     TARGETS: aarch64-softmmu ppc64-softmmu s390x-softmmu x86_64-softmmu
+-    MAKE_CHECK_ARGS: check
++    MAKE_CHECK_ARGS: check-unit check-softfloat
+   after_script:
+     - cd build
+     - gcovr --xml-pretty --exclude-unreachable-branches --print-summary
 -- 
 2.39.2
 
