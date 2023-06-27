@@ -2,69 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C57E573FBC6
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 14:10:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 81FA173FBD2
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 14:13:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qE7WD-00047z-Ok; Tue, 27 Jun 2023 08:10:01 -0400
+	id 1qE7YZ-0005JD-Iv; Tue, 27 Jun 2023 08:12:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qE7W7-00043C-IR
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 08:09:56 -0400
-Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
+ id 1qE7YW-0005Ii-4Y
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 08:12:24 -0400
+Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qE7W5-0001Bg-Q3
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 08:09:55 -0400
-Received: by mail-ed1-x536.google.com with SMTP id
- 4fb4d7f45d1cf-51cff235226so6354875a12.0
- for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 05:09:53 -0700 (PDT)
+ id 1qE7YU-00023L-Dp
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 08:12:23 -0400
+Received: by mail-ed1-x52b.google.com with SMTP id
+ 4fb4d7f45d1cf-51d810010deso3014671a12.0
+ for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 05:12:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687867792; x=1690459792;
+ d=linaro.org; s=google; t=1687867941; x=1690459941;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=+DIaJEZZkOj6A00vEClo2ROUXdo+5TvBnx+ed4rFkjo=;
- b=aUf1F8YTSrliqLbZaIwP/C1vZSFnKd5vMbWOYd4Dy46rWyFJJYvdw4PkN8HAgu6CaC
- /F/ORDSELJoXTa/G1XMalSh9UZntJEDIpAdS+zaJQjkyvH9yPXfvcKwVzJ9/DgYBN9pG
- US1L5M8y4/W6gJVGDI9dhrSxC4DU3jkNIkbF1lwjW12m2p84x2KsiLRrKGmwZ5ZnIiBS
- hGvlkb2nBzpRY5A/IrwZslXfoBaeqMG408g74H+iaVmrPSXA1Co1ft606q3YJamVql+G
- mYwpeEib0i9H3pK1EcQvqM5aJkoTCbASMeTnbvKnKOPFOv5UPnyLzLDTSzg0bITBsOOY
- Ap4Q==
+ bh=+R0bx70T6FRoSzBP92juYNpgA41gealJZHkeJuD1QBk=;
+ b=O1yZm554d1l/tG5AFVhQxYYr74GDUBmbAOH6uAFlO9BB49CNYiD+YkQAlXmYH7YAyf
+ KVxpMbmdbKHFQEdi+oJXD3OBbgIgEXdj+0ecgzrcjbutzLOwgHF/H4sWu8n5AymjFPai
+ MtK30tQplVD3HmmGfW21CjBQzLCNN/jc23/HOKFwLnT1Tn/GKGCKuZENefIz4I0xzZV0
+ QsD+bEJZO+bbbwiM9XNl/DQSajiNPahdr7RGvWe9EMxEpwSGf5iQEe9mSDT2Wtw6ZLPI
+ ZBk08H8LVRuopQAhDFBiUaVNL19cQnyA0y5Jnw3PvnmgQonACtnR7BCCi2UUsZ1Kq6oL
+ 1Aew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687867792; x=1690459792;
+ d=1e100.net; s=20221208; t=1687867941; x=1690459941;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=+DIaJEZZkOj6A00vEClo2ROUXdo+5TvBnx+ed4rFkjo=;
- b=KOdwUBJOFec4xaXK0sc9bgPqLXocG5E/U3kn+FJVaYB8EIfTb8XY+1YsiDzaWMsQJg
- lWleb0yXnq0NeRVINOF04+CqxP/pyx70eL08f2ph97OE+IpOTBZqJGVke0Lk48BTtQXV
- 7RKoU5JkuZoUgeKXt1yn49Ce4hM22d21MvnybCyQhANXH4Hon3JMwu852T0k+PbwRnHc
- 4yUbOXodppoAJhDH7tqID0b5xXfGrp4y10kEhKOXAwtoUfoxPhGocsqctUkEh8ZuDVDD
- G/uTp2Ot915kSqwSUpd1ScU707x/szfPr9Ld7W1U5sFTylPy1cA5AZWFZtZ3RkpF+aG+
- q8XQ==
-X-Gm-Message-State: AC+VfDx8MgHy/ZXITz4cZw4qo5nYWV16dN5gcLGe3imsSIzdn/kOiHW7
- lPjnHD5EhDT66Kfos8803zrIhxnTSMVV+n4hhQQPeFHA9G115lO/
-X-Google-Smtp-Source: ACHHUZ5wishnr9HWmj5U+NvuxY0SmTSliAs2eyfFJkb2ZqymO1XafzRtPilb27RqQfXER5h3CHk5eEJsCjog9zsxCSg=
-X-Received: by 2002:a05:6402:4302:b0:514:a21b:f137 with SMTP id
- m2-20020a056402430200b00514a21bf137mr34020656edc.6.1687867791961; Tue, 27 Jun
- 2023 05:09:51 -0700 (PDT)
+ bh=+R0bx70T6FRoSzBP92juYNpgA41gealJZHkeJuD1QBk=;
+ b=dqxr0xPvWMgFTyZNV11XgcIIz3cXmsOd3ffQvqMkYDr48wtZ17KQctAihZg4mSCAO1
+ NSwlu90kcRjsaBVO4qe4GbfGsJieW+FatRpzPdlbM8ILTrOkqhYKqrJoGuZinoui0Rgf
+ XoivONz4u0OEim2KAkZW+8+yj41x76a3KxL1kWJ6FYSXQnUTV+qKaKSuGgFNGPopuDCW
+ FZcOzhw0RoR9X5vKTWTIDIMHa2dJMmO7y4Y5T2B14JGJaX6ofncEHCfMVwNY+5F4Pzo1
+ 0M3fjZctcjut5I3QwL8feWsHrlDTv+7XMsz4sL6NfpH6qLkJxi7x0f8QfWL36JbJ7iid
+ Apgw==
+X-Gm-Message-State: AC+VfDzBqSupyGJ+CEw+d58vVzxJ6fsNE04jWBfciFvcGKavsmy5bi//
+ B+2VYrM0eYl9Xte77kg4xr+zPyBSkRlxzIoiCeJ3lzqhLtdZrwUC
+X-Google-Smtp-Source: ACHHUZ428kLCWSwvD9zcLmEQukBcQG8vNufUD8orO/1AyLFYRLCE2kcmpnkBgHwij1at2w6Nd9O9iWRdLSU4uC7KvoE=
+X-Received: by 2002:aa7:d405:0:b0:51d:907d:b927 with SMTP id
+ z5-20020aa7d405000000b0051d907db927mr4636805edq.11.1687867940809; Tue, 27 Jun
+ 2023 05:12:20 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210510125340.903323-1-anthony.perard@citrix.com>
- <20210510125340.903323-4-anthony.perard@citrix.com>
- <CAFEAcA-ZxRW-+ttyfZj1hSAZyDbYj6Mbvs=KsG6Sfg6QTdKhrg@mail.gmail.com>
-In-Reply-To: <CAFEAcA-ZxRW-+ttyfZj1hSAZyDbYj6Mbvs=KsG6Sfg6QTdKhrg@mail.gmail.com>
+References: <20230626075207.623535-1-marcin.juszkiewicz@linaro.org>
+In-Reply-To: <20230626075207.623535-1-marcin.juszkiewicz@linaro.org>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 27 Jun 2023 13:09:40 +0100
-Message-ID: <CAFEAcA_NmutsbheVL27d8ZUNZ_MYC+bC6bWjZA+-n+xqdBMKXA@mail.gmail.com>
-Subject: Re: [PULL 3/3] xen-block: Use specific blockdev driver
-To: qemu-devel@nongnu.org
-Cc: Anthony PERARD <anthony.perard@citrix.com>,
- David Woodhouse <dwmw2@infradead.org>, Paul Durrant <paul@xen.org>
+Date: Tue, 27 Jun 2023 13:12:09 +0100
+Message-ID: <CAFEAcA-K_2SLxbq90TpUyzLpiC0U2WVJe7ffaC_TH66K-=GV4A@mail.gmail.com>
+Subject: Re: [PATCH 1/1] hw/arm/sbsa-ref: add PCIe node into DT
+To: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+Cc: qemu-devel@nongnu.org, Leif Lindholm <quic_llindhol@quicinc.com>, 
+ Radoslaw Biernacki <rad@semihalf.com>, qemu-arm@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::536;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x536.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -87,77 +85,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 2 Jun 2023 at 18:04, Peter Maydell <peter.maydell@linaro.org> wrote:
+On Mon, 26 Jun 2023 at 08:52, Marcin Juszkiewicz
+<marcin.juszkiewicz@linaro.org> wrote:
 >
-> On Mon, 10 May 2021 at 13:53, Anthony PERARD <anthony.perard@citrix.com> wrote:
-> >
-> > ... when a xen-block backend instance is created via xenstore.
-> >
-> > Following 8d17adf34f50 ("block: remove support for using "file" driver
-> > with block/char devices"), using the "file" blockdev driver for
-> > everything doesn't work anymore, we need to use the "host_device"
-> > driver when the disk image is a block device and "file" driver when it
-> > is a regular file.
-> >
-> > Signed-off-by: Anthony PERARD <anthony.perard@citrix.com>
-> > Acked-by: Paul Durrant <paul@xen.org>
-> > Message-Id: <20210430163432.468894-1-anthony.perard@citrix.com>
-> > Signed-off-by: Anthony PERARD <anthony.perard@citrix.com>
+> Add PCI Express information into DeviceTree as part of SBSA-REF
+> versioning.
 >
-> Hi; Coverity points out (CID 1508722) that this introduces a
-> memory leak in the new error codepath:
+> Trusted Firmware will read it and provide to next firmware level.
+>
+> Signed-off-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+> ---
+>  hw/arm/sbsa-ref.c | 20 ++++++++++++++++++++
+>  1 file changed, 20 insertions(+)
+>
+> diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
+> index 0639f97dd5..b87d2ee3b2 100644
+> --- a/hw/arm/sbsa-ref.c
+> +++ b/hw/arm/sbsa-ref.c
+> @@ -171,6 +171,25 @@ static uint64_t sbsa_ref_cpu_mp_affinity(SBSAMachineState *sms, int idx)
+>      return arm_cpu_mp_affinity(idx, clustersz);
+>  }
+>
+> +static void sbsa_fdt_add_pcie_node(SBSAMachineState *sms)
+> +{
+> +    char *nodename;
+> +
+> +    nodename = g_strdup_printf("/pcie");
+> +    qemu_fdt_add_subnode(sms->fdt, nodename);
+> +    qemu_fdt_setprop_sized_cells(sms->fdt, nodename, "reg",
+> +                                 2, sbsa_ref_memmap[SBSA_PCIE_ECAM].base,
+> +                                 2, sbsa_ref_memmap[SBSA_PCIE_ECAM].size,
+> +                                 2, sbsa_ref_memmap[SBSA_PCIE_PIO].base,
+> +                                 2, sbsa_ref_memmap[SBSA_PCIE_PIO].size,
+> +                                 2, sbsa_ref_memmap[SBSA_PCIE_MMIO].base,
+> +                                 2, sbsa_ref_memmap[SBSA_PCIE_MMIO].size,
+> +                                 2, sbsa_ref_memmap[SBSA_PCIE_MMIO_HIGH].base,
+> +                                 2, sbsa_ref_memmap[SBSA_PCIE_MMIO_HIGH].size);
+> +
+> +    g_free(nodename);
 
-I just realized I forgot to cc the current Xen maintainers,
-so I'm doing that now. I think the fix for this leak should
-be fairly straightforward.
 
-> > ---
-> >  hw/block/xen-block.c | 14 +++++++++++++-
-> >  1 file changed, 13 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/hw/block/xen-block.c b/hw/block/xen-block.c
-> > index 83754a4344..674953f1ad 100644
-> > --- a/hw/block/xen-block.c
-> > +++ b/hw/block/xen-block.c
-> > @@ -728,6 +728,8 @@ static XenBlockDrive *xen_block_drive_create(const char *id,
-> >      XenBlockDrive *drive = NULL;
-> >      QDict *file_layer;
-> >      QDict *driver_layer;
-> > +    struct stat st;
-> > +    int rc;
-> >
-> >      if (params) {
-> >          char **v = g_strsplit(params, ":", 2);
-> > @@ -761,7 +763,17 @@ static XenBlockDrive *xen_block_drive_create(const char *id,
-> >      file_layer = qdict_new();
-> >      driver_layer = qdict_new();
->
-> You can see here that we allocate file_layer and driver_layer
-> as new qdict objects...
->
-> >
-> > -    qdict_put_str(file_layer, "driver", "file");
-> > +    rc = stat(filename, &st);
-> > +    if (rc) {
-> > +        error_setg_errno(errp, errno, "Could not stat file '%s'", filename);
-> > +        goto done;
->
-> ...but here if the stat() fails we will bail out to
-> the 'done' label, and the code there does not dereference
-> these qdicts, so they will leak.
->
-> The easy fix is to move the two calls to qdict_new() to
-> below this if() rather than above it.
->
-> > +    }
-> > +    if (S_ISBLK(st.st_mode)) {
-> > +        qdict_put_str(file_layer, "driver", "host_device");
-> > +    } else {
-> > +        qdict_put_str(file_layer, "driver", "file");
-> > +    }
-> > +
-> >      qdict_put_str(file_layer, "filename", filename);
-> >      g_free(filename);
+Why do we need to do this? The firmware should just
+know exactly where the PCIE windows are, the same way
+it knows where the flash, the UART, the RTC etc etc
+all are in the memory map.
 
 thanks
 -- PMM
