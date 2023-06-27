@@ -2,59 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69D9173F02D
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 03:13:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E44D173F0E3
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 04:36:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qDxFd-0008RM-Dv; Mon, 26 Jun 2023 21:12:13 -0400
+	id 1qDyXc-0007me-Ow; Mon, 26 Jun 2023 22:34:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chenyuhui5@huawei.com>)
- id 1qDxFa-0008RB-Eu
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 21:12:10 -0400
-Received: from szxga01-in.huawei.com ([45.249.212.187])
+ (Exim 4.90_1) (envelope-from <shahuang@redhat.com>)
+ id 1qDyXX-0007mE-Ir
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 22:34:47 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chenyuhui5@huawei.com>)
- id 1qDxFV-0005l2-3K
- for qemu-devel@nongnu.org; Mon, 26 Jun 2023 21:12:10 -0400
-Received: from dggpemm500002.china.huawei.com (unknown [172.30.72.57])
- by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4Qqmnm0wNqzlWLD;
- Tue, 27 Jun 2023 09:09:16 +0800 (CST)
-Received: from [10.174.187.43] (10.174.187.43) by
- dggpemm500002.china.huawei.com (7.185.36.229) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Tue, 27 Jun 2023 09:11:58 +0800
-Message-ID: <ae697c8c-5d57-071c-240a-6f1e8307bdbd@huawei.com>
-Date: Tue, 27 Jun 2023 09:11:57 +0800
+ (Exim 4.90_1) (envelope-from <shahuang@redhat.com>)
+ id 1qDyXW-0006Wc-0t
+ for qemu-devel@nongnu.org; Mon, 26 Jun 2023 22:34:47 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1687833284;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=wu4+qGRzze9rNAF/oBI8QT0UDNN6zhdjUkN+ApOnm6A=;
+ b=On6sbPQZFXZ/2FBwM9y4LTr5erS/FaJBqMreL8Rguh4E+5kjL5Pcet/oNzSw7fgsrM6y2H
+ Y+rH/3xTntGr+gfEYYhUpuXMsr+hGVRz4eJASD0E7OVQnlW5PGfVMoEYke0hYcwtuPtVlF
+ obl0LR7/4A2cWRY7JxQDfvVOMOsuadk=
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com
+ [209.85.214.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-484-llgPsn54MZaGPPtLyrv7Jw-1; Mon, 26 Jun 2023 22:34:41 -0400
+X-MC-Unique: llgPsn54MZaGPPtLyrv7Jw-1
+Received: by mail-pl1-f200.google.com with SMTP id
+ d9443c01a7336-1b80c4ca6c5so1278575ad.1
+ for <qemu-devel@nongnu.org>; Mon, 26 Jun 2023 19:34:41 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1687833280; x=1690425280;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=wu4+qGRzze9rNAF/oBI8QT0UDNN6zhdjUkN+ApOnm6A=;
+ b=PDVB0MxkyJnBsVSSMZupKL66BMV1qwWH8BINSvZ2ttAwPh7yKnTi3YEpF2JB9J246w
+ f0b8WgsTA69wgbWseYJFDT3ZYEYTMd2N16izqpPRgXl2p6loO9aA+ywaU05eE17C4uXN
+ JpkFigS0A9krsKJYK7wmu5PItwATYnqgh1oczkboBQpUjmR6yhNwsDrOmzNAWhFKLP4L
+ XC8BxMWZaywEIRsLtenAoF0Bv6JXND3mHtRHhj9ODjKBFGtyjuMDwkPomOiN4eFvq8df
+ lYGUNi8BkHzCQxVqlEFQMXZ6ZzQKDAWkrq8D/AiGgnY57R/JqRB4kFoPqoJuWrim3XIn
+ 5dig==
+X-Gm-Message-State: AC+VfDzIJP3YBjJ/gWyO7ApmgUp/oPBKR/p+pas7BNa2jjnHk4fMQ7Tt
+ dEKCkvFw362J2CoDGdAKGhF7Sbsz6sK04hCqb/EfKemxfhpB2qyCsnlxD4yV1XGzDcTnn8ZoVpd
+ yJah3kc0O1lPnbvo=
+X-Received: by 2002:a17:903:1ca:b0:1b5:32ec:df97 with SMTP id
+ e10-20020a17090301ca00b001b532ecdf97mr36654234plh.5.1687833280754; 
+ Mon, 26 Jun 2023 19:34:40 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6yE6lyZOsSy5asQLEIJAm4foiQaPUY/FsSOYw03E80E6jiejKP5iLw6DKgjFN0Ijz8VV/FTg==
+X-Received: by 2002:a17:903:1ca:b0:1b5:32ec:df97 with SMTP id
+ e10-20020a17090301ca00b001b532ecdf97mr36654214plh.5.1687833280521; 
+ Mon, 26 Jun 2023 19:34:40 -0700 (PDT)
+Received: from [10.66.61.39] ([209.132.188.80])
+ by smtp.gmail.com with ESMTPSA id
+ jn22-20020a170903051600b001b3eed9cf24sm4821765plb.54.2023.06.26.19.34.36
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 26 Jun 2023 19:34:40 -0700 (PDT)
+Message-ID: <fb5e8d4d-2388-3ab0-aaac-a1dd91e74b08@redhat.com>
+Date: Tue, 27 Jun 2023 10:34:35 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH] migrate/multifd: fix coredump when the multifd thread
- cleanup
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH v1 0/5] target/arm: Handle psci calls in userspace
+To: Salil Mehta <salil.mehta@huawei.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>
+Cc: "oliver.upton@linux.dev" <oliver.upton@linux.dev>,
+ "james.morse@arm.com" <james.morse@arm.com>,
+ "gshan@redhat.com" <gshan@redhat.com>, Cornelia Huck <cohuck@redhat.com>,
+ "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Salil Mehta <salil.mehta@opnsrc.net>
+References: <20230626064910.1787255-1-shahuang@redhat.com>
+ <9df973ede74e4757b510f26cd5786036@huawei.com>
 Content-Language: en-US
-To: Fabiano Rosas <farosas@suse.de>, <peterx@redhat.com>,
- <qemu-devel@nongnu.org>
-CC: <xuyinghua3@huawei.com>, <liheng.liheng@huawei.com>,
- <renxuming@huawei.com>, <pengyi.pengyi@huawei.com>, <yubihong@huawei.com>,
- <zhengchuan@huawei.com>, <huhao33@huawei.com>, <zhangjianguo18@huawei.com>,
- <caozhongwang1@huawei.com>
-References: <20230621081826.3203053-1-zhangjianguo18@huawei.com>
- <87wmzwsxmz.fsf@suse.de> <53a69e3b-f9f7-b2c1-9487-f9992ffec2a3@huawei.com>
-In-Reply-To: <53a69e3b-f9f7-b2c1-9487-f9992ffec2a3@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.187.43]
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- dggpemm500002.china.huawei.com (7.185.36.229)
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=45.249.212.187;
- envelope-from=chenyuhui5@huawei.com; helo=szxga01-in.huawei.com
-X-Spam_score_int: -42
-X-Spam_score: -4.3
-X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.09,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+From: Shaoqin Huang <shahuang@redhat.com>
+In-Reply-To: <9df973ede74e4757b510f26cd5786036@huawei.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=shahuang@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -68,124 +108,59 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  "chenyuhui (A)" <chenyuhui5@huawei.com>
-From:  "chenyuhui (A)" via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hi Salil,
 
-
-On 2023/6/26 21:16, chenyuhui (A) wrote:
-> 
-> On 2023/6/21 22:22, Fabiano Rosas wrote:
->> Jianguo Zhang via <qemu-devel@nongnu.org> writes:
+On 6/26/23 21:42, Salil Mehta wrote:
+>> From: Shaoqin Huang <shahuang@redhat.com>
+>> Sent: Monday, June 26, 2023 7:49 AM
+>> To: qemu-devel@nongnu.org; qemu-arm@nongnu.org
+>> Cc: oliver.upton@linux.dev; Salil Mehta <salil.mehta@huawei.com>;
+>> james.morse@arm.com; gshan@redhat.com; Shaoqin Huang <shahuang@redhat.com>;
+>> Cornelia Huck <cohuck@redhat.com>; kvm@vger.kernel.org; Michael S. Tsirkin
+>> <mst@redhat.com>; Paolo Bonzini <pbonzini@redhat.com>; Peter Maydell
+>> <peter.maydell@linaro.org>
+>> Subject: [PATCH v1 0/5] target/arm: Handle psci calls in userspace
 >>
->>> From: Yuhui Chen <chenyuhui5@huawei.com>
->>>
->>> There is a coredump while trying to destroy mutex when
->>> p->running is false but p->mutex is not unlock.
->>> Make sure all mutexes has been released before destroy them.
->>>
->>> Signed-off-by: Yuhui Chen <chenyuhui5@huawei.com>
->>> ---
->>>  migration/multifd.c | 6 ++----
->>>  1 file changed, 2 insertions(+), 4 deletions(-)
->>>
->>> diff --git a/migration/multifd.c b/migration/multifd.c
->>> index b7ad7002e0..7dcdb2d3a0 100644
->>> --- a/migration/multifd.c
->>> +++ b/migration/multifd.c
->>> @@ -523,9 +523,7 @@ void multifd_save_cleanup(void)
->>>      for (i = 0; i < migrate_multifd_channels(); i++) {
->>>          MultiFDSendParams *p = &multifd_send_state->params[i];
->>>  
->>> -        if (p->running) {
+>> The userspace SMCCC call filtering[1] provides the ability to forward the SMCCC
+>> calls to the userspace. The vCPU hotplug[2] would be the first legitimate use
+>> case to handle the psci calls in userspace, thus the vCPU hotplug can deny the
+>> PSCI_ON call if the vCPU is not present now.
 >>
->> The need for this flag is dubious IMO. Commit 10351fbad1
->> ("migration/multifd: Join all multifd threads in order to avoid leaks")
->> already moved the other join outside of it. If we figure out another way
->> to deal with the sem_sync lockup we could probably remove this
->> altogether.
-> 
-> 
-> I've seen this commit 10351fbad1, and it's seems to have the same
-> problem in function multifd_save_cleanup.
-> 
-> So that may my patch only need to modify multifd_save_cleanup.
-> 
-> ______
-> 
-> 
-> On 2023/6/21 21:24, Peter Xu wrote:
->> On Wed, Jun 21, 2023 at 04:18:26PM +0800, Jianguo Zhang via wrote:
->>> From: Yuhui Chen<chenyuhui5@huawei.com>
->>>
->>> There is a coredump while trying to destroy mutex when
->>> p->running is false but p->mutex is not unlock.
->>> Make sure all mutexes has been released before destroy them.
+>> This series try to enable the userspace SMCCC call filtering, thus can handle
+>> the SMCCC call in userspace. The first enabled SMCCC call is psci call, by using
+>> the new added option 'user-smccc', we can enable handle psci calls in userspace.
 >>
->> It'll be nice to add a backtrace of the coredump here, and also copy
->> maintainer (Juan Quintela, copied now).
+>> qemu-system-aarch64 -machine virt,user-smccc=on
 >>
+>> This series reuse the qemu implementation of the psci handling, thus the
+>> handling process is very simple. But when handling psci in userspace when using
+>> kvm, the reset vcpu process need to be taking care, the detail is included in
+>> the patch05.
 > 
-> The attachment is coredump, and my code is base on
-> https://github.com/qemu/qemu.git tag v6.2.0.
+> This change in intended for VCPU Hotplug and we are duplicating the code
+> we are working on. Unless this change is also intended for any other
+> feature I would request you to defer this.
+
+Thanks for sharing me the information. I'm not intended for merging this 
+series, but discuss something about the VCPU Hotplug, since I'm also 
+following the work of vCPU Hotplug.
+
+Just curious, what is your plan to update a new version of VCPU Hotplug 
+which is based on the userspace SMCCC filtering?
+
+Thanks,
+Shaoqin
+
+> 
+> 
+> Thanks
+> Salil
 > 
 
+-- 
+Shaoqin
 
-(gdb) bt
-#0  0x0000ffffabe3b2b8 in  () at /usr/lib64/libc.so.6
-#1  0x0000ffffabdf6d7c in raise () at /usr/lib64/libc.so.6
-#2  0x0000ffffabde4d2c in abort () at /usr/lib64/libc.so.6
-#3  0x0000aaaac67fcc10 in error_exit (err=<optimized out>, msg=msg@entry=0xaaaac6dc52b8 <__func__.33> "qemu_mutex_destroy") at ../util/qemu-thread-posix.c:38
-#4  0x0000aaaac67fce38 in qemu_mutex_destroy (mutex=mutex@entry=0xaaaafa1a4250) at ../util/qemu-thread-posix.c:71
-#5  0x0000aaaac6055688 in multifd_save_cleanup () at ../migration/multifd.c:555
-#6  0x0000aaaac6050198 in migrate_fd_cleanup (s=s@entry=0xaaaaf7518800) at ../migration/migration.c:1808
-#7  0x0000aaaac6050384 in migrate_fd_cleanup_bh (opaque=0xaaaaf7518800) at ../migration/migration.c:1850
-#8  0x0000aaaac680d790 in aio_bh_call (bh=0xffffa0004c40) at ../util/async.c:141
-#9  aio_bh_poll (ctx=ctx@entry=0xaaaaf73285a0) at ../util/async.c:169
-#10 0x0000aaaac67f9e18 in aio_dispatch (ctx=0xaaaaf73285a0) at ../util/aio-posix.c:381
-#11 0x0000aaaac680d414 in aio_ctx_dispatch (source=<optimized out>, callback=<optimized out>, user_data=<optimized out>) at ../util/async.c:311
-#12 0x0000ffffac44cf88 in g_main_context_dispatch () at /usr/lib64/libglib-2.0.so.0
-#13 0x0000aaaac6819214 in glib_pollfds_poll () at ../util/main-loop.c:232
-#14 os_host_main_loop_wait (timeout=735000000) at ../util/main-loop.c:255
-#15 main_loop_wait (nonblocking=nonblocking@entry=0) at ../util/main-loop.c:531
-#16 0x0000aaaac65005cc in qemu_main_loop () at ../softmmu/runstate.c:726
-#17 0x0000aaaac5fe2030 in main (argc=<optimized out>, argv=<optimized out>, envp=<optimized out>) at ../softmmu/main.c:50
-(gdb) q
-
-
-> How reproducible:
-> 1、And sleep time to produce p->running is false but p->mutex is
->  not unlock.
-> 
-> From: Yuhui Chen <chenyuhui5@huawei.com>
-> Date: Mon, 26 Jun 2023 14:24:35 +0800
-> Subject: [DEBUG][PATCH] And sleep time to produce p->running is false but p->mutex is
->  not unlock.
-> 
-> ---
->  migration/multifd.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/migration/multifd.c b/migration/multifd.c
-> index 7c9deb1921..09a7b0748a 100644
-> --- a/migration/multifd.c
-> +++ b/migration/multifd.c
-> @@ -538,6 +538,7 @@ void multifd_save_cleanup(void)
->      for (i = 0; i < migrate_multifd_channels(); i++) {
->          MultiFDSendParams *p = &multifd_send_state->params[i];
-> 
-> +        sleep(2);
->          if (p->running) {
->              qemu_thread_join(&p->thread);
->          }
-> @@ -719,6 +720,7 @@ out:
-> 
->      qemu_mutex_lock(&p->mutex);
->      p->running = false;
-> +    sleep(20);
->      qemu_mutex_unlock(&p->mutex);
-> 
->      rcu_unregister_thread();
 
