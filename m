@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDA2E73FC74
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 15:10:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A70E873FC5B
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 15:04:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qE8M0-000064-OP; Tue, 27 Jun 2023 09:03:32 -0400
+	id 1qE8Lr-0008V0-Sg; Tue, 27 Jun 2023 09:03:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qE8Ln-0008Ve-Qk
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 09:03:19 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1qE8Lh-0008UE-RM
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 09:03:13 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qE8Ll-00075e-OI
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 09:03:19 -0400
+ id 1qE8Le-000749-Vm
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 09:03:13 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687870997;
+ s=mimecast20190719; t=1687870989;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Dfamq97zDHWgWJoUOttRD4ntjk4FlCHAaw04hrxqgKs=;
- b=iHb/KxLdCO5Hu1u6kP1R4mocr1Z9n9coRbTd9bysjKIa+8f0Xf2kJu6PuqabtM4k01kzFm
- S0vSEZv7DbQe6jTklotRnZQ+H6MvyuongSZT1206WbKQ5ZT4yDmL5PdUU8UrnRUCLRdpb5
- In8nscVe9yBOHHbGBGZg67qgBdnOjTI=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=TJ/y/2ZYdkiikxVR+2QxS0YHBWZuSz8vWopSq/Tcy+Q=;
+ b=U3mZboE59LKdru4eVLFcOk9Dc+OSq5OCfQmwGgxC1NygMCDgxC1MgklwtJfRMNhNHBdV3A
+ IhTEAS7+bhxA/aElm6dRSQ3nAZvsOX6py5qEzbiID2xgPHweOkDrMprnTw0v1f6om7AN+c
+ 8sxE2BPJsqkurghi/DfmuSJrVPF/jo8=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-620-wvPy7lcGOMWGepKGTPDMdg-1; Tue, 27 Jun 2023 09:03:08 -0400
-X-MC-Unique: wvPy7lcGOMWGepKGTPDMdg-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
+ us-mta-563-TTVnnDVmMx-HcSknMmxyug-1; Tue, 27 Jun 2023 09:03:03 -0400
+X-MC-Unique: TTVnnDVmMx-HcSknMmxyug-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 93C27185A78F;
- Tue, 27 Jun 2023 13:03:01 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6AE15280AA36;
+ Tue, 27 Jun 2023 13:03:03 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.36])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 5169740C6F5A;
- Tue, 27 Jun 2023 13:03:00 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id E72D940C206F;
+ Tue, 27 Jun 2023 13:03:02 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Gerd Hoffmann <kraxel@redhat.com>
-Subject: [PULL 14/33] ui/egl: fix make_context_current() callback return value
-Date: Tue, 27 Jun 2023 15:02:11 +0200
-Message-ID: <20230627130231.1614896-15-marcandre.lureau@redhat.com>
+Subject: [PULL 15/33] ui/dbus: compile without gio/gunixfdlist.h
+Date: Tue, 27 Jun 2023 15:02:12 +0200
+Message-ID: <20230627130231.1614896-16-marcandre.lureau@redhat.com>
 In-Reply-To: <20230627130231.1614896-1-marcandre.lureau@redhat.com>
 References: <20230627130231.1614896-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.133.124;
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -84,72 +84,177 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-eglMakeCurrent() returns 1/EGL_TRUE on success. This is not what the
-callback expects, where 0 indicates success.
-
-While at it, print the EGL error to ease debugging.
-
-As with virgl_renderer_callbacks, the return value is now checked since
-version >= 4:
-https://gitlab.freedesktop.org/virgl/virglrenderer/-/commit/7f09e6bf0c6ceea6727bd0049781256a28cab0e5
+D-Bus on windows doesn't support fd-passing. Let's isolate the
+fdlist-related code as a first step, before adding Windows support,
+using another mechanism.
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Message-Id: <20230606115658.677673-3-marcandre.lureau@redhat.com>
+Message-Id: <20230606115658.677673-4-marcandre.lureau@redhat.com>
 ---
- ui/egl-context.c | 10 ++++++++--
- ui/gtk-egl.c     | 10 ++++++++--
- 2 files changed, 16 insertions(+), 4 deletions(-)
+ audio/dbusaudio.c  | 7 +++++++
+ ui/dbus-chardev.c  | 6 ++++++
+ ui/dbus-console.c  | 8 ++++++++
+ ui/dbus-listener.c | 2 ++
+ 4 files changed, 23 insertions(+)
 
-diff --git a/ui/egl-context.c b/ui/egl-context.c
-index eb5f520fc4..9e0df466f3 100644
---- a/ui/egl-context.c
-+++ b/ui/egl-context.c
-@@ -1,4 +1,5 @@
- #include "qemu/osdep.h"
-+#include "qemu/error-report.h"
- #include "ui/egl-context.h"
+diff --git a/audio/dbusaudio.c b/audio/dbusaudio.c
+index fece74f78c..de59467d9e 100644
+--- a/audio/dbusaudio.c
++++ b/audio/dbusaudio.c
+@@ -29,7 +29,10 @@
+ #include "qemu/timer.h"
+ #include "qemu/dbus.h"
  
- QEMUGLContext qemu_egl_create_context(DisplayGLCtx *dgc,
-@@ -32,6 +33,11 @@ void qemu_egl_destroy_context(DisplayGLCtx *dgc, QEMUGLContext ctx)
- int qemu_egl_make_context_current(DisplayGLCtx *dgc,
-                                   QEMUGLContext ctx)
- {
--   return eglMakeCurrent(qemu_egl_display,
--                         EGL_NO_SURFACE, EGL_NO_SURFACE, ctx);
-+   if (!eglMakeCurrent(qemu_egl_display,
-+                       EGL_NO_SURFACE, EGL_NO_SURFACE, ctx)) {
-+        error_report("egl: eglMakeCurrent failed: %s", qemu_egl_get_error_string());
-+        return -1;
-+   }
++#ifdef G_OS_UNIX
+ #include <gio/gunixfdlist.h>
++#endif
 +
-+   return 0;
+ #include "ui/dbus-display1.h"
+ 
+ #define AUDIO_CAP "dbus"
+@@ -419,6 +422,7 @@ dbus_audio_fini(void *opaque)
+     g_free(da);
  }
-diff --git a/ui/gtk-egl.c b/ui/gtk-egl.c
-index e99e3b0d8c..64dc0eeec8 100644
---- a/ui/gtk-egl.c
-+++ b/ui/gtk-egl.c
-@@ -13,6 +13,7 @@
  
- #include "qemu/osdep.h"
- #include "qemu/main-loop.h"
-+#include "qemu/error-report.h"
++#ifdef G_OS_UNIX
+ static void
+ listener_out_vanished_cb(GDBusConnection *connection,
+                          gboolean remote_peer_vanished,
+@@ -591,6 +595,7 @@ dbus_audio_register_in_listener(AudioState *s,
+     return dbus_audio_register_listener(s, invocation,
+                                         fd_list, arg_listener, false);
+ }
++#endif
  
+ static void
+ dbus_audio_set_server(AudioState *s, GDBusObjectManagerServer *server, bool p2p)
+@@ -605,12 +610,14 @@ dbus_audio_set_server(AudioState *s, GDBusObjectManagerServer *server, bool p2p)
+ 
+     da->audio = g_dbus_object_skeleton_new(DBUS_DISPLAY1_AUDIO_PATH);
+     da->iface = qemu_dbus_display1_audio_skeleton_new();
++#ifdef G_OS_UNIX
+     g_object_connect(da->iface,
+                      "swapped-signal::handle-register-in-listener",
+                      dbus_audio_register_in_listener, s,
+                      "swapped-signal::handle-register-out-listener",
+                      dbus_audio_register_out_listener, s,
+                      NULL);
++#endif
+ 
+     g_dbus_object_skeleton_add_interface(G_DBUS_OBJECT_SKELETON(da->audio),
+                                          G_DBUS_INTERFACE_SKELETON(da->iface));
+diff --git a/ui/dbus-chardev.c b/ui/dbus-chardev.c
+index 940ef937cd..7154d81a9a 100644
+--- a/ui/dbus-chardev.c
++++ b/ui/dbus-chardev.c
+@@ -27,7 +27,9 @@
+ #include "qemu/config-file.h"
+ #include "qemu/option.h"
+ 
++#ifdef G_OS_UNIX
+ #include <gio/gunixfdlist.h>
++#endif
+ 
+ #include "dbus.h"
+ 
+@@ -108,6 +110,7 @@ dbus_chardev_init(DBusDisplay *dpy)
+                          dbus_display_chardev_foreach, dpy);
+ }
+ 
++#ifdef G_OS_UNIX
+ static gboolean
+ dbus_chr_register(
+     DBusChardev *dc,
+@@ -145,6 +148,7 @@ dbus_chr_register(
+     qemu_dbus_display1_chardev_complete_register(object, invocation, NULL);
+     return DBUS_METHOD_INVOCATION_HANDLED;
+ }
++#endif
+ 
+ static gboolean
+ dbus_chr_send_break(
+@@ -175,8 +179,10 @@ dbus_chr_open(Chardev *chr, ChardevBackend *backend,
+     dc->iface = qemu_dbus_display1_chardev_skeleton_new();
+     g_object_set(dc->iface, "name", backend->u.dbus.data->name, NULL);
+     g_object_connect(dc->iface,
++#ifdef G_OS_UNIX
+                      "swapped-signal::handle-register",
+                      dbus_chr_register, dc,
++#endif
+                      "swapped-signal::handle-send-break",
+                      dbus_chr_send_break, dc,
+                      NULL);
+diff --git a/ui/dbus-console.c b/ui/dbus-console.c
+index bc97614fec..d5f6c93637 100644
+--- a/ui/dbus-console.c
++++ b/ui/dbus-console.c
+@@ -28,7 +28,9 @@
+ #include "ui/kbd-state.h"
  #include "trace.h"
  
-@@ -369,6 +370,11 @@ int gd_egl_make_current(DisplayGLCtx *dgc,
- {
-     VirtualConsole *vc = container_of(dgc, VirtualConsole, gfx.dgc);
++#ifdef G_OS_UNIX
+ #include <gio/gunixfdlist.h>
++#endif
  
--    return eglMakeCurrent(qemu_egl_display, vc->gfx.esurface,
--                          vc->gfx.esurface, ctx);
-+    if (!eglMakeCurrent(qemu_egl_display, vc->gfx.esurface,
-+                        vc->gfx.esurface, ctx)) {
-+        error_report("egl: eglMakeCurrent failed: %s", qemu_egl_get_error_string());
-+        return -1;
-+    }
-+
-+    return 0;
+ #include "dbus.h"
+ 
+@@ -163,6 +165,7 @@ dbus_display_console_class_init(DBusDisplayConsoleClass *klass)
+     gobject_class->dispose = dbus_display_console_dispose;
  }
+ 
++#ifdef G_OS_UNIX
+ static void
+ listener_vanished_cb(DBusDisplayListener *listener)
+ {
+@@ -174,6 +177,7 @@ listener_vanished_cb(DBusDisplayListener *listener)
+     g_hash_table_remove(ddc->listeners, name);
+     qkbd_state_lift_all_keys(ddc->kbd);
+ }
++#endif
+ 
+ static gboolean
+ dbus_console_set_ui_info(DBusDisplayConsole *ddc,
+@@ -207,6 +211,7 @@ dbus_console_set_ui_info(DBusDisplayConsole *ddc,
+     return DBUS_METHOD_INVOCATION_HANDLED;
+ }
+ 
++#ifdef G_OS_UNIX
+ static gboolean
+ dbus_console_register_listener(DBusDisplayConsole *ddc,
+                                GDBusMethodInvocation *invocation,
+@@ -282,6 +287,7 @@ dbus_console_register_listener(DBusDisplayConsole *ddc,
+     trace_dbus_registered_listener(sender);
+     return DBUS_METHOD_INVOCATION_HANDLED;
+ }
++#endif
+ 
+ static gboolean
+ dbus_kbd_press(DBusDisplayConsole *ddc,
+@@ -510,8 +516,10 @@ dbus_display_console_new(DBusDisplay *display, QemuConsole *con)
+         "device-address", device_addr,
+         NULL);
+     g_object_connect(ddc->iface,
++#ifdef G_OS_UNIX
+         "swapped-signal::handle-register-listener",
+         dbus_console_register_listener, ddc,
++#endif
+         "swapped-signal::handle-set-uiinfo",
+         dbus_console_set_ui_info, ddc,
+         NULL);
+diff --git a/ui/dbus-listener.c b/ui/dbus-listener.c
+index 23034eebf9..41597a0078 100644
+--- a/ui/dbus-listener.c
++++ b/ui/dbus-listener.c
+@@ -25,7 +25,9 @@
+ #include "qemu/error-report.h"
+ #include "sysemu/sysemu.h"
+ #include "dbus.h"
++#ifdef G_OS_UNIX
+ #include <gio/gunixfdlist.h>
++#endif
+ 
+ #ifdef CONFIG_OPENGL
+ #include "ui/shader.h"
 -- 
 2.41.0
 
