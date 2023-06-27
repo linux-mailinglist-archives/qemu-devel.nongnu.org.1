@@ -2,60 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B98BD73FC68
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 15:06:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E66FA73FC6D
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 15:08:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qE8M0-0008WJ-1h; Tue, 27 Jun 2023 09:03:32 -0400
+	id 1qE8M3-000082-8h; Tue, 27 Jun 2023 09:03:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qE8Lk-0008Uz-Di
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 09:03:16 -0400
+ id 1qE8M0-000070-LO
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 09:03:32 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qE8Lg-00074a-A6
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 09:03:15 -0400
+ id 1qE8Ly-0007Bd-6f
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 09:03:32 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687870991;
+ s=mimecast20190719; t=1687871009;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=TFDkDp9rimF6iwnlZ/BVgfg224qyFjRqkgTrI28JCoQ=;
- b=Azf9QKs9LiUlBcPeRWaAS36b/FIJ0m9KEer8Pw7cATfSVT18Rl5VskF0QYLkCUbmT/GTRq
- vhksSnWb+i7cxadKqMC4+xPHQLPu2xq3m+/0vNZuXUNqS0rqXXML+gR0Olj5FwNGe8KU30
- ZW6omXKevxQJaucQb7Q6Xswz94wEnWI=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=MfhAPe97n24USXYXdYJ8TzyLGZ9sb1ip/nyJzfrxxUE=;
+ b=KTFtv5ciTP43NdO1t1KRvSZ1Drn8b3Fd3WyCk66iYCRjQXHrhKKVp/0RfQ5CcmDRaGEtar
+ n2EwC4SE53c4P1s8vy2AOfyLwSlvpubRngdAsUzM7wqRdDmWfAykOejZGQXRSixQ7gNphl
+ BExwyqj5I6ozWsAaOyfX06CxWMyIwKI=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-264-_nNBuCAPMaCa-lPhfme8yA-1; Tue, 27 Jun 2023 09:03:09 -0400
-X-MC-Unique: _nNBuCAPMaCa-lPhfme8yA-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
+ us-mta-248-YWEFyl0COviwdpR7W2A4PA-1; Tue, 27 Jun 2023 09:03:17 -0400
+X-MC-Unique: YWEFyl0COviwdpR7W2A4PA-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D7C4B10504CF;
- Tue, 27 Jun 2023 13:03:05 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1102B3811F4B;
+ Tue, 27 Jun 2023 13:03:08 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.36])
- by smtp.corp.redhat.com (Postfix) with ESMTP id DA3A614682FA;
- Tue, 27 Jun 2023 13:03:04 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 5C4CCF5CC6;
+ Tue, 27 Jun 2023 13:03:07 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- John Snow <jsnow@redhat.com>, Cleber Rosa <crosa@redhat.com>
-Subject: [PULL 16/33] scripts: add a XML preprocessor script
-Date: Tue, 27 Jun 2023 15:02:13 +0200
-Message-ID: <20230627130231.1614896-17-marcandre.lureau@redhat.com>
+ Gerd Hoffmann <kraxel@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 17/33] ui/dbus: win32 support
+Date: Tue, 27 Jun 2023 15:02:14 +0200
+Message-ID: <20230627130231.1614896-18-marcandre.lureau@redhat.com>
 In-Reply-To: <20230627130231.1614896-1-marcandre.lureau@redhat.com>
 References: <20230627130231.1614896-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
 Received-SPF: pass client-ip=170.10.133.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -84,493 +87,506 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-gdbus-codegen doesn't support conditions or pre-processing.
+D-Bus doesn't support fd-passing on Windows (AF_UNIX doesn't have
+SCM_RIGHTS yet, but there are other means to share objects. I have
+proposed various solutions upstream, but none seem fitting enough atm).
 
-Rather than duplicating D-Bus interfaces for win32 adaptation, let's
-have a preprocess step, so we can have platform-specific interfaces.
-
-The python script is based on
-https://github.com/peitaosu/XML-Preprocessor, with bug fixes, some
-testing and replacing lxml dependency with the built-in xml module.
-
-This preprocessing syntax style is not very common, but is similar to
-the one provided by WiX (https://wixtoolset.org/docs/v3/overview/preprocessor/)
-or wixl, that we adopted in QEMU for packaging the guest agent.
+To make the "-display dbus" work on Windows, implement an alternative
+D-Bus interface where all the 'h' (FDs) arguments are replaced with
+'ay' (WSASocketW data), and sockets are passed to the other end via
+WSADuplicateSocket().
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Message-Id: <20230606115658.677673-5-marcandre.lureau@redhat.com>
+Message-Id: <20230606115658.677673-6-marcandre.lureau@redhat.com>
 ---
- MAINTAINERS                    |   1 +
- scripts/meson.build            |   2 +
- scripts/xml-preprocess-test.py | 136 +++++++++++++++
- scripts/xml-preprocess.py      | 293 +++++++++++++++++++++++++++++++++
- 4 files changed, 432 insertions(+)
- create mode 100644 scripts/xml-preprocess-test.py
- create mode 100755 scripts/xml-preprocess.py
+ meson.build          |  4 +--
+ ui/dbus.h            |  6 +++++
+ audio/dbusaudio.c    | 44 +++++++++++++++++++++++++++------
+ ui/dbus-chardev.c    | 22 +++++++++++++----
+ ui/dbus-console.c    | 59 ++++++++++++++++++++++++++++++++++++++------
+ ui/dbus-display1.xml | 28 +++++++++++++++++++++
+ ui/meson.build       |  9 ++++++-
+ 7 files changed, 149 insertions(+), 23 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index e07746ac7d..21a587ce4b 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -3202,6 +3202,7 @@ F: docs/interop/dbus*
- F: docs/sphinx/dbus*
- F: docs/sphinx/fakedbusdoc.py
- F: tests/qtest/dbus*
-+F: scripts/xml-preprocess*
- 
- Seccomp
- M: Daniel P. Berrange <berrange@redhat.com>
-diff --git a/scripts/meson.build b/scripts/meson.build
-index 1c89e10a76..532277f5a2 100644
---- a/scripts/meson.build
-+++ b/scripts/meson.build
-@@ -1,3 +1,5 @@
- if stap.found()
-   install_data('qemu-trace-stap', install_dir: get_option('bindir'))
+diff --git a/meson.build b/meson.build
+index b409788832..9a1ce43471 100644
+--- a/meson.build
++++ b/meson.build
+@@ -838,6 +838,8 @@ if gdbus_codegen.found() and get_option('cfi')
+   gdbus_codegen_error = '@0@ uses gdbus-codegen, which does not support control flow integrity'
  endif
+ 
++xml_pp = find_program('scripts/xml-preprocess.py')
 +
-+test('xml-preprocess', files('xml-preprocess-test.py'), suite: ['unit'])
-diff --git a/scripts/xml-preprocess-test.py b/scripts/xml-preprocess-test.py
-new file mode 100644
-index 0000000000..dd92579969
---- /dev/null
-+++ b/scripts/xml-preprocess-test.py
-@@ -0,0 +1,136 @@
-+#!/usr/bin/env python3
-+#
-+# Copyright (c) 2023 Red Hat, Inc.
-+#
-+# SPDX-License-Identifier: MIT
-+"""Unit tests for xml-preprocess"""
+ lttng = not_found
+ if 'ust' in get_option('trace_backends')
+   lttng = dependency('lttng-ust', required: true, version: '>= 2.1',
+@@ -1985,8 +1987,6 @@ dbus_display = get_option('dbus_display') \
+            error_message: '-display dbus requires glib>=2.64') \
+   .require(gdbus_codegen.found(),
+            error_message: gdbus_codegen_error.format('-display dbus')) \
+-  .require(targetos != 'windows',
+-           error_message: '-display dbus is not available on Windows') \
+   .allowed()
+ 
+ have_virtfs = get_option('virtfs') \
+diff --git a/ui/dbus.h b/ui/dbus.h
+index 9c149e7b41..1e8c24a48e 100644
+--- a/ui/dbus.h
++++ b/ui/dbus.h
+@@ -62,6 +62,12 @@ struct DBusDisplay {
+     Notifier notifier;
+ };
+ 
++#ifdef WIN32
++bool
++dbus_win32_import_socket(GDBusMethodInvocation *invocation,
++                         GVariant *arg_listener, int *socket);
++#endif
 +
-+import contextlib
-+import importlib
-+import os
-+import platform
-+import subprocess
-+import tempfile
-+import unittest
-+from io import StringIO
+ #define TYPE_DBUS_DISPLAY "dbus-display"
+ OBJECT_DECLARE_SIMPLE_TYPE(DBusDisplay, DBUS_DISPLAY)
+ 
+diff --git a/audio/dbusaudio.c b/audio/dbusaudio.c
+index de59467d9e..7a11fbfb42 100644
+--- a/audio/dbusaudio.c
++++ b/audio/dbusaudio.c
+@@ -33,6 +33,7 @@
+ #include <gio/gunixfdlist.h>
+ #endif
+ 
++#include "ui/dbus.h"
+ #include "ui/dbus-display1.h"
+ 
+ #define AUDIO_CAP "dbus"
+@@ -422,7 +423,6 @@ dbus_audio_fini(void *opaque)
+     g_free(da);
+ }
+ 
+-#ifdef G_OS_UNIX
+ static void
+ listener_out_vanished_cb(GDBusConnection *connection,
+                          gboolean remote_peer_vanished,
+@@ -448,7 +448,9 @@ listener_in_vanished_cb(GDBusConnection *connection,
+ static gboolean
+ dbus_audio_register_listener(AudioState *s,
+                              GDBusMethodInvocation *invocation,
++#ifdef G_OS_UNIX
+                              GUnixFDList *fd_list,
++#endif
+                              GVariant *arg_listener,
+                              bool out)
+ {
+@@ -475,6 +477,11 @@ dbus_audio_register_listener(AudioState *s,
+         return DBUS_METHOD_INVOCATION_HANDLED;
+     }
+ 
++#ifdef G_OS_WIN32
++    if (!dbus_win32_import_socket(invocation, arg_listener, &fd)) {
++        return DBUS_METHOD_INVOCATION_HANDLED;
++    }
++#else
+     fd = g_unix_fd_list_get(fd_list, g_variant_get_handle(arg_listener), &err);
+     if (err) {
+         g_dbus_method_invocation_return_error(invocation,
+@@ -484,6 +491,7 @@ dbus_audio_register_listener(AudioState *s,
+                                               err->message);
+         return DBUS_METHOD_INVOCATION_HANDLED;
+     }
++#endif
+ 
+     socket = g_socket_new_from_fd(fd, &err);
+     if (err) {
+@@ -492,15 +500,28 @@ dbus_audio_register_listener(AudioState *s,
+                                               DBUS_DISPLAY_ERROR_FAILED,
+                                               "Couldn't make a socket: %s",
+                                               err->message);
++#ifdef G_OS_WIN32
++        closesocket(fd);
++#else
++        close(fd);
++#endif
+         return DBUS_METHOD_INVOCATION_HANDLED;
+     }
+     socket_conn = g_socket_connection_factory_create_connection(socket);
+     if (out) {
+         qemu_dbus_display1_audio_complete_register_out_listener(
+-            da->iface, invocation, NULL);
++            da->iface, invocation
++#ifdef G_OS_UNIX
++            , NULL
++#endif
++            );
+     } else {
+         qemu_dbus_display1_audio_complete_register_in_listener(
+-            da->iface, invocation, NULL);
++            da->iface, invocation
++#ifdef G_OS_UNIX
++            , NULL
++#endif
++            );
+     }
+ 
+     listener_conn =
+@@ -578,24 +599,33 @@ dbus_audio_register_listener(AudioState *s,
+ static gboolean
+ dbus_audio_register_out_listener(AudioState *s,
+                                  GDBusMethodInvocation *invocation,
++#ifdef G_OS_UNIX
+                                  GUnixFDList *fd_list,
++#endif
+                                  GVariant *arg_listener)
+ {
+     return dbus_audio_register_listener(s, invocation,
+-                                        fd_list, arg_listener, true);
++#ifdef G_OS_UNIX
++                                        fd_list,
++#endif
++                                        arg_listener, true);
+ 
+ }
+ 
+ static gboolean
+ dbus_audio_register_in_listener(AudioState *s,
+                                 GDBusMethodInvocation *invocation,
++#ifdef G_OS_UNIX
+                                 GUnixFDList *fd_list,
++#endif
+                                 GVariant *arg_listener)
+ {
+     return dbus_audio_register_listener(s, invocation,
+-                                        fd_list, arg_listener, false);
+-}
++#ifdef G_OS_UNIX
++                                        fd_list,
+ #endif
++                                        arg_listener, false);
++}
+ 
+ static void
+ dbus_audio_set_server(AudioState *s, GDBusObjectManagerServer *server, bool p2p)
+@@ -610,14 +640,12 @@ dbus_audio_set_server(AudioState *s, GDBusObjectManagerServer *server, bool p2p)
+ 
+     da->audio = g_dbus_object_skeleton_new(DBUS_DISPLAY1_AUDIO_PATH);
+     da->iface = qemu_dbus_display1_audio_skeleton_new();
+-#ifdef G_OS_UNIX
+     g_object_connect(da->iface,
+                      "swapped-signal::handle-register-in-listener",
+                      dbus_audio_register_in_listener, s,
+                      "swapped-signal::handle-register-out-listener",
+                      dbus_audio_register_out_listener, s,
+                      NULL);
+-#endif
+ 
+     g_dbus_object_skeleton_add_interface(G_DBUS_OBJECT_SKELETON(da->audio),
+                                          G_DBUS_INTERFACE_SKELETON(da->iface));
+diff --git a/ui/dbus-chardev.c b/ui/dbus-chardev.c
+index 7154d81a9a..1d3a7122a1 100644
+--- a/ui/dbus-chardev.c
++++ b/ui/dbus-chardev.c
+@@ -110,18 +110,24 @@ dbus_chardev_init(DBusDisplay *dpy)
+                          dbus_display_chardev_foreach, dpy);
+ }
+ 
+-#ifdef G_OS_UNIX
+ static gboolean
+ dbus_chr_register(
+     DBusChardev *dc,
+     GDBusMethodInvocation *invocation,
++#ifdef G_OS_UNIX
+     GUnixFDList *fd_list,
++#endif
+     GVariant *arg_stream,
+     QemuDBusDisplay1Chardev *object)
+ {
+     g_autoptr(GError) err = NULL;
+     int fd;
+ 
++#ifdef G_OS_WIN32
++    if (!dbus_win32_import_socket(invocation, arg_stream, &fd)) {
++        return DBUS_METHOD_INVOCATION_HANDLED;
++    }
++#else
+     fd = g_unix_fd_list_get(fd_list, g_variant_get_handle(arg_stream), &err);
+     if (err) {
+         g_dbus_method_invocation_return_error(
+@@ -131,13 +137,18 @@ dbus_chr_register(
+             "Couldn't get peer FD: %s", err->message);
+         return DBUS_METHOD_INVOCATION_HANDLED;
+     }
++#endif
+ 
+     if (qemu_chr_add_client(CHARDEV(dc), fd) < 0) {
+         g_dbus_method_invocation_return_error(invocation,
+                                               DBUS_DISPLAY_ERROR,
+                                               DBUS_DISPLAY_ERROR_FAILED,
+                                               "Couldn't register FD!");
++#ifdef G_OS_WIN32
++        closesocket(fd);
++#else
+         close(fd);
++#endif
+         return DBUS_METHOD_INVOCATION_HANDLED;
+     }
+ 
+@@ -145,10 +156,13 @@ dbus_chr_register(
+                  "owner", g_dbus_method_invocation_get_sender(invocation),
+                  NULL);
+ 
+-    qemu_dbus_display1_chardev_complete_register(object, invocation, NULL);
++    qemu_dbus_display1_chardev_complete_register(object, invocation
++#ifndef G_OS_WIN32
++                                                 , NULL
++#endif
++        );
+     return DBUS_METHOD_INVOCATION_HANDLED;
+ }
+-#endif
+ 
+ static gboolean
+ dbus_chr_send_break(
+@@ -179,10 +193,8 @@ dbus_chr_open(Chardev *chr, ChardevBackend *backend,
+     dc->iface = qemu_dbus_display1_chardev_skeleton_new();
+     g_object_set(dc->iface, "name", backend->u.dbus.data->name, NULL);
+     g_object_connect(dc->iface,
+-#ifdef G_OS_UNIX
+                      "swapped-signal::handle-register",
+                      dbus_chr_register, dc,
+-#endif
+                      "swapped-signal::handle-send-break",
+                      dbus_chr_send_break, dc,
+                      NULL);
+diff --git a/ui/dbus-console.c b/ui/dbus-console.c
+index d5f6c93637..4a1c1fb55e 100644
+--- a/ui/dbus-console.c
++++ b/ui/dbus-console.c
+@@ -165,7 +165,6 @@ dbus_display_console_class_init(DBusDisplayConsoleClass *klass)
+     gobject_class->dispose = dbus_display_console_dispose;
+ }
+ 
+-#ifdef G_OS_UNIX
+ static void
+ listener_vanished_cb(DBusDisplayListener *listener)
+ {
+@@ -177,7 +176,6 @@ listener_vanished_cb(DBusDisplayListener *listener)
+     g_hash_table_remove(ddc->listeners, name);
+     qkbd_state_lift_all_keys(ddc->kbd);
+ }
+-#endif
+ 
+ static gboolean
+ dbus_console_set_ui_info(DBusDisplayConsole *ddc,
+@@ -211,11 +209,47 @@ dbus_console_set_ui_info(DBusDisplayConsole *ddc,
+     return DBUS_METHOD_INVOCATION_HANDLED;
+ }
+ 
+-#ifdef G_OS_UNIX
++#ifdef G_OS_WIN32
++bool
++dbus_win32_import_socket(GDBusMethodInvocation *invocation,
++                         GVariant *arg_listener, int *socket)
++{
++    gsize n;
++    WSAPROTOCOL_INFOW *info = (void *)g_variant_get_fixed_array(arg_listener, &n, 1);
 +
-+xmlpp = importlib.import_module("xml-preprocess")
++    if (!info || n != sizeof(*info)) {
++        g_dbus_method_invocation_return_error(
++            invocation,
++            DBUS_DISPLAY_ERROR,
++            DBUS_DISPLAY_ERROR_FAILED,
++            "Failed to get socket infos");
++        return false;
++    }
 +
++    *socket = WSASocketW(FROM_PROTOCOL_INFO,
++                         FROM_PROTOCOL_INFO,
++                         FROM_PROTOCOL_INFO,
++                         info, 0, 0);
++    if (*socket == INVALID_SOCKET) {
++        g_autofree gchar *emsg = g_win32_error_message(WSAGetLastError());
++        g_dbus_method_invocation_return_error(
++            invocation,
++            DBUS_DISPLAY_ERROR,
++            DBUS_DISPLAY_ERROR_FAILED,
++            "Couldn't create socket: %s", emsg);
++        return false;
++    }
 +
-+class TestXmlPreprocess(unittest.TestCase):
-+    """Tests for xml-preprocess.Preprocessor"""
++    return true;
++}
++#endif
 +
-+    def test_preprocess_xml(self):
-+        with tempfile.NamedTemporaryFile(mode="w", delete=False) as temp_file:
-+            temp_file.write("<root></root>")
-+            temp_file_name = temp_file.name
-+        result = xmlpp.preprocess_xml(temp_file_name)
-+        self.assertEqual(result, "<root></root>")
-+        os.remove(temp_file_name)
-+
-+    def test_save_xml(self):
-+        with tempfile.NamedTemporaryFile(mode="w", delete=False) as temp_file:
-+            temp_file_name = temp_file.name
-+            xmlpp.save_xml("<root></root>", temp_file_name)
-+        self.assertTrue(os.path.isfile(temp_file_name))
-+        os.remove(temp_file_name)
-+
-+    def test_include(self):
-+        with tempfile.NamedTemporaryFile(mode="w", delete=False) as inc_file:
-+            inc_file.write("<included>Content from included file</included>")
-+            inc_file_name = inc_file.name
-+        xml_str = f"<?include {inc_file_name} ?>"
-+        expected = "<included>Content from included file</included>"
-+        xpp = xmlpp.Preprocessor()
-+        result = xpp.preprocess(xml_str)
-+        self.assertEqual(result, expected)
-+        os.remove(inc_file_name)
-+        self.assertRaises(FileNotFoundError, xpp.preprocess, xml_str)
-+
-+    def test_envvar(self):
-+        os.environ["TEST_ENV_VAR"] = "TestValue"
-+        xml_str = "<root>$(env.TEST_ENV_VAR)</root>"
-+        expected = "<root>TestValue</root>"
-+        xpp = xmlpp.Preprocessor()
-+        result = xpp.preprocess(xml_str)
-+        self.assertEqual(result, expected)
-+        self.assertRaises(KeyError, xpp.preprocess, "$(env.UNKNOWN)")
-+
-+    def test_sys_var(self):
-+        xml_str = "<root>$(sys.ARCH)</root>"
-+        expected = f"<root>{platform.architecture()[0]}</root>"
-+        xpp = xmlpp.Preprocessor()
-+        result = xpp.preprocess(xml_str)
-+        self.assertEqual(result, expected)
-+        self.assertRaises(KeyError, xpp.preprocess, "$(sys.UNKNOWN)")
-+
-+    def test_cus_var(self):
-+        xml_str = "<root>$(var.USER)</root>"
-+        expected = "<root></root>"
-+        xpp = xmlpp.Preprocessor()
-+        result = xpp.preprocess(xml_str)
-+        self.assertEqual(result, expected)
-+        xml_str = "<?define USER=FOO?><root>$(var.USER)</root>"
-+        expected = "<root>FOO</root>"
-+        xpp = xmlpp.Preprocessor()
-+        result = xpp.preprocess(xml_str)
-+        self.assertEqual(result, expected)
-+
-+    def test_error_warning(self):
-+        xml_str = "<root><?warning \"test warn\"?></root>"
-+        expected = "<root></root>"
-+        xpp = xmlpp.Preprocessor()
-+        out = StringIO()
-+        with contextlib.redirect_stdout(out):
-+            result = xpp.preprocess(xml_str)
-+        self.assertEqual(result, expected)
-+        self.assertEqual(out.getvalue(), "[Warning]: test warn\n")
-+        self.assertRaises(RuntimeError, xpp.preprocess, "<?error \"test\"?>")
-+
-+    def test_cmd(self):
-+        xpp = xmlpp.Preprocessor()
-+        result = xpp.preprocess('<root><?cmd "echo hello world"?></root>')
-+        self.assertEqual(result, "<root>hello world</root>")
-+        self.assertRaises(
-+            subprocess.CalledProcessError,
-+            xpp.preprocess, '<?cmd "test-unknown-cmd"?>'
-+        )
-+
-+    def test_foreach(self):
-+        xpp = xmlpp.Preprocessor()
-+        result = xpp.preprocess(
-+            '<root><?foreach x in a;b;c?>$(var.x)<?endforeach?></root>'
-+        )
-+        self.assertEqual(result, "<root>abc</root>")
-+
-+    def test_if_elseif(self):
-+        xpp = xmlpp.Preprocessor()
-+        result = xpp.preprocess('<root><?if True?>ok<?endif?></root>')
-+        self.assertEqual(result, "<root>ok</root>")
-+        result = xpp.preprocess('<root><?if False?>ok<?endif?></root>')
-+        self.assertEqual(result, "<root></root>")
-+        result = xpp.preprocess('<root><?if True?>ok<?else?>ko<?endif?></root>')
-+        self.assertEqual(result, "<root>ok</root>")
-+        result = xpp.preprocess('<root><?if False?>ok<?else?>ko<?endif?></root>')
-+        self.assertEqual(result, "<root>ko</root>")
-+        result = xpp.preprocess(
-+            '<root><?if False?>ok<?elseif True?>ok2<?else?>ko<?endif?></root>'
-+        )
-+        self.assertEqual(result, "<root>ok2</root>")
-+        result = xpp.preprocess(
-+            '<root><?if False?>ok<?elseif False?>ok<?else?>ko<?endif?></root>'
-+        )
-+        self.assertEqual(result, "<root>ko</root>")
-+
-+    def test_ifdef(self):
-+        xpp = xmlpp.Preprocessor()
-+        result = xpp.preprocess('<root><?ifdef USER?>ok<?else?>ko<?endif?></root>')
-+        self.assertEqual(result, "<root>ko</root>")
-+        result = xpp.preprocess(
-+            '<?define USER=FOO?><root><?ifdef USER?>ok<?else?>ko<?endif?></root>'
-+        )
-+        self.assertEqual(result, "<root>ok</root>")
-+
-+
-+if __name__ == "__main__":
-+    unittest.main()
-diff --git a/scripts/xml-preprocess.py b/scripts/xml-preprocess.py
-new file mode 100755
-index 0000000000..57f1d28912
---- /dev/null
-+++ b/scripts/xml-preprocess.py
-@@ -0,0 +1,293 @@
-+#!/usr/bin/env python3
-+#
-+# Copyright (c) 2017-2019 Tony Su
-+# Copyright (c) 2023 Red Hat, Inc.
-+#
-+# SPDX-License-Identifier: MIT
-+#
-+# Adapted from https://github.com/peitaosu/XML-Preprocessor
-+#
-+"""This is a XML Preprocessor which can be used to process your XML file before
-+you use it, to process conditional statements, variables, iteration
-+statements, error/warning, execute command, etc.
-+
-+## XML Schema
-+
-+### Include Files
-+```
-+<?include path/to/file ?>
-+```
-+
-+### Variables
-+```
-+$(env.EnvironmentVariable)
-+
-+$(sys.SystemVariable)
-+
-+$(var.CustomVariable)
-+```
-+
-+### Conditional Statements
-+```
-+<?if ?>
-+
-+<?ifdef ?>
-+
-+<?ifndef ?>
-+
-+<?else?>
-+
-+<?elseif ?>
-+
-+<?endif?>
-+```
-+
-+### Iteration Statements
-+```
-+<?foreach VARNAME in 1;2;3?>
-+    $(var.VARNAME)
-+<?endforeach?>
-+```
-+
-+### Errors and Warnings
-+```
-+<?error "This is error message!" ?>
-+
-+<?warning "This is warning message!" ?>
-+```
-+
-+### Commands
-+```
-+<? cmd "echo hello world" ?>
-+```
-+"""
-+
-+import os
-+import platform
-+import re
-+import subprocess
-+import sys
-+from typing import Optional
-+from xml.dom import minidom
-+
-+
-+class Preprocessor():
-+    """This class holds the XML preprocessing state"""
-+
-+    def __init__(self):
-+        self.sys_vars = {
-+            "ARCH": platform.architecture()[0],
-+            "SOURCE": os.path.abspath(__file__),
-+            "CURRENT": os.getcwd(),
-+        }
-+        self.cus_vars = {}
-+
-+    def _pp_include(self, xml_str: str) -> str:
-+        include_regex = r"(<\?include([\w\s\\/.:_-]+)\s*\?>)"
-+        matches = re.findall(include_regex, xml_str)
-+        for group_inc, group_xml in matches:
-+            inc_file_path = group_xml.strip()
-+            with open(inc_file_path, "r", encoding="utf-8") as inc_file:
-+                inc_file_content = inc_file.read()
-+                xml_str = xml_str.replace(group_inc, inc_file_content)
-+        return xml_str
-+
-+    def _pp_env_var(self, xml_str: str) -> str:
-+        envvar_regex = r"(\$\(env\.(\w+)\))"
-+        matches = re.findall(envvar_regex, xml_str)
-+        for group_env, group_var in matches:
-+            xml_str = xml_str.replace(group_env, os.environ[group_var])
-+        return xml_str
-+
-+    def _pp_sys_var(self, xml_str: str) -> str:
-+        sysvar_regex = r"(\$\(sys\.(\w+)\))"
-+        matches = re.findall(sysvar_regex, xml_str)
-+        for group_sys, group_var in matches:
-+            xml_str = xml_str.replace(group_sys, self.sys_vars[group_var])
-+        return xml_str
-+
-+    def _pp_cus_var(self, xml_str: str) -> str:
-+        define_regex = r"(<\?define\s*(\w+)\s*=\s*([\w\s\"]+)\s*\?>)"
-+        matches = re.findall(define_regex, xml_str)
-+        for group_def, group_name, group_var in matches:
-+            group_name = group_name.strip()
-+            group_var = group_var.strip().strip("\"")
-+            self.cus_vars[group_name] = group_var
-+            xml_str = xml_str.replace(group_def, "")
-+        cusvar_regex = r"(\$\(var\.(\w+)\))"
-+        matches = re.findall(cusvar_regex, xml_str)
-+        for group_cus, group_var in matches:
-+            xml_str = xml_str.replace(
-+                group_cus,
-+                self.cus_vars.get(group_var, "")
-+            )
-+        return xml_str
-+
-+    def _pp_foreach(self, xml_str: str) -> str:
-+        foreach_regex = r"(<\?foreach\s+(\w+)\s+in\s+([\w;]+)\s*\?>(.*)<\?endforeach\?>)"
-+        matches = re.findall(foreach_regex, xml_str)
-+        for group_for, group_name, group_vars, group_text in matches:
-+            group_texts = ""
-+            for var in group_vars.split(";"):
-+                self.cus_vars[group_name] = var
-+                group_texts += self._pp_cus_var(group_text)
-+            xml_str = xml_str.replace(group_for, group_texts)
-+        return xml_str
-+
-+    def _pp_error_warning(self, xml_str: str) -> str:
-+        error_regex = r"<\?error\s*\"([^\"]+)\"\s*\?>"
-+        matches = re.findall(error_regex, xml_str)
-+        for group_var in matches:
-+            raise RuntimeError("[Error]: " + group_var)
-+        warning_regex = r"(<\?warning\s*\"([^\"]+)\"\s*\?>)"
-+        matches = re.findall(warning_regex, xml_str)
-+        for group_wrn, group_var in matches:
-+            print("[Warning]: " + group_var)
-+            xml_str = xml_str.replace(group_wrn, "")
-+        return xml_str
-+
-+    def _pp_if_eval(self, xml_str: str) -> str:
-+        ifelif_regex = (
-+            r"(<\?(if|elseif)\s*([^\"\s=<>!]+)\s*([!=<>]+)\s*\"*([^\"=<>!]+)\"*\s*\?>)"
-+        )
-+        matches = re.findall(ifelif_regex, xml_str)
-+        for ifelif, tag, left, operator, right in matches:
-+            if "<" in operator or ">" in operator:
-+                result = eval(f"{left} {operator} {right}")
-+            else:
-+                result = eval(f'"{left}" {operator} "{right}"')
-+            xml_str = xml_str.replace(ifelif, f"<?{tag} {result}?>")
-+        return xml_str
-+
-+    def _pp_ifdef_ifndef(self, xml_str: str) -> str:
-+        ifndef_regex = r"(<\?(ifdef|ifndef)\s*([\w]+)\s*\?>)"
-+        matches = re.findall(ifndef_regex, xml_str)
-+        for group_ifndef, group_tag, group_var in matches:
-+            if group_tag == "ifdef":
-+                result = group_var in self.cus_vars
-+            else:
-+                result = group_var not in self.cus_vars
-+            xml_str = xml_str.replace(group_ifndef, f"<?if {result}?>")
-+        return xml_str
-+
-+    def _pp_if_elseif(self, xml_str: str) -> str:
-+        if_elif_else_regex = (
-+            r"(<\?if\s(True|False)\?>"
-+            r"(.*?)"
-+            r"<\?elseif\s(True|False)\?>"
-+            r"(.*?)"
-+            r"<\?else\?>"
-+            r"(.*?)"
-+            r"<\?endif\?>)"
-+        )
-+        if_else_regex = (
-+            r"(<\?if\s(True|False)\?>"
-+            r"(.*?)"
-+            r"<\?else\?>"
-+            r"(.*?)"
-+            r"<\?endif\?>)"
-+        )
-+        if_regex = r"(<\?if\s(True|False)\?>(.*?)<\?endif\?>)"
-+        matches = re.findall(if_elif_else_regex, xml_str, re.DOTALL)
-+        for (group_full, group_if, group_if_elif, group_elif,
-+             group_elif_else, group_else) in matches:
-+            result = ""
-+            if group_if == "True":
-+                result = group_if_elif
-+            elif group_elif == "True":
-+                result = group_elif_else
-+            else:
-+                result = group_else
-+            xml_str = xml_str.replace(group_full, result)
-+        matches = re.findall(if_else_regex, xml_str, re.DOTALL)
-+        for group_full, group_if, group_if_else, group_else in matches:
-+            result = ""
-+            if group_if == "True":
-+                result = group_if_else
-+            else:
-+                result = group_else
-+            xml_str = xml_str.replace(group_full, result)
-+        matches = re.findall(if_regex, xml_str, re.DOTALL)
-+        for group_full, group_if, group_text in matches:
-+            result = ""
-+            if group_if == "True":
-+                result = group_text
-+            xml_str = xml_str.replace(group_full, result)
-+        return xml_str
-+
-+    def _pp_command(self, xml_str: str) -> str:
-+        cmd_regex = r"(<\?cmd\s*\"([^\"]+)\"\s*\?>)"
-+        matches = re.findall(cmd_regex, xml_str)
-+        for group_cmd, group_exec in matches:
-+            output = subprocess.check_output(
-+                group_exec, shell=True,
-+                text=True, stderr=subprocess.STDOUT
-+            )
-+            xml_str = xml_str.replace(group_cmd, output)
-+        return xml_str
-+
-+    def _pp_blanks(self, xml_str: str) -> str:
-+        right_blank_regex = r">[\n\s\t\r]*"
-+        left_blank_regex = r"[\n\s\t\r]*<"
-+        xml_str = re.sub(right_blank_regex, ">", xml_str)
-+        xml_str = re.sub(left_blank_regex, "<", xml_str)
-+        return xml_str
-+
-+    def preprocess(self, xml_str: str) -> str:
-+        fns = [
-+            self._pp_blanks,
-+            self._pp_include,
-+            self._pp_foreach,
-+            self._pp_env_var,
-+            self._pp_sys_var,
-+            self._pp_cus_var,
-+            self._pp_if_eval,
-+            self._pp_ifdef_ifndef,
-+            self._pp_if_elseif,
-+            self._pp_command,
-+            self._pp_error_warning,
-+        ]
-+
-+        while True:
-+            changed = False
-+            for func in fns:
-+                out_xml = func(xml_str)
-+                if not changed and out_xml != xml_str:
-+                    changed = True
-+                xml_str = out_xml
-+            if not changed:
-+                break
-+
-+        return xml_str
-+
-+
-+def preprocess_xml(path: str) -> str:
-+    with open(path, "r", encoding="utf-8") as original_file:
-+        input_xml = original_file.read()
-+
-+        proc = Preprocessor()
-+        return proc.preprocess(input_xml)
-+
-+
-+def save_xml(xml_str: str, path: Optional[str]):
-+    xml = minidom.parseString(xml_str)
-+    with open(path, "w", encoding="utf-8") if path else sys.stdout as output_file:
-+        output_file.write(xml.toprettyxml())
-+
-+
-+def main():
-+    if len(sys.argv) < 2:
-+        print("Usage: xml-preprocessor input.xml [output.xml]")
-+        sys.exit(1)
-+
-+    output_file = None
-+    if len(sys.argv) == 3:
-+        output_file = sys.argv[2]
-+
-+    input_file = sys.argv[1]
-+    output_xml = preprocess_xml(input_file)
-+    save_xml(output_xml, output_file)
-+
-+
-+if __name__ == "__main__":
-+    main()
+ static gboolean
+ dbus_console_register_listener(DBusDisplayConsole *ddc,
+                                GDBusMethodInvocation *invocation,
++#ifdef G_OS_UNIX
+                                GUnixFDList *fd_list,
++#endif
+                                GVariant *arg_listener)
+ {
+     const char *sender = g_dbus_method_invocation_get_sender(invocation);
+@@ -237,6 +271,11 @@ dbus_console_register_listener(DBusDisplayConsole *ddc,
+         return DBUS_METHOD_INVOCATION_HANDLED;
+     }
+ 
++#ifdef G_OS_WIN32
++    if (!dbus_win32_import_socket(invocation, arg_listener, &fd)) {
++        return DBUS_METHOD_INVOCATION_HANDLED;
++    }
++#else
+     fd = g_unix_fd_list_get(fd_list, g_variant_get_handle(arg_listener), &err);
+     if (err) {
+         g_dbus_method_invocation_return_error(
+@@ -246,6 +285,7 @@ dbus_console_register_listener(DBusDisplayConsole *ddc,
+             "Couldn't get peer fd: %s", err->message);
+         return DBUS_METHOD_INVOCATION_HANDLED;
+     }
++#endif
+ 
+     socket = g_socket_new_from_fd(fd, &err);
+     if (err) {
+@@ -254,13 +294,21 @@ dbus_console_register_listener(DBusDisplayConsole *ddc,
+             DBUS_DISPLAY_ERROR,
+             DBUS_DISPLAY_ERROR_FAILED,
+             "Couldn't make a socket: %s", err->message);
++#ifdef G_OS_WIN32
++        closesocket(fd);
++#else
+         close(fd);
++#endif
+         return DBUS_METHOD_INVOCATION_HANDLED;
+     }
+     socket_conn = g_socket_connection_factory_create_connection(socket);
+ 
+     qemu_dbus_display1_console_complete_register_listener(
+-        ddc->iface, invocation, NULL);
++        ddc->iface, invocation
++#ifdef G_OS_UNIX
++        , NULL
++#endif
++    );
+ 
+     listener_conn = g_dbus_connection_new_sync(
+         G_IO_STREAM(socket_conn),
+@@ -287,7 +335,6 @@ dbus_console_register_listener(DBusDisplayConsole *ddc,
+     trace_dbus_registered_listener(sender);
+     return DBUS_METHOD_INVOCATION_HANDLED;
+ }
+-#endif
+ 
+ static gboolean
+ dbus_kbd_press(DBusDisplayConsole *ddc,
+@@ -516,10 +563,8 @@ dbus_display_console_new(DBusDisplay *display, QemuConsole *con)
+         "device-address", device_addr,
+         NULL);
+     g_object_connect(ddc->iface,
+-#ifdef G_OS_UNIX
+         "swapped-signal::handle-register-listener",
+         dbus_console_register_listener, ddc,
+-#endif
+         "swapped-signal::handle-set-uiinfo",
+         dbus_console_set_ui_info, ddc,
+         NULL);
+diff --git a/ui/dbus-display1.xml b/ui/dbus-display1.xml
+index cc0c9b68bf..cd596f774e 100644
+--- a/ui/dbus-display1.xml
++++ b/ui/dbus-display1.xml
+@@ -57,7 +57,13 @@
+         :dbus:iface:`org.qemu.Display1.Listener` interface.
+     -->
+     <method name="RegisterListener">
++      <?if $(env.TARGETOS) == windows?>
++      <arg type="ay" name="listener" direction="in">
++        <annotation name="org.gtk.GDBus.C.ForceGVariant" value="true"/>
++      </arg>
++      <?else?>
+       <arg type="h" name="listener" direction="in"/>
++      <?endif?>
+     </method>
+ 
+     <!--
+@@ -334,6 +340,9 @@
+       </arg>
+     </method>
+ 
++    <?if $(env.TARGETOS) == windows?>
++    <!-- Add shared memory/texture support -->
++    <?else?>
+     <!--
+         ScanoutDMABUF:
+         @dmabuf: the DMABUF file descriptor.
+@@ -372,6 +381,7 @@
+       <arg type="i" name="width" direction="in"/>
+       <arg type="i" name="height" direction="in"/>
+     </method>
++    <?endif?>
+ 
+     <!--
+         Disable:
+@@ -532,7 +542,13 @@
+         :dbus:iface:`org.qemu.Display1.AudioOutListener` interface.
+     -->
+     <method name="RegisterOutListener">
++      <?if $(env.TARGETOS) == windows?>
++      <arg type="ay" name="listener" direction="in">
++        <annotation name="org.gtk.GDBus.C.ForceGVariant" value="true"/>
++      </arg>
++      <?else?>
+       <arg type="h" name="listener" direction="in"/>
++      <?endif?>
+     </method>
+ 
+     <!--
+@@ -547,7 +563,13 @@
+         :dbus:iface:`org.qemu.Display1.AudioInListener` interface.
+     -->
+     <method name="RegisterInListener">
++      <?if $(env.TARGETOS) == windows?>
++      <arg type="ay" name="listener" direction="in">
++        <annotation name="org.gtk.GDBus.C.ForceGVariant" value="true"/>
++      </arg>
++      <?else?>
+       <arg type="h" name="listener" direction="in"/>
++      <?endif?>
+     </method>
+   </interface>
+ 
+@@ -760,7 +782,13 @@
+         The current handler, if any, will be replaced.
+     -->
+     <method name="Register">
++      <?if $(env.TARGETOS) == windows?>
++      <arg type="ay" name="listener" direction="in">
++        <annotation name="org.gtk.GDBus.C.ForceGVariant" value="true"/>
++      </arg>
++      <?else?>
+       <arg type="h" name="stream" direction="in"/>
++      <?endif?>
+     </method>
+ 
+     <!--
+diff --git a/ui/meson.build b/ui/meson.build
+index a5506ac8ad..d84650676d 100644
+--- a/ui/meson.build
++++ b/ui/meson.build
+@@ -74,9 +74,16 @@ endif
+ 
+ if dbus_display
+   dbus_ss = ss.source_set()
++  env = environment()
++  env.set('TARGETOS', targetos)
++  xml = custom_target('dbus-display preprocess',
++                      input: 'dbus-display1.xml',
++                      output: 'dbus-display1.xml',
++                      env: env,
++                      command: [xml_pp, '@INPUT@', '@OUTPUT@'])
+   dbus_display1 = custom_target('dbus-display gdbus-codegen',
+                                 output: ['dbus-display1.h', 'dbus-display1.c'],
+-                                input: files('dbus-display1.xml'),
++                                input: xml,
+                                 command: [gdbus_codegen, '@INPUT@',
+                                           '--glib-min-required', '2.64',
+                                           '--output-directory', meson.current_build_dir(),
 -- 
 2.41.0
 
