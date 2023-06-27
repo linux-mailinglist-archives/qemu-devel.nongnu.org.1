@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6779C73FC78
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 15:10:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E910F73FC65
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 15:06:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qE8M4-00008F-E4; Tue, 27 Jun 2023 09:03:36 -0400
+	id 1qE8MB-0000DN-H5; Tue, 27 Jun 2023 09:03:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qE8M0-00006R-7O
+ id 1qE8M0-00006U-AG
  for qemu-devel@nongnu.org; Tue, 27 Jun 2023 09:03:32 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qE8Lv-00079S-Pa
+ id 1qE8Lx-0007Ae-B2
  for qemu-devel@nongnu.org; Tue, 27 Jun 2023 09:03:31 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687871006;
+ s=mimecast20190719; t=1687871008;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=9Vzzn6tUFrjan4BZgfFPWCPjeNGkv0pevKvaUz08Xb4=;
- b=YKBWtxwQasSh/JFNBbRCkhRyXPOgYmXcqLwQ9vczam5++jgGNSl7RNwk/Pr7eRVNfUNKNz
- nvGwQFb21V/+sQxar1yJLvIrzw7iw8OwzRsdiWSoneGSL/dP3kY0Ai9tey5ldwyOlOKlfP
- tQjAY+Y0lnx8pEIjqkyeExQt0LZf+3o=
+ bh=Qsxc/cKsiTZ/ZZMV1rebGFc/B2lZvncDKvClLyAnOuk=;
+ b=IgQxZ3tMoubBX16VCMH2sO1T2fMB0io6Ud9rtBIxdh1cpf/8QML84DayRbk0dlDArbrPZv
+ OwjieJV0P+Gm2Oloo3PvvCbD9ddUJtLps3YKcOTSfLzE8Y6gHwBDQPf8FpRR0NhlAqkS8w
+ TdkRkKFGW9c1+IOmDtRDDa01QUAE/H8=
 Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
  [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-662-sRBmmjD_M-anMQ7lij5nXQ-1; Tue, 27 Jun 2023 09:03:18 -0400
-X-MC-Unique: sRBmmjD_M-anMQ7lij5nXQ-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
+ us-mta-475-msiSUr85O1mc1s-Ej00wmg-1; Tue, 27 Jun 2023 09:03:20 -0400
+X-MC-Unique: msiSUr85O1mc1s-Ej00wmg-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 51AFC3C1CB01;
- Tue, 27 Jun 2023 13:03:14 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 33E663C1CB0B;
+ Tue, 27 Jun 2023 13:03:16 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.36])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 87B70200A3AD;
- Tue, 27 Jun 2023 13:03:13 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 9204A2166B25;
+ Tue, 27 Jun 2023 13:03:15 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Gerd Hoffmann <kraxel@redhat.com>
-Subject: [PULL 20/33] ui/dbus: introduce "Interfaces" properties
-Date: Tue, 27 Jun 2023 15:02:17 +0200
-Message-ID: <20230627130231.1614896-21-marcandre.lureau@redhat.com>
+ Stefan Weil <sw@weilnetz.de>, Gerd Hoffmann <kraxel@redhat.com>
+Subject: [PULL 21/33] console/win32: allocate shareable display surface
+Date: Tue, 27 Jun 2023 15:02:18 +0200
+Message-ID: <20230627130231.1614896-22-marcandre.lureau@redhat.com>
 In-Reply-To: <20230627130231.1614896-1-marcandre.lureau@redhat.com>
 References: <20230627130231.1614896-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.133.124;
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -84,235 +84,231 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-This property is similar to ``org.freedesktop.DBus.Interfaces`` property
-on the bus interface: it's an array of strings listing the extra
-interfaces and capabilities available, in a convenient way.
+Introduce qemu_win32_map_alloc() and qemu_win32_map_free() to allocate
+shared memory mapping. The handle can be used to share the mapping with
+another process.
 
-Most interfaces are implicit, as they are required. For
-``org/qemu/Display1_$id``, we can list the Keyboard And Mouse
-interfaces. Those could be optional.
+Teach qemu_create_displaysurface() to allocate shared memory. Following
+patches will introduce other places for shared memory allocation.
+
+Other patches for -display dbus will share the memory when possible with
+the client, to avoid expensive memory copy between the processes.
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Message-Id: <20230606115658.677673-9-marcandre.lureau@redhat.com>
+Message-Id: <20230606115658.677673-10-marcandre.lureau@redhat.com>
 ---
- ui/dbus-console.c    |   7 +++
- ui/dbus-display1.xml | 118 ++++++++++++++++++++++++++++++++++++++++++-
- 2 files changed, 123 insertions(+), 2 deletions(-)
+ include/sysemu/os-win32.h |  3 ++
+ include/ui/console.h      |  8 ++++++
+ ui/console.c              | 59 ++++++++++++++++++++++++++++++++++-----
+ ui/qemu-pixman.c          |  1 +
+ util/oslib-win32.c        | 33 ++++++++++++++++++++++
+ ui/trace-events           |  2 +-
+ util/trace-events         |  4 +++
+ 7 files changed, 102 insertions(+), 8 deletions(-)
 
-diff --git a/ui/dbus-console.c b/ui/dbus-console.c
-index 4a1c1fb55e..aaa9d3b0b3 100644
---- a/ui/dbus-console.c
-+++ b/ui/dbus-console.c
-@@ -537,6 +537,12 @@ dbus_display_console_new(DBusDisplay *display, QemuConsole *con)
-     char device_addr[256] = "";
-     DBusDisplayConsole *ddc;
-     int idx, i;
-+    const char *interfaces[] = {
-+        "org.qemu.Display1.Keyboard",
-+        "org.qemu.Display1.Mouse",
-+        "org.qemu.Display1.MultiTouch",
-+        NULL
-+    };
+diff --git a/include/sysemu/os-win32.h b/include/sysemu/os-win32.h
+index 65f6c9ea57..91aa0d7ec0 100644
+--- a/include/sysemu/os-win32.h
++++ b/include/sysemu/os-win32.h
+@@ -263,6 +263,9 @@ EXCEPTION_DISPOSITION
+ win32_close_exception_handler(struct _EXCEPTION_RECORD*, void*,
+                               struct _CONTEXT*, void*);
  
-     assert(display);
-     assert(con);
-@@ -561,6 +567,7 @@ dbus_display_console_new(DBusDisplay *display, QemuConsole *con)
-         "width", qemu_console_get_width(con, 0),
-         "height", qemu_console_get_height(con, 0),
-         "device-address", device_addr,
-+        "interfaces", interfaces,
-         NULL);
-     g_object_connect(ddc->iface,
-         "swapped-signal::handle-register-listener",
-diff --git a/ui/dbus-display1.xml b/ui/dbus-display1.xml
-index cd596f774e..06e8779c04 100644
---- a/ui/dbus-display1.xml
-+++ b/ui/dbus-display1.xml
-@@ -26,6 +26,20 @@
-         The list of consoles available on ``/org/qemu/Display1/Console_$id``.
-     -->
-     <property name="ConsoleIDs" type="au" access="read"/>
++void *qemu_win32_map_alloc(size_t size, HANDLE *h, Error **errp);
++void qemu_win32_map_free(void *ptr, HANDLE h, Error **errp);
 +
-+    <!--
-+        Interfaces:
-+
-+        This property lists extra interfaces provided by the
-+        /org/qemu/Display1/VM object, and can be used to detect
-+        the capabilities with which they are communicating.
-+
-+        Unlike the standard D-Bus Introspectable interface, querying this
-+        property does not require parsing XML.
-+
-+        (earlier version of the display interface do not provide this property)
-+    -->
-+    <property name="Interfaces" type="as" access="read"/>
-   </interface>
+ #ifdef __cplusplus
+ }
+ #endif
+diff --git a/include/ui/console.h b/include/ui/console.h
+index 2093e2a3ba..2ab0c7112a 100644
+--- a/include/ui/console.h
++++ b/include/ui/console.h
+@@ -143,6 +143,10 @@ typedef struct DisplaySurface {
+     GLenum gltype;
+     GLuint texture;
+ #endif
++#ifdef WIN32
++    HANDLE handle;
++    uint32_t handle_offset;
++#endif
+ } DisplaySurface;
  
-   <!--
-@@ -127,12 +141,27 @@
-         The device address (ex: "pci/0000/02.0").
-     -->
-     <property name="DeviceAddress" type="s" access="read"/>
-+
-+    <!--
-+        Interfaces:
-+
-+        This property lists extra interfaces provided by the
-+        ``/org/qemu/Display1/Console_$id`` object, and can be used to detect the
-+        capabilities with which they are communicating.
-+
-+        Unlike the standard D-Bus Introspectable interface, querying this
-+        property does not require parsing XML.
-+
-+        (earlier version of the display interface do not provide this property)
-+    -->
-+    <property name="Interfaces" type="as" access="read"/>
-   </interface>
+ typedef struct QemuUIInfo {
+@@ -329,6 +333,10 @@ DisplaySurface *qemu_create_displaysurface_from(int width, int height,
+ DisplaySurface *qemu_create_displaysurface_pixman(pixman_image_t *image);
+ DisplaySurface *qemu_create_placeholder_surface(int w, int h,
+                                                 const char *msg);
++#ifdef WIN32
++void qemu_displaysurface_win32_set_handle(DisplaySurface *surface,
++                                          HANDLE h, uint32_t offset);
++#endif
+ PixelFormat qemu_default_pixelformat(int bpp);
  
-   <!--
-       org.qemu.Display1.Keyboard:
+ DisplaySurface *qemu_create_displaysurface(int width, int height);
+diff --git a/ui/console.c b/ui/console.c
+index cfaa43e970..4957110723 100644
+--- a/ui/console.c
++++ b/ui/console.c
+@@ -1513,18 +1513,59 @@ static QemuConsole *new_console(DisplayState *ds, console_type_t console_type,
+     return s;
+ }
  
--      This interface in implemented on ``/org/qemu/Display1/Console_$id`` (see
-+      This interface is optionally implemented on
-+      ``/org/qemu/Display1/Console_$id`` (see
-       :dbus:iface:`~org.qemu.Display1.Console`).
-   -->
-   <interface name="org.qemu.Display1.Keyboard">
-@@ -171,7 +200,8 @@
-   <!--
-       org.qemu.Display1.Mouse:
++#ifdef WIN32
++void qemu_displaysurface_win32_set_handle(DisplaySurface *surface,
++                                          HANDLE h, uint32_t offset)
++{
++    assert(!surface->handle);
++
++    surface->handle = h;
++    surface->handle_offset = offset;
++}
++
++static void
++win32_pixman_image_destroy(pixman_image_t *image, void *data)
++{
++    DisplaySurface *surface = data;
++
++    if (!surface->handle) {
++        return;
++    }
++
++    assert(surface->handle_offset == 0);
++
++    qemu_win32_map_free(
++        pixman_image_get_data(surface->image),
++        surface->handle,
++        &error_warn
++    );
++}
++#endif
++
+ DisplaySurface *qemu_create_displaysurface(int width, int height)
+ {
+-    DisplaySurface *surface = g_new0(DisplaySurface, 1);
++    DisplaySurface *surface;
++    void *bits = NULL;
++#ifdef WIN32
++    HANDLE handle = NULL;
++#endif
  
--      This interface in implemented on ``/org/qemu/Display1/Console_$id`` (see
-+      This interface is optionally implemented on
-+      ``/org/qemu/Display1/Console_$id`` (see
-       :dbus:iface:`~org.qemu.Display1.Console` documentation).
+-    trace_displaysurface_create(surface, width, height);
+-    surface->format = PIXMAN_x8r8g8b8;
+-    surface->image = pixman_image_create_bits(surface->format,
+-                                              width, height,
+-                                              NULL, width * 4);
+-    assert(surface->image != NULL);
++    trace_displaysurface_create(width, height);
++
++#ifdef WIN32
++    bits = qemu_win32_map_alloc(width * height * 4, &handle, &error_abort);
++#endif
++
++    surface = qemu_create_displaysurface_from(
++        width, height,
++        PIXMAN_x8r8g8b8,
++        width * 4, bits
++    );
+     surface->flags = QEMU_ALLOCATED_FLAG;
  
-       .. _dbus-button-values:
-@@ -425,6 +455,20 @@
-         <annotation name="org.gtk.GDBus.C.ForceGVariant" value="true"/>
-       </arg>
-     </method>
-+
-+    <!--
-+        Interfaces:
-+
-+        This property lists extra interfaces provided by the
-+        /org/qemu/Display1/Listener object, and can be used to detect
-+        the capabilities with which they are communicating.
-+
-+        Unlike the standard D-Bus Introspectable interface, querying this
-+        property does not require parsing XML.
-+
-+        (earlier version of the display interface do not provide this property)
-+    -->
-+    <property name="Interfaces" type="as" access="read"/>
-   </interface>
++#ifdef WIN32
++    qemu_displaysurface_win32_set_handle(surface, handle, 0);
++#endif
+     return surface;
+ }
  
-   <!--
-@@ -522,6 +566,20 @@
-         <annotation name="org.gtk.GDBus.C.ForceGVariant" value="true"/>
-       </arg>
-     </method>
-+
-+    <!--
-+        Interfaces:
-+
-+        This property lists extra interfaces provided by the
-+        /org/qemu/Display1/Clipboard object, and can be used to detect
-+        the capabilities with which they are communicating.
-+
-+        Unlike the standard D-Bus Introspectable interface, querying this
-+        property does not require parsing XML.
-+
-+        (earlier version of the display interface do not provide this property)
-+    -->
-+    <property name="Interfaces" type="as" access="read"/>
-   </interface>
+@@ -1540,6 +1581,10 @@ DisplaySurface *qemu_create_displaysurface_from(int width, int height,
+                                               width, height,
+                                               (void *)data, linesize);
+     assert(surface->image != NULL);
++#ifdef WIN32
++    pixman_image_set_destroy_function(surface->image,
++                                      win32_pixman_image_destroy, surface);
++#endif
  
-   <!--
-@@ -571,6 +629,20 @@
-       <arg type="h" name="listener" direction="in"/>
-       <?endif?>
-     </method>
-+
-+    <!--
-+        Interfaces:
-+
-+        This property lists extra interfaces provided by the
-+        /org/qemu/Display1/Audio object, and can be used to detect
-+        the capabilities with which they are communicating.
-+
-+        Unlike the standard D-Bus Introspectable interface, querying this
-+        property does not require parsing XML.
-+
-+        (earlier version of the display interface do not provide this property)
-+    -->
-+    <property name="Interfaces" type="as" access="read"/>
-   </interface>
+     return surface;
+ }
+diff --git a/ui/qemu-pixman.c b/ui/qemu-pixman.c
+index 3ab7e2e958..e4f024a85e 100644
+--- a/ui/qemu-pixman.c
++++ b/ui/qemu-pixman.c
+@@ -6,6 +6,7 @@
+ #include "qemu/osdep.h"
+ #include "ui/console.h"
+ #include "standard-headers/drm/drm_fourcc.h"
++#include "trace.h"
  
-   <!--
-@@ -657,6 +729,20 @@
-         <annotation name="org.gtk.GDBus.C.ForceGVariant" value="true"/>
-       </arg>
-     </method>
+ PixelFormat qemu_pixelformat_from_pixman(pixman_format_code_t format)
+ {
+diff --git a/util/oslib-win32.c b/util/oslib-win32.c
+index fafbab80b4..429542face 100644
+--- a/util/oslib-win32.c
++++ b/util/oslib-win32.c
+@@ -835,3 +835,36 @@ int qemu_msync(void *addr, size_t length, int fd)
+      */
+     return qemu_fdatasync(fd);
+ }
 +
-+    <!--
-+        Interfaces:
++void *qemu_win32_map_alloc(size_t size, HANDLE *h, Error **errp)
++{
++    void *bits;
 +
-+        This property lists extra interfaces provided by the
-+        /org/qemu/Display1/AudioOutListener object, and can be used to detect
-+        the capabilities with which they are communicating.
++    trace_win32_map_alloc(size);
 +
-+        Unlike the standard D-Bus Introspectable interface, querying this
-+        property does not require parsing XML.
++    *h = CreateFileMapping(INVALID_HANDLE_VALUE, NULL, PAGE_READWRITE, 0,
++                          size, NULL);
++    if (*h == NULL) {
++        error_setg_win32(errp, GetLastError(), "Failed to CreateFileMapping");
++        return NULL;
++    }
 +
-+        (earlier version of the display interface do not provide this property)
-+    -->
-+    <property name="Interfaces" type="as" access="read"/>
-   </interface>
++    bits = MapViewOfFile(*h, FILE_MAP_ALL_ACCESS, 0, 0, size);
++    if (bits == NULL) {
++        error_setg_win32(errp, GetLastError(), "Failed to MapViewOfFile");
++        CloseHandle(*h);
++        return NULL;
++    }
++
++    return bits;
++}
++
++void qemu_win32_map_free(void *ptr, HANDLE h, Error **errp)
++{
++    trace_win32_map_free(ptr, h);
++
++    if (UnmapViewOfFile(ptr) == 0) {
++        error_setg_win32(errp, GetLastError(), "Failed to UnmapViewOfFile");
++    }
++    CloseHandle(h);
++}
+diff --git a/ui/trace-events b/ui/trace-events
+index 138a09cc03..a71895c479 100644
+--- a/ui/trace-events
++++ b/ui/trace-events
+@@ -9,7 +9,7 @@ console_putchar_unhandled(int ch) "unhandled escape character '%c'"
+ console_txt_new(int w, int h) "%dx%d"
+ console_select(int nr) "%d"
+ console_refresh(int interval) "interval %d ms"
+-displaysurface_create(void *display_surface, int w, int h) "surface=%p, %dx%d"
++displaysurface_create(int w, int h) "%dx%d"
+ displaysurface_create_from(void *display_surface, int w, int h, uint32_t format) "surface=%p, %dx%d, format 0x%x"
+ displaysurface_create_pixman(void *display_surface) "surface=%p"
+ displaysurface_free(void *display_surface) "surface=%p"
+diff --git a/util/trace-events b/util/trace-events
+index 3f7e766683..49a4962e18 100644
+--- a/util/trace-events
++++ b/util/trace-events
+@@ -52,6 +52,10 @@ qemu_anon_ram_alloc(size_t size, void *ptr) "size %zu ptr %p"
+ qemu_vfree(void *ptr) "ptr %p"
+ qemu_anon_ram_free(void *ptr, size_t size) "ptr %p size %zu"
  
-   <!--
-@@ -745,6 +831,20 @@
-         <annotation name="org.gtk.GDBus.C.ForceGVariant" value="true"/>
-       </arg>
-     </method>
++# oslib-win32.c
++win32_map_alloc(size_t size) "size:%zd"
++win32_map_free(void *ptr, void *h) "ptr:%p handle:%p"
 +
-+    <!--
-+        Interfaces:
-+
-+        This property lists extra interfaces provided by the
-+        /org/qemu/Display1/AudioInListener object, and can be used to detect
-+        the capabilities with which they are communicating.
-+
-+        Unlike the standard D-Bus Introspectable interface, querying this
-+        property does not require parsing XML.
-+
-+        (earlier version of the display interface do not provide this property)
-+    -->
-+    <property name="Interfaces" type="as" access="read"/>
-   </interface>
- 
-   <!--
-@@ -826,5 +926,19 @@
-         The D-Bus unique name of the registered handler.
-     -->
-     <property name="Owner" type="s" access="read"/>
-+
-+    <!--
-+        Interfaces:
-+
-+        This property lists extra interfaces provided by the
-+        ``/org/qemu/Display1/Chardev_$i`` object, and can be used to detect
-+        the capabilities with which they are communicating.
-+
-+        Unlike the standard D-Bus Introspectable interface, querying this
-+        property does not require parsing XML.
-+
-+        (earlier version of the display interface do not provide this property)
-+    -->
-+    <property name="Interfaces" type="as" access="read"/>
-   </interface>
- </node>
+ # hbitmap.c
+ hbitmap_iter_skip_words(const void *hb, void *hbi, uint64_t pos, unsigned long cur) "hb %p hbi %p pos %"PRId64" cur 0x%lx"
+ hbitmap_reset(void *hb, uint64_t start, uint64_t count, uint64_t sbit, uint64_t ebit) "hb %p items %"PRIu64",%"PRIu64" bits %"PRIu64"..%"PRIu64
 -- 
 2.41.0
 
