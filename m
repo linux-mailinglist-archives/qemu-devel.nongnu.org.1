@@ -2,62 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2ACD73FC5F
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 15:05:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BCB773FC77
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 15:10:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qE8M1-00007p-Pl; Tue, 27 Jun 2023 09:03:33 -0400
+	id 1qE8M2-00007s-IX; Tue, 27 Jun 2023 09:03:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qE8Lv-000051-5f
+ id 1qE8Lv-000052-67
  for qemu-devel@nongnu.org; Tue, 27 Jun 2023 09:03:27 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qE8Lr-000774-Pq
+ id 1qE8Lq-00075x-Mj
  for qemu-devel@nongnu.org; Tue, 27 Jun 2023 09:03:25 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687871003;
+ s=mimecast20190719; t=1687870997;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=uDesFIck21Cj1KLqw1bw4HycV5nSY4Dbu4C8FaGyIk0=;
- b=bhHAsXvlq+cLq6Y5SIIV+5/vSdSmqhDnBnGlfqzpil7ETWgSvvOSG4XB214umLufgOWsWy
- 1Bw8mOgIHZ4tA3YsBlLsyolNY6AP88NhOsEVe3daShASO26aKGxYxoI47k0cGm6KsEOxZr
- LmLUtmMP5701ZHXRh5a3HA3tXmMiJKY=
+ bh=CcOU8Y7nrW3RjnAoSddp34WAn+LTRdakodtJGzExPG4=;
+ b=A5KPjIQWTog3+RCSR8fThQzM150Q88HQsSmplAA8MlR+ekkLmnUZSuP0ShFynO4DFs9TE7
+ xH7A3Kt4mtumYDmqCYoLqTzkT2x5HWZmeACh5hpwaGNfyS2tedFBBWNJHqfID6LR5lSjGV
+ YjN209bbF3Y6Dvq09lPtlxA9x5qCd4U=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-569-4Q2Aoc1AOvWxWVAbx_JlaA-1; Tue, 27 Jun 2023 09:03:19 -0400
-X-MC-Unique: 4Q2Aoc1AOvWxWVAbx_JlaA-1
+ us-mta-648-GaY72Cz2OyqlX0oUvtq4Dg-1; Tue, 27 Jun 2023 09:03:13 -0400
+X-MC-Unique: GaY72Cz2OyqlX0oUvtq4Dg-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
  [10.11.54.8])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E872A8564EF;
- Tue, 27 Jun 2023 13:02:53 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 829968C80FB;
+ Tue, 27 Jun 2023 13:02:55 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.36])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 87F08C00049;
- Tue, 27 Jun 2023 13:02:53 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 25E06C00049;
+ Tue, 27 Jun 2023 13:02:54 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org, Dongwon Kim <dongwon.kim@intel.com>,
  Gerd Hoffmann <kraxel@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Vivek Kasireddy <vivek.kasireddy@intel.com>
-Subject: [PULL 10/33] ui/gtk: set the area of the scanout texture correctly
-Date: Tue, 27 Jun 2023 15:02:07 +0200
-Message-ID: <20230627130231.1614896-11-marcandre.lureau@redhat.com>
+ Vivek Kasireddy <vivek.kasireddy@intel.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>
+Subject: [PULL 11/33] virtio-gpu: OUT_OF_MEMORY if failing to create udmabuf
+Date: Tue, 27 Jun 2023 15:02:08 +0200
+Message-ID: <20230627130231.1614896-12-marcandre.lureau@redhat.com>
 In-Reply-To: <20230627130231.1614896-1-marcandre.lureau@redhat.com>
 References: <20230627130231.1614896-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.129.124;
+Received-SPF: pass client-ip=170.10.133.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -85,48 +86,37 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Dongwon Kim <dongwon.kim@intel.com>
 
-x and y offsets and width and height of the scanout texture
-is not correctly configured in case guest scanout frame is
-dmabuf.
+Respond with VIRTIO_GPU_RESP_ERR_OUT_OF_MEMORY if it fails to create
+an udmabuf for the blob resource.
+
+v2: consolidated return statments and removed an unnecessary style change
 
 Cc: Gerd Hoffmann <kraxel@redhat.com>
 Cc: Marc-André Lureau <marcandre.lureau@redhat.com>
 Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>
 Signed-off-by: Dongwon Kim <dongwon.kim@intel.com>
-Message-ID: <20230621213150.29573-1-dongwon.kim@intel.com>
+Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Message-ID: <20230627003453.5321-1-dongwon.kim@intel.com>
 ---
- ui/gtk-egl.c     | 3 ++-
- ui/gtk-gl-area.c | 3 ++-
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ hw/display/virtio-gpu.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/ui/gtk-egl.c b/ui/gtk-egl.c
-index 19130041bc..e99e3b0d8c 100644
---- a/ui/gtk-egl.c
-+++ b/ui/gtk-egl.c
-@@ -257,7 +257,8 @@ void gd_egl_scanout_dmabuf(DisplayChangeListener *dcl,
+diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
+index 506cda944d..1f8a5b16c6 100644
+--- a/hw/display/virtio-gpu.c
++++ b/hw/display/virtio-gpu.c
+@@ -651,8 +651,10 @@ static void virtio_gpu_do_set_scanout(VirtIOGPU *g,
+         if (console_has_gl(scanout->con)) {
+             if (!virtio_gpu_update_dmabuf(g, scanout_id, res, fb, r)) {
+                 virtio_gpu_update_scanout(g, scanout_id, res, r);
+-                return;
++            } else {
++                *error = VIRTIO_GPU_RESP_ERR_OUT_OF_MEMORY;
+             }
++            return;
+         }
  
-     gd_egl_scanout_texture(dcl, dmabuf->texture,
-                            dmabuf->y0_top, dmabuf->width, dmabuf->height,
--                           0, 0, dmabuf->width, dmabuf->height);
-+                           dmabuf->x, dmabuf->y, dmabuf->scanout_width,
-+                           dmabuf->scanout_height);
- 
-     if (dmabuf->allow_fences) {
-         vc->gfx.guest_fb.dmabuf = dmabuf;
-diff --git a/ui/gtk-gl-area.c b/ui/gtk-gl-area.c
-index c384a1516b..1605818bd1 100644
---- a/ui/gtk-gl-area.c
-+++ b/ui/gtk-gl-area.c
-@@ -299,7 +299,8 @@ void gd_gl_area_scanout_dmabuf(DisplayChangeListener *dcl,
- 
-     gd_gl_area_scanout_texture(dcl, dmabuf->texture,
-                                dmabuf->y0_top, dmabuf->width, dmabuf->height,
--                               0, 0, dmabuf->width, dmabuf->height);
-+                               dmabuf->x, dmabuf->y, dmabuf->scanout_width,
-+                               dmabuf->scanout_height);
- 
-     if (dmabuf->allow_fences) {
-         vc->gfx.guest_fb.dmabuf = dmabuf;
+         data = res->blob;
 -- 
 2.41.0
 
