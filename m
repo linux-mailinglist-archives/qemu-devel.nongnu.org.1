@@ -2,63 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A543773FC60
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 15:05:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D36E573FC59
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 15:04:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qE8Le-0008RV-27; Tue, 27 Jun 2023 09:03:10 -0400
+	id 1qE8Ly-0008WG-11; Tue, 27 Jun 2023 09:03:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qE8LY-0008Qr-FA
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 09:03:05 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1qE8Lk-0008Uy-DE
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 09:03:16 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qE8LV-000727-Dg
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 09:03:03 -0400
+ id 1qE8Li-00074z-Cf
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 09:03:15 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687870980;
+ s=mimecast20190719; t=1687870993;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=u0bYTYfFNy191Us+7zaIahk+6tXlpMlw0OvE6VEHBQE=;
- b=SogHWtzbXzWm6KUrcix/6j/zwg6qBnUBOQV/JO3KvlrOl+q+NJMDzoL6R/4Vioi4248qZ5
- aW2hAy2LYPItgwK6ijiifcyjgwmqWxasZzKtN2x+LnhoRKTwivttoaaI+YdGVG6koRh7X5
- GB2bZiOXHbs8QShHwxc9rDE9Jm7+RKo=
+ bh=8dzA1NoE/UrBvRfSmY/7z7dD/5p5ZkaKalZUiHE47ZI=;
+ b=GWB8F//JHgGaot3RtzMVvrUhNzJu/YAuO5bmOC7XGzCuE3Dj7dkjlAlSjDzmu+Z0bXZoY+
+ P0yFgch4BAaoKcLxCS0tddoVauhPw9gPKmu1iV34Ac0y1sC1nDO0/yWA2z3iM8D5bSBexF
+ +Vmomc1PJGpmH0xrCDwotIuJdW6Wz7k=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-595-6tPuwoJvNSK1Zidh8XR_JQ-1; Tue, 27 Jun 2023 09:02:53 -0400
-X-MC-Unique: 6tPuwoJvNSK1Zidh8XR_JQ-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
+ us-mta-322-38Fj5myoOVG8Ci_sysZULQ-1; Tue, 27 Jun 2023 09:03:07 -0400
+X-MC-Unique: 38Fj5myoOVG8Ci_sysZULQ-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1616E80006E;
- Tue, 27 Jun 2023 13:02:49 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 35EAA800CAE;
+ Tue, 27 Jun 2023 13:02:51 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.36])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 9CF4547AD4B;
- Tue, 27 Jun 2023 13:02:48 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id C8A0EC00049;
+ Tue, 27 Jun 2023 13:02:50 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org, Vivek Kasireddy <vivek.kasireddy@intel.com>,
+Cc: richard.henderson@linaro.org, Dongwon Kim <dongwon.kim@intel.com>,
  Gerd Hoffmann <kraxel@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Dongwon Kim <dongwon.kim@intel.com>, "Michael S. Tsirkin" <mst@redhat.com>
-Subject: [PULL 08/33] virtio-gpu: Make non-gl display updates work again when
- blob=true
-Date: Tue, 27 Jun 2023 15:02:05 +0200
-Message-ID: <20230627130231.1614896-9-marcandre.lureau@redhat.com>
+ Vivek Kasireddy <vivek.kasireddy@intel.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>
+Subject: [PULL 09/33] virtio-gpu-udmabuf: create udmabuf for blob even when
+ iov_cnt == 1
+Date: Tue, 27 Jun 2023 15:02:06 +0200
+Message-ID: <20230627130231.1614896-10-marcandre.lureau@redhat.com>
 In-Reply-To: <20230627130231.1614896-1-marcandre.lureau@redhat.com>
 References: <20230627130231.1614896-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.129.124;
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
+Received-SPF: pass client-ip=170.10.133.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -84,72 +85,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Vivek Kasireddy <vivek.kasireddy@intel.com>
+From: Dongwon Kim <dongwon.kim@intel.com>
 
-In the case where the console does not have gl capability, and
-if blob is set to true, make sure that the display updates still
-work. Commit e86a93f55463 accidentally broke this by misplacing
-the return statement (in resource_flush) causing the updates to
-be silently ignored.
+There were often cases where a scanout blob sometimes has just 1 entry
+that is linked to many pages in it. So just checking whether iov_cnt is 1
+is not enough for screening small, non-scanout blobs. Therefore adding
+iov_len check as well to make sure it creates an udmabuf only for a scanout
+blob, which is at least bigger than one page size.
 
-Fixes: e86a93f55463 ("virtio-gpu: splitting one extended mode guest fb into n-scanouts")
 Cc: Gerd Hoffmann <kraxel@redhat.com>
 Cc: Marc-André Lureau <marcandre.lureau@redhat.com>
-Cc: Dongwon Kim <dongwon.kim@intel.com>
-Signed-off-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
+Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>
+Signed-off-by: Dongwon Kim <dongwon.kim@intel.com>
 Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Message-ID: <20230623060454.3749910-1-vivek.kasireddy@intel.com>
+Message-ID: <20230621222704.29932-1-dongwon.kim@intel.com>
 ---
- hw/display/virtio-gpu.c | 27 ++++++++++++++++++++++-----
- 1 file changed, 22 insertions(+), 5 deletions(-)
+ hw/display/virtio-gpu-udmabuf.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
-index af31018ab0..506cda944d 100644
---- a/hw/display/virtio-gpu.c
-+++ b/hw/display/virtio-gpu.c
-@@ -498,6 +498,8 @@ static void virtio_gpu_resource_flush(VirtIOGPU *g,
-     struct virtio_gpu_resource_flush rf;
-     struct virtio_gpu_scanout *scanout;
-     pixman_region16_t flush_region;
-+    bool within_bounds = false;
-+    bool update_submitted = false;
-     int i;
+diff --git a/hw/display/virtio-gpu-udmabuf.c b/hw/display/virtio-gpu-udmabuf.c
+index 69e2cf0bd6..ef1a740de5 100644
+--- a/hw/display/virtio-gpu-udmabuf.c
++++ b/hw/display/virtio-gpu-udmabuf.c
+@@ -132,7 +132,8 @@ void virtio_gpu_init_udmabuf(struct virtio_gpu_simple_resource *res)
+     void *pdata = NULL;
  
-     VIRTIO_GPU_FILL_CMD(rf);
-@@ -518,13 +520,28 @@ static void virtio_gpu_resource_flush(VirtIOGPU *g,
-                 rf.r.x < scanout->x + scanout->width &&
-                 rf.r.x + rf.r.width >= scanout->x &&
-                 rf.r.y < scanout->y + scanout->height &&
--                rf.r.y + rf.r.height >= scanout->y &&
--                console_has_gl(scanout->con)) {
--                dpy_gl_update(scanout->con, 0, 0, scanout->width,
--                              scanout->height);
-+                rf.r.y + rf.r.height >= scanout->y) {
-+                within_bounds = true;
-+
-+                if (console_has_gl(scanout->con)) {
-+                    dpy_gl_update(scanout->con, 0, 0, scanout->width,
-+                                  scanout->height);
-+                    update_submitted = true;
-+                }
-             }
-         }
--        return;
-+
-+        if (update_submitted) {
-+            return;
-+        }
-+        if (!within_bounds) {
-+            qemu_log_mask(LOG_GUEST_ERROR, "%s: flush bounds outside scanouts"
-+                          " bounds for flush %d: %d %d %d %d\n",
-+                          __func__, rf.resource_id, rf.r.x, rf.r.y,
-+                          rf.r.width, rf.r.height);
-+            cmd->error = VIRTIO_GPU_RESP_ERR_INVALID_PARAMETER;
-+            return;
-+        }
-     }
- 
-     if (!res->blob &&
+     res->dmabuf_fd = -1;
+-    if (res->iov_cnt == 1) {
++    if (res->iov_cnt == 1 &&
++        res->iov[0].iov_len < 4096) {
+         pdata = res->iov[0].iov_base;
+     } else {
+         virtio_gpu_create_udmabuf(res);
 -- 
 2.41.0
 
