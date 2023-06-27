@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E79273FB6F
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A01D73FB70
 	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 13:53:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qE7Ef-0001up-MX; Tue, 27 Jun 2023 07:51:53 -0400
+	id 1qE7Em-0001w4-U5; Tue, 27 Jun 2023 07:52:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qE7Ea-0001tw-Mz
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 07:51:48 -0400
-Received: from mail-ej1-x62c.google.com ([2a00:1450:4864:20::62c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qE7Eh-0001vi-UT
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 07:51:55 -0400
+Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qE7EZ-0004kQ-66
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 07:51:48 -0400
-Received: by mail-ej1-x62c.google.com with SMTP id
- a640c23a62f3a-986d8332f50so561017766b.0
- for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 04:51:46 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qE7Ef-0004lJ-67
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 07:51:55 -0400
+Received: by mail-ej1-x634.google.com with SMTP id
+ a640c23a62f3a-98e25fa6f5bso445117866b.3
+ for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 04:51:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687866705; x=1690458705;
+ d=linaro.org; s=google; t=1687866711; x=1690458711;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=wwRqncGBMw48ZRHZQQygcwpEXInzVqgYCZMTOEm7gro=;
- b=mnixBROMk4W/E5oZOyhcDKzrHtFUiMXo/SHSOVZCdjVa4W+QHAk1YP6JN0WdriXCRg
- 7kgoxdRSdpXiXm9/tuZtgVuUAVG4ULDZsoY7BNnEAtsId8Zrgl3kiwhYh8lszegl3BbK
- eboQUwrTSJ19pIAC5BvplUdAQ5sUlzxk+8+17nFe/f8c02iQ5HztThoAHTWuKxBxryTN
- vQz3qYE32MLVfAyKfOuC1Jf5fuf2ID3FOaFQZuzkK/hinGVcshX/IMsG6Y03ITu8CKRp
- tLJv9jBxZg9m/AMaSr9x1W1DFD3qMA1U+SUcDCepP90EDHA7/670RNlWEjyMxhvaXW6J
- bCDQ==
+ bh=TGZXRn778tTjabpObTTq7zFLfhDFVmkSDdvtG4Gr8rE=;
+ b=ivXPP7EELHfP6sJ0l5qbHx5mCV8QlbwHGwSr7NB/wOhD6ru2flkDn3IF6/KjnLc1Sc
+ RuPyAvov01ZLYBdsoZomj1ewZoI+FtwOEl+ccTsSDdOldyqu+FZwmlFqzaqtzYFbfs8P
+ ce1DotNHn0nwCBkYyHAAx/Bd9+mhjvIj0Pyhk+o56mBDh/nXkkbTS71Ee83uhnydL9yI
+ P77qRKp256o1b5l9IuNXT9ndDCwwreprJlClr4Q5c4N+b1Th9tj8Xpj+sbA3a1w9/BJR
+ GOcbV8TtL+sewaMNfqzFZ2+sjHp2XuNJOG9liHKOZSwFlzeMYHcKGHdDLNplrav8YT5U
+ JkmQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687866705; x=1690458705;
+ d=1e100.net; s=20221208; t=1687866711; x=1690458711;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=wwRqncGBMw48ZRHZQQygcwpEXInzVqgYCZMTOEm7gro=;
- b=CT1Z6ZdiqxVsY8ax7EfjPMPXKb2lDH31ImAroP7FI2yM6UbBm4gMl8/h3+pHZVXc1Y
- hnv+SPhdFXY3N2CqsTmuddBhdsYYFoeBu+thBkFePcOGagUEWVGUj6N51hCHfoEiZUAx
- 9uu9DMtdYKUGUInsG4HEknHD6OM/kaZpkcfJeBuW6C0N8qTFGNQv2FnFOdKwcDdYvpgQ
- 8iJ4pMzokj7gHgxyg/52dDtTnHPrSgpVmr5fYuqF/sLj6r4jGzJ3AkkwZTUzhjn1Ko2a
- sA/aSXUQvvUKL1VG5GcWDbFgZNQL79x9+/OQ5jLh/aN9+d5goWUrezPjFynoXfjFY5ov
- Kucg==
-X-Gm-Message-State: AC+VfDyMgv7hGZbZdhAHhiXTvhVB67lP06i5OEgLy8Uf4o/dn1KVj5d0
- xtMN1MYFMslkDYPgJVZACpY5UFYxfZQtILkhVL4=
-X-Google-Smtp-Source: ACHHUZ6xLnSQ/b3U5NJqWbrTuz86G0gbNTSsjgso5M/VhbPKvGVEY9yrkxTf9DH2qSNmGFKSSTxcGw==
-X-Received: by 2002:a17:906:6a04:b0:988:a837:327a with SMTP id
- qw4-20020a1709066a0400b00988a837327amr22018537ejc.44.1687866705562; 
- Tue, 27 Jun 2023 04:51:45 -0700 (PDT)
+ bh=TGZXRn778tTjabpObTTq7zFLfhDFVmkSDdvtG4Gr8rE=;
+ b=M8MUoIDCyltfn6zHgYbdlCGs/mYWDrlN0PlVi1mOMBGhZUouPGfODWJ6QqWFYKkPwW
+ x++TTD0bjbq8XLI7R15PxhCNmBQC30WMqzJRphBx2VgiSDo4V7zTciVAqWybBabUd6xK
+ aZ4ezWdfvLqCeSo3ZJ19ASCtkoXU7frmWI1BcJ/yoQpDrxXPF7ww2zTY6x0ffB/G+UhI
+ v+TSqoC/gczm/y22PqSMWGw8MUVX0CbGW5r8E8i7m7JKEBMeKZDHTDaJ426tQkTX0Ud+
+ IZQRU3fJQ92VDrYSUHDWvlblBQV3n+l+vqw06iUkWApyJP4z0GR17qjVO7Bhjc5rwXMm
+ ORRQ==
+X-Gm-Message-State: AC+VfDwdfIsImLavHQ70Bzx6KV8WN7gP0Vb2vjqPD3BeFNUxdBDeqYuJ
+ 8diaifcbZWkEN+FWW0L9azJZ12DalkP6VsT/cj0=
+X-Google-Smtp-Source: ACHHUZ6KmfyVDXHoF0LSGwDDJ1p2i/7O7JP2KiimBL6Oz48s5RB2ncVVHEPFcgvvbfKEdG3eNwqUoQ==
+X-Received: by 2002:aa7:d5d6:0:b0:51d:961c:8ad4 with SMTP id
+ d22-20020aa7d5d6000000b0051d961c8ad4mr4856426eds.28.1687866711477; 
+ Tue, 27 Jun 2023 04:51:51 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.199.204])
  by smtp.gmail.com with ESMTPSA id
- h14-20020a17090634ce00b0098238141deasm4478624ejb.90.2023.06.27.04.51.44
+ v20-20020aa7dbd4000000b00514a5f7a145sm3701418edt.37.2023.06.27.04.51.49
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 27 Jun 2023 04:51:45 -0700 (PDT)
+ Tue, 27 Jun 2023 04:51:51 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: David Gibson <david@gibson.dropbear.id.au>,
@@ -62,17 +62,17 @@ Cc: David Gibson <david@gibson.dropbear.id.au>,
  Paolo Bonzini <pbonzini@redhat.com>, Greg Kurz <groug@kaod.org>,
  kvm@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v3 3/6] target/ppc: Move CPU QOM definitions to cpu-qom.h
-Date: Tue, 27 Jun 2023 13:51:21 +0200
-Message-Id: <20230627115124.19632-4-philmd@linaro.org>
+Subject: [PATCH v3 4/6] target/ppc: Define TYPE_HOST_POWERPC_CPU in cpu-qom.h
+Date: Tue, 27 Jun 2023 13:51:22 +0200
+Message-Id: <20230627115124.19632-5-philmd@linaro.org>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230627115124.19632-1-philmd@linaro.org>
 References: <20230627115124.19632-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62c;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::634;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x634.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,45 +95,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+TYPE_HOST_POWERPC_CPU is used in various places of cpu_init.c,
+in order to restrict "kvm_ppc.h" to sysemu, move this QOM-related
+definition to cpu-qom.h.
+
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/ppc/cpu-qom.h | 5 +++++
- target/ppc/cpu.h     | 6 ------
- 2 files changed, 5 insertions(+), 6 deletions(-)
+ target/ppc/cpu-qom.h | 2 ++
+ target/ppc/kvm_ppc.h | 2 --
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/target/ppc/cpu-qom.h b/target/ppc/cpu-qom.h
-index 9666f54f65..c2bff349cc 100644
+index c2bff349cc..4e4061068e 100644
 --- a/target/ppc/cpu-qom.h
 +++ b/target/ppc/cpu-qom.h
-@@ -31,6 +31,11 @@
+@@ -36,6 +36,8 @@ OBJECT_DECLARE_CPU_TYPE(PowerPCCPU, PowerPCCPUClass, POWERPC_CPU)
+ #define CPU_RESOLVING_TYPE TYPE_POWERPC_CPU
+ #define cpu_list ppc_cpu_list
  
- OBJECT_DECLARE_CPU_TYPE(PowerPCCPU, PowerPCCPUClass, POWERPC_CPU)
- 
-+#define POWERPC_CPU_TYPE_SUFFIX "-" TYPE_POWERPC_CPU
-+#define POWERPC_CPU_TYPE_NAME(model) model POWERPC_CPU_TYPE_SUFFIX
-+#define CPU_RESOLVING_TYPE TYPE_POWERPC_CPU
-+#define cpu_list ppc_cpu_list
++#define TYPE_HOST_POWERPC_CPU POWERPC_CPU_TYPE_NAME("host")
 +
  ObjectClass *ppc_cpu_class_by_name(const char *name);
  
  typedef struct CPUArchState CPUPPCState;
-diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
-index af12c93ebc..e91e1774e5 100644
---- a/target/ppc/cpu.h
-+++ b/target/ppc/cpu.h
-@@ -1468,12 +1468,6 @@ static inline uint64_t ppc_dump_gpr(CPUPPCState *env, int gprn)
- int ppc_dcr_read(ppc_dcr_t *dcr_env, int dcrn, uint32_t *valp);
- int ppc_dcr_write(ppc_dcr_t *dcr_env, int dcrn, uint32_t val);
+diff --git a/target/ppc/kvm_ppc.h b/target/ppc/kvm_ppc.h
+index 49954a300b..901e188c9a 100644
+--- a/target/ppc/kvm_ppc.h
++++ b/target/ppc/kvm_ppc.h
+@@ -13,8 +13,6 @@
+ #include "exec/hwaddr.h"
+ #include "cpu.h"
  
--#define POWERPC_CPU_TYPE_SUFFIX "-" TYPE_POWERPC_CPU
--#define POWERPC_CPU_TYPE_NAME(model) model POWERPC_CPU_TYPE_SUFFIX
--#define CPU_RESOLVING_TYPE TYPE_POWERPC_CPU
+-#define TYPE_HOST_POWERPC_CPU POWERPC_CPU_TYPE_NAME("host")
 -
--#define cpu_list ppc_cpu_list
--
- /* MMU modes definitions */
- #define MMU_USER_IDX 0
- static inline int cpu_mmu_index(CPUPPCState *env, bool ifetch)
+ #ifdef CONFIG_KVM
+ 
+ uint32_t kvmppc_get_tbfreq(void);
 -- 
 2.38.1
 
