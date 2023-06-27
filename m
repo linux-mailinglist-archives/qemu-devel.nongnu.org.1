@@ -2,147 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72FD573FC02
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 14:31:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8045E73FC09
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 14:36:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qE7qJ-00081d-CE; Tue, 27 Jun 2023 08:30:47 -0400
+	id 1qE7us-00014p-Kp; Tue, 27 Jun 2023 08:35:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jgg@nvidia.com>) id 1qE7q5-0007rT-Te
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 08:30:43 -0400
-Received: from mail-co1nam11on20621.outbound.protection.outlook.com
- ([2a01:111:f400:7eab::621]
- helo=NAM11-CO1-obe.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jgg@nvidia.com>) id 1qE7q1-0005kL-LU
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 08:30:33 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=K0QLRGWoqjD/HDco0AMAfqhefps93jvPekIs90VVHFKZtTWEu+XxlnTUAlY9tTaK+lyZFYakZNPOUahLxS0tlyjkJlRFJ/WTKM7imdG5wI+8lVXWV6D7NiVX0EzfSX+r1ChQW+X9YqJXXNrLIVN77si3c9ag/eszOZUZhEflBH+xSyXBjWjVt+AEZtGuYj9RSDPt+o0trzWgKk5lD4KP691Zw0LGenxSJuvr3QgT3Mzg+JO/lDZmwpZWJSZ02FJSqwHAwLGF7Xci0hYEJzl1x6d9irH1WJwSdjTBbxsCGkQvMWCWBg+LHfvz2CmBXyilHXoVQEm064+tQ/Z9qDfhIQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4mOLiwDv22HcM0U7GC735JK8uFqp2/nimk9xlvxxo0I=;
- b=mk0jK40YGsU2YcyXUN7+7Su/WPiBD83fsB6P6ND78U+gHqqxF1h4UBxwrMRxL/Wotx5WSkYMY8HFu92tXAhSgiXy2ZtKIT+i0lv1LbDuiqvgIwugbGng/gdTY1PGOGEE1nzz6sGo74Q0QZqlDubtYnYjPjhl2YgcRkDyfel0kzlZw/lMKz4tAtqqjBUXasKto2kHgdS1gvf/Cr1hJp0YTQAaMMAQ6EvtbKbGxQEAb5r6N7P3MaufJLzG0hY8Vxy4gnEGsuLz14hyXDwwAw6MeT/3XdTDjHRT8XiJufhzqv1xqCl1gwb9f51NzF+g3ZSiT/4Ih44Xqj5hB9Gdzm7Hxw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4mOLiwDv22HcM0U7GC735JK8uFqp2/nimk9xlvxxo0I=;
- b=GiY94PNBG43h1AKc1oyzt+p3fxj6L+6JH4+u0gjBkoEawJBZQJ1yso8NOOs86FO12GhzbkEKEIMfEM8Ll6OTYJPcxwGronyot3hHD4Ycbnm8EtYYuudEmeBqp7Qixm7qWs5jtnXMXG+e6l0i3xBOoefoQIzzixqs5pzZXiTKbbnbiz9pAMZ2ri9iyYybOmJCE2/LISO2TP+eTM7QrNm8+cCZGrpVnRgfkmT2VJLL7HtZEm+MWSwcapYF4KjGdVVlQ7ChXejCbY+W7gis1oUtyEapq6z5JK54VK/wyIEtLjPg6QoeqTyuRNhLmpupxZuHBQbVu5uZAVfC2IL26VHnaA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from LV2PR12MB5869.namprd12.prod.outlook.com (2603:10b6:408:176::16)
- by CY8PR12MB7121.namprd12.prod.outlook.com (2603:10b6:930:62::20)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6500.37; Tue, 27 Jun
- 2023 12:30:23 +0000
-Received: from LV2PR12MB5869.namprd12.prod.outlook.com
- ([fe80::f7a7:a561:87e9:5fab]) by LV2PR12MB5869.namprd12.prod.outlook.com
- ([fe80::f7a7:a561:87e9:5fab%7]) with mapi id 15.20.6521.024; Tue, 27 Jun 2023
- 12:30:23 +0000
-Date: Tue, 27 Jun 2023 09:30:22 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>
-Cc: Avihai Horon <avihaih@nvidia.com>,
- Alex Williamson <alex.williamson@redhat.com>,
- Joao Martins <joao.m.martins@oracle.com>,
- Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
- Leonardo Bras <leobras@redhat.com>,
- Zhenzhong Duan <zhenzhong.duan@intel.com>,
- Yishai Hadas <yishaih@nvidia.com>, Maor Gottlieb <maorg@nvidia.com>,
- Kirti Wankhede <kwankhede@nvidia.com>,
- Tarun Gupta <targupta@nvidia.com>, qemu-devel@nongnu.org,
- Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
-Subject: Re: [PATCH 3/3] vfio/migration: Make VFIO migration non-experimental
-Message-ID: <ZJrWXkM3FmEPtLMC@nvidia.com>
-References: <20230626082353.18535-1-avihaih@nvidia.com>
- <20230626082353.18535-4-avihaih@nvidia.com>
- <cd94caa3-cb16-f44e-6ffc-2e8fc37e9441@redhat.com>
- <62b1ce2a-8191-fc6b-c7b7-e4c787deacf5@oracle.com>
- <78ef9a6d-25ac-e0ac-ca52-5a0673df661e@redhat.com>
- <20230626112729.06dc48d8.alex.williamson@redhat.com>
- <976b7037-ee62-f86d-5772-6a2deca0816d@nvidia.com>
- <0a6e8496-f3c8-567a-c886-b8ea604c799a@redhat.com>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <0a6e8496-f3c8-567a-c886-b8ea604c799a@redhat.com>
-X-ClientProxiedBy: MN2PR16CA0046.namprd16.prod.outlook.com
- (2603:10b6:208:234::15) To LV2PR12MB5869.namprd12.prod.outlook.com
- (2603:10b6:408:176::16)
+ (Exim 4.90_1) (envelope-from <rehn@rivosinc.com>) id 1qE7uk-00013C-Ev
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 08:35:22 -0400
+Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <rehn@rivosinc.com>) id 1qE7ub-00076T-VT
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 08:35:20 -0400
+Received: by mail-lf1-x134.google.com with SMTP id
+ 2adb3069b0e04-4f954d7309fso5508547e87.1
+ for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 05:35:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=rivosinc-com.20221208.gappssmtp.com; s=20221208; t=1687869308; x=1690461308; 
+ h=mime-version:user-agent:content-transfer-encoding:references
+ :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=nSlPFv4xsGFp7sT3StespzX3zM8bJK9dIseoY9yP/rk=;
+ b=fFBunD/K1aKt1HbuQOYAu5xJcm99tu13PLZ9I7KS2e3auSVKmurNiR6x9dZuj7MtZL
+ DViwTB56QLqXj9GwZtRY7aSp3eLF0+wutbXhTT1gKn/sUTJIgLYx6Zzphq1wXZEzxzgA
+ Pp9+D3KcB464artJz0t09vOQ56JSNtTnzutQIHeoBH5kj1DEd8KaPkFa6pgEoCwZh4w2
+ l0pld4ReDKSmK3Vi060Vv+bTZ4Cu807WBI7FlTGGZxNqA5bE4GobQilNYiDfrLtePuLT
+ Pn3DHzR9operBjquAAdt6xprxicYw9LUVqUSsqagbMlt1aiyBvXn3gEYefBKiGZoYzsW
+ HFhQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1687869308; x=1690461308;
+ h=mime-version:user-agent:content-transfer-encoding:references
+ :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=nSlPFv4xsGFp7sT3StespzX3zM8bJK9dIseoY9yP/rk=;
+ b=E8ENKGEYExLEdcaT0rzUIUHPtt/CVEyoEAIuKVCUX9CXDxx49NydgDdtLWZfYswVQm
+ RVi0QW7UpJsOoRf+vNJEVFXWsup0TJ9F27nHYzKFc4MqhcxnHbFy6xJbG/E2AHJd4c6c
+ a/di0PR89Xkt1SLvl+FAZs53aoIvIyrVVGXjhXPT/6FTz8K++/RR7wbfL610LvqojDGb
+ dUzoL/128B8fU5pZ3Do4m1jzdvWxk0EeMNFmHbgnSc6zkkmo2Euvc6Rer+lDWLfWLjL3
+ 02u3eaBZ9j3nvt4UJDSnjHsHLSWIg77ISKFDy621w++MFrgUfpJyPfKles/gtwUu+cJJ
+ fxUg==
+X-Gm-Message-State: AC+VfDwyryLXltVkxdivvxHemd1THDY2iXS2/w2+moAQGyLuMaUN6MFN
+ +Kn9ylCFbM7hA0dL3VA/LVbuew==
+X-Google-Smtp-Source: ACHHUZ7PYCXH0zb5S0rhu2dxqQPtaLTpTeP9mEHIEOleENXWd9YLJozqbcpCPzeIlIuoUlFMi3wuwA==
+X-Received: by 2002:a05:6512:110a:b0:4fb:7bf8:51c8 with SMTP id
+ l10-20020a056512110a00b004fb7bf851c8mr902255lfg.1.1687869307866; 
+ Tue, 27 Jun 2023 05:35:07 -0700 (PDT)
+Received: from [192.168.50.45] (h-155-4-92-80.A980.priv.bahnhof.se.
+ [155.4.92.80]) by smtp.gmail.com with ESMTPSA id
+ r1-20020a19ac41000000b004f8416892f1sm1480030lfc.87.2023.06.27.05.35.07
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 27 Jun 2023 05:35:07 -0700 (PDT)
+Message-ID: <0af8f346455e514eeff14f12ef3d22609225fc29.camel@rivosinc.com>
+Subject: Re: [PATCH] linux-user/riscv: Add syscall riscv_hwprobe
+From: Robbin Ehn <rehn@rivosinc.com>
+To: Alistair Francis <alistair23@gmail.com>
+Cc: qemu-devel@nongnu.org, palmer@rivosinc.com, laurent@vivier.eu, 
+ qemu-riscv@nongnu.org, richard.henderson@linaro.org, ajones@ventanamicro.com
+Date: Tue, 27 Jun 2023 14:35:06 +0200
+In-Reply-To: <CAKmqyKNpE7gCMXqWnxCp58v+aXb=hWswniOTthM7joL+E+1Q_A@mail.gmail.com>
+References: <06a4543df2aa6101ca9a48f21a3198064b4f1f87.camel@rivosinc.com>
+ <CAKmqyKNpE7gCMXqWnxCp58v+aXb=hWswniOTthM7joL+E+1Q_A@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.1-0ubuntu1 
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV2PR12MB5869:EE_|CY8PR12MB7121:EE_
-X-MS-Office365-Filtering-Correlation-Id: bde1195f-a090-446b-4603-08db770a474b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: Q99onbmostqP77/yAJFaot1ul/0skhRwA6XbBhi/kI5Qib/QScLDbdscn/UfUnIKSaeyYpjxvLMXAHpmfManqPIHUtsPxomrjIX9MQoZ553Bj6nvsrSX/T9+B0gq2HlMor9H5I5Yo3DEgwYr13WowSpIMvC3spSV3xeJIGP8SmR9O0mgaU+hwGFUcrRauM86XLgPRikn5dcpQFe0nw5D5ZXAUhXiUyfGDjiD5ml4Rt32dhJBZKK5jjKGLXryhWV5twRDsBBoSXbo38m8KwXOxSze8fftaZkCXI138nPDNjdeKM00GkDQN+oGBxKdTeV8Co6UUfwI/yfTco9vIWkD49kv7Sgz80pAOfMijsr6PeMvZnJA+pCGiO/3slHH8tq/QEG0YY3A2Nu07/cqHTnXcuAJb5vbmC3jSlD0KeKVguxcz/4Vt047qjQPuKwqpDQ6VLZma/4ijM0n8fz6gSvvs++9TrbNghk+OXumsN8bylJs61CaheGW0ellpG9vzd/Dn4KezFRJdNa1IfbdM/EVHp45+9yo++QznDGqVrpptL3uN5e87WVEnspMmkHbrVGx
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:LV2PR12MB5869.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230028)(4636009)(136003)(39860400002)(346002)(366004)(376002)(396003)(451199021)(36756003)(86362001)(478600001)(54906003)(4326008)(66556008)(66946007)(66476007)(6916009)(26005)(316002)(6506007)(41300700001)(8936002)(8676002)(5660300002)(2906002)(6512007)(6486002)(38100700002)(4744005)(66574015)(186003)(2616005);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?L05aZHoxZW44VlFpQ0xXMFVpOGp3eDZuaHpxNnppNWFwQ1NqME5ZS2tCU1pR?=
- =?utf-8?B?SGdpME1ZQUUvWUxLeGFvazgyazZkSVN1WGNvZVlsWVlEbDdjYWtBZFAxZDh2?=
- =?utf-8?B?TS9wblNTQm16NnRLUTZyQWFSM3IxeXlhUzQ2eTJuUmphYjQ3enp5MFowTFRO?=
- =?utf-8?B?RTdxK1A0Ry9ocXdEbTd0eVJlNVFnTGh2d08wMW8yRGdJSGNiK3NJZmt2NUsv?=
- =?utf-8?B?YlQ4d2s1bDVmbjlRVkxUUy9DTHhDSEowT0IzSmt3b3NBcWdtZmFaLzMybVlE?=
- =?utf-8?B?bEpOS04zOG45K094ZU14bUFJZGo4bVFjd0lWalpVS0dBT0phTW9EY3ZNTVBu?=
- =?utf-8?B?bjQ0Vmk4WXVDWlFIbytuYnQ1RmZndUNKVFc1aGRBRjRmTVNtV09Wa3JUemdG?=
- =?utf-8?B?akJzNFFHak1tb2dTMmVhVmFkTDN3NFdFcDlLRmNOR2tMSkxlcVVSOHBabXBm?=
- =?utf-8?B?K0JWUmdOcVVZeitIVTUvUHlmN2p0MkRIS3hFU09tbUsybk9yeDcvc0krSksr?=
- =?utf-8?B?emxnbmNidlpBTEs1amZBS1hqK3NMc1c2RVNOTTVuUDJPdDhBRzJMWk1uRjJh?=
- =?utf-8?B?N1FsYStEU20vUk9DNlhPNzhzVmdYRnZOVnhiKzZKNWhMM3dXamFBdUcvTkhK?=
- =?utf-8?B?VkFveFVuRWJDclBPL0ZDL0V6dWpqT1EyUEllay9XYWdRMG5iYXFTZWhqa0hJ?=
- =?utf-8?B?alMwWFczeXd4UFhJZUNSYW9EMVV5eWhmYTdrMjJqaHhCaFd3OWY2M0JHTEl3?=
- =?utf-8?B?TjJhMStVbStTajZ6bzVWUCtIckNvQjY5OU9ZdDF5MW83cEVnK1MzUmw3bVRW?=
- =?utf-8?B?TkR6OTJzUk9UaFRjUVA0VzJONTAzeXpCdUY5ZUsyazhHZjhiaGFsdlJDa3h0?=
- =?utf-8?B?bUQzYXJMa0JBUWFEUWVpNmIvR01SOTlMdzl0Mnd1aVFzRzBuZEFYLzVKZWQ3?=
- =?utf-8?B?WDAvOWFra0xITWdmckF1bHM5ekRadk5CS001MnFBeE1QMjNoTUtacFVpRnFt?=
- =?utf-8?B?ZjhiUWdrVUhvcmErbE55QWU3S2NmTkdIdmV4QXA3NmxPdWE5bGlTRVVVVzVN?=
- =?utf-8?B?alZyUkNZOUZlaUVPVmgzQW4rU3NZN0V5RTlNMlhHdEhNQTFPWmE0UzF0RjRx?=
- =?utf-8?B?ZEhvOURBcXZlUVpBM09OczU5bGlnRUxVMGFUVjRuL0l3elFCaVZlSWxtYTBq?=
- =?utf-8?B?SjdRd0UwVXBmYnNoS0Q3dTV3SmF0Y29lSVI1UGlOQmdOWnExZzNpSUFBY2wy?=
- =?utf-8?B?K0UvUjdDOE5mSXpvaXAxZnZ1QVZ3TWVnQzdKb0NJdGVlb043cHlNZ0VmNld5?=
- =?utf-8?B?R043QWFwY2hvVnp3cDZrNlQ0ZDBDZnV1L04rZ1JReU1iMitISk5TZWQ3WXVQ?=
- =?utf-8?B?K21jUldMb0x3elNueWVSWFUzRUpKb1ZaVmhXN1FDbG96MlphQTMyQ2JnNHVP?=
- =?utf-8?B?a2laT2lYMnp4WFJ3Q0hYSkNudnZTcUw1MUl1NytYM2tWQjdCNGtzdFBYck1a?=
- =?utf-8?B?dENLQXZ1SzBJdDRod3c5dkJYaC9qSWY0NGNrbjUzcVdteG90QkxBVXord0tw?=
- =?utf-8?B?b1Z5a3BkQjhJdkxJYUoxaTVSODRmTTNOV3pyNkJFT3E3Z052Zi9NU2hqSjZt?=
- =?utf-8?B?dlNmWHdxUWdHRG1CaFVsTlRmY3lJaU1pZjNaOVlSRjRmWHYxRFBNaTd1QzV0?=
- =?utf-8?B?NGd4RnNrL0laU3ZGM0dFaHI4K1dmY0pCd3ltZ0lmM1NnODNiZXRIYTRzZUlB?=
- =?utf-8?B?bjV3NnhwMzhwNEViNmNJU0N0L3Q3ajhqbjN1Y0lmRkJzN2FLQVkxN29PNUln?=
- =?utf-8?B?b3pFdnRZcVh1cHZvOThoMWd6MTBvMmdmTEFBeXZNWW8xY2NIVlo3eEdnalBI?=
- =?utf-8?B?SmQ1YnZ0Yk1UeCsyMm9iTUdpNmkrNTFER2NNdWhKKzZCNiszdVJDQktiMlha?=
- =?utf-8?B?QVkzY3Jwb1JDTW5UVU9VOU5tNGFxbHRBVjFMSkEvSG13cExrbWozdzhCYWpx?=
- =?utf-8?B?aUlPUGV4OVZySEtPRjBQNnk0SVNBUm9zZDJHdWNDUDlBOURpZWdZTnRGeG13?=
- =?utf-8?B?cmxDdmFTaUxnUXN4OWZpK3hQRFF3aFVrdWVjYTNPQmxmWlczbkNLbEVGRFdy?=
- =?utf-8?Q?mal2PaqVrdlkQgS0SE5OK9isk?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: bde1195f-a090-446b-4603-08db770a474b
-X-MS-Exchange-CrossTenant-AuthSource: LV2PR12MB5869.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Jun 2023 12:30:23.4107 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 1AbFIVKHXQ9fgrzeWUMrof74Ps38KdMEFJIaNKIK3o4OvL+rAcefpGk86WOE1y73
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7121
-Received-SPF: softfail client-ip=2a01:111:f400:7eab::621;
- envelope-from=jgg@nvidia.com;
- helo=NAM11-CO1-obe.outbound.protection.outlook.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::134;
+ envelope-from=rehn@rivosinc.com; helo=mail-lf1-x134.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -158,14 +91,241 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jun 27, 2023 at 02:21:55PM +0200, Cédric Le Goater wrote:
+On Fri, 2023-06-23 at 12:24 +1000, Alistair Francis wrote:
+> On Mon, Jun 19, 2023 at 6:25=E2=80=AFPM Robbin Ehn <rehn@rivosinc.com> wr=
+ote:
+> >=20
+> > This patch adds the new syscall for the
+> > "RISC-V Hardware Probing Interface"
+> > (https://docs.kernel.org/riscv/hwprobe.html).
+> >=20
+> > Reviewed-by: Palmer Dabbelt <palmer@rivosinc.com>
+> > Signed-off-by: Robbin Ehn <rehn@rivosinc.com>
+>=20
+> Thanks for the patch!
+>=20
+> Do you mind re-sending this when 6.4 comes out? I would like it in a
+> kernel release before we pick it up
 
-> We have a way to run and migrate a machine with a device not supporting
-> dirty tracking. Only Hisilicon is in that case today. May be there are
-> plans to add dirty tracking support ?
+Hi!
 
-Hisilicon will eventually use Joao's work for IOMMU based tracking,
-this is what their HW was designed to do.
+6.4 is out. This still applies clean, you want me to re-send it anyways?
 
-Jason
+Thanks, Robbin
+
+>=20
+> Alistair
+>=20
+> > ---
+> > v1->v2: Moved to syscall.c
+> > v2->v3: Separate function, get/put user
+> > v3->patch
+> > ---
+> >  linux-user/riscv/syscall32_nr.h |   1 +
+> >  linux-user/riscv/syscall64_nr.h |   1 +
+> >  linux-user/syscall.c            | 146 ++++++++++++++++++++++++++++++++
+> >  3 files changed, 148 insertions(+)
+> >=20
+> > diff --git a/linux-user/riscv/syscall32_nr.h b/linux-user/riscv/syscall=
+32_nr.h
+> > index 1327d7dffa..412e58e5b2 100644
+> > --- a/linux-user/riscv/syscall32_nr.h
+> > +++ b/linux-user/riscv/syscall32_nr.h
+> > @@ -228,6 +228,7 @@
+> >  #define TARGET_NR_accept4 242
+> >  #define TARGET_NR_arch_specific_syscall 244
+> >  #define TARGET_NR_riscv_flush_icache (TARGET_NR_arch_specific_syscall =
++ 15)
+> > +#define TARGET_NR_riscv_hwprobe (TARGET_NR_arch_specific_syscall + 14)
+> >  #define TARGET_NR_prlimit64 261
+> >  #define TARGET_NR_fanotify_init 262
+> >  #define TARGET_NR_fanotify_mark 263
+> > diff --git a/linux-user/riscv/syscall64_nr.h b/linux-user/riscv/syscall=
+64_nr.h
+> > index 6659751933..29e1eb2075 100644
+> > --- a/linux-user/riscv/syscall64_nr.h
+> > +++ b/linux-user/riscv/syscall64_nr.h
+> > @@ -251,6 +251,7 @@
+> >  #define TARGET_NR_recvmmsg 243
+> >  #define TARGET_NR_arch_specific_syscall 244
+> >  #define TARGET_NR_riscv_flush_icache (TARGET_NR_arch_specific_syscall =
++ 15)
+> > +#define TARGET_NR_riscv_hwprobe (TARGET_NR_arch_specific_syscall + 14)
+> >  #define TARGET_NR_wait4 260
+> >  #define TARGET_NR_prlimit64 261
+> >  #define TARGET_NR_fanotify_init 262
+> > diff --git a/linux-user/syscall.c b/linux-user/syscall.c
+> > index f2cb101d83..55becf3666 100644
+> > --- a/linux-user/syscall.c
+> > +++ b/linux-user/syscall.c
+> > @@ -8874,6 +8874,147 @@ static int do_getdents64(abi_long dirfd, abi_lo=
+ng arg2, abi_long count)
+> >  }
+> >  #endif /* TARGET_NR_getdents64 */
+> >=20
+> > +#if defined(TARGET_NR_riscv_hwprobe)
+> > +
+> > +#define RISCV_HWPROBE_KEY_MVENDORID     0
+> > +#define RISCV_HWPROBE_KEY_MARCHID       1
+> > +#define RISCV_HWPROBE_KEY_MIMPID        2
+> > +
+> > +#define RISCV_HWPROBE_KEY_BASE_BEHAVIOR 3
+> > +#define     RISCV_HWPROBE_BASE_BEHAVIOR_IMA (1 << 0)
+> > +
+> > +#define RISCV_HWPROBE_KEY_IMA_EXT_0     4
+> > +#define     RISCV_HWPROBE_IMA_FD       (1 << 0)
+> > +#define     RISCV_HWPROBE_IMA_C        (1 << 1)
+> > +
+> > +#define RISCV_HWPROBE_KEY_CPUPERF_0     5
+> > +#define     RISCV_HWPROBE_MISALIGNED_UNKNOWN     (0 << 0)
+> > +#define     RISCV_HWPROBE_MISALIGNED_EMULATED    (1 << 0)
+> > +#define     RISCV_HWPROBE_MISALIGNED_SLOW        (2 << 0)
+> > +#define     RISCV_HWPROBE_MISALIGNED_FAST        (3 << 0)
+> > +#define     RISCV_HWPROBE_MISALIGNED_UNSUPPORTED (4 << 0)
+> > +#define     RISCV_HWPROBE_MISALIGNED_MASK        (7 << 0)
+> > +
+> > +struct riscv_hwprobe {
+> > +    abi_llong  key;
+> > +    abi_ullong value;
+> > +};
+> > +
+> > +static void risc_hwprobe_fill_pairs(CPURISCVState *env,
+> > +                                    struct riscv_hwprobe *pair,
+> > +                                    size_t pair_count)
+> > +{
+> > +    const RISCVCPUConfig *cfg =3D riscv_cpu_cfg(env);
+> > +
+> > +    for (; pair_count > 0; pair_count--, pair++) {
+> > +        abi_llong key;
+> > +        abi_ullong value;
+> > +        __put_user(0, &pair->value);
+> > +        __get_user(key, &pair->key);
+> > +        switch (key) {
+> > +        case RISCV_HWPROBE_KEY_MVENDORID:
+> > +            __put_user(cfg->mvendorid, &pair->value);
+> > +            break;
+> > +        case RISCV_HWPROBE_KEY_MARCHID:
+> > +            __put_user(cfg->marchid, &pair->value);
+> > +            break;
+> > +        case RISCV_HWPROBE_KEY_MIMPID:
+> > +            __put_user(cfg->mimpid, &pair->value);
+> > +            break;
+> > +        case RISCV_HWPROBE_KEY_BASE_BEHAVIOR:
+> > +            value =3D riscv_has_ext(env, RVI) &&
+> > +                    riscv_has_ext(env, RVM) &&
+> > +                    riscv_has_ext(env, RVA) ?
+> > +                    RISCV_HWPROBE_BASE_BEHAVIOR_IMA : 0;
+> > +            __put_user(value, &pair->value);
+> > +            break;
+> > +        case RISCV_HWPROBE_KEY_IMA_EXT_0:
+> > +            value =3D riscv_has_ext(env, RVF) &&
+> > +                    riscv_has_ext(env, RVD) ?
+> > +                    RISCV_HWPROBE_IMA_FD : 0;
+> > +            value |=3D riscv_has_ext(env, RVC) ?
+> > +                     RISCV_HWPROBE_IMA_C : pair->value;
+> > +            __put_user(value, &pair->value);
+> > +            break;
+> > +        case RISCV_HWPROBE_KEY_CPUPERF_0:
+> > +            __put_user(RISCV_HWPROBE_MISALIGNED_FAST, &pair->value);
+> > +            break;
+> > +        default:
+> > +            __put_user(-1, &pair->key);
+> > +            break;
+> > +        }
+> > +    }
+> > +}
+> > +
+> > +static int cpu_set_valid(abi_long arg3, abi_long arg4)
+> > +{
+> > +    int ret, i, tmp;
+> > +    size_t host_mask_size, target_mask_size;
+> > +    unsigned long *host_mask;
+> > +
+> > +    /*
+> > +     * cpu_set_t represent CPU masks as bit masks of type unsigned lon=
+g *.
+> > +     * arg3 contains the cpu count.
+> > +     */
+> > +    tmp =3D (8 * sizeof(abi_ulong));
+> > +    target_mask_size =3D ((arg3 + tmp - 1) / tmp) * sizeof(abi_ulong);
+> > +    host_mask_size =3D (target_mask_size + (sizeof(*host_mask) - 1)) &
+> > +                     ~(sizeof(*host_mask) - 1);
+> > +
+> > +    host_mask =3D alloca(host_mask_size);
+> > +
+> > +    ret =3D target_to_host_cpu_mask(host_mask, host_mask_size,
+> > +                                  arg4, target_mask_size);
+> > +    if (ret !=3D 0) {
+> > +        return ret;
+> > +    }
+> > +
+> > +    for (i =3D 0 ; i < host_mask_size / sizeof(*host_mask); i++) {
+> > +        if (host_mask[i] !=3D 0) {
+> > +            return 0;
+> > +        }
+> > +    }
+> > +    return -TARGET_EINVAL;
+> > +}
+> > +
+> > +static abi_long do_riscv_hwprobe(CPUArchState *cpu_env, abi_long arg1,
+> > +                                 abi_long arg2, abi_long arg3,
+> > +                                 abi_long arg4, abi_long arg5)
+> > +{
+> > +    int ret;
+> > +    struct riscv_hwprobe *host_pairs;
+> > +
+> > +    /* flags must be 0 */
+> > +    if (arg5 !=3D 0) {
+> > +        return -TARGET_EINVAL;
+> > +    }
+> > +
+> > +    /* check cpu_set */
+> > +    if (arg3 !=3D 0) {
+> > +        ret =3D cpu_set_valid(arg3, arg4);
+> > +        if (ret !=3D 0) {
+> > +            return ret;
+> > +        }
+> > +    } else if (arg4 !=3D 0) {
+> > +        return -TARGET_EINVAL;
+> > +    }
+> > +
+> > +    /* no pairs */
+> > +    if (arg2 =3D=3D 0) {
+> > +        return 0;
+> > +    }
+> > +
+> > +    host_pairs =3D lock_user(VERIFY_WRITE, arg1,
+> > +                           sizeof(*host_pairs) * (size_t)arg2, 0);
+> > +    if (host_pairs =3D=3D NULL) {
+> > +        return -TARGET_EFAULT;
+> > +    }
+> > +    risc_hwprobe_fill_pairs(cpu_env, host_pairs, arg2);
+> > +    unlock_user(host_pairs, arg1, sizeof(*host_pairs) * (size_t)arg2);
+> > +    return 0;
+> > +}
+> > +#endif /* TARGET_NR_riscv_hwprobe */
+> > +
+> >  #if defined(TARGET_NR_pivot_root) && defined(__NR_pivot_root)
+> >  _syscall2(int, pivot_root, const char *, new_root, const char *, put_o=
+ld)
+> >  #endif
+> > @@ -13571,6 +13712,11 @@ static abi_long do_syscall1(CPUArchState *cpu_=
+env, int num, abi_long arg1,
+> >          return ret;
+> >  #endif
+> >=20
+> > +#if defined(TARGET_NR_riscv_hwprobe)
+> > +    case TARGET_NR_riscv_hwprobe:
+> > +        return do_riscv_hwprobe(cpu_env, arg1, arg2, arg3, arg4, arg5)=
+;
+> > +#endif
+> > +
+> >      default:
+> >          qemu_log_mask(LOG_UNIMP, "Unsupported syscall: %d\n", num);
+> >          return -TARGET_ENOSYS;
+> > --
+> > 2.39.2
+> >=20
+> >=20
+
 
