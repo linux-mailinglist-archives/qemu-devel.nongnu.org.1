@@ -2,65 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D8D0740570
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 23:07:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 132EC740574
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 23:07:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEFtU-00070O-N7; Tue, 27 Jun 2023 17:06:36 -0400
+	id 1qEFtz-0007kq-I9; Tue, 27 Jun 2023 17:07:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qEFtK-0006yj-Uc
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 17:06:28 -0400
-Received: from mail-lj1-x236.google.com ([2a00:1450:4864:20::236])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qEFtw-0007gi-GT
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 17:07:05 -0400
+Received: from mail-lj1-x230.google.com ([2a00:1450:4864:20::230])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qEFtJ-0000vT-Aj
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 17:06:26 -0400
-Received: by mail-lj1-x236.google.com with SMTP id
- 38308e7fff4ca-2b6adef5c22so19936831fa.3
- for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 14:06:24 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qEFtu-0001Hk-RL
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 17:07:04 -0400
+Received: by mail-lj1-x230.google.com with SMTP id
+ 38308e7fff4ca-2b699284ff4so53610321fa.2
+ for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 14:07:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687899983; x=1690491983;
+ d=linaro.org; s=google; t=1687900020; x=1690492020;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=s+mxbvopcN8GhtyLQyosyHXduhB/LupAIEMRtR9S99Q=;
- b=kGS7onlOB4geoA/XdBFX+p9ywgVLF+Ya/yS6AYbiWQ3Xgp6uN1THRCrVkIka9JD4mp
- b70qbTp/o2pi4aEyOgieWX9iRjSyOlECI194uURJy+fl81Y9zly2XBy6RuPQ5ijBYg5c
- M8UKlf3+EhUjg94e4WBLY3oQ3HlUp0uGVTYhkI3G9pAYEN3rFjQCH+nJU91vcMRRKd7C
- 7MWmwJa7GuX1EnyuPL1JvXFwZe3sWCfoQfGJu2MHkIFYh2BwwQSw9+YocBrLlXr7h9aP
- wlRm4/lpfie9khCsw78VqX2lMDrU8smc3KCzHfaFCKz4U467lYZF8WjIhKw2lhBTNkWg
- feOA==
+ bh=APVxDd6lgCOHy9cpPK8Ts43N5aR9TxdOrvF2rjEZXgI=;
+ b=Yb0C2eKkTp3V2e9OosWmbNq8jorJT5jkwrpqePGtcDz+MlXvb2vVHZfOGXQT+fIW0S
+ 0+PmHlnuFeCxB/XiEkwjxBnpeMuxU6/MzuXWPbnyz5sa1jIK7PWmpaf7Cpt+YqTAhDCi
+ vMbQHJKTR+oAeL34yKd+wWejMeGLfL2U6dXupbmFQzpVZk/LUsaQotyklgRcCrvrawKm
+ 8aWYqwvI4O68Jwo9yLwRapbLcWJKK7S+XJjGlsypjXNeFK6fkFwBSemyvP7ak1JKdxHp
+ J1UhstuikdnYcus/iieRXZy/k500oZCphnd4z8Os1WSZhhf+CaKg4hN7G0JvtOduySKB
+ VoEg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687899983; x=1690491983;
+ d=1e100.net; s=20221208; t=1687900020; x=1690492020;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=s+mxbvopcN8GhtyLQyosyHXduhB/LupAIEMRtR9S99Q=;
- b=eidhTEeBk9KUpp2yD4wnJuHq0uZQtKjR0mV2MBdYJqrzLFGWXuZ53+VYPU5VzTZpO6
- 9wS5ckYdcqmHfHQVfNDF6ZKdu2xsXPOO+Ejxu2nW8G2PSogtQ3w+smRQnRuxx5QheGqI
- 0sWr0VAUbQTOIcMYehcu8sb42ufQuzekYlkaIrPJ7j1VUpmw6Kc+ASueSEE/rZ1uVfWm
- zSL9zwV/6Gn5jCE3mawhgNDOtW0qlqAe8ul8zDejVHgjTquCl4VucBmWRcneODA723w5
- eJFuyMJYQ4P5HZA0QJT8BkCWnKpFVWQv7AA5nqMtySu5kghRLaffnZ9ndjd7YxEH65hC
- JgwA==
-X-Gm-Message-State: AC+VfDxXJxPFMgVzo4hamcjr5Egm50BgJZof8gstSJmndB935cpCxE3X
- dC5/ri3REnROSbFyPO2i6oOLgw==
-X-Google-Smtp-Source: ACHHUZ4f1qVZ7/fRnZpaOeLsDQGLZvHLPTnJxTFvEeLT0DrtxXdqmDDvsfFz2vgB/xxlaYc+bToM2Q==
-X-Received: by 2002:a05:651c:90:b0:2b6:b672:5924 with SMTP id
- 16-20020a05651c009000b002b6b6725924mr1623810ljq.5.1687899983545; 
- Tue, 27 Jun 2023 14:06:23 -0700 (PDT)
+ bh=APVxDd6lgCOHy9cpPK8Ts43N5aR9TxdOrvF2rjEZXgI=;
+ b=WfpGar18Y4+rfXTHReezkkb/iYLfmuVQDby3c4fKZKwRqPaxZ14Ff6+V1d2i3lJr7x
+ mNEFZdksdtmOxZ3mAm2ueovLBTSM097Eq7mmPA3IBmeZ7Yq17+f8YRssQ8TvnlexpcxY
+ p0d6BNzjr1cBFj5pG9jIP6YcQ7NYr7Dvl3utrOnT7rXLtkolQi+y3/Gsq4xv/c/6HQk/
+ 0EjfT9uwrdQnjnUHrAYpQdea7xXiIrf8oiQD4XbuiXn7enHpGWi9gVz42d+rL9kmg9DY
+ U8771glqMNsWSy2MULXYfZJ+054Ekw5aowBb7mkX1vhVl/Yxaz24pItdI6bIZUwB2Qkj
+ OO0w==
+X-Gm-Message-State: AC+VfDxWrWOo/3F7p8Fo5wfnX+qZWGdWzpXNobGjeaMibpCEEWbJBvDw
+ fOthDGNsVf+4ELESrN6So516hQ==
+X-Google-Smtp-Source: ACHHUZ6BDKv4+8d0Fo6SS5SJnuE2OgJGSU/64zLoX+0duCe2qdln8VeYqm2b1wRBFW2XihjEfRnXUQ==
+X-Received: by 2002:a2e:9b50:0:b0:2b6:9001:e447 with SMTP id
+ o16-20020a2e9b50000000b002b69001e447mr5741786ljj.0.1687900020652; 
+ Tue, 27 Jun 2023 14:07:00 -0700 (PDT)
 Received: from [192.168.69.115] ([176.187.199.204])
  by smtp.gmail.com with ESMTPSA id
- ce23-20020a170906b25700b009920f18a5f0sm1266693ejb.185.2023.06.27.14.06.20
+ e13-20020a50fb8d000000b0051d80d7a95bsm3990985edq.14.2023.06.27.14.06.57
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 27 Jun 2023 14:06:22 -0700 (PDT)
-Message-ID: <cafa811a-0212-36c3-4f93-b4937c7617c4@linaro.org>
-Date: Tue, 27 Jun 2023 23:06:19 +0200
+ Tue, 27 Jun 2023 14:07:00 -0700 (PDT)
+Message-ID: <b287b67d-7bd6-6b0f-1cb5-14fd12099175@linaro.org>
+Date: Tue, 27 Jun 2023 23:06:56 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.12.0
-Subject: Re: [PATCH v3 16/36] tests/avocado: update firmware to enable
- sbsa-ref/max
+Subject: Re: [PATCH v3 12/36] tests/lcitool: Bump fedora container versions
 Content-Language: en-US
 To: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
  qemu-devel@nongnu.org
@@ -80,22 +79,23 @@ Cc: Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
  Leif Lindholm <quic_llindhol@quicinc.com>,
  Laurent Vivier <lvivier@redhat.com>, Qiuhao Li <Qiuhao.Li@outlook.com>,
- Mahmoud Mandour <ma.mandourr@gmail.com>, Riku Voipio <riku.voipio@iki.fi>
+ Mahmoud Mandour <ma.mandourr@gmail.com>, Riku Voipio <riku.voipio@iki.fi>,
+ Erik Skultety <eskultet@redhat.com>
 References: <20230627160943.2956928-1-alex.bennee@linaro.org>
- <20230627160943.2956928-17-alex.bennee@linaro.org>
+ <20230627160943.2956928-13-alex.bennee@linaro.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230627160943.2956928-17-alex.bennee@linaro.org>
+In-Reply-To: <20230627160943.2956928-13-alex.bennee@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::236;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x236.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::230;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x230.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.103,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -112,22 +112,22 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 27/6/23 18:09, Alex Bennée wrote:
-> From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+> From: Erik Skultety <eskultet@redhat.com>
 > 
-> Update prebuilt firmware images to have TF-A with FEAT_FGT support
-> enabled. This allowed us to enable test for "max" cpu in sbsa-ref
-> machine.
+> Fedora 37 -> 38
 > 
-> Signed-off-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-> Message-Id: <20230530152240.79160-1-marcin.juszkiewicz@linaro.org>
+> Signed-off-by: Erik Skultety <eskultet@redhat.com>
+> Acked-by: Richard Henderson <richard.henderson@linaro.org>
+> Message-Id: <20230623122100.1640995-14-alex.bennee@linaro.org>
+> Message-Id: <c9b00e573a7a80fc6ce5c68595382f5c916a9195.1685528076.git.eskultet@redhat.com>
+> [AJB: Dropped alpine (in prev commit), reflow commit msg]
 > Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-> 
 > ---
-> v3
->    - re-enable for CI
-> ---
->   tests/avocado/machine_aarch64_sbsaref.py | 23 ++++++++++-------------
->   1 file changed, 10 insertions(+), 13 deletions(-)
+>   tests/docker/dockerfiles/fedora-win32-cross.docker | 4 ++--
+>   tests/docker/dockerfiles/fedora-win64-cross.docker | 4 ++--
+>   tests/docker/dockerfiles/fedora.docker             | 4 ++--
+>   tests/lcitool/refresh                              | 6 +++---
+>   4 files changed, 9 insertions(+), 9 deletions(-)
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
