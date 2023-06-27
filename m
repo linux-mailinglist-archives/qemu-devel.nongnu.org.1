@@ -2,90 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62E2473FBEF
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 14:24:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6C1073FBF0
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 14:25:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qE7kI-0003g5-5f; Tue, 27 Jun 2023 08:24:34 -0400
+	id 1qE7km-00040h-EV; Tue, 27 Jun 2023 08:25:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1qE7kD-0003fp-9Q
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 08:24:29 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qE7kW-0003pe-0K
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 08:24:50 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1qE7kB-00048J-Pi
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 08:24:29 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qE7kR-0004Bz-Km
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 08:24:46 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687868666;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
+ s=mimecast20190719; t=1687868682;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ik4yNkgjvDAnpWrrhvwfo0lYDp79+FNNq43gUIzY6P0=;
- b=Rid/uVuV8UKlMhrYfL+EK7BYDTfgNwbkn+rY8cgqkk7kte984vVKyRjGjn6b0hX8hvl8zx
- ww2tt0V+RP234ItadYxa3tjPKsNo0oRfi+42y1DMKD9ihpK/09G+VnDrh2KCu1APQxwN57
- SXRrLQe7+SU9fH5RHcu+ZIjjXWcuxew=
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
- [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=cmb9tQf2GENPIo5I6yF2q1ankDrBGnDGOISKz/f5ZMo=;
+ b=bm7i78pEjPzuwRIH0Ah/ABoiTq/+nITARTngEZ0vRAkS3e1t2IWUpWXEjolp0PGOjs8kOt
+ vv1NNv1HUcyP/CwoGWzyEBC2tPZ1x/D7uTex9oYXqvqisofm8vS5d0oaAeb/mNjNeQetqy
+ 0D1u6ZAcAjFz4Ec3LiN7+Is3jli12zc=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-118-UIu1WGyINJSbflko6StHKA-1; Tue, 27 Jun 2023 08:24:23 -0400
-X-MC-Unique: UIu1WGyINJSbflko6StHKA-1
-Received: by mail-qk1-f199.google.com with SMTP id
- af79cd13be357-7659924cf20so251551485a.2
- for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 05:24:23 -0700 (PDT)
+ us-mta-477-2fqRYB0TNqaupSFb5b4OKg-1; Tue, 27 Jun 2023 08:24:41 -0400
+X-MC-Unique: 2fqRYB0TNqaupSFb5b4OKg-1
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-987e47d2e81so355417866b.1
+ for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 05:24:40 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687868663; x=1690460663;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:reply-to:user-agent:mime-version:date
+ d=1e100.net; s=20221208; t=1687868680; x=1690460680;
+ h=content-transfer-encoding:in-reply-to:organization:from:references
+ :cc:to:content-language:subject:user-agent:mime-version:date
  :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=ik4yNkgjvDAnpWrrhvwfo0lYDp79+FNNq43gUIzY6P0=;
- b=VtSHrG26sq+8hpvVYgqsW3HGvaCAQj7rlZP/Gi5xjiN/FGWNhtoWUYl+We9M+nR3Dc
- qAE1/K5c2ANJWnGOM4Cnemf/JQm0iLYiHkSTlqgP1vzm23LUU9jZoabT4TKhw4olQhS/
- sPHWQON1xzA7ZRiWM6Gnsy4saZ4+XrKiU86dJDyvKVXHBS6aQZ1a6Ltn5eQVtL7PYEwf
- zJ1Wfxim1UaFl1apre+4s1xrfTXNWczEgCY6Rnpf1ag9RpJ2BfBKP6x/twG29UqUtiXO
- NKbex9fKNwSMGPJoMmDEPHJKG/VKYcXrR+vOGYzL+2ydzt3BPHyBbRl5aTS20SmEPmDj
- y3/Q==
-X-Gm-Message-State: AC+VfDx33VPZ944lzmoNlT8NGO8EUZ/PPYiZ2G4wUqRZx0boDeb2a4sb
- dxmircKZvyjk/67sUgRtLtqUklxK38su2PUaS6Qz/4ZrQwet5aTDeA0Fcp4QouUY8om2N3VouTI
- yzBgDyX7gJ1er9rk=
-X-Received: by 2002:a05:620a:25cd:b0:765:6782:cafd with SMTP id
- y13-20020a05620a25cd00b007656782cafdmr8166862qko.69.1687868662743; 
- Tue, 27 Jun 2023 05:24:22 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5zUol7rOE58BaS17fQeDU2moP+xoZB2mY301+mT3xABCbFwt/iqjdDWk6Trt2fhl45Cpl60g==
-X-Received: by 2002:a05:620a:25cd:b0:765:6782:cafd with SMTP id
- y13-20020a05620a25cd00b007656782cafdmr8166852qko.69.1687868662508; 
- Tue, 27 Jun 2023 05:24:22 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
- ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
+ bh=cmb9tQf2GENPIo5I6yF2q1ankDrBGnDGOISKz/f5ZMo=;
+ b=QKKYza9OVow6U7f35d+a+kgic/0StkHIXZBocYkueVjKB0Gy+rgRM25CWY4u0FxkPC
+ xMrwhNW6kkogTRfFfQ/kHzjGyyoHMcogxJAifPWUL9DQS0Mdt5vbG0zymhkWPOyTZVji
+ Ovn4a04KV9bhRePAwHsUbn7kUYujG45UCUxLddgNJl3eX1WDTcIzzO/EkvRzkKC5Qf97
+ AgzSN8DaSBIXWiYEV1TAcuyAcEMqDdRlLLinCtoeSQxwwAFOiZUW5KUUkIWL9twWpRGE
+ mda+OJGqZezAn4qAurUnu00MnR0MU6SAm0dHgbvIFrYWeiAv7CSSrq3y5z+uUKndfWN2
+ jKqg==
+X-Gm-Message-State: AC+VfDydQ56PN5ldT0ucj94E11JZPX3Fbl83vkdCEM5i2topparsZYv9
+ nUfxjHazQgiOMExRaZdxIV5ntiNTuXN2ARoThUGMKrx45CdZGk2c9JBdhV5kJaxfsNRYD+3+B9E
+ xvRJ2sbRMhFMtAmHsYilzcrw6gY/xxx7lLoIHhsjCLUG57P4UTBl015khIPHl72VV1UtZOeQ=
+X-Received: by 2002:a17:907:3e27:b0:978:ab4a:2154 with SMTP id
+ hp39-20020a1709073e2700b00978ab4a2154mr34061310ejc.1.1687868680026; 
+ Tue, 27 Jun 2023 05:24:40 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ68+3KOTgI/5T1/1IURXg4nD0MmY75NBJ6prO/rD57+jMw9qQpuPwocc5p9WHj8GvtFthDdVA==
+X-Received: by 2002:a17:907:3e27:b0:978:ab4a:2154 with SMTP id
+ hp39-20020a1709073e2700b00978ab4a2154mr34061273ejc.1.1687868679668; 
+ Tue, 27 Jun 2023 05:24:39 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c737:4900:68b3:e93b:e07a:558b?
+ (p200300cbc737490068b3e93be07a558b.dip0.t-ipconnect.de.
+ [2003:cb:c737:4900:68b3:e93b:e07a:558b])
  by smtp.gmail.com with ESMTPSA id
- t7-20020a05620a034700b007651047d620sm3873542qkm.125.2023.06.27.05.24.20
+ h14-20020a17090634ce00b0098238141deasm4514931ejb.90.2023.06.27.05.24.38
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 27 Jun 2023 05:24:21 -0700 (PDT)
-Message-ID: <a80354b1-584a-d233-8a4b-d429161e452e@redhat.com>
-Date: Tue, 27 Jun 2023 14:24:18 +0200
+ Tue, 27 Jun 2023 05:24:39 -0700 (PDT)
+Message-ID: <c0f3d43a-cd56-d4c8-dbae-42b1176fada4@redhat.com>
+Date: Tue, 27 Jun 2023 14:24:37 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.0
-Subject: Re: [PATCH v3] target/arm: Add raw_writes ops for register whose
- write induce TLB maintenance
+ Thunderbird/102.12.0
+Subject: Re: [PATCH v4 00/10] memory-device: Some cleanups
 Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: eric.auger.pro@gmail.com, richard.henderson@linaro.org,
- pbonzini@redhat.com, qemu-devel@nongnu.org, philmd@linaro.org
-References: <20230228093619.342575-1-eric.auger@redhat.com>
- <27fd657b-02e7-658c-4cc4-07a6c374a1b9@redhat.com>
- <CAFEAcA_y2WHGU8xQ0Tw-UfdXF-FPbAV=mHA0vHYzoSz66VBoJQ@mail.gmail.com>
-From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <CAFEAcA_y2WHGU8xQ0Tw-UfdXF-FPbAV=mHA0vHYzoSz66VBoJQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
+To: qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, qemu-ppc@nongnu.org,
+ Igor Mammedov <imammedo@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Xiao Guangrong <xiaoguangrong.eric@gmail.com>,
+ =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Eduardo Habkost <eduardo@habkost.net>, Greg Kurz <groug@kaod.org>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Song Gao <gaosong@loongson.cn>, Xiaojuan Yang <yangxiaojuan@loongson.cn>
+References: <20230623124553.400585-1-david@redhat.com>
+From: David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+In-Reply-To: <20230623124553.400585-1-david@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124;
- envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -106,36 +114,22 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Peter,
+On 23.06.23 14:45, David Hildenbrand wrote:
+> Essentially a resend with ACKs/RBs. If I don't get any more comments
+> I'll queue this to my mem-next tree next week.
 
-On 6/27/23 14:23, Peter Maydell wrote:
-> On Fri, 23 Jun 2023 at 17:43, Eric Auger <eric.auger@redhat.com> wrote:
->> Hi Peter,
->>
->> On 2/28/23 10:36, Eric Auger wrote:
->>> Some registers whose 'cooked' writefns induce TLB maintenance do
->>> not have raw_writefn ops defined. If only the writefn ops is set
->>> (ie. no raw_writefn is provided), it is assumed the cooked also
->>> work as the raw one. For those registers it is not obvious the
->>> tlb_flush works on KVM mode so better/safer setting the raw write.
->>>
->>> Signed-off-by: Eric Auger <eric.auger@redhat.com>
->>> Suggested-by: Peter Maydell <peter.maydell@linaro.org>
->> If I am not wrong this patch fell into the cracks. Is it in a decent
->> state now?
-> Oops, sorry about that. Yes, I think v3 looks good; I've
-> applied it to target-arm.next.
+Queued to
 
-no problem. thanks!
+https://github.com/davidhildenbrand/qemu.git mem-next
 
-Eric
->
-> thanks
-> -- PMM
->
+Will probably send a PR later this week.
+
+-- 
+Cheers,
+
+David / dhildenb
 
 
