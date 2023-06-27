@@ -2,59 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B185373FC58
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 15:04:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A78073FC62
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 15:05:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qE8Lg-0008TS-Qz; Tue, 27 Jun 2023 09:03:12 -0400
+	id 1qE8Le-0008SF-Tc; Tue, 27 Jun 2023 09:03:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qE8Le-0008SH-80
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 09:03:10 -0400
+ id 1qE8Lb-0008RF-4Z
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 09:03:07 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qE8La-00073F-2R
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 09:03:08 -0400
+ id 1qE8LX-00072f-1n
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 09:03:05 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687870985;
+ s=mimecast20190719; t=1687870982;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=jLIMFL3RGpvTWWJghQtYs7EfwwGgWZRaOc2yyn4IxPk=;
- b=QO07qHBaqYAoSRxWs+VNGTogYU6o0Zp9makaazDtZ2gnSzj1rUuJnQMtsVcQymqJrNyWdX
- ayi9TdKd63me3kT8TGFQrlvEvVs+bw5Fg8qSTJ1aaJD65/3XrDJ5ccnyONF+xT1fZuC2Wg
- 9w1alRo5bXeweLhEORN6MFnXyDvqpiY=
+ bh=2BH5BpSpjKRT4vLbjNQw58r98+qZ4ELu7ZRZz3wXTis=;
+ b=BErFOMIbQYCeUR6n4RiQswhXvedxeSsrmg3pRzN6cQaEs4+IyAbatylLzsTI0XMqEcIIuL
+ cAEHi7BffB/Z+PaZvjWy5g5Xq1dOURHx1AzUT5l3tlWtFF6ChAksxNM13Clcv2HUH75Raw
+ z1gWedM8d8Bj9CNOy3U7wwDA+KjMBr0=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-230-T1BpxG_tPRKj1ldia3eEow-1; Tue, 27 Jun 2023 09:03:00 -0400
-X-MC-Unique: T1BpxG_tPRKj1ldia3eEow-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
+ us-mta-392--sX9zqhhONmAOqQ33drxPg-1; Tue, 27 Jun 2023 09:02:58 -0400
+X-MC-Unique: -sX9zqhhONmAOqQ33drxPg-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7528A83DCC2;
- Tue, 27 Jun 2023 13:02:41 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 59D4988D554;
+ Tue, 27 Jun 2023 13:02:43 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.36])
- by smtp.corp.redhat.com (Postfix) with ESMTP id E56E0200A3AD;
- Tue, 27 Jun 2023 13:02:40 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id AB6D740C2063;
+ Tue, 27 Jun 2023 13:02:42 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org, Keqian Zhu <zhukeqian1@huawei.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>
-Subject: [PULL 04/33] virtio-gpu: Optimize 2D resource data transfer
-Date: Tue, 27 Jun 2023 15:02:01 +0200
-Message-ID: <20230627130231.1614896-5-marcandre.lureau@redhat.com>
+Cc: richard.henderson@linaro.org, Zhang Huasen <huasenzhang@foxmail.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PULL 05/33] chardev/char-win-stdio: Support VT sequences on Windows
+ 11 host
+Date: Tue, 27 Jun 2023 15:02:02 +0200
+Message-ID: <20230627130231.1614896-6-marcandre.lureau@redhat.com>
 In-Reply-To: <20230627130231.1614896-1-marcandre.lureau@redhat.com>
 References: <20230627130231.1614896-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
 Received-SPF: pass client-ip=170.10.133.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -81,73 +83,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Keqian Zhu via <qemu-devel@nongnu.org>
+From: Zhang Huasen <huasenzhang@foxmail.com>
 
-The following points sometimes can reduce much data
-to copy:
-1. When width matches, we can transfer data with one
-call of iov_to_buf().
-2. Only the required height need to transfer, not
-whole image.
+If the monitor or the serial port use STDIO as backend on Windows 11 host,
+e.g. -nographic options is used, the monitor or the guest Linux do not
+response to arrow keys.
 
-Signed-off-by: Keqian Zhu <zhukeqian1@huawei.com>
+When Windows creates a console, ENABLE_VIRTUAL_PROCESS_INPUT is disabled
+by default. Arrow keys cannot be retrieved by ReadFile or ReadConsoleInput
+functions.
+
+Add ENABLE_VIRTUAL_PROCESS_INPUT to the flag which is passed to SetConsoleMode,
+when opening stdio console.
+
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1674
+
+Signed-off-by: Zhang Huasen <huasenzhang@foxmail.com>
 Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Message-Id: <20230612021358.25068-1-zhukeqian1@huawei.com>
+Message-Id: <tencent_8DA57B405D427A560FD40F8FB0C0B1ADDE09@qq.com>
 ---
- hw/display/virtio-gpu.c | 22 +++++++++++-----------
- 1 file changed, 11 insertions(+), 11 deletions(-)
+ chardev/char-win-stdio.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
-index 66cddd94d9..af31018ab0 100644
---- a/hw/display/virtio-gpu.c
-+++ b/hw/display/virtio-gpu.c
-@@ -438,11 +438,11 @@ static void virtio_gpu_transfer_to_host_2d(VirtIOGPU *g,
-                                            struct virtio_gpu_ctrl_command *cmd)
- {
-     struct virtio_gpu_simple_resource *res;
--    int h;
-+    int h, bpp;
-     uint32_t src_offset, dst_offset, stride;
--    int bpp;
-     pixman_format_code_t format;
-     struct virtio_gpu_transfer_to_host_2d t2d;
-+    void *img_data;
- 
-     VIRTIO_GPU_FILL_CMD(t2d);
-     virtio_gpu_t2d_bswap(&t2d);
-@@ -471,23 +471,23 @@ static void virtio_gpu_transfer_to_host_2d(VirtIOGPU *g,
-     format = pixman_image_get_format(res->image);
-     bpp = DIV_ROUND_UP(PIXMAN_FORMAT_BPP(format), 8);
-     stride = pixman_image_get_stride(res->image);
-+    img_data = pixman_image_get_data(res->image);
- 
--    if (t2d.offset || t2d.r.x || t2d.r.y ||
--        t2d.r.width != pixman_image_get_width(res->image)) {
--        void *img_data = pixman_image_get_data(res->image);
-+    if (t2d.r.x || t2d.r.width != pixman_image_get_width(res->image)) {
-         for (h = 0; h < t2d.r.height; h++) {
-             src_offset = t2d.offset + stride * h;
-             dst_offset = (t2d.r.y + h) * stride + (t2d.r.x * bpp);
- 
-             iov_to_buf(res->iov, res->iov_cnt, src_offset,
--                       (uint8_t *)img_data
--                       + dst_offset, t2d.r.width * bpp);
-+                       (uint8_t *)img_data + dst_offset,
-+                       t2d.r.width * bpp);
+diff --git a/chardev/char-win-stdio.c b/chardev/char-win-stdio.c
+index eb830eabd9..1a18999e78 100644
+--- a/chardev/char-win-stdio.c
++++ b/chardev/char-win-stdio.c
+@@ -190,7 +190,7 @@ static void qemu_chr_open_stdio(Chardev *chr,
          }
-     } else {
--        iov_to_buf(res->iov, res->iov_cnt, 0,
--                   pixman_image_get_data(res->image),
--                   pixman_image_get_stride(res->image)
--                   * pixman_image_get_height(res->image));
-+        src_offset = t2d.offset;
-+        dst_offset = t2d.r.y * stride + t2d.r.x * bpp;
-+        iov_to_buf(res->iov, res->iov_cnt, src_offset,
-+                   (uint8_t *)img_data + dst_offset,
-+                   stride * t2d.r.height);
      }
- }
  
+-    dwMode |= ENABLE_LINE_INPUT;
++    dwMode |= ENABLE_LINE_INPUT | ENABLE_VIRTUAL_TERMINAL_INPUT;
+ 
+     if (is_console) {
+         /* set the terminal in raw mode */
 -- 
 2.41.0
 
