@@ -2,75 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B03E373FEFF
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 16:53:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AFF8173FF12
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 16:56:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEA3W-0003pm-3v; Tue, 27 Jun 2023 10:52:34 -0400
+	id 1qEA7G-0005RJ-Rp; Tue, 27 Jun 2023 10:56:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qEA3Q-0003pD-90
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 10:52:28 -0400
-Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qEA3O-00080Q-EW
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 10:52:28 -0400
-Received: by mail-ed1-x533.google.com with SMTP id
- 4fb4d7f45d1cf-51da8a744c4so1150468a12.0
- for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 07:52:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687877544; x=1690469544;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=BLnUJF5Bzfslc48dcgvh1zImH+cIPeOi8OhebaRALSs=;
- b=Up7JK2pAWfl5vhPnsWIN038BMYKar32wsExKOPYbJQ6kj2s1Y+MWUlA+FXE7ryyqH4
- hQIA3Oq5rTRYBq+/4hKrKKPhUAYdv1e5NUwiIIpqsb3V3hbxIZA8qNoF4bvnpXGV1z1H
- j8mI/qJSLma7uw5Z7to3ekA7IDqACGQx2YxpFuOr8PCgkEuArpKxmFgZYEeIiDmZCP1q
- H5SYP/l7+kQ5slf9wvEdF5DWGtVnLd4gpJ0LsLFKu3UDMwdi+KQsk9zLkFYHium4M3H6
- RC0hkw69TGxnOZVZ9zOROXvzn09SZG4II2wfx9kYBnOBGX44hrt1u/RbT4PSVe1hLtUb
- hRlA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687877544; x=1690469544;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=BLnUJF5Bzfslc48dcgvh1zImH+cIPeOi8OhebaRALSs=;
- b=ROV/+39szqzhXEBEKGador3byZtS0ASIOF9piMOkfxOhTdeqOYU8MXyb0YmnSsoVVq
- hkptWQXSy/xEaRLqPea+AisFJ6l43tIltdNAb78CiQCNvoak4ke+N9fcyC50jq8R1Ah+
- LA/FJMHQX7jDoxltRCY+VE8jdluDV5UGlgu8PU6vjSWDkPLRqV+1JOZCeb/QNGlidzFt
- OEbieMXTMrzpf8ofzQuNW9r25/jgTDbW6SupUXibuhpZ4edYiFH5/vm+07hlDmncgAwc
- fPxHN2CEwI0B3F8KR0fTaA1faIhv0Xy49C9KIFJx19FUvUS5+6buPhSxB6UfMcYNZWI5
- X5hQ==
-X-Gm-Message-State: AC+VfDwc1O9XC2023JoPOGqt+sDXXJegtlxJqgl/AuUSNkc3xwfsT9W9
- BSbEGWJYn3EZp9DDJDqRxhzMYDMIsc9OINsi8hxFdCFJ80cz40mu
-X-Google-Smtp-Source: ACHHUZ5UwPpMMaP7px8nOrWGC7a2ulaI7IWSIitUhKPryIcspXlOl0XDdi4bcOzORwDYoWvvyphPoHnhWd3Xi1mwXTg=
-X-Received: by 2002:aa7:d396:0:b0:51d:aa00:bdd4 with SMTP id
- x22-20020aa7d396000000b0051daa00bdd4mr1700936edq.24.1687877544615; Tue, 27
- Jun 2023 07:52:24 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1qEA7E-0005Qq-3X; Tue, 27 Jun 2023 10:56:24 -0400
+Received: from forwardcorp1b.mail.yandex.net ([178.154.239.136])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1qEA7B-0000dJ-Rz; Tue, 27 Jun 2023 10:56:23 -0400
+Received: from mail-nwsmtp-smtp-corp-main-44.iva.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-44.iva.yp-c.yandex.net
+ [IPv6:2a02:6b8:c0c:a49a:0:640:edd6:0])
+ by forwardcorp1b.mail.yandex.net (Yandex) with ESMTP id 7278B610FC;
+ Tue, 27 Jun 2023 17:55:58 +0300 (MSK)
+Received: from [IPV6:2a02:6b8:b081:b68e::1:39] (unknown
+ [2a02:6b8:b081:b68e::1:39])
+ by mail-nwsmtp-smtp-corp-main-44.iva.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id vtMoa40OfeA0-qNijVUlz; Tue, 27 Jun 2023 17:55:57 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; 
+ t=1687877757; bh=H3v3rAV55BdJDzWpxXobNIgCLfXEjF+wiVe3FwwUe60=;
+ h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+ b=gXReDzpfXY/M9VbM7VuQdQaX8jvpMgT/fG2Vf6LrjVeI+utRGnJqeZavOZvZruBTT
+ yAlE43bDeY7mCtN1bY7S7v3Ddps0iWeM/4zlp1583fCZVamkEE8VwvHTVpHQWtxiKk
+ IbTZyjB/8jxaw1WTT4/2r7E/hs1UuUFn/P01ayy0=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-44.iva.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+Message-ID: <e3dd4b93-4893-e066-ddca-c76f10a599a2@yandex-team.ru>
+Date: Tue, 27 Jun 2023 17:55:57 +0300
 MIME-Version: 1.0
-References: <168778890374.24232.3402138851538068785-0@git.sr.ht>
- <168778890374.24232.3402138851538068785-2@git.sr.ht>
-In-Reply-To: <168778890374.24232.3402138851538068785-2@git.sr.ht>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 27 Jun 2023 15:52:13 +0100
-Message-ID: <CAFEAcA_72SVs=YJmEbrai+KRopdkema9ubUEpc_sSEQUW_Zo3A@mail.gmail.com>
-Subject: Re: [PATCH qemu v4 2/2] tests/tcg/aarch64: Add testcases for IC IVAU
- and dual-mapped code
-To: "~jhogberg" <john.hogberg@ericsson.com>
-Cc: qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::533;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x533.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.0
+Subject: Re: [PATCH v4 21/24] nbd/client: Request extended headers during
+ negotiation
+Content-Language: en-US
+To: Eric Blake <eblake@redhat.com>, qemu-devel@nongnu.org
+Cc: qemu-block@nongnu.org, libguestfs@redhat.com,
+ Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>
+References: <20230608135653.2918540-1-eblake@redhat.com>
+ <20230608135653.2918540-22-eblake@redhat.com>
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+In-Reply-To: <20230608135653.2918540-22-eblake@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=178.154.239.136;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.103,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -88,33 +76,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 26 Jun 2023 at 15:15, ~jhogberg <jhogberg@git.sr.ht> wrote:
->
-> From: John H=C3=B6gberg <john.hogberg@ericsson.com>
->
-> https://gitlab.com/qemu-project/qemu/-/issues/1034
->
-> Signed-off-by: John H=C3=B6gberg <john.hogberg@ericsson.com>
+On 08.06.23 16:56, Eric Blake wrote:
+> All the pieces are in place for a client to finally request extended
+> headers.  Note that we must not request extended headers when qemu-nbd
+> is used to connect to the kernel module (as nbd.ko does not expect
+> them, but expects us to do the negotiation in userspace before handing
+> the socket over to the kernel), but there is no harm in all other
+> clients requesting them.
+> 
+> Extended headers are not essential to the information collected during
+> 'qemu-nbd --list', but probing for it gives us one more piece of
+> information in that output.  Update the iotests affected by the new
+> line of output.
+> 
+> Signed-off-by: Eric Blake<eblake@redhat.com>
 
+Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 
-> +static int self_modification_test(uint32_t *rw_data, const uint32_t *exe=
-c_data)
-> +{
-> +    /*
-> +     * This test is self-modifying in an attempt to cover an edge case w=
-here
-> +     * the IC IVAU instruction invalidates itself.
-> +     *
-> +     * Note that the IC IVAU instruction is 16 bytes into the function, =
-in what
-> +     * will be the same cache line as the modifed instruction on machine=
-s with
+-- 
+Best regards,
+Vladimir
 
-typo: "modified".
-
-Otherwise
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-
-thanks
--- PMM
 
