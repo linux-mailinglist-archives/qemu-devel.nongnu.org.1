@@ -2,90 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 817DA73FF72
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 17:15:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DB1A73FF70
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 17:15:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEAON-0003A0-Uq; Tue, 27 Jun 2023 11:14:07 -0400
+	id 1qEAOh-0003It-B9; Tue, 27 Jun 2023 11:14:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qEAOM-00039X-6V
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 11:14:06 -0400
-Received: from mail-ej1-x62c.google.com ([2a00:1450:4864:20::62c])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qEAOe-0003EA-Rv
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 11:14:25 -0400
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qEAOK-00056S-Iq
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 11:14:05 -0400
-Received: by mail-ej1-x62c.google.com with SMTP id
- a640c23a62f3a-98e109525d6so568194066b.0
- for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 08:14:04 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qEAOV-00058m-DK
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 11:14:21 -0400
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-3fa9850bfd9so22823275e9.0
+ for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 08:14:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687878842; x=1690470842;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=1hLkHKgBAbZUuk0W8oE9AqIRXF820+oX61/uVYQAwns=;
- b=RHSJC9x8UfCPz2FSbqOh2Ao54TcsCXhLbDK36yeB1DEJ4hj8Sl//hI37GaNYUgS+fs
- y4GXgRTnzQOM1uZVi38YmTqIyNo79pOMoci/EMI21MPW3l/lqt4OWFxhD0crUv1+Jlb9
- HAOtsR6oW56BaUJI4kAcsAxbPwP1gziEWSlXXCLlw13fsJZ46+EXCC7yWYT+y9jAT4m2
- e37yJcRCJEf80dlpoCKw2ihRR+G97nQEWmYOKSl3kIWFhrwA65/8u/9cIRWyQlcvD9VH
- FtltpgqEHEOcfVtyLsREChlxiSDkV4CjXzltjoOAxfty5o4YqGw18zEI/gJw6anC6zz4
- g8oA==
+ d=linaro.org; s=google; t=1687878853; x=1690470853;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=7RyMnAjjBSSOq3zaTdvT972DJCcOcquWn/+qjsJsWNU=;
+ b=jY+MrflDodJ5iCExLF5jEzXFBNDtiensxy8gsQZSCl5vUmcMyKYahWjIk0eOykjc5v
+ tNcucAslRMvAU2KA66kuSDQtzdG5UnZQfRKQpkpAWLrn9P8OGH41oYAQ0MysGOsZHbI8
+ miMpmb84nG9x2RJhEur9gd+5+Es+rW6h7L4AkHBxlJOxdKnH9gvoDCG0XYIgVPcaYl15
+ fXPMJNJx04qMgZYn91SasnETwqrlYy09UXGrf+fMYrsP3Hf6foskNlcWBrTmiW09GTyd
+ rkw+sX69n3wxqsBhhW2a0qpHt+lU0g+6n3jQlEsegNVtJLyFZ70XHILlszNebkE+V6Tc
+ KoOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687878842; x=1690470842;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=1hLkHKgBAbZUuk0W8oE9AqIRXF820+oX61/uVYQAwns=;
- b=Q2NDwIKrj8rKxR31r/UPCgQqeelaxEZjchdekJ90mbwTdyS1Pkjazl6pGIYOTBosNJ
- MKVgzSqfNJ80Gu1bV/kuPgar6PbgceVS3qsi74MvhOj3oyzoIf7HBk+X4/KNQacsQByC
- MMCnuYfSOIxWBeW5ZYGbXwLo1PLLECWdb1TqCpAWNsxjoUBfGnMhYORTMUx9qmBb+Cph
- QCCl1geXk751nb6x6XkmAWfhipMU5Y4kxy34SxS6pyx+XO2VGR/8DYMXBBlUD5dLD8qt
- O0lFzRfYWq/BL+0evnGDC4fVA0TE+ewzBvxYUMBHGGrwmoXqN10AAVRWhQZgISxf0Jtt
- GlQg==
-X-Gm-Message-State: AC+VfDx1sygvN4G7BEUOOWBjiD8G2wrHvIqiUBQSAt1tP9B5zsK6IKKe
- vGWloIyUVDE7yzmzu45yKJLJ8cdLfK+4VxtguRk=
-X-Google-Smtp-Source: ACHHUZ4N32hEou6vtUW/NAB1itCDeEMec+9QDxvX9fKtvB6/ovOV17I4ogYzFcIiFUizKhcJXoAQ3g==
-X-Received: by 2002:a17:907:3f87:b0:977:d660:c5aa with SMTP id
- hr7-20020a1709073f8700b00977d660c5aamr30961510ejc.31.1687878842634; 
- Tue, 27 Jun 2023 08:14:02 -0700 (PDT)
-Received: from [192.168.69.115] ([176.187.199.204])
+ d=1e100.net; s=20221208; t=1687878853; x=1690470853;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=7RyMnAjjBSSOq3zaTdvT972DJCcOcquWn/+qjsJsWNU=;
+ b=Z8TZU3dLibWcQz6sIJEP19XYQ43o8gHA3biKRUnlIOPG3U3u4qJ4zMseAji84Fn8iR
+ GTISJ35xgGLhnAs9BeYLPco6cQLxwnr9olu3D98MPvXveCIfjzomagb+7rfUtzrfdTHt
+ 0Xo4+U+sA5Nrl/pmpQVS+AvnExxgA2h0PZIwxWUNQ04s/p1Cxh5R9OJchIQNzdysPpkO
+ AlFPxtoi2Luitfa4bqXQEFf/F8YSfIrWitc4gOM4HMuUTpXJldpczA9CXGZBanSkPo22
+ WXGpCT7PGLuK9ng+SiHUmE9LE5SXV0IukmlnusAhd2zLQkIzBWk7eZBrWl5dyedycwO3
+ ewsw==
+X-Gm-Message-State: AC+VfDyNGDeF1rcpEyD2dipN1DYMwER+vg8OsEvRktC6G64+1L+VgZV1
+ 6kEgCjP7Z68x7HabDXRrZ100jg==
+X-Google-Smtp-Source: ACHHUZ5+t9nRUwpOJCcnGV46wvX95Rs5MyD4JyYJXJO1uJq7lQbVKVCGfmycsDaOthezRHqF0Tm6Og==
+X-Received: by 2002:a7b:c456:0:b0:3fa:7b1b:4adc with SMTP id
+ l22-20020a7bc456000000b003fa7b1b4adcmr8174172wmi.39.1687878853059; 
+ Tue, 27 Jun 2023 08:14:13 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- ss26-20020a170907039a00b0098e422d6758sm3262608ejb.219.2023.06.27.08.14.00
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 27 Jun 2023 08:14:02 -0700 (PDT)
-Message-ID: <dcf96b9e-16c5-b1d5-14a5-276fc0556bee@linaro.org>
-Date: Tue, 27 Jun 2023 17:13:58 +0200
+ s24-20020a7bc398000000b003fb9ebb6b88sm2749606wmj.39.2023.06.27.08.14.12
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 27 Jun 2023 08:14:12 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id 39A1E1FFBB;
+ Tue, 27 Jun 2023 16:14:12 +0100 (BST)
+References: <20230621203627.1808446-1-iii@linux.ibm.com>
+User-agent: mu4e 1.11.7; emacs 29.0.92
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Ilya Leoshkevich <iii@linux.ibm.com>
+Cc: Laurent Vivier <laurent@vivier.eu>, Peter Maydell
+ <peter.maydell@linaro.org>, Richard Henderson
+ <richard.henderson@linaro.org>, David Hildenbrand <david@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-s390x@nongnu.org
+Subject: Re: [PATCH v4 0/8] gdbstub: Add support for info proc mappings
+Date: Tue, 27 Jun 2023 16:14:01 +0100
+In-reply-to: <20230621203627.1808446-1-iii@linux.ibm.com>
+Message-ID: <87h6qtym2j.fsf@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.12.0
-Subject: Re: [PATCH v3 00/16] accel: Share CPUState accel context
- (HAX/NVMM/WHPX/HVF)
-Content-Language: en-US
-To: qemu-devel@nongnu.org
-Cc: kvm@vger.kernel.org, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Roman Bolshakov <rbolshakov@ddn.com>, qemu-arm@nongnu.org,
- Richard Henderson <richard.henderson@linaro.org>,
- Alexander Graf <agraf@csgraf.de>, xen-devel@lists.xenproject.org,
- Sunil Muthuswamy <sunilmut@microsoft.com>,
- Anthony Perard <anthony.perard@citrix.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Yanan Wang <wangyanan55@huawei.com>, Paul Durrant <paul@xen.org>,
- Reinoud Zandijk <reinoud@netbsd.org>, Eduardo Habkost <eduardo@habkost.net>,
- Cameron Esfahani <dirty@apple.com>, Paolo Bonzini <pbonzini@redhat.com>
-References: <20230624174121.11508-1-philmd@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230624174121.11508-1-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62c;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62c.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.103,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
@@ -103,49 +99,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 24/6/23 19:41, Philippe Mathieu-Daudé wrote:
-> This series is part of the single binary effort.
-> 
-> All accelerator will share their per-vCPU context in
-> an opaque 'accel' pointer within the CPUState.
-> 
-> First handle HAX/NVMM/WHPX/HVF. KVM and TCG will follow
-> as two different (bigger) follow-up series.
-> 
-> Except HVF/intel, all has been (cross-)build tested.
-> 
-> I plan to send the PR myself.
-> 
-> Since v2:
-> - Addressed rth's review comments
-> - Added rth's R-b tag
-> 
-> Since v1:
-> - Addressed rth's review comments
-> - Added rth's R-b tag
-> - Converted HVF intel (untested)
-> - Rebased
-> 
-> Philippe Mathieu-Daudé (16):
->    MAINTAINERS: Update Roman Bolshakov email address
->    accel: Document generic accelerator headers
->    accel: Remove unused hThread variable on TCG/WHPX
->    accel: Fix a leak on Windows HAX
->    accel: Destroy HAX vCPU threads once done
->    accel: Rename 'hax_vcpu' as 'accel' in CPUState
->    accel: Rename HAX 'struct hax_vcpu_state' -> AccelCPUState
->    accel: Move HAX hThread to accelerator context
->    accel: Remove NVMM unreachable error path
->    accel: Rename NVMM 'struct qemu_vcpu' -> AccelCPUState
->    accel: Inline NVMM get_qemu_vcpu()
->    accel: Remove WHPX unreachable error path
->    accel: Rename WHPX 'struct whpx_vcpu' -> AccelCPUState
->    accel: Inline WHPX get_whpx_vcpu()
->    accel: Rename 'cpu_state' -> 'cs'
->    accel: Rename HVF 'struct hvf_vcpu_state' -> AccelCPUState
 
-Except the MAINTAINERS patch, all the rest is reviewed, so I plan
-to send a PR tomorrow (dropping the first patch, nobody complained
-about Roman email bouncing for months so we can keep ignoring the
-automated emails).
+Ilya Leoshkevich <iii@linux.ibm.com> writes:
+
+> v3: https://lists.gnu.org/archive/html/qemu-devel/2023-06/msg01311.html
+> v3 -> v4: Fix the 32-bit build (Alex).
+>           Enable the test on all architectures and ignore certain
+>           expected failures (Alex). I tried this with the latest
+>           gdb-multiarch and it works. The only skip is on x86_64,
+>           as expected.
+>
+> v2: https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg06837.html
+> v2 -> v3: Use openat() instead of safe_openat() (new patch: 2/8).
+>           Add /proc/self/smaps emulation (new patch: 3/8).
+>           With these 2 changes, the minor issues previously mentioned in
+>           the patch 6/8 are gone.
+>
+> v1: https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg02614.html
+> v1 -> v2: Reword the 5/6 commit message (Dominik).
+>           Add R-bs.
+>           Patches that need review:
+>           4/6 gdbstub: Add support for info proc mappings
+>           6/6 tests/tcg: Add a test for info proc mappings
+>
+> Hi,
+>
+> this series partially implements the Host I/O feature of the GDB Remote
+> Serial Protocol in order to make generate-core-file work with qemu-user.
+> It borrows heavily from the abandoned patch by Dominik [1], hence 4/6
+> carries the respective Co-developed-by: tag. I also peeked at
+> gdbserver/hostio.cc quite a few times.
+
+Queued to gdbstub/next, thanks.
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
