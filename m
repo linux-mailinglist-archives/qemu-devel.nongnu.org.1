@@ -2,99 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14D3973F7E3
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 10:55:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FADE73F7E2
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 10:55:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qE4TY-0001bn-Sg; Tue, 27 Jun 2023 04:55:04 -0400
+	id 1qE4TY-0001ad-JX; Tue, 27 Jun 2023 04:55:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qE4Sj-0001OI-Up
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 04:54:19 -0400
-Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qE4Sd-0007Pg-H4
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 04:54:13 -0400
-Received: by mail-ej1-x635.google.com with SMTP id
- a640c23a62f3a-98de21518fbso413220266b.0
- for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 01:54:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687856040; x=1690448040;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=SP/AQ1lhPmkfo1DD1a3kRUAZr3WZGDutW0g6+VnAEE4=;
- b=vmGrpxkIRENozf4lBJ538WXIAsBWZFnrAdiXxZLm6KUbkJAFzEmHbdLrJ4PhtUFEFB
- 82m9XkinccU56YpN8VeZHOmlWNcWlzLbDF1y2LM2mGNjqKee8giQVlawWXmbHzHpRtDB
- Xj8zEQW8R1tH6fv4yZRb6MkTGpcLgFOiI+Mvj5gDDk3mJFxIlzumcK2mujE6ASHwIRoG
- uzHsLHzYbM4f4qUyoUKiHDf5fKhqof1oqWgVsdnSj0doU7cPcDYSYzpYW4p5sbiAOoNx
- yBIXPKOPe4IPcAwpfFp2P/AkeA3j8r+j7H1L6+wofgnm+qdrMt45VsfJNWxVkvwzgT27
- h4ow==
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1qE4Sq-0001TF-F9
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 04:54:24 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1qE4So-0007RV-H6
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 04:54:20 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1687856057;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=PcRinwJW70Z+okwHmQsYfCUs5P7z2rYgMy/6g4Tlbic=;
+ b=cuR69BfkNPjRKiCu+scvlnU+UTo6jeQpgazQeEBiRDVto7brYDa9TykNWtZlvx656DIw2u
+ hg9J8MG9i+EVO5MuE+qwvBXxzn3pcmEbGX7hY1AwqNwI5OePPPCad4w/h/iqRhmayA2vJy
+ QfKhefpuxozTrqYeSQOP2NNHJLBT3hA=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-481-t5kRhjPeM1SeXw2F77JozQ-1; Tue, 27 Jun 2023 04:54:15 -0400
+X-MC-Unique: t5kRhjPeM1SeXw2F77JozQ-1
+Received: by mail-ed1-f69.google.com with SMTP id
+ 4fb4d7f45d1cf-51bfa36eef5so2546344a12.0
+ for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 01:54:15 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687856040; x=1690448040;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=SP/AQ1lhPmkfo1DD1a3kRUAZr3WZGDutW0g6+VnAEE4=;
- b=JttiWyX+d0NTV928YJgyncW5wPyW5QWxOuipEDeQ6uwGe9+RWaYFyQL+xJuSjHRHU3
- m67WyY3MIdWr+6CXNdahrjW/Quu+wlKlTO0EdHoAuLblANNZ5VUTLMuFWv0LZ9IfaXX5
- knT0cSHb75fbfcLY4PIy/QNuPdjq0PM9Zja7g2OC8r+GMzQlGuLwmfHj03ZdnmvlBFPZ
- Sl9mW64bi2Y8es6anF2Kab2C/SvOkOY/nBp+1bzfycTzaARjsXOmgNwaEl8SYQ8wSXQ6
- AP1znxElS4iwt4v4sxKeS11rJuXTtXz2HQAFq4zVmE9c4M8lOKFm2WrhoqK6uB9aUuZg
- Aovw==
-X-Gm-Message-State: AC+VfDzYnZKtY/s5wHhCjvZqDaYsf5UZUHFta0dQyq5gdtOI8wmZL6Sj
- 8kX1DHFXCgHns7ECPvCQhXAihA==
-X-Google-Smtp-Source: ACHHUZ54qxB1hHAj8YJH3HP44662OVP5oAP6U1uKuwmZa/5WIlccKWfui1myilS/Q80CbvVCfmPSqw==
-X-Received: by 2002:a17:907:2d88:b0:988:56d1:10ca with SMTP id
- gt8-20020a1709072d8800b0098856d110camr25969298ejc.66.1687856040042; 
- Tue, 27 Jun 2023 01:54:00 -0700 (PDT)
-Received: from [192.168.69.115] ([176.187.199.204])
- by smtp.gmail.com with ESMTPSA id
- n14-20020a170906118e00b0098ce63e36e9sm4347758eja.16.2023.06.27.01.53.57
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 27 Jun 2023 01:53:59 -0700 (PDT)
-Message-ID: <2274a813-af8f-6447-6dbd-04f2f4f2beba@linaro.org>
-Date: Tue, 27 Jun 2023 10:53:56 +0200
+ d=1e100.net; s=20221208; t=1687856054; x=1690448054;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=PcRinwJW70Z+okwHmQsYfCUs5P7z2rYgMy/6g4Tlbic=;
+ b=eExdhx8Z1xSKHdIPoKXs5K64gcxQoL/gD7at1alFLATEnpdLA6+x5lneo6fwZ46T0H
+ yBXtni7mGKmhMJDtHgjn2UQ1F318UEilWI3IFo36OCqQ+7xY9XFDWI1YhlW1/tY+xl9k
+ lRlK9JmXAOZlmZpUckLD6BUJmSrRTLE79hZJO5U6NONtY/Ve5VkG939ln1A2QLE7Qmp/
+ QCzc9A+1Hb0C57okLc0brZYT9173z69fCQePn5ftHrQFBOHsO8RgAkvDL2HUyMxY+NAu
+ ZO0FXf6nhfEUp5MKvsRTo/frER+hoPfsCi8+lCh4oXmOHW2aorLZ91yM7PPbAoaCEy7R
+ 6VlQ==
+X-Gm-Message-State: AC+VfDxbBqIbsH/fUIFlot+RAwZja2YvrzGyvEAz+PmIsqUW8JUgfGVv
+ uqVaaat2x4xmVcx+A+dV6VsAiBr3fBKkghU1FivpAIl0Wb+f6QvljIvXkbq9XBVNVcCjub/kwk9
+ hHZbkxkKZBw0yz/M=
+X-Received: by 2002:a05:6402:1507:b0:51d:9464:3cae with SMTP id
+ f7-20020a056402150700b0051d94643caemr4683679edw.5.1687856054691; 
+ Tue, 27 Jun 2023 01:54:14 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7vtlTgEu24B5uXkxdAbViUYn63ktYWUiQld5tVkGhxKHzqzyB2dwX4gR08jM0DlBKn0Z84Jw==
+X-Received: by 2002:a05:6402:1507:b0:51d:9464:3cae with SMTP id
+ f7-20020a056402150700b0051d94643caemr4683663edw.5.1687856054384; 
+ Tue, 27 Jun 2023 01:54:14 -0700 (PDT)
+Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
+ [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
+ m5-20020aa7d345000000b0051495ce23absm3644304edr.10.2023.06.27.01.54.13
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 27 Jun 2023 01:54:13 -0700 (PDT)
+Date: Tue, 27 Jun 2023 10:54:13 +0200
+From: Igor Mammedov <imammedo@redhat.com>
+To: Ani Sinha <anisinha@redhat.com>
+Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>, Laurent Vivier
+ <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, mst@redhat.com,
+ Michael Labiuk <michael.labiuk@virtuozzo.com>
+Subject: Re: [RESEND PATCH v5 4/5] tests/qtest/hd-geo-test: fix incorrect
+ pcie-root-port usage and simplify test
+Message-ID: <20230627105413.125f3da7@imammedo.users.ipa.redhat.com>
+In-Reply-To: <20230626161244.4145-5-anisinha@redhat.com>
+References: <20230626161244.4145-1-anisinha@redhat.com>
+ <20230626161244.4145-5-anisinha@redhat.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.12.0
-Subject: Re: [PATCH v2 08/26] tests/qtests: clean-up and fix leak in
- generic_fuzz
-Content-Language: en-US
-To: quintela@redhat.com, =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org, Alexander Bulekov <alxndr@bu.edu>,
- =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- Alexandre Iooss <erdnaxe@crans.org>, Thomas Huth <thuth@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Leif Lindholm <quic_llindhol@quicinc.com>, Riku Voipio <riku.voipio@iki.fi>,
- Peter Maydell <peter.maydell@linaro.org>, Paolo Bonzini
- <pbonzini@redhat.com>, Bandan Das <bsd@redhat.com>,
- Leonardo Bras <leobras@redhat.com>, Cleber Rosa <crosa@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Beraldo Leal <bleal@redhat.com>, Peter Xu <peterx@redhat.com>,
- Mahmoud Mandour <ma.mandourr@gmail.com>,
- Stefan Hajnoczi <stefanha@redhat.com>, Yanan Wang <wangyanan55@huawei.com>,
- Eduardo Habkost <eduardo@habkost.net>, Bin Meng <bmeng.cn@gmail.com>,
- qemu-arm@nongnu.org, Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Darren Kenny <darren.kenny@oracle.com>, Radoslaw Biernacki
- <rad@semihalf.com>, Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
- Qiuhao Li <Qiuhao.Li@outlook.com>, Laurent Vivier <lvivier@redhat.com>
-References: <20230626215926.2522656-1-alex.bennee@linaro.org>
- <20230626215926.2522656-9-alex.bennee@linaro.org>
- <87h6qtcpup.fsf@secure.mitica>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <87h6qtcpup.fsf@secure.mitica>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::635;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x635.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -111,91 +104,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 27/6/23 09:43, Juan Quintela wrote:
-> Alex Bennée <alex.bennee@linaro.org> wrote:
->> An update to the clang tooling detects more issues with the code
->> including a memory leak from the g_string_new() allocation. Clean up
->> the code with g_autoptr and use ARRAY_SIZE while we are at it.
->>
->> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
->> ---
->>   tests/qtest/fuzz/generic_fuzz.c | 11 ++++-------
->>   1 file changed, 4 insertions(+), 7 deletions(-)
->>
->> diff --git a/tests/qtest/fuzz/generic_fuzz.c b/tests/qtest/fuzz/generic_fuzz.c
->> index c525d22951..a4841181cc 100644
->> --- a/tests/qtest/fuzz/generic_fuzz.c
->> +++ b/tests/qtest/fuzz/generic_fuzz.c
->> @@ -954,17 +954,14 @@ static void register_generic_fuzz_targets(void)
->>               .crossover = generic_fuzz_crossover
->>       });
->>   
->> -    GString *name;
->> +    g_autoptr(GString) name = g_string_new("");
->>       const generic_fuzz_config *config;
->>   
->> -    for (int i = 0;
->> -         i < sizeof(predefined_configs) / sizeof(generic_fuzz_config);
->> -         i++) {
->> +    for (int i = 0; i < ARRAY_SIZE(predefined_configs); i++) {
->>           config = predefined_configs + i;
->> -        name = g_string_new("generic-fuzz");
->> -        g_string_append_printf(name, "-%s", config->name);
->> +        g_string_printf(name, "generic-fuzz-%s", config->name);
->>           fuzz_add_target(&(FuzzTarget){
->> -                .name = name->str,
->> +                .name = g_strdup(name->str),
->>                   .description = "Predefined generic-fuzz config.",
->>                   .get_init_cmdline = generic_fuzz_predefined_config_cmdline,
->>                   .pre_fuzz = generic_pre_fuzz,
-> 
-> Once that you are here, what about?
-> (Yes, I didn't care about the ARRAY_SIZE) but you got the idea.
-> 
-> Reviewed-by: Juan Quintela <quintela@redhat.com>
-> 
-> To your proposal with/without the change that I proposse.
-> 
-> modified   tests/qtest/fuzz/generic_fuzz.c
-> @@ -954,17 +954,14 @@ static void register_generic_fuzz_targets(void)
->               .crossover = generic_fuzz_crossover
->       });
->   
-> -    GString *name;
->       const generic_fuzz_config *config;
->   
->       for (int i = 0;
->            i < sizeof(predefined_configs) / sizeof(generic_fuzz_config);
->            i++) {
->           config = predefined_configs + i;
-> -        name = g_string_new("generic-fuzz");
-> -        g_string_append_printf(name, "-%s", config->name);
->           fuzz_add_target(&(FuzzTarget){
-> -                .name = name->str,
-> +                .name = g_strdup_printf("generic-fuzz-%s", config->name),
+On Mon, 26 Jun 2023 21:42:43 +0530
+Ani Sinha <anisinha@redhat.com> wrote:
 
-Even simpler is g_strconcat() suggested by Richard in v1:
-https://lore.kernel.org/qemu-devel/42b497a0-e234-64db-e845-1c37b67839fc@linaro.org/
+> The test attaches a SCSI controller to a non-zero slot and a pcie-to-pci bridge
+> on slot 0 on the same pcie-root-port. Since a downstream device can be attached
+> to a pcie-root-port only on slot 0, the above test configuration is not allowed.
 
--- >8 --
---- a/tests/qtest/fuzz/generic_fuzz.c
-+++ b/tests/qtest/fuzz/generic_fuzz.c
-@@ -956,13 +956,8 @@ static void register_generic_fuzz_targets(void)
+> Additionally using pcie.0 as id for pcie-root-port is incorrect as that id is
+                                      ^^^^ shouldn't it be pcie-to-pci ?
+> reserved only for the root bus.
 
--    GString *name;
-      const generic_fuzz_config *config;
+> 
+> In the test scenario, there is no need to attach a pcie-root-port to the
+> root complex. A SCSI controller can be attached to a pcie-to-pci bridge
+> which can then be directly attached to the root bus (pcie.0).
+> 
+> Fix the test and simplify it.
+> 
+> CC: mst@redhat.com
+> CC: imammedo@redhat.com
+> CC: Michael Labiuk <michael.labiuk@virtuozzo.com>
+> 
+> Signed-off-by: Ani Sinha <anisinha@redhat.com>
+> ---
+>  tests/qtest/hd-geo-test.c | 18 ++++++++----------
+>  1 file changed, 8 insertions(+), 10 deletions(-)
+> 
+> diff --git a/tests/qtest/hd-geo-test.c b/tests/qtest/hd-geo-test.c
+> index 5aa258a2b3..d08bffad91 100644
+> --- a/tests/qtest/hd-geo-test.c
+> +++ b/tests/qtest/hd-geo-test.c
+> @@ -784,14 +784,12 @@ static void test_override_scsi(void)
+>      test_override(args, "pc", expected);
+>  }
+>  
+> -static void setup_pci_bridge(TestArgs *args, const char *id, const char *rootid)
+> +static void setup_pci_bridge(TestArgs *args, const char *id)
+>  {
+>  
+> -    char *root, *br;
+> -    root = g_strdup_printf("-device pcie-root-port,id=%s", rootid);
+> -    br = g_strdup_printf("-device pcie-pci-bridge,bus=%s,id=%s", rootid, id);
+> +    char *br;
+> +    br = g_strdup_printf("-device pcie-pci-bridge,bus=pcie.0,id=%s", id);
+>  
+> -    args->argc = append_arg(args->argc, args->argv, ARGV_SIZE, root);
+>      args->argc = append_arg(args->argc, args->argv, ARGV_SIZE, br);
+>  }
+>  
+> @@ -811,8 +809,8 @@ static void test_override_scsi_q35(void)
+>      add_drive_with_mbr(args, empty_mbr, 1);
+>      add_drive_with_mbr(args, empty_mbr, 1);
+>      add_drive_with_mbr(args, empty_mbr, 1);
+> -    setup_pci_bridge(args, "pcie.0", "br");
+> -    add_scsi_controller(args, "lsi53c895a", "br", 3);
+> +    setup_pci_bridge(args, "pcie-pci-br");
+> +    add_scsi_controller(args, "lsi53c895a", "pcie-pci-br", 3);
+>      add_scsi_disk(args, 0, 0, 0, 0, 0, 10000, 120, 30);
+>      add_scsi_disk(args, 1, 0, 0, 1, 0, 9000, 120, 30);
+>      add_scsi_disk(args, 2, 0, 0, 2, 0, 1, 0, 0);
+> @@ -868,9 +866,9 @@ static void test_override_virtio_blk_q35(void)
+>      };
+>      add_drive_with_mbr(args, empty_mbr, 1);
+>      add_drive_with_mbr(args, empty_mbr, 1);
+> -    setup_pci_bridge(args, "pcie.0", "br");
+> -    add_virtio_disk(args, 0, "br", 3, 10000, 120, 30);
+> -    add_virtio_disk(args, 1, "br", 4, 9000, 120, 30);
+> +    setup_pci_bridge(args, "pcie-pci-br");
+> +    add_virtio_disk(args, 0, "pcie-pci-br", 3, 10000, 120, 30);
+> +    add_virtio_disk(args, 1, "pcie-pci-br", 4, 9000, 120, 30);
+>      test_override(args, "q35", expected);
+>  }
+>  
 
--    for (int i = 0;
--         i < sizeof(predefined_configs) / sizeof(generic_fuzz_config);
--         i++) {
--        config = predefined_configs + i;
--        name = g_string_new("generic-fuzz");
--        g_string_append_printf(name, "-%s", config->name);
-+    for (int i = 0; i < ARRAY_SIZE(predefined_configs); i++) {
-+        config = &predefined_configs[i];
-          fuzz_add_target(&(FuzzTarget){
--                .name = name->str,
-+                .name = g_strconcat("generic-fuzz-", config->name, NULL),
-                  .description = "Predefined generic-fuzz config.",
----
 
