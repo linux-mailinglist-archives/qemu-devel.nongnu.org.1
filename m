@@ -2,63 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFF8173FF12
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 16:56:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44B0573FF38
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 17:04:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEA7G-0005RJ-Rp; Tue, 27 Jun 2023 10:56:26 -0400
+	id 1qEADi-0007TK-Cx; Tue, 27 Jun 2023 11:03:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1qEA7E-0005Qq-3X; Tue, 27 Jun 2023 10:56:24 -0400
-Received: from forwardcorp1b.mail.yandex.net ([178.154.239.136])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1qEA7B-0000dJ-Rz; Tue, 27 Jun 2023 10:56:23 -0400
-Received: from mail-nwsmtp-smtp-corp-main-44.iva.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-44.iva.yp-c.yandex.net
- [IPv6:2a02:6b8:c0c:a49a:0:640:edd6:0])
- by forwardcorp1b.mail.yandex.net (Yandex) with ESMTP id 7278B610FC;
- Tue, 27 Jun 2023 17:55:58 +0300 (MSK)
-Received: from [IPV6:2a02:6b8:b081:b68e::1:39] (unknown
- [2a02:6b8:b081:b68e::1:39])
- by mail-nwsmtp-smtp-corp-main-44.iva.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id vtMoa40OfeA0-qNijVUlz; Tue, 27 Jun 2023 17:55:57 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; 
- t=1687877757; bh=H3v3rAV55BdJDzWpxXobNIgCLfXEjF+wiVe3FwwUe60=;
- h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
- b=gXReDzpfXY/M9VbM7VuQdQaX8jvpMgT/fG2Vf6LrjVeI+utRGnJqeZavOZvZruBTT
- yAlE43bDeY7mCtN1bY7S7v3Ddps0iWeM/4zlp1583fCZVamkEE8VwvHTVpHQWtxiKk
- IbTZyjB/8jxaw1WTT4/2r7E/hs1UuUFn/P01ayy0=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-44.iva.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-Message-ID: <e3dd4b93-4893-e066-ddca-c76f10a599a2@yandex-team.ru>
-Date: Tue, 27 Jun 2023 17:55:57 +0300
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qEADg-0007Sh-1B
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 11:03:04 -0400
+Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qEADe-0002HL-Bt
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 11:03:03 -0400
+Received: by mail-ed1-x532.google.com with SMTP id
+ 4fb4d7f45d1cf-51d7f4c1cfeso4748454a12.0
+ for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 08:03:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1687878180; x=1690470180;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=7acVeO8Fk/hj9I/KUIKvuKxa7Qgfhd6zOw3GILR2Wag=;
+ b=AEOLIuFpdbKWjyYfbRoJKUzn7NYsbCkVTtDEkPW8yiG/5G+kZUu+N9udW2Gz7Vj74r
+ Fp12c4xvEyoSj2SSIyKQO6wVLb+v8Sco9VF+cXDmPWZBL2F4l+O4jx3p2JTXQzD4EmxK
+ dA+FZ2qQNVtbzu+lxwRVUwRPubmk11jeJ97qBx5oSBmpIiZW1sw2r+z+DIGvTMpj4/Cq
+ MRTFr3En0/BpWjnr2Za//Qy3pvmN7v/l/NbVmgz362mfQA+/uHafGbyJRXNuVqdV1/cM
+ tYprc43NZvHGdZNFWBL18t9MebruaFNodeFN0HFqh0fJMPr6ugKsA69l1wXSzhBgeDG4
+ yD0g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1687878180; x=1690470180;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=7acVeO8Fk/hj9I/KUIKvuKxa7Qgfhd6zOw3GILR2Wag=;
+ b=ZtP1EQw+HJgOpf6gKTIWb9ZB03bagYvhFkLE6FkL3ofFrHtKD3sImIuex1PdwimaxE
+ fTJYJlkWUcZk8bd8zZJhIFceK8UGLsabe7vguvsaHxO0DJM2iidIXzcTK9guqXCc+7ci
+ /j1UunVhNz7EmDjjGZUPYYyObyELzwJGB+5cXhh5/GI1P+YWRgPz9kAOi0/ndXQb+OhO
+ 5rIN2uVEs0qdVqtHVNP7Yf9tkAFTt7hac0QDz23KynTm7soTaCfhj57+WsstlaRz61E/
+ Zs64VScM77MHj872c7dLqoV3c0AtRTNDc3NDX+0Ayufow3rdPuCR8W2KFT+nYk6HlwDS
+ 0kPw==
+X-Gm-Message-State: AC+VfDy8Oz0H53FB881eJHG+KscYSg2P7kylAwp7l/CTEzz4zqSb8ovx
+ eTFxmXTIHylQoN5HrgqKzUo2JnwpmMItyxp8IGzdFg==
+X-Google-Smtp-Source: ACHHUZ7oEzbOJeW9Jz86Ac2/SwvsubfXHsIbmdHwg4lSuD9X/x/vf94f1udUnS13oEfRXHE2AgCmS2UZUXr+lwpNCnE=
+X-Received: by 2002:aa7:c38a:0:b0:51d:9dd1:29d0 with SMTP id
+ k10-20020aa7c38a000000b0051d9dd129d0mr4086292edq.23.1687878180310; Tue, 27
+ Jun 2023 08:03:00 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Subject: Re: [PATCH v4 21/24] nbd/client: Request extended headers during
- negotiation
-Content-Language: en-US
-To: Eric Blake <eblake@redhat.com>, qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org, libguestfs@redhat.com,
- Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>
-References: <20230608135653.2918540-1-eblake@redhat.com>
- <20230608135653.2918540-22-eblake@redhat.com>
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-In-Reply-To: <20230608135653.2918540-22-eblake@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=178.154.239.136;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+References: <168778890374.24232.3402138851538068785-0@git.sr.ht>
+In-Reply-To: <168778890374.24232.3402138851538068785-0@git.sr.ht>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 27 Jun 2023 16:02:49 +0100
+Message-ID: <CAFEAcA9zpLBbTSnhvQ9+1o3n4FEnjkDAYm5ZF9NZ0JOJ05MDEw@mail.gmail.com>
+Subject: Re: [PATCH qemu v4 0/2] target/arm: Improve user-mode compatibility
+ with JITs
+To: "~jhogberg" <john.hogberg@ericsson.com>
+Cc: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::532;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x532.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.103,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -76,25 +85,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 08.06.23 16:56, Eric Blake wrote:
-> All the pieces are in place for a client to finally request extended
-> headers.  Note that we must not request extended headers when qemu-nbd
-> is used to connect to the kernel module (as nbd.ko does not expect
-> them, but expects us to do the negotiation in userspace before handing
-> the socket over to the kernel), but there is no harm in all other
-> clients requesting them.
-> 
-> Extended headers are not essential to the information collected during
-> 'qemu-nbd --list', but probing for it gives us one more piece of
-> information in that output.  Update the iotests affected by the new
-> line of output.
-> 
-> Signed-off-by: Eric Blake<eblake@redhat.com>
+On Mon, 26 Jun 2023 at 15:15, ~jhogberg <jhogberg@git.sr.ht> wrote:
+>
+> Changes since v3:
+>
+> 1) Reworded the first commit comment to note that the need to clear
+>    cache is implementation-dependent.
+> 2) CTR_EL0.DIC is now cleared in user mode to indicate that IC IVAU
+>    must be used.
+> 3) The test case now only uses DC CVAU / IC IVAU when this is
+>    required, as indicated by CTR_EL0.{DIC,IDC}. There have been no
+>    changes outside of the function `mark_code_modified`
 
-Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Since there were only a couple of minor nits in this version
+of the patchset I'm going to apply it to target-arm.next
+and make those fixups in my tree. Thanks for this bug fix!
 
--- 
-Best regards,
-Vladimir
-
+thanks
+-- PMM
 
