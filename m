@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44C71740069
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 18:09:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF06F74006E
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 18:10:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEBE6-0000Lt-H8; Tue, 27 Jun 2023 12:07:34 -0400
+	id 1qEBDn-0000FU-TX; Tue, 27 Jun 2023 12:07:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qEBDk-0000Bx-Tp
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 12:07:12 -0400
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ id 1qEBDi-0000AP-4j
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 12:07:10 -0400
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qEBDe-00058Z-OI
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 12:07:12 -0400
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-3fba8e2a9ecso6761415e9.3
- for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 09:07:06 -0700 (PDT)
+ id 1qEBDd-00057t-Qc
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 12:07:09 -0400
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-31297125334so12624f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 09:07:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687882025; x=1690474025;
+ d=linaro.org; s=google; t=1687882024; x=1690474024;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=o65EU6QKm/ZKlwjUjomTQSbG60nANx/Rf8AOn4I397k=;
- b=CbHtyoZ7l3CHg14wHQLLaJZkrslTC02xBDp/hppUHY8ORu4Gja0LUY7GpaSsrL0hAn
- 29JQ0SOPm84Vfrw93rkQ1aj7JBYMf9zAOFYg08LPgHdwR8NzsDTVXXiJlR1YXIuwlVvd
- b8zUZipq6wP7T9/iSAkbOUe3oc/raZ9SZ9xnDcw/w75oDb0m+NpF4mC/+uRpn5aXHduO
- rt9i1tbMP7sdAA0tf/UZvEsoL0w2/CjkgAoaxfVPAT067p9tWPVt2UvumBM6/0CYpvlw
- ux6U9yaQA6uQxbZZevMSuMcBddtH5vC/S2r24xhfrPi0Rm+p1PMk8KYuxhrZfQpE7p5N
- kWFA==
+ bh=OoH/DOZFZDe6ZD+LHfFvG2TjLm3SJ3G2i0MfunKyFLs=;
+ b=HAXvgYVQj2aKDGxr/IBoeMC/673IqY3UyaMYpy1khbhfutpblQDEXBXTT4NiIIujFh
+ z6ni3z7fPvio4+65wfSn2GpY/YovvOJ1VfmyKKyNfwL8/W/Uwcbxr2/iDuW1vy+vLYJZ
+ CL0ZtNLsaogPzhEe+70qbgrrWSv08GeGefu5kmWa7VsQc6CNWShZb/E6IgeY9BwiN3Dv
+ IHzbWdRciWoqV4uiSmypf622q4OHybxzw4mfK6louRtiAacJ4Mnm7s1SQq5i+om2kSl5
+ qELZE1EB3uLoc2ENG6rqEep4zcgAhHvrnBkeYIsr8eiMCc2vTuojT1yFBUDlxLMsxqWt
+ 89cA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687882025; x=1690474025;
+ d=1e100.net; s=20221208; t=1687882024; x=1690474024;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=o65EU6QKm/ZKlwjUjomTQSbG60nANx/Rf8AOn4I397k=;
- b=jFTBMYplCjpUe978U/SNtaoQahMuIgOR+7GqqoB6IYAzxdivd9EMxbFf5DitYcLleg
- iOX56jivxzmGPL1S5snlfy/JLgYEC7HcRNK0tOQE8Dc6jsXNK/keIXWYvC6s2A63T4aQ
- 5SqQcKCk/AXH2cUuNbhCENH3hTaaTrPkzTBEvShw86rgyiCLUcEY9F8dlCfNEgnlCmGi
- K8PjA99mnkaVjKBG0him0MuSiTADi3zPgDCCCNsbNW/r9T/3Buoelp45jf6PojJOlWoN
- bVl5+GGFjANc17khziS8esksUW4lO5OtA++WLG/d55Zg3JLVc5B1p6xlEcNj6VXNmmFf
- rReg==
-X-Gm-Message-State: AC+VfDwPvvVSyqL9d7ab0Y9q2cJGszzwI14p7juQP8jPDREfSlTt3dWQ
- MCiDwfuNtYHVkhR0Zn1yBH+2KQ==
-X-Google-Smtp-Source: ACHHUZ4M4UZfzxb+z9EUmc5M/uYSUqQFMVr/G7Q3Ws5rSis3DrVhHtShoJcLCL0u8A5sxPmPzcpm7Q==
-X-Received: by 2002:a7b:c414:0:b0:3fa:7cb1:ff7a with SMTP id
- k20-20020a7bc414000000b003fa7cb1ff7amr9887231wmi.13.1687882024928; 
+ bh=OoH/DOZFZDe6ZD+LHfFvG2TjLm3SJ3G2i0MfunKyFLs=;
+ b=gE9G7c/Hb0VAGHGW8BKTyVZrcAF9CImJAv9tIClRzg7RIQbKSaFM3/iV6xNN8lRMCC
+ 1VQVUx8CvLYISqx4tpfMv2caGSyUGuhoMz5s6BN7gbiXgrpDI09NMtF+scpStPAHPPk4
+ JQVDctdb+zX+nqm/yvJ7MAPe1AXng5QDH5m6TtIOEC/rc7jdkGsxijRTGAbO/clv3/sY
+ P6OBx6kHToeHT6WOKmzCUGk4W9WtJMkCSW52T22NhQwH20s6BOiGvoQZXa+yj1PRqEFV
+ iV+VFE7Gu/s2+RMmXJ6yzkYhRllWqNeWcBXOsaGGLL5WAuO8xwdd9JLme4aGGYwUnhF8
+ Y3og==
+X-Gm-Message-State: AC+VfDxWqk9sjztICuyiz10vW1mrgYqMTwabgNrKrIKfxRmslt/O+wFq
+ qQrhDGOls/AVFo+8bcWhrjG20g==
+X-Google-Smtp-Source: ACHHUZ5YUf9Pc2z7Ru43a/ga3iT6wg7eVySD1P1/WZZhe4mC/RKmOBI4W7nLzILe8rLTfbO/V9FttQ==
+X-Received: by 2002:adf:edd1:0:b0:311:3ce9:c9fa with SMTP id
+ v17-20020adfedd1000000b003113ce9c9famr24936345wro.3.1687882024100; 
  Tue, 27 Jun 2023 09:07:04 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- a10-20020a05600c224a00b003faef96ee78sm5045149wmm.33.2023.06.27.09.07.02
+ t12-20020a7bc3cc000000b003f604793989sm13855945wmj.18.2023.06.27.09.07.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 27 Jun 2023 09:07:03 -0700 (PDT)
 Received: from zen.lan (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id A265F1FFC3;
+ by zen.linaroharston (Postfix) with ESMTP id BD5531FFBB;
  Tue, 27 Jun 2023 17:07:01 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -85,17 +85,17 @@ Cc: qemu-arm@nongnu.org, Riku Voipio <riku.voipio@iki.fi>,
  Laurent Vivier <lvivier@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Alexander Bulekov <alxndr@bu.edu>
-Subject: [PATCH v3 08/36] tests/qtests: clean-up and fix leak in generic_fuzz
-Date: Tue, 27 Jun 2023 17:06:32 +0100
-Message-Id: <20230627160700.2955547-9-alex.bennee@linaro.org>
+Subject: [PATCH v3 09/36] tests/docker: add test-fuzz
+Date: Tue, 27 Jun 2023 17:06:33 +0100
+Message-Id: <20230627160700.2955547-10-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230627160700.2955547-1-alex.bennee@linaro.org>
 References: <20230627160700.2955547-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -118,40 +118,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-An update to the clang tooling detects more issues with the code
-including a memory leak from the g_string_new() allocation. Clean up
-the code to avoid the allocation and use ARRAY_SIZE while we are at
-it.
+Running the fuzzer requires some hoop jumping and some problems only
+show up in containers. This basically replicates the build-oss-fuzz
+job from our CI so we can run in the same containers we use in CI.
 
+Message-Id: <20230626215926.2522656-10-alex.bennee@linaro.org>
+Reviewed-by: Alexander Bulekov <alxndr@bu.edu>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
----
- tests/qtest/fuzz/generic_fuzz.c | 11 ++---------
- 1 file changed, 2 insertions(+), 9 deletions(-)
 
-diff --git a/tests/qtest/fuzz/generic_fuzz.c b/tests/qtest/fuzz/generic_fuzz.c
-index c525d22951..d0a59f7475 100644
---- a/tests/qtest/fuzz/generic_fuzz.c
-+++ b/tests/qtest/fuzz/generic_fuzz.c
-@@ -954,17 +954,10 @@ static void register_generic_fuzz_targets(void)
-             .crossover = generic_fuzz_crossover
-     });
- 
--    GString *name;
--    const generic_fuzz_config *config;
--
--    for (int i = 0;
--         i < sizeof(predefined_configs) / sizeof(generic_fuzz_config);
--         i++) {
-+    for (int i = 0; i < ARRAY_SIZE(predefined_configs); i++) {
-         config = predefined_configs + i;
--        name = g_string_new("generic-fuzz");
--        g_string_append_printf(name, "-%s", config->name);
-         fuzz_add_target(&(FuzzTarget){
--                .name = name->str,
-+                .name = g_strconcat("generic-fuzz-", config->name, NULL),
-                 .description = "Predefined generic-fuzz config.",
-                 .get_init_cmdline = generic_fuzz_predefined_config_cmdline,
-                 .pre_fuzz = generic_pre_fuzz,
+---
+v3
+ - checkpatch cleanups
+---
+ MAINTAINERS            |  1 +
+ tests/docker/test-fuzz | 28 ++++++++++++++++++++++++++++
+ 2 files changed, 29 insertions(+)
+ create mode 100755 tests/docker/test-fuzz
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index e07746ac7d..3cfc389db0 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -3106,6 +3106,7 @@ R: Qiuhao Li <Qiuhao.Li@outlook.com>
+ S: Maintained
+ F: tests/qtest/fuzz/
+ F: tests/qtest/fuzz-*test.c
++F: tests/docker/test-fuzz
+ F: scripts/oss-fuzz/
+ F: hw/mem/sparse-mem.c
+ F: docs/devel/fuzzing.rst
+diff --git a/tests/docker/test-fuzz b/tests/docker/test-fuzz
+new file mode 100755
+index 0000000000..7e506ae1f6
+--- /dev/null
++++ b/tests/docker/test-fuzz
+@@ -0,0 +1,28 @@
++#!/bin/bash -e
++#
++# Compile and check with oss-fuzz.
++#
++# Copyright (c) 2023 Linaro Ltd.
++#
++# Authors:
++#  Alex Bennée <alex.bennee@linaro.org>
++#
++# SPDX-License-Identifier: GPL-2.0-or-later
++
++. common.rc
++
++requires_binary clang
++
++# the build script runs out of $src so we need to copy across
++cd "$BUILD_DIR"
++cp -a $QEMU_SRC .
++cd src
++mkdir build-oss-fuzz
++export LSAN_OPTIONS=suppressions=scripts/oss-fuzz/lsan_suppressions.txt
++env CC="clang" CXX="clang++" CFLAGS="-fsanitize=address" ./scripts/oss-fuzz/build.sh
++export ASAN_OPTIONS="fast_unwind_on_malloc=0"
++for fuzzer in $(find ./build-oss-fuzz/DEST_DIR/ -executable -type f | grep -v slirp); do
++        grep "LLVMFuzzerTestOneInput" ${fuzzer} > /dev/null 2>&1 || continue ;
++        echo Testing ${fuzzer} ... ;
++        "${fuzzer}" -runs=1 -seed=1 || exit 1 ;
++done
 -- 
 2.39.2
 
