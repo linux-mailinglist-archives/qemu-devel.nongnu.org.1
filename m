@@ -2,85 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F2AE73F739
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 10:30:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5FB673F74B
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 10:32:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qE44z-0003en-3B; Tue, 27 Jun 2023 04:29:41 -0400
+	id 1qE47M-0004nI-DI; Tue, 27 Jun 2023 04:32:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1qE44w-0003eW-Nl
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 04:29:38 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <vkuznets@redhat.com>)
+ id 1qE477-0004l9-Ox
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 04:31:53 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1qE44v-0000Vh-B4
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 04:29:38 -0400
+ (Exim 4.90_1) (envelope-from <vkuznets@redhat.com>)
+ id 1qE475-0001Oa-O0
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 04:31:53 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687854576;
+ s=mimecast20190719; t=1687854709;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=GeqsP/brBKhrE+ocxnW3pdGoVSRZRSoAzIjjXyd7D4I=;
- b=M5tYT3HE4VFa2ssi6ELRiPEqIb2QnxcUn45QQnd7c6deWteNi/lM7dt8S4WnXJN7EKCG8U
- /ewKfd6mspYxKidxtrcq4NnsRoazHEkVIPQ7TwJ2Y6sRF5gWMwyI0ypALSlcEg7oHsrdwX
- gq6FQQzDBStq6cRp7iqEatsmctyNrV8=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=ZfCLFSNeDbxBiCsNELMzC66C7znPv88EnFZkpXDZz4Q=;
+ b=C36gnVgxf9mZWejegqlxFQaArNF7BLzqZdwA+LuCkeuQYIyp9z0uzykTvhU4J+liw9o/P7
+ NLcQA2HzN54k0la1RPIjYGGOV0aVlpWDCqCZmftGbMKDaJXBQuu46L2Dtjr4PorzBkRqnm
+ QV8d2ioKKPtpMFZds+lEvyjQM0MvFB0=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-213-zQTfkFn3NjeWeNK_k2WTVA-1; Tue, 27 Jun 2023 04:29:34 -0400
-X-MC-Unique: zQTfkFn3NjeWeNK_k2WTVA-1
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-988643252e0so315802566b.2
- for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 01:29:34 -0700 (PDT)
+ us-mta-282-OS-X_1HbNb-RA9xGDAd3Jg-1; Tue, 27 Jun 2023 04:31:47 -0400
+X-MC-Unique: OS-X_1HbNb-RA9xGDAd3Jg-1
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-987e47d2e81so339350766b.1
+ for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 01:31:47 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687854573; x=1690446573;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=GeqsP/brBKhrE+ocxnW3pdGoVSRZRSoAzIjjXyd7D4I=;
- b=f+faKtCjzUDTA08ye6ZkJonztoTwYbn+/yByTClLSKGFQGGOwA6dIP0kCVmh5MF0nY
- itv47qSPNqXkgYpSV0Lw/w9itnjZeVFSb/GTva7caZZjhLXjG7/+gIAKH2j4CQ0Uh3qx
- +6Fxy3/bf70XR2Pceo4I/URZJoKcHy9w1nx8hNoVH3JFxvPGZjrcDkKYUzLBOPo8IrqC
- C3Rwikz/CCecPFPYNMkUAdHwk9wivrSYLRPLXB9rEA5Ku1qYAZ5mUDYQUA0kw6+Ho5by
- ziP03WbaBxT20QEnMvKP4NV2Qi63xuf7nycyleW4bEZKvUI7ywDXFcUSJcMhXeNhLrnV
- hrLA==
-X-Gm-Message-State: AC+VfDyP24ES978AVU0b/D0IQoSLEUGx3g5gJ3bwxVBNbTgtIS+dlWLl
- 9ySwJPT7esENiTLJuOp5fjGJT4tLP465Hcjyf86pvXOqHYlSqZ/ZSzKyrzujPuRF96q7VPQhuPL
- 77stm3J8R//1rCkM=
-X-Received: by 2002:a17:906:55d4:b0:98e:a451:fac3 with SMTP id
- z20-20020a17090655d400b0098ea451fac3mr4557557ejp.42.1687854573782; 
- Tue, 27 Jun 2023 01:29:33 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5Od/OW6GvzU/WG3o/l3dbP8MLeSJnbQBSb1SazMc62rt2acTI0RuGZJre0GO8F2Rm7izZyhw==
-X-Received: by 2002:a17:906:55d4:b0:98e:a451:fac3 with SMTP id
- z20-20020a17090655d400b0098ea451fac3mr4557550ejp.42.1687854573480; 
- Tue, 27 Jun 2023 01:29:33 -0700 (PDT)
-Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
- [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
- f11-20020a170906084b00b00991e019207esm1665678ejd.55.2023.06.27.01.29.32
+ d=1e100.net; s=20221208; t=1687854706; x=1690446706;
+ h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=ZfCLFSNeDbxBiCsNELMzC66C7znPv88EnFZkpXDZz4Q=;
+ b=aeAYB6btLEIrI5nwvevJB/h8Z5+mnlSqIsTXj6jyV2dPYNcJ2GJFr6kjAlV3r0kBVy
+ FLp3/bElK8+9Y71gZkFwQOL4yM5ZCaFMS4638GRR5jhb2z8M0AliqXr1h4988fmvvl6f
+ XCk9u7pDNQyCIQW4qgPtVGHO9saRjy73fZFi7u+oDBMM2QxmySsYBHh2QeHqVuGacOgK
+ Lnic98fLHEZRSpFOuPwTelvP4joTLXMLnVSPu67dmkcZYKLyY63i4qcDssB3wd2lpzwi
+ 0adRUeEz/kIsN1h/2gS9TTIj3xv5aQS0pjb3ElukPewfRdQtThKMaYVwH0p7yfa5M7Rq
+ 0Aug==
+X-Gm-Message-State: AC+VfDwNNH16y5Qun6wVWWhDuXje/kk/+yNGM2FgEc2PAwikRuILtBHF
+ s1OJGDx3WWCGo97DesgGJ4Jixpth2UqnDsaS9BDiey6/UzZs3Y1iEOyZbvxK6wRiF4cJbB3BcB4
+ GGBzuIJIu79HyTLXketJ6xZo=
+X-Received: by 2002:a17:906:c359:b0:98d:63c5:d135 with SMTP id
+ ci25-20020a170906c35900b0098d63c5d135mr10822650ejb.54.1687854706765; 
+ Tue, 27 Jun 2023 01:31:46 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7yoIu7pZondIwuO4cYMXXmH3GGdKsBeQwk1QEbw0k3LIh2R6N7KTBh/f01c9MY73SZhj51yg==
+X-Received: by 2002:a17:906:c359:b0:98d:63c5:d135 with SMTP id
+ ci25-20020a170906c35900b0098d63c5d135mr10822639ejb.54.1687854706541; 
+ Tue, 27 Jun 2023 01:31:46 -0700 (PDT)
+Received: from fedora (g2.ign.cz. [91.219.240.8])
+ by smtp.gmail.com with ESMTPSA id
+ e8-20020a1709062c0800b0098921e1b064sm4254740ejh.181.2023.06.27.01.31.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 27 Jun 2023 01:29:32 -0700 (PDT)
-Date: Tue, 27 Jun 2023 10:29:32 +0200
-From: Igor Mammedov <imammedo@redhat.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Tao Su <tao1.su@linux.intel.com>, qemu-devel@nongnu.org,
- pbonzini@redhat.com, lei4.wang@intel.com, qian.wen@intel.com
-Subject: Re: [PATCH 5/7] target/i386: Add few security fix bits in
- ARCH_CAPABILITIES into SapphireRapids CPU model
-Message-ID: <20230627102932.2a822b84@imammedo.users.ipa.redhat.com>
-In-Reply-To: <f4b9bb58-a7d6-a02f-a307-450f3e630b3a@intel.com>
-References: <20230616032311.19137-1-tao1.su@linux.intel.com>
- <20230616032311.19137-6-tao1.su@linux.intel.com>
- <20230626151530.24524700@imammedo.users.ipa.redhat.com>
- <f4b9bb58-a7d6-a02f-a307-450f3e630b3a@intel.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+ Tue, 27 Jun 2023 01:31:46 -0700 (PDT)
+From: Vitaly Kuznetsov <vkuznets@redhat.com>
+To: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>
+Cc: Marcelo Tosatti <mtosatti@redhat.com>
+Subject: Re: [PATCH 0/2] i386: Fix Hyper-V Gen1 guests stuck on boot with
+ 'hv-passthrough'
+In-Reply-To: <20230612084201.294248-1-vkuznets@redhat.com>
+References: <20230612084201.294248-1-vkuznets@redhat.com>
+Date: Tue, 27 Jun 2023 10:31:45 +0200
+Message-ID: <875y79paq6.fsf@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
+Content-Type: text/plain
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=vkuznets@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -105,64 +97,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 27 Jun 2023 14:10:17 +0800
-Xiaoyao Li <xiaoyao.li@intel.com> wrote:
+Vitaly Kuznetsov <vkuznets@redhat.com> writes:
 
-> On 6/26/2023 9:15 PM, Igor Mammedov wrote:
-> > On Fri, 16 Jun 2023 11:23:09 +0800
-> > Tao Su <tao1.su@linux.intel.com> wrote:
-> >   
-> >> From: Lei Wang <lei4.wang@intel.com>
-> >>
-> >> Latest stepping (8) of SapphireRapids has bit 13, 14 and 15 of
-> >> MSR_IA32_ARCH_CAPABILITIES enabled, which are related to some security
-> >> fixes.
-> >>
-> >> Add version 2 of SapphireRapids CPU model with those bits enabled also.  
-> > 
-> > don't we need to update stepping value to 8 as well?  
-> 
-> No need.
-> 
-> The commit message is misleading. There 3 bits and some other bits in 
-> MSR_IA32_ARCH_CAPABILITIES are not tied to CPU stepping. Instead, they 
-> are enumerated with newer microcode.
+> Hyper-V Gen1 guests are getting stuck on boot when 'hv-passthrough' is
+> used. While 'hv-passthrough' is a debug only feature, this significantly
+> limit its usefullness. While debugging the problem, I found that there are
+> two loosely connected issues:
+> - 'hv-passthrough' enables 'hv-syndbg' and this is undesired.
+> - 'hv-syndbg's support by KVM is detected incorrectly when !CONFIG_SYNDBG.
+>
+> Fix both issues; exclude 'hv-syndbg' from 'hv-passthrough' and don't allow
+> to turn on 'hv-syndbg' for !CONFIG_SYNDBG builds. 
+>
+> Vitaly Kuznetsov (2):
+>   i386: Fix conditional CONFIG_SYNDBG enablement
+>   i386: Exclude 'hv-syndbg' from 'hv-passthrough'
+>
+>  docs/system/i386/hyperv.rst | 13 +++++++++----
+>  target/i386/cpu.c           |  2 ++
+>  target/i386/kvm/kvm.c       | 18 ++++++++++++------
+>  3 files changed, 23 insertions(+), 10 deletions(-)
 
-It that case fix commit message please.
+Ping)
 
-> 
-> >>
-> >> Signed-off-by: Lei Wang <lei4.wang@intel.com>
-> >> Signed-off-by: Tao Su <tao1.su@linux.intel.com>
-> >> ---
-> >>   target/i386/cpu.c | 13 +++++++++++--
-> >>   1 file changed, 11 insertions(+), 2 deletions(-)
-> >>
-> >> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-> >> index b5321240c6..f84fd20bb1 100644
-> >> --- a/target/i386/cpu.c
-> >> +++ b/target/i386/cpu.c
-> >> @@ -3854,8 +3854,17 @@ static const X86CPUDefinition builtin_x86_defs[] = {
-> >>           .model_id = "Intel Xeon Processor (SapphireRapids)",
-> >>           .versions = (X86CPUVersionDefinition[]) {
-> >>               { .version = 1 },
-> >> -            { /* end of list */ },
-> >> -        },
-> >> +            {
-> >> +                .version = 2,
-> >> +                .props = (PropValue[]) {
-> >> +                    { "sbdr-ssdp-no", "on" },
-> >> +                    { "fbsdp-no", "on" },
-> >> +                    { "psdp-no", "on" },
-> >> +                    { /* end of list */ }
-> >> +                }
-> >> +            },
-> >> +            { /* end of list */ }
-> >> +        }
-> >>       },
-> >>       {
-> >>           .name = "Denverton",  
-> >   
-> 
+-- 
+Vitaly
 
 
