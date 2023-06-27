@@ -2,91 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7E3E73FDBB
-	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 16:24:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6724773FDCE
+	for <lists+qemu-devel@lfdr.de>; Tue, 27 Jun 2023 16:28:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qE9bg-000686-BB; Tue, 27 Jun 2023 10:23:48 -0400
+	id 1qE9fe-0007vh-Te; Tue, 27 Jun 2023 10:27:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qE9bV-00064u-HU
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 10:23:37 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qE9bS-0001kE-3q
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 10:23:37 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687875803;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=T5LjbJuBdWFD0AAMuZl7bsFyVyIT8AaMHEQeSd3MEEg=;
- b=ZHoAyNOKiXyH9+DwcIlHUZUEtYMM0Y+wKr1AF7AjVWpmTnsQ4+efaqEqyBd97UlM4HTpGj
- Ec3iKt3V7H3y9laDRjqKMnqMOIBSV4RII0mxjpptgyhEqHHaD7FfdfY8ZAfzSs44ThoXKP
- AfhzPo4SzumXVlIDvPQ6L7uLCbVmKw8=
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
- [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-275-ONxxYf3YP5WDdcP0S4SNmA-1; Tue, 27 Jun 2023 10:23:21 -0400
-X-MC-Unique: ONxxYf3YP5WDdcP0S4SNmA-1
-Received: by mail-qk1-f198.google.com with SMTP id
- af79cd13be357-765a1a97103so285717385a.1
- for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 07:23:15 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qE9fS-0007v0-Eg
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 10:27:43 -0400
+Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qE9fO-0002Yy-Ko
+ for qemu-devel@nongnu.org; Tue, 27 Jun 2023 10:27:41 -0400
+Received: by mail-ed1-x52f.google.com with SMTP id
+ 4fb4d7f45d1cf-51d884a22e7so4425861a12.3
+ for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 07:27:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1687876057; x=1690468057;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=+JxuZKlt7rEQ6Do2L/qjII+HMlmfBcZln2gs6DAb+0w=;
+ b=SYbJjSWhHiFPxNZAd1tqKhfavO/QcO7YPLaf+mgwvbFLmdOS+VmOuXxvlM8iRqNKhr
+ UGhKyK2tK/h95HfypgFcQGXUGxwVc6nYTGfwpeeBjj3iS9GeBgqBqzW9Wz8207vEvyTA
+ 6qNsxX81rR2j1jWaAEqOT+lf9DBDT+ziQhk4bDk0JQ5uJBtM/bEXXmFF7Umq7LvBXx+E
+ 0ZzxN+xhQqhIdtgFSSmMa/G7GoD9I4Ucxasq0jGtXNK8N7FZLnnTDLpPC39AzQ4e6Wwo
+ wXiH4tnsfLc4LUjcXXnf5klRHzSY4f8GwtMzxU8ZrVJoTGxM9C+g61eK/dr+e5WiNtac
+ 1C8A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687875795; x=1690467795;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=T5LjbJuBdWFD0AAMuZl7bsFyVyIT8AaMHEQeSd3MEEg=;
- b=GdgszB15TvzQXUGQLqEqViI5jMx0pKFRAYJ7aLuw50p+5/dLA3k9Jh1fYCs9qjXqXV
- KiWi3GMsGdW8dJ5OmWW688uiQp01asHzOkXwjctstVpMDuxgzLmUWARnWyltBqgsKjch
- 7gCpFK7EtjeRm4OY5ecW8M3+IUwj3EODMX7ARcExI0eRJQzJPmV5ixwedBevUih0+zg0
- CaebKM/GDOIjFU5ah564FXqcQ3RW7gml0jtPTwDxjgN5JYTCJf9gKcTCwB5LWBcusZIp
- 7swNGTq9otUO3XJT9cvBBHbcChl0ffSCzxTytv4ZhkK6avXfeXl4C/WIP6jWTqiFvnA6
- J27Q==
-X-Gm-Message-State: AC+VfDyfZ9+43Q8eDXtRFFX8AgZyYKegJtoCma/swPHSPcHMnXj+y16s
- 7c+8wXLhF6upKOqXKX7wq5cjXIMvqChm7Tl9bulsfhRm/YlR/bNywMKavOpYe+40f1ACTAGdlGz
- oTrN1G+yhZ10C2hQ=
-X-Received: by 2002:a05:620a:25ca:b0:765:a74d:62b1 with SMTP id
- y10-20020a05620a25ca00b00765a74d62b1mr6707973qko.19.1687875795534; 
- Tue, 27 Jun 2023 07:23:15 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5X73TqOeisjL/j2fL5NJ5pkisWmx2qkY4zP45kkh6+jXajSppU8RbIxA1GU/NMsM83JcCt5w==
-X-Received: by 2002:a05:620a:25ca:b0:765:a74d:62b1 with SMTP id
- y10-20020a05620a25ca00b00765a74d62b1mr6707956qko.19.1687875795270; 
- Tue, 27 Jun 2023 07:23:15 -0700 (PDT)
-Received: from redhat.com ([45.144.113.5]) by smtp.gmail.com with ESMTPSA id
- t3-20020a05620a034300b007654bb4a842sm3966076qkm.104.2023.06.27.07.23.13
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 27 Jun 2023 07:23:14 -0700 (PDT)
-Date: Tue, 27 Jun 2023 10:23:09 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Ani Sinha <anisinha@redhat.com>
-Cc: Igor Mammedov <imammedo@redhat.com>, qemu-devel@nongnu.org,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, jusual@redhat.com
-Subject: Re: [RESEND PATCH v5 5/5] hw/pci: ensure PCIE devices are plugged
- into only slot 0 of PCIE port
-Message-ID: <20230627102239-mutt-send-email-mst@kernel.org>
-References: <20230626161244.4145-1-anisinha@redhat.com>
- <20230626161244.4145-6-anisinha@redhat.com>
- <20230627110224.36fa1b06@imammedo.users.ipa.redhat.com>
- <A085E1C1-244C-4ED3-AC9A-17497BA66255@redhat.com>
- <20230627135849.37e52f87@imammedo.users.ipa.redhat.com>
- <20230627081835-mutt-send-email-mst@kernel.org>
- <41FA6F3E-2068-44CC-9457-37F11021BDD2@redhat.com>
+ d=1e100.net; s=20221208; t=1687876057; x=1690468057;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=+JxuZKlt7rEQ6Do2L/qjII+HMlmfBcZln2gs6DAb+0w=;
+ b=dnHJKfaueI/KuaeEhfBIYouV7Kr9j0aSJOoMdyLYdzDkfV1EQmJUHJRngHDBbcoBB3
+ HeSSqtj/jhuoL8CnktBPsT8ExX9qJHTmgjzESf1sD3leWd9asvJA0UMRLGoIO84KZ3XJ
+ Y4N/OhqIT6Of46US2M7FwFMi4XExcfoC28kOjc4Mzshyii7cKRo2rGLs/dfCnoRtHP+J
+ S+ajaHieFxTDllJ/qj2doanu465n6a0tKBKg17lTroKDL1IfJLZaFmxutiGHtBHT4Llr
+ O4aHGXcCizpu+IVIZ4QTK0DdrWwIT40S23NEwb/pXRF+fK2TQPExZKYA33jwpL9It60t
+ z4VQ==
+X-Gm-Message-State: AC+VfDwGhjDz+1qxT9+mArYg+H7QROG9QcvsmCnY6pl5+jkTgC3TqK2O
+ sh3Eb1V2qw7Mr1bdYf0fyucVJvvgHhHkcV19ZPhU3g==
+X-Google-Smtp-Source: ACHHUZ5d2F67GKdEoCzeKXH+ZYffDrX+YuK6c0bx+Mv5wImkIki5d89vPPNRHmoB8hK/w91hGT14dM1ewvgA9RdftMs=
+X-Received: by 2002:aa7:c257:0:b0:51c:ef63:380a with SMTP id
+ y23-20020aa7c257000000b0051cef63380amr7341736edo.27.1687876056952; Tue, 27
+ Jun 2023 07:27:36 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <41FA6F3E-2068-44CC-9457-37F11021BDD2@redhat.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <20230626075207.623535-1-marcin.juszkiewicz@linaro.org>
+ <CAFEAcA-K_2SLxbq90TpUyzLpiC0U2WVJe7ffaC_TH66K-=GV4A@mail.gmail.com>
+ <b26c98d3-3e9f-331e-acbd-ae0c451e0ed3@quicinc.com>
+ <CAFEAcA_rg4CbE1Y9mTQmPs_KBqb-S=3Z5Hh78gbVUD6R7DR0hg@mail.gmail.com>
+ <d8e93b7b-5e86-5e26-21cd-fefb76f88204@quicinc.com>
+In-Reply-To: <d8e93b7b-5e86-5e26-21cd-fefb76f88204@quicinc.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 27 Jun 2023 15:27:26 +0100
+Message-ID: <CAFEAcA8L--h_3QvKff66mw3VG7G__hwv=syw2hU2Qby8jkJPRw@mail.gmail.com>
+Subject: Re: [PATCH 1/1] hw/arm/sbsa-ref: add PCIe node into DT
+To: Leif Lindholm <quic_llindhol@quicinc.com>
+Cc: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>, qemu-devel@nongnu.org, 
+ Radoslaw Biernacki <rad@semihalf.com>, qemu-arm@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -103,77 +89,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jun 27, 2023 at 05:59:02PM +0530, Ani Sinha wrote:
-> 
-> 
-> > On 27-Jun-2023, at 5:53 PM, Michael S. Tsirkin <mst@redhat.com> wrote:
-> > 
-> > On Tue, Jun 27, 2023 at 01:58:49PM +0200, Igor Mammedov wrote:
-> >> On Tue, 27 Jun 2023 15:23:04 +0530
-> >> Ani Sinha <anisinha@redhat.com> wrote:
-> >> 
-> >>>> On 27-Jun-2023, at 2:32 PM, Igor Mammedov <imammedo@redhat.com> wrote:
-> >>>> 
-> >>>> On Mon, 26 Jun 2023 21:42:44 +0530
-> >>>> Ani Sinha <anisinha@redhat.com> wrote:
-> >>>> 
-> >>>>> PCI Express ports only have one slot, so PCI Express devices can only be
-> >>>>> plugged into slot 0 on a PCIE port. Enforce it.  
-> >>>> 
-> >>>> btw, previously you mentioned ARI.
-> >>>> So if we turn it on, wouldn't this patch actually become regression?  
-> >>> 
-> >>> If ARI breaks this, it will break other areas in QEMU too, ex anywhere pci_get_function_0() is used.
-> >>> Regardless, I think at least the tests are worth fixing, particularly the mess with hd-geo-test.
-> >> 
-> >> I'm fine with this patch if you test it with ARI enabled and it won't break
-> >> something that has been working before this patch. Just mention what testing
-> >> you've done in commit message.
-> > 
-> > Oh yes. That's why it was checking !vf originally. It's because the most
-> > common use of ARI is SRIOV, so it works a a kind of hack.
-> 
-> Ok so should I put it back?
-> Also I was thinking of running the qtest and avocado test mentioned in https://www.qemu.org/docs/master/system/devices/igb.html . Not sure if it would be enough to test ARI.
+On Tue, 27 Jun 2023 at 15:09, Leif Lindholm <quic_llindhol@quicinc.com> wrote:
+> On 2023-06-27 14:27, Peter Maydell wrote:
+> > OK. This is the kind of rationale that needs to be described
+> > in the commit message and comments, though, so it's clear
+> > why the PCI controller is special in this way.
+>
+> I mean, ultimately it's not. We've kept static mappings for the items
+> that it wouldn't really provide any additional benefit anywhere to be
+> able to shuffle around. (Which failed with EHCI.)
+> Having the UART static has minor debug advantages. Everything else is
+> static because it's poor return on investment (it doesn't let us test
+> anything interesting in the firmware stacks) to make them dynamic.
+>
+> > What I'm trying to avoid here is that we start off saying
+> > "the dtb we pass to the firmware is just a convenient format
+> > for passing a tiny amount of information to it" and then
+> > gradually add more and more stuff to it until we've backed
+> > ourselves into "actually it's almost a complete dtb except
+> > it's not compliant with the spec". That means there needs
+> > to be a clear rationale for what is in the dtb versus
+> > what is "the firmware knows what hardware it runs on".
+>
+> Yet again I find myself wishing I'd invented a custom format instead of
+> using a DT to pass the information across. And I'm not even being sarky
+> - it keeps confusing people, and across multiple projects we're being
+> asked to repeatedly justify why we're not conforming to bindings that
+> are not designed for what we want to do, when we only opted to use an
+> existing storage format in order to maximise code reuse.
+>
+> The purpose of the DT in this platform is to pass information about the
+> machine configuration to the highest-level firmware that in real
+> hardware it would have means of determining programmatically *handwavy*
+> "in other ways", so that that higher-level firmware can abstract the
+> information away behind SMC calls that lower levels of firmware can
+> access throug into reusable libraries that will also be useful for
+> actual hardware platforms.
+> *and* let us wiggle things around to try to shake out bugs in those (and
+> other) firmware components.
+>
+> Serious question: would it be preferable if we moved to a custom DT node
+> where we stick everything in as KEY=VALUE pairs to reduce this confusion?
 
-Well you need > 8 VFs for that.
+I don't really mind, I just want it to be clear what is going on here
+so that when I'm reviewing patches I have a design I can keep in mind.
+The way this was presented to me originally, at least as I recall
+it, was "this board will work the way that real hardware does, ie
+the firmware knows what hardware it was built for". In that
+setup QEMU doesn't need to tell the firmware anything, except
+a very limited set of things which it's more convenient to have
+flexible and specifiable on the QEMU command line, like number of
+CPUs and size of RAM. And that's what the comments in the source say
+at the moment:
 
-> > 
-> >>> 
-> >>>> 
-> >>>>> 
-> >>>>> CC: jusual@redhat.com
-> >>>>> CC: imammedo@redhat.com
-> >>>>> Resolves: https://bugzilla.redhat.com/show_bug.cgi?id=2128929
-> >>>>> Signed-off-by: Ani Sinha <anisinha@redhat.com>
-> >>>>> Reviewed-by: Julia Suvorova <jusual@redhat.com>
-> >>>>> ---
-> >>>>> hw/pci/pci.c | 6 ++++++
-> >>>>> 1 file changed, 6 insertions(+)
-> >>>>> 
-> >>>>> diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-> >>>>> index bf38905b7d..426af133b0 100644
-> >>>>> --- a/hw/pci/pci.c
-> >>>>> +++ b/hw/pci/pci.c
-> >>>>> @@ -64,6 +64,7 @@ bool pci_available = true;
-> >>>>> static char *pcibus_get_dev_path(DeviceState *dev);
-> >>>>> static char *pcibus_get_fw_dev_path(DeviceState *dev);
-> >>>>> static void pcibus_reset(BusState *qbus);
-> >>>>> +static bool pcie_has_upstream_port(PCIDevice *dev);
-> >>>>> 
-> >>>>> static Property pci_props[] = {
-> >>>>>    DEFINE_PROP_PCI_DEVFN("addr", PCIDevice, devfn, -1),
-> >>>>> @@ -1189,6 +1190,11 @@ static PCIDevice *do_pci_register_device(PCIDevice *pci_dev,
-> >>>>>                   name);
-> >>>>> 
-> >>>>>       return NULL;
-> >>>>> +    } else if (pcie_has_upstream_port(pci_dev) && PCI_SLOT(devfn)) {
-> >>>>> +        error_setg(errp, "PCI: slot %d is not valid for %s,"
-> >>>>> +                   " parent device only allows plugging into slot 0.",
-> >>>>> +                   PCI_SLOT(devfn), name);
-> >>>>> +        return NULL;
-> >>>>>    }
-> >>>>> 
-> >>>>>    pci_dev->devfn = devfn;  
+/*
+ * Firmware on this machine only uses ACPI table to load OS, these limited
+ * device tree nodes are just to let firmware know the info which varies from
+ * command line parameters, so it is not necessary to be fully compatible
+ * with the kernel CPU and NUMA binding rules.
+ */
 
+So that's the design I've been implicitly reviewing these changes
+against.
+
+It is pretty surprising to me to hear that in real-world systems
+the firmware is not built to know exactly where its UART, USB
+controller, etc are and that it is instead asking some board
+management controller chip for all this information and being
+fully-flexible in the firmware that runs on the application CPU,
+but I have zero experience in that area so that's just my
+lack of knowledge speaking.
+
+If there's a standard/common protocol for how the BMC communicates
+that info to the application-CPU firmware then it might be
+less confusing to use it, I guess. But I'm not inherently
+opposed to putting this stuff in a dtb-format blob.
+
+(Side note: is the commit message line "Trusted Firmware will
+read it and provide to next firmware level." intended to
+mean "TF will take this dtb node and pass it on", or merely
+"TF will take the information in this dtb node and use
+it to construct or modify the ACPI tables it passes to the
+next level"?)
+
+thanks
+-- PMM
 
