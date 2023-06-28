@@ -2,84 +2,105 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60D6E740919
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 06:11:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D10F674095A
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 08:00:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEMVe-0004sK-PA; Wed, 28 Jun 2023 00:10:27 -0400
+	id 1qEOCL-0008Fe-Dv; Wed, 28 Jun 2023 01:58:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1qEMVV-0004s2-KS
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 00:10:17 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <anushree.mathur@linux.vnet.ibm.com>)
+ id 1qEOCF-0008Dy-3V; Wed, 28 Jun 2023 01:58:32 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1qEMVT-0003m1-Eu
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 00:10:17 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687925412;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=17gvP8LzDNYgCJs9UcC3nA3AzVhmgbyEIcuDq5si6yM=;
- b=gG33JJVS5OP3vNhw2oy2mnqrwuH0WOLKA6+InarPkYwb5R/aKOLP/CaTJr+ufc+LVp3Oa1
- fev+XdIHb8piEYgoK9/OMHbLI9R5So52Vs9j7ImlYhzT6bWeeFUJh1/p5suBdr4N+ujtUn
- cJR7BYoSfFwFZ2BT/76x2WrUtg2CMZU=
-Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
- [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-131-Gyg-SBOwNZqXy5RrBLBfjQ-1; Wed, 28 Jun 2023 00:10:10 -0400
-X-MC-Unique: Gyg-SBOwNZqXy5RrBLBfjQ-1
-Received: by mail-lf1-f72.google.com with SMTP id
- 2adb3069b0e04-4fb76659cacso2831397e87.1
- for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 21:10:09 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687925408; x=1690517408;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=17gvP8LzDNYgCJs9UcC3nA3AzVhmgbyEIcuDq5si6yM=;
- b=YkLUypSqzc2/Hxb28s1uhFvMLh23w3A4eWbS69OL6LhAwGiJajN/wM0SrrabLZnt3p
- u4NGX7lcIcreLadkhzotfamGJc2/yzVbxqiNZAk7YE1ribL4r6KiAY7Kk3j0U6qpwOr6
- ODXVMRxZdKKhRDk+xPM8fLy5NJg1fupZBdOVTJCZipgIDBmFNOmokGdYjydSp3blxpcr
- NUD02FDr63fNI1olFzM87vVuNS03ZTpQZdYHim8T1x6VdPb1OzkUZbOSYUJlkJ8vsbTp
- ORHpcjeWR6t8XaNO4kFM+QmvRJPBySGnqljZA6UG9MIIl3UWOH8XMXopZpLBp5C3WzXc
- UBWg==
-X-Gm-Message-State: AC+VfDxRgOFrEtoNs3UTYsT16NvZ5s569WZ40PuhIugM25nffmX916p7
- YpL+178aXc/E/PfmsxrvsG51wzsSEbOi2Yzl7stHx18Di6t2tYe+HteLe/FQEbPEfALfeGuMZO2
- 5GiPhqzqFbMFXbG5AbxAsd0/ahpoUyMs=
-X-Received: by 2002:a05:6512:b8b:b0:4fa:ad2d:6c58 with SMTP id
- b11-20020a0565120b8b00b004faad2d6c58mr7784684lfv.61.1687925408586; 
- Tue, 27 Jun 2023 21:10:08 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6gvwRwheyp0WGpnITScgcewgMe3NmyRNSR/aXhh9zdq9YHY/F9HYNICI8vwuTKTWPcSoAYiflKDOAnJtbaxp8=
-X-Received: by 2002:a05:6512:b8b:b0:4fa:ad2d:6c58 with SMTP id
- b11-20020a0565120b8b00b004faad2d6c58mr7784674lfv.61.1687925408217; Tue, 27
- Jun 2023 21:10:08 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <anushree.mathur@linux.vnet.ibm.com>)
+ id 1qEOCC-0001ch-Ss; Wed, 28 Jun 2023 01:58:30 -0400
+Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 35S5l7Xc032572; Wed, 28 Jun 2023 05:57:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ subject : to : cc : references : from : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=2GobPJFrHXVfGuqHkg+R8CkK/QcRlDcJ65ZZWWFToqA=;
+ b=jl7DdGbXVFg6yfVvNvIVFSIQurnhFFRhlSFLSdjczl6e86SCIKy2u22xIaSx6WzPrBn3
+ oW8wqAnGbv3bvB3S/BSLJubok14VdR5ZvH9LIJpz7Lp0AGcvNZ5/Hyw+Twe17D6u5arN
+ zbDhVxXLpggh8705/UTytiItakg3Q5u15PqgvmFR75DJepjghq3Zwi1pYuJhZ2unnxT4
+ /w1oyuqlB63oZFwWroC1wso76Pdnwiim7i7knesn8fv4bRBn27xq5Z02bKDvYVVQqEbH
+ Ri1ghiqwQwqmPCdSV0Lj0GBjqhYUE7JGP57cj0SHxJI0tWoeuhsrzAciSWEhw0kRMx3/ kQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rgf10g66h-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 28 Jun 2023 05:57:34 +0000
+Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 35S5lbBp001774;
+ Wed, 28 Jun 2023 05:57:34 GMT
+Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
+ [169.47.144.26])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rgf10g65u-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 28 Jun 2023 05:57:34 +0000
+Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
+ by ppma04wdc.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 35S5aqpY024778;
+ Wed, 28 Jun 2023 05:56:39 GMT
+Received: from smtprelay02.wdc07v.mail.ibm.com ([9.208.129.120])
+ by ppma04wdc.us.ibm.com (PPS) with ESMTPS id 3rdr45vfnb-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 28 Jun 2023 05:56:39 +0000
+Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com
+ [10.39.53.233])
+ by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 35S5ucG54719162
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 28 Jun 2023 05:56:38 GMT
+Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0E14B58054;
+ Wed, 28 Jun 2023 05:56:38 +0000 (GMT)
+Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3011A5803F;
+ Wed, 28 Jun 2023 05:56:36 +0000 (GMT)
+Received: from [9.109.244.180] (unknown [9.109.244.180])
+ by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+ Wed, 28 Jun 2023 05:56:35 +0000 (GMT)
+Message-ID: <48e48bba-2aab-1212-7f5d-7c31fa841091@linux.vnet.ibm.com>
+Date: Wed, 28 Jun 2023 11:26:34 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH 0/4] target/ppc: Fixes for instruction-related
+Content-Language: en-US
+To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
+Cc: qemu-devel@nongnu.org, Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>
+References: <20230620131044.169110-1-npiggin@gmail.com>
+From: Anushree Mathur <anushree.mathur@linux.vnet.ibm.com>
+In-Reply-To: <20230620131044.169110-1-npiggin@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: UmQSHc6ZQRyCvODJ6BhF_R_sUDYitEyU
+X-Proofpoint-ORIG-GUID: EAwJdfpFBaVUfntT0lpFjL0Wfl92LtvM
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-References: <69010e9ebb5e3729aef595ed92840f43e48e53e5.1687875592.git.yin31149@gmail.com>
-In-Reply-To: <69010e9ebb5e3729aef595ed92840f43e48e53e5.1687875592.git.yin31149@gmail.com>
-From: Jason Wang <jasowang@redhat.com>
-Date: Wed, 28 Jun 2023 12:09:56 +0800
-Message-ID: <CACGkMEv6+W0HJAuUvbPRRn7HqdNXLbQhBE3o5BQd98Wz=r2KBQ@mail.gmail.com>
-Subject: Re: [PATCH v2] vdpa: Return -EINVAL if device ack is VIRTIO_NET_ERR
-To: Hawkins Jiawei <yin31149@gmail.com>
-Cc: mst@redhat.com, eperezma@redhat.com, qemu-stable@nongnu.org, 
- qemu-devel@nongnu.org, 18801353760@163.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jasowang@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-06-28_02,2023-06-27_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0
+ spamscore=0 clxscore=1015 priorityscore=1501 mlxscore=0 malwarescore=0
+ mlxlogscore=953 impostorscore=0 adultscore=0 phishscore=0 suspectscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2305260000 definitions=main-2306280048
+Received-SPF: none client-ip=148.163.158.5;
+ envelope-from=anushree.mathur@linux.vnet.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.103,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,95 +116,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jun 27, 2023 at 10:36=E2=80=AFPM Hawkins Jiawei <yin31149@gmail.com=
-> wrote:
+On 6/20/23 18:40, Nicholas Piggin wrote:
+> Because they got more complexities than I first thought, these patches
+> are broken out from the bigger series here:
 >
-> According to VirtIO standard, "The class, command and
-> command-specific-data are set by the driver,
-> and the device sets the ack byte.
-> There is little it can do except issue a diagnostic
-> if ack is not VIRTIO_NET_OK."
+> https://lists.gnu.org/archive/html/qemu-ppc/2023-05/msg00425.html
 >
-> Therefore, QEMU should stop sending the queued SVQ commands and
-> cancel the device startup if the device's ack is not VIRTIO_NET_OK.
+> Since then I fixed the --disable-tcg compile bug reported by Anushree
+> hopefully. Also added a workaround for KVM so injected interrupts
+> wouldn't attempt to find the prefix bit setting. I don't know how much
+> that is really needed, but injection callers would have to set it one
+> way or anohter if we need to add it.
 >
-> Yet the problem is that, vhost_vdpa_net_load_x() returns 1 based on
-> `*s->status !=3D VIRTIO_NET_OK` when the device's ack is VIRTIO_NET_ERR.
-> As a result, net->nc->info->load() also returns 1, this makes
-> vhost_net_start_one() incorrectly assume the device state is
-> successfully loaded by vhost_vdpa_net_load() and return 0, instead of
-> goto `fail` label to cancel the device startup, as vhost_net_start_one()
-> only cancels the device startup when net->nc->info->load() returns a
-> negative value.
+> Thanks,
+> Nick
 >
-> This patch fixes this problem by returning -EINVAL when the device's
-> ack is not VIRTIO_NET_OK.
+> Nicholas Piggin (4):
+>    target/ppc: Fix instruction loading endianness in alignment interrupt
+>    target/ppc: Change partition-scope translate interface
+>    target/ppc: Add SRR1 prefix indication to interrupt handlers
+>    target/ppc: Implement HEIR SPR
 >
-> Fixes: f73c0c43ac ("vdpa: extract vhost_vdpa_net_load_mac from vhost_vdpa=
-_net_load")
-> Fixes: f64c7cda69 ("vdpa: Add vhost_vdpa_net_load_mq")
-> Fixes: 0b58d3686a ("vdpa: Add vhost_vdpa_net_load_offloads()")
-> Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
+>   target/ppc/cpu.h         |   1 +
+>   target/ppc/cpu_init.c    |  23 ++++++++
+>   target/ppc/excp_helper.c | 110 ++++++++++++++++++++++++++++++++++++++-
+>   target/ppc/mmu-radix64.c |  38 ++++++++++----
+>   4 files changed, 159 insertions(+), 13 deletions(-)
+>
+Hye Nick,
 
-Acked-by: Jason Wang <jasowang@redhat.com>
+I tried this patch-set and the compilation of qemu with --disable-tcg 
+parameter happened successfully!
 
-Thanks
+Thanks & Regards,
 
-> ---
-> v2:
->  - fix the same bug in vhost_vdpa_net_load_offloads()
->
-> v1: https://lore.kernel.org/all/cover.1686746406.git.yin31149@gmail.com/
->
->  net/vhost-vdpa.c | 15 +++++++++++----
->  1 file changed, 11 insertions(+), 4 deletions(-)
->
-> diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-> index e19ab063fa..6f6a5c6df6 100644
-> --- a/net/vhost-vdpa.c
-> +++ b/net/vhost-vdpa.c
-> @@ -646,8 +646,9 @@ static int vhost_vdpa_net_load_mac(VhostVDPAState *s,=
- const VirtIONet *n)
->          if (unlikely(dev_written < 0)) {
->              return dev_written;
->          }
-> -
-> -        return *s->status !=3D VIRTIO_NET_OK;
-> +        if (*s->status !=3D VIRTIO_NET_OK) {
-> +            return -EINVAL;
-> +        }
->      }
->
->      return 0;
-> @@ -670,8 +671,11 @@ static int vhost_vdpa_net_load_mq(VhostVDPAState *s,
->      if (unlikely(dev_written < 0)) {
->          return dev_written;
->      }
-> +    if (*s->status !=3D VIRTIO_NET_OK) {
-> +        return -EINVAL;
-> +    }
->
-> -    return *s->status !=3D VIRTIO_NET_OK;
-> +    return 0;
->  }
->
->  static int vhost_vdpa_net_load_offloads(VhostVDPAState *s,
-> @@ -708,8 +712,11 @@ static int vhost_vdpa_net_load_offloads(VhostVDPASta=
-te *s,
->      if (unlikely(dev_written < 0)) {
->          return dev_written;
->      }
-> +    if (*s->status !=3D VIRTIO_NET_OK) {
-> +        return -EINVAL;
-> +    }
->
-> -    return *s->status !=3D VIRTIO_NET_OK;
-> +    return 0;
->  }
->
->  static int vhost_vdpa_net_load(NetClientState *nc)
-> --
-> 2.25.1
->
+Anushree-Mathur
 
 
