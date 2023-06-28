@@ -2,59 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A98BC740FE0
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 13:15:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A78A740FEB
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 13:17:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qET8T-0005Ne-VP; Wed, 28 Jun 2023 07:14:57 -0400
+	id 1qETAF-0007BU-Ph; Wed, 28 Jun 2023 07:16:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <i.maximets@ovn.org>)
- id 1qET8R-0005NQ-OX
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 07:14:55 -0400
-Received: from relay1-d.mail.gandi.net ([2001:4b98:dc4:8::221])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <i.maximets@ovn.org>)
- id 1qET8P-0007SI-04
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 07:14:55 -0400
-X-GND-Sasl: i.maximets@ovn.org
-X-GND-Sasl: i.maximets@ovn.org
-X-GND-Sasl: i.maximets@ovn.org
-X-GND-Sasl: i.maximets@ovn.org
-X-GND-Sasl: i.maximets@ovn.org
-X-GND-Sasl: i.maximets@ovn.org
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 06FD0240002;
- Wed, 28 Jun 2023 11:14:47 +0000 (UTC)
-Message-ID: <df817423-9b06-0649-6d82-b8308b64bdc5@ovn.org>
-Date: Wed, 28 Jun 2023 13:15:37 +0200
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qETA8-00075f-5K
+ for qemu-devel@nongnu.org; Wed, 28 Jun 2023 07:16:40 -0400
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qETA6-00017R-KP
+ for qemu-devel@nongnu.org; Wed, 28 Jun 2023 07:16:39 -0400
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-313f18f5295so3658798f8f.3
+ for <qemu-devel@nongnu.org>; Wed, 28 Jun 2023 04:16:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1687950997; x=1690542997;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=MtGurHEeYBwGEy635q3RYNveqNhidMZBB2vN3AYV2ik=;
+ b=ygcGZ8G1gTV8jacsvTo5zgsPTLggntorSw6OrgtIkJzeOH3T/gAhWs8DbHUV+Y+FPk
+ hGYMvNxBX8wx96TiFdiz6ZexU1fjBdJkURkGAv/sFf9Ixs2lz8C4IqSQWF1FXfQ7vtju
+ ixsl9hHsVMQnNFCgtRGPJwQzzcqmVZGzcGkhNuYClQGR5rwofWJaSdCmSTYQuHJd/ekk
+ dSgGHXpkJEDeBEGxAJ5QKRnQRsLVBAgRehnoi6tX91wPMYNQ1Npx4tOqv40Midw8YpcK
+ 0VXWfS/pSYPpsRIlA7TqYu6dkYad+PJQtt3ClQnq9t0+ry2t4J4tSYgi08c6y/jkhbHE
+ Bc3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1687950997; x=1690542997;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=MtGurHEeYBwGEy635q3RYNveqNhidMZBB2vN3AYV2ik=;
+ b=OVhZ83jn0ev9Kc3QyZ7rhhCV4bfGJFknYSzSbiA8GiN5H2bLgN7P/DbPCZIJTs4LaA
+ 87l9sFuXJNWrL5CNYjO0zAEGp6Qxnma4mxjdoSZWrSc2XRoqwA4miv1dyPCLH1Pccr6R
+ fEfrpViuS1v9MePVssEquRpm3nb8wI6urBYLeNoIujxWXXcMiV78jE4ovlkeI6ZuHwK4
+ kJ34JE3xq0yKVDYKjD/vs1XE9bSfjBrhaDKwIb4utrj826WVBEGpwtTT2Zt4hk4YKqYJ
+ acCTeqe6C50hPz1d0EL/gZMflmawzg/WvymxopcCZ5rP327WmkcYN5CVONBoDWMgKrfN
+ UyvQ==
+X-Gm-Message-State: AC+VfDwL4jhLVUvb54YKgm4nZyCzUUxDztY0qB6jiMzbJgWeI4P3jTx/
+ c7lRwBRu63fwKfDic3dFxtr3Aw==
+X-Google-Smtp-Source: ACHHUZ59GKKe/sc6gmcXDx7k6bRbhcq0fYcz5G+zVFdQX4U3qUFmSWgEdGkRihCra7OakuuxYZ501Q==
+X-Received: by 2002:adf:ed88:0:b0:313:ebb0:ca5d with SMTP id
+ c8-20020adfed88000000b00313ebb0ca5dmr10102410wro.44.1687950996786; 
+ Wed, 28 Jun 2023 04:16:36 -0700 (PDT)
+Received: from [192.168.69.115] ([176.187.207.229])
+ by smtp.gmail.com with ESMTPSA id
+ t5-20020a05600001c500b00313f7b077fesm6423383wrx.59.2023.06.28.04.16.35
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 28 Jun 2023 04:16:36 -0700 (PDT)
+Message-ID: <8e8a4714-84d7-8be7-c9ca-f6ed2a70db68@linaro.org>
+Date: Wed, 28 Jun 2023 13:16:34 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Cc: i.maximets@ovn.org, Paolo Bonzini <pbonzini@redhat.com>,
- Eric Blake <eblake@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
- qemu-devel@nongnu.org
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.12.0
+Subject: Re: [PATCH] hw: arm: allwinner-sramc: Set class_size
 Content-Language: en-US
-To: Jason Wang <jasowang@redhat.com>
-References: <20230622215824.2173343-1-i.maximets@ovn.org>
- <CACGkMEsXOb8wiYo9ktgqh8MqD971=ARJ_etL7MBF-uyo6qt1eA@mail.gmail.com>
- <CACGkMEuyq+5_cqx4T03fcaLOGUCrKLZn51sZxNSXyZq8CqLXTg@mail.gmail.com>
- <93a056c4-b6d3-5491-0c1f-7f58e9f9d1ad@ovn.org>
- <CACGkMEuaUTGeCYfH-MbtX_79scN-CkBmFMcY0fwKo4vO_9cn4w@mail.gmail.com>
- <26c03cd4-5582-489c-9f4c-aeaf8e157b42@ovn.org>
- <CACGkMEsE6_91mOhCP5ezT96zz-Tb-bLXQr9ktrLg6zG0TZC3Lg@mail.gmail.com>
-From: Ilya Maximets <i.maximets@ovn.org>
-Subject: Re: [PATCH] net: add initial support for AF_XDP network backend
-In-Reply-To: <CACGkMEsE6_91mOhCP5ezT96zz-Tb-bLXQr9ktrLg6zG0TZC3Lg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org,
+ Strahinja Jankovic <strahinja.p.jankovic@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Beniamino Galvani <b.galvani@gmail.com>
+References: <20230628110905.38125-1-akihiko.odaki@daynix.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230628110905.38125-1-akihiko.odaki@daynix.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: neutral client-ip=2001:4b98:dc4:8::221;
- envelope-from=i.maximets@ovn.org; helo=relay1-d.mail.gandi.net
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.089,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_PASS=-0.001, SPF_NEUTRAL=0.779,
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.089,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -71,169 +95,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/28/23 05:27, Jason Wang wrote:
-> On Wed, Jun 28, 2023 at 6:45 AM Ilya Maximets <i.maximets@ovn.org> wrote:
->>
->> On 6/27/23 04:54, Jason Wang wrote:
->>> On Mon, Jun 26, 2023 at 9:17 PM Ilya Maximets <i.maximets@ovn.org> wrote:
->>>>
->>>> On 6/26/23 08:32, Jason Wang wrote:
->>>>> On Sun, Jun 25, 2023 at 3:06 PM Jason Wang <jasowang@redhat.com> wrote:
->>>>>>
->>>>>> On Fri, Jun 23, 2023 at 5:58 AM Ilya Maximets <i.maximets@ovn.org> wrote:
->>>>>>>
->>>>>>> AF_XDP is a network socket family that allows communication directly
->>>>>>> with the network device driver in the kernel, bypassing most or all
->>>>>>> of the kernel networking stack.  In the essence, the technology is
->>>>>>> pretty similar to netmap.  But, unlike netmap, AF_XDP is Linux-native
->>>>>>> and works with any network interfaces without driver modifications.
->>>>>>> Unlike vhost-based backends (kernel, user, vdpa), AF_XDP doesn't
->>>>>>> require access to character devices or unix sockets.  Only access to
->>>>>>> the network interface itself is necessary.
->>>>>>>
->>>>>>> This patch implements a network backend that communicates with the
->>>>>>> kernel by creating an AF_XDP socket.  A chunk of userspace memory
->>>>>>> is shared between QEMU and the host kernel.  4 ring buffers (Tx, Rx,
->>>>>>> Fill and Completion) are placed in that memory along with a pool of
->>>>>>> memory buffers for the packet data.  Data transmission is done by
->>>>>>> allocating one of the buffers, copying packet data into it and
->>>>>>> placing the pointer into Tx ring.  After transmission, device will
->>>>>>> return the buffer via Completion ring.  On Rx, device will take
->>>>>>> a buffer form a pre-populated Fill ring, write the packet data into
->>>>>>> it and place the buffer into Rx ring.
->>>>>>>
->>>>>>> AF_XDP network backend takes on the communication with the host
->>>>>>> kernel and the network interface and forwards packets to/from the
->>>>>>> peer device in QEMU.
->>>>>>>
->>>>>>> Usage example:
->>>>>>>
->>>>>>>   -device virtio-net-pci,netdev=guest1,mac=00:16:35:AF:AA:5C
->>>>>>>   -netdev af-xdp,ifname=ens6f1np1,id=guest1,mode=native,queues=1
->>>>>>>
->>>>>>> XDP program bridges the socket with a network interface.  It can be
->>>>>>> attached to the interface in 2 different modes:
->>>>>>>
->>>>>>> 1. skb - this mode should work for any interface and doesn't require
->>>>>>>          driver support.  With a caveat of lower performance.
->>>>>>>
->>>>>>> 2. native - this does require support from the driver and allows to
->>>>>>>             bypass skb allocation in the kernel and potentially use
->>>>>>>             zero-copy while getting packets in/out userspace.
->>>>>>>
->>>>>>> By default, QEMU will try to use native mode and fall back to skb.
->>>>>>> Mode can be forced via 'mode' option.  To force 'copy' even in native
->>>>>>> mode, use 'force-copy=on' option.  This might be useful if there is
->>>>>>> some issue with the driver.
->>>>>>>
->>>>>>> Option 'queues=N' allows to specify how many device queues should
->>>>>>> be open.  Note that all the queues that are not open are still
->>>>>>> functional and can receive traffic, but it will not be delivered to
->>>>>>> QEMU.  So, the number of device queues should generally match the
->>>>>>> QEMU configuration, unless the device is shared with something
->>>>>>> else and the traffic re-direction to appropriate queues is correctly
->>>>>>> configured on a device level (e.g. with ethtool -N).
->>>>>>> 'start-queue=M' option can be used to specify from which queue id
->>>>>>> QEMU should start configuring 'N' queues.  It might also be necessary
->>>>>>> to use this option with certain NICs, e.g. MLX5 NICs.  See the docs
->>>>>>> for examples.
->>>>>>>
->>>>>>> In a general case QEMU will need CAP_NET_ADMIN and CAP_SYS_ADMIN
->>>>>>> capabilities in order to load default XSK/XDP programs to the
->>>>>>> network interface and configure BTF maps.
->>>>>>
->>>>>> I think you mean "BPF" actually?
->>>>
->>>> "BPF Type Format maps" kind of makes some sense, but yes. :)
->>>>
->>>>>>
->>>>>>>  It is possible, however,
->>>>>>> to run only with CAP_NET_RAW.
->>>>>>
->>>>>> Qemu often runs without any privileges, so we need to fix it.
->>>>>>
->>>>>> I think adding support for SCM_RIGHTS via monitor would be a way to go.
->>>>
->>>> I looked through the code and it seems like we can run completely
->>>> non-privileged as far as kernel concerned.  We'll need an API
->>>> modification in libxdp though.
->>>>
->>>> The thing is, IIUC, the only syscall that requires CAP_NET_RAW is
->>>> a base socket creation.  Binding and other configuration doesn't
->>>> require any privileges.  So, we could create a socket externally
->>>> and pass it to QEMU.
->>>
->>> That's the way TAP works for example.
->>>
->>>>  Should work, unless it's an oversight from
->>>> the kernel side that needs to be patched. :)  libxdp doesn't have
->>>> a way to specify externally created socket today, so we'll need
->>>> to change that.  Should be easy to do though.  I can explore.
->>>
->>> Please do that.
->>
->> I have a prototype:
->>   https://github.com/igsilya/xdp-tools/commit/db73e90945e3aa5e451ac88c42c83cb9389642d3
->>
->> Need to test it out and then submit PR to xdp-tools project.
->>
->>>
->>>>
->>>> In case the bind syscall will actually need CAP_NET_RAW for some
->>>> reason, we could change the kernel and allow non-privileged bind
->>>> by utilizing, e.g. SO_BINDTODEVICE.  i.e., let the privileged
->>>> process bind the socket to a particular device, so QEMU can't
->>>> bind it to a random one.  Might be a good use case to allow even
->>>> if not strictly necessary.
->>>
->>> Yes.
->>
->> Will propose something for a kernel as well.  We might want something
->> more granular though, e.g. bind to a queue instead of a device.  In
->> case we want better control in the device sharing scenario.
+On 28/6/23 13:09, Akihiko Odaki wrote:
+> AwSRAMCClass is larger than SysBusDeviceClass so the class size must be
+> advertised accordingly.
 > 
-> I may miss something but the bind is already done at dev plus queue
-> right now, isn't it?
+> Fixes: 05def917e1 ("hw: arm: allwinner-sramc: Add SRAM Controller support for R40")
+> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+> ---
+>   hw/misc/allwinner-sramc.c | 1 +
+>   1 file changed, 1 insertion(+)
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
-Yes, the bind() syscall will bind socket to the dev+queue.  I was talking
-about SO_BINDTODEVICE that only ties the socket to a particular device,
-but not a queue.
-
-Assuming SO_BINDTODEVICE is implemented for AF_XDP sockets and
-assuming a privileged process does:
-
-  fd = socket(AF_XDP, ...);
-  setsockopt(fd, SOL_SOCKET, SO_BINDTODEVICE, <device>);
-
-And sends fd to a non-privileged process.  That non-privileged process
-will be able to call:
-
-  bind(fd, <device>, <random queue>);
-
-It will have to use the same device, but can choose any queue, if that
-queue is not already busy with another socket.
-
-So, I was thinking maybe implementing something like XDP_BINDTOQID option.
-This way the privileged process may call:
-
-  setsockopt(fd, SOL_XDP, XDP_BINDTOQID, <device>, <queue>);
-
-And later kernel will be able to refuse bind() for any other queue for
-this particular socket.
-
-Not sure if that is necessary though.
-Since we're allocating the socket in the privileged process, that process
-may add the socket to the BPF map on the correct queue id.  This way the
-non-privileged process will not be able to receive any packets from any
-other queue on this socket, even if bound to it.  And no other AF_XDP
-socket will be able to be bound to that other queue as well.  So, the
-rogue QEMU will be able to hog one extra queue, but it will not be able
-to intercept traffic any from it, AFAICT.  May not be a huge problem
-after all.
-
-SO_BINDTODEVICE would still be nice to have.  Especially for cases where
-we give the whole device to one VM.
-
-Best regards, Ilya Maximets.
 
