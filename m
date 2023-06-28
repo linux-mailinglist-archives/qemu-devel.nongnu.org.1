@@ -2,70 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D822741B9F
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 00:02:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E61D741BF8
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 00:53:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEdEl-0002HI-BK; Wed, 28 Jun 2023 18:02:07 -0400
+	id 1qEe0o-0001dN-VH; Wed, 28 Jun 2023 18:51:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>)
- id 1qEdEf-0002GK-FW; Wed, 28 Jun 2023 18:02:02 -0400
-Received: from smtp-out1.suse.de ([195.135.220.28])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qEe0n-0001d0-8m
+ for qemu-devel@nongnu.org; Wed, 28 Jun 2023 18:51:45 -0400
+Received: from smtp-out2.suse.de ([2001:67c:2178:6::1d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>)
- id 1qEdEd-00040M-UK; Wed, 28 Jun 2023 18:02:01 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qEe0l-0007sr-MR
+ for qemu-devel@nongnu.org; Wed, 28 Jun 2023 18:51:45 -0400
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 2C14C21857;
- Wed, 28 Jun 2023 22:01:57 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 012581F45F;
+ Wed, 28 Jun 2023 22:51:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1687989717; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1687992702; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=/QC0nNCuG1ErmvbVHD5LNWqVAqPjv/diddoC/1j66KM=;
- b=0dj5+PBGXdotYQY5x/p1l7nSr4+UKZ2H5HjCUti5PZmV8WCYuzr+CnYZkTLFVwIJ+cwaGg
- OCJUxkcD9nGLH44r+Ujo79J+FRb5DKF1/D6LFmMtYo1y3htlcQBLQfnRhew+2p6Gmkxfsz
- P1P6xOc9YIb3hDBLHY4NF/SnmERhT84=
+ bh=Bpa8RBNbnpl92icVUg3N/atS+y8F1DQPRX1d6HoP4Ys=;
+ b=vDkLFbEJIzZWXBHoKqvHYlq+/NKHFqPu/ygT/D7Wm3GmYvXUQYYMIgPkswK17VmfI3rOV3
+ BHWGQllaBGpvphPPOmmNMmTGZl8duFZYjkDnlVXaUDW2h9SZTUDODFXMeQYF+op+JNeafG
+ cxo7bk/0BhPjK0j120RaZ5mebSxirhg=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1687989717;
+ s=susede2_ed25519; t=1687992702;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=/QC0nNCuG1ErmvbVHD5LNWqVAqPjv/diddoC/1j66KM=;
- b=+NT79AsdR4a+ReUt4fQkEP+HX3I2amYo1FT1ZHAoBoujBYFAPOQBLjtHhBubj3hgd33AfA
- ixxWtBCkVX7FwuDQ==
+ bh=Bpa8RBNbnpl92icVUg3N/atS+y8F1DQPRX1d6HoP4Ys=;
+ b=i4vu/Nx8S3nKDUIPJoqJ/QjGrWBQTc2CEyLAozU7iWN0Q5mfSOwYA55orjfUnlaR7ye8vq
+ LrApKPCaQbA8FXAA==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id B0432138E8;
- Wed, 28 Jun 2023 22:01:56 +0000 (UTC)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 854B3138E8;
+ Wed, 28 Jun 2023 22:51:41 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id 172nHtStnGSOZAAAMHmgww
- (envelope-from <farosas@suse.de>); Wed, 28 Jun 2023 22:01:56 +0000
+ by imap2.suse-dmz.suse.de with ESMTPSA id 9ur0E325nGT/dQAAMHmgww
+ (envelope-from <farosas@suse.de>); Wed, 28 Jun 2023 22:51:41 +0000
 From: Fabiano Rosas <farosas@suse.de>
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, Peter Maydell <peter.maydell@linaro.org>, Richard
- Henderson <richard.henderson@linaro.org>, Thomas Huth <thuth@redhat.com>,
- Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: Re: [PATCH] target/arm: gdbstub: Guard M-profile code with CONFIG_TCG
-In-Reply-To: <87bkgzqmpz.fsf@suse.de>
-References: <20230628164821.16771-1-farosas@suse.de>
- <441e8217-31ac-0fd9-1d85-e83f9fdcb3f3@linaro.org> <87bkgzqmpz.fsf@suse.de>
-Date: Wed, 28 Jun 2023 19:01:54 -0300
-Message-ID: <878rc3qm99.fsf@suse.de>
+To: Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org
+Cc: peterx@redhat.com, Leonardo Bras Soares Passos <lsoaresp@redhat.com>,
+ Juan Quintela <quintela@redhat.com>, Lukas Straub <lukasstraub2@web.de>
+Subject: Re: [PATCH 3/7] migration: Refactor error handling in source return
+ path
+In-Reply-To: <20230628215002.73546-4-peterx@redhat.com>
+References: <20230628215002.73546-1-peterx@redhat.com>
+ <20230628215002.73546-4-peterx@redhat.com>
+Date: Wed, 28 Jun 2023 19:51:39 -0300
+Message-ID: <875y77qjyc.fsf@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=195.135.220.28; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
+Content-Type: text/plain
+Received-SPF: pass client-ip=2001:67c:2178:6::1d; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -88,35 +84,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fabiano Rosas <farosas@suse.de> writes:
+Peter Xu <peterx@redhat.com> writes:
 
-> Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
+> rp_state.error was a boolean used to show error happened in return path
+> thread.  That's not only duplicating error reporting (migrate_set_error),
+> but also not good enough in that we only do error_report() and set it to
+> true, we never can keep a history of the exact error and show it in
+> query-migrate.
 >
->> On 28/6/23 18:48, Fabiano Rosas wrote:
->>> This code is only relevant when TCG is present in the build. Building
->>> with --disable-tcg --enable-xen on an x86 host we get:
->>>=20
->>> $ ../configure --target-list=3Dx86_64-softmmu,aarch64-softmmu --disable=
--tcg --enable-xen
->>> $ make -j$(nproc)
->>> ...
->>> libqemu-aarch64-softmmu.fa.p/target_arm_gdbstub.c.o: in function `m_sys=
-reg_ptr':
->>>   ../target/arm/gdbstub.c:358: undefined reference to `arm_v7m_get_sp_p=
-tr'
->>>   ../target/arm/gdbstub.c:361: undefined reference to `arm_v7m_get_sp_p=
-tr'
->>>=20
->>> libqemu-aarch64-softmmu.fa.p/target_arm_gdbstub.c.o: in function `arm_g=
-db_get_m_systemreg':
->>> ../target/arm/gdbstub.c:405: undefined reference to `arm_v7m_mrs_contro=
-l'
->>
->> I'm a bit confused, isn't this covered by the cross-arm64-xen-only
->> job?
+> To make this better, a few things done:
 >
-> It should be. Perhaps the CI is using different optimization flags. I'll
-> try to figure it out.
+>   - Use error_setg() rather than error_report() across the whole lifecycle
+>     of return path thread, keeping the error in an Error*.
+>
+>   - Use migrate_set_error() to apply that captured error to the global
+>     migration object when error occured in this thread.
+>
+>   - With above, no need to have mark_source_rp_bad(), remove it, alongside
+>     with rp_state.error itself.
+>
+> Signed-off-by: Peter Xu <peterx@redhat.com>
 
-Yep. The CI has -O2 while I am using --enable-debug.
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
 
