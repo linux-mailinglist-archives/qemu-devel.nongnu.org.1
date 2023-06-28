@@ -2,96 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1294740F61
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 12:55:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EB19740FCA
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 13:11:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qESop-0007Pj-9a; Wed, 28 Jun 2023 06:54:39 -0400
+	id 1qET3B-0002rq-Fl; Wed, 28 Jun 2023 07:09:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qESoo-0007PX-20
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 06:54:38 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qESom-0000wC-9p
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 06:54:37 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687949675;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=63T0JyU0ZtMZjXS5h8jX5BOC4I+j1HdnoJsL9RQneqQ=;
- b=dFnTwSpDgywjAj6aSGNl3GKlf0mzgltC0+5S8XWo3H4KZPIXXLCi6B5/D+7oyF/DcFhSC3
- iEmT/Li2LiA2ylZBV2iq3xeCaaZld9XueQqkv5Tqf4RttxiHEhTLcBYGF9IWvtYOH9ECH2
- fc3jImjxvWWigScVmPF24QY7J0xVpbY=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-73-V6UOk3F6Mz2nhwxRX-QPlQ-1; Wed, 28 Jun 2023 06:54:34 -0400
-X-MC-Unique: V6UOk3F6Mz2nhwxRX-QPlQ-1
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-313f5021d9bso1405748f8f.2
- for <qemu-devel@nongnu.org>; Wed, 28 Jun 2023 03:54:33 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qET34-0002mL-Eu
+ for qemu-devel@nongnu.org; Wed, 28 Jun 2023 07:09:22 -0400
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qET2x-00012A-CR
+ for qemu-devel@nongnu.org; Wed, 28 Jun 2023 07:09:19 -0400
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-1b7e94912daso20364015ad.3
+ for <qemu-devel@nongnu.org>; Wed, 28 Jun 2023 04:09:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1687950552; x=1690542552;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=pxqYwFZlQDRcPvSRMEkOuNG+LRfYsTu2FiTLUQDOseY=;
+ b=0OoE/b+4Ut+rto1yqBLS4JOvmzyt/9/0DMCe40VyIBW8E8/YnWZ//nXSbucDMwFhJK
+ wKFXKG5P1v9R/DYTLuXzwoONwOFsQlH+zkIqpsWCDgGDGOl4CyoLgGRySRqfLfU2CH2G
+ eF0LCn/JUIdlSJtGUWlRnaPzGb2hHXb/9Ss9Nmqyxd8UgqC/X9RhxitF8bNRvnS8R2fM
+ x35r0pUKqB34lpE6BJojOHR2UYO5awogT8Qn9LYpksyF7pj2eU9M7Z9aft9wFPmjUcs9
+ mMeeBWykZkdmx7f80pqZHLVLw/jJ3R1G8nS+lBoamXyaxUqjhw1t8XwlFE2SUZb2RY7A
+ InVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687949673; x=1690541673;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=63T0JyU0ZtMZjXS5h8jX5BOC4I+j1HdnoJsL9RQneqQ=;
- b=bpcXkE6zIRlPZeuvG1BoGi94C1CZ9sgxdEdGdolWx/bNKoDa02po65s66MCuNoG0hR
- 2T6ArsMUfzMboOx00gB0deNaRDvla8oKDYWFTUO7GIqpyVeXfdwLWxAsHNchcqG1Ki7h
- d794rjPIr5/03P5htOhw55LHfFMvayV+C1jIaRR/zO5qgjM0Wr3LdDLFpWWqR/Bv4bE0
- B5hIxP1iyBcxXu5uEYTsTY+SXSfzqpjIr1uC3z9IRzBDh8YSvTPcMu87fZiayu91im+b
- aQSwMf1ctB6Ey8AgNX7CVQMzQGbeh8A+tetf+I69RxSOvr4gPEGjhG1OwFXZO4QRT7QT
- xKiA==
-X-Gm-Message-State: AC+VfDwr9eyA9xCChWhac3nc8d16qZX07DhBnR43ECy943X7YzroVtwg
- 2Ovr+Re/QKm+8CJI2+XdPeWUJV8wsmA96NV54CIKUWs0GuBHVSya0PL5R8GqxgWKc4ii1fLjcB9
- lgGy40IRGCCXXli4=
-X-Received: by 2002:a5d:4083:0:b0:313:f2b3:af73 with SMTP id
- o3-20020a5d4083000000b00313f2b3af73mr5538246wrp.25.1687949672868; 
- Wed, 28 Jun 2023 03:54:32 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ62XeXgCG/0DTkj1iRYIPcZA7I+FmqRFkrs/9GkTl76pha9hCbFRQ71lBxmWhX5pt1BZHoTjw==
-X-Received: by 2002:a5d:4083:0:b0:313:f2b3:af73 with SMTP id
- o3-20020a5d4083000000b00313f2b3af73mr5538239wrp.25.1687949672552; 
- Wed, 28 Jun 2023 03:54:32 -0700 (PDT)
-Received: from redhat.com ([176.12.183.225]) by smtp.gmail.com with ESMTPSA id
- l6-20020a5d4106000000b0030c2e3c7fb3sm13037746wrp.101.2023.06.28.03.54.30
+ d=1e100.net; s=20221208; t=1687950552; x=1690542552;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=pxqYwFZlQDRcPvSRMEkOuNG+LRfYsTu2FiTLUQDOseY=;
+ b=GuiuHrwzHDnKnPwI5HFBAzi1UvRPHjlAvKzvu6jpEN7cO+a5llj+os+2W/7qMj131O
+ z7K0HJ7T0X7aWgJgpaz2QlQ2r3/4DoHy7+CK743It9ZSCmUQ++fNfhHHra1kZqctwTnn
+ H75fUsNkhu5NqeloDqHPaCMaDbSZ+8TptF2t0UoTZd9KF+q1J5nqy7YECGQjYM37/zHW
+ 1woQ8dlso4KbIqGnTLkq1djZTPoLi2CgEOS0xERmSH87zgQ6Ygdt5wXOUeZg5S3W8S92
+ JGhcP3dBUkooyKeuOrNZ8UZ7mMjPJuKNH3cKHvlD5x16CKaFCXKGWptS5SoilNbnF8ZG
+ B0tg==
+X-Gm-Message-State: AC+VfDwu4tZmxlbf6c665M3REGNy2YCht74YkLEQC6g49xn6k7UTXc+P
+ QCV33xJnAL6/fGaPIfiCYPC6+Rv/hx0jtzopYEM=
+X-Google-Smtp-Source: ACHHUZ7bx82Pr0eEznRZ4VRUXFtq1AJ4wQydJbLAfLUUtZk/Qb+WZY3B6JNHcsuk3gzMFE9+scpigw==
+X-Received: by 2002:a17:902:f7c1:b0:1b3:7de7:f83f with SMTP id
+ h1-20020a170902f7c100b001b37de7f83fmr7665549plw.26.1687950552198; 
+ Wed, 28 Jun 2023 04:09:12 -0700 (PDT)
+Received: from alarm.. ([157.82.204.253]) by smtp.gmail.com with ESMTPSA id
+ n10-20020a170902d2ca00b001b3cac25f82sm7461198plc.139.2023.06.28.04.09.10
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 28 Jun 2023 03:54:32 -0700 (PDT)
-Date: Wed, 28 Jun 2023 06:54:28 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Ani Sinha <anisinha@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
- =?iso-8859-1?Q?=22Daniel_P=2E_Berrang=E9=22?= <berrange@redhat.com>,
- Thomas Huth <thuth@redhat.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Igor Mammedov <imammedo@redhat.com>,
- Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
- qemu-devel@nongnu.org
-Subject: Re: [PATCH v3] acpi/tests/bios-tables-test: make iasl tool handling
- simpler
-Message-ID: <20230628065132-mutt-send-email-mst@kernel.org>
-References: <20230522103039.19111-1-anisinha@redhat.com>
- <20230626084401-mutt-send-email-mst@kernel.org>
- <9B31F63A-164A-42EF-9387-1F6A56BC9BEA@redhat.com>
- <20230626091206-mutt-send-email-mst@kernel.org>
- <585996FE-8415-4ECC-BBB2-1BDA0C3D8E25@redhat.com>
+ Wed, 28 Jun 2023 04:09:11 -0700 (PDT)
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+To: 
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org,
+ Strahinja Jankovic <strahinja.p.jankovic@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Beniamino Galvani <b.galvani@gmail.com>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>
+Subject: [PATCH] hw: arm: allwinner-sramc: Set class_size
+Date: Wed, 28 Jun 2023 20:09:03 +0900
+Message-ID: <20230628110905.38125-1-akihiko.odaki@daynix.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <585996FE-8415-4ECC-BBB2-1BDA0C3D8E25@redhat.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62b.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,93 +90,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jun 28, 2023 at 12:05:46PM +0530, Ani Sinha wrote:
-> 
-> 
-> > On 26-Jun-2023, at 6:49 PM, Michael S. Tsirkin <mst@redhat.com> wrote:
-> > 
-> > On Mon, Jun 26, 2023 at 06:33:14PM +0530, Ani Sinha wrote:
-> >> 
-> >> 
-> >>> On 26-Jun-2023, at 6:28 PM, Michael S. Tsirkin <mst@redhat.com> wrote:
-> >>> 
-> >>> On Mon, May 22, 2023 at 04:00:39PM +0530, Ani Sinha wrote:
-> >>>> Currently the meson based QEMU build process locates the iasl binary from the
-> >>>> current PATH and other locations [1] and uses that to set CONFIG_IASL in
-> >>>> config-host.h header.This is then used at compile time by bios-tables-test to
-> >>>> set iasl path.
-> >>>> 
-> >>>> This has two disadvantages:
-> >>>> - If iasl was not previously installed in the PATH, one has to install iasl
-> >>>>  and rebuild QEMU in order to regenerate the header and pick up the found
-> >>>>  iasl location. One cannot simply use the existing bios-tables-test binary
-> >>>>  because CONFIG_IASL is only set during the QEMU build time by meson and
-> >>>>  then bios-tables-test has to be rebuilt with CONFIG_IASL set in order to
-> >>>>  use iasl.
-> >>>> - Sometimes, the stock iasl that comes with distributions is simply not good
-> >>>>  enough because it does not support the latest ACPI changes - newly
-> >>>>  introduced tables or new table attributes etc. In order to test ACPI code
-> >>>>  in QEMU, one has to clone the latest acpica upstream repository and
-> >>>>  rebuild iasl in order to get support for it. In those cases, one may want
-> >>>>  the test to use the iasl binary from a non-standard location.
-> >>>> 
-> >>>> In order to overcome the above two disadvantages, we set a default iasl path
-> >>>> as "/usr/bin/iasl". bios-tables-test also checks for the environment variable
-> >>>> IASL_PATH that can be set by the developer. IASL_PATH passed from the
-> >>>> environment overrides the default path. This way developers can point
-> >>>> IASL_PATH environment variable to a possibly a non-standard custom build
-> >>>> binary and quickly run bios-tables-test without rebuilding. If the default
-> >>>> path of iasl changes, one simply needs to update the default path and rebuild
-> >>>> just the test, not whole QEMU.
-> >>>> 
-> >>>> [1] https://mesonbuild.com/Reference-manual_functions.html#find_program
-> >>>> 
-> >>>> CC: alex.bennee@linaro.org
-> >>>> CC: pbonzini@redhat.com
-> >>>> Signed-off-by: Ani Sinha <anisinha@redhat.com>
-> >>> 
-> >>> I don't much like environment variables since they are
-> >>> not discoverable.
-> >> 
-> >> I do have this:
-> >> 
-> >> +                " Set IASL_PATH environment variable to the path of iasl binary\n"
-> >> +                " if iasl is installed somewhere other than %s.\n",
-> > 
-> > You only see this if there's a diff.
-> > 
-> > And then people stick this in their scripts and are scratching their
-> > heads trying to figure out why is a wrong iasl running.  Or someone
-> > comes up with a different use for IASL_PATH and they conflict.
-> 
-> OK in that case I think its ok to simply remove the environment
-> variable part. If people are going to be changing a header file,
+AwSRAMCClass is larger than SysBusDeviceClass so the class size must be
+advertised accordingly.
 
-Not people. configure script
+Fixes: 05def917e1 ("hw: arm: allwinner-sramc: Add SRAM Controller support for R40")
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+---
+ hw/misc/allwinner-sramc.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-> they
-> might as well change the DEFAULT_IASL_PATH in the test itself where
-> its easier to find. What additional complication meson provides is
-> that it uses find_program() to find the IASL binary in a list of
-> predefined locations. I do not think this additional tie up with meson
-> is worth it for the niche iasl use case.  Simple is beautiful.
-
-The just the below then? And we can let it be?
-
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-
-
-diff --git a/tests/qtest/bios-tables-test.c b/tests/qtest/bios-tables-test.c
-index ed1c69cf01..d0e1655d2e 100644
---- a/tests/qtest/bios-tables-test.c
-+++ b/tests/qtest/bios-tables-test.c
-@@ -102,6 +102,7 @@ typedef struct {
+diff --git a/hw/misc/allwinner-sramc.c b/hw/misc/allwinner-sramc.c
+index a8b731f8f2..d76c24d081 100644
+--- a/hw/misc/allwinner-sramc.c
++++ b/hw/misc/allwinner-sramc.c
+@@ -159,6 +159,7 @@ static const TypeInfo allwinner_sramc_info = {
+     .parent        = TYPE_SYS_BUS_DEVICE,
+     .instance_init = allwinner_sramc_init,
+     .instance_size = sizeof(AwSRAMCState),
++    .class_size    = sizeof(AwSRAMCClass),
+     .class_init    = allwinner_sramc_class_init,
+ };
  
- static char disk[] = "tests/acpi-test-disk-XXXXXX";
- static const char *data_dir = "tests/data/acpi";
-+/* If you want your own path, change the below to iasl = "/home/usr/bin/iasl" */
- #ifdef CONFIG_IASL
- static const char *iasl = CONFIG_IASL;
- #else
+-- 
+2.41.0
 
 
