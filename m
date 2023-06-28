@@ -2,77 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A08A7410A0
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 14:00:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B44A47410A4
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 14:02:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qETqO-0005dn-ND; Wed, 28 Jun 2023 08:00:21 -0400
+	id 1qETsN-0007Os-Ft; Wed, 28 Jun 2023 08:02:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qETq5-0005bV-9U
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 08:00:01 -0400
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qETs4-0007KB-Py
+ for qemu-devel@nongnu.org; Wed, 28 Jun 2023 08:02:07 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qETq3-0005kg-MU
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 08:00:00 -0400
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-3112f256941so5158469f8f.1
- for <qemu-devel@nongnu.org>; Wed, 28 Jun 2023 04:59:59 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qETs3-0006bE-3h
+ for qemu-devel@nongnu.org; Wed, 28 Jun 2023 08:02:04 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-3fba5a8af2cso18908995e9.3
+ for <qemu-devel@nongnu.org>; Wed, 28 Jun 2023 05:02:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687953598; x=1690545598;
+ d=linaro.org; s=google; t=1687953720; x=1690545720;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=cgs/bOBaRWcfj9s65iw3KP8foJQTGAj5CEZ2u4EjCOg=;
- b=VpCjj8LPaoYGLgFYgGRfZkl3kwlw/728NM2kc3ncj0ZEeF2BblMcB8GhoIJx0YQwJz
- QiN4DAr6ogMjs9j5X4N8hAgNdsy7pa3cQAa72RmBRIV42tuklhb538TupXBycDqKN00X
- 0NHTAtRjt6OP65JP5UhrVpWfx1U5eNSfPSkKkm/8zVaEbbUBFUeugCDhjEjfGM98T9Er
- /FKDc8DCsFPI5tJUZ17kFLA7O4/aVAbUEWY240UydCJjTjlUHsfKa2TffqgeK7HaP2Z3
- Bsc/oUhVyIg5zN4HMz/uzT0dksaDl5kG48xTB9FgwgBnVEBmmmhCCLxPNYXewFU6IO0n
- 8M7Q==
+ bh=2v+lJBO3ApD0e5taWaLyTywsCleiDpRiInhtI1iPbEI=;
+ b=q8f31pXW4rOMSJ06wLesia3v7UkcqZiDVkvjBJsK7IBnYNOKxCQNKRNNTla9KgMipv
+ 46QrlI65WxVJvGXHK0yp69MRorS5SXmJea2LnQNQwVP4yrWb2b5dwwlBngVdO39RNjOV
+ fnOfIVAiG7zdulmrkoVoWlWopH48OtIuXYZT1at+jxlh1TfB/FTx2zAoUH6DLCO9NoLU
+ nrOabvfdEIVb4z0MKYwFDkKZ8jnVqlfLSIN1vGEb5iVYHoZ5zb0AijLiYgu+fLVi/FSG
+ lQahslWbNpaoNXz5BMW6Co3TDd4DoGkII1SsBtTXdypRlM9EBNWShCfwrwQ0ubYQ/sNm
+ bUhA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687953598; x=1690545598;
+ d=1e100.net; s=20221208; t=1687953720; x=1690545720;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=cgs/bOBaRWcfj9s65iw3KP8foJQTGAj5CEZ2u4EjCOg=;
- b=H9gCmSONBfZJMe2a2sMb+0RbG0dkxt/5HUCTtYuKzRL8MGeT9Uabvq+Dk97srn3Eut
- Kc4lHdBOEhloB4xvXi+L8QfbpJCudhQa2u2x8rsw9oMtwhQBaK2LqkNXn6iY9+v/+oIF
- GS0d2pBArJ/y6qVXeIimIb6U18fFd5SViDoFFxwMt3b4IHLkwlnC0Noy3ZIk3tM05Dpf
- 37H5xl8/fDMG05sNqzQg1hbqvWOkMwv7HNbUEZXth0Hjg8cYpAM0QeLJemTyaW2HGe1+
- 9avs9fz6y9qyJ9kjnECP7noVcTko1XeULozGeXGhgTzxbtHkNzkVY4urjNvQ8dsExgYR
- tWHw==
-X-Gm-Message-State: AC+VfDyMvOj50TAxbO1MzlMqGqFIKxB3pydKwzkouDKdvC0r6h8XJl2P
- VtJVlT8tE//PiHlZz5O4OTHV5XR7JtEE6d+Zss0=
-X-Google-Smtp-Source: ACHHUZ7IljUTP+ZUsoaQrnCCUUkyGQiW6iVcMWelOjCHIIcC96wlavKghBZdczKV9e2iX7frWHQv3w==
-X-Received: by 2002:adf:dc91:0:b0:313:e897:67ec with SMTP id
- r17-20020adfdc91000000b00313e89767ecmr8991274wrj.5.1687953598055; 
- Wed, 28 Jun 2023 04:59:58 -0700 (PDT)
+ bh=2v+lJBO3ApD0e5taWaLyTywsCleiDpRiInhtI1iPbEI=;
+ b=coWWjKfky4rtGVpu4R8vb1N4U//bJpZnD5exx8EpEwJl8PgwqM3midhP2xeOsCCnfk
+ 4ihKq30hmSk8fb1mbmacBztJMj5StQU3+FrMCf7M4x/CeWQNZLmJxkk9gVm6yuc/UHcd
+ xstmuWtEE52j8THFMQcopKeTpwOWmlb3PRs/BzWFUza491UIwoBAYrZni3Kaw+hxadso
+ nJgm/ROHkQ6dqW3h/8IKnx8DA7TunXnT7XzsovtW/7CkmXdCjkUC+V8ptEMcoLyB2IVU
+ lHLIzMgeoiBupV4VrPx36rkBmWNhtnnUCj95i7i5eQ3IaqZkZHWkK+L7QjAFjKNTJBdD
+ Msbg==
+X-Gm-Message-State: AC+VfDzXJ+u8WXSXzCLuPbPmrYmDuXWdR+I7Q3HAYX/r4RPIjzSrn8E6
+ FQr2lV/Ne86MKEC+TBcXXfFa3PkMmHDDuCS7KRk=
+X-Google-Smtp-Source: ACHHUZ7sEuDF5Ls1bG/Dk+UyzaplCBI36B9PHOWAgpsZktSXyq7IJjRBT8uHR707Wa3nDebDrl/Fyg==
+X-Received: by 2002:a1c:ed0b:0:b0:3f7:3651:450c with SMTP id
+ l11-20020a1ced0b000000b003f73651450cmr12489003wmh.6.1687953720661; 
+ Wed, 28 Jun 2023 05:02:00 -0700 (PDT)
 Received: from [192.168.69.115] ([176.187.207.229])
  by smtp.gmail.com with ESMTPSA id
- h15-20020a05600004cf00b0030e52d4c1bcsm13325554wri.71.2023.06.28.04.59.56
+ y17-20020a1c4b11000000b003f90a604885sm13650686wma.34.2023.06.28.05.01.59
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 28 Jun 2023 04:59:57 -0700 (PDT)
-Message-ID: <1f4b504e-43f2-5adb-8d93-de20bd577e37@linaro.org>
-Date: Wed, 28 Jun 2023 13:59:56 +0200
+ Wed, 28 Jun 2023 05:02:00 -0700 (PDT)
+Message-ID: <08dc34d7-0619-4df3-3ebd-113d1ed82c27@linaro.org>
+Date: Wed, 28 Jun 2023 14:01:58 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.12.0
-Subject: Re: [PATCH] i386/WHPX: Fix error message when fail to set
- ProcessorCount
+Subject: Re: [PATCH 0/2] accel: Re-enable WHPX cross-build on case sensitive
+ filesystems
 Content-Language: en-US
-To: Zhao Liu <zhao1.liu@linux.intel.com>,
- Sunil Muthuswamy <sunilmut@microsoft.com>
-Cc: qemu-devel@nongnu.org, Zhenyu Wang <zhenyu.z.wang@intel.com>,
- Zhao Liu <zhao1.liu@intel.com>
-References: <20230529124331.412822-1-zhao1.liu@linux.intel.com>
+To: qemu-devel@nongnu.org
+Cc: Sunil Muthuswamy <sunilmut@microsoft.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
+ Beraldo Leal <bleal@redhat.com>
+References: <20230624142211.8888-1-philmd@linaro.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230529124331.412822-1-zhao1.liu@linux.intel.com>
+In-Reply-To: <20230624142211.8888-1-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -95,28 +99,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 29/5/23 14:43, Zhao Liu wrote:
-> From: Zhao Liu <zhao1.liu@intel.com>
-> 
-> 003f230e37d7 ("machine: Tweak the order of topology members in struct
-> CpuTopology") changes the meaning of MachineState.smp.cores from "the
-> number of cores in one package" to "the number of cores in one die"
-> and doesn't fix other uses of MachineState.smp.cores. And because of
-> the introduction of cluster, now smp.cores just means "the number of
-> cores in one cluster". This clearly does not fit the semantics here.
-> 
-> And before this error message, WHvSetPartitionProperty() is called to
-> set prop.ProcessorCount.
-> 
-> So the error message should show the prop.ProcessorCount other than
-> "cores per cluster" or "cores per package".
-> 
-> Cc: Sunil Muthuswamy <sunilmut@microsoft.com>
-> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-> ---
->   target/i386/whpx/whpx-all.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
+On 24/6/23 16:22, Philippe Mathieu-Daudé wrote:
 
-Patch queued (fixing the unsigned format), thanks.
+> Philippe Mathieu-Daudé (2):
+>    docs/devel/testing: Update the 'Docker Debugging' section
+>    accel: Re-enable WHPX cross-build on case sensitive filesystems
+> 
+>   docs/devel/testing.rst           | 2 +-
+>   meson.build                      | 4 ++--
+>   target/i386/whpx/whpx-internal.h | 4 ++--
+>   target/i386/whpx/whpx-all.c      | 4 ++--
+>   4 files changed, 7 insertions(+), 7 deletions(-)
+
+Series queued.
 
 
