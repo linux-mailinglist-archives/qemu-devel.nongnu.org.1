@@ -2,60 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 050B274172F
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 19:28:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F2B2C74172E
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 19:28:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEYwU-0001c2-MC; Wed, 28 Jun 2023 13:26:58 -0400
+	id 1qEYwR-0001bX-Hk; Wed, 28 Jun 2023 13:26:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mtosatti@redhat.com>)
- id 1qEYwS-0001bo-VF
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 13:26:56 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qEYwQ-0001bP-34
+ for qemu-devel@nongnu.org; Wed, 28 Jun 2023 13:26:54 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mtosatti@redhat.com>)
- id 1qEYwR-0004sv-Gw
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 13:26:56 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qEYwO-0004sU-KE
+ for qemu-devel@nongnu.org; Wed, 28 Jun 2023 13:26:53 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687973214;
+ s=mimecast20190719; t=1687973211;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=6CKHaLdD6MUf5lvnyDsPv4nM3yOoVncz5ZyEqeb2Kto=;
- b=ZkEVa2nAhaHrZSCNthy+APxt0wduZ6LXoWbVQaZ0mPvwwqRkmuUd5uJMzkRjfYOb9MA+O0
- Hm5oo2JqdxlYJYdK2JUNYWOj53hQ6ybQuQPj4NVcPJJRutcp/XPq84QSNwEUihMr4k6rQd
- /HnuHOu94yvY+CGJF72sKFVUZmxv0R8=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-158-5mLvSTM1PoaPaW_3_E8o2g-1; Wed, 28 Jun 2023 13:26:52 -0400
-X-MC-Unique: 5mLvSTM1PoaPaW_3_E8o2g-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A8FA1104458D
- for <qemu-devel@nongnu.org>; Wed, 28 Jun 2023 17:26:52 +0000 (UTC)
-Received: from tpad.localdomain (ovpn-112-2.gru2.redhat.com [10.97.112.2])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 67A922166B25;
- Wed, 28 Jun 2023 17:26:52 +0000 (UTC)
-Received: by tpad.localdomain (Postfix, from userid 1000)
- id 3D345403C37D3; Wed, 28 Jun 2023 14:26:36 -0300 (-03)
-Date: Wed, 28 Jun 2023 14:26:36 -0300
-From: Marcelo Tosatti <mtosatti@redhat.com>
-To: Anthony Harivel <aharivel@redhat.com>
-Cc: pbonzini@redhat.com, qemu-devel@nongnu.org
-Subject: Re: [PATCH] Add support for RAPL MSRs in KVM/Qemu
-Message-ID: <ZJxtTCWvqO2VuL8q@tpad>
-References: <20230616140830.316655-1-aharivel@redhat.com>
+ bh=FuIKCMMdD1E5IlSd7tmfgvwoHDNnGtPNNLBURro6xE0=;
+ b=FX8mL790v2zekAK+WxSL9tGxajhslm6WmYUZZyL85vkHCMkIt1vrG5WCBbnIsB2V+tMrSy
+ yrjQNFYd504VogBB3KRf8MkR7y/A3w6nzYKVUB7+uTIv6da4HRhIunGe7lLSXyvmsMwQls
+ j5BIUAXnqOovB0nvvlLRB/I8MIDPxL8=
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
+ [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-404-fnRat6UaO1GY6obFxMfG_w-1; Wed, 28 Jun 2023 13:26:49 -0400
+X-MC-Unique: fnRat6UaO1GY6obFxMfG_w-1
+Received: by mail-qk1-f198.google.com with SMTP id
+ af79cd13be357-7655fffd637so128612285a.1
+ for <qemu-devel@nongnu.org>; Wed, 28 Jun 2023 10:26:49 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1687973209; x=1690565209;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=FuIKCMMdD1E5IlSd7tmfgvwoHDNnGtPNNLBURro6xE0=;
+ b=aovzJip3psRvAopLYKrbqL3bbTqM+MdPq6h9VF1fvW2GYg2dZFl2FiyB5m4C2G4lAL
+ TNkn5GLbT0XzeMK9JjgiuXvE2Qe+mSdxE0J/ST8mUjJmDvTAuWqPdTt+2T82ujJ4C6ck
+ yTfttGL05+TH+OOcX5Y9b+wyKv8L1C9CuH0MQqTXBN1p9mly9VpZgDvTttI4DBBhHJ3i
+ dSHumCxnzcdAS5pi+xeycb+bBQs+wZHh///rMe+6Qy8Nl+iiocq1cGvRJO5b3e1JtW2H
+ AFjy2Y2+s5i4qpD7O1dKELohFmsQdZHRmD2/ezO5N6I3QL6C06+wXQf2DaGUDvWT4TPq
+ NnaQ==
+X-Gm-Message-State: AC+VfDxXmkq2oLo/Eko3iXZYvbTbrsBhIQlMyEnkeak/1cwjF6SXiJ7d
+ fLEukMuLJ/3tDMDwRpONbh5SBn0LXiKQj282zERFWnNxOSBkGXU5loD2Z87BRdQbcJKHfKjM1N/
+ r9+fJjaMPN9ZHM78=
+X-Received: by 2002:a05:620a:190e:b0:767:1a23:137 with SMTP id
+ bj14-20020a05620a190e00b007671a230137mr4690215qkb.2.1687973209387; 
+ Wed, 28 Jun 2023 10:26:49 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5t6AFCq0jYctnvzaJr/iuucbMVm47Vk+AhEfYJPo32tdWmP2FaTrPwgkIX22xSJ1nZRnaD4g==
+X-Received: by 2002:a05:620a:190e:b0:767:1a23:137 with SMTP id
+ bj14-20020a05620a190e00b007671a230137mr4690200qkb.2.1687973209167; 
+ Wed, 28 Jun 2023 10:26:49 -0700 (PDT)
+Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
+ [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
+ y24-20020a37e318000000b007579ea33cdesm5226905qki.62.2023.06.28.10.26.48
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 28 Jun 2023 10:26:48 -0700 (PDT)
+Date: Wed, 28 Jun 2023 13:26:48 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Steve Sistare <steven.sistare@oracle.com>
+Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>,
+ "Daniel P. Berrange" <berrange@redhat.com>, Fabiano Rosas <farosas@suse.de>
+Subject: Re: [PATCH V3 2/2] migration: file URI offset
+Message-ID: <ZJxtWAKXaPQa/YBJ@x1n>
+References: <1687466251-310524-1-git-send-email-steven.sistare@oracle.com>
+ <1687466251-310524-3-git-send-email-steven.sistare@oracle.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230616140830.316655-1-aharivel@redhat.com>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mtosatti@redhat.com;
+In-Reply-To: <1687466251-310524-3-git-send-email-steven.sistare@oracle.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -80,35 +98,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Jun 16, 2023 at 04:08:30PM +0200, Anthony Harivel wrote:
-> Starting with the "Sandy Bridge" generation, Intel CPUs provide a RAPL
-> interface (Running Average Power Limit) for advertising the accumulated
-> energy consumption of various power domains (e.g. CPU packages, DRAM,
-> etc.).
+On Thu, Jun 22, 2023 at 01:37:31PM -0700, Steve Sistare wrote:
+> Allow an offset option to be specified as part of the file URI, in
+> the form "file:filename,offset=offset", where offset accepts the common
+> size suffixes, or the 0x prefix, but not both.  Migration data is written
+> to and read from the file starting at offset.  If unspecified, it defaults
+> to 0.
 > 
-> The consumption is reported via MSRs (model specific registers) like
-> MSR_PKG_ENERGY_STATUS for the CPU package power domain. These MSRs are
-> 64 bits registers that represent the accumulated energy consumption in
-> micro Joules. They are updated by microcode every ~1ms.
+> This is needed by libvirt to store its own data at the head of the file.
 > 
-> For now, KVM always returns 0 when the guest requests the value of
-> these MSRs. Use the KVM MSR filtering mechanism to allow QEMU handle
-> these MSRs dynamically in userspace.
-> 
-> To limit the amount of system calls for every MSR call, create a new
-> thread in QEMU that updates the "virtual" MSR values asynchronously.
-> 
-> Each vCPU has its own vMSR to reflect the independence of vCPUs. The
-> thread updates the vMSR values with the ratio of energy consumed of
-> the whole physical CPU package the vCPU thread runs on and the
-> thread's utime and stime values.
-> 
-> All other non-vCPU threads are also taken into account. Their energy
-> consumption is evenly distributed among all vCPUs threads running on
-> the same physical CPU package.
-> 
-> This feature is activated with -accel kvm,rapl=true.
+> Suggested-by: Daniel P. Berrange <berrange@redhat.com>
+> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 
-I suppose this should be a CPU flag instead? -cpu xxx,rapl=on.
+Ideally I think we should make "," the separator from the start, but I
+suppose no one will try to apply previous patch only, and then start using
+a file name contains ",offset=".. so maybe not that a huge deal.
+
+Reviewed-by: Peter Xu <peterx@redhat.com>
+
+-- 
+Peter Xu
 
 
