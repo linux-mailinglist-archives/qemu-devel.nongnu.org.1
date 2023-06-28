@@ -2,55 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19795741651
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 18:27:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18F2674168A
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 18:36:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEY0F-00031c-Bk; Wed, 28 Jun 2023 12:26:47 -0400
+	id 1qEY7y-0005Tx-N3; Wed, 28 Jun 2023 12:34:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anton.kochkov@proton.me>)
- id 1qEY07-0002xy-Dl
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 12:26:39 -0400
-Received: from mail-40134.protonmail.ch ([185.70.40.134])
+ (Exim 4.90_1) (envelope-from <SRS0=C+FE=CQ=kaod.org=clg@ozlabs.org>)
+ id 1qEY7w-0005TR-Pe; Wed, 28 Jun 2023 12:34:44 -0400
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
+ helo=gandalf.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anton.kochkov@proton.me>)
- id 1qEY05-0005ah-Pm
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 12:26:39 -0400
-Date: Wed, 28 Jun 2023 16:26:23 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
- s=protonmail; t=1687969595; x=1688228795;
- bh=YTHGwutzeM+eVoKJRrhQxHJXdTuUQEKkOF6ZSxkfavo=;
- h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
- Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
- Message-ID:BIMI-Selector;
- b=Dq3sWjOGEPqAYVfGHWei4HAI9nGLcUQPTmaIWUAbda8xNmWibjxxfJLhGrqWkOuX+
- J0Rc7FHouyuWOBqPsTrii4+tsxwAO3IgL4mrCSQ7ZjHWmRw322UzE2llujdNGweAN8
- tqPb48oqAZi/ifKDyFzhoUSafhJwTI7c74OL3xm6aHdr3S/mTUsHDp+DEv34tTtimV
- BxDf4AhUzy3vTzPB197p7foMUFBczQ5LWvLc10iVcdonc2El1HcrvUCs+vAQKC2iGy
- t0IK79qpTaxgXEzSmeznfTRULuJZ4ixZiaHOINX7Lpiw+8bmNUmv1lvQeujsWfThZo
- +qrR2SkIbbo4Q==
-To: qemu-devel@nongnu.org
-From: Anton Kochkov <anton.kochkov@proton.me>
-Cc: Anton Kochkov <anton.kochkov@proton.me>
-Subject: [PATCH v2 2/2] contrib/plugins: remove Makefile
-Message-ID: <20230628162451.147419-3-anton.kochkov@proton.me>
-In-Reply-To: <20230628162451.147419-1-anton.kochkov@proton.me>
-References: <20230628162451.147419-1-anton.kochkov@proton.me>
-Feedback-ID: 53490844:user:proton
+ (Exim 4.90_1) (envelope-from <SRS0=C+FE=CQ=kaod.org=clg@ozlabs.org>)
+ id 1qEY7u-0001HM-H2; Wed, 28 Jun 2023 12:34:44 -0400
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4QrnGz5dH5z4wp2;
+ Thu, 29 Jun 2023 02:34:35 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4QrnGv75Pnz4wgk;
+ Thu, 29 Jun 2023 02:34:31 +1000 (AEST)
+Message-ID: <75e183e9-f253-60f3-c7bd-a064b8887ca1@kaod.org>
+Date: Wed, 28 Jun 2023 18:34:28 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=185.70.40.134;
- envelope-from=anton.kochkov@proton.me; helo=mail-40134.protonmail.ch
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH qemu] aspeed add montblanc bmc reference from fuji
+Content-Language: en-US
+To: Sittisak Sinprem <ssinprem@celestica.com>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, peter.maydell@linaro.org,
+ andrew@aj.id.au, srikanth@celestica.com, ssumet@celestica.com,
+ thangavelu.v@celestica.com, kgengan@celestica.com,
+ anandaramanv@celestica.com, Joel Stanley <joel@jms.id.au>
+References: <168794501779.28884.3336012012258765799-0@git.sr.ht>
+ <cd38a154-d5c3-1e22-c94f-9e1d74069f6b@kaod.org>
+ <CAE+aGtVDXtPbZxC-OJvQ0R+dOk0S=_gx+0wfyJ+wbA_xn=NLMg@mail.gmail.com>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <CAE+aGtVDXtPbZxC-OJvQ0R+dOk0S=_gx+0wfyJ+wbA_xn=NLMg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+ envelope-from=SRS0=C+FE=CQ=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -40
+X-Spam_score: -4.1
+X-Spam_bar: ----
+X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, NICE_REPLY_A=-0.089,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -66,65 +70,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Anton Kochkov <anton.kochkov@proton.me>
----
- contrib/plugins/Makefile | 46 ----------------------------------------
- 1 file changed, 46 deletions(-)
- delete mode 100644 contrib/plugins/Makefile
+On 6/28/23 12:07, Sittisak Sinprem wrote:
+> Got it Cedric, I just know for it,
+> 
+> I am fixing, and will re-send the patch as V2.
 
-diff --git a/contrib/plugins/Makefile b/contrib/plugins/Makefile
-deleted file mode 100644
-index b2b9db9f51..0000000000
---- a/contrib/plugins/Makefile
-+++ /dev/null
-@@ -1,46 +0,0 @@
--# -*- Mode: makefile -*-
--#
--# This Makefile example is fairly independent from the main makefile
--# so users can take and adapt it for their build. We only really
--# include config-host.mak so we don't have to repeat probing for
--# programs that the main configure has already done for us.
--#
--
--BUILD_DIR :=3D $(CURDIR)/../..
--
--include $(BUILD_DIR)/config-host.mak
--
--VPATH +=3D $(SRC_PATH)/contrib/plugins
--
--NAMES :=3D
--NAMES +=3D execlog
--NAMES +=3D hotblocks
--NAMES +=3D hotpages
--NAMES +=3D howvec
--NAMES +=3D lockstep
--NAMES +=3D hwprofile
--NAMES +=3D cache
--NAMES +=3D drcov
--
--SONAMES :=3D $(addsuffix .so,$(addprefix lib,$(NAMES)))
--
--# The main QEMU uses Glib extensively so it's perfectly fine to use it
--# in plugins (which many example do).
--CFLAGS :=3D $(shell $(PKG_CONFIG) --cflags glib-2.0)
--CFLAGS +=3D -fPIC -Wall
--CFLAGS +=3D $(if $(CONFIG_DEBUG_TCG), -ggdb -O0)
--CFLAGS +=3D -I$(SRC_PATH)/include/qemu
--
--all: $(SONAMES)
--
--%.o: %.c
--=09$(CC) $(CFLAGS) -c -o $@ $<
--
--lib%.so: %.o
--=09$(CC) -shared -Wl,-soname,$@ -o $@ $^ $(LDLIBS)
--
--clean:
--=09rm -f *.o *.so *.d
--=09rm -Rf .libs
--
--.PHONY: all clean
---
+Could you please use the patch below and send in your series ?
+
+Thanks,
+
+C.
+
+
+ From cfbc865ffe8a4dffe4ac764eb10416aa906a7170 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
+Date: Wed, 28 Jun 2023 18:32:20 +0200
+Subject: [PATCH] aspeed: Introduce ASPEED_RAM_SIZE helper for 32-bit hosts
+  limitation
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+On 32-bit hosts, RAM has a 2047 MB limit. Use a macro to define the
+default ram size of machines (AST2600 SoC) that can have 2 GB.
+
+Signed-off-by: Cédric Le Goater <clg@kaod.org>
+---
+  hw/arm/aspeed.c | 21 +++++++++------------
+  1 file changed, 9 insertions(+), 12 deletions(-)
+
+diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
+index eefd2e275015..0ae252232597 100644
+--- a/hw/arm/aspeed.c
++++ b/hw/arm/aspeed.c
+@@ -49,6 +49,13 @@ struct AspeedMachineState {
+      uint32_t hw_strap1;
+  };
+  
++/* On 32-bit hosts, lower RAM to 1G because of the 2047 MB limit */
++#if HOST_LONG_BITS == 32
++#define ASPEED_RAM_SIZE(sz) MIN((sz), 1 * GiB)
++#else
++#define ASPEED_RAM_SIZE(sz) (sz)
++#endif
++
+  /* Palmetto hardware value: 0x120CE416 */
+  #define PALMETTO_BMC_HW_STRAP1 (                                        \
+          SCU_AST2400_HW_STRAP_DRAM_SIZE(DRAM_SIZE_256MB) |               \
+@@ -1504,12 +1511,7 @@ static void aspeed_machine_rainier_class_init(ObjectClass *oc, void *data)
+      aspeed_machine_ast2600_class_init(oc, data);
+  };
+  
+-/* On 32-bit hosts, lower RAM to 1G because of the 2047 MB limit */
+-#if HOST_LONG_BITS == 32
+-#define FUJI_BMC_RAM_SIZE (1 * GiB)
+-#else
+-#define FUJI_BMC_RAM_SIZE (2 * GiB)
+-#endif
++#define FUJI_BMC_RAM_SIZE ASPEED_RAM_SIZE(2 * GiB)
+  
+  static void aspeed_machine_fuji_class_init(ObjectClass *oc, void *data)
+  {
+@@ -1533,12 +1535,7 @@ static void aspeed_machine_fuji_class_init(ObjectClass *oc, void *data)
+      aspeed_machine_ast2600_class_init(oc, data);
+  };
+  
+-/* On 32-bit hosts, lower RAM to 1G because of the 2047 MB limit */
+-#if HOST_LONG_BITS == 32
+-#define BLETCHLEY_BMC_RAM_SIZE (1 * GiB)
+-#else
+-#define BLETCHLEY_BMC_RAM_SIZE (2 * GiB)
+-#endif
++#define BLETCHLEY_BMC_RAM_SIZE ASPEED_RAM_SIZE(2 * GiB)
+  
+  static void aspeed_machine_bletchley_class_init(ObjectClass *oc, void *data)
+  {
+-- 
 2.41.0
 
 
