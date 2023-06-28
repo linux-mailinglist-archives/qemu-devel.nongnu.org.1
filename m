@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EDC07415DE
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 17:57:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B2367415F4
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 18:01:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEXWw-0003Hc-QI; Wed, 28 Jun 2023 11:56:30 -0400
+	id 1qEXX2-0003NK-EJ; Wed, 28 Jun 2023 11:56:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qEXWU-0002on-7j
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qEXWU-0002oq-7o
  for qemu-devel@nongnu.org; Wed, 28 Jun 2023 11:56:05 -0400
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
+Received: from mail-lf1-x131.google.com ([2a00:1450:4864:20::131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qEXWD-0001oo-HL
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 11:55:47 -0400
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-311367a3e12so7297354f8f.2
- for <qemu-devel@nongnu.org>; Wed, 28 Jun 2023 08:55:44 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qEXWJ-0001qN-88
+ for qemu-devel@nongnu.org; Wed, 28 Jun 2023 11:55:52 -0400
+Received: by mail-lf1-x131.google.com with SMTP id
+ 2adb3069b0e04-4f8735ac3e3so8741037e87.2
+ for <qemu-devel@nongnu.org>; Wed, 28 Jun 2023 08:55:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687967744; x=1690559744;
+ d=linaro.org; s=google; t=1687967749; x=1690559749;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=PM8fq3NUI8RLScHcRL3tzhQ3mex7XVAOJnNOqHES0No=;
- b=kHsljvTODBeCkqoAi6ggej0MI8o9aYKoOkBUdKOps1J6MM7pOAVoAgOVQTdehv3JH6
- 2aFwIZq8UCQA5zMRa3Vl9mhhXQYplSM0EVjbzfLiIWzmmvaORFqoV5HduIjeY2df6or6
- OhTrotk5r0FTo7sTIuL/LnDoZpEDCIceKgEYGNtxKejTTKxt5PLWzizXQI6pqXkuMnKU
- MzVw5nlD+SqSRbff8nW68baUNcUIxMlX3N/5TW86zDWsN+4B9sys5lDOIMvc7BpNUCAa
- Pj2UBnKEI+z2ubjBlOtOMGA7nr3dq19Zs9QDVCaBOPyxwiKnJye916B63Yzrqoop5p36
- 4j7g==
+ bh=H+ZDEfi36SOkHrG1dMSIzURkkU/Whlh5zESiI+Pn1BQ=;
+ b=wzjYdzPq6+z5udYXUpbJYmf/NQStNtIBa+s6s9DI1921PUZ++SH8/UHQ4uO8FBTKWz
+ fkQBv5FTRDRFUtWFUMRkSc1m0k2+uUid4SUN3f8qgPtEgmH9nDSKiFEWZUjmbsheFplN
+ y/knchuSCel/kLdLsNz56nTbI1hc+Zik7USnqGXv86JLG3Do5IgNS1aQmNHLrztWQboQ
+ OXmi4ERd3FpD0fmdWArRVhXzGmIyEfYRwXH9bZAttRQaDRMbNOvOg4ewhhOYRUbn3nwD
+ zpnwCs+mOEg/doA9nWHXT0vJ7jVqugFkiHqkPrY7k2vgF3bBfXd7u0vvAgG410Q2OVMw
+ aSXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687967744; x=1690559744;
+ d=1e100.net; s=20221208; t=1687967749; x=1690559749;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=PM8fq3NUI8RLScHcRL3tzhQ3mex7XVAOJnNOqHES0No=;
- b=XIkvsQPW1YVPOwn6gyLmkg/YPMGWJPGelDxcK/MdH/R0LpChy/HnuoS1vQH9yxe87U
- MWZawcbarUSXohb3wmLsux/XD7vaFLIjyCozICUOrtaJwIHEFlFzzBh5CMclHM8ROoj0
- n+cxF/f0aezKmdiwNAI0rnJ9k2TLNKNG/X4nrK++1CZCg4cihuGXA4zJQpspZOSmClYq
- EcxpgOV0403zlcdgEF9inx1ez6jKGjWqKnuoOTyi+HVISudOn4TcaBUgKmoe3YZ+peYv
- b583IOkCYxKJ/9tOB18xQ39Kks1gG+k7Y1HPzbFmgdNeHWqYQqWMDVSGJYONgzDOOjAJ
- jBpw==
-X-Gm-Message-State: ABy/qLbGZo1kuI0vbT+I3RVxgxBZbBHe+sU0kBR/7nS2C80JIhYDu+pw
- hJFlzqvE4kJmDH/L490frhwTmi5QZbNOHt4TYP4=
-X-Google-Smtp-Source: APBJJlGe7s/0T3AGr1VOhmClS/8OQqxlkUfWfwpGg6yOlQh3Z+EvZdipVeRI3UoDGnCiGXa6PVVp8g==
-X-Received: by 2002:adf:f210:0:b0:314:111a:e121 with SMTP id
- p16-20020adff210000000b00314111ae121mr873583wro.30.1687967743772; 
- Wed, 28 Jun 2023 08:55:43 -0700 (PDT)
+ bh=H+ZDEfi36SOkHrG1dMSIzURkkU/Whlh5zESiI+Pn1BQ=;
+ b=bu0QIzWIL8WCUHtb9Qw+vR9RVo596GRmZmeHT9O936QXmkZln1KzXP3jcGaj2lcIlD
+ jaiKE8QHGRpCzzuCdOmBEZLs5ZoGK4VpEKfrWC2/Z/l/37lIZ/x7EumG3BbVrPCW64dN
+ ta17cp3MPlK2wCCzFzVX7SZqPcQ6JMLaBVhiiW+h9PUYUt4kNMIGkKoK1TM/J4t5mPlb
+ xAuYC+gpBl66hyOT4osNZnnyr/qXk8PreRydJaxTT43siDT5QRv6SElo6qhq3UEKtmZW
+ AYxoQexXMzano1WvVFV19K1lF+qNp6mMMJVX4YFCt6nfhcEkGLfpPYNQ0KVzFXamGly7
+ ssdQ==
+X-Gm-Message-State: AC+VfDzxs26tcQNJ4g5LDg7Cv4y1wmD3F2UrVGbvHdJ3HI+RQITRqfhz
+ VhWg5DKYXBBmACdyR30OQwn5rhLUPSNj4Zj6zJU=
+X-Google-Smtp-Source: ACHHUZ6vlk1hKSNlw3g2LO9xTnXjwoxEKPiIbk5AMYXY6Ap/d2C/NSO+hYkDP1/O2cueKuq+4nBzig==
+X-Received: by 2002:a05:6512:684:b0:4f9:b649:23d2 with SMTP id
+ t4-20020a056512068400b004f9b64923d2mr9248064lfe.42.1687967749349; 
+ Wed, 28 Jun 2023 08:55:49 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.207.229])
  by smtp.gmail.com with ESMTPSA id
- cx16-20020a056000093000b00301a351a8d6sm13782187wrb.84.2023.06.28.08.55.42
+ x9-20020a05600c21c900b003fb41491670sm6755700wmj.24.2023.06.28.08.55.48
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 28 Jun 2023 08:55:43 -0700 (PDT)
+ Wed, 28 Jun 2023 08:55:49 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Nicholas Piggin <npiggin@gmail.com>
-Subject: [PULL 25/30] target/ppc: Restrict KVM-specific fields from ArchCPU
-Date: Wed, 28 Jun 2023 17:53:08 +0200
-Message-Id: <20230628155313.71594-26-philmd@linaro.org>
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Subject: [PULL 26/30] target/riscv: Restrict KVM-specific fields from ArchCPU
+Date: Wed, 28 Jun 2023 17:53:09 +0200
+Message-Id: <20230628155313.71594-27-philmd@linaro.org>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230628155313.71594-1-philmd@linaro.org>
 References: <20230628155313.71594-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::131;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x131.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,93 +91,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The 'kvm_sw_tlb' and 'tlb_dirty' fields introduced in commit
-93dd5e852c ("kvm: ppc: booke206: use MMU API") are specific
-to KVM and shouldn't be accessed when it is not available.
+These fields shouldn't be accessed when KVM is not available.
+
+Restrict the KVM timer migration state. Rename the KVM timer
+post_load() handler accordingly, because cpu_post_load() is
+too generic.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
-Message-Id: <20230624192645.13680-1-philmd@linaro.org>
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Message-Id: <20230626232007.8933-3-philmd@linaro.org>
 ---
- target/ppc/cpu.h        | 2 ++
- hw/ppc/e500.c           | 2 ++
- hw/ppc/ppce500_spin.c   | 2 ++
- target/ppc/mmu_common.c | 4 ++++
- 4 files changed, 10 insertions(+)
+ target/riscv/cpu.h     | 2 ++
+ target/riscv/cpu.c     | 2 +-
+ target/riscv/machine.c | 8 ++++++--
+ 3 files changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
-index 94497aa115..af12c93ebc 100644
---- a/target/ppc/cpu.h
-+++ b/target/ppc/cpu.h
-@@ -1149,8 +1149,10 @@ struct CPUArchState {
-     int nb_pids;     /* Number of available PID registers */
-     int tlb_type;    /* Type of TLB we're dealing with */
-     ppc_tlb_t tlb;   /* TLB is optional. Allocate them only if needed */
+diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+index 7bff1d47f6..7adb8706ac 100644
+--- a/target/riscv/cpu.h
++++ b/target/riscv/cpu.h
+@@ -363,12 +363,14 @@ struct CPUArchState {
+     hwaddr kernel_addr;
+     hwaddr fdt_addr;
+ 
 +#ifdef CONFIG_KVM
-     bool tlb_dirty;  /* Set to non-zero when modifying TLB */
-     bool kvm_sw_tlb; /* non-zero if KVM SW TLB API is active */
+     /* kvm timer */
+     bool kvm_timer_dirty;
+     uint64_t kvm_timer_time;
+     uint64_t kvm_timer_compare;
+     uint64_t kvm_timer_state;
+     uint64_t kvm_timer_frequency;
 +#endif /* CONFIG_KVM */
-     uint32_t tlb_need_flush; /* Delayed flush needed */
- #define TLB_NEED_LOCAL_FLUSH   0x1
- #define TLB_NEED_GLOBAL_FLUSH  0x2
-diff --git a/hw/ppc/e500.c b/hw/ppc/e500.c
-index b6eb599751..67793a86f1 100644
---- a/hw/ppc/e500.c
-+++ b/hw/ppc/e500.c
-@@ -765,7 +765,9 @@ static void mmubooke_create_initial_mapping(CPUPPCState *env)
-     tlb->mas7_3 = 0;
-     tlb->mas7_3 |= MAS3_UR | MAS3_UW | MAS3_UX | MAS3_SR | MAS3_SW | MAS3_SX;
+ };
+ 
+ /*
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index 881bddf393..4035fe0e62 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -584,7 +584,7 @@ static void riscv_host_cpu_init(Object *obj)
+ #endif
+     riscv_cpu_add_user_properties(obj);
+ }
+-#endif
++#endif /* CONFIG_KVM */
+ 
+ static ObjectClass *riscv_cpu_class_by_name(const char *cpu_model)
+ {
+diff --git a/target/riscv/machine.c b/target/riscv/machine.c
+index 3ce2970785..c7c862cdd3 100644
+--- a/target/riscv/machine.c
++++ b/target/riscv/machine.c
+@@ -194,12 +194,13 @@ static const VMStateDescription vmstate_rv128 = {
+     }
+ };
  
 +#ifdef CONFIG_KVM
-     env->tlb_dirty = true;
-+#endif
+ static bool kvmtimer_needed(void *opaque)
+ {
+     return kvm_enabled();
  }
  
- static void ppce500_cpu_reset_sec(void *opaque)
-diff --git a/hw/ppc/ppce500_spin.c b/hw/ppc/ppce500_spin.c
-index d57b199797..bbce63e8a4 100644
---- a/hw/ppc/ppce500_spin.c
-+++ b/hw/ppc/ppce500_spin.c
-@@ -83,7 +83,9 @@ static void mmubooke_create_initial_mapping(CPUPPCState *env,
-     tlb->mas2 = (va & TARGET_PAGE_MASK) | MAS2_M;
-     tlb->mas7_3 = pa & TARGET_PAGE_MASK;
-     tlb->mas7_3 |= MAS3_UR | MAS3_UW | MAS3_UX | MAS3_SR | MAS3_SW | MAS3_SX;
-+#ifdef CONFIG_KVM
-     env->tlb_dirty = true;
-+#endif
- }
- 
- static void spin_kick(CPUState *cs, run_on_cpu_data data)
-diff --git a/target/ppc/mmu_common.c b/target/ppc/mmu_common.c
-index ae1db6e348..8c000e250d 100644
---- a/target/ppc/mmu_common.c
-+++ b/target/ppc/mmu_common.c
-@@ -930,10 +930,12 @@ static void mmubooke_dump_mmu(CPUPPCState *env)
-     ppcemb_tlb_t *entry;
-     int i;
- 
-+#ifdef CONFIG_KVM
-     if (kvm_enabled() && !env->kvm_sw_tlb) {
-         qemu_printf("Cannot access KVM TLB\n");
-         return;
+-static int cpu_post_load(void *opaque, int version_id)
++static int cpu_kvmtimer_post_load(void *opaque, int version_id)
+ {
+     RISCVCPU *cpu = opaque;
+     CPURISCVState *env = &cpu->env;
+@@ -213,7 +214,7 @@ static const VMStateDescription vmstate_kvmtimer = {
+     .version_id = 1,
+     .minimum_version_id = 1,
+     .needed = kvmtimer_needed,
+-    .post_load = cpu_post_load,
++    .post_load = cpu_kvmtimer_post_load,
+     .fields = (VMStateField[]) {
+         VMSTATE_UINT64(env.kvm_timer_time, RISCVCPU),
+         VMSTATE_UINT64(env.kvm_timer_compare, RISCVCPU),
+@@ -221,6 +222,7 @@ static const VMStateDescription vmstate_kvmtimer = {
+         VMSTATE_END_OF_LIST()
      }
+ };
 +#endif
  
-     qemu_printf("\nTLB:\n");
-     qemu_printf("Effective          Physical           Size PID   Prot     "
-@@ -1021,10 +1023,12 @@ static void mmubooke206_dump_mmu(CPUPPCState *env)
-     int offset = 0;
-     int i;
- 
+ static bool debug_needed(void *opaque)
+ {
+@@ -409,7 +411,9 @@ const VMStateDescription vmstate_riscv_cpu = {
+         &vmstate_vector,
+         &vmstate_pointermasking,
+         &vmstate_rv128,
 +#ifdef CONFIG_KVM
-     if (kvm_enabled() && !env->kvm_sw_tlb) {
-         qemu_printf("Cannot access KVM TLB\n");
-         return;
-     }
+         &vmstate_kvmtimer,
 +#endif
- 
-     for (i = 0; i < BOOKE206_MAX_TLBN; i++) {
-         int size = booke206_tlb_size(env, i);
+         &vmstate_envcfg,
+         &vmstate_debug,
+         &vmstate_smstateen,
 -- 
 2.38.1
 
