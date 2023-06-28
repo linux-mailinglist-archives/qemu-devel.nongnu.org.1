@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF8877413A8
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 16:20:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D799D7413A1
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 16:20:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEVyP-0000iB-Mn; Wed, 28 Jun 2023 10:16:45 -0400
+	id 1qEVyE-0000KA-AX; Wed, 28 Jun 2023 10:16:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qEVyI-0000Wl-VE
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 10:16:39 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qEVxz-0008KH-SK
+ for qemu-devel@nongnu.org; Wed, 28 Jun 2023 10:16:20 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qEVyH-0005TK-HD
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 10:16:38 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qEVxw-0005Jj-AF
+ for qemu-devel@nongnu.org; Wed, 28 Jun 2023 10:16:18 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687961796;
+ s=mimecast20190719; t=1687961773;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=5yMB5EpOlYUgp/txzUb/WhM7pHRUJ64AGPQgMM0NnMs=;
- b=E7tQrGk3/mV2oV0JMpe0Bh/Wo2Xq/cQyoiM9k6WPsdQT4E1TgP4bdy3wlBX7Nol+gV39K8
- Wu4WO1LsQEbB/Tmc8slBbjkuCpRg7J0nE+BpHIMlhh9OtcEzvciDkNswMUJThFSVsUoWxD
- dzC1qSRyhsjzYsPgU3MbsI64fHNvz/s=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=ETKNQBPKI8AfHzDWP2bucdZbOVL7nzz6r8QDdMsok9o=;
+ b=AN6BnyujXeQuPl1/MMtqo8yZ8aq57jFeIRgoFdKVhtBnT8DOqnxuPn30RhVW/CSI76/Gl9
+ 2sblyjWkzUn3SCHen5+GKuQkZyTzXuNfqsF8tgiA7FC5CAVOXOxcPg2hJiQkrq3Z28fSyX
+ FSMsU7fY9OJ0GcNp4h7E4Wp/E3ZgPdQ=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-657-6ZQdF8PtNdaAZXabrFEaYQ-1; Wed, 28 Jun 2023 10:16:26 -0400
-X-MC-Unique: 6ZQdF8PtNdaAZXabrFEaYQ-1
+ us-mta-563-oyYxxjuKP6WExvvO5eFTkA-1; Wed, 28 Jun 2023 10:16:08 -0400
+X-MC-Unique: oyYxxjuKP6WExvvO5eFTkA-1
 Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
  [10.11.54.1])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1FE6F802A55;
- Wed, 28 Jun 2023 14:15:55 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 26CDB28237DD;
+ Wed, 28 Jun 2023 14:15:56 +0000 (UTC)
 Received: from merkur.redhat.com (unknown [10.39.195.21])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 6258F40C2063;
- Wed, 28 Jun 2023 14:15:54 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 54F7040C2063;
+ Wed, 28 Jun 2023 14:15:55 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com,
 	richard.henderson@linaro.org,
 	qemu-devel@nongnu.org
-Subject: [PULL 15/23] bochs: mark more functions as coroutine_fns and
- GRAPH_RDLOCK
-Date: Wed, 28 Jun 2023 16:15:18 +0200
-Message-ID: <20230628141526.293104-16-kwolf@redhat.com>
+Subject: [PULL 16/23] block: mark another function as coroutine_fns and
+ GRAPH_UNLOCKED
+Date: Wed, 28 Jun 2023 16:15:19 +0200
+Message-ID: <20230628141526.293104-17-kwolf@redhat.com>
 In-Reply-To: <20230628141526.293104-1-kwolf@redhat.com>
 References: <20230628141526.293104-1-kwolf@redhat.com>
 MIME-Version: 1.0
@@ -82,42 +82,51 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 From: Paolo Bonzini <pbonzini@redhat.com>
 
 Mark functions as coroutine_fn when they are only called by other coroutine_fns
-and they can suspend.  Change calls to co_wrappers to use the non-wrapped
-functions, which in turn requires adding GRAPH_RDLOCK annotations.
+and they can suspend.  Because this function operates on a BlockBackend, mark it
+GRAPH_UNLOCKED.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Message-ID: <20230601115145.196465-5-pbonzini@redhat.com>
+Message-ID: <20230601115145.196465-6-pbonzini@redhat.com>
 Reviewed-by: Kevin Wolf <kwolf@redhat.com>
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- block/bochs.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ block.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/block/bochs.c b/block/bochs.c
-index 2f5ae52c90..66e7a58e5e 100644
---- a/block/bochs.c
-+++ b/block/bochs.c
-@@ -203,7 +203,8 @@ static void bochs_refresh_limits(BlockDriverState *bs, Error **errp)
-     bs->bl.request_alignment = BDRV_SECTOR_SIZE; /* No sub-sector I/O */
- }
- 
--static int64_t seek_to_sector(BlockDriverState *bs, int64_t sector_num)
-+static int64_t coroutine_fn GRAPH_RDLOCK
-+seek_to_sector(BlockDriverState *bs, int64_t sector_num)
+diff --git a/block.c b/block.c
+index 0cd1a12344..a307c151a8 100644
+--- a/block.c
++++ b/block.c
+@@ -555,8 +555,9 @@ int coroutine_fn bdrv_co_create(BlockDriver *drv, const char *filename,
+  * On success, return @blk's actual length.
+  * Otherwise, return -errno.
+  */
+-static int64_t create_file_fallback_truncate(BlockBackend *blk,
+-                                             int64_t minimum_size, Error **errp)
++static int64_t coroutine_fn GRAPH_UNLOCKED
++create_file_fallback_truncate(BlockBackend *blk, int64_t minimum_size,
++                              Error **errp)
  {
-     BDRVBochsState *s = bs->opaque;
-     uint64_t offset = sector_num * 512;
-@@ -224,8 +225,8 @@ static int64_t seek_to_sector(BlockDriverState *bs, int64_t sector_num)
-         (s->extent_blocks + s->bitmap_blocks));
+     Error *local_err = NULL;
+     int64_t size;
+@@ -564,14 +565,14 @@ static int64_t create_file_fallback_truncate(BlockBackend *blk,
  
-     /* read in bitmap for current extent */
--    ret = bdrv_pread(bs->file, bitmap_offset + (extent_offset / 8), 1,
--                     &bitmap_entry, 0);
-+    ret = bdrv_co_pread(bs->file, bitmap_offset + (extent_offset / 8), 1,
-+                        &bitmap_entry, 0);
-     if (ret < 0) {
+     GLOBAL_STATE_CODE();
+ 
+-    ret = blk_truncate(blk, minimum_size, false, PREALLOC_MODE_OFF, 0,
+-                       &local_err);
++    ret = blk_co_truncate(blk, minimum_size, false, PREALLOC_MODE_OFF, 0,
++                          &local_err);
+     if (ret < 0 && ret != -ENOTSUP) {
+         error_propagate(errp, local_err);
          return ret;
      }
+ 
+-    size = blk_getlength(blk);
++    size = blk_co_getlength(blk);
+     if (size < 0) {
+         error_free(local_err);
+         error_setg_errno(errp, -size,
 -- 
 2.41.0
 
