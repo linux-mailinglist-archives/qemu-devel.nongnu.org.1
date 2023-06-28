@@ -2,92 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52CB0740A2F
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 10:00:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DFA49740ABD
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 10:11:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEQ5C-0005Iw-Va; Wed, 28 Jun 2023 03:59:23 -0400
+	id 1qEQFt-00080P-OA; Wed, 28 Jun 2023 04:10:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1qEQ5B-0005HX-79
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 03:59:21 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1qEQ59-00030p-D9
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 03:59:20 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687939158;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=5ss2vhDeCJgXzZJSo6W1cECFqmw6tMqVtzFGMYfLquI=;
- b=Dh87hrYC0mRsou7UnXEsbJoCHQyDQ7fUSqEUPhKHuyMYmOAe1jLavcXjawHuHogAwssbAP
- O1jsLJopdwF5cVeiHWQx8eV/W4LkzP5/D12VFl+oFQVb6IUDbBCiDHwAN8pWUsM20BrxOc
- B8FyY8hYOk/WK8IlK56oPyMX4JwcOgg=
-Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
- [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-657-jgQwi-XFOyOmYq6weZOIYw-1; Wed, 28 Jun 2023 03:59:17 -0400
-X-MC-Unique: jgQwi-XFOyOmYq6weZOIYw-1
-Received: by mail-lj1-f199.google.com with SMTP id
- 38308e7fff4ca-2b6b5a7d882so11127941fa.3
- for <qemu-devel@nongnu.org>; Wed, 28 Jun 2023 00:59:16 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1qEQFp-0007yT-Go
+ for qemu-devel@nongnu.org; Wed, 28 Jun 2023 04:10:21 -0400
+Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1qEQFl-0001XS-EG
+ for qemu-devel@nongnu.org; Wed, 28 Jun 2023 04:10:20 -0400
+Received: by mail-ed1-x52e.google.com with SMTP id
+ 4fb4d7f45d1cf-51d89664272so5159459a12.1
+ for <qemu-devel@nongnu.org>; Wed, 28 Jun 2023 01:10:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1687939815; x=1690531815;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=bdUKDs3NrDlvDu85I0ujJlz1kTwuhWYb6Cmaa8BIkaY=;
+ b=CjGjXq6Jc93wTIICQIcCm9NBlfzGGwhCRz0R5XExWN+XWCNblPHozfFhVClsitXdtv
+ 1LcJN3mYWd56elr/7oacwGr1xNxYu/EImhaiX0y/H/4btkFjo6VYxyAZStl6tVehXAfj
+ WstZDS7KdzkW9ZmU/vPG3piwmTLJY4+kJyWJyEkcD14336UB53EnOaPHx6yUwKco7hFm
+ vAwxdN8sOPr/ONZvkb/6Qsa90wf5hZ0H3t/QXw1Y4/9bdTkww6NkYxQt434uwziavM84
+ wSSVAi8gg637xbXih9d/PW4hvVjSw1GK/m2Mmr0n1u7UC7QdEE2+APhM1fZsZ05ZbH3Q
+ /chw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687939155; x=1690531155;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=5ss2vhDeCJgXzZJSo6W1cECFqmw6tMqVtzFGMYfLquI=;
- b=ZCbjPNnlKeq43K5OH7bT1HIQSHE5VFV/O2Ar2gnSHRLkrtRytuVK+iKMnShtJ6nXq7
- vCMNExEq1f7zvi9GNzd7+i4nicAsbg3GoyHhwye7bxS1mUNyQOd/nSfMRp50IRytF8lW
- eg0pdg/eHiagwMd6+46qczp70AN6KE1hx3mZUWn+yoMZVZSr7LDmbXgDsC6sxURZV6wA
- 8E7I7Tnq3QyXmBBFj3vVqs44rMTmCDGt0LXVXx4fl3MPuLkMUAgQBnrkFEuhbOF7vWFM
- /K1mwZJJvjfsvPGopXGOFHQswWj1FcOVfvMfAeSVTiqY2MWrKnTRB0xy0/aLn6qWaM/N
- HiXw==
-X-Gm-Message-State: AC+VfDxy839Jmh0++swGpp36eD1xNIarFZFuSAIKT3Fw7PW256ka73nb
- Mi1rR3TVIqsHxJIB8LFXNWoRLPFw/+7AM6T2SeQ4jvqn3NmVUx9o5NY9Tq3iWoruVqLCrrfEGZm
- w7c2WKp2zRwGlPKMNJlhSpnqm8uHvjvE=
-X-Received: by 2002:a2e:b042:0:b0:2b5:8102:1843 with SMTP id
- d2-20020a2eb042000000b002b581021843mr19388838ljl.18.1687939155542; 
- Wed, 28 Jun 2023 00:59:15 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6ZIWi6S+7fHITrqgbmB+eNGuBEtRIZMHPaT6aVjigx5zD5GSU25wwff/0G6ErlJsHQrmv0Yo6upNfNGUUuPfM=
-X-Received: by 2002:a2e:b042:0:b0:2b5:8102:1843 with SMTP id
- d2-20020a2eb042000000b002b581021843mr19388823ljl.18.1687939155244; Wed, 28
- Jun 2023 00:59:15 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1687939815; x=1690531815;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=bdUKDs3NrDlvDu85I0ujJlz1kTwuhWYb6Cmaa8BIkaY=;
+ b=K16r387kCsfWSZU8DPdSp/gFlSRJlGOnOqXb1TEGqMTke20Cd03JWfnLsBk1gXrbpn
+ kuhbeZhl8BV5g1Wo0qtF9nkDbIpyDaqITdgovY4jOnIrj46XTFtxVf6zK59cAwqrXjqT
+ seXY+77NFigSO6Lv8g+ckbVIvovc1bW7kqv3lgHjTzqtFkGtuTCB720jO/SfX+/H2dx+
+ SjLKToVUh+C/AWSHwMVbv91qToUdsjO6kYnBgb+0FDeXvIV6p1gLhOh8FUOYl/zNg2Yh
+ qgrL6rI5SZKVRzhxN3ikJxFCmvZ+th8AUp2EbL03fNEH11KfVdKT83Yk0262/OalfOqB
+ cdlQ==
+X-Gm-Message-State: AC+VfDwfuw2K2wRKGcvypYRrExIKgeAXsxSvI+KhdZK2/b4RQwiHXELw
+ +rmTq/7ZK9bM0SdqWTVnwkqn4A==
+X-Google-Smtp-Source: ACHHUZ48EmF53XhzkT83Ed7iyWW7n0y6bUnJj67KxpK36YZSgwuoWqvvTe1bQxFjQbRvQ27whf8A9Q==
+X-Received: by 2002:aa7:d782:0:b0:51d:b963:4bd3 with SMTP id
+ s2-20020aa7d782000000b0051db9634bd3mr911059edq.31.1687939814723; 
+ Wed, 28 Jun 2023 01:10:14 -0700 (PDT)
+Received: from localhost (2001-1ae9-1c2-4c00-20f-c6b4-1e57-7965.ip6.tmcz.cz.
+ [2001:1ae9:1c2:4c00:20f:c6b4:1e57:7965])
+ by smtp.gmail.com with ESMTPSA id
+ w25-20020aa7cb59000000b0051bc7483bc7sm4574816edt.78.2023.06.28.01.10.13
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 28 Jun 2023 01:10:13 -0700 (PDT)
+Date: Wed, 28 Jun 2023 10:10:12 +0200
+From: Andrew Jones <ajones@ventanamicro.com>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: Daniel Henrique Barboza <dbarboza@ventanamicro.com>, 
+ qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
+ bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
+ palmer@rivosinc.com
+Subject: Re: [PATCH v5 11/19] target/riscv/cpu: add misa_ext_info_arr[]
+Message-ID: <20230628-d58458b465a317028b742501@orel>
+References: <20230627163203.49422-1-dbarboza@ventanamicro.com>
+ <20230627163203.49422-12-dbarboza@ventanamicro.com>
+ <e217dfb9-a4c2-12e3-6053-ef2167f30a05@linaro.org>
 MIME-Version: 1.0
-References: <20230622215824.2173343-1-i.maximets@ovn.org>
- <CACGkMEsXOb8wiYo9ktgqh8MqD971=ARJ_etL7MBF-uyo6qt1eA@mail.gmail.com>
- <CACGkMEuyq+5_cqx4T03fcaLOGUCrKLZn51sZxNSXyZq8CqLXTg@mail.gmail.com>
- <93a056c4-b6d3-5491-0c1f-7f58e9f9d1ad@ovn.org>
- <CACGkMEuaUTGeCYfH-MbtX_79scN-CkBmFMcY0fwKo4vO_9cn4w@mail.gmail.com>
- <26c03cd4-5582-489c-9f4c-aeaf8e157b42@ovn.org>
- <CACGkMEsE6_91mOhCP5ezT96zz-Tb-bLXQr9ktrLg6zG0TZC3Lg@mail.gmail.com>
- <CAJSP0QXPiNK2rH6_8bB7sjMpdQjT--oX0u4FkdaTj7Ew3qs8CA@mail.gmail.com>
-In-Reply-To: <CAJSP0QXPiNK2rH6_8bB7sjMpdQjT--oX0u4FkdaTj7Ew3qs8CA@mail.gmail.com>
-From: Jason Wang <jasowang@redhat.com>
-Date: Wed, 28 Jun 2023 15:59:03 +0800
-Message-ID: <CACGkMEuN_PeXZhqaN4EJP8rKRVK=wftpkH3--y267j9+7smCOw@mail.gmail.com>
-Subject: Re: [PATCH] net: add initial support for AF_XDP network backend
-To: Stefan Hajnoczi <stefanha@gmail.com>
-Cc: Ilya Maximets <i.maximets@ovn.org>, Paolo Bonzini <pbonzini@redhat.com>, 
- Eric Blake <eblake@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
- qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jasowang@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <e217dfb9-a4c2-12e3-6053-ef2167f30a05@linaro.org>
+Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
+ envelope-from=ajones@ventanamicro.com; helo=mail-ed1-x52e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,76 +98,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jun 28, 2023 at 3:46=E2=80=AFPM Stefan Hajnoczi <stefanha@gmail.com=
-> wrote:
->
-> On Wed, 28 Jun 2023 at 05:28, Jason Wang <jasowang@redhat.com> wrote:
-> >
-> > On Wed, Jun 28, 2023 at 6:45=E2=80=AFAM Ilya Maximets <i.maximets@ovn.o=
-rg> wrote:
-> > >
-> > > On 6/27/23 04:54, Jason Wang wrote:
-> > > > On Mon, Jun 26, 2023 at 9:17=E2=80=AFPM Ilya Maximets <i.maximets@o=
-vn.org> wrote:
-> > > >>
-> > > >> On 6/26/23 08:32, Jason Wang wrote:
-> > > >>> On Sun, Jun 25, 2023 at 3:06=E2=80=AFPM Jason Wang <jasowang@redh=
-at.com> wrote:
-> > > >>>>
-> > > >>>> On Fri, Jun 23, 2023 at 5:58=E2=80=AFAM Ilya Maximets <i.maximet=
-s@ovn.org> wrote:
-> > > >> It is noticeably more performant than a tap with vhost=3Don in ter=
-ms of PPS.
-> > > >> So, that might be one case.  Taking into account that just rcu loc=
-k and
-> > > >> unlock in virtio-net code takes more time than a packet copy, some=
- batching
-> > > >> on QEMU side should improve performance significantly.  And it sho=
-uldn't be
-> > > >> too hard to implement.
-> > > >>
-> > > >> Performance over virtual interfaces may potentially be improved by=
- creating
-> > > >> a kernel thread for async Tx.  Similarly to what io_uring allows. =
- Currently
-> > > >> Tx on non-zero-copy interfaces is synchronous, and that doesn't al=
-low to
-> > > >> scale well.
-> > > >
-> > > > Interestingly, actually, there are a lot of "duplication" between
-> > > > io_uring and AF_XDP:
-> > > >
-> > > > 1) both have similar memory model (user register)
-> > > > 2) both use ring for communication
-> > > >
-> > > > I wonder if we can let io_uring talks directly to AF_XDP.
-> > >
-> > > Well, if we submit poll() in QEMU main loop via io_uring, then we can
-> > > avoid cost of the synchronous Tx for non-zero-copy modes, i.e. for
-> > > virtual interfaces.  io_uring thread in the kernel will be able to
-> > > perform transmission for us.
-> >
-> > It would be nice if we can use iothread/vhost other than the main loop
-> > even if io_uring can use kthreads. We can avoid the memory translation
-> > cost.
->
-> The QEMU event loop (AioContext) has io_uring code
-> (utils/fdmon-io_uring.c) but it's disabled at the moment. I'm working
-> on patches to re-enable it and will probably send them in July. The
-> patches also add an API to submit arbitrary io_uring operations so
-> that you can do stuff besides file descriptor monitoring. Both the
-> main loop and IOThreads will be able to use io_uring on Linux hosts.
+On Tue, Jun 27, 2023 at 11:29:54PM +0200, Philippe Mathieu-Daudé wrote:
+> On 27/6/23 18:31, Daniel Henrique Barboza wrote:
+> > Next patch will add KVM specific user properties for both MISA and
+> > multi-letter extensions. For MISA extensions we want to make use of what
+> > is already available in misa_ext_cfgs[] to avoid code repetition.
+> > 
+> > misa_ext_info_arr[] array will hold name and description for each MISA
+> > extension that misa_ext_cfgs[] is declaring. We'll then use this new
+> > array in KVM code to avoid duplicating strings.
+> > 
+> > There's nothing holding us back from doing the same with multi-letter
+> > extensions. For now doing just with MISA extensions is enough.
+> > 
+> > Suggested-by: Andrew Jones <ajones@ventanamicro.com>
+> > Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+> > Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+> > ---
+> >   target/riscv/cpu.c | 60 ++++++++++++++++++++++++++--------------------
+> >   target/riscv/cpu.h | 11 ++++++++-
+> >   2 files changed, 44 insertions(+), 27 deletions(-)
+> 
+> 
+> > +const MISAExtInfo misa_ext_info_arr[] = {
+> > +    [RVA] = {"a", "Atomic instructions"},
+> > +    [RVC] = {"c", "Compressed instructions"},
+> > +    [RVD] = {"d", "Double-precision float point"},
+> > +    [RVF] = {"f", "Single-precision float point"},
+> > +    [RVI] = {"i", "Base integer instruction set"},
+> > +    [RVE] = {"e", "Base integer instruction set (embedded)"},
+> > +    [RVM] = {"m", "Integer multiplication and division"},
+> > +    [RVS] = {"s", "Supervisor-level instructions"},
+> > +    [RVU] = {"u", "User-level instructions"},
+> > +    [RVH] = {"h", "Hypervisor"},
+> > +    [RVJ] = {"x-j", "Dynamic translated languages"},
+> > +    [RVV] = {"v", "Vector operations"},
+> > +    [RVG] = {"g", "General purpose (IMAFD_Zicsr_Zifencei)"},
+> > +};
+> 
+> Personally I prefer using a getter() helper because we can check in
+> a single place for empty entries in the array.
+> 
+> IIUC this 13-entries array takes 4MiB (RVV is '1<<21' = 2MiB).
 
-Just to make sure I understand. If we still need a copy from guest to
-io_uring buffer, we still need to go via memory API for GPA which
-seems expensive.
+Oh, ouch. I never looked close enough to see that these indices
+where the _shifted_ bitnums. I assumed they were _the_ bitnums,
+i.e. RVV == 21, not RVV == 2097152!
 
-Vhost seems to be a shortcut for this.
-
-Thanks
-
->
-> Stefan
->
-
+Thanks,
+drew
 
