@@ -2,88 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18372741B28
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 23:51:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30951741B2D
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 23:52:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEd3V-0001MK-JK; Wed, 28 Jun 2023 17:50:29 -0400
+	id 1qEd4z-00064o-HZ; Wed, 28 Jun 2023 17:52:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qEd3K-0001Jn-K3
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 17:50:19 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qEd3J-0008Q3-7m
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 17:50:18 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687989016;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>)
+ id 1qEd4w-00061S-QP; Wed, 28 Jun 2023 17:51:58 -0400
+Received: from smtp-out2.suse.de ([2001:67c:2178:6::1d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>)
+ id 1qEd4v-0000FC-60; Wed, 28 Jun 2023 17:51:58 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id DAC351F750;
+ Wed, 28 Jun 2023 21:51:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1687989114; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=2wMxl19wPT6NOIYdfEthE3CTENPdu0RlUwoU249Hq90=;
- b=DINCsajt9LRTGrEJ/QXK25bXTbAS1q4nl2KhT+TIv7hdBjVSN1ZRgb2NrTtME/8fFpO+9V
- Rs1+i9xXQ1y7nJ/sO0sq0UouRT2Yyc86GTb7wbNKVGONqi+BrOLA3+lHM+NFZYHMEzs6Ke
- EOAF7BFWpSntDGu7f+F/xpWOrDz78MQ=
-Received: from mail-oi1-f200.google.com (mail-oi1-f200.google.com
- [209.85.167.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-649-0vFcQnnEOueCKhwG6dAjyQ-1; Wed, 28 Jun 2023 17:50:12 -0400
-X-MC-Unique: 0vFcQnnEOueCKhwG6dAjyQ-1
-Received: by mail-oi1-f200.google.com with SMTP id
- 5614622812f47-3a1f0f175f8so3144b6e.1
- for <qemu-devel@nongnu.org>; Wed, 28 Jun 2023 14:50:12 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687989011; x=1690581011;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=2wMxl19wPT6NOIYdfEthE3CTENPdu0RlUwoU249Hq90=;
- b=hW6X4s9/V+H15eaoO34tAZ2G3S5jHXxpxg/xGj9ZoCjN5VRTbNuXD8rNGJV6qmIoe5
- zHJ5ISeq72WlwgxvGyVD9dAMeXGX+WAfpXqQTypBMEyr9oqvA0gq36kV+6BNW4kCm93A
- j9NvPuxBUEb+3kTWfOD0Vlwu8tLxTd1u75YhyhEgc5XFMSwQX9FLrz24qA6t8gW0k/RG
- gxPzmhQC+L1g29izNk5q38zSGrC0H5CPcwoL52+yJnix5XBFwvM2O2aZcvr3X1rxA9xc
- bm6enUo0WcSjzWLrYpO9nUyKkJbxVRJ2tDhrClW/KqqB1I6Ro7fpwvl4A3MmLJWAJobB
- ytDQ==
-X-Gm-Message-State: AC+VfDxYYqrtL1/LnrIIIgFp5iwwB3csVDdwiGb1yC/j86/98NyrO+g4
- 9ooemGpBLcJsqMdjwaxNRMGQoW2pzakjANTrCV8WHHgx7MkkneM1hqLkcUolckY51oP4V2zMzE9
- 6UOcGIswtCq0PjKwimQeDTV5j1GguB/iy/wVgEgXAFDxyB4yk4vpnSIRv3T0/p9L6j2U+nfgk
-X-Received: by 2002:aca:b956:0:b0:3a1:ebb8:396a with SMTP id
- j83-20020acab956000000b003a1ebb8396amr879700oif.2.1687989011376; 
- Wed, 28 Jun 2023 14:50:11 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5JqIs26rdIsHa5vAoH3Zji4TcLkG7DaKD57OALkh4PeQJzHwjZ4eSiMDNlVlveJF3Vtuivhg==
-X-Received: by 2002:aca:b956:0:b0:3a1:ebb8:396a with SMTP id
- j83-20020acab956000000b003a1ebb8396amr879682oif.2.1687989011101; 
- Wed, 28 Jun 2023 14:50:11 -0700 (PDT)
-Received: from x1n.. (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
- [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- w29-20020ac84d1d000000b004032d9209a0sm255552qtv.50.2023.06.28.14.50.10
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 28 Jun 2023 14:50:10 -0700 (PDT)
-From: Peter Xu <peterx@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: peterx@redhat.com, Leonardo Bras Soares Passos <lsoaresp@redhat.com>,
- Fabiano Rosas <farosas@suse.de>, Juan Quintela <quintela@redhat.com>,
- Lukas Straub <lukasstraub2@web.de>
-Subject: [PATCH 7/7] migration: Provide explicit error message for file
- shutdowns
-Date: Wed, 28 Jun 2023 17:50:02 -0400
-Message-ID: <20230628215002.73546-8-peterx@redhat.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230628215002.73546-1-peterx@redhat.com>
-References: <20230628215002.73546-1-peterx@redhat.com>
+ bh=JrmVMEKvCpwICEIOWOUY0XbVeXGFMU6QizL/dyKqd00=;
+ b=TkNUrNoGxquyCD2d1KKnsRG60ulEERyE9aBxjcQD0rMJzGLVg12zKTeQhRHs8VcDeQ4vza
+ z/zUuoW3njEMUpwitYtBED2TiXP7aUaPkPixUq6qaKcKxIt1Amk9C/JXEkmmmIXTYmFr8q
+ BrsMrTRUzm9LOh4zIxL++nxySDrtEEg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1687989114;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=JrmVMEKvCpwICEIOWOUY0XbVeXGFMU6QizL/dyKqd00=;
+ b=+IHlLvhKV00EL+UuYCY1xXfDiIBhbAUYHxsocpQFDyb5A7yWvq6dltNnpfoZRDHZIoQ8u7
+ oicq2W7yqeVRdXAw==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 696BA138EF;
+ Wed, 28 Jun 2023 21:51:54 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id XAwoDXqrnGTRYAAAMHmgww
+ (envelope-from <farosas@suse.de>); Wed, 28 Jun 2023 21:51:54 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, Peter Maydell <peter.maydell@linaro.org>, Richard
+ Henderson <richard.henderson@linaro.org>, Thomas Huth <thuth@redhat.com>,
+ Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: Re: [PATCH] target/arm: gdbstub: Guard M-profile code with CONFIG_TCG
+In-Reply-To: <441e8217-31ac-0fd9-1d85-e83f9fdcb3f3@linaro.org>
+References: <20230628164821.16771-1-farosas@suse.de>
+ <441e8217-31ac-0fd9-1d85-e83f9fdcb3f3@linaro.org>
+Date: Wed, 28 Jun 2023 18:51:52 -0300
+Message-ID: <87bkgzqmpz.fsf@suse.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2001:67c:2178:6::1d; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -100,42 +88,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Provide an explicit reason for qemu_file_shutdown()s, which can be
-displayed in query-migrate when used.
+Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
 
-This will make e.g. migrate-pause to display explicit error descriptions,
-from:
+> On 28/6/23 18:48, Fabiano Rosas wrote:
+>> This code is only relevant when TCG is present in the build. Building
+>> with --disable-tcg --enable-xen on an x86 host we get:
+>>=20
+>> $ ../configure --target-list=3Dx86_64-softmmu,aarch64-softmmu --disable-=
+tcg --enable-xen
+>> $ make -j$(nproc)
+>> ...
+>> libqemu-aarch64-softmmu.fa.p/target_arm_gdbstub.c.o: in function `m_sysr=
+eg_ptr':
+>>   ../target/arm/gdbstub.c:358: undefined reference to `arm_v7m_get_sp_pt=
+r'
+>>   ../target/arm/gdbstub.c:361: undefined reference to `arm_v7m_get_sp_pt=
+r'
+>>=20
+>> libqemu-aarch64-softmmu.fa.p/target_arm_gdbstub.c.o: in function `arm_gd=
+b_get_m_systemreg':
+>> ../target/arm/gdbstub.c:405: undefined reference to `arm_v7m_mrs_control'
+>
+> I'm a bit confused, isn't this covered by the cross-arm64-xen-only
+> job?
 
-"error-desc": "Channel error: Input/output error"
-
-To:
-
-"error-desc": "Channel is explicitly shutdown by the user"
-
-in query-migrate.
-
-Signed-off-by: Peter Xu <peterx@redhat.com>
----
- migration/qemu-file.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
-
-diff --git a/migration/qemu-file.c b/migration/qemu-file.c
-index 419b4092e7..ff605027de 100644
---- a/migration/qemu-file.c
-+++ b/migration/qemu-file.c
-@@ -87,7 +87,10 @@ int qemu_file_shutdown(QEMUFile *f)
-      *      --> guest crash!
-      */
-     if (!f->last_error) {
--        qemu_file_set_error(f, -EIO);
-+        Error *err = NULL;
-+
-+        error_setg(&err, "Channel is explicitly shutdown by the user");
-+        qemu_file_set_error_obj(f, -EIO, err);
-     }
- 
-     if (!qio_channel_has_feature(f->ioc,
--- 
-2.41.0
-
+It should be. Perhaps the CI is using different optimization flags. I'll
+try to figure it out.
 
