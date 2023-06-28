@@ -2,76 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93C57741911
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 21:53:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49A2F741914
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 21:54:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEbDJ-0004jc-HF; Wed, 28 Jun 2023 15:52:29 -0400
+	id 1qEbDF-0004hp-VB; Wed, 28 Jun 2023 15:52:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qEbDC-0004gr-9d
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qEbDC-0004h2-SX
  for qemu-devel@nongnu.org; Wed, 28 Jun 2023 15:52:22 -0400
-Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
+Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qEbDA-0005iO-Mt
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qEbDB-0005iZ-Bu
  for qemu-devel@nongnu.org; Wed, 28 Jun 2023 15:52:22 -0400
-Received: by mail-ej1-x62b.google.com with SMTP id
- a640c23a62f3a-991fee3a6b1so25188666b.0
+Received: by mail-ej1-x62e.google.com with SMTP id
+ a640c23a62f3a-991fee3a6b1so25190166b.0
  for <qemu-devel@nongnu.org>; Wed, 28 Jun 2023 12:52:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1687981939; x=1690573939;
+ d=gmail.com; s=20221208; t=1687981940; x=1690573940;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=fWlnycR5wJyTdbj8DEeaQ9aaDr9hN9D3c5m0fZQj8MU=;
- b=dHQfj8xZfVNPNi67NDDtMr6ztg98xEwGKlej5ZICK/2ijaI9VUqgtDvwatQm/8PcFX
- ekPJZUed90DuG8BX3JfBMhPCv7mBx0WEA9IZjgUEfVMkIaXnIy9wYsEEcAUfGDxbeAqH
- P1X1T411rAucl0HroOvDECsnNMLxQbU+O+6gwPY4Bn9m9lVxsnmO8AUJEmOXr5foXqxi
- rB3iDWdztNBQTkMlcEj1t08i35Okh4PokAl8RgofPO2XnpAuvV7VSx/Q4S9YOjdXXMC1
- 6eZka3ep/JIyyukUmwFfOncOtzN27FkmSWDcTyJAn4qW3pcONgvT4dOnRwJdNDOayd/t
- HBcA==
+ bh=UK0QSdymOFByub6L+Ko6+j892+Q1EOkr2A7MxnMviE4=;
+ b=oBewUrNXU/c3JEPhwAnvz9PDBky7HWoDdRRJXf7CloOFM/9mPvwfBFrm5vX0lnzr31
+ k4X4YZvR1/hDBz4WDtguZ9VRplE+uZHAkvZc2CjIhfOa5OgNY2T6Q14jpl3V45eXIvbi
+ C7Tcv3IrM4X97DTW4gmca8lzSq9TxlPHpf5pa0N7vUBaQyGDDvMZr5hmFv77ReOt8YGA
+ 6phpKSrKzFPuapNAtjFbZI0W0iCXn1O9jS4MlCh2TCrHakabOSjO42J7RMKWgtRyiau3
+ gjOOvq263pFIkaKNBKda8iPSrwXvoFHEtJiVdQ7m5FPhIG4K+kTTLi5sx8Azul99xB8T
+ x0ew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687981939; x=1690573939;
+ d=1e100.net; s=20221208; t=1687981940; x=1690573940;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=fWlnycR5wJyTdbj8DEeaQ9aaDr9hN9D3c5m0fZQj8MU=;
- b=FUgZYwzPKUXIW8B2nkrp75xDyzYQLIWgKLGj2ui3CMwcIlir77FI1BY9ly1cZJ51V5
- gwjhnL6ypOeWyAcd2OTSx2dmuc+NYXKKbjOGoejvRoElqwkIun3vDM2XoKcUqyFstbe+
- djlwE/8GV83IcdJLw2HOKioK5NMa0mcBfOT7e6R5KIWJcPFIzl5+JHLNkRiZ21UViYSd
- IEizs4oEXMguj86qhhAAupR/w06H+DH1zrRDQ4MmdfdeoGjfapk5z5BzQ7hXJ5lVrCGR
- kkvKEiQWOx2Ymhoo5wqkzq6sYGSEGZAyqhSk977pUiZL3814bqbkog9eSwEKI08nYtGY
- h6ig==
-X-Gm-Message-State: AC+VfDxsPRDH1mFwkVXX+jCCMPBp8HD3kQ4dC5PGk/W5UxU2pPBM0k8e
- 0Mw4beXOfuyen4u54JAa29Xdlcq4k9s=
-X-Google-Smtp-Source: ACHHUZ52DBeQ2cjjNsTmbdGi5j4ZEZnDL4RR6VsqkFGnT7bgJOZ6cDIPvUh+lZB6J7vtECx0oS448g==
-X-Received: by 2002:a17:907:3e16:b0:978:a186:464f with SMTP id
- hp22-20020a1709073e1600b00978a186464fmr35930860ejc.39.1687981938712; 
- Wed, 28 Jun 2023 12:52:18 -0700 (PDT)
+ bh=UK0QSdymOFByub6L+Ko6+j892+Q1EOkr2A7MxnMviE4=;
+ b=aPJDrwzBARPI7/R4uybepi7EtMX2NaDRCdf49BfmvWijIo/ZBO1UN5oUjfJ40Ai3DZ
+ dSacb7ZYT+vdJ61fkIRIkhcJTpRZWPyW0E6jqQOEBsIJoTMVOIi0x21ZlMt7FONDQ1cD
+ lF/2sTxNoWt27qgjfse01bV2+m+MWYlYeTO5scquAz2qwVn0AswYzAmsNzLSs53uYqxb
+ s9Iga5pI3cubUa6FvRIerpIMJCiYGHAjakMescVLqg1ikQCPJN33FUsunJnEZjlGDqUx
+ miSijkDgiXP8leYfy5dpOCd1n5mnEjpW3hyTxGCAquYRbaPDN825dRKbw2BkGblgYCz+
+ Og1Q==
+X-Gm-Message-State: AC+VfDywQftMukpWNolno4LbmWdunJzvnmECn1AdXCMtqfFQxs20AVS2
+ ZZBmuOOFiWM+COSamBmJin2L2AYGJDc=
+X-Google-Smtp-Source: ACHHUZ5NFYXKm5XyVTIwTm5PuVeXNUAY9JKuH/EpcqBTO3fBZwaTvWn3Eu/LC0xeVlSQy6WwZSOGbw==
+X-Received: by 2002:a17:907:1dec:b0:991:e3c4:c129 with SMTP id
+ og44-20020a1709071dec00b00991e3c4c129mr6068124ejc.69.1687981939786; 
+ Wed, 28 Jun 2023 12:52:19 -0700 (PDT)
 Received: from archlinux.. (dynamic-077-191-074-208.77.191.pool.telefonica.de.
  [77.191.74.208]) by smtp.gmail.com with ESMTPSA id
- ec10-20020a170906b6ca00b00982be08a9besm6142817ejb.172.2023.06.28.12.52.17
+ ec10-20020a170906b6ca00b00982be08a9besm6142817ejb.172.2023.06.28.12.52.18
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 28 Jun 2023 12:52:18 -0700 (PDT)
+ Wed, 28 Jun 2023 12:52:19 -0700 (PDT)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Eduardo Habkost <eduardo@habkost.net>,
  "Michael S. Tsirkin" <mst@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Bernhard Beschow <shentey@gmail.com>
-Subject: [PATCH v2 06/16] hw/pci-host/q35: Make some property name macros
- reusable by i440fx
-Date: Wed, 28 Jun 2023 21:51:54 +0200
-Message-ID: <20230628195204.1241-7-shentey@gmail.com>
+ Paolo Bonzini <pbonzini@redhat.com>, Bernhard Beschow <shentey@gmail.com>,
+ Igor Mammedov <imammedo@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v2 07/16] hw/pci-host/i440fx: Replace magic values by existing
+ constants
+Date: Wed, 28 Jun 2023 21:51:55 +0200
+Message-ID: <20230628195204.1241-8-shentey@gmail.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230628195204.1241-1-shentey@gmail.com>
 References: <20230628195204.1241-1-shentey@gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
- envelope-from=shentey@gmail.com; helo=mail-ej1-x62b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
+ envelope-from=shentey@gmail.com; helo=mail-ej1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,94 +98,39 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+Reviewed-by: Igor Mammedov <imammedo@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/i386/pc.h      | 4 ++++
- include/hw/pci-host/q35.h | 5 -----
- hw/i386/pc_q35.c          | 8 ++++----
- hw/pci-host/q35.c         | 8 ++++----
- 4 files changed, 12 insertions(+), 13 deletions(-)
+ hw/pci-host/i440fx.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
-index 6eec0fc51d..c34c698cdd 100644
---- a/include/hw/i386/pc.h
-+++ b/include/hw/i386/pc.h
-@@ -146,6 +146,10 @@ void pc_acpi_smi_interrupt(void *opaque, int irq, int level);
+diff --git a/hw/pci-host/i440fx.c b/hw/pci-host/i440fx.c
+index 61e7b97ff4..daa4d11104 100644
+--- a/hw/pci-host/i440fx.c
++++ b/hw/pci-host/i440fx.c
+@@ -277,8 +277,8 @@ PCIBus *i440fx_init(const char *pci_type,
  
- void pc_guest_info_init(PCMachineState *pcms);
+     /* if *disabled* show SMRAM to all CPUs */
+     memory_region_init_alias(&f->smram_region, OBJECT(d), "smram-region",
+-                             f->pci_address_space, 0xa0000, 0x20000);
+-    memory_region_add_subregion_overlap(f->system_memory, 0xa0000,
++                             f->pci_address_space, SMRAM_C_BASE, SMRAM_C_SIZE);
++    memory_region_add_subregion_overlap(f->system_memory, SMRAM_C_BASE,
+                                         &f->smram_region, 1);
+     memory_region_set_enabled(&f->smram_region, true);
  
-+#define PCI_HOST_PROP_RAM_MEM          "ram-mem"
-+#define PCI_HOST_PROP_PCI_MEM          "pci-mem"
-+#define PCI_HOST_PROP_SYSTEM_MEM       "system-mem"
-+#define PCI_HOST_PROP_IO_MEM           "io-mem"
- #define PCI_HOST_PROP_PCI_HOLE_START   "pci-hole-start"
- #define PCI_HOST_PROP_PCI_HOLE_END     "pci-hole-end"
- #define PCI_HOST_PROP_PCI_HOLE64_START "pci-hole64-start"
-diff --git a/include/hw/pci-host/q35.h b/include/hw/pci-host/q35.h
-index e89329c51e..1d98bbfe0d 100644
---- a/include/hw/pci-host/q35.h
-+++ b/include/hw/pci-host/q35.h
-@@ -74,11 +74,6 @@ struct Q35PCIHost {
-  * gmch part
-  */
+@@ -286,9 +286,9 @@ PCIBus *i440fx_init(const char *pci_type,
+     memory_region_init(&f->smram, OBJECT(d), "smram", 4 * GiB);
+     memory_region_set_enabled(&f->smram, true);
+     memory_region_init_alias(&f->low_smram, OBJECT(d), "smram-low",
+-                             f->ram_memory, 0xa0000, 0x20000);
++                             f->ram_memory, SMRAM_C_BASE, SMRAM_C_SIZE);
+     memory_region_set_enabled(&f->low_smram, true);
+-    memory_region_add_subregion(&f->smram, 0xa0000, &f->low_smram);
++    memory_region_add_subregion(&f->smram, SMRAM_C_BASE, &f->low_smram);
+     object_property_add_const_link(qdev_get_machine(), "smram",
+                                    OBJECT(&f->smram));
  
--#define MCH_HOST_PROP_RAM_MEM "ram-mem"
--#define MCH_HOST_PROP_PCI_MEM "pci-mem"
--#define MCH_HOST_PROP_SYSTEM_MEM "system-mem"
--#define MCH_HOST_PROP_IO_MEM "io-mem"
--
- /* PCI configuration */
- #define MCH_HOST_BRIDGE                        "MCH"
- 
-diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
-index 852250e8cb..02dd274276 100644
---- a/hw/i386/pc_q35.c
-+++ b/hw/i386/pc_q35.c
-@@ -218,13 +218,13 @@ static void pc_q35_init(MachineState *machine)
-     pc_memory_init(pcms, system_memory, rom_memory, pci_hole64_size);
- 
-     object_property_add_child(OBJECT(machine), "q35", phb);
--    object_property_set_link(phb, MCH_HOST_PROP_RAM_MEM,
-+    object_property_set_link(phb, PCI_HOST_PROP_RAM_MEM,
-                              OBJECT(machine->ram), NULL);
--    object_property_set_link(phb, MCH_HOST_PROP_PCI_MEM,
-+    object_property_set_link(phb, PCI_HOST_PROP_PCI_MEM,
-                              OBJECT(pci_memory), NULL);
--    object_property_set_link(phb, MCH_HOST_PROP_SYSTEM_MEM,
-+    object_property_set_link(phb, PCI_HOST_PROP_SYSTEM_MEM,
-                              OBJECT(system_memory), NULL);
--    object_property_set_link(phb, MCH_HOST_PROP_IO_MEM,
-+    object_property_set_link(phb, PCI_HOST_PROP_IO_MEM,
-                              OBJECT(system_io), NULL);
-     object_property_set_int(phb, PCI_HOST_BELOW_4G_MEM_SIZE,
-                             x86ms->below_4g_mem_size, NULL);
-diff --git a/hw/pci-host/q35.c b/hw/pci-host/q35.c
-index d2830cee34..91c46df9ae 100644
---- a/hw/pci-host/q35.c
-+++ b/hw/pci-host/q35.c
-@@ -240,19 +240,19 @@ static void q35_host_initfn(Object *obj)
-     object_property_add_uint64_ptr(obj, PCIE_HOST_MCFG_SIZE,
-                                    &pehb->size, OBJ_PROP_FLAG_READ);
- 
--    object_property_add_link(obj, MCH_HOST_PROP_RAM_MEM, TYPE_MEMORY_REGION,
-+    object_property_add_link(obj, PCI_HOST_PROP_RAM_MEM, TYPE_MEMORY_REGION,
-                              (Object **) &s->mch.ram_memory,
-                              qdev_prop_allow_set_link_before_realize, 0);
- 
--    object_property_add_link(obj, MCH_HOST_PROP_PCI_MEM, TYPE_MEMORY_REGION,
-+    object_property_add_link(obj, PCI_HOST_PROP_PCI_MEM, TYPE_MEMORY_REGION,
-                              (Object **) &s->mch.pci_address_space,
-                              qdev_prop_allow_set_link_before_realize, 0);
- 
--    object_property_add_link(obj, MCH_HOST_PROP_SYSTEM_MEM, TYPE_MEMORY_REGION,
-+    object_property_add_link(obj, PCI_HOST_PROP_SYSTEM_MEM, TYPE_MEMORY_REGION,
-                              (Object **) &s->mch.system_memory,
-                              qdev_prop_allow_set_link_before_realize, 0);
- 
--    object_property_add_link(obj, MCH_HOST_PROP_IO_MEM, TYPE_MEMORY_REGION,
-+    object_property_add_link(obj, PCI_HOST_PROP_IO_MEM, TYPE_MEMORY_REGION,
-                              (Object **) &s->mch.address_space_io,
-                              qdev_prop_allow_set_link_before_realize, 0);
- }
 -- 
 2.41.0
 
