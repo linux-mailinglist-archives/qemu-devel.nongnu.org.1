@@ -2,71 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8C4F74099F
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 09:13:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 470697409A2
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 09:13:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEPLp-00034v-IN; Wed, 28 Jun 2023 03:12:29 -0400
+	id 1qEPLt-0003Op-Ni; Wed, 28 Jun 2023 03:12:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qEPLV-00033n-4i
+ id 1qEPLV-00033m-3e
  for qemu-devel@nongnu.org; Wed, 28 Jun 2023 03:12:10 -0400
-Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qEPLT-0005Ia-6m
+ id 1qEPLT-0005Ig-Gn
  for qemu-devel@nongnu.org; Wed, 28 Jun 2023 03:12:08 -0400
-Received: by mail-lf1-x134.google.com with SMTP id
- 2adb3069b0e04-4fb7dc16ff0so3201746e87.2
- for <qemu-devel@nongnu.org>; Wed, 28 Jun 2023 00:12:06 -0700 (PDT)
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-313f04ff978so3015026f8f.3
+ for <qemu-devel@nongnu.org>; Wed, 28 Jun 2023 00:12:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687936325; x=1690528325;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=gnOmqiNt0uuPn7dHfv6gqd6Jo/Wr3kqBk5WYapt4iEA=;
- b=hkl17mDZa3ex7cE1RtllD/TsZ6WNTCWuzAK26kzoKg8kR2JxeIFQq9CfHt+lwN6S84
- wi3xf423DS8N2NRqUIRp/jteyPaIBu2PYM3v4YrktRiwpM0hX/mXHsc/RPTirlHczNxj
- oQL4Y3r/sp9du/T01ZRwbbiEuyj8KsSEQJbqamPb5BM//Sv7zKKTVLHij93lgOvQxsMz
- 91FFQ/e8VmlFB+Rz0gkUaWQLxfPWL4WpwJ8DIiSBkwFYC5Jvv3rmK9ReiDhQoAKBqZGh
- D4PnMbaBQ1Fb/2Gy0SsE2Ig81jaOjQisHMCuMz7vtHNpoFPasnMS3FR2sXbxTYiyFyug
- t4Lg==
+ d=linaro.org; s=google; t=1687936326; x=1690528326;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=6MLLwhPBjVmEi0+udNp6FGHceQgbPjwj+i6jIV9NGNI=;
+ b=TpEckxW4V7K+Ttlc8rgCqcwSYgbLo/21tit1oAjnyQlNTbCjoc6rf3/D4R1nWNUHiU
+ 7jI5acuwYSh1aXVik3PLhgZpidWBbtrx0za4TqFYWquDvHYdTf0J2dOudMPbFv3cdW15
+ /nFUdK3RkHaEr7BkxPb0cdxiBh/7+Bf1PDyoSzBf0J/IqtKazbny3x/jHrTVnFhtdQ5i
+ biwf6UnKOyNnelcF8PuTMIc/Hg0NqZkEsaGg3mEAaBttvtQ77LHG77kMcAQ/Pxo12DO6
+ xjUIibTaHlwM+omFel98No8DywWjHaEkDDqbLkk79pBUtAAxBmSi88KBIasGnK5sVYw6
+ Ow3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687936325; x=1690528325;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=gnOmqiNt0uuPn7dHfv6gqd6Jo/Wr3kqBk5WYapt4iEA=;
- b=KqsvyCjfYKtA1eUo4/z3vgoHTsq1r+J7dWb4hSL3edygBHU0pe/xGjhB03KHyFHClJ
- xqzj0xAUR3LtUUBl/Bk6fzmwpeP1wQe/lcRCuXMKm9uVHypLSocOOkRvAdBbmzHTmr7h
- rgY680Lpyfb9wzC+ewHWJE7qvoyw/yKvzBG/K/dMiEORga6+FpkbRaIiKlZifFzcMYIk
- yALInp6RotQ/CUrwJfdQUM1y6Zo62FwROXwC6DQwHx47daDtAPwHqvBRtWWQqMPBGg2B
- oTAwBjytxKGX66I3T7R7yyw7/3Gv+SIN5Ggct1HTKpDwv8VkBEsHrYSNBcQg9GQXL0iF
- V0yg==
-X-Gm-Message-State: AC+VfDzeQO/Zn4d2Qsvy5Lq5BXroaplURpkPOWANb6M/h6hkVO68CE0D
- 5D3S0Cd58BKlYEnDqv/qxgkQe1zFCMDgjqu5Ks1MDH3m
-X-Google-Smtp-Source: ACHHUZ5bHCxv6gg5iB/vtNVaf+/iy9cAzsjTdzPkexc9Q6jYyvwSvkY3xc/KFdJdOZmKcwThYhaNkQ==
-X-Received: by 2002:a05:6512:3e06:b0:4f9:69af:9857 with SMTP id
- i6-20020a0565123e0600b004f969af9857mr13518607lfv.51.1687936324933; 
- Wed, 28 Jun 2023 00:12:04 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1687936326; x=1690528326;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=6MLLwhPBjVmEi0+udNp6FGHceQgbPjwj+i6jIV9NGNI=;
+ b=i3gsZwI0Cad6V0MAshVu+olt8QRmBBK6E3hISOf6kcbFNJHpVGATxY1THlJOp1i2+8
+ 410v7nZqBVku/nr6kF9kG4CS6IRrab81fOnSX32IOBXubOzhgB/cHI6fH0yXcdFv4e7v
+ rL/4z+lngf+wx8VTb3Jw/lRRNOM6COAGrYk69tsL2q/3I+hZk1pp8AHlZ42RrqGhZ/IU
+ RTRMWapj8d2v+OIg7v2VPDBWlLCiuxCQQELPCxjT9D5EqlFx+5eiuDU2E/nQzsaut8Ks
+ uRpsv/cpj1v5MYR2vlrH9NQGH+HP8r94wIth3XUEy6NQyfcfd0yTpy4sVIMQC1VMvWlw
+ bLMA==
+X-Gm-Message-State: AC+VfDxAc5n8wVEQ9T900Mf+OWMd4izjcNL2LlHgwQ4UAZDP3Rm2CwqR
+ rbCwLLX+4S1qE4Fzn0RdjVpRUDmIJKUdjm/7egW93PMI
+X-Google-Smtp-Source: ACHHUZ4M92qqCfewVxjvPCJbS60u9EWL9b/yg59WJ4hhfbtyoagacwnne0iPd6oskPVbC0BZrkw1iQ==
+X-Received: by 2002:a05:6000:1818:b0:313:fe77:a825 with SMTP id
+ m24-20020a056000181800b00313fe77a825mr3467340wrh.13.1687936325753; 
+ Wed, 28 Jun 2023 00:12:05 -0700 (PDT)
 Received: from localhost.localdomain ([139.47.41.103])
  by smtp.gmail.com with ESMTPSA id
- a5-20020a5d5705000000b00313f9a0c521sm4908667wrv.107.2023.06.28.00.12.04
+ a5-20020a5d5705000000b00313f9a0c521sm4908667wrv.107.2023.06.28.00.12.05
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 28 Jun 2023 00:12:04 -0700 (PDT)
+ Wed, 28 Jun 2023 00:12:05 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH v3 0/8] target/sparc: Use tcg_gen_lookup_and_goto_ptr
-Date: Wed, 28 Jun 2023 09:11:54 +0200
-Message-Id: <20230628071202.230991-1-richard.henderson@linaro.org>
+Cc: mark.cave-ayland@ilande.co.uk,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v3 1/8] target/sparc: Use tcg_gen_lookup_and_goto_ptr in
+ gen_goto_tb
+Date: Wed, 28 Jun 2023 09:11:55 +0200
+Message-Id: <20230628071202.230991-2-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230628071202.230991-1-richard.henderson@linaro.org>
+References: <20230628071202.230991-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::134;
- envelope-from=richard.henderson@linaro.org; helo=mail-lf1-x134.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,31 +94,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Changes from v2:
-  * Patch 4 relaxes the checking on NPC:
-    (1) save_npc has just asserted that if the low 2 bits are non-zero,
-        then we have exactly one of our 3 special cases.
-    (2) The difference between DYNAMIC_PC_LOOKUP and DYNAMIC_PC within
-        NPC are not relevant to chaining, only those two values within PC.
-    Therefore simplify the test in sparc_tr_tb_stop.
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ target/sparc/translate.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-
-r~
-
-
-Richard Henderson (8):
-  target/sparc: Use tcg_gen_lookup_and_goto_ptr in gen_goto_tb
-  target/sparc: Fix npc comparison in sparc_tr_insn_start
-  target/sparc: Drop inline markers from translate.c
-  target/sparc: Introduce DYNAMIC_PC_LOOKUP
-  target/sparc: Use DYNAMIC_PC_LOOKUP for conditional branches
-  target/sparc: Use DYNAMIC_PC_LOOKUP for JMPL
-  target/sparc: Use DYNAMIC_PC_LOOKUP for v9 RETURN
-  target/sparc: Use tcg_gen_lookup_and_goto_ptr for v9 WRASI
-
- target/sparc/translate.c | 402 ++++++++++++++++++++++-----------------
- 1 file changed, 225 insertions(+), 177 deletions(-)
-
+diff --git a/target/sparc/translate.c b/target/sparc/translate.c
+index bad2ec90a0..28d4cdb8b4 100644
+--- a/target/sparc/translate.c
++++ b/target/sparc/translate.c
+@@ -318,10 +318,10 @@ static void gen_goto_tb(DisasContext *s, int tb_num,
+         tcg_gen_movi_tl(cpu_npc, npc);
+         tcg_gen_exit_tb(s->base.tb, tb_num);
+     } else {
+-        /* jump to another page: currently not optimized */
++        /* jump to another page: we can use an indirect jump */
+         tcg_gen_movi_tl(cpu_pc, pc);
+         tcg_gen_movi_tl(cpu_npc, npc);
+-        tcg_gen_exit_tb(NULL, 0);
++        tcg_gen_lookup_and_goto_ptr();
+     }
+ }
+ 
 -- 
 2.34.1
 
