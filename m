@@ -2,81 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B558E740AF3
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 10:15:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE1FB740AF4
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 10:15:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEQK1-0001iY-Ob; Wed, 28 Jun 2023 04:14:41 -0400
+	id 1qEQKa-0001qr-N4; Wed, 28 Jun 2023 04:15:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1qEQJz-0001hQ-1S
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 04:14:39 -0400
-Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1qEQKY-0001qV-Uk
+ for qemu-devel@nongnu.org; Wed, 28 Jun 2023 04:15:14 -0400
+Received: from mail-oa1-x36.google.com ([2001:4860:4864:20::36])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1qEQJx-0002Xd-B5
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 04:14:38 -0400
-Received: by mail-ej1-x62e.google.com with SMTP id
- a640c23a62f3a-991fe70f21bso252100666b.3
- for <qemu-devel@nongnu.org>; Wed, 28 Jun 2023 01:14:36 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1qEQKW-0002p5-Ju
+ for qemu-devel@nongnu.org; Wed, 28 Jun 2023 04:15:14 -0400
+Received: by mail-oa1-x36.google.com with SMTP id
+ 586e51a60fabf-1b07d97180dso307274fac.3
+ for <qemu-devel@nongnu.org>; Wed, 28 Jun 2023 01:15:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1687940075; x=1690532075;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=cFkITCm7Ej6n3DjkfdwkD4Elkhz2kqSHz2YVvLg1u08=;
- b=RTCvYi/1PQugB30B06+ygqrdftaCE1v2/txMRMz17itSwI1uTcU62xa3qDmngRUbNv
- m2vKCnB2AuM4LRSHUZI1mYTXrAL5HSBxWfchEyyvoPcLjLdEscvCFV1DAY74REWXw4Ps
- EjH2wIR3F0Gj6k+3Wn676l597vohi/u+s0KBWRWaudwz7cuRYWcldAIcQVtZ7x4d1qgc
- x9o/RBugw/6Fwc/rsxDFOtT9SmbQSlYeVjEeYpj3Tpn/A+QamAjjETXH+j1rf1sL25e0
- /RHe6PLgGhDAMRcVXZXzIvagciUyjw8xcdCdttDrB7mY8/jaGW38VKhlrT8F+b5STQ4F
- f6OA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687940075; x=1690532075;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ d=gmail.com; s=20221208; t=1687940111; x=1690532111;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=cFkITCm7Ej6n3DjkfdwkD4Elkhz2kqSHz2YVvLg1u08=;
- b=hHMEajgDOBSc8VpW5ZNqaCna+9qHPF3Hq2LmhHRadizEh6z52oI5ksFRRIl7D7BcdU
- P4Zg/gNGtnKN86C5MrhMb7dEFMx0sB4wLU71sfCT4MBkLj7vReQQmH6MIDgDkj0LwSer
- dLqKNtXbiIutD/PYgfXdOez2uy5Pdm+Owl1sVW4GBzHx/r6Tj9Z1v/Uvor3s90RMju+0
- wLE8UHcjoo0fy0gisG/F+GA4dJOqIxNL5h4HpNv4D9xTLJoFOIat7RQ2FwxBSKOws6q1
- S9F7o1y1Kn9PGZFY3/mhJkiF+WIcgGn4XLWv/W8cM8IascT5q5HRGmS5QH43A8GS3Ga1
- DKqw==
-X-Gm-Message-State: AC+VfDxPpWNsDLaEAt0tOvQYjSQAwbmrTMs4//T3lNDD3ErhvU9+gU/C
- gGo2MO5ZXezWHl8Ne8r7PauaFg==
-X-Google-Smtp-Source: ACHHUZ67bFSbmMlXFuxlfzAxQaVtZCIn6e+AI3cERCDJgGm7a1WEEoRA0cmqI1t56uRQXeiM4JPMeQ==
-X-Received: by 2002:a17:906:da8a:b0:97d:2bcc:47d5 with SMTP id
- xh10-20020a170906da8a00b0097d2bcc47d5mr29715601ejb.49.1687940075311; 
- Wed, 28 Jun 2023 01:14:35 -0700 (PDT)
-Received: from localhost (2001-1ae9-1c2-4c00-20f-c6b4-1e57-7965.ip6.tmcz.cz.
- [2001:1ae9:1c2:4c00:20f:c6b4:1e57:7965])
- by smtp.gmail.com with ESMTPSA id
- l16-20020a1709065a9000b0098884f86e41sm5379644ejq.123.2023.06.28.01.14.34
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 28 Jun 2023 01:14:34 -0700 (PDT)
-Date: Wed, 28 Jun 2023 10:14:33 +0200
-From: Andrew Jones <ajones@ventanamicro.com>
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
- bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
- palmer@rivosinc.com
-Subject: Re: [PATCH v5 16/19] target/riscv/cpu.c: create KVM mock properties
-Message-ID: <20230628-3c9c1c6716a2b5752db75315@orel>
-References: <20230627163203.49422-1-dbarboza@ventanamicro.com>
- <20230627163203.49422-17-dbarboza@ventanamicro.com>
+ bh=amb9PdwzK2dq9guvrH6cRIZhhG/JGq0GF5KwBk9VNfA=;
+ b=d1Jno0Pv+A04irrCHa5YQIOsj2EjPLGgIMyvieJuV669SRgiiDoWXB7Slh9AkjtIZw
+ 0MR6V9EPpKRVZ0ThuF4UBoNmz9qlbX05sMpKdNzLtgJoY4trOyhjbSAD64h2RHBl9QDV
+ JJ/NIxv3bHfeBhfaj9rb0f7H5jxVvJ+ElSCcVEAOf3o9mbngC1yMHlngtcK/k8Pqy9YA
+ rs6pG/fXFQIEPopSvSz1xwL2njzR5TfnbQH5vfpWZ2uK35/LZommnTDJpx0SSwE6OBz9
+ l9yKQmEU/h9xYnljtGF3goKe6/MbOABkaFvS7rqsxFjDiRziwtcKvseD6W3MgrzxlAI3
+ O1XA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1687940111; x=1690532111;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=amb9PdwzK2dq9guvrH6cRIZhhG/JGq0GF5KwBk9VNfA=;
+ b=gmiSfI8ZaLJqWRPEN1RFDt1SaJ+TX/r6EJRPqTij7XVO0YGksK1c4QhUgBXZpfpfnQ
+ 0pDDxLgEpjfAtZCHUVtDfbCVOZiItJyFaJDbC+rXU9qJBRiJAIx1DAx796HqJ+0Y4wlH
+ yqle8YFu5nPHXUYphmKZFM88x5mZpuwSB4nXy8ycQUQkE38jM9iA84eazLF7xstyRfcn
+ HGIqcaZqQBAP3KiRNs9B+ufJLx9gYmmq3P5OENob4NGt/38iWbbcVW3qyNH1wMzeE6pI
+ jeOO922DMaMM0T3sFObQKSM7rckrkdTNNbT9YUi1MDM3xCbRdxp6TNV2R1C4Q5UGo2QC
+ Or2w==
+X-Gm-Message-State: AC+VfDxJjXBpljRkM0fgwbMdsF4zZ8Xe4H5X55CEgvQd3LA6Rl1ZzkS2
+ aosXyoAPZETUo8uYwk/mk/n+E0jUwUJgsvU2XrY=
+X-Google-Smtp-Source: ACHHUZ4seFrivwI9oWU4qo/dt4KFr9zDwj5Q12FxGxWyZU9VLjdLLJ0Vy/bKkvAyKMEawtlr+NGPbgAwjhJshFNUhEA=
+X-Received: by 2002:a05:6870:e916:b0:1b0:6e5b:21d6 with SMTP id
+ l22-20020a056870e91600b001b06e5b21d6mr2655483oan.38.1687940110819; Wed, 28
+ Jun 2023 01:15:10 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230627163203.49422-17-dbarboza@ventanamicro.com>
-Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
- envelope-from=ajones@ventanamicro.com; helo=mail-ej1-x62e.google.com
+References: <20230622215824.2173343-1-i.maximets@ovn.org>
+ <CACGkMEsXOb8wiYo9ktgqh8MqD971=ARJ_etL7MBF-uyo6qt1eA@mail.gmail.com>
+ <CACGkMEuyq+5_cqx4T03fcaLOGUCrKLZn51sZxNSXyZq8CqLXTg@mail.gmail.com>
+ <93a056c4-b6d3-5491-0c1f-7f58e9f9d1ad@ovn.org>
+ <CACGkMEuaUTGeCYfH-MbtX_79scN-CkBmFMcY0fwKo4vO_9cn4w@mail.gmail.com>
+ <26c03cd4-5582-489c-9f4c-aeaf8e157b42@ovn.org>
+ <CACGkMEsE6_91mOhCP5ezT96zz-Tb-bLXQr9ktrLg6zG0TZC3Lg@mail.gmail.com>
+ <CAJSP0QXPiNK2rH6_8bB7sjMpdQjT--oX0u4FkdaTj7Ew3qs8CA@mail.gmail.com>
+ <CACGkMEuN_PeXZhqaN4EJP8rKRVK=wftpkH3--y267j9+7smCOw@mail.gmail.com>
+In-Reply-To: <CACGkMEuN_PeXZhqaN4EJP8rKRVK=wftpkH3--y267j9+7smCOw@mail.gmail.com>
+From: Stefan Hajnoczi <stefanha@gmail.com>
+Date: Wed, 28 Jun 2023 10:14:59 +0200
+Message-ID: <CAJSP0QVg-mmtnMXZpxRKutbdgpdNeawJT45iQSp4cf=MRedZAQ@mail.gmail.com>
+Subject: Re: [PATCH] net: add initial support for AF_XDP network backend
+To: Jason Wang <jasowang@redhat.com>
+Cc: Ilya Maximets <i.maximets@ovn.org>, Paolo Bonzini <pbonzini@redhat.com>, 
+ Eric Blake <eblake@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
+ qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2001:4860:4864:20::36;
+ envelope-from=stefanha@gmail.com; helo=mail-oa1-x36.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -94,104 +96,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jun 27, 2023 at 01:32:00PM -0300, Daniel Henrique Barboza wrote:
-> KVM-specific properties are being created inside target/riscv/kvm.c. But
-> at this moment we're gathering all the remaining properties from TCG and
-> adding them as is when running KVM. This creates a situation where
-> non-KVM properties are setting flags to 'true' due to its default
-> settings (e.g.  Zawrs). Users can also freely enable them via command
-> line.
-> 
-> This doesn't impact runtime per se because KVM doesn't care about these
-> flags, but code such as riscv_isa_string_ext() take those flags into
-> account. The result is that, for a KVM guest, setting non-KVM properties
-> will make them appear in the riscv,isa DT.
-> 
-> We want to keep the same API for both TCG and KVM and at the same time,
-> when running KVM, forbid non-KVM extensions to be enabled internally. We
-> accomplish both by changing riscv_cpu_add_user_properties() to add a
-> mock boolean property for every non-KVM extension in
-> riscv_cpu_extensions[]. Then, when running KVM, users are still free to
-> set extensions at will, but we'll error out if a non-KVM extension is
-> enabled. Setting such extension to 'false' will be ignored.
-> 
-> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-> ---
->  target/riscv/cpu.c | 42 +++++++++++++++++++++++++++++++++++++++---
->  1 file changed, 39 insertions(+), 3 deletions(-)
-> 
-> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-> index b65db165cc..22851b0e93 100644
-> --- a/target/riscv/cpu.c
-> +++ b/target/riscv/cpu.c
-> @@ -1720,6 +1720,24 @@ static Property riscv_cpu_extensions[] = {
->      DEFINE_PROP_END_OF_LIST(),
->  };
->  
-> +
-> +static void cpu_set_cfg_unavailable(Object *obj, Visitor *v,
-> +                                    const char *name,
-> +                                    void *opaque, Error **errp)
-> +{
-> +    const char *propname = opaque;
-> +    bool value;
-> +
-> +    if (!visit_type_bool(v, name, &value, errp)) {
-> +        return;
-> +    }
-> +
-> +    if (value) {
-> +        error_setg(errp, "extension %s is not available with KVM",
-> +                   propname);
-> +    }
-> +}
-> +
->  /*
->   * Add CPU properties with user-facing flags.
->   *
-> @@ -1738,9 +1756,27 @@ static void riscv_cpu_add_user_properties(Object *obj)
->      riscv_cpu_add_misa_properties(obj);
->  
->      for (prop = riscv_cpu_extensions; prop && prop->name; prop++) {
-> -        /* Check if KVM didn't create the property already */
-> -        if (object_property_find(obj, prop->name)) {
-> -            continue;
-> +        if (riscv_running_kvm()) {
-> +            /* Check if KVM created the property already */
-
-The comment change should have been fixed on patch 12 where it was
-introduced.
-
-> +            if (object_property_find(obj, prop->name)) {
-> +                continue;
-> +            }
-> +
-> +            /*
-> +             * Set the default to disabled for every extension
-> +             * unknown to KVM and error out if the user attempts
-> +             * to enable any of them.
-> +             *
-> +             * We're giving a pass for non-bool properties since they're
-> +             * not related to the availability of extensions and can be
-> +             * safely ignored as is.
-> +             */
-> +            if (prop->info == &qdev_prop_bool) {
-> +                object_property_add(obj, prop->name, "bool",
-> +                                    NULL, cpu_set_cfg_unavailable,
-> +                                    NULL, (void *)prop->name);
-> +                continue;
-> +            }
->          }
->  
->          qdev_property_add_static(dev, prop);
-> -- 
-> 2.41.0
+On Wed, 28 Jun 2023 at 09:59, Jason Wang <jasowang@redhat.com> wrote:
 >
+> On Wed, Jun 28, 2023 at 3:46=E2=80=AFPM Stefan Hajnoczi <stefanha@gmail.c=
+om> wrote:
+> >
+> > On Wed, 28 Jun 2023 at 05:28, Jason Wang <jasowang@redhat.com> wrote:
+> > >
+> > > On Wed, Jun 28, 2023 at 6:45=E2=80=AFAM Ilya Maximets <i.maximets@ovn=
+.org> wrote:
+> > > >
+> > > > On 6/27/23 04:54, Jason Wang wrote:
+> > > > > On Mon, Jun 26, 2023 at 9:17=E2=80=AFPM Ilya Maximets <i.maximets=
+@ovn.org> wrote:
+> > > > >>
+> > > > >> On 6/26/23 08:32, Jason Wang wrote:
+> > > > >>> On Sun, Jun 25, 2023 at 3:06=E2=80=AFPM Jason Wang <jasowang@re=
+dhat.com> wrote:
+> > > > >>>>
+> > > > >>>> On Fri, Jun 23, 2023 at 5:58=E2=80=AFAM Ilya Maximets <i.maxim=
+ets@ovn.org> wrote:
+> > > > >> It is noticeably more performant than a tap with vhost=3Don in t=
+erms of PPS.
+> > > > >> So, that might be one case.  Taking into account that just rcu l=
+ock and
+> > > > >> unlock in virtio-net code takes more time than a packet copy, so=
+me batching
+> > > > >> on QEMU side should improve performance significantly.  And it s=
+houldn't be
+> > > > >> too hard to implement.
+> > > > >>
+> > > > >> Performance over virtual interfaces may potentially be improved =
+by creating
+> > > > >> a kernel thread for async Tx.  Similarly to what io_uring allows=
+.  Currently
+> > > > >> Tx on non-zero-copy interfaces is synchronous, and that doesn't =
+allow to
+> > > > >> scale well.
+> > > > >
+> > > > > Interestingly, actually, there are a lot of "duplication" between
+> > > > > io_uring and AF_XDP:
+> > > > >
+> > > > > 1) both have similar memory model (user register)
+> > > > > 2) both use ring for communication
+> > > > >
+> > > > > I wonder if we can let io_uring talks directly to AF_XDP.
+> > > >
+> > > > Well, if we submit poll() in QEMU main loop via io_uring, then we c=
+an
+> > > > avoid cost of the synchronous Tx for non-zero-copy modes, i.e. for
+> > > > virtual interfaces.  io_uring thread in the kernel will be able to
+> > > > perform transmission for us.
+> > >
+> > > It would be nice if we can use iothread/vhost other than the main loo=
+p
+> > > even if io_uring can use kthreads. We can avoid the memory translatio=
+n
+> > > cost.
+> >
+> > The QEMU event loop (AioContext) has io_uring code
+> > (utils/fdmon-io_uring.c) but it's disabled at the moment. I'm working
+> > on patches to re-enable it and will probably send them in July. The
+> > patches also add an API to submit arbitrary io_uring operations so
+> > that you can do stuff besides file descriptor monitoring. Both the
+> > main loop and IOThreads will be able to use io_uring on Linux hosts.
+>
+> Just to make sure I understand. If we still need a copy from guest to
+> io_uring buffer, we still need to go via memory API for GPA which
+> seems expensive.
+>
+> Vhost seems to be a shortcut for this.
 
-Otherwise,
+I'm not sure how exactly you're thinking of using io_uring.
 
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Simply using io_uring for the event loop (file descriptor monitoring)
+doesn't involve an extra buffer, but the packet payload still needs to
+reside in AF_XDP umem, so there is a copy between guest memory and
+umem. If umem encompasses guest memory, it may be possible to avoid
+copying the packet payload.
 
-Thanks,
-drew
+Stefan
 
