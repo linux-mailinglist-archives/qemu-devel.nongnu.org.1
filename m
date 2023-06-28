@@ -2,84 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AD9A741067
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 13:51:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B48F741080
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 13:55:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEThN-00020E-Eu; Wed, 28 Jun 2023 07:51:01 -0400
+	id 1qETkz-0002yZ-2d; Wed, 28 Jun 2023 07:54:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qEThK-0001zs-PJ
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 07:50:58 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qEThI-0002Pz-NG
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 07:50:58 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-3fbac8b01b3so7800565e9.1
- for <qemu-devel@nongnu.org>; Wed, 28 Jun 2023 04:50:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687953054; x=1690545054;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=gH3ecwQGgN9qVQVMfSMGcLYDZ+xR1lj1XVS9qrfSE88=;
- b=iG9INtx6vHHy+nf1PHCiBIub0EyZPSMVKR9qrifEfE8DnrYoT0gS7/unx6N+rtfajC
- OSXVAy9oRYaPIefhs9vCWGUZNI1rob7nD6mV8wtciaKE9X7V3RArucijb7kR6e45rm+4
- aNDm5m9pseMLsV+3QbPZQM+pqrkVmpdm/spONegP/QrOtTdYE6WeSpGzH+Q4uKcj+qU+
- XGmDJ/YZKVzeMhbQtYBrc12K1xYSKQ2x5hbt8swhqjT0l1T/zal3x6syDDgrFfIYU6Me
- aqZfmFuHz9YDh9gmNBF4mG28tT7C6TcnODGT9ckj7oeVpP1X9uLEY2REkEwRQPVYSxVs
- 9fiQ==
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qETkw-0002yC-5c
+ for qemu-devel@nongnu.org; Wed, 28 Jun 2023 07:54:42 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qETku-0003aY-F3
+ for qemu-devel@nongnu.org; Wed, 28 Jun 2023 07:54:41 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1687953279;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=n6Yd39jQiIfXzajqxx7OTS1pjn86kSe493yHFqEn7Gg=;
+ b=RR/lkwxeegr2LYBMHMTQ/R1TAfRid3MZhaSXnno7n/WZPGBn8Aj8EAGNGPFlfSO6ylgbNL
+ gtLZp1A1MmVHk9ZojMQ+9aUjHE75iUqkIJhLQiV7Zg3+psGzpKNdHyfHWYCa1nt8BOhd9M
+ 01xdOOhyHOGqT5qea1DBfv/OgmOqt0I=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-217-NUI7ULGePoeXtj_dJQUQ-A-1; Wed, 28 Jun 2023 07:54:37 -0400
+X-MC-Unique: NUI7ULGePoeXtj_dJQUQ-A-1
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-313f59eba37so1367698f8f.2
+ for <qemu-devel@nongnu.org>; Wed, 28 Jun 2023 04:54:37 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687953054; x=1690545054;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=gH3ecwQGgN9qVQVMfSMGcLYDZ+xR1lj1XVS9qrfSE88=;
- b=YCJsN1aFmrwOwcQ/QnqD6IXui+GOjeiEI4muOZd8yKmGTxIn3OzRdSRbej9PZOaaHX
- B0MYhWUjNcR+2OcFPh1MFPfzT1h4i6q8zodZBji5UsXaUvmjDKvelNmF/M0ZyMA2E4qE
- CMSfjZFkNm1G3Q8MZgwqA5xQhX13Es8Naah+JBOllTpMRWDgFAnJ149kFtdSjrub3RbS
- j3ccNWhqbhrxR5zt1qoWdoHPYGCp9qpP04VXgFLDQSfE5meRcQyWRTOIOwax+fgCQmd1
- J8aiG9Aix72rVhu+Vp20z1/mvpJwnh4JSRJnRbI630aaiWQK+Hwj2psKzp0kNnFaL9nJ
- 2P6w==
-X-Gm-Message-State: AC+VfDx7/7mgotZ/gIZf7hvb3A5v5B/r2pf3cEc6e0MaB0Bw8Zd5s214
- MohkGZDFRi5KeO+tYEMVDaZp8Q==
-X-Google-Smtp-Source: ACHHUZ48cA5mAMu+B/EgbH0qd7Zh9wGa9QDPfT+pTs7kZ8pADJDlBz3lmS1vZ3IDZG/j8IvyANLaLQ==
-X-Received: by 2002:a1c:4b0b:0:b0:3f6:8ba:6ea2 with SMTP id
- y11-20020a1c4b0b000000b003f608ba6ea2mr1403068wma.15.1687953054634; 
- Wed, 28 Jun 2023 04:50:54 -0700 (PDT)
-Received: from [192.168.69.115] ([176.187.207.229])
- by smtp.gmail.com with ESMTPSA id
- f10-20020a7bc8ca000000b003fbad1b4904sm2308846wml.0.2023.06.28.04.50.53
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 28 Jun 2023 04:50:54 -0700 (PDT)
-Message-ID: <1b6f267c-5815-5da8-7e3d-c4c145c8b8c9@linaro.org>
-Date: Wed, 28 Jun 2023 13:50:52 +0200
+ d=1e100.net; s=20221208; t=1687953276; x=1690545276;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=n6Yd39jQiIfXzajqxx7OTS1pjn86kSe493yHFqEn7Gg=;
+ b=M0lSzdUxKnNdjmwJZ55NDaFj7LvwzQVK3qlEUedp5EeTGzjr9gQKLGdRL3tPnSNTKl
+ 1J9RL6ubRWI36qnYBTmj8AY1H5ssOAG/en7yx8zzD5hNgP+w/YHR5HCpFFyMCFNaPlZR
+ 5FquZcWTAlbaLUEmZjihXz6BKhDQMywtmrrFTOjqwHTZnxvB99Z2m3MJnxeFdgsz/kHT
+ 0D1crrZ+w2p+lzclTzfmZqIpnLpgs7zM5pio7osYj0uZ4sk/34owKGiRVeFD0O/6P6lt
+ FUiRDdUwADUJKfwhrXJmvPJmqYxqzXe/ydGpYqR3PUHq+Mqf13pU+fGgRppzw8AdTEpO
+ VcCA==
+X-Gm-Message-State: AC+VfDzP+rR4xX4TxPsdYKpKXW7Eh9MS8ZVS/cgSDcVNL71c5BrTZh5F
+ g4oCAN7BXSVzwYLT+EaERzE+8hChBq0xLWIvxjHCdvzu8XKkLnnkx+QR4TaM3n7cNRfnV3uIi5t
+ V1Cv712KMcIyOiCL1caza0XC6xyzsqb6DruuBrI8A1QlhgB0Q40dbvPq2DpF52ID/g7KN9dE=
+X-Received: by 2002:adf:d84f:0:b0:313:ea8f:30a5 with SMTP id
+ k15-20020adfd84f000000b00313ea8f30a5mr7984074wrl.23.1687953276039; 
+ Wed, 28 Jun 2023 04:54:36 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ77SAU/Z1m/QUQnb2u2EeXr5n4C9sZsK2waNPg+nV+MrhSma3XZCpW7bdzEgrZL8TrvrvyUIQ==
+X-Received: by 2002:adf:d84f:0:b0:313:ea8f:30a5 with SMTP id
+ k15-20020adfd84f000000b00313ea8f30a5mr7984063wrl.23.1687953275750; 
+ Wed, 28 Jun 2023 04:54:35 -0700 (PDT)
+Received: from redhat.com ([176.12.183.225]) by smtp.gmail.com with ESMTPSA id
+ w7-20020a5d4047000000b003063772a55bsm13126238wrp.61.2023.06.28.04.54.34
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 28 Jun 2023 04:54:35 -0700 (PDT)
+Date: Wed, 28 Jun 2023 07:54:32 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>
+Subject: Re: [PULL 0/1] virtio: regression fix
+Message-ID: <20230628075419-mutt-send-email-mst@kernel.org>
+References: <cover.1687952477.git.mst@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.12.0
-Subject: Re: [PATCH] net/vhost-net: do not assert on null pointer return from
- tap_get_vhost_net()
-Content-Language: en-US
-To: Ani Sinha <anisinha@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Jason Wang <jasowang@redhat.com>, peter.maydell@linaro.org,
- lvivier@redhat.com, clg@redhat.com, qemu-devel@nongnu.org
-References: <20230628112804.36676-1-anisinha@redhat.com>
- <20230628074144-mutt-send-email-mst@kernel.org>
- <39CDD356-542F-4CBF-B72F-8D96395CF1D7@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <39CDD356-542F-4CBF-B72F-8D96395CF1D7@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cover.1687952477.git.mst@redhat.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.089,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,31 +95,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 28/6/23 13:44, Ani Sinha wrote:
+On Wed, Jun 28, 2023 at 07:41:34AM -0400, Michael S. Tsirkin wrote:
+> The following changes since commit a0d7215e339b61c7d7a7b3fcf754954d80d93eb8:
 > 
+>   vhost-vdpa: do not cleanup the vdpa/vhost-net structures if peer nic is present (2023-06-26 09:50:00 -0400)
 > 
->> On 28-Jun-2023, at 5:12 PM, Michael S. Tsirkin <mst@redhat.com> wrote:
->>
->> On Wed, Jun 28, 2023 at 04:58:04PM +0530, Ani Sinha wrote:
->>> When 'vhost=off' or no vhost specific options at all are passed for the tap
->>> net-device backend, tap_get_vhost_net() can return NULL. The function
->>> net_init_tap_one() does not call vhost_net_init() on such cases and therefore
->>> vhost_net pointer within the tap device state structure remains NULL. Hence,
->>> assertion here on a NULL pointer return from tap_get_vhost_net() would not be
->>> correct. Remove it and fix the crash generated by qemu upon initialization in
->>> the following call chain :
->>>
->>> qdev_realize() -> pci_qdev_realize() -> virtio_device_realize() ->
->>> virtio_bus_device_plugged() -> virtio_net_get_features() -> get_vhost_net()
->>>
->>> fixes: 0e994668d00c9c ("vhost_net: add an assertion for TAP client backends")
->>> Signed-off-by: Ani Sinha <anisinha@redhat.com>
->>
->> I added a bunch of tags and sent it upstream. Take a look
->> at the pull request so you can do it yourself going
->> forward, pls.
+> are available in the Git repository at:
 > 
-> I thought only maintainers sends PR? Do you have any handy scripts?
+>   https://git.kernel.org/pub/scm/virt/kvm/mst/qemu.git tags/for_upstream
+> 
+> for you to fetch changes up to 0585e97f070014265e5ec3b28d27dcb963cde25b:
 
-https://github.com/stefanha/git-publish/blob/master/git-publish.pod#sending-pull-requests
+ca3fcdeeeef56f46a7ac7b2408eda608d59be6f1 now - added reviewed by tags.
+
+>   net/vhost-net: do not assert on null pointer return from tap_get_vhost_net() (2023-06-28 07:38:59 -0400)
+> 
+> ----------------------------------------------------------------
+> virtio: regression fix
+> 
+> A regression was introduced in the last pull request. Fix it up.
+> 
+> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+> 
+> ----------------------------------------------------------------
+> Ani Sinha (1):
+>       net/vhost-net: do not assert on null pointer return from tap_get_vhost_net()
+> 
+>  hw/net/vhost_net.c | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
+> 
+
 
