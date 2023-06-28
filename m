@@ -2,79 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AF8D741605
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 18:05:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ECE37741606
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 18:05:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEXWu-00039c-32; Wed, 28 Jun 2023 11:56:28 -0400
+	id 1qEXey-0001YF-8G; Wed, 28 Jun 2023 12:04:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qEXWV-0002oU-27
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 11:56:05 -0400
-Received: from mail-lf1-x129.google.com ([2a00:1450:4864:20::129])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qEXW8-0001nv-8p
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 11:55:41 -0400
-Received: by mail-lf1-x129.google.com with SMTP id
- 2adb3069b0e04-4fb5bcb9a28so5903238e87.3
- for <qemu-devel@nongnu.org>; Wed, 28 Jun 2023 08:55:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687967738; x=1690559738;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=iZPYp3VLZeraZ7kAA283/V2ksX5guNAeZdMB4i4D/xw=;
- b=D2q6V5oV2b6utGwiKObbkSM0lWmZeQlqDT7JVt3yJ+zWi88HYKtLr7fjAatAEs9Hvi
- 0GjVO226sTOtxcVFchXpjMnwvFHZH/5Lu8RfR8IJDaZmnqPpl/BvZfwgmTF7QNAi1pvM
- LoPO6LjGGqMRnhLdjwWdKiQI35uguV0A49tuoxww3SO7AOn6OWFS5mFz7/cBRNj6MI5c
- i3/zS6c6Sn3Ejaa4UdjFZN/VG5B7qNBp4SPcRooNUt/C4xTVu9BOaPoUJnZwD/Iql4+u
- Dsz4LLoNAGgCdKa6KgT5ubsSvng6D03/9PG4qy9oQJ9Xq6QWwwj90aa474olrwP1Uje7
- Fpyw==
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qEXee-0001Kz-KC
+ for qemu-devel@nongnu.org; Wed, 28 Jun 2023 12:04:30 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qEXeb-0004m4-5M
+ for qemu-devel@nongnu.org; Wed, 28 Jun 2023 12:04:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1687968264;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=fdOj7QUz/AuRR4bas7CSoxXdBUstOoSAdAf2o8XtFMs=;
+ b=LUtrPo9ydMrxkGmaTDKhjxWgM/RR0XQeL/ph79Ub9u/8vZPCgQih+H+rhJ9bDyEtPvyF2k
+ VcX7D3XkhGDkmNyWkXHdfBc4ZdBms4SizY+W58XV7zLl8V1UVlp3pUEOy4vcQW5iM2j/sf
+ tY+4GIWTNDWR0LlAiNhxQHYQlUCf0qs=
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
+ [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-479-vqhS502XMFG7GkjhcIUUrA-1; Wed, 28 Jun 2023 12:04:06 -0400
+X-MC-Unique: vqhS502XMFG7GkjhcIUUrA-1
+Received: by mail-qt1-f200.google.com with SMTP id
+ d75a77b69052e-4027c076023so44231cf.2
+ for <qemu-devel@nongnu.org>; Wed, 28 Jun 2023 09:03:54 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687967738; x=1690559738;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=iZPYp3VLZeraZ7kAA283/V2ksX5guNAeZdMB4i4D/xw=;
- b=NC6jwe9Jsq+sM9W/6tAd0FbzSV/mclJZCnawTxvDKugKI9eXc6+lMQnAUtQUV07Xdg
- k3SfzVfz69E0yaRim1eGEoxzOmG2rvuJXZnrHSUX9MLNqY6cmZZaYCGt/WNrh4CnWMs2
- AZVlUYzj2aX2qW4ezSZl3hg/y7A7BF2bivpEKR1MsRI/ews/I7LE+Uj/8djpWtVbljhi
- +EdN9XF4N12iwrJjBDUuk8OtFqRKWCWpU30GoJIqTguFuMRGa8Jxf7DBEoQyo4VcTtbs
- q23T59XxQBYQ9PF0ALg3bhiWC5mARm1pT5F7lAaRjSRaGXh6c/G/mB1AY2kZcG5OyOFX
- lGAg==
-X-Gm-Message-State: AC+VfDwmwDuhPW43Q85YevEPXsKNMH/zlKyRsLCh0u8mCvJStBgegr+l
- YsXRca5UxwaPbIRTxxV+DX/v5Tw3J7rId3ViqNs=
-X-Google-Smtp-Source: ACHHUZ4TIe2l9gPXbtl06dhkYnZhpxSPqRPTjstjCr+vW0ueM4tLHZMTm+cawtsmZGAvyx+L8jix5w==
-X-Received: by 2002:a05:6512:39d1:b0:4fb:8afa:4dc9 with SMTP id
- k17-20020a05651239d100b004fb8afa4dc9mr3724565lfu.49.1687967738189; 
- Wed, 28 Jun 2023 08:55:38 -0700 (PDT)
-Received: from m1x-phil.lan ([176.187.207.229])
+ d=1e100.net; s=20221208; t=1687968234; x=1690560234;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=fdOj7QUz/AuRR4bas7CSoxXdBUstOoSAdAf2o8XtFMs=;
+ b=a43zQJxjDSnZ8W+Z7NcRxz0PF7zqXQL4ewaWTdvv2AQXgqwW3LigG/gtrkggUTJRNB
+ pPP1FcN4AbShscL49Mwm8LJ+xNewKi5atNh4qWbsl7ITfr+qRUKJgOmfMwph6SR2C/H6
+ luwrsDkOxgDKhtmkPf018IwlEDhSdR0mRsqCMLKG+FAPX1SlViKfZymPkprPBZRftH9k
+ LwaStmerMoyFwKAEbvBLwfSjadPpExAuhDTxDWiq0a/HyLLmy6RqvDIf3u9hU4P5/Vha
+ 6Iklt0xStSOM2/fdp03EwpKAaTal3OfspzNHY26XiA4+OmXWISWK4HXVMNkb1SOo8Ir1
+ YOfQ==
+X-Gm-Message-State: AC+VfDxNtBpwjS47tANuPQEnmXnBDRLxpkgeD8yn4OgNLRnQXSprNLwc
+ f69zKsrFnX2BQuznz4GzNWh8fUAY1XoxXch+EhAFv3qk3Fv5cxpKE8QO4P2flYvJTwTZEgrg4yv
+ hBwUCDTBbNjNbOXA=
+X-Received: by 2002:ac8:5acc:0:b0:3fd:e410:73a9 with SMTP id
+ d12-20020ac85acc000000b003fde41073a9mr39548323qtd.66.1687968233632; 
+ Wed, 28 Jun 2023 09:03:53 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7ot/BMeoXYhXE4mD3cFBQt9OZ5I1wyE/qEV7el1oMCOV9Vd/VaBsRqvOt3GA4CaQE5XZbw2w==
+X-Received: by 2002:ac8:5acc:0:b0:3fd:e410:73a9 with SMTP id
+ d12-20020ac85acc000000b003fde41073a9mr39548286qtd.66.1687968233286; 
+ Wed, 28 Jun 2023 09:03:53 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:280:24f0:576b:abc6:6396:ed4a?
+ ([2a01:e0a:280:24f0:576b:abc6:6396:ed4a])
  by smtp.gmail.com with ESMTPSA id
- 14-20020a05600c020e00b003fba92fad35sm1811324wmi.26.2023.06.28.08.55.37
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 28 Jun 2023 08:55:37 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 24/30] target/arm: Restrict KVM-specific fields from ArchCPU
-Date: Wed, 28 Jun 2023 17:53:07 +0200
-Message-Id: <20230628155313.71594-25-philmd@linaro.org>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20230628155313.71594-1-philmd@linaro.org>
-References: <20230628155313.71594-1-philmd@linaro.org>
+ bt3-20020ac86903000000b003f9a79fe046sm3886370qtb.38.2023.06.28.09.03.51
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 28 Jun 2023 09:03:53 -0700 (PDT)
+Message-ID: <6e5a8ac8-6542-bdbb-473f-15e842902052@redhat.com>
+Date: Wed, 28 Jun 2023 18:03:49 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH v2 2/2] vfio/migration: Make VFIO migration
+ non-experimental
+Content-Language: en-US
+To: Joao Martins <joao.m.martins@oracle.com>, Avihai Horon <avihaih@nvidia.com>
+Cc: Alex Williamson <alex.williamson@redhat.com>,
+ Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Leonardo Bras <leobras@redhat.com>, Zhenzhong Duan
+ <zhenzhong.duan@intel.com>, Yishai Hadas <yishaih@nvidia.com>,
+ Jason Gunthorpe <jgg@nvidia.com>, Maor Gottlieb <maorg@nvidia.com>,
+ Kirti Wankhede <kwankhede@nvidia.com>, Tarun Gupta <targupta@nvidia.com>,
+ qemu-devel@nongnu.org
+References: <20230628073112.7958-1-avihaih@nvidia.com>
+ <20230628073112.7958-3-avihaih@nvidia.com>
+ <0b6b4262-5782-bdc1-428e-2b106411afd3@redhat.com>
+ <b9c42787-0f8b-b458-0d8f-c691f7be5276@oracle.com>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>
+In-Reply-To: <b9c42787-0f8b-b458-0d8f-c691f7be5276@oracle.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::129;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x129.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.089, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -91,36 +111,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These fields shouldn't be accessed when KVM is not available.
+On 6/28/23 16:51, Joao Martins wrote:
+> On 28/06/2023 13:54, Cédric Le Goater wrote:
+>> On 6/28/23 09:31, Avihai Horon wrote:
+>>> The major parts of VFIO migration are supported today in QEMU. This
+>>> includes basic VFIO migration, device dirty page tracking and precopy
+>>> support.
+>>>
+>>> Thus, at this point in time, it seems appropriate to make VFIO migration
+>>> non-experimental: remove the x prefix from enable_migration property,
+>>> change it to ON_OFF_AUTO and let the default value be AUTO.
+>>>
+>>> In addition, make the following adjustments:
+>>> 1. When enable_migration is ON and migration is not supported, fail VFIO
+>>>      device realization.
+>>> 2. When enable_migration is AUTO (i.e., not explicitly enabled), require
+>>>      device dirty tracking support. This is because device dirty tracking
+>>>      is currently the only method to do dirty page tracking, which is
+>>>      essential for migrating in a reasonable downtime. Setting
+>>>      enable_migration to ON will not require device dirty tracking.
+>>> 3. Make migration error and blocker messages more elaborate.
+>>> 4. Remove error prints in vfio_migration_query_flags().
+>>> 5. Rename trace_vfio_migration_probe() to
+>>>      trace_vfio_migration_realize().
+>>>
+>>> Signed-off-by: Avihai Horon <avihaih@nvidia.com>
+>>
+>>
+>> We should rework the return value of most of the routines called by
+>> vfio_migration_realize() and simply use a bool. I think Zhenzhong is
+>> working it.
+>>
+>> Zhenzhong,
+>>
+>> When you resend v4 of the "VFIO migration related refactor and bug fix"
+>> series, please rebase on this patch since it should be merged.
+>>
+> 
+> This, and his switchover-ack series from Avihai that preceeds it.
+> 
+> Perhaps it might be easier to point to your tree:branch where you are queueing
+> all the patches?
+> 
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20230405160454.97436-8-philmd@linaro.org>
----
- target/arm/cpu.h | 2 ++
- 1 file changed, 2 insertions(+)
+Sure.
 
-diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-index 00e675f58f..4d6c0f95d5 100644
---- a/target/arm/cpu.h
-+++ b/target/arm/cpu.h
-@@ -961,6 +961,7 @@ struct ArchCPU {
-      */
-     uint32_t kvm_target;
- 
-+#ifdef CONFIG_KVM
-     /* KVM init features for this CPU */
-     uint32_t kvm_init_features[7];
- 
-@@ -973,6 +974,7 @@ struct ArchCPU {
- 
-     /* KVM steal time */
-     OnOffAuto kvm_steal_time;
-+#endif /* CONFIG_KVM */
- 
-     /* Uniprocessor system with MP extensions */
-     bool mp_is_up;
--- 
-2.38.1
+I track QEMU patches for various subsystems under :
+
+  https://github.com/legoater/qemu
+
+  
+VFIO candidates are under :
+
+   https://github.com/legoater/qemu/tree/vfio-8.1
+
+This is a wip tree, patches come and go. It contains the VFIO patches of
+the day/week, good for testing new ideas and checking CI.
+
+
+The vfio-next branch contains what I am 90% sure to send upstream :
+
+  https://github.com/legoater/qemu/tree/vfio-next
+
+which I rebase on master and update with new proposals and new tags.
+
+Beware, both are git push forced branches. Only master is not.
+
+
+Cheers,
+
+C.
 
 
