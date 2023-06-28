@@ -2,56 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8609C7409C5
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 09:41:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CFDA87409C6
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 09:41:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEPnL-0004da-Mc; Wed, 28 Jun 2023 03:40:55 -0400
+	id 1qEPnQ-0004eS-UZ; Wed, 28 Jun 2023 03:41:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qEPnJ-0004dB-LT
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 03:40:53 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qEPnO-0004eF-IX
+ for qemu-devel@nongnu.org; Wed, 28 Jun 2023 03:40:58 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qEPnI-0003I5-0j
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 03:40:53 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qEPnN-0003KP-4o
+ for qemu-devel@nongnu.org; Wed, 28 Jun 2023 03:40:58 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687938050;
+ s=mimecast20190719; t=1687938056;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=Ros0zz0a+0QAkmBvsRh7QiPiseMFlO9T4/oDZGvzdgg=;
- b=FrddCQVUrwlhE7PALSl9FmNI12G+1gtlYOOVVMeO3B7cQmCbhzwuloAqe1P6rAfUuK7VQL
- XTdlwUbaRoOy3wYY61H9YZYcDxidUNbjyXueSqObTZ1ldQvxT1vR6CVLjUSCsfVd65Bsef
- khUN1kRZHhjV+Dn+Ela8CBEeasFkjg4=
+ bh=rAHuvp9gHNEQgVe457TzONRKWrJHV45bn95LAtx286E=;
+ b=IJeW2xa0WoTf+Kdcr2zawl0Cr8q4Lcia/i/W7l5bPDEiDvC/W1Yvb7uSQLoT6Z3whBGvxl
+ e9/UTkFEnysixsZ1Re09spS37n+7Gsd70pUrTCMcXX34ZMjwsOrR7vOyjux6IYFiK/jNO4
+ dVhZXxJ2MLX3KCWFp1UaFwex8iV2pDE=
 Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
  [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-437-JaxH-fMQPCm0tvzmPb4IRA-1; Wed, 28 Jun 2023 03:40:47 -0400
-X-MC-Unique: JaxH-fMQPCm0tvzmPb4IRA-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
+ us-mta-215-VivBmpYFOAuiADVOj0mjQg-1; Wed, 28 Jun 2023 03:40:54 -0400
+X-MC-Unique: VivBmpYFOAuiADVOj0mjQg-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4AAB8382C96A;
- Wed, 28 Jun 2023 07:40:47 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 414B31C05156;
+ Wed, 28 Jun 2023 07:40:54 +0000 (UTC)
 Received: from redhat.com (dhcp-192-205.str.redhat.com [10.33.192.205])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id BEAAA9E9C;
- Wed, 28 Jun 2023 07:40:46 +0000 (UTC)
-Date: Wed, 28 Jun 2023 09:40:45 +0200
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id B5ED940BB4D;
+ Wed, 28 Jun 2023 07:40:53 +0000 (UTC)
+Date: Wed, 28 Jun 2023 09:40:52 +0200
 From: Kevin Wolf <kwolf@redhat.com>
 To: Paolo Bonzini <pbonzini@redhat.com>
 Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org
-Subject: Re: [PATCH v2 3/3] block: remove separate bdrv_file_open callback
-Message-ID: <ZJvj/UP9CZXQ+U2Y@redhat.com>
-References: <20230601115139.196369-1-pbonzini@redhat.com>
- <20230601115139.196369-4-pbonzini@redhat.com>
+Subject: Re: [PATCH 09/12] vhdx: mark more functions as coroutine_fns and
+ GRAPH_RDLOCK
+Message-ID: <ZJvkBHOJkvE5/5aL@redhat.com>
+References: <20230601115145.196465-1-pbonzini@redhat.com>
+ <20230601115145.196465-10-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230601115139.196369-4-pbonzini@redhat.com>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
+In-Reply-To: <20230601115145.196465-10-pbonzini@redhat.com>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -78,46 +79,28 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Am 01.06.2023 um 13:51 hat Paolo Bonzini geschrieben:
-> bdrv_file_open and bdrv_open are completely equivalent, they are
-> never checked except to see which one to invoke.  So merge them
-> into a single one.
+> Mark functions as coroutine_fn when they are only called by other coroutine_fns
+> and they can suspend.  Change calls to co_wrappers to use the non-wrapped
+> functions, which in turn requires adding GRAPH_RDLOCK annotations.
 > 
 > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 
-> diff --git a/block/blkio.c b/block/blkio.c
-> index 72117fa0059b..202cf20ca4bb 100644
-> --- a/block/blkio.c
-> +++ b/block/blkio.c
-> @@ -992,7 +992,7 @@ static void blkio_refresh_limits(BlockDriverState *bs, Error **errp)
->          .format_name             = name, \
->          .protocol_name           = name, \
->          .instance_size           = sizeof(BDRVBlkioState), \
-> -        .bdrv_file_open          = blkio_file_open, \
-> +        .bdrv_open               = blkio_open, \
->          .bdrv_close              = blkio_close, \
->          .bdrv_co_getlength       = blkio_co_getlength, \
->          .bdrv_co_truncate        = blkio_truncate, \
-
-You changed the function name here, but didn't actually rename the
-function. I don't think this can build.
-
-> diff --git a/block/null.c b/block/null.c
-> index 4808704ffd3a..6fa64d20d865 100644
-> --- a/block/null.c
-> +++ b/block/null.c
-> @@ -283,7 +283,7 @@ static BlockDriver bdrv_null_co = {
->      .protocol_name          = "null-co",
->      .instance_size          = sizeof(BDRVNullState),
+> @@ -1036,8 +1037,9 @@ exit:
+>  }
 >  
-> -    .bdrv_file_open         = null_file_open,
-> +    .bdrv_open              = null_file_open,
->      .bdrv_parse_filename    = null_co_parse_filename,
->      .bdrv_co_getlength      = null_co_getlength,
->      .bdrv_co_get_allocated_file_size = null_co_get_allocated_file_size,
+>  /* Perform a log write, and then immediately flush the entire log */
+> -int vhdx_log_write_and_flush(BlockDriverState *bs, BDRVVHDXState *s,
+> -                             void *data, uint32_t length, uint64_t offset)
+> +int coroutine_fn GRAPH_RDLOCK
+> +vhdx_log_write_and_flush(BlockDriverState *bs, BDRVVHDXState *s,
+> +                         void *data, uint32_t length, uint64_t offset)
+>  {
+>      int ret = 0;
+>      VHDXLogSequence logs = { .valid = true,
 
-If we do want to rename, then we should do it in all block drivers. As
-far as I can tell, this would be null, nvme and ssh. Not nfs, because
-all related function start with nfs_file_* there.
+This is a public function, so GRAPH_RDLOCK needs to move to the header
+so that callers in other source files are actually checked. I can fix
+this up while applying.
 
 Kevin
 
