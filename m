@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42F55740CB1
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 11:26:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C130E740CB3
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 11:26:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qERQF-0006s9-Kb; Wed, 28 Jun 2023 05:25:11 -0400
+	id 1qERQE-0006rl-P6; Wed, 28 Jun 2023 05:25:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1qERQC-0006qs-Ib; Wed, 28 Jun 2023 05:25:08 -0400
+ id 1qERQB-0006qS-II; Wed, 28 Jun 2023 05:25:07 -0400
 Received: from out5-smtp.messagingengine.com ([66.111.4.29])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1qERQ8-00018T-Eo; Wed, 28 Jun 2023 05:25:08 -0400
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
- by mailout.nyi.internal (Postfix) with ESMTP id 549015C0208;
- Wed, 28 Jun 2023 05:25:02 -0400 (EDT)
+ id 1qERQ9-0001JL-9u; Wed, 28 Jun 2023 05:25:07 -0400
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+ by mailout.nyi.internal (Postfix) with ESMTP id 8A1AE5C01EA;
+ Wed, 28 Jun 2023 05:25:04 -0400 (EDT)
 Received: from mailfrontend2 ([10.202.2.163])
- by compute6.internal (MEProxy); Wed, 28 Jun 2023 05:25:02 -0400
+ by compute5.internal (MEProxy); Wed, 28 Jun 2023 05:25:04 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=irrelevant.dk;
  h=cc:cc:content-transfer-encoding:content-type:date:date:from
  :from:in-reply-to:in-reply-to:message-id:mime-version:references
- :reply-to:sender:subject:subject:to:to; s=fm1; t=1687944302; x=
- 1688030702; bh=pKSgGPugpMae8P+g9ZSMuUMtsFuKLPdDV3W3UFsC10o=; b=V
- SPJT51i1zATjq7SBgHSO1Tv3/IZSzYgBptIU36t6ZjmUF9+LCBkjN7lTNhpDrzj6
- BFRLap9MITtKqYKgPVjGyDycTc1iUhiPOJGXeVWXTUEXSfqq7xHTV+L0JM3LwZos
- f8HUSBOKoYESfGZwOiUyH+IQPjL7NYBAM5rdmfe68Wpc3aMCjYyPWjqccMPgMPwt
- DxvP+J2CabzJqorxVVr3xMNozknMivH+NdMw3aCASlc7hGByY0kMFTFFi+ZWBIc+
- aXbmkxPNNhtWnyGsZxB+d1/IiWnt/WRrpkvKjal2vIwwep3Hc0GpCwDNJbLvZg4D
- PTTiGiBS/krZt29WzfnTA==
+ :reply-to:sender:subject:subject:to:to; s=fm1; t=1687944304; x=
+ 1688030704; bh=nc9Hvjg/exthUfwyl9oW072OtPhq6B/BaXkQeS2Ls+I=; b=B
+ nex0vNq/qenAE2RYI5skwK6vNMKX2Bk+puXj5rqY8iZYJPOEx+ZoTxPv/ny9eWnX
+ BuMBGffLnlmDS7LT493gurfd0i0QPnhc4CWHoxV4AKHe7lil/vK+uFGMdDW0PwL6
+ AKgQlPwJ2JrTd50Xjs3MfzrmkKzI+4XtAFH+E+ynNum6sVTe38QdIDaYrtwgK1jx
+ FOTWNsF6kmh6ynjfenT7HXXtZCavlX5bzcbALZSCQylYZ29VewWQwQJp0k8PuWbW
+ f25QvUq02uSXdd25/D5JRlPb98IuVKgdnQZC1bc1/Ii0+ybuD/wSZWpcznmy0pfP
+ tzaoeQ+6Gaim9f8AvAgKw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
  messagingengine.com; h=cc:cc:content-transfer-encoding
  :content-type:date:date:feedback-id:feedback-id:from:from
  :in-reply-to:in-reply-to:message-id:mime-version:references
  :reply-to:sender:subject:subject:to:to:x-me-proxy:x-me-proxy
- :x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1687944302; x=
- 1688030702; bh=pKSgGPugpMae8P+g9ZSMuUMtsFuKLPdDV3W3UFsC10o=; b=R
- y6V3/n3tdUtckIQetO0z2p0T8szrrjVvztV1M/E08/+JjTIldGUQX6MuM47s51MW
- fk/X722xiOKRolnSKJMp7kjFX6gjyYDzIAD9gOMy1Gxaw0jmLmG2J/yp7Puh5nGQ
- 013bphJFGTUY9916glETZ8lxB5KvEnJ96CTEnbQcoQ9sFc9dW9W7iRS5O6SAtf/9
- EnE33cryJixn1/LhvkJat5yWAwaVxVmYfNheb51a3DQiClkNAT/JW3aSTZGTV+E7
- nfOEdtN3DRWDUJMGGWFiU2pFGEfz5Vu9a4B09J/fU//2++PoWD20XgcBAJIBuJr7
- 5tzcAkfJLjCaTdxgwH4vg==
-X-ME-Sender: <xms:bvybZKQkw5TjUGYgEpK0dbrNi-GAQxEmiaTH0PuLjWATjlRiM5QnOQ>
- <xme:bvybZPwNKPFmBy0AY3X5v1YpIFZxZOGrtiZ2o7RkfcQLMdqu_DA1pQVbnZiSXe0Aa
- zqYa1KFX334wtUTFUc>
-X-ME-Received: <xmr:bvybZH20Tg7sYgveRIVxavfhLUvw2YIec-SYpDHAGVjwhZ2LG9KsG3Th8wwx2EUIdIgLBQQuTyk>
+ :x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1687944304; x=
+ 1688030704; bh=nc9Hvjg/exthUfwyl9oW072OtPhq6B/BaXkQeS2Ls+I=; b=m
+ WyMBgukHjzVdcd+oJWvAU+5L+0rW7k8Up4GmtHZXFcFw5u7SonvzI+Wil4fgkwA2
+ PhGZ6G6MwJ9VrEmAd1y+HZJJNHpuVH5UCoHBzeekymbVppfqC36y/ZqNta1A3QKk
+ cLXQyak7BQAxQ4GGq13Z2AvRdVBUi4FB+aBAQhr5O/QVNKmuh0YJMLfunhQJR2pN
+ 8ZUJZGpT2dyyA9R9rP8OtYB2vsTNuZejyKPpxWlNGoBs4XQg9kAaGluK3G4KPSdn
+ S/9CnP2ltbc0u1Xi+LGP7MUfkw2YqmCJUob1hHDqpGaRaG6UZwrHaU47ZM0s4Old
+ +0eMqRbgAmoRIQ3ZYN5PQ==
+X-ME-Sender: <xms:cPybZAwbom-eNj8GUj0rUpBPKFgMhSiQM8V8-F3JVABNcTe0eYYxcg>
+ <xme:cPybZERoWMuyPZFxxojmJDtId9Vr4RHzFjakTfmp2ux7uJa0evZDfRaPWPNYRkkjP
+ kUjMt0_R0TLLV9H32s>
+X-ME-Received: <xmr:cPybZCXVYRDidmscfc30oOZmJ6Fzzr7OKKXr9egxuKxelSZ-eWiNyMLuKDgJZraP-JuWEUWHbo0>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrtddvgddufecutefuodetggdotefrodftvf
  curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
  uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
@@ -57,13 +57,13 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrtddvgddufecutefuodetggdote
  gvrhhnpeejgfeilefgieevheekueevheehkeefveegiefgheefgfejjeehffefgedujedu
  geenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehith
  hssehirhhrvghlvghvrghnthdrughk
-X-ME-Proxy: <xmx:bvybZGCTytu2WBH0gY3nl1NILbe0vWLtOxq0FcglvcKPSPZEpJW_hw>
- <xmx:bvybZDjEbO7jmiu29CCzev10bQoS1UTB2JXmOsNpWIdtR5TVHsLKig>
- <xmx:bvybZCp4IDGJALrzmAXqBgo1KYrsC4Q_QkjaQ0o98Mq3UhE0b_bLqw>
- <xmx:bvybZIbU7NycP-FBVpgwxxdKgpWxmhA0_kam4QYH2TI6cUS88lOT8A>
+X-ME-Proxy: <xmx:cPybZOhqJrh4F2vMMfZmgLKK3pr20G6nPQMJJJL0aPrD1BhzO9HsHw>
+ <xmx:cPybZCC5i-aBauFz4VbgPH45b8Zj3XQMph70M14cV6niqaUt4Prryw>
+ <xmx:cPybZPIuN5wNpBPbycxEWzS4_wokvu0G0mPE9qyxLPGLqCxnOGVUgQ>
+ <xmx:cPybZG7T0hNkG813gCbDNbWdXAJSmh-0u_Ii1U0pknFAyt2wmfhI_w>
 Feedback-ID: idc91472f:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 28 Jun 2023 05:25:00 -0400 (EDT)
+ 28 Jun 2023 05:25:02 -0400 (EDT)
 From: Klaus Jensen <its@irrelevant.dk>
 To: qemu-devel@nongnu.org,
 	Peter Maydell <peter.maydell@linaro.org>
@@ -73,22 +73,22 @@ Cc: Fam Zheng <fam@euphon.net>, Stefan Hajnoczi <stefanha@redhat.com>,
  qemu-block@nongnu.org, Hanna Reitz <hreitz@redhat.com>,
  Klaus Jensen <its@irrelevant.dk>, Minwoo Im <minwoo.im@samsung.com>,
  Klaus Jensen <k.jensen@samsung.com>
-Subject: [PULL 1/7] hw/nvme: add comment for nvme-ns properties
-Date: Wed, 28 Jun 2023 11:24:55 +0200
-Message-ID: <20230628092453.39602-10-its@irrelevant.dk>
+Subject: [PULL 2/7] hw/nvme: consider COPY command in nvme_aio_err
+Date: Wed, 28 Jun 2023 11:24:56 +0200
+Message-ID: <20230628092453.39602-11-its@irrelevant.dk>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230628092453.39602-9-its@irrelevant.dk>
 References: <20230628092453.39602-9-its@irrelevant.dk>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1300; i=k.jensen@samsung.com;
- h=from:subject; bh=d6hLJrNAEXhZ3XBWCPuox7FQ1uK+b1JaB9MdsfsOYLY=;
- b=owJ4nAFtAZL+kA0DAAoBTeGvMW1PDekByyZiAGSb/GVVib31dxosdNPemWevyS1/kC/GzCerU
- FREuOzK4sWgF4kBMwQAAQoAHRYhBFIoM6p14tzmokdmwE3hrzFtTw3pBQJkm/xlAAoJEE3hrzFt
- Tw3poq8IALRpj7bSFi0rkfFbJiI/L/ZoiD4jOQT4bDKpxqLtPohxyBNMZAXgrLvA37YRrmQYjU4
- 7appKTooGypbQiOPD/NS5mxP6583pZbcfSKzeJPyS2tfRo72bw60eI7LMVqkZSFuxCUxpEc1Pvj
- RVsX2SL0YMHAP7cgOlWjtbcc8/c8WfNaDlVj3/fVynf0Z+YIwkdYtkuniuX5C5/ARy0PkG/2TPi
- /jcmNMip6hq+QtpahuarPQF8WKkzwIUdmmX5sG3TYWhMyZ1oCZgw/xsY+XB81AQtY/pgMe4JIzv
- 1EEjK2XaiEcwrdKLzUEMV7I0wzhgxoDzxfQSIk+rY8Io6bIVWnXzHK62
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1035; i=k.jensen@samsung.com;
+ h=from:subject; bh=SzPvUmf1mwaRcbQQTu9QRtcGmSDNxD8XoXG5+zbb4zI=;
+ b=owJ4nAFtAZL+kA0DAAoBTeGvMW1PDekByyZiAGSb/GYe8JeNk/d+RclM8ACvIRty+82BulKac
+ 0KHZbf85ecoxokBMwQAAQoAHRYhBFIoM6p14tzmokdmwE3hrzFtTw3pBQJkm/xmAAoJEE3hrzFt
+ Tw3pZ04H/1UwsbdnxRqYd56fl6TMIBMtozx0ASK/RXz44JKznq969ysT/AAqd/RWtl9MW/YZK3Q
+ 0xOvkIuN1Hm/AlcnmKbZ7BnXuVCjIAsR/8WbvSmV3WhJquJff3xjJlv9vLieXFekFTPonjZFYlW
+ bCB7Gb/n5sCizTu5Y0bd9k5MiJ/+bhvbUm32eIcdM6SUD/YPupX3oX+9/YLuZlO2TJ4jO63KXQa
+ aMQCA6wv8B5pnkFzbaJihBp2+nkuu5JNk6oa/exSvUY0IvZMCm8bt5s+zmgSKKSVhM4ijyBG9dR
+ W5c54+9LrEajTwH9wOY9E9Vj6KVJPETnOOLRM+POWASb3OvIT55Z1LOl
 X-Developer-Key: i=k.jensen@samsung.com; a=openpgp;
  fpr=DDCA4D9C9EF931CC3468427263D56FC5E55DA838
 Content-Transfer-Encoding: 8bit
@@ -118,35 +118,34 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Minwoo Im <minwoo.im@samsung.com>
 
-Add more comments of existing properties for nvme-ns device.
+If we don't have NVME_CMD_COPY consideration in the switch statement in
+nvme_aio_err(), it will go to have NVME_INTERNAL_DEV_ERROR and
+`req->status` will be ovewritten to it.  During the aio context, it
+might set the NVMe status field like NVME_CMD_SIZE_LIMIT, but it's
+overwritten in the nvme_aio_err().
+
+Add consideration for the NVME_CMD_COPY not to overwrite the status at
+the end of the function.
 
 Signed-off-by: Minwoo Im <minwoo.im@samsung.com>
 Reviewed-by: Klaus Jensen <k.jensen@samsung.com>
 Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
 ---
- hw/nvme/ctrl.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ hw/nvme/ctrl.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
-index fd917fcda1f5..020f37a780e0 100644
+index 020f37a780e0..e031c2250a84 100644
 --- a/hw/nvme/ctrl.c
 +++ b/hw/nvme/ctrl.c
-@@ -43,7 +43,14 @@
-  *              subsys=<subsys_id>
-  *      -device nvme-ns,drive=<drive_id>,bus=<bus_name>,nsid=<nsid>,\
-  *              zoned=<true|false[optional]>, \
-- *              subsys=<subsys_id>,detached=<true|false[optional]>
-+ *              subsys=<subsys_id>,shared=<true|false[optional]>, \
-+ *              detached=<true|false[optional]>, \
-+ *              zoned.zone_size=<N[optional]>, \
-+ *              zoned.zone_capacity=<N[optional]>, \
-+ *              zoned.descr_ext_size=<N[optional]>, \
-+ *              zoned.max_active=<N[optional]>, \
-+ *              zoned.max_open=<N[optional]>, \
-+ *              zoned.cross_read=<true|false[optional]>
-  *
-  * Note cmb_size_mb denotes size of CMB in MB. CMB is assumed to be at
-  * offset 0 in BAR2 and supports only WDS, RDS and SQS for now. By default, the
+@@ -1755,6 +1755,7 @@ static void nvme_aio_err(NvmeRequest *req, int ret)
+     case NVME_CMD_WRITE:
+     case NVME_CMD_WRITE_ZEROES:
+     case NVME_CMD_ZONE_APPEND:
++    case NVME_CMD_COPY:
+         status = NVME_WRITE_FAULT;
+         break;
+     default:
 -- 
 2.41.0
 
