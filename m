@@ -2,51 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD8F87411E0
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 15:01:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B2B37411CE
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 14:55:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEUmi-0004Fs-Ac; Wed, 28 Jun 2023 09:00:36 -0400
+	id 1qEUgw-00011A-FU; Wed, 28 Jun 2023 08:54:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qEUmf-0004Fe-RV
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 09:00:33 -0400
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1qEUgt-00010d-9H
+ for qemu-devel@nongnu.org; Wed, 28 Jun 2023 08:54:35 -0400
+Received: from mga05.intel.com ([192.55.52.43])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qEUmd-0004vW-CD
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 09:00:33 -0400
-Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id 7A0BF746335;
- Wed, 28 Jun 2023 15:00:14 +0200 (CEST)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 45D3574632B; Wed, 28 Jun 2023 15:00:14 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 4422C745720;
- Wed, 28 Jun 2023 15:00:14 +0200 (CEST)
-Date: Wed, 28 Jun 2023 15:00:14 +0200 (CEST)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-cc: richard.henderson@linaro.org, qemu-devel@nongnu.org
-Subject: Re: [PULL 02/10] target/sparc: Use tcg_gen_lookup_and_goto_ptr in
- gen_goto_tb
-In-Reply-To: <20230628114504.546265-3-mark.cave-ayland@ilande.co.uk>
-Message-ID: <813defa4-a833-2486-a89e-3a0f4e0b8d10@eik.bme.hu>
-References: <20230628114504.546265-1-mark.cave-ayland@ilande.co.uk>
- <20230628114504.546265-3-mark.cave-ayland@ilande.co.uk>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1qEUgq-0001El-KY
+ for qemu-devel@nongnu.org; Wed, 28 Jun 2023 08:54:35 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1687956872; x=1719492872;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=dJs3xZv9X69YwKkCoR7HTZY16sKT6xVllxuCAUDWTJU=;
+ b=YIN7lVt/KA16efLCWk2AywO7e5qcPTE5tFKBz5L7OTjzm2rmw8WbqHG2
+ eTY1FDO4mXnVlcn1mSl6rlDotepGva+SoKUcFtltukDItKcd+YbhxjHtm
+ z+u3+Ku4NtD/1u5Y7+o8KCqrgYt26EMqCh/eeLcnTmnwfCs7rBzPTxzT/
+ pfnEfFaC4vBw+YgQRcRa1uMEEmPZOXXC5uKmoU5GOJtzxzZiIt9wLwgnd
+ YankM055wqNEcI1WsTKjrE1ksYP3KXhraq3fSuhaGTKMldW5RKsgpfW08
+ PFB5+3+Efs93a/nCQ9DUGWUes+oj7Y4Jb9HbhPyqbter0dhos9A4rfszB w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10754"; a="448217857"
+X-IronPort-AV: E=Sophos;i="6.01,165,1684825200"; d="scan'208";a="448217857"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+ by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Jun 2023 05:54:29 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10754"; a="711041098"
+X-IronPort-AV: E=Sophos;i="6.01,165,1684825200"; d="scan'208";a="711041098"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.28])
+ by orsmga007.jf.intel.com with ESMTP; 28 Jun 2023 05:54:27 -0700
+Date: Wed, 28 Jun 2023 21:04:26 +0800
+From: Zhao Liu <zhao1.liu@linux.intel.com>
+To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
+Cc: Sunil Muthuswamy <sunilmut@microsoft.com>, qemu-devel@nongnu.org,
+ Zhenyu Wang <zhenyu.z.wang@intel.com>, Zhao Liu <zhao1.liu@intel.com>
+Subject: Re: [PATCH] i386/WHPX: Fix error message when fail to set
+ ProcessorCount
+Message-ID: <ZJwv2monGov2GQEJ@liuzhao-OptiPlex-7080>
+References: <20230529124331.412822-1-zhao1.liu@linux.intel.com>
+ <1f4b504e-43f2-5adb-8d93-de20bd577e37@linaro.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="3866299591-673249674-1687957214=:55442"
-X-Spam-Probability: 9%
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <1f4b504e-43f2-5adb-8d93-de20bd577e37@linaro.org>
+Received-SPF: none client-ip=192.55.52.43;
+ envelope-from=zhao1.liu@linux.intel.com; helo=mga05.intel.com
+X-Spam_score_int: -42
+X-Spam_score: -4.3
+X-Spam_bar: ----
+X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -62,51 +80,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
-
---3866299591-673249674-1687957214=:55442
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8BIT
-
-On Wed, 28 Jun 2023, Mark Cave-Ayland wrote:
-> From: Richard Henderson <richard.henderson@linaro.org>
+On Wed, Jun 28, 2023 at 01:59:56PM +0200, Philippe Mathieu-Daudé wrote:
+> Date: Wed, 28 Jun 2023 13:59:56 +0200
+> From: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Subject: Re: [PATCH] i386/WHPX: Fix error message when fail to set
+>  ProcessorCount
+> 
+> On 29/5/23 14:43, Zhao Liu wrote:
+> > From: Zhao Liu <zhao1.liu@intel.com>
+> > 
+> > 003f230e37d7 ("machine: Tweak the order of topology members in struct
+> > CpuTopology") changes the meaning of MachineState.smp.cores from "the
+> > number of cores in one package" to "the number of cores in one die"
+> > and doesn't fix other uses of MachineState.smp.cores. And because of
+> > the introduction of cluster, now smp.cores just means "the number of
+> > cores in one cluster". This clearly does not fit the semantics here.
+> > 
+> > And before this error message, WHvSetPartitionProperty() is called to
+> > set prop.ProcessorCount.
+> > 
+> > So the error message should show the prop.ProcessorCount other than
+> > "cores per cluster" or "cores per package".
+> > 
+> > Cc: Sunil Muthuswamy <sunilmut@microsoft.com>
+> > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+> > ---
+> >   target/i386/whpx/whpx-all.c | 4 ++--
+> >   1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> Patch queued (fixing the unsigned format), thanks.
 >
-> Reviewed-by: Philippe Mathieu-DaudÃ© <philmd@linaro.org>
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> Message-Id: <20230628071202.230991-2-richard.henderson@linaro.org>
-> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-> ---
-> target/sparc/translate.c | 4 ++--
-> 1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/target/sparc/translate.c b/target/sparc/translate.c
-> index bad2ec90a0..28d4cdb8b4 100644
-> --- a/target/sparc/translate.c
-> +++ b/target/sparc/translate.c
-> @@ -318,10 +318,10 @@ static void gen_goto_tb(DisasContext *s, int tb_num,
->         tcg_gen_movi_tl(cpu_npc, npc);
->         tcg_gen_exit_tb(s->base.tb, tb_num);
->     } else {
-> -        /* jump to another page: currently not optimized */
-> +        /* jump to another page: we can use an indirect jump */
->         tcg_gen_movi_tl(cpu_pc, pc);
->         tcg_gen_movi_tl(cpu_npc, npc);
-> -        tcg_gen_exit_tb(NULL, 0);
-> +        tcg_gen_lookup_and_goto_ptr();
 
-Out of curiosity, did you test this is actually faster? The reason I ask 
-is because I've tried to optimise similar case in target/ppc by using 
-lookup_and_goto_ptr but found it was slower than without that. I think 
-this may depend on the usage but I wonder if that could be a generic issue 
-with lookup_and_goto_ptr or only specific for the case I've tried.
+Many thanks!
 
-Regards,
-BALATON Zoltan
-
->     }
-> }
->
->
---3866299591-673249674-1687957214=:55442--
+-Zhao
 
