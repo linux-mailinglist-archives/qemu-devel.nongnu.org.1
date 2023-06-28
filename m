@@ -2,77 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50955740753
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 02:56:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14F0174076D
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 03:05:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEJSk-0005cT-VM; Tue, 27 Jun 2023 20:55:15 -0400
+	id 1qEJbM-0007fw-Tk; Tue, 27 Jun 2023 21:04:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qEJSi-0005bi-L3; Tue, 27 Jun 2023 20:55:12 -0400
-Received: from mail-pg1-x52b.google.com ([2607:f8b0:4864:20::52b])
+ id 1qEJbI-0007fJ-A2; Tue, 27 Jun 2023 21:04:04 -0400
+Received: from mail-pg1-x536.google.com ([2607:f8b0:4864:20::536])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qEJSg-0004h5-Vu; Tue, 27 Jun 2023 20:55:12 -0400
-Received: by mail-pg1-x52b.google.com with SMTP id
- 41be03b00d2f7-55b1238cab4so656177a12.2; 
- Tue, 27 Jun 2023 17:55:10 -0700 (PDT)
+ id 1qEJbG-0007SZ-Jc; Tue, 27 Jun 2023 21:04:04 -0400
+Received: by mail-pg1-x536.google.com with SMTP id
+ 41be03b00d2f7-553a998bca3so3920523a12.2; 
+ Tue, 27 Jun 2023 18:04:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1687913709; x=1690505709;
- h=in-reply-to:references:cc:to:from:subject:message-id:date
+ d=gmail.com; s=20221208; t=1687914241; x=1690506241;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
  :content-transfer-encoding:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=zPDkjCM1PkCzHhOgYy1PKpCQYJBrRHjNwIPY8nun7RE=;
- b=BnAGqbJ4CRHIM2dDa7Lw247lD1+XTtQPUdCV9v5Zib0Qbh0KsZGGSYlRVi393Fw2vk
- LT3vD4zbc33fdBuecN/oQlcMGdHH8Sv4WzeZILJCuUouWlJNbrguZ1dQQayZVUJEgiDi
- 027LZmXi5rjnKw7C0j+uK580GcuEQ1d4BghNR9Swm4vEvJs2W+4Msjgnv1wBwpO8FtCE
- kxbU7OSwRA5F9gEECWTWAGpa5oiKNpDVXsTrqnYh0zE8If3TUVwVjN323uDIZUFrS0vM
- PKk7zLAYAWmSlR94iJ3NoEiyz6EuqghdvmQaL1h7d0eZfTB2DlueJ7MLBq+qZCakWg1Z
- 73rQ==
+ bh=nhZBOHesEoI4xRftBeYUk6t9VDR5W/80wDcDAni4Gyo=;
+ b=Hxjur7lfpuNR3RN3zc/N80rAi49Tq6+Tyj8BkCWziuueG1Flp/jlo3HS2TrG4d/se7
+ tEz09mHRtRPu3j3hTwxOg0q3gtmhzHN/i4OILapPcqQ6Dy6WS7IIm+3i7FRdRDfVHifI
+ zpxZUfeARONfJv+OfRlg3CtWC6zCUh+G3IERAMT3Dc8XtffcFcX+cO+6rqNBaG+jzMom
+ x6WXuuY0vOsKfSANmm1BMQhYuT5YjHBFodctbTyfQ5aqJRb9xkqwP2+q/1piewYJFICq
+ YmLky32jfpSLEJx7EcWUbmexGujInA0vgO57Yj2ENE98KtmsSNc32IDAZjgmT1x+HYP3
+ To0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687913709; x=1690505709;
- h=in-reply-to:references:cc:to:from:subject:message-id:date
+ d=1e100.net; s=20221208; t=1687914241; x=1690506241;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
  :content-transfer-encoding:mime-version:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=zPDkjCM1PkCzHhOgYy1PKpCQYJBrRHjNwIPY8nun7RE=;
- b=QxyA2Z32VRr4skF8JTy51oP1Amd4IeBGL1q20mlAo7NVvR9I8P5sli4t9LH/xHrQpc
- k9df/wkOkcpYidVDRc/aIzv+vEsdfQsijQ4zJa0rkDbJ10TjJoOF96wV2pZq3Xi7MFKC
- ZoEeK+JV0gGx/NRntjWLfGwRm3oRQwv6uct6qVTstZuvvg9PNHcdvgvMoaCWKfInwSej
- GFONmwGXDLRgcnwJ939DuaD4aVl+eytqOw1Mb9+xzK4lUwutJO+7IkGStGw3wIRCuEEM
- 592FFK11dU+iMdRRAySKxYE7QtdpY9e+7DOZ7HAlVyndhlidBN61xriy2BH0JSwftlZN
- Tuig==
-X-Gm-Message-State: AC+VfDxILBRwo0Xc1QyQz7kgOG9s/AAB4lMUJVhkFCstgxKRFCBKoQKU
- OY2y6Hr8EPvBAXboGODau90=
-X-Google-Smtp-Source: ACHHUZ4yrikoHtIjb2pFWRyuYOrunafLI+Hn4WWFXEibyLsndUPFSnuipzdG9HQnDcozubioAv1uYA==
-X-Received: by 2002:a05:6a20:3d26:b0:10b:8698:2097 with SMTP id
- y38-20020a056a203d2600b0010b86982097mr31753892pzi.0.1687913708816; 
- Tue, 27 Jun 2023 17:55:08 -0700 (PDT)
+ bh=nhZBOHesEoI4xRftBeYUk6t9VDR5W/80wDcDAni4Gyo=;
+ b=dq8lZfj//rKcd1GeZKgp24Jz+1f+jp5M3RaFAtm6mSorc1CBkMS2lgGl62E+Bcpssk
+ cC8qxDUbdd7Rqbb8HacBSWnfMIwq1KPD9jFLDgnsoiNswTpU4VDQqnqWFLLFZivJzCI9
+ sDxZRvFXolOGSrJxfeuq5Uq9up/VNcMTTjbOvvAhp0VJDbmuB4hMR5T2g+O7xcE9nebH
+ SxLnYhJfzY0y9x9w1KsSqMTPT7sJyoD+yMf1oIOKQc+yqaCGaRmwZ08M8sOoQ8rjCVva
+ lPWJtXD/obmjSIMrwnhpHSltmzkdPghNpaWYKAEu0oKYyWOjxJzf5wNBRVjj0QkFBQKR
+ 93zg==
+X-Gm-Message-State: AC+VfDzCs6C34y/5ZLUxr7ddX/vIn4+mfBgIX5U4TSLYbNkKylViJmq2
+ naQIRc7KIGNoLOYTdmmpiyY=
+X-Google-Smtp-Source: ACHHUZ5oDoGrw/SVKY1L6orUxyxfMy+CSbCqG/jxl5VKoLC9uTJ/7kzkqIdX+Et8olXXmDODnEavuw==
+X-Received: by 2002:a17:90a:49c6:b0:263:11f8:a132 with SMTP id
+ l6-20020a17090a49c600b0026311f8a132mr3928118pjm.36.1687914240549; 
+ Tue, 27 Jun 2023 18:04:00 -0700 (PDT)
 Received: from localhost (193-116-109-121.tpgi.com.au. [193.116.109.121])
  by smtp.gmail.com with ESMTPSA id
- 6-20020aa79146000000b00659edece5dasm5907948pfi.49.2023.06.27.17.55.04
+ k7-20020a17090a658700b00262eccfa29fsm4508910pjj.33.2023.06.27.18.03.57
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 27 Jun 2023 17:55:08 -0700 (PDT)
+ Tue, 27 Jun 2023 18:04:00 -0700 (PDT)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 28 Jun 2023 10:55:02 +1000
-Message-Id: <CTNVGY00BO7S.35I04KZ8AFLL4@wheely>
-Subject: Re: [PATCH v2 3/4] target/ppc: Make checkstop actually stop the system
+Date: Wed, 28 Jun 2023 11:03:55 +1000
+Message-Id: <CTNVNQVXBXXU.L2P609T3RN13@wheely>
+Cc: <qemu-devel@nongnu.org>, <qemu-ppc@nongnu.org>, <clg@kaod.org>, "Greg
+ Kurz" <groug@kaod.org>, "Daniel Henrique Barboza" <danielhb413@gmail.com>
+Subject: Re: [PATCH v3 09/14] target/ppc: Move patching nip from exception
+ handler to helper_scv
 From: "Nicholas Piggin" <npiggin@gmail.com>
 To: "BALATON Zoltan" <balaton@eik.bme.hu>
-Cc: <qemu-devel@nongnu.org>, <qemu-ppc@nongnu.org>, "Daniel Henrique
- Barboza" <danielhb413@gmail.com>, =?utf-8?q?C=C3=A9dric_Le_Goater?=
- <clg@kaod.org>, "David Gibson" <david@gibson.dropbear.id.au>, "Greg Kurz"
- <groug@kaod.org>, "Harsh Prateek Bora" <harshpb@linux.ibm.com>
 X-Mailer: aerc 0.15.2
-References: <20230627134644.260663-1-npiggin@gmail.com>
- <20230627134644.260663-4-npiggin@gmail.com>
- <5b90ae62-f279-1d07-1098-39a4f450bb99@eik.bme.hu>
-In-Reply-To: <5b90ae62-f279-1d07-1098-39a4f450bb99@eik.bme.hu>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52b;
- envelope-from=npiggin@gmail.com; helo=mail-pg1-x52b.google.com
+References: <cover.1686868895.git.balaton@eik.bme.hu>
+ <b7317331ebccb0209fd0b12687945af6f626b0eb.1686868895.git.balaton@eik.bme.hu>
+ <CTH6LN434MCH.2IK0QCFPCBW6F@wheely>
+ <cd15856c-a664-66e6-cd27-65247784b3fe@eik.bme.hu>
+ <CTMJMWCPZQX7.LVCEBEI5KXOE@wheely>
+ <434967dc-b631-f1d2-0267-93695c1e806b@eik.bme.hu>
+In-Reply-To: <434967dc-b631-f1d2-0267-93695c1e806b@eik.bme.hu>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::536;
+ envelope-from=npiggin@gmail.com; helo=mail-pg1-x536.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,107 +97,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed Jun 28, 2023 at 3:38 AM AEST, BALATON Zoltan wrote:
-> On Tue, 27 Jun 2023, Nicholas Piggin wrote:
-> > checkstop state does not halt the system, interrupts continue to be
-> > serviced, and other CPUs run.
+On Wed Jun 28, 2023 at 3:40 AM AEST, BALATON Zoltan wrote:
+> On Mon, 26 Jun 2023, Nicholas Piggin wrote:
+> > On Tue Jun 20, 2023 at 8:47 PM AEST, BALATON Zoltan wrote:
+> >> On Tue, 20 Jun 2023, Nicholas Piggin wrote:
+> >>> On Fri Jun 16, 2023 at 9:03 AM AEST, BALATON Zoltan wrote:
+> >>>> From: Nicholas Piggin <npiggin@gmail.com>
+> >>>>
+> >>>> Unlike sc, for scv a facility unavailable interrupt must be generate=
+d
+> >>>> if FSCR[SCV]=3D0 so we can't raise the exception with nip set to nex=
+t
+> >>>> instruction but we can move advancing nip if the FSCR check passes t=
+o
+> >>>> helper_scv so the exception handler does not need to change it.
+> >>>>
+> >>>> [balaton: added commit message]
+> >>>> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+> >>>
+> >>> Ah you sent it, fine, thank you. But actually now I look again,
+> >>> now we're off by one in the other direction for the dumps.
+> >>
+> >> This is mentioned in the commit message for the patch changing sc. I t=
+hink
+> >> we should not patch nip in the dump so we actually dump what the CPU
+> >> should have and match the ISA docs.
+> >>
+> >>> So... probably your way is still better because it matches the
+> >>> interrupt semantics of the ISA when executing the instruction,
+> >>> but it needs this patch:
+> >>
+> >> OK so then I'm confused why we need nip - 4 in dumps?
 > >
-> > Stop the machine with vm_stop(), and print a register dump too.
-> >
-> > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> > ---
-> > Since v1:
-> > - Fix loop exit so it stops on the attn instruction, rather than
-> >  after it.
-> >
-> > target/ppc/excp_helper.c | 34 ++++++++++++++++++++--------------
-> > 1 file changed, 20 insertions(+), 14 deletions(-)
-> >
-> > diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
-> > index 5beda973ce..28d8a9b212 100644
-> > --- a/target/ppc/excp_helper.c
-> > +++ b/target/ppc/excp_helper.c
-> > @@ -19,6 +19,7 @@
-> > #include "qemu/osdep.h"
-> > #include "qemu/main-loop.h"
-> > #include "qemu/log.h"
-> > +#include "sysemu/runstate.h"
-> > #include "cpu.h"
-> > #include "exec/exec-all.h"
-> > #include "internal.h"
-> > @@ -186,19 +187,24 @@ static void ppc_excp_debug_sw_tlb(CPUPPCState *en=
-v, int excp)
-> >              env->error_code);
-> > }
-> >
-> > -static void powerpc_checkstop(CPUPPCState *env)
-> > +static void powerpc_checkstop(CPUPPCState *env, const char *reason)
-> > {
-> >     CPUState *cs =3D env_cpu(env);
-> >
-> > -    /* Machine check exception is not enabled. Enter checkstop state. =
-*/
-> > -    fprintf(stderr, "Machine check while not allowed. "
-> > -            "Entering checkstop state\n");
-> > +    vm_stop(RUN_STATE_GUEST_PANICKED);
-> > +
-> > +    fprintf(stderr, "Entering checkstop state: %s\n", reason);
-> > +    cpu_dump_state(cs, stderr, CPU_DUMP_FPU | CPU_DUMP_CCOP);
-> >     if (qemu_log_separate()) {
-> > -        qemu_log("Machine check while not allowed. "
-> > -                 "Entering checkstop state\n");
-> > +        FILE *logfile =3D qemu_log_trylock();
-> > +        if (logfile) {
-> > +            fprintf(logfile, "Entering checkstop state: %s\n", reason)=
-;
+> > Sorry I missed your reply here. We want nip - 4 in dumps so the
+> > address of the syscall is the sc instruction itself, not the
+> > random one after it.
 >
-> I don't think you should have fprintfs here. Is this remnants of debug=20
-> code left here by mistake? The fprintf that was there before may also nee=
-d=20
-> to be converted to some qemI_log or error_report but I did not know what=
+> Although that's how it was in QEMU before
+
+Current upstream QEMU dumps syscall address of sc instruction. After
+patch 8 and 9, it will dump the address of the instruction after it.
+
+> that's not how it is on real=20
+> hardware so I don't think we should keep this and just log what a real CP=
+U=20
+> would have and people should know how to interpret that after consulting=
 =20
-> these are for and did not address that. But if you want to add more then=
-=20
-> it may need to be solved first.
+> the ISA docs.
 
-I just followed existing fprintf use. Changing that should be separate
-patch indeed.
-
-> > +            cpu_dump_state(cs, logfile, CPU_DUMP_FPU | CPU_DUMP_CCOP);
-> > +            qemu_log_unlock(logfile);
-> > +        }
-> >     }
-> > -    cs->halted =3D 1;
-> > -    cpu_interrupt_exittb(cs);
-> > +
->
-> Excess blank line?
-
-No, it separates the logging block from function.
-
->
-> > +    cpu_loop_exit_noexc(cs);
-> > }
-> >
-> > #if defined(TARGET_PPC64)
-> > @@ -483,7 +489,7 @@ static void powerpc_excp_40x(PowerPCCPU *cpu, int e=
-xcp)
-> >         break;
-> >     case POWERPC_EXCP_MCHECK:    /* Machine check exception            =
-      */
-> >         if (!FIELD_EX64(env->msr, MSR, ME)) {
-> > -            powerpc_checkstop(env);
-> > +            powerpc_checkstop(env, "machine check with MSR[ME]=3D0");
->
-> If the message is always the same why pass it from here If the only other=
-=20
-> option not used yet would be MSR[ME]=3D1 then that could also be checked =
-in=20
-> the func so no need to pass the message. So is there any other possible=
-=20
-> reason here?
-
-To make the checkstop function more general (e.g., used by the next patch).
+I did get the feeling it was nicer your way, OTOH there really is not
+anything in the ISA that requires a particular implementation. QEMU is
+a real implementation of the ISA anyway. You could argue it's more
+consistent for QEMU to keep env->nip as the address of instruction that
+caused the interrupt, and then the sc fixup is restricted to setting
+SRR0. I'm on the fence about it now.
 
 Thanks,
 Nick
