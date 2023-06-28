@@ -2,103 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79D8A740C72
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 11:09:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6571740C6A
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 11:08:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qERAR-0000aD-Ph; Wed, 28 Jun 2023 05:08:51 -0400
+	id 1qER9R-0008UE-7x; Wed, 28 Jun 2023 05:07:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qERAP-0000PZ-HF
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 05:08:49 -0400
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qER9P-0008Tk-7s
+ for qemu-devel@nongnu.org; Wed, 28 Jun 2023 05:07:47 -0400
+Received: from mail-lf1-x12f.google.com ([2a00:1450:4864:20::12f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qERAN-0002Kn-EY
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 05:08:49 -0400
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-3112f256941so5004038f8f.1
- for <qemu-devel@nongnu.org>; Wed, 28 Jun 2023 02:08:46 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qER9M-0008SS-Sa
+ for qemu-devel@nongnu.org; Wed, 28 Jun 2023 05:07:46 -0400
+Received: by mail-lf1-x12f.google.com with SMTP id
+ 2adb3069b0e04-4fb94b1423eso289453e87.1
+ for <qemu-devel@nongnu.org>; Wed, 28 Jun 2023 02:07:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687943326; x=1690535326;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
- :message-id:reply-to;
- bh=M3pDsxAoTjrUyAypMeBaLtnxfFQfSnGxrGbum4ZzZ2w=;
- b=bEvsgxnzLsrpyuVM4haqAQaQJbn98zTmd5PhpS9JECwTGR58bUkx1TRL0v1ymD2M0H
- hKH+RA6C88n+ZH+fLln0iwbovHdEfw3Jc9FaACEQbG7lHb8HvSoh7Es1njYqxzQJAQ9r
- Oe+AnAsnkK+8fisFxOo1kiNWWgQe2FMQCiZljq0qWIvE5H92a23DSQYD6lhVAHnzRjSP
- ffMpYeyGEOeUgqb1Mq7zBntQHF52cOHu3X5bCo8oJ/Z9I6KWpiscTvLx8QR0VNKHzg6b
- cIA7DOdxHXacFEc8sIypKc7IJQkDg7TPgU8FD2lyTyx3d1ags/VUBfHWFbCazxcV9HoP
- E0rQ==
+ d=linaro.org; s=google; t=1687943263; x=1690535263;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Yg+Y5FmR7KsY+IEy4o0xFzpFhAX0DMCj+mtO6dzHn3Q=;
+ b=QY5ITJ0tZwUOni3jUTYQbNHMu4AW0NPV5ZwOepLnNwyc1Mbkdv9HOV8VEEdo7jYWH0
+ Jky3mC8GExhzx/XtbdCTl1RKnle0zF1bsAQk/3dGbLHa4Ro1XxNBDPKMhNbdMHeuqmbE
+ BoU9OQN6q7WKGtvjrRSmgxNVWmSGvsuDIkeCbXpcFsEXD6HMHq91lFdOCpYkXaQfwvx5
+ z9yKB95Tai34Dtq1KXm7YBfkFY9JspBWgeZwVDdE0sZN87ao/xvFtqxTo1r1bg7THsO2
+ 33McTrwaRld2Z3JN4Ppg8svHwqWYPK8rZSJa3wxzJJfybj/d6G1PN8XgnBPYTT2B44Xs
+ rztg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687943326; x=1690535326;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=M3pDsxAoTjrUyAypMeBaLtnxfFQfSnGxrGbum4ZzZ2w=;
- b=WV2XJ//N3rTcG46XJH2I2CPdej9HefjqlKYqFP2AJlL0HlJjbufpfe15E/6YwT262u
- k7Ip/3JX+MulezLbQifWCcK5QShpATQCiooTSS8DQh4Vsga4Tja38fO9hNa4VlhLdsnL
- CsBIWcTGymdHmt7XHVa7k+bi6rOlq8wB9v6+Amxfb1Sihtpoak7qES1uzKPbWpXkGXy1
- s793NSVVPGBNvIW/rVKf5X2FvBYhBaSUBPD5VWAktPKn0WUr/uuBofMRK+W+JsUStarI
- d01HS1DaWJV/lgtP1M5p5yy08oVAauv0xgx76WrqXv81NLipXC2JPXcwGlLUTtvy7GP+
- fdxw==
-X-Gm-Message-State: AC+VfDzh9rZVVpZPF+oeoZ0otrjUEjUk59saCdQuWa2Fktstnyhr6kGs
- Tfyf8tUaev5hfF350+rc6+QY3g==
-X-Google-Smtp-Source: ACHHUZ6KKc0iHtRXMwf1tNKiUkTYpJvJt1Q6MIsEEWfZtOml067a8VnmMSJ/rUGVL7XyzuIc3ShRVQ==
-X-Received: by 2002:adf:e78e:0:b0:313:e6fa:6900 with SMTP id
- n14-20020adfe78e000000b00313e6fa6900mr8408104wrm.30.1687943325677; 
- Wed, 28 Jun 2023 02:08:45 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
+ d=1e100.net; s=20221208; t=1687943263; x=1690535263;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Yg+Y5FmR7KsY+IEy4o0xFzpFhAX0DMCj+mtO6dzHn3Q=;
+ b=eRqOIfOsCxbMBfjA7rPvF7wE3Er3RbgGWzcwCDVyQzGyoKFIBowhqoxKBnzTbVUgcl
+ qQanUkxfbwJ0MnBEWxIDhYhdP3Ec0okVp+nmuCfPr/GLgk4zlzSfUGrVYZTRzqOVpZ5l
+ PK39wgOfdaabPxmy9imREFtmTQ7ks3EoNu2ScogODpCfMg7HVa3B2+trChYr/+3TXeQG
+ JldifuahE9ueQAtGNDWX+pwdr5SRvjZ0vk5Xgk+P+3ADH8oweLKVrmd5qB68K+MXXVI/
+ +F5Na6INTSb2JfU/9BLTZbFzbJkV9ZowcKpxd5oPcpSNHqO4dYuI+yQPG2iPy8/ZFPmr
+ fW/g==
+X-Gm-Message-State: AC+VfDwdSTau0pSs9app1hyhm6ESmvbJLia+ckWyHawdt2F+TOlXwA4R
+ pX69E4oxjV9/nHQ6Og1M02LYGA==
+X-Google-Smtp-Source: ACHHUZ4oOeon2Qse9QXn/vYmIjvSluaGxsIQHySTcxOQ34NUjbl4AZm6GydbRjsUr4YVb6LAmFsiXQ==
+X-Received: by 2002:ac2:4e03:0:b0:4fb:9497:b2a5 with SMTP id
+ e3-20020ac24e03000000b004fb9497b2a5mr525870lfr.21.1687943262914; 
+ Wed, 28 Jun 2023 02:07:42 -0700 (PDT)
+Received: from [192.168.1.208] ([139.47.41.103])
  by smtp.gmail.com with ESMTPSA id
- cs5-20020a056000088500b0030ab5ebefa8sm12809449wrb.46.2023.06.28.02.08.44
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 28 Jun 2023 02:08:45 -0700 (PDT)
-Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 3C2921FFBB;
- Wed, 28 Jun 2023 10:08:44 +0100 (BST)
-References: <20230627160943.2956928-1-alex.bennee@linaro.org>
- <20230627160943.2956928-18-alex.bennee@linaro.org>
- <832d49b4-4d53-729e-c8aa-004a71bdf99f@linaro.org>
-User-agent: mu4e 1.11.7; emacs 29.0.92
-From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, Wainer dos Santos Moschetta
- <wainersm@redhat.com>, Juan Quintela <quintela@redhat.com>, Thomas Huth
- <thuth@redhat.com>, Cleber Rosa <crosa@redhat.com>, Leonardo Bras
- <leobras@redhat.com>, Beraldo Leal <bleal@redhat.com>, Peter Maydell
- <peter.maydell@linaro.org>, Bin Meng <bmeng.cn@gmail.com>, Yanan Wang
- <wangyanan55@huawei.com>, Darren Kenny <darren.kenny@oracle.com>,
- Alexander Bulekov <alxndr@bu.edu>, Marcel Apfelbaum
- <marcel.apfelbaum@gmail.com>, Peter Xu <peterx@redhat.com>, Radoslaw
- Biernacki <rad@semihalf.com>, Laurent Vivier <laurent@vivier.eu>, Paolo
- Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- qemu-arm@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>, Bandan Das
- <bsd@redhat.com>, Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, =?utf-8?Q?Daniel_P=2E_Berrang=C3=A9?=
- <berrange@redhat.com>, Alexandre Iooss <erdnaxe@crans.org>,
- Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>, Leif Lindholm
- <quic_llindhol@quicinc.com>, Laurent Vivier <lvivier@redhat.com>, Qiuhao
- Li <Qiuhao.Li@outlook.com>, Mahmoud Mandour <ma.mandourr@gmail.com>, Riku
- Voipio <riku.voipio@iki.fi>, Robert Henry <robhenry@microsoft.com>, Aaron
- Lindsay <aaron@os.amperecomputing.com>
-Subject: Re: [PATCH v3 17/36] plugins: force slow path when plugins
- instrument memory ops
-Date: Wed, 28 Jun 2023 10:06:38 +0100
-In-reply-to: <832d49b4-4d53-729e-c8aa-004a71bdf99f@linaro.org>
-Message-ID: <878rc4ymw3.fsf@linaro.org>
+ z16-20020a5d4d10000000b00313eeca9f4asm9207596wrt.14.2023.06.28.02.07.41
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 28 Jun 2023 02:07:42 -0700 (PDT)
+Message-ID: <af36c183-aad0-6e66-62e0-0f97b04eb4cc@linaro.org>
+Date: Wed, 28 Jun 2023 11:07:40 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v6 09/15] target/riscv: Add Zvkned ISA extension support
+Content-Language: en-US
+To: Max Chou <max.chou@sifive.com>, qemu-devel@nongnu.org,
+ qemu-riscv@nongnu.org
+Cc: dbarboza@ventanamicro.com, Nazar Kazakov <nazar.kazakov@codethink.co.uk>, 
+ Lawrence Hunter <lawrence.hunter@codethink.co.uk>,
+ William Salmon <will.salmon@codethink.co.uk>,
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Kiran Ostrolenk <kiran.ostrolenk@codethink.co.uk>
+References: <20230627174551.65498-1-max.chou@sifive.com>
+ <20230627174551.65498-10-max.chou@sifive.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230627174551.65498-10-max.chou@sifive.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::12f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-lf1-x12f.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.103,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -116,141 +103,221 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 6/27/23 19:45, Max Chou wrote:
+> +#define GEN_V_UNMASKED_TRANS(NAME, CHECK, EGS)                                \
+> +    static bool trans_##NAME(DisasContext *s, arg_##NAME *a)                  \
+> +    {                                                                         \
+> +        if (CHECK(s, a)) {                                                    \
+> +            TCGv_ptr rd_v, rs2_v;                                             \
+> +            TCGv_i32 desc;                                                    \
+> +            uint32_t data = 0;                                                \
+> +            TCGLabel *over = gen_new_label();                                 \
+> +            TCGLabel *vl_ok = gen_new_label();                                \
+> +            TCGLabel *vstart_ok = gen_new_label();                            \
+> +            TCGv_i32 tmp = tcg_temp_new_i32();                                \
+> +                                                                              \
+> +            /* save opcode for unwinding in case we throw an exception */     \
+> +            decode_save_opc(s);                                               \
+> +                                                                              \
+> +            /* check (vl % EGS == 0) assuming it's power of 2 */              \
+> +            tcg_gen_trunc_tl_i32(tmp, cpu_vl);                                \
+> +            tcg_gen_andi_i32(tmp, tmp, EGS - 1);                              \
+> +            tcg_gen_brcondi_i32(TCG_COND_EQ, tmp, 0, vl_ok);                  \
+> +            gen_helper_restore_cpu_and_raise_exception(                       \
+> +                cpu_env, tcg_constant_i32(RISCV_EXCP_ILLEGAL_INST));          \
+> +            gen_set_label(vl_ok);                                             \
+> +                                                                              \
+> +            /* check (vstart % EGS == 0) assuming it's power of 2 */          \
+> +            tcg_gen_trunc_tl_i32(tmp, cpu_vstart);                            \
+> +            tcg_gen_andi_i32(tmp, tmp, EGS - 1);                              \
+> +            tcg_gen_brcondi_i32(TCG_COND_EQ, tmp, 0, vstart_ok);              \
+> +            gen_helper_restore_cpu_and_raise_exception(                       \
+> +                cpu_env, tcg_constant_i32(RISCV_EXCP_ILLEGAL_INST));          \
+> +            gen_set_label(vstart_ok);                                         \
+> +                                                                              \
+> +            tcg_gen_brcond_tl(TCG_COND_GEU, cpu_vstart, cpu_vl, over);        \
+> +            data = FIELD_DP32(data, VDATA, VM, a->vm);                        \
+> +            data = FIELD_DP32(data, VDATA, LMUL, s->lmul);                    \
+> +            data = FIELD_DP32(data, VDATA, VTA, s->vta);                      \
+> +            data = FIELD_DP32(data, VDATA, VTA_ALL_1S, s->cfg_vta_all_1s);    \
+> +            data = FIELD_DP32(data, VDATA, VMA, s->vma);                      \
+> +            rd_v = tcg_temp_new_ptr();                                        \
+> +            rs2_v = tcg_temp_new_ptr();                                       \
+> +            desc = tcg_constant_i32(                                          \
+> +                simd_desc(s->cfg_ptr->vlen / 8, s->cfg_ptr->vlen / 8, data)); \
+> +            tcg_gen_addi_ptr(rd_v, cpu_env, vreg_ofs(s, a->rd));              \
+> +            tcg_gen_addi_ptr(rs2_v, cpu_env, vreg_ofs(s, a->rs2));            \
+> +            gen_helper_##NAME(rd_v, rs2_v, cpu_env, desc);                    \
+> +            mark_vs_dirty(s);                                                 \
+> +            gen_set_label(over);                                              \
+> +            return true;                                                      \
+> +        }                                                                     \
+> +        return false;                                                         \
+> +    }
 
-Richard Henderson <richard.henderson@linaro.org> writes:
+This kind of massive macro is bad style.
+Much better to have a helper function and pass in gen_helper_foo as a parameter.
 
-> On 6/27/23 18:09, Alex Benn=C3=A9e wrote:
->> The lack of SVE memory instrumentation has been an omission in plugin
->> handling since it was introduced. Fortunately we can utilise the
->> probe_* functions to force all all memory access to follow the slow
->> path. We do this by checking the access type and presence of plugin
->> memory callbacks and if set return the TLB_MMIO flag.
->> We have to jump through a few hoops in user mode to re-use the flag
->> but it was the desired effect:
->>   ./qemu-system-aarch64 -display none -serial mon:stdio \
->>     -M virt -cpu max -semihosting-config enable=3Don \
->>     -kernel ./tests/tcg/aarch64-softmmu/memory-sve \
->>     -plugin ./contrib/plugins/libexeclog.so,ifilter=3Dst1w,afilter=3D0x4=
-0001808 -d plugin
->> gives (disas doesn't currently understand st1w):
->>    0, 0x40001808, 0xe54342a0, ".byte 0xa0, 0x42, 0x43, 0xe5", store,
->> 0x40213010, RAM, store, 0x40213014, RAM, store, 0x40213018, RAM
->> And for user-mode:
->>    ./qemu-aarch64 \
->>      -plugin contrib/plugins/libexeclog.so,afilter=3D0x4007c0 \
->>      -d plugin \
->>      ./tests/tcg/aarch64-linux-user/sha512-sve
->> gives:
->>    1..10
->>    ok 1 - do_test(&tests[i])
->>    0, 0x4007c0, 0xa4004b80, ".byte 0x80, 0x4b, 0x00, 0xa4", load, 0x5500=
-800370, load, 0x5500800371, load, 0x5500800372, load, 0x5500800373, load, 0=
-x5500800374, load, 0x5500800375, load, 0x5500800376, load, 0x5500800377, lo=
-ad, 0x5500800378, load, 0x5500800379, load, 0x550080037a, load, 0x550080037=
-b, load, 0x550080037c, load, 0x550080037d, load, 0x550080037e, load, 0x5500=
-80037f, load, 0x5500800380, load, 0x5500800381, load, 0x5500800382, load, 0=
-x5500800383, load, 0x5500800384, load, 0x5500800385, load, 0x5500800386, lo
->>    ad, 0x5500800387, load, 0x5500800388, load, 0x5500800389, load, 0x550=
-080038a, load, 0x550080038b, load, 0x550080038c, load, 0x550080038d, load, =
-0x550080038e, load, 0x550080038f, load, 0x5500800390, load, 0x5500800391, l=
-oad, 0x5500800392, load, 0x5500800393, load, 0x5500800394, load, 0x55008003=
-95, load, 0x5500800396, load, 0x5500800397, load, 0x5500800398, load, 0x550=
-0800399, load, 0x550080039a, load, 0x550080039b, load, 0x550080039c, load, =
-0x550080039d, load, 0x550080039e, load, 0x550080039f, load, 0x55008003a0, l=
-oad, 0x55008003a1, load, 0x55008003a2, load, 0x55008003a3, load, 0x55008003=
-a4, load, 0x55008003a5, load, 0x55008003a6, load, 0x55008003a7, load, 0x550=
-08003a8, load, 0x55008003a9, load, 0x55008003aa, load, 0x55008003ab, load, =
-0x55008003ac, load, 0x55008003ad, load, 0x55008003ae, load, 0x55008003af
->> (4007c0 is the ld1b in the sha512-sve)
->> Signed-off-by: Alex Benn=C3=A9e<alex.bennee@linaro.org>
->> Reviewed-by: Richard Henderson<richard.henderson@linaro.org>
->> Cc: Robert Henry<robhenry@microsoft.com>
->> Cc: Aaron Lindsay<aaron@os.amperecomputing.com>
->> ---
->> v2
->>   - allow TLB_MMIO to appear in user-mode probe_access
->> v3
->>   - checkpatch cleanups
->> ---
->
-> I thought we dropped this patch until we could do something with TLB
-> accesses.
+You can eliminate the vstart % EGS test, and the vstart < vl test, when VSTART_EQ_ZERO.
+You can eliminate the vl % EGS test when VL_EQ_VLMAX.
 
-I did suggest something like:
+You could move all of these tests out of line, into a helper_foo_chk() function which 
+performs the checks and then calls helper_foo().
 
---8<---------------cut here---------------start------------->8---
-modified   include/hw/core/cpu.h
-@@ -80,10 +80,24 @@ DECLARE_CLASS_CHECKERS(CPUClass, CPU,
-     typedef struct ArchCPU CpuInstanceType; \
-     OBJECT_DECLARE_TYPE(ArchCPU, CpuClassType, CPU_MODULE_OBJ_NAME);
-=20
-+/**
-+ * typedef MMUAccessType - describe the type of access for cputlb
-+ *
-+ * When handling the access to memory we need to know the type of
-+ * access we are doing. Loads and store rely on read and write page
-+ * permissions where as the instruction fetch relies on execute
-+ * permissions. Additional bits are used for TLB access so we can
-+ * suppress instrumentation of memory when the CPU is probing.
-+ */
- typedef enum MMUAccessType {
-     MMU_DATA_LOAD  =3D 0,
-     MMU_DATA_STORE =3D 1,
--    MMU_INST_FETCH =3D 2
-+    MMU_INST_FETCH =3D 2,
-+    /* MMU Mask */
-+    MMU_VALID_MASK =3D (MMU_DATA_LOAD | MMU_DATA_STORE | MMU_INST_FETCH),
-+    /* Represents the CPU walking the page table */
-+    MMU_TLB_ACCESS =3D 0x4,
-+    MMU_TLB_LOAD =3D MMU_DATA_LOAD | MMU_TLB_ACCESS
- } MMUAccessType;
-=20
- typedef struct CPUWatchpoint CPUWatchpoint;
-modified   accel/tcg/cputlb.c
-@@ -1503,11 +1503,12 @@ static void notdirty_write(CPUState *cpu, vaddr mem=
-_vaddr, unsigned size,
- }
-=20
- static int probe_access_internal(CPUArchState *env, target_ulong addr,
--                                 int fault_size, MMUAccessType access_type,
-+                                 int fault_size, MMUAccessType full_access=
-_type,
-                                  int mmu_idx, bool nonfault,
-                                  void **phost, CPUTLBEntryFull **pfull,
-                                  uintptr_t retaddr)
- {
-+    MMUAccessType access_type =3D full_access_type & MMU_VALID_MASK;
-     uintptr_t index =3D tlb_index(env, mmu_idx, addr);
-     CPUTLBEntry *entry =3D tlb_entry(env, mmu_idx, addr);
-     target_ulong tlb_addr =3D tlb_read_idx(entry, access_type);
-@@ -1546,7 +1547,9 @@ static int probe_access_internal(CPUArchState *env, t=
-arget_ulong addr,
-     /* Fold all "mmio-like" bits into TLB_MMIO.  This is not RAM.  */
-     if (unlikely(flags & ~(TLB_WATCHPOINT | TLB_NOTDIRTY))
-         ||
--        (access_type !=3D MMU_INST_FETCH && cpu_plugin_mem_cbs_enabled(env=
-_cpu(env)))) {
-+        (access_type !=3D MMU_INST_FETCH &&
-+         !(full_access_type & MMU_TLB_ACCESS) &&
-+         cpu_plugin_mem_cbs_enabled(env_cpu(env)))) {
-         *phost =3D NULL;
-         return TLB_MMIO;
-     }
---8<---------------cut here---------------end--------------->8---
+> +#define GEN_VI_UNMASKED_TRANS(NAME, CHECK, EGS)                               \
+> +    static bool trans_##NAME(DisasContext *s, arg_##NAME *a)                  \
+> +    {                                                                         \
+> +        if (CHECK(s, a)) {                                                    \
+> +            TCGv_ptr rd_v, rs2_v;                                             \
+> +            TCGv_i32 uimm_v, desc;                                            \
+> +            uint32_t data = 0;                                                \
+> +            TCGLabel *over = gen_new_label();                                 \
+> +            TCGLabel *vl_ok = gen_new_label();                                \
+> +            TCGLabel *vstart_ok = gen_new_label();                            \
+> +            TCGv_i32 tmp = tcg_temp_new_i32();                                \
+> +                                                                              \
+> +            /* save opcode for unwinding in case we throw an exception */     \
+> +            decode_save_opc(s);                                               \
+> +                                                                              \
+> +            /* check (vl % EGS == 0) assuming it's power of 2 */              \
+> +            tcg_gen_trunc_tl_i32(tmp, cpu_vl);                                \
+> +            tcg_gen_andi_i32(tmp, tmp, EGS - 1);                              \
+> +            tcg_gen_brcondi_i32(TCG_COND_EQ, tmp, 0, vl_ok);                  \
+> +            gen_helper_restore_cpu_and_raise_exception(                       \
+> +                cpu_env, tcg_constant_i32(RISCV_EXCP_ILLEGAL_INST));          \
+> +            gen_set_label(vl_ok);                                             \
+> +                                                                              \
+> +            /* check (vstart % EGS == 0) assuming it's power of 2 */          \
+> +            tcg_gen_trunc_tl_i32(tmp, cpu_vstart);                            \
+> +            tcg_gen_andi_i32(tmp, tmp, EGS - 1);                              \
+> +            tcg_gen_brcondi_i32(TCG_COND_EQ, tmp, 0, vstart_ok);              \
+> +            gen_helper_restore_cpu_and_raise_exception(                       \
+> +                cpu_env, tcg_constant_i32(RISCV_EXCP_ILLEGAL_INST));          \
+> +            gen_set_label(vstart_ok);                                         \
+> +                                                                              \
+> +            tcg_gen_brcond_tl(TCG_COND_GEU, cpu_vstart, cpu_vl, over);        \
+> +            data = FIELD_DP32(data, VDATA, VM, a->vm);                        \
+> +            data = FIELD_DP32(data, VDATA, LMUL, s->lmul);                    \
+> +            data = FIELD_DP32(data, VDATA, VTA, s->vta);                      \
+> +            data = FIELD_DP32(data, VDATA, VTA_ALL_1S, s->cfg_vta_all_1s);    \
+> +            data = FIELD_DP32(data, VDATA, VMA, s->vma);                      \
+> +                                                                              \
+> +            rd_v = tcg_temp_new_ptr();                                        \
+> +            rs2_v = tcg_temp_new_ptr();                                       \
+> +            uimm_v = tcg_constant_i32(a->rs1);                                \
+> +            desc = tcg_constant_i32(                                          \
+> +                simd_desc(s->cfg_ptr->vlen / 8, s->cfg_ptr->vlen / 8, data)); \
+> +            tcg_gen_addi_ptr(rd_v, cpu_env, vreg_ofs(s, a->rd));              \
+> +            tcg_gen_addi_ptr(rs2_v, cpu_env, vreg_ofs(s, a->rs2));            \
+> +            gen_helper_##NAME(rd_v, rs2_v, uimm_v, cpu_env, desc);            \
+> +            mark_vs_dirty(s);                                                 \
+> +            gen_set_label(over);                                              \
+> +            return true;                                                      \
+> +        }                                                                     \
+> +        return false;                                                         \
+> +    }
 
-and then we can apply MMU_TLB_LOAD as the type in the page walking code.
-I wanted to know if that was the sort of thing you where thinking off or
-if that is too ugly.
+Likewise.
 
-The other option is a specific probe_access_* function for TLB type
-operations.
+> +#define GEN_ZVKNED_HELPER_VV(NAME, ...)                                   \
+> +    void HELPER(NAME)(void *vd_vptr, void *vs2_vptr, CPURISCVState *env,  \
+> +                      uint32_t desc)                                      \
+> +    {                                                                     \
+> +        uint64_t *vd = vd_vptr;                                           \
+> +        uint64_t *vs2 = vs2_vptr;                                         \
+> +        uint32_t vl = env->vl;                                            \
+> +        uint32_t total_elems = vext_get_total_elems(env, desc, 4);        \
+> +        uint32_t vta = vext_vta(desc);                                    \
+> +                                                                          \
+> +        for (uint32_t i = env->vstart / 4; i < env->vl / 4; i++) {        \
+> +            AESState round_key;                                           \
+> +            round_key.d[HOST_BIG_ENDIAN] = cpu_to_le64(vs2[i * 2 + 0]);   \
+> +            round_key.d[!HOST_BIG_ENDIAN] = cpu_to_le64(vs2[i * 2 + 1]);  \
+> +            AESState round_state;                                         \
+> +            cpu_to_le64s(vd + i * 2 + 0);                                 \
+> +            cpu_to_le64s(vd + i * 2 + 1);                                 \
+> +            for (int j = 0; j < 16; j++) {                                \
+> +                round_state.b[j] = ((uint8_t *)(vd + i * 2))[j];          \
+> +            }                                                             \
 
->
->
-> r~
+I think all of this byte swapping is wrong.
+With this last loop particularly being particularly silly.
+
+You want to present the 16 bytes in *host* endian order.
+Because the words are always in little-endian order (see H1 et al),
+we only need to swap the words on big-endian hosts.
+
+See https://lore.kernel.org/qemu-devel/20230620110758.787479-21-richard.henderson@linaro.org/
+where I do exactly the same thing for ARM:
+
++        AESState *ad = (AESState *)(vd + i);
++        AESState *st = (AESState *)(vm + i);
++        AESState t;
++
++        /* Our uint64_t are in the wrong order for big-endian. */
++        if (HOST_BIG_ENDIAN) {
++            t.d[0] = st->d[1];
++            t.d[1] = st->d[0];
++            aesdec_IMC(&t, &t, false);
++            ad->d[0] = t.d[1];
++            ad->d[1] = t.d[0];
++        } else {
++            aesdec_IMC(ad, st, false);
++        }
+
+> +void HELPER(vaeskf1_vi)(void *vd_vptr, void *vs2_vptr, uint32_t uimm,
+> +                        CPURISCVState *env, uint32_t desc)
+> +{
+> +    uint32_t *vd = vd_vptr;
+> +    uint32_t *vs2 = vs2_vptr;
+> +    uint32_t vl = env->vl;
+> +    uint32_t total_elems = vext_get_total_elems(env, desc, 4);
+> +    uint32_t vta = vext_vta(desc);
+> +
+> +    uimm &= 0b1111;
+> +    if (uimm > 10 || uimm == 0) {
+> +        uimm ^= 0b1000;
+> +    }
+> +
+> +    for (uint32_t i = env->vstart / 4; i < env->vl / 4; i++) {
+> +        uint32_t rk[8];
+> +        static const uint32_t rcon[] = {
+> +            0x01000000, 0x02000000, 0x04000000, 0x08000000, 0x10000000,
+> +            0x20000000, 0x40000000, 0x80000000, 0x1B000000, 0x36000000,
+> +        };
+> +
+> +        rk[0] = bswap32(vs2[i * 4 + H4(0)]);
+> +        rk[1] = bswap32(vs2[i * 4 + H4(1)]);
+> +        rk[2] = bswap32(vs2[i * 4 + H4(2)]);
+> +        rk[3] = bswap32(vs2[i * 4 + H4(3)]);
+> +
+> +        rk[4] = rk[0] ^ (((uint32_t)AES_sbox[(rk[3] >> 16) & 0xff] << 24) |
+> +                         ((uint32_t)AES_sbox[(rk[3] >> 8) & 0xff] << 16) |
+> +                         ((uint32_t)AES_sbox[(rk[3] >> 0) & 0xff] << 8) |
+> +                         ((uint32_t)AES_sbox[(rk[3] >> 24) & 0xff] << 0))
+> +                      ^ rcon[uimm - 1];
+> +        rk[5] = rk[1] ^ rk[4];
+> +        rk[6] = rk[2] ^ rk[5];
+> +        rk[7] = rk[3] ^ rk[6];
+> +
+> +        vd[i * 4 + H4(0)] = bswap32(rk[4]);
+> +        vd[i * 4 + H4(1)] = bswap32(rk[5]);
+> +        vd[i * 4 + H4(2)] = bswap32(rk[6]);
+> +        vd[i * 4 + H4(3)] = bswap32(rk[7]);
+> +    }
+> +    env->vstart = 0;
+> +    /* set tail elements to 1s */
+> +    vext_set_elems_1s(vd, vta, vl * 4, total_elems * 4);
+> +}
+
+All of this byte swapping is going to be wrong for a big-endian host.
+It is also a little bit silly to do for a little-endian host.
+
+You're byte swapping uint32_t words, then extracting bytes from those words.  Just extract 
+the exact byte you require from the original input, using the H1() macro, and now you have 
+correct code for both big- and little-endian hosts.
 
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+r~
+
 
