@@ -2,92 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6571740C6A
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 11:08:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C19D740D11
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 11:37:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qER9R-0008UE-7x; Wed, 28 Jun 2023 05:07:49 -0400
+	id 1qERbl-0007LG-B8; Wed, 28 Jun 2023 05:37:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qER9P-0008Tk-7s
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 05:07:47 -0400
-Received: from mail-lf1-x12f.google.com ([2a00:1450:4864:20::12f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qER9M-0008SS-Sa
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 05:07:46 -0400
-Received: by mail-lf1-x12f.google.com with SMTP id
- 2adb3069b0e04-4fb94b1423eso289453e87.1
- for <qemu-devel@nongnu.org>; Wed, 28 Jun 2023 02:07:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687943263; x=1690535263;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Yg+Y5FmR7KsY+IEy4o0xFzpFhAX0DMCj+mtO6dzHn3Q=;
- b=QY5ITJ0tZwUOni3jUTYQbNHMu4AW0NPV5ZwOepLnNwyc1Mbkdv9HOV8VEEdo7jYWH0
- Jky3mC8GExhzx/XtbdCTl1RKnle0zF1bsAQk/3dGbLHa4Ro1XxNBDPKMhNbdMHeuqmbE
- BoU9OQN6q7WKGtvjrRSmgxNVWmSGvsuDIkeCbXpcFsEXD6HMHq91lFdOCpYkXaQfwvx5
- z9yKB95Tai34Dtq1KXm7YBfkFY9JspBWgeZwVDdE0sZN87ao/xvFtqxTo1r1bg7THsO2
- 33McTrwaRld2Z3JN4Ppg8svHwqWYPK8rZSJa3wxzJJfybj/d6G1PN8XgnBPYTT2B44Xs
- rztg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687943263; x=1690535263;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Yg+Y5FmR7KsY+IEy4o0xFzpFhAX0DMCj+mtO6dzHn3Q=;
- b=eRqOIfOsCxbMBfjA7rPvF7wE3Er3RbgGWzcwCDVyQzGyoKFIBowhqoxKBnzTbVUgcl
- qQanUkxfbwJ0MnBEWxIDhYhdP3Ec0okVp+nmuCfPr/GLgk4zlzSfUGrVYZTRzqOVpZ5l
- PK39wgOfdaabPxmy9imREFtmTQ7ks3EoNu2ScogODpCfMg7HVa3B2+trChYr/+3TXeQG
- JldifuahE9ueQAtGNDWX+pwdr5SRvjZ0vk5Xgk+P+3ADH8oweLKVrmd5qB68K+MXXVI/
- +F5Na6INTSb2JfU/9BLTZbFzbJkV9ZowcKpxd5oPcpSNHqO4dYuI+yQPG2iPy8/ZFPmr
- fW/g==
-X-Gm-Message-State: AC+VfDwdSTau0pSs9app1hyhm6ESmvbJLia+ckWyHawdt2F+TOlXwA4R
- pX69E4oxjV9/nHQ6Og1M02LYGA==
-X-Google-Smtp-Source: ACHHUZ4oOeon2Qse9QXn/vYmIjvSluaGxsIQHySTcxOQ34NUjbl4AZm6GydbRjsUr4YVb6LAmFsiXQ==
-X-Received: by 2002:ac2:4e03:0:b0:4fb:9497:b2a5 with SMTP id
- e3-20020ac24e03000000b004fb9497b2a5mr525870lfr.21.1687943262914; 
- Wed, 28 Jun 2023 02:07:42 -0700 (PDT)
-Received: from [192.168.1.208] ([139.47.41.103])
- by smtp.gmail.com with ESMTPSA id
- z16-20020a5d4d10000000b00313eeca9f4asm9207596wrt.14.2023.06.28.02.07.41
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 28 Jun 2023 02:07:42 -0700 (PDT)
-Message-ID: <af36c183-aad0-6e66-62e0-0f97b04eb4cc@linaro.org>
-Date: Wed, 28 Jun 2023 11:07:40 +0200
+ (Exim 4.90_1) (envelope-from <outgoing@sr.ht>)
+ id 1qERbi-0007Jc-L5; Wed, 28 Jun 2023 05:37:02 -0400
+Received: from mail-b.sr.ht ([173.195.146.151])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <outgoing@sr.ht>)
+ id 1qERbg-0008Qw-AB; Wed, 28 Jun 2023 05:37:02 -0400
+Authentication-Results: mail-b.sr.ht; dkim=none 
+Received: from git.sr.ht (unknown [173.195.146.142])
+ by mail-b.sr.ht (Postfix) with ESMTPSA id 0E26211EECC;
+ Wed, 28 Jun 2023 09:36:58 +0000 (UTC)
+From: ~ssinprem <ssinprem@git.sr.ht>
+Date: Wed, 28 Jun 2023 16:09:23 +0700
+Subject: [PATCH qemu] aspeed add montblanc bmc reference from fuji
+Message-ID: <168794501779.28884.3336012012258765799-0@git.sr.ht>
+X-Mailer: git.sr.ht
+To: qemu-devel@nongnu.org, qemu-arm@nongnu.org
+Cc: ssinprem@celestica.com, clg@kaod.org, peter.maydell@linaro.org,
+ andrew@aj.id.au, joel@jms.id.a, qemu-stable@nongnu.org,
+ srikanth@celestica.com, ssumet@celestica.com, thangavelu.v@celestica.com,
+ kgengan@celestica.com, anandaramanv@celestica.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH v6 09/15] target/riscv: Add Zvkned ISA extension support
-Content-Language: en-US
-To: Max Chou <max.chou@sifive.com>, qemu-devel@nongnu.org,
- qemu-riscv@nongnu.org
-Cc: dbarboza@ventanamicro.com, Nazar Kazakov <nazar.kazakov@codethink.co.uk>, 
- Lawrence Hunter <lawrence.hunter@codethink.co.uk>,
- William Salmon <will.salmon@codethink.co.uk>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Kiran Ostrolenk <kiran.ostrolenk@codethink.co.uk>
-References: <20230627174551.65498-1-max.chou@sifive.com>
- <20230627174551.65498-10-max.chou@sifive.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230627174551.65498-10-max.chou@sifive.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12f;
- envelope-from=richard.henderson@linaro.org; helo=mail-lf1-x12f.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.103,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=173.195.146.151; envelope-from=outgoing@sr.ht;
+ helo=mail-b.sr.ht
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,224 +52,205 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: ~ssinprem <ssinprem@celestica.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/27/23 19:45, Max Chou wrote:
-> +#define GEN_V_UNMASKED_TRANS(NAME, CHECK, EGS)                                \
-> +    static bool trans_##NAME(DisasContext *s, arg_##NAME *a)                  \
-> +    {                                                                         \
-> +        if (CHECK(s, a)) {                                                    \
-> +            TCGv_ptr rd_v, rs2_v;                                             \
-> +            TCGv_i32 desc;                                                    \
-> +            uint32_t data = 0;                                                \
-> +            TCGLabel *over = gen_new_label();                                 \
-> +            TCGLabel *vl_ok = gen_new_label();                                \
-> +            TCGLabel *vstart_ok = gen_new_label();                            \
-> +            TCGv_i32 tmp = tcg_temp_new_i32();                                \
-> +                                                                              \
-> +            /* save opcode for unwinding in case we throw an exception */     \
-> +            decode_save_opc(s);                                               \
-> +                                                                              \
-> +            /* check (vl % EGS == 0) assuming it's power of 2 */              \
-> +            tcg_gen_trunc_tl_i32(tmp, cpu_vl);                                \
-> +            tcg_gen_andi_i32(tmp, tmp, EGS - 1);                              \
-> +            tcg_gen_brcondi_i32(TCG_COND_EQ, tmp, 0, vl_ok);                  \
-> +            gen_helper_restore_cpu_and_raise_exception(                       \
-> +                cpu_env, tcg_constant_i32(RISCV_EXCP_ILLEGAL_INST));          \
-> +            gen_set_label(vl_ok);                                             \
-> +                                                                              \
-> +            /* check (vstart % EGS == 0) assuming it's power of 2 */          \
-> +            tcg_gen_trunc_tl_i32(tmp, cpu_vstart);                            \
-> +            tcg_gen_andi_i32(tmp, tmp, EGS - 1);                              \
-> +            tcg_gen_brcondi_i32(TCG_COND_EQ, tmp, 0, vstart_ok);              \
-> +            gen_helper_restore_cpu_and_raise_exception(                       \
-> +                cpu_env, tcg_constant_i32(RISCV_EXCP_ILLEGAL_INST));          \
-> +            gen_set_label(vstart_ok);                                         \
-> +                                                                              \
-> +            tcg_gen_brcond_tl(TCG_COND_GEU, cpu_vstart, cpu_vl, over);        \
-> +            data = FIELD_DP32(data, VDATA, VM, a->vm);                        \
-> +            data = FIELD_DP32(data, VDATA, LMUL, s->lmul);                    \
-> +            data = FIELD_DP32(data, VDATA, VTA, s->vta);                      \
-> +            data = FIELD_DP32(data, VDATA, VTA_ALL_1S, s->cfg_vta_all_1s);    \
-> +            data = FIELD_DP32(data, VDATA, VMA, s->vma);                      \
-> +            rd_v = tcg_temp_new_ptr();                                        \
-> +            rs2_v = tcg_temp_new_ptr();                                       \
-> +            desc = tcg_constant_i32(                                          \
-> +                simd_desc(s->cfg_ptr->vlen / 8, s->cfg_ptr->vlen / 8, data)); \
-> +            tcg_gen_addi_ptr(rd_v, cpu_env, vreg_ofs(s, a->rd));              \
-> +            tcg_gen_addi_ptr(rs2_v, cpu_env, vreg_ofs(s, a->rs2));            \
-> +            gen_helper_##NAME(rd_v, rs2_v, cpu_env, desc);                    \
-> +            mark_vs_dirty(s);                                                 \
-> +            gen_set_label(over);                                              \
-> +            return true;                                                      \
-> +        }                                                                     \
-> +        return false;                                                         \
-> +    }
+From: Sittisak Sinprem <ssinprem@celestica.com>
 
-This kind of massive macro is bad style.
-Much better to have a helper function and pass in gen_helper_foo as a parameter.
+- I2C list follow I2C Tree v1.6 20230320
+- fru eeprom data use FB FRU format version 4
 
-You can eliminate the vstart % EGS test, and the vstart < vl test, when VSTART_EQ_ZERO.
-You can eliminate the vl % EGS test when VL_EQ_VLMAX.
+Signed-off-by: Sittisak Sinprem <ssinprem@celestica.com>
+---
+ hw/arm/aspeed.c        | 67 ++++++++++++++++++++++++++++++++++++++++++
+ hw/arm/aspeed_eeprom.c | 50 +++++++++++++++++++++++++++++++
+ hw/arm/aspeed_eeprom.h |  7 +++++
+ 3 files changed, 124 insertions(+)
 
-You could move all of these tests out of line, into a helper_foo_chk() function which 
-performs the checks and then calls helper_foo().
-
-> +#define GEN_VI_UNMASKED_TRANS(NAME, CHECK, EGS)                               \
-> +    static bool trans_##NAME(DisasContext *s, arg_##NAME *a)                  \
-> +    {                                                                         \
-> +        if (CHECK(s, a)) {                                                    \
-> +            TCGv_ptr rd_v, rs2_v;                                             \
-> +            TCGv_i32 uimm_v, desc;                                            \
-> +            uint32_t data = 0;                                                \
-> +            TCGLabel *over = gen_new_label();                                 \
-> +            TCGLabel *vl_ok = gen_new_label();                                \
-> +            TCGLabel *vstart_ok = gen_new_label();                            \
-> +            TCGv_i32 tmp = tcg_temp_new_i32();                                \
-> +                                                                              \
-> +            /* save opcode for unwinding in case we throw an exception */     \
-> +            decode_save_opc(s);                                               \
-> +                                                                              \
-> +            /* check (vl % EGS == 0) assuming it's power of 2 */              \
-> +            tcg_gen_trunc_tl_i32(tmp, cpu_vl);                                \
-> +            tcg_gen_andi_i32(tmp, tmp, EGS - 1);                              \
-> +            tcg_gen_brcondi_i32(TCG_COND_EQ, tmp, 0, vl_ok);                  \
-> +            gen_helper_restore_cpu_and_raise_exception(                       \
-> +                cpu_env, tcg_constant_i32(RISCV_EXCP_ILLEGAL_INST));          \
-> +            gen_set_label(vl_ok);                                             \
-> +                                                                              \
-> +            /* check (vstart % EGS == 0) assuming it's power of 2 */          \
-> +            tcg_gen_trunc_tl_i32(tmp, cpu_vstart);                            \
-> +            tcg_gen_andi_i32(tmp, tmp, EGS - 1);                              \
-> +            tcg_gen_brcondi_i32(TCG_COND_EQ, tmp, 0, vstart_ok);              \
-> +            gen_helper_restore_cpu_and_raise_exception(                       \
-> +                cpu_env, tcg_constant_i32(RISCV_EXCP_ILLEGAL_INST));          \
-> +            gen_set_label(vstart_ok);                                         \
-> +                                                                              \
-> +            tcg_gen_brcond_tl(TCG_COND_GEU, cpu_vstart, cpu_vl, over);        \
-> +            data = FIELD_DP32(data, VDATA, VM, a->vm);                        \
-> +            data = FIELD_DP32(data, VDATA, LMUL, s->lmul);                    \
-> +            data = FIELD_DP32(data, VDATA, VTA, s->vta);                      \
-> +            data = FIELD_DP32(data, VDATA, VTA_ALL_1S, s->cfg_vta_all_1s);    \
-> +            data = FIELD_DP32(data, VDATA, VMA, s->vma);                      \
-> +                                                                              \
-> +            rd_v = tcg_temp_new_ptr();                                        \
-> +            rs2_v = tcg_temp_new_ptr();                                       \
-> +            uimm_v = tcg_constant_i32(a->rs1);                                \
-> +            desc = tcg_constant_i32(                                          \
-> +                simd_desc(s->cfg_ptr->vlen / 8, s->cfg_ptr->vlen / 8, data)); \
-> +            tcg_gen_addi_ptr(rd_v, cpu_env, vreg_ofs(s, a->rd));              \
-> +            tcg_gen_addi_ptr(rs2_v, cpu_env, vreg_ofs(s, a->rs2));            \
-> +            gen_helper_##NAME(rd_v, rs2_v, uimm_v, cpu_env, desc);            \
-> +            mark_vs_dirty(s);                                                 \
-> +            gen_set_label(over);                                              \
-> +            return true;                                                      \
-> +        }                                                                     \
-> +        return false;                                                         \
-> +    }
-
-Likewise.
-
-> +#define GEN_ZVKNED_HELPER_VV(NAME, ...)                                   \
-> +    void HELPER(NAME)(void *vd_vptr, void *vs2_vptr, CPURISCVState *env,  \
-> +                      uint32_t desc)                                      \
-> +    {                                                                     \
-> +        uint64_t *vd = vd_vptr;                                           \
-> +        uint64_t *vs2 = vs2_vptr;                                         \
-> +        uint32_t vl = env->vl;                                            \
-> +        uint32_t total_elems = vext_get_total_elems(env, desc, 4);        \
-> +        uint32_t vta = vext_vta(desc);                                    \
-> +                                                                          \
-> +        for (uint32_t i = env->vstart / 4; i < env->vl / 4; i++) {        \
-> +            AESState round_key;                                           \
-> +            round_key.d[HOST_BIG_ENDIAN] = cpu_to_le64(vs2[i * 2 + 0]);   \
-> +            round_key.d[!HOST_BIG_ENDIAN] = cpu_to_le64(vs2[i * 2 + 1]);  \
-> +            AESState round_state;                                         \
-> +            cpu_to_le64s(vd + i * 2 + 0);                                 \
-> +            cpu_to_le64s(vd + i * 2 + 1);                                 \
-> +            for (int j = 0; j < 16; j++) {                                \
-> +                round_state.b[j] = ((uint8_t *)(vd + i * 2))[j];          \
-> +            }                                                             \
-
-I think all of this byte swapping is wrong.
-With this last loop particularly being particularly silly.
-
-You want to present the 16 bytes in *host* endian order.
-Because the words are always in little-endian order (see H1 et al),
-we only need to swap the words on big-endian hosts.
-
-See https://lore.kernel.org/qemu-devel/20230620110758.787479-21-richard.henderson@linaro.org/
-where I do exactly the same thing for ARM:
-
-+        AESState *ad = (AESState *)(vd + i);
-+        AESState *st = (AESState *)(vm + i);
-+        AESState t;
+diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
+index 6880998484..df154cbf52 100644
+--- a/hw/arm/aspeed.c
++++ b/hw/arm/aspeed.c
+@@ -182,6 +182,10 @@ struct AspeedMachineState {
+ #define FUJI_BMC_HW_STRAP1    0x00000000
+ #define FUJI_BMC_HW_STRAP2    0x00000000
+=20
++/* Montblanc hardware value */
++#define MONTBLANC_BMC_HW_STRAP1    0x00000000
++#define MONTBLANC_BMC_HW_STRAP2    0x00000000
 +
-+        /* Our uint64_t are in the wrong order for big-endian. */
-+        if (HOST_BIG_ENDIAN) {
-+            t.d[0] = st->d[1];
-+            t.d[1] = st->d[0];
-+            aesdec_IMC(&t, &t, false);
-+            ad->d[0] = t.d[1];
-+            ad->d[1] = t.d[0];
-+        } else {
-+            aesdec_IMC(ad, st, false);
-+        }
-
-> +void HELPER(vaeskf1_vi)(void *vd_vptr, void *vs2_vptr, uint32_t uimm,
-> +                        CPURISCVState *env, uint32_t desc)
-> +{
-> +    uint32_t *vd = vd_vptr;
-> +    uint32_t *vs2 = vs2_vptr;
-> +    uint32_t vl = env->vl;
-> +    uint32_t total_elems = vext_get_total_elems(env, desc, 4);
-> +    uint32_t vta = vext_vta(desc);
-> +
-> +    uimm &= 0b1111;
-> +    if (uimm > 10 || uimm == 0) {
-> +        uimm ^= 0b1000;
-> +    }
-> +
-> +    for (uint32_t i = env->vstart / 4; i < env->vl / 4; i++) {
-> +        uint32_t rk[8];
-> +        static const uint32_t rcon[] = {
-> +            0x01000000, 0x02000000, 0x04000000, 0x08000000, 0x10000000,
-> +            0x20000000, 0x40000000, 0x80000000, 0x1B000000, 0x36000000,
-> +        };
-> +
-> +        rk[0] = bswap32(vs2[i * 4 + H4(0)]);
-> +        rk[1] = bswap32(vs2[i * 4 + H4(1)]);
-> +        rk[2] = bswap32(vs2[i * 4 + H4(2)]);
-> +        rk[3] = bswap32(vs2[i * 4 + H4(3)]);
-> +
-> +        rk[4] = rk[0] ^ (((uint32_t)AES_sbox[(rk[3] >> 16) & 0xff] << 24) |
-> +                         ((uint32_t)AES_sbox[(rk[3] >> 8) & 0xff] << 16) |
-> +                         ((uint32_t)AES_sbox[(rk[3] >> 0) & 0xff] << 8) |
-> +                         ((uint32_t)AES_sbox[(rk[3] >> 24) & 0xff] << 0))
-> +                      ^ rcon[uimm - 1];
-> +        rk[5] = rk[1] ^ rk[4];
-> +        rk[6] = rk[2] ^ rk[5];
-> +        rk[7] = rk[3] ^ rk[6];
-> +
-> +        vd[i * 4 + H4(0)] = bswap32(rk[4]);
-> +        vd[i * 4 + H4(1)] = bswap32(rk[5]);
-> +        vd[i * 4 + H4(2)] = bswap32(rk[6]);
-> +        vd[i * 4 + H4(3)] = bswap32(rk[7]);
-> +    }
-> +    env->vstart = 0;
-> +    /* set tail elements to 1s */
-> +    vext_set_elems_1s(vd, vta, vl * 4, total_elems * 4);
-> +}
-
-All of this byte swapping is going to be wrong for a big-endian host.
-It is also a little bit silly to do for a little-endian host.
-
-You're byte swapping uint32_t words, then extracting bytes from those words.  Just extract 
-the exact byte you require from the original input, using the H1() macro, and now you have 
-correct code for both big- and little-endian hosts.
-
-
-r~
-
+ /* Bletchley hardware value */
+ /* TODO: Leave same as EVB for now. */
+ #define BLETCHLEY_BMC_HW_STRAP1 AST2600_EVB_HW_STRAP1
+@@ -918,6 +922,39 @@ static void fuji_bmc_i2c_init(AspeedMachineState *bmc)
+     }
+ }
+=20
++static void montblanc_bmc_i2c_init(AspeedMachineState *bmc)
++{
++    AspeedSoCState *soc =3D &bmc->soc;
++    I2CBus *i2c[16] =3D {};
++
++    for (int i =3D 0; i < 16; i++) {
++        i2c[i] =3D aspeed_i2c_get_bus(&soc->i2c, i);
++    }
++
++    /* Ref from Minipack3_I2C_Tree_V1.6 20230320 */
++    at24c_eeprom_init(i2c[3], 0x56, montblanc_scm_fruid, 8192, true);
++    at24c_eeprom_init(i2c[6], 0x53, montblanc_fcm_fruid, 8192, true);
++
++    /* CPLD and FPGA */
++    aspeed_eeprom_init(i2c[1], 0x35, 256);  /* SCM CPLD */
++    aspeed_eeprom_init(i2c[5], 0x35, 256);  /* COMe CPLD TODO: need to updat=
+e */
++    aspeed_eeprom_init(i2c[12], 0x60, 256); /* MCB PWR CPLD */
++    aspeed_eeprom_init(i2c[13], 0x35, 256); /* IOB FPGA */
++
++    /* on BMC board */
++    at24c_eeprom_init(i2c[8], 0x51, montblanc_bmc_fruid, 8192, true);
++                                                      /* BMC EEPROM */
++    i2c_slave_create_simple(i2c[8], TYPE_LM75, 0x48); /* Thermal Sensor */
++
++    /* COMe Sensor/EEPROM */
++    aspeed_eeprom_init(i2c[0], 0x56, 16384);          /* FRU EEPROM */
++    i2c_slave_create_simple(i2c[0], TYPE_LM75, 0x48); /* INLET Sensor */
++    i2c_slave_create_simple(i2c[0], TYPE_LM75, 0x4A); /* OUTLET Sensor */
++
++    /* It expects a pca9555 but a pca9552 is compatible */
++    create_pca9552(soc, 4, 0x27);
++}
++
+ #define TYPE_TMP421 "tmp421"
+=20
+ static void bletchley_bmc_i2c_init(AspeedMachineState *bmc)
+@@ -1450,6 +1487,32 @@ static void aspeed_machine_fuji_class_init(ObjectClass=
+ *oc, void *data)
+         aspeed_soc_num_cpus(amc->soc_name);
+ };
+=20
++/* On 32-bit hosts, lower RAM to 1G because of the 2047 MB limit */
++#if HOST_LONG_BITS =3D=3D 32
++#define MONTBLANC_BMC_RAM_SIZE (1 * GiB)
++#else
++#define MONTBLANC_BMC_RAM_SIZE (2 * GiB)
++#endif
++static void aspeed_machine_montblanc_class_init(ObjectClass *oc, void *data)
++{
++    MachineClass *mc =3D MACHINE_CLASS(oc);
++    AspeedMachineClass *amc =3D ASPEED_MACHINE_CLASS(oc);
++
++    mc->desc =3D "Facebook Montblanc BMC (Cortex-A7)";
++    amc->soc_name =3D "ast2600-a3";
++    amc->hw_strap1 =3D MONTBLANC_BMC_HW_STRAP1;
++    amc->hw_strap2 =3D MONTBLANC_BMC_HW_STRAP2;
++    amc->fmc_model =3D "mx66l1g45g";
++    amc->spi_model =3D "mx66l1g45g";
++    amc->num_cs =3D 2;
++    amc->macs_mask =3D ASPEED_MAC3_ON;
++    amc->i2c_init =3D montblanc_bmc_i2c_init;
++    amc->uart_default =3D ASPEED_DEV_UART1;
++    mc->default_ram_size =3D MONTBLANC_BMC_RAM_SIZE;
++    mc->default_cpus =3D mc->min_cpus =3D mc->max_cpus =3D
++        aspeed_soc_num_cpus(amc->soc_name);
++};
++
+ /* On 32-bit hosts, lower RAM to 1G because of the 2047 MB limit */
+ #if HOST_LONG_BITS =3D=3D 32
+ #define BLETCHLEY_BMC_RAM_SIZE (1 * GiB)
+@@ -1706,6 +1769,10 @@ static const TypeInfo aspeed_machine_types[] =3D {
+         .name          =3D MACHINE_TYPE_NAME("fuji-bmc"),
+         .parent        =3D TYPE_ASPEED_MACHINE,
+         .class_init    =3D aspeed_machine_fuji_class_init,
++    }, {
++        .name          =3D MACHINE_TYPE_NAME("montblanc-bmc"),
++        .parent        =3D TYPE_ASPEED_MACHINE,
++        .class_init    =3D aspeed_machine_montblanc_class_init,
+     }, {
+         .name          =3D MACHINE_TYPE_NAME("bletchley-bmc"),
+         .parent        =3D TYPE_ASPEED_MACHINE,
+diff --git a/hw/arm/aspeed_eeprom.c b/hw/arm/aspeed_eeprom.c
+index ace5266cec..bcde346e9b 100644
+--- a/hw/arm/aspeed_eeprom.c
++++ b/hw/arm/aspeed_eeprom.c
+@@ -161,6 +161,53 @@ const uint8_t rainier_bmc_fruid[] =3D {
+     0x31, 0x50, 0x46, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
+ };
+=20
++/* Montblanc BMC FRU */
++const uint8_t montblanc_scm_fruid[8192] =3D {
++    0xfb, 0xfb, 0x04, 0xff, 0x01, 0x0d, 0x4d, 0x49, 0x4e, 0x49, 0x50, 0x41,
++    0x43, 0x4b, 0x33, 0x5f, 0x53, 0x43, 0x4d, 0x02, 0x08, 0x32, 0x30, 0x30,
++    0x30, 0x32, 0x39, 0x34, 0x35, 0x04, 0x0c, 0x31, 0x33, 0x32, 0x30, 0x30,
++    0x30, 0x31, 0x36, 0x34, 0x30, 0x31, 0x20, 0x05, 0x0c, 0x31, 0x33, 0x31,
++    0x30, 0x30, 0x30, 0x31, 0x32, 0x37, 0x30, 0x31, 0x20, 0x06, 0x0c, 0x52,
++    0x33, 0x32, 0x31, 0x34, 0x47, 0x30, 0x30, 0x30, 0x33, 0x30, 0x31, 0x07,
++    0x0d, 0x41, 0x30, 0x33, 0x31, 0x33, 0x58, 0x58, 0x58, 0x58, 0x58, 0x58,
++    0x58, 0x58, 0x08, 0x01, 0x01, 0x09, 0x01, 0x00, 0x0a, 0x01, 0x00, 0x0b,
++    0x0d, 0x4d, 0x32, 0x32, 0x31, 0x33, 0x32, 0x33, 0x31, 0x37, 0x30, 0x30,
++    0x30, 0x32, 0x0c, 0x03, 0x43, 0x4c, 0x53, 0x0d, 0x08, 0x32, 0x30, 0x32,
++    0x33, 0x30, 0x35, 0x30, 0x31, 0x0e, 0x03, 0x57, 0x55, 0x53, 0x0f, 0x03,
++    0x43, 0x54, 0x48, 0x10, 0x06, 0xb4, 0xbd, 0x00, 0x00, 0x00, 0x01, 0x13,
++    0x03, 0x53, 0x43, 0x4d, 0xfa, 0x02, 0x11, 0x07,
++};
++
++const uint8_t montblanc_fcm_fruid[8192] =3D {
++    0xfb, 0xfb, 0x04, 0xff, 0x01, 0x0d, 0x4d, 0x49, 0x4e, 0x49, 0x50, 0x41,
++    0x43, 0x4b, 0x33, 0x5f, 0x46, 0x43, 0x42, 0x02, 0x08, 0x33, 0x30, 0x30,
++    0x30, 0x30, 0x31, 0x36, 0x31, 0x04, 0x0c, 0x31, 0x33, 0x32, 0x30, 0x30,
++    0x30, 0x31, 0x36, 0x33, 0x30, 0x31, 0x20, 0x05, 0x0c, 0x31, 0x33, 0x31,
++    0x30, 0x30, 0x30, 0x31, 0x33, 0x30, 0x30, 0x31, 0x20, 0x06, 0x0c, 0x52,
++    0x33, 0x32, 0x31, 0x34, 0x47, 0x30, 0x30, 0x31, 0x32, 0x30, 0x31, 0x07,
++    0x0d, 0x41, 0x31, 0x32, 0x31, 0x32, 0x58, 0x58, 0x58, 0x58, 0x58, 0x58,
++    0x58, 0x58, 0x08, 0x01, 0x01, 0x09, 0x01, 0x00, 0x0a, 0x01, 0x00, 0x0b,
++    0x0d, 0x46, 0x35, 0x30, 0x31, 0x33, 0x32, 0x33, 0x31, 0x37, 0x30, 0x30,
++    0x30, 0x35, 0x0c, 0x03, 0x43, 0x4c, 0x53, 0x0d, 0x08, 0x32, 0x30, 0x32,
++    0x33, 0x30, 0x35, 0x30, 0x31, 0x0e, 0x03, 0x57, 0x55, 0x53, 0x0f, 0x03,
++    0x43, 0x54, 0x48, 0x10, 0x06, 0xb4, 0xbd, 0x00, 0x00, 0x00, 0x02, 0x11,
++    0x06, 0xb4, 0xbd, 0x00, 0x00, 0x00, 0x03, 0x12, 0x02, 0x8a, 0x00, 0x13,
++    0x03, 0x46, 0x43, 0x42, 0xfa, 0x02, 0x0e, 0x61,
++};
++
++const uint8_t montblanc_bmc_fruid[8192] =3D {
++    0xfb, 0xfb, 0x04, 0xff, 0x01, 0x0d, 0x4d, 0x49, 0x4e, 0x49, 0x50, 0x41,
++    0x43, 0x4b, 0x33, 0x5f, 0x42, 0x4d, 0x43, 0x04, 0x0c, 0x31, 0x33, 0x32,
++    0x30, 0x30, 0x30, 0x31, 0x33, 0x36, 0x30, 0x31, 0x20, 0x05, 0x0c, 0x31,
++    0x33, 0x31, 0x30, 0x30, 0x30, 0x30, 0x38, 0x36, 0x30, 0x35, 0x20, 0x06,
++    0x0c, 0x52, 0x33, 0x30, 0x39, 0x37, 0x47, 0x30, 0x30, 0x30, 0x32, 0x30,
++    0x37, 0x07, 0x0d, 0x42, 0x30, 0x32, 0x37, 0x34, 0x58, 0x58, 0x58, 0x58,
++    0x58, 0x58, 0x58, 0x58, 0x08, 0x01, 0x04, 0x09, 0x01, 0x00, 0x0a, 0x01,
++    0x00, 0x0c, 0x03, 0x43, 0x4c, 0x53, 0x0d, 0x08, 0x32, 0x30, 0x32, 0x33,
++    0x30, 0x35, 0x30, 0x31, 0x0e, 0x03, 0x57, 0x55, 0x53, 0x0f, 0x03, 0x43,
++    0x54, 0x48, 0x13, 0x03, 0x42, 0x4d, 0x43, 0xfa, 0x02, 0xef, 0xba,
++};
++
+ const size_t tiogapass_bmc_fruid_len =3D sizeof(tiogapass_bmc_fruid);
+ const size_t fby35_nic_fruid_len =3D sizeof(fby35_nic_fruid);
+ const size_t fby35_bb_fruid_len =3D sizeof(fby35_bb_fruid);
+@@ -168,3 +215,6 @@ const size_t fby35_bmc_fruid_len =3D sizeof(fby35_bmc_fru=
+id);
+ const size_t yosemitev2_bmc_fruid_len =3D sizeof(yosemitev2_bmc_fruid);
+ const size_t rainier_bb_fruid_len =3D sizeof(rainier_bb_fruid);
+ const size_t rainier_bmc_fruid_len =3D sizeof(rainier_bmc_fruid);
++const size_t montblanc_scm_fruid_len =3D sizeof(montblanc_scm_fruid);
++const size_t montblanc_fcm_fruid_len =3D sizeof(montblanc_fcm_fruid);
++const size_t montblanc_bmc_fruid_len =3D sizeof(montblanc_bmc_fruid);
+diff --git a/hw/arm/aspeed_eeprom.h b/hw/arm/aspeed_eeprom.h
+index bbf9e54365..b8fbdd0734 100644
+--- a/hw/arm/aspeed_eeprom.h
++++ b/hw/arm/aspeed_eeprom.h
+@@ -27,4 +27,11 @@ extern const size_t rainier_bb_fruid_len;
+ extern const uint8_t rainier_bmc_fruid[];
+ extern const size_t rainier_bmc_fruid_len;
+=20
++extern const uint8_t montblanc_scm_fruid[];
++extern const uint8_t montblanc_fcm_fruid[];
++extern const uint8_t montblanc_bmc_fruid[];
++extern const size_t montblanc_scm_fruid_len;
++extern const size_t montblanc_fcm_fruid_len;
++extern const size_t montblanc_bmc_fruid_len;
++
+ #endif
+--=20
+2.38.5
 
