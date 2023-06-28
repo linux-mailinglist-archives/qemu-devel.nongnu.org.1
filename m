@@ -2,87 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B44A47410A4
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 14:02:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E8237410A6
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 14:02:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qETsN-0007Os-Ft; Wed, 28 Jun 2023 08:02:23 -0400
+	id 1qETsX-0007Rd-QJ; Wed, 28 Jun 2023 08:02:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qETs4-0007KB-Py
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 08:02:07 -0400
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qETs3-0006bE-3h
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 08:02:04 -0400
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-3fba5a8af2cso18908995e9.3
- for <qemu-devel@nongnu.org>; Wed, 28 Jun 2023 05:02:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687953720; x=1690545720;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=2v+lJBO3ApD0e5taWaLyTywsCleiDpRiInhtI1iPbEI=;
- b=q8f31pXW4rOMSJ06wLesia3v7UkcqZiDVkvjBJsK7IBnYNOKxCQNKRNNTla9KgMipv
- 46QrlI65WxVJvGXHK0yp69MRorS5SXmJea2LnQNQwVP4yrWb2b5dwwlBngVdO39RNjOV
- fnOfIVAiG7zdulmrkoVoWlWopH48OtIuXYZT1at+jxlh1TfB/FTx2zAoUH6DLCO9NoLU
- nrOabvfdEIVb4z0MKYwFDkKZ8jnVqlfLSIN1vGEb5iVYHoZ5zb0AijLiYgu+fLVi/FSG
- lQahslWbNpaoNXz5BMW6Co3TDd4DoGkII1SsBtTXdypRlM9EBNWShCfwrwQ0ubYQ/sNm
- bUhA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687953720; x=1690545720;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=2v+lJBO3ApD0e5taWaLyTywsCleiDpRiInhtI1iPbEI=;
- b=coWWjKfky4rtGVpu4R8vb1N4U//bJpZnD5exx8EpEwJl8PgwqM3midhP2xeOsCCnfk
- 4ihKq30hmSk8fb1mbmacBztJMj5StQU3+FrMCf7M4x/CeWQNZLmJxkk9gVm6yuc/UHcd
- xstmuWtEE52j8THFMQcopKeTpwOWmlb3PRs/BzWFUza491UIwoBAYrZni3Kaw+hxadso
- nJgm/ROHkQ6dqW3h/8IKnx8DA7TunXnT7XzsovtW/7CkmXdCjkUC+V8ptEMcoLyB2IVU
- lHLIzMgeoiBupV4VrPx36rkBmWNhtnnUCj95i7i5eQ3IaqZkZHWkK+L7QjAFjKNTJBdD
- Msbg==
-X-Gm-Message-State: AC+VfDzXJ+u8WXSXzCLuPbPmrYmDuXWdR+I7Q3HAYX/r4RPIjzSrn8E6
- FQr2lV/Ne86MKEC+TBcXXfFa3PkMmHDDuCS7KRk=
-X-Google-Smtp-Source: ACHHUZ7sEuDF5Ls1bG/Dk+UyzaplCBI36B9PHOWAgpsZktSXyq7IJjRBT8uHR707Wa3nDebDrl/Fyg==
-X-Received: by 2002:a1c:ed0b:0:b0:3f7:3651:450c with SMTP id
- l11-20020a1ced0b000000b003f73651450cmr12489003wmh.6.1687953720661; 
- Wed, 28 Jun 2023 05:02:00 -0700 (PDT)
-Received: from [192.168.69.115] ([176.187.207.229])
- by smtp.gmail.com with ESMTPSA id
- y17-20020a1c4b11000000b003f90a604885sm13650686wma.34.2023.06.28.05.01.59
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 28 Jun 2023 05:02:00 -0700 (PDT)
-Message-ID: <08dc34d7-0619-4df3-3ebd-113d1ed82c27@linaro.org>
-Date: Wed, 28 Jun 2023 14:01:58 +0200
+ (Exim 4.90_1) (envelope-from <fei2.wu@intel.com>) id 1qETsN-0007PX-Sz
+ for qemu-devel@nongnu.org; Wed, 28 Jun 2023 08:02:27 -0400
+Received: from mga01.intel.com ([192.55.52.88])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <fei2.wu@intel.com>) id 1qETsL-0006fL-Dl
+ for qemu-devel@nongnu.org; Wed, 28 Jun 2023 08:02:23 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1687953741; x=1719489741;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=j+4mk9FNek0343R9PsrWQM06pCfK3kv7Dkabywtr5KQ=;
+ b=OQNB/NSTKk64RiBQrfI4ZOs6zv07o/eXXvrmzKhO4dWgxm6XaM1u2wGD
+ rU0VJG21xKVC/YqPuEReqGqPJlchj4oB8f6FyV7sUv9vX4Lvca+0nWAnt
+ mw8vZ/eKPIzRMksujMCNar2n1CfqAq0pFHDErKtOeIp3eeEW9YxOvOP5A
+ 69NwIiMq7CzLS0NOuHnt1s1nk060Y5ky8sR0iLDna/xyuPDMVyPr8cJAE
+ wgIaHSXS1dzT7rmsArxJ2K6zeyL1n/u/pzZmrxa61I3icmmscHeHuOIQU
+ WC2SsgmXDeru+N7Yo1bRXPTxDLHbmjy4FzKOQcS4x6kS1GXJUk/hHxu8M A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10754"; a="392547231"
+X-IronPort-AV: E=Sophos;i="6.01,165,1684825200"; d="scan'208";a="392547231"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+ by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Jun 2023 05:02:10 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10754"; a="841047464"
+X-IronPort-AV: E=Sophos;i="6.01,165,1684825200"; d="scan'208";a="841047464"
+Received: from wufei-optiplex-7090.sh.intel.com ([10.238.200.247])
+ by orsmga004.jf.intel.com with ESMTP; 28 Jun 2023 05:02:08 -0700
+From: Fei Wu <fei2.wu@intel.com>
+To: richard.henderson@linaro.org, alex.bennee@linaro.org, qemu-devel@nongnu.org
+Cc: Fei Wu <fei2.wu@intel.com>
+Subject: [PATCH v16 0/9] TCG code quality tracking
+Date: Wed, 28 Jun 2023 20:04:21 +0800
+Message-Id: <20230628120430.73777-1-fei2.wu@intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.12.0
-Subject: Re: [PATCH 0/2] accel: Re-enable WHPX cross-build on case sensitive
- filesystems
-Content-Language: en-US
-To: qemu-devel@nongnu.org
-Cc: Sunil Muthuswamy <sunilmut@microsoft.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
- =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
- Beraldo Leal <bleal@redhat.com>
-References: <20230624142211.8888-1-philmd@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230624142211.8888-1-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.089,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=192.55.52.88; envelope-from=fei2.wu@intel.com;
+ helo=mga01.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -99,18 +73,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 24/6/23 16:22, Philippe Mathieu-Daudé wrote:
+v16
+--
+* rebase to latest commit 4329d049d (Jun 26)
+* original patch 1 (remove CONFIG_PROFILER) has already upstreamed so is
+  removed from here
+* add async_safe_run_on_cpu back for info tb-list/tb
+* add ram_addr support to monitor_disas and use it to disassemble guest code
+* update the commit logs and documents
+* small change to do_hmp_tbstats_safe() to avoid memory leaking
 
-> Philippe Mathieu-Daudé (2):
->    docs/devel/testing: Update the 'Docker Debugging' section
->    accel: Re-enable WHPX cross-build on case sensitive filesystems
-> 
->   docs/devel/testing.rst           | 2 +-
->   meson.build                      | 4 ++--
->   target/i386/whpx/whpx-internal.h | 4 ++--
->   target/i386/whpx/whpx-all.c      | 4 ++--
->   4 files changed, 7 insertions(+), 7 deletions(-)
 
-Series queued.
+Alex Bennée (1):
+  tb-stats: reset the tracked TBs on a tb_flush
+
+Fei Wu (4):
+  accel/tcg: add jit stats to TBStatistics
+  debug: add -d tb_stats to control TBStatistics
+  tb-stats: dump hot TBs at the end of the execution
+  docs: add tb-stats how to
+
+Vanderson M. do Rosario (4):
+  accel/tcg: introduce TBStatistics structure
+  accel: collecting TB execution count
+  monitor: adding tb_stats hmp command
+  tb-stats: Adding info [tb-list|tb] commands to HMP
+
+ MAINTAINERS                      |   1 +
+ accel/tcg/cpu-exec.c             |   6 +
+ accel/tcg/meson.build            |   1 +
+ accel/tcg/monitor.c              | 216 ++++++++++++++++++
+ accel/tcg/tb-context.h           |   1 +
+ accel/tcg/tb-hash.h              |   7 +
+ accel/tcg/tb-maint.c             |  20 ++
+ accel/tcg/tb-stats.c             | 366 +++++++++++++++++++++++++++++++
+ accel/tcg/tcg-runtime.c          |   1 +
+ accel/tcg/translate-all.c        |  77 ++++++-
+ accel/tcg/translator.c           |  31 +++
+ disas/disas-mon.c                |  15 +-
+ disas/disas.c                    |   2 +
+ docs/devel/index-tcg.rst         |   1 +
+ docs/devel/tcg-tbstats.rst       | 126 +++++++++++
+ hmp-commands-info.hx             |  16 ++
+ hmp-commands.hx                  |  16 ++
+ include/disas/disas.h            |   8 +-
+ include/exec/tb-stats-dump.h     |  21 ++
+ include/exec/tb-stats-flags.h    |  29 +++
+ include/exec/tb-stats.h          | 130 +++++++++++
+ include/exec/translation-block.h |   3 +
+ include/monitor/hmp.h            |   3 +
+ include/qemu/log.h               |   1 +
+ include/tcg/tcg-temp-internal.h  |   2 +
+ include/tcg/tcg.h                |  10 +
+ linux-user/exit.c                |   2 +
+ monitor/hmp-cmds-target.c        |   3 +-
+ softmmu/runstate.c               |   2 +
+ stubs/meson.build                |   1 +
+ stubs/tb-stats.c                 |  36 +++
+ tcg/tcg.c                        |  47 +++-
+ util/log.c                       |  26 +++
+ 33 files changed, 1217 insertions(+), 10 deletions(-)
+ create mode 100644 accel/tcg/tb-stats.c
+ create mode 100644 docs/devel/tcg-tbstats.rst
+ create mode 100644 include/exec/tb-stats-dump.h
+ create mode 100644 include/exec/tb-stats-flags.h
+ create mode 100644 include/exec/tb-stats.h
+ create mode 100644 stubs/tb-stats.c
+
+-- 
+2.25.1
 
 
