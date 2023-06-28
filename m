@@ -2,84 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9048740F50
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 12:51:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1294740F61
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 12:55:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qESlU-00069V-Tr; Wed, 28 Jun 2023 06:51:13 -0400
+	id 1qESop-0007Pj-9a; Wed, 28 Jun 2023 06:54:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qESlN-00068T-1m
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 06:51:08 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qESoo-0007PX-20
+ for qemu-devel@nongnu.org; Wed, 28 Jun 2023 06:54:38 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qESlK-0007J5-BI
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 06:51:04 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qESom-0000wC-9p
+ for qemu-devel@nongnu.org; Wed, 28 Jun 2023 06:54:37 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687949456;
+ s=mimecast20190719; t=1687949675;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=8vxtQzNt/pBj7OcJIB6SxLWXaw/Q9wf2rcnn5/tdhts=;
- b=RKNYso2cxfOVDzb93N6JrII92u6Xo5CqyZTegMKjxqQQdo9T2iBET9dXqaaG6xu4HlT8Ry
- h6TxOzAEecTmloRz1f/Nm92UL3njhftf9Nk8EicebsmgjoxEbTicDJLWGo2uABT5DnOkEm
- Ka5UKPxcQYMYi8sHqE1sJvfMm6W5kuA=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=63T0JyU0ZtMZjXS5h8jX5BOC4I+j1HdnoJsL9RQneqQ=;
+ b=dFnTwSpDgywjAj6aSGNl3GKlf0mzgltC0+5S8XWo3H4KZPIXXLCi6B5/D+7oyF/DcFhSC3
+ iEmT/Li2LiA2ylZBV2iq3xeCaaZld9XueQqkv5Tqf4RttxiHEhTLcBYGF9IWvtYOH9ECH2
+ fc3jImjxvWWigScVmPF24QY7J0xVpbY=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-76-FHu6KO5hORCj34BVk1vwIQ-1; Wed, 28 Jun 2023 06:50:53 -0400
-X-MC-Unique: FHu6KO5hORCj34BVk1vwIQ-1
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-313e6020882so381873f8f.1
- for <qemu-devel@nongnu.org>; Wed, 28 Jun 2023 03:50:53 -0700 (PDT)
+ us-mta-73-V6UOk3F6Mz2nhwxRX-QPlQ-1; Wed, 28 Jun 2023 06:54:34 -0400
+X-MC-Unique: V6UOk3F6Mz2nhwxRX-QPlQ-1
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-313f5021d9bso1405748f8f.2
+ for <qemu-devel@nongnu.org>; Wed, 28 Jun 2023 03:54:33 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687949452; x=1690541452;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=8vxtQzNt/pBj7OcJIB6SxLWXaw/Q9wf2rcnn5/tdhts=;
- b=FUk4LWR6h+a01+swZowLALEe7aG3B+JmsvGz94/fxZC0azk/0Wm10JlTMibUgD+llP
- bwCbs6LxsX6PBsN8u20xJuh6oqF8STPiY/f76XwEXIoI6AxMCe2at9pXDcw3iTVc/vJN
- 64HycO3vGuvIjMr79GI5AKdeMcnS5lcB12QwlVLZ5Evtvpt0R9pgwO6ro+FZBcbKi3Kg
- G6KPYKy/rh3cuYCVUDjVCtb8tj0aBYWj0jtEtqJD9S8sm6dv0iAQSR6SQC+Z2cz9Wp9N
- a/YZPjGUbFH0B+KKoeweZatq/z57x3sh7U+lM3d5QFXc2sBV2vli4k4EQ0RHwXdeiY5L
- VzIg==
-X-Gm-Message-State: AC+VfDx/a7IE68i3BxrTj49CXyUfRr1GeR61HTFpmHrJ/SrUSChO1iKi
- EW6FHHEAPPilT5CcHuPD5FhE1SFzEm5cwzh24u93ad5d4A7RyOHrrsfJ2qhNG4yJBNVRxfBatOV
- XjT1Uru9hg3S6jAo=
-X-Received: by 2002:adf:e803:0:b0:314:475:bc6b with SMTP id
- o3-20020adfe803000000b003140475bc6bmr1217703wrm.18.1687949452250; 
- Wed, 28 Jun 2023 03:50:52 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6aePT42892iGbtB4yyXzMMBHOw4O62IAMBq+/QDig2ltDPOkKsk+PxuzKXj8qenB3DQUsE5A==
-X-Received: by 2002:adf:e803:0:b0:314:475:bc6b with SMTP id
- o3-20020adfe803000000b003140475bc6bmr1217680wrm.18.1687949451819; 
- Wed, 28 Jun 2023 03:50:51 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1687949673; x=1690541673;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=63T0JyU0ZtMZjXS5h8jX5BOC4I+j1HdnoJsL9RQneqQ=;
+ b=bpcXkE6zIRlPZeuvG1BoGi94C1CZ9sgxdEdGdolWx/bNKoDa02po65s66MCuNoG0hR
+ 2T6ArsMUfzMboOx00gB0deNaRDvla8oKDYWFTUO7GIqpyVeXfdwLWxAsHNchcqG1Ki7h
+ d794rjPIr5/03P5htOhw55LHfFMvayV+C1jIaRR/zO5qgjM0Wr3LdDLFpWWqR/Bv4bE0
+ B5hIxP1iyBcxXu5uEYTsTY+SXSfzqpjIr1uC3z9IRzBDh8YSvTPcMu87fZiayu91im+b
+ aQSwMf1ctB6Ey8AgNX7CVQMzQGbeh8A+tetf+I69RxSOvr4gPEGjhG1OwFXZO4QRT7QT
+ xKiA==
+X-Gm-Message-State: AC+VfDwr9eyA9xCChWhac3nc8d16qZX07DhBnR43ECy943X7YzroVtwg
+ 2Ovr+Re/QKm+8CJI2+XdPeWUJV8wsmA96NV54CIKUWs0GuBHVSya0PL5R8GqxgWKc4ii1fLjcB9
+ lgGy40IRGCCXXli4=
+X-Received: by 2002:a5d:4083:0:b0:313:f2b3:af73 with SMTP id
+ o3-20020a5d4083000000b00313f2b3af73mr5538246wrp.25.1687949672868; 
+ Wed, 28 Jun 2023 03:54:32 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ62XeXgCG/0DTkj1iRYIPcZA7I+FmqRFkrs/9GkTl76pha9hCbFRQ71lBxmWhX5pt1BZHoTjw==
+X-Received: by 2002:a5d:4083:0:b0:313:f2b3:af73 with SMTP id
+ o3-20020a5d4083000000b00313f2b3af73mr5538239wrp.25.1687949672552; 
+ Wed, 28 Jun 2023 03:54:32 -0700 (PDT)
 Received: from redhat.com ([176.12.183.225]) by smtp.gmail.com with ESMTPSA id
- q18-20020adfcd92000000b003140f47224csm787569wrj.15.2023.06.28.03.50.49
+ l6-20020a5d4106000000b0030c2e3c7fb3sm13037746wrp.101.2023.06.28.03.54.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 28 Jun 2023 03:50:51 -0700 (PDT)
-Date: Wed, 28 Jun 2023 06:50:47 -0400
+ Wed, 28 Jun 2023 03:54:32 -0700 (PDT)
+Date: Wed, 28 Jun 2023 06:54:28 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: Ani Sinha <anisinha@redhat.com>
-Cc: =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@redhat.com>,
- qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- Laurent Vivier <lvivier@redhat.com>, Jason Wang <jasowang@redhat.com>
-Subject: Re: [PULL 52/53] vhost_net: add an assertion for TAP client backends
-Message-ID: <20230628064927-mutt-send-email-mst@kernel.org>
-References: <cover.1687782442.git.mst@redhat.com>
- <0af710813dcde638379e3bece8f9b1bde31af2f6.1687782442.git.mst@redhat.com>
- <abab7a71-216d-b103-fa47-70bdf9dc0080@redhat.com>
- <A0C56F97-3830-4DF3-8BDD-D49611418056@redhat.com>
- <21cf43f3-4db1-e2a0-8bfe-03228c5263f3@redhat.com>
- <2704D32C-D09E-4324-A8CB-744F5E5B47CD@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
+ =?iso-8859-1?Q?=22Daniel_P=2E_Berrang=E9=22?= <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Igor Mammedov <imammedo@redhat.com>,
+ Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+ qemu-devel@nongnu.org
+Subject: Re: [PATCH v3] acpi/tests/bios-tables-test: make iasl tool handling
+ simpler
+Message-ID: <20230628065132-mutt-send-email-mst@kernel.org>
+References: <20230522103039.19111-1-anisinha@redhat.com>
+ <20230626084401-mutt-send-email-mst@kernel.org>
+ <9B31F63A-164A-42EF-9387-1F6A56BC9BEA@redhat.com>
+ <20230626091206-mutt-send-email-mst@kernel.org>
+ <585996FE-8415-4ECC-BBB2-1BDA0C3D8E25@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <2704D32C-D09E-4324-A8CB-744F5E5B47CD@redhat.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+In-Reply-To: <585996FE-8415-4ECC-BBB2-1BDA0C3D8E25@redhat.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -104,139 +107,93 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jun 28, 2023 at 04:03:44PM +0530, Ani Sinha wrote:
+On Wed, Jun 28, 2023 at 12:05:46PM +0530, Ani Sinha wrote:
 > 
 > 
-> > On 28-Jun-2023, at 1:00 PM, Cédric Le Goater <clg@redhat.com> wrote:
+> > On 26-Jun-2023, at 6:49 PM, Michael S. Tsirkin <mst@redhat.com> wrote:
 > > 
-> > On 6/28/23 08:45, Ani Sinha wrote:
-> >>> On 28-Jun-2023, at 11:58 AM, Cédric Le Goater <clg@redhat.com> wrote:
+> > On Mon, Jun 26, 2023 at 06:33:14PM +0530, Ani Sinha wrote:
+> >> 
+> >> 
+> >>> On 26-Jun-2023, at 6:28 PM, Michael S. Tsirkin <mst@redhat.com> wrote:
 > >>> 
-> >>> Hello,
-> >>> 
-> >>> On 6/26/23 14:30, Michael S. Tsirkin wrote:
-> >>>> From: Ani Sinha <anisinha@redhat.com>
-> >>>> An assertion was missing for tap vhost backends that enforces a non-null
-> >>>> reference from get_vhost_net(). Both vhost-net-user and vhost-net-vdpa
-> >>>> enforces this. Enforce the same for tap. Unit tests pass with this change.
+> >>> On Mon, May 22, 2023 at 04:00:39PM +0530, Ani Sinha wrote:
+> >>>> Currently the meson based QEMU build process locates the iasl binary from the
+> >>>> current PATH and other locations [1] and uses that to set CONFIG_IASL in
+> >>>> config-host.h header.This is then used at compile time by bios-tables-test to
+> >>>> set iasl path.
+> >>>> 
+> >>>> This has two disadvantages:
+> >>>> - If iasl was not previously installed in the PATH, one has to install iasl
+> >>>>  and rebuild QEMU in order to regenerate the header and pick up the found
+> >>>>  iasl location. One cannot simply use the existing bios-tables-test binary
+> >>>>  because CONFIG_IASL is only set during the QEMU build time by meson and
+> >>>>  then bios-tables-test has to be rebuilt with CONFIG_IASL set in order to
+> >>>>  use iasl.
+> >>>> - Sometimes, the stock iasl that comes with distributions is simply not good
+> >>>>  enough because it does not support the latest ACPI changes - newly
+> >>>>  introduced tables or new table attributes etc. In order to test ACPI code
+> >>>>  in QEMU, one has to clone the latest acpica upstream repository and
+> >>>>  rebuild iasl in order to get support for it. In those cases, one may want
+> >>>>  the test to use the iasl binary from a non-standard location.
+> >>>> 
+> >>>> In order to overcome the above two disadvantages, we set a default iasl path
+> >>>> as "/usr/bin/iasl". bios-tables-test also checks for the environment variable
+> >>>> IASL_PATH that can be set by the developer. IASL_PATH passed from the
+> >>>> environment overrides the default path. This way developers can point
+> >>>> IASL_PATH environment variable to a possibly a non-standard custom build
+> >>>> binary and quickly run bios-tables-test without rebuilding. If the default
+> >>>> path of iasl changes, one simply needs to update the default path and rebuild
+> >>>> just the test, not whole QEMU.
+> >>>> 
+> >>>> [1] https://mesonbuild.com/Reference-manual_functions.html#find_program
+> >>>> 
+> >>>> CC: alex.bennee@linaro.org
+> >>>> CC: pbonzini@redhat.com
 > >>>> Signed-off-by: Ani Sinha <anisinha@redhat.com>
-> >>>> Message-Id: <20230619041501.111655-1-anisinha@redhat.com>
-> >>>> Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-> >>>> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-> >>>> Reviewed-by: Laurent Vivier <lvivier@redhat.com>
-> >>>> ---
-> >>>>  hw/net/vhost_net.c | 1 +
-> >>>>  1 file changed, 1 insertion(+)
-> >>>> diff --git a/hw/net/vhost_net.c b/hw/net/vhost_net.c
-> >>>> index c4eecc6f36..6db23ca323 100644
-> >>>> --- a/hw/net/vhost_net.c
-> >>>> +++ b/hw/net/vhost_net.c
-> >>>> @@ -507,6 +507,7 @@ VHostNetState *get_vhost_net(NetClientState *nc)
-> >>>>      switch (nc->info->type) {
-> >>>>      case NET_CLIENT_DRIVER_TAP:
-> >>>>          vhost_net = tap_get_vhost_net(nc);
-> >>>> +        assert(vhost_net);
-> >>>>          break;
-> >>>>  #ifdef CONFIG_VHOST_NET_USER
-> >>>>      case NET_CLIENT_DRIVER_VHOST_USER:
 > >>> 
-> >>> A system of mine without vhost_net (old host kernel) is reaching this assert
-> >> We need to understand why this assertion is being hit. It could be a bug somewhere else.
+> >>> I don't much like environment variables since they are
+> >>> not discoverable.
+> >> 
+> >> I do have this:
+> >> 
+> >> +                " Set IASL_PATH environment variable to the path of iasl binary\n"
+> >> +                " if iasl is installed somewhere other than %s.\n",
 > > 
-> > sure.
+> > You only see this if there's a diff.
 > > 
-> >> What is the backtrace? 
-> > 
-> > 
-> > #0  __pthread_kill_implementation (threadid=549621125152, signo=signo@entry=6, no_tid=no_tid@entry=0) at ./nptl/pthread_kill.c:44
-> > #1  0x0000007ff71df254 in __pthread_kill_internal (signo=6, threadid=<optimized out>) at ./nptl/pthread_kill.c:78
-> > #2  0x0000007ff719a67c in __GI_raise (sig=sig@entry=6) at ../sysdeps/posix/raise.c:26
-> > #3  0x0000007ff7187130 in __GI_abort () at ./stdlib/abort.c:79
-> > #4  0x0000007ff7193fd0 in __assert_fail_base
-> >    (fmt=0x7ff72ad3f8 "%s%s%s:%u: %s%sAssertion `%s' failed.\n%n", assertion=assertion@entry=0x5556208c00 "vhost_net", file=file@entry=0x5556208ae0 "../hw/net/vhost_net.c", line=line@entry=510, function=function@entry=0x5556208de8 <__PRETTY_FUNCTION__.2> "get_vhost_net") at ./assert/assert.c:92
-> > #5  0x0000007ff7194040 in __GI___assert_fail
-> >    (assertion=assertion@entry=0x5556208c00 "vhost_net", file=file@entry=0x5556208ae0 "../hw/net/vhost_net.c", line=line@entry=510, function=function@entry=0x5556208de8 <__PRETTY_FUNCTION__.2> "get_vhost_net") at ./assert/assert.c:101
-> > #6  0x0000005555a767ac in get_vhost_net (nc=<optimized out>) at ../hw/net/vhost_net.c:510
-> > #7  0x0000005555e6aea8 in virtio_net_get_features (vdev=0x55578cc770, features=1105849221095, errp=<optimized out>) at ../hw/net/virtio-net.c:807
-> > #8  0x0000005555b69da4 in virtio_bus_device_plugged (vdev=vdev@entry=0x55578cc770, errp=errp@entry=0x7fffffe640) at ../hw/virtio/virtio-bus.c:66
-> > #9  0x0000005555e8b6a0 in virtio_device_realize (dev=0x55578cc770, errp=0x7fffffe6c0) at ../hw/virtio/virtio.c:3609
-> > #10 0x0000005555f1ead8 in device_set_realized (obj=0x55578cc770, value=<optimized out>, errp=0x7fffffe898) at ../hw/core/qdev.c:510
-> > #11 0x0000005555f22a14 in property_set_bool (obj=0x55578cc770, v=<optimized out>, name=<optimized out>, opaque=0x5556be9ad0, errp=0x7fffffe898) at ../qom/object.c:2285
-> > #12 0x0000005555f260fc in object_property_set (obj=obj@entry=0x55578cc770, name=name@entry=0x555621c280 "realized", v=v@entry=0x55578d9310, errp=errp@entry=0x7fffffe898)
-> >    at ../qom/object.c:1420
-> > #13 0x0000005555f2a85c in object_property_set_qobject
-> >    (obj=obj@entry=0x55578cc770, name=name@entry=0x555621c280 "realized", value=value@entry=0x55578d9250, errp=errp@entry=0x7fffffe898) at ../qom/qom-qobject.c:28
-> > #14 0x0000005555f26820 in object_property_set_bool (obj=0x55578cc770, name=0x555621c280 "realized", value=<optimized out>, errp=0x7fffffe898) at ../qom/object.c:1489
-> > #15 0x0000005555aafd24 in pci_qdev_realize (qdev=<optimized out>, errp=<optimized out>) at ../hw/pci/pci.c:2116
-> > #16 0x0000005555f1ead8 in device_set_realized (obj=0x55578c43a0, value=<optimized out>, errp=0x7fffffeae8) at ../hw/core/qdev.c:510
-> > #17 0x0000005555f22a14 in property_set_bool (obj=0x55578c43a0, v=<optimized out>, name=<optimized out>, opaque=0x5556be9ad0, errp=0x7fffffeae8) at ../qom/object.c:2285
-> > #18 0x0000005555f260fc in object_property_set (obj=obj@entry=0x55578c43a0, name=name@entry=0x555621c280 "realized", v=v@entry=0x55578d34c0, errp=errp@entry=0x7fffffeae8)
-> >    at ../qom/object.c:1420
-> > #19 0x0000005555f2a85c in object_property_set_qobject
-> >    (obj=obj@entry=0x55578c43a0, name=name@entry=0x555621c280 "realized", value=value@entry=0x55578d3450, errp=errp@entry=0x7fffffeae8) at ../qom/qom-qobject.c:28
-> > #20 0x0000005555f26820 in object_property_set_bool (obj=0x55578c43a0, name=0x555621c280 "realized", value=<optimized out>, errp=0x7fffffeae8) at ../qom/object.c:1489
-> > #21 0x0000005555ba4f7c in qdev_device_add_from_qdict (opts=opts@entry=0x55578c3110, from_json=from_json@entry=false, errp=0x7fffffeae8, errp@entry=0x5556b24a28 <error_fatal>)
-> >    at ../softmmu/qdev-monitor.c:714
-> > #22 0x0000005555ba5170 in qdev_device_add (opts=0x5556be6060, errp=errp@entry=0x5556b24a28 <error_fatal>) at ../softmmu/qdev-monitor.c:733
-> > #23 0x0000005555baa09c in device_init_func (opaque=<optimized out>, opts=<optimized out>, errp=0x5556b24a28 <error_fatal>) at ../softmmu/vl.c:1152
-> > #24 0x00000055560b2124 in qemu_opts_foreach
-> >    (list=<optimized out>, func=func@entry=0x5555baa080 <device_init_func>, opaque=opaque@entry=0x0, errp=errp@entry=0x5556b24a28 <error_fatal>) at ../util/qemu-option.c:1135
-> > #25 0x0000005555bac88c in qemu_create_cli_devices () at ../softmmu/vl.c:2573
-> > #26 qmp_x_exit_preconfig (errp=<optimized out>) at ../softmmu/vl.c:2641
-> > #27 0x0000005555bafee4 in qmp_x_exit_preconfig (errp=<optimized out>) at ../softmmu/vl.c:2635
-> > #28 qemu_init (argc=<optimized out>, argv=<optimized out>) at ../softmmu/vl.c:3648
-> > #29 0x00000055558e839c in main (argc=<optimized out>, argv=<optimized out>) at ../softmmu/main.c:47
-> > 
-> >> What is the repro case?
-> > 
+> > And then people stick this in their scripts and are scratching their
+> > heads trying to figure out why is a wrong iasl running.  Or someone
+> > comes up with a different use for IASL_PATH and they conflict.
 > 
-> I have been able to repro this even on x86, using the following command line:
-> 
-> ./qemu-system-x86_64 \
-> -accel kvm \
-> -machine pc-q35-8.0 \
-> -m 8192 \
-> -nodefaults \
-> -boot strict=on \
-> -nographic \
-> -device virtio-net,netdev=net0,mac=C0:FF:EE:00:00:12,bus=pcie.0,addr=0x3 \
-> -netdev tap,id=net0,helper=/usr/libexec/qemu-bridge-helper,br=virbr0,vhost=off \
-> -monitor stdio \
-> -qmp tcp:0:5555,server,nowait \
-> -vnc :0
-> 
-> 
-> > Nothing special :
-> > 
-> > qemu-system-aarch64 -M virt -accel kvm -cpu host -nographic -m 2G \
-> > -drive if=pflash,format=raw,file=./EFI/efi.img,readonly=on \
-> > -drive if=pflash,format=raw,file=fedora-varstore.img \
-> > -device virtio-net,netdev=net0,mac=C0:FF:EE:00:00:12,bus=pcie.0,addr=0x3 \
-> > -netdev tap,id=net0,helper=/usr/lib/qemu/qemu-bridge-helper,br=virbr0,vhost=off \
->                                                                        ^^^^^^^^^^^
-> This is what is causing the crash. With vhost=off or without that option (and no vhostfd provided or forced) , within net_init_tap_one(), tap->vhost is False (when vhost=off) or tap->has_vhost is False (when no vhost option is provided). Thus vhost_net_init() will never be called since the following conditional evaluates to false :
-> 
->     if (tap->has_vhost ? tap->vhost :
->         vhostfdname || (tap->has_vhostforce && tap->vhostforce)) {
-> 
-> and s->vhost_net pointer will remain NULL.
-> 
-> The crash does not happen when passing vhost=on in the commandline.
-> 
-> Its sad we did not have a test for it and did not catch this scenario.
-> 
-> I will replace the assert() with a comment as to why the assert() is absent in tap network case.
->  
-> > -drive file=fedora-arm64.qcow2,if=none,id=disk,format=qcow2,cache=none \
-> > -device virtio-blk-device,drive=disk \
-> > -serial mon:stdio
-> > qemu-system-aarch64: ../hw/net/vhost_net.c:510: get_vhost_net: Assertion `vhost_net' failed.
-> 
+> OK in that case I think its ok to simply remove the environment
+> variable part. If people are going to be changing a header file,
 
-Thanks! Pls post quickly and I'll do a pull with just this fixup, so
-people don't suffer from the regression.
+Not people. configure script
 
--- 
-MST
+> they
+> might as well change the DEFAULT_IASL_PATH in the test itself where
+> its easier to find. What additional complication meson provides is
+> that it uses find_program() to find the IASL binary in a list of
+> predefined locations. I do not think this additional tie up with meson
+> is worth it for the niche iasl use case.  Simple is beautiful.
+
+The just the below then? And we can let it be?
+
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+
+
+diff --git a/tests/qtest/bios-tables-test.c b/tests/qtest/bios-tables-test.c
+index ed1c69cf01..d0e1655d2e 100644
+--- a/tests/qtest/bios-tables-test.c
++++ b/tests/qtest/bios-tables-test.c
+@@ -102,6 +102,7 @@ typedef struct {
+ 
+ static char disk[] = "tests/acpi-test-disk-XXXXXX";
+ static const char *data_dir = "tests/data/acpi";
++/* If you want your own path, change the below to iasl = "/home/usr/bin/iasl" */
+ #ifdef CONFIG_IASL
+ static const char *iasl = CONFIG_IASL;
+ #else
 
 
