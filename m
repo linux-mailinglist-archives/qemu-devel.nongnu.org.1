@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 357CF7415BB
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 17:54:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CFB87415E4
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 17:58:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEXTz-0005wJ-WE; Wed, 28 Jun 2023 11:53:28 -0400
+	id 1qEXU4-0005xU-Sy; Wed, 28 Jun 2023 11:53:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qEXTx-0005u9-MJ
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 11:53:25 -0400
-Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qEXU2-0005xF-Us
+ for qemu-devel@nongnu.org; Wed, 28 Jun 2023 11:53:30 -0400
+Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qEXTv-0007tr-Rg
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 11:53:25 -0400
-Received: by mail-ed1-x52a.google.com with SMTP id
- 4fb4d7f45d1cf-51d97ba7c01so4346922a12.2
- for <qemu-devel@nongnu.org>; Wed, 28 Jun 2023 08:53:23 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qEXU1-0007wy-E4
+ for qemu-devel@nongnu.org; Wed, 28 Jun 2023 11:53:30 -0400
+Received: by mail-ej1-x632.google.com with SMTP id
+ a640c23a62f3a-991ef0b464cso205879766b.0
+ for <qemu-devel@nongnu.org>; Wed, 28 Jun 2023 08:53:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687967602; x=1690559602;
+ d=linaro.org; s=google; t=1687967607; x=1690559607;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=eShSRmy/GqoDH/FhCcesT7q/quPV3TAXq83nQ07WWaA=;
- b=FQ/MBrRNMp4nnOnwYZhH7DeLsuzgZf4Y/DG/Vugzpptbjxz5HGHyc5tb9j7ZBGNP67
- q0KQBm0df4jnFgFBqY7GPlE2gPxe2jLmNo3jIpP9tSGIUkEC9vhuqyByo2fz7me3Hzg8
- 98J0U2GHhsyxAY1OAB8AIN9bDnuQgW2IKpiOraSvuswXVmJueNleJbK0ZEAkADU5Ayog
- 1mpxhdSOvVuT244IFUQOJB6LykS5MIq/lA0KSnrRJJRUvg6CYETic2j26qvr5HWe8+Tf
- yJ5DFN6CAjmzHpILVhHqcZoblWAZvpKWC7a64SQBWyJKBsztcWmdjcdm5wd6grbjxB6X
- IcQA==
+ bh=wMlsZi72Q+9JyexsNovmnwH/F2Yz55mMGgFcrNGHUZI=;
+ b=MCkqT29eRFZPRqkA78wBDHdCjibnoIDMu51OXAT7Xkit0ILYD7J1Z1vJz1gaW6UXlo
+ sdTTikxGyNiRk7sijVV/3X9j8imRi6kBUynEf8WqPCV3qnO6Y218Q42Ls2NAcc3AbPKc
+ /OjwAfcAOCQV7nxv4IFGJOEYrUrMB6xV5agyjOpsWEQ/069XDI/duH0X0FvurPTS+TxO
+ zo8t8G87M4GtX6mK7cdX9FJs988vF7FdEG2FAvb4Bur3aZMvY8gqGZpt3jfFJvjofZ1Z
+ ipXoZ3jlCHnMksxt1fDorfR3TKrCgFLyJbb/46vh8B4f7NMXp2LM9AS6FaO/MdEgjKle
+ VPXw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687967602; x=1690559602;
+ d=1e100.net; s=20221208; t=1687967607; x=1690559607;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=eShSRmy/GqoDH/FhCcesT7q/quPV3TAXq83nQ07WWaA=;
- b=GxtyU9b0yPCe62cUYJMl3WyUbT6mE+1OJnoy5LL7BTuysLIbTsH7inO0MU0ajjr/rT
- ihFE/nez6ecVy8/RAcJEi+QsONLstFo3RHJI2Gfv7DRilifyIh2tJIGDw7yCtYYMLGN0
- BncjRhHyzpOfYdnjSwigktr+m6NwtP7fovwbkkmI/c8mU//bF59ZkBDiN0uqObnGjF1a
- hauufAwjsUj6ALe+f/+ySrFnosdlIZ0oHoeHufNso2godCH43LVdxY956kMXT0ndGu7O
- a2QMhPFMtvnRY+FjLPSZmosb2iONsnxiMukk4xvGQ0P0CyLqpkMXgARzmkw6YR8NIaJH
- 0r9g==
-X-Gm-Message-State: AC+VfDzsmxgdXiWiEL0O/vqyf7CnU0qtvzz0NVazgd7a36Z3Rko+q+rT
- /OkXzjKs8XhMrAdU0gT6UCrAFsG8r++odArvIF0=
-X-Google-Smtp-Source: ACHHUZ7qTu7lr1d8DHP9YWR00sXm98zKjQ+96l2Lt/uEUuI7/SFw7CyDgXrEOgqlU13/jHK04A/cSA==
-X-Received: by 2002:a05:6402:1290:b0:51d:a237:d45b with SMTP id
- w16-20020a056402129000b0051da237d45bmr5566897edv.36.1687967602044; 
- Wed, 28 Jun 2023 08:53:22 -0700 (PDT)
+ bh=wMlsZi72Q+9JyexsNovmnwH/F2Yz55mMGgFcrNGHUZI=;
+ b=cDe4dveSZoYOOQZdkK0o/Yrp2B2XScS/28F/oUTHRSX0+hbRsPKdbxVLSVqW8xbFKf
+ nnYlrqd2ewDVvZP2NOns8LUNyfSXxKLZDCfRbE6AhcoZZP3XZsJ0R982Cn8wV8yELKMR
+ CbHDnMD+zApJmir27/uCazaMgeNYRq5QdcnPOynykVmvNTOs3bjLrdGNbfvvtDzw3YYi
+ dTTNgIutauBcJVUzDRoAFViQ2BVEKUcjaCjzTBkh8ZYiDRsl7HOgeq9ySxws3sfK2HJ4
+ TlMMIUIfxBj48ZJrDnoQMnX9BYtQ8xnh+M/XAo91vGIJd0JfuNP1PqBGI+KVRuz5Wm6J
+ HxcQ==
+X-Gm-Message-State: AC+VfDydnMffm1rJtsZ70LntI5seEIuQTZdXw8yxYgY7IXJMNM2wjdm+
+ 5/llzW+5r5xaX7+jhezDxdF+Cbt7P7OWbL5AlRA=
+X-Google-Smtp-Source: ACHHUZ5w5KYEpkoX+wi+EXmlnlnxtm5NocqyezynOZSulFT5MqbNr6NsTaFajz9BoX+TLFdbAiZYgw==
+X-Received: by 2002:a17:906:478a:b0:966:1bf2:2af5 with SMTP id
+ cw10-20020a170906478a00b009661bf22af5mr1408012ejc.22.1687967607607; 
+ Wed, 28 Jun 2023 08:53:27 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.207.229])
  by smtp.gmail.com with ESMTPSA id
- m16-20020aa7c490000000b005187d2ba7c1sm4859551edq.91.2023.06.28.08.53.20
+ ss26-20020a170907039a00b0098e422d6758sm4432799ejb.219.2023.06.28.08.53.26
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 28 Jun 2023 08:53:21 -0700 (PDT)
+ Wed, 28 Jun 2023 08:53:27 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Roman Bolshakov <rbolshakov@ddn.com>
-Subject: [PULL 01/30] MAINTAINERS: Update Roman Bolshakov email address
-Date: Wed, 28 Jun 2023 17:52:44 +0200
-Message-Id: <20230628155313.71594-2-philmd@linaro.org>
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PULL 02/30] docs/devel/testing: Update the 'Docker Debugging' section
+Date: Wed, 28 Jun 2023 17:52:45 +0200
+Message-Id: <20230628155313.71594-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230628155313.71594-1-philmd@linaro.org>
 References: <20230628155313.71594-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::632;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x632.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,56 +91,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-r.bolshakov@yadro.com is bouncing: Update Roman's email address
-using one found somewhere on the Internet; this way he can Ack-by.
-
-(Reorder Taylor's line to keep the section sorted alphabetically).
+Since commit 93cc0506f6 ("tests/docker: Use Fedora containers
+for MinGW cross-builds in the gitlab-CI") the MinGW toolchain
+is packaged inside the fedora-win[32/64]-cross images.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Roman Bolshakov <rbolshakov@ddn.com>
-Message-Id: <20230624174121.11508-2-philmd@linaro.org>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Message-Id: <20230624142211.8888-2-philmd@linaro.org>
 ---
- MAINTAINERS | 4 ++--
- .mailmap    | 3 ++-
- 2 files changed, 4 insertions(+), 3 deletions(-)
+ docs/devel/testing.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 21a587ce4b..aba07722f6 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -498,14 +498,14 @@ F: target/arm/hvf/
+diff --git a/docs/devel/testing.rst b/docs/devel/testing.rst
+index 203facb417..e85e26c4ca 100644
+--- a/docs/devel/testing.rst
++++ b/docs/devel/testing.rst
+@@ -558,7 +558,7 @@ When CI tasks, maintainers or yourself report a Docker test failure, follow the
+ below steps to debug it:
  
- X86 HVF CPUs
- M: Cameron Esfahani <dirty@apple.com>
--M: Roman Bolshakov <r.bolshakov@yadro.com>
-+M: Roman Bolshakov <rbolshakov@ddn.com>
- W: https://wiki.qemu.org/Features/HVF
- S: Maintained
- F: target/i386/hvf/
- 
- HVF
- M: Cameron Esfahani <dirty@apple.com>
--M: Roman Bolshakov <r.bolshakov@yadro.com>
-+M: Roman Bolshakov <rbolshakov@ddn.com>
- W: https://wiki.qemu.org/Features/HVF
- S: Maintained
- F: accel/hvf/
-diff --git a/.mailmap b/.mailmap
-index b57da4827e..64ef9f4de6 100644
---- a/.mailmap
-+++ b/.mailmap
-@@ -76,9 +76,10 @@ Paul Burton <paulburton@kernel.org> <pburton@wavecomp.com>
- Philippe Mathieu-Daudé <philmd@linaro.org> <f4bug@amsat.org>
- Philippe Mathieu-Daudé <philmd@linaro.org> <philmd@redhat.com>
- Philippe Mathieu-Daudé <philmd@linaro.org> <philmd@fungible.com>
-+Roman Bolshakov <rbolshakov@ddn.com> <r.bolshakov@yadro.com>
- Stefan Brankovic <stefan.brankovic@syrmia.com> <stefan.brankovic@rt-rk.com.com>
--Yongbok Kim <yongbok.kim@mips.com> <yongbok.kim@imgtec.com>
- Taylor Simpson <ltaylorsimpson@gmail.com> <tsimpson@quicinc.com>
-+Yongbok Kim <yongbok.kim@mips.com> <yongbok.kim@imgtec.com>
- 
- # Also list preferred name forms where people have changed their
- # git author config, or had utf8/latin1 encoding issues.
+ 1. Locally reproduce the failure with the reported command line. E.g. run
+-   ``make docker-test-mingw@fedora J=8``.
++   ``make docker-test-mingw@fedora-win64-cross J=8``.
+ 2. Add "V=1" to the command line, try again, to see the verbose output.
+ 3. Further add "DEBUG=1" to the command line. This will pause in a shell prompt
+    in the container right before testing starts. You could either manually
 -- 
 2.38.1
 
