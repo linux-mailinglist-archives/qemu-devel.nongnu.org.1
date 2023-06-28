@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93BB77416DB
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 18:57:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ECED87416D4
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 18:57:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEYSx-0003Xf-Jh; Wed, 28 Jun 2023 12:56:27 -0400
+	id 1qEYSy-0003Yi-9h; Wed, 28 Jun 2023 12:56:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qEYSY-0003Ul-Fv
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 12:56:03 -0400
-Received: from smtp-out2.suse.de ([2001:67c:2178:6::1d])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qEYSd-0003Ve-17
+ for qemu-devel@nongnu.org; Wed, 28 Jun 2023 12:56:07 -0400
+Received: from smtp-out1.suse.de ([2001:67c:2178:6::1c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qEYSU-0001py-P4
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 12:56:01 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qEYSX-0001rh-Q9
+ for qemu-devel@nongnu.org; Wed, 28 Jun 2023 12:56:03 -0400
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id BF6E61F8CD;
- Wed, 28 Jun 2023 16:55:56 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id D7FAA2187F;
+ Wed, 28 Jun 2023 16:55:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1687971356; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1687971359; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ygga863EuZuvNXsgtReC3vZX6tqmzf7m8Xqn/WX/ZUA=;
- b=gISQRuDZNNTen4UgGK3lY9TancvZiID6e435OMuqi5ZzxS6SgsSIWplvl/jUOrCmSNOdht
- rnvXjt3g5JHN4N2k30zFqkLf+k45YoM3Pd+XRW7Q4ZzSNQLQQOQ185AwOSLK5s9jHzaLtm
- /gcxbzbXrjiLmhFd8cHcOQqJdVnXyRM=
+ bh=rBWii+EOlEgXPJvGteTYHHqtuoQYlZN9AnH2+sAtuDM=;
+ b=0ZX/8xTvG4MxSh1pzubu2jHbkXPqjdnSXO5APkU6thjlFrvPKfff0CocP4k7mJqMa3bpeG
+ U8of2EkedaRGo+GoYVZvgoUJvK1fr3ldL4VH0ejSYRj6sI3L32RhS9SaxQDJO4qEGjeErk
+ n7yYB8pPpMWDtKxEv8hYeBFqlGzJzTY=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1687971356;
+ s=susede2_ed25519; t=1687971359;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ygga863EuZuvNXsgtReC3vZX6tqmzf7m8Xqn/WX/ZUA=;
- b=LL6RkV9JpCrFf2WTYkggzYB+V/F/SeZlWDFUnxh7ljj4eMH+6kLA8/QlEM+Domk8caHVBh
- 2Cj+jJEm+U8VhDAQ==
+ bh=rBWii+EOlEgXPJvGteTYHHqtuoQYlZN9AnH2+sAtuDM=;
+ b=+GWyFRNrw3lkdJrLJqIt853O5bJGhwt1iglLA2vJWQTTH8Hs47sLruGdB0gw06copywcL5
+ he+342S3n2MOCaDQ==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 62124138EF;
- Wed, 28 Jun 2023 16:55:54 +0000 (UTC)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 458C0138EF;
+ Wed, 28 Jun 2023 16:55:57 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id GO5mCxpmnGRIZwAAMHmgww
- (envelope-from <farosas@suse.de>); Wed, 28 Jun 2023 16:55:54 +0000
+ by imap2.suse-dmz.suse.de with ESMTPSA id oI1cAh1mnGRIZwAAMHmgww
+ (envelope-from <farosas@suse.de>); Wed, 28 Jun 2023 16:55:57 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
@@ -56,17 +56,17 @@ Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>, Leonardo Bras <leobras@redhat.com>
-Subject: [PATCH 4/6] tests/qtest: migration: Use migrate_incoming_qmp where
- appropriate
-Date: Wed, 28 Jun 2023 13:55:40 -0300
-Message-Id: <20230628165542.17214-5-farosas@suse.de>
+Subject: [PATCH 5/6] tests/qtest: migration: Add support for negative testing
+ of qmp_migrate
+Date: Wed, 28 Jun 2023 13:55:41 -0300
+Message-Id: <20230628165542.17214-6-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20230628165542.17214-1-farosas@suse.de>
 References: <20230628165542.17214-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:67c:2178:6::1d; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
+Received-SPF: pass client-ip=2001:67c:2178:6::1c; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -89,220 +89,223 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use the new migrate_incoming_qmp helper in the places that currently
-open-code calling migrate-incoming.
+There is currently no way to write a test for errors that happened in
+qmp_migrate before the migration has started.
+
+Add a version of qmp_migrate that ensures an error happens and tests
+the error message. To make use of it a test needs to declare:
+
+    MigrateCommon args = {
+        .result = MIG_TEST_QMP_ERROR,
+        .error_str = "error message"
+    }
 
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
-Reviewed-by: Juan Quintela <quintela@redhat.com>
 ---
- tests/qtest/meson.build           |  1 +
- tests/qtest/migration-test.c      | 12 ++---
- tests/qtest/virtio-net-failover.c | 77 ++++---------------------------
- 3 files changed, 14 insertions(+), 76 deletions(-)
+ tests/qtest/libqtest.c          | 33 +++++++++++++++++++++++++++++++++
+ tests/qtest/libqtest.h          | 28 ++++++++++++++++++++++++++++
+ tests/qtest/migration-helpers.c | 22 ++++++++++++++++++++++
+ tests/qtest/migration-helpers.h |  4 ++++
+ tests/qtest/migration-test.c    | 17 +++++++++++++----
+ 5 files changed, 100 insertions(+), 4 deletions(-)
 
-diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-index 5fa6833ad7..c14bfeccd5 100644
---- a/tests/qtest/meson.build
-+++ b/tests/qtest/meson.build
-@@ -313,6 +313,7 @@ qtests = {
-   'tpm-tis-i2c-test': [io, tpmemu_files, 'qtest_aspeed.c'],
-   'tpm-tis-device-swtpm-test': [io, tpmemu_files, 'tpm-tis-util.c'],
-   'tpm-tis-device-test': [io, tpmemu_files, 'tpm-tis-util.c'],
-+  'virtio-net-failover': files('migration-helpers.c'),
-   'vmgenid-test': files('boot-sector.c', 'acpi-utils.c'),
-   'netdev-socket': files('netdev-socket.c', '../unit/socket-helpers.c'),
+diff --git a/tests/qtest/libqtest.c b/tests/qtest/libqtest.c
+index de03ef5f60..14ed7d6d83 100644
+--- a/tests/qtest/libqtest.c
++++ b/tests/qtest/libqtest.c
+@@ -1243,6 +1243,28 @@ void qtest_memset(QTestState *s, uint64_t addr, uint8_t pattern, size_t size)
+     qtest_rsp(s);
  }
+ 
++QDict *qtest_vqmp_assert_failure_ref(QTestState *qts,
++                                     const char *fmt, va_list args)
++{
++    QDict *response;
++    QDict *ret;
++
++    response = qtest_vqmp(qts, fmt, args);
++
++    g_assert(response);
++    if (!qdict_haskey(response, "error")) {
++        g_autoptr(GString) s = qobject_to_json_pretty(QOBJECT(response), true);
++        g_test_message("%s", s->str);
++    }
++    g_assert(qdict_haskey(response, "error"));
++    g_assert(!qdict_haskey(response, "return"));
++    ret = qdict_get_qdict(response, "error");
++    qobject_ref(ret);
++    qobject_unref(response);
++
++    return ret;
++}
++
+ QDict *qtest_vqmp_assert_success_ref(QTestState *qts,
+                                      const char *fmt, va_list args)
+ {
+@@ -1305,6 +1327,17 @@ void qtest_vqmp_fds_assert_success(QTestState *qts, int *fds, size_t nfds,
+ }
+ #endif /* !_WIN32 */
+ 
++QDict *qtest_qmp_assert_failure_ref(QTestState *qts, const char *fmt, ...)
++{
++    QDict *response;
++    va_list ap;
++
++    va_start(ap, fmt);
++    response = qtest_vqmp_assert_failure_ref(qts, fmt, ap);
++    va_end(ap);
++    return response;
++}
++
+ QDict *qtest_qmp_assert_success_ref(QTestState *qts, const char *fmt, ...)
+ {
+     QDict *response;
+diff --git a/tests/qtest/libqtest.h b/tests/qtest/libqtest.h
+index a12acf7fa9..1fed533d7d 100644
+--- a/tests/qtest/libqtest.h
++++ b/tests/qtest/libqtest.h
+@@ -799,6 +799,34 @@ void qtest_vqmp_fds_assert_success(QTestState *qts, int *fds, size_t nfds,
+     G_GNUC_PRINTF(4, 0);
+ #endif /* !_WIN32 */
+ 
++/**
++ * qtest_qmp_assert_failure_ref:
++ * @qts: QTestState instance to operate on
++ * @fmt: QMP message to send to qemu, formatted like
++ * qobject_from_jsonf_nofail().  See parse_interpolation() for what's
++ * supported after '%'.
++ *
++ * Sends a QMP message to QEMU, asserts that an 'error' key is present in
++ * the response, and returns the response.
++ */
++QDict *qtest_qmp_assert_failure_ref(QTestState *qts, const char *fmt, ...)
++    G_GNUC_PRINTF(2, 3);
++
++/**
++ * qtest_vqmp_assert_failure_ref:
++ * @qts: QTestState instance to operate on
++ * @fmt: QMP message to send to qemu, formatted like
++ * qobject_from_jsonf_nofail().  See parse_interpolation() for what's
++ * supported after '%'.
++ * @args: variable arguments for @fmt
++ *
++ * Sends a QMP message to QEMU, asserts that an 'error' key is present in
++ * the response, and returns the response.
++ */
++QDict *qtest_vqmp_assert_failure_ref(QTestState *qts,
++                                     const char *fmt, va_list args)
++    G_GNUC_PRINTF(2, 0);
++
+ /**
+  * qtest_qmp_assert_success_ref:
+  * @qts: QTestState instance to operate on
+diff --git a/tests/qtest/migration-helpers.c b/tests/qtest/migration-helpers.c
+index bc54b29184..5e021ba078 100644
+--- a/tests/qtest/migration-helpers.c
++++ b/tests/qtest/migration-helpers.c
+@@ -49,6 +49,28 @@ bool migrate_watch_for_resume(QTestState *who, const char *name,
+     return false;
+ }
+ 
++void migrate_qmp_with_error(QTestState *who, const char *uri,
++                            const char *error_str, const char *fmt, ...)
++{
++    va_list ap;
++    QDict *args, *err;
++
++    va_start(ap, fmt);
++    args = qdict_from_vjsonf_nofail(fmt, ap);
++    va_end(ap);
++
++    g_assert(!qdict_haskey(args, "uri"));
++    qdict_put_str(args, "uri", uri);
++
++    err = qtest_qmp_assert_failure_ref(
++        who, "{ 'execute': 'migrate', 'arguments': %p}", args);
++
++    g_assert(qdict_haskey(err, "desc"));
++    g_assert_cmpstr(qdict_get_str(err, "desc"), ==, error_str);
++
++    qobject_unref(err);
++}
++
+ /*
+  * Send QMP command "migrate".
+  * Arguments are built from @fmt... (formatted like
+diff --git a/tests/qtest/migration-helpers.h b/tests/qtest/migration-helpers.h
+index 57d295a4fe..991efd57a6 100644
+--- a/tests/qtest/migration-helpers.h
++++ b/tests/qtest/migration-helpers.h
+@@ -27,6 +27,10 @@ G_GNUC_PRINTF(3, 4)
+ void migrate_incoming_qmp(QTestState *who, const char *uri,
+                           const char *fmt, ...);
+ 
++G_GNUC_PRINTF(4, 5)
++void migrate_qmp_with_error(QTestState *who, const char *uri,
++                            const char *error_str, const char *fmt, ...);
++
+ void migrate_set_capability(QTestState *who, const char *capability,
+                             bool value);
+ 
 diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-index 310627be39..aafecb4f02 100644
+index aafecb4f02..acb778a8cd 100644
 --- a/tests/qtest/migration-test.c
 +++ b/tests/qtest/migration-test.c
-@@ -1819,8 +1819,7 @@ static void *test_migrate_fd_start_hook(QTestState *from,
-     close(pair[0]);
+@@ -564,6 +564,8 @@ typedef struct {
+         MIG_TEST_FAIL,
+         /* This test should fail, dest qemu should fail with abnormal status */
+         MIG_TEST_FAIL_DEST_QUIT_ERR,
++        /* The QMP command for this migration should fail with an error */
++        MIG_TEST_QMP_ERROR,
+     } result;
  
-     /* Start incoming migration from the 1st socket */
--    qtest_qmp_assert_success(to, "{ 'execute': 'migrate-incoming',"
--                             "  'arguments': { 'uri': 'fd:fd-mig' }}");
-+    migrate_incoming_qmp(to, "fd:fd-mig", "{}");
+     /* Optional: set number of migration passes to wait for, if live==true */
+@@ -582,6 +584,7 @@ typedef struct {
+     /* Postcopy specific fields */
+     void *postcopy_data;
+     bool postcopy_preempt;
++    gchar *error_str;
+ } MigrateCommon;
  
-     /* Send the 2nd socket to the target */
-     qtest_qmp_fds_assert_success(from, &pair[1], 1,
-@@ -2042,8 +2041,7 @@ test_migrate_precopy_tcp_multifd_start_common(QTestState *from,
-     migrate_set_capability(to, "multifd", true);
- 
-     /* Start incoming migration from the 1st socket */
--    qtest_qmp_assert_success(to, "{ 'execute': 'migrate-incoming',"
--                             "  'arguments': { 'uri': 'tcp:127.0.0.1:0' }}");
-+    migrate_incoming_qmp(to, "tcp:127.0.0.1:0", "{}");
- 
-     return NULL;
- }
-@@ -2295,8 +2293,7 @@ static void test_multifd_tcp_cancel(void)
-     migrate_set_capability(to, "multifd", true);
- 
-     /* Start incoming migration from the 1st socket */
--    qtest_qmp_assert_success(to, "{ 'execute': 'migrate-incoming',"
--                             "  'arguments': { 'uri': 'tcp:127.0.0.1:0' }}");
-+    migrate_incoming_qmp(to, "tcp:127.0.0.1:0", "{}");
- 
-     /* Wait for the first serial output from the source */
-     wait_for_serial("src_serial");
-@@ -2326,8 +2323,7 @@ static void test_multifd_tcp_cancel(void)
-     migrate_set_capability(to2, "multifd", true);
- 
-     /* Start incoming migration from the 1st socket */
--    qtest_qmp_assert_success(to2, "{ 'execute': 'migrate-incoming',"
--                             "  'arguments': { 'uri': 'tcp:127.0.0.1:0' }}");
-+    migrate_incoming_qmp(to2, "tcp:127.0.0.1:0", "{}");
- 
-     g_free(uri);
-     uri = migrate_get_socket_address(to2, "socket-address");
-diff --git a/tests/qtest/virtio-net-failover.c b/tests/qtest/virtio-net-failover.c
-index 4a809590bf..0d40bc1f2d 100644
---- a/tests/qtest/virtio-net-failover.c
-+++ b/tests/qtest/virtio-net-failover.c
-@@ -11,6 +11,7 @@
- #include "libqtest.h"
- #include "libqos/pci.h"
- #include "libqos/pci-pc.h"
-+#include "migration-helpers.h"
- #include "qapi/qmp/qdict.h"
- #include "qapi/qmp/qlist.h"
- #include "qapi/qmp/qjson.h"
-@@ -736,26 +737,10 @@ static void test_migrate_out(gconstpointer opaque)
-     machine_stop(qts);
- }
- 
--static QDict *get_migration_event(QTestState *qts)
--{
--    QDict *resp;
--    QDict *data;
--
--    resp = qtest_qmp_eventwait_ref(qts, "MIGRATION");
--    g_assert(qdict_haskey(resp, "data"));
--
--    data = qdict_get_qdict(resp, "data");
--    g_assert(qdict_haskey(data, "status"));
--    qobject_ref(data);
--    qobject_unref(resp);
--
--    return data;
--}
--
- static void test_migrate_in(gconstpointer opaque)
+ static int test_migrate_start(QTestState **from, QTestState **to,
+@@ -1379,6 +1382,7 @@ static void test_precopy_common(MigrateCommon *args)
  {
-     QTestState *qts;
--    QDict *resp, *args, *ret;
-+    QDict *resp, *ret;
-     g_autofree gchar *uri = g_strdup_printf("exec: cat %s", (gchar *)opaque);
+     QTestState *from, *to;
+     void *data_hook = NULL;
++    g_autofree char *connect_uri = NULL;
  
-     qts = machine_start(BASE_MACHINE
-@@ -787,18 +772,7 @@ static void test_migrate_in(gconstpointer opaque)
-     check_one_card(qts, true, "standby0", MAC_STANDBY0);
-     check_one_card(qts, false, "primary0", MAC_PRIMARY0);
+     if (test_migrate_start(&from, &to, args->listen_uri, &args->start)) {
+         return;
+@@ -1419,13 +1423,17 @@ static void test_precopy_common(MigrateCommon *args)
+     }
  
--    args = qdict_from_jsonf_nofail("{}");
--    g_assert_nonnull(args);
--    qdict_put_str(args, "uri", uri);
--
--    resp = qtest_qmp(qts, "{ 'execute': 'migrate-incoming', 'arguments': %p}",
--                     args);
--    g_assert(qdict_haskey(resp, "return"));
--    qobject_unref(resp);
--
--    resp = get_migration_event(qts);
--    g_assert_cmpstr(qdict_get_str(resp, "status"), ==, "setup");
--    qobject_unref(resp);
-+    migrate_incoming_qmp(qts, uri, "{}");
+     if (!args->connect_uri) {
+-        g_autofree char *local_connect_uri =
+-            migrate_get_socket_address(to, "socket-address");
+-        migrate_qmp(from, local_connect_uri, "{}");
++        connect_uri = migrate_get_socket_address(to, "socket-address");
+     } else {
+-        migrate_qmp(from, args->connect_uri, "{}");
++        connect_uri = g_strdup(args->connect_uri);
+     }
  
-     resp = get_failover_negociated_event(qts);
-     g_assert_cmpstr(qdict_get_str(resp, "device-id"), ==, "standby0");
-@@ -888,7 +862,7 @@ static void test_off_migrate_out(gconstpointer opaque)
- static void test_off_migrate_in(gconstpointer opaque)
- {
-     QTestState *qts;
--    QDict *resp, *args, *ret;
-+    QDict *ret;
-     g_autofree gchar *uri = g_strdup_printf("exec: cat %s", (gchar *)opaque);
++    if (args->result == MIG_TEST_QMP_ERROR) {
++        migrate_qmp_with_error(from, connect_uri, args->error_str, "{}");
++        goto finish;
++    }
++
++    migrate_qmp(from, connect_uri, "{}");
  
-     qts = machine_start(BASE_MACHINE
-@@ -920,18 +894,7 @@ static void test_off_migrate_in(gconstpointer opaque)
-     check_one_card(qts, true, "standby0", MAC_STANDBY0);
-     check_one_card(qts, true, "primary0", MAC_PRIMARY0);
+     if (args->result != MIG_TEST_SUCCEED) {
+         bool allow_active = args->result == MIG_TEST_FAIL;
+@@ -1474,6 +1482,7 @@ static void test_precopy_common(MigrateCommon *args)
+         wait_for_serial("dest_serial");
+     }
  
--    args = qdict_from_jsonf_nofail("{}");
--    g_assert_nonnull(args);
--    qdict_put_str(args, "uri", uri);
--
--    resp = qtest_qmp(qts, "{ 'execute': 'migrate-incoming', 'arguments': %p}",
--                     args);
--    g_assert(qdict_haskey(resp, "return"));
--    qobject_unref(resp);
--
--    resp = get_migration_event(qts);
--    g_assert_cmpstr(qdict_get_str(resp, "status"), ==, "setup");
--    qobject_unref(resp);
-+    migrate_incoming_qmp(qts, uri, "{}");
- 
-     check_one_card(qts, true, "standby0", MAC_STANDBY0);
-     check_one_card(qts, true, "primary0", MAC_PRIMARY0);
-@@ -1026,7 +989,7 @@ static void test_guest_off_migrate_out(gconstpointer opaque)
- static void test_guest_off_migrate_in(gconstpointer opaque)
- {
-     QTestState *qts;
--    QDict *resp, *args, *ret;
-+    QDict *ret;
-     g_autofree gchar *uri = g_strdup_printf("exec: cat %s", (gchar *)opaque);
- 
-     qts = machine_start(BASE_MACHINE
-@@ -1058,18 +1021,7 @@ static void test_guest_off_migrate_in(gconstpointer opaque)
-     check_one_card(qts, true, "standby0", MAC_STANDBY0);
-     check_one_card(qts, false, "primary0", MAC_PRIMARY0);
- 
--    args = qdict_from_jsonf_nofail("{}");
--    g_assert_nonnull(args);
--    qdict_put_str(args, "uri", uri);
--
--    resp = qtest_qmp(qts, "{ 'execute': 'migrate-incoming', 'arguments': %p}",
--                     args);
--    g_assert(qdict_haskey(resp, "return"));
--    qobject_unref(resp);
--
--    resp = get_migration_event(qts);
--    g_assert_cmpstr(qdict_get_str(resp, "status"), ==, "setup");
--    qobject_unref(resp);
-+    migrate_incoming_qmp(qts, uri, "{}");
- 
-     check_one_card(qts, true, "standby0", MAC_STANDBY0);
-     check_one_card(qts, false, "primary0", MAC_PRIMARY0);
-@@ -1728,7 +1680,7 @@ static void test_multi_out(gconstpointer opaque)
- static void test_multi_in(gconstpointer opaque)
- {
-     QTestState *qts;
--    QDict *resp, *args, *ret;
-+    QDict *resp, *ret;
-     g_autofree gchar *uri = g_strdup_printf("exec: cat %s", (gchar *)opaque);
- 
-     qts = machine_start(BASE_MACHINE
-@@ -1794,18 +1746,7 @@ static void test_multi_in(gconstpointer opaque)
-     check_one_card(qts, true, "standby1", MAC_STANDBY1);
-     check_one_card(qts, false, "primary1", MAC_PRIMARY1);
- 
--    args = qdict_from_jsonf_nofail("{}");
--    g_assert_nonnull(args);
--    qdict_put_str(args, "uri", uri);
--
--    resp = qtest_qmp(qts, "{ 'execute': 'migrate-incoming', 'arguments': %p}",
--                     args);
--    g_assert(qdict_haskey(resp, "return"));
--    qobject_unref(resp);
--
--    resp = get_migration_event(qts);
--    g_assert_cmpstr(qdict_get_str(resp, "status"), ==, "setup");
--    qobject_unref(resp);
-+    migrate_incoming_qmp(qts, uri, "{}");
- 
-     resp = get_failover_negociated_event(qts);
-     g_assert_cmpstr(qdict_get_str(resp, "device-id"), ==, "standby0");
++finish:
+     if (args->finish_hook) {
+         args->finish_hook(from, to, data_hook);
+     }
 -- 
 2.35.3
 
