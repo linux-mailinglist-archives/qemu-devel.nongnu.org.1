@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF7E77416C1
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 18:50:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A456C7416D6
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 18:57:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEYLI-0000IS-7c; Wed, 28 Jun 2023 12:48:32 -0400
+	id 1qEYSr-0003Ue-Ln; Wed, 28 Jun 2023 12:56:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>)
- id 1qEYLG-0000Gq-7C; Wed, 28 Jun 2023 12:48:30 -0400
-Received: from smtp-out1.suse.de ([2001:67c:2178:6::1c])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qEYSO-0003RN-5j
+ for qemu-devel@nongnu.org; Wed, 28 Jun 2023 12:55:53 -0400
+Received: from smtp-out2.suse.de ([195.135.220.29])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>)
- id 1qEYLE-0006YF-EL; Wed, 28 Jun 2023 12:48:29 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qEYSJ-0001lo-RZ
+ for qemu-devel@nongnu.org; Wed, 28 Jun 2023 12:55:49 -0400
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 4EC3A2187A;
- Wed, 28 Jun 2023 16:48:25 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 458251F8D6;
+ Wed, 28 Jun 2023 16:55:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1687970905; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1687971346; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
- bh=GKtSAjY/gybSB8YQ3UvrdFZTDzcvViwaB6S+q8mdJM4=;
- b=Qj5Am9D4o0JzWr9PCO/hJFW+Q7e3jTe1icbxvG5/zj4Q//fjLbpRngEyo8ZgXnY8F0Z4T9
- 9OPcpelDUOBdU3/5kYMAysBJg2m7QLNy9ogn8wxfAw215wF1i4081/MQ7i4I4AJgSBOR8x
- H21wMRT5hJv28/2qM2qpLKOjjAEH65Y=
+ bh=NZ3ZXC6sOMRtwElUR8qo5Lx5p67f+dpCH637YMTlFSI=;
+ b=BMYGKwDJDCfo2FT/0nbtfLAgBoVSgjqKdQN+U4MWwLlBT9XwhCwqSjiWS2ML5gsEUB4a7n
+ Zc8N8ooon/39eMNKtayNwHBkRnmqJs03JCeOQewvgYNuGQ31fahi5U+l44kssYvzRZaHad
+ kfGoELRlMNNyvarHPOY/NWLLaEVU26U=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1687970905;
+ s=susede2_ed25519; t=1687971346;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
- bh=GKtSAjY/gybSB8YQ3UvrdFZTDzcvViwaB6S+q8mdJM4=;
- b=JCnH6XOQW2i4rzp8TpNJ1Fl/AiAPmYgx/6nB+tmf9VDWDcI5wEqj+DAPoBXIOy/3YAtxQG
- XSTuWR6Uo3e6BDBQ==
+ bh=NZ3ZXC6sOMRtwElUR8qo5Lx5p67f+dpCH637YMTlFSI=;
+ b=NAg/hIxBjd5V5cWzWCInNtYx+jTP8pz7AjTBGZ8mLHqsucD5ZDGggiIV9az1ErKsysgMwA
+ Ms/zsPUZZKN8fkBg==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id C0F07138EF;
- Wed, 28 Jun 2023 16:48:23 +0000 (UTC)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id ABCAA138EF;
+ Wed, 28 Jun 2023 16:55:44 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id 6d6vIldknGQjZAAAMHmgww
- (envelope-from <farosas@suse.de>); Wed, 28 Jun 2023 16:48:23 +0000
+ by imap2.suse-dmz.suse.de with ESMTPSA id PWgHHRBmnGRIZwAAMHmgww
+ (envelope-from <farosas@suse.de>); Wed, 28 Jun 2023 16:55:44 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH] target/arm: gdbstub: Guard M-profile code with CONFIG_TCG
-Date: Wed, 28 Jun 2023 13:48:21 -0300
-Message-Id: <20230628164821.16771-1-farosas@suse.de>
+Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Steve Sistare <steven.sistare@oracle.com>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PATCH 0/6] migration: Test the new "file:" migration
+Date: Wed, 28 Jun 2023 13:55:36 -0300
+Message-Id: <20230628165542.17214-1-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:67c:2178:6::1c; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
+Received-SPF: pass client-ip=195.135.220.29; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -80,61 +80,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This code is only relevant when TCG is present in the build. Building
-with --disable-tcg --enable-xen on an x86 host we get:
+Based-on:
+[PATCH V3 0/2] migration file URI
+https://lore.kernel.org/r/1687466251-310524-1-git-send-email-steven.sistare@oracle.com
 
-$ ../configure --target-list=x86_64-softmmu,aarch64-softmmu --disable-tcg --enable-xen
-$ make -j$(nproc)
-...
-libqemu-aarch64-softmmu.fa.p/target_arm_gdbstub.c.o: in function `m_sysreg_ptr':
- ../target/arm/gdbstub.c:358: undefined reference to `arm_v7m_get_sp_ptr'
- ../target/arm/gdbstub.c:361: undefined reference to `arm_v7m_get_sp_ptr'
+Since v1:
 
-libqemu-aarch64-softmmu.fa.p/target_arm_gdbstub.c.o: in function `arm_gdb_get_m_systemreg':
-../target/arm/gdbstub.c:405: undefined reference to `arm_v7m_mrs_control'
+- added the force-emit-setup-event property
+- added verification that the skipped region is empty
 
-Signed-off-by: Fabiano Rosas <farosas@suse.de>
----
-This is a respin of:
-https://lore.kernel.org/r/20230313151058.19645-5-farosas@suse.de
----
- target/arm/gdbstub.c | 4 ++++
- 1 file changed, 4 insertions(+)
+CI run: https://gitlab.com/farosas/qemu/-/pipelines/914915941
 
-diff --git a/target/arm/gdbstub.c b/target/arm/gdbstub.c
-index 03b17c814f..f421c5d041 100644
---- a/target/arm/gdbstub.c
-+++ b/target/arm/gdbstub.c
-@@ -324,6 +324,7 @@ static int arm_gen_dynamic_sysreg_xml(CPUState *cs, int base_reg)
-     return cpu->dyn_sysreg_xml.num;
- }
- 
-+#ifdef CONFIG_TCG
- typedef enum {
-     M_SYSREG_MSP,
-     M_SYSREG_PSP,
-@@ -481,6 +482,7 @@ static int arm_gen_dynamic_m_secextreg_xml(CPUState *cs, int orig_base_reg)
-     return cpu->dyn_m_secextreg_xml.num;
- }
- #endif
-+#endif /* CONFIG_TCG */
- 
- const char *arm_gdb_get_dynamic_xml(CPUState *cs, const char *xmlname)
- {
-@@ -561,6 +563,7 @@ void arm_cpu_register_gdb_regs_for_features(ARMCPU *cpu)
-                              arm_gen_dynamic_sysreg_xml(cs, cs->gdb_num_regs),
-                              "system-registers.xml", 0);
- 
-+#ifdef CONFIG_TCG
-     if (arm_feature(env, ARM_FEATURE_M) && tcg_enabled()) {
-         gdb_register_coprocessor(cs,
-             arm_gdb_get_m_systemreg, arm_gdb_set_m_systemreg,
-@@ -575,4 +578,5 @@ void arm_cpu_register_gdb_regs_for_features(ARMCPU *cpu)
-         }
- #endif
-     }
-+#endif /* CONFIG_TCG */
- }
+v1:
+https://lore.kernel.org/r/20230626182210.8792-1-farosas@suse.de
+
+Here's the test for the file: migration.
+
+I hit an issue with the setting of migration status. If we call
+query-migrate too soon after migrate-incoming, the query returns an
+empty response because we're not setting the MIGRATION_STATUS_SETUP in
+the incoming path. We just send the event, but never actually change
+state.
+
+Aside from the fix, there's some tidying up to avoid duplicating too
+much code in the tests.
+
+Thanks
+
+CI run: https://gitlab.com/farosas/qemu/-/pipelines/912226554
+
+Fabiano Rosas (6):
+  migration: Set migration status early in incoming side
+  tests/qtest: migration: Expose migrate_set_capability
+  tests/qtest: migration: Add migrate_incoming_qmp helper
+  tests/qtest: migration: Use migrate_incoming_qmp where appropriate
+  tests/qtest: migration: Add support for negative testing of
+    qmp_migrate
+  tests/qtest: migration-test: Add tests for file-based migration
+
+ migration/migration.c             |  17 +++-
+ migration/migration.h             |  11 +++
+ migration/options.c               |  13 +++
+ migration/options.h               |   1 +
+ tests/qtest/libqtest.c            |  33 +++++++
+ tests/qtest/libqtest.h            |  28 ++++++
+ tests/qtest/meson.build           |   1 +
+ tests/qtest/migration-helpers.c   |  61 +++++++++++++
+ tests/qtest/migration-helpers.h   |  11 +++
+ tests/qtest/migration-test.c      | 144 +++++++++++++++++++++++++-----
+ tests/qtest/virtio-net-failover.c |  77 ++--------------
+ 11 files changed, 304 insertions(+), 93 deletions(-)
+
 -- 
 2.35.3
 
