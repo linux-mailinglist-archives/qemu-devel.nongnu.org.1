@@ -2,63 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E8237410A6
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 14:02:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3ADE5741294
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 15:34:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qETsX-0007Rd-QJ; Wed, 28 Jun 2023 08:02:34 -0400
+	id 1qEVJC-0007XR-Rl; Wed, 28 Jun 2023 09:34:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fei2.wu@intel.com>) id 1qETsN-0007PX-Sz
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 08:02:27 -0400
-Received: from mga01.intel.com ([192.55.52.88])
+ (Exim 4.90_1) (envelope-from <reaperlu@hust.edu.cn>)
+ id 1qEPWb-0005cQ-S9
+ for qemu-devel@nongnu.org; Wed, 28 Jun 2023 03:23:38 -0400
+Received: from mail.hust.edu.cn ([202.114.0.240] helo=hust.edu.cn)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fei2.wu@intel.com>) id 1qETsL-0006fL-Dl
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 08:02:23 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1687953741; x=1719489741;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=j+4mk9FNek0343R9PsrWQM06pCfK3kv7Dkabywtr5KQ=;
- b=OQNB/NSTKk64RiBQrfI4ZOs6zv07o/eXXvrmzKhO4dWgxm6XaM1u2wGD
- rU0VJG21xKVC/YqPuEReqGqPJlchj4oB8f6FyV7sUv9vX4Lvca+0nWAnt
- mw8vZ/eKPIzRMksujMCNar2n1CfqAq0pFHDErKtOeIp3eeEW9YxOvOP5A
- 69NwIiMq7CzLS0NOuHnt1s1nk060Y5ky8sR0iLDna/xyuPDMVyPr8cJAE
- wgIaHSXS1dzT7rmsArxJ2K6zeyL1n/u/pzZmrxa61I3icmmscHeHuOIQU
- WC2SsgmXDeru+N7Yo1bRXPTxDLHbmjy4FzKOQcS4x6kS1GXJUk/hHxu8M A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10754"; a="392547231"
-X-IronPort-AV: E=Sophos;i="6.01,165,1684825200"; d="scan'208";a="392547231"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
- by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Jun 2023 05:02:10 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10754"; a="841047464"
-X-IronPort-AV: E=Sophos;i="6.01,165,1684825200"; d="scan'208";a="841047464"
-Received: from wufei-optiplex-7090.sh.intel.com ([10.238.200.247])
- by orsmga004.jf.intel.com with ESMTP; 28 Jun 2023 05:02:08 -0700
-From: Fei Wu <fei2.wu@intel.com>
-To: richard.henderson@linaro.org, alex.bennee@linaro.org, qemu-devel@nongnu.org
-Cc: Fei Wu <fei2.wu@intel.com>
-Subject: [PATCH v16 0/9] TCG code quality tracking
-Date: Wed, 28 Jun 2023 20:04:21 +0800
-Message-Id: <20230628120430.73777-1-fei2.wu@intel.com>
-X-Mailer: git-send-email 2.25.1
+ (Exim 4.90_1) (envelope-from <reaperlu@hust.edu.cn>)
+ id 1qEPWY-0003Y7-Ne
+ for qemu-devel@nongnu.org; Wed, 28 Jun 2023 03:23:37 -0400
+Received: from localhost.localdomain ([10.12.190.169])
+ (user=reaperlu@hust.edu.cn mech=LOGIN bits=0)
+ by mx1.hust.edu.cn  with ESMTP id 35S7N6fL021321-35S7N6fM021321
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+ Wed, 28 Jun 2023 15:23:10 +0800
+From: Ruibo Lu <reaperlu@hust.edu.cn>
+To: qemu-devel@nongnu.org
+Cc: alistair.francis@wdc.com, liweiwei@iscas.ac.cn
+Subject: [PATCH 0/2] improve accuracy in riscv-pmp
+Date: Wed, 28 Jun 2023 15:22:59 +0800
+Message-ID: <20230628072259.26516-1-reaperlu@hust.edu.cn>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=192.55.52.88; envelope-from=fei2.wu@intel.com;
- helo=mga01.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-FEAS-AUTH-USER: reaperlu@hust.edu.cn
+Received-SPF: pass client-ip=202.114.0.240; envelope-from=reaperlu@hust.edu.cn;
+ helo=hust.edu.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Wed, 28 Jun 2023 09:33:57 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,74 +56,127 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-v16
---
-* rebase to latest commit 4329d049d (Jun 26)
-* original patch 1 (remove CONFIG_PROFILER) has already upstreamed so is
-  removed from here
-* add async_safe_run_on_cpu back for info tb-list/tb
-* add ram_addr support to monitor_disas and use it to disassemble guest code
-* update the commit logs and documents
-* small change to do_hmp_tbstats_safe() to avoid memory leaking
+Based-on: 4329d049d5b8d4af71c6b399d64a6d1b98856318
 
+Ruibo Lu (2):
+  target/riscv: Remove redundant check in pmp_is_locked
+  target/riscv: Optimize ambiguous local variable in pmp_hart_has_privs
 
-Alex Bennée (1):
-  tb-stats: reset the tracked TBs on a tb_flush
-
-Fei Wu (4):
-  accel/tcg: add jit stats to TBStatistics
-  debug: add -d tb_stats to control TBStatistics
-  tb-stats: dump hot TBs at the end of the execution
-  docs: add tb-stats how to
-
-Vanderson M. do Rosario (4):
-  accel/tcg: introduce TBStatistics structure
-  accel: collecting TB execution count
-  monitor: adding tb_stats hmp command
-  tb-stats: Adding info [tb-list|tb] commands to HMP
-
- MAINTAINERS                      |   1 +
- accel/tcg/cpu-exec.c             |   6 +
- accel/tcg/meson.build            |   1 +
- accel/tcg/monitor.c              | 216 ++++++++++++++++++
- accel/tcg/tb-context.h           |   1 +
- accel/tcg/tb-hash.h              |   7 +
- accel/tcg/tb-maint.c             |  20 ++
- accel/tcg/tb-stats.c             | 366 +++++++++++++++++++++++++++++++
- accel/tcg/tcg-runtime.c          |   1 +
- accel/tcg/translate-all.c        |  77 ++++++-
- accel/tcg/translator.c           |  31 +++
- disas/disas-mon.c                |  15 +-
- disas/disas.c                    |   2 +
- docs/devel/index-tcg.rst         |   1 +
- docs/devel/tcg-tbstats.rst       | 126 +++++++++++
- hmp-commands-info.hx             |  16 ++
- hmp-commands.hx                  |  16 ++
- include/disas/disas.h            |   8 +-
- include/exec/tb-stats-dump.h     |  21 ++
- include/exec/tb-stats-flags.h    |  29 +++
- include/exec/tb-stats.h          | 130 +++++++++++
- include/exec/translation-block.h |   3 +
- include/monitor/hmp.h            |   3 +
- include/qemu/log.h               |   1 +
- include/tcg/tcg-temp-internal.h  |   2 +
- include/tcg/tcg.h                |  10 +
- linux-user/exit.c                |   2 +
- monitor/hmp-cmds-target.c        |   3 +-
- softmmu/runstate.c               |   2 +
- stubs/meson.build                |   1 +
- stubs/tb-stats.c                 |  36 +++
- tcg/tcg.c                        |  47 +++-
- util/log.c                       |  26 +++
- 33 files changed, 1217 insertions(+), 10 deletions(-)
- create mode 100644 accel/tcg/tb-stats.c
- create mode 100644 docs/devel/tcg-tbstats.rst
- create mode 100644 include/exec/tb-stats-dump.h
- create mode 100644 include/exec/tb-stats-flags.h
- create mode 100644 include/exec/tb-stats.h
- create mode 100644 stubs/tb-stats.c
+ target/riscv/pmp.c | 25 ++++++++++---------------
+ 1 file changed, 10 insertions(+), 15 deletions(-)
 
 -- 
-2.25.1
+2.41.0
+
+From 6780c552b3b4c1b8d6d8d5b17d4054c5f24ad062 Mon Sep 17 00:00:00 2001
+From: Ruibo Lu <reaperlu@hust.edu.cn>
+Date: Wed, 28 Jun 2023 11:07:33 +0800
+Subject: [PATCH 1/2] target/riscv: Remove redundant check in pmp_is_locked
+
+the check of top PMP is redundant and will not influence the return
+value, so consider remove it
+
+Signed-off-by: Ruibo Lu <reaperlu@hust.edu.cn>
+---
+ target/riscv/pmp.c | 5 -----
+ 1 file changed, 5 deletions(-)
+
+diff --git a/target/riscv/pmp.c b/target/riscv/pmp.c
+index 9d8db493e6..1a9279ba88 100644
+--- a/target/riscv/pmp.c
++++ b/target/riscv/pmp.c
+@@ -49,11 +49,6 @@ static inline int pmp_is_locked(CPURISCVState *env, uint32_t pmp_index)
+         return 1;
+     }
+ 
+-    /* Top PMP has no 'next' to check */
+-    if ((pmp_index + 1u) >= MAX_RISCV_PMPS) {
+-        return 0;
+-    }
+-
+     return 0;
+ }
+ 
+-- 
+2.41.0
+
+
+From 7174d9fb96f5e5dcde41d74b4270216286b9bb3d Mon Sep 17 00:00:00 2001
+From: Ruibo Lu <reaperlu@hust.edu.cn>
+Date: Wed, 28 Jun 2023 11:19:38 +0800
+Subject: [PATCH 2/2] target/riscv: Optimize ambiguous local variable in
+ pmp_hart_has_privs
+
+These two values represents whether start/end address is in pmp_range.
+However, the type and name of them is ambiguous. This commit change the
+name and type of them to improve code readability and accuracy.
+
+Signed-off-by: Ruibo Lu <reaperlu@hust.edu.cn>
+---
+ target/riscv/pmp.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
+
+diff --git a/target/riscv/pmp.c b/target/riscv/pmp.c
+index 1a9279ba88..aa573bab14 100644
+--- a/target/riscv/pmp.c
++++ b/target/riscv/pmp.c
+@@ -203,16 +203,16 @@ void pmp_update_rule_nums(CPURISCVState *env)
+     }
+ }
+ 
+-static int pmp_is_in_range(CPURISCVState *env, int pmp_index,
++static bool pmp_is_in_range(CPURISCVState *env, int pmp_index,
+                            target_ulong addr)
+ {
+-    int result = 0;
++    int result = false;
+ 
+     if ((addr >= env->pmp_state.addr[pmp_index].sa) &&
+         (addr <= env->pmp_state.addr[pmp_index].ea)) {
+-        result = 1;
++        result = true;
+     } else {
+-        result = 0;
++        result = false;
+     }
+ 
+     return result;
+@@ -287,8 +287,8 @@ bool pmp_hart_has_privs(CPURISCVState *env, target_ulong addr,
+ {
+     int i = 0;
+     int pmp_size = 0;
+-    target_ulong s = 0;
+-    target_ulong e = 0;
++    bool sa_in = 0;
++    bool ea_in = 0;
+ 
+     /* Short cut if no rules */
+     if (0 == pmp_get_num_rules(env)) {
+@@ -314,11 +314,11 @@ bool pmp_hart_has_privs(CPURISCVState *env, target_ulong addr,
+      * from low to high
+      */
+     for (i = 0; i < MAX_RISCV_PMPS; i++) {
+-        s = pmp_is_in_range(env, i, addr);
+-        e = pmp_is_in_range(env, i, addr + pmp_size - 1);
++        sa_in = pmp_is_in_range(env, i, addr);
++        ea_in = pmp_is_in_range(env, i, addr + pmp_size - 1);
+ 
+         /* partially inside */
+-        if ((s + e) == 1) {
++        if (sa_in ^ ea_in) {
+             qemu_log_mask(LOG_GUEST_ERROR,
+                           "pmp violation - access is partially inside\n");
+             *allowed_privs = 0;
+@@ -339,7 +339,7 @@ bool pmp_hart_has_privs(CPURISCVState *env, target_ulong addr,
+             (env->pmp_state.pmp[i].cfg_reg & PMP_WRITE) |
+             ((env->pmp_state.pmp[i].cfg_reg & PMP_EXEC) >> 2);
+ 
+-        if (((s + e) == 2) && (PMP_AMATCH_OFF != a_field)) {
++        if ((sa_in & ea_in) && (PMP_AMATCH_OFF != a_field)) {
+             /*
+              * If the PMP entry is not off and the address is in range,
+              * do the priv check
+-- 
+2.41.0
 
 
