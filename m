@@ -2,68 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D44B97412D7
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 15:46:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BCAE74131D
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 15:56:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEVU0-0005EG-OY; Wed, 28 Jun 2023 09:45:20 -0400
+	id 1qEVdZ-0002Ho-5Z; Wed, 28 Jun 2023 09:55:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1qEVTl-0005Cf-H8
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 09:45:07 -0400
-Received: from mga07.intel.com ([134.134.136.100])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1qEVTi-00089l-91
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 09:45:03 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1687959902; x=1719495902;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=o69eaL3+onIsEWii+kpARMjg37wbuabYwIfkzHgP+uw=;
- b=Wyhw/21a+7B+bsIzDNHiJnLU+g8NPQB/bRchFexFH1n3b/g0ZNvY1HXV
- 2I3NEOFVBsmbyJkC29yH/1UeyVi5Pv1si+yqitFfAHjnyMgBOPE9YWjyG
- 9T/9EYgUsAAlgywIGG2269ijFC2/wLfY9F57V2mcaZ2LG2YR7A/8lUK9Z
- Y5nyGnMlYQstCAO5bUXkZsiwkIa1RUIU+cQeMUg0AGzwcf29IMugFp5vM
- tNmCFKB+BkxNS6NcFy0rRy6RFIS+yLYMpzteopL9HDR8TBcOxdXsEs2hq
- l0TNbLg1RFiTZ44yvAWx1Tk0Ee6BqDlaI3OFk1by3olSxZwtoOKSi7ea6 Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10754"; a="427854153"
-X-IronPort-AV: E=Sophos;i="6.01,165,1684825200"; d="scan'208";a="427854153"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
- by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Jun 2023 06:44:59 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10754"; a="806905501"
-X-IronPort-AV: E=Sophos;i="6.01,165,1684825200"; d="scan'208";a="806905501"
-Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.28])
- by FMSMGA003.fm.intel.com with ESMTP; 28 Jun 2023 06:44:57 -0700
-From: Zhao Liu <zhao1.liu@linux.intel.com>
-To: "Michael S . Tsirkin" <mst@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>, Yanan Wang <wangyanan55@huawei.com>
-Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org, Zhenyu Wang <zhenyu.z.wang@intel.com>,
- Yongwei Ma <yongwei.ma@intel.com>, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v4 4/4] hw/smbios: Fix core count in type4
-Date: Wed, 28 Jun 2023 21:54:37 +0800
-Message-Id: <20230628135437.1145805-5-zhao1.liu@linux.intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230628135437.1145805-1-zhao1.liu@linux.intel.com>
-References: <20230628135437.1145805-1-zhao1.liu@linux.intel.com>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qEVdT-0002HD-0W
+ for qemu-devel@nongnu.org; Wed, 28 Jun 2023 09:55:07 -0400
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qEVdR-0005Us-8f
+ for qemu-devel@nongnu.org; Wed, 28 Jun 2023 09:55:06 -0400
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-307d58b3efbso5221168f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 28 Jun 2023 06:55:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1687960503; x=1690552503;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=J4oQgtM+eJxWu8/OmEL9gyUEfN79NG26Bp/O0pvgx4E=;
+ b=HslIOAFZThJZdYodA4H7GMPEUVcBAYB/emsq6Tv3IBql+f03b+Cy15f2Xtd5VLlJKp
+ VxJqvp30bPR8oRi2qyjD9EU6bVlTPEhHWsL+FGEZ+OE77OCuSbgqDt1xZI3R6Oju0+b8
+ ChsGJA9A/5kMFx+HyuFsOya8FXeu+BLLNLIZvV5cLS00TbaVISZlYRfTh/C/wYB2/zd0
+ 6dFWogPFToPemOeAGdjXATeqKBVyElVctuqHF/HEHm4JQtBZnfgETp53LYGJk59xc/0+
+ JNJ2eu1vnSdnZFd6i3RxqW9clzZh/x8D8VgDj6/KD4s5VtUQk3UjkTvAYOYlf8lWXRyj
+ woDQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1687960503; x=1690552503;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=J4oQgtM+eJxWu8/OmEL9gyUEfN79NG26Bp/O0pvgx4E=;
+ b=LCSBOUW1UsYF0cWiM3gIeZ/AbTV9x3ZlTsklXBVVUUF1kMe50q4pPTCxXpomLvDW4c
+ rwmUg2YYiWGLVdMscHewDyeR4Um6Nr9tC/bM1oaoPeH3+j/0KyPwe0HCIFN+UNUn8pf9
+ hWkaTwpRC957tMMbEbLR8G81x7PQIsO9bnuxiNw9+piVUqMxXaHygRVyKR/UxySmZm8j
+ FJbMwVQCMKaWwgtqKvGCGipttB8t5xLwhp8olmCvcn419B+xs6i5Ac2Z0yuXDTsUhj6A
+ Day8gfdQ7YO9dpxDKbW4RjY+FDztI9IkGFmki7tDh0NxJastvdPaazWLZoHAS29EJQjm
+ aC8g==
+X-Gm-Message-State: AC+VfDxRgIUdgeoUlJOnldZntmKvfKCOf/iNM9gQeNckFMfKBFnXhgiI
+ 3mEhbBw63ry6XFVF9VX9WNts5A==
+X-Google-Smtp-Source: ACHHUZ4NpSKDIehoe7ymFv385kaZEg8uTeR+tDrYIDs0gd+T9sqUAs/vJiCC++K1Su5RHtlD90Fhpw==
+X-Received: by 2002:adf:e408:0:b0:313:ec90:ac25 with SMTP id
+ g8-20020adfe408000000b00313ec90ac25mr7364697wrm.11.1687960503570; 
+ Wed, 28 Jun 2023 06:55:03 -0700 (PDT)
+Received: from [192.168.1.208] ([139.47.41.103])
+ by smtp.gmail.com with ESMTPSA id
+ a10-20020adfeeca000000b00314103d6daesm950642wrp.47.2023.06.28.06.55.02
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 28 Jun 2023 06:55:03 -0700 (PDT)
+Message-ID: <1cc1cbce-50be-b714-68d3-205bf9d54c78@linaro.org>
+Date: Wed, 28 Jun 2023 15:55:01 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PULL 02/10] target/sparc: Use tcg_gen_lookup_and_goto_ptr in
+ gen_goto_tb
+Content-Language: en-US
+To: BALATON Zoltan <balaton@eik.bme.hu>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Cc: qemu-devel@nongnu.org
+References: <20230628114504.546265-1-mark.cave-ayland@ilande.co.uk>
+ <20230628114504.546265-3-mark.cave-ayland@ilande.co.uk>
+ <813defa4-a833-2486-a89e-3a0f4e0b8d10@eik.bme.hu>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <813defa4-a833-2486-a89e-3a0f4e0b8d10@eik.bme.hu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=134.134.136.100;
- envelope-from=zhao1.liu@linux.intel.com; helo=mga07.intel.com
-X-Spam_score_int: -42
-X-Spam_score: -4.3
-X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x430.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.089,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -80,76 +98,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zhao Liu <zhao1.liu@intel.com>
+On 6/28/23 15:00, BALATON Zoltan wrote:
+> On Wed, 28 Jun 2023, Mark Cave-Ayland wrote:
+>> From: Richard Henderson <richard.henderson@linaro.org>
+>>
+>> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+>> Message-Id: <20230628071202.230991-2-richard.henderson@linaro.org>
+>> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+>> ---
+>> target/sparc/translate.c | 4 ++--
+>> 1 file changed, 2 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/target/sparc/translate.c b/target/sparc/translate.c
+>> index bad2ec90a0..28d4cdb8b4 100644
+>> --- a/target/sparc/translate.c
+>> +++ b/target/sparc/translate.c
+>> @@ -318,10 +318,10 @@ static void gen_goto_tb(DisasContext *s, int tb_num,
+>>         tcg_gen_movi_tl(cpu_npc, npc);
+>>         tcg_gen_exit_tb(s->base.tb, tb_num);
+>>     } else {
+>> -        /* jump to another page: currently not optimized */
+>> +        /* jump to another page: we can use an indirect jump */
+>>         tcg_gen_movi_tl(cpu_pc, pc);
+>>         tcg_gen_movi_tl(cpu_npc, npc);
+>> -        tcg_gen_exit_tb(NULL, 0);
+>> +        tcg_gen_lookup_and_goto_ptr();
+> 
+> Out of curiosity, did you test this is actually faster? The reason I ask is because I've 
+> tried to optimise similar case in target/ppc by using lookup_and_goto_ptr but found it was 
+> slower than without that. I think this may depend on the usage but I wonder if that could 
+> be a generic issue with lookup_and_goto_ptr or only specific for the case I've tried.
 
-From SMBIOS 3.0 specification, core count field means:
+It is faster.
 
-Core Count is the number of cores detected by the BIOS for this
-processor socket. [1]
+It should be *always* faster, because returning to the main cpu loop will always do more 
+work than merely checking to see if we already have built the required TB.
 
-Before 003f230e37d7 ("machine: Tweak the order of topology members in
-struct CpuTopology"), MachineState.smp.cores means "the number of cores
-in one package", and it's correct to use smp.cores for core count.
+If you see slowdowns, then *probably* you are using lookup_and_goto_ptr incorrectly in 
+some instance, such that an interrupt has gotten overly delayed.  (One must always return 
+to the main loop after anything that might re-enable interrupts.  Otherwise the interrupt 
+handler may be delayed indefinitely.  This was in fact the problem with v1 of this patch set.)
 
-But 003f230e37d7 changes the smp.cores' meaning to "the number of cores
-in one die" and doesn't change the original smp.cores' use in smbios as
-well, which makes core count in type4 go wrong.
 
-Fix this issue with the correct "cores per socket" caculation.
-
-[1] SMBIOS 3.0.0, section 7.5.6, Processor Information - Core Count
-
-Fixes: 003f230e37d7 ("machine: Tweak the order of topology members in struct CpuTopology")
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
----
-v4:
- * None.
-
-v3:
- * Use the wrapped helper to get cores per socket.
-
-v2:
- * Calculate cores_per_socket in a different way from
-   threads_per_socket.
- * Add the sanity check to ensure consistency of results between these 2
-   ways. This can help not miss any future change of cpu topology.
----
- hw/smbios/smbios.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/hw/smbios/smbios.c b/hw/smbios/smbios.c
-index 3aae9328c014..10cd22f610ef 100644
---- a/hw/smbios/smbios.c
-+++ b/hw/smbios/smbios.c
-@@ -714,6 +714,7 @@ static void smbios_build_type_4_table(MachineState *ms, unsigned instance)
-     char sock_str[128];
-     size_t tbl_len = SMBIOS_TYPE_4_LEN_V28;
-     unsigned threads_per_socket;
-+    unsigned cores_per_socket;
- 
-     if (smbios_ep_type == SMBIOS_ENTRY_POINT_TYPE_64) {
-         tbl_len = SMBIOS_TYPE_4_LEN_V30;
-@@ -749,8 +750,9 @@ static void smbios_build_type_4_table(MachineState *ms, unsigned instance)
-     SMBIOS_TABLE_SET_STR(4, part_number_str, type4.part);
- 
-     threads_per_socket = machine_topo_get_threads_per_socket(ms);
-+    cores_per_socket = machine_topo_get_cores_per_socket(ms);
- 
--    t->core_count = (ms->smp.cores > 255) ? 0xFF : ms->smp.cores;
-+    t->core_count = (cores_per_socket > 255) ? 0xFF : cores_per_socket;
-     t->core_enabled = t->core_count;
- 
-     t->thread_count = (threads_per_socket > 255) ? 0xFF : threads_per_socket;
-@@ -759,7 +761,7 @@ static void smbios_build_type_4_table(MachineState *ms, unsigned instance)
-     t->processor_family2 = cpu_to_le16(0x01); /* Other */
- 
-     if (tbl_len == SMBIOS_TYPE_4_LEN_V30) {
--        t->core_count2 = t->core_enabled2 = cpu_to_le16(ms->smp.cores);
-+        t->core_count2 = t->core_enabled2 = cpu_to_le16(cores_per_socket);
-         t->thread_count2 = cpu_to_le16(threads_per_socket);
-     }
- 
--- 
-2.34.1
-
+r~
 
