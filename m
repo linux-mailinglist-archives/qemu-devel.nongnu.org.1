@@ -2,78 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BCAE74131D
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 15:56:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E43B7741370
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 16:11:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEVdZ-0002Ho-5Z; Wed, 28 Jun 2023 09:55:13 -0400
+	id 1qEVrL-0006AJ-5t; Wed, 28 Jun 2023 10:09:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qEVdT-0002HD-0W
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 09:55:07 -0400
+ id 1qEVrI-0006A2-UX
+ for qemu-devel@nongnu.org; Wed, 28 Jun 2023 10:09:24 -0400
 Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qEVdR-0005Us-8f
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 09:55:06 -0400
+ id 1qEVrG-0002p1-1r
+ for qemu-devel@nongnu.org; Wed, 28 Jun 2023 10:09:24 -0400
 Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-307d58b3efbso5221168f8f.0
- for <qemu-devel@nongnu.org>; Wed, 28 Jun 2023 06:55:04 -0700 (PDT)
+ ffacd0b85a97d-3128fcd58f3so6642808f8f.1
+ for <qemu-devel@nongnu.org>; Wed, 28 Jun 2023 07:09:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687960503; x=1690552503;
+ d=linaro.org; s=google; t=1687961360; x=1690553360;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=J4oQgtM+eJxWu8/OmEL9gyUEfN79NG26Bp/O0pvgx4E=;
- b=HslIOAFZThJZdYodA4H7GMPEUVcBAYB/emsq6Tv3IBql+f03b+Cy15f2Xtd5VLlJKp
- VxJqvp30bPR8oRi2qyjD9EU6bVlTPEhHWsL+FGEZ+OE77OCuSbgqDt1xZI3R6Oju0+b8
- ChsGJA9A/5kMFx+HyuFsOya8FXeu+BLLNLIZvV5cLS00TbaVISZlYRfTh/C/wYB2/zd0
- 6dFWogPFToPemOeAGdjXATeqKBVyElVctuqHF/HEHm4JQtBZnfgETp53LYGJk59xc/0+
- JNJ2eu1vnSdnZFd6i3RxqW9clzZh/x8D8VgDj6/KD4s5VtUQk3UjkTvAYOYlf8lWXRyj
- woDQ==
+ bh=uWkoBlCW6apXh86RZXu3ZOrLCzjbQMErzxVckKf3Frs=;
+ b=gbvBOspI4xPl86i6vMyrmnYOPNquKH5xiHMtZ49sNW/ROCZyQ8WywE6pixe8co0RfS
+ qBmR0B2yXJvtF0ZJqmVrL+7ClpEEmj0JwXD8o9eVYoUexihOGIDLG3gVsDomTmPJ9Ayu
+ 1008D+xW/tnhcKDTnidMJFNccjWJl8fFbhEPWXDImSnIa/NifOHAxWA8vFvA6ev04reI
+ VrbTfz8lsYOpUSpsxIpJftUvitu/dHW54zEjEdwSvq8XFBrIpLCPBJDb/+DP0FZcl/YU
+ jCmDQQ37skZAFTcu42aeF5MvnXN2+4vGQVlwtIF2mK5ANsqEvEiY6MdSG5IVSX+BoGoe
+ V8Tw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687960503; x=1690552503;
+ d=1e100.net; s=20221208; t=1687961360; x=1690553360;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=J4oQgtM+eJxWu8/OmEL9gyUEfN79NG26Bp/O0pvgx4E=;
- b=LCSBOUW1UsYF0cWiM3gIeZ/AbTV9x3ZlTsklXBVVUUF1kMe50q4pPTCxXpomLvDW4c
- rwmUg2YYiWGLVdMscHewDyeR4Um6Nr9tC/bM1oaoPeH3+j/0KyPwe0HCIFN+UNUn8pf9
- hWkaTwpRC957tMMbEbLR8G81x7PQIsO9bnuxiNw9+piVUqMxXaHygRVyKR/UxySmZm8j
- FJbMwVQCMKaWwgtqKvGCGipttB8t5xLwhp8olmCvcn419B+xs6i5Ac2Z0yuXDTsUhj6A
- Day8gfdQ7YO9dpxDKbW4RjY+FDztI9IkGFmki7tDh0NxJastvdPaazWLZoHAS29EJQjm
- aC8g==
-X-Gm-Message-State: AC+VfDxRgIUdgeoUlJOnldZntmKvfKCOf/iNM9gQeNckFMfKBFnXhgiI
- 3mEhbBw63ry6XFVF9VX9WNts5A==
-X-Google-Smtp-Source: ACHHUZ4NpSKDIehoe7ymFv385kaZEg8uTeR+tDrYIDs0gd+T9sqUAs/vJiCC++K1Su5RHtlD90Fhpw==
-X-Received: by 2002:adf:e408:0:b0:313:ec90:ac25 with SMTP id
- g8-20020adfe408000000b00313ec90ac25mr7364697wrm.11.1687960503570; 
- Wed, 28 Jun 2023 06:55:03 -0700 (PDT)
+ bh=uWkoBlCW6apXh86RZXu3ZOrLCzjbQMErzxVckKf3Frs=;
+ b=Nxcb+MjKNdNyqxH0iPlo7ZMBE3ZUJ7/TMFJX7lsoCv4/STwf38drMcMJhH2+xNn1hN
+ f7IBbKE4W5cd/XxijF6dyKu8P6OCFyBK0blr2ScqItMG/NVZScTHjOkl4byI1b3DKMKy
+ a3L1XRzGyiH14oiQuxY5s6lKSkNNeRPLiEql8I6KEuQN6SnMLdniPbRFQr/hqH2PyYq7
+ FfVEoX5LKKkSnd+HHJkYvs7ofPrAfkW4PgwRLXT6cqRVR5K2S4Q46Taf9/8F9isBmB+i
+ +nyoy3rCsDHGF2fhfh1AsRETWTY8lmTbfz/IgdDBYVWWQLn5DZBIgeudmVN19+KjSNyP
+ zGXg==
+X-Gm-Message-State: AC+VfDwZvd0ehhe17axll8+iuR80uU0kBLHKSP+IdOYb3OYg1u5pSj38
+ TSq6PWFj6G5ZyfMuuS24Ootgjg==
+X-Google-Smtp-Source: ACHHUZ5Y5OcrdFaC6VYEmAIRKkaUPunzybMymQNJM0tkksqXZ8pkKVhgO2YEsU3Y8aXpOZEoDBQ9uA==
+X-Received: by 2002:a05:6000:1370:b0:311:1a45:3606 with SMTP id
+ q16-20020a056000137000b003111a453606mr28082751wrz.30.1687961359839; 
+ Wed, 28 Jun 2023 07:09:19 -0700 (PDT)
 Received: from [192.168.1.208] ([139.47.41.103])
  by smtp.gmail.com with ESMTPSA id
- a10-20020adfeeca000000b00314103d6daesm950642wrp.47.2023.06.28.06.55.02
+ p12-20020a5d638c000000b00313f61889e9sm7376348wru.36.2023.06.28.07.09.19
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 28 Jun 2023 06:55:03 -0700 (PDT)
-Message-ID: <1cc1cbce-50be-b714-68d3-205bf9d54c78@linaro.org>
-Date: Wed, 28 Jun 2023 15:55:01 +0200
+ Wed, 28 Jun 2023 07:09:19 -0700 (PDT)
+Message-ID: <e594441e-d3df-8698-f98e-0f98e5e8fcad@linaro.org>
+Date: Wed, 28 Jun 2023 16:09:17 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PULL 02/10] target/sparc: Use tcg_gen_lookup_and_goto_ptr in
- gen_goto_tb
+Subject: Re: [PATCH] hw: arm: allwinner-sramc: Set class_size
 Content-Language: en-US
-To: BALATON Zoltan <balaton@eik.bme.hu>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Cc: qemu-devel@nongnu.org
-References: <20230628114504.546265-1-mark.cave-ayland@ilande.co.uk>
- <20230628114504.546265-3-mark.cave-ayland@ilande.co.uk>
- <813defa4-a833-2486-a89e-3a0f4e0b8d10@eik.bme.hu>
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org,
+ Strahinja Jankovic <strahinja.p.jankovic@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Beniamino Galvani <b.galvani@gmail.com>
+References: <20230628110905.38125-1-akihiko.odaki@daynix.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <813defa4-a833-2486-a89e-3a0f4e0b8d10@eik.bme.hu>
+In-Reply-To: <20230628110905.38125-1-akihiko.odaki@daynix.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=2a00:1450:4864:20::430;
  envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x430.google.com
 X-Spam_score_int: -21
@@ -98,48 +97,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/28/23 15:00, BALATON Zoltan wrote:
-> On Wed, 28 Jun 2023, Mark Cave-Ayland wrote:
->> From: Richard Henderson <richard.henderson@linaro.org>
->>
->> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
->> Message-Id: <20230628071202.230991-2-richard.henderson@linaro.org>
->> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
->> ---
->> target/sparc/translate.c | 4 ++--
->> 1 file changed, 2 insertions(+), 2 deletions(-)
->>
->> diff --git a/target/sparc/translate.c b/target/sparc/translate.c
->> index bad2ec90a0..28d4cdb8b4 100644
->> --- a/target/sparc/translate.c
->> +++ b/target/sparc/translate.c
->> @@ -318,10 +318,10 @@ static void gen_goto_tb(DisasContext *s, int tb_num,
->>         tcg_gen_movi_tl(cpu_npc, npc);
->>         tcg_gen_exit_tb(s->base.tb, tb_num);
->>     } else {
->> -        /* jump to another page: currently not optimized */
->> +        /* jump to another page: we can use an indirect jump */
->>         tcg_gen_movi_tl(cpu_pc, pc);
->>         tcg_gen_movi_tl(cpu_npc, npc);
->> -        tcg_gen_exit_tb(NULL, 0);
->> +        tcg_gen_lookup_and_goto_ptr();
+On 6/28/23 13:09, Akihiko Odaki wrote:
+> AwSRAMCClass is larger than SysBusDeviceClass so the class size must be
+> advertised accordingly.
 > 
-> Out of curiosity, did you test this is actually faster? The reason I ask is because I've 
-> tried to optimise similar case in target/ppc by using lookup_and_goto_ptr but found it was 
-> slower than without that. I think this may depend on the usage but I wonder if that could 
-> be a generic issue with lookup_and_goto_ptr or only specific for the case I've tried.
+> Fixes: 05def917e1 ("hw: arm: allwinner-sramc: Add SRAM Controller support for R40")
+> Signed-off-by: Akihiko Odaki<akihiko.odaki@daynix.com>
+> ---
+>   hw/misc/allwinner-sramc.c | 1 +
+>   1 file changed, 1 insertion(+)
 
-It is faster.
-
-It should be *always* faster, because returning to the main cpu loop will always do more 
-work than merely checking to see if we already have built the required TB.
-
-If you see slowdowns, then *probably* you are using lookup_and_goto_ptr incorrectly in 
-some instance, such that an interrupt has gotten overly delayed.  (One must always return 
-to the main loop after anything that might re-enable interrupts.  Otherwise the interrupt 
-handler may be delayed indefinitely.  This was in fact the problem with v1 of this patch set.)
-
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
 r~
 
