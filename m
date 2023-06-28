@@ -2,86 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E43B7741370
+	by mail.lfdr.de (Postfix) with ESMTPS id AAD5C74136F
 	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 16:11:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEVrL-0006AJ-5t; Wed, 28 Jun 2023 10:09:27 -0400
+	id 1qEVsC-0006Vf-7M; Wed, 28 Jun 2023 10:10:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qEVrI-0006A2-UX
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 10:09:24 -0400
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qEVrG-0002p1-1r
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 10:09:24 -0400
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-3128fcd58f3so6642808f8f.1
- for <qemu-devel@nongnu.org>; Wed, 28 Jun 2023 07:09:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687961360; x=1690553360;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=uWkoBlCW6apXh86RZXu3ZOrLCzjbQMErzxVckKf3Frs=;
- b=gbvBOspI4xPl86i6vMyrmnYOPNquKH5xiHMtZ49sNW/ROCZyQ8WywE6pixe8co0RfS
- qBmR0B2yXJvtF0ZJqmVrL+7ClpEEmj0JwXD8o9eVYoUexihOGIDLG3gVsDomTmPJ9Ayu
- 1008D+xW/tnhcKDTnidMJFNccjWJl8fFbhEPWXDImSnIa/NifOHAxWA8vFvA6ev04reI
- VrbTfz8lsYOpUSpsxIpJftUvitu/dHW54zEjEdwSvq8XFBrIpLCPBJDb/+DP0FZcl/YU
- jCmDQQ37skZAFTcu42aeF5MvnXN2+4vGQVlwtIF2mK5ANsqEvEiY6MdSG5IVSX+BoGoe
- V8Tw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687961360; x=1690553360;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=uWkoBlCW6apXh86RZXu3ZOrLCzjbQMErzxVckKf3Frs=;
- b=Nxcb+MjKNdNyqxH0iPlo7ZMBE3ZUJ7/TMFJX7lsoCv4/STwf38drMcMJhH2+xNn1hN
- f7IBbKE4W5cd/XxijF6dyKu8P6OCFyBK0blr2ScqItMG/NVZScTHjOkl4byI1b3DKMKy
- a3L1XRzGyiH14oiQuxY5s6lKSkNNeRPLiEql8I6KEuQN6SnMLdniPbRFQr/hqH2PyYq7
- FfVEoX5LKKkSnd+HHJkYvs7ofPrAfkW4PgwRLXT6cqRVR5K2S4Q46Taf9/8F9isBmB+i
- +nyoy3rCsDHGF2fhfh1AsRETWTY8lmTbfz/IgdDBYVWWQLn5DZBIgeudmVN19+KjSNyP
- zGXg==
-X-Gm-Message-State: AC+VfDwZvd0ehhe17axll8+iuR80uU0kBLHKSP+IdOYb3OYg1u5pSj38
- TSq6PWFj6G5ZyfMuuS24Ootgjg==
-X-Google-Smtp-Source: ACHHUZ5Y5OcrdFaC6VYEmAIRKkaUPunzybMymQNJM0tkksqXZ8pkKVhgO2YEsU3Y8aXpOZEoDBQ9uA==
-X-Received: by 2002:a05:6000:1370:b0:311:1a45:3606 with SMTP id
- q16-20020a056000137000b003111a453606mr28082751wrz.30.1687961359839; 
- Wed, 28 Jun 2023 07:09:19 -0700 (PDT)
-Received: from [192.168.1.208] ([139.47.41.103])
- by smtp.gmail.com with ESMTPSA id
- p12-20020a5d638c000000b00313f61889e9sm7376348wru.36.2023.06.28.07.09.19
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 28 Jun 2023 07:09:19 -0700 (PDT)
-Message-ID: <e594441e-d3df-8698-f98e-0f98e5e8fcad@linaro.org>
-Date: Wed, 28 Jun 2023 16:09:17 +0200
+ (Exim 4.90_1) (envelope-from <groug@kaod.org>) id 1qEVs8-0006TB-FB
+ for qemu-devel@nongnu.org; Wed, 28 Jun 2023 10:10:16 -0400
+Received: from 8.mo552.mail-out.ovh.net ([46.105.37.156])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <groug@kaod.org>) id 1qEVs3-000371-LD
+ for qemu-devel@nongnu.org; Wed, 28 Jun 2023 10:10:15 -0400
+Received: from mxplan5.mail.ovh.net (unknown [10.109.156.3])
+ by mo552.mail-out.ovh.net (Postfix) with ESMTPS id 6D7872BB22;
+ Wed, 28 Jun 2023 14:10:00 +0000 (UTC)
+Received: from kaod.org (37.59.142.95) by DAG6EX1.mxp5.local (172.16.2.51)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Wed, 28 Jun
+ 2023 16:09:59 +0200
+Authentication-Results: garm.ovh; auth=pass
+ (GARM-95G001841affdc-bd95-49e8-b467-fa1aa7e6ec9a,
+ BB93B6AC372DD556F16E72057DB7D6FCEC78780F) smtp.auth=groug@kaod.org
+X-OVh-ClientIp: 78.197.208.248
+Date: Wed, 28 Jun 2023 16:09:58 +0200
+From: Greg Kurz <groug@kaod.org>
+To: Philippe =?UTF-8?B?TWF0aGlldS1EYXVkw6k=?= <philmd@linaro.org>
+CC: <qemu-devel@nongnu.org>, David Gibson <david@gibson.dropbear.id.au>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>, "=?UTF-8?B?Q8OpZHJpYw==?= Le
+ Goater" <clg@kaod.org>, <qemu-ppc@nongnu.org>, Paolo Bonzini
+ <pbonzini@redhat.com>, <kvm@vger.kernel.org>, Nicholas Piggin
+ <npiggin@gmail.com>
+Subject: Re: [PATCH v3 1/6] target/ppc: Have 'kvm_ppc.h' include 'sysemu/kvm.h'
+Message-ID: <20230628160958.7c4be6e7@bahia>
+In-Reply-To: <20230627115124.19632-2-philmd@linaro.org>
+References: <20230627115124.19632-1-philmd@linaro.org>
+ <20230627115124.19632-2-philmd@linaro.org>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH] hw: arm: allwinner-sramc: Set class_size
-Content-Language: en-US
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org,
- Strahinja Jankovic <strahinja.p.jankovic@gmail.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Beniamino Galvani <b.galvani@gmail.com>
-References: <20230628110905.38125-1-akihiko.odaki@daynix.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230628110905.38125-1-akihiko.odaki@daynix.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x430.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.089,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Originating-IP: [37.59.142.95]
+X-ClientProxiedBy: DAG6EX1.mxp5.local (172.16.2.51) To DAG6EX1.mxp5.local
+ (172.16.2.51)
+X-Ovh-Tracer-GUID: afc8a218-a4e6-454b-9892-9bf920199ac5
+X-Ovh-Tracer-Id: 4555391025249360175
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedviedrtddvgdejvdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfgjfhfogggtgfhisehtqhertdertdejnecuhfhrohhmpefirhgvghcumfhurhiiuceoghhrohhugheskhgrohgurdhorhhgqeenucggtffrrghtthgvrhhnpeeuueeijedtleeluedthfetjeffieetffeuvefffeeftedvieefueejgfdugeetueenucfkphepuddvjedrtddrtddruddpfeejrdehledrudegvddrleehpdejkedrudeljedrvddtkedrvdegkeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeduvdejrddtrddtrddupdhmrghilhhfrhhomhepoehgrhhouhhgsehkrghougdrohhrgheqpdhnsggprhgtphhtthhopedupdhrtghpthhtohepphhhihhlmhgusehlihhnrghrohdrohhrghdpqhgvmhhuqdguvghvvghlsehnohhnghhnuhdrohhrghdpuggrvhhiugesghhisghsohhnrdgurhhophgsvggrrhdrihgurdgruhdpuggrnhhivghlhhgsgedufeesghhmrghilhdrtghomhdpqhgvmhhuqdhpphgtsehnohhnghhnuhdrohhrghdpphgsohhniihinhhisehrvgguhhgrthdrtghomhdpkhhvmhesvhhgvghrrdhkvghrnhgvlhdrohhrghdpnhhpihhgghhinhesghhmrghilhdrtghomhdptghlgh
+ eskhgrohgurdhorhhgpdfovfetjfhoshhtpehmohehhedvpdhmohguvgepshhmthhpohhuth
+Received-SPF: pass client-ip=46.105.37.156; envelope-from=groug@kaod.org;
+ helo=8.mo552.mail-out.ovh.net
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,17 +76,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/28/23 13:09, Akihiko Odaki wrote:
-> AwSRAMCClass is larger than SysBusDeviceClass so the class size must be
-> advertised accordingly.
-> 
-> Fixes: 05def917e1 ("hw: arm: allwinner-sramc: Add SRAM Controller support for R40")
-> Signed-off-by: Akihiko Odaki<akihiko.odaki@daynix.com>
+On Tue, 27 Jun 2023 13:51:19 +0200
+Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> wrote:
+
+> "kvm_ppc.h" declares:
+>=20
+>   int kvm_handle_nmi(PowerPCCPU *cpu, struct kvm_run *run);
+>=20
+> 'struct kvm_run' is declared in "sysemu/kvm.h", include it.
+>=20
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
 > ---
->   hw/misc/allwinner-sramc.c | 1 +
->   1 file changed, 1 insertion(+)
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Greg Kurz <groug@kaod.org>
 
-r~
+>  target/ppc/kvm_ppc.h | 1 +
+>  1 file changed, 1 insertion(+)
+>=20
+> diff --git a/target/ppc/kvm_ppc.h b/target/ppc/kvm_ppc.h
+> index 611debc3ce..2e395416f0 100644
+> --- a/target/ppc/kvm_ppc.h
+> +++ b/target/ppc/kvm_ppc.h
+> @@ -9,6 +9,7 @@
+>  #ifndef KVM_PPC_H
+>  #define KVM_PPC_H
+> =20
+> +#include "sysemu/kvm.h"
+>  #include "exec/hwaddr.h"
+>  #include "cpu.h"
+> =20
+
+
+
+--=20
+Greg
 
