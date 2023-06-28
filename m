@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0D37741912
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 21:54:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E818874190F
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 21:53:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEbDC-0004g9-O9; Wed, 28 Jun 2023 15:52:22 -0400
+	id 1qEbDC-0004g7-MG; Wed, 28 Jun 2023 15:52:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qEbD6-0004fJ-T2
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 15:52:16 -0400
-Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qEbD7-0004fR-EC
+ for qemu-devel@nongnu.org; Wed, 28 Jun 2023 15:52:17 -0400
+Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qEbD4-0005hC-Bq
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 15:52:16 -0400
-Received: by mail-ej1-x62f.google.com with SMTP id
- a640c23a62f3a-98377c5d53eso24032566b.0
- for <qemu-devel@nongnu.org>; Wed, 28 Jun 2023 12:52:14 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qEbD5-0005hO-PW
+ for qemu-devel@nongnu.org; Wed, 28 Jun 2023 15:52:17 -0400
+Received: by mail-ej1-x631.google.com with SMTP id
+ a640c23a62f3a-991ef0b464cso249567966b.0
+ for <qemu-devel@nongnu.org>; Wed, 28 Jun 2023 12:52:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1687981933; x=1690573933;
+ d=gmail.com; s=20221208; t=1687981934; x=1690573934;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=M94ZWqJV1AdEsj9l0Iz5HDYh7/xoEBsvE14jtmH7TGk=;
- b=PMhIEjcWSQaKxngW7erYnsqP4eoUN2FzRTQFLPHhyqbrLHLC6wJ0Rj1UYQpynC050g
- PI8/gpSXFvWRpIhFimBBmwcvyWBLiMegQ9p/WtGQoSFMxv2wi6zIp66gd/a+G+M8fPEB
- fvI+KQVeBsbIFHF9q6f+3e1Neqbg+h/MncU3pDrOCXPXgdBM4V0nvG+zTcFfL+EtKh5E
- hvbPv58evSIsoo06LzY/NWJpdvHHRag0JzvCJtUVT+Wzi7cEIU6HLOcKLru4diA9vIY6
- 0wnKvHO43dIuQ2QieYNkduS9OTHMvmzCYvB98dqxGka9ETAMJG+VJpc6OC1jH4URUz+z
- IbnQ==
+ bh=1qTEjiJO+rGciaKNYAv4AjJGsmsXEooYuDKonzHCbf4=;
+ b=Mfd7atY84/FKHIik5Kqo2ACsvtK0RKxdnXsNRrsB9DeTjJVO5tihP/NRBuIE3l0wgh
+ oAz/rY4Od56mGDqNl9WMBn6vpBH51RMA77NUvuY1gD0RQVnxLHMCC2Y/224eHFAF/rmB
+ JfYMt3kvNrQ5i0BYCAoBlJ0ZryZd1nOpZl/75fMJxSJ1r41hvNIhfWxluyJrcKhWDOqE
+ FzbOALyd+4Bbp9pBLqo58qXBSDeIxwCsiM4aaL97phWFXYLZmtV3peS9MJDzolfr9mZS
+ YVKabfUE2+zE9KQJA2fO4mSLsu0sCTAjwoPKmLMp5WDFUmK1YEDnLPj0+FEm5XxKAFhW
+ eU6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687981933; x=1690573933;
+ d=1e100.net; s=20221208; t=1687981934; x=1690573934;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=M94ZWqJV1AdEsj9l0Iz5HDYh7/xoEBsvE14jtmH7TGk=;
- b=fhaq/h+mqVy/4PhFWHmM8so05/J+X91621op3p3/AEmF5GgEy2N+zVdfRMTw74YFQG
- YHMIsS2p3pM8s1aDu37FBY1Wl9g0hjsjJl7YKSrmlzzfqg3Q4G6NdmdqRaRdMkhBmWjz
- 0/JKEz9LKOHIdLCeaNw+919Hn+DVkdpM2NQ7QHLDiQjG+HDG317s+4/pozn2WSW+hlB7
- 0frLedf/lba0XWiEEfZhb/ELmCWASorQWAg5m+ulc7PmzrYJAHZWiA2Z7A8qOiRqevzg
- LAUU8VtiLR6+vGvHrR6vO+HcrV5M+PVOVqnl7r9AlX3TChZbYM/uQwz8rSwvHaPsNQMF
- WhRw==
-X-Gm-Message-State: AC+VfDyJwyYHWEwnm3NRKF8TbIlmsbyVaAWWE65xUHXFlrvn4sy79Fda
- g6vlJKHokO8sFhzvY4prgONI3fUfCgo=
-X-Google-Smtp-Source: ACHHUZ5X1HYhYsphrE3SUH6424wDcfmaK8oN2BWAhYRzaqzfc5ulHxUBkz8aYh13TV5mJe/RvJrmow==
-X-Received: by 2002:a17:907:7b96:b0:969:7739:2eb7 with SMTP id
- ne22-20020a1709077b9600b0096977392eb7mr34639607ejc.4.1687981932554; 
- Wed, 28 Jun 2023 12:52:12 -0700 (PDT)
+ bh=1qTEjiJO+rGciaKNYAv4AjJGsmsXEooYuDKonzHCbf4=;
+ b=Rsn0yZHHJ2rfGOh/k6VaKLKKtDMtAJzHyyYulZRew2CxXGvGFncKBwlYOujmgGPjyQ
+ SkgskFfMaMBJ9Or+4cKW4taUoRYLZhHh0r0PPq5778vikCuXpO2na0i9itYNel2F+i66
+ B1kOiXxJPWEYJVWSnSLVH00AX5P1GyrW0/hNXL/KAakm4z/R7ISrd+2GgvFIBomoFR8M
+ 9wUFU+4Ngy5VZDy2rgkiWnDeD8XiKm1AfbbnOz+HXvAmEGclr3618qvd1OdzbuEjBd5U
+ LBKx3YtIXtQsvguIjuC7Jg9i0tNhg1DvgVOWzMI+zJHgnMT8tOoFYc9lHvnlqdzdj+eM
+ 9pZA==
+X-Gm-Message-State: AC+VfDyjioMaMU6HR27p8rCkA8kkab0R7bYe8mcYHvzaurew/JaJsA68
+ RmCJ/Kwe3lw7236yqoLCXvuYSfVSxVk=
+X-Google-Smtp-Source: ACHHUZ5D6yWNiDlqPjgKzfzAwGMTFNfPgBNW8slafVrho58xzOKeLDFxkrC/Dhh9mL1fG8MeCP5nlg==
+X-Received: by 2002:a17:907:2d27:b0:98f:c9b:24ef with SMTP id
+ gs39-20020a1709072d2700b0098f0c9b24efmr2329241ejc.20.1687981933804; 
+ Wed, 28 Jun 2023 12:52:13 -0700 (PDT)
 Received: from archlinux.. (dynamic-077-191-074-208.77.191.pool.telefonica.de.
  [77.191.74.208]) by smtp.gmail.com with ESMTPSA id
- ec10-20020a170906b6ca00b00982be08a9besm6142817ejb.172.2023.06.28.12.52.11
+ ec10-20020a170906b6ca00b00982be08a9besm6142817ejb.172.2023.06.28.12.52.12
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 28 Jun 2023 12:52:12 -0700 (PDT)
+ Wed, 28 Jun 2023 12:52:13 -0700 (PDT)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Eduardo Habkost <eduardo@habkost.net>,
  "Michael S. Tsirkin" <mst@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Bernhard Beschow <shentey@gmail.com>,
- Thomas Huth <thuth@redhat.com>
-Subject: [PATCH v2 01/16] hw/i386/pc_q35: Resolve redundant q35_host variable
-Date: Wed, 28 Jun 2023 21:51:49 +0200
-Message-ID: <20230628195204.1241-2-shentey@gmail.com>
+ Paolo Bonzini <pbonzini@redhat.com>, Bernhard Beschow <shentey@gmail.com>
+Subject: [PATCH v2 02/16] hw/pci-host/q35: Fix double,
+ contradicting .endianness assignment
+Date: Wed, 28 Jun 2023 21:51:50 +0200
+Message-ID: <20230628195204.1241-3-shentey@gmail.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230628195204.1241-1-shentey@gmail.com>
 References: <20230628195204.1241-1-shentey@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
- envelope-from=shentey@gmail.com; helo=mail-ej1-x62f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::631;
+ envelope-from=shentey@gmail.com; helo=mail-ej1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,75 +94,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The variable is redundant to "phb" and is never used by its real type.
+Fixes the following clangd warning (-Winitializer-overrides):
 
+  q35.c:297:19: Initializer overrides prior initialization of this subobject
+  q35.c:292:19: previous initialization is here
+
+Settle on little endian which is consistent with using pci_host_conf_le_ops.
+
+Fixes: bafc90bdc594 ("q35: implement TSEG")
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
 ---
- hw/i386/pc_q35.c | 27 +++++++++++++--------------
- 1 file changed, 13 insertions(+), 14 deletions(-)
+ hw/pci-host/q35.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
-index 11a7084ea1..d9f3764184 100644
---- a/hw/i386/pc_q35.c
-+++ b/hw/i386/pc_q35.c
-@@ -120,8 +120,7 @@ static void pc_q35_init(MachineState *machine)
-     PCMachineState *pcms = PC_MACHINE(machine);
-     PCMachineClass *pcmc = PC_MACHINE_GET_CLASS(pcms);
-     X86MachineState *x86ms = X86_MACHINE(machine);
--    Q35PCIHost *q35_host;
--    PCIHostState *phb;
-+    Object *phb;
-     PCIBus *host_bus;
-     PCIDevice *lpc;
-     DeviceState *lpc_dev;
-@@ -207,10 +206,10 @@ static void pc_q35_init(MachineState *machine)
-     }
- 
-     /* create pci host bus */
--    q35_host = Q35_HOST_DEVICE(qdev_new(TYPE_Q35_HOST_DEVICE));
-+    phb = OBJECT(qdev_new(TYPE_Q35_HOST_DEVICE));
- 
-     if (pcmc->pci_enabled) {
--        pci_hole64_size = object_property_get_uint(OBJECT(q35_host),
-+        pci_hole64_size = object_property_get_uint(phb,
-                                                    PCI_HOST_PROP_PCI_HOLE64_SIZE,
-                                                    &error_abort);
-     }
-@@ -218,23 +217,23 @@ static void pc_q35_init(MachineState *machine)
-     /* allocate ram and load rom/bios */
-     pc_memory_init(pcms, system_memory, rom_memory, pci_hole64_size);
- 
--    object_property_add_child(OBJECT(machine), "q35", OBJECT(q35_host));
--    object_property_set_link(OBJECT(q35_host), MCH_HOST_PROP_RAM_MEM,
-+    object_property_add_child(OBJECT(machine), "q35", phb);
-+    object_property_set_link(phb, MCH_HOST_PROP_RAM_MEM,
-                              OBJECT(machine->ram), NULL);
--    object_property_set_link(OBJECT(q35_host), MCH_HOST_PROP_PCI_MEM,
-+    object_property_set_link(phb, MCH_HOST_PROP_PCI_MEM,
-                              OBJECT(pci_memory), NULL);
--    object_property_set_link(OBJECT(q35_host), MCH_HOST_PROP_SYSTEM_MEM,
-+    object_property_set_link(phb, MCH_HOST_PROP_SYSTEM_MEM,
-                              OBJECT(system_memory), NULL);
--    object_property_set_link(OBJECT(q35_host), MCH_HOST_PROP_IO_MEM,
-+    object_property_set_link(phb, MCH_HOST_PROP_IO_MEM,
-                              OBJECT(system_io), NULL);
--    object_property_set_int(OBJECT(q35_host), PCI_HOST_BELOW_4G_MEM_SIZE,
-+    object_property_set_int(phb, PCI_HOST_BELOW_4G_MEM_SIZE,
-                             x86ms->below_4g_mem_size, NULL);
--    object_property_set_int(OBJECT(q35_host), PCI_HOST_ABOVE_4G_MEM_SIZE,
-+    object_property_set_int(phb, PCI_HOST_ABOVE_4G_MEM_SIZE,
-                             x86ms->above_4g_mem_size, NULL);
-+
-     /* pci */
--    sysbus_realize_and_unref(SYS_BUS_DEVICE(q35_host), &error_fatal);
--    phb = PCI_HOST_BRIDGE(q35_host);
--    host_bus = phb->bus;
-+    sysbus_realize_and_unref(SYS_BUS_DEVICE(phb), &error_fatal);
-+    host_bus = PCI_BUS(qdev_get_child_bus(DEVICE(phb), "pcie.0"));
-     /* create ISA bus */
-     lpc = pci_new_multifunction(PCI_DEVFN(ICH9_LPC_DEV, ICH9_LPC_FUNC), true,
-                                 TYPE_ICH9_LPC_DEVICE);
+diff --git a/hw/pci-host/q35.c b/hw/pci-host/q35.c
+index fd18920e7f..84137b9ad9 100644
+--- a/hw/pci-host/q35.c
++++ b/hw/pci-host/q35.c
+@@ -285,7 +285,6 @@ static void blackhole_write(void *opaque, hwaddr addr, uint64_t val,
+ static const MemoryRegionOps blackhole_ops = {
+     .read = blackhole_read,
+     .write = blackhole_write,
+-    .endianness = DEVICE_NATIVE_ENDIAN,
+     .valid.min_access_size = 1,
+     .valid.max_access_size = 4,
+     .impl.min_access_size = 4,
 -- 
 2.41.0
 
