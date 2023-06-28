@@ -2,86 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8370174100E
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 13:29:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BBC5740E02
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 12:05:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qETLX-00019z-0q; Wed, 28 Jun 2023 07:28:27 -0400
+	id 1qES1w-0007Jo-8g; Wed, 28 Jun 2023 06:04:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qETLU-00019p-9S
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 07:28:24 -0400
-Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qETLS-00056x-3v
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 07:28:23 -0400
-Received: by mail-ed1-x52a.google.com with SMTP id
- 4fb4d7f45d1cf-51d9128494cso3993095a12.0
- for <qemu-devel@nongnu.org>; Wed, 28 Jun 2023 04:28:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1687951699; x=1690543699;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
- :message-id:reply-to;
- bh=m71/o/G171aVR8A+7xTRHGvVpEgwswY5zKXzBViWocU=;
- b=k2isNveHKZxBtTLEMMulb1S/ua0NYPqk6AAPGIdZM9KMdHYEE12hHA2gjCRoRw7aA+
- x2tsDVYe5yDuitLP7uap7gIacGYdTbX8+i9EkkUfpueft2TdeK+gOloOhLRBnx9SGijj
- jEyD4gtyuMiCaMzm7Wp2388t1qZwzcM32xZpALDH4H4EPyc9KYDoBJW7do2kIEYyTvL/
- 8RqYCVPMxsmVgLkdbKXhDa9+Eqb8lYxYXFIxNM+PUNuF8WB+d0lYHAH2eIrwQsfWNf0/
- ErT9Zyf1fOzle7Z5AZIh4TalyZh/jS/3/2eZYKvPslexdtZIK42o9i0e4w7XjdZzkUZ3
- luvQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687951699; x=1690543699;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=m71/o/G171aVR8A+7xTRHGvVpEgwswY5zKXzBViWocU=;
- b=KrMSXf0Ykzki/DPuovyZ4gecbGO0H2Gw+KZA8EF5Xb7S2w/8U/ZuUlRZwPXKMGNMqW
- Y0scidxvNorllBXhbp8bECCtH43VA1yIZbYSDCw18RzxWIf3o7NNbuerLA9zK24htqFE
- 5v3p+fdZ+tGK3Ir/zkiXDaJcgS24ERTcyagsV78OpIkNZ2JaphifkUDs0/I3Vq2Q/FMA
- SgYoPiWaZXiYusxw/8rbAJFkitQUgBfhHefI2Q2m/ihzQWhZpVQZy/BmQdXvBsXsEtQk
- qfrE9c8fJeDVcn4Jq+SoQ2ziDtreAFVvjMNXJYzbsMwIdfR1doaZatmtpuven/XmgcuS
- Qthg==
-X-Gm-Message-State: AC+VfDw9RUOde8UcuNBUXxkxwycdGGpW7pf54Cdv2K3F3VEHhP1D37Bz
- xB85dRkveZJiXQdpRXguYfY=
-X-Google-Smtp-Source: ACHHUZ53bBhM+ZFnfkclLsOB3uAYk8E4AwmHM6NQwKQFrXZxP0QjGSDsDw12FR2s8QmYxIHZThdZnQ==
-X-Received: by 2002:a17:907:1c9c:b0:960:d9d:ffb5 with SMTP id
- nb28-20020a1709071c9c00b009600d9dffb5mr34137625ejc.41.1687951698870; 
- Wed, 28 Jun 2023 04:28:18 -0700 (PDT)
-Received: from [127.0.0.1] ([90.187.110.129]) by smtp.gmail.com with ESMTPSA id
- v21-20020a170906565500b00991bba473e1sm3565236ejr.3.2023.06.28.04.28.18
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 28 Jun 2023 04:28:18 -0700 (PDT)
-Date: Wed, 28 Jun 2023 09:27:16 +0000
-From: Bernhard Beschow <shentey@gmail.com>
-To: Olaf Hering <olaf@aepfle.de>
-CC: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- John Snow <jsnow@redhat.com>, xen-devel@lists.xenproject.org,
- Stefano Stabellini <sstabellini@kernel.org>
-Subject: Re: [PATCH v2] piix: fix regression during unplug in Xen HVM domUs
-In-Reply-To: <20230627140740.2736f6e8.olaf@aepfle.de>
-References: <20210317070046.17860-1-olaf@aepfle.de>
- <4441d32f-bd52-9408-cabc-146b59f0e4dc@redhat.com>
- <20210325121219.7b5daf76.olaf@aepfle.de>
- <dae251e1-f808-708e-902c-05cfcbbea9cf@redhat.com>
- <20230509225818.GA16290@aepfle.de> <20230626231901.5b5d11c1.olaf@aepfle.de>
- <c939b695-2b68-085a-0f19-108ecdcc1a05@redhat.com>
- <5DB37FA5-41DF-4ED6-8C8A-CDDD6F276F42@gmail.com>
- <20230627140740.2736f6e8.olaf@aepfle.de>
-Message-ID: <4F5609FD-4A89-4450-89E2-3311CC5A9317@gmail.com>
+ (Exim 4.90_1) (envelope-from <SRS0=C+FE=CQ=kaod.org=clg@ozlabs.org>)
+ id 1qES1u-0007J9-Fw; Wed, 28 Jun 2023 06:04:06 -0400
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
+ helo=gandalf.ozlabs.org)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <SRS0=C+FE=CQ=kaod.org=clg@ozlabs.org>)
+ id 1qES1r-0002me-HJ; Wed, 28 Jun 2023 06:04:06 -0400
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4QrccF4LDQz4wp4;
+ Wed, 28 Jun 2023 20:03:57 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits))
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4QrccB0h9vz4wgk;
+ Wed, 28 Jun 2023 20:03:53 +1000 (AEST)
+Message-ID: <cd38a154-d5c3-1e22-c94f-9e1d74069f6b@kaod.org>
+Date: Wed, 28 Jun 2023 12:03:52 +0200
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
- envelope-from=shentey@gmail.com; helo=mail-ed1-x52a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH qemu] aspeed add montblanc bmc reference from fuji
+Content-Language: en-US
+To: ~ssinprem <ssinprem@celestica.com>, qemu-devel@nongnu.org,
+ qemu-arm@nongnu.org
+Cc: peter.maydell@linaro.org, andrew@aj.id.au, srikanth@celestica.com,
+ ssumet@celestica.com, thangavelu.v@celestica.com, kgengan@celestica.com,
+ anandaramanv@celestica.com, Joel Stanley <joel@jms.id.au>
+References: <168794501779.28884.3336012012258765799-0@git.sr.ht>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <168794501779.28884.3336012012258765799-0@git.sr.ht>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+ envelope-from=SRS0=C+FE=CQ=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -40
+X-Spam_score: -4.1
+X-Spam_bar: ----
+X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, NICE_REPLY_A=-0.103,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -98,23 +67,211 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hello Sittisak,
+
+On 6/28/23 11:09, ~ssinprem wrote:
+> From: Sittisak Sinprem <ssinprem@celestica.com>
+> 
+> - I2C list follow I2C Tree v1.6 20230320
+> - fru eeprom data use FB FRU format version 4
+> 
+> Signed-off-by: Sittisak Sinprem <ssinprem@celestica.com>
 
 
-Am 27=2E Juni 2023 12:07:40 UTC schrieb Olaf Hering <olaf@aepfle=2Ede>:
->Tue, 27 Jun 2023 10:12:50 +0000 Bernhard Beschow <shentey@gmail=2Ecom>:
->
->> The BAR is a 32 bit register whose default value is 0x00000001=2E I thi=
-nk what's supposed to happen here is a pci_set_long() rather than a pci_set=
-_byte()=2E
->
->Indeed, the u32 at that address changes from c121 to c101 with the curren=
-t code=2E
+You don't need to cc: qemu-stable@nongnu.org for new machines.
 
-Neat! Would you mind sending a patch fixing the BMIBA register to be reset=
- as 32 bit?
+> ---
+>   hw/arm/aspeed.c        | 67 ++++++++++++++++++++++++++++++++++++++++++
+>   hw/arm/aspeed_eeprom.c | 50 +++++++++++++++++++++++++++++++
+>   hw/arm/aspeed_eeprom.h |  7 +++++
+>   3 files changed, 124 insertions(+)
+> 
+> diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
+> index 6880998484..df154cbf52 100644
+> --- a/hw/arm/aspeed.c
+> +++ b/hw/arm/aspeed.c
+> @@ -182,6 +182,10 @@ struct AspeedMachineState {
+>   #define FUJI_BMC_HW_STRAP1    0x00000000
+>   #define FUJI_BMC_HW_STRAP2    0x00000000
+>   
+> +/* Montblanc hardware value */
+> +#define MONTBLANC_BMC_HW_STRAP1    0x00000000
+> +#define MONTBLANC_BMC_HW_STRAP2    0x00000000
+> +
+>   /* Bletchley hardware value */
+>   /* TODO: Leave same as EVB for now. */
+>   #define BLETCHLEY_BMC_HW_STRAP1 AST2600_EVB_HW_STRAP1
+> @@ -918,6 +922,39 @@ static void fuji_bmc_i2c_init(AspeedMachineState *bmc)
+>       }
+>   }
+>   
+> +static void montblanc_bmc_i2c_init(AspeedMachineState *bmc)
+> +{
+> +    AspeedSoCState *soc = &bmc->soc;
+> +    I2CBus *i2c[16] = {};
+> +
+> +    for (int i = 0; i < 16; i++) {
+> +        i2c[i] = aspeed_i2c_get_bus(&soc->i2c, i);
+> +    }
+> +
+> +    /* Ref from Minipack3_I2C_Tree_V1.6 20230320 */
+> +    at24c_eeprom_init(i2c[3], 0x56, montblanc_scm_fruid, 8192, true);
 
-Best regards,
-Bernhard
->
->Olaf
+I think you meant to use at24c_eeprom_init_rom ?
+
+Thanks,
+
+C.
+
+> +    at24c_eeprom_init(i2c[6], 0x53, montblanc_fcm_fruid, 8192, true);
+> +
+> +    /* CPLD and FPGA */
+> +    aspeed_eeprom_init(i2c[1], 0x35, 256);  /* SCM CPLD */
+> +    aspeed_eeprom_init(i2c[5], 0x35, 256);  /* COMe CPLD TODO: need to update */
+> +    aspeed_eeprom_init(i2c[12], 0x60, 256); /* MCB PWR CPLD */
+> +    aspeed_eeprom_init(i2c[13], 0x35, 256); /* IOB FPGA */
+> +
+> +    /* on BMC board */
+> +    at24c_eeprom_init(i2c[8], 0x51, montblanc_bmc_fruid, 8192, true);
+> +                                                      /* BMC EEPROM */
+> +    i2c_slave_create_simple(i2c[8], TYPE_LM75, 0x48); /* Thermal Sensor */
+> +
+> +    /* COMe Sensor/EEPROM */
+> +    aspeed_eeprom_init(i2c[0], 0x56, 16384);          /* FRU EEPROM */
+> +    i2c_slave_create_simple(i2c[0], TYPE_LM75, 0x48); /* INLET Sensor */
+> +    i2c_slave_create_simple(i2c[0], TYPE_LM75, 0x4A); /* OUTLET Sensor */
+> +
+> +    /* It expects a pca9555 but a pca9552 is compatible */
+> +    create_pca9552(soc, 4, 0x27);
+> +}
+> +
+>   #define TYPE_TMP421 "tmp421"
+>   
+>   static void bletchley_bmc_i2c_init(AspeedMachineState *bmc)
+> @@ -1450,6 +1487,32 @@ static void aspeed_machine_fuji_class_init(ObjectClass *oc, void *data)
+>           aspeed_soc_num_cpus(amc->soc_name);
+>   };
+>   
+> +/* On 32-bit hosts, lower RAM to 1G because of the 2047 MB limit */
+> +#if HOST_LONG_BITS == 32
+> +#define MONTBLANC_BMC_RAM_SIZE (1 * GiB)
+> +#else
+> +#define MONTBLANC_BMC_RAM_SIZE (2 * GiB)
+> +#endif
+> +static void aspeed_machine_montblanc_class_init(ObjectClass *oc, void *data)
+> +{
+> +    MachineClass *mc = MACHINE_CLASS(oc);
+> +    AspeedMachineClass *amc = ASPEED_MACHINE_CLASS(oc);
+> +
+> +    mc->desc = "Facebook Montblanc BMC (Cortex-A7)";
+> +    amc->soc_name = "ast2600-a3";
+> +    amc->hw_strap1 = MONTBLANC_BMC_HW_STRAP1;
+> +    amc->hw_strap2 = MONTBLANC_BMC_HW_STRAP2;
+> +    amc->fmc_model = "mx66l1g45g";
+> +    amc->spi_model = "mx66l1g45g";
+> +    amc->num_cs = 2;
+> +    amc->macs_mask = ASPEED_MAC3_ON;
+> +    amc->i2c_init = montblanc_bmc_i2c_init;
+> +    amc->uart_default = ASPEED_DEV_UART1;
+> +    mc->default_ram_size = MONTBLANC_BMC_RAM_SIZE;
+> +    mc->default_cpus = mc->min_cpus = mc->max_cpus =
+> +        aspeed_soc_num_cpus(amc->soc_name);
+> +};
+> +
+>   /* On 32-bit hosts, lower RAM to 1G because of the 2047 MB limit */
+>   #if HOST_LONG_BITS == 32
+>   #define BLETCHLEY_BMC_RAM_SIZE (1 * GiB)
+> @@ -1706,6 +1769,10 @@ static const TypeInfo aspeed_machine_types[] = {
+>           .name          = MACHINE_TYPE_NAME("fuji-bmc"),
+>           .parent        = TYPE_ASPEED_MACHINE,
+>           .class_init    = aspeed_machine_fuji_class_init,
+> +    }, {
+> +        .name          = MACHINE_TYPE_NAME("montblanc-bmc"),
+> +        .parent        = TYPE_ASPEED_MACHINE,
+> +        .class_init    = aspeed_machine_montblanc_class_init,
+>       }, {
+>           .name          = MACHINE_TYPE_NAME("bletchley-bmc"),
+>           .parent        = TYPE_ASPEED_MACHINE,
+> diff --git a/hw/arm/aspeed_eeprom.c b/hw/arm/aspeed_eeprom.c
+> index ace5266cec..bcde346e9b 100644
+> --- a/hw/arm/aspeed_eeprom.c
+> +++ b/hw/arm/aspeed_eeprom.c
+> @@ -161,6 +161,53 @@ const uint8_t rainier_bmc_fruid[] = {
+>       0x31, 0x50, 0x46, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
+>   };
+>   
+> +/* Montblanc BMC FRU */
+> +const uint8_t montblanc_scm_fruid[8192] = {
+> +    0xfb, 0xfb, 0x04, 0xff, 0x01, 0x0d, 0x4d, 0x49, 0x4e, 0x49, 0x50, 0x41,
+> +    0x43, 0x4b, 0x33, 0x5f, 0x53, 0x43, 0x4d, 0x02, 0x08, 0x32, 0x30, 0x30,
+> +    0x30, 0x32, 0x39, 0x34, 0x35, 0x04, 0x0c, 0x31, 0x33, 0x32, 0x30, 0x30,
+> +    0x30, 0x31, 0x36, 0x34, 0x30, 0x31, 0x20, 0x05, 0x0c, 0x31, 0x33, 0x31,
+> +    0x30, 0x30, 0x30, 0x31, 0x32, 0x37, 0x30, 0x31, 0x20, 0x06, 0x0c, 0x52,
+> +    0x33, 0x32, 0x31, 0x34, 0x47, 0x30, 0x30, 0x30, 0x33, 0x30, 0x31, 0x07,
+> +    0x0d, 0x41, 0x30, 0x33, 0x31, 0x33, 0x58, 0x58, 0x58, 0x58, 0x58, 0x58,
+> +    0x58, 0x58, 0x08, 0x01, 0x01, 0x09, 0x01, 0x00, 0x0a, 0x01, 0x00, 0x0b,
+> +    0x0d, 0x4d, 0x32, 0x32, 0x31, 0x33, 0x32, 0x33, 0x31, 0x37, 0x30, 0x30,
+> +    0x30, 0x32, 0x0c, 0x03, 0x43, 0x4c, 0x53, 0x0d, 0x08, 0x32, 0x30, 0x32,
+> +    0x33, 0x30, 0x35, 0x30, 0x31, 0x0e, 0x03, 0x57, 0x55, 0x53, 0x0f, 0x03,
+> +    0x43, 0x54, 0x48, 0x10, 0x06, 0xb4, 0xbd, 0x00, 0x00, 0x00, 0x01, 0x13,
+> +    0x03, 0x53, 0x43, 0x4d, 0xfa, 0x02, 0x11, 0x07,
+> +};
+> +
+> +const uint8_t montblanc_fcm_fruid[8192] = {
+> +    0xfb, 0xfb, 0x04, 0xff, 0x01, 0x0d, 0x4d, 0x49, 0x4e, 0x49, 0x50, 0x41,
+> +    0x43, 0x4b, 0x33, 0x5f, 0x46, 0x43, 0x42, 0x02, 0x08, 0x33, 0x30, 0x30,
+> +    0x30, 0x30, 0x31, 0x36, 0x31, 0x04, 0x0c, 0x31, 0x33, 0x32, 0x30, 0x30,
+> +    0x30, 0x31, 0x36, 0x33, 0x30, 0x31, 0x20, 0x05, 0x0c, 0x31, 0x33, 0x31,
+> +    0x30, 0x30, 0x30, 0x31, 0x33, 0x30, 0x30, 0x31, 0x20, 0x06, 0x0c, 0x52,
+> +    0x33, 0x32, 0x31, 0x34, 0x47, 0x30, 0x30, 0x31, 0x32, 0x30, 0x31, 0x07,
+> +    0x0d, 0x41, 0x31, 0x32, 0x31, 0x32, 0x58, 0x58, 0x58, 0x58, 0x58, 0x58,
+> +    0x58, 0x58, 0x08, 0x01, 0x01, 0x09, 0x01, 0x00, 0x0a, 0x01, 0x00, 0x0b,
+> +    0x0d, 0x46, 0x35, 0x30, 0x31, 0x33, 0x32, 0x33, 0x31, 0x37, 0x30, 0x30,
+> +    0x30, 0x35, 0x0c, 0x03, 0x43, 0x4c, 0x53, 0x0d, 0x08, 0x32, 0x30, 0x32,
+> +    0x33, 0x30, 0x35, 0x30, 0x31, 0x0e, 0x03, 0x57, 0x55, 0x53, 0x0f, 0x03,
+> +    0x43, 0x54, 0x48, 0x10, 0x06, 0xb4, 0xbd, 0x00, 0x00, 0x00, 0x02, 0x11,
+> +    0x06, 0xb4, 0xbd, 0x00, 0x00, 0x00, 0x03, 0x12, 0x02, 0x8a, 0x00, 0x13,
+> +    0x03, 0x46, 0x43, 0x42, 0xfa, 0x02, 0x0e, 0x61,
+> +};
+> +
+> +const uint8_t montblanc_bmc_fruid[8192] = {
+> +    0xfb, 0xfb, 0x04, 0xff, 0x01, 0x0d, 0x4d, 0x49, 0x4e, 0x49, 0x50, 0x41,
+> +    0x43, 0x4b, 0x33, 0x5f, 0x42, 0x4d, 0x43, 0x04, 0x0c, 0x31, 0x33, 0x32,
+> +    0x30, 0x30, 0x30, 0x31, 0x33, 0x36, 0x30, 0x31, 0x20, 0x05, 0x0c, 0x31,
+> +    0x33, 0x31, 0x30, 0x30, 0x30, 0x30, 0x38, 0x36, 0x30, 0x35, 0x20, 0x06,
+> +    0x0c, 0x52, 0x33, 0x30, 0x39, 0x37, 0x47, 0x30, 0x30, 0x30, 0x32, 0x30,
+> +    0x37, 0x07, 0x0d, 0x42, 0x30, 0x32, 0x37, 0x34, 0x58, 0x58, 0x58, 0x58,
+> +    0x58, 0x58, 0x58, 0x58, 0x08, 0x01, 0x04, 0x09, 0x01, 0x00, 0x0a, 0x01,
+> +    0x00, 0x0c, 0x03, 0x43, 0x4c, 0x53, 0x0d, 0x08, 0x32, 0x30, 0x32, 0x33,
+> +    0x30, 0x35, 0x30, 0x31, 0x0e, 0x03, 0x57, 0x55, 0x53, 0x0f, 0x03, 0x43,
+> +    0x54, 0x48, 0x13, 0x03, 0x42, 0x4d, 0x43, 0xfa, 0x02, 0xef, 0xba,
+> +};
+> +
+>   const size_t tiogapass_bmc_fruid_len = sizeof(tiogapass_bmc_fruid);
+>   const size_t fby35_nic_fruid_len = sizeof(fby35_nic_fruid);
+>   const size_t fby35_bb_fruid_len = sizeof(fby35_bb_fruid);
+> @@ -168,3 +215,6 @@ const size_t fby35_bmc_fruid_len = sizeof(fby35_bmc_fruid);
+>   const size_t yosemitev2_bmc_fruid_len = sizeof(yosemitev2_bmc_fruid);
+>   const size_t rainier_bb_fruid_len = sizeof(rainier_bb_fruid);
+>   const size_t rainier_bmc_fruid_len = sizeof(rainier_bmc_fruid);
+> +const size_t montblanc_scm_fruid_len = sizeof(montblanc_scm_fruid);
+> +const size_t montblanc_fcm_fruid_len = sizeof(montblanc_fcm_fruid);
+> +const size_t montblanc_bmc_fruid_len = sizeof(montblanc_bmc_fruid);
+> diff --git a/hw/arm/aspeed_eeprom.h b/hw/arm/aspeed_eeprom.h
+> index bbf9e54365..b8fbdd0734 100644
+> --- a/hw/arm/aspeed_eeprom.h
+> +++ b/hw/arm/aspeed_eeprom.h
+> @@ -27,4 +27,11 @@ extern const size_t rainier_bb_fruid_len;
+>   extern const uint8_t rainier_bmc_fruid[];
+>   extern const size_t rainier_bmc_fruid_len;
+>   
+> +extern const uint8_t montblanc_scm_fruid[];
+> +extern const uint8_t montblanc_fcm_fruid[];
+> +extern const uint8_t montblanc_bmc_fruid[];
+> +extern const size_t montblanc_scm_fruid_len;
+> +extern const size_t montblanc_fcm_fruid_len;
+> +extern const size_t montblanc_bmc_fruid_len;
+> +
+>   #endif
+
 
