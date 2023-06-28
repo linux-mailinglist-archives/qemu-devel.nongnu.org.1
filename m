@@ -2,68 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEF7A740D87
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 11:49:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8370174100E
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 13:29:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qERmf-0002uW-5Z; Wed, 28 Jun 2023 05:48:21 -0400
+	id 1qETLX-00019z-0q; Wed, 28 Jun 2023 07:28:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qERmc-0002tZ-JY
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 05:48:18 -0400
-Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qERma-0005FO-Eb
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 05:48:17 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
- In-Reply-To:From:References:To:MIME-Version:Date:Message-ID:Sender:Reply-To:
- Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
- Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
- List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=XT1I1/d069RQZJVBhP5AW2FwHsbd1GfLkKHElEzynrM=; b=TBBbpignwkdU4q4/jRhWSMWDaN
- hki0tzsl21YnFXDaajfNRMFvZuMfS6SuUdb7688LjnpXkJG9OP3o73EtIUuBWi0jVBvkAWhdh1TMj
- b4x67oeGE1oGmWVmMfk4JW7UTAhEdqBcvom+oKZWiC1eYROAf0Mis9Humi0Y7Hf4KcbBc+D8FdJPr
- Tg0lab0OoyqtBjjf/TxzNcPE4DmkUWtY4L0caLAvuFE46qFYHqTi0NHsnEoK9Kllf1vmDyFMFOqTE
- MVdhAEQ6ylFnGHvu64Zw/W2V2CXgbgow6nVawc1vJ/1YW7hdnkEwI1ITUwMFie4sapi6Kvkafh8ht
- 2eGND1rPIKglmfgnCdlqUApJZZxTa1eSTi4X1X6YCaThoJTaFcIQAW4dpLPQ/bZ4SmoesK5avk2NG
- 2DGcFUvhspYMdVqiNSEnCyjDIgFVuzGDQ0byTibYlCx/fRXQg7TCpnh7to/mcCUK2qRho9sAXSAfG
- v9QOGCT61bTFK3/Th80T2bzP7n+3sPBiJmKuUe1IPipXKMlISnh0j1V01jFE7/kvvXvRWbLel88AG
- Dw2lPfuawM3jS7Em2KBxgIQUjhRSlBzk42PO634N2N6lStEYhtUPS87Ubb+zj0APvw6s+eTX2lcxJ
- QySVtrm601siHXyI3QyupW4NWzxPH+hPn3nPxMqMk=;
-Received: from host86-130-37-216.range86-130.btcentralplus.com
- ([86.130.37.216] helo=[10.8.0.6])
- by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qERmL-000CBS-Nb; Wed, 28 Jun 2023 10:48:02 +0100
-Message-ID: <2646948c-13a8-3a12-00d2-ccdad4d519c3@ilande.co.uk>
-Date: Wed, 28 Jun 2023 10:48:09 +0100
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qETLU-00019p-9S
+ for qemu-devel@nongnu.org; Wed, 28 Jun 2023 07:28:24 -0400
+Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qETLS-00056x-3v
+ for qemu-devel@nongnu.org; Wed, 28 Jun 2023 07:28:23 -0400
+Received: by mail-ed1-x52a.google.com with SMTP id
+ 4fb4d7f45d1cf-51d9128494cso3993095a12.0
+ for <qemu-devel@nongnu.org>; Wed, 28 Jun 2023 04:28:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1687951699; x=1690543699;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=m71/o/G171aVR8A+7xTRHGvVpEgwswY5zKXzBViWocU=;
+ b=k2isNveHKZxBtTLEMMulb1S/ua0NYPqk6AAPGIdZM9KMdHYEE12hHA2gjCRoRw7aA+
+ x2tsDVYe5yDuitLP7uap7gIacGYdTbX8+i9EkkUfpueft2TdeK+gOloOhLRBnx9SGijj
+ jEyD4gtyuMiCaMzm7Wp2388t1qZwzcM32xZpALDH4H4EPyc9KYDoBJW7do2kIEYyTvL/
+ 8RqYCVPMxsmVgLkdbKXhDa9+Eqb8lYxYXFIxNM+PUNuF8WB+d0lYHAH2eIrwQsfWNf0/
+ ErT9Zyf1fOzle7Z5AZIh4TalyZh/jS/3/2eZYKvPslexdtZIK42o9i0e4w7XjdZzkUZ3
+ luvQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1687951699; x=1690543699;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=m71/o/G171aVR8A+7xTRHGvVpEgwswY5zKXzBViWocU=;
+ b=KrMSXf0Ykzki/DPuovyZ4gecbGO0H2Gw+KZA8EF5Xb7S2w/8U/ZuUlRZwPXKMGNMqW
+ Y0scidxvNorllBXhbp8bECCtH43VA1yIZbYSDCw18RzxWIf3o7NNbuerLA9zK24htqFE
+ 5v3p+fdZ+tGK3Ir/zkiXDaJcgS24ERTcyagsV78OpIkNZ2JaphifkUDs0/I3Vq2Q/FMA
+ SgYoPiWaZXiYusxw/8rbAJFkitQUgBfhHefI2Q2m/ihzQWhZpVQZy/BmQdXvBsXsEtQk
+ qfrE9c8fJeDVcn4Jq+SoQ2ziDtreAFVvjMNXJYzbsMwIdfR1doaZatmtpuven/XmgcuS
+ Qthg==
+X-Gm-Message-State: AC+VfDw9RUOde8UcuNBUXxkxwycdGGpW7pf54Cdv2K3F3VEHhP1D37Bz
+ xB85dRkveZJiXQdpRXguYfY=
+X-Google-Smtp-Source: ACHHUZ53bBhM+ZFnfkclLsOB3uAYk8E4AwmHM6NQwKQFrXZxP0QjGSDsDw12FR2s8QmYxIHZThdZnQ==
+X-Received: by 2002:a17:907:1c9c:b0:960:d9d:ffb5 with SMTP id
+ nb28-20020a1709071c9c00b009600d9dffb5mr34137625ejc.41.1687951698870; 
+ Wed, 28 Jun 2023 04:28:18 -0700 (PDT)
+Received: from [127.0.0.1] ([90.187.110.129]) by smtp.gmail.com with ESMTPSA id
+ v21-20020a170906565500b00991bba473e1sm3565236ejr.3.2023.06.28.04.28.18
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 28 Jun 2023 04:28:18 -0700 (PDT)
+Date: Wed, 28 Jun 2023 09:27:16 +0000
+From: Bernhard Beschow <shentey@gmail.com>
+To: Olaf Hering <olaf@aepfle.de>
+CC: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ John Snow <jsnow@redhat.com>, xen-devel@lists.xenproject.org,
+ Stefano Stabellini <sstabellini@kernel.org>
+Subject: Re: [PATCH v2] piix: fix regression during unplug in Xen HVM domUs
+In-Reply-To: <20230627140740.2736f6e8.olaf@aepfle.de>
+References: <20210317070046.17860-1-olaf@aepfle.de>
+ <4441d32f-bd52-9408-cabc-146b59f0e4dc@redhat.com>
+ <20210325121219.7b5daf76.olaf@aepfle.de>
+ <dae251e1-f808-708e-902c-05cfcbbea9cf@redhat.com>
+ <20230509225818.GA16290@aepfle.de> <20230626231901.5b5d11c1.olaf@aepfle.de>
+ <c939b695-2b68-085a-0f19-108ecdcc1a05@redhat.com>
+ <5DB37FA5-41DF-4ED6-8C8A-CDDD6F276F42@gmail.com>
+ <20230627140740.2736f6e8.olaf@aepfle.de>
+Message-ID: <4F5609FD-4A89-4450-89E2-3311CC5A9317@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-References: <20230628071202.230991-1-richard.henderson@linaro.org>
-From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-In-Reply-To: <20230628071202.230991-1-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 86.130.37.216
-X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: Re: [PATCH v3 0/8] target/sparc: Use tcg_gen_lookup_and_goto_ptr
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
-Received-SPF: pass client-ip=2001:41c9:1:41f::167;
- envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
+ envelope-from=shentey@gmail.com; helo=mail-ed1-x52a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.103,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -80,39 +98,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 28/06/2023 08:11, Richard Henderson wrote:
-
-> Changes from v2:
->    * Patch 4 relaxes the checking on NPC:
->      (1) save_npc has just asserted that if the low 2 bits are non-zero,
->          then we have exactly one of our 3 special cases.
->      (2) The difference between DYNAMIC_PC_LOOKUP and DYNAMIC_PC within
->          NPC are not relevant to chaining, only those two values within PC.
->      Therefore simplify the test in sparc_tr_tb_stop.
-> 
-> 
-> r~
-> 
-> 
-> Richard Henderson (8):
->    target/sparc: Use tcg_gen_lookup_and_goto_ptr in gen_goto_tb
->    target/sparc: Fix npc comparison in sparc_tr_insn_start
->    target/sparc: Drop inline markers from translate.c
->    target/sparc: Introduce DYNAMIC_PC_LOOKUP
->    target/sparc: Use DYNAMIC_PC_LOOKUP for conditional branches
->    target/sparc: Use DYNAMIC_PC_LOOKUP for JMPL
->    target/sparc: Use DYNAMIC_PC_LOOKUP for v9 RETURN
->    target/sparc: Use tcg_gen_lookup_and_goto_ptr for v9 WRASI
-> 
->   target/sparc/translate.c | 402 ++++++++++++++++++++++-----------------
->   1 file changed, 225 insertions(+), 177 deletions(-)
-
-This fixes the issue seen with the real PROM and a run of my OpenBIOS boot tests 
-shows all is still well, so I'll get this queued to qemu-sparc and send a PR shortly.
 
 
-ATB,
+Am 27=2E Juni 2023 12:07:40 UTC schrieb Olaf Hering <olaf@aepfle=2Ede>:
+>Tue, 27 Jun 2023 10:12:50 +0000 Bernhard Beschow <shentey@gmail=2Ecom>:
+>
+>> The BAR is a 32 bit register whose default value is 0x00000001=2E I thi=
+nk what's supposed to happen here is a pci_set_long() rather than a pci_set=
+_byte()=2E
+>
+>Indeed, the u32 at that address changes from c121 to c101 with the curren=
+t code=2E
 
-Mark.
+Neat! Would you mind sending a patch fixing the BMIBA register to be reset=
+ as 32 bit?
 
+Best regards,
+Bernhard
+>
+>Olaf
 
