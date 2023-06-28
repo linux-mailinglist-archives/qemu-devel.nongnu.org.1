@@ -2,21 +2,21 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0273E741052
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 13:47:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9200F74105D
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 13:48:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qETdV-0004P2-A9; Wed, 28 Jun 2023 07:47:01 -0400
+	id 1qETdI-0003KE-8H; Wed, 28 Jun 2023 07:46:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qETcO-0002gC-5y
+ id 1qETcO-0002gD-62
  for qemu-devel@nongnu.org; Wed, 28 Jun 2023 07:46:04 -0400
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qETcL-0005D5-1i
+ id 1qETcL-0005F5-Hp
  for qemu-devel@nongnu.org; Wed, 28 Jun 2023 07:45:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
@@ -24,26 +24,26 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
  Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
  List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=mZEYH3EO9Ckj3bPrCqjVynHhC4HScMvpjZTuEQOMNYE=; b=r63f37drXS2+xIsASLrOmjNzBL
- wYxj23TD6rUpF2rak4g6CMwGGPAmqRZ3Sh4ot7uFT+EFUeQ+qSENCXkWTpd7s8WHo3sdMu0hkJJWF
- KAEQ4HF+PnpVpKTKHPRzryQ47A8iifnP5urDJqRVrTLXAV82ahjTYvrVBzgAROK6vrP2Nt4wdgZQQ
- ttLOiGF8GOewsMYF+FVXSfDhWxvKy8eWsB6Y5xZMebSHQQXm+R0qxQYRVY3CR5a6+VbVCBczIOVQG
- duJmeRLq9MfdGzYuGG0PNTJoIRFWQ06qc8uFqMs/Lb07sVaxvlSy/qQCsAVOjq8CZR3qj/bo6BAP1
- YzrlhG53rKMwEYVUT1rl8IBxg5PCAJxGnM2iRtDVI7PqnrhpDbnW0vCWKKlu4lHAHpoJ2CHXSpzz9
- ud7FkvnpHAAQji9wuL4qtdZcREKUQqoH4rJjqNoMrjKS/wFAcX/xvaKmIJm7jRVY2twsXBS3zrNSY
- ktnux17LZBY6sVNaxIPiVkKkKItrhojmLv01dB6EWHRoyqp3B453nPi+Qsh3opJd+PpdgDH+swCqO
- MZVQQqFbncG3+yxgFR0KulWk1B3xJ7HnTc7PXqL7OsUJmeujRRY7mM8sHDJ4b9j2zdwek8O4iX9UO
- tusY0Vu/4xn0xk4GB9C6rGlukBaiWG0XKQocLwlsg=;
+ bh=FV+chXvjmNEXKyHiXB6vsfOn/aoT2Gsa6mwo/x6dy/A=; b=k44+/gkvrg96DyXI7wEj/HPu+g
+ MNgtOi8+sSfBhrniLJEdevSh/Vo6qH3DdK0m7JJEC6TC9FaOTqoiir65Jgz1secpFALo8xJiU0Tfv
+ muqHVAQYqupxioVh7Kpkp3i9YlMVf/f2wvyhbBRjFkQuSiHy2bzUaGCz94gahIWYhoMEzwTOGTZT+
+ 6swtuAXVQD5LDvc7pIivNSK/ahSa6cXnNIFYCaxl4W9thaZPF+epYrdsk6Aunb829aKY1xtMT0/W8
+ bYLkgio+Qc3cIB4KUZ1E54F4v9UgtCztll+RGpu06xhvhF1ww3KGk5wnrmFCBA+T4u5OnE6PoPNzl
+ UoV93tw+sqqSQUKVHQhaFiVg4LYCfuS06cJSKbCerQ/JYnJvfNZUkKFmUItYy/cqi/qAtLZKLjBNn
+ Tjwr6GfrHjw8upDgXu9NdSVmyqtvd9I/yAg9Q6b/koKHw4ncimEeoq+17czQ1vQ4qvbTiP2orv3vW
+ y01d0gFskWDjXiGHuWX5mtLDg/e+bugG1wXFnmJhJopzp5spajcku+OTF3np/BWlj2xHx/SmZsKpT
+ otGh0VUBBQdD51ZzTMcSmCpnQHKZ88Fgtoae7Lf/A4L3eLXP7io0/oyE3QtUm2GupZ7urNSQL/8Jo
+ cVAd98olF9aD3wy5xoZ+kBxvV5COBGJNaeIZ3ENvc=;
 Received: from host86-130-37-216.range86-130.btcentralplus.com
  ([86.130.37.216] helo=kentang.home)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qETc3-00007c-P0; Wed, 28 Jun 2023 12:45:35 +0100
+ id 1qETc7-00007c-En; Wed, 28 Jun 2023 12:45:39 +0100
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: richard.henderson@linaro.org,
 	qemu-devel@nongnu.org
-Date: Wed, 28 Jun 2023 12:45:02 +0100
-Message-Id: <20230628114504.546265-9-mark.cave-ayland@ilande.co.uk>
+Date: Wed, 28 Jun 2023 12:45:03 +0100
+Message-Id: <20230628114504.546265-10-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20230628114504.546265-1-mark.cave-ayland@ilande.co.uk>
 References: <20230628114504.546265-1-mark.cave-ayland@ilande.co.uk>
@@ -52,7 +52,8 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 86.130.37.216
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PULL 08/10] target/sparc: Use DYNAMIC_PC_LOOKUP for v9 RETURN
+Subject: [PULL 09/10] target/sparc: Use tcg_gen_lookup_and_goto_ptr for v9
+ WRASI
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -80,30 +81,42 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Richard Henderson <richard.henderson@linaro.org>
 
-After the register window unwind, this is for a plain indirect
-branch with no further side effects.
+We incorporate %asi into tb->flags so that we may generate
+inline code for the many ASIs for which it is easy to do so.
+Setting %asi is common for e.g. memcpy and memset performing
+block copy and clear, so it is worth noticing this case.
+
+We must end the TB but do not need to return to the main loop.
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20230628071202.230991-8-richard.henderson@linaro.org>
+Message-Id: <20230628071202.230991-9-richard.henderson@linaro.org>
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 ---
- target/sparc/translate.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/sparc/translate.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
 diff --git a/target/sparc/translate.c b/target/sparc/translate.c
-index 17afe98523..9148e33283 100644
+index 9148e33283..bd877a5e4a 100644
 --- a/target/sparc/translate.c
 +++ b/target/sparc/translate.c
-@@ -5029,7 +5029,7 @@ static void disas_sparc_insn(DisasContext * dc, unsigned int insn)
-                 gen_mov_pc_npc(dc);
-                 gen_check_align(cpu_tmp0, 3);
-                 tcg_gen_mov_tl(cpu_npc, cpu_tmp0);
--                dc->npc = DYNAMIC_PC;
-+                dc->npc = DYNAMIC_PC_LOOKUP;
-                 goto jmp_insn;
- #endif
-             } else {
+@@ -4147,10 +4147,14 @@ static void disas_sparc_insn(DisasContext * dc, unsigned int insn)
+                                 tcg_gen_andi_tl(cpu_tmp0, cpu_tmp0, 0xff);
+                                 tcg_gen_st32_tl(cpu_tmp0, cpu_env,
+                                                 offsetof(CPUSPARCState, asi));
+-                                /* End TB to notice changed ASI.  */
++                                /*
++                                 * End TB to notice changed ASI.
++                                 * TODO: Could notice src1 = %g0 and IS_IMM,
++                                 * update DisasContext and not exit the TB.
++                                 */
+                                 save_state(dc);
+                                 gen_op_next_insn();
+-                                tcg_gen_exit_tb(NULL, 0);
++                                tcg_gen_lookup_and_goto_ptr();
+                                 dc->base.is_jmp = DISAS_NORETURN;
+                                 break;
+                             case 0x6: /* V9 wrfprs */
 -- 
 2.30.2
 
