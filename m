@@ -2,44 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B71687414F8
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 17:29:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18A437414F2
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 17:29:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEX78-0007ef-Gn; Wed, 28 Jun 2023 11:29:50 -0400
+	id 1qEX6A-0004QP-U4; Wed, 28 Jun 2023 11:28:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <bmeng@tinylab.org>) id 1qEX76-0007Wy-7B
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 11:29:48 -0400
+ (Exim 4.90_1) (envelope-from <bmeng@tinylab.org>) id 1qEX69-0004PT-4m
+ for qemu-devel@nongnu.org; Wed, 28 Jun 2023 11:28:49 -0400
 Received: from bg4.exmail.qq.com ([43.154.221.58])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <bmeng@tinylab.org>) id 1qEX74-0005SO-8Q
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 11:29:47 -0400
-X-QQ-mid: bizesmtp72t1687966066twpgsy9m
+ (Exim 4.90_1) (envelope-from <bmeng@tinylab.org>) id 1qEX67-0005A7-6d
+ for qemu-devel@nongnu.org; Wed, 28 Jun 2023 11:28:48 -0400
+X-QQ-mid: bizesmtp72t1687966069tmqlnmkx
 Received: from ubuntu.. ( [111.196.130.174]) by bizesmtp.qq.com (ESMTP) with 
- id ; Wed, 28 Jun 2023 23:27:45 +0800 (CST)
+ id ; Wed, 28 Jun 2023 23:27:48 +0800 (CST)
 X-QQ-SSF: 01200000000000F0G000000A0000000
-X-QQ-FEAT: 5q30pvLz2icAGFkF82a5M/N8UMRBKLiaGF0AAETKyxVxLH0r8oR/LEEqUoh3d
- 7wBLICrGCN1GC2PEGPl7rfq62a7Hhz9aJaN5S47mBJIzswVE1XgYQmxkOIZXAwS2fQQ19TE
- ODzxTBzNJ8d8MTCkzK1G4V1yY/kqmrOymiKEpvVOQhywngiLzMpbN0z2Y7O3wabqDCPCAKf
- s2VJNmidFWeF4iMTppwxtCOubGCYQCyqDh1vv9tiLFYUF1cTeZTjl7teQIpAt6r1Q40ILOA
- NhgOZgHElF/so8qQVv8syAXLFwB8FWOIIY0PI/ziO3b/QjhilxHpLUyL0dUovNpWsC6yx65
- xQIn3cTEgg7ntARjyzA6arUsbf3+lhaO5SOjDxmNZRBUOPxuRMZhgF29MFL5A==
+X-QQ-FEAT: hvKw+PyJ8U7RjaySGGyFw+oMJe+/6zgEDwZMqVXUjA1W39vtXjC1xN2WiE9J5
+ 2flQK+Q45p9P2HSK22klOny9VuMZ51HSGfh1qTBjIDSfqZgVVWzv5WFJL4H/YsS+2D1tuBC
+ vo3CW+f+ST36LV5bXE+mQciSUWVgmnpPpl+t4Z43RI+1njXU0HkzEU48i8Ph5fkKGdfkS8P
+ dNp75uieNUwLwfyavhrs+8hmaHpUFxEpSbrDInjysJ5/xQCTqasB+q9th3CkZI0GmXaEr1m
+ AqxvGXR67qCjU/+S3Z5e0Op+ZRjkO/z4AGRFO8JiKKKald7SYLzug6qYyj09lZT/UfRuY3Z
+ JnX4i0C8dsnoofqAHjbqEdm0+NQYVF3ESWPIgFbl3vzx6lhUp3svwD6XIJAa+uf30ue8CEi
 X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 11925419786260877323
+X-BIZMAIL-ID: 13845974076954433580
 From: Bin Meng <bmeng@tinylab.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
- Zhangjin Wu <falcon@tinylab.org>,
- Claudio Imbrenda <imbrenda@linux.ibm.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>
-Subject: [PATCH v4 5/6] util/async-teardown: Use qemu_close_range() to close
- fds
-Date: Wed, 28 Jun 2023 23:27:25 +0800
-Message-Id: <20230628152726.110295-6-bmeng@tinylab.org>
+ Zhangjin Wu <falcon@tinylab.org>, Jason Wang <jasowang@redhat.com>
+Subject: [PATCH v4 6/6] net: tap: Use qemu_close_range() to close fds
+Date: Wed, 28 Jun 2023 23:27:26 +0800
+Message-Id: <20230628152726.110295-7-bmeng@tinylab.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230628152726.110295-1-bmeng@tinylab.org>
 References: <20230628152726.110295-1-bmeng@tinylab.org>
@@ -73,88 +68,88 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhangjin Wu <falcon@tinylab.org>
 
-Based on the old close_all_open_fd() of util/async-teardown.c, a new
-generic qemu_close_range() has been added in osdep.c.
+Current codes using a brute-force traversal of all file descriptors
+do not scale on a system where the maximum number of file descriptors
+is set to a very large value (e.g.: in a Docker container of Manjaro
+distribution it is set to 1073741816). QEMU just looks frozen during
+start-up.
 
-Now, let's switch over to use the generic qemu_close_range().
+The close-on-exec flag (O_CLOEXEC) was introduced since Linux kernel
+2.6.23, FreeBSD 8.3, OpenBSD 5.0, Solaris 11. While it's true QEMU
+doesn't need to manually close the fds for child process as the proper
+O_CLOEXEC flag should have been set properly on files with its own
+codes, QEMU uses a huge number of 3rd party libraries and we don't
+trust them to reliably be using O_CLOEXEC on everything they open.
 
+Modern Linux and BSDs have the close_range() call we can use to do the
+job, and on Linux we have one more way to walk through /proc/self/fd
+to complete the task efficiently, which is what qemu_close_range() does.
+
+Reported-by: Zhangjin Wu <falcon@tinylab.org>
+Co-developed-by: Bin Meng <bmeng@tinylab.org>
 Signed-off-by: Zhangjin Wu <falcon@tinylab.org>
 Signed-off-by: Bin Meng <bmeng@tinylab.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
 ---
 
 Changes in v4:
-- call sysconf directly instead of using a variable
-
-Changes in v3:
-- limit the last_fd of qemu_close_range() to sysconf(_SC_OPEN_MAX)
+- put fd on its own line
 
 Changes in v2:
-- new patch: "util/async-teardown: Use qemu_close_range() to close fds"
+- Change to use qemu_close_range() to close fds for child process efficiently
+- v1 link: https://lore.kernel.org/qemu-devel/20230406112041.798585-1-bmeng@tinylab.org/
 
- util/async-teardown.c | 41 +----------------------------------------
- 1 file changed, 1 insertion(+), 40 deletions(-)
+ net/tap.c | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/util/async-teardown.c b/util/async-teardown.c
-index 7e0177a8da..a038a255ff 100644
---- a/util/async-teardown.c
-+++ b/util/async-teardown.c
-@@ -29,44 +29,6 @@
- 
- static pid_t the_ppid;
- 
--/*
-- * Close all open file descriptors.
-- */
--static void close_all_open_fd(void)
--{
--    struct dirent *de;
--    int fd, dfd;
--    DIR *dir;
--
--#ifdef CONFIG_CLOSE_RANGE
--    int r = close_range(0, ~0U, 0);
--    if (!r) {
--        /* Success, no need to try other ways. */
--        return;
--    }
--#endif
--
--    dir = opendir("/proc/self/fd");
--    if (!dir) {
--        /* If /proc is not mounted, close fds one by one. */
+diff --git a/net/tap.c b/net/tap.c
+index 1bf085d422..9f080215f0 100644
+--- a/net/tap.c
++++ b/net/tap.c
+@@ -446,13 +446,13 @@ static void launch_script(const char *setup_script, const char *ifname,
+         return;
+     }
+     if (pid == 0) {
 -        int open_max = sysconf(_SC_OPEN_MAX), i;
--        for (i = 0; i < open_max; i++) {
--                close(i);
--        }
--        return;
--    }
--    /* Avoid closing the directory. */
--    dfd = dirfd(dir);
--
--    for (de = readdir(dir); de; de = readdir(dir)) {
--        fd = atoi(de->d_name);
--        if (fd != dfd) {
--            close(fd);
--        }
--    }
--    closedir(dir);
--}
--
- static void hup_handler(int signal)
- {
-     /* Check every second if this process has been reparented. */
-@@ -92,9 +54,8 @@ static int async_teardown_fn(void *arg)
-     /*
-      * Close all file descriptors that might have been inherited from the
-      * main qemu process when doing clone, needed to make libvirt happy.
--     * Not using close_range for increased compatibility with older kernels.
-      */
--    close_all_open_fd();
-+    qemu_close_range(0, sysconf(_SC_OPEN_MAX) - 1);
++        unsigned int last_fd = sysconf(_SC_OPEN_MAX) - 1;
++
++        /* skip stdin, stdout and stderr */
++        qemu_close_range(3, fd - 1);
++        /* skip the currently used fd */
++        qemu_close_range(fd + 1, last_fd);
  
-     /* Set up a handler for SIGHUP and unblock SIGHUP. */
-     sigaction(SIGHUP, &sa, NULL);
+-        for (i = 3; i < open_max; i++) {
+-            if (i != fd) {
+-                close(i);
+-            }
+-        }
+         parg = args;
+         *parg++ = (char *)setup_script;
+         *parg++ = (char *)ifname;
+@@ -536,16 +536,16 @@ static int net_bridge_run_helper(const char *helper, const char *bridge,
+         return -1;
+     }
+     if (pid == 0) {
+-        int open_max = sysconf(_SC_OPEN_MAX), i;
++        unsigned int last_fd = sysconf(_SC_OPEN_MAX) - 1;
++        unsigned int fd = sv[1];
+         char *fd_buf = NULL;
+         char *br_buf = NULL;
+         char *helper_cmd = NULL;
+ 
+-        for (i = 3; i < open_max; i++) {
+-            if (i != sv[1]) {
+-                close(i);
+-            }
+-        }
++        /* skip stdin, stdout and stderr */
++        qemu_close_range(3, fd - 1);
++        /* skip the currently used fd */
++        qemu_close_range(fd + 1, last_fd);
+ 
+         fd_buf = g_strdup_printf("%s%d", "--fd=", sv[1]);
+ 
 -- 
 2.34.1
 
