@@ -2,85 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D35D2740973
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 08:33:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A61F740978
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 08:35:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEOjx-0002iL-12; Wed, 28 Jun 2023 02:33:21 -0400
+	id 1qEOlw-00063h-At; Wed, 28 Jun 2023 02:35:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qEOji-0002hI-8n
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 02:33:07 -0400
-Received: from mail-lj1-x22c.google.com ([2a00:1450:4864:20::22c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qEOlu-00061p-I4
+ for qemu-devel@nongnu.org; Wed, 28 Jun 2023 02:35:22 -0400
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qEOjg-0002zj-IQ
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 02:33:06 -0400
-Received: by mail-lj1-x22c.google.com with SMTP id
- 38308e7fff4ca-2b44eddb52dso83313161fa.3
- for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 23:33:04 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qEOls-0003g3-MP
+ for qemu-devel@nongnu.org; Wed, 28 Jun 2023 02:35:22 -0400
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-3fa94ea1caaso5257715e9.1
+ for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 23:35:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687933982; x=1690525982;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=qC/1GiJPfuuKIOYH9GpoitlcBjboxKTENlQqXK5RUaI=;
- b=qQtobIVJv9S5GZA1akR2od2AX88CrH4D/lYGqelS3VnwsIwBtaBxz3EMSmC1OqcQaN
- toTS/oOTAsMCVHlKgWV2AhMewHv7QirzBfb0andM+4I6k6P6Gj2xvEDvV1dJaS8DQGML
- yVesjJwcMGMRxO5P9cOzyPK5RfdY87A0ISWXnLSf8PEpfEQYj2b1r8FZRlxE2heGYYSa
- oiQkDgDzoLFL6YFGaWDoLtJAu5LMJPUvKaMiJqJXKxGUuVqsoDz9uq+XDPxuVrplpdkg
- H50RONCYa6/rzFf6ScRDlVQtm3vKu6fYV/muf5J3mOmiPclJozBSD4VhXNYqz5nJesL5
- zDPw==
+ d=linaro.org; s=google; t=1687934119; x=1690526119;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=GztW//yi2sBePXq0XAR/HTbABRV/qyaeMB+/3zab8is=;
+ b=dd5WBqoMajYAa6ioiZgGH77izx9NWXNUeNEnpE0Q4AetG3pd65Ouz3xaeDt3Mdriay
+ u810zVbjfThIhiTdEN87NpwtPPcjgzIaEfnGBW3DmVZITyAIk0UUEvT/kHWsE0iGePMT
+ Y+yzRsmIZzc7e0RXhwa5Pp/V4XX0dI76dr2Dth1UpyDNB74bmh/rNGAgRnlO76qLBorz
+ /JcMxCZk+5nHHahYpigPtDmzh4QpktH84D1k9+SY0YNKUSY8/PXDGSooJ8EAWrn0oZ7L
+ m614ADhzSWulzMWMkjtwp/WRnUXT5jMPxd5zg/HEzEZibJOJ/bywkhnJ9XtwJ1KF16Bc
+ zx7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687933982; x=1690525982;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=qC/1GiJPfuuKIOYH9GpoitlcBjboxKTENlQqXK5RUaI=;
- b=CCVXVXPKV7wUVzClH29BUryum69nQfUMID76lIvfKeSQ+/qkfRkfAgV1/JxcSYeaaP
- mOXsXCSJQyKcjHlzvhdIRGvf58D5G2KB04YTFgSsB61dhEZYrq2g8ZvhPindA1YTGBMI
- vTAbP9LXxao1na14JKz9Knc1t7nkGPwmTI3xCrJGehuPhP7QoWpuUlygBthOzCXqpHhG
- miA8YQKOGWzvVN/Lbz7KLqyxGzB0DroKmk7RoKliWFSZGcA1uWcBE3dQgFw2TKRCzz5J
- n2FVcisV71IKW8T3LPhT8fHVQRZoaradGyeECHzOmdv26YiWUD9OUW+xU5M9zRJBkTT4
- yWtQ==
-X-Gm-Message-State: AC+VfDz6AVdq1hTJuN7eUL2zdQLNsYyQ68B6BeuBA785TdUJHfbXzk1I
- BHPEvtNfuk46NMTBevfd+YCqXQz0aVhgMg/PCIc=
-X-Google-Smtp-Source: ACHHUZ4SnBarwCAC1JJL2i4KUcSAthpiSqDvb7SlYp3B+HRtGR0CGIaxUnizcaBKM6zY7LQPUHELNw==
-X-Received: by 2002:a05:651c:10c:b0:2b6:a55c:fd72 with SMTP id
- a12-20020a05651c010c00b002b6a55cfd72mr4449500ljb.37.1687933982566; 
- Tue, 27 Jun 2023 23:33:02 -0700 (PDT)
-Received: from m1x-phil.lan ([176.187.207.229])
+ d=1e100.net; s=20221208; t=1687934119; x=1690526119;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=GztW//yi2sBePXq0XAR/HTbABRV/qyaeMB+/3zab8is=;
+ b=CN6kB0f8PYzIvicTipV5YwH89lMyMTCznjWFW8GUy8h4HjryOl0JdRJHPj8Y7jXdAG
+ potuC/rIroChDUIRCXnSzcRwYZOw9bIwk6UV6TLeCnSI7VClxO8H6DrHNwiUkiNfQsvo
+ S33GyXNATrq/dGWW0a2o7HPcRdP1JiXuFwk/JZJDi5RLvAC2xZBdW3LyaLHQDb44RJta
+ Xu6FTEyBKyofjyYPDrNggVNA5t+XxrDt3HjjBwHmgbWqEiGE4xIxTHSVR3fne26SUJLl
+ axNxquf0J5ByAkMXRorGBuWjZnAm9AMIQZmNgqJcgDX/cf1z/LxMzEs8vXRft7v2GHnu
+ 4WDA==
+X-Gm-Message-State: AC+VfDzDqqSacb+Lq9eeNRom6s8kCwG+35L9+94CbaPwJXbSGj4dabvg
+ hvsQ90kBOVR6Jhay+K93C1WZFQ==
+X-Google-Smtp-Source: ACHHUZ4LrgJFIDcTEgbtHNNAPqIH8rGIXOEGMHhG8WDo5Izwl9faZrK54m9Y9OpWFCet5qRu+JWcRQ==
+X-Received: by 2002:a05:600c:230d:b0:3f6:d90:3db with SMTP id
+ 13-20020a05600c230d00b003f60d9003dbmr545168wmo.3.1687934119084; 
+ Tue, 27 Jun 2023 23:35:19 -0700 (PDT)
+Received: from [192.168.69.115] ([176.187.207.229])
  by smtp.gmail.com with ESMTPSA id
- n23-20020a7bcbd7000000b003f9b19caabesm12837214wmi.37.2023.06.27.23.33.01
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 27 Jun 2023 23:33:02 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Bin Meng <bin.meng@windriver.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Weiwei Li <liweiwei@iscas.ac.cn>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>, qemu-riscv@nongnu.org,
- Alistair Francis <alistair.francis@wdc.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 4/4] target/riscv: Restrict riscv_cpu_do_interrupt() to
- sysemu
-Date: Wed, 28 Jun 2023 08:32:34 +0200
-Message-Id: <20230628063234.32544-5-philmd@linaro.org>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20230628063234.32544-1-philmd@linaro.org>
-References: <20230628063234.32544-1-philmd@linaro.org>
+ s24-20020a7bc398000000b003fb9ebb6b88sm4476149wmj.39.2023.06.27.23.35.17
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 27 Jun 2023 23:35:18 -0700 (PDT)
+Message-ID: <c2c09ab0-1f87-6e0e-6c0b-c8347bb9f93f@linaro.org>
+Date: Wed, 28 Jun 2023 08:35:16 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.12.0
+Subject: Re: [PATCH v5 11/19] target/riscv/cpu: add misa_ext_info_arr[]
+Content-Language: en-US
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>, qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
+ liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
+ ajones@ventanamicro.com
+References: <20230627163203.49422-1-dbarboza@ventanamicro.com>
+ <20230627163203.49422-12-dbarboza@ventanamicro.com>
+ <e217dfb9-a4c2-12e3-6053-ef2167f30a05@linaro.org>
+ <997135f3-f9a3-7974-118c-48e8fb1e04d2@ventanamicro.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <997135f3-f9a3-7974-118c-48e8fb1e04d2@ventanamicro.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::22c;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x22c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.103,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,75 +97,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-riscv_cpu_do_interrupt() is not reachable on user emulation.
+On 28/6/23 02:04, Daniel Henrique Barboza wrote:
+> 
+> 
+> On 6/27/23 18:29, Philippe Mathieu-Daudé wrote:
+>> On 27/6/23 18:31, Daniel Henrique Barboza wrote:
+>>> Next patch will add KVM specific user properties for both MISA and
+>>> multi-letter extensions. For MISA extensions we want to make use of what
+>>> is already available in misa_ext_cfgs[] to avoid code repetition.
+>>>
+>>> misa_ext_info_arr[] array will hold name and description for each MISA
+>>> extension that misa_ext_cfgs[] is declaring. We'll then use this new
+>>> array in KVM code to avoid duplicating strings.
+>>>
+>>> There's nothing holding us back from doing the same with multi-letter
+>>> extensions. For now doing just with MISA extensions is enough.
+>>>
+>>> Suggested-by: Andrew Jones <ajones@ventanamicro.com>
+>>> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+>>> Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+>>> ---
+>>>   target/riscv/cpu.c | 60 ++++++++++++++++++++++++++--------------------
+>>>   target/riscv/cpu.h | 11 ++++++++-
+>>>   2 files changed, 44 insertions(+), 27 deletions(-)
+>>
+>>
+>>> +const MISAExtInfo misa_ext_info_arr[] = {
+>>> +    [RVA] = {"a", "Atomic instructions"},
+>>> +    [RVC] = {"c", "Compressed instructions"},
+>>> +    [RVD] = {"d", "Double-precision float point"},
+>>> +    [RVF] = {"f", "Single-precision float point"},
+>>> +    [RVI] = {"i", "Base integer instruction set"},
+>>> +    [RVE] = {"e", "Base integer instruction set (embedded)"},
+>>> +    [RVM] = {"m", "Integer multiplication and division"},
+>>> +    [RVS] = {"s", "Supervisor-level instructions"},
+>>> +    [RVU] = {"u", "User-level instructions"},
+>>> +    [RVH] = {"h", "Hypervisor"},
+>>> +    [RVJ] = {"x-j", "Dynamic translated languages"},
+>>> +    [RVV] = {"v", "Vector operations"},
+>>> +    [RVG] = {"g", "General purpose (IMAFD_Zicsr_Zifencei)"},
+>>> +};
+>>
+>> Personally I prefer using a getter() helper because we can check in
+>> a single place for empty entries in the array.
+>>
+>> IIUC this 13-entries array takes 4MiB (RVV is '1<<21' = 2MiB).
+>>
+>> Wouldn't it be clever to index by [a-z]? Except "x-j"...
+> 
+> 
+> Well .. RVA is 1<<0, RVC is 1<<2, up to RVV 1<<21. I guess this array can
+> be indexed at zero, and then we create a getter() that retrieves the 
+> element
+> we want using ctz32() to find the right index. Something in the likes of:
+> 
+> MISAExtInfo *get_misa_ext_info(uint32_t bit)
+> {
+>      return &misa_ext_info_arr[ctz32(bit)];
+> }
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- target/riscv/cpu.h        | 5 +++--
- target/riscv/cpu_helper.c | 7 ++-----
- 2 files changed, 5 insertions(+), 7 deletions(-)
+Certainly cleaner :)
 
-diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index cc20ee25a7..ab6aa7e3ea 100644
---- a/target/riscv/cpu.h
-+++ b/target/riscv/cpu.h
-@@ -409,7 +409,6 @@ extern const char * const riscv_int_regnamesh[];
- extern const char * const riscv_fpr_regnames[];
- 
- const char *riscv_cpu_get_trap_name(target_ulong cause, bool async);
--void riscv_cpu_do_interrupt(CPUState *cpu);
- int riscv_cpu_write_elf64_note(WriteCoreDumpFunction f, CPUState *cs,
-                                int cpuid, DumpState *s);
- int riscv_cpu_write_elf32_note(WriteCoreDumpFunction f, CPUState *cs,
-@@ -442,6 +441,7 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp);
- #define cpu_mmu_index riscv_cpu_mmu_index
- 
- #ifndef CONFIG_USER_ONLY
-+void riscv_cpu_do_interrupt(CPUState *cpu);
- void riscv_cpu_do_transaction_failed(CPUState *cs, hwaddr physaddr,
-                                      vaddr addr, unsigned size,
-                                      MMUAccessType access_type,
-@@ -465,7 +465,8 @@ void riscv_cpu_set_aia_ireg_rmw_fn(CPURISCVState *env, uint32_t priv,
-                                    void *rmw_fn_arg);
- 
- RISCVException smstateen_acc_ok(CPURISCVState *env, int index, uint64_t bit);
--#endif
-+#endif /* !CONFIG_USER_ONLY */
-+
- void riscv_cpu_set_mode(CPURISCVState *env, target_ulong newpriv);
- 
- void riscv_translate_init(void);
-diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
-index 3c28396eaf..3f5ba2b4ef 100644
---- a/target/riscv/cpu_helper.c
-+++ b/target/riscv/cpu_helper.c
-@@ -1580,7 +1580,6 @@ static target_ulong riscv_transformed_insn(CPURISCVState *env,
- 
-     return xinsn;
- }
--#endif /* !CONFIG_USER_ONLY */
- 
- /*
-  * Handle Traps
-@@ -1590,8 +1589,6 @@ static target_ulong riscv_transformed_insn(CPURISCVState *env,
-  */
- void riscv_cpu_do_interrupt(CPUState *cs)
- {
--#if !defined(CONFIG_USER_ONLY)
--
-     RISCVCPU *cpu = RISCV_CPU(cs);
-     CPURISCVState *env = &cpu->env;
-     bool write_gva = false;
-@@ -1784,6 +1781,6 @@ void riscv_cpu_do_interrupt(CPUState *cs)
- 
-     env->two_stage_lookup = false;
-     env->two_stage_indirect_lookup = false;
--#endif
--    cs->exception_index = RISCV_EXCP_NONE; /* mark handled to qemu */
- }
-+
-+#endif /* !CONFIG_USER_ONLY */
--- 
-2.38.1
+> And now, since we're using a getter, we don't need to export the whole 
+> array
+> anymore.
+
+Yes.
+
+> I'll see how it plays out. Thanks,
+
+Thanks! (and sorry for jumping late at v5)
 
 
