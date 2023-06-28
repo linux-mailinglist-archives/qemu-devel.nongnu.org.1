@@ -2,68 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B2B37411CE
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 14:55:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FCA1741238
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 15:22:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEUgw-00011A-FU; Wed, 28 Jun 2023 08:54:38 -0400
+	id 1qEV6u-0001TG-PT; Wed, 28 Jun 2023 09:21:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1qEUgt-00010d-9H
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 08:54:35 -0400
-Received: from mga05.intel.com ([192.55.52.43])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1qEUgq-0001El-KY
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 08:54:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1687956872; x=1719492872;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=dJs3xZv9X69YwKkCoR7HTZY16sKT6xVllxuCAUDWTJU=;
- b=YIN7lVt/KA16efLCWk2AywO7e5qcPTE5tFKBz5L7OTjzm2rmw8WbqHG2
- eTY1FDO4mXnVlcn1mSl6rlDotepGva+SoKUcFtltukDItKcd+YbhxjHtm
- z+u3+Ku4NtD/1u5Y7+o8KCqrgYt26EMqCh/eeLcnTmnwfCs7rBzPTxzT/
- pfnEfFaC4vBw+YgQRcRa1uMEEmPZOXXC5uKmoU5GOJtzxzZiIt9wLwgnd
- YankM055wqNEcI1WsTKjrE1ksYP3KXhraq3fSuhaGTKMldW5RKsgpfW08
- PFB5+3+Efs93a/nCQ9DUGWUes+oj7Y4Jb9HbhPyqbter0dhos9A4rfszB w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10754"; a="448217857"
-X-IronPort-AV: E=Sophos;i="6.01,165,1684825200"; d="scan'208";a="448217857"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
- by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Jun 2023 05:54:29 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10754"; a="711041098"
-X-IronPort-AV: E=Sophos;i="6.01,165,1684825200"; d="scan'208";a="711041098"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.28])
- by orsmga007.jf.intel.com with ESMTP; 28 Jun 2023 05:54:27 -0700
-Date: Wed, 28 Jun 2023 21:04:26 +0800
-From: Zhao Liu <zhao1.liu@linux.intel.com>
-To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Cc: Sunil Muthuswamy <sunilmut@microsoft.com>, qemu-devel@nongnu.org,
- Zhenyu Wang <zhenyu.z.wang@intel.com>, Zhao Liu <zhao1.liu@intel.com>
-Subject: Re: [PATCH] i386/WHPX: Fix error message when fail to set
- ProcessorCount
-Message-ID: <ZJwv2monGov2GQEJ@liuzhao-OptiPlex-7080>
-References: <20230529124331.412822-1-zhao1.liu@linux.intel.com>
- <1f4b504e-43f2-5adb-8d93-de20bd577e37@linaro.org>
+ (Exim 4.90_1) (envelope-from <liweiwei@iscas.ac.cn>)
+ id 1qEV6m-0001Sw-JV; Wed, 28 Jun 2023 09:21:20 -0400
+Received: from smtp80.cstnet.cn ([159.226.251.80] helo=cstnet.cn)
+ by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_CBC_SHA1:256)
+ (Exim 4.90_1) (envelope-from <liweiwei@iscas.ac.cn>)
+ id 1qEV6j-0006nJ-By; Wed, 28 Jun 2023 09:21:20 -0400
+Received: from [192.168.0.120] (unknown [114.95.176.74])
+ by APP-01 (Coremail) with SMTP id qwCowAD3__O+M5xkCJWJBQ--.52066S2;
+ Wed, 28 Jun 2023 21:21:03 +0800 (CST)
+Message-ID: <dfc222e9-905d-2f55-7451-0180db4e6f82@iscas.ac.cn>
+Date: Wed, 28 Jun 2023 21:21:02 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1f4b504e-43f2-5adb-8d93-de20bd577e37@linaro.org>
-Received-SPF: none client-ip=192.55.52.43;
- envelope-from=zhao1.liu@linux.intel.com; helo=mga05.intel.com
-X-Spam_score_int: -42
-X-Spam_score: -4.3
-X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Cc: liweiwei@iscas.ac.cn, qemu-riscv@nongnu.org, luruibo2000@163.com,
+ alistair.francis@wdc.com
+Subject: Re: [PATCH 1/2] target/riscv: Remove redundant check in pmp_is_locked
+To: Ruibo Lu <reaperlu@hust.edu.cn>, qemu-devel@nongnu.org
+References: <20230628103651.55194-1-reaperlu@hust.edu.cn>
+Content-Language: en-US
+From: Weiwei Li <liweiwei@iscas.ac.cn>
+In-Reply-To: <20230628103651.55194-1-reaperlu@hust.edu.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID: qwCowAD3__O+M5xkCJWJBQ--.52066S2
+X-Coremail-Antispam: 1UD129KBjvdXoW7JFyUKw45Jw45ZFy5Cr45ZFb_yoWxtrX_Gr
+ W0gF48XryDW3WjyFy8Cry5Jw1xKFykG347Kayftw47G347WrW7Xa4kKF95Jryj9F97GFs7
+ ur1fAFy7KrnI9jkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+ 9fnUUIcSsGvfJTRUUUbckFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+ 6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+ A2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Jr0_
+ Gr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
+ 0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
+ jxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr
+ 1lF7xvr2IY64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7Mxk0xIA0c2IEe2xFo4CEbIxv
+ r21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxV
+ WUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI
+ 7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r
+ 1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI
+ 42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x0JUywZ7UUUUU=
+X-Originating-IP: [114.95.176.74]
+X-CM-SenderInfo: 5olzvxxzhlqxpvfd2hldfou0/
+Received-SPF: pass client-ip=159.226.251.80; envelope-from=liweiwei@iscas.ac.cn;
+ helo=cstnet.cn
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.089,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -80,38 +75,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jun 28, 2023 at 01:59:56PM +0200, Philippe Mathieu-Daudé wrote:
-> Date: Wed, 28 Jun 2023 13:59:56 +0200
-> From: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Subject: Re: [PATCH] i386/WHPX: Fix error message when fail to set
->  ProcessorCount
-> 
-> On 29/5/23 14:43, Zhao Liu wrote:
-> > From: Zhao Liu <zhao1.liu@intel.com>
-> > 
-> > 003f230e37d7 ("machine: Tweak the order of topology members in struct
-> > CpuTopology") changes the meaning of MachineState.smp.cores from "the
-> > number of cores in one package" to "the number of cores in one die"
-> > and doesn't fix other uses of MachineState.smp.cores. And because of
-> > the introduction of cluster, now smp.cores just means "the number of
-> > cores in one cluster". This clearly does not fit the semantics here.
-> > 
-> > And before this error message, WHvSetPartitionProperty() is called to
-> > set prop.ProcessorCount.
-> > 
-> > So the error message should show the prop.ProcessorCount other than
-> > "cores per cluster" or "cores per package".
-> > 
-> > Cc: Sunil Muthuswamy <sunilmut@microsoft.com>
-> > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-> > ---
-> >   target/i386/whpx/whpx-all.c | 4 ++--
-> >   1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> Patch queued (fixing the unsigned format), thanks.
+
+On 2023/6/28 18:36, Ruibo Lu wrote:
+> the check of top PMP is redundant and will not influence the return
+> value, so consider remove it
 >
+> Signed-off-by: Ruibo Lu <reaperlu@hust.edu.cn>
+> ---
+Reviewed-by: Weiwei Li <liweiwei@iscas.ac.cn>
 
-Many thanks!
+Weiwei Li
+>   target/riscv/pmp.c | 5 -----
+>   1 file changed, 5 deletions(-)
+>
+> diff --git a/target/riscv/pmp.c b/target/riscv/pmp.c
+> index 9d8db493e6..1a9279ba88 100644
+> --- a/target/riscv/pmp.c
+> +++ b/target/riscv/pmp.c
+> @@ -49,11 +49,6 @@ static inline int pmp_is_locked(CPURISCVState *env, uint32_t pmp_index)
+>           return 1;
+>       }
+>   
+> -    /* Top PMP has no 'next' to check */
+> -    if ((pmp_index + 1u) >= MAX_RISCV_PMPS) {
+> -        return 0;
+> -    }
+> -
+>       return 0;
+>   }
+>   
 
--Zhao
 
