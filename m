@@ -2,71 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBA057416E0
+	by mail.lfdr.de (Postfix) with ESMTPS id 281EE7416DF
 	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 18:59:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEYVU-0007to-O0; Wed, 28 Jun 2023 12:59:04 -0400
+	id 1qEYVU-0007tv-Su; Wed, 28 Jun 2023 12:59:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <tom.lonergan@nutanix.com>)
- id 1qEYD3-0006k4-MJ
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 12:40:01 -0400
+ id 1qEYD0-0006jO-Bw
+ for qemu-devel@nongnu.org; Wed, 28 Jun 2023 12:39:58 -0400
 Received: from mx0a-002c1b01.pphosted.com ([148.163.151.68])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <tom.lonergan@nutanix.com>)
- id 1qEYCy-0002Hb-EB
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 12:39:59 -0400
+ id 1qEYCx-0002HW-Hm
+ for qemu-devel@nongnu.org; Wed, 28 Jun 2023 12:39:58 -0400
 Received: from pps.filterd (m0127837.ppops.net [127.0.0.1])
  by mx0a-002c1b01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 35SEKA9L024880; Wed, 28 Jun 2023 09:39:46 -0700
+ 35SEKA9M024880; Wed, 28 Jun 2023 09:39:47 -0700
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
  h=from : to : cc :
  subject : date : message-id : in-reply-to : references :
  content-transfer-encoding : content-type : mime-version;
- s=proofpoint20171006; bh=aYh5AfEbSLb0tKyGZew8JB6Cib5lFwEpdviHXBqrLDc=;
- b=xXR+vXAwsWg0HHNnTmkIw2VszEq3vkwgsA0+gpMbRmzvTCK7/O5hBRGQyHKveJjCRtmy
- fFJ3zn50UhLZKtbN7prcxkTyL1+2uV5iNlarbFigBizXUZ/QxnuOZBG8fnAkwrzr+2zb
- HAZ5EGA4uf+3K01BCB2BhioPNbPVWDhyBRLxXQVES+pc44O2jumJfPk/IB8xOWR3/2wt
- GI0jJL8QetoXvW5shKhnruOt4D3hbrtETDucp5l0xZsc06SNDVAADNfQgSeDTSbknkN5
- V6TepyGNhceoYRmurtzYPDW7PWr6jXYP7yX2wk9PxqDnamFybb6AMUQ+VYG+hPr9Mhpk ew== 
+ s=proofpoint20171006; bh=YM0K8+oAOqiDWsJILhfiX5Y1VfLZ7WYAbuHhntTtJY0=;
+ b=CglPM03mTi9PHusSRUsGax+r47diNttgjIG2guThAc/4yG6TVtE0U/rdpVdSnRf4mezZ
+ hYZzzDiVbU1VSqdSlc1KEOwqg1yKm4qrepHXCtEzmaSuXTt420YJAhIg9anXrmk8UW/G
+ w3Wh5XOX5C9lAXkLNSpotrhboj/olxMWQDdU3H1f14OKGcC4W6NlE3jec3uYU2FX2abM
+ U3Rhy6tMPtC7kuEPuJxYVPDc1FBuMMtTZ7zP20yRnGT0r3Ws8S5CAsLSXmSefh/E8+Uf
+ xZjzlRHKURtcQMMi7lGKnY7Dzu0u1Ru+DpKwDJ/pWlNiG86ZJyuVXLi1mZVlx90YLzVt +Q== 
 Received: from nam10-mw2-obe.outbound.protection.outlook.com
  (mail-mw2nam10lp2107.outbound.protection.outlook.com [104.47.55.107])
- by mx0a-002c1b01.pphosted.com (PPS) with ESMTPS id 3rdvd609ec-2
+ by mx0a-002c1b01.pphosted.com (PPS) with ESMTPS id 3rdvd609ec-3
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Wed, 28 Jun 2023 09:39:46 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=fThpJOsoYZMItW4580jEKI7/ifS4aGdQc9+yjS6yq3mTzgrBwTV/4zEg3p/ZCqvD/hLc5xE88CXR39cWX6R960JSRi8RY9hmcs26CodyBQOsA4dVIjrVITkq+aMkk63xEF7T/Za1ixWKbrPU+U++KzbAo8J9y7y0M6TogEHFpMiDNo+7FEtcFpKkQixTxRx5N1UeiNHcCV04ZgpCPtpY6By6PYoONITqs3Xr5tMSeLbHly/Xf5shf14BYj0aFt8GbxLYuRV49lYHIR5pafNmW3GSnuL+wTt97tBL8ZSjXaRTfRcCFRKuNQ0yS02SQgHK2fMeHPh2VWWJBfQKWCMq1w==
+ b=C7u0kO7lm7yl0MTUsEkmB8CP6mKSfwVDKvr2WET9DcAlxfNGsuPISMCjGmrPRrh4ePJPc8QRyhcFJIOzxcg+yzExQTkPTUuFxqZPhptJA4xAUYs9FMpIAbepkpIe0DJP6ZIDjP/gVVrNbdS2UNa6i9FB46KWiQdDdmb+x4LhawA38u2nhn4xwa796drvPku9X2KGLd5CDsTu07HNPb3gaC+rEj15/9bOrWw7e8Hx2MVOliBMvLdQVVf/3S5gSLTvAsHKroBPePkx7s8Dt2s2+NriJDOd5yoqkWQn1izvrde28/04vRzCakoeoeyTbOucp+0VxAzHLQznQsZzuGNEMg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=aYh5AfEbSLb0tKyGZew8JB6Cib5lFwEpdviHXBqrLDc=;
- b=EDlGRXjWlD+PKEfa6FJyXiJSb993uUOpxWINsXO4StNsai0u3iS7tTHpFtEUflY45eBUhb6+C+LHdr4sVNcVKVVKwm6XslOTSjmq6g2C9T8/6268MN+8YFo9OIrWFwN73a0A3O4pCdFbViUkhxIb0T+AIN1V8q7428MYitcHNwuRyncCT1p8izC5X2q93AV2c3qxpt1JL7rPnSQ+bqvk3uhcreoE+KQpS6dPRB7kh0Fe5v9sBhptQFM+R++xTzrpaYCvDl3R+Thjx4d8kaTzg4wO2LksZ3G8UUlSu4JcN6Gg/2YQedBEBrJJohxF2GiiRUQKmnU3OGIMZBaDCyHr7g==
+ bh=YM0K8+oAOqiDWsJILhfiX5Y1VfLZ7WYAbuHhntTtJY0=;
+ b=QymDiD7geFm5wWHVLINNxV2c5KBmEpURedjLcZRJiaMUheJUj6GUl0A4oVrbLqMwUxxBUJNOKiBP6Uf+/to36FnTiv/WByLlUbG4+6KApcQMlrOHERjZnyf3wTo20hwnDlMqWE7/B4ZLMkf8RNA4hGaz5H6dH976MRmkfLZDe58mgkfEvagEPFWueCaE8uJ6URkSOT3dD3G+XZ73haENInxJZlMbIFs+AJBUaK0o7TAV28dHm/yRt+EoqgLS6Osw8hsm2evaBNPid4EeSNzBMJwMfGqE4eRtZ38seNLZo+9z8ofPWRgG1VlK6pnOWiJpYVQ+kTmjoL9b5Opzk/cHLg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nutanix.com; dmarc=pass action=none header.from=nutanix.com;
  dkim=pass header.d=nutanix.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=aYh5AfEbSLb0tKyGZew8JB6Cib5lFwEpdviHXBqrLDc=;
- b=GnpXUwgHtC+fKCgJd9aXmJdjdcv+OisndHkdKWMxr+gVuwYCaNMyd2zHP87a9L6onx2YO+yr3f5v0Z7VIeCWBxolB4tm+onKHsT6HHBoDYKOenL5sywhw4TMILyO3SU6qdGbINA9tDH+pLlU9oFHGMGnJFzu6Pay8oTnMl+xe3dzdVZKAHCU3Y5KmwFWiSOkh3AI2FVH/3F5CYv/0B+uKIkqRjQTDbhytyYq2tj6A41sWDARNv1kp9ZbBtJcYXm7zLmG9V+CcOva/K4FQsGOcM02kF7tkAevkU/ouiVNkM5vXIvLeRVuE8VsAoi1nmKHpwA4xWrx2rOdJATdiJHF5w==
+ bh=YM0K8+oAOqiDWsJILhfiX5Y1VfLZ7WYAbuHhntTtJY0=;
+ b=Lg0m46ZBu8+z8Dr72RoU1xTRvSyh4uf+0O2AoEh9vJaxVP3iAsyuWvofgJPl5DwkvqX0jnojwYLWqPxg9Xsk/cZjYik9AtuhjB+T4d6PJtzpqkbbFbyFub9+bM5EJ6RHL0bvJXDYkpmqBhmUVPCDVsNsEmnoOWZ1sI4DSaViGgd3sXNIYNL6oB1KtgI1f+dmtxALKSiqGxhcfe0HTYAeHet88/2AplhhqJVCbPLW4cdun+CZiE31c5g3tAxayWIdUgp1p4vm9YwxFLrTYkGcGpEMZesyTh1CIH65IhshWA5hDyRL8Xz/ufgU9jMttnaE43mHfdXjVZJtqVVEnu2New==
 Received: from DM6PR02MB6123.namprd02.prod.outlook.com (2603:10b6:5:1fd::20)
  by PH7PR02MB10061.namprd02.prod.outlook.com (2603:10b6:510:2ec::11) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6521.23; Wed, 28 Jun
- 2023 16:39:44 +0000
+ 2023 16:39:45 +0000
 Received: from DM6PR02MB6123.namprd02.prod.outlook.com
  ([fe80::4bce:9f20:28bc:8e93]) by DM6PR02MB6123.namprd02.prod.outlook.com
  ([fe80::4bce:9f20:28bc:8e93%7]) with mapi id 15.20.6544.008; Wed, 28 Jun 2023
- 16:39:44 +0000
+ 16:39:45 +0000
 From: Tom Lonergan <tom.lonergan@nutanix.com>
 To: mst@redhat.com
 Cc: raphael.norwitz@nutanix.com, qemu-devel@nongnu.org,
  yuanmh12@chinatelecom.cn, Tom Lonergan <tom.lonergan@nutanix.com>
-Subject: [PATCH 1/2] vhost-user: Change one_time to per_device request
-Date: Wed, 28 Jun 2023 16:39:26 +0000
-Message-Id: <20230628163927.108171-2-tom.lonergan@nutanix.com>
+Subject: [PATCH 2/2] vhost-user: Make RESET_DEVICE a per device message
+Date: Wed, 28 Jun 2023 16:39:27 +0000
+Message-Id: <20230628163927.108171-3-tom.lonergan@nutanix.com>
 X-Mailer: git-send-email 2.22.3
 In-Reply-To: <20230628163927.108171-1-tom.lonergan@nutanix.com>
 References: <20230628163927.108171-1-tom.lonergan@nutanix.com>
@@ -78,57 +78,57 @@ X-ClientProxiedBy: PH8PR05CA0012.namprd05.prod.outlook.com
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: DM6PR02MB6123:EE_|PH7PR02MB10061:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9785e7e0-e1e8-478a-ec7d-08db77f64755
+X-MS-Office365-Filtering-Correlation-Id: 154811e0-295c-4ac1-d259-08db77f647be
 x-proofpoint-crosstenant: true
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: ivjDnqHXeVXnFUZvfbgT+mKLomxHrT3aZVDnUYKANKHPkgl1PC97UbxaSk3Ah2KONuYB/kIsSQ/hhBCWp9FP4Q3ibQvzcSW99cveIvy2CNo6c3zFwvAa4FShN0MeyRcmpzVJR6Y8xyHUUPji/g4uoQ2a3v/9AUVBzX3f8kA+9ymUWnTb9dwXNanWB6kunm4GXTc6C9Cd27eSuORngvv59eCLDXYuvaw7eTAV4NcNwo9eHrrF1OdwWq3fRHKKtBzaMN/gONHpBjN2szvATAxBGCjvfBDdErgTjBkGQjBSnfNDJIcd8LvYyDdQhW6hZSiPeEDNb3L2gIdhUzGOIiQijMx3UZswRWVEe7xMvAG2L12KeAEGeSxMKuSVnuEJHjJAOLClla92k1kaVqQDclmHrFi9pRefrkpbp/wOGuywtUtXTB40ppwWfnmtMo+PYK3tTZQa334upAfGdZc25Vn96nf6dzNXhVVTCIaw2iAaqONxz8eBOzSZn20k0g5lQPhBheymTAeOnE2gOgA6Fjf+U0975InddjjngMigBPeI2gFRZa4W2pahFJ2vBx9DTwDF7TAeRGm3TRl7ndg88BGlNs2+da48zxQSaZMIUHFRalRP/LTceC6x4Z5YhYGX9MZu
+X-Microsoft-Antispam-Message-Info: IPpQ7nxfr7Zu+0Rcl7af7KB5DJG92hD6rXyqS7kB++jfgJLEHN0MTO1W5hoBd+NySA0HmjhaTfN5uHUJRv2fbvJ+nGCuEY86AZoVv99lzix9e/Q7e0K44JqAt5uQMbD7EK1E3Y+FpYvF+GliRF7kZX2ut0Jp+rG0j9nwBOM2MCCasGFtwfe0kOs/yXVIpMxhYUqRzWJOIkjXrYn85JgvHuEZJu5pX8ieQy94vE2LkJIFEpE/ALJOK3p6oDegGs9dg4Uyqf5schZrv6NKcWFUDOXZbUpVQT4WAcGOZ18sT8Qm+J7THlnmrNCQAr7d9m5pKhmRjnpQU7JU23b5hxtbCWGqc2YopMEtoR8CypY3/0NntN5Km9gppCjgKUOrRF0pWq7sUILBkOtfJgS8FmoxRr2SaGZBPGG4+C4aMVRG2O2kooftdk2bE1UFj2hs6MIi4qz0CSY579/rul7eZqF6yCi2XwddlG9DRPSW7r7CjFngTbITr1jtu+uh3tzq9HN8Hev14RcFl3zX1IX4TFQjZWTYXzCKIBYu1KECwqwjbUkYNi9h6Fa2mhKM8V9YmTOWxut/99dID/mFd2HxGYjV2jNovuJHTorGR/cHakkk9YEY3q8Yl2NTyqNGXjSL3qqF
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:DM6PR02MB6123.namprd02.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230028)(396003)(366004)(346002)(136003)(376002)(39860400002)(451199021)(2906002)(6486002)(6666004)(52116002)(83380400001)(38100700002)(107886003)(186003)(38350700002)(6512007)(2616005)(6506007)(1076003)(86362001)(966005)(41300700001)(478600001)(316002)(4326008)(36756003)(66476007)(66946007)(6916009)(8936002)(66556008)(26005)(44832011)(8676002)(5660300002)(4444003);
+ SFS:(13230028)(396003)(366004)(346002)(136003)(376002)(39860400002)(451199021)(2906002)(4744005)(6486002)(6666004)(52116002)(83380400001)(38100700002)(107886003)(186003)(38350700002)(6512007)(2616005)(6506007)(1076003)(86362001)(41300700001)(478600001)(316002)(4326008)(36756003)(66476007)(66946007)(6916009)(8936002)(66556008)(26005)(44832011)(8676002)(5660300002)(15650500001);
  DIR:OUT; SFP:1102; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?yRXPc7KVntE6Vm/vWDC2qs7+2x1hlBxX995yHty727qfTDR/C7r4oIjs+vYu?=
- =?us-ascii?Q?PYKVnDsdU79t2NzWVp1f46uZszrrR8XdsaTly/UUsaCpXvj8+ktSqy4pJN+Q?=
- =?us-ascii?Q?sUz3cIMuzGkKukiO1niuBE4rkcEzkzKLiwhd4y/wEJ48P8Z5zFxnIGYA1uFV?=
- =?us-ascii?Q?qzzHBdL8ekWGk4mSZkRC72EWAoOuO8w3UkXkHejFX0jZ9eVXW7LERBMopn+v?=
- =?us-ascii?Q?BhHN2P8zJqfqdXwlT6dJCgtkeDM9Kn1HRaL9sZm27vSxSmZ8oTui9loUukEA?=
- =?us-ascii?Q?YCxTJRwOvv8WpZuuwAo/oiOKmCgkxww6iAAUYGDCczXkUmjvFzkuUl6gHfVq?=
- =?us-ascii?Q?/5IbZUJapnQFPwlF6xHdhPseewYTSSwLSfNqHItPxVgMcbVwx1vbJG8Hvy2P?=
- =?us-ascii?Q?6Sjc8X1sY27o5xY19KEu72EmmjLoMhDo3fcr8/ju7dhOORwrlVYeOvRx4frF?=
- =?us-ascii?Q?JcrNlMws41hp7NXS6RUQ4aF7LOvh7GQDQpp5jKjYmZ7QKI+QE/MAQxPkSklA?=
- =?us-ascii?Q?hXZI7i3hat4RAxWhLN+8udYufa2+TQs2J4Fpn+jxyxqGsu3i7sGpOQfdVcfe?=
- =?us-ascii?Q?vbGfJq5bnFWHFuZbMF0NdS89ViBQUhxtytZX90CqD9riL13YRpnXBoK9RcHu?=
- =?us-ascii?Q?e1vIAzvd9Iscl/RQ3c+VnyxgRDolrK0AG4nbiRz2wQwvxpJWInKSKUN4HuFc?=
- =?us-ascii?Q?QsucaknKI8ywmJMLrIads7xTGQNDhj8X3Gqmi6+hNfg5suynmzmRdmmFUpji?=
- =?us-ascii?Q?8NUw12l7pbvfRc4/GqepNYL32KYv2+mEIBUQru657vdJsce/dgnF1pkRYfBn?=
- =?us-ascii?Q?I5wqDkeAHmlQXJKE1vfZgtlLJp5K+1McJOqt2f0lmPR2F0iPGziX9lLkafnH?=
- =?us-ascii?Q?AcLNneH37GV+VFoTpxMVXA0W9+PK+wYyZoN1IhjoApsHo3IWefNiLTg6GFfM?=
- =?us-ascii?Q?IOTMlV/BvehyQvBHP+FsvJ4JIXVxO2NuxTDxisAz0eh/5y5Uz84rhEsZvbc5?=
- =?us-ascii?Q?a5NCn35Xnp+GOTQn6Bxf6JNp5rAgSzyKYK64Ns3b7UQR++m5XoeqnazNcYLJ?=
- =?us-ascii?Q?qizli6b2fZQKoeV6m8kP+CDoaXmom0JzYfLsRtC1CszdDRiDeYYNqGcIr/+E?=
- =?us-ascii?Q?OuVmjciDGwEYtqIKYrqIogEE/wI99+yf+hoyV/gIyus6werCwekVKWx2UYTd?=
- =?us-ascii?Q?H7F9EGdsxmi1Y6nyMft7fDgjf7UDzGOMEKnyYdH2PhYY9B4xj25+zncLKqXm?=
- =?us-ascii?Q?KPCZnU/4mdd1ohi7jHpzmRXqmWlOYL6P3S/LXpJ2sG//mLAfKMZTT22Xw6A1?=
- =?us-ascii?Q?B1up0eaSnHAm+CuNgJF2AdiatXE2fLelvNHazCByoxDp2LGlBLvm15o6opAJ?=
- =?us-ascii?Q?/iJBC/xgUAJTN/YAaS7vG1BcyqWKRlhhG7t7RW5ExWc+3pe91bWXPAXWcTPV?=
- =?us-ascii?Q?f0anWMewCxbZvxnjcBIquxVXs7BZu08aozYZUDyX/1uTjyBsYCmmJoWh2moU?=
- =?us-ascii?Q?s1/r6DuhLe32/k7i+3ihtIAO6WwYMU0lrfjimrHLTKZEJnH6sGtVKIsFPPeL?=
- =?us-ascii?Q?8sF+upqwXvfmVnsSH88RFYCezVKkeAjzsfcPaqDnmFBpPuGDA1r4wflvSMIr?=
- =?us-ascii?Q?CA=3D=3D?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?DcXzOeTM/6t7FPm8NhwNw7OY8v2V5yP++CVJLGD4QsOjHG5QG0AI2ByyTFM4?=
+ =?us-ascii?Q?w7fhWaGjhHgUHB3kl8/sXkOquLpxreHSKRIStDh5QqVaJ0QGqEgCseU6paeR?=
+ =?us-ascii?Q?ASDHfOaNVOKtkWofPbJnnxQJQMnA3P2GsGDN5uV1rIOsFQYFA4mSvnM7OoKl?=
+ =?us-ascii?Q?9CNb+Vbdo+Q26fxH+RIt/r1hmKeOH+Pzfv3G/x5K8lNL22sRWwE8U+CJsU2Q?=
+ =?us-ascii?Q?vrbFg4mPEPMqS+kdb7GfxcAh0cVE6Ubk7XTRpdUC1UulrTlnFvLKn51sa8z1?=
+ =?us-ascii?Q?Omt2bpRBV/AGvVeqku0HWDnDegPKkB5ZF5i/VpMF1TqmK5doBnP3pUaQPE7b?=
+ =?us-ascii?Q?vsJvAEigo7dX+PcJEhl1wIBZJIYWYJ045qIk/bDXW/uPdX0IT5k4jGo8aodK?=
+ =?us-ascii?Q?5pADS+3KU/a0Hoj6zuQ72Gm+eRUdV4hWH1uajbxVytOJByWNAUU8uzvXygbv?=
+ =?us-ascii?Q?j0yxkUB3fDppAyudM0bZ6v403FVvkCnH4ZxkmtZ6NfEyURXg5XJtBXJvXGvt?=
+ =?us-ascii?Q?Vrz+2AQELZOCNBfII17L8aIOAuvBrntMdNENj09xYYuFoNTiww1ZwC/1qFYk?=
+ =?us-ascii?Q?5yA8En5OBnKg/QOpw8VLKMs92WPeMNfsiKZxIE6is6H7RNyFsfORmPP0jNx6?=
+ =?us-ascii?Q?3cnGAZk/BowI91RT8BnTiCgDCY8UnRUCxNATDHg4lWhocs1MipYOeHQ4Rujp?=
+ =?us-ascii?Q?meC41gJTJZnt0WbI0kOH0EcNcboD5qdohyVa+eyjJTwcL8IreEP2JZ6sxy+2?=
+ =?us-ascii?Q?YxbiIK/TjTtQ76JrLv6MpKe1+a91IYPaAwLGbs8dKOCUyV7hAwvscoHsqj54?=
+ =?us-ascii?Q?25Pgp8ABlfvcx19JviZlttSL8t7BhCOd7MRJZXjHzAFJjUOO4xejTYXOcpSI?=
+ =?us-ascii?Q?9+LN4azgt6UzfYoqY1U9l4UtcSP02Pf0FDW6oNmftb5jnR4cc71SH2gJWsLG?=
+ =?us-ascii?Q?7Q+O95YmUMmNdJ/uaxh2+K5rJK8tHLUlx2RjyUqcnQs6zcCx0HenY5+I0wwG?=
+ =?us-ascii?Q?zvTH7+gGRKwWT5ICm2GbVwmNH5WCqZesOSNZOESKsfhb6ZTdVQKHMmYnyb44?=
+ =?us-ascii?Q?J2ItT/liX98SE1VvzcES+EaZ3nZlK6QaH6gkqdZO5amoBrcaq2Bjy93Tq8MJ?=
+ =?us-ascii?Q?aMbrBxOvvpUMrLdzdlsStp15Aa1GENh+APsXr7LRgrSGHuMaq4sV5YPlN/Vr?=
+ =?us-ascii?Q?vXtraKiVJPz6mXMncl6xUfuAj0nlrtV0pluLtrfzNukap67q7/rmGafmU7Ok?=
+ =?us-ascii?Q?YQ4U1XQ85N2kkM6/ahG6DppNkaea2pZMCcXq6AbhLvgGmytx7VvxMWYgJt7h?=
+ =?us-ascii?Q?rFJ8XAiKpOGWsppr7MSeLNLn/wqVXKxfrR0k0jsSwd++RVtvrMGn44p7uSB9?=
+ =?us-ascii?Q?XtvBE9dgC3IGYb+LvkAkIM3B2HHkucx9YHyFS9Qn5s+I7HPfUjkpHqaO+oWi?=
+ =?us-ascii?Q?rwm/bqLD+YyrFDWmFTWTcOVZM86u12CKg3jS6s72oCL08jWnQ1yS5KEoA8qs?=
+ =?us-ascii?Q?Wv+l3Fn0/FrAfhZJoyqBks6P49/dlJbHS+rqTfI/xeXI6hSmezRvq87tOLMP?=
+ =?us-ascii?Q?87kQUxOnZ6RxOG0J3nQsDC1bJt9zY2dSCLQ6tll/GS6yBMDDZDysQdECiSOn?=
+ =?us-ascii?Q?iA=3D=3D?=
 X-OriginatorOrg: nutanix.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9785e7e0-e1e8-478a-ec7d-08db77f64755
+X-MS-Exchange-CrossTenant-Network-Message-Id: 154811e0-295c-4ac1-d259-08db77f647be
 X-MS-Exchange-CrossTenant-AuthSource: DM6PR02MB6123.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jun 2023 16:39:44.6790 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jun 2023 16:39:45.4176 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bb047546-786f-4de1-bd75-24e5b6f79043
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: VLgHfhpbP18TQ8j5Sbh4MklnLdc7m9GSc4Op54ZHELUYCHKJC4gGJqgxtFLAo2kPr1NQUjC88waamZOqlkOsyu3Jp/4uhtnKhaCj35JKAIM=
+X-MS-Exchange-CrossTenant-UserPrincipalName: ZNLHGRI1uyxqcts6XjrMe3wqp17eVHlcPQ78VT0brLZSC0NRzOveI7YhQfar6D7uNByrRwLJkPnci2KP1pMPDNQjWpwlpWaBTBzEOIaq+Nk=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR02MB10061
-X-Proofpoint-GUID: m_Bdn1uUCsA-w2oL8PL5jL4j0epEWsj3
-X-Proofpoint-ORIG-GUID: m_Bdn1uUCsA-w2oL8PL5jL4j0epEWsj3
+X-Proofpoint-GUID: 7XEAsxBMpttnaOLqZgDS0bHmJV-W6sqx
+X-Proofpoint-ORIG-GUID: 7XEAsxBMpttnaOLqZgDS0bHmJV-W6sqx
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
  definitions=2023-06-28_12,2023-06-27_01,2023-05-22_02
@@ -158,65 +158,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Some devices, like virtio-scsi, consist of one vhost_dev, while others, like
-virtio-net, contain multiple vhost_devs. The QEMU vhost-user code has a
-concept of one-time messages which is misleading. One-time messages are sent
-once per operation on the device, not once for the lifetime of the device.
-Therefore, as discussed in [1], vhost_user_one_time_request should be
-renamed to vhost_user_per_device_request and the relevant comments updated
-to match the real functionality.
-
-[1] https://lore.kernel.org/qemu-devel/20230127083027-mutt-send-email-mst@kernel.org/
+A device reset is issued per device, not per VQ. The legacy device reset
+message, VHOST_USER_RESET_OWNER, is already a per device message. Therefore,
+this change adds the proper message, VHOST_USER_RESET_DEVICE, to per device
+messages.
 
 Signed-off-by: Tom Lonergan <tom.lonergan@nutanix.com>
 ---
- hw/virtio/vhost-user.c | 18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+ hw/virtio/vhost-user.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
-index c4e0cbd702..65d6299343 100644
+index 65d6299343..8dcf049d42 100644
 --- a/hw/virtio/vhost-user.c
 +++ b/hw/virtio/vhost-user.c
-@@ -367,7 +367,7 @@ static int process_message_reply(struct vhost_dev *dev,
-     return msg_reply.payload.u64 ? -EIO : 0;
- }
- 
--static bool vhost_user_one_time_request(VhostUserRequest request)
-+static bool vhost_user_per_device_request(VhostUserRequest request)
- {
-     switch (request) {
-     case VHOST_USER_SET_OWNER:
-@@ -392,11 +392,17 @@ static int vhost_user_write(struct vhost_dev *dev, VhostUserMsg *msg,
-     int ret, size = VHOST_USER_HDR_SIZE + msg->hdr.size;
- 
-     /*
--     * For non-vring specific requests, like VHOST_USER_SET_MEM_TABLE,
--     * we just need send it once in the first time. For later such
--     * request, we just ignore it.
-+     * Some devices, like virtio-scsi, are implemented as a single vhost_dev,
-+     * while others, like virtio-net, contain multiple vhost_devs. For
-+     * operations such as configuring device memory mappings or issuing device
-+     * resets, which affect the whole device instead of individual VQs,
-+     * vhost-user messages should only be sent once.
-+     * 
-+     * Devices with multiple vhost_devs are given an associated dev->vq_index
-+     * so per_device requests are only sent if vq_index is 0.
-      */
--    if (vhost_user_one_time_request(msg->hdr.request) && dev->vq_index != 0) {
-+    if (vhost_user_per_device_request(msg->hdr.request)
-+        && dev->vq_index != 0) {
-         msg->hdr.flags &= ~VHOST_USER_NEED_REPLY_MASK;
-         return 0;
-     }
-@@ -1256,7 +1262,7 @@ static int vhost_user_get_u64(struct vhost_dev *dev, int request, uint64_t *u64)
-         .hdr.flags = VHOST_USER_VERSION,
-     };
- 
--    if (vhost_user_one_time_request(request) && dev->vq_index != 0) {
-+    if (vhost_user_per_device_request(request) && dev->vq_index != 0) {
-         return 0;
-     }
- 
+@@ -375,6 +375,7 @@ static bool vhost_user_per_device_request(VhostUserRequest request)
+     case VHOST_USER_SET_MEM_TABLE:
+     case VHOST_USER_GET_QUEUE_NUM:
+     case VHOST_USER_NET_SET_MTU:
++    case VHOST_USER_RESET_DEVICE:
+     case VHOST_USER_ADD_MEM_REG:
+     case VHOST_USER_REM_MEM_REG:
+         return true;
 -- 
 2.22.3
 
