@@ -2,65 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAD5C74136F
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 16:11:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E8D7741395
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 16:18:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEVsC-0006Vf-7M; Wed, 28 Jun 2023 10:10:20 -0400
+	id 1qEVyr-00020p-IG; Wed, 28 Jun 2023 10:17:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <groug@kaod.org>) id 1qEVs8-0006TB-FB
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 10:10:16 -0400
-Received: from 8.mo552.mail-out.ovh.net ([46.105.37.156])
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qEVyo-0001uB-VJ
+ for qemu-devel@nongnu.org; Wed, 28 Jun 2023 10:17:10 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <groug@kaod.org>) id 1qEVs3-000371-LD
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 10:10:15 -0400
-Received: from mxplan5.mail.ovh.net (unknown [10.109.156.3])
- by mo552.mail-out.ovh.net (Postfix) with ESMTPS id 6D7872BB22;
- Wed, 28 Jun 2023 14:10:00 +0000 (UTC)
-Received: from kaod.org (37.59.142.95) by DAG6EX1.mxp5.local (172.16.2.51)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Wed, 28 Jun
- 2023 16:09:59 +0200
-Authentication-Results: garm.ovh; auth=pass
- (GARM-95G001841affdc-bd95-49e8-b467-fa1aa7e6ec9a,
- BB93B6AC372DD556F16E72057DB7D6FCEC78780F) smtp.auth=groug@kaod.org
-X-OVh-ClientIp: 78.197.208.248
-Date: Wed, 28 Jun 2023 16:09:58 +0200
-From: Greg Kurz <groug@kaod.org>
-To: Philippe =?UTF-8?B?TWF0aGlldS1EYXVkw6k=?= <philmd@linaro.org>
-CC: <qemu-devel@nongnu.org>, David Gibson <david@gibson.dropbear.id.au>,
- Daniel Henrique Barboza <danielhb413@gmail.com>, "=?UTF-8?B?Q8OpZHJpYw==?= Le
- Goater" <clg@kaod.org>, <qemu-ppc@nongnu.org>, Paolo Bonzini
- <pbonzini@redhat.com>, <kvm@vger.kernel.org>, Nicholas Piggin
- <npiggin@gmail.com>
-Subject: Re: [PATCH v3 1/6] target/ppc: Have 'kvm_ppc.h' include 'sysemu/kvm.h'
-Message-ID: <20230628160958.7c4be6e7@bahia>
-In-Reply-To: <20230627115124.19632-2-philmd@linaro.org>
-References: <20230627115124.19632-1-philmd@linaro.org>
- <20230627115124.19632-2-philmd@linaro.org>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qEVyn-0005ik-4W
+ for qemu-devel@nongnu.org; Wed, 28 Jun 2023 10:17:10 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1687961828;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=DH6ENqMnoMDqbAuCQos8LO8cdPPbY9SJXzo5XXx2snE=;
+ b=XJsAv7zMKW8kjuzmo7k1vpgk24FmT3gJgFeg5BRoyceaxexBbn3hOmjyl7CjlWMpkpxehh
+ Y50OAsuMsEsTMIY3vIxDZA473ktzlUUJ2W4DTGUC8r1i5ejswGZDNv3biu+H4IsWYnwEgQ
+ bKhhgoKQqAbcqveRa8MqU5deenrmqhI=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-511-GWnryxy3OdibdvIF9gijlQ-1; Wed, 28 Jun 2023 10:15:53 -0400
+X-MC-Unique: GWnryxy3OdibdvIF9gijlQ-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2B32088D0F7;
+ Wed, 28 Jun 2023 14:15:40 +0000 (UTC)
+Received: from merkur.redhat.com (unknown [10.39.195.21])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 78A6240C2063;
+ Wed, 28 Jun 2023 14:15:39 +0000 (UTC)
+From: Kevin Wolf <kwolf@redhat.com>
+To: qemu-block@nongnu.org
+Cc: kwolf@redhat.com,
+	richard.henderson@linaro.org,
+	qemu-devel@nongnu.org
+Subject: [PULL 00/23] Block layer patches
+Date: Wed, 28 Jun 2023 16:15:03 +0200
+Message-ID: <20230628141526.293104-1-kwolf@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Originating-IP: [37.59.142.95]
-X-ClientProxiedBy: DAG6EX1.mxp5.local (172.16.2.51) To DAG6EX1.mxp5.local
- (172.16.2.51)
-X-Ovh-Tracer-GUID: afc8a218-a4e6-454b-9892-9bf920199ac5
-X-Ovh-Tracer-Id: 4555391025249360175
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedviedrtddvgdejvdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfgjfhfogggtgfhisehtqhertdertdejnecuhfhrohhmpefirhgvghcumfhurhiiuceoghhrohhugheskhgrohgurdhorhhgqeenucggtffrrghtthgvrhhnpeeuueeijedtleeluedthfetjeffieetffeuvefffeeftedvieefueejgfdugeetueenucfkphepuddvjedrtddrtddruddpfeejrdehledrudegvddrleehpdejkedrudeljedrvddtkedrvdegkeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeduvdejrddtrddtrddupdhmrghilhhfrhhomhepoehgrhhouhhgsehkrghougdrohhrgheqpdhnsggprhgtphhtthhopedupdhrtghpthhtohepphhhihhlmhgusehlihhnrghrohdrohhrghdpqhgvmhhuqdguvghvvghlsehnohhnghhnuhdrohhrghdpuggrvhhiugesghhisghsohhnrdgurhhophgsvggrrhdrihgurdgruhdpuggrnhhivghlhhgsgedufeesghhmrghilhdrtghomhdpqhgvmhhuqdhpphgtsehnohhnghhnuhdrohhrghdpphgsohhniihinhhisehrvgguhhgrthdrtghomhdpkhhvmhesvhhgvghrrdhkvghrnhgvlhdrohhrghdpnhhpihhgghhinhesghhmrghilhdrtghomhdptghlgh
- eskhgrohgurdhorhhgpdfovfetjfhoshhtpehmohehhedvpdhmohguvgepshhmthhpohhuth
-Received-SPF: pass client-ip=46.105.37.156; envelope-from=groug@kaod.org;
- helo=8.mo552.mail-out.ovh.net
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -76,38 +75,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 27 Jun 2023 13:51:19 +0200
-Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> wrote:
+The following changes since commit 52ed34cbddde1cb89b2ac263e758e349a77f21e1:
 
-> "kvm_ppc.h" declares:
->=20
->   int kvm_handle_nmi(PowerPCCPU *cpu, struct kvm_run *run);
->=20
-> 'struct kvm_run' is declared in "sysemu/kvm.h", include it.
->=20
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> ---
+  Merge tag 'pull-request-2023-06-26' of https://gitlab.com/thuth/qemu into staging (2023-06-26 10:38:41 +0200)
 
-Reviewed-by: Greg Kurz <groug@kaod.org>
+are available in the Git repository at:
 
->  target/ppc/kvm_ppc.h | 1 +
->  1 file changed, 1 insertion(+)
->=20
-> diff --git a/target/ppc/kvm_ppc.h b/target/ppc/kvm_ppc.h
-> index 611debc3ce..2e395416f0 100644
-> --- a/target/ppc/kvm_ppc.h
-> +++ b/target/ppc/kvm_ppc.h
-> @@ -9,6 +9,7 @@
->  #ifndef KVM_PPC_H
->  #define KVM_PPC_H
-> =20
-> +#include "sysemu/kvm.h"
->  #include "exec/hwaddr.h"
->  #include "cpu.h"
-> =20
+  https://repo.or.cz/qemu/kevin.git tags/for-upstream
 
+for you to fetch changes up to 17362398ee1a7f04e8006a46333145d8b707fd35:
 
+  block: use bdrv_co_debug_event in coroutine context (2023-06-28 09:46:34 +0200)
 
---=20
-Greg
+----------------------------------------------------------------
+Block layer patches
+
+- Re-enable the graph lock
+- More fixes to coroutine_fn marking
+
+----------------------------------------------------------------
+Kevin Wolf (11):
+      iotests: Test active commit with iothread and background I/O
+      qdev-properties-system: Lock AioContext for blk_insert_bs()
+      test-block-iothread: Lock AioContext for blk_insert_bs()
+      block: Fix AioContext locking in bdrv_open_child()
+      block: Fix AioContext locking in bdrv_attach_child_common()
+      block: Fix AioContext locking in bdrv_reopen_parse_file_or_backing()
+      block: Fix AioContext locking in bdrv_open_inherit()
+      block: Fix AioContext locking in bdrv_open_backing_file()
+      blockjob: Fix AioContext locking in block_job_add_bdrv()
+      graph-lock: Unlock the AioContext while polling
+      Revert "graph-lock: Disable locking for now"
+
+Paolo Bonzini (12):
+      file-posix: remove incorrect coroutine_fn calls
+      qed: mark more functions as coroutine_fns and GRAPH_RDLOCK
+      vpc: mark more functions as coroutine_fns and GRAPH_RDLOCK
+      bochs: mark more functions as coroutine_fns and GRAPH_RDLOCK
+      block: mark another function as coroutine_fns and GRAPH_UNLOCKED
+      cloop: mark more functions as coroutine_fns and GRAPH_RDLOCK
+      dmg: mark more functions as coroutine_fns and GRAPH_RDLOCK
+      vmdk: mark more functions as coroutine_fns and GRAPH_RDLOCK
+      vhdx: mark more functions as coroutine_fns and GRAPH_RDLOCK
+      qcow2: mark more functions as coroutine_fns and GRAPH_RDLOCK
+      block: use bdrv_co_getlength in coroutine context
+      block: use bdrv_co_debug_event in coroutine context
+
+ block/qcow2.h                                      |  33 +++--
+ block/vhdx.h                                       |   5 +-
+ include/block/block-io.h                           |   7 ++
+ include/block/graph-lock.h                         |   6 +-
+ block.c                                            | 114 ++++++++++++++++--
+ block/bochs.c                                      |   7 +-
+ block/cloop.c                                      |   9 +-
+ block/dmg.c                                        |  21 ++--
+ block/file-posix.c                                 |  29 +++--
+ block/graph-lock.c                                 |  43 +++----
+ block/io.c                                         |  14 +--
+ block/parallels.c                                  |   4 +-
+ block/qcow.c                                       |  30 ++---
+ block/qcow2-bitmap.c                               |  26 ++--
+ block/qcow2-cluster.c                              |  24 ++--
+ block/qcow2-refcount.c                             | 134 +++++++++++----------
+ block/qcow2.c                                      |  20 +--
+ block/qed-check.c                                  |   5 +-
+ block/qed-table.c                                  |   6 +-
+ block/qed.c                                        |  15 +--
+ block/raw-format.c                                 |   4 +-
+ block/vhdx-log.c                                   |  36 +++---
+ block/vhdx.c                                       |  73 ++++++-----
+ block/vmdk.c                                       |  55 ++++-----
+ block/vpc.c                                        |  52 ++++----
+ blockjob.c                                         |  17 ++-
+ hw/core/qdev-properties-system.c                   |   8 +-
+ tests/unit/test-block-iothread.c                   |   7 +-
+ tests/qemu-iotests/tests/iothreads-commit-active   |  85 +++++++++++++
+ .../qemu-iotests/tests/iothreads-commit-active.out |  23 ++++
+ 30 files changed, 573 insertions(+), 339 deletions(-)
+ create mode 100755 tests/qemu-iotests/tests/iothreads-commit-active
+ create mode 100644 tests/qemu-iotests/tests/iothreads-commit-active.out
+
 
