@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC3A97412D8
+	by mail.lfdr.de (Postfix) with ESMTPS id EB4347412D9
 	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 15:46:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEVTe-0005B4-Cp; Wed, 28 Jun 2023 09:44:58 -0400
+	id 1qEVTg-0005Bd-9p; Wed, 28 Jun 2023 09:45:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1qEVTc-0005Aj-B5
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 09:44:56 -0400
+ id 1qEVTc-0005Av-Ui
+ for qemu-devel@nongnu.org; Wed, 28 Jun 2023 09:44:57 -0400
 Received: from mga07.intel.com ([134.134.136.100])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1qEVTZ-000885-P2
+ id 1qEVTb-00088Q-DC
  for qemu-devel@nongnu.org; Wed, 28 Jun 2023 09:44:56 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1687959893; x=1719495893;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=3SJPsmsN03QrP8lm8DTQ9wE5qq+rO6qVFYNMPhYSNhI=;
- b=B4ZSqAU4Soz2jk3k0RsrJUb5armLX7a4jOX+zdgRUkumN7EwlcdL8LBj
- PoKHRibbhsUTRXlz0J/E1jNa+9xkYCOW4semxn8AcnHy6Sgw+2q0Cc+4r
- qc9BqTVTEfvrERo5AL5ze0NKCsqPZSDjyikSTDSpa5Xj6HINoHWFqeuBx
- QdFjcKv1RAE4qZetVTdbjdObcMJRJHj2dYaCOzqlzZQSGnHzTgfg1NQip
- b1q/3rQ2L5OtXJOBb5a5vbPvM438lWbZdXwQk6niW0lvGCv0MeqLgeK3i
- C0MaTP3FitvBhTq2SJ8KiO/+9XVpuMhqKORXaQDPen8pm4XgDPj5t/tCJ g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10754"; a="427854108"
-X-IronPort-AV: E=Sophos;i="6.01,165,1684825200"; d="scan'208";a="427854108"
+ t=1687959895; x=1719495895;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=/p2yXUJZCsxnEMkGSLP23fJhX9cTP2S05PNdFSoPzpY=;
+ b=Hn8PaDPFw6ao+L6y9ckHn7M6MJD4AQerq6M3HAkQCicY4m3w3Ezm1hv3
+ 46Te8vsnZ17JzAX5q7OJqqxGRp04ECbZxdfE4GyUek8KZ9D7sBxvLRSgZ
+ wqgFXfTTEU8ye71cmz84QVJyB1S3B088RXcqzk3cLK6AT4oMeS3seTHue
+ /WL44jGKU1Cs6Wd2ERG9tKjKhAdNNrbZJT4feJOp8q9S85neNHc944+5T
+ NJFiqLABiMO4NraE2GyClZ3J8BXLT1U8oYVTTyR3d14mUUTVH7nPyg4hf
+ xkgc7rMj2ROgeeerd+TJfj0mioJHmWmGm1rzfK/Xr4KxPZBJ/1DYG+Dx6 Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10754"; a="427854116"
+X-IronPort-AV: E=Sophos;i="6.01,165,1684825200"; d="scan'208";a="427854116"
 Received: from fmsmga003.fm.intel.com ([10.253.24.29])
  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Jun 2023 06:44:50 -0700
+ 28 Jun 2023 06:44:51 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10754"; a="806905447"
-X-IronPort-AV: E=Sophos;i="6.01,165,1684825200"; d="scan'208";a="806905447"
+X-IronPort-AV: E=McAfee;i="6600,9927,10754"; a="806905470"
+X-IronPort-AV: E=Sophos;i="6.01,165,1684825200"; d="scan'208";a="806905470"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.28])
- by FMSMGA003.fm.intel.com with ESMTP; 28 Jun 2023 06:44:39 -0700
+ by FMSMGA003.fm.intel.com with ESMTP; 28 Jun 2023 06:44:48 -0700
 From: Zhao Liu <zhao1.liu@linux.intel.com>
 To: "Michael S . Tsirkin" <mst@redhat.com>,
  Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
@@ -48,10 +48,12 @@ Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org, Zhenyu Wang <zhenyu.z.wang@intel.com>,
  Yongwei Ma <yongwei.ma@intel.com>, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v4 0/4] hw/smbios: Cleanup topology related variables
-Date: Wed, 28 Jun 2023 21:54:33 +0800
-Message-Id: <20230628135437.1145805-1-zhao1.liu@linux.intel.com>
+Subject: [PATCH v4 1/4] machine: Add helpers to get cores/threads per socket
+Date: Wed, 28 Jun 2023 21:54:34 +0800
+Message-Id: <20230628135437.1145805-2-zhao1.liu@linux.intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230628135437.1145805-1-zhao1.liu@linux.intel.com>
+References: <20230628135437.1145805-1-zhao1.liu@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: none client-ip=134.134.136.100;
@@ -80,72 +82,58 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhao Liu <zhao1.liu@intel.com>
 
-Hi all,
+The number of cores/threads per socket are needed for smbios, and are
+also useful for other modules.
 
-This is my v4 patch series based on b111569da9f8 ("Merge tag 'ui-pull-
-request' of https://gitlab.com/marcandre.lureau/qemu into staging").
+Provide the helpers to wrap the calculation of cores/threads per socket
+so that we can avoid calculation errors caused by other modules miss
+topology changes.
 
-This v4 is a quick refresh to address Igor's comment in v3 [1] about the
-location of the new two helpers.
-
-About the 2 newly added helpers, they can also be used in i386 code [2].
-I will follow up to do the cleanup after another i386 cluster support
-patch series.
-
-
-Introduction
-============
-
-This patchset is split from my previous hybrid topology RFC [3].
-
-This patchset adds 2 new helpers to wrap the threads/cores per sockets
-calculation to avoid errors caused by other modules miss topology
-changes.
-
-Additionally, there are three places for topology-related cleanup in
-smbios:
-
-1. Fix the calculation of the number of sockets.
-
-   Due to the misuse of the smp.cpus variable and the change in the
-   meaning of smp.cores, the calculation of socket number in smbios is
-   incorrect. This can be fixed by using smp.sockets directly.
-
-2. Fix core count in type4.
-
-   The meaning of smp.cores changed so that the calculation of cores
-   per socket became wrong.
-
-   v3 introduces the helper "machine_topo_get_cores_per_socket()" to
-   wrap the calculation of cores per socket. This can help other modules
-   avoid calculation error caused by missing topology changes.
-
-3. Fix thread count in type4.
-
-   I also found that the definition of thread count in type4 doesn't
-   match the spec (smbios 3.0.0) and cleaned it up as well.
-
-   Similar to core count, also use a new helper to fix this.
-
-[1]: https://lists.gnu.org/archive/html/qemu-devel/2023-06/msg05402.html
-[2]: https://lists.gnu.org/archive/html/qemu-devel/2023-06/msg06071.html
-[3]: https://mail.gnu.org/archive/html/qemu-devel/2023-02/msg03205.html
-
-
-Regards,
-Zhao
+Suggested-by: Igor Mammedov <imammedo@redhat.com>
+Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
-Zhao Liu (4):
-  machine: Add helpers to get cores/threads per socket
-  hw/smbios: Fix smbios_smp_sockets caculation
-  hw/smbios: Fix thread count in type4
-  hw/smbios: Fix core count in type4
+v4:
+ * Put the declarations/definitions after machine_parse_smp_config()
+   to avoid missing future topology related changes. (Igor)
 
+v3:
+ * The new patch to wrap the calculation of cores/threads per socket.
+---
  hw/core/machine-smp.c | 10 ++++++++++
- hw/smbios/smbios.c    | 16 ++++++++++------
  include/hw/boards.h   |  2 ++
- 3 files changed, 22 insertions(+), 6 deletions(-)
+ 2 files changed, 12 insertions(+)
 
+diff --git a/hw/core/machine-smp.c b/hw/core/machine-smp.c
+index 89fe0cda4275..0f4d9b6f7a9f 100644
+--- a/hw/core/machine-smp.c
++++ b/hw/core/machine-smp.c
+@@ -197,3 +197,13 @@ void machine_parse_smp_config(MachineState *ms,
+         return;
+     }
+ }
++
++unsigned int machine_topo_get_cores_per_socket(const MachineState *ms)
++{
++    return ms->smp.cores * ms->smp.clusters * ms->smp.dies;
++}
++
++unsigned int machine_topo_get_threads_per_socket(const MachineState *ms)
++{
++    return ms->smp.threads * machine_topo_get_cores_per_socket(ms);
++}
+diff --git a/include/hw/boards.h b/include/hw/boards.h
+index 6b267c21ce7d..12d9e9d17ce9 100644
+--- a/include/hw/boards.h
++++ b/include/hw/boards.h
+@@ -35,6 +35,8 @@ void machine_set_cpu_numa_node(MachineState *machine,
+                                Error **errp);
+ void machine_parse_smp_config(MachineState *ms,
+                               const SMPConfiguration *config, Error **errp);
++unsigned int machine_topo_get_cores_per_socket(const MachineState *ms);
++unsigned int machine_topo_get_threads_per_socket(const MachineState *ms);
+ 
+ /**
+  * machine_class_allow_dynamic_sysbus_dev: Add type to list of valid devices
 -- 
 2.34.1
 
