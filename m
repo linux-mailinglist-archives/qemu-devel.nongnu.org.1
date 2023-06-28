@@ -2,95 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 212D9741A7B
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 23:15:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11C20741AE9
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 23:32:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEcUb-0007eg-LX; Wed, 28 Jun 2023 17:14:25 -0400
+	id 1qEckU-0001pb-Ge; Wed, 28 Jun 2023 17:30:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
- id 1qEcUZ-0007e1-OS
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 17:14:23 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
- id 1qEcUY-0001q4-6F
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 17:14:23 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687986860;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=7+rr/xaKo6blJY11VvQTFwogMWlsygR+gBEOzAYsIcY=;
- b=FOsvCs6uQcv27PgTmqZ12WGfibGdut1zwcCsPzHDNDrU1z/FFt9y8g9yxJlncdPaDyol6R
- +hB1FrA/+IS3h8tPuVnII4FN/DvRHU1c6Pz+J18NC6W0OKAFnw5SRiXlEHfZyOO60hraOW
- uqTBHiNHQvtWgB71UWSyOilOAz2HKuI=
-Received: from mail-io1-f69.google.com (mail-io1-f69.google.com
- [209.85.166.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-180-gpgWO5oaOlu1481_oqEvrQ-1; Wed, 28 Jun 2023 17:14:18 -0400
-X-MC-Unique: gpgWO5oaOlu1481_oqEvrQ-1
-Received: by mail-io1-f69.google.com with SMTP id
- ca18e2360f4ac-76998d984b0so15383639f.2
- for <qemu-devel@nongnu.org>; Wed, 28 Jun 2023 14:14:18 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qEckS-0001ol-7o
+ for qemu-devel@nongnu.org; Wed, 28 Jun 2023 17:30:48 -0400
+Received: from mail-oo1-xc33.google.com ([2607:f8b0:4864:20::c33])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qEckQ-0007vK-6t
+ for qemu-devel@nongnu.org; Wed, 28 Jun 2023 17:30:47 -0400
+Received: by mail-oo1-xc33.google.com with SMTP id
+ 006d021491bc7-55b8f1c930eso256586eaf.3
+ for <qemu-devel@nongnu.org>; Wed, 28 Jun 2023 14:30:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1687987844; x=1690579844;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=xapxJefoVFXjJorcqsj2mlb6KOj+wdv61DJB7tgDdEg=;
+ b=V/GxvC07gAhIPNppMUHT1GHJbRnf8U5zMQD1aDJV+9LNuUS7rIxy9gW8o1NKp2TLvd
+ ENPNdKHnQQR5rNkBc1gf6X539I+7+mHaFkVOezUgIVmEkEXM0Tqc7PsSI0khBvbMC0vN
+ 8tYF91qnU2lC3r3l0dEjrYwlFXscIQL8xRUYbqto09kVXfIojVaVL7IHzOIzXJ5dD1hs
+ tfoCU881pwto2ARVa0B94uUakVWXvdh0ExR6tCvsDT72gpK/dSatlXx4pSWAUb9ABphI
+ 7xf0vTpdfgl5tp6inD3svLtKXTlAz9/7Pc6jwU+68ZpwGfkmZTnrDhfGbNoU9nf8Emi3
+ 8LLA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687986858; x=1690578858;
- h=content-transfer-encoding:mime-version:organization:references
- :in-reply-to:message-id:subject:cc:to:from:date:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=7+rr/xaKo6blJY11VvQTFwogMWlsygR+gBEOzAYsIcY=;
- b=bWmwc2211UhxRYORLxXG17uGUb9Zu/8nA5MDG6niLc95X/hUdD8zOsHc03RQLwcU1x
- I6Agl5pTqMrEFyqFZtUatn/6p0xTePBeGJ8jJX0FvAHX6+IULiRRQhSBrYIK8Ncy+Cvs
- eq6Lk12U8qHQSNgsZVWOutDJU2srnGs1N+r+YCE7AWNj449esK9U1o6yUk/E1pxsQpxu
- wlrmWwEniwON5x8LHEIV3LgAM4AUdhzE20hzSmwUdNVvH6SmxKEsaCzhuX1leIKAXSLz
- EjgXdVn1m6Xa7Z7hk+AfHI+4+STnBZN4LzOdY0FrcdGSC1v3XW+SeMMqpcE5PVjCVjl/
- QXOA==
-X-Gm-Message-State: AC+VfDywZbX1MscSPB7e6Husupypqhkr3pkRYygbOB12CJJ1vX/sX4gb
- n/nscPMjVwTBlML+lTI0h/g9owDOxFEzoUTBsO9UgQTlDfAoFyUPV8tQ92/sTxVlSxmmlmOWY/I
- pyNROCIJg3VcOpT0=
-X-Received: by 2002:a6b:e503:0:b0:783:62f7:3e2c with SMTP id
- y3-20020a6be503000000b0078362f73e2cmr10737601ioc.9.1687986858113; 
- Wed, 28 Jun 2023 14:14:18 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7x+45mR/qzupdxQwhXwU8dzdn5rNS1y4XhowSEBrFQJfRL7ba65LiNEwRcij8E/RlysS+gNQ==
-X-Received: by 2002:a6b:e503:0:b0:783:62f7:3e2c with SMTP id
- y3-20020a6be503000000b0078362f73e2cmr10737577ioc.9.1687986857868; 
- Wed, 28 Jun 2023 14:14:17 -0700 (PDT)
-Received: from redhat.com ([38.15.36.239]) by smtp.gmail.com with ESMTPSA id
- g6-20020a5d8c86000000b00780d8ef274asm3703763ion.3.2023.06.28.14.14.16
+ d=1e100.net; s=20221208; t=1687987844; x=1690579844;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=xapxJefoVFXjJorcqsj2mlb6KOj+wdv61DJB7tgDdEg=;
+ b=W1JieWF6ZmLSuIzQFF+XDkKDdK/1U2z+xYmsTVapi+38ehN11+4hABjuXtntnZeE1H
+ iUh53sdJ7sHFhrzjHSZ5uvvIjXFeiwBBAkpJGAwR1m7WLVIwIT8OL199BImL7XrVvYCk
+ gafZVjVAa6cuh9uUejdzDCosIcKyZnm3KVAHIPiVboNPPYwZjUmpZE1K1ze453OOWE8t
+ 2ehdXW6557sXh8J0gKVkD7hU7z3BkFSgBf6Z9InLEGlGal7LBaraUWSy344HJBiyvWGM
+ zGLilP0cdeQ99b5No88uwsQAkeDznCUvFLHbiDcC1jkSrhsP/FjR4RthwY/LxZIXKs5O
+ nk7A==
+X-Gm-Message-State: AC+VfDzbpvySm98d6Xkj+Pbr+hG6bgkuajZR+A7TxtYxfF4bZ1CY6Dqr
+ m3Catpwj7IcTTbA49TH6O4rkQ6aWZ9IuZP4VDzk=
+X-Google-Smtp-Source: ACHHUZ5khVhuDy+J3I0nRmzxirfsVR6FYkgkTWgYR0EKpkmQzWmlIV3K91xKDrMeIq3HeAIO142U1w==
+X-Received: by 2002:a4a:bc01:0:b0:558:b482:c3b3 with SMTP id
+ i1-20020a4abc01000000b00558b482c3b3mr21767267oop.1.1687987843897; 
+ Wed, 28 Jun 2023 14:30:43 -0700 (PDT)
+Received: from grind.dc1.ventanamicro.com
+ (201-69-66-110.dial-up.telesp.net.br. [201.69.66.110])
+ by smtp.gmail.com with ESMTPSA id
+ y17-20020a4a4511000000b0056084a91c74sm832892ooa.24.2023.06.28.14.30.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 28 Jun 2023 14:14:17 -0700 (PDT)
-Date: Wed, 28 Jun 2023 15:14:15 -0600
-From: Alex Williamson <alex.williamson@redhat.com>
-To: Avihai Horon <avihaih@nvidia.com>
-Cc: <qemu-devel@nongnu.org>, =?UTF-8?B?Q8OpZHJpYw==?= Le Goater
- <clg@redhat.com>, Juan Quintela <quintela@redhat.com>, Peter Xu
- <peterx@redhat.com>, Leonardo Bras <leobras@redhat.com>, Zhenzhong Duan
- <zhenzhong.duan@intel.com>, Yishai Hadas <yishaih@nvidia.com>, Jason
- Gunthorpe <jgg@nvidia.com>, Maor Gottlieb <maorg@nvidia.com>, Kirti
- Wankhede <kwankhede@nvidia.com>, Tarun Gupta <targupta@nvidia.com>, Joao
- Martins <joao.m.martins@oracle.com>
-Subject: Re: [PATCH v2 0/2] vfio/migration: Make VFIO migration
- non-experimental
-Message-ID: <20230628151415.77ee583e.alex.williamson@redhat.com>
-In-Reply-To: <20230628073112.7958-1-avihaih@nvidia.com>
-References: <20230628073112.7958-1-avihaih@nvidia.com>
-Organization: Red Hat
+ Wed, 28 Jun 2023 14:30:43 -0700 (PDT)
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
+ liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
+ ajones@ventanamicro.com, philmd@linaro.org,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Subject: [PATCH v6 00/20] target/riscv, KVM: fixes and enhancements
+Date: Wed, 28 Jun 2023 18:30:13 -0300
+Message-ID: <20230628213033.170315-1-dbarboza@ventanamicro.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124;
- envelope-from=alex.williamson@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c33;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-oo1-xc33.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -107,65 +93,121 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 28 Jun 2023 10:31:10 +0300
-Avihai Horon <avihaih@nvidia.com> wrote:
+Hi,
 
-> Hello,
-> 
-> The major parts of VFIO migration are supported today in QEMU. This
-> includes basic VFIO migration, device dirty page tracking and precopy
-> support. Thus, at this point in time, it seems appropriate to make VFIO
-> migration non-experimental.
-> 
-> This short series (which is based on the precopy series [1]) does that
-> and also adds a few improvements:
-> - Patch #1 resets bytes_transferred counter properly.
-> - Patch #2 cleans up the VFIO migration realize flow and makes VFIO
->   migration non-experimental.
-> 
-> Note that Zhenzhong's series [2] fixes additional bugs and further
-> cleans the VFIO migration realize flow.
-> 
-> Changes from v1 [3]:
-> * Dropped patch #1 as it's an optimization. (Cedric)
-> * Added Fixes tag to patch #2. (Cedric)
-> * Made VFIO device realization fail if migration is not supported and
->   enable_migration is ON. (Cedric)
-> * Kept the error message of errno == ENOTTY case as it was in
->   vfio_migration_query_flags(). (Cedric)
-> * Added a warn when enable_migration is ON and device dirty tracking is
->   not supported. (Alex)
-> * Renamed trace_vfio_migration_probe() to
-> * trace_vfio_migration_realize().
-> 
-> 
-> Thanks.
-> 
-> [1]
-> https://lore.kernel.org/qemu-devel/20230621111201.29729-1-avihaih@nvidia.com/
-> 
-> [2]
-> https://lore.kernel.org/qemu-devel/20230621080204.420723-1-zhenzhong.duan@intel.com/
-> 
-> [3]
-> https://lore.kernel.org/qemu-devel/20230626082353.18535-1-avihaih@nvidia.com/
-> 
-> Avihai Horon (2):
->   vfio/migration: Reset bytes_transferred properly
->   vfio/migration: Make VFIO migration non-experimental
-> 
->  include/hw/vfio/vfio-common.h |  7 +--
->  migration/migration.h         |  1 +
->  hw/vfio/common.c              | 16 ++++++-
->  hw/vfio/migration.c           | 85 ++++++++++++++++++++++++-----------
->  hw/vfio/pci.c                 |  4 +-
->  migration/migration.c         |  1 +
->  migration/savevm.c            |  1 +
->  migration/target.c            | 17 ++++++-
->  hw/vfio/trace-events          |  2 +-
->  9 files changed, 97 insertions(+), 37 deletions(-)
-> 
+This new version has changes suggested by Phil in v5. It also has some
+changes I made on the fly. The short summary is:
 
-Reviewed-by: Alex Williamson <alex.williamson@redhat.com>
+- use "#ifndef CONFIG_USER_MODE kvm_enabled() #endif" instead of a helper
+  that wraps them all up. This was suggested by Phil to be more clear
+  about the code that depends on KVM or not. A new patch (15) was added
+  to keep the amount of #ifndefs in control in
+  riscv_cpu_add_user_properties() due to this design change;
+
+- misa_ext_info_arr[] is now indexed from 0 to 25 instead of 0 from
+  potentially 1 << 25. Getters for 'name' and 'description' were added.
+
+It's worth mentioning a change I decided to make that wasn't mentioned
+in the v5 review. In patch 12, where we added KVM MISA properties, we
+were trying to find the property before proceeding with
+object_property_add() to add the remaining properties. I remembered that
+we can also use object_property_try_add(). In fact,
+object_property_add() is a simple call for object_property_try_add()
+that uses &error_fatal. And it turns out that and the only error being
+reported by try_add() happens when object_property_find() finds a
+property with the same name. This means that we can use
+object_property_try_add() with an error pointer and, if an error is
+reported, it means that we already have the property. This change makes
+us do a single object_property_find() instead of 2. 
+
+Patches 6 and 17 (former 16) had trivial changes, all of them related to
+the extinct riscv_running_kvm() helper, and I decided to keep their r-bs
+for reviewer convenience.
+
+Series was rebased on top of riscv-to-apply.next.
+
+Patches missing reviews: 1, 11, 12, 14, 15.
+
+Changes from v5:
+- trivial changes (R-bs kept):
+  - patch 6: use kvm_enabled() instead of riscv_running_kvm()
+  - patch 17 (former 16): wrap cpu_set_cfg_unavailable() inside '#ifndef
+    CONFIG_USER_MODE'
+- patch 1:
+  - riscv_running_kvm() removed
+  - rename riscv_cpu_realize_functions() to riscv_cpu_realize_tcg()
+  - use 'tcg_enabled()' before riscv_cpu_realize_tcg()
+  - reword commit msg to indicate that we're checking positive for TCG
+    instead of negative for KVM
+- patch 11:
+  - misa_ext_info_arr[] is now indexed from 0 (A-A) to 25 (Z-A)
+  - getter functions for 'name' and 'description' were added
+  - misa_ext_info_arr[] is no longer exported in target/riscv/cpu.h
+  - 'name' and 'description' of misa_ext_cfg[] must now be populated
+    after initialization because misa_ext_info_arr[] is no longer a
+    constant array
+- patch 12:
+  - use object_property_try_add() in riscv_cpu_add_misa_properties().
+    It'll set an Error pointer if the property already exists. Use that
+    to skip an already created property instead of doing a redundant
+    object_property_find() beforehand
+  - moved the object_property_find() code that was checking for
+    multi-letter properties to patch 14
+  - use the new getters() from patch 11 instead of reading the array
+    directly
+- patch 14:
+  - added the code from patch 12 that checks for an existing
+    multi-letter property. Add a kvm_enabled() check around it in
+    preparation for the mock KVM properties patch later on
+- patch 15 (new):
+  - create satp_mode properties earlier to avoid an extra #ifndef
+    CONFIG_USER_MODE block
+- v5 link: https://lists.gnu.org/archive/html/qemu-devel/2023-06/msg05984.html
+
+Daniel Henrique Barboza (20):
+  target/riscv: skip features setup for KVM CPUs
+  hw/riscv/virt.c: skip 'mmu-type' FDT if satp mode not set
+  target/riscv/cpu.c: restrict 'mvendorid' value
+  target/riscv/cpu.c: restrict 'mimpid' value
+  target/riscv/cpu.c: restrict 'marchid' value
+  target/riscv: use KVM scratch CPUs to init KVM properties
+  target/riscv: read marchid/mimpid in kvm_riscv_init_machine_ids()
+  target/riscv: handle mvendorid/marchid/mimpid for KVM CPUs
+  linux-headers: Update to v6.4-rc1
+  target/riscv/kvm.c: init 'misa_ext_mask' with scratch CPU
+  target/riscv/cpu: add misa_ext_info_arr[]
+  target/riscv: add KVM specific MISA properties
+  target/riscv/kvm.c: update KVM MISA bits
+  target/riscv/kvm.c: add multi-letter extension KVM properties
+  target/riscv/cpu.c: add satp_mode properties earlier
+  target/riscv/cpu.c: remove priv_ver check from riscv_isa_string_ext()
+  target/riscv/cpu.c: create KVM mock properties
+  target/riscv: update multi-letter extension KVM properties
+  target/riscv/kvm.c: add kvmconfig_get_cfg_addr() helper
+  target/riscv/kvm.c: read/write (cbom|cboz)_blocksize in KVM
+
+ hw/riscv/virt.c                               |  14 +-
+ include/standard-headers/linux/const.h        |   2 +-
+ include/standard-headers/linux/virtio_blk.h   |  18 +-
+ .../standard-headers/linux/virtio_config.h    |   6 +
+ include/standard-headers/linux/virtio_net.h   |   1 +
+ linux-headers/asm-arm64/kvm.h                 |  33 ++
+ linux-headers/asm-riscv/kvm.h                 |  53 +-
+ linux-headers/asm-riscv/unistd.h              |   9 +
+ linux-headers/asm-s390/unistd_32.h            |   1 +
+ linux-headers/asm-s390/unistd_64.h            |   1 +
+ linux-headers/asm-x86/kvm.h                   |   3 +
+ linux-headers/linux/const.h                   |   2 +-
+ linux-headers/linux/kvm.h                     |  12 +-
+ linux-headers/linux/psp-sev.h                 |   7 +
+ linux-headers/linux/userfaultfd.h             |  17 +-
+ target/riscv/cpu.c                            | 322 +++++++++--
+ target/riscv/cpu.h                            |   7 +-
+ target/riscv/kvm.c                            | 499 +++++++++++++++++-
+ target/riscv/kvm_riscv.h                      |   1 +
+ 19 files changed, 917 insertions(+), 91 deletions(-)
+
+-- 
+2.41.0
 
 
