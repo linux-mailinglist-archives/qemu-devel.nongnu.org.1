@@ -2,55 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BBC5740E02
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 12:05:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CE9D740E2E
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 12:07:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qES1w-0007Jo-8g; Wed, 28 Jun 2023 06:04:08 -0400
+	id 1qES4D-0008E9-E8; Wed, 28 Jun 2023 06:06:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=C+FE=CQ=kaod.org=clg@ozlabs.org>)
- id 1qES1u-0007J9-Fw; Wed, 28 Jun 2023 06:04:06 -0400
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
+ (Exim 4.90_1) (envelope-from <mzamazal@redhat.com>)
+ id 1qES4B-0008Dy-Uf
+ for qemu-devel@nongnu.org; Wed, 28 Jun 2023 06:06:27 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=C+FE=CQ=kaod.org=clg@ozlabs.org>)
- id 1qES1r-0002me-HJ; Wed, 28 Jun 2023 06:04:06 -0400
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4QrccF4LDQz4wp4;
- Wed, 28 Jun 2023 20:03:57 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits))
+ (Exim 4.90_1) (envelope-from <mzamazal@redhat.com>)
+ id 1qES4A-0005TK-1F
+ for qemu-devel@nongnu.org; Wed, 28 Jun 2023 06:06:27 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1687946783;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=hHs98muq9oawK+/pzPoCIgsAavylEep2jhAx5ZJBH7I=;
+ b=fKlSjD6kmz2Untlxqp8SrZla8ssB7sbQWjI1QAMT5zuZBaMhoNXkm7W0faTbnSwnUrkLUf
+ +JAZkfE1GFMCUkWTNm6N5gyw/AHI9poBGSwRowu72Q1DoZZ8X59ZI0t6B/U5yMlWDij7P+
+ Dq65EMFTzD5p2/WyAinUNmlZTdnkxG0=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-562-nGCIwKYQPU-5YkVswsItwQ-1; Wed, 28 Jun 2023 06:06:21 -0400
+X-MC-Unique: nGCIwKYQPU-5YkVswsItwQ-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4QrccB0h9vz4wgk;
- Wed, 28 Jun 2023 20:03:53 +1000 (AEST)
-Message-ID: <cd38a154-d5c3-1e22-c94f-9e1d74069f6b@kaod.org>
-Date: Wed, 28 Jun 2023 12:03:52 +0200
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 83C40800CA9;
+ Wed, 28 Jun 2023 10:06:21 +0000 (UTC)
+Received: from nuthatch.redhat.com (unknown [10.45.226.55])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 384B015230A0;
+ Wed, 28 Jun 2023 10:06:20 +0000 (UTC)
+From: Milan Zamazal <mzamazal@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Milan Zamazal <mzamazal@redhat.com>, mst@redhat.com, stefanha@redhat.com,
+ alex.bennee@linaro.org, thuth@redhat.com, vincent.guittot@linaro.org
+Subject: [PATCH v3 0/3] Add SCMI vhost-user VIRTIO device
+Date: Wed, 28 Jun 2023 12:05:21 +0200
+Message-Id: <20230628100524.342666-1-mzamazal@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH qemu] aspeed add montblanc bmc reference from fuji
-Content-Language: en-US
-To: ~ssinprem <ssinprem@celestica.com>, qemu-devel@nongnu.org,
- qemu-arm@nongnu.org
-Cc: peter.maydell@linaro.org, andrew@aj.id.au, srikanth@celestica.com,
- ssumet@celestica.com, thangavelu.v@celestica.com, kgengan@celestica.com,
- anandaramanv@celestica.com, Joel Stanley <joel@jms.id.au>
-References: <168794501779.28884.3336012012258765799-0@git.sr.ht>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <168794501779.28884.3336012012258765799-0@git.sr.ht>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
- envelope-from=SRS0=C+FE=CQ=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -40
-X-Spam_score: -4.1
-X-Spam_bar: ----
-X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, NICE_REPLY_A=-0.103,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mzamazal@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -67,211 +77,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello Sittisak,
+This patch series adds a vhost-user VIRTIO device for SCMI.
+It's similar to other similar vhost-user VIRTIO devices.
 
-On 6/28/23 11:09, ~ssinprem wrote:
-> From: Sittisak Sinprem <ssinprem@celestica.com>
-> 
-> - I2C list follow I2C Tree v1.6 20230320
-> - fru eeprom data use FB FRU format version 4
-> 
-> Signed-off-by: Sittisak Sinprem <ssinprem@celestica.com>
+I'm aware of the work in progress by Alex Bennée to simplify similar devices
+and avoid excessive code duplication.  I think the SCMI device support
+doesn't bring anything special and it can be rebased on the given work
+if/once it is merged.
 
+The device has been tested with a prototype rust-vmm based
+vhost-user-scmi daemon emulating a sensor device and a Linux guest OS
+(the production version of the vhost-user daemon is developed at
+https://github.com/mz-pdm/vhost-device/tree/scmi).
 
-You don't need to cc: qemu-stable@nongnu.org for new machines.
+v3:
+ - Rebased on master after one of the patches had been merged.
+v2:
+ - A missing trailing space additionally added in the comment typo fix.
+ - A note about testing added above.
 
-> ---
->   hw/arm/aspeed.c        | 67 ++++++++++++++++++++++++++++++++++++++++++
->   hw/arm/aspeed_eeprom.c | 50 +++++++++++++++++++++++++++++++
->   hw/arm/aspeed_eeprom.h |  7 +++++
->   3 files changed, 124 insertions(+)
-> 
-> diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
-> index 6880998484..df154cbf52 100644
-> --- a/hw/arm/aspeed.c
-> +++ b/hw/arm/aspeed.c
-> @@ -182,6 +182,10 @@ struct AspeedMachineState {
->   #define FUJI_BMC_HW_STRAP1    0x00000000
->   #define FUJI_BMC_HW_STRAP2    0x00000000
->   
-> +/* Montblanc hardware value */
-> +#define MONTBLANC_BMC_HW_STRAP1    0x00000000
-> +#define MONTBLANC_BMC_HW_STRAP2    0x00000000
-> +
->   /* Bletchley hardware value */
->   /* TODO: Leave same as EVB for now. */
->   #define BLETCHLEY_BMC_HW_STRAP1 AST2600_EVB_HW_STRAP1
-> @@ -918,6 +922,39 @@ static void fuji_bmc_i2c_init(AspeedMachineState *bmc)
->       }
->   }
->   
-> +static void montblanc_bmc_i2c_init(AspeedMachineState *bmc)
-> +{
-> +    AspeedSoCState *soc = &bmc->soc;
-> +    I2CBus *i2c[16] = {};
-> +
-> +    for (int i = 0; i < 16; i++) {
-> +        i2c[i] = aspeed_i2c_get_bus(&soc->i2c, i);
-> +    }
-> +
-> +    /* Ref from Minipack3_I2C_Tree_V1.6 20230320 */
-> +    at24c_eeprom_init(i2c[3], 0x56, montblanc_scm_fruid, 8192, true);
+Milan Zamazal (3):
+  hw/virtio: Add boilerplate for vhost-user-scmi device
+  hw/virtio: Add vhost-user-scmi-pci boilerplate
+  tests/qtest: enable tests for virtio-scmi
 
-I think you meant to use at24c_eeprom_init_rom ?
+ MAINTAINERS                         |   7 +
+ hw/virtio/Kconfig                   |   5 +
+ hw/virtio/meson.build               |   2 +
+ hw/virtio/vhost-user-scmi-pci.c     |  68 +++++++
+ hw/virtio/vhost-user-scmi.c         | 306 ++++++++++++++++++++++++++++
+ include/hw/virtio/vhost-user-scmi.h |  30 +++
+ tests/qtest/libqos/meson.build      |   1 +
+ tests/qtest/libqos/virtio-scmi.c    | 174 ++++++++++++++++
+ tests/qtest/libqos/virtio-scmi.h    |  34 ++++
+ tests/qtest/vhost-user-test.c       |  44 ++++
+ 10 files changed, 671 insertions(+)
+ create mode 100644 hw/virtio/vhost-user-scmi-pci.c
+ create mode 100644 hw/virtio/vhost-user-scmi.c
+ create mode 100644 include/hw/virtio/vhost-user-scmi.h
+ create mode 100644 tests/qtest/libqos/virtio-scmi.c
+ create mode 100644 tests/qtest/libqos/virtio-scmi.h
 
-Thanks,
-
-C.
-
-> +    at24c_eeprom_init(i2c[6], 0x53, montblanc_fcm_fruid, 8192, true);
-> +
-> +    /* CPLD and FPGA */
-> +    aspeed_eeprom_init(i2c[1], 0x35, 256);  /* SCM CPLD */
-> +    aspeed_eeprom_init(i2c[5], 0x35, 256);  /* COMe CPLD TODO: need to update */
-> +    aspeed_eeprom_init(i2c[12], 0x60, 256); /* MCB PWR CPLD */
-> +    aspeed_eeprom_init(i2c[13], 0x35, 256); /* IOB FPGA */
-> +
-> +    /* on BMC board */
-> +    at24c_eeprom_init(i2c[8], 0x51, montblanc_bmc_fruid, 8192, true);
-> +                                                      /* BMC EEPROM */
-> +    i2c_slave_create_simple(i2c[8], TYPE_LM75, 0x48); /* Thermal Sensor */
-> +
-> +    /* COMe Sensor/EEPROM */
-> +    aspeed_eeprom_init(i2c[0], 0x56, 16384);          /* FRU EEPROM */
-> +    i2c_slave_create_simple(i2c[0], TYPE_LM75, 0x48); /* INLET Sensor */
-> +    i2c_slave_create_simple(i2c[0], TYPE_LM75, 0x4A); /* OUTLET Sensor */
-> +
-> +    /* It expects a pca9555 but a pca9552 is compatible */
-> +    create_pca9552(soc, 4, 0x27);
-> +}
-> +
->   #define TYPE_TMP421 "tmp421"
->   
->   static void bletchley_bmc_i2c_init(AspeedMachineState *bmc)
-> @@ -1450,6 +1487,32 @@ static void aspeed_machine_fuji_class_init(ObjectClass *oc, void *data)
->           aspeed_soc_num_cpus(amc->soc_name);
->   };
->   
-> +/* On 32-bit hosts, lower RAM to 1G because of the 2047 MB limit */
-> +#if HOST_LONG_BITS == 32
-> +#define MONTBLANC_BMC_RAM_SIZE (1 * GiB)
-> +#else
-> +#define MONTBLANC_BMC_RAM_SIZE (2 * GiB)
-> +#endif
-> +static void aspeed_machine_montblanc_class_init(ObjectClass *oc, void *data)
-> +{
-> +    MachineClass *mc = MACHINE_CLASS(oc);
-> +    AspeedMachineClass *amc = ASPEED_MACHINE_CLASS(oc);
-> +
-> +    mc->desc = "Facebook Montblanc BMC (Cortex-A7)";
-> +    amc->soc_name = "ast2600-a3";
-> +    amc->hw_strap1 = MONTBLANC_BMC_HW_STRAP1;
-> +    amc->hw_strap2 = MONTBLANC_BMC_HW_STRAP2;
-> +    amc->fmc_model = "mx66l1g45g";
-> +    amc->spi_model = "mx66l1g45g";
-> +    amc->num_cs = 2;
-> +    amc->macs_mask = ASPEED_MAC3_ON;
-> +    amc->i2c_init = montblanc_bmc_i2c_init;
-> +    amc->uart_default = ASPEED_DEV_UART1;
-> +    mc->default_ram_size = MONTBLANC_BMC_RAM_SIZE;
-> +    mc->default_cpus = mc->min_cpus = mc->max_cpus =
-> +        aspeed_soc_num_cpus(amc->soc_name);
-> +};
-> +
->   /* On 32-bit hosts, lower RAM to 1G because of the 2047 MB limit */
->   #if HOST_LONG_BITS == 32
->   #define BLETCHLEY_BMC_RAM_SIZE (1 * GiB)
-> @@ -1706,6 +1769,10 @@ static const TypeInfo aspeed_machine_types[] = {
->           .name          = MACHINE_TYPE_NAME("fuji-bmc"),
->           .parent        = TYPE_ASPEED_MACHINE,
->           .class_init    = aspeed_machine_fuji_class_init,
-> +    }, {
-> +        .name          = MACHINE_TYPE_NAME("montblanc-bmc"),
-> +        .parent        = TYPE_ASPEED_MACHINE,
-> +        .class_init    = aspeed_machine_montblanc_class_init,
->       }, {
->           .name          = MACHINE_TYPE_NAME("bletchley-bmc"),
->           .parent        = TYPE_ASPEED_MACHINE,
-> diff --git a/hw/arm/aspeed_eeprom.c b/hw/arm/aspeed_eeprom.c
-> index ace5266cec..bcde346e9b 100644
-> --- a/hw/arm/aspeed_eeprom.c
-> +++ b/hw/arm/aspeed_eeprom.c
-> @@ -161,6 +161,53 @@ const uint8_t rainier_bmc_fruid[] = {
->       0x31, 0x50, 0x46, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
->   };
->   
-> +/* Montblanc BMC FRU */
-> +const uint8_t montblanc_scm_fruid[8192] = {
-> +    0xfb, 0xfb, 0x04, 0xff, 0x01, 0x0d, 0x4d, 0x49, 0x4e, 0x49, 0x50, 0x41,
-> +    0x43, 0x4b, 0x33, 0x5f, 0x53, 0x43, 0x4d, 0x02, 0x08, 0x32, 0x30, 0x30,
-> +    0x30, 0x32, 0x39, 0x34, 0x35, 0x04, 0x0c, 0x31, 0x33, 0x32, 0x30, 0x30,
-> +    0x30, 0x31, 0x36, 0x34, 0x30, 0x31, 0x20, 0x05, 0x0c, 0x31, 0x33, 0x31,
-> +    0x30, 0x30, 0x30, 0x31, 0x32, 0x37, 0x30, 0x31, 0x20, 0x06, 0x0c, 0x52,
-> +    0x33, 0x32, 0x31, 0x34, 0x47, 0x30, 0x30, 0x30, 0x33, 0x30, 0x31, 0x07,
-> +    0x0d, 0x41, 0x30, 0x33, 0x31, 0x33, 0x58, 0x58, 0x58, 0x58, 0x58, 0x58,
-> +    0x58, 0x58, 0x08, 0x01, 0x01, 0x09, 0x01, 0x00, 0x0a, 0x01, 0x00, 0x0b,
-> +    0x0d, 0x4d, 0x32, 0x32, 0x31, 0x33, 0x32, 0x33, 0x31, 0x37, 0x30, 0x30,
-> +    0x30, 0x32, 0x0c, 0x03, 0x43, 0x4c, 0x53, 0x0d, 0x08, 0x32, 0x30, 0x32,
-> +    0x33, 0x30, 0x35, 0x30, 0x31, 0x0e, 0x03, 0x57, 0x55, 0x53, 0x0f, 0x03,
-> +    0x43, 0x54, 0x48, 0x10, 0x06, 0xb4, 0xbd, 0x00, 0x00, 0x00, 0x01, 0x13,
-> +    0x03, 0x53, 0x43, 0x4d, 0xfa, 0x02, 0x11, 0x07,
-> +};
-> +
-> +const uint8_t montblanc_fcm_fruid[8192] = {
-> +    0xfb, 0xfb, 0x04, 0xff, 0x01, 0x0d, 0x4d, 0x49, 0x4e, 0x49, 0x50, 0x41,
-> +    0x43, 0x4b, 0x33, 0x5f, 0x46, 0x43, 0x42, 0x02, 0x08, 0x33, 0x30, 0x30,
-> +    0x30, 0x30, 0x31, 0x36, 0x31, 0x04, 0x0c, 0x31, 0x33, 0x32, 0x30, 0x30,
-> +    0x30, 0x31, 0x36, 0x33, 0x30, 0x31, 0x20, 0x05, 0x0c, 0x31, 0x33, 0x31,
-> +    0x30, 0x30, 0x30, 0x31, 0x33, 0x30, 0x30, 0x31, 0x20, 0x06, 0x0c, 0x52,
-> +    0x33, 0x32, 0x31, 0x34, 0x47, 0x30, 0x30, 0x31, 0x32, 0x30, 0x31, 0x07,
-> +    0x0d, 0x41, 0x31, 0x32, 0x31, 0x32, 0x58, 0x58, 0x58, 0x58, 0x58, 0x58,
-> +    0x58, 0x58, 0x08, 0x01, 0x01, 0x09, 0x01, 0x00, 0x0a, 0x01, 0x00, 0x0b,
-> +    0x0d, 0x46, 0x35, 0x30, 0x31, 0x33, 0x32, 0x33, 0x31, 0x37, 0x30, 0x30,
-> +    0x30, 0x35, 0x0c, 0x03, 0x43, 0x4c, 0x53, 0x0d, 0x08, 0x32, 0x30, 0x32,
-> +    0x33, 0x30, 0x35, 0x30, 0x31, 0x0e, 0x03, 0x57, 0x55, 0x53, 0x0f, 0x03,
-> +    0x43, 0x54, 0x48, 0x10, 0x06, 0xb4, 0xbd, 0x00, 0x00, 0x00, 0x02, 0x11,
-> +    0x06, 0xb4, 0xbd, 0x00, 0x00, 0x00, 0x03, 0x12, 0x02, 0x8a, 0x00, 0x13,
-> +    0x03, 0x46, 0x43, 0x42, 0xfa, 0x02, 0x0e, 0x61,
-> +};
-> +
-> +const uint8_t montblanc_bmc_fruid[8192] = {
-> +    0xfb, 0xfb, 0x04, 0xff, 0x01, 0x0d, 0x4d, 0x49, 0x4e, 0x49, 0x50, 0x41,
-> +    0x43, 0x4b, 0x33, 0x5f, 0x42, 0x4d, 0x43, 0x04, 0x0c, 0x31, 0x33, 0x32,
-> +    0x30, 0x30, 0x30, 0x31, 0x33, 0x36, 0x30, 0x31, 0x20, 0x05, 0x0c, 0x31,
-> +    0x33, 0x31, 0x30, 0x30, 0x30, 0x30, 0x38, 0x36, 0x30, 0x35, 0x20, 0x06,
-> +    0x0c, 0x52, 0x33, 0x30, 0x39, 0x37, 0x47, 0x30, 0x30, 0x30, 0x32, 0x30,
-> +    0x37, 0x07, 0x0d, 0x42, 0x30, 0x32, 0x37, 0x34, 0x58, 0x58, 0x58, 0x58,
-> +    0x58, 0x58, 0x58, 0x58, 0x08, 0x01, 0x04, 0x09, 0x01, 0x00, 0x0a, 0x01,
-> +    0x00, 0x0c, 0x03, 0x43, 0x4c, 0x53, 0x0d, 0x08, 0x32, 0x30, 0x32, 0x33,
-> +    0x30, 0x35, 0x30, 0x31, 0x0e, 0x03, 0x57, 0x55, 0x53, 0x0f, 0x03, 0x43,
-> +    0x54, 0x48, 0x13, 0x03, 0x42, 0x4d, 0x43, 0xfa, 0x02, 0xef, 0xba,
-> +};
-> +
->   const size_t tiogapass_bmc_fruid_len = sizeof(tiogapass_bmc_fruid);
->   const size_t fby35_nic_fruid_len = sizeof(fby35_nic_fruid);
->   const size_t fby35_bb_fruid_len = sizeof(fby35_bb_fruid);
-> @@ -168,3 +215,6 @@ const size_t fby35_bmc_fruid_len = sizeof(fby35_bmc_fruid);
->   const size_t yosemitev2_bmc_fruid_len = sizeof(yosemitev2_bmc_fruid);
->   const size_t rainier_bb_fruid_len = sizeof(rainier_bb_fruid);
->   const size_t rainier_bmc_fruid_len = sizeof(rainier_bmc_fruid);
-> +const size_t montblanc_scm_fruid_len = sizeof(montblanc_scm_fruid);
-> +const size_t montblanc_fcm_fruid_len = sizeof(montblanc_fcm_fruid);
-> +const size_t montblanc_bmc_fruid_len = sizeof(montblanc_bmc_fruid);
-> diff --git a/hw/arm/aspeed_eeprom.h b/hw/arm/aspeed_eeprom.h
-> index bbf9e54365..b8fbdd0734 100644
-> --- a/hw/arm/aspeed_eeprom.h
-> +++ b/hw/arm/aspeed_eeprom.h
-> @@ -27,4 +27,11 @@ extern const size_t rainier_bb_fruid_len;
->   extern const uint8_t rainier_bmc_fruid[];
->   extern const size_t rainier_bmc_fruid_len;
->   
-> +extern const uint8_t montblanc_scm_fruid[];
-> +extern const uint8_t montblanc_fcm_fruid[];
-> +extern const uint8_t montblanc_bmc_fruid[];
-> +extern const size_t montblanc_scm_fruid_len;
-> +extern const size_t montblanc_fcm_fruid_len;
-> +extern const size_t montblanc_bmc_fruid_len;
-> +
->   #endif
+-- 
+2.40.1
 
 
