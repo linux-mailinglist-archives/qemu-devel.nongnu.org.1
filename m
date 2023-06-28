@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C130E740CB3
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 11:26:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47DA0740CA5
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 11:25:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qERQE-0006rl-P6; Wed, 28 Jun 2023 05:25:10 -0400
+	id 1qERQJ-0006tz-3i; Wed, 28 Jun 2023 05:25:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1qERQB-0006qS-II; Wed, 28 Jun 2023 05:25:07 -0400
+ id 1qERQE-0006rn-Hb; Wed, 28 Jun 2023 05:25:10 -0400
 Received: from out5-smtp.messagingengine.com ([66.111.4.29])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1qERQ9-0001JL-9u; Wed, 28 Jun 2023 05:25:07 -0400
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
- by mailout.nyi.internal (Postfix) with ESMTP id 8A1AE5C01EA;
- Wed, 28 Jun 2023 05:25:04 -0400 (EDT)
+ id 1qERQD-0001Jj-1f; Wed, 28 Jun 2023 05:25:10 -0400
+Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
+ by mailout.nyi.internal (Postfix) with ESMTP id 0D5555C0256;
+ Wed, 28 Jun 2023 05:25:07 -0400 (EDT)
 Received: from mailfrontend2 ([10.202.2.163])
- by compute5.internal (MEProxy); Wed, 28 Jun 2023 05:25:04 -0400
+ by compute1.internal (MEProxy); Wed, 28 Jun 2023 05:25:07 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=irrelevant.dk;
  h=cc:cc:content-transfer-encoding:content-type:date:date:from
  :from:in-reply-to:in-reply-to:message-id:mime-version:references
- :reply-to:sender:subject:subject:to:to; s=fm1; t=1687944304; x=
- 1688030704; bh=nc9Hvjg/exthUfwyl9oW072OtPhq6B/BaXkQeS2Ls+I=; b=B
- nex0vNq/qenAE2RYI5skwK6vNMKX2Bk+puXj5rqY8iZYJPOEx+ZoTxPv/ny9eWnX
- BuMBGffLnlmDS7LT493gurfd0i0QPnhc4CWHoxV4AKHe7lil/vK+uFGMdDW0PwL6
- AKgQlPwJ2JrTd50Xjs3MfzrmkKzI+4XtAFH+E+ynNum6sVTe38QdIDaYrtwgK1jx
- FOTWNsF6kmh6ynjfenT7HXXtZCavlX5bzcbALZSCQylYZ29VewWQwQJp0k8PuWbW
- f25QvUq02uSXdd25/D5JRlPb98IuVKgdnQZC1bc1/Ii0+ybuD/wSZWpcznmy0pfP
- tzaoeQ+6Gaim9f8AvAgKw==
+ :reply-to:sender:subject:subject:to:to; s=fm1; t=1687944307; x=
+ 1688030707; bh=0SAFqxK4V1/WoZqNqzV4M1fFbLLbqOGk3I++tVFYBTA=; b=c
+ pXCUS87GhOiBzcL7vJuqh4Qc/Lk2CXKW6GnSmoZzMou2CVU69OVe45fqikgY/J1W
+ MJQwfpfN9gaVeF4fMMlvjHR5AFrGZOxsTVDKFjDiYGyL/sqrhUZRPeJLGExhfeua
+ d8LphmdJXqq/foNvCAApY9RDUWRE4BpoT3oasRO7y78y92G8KTNciEvl6nYoQunz
+ mNZ1oFOtRPePCFDlTxW0SwuITvg9SR4PN7Th1nDw2ZQCBc1FT+b+oOg73395B53J
+ dBYfBDlw1ryPAtY2O2G35cezr7mEaL47uMq22gHWHQAu1zoGqwAzLrRGHYEeo/Mb
+ VKMPRD4lqlpaA1Ciy63mg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
  messagingengine.com; h=cc:cc:content-transfer-encoding
  :content-type:date:date:feedback-id:feedback-id:from:from
  :in-reply-to:in-reply-to:message-id:mime-version:references
  :reply-to:sender:subject:subject:to:to:x-me-proxy:x-me-proxy
- :x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1687944304; x=
- 1688030704; bh=nc9Hvjg/exthUfwyl9oW072OtPhq6B/BaXkQeS2Ls+I=; b=m
- WyMBgukHjzVdcd+oJWvAU+5L+0rW7k8Up4GmtHZXFcFw5u7SonvzI+Wil4fgkwA2
- PhGZ6G6MwJ9VrEmAd1y+HZJJNHpuVH5UCoHBzeekymbVppfqC36y/ZqNta1A3QKk
- cLXQyak7BQAxQ4GGq13Z2AvRdVBUi4FB+aBAQhr5O/QVNKmuh0YJMLfunhQJR2pN
- 8ZUJZGpT2dyyA9R9rP8OtYB2vsTNuZejyKPpxWlNGoBs4XQg9kAaGluK3G4KPSdn
- S/9CnP2ltbc0u1Xi+LGP7MUfkw2YqmCJUob1hHDqpGaRaG6UZwrHaU47ZM0s4Old
- +0eMqRbgAmoRIQ3ZYN5PQ==
-X-ME-Sender: <xms:cPybZAwbom-eNj8GUj0rUpBPKFgMhSiQM8V8-F3JVABNcTe0eYYxcg>
- <xme:cPybZERoWMuyPZFxxojmJDtId9Vr4RHzFjakTfmp2ux7uJa0evZDfRaPWPNYRkkjP
- kUjMt0_R0TLLV9H32s>
-X-ME-Received: <xmr:cPybZCXVYRDidmscfc30oOZmJ6Fzzr7OKKXr9egxuKxelSZ-eWiNyMLuKDgJZraP-JuWEUWHbo0>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrtddvgddufecutefuodetggdotefrodftvf
+ :x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1687944307; x=
+ 1688030707; bh=0SAFqxK4V1/WoZqNqzV4M1fFbLLbqOGk3I++tVFYBTA=; b=p
+ ekQkUvhU190GwF32KkqItKNOtBuHsE5DOStpgeGowHSsDNSo7P0fGd4HPqf7nZuo
+ kzKETiTtQTzr/KHl6SG7Xh1OLoxWdUU9DdFKXxiKjoJIc1zu1T9MYx0aiAN+TnAu
+ KRsLSyd+PvoW2bXiv9vwYaj5CjFoVoWyDEvSZgzDoNmgZyWNTR0h0IhqB936bE2S
+ NCstEFUHxaURNQ2ymX4SLxdF2H91WD39TP9VaifGV/3uapQbSUf0yGEpgdbYpp1f
+ nWXkZN/e0zI0TZmgIYXzy/dvPvwASevlVMZna7VTSAYSx3DW875/UG5cuw+SzHJ8
+ dInrG+MWrVa9DRHgXuZsw==
+X-ME-Sender: <xms:cvybZAQn2IaY9TDIIe_Y8ZoBTjMawbWNuqB9FT5TO0SE6V-q3pcQaQ>
+ <xme:cvybZNxQvFRtwnR973U85rC2A5MmrnaV8JAPAjw1lWDBOeZeN-gzpSI2rtdBAFHJm
+ BxjfaA8ajYYNLjaSO8>
+X-ME-Received: <xmr:cvybZN1tBI_g0rk9TiWrgeoMyUb2f1r4XTwFVV_DTBn8q9jYyLz3jAVuPIeq-73u8NamHxNOX_E>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrtddvgddugecutefuodetggdotefrodftvf
  curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
  uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
  fjughrpefhvfevufffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpefmlhgruhhs
@@ -57,13 +57,13 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrtddvgddufecutefuodetggdote
  gvrhhnpeejgfeilefgieevheekueevheehkeefveegiefgheefgfejjeehffefgedujedu
  geenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehith
  hssehirhhrvghlvghvrghnthdrughk
-X-ME-Proxy: <xmx:cPybZOhqJrh4F2vMMfZmgLKK3pr20G6nPQMJJJL0aPrD1BhzO9HsHw>
- <xmx:cPybZCC5i-aBauFz4VbgPH45b8Zj3XQMph70M14cV6niqaUt4Prryw>
- <xmx:cPybZPIuN5wNpBPbycxEWzS4_wokvu0G0mPE9qyxLPGLqCxnOGVUgQ>
- <xmx:cPybZG7T0hNkG813gCbDNbWdXAJSmh-0u_Ii1U0pknFAyt2wmfhI_w>
+X-ME-Proxy: <xmx:cvybZEDBNhJ3BTBbsERs4SDFo1qX6dyNOmnqrO2Ew2F65mNvbBlO7Q>
+ <xmx:cvybZJiMM9b8cROnl-aAZAmE-KoeUWTkXNeoMTtdXyGFspb-E9jVEQ>
+ <xmx:cvybZAoJSnECsHkOENzbRkJDEvfWwQbvoTHagkhfTFurmntEVEBanw>
+ <xmx:c_ybZOZ0dg-JWJSsaCoXVzAMmKMq_ZZmi3lNZBIsvTmXEaTkoa2xCg>
 Feedback-ID: idc91472f:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 28 Jun 2023 05:25:02 -0400 (EDT)
+ 28 Jun 2023 05:25:04 -0400 (EDT)
 From: Klaus Jensen <its@irrelevant.dk>
 To: qemu-devel@nongnu.org,
 	Peter Maydell <peter.maydell@linaro.org>
@@ -73,22 +73,22 @@ Cc: Fam Zheng <fam@euphon.net>, Stefan Hajnoczi <stefanha@redhat.com>,
  qemu-block@nongnu.org, Hanna Reitz <hreitz@redhat.com>,
  Klaus Jensen <its@irrelevant.dk>, Minwoo Im <minwoo.im@samsung.com>,
  Klaus Jensen <k.jensen@samsung.com>
-Subject: [PULL 2/7] hw/nvme: consider COPY command in nvme_aio_err
-Date: Wed, 28 Jun 2023 11:24:56 +0200
-Message-ID: <20230628092453.39602-11-its@irrelevant.dk>
+Subject: [PULL 3/7] hw/nvme: check maximum copy length (MCL) for COPY
+Date: Wed, 28 Jun 2023 11:24:57 +0200
+Message-ID: <20230628092453.39602-12-its@irrelevant.dk>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230628092453.39602-9-its@irrelevant.dk>
 References: <20230628092453.39602-9-its@irrelevant.dk>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1035; i=k.jensen@samsung.com;
- h=from:subject; bh=SzPvUmf1mwaRcbQQTu9QRtcGmSDNxD8XoXG5+zbb4zI=;
- b=owJ4nAFtAZL+kA0DAAoBTeGvMW1PDekByyZiAGSb/GYe8JeNk/d+RclM8ACvIRty+82BulKac
- 0KHZbf85ecoxokBMwQAAQoAHRYhBFIoM6p14tzmokdmwE3hrzFtTw3pBQJkm/xmAAoJEE3hrzFt
- Tw3pZ04H/1UwsbdnxRqYd56fl6TMIBMtozx0ASK/RXz44JKznq969ysT/AAqd/RWtl9MW/YZK3Q
- 0xOvkIuN1Hm/AlcnmKbZ7BnXuVCjIAsR/8WbvSmV3WhJquJff3xjJlv9vLieXFekFTPonjZFYlW
- bCB7Gb/n5sCizTu5Y0bd9k5MiJ/+bhvbUm32eIcdM6SUD/YPupX3oX+9/YLuZlO2TJ4jO63KXQa
- aMQCA6wv8B5pnkFzbaJihBp2+nkuu5JNk6oa/exSvUY0IvZMCm8bt5s+zmgSKKSVhM4ijyBG9dR
- W5c54+9LrEajTwH9wOY9E9Vj6KVJPETnOOLRM+POWASb3OvIT55Z1LOl
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1670; i=k.jensen@samsung.com;
+ h=from:subject; bh=eKUVEUgODcXz3wtxTeNtY/83NRFFRhmOiWfERAFAsk0=;
+ b=owJ4nAFtAZL+kA0DAAoBTeGvMW1PDekByyZiAGSb/GYzacgX39Slxe3kS6GMf1Yo1H8sMKI4a
+ tDbINuyDls5iYkBMwQAAQoAHRYhBFIoM6p14tzmokdmwE3hrzFtTw3pBQJkm/xmAAoJEE3hrzFt
+ Tw3pKWkH/ReLj8LT5xIYZZPu6eJw/cWAulu/ojIAMeJvHimSjUiTwSPdRoFOJbHyOsGhuoYiY3a
+ fonU00RBfRVh1eramn2uHUPccP4WFkFRlZ0hTNDWrnTt15te7wHpw3wbO1/J6w2AJ1gd1BBfimA
+ bAXbRFtWANCprA7yvNuhA0o8iosl1ieYhk4dD0n4Qee9E0hLKkcV1QFEgc8Fk+jCLwqYMtoOUe+
+ KL26YQHp1n5qn3dSVc1rElaw+YylAfDNOjE7xI/nrs19GG1NpI+7cssEsdJzKP+Q7MUODZPAc/Y
+ ix5E3xzgh7VWMccSme3KKF3ERHKMrYMzLh+Rp9l7Y8/yttjwyEK05q2F
 X-Developer-Key: i=k.jensen@samsung.com; a=openpgp;
  fpr=DDCA4D9C9EF931CC3468427263D56FC5E55DA838
 Content-Transfer-Encoding: 8bit
@@ -118,34 +118,60 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Minwoo Im <minwoo.im@samsung.com>
 
-If we don't have NVME_CMD_COPY consideration in the switch statement in
-nvme_aio_err(), it will go to have NVME_INTERNAL_DEV_ERROR and
-`req->status` will be ovewritten to it.  During the aio context, it
-might set the NVMe status field like NVME_CMD_SIZE_LIMIT, but it's
-overwritten in the nvme_aio_err().
-
-Add consideration for the NVME_CMD_COPY not to overwrite the status at
-the end of the function.
+MCL(Maximum Copy Length) in the Identify Namespace data structure limits
+the number of LBAs to be copied inside of the controller.  We've not
+checked it at all, so added the check with returning the proper error
+status.
 
 Signed-off-by: Minwoo Im <minwoo.im@samsung.com>
 Reviewed-by: Klaus Jensen <k.jensen@samsung.com>
 Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
 ---
- hw/nvme/ctrl.c | 1 +
- 1 file changed, 1 insertion(+)
+ hw/nvme/ctrl.c | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
 diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
-index 020f37a780e0..e031c2250a84 100644
+index e031c2250a84..355668bdf87e 100644
 --- a/hw/nvme/ctrl.c
 +++ b/hw/nvme/ctrl.c
-@@ -1755,6 +1755,7 @@ static void nvme_aio_err(NvmeRequest *req, int ret)
-     case NVME_CMD_WRITE:
-     case NVME_CMD_WRITE_ZEROES:
-     case NVME_CMD_ZONE_APPEND:
-+    case NVME_CMD_COPY:
-         status = NVME_WRITE_FAULT;
-         break;
-     default:
+@@ -2855,6 +2855,25 @@ static void nvme_copy_source_range_parse(void *ranges, int idx, uint8_t format,
+     }
+ }
+ 
++static inline uint16_t nvme_check_copy_mcl(NvmeNamespace *ns,
++                                           NvmeCopyAIOCB *iocb, uint16_t nr)
++{
++    uint32_t copy_len = 0;
++
++    for (int idx = 0; idx < nr; idx++) {
++        uint32_t nlb;
++        nvme_copy_source_range_parse(iocb->ranges, idx, iocb->format, NULL,
++                                     &nlb, NULL, NULL, NULL);
++        copy_len += nlb + 1;
++    }
++
++    if (copy_len > ns->id_ns.mcl) {
++        return NVME_CMD_SIZE_LIMIT | NVME_DNR;
++    }
++
++    return NVME_SUCCESS;
++}
++
+ static void nvme_copy_out_completed_cb(void *opaque, int ret)
+ {
+     NvmeCopyAIOCB *iocb = opaque;
+@@ -3167,6 +3186,11 @@ static uint16_t nvme_copy(NvmeCtrl *n, NvmeRequest *req)
+         }
+     }
+ 
++    status = nvme_check_copy_mcl(ns, iocb, nr);
++    if (status) {
++        goto invalid;
++    }
++
+     iocb->req = req;
+     iocb->ret = 0;
+     iocb->nr = nr;
 -- 
 2.41.0
 
