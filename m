@@ -2,86 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CE8874070A
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 02:06:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50955740753
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 02:56:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEIfg-0005DI-PV; Tue, 27 Jun 2023 20:04:32 -0400
+	id 1qEJSk-0005cT-VM; Tue, 27 Jun 2023 20:55:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qEIfc-0005Cd-Og
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 20:04:28 -0400
-Received: from mail-oo1-xc30.google.com ([2607:f8b0:4864:20::c30])
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1qEJSi-0005bi-L3; Tue, 27 Jun 2023 20:55:12 -0400
+Received: from mail-pg1-x52b.google.com ([2607:f8b0:4864:20::52b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qEIfX-0004oE-FB
- for qemu-devel@nongnu.org; Tue, 27 Jun 2023 20:04:25 -0400
-Received: by mail-oo1-xc30.google.com with SMTP id
- 006d021491bc7-558a79941c6so3516168eaf.3
- for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 17:04:21 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1qEJSg-0004h5-Vu; Tue, 27 Jun 2023 20:55:12 -0400
+Received: by mail-pg1-x52b.google.com with SMTP id
+ 41be03b00d2f7-55b1238cab4so656177a12.2; 
+ Tue, 27 Jun 2023 17:55:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1687910660; x=1690502660;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=3kBv7QeNj/L+noL8nO2h+0iDRT12aUSxYkAtl53jAi4=;
- b=Rnn7Eqdq4TNXlohf9uyWabF9KVzX7xWCEfwLmDajC76aVSUIRF/TOASe4PvZXJW7fg
- KkVJ4KqvgfB16pDy6Mk76WvAkHVoZCV9/uF03sBYLdT8DbCVFzlns+a251QgsatemJrT
- P6lfFlbkSz8lzTcdXvYSoJiBKkAUwZLvz1y+5HjZY+vQv/eIyGPF9cNgoPAdgPHSELup
- cT2OpQDu/VO5+6Q325rbIkZmFlNd81IXGofihCa2Esv2uMrt6kwppLYmiPDF13Yq4mJ+
- SffXIcOF5Lg+bBOT3snWGci4AgSpPlHJ9aYjR99atvfLEsUPQIqJuXs3c2Fq/D20+OTe
- NOnA==
+ d=gmail.com; s=20221208; t=1687913709; x=1690505709;
+ h=in-reply-to:references:cc:to:from:subject:message-id:date
+ :content-transfer-encoding:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=zPDkjCM1PkCzHhOgYy1PKpCQYJBrRHjNwIPY8nun7RE=;
+ b=BnAGqbJ4CRHIM2dDa7Lw247lD1+XTtQPUdCV9v5Zib0Qbh0KsZGGSYlRVi393Fw2vk
+ LT3vD4zbc33fdBuecN/oQlcMGdHH8Sv4WzeZILJCuUouWlJNbrguZ1dQQayZVUJEgiDi
+ 027LZmXi5rjnKw7C0j+uK580GcuEQ1d4BghNR9Swm4vEvJs2W+4Msjgnv1wBwpO8FtCE
+ kxbU7OSwRA5F9gEECWTWAGpa5oiKNpDVXsTrqnYh0zE8If3TUVwVjN323uDIZUFrS0vM
+ PKk7zLAYAWmSlR94iJ3NoEiyz6EuqghdvmQaL1h7d0eZfTB2DlueJ7MLBq+qZCakWg1Z
+ 73rQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687910660; x=1690502660;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=3kBv7QeNj/L+noL8nO2h+0iDRT12aUSxYkAtl53jAi4=;
- b=ASb8EKpsq6dNtEF2TaeFfhUfKB6FzJtjrm2eLAFORbULMqW/OqdCUaOJLV4wIqx73o
- VBXcYRIFFNMg58edYGpXoJiW2MGUYabpGCWj3SAIbuMV/pOu1ffNDPRMnfYW8agyn3Sj
- T+/eqgxkCAC5Se2LBnxbMBUTxkfWE5K5sF+EfuIp2XxJVUM/yS5JTy0CnSJJRJ866Bo8
- Zafbs6FN4L8NowYOufTutarfzQjOioX66XHibLGFjA5qWOausZP5fzJELv9c6DNf4ueo
- 9dlkMwgdXfr1ZS1GDn7JqbHe664HPXhgRtoRpQtuunK9pYf5LIhlH8r8taqb8qRFaT49
- hOhg==
-X-Gm-Message-State: AC+VfDzXbyWc2yRLHEFnBxLjEwz80mPK4Wcp520frI1GOMihnrDcHBqJ
- xBoJED+KoGhSmf3fx208p+kLQg==
-X-Google-Smtp-Source: ACHHUZ5iOHPTCivLVlkJ/bgUpxCWdrlEjYkCfHieo9GOdMK/KFLL4VRj4mS2g4DdbJI4CT2YpWbELA==
-X-Received: by 2002:a4a:e8db:0:b0:565:84b0:845d with SMTP id
- h27-20020a4ae8db000000b0056584b0845dmr2586101ooe.6.1687910660313; 
- Tue, 27 Jun 2023 17:04:20 -0700 (PDT)
-Received: from [192.168.68.107] (201-69-66-110.dial-up.telesp.net.br.
- [201.69.66.110]) by smtp.gmail.com with ESMTPSA id
- f14-20020a4ada4e000000b00558c88d131asm1751798oou.36.2023.06.27.17.04.17
+ d=1e100.net; s=20221208; t=1687913709; x=1690505709;
+ h=in-reply-to:references:cc:to:from:subject:message-id:date
+ :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=zPDkjCM1PkCzHhOgYy1PKpCQYJBrRHjNwIPY8nun7RE=;
+ b=QxyA2Z32VRr4skF8JTy51oP1Amd4IeBGL1q20mlAo7NVvR9I8P5sli4t9LH/xHrQpc
+ k9df/wkOkcpYidVDRc/aIzv+vEsdfQsijQ4zJa0rkDbJ10TjJoOF96wV2pZq3Xi7MFKC
+ ZoEeK+JV0gGx/NRntjWLfGwRm3oRQwv6uct6qVTstZuvvg9PNHcdvgvMoaCWKfInwSej
+ GFONmwGXDLRgcnwJ939DuaD4aVl+eytqOw1Mb9+xzK4lUwutJO+7IkGStGw3wIRCuEEM
+ 592FFK11dU+iMdRRAySKxYE7QtdpY9e+7DOZ7HAlVyndhlidBN61xriy2BH0JSwftlZN
+ Tuig==
+X-Gm-Message-State: AC+VfDxILBRwo0Xc1QyQz7kgOG9s/AAB4lMUJVhkFCstgxKRFCBKoQKU
+ OY2y6Hr8EPvBAXboGODau90=
+X-Google-Smtp-Source: ACHHUZ4yrikoHtIjb2pFWRyuYOrunafLI+Hn4WWFXEibyLsndUPFSnuipzdG9HQnDcozubioAv1uYA==
+X-Received: by 2002:a05:6a20:3d26:b0:10b:8698:2097 with SMTP id
+ y38-20020a056a203d2600b0010b86982097mr31753892pzi.0.1687913708816; 
+ Tue, 27 Jun 2023 17:55:08 -0700 (PDT)
+Received: from localhost (193-116-109-121.tpgi.com.au. [193.116.109.121])
+ by smtp.gmail.com with ESMTPSA id
+ 6-20020aa79146000000b00659edece5dasm5907948pfi.49.2023.06.27.17.55.04
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 27 Jun 2023 17:04:20 -0700 (PDT)
-Message-ID: <997135f3-f9a3-7974-118c-48e8fb1e04d2@ventanamicro.com>
-Date: Tue, 27 Jun 2023 21:04:16 -0300
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH v5 11/19] target/riscv/cpu: add misa_ext_info_arr[]
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
- liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
- ajones@ventanamicro.com
-References: <20230627163203.49422-1-dbarboza@ventanamicro.com>
- <20230627163203.49422-12-dbarboza@ventanamicro.com>
- <e217dfb9-a4c2-12e3-6053-ef2167f30a05@linaro.org>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <e217dfb9-a4c2-12e3-6053-ef2167f30a05@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c30;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-oo1-xc30.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+ Tue, 27 Jun 2023 17:55:08 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 28 Jun 2023 10:55:02 +1000
+Message-Id: <CTNVGY00BO7S.35I04KZ8AFLL4@wheely>
+Subject: Re: [PATCH v2 3/4] target/ppc: Make checkstop actually stop the system
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "BALATON Zoltan" <balaton@eik.bme.hu>
+Cc: <qemu-devel@nongnu.org>, <qemu-ppc@nongnu.org>, "Daniel Henrique
+ Barboza" <danielhb413@gmail.com>, =?utf-8?q?C=C3=A9dric_Le_Goater?=
+ <clg@kaod.org>, "David Gibson" <david@gibson.dropbear.id.au>, "Greg Kurz"
+ <groug@kaod.org>, "Harsh Prateek Bora" <harshpb@linux.ibm.com>
+X-Mailer: aerc 0.15.2
+References: <20230627134644.260663-1-npiggin@gmail.com>
+ <20230627134644.260663-4-npiggin@gmail.com>
+ <5b90ae62-f279-1d07-1098-39a4f450bb99@eik.bme.hu>
+In-Reply-To: <5b90ae62-f279-1d07-1098-39a4f450bb99@eik.bme.hu>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52b;
+ envelope-from=npiggin@gmail.com; helo=mail-pg1-x52b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.103,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -99,71 +95,108 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Wed Jun 28, 2023 at 3:38 AM AEST, BALATON Zoltan wrote:
+> On Tue, 27 Jun 2023, Nicholas Piggin wrote:
+> > checkstop state does not halt the system, interrupts continue to be
+> > serviced, and other CPUs run.
+> >
+> > Stop the machine with vm_stop(), and print a register dump too.
+> >
+> > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> > ---
+> > Since v1:
+> > - Fix loop exit so it stops on the attn instruction, rather than
+> >  after it.
+> >
+> > target/ppc/excp_helper.c | 34 ++++++++++++++++++++--------------
+> > 1 file changed, 20 insertions(+), 14 deletions(-)
+> >
+> > diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
+> > index 5beda973ce..28d8a9b212 100644
+> > --- a/target/ppc/excp_helper.c
+> > +++ b/target/ppc/excp_helper.c
+> > @@ -19,6 +19,7 @@
+> > #include "qemu/osdep.h"
+> > #include "qemu/main-loop.h"
+> > #include "qemu/log.h"
+> > +#include "sysemu/runstate.h"
+> > #include "cpu.h"
+> > #include "exec/exec-all.h"
+> > #include "internal.h"
+> > @@ -186,19 +187,24 @@ static void ppc_excp_debug_sw_tlb(CPUPPCState *en=
+v, int excp)
+> >              env->error_code);
+> > }
+> >
+> > -static void powerpc_checkstop(CPUPPCState *env)
+> > +static void powerpc_checkstop(CPUPPCState *env, const char *reason)
+> > {
+> >     CPUState *cs =3D env_cpu(env);
+> >
+> > -    /* Machine check exception is not enabled. Enter checkstop state. =
+*/
+> > -    fprintf(stderr, "Machine check while not allowed. "
+> > -            "Entering checkstop state\n");
+> > +    vm_stop(RUN_STATE_GUEST_PANICKED);
+> > +
+> > +    fprintf(stderr, "Entering checkstop state: %s\n", reason);
+> > +    cpu_dump_state(cs, stderr, CPU_DUMP_FPU | CPU_DUMP_CCOP);
+> >     if (qemu_log_separate()) {
+> > -        qemu_log("Machine check while not allowed. "
+> > -                 "Entering checkstop state\n");
+> > +        FILE *logfile =3D qemu_log_trylock();
+> > +        if (logfile) {
+> > +            fprintf(logfile, "Entering checkstop state: %s\n", reason)=
+;
+>
+> I don't think you should have fprintfs here. Is this remnants of debug=20
+> code left here by mistake? The fprintf that was there before may also nee=
+d=20
+> to be converted to some qemI_log or error_report but I did not know what=
+=20
+> these are for and did not address that. But if you want to add more then=
+=20
+> it may need to be solved first.
 
+I just followed existing fprintf use. Changing that should be separate
+patch indeed.
 
-On 6/27/23 18:29, Philippe Mathieu-Daudé wrote:
-> On 27/6/23 18:31, Daniel Henrique Barboza wrote:
->> Next patch will add KVM specific user properties for both MISA and
->> multi-letter extensions. For MISA extensions we want to make use of what
->> is already available in misa_ext_cfgs[] to avoid code repetition.
->>
->> misa_ext_info_arr[] array will hold name and description for each MISA
->> extension that misa_ext_cfgs[] is declaring. We'll then use this new
->> array in KVM code to avoid duplicating strings.
->>
->> There's nothing holding us back from doing the same with multi-letter
->> extensions. For now doing just with MISA extensions is enough.
->>
->> Suggested-by: Andrew Jones <ajones@ventanamicro.com>
->> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
->> Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
->> ---
->>   target/riscv/cpu.c | 60 ++++++++++++++++++++++++++--------------------
->>   target/riscv/cpu.h | 11 ++++++++-
->>   2 files changed, 44 insertions(+), 27 deletions(-)
-> 
-> 
->> +const MISAExtInfo misa_ext_info_arr[] = {
->> +    [RVA] = {"a", "Atomic instructions"},
->> +    [RVC] = {"c", "Compressed instructions"},
->> +    [RVD] = {"d", "Double-precision float point"},
->> +    [RVF] = {"f", "Single-precision float point"},
->> +    [RVI] = {"i", "Base integer instruction set"},
->> +    [RVE] = {"e", "Base integer instruction set (embedded)"},
->> +    [RVM] = {"m", "Integer multiplication and division"},
->> +    [RVS] = {"s", "Supervisor-level instructions"},
->> +    [RVU] = {"u", "User-level instructions"},
->> +    [RVH] = {"h", "Hypervisor"},
->> +    [RVJ] = {"x-j", "Dynamic translated languages"},
->> +    [RVV] = {"v", "Vector operations"},
->> +    [RVG] = {"g", "General purpose (IMAFD_Zicsr_Zifencei)"},
->> +};
-> 
-> Personally I prefer using a getter() helper because we can check in
-> a single place for empty entries in the array.
-> 
-> IIUC this 13-entries array takes 4MiB (RVV is '1<<21' = 2MiB).
-> 
-> Wouldn't it be clever to index by [a-z]? Except "x-j"...
+> > +            cpu_dump_state(cs, logfile, CPU_DUMP_FPU | CPU_DUMP_CCOP);
+> > +            qemu_log_unlock(logfile);
+> > +        }
+> >     }
+> > -    cs->halted =3D 1;
+> > -    cpu_interrupt_exittb(cs);
+> > +
+>
+> Excess blank line?
 
+No, it separates the logging block from function.
 
-Well .. RVA is 1<<0, RVC is 1<<2, up to RVV 1<<21. I guess this array can
-be indexed at zero, and then we create a getter() that retrieves the element
-we want using ctz32() to find the right index. Something in the likes of:
+>
+> > +    cpu_loop_exit_noexc(cs);
+> > }
+> >
+> > #if defined(TARGET_PPC64)
+> > @@ -483,7 +489,7 @@ static void powerpc_excp_40x(PowerPCCPU *cpu, int e=
+xcp)
+> >         break;
+> >     case POWERPC_EXCP_MCHECK:    /* Machine check exception            =
+      */
+> >         if (!FIELD_EX64(env->msr, MSR, ME)) {
+> > -            powerpc_checkstop(env);
+> > +            powerpc_checkstop(env, "machine check with MSR[ME]=3D0");
+>
+> If the message is always the same why pass it from here If the only other=
+=20
+> option not used yet would be MSR[ME]=3D1 then that could also be checked =
+in=20
+> the func so no need to pass the message. So is there any other possible=
+=20
+> reason here?
 
-MISAExtInfo *get_misa_ext_info(uint32_t bit)
-{
-     return &misa_ext_info_arr[ctz32(bit)];
-}
+To make the checkstop function more general (e.g., used by the next patch).
 
-And now, since we're using a getter, we don't need to export the whole array
-anymore.
-
-I'll see how it plays out. Thanks,
-
-
-Daniel
-
-> 
-> 
+Thanks,
+Nick
 
