@@ -2,73 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2313E7415DF
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 17:57:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23AFC7415EE
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 18:00:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEXWC-0002Pu-UG; Wed, 28 Jun 2023 11:55:45 -0400
+	id 1qEXWs-00030J-NO; Wed, 28 Jun 2023 11:56:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qEXVe-00027d-Pk
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 11:55:14 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qEXVm-0002Vt-Kk
+ for qemu-devel@nongnu.org; Wed, 28 Jun 2023 11:55:21 -0400
+Received: from mail-lj1-x22c.google.com ([2a00:1450:4864:20::22c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qEXVd-0001T7-02
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 11:55:10 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-3fba5a8af2cso379575e9.3
- for <qemu-devel@nongnu.org>; Wed, 28 Jun 2023 08:55:08 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qEXVk-0001hz-O4
+ for qemu-devel@nongnu.org; Wed, 28 Jun 2023 11:55:18 -0400
+Received: by mail-lj1-x22c.google.com with SMTP id
+ 38308e7fff4ca-2b6a1fe5845so55379871fa.3
+ for <qemu-devel@nongnu.org>; Wed, 28 Jun 2023 08:55:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1687967707; x=1690559707;
+ d=linaro.org; s=google; t=1687967715; x=1690559715;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=v9ckCZXgNGhuTxOJv5GYa6oPwaWkms/CNLiXxlbZv/w=;
- b=v6tNW2c1WIDkixH0MPPE/S8OqbR1GpC0qZHflhyH4UBr5PEPPgMWkwYBr0tBesFOyn
- t1q9iOuct9fCUY5FTeCiAd7hAZqYHo8JPU1wYtESyakfTa2aUlO2BTABAm32Q6yKOWhS
- XxPqtXLMrqFpWm3elS/uVszz2fOpuXDz/a1Ja/sR0rkUk3k18pyK0E0HriTevzp5bXuO
- JSZ1NSeL6Ilekvfp3fRFvMVWuQrOC1gQqsbvg8xyEWd2xY0y6xY5b3AhrYY7Lsz3U6EO
- +GlVKj9ikOBgI5JyQqH/dWK37n9RMkGXQTsuQ6fkwTx/ZIe/E/iYkutNs7uEioI/ROf5
- SAlA==
+ bh=1Z7hmSf7F5zCyqJWN1ZSSRjKzW8IULQcgC+39wDtspA=;
+ b=HwCVEdLiBB20/nQnpNyCHsJT/cv4dG6G2fut64R1esGlbLRx8k3fHu6SRvYbMKyjZH
+ J5kGI/EMPL2FdNTa3OnCxsYfU4S7XQsIdiNEhvvZRHOWuQ7qjL4ZqovI2VD4lsncwLcL
+ DcgmDEdHVmc31k0W8FhTFkXoCJEZv6bB1FFSV8oUD5BkuuAkHoxSBPm45PKKefxAXPYM
+ 9W29FoY1n3qhKABimjDgijoL8P9l5Idi8fYdAqH9SzQ9MD49xQpsCsVRP4nnziJYEikc
+ mH3vQDoqFJZwJxLYRZl9BJ4IE2Ks1kXQKdGHo/MxfY4NdOCJldfMoeMUYFHicH2cTEeI
+ pQCA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687967707; x=1690559707;
+ d=1e100.net; s=20221208; t=1687967715; x=1690559715;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=v9ckCZXgNGhuTxOJv5GYa6oPwaWkms/CNLiXxlbZv/w=;
- b=gWCZ7tkm4wyfDW7a6UzxdYCsCvCGXCM/LGebJXRXQ9BCO7zP+KuXJg2YpN2Icu250y
- Ed1yexsvCGRZJq6HBnZDSpnc7R0zyuUMIOJswcHPUa5qNFinMlxh2t6SXY4XIwoSCc0Y
- 0xa3+PGGJo7nbIb4+BJIVgavrbkUixTP7jWpFoh3cBherKdrJPYz758ScpbtoEtM87b3
- y0RaGgNoFTHJjA059T+0CaaY42I49a6TsaYEygRZZQjYeNRe/UiPSxZqwfeXmgwZ2tzv
- 63kjNvpnknnd6bTxEbU7ig1ZgKGw9crqxGwHVVlL02QKJcTkJ4hylej/QzxRKI3aaU2w
- 3vWQ==
-X-Gm-Message-State: AC+VfDx3H6t+BfRxWbUSkfh9L+WrmcIJr2raK7NxspHeJUKxMo4yfkfZ
- hql2eG9cu+PvqC43ZT6F3/Z0mqVW1djQtYsz0JU=
-X-Google-Smtp-Source: ACHHUZ7IMh8R3+rRcjLrTFpHAPfRc1rMifezdqjF1yWsz1ip4kmJhkeEF9DF3UXSkRinKeBVcjyCbw==
-X-Received: by 2002:a7b:cc0c:0:b0:3f8:fb7c:6793 with SMTP id
- f12-20020a7bcc0c000000b003f8fb7c6793mr23256693wmh.24.1687967707458; 
- Wed, 28 Jun 2023 08:55:07 -0700 (PDT)
+ bh=1Z7hmSf7F5zCyqJWN1ZSSRjKzW8IULQcgC+39wDtspA=;
+ b=TmxK5SFjVbckhT8JRflLPZqAdCS5Re+qF+yhPOtJ8onwOLRYc0kqfERpf1oVHgDQch
+ 5FWverYSzWfWhDXC7nRexL10CTGugWWsVkic5VVwIEvlObJy03nBflyr0PEwGLv4Nhvx
+ 7uNisqT+4Biiu/zY9KqRacakejHGgQg60b0xoMqN8wzWkX4kIM+nRj8w4X3/DNTvq/2I
+ k7I3KPknxJGkzRCAwYFrDyzl9UkviqNpTCUl5jX1i4SOujxgk+RSz6VOKc5c1pQRR+Ml
+ T/XBX3AdFOoLybJ5JCIj+SkoIXpZwb0w0NysGYDJLVESjdySqbNQa7RgkpF836zuzUmm
+ TUYw==
+X-Gm-Message-State: AC+VfDw9obtxM8iOExEBO14+j/kFND2GxQSj3qNGWZ2NcOu5+tafiq7k
+ UcJH6XOezUC2eyv6pXD0NLij516idFionJhhrxE=
+X-Google-Smtp-Source: ACHHUZ4FYQf9ndVmCp3iz42fwJm07amde2WgB4kbUGAuz15og0ntT/XrgBnSkndJBZkRXZBMGWBfGA==
+X-Received: by 2002:a05:6512:4014:b0:4fb:8c52:611 with SMTP id
+ br20-20020a056512401400b004fb8c520611mr2820414lfb.38.1687967714959; 
+ Wed, 28 Jun 2023 08:55:14 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.207.229])
  by smtp.gmail.com with ESMTPSA id
- l6-20020a7bc446000000b003fba137857esm5611916wmi.14.2023.06.28.08.55.06
+ j14-20020adfff8e000000b003112dbc3257sm13438198wrr.90.2023.06.28.08.55.12
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 28 Jun 2023 08:55:07 -0700 (PDT)
+ Wed, 28 Jun 2023 08:55:14 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 19/30] accel/kvm: Re-include "exec/memattrs.h" header
-Date: Wed, 28 Jun 2023 17:53:02 +0200
-Message-Id: <20230628155313.71594-20-philmd@linaro.org>
+Subject: [PULL 20/30] accel/kvm: Declare kvm_direct_msi_allowed in stubs
+Date: Wed, 28 Jun 2023 17:53:03 +0200
+Message-Id: <20230628155313.71594-21-philmd@linaro.org>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230628155313.71594-1-philmd@linaro.org>
 References: <20230628155313.71594-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::22c;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x22c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,31 +92,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Commit 1e05888ab5 ("sysemu/kvm: Remove unused headers") was
-a bit overzealous while cleaning "sysemu/kvm.h" headers:
-kvm_arch_post_run() returns a MemTxAttrs type, so depends on
-"exec/memattrs.h" for its definition.
+Avoid when calling kvm_direct_msi_enabled() from
+arm_gicv3_its_common.c the next commit:
 
-Fixes: 1e05888ab5 ("sysemu/kvm: Remove unused headers")
+  Undefined symbols for architecture arm64:
+    "_kvm_direct_msi_allowed", referenced from:
+        _its_class_name in hw_intc_arm_gicv3_its_common.c.o
+  ld: symbol(s) not found for architecture arm64
+
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20230619074153.44268-5-philmd@linaro.org>
+Message-Id: <20230405160454.97436-3-philmd@linaro.org>
 ---
- include/sysemu/kvm.h | 1 +
+ accel/stubs/kvm-stub.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/include/sysemu/kvm.h b/include/sysemu/kvm.h
-index 7902acdfd9..115f0cca79 100644
---- a/include/sysemu/kvm.h
-+++ b/include/sysemu/kvm.h
-@@ -16,6 +16,7 @@
- #ifndef QEMU_KVM_H
- #define QEMU_KVM_H
+diff --git a/accel/stubs/kvm-stub.c b/accel/stubs/kvm-stub.c
+index 5d2dd8f351..235dc661bc 100644
+--- a/accel/stubs/kvm-stub.c
++++ b/accel/stubs/kvm-stub.c
+@@ -27,6 +27,7 @@ bool kvm_allowed;
+ bool kvm_readonly_mem_allowed;
+ bool kvm_ioeventfd_any_length_allowed;
+ bool kvm_msi_use_devid;
++bool kvm_direct_msi_allowed;
  
-+#include "exec/memattrs.h"
- #include "qemu/accel.h"
- #include "qom/object.h"
- 
+ void kvm_flush_coalesced_mmio_buffer(void)
+ {
 -- 
 2.38.1
 
