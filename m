@@ -2,93 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EB4F740985
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 08:45:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB2C2740987
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 08:48:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEOvR-0001hC-4W; Wed, 28 Jun 2023 02:45:13 -0400
+	id 1qEOxn-0002Wj-Cl; Wed, 28 Jun 2023 02:47:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qEOvO-0001gx-Em
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 02:45:10 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qEOvM-0000Xu-Ld
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 02:45:10 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687934707;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=1ak6Uf6OtMwjY/tTOtgkZlKzUZDmtZt7TpBE5FVkSZA=;
- b=QBXugR2ocrHnFGJdv+K8M3PSosg3cf/qrNsPQL//FNzZJi13m3OtX5oyU6RMRqiyVoyfPz
- BLyX7rV41fph5lrxkhaaFXRhin19iswdgu62rqD5g5NbPQGVZ70rUgZfVcL1ZWYMc1EDhv
- mSt+CjuwZxmwW6e0dnL7+dsImGcMd9Q=
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com
- [209.85.214.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-43-EaUJUdhmNHa9qQWraf_HZA-1; Wed, 28 Jun 2023 02:45:06 -0400
-X-MC-Unique: EaUJUdhmNHa9qQWraf_HZA-1
-Received: by mail-pl1-f199.google.com with SMTP id
- d9443c01a7336-1b81ec07321so9052085ad.3
- for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 23:45:05 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qEOxk-0002Vw-Vj
+ for qemu-devel@nongnu.org; Wed, 28 Jun 2023 02:47:36 -0400
+Received: from mail-lj1-x22e.google.com ([2a00:1450:4864:20::22e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qEOxj-0001ej-C5
+ for qemu-devel@nongnu.org; Wed, 28 Jun 2023 02:47:36 -0400
+Received: by mail-lj1-x22e.google.com with SMTP id
+ 38308e7fff4ca-2b69f958ef3so52333011fa.1
+ for <qemu-devel@nongnu.org>; Tue, 27 Jun 2023 23:47:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1687934853; x=1690526853;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=ouM7rkJZdjNte8pgXe3VfMluYdj+fNs00pJFJtmEWjM=;
+ b=C2KXj5j1Bi3w//HX8cpem4MviMKruqkSlrfuBLMN65J15b50+ZaQdb8eHHXekUCOB6
+ dBGRKK78FrEZ0yWPjcrzESMGr3zI+f1qtsAKQCU1p2+WSSHKMAacxQSsY0/nKdSMffk2
+ rDZa+Fz3EN3yTPBsuGOvYfH6J8Uv2EP0Uy+r9n2RsG7bwZz8k64eNTm2XE1Tn8dZsl9I
+ LDFGalcPguPYpJjKhWUrI7UBPAWYoHxi1692voD26LlgyK+0QPKItL4Q5tfPptHP9ols
+ hEntciiEaS2ctmfZVWX6jI9w7XGhSSqIhE3dur8tA9ktp1IPC9UF68pV/VaC1MPMQX4I
+ g37A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687934705; x=1690526705;
- h=to:references:message-id:content-transfer-encoding:cc:date
- :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=1ak6Uf6OtMwjY/tTOtgkZlKzUZDmtZt7TpBE5FVkSZA=;
- b=NM48TRJeYOjJfG7rETxSc5tsZS58Gj+nf26hZhbZ5JUTLWi4o3hiRCjN9Pxkbstva1
- b20SWDhBN30EMlIv/XOR9cZHz88LF4jxsz5CIkxtdRHhyEn6y1lHMMwAd8/cnO5q44i8
- nQSyuAb7UeTQt0lz7SW25fWXehjXVp0bAq93ygmZ5HWFKdS508KARu/W8P2bDZGPhIj1
- kGM7MA+84MXIw1dm7Y0836steRspicCNfMUgSITpS9pQ+/LwsZ//oingYeWDP+XSTGWu
- Fa94sJFKtnvBgeHhYLul3Lfat+YqXyTVgS/HTQrjVIVMbrVmeyVFP4dp1uhwEUl14WWU
- B/7g==
-X-Gm-Message-State: AC+VfDwnqm/yjitkyubJ8g2xw9VW1rmfTpt0CvF+Hk5KyVjTjtU8q4EF
- C8Jf/aWzfTe7z80hYT8VnKr+Uy4jSI750W+FZSO0q+MqnEHxo3pcRgrk9zyGhMwJLZc7IxM9Sdl
- cAOWHAiyXl4yTCUM=
-X-Received: by 2002:a17:902:e744:b0:1b5:edd:e3c7 with SMTP id
- p4-20020a170902e74400b001b50edde3c7mr11170466plf.16.1687934705058; 
- Tue, 27 Jun 2023 23:45:05 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7XDBvjqgAT89vFu56iNFfgqat/77cUZ5cCZxVcSa9OrYy/3h7vUYmAllXEH4/EMfmRV3SFiA==
-X-Received: by 2002:a17:902:e744:b0:1b5:edd:e3c7 with SMTP id
- p4-20020a170902e74400b001b50edde3c7mr11170455plf.16.1687934704766; 
- Tue, 27 Jun 2023 23:45:04 -0700 (PDT)
-Received: from smtpclient.apple ([115.96.122.163])
+ d=1e100.net; s=20221208; t=1687934853; x=1690526853;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=ouM7rkJZdjNte8pgXe3VfMluYdj+fNs00pJFJtmEWjM=;
+ b=YkCAIMGwx/m9GCHWX9xRiig+IeFk0PorklX8qAepD9C8Kxoo64kJKYbf/5YWdJghAx
+ q+FbblMdr1RG84P1unjjdf5hTAQphBLISjwAvfLDtRm/cedyN/2SXg2uUVnEOsrg659b
+ xjgxJj1fqBW/u+1rcQbybgzmv8G8ucUi9P7zHE1rxhKpgQNzDCy3jWWhmIKsF1Psrb6w
+ 51cxQV8TilR1x1XJDAVTtXYDr4H8mELK+xRl50v3LQorLzSPpqNWDmCjkpIzOH9yuaT0
+ RYUarhUZePyN1yDdJ76XFT6vuYhlVrTgxhVv1G+dPheRHJQks4FMEWBbSI5V2rVoMFxJ
+ EUuw==
+X-Gm-Message-State: AC+VfDy0CnOtyyUrABSXwi4sVs5HbY3GBxMYfYby19+xMfwqjEMbN2gi
+ 5MHDrKFo5iY24eKMP43x0euR0drleDL786rA3W8=
+X-Google-Smtp-Source: ACHHUZ7hZBKSI2s37PRDmb3RwMFKooZnwWLS/vjqNTN79XW3s35ckN72hNZY5UikGoeuz48JHxN8bA==
+X-Received: by 2002:a2e:2419:0:b0:2b6:bd77:563f with SMTP id
+ k25-20020a2e2419000000b002b6bd77563fmr559899ljk.19.1687934853573; 
+ Tue, 27 Jun 2023 23:47:33 -0700 (PDT)
+Received: from [192.168.69.115] ([176.187.207.229])
  by smtp.gmail.com with ESMTPSA id
- g6-20020a170902934600b001a65fa33e62sm6915815plp.154.2023.06.27.23.45.02
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Tue, 27 Jun 2023 23:45:04 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.3\))
-Subject: Re: [PULL 52/53] vhost_net: add an assertion for TAP client backends
-From: Ani Sinha <anisinha@redhat.com>
-In-Reply-To: <abab7a71-216d-b103-fa47-70bdf9dc0080@redhat.com>
-Date: Wed, 28 Jun 2023 12:15:00 +0530
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, qemu-devel@nongnu.org,
- Peter Maydell <peter.maydell@linaro.org>,
- Laurent Vivier <lvivier@redhat.com>, Jason Wang <jasowang@redhat.com>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <A0C56F97-3830-4DF3-8BDD-D49611418056@redhat.com>
-References: <cover.1687782442.git.mst@redhat.com>
- <0af710813dcde638379e3bece8f9b1bde31af2f6.1687782442.git.mst@redhat.com>
- <abab7a71-216d-b103-fa47-70bdf9dc0080@redhat.com>
-To: =?utf-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-X-Mailer: Apple Mail (2.3696.120.41.1.3)
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=anisinha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+ 7-20020a05600c230700b003fa968e9c27sm8105939wmo.9.2023.06.27.23.47.32
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 27 Jun 2023 23:47:33 -0700 (PDT)
+Message-ID: <68facc44-06c6-3b7c-2a17-0ff4bd5f0fc6@linaro.org>
+Date: Wed, 28 Jun 2023 08:47:31 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.12.0
+Subject: Re: [PATCH] linux-user: Fix do_shmat type errors
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: anjo@rev.ng, laurent@vivier.eu
+References: <20230626140250.69572-1-richard.henderson@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230626140250.69572-1-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::22e;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x22e.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.103,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -105,55 +92,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 26/6/23 16:02, Richard Henderson wrote:
+> The guest address, raddr, should be unsigned, aka abi_ulong.
+> The host addresses should be cast via *intptr_t not long.
+> Drop the inline and fix two other whitespace issues.
+> 
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>   linux-user/syscall.c | 13 ++++++-------
+>   1 file changed, 6 insertions(+), 7 deletions(-)
 
-
-> On 28-Jun-2023, at 11:58 AM, C=C3=A9dric Le Goater <clg@redhat.com> =
-wrote:
->=20
-> Hello,
->=20
-> On 6/26/23 14:30, Michael S. Tsirkin wrote:
->> From: Ani Sinha <anisinha@redhat.com>
->> An assertion was missing for tap vhost backends that enforces a =
-non-null
->> reference from get_vhost_net(). Both vhost-net-user and =
-vhost-net-vdpa
->> enforces this. Enforce the same for tap. Unit tests pass with this =
-change.
->> Signed-off-by: Ani Sinha <anisinha@redhat.com>
->> Message-Id: <20230619041501.111655-1-anisinha@redhat.com>
->> Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
->> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
->> Reviewed-by: Laurent Vivier <lvivier@redhat.com>
->> ---
->>  hw/net/vhost_net.c | 1 +
->>  1 file changed, 1 insertion(+)
->> diff --git a/hw/net/vhost_net.c b/hw/net/vhost_net.c
->> index c4eecc6f36..6db23ca323 100644
->> --- a/hw/net/vhost_net.c
->> +++ b/hw/net/vhost_net.c
->> @@ -507,6 +507,7 @@ VHostNetState *get_vhost_net(NetClientState *nc)
->>      switch (nc->info->type) {
->>      case NET_CLIENT_DRIVER_TAP:
->>          vhost_net =3D tap_get_vhost_net(nc);
->> +        assert(vhost_net);
->>          break;
->>  #ifdef CONFIG_VHOST_NET_USER
->>      case NET_CLIENT_DRIVER_VHOST_USER:
->=20
-> A system of mine without vhost_net (old host kernel) is reaching this =
-assert
-
-We need to understand why this assertion is being hit. It could be a bug =
-somewhere else.
-What is the backtrace? What is the repro case?
-
-> and works perfectly fine without. Should it be considered as a =
-regression ?
->=20
-> Thanks,
->=20
-> C.
->=20
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
