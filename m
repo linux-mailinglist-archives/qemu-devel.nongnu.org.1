@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E18774190D
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 21:53:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18DF274191C
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 21:54:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEbDL-0004kW-Gs; Wed, 28 Jun 2023 15:52:31 -0400
+	id 1qEbDN-0004l8-3b; Wed, 28 Jun 2023 15:52:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qEbDJ-0004je-0C
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 15:52:29 -0400
-Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qEbDK-0004kJ-KE
+ for qemu-devel@nongnu.org; Wed, 28 Jun 2023 15:52:30 -0400
+Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qEbDH-0005jX-8Y
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 15:52:28 -0400
-Received: by mail-ej1-x635.google.com with SMTP id
- a640c23a62f3a-991e69499d1so20684266b.2
- for <qemu-devel@nongnu.org>; Wed, 28 Jun 2023 12:52:26 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qEbDI-0005kA-U6
+ for qemu-devel@nongnu.org; Wed, 28 Jun 2023 15:52:30 -0400
+Received: by mail-ej1-x62a.google.com with SMTP id
+ a640c23a62f3a-98d34f1e54fso20553266b.2
+ for <qemu-devel@nongnu.org>; Wed, 28 Jun 2023 12:52:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1687981945; x=1690573945;
+ d=gmail.com; s=20221208; t=1687981947; x=1690573947;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=mL6z6NKnRj7uKbeJl/5GmAu1q3jetiBvcyAOgocsCSQ=;
- b=RsTnsSRG2QbMdkxGxMftOLIQ1si5yrkMKk9BxDT79cJH3ljn/KSig4m/CxaFPnEks2
- h1oJ6faSs6JScXo0D4eQ9BhcqJYKy60NfTCJN/FPgS6X7h60UCkI/6325fYXXnl4xt5p
- N98fckPt1/ny0L5DJIKi5qZ4Fqv1bpvRgm8es5uhPUyrpolVNetnnrD0tVCRMe/WI2PR
- pkPSGkxrM0TfkyWLtX2M18126hr9yQ48Bek8E8Y87QA6To+sPF7DGX5u1IMOHvH5AXyH
- 6ii5N9/XBJdZMq/V6gc4XxkC4aj51AnAj3kNRd9WivDwqa6oZwpIRm7sviWyqn+RnBs5
- jzyg==
+ bh=UHBCVt28+gb3jtcCQXQp5cJeJRF2BGFVeWUg0BbI4/k=;
+ b=eZ/0cBv/FdVLJYqU4zfdAw0zs6oqa4YrY4TficCbBxzk1J7cltsd8dvwx4sbZQ6bzc
+ dMvHrRLPP3/M42D6AeasG3913gxalxX0tFBgdTgnb1zN/gNdoeeMMsMG/sjcEPSgSS0x
+ dxMEw0w4HHdGia9995F69/NDh3UifkHvSD5RjHHpc/EvGJmunF+fwzxfDNp4rejQhdmd
+ EP12FZIZWsfEEjWz+hg8L582dtUEoCampj1Fq1EiUG544xGMqnvTtykZQIytEda3U52F
+ 7iaxDsEH+kujZRVFicPOe0r7/nD92rINCGt1Al3t5UjzNBDnGR/hIGz/aYr6NiK1ZPzO
+ iS8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687981945; x=1690573945;
+ d=1e100.net; s=20221208; t=1687981947; x=1690573947;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=mL6z6NKnRj7uKbeJl/5GmAu1q3jetiBvcyAOgocsCSQ=;
- b=b+B1la5ZCbSz/krM2EgZzm37lr5ySsL+FGeQE2uRRGvh2EDkUPQeMuHkZn+LQ33rji
- T91AYUfwXLnq0hzhnaaGeF80kGTCh74UnEBgFWLr5fwJCkbrLz+Xyx/9BVRwRWl18Swa
- ETUS9kSU95beQ/QvTIehUSaDtjLINaQeL5KWTtmFxIcffvCZo+kOz3tKyYSH0MC4gdqO
- AXQE+J69PLBKuMewWCSH7bfJOi9hVCJ/9IZzVADhjfsaa6MxyyWJf9dGZGkyjp8dGBar
- 8UYASoa/PID/rnE1AnmPVQGRt5dzI5dovKBaxOUEOWOKw9oDfKheEXPq+kkJ9/R6tL4z
- oP/A==
-X-Gm-Message-State: AC+VfDyD5jftgHw8//A7CR8FS4t7vsjnhLPdOigo1DuD4B6g4FYyr1zy
- ORB1UV1v/LGPcrT2c/bTP7R0AS+7J9U=
-X-Google-Smtp-Source: ACHHUZ7db4UIJbdDZPV3xjqaAvFZDGUf9PugH/TDo3HcHI0Ey5q1VjYwWtrrhPM4ItF/7qJMxYbTUw==
-X-Received: by 2002:a17:906:4793:b0:978:8937:19ba with SMTP id
- cw19-20020a170906479300b00978893719bamr32857892ejc.44.1687981945556; 
- Wed, 28 Jun 2023 12:52:25 -0700 (PDT)
+ bh=UHBCVt28+gb3jtcCQXQp5cJeJRF2BGFVeWUg0BbI4/k=;
+ b=dtHQzjRxPISZemdeYmQK82oBqh6OPrGIb+tUQBa2jtnYeDA++njtWPCIElej4DdtaS
+ Oxw9CEnJAUUyQYfRgVjEDzqfJhfxSwzjIIuQa9Pz50O1TG/K9ggJ14Cm0pbbMk+rnL51
+ uFzRfXCsotn/3EjfUq1FN1mhLsJbarVXXGNQc98TCEq6cw6/+PbCfvHP1qOM55scEU36
+ LcTK5p8KYsH82UHJ+6xJg9WeXdPw1jwLyfsIX+X/rFmQTrp/LS5ShuXzUwsyZ5PSmC87
+ hwqjcJLTVzcFzsacoC8+fMQGXhpcfoaCCX9dNePb0eLbcIqN07dofesIpcJTHsECfi+4
+ 2g2A==
+X-Gm-Message-State: AC+VfDw/V0CEKQ5mGZ7XT9yo1+Ds8oBYoWUxs3Mv6l8qNNNcO79xza3G
+ Ip/ZhFzBMjFArbxleZqYjFdIW27rv/M=
+X-Google-Smtp-Source: ACHHUZ4RepXXgLbP386FB0BOYlZzPn/HivzuOujM9QncRDmT/Rj1hZIPNb2MY8426eMtLKgLTn69LQ==
+X-Received: by 2002:a17:907:7b96:b0:982:3e2a:91a8 with SMTP id
+ ne22-20020a1709077b9600b009823e2a91a8mr31056025ejc.72.1687981947114; 
+ Wed, 28 Jun 2023 12:52:27 -0700 (PDT)
 Received: from archlinux.. (dynamic-077-191-074-208.77.191.pool.telefonica.de.
  [77.191.74.208]) by smtp.gmail.com with ESMTPSA id
- ec10-20020a170906b6ca00b00982be08a9besm6142817ejb.172.2023.06.28.12.52.24
+ ec10-20020a170906b6ca00b00982be08a9besm6142817ejb.172.2023.06.28.12.52.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 28 Jun 2023 12:52:25 -0700 (PDT)
+ Wed, 28 Jun 2023 12:52:26 -0700 (PDT)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Eduardo Habkost <eduardo@habkost.net>,
@@ -61,17 +61,17 @@ Cc: Eduardo Habkost <eduardo@habkost.net>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>, Bernhard Beschow <shentey@gmail.com>
-Subject: [PATCH v2 12/16] hw/pci-host/i440fx: Add PCI_HOST_{ABOVE,
- BELOW}_4G_MEM_SIZE properties
-Date: Wed, 28 Jun 2023 21:52:00 +0200
-Message-ID: <20230628195204.1241-13-shentey@gmail.com>
+Subject: [PATCH v2 13/16] hw/pci-host/i440fx: Add I440FX_HOST_PROP_PCI_TYPE
+ property
+Date: Wed, 28 Jun 2023 21:52:01 +0200
+Message-ID: <20230628195204.1241-14-shentey@gmail.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230628195204.1241-1-shentey@gmail.com>
 References: <20230628195204.1241-1-shentey@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::635;
- envelope-from=shentey@gmail.com; helo=mail-ej1-x635.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
+ envelope-from=shentey@gmail.com; helo=mail-ej1-x62a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,115 +94,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Introduce the properties in anticipation of QOM'ification; Q35 has the same
-properties.
-
-Note that we want to avoid a "ram size" property in the QOM interface since it
-seems redundant to both properties introduced in this change. Thus the removal
-of the ram_size parameter. We assume the invariant of both properties to sum up
-to "ram size" which is already asserted in pc_memory_init(). Under Xen the
-invariant seems to hold as well, so we now also check it there.
+I440FX needs a different PCI device model if the "igd-passthru" property is
+enabled. The type name is currently passed as a parameter to i440fx_init(). This
+parameter will be replaced by a property assignment once i440fx_init() gets
+resolved.
 
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 ---
- include/hw/pci-host/i440fx.h |  1 -
- hw/i386/pc_piix.c            |  5 ++++-
- hw/pci-host/i440fx.c         | 12 ++++++++++--
- 3 files changed, 14 insertions(+), 4 deletions(-)
+ include/hw/pci-host/i440fx.h | 2 ++
+ hw/pci-host/i440fx.c         | 6 +++++-
+ 2 files changed, 7 insertions(+), 1 deletion(-)
 
 diff --git a/include/hw/pci-host/i440fx.h b/include/hw/pci-host/i440fx.h
-index e3a550021e..7e38456ebb 100644
+index 7e38456ebb..2d7bae5a45 100644
 --- a/include/hw/pci-host/i440fx.h
 +++ b/include/hw/pci-host/i440fx.h
-@@ -36,7 +36,6 @@ PCIBus *i440fx_init(const char *pci_type,
-                     DeviceState *dev,
-                     MemoryRegion *address_space_mem,
-                     MemoryRegion *address_space_io,
--                    ram_addr_t ram_size,
-                     ram_addr_t below_4g_mem_size,
-                     ram_addr_t above_4g_mem_size,
-                     MemoryRegion *pci_memory,
-diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
-index f9947fbc10..87bee368fc 100644
---- a/hw/i386/pc_piix.c
-+++ b/hw/i386/pc_piix.c
-@@ -227,6 +227,9 @@ static void pc_init1(MachineState *machine,
-     if (!xen_enabled()) {
-         pc_memory_init(pcms, system_memory, rom_memory, hole64_size);
-     } else {
-+        assert(machine->ram_size == x86ms->below_4g_mem_size +
-+                                    x86ms->above_4g_mem_size);
-+
-         pc_system_flash_cleanup_unused(pcms);
-         if (machine->kernel_filename != NULL) {
-             /* For xen HVM direct kernel boot, load linux here */
-@@ -242,7 +245,7 @@ static void pc_init1(MachineState *machine,
+@@ -15,6 +15,8 @@
+ #include "hw/pci-host/pam.h"
+ #include "qom/object.h"
  
-         pci_bus = i440fx_init(pci_type,
-                               i440fx_host,
--                              system_memory, system_io, machine->ram_size,
-+                              system_memory, system_io,
-                               x86ms->below_4g_mem_size,
-                               x86ms->above_4g_mem_size,
-                               pci_memory, ram_memory);
++#define I440FX_HOST_PROP_PCI_TYPE "pci-type"
++
+ #define TYPE_I440FX_PCI_HOST_BRIDGE "i440FX-pcihost"
+ #define TYPE_I440FX_PCI_DEVICE "i440FX"
+ 
 diff --git a/hw/pci-host/i440fx.c b/hw/pci-host/i440fx.c
-index a740d1762b..4dd70e68fa 100644
+index 4dd70e68fa..e8e66afc11 100644
 --- a/hw/pci-host/i440fx.c
 +++ b/hw/pci-host/i440fx.c
-@@ -52,6 +52,8 @@ struct I440FXState {
-     MemoryRegion *pci_address_space;
-     MemoryRegion *ram_memory;
-     Range pci_hole;
-+    uint64_t below_4g_mem_size;
-+    uint64_t above_4g_mem_size;
+@@ -57,6 +57,8 @@ struct I440FXState {
      uint64_t pci_hole64_size;
      bool pci_hole64_fix;
      uint32_t short_root_bus;
-@@ -264,7 +266,6 @@ PCIBus *i440fx_init(const char *pci_type,
-                     DeviceState *dev,
-                     MemoryRegion *address_space_mem,
-                     MemoryRegion *address_space_io,
--                    ram_addr_t ram_size,
-                     ram_addr_t below_4g_mem_size,
-                     ram_addr_t above_4g_mem_size,
-                     MemoryRegion *pci_address_space,
-@@ -281,6 +282,8 @@ PCIBus *i440fx_init(const char *pci_type,
-     s->io_memory = address_space_io;
-     s->pci_address_space = pci_address_space;
++
++    char *pci_type;
+ };
+ 
+ #define I440FX_PAM      0x59
+@@ -284,6 +286,7 @@ PCIBus *i440fx_init(const char *pci_type,
      s->ram_memory = ram_memory;
-+    s->below_4g_mem_size = below_4g_mem_size;
-+    s->above_4g_mem_size = above_4g_mem_size;
+     s->below_4g_mem_size = below_4g_mem_size;
+     s->above_4g_mem_size = above_4g_mem_size;
++    s->pci_type = (char *)pci_type;
  
      b = pci_root_bus_new(dev, NULL, s->pci_address_space,
                           s->io_memory, 0, TYPE_PCI_BUS);
 @@ -291,7 +294,7 @@ PCIBus *i440fx_init(const char *pci_type,
-     d = pci_create_simple(b, 0, pci_type);
+     object_property_add_child(qdev_get_machine(), "i440fx", OBJECT(dev));
+     sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
+ 
+-    d = pci_create_simple(b, 0, pci_type);
++    d = pci_create_simple(b, 0, s->pci_type);
      f = I440FX_PCI_DEVICE(d);
  
--    range_set_bounds(&s->pci_hole, below_4g_mem_size,
-+    range_set_bounds(&s->pci_hole, s->below_4g_mem_size,
-                      IO_APIC_DEFAULT_ADDRESS - 1);
- 
-     /* setup pci memory mapping */
-@@ -322,6 +325,7 @@ PCIBus *i440fx_init(const char *pci_type,
-                  PAM_EXPAN_BASE + i * PAM_EXPAN_SIZE, PAM_EXPAN_SIZE);
-     }
- 
-+    ram_addr_t ram_size = s->below_4g_mem_size + s->above_4g_mem_size;
-     ram_size = ram_size / 8 / 1024 / 1024;
-     if (ram_size > 255) {
-         ram_size = 255;
-@@ -381,6 +385,10 @@ static Property i440fx_props[] = {
-     DEFINE_PROP_SIZE(PCI_HOST_PROP_PCI_HOLE64_SIZE, I440FXState,
-                      pci_hole64_size, I440FX_PCI_HOST_HOLE64_SIZE_DEFAULT),
-     DEFINE_PROP_UINT32("short_root_bus", I440FXState, short_root_bus, 0),
-+    DEFINE_PROP_SIZE(PCI_HOST_BELOW_4G_MEM_SIZE, I440FXState,
-+                     below_4g_mem_size, 0),
-+    DEFINE_PROP_SIZE(PCI_HOST_ABOVE_4G_MEM_SIZE, I440FXState,
-+                     above_4g_mem_size, 0),
+     range_set_bounds(&s->pci_hole, s->below_4g_mem_size,
+@@ -390,6 +393,7 @@ static Property i440fx_props[] = {
+     DEFINE_PROP_SIZE(PCI_HOST_ABOVE_4G_MEM_SIZE, I440FXState,
+                      above_4g_mem_size, 0),
      DEFINE_PROP_BOOL("x-pci-hole64-fix", I440FXState, pci_hole64_fix, true),
++    DEFINE_PROP_STRING(I440FX_HOST_PROP_PCI_TYPE, I440FXState, pci_type),
      DEFINE_PROP_END_OF_LIST(),
  };
+ 
 -- 
 2.41.0
 
