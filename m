@@ -2,55 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68BF27414F1
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 17:29:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F7777414EC
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 17:28:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEX6C-0004R3-Jc; Wed, 28 Jun 2023 11:28:52 -0400
+	id 1qEX5I-0003IT-RC; Wed, 28 Jun 2023 11:27:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <bmeng@tinylab.org>) id 1qEX6A-0004QY-K8
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 11:28:50 -0400
-Received: from bg4.exmail.qq.com ([43.154.221.58])
+ (Exim 4.90_1) (envelope-from <bmeng@tinylab.org>) id 1qEX59-0003H5-LC
+ for qemu-devel@nongnu.org; Wed, 28 Jun 2023 11:27:48 -0400
+Received: from bg4.exmail.qq.com ([43.155.67.158])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <bmeng@tinylab.org>) id 1qEX68-0005AP-B1
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 11:28:50 -0400
-X-QQ-mid: bizesmtp72t1687966049tgd6dk8l
+ (Exim 4.90_1) (envelope-from <bmeng@tinylab.org>) id 1qEX57-0004yu-7R
+ for qemu-devel@nongnu.org; Wed, 28 Jun 2023 11:27:47 -0400
+X-QQ-mid: bizesmtp72t1687966052tr3r64no
 Received: from ubuntu.. ( [111.196.130.174]) by bizesmtp.qq.com (ESMTP) with 
- id ; Wed, 28 Jun 2023 23:27:27 +0800 (CST)
-X-QQ-SSF: 01200000000000E0G000000A0000000
-X-QQ-FEAT: SFhf6fKhx/9iz4DBPKS36ENBTcBPb7Sd+FeFBYFVw89EUrka8PXJd4mZlperZ
- ZYtmWIDxQH0Q0xbH7m2DtBUZZ1z88SLAkEHCXL02D2BwGM9mRgGdxSzKHe7j+xkszzdB5iQ
- B3hzeHdLvkh55ScqkrxqO8RkER2O3EIrwJwqwxYeCXCIAgadW4Grml/kIAijklBRh6w7rz+
- LKnDNiSkiXjGGgbyjBELjjZkq/jh7NTvxuckSLAyYP70aX8HScMSoAS3oosfZYGn1Wjc7dS
- CuZrMeD1FIcO1+cn5jt6mcY0QyuJ6Ym2d0Oinn5g7/QYoRbQKtGYBRBJHHGaKTQTii7Yofe
- 1YO7rs0OdT0IejnTreS8p9trjOGv0ZkuBJ5A7+foo6putKODbCEZwSdY4nJbg==
+ id ; Wed, 28 Jun 2023 23:27:31 +0800 (CST)
+X-QQ-SSF: 00200000000000F0G000000A0000000
+X-QQ-FEAT: xQoAiglG4R6wB1LBl/nmFf3sqqIgXKRxvklvQMMV1KOS4BOK5Wl8dzVSvq+0d
+ AQH5Uc/MHuzTWeEVmGxShTLHyY6zzWu+9Jke9Xe5sHg+KUejB2AW1y4qUnpoaBl5Y0uBmij
+ Vbzzd4YBL7yrvR274AKltErBPJKhwW1kAJxkO89rp2PGuE7T77raAz1fdC0WXz+6c1IYtKG
+ Q4aA8I+tB9SBMqjZf9yAb2oG93ZcK0z8Dl4AtDsWANl0kogEcxaES4/L/zWjA1d3oibXkCz
+ Io0ElCJpebM4cxi4uIM6AlObS6HhlQOOOooDiJjBuFuTpUf9V0NQzHx/BbU5+LJkGdsKfK+
+ o5ikJ9bG3R+gmh4vgPbs/tkQbZ7me5fKJfnOsb8V09Zlj9lBrfQAze5DCNlMA==
 X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 5553759802645831184
+X-BIZMAIL-ID: 6150981274832304845
 From: Bin Meng <bmeng@tinylab.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  Zhangjin Wu <falcon@tinylab.org>,
- Claudio Imbrenda <imbrenda@linux.ibm.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Jason Wang <jasowang@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>, Xuzhou Cheng <xuzhou.cheng@windriver.com>
-Subject: [PATCH v4 0/6] net/tap: Fix QEMU frozen issue when the maximum number
- of file descriptors is very large
-Date: Wed, 28 Jun 2023 23:27:20 +0800
-Message-Id: <20230628152726.110295-1-bmeng@tinylab.org>
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
+Subject: [PATCH v4 1/6] tests/tcg/cris: Fix the coding style
+Date: Wed, 28 Jun 2023 23:27:21 +0800
+Message-Id: <20230628152726.110295-2-bmeng@tinylab.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230628152726.110295-1-bmeng@tinylab.org>
+References: <20230628152726.110295-1-bmeng@tinylab.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
 Feedback-ID: bizesmtp:tinylab.org:qybglogicsvrgz:qybglogicsvrgz7a-0
-Received-SPF: pass client-ip=43.154.221.58; envelope-from=bmeng@tinylab.org;
+Received-SPF: pass client-ip=43.155.67.158; envelope-from=bmeng@tinylab.org;
  helo=bg4.exmail.qq.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
@@ -74,66 +69,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+The code style does not conform with QEMU's. Correct it so that the
+upcoming commit does not trigger checkpatch warnings.
 
-Current codes using a brute-force traversal of all file descriptors
-do not scale on a system where the maximum number of file descriptors
-is set to a very large value (e.g.: in a Docker container of Manjaro
-distribution it is set to 1073741816). QEMU just looks frozen during
-start-up.
+Signed-off-by: Bin Meng <bmeng@tinylab.org>
+Acked-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-The close-on-exec flag (O_CLOEXEC) was introduced since Linux kernel
-2.6.23, FreeBSD 8.3, OpenBSD 5.0, Solaris 11. While it's true QEMU
-doesn't need to manually close the fds for child process as the proper
-O_CLOEXEC flag should have been set properly on files with its own
-codes, QEMU uses a huge number of 3rd party libraries and we don't
-trust them to reliably be using O_CLOEXEC on everything they open.
+---
 
-Modern Linux and BSDs have the close_range() call we can use to do the
-job, and on Linux we have one more way to walk through /proc/self/fd
-to complete the task efficiently, which is what qemu_close_range()
-does, a new API we add in util/osdep.c.
-
-V1 link: https://lore.kernel.org/qemu-devel/20230406112041.798585-1-bmeng@tinylab.org/
-
-Changes in v4:
-- add 'first > last' check logic
-- reorder the ifdefs logic
-- change i to unsigned int type
-- use qemu_strtoi() instead of atoi()
-- limit last upper value to sysconf(_SC_OPEN_MAX) - 1
-- call sysconf directly instead of using a variable
-- put fd on its own line
-
-Changes in v3:
-- fix win32 build failure
-- limit the last_fd of qemu_close_range() to sysconf(_SC_OPEN_MAX)
+(no changes since v2)
 
 Changes in v2:
 - new patch: "tests/tcg/cris: Fix the coding style"
-- new patch: "tests/tcg/cris: Correct the off-by-one error"
-- new patch: "util/async-teardown: Fall back to close fds one by one"
-- new patch: "util/osdep: Introduce qemu_close_range()"
-- new patch: "util/async-teardown: Use qemu_close_range() to close fds"
-- Change to use qemu_close_range() to close fds for child process efficiently
-- v1 link: https://lore.kernel.org/qemu-devel/20230406112041.798585-1-bmeng@tinylab.org/
 
-Bin Meng (4):
-  tests/tcg/cris: Fix the coding style
-  tests/tcg/cris: Correct the off-by-one error
-  util/async-teardown: Fall back to close fds one by one
-  util/osdep: Introduce qemu_close_range()
+ tests/tcg/cris/libc/check_openpf5.c | 57 ++++++++++++++---------------
+ 1 file changed, 27 insertions(+), 30 deletions(-)
 
-Zhangjin Wu (2):
-  util/async-teardown: Use qemu_close_range() to close fds
-  net: tap: Use qemu_close_range() to close fds
-
- include/qemu/osdep.h                |  1 +
- net/tap.c                           | 24 ++++++------
- tests/tcg/cris/libc/check_openpf5.c | 57 +++++++++++++--------------
- util/async-teardown.c               | 37 +-----------------
- util/osdep.c                        | 60 +++++++++++++++++++++++++++++
- 5 files changed, 101 insertions(+), 78 deletions(-)
-
+diff --git a/tests/tcg/cris/libc/check_openpf5.c b/tests/tcg/cris/libc/check_openpf5.c
+index 1f86ea283d..0037fbca4c 100644
+--- a/tests/tcg/cris/libc/check_openpf5.c
++++ b/tests/tcg/cris/libc/check_openpf5.c
+@@ -13,44 +13,41 @@
+ #include <fcntl.h>
+ #include <string.h>
+ 
+-int main (int argc, char *argv[])
++int main(int argc, char *argv[])
+ {
+-  int i;
+-  int filemax;
++    int i;
++    int filemax;
+ 
+ #ifdef OPEN_MAX
+-  filemax = OPEN_MAX;
++    filemax = OPEN_MAX;
+ #else
+-  filemax = sysconf (_SC_OPEN_MAX);
++    filemax = sysconf(_SC_OPEN_MAX);
+ #endif
+ 
+-  char *fn = malloc (strlen (argv[0]) + 2);
+-  if (fn == NULL)
+-    abort ();
+-  strcpy (fn, "/");
+-  strcat (fn, argv[0]);
++    char *fn = malloc(strlen(argv[0]) + 2);
++    if (fn == NULL) {
++        abort();
++    }
++    strcpy(fn, "/");
++    strcat(fn, argv[0]);
+ 
+-  for (i = 0; i < filemax + 1; i++)
+-    {
+-      if (open (fn, O_RDONLY) < 0)
+-	{
+-	  /* Shouldn't happen too early.  */
+-	  if (i < filemax - 3 - 1)
+-	    {
+-	      fprintf (stderr, "i: %d\n", i);
+-	      abort ();
+-	    }
+-	  if (errno != EMFILE)
+-	    {
+-	      perror ("open");
+-	      abort ();
+-	    }
+-	  goto ok;
+-	}
++    for (i = 0; i < filemax + 1; i++) {
++        if (open(fn, O_RDONLY) < 0) {
++            /* Shouldn't happen too early.  */
++            if (i < filemax - 3 - 1) {
++                fprintf(stderr, "i: %d\n", i);
++                abort();
++            }
++            if (errno != EMFILE) {
++                perror("open");
++                abort();
++            }
++        goto ok;
++        }
+     }
+-  abort ();
++    abort();
+ 
+ ok:
+-  printf ("pass\n");
+-  exit (0);
++    printf("pass\n");
++    exit(0);
+ }
 -- 
 2.34.1
 
