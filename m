@@ -2,73 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FFC5741B26
-	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 23:51:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18372741B28
+	for <lists+qemu-devel@lfdr.de>; Wed, 28 Jun 2023 23:51:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEd3T-0001LJ-RV; Wed, 28 Jun 2023 17:50:27 -0400
+	id 1qEd3V-0001MK-JK; Wed, 28 Jun 2023 17:50:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qEd3H-0001J6-MV
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 17:50:16 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qEd3K-0001Jn-K3
+ for qemu-devel@nongnu.org; Wed, 28 Jun 2023 17:50:19 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qEd3G-0008PB-7M
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 17:50:15 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qEd3J-0008Q3-7m
+ for qemu-devel@nongnu.org; Wed, 28 Jun 2023 17:50:18 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1687989012;
+ s=mimecast20190719; t=1687989016;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=8nfLmUWQ8pB+Gq1IgpYYS03S4VtZKbHTf8LZ4fkY7mg=;
- b=ED6avEs1BlOzh3tGUAmH0+oCtHs68jqlqsKmiFtP3obg9udSiZ7IG/BAZ6IzowGs0ZV3xC
- QmtBfQiF6LZk489aRK3II/UhewELudaMGFyaOHJsaUiAnWz9E/mVXKmhY27JrmHL29sJPF
- l8bNgtB9dO2DQIt5qKd3OsMGtfvlUjI=
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
- [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=2wMxl19wPT6NOIYdfEthE3CTENPdu0RlUwoU249Hq90=;
+ b=DINCsajt9LRTGrEJ/QXK25bXTbAS1q4nl2KhT+TIv7hdBjVSN1ZRgb2NrTtME/8fFpO+9V
+ Rs1+i9xXQ1y7nJ/sO0sq0UouRT2Yyc86GTb7wbNKVGONqi+BrOLA3+lHM+NFZYHMEzs6Ke
+ EOAF7BFWpSntDGu7f+F/xpWOrDz78MQ=
+Received: from mail-oi1-f200.google.com (mail-oi1-f200.google.com
+ [209.85.167.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-593-aK1qlQawNOCC42VJGncZEw-1; Wed, 28 Jun 2023 17:50:11 -0400
-X-MC-Unique: aK1qlQawNOCC42VJGncZEw-1
-Received: by mail-qt1-f198.google.com with SMTP id
- d75a77b69052e-401df9d2dc4so49461cf.0
- for <qemu-devel@nongnu.org>; Wed, 28 Jun 2023 14:50:11 -0700 (PDT)
+ us-mta-649-0vFcQnnEOueCKhwG6dAjyQ-1; Wed, 28 Jun 2023 17:50:12 -0400
+X-MC-Unique: 0vFcQnnEOueCKhwG6dAjyQ-1
+Received: by mail-oi1-f200.google.com with SMTP id
+ 5614622812f47-3a1f0f175f8so3144b6e.1
+ for <qemu-devel@nongnu.org>; Wed, 28 Jun 2023 14:50:12 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1687989010; x=1690581010;
+ d=1e100.net; s=20221208; t=1687989011; x=1690581011;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=8nfLmUWQ8pB+Gq1IgpYYS03S4VtZKbHTf8LZ4fkY7mg=;
- b=WrDQwdZLRF8nBf/Cc3lNpQjbLwOuXM+INh8Pgtr58XjMHesYJGWeKmdrqJc+CPger+
- JXNh+Zkog1lgVq7T9v2r692Rm7j2w63yufj8D9X00ZP1AYHVEmQ2MHTKjQhmNdzuqNwP
- 2YioiSjy6S/O0h0rHxe6FXVbSmoBzx8Eceoqj1rW8PnHPzhxWbGOhSvImxq/X9pZJRDE
- gfpcgUB5RCBLJl79OyH/O/h/S3Vl/PWSw1uzSy1bQS2tjB6LEt+GHuDq6r9UNqhDT1pL
- GPNy1JXRFywLPBgB15vGyTA2h0PYmiLCX5ESCUzbmY1Dn+vfx1ymPlgOCg5Zo0klri3Z
- mKAA==
-X-Gm-Message-State: AC+VfDzfdpE/wDAKKIEsJXAsf6/ALKvOgp73r5m6QEKy3Y4hvGLAjr+A
- qosexMECHaANM99qN+jdMG1j+WZ9K+Xijn4wVAlFtBIOSagplVNBWMWpL1fx3HRpvEcYqI4RMY4
- 07sDRBV1tn1ft1aDmHH994j63TESteqWR13bZ2xjvxNQXLZMIAUCnp5qFBXUn7bvJqpkYIGvP
-X-Received: by 2002:ac8:7d83:0:b0:400:990c:8f7c with SMTP id
- c3-20020ac87d83000000b00400990c8f7cmr14882219qtd.0.1687989010498; 
- Wed, 28 Jun 2023 14:50:10 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6n8+yg0+ZfD7+yh4o1pn41UJz8kT4F7tMRXN2TIPJxZnGGz0H2kOEzHAwKv2f5E3iLxSPBmw==
-X-Received: by 2002:ac8:7d83:0:b0:400:990c:8f7c with SMTP id
- c3-20020ac87d83000000b00400990c8f7cmr14882199qtd.0.1687989010097; 
- Wed, 28 Jun 2023 14:50:10 -0700 (PDT)
+ bh=2wMxl19wPT6NOIYdfEthE3CTENPdu0RlUwoU249Hq90=;
+ b=hW6X4s9/V+H15eaoO34tAZ2G3S5jHXxpxg/xGj9ZoCjN5VRTbNuXD8rNGJV6qmIoe5
+ zHJ5ISeq72WlwgxvGyVD9dAMeXGX+WAfpXqQTypBMEyr9oqvA0gq36kV+6BNW4kCm93A
+ j9NvPuxBUEb+3kTWfOD0Vlwu8tLxTd1u75YhyhEgc5XFMSwQX9FLrz24qA6t8gW0k/RG
+ gxPzmhQC+L1g29izNk5q38zSGrC0H5CPcwoL52+yJnix5XBFwvM2O2aZcvr3X1rxA9xc
+ bm6enUo0WcSjzWLrYpO9nUyKkJbxVRJ2tDhrClW/KqqB1I6Ro7fpwvl4A3MmLJWAJobB
+ ytDQ==
+X-Gm-Message-State: AC+VfDxYYqrtL1/LnrIIIgFp5iwwB3csVDdwiGb1yC/j86/98NyrO+g4
+ 9ooemGpBLcJsqMdjwaxNRMGQoW2pzakjANTrCV8WHHgx7MkkneM1hqLkcUolckY51oP4V2zMzE9
+ 6UOcGIswtCq0PjKwimQeDTV5j1GguB/iy/wVgEgXAFDxyB4yk4vpnSIRv3T0/p9L6j2U+nfgk
+X-Received: by 2002:aca:b956:0:b0:3a1:ebb8:396a with SMTP id
+ j83-20020acab956000000b003a1ebb8396amr879700oif.2.1687989011376; 
+ Wed, 28 Jun 2023 14:50:11 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5JqIs26rdIsHa5vAoH3Zji4TcLkG7DaKD57OALkh4PeQJzHwjZ4eSiMDNlVlveJF3Vtuivhg==
+X-Received: by 2002:aca:b956:0:b0:3a1:ebb8:396a with SMTP id
+ j83-20020acab956000000b003a1ebb8396amr879682oif.2.1687989011101; 
+ Wed, 28 Jun 2023 14:50:11 -0700 (PDT)
 Received: from x1n.. (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
  [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- w29-20020ac84d1d000000b004032d9209a0sm255552qtv.50.2023.06.28.14.50.09
+ w29-20020ac84d1d000000b004032d9209a0sm255552qtv.50.2023.06.28.14.50.10
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 28 Jun 2023 14:50:09 -0700 (PDT)
+ Wed, 28 Jun 2023 14:50:10 -0700 (PDT)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: peterx@redhat.com, Leonardo Bras Soares Passos <lsoaresp@redhat.com>,
  Fabiano Rosas <farosas@suse.de>, Juan Quintela <quintela@redhat.com>,
  Lukas Straub <lukasstraub2@web.de>
-Subject: [PATCH 6/7] qemufile: Always return a verbose error
-Date: Wed, 28 Jun 2023 17:50:01 -0400
-Message-ID: <20230628215002.73546-7-peterx@redhat.com>
+Subject: [PATCH 7/7] migration: Provide explicit error message for file
+ shutdowns
+Date: Wed, 28 Jun 2023 17:50:02 -0400
+Message-ID: <20230628215002.73546-8-peterx@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230628215002.73546-1-peterx@redhat.com>
 References: <20230628215002.73546-1-peterx@redhat.com>
@@ -99,52 +100,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-There're a lot of cases where we only have an errno set in last_error but
-without a detailed error description.  When this happens, try to generate
-an error contains the errno as a descriptive error.
+Provide an explicit reason for qemu_file_shutdown()s, which can be
+displayed in query-migrate when used.
 
-This will be helpful in cases where one relies on the Error*.  E.g.,
-migration state only caches Error* in MigrationState.error.  With this,
-we'll display correct error messages in e.g. query-migrate when the error
-was only set by qemu_file_set_error().
+This will make e.g. migrate-pause to display explicit error descriptions,
+from:
+
+"error-desc": "Channel error: Input/output error"
+
+To:
+
+"error-desc": "Channel is explicitly shutdown by the user"
+
+in query-migrate.
 
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- migration/qemu-file.c | 15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+ migration/qemu-file.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/migration/qemu-file.c b/migration/qemu-file.c
-index acc282654a..419b4092e7 100644
+index 419b4092e7..ff605027de 100644
 --- a/migration/qemu-file.c
 +++ b/migration/qemu-file.c
-@@ -156,15 +156,24 @@ void qemu_file_set_hooks(QEMUFile *f, const QEMUFileHooks *hooks)
-  *
-  * Return negative error value if there has been an error on previous
-  * operations, return 0 if no error happened.
-- * Optional, it returns Error* in errp, but it may be NULL even if return value
-- * is not 0.
-  *
-+ * If errp is specified, a verbose error message will be copied over.
-  */
- int qemu_file_get_error_obj(QEMUFile *f, Error **errp)
- {
-+    if (!f->last_error) {
-+        return 0;
-+    }
+@@ -87,7 +87,10 @@ int qemu_file_shutdown(QEMUFile *f)
+      *      --> guest crash!
+      */
+     if (!f->last_error) {
+-        qemu_file_set_error(f, -EIO);
++        Error *err = NULL;
 +
-+    /* There is an error */
-     if (errp) {
--        *errp = f->last_error_obj ? error_copy(f->last_error_obj) : NULL;
-+        if (f->last_error_obj) {
-+            *errp = error_copy(f->last_error_obj);
-+        } else {
-+            error_setg_errno(errp, -f->last_error, "Channel error");
-+        }
++        error_setg(&err, "Channel is explicitly shutdown by the user");
++        qemu_file_set_error_obj(f, -EIO, err);
      }
-+
-     return f->last_error;
- }
  
+     if (!qio_channel_has_feature(f->ioc,
 -- 
 2.41.0
 
