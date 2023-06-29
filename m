@@ -2,49 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CC687423C1
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 12:12:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AD5B7423CF
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 12:16:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEodk-00064u-RH; Thu, 29 Jun 2023 06:12:40 -0400
+	id 1qEoh4-0007Rv-Jg; Thu, 29 Jun 2023 06:16:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qEodi-00064e-2U
- for qemu-devel@nongnu.org; Thu, 29 Jun 2023 06:12:38 -0400
-Received: from isrv.corpit.ru ([86.62.121.231])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qEoh2-0007RV-0e
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 06:16:04 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qEodg-0003og-GE
- for qemu-devel@nongnu.org; Thu, 29 Jun 2023 06:12:37 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 3F63310032;
- Thu, 29 Jun 2023 13:12:35 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 89473103A9;
- Thu, 29 Jun 2023 13:12:34 +0300 (MSK)
-Message-ID: <3e79215c-2d21-580a-db52-3b1b5df1032b@tls.msk.ru>
-Date: Thu, 29 Jun 2023 13:12:34 +0300
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qEogz-0004UZ-5B
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 06:16:03 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1688033759;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=V+o2Z+AY3SMhCmVLLuNUdY5h3t7GxmtiWYbpQ2O5ZK8=;
+ b=IQx2GAsRa0Qng9lvLtPXStIlYP84FFsXFKTbDmQVtVnluaPfxOUb2jIikwoVAfN0kOkV5v
+ SY6eVRMBYFcDrhbjBTGeAMBic3GRzZzV55zQfqn6+pbEweQmth/+sDtuBjMpwrhBrh9viX
+ Wt9Ac7tvd/3qznsuEMp11xqE5eLj/kA=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-113-93Us5fxBMqeNCLRRv7Rf6A-1; Thu, 29 Jun 2023 06:15:58 -0400
+X-MC-Unique: 93Us5fxBMqeNCLRRv7Rf6A-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-3f81f4a7596so2943315e9.1
+ for <qemu-devel@nongnu.org>; Thu, 29 Jun 2023 03:15:57 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1688033757; x=1690625757;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=V+o2Z+AY3SMhCmVLLuNUdY5h3t7GxmtiWYbpQ2O5ZK8=;
+ b=Rf4EpraXuJqC+hyc0hcft20lJ+qKGJ5ZbDj44b4ZeCXOXMlY/qeVos/TTHw1nWykcv
+ k+I/2xh0KHP+lzh6P8jkjcGxBVSYLEq/HK1vc6wiSSGVrzE+Wle5M9wjSJ843Th4Dl+B
+ j/6dQT2mVC6m9r0mONRqwVgyWnZC9QwF2JPmbkax2VTgvD/k9bY6MH99BTiw/lM3Muc6
+ AQm/7WOjlsRX2x6Ct0fnxbX8c3U6gxVp5zLwZ+seY5HJGctLia343esGYviAPCmq53Rk
+ uD58VyzQbVtbOD5fj1n6KhzblxWpl4BSnHPblluI1gIfH2e905roIueZ3w9txRa/s4Zx
+ m7wA==
+X-Gm-Message-State: AC+VfDyHVT5Y5fzRk9I1HBJJCHQGUtvrrxWeqfJsZ/7Mx/QsOIEZ3sqT
+ r2/Y2ZobrmckC6bJbmt1I8rS5qmCaR39ciQRyNx/3Ze62oIYR5kgMJChMIYCV9rrHSCyOgL0Qkl
+ 8ZH8WRha0N0i93cw=
+X-Received: by 2002:a7b:cb99:0:b0:3f9:c9bc:401 with SMTP id
+ m25-20020a7bcb99000000b003f9c9bc0401mr19761166wmi.33.1688033756959; 
+ Thu, 29 Jun 2023 03:15:56 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5g3Oz67Pa9+F1Nrp26h2qdCUhCqDhYdEuGmdWEMKKBlVf9q3m9iN5I6q21ex6yE6vIDB5jrA==
+X-Received: by 2002:a7b:cb99:0:b0:3f9:c9bc:401 with SMTP id
+ m25-20020a7bcb99000000b003f9c9bc0401mr19761154wmi.33.1688033756651; 
+ Thu, 29 Jun 2023 03:15:56 -0700 (PDT)
+Received: from [10.33.192.205] (nat-pool-str-t.redhat.com. [149.14.88.106])
+ by smtp.gmail.com with ESMTPSA id
+ f10-20020a7bc8ca000000b003fbad1b4904sm4795032wml.0.2023.06.29.03.15.55
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 29 Jun 2023 03:15:56 -0700 (PDT)
+Message-ID: <3b47989a-1efa-df45-c49c-0ae77b4679b6@redhat.com>
+Date: Thu, 29 Jun 2023 12:15:55 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [qemu-web PATCH] Fix installation instructions for Debian/Ubuntu
+ Thunderbird/102.11.0
+Subject: Re: [qemu-web PATCH v2] Fix installation instructions for
+ Debian/Ubuntu
 Content-Language: en-US
-To: Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+To: Michael Tokarev <mjt@tls.msk.ru>, Paolo Bonzini <pbonzini@redhat.com>,
  qemu-devel@nongnu.org
-References: <20230629080234.179687-1-thuth@redhat.com>
- <305b3e1f-aa55-8efe-8394-7c1b90ffe3f3@tls.msk.ru>
- <1f0afdee-09f0-83a5-f8fb-d2b86827ba16@redhat.com>
-From: Michael Tokarev <mjt@tls.msk.ru>
-In-Reply-To: <1f0afdee-09f0-83a5-f8fb-d2b86827ba16@redhat.com>
+References: <20230629092425.183618-1-thuth@redhat.com>
+ <3021d649-84ce-fc61-4788-3102258eba41@tls.msk.ru>
+From: Thomas Huth <thuth@redhat.com>
+In-Reply-To: <3021d649-84ce-fc61-4788-3102258eba41@tls.msk.ru>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -69
-X-Spam_score: -7.0
-X-Spam_bar: -------
-X-Spam_report: (-7.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.089,
- RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.089, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -61,19 +102,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-29.06.2023 12:31, Thomas Huth wrote:
-..
->> This is actually a question to QEMU upstream, - I think the same reasoning
->> applies there as well.
+On 29/06/2023 12.09, Michael Tokarev wrote:
+> 29.06.2023 12:24, Thomas Huth пишет:
+>> There is no package called "qemu" here - thus use the two meta-packages
+>> "qemu-system" and "qemu-user-static" instead.
+>>
+>> While we're at it, add a note for people who might not need all
+>> emulator binaries - in that case it makes sense to have a look
+>> at the list of available packages first.
+>>
+>> Resolves: https://gitlab.com/qemu-project/qemu-web/-/issues/8
+>> Signed-off-by: Thomas Huth <thuth@redhat.com>
+>> ---
+>>   v2:
+>>   - Separate the installation instruction for system and user-mode
+>>   - Add a note for people who don't need all targets
+>>
+>>   _download/linux.md | 9 ++++++++-
+>>   1 file changed, 8 insertions(+), 1 deletion(-)
 > 
-> Looking at our docs, it seems like we're lacking an introduction to the the "configure" switches like --enable-system and --enable-user completely, 
-> indeed :-(
+> Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
+> 
+> This looks like a -trivial material, I can pick it up and it'll go
+> there if no one picks it before.
 
-When I come to qemu 10+ years ago, it was somehow very
-difficult to understand what's qemu-user and what's
-qemu-system.  Now it is obvious, like breathing, but
-that's after 10+ years.. ;))
+No worries, this is for the qemu-web repository, I can commit it there directly.
 
-/mjt
+  Thomas
+
 
 
