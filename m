@@ -2,85 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4E7D741E88
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 04:59:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D780741F25
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 06:09:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEhqv-0002Ga-RU; Wed, 28 Jun 2023 22:57:49 -0400
+	id 1qEix1-0004Ey-Od; Thu, 29 Jun 2023 00:08:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ssinprem@celestica.com>)
- id 1qEhqt-0002GD-Un
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 22:57:47 -0400
-Received: from mail-pj1-x1031.google.com ([2607:f8b0:4864:20::1031])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ssinprem@celestica.com>)
- id 1qEhqr-00031Z-QI
- for qemu-devel@nongnu.org; Wed, 28 Jun 2023 22:57:47 -0400
-Received: by mail-pj1-x1031.google.com with SMTP id
- 98e67ed59e1d1-263315da33cso50439a91.0
- for <qemu-devel@nongnu.org>; Wed, 28 Jun 2023 19:57:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=celestica.com; s=google-201810; t=1688007464; x=1690599464;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=jGpbsSK6KXL9Q3SvqQNiedqCZebsR3+7uGHACF0J8c0=;
- b=lzue2hBo9BCjGuEFVi/kVVWSmcVmaiAxjlGHS2GUG7MWtCPJg0GE+gnkfzXzAcll2X
- vB0hmFHrSi4LfvA8QShjKT6F2ray6w3qvg9yO4smNDDL4njYY6iy1cmWr+esPhmbqPpN
- 2IYDaq9Oet7lqs8zhCJp7/06YpjzXomiyJoBQ0HY0t+v+cZ8WRDxdMLnjas3jtiVj7S2
- EIWOuAKud6rd5pKSrw6YGFZDEo84vqt1GeDePFvT7mbUZlu0hy9cLatTiQDCIB1By0nG
- U81KBHhM1o8lxAX1pS7QTuEWduNQjheUVwUeto1CwxZ3ihcVGTzfOLWWYBnUSKF6IlCL
- AJew==
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1qEix0-0004Eo-8M
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 00:08:10 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1qEiwy-00015X-N4
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 00:08:10 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1688011687;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=Npl46K/mv7PRoXfR4jPjCTwNrJ2E4gGt5Z0oOmVFrpc=;
+ b=gyHGxpoMOUv/03hz/XPsHedegntnWyArvjwX+jwoJmihdVCIGZxzbMY/kdYZFbgcZ1/bP3
+ aIn4oZGCM+oC3Aow5j3JCxkf6prD+H/2Rkf2yjdt/XgAPYhefjhO/pXOWQ6XgRf4BF3AaI
+ rpLnBAikbh2TqhIO9jk5x2oQB+1NSrw=
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com
+ [209.85.216.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-447-N5NidJcrON6ExPZ8BUewkw-1; Thu, 29 Jun 2023 00:08:05 -0400
+X-MC-Unique: N5NidJcrON6ExPZ8BUewkw-1
+Received: by mail-pj1-f71.google.com with SMTP id
+ 98e67ed59e1d1-26304c2e178so240102a91.3
+ for <qemu-devel@nongnu.org>; Wed, 28 Jun 2023 21:08:05 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688007464; x=1690599464;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20221208; t=1688011684; x=1690603684;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=jGpbsSK6KXL9Q3SvqQNiedqCZebsR3+7uGHACF0J8c0=;
- b=OLlnLjKVZMSGlNx2JXap9GYrIG64azYcZhhjCa4yUvxJOE5o8gsCU5nYE6dP7B4ogv
- s8zrkTvDKxmqKLUMAzbShnCFCbjAIFL0HzjSCkbgcMFJVnOzZox3uJU7siIGvUis7R09
- FU67/IxkGrNkgo1faNEkcYThYZA2MtioT7xajCVtlJ7FjG/KazZxXhm9iVPguCwTMr/C
- jYdT672D/b5fg+nZpuEbgCFaa6EMYdHc28u9N4XQnUeniewBeYDoT1lG0BBgW5P/lbzM
- 8hUq1qbGKWxIKtIJfInjmqydDqpfd5ijzNm07wzUZBFCv2nVJPfVjd8m3vnqrZsgiXiM
- U/CQ==
-X-Gm-Message-State: AC+VfDx4nl+TUQ6MeiFFJAqSgQZhnW2LlZmyIzZiHhhZcUn4invLefCV
- MGsuvNTaRqDqxAoEa9NxwrpEro+B55P2v35TUXVPXdDzl7jNIxrTh6KKxUVDPYMQUms85G9oDmp
- KNcH6ngQsgIEKpZwxWP5/8wNA8jGlz7GeSR1W/VIrI7+C7Tx5TQ2k+pW0+fMz/RLLSetzfExL73
- A0xQNeem/pKplHfg6WGK2jvM4TcVJ7cAqpHQ==
-X-Google-Smtp-Source: ACHHUZ5JYLvc09K08aUyvpZ0QhvJJBvdeyJM/gZiRhjEVQQ7ehjRunlpMD5aCJRAl3cAoM6ZGXIGV3mx6C+5rDUE9Qk=
-X-Received: by 2002:a17:90b:4b4c:b0:23b:4bce:97de with SMTP id
- mi12-20020a17090b4b4c00b0023b4bce97demr43520815pjb.4.1688007463674; Wed, 28
- Jun 2023 19:57:43 -0700 (PDT)
+ bh=Npl46K/mv7PRoXfR4jPjCTwNrJ2E4gGt5Z0oOmVFrpc=;
+ b=KDx0vbYNLYtPHj8XF5YWSJUpwIHxCXwGikHB/635HDsuGjI/BX/KWX1UCw3HtrOWnq
+ 4eH1/wP9ln87y1vUCRvg/0x69rSj+5vges1IV3/VR/as/dsv0Wbs92mbExW1HcE+S0VN
+ 8gJWd6SQAMfqLveGm2UKCcPBj+sGsgprSc6Z7rVNCEn8/QPRmwTYXfB4BlOSuV9J7Fxv
+ 9CF5y7Hb826N0b7Ln5WOOQ+BaKoXfEfs5hAoDd4A3FHh1Xskp90xBrCtpG4B+V6gwuJC
+ yWAUHJtoI24j1RaAh+iiB5Ue3YuMuyB38d00o8YOZZ4ZizHMwGJuRmioRL26JZFy1nOc
+ Efcg==
+X-Gm-Message-State: AC+VfDyoS8LAXj0N5DlXlA0YhUKt+F/Nvp6GnZ76HhV+pjBTNrbpI2xQ
+ vcU3J7p33T7kmqrJVDT44sIiySFz5JjPoFA0OOSvlG5U0tEpAdxUyLg/m03P0uaPr9AtPd1BEPY
+ fOl6aRFPCTWd4zTQRVZP+9h9BM0cwZk7gJaOs6nrUdXGpZg7uvTDpA3QOfmWH8HrGVCQJrNrw8p
+ w=
+X-Received: by 2002:a17:90a:1906:b0:25e:a8ab:9157 with SMTP id
+ 6-20020a17090a190600b0025ea8ab9157mr34067038pjg.22.1688011684392; 
+ Wed, 28 Jun 2023 21:08:04 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7LZ6bobQvK1+FwQNHPOJx0dvmuaamEu2hTx3RnhAH+abILUCT4P61bN1/tc3owvluiIwwGxQ==
+X-Received: by 2002:a17:90a:1906:b0:25e:a8ab:9157 with SMTP id
+ 6-20020a17090a190600b0025ea8ab9157mr34067020pjg.22.1688011684031; 
+ Wed, 28 Jun 2023 21:08:04 -0700 (PDT)
+Received: from localhost.localdomain ([203.163.234.183])
+ by smtp.googlemail.com with ESMTPSA id
+ 21-20020a17090a019500b00256b67208b1sm10978169pjc.56.2023.06.28.21.08.00
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 28 Jun 2023 21:08:03 -0700 (PDT)
+From: Ani Sinha <anisinha@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Ani Sinha <anisinha@redhat.com>, mst@redhat.com, imammedo@redhat.com,
+ jusual@redhat.com, thuth@redhat.com, lvivier@redhat.com,
+ michael.labiuk@virtuozzo.com
+Subject: [PATCH v6 0/5] test and QEMU fixes to ensure proper PCIE device usage
+Date: Thu, 29 Jun 2023 09:37:02 +0530
+Message-Id: <20230629040707.115656-1-anisinha@redhat.com>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-References: <168794501779.28884.3336012012258765799-0@git.sr.ht>
- <cd38a154-d5c3-1e22-c94f-9e1d74069f6b@kaod.org>
- <CAE+aGtVDXtPbZxC-OJvQ0R+dOk0S=_gx+0wfyJ+wbA_xn=NLMg@mail.gmail.com>
- <75e183e9-f253-60f3-c7bd-a064b8887ca1@kaod.org>
-In-Reply-To: <75e183e9-f253-60f3-c7bd-a064b8887ca1@kaod.org>
-From: Sittisak Sinprem <ssinprem@celestica.com>
-Date: Thu, 29 Jun 2023 09:57:17 +0700
-Message-ID: <CAE+aGtVs33sbcQJrW88H7E6ot72cBnJC=OPZYO0saEo3i6Mr4Q@mail.gmail.com>
-Subject: Re: [PATCH qemu] aspeed add montblanc bmc reference from fuji
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, peter.maydell@linaro.org, 
- andrew@aj.id.au, srikanth@celestica.com, ssumet@celestica.com, 
- thangavelu.v@celestica.com, kgengan@celestica.com, anandaramanv@celestica.com, 
- Joel Stanley <joel@jms.id.au>
-Content-Type: multipart/alternative; boundary="00000000000040ab1e05ff3bdda8"
-X-CLS-Gapps: True
-X-CLOUD-SEC-AV-Sent: true
-X-CLOUD-SEC-AV-Info: celesticainc,google_mail,monitor
-X-Gm-Spam: 0
-X-Gm-Phishy: 0
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1031;
- envelope-from=ssinprem@celestica.com; helo=mail-pj1-x1031.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=anisinha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, HTML_MESSAGE=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -97,231 +99,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---00000000000040ab1e05ff3bdda8
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Patches 1-4:
+Fix tests so that devices do not use non-zero slots on the pcie root
+ports. PCIE ports only have one slot, so PCIE devices can only be
+plugged into slot 0 on a PCIE port.
 
-Hi C=C3=A9dric,
+Patch 5:
+Enforce only one slot on PCIE port.
 
-I had fixed the function name to support in current branch,
-but facing about below error while starting
+The test fixes must be applied before the QEMU change that checks for use
+of a single slot in PCIE port.
 
-./build/qemu-system-arm -machine montblanc-bmc  -drive
-> file=3D~/flash-montblanc,format=3Draw,if=3Dmtd -nographic -netdev
-> tap,id=3Dnetdev0,script=3Dno,downscript=3Dno,ifname=3Dtap0 -net
-> nic,netdev=3Dnetdev0,model=3Dftgmac100
->
+CC: mst@redhat.com
+CC: imammedo@redhat.com
+CC: jusual@redhat.com
+CC: thuth@redhat.com
+CC: lvivier@redhat.com
+CC: michael.labiuk@virtuozzo.com
+
+Changelog:
+===========
+v6: make patch 5 ARI compliant. fix commit message (s/pcie-root-port/pcie-to-pci/)
+in patch 4. Rebase patchset to latest master.
+
+v5: no code changes - correct a mistake in the commit log message.
+
+v4: reword commit log for patch 4.
+
+v3: tags added. reword the error description in patch 5. Reword commit log in patch 4. 
+
+v2: add hd-geo-test fix as well as the actual QEMU code fix to the patchset.
+
+The patches are added in the right order.
 
 
-qemu-system-arm: device requires 134217728 bytes, block backend provides
-> 27726336 bytes
+Ani Sinha (5):
+  tests/acpi: allow changes in DSDT.noacpihp table blob
+  tests/acpi/bios-tables-test: use the correct slot on the
+    pcie-root-port
+  tests/acpi/bios-tables-test: update acpi blob q35/DSDT.noacpihp
+  tests/qtest/hd-geo-test: fix incorrect pcie-root-port usage and
+    simplify test
+  hw/pci: ensure PCIE devices are plugged into only slot 0 of PCIE port
 
+ hw/pci/pci.c                      |  15 +++++++++++++++
+ tests/data/acpi/q35/DSDT.noacpihp | Bin 8248 -> 8241 bytes
+ tests/qtest/bios-tables-test.c    |   4 ++--
+ tests/qtest/hd-geo-test.c         |  18 ++++++++----------
+ 4 files changed, 25 insertions(+), 12 deletions(-)
 
+-- 
+2.39.1
 
-
-On Wed, Jun 28, 2023 at 11:34=E2=80=AFPM C=C3=A9dric Le Goater <clg@kaod.or=
-g> wrote:
-
-> On 6/28/23 12:07, Sittisak Sinprem wrote:
-> > Got it Cedric, I just know for it,
-> >
-> > I am fixing, and will re-send the patch as V2.
->
-> Could you please use the patch below and send in your series ?
->
-> Thanks,
->
-> C.
->
->
->  From cfbc865ffe8a4dffe4ac764eb10416aa906a7170 Mon Sep 17 00:00:00 2001
-> From: =3D?UTF-8?q?C=3DC3=3DA9dric=3D20Le=3D20Goater?=3D <clg@kaod.org>
-> Date: Wed, 28 Jun 2023 18:32:20 +0200
-> Subject: [PATCH] aspeed: Introduce ASPEED_RAM_SIZE helper for 32-bit host=
-s
->   limitation
-> MIME-Version: 1.0
-> Content-Type: text/plain; charset=3DUTF-8
-> Content-Transfer-Encoding: 8bit
->
-> On 32-bit hosts, RAM has a 2047 MB limit. Use a macro to define the
-> default ram size of machines (AST2600 SoC) that can have 2 GB.
->
-> Signed-off-by: C=C3=A9dric Le Goater <clg@kaod.org>
-> ---
->   hw/arm/aspeed.c | 21 +++++++++------------
->   1 file changed, 9 insertions(+), 12 deletions(-)
->
-> diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
-> index eefd2e275015..0ae252232597 100644
-> --- a/hw/arm/aspeed.c
-> +++ b/hw/arm/aspeed.c
-> @@ -49,6 +49,13 @@ struct AspeedMachineState {
->       uint32_t hw_strap1;
->   };
->
-> +/* On 32-bit hosts, lower RAM to 1G because of the 2047 MB limit */
-> +#if HOST_LONG_BITS =3D=3D 32
-> +#define ASPEED_RAM_SIZE(sz) MIN((sz), 1 * GiB)
-> +#else
-> +#define ASPEED_RAM_SIZE(sz) (sz)
-> +#endif
-> +
->   /* Palmetto hardware value: 0x120CE416 */
->   #define PALMETTO_BMC_HW_STRAP1 (                                       =
- \
->           SCU_AST2400_HW_STRAP_DRAM_SIZE(DRAM_SIZE_256MB) |              =
- \
-> @@ -1504,12 +1511,7 @@ static void
-> aspeed_machine_rainier_class_init(ObjectClass *oc, void *data)
->       aspeed_machine_ast2600_class_init(oc, data);
->   };
->
-> -/* On 32-bit hosts, lower RAM to 1G because of the 2047 MB limit */
-> -#if HOST_LONG_BITS =3D=3D 32
-> -#define FUJI_BMC_RAM_SIZE (1 * GiB)
-> -#else
-> -#define FUJI_BMC_RAM_SIZE (2 * GiB)
-> -#endif
-> +#define FUJI_BMC_RAM_SIZE ASPEED_RAM_SIZE(2 * GiB)
->
->   static void aspeed_machine_fuji_class_init(ObjectClass *oc, void *data)
->   {
-> @@ -1533,12 +1535,7 @@ static void
-> aspeed_machine_fuji_class_init(ObjectClass *oc, void *data)
->       aspeed_machine_ast2600_class_init(oc, data);
->   };
->
-> -/* On 32-bit hosts, lower RAM to 1G because of the 2047 MB limit */
-> -#if HOST_LONG_BITS =3D=3D 32
-> -#define BLETCHLEY_BMC_RAM_SIZE (1 * GiB)
-> -#else
-> -#define BLETCHLEY_BMC_RAM_SIZE (2 * GiB)
-> -#endif
-> +#define BLETCHLEY_BMC_RAM_SIZE ASPEED_RAM_SIZE(2 * GiB)
->
->   static void aspeed_machine_bletchley_class_init(ObjectClass *oc, void
-> *data)
->   {
-> --
-> 2.41.0
->
->
->
-
---00000000000040ab1e05ff3bdda8
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div class=3D"gmail_default" style=3D"font-family:trebuche=
-t ms,sans-serif;font-size:small;color:#134f5c">Hi C=C3=A9dric,<br><br>I had=
- fixed the function name to support in current branch,<br>but facing about =
-below error while starting<br><br><blockquote class=3D"gmail_quote" style=
-=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding=
--left:1ex">./build/qemu-system-arm -machine montblanc-bmc =C2=A0-drive file=
-=3D~/flash-montblanc,format=3Draw,if=3Dmtd -nographic -netdev tap,id=3Dnetd=
-ev0,script=3Dno,downscript=3Dno,ifname=3Dtap0 -net nic,netdev=3Dnetdev0,mod=
-el=3Dftgmac100<br></blockquote><blockquote class=3D"gmail_quote" style=3D"m=
-argin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left=
-:1ex">=C2=A0</blockquote><blockquote class=3D"gmail_quote" style=3D"margin:=
-0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">=
-qemu-system-arm: device requires 134217728 bytes, block backend provides 27=
-726336 bytes</blockquote><br><br></div></div><br><div class=3D"gmail_quote"=
-><div dir=3D"ltr" class=3D"gmail_attr">On Wed, Jun 28, 2023 at 11:34=E2=80=
-=AFPM C=C3=A9dric Le Goater &lt;<a href=3D"mailto:clg@kaod.org" target=3D"_=
-blank">clg@kaod.org</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quot=
-e" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204)=
-;padding-left:1ex">On 6/28/23 12:07, Sittisak Sinprem wrote:<br>
-&gt; Got it Cedric, I just know for it,<br>
-&gt; <br>
-&gt; I am fixing, and will re-send the patch as V2.<br>
-<br>
-Could you please use the patch below and send in your series ?<br>
-<br>
-Thanks,<br>
-<br>
-C.<br>
-<br>
-<br>
-=C2=A0From cfbc865ffe8a4dffe4ac764eb10416aa906a7170 Mon Sep 17 00:00:00 200=
-1<br>
-From: =3D?UTF-8?q?C=3DC3=3DA9dric=3D20Le=3D20Goater?=3D &lt;<a href=3D"mail=
-to:clg@kaod.org" target=3D"_blank">clg@kaod.org</a>&gt;<br>
-Date: Wed, 28 Jun 2023 18:32:20 +0200<br>
-Subject: [PATCH] aspeed: Introduce ASPEED_RAM_SIZE helper for 32-bit hosts<=
-br>
-=C2=A0 limitation<br>
-MIME-Version: 1.0<br>
-Content-Type: text/plain; charset=3DUTF-8<br>
-Content-Transfer-Encoding: 8bit<br>
-<br>
-On 32-bit hosts, RAM has a 2047 MB limit. Use a macro to define the<br>
-default ram size of machines (AST2600 SoC) that can have 2 GB.<br>
-<br>
-Signed-off-by: C=C3=A9dric Le Goater &lt;<a href=3D"mailto:clg@kaod.org" ta=
-rget=3D"_blank">clg@kaod.org</a>&gt;<br>
----<br>
-=C2=A0 hw/arm/aspeed.c | 21 +++++++++------------<br>
-=C2=A0 1 file changed, 9 insertions(+), 12 deletions(-)<br>
-<br>
-diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c<br>
-index eefd2e275015..0ae252232597 100644<br>
---- a/hw/arm/aspeed.c<br>
-+++ b/hw/arm/aspeed.c<br>
-@@ -49,6 +49,13 @@ struct AspeedMachineState {<br>
-=C2=A0 =C2=A0 =C2=A0 uint32_t hw_strap1;<br>
-=C2=A0 };<br>
-<br>
-+/* On 32-bit hosts, lower RAM to 1G because of the 2047 MB limit */<br>
-+#if HOST_LONG_BITS =3D=3D 32<br>
-+#define ASPEED_RAM_SIZE(sz) MIN((sz), 1 * GiB)<br>
-+#else<br>
-+#define ASPEED_RAM_SIZE(sz) (sz)<br>
-+#endif<br>
-+<br>
-=C2=A0 /* Palmetto hardware value: 0x120CE416 */<br>
-=C2=A0 #define PALMETTO_BMC_HW_STRAP1 (=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 \<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 SCU_AST2400_HW_STRAP_DRAM_SIZE(DRAM_SIZE=
-_256MB) |=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0\<br>
-@@ -1504,12 +1511,7 @@ static void aspeed_machine_rainier_class_init(Object=
-Class *oc, void *data)<br>
-=C2=A0 =C2=A0 =C2=A0 aspeed_machine_ast2600_class_init(oc, data);<br>
-=C2=A0 };<br>
-<br>
--/* On 32-bit hosts, lower RAM to 1G because of the 2047 MB limit */<br>
--#if HOST_LONG_BITS =3D=3D 32<br>
--#define FUJI_BMC_RAM_SIZE (1 * GiB)<br>
--#else<br>
--#define FUJI_BMC_RAM_SIZE (2 * GiB)<br>
--#endif<br>
-+#define FUJI_BMC_RAM_SIZE ASPEED_RAM_SIZE(2 * GiB)<br>
-<br>
-=C2=A0 static void aspeed_machine_fuji_class_init(ObjectClass *oc, void *da=
-ta)<br>
-=C2=A0 {<br>
-@@ -1533,12 +1535,7 @@ static void aspeed_machine_fuji_class_init(ObjectCla=
-ss *oc, void *data)<br>
-=C2=A0 =C2=A0 =C2=A0 aspeed_machine_ast2600_class_init(oc, data);<br>
-=C2=A0 };<br>
-<br>
--/* On 32-bit hosts, lower RAM to 1G because of the 2047 MB limit */<br>
--#if HOST_LONG_BITS =3D=3D 32<br>
--#define BLETCHLEY_BMC_RAM_SIZE (1 * GiB)<br>
--#else<br>
--#define BLETCHLEY_BMC_RAM_SIZE (2 * GiB)<br>
--#endif<br>
-+#define BLETCHLEY_BMC_RAM_SIZE ASPEED_RAM_SIZE(2 * GiB)<br>
-<br>
-=C2=A0 static void aspeed_machine_bletchley_class_init(ObjectClass *oc, voi=
-d *data)<br>
-=C2=A0 {<br>
--- <br>
-2.41.0<br>
-<br>
-<br>
-</blockquote></div>
-
---00000000000040ab1e05ff3bdda8--
 
