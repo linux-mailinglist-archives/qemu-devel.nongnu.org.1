@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FE80741F2A
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 06:10:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45AF3741F24
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 06:09:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEixI-0004Ia-Jt; Thu, 29 Jun 2023 00:08:28 -0400
+	id 1qEixH-0004IR-VH; Thu, 29 Jun 2023 00:08:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qEixD-0004Hb-VV
+ id 1qEixE-0004Hc-4Q
  for qemu-devel@nongnu.org; Thu, 29 Jun 2023 00:08:24 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qEixC-00018K-8c
+ id 1qEixC-000195-Dy
  for qemu-devel@nongnu.org; Thu, 29 Jun 2023 00:08:23 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688011698;
+ s=mimecast20190719; t=1688011701;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=8E3L/eh8xTMWqqFxd2K3iGDv+eq82X+mKSmU3uQ/MtY=;
- b=L4cpDAXrGTqCBYiE6l9b/fMzH4hjJCvuXHLc3q6OGGvTntoHL+8JdemzQ4jGBRA6+ChPzd
- qQl8ldWtStntzDixEjXXbPRLPZVBPvE3HbTjeS6gquVCCZlkY/cLtJcZ8H3LcXReI8dbvR
- AnqPKJl8ZjdzZ22dhh0Bs0xhwd8SBHo=
-Received: from mail-oa1-f71.google.com (mail-oa1-f71.google.com
- [209.85.160.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=GoBS0EC4cwBNnpcmWPjz9AcRRSQCOhYWW+JOrffjg2c=;
+ b=ZrPOOwnU5AnQAOEPlB3RMWkAxl0ypBmzwnUa/j7ONT8ypAWhhzSIAxVHoZQukhdM49RXlq
+ 81eLlM1/RkQ6lAaH0PZxroYwB8bLJ4xyKm86u+4mSKq+Z6neYkATl88mmS1lwjIDwhGDoh
+ iJRm99OYEo2zIyy7LWvv0Pw856d+LFE=
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com
+ [209.85.216.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-33-sfCyeaEENTip4ggMTwu_1w-1; Thu, 29 Jun 2023 00:08:16 -0400
-X-MC-Unique: sfCyeaEENTip4ggMTwu_1w-1
-Received: by mail-oa1-f71.google.com with SMTP id
- 586e51a60fabf-1b016818400so384215fac.0
- for <qemu-devel@nongnu.org>; Wed, 28 Jun 2023 21:08:16 -0700 (PDT)
+ us-mta-562-vYea4MMNMjKRqjb8V2csew-1; Thu, 29 Jun 2023 00:08:19 -0400
+X-MC-Unique: vYea4MMNMjKRqjb8V2csew-1
+Received: by mail-pj1-f71.google.com with SMTP id
+ 98e67ed59e1d1-26337f5d2daso230492a91.0
+ for <qemu-devel@nongnu.org>; Wed, 28 Jun 2023 21:08:19 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688011695; x=1690603695;
+ d=1e100.net; s=20221208; t=1688011698; x=1690603698;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=8E3L/eh8xTMWqqFxd2K3iGDv+eq82X+mKSmU3uQ/MtY=;
- b=aY4U+QZULx8pOZC1dK7amTWbvtnAA0LJ0ePWkQIoqNSKQhDvPjxw0V+5ffScraJUCv
- J0X3NWOcjQn8xq3A+PpfB9iKuyBPuiph6ewC6WDVPO40wDGyMlJdG6N1PfbY7su0L9ma
- BeCvApxhIvnOxAQMQFmCPGS2DXFM5SuOY3WbhIl5Ni03Lwv/i2iQlFwcA5AZECPqyDf0
- D4en5yLb6wUJllWZkDP+xdrpRSNJ3ZD6kpO4nFjdyp3P0zJpXNYZgWr26hwPtcFqm7o9
- xhkp0NHyuVuK5QGwwBPZQvkgLRMIfxSXE1oUwYHQ4Fp14qnWGS8YEpizm6kne6QByGY1
- YyHA==
-X-Gm-Message-State: AC+VfDzBQ4ctCLm3Dg+7KB9Lo3DOvCaTiTqffaA+PznKH5mLratuHeAj
- +b3+6Xg9ZsI9Mw6N7XVYnnbRWnsT0fJmz9tQvEyCPI5hrbq8X7B7m3JS1P9ItbUFr+Dvj218SUV
- c2kptCjBFLVTxK796TF04F/2FGHAEiu95004zBbGzEVzCSYNaSKx9SeEFJH72qOyRlhPkFW2BD9
- E=
-X-Received: by 2002:a05:6870:c155:b0:1b0:89fb:9e77 with SMTP id
- g21-20020a056870c15500b001b089fb9e77mr2843584oad.35.1688011695292; 
- Wed, 28 Jun 2023 21:08:15 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6h1jcZbyztsCfZOqZC0QC/Oy1APsfvxMmkiQuAHZY12aYjToAoacsNNEEtt+qcr+1tI2ePxg==
-X-Received: by 2002:a05:6870:c155:b0:1b0:89fb:9e77 with SMTP id
- g21-20020a056870c15500b001b089fb9e77mr2843566oad.35.1688011694980; 
- Wed, 28 Jun 2023 21:08:14 -0700 (PDT)
+ bh=GoBS0EC4cwBNnpcmWPjz9AcRRSQCOhYWW+JOrffjg2c=;
+ b=G0SRXBCbA76T3FxELTg6q4Wh9lAMwlo49cCWsuF7OMU/uXLQLxSL/wji/xw9TzGts/
+ DeKnZMpXLmcyg2Rg6bhaBp2cn89m5h7ch+C4e0X4B2LDW1Wt/dU+geBBcp8C+YeZORu4
+ WpvYrfTgnPF/SEo5xdEF+xQ9x01Xp1nhb6L8xVVNxDl89r5azv3MacO+4kZn1t2LfJ5S
+ Ku2X/qPSZku42ZD4baySJJztUdRYe+YwER2Ko9+V413Q9TGpvcMx9PDNfBPT/Luix7+J
+ dQ9nVHJhKxjCYkbmCVLCW3h+Gx5vX5eYW2V8cGE/AuN4fE5e1yt3E6e5eZBeHsIY5xWD
+ GWRA==
+X-Gm-Message-State: AC+VfDxnTv4SYOzoLW3AvlYto4gQaHtXaSwPMa5MWVbicCnemPuVAPvU
+ h8ZoTMkq7ySTpPWLDJVfViWYUYqeFq0NizjmLR5Me6M7UE1gm2OmCJyYA2IDK9ibJE8JWzEw8ah
+ QK1dUIHQrama1PvKdoez6KcL0GJzoZ7SROY/vowZztkyYcynLnX+TzUQowk0Xo6lR6PB4YbV7Dm
+ c=
+X-Received: by 2002:a17:90a:8d09:b0:262:f449:4497 with SMTP id
+ c9-20020a17090a8d0900b00262f4494497mr9606143pjo.2.1688011698400; 
+ Wed, 28 Jun 2023 21:08:18 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7asSaYoTZygpM8utTywpaThVmrfqBiWRAIQog79mLQcg486a7xuk2AS+F5sSazfKDolhxyUw==
+X-Received: by 2002:a17:90a:8d09:b0:262:f449:4497 with SMTP id
+ c9-20020a17090a8d0900b00262f4494497mr9606128pjo.2.1688011698047; 
+ Wed, 28 Jun 2023 21:08:18 -0700 (PDT)
 Received: from localhost.localdomain ([203.163.234.183])
  by smtp.googlemail.com with ESMTPSA id
- 21-20020a17090a019500b00256b67208b1sm10978169pjc.56.2023.06.28.21.08.12
+ 21-20020a17090a019500b00256b67208b1sm10978169pjc.56.2023.06.28.21.08.15
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 28 Jun 2023 21:08:14 -0700 (PDT)
+ Wed, 28 Jun 2023 21:08:17 -0700 (PDT)
 From: Ani Sinha <anisinha@redhat.com>
-To: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: Ani Sinha <anisinha@redhat.com>, mst@redhat.com, imammedo@redhat.com,
- Michael Labiuk <michael.labiuk@virtuozzo.com>
-Subject: [PATCH v6 4/5] tests/qtest/hd-geo-test: fix incorrect pcie-root-port
- usage and simplify test
-Date: Thu, 29 Jun 2023 09:37:06 +0530
-Message-Id: <20230629040707.115656-5-anisinha@redhat.com>
+To: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Cc: Ani Sinha <anisinha@redhat.com>, jusual@redhat.com, imammedo@redhat.com,
+ akihiko.odaki@daynix.com
+Subject: [PATCH v6 5/5] hw/pci: ensure PCIE devices are plugged into only slot
+ 0 of PCIE port
+Date: Thu, 29 Jun 2023 09:37:07 +0530
+Message-Id: <20230629040707.115656-6-anisinha@redhat.com>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20230629040707.115656-1-anisinha@redhat.com>
 References: <20230629040707.115656-1-anisinha@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=anisinha@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -103,73 +103,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The test attaches a SCSI controller to a non-zero slot and a pcie-to-pci bridge
-on slot 0 on the same pcie-root-port. Since a downstream device can be attached
-to a pcie-root-port only on slot 0, the above test configuration is not allowed.
-Additionally using pcie.0 as id for pcie-to-pci bridge is incorrect as that id
-is reserved only for the root bus.
+PCI Express ports only have one slot, so PCI Express devices can only be
+plugged into slot 0 on a PCIE port. Enforce it.
 
-In the test scenario, there is no need to attach a pcie-root-port to the
-root complex. A SCSI controller can be attached to a pcie-to-pci bridge
-which can then be directly attached to the root bus (pcie.0).
+The change has been tested to not break ARI by instantiating seven vfs on an
+emulated igb device (the maximum number of vfs the linux igb driver supports).
+The vfs are seen to have non-zero device/slot numbers in the conventional
+PCI BDF representation.
 
-Fix the test and simplify it.
-
-CC: mst@redhat.com
+CC: jusual@redhat.com
 CC: imammedo@redhat.com
-CC: Michael Labiuk <michael.labiuk@virtuozzo.com>
+CC: akihiko.odaki@daynix.com
 
+Resolves: https://bugzilla.redhat.com/show_bug.cgi?id=2128929
 Signed-off-by: Ani Sinha <anisinha@redhat.com>
+Reviewed-by: Julia Suvorova <jusual@redhat.com>
 ---
- tests/qtest/hd-geo-test.c | 18 ++++++++----------
- 1 file changed, 8 insertions(+), 10 deletions(-)
+ hw/pci/pci.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/tests/qtest/hd-geo-test.c b/tests/qtest/hd-geo-test.c
-index 5aa258a2b3..d08bffad91 100644
---- a/tests/qtest/hd-geo-test.c
-+++ b/tests/qtest/hd-geo-test.c
-@@ -784,14 +784,12 @@ static void test_override_scsi(void)
-     test_override(args, "pc", expected);
- }
+diff --git a/hw/pci/pci.c b/hw/pci/pci.c
+index e2eb4c3b4a..0320ac2bb3 100644
+--- a/hw/pci/pci.c
++++ b/hw/pci/pci.c
+@@ -65,6 +65,7 @@ bool pci_available = true;
+ static char *pcibus_get_dev_path(DeviceState *dev);
+ static char *pcibus_get_fw_dev_path(DeviceState *dev);
+ static void pcibus_reset(BusState *qbus);
++static bool pcie_has_upstream_port(PCIDevice *dev);
  
--static void setup_pci_bridge(TestArgs *args, const char *id, const char *rootid)
-+static void setup_pci_bridge(TestArgs *args, const char *id)
- {
+ static Property pci_props[] = {
+     DEFINE_PROP_PCI_DEVFN("addr", PCIDevice, devfn, -1),
+@@ -1190,6 +1191,20 @@ static PCIDevice *do_pci_register_device(PCIDevice *pci_dev,
+                    name);
  
--    char *root, *br;
--    root = g_strdup_printf("-device pcie-root-port,id=%s", rootid);
--    br = g_strdup_printf("-device pcie-pci-bridge,bus=%s,id=%s", rootid, id);
-+    char *br;
-+    br = g_strdup_printf("-device pcie-pci-bridge,bus=pcie.0,id=%s", id);
+        return NULL;
++    } /*
++       * With SRIOV and ARI, vfs can have non-zero slot in the conventional
++       * PCI interpretation as all five bits reserved for slot addresses are
++       * also used for function bits for the various vfs. Ignore that case.
++       * It is too early here to check for ARI capabilities in the PCI config
++       * space. Hence, we check for a vf device instead.
++       */
++    else if (!pci_is_vf(pci_dev) &&
++             pcie_has_upstream_port(pci_dev) &&
++             PCI_SLOT(devfn)) {
++        error_setg(errp, "PCI: slot %d is not valid for %s,"
++                   " parent device only allows plugging into slot 0.",
++                   PCI_SLOT(devfn), name);
++        return NULL;
+     }
  
--    args->argc = append_arg(args->argc, args->argv, ARGV_SIZE, root);
-     args->argc = append_arg(args->argc, args->argv, ARGV_SIZE, br);
- }
- 
-@@ -811,8 +809,8 @@ static void test_override_scsi_q35(void)
-     add_drive_with_mbr(args, empty_mbr, 1);
-     add_drive_with_mbr(args, empty_mbr, 1);
-     add_drive_with_mbr(args, empty_mbr, 1);
--    setup_pci_bridge(args, "pcie.0", "br");
--    add_scsi_controller(args, "lsi53c895a", "br", 3);
-+    setup_pci_bridge(args, "pcie-pci-br");
-+    add_scsi_controller(args, "lsi53c895a", "pcie-pci-br", 3);
-     add_scsi_disk(args, 0, 0, 0, 0, 0, 10000, 120, 30);
-     add_scsi_disk(args, 1, 0, 0, 1, 0, 9000, 120, 30);
-     add_scsi_disk(args, 2, 0, 0, 2, 0, 1, 0, 0);
-@@ -868,9 +866,9 @@ static void test_override_virtio_blk_q35(void)
-     };
-     add_drive_with_mbr(args, empty_mbr, 1);
-     add_drive_with_mbr(args, empty_mbr, 1);
--    setup_pci_bridge(args, "pcie.0", "br");
--    add_virtio_disk(args, 0, "br", 3, 10000, 120, 30);
--    add_virtio_disk(args, 1, "br", 4, 9000, 120, 30);
-+    setup_pci_bridge(args, "pcie-pci-br");
-+    add_virtio_disk(args, 0, "pcie-pci-br", 3, 10000, 120, 30);
-+    add_virtio_disk(args, 1, "pcie-pci-br", 4, 9000, 120, 30);
-     test_override(args, "q35", expected);
- }
- 
+     pci_dev->devfn = devfn;
 -- 
 2.39.1
 
