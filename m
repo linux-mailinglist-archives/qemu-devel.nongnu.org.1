@@ -2,39 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 360BC7430CC
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 00:57:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A428D7430D8
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 01:03:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qF0Xu-0006vU-Ry; Thu, 29 Jun 2023 18:55:26 -0400
+	id 1qF0eg-00089S-UL; Thu, 29 Jun 2023 19:02:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <sstabellini@kernel.org>)
- id 1qF0Xs-0006uf-Jq; Thu, 29 Jun 2023 18:55:24 -0400
+ id 1qF0ee-00088v-HM; Thu, 29 Jun 2023 19:02:24 -0400
 Received: from dfw.source.kernel.org ([139.178.84.217])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <sstabellini@kernel.org>)
- id 1qF0Xq-0005FE-M8; Thu, 29 Jun 2023 18:55:24 -0400
+ id 1qF0ec-0007Rb-Kk; Thu, 29 Jun 2023 19:02:24 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id 868116154A;
- Thu, 29 Jun 2023 22:55:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26916C433C0;
- Thu, 29 Jun 2023 22:55:18 +0000 (UTC)
+ by dfw.source.kernel.org (Postfix) with ESMTPS id D275661635;
+ Thu, 29 Jun 2023 23:02:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67B6DC433C0;
+ Thu, 29 Jun 2023 23:02:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1688079319;
- bh=5CbRGVmEg7+h+/ULxccQ+hCw+r8cR8IokMTPkEESj2M=;
+ s=k20201202; t=1688079740;
+ bh=aHn5PLTEUEUIZNeZuwQ6/n8rICCV9CLX6scPwU4BU5c=;
  h=Date:From:To:cc:Subject:In-Reply-To:References:From;
- b=Nda6+B3l4ABd8QfIfja6GMqQjmi17Vn1YF2bt1Z39Mcl6nwMDLoSTsBu0aLjke9Jk
- 4LpgR7LLFJT/P8GmyWxokhdPsPzqQ+fVj9AQY5tkjg4TDHCAL9sG8uxPh9kNb/GtIX
- 9WEUpBVHErIiksjn1wUSovzZofUFxzdMFRFs4HeGVunnHMMgl4xi0+Xg6qZt8nsgRp
- nb3UYfLefCmFy5MfY9ViRU8jBKJjHCwbDCvJGh3yOAU1rBW4Girs1Xo9U8pCsQpj0A
- djyLYozMmBV5ngw6l9l4XRTl4u+PqCSnhIiVowQUS88IBswE5aAe93sAdiAHeld0kB
- YEpitVnC2P6mw==
-Date: Thu, 29 Jun 2023 15:55:17 -0700 (PDT)
+ b=TjjAkxI2JPQa3ZWvpksWz1XN3D5H9zckR95EsPHs3Mxm+xq+HSNnhTvlGMjBaveKt
+ t8LQESwv/o3MCbQCdiyFUVt1T3D74WrF6qZIm5t0vz0waIU+5XnfZ9mVLKKDeEt8P9
+ SaR5j7HtMIb3X5JWv/GT7J2vAzsXstey6FpuitFYJpSeNNX7MYR7+SePfrcyGAFAKN
+ LnyX7AKAbpS+qEg3VxI9BOBmdoRSheG9ICM2xwOYmzqF7PkbJDpTuSN48FPaUztWBE
+ dOnwBDOKUyZd9828xCHfIix1DGot8kqaWcsla1hnyablLfY2GZboyiIVqgA7LUCVCk
+ MSok/d+7KV/4A==
+Date: Thu, 29 Jun 2023 16:02:18 -0700 (PDT)
 From: Stefano Stabellini <sstabellini@kernel.org>
 X-X-Sender: sstabellini@ubuntu-linux-20-04-desktop
 To: Vikram Garhwal <vikram.garhwal@amd.com>
@@ -42,12 +42,12 @@ cc: qemu-devel@nongnu.org, sstabellini@kernel.org,
  Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>, 
  Peter Maydell <peter.maydell@linaro.org>, 
  "open list:ARM TCG CPUs" <qemu-arm@nongnu.org>
-Subject: Re: [RESEND][PATCH v1 1/2] xen_arm: Create virtio-mmio devices during
- initialization
-In-Reply-To: <20230629174310.14434-2-vikram.garhwal@amd.com>
-Message-ID: <alpine.DEB.2.22.394.2306291552070.3936094@ubuntu-linux-20-04-desktop>
+Subject: Re: [RESEND][PATCH v1 2/2] xen_arm: Initialize RAM and add hi/low
+ memory regions
+In-Reply-To: <20230629174310.14434-3-vikram.garhwal@amd.com>
+Message-ID: <alpine.DEB.2.22.394.2306291557520.3936094@ubuntu-linux-20-04-desktop>
 References: <20230629174310.14434-1-vikram.garhwal@amd.com>
- <20230629174310.14434-2-vikram.garhwal@amd.com>
+ <20230629174310.14434-3-vikram.garhwal@amd.com>
 User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -78,93 +78,109 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On Thu, 29 Jun 2023, Vikram Garhwal wrote:
 > From: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
 > 
-> In order to use virtio backends we need to allocate virtio-mmio
-> parameters (irq and base) and register corresponding buses.
+> In order to use virtio backends we need to initialize RAM for the
+> xen-mapcache (which is responsible for mapping guest memory using foreign
+> mapping) to work. Calculate and add hi/low memory regions based on
+> machine->ram_size.
 > 
-> Use the constants defined in public header arch-arm.h to be
-> aligned with the toolstack. So the number of current supported
-> virtio-mmio devices is 10.
+> Use the constants defined in public header arch-arm.h to be aligned with the xen
+> toolstack.
 > 
-> For the interrupts triggering use already existing on Arm
-> device-model hypercall.
-> 
-> The toolstack should then insert the same amount of device nodes
-> into guest device-tree.
+> While using this machine, the toolstack should then pass real ram_size using
+> "-m" arg. If "-m" is not given, create a QEMU machine without IOREQ, TPM and
+> VIRTIO to keep it usable for /etc/init.d/xencommons.
 > 
 > Signed-off-by: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
 > Signed-off-by: Vikram Garhwal <vikram.garhwal@amd.com>
 > ---
->  hw/arm/xen_arm.c | 29 +++++++++++++++++++++++++++++
->  1 file changed, 29 insertions(+)
+>  hw/arm/xen_arm.c | 45 +++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 45 insertions(+)
 > 
 > diff --git a/hw/arm/xen_arm.c b/hw/arm/xen_arm.c
-> index 60dcd1bcc7..c0a93f2c9d 100644
+> index c0a93f2c9d..cc4dffee70 100644
 > --- a/hw/arm/xen_arm.c
 > +++ b/hw/arm/xen_arm.c
-> @@ -26,6 +26,7 @@
->  #include "qapi/qapi-commands-migration.h"
->  #include "qapi/visitor.h"
->  #include "hw/boards.h"
-> +#include "hw/irq.h"
->  #include "hw/sysbus.h"
->  #include "sysemu/block-backend.h"
->  #include "sysemu/tpm_backend.h"
-> @@ -59,6 +60,32 @@ struct XenArmState {
+> @@ -60,6 +60,8 @@ struct XenArmState {
 >      } cfg;
 >  };
 >  
-> +#define VIRTIO_MMIO_DEV_SIZE   0x200
-
-Is this coming from QEMU? Or is it standard virtio?
-
-Just asking to make sure that we don't run into a virtio device that
-needs more than 0x200 of MMIO size.
-
-
-> +#define NR_VIRTIO_MMIO_DEVICES   \
-> +   (GUEST_VIRTIO_MMIO_SPI_LAST - GUEST_VIRTIO_MMIO_SPI_FIRST)
+> +static MemoryRegion ram_lo, ram_hi;
 > +
-> +static void xen_set_irq(void *opaque, int irq, int level)
+>  #define VIRTIO_MMIO_DEV_SIZE   0x200
+>  
+>  #define NR_VIRTIO_MMIO_DEVICES   \
+> @@ -86,6 +88,39 @@ static void xen_create_virtio_mmio_devices(XenArmState *xam)
+>      }
+>  }
+>  
+> +static void xen_init_ram(MachineState *machine)
 > +{
-> +    xendevicemodel_set_irq_level(xen_dmod, xen_domid, irq, level);
-> +}
-
-Just a note: likely the xendevicemodel_set_irq_level call needs
-privileges. Just something to keep in mind for when we try to run QEMU
-in a domain other than Dom0. No need to do anything for now.
-
-Everything looks good. If we can be sure 0x200 is the right MMIO size
-for virtio devices then I would provide by Ack.
-
-
-> +static void xen_create_virtio_mmio_devices(XenArmState *xam)
-> +{
-> +    int i;
+> +    MemoryRegion *sysmem = get_system_memory();
+> +    ram_addr_t block_len, ram_size[GUEST_RAM_BANKS];
 > +
-> +    for (i = 0; i < NR_VIRTIO_MMIO_DEVICES; i++) {
-> +        hwaddr base = GUEST_VIRTIO_MMIO_BASE + i * VIRTIO_MMIO_DEV_SIZE;
-> +        qemu_irq irq = qemu_allocate_irq(xen_set_irq, NULL,
-> +                                         GUEST_VIRTIO_MMIO_SPI_FIRST + i);
+> +    if (machine->ram_size <= GUEST_RAM0_SIZE) {
+> +        ram_size[0] = machine->ram_size;
+> +        ram_size[1] = 0;
+> +        block_len = GUEST_RAM0_BASE + ram_size[0];
+> +    } else {
+> +        ram_size[0] = GUEST_RAM0_SIZE;
+> +        ram_size[1] = machine->ram_size - GUEST_RAM0_SIZE;
+> +        block_len = GUEST_RAM1_BASE + ram_size[1];
+> +    }
 > +
-> +        sysbus_create_simple("virtio-mmio", base, irq);
+> +    memory_region_init_ram(&ram_memory, NULL, "xen.ram", block_len,
+> +                           &error_fatal);
 > +
-> +        DPRINTF("Created virtio-mmio device %d: irq %d base 0x%lx\n",
-> +                i, GUEST_VIRTIO_MMIO_SPI_FIRST + i, base);
+> +    memory_region_init_alias(&ram_lo, NULL, "xen.ram.lo", &ram_memory,
+> +                             GUEST_RAM0_BASE, ram_size[0]);
+> +    memory_region_add_subregion(sysmem, GUEST_RAM0_BASE, &ram_lo);
+> +    DPRINTF("Initialized region xen.ram.lo: base 0x%llx size 0x%lx\n",
+> +            GUEST_RAM0_BASE, ram_size[0]);
+> +
+> +    if (ram_size[1] > 0) {
+> +        memory_region_init_alias(&ram_hi, NULL, "xen.ram.hi", &ram_memory,
+> +                                 GUEST_RAM1_BASE, ram_size[1]);
+> +        memory_region_add_subregion(sysmem, GUEST_RAM1_BASE, &ram_hi);
+> +        DPRINTF("Initialized region xen.ram.hi: base 0x%llx size 0x%lx\n",
+> +                GUEST_RAM1_BASE, ram_size[1]);
 > +    }
 > +}
 > +
 >  void arch_handle_ioreq(XenIOState *state, ioreq_t *req)
 >  {
 >      hw_error("Invalid ioreq type 0x%x\n", req->type);
-> @@ -110,6 +137,8 @@ static void xen_arm_init(MachineState *machine)
+> @@ -135,6 +170,14 @@ static void xen_arm_init(MachineState *machine)
 >  
+>      xam->state =  g_new0(XenIOState, 1);
+>  
+> +    if (machine->ram_size == 0) {
+> +        DPRINTF("ram_size not specified. QEMU machine will be started without"
+> +                " TPM, IOREQ and Virtio-MMIO backends\n");
+> +        return;
+> +    }
+
+I would say "ram_size not specified. QEMU machine started without IOREQ
+(no emulated devices including Virtio)."
+
+We might add more devices in the future beyond Virtio and TPM. I don't
+think we want to call out the whole list here.
+
+
+
+> +    xen_init_ram(machine);
+> +
 >      xen_register_ioreq(xam->state, machine->smp.cpus, xen_memory_listener);
 >  
-> +    xen_create_virtio_mmio_devices(xam);
-> +
+>      xen_create_virtio_mmio_devices(xam);
+> @@ -182,6 +225,8 @@ static void xen_arm_machine_class_init(ObjectClass *oc, void *data)
+>      mc->init = xen_arm_init;
+>      mc->max_cpus = 1;
+>      mc->default_machine_opts = "accel=xen";
+> +    /* Set explicitly here to make sure that real ram_size is passed */
+> +    mc->default_ram_size = 0;
+>  
+>      printf("CHECK for NEW BUILD\n");
 >  #ifdef CONFIG_TPM
->      if (xam->cfg.tpm_base_addr) {
->          xen_enable_tpm(xam);
 > -- 
 > 2.25.1
 > 
