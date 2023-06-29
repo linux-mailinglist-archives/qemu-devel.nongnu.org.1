@@ -2,81 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95FE57426D0
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 14:59:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 244F07426D1
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 14:59:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qErEq-0003GK-HD; Thu, 29 Jun 2023 08:59:08 -0400
+	id 1qErF9-0003HN-HV; Thu, 29 Jun 2023 08:59:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qErEp-0003GB-1w
- for qemu-devel@nongnu.org; Thu, 29 Jun 2023 08:59:07 -0400
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ id 1qErF4-0003H1-S7
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 08:59:22 -0400
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qErEn-0000L9-Dy
- for qemu-devel@nongnu.org; Thu, 29 Jun 2023 08:59:06 -0400
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-3fa8ce2307dso8232155e9.2
- for <qemu-devel@nongnu.org>; Thu, 29 Jun 2023 05:59:04 -0700 (PDT)
+ id 1qErF3-0000NP-5s
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 08:59:22 -0400
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-31409e8c145so696339f8f.2
+ for <qemu-devel@nongnu.org>; Thu, 29 Jun 2023 05:59:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688043543; x=1690635543;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=linaro.org; s=google; t=1688043554; x=1690635554;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=KlZbAFopa+j9KDopCXGXvNCrxxYE6RiV+LyZJ7viX68=;
- b=Fmo/RFZLUhhh251XLhM3ibxX/nY6M2ntleTqsMaMiLPOYAQzjjhLgOBxBZoLJUCLbn
- Millcn/mtMmcUmc+ynKdYAOv85xqcU8P+KuzPa/6H3QWnZ70VxNgLgDWlyY5yY5GBt30
- qWParOnD6WNDfLjEj10YNXdrMCBP8MeCYpme51QH3mZRM8KNp84c7adTBf0AgCpw3K/3
- aHTcl4qzqr8++h5+H1fUQ6oX+Qu1kd6zDBOX1GaYGFTMNTFAoBLd/LH4/2j5RLv1F7yh
- /aB+xwWwE+lxVbZiNR6g43lid5gjmEJKoHGb66LiCQmeXoaB+OtiX6hezEEv2Yn720TW
- fEig==
+ bh=7VQO2ckrFRTohI8w8jBxUswkLIjb7q5ZekMTiAF9kwk=;
+ b=GIqPDw/x342GS07XoMPCCtNklTjrRM4RkLavwAjI6v/0gG96Hn/GtCBbEPTlBI4i2s
+ xSIRG+CqwHJ2VlxnSaowQZkdovps7bJnVrJ40tfuPUHNYzMFik7mQpUa1LMCNK2Kjpwd
+ SJppk+7xOtrNBkw43U/2rlHBLG8ds0juD+qenTu3vndxVYZ9AgY15xz6jsL2UXKo91CS
+ pN128D8kve37zhdR8+F//SAVRSfmpOLW//Y+CdyZczl9njA/0n2S98Avlp+Dcj9lp3PX
+ +IMskvc7Y189XkpVCEs34UBzJnNbTFUU36qUwvW1SiTS83+uCcDzaqzu0v/YhiEmZeeg
+ bMZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688043543; x=1690635543;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=1e100.net; s=20221208; t=1688043554; x=1690635554;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=KlZbAFopa+j9KDopCXGXvNCrxxYE6RiV+LyZJ7viX68=;
- b=bG6Ipd/QXYsOvOWpdZXy1t1/mkI8vcOW6o6pCzar+hHGq/1MzKZMwaXdlZeT5E326e
- M/t3SMXzJE6PJ/GVpOuuHOJwD3lw7DG+bfxuHT95Pef7YqqsIBWna8PIB96kRvUuYf1b
- 8C6uf/zzNL7ODlKh9Z2EkPepvP0XZVMtvS9JQ/FaJfWcRvYbfsygwPkk3bS7HesseY68
- RwAt9QyU2J0hNMzpLFoorrYE1fLkh/1axf858ZiOLp+cP4Jh3vM00OM46sm9KVYmH1kA
- recwzgXKVOP0QHEoi1TRdB74izYfk8zeN45iQlJYBPsZW05iovftYLKsF24mE1n9LquF
- kiJQ==
-X-Gm-Message-State: AC+VfDzxxRdpNm88xUFDGxwXjP3fivygDFltcFvR0Pjtxd19OkDzG3QH
- 79ipEcbl537XSSQvfgbff1wM0w==
-X-Google-Smtp-Source: ACHHUZ57RhXNFpd445dgAzTyz38CfwAJ9thr0DapT6ay6TX1e1AhU5hUFDFKl3UOUgmKyAhxU5X37Q==
-X-Received: by 2002:a7b:cb97:0:b0:3fb:bc6d:41f7 with SMTP id
- m23-20020a7bcb97000000b003fbbc6d41f7mr1669978wmi.27.1688043543091; 
- Thu, 29 Jun 2023 05:59:03 -0700 (PDT)
+ bh=7VQO2ckrFRTohI8w8jBxUswkLIjb7q5ZekMTiAF9kwk=;
+ b=Lvd6LexA3OlYF0Mv7uMkyuCwxYAjAoCwYOLSAXRQLbnUkFpY4+oPd1nXSnq251PulB
+ YCgkK6h9CbNGyW0bG5HQMLzl74H3UuZWoek+fn2ikYgVxb15XCOJJOiVnqrRGmygjSeu
+ HjECaoRu438teUvKCIweU2etHg+6Qd27ufYzPF5Z/UpKuPjeFZaiMsxP76/Ymcf1vY+V
+ 8iJxmRhSqRWYpN185tobJZ1B27bLqc01RWQh9fsvNWa7uUqkPwot43PoVDMC4XhGRN3a
+ nKMvNjKz0wTK9dQrK33I8M7HtJciBH8lJNjvY5i9vQbHvpSVczwEbeF7C3IPX1trZdpy
+ DS8g==
+X-Gm-Message-State: AC+VfDzfqHAeJEz1NornqWbDWVW7LTAGEJe832Zmc0OMwg54Rq0aYdT9
+ nmtWvs/zxl/QXIUGQr7QHY/xlA==
+X-Google-Smtp-Source: ACHHUZ5SyCSnwA4JonlM7Ch6IE8XmfFaE41Pv/lAO7FMt+4ZKrqkYl0EltedD7ORaiFlfwh24yv1uQ==
+X-Received: by 2002:adf:e54f:0:b0:313:edaa:24f7 with SMTP id
+ z15-20020adfe54f000000b00313edaa24f7mr11150377wrm.11.1688043554161; 
+ Thu, 29 Jun 2023 05:59:14 -0700 (PDT)
 Received: from [192.168.1.208] ([139.47.41.96])
  by smtp.gmail.com with ESMTPSA id
- g14-20020a7bc4ce000000b003fbaf9abf2fsm4787561wmk.23.2023.06.29.05.59.02
+ d5-20020adff845000000b003141b9ddab3sm913128wrq.114.2023.06.29.05.59.13
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 29 Jun 2023 05:59:02 -0700 (PDT)
-Message-ID: <e122d115-0d0f-59d2-b593-2210ca1118df@linaro.org>
-Date: Thu, 29 Jun 2023 14:59:00 +0200
+ Thu, 29 Jun 2023 05:59:13 -0700 (PDT)
+Message-ID: <4262fd2f-7d89-42b5-151b-0b6f4382bb9c@linaro.org>
+Date: Thu, 29 Jun 2023 14:59:12 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PULL 3/5] tcg: add perfmap and jitdump
+Subject: Re: [PULL 0/5] x86, main loop changes for 2023-06-29
 Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org, Ilya Leoshkevich <iii@linux.ibm.com>,
- "Vanderson M . do Rosario" <vandersonmr2@gmail.com>,
- =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>
-References: <20230116223637.3512814-1-richard.henderson@linaro.org>
- <20230116223637.3512814-4-richard.henderson@linaro.org>
- <e1112615-0e6c-e0ea-aa60-1d94d1da26ea@linaro.org>
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+References: <20230629101918.9800-1-pbonzini@redhat.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <e1112615-0e6c-e0ea-aa60-1d94d1da26ea@linaro.org>
+In-Reply-To: <20230629101918.9800-1-pbonzini@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x32c.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x431.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -99,23 +93,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/29/23 13:31, Philippe Mathieu-Daudé wrote:
->> diff --git a/tcg/tcg.c b/tcg/tcg.c
->> index da91779890..9b7df71e7a 100644
->> --- a/tcg/tcg.c
->> +++ b/tcg/tcg.c
->> @@ -61,6 +61,7 @@
->>   #include "exec/log.h"
->>   #include "tcg/tcg-ldst.h"
->>   #include "tcg-internal.h"
->> +#include "accel/tcg/perf.h"
+On 6/29/23 12:19, Paolo Bonzini wrote:
+> The following changes since commit 4329d049d5b8d4af71c6b399d64a6d1b98856318:
 > 
-> Is it OK to include an header from QEMU's accel/tcg/ here?
-> I thought we wanted to keep tcg/ kinda independant (or maybe
-> this is already too late and this isn't a concern anymore).
+>    Merge tag 'pull-tcg-20230626' ofhttps://gitlab.com/rth7680/qemu  into staging (2023-06-26 17:40:38 +0200)
+> 
+> are available in the Git repository at:
+> 
+>    https://gitlab.com/bonzini/qemu.git  tags/for-upstream
+> 
+> for you to fetch changes up to 40a205da415e9c10ff02505078700e14ead77092:
+> 
+>    target/i386: emulate 64-bit ring 0 for linux-user if LM feature is set (2023-06-29 10:49:43 +0200)
+> 
+> ----------------------------------------------------------------
+> * Make named CPU models usable for qemu-{i386,x86_64}
+> * Fix backwards time with -icount auto
 
-It's not ideal, no.  Perf really should live in tcg/.
+Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/8.1 as appropriate.
 
 
 r~
+
 
