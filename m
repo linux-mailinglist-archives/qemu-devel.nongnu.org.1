@@ -2,99 +2,188 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE790742AC9
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 18:46:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3F40742AD1
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 18:49:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEumB-0000Uf-Of; Thu, 29 Jun 2023 12:45:47 -0400
+	id 1qEuoo-0001mB-VA; Thu, 29 Jun 2023 12:48:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qEum8-0000UP-R5
- for qemu-devel@nongnu.org; Thu, 29 Jun 2023 12:45:45 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <dongwon.kim@intel.com>)
+ id 1qEuok-0001lq-4Y
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 12:48:26 -0400
+Received: from mga11.intel.com ([192.55.52.93])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qEum6-00015C-Tr
- for qemu-devel@nongnu.org; Thu, 29 Jun 2023 12:45:44 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688057141;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=3uWfb76ySo4VAx8LvJ9wVPoO+SIyRzDOfPVyFfaFRG0=;
- b=deydzF3Iq9M+gJ/R6rlLCbAki0eT8Qw4HHTfr0XNALUay7XN6r0rl33acf88/4X73t7J/K
- qDv9ekLS599eYPHktZ4VbJLP5oEwMKvHJ/l5rFqLzdp2j7Qo/YOt3ksAqAUiFc0EiBQW+z
- dhauZr+1eB7ScCDY+PKgkVx3F55EQtA=
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com
- [209.85.214.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-353-fEb58kQQMdqO1ZWrwoXzKw-1; Thu, 29 Jun 2023 12:45:30 -0400
-X-MC-Unique: fEb58kQQMdqO1ZWrwoXzKw-1
-Received: by mail-pl1-f197.google.com with SMTP id
- d9443c01a7336-1b8303cd306so5207185ad.2
- for <qemu-devel@nongnu.org>; Thu, 29 Jun 2023 09:45:29 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688057129; x=1690649129;
- h=to:references:message-id:content-transfer-encoding:cc:date
- :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=3uWfb76ySo4VAx8LvJ9wVPoO+SIyRzDOfPVyFfaFRG0=;
- b=f+crzGDB4XcT8arGdznzY28mm3+uaM77vuTaCcOGqYWShJ4gTvSZQUY0Uafosg+oOs
- bKLSs5CFd5T3ICXG7iyp/gOlZWec1aI9vohiuqiiz5B5vowX9OrBYByDuGBMSP5JERMA
- TmNx/tYmrFhxavhfpGjmZ3GTk3DU4veGFCQqqZvNvS3AH6xLBgF8EZRMD5QSGwLXi91B
- ilXZGpSmz+/lq9sSTe7jrjzILVZzxkoHCmvQI0z8I2zLoa5LgfjRdG+oHXY/MLngHqUi
- jx+JO7Q+ZH3B94vIl8t68NSF3FqvCdgN0WWtfD1z4M/iBjvD8RpQGXPUob9/e7WrVudI
- HJTQ==
-X-Gm-Message-State: AC+VfDwbLwhzhiTFWUEh3O8VpDRiVm2rEVSpyaJDpJlJL4Cq1ihziPTW
- GIkjrbs+NJtBRi6tDkV+t9eAyw0YctNjd5p7e9BoXThvw7bWMjE6q+oHvTsqh89QTSdfGF5lDA+
- R8fwMjV8+RI/WNfs=
-X-Received: by 2002:a17:902:9a08:b0:1b2:74e:84cb with SMTP id
- v8-20020a1709029a0800b001b2074e84cbmr12365961plp.9.1688057128713; 
- Thu, 29 Jun 2023 09:45:28 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ4sV4TRr5Fhdi1cPJGcdnNKzfYiM1VLPeL38affsuQAGjHBiK4iao1FDqqdQ07BIKW4I8UJ4w==
-X-Received: by 2002:a17:902:9a08:b0:1b2:74e:84cb with SMTP id
- v8-20020a1709029a0800b001b2074e84cbmr12365946plp.9.1688057128353; 
- Thu, 29 Jun 2023 09:45:28 -0700 (PDT)
-Received: from smtpclient.apple ([203.163.234.183])
- by smtp.gmail.com with ESMTPSA id
- e6-20020a170902cf4600b001b1c4d875f5sm9319306plg.44.2023.06.29.09.45.25
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Thu, 29 Jun 2023 09:45:27 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.3\))
-Subject: Re: [PATCH v6 5/5] hw/pci: ensure PCIE devices are plugged into only
- slot 0 of PCIE port
-From: Ani Sinha <anisinha@redhat.com>
-In-Reply-To: <A9837DAD-AEF3-4567-8172-EC1BAF2AEA3F@redhat.com>
-Date: Thu, 29 Jun 2023 22:15:23 +0530
-Cc: qemu-devel <qemu-devel@nongnu.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Julia Suvorova <jusual@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- akihiko.odaki@daynix.com
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <D19E1234-77A6-42BB-AE00-7F105A5730B0@redhat.com>
-References: <20230629040707.115656-1-anisinha@redhat.com>
- <20230629040707.115656-6-anisinha@redhat.com>
- <20230629102421-mutt-send-email-mst@kernel.org>
- <A398CFAA-12F6-447D-A03D-F2DAC79AB1B7@redhat.com>
- <20230629113141-mutt-send-email-mst@kernel.org>
- <A9837DAD-AEF3-4567-8172-EC1BAF2AEA3F@redhat.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-X-Mailer: Apple Mail (2.3696.120.41.1.3)
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=anisinha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ (Exim 4.90_1) (envelope-from <dongwon.kim@intel.com>)
+ id 1qEuof-0001S2-BC
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 12:48:25 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1688057301; x=1719593301;
+ h=message-id:date:subject:to:cc:references:from:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=GBh+Sv/amPAsxBcRSJeMklTMNhqeaL5uZpm84YynRHM=;
+ b=iprs7en2AwZqTsJYaDrfeI6EAuUX7ZbPcUXXUlE+0CUj6GW7cdb9sgTg
+ b2n73wtW3AsxXaCa5fW2ZjUrn2khslE3Algsj9gYFXlXF31Xw12VRZt/l
+ BGJFO+ZaTX4yHLc+6SfRp2eg5U2nf4TBzJV3lIyD8J8ZzVoSFR267x69y
+ /EtxAf+RnEKmI0grjoZLSd9EfY7FeB3/3lARmG55l/LtD0Rw851W9d1J/
+ G8svK45N4hUy0gGCFGhbq3H0MeG8hqAzub1K4cCVnklZVF1SPhrPc9pLz
+ K+Pvn1fiGBhzkY/cNky4MV1Ihy5JiAZDdRAJ/vQ6MGDJ9hNeXYzddwyJQ g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10756"; a="359646266"
+X-IronPort-AV: E=Sophos;i="6.01,168,1684825200"; d="scan'208";a="359646266"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+ by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Jun 2023 09:48:10 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10756"; a="1047857834"
+X-IronPort-AV: E=Sophos;i="6.01,168,1684825200"; d="scan'208";a="1047857834"
+Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
+ by fmsmga005.fm.intel.com with ESMTP; 29 Jun 2023 09:48:09 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27; Thu, 29 Jun 2023 09:48:08 -0700
+Received: from orsmsx612.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27; Thu, 29 Jun 2023 09:48:08 -0700
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ orsmsx612.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27 via Frontend Transport; Thu, 29 Jun 2023 09:48:08 -0700
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (104.47.66.49) by
+ edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.27; Thu, 29 Jun 2023 09:48:07 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=H8edgAVvHxvSbvnz5/zEwsqt/EoBOpdEQRacO2GixX+kjIGwV7lTLxRbOZIT7yBKcXqoOUBxVXRKO/lgSaDwbMypzniHHNud8CzWpUVQACWZmu+QPaFzxMF8PBlbhALp2gZyLmxcgHUjLYltgzgP2yjOsxKwBfGhOCM/GujQgDsRd2RKBkrh+Jt+36kCh3/a9wvF936K4ahje7w/kbHP05RZMHTO1lq2eMQOUq0BpL14fSXYMtF32rwAEuosyAdqTcvcwkDYOLKJWDtFLIJatB7UIhe+uz01w4anzmmloLtgRe4BmfQEJJtFdVGhfgIYy1BjLuSYRH6Hl6hld4LeFQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=obaEIbrZyVFCMlpZnXrItx5UZtL53gws9Zj7nTlNfDM=;
+ b=VrTu2gxKVnjSGAVcp2q4Xgh4iF2P5iHZ4wZkJqQawvDXB5Sc+8XYfaoNz7t8gA88TtrPa/WQ6NOxpw3JA32zBi4O4ZY9aJwfYGRIpMo+EtjEI5Xp8aeES8EPTgP96jXLkoVYGohu8Yn32iEAtOT1T04eJkbaF4xXIp67+lvlUvIrq6whNxMwssjEI1dPgT4gd43rNuIjFRhfpg5a3TQlsDhsjynulPz3AD73oop+g1GUTga0BScG7ZNQAB4DKZksoyZ1UKkMyoLHi6xPEg/oOm4WXGahbiDjLlx9GjE0Z9iNRICoCx9bTNQLaTZfaR4DGfQH9LanVUk8lMy+1V+YHw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH8PR11MB6879.namprd11.prod.outlook.com (2603:10b6:510:229::22)
+ by CH3PR11MB7249.namprd11.prod.outlook.com (2603:10b6:610:146::20)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6521.23; Thu, 29 Jun
+ 2023 16:48:04 +0000
+Received: from PH8PR11MB6879.namprd11.prod.outlook.com
+ ([fe80::b33c:de68:eacf:e9c4]) by PH8PR11MB6879.namprd11.prod.outlook.com
+ ([fe80::b33c:de68:eacf:e9c4%3]) with mapi id 15.20.6500.036; Thu, 29 Jun 2023
+ 16:48:04 +0000
+Message-ID: <2401c7ba-6eed-f2b2-cbe3-d0ebccc7bc26@intel.com>
+Date: Thu, 29 Jun 2023 09:48:01 -0700
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [QEMU PATCH 1/1] virtgpu: do not destroy resources when guest
+ suspend
+Content-Language: en-US
+To: Robert Beckett <bob.beckett@collabora.com>, Gerd Hoffmann
+ <kraxel@redhat.com>
+CC: "Chen, Jiqian" <Jiqian.Chen@amd.com>, =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?=
+ <marcandre.lureau@gmail.com>, Damien Hedde <damien.hedde@greensocs.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>, Stefano Stabellini
+ <sstabellini@kernel.org>, Anthony PERARD <anthony.perard@citrix.com>,
+ =?UTF-8?Q?Roger_Pau_Monn=c3=a9?= <roger.pau@citrix.com>, Jan Beulich
+ <jbeulich@suse.com>, "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>, "Deucher,
+ Alexander" <Alexander.Deucher@amd.com>, "Koenig, Christian"
+ <Christian.Koenig@amd.com>, "Hildebrand, Stewart"
+ <Stewart.Hildebrand@amd.com>, Xenia Ragiadakou <burzalodowa@gmail.com>,
+ "Huang, Honglei1" <Honglei1.Huang@amd.com>, "Zhang, Julia"
+ <Julia.Zhang@amd.com>, "Huang, Ray" <Ray.Huang@amd.com>
+References: <20230608025655.1674357-1-Jiqian.Chen@amd.com>
+ <20230608025655.1674357-2-Jiqian.Chen@amd.com>
+ <CAJ+F1CKjTW7zycr2xAW0x+d_7CEy+LxWur2Tqp2dvsb=PoJ5Dw@mail.gmail.com>
+ <q2rpqbg5b4bqxb7oayclzgbf5fplofm3dmxgmpmskjf4mcfzpn@peeiuxwkqxbb>
+ <BL1PR12MB58491E2E13F959365AA3F594E75CA@BL1PR12MB5849.namprd12.prod.outlook.com>
+ <lgan3p6wqmxht5fpduh5nvg3f5m5n636k7zrrealnu2lilghhh@qlbvgu3l4apw>
+ <2164ff79-aa09-d959-cc61-c7a2a21db5e3@collabora.com>
+ <2s33vb2tfogntkyk5laxzcmgexf42mhkpwr2gh3gjvpitav6ez@h5zbmuklzmv5>
+ <e9e10508-c26c-cf2a-6407-8e26a1342370@collabora.com>
+From: "Kim, Dongwon" <dongwon.kim@intel.com>
+In-Reply-To: <e9e10508-c26c-cf2a-6407-8e26a1342370@collabora.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SJ0PR03CA0127.namprd03.prod.outlook.com
+ (2603:10b6:a03:33c::12) To PH8PR11MB6879.namprd11.prod.outlook.com
+ (2603:10b6:510:229::22)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR11MB6879:EE_|CH3PR11MB7249:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5c3b9f96-6043-4b81-cad1-08db78c09baf
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: ireVCXVjeUULo/PGrFgABEpuQ57NNy88oL/4KjuePAfZRsU0QZ4lwHvfKV5LW+Af5v6WZG03hLrw6CJw4hmD9YpwlTme4QS0hbfT1AZxnrBTiXZjQkXrYgTEeeJD/Zwa6J/2bhTsGa1MY6CkD5tSOz6VhuVn+fAsxSPkbyvvatBB5ib5QzNu9rHQrE+g1rGQ+yO0lqC3bnVLDYb40yFA9UH/UCmXQOsy6Wgsemm9ki8wA3nP0kPPnjAtfUryJQ2y3DvAK5A+t90v2qEzu3cUmwvfNsvQYbxkX+CtIzs0AUEUwB/heTBTpk2t/Bqa4MSWBhA6Cm1s4J3MyWzjtl6IxmLFl0SykjYcVDwV8HYwcga943+kM5JoRoFtLf+yKPdjXwVW6Zu7KY5QJFFYwYeu/a0TdZt5Pet7ikTeeZ7iKoSvdqKcmnMvrez5KyReoIK9sGfs+K/O/2Yc8U7E2bKYFdTBwbaneRaTs+/2zlYxOT2Z5ucvvziG/uvcsZnueNPQFEE17T1SZLiI8ERqx3ghbZ0jwhKT28icOHGPMj5OfZKbPgYC2RnCpbFM4OmHi8hMFGY8FcmHvKoi4ZkvB1JSiRxo2vE/5zu7BbIYsen5w8ACIAIEKzWGlftkr1B306uBXlAYOaj8SPIYpadW0e2+Yw==
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:PH8PR11MB6879.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230028)(366004)(376002)(136003)(396003)(346002)(39860400002)(451199021)(83380400001)(66476007)(316002)(66946007)(8676002)(66556008)(8936002)(6512007)(186003)(6486002)(53546011)(6506007)(26005)(4326008)(966005)(6666004)(2616005)(110136005)(54906003)(41300700001)(7416002)(5660300002)(2906002)(478600001)(15650500001)(38100700002)(82960400001)(31696002)(86362001)(31686004)(36756003)(43740500002)(45980500001);
+ DIR:OUT; SFP:1102; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?QlpQQVl2eUxpaHZrMUpwbkNlalppc2E4RHFkTjUra08zbExoNFNrN0pwS2NP?=
+ =?utf-8?B?a21hcTVvMTdEejU3M0FENlEzdjNBQmtIT3llUWtTUENPSWZ1SnB1bmVjd25H?=
+ =?utf-8?B?MTNZMGExZHE5ay9qbHpjQW83MUVoWnBVWUFGY015emhmeXU3aGRQcWx0dHlv?=
+ =?utf-8?B?RU4zaGxJS3ByZE5aalVReUxRSXFjNThCZEI4a0R1eFFSV2JtMlVwdGluNW5n?=
+ =?utf-8?B?NGl2eFBoaWppNnQxY1RZSk44VjgzK3FzOTY4RGNxQjEzSExUaGRnZDRjNVI4?=
+ =?utf-8?B?RDVuOTVrUFJJYkhXeWIwbjdySUFNa1p3UUJBV3VwM2wvclBIMFJtbXpQazFy?=
+ =?utf-8?B?NjBxaEV6OUdVWjJhT3RSUVk0aXFjMGxsNTBJZndqZGxIdnFYREl0Q3Riek1K?=
+ =?utf-8?B?NHU3K1NCdE5pdVBSSjZVRG1zRk5yV3Zjckc1UXR1elJqcXh0dkdXVkJZYVZT?=
+ =?utf-8?B?b0pMREVSbzRvNm9pY2l3bXNsRzltVFhKTHQvd25xZGl5UkNUQkF2blFUSFVP?=
+ =?utf-8?B?VjdYQUF6S2VjQ2UyNzZybkgrbVFOeXIzU0xKNTRNSE45VXp2ci9kZGZRS0Zr?=
+ =?utf-8?B?WVhpRE5INzd5KzZNK3lpb1N6UWVRV0RWSnV2QnhHQ0hBaEpBSmhiWS9qZGlx?=
+ =?utf-8?B?RDFwckdFVnZmZzMxRmxmRHR4cmdXSXk0L0VuRkxxRnQ5SXpIRXFRZEVtbEJJ?=
+ =?utf-8?B?ZmlDUzUzZUxmUWpNRHRNOExkU2xjNXRKWWRvMG9ScmxPS0dNTWErYlFJQUNl?=
+ =?utf-8?B?Vld3Q3IxRnN6OStZVmNmcVZLWWkxUE1Ld2dIcGdpUHNZbzIzU3BBaTN4UlZK?=
+ =?utf-8?B?Rm9FSFlKWWVVQUp1Y0UrMnNFd2RGRG1ybzJOVUtVM0ViNm8yT1RoeExDdW81?=
+ =?utf-8?B?ZHBudjFUOVlvQU1GQTRPV005UFRqeDdobmp0b09kalVXbW5SeXZsdDZ3TTVQ?=
+ =?utf-8?B?U29MQThXRmtCeDdxeExYUTdkejdmZTRMYU1KMzhxa3JKSmRyVFlpQjZWY0FT?=
+ =?utf-8?B?ZG9jQmNFa3hkdnI1TFdoY2RrZm1DZUl6SURwQmQ2N0ZUK3BVa3JpTFNXY1I3?=
+ =?utf-8?B?cjdLV3JXZjB2S0JCU0JPR2wzWHdCN2NML3VkRTVaUm9DbXBtUllUTXAyTVRw?=
+ =?utf-8?B?TnFCblBDNk9sc2s2bk94UEI1RUtqMWJEWHVYd0JJdEd5dlNscjBETElBSExy?=
+ =?utf-8?B?TWY1QlMvaWhTbUJqNVQ0WS9TZStmZzh5QkZvd1pPc2dFZlIveW85bEpIVk02?=
+ =?utf-8?B?cVhwelAySm1RaG5MYzJiamgwcnYvM1hHUDN5ZTJxYUh1c0UxZUEzQTNUYlZs?=
+ =?utf-8?B?UExRdUlHWmJBZEF0TW5nZ05hN0kzdlREUk5mRFp1NXlUc2RJNjRtd0tKRElz?=
+ =?utf-8?B?bWZxN3ZqUGZxSHJrek5YZmtjaGxkdzAvUUM4ck5ReVNlTzAveU11cGI0azV3?=
+ =?utf-8?B?MmhySnoxcUVUaEFsZjhhZGhRS0lzVi9OWGZWNjVnNFVXeXhJbnMyQy93YWk3?=
+ =?utf-8?B?TTVWQUZXeWUrTWpTVFIvcGxFVFE2bkNUVlBKWVA2N3JGd2tFQVdmUGJlZUVC?=
+ =?utf-8?B?QnNIM3lyOTRYWm01Rk1YaWVoMGxYRGErcEdnc3VZamxVWXBlSFozaFI3NmEz?=
+ =?utf-8?B?V0JLWGJyaXRXNTFrdHJTVlZTZFZyK0JoRzVvbFp4dHkzY3YyM0c0c1lha0Y1?=
+ =?utf-8?B?eTU2V2RjRkw4SUREWkpDRGlyR280aHNCM3VZZmpkQW5lM3Y4NE1GQVVaWFdG?=
+ =?utf-8?B?ODV2aVltZHZvTXRXUDVEOHNXOGtXSDI5a0d5czZvQ1M4ZWMzK052S09nZFh5?=
+ =?utf-8?B?MUExUkdBMVd1M3NBUjFLbHNjSFlqL0VNMWxxTVNBbWVrMzk0Q3pZRmduZjAz?=
+ =?utf-8?B?VEF4K3ZSRU1YdTRndDdobzY2TEY4YkRwU2t1NlpYSEg5dWNsY0RpZTdQRjZm?=
+ =?utf-8?B?K0F1VWh0ZzFNZjRRNUtrbGNKd0JQMWNCY1pGSXlYVlEwZ3dYR0lBYlBVMXhN?=
+ =?utf-8?B?TTZqc3hFSWFzRjJ3NnU1VGlvbUFSQkY4MHM0NUZFd05YMlYrSnVDaURyeFQx?=
+ =?utf-8?B?REdhUE4zUEs1b3drclFvSDBRTWFJZkxoZlFTSFh5eHdrcmoyNFM5WEhORlNo?=
+ =?utf-8?Q?xjcB5/IxjaqABRR2MsnUkJSoW?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5c3b9f96-6043-4b81-cad1-08db78c09baf
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB6879.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jun 2023 16:48:04.6022 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 0U1QJPdTd9mkrKw7BOzU/TMlu/ekw7A/t9U2IwwYuCzPDCp2SpPghJ+M1CTfj2fbieHPKL+hP8ji8wG1ZWUr5Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR11MB7249
+X-OriginatorOrg: intel.com
+Received-SPF: pass client-ip=192.55.52.93; envelope-from=dongwon.kim@intel.com;
+ helo=mga11.intel.com
+X-Spam_score_int: -44
+X-Spam_score: -4.5
+X-Spam_bar: ----
+X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ NICE_REPLY_A=-0.093, RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -111,130 +200,87 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
+On 6/21/2023 4:14 AM, Robert Beckett wrote:
+>
+> On 21/06/2023 09:39, Gerd Hoffmann wrote:
+>> On Tue, Jun 20, 2023 at 01:26:15PM +0100, Robert Beckett wrote:
+>>> On 20/06/2023 10:41, Gerd Hoffmann wrote:
+>>>>     Hi,
+>>>>
+>>>>>> The guest driver should be able to restore resources after resume.
+>>>>> Thank you for your suggestion!
+>>>>> As far as I know, resources are created on host side and guest has 
+>>>>> no backup, if resources are destroyed, guest can't restore them.
+>>>>> Or do you mean guest driver need to send commands to re-create 
+>>>>> resources after resume?
+>>>> The later.  The guest driver knows which resources it has created,
+>>>> it can restore them after suspend.
+>>> Are you sure that this is viable?
+>>>
+>>> How would you propose that a guest kernel could reproduce a resource,
+>>> including pixel data upload during a resume?
+>>>
+>>> The kernel would not have any of the pixel data to transfer to host.
+>> Depends on the of resource type.  For resources which are created by
+>> uploading pixel data (using VIRTIO_GPU_CMD_TRANSFER_TO_HOST_*) a guest
+>> mirror exists which can be used for re-upload.
+>
+> unfortunately this is not always the case.
+>
+> https://gitlab.freedesktop.org/mesa/mesa/-/blob/main/src/gallium/drivers/virgl/virgl_resource.c#L668 
+>
+>
+> Often mesa will decide that it won't need to access a resource again 
+> after initial upload (textures etc). In this case, if it is able to 
+> copy back from host if needed, it will not maintain the guest shadow 
+> copy. Instead it will create a single page proxy object. The transfer 
+> to host will then over fill it to the correct size.
+>
+> I think this was a fairly huge optimization for them.
+>
+I have been only focused on scanout blob so didn't think too much about 
+all virgl objects but aren't all the virtio-gpu-object will be 
+maintained until they are removed by the driver regardless of the type 
+of data they contain? Does Mesa (virgl) remove those objects after they 
+are uploaded to the host?
 
-> On 29-Jun-2023, at 9:27 PM, Ani Sinha <anisinha@redhat.com> wrote:
->=20
->=20
->=20
->> On 29-Jun-2023, at 9:02 PM, Michael S. Tsirkin <mst@redhat.com> =
-wrote:
->>=20
->> On Thu, Jun 29, 2023 at 08:07:57PM +0530, Ani Sinha wrote:
->>>=20
->>>=20
->>>> On 29-Jun-2023, at 7:54 PM, Michael S. Tsirkin <mst@redhat.com> =
-wrote:
->>>>=20
->>>> On Thu, Jun 29, 2023 at 09:37:07AM +0530, Ani Sinha wrote:
->>>>> PCI Express ports only have one slot, so PCI Express devices can =
-only be
->>>>> plugged into slot 0 on a PCIE port. Enforce it.
->>>>>=20
->>>>> The change has been tested to not break ARI by instantiating seven =
-vfs on an
->>>>> emulated igb device (the maximum number of vfs the linux igb =
-driver supports).
->>>>=20
->>>> I guess we need to test with some other device then? 7 VFs is same
->>>> slot so hardly a good test.
->>>=20
->>> No its not the same slot. Its using different slots/device numbers. =
-I checked that.
->>> The same patch was failing without the vf check.
->>=20
->> Ah, playing with VF stride?
-
-Indeed. You=E2=80=99ll see IGB_VF_STRIDE is 2. pcie_sriov_pf_init() uses =
-this to initialise the PCIE config space attributes. register_vfs() uses =
-this to increment the devfn values :-)=20
-
-
->> Could you show the command line please?
->=20
-> Akhido mentioned this in the other thread. Basically For QEMU:
->=20
-> -device pcie-root-port,id=3Dp -device igb,bus=3Dp
->=20
-> Then from within the guest (in my case RHEL 9.2):
->=20
-> $ echo 7 > /sys/bus/pci/devices/0000\:01\:00.0/sriov_numvfs
->=20
-> You=E2=80=99ll find that if you use something more than 7 there will =
-be ERANGE from the guest kernel because the driver can create maximum 7 =
-vfs.
-> This above command line will fail if we do not check for !vfs in the =
-patch with the following error from QEMU:
->=20
-> (qemu) qemu-system-x86_64: PCI: slot 16 is not valid for igbvf, parent =
-device only allows plugging into slot 0.
->=20
-> and an IO error on the write from the guest kernel.
->=20
-> In the current version of the patch with the vf check, you will find =
-the vfs created with the addresses:
->=20
-> 01:10.{2,4,6,8} and 01.11.{2,4,6} , that is bus 1 for the root port, =
-devices 10 and 11, functions 2,4,6,8 etc.
->=20
-> There would be no error from QEMU.
->=20
->>=20
->>>>=20
->>>>> The vfs are seen to have non-zero device/slot numbers in the =
-conventional
->>>>> PCI BDF representation.
->>>>>=20
->>>>> CC: jusual@redhat.com
->>>>> CC: imammedo@redhat.com
->>>>> CC: akihiko.odaki@daynix.com
->>>>>=20
->>>>> Resolves: https://bugzilla.redhat.com/show_bug.cgi?id=3D2128929
->>>>> Signed-off-by: Ani Sinha <anisinha@redhat.com>
->>>>> Reviewed-by: Julia Suvorova <jusual@redhat.com>
->>>>> ---
->>>>> hw/pci/pci.c | 15 +++++++++++++++
->>>>> 1 file changed, 15 insertions(+)
->>>>>=20
->>>>> diff --git a/hw/pci/pci.c b/hw/pci/pci.c
->>>>> index e2eb4c3b4a..0320ac2bb3 100644
->>>>> --- a/hw/pci/pci.c
->>>>> +++ b/hw/pci/pci.c
->>>>> @@ -65,6 +65,7 @@ bool pci_available =3D true;
->>>>> static char *pcibus_get_dev_path(DeviceState *dev);
->>>>> static char *pcibus_get_fw_dev_path(DeviceState *dev);
->>>>> static void pcibus_reset(BusState *qbus);
->>>>> +static bool pcie_has_upstream_port(PCIDevice *dev);
->>>>>=20
->>>>> static Property pci_props[] =3D {
->>>>>   DEFINE_PROP_PCI_DEVFN("addr", PCIDevice, devfn, -1),
->>>>> @@ -1190,6 +1191,20 @@ static PCIDevice =
-*do_pci_register_device(PCIDevice *pci_dev,
->>>>>                  name);
->>>>>=20
->>>>>      return NULL;
->>>>> +    } /*
->>>>> +       * With SRIOV and ARI, vfs can have non-zero slot in the =
-conventional
->>>>> +       * PCI interpretation as all five bits reserved for slot =
-addresses are
->>>>> +       * also used for function bits for the various vfs. Ignore =
-that case.
->>>>> +       * It is too early here to check for ARI capabilities in =
-the PCI config
->>>>> +       * space. Hence, we check for a vf device instead.
->>>>> +       */
->>>>> +    else if (!pci_is_vf(pci_dev) &&
->>>>> +             pcie_has_upstream_port(pci_dev) &&
->>>>> +             PCI_SLOT(devfn)) {
->>>>> +        error_setg(errp, "PCI: slot %d is not valid for %s,"
->>>>> +                   " parent device only allows plugging into slot =
-0.",
->>>>> +                   PCI_SLOT(devfn), name);
->>>>> +        return NULL;
->>>>>   }
->>>>>=20
->>>>>   pci_dev->devfn =3D devfn;
->>>>> --=20
->>>>> 2.39.1
-
+>>
+>> For resources filled by gl rendering ops this is indeed not the case.
+>>
+>>> Could you explain how you anticipate the guest being able to 
+>>> reproduce the
+>>> resources please?
+>> Same you do on physical hardware?  Suspend can poweroff your PCI
+>> devices, so there must be some standard way to handle that situation
+>> for resources stored in gpu device memory, which is very similar to
+>> the problem we have here.
+>
+> In traditional PCI gfx card setups, TTM is used as the memory manager 
+> in the kernel. This is used to migrate the buffers back from VRAM to 
+> system pages during a suspend.
+>
+> This would be suitable for use to track host blob buffers that get 
+> mapped to guest via the PCI BAR, though would be a significant 
+> re-architecting of virtio gpu driver.
+>
+> It would not help with the previously mentioned proxied resources. 
+> Though in theory the driver could read the resources back from host to 
+> guest pages during suspend, this would then be potentially complicated 
+> by suspend time alloc failures etc.
+>
+>
+> As virtio drivers are by design paravirt drivers ,I think it is 
+> reasonable to accept some knowledge with and cooperation with the host 
+> to manage suspend/resume.
+>
+> It seems to me like a lot of effort and long term maintenance to add 
+> support for transparent suspend/resume that would otherwise be unneeded.
+>
+> Perhaps others have alternative designs for this?
+>
+>>
+>> take care,
+>>    Gerd
+>>
+>
 
