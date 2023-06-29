@@ -2,88 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0F0974291F
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 17:08:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50E0F74292A
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 17:11:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEtEo-0003Qc-Oc; Thu, 29 Jun 2023 11:07:14 -0400
+	id 1qEtHo-0004o4-5W; Thu, 29 Jun 2023 11:10:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qEtEm-0003QN-SB
- for qemu-devel@nongnu.org; Thu, 29 Jun 2023 11:07:12 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qEtEi-0001h3-Ax
- for qemu-devel@nongnu.org; Thu, 29 Jun 2023 11:07:12 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688051226;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=T1VfrjpJNjGz4j/vL9ns63vU7nM5GOXDypXBYsAvRiY=;
- b=NyOn22+ANhy/xEJDXy0c760RTqLGs6U5Vm3E5zE82ll22JP8TKqEIM3tyFjP11AHBFnc23
- OBDjNButRctu/eutWoRti6LYoBy5h0OMHX2a7rQWlHW8WQVJ6MEgIHQ3/IjVBsmrQa9+RG
- ZFwikTKwdnKfoEH9LU9CAQiaVMkJM78=
-Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
- [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-279-PPv6Aig7Pbejqll_mIDbUw-1; Thu, 29 Jun 2023 11:07:00 -0400
-X-MC-Unique: PPv6Aig7Pbejqll_mIDbUw-1
-Received: by mail-lf1-f72.google.com with SMTP id
- 2adb3069b0e04-4edc7406cbaso741242e87.2
- for <qemu-devel@nongnu.org>; Thu, 29 Jun 2023 08:06:54 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
+ id 1qEtHl-0004nN-Pk
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 11:10:17 -0400
+Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
+ id 1qEtHj-0002qT-0b
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 11:10:17 -0400
+Received: by mail-pl1-x630.google.com with SMTP id
+ d9443c01a7336-1b7fdc66e30so4741995ad.2
+ for <qemu-devel@nongnu.org>; Thu, 29 Jun 2023 08:10:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=sifive.com; s=google; t=1688051413; x=1690643413;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=URH1FQfpEtFFX7bBzsE6B0pgqJL9drexvdS8FCvkrF0=;
+ b=MgPfsTeeFeOd6GFlq3HofaE3b3u0uKLwEJJjC+tzEYq6iboYlSkEsw7HXyuHtx7gn9
+ Lxs1s/lplGtqFtd3DURoSsojxLso2wgENuLPHB9UBKpl16bRD4rlo4iGwXUbU+jWYenU
+ zCT38VJ4LgfgeODV9ej/LKyo8purkA8o/dOqm+b1j/Srj+momCJwXfDRuwEhVJHOYYPC
+ vZkAAmjyqwKn2tFymyw1pNt0kL4I5y0SY3f+uMppPqMClGHqBDAaEVit5of8MYE/u0xb
+ rzO6FSCKyWZqfnkCE39PRGSlQ9MpMCganJHuvJGtmbRke75+lpc3KE2gNA4BIxhMdG7K
+ mM3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688051213; x=1690643213;
+ d=1e100.net; s=20221208; t=1688051413; x=1690643413;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=T1VfrjpJNjGz4j/vL9ns63vU7nM5GOXDypXBYsAvRiY=;
- b=Odo4tqWDnkzMPTxj5OIgv/zZ8vPkd6kf7CXMQVBsivWt8hERGLukt0794RGyyCweJj
- eyNx77nkG0QoCF1CR4bsEEwrlpGadXgjcY7JbPJhS6yzXH/PprA/NcS3/fuCP99Vrrfd
- zmrmuClfbQqS/lzGZb/O5YoC/1XOGsN26f+gsBAm1GcvHebV7XL1MzrlnHtarihK8tFB
- aYmcErlL7smJ1vuoydE0OMSIwQppK1faewPg47W7fz5jfZA9vG4TlMvLChvSyTxOF12U
- oYNnAW+IzI1LSbRDCaeSdmEVsru20JAvdMJvJ7cu9bbPz03D0U6AEwLyJVu1zozyvLXa
- UVfA==
-X-Gm-Message-State: ABy/qLay533t2WIisCNzeQn1pyK2yTF88uRH/+w1k/0sCA0k+Li051JB
- UsPe5I47mpz/aQ7NwcYby1lryah8xia+XoiXo6w1Nx3XXdlNs4vj2jfLRbY25sjy6l+JLn1rqMa
- cdtte7to/6rOXJSA=
-X-Received: by 2002:ac2:5f5b:0:b0:4f8:5755:5b22 with SMTP id
- 27-20020ac25f5b000000b004f857555b22mr164394lfz.27.1688051213227; 
- Thu, 29 Jun 2023 08:06:53 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlHFk/xx2lzH+F5RmcCIXWaxwCu8peutLJOOxZ7QKsYzzhW9pyrWZSL4FpWxA3NWSZF6Rxcxjg==
-X-Received: by 2002:ac2:5f5b:0:b0:4f8:5755:5b22 with SMTP id
- 27-20020ac25f5b000000b004f857555b22mr164378lfz.27.1688051212878; 
- Thu, 29 Jun 2023 08:06:52 -0700 (PDT)
-Received: from [192.168.8.100] (tmo-067-34.customers.d1-online.com.
- [80.187.67.34]) by smtp.gmail.com with ESMTPSA id
- u16-20020a7bcb10000000b003fbb5142c4bsm3266197wmj.18.2023.06.29.08.06.51
+ bh=URH1FQfpEtFFX7bBzsE6B0pgqJL9drexvdS8FCvkrF0=;
+ b=ORwhHlnH+AhNfwVQk3vP7wZsmeURJ1t3BSnFhlH8354AZf5+r+QBou2znMYoOMLJyk
+ UtZ0K4mreBIlxBT019q9DbKm6f+xg7IiiuE69bvkHs+h83fjt3yW2HIL255xyleA4SYZ
+ kRhpqZcEMURm3/cG1/rm9OgsS+IZBmpfioU0CQ93M/aQxgKE2gA6VepvjNi9LqnMv/jT
+ qVG9sLm0mS6IOGeoHdCX2HN1p/bT7QRaRatRVZ+WHq2K4s7pNyzDfnWXi+tHtWRQW/0N
+ crcHh2t0KR0d+nQGwf4qGCr/FPvrA3A3YjR7xGmjfPjRgX70CAcsNcxozwH3h2koGyz3
+ 3eAQ==
+X-Gm-Message-State: ABy/qLbh1okLGg7xHgPv4+8WPQAdJ+lLaEffwfVVh1umDr3L8zUNzMKG
+ nwFRMZREDnuMSKiLda7h+ASf0g==
+X-Google-Smtp-Source: APBJJlFXZd70M1oT4oa3uQ5pgpx82HB6PFS5RpR/WeMqwlNttzOlKQTpG95XC0+lcCI8VjTJkC+2tg==
+X-Received: by 2002:a17:902:cec5:b0:1b8:5a29:7702 with SMTP id
+ d5-20020a170902cec500b001b85a297702mr1434141plg.47.1688051412900; 
+ Thu, 29 Jun 2023 08:10:12 -0700 (PDT)
+Received: from [10.11.0.74] (125-228-20-175.hinet-ip.hinet.net.
+ [125.228.20.175]) by smtp.gmail.com with ESMTPSA id
+ d1-20020a170902854100b001ae365072ccsm9196717plo.122.2023.06.29.08.10.10
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 29 Jun 2023 08:06:52 -0700 (PDT)
-Message-ID: <d09e7410-6bf9-e15b-5759-e111f60e9f19@redhat.com>
-Date: Thu, 29 Jun 2023 17:06:50 +0200
+ Thu, 29 Jun 2023 08:10:12 -0700 (PDT)
+Message-ID: <c7860d59-2166-292b-4689-0d25ff7b7469@sifive.com>
+Date: Thu, 29 Jun 2023 23:10:09 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH] gitlab: Disable plugins for cross-i386-tci
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.12.0
+Subject: Re: [PATCH v6 09/15] target/riscv: Add Zvkned ISA extension support
 Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: alex.bennee@linaro.org
-References: <20230629130844.151453-1-richard.henderson@linaro.org>
-From: Thomas Huth <thuth@redhat.com>
-In-Reply-To: <20230629130844.151453-1-richard.henderson@linaro.org>
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org,
+ qemu-riscv@nongnu.org
+Cc: dbarboza@ventanamicro.com, Nazar Kazakov <nazar.kazakov@codethink.co.uk>, 
+ Lawrence Hunter <lawrence.hunter@codethink.co.uk>,
+ William Salmon <will.salmon@codethink.co.uk>,
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Kiran Ostrolenk <kiran.ostrolenk@codethink.co.uk>
+References: <20230627174551.65498-1-max.chou@sifive.com>
+ <20230627174551.65498-10-max.chou@sifive.com>
+ <af36c183-aad0-6e66-62e0-0f97b04eb4cc@linaro.org>
+From: Max Chou <max.chou@sifive.com>
+In-Reply-To: <af36c183-aad0-6e66-62e0-0f97b04eb4cc@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
+ envelope-from=max.chou@sifive.com; helo=mail-pl1-x630.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.093, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.093,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -100,55 +104,210 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 29/06/2023 15.08, Richard Henderson wrote:
-> There are timeouts in the cross-i386-tci job that are related to plugins.
-> Restrict this job to basic TCI testing.
-> 
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
-> 
-> E.g. most recent failure(s),
-> 
-> https://gitlab.com/qemu-project/qemu/-/jobs/4565517825
-> 4488: make[1]: *** [Makefile:189: run-plugin-memory-with-libbb.so] Error 124
-> 4497: make[1]: *** [Makefile:189: run-plugin-memory-with-libempty.so] Error 124
-> 4506: make[1]: *** [Makefile:189: run-plugin-memory-with-libinsn.so] Error 124
-> 4550: make[1]: *** [Makefile:189: run-plugin-memory-with-libmem.so] Error 124
-> 4558: make[1]: *** [Makefile:189: run-plugin-memory-with-libsyscall.so] Error 124
-> 
-> We do tci+plugin testing with an x86_64 job, so I don't think it's
-> important that we cover plugins here.  Mostly we want to make sure
-> that TCI *builds* on a 32-bit host.
-> 
-> Anyway, here's a pass with shared infrastructure,
-> https://gitlab.com/rth7680/qemu/-/jobs/4565547513
-> 
-> There might well be different timings on the project k8s hosts.
-> 
-> 
+On 2023/6/28 5:07 PM, Richard Henderson wrote:
+
+> On 6/27/23 19:45, Max Chou wrote:
+>> +#define GEN_V_UNMASKED_TRANS(NAME, CHECK, 
+>> EGS)                                \
+>> +    static bool trans_##NAME(DisasContext *s, arg_##NAME 
+>> *a)                  \
+>> + { \
+>> +        if (CHECK(s, a)) 
+>> {                                                    \
+>> +            TCGv_ptr rd_v, 
+>> rs2_v;                                             \
+>> +            TCGv_i32 
+>> desc;                                                    \
+>> +            uint32_t data = 
+>> 0;                                                \
+>> +            TCGLabel *over = 
+>> gen_new_label();                                 \
+>> +            TCGLabel *vl_ok = 
+>> gen_new_label();                                \
+>> +            TCGLabel *vstart_ok = 
+>> gen_new_label();                            \
+>> +            TCGv_i32 tmp = 
+>> tcg_temp_new_i32();                                \
+>> + \
+>> +            /* save opcode for unwinding in case we throw an 
+>> exception */     \
+>> + decode_save_opc(s); \
+>> + \
+>> +            /* check (vl % EGS == 0) assuming it's power of 2 
+>> */              \
+>> +            tcg_gen_trunc_tl_i32(tmp, 
+>> cpu_vl);                                \
+>> +            tcg_gen_andi_i32(tmp, tmp, EGS - 
+>> 1);                              \
+>> +            tcg_gen_brcondi_i32(TCG_COND_EQ, tmp, 0, 
+>> vl_ok);                  \
+>> + gen_helper_restore_cpu_and_raise_exception( \
+>> +                cpu_env, 
+>> tcg_constant_i32(RISCV_EXCP_ILLEGAL_INST));          \
+>> + gen_set_label(vl_ok); \
+>> + \
+>> +            /* check (vstart % EGS == 0) assuming it's power of 2 
+>> */          \
+>> +            tcg_gen_trunc_tl_i32(tmp, 
+>> cpu_vstart);                            \
+>> +            tcg_gen_andi_i32(tmp, tmp, EGS - 
+>> 1);                              \
+>> +            tcg_gen_brcondi_i32(TCG_COND_EQ, tmp, 0, 
+>> vstart_ok);              \
+>> + gen_helper_restore_cpu_and_raise_exception( \
+>> +                cpu_env, 
+>> tcg_constant_i32(RISCV_EXCP_ILLEGAL_INST));          \
+>> + gen_set_label(vstart_ok); \
+>> + \
+>> +            tcg_gen_brcond_tl(TCG_COND_GEU, cpu_vstart, cpu_vl, 
+>> over);        \
+>
+> This kind of massive macro is bad style.
+> Much better to have a helper function and pass in gen_helper_foo as a 
+> parameter.
+>
+> You can eliminate the vstart % EGS test, and the vstart < vl test, 
+> when VSTART_EQ_ZERO.
+> You can eliminate the vl % EGS test when VL_EQ_VLMAX.
+>
+> You could move all of these tests out of line, into a helper_foo_chk() 
+> function which performs the checks and then calls helper_foo().
+Hi Richard
+
+Thank you for the suggestion.
+I'll provide the v7 patch set with this suggestion.
+
+But I have an question about the vstart < vl test.
+I think that we can't eliminate the vstart < vl test when both the 
+vstart and vl are equal to zero.
+Although this situation means that the instructions will do nothing.
+>
+>> +#define GEN_ZVKNED_HELPER_VV(NAME, 
+>> ...)                                   \
+>> +    void HELPER(NAME)(void *vd_vptr, void *vs2_vptr, CPURISCVState 
+>> *env,  \
+>> +                      uint32_t 
+>> desc)                                      \
+>> + { \
+>> +        uint64_t *vd = 
+>> vd_vptr;                                           \
+>> +        uint64_t *vs2 = 
+>> vs2_vptr;                                         \
+>> +        uint32_t vl = 
+>> env->vl;                                            \
+>> +        uint32_t total_elems = vext_get_total_elems(env, desc, 
+>> 4);        \
+>> +        uint32_t vta = 
+>> vext_vta(desc);                                    \
+>> + \
+>> +        for (uint32_t i = env->vstart / 4; i < env->vl / 4; i++) 
+>> {        \
+>> +            AESState 
+>> round_key;                                           \
+>> +            round_key.d[HOST_BIG_ENDIAN] = cpu_to_le64(vs2[i * 2 + 
+>> 0]);   \
+>> +            round_key.d[!HOST_BIG_ENDIAN] = cpu_to_le64(vs2[i * 2 + 
+>> 1]);  \
+>> +            AESState 
+>> round_state;                                         \
+>> +            cpu_to_le64s(vd + i * 2 + 
+>> 0);                                 \
+>> +            cpu_to_le64s(vd + i * 2 + 
+>> 1);                                 \
+>> +            for (int j = 0; j < 16; j++) 
+>> {                                \
+>> +                round_state.b[j] = ((uint8_t *)(vd + i * 
+>> 2))[j];          \
+>> + }                                                             \
+>
+> I think all of this byte swapping is wrong.
+> With this last loop particularly being particularly silly.
+>
+> You want to present the 16 bytes in *host* endian order.
+> Because the words are always in little-endian order (see H1 et al),
+> we only need to swap the words on big-endian hosts.
+>
+> See 
+> https://lore.kernel.org/qemu-devel/20230620110758.787479-21-richard.henderson@linaro.org/
+> where I do exactly the same thing for ARM:
+>
+> +        AESState *ad = (AESState *)(vd + i);
+> +        AESState *st = (AESState *)(vm + i);
+> +        AESState t;
+> +
+> +        /* Our uint64_t are in the wrong order for big-endian. */
+> +        if (HOST_BIG_ENDIAN) {
+> +            t.d[0] = st->d[1];
+> +            t.d[1] = st->d[0];
+> +            aesdec_IMC(&t, &t, false);
+> +            ad->d[0] = t.d[1];
+> +            ad->d[1] = t.d[0];
+> +        } else {
+> +            aesdec_IMC(ad, st, false);
+> +        }
+>
+>> +void HELPER(vaeskf1_vi)(void *vd_vptr, void *vs2_vptr, uint32_t uimm,
+>> +                        CPURISCVState *env, uint32_t desc)
+>> +{
+>> +    uint32_t *vd = vd_vptr;
+>> +    uint32_t *vs2 = vs2_vptr;
+>> +    uint32_t vl = env->vl;
+>> +    uint32_t total_elems = vext_get_total_elems(env, desc, 4);
+>> +    uint32_t vta = vext_vta(desc);
+>> +
+>> +    uimm &= 0b1111;
+>> +    if (uimm > 10 || uimm == 0) {
+>> +        uimm ^= 0b1000;
+>> +    }
+>> +
+>> +    for (uint32_t i = env->vstart / 4; i < env->vl / 4; i++) {
+>> +        uint32_t rk[8];
+>> +        static const uint32_t rcon[] = {
+>> +            0x01000000, 0x02000000, 0x04000000, 0x08000000, 0x10000000,
+>> +            0x20000000, 0x40000000, 0x80000000, 0x1B000000, 0x36000000,
+>> +        };
+>> +
+>> +        rk[0] = bswap32(vs2[i * 4 + H4(0)]);
+>> +        rk[1] = bswap32(vs2[i * 4 + H4(1)]);
+>> +        rk[2] = bswap32(vs2[i * 4 + H4(2)]);
+>> +        rk[3] = bswap32(vs2[i * 4 + H4(3)]);
+>> +
+>> +        rk[4] = rk[0] ^ (((uint32_t)AES_sbox[(rk[3] >> 16) & 0xff] 
+>> << 24) |
+>> +                         ((uint32_t)AES_sbox[(rk[3] >> 8) & 0xff] << 
+>> 16) |
+>> +                         ((uint32_t)AES_sbox[(rk[3] >> 0) & 0xff] << 
+>> 8) |
+>> +                         ((uint32_t)AES_sbox[(rk[3] >> 24) & 0xff] 
+>> << 0))
+>> +                      ^ rcon[uimm - 1];
+>> +        rk[5] = rk[1] ^ rk[4];
+>> +        rk[6] = rk[2] ^ rk[5];
+>> +        rk[7] = rk[3] ^ rk[6];
+>> +
+>> +        vd[i * 4 + H4(0)] = bswap32(rk[4]);
+>> +        vd[i * 4 + H4(1)] = bswap32(rk[5]);
+>> +        vd[i * 4 + H4(2)] = bswap32(rk[6]);
+>> +        vd[i * 4 + H4(3)] = bswap32(rk[7]);
+>> +    }
+>> +    env->vstart = 0;
+>> +    /* set tail elements to 1s */
+>> +    vext_set_elems_1s(vd, vta, vl * 4, total_elems * 4);
+>> +}
+>
+> All of this byte swapping is going to be wrong for a big-endian host.
+> It is also a little bit silly to do for a little-endian host.
+>
+> You're byte swapping uint32_t words, then extracting bytes from those 
+> words.  Just extract the exact byte you require from the original 
+> input, using the H1() macro, and now you have correct code for both 
+> big- and little-endian hosts.
+>
+>
 > r~
-> 
-> ---
->   .gitlab-ci.d/crossbuilds.yml | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/.gitlab-ci.d/crossbuilds.yml b/.gitlab-ci.d/crossbuilds.yml
-> index 1e0e6c7f2c..b6ec99ecd1 100644
-> --- a/.gitlab-ci.d/crossbuilds.yml
-> +++ b/.gitlab-ci.d/crossbuilds.yml
-> @@ -57,7 +57,7 @@ cross-i386-tci:
->     variables:
->       IMAGE: fedora-i386-cross
->       ACCEL: tcg-interpreter
-> -    EXTRA_CONFIGURE_OPTS: --target-list=i386-softmmu,i386-linux-user,aarch64-softmmu,aarch64-linux-user,ppc-softmmu,ppc-linux-user
-> +    EXTRA_CONFIGURE_OPTS: --target-list=i386-softmmu,i386-linux-user,aarch64-softmmu,aarch64-linux-user,ppc-softmmu,ppc-linux-user --disable-plugins
->       MAKE_CHECK_ARGS: check check-tcg
->   
->   cross-mipsel-system:
+>
+I'll fix these byte swapping issues in the v7 patch set.
 
-FWIW,
-Acked-by: Thomas Huth <thuth@redhat.com>
-
-I assume you'll apply this directly as a CI fix?
-
+Thank you :)
+Max
 
