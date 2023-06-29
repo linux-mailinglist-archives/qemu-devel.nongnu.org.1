@@ -2,81 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B87B741F23
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 06:09:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FE80741F2A
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 06:10:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEixJ-0004Ih-CB; Thu, 29 Jun 2023 00:08:29 -0400
+	id 1qEixI-0004Ia-Jt; Thu, 29 Jun 2023 00:08:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qEixC-0004G3-LM
+ id 1qEixD-0004Hb-VV
  for qemu-devel@nongnu.org; Thu, 29 Jun 2023 00:08:24 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qEix7-00016j-3W
- for qemu-devel@nongnu.org; Thu, 29 Jun 2023 00:08:19 -0400
+ id 1qEixC-00018K-8c
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 00:08:23 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688011695;
+ s=mimecast20190719; t=1688011698;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=UVrMQo5OTuj/Z/ArUoRLIJdd/O7g0cHC9ea86NhATqc=;
- b=HpIIBwdJj8B5nwPupfbr4ynjobd6IvBdWyFaAEzN6eLSE+cWp91qnKaG3BCsz/IgOwNV/n
- PVewqX20CeB1dZnw2qi+nggAiuOaJ+5lj6SrN/Qc0wP9LrzuxWxccfyfrWhNL2fhBfPYDY
- yObT9BUumV7PEISGREWgpIPj/BedlnY=
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com
- [209.85.216.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=8E3L/eh8xTMWqqFxd2K3iGDv+eq82X+mKSmU3uQ/MtY=;
+ b=L4cpDAXrGTqCBYiE6l9b/fMzH4hjJCvuXHLc3q6OGGvTntoHL+8JdemzQ4jGBRA6+ChPzd
+ qQl8ldWtStntzDixEjXXbPRLPZVBPvE3HbTjeS6gquVCCZlkY/cLtJcZ8H3LcXReI8dbvR
+ AnqPKJl8ZjdzZ22dhh0Bs0xhwd8SBHo=
+Received: from mail-oa1-f71.google.com (mail-oa1-f71.google.com
+ [209.85.160.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-170-WQn0qN6MNiiMo9ENrwqlyg-1; Thu, 29 Jun 2023 00:08:13 -0400
-X-MC-Unique: WQn0qN6MNiiMo9ENrwqlyg-1
-Received: by mail-pj1-f71.google.com with SMTP id
- 98e67ed59e1d1-262d69faef9so122850a91.3
- for <qemu-devel@nongnu.org>; Wed, 28 Jun 2023 21:08:13 -0700 (PDT)
+ us-mta-33-sfCyeaEENTip4ggMTwu_1w-1; Thu, 29 Jun 2023 00:08:16 -0400
+X-MC-Unique: sfCyeaEENTip4ggMTwu_1w-1
+Received: by mail-oa1-f71.google.com with SMTP id
+ 586e51a60fabf-1b016818400so384215fac.0
+ for <qemu-devel@nongnu.org>; Wed, 28 Jun 2023 21:08:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688011692; x=1690603692;
+ d=1e100.net; s=20221208; t=1688011695; x=1690603695;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=UVrMQo5OTuj/Z/ArUoRLIJdd/O7g0cHC9ea86NhATqc=;
- b=S0WgJtNsxVEp2XgAoa7CtDJAAuIxDw0CoPhSnn+0S1WUEvs9uFK/Gt1upOIko0KAlo
- 4hRfRkj4qK2hW6z9C1Cq6BqurpSzIMY0Hjb9QCtvHCR9BhI+6XGBH+ptykYTKhXXMNi8
- OybVZsqz7NOyqFHy+wJjDXE5/wJfbDOaldW9sueHvgfwKZQ2SF+qxtVRjtRHCgTEP1fj
- n2RT2Aas0qZESLvehnAseMbAjHVW7XOhj/GypUU9UABqLcKLfPQyUO+qR3DzPxFBPpUJ
- SxcMwVnDF9ZGsNQbgaLmfs/c/omglXfY0qQ8DoZBdnjNpc2jelGOlbmNWzvds8nroBrH
- lmbA==
-X-Gm-Message-State: AC+VfDwSkXjPB+dkBwDyWP1Zg2375iqPm7bFcAixZX2+iq1pXf6C+x24
- /UoQwdbN+DuWeew9qfDWGyCB7TixdcAKSLjqr2/4bWvMsg7ScaqwXxigZ/pjdkope6h9IimXRS2
- f7Dw4FQwK+Xbb0c3HLYPtXcfqahc5lv6YRNFJNQx8iM5vIZaRjPwynMK0mCBPeEo85TU8ZmZK0Q
- Q=
-X-Received: by 2002:a17:90a:db90:b0:263:8e8:6d32 with SMTP id
- h16-20020a17090adb9000b0026308e86d32mr6819590pjv.37.1688011692043; 
- Wed, 28 Jun 2023 21:08:12 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ4LsSbQ/Tdt9uruODYcWQy6BCq51S+cWxmKA1oK3IkNFyaOEqipaKJBKxF8Oeh95/+zWJrhLA==
-X-Received: by 2002:a17:90a:db90:b0:263:8e8:6d32 with SMTP id
- h16-20020a17090adb9000b0026308e86d32mr6819581pjv.37.1688011691655; 
- Wed, 28 Jun 2023 21:08:11 -0700 (PDT)
+ bh=8E3L/eh8xTMWqqFxd2K3iGDv+eq82X+mKSmU3uQ/MtY=;
+ b=aY4U+QZULx8pOZC1dK7amTWbvtnAA0LJ0ePWkQIoqNSKQhDvPjxw0V+5ffScraJUCv
+ J0X3NWOcjQn8xq3A+PpfB9iKuyBPuiph6ewC6WDVPO40wDGyMlJdG6N1PfbY7su0L9ma
+ BeCvApxhIvnOxAQMQFmCPGS2DXFM5SuOY3WbhIl5Ni03Lwv/i2iQlFwcA5AZECPqyDf0
+ D4en5yLb6wUJllWZkDP+xdrpRSNJ3ZD6kpO4nFjdyp3P0zJpXNYZgWr26hwPtcFqm7o9
+ xhkp0NHyuVuK5QGwwBPZQvkgLRMIfxSXE1oUwYHQ4Fp14qnWGS8YEpizm6kne6QByGY1
+ YyHA==
+X-Gm-Message-State: AC+VfDzBQ4ctCLm3Dg+7KB9Lo3DOvCaTiTqffaA+PznKH5mLratuHeAj
+ +b3+6Xg9ZsI9Mw6N7XVYnnbRWnsT0fJmz9tQvEyCPI5hrbq8X7B7m3JS1P9ItbUFr+Dvj218SUV
+ c2kptCjBFLVTxK796TF04F/2FGHAEiu95004zBbGzEVzCSYNaSKx9SeEFJH72qOyRlhPkFW2BD9
+ E=
+X-Received: by 2002:a05:6870:c155:b0:1b0:89fb:9e77 with SMTP id
+ g21-20020a056870c15500b001b089fb9e77mr2843584oad.35.1688011695292; 
+ Wed, 28 Jun 2023 21:08:15 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6h1jcZbyztsCfZOqZC0QC/Oy1APsfvxMmkiQuAHZY12aYjToAoacsNNEEtt+qcr+1tI2ePxg==
+X-Received: by 2002:a05:6870:c155:b0:1b0:89fb:9e77 with SMTP id
+ g21-20020a056870c15500b001b089fb9e77mr2843566oad.35.1688011694980; 
+ Wed, 28 Jun 2023 21:08:14 -0700 (PDT)
 Received: from localhost.localdomain ([203.163.234.183])
  by smtp.googlemail.com with ESMTPSA id
- 21-20020a17090a019500b00256b67208b1sm10978169pjc.56.2023.06.28.21.08.09
+ 21-20020a17090a019500b00256b67208b1sm10978169pjc.56.2023.06.28.21.08.12
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 28 Jun 2023 21:08:11 -0700 (PDT)
+ Wed, 28 Jun 2023 21:08:14 -0700 (PDT)
 From: Ani Sinha <anisinha@redhat.com>
-To: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>
-Subject: [PATCH v6 3/5] tests/acpi/bios-tables-test: update acpi blob
- q35/DSDT.noacpihp
-Date: Thu, 29 Jun 2023 09:37:05 +0530
-Message-Id: <20230629040707.115656-4-anisinha@redhat.com>
+To: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: Ani Sinha <anisinha@redhat.com>, mst@redhat.com, imammedo@redhat.com,
+ Michael Labiuk <michael.labiuk@virtuozzo.com>
+Subject: [PATCH v6 4/5] tests/qtest/hd-geo-test: fix incorrect pcie-root-port
+ usage and simplify test
+Date: Thu, 29 Jun 2023 09:37:06 +0530
+Message-Id: <20230629040707.115656-5-anisinha@redhat.com>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20230629040707.115656-1-anisinha@redhat.com>
 References: <20230629040707.115656-1-anisinha@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=anisinha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -101,126 +103,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Some fixes were committed in bios-tables-test in the previous commit. Update
-the acpi blob and clear bios-tables-test-allowed-diff.h so that the test
-continues to pass with the changes in the bios-tables-test.
+The test attaches a SCSI controller to a non-zero slot and a pcie-to-pci bridge
+on slot 0 on the same pcie-root-port. Since a downstream device can be attached
+to a pcie-root-port only on slot 0, the above test configuration is not allowed.
+Additionally using pcie.0 as id for pcie-to-pci bridge is incorrect as that id
+is reserved only for the root bus.
 
-Following is the asl diff between the old and the newly updated blob:
+In the test scenario, there is no need to attach a pcie-root-port to the
+root complex. A SCSI controller can be attached to a pcie-to-pci bridge
+which can then be directly attached to the root bus (pcie.0).
 
-@@ -1,30 +1,30 @@
- /*
-  * Intel ACPI Component Architecture
-  * AML/ASL+ Disassembler version 20210604 (64-bit version)
-  * Copyright (c) 2000 - 2021 Intel Corporation
-  *
-  * Disassembling to symbolic ASL+ operators
-  *
-- * Disassembly of tests/data/acpi/q35/DSDT.noacpihp, Wed Jun 21 18:26:52 2023
-+ * Disassembly of /tmp/aml-O8SU61, Wed Jun 21 18:26:52 2023
-  *
-  * Original Table Header:
-  *     Signature        "DSDT"
-- *     Length           0x00002038 (8248)
-+ *     Length           0x00002031 (8241)
-  *     Revision         0x01 **** 32-bit table (V1), no 64-bit math support
-- *     Checksum         0x4A
-+ *     Checksum         0x89
-  *     OEM ID           "BOCHS "
-  *     OEM Table ID     "BXPC    "
-  *     OEM Revision     0x00000001 (1)
-  *     Compiler ID      "BXPC"
-  *     Compiler Version 0x00000001 (1)
-  */
- DefinitionBlock ("", "DSDT", 1, "BOCHS ", "BXPC    ", 0x00000001)
- {
-     Scope (\)
-     {
-         OperationRegion (DBG, SystemIO, 0x0402, One)
-         Field (DBG, ByteAcc, NoLock, Preserve)
-         {
-             DBGB,   8
-         }
+Fix the test and simplify it.
 
-@@ -3148,48 +3148,48 @@
-                 {
-                     Name (_ADR, Zero)  // _ADR: Address
-                     Method (_DSM, 4, Serialized)  // _DSM: Device-Specific Method
-                     {
-                         Local0 = Package (0x01)
-                             {
-                                 0x01F5
-                             }
-                         Return (EDSM (Arg0, Arg1, Arg2, Arg3, Local0))
-                     }
-                 }
-             }
-
-             Device (S40)
-             {
-                 Name (_ADR, 0x00080000)  // _ADR: Address
--                Device (S41)
-+                Device (S01)
-                 {
--                    Name (_ADR, 0x00080001)  // _ADR: Address
-+                    Name (_ADR, One)  // _ADR: Address
-                     Method (_DSM, 4, Serialized)  // _DSM: Device-Specific Method
-                     {
-                         Local0 = Package (0x01)
-                             {
-                                 0x0259
-                             }
-                         Return (EDSM (Arg0, Arg1, Arg2, Arg3, Local0))
-                     }
-                 }
-
--                Device (S48)
-+                Device (S02)
-                 {
--                    Name (_ADR, 0x00090000)  // _ADR: Address
-+                    Name (_ADR, 0x02)  // _ADR: Address
-                     Device (S00)
-                     {
-                         Name (_ADR, Zero)  // _ADR: Address
-                     }
-                 }
-             }
-
-             Device (SF8)
-             {
-                 Name (_ADR, 0x001F0000)  // _ADR: Address
-                 OperationRegion (PIRQ, PCI_Config, 0x60, 0x0C)
-                 Scope (\_SB)
-                 {
-                     Field (PCI0.SF8.PIRQ, ByteAcc, NoLock, Preserve)
-                     {
-                         PRQA,   8,
+CC: mst@redhat.com
+CC: imammedo@redhat.com
+CC: Michael Labiuk <michael.labiuk@virtuozzo.com>
 
 Signed-off-by: Ani Sinha <anisinha@redhat.com>
-Acked-by: Igor Mammedov <imammedo@redhat.com>
 ---
- tests/data/acpi/q35/DSDT.noacpihp           | Bin 8248 -> 8241 bytes
- tests/qtest/bios-tables-test-allowed-diff.h |   1 -
- 2 files changed, 1 deletion(-)
+ tests/qtest/hd-geo-test.c | 18 ++++++++----------
+ 1 file changed, 8 insertions(+), 10 deletions(-)
 
-diff --git a/tests/data/acpi/q35/DSDT.noacpihp b/tests/data/acpi/q35/DSDT.noacpihp
-index 6ab1f0e52543fcb7f84a7fd1327fe5aa42010565..8cab2f8eb9ae94e0165f3f17857ec7d080fb0e13 100644
-GIT binary patch
-delta 109
-zcmdntu+f3bCD<jzP=SGgv2!Dri!7J3UQB$jQ@nt;?&b(tDMlAZ)?gEZc#e2SmmnSn
-z1`dYkCY4|VLx=#Qh(x?gurE)65Gx~hBvZl?S0FDVGb=kGx=AwFzzCv>i)r&-xoSoL
-DyqFtK
-
-delta 94
-zcmdn!u)~4NCD<jzLV<yS(Q6}@i!7IyUQB$jQ@nta-sT8dDMm#P)?gEZc#e2SmmnSn
-k1`dYkCXHYdL#O~FP+)SuoHV~ou!#j+5huguZF1F&02bsG6#xJL
-
-diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
-index 31df9c6187..dfb8523c8b 100644
---- a/tests/qtest/bios-tables-test-allowed-diff.h
-+++ b/tests/qtest/bios-tables-test-allowed-diff.h
-@@ -1,2 +1 @@
- /* List of comma-separated changed AML files to ignore */
--"tests/data/acpi/q35/DSDT.noacpihp",
+diff --git a/tests/qtest/hd-geo-test.c b/tests/qtest/hd-geo-test.c
+index 5aa258a2b3..d08bffad91 100644
+--- a/tests/qtest/hd-geo-test.c
++++ b/tests/qtest/hd-geo-test.c
+@@ -784,14 +784,12 @@ static void test_override_scsi(void)
+     test_override(args, "pc", expected);
+ }
+ 
+-static void setup_pci_bridge(TestArgs *args, const char *id, const char *rootid)
++static void setup_pci_bridge(TestArgs *args, const char *id)
+ {
+ 
+-    char *root, *br;
+-    root = g_strdup_printf("-device pcie-root-port,id=%s", rootid);
+-    br = g_strdup_printf("-device pcie-pci-bridge,bus=%s,id=%s", rootid, id);
++    char *br;
++    br = g_strdup_printf("-device pcie-pci-bridge,bus=pcie.0,id=%s", id);
+ 
+-    args->argc = append_arg(args->argc, args->argv, ARGV_SIZE, root);
+     args->argc = append_arg(args->argc, args->argv, ARGV_SIZE, br);
+ }
+ 
+@@ -811,8 +809,8 @@ static void test_override_scsi_q35(void)
+     add_drive_with_mbr(args, empty_mbr, 1);
+     add_drive_with_mbr(args, empty_mbr, 1);
+     add_drive_with_mbr(args, empty_mbr, 1);
+-    setup_pci_bridge(args, "pcie.0", "br");
+-    add_scsi_controller(args, "lsi53c895a", "br", 3);
++    setup_pci_bridge(args, "pcie-pci-br");
++    add_scsi_controller(args, "lsi53c895a", "pcie-pci-br", 3);
+     add_scsi_disk(args, 0, 0, 0, 0, 0, 10000, 120, 30);
+     add_scsi_disk(args, 1, 0, 0, 1, 0, 9000, 120, 30);
+     add_scsi_disk(args, 2, 0, 0, 2, 0, 1, 0, 0);
+@@ -868,9 +866,9 @@ static void test_override_virtio_blk_q35(void)
+     };
+     add_drive_with_mbr(args, empty_mbr, 1);
+     add_drive_with_mbr(args, empty_mbr, 1);
+-    setup_pci_bridge(args, "pcie.0", "br");
+-    add_virtio_disk(args, 0, "br", 3, 10000, 120, 30);
+-    add_virtio_disk(args, 1, "br", 4, 9000, 120, 30);
++    setup_pci_bridge(args, "pcie-pci-br");
++    add_virtio_disk(args, 0, "pcie-pci-br", 3, 10000, 120, 30);
++    add_virtio_disk(args, 1, "pcie-pci-br", 4, 9000, 120, 30);
+     test_override(args, "q35", expected);
+ }
+ 
 -- 
 2.39.1
 
