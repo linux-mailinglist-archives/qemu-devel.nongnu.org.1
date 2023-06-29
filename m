@@ -2,92 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23390742ABC
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 18:41:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE790742AC9
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 18:46:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEugq-0006c3-8q; Thu, 29 Jun 2023 12:40:16 -0400
+	id 1qEumB-0000Uf-Of; Thu, 29 Jun 2023 12:45:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qEugn-0006bt-4c
- for qemu-devel@nongnu.org; Thu, 29 Jun 2023 12:40:13 -0400
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1qEum8-0000UP-R5
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 12:45:45 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qEugj-0007uI-Bq
- for qemu-devel@nongnu.org; Thu, 29 Jun 2023 12:40:12 -0400
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1qEum6-00015C-Tr
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 12:45:44 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688056808;
+ s=mimecast20190719; t=1688057141;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=WkcrRyyVU753PCw88FfAVMqtBE36nxnageudGBVkoPk=;
- b=PQjyHrlGkMf0UV/ijEyqgvsrIdj1ib5ccOQ7d3C710PpZzHlTD0f5lYDm02nTTiXu2TG/s
- 5iaSCKJqWon9Y7FlTtmPIZM1tW6phAFYG08aQj9Bf9yqheeRvemjq+lIJPiEVlKZMtvJ+i
- wRyH4AUKoTGAV9ZvkcFKf2/63MGl1H8=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=3uWfb76ySo4VAx8LvJ9wVPoO+SIyRzDOfPVyFfaFRG0=;
+ b=deydzF3Iq9M+gJ/R6rlLCbAki0eT8Qw4HHTfr0XNALUay7XN6r0rl33acf88/4X73t7J/K
+ qDv9ekLS599eYPHktZ4VbJLP5oEwMKvHJ/l5rFqLzdp2j7Qo/YOt3ksAqAUiFc0EiBQW+z
+ dhauZr+1eB7ScCDY+PKgkVx3F55EQtA=
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com
+ [209.85.214.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-543-KuFjKIfUNa6s_NB0KKxUEw-1; Thu, 29 Jun 2023 12:40:06 -0400
-X-MC-Unique: KuFjKIfUNa6s_NB0KKxUEw-1
-Received: by mail-qv1-f72.google.com with SMTP id
- 6a1803df08f44-6349a78b1aaso5959366d6.1
- for <qemu-devel@nongnu.org>; Thu, 29 Jun 2023 09:40:06 -0700 (PDT)
+ us-mta-353-fEb58kQQMdqO1ZWrwoXzKw-1; Thu, 29 Jun 2023 12:45:30 -0400
+X-MC-Unique: fEb58kQQMdqO1ZWrwoXzKw-1
+Received: by mail-pl1-f197.google.com with SMTP id
+ d9443c01a7336-1b8303cd306so5207185ad.2
+ for <qemu-devel@nongnu.org>; Thu, 29 Jun 2023 09:45:29 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688056806; x=1690648806;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=WkcrRyyVU753PCw88FfAVMqtBE36nxnageudGBVkoPk=;
- b=S9KP77w8mfFMhnUYbaCM4SAUvyDyfWhAOdkLGhrpsGvaLrUeBrEFNEfMS7cM8swz8a
- vDPvau1Uzjj9rUZYOv8efjPigxBqJyd5GVcDydKNhrad/CgPmKqKlDFSsBHKJoS8JUTT
- 9I0TnynFlplMuv86McxpK0GLcXHBX+mcB85pUBErHcMnEgCQkmMwEzrcGfCu0zYSRI43
- 642V/X6w3Xu5NjdapkLpCp7GvPow0pTKfkwpyl9/SZfjSLcxX8qqthBnU2TVuaLTfnod
- wBY3bdaONibaVv3c17VM3HfzEX9isk1/i0ILgfq4NwOlLykQ8pvpAW0OvKDU3q3KuMFL
- ROYg==
-X-Gm-Message-State: ABy/qLbGBYHe3qr2dR50MletzO9jUPdJHDXR/6qxC4RxXm5I6rTXAWW+
- 7+pR3XZ16FhRmMan3HhMtVjAMFRpAgL3V+Hh+Oqq+JXvPQQ4AdFg9cAHzNae2GrDIEernzaqwmA
- B/D8KlEuvhoxSFjs=
-X-Received: by 2002:ad4:5bae:0:b0:625:aa49:ea0d with SMTP id
- 14-20020ad45bae000000b00625aa49ea0dmr450232qvq.32.1688056805932; 
- Thu, 29 Jun 2023 09:40:05 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlHG69eQME41rmnrk73h3pJvPJ99QpO0T5BQEV/yuzp8HX3v83Mm4deVelQRFzxYCd7BzXQgHg==
-X-Received: by 2002:ad4:5bae:0:b0:625:aa49:ea0d with SMTP id
- 14-20020ad45bae000000b00625aa49ea0dmr450208qvq.32.1688056805590; 
- Thu, 29 Jun 2023 09:40:05 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:280:24f0:576b:abc6:6396:ed4a?
- ([2a01:e0a:280:24f0:576b:abc6:6396:ed4a])
+ d=1e100.net; s=20221208; t=1688057129; x=1690649129;
+ h=to:references:message-id:content-transfer-encoding:cc:date
+ :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=3uWfb76ySo4VAx8LvJ9wVPoO+SIyRzDOfPVyFfaFRG0=;
+ b=f+crzGDB4XcT8arGdznzY28mm3+uaM77vuTaCcOGqYWShJ4gTvSZQUY0Uafosg+oOs
+ bKLSs5CFd5T3ICXG7iyp/gOlZWec1aI9vohiuqiiz5B5vowX9OrBYByDuGBMSP5JERMA
+ TmNx/tYmrFhxavhfpGjmZ3GTk3DU4veGFCQqqZvNvS3AH6xLBgF8EZRMD5QSGwLXi91B
+ ilXZGpSmz+/lq9sSTe7jrjzILVZzxkoHCmvQI0z8I2zLoa5LgfjRdG+oHXY/MLngHqUi
+ jx+JO7Q+ZH3B94vIl8t68NSF3FqvCdgN0WWtfD1z4M/iBjvD8RpQGXPUob9/e7WrVudI
+ HJTQ==
+X-Gm-Message-State: AC+VfDwbLwhzhiTFWUEh3O8VpDRiVm2rEVSpyaJDpJlJL4Cq1ihziPTW
+ GIkjrbs+NJtBRi6tDkV+t9eAyw0YctNjd5p7e9BoXThvw7bWMjE6q+oHvTsqh89QTSdfGF5lDA+
+ R8fwMjV8+RI/WNfs=
+X-Received: by 2002:a17:902:9a08:b0:1b2:74e:84cb with SMTP id
+ v8-20020a1709029a0800b001b2074e84cbmr12365961plp.9.1688057128713; 
+ Thu, 29 Jun 2023 09:45:28 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4sV4TRr5Fhdi1cPJGcdnNKzfYiM1VLPeL38affsuQAGjHBiK4iao1FDqqdQ07BIKW4I8UJ4w==
+X-Received: by 2002:a17:902:9a08:b0:1b2:74e:84cb with SMTP id
+ v8-20020a1709029a0800b001b2074e84cbmr12365946plp.9.1688057128353; 
+ Thu, 29 Jun 2023 09:45:28 -0700 (PDT)
+Received: from smtpclient.apple ([203.163.234.183])
  by smtp.gmail.com with ESMTPSA id
- j14-20020a056214032e00b00635eee57eb0sm1452348qvu.34.2023.06.29.09.40.04
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 29 Jun 2023 09:40:05 -0700 (PDT)
-Message-ID: <fa97ab02-1b53-758d-9b2e-0d277b5e4e3f@redhat.com>
-Date: Thu, 29 Jun 2023 18:40:02 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH v4 5/5] vfio/migration: Refactor and fix print of
- "Migration disabled"
-Content-Language: en-US
-To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
-Cc: alex.williamson@redhat.com, joao.m.martins@oracle.com,
- avihaih@nvidia.com, chao.p.peng@intel.com
-References: <20230629084042.86502-1-zhenzhong.duan@intel.com>
- <20230629084042.86502-6-zhenzhong.duan@intel.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <20230629084042.86502-6-zhenzhong.duan@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+ e6-20020a170902cf4600b001b1c4d875f5sm9319306plg.44.2023.06.29.09.45.25
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Thu, 29 Jun 2023 09:45:27 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.3\))
+Subject: Re: [PATCH v6 5/5] hw/pci: ensure PCIE devices are plugged into only
+ slot 0 of PCIE port
+From: Ani Sinha <anisinha@redhat.com>
+In-Reply-To: <A9837DAD-AEF3-4567-8172-EC1BAF2AEA3F@redhat.com>
+Date: Thu, 29 Jun 2023 22:15:23 +0530
+Cc: qemu-devel <qemu-devel@nongnu.org>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Julia Suvorova <jusual@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ akihiko.odaki@daynix.com
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <D19E1234-77A6-42BB-AE00-7F105A5730B0@redhat.com>
+References: <20230629040707.115656-1-anisinha@redhat.com>
+ <20230629040707.115656-6-anisinha@redhat.com>
+ <20230629102421-mutt-send-email-mst@kernel.org>
+ <A398CFAA-12F6-447D-A03D-F2DAC79AB1B7@redhat.com>
+ <20230629113141-mutt-send-email-mst@kernel.org>
+ <A9837DAD-AEF3-4567-8172-EC1BAF2AEA3F@redhat.com>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+X-Mailer: Apple Mail (2.3696.120.41.1.3)
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=anisinha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.093, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -104,281 +110,131 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello Zhenzhong,
-
-On 6/29/23 10:40, Zhenzhong Duan wrote:
-> This patch refactors vfio_migration_realize() and its dependend code
-> as follows:
-> 
-> 1. It's redundant in vfio_migration_realize() to registers multiple blockers,
->     e.g: vIOMMU blocker can be refactored as per device blocker.
-> 2. Change vfio_viommu_preset() to be only a per device checker.
-> 3. Remove global vIOMMU blocker related stuff, e.g:
->     giommu_migration_blocker, vfio_[block|unblock]_giommu_migration()
->     and vfio_migration_finalize()
-> 4. Change vfio_migration_realize(), vfio_block_multiple_devices_migration()
->     vfio_block_migration() and vfio_viommu_preset() to return bool type.
-> 5. Print "Migration disabled" depending on enable_migration property
->     and print it as warning instead of error which is overkill.
 
 
-We are close to soft freeze and these combo patches adding various fixes
-all at once are difficult to evaluate.
+> On 29-Jun-2023, at 9:27 PM, Ani Sinha <anisinha@redhat.com> wrote:
+>=20
+>=20
+>=20
+>> On 29-Jun-2023, at 9:02 PM, Michael S. Tsirkin <mst@redhat.com> =
+wrote:
+>>=20
+>> On Thu, Jun 29, 2023 at 08:07:57PM +0530, Ani Sinha wrote:
+>>>=20
+>>>=20
+>>>> On 29-Jun-2023, at 7:54 PM, Michael S. Tsirkin <mst@redhat.com> =
+wrote:
+>>>>=20
+>>>> On Thu, Jun 29, 2023 at 09:37:07AM +0530, Ani Sinha wrote:
+>>>>> PCI Express ports only have one slot, so PCI Express devices can =
+only be
+>>>>> plugged into slot 0 on a PCIE port. Enforce it.
+>>>>>=20
+>>>>> The change has been tested to not break ARI by instantiating seven =
+vfs on an
+>>>>> emulated igb device (the maximum number of vfs the linux igb =
+driver supports).
+>>>>=20
+>>>> I guess we need to test with some other device then? 7 VFs is same
+>>>> slot so hardly a good test.
+>>>=20
+>>> No its not the same slot. Its using different slots/device numbers. =
+I checked that.
+>>> The same patch was failing without the vf check.
+>>=20
+>> Ah, playing with VF stride?
 
-Please split this patch in multiple ones to ease the review.  May be
-start with the  int -> bool conversion of the return values. It should
-remove some noise.
+Indeed. You=E2=80=99ll see IGB_VF_STRIDE is 2. pcie_sriov_pf_init() uses =
+this to initialise the PCIE config space attributes. register_vfs() uses =
+this to increment the devfn values :-)=20
 
-Thanks,
 
-C.
-
-> migrate_add_blocker() returns 0 when successfully adding the migration blocker.
-> However, the caller of vfio_migration_realize() considers that migration was
-> blocked when the latter returned an error. What matters for migration is that
-> the blocker is added in core migration, so this cleans up usability such that
-> user sees "Migrate disabled" when any of the vfio migration blockers are active
-> and it's not intentionally forced by user with enable-migration=off.
-> 
-> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-> ---
->   hw/vfio/common.c              | 66 +++++++----------------------------
->   hw/vfio/migration.c           | 30 +++++++++-------
->   hw/vfio/pci.c                 |  4 +--
->   include/hw/vfio/vfio-common.h |  7 ++--
->   4 files changed, 36 insertions(+), 71 deletions(-)
-> 
-> diff --git a/hw/vfio/common.c b/hw/vfio/common.c
-> index 77e2ee0e5c6e..c80ecb1da53f 100644
-> --- a/hw/vfio/common.c
-> +++ b/hw/vfio/common.c
-> @@ -362,7 +362,6 @@ bool vfio_mig_active(void)
->   }
->   
->   static Error *multiple_devices_migration_blocker;
-> -static Error *giommu_migration_blocker;
->   
->   static unsigned int vfio_migratable_device_num(void)
->   {
-> @@ -381,19 +380,19 @@ static unsigned int vfio_migratable_device_num(void)
->       return device_num;
->   }
->   
-> -int vfio_block_multiple_devices_migration(VFIODevice *vbasedev, Error **errp)
-> +bool vfio_block_multiple_devices_migration(VFIODevice *vbasedev, Error **errp)
->   {
->       int ret;
->   
->       if (multiple_devices_migration_blocker ||
->           vfio_migratable_device_num() <= 1) {
-> -        return 0;
-> +        return true;
->       }
->   
->       if (vbasedev->enable_migration == ON_OFF_AUTO_ON) {
->           error_setg(errp, "Migration is currently not supported with multiple "
->                            "VFIO devices");
-> -        return -EINVAL;
-> +        return false;
->       }
->   
->       error_setg(&multiple_devices_migration_blocker,
-> @@ -403,9 +402,15 @@ int vfio_block_multiple_devices_migration(VFIODevice *vbasedev, Error **errp)
->       if (ret < 0) {
->           error_free(multiple_devices_migration_blocker);
->           multiple_devices_migration_blocker = NULL;
-> +    } else {
-> +        /*
-> +         * Only ON_OFF_AUTO_AUTO case, ON_OFF_AUTO_OFF is checked
-> +         * in vfio_migration_realize().
-> +         */
-> +        warn_report("Migration disabled, not support multiple VFIO devices");
->       }
->   
-> -    return ret;
-> +    return !ret;
->   }
->   
->   void vfio_unblock_multiple_devices_migration(void)
-> @@ -420,55 +425,10 @@ void vfio_unblock_multiple_devices_migration(void)
->       multiple_devices_migration_blocker = NULL;
->   }
->   
-> -static bool vfio_viommu_preset(void)
-> +/* Block migration with a vIOMMU */
-> +bool vfio_viommu_preset(VFIODevice *vbasedev)
->   {
-> -    VFIOAddressSpace *space;
-> -
-> -    QLIST_FOREACH(space, &vfio_address_spaces, list) {
-> -        if (space->as != &address_space_memory) {
-> -            return true;
-> -        }
-> -    }
-> -
-> -    return false;
-> -}
-> -
-> -int vfio_block_giommu_migration(VFIODevice *vbasedev, Error **errp)
-> -{
-> -    int ret;
-> -
-> -    if (giommu_migration_blocker ||
-> -        !vfio_viommu_preset()) {
-> -        return 0;
-> -    }
-> -
-> -    if (vbasedev->enable_migration == ON_OFF_AUTO_ON) {
-> -        error_setg(errp,
-> -                   "Migration is currently not supported with vIOMMU enabled");
-> -        return -EINVAL;
-> -    }
-> -
-> -    error_setg(&giommu_migration_blocker,
-> -               "Migration is currently not supported with vIOMMU enabled");
-> -    ret = migrate_add_blocker(giommu_migration_blocker, errp);
-> -    if (ret < 0) {
-> -        error_free(giommu_migration_blocker);
-> -        giommu_migration_blocker = NULL;
-> -    }
-> -
-> -    return ret;
-> -}
-> -
-> -void vfio_migration_finalize(void)
-> -{
-> -    if (!giommu_migration_blocker ||
-> -        vfio_viommu_preset()) {
-> -        return;
-> -    }
-> -
-> -    migrate_del_blocker(giommu_migration_blocker);
-> -    error_free(giommu_migration_blocker);
-> -    giommu_migration_blocker = NULL;
-> +    return vbasedev->group->container->space->as != &address_space_memory;
->   }
->   
->   static void vfio_set_migration_error(int err)
-> diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
-> index 1db7d52ab2c1..84036e5cfc01 100644
-> --- a/hw/vfio/migration.c
-> +++ b/hw/vfio/migration.c
-> @@ -802,13 +802,13 @@ static int vfio_migration_init(VFIODevice *vbasedev)
->       return 0;
->   }
->   
-> -static int vfio_block_migration(VFIODevice *vbasedev, Error *err, Error **errp)
-> +static bool vfio_block_migration(VFIODevice *vbasedev, Error *err, Error **errp)
->   {
->       int ret;
->   
->       if (vbasedev->enable_migration == ON_OFF_AUTO_ON) {
->           error_propagate(errp, err);
-> -        return -EINVAL;
-> +        return false;
->       }
->   
->       vbasedev->migration_blocker = error_copy(err);
-> @@ -818,9 +818,11 @@ static int vfio_block_migration(VFIODevice *vbasedev, Error *err, Error **errp)
->       if (ret < 0) {
->           error_free(vbasedev->migration_blocker);
->           vbasedev->migration_blocker = NULL;
-> +    } else if (vbasedev->enable_migration != ON_OFF_AUTO_OFF) {
-> +        warn_report("%s: Migration disabled", vbasedev->name);
->       }
->   
-> -    return ret;
-> +    return !ret;
->   }
->   
->   /* ---------------------------------------------------------------------- */
-> @@ -835,7 +837,12 @@ void vfio_reset_bytes_transferred(void)
->       bytes_transferred = 0;
->   }
->   
-> -int vfio_migration_realize(VFIODevice *vbasedev, Error **errp)
-> +/*
-> + * Return true when either migration initialized or blocker registered.
-> + * Currently only return false when adding blocker fails which will
-> + * de-register vfio device.
-> + */
-> +bool vfio_migration_realize(VFIODevice *vbasedev, Error **errp)
->   {
->       Error *err = NULL;
->       int ret;
-> @@ -873,18 +880,17 @@ int vfio_migration_realize(VFIODevice *vbasedev, Error **errp)
->                       vbasedev->name);
->       }
->   
-> -    ret = vfio_block_multiple_devices_migration(vbasedev, errp);
-> -    if (ret) {
-> -        return ret;
-> +    if (!vfio_block_multiple_devices_migration(vbasedev, errp)) {
-> +        return false;
->       }
->   
-> -    ret = vfio_block_giommu_migration(vbasedev, errp);
-> -    if (ret) {
-> -        return ret;
-> +    if (vfio_viommu_preset(vbasedev)) {
-> +        error_setg(&err, "%s: Migration is currently not supported "
-> +                   "with vIOMMU enabled", vbasedev->name);
-> +        return vfio_block_migration(vbasedev, err, errp);
->       }
->   
-> -    trace_vfio_migration_realize(vbasedev->name);
-> -    return 0;
-> +    return true;
->   }
->   
->   void vfio_migration_exit(VFIODevice *vbasedev)
-> diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-> index dc69d3031b24..184d08568154 100644
-> --- a/hw/vfio/pci.c
-> +++ b/hw/vfio/pci.c
-> @@ -3209,7 +3209,8 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
->       if (!pdev->failover_pair_id) {
->           ret = vfio_migration_realize(vbasedev, errp);
->           if (ret) {
-> -            error_report("%s: Migration disabled", vbasedev->name);
-> +            trace_vfio_migration_realize(vbasedev->name);
-> +        } else {
->               goto out_vfio_migration;
->           }
->       }
-> @@ -3257,7 +3258,6 @@ static void vfio_instance_finalize(Object *obj)
->        */
->       vfio_put_device(vdev);
->       vfio_put_group(group);
-> -    vfio_migration_finalize();
->   }
->   
->   static void vfio_exitfn(PCIDevice *pdev)
-> diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
-> index 93429b9abba0..3c18572322fc 100644
-> --- a/include/hw/vfio/vfio-common.h
-> +++ b/include/hw/vfio/vfio-common.h
-> @@ -225,9 +225,9 @@ typedef QLIST_HEAD(VFIOGroupList, VFIOGroup) VFIOGroupList;
->   extern VFIOGroupList vfio_group_list;
->   
->   bool vfio_mig_active(void);
-> -int vfio_block_multiple_devices_migration(VFIODevice *vbasedev, Error **errp);
-> +bool vfio_block_multiple_devices_migration(VFIODevice *vbasedev, Error **errp);
->   void vfio_unblock_multiple_devices_migration(void);
-> -int vfio_block_giommu_migration(VFIODevice *vbasedev, Error **errp);
-> +bool vfio_viommu_preset(VFIODevice *vbasedev);
->   int64_t vfio_mig_bytes_transferred(void);
->   void vfio_reset_bytes_transferred(void);
->   
-> @@ -252,8 +252,7 @@ int vfio_spapr_create_window(VFIOContainer *container,
->   int vfio_spapr_remove_window(VFIOContainer *container,
->                                hwaddr offset_within_address_space);
->   
-> -int vfio_migration_realize(VFIODevice *vbasedev, Error **errp);
-> +bool vfio_migration_realize(VFIODevice *vbasedev, Error **errp);
->   void vfio_migration_exit(VFIODevice *vbasedev);
-> -void vfio_migration_finalize(void);
->   
->   #endif /* HW_VFIO_VFIO_COMMON_H */
+>> Could you show the command line please?
+>=20
+> Akhido mentioned this in the other thread. Basically For QEMU:
+>=20
+> -device pcie-root-port,id=3Dp -device igb,bus=3Dp
+>=20
+> Then from within the guest (in my case RHEL 9.2):
+>=20
+> $ echo 7 > /sys/bus/pci/devices/0000\:01\:00.0/sriov_numvfs
+>=20
+> You=E2=80=99ll find that if you use something more than 7 there will =
+be ERANGE from the guest kernel because the driver can create maximum 7 =
+vfs.
+> This above command line will fail if we do not check for !vfs in the =
+patch with the following error from QEMU:
+>=20
+> (qemu) qemu-system-x86_64: PCI: slot 16 is not valid for igbvf, parent =
+device only allows plugging into slot 0.
+>=20
+> and an IO error on the write from the guest kernel.
+>=20
+> In the current version of the patch with the vf check, you will find =
+the vfs created with the addresses:
+>=20
+> 01:10.{2,4,6,8} and 01.11.{2,4,6} , that is bus 1 for the root port, =
+devices 10 and 11, functions 2,4,6,8 etc.
+>=20
+> There would be no error from QEMU.
+>=20
+>>=20
+>>>>=20
+>>>>> The vfs are seen to have non-zero device/slot numbers in the =
+conventional
+>>>>> PCI BDF representation.
+>>>>>=20
+>>>>> CC: jusual@redhat.com
+>>>>> CC: imammedo@redhat.com
+>>>>> CC: akihiko.odaki@daynix.com
+>>>>>=20
+>>>>> Resolves: https://bugzilla.redhat.com/show_bug.cgi?id=3D2128929
+>>>>> Signed-off-by: Ani Sinha <anisinha@redhat.com>
+>>>>> Reviewed-by: Julia Suvorova <jusual@redhat.com>
+>>>>> ---
+>>>>> hw/pci/pci.c | 15 +++++++++++++++
+>>>>> 1 file changed, 15 insertions(+)
+>>>>>=20
+>>>>> diff --git a/hw/pci/pci.c b/hw/pci/pci.c
+>>>>> index e2eb4c3b4a..0320ac2bb3 100644
+>>>>> --- a/hw/pci/pci.c
+>>>>> +++ b/hw/pci/pci.c
+>>>>> @@ -65,6 +65,7 @@ bool pci_available =3D true;
+>>>>> static char *pcibus_get_dev_path(DeviceState *dev);
+>>>>> static char *pcibus_get_fw_dev_path(DeviceState *dev);
+>>>>> static void pcibus_reset(BusState *qbus);
+>>>>> +static bool pcie_has_upstream_port(PCIDevice *dev);
+>>>>>=20
+>>>>> static Property pci_props[] =3D {
+>>>>>   DEFINE_PROP_PCI_DEVFN("addr", PCIDevice, devfn, -1),
+>>>>> @@ -1190,6 +1191,20 @@ static PCIDevice =
+*do_pci_register_device(PCIDevice *pci_dev,
+>>>>>                  name);
+>>>>>=20
+>>>>>      return NULL;
+>>>>> +    } /*
+>>>>> +       * With SRIOV and ARI, vfs can have non-zero slot in the =
+conventional
+>>>>> +       * PCI interpretation as all five bits reserved for slot =
+addresses are
+>>>>> +       * also used for function bits for the various vfs. Ignore =
+that case.
+>>>>> +       * It is too early here to check for ARI capabilities in =
+the PCI config
+>>>>> +       * space. Hence, we check for a vf device instead.
+>>>>> +       */
+>>>>> +    else if (!pci_is_vf(pci_dev) &&
+>>>>> +             pcie_has_upstream_port(pci_dev) &&
+>>>>> +             PCI_SLOT(devfn)) {
+>>>>> +        error_setg(errp, "PCI: slot %d is not valid for %s,"
+>>>>> +                   " parent device only allows plugging into slot =
+0.",
+>>>>> +                   PCI_SLOT(devfn), name);
+>>>>> +        return NULL;
+>>>>>   }
+>>>>>=20
+>>>>>   pci_dev->devfn =3D devfn;
+>>>>> --=20
+>>>>> 2.39.1
 
 
