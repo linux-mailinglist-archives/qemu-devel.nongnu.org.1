@@ -2,105 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D365A7420B9
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 09:05:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13AC07420D1
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 09:15:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qElhn-00063L-1m; Thu, 29 Jun 2023 03:04:39 -0400
+	id 1qElqz-000067-QF; Thu, 29 Jun 2023 03:14:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fbarrat@linux.ibm.com>)
- id 1qElhi-0005vP-TD; Thu, 29 Jun 2023 03:04:35 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qElqx-00005i-IX
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 03:14:07 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fbarrat@linux.ibm.com>)
- id 1qElhd-0001Rs-Kp; Thu, 29 Jun 2023 03:04:34 -0400
-Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 35T6wumW006662; Thu, 29 Jun 2023 07:04:19 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=pXWJaEWqaqgDz9aA6cjIaDLwncdD88Fud5d6zE7oMew=;
- b=GliT57wllNo80blH3HytK70kAvWyH0gB1NseHaO+wDoYKwksTSiCTWGoyfbiBipwg6rQ
- MlP7L+v2hS2+b1PaNz9KQx9g9zQ2mxNTLcBot7M8YHTOuuKY0HY/9BNIjhzFgbyXTjrF
- sSM3xK86MFAYu0iwRh4rarTTMXyscBf46SOivMhpEvz2Eehb5mkrwhjngqgf3GRWtZDz
- 1EAtLQhTmVZP0PP0jZM3IobbjVOiwUMzS8nG+qfaGO2HV5unhzAlFDYNySYCztGPg+dy
- A1M2Ar09tDmMnGteB11paa38fMTmnNSXK34UkI81pnR1zMalokL4HOmCB/1bTuxIYSlP Dg== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rh55ug3r6-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 29 Jun 2023 07:04:18 +0000
-Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 35T70Ulm011402;
- Thu, 29 Jun 2023 07:04:18 GMT
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.102])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rh55ug3qd-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 29 Jun 2023 07:04:18 +0000
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
- by ppma06ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 35T2pSxA026359;
- Thu, 29 Jun 2023 07:04:16 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
- by ppma06ams.nl.ibm.com (PPS) with ESMTPS id 3rdqre378b-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 29 Jun 2023 07:04:16 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com
- [10.20.54.100])
- by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 35T74E6J43909674
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 29 Jun 2023 07:04:14 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E94CA20040;
- Thu, 29 Jun 2023 07:04:13 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5C3F22004D;
- Thu, 29 Jun 2023 07:04:13 +0000 (GMT)
-Received: from [9.171.5.151] (unknown [9.171.5.151])
- by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 29 Jun 2023 07:04:13 +0000 (GMT)
-Message-ID: <e793d122-91fd-41ad-7151-b97073ac9753@linux.ibm.com>
-Date: Thu, 29 Jun 2023 09:04:12 +0200
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qElqv-0005Fd-26
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 03:14:06 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1688022843;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=/QEhG9UJj+Amcskzq6x047pLj+1zs8AL+K4iBjKompQ=;
+ b=H4JG7eR/ZC3MP5+zUMub61hsnwRB11L6smCzk7gSs/ecw/wXluVmX9W9f60sjsXB/MZr2e
+ JyqCuYcSwm7xN9Q3Pn/kP7rmXwOBAYT4k2X9utRvfMhOoLPz0oIzpJE+eCnw1Sm2mFBCB2
+ aalU1D6cVxmnW9J7QWkxFj9qxymjtB8=
+Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
+ [209.85.208.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-259-KnBDFcCjNxubuQJofWIvsA-1; Thu, 29 Jun 2023 03:13:59 -0400
+X-MC-Unique: KnBDFcCjNxubuQJofWIvsA-1
+Received: by mail-lj1-f198.google.com with SMTP id
+ 38308e7fff4ca-2b620465d0eso3192591fa.0
+ for <qemu-devel@nongnu.org>; Thu, 29 Jun 2023 00:13:58 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1688022837; x=1690614837;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=/QEhG9UJj+Amcskzq6x047pLj+1zs8AL+K4iBjKompQ=;
+ b=AvGW8VGm3oh7N+OYKaarzil1nmnlniwB0KI1wCeUhVEyXKPBJ4/ELW7T0hmn1k8u2k
+ ehs/X1jCN7CjDpx6lB2w0qbjqFKFPFx6XeHttolzAr4o9x8AZIvTB68epqiPmZdRGPmo
+ mg8EsXGRXA/I8KhtgmUXIQ5gjttFqJTKQpm6SLNGC7m9rLV3z4nKz5swzsbVSSCLUjks
+ f9vD97FGkgYP6mvffAN1/igq/FxF50KKlrxm+g4HwRwC4iD0nW8y+DmR+1tNBr8t2GSz
+ 28POFqgwJHQYownssVhE8j8wrPctip03zRJJIvf3GjvNHLH2/4fEXi7VmLknvXm+n6St
+ 7i4Q==
+X-Gm-Message-State: AC+VfDzZe1snQnJEp2L3yTp6Sr/y+d+s4LvJHBEuXJvQ69EvsOOlA7uB
+ MvdjN4qK7YqjvXNNZgX2HJMBve9WaPW/7BJmrWfBf1lhhhscAWsur1R7Z1BI+Pw52Aw6EjMXXRL
+ 17FO6c7usFdF353fG/+qRi9k=
+X-Received: by 2002:a2e:b163:0:b0:2b6:a08d:e142 with SMTP id
+ a3-20020a2eb163000000b002b6a08de142mr7659559ljm.7.1688022837035; 
+ Thu, 29 Jun 2023 00:13:57 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4xEso6o2JNpGz71RZP8k2R9XxGe72isPuJunURk9oRMi6nE/svJHFOfWQiylSjxMrOLfc08Q==
+X-Received: by 2002:a2e:b163:0:b0:2b6:a08d:e142 with SMTP id
+ a3-20020a2eb163000000b002b6a08de142mr7659549ljm.7.1688022836624; 
+ Thu, 29 Jun 2023 00:13:56 -0700 (PDT)
+Received: from redhat.com ([2a02:14f:179:4322:e639:6002:3388:4c85])
+ by smtp.gmail.com with ESMTPSA id
+ q20-20020a1cf314000000b003f90b9b2c31sm18903472wmq.28.2023.06.29.00.13.54
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 29 Jun 2023 00:13:55 -0700 (PDT)
+Date: Thu, 29 Jun 2023 03:13:52 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Rma Ma <rma.ma@jaguarmicro.com>
+Cc: qemu-devel <qemu-devel@nongnu.org>
+Subject: Re: [PATCH] vhost-user: use new thread to loop backend channel.
+Message-ID: <20230629030821-mutt-send-email-mst@kernel.org>
+References: <20230629065415.8211-1-rma.ma@jaguarmicro.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH] hw/ppc: Fix clock update drift
-Content-Language: en-US
-To: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org, Daniel Henrique Barboza <danielhb413@gmail.com>,
- =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
- David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-stable@nongnu.org
-References: <20230629020713.327745-1-npiggin@gmail.com>
-From: Frederic Barrat <fbarrat@linux.ibm.com>
-In-Reply-To: <20230629020713.327745-1-npiggin@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: WbwLKTXrfw2ZEXxauGlUUxsx6vGrM35e
-X-Proofpoint-GUID: BsO7PP3tjXEAtJDgeAWTtWKC9N2bOPVo
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-06-28_14,2023-06-27_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0
- mlxlogscore=999 priorityscore=1501 lowpriorityscore=0 phishscore=0
- clxscore=1011 malwarescore=0 adultscore=0 mlxscore=0 suspectscore=0
- spamscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2305260000 definitions=main-2306290061
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=fbarrat@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230629065415.8211-1-rma.ma@jaguarmicro.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.089,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -116,123 +96,145 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Thu, Jun 29, 2023 at 02:54:15PM +0800, Rma Ma wrote:
+> fix: QEMU deadlock with dpdk-vdpa
+> 
+> QEMU start vhost-user with modern net and blk, backend use dpdk-vdpa process,
+> after live migration, dest QEMU deadlock with dpdk-vdpa
+> 
+> - QEMU sends VHOST_USER_SET_VRING_KICK to dpdk-vdpa net
+> - QEMU does not need to wait for a response to this message
+> - QEMU then sends VHOST_USER_SET_MEM_TABLE to dpdk-vdpa blk
+> - QEMU needs to wait reply in this message
+> - when dpdk-vdpa recv VHOST_USER_SET_VRING_KICK, it will send VHOST_USER_BACKEND_VRING_HOST_NOTIFIER_MSG to QEMU
+> - dpdk-vdpa needs to wait for a response to this message
+> - since QEMU vhost_user_read and backend channel are synchronous in the same thread
+> - QEMU will deadlock with dpdk-vdpa
+> 
+> Signed-off-by: Rma Ma <rma.ma@jaguarmicro.com>
+
+Hmm this will need some thought. I'm concerned that this
+is making what was previously a simple synchronous
+code, multithreaded.
+
+Also I feel dpdk needs to fix this too.
+
+Let's document in the doc that when backend is allowed to send messages
+(VHOST_USER_PROTOCOL_F_BACKEND_REQ) , neither side is allowed to block
+processing incoming messsages while waiting for response.
 
 
-On 29/06/2023 04:07, Nicholas Piggin wrote:
-> The clock update logic reads the clock twice to compute the new clock
-> value, with a value derived from the later time subtracted from a value
-> derived from the earlier time. The delta causes time to be lost.
-> 
-> This can ultimately result in time becoming unsynchronized between CPUs
-> and that can cause OS lockups, timeouts, watchdogs, etc. This can be
-> seen running a KVM guest (that causes lots of TB updates) on a powernv
-> SMP machine.
-> 
-> Fix this by reading the clock once.
-> 
-> Cc: qemu-stable@nongnu.org
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > ---
-
-
-Nice! It must have been a nightmare to debug.
-Do you know where that ATB spr comes from? I can't relate it to the ISA.
-
-Reviewed-by: Frederic Barrat <fbarrat@linux.ibm.com>
-
-
-
-> I also made a test case that can trigger this with kvm-unit-tests, but
-> it's been taking me a while to get that upstreamed.
+>  hw/virtio/vhost-user.c | 67 ++++++++++++++++++++++++++++++++++++++----
+>  1 file changed, 61 insertions(+), 6 deletions(-)
 > 
-> Thanks,
-> Nick
-> 
->   hw/ppc/ppc.c | 33 +++++++++++++++++----------------
->   1 file changed, 17 insertions(+), 16 deletions(-)
-> 
-> diff --git a/hw/ppc/ppc.c b/hw/ppc/ppc.c
-> index 82e4408c5c..6233f43c01 100644
-> --- a/hw/ppc/ppc.c
-> +++ b/hw/ppc/ppc.c
-> @@ -535,23 +535,24 @@ static inline void cpu_ppc_store_tb(ppc_tb_t *tb_env, uint64_t vmclk,
->   void cpu_ppc_store_tbl (CPUPPCState *env, uint32_t value)
->   {
->       ppc_tb_t *tb_env = env->tb_env;
-> +    int64_t clock = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
->       uint64_t tb;
->   
-> -    tb = cpu_ppc_get_tb(tb_env, qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL), tb_env->tb_offset);
-> +    tb = cpu_ppc_get_tb(tb_env, clock, tb_env->tb_offset);
->       tb &= 0xFFFFFFFF00000000ULL;
-> -    cpu_ppc_store_tb(tb_env, qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL),
-> -                     &tb_env->tb_offset, tb | (uint64_t)value);
-> +    cpu_ppc_store_tb(tb_env, clock, &tb_env->tb_offset, tb | (uint64_t)value);
->   }
->   
->   static inline void _cpu_ppc_store_tbu(CPUPPCState *env, uint32_t value)
->   {
->       ppc_tb_t *tb_env = env->tb_env;
-> +    int64_t clock = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
->       uint64_t tb;
->   
-> -    tb = cpu_ppc_get_tb(tb_env, qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL), tb_env->tb_offset);
-> +    tb = cpu_ppc_get_tb(tb_env, clock, tb_env->tb_offset);
->       tb &= 0x00000000FFFFFFFFULL;
-> -    cpu_ppc_store_tb(tb_env, qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL),
-> -                     &tb_env->tb_offset, ((uint64_t)value << 32) | tb);
-> +    cpu_ppc_store_tb(tb_env, clock, &tb_env->tb_offset,
-> +                     ((uint64_t)value << 32) | tb);
->   }
->   
->   void cpu_ppc_store_tbu (CPUPPCState *env, uint32_t value)
-> @@ -584,23 +585,24 @@ uint32_t cpu_ppc_load_atbu (CPUPPCState *env)
->   void cpu_ppc_store_atbl (CPUPPCState *env, uint32_t value)
->   {
->       ppc_tb_t *tb_env = env->tb_env;
-> +    int64_t clock = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
->       uint64_t tb;
->   
-> -    tb = cpu_ppc_get_tb(tb_env, qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL), tb_env->atb_offset);
-> +    tb = cpu_ppc_get_tb(tb_env, clock, tb_env->atb_offset);
->       tb &= 0xFFFFFFFF00000000ULL;
-> -    cpu_ppc_store_tb(tb_env, qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL),
-> -                     &tb_env->atb_offset, tb | (uint64_t)value);
-> +    cpu_ppc_store_tb(tb_env, clock, &tb_env->atb_offset, tb | (uint64_t)value);
->   }
->   
->   void cpu_ppc_store_atbu (CPUPPCState *env, uint32_t value)
->   {
->       ppc_tb_t *tb_env = env->tb_env;
-> +    int64_t clock = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
->       uint64_t tb;
->   
-> -    tb = cpu_ppc_get_tb(tb_env, qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL), tb_env->atb_offset);
-> +    tb = cpu_ppc_get_tb(tb_env, clock, tb_env->atb_offset);
->       tb &= 0x00000000FFFFFFFFULL;
-> -    cpu_ppc_store_tb(tb_env, qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL),
-> -                     &tb_env->atb_offset, ((uint64_t)value << 32) | tb);
-> +    cpu_ppc_store_tb(tb_env, clock, &tb_env->atb_offset,
-> +                     ((uint64_t)value << 32) | tb);
->   }
->   
->   uint64_t cpu_ppc_load_vtb(CPUPPCState *env)
-> @@ -622,14 +624,13 @@ void cpu_ppc_store_vtb(CPUPPCState *env, uint64_t value)
->   void cpu_ppc_store_tbu40(CPUPPCState *env, uint64_t value)
->   {
->       ppc_tb_t *tb_env = env->tb_env;
-> +    int64_t clock = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
->       uint64_t tb;
->   
-> -    tb = cpu_ppc_get_tb(tb_env, qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL),
-> -                        tb_env->tb_offset);
-> +    tb = cpu_ppc_get_tb(tb_env, clock, tb_env->tb_offset);
->       tb &= 0xFFFFFFUL;
->       tb |= (value & ~0xFFFFFFUL);
-> -    cpu_ppc_store_tb(tb_env, qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL),
-> -                     &tb_env->tb_offset, tb);
-> +    cpu_ppc_store_tb(tb_env, clock, &tb_env->tb_offset, tb);
->   }
->   
->   static void cpu_ppc_tb_stop (CPUPPCState *env)
+> diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c 
+> index c4e0cbd702..1f6b3a5a63 100644
+> --- a/hw/virtio/vhost-user.c
+> +++ b/hw/virtio/vhost-user.c
+> @@ -274,6 +274,17 @@ struct scrub_regions {
+>      int fd_idx;
+>  };
+>  
+> +struct backend_thread {
+> +    QemuThread thread;
+> +    QemuSemaphore init_done_sem;
+> +    int thread_id;
+> +    GMainContext *ctxt;
+> +    GMainLoop *loop;
+> +};
+> +
+> +static struct backend_thread *backend_th;
+> +static bool backend_thread_run;
+> +
+>  static bool ioeventfd_enabled(void)
+>  {
+>      return !kvm_enabled() || kvm_eventfds_enabled();
+> @@ -1696,7 +1707,8 @@ fdcleanup:
+>      return rc;
+>  }
+>  
+> -static int vhost_setup_backend_channel(struct vhost_dev *dev)
+> +static int vhost_setup_backend_channel(struct vhost_dev *dev,
+> +                                       GMainContext *ctxt)
+>  {
+>      VhostUserMsg msg = {
+>          .hdr.request = VHOST_USER_SET_BACKEND_REQ_FD,
+> @@ -1728,7 +1740,7 @@ static int vhost_setup_backend_channel(struct vhost_dev *dev)
+>      u->backend_ioc = ioc;
+>      u->backend_src = qio_channel_add_watch_source(u->backend_ioc,
+>                                                  G_IO_IN | G_IO_HUP,
+> -                                                backend_read, dev, NULL, NULL);
+> +                                                backend_read, dev, NULL, ctxt);
+>  
+>      if (reply_supported) {
+>          msg.hdr.flags |= VHOST_USER_NEED_REPLY_MASK;
+> @@ -1981,6 +1993,42 @@ static int vhost_user_postcopy_notifier(NotifierWithReturn *notifier,
+>      return 0;
+>  }
+>  
+> +static void *vhost_backend_channel_worker(void *opaque)
+> +{
+> +    struct backend_thread *backend_th = opaque;
+> +
+> +    rcu_register_thread();
+> +
+> +    backend_th->ctxt = g_main_context_new();
+> +    backend_th->loop = g_main_loop_new(backend_th->ctxt, false);
+> +    backend_th->thread_id = qemu_get_thread_id();
+> +
+> +    qemu_sem_post(&backend_th->init_done_sem);
+> +
+> +    g_main_loop_run(backend_th->loop);
+> +
+> +    g_main_loop_unref(backend_th->loop);
+> +    g_main_context_unref(backend_th->ctxt);
+> +    g_free(backend_th);
+> +    rcu_unregister_thread();
+> +    return NULL;
+> +}
+> +
+> +static void vhost_backend_thread_init(void)
+> +{
+> +    backend_th = g_malloc0(sizeof(struct backend_thread));
+> +    backend_th->thread_id = -1;
+> +    qemu_sem_init(&backend_th->init_done_sem, 0);
+> +
+> +    qemu_thread_create(&backend_th->thread, "backend-channel-worker",
+> +                       vhost_backend_channel_worker, backend_th,
+> +                       QEMU_THREAD_DETACHED);
+> +
+> +    while (backend_th->thread_id == -1) {
+> +        qemu_sem_wait(&backend_th->init_done_sem);
+> +    }
+> +}
+> +
+>  static int vhost_user_backend_init(struct vhost_dev *dev, void *opaque,
+>                                     Error **errp)
+>  {
+> @@ -2108,10 +2156,17 @@ static int vhost_user_backend_init(struct vhost_dev *dev, void *opaque,
+>      }
+>  
+>      if (dev->vq_index == 0) {
+> -        err = vhost_setup_backend_channel(dev);
+> -        if (err < 0) {
+> -            error_setg_errno(errp, EPROTO, "vhost_backend_init failed");
+> -            return -EPROTO;
+> +        if (!backend_thread_run) {
+> +            vhost_backend_thread_init();
+> +            backend_thread_run = true;
+> +        }
+> +
+> +        if (backend_thread_run && backend_th) {
+> +            err = vhost_setup_backend_channel(dev, backend_th->ctxt);
+> +            if (err < 0) {
+> +                error_setg_errno(errp, EPROTO, "vhost_backend_init failed");
+> +                return -EPROTO;
+> +            }
+>          }
+>      }
+>  
+> -- 
+> 2.17.1
+
 
