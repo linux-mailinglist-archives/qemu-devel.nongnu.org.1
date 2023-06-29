@@ -2,89 +2,123 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C15B67420A5
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 08:48:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE3117426E0
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 15:03:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qElR5-0002nC-E5; Thu, 29 Jun 2023 02:47:23 -0400
+	id 1qErHd-0004mR-OH; Thu, 29 Jun 2023 09:02:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qElQv-0002mZ-ET
- for qemu-devel@nongnu.org; Thu, 29 Jun 2023 02:47:13 -0400
-Received: from mail-ot1-x331.google.com ([2607:f8b0:4864:20::331])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qElQt-0004Xr-Gu
- for qemu-devel@nongnu.org; Thu, 29 Jun 2023 02:47:13 -0400
-Received: by mail-ot1-x331.google.com with SMTP id
- 46e09a7af769-6b74e2d8c98so323106a34.2
- for <qemu-devel@nongnu.org>; Wed, 28 Jun 2023 23:47:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1688021229; x=1690613229;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=RLUv3JkR/493FEh/mC3hqC02p+R4kbf0Ivsten6bGqQ=;
- b=Fyx4OsXucnnd2Duq4cleL5g3rlwP2qmMT9kyURSoQeogOHulQvn0O3an+XkEcDuyJ1
- u8oQRCHceoAiFC0Nq2nEgPtXFVyDzP8VHl7Nf5v4RYnTGr8KDn7k2Hs1FotSxh7bHbyD
- trGSnRGsthxKqZWih/lAbiLtAxYbY0EFireOflYhPdC2xY9HTr5fIF6Rta+bX8FtAd3y
- IZQ7UJh/7j9RuyBkw9sfD+h7rtk5tQNeDz8O3fePtASScNziVg0SXqdcYMjcweXPAtAm
- oQNKQm2pdoF5n4VF8C9u1Br1dJySiwoeKSgI4jd1B6Dg6VN5lkJHnJOn1PdnhUtMdi/Y
- 3WhQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688021229; x=1690613229;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=RLUv3JkR/493FEh/mC3hqC02p+R4kbf0Ivsten6bGqQ=;
- b=Bm6L86uVM2csCDTikP9NlAimMdzfyT2HBegbeEZsXhbWbRBhnC53+edEhLS7TkZ6jd
- nMidwuz8u10PM7t+m/cmw7W9xJ6TL2VcR2b7f7KqLU6tpiQaMagQYvVhx9voIAg+UbvA
- nqfYyYj4R2AOiAI78uapDj7KdyAdoYX3E1DU//Teb+fgbi7RzdsyI+iL0ZqaU/UTuh/q
- ia5goG7l+SLvqmEoDqmWOLNi9IoP85qadHZPGcXrMRXE5BfmGKD8QVeNQ+lT9Bmy03J6
- xgwItQuj/sjQfY7Ly9VjTssBdXKy/up5HN0XVcEpErOjRqYlRRhSjhROzdxLkaEVBXzA
- WXHg==
-X-Gm-Message-State: AC+VfDyzfVDeF2+qfEGI5UU1rrrOM7n/CvmDAP4WY5i0txEe7ljS6Swe
- 8Yq4ltcgal2aaiVehUi2oyo5Ew==
-X-Google-Smtp-Source: ACHHUZ5ugAeoJln3/kXwY55iMWCZj0hM0Xv2Y4ouAMqq5u9qtbr6+SRyNHbYkvhMte8jKocEN6lk4g==
-X-Received: by 2002:a05:6808:984:b0:3a3:6506:2ec2 with SMTP id
- a4-20020a056808098400b003a365062ec2mr4210516oic.35.1688021229134; 
- Wed, 28 Jun 2023 23:47:09 -0700 (PDT)
-Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
- ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
- by smtp.gmail.com with ESMTPSA id
- g7-20020aa78187000000b006687da3db65sm7857013pfi.75.2023.06.28.23.47.07
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 28 Jun 2023 23:47:08 -0700 (PDT)
-Message-ID: <8d382e8b-088b-f0af-eec4-a85ee513b4ae@daynix.com>
-Date: Thu, 29 Jun 2023 15:47:06 +0900
+ (Exim 4.90_1) (envelope-from <rma.ma@jaguarmicro.com>)
+ id 1qEldS-0005Nx-6w
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 03:00:10 -0400
+Received: from mail-tyzapc01on2055.outbound.protection.outlook.com
+ ([40.107.117.55] helo=APC01-TYZ-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <rma.ma@jaguarmicro.com>)
+ id 1qEldN-000099-Tl
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 03:00:09 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=WsAfCX1TCoP6BlMIo6LM3V8lkVk9H1PIwd+PUcdps9fEkG41/hWHFGBXCwgY8QXMfNbh+u8FNYFeTfnZ3Axa4lw0BwF6XMnOC5aHDHXlAjS+egFpCXkM4RViGJ/tztTmZHaNq0R0Xwy15SwWBKfSAyA+D+NEqi8Ynxwvahz5+ZLKnNklI3IqbuYdPsD+dGOPczQHJ2A/BlkX793jEw5YOtiqZO3mq/a2oOISWonn78xz0JXOOvUS2DeuGiRic1Es+Jr0YpcZvKLfzOlWr+WcG6VpQcIdZ0Va1mncsBt/wjBN8h79fdZ3unrevEBgNRKWSfzSKqP6E+RfY/Vg2l4GLw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=uWh+04QVFHsibNmGGJzY9lNvad0hSlEXveaYdLU7Lwk=;
+ b=N9iBYfPKoFHNEKeDjYXRzTGGZxk02rIChjxzQ3XR7UXVVOuduHXW3nLfv78ThWSgkBbeaBplk1YGjDZkBsPhtXzTGiDENlu2GLVvvN1iiItISOFDq4PRbY6WHgmQe4QDLkbximc+jp7Q7Vf2aS/Eg83RrrDZ+mZO3ONAMdHmLPJIJiF7Paie5S692ACWgPxlmKIwROwnRf2LoMWwnzmc+4RedST5sXfbmdS3gopCMy5RbtODAvH3L2ejA+4G7qxoEgRU9cJL9c0he6C6Q4YWp3B+rsSh5HDuvmlJ99RYjrZLdsgc+VV1tsvmAuR8VcSNZzJrJC3W9vVt2vXQNuMvRw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=jaguarmicro.com; dmarc=pass action=none
+ header.from=jaguarmicro.com; dkim=pass header.d=jaguarmicro.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jaguarmicro.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=uWh+04QVFHsibNmGGJzY9lNvad0hSlEXveaYdLU7Lwk=;
+ b=aay5AvuoTcD8hEeL45av4yD1dUOjWxgi1/+waFD2NEP7Hs4dtcsgACD+xJtyQ1pAKdaG6TKnombULq0cyqNFt2+KQXU95Yd5q5o3rP2nquanjdhGJF3FK3UbKzafgPPFCvuLGn4g0GMK3G2jf60sTvxcOyiWzvni6oXy2iXuYsPjvNOz6tPuXu4XGvkwbH2Lf+wdoIcsbTtvXuAXgibOmJjMYCszVRGKKIf5VurP9s4OHUReLBXrLgpX2ouUG/HrjSnqnJNFMMRbaHuhMgaXMxAjViKSMPtqQlmX/T+MJ1L25eEqV8tQVhe0hBsx/G9lPpgiUBQXh/mA+SCJwmb/ng==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=jaguarmicro.com;
+Received: from SI2PR06MB4752.apcprd06.prod.outlook.com (2603:1096:4:14c::14)
+ by TYUPR06MB6269.apcprd06.prod.outlook.com (2603:1096:400:351::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6521.23; Thu, 29 Jun
+ 2023 06:54:57 +0000
+Received: from SI2PR06MB4752.apcprd06.prod.outlook.com
+ ([fe80::25f2:1ee4:9de:7b00]) by SI2PR06MB4752.apcprd06.prod.outlook.com
+ ([fe80::25f2:1ee4:9de:7b00%3]) with mapi id 15.20.6521.026; Thu, 29 Jun 2023
+ 06:54:56 +0000
+From: Rma Ma <rma.ma@jaguarmicro.com>
+To: qemu-devel <qemu-devel@nongnu.org>
+Cc: "Michael S . Tsirkin" <mst@redhat.com>,
+	Rma Ma <rma.ma@jaguarmicro.com>
+Subject: [PATCH] vhost-user: use new thread to loop backend channel.
+Date: Thu, 29 Jun 2023 14:54:15 +0800
+Message-Id: <20230629065415.8211-1-rma.ma@jaguarmicro.com>
+X-Mailer: git-send-email 2.17.1
+Content-Type: text/plain
+X-ClientProxiedBy: SI1PR02CA0030.apcprd02.prod.outlook.com
+ (2603:1096:4:1f4::8) To KL1PR0601MB4753.apcprd06.prod.outlook.com
+ (2603:1096:820:92::13)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH v6 5/5] hw/pci: ensure PCIE devices are plugged into only
- slot 0 of PCIE port
-Content-Language: en-US
-To: Ani Sinha <anisinha@redhat.com>, qemu-devel@nongnu.org,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Cc: jusual@redhat.com, imammedo@redhat.com
-References: <20230629040707.115656-1-anisinha@redhat.com>
- <20230629040707.115656-6-anisinha@redhat.com>
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <20230629040707.115656-6-anisinha@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::331;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-ot1-x331.google.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SI2PR06MB4752:EE_|TYUPR06MB6269:EE_
+X-MS-Office365-Filtering-Correlation-Id: a4cfd355-dc8a-4241-c6be-08db786dbf34
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: r1dcAKcC/7Tjq1CQPwGqUYj4fcYU/bHOMYmjfXq52Wb7n9E4CLgXRdZJRD2y/Xq4FyjGg+eQr6/6jtMHKwXdh2jXCJvnvcTVqfqr3eZ75TJzPEfAjLwlRgutrjNJYkRIDRbeA1IR8M7RDcxncTLAblXNy2UYP+3vHaxjPU9jjYBFoSKIWrq10pVDzP9xwOAr5BAjWYSV6Z4NFnfepJtvD9uSug1F5FovypKii1hm5sLTb953Ff6RwHL5TriK+DJbtdt4L/xQ20EsSKdB8qESAj5li8xxPaCiMhx1CwzHkAOwXPKm8oze041Qb94im5D5N4iIvvrgfFqUXpGb+mZ0HdPr/dDhrazDVec7geqIkNzkiOxWj/V26chdTtajJqsGS6kQbALgTQQHlX76BJBEtUMZCCQM2pT+Yk6Dlc1I3YraHkytz47MHRvZXLvxOAQFNo2Hvv/EHdHLEOO49s5OEJzIMr+0aUxM86bNBpiulKoYmBIEdcwtpo46k7+moiy2wJ929TBXggGub9wqaodvBkQHKg4qZvTZWznkzkO7694aY0JCSI6fM8SWK+WhLC/i7p7a3FoYp9QeTWy1KjHewJuh4fwfq/UqnCym2MRgzE+BtU1uW8L3RTqJF7zg2kfb
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:SI2PR06MB4752.apcprd06.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230028)(366004)(136003)(396003)(39830400003)(376002)(346002)(451199021)(6512007)(26005)(36756003)(66946007)(44832011)(41300700001)(86362001)(6916009)(38350700002)(66556008)(4326008)(8676002)(8936002)(66476007)(38100700002)(316002)(107886003)(6506007)(5660300002)(6486002)(2906002)(186003)(6666004)(83380400001)(54906003)(1076003)(478600001)(2616005)(52116002);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?6M1nS2+WeFAqDs2u6aXlAtVbQ7+Yr9zOknoKrEyAgKlbT6hRTsKVlvglQLk7?=
+ =?us-ascii?Q?nitGU/wo9RD2i7PgMo0yqDIuL2kPYiE/n639EDwU/x5icImJP+NKVd0x3V5q?=
+ =?us-ascii?Q?ntHXtbP73FrJETk7XeLgy2+Q16hZNdCFqbx7uHWuBPdW7cxDIURSRTox+V+Y?=
+ =?us-ascii?Q?3//sSjPIm8nWGQIlBud9r16RwEtZzM9h9d2CdC8yVut21mghfSk80KMSHhfx?=
+ =?us-ascii?Q?WdgofkMO6zs9tc7oZ8W2b7hVr43Xxsuc7e5c4q+sJxkFHKSYJbjU9VkKyDgG?=
+ =?us-ascii?Q?7nWTLGBZjLkk5uJt3jr8RLAKq5gspdrooSJVuKsG7re9RGFbzN2tXp9Eq0hK?=
+ =?us-ascii?Q?z+n+tR6eYdjenqyhNcvlmVq4Uc1X8JlKdpV57fOEvRCqBQfhw7aESd1fwGIr?=
+ =?us-ascii?Q?ifLPFmifx7JSS/2Ml/mm+0U9Be7WPPhO9k9JVreTdqN6oUveMB5fMH8lJj2z?=
+ =?us-ascii?Q?OmEOj5J1V1O9PoIzW8MfbBXuUJtEMeRPZoztxFHOxoLiYvk9Zdh9fB6Pt5r2?=
+ =?us-ascii?Q?RU4RhJ92rt5rlPVKGnLJZVZfNpskyEAdVWtxOtf6lRNMCX9bdk60Yn6ViLdg?=
+ =?us-ascii?Q?IJEJqRW9sEHnSHgqBCo8r24Cdk1EmwIYRx7P7arQGXp0qZA/Yy+trGO0OQgm?=
+ =?us-ascii?Q?rIcOild7QGCQDDZcuX18SOm0WEhkRXCfak3P4DKLNbepFPM0pVwHOQM/cFnv?=
+ =?us-ascii?Q?rCn55naH9L6PwLe6V0pa70w79La9XMTUr6WzLJ8FWpdzitxNpx8Y1yDEIMtH?=
+ =?us-ascii?Q?BiyzttCCUxXCCYmIWKA0rCRoeT02iTKNFcry5QNOBUZKLDyTn3l7c1VNpkC1?=
+ =?us-ascii?Q?hH00wTp2L/9E33C+Auk+SgegpgUZ16AnfDEtS6rIBwUPUKxga2hSfxNoaOuo?=
+ =?us-ascii?Q?Dm/11DVzoOXGPP7u6jRr9ynM2vvaak7p73dauNygqgDNZJWLD+bRYjhcWuAx?=
+ =?us-ascii?Q?KZCPy/lp0pfsCmGtDh3/HCGbZz8UyKOIwnNrruog6MJn5zoVIVFnHEc3rKK8?=
+ =?us-ascii?Q?qNpmg9BFO0G7obvmwJE1NgtRozFJWozXzZznuWO0UuP5GdhP6EpfKrDAdWYm?=
+ =?us-ascii?Q?Wep2a1ICBlt38uDXa00jV0AAcZPoWd8DwlgYouTDJHafzdGVRtnMdr/zRUb9?=
+ =?us-ascii?Q?T6MI5vg0YEFljp+9mRxXJ3B+bwtuWPof9qgi+WUqAetrwZJTH7wfL1ktynf3?=
+ =?us-ascii?Q?dcxhSEsmfEa3UxnyKy0BmFbi5oQW292YV5eCSjWOQ3f1evkZqFUgmwvtHvNt?=
+ =?us-ascii?Q?eLMN8BXGSzLt46NMYkb8QiDARziiG+85hpZNtfNxw/LlGyiDi3OAiEhlqRGY?=
+ =?us-ascii?Q?/ElVMVrLDhAH179RajFsy1lGLLNmjZOAvwWQ7z6MoRqbs/P7CSDXM6k7E2rk?=
+ =?us-ascii?Q?h3R3eI6CXFdRbubLf0d9UXdKpSWqAthj0MH9mSJqtKJaOI1z/5JhcqEZWbv+?=
+ =?us-ascii?Q?I2hKdBL1ay7Ft8XIvGrQ72YlCsWlMDLytj/rwVEXqsfM6pN4LCCMhYbOtl4a?=
+ =?us-ascii?Q?DXL9a056TmLaiwMVF/Z2PrgRvekagFf5zbsqlpCnQKfszsXJ3kp29tzMETFb?=
+ =?us-ascii?Q?ZMgtYsbDWQJ3rnFY+3RkOoxS+SekSuS9CXImpkYG?=
+X-OriginatorOrg: jaguarmicro.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a4cfd355-dc8a-4241-c6be-08db786dbf34
+X-MS-Exchange-CrossTenant-AuthSource: KL1PR0601MB4753.apcprd06.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jun 2023 06:54:56.6764 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 1e45a5c2-d3e1-46b3-a0e6-c5ebf6d8ba7b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: o4KgH8r1IM+7CJrZRNLAmCm4TPIB2ttJx2yf6hQ31kKBPi90MyoNJuJvLhFEj9J2cUz/Voym6nf/TnULzWG5ng==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYUPR06MB6269
+Received-SPF: pass client-ip=40.107.117.55;
+ envelope-from=rma.ma@jaguarmicro.com;
+ helo=APC01-TYZ-obe.outbound.protection.outlook.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, NICE_REPLY_A=-0.089, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Thu, 29 Jun 2023 09:01:55 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -99,63 +133,132 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/06/29 13:07, Ani Sinha wrote:
-> PCI Express ports only have one slot, so PCI Express devices can only be
-> plugged into slot 0 on a PCIE port. Enforce it.
-> 
-> The change has been tested to not break ARI by instantiating seven vfs on an
-> emulated igb device (the maximum number of vfs the linux igb driver supports).
-> The vfs are seen to have non-zero device/slot numbers in the conventional
-> PCI BDF representation.
-> 
-> CC: jusual@redhat.com
-> CC: imammedo@redhat.com
-> CC: akihiko.odaki@daynix.com
-> 
-> Resolves: https://bugzilla.redhat.com/show_bug.cgi?id=2128929
-> Signed-off-by: Ani Sinha <anisinha@redhat.com>
-> Reviewed-by: Julia Suvorova <jusual@redhat.com>
-> ---
->   hw/pci/pci.c | 15 +++++++++++++++
->   1 file changed, 15 insertions(+)
-> 
-> diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-> index e2eb4c3b4a..0320ac2bb3 100644
-> --- a/hw/pci/pci.c
-> +++ b/hw/pci/pci.c
-> @@ -65,6 +65,7 @@ bool pci_available = true;
->   static char *pcibus_get_dev_path(DeviceState *dev);
->   static char *pcibus_get_fw_dev_path(DeviceState *dev);
->   static void pcibus_reset(BusState *qbus);
-> +static bool pcie_has_upstream_port(PCIDevice *dev);
->   
->   static Property pci_props[] = {
->       DEFINE_PROP_PCI_DEVFN("addr", PCIDevice, devfn, -1),
-> @@ -1190,6 +1191,20 @@ static PCIDevice *do_pci_register_device(PCIDevice *pci_dev,
->                      name);
->   
->          return NULL;
-> +    } /*
-> +       * With SRIOV and ARI, vfs can have non-zero slot in the conventional
-> +       * PCI interpretation as all five bits reserved for slot addresses are
-> +       * also used for function bits for the various vfs. Ignore that case.
-> +       * It is too early here to check for ARI capabilities in the PCI config
-> +       * space. Hence, we check for a vf device instead.
-> +       */
+fix: QEMU deadlock with dpdk-vdpa
 
-Why don't just perform this check after the capabilities are set?
+QEMU start vhost-user with modern net and blk, backend use dpdk-vdpa process,
+after live migration, dest QEMU deadlock with dpdk-vdpa
 
-Regards,
-Akihiko Odaki
+- QEMU sends VHOST_USER_SET_VRING_KICK to dpdk-vdpa net
+- QEMU does not need to wait for a response to this message
+- QEMU then sends VHOST_USER_SET_MEM_TABLE to dpdk-vdpa blk
+- QEMU needs to wait reply in this message
+- when dpdk-vdpa recv VHOST_USER_SET_VRING_KICK, it will send VHOST_USER_BACKEND_VRING_HOST_NOTIFIER_MSG to QEMU
+- dpdk-vdpa needs to wait for a response to this message
+- since QEMU vhost_user_read and backend channel are synchronous in the same thread
+- QEMU will deadlock with dpdk-vdpa
 
-> +    else if (!pci_is_vf(pci_dev) &&
-> +             pcie_has_upstream_port(pci_dev) &&
-> +             PCI_SLOT(devfn)) {
-> +        error_setg(errp, "PCI: slot %d is not valid for %s,"
-> +                   " parent device only allows plugging into slot 0.",
-> +                   PCI_SLOT(devfn), name);
-> +        return NULL;
->       }
->   
->       pci_dev->devfn = devfn;
+Signed-off-by: Rma Ma <rma.ma@jaguarmicro.com>
+---
+ hw/virtio/vhost-user.c | 67 ++++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 61 insertions(+), 6 deletions(-)
+
+diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c 
+index c4e0cbd702..1f6b3a5a63 100644
+--- a/hw/virtio/vhost-user.c
++++ b/hw/virtio/vhost-user.c
+@@ -274,6 +274,17 @@ struct scrub_regions {
+     int fd_idx;
+ };
+ 
++struct backend_thread {
++    QemuThread thread;
++    QemuSemaphore init_done_sem;
++    int thread_id;
++    GMainContext *ctxt;
++    GMainLoop *loop;
++};
++
++static struct backend_thread *backend_th;
++static bool backend_thread_run;
++
+ static bool ioeventfd_enabled(void)
+ {
+     return !kvm_enabled() || kvm_eventfds_enabled();
+@@ -1696,7 +1707,8 @@ fdcleanup:
+     return rc;
+ }
+ 
+-static int vhost_setup_backend_channel(struct vhost_dev *dev)
++static int vhost_setup_backend_channel(struct vhost_dev *dev,
++                                       GMainContext *ctxt)
+ {
+     VhostUserMsg msg = {
+         .hdr.request = VHOST_USER_SET_BACKEND_REQ_FD,
+@@ -1728,7 +1740,7 @@ static int vhost_setup_backend_channel(struct vhost_dev *dev)
+     u->backend_ioc = ioc;
+     u->backend_src = qio_channel_add_watch_source(u->backend_ioc,
+                                                 G_IO_IN | G_IO_HUP,
+-                                                backend_read, dev, NULL, NULL);
++                                                backend_read, dev, NULL, ctxt);
+ 
+     if (reply_supported) {
+         msg.hdr.flags |= VHOST_USER_NEED_REPLY_MASK;
+@@ -1981,6 +1993,42 @@ static int vhost_user_postcopy_notifier(NotifierWithReturn *notifier,
+     return 0;
+ }
+ 
++static void *vhost_backend_channel_worker(void *opaque)
++{
++    struct backend_thread *backend_th = opaque;
++
++    rcu_register_thread();
++
++    backend_th->ctxt = g_main_context_new();
++    backend_th->loop = g_main_loop_new(backend_th->ctxt, false);
++    backend_th->thread_id = qemu_get_thread_id();
++
++    qemu_sem_post(&backend_th->init_done_sem);
++
++    g_main_loop_run(backend_th->loop);
++
++    g_main_loop_unref(backend_th->loop);
++    g_main_context_unref(backend_th->ctxt);
++    g_free(backend_th);
++    rcu_unregister_thread();
++    return NULL;
++}
++
++static void vhost_backend_thread_init(void)
++{
++    backend_th = g_malloc0(sizeof(struct backend_thread));
++    backend_th->thread_id = -1;
++    qemu_sem_init(&backend_th->init_done_sem, 0);
++
++    qemu_thread_create(&backend_th->thread, "backend-channel-worker",
++                       vhost_backend_channel_worker, backend_th,
++                       QEMU_THREAD_DETACHED);
++
++    while (backend_th->thread_id == -1) {
++        qemu_sem_wait(&backend_th->init_done_sem);
++    }
++}
++
+ static int vhost_user_backend_init(struct vhost_dev *dev, void *opaque,
+                                    Error **errp)
+ {
+@@ -2108,10 +2156,17 @@ static int vhost_user_backend_init(struct vhost_dev *dev, void *opaque,
+     }
+ 
+     if (dev->vq_index == 0) {
+-        err = vhost_setup_backend_channel(dev);
+-        if (err < 0) {
+-            error_setg_errno(errp, EPROTO, "vhost_backend_init failed");
+-            return -EPROTO;
++        if (!backend_thread_run) {
++            vhost_backend_thread_init();
++            backend_thread_run = true;
++        }
++
++        if (backend_thread_run && backend_th) {
++            err = vhost_setup_backend_channel(dev, backend_th->ctxt);
++            if (err < 0) {
++                error_setg_errno(errp, EPROTO, "vhost_backend_init failed");
++                return -EPROTO;
++            }
+         }
+     }
+ 
+-- 
+2.17.1
+
 
