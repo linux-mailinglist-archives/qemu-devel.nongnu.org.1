@@ -2,41 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 920127423BC
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 12:10:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CC687423C1
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 12:12:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEob2-0004fe-Rl; Thu, 29 Jun 2023 06:09:53 -0400
+	id 1qEodk-00064u-RH; Thu, 29 Jun 2023 06:12:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qEob0-0004fD-Fx
- for qemu-devel@nongnu.org; Thu, 29 Jun 2023 06:09:50 -0400
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qEodi-00064e-2U
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 06:12:38 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qEoay-0003LC-5f
- for qemu-devel@nongnu.org; Thu, 29 Jun 2023 06:09:50 -0400
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qEodg-0003og-GE
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 06:12:37 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id B525C1002F;
- Thu, 29 Jun 2023 13:09:44 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 3F63310032;
+ Thu, 29 Jun 2023 13:12:35 +0300 (MSK)
 Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id EF1A2103A8;
- Thu, 29 Jun 2023 13:09:43 +0300 (MSK)
-Message-ID: <3021d649-84ce-fc61-4788-3102258eba41@tls.msk.ru>
-Date: Thu, 29 Jun 2023 13:09:43 +0300
+ by tsrv.corpit.ru (Postfix) with ESMTP id 89473103A9;
+ Thu, 29 Jun 2023 13:12:34 +0300 (MSK)
+Message-ID: <3e79215c-2d21-580a-db52-3b1b5df1032b@tls.msk.ru>
+Date: Thu, 29 Jun 2023 13:12:34 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
-Subject: Re: [qemu-web PATCH v2] Fix installation instructions for
- Debian/Ubuntu
+Subject: Re: [qemu-web PATCH] Fix installation instructions for Debian/Ubuntu
 Content-Language: en-US
 To: Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  qemu-devel@nongnu.org
-References: <20230629092425.183618-1-thuth@redhat.com>
+References: <20230629080234.179687-1-thuth@redhat.com>
+ <305b3e1f-aa55-8efe-8394-7c1b90ffe3f3@tls.msk.ru>
+ <1f0afdee-09f0-83a5-f8fb-d2b86827ba16@redhat.com>
 From: Michael Tokarev <mjt@tls.msk.ru>
-In-Reply-To: <20230629092425.183618-1-thuth@redhat.com>
+In-Reply-To: <1f0afdee-09f0-83a5-f8fb-d2b86827ba16@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
 X-Spam_score_int: -69
@@ -60,30 +61,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-29.06.2023 12:24, Thomas Huth пишет:
-> There is no package called "qemu" here - thus use the two meta-packages
-> "qemu-system" and "qemu-user-static" instead.
+29.06.2023 12:31, Thomas Huth wrote:
+..
+>> This is actually a question to QEMU upstream, - I think the same reasoning
+>> applies there as well.
 > 
-> While we're at it, add a note for people who might not need all
-> emulator binaries - in that case it makes sense to have a look
-> at the list of available packages first.
-> 
-> Resolves: https://gitlab.com/qemu-project/qemu-web/-/issues/8
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
-> ---
->   v2:
->   - Separate the installation instruction for system and user-mode
->   - Add a note for people who don't need all targets
-> 
->   _download/linux.md | 9 ++++++++-
->   1 file changed, 8 insertions(+), 1 deletion(-)
+> Looking at our docs, it seems like we're lacking an introduction to the the "configure" switches like --enable-system and --enable-user completely, 
+> indeed :-(
 
-Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
-
-This looks like a -trivial material, I can pick it up and it'll go
-there if no one picks it before.
-
-Thanks,
+When I come to qemu 10+ years ago, it was somehow very
+difficult to understand what's qemu-user and what's
+qemu-system.  Now it is obvious, like breathing, but
+that's after 10+ years.. ;))
 
 /mjt
+
 
