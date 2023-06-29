@@ -2,54 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29B2D742668
+	by mail.lfdr.de (Postfix) with ESMTPS id 506AF742669
 	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 14:28:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEqjY-0001mv-8v; Thu, 29 Jun 2023 08:26:48 -0400
+	id 1qEqjs-0001pl-Ty; Thu, 29 Jun 2023 08:27:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=1kQ5=CR=kaod.org=clg@ozlabs.org>)
- id 1qEqjV-0001mg-AW; Thu, 29 Jun 2023 08:26:45 -0400
-Received: from gandalf.ozlabs.org ([150.107.74.76])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=1kQ5=CR=kaod.org=clg@ozlabs.org>)
- id 1qEqjO-00056e-0u; Thu, 29 Jun 2023 08:26:45 -0400
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4QsHk65ShGz4wgk;
- Thu, 29 Jun 2023 22:26:22 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4QsHk43Shmz4wbg;
- Thu, 29 Jun 2023 22:26:20 +1000 (AEST)
-Message-ID: <fe741d9e-b64b-65ac-af45-a553c4aed6f8@kaod.org>
-Date: Thu, 29 Jun 2023 14:26:16 +0200
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qEqje-0001na-LX
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 08:26:55 -0400
+Received: from mail-oa1-x32.google.com ([2001:4860:4864:20::32])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qEqjc-0005CP-UH
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 08:26:54 -0400
+Received: by mail-oa1-x32.google.com with SMTP id
+ 586e51a60fabf-1b06da65bdbso515261fac.1
+ for <qemu-devel@nongnu.org>; Thu, 29 Jun 2023 05:26:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1688041611; x=1690633611;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=y7r0OeYIr1fG0wYCNwKuZFFQ5Vylz1EugEMx2PQEN/o=;
+ b=KIkCAPlyF7vS8UWS7Hgf9L0TFY+qi+iI8E1KkH5ZM3lj4KnO6t36WAV1RgnMTnbJWI
+ oRQrGaCb5mAko6/nphGlcZwpvaBYrFUPpPPhbp5M0d6C4/4GSaOtPbKiB9jj+EjKX9Tl
+ ob0yqW/NKeLDir8OQWq9i3dgomiaNihCwb9hHDFR9cHf0tO9cQRpGVVvSl/76mm9ZzNw
+ nVdkfgIPj2AKIS69giNsvwQzPuejCVVKty7YudND9DqaGg8e/qqETckYsy2KF39YeYeG
+ xwGe23ryVP8ZQStlQYbMX5fdmoAka+IwEwzyxnfUvj56RS1fr4m5rTrI6ya49mM9HQeZ
+ gbcA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1688041611; x=1690633611;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=y7r0OeYIr1fG0wYCNwKuZFFQ5Vylz1EugEMx2PQEN/o=;
+ b=IT7u6TZZGQobKKDf5ZgNhTec0IDNfiH64IVAI8P4fwe/ISItX+Odbomno+86TAOjqV
+ yqLRG4X2aOVadgk/MXYgBoKSSBNDHgTD+OSzRDciUWQSmSlkT9LkDSyiB7YDpyV2cPt9
+ JE35TMQ8BYxmulUoKzbbQrcCaKzpBIJkCk8GZpnR5BFD4wPqzV/0+2OSQz3QgAJ36faM
+ qlwjkPWI7W+Ble2eE6advGt4i1CTi/4qFSD77CKs5GvI64itCrNUa369POA10sw+dKSc
+ KT8H1R9L7iGaTvJAZJbKDHJ+Bel6RCG2uyA9q/rd/0EUbz0aKS9dP2X4UR4K2v+e+KYL
+ QfTQ==
+X-Gm-Message-State: AC+VfDx7Xeoa8d+TRDglLbZgfWNDi6y78bAganG31jHbyAPB7OHGMjGn
+ ZUpzZ8GEsB7YmaMKZVDgFseMwA==
+X-Google-Smtp-Source: ACHHUZ54ttLdzMavlNWxCUCP94Kwre8pItvZKfbNXOv56HSOKyP7pcIJrKJGfd6rV709E95rmLRomQ==
+X-Received: by 2002:a05:6870:e353:b0:1a6:d839:928a with SMTP id
+ a19-20020a056870e35300b001a6d839928amr25493574oae.8.1688041611301; 
+ Thu, 29 Jun 2023 05:26:51 -0700 (PDT)
+Received: from [192.168.68.107] (201-69-66-110.dial-up.telesp.net.br.
+ [201.69.66.110]) by smtp.gmail.com with ESMTPSA id
+ en41-20020a05687007a900b001a9eb707366sm7550061oab.15.2023.06.29.05.26.48
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 29 Jun 2023 05:26:50 -0700 (PDT)
+Message-ID: <057c335b-a614-95c9-953d-d9eaa793d529@ventanamicro.com>
+Date: Thu, 29 Jun 2023 09:26:46 -0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
-Subject: Re: [PATCH] target/ppc: Make HDECR underflow edge triggered
+Subject: Re: [PATCH 1/2] hw/riscv/virt: Fix 'controller' typo
 Content-Language: en-US
-To: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org, Daniel Henrique Barboza <danielhb413@gmail.com>,
- David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>
-References: <20230625122045.15544-1-npiggin@gmail.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20230625122045.15544-1-npiggin@gmail.com>
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Bin Meng <bin.meng@windriver.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, qemu-riscv@nongnu.org,
+ Weiwei Li <liweiwei@iscas.ac.cn>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
+References: <20230629121103.87733-1-philmd@linaro.org>
+ <20230629121103.87733-2-philmd@linaro.org>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <20230629121103.87733-2-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=150.107.74.76;
- envelope-from=SRS0=1kQ5=CR=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, NICE_REPLY_A=-0.093, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2001:4860:4864:20::32;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-oa1-x32.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.093,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -65,82 +99,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/25/23 14:20, Nicholas Piggin wrote:
-> HDEC interrupts are edge-triggered on HDECR underflow (notably different
-> from DEC which is level-triggered).
+Phil,
 
-yes.
-  
-> HDEC interrupts already clear the irq on delivery so that does not need
-> to be changed.
-> 
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+I've fixed this typo a few weeks ago. qemu-trivial picked it up.
 
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
 
 Thanks,
 
-C.
+Daniel
 
+On 6/29/23 09:11, Philippe Mathieu-Daudé wrote:
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->   hw/ppc/ppc.c | 16 +++++++++-------
->   1 file changed, 9 insertions(+), 7 deletions(-)
+>   hw/riscv/virt.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/hw/ppc/ppc.c b/hw/ppc/ppc.c
-> index 7b7db30f95..f4fe1767d6 100644
-> --- a/hw/ppc/ppc.c
-> +++ b/hw/ppc/ppc.c
-> @@ -789,8 +789,8 @@ static void __cpu_ppc_store_decr(PowerPCCPU *cpu, uint64_t *nextp,
->                                    QEMUTimer *timer,
->                                    void (*raise_excp)(void *),
->                                    void (*lower_excp)(PowerPCCPU *),
-> -                                 target_ulong decr, target_ulong value,
-> -                                 int nr_bits)
-> +                                 uint32_t flags, target_ulong decr,
-> +                                 target_ulong value, int nr_bits)
->   {
->       CPUPPCState *env = &cpu->env;
->       ppc_tb_t *tb_env = env->tb_env;
-> @@ -820,15 +820,15 @@ static void __cpu_ppc_store_decr(PowerPCCPU *cpu, uint64_t *nextp,
->        * On MSB edge based DEC implementations the MSB going from 0 -> 1 triggers
->        * an edge interrupt, so raise it here too.
->        */
-> -    if (((tb_env->flags & PPC_DECR_UNDERFLOW_LEVEL) && signed_value < 0) ||
-> -        ((tb_env->flags & PPC_DECR_UNDERFLOW_TRIGGERED) && signed_value < 0
-> +    if (((flags & PPC_DECR_UNDERFLOW_LEVEL) && signed_value < 0) ||
-> +        ((flags & PPC_DECR_UNDERFLOW_TRIGGERED) && signed_value < 0
->             && signed_decr >= 0)) {
->           (*raise_excp)(cpu);
->           return;
->       }
+> diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
+> index ed4c27487e..68ccd0bde1 100644
+> --- a/hw/riscv/virt.c
+> +++ b/hw/riscv/virt.c
+> @@ -1692,7 +1692,7 @@ static void virt_machine_class_init(ObjectClass *oc, void *data)
+>                                     virt_set_aia);
+>       object_class_property_set_description(oc, "aia",
+>                                             "Set type of AIA interrupt "
+> -                                          "conttoller. Valid values are "
+> +                                          "controller. Valid values are "
+>                                             "none, aplic, and aplic-imsic.");
 >   
->       /* On MSB level based systems a 0 for the MSB stops interrupt delivery */
-> -    if (signed_value >= 0 && (tb_env->flags & PPC_DECR_UNDERFLOW_LEVEL)) {
-> +    if (signed_value >= 0 && (flags & PPC_DECR_UNDERFLOW_LEVEL)) {
->           (*lower_excp)(cpu);
->       }
->   
-> @@ -847,8 +847,8 @@ static inline void _cpu_ppc_store_decr(PowerPCCPU *cpu, target_ulong decr,
->       ppc_tb_t *tb_env = cpu->env.tb_env;
->   
->       __cpu_ppc_store_decr(cpu, &tb_env->decr_next, tb_env->decr_timer,
-> -                         tb_env->decr_timer->cb, &cpu_ppc_decr_lower, decr,
-> -                         value, nr_bits);
-> +                         tb_env->decr_timer->cb, &cpu_ppc_decr_lower,
-> +                         tb_env->flags, decr, value, nr_bits);
->   }
->   
->   void cpu_ppc_store_decr(CPUPPCState *env, target_ulong value)
-> @@ -877,8 +877,10 @@ static inline void _cpu_ppc_store_hdecr(PowerPCCPU *cpu, target_ulong hdecr,
->       ppc_tb_t *tb_env = cpu->env.tb_env;
->   
->       if (tb_env->hdecr_timer != NULL) {
-> +        /* HDECR (Book3S 64bit) is edge-based, not level like DECR */
->           __cpu_ppc_store_decr(cpu, &tb_env->hdecr_next, tb_env->hdecr_timer,
->                                tb_env->hdecr_timer->cb, &cpu_ppc_hdecr_lower,
-> +                             PPC_DECR_UNDERFLOW_TRIGGERED,
->                                hdecr, value, nr_bits);
->       }
->   }
-
+>       object_class_property_add_str(oc, "aia-guests",
 
