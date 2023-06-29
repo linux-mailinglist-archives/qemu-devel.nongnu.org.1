@@ -2,93 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC96A7420A4
+	by mail.lfdr.de (Postfix) with ESMTPS id C15B67420A5
 	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 08:48:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qElQe-0002lD-6C; Thu, 29 Jun 2023 02:46:56 -0400
+	id 1qElR5-0002nC-E5; Thu, 29 Jun 2023 02:47:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qElQW-0002ku-AJ
- for qemu-devel@nongnu.org; Thu, 29 Jun 2023 02:46:48 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qElQT-0004Pd-Hp
- for qemu-devel@nongnu.org; Thu, 29 Jun 2023 02:46:47 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688021197;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=d8TylTYOPduQg8TLv7mDi395AgrpfZgzIBhob5u5NX0=;
- b=OUL2H/H3sr7IyKf2NvdDf5/+TFGvAIjDR6b+a8RPe26DmZGExxXDOyEWDQQbDWOfBESI0H
- GwEBJuacRVhRyUOG4uVB/LxM+GM59uc/ATtEn8c4ZN5TqF/hvxh/2mZ/H96XQBs49nikwB
- 4ahDXHlZwS+w6uMFDdwyGS++3kBiYuE=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-662-jg-PPiMrPyGZ9QqMV-EZKQ-1; Thu, 29 Jun 2023 02:46:35 -0400
-X-MC-Unique: jg-PPiMrPyGZ9QqMV-EZKQ-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-3f81f4a7596so2173795e9.1
- for <qemu-devel@nongnu.org>; Wed, 28 Jun 2023 23:46:35 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qElQv-0002mZ-ET
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 02:47:13 -0400
+Received: from mail-ot1-x331.google.com ([2607:f8b0:4864:20::331])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qElQt-0004Xr-Gu
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 02:47:13 -0400
+Received: by mail-ot1-x331.google.com with SMTP id
+ 46e09a7af769-6b74e2d8c98so323106a34.2
+ for <qemu-devel@nongnu.org>; Wed, 28 Jun 2023 23:47:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1688021229; x=1690613229;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=RLUv3JkR/493FEh/mC3hqC02p+R4kbf0Ivsten6bGqQ=;
+ b=Fyx4OsXucnnd2Duq4cleL5g3rlwP2qmMT9kyURSoQeogOHulQvn0O3an+XkEcDuyJ1
+ u8oQRCHceoAiFC0Nq2nEgPtXFVyDzP8VHl7Nf5v4RYnTGr8KDn7k2Hs1FotSxh7bHbyD
+ trGSnRGsthxKqZWih/lAbiLtAxYbY0EFireOflYhPdC2xY9HTr5fIF6Rta+bX8FtAd3y
+ IZQ7UJh/7j9RuyBkw9sfD+h7rtk5tQNeDz8O3fePtASScNziVg0SXqdcYMjcweXPAtAm
+ oQNKQm2pdoF5n4VF8C9u1Br1dJySiwoeKSgI4jd1B6Dg6VN5lkJHnJOn1PdnhUtMdi/Y
+ 3WhQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688021194; x=1690613194;
+ d=1e100.net; s=20221208; t=1688021229; x=1690613229;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=d8TylTYOPduQg8TLv7mDi395AgrpfZgzIBhob5u5NX0=;
- b=aPYXGfgQFwLJwV89Ogs3L4HaqDbz2JzADeWjNHR85xbkTdiDljXg7dkFjO2bCsBsxB
- 9jj9Nbq50m0e0ofu250MUZcrtPZj8pc9HIG+7KuZ8X9aqntYkROTVQr6BEJg8tOo7Wvn
- WSAFQHgmdW6ULAjOrE8X8ts3+gk2YOKvyZTMvOb6+tpeZaMBbTu2/oLsrugRihZwSpIz
- LMPBBbccOXbwKXHMr5duh/Zkc7lg9yWHfL8yBP3D+BuRnoiaqZ2XTC5J1rQityGcIEdy
- eGfkD9XLQfLFK7vnSbTc7kyticgyhpdEjPEdQPiM/lsValuP1XWc/pYBChMLKgzazfOG
- sEmA==
-X-Gm-Message-State: AC+VfDykooX9unxPGwv+Ke+FiZFq4PwRbXgetFjlYozDw7WYJrhCnOsJ
- 8bgda/CmzN3x4uWdfhvevCkRkd7rY1EBRIeVt2NW2E/Eh70XCVR1zRMDFCrjJc55KueVz/eGLM2
- 5a40ycjZ2QbH5gw4=
-X-Received: by 2002:a7b:c399:0:b0:3fa:95c7:e891 with SMTP id
- s25-20020a7bc399000000b003fa95c7e891mr9489110wmj.35.1688021194859; 
- Wed, 28 Jun 2023 23:46:34 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ52lsRqVQQ1JrrV+qRsKIA8l8pt/Cegm5ByduAy+molhuoGZckerhsFynGUPiAooUCk9jYXuA==
-X-Received: by 2002:a7b:c399:0:b0:3fa:95c7:e891 with SMTP id
- s25-20020a7bc399000000b003fa95c7e891mr9489092wmj.35.1688021194572; 
- Wed, 28 Jun 2023 23:46:34 -0700 (PDT)
-Received: from [10.33.192.205] (nat-pool-str-t.redhat.com. [149.14.88.106])
+ bh=RLUv3JkR/493FEh/mC3hqC02p+R4kbf0Ivsten6bGqQ=;
+ b=Bm6L86uVM2csCDTikP9NlAimMdzfyT2HBegbeEZsXhbWbRBhnC53+edEhLS7TkZ6jd
+ nMidwuz8u10PM7t+m/cmw7W9xJ6TL2VcR2b7f7KqLU6tpiQaMagQYvVhx9voIAg+UbvA
+ nqfYyYj4R2AOiAI78uapDj7KdyAdoYX3E1DU//Teb+fgbi7RzdsyI+iL0ZqaU/UTuh/q
+ ia5goG7l+SLvqmEoDqmWOLNi9IoP85qadHZPGcXrMRXE5BfmGKD8QVeNQ+lT9Bmy03J6
+ xgwItQuj/sjQfY7Ly9VjTssBdXKy/up5HN0XVcEpErOjRqYlRRhSjhROzdxLkaEVBXzA
+ WXHg==
+X-Gm-Message-State: AC+VfDyzfVDeF2+qfEGI5UU1rrrOM7n/CvmDAP4WY5i0txEe7ljS6Swe
+ 8Yq4ltcgal2aaiVehUi2oyo5Ew==
+X-Google-Smtp-Source: ACHHUZ5ugAeoJln3/kXwY55iMWCZj0hM0Xv2Y4ouAMqq5u9qtbr6+SRyNHbYkvhMte8jKocEN6lk4g==
+X-Received: by 2002:a05:6808:984:b0:3a3:6506:2ec2 with SMTP id
+ a4-20020a056808098400b003a365062ec2mr4210516oic.35.1688021229134; 
+ Wed, 28 Jun 2023 23:47:09 -0700 (PDT)
+Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
+ ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
  by smtp.gmail.com with ESMTPSA id
- 12-20020a05600c020c00b003f90ab2fff9sm15582288wmi.9.2023.06.28.23.46.33
+ g7-20020aa78187000000b006687da3db65sm7857013pfi.75.2023.06.28.23.47.07
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 28 Jun 2023 23:46:34 -0700 (PDT)
-Message-ID: <355faa50-6de9-9322-4f3f-b7aa4095924a@redhat.com>
-Date: Thu, 29 Jun 2023 08:46:32 +0200
+ Wed, 28 Jun 2023 23:47:08 -0700 (PDT)
+Message-ID: <8d382e8b-088b-f0af-eec4-a85ee513b4ae@daynix.com>
+Date: Thu, 29 Jun 2023 15:47:06 +0900
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH 2/6] tests/qtest: migration: Expose migrate_set_capability
+User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH v6 5/5] hw/pci: ensure PCIE devices are plugged into only
+ slot 0 of PCIE port
 Content-Language: en-US
-To: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org
-Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
- Steve Sistare <steven.sistare@oracle.com>,
- =?UTF-8?Q?Daniel_P_=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Leonardo Bras <leobras@redhat.com>
-References: <20230628165542.17214-1-farosas@suse.de>
- <20230628165542.17214-3-farosas@suse.de>
-From: Thomas Huth <thuth@redhat.com>
-In-Reply-To: <20230628165542.17214-3-farosas@suse.de>
+To: Ani Sinha <anisinha@redhat.com>, qemu-devel@nongnu.org,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Cc: jusual@redhat.com, imammedo@redhat.com
+References: <20230629040707.115656-1-anisinha@redhat.com>
+ <20230629040707.115656-6-anisinha@redhat.com>
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <20230629040707.115656-6-anisinha@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Received-SPF: none client-ip=2607:f8b0:4864:20::331;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-ot1-x331.google.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.089, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, NICE_REPLY_A=-0.089, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -105,18 +99,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 28/06/2023 18.55, Fabiano Rosas wrote:
-> The following patch will make use of this function from within
-> migrate-helpers.c, so move it there.
+On 2023/06/29 13:07, Ani Sinha wrote:
+> PCI Express ports only have one slot, so PCI Express devices can only be
+> plugged into slot 0 on a PCIE port. Enforce it.
 > 
-> Signed-off-by: Fabiano Rosas <farosas@suse.de>
-> Reviewed-by: Juan Quintela <quintela@redhat.com>
+> The change has been tested to not break ARI by instantiating seven vfs on an
+> emulated igb device (the maximum number of vfs the linux igb driver supports).
+> The vfs are seen to have non-zero device/slot numbers in the conventional
+> PCI BDF representation.
+> 
+> CC: jusual@redhat.com
+> CC: imammedo@redhat.com
+> CC: akihiko.odaki@daynix.com
+> 
+> Resolves: https://bugzilla.redhat.com/show_bug.cgi?id=2128929
+> Signed-off-by: Ani Sinha <anisinha@redhat.com>
+> Reviewed-by: Julia Suvorova <jusual@redhat.com>
 > ---
->   tests/qtest/migration-helpers.c | 11 +++++++++++
->   tests/qtest/migration-helpers.h |  3 +++
->   tests/qtest/migration-test.c    | 11 -----------
->   3 files changed, 14 insertions(+), 11 deletions(-)
+>   hw/pci/pci.c | 15 +++++++++++++++
+>   1 file changed, 15 insertions(+)
+> 
+> diff --git a/hw/pci/pci.c b/hw/pci/pci.c
+> index e2eb4c3b4a..0320ac2bb3 100644
+> --- a/hw/pci/pci.c
+> +++ b/hw/pci/pci.c
+> @@ -65,6 +65,7 @@ bool pci_available = true;
+>   static char *pcibus_get_dev_path(DeviceState *dev);
+>   static char *pcibus_get_fw_dev_path(DeviceState *dev);
+>   static void pcibus_reset(BusState *qbus);
+> +static bool pcie_has_upstream_port(PCIDevice *dev);
+>   
+>   static Property pci_props[] = {
+>       DEFINE_PROP_PCI_DEVFN("addr", PCIDevice, devfn, -1),
+> @@ -1190,6 +1191,20 @@ static PCIDevice *do_pci_register_device(PCIDevice *pci_dev,
+>                      name);
+>   
+>          return NULL;
+> +    } /*
+> +       * With SRIOV and ARI, vfs can have non-zero slot in the conventional
+> +       * PCI interpretation as all five bits reserved for slot addresses are
+> +       * also used for function bits for the various vfs. Ignore that case.
+> +       * It is too early here to check for ARI capabilities in the PCI config
+> +       * space. Hence, we check for a vf device instead.
+> +       */
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+Why don't just perform this check after the capabilities are set?
 
+Regards,
+Akihiko Odaki
+
+> +    else if (!pci_is_vf(pci_dev) &&
+> +             pcie_has_upstream_port(pci_dev) &&
+> +             PCI_SLOT(devfn)) {
+> +        error_setg(errp, "PCI: slot %d is not valid for %s,"
+> +                   " parent device only allows plugging into slot 0.",
+> +                   PCI_SLOT(devfn), name);
+> +        return NULL;
+>       }
+>   
+>       pci_dev->devfn = devfn;
 
