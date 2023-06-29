@@ -2,92 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45AF3741F24
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 06:09:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42634741F6D
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 07:00:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEixH-0004IR-VH; Thu, 29 Jun 2023 00:08:27 -0400
+	id 1qEjkQ-00078U-IP; Thu, 29 Jun 2023 00:59:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qEixE-0004Hc-4Q
- for qemu-devel@nongnu.org; Thu, 29 Jun 2023 00:08:24 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <SRS0=1kQ5=CR=kaod.org=clg@ozlabs.org>)
+ id 1qEjkJ-000771-7G; Thu, 29 Jun 2023 00:59:07 -0400
+Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qEixC-000195-Dy
- for qemu-devel@nongnu.org; Thu, 29 Jun 2023 00:08:23 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688011701;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=GoBS0EC4cwBNnpcmWPjz9AcRRSQCOhYWW+JOrffjg2c=;
- b=ZrPOOwnU5AnQAOEPlB3RMWkAxl0ypBmzwnUa/j7ONT8ypAWhhzSIAxVHoZQukhdM49RXlq
- 81eLlM1/RkQ6lAaH0PZxroYwB8bLJ4xyKm86u+4mSKq+Z6neYkATl88mmS1lwjIDwhGDoh
- iJRm99OYEo2zIyy7LWvv0Pw856d+LFE=
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com
- [209.85.216.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-562-vYea4MMNMjKRqjb8V2csew-1; Thu, 29 Jun 2023 00:08:19 -0400
-X-MC-Unique: vYea4MMNMjKRqjb8V2csew-1
-Received: by mail-pj1-f71.google.com with SMTP id
- 98e67ed59e1d1-26337f5d2daso230492a91.0
- for <qemu-devel@nongnu.org>; Wed, 28 Jun 2023 21:08:19 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688011698; x=1690603698;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=GoBS0EC4cwBNnpcmWPjz9AcRRSQCOhYWW+JOrffjg2c=;
- b=G0SRXBCbA76T3FxELTg6q4Wh9lAMwlo49cCWsuF7OMU/uXLQLxSL/wji/xw9TzGts/
- DeKnZMpXLmcyg2Rg6bhaBp2cn89m5h7ch+C4e0X4B2LDW1Wt/dU+geBBcp8C+YeZORu4
- WpvYrfTgnPF/SEo5xdEF+xQ9x01Xp1nhb6L8xVVNxDl89r5azv3MacO+4kZn1t2LfJ5S
- Ku2X/qPSZku42ZD4baySJJztUdRYe+YwER2Ko9+V413Q9TGpvcMx9PDNfBPT/Luix7+J
- dQ9nVHJhKxjCYkbmCVLCW3h+Gx5vX5eYW2V8cGE/AuN4fE5e1yt3E6e5eZBeHsIY5xWD
- GWRA==
-X-Gm-Message-State: AC+VfDxnTv4SYOzoLW3AvlYto4gQaHtXaSwPMa5MWVbicCnemPuVAPvU
- h8ZoTMkq7ySTpPWLDJVfViWYUYqeFq0NizjmLR5Me6M7UE1gm2OmCJyYA2IDK9ibJE8JWzEw8ah
- QK1dUIHQrama1PvKdoez6KcL0GJzoZ7SROY/vowZztkyYcynLnX+TzUQowk0Xo6lR6PB4YbV7Dm
- c=
-X-Received: by 2002:a17:90a:8d09:b0:262:f449:4497 with SMTP id
- c9-20020a17090a8d0900b00262f4494497mr9606143pjo.2.1688011698400; 
- Wed, 28 Jun 2023 21:08:18 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7asSaYoTZygpM8utTywpaThVmrfqBiWRAIQog79mLQcg486a7xuk2AS+F5sSazfKDolhxyUw==
-X-Received: by 2002:a17:90a:8d09:b0:262:f449:4497 with SMTP id
- c9-20020a17090a8d0900b00262f4494497mr9606128pjo.2.1688011698047; 
- Wed, 28 Jun 2023 21:08:18 -0700 (PDT)
-Received: from localhost.localdomain ([203.163.234.183])
- by smtp.googlemail.com with ESMTPSA id
- 21-20020a17090a019500b00256b67208b1sm10978169pjc.56.2023.06.28.21.08.15
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 28 Jun 2023 21:08:17 -0700 (PDT)
-From: Ani Sinha <anisinha@redhat.com>
-To: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Cc: Ani Sinha <anisinha@redhat.com>, jusual@redhat.com, imammedo@redhat.com,
- akihiko.odaki@daynix.com
-Subject: [PATCH v6 5/5] hw/pci: ensure PCIE devices are plugged into only slot
- 0 of PCIE port
-Date: Thu, 29 Jun 2023 09:37:07 +0530
-Message-Id: <20230629040707.115656-6-anisinha@redhat.com>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <20230629040707.115656-1-anisinha@redhat.com>
-References: <20230629040707.115656-1-anisinha@redhat.com>
+ (Exim 4.90_1) (envelope-from <SRS0=1kQ5=CR=kaod.org=clg@ozlabs.org>)
+ id 1qEjkG-00031d-Dz; Thu, 29 Jun 2023 00:59:06 -0400
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4Qs5np0CS1z4whk;
+ Thu, 29 Jun 2023 14:58:54 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Qs5nl631Yz4wZp;
+ Thu, 29 Jun 2023 14:58:51 +1000 (AEST)
+Message-ID: <3f70738c-f30a-99a6-6e06-e53b8f93f830@kaod.org>
+Date: Thu, 29 Jun 2023 06:58:47 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH 0/2] target/ppc: Easy parts of the POWER chiptod series
+Content-Language: en-US
+To: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org
+Cc: qemu-ppc@nongnu.org, Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>
+References: <20230625120317.13877-1-npiggin@gmail.com>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <20230625120317.13877-1-npiggin@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=SRS0=1kQ5=CR=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, NICE_REPLY_A=-0.089, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,59 +63,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-PCI Express ports only have one slot, so PCI Express devices can only be
-plugged into slot 0 on a PCIE port. Enforce it.
+On 6/25/23 14:03, Nicholas Piggin wrote:
+> Cedric kindly reviewed these already so I think they should be
+> good to go now. This is just a rebase and slight rewording the
+> changelog. Still haven't completed the main chiptod device yet.
+> 
+> Thanks,
+> Nick
+> 
+> Nicholas Piggin (2):
+>    target/ppc: Tidy POWER book4 SPR registration
+>    target/ppc: Add TFMR SPR implementation with read and write helpers
+> 
+>   target/ppc/cpu_init.c        | 82 ++++++++++++++++++++++++------------
+>   target/ppc/helper.h          |  2 +
+>   target/ppc/spr_common.h      |  2 +
+>   target/ppc/timebase_helper.c | 13 ++++++
+>   target/ppc/translate.c       | 10 +++++
+>   5 files changed, 82 insertions(+), 27 deletions(-)
+> 
 
-The change has been tested to not break ARI by instantiating seven vfs on an
-emulated igb device (the maximum number of vfs the linux igb driver supports).
-The vfs are seen to have non-zero device/slot numbers in the conventional
-PCI BDF representation.
 
-CC: jusual@redhat.com
-CC: imammedo@redhat.com
-CC: akihiko.odaki@daynix.com
+Daniel,
 
-Resolves: https://bugzilla.redhat.com/show_bug.cgi?id=2128929
-Signed-off-by: Ani Sinha <anisinha@redhat.com>
-Reviewed-by: Julia Suvorova <jusual@redhat.com>
----
- hw/pci/pci.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+When you start building the next PPC PR, I think you can also take
+this patch :
 
-diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-index e2eb4c3b4a..0320ac2bb3 100644
---- a/hw/pci/pci.c
-+++ b/hw/pci/pci.c
-@@ -65,6 +65,7 @@ bool pci_available = true;
- static char *pcibus_get_dev_path(DeviceState *dev);
- static char *pcibus_get_fw_dev_path(DeviceState *dev);
- static void pcibus_reset(BusState *qbus);
-+static bool pcie_has_upstream_port(PCIDevice *dev);
- 
- static Property pci_props[] = {
-     DEFINE_PROP_PCI_DEVFN("addr", PCIDevice, devfn, -1),
-@@ -1190,6 +1191,20 @@ static PCIDevice *do_pci_register_device(PCIDevice *pci_dev,
-                    name);
- 
-        return NULL;
-+    } /*
-+       * With SRIOV and ARI, vfs can have non-zero slot in the conventional
-+       * PCI interpretation as all five bits reserved for slot addresses are
-+       * also used for function bits for the various vfs. Ignore that case.
-+       * It is too early here to check for ARI capabilities in the PCI config
-+       * space. Hence, we check for a vf device instead.
-+       */
-+    else if (!pci_is_vf(pci_dev) &&
-+             pcie_has_upstream_port(pci_dev) &&
-+             PCI_SLOT(devfn)) {
-+        error_setg(errp, "PCI: slot %d is not valid for %s,"
-+                   " parent device only allows plugging into slot 0.",
-+                   PCI_SLOT(devfn), name);
-+        return NULL;
-     }
- 
-     pci_dev->devfn = devfn;
--- 
-2.39.1
+   [4/4] target/ppc: Implement core timebase state machine and TFMR
+   https://patchwork.ozlabs.org/project/qemu-ppc/patch/20230603233612.125879-5-npiggin@gmail.com/
 
+It belongs to the same series.
+
+Thanks,
+
+C.
 
