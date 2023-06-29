@@ -2,64 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A428D7430D8
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 01:03:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BDA0774312D
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 01:39:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qF0eg-00089S-UL; Thu, 29 Jun 2023 19:02:26 -0400
+	id 1qF1DJ-0004lM-0H; Thu, 29 Jun 2023 19:38:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sstabellini@kernel.org>)
- id 1qF0ee-00088v-HM; Thu, 29 Jun 2023 19:02:24 -0400
-Received: from dfw.source.kernel.org ([139.178.84.217])
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qF1DG-0004l6-7q
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 19:38:10 -0400
+Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sstabellini@kernel.org>)
- id 1qF0ec-0007Rb-Kk; Thu, 29 Jun 2023 19:02:24 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id D275661635;
- Thu, 29 Jun 2023 23:02:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67B6DC433C0;
- Thu, 29 Jun 2023 23:02:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1688079740;
- bh=aHn5PLTEUEUIZNeZuwQ6/n8rICCV9CLX6scPwU4BU5c=;
- h=Date:From:To:cc:Subject:In-Reply-To:References:From;
- b=TjjAkxI2JPQa3ZWvpksWz1XN3D5H9zckR95EsPHs3Mxm+xq+HSNnhTvlGMjBaveKt
- t8LQESwv/o3MCbQCdiyFUVt1T3D74WrF6qZIm5t0vz0waIU+5XnfZ9mVLKKDeEt8P9
- SaR5j7HtMIb3X5JWv/GT7J2vAzsXstey6FpuitFYJpSeNNX7MYR7+SePfrcyGAFAKN
- LnyX7AKAbpS+qEg3VxI9BOBmdoRSheG9ICM2xwOYmzqF7PkbJDpTuSN48FPaUztWBE
- dOnwBDOKUyZd9828xCHfIix1DGot8kqaWcsla1hnyablLfY2GZboyiIVqgA7LUCVCk
- MSok/d+7KV/4A==
-Date: Thu, 29 Jun 2023 16:02:18 -0700 (PDT)
-From: Stefano Stabellini <sstabellini@kernel.org>
-X-X-Sender: sstabellini@ubuntu-linux-20-04-desktop
-To: Vikram Garhwal <vikram.garhwal@amd.com>
-cc: qemu-devel@nongnu.org, sstabellini@kernel.org, 
- Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>, 
- Peter Maydell <peter.maydell@linaro.org>, 
- "open list:ARM TCG CPUs" <qemu-arm@nongnu.org>
-Subject: Re: [RESEND][PATCH v1 2/2] xen_arm: Initialize RAM and add hi/low
- memory regions
-In-Reply-To: <20230629174310.14434-3-vikram.garhwal@amd.com>
-Message-ID: <alpine.DEB.2.22.394.2306291557520.3936094@ubuntu-linux-20-04-desktop>
-References: <20230629174310.14434-1-vikram.garhwal@amd.com>
- <20230629174310.14434-3-vikram.garhwal@amd.com>
-User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qF1DD-00074d-71
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 19:38:09 -0400
+Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
+ by localhost (Postfix) with SMTP id A9BD5746361;
+ Fri, 30 Jun 2023 01:37:49 +0200 (CEST)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 7860074632B; Fri, 30 Jun 2023 01:37:49 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 7657B745720;
+ Fri, 30 Jun 2023 01:37:49 +0200 (CEST)
+Date: Fri, 30 Jun 2023 01:37:49 +0200 (CEST)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: qemu-devel@nongnu.org
+cc: Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>, 
+ David Hildenbrand <david@redhat.com>
+Subject: Memory region endianness
+Message-ID: <873fa402-8e75-1ea1-6806-26b93d3ac714@eik.bme.hu>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Received-SPF: pass client-ip=139.178.84.217;
- envelope-from=sstabellini@kernel.org; helo=dfw.source.kernel.org
-X-Spam_score_int: -70
-X-Spam_score: -7.1
-X-Spam_bar: -------
-X-Spam_report: (-7.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; format=flowed; charset=US-ASCII
+X-Spam-Probability: 9%
+Received-SPF: pass client-ip=2001:738:2001:2001::2001;
+ envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -75,113 +58,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 29 Jun 2023, Vikram Garhwal wrote:
-> From: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
-> 
-> In order to use virtio backends we need to initialize RAM for the
-> xen-mapcache (which is responsible for mapping guest memory using foreign
-> mapping) to work. Calculate and add hi/low memory regions based on
-> machine->ram_size.
-> 
-> Use the constants defined in public header arch-arm.h to be aligned with the xen
-> toolstack.
-> 
-> While using this machine, the toolstack should then pass real ram_size using
-> "-m" arg. If "-m" is not given, create a QEMU machine without IOREQ, TPM and
-> VIRTIO to keep it usable for /etc/init.d/xencommons.
-> 
-> Signed-off-by: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
-> Signed-off-by: Vikram Garhwal <vikram.garhwal@amd.com>
-> ---
->  hw/arm/xen_arm.c | 45 +++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 45 insertions(+)
-> 
-> diff --git a/hw/arm/xen_arm.c b/hw/arm/xen_arm.c
-> index c0a93f2c9d..cc4dffee70 100644
-> --- a/hw/arm/xen_arm.c
-> +++ b/hw/arm/xen_arm.c
-> @@ -60,6 +60,8 @@ struct XenArmState {
->      } cfg;
->  };
->  
-> +static MemoryRegion ram_lo, ram_hi;
-> +
->  #define VIRTIO_MMIO_DEV_SIZE   0x200
->  
->  #define NR_VIRTIO_MMIO_DEVICES   \
-> @@ -86,6 +88,39 @@ static void xen_create_virtio_mmio_devices(XenArmState *xam)
->      }
->  }
->  
-> +static void xen_init_ram(MachineState *machine)
-> +{
-> +    MemoryRegion *sysmem = get_system_memory();
-> +    ram_addr_t block_len, ram_size[GUEST_RAM_BANKS];
-> +
-> +    if (machine->ram_size <= GUEST_RAM0_SIZE) {
-> +        ram_size[0] = machine->ram_size;
-> +        ram_size[1] = 0;
-> +        block_len = GUEST_RAM0_BASE + ram_size[0];
-> +    } else {
-> +        ram_size[0] = GUEST_RAM0_SIZE;
-> +        ram_size[1] = machine->ram_size - GUEST_RAM0_SIZE;
-> +        block_len = GUEST_RAM1_BASE + ram_size[1];
-> +    }
-> +
-> +    memory_region_init_ram(&ram_memory, NULL, "xen.ram", block_len,
-> +                           &error_fatal);
-> +
-> +    memory_region_init_alias(&ram_lo, NULL, "xen.ram.lo", &ram_memory,
-> +                             GUEST_RAM0_BASE, ram_size[0]);
-> +    memory_region_add_subregion(sysmem, GUEST_RAM0_BASE, &ram_lo);
-> +    DPRINTF("Initialized region xen.ram.lo: base 0x%llx size 0x%lx\n",
-> +            GUEST_RAM0_BASE, ram_size[0]);
-> +
-> +    if (ram_size[1] > 0) {
-> +        memory_region_init_alias(&ram_hi, NULL, "xen.ram.hi", &ram_memory,
-> +                                 GUEST_RAM1_BASE, ram_size[1]);
-> +        memory_region_add_subregion(sysmem, GUEST_RAM1_BASE, &ram_hi);
-> +        DPRINTF("Initialized region xen.ram.hi: base 0x%llx size 0x%lx\n",
-> +                GUEST_RAM1_BASE, ram_size[1]);
-> +    }
-> +}
-> +
->  void arch_handle_ioreq(XenIOState *state, ioreq_t *req)
->  {
->      hw_error("Invalid ioreq type 0x%x\n", req->type);
-> @@ -135,6 +170,14 @@ static void xen_arm_init(MachineState *machine)
->  
->      xam->state =  g_new0(XenIOState, 1);
->  
-> +    if (machine->ram_size == 0) {
-> +        DPRINTF("ram_size not specified. QEMU machine will be started without"
-> +                " TPM, IOREQ and Virtio-MMIO backends\n");
-> +        return;
-> +    }
+Hello,
 
-I would say "ram_size not specified. QEMU machine started without IOREQ
-(no emulated devices including Virtio)."
+Some devices have bits that allow the guest to change endianness of memory 
+mapped resources, e.g. ati-vga should allow switching the regs BAR into 
+big endian on writing a bit. What's the best way to emulate this?
 
-We might add more devices in the future beyond Virtio and TPM. I don't
-think we want to call out the whole list here.
+The naive way could be to just test for the bit in the memory ops call 
+backs and do the swap there, but that would add overhead when it's not 
+needed (most guests don't need it) and there are two BARs to access the 
+same registers (one is in an IO BAR that aliases part of the MEM space 
+BAR) and these may need to have different endianness so I'd rather have 
+the memory layer handle it.
 
+Now the question is how can the endianness be changed from the memory ops 
+call back? Is it allowed to overwrite ops.endianness or replace ops with 
+another one that has DEVICE_BIG_ENDIAN? In MemoryRegion the ops field is 
+declared const and nothing seems to try to change it so I guess it might 
+not be changed.
 
+Then do I need to define two memory regions one with little and another 
+with big endian and unmap/map those when the bit is written? Can this be 
+done when a write to the bit happens with LE ops then is it possible from 
+the callback ro unmap the memory region being written and replace it with 
+another? Is there any other easy simple way that I'm missing?
 
-> +    xen_init_ram(machine);
-> +
->      xen_register_ioreq(xam->state, machine->smp.cpus, xen_memory_listener);
->  
->      xen_create_virtio_mmio_devices(xam);
-> @@ -182,6 +225,8 @@ static void xen_arm_machine_class_init(ObjectClass *oc, void *data)
->      mc->init = xen_arm_init;
->      mc->max_cpus = 1;
->      mc->default_machine_opts = "accel=xen";
-> +    /* Set explicitly here to make sure that real ram_size is passed */
-> +    mc->default_ram_size = 0;
->  
->      printf("CHECK for NEW BUILD\n");
->  #ifdef CONFIG_TPM
-> -- 
-> 2.25.1
-> 
+Regards,
+BALATON Zoltan
 
