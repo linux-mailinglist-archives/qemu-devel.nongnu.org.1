@@ -2,67 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 630A7742439
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 12:49:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55F4E74248A
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 12:57:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEpCi-0002UM-0B; Thu, 29 Jun 2023 06:48:48 -0400
+	id 1qEpJv-0000PH-F9; Thu, 29 Jun 2023 06:56:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qEpCe-0002SH-8e
- for qemu-devel@nongnu.org; Thu, 29 Jun 2023 06:48:44 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qEpCc-000471-4g
- for qemu-devel@nongnu.org; Thu, 29 Jun 2023 06:48:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688035721;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=5+0qiiAnL0MXOpNHbR7TIl0yAcFqnmvzhcBmDoVDT/w=;
- b=djnU46Yav3pOZqtWb8/AJ9V7hKLw3YPyx5dqLPXXczQpP69WBvbJmwAij/dj4FHxwO+Zs4
- +juquMr2UmVAjYPip/mJQLWwe8z74dUgTbjJz0OGFnG/593yRwu2aCgLeNZv0arc5Rru0d
- qFuaHUyxobKPcpfOq/rVlXXlv40UkAA=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-357--ZymdlYNPPKveN9pVV3_aA-1; Thu, 29 Jun 2023 06:48:38 -0400
-X-MC-Unique: -ZymdlYNPPKveN9pVV3_aA-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 268EE8017C3;
- Thu, 29 Jun 2023 10:48:30 +0000 (UTC)
-Received: from thuth.com (dhcp-192-205.str.redhat.com [10.33.192.205])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 6951440C6F5A;
- Thu, 29 Jun 2023 10:48:29 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-s390x@nongnu.org, Christian Borntraeger <borntraeger@linux.ibm.com>,
- Eric Farman <farman@linux.ibm.com>,
- Claudio Imbrenda <imbrenda@linux.ibm.com>
-Subject: [PATCH v3 7/7] pc-bios/s390-ccw: Don't use __bss_start with the
- "larl" instruction
-Date: Thu, 29 Jun 2023 12:48:21 +0200
-Message-Id: <20230629104821.194859-8-thuth@redhat.com>
-In-Reply-To: <20230629104821.194859-1-thuth@redhat.com>
-References: <20230629104821.194859-1-thuth@redhat.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qEpJt-0000Or-V0
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 06:56:14 -0400
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qEpJs-0007wL-Cm
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 06:56:13 -0400
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-307d20548adso561651f8f.0
+ for <qemu-devel@nongnu.org>; Thu, 29 Jun 2023 03:56:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1688036171; x=1690628171;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=QT2BFc8i927d1TsYWok/iWivYKndiSBD9tPu5+cIlcc=;
+ b=L7o7SeyYGyj366o8ocS1ihk5d3PlfOkAGTvK8vTnVt9zfJ1q0jCozJjBqRVg6pd+Zk
+ eGVjQWO+onqnzZ+QpD5iFTqyWvBEUUi3+U330w+VPrYChiKeqSwvDO7KmIx8ux9giYzb
+ loaeKmfMgh6HQuojk+gevyFOt2HX6hExMl0w2JWAFDL0LBWAgbpCGga319mrc2lZGORC
+ vUqXJR/ZuxZGR/zk0SgevfOJjUbfbwXL1jJFnuwx2dj2bV/Z2ryeJtl4lDu1GfM+vDij
+ mbrXi/ShjA7t7bZnTRJ2PEzblFlKLBUQEzL869nvDiJ4L6rJdGKkDbeDcfuNKwrRs8k1
+ Vr7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1688036171; x=1690628171;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=QT2BFc8i927d1TsYWok/iWivYKndiSBD9tPu5+cIlcc=;
+ b=jknQVm7QS0VxWaS/djB03kHPP+uF+ZZL1hGq7AEBj+tRflZZkTlNhe5Vuc/wpl5r+T
+ 9P61csSJuoy6yhPPShBbgwH7jAh/8o1dn7Eo6PD/H8XsrN0TEwU1uuPXN3eR6uF5yzrr
+ OhzrOpZIEbekctDGYh9td2FzggCsvpuINAb5MuHFvVB2JVPSX088TtJs0rhfqvO3xxF8
+ CDs1iWzdmknWUDdM5c5WDIj1pu+sZ8GEJ5WGzvoNq0m7OM9/mOQyVdaMZSuWP2h8Rlbw
+ xI2nHpTvHDSGlejGycSFMjqCqXf40l3Y7cCFapxC5G3DNqTAmGlnZTcK8vARPMM1IEQi
+ /hOw==
+X-Gm-Message-State: AC+VfDzGdv2HX2MbZj3msVPO3ztYaAbptKipiag7gB7RMXyh898mygE9
+ PaerMtLcbW0CFdA6Z/RSRBQs/A==
+X-Google-Smtp-Source: ACHHUZ5SOeqkuZaAZA4R6WFo4BVZIDcHra4jNr1e5VvQmsq4tSQQ+Up7FIqE8ak6aNGsVMCILEe+Xw==
+X-Received: by 2002:adf:ef02:0:b0:314:77a:c2b2 with SMTP id
+ e2-20020adfef02000000b00314077ac2b2mr5019865wro.32.1688036170643; 
+ Thu, 29 Jun 2023 03:56:10 -0700 (PDT)
+Received: from [192.168.69.115] ([176.176.166.242])
+ by smtp.gmail.com with ESMTPSA id
+ r15-20020adfe68f000000b003111025ec67sm15549405wrm.25.2023.06.29.03.56.08
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 29 Jun 2023 03:56:10 -0700 (PDT)
+Message-ID: <744350d6-f9f3-e8a3-51cd-5f998ee1b366@linaro.org>
+Date: Thu, 29 Jun 2023 12:56:07 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.12.0
+Subject: Re: [PATCH v2 04/12] hw/ssi: Add an "addr" property to SSIPeripheral
+Content-Language: en-US
+To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
+ Joel Stanley <joel@jms.id.au>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org,
+ Peter Maydell <peter.maydell@linaro.org>, Andrew Jeffery <andrew@aj.id.au>,
+ Alistair Francis <alistair@alistair23.me>
+References: <20230607043943.1837186-1-clg@kaod.org>
+ <20230607043943.1837186-5-clg@kaod.org>
+ <CACPK8XencE5MMgYdQ5H6iV_rTHaynv-UJYHZy=y-DaCXYBWWXg@mail.gmail.com>
+ <62e69c35-4869-8cc3-5983-9f83ff649da9@linaro.org>
+ <7f37de5f-d31d-b51c-340d-a04ae99230f0@kaod.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <7f37de5f-d31d-b51c-340d-a04ae99230f0@kaod.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.089,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -79,63 +99,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-start.S currently cannot be compiled with Clang 16 and binutils 2.40:
+On 7/6/23 16:15, Cédric Le Goater wrote:
+> On 6/7/23 10:28, Philippe Mathieu-Daudé wrote:
+>> On 7/6/23 10:06, Joel Stanley wrote:
+>>> On Wed, 7 Jun 2023 at 04:40, Cédric Le Goater <clg@kaod.org> wrote:
+>>>>
+>>>> Boards will use this new property to identify the device CS line and
+>>>> wire the SPI controllers accordingly.
+>>>
+>>> "addr" and not "cs" or even "chip-select"?
+>>
+>> "chip-select" is a good suggestion!
+> 
+> I thought of using "cs" initially as it makes more sense for SPI
+> controllers, I do agree. But then, I tried to be consistent with
+> what QEMU is proposing today : "bus" and "addr".
 
- ld: start.o(.text+0x8): misaligned symbol `__bss_start' (0xc1e5) for
-     relocation R_390_PC32DBL
-
-According to the built-in linker script of ld, the symbol __bss_start
-can actually point *before* the .bss section and does not need to have
-any alignment, so in certain situations (like when using the internal
-assembler of Clang), the __bss_start symbol can indeed be unaligned
-and thus it is not suitable for being used with the "larl" instruction
-that needs an address that is at least aligned to halfwords.
-The problem went unnoticed so far since binutils <= 2.39 did not
-check the alignment, but starting with binutils 2.40, such unaligned
-addresses are now refused.
-
-Fix it by loading the address indirectly instead.
-
-Buglink: https://bugzilla.redhat.com/show_bug.cgi?id=2216662
-Reported-by: Miroslav Rezanina <mrezanin@redhat.com>
-Suggested-by:  Andreas Krebbel <andreas.krebbel@de.ibm.com>
-Signed-off-by: Thomas Huth <thuth@redhat.com>
----
- pc-bios/s390-ccw/start.S | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/pc-bios/s390-ccw/start.S b/pc-bios/s390-ccw/start.S
-index 429a2b30a1..061b06591c 100644
---- a/pc-bios/s390-ccw/start.S
-+++ b/pc-bios/s390-ccw/start.S
-@@ -19,7 +19,8 @@ _start:
-     larl    %r15,stack + STACK_SIZE - STACK_FRAME_SIZE   /* Set up stack */
- 
-     /* clear bss */
--    larl    %r2,__bss_start
-+    larl    %r2,bss_start_literal   /* __bss_start might be unaligned ... */
-+    lg      %r2,0(%r2)              /* ... so load it indirectly */
-     larl    %r3,_end
-     slgr    %r3,%r2    /* get sizeof bss */
-     ltgr    %r3,%r3    /* bss empty? */
-@@ -45,7 +46,6 @@ done:
- memsetxc:
-     xc      0(1,%r1),0(%r1)
- 
--
- /*
-  * void disabled_wait(void)
-  *
-@@ -113,6 +113,8 @@ io_new_code:
-     br      %r14
- 
-     .align  8
-+bss_start_literal:
-+    .quad   __bss_start
- disabled_wait_psw:
-     .quad   0x0002000180000000,0x0000000000000000
- enabled_wait_psw:
--- 
-2.39.3
-
+We should use a description that stays close with the terms used
+by the hardware we model. In that case "cs" seems more appropriate.
 
