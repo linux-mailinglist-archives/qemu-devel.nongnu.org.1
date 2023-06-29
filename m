@@ -2,38 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B575741F80
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 07:07:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46C8C741F8D
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 07:11:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEjsV-0002QL-Jt; Thu, 29 Jun 2023 01:07:37 -0400
+	id 1qEjvg-0003yZ-Pr; Thu, 29 Jun 2023 01:10:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=1kQ5=CR=kaod.org=clg@ozlabs.org>)
- id 1qEjs5-0002Gs-HA; Thu, 29 Jun 2023 01:07:09 -0400
+ id 1qEjvb-0003x7-Vs; Thu, 29 Jun 2023 01:10:48 -0400
 Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
  helo=gandalf.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=1kQ5=CR=kaod.org=clg@ozlabs.org>)
- id 1qEjs3-0005k2-Oa; Thu, 29 Jun 2023 01:07:09 -0400
+ id 1qEjva-0006gL-9s; Thu, 29 Jun 2023 01:10:47 -0400
 Received: from gandalf.ozlabs.org (mail.ozlabs.org
  [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4Qs5zB1db1z4wbP;
- Thu, 29 Jun 2023 15:07:02 +1000 (AEST)
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4Qs63R1jwjz4wp4;
+ Thu, 29 Jun 2023 15:10:43 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits))
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Qs5z72qHlz4wZp;
- Thu, 29 Jun 2023 15:06:59 +1000 (AEST)
-Message-ID: <726b3788-65a2-1e62-1b43-5e54ade1bf95@kaod.org>
-Date: Thu, 29 Jun 2023 07:06:57 +0200
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Qs63N3SNlz4wp2;
+ Thu, 29 Jun 2023 15:10:40 +1000 (AEST)
+Message-ID: <ab48582d-1f29-3c86-7500-a8a0eeff85ed@kaod.org>
+Date: Thu, 29 Jun 2023 07:10:38 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
-Subject: Re: [PATCH v3 5/6] target/ppc: Restrict 'kvm_ppc.h' to sysemu in
- cpu_init.c
+Subject: Re: [PATCH v3 6/6] target/ppc: Remove pointless checks of
+ CONFIG_USER_ONLY in 'kvm_ppc.h'
 Content-Language: en-US
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
@@ -42,9 +42,9 @@ Cc: David Gibson <david@gibson.dropbear.id.au>,
  Paolo Bonzini <pbonzini@redhat.com>, Greg Kurz <groug@kaod.org>,
  kvm@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>
 References: <20230627115124.19632-1-philmd@linaro.org>
- <20230627115124.19632-6-philmd@linaro.org>
+ <20230627115124.19632-7-philmd@linaro.org>
 From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20230627115124.19632-6-philmd@linaro.org>
+In-Reply-To: <20230627115124.19632-7-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
@@ -72,12 +72,11 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 6/27/23 13:51, Philippe Mathieu-Daudé wrote:
-> User emulation shouldn't need any of the KVM prototypes
-> declared in "kvm_ppc.h".
-> 
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
+I guess the MemoryRegion code has sufficiently changed since commit
+98efaf75282a ("ppc: Fix up usermode only builds") ?
 
 Reviewed-by: Cédric Le Goater <clg@kaod.org>
 
@@ -86,29 +85,48 @@ Thanks,
 C.
 
 
+
+
 > ---
->   target/ppc/cpu_init.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+>   target/ppc/kvm_ppc.h | 5 -----
+>   1 file changed, 5 deletions(-)
 > 
-> diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
-> index aeff71d063..f2afb539eb 100644
-> --- a/target/ppc/cpu_init.c
-> +++ b/target/ppc/cpu_init.c
-> @@ -21,7 +21,6 @@
->   #include "qemu/osdep.h"
->   #include "disas/dis-asm.h"
->   #include "gdbstub/helpers.h"
-> -#include "kvm_ppc.h"
->   #include "sysemu/cpus.h"
->   #include "sysemu/hw_accel.h"
->   #include "sysemu/tcg.h"
-> @@ -49,6 +48,7 @@
->   #ifndef CONFIG_USER_ONLY
->   #include "hw/boards.h"
->   #include "hw/intc/intc.h"
-> +#include "kvm_ppc.h"
->   #endif
+> diff --git a/target/ppc/kvm_ppc.h b/target/ppc/kvm_ppc.h
+> index 901e188c9a..6a4dd9c560 100644
+> --- a/target/ppc/kvm_ppc.h
+> +++ b/target/ppc/kvm_ppc.h
+> @@ -42,7 +42,6 @@ int kvmppc_booke_watchdog_enable(PowerPCCPU *cpu);
+>   target_ulong kvmppc_configure_v3_mmu(PowerPCCPU *cpu,
+>                                        bool radix, bool gtse,
+>                                        uint64_t proc_tbl);
+> -#ifndef CONFIG_USER_ONLY
+>   bool kvmppc_spapr_use_multitce(void);
+>   int kvmppc_spapr_enable_inkernel_multitce(void);
+>   void *kvmppc_create_spapr_tce(uint32_t liobn, uint32_t page_shift,
+> @@ -52,7 +51,6 @@ int kvmppc_remove_spapr_tce(void *table, int pfd, uint32_t window_size);
+>   int kvmppc_reset_htab(int shift_hint);
+>   uint64_t kvmppc_vrma_limit(unsigned int hash_shift);
+>   bool kvmppc_has_cap_spapr_vfio(void);
+> -#endif /* !CONFIG_USER_ONLY */
+>   bool kvmppc_has_cap_epr(void);
+>   int kvmppc_define_rtas_kernel_token(uint32_t token, const char *function);
+>   int kvmppc_get_htab_fd(bool write, uint64_t index, Error **errp);
+> @@ -262,7 +260,6 @@ static inline void kvmppc_set_reg_tb_offset(PowerPCCPU *cpu, int64_t tb_offset)
+>   {
+>   }
 >   
->   /* #define PPC_DEBUG_SPR */
+> -#ifndef CONFIG_USER_ONLY
+>   static inline bool kvmppc_spapr_use_multitce(void)
+>   {
+>       return false;
+> @@ -322,8 +319,6 @@ static inline void kvmppc_write_hpte(hwaddr ptex, uint64_t pte0, uint64_t pte1)
+>       abort();
+>   }
+>   
+> -#endif /* !CONFIG_USER_ONLY */
+> -
+>   static inline bool kvmppc_has_cap_epr(void)
+>   {
+>       return false;
 
 
