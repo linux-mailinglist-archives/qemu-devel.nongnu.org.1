@@ -2,84 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3EF87424D9
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 13:12:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 352447424DA
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 13:13:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEpZS-00020X-7l; Thu, 29 Jun 2023 07:12:18 -0400
+	id 1qEpZl-00028M-1l; Thu, 29 Jun 2023 07:12:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qEpZP-0001zt-TD
- for qemu-devel@nongnu.org; Thu, 29 Jun 2023 07:12:15 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qEpZO-0005GO-E8
- for qemu-devel@nongnu.org; Thu, 29 Jun 2023 07:12:15 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-3fb4146e8fcso4522555e9.0
- for <qemu-devel@nongnu.org>; Thu, 29 Jun 2023 04:12:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688037132; x=1690629132;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=w+tsYH8FgvAwCXz+SPqSm450BBcbFww7+8yOOmdoO2o=;
- b=ps7FmnYBWw36sAtEvXEVOlnbxCKvBFhoqhXiVXcv4XfPDjkCB2wRnBcODjkRjtlGnC
- 8zcrzxGwZZAHiVeIo4xLeiZMf6t4YMCdurRhLU8kw/ZCLUZds64QQszHubaYwM9AM6Pz
- l81OflF9owa7pcTe7YN3yAkEIqVN29B7NrwPYdNZJO9gIVtrttaoFzXL8zkxuDUMvtiA
- ypc+dMqIAd6K+68To3lySSFVqxgf1FUqUds7GNZwOPdjE8c/TsGhIUyJnG7E/ThOVOHF
- hK7OZywA4M7d7wJudJS8ma7pf7o6satVRs/imVIywuDjAFOzbyIweZCPUrSkFGY/gWHw
- bhRw==
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qEpZh-00027i-VI
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 07:12:33 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qEpZf-0005Jo-UN
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 07:12:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1688037150;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=5mWGt46wjhq7WLGOkiDn17lIXV9beoQ0E4areOIRRCs=;
+ b=LPmeJq3PH+tzZBzI2u6Yim4KWJJu0MCrCzCkPBXCdXa923924I6b8nTHdgL6478eA35H6f
+ 9Fc9a9bjcJKxcaISvozbrN6ayD8Gs1+RFX/EBE8v6dDbhN6MQkEpOKtnjg+oBImjKn8uws
+ ywbx8TzDRmz5e2VphNtRmKKviA9/8W8=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-163-_EtkZ9lUOJmcOoRyXY5G9A-1; Thu, 29 Jun 2023 07:12:29 -0400
+X-MC-Unique: _EtkZ9lUOJmcOoRyXY5G9A-1
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-3141a98a29aso201287f8f.1
+ for <qemu-devel@nongnu.org>; Thu, 29 Jun 2023 04:12:29 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688037132; x=1690629132;
+ d=1e100.net; s=20221208; t=1688037148; x=1690629148;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=w+tsYH8FgvAwCXz+SPqSm450BBcbFww7+8yOOmdoO2o=;
- b=W4AMQ2+MEb/DBJK52FiWvZg2oxyV4bodb76UpmE3VRddIaIJl3HyU/gX6//SA/2kso
- u9cBQqOjwR0PBeiRuIxMLJB7MHZSIW2Av9tY6bNsC8By8i+z6RHqub+WkjIB6K26At8Z
- oTEyzxDkigfsjiLu4NW1GtBx21AiWonM5kEIIqS9ROiAy4eyTApkZGayiVYFCyj7hKQD
- 6z4XPvjZYS0jzPjXSfzxDnLyWhUpzjPLyyCb8qbJJGmEi6PYQAYOAB4qKyH2fvC8MWby
- rFXUPEls+bBR1BVzRNtInL+qAhWcz5h920eKFnW3s+enmsDaXQYwUlU+so+Ag4G2uOnS
- vcnQ==
-X-Gm-Message-State: AC+VfDxiIlde+D7GKS0R2ldHFekdjjXJ4at9Y7KvMYU3b3jOsjyQIqSV
- cOupM/Su3zwdTHZHUBh8ADiOOg==
-X-Google-Smtp-Source: ACHHUZ6ArkSQses1hDgIzY3qPySbprRwLVLzlv/yZXKYTAO4EuSugcOv949KqkNb5pJRDvLTyhdi5w==
-X-Received: by 2002:a05:600c:3647:b0:3fb:a6ee:4cd3 with SMTP id
- y7-20020a05600c364700b003fba6ee4cd3mr4181298wmq.16.1688037132111; 
- Thu, 29 Jun 2023 04:12:12 -0700 (PDT)
-Received: from [192.168.69.115] ([176.176.166.242])
+ bh=5mWGt46wjhq7WLGOkiDn17lIXV9beoQ0E4areOIRRCs=;
+ b=fZRVGgx0DJgLvcjKmyTrj26o5GvOWcVtd9MWeHzD99na1Y0t4yBTawvZuSDlr+9YXN
+ Rq1ybi/MweOSg8vaZhSKJBZNcqHmU+XpUZL9dEPMhLeCkMTqSKBsM2GHquikwg1UYBoD
+ A1mw1aa82FUGyy80NC6BZH3YU2OI4d2OAe20KjziDO3aBpXJ07bDBcurFVEOZ0SgZkOZ
+ iGRuD7Ao6uXR6MEjWFU/EiTnDLD+HpOoDgSuv3D5pNJak5yx4sg6JxQIUhj/WZMNGNsN
+ x2EPbNU37bcftmqrk4Pm5CcanyUMALFTd1nH49uvU7gFkVSa49NJ3mphTkwI+2F1/yj8
+ DHRg==
+X-Gm-Message-State: AC+VfDwWSB/xF3yMhrjhJWTguCJp8i/ZiTdDp95oMTkE/Vybh9F+VmBJ
+ VGKsasIHm7U0SUeC4MYLHUwCScynj6YbKziYDQeLx+RSt7RClXMgQc+HA91a1fMc/boi54SyYLv
+ LxMk56r3/nd6GnWGETj8rOEs=
+X-Received: by 2002:a5d:4bc3:0:b0:314:99e:af46 with SMTP id
+ l3-20020a5d4bc3000000b00314099eaf46mr4177717wrt.20.1688037148301; 
+ Thu, 29 Jun 2023 04:12:28 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ77kEqP6YRPAXX0OUw3Tqvjof5oaikrp6ziSzuMuHxKpT5P8YS/lxFeokT/gT+gmddQ+k4dKA==
+X-Received: by 2002:a5d:4bc3:0:b0:314:99e:af46 with SMTP id
+ l3-20020a5d4bc3000000b00314099eaf46mr4177697wrt.20.1688037148026; 
+ Thu, 29 Jun 2023 04:12:28 -0700 (PDT)
+Received: from [10.33.192.205] (nat-pool-str-t.redhat.com. [149.14.88.106])
  by smtp.gmail.com with ESMTPSA id
- o10-20020a1c750a000000b003fbc0ea491dsm371625wmc.40.2023.06.29.04.12.11
+ d5-20020adff845000000b003141b9ddab3sm718815wrq.114.2023.06.29.04.12.27
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 29 Jun 2023 04:12:11 -0700 (PDT)
-Message-ID: <152bc0f2-f20e-e2cb-7a1d-86cfb8e2c419@linaro.org>
-Date: Thu, 29 Jun 2023 13:12:10 +0200
+ Thu, 29 Jun 2023 04:12:27 -0700 (PDT)
+Message-ID: <8bee7886-9b63-c7e9-6bc4-3ad8f6ce037a@redhat.com>
+Date: Thu, 29 Jun 2023 13:12:26 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.12.0
-Subject: Re: [PATCH v3 1/7] s390-ccw: Getting rid of ulong
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v3 7/7] pc-bios/s390-ccw: Don't use __bss_start with the
+ "larl" instruction
 Content-Language: en-US
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
-Cc: qemu-s390x@nongnu.org, Christian Borntraeger <borntraeger@linux.ibm.com>, 
- Eric Farman <farman@linux.ibm.com>,
- Claudio Imbrenda <imbrenda@linux.ibm.com>
+To: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Cc: qemu-devel@nongnu.org, qemu-s390x@nongnu.org,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Eric Farman <farman@linux.ibm.com>
 References: <20230629104821.194859-1-thuth@redhat.com>
- <20230629104821.194859-2-thuth@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230629104821.194859-2-thuth@redhat.com>
+ <20230629104821.194859-8-thuth@redhat.com>
+ <20230629125818.09ec8ad6@p-imbrenda>
+From: Thomas Huth <thuth@redhat.com>
+In-Reply-To: <20230629125818.09ec8ad6@p-imbrenda>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.093,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.093, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,26 +105,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 29/6/23 12:48, Thomas Huth wrote:
-> From: Juan Quintela <quintela@redhat.com>
+On 29/06/2023 12.58, Claudio Imbrenda wrote:
+> On Thu, 29 Jun 2023 12:48:21 +0200
+> Thomas Huth <thuth@redhat.com> wrote:
 > 
-> Any good reason why this still exist?
-> I can understand u* and __u* to be linux kernel like, but ulong?
+>> start.S currently cannot be compiled with Clang 16 and binutils 2.40:
+>>
+>>   ld: start.o(.text+0x8): misaligned symbol `__bss_start' (0xc1e5) for
+>>       relocation R_390_PC32DBL
+>>
+>> According to the built-in linker script of ld, the symbol __bss_start
+>> can actually point *before* the .bss section and does not need to have
+>> any alignment, so in certain situations (like when using the internal
+>> assembler of Clang), the __bss_start symbol can indeed be unaligned
+>> and thus it is not suitable for being used with the "larl" instruction
+>> that needs an address that is at least aligned to halfwords.
+>> The problem went unnoticed so far since binutils <= 2.39 did not
+>> check the alignment, but starting with binutils 2.40, such unaligned
+>> addresses are now refused.
+>>
+>> Fix it by loading the address indirectly instead.
 > 
-> Signed-off-by: Juan Quintela <quintela@redhat.com>
-> Message-Id: <20230510143925.4094-4-quintela@redhat.com>
-> Reviewed-by: Thomas Huth <thuth@redhat.com>
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
-> ---
->   pc-bios/s390-ccw/helper.h        |  2 +-
->   pc-bios/s390-ccw/s390-ccw.h      |  7 +++----
->   pc-bios/s390-ccw/virtio-scsi.h   |  2 +-
->   pc-bios/s390-ccw/virtio.h        |  4 ++--
->   pc-bios/s390-ccw/virtio-blkdev.c | 12 ++++++------
->   pc-bios/s390-ccw/virtio-scsi.c   |  4 ++--
->   pc-bios/s390-ccw/virtio.c        | 12 ++++++------
->   7 files changed, 21 insertions(+), 22 deletions(-)
+> what are the advantages of this solution compared to your previous one
+> (i.e. align .bss) ?
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+__bss_start is supposed to point to an address that is before all bss-like 
+segments. There are also segments like .sbss and .bss.plt on other 
+architectures, see https://bugzilla.redhat.com/show_bug.cgi?id=2216662#c11 .
+Seems like we don't have them on s390x yet, so currently my previous patch 
+is fine, too. But in case there will ever be an extension to the s390x ABI 
+that introduces such additional segments, we have to switch back to 
+__bss_start again. So it sounds slightly more future-proof to me to keep 
+__bss_start here, even if we need a slightly more complex startup code here now.
+
+  Thomas
+
 
 
