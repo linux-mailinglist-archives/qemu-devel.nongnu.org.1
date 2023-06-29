@@ -2,173 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52A52742520
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 13:47:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FC1074252B
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 13:51:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEq6M-0005eW-4s; Thu, 29 Jun 2023 07:46:18 -0400
+	id 1qEqAo-0007Ip-Rg; Thu, 29 Jun 2023 07:50:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <joao.m.martins@oracle.com>)
- id 1qEq6H-0005eJ-RQ
- for qemu-devel@nongnu.org; Thu, 29 Jun 2023 07:46:14 -0400
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <joao.m.martins@oracle.com>)
- id 1qEq6F-00079O-Ky
- for qemu-devel@nongnu.org; Thu, 29 Jun 2023 07:46:13 -0400
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 35TAoaVL023536; Thu, 29 Jun 2023 11:46:07 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=corp-2023-03-30;
- bh=V7xea8I3CZLIcakZyBSu3RThU4wH7WSmGZQlsriOtKE=;
- b=DYOzsnmai+GGldRf7r/AZJvVZIQ+L+s38DV1YwMxIsJKcU1POJ0PwTjuoTqNB/TaMZIp
- oNAXGV9j4sa0biVFZ2uXjBLBThCWZAtw72GRs1atDTS8KntviAGV+/JhLU8y75IB+5MP
- kBofv0DPQgH+xL7DjLs0xyT4QHWIeRCqXD9F7TqSnGo7XQO95pB5QyfMNCZNeHBhEtd1
- fmVdutvUXPfs9gM3JAhaXsyaPRKxdbasZzIsDq+LNdlgjuKauOXQ59TBP0vMXAetkoAx
- Eda0PuoGnLtxLbGEgA4g/C1JR8vWdKTcwRyJDZe44gTjS/AqK1ExslhBgDgwrJiAFI1F xQ== 
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
- (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3rdpwdkr92-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 29 Jun 2023 11:46:07 +0000
-Received: from pps.filterd
- (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 35TAKOpn029607; Thu, 29 Jun 2023 11:46:06 GMT
-Received: from nam11-bn8-obe.outbound.protection.outlook.com
- (mail-bn8nam11lp2168.outbound.protection.outlook.com [104.47.58.168])
- by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 3rdpx79e4u-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 29 Jun 2023 11:46:06 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=dpf7QRTgUYuzZnFf3rsTqn6gdwwnV34V5rhk6Pf82UYhtt0+2SH2Qzbj2okinT58jl40w+hhoDXb2DYhDpgx/1HTFLFYQaX7ZY4SNxPmbn0OhIryAGlKiotLuPZCVH67dlN91gFcKtBye49/PIVkfVf1wVdWQfTUV/v2V3Js9mVY8gKJw+3jr68YQghatcC6Y1a2VUdMzibkR+1kI6KuXzoyUodVTa10IkT+ODU+TBydbHOgfSc7+gXAajwWtlFxPetjAmBN1GVjJMf8F1h8z5xj+PUzgcTz7zQAXLqr5Xt3TD7L7WQ2aLHgS0PsWhaPHhKJiaVl9f11Cjz8dq/ufw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=V7xea8I3CZLIcakZyBSu3RThU4wH7WSmGZQlsriOtKE=;
- b=IZyPU4AyhNlX8UAiwhYYAncYrYqjY7dsCsh4opl6dV+iuBYDG1uf3VhQP65SetccxUzirAtnriD8sHQclsDSooJ2QBUK39EAuPtxGD86Efc67nDVTifZZet9362nATiFygJg1F65EDXuxQVTwyE1onR66JxnW7DZa0OyIHQCNPrrKfIB85kUwKjvWVm0nAOFiUbGzAtDywYC0Xow/6LUiAj1CBStdGcUYKmUL69sx2gZ9wd74qz04Q+Jti7iYlqfl0UHD+WlRhwQkGycXbBuqcg3UJ2VJQGQbuIhNdSxfIEejrgWid4oy2Prux6I0l9Xk4IyJllsVkRrApAMawk0Ew==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qEqAh-0007IO-C3
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 07:50:47 -0400
+Received: from mail-ot1-x334.google.com ([2607:f8b0:4864:20::334])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qEqAe-0000UX-3c
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 07:50:46 -0400
+Received: by mail-ot1-x334.google.com with SMTP id
+ 46e09a7af769-6b5cf23b9fcso524552a34.0
+ for <qemu-devel@nongnu.org>; Thu, 29 Jun 2023 04:50:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=V7xea8I3CZLIcakZyBSu3RThU4wH7WSmGZQlsriOtKE=;
- b=GenDjgYwh9HKOaoZFCasprBYQeSEQotrMtLJXWtSTtGUHJ+c5fmbmyt+NDpU7qNGGKyUnuLjjfFIY4H+cJPiQCfLFVxmUKyCbwPGwJ0kJ+2bNziAeDjZ7OpZJfUxIDwd16bQUfN+2LrdAU0sZiYv8WxCP3AxdwBTd5tQRl2eglo=
-Received: from BLAPR10MB4835.namprd10.prod.outlook.com (2603:10b6:208:331::11)
- by SN7PR10MB6306.namprd10.prod.outlook.com (2603:10b6:806:272::15)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6521.23; Thu, 29 Jun
- 2023 11:46:04 +0000
-Received: from BLAPR10MB4835.namprd10.prod.outlook.com
- ([fe80::f7ba:4a04:3f37:6d0f]) by BLAPR10MB4835.namprd10.prod.outlook.com
- ([fe80::f7ba:4a04:3f37:6d0f%5]) with mapi id 15.20.6521.026; Thu, 29 Jun 2023
- 11:46:04 +0000
-Message-ID: <346b1c73-0efb-e339-dbbf-c4ae41e85861@oracle.com>
-Date: Thu, 29 Jun 2023 12:45:58 +0100
-Subject: Re: [PATCH v4 4/5] vfio/pci: Free resources when
- vfio_migration_realize fails
-Content-Language: en-US
-To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
-Cc: alex.williamson@redhat.com, clg@redhat.com, avihaih@nvidia.com,
- chao.p.peng@intel.com
-References: <20230629084042.86502-1-zhenzhong.duan@intel.com>
- <20230629084042.86502-5-zhenzhong.duan@intel.com>
-From: Joao Martins <joao.m.martins@oracle.com>
-In-Reply-To: <20230629084042.86502-5-zhenzhong.duan@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO2P265CA0280.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:a1::28) To BLAPR10MB4835.namprd10.prod.outlook.com
- (2603:10b6:208:331::11)
+ d=ventanamicro.com; s=google; t=1688039442; x=1690631442;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=weDTkMav7+3PiDuAlGRavKzdLh6C+OSfUaSA0DB2My0=;
+ b=LicaFnuY6pWYfDh+81ZPaXRL55sSzxzIUSNg4S1DhvfnxI8zWDfv5iGQLc8ATUscyV
+ EucqDl4uioCttjggq5s6dJtbHPE98KfWBichl/1rTteA6Ug2cd1/VG0TGua9SUjS/AV0
+ WHoEO4DoI7Cyl9/Xc0FN13HgNJNsEX9xbP+7BxDZ6XcFRKKgNY/SeHYxmSdQcDtoTh2Q
+ ZFKCkxPozzsrIJ0eguN017yRFd94aVBKlZJkAW8cAOtrePcb2rNtydVckDzvdykcaYZf
+ vONvSD+/AgLY1J4wOdO9E/V+tgUWzLGxan4xfuroEmUNcRPMxrgYBPzuXLkssqBohmnh
+ 6K6w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1688039442; x=1690631442;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=weDTkMav7+3PiDuAlGRavKzdLh6C+OSfUaSA0DB2My0=;
+ b=DgEY2tcSuVxkOXgj2IpYodgttwXmSIW5uBSxQdZA7MDUNt5x3BhWJ9X4cZaHhYsXjI
+ 49Pu0y1nhv2+4GIEvjxpY7E5iGz3W8cTpU2ICAjjQJ+qHQz7rZYGLRD3h7GAXRXyy66v
+ rmkNDxmOCSgSqfQ4wLxCcvhE+jJkASvGBWrbk75H+94VZ/2+ky3PEE0vSLm63Jj4O1OQ
+ jMlS3Ix7H4RCPPxpd58H5FjSg2ayqD1RG32eBSXGP7rqiW7e+hxuJXuIFNHGNYRJEbEK
+ mVujmhmbcLpp+eocI7JjkzDBdCngwhB+iOrFuDdxPxmGQqHhegki7n32ZhE8cSFv6jq5
+ iJiw==
+X-Gm-Message-State: AC+VfDxSsbmO0DN4Nf8+3AVofPl69PJCULx3/DOpjykPxgvU+eQrXgjW
+ f74jBx6zd6T1l7L/C1Kjd5KeCUgIY9jtZFF2Tjg=
+X-Google-Smtp-Source: ACHHUZ7qluPgbFhEOdZqMtyAjLoHv4nSK3OctqDELaZyS1eSOt6g6sO/9JY8ZQlQEfSEJxEHbOJDaA==
+X-Received: by 2002:a9d:7cd5:0:b0:6b8:81a3:9060 with SMTP id
+ r21-20020a9d7cd5000000b006b881a39060mr3560194otn.6.1688039442514; 
+ Thu, 29 Jun 2023 04:50:42 -0700 (PDT)
+Received: from ?IPV6:2804:7f0:bcc0:bdf2:b7ba:a476:c0e3:fb59?
+ ([2804:7f0:bcc0:bdf2:b7ba:a476:c0e3:fb59])
+ by smtp.gmail.com with ESMTPSA id
+ f17-20020a9d7b51000000b006b89596bc61sm118508oto.61.2023.06.29.04.50.38
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 29 Jun 2023 04:50:41 -0700 (PDT)
+Message-ID: <6f9e1d11-bb34-d8b7-dc83-588064adabf6@ventanamicro.com>
+Date: Thu, 29 Jun 2023 08:50:37 -0300
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BLAPR10MB4835:EE_|SN7PR10MB6306:EE_
-X-MS-Office365-Filtering-Correlation-Id: 21da7b97-f3d2-45b4-2ba1-08db78966af7
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: d6Z4NKhtf2PBwAkrtuRkZN1qTV21THHjLLSQ6BbI2Nq5bds27tksKbTUrBn9BDssW5ftdBBqkKQmzaSNWGbDeXxjU8uBjkreQIGIQ5/b/5CxXZPsLdY9DGruKi/SqvJFpX6BIbDqwE8Mtytvzj+Gyh0P6k5WSqQbXpYkX7oVud1FIPoeIY/BY192SSylkwKTDGfi9QCyvxflgEAcvwmzD5dkHhyE6ku/o5vCuHwEL1PjEFSO0nmJHFWFbnXHvOlZoFsnLGdK5K23CjFGPwVqeNYhFy+XiZ5vhPzvBKl/6Ca9y9GobFaU9+5rENAKYoBy7mnistiCTU2BHc/mUhyqMLk4m30DVKqSl8IfPGJM1Mf9wspHr8DkTh+3MkJVXBuiMnepj3x11c3eDQahUW4dyC3rL5XCcC65YghCGIMdkZmulqDIH1jEQ7Kaf6K7oJHJEvEJqwCtEIy3FSfG+ENQJWfmLOjvGMcN95lLWdC53Y3Dikzg1rUpZI3p/8WsDrCqpPuJLdDJgT1U4Nxmv38iIkeF6pHxlUgT7rdquG6MhpjKYCjxgsFKYIVBzn/z+wKIzdxOqvUh90WBoxrY5llDQd6FzNtGku0ebXF6MRKJWENGwQO9eKP9t9/dZvkuoHLS
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:BLAPR10MB4835.namprd10.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230028)(376002)(136003)(366004)(39860400002)(396003)(346002)(451199021)(66476007)(8676002)(41300700001)(66556008)(316002)(8936002)(66946007)(6506007)(26005)(186003)(6512007)(53546011)(478600001)(6666004)(4326008)(2616005)(6486002)(2906002)(5660300002)(38100700002)(36756003)(31696002)(31686004)(86362001)(83380400001)(45980500001);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?SnFiOUk0TkVKQndFbkhROEdCSW1KYVlvZEZPS1pZYXhyUEpucVVxZHhpdHpi?=
- =?utf-8?B?ZGtOTmVRRTBobldOWkY2eGVzajdFZHpDYnZ2bU5CYStDSUgwRFpOOTlhcjZP?=
- =?utf-8?B?VEpieitwdDZicThOY1FvODdaQ2tPM2RxNldJa09ydmN3NTRkOU8wUVBxTDg4?=
- =?utf-8?B?YzRydVp4NjczVW4xWEI0bG9KbHM5bjAxMGYwQ0NkVER1Qjg4ZkJ1YllucGEx?=
- =?utf-8?B?R2gyMjdxUWMwZjN4aW5HWklqeDF0WnNidUZ4VDNGSUpnZjRBK3hhMVUrc1lS?=
- =?utf-8?B?dzJ3ZDlpY3pzMHlTL242UStSYTBObko2dTlJcm4wZ0VoQVgwN055STkyS0NM?=
- =?utf-8?B?WnBqNFpvQSsvR0RLRXBJM0dKN3BHWERIS3A5d2RmZ1RiYy9XYWhCQ0xTV1kw?=
- =?utf-8?B?QUVrdWFpeWNrcG5vMzZXajgyaStmY082UzAvZzJ3cUFmL001UUdOdExac3g0?=
- =?utf-8?B?ZG92YXlxWFJkaGRKOXYxVDNLN3BBSnJHaldQQnIxOCt1RXM3UFNGQWNVeW9w?=
- =?utf-8?B?THI2S0JHMWNHcUtwemRRZWlleXJFT2VLeTF4RjZrWWt6UXBsSXh2UXB6bFhk?=
- =?utf-8?B?eHRDTForUTZwdXBWanZ4Tkhidmo1SU15VVlDa3ZLTUdrM0JSWC9VeXUvRnN6?=
- =?utf-8?B?WEVhMGFJY0hpV2dDSEtUTnRXTm9DalFlcm9JSzZXVUdFakdyZWZJTkdYck5x?=
- =?utf-8?B?RWJveitTUmhGVERrZ2dLYUhxZXlwbG05V2VIcnBRUHIxOVcxTkFyZmFWS2do?=
- =?utf-8?B?RGc4T2VDTm5wK2d3MExtekJWVW1oS1RGU1pydU40Q0l1SG1oSUlwR1plQ1VS?=
- =?utf-8?B?bTlyaFAwWUwzcEhBK01DdmUxcGtUMEpGUGxzam8xVTFMaEV2bG8wRXJMRlhL?=
- =?utf-8?B?cHdnU1BFNmRhMm5BSkZoNGdQRmRsUHNDMEZqMElOVHl0ZExUVDU5UzJmVG43?=
- =?utf-8?B?dmtIU0NTTnNFWXErTVVrUi8rbjFHNUU3Y0pKemJQYlJoSXdhSHRZdEtoR045?=
- =?utf-8?B?dkJYeVdLd0ltcGU0ZTZSNXhyT3dUQTM1bHNPcTBJUXc3STgzOUJoeXdsU014?=
- =?utf-8?B?N0NNcitPaDArY2JYd2Yvd2ZPZ1FZZGNQLzE1eFZyWHBRZUZlN2ZvYnN1eXlt?=
- =?utf-8?B?RlBncU1Jb3I3TzJrL0F4QmRDRnNTaTRqcWlTLyt6dFNaTmlKeC9FV3E5R1A0?=
- =?utf-8?B?TmRueFNJbmFackZLU3FzNVYyZGxzeXk1Z1Z2NWd0MmRBT09WcnF1SEZwRGR6?=
- =?utf-8?B?Ynd4U29uZWhZa3ZFZ0dFcXd3dHNjeHl6V0M0REUyYzdHSlV0MkM0UXFYNWVZ?=
- =?utf-8?B?VERocjlTSEx4ajdKRHdNa0I3M1NPMThPNHp0b1grM056dmlGV3E1Y014ZjR6?=
- =?utf-8?B?K0ZGakI5VmNQbmU4MHNEMlpPeE9NUTZpT2lMYUpNcmRXRkZaRDU1bEpFbDdR?=
- =?utf-8?B?enpFZ1hRam04dFdNdVA4VkVFVlZYY1M4OWpVaXhjalZyOWViaUI5cGROSnhK?=
- =?utf-8?B?SU9jWmFucHFWcUlnWkJ4OGdlOEFXRWxoeFVQWEQvNXFxbnNmd0lDNklySkx0?=
- =?utf-8?B?eHFKTFQ0UzJkUVdpQWlXVXJMWEJxMHBVTDc1bDVtR0IrcmJ3emdyTlhCSkVr?=
- =?utf-8?B?ZW80WnYrdloxSHZOa3dQWXhHYkdWSHhkOGdadlBwcExaZnJNOWlYWXNOcHpO?=
- =?utf-8?B?NmJ3NFdNODhqYmQ2a1g0TGFXMFJYN3hyNDRvL1d5SUZHOHpWNFd5ajcwZFBD?=
- =?utf-8?B?cGQ4dGl2QTFPalBleTNmd1R4Y1ZJV1dLQTZkUzRjb3YyNmliZTJ1SE9uMjdL?=
- =?utf-8?B?NFcwOTlVcFlPYU9KQW9sL2xkTlZlVEFhWW8vNmJRb0tldktaM1IwN3QyTGFu?=
- =?utf-8?B?V2ZYeUg4WktHWE9vYVYrelA3SHdLT0FodDJFb01HeXpnT3JKd2J1YWZXWFNZ?=
- =?utf-8?B?Y3JCeE05TUU0Y05iMkozMVFYUWFPUWtjMVVhNDU1K3ZzYkgrUWNmdTNBaWJ4?=
- =?utf-8?B?Vks5bjBqbDB3dk9kZVhCVzdHWnQzVG5YSkREaUZlRjBVUXVWOEcrTmNPTk5q?=
- =?utf-8?B?VGFyYVZwdThaUG1GZ0UwOThLWmZCZDBta3hzd21Ya2M2dXl6amtudXFWS3VJ?=
- =?utf-8?B?ZUNvM0xRN1A0cmdmTWx0Zk9DUEhuTGJGY0RaaWIvZWVRb25NdDBRS2JqVTk0?=
- =?utf-8?B?aHc9PQ==?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: jQGhk/hiUGAS97d08dBBfei+WyYoFrPgZ/59xTs1AsPlmfSe8VLPEq1abe6b0HFDfJSHPsVFumBTfuz8CapwSF06MpM60OBkHyLbxsTMEPIOAt/9qPJPbfDZxEQKuHP/WuLdqHEIAZH5EmElY+ygfIQIJugNUWjStogDpNVDIACMdGYThXc30Z5+gbzEK7+YGGWKjttXl4wUrR2KjGQtYi+RlKxOrTEWADtCq+kbhJT9wHjlkc2qQizJNE4iYhfY1c5hJyEbqhB3GFit6kECNJI4ihpcs9TT1ds695RVWWPkFD1jgTJZfXSkRhTbO29awEFyhqg0eFm+VhRQ1vk0ay4Uvw2IWFWuoNrjh4EBCsXOmvSvF6M4A+sf4tJBWc9Q/J8/MTcUCYzJ1rYj/3YPUed6vDM/w4QMYd+Fm807BHYjPZ9tEPG4imeSPGw+XV+HeiRbPNsNVBj8wygioFK4BGTqPMrjmgmhRtroi6BdQ5eS8fn6XIyYHg24Ba11eBpSva/CflI0MHvd9G5VKihyF+MkdA4G5PIBlsr4TZK2piL2puzxF/LhLzlo8D5QUoa9AWnbEwQOQOxi/TM2WAgK1qAI13f5VktReiTHloYhXlVohsT+mRAqh+/rirCxZ6U8iTeenBAJevA6OQ1z4jbGhL6ZNTRiASz+ALUGRzdvmNtK3pwc+WVOkYXlUpccI68mFfRq4YmYSraaFuIsB+4wZTeKyri/ZQVTv1uS7ZQ9ZuwlKft9QuJFlWYQw5q3qUxwQpnLtHgnsD0rXAf9eQ3KDwfWaIsHyvzP90pxaLtBxIKONslTStpw9VQGQCXWixqbfG/J/AfwZFJysikqt08y7A==
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 21da7b97-f3d2-45b4-2ba1-08db78966af7
-X-MS-Exchange-CrossTenant-AuthSource: BLAPR10MB4835.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jun 2023 11:46:03.9616 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: FHnH08zqxN1pCXv9gHRT178Pp82v1yyjBoCaim3Kuf/7RH62uqE8xQ8oVFntiwPEeQ2ej7IA0MPZF0NbROgESbS6gz9bmlut3wPRXGuTzzE=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR10MB6306
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-06-29_03,2023-06-27_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
- suspectscore=0
- malwarescore=0 adultscore=0 mlxlogscore=999 phishscore=0 bulkscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2305260000 definitions=main-2306290105
-X-Proofpoint-GUID: YrXndKdj9bDVcYAXczZuKKRwa7wo7Bg0
-X-Proofpoint-ORIG-GUID: YrXndKdj9bDVcYAXczZuKKRwa7wo7Bg0
-Received-SPF: pass client-ip=205.220.177.32;
- envelope-from=joao.m.martins@oracle.com; helo=mx0b-00069f02.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH v6 12/20] target/riscv: add KVM specific MISA properties
+Content-Language: en-US
+To: Andrew Jones <ajones@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com,
+ bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com,
+ palmer@rivosinc.com, philmd@linaro.org
+References: <20230628213033.170315-1-dbarboza@ventanamicro.com>
+ <20230628213033.170315-13-dbarboza@ventanamicro.com>
+ <20230629-549d312bafe3d5b913ca2048@orel>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <20230629-549d312bafe3d5b913ca2048@orel>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::334;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-ot1-x334.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.093,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -184,64 +99,213 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 29/06/2023 09:40, Zhenzhong Duan wrote:
-> When vfio_realize() succeeds, hot unplug will call vfio_exitfn()
-> to free resources allocated in vfio_realize(); when vfio_realize()
-> fails, vfio_exitfn() is never called and we need to free resources
-> in vfio_realize().
-> 
-> In the case that vfio_migration_realize() fails,
-> e.g: with -only-migratable & enable-migration=off, we see below:
-> 
-> (qemu) device_add vfio-pci,host=81:11.1,id=vfio1,bus=root1,enable-migration=off
-> 0000:81:11.1: Migration disabled
-> Error: disallowing migration blocker (--only-migratable) for: 0000:81:11.1: Migration is disabled for VFIO device
-> 
-> If we hotplug again we should see same log as above, but we see:
-> (qemu) device_add vfio-pci,host=81:11.1,id=vfio1,bus=root1,enable-migration=off
-> Error: vfio 0000:81:11.1: device is already attached
-> 
-> That's because some references to VFIO device isn't released,
-> we should check return value of vfio_migration_realize() and
-> release the references, then VFIO device will be truely
-> released when hotplug fails.
-> 
-> Fixes: a22651053b59 ("vfio: Make vfio-pci device migration capable")
-> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-> ---
->  hw/vfio/pci.c | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-> index 54a8179d1c64..dc69d3031b24 100644
-> --- a/hw/vfio/pci.c
-> +++ b/hw/vfio/pci.c
-> @@ -3210,6 +3210,7 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
->          ret = vfio_migration_realize(vbasedev, errp);
->          if (ret) {
->              error_report("%s: Migration disabled", vbasedev->name);
-> +            goto out_vfio_migration;
->          }
->      }
->  
-> @@ -3219,6 +3220,8 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
->  
->      return;
->  
-> +out_vfio_migration:
-> +    vfio_migration_exit(vbasedev);
->  out_deregister:
->      vfio_disable_interrupts(vdev);
->  out_intx_disable:
 
-I agree with the general sentiment behind the change.
-Clearly vfio::migration and vfio::migration_blocker are leaking from inside the
-migration_realize() function.
 
-But it is kinda awkward semantic that vfio_migration_realize() (or any realize)
-failures need to be accompanied with a vfio_migration_exit() that tears down
-state *leaked* by its realize() failure.
+On 6/29/23 06:12, Andrew Jones wrote:
+> On Wed, Jun 28, 2023 at 06:30:25PM -0300, Daniel Henrique Barboza wrote:
+>> Using all TCG user properties in KVM is tricky. First because KVM
+>> supports only a small subset of what TCG provides, so most of the
+>> cpu->cfg flags do nothing for KVM.
+>>
+>> Second, and more important, we don't have a way of telling if any given
+>> value is an user input or not. For TCG this has a small impact since we
+>> just validating everything and error out if needed. But for KVM it would
+>> be good to know if a given value was set by the user or if it's a value
+>> already provided by KVM. Otherwise we don't know how to handle failed
+>> kvm_set_one_regs() when writing the configurations back.
+>>
+>> These characteristics make it overly complicated to use the same user
+>> facing flags for both KVM and TCG. A simpler approach is to create KVM
+>> specific properties that have specialized logic, forking KVM and TCG use
+>> cases for those cases only. Fully separating KVM/TCG properties is
+>> unneeded at this point - in fact we want the user experience to be as
+>> equal as possible, regardless of the acceleration chosen.
+>>
+>> We'll start this fork with the MISA properties, adding the MISA bits
+>> that the KVM driver currently supports. A new KVMCPUConfig type is
+>> introduced. It'll hold general information about an extension. For MISA
+>> extensions we're going to use the newly created getters of
+>> misa_ext_infos[] to populate their name and description. 'offset' holds
+>> the MISA bit (RVA, RVC, ...). We're calling it 'offset' instead of
+>> 'misa_bit' because this same KVMCPUConfig struct will be used to
+>> multi-letter extensions later on.
+>>
+>> This new type also holds a 'user_set' flag. This flag will be set when
+>> the user set an option that's different than what is already configured
+>> in the host, requiring KVM intervention to write the regs back during
+>> kvm_arch_init_vcpu(). Similar mechanics will be implemented for
+>> multi-letter extensions as well.
+>>
+>> There is no need to duplicate more code than necessary, so we're going
+>> to use the existing kvm_riscv_init_user_properties() to add the KVM
+>> specific properties. Any code that is adding a TCG user prop is then
+>> changed slightly to verify first if there's a KVM prop with the same
+>> name already added.
+>>
+>> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+>> ---
+>>   target/riscv/cpu.c | 13 +++++---
+>>   target/riscv/kvm.c | 78 ++++++++++++++++++++++++++++++++++++++++++++++
+>>   2 files changed, 87 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+>> index 90dd2078ae..f4b1868466 100644
+>> --- a/target/riscv/cpu.c
+>> +++ b/target/riscv/cpu.c
+>> @@ -1617,14 +1617,19 @@ static void riscv_cpu_add_misa_properties(Object *cpu_obj)
+>>   
+>>       for (i = 0; i < ARRAY_SIZE(misa_ext_cfgs); i++) {
+>>           RISCVCPUMisaExtConfig *misa_cfg = &misa_ext_cfgs[i];
+>> +        Error *local_err = NULL;
+>>   
+>>           misa_cfg->name = riscv_get_misa_ext_name(misa_cfg->misa_bit);
+>>           misa_cfg->description = riscv_get_misa_ext_descr(misa_cfg->misa_bit);
+>>   
+>> -        object_property_add(cpu_obj, misa_cfg->name, "bool",
+>> -                            cpu_get_misa_ext_cfg,
+>> -                            cpu_set_misa_ext_cfg,
+>> -                            NULL, (void *)misa_cfg);
+>> +        object_property_try_add(cpu_obj, misa_cfg->name, "bool",
+>> +                                cpu_get_misa_ext_cfg, cpu_set_misa_ext_cfg,
+>> +                                NULL, (void *)misa_cfg, &local_err);
+>> +        if (local_err) {
+>> +            /* Someone (KVM) already created the property */
+>> +            continue;
+>> +        }
+> 
+> This assumes object_property_try_add() only fails when it detects
+> duplicate properties. That's currently true, but it's not documented,
+> so I'm not sure we should count on it. Also, if we do want to assume
+> only duplicate properties generate errors, then we can pass NULL for
+> errp and just check the return value of the call, as it'll be NULL on
+> failure.
 
-It sounds to me that this should be inside the vfio_migration_realize() not on
-the caller? Unless QEMU ::realize() is expected to do this.
+At this moment only a duplicate property returns NULL, so this works. But then, if this
+function changes in the future and more conditions return NULL, we might not be sure if
+we should ignore the NULL return instead of erroring out.
+
+If we want to be on the safe side I believe we should give up this idea and go back to
+what it was before. We'll safely ignore if there's a duplicate because we'll test for
+it, and then object_property_add() can error_fatal in any other error.
+
+Thanks,
+
+Daniel
+
+> 
+>> +
+>>           object_property_set_description(cpu_obj, misa_cfg->name,
+>>                                           misa_cfg->description);
+>>           object_property_set_bool(cpu_obj, misa_cfg->name,
+>> diff --git a/target/riscv/kvm.c b/target/riscv/kvm.c
+>> index 4d0808cb9a..0fb63cced3 100644
+>> --- a/target/riscv/kvm.c
+>> +++ b/target/riscv/kvm.c
+>> @@ -22,8 +22,10 @@
+>>   #include <linux/kvm.h>
+>>   
+>>   #include "qemu/timer.h"
+>> +#include "qapi/error.h"
+>>   #include "qemu/error-report.h"
+>>   #include "qemu/main-loop.h"
+>> +#include "qapi/visitor.h"
+>>   #include "sysemu/sysemu.h"
+>>   #include "sysemu/kvm.h"
+>>   #include "sysemu/kvm_int.h"
+>> @@ -105,6 +107,81 @@ static uint64_t kvm_riscv_reg_id(CPURISCVState *env, uint64_t type,
+>>           } \
+>>       } while (0)
+>>   
+>> +typedef struct KVMCPUConfig {
+>> +    const char *name;
+>> +    const char *description;
+>> +    target_ulong offset;
+>> +    int kvm_reg_id;
+>> +    bool user_set;
+>> +} KVMCPUConfig;
+>> +
+>> +#define KVM_MISA_CFG(_bit, _reg_id) \
+>> +    {.offset = _bit, .kvm_reg_id = _reg_id}
+>> +
+>> +/* KVM ISA extensions */
+>> +static KVMCPUConfig kvm_misa_ext_cfgs[] = {
+>> +    KVM_MISA_CFG(RVA, KVM_RISCV_ISA_EXT_A),
+>> +    KVM_MISA_CFG(RVC, KVM_RISCV_ISA_EXT_C),
+>> +    KVM_MISA_CFG(RVD, KVM_RISCV_ISA_EXT_D),
+>> +    KVM_MISA_CFG(RVF, KVM_RISCV_ISA_EXT_F),
+>> +    KVM_MISA_CFG(RVH, KVM_RISCV_ISA_EXT_H),
+>> +    KVM_MISA_CFG(RVI, KVM_RISCV_ISA_EXT_I),
+>> +    KVM_MISA_CFG(RVM, KVM_RISCV_ISA_EXT_M),
+>> +};
+>> +
+>> +static void kvm_cpu_set_misa_ext_cfg(Object *obj, Visitor *v,
+>> +                                     const char *name,
+>> +                                     void *opaque, Error **errp)
+>> +{
+>> +    KVMCPUConfig *misa_ext_cfg = opaque;
+>> +    target_ulong misa_bit = misa_ext_cfg->offset;
+>> +    RISCVCPU *cpu = RISCV_CPU(obj);
+>> +    CPURISCVState *env = &cpu->env;
+>> +    bool value, host_bit;
+>> +
+>> +    if (!visit_type_bool(v, name, &value, errp)) {
+>> +        return;
+>> +    }
+>> +
+>> +    host_bit = env->misa_ext_mask & misa_bit;
+>> +
+>> +    if (value == host_bit) {
+>> +        return;
+>> +    }
+>> +
+>> +    if (!value) {
+>> +        misa_ext_cfg->user_set = true;
+>> +        return;
+>> +    }
+>> +
+>> +    /*
+>> +     * Forbid users to enable extensions that aren't
+>> +     * available in the hart.
+>> +     */
+>> +    error_setg(errp, "Enabling MISA bit '%s' is not allowed: it's not "
+>> +               "enabled in the host", misa_ext_cfg->name);
+>> +}
+>> +
+>> +static void kvm_riscv_add_cpu_user_properties(Object *cpu_obj)
+>> +{
+>> +    int i;
+>> +
+>> +    for (i = 0; i < ARRAY_SIZE(kvm_misa_ext_cfgs); i++) {
+>> +        KVMCPUConfig *misa_cfg = &kvm_misa_ext_cfgs[i];
+>> +        int bit = misa_cfg->offset;
+>> +
+>> +        misa_cfg->name = riscv_get_misa_ext_name(bit);
+>> +        misa_cfg->description = riscv_get_misa_ext_descr(bit);
+>> +
+>> +        object_property_add(cpu_obj, misa_cfg->name, "bool",
+>> +                            NULL,
+>> +                            kvm_cpu_set_misa_ext_cfg,
+>> +                            NULL, misa_cfg);
+>> +        object_property_set_description(cpu_obj, misa_cfg->name,
+>> +                                        misa_cfg->description);
+>> +    }
+>> +}
+>> +
+>>   static int kvm_riscv_get_regs_core(CPUState *cs)
+>>   {
+>>       int ret = 0;
+>> @@ -427,6 +504,7 @@ void kvm_riscv_init_user_properties(Object *cpu_obj)
+>>           return;
+>>       }
+>>   
+>> +    kvm_riscv_add_cpu_user_properties(cpu_obj);
+>>       kvm_riscv_init_machine_ids(cpu, &kvmcpu);
+>>       kvm_riscv_init_misa_ext_mask(cpu, &kvmcpu);
+>>   
+>> -- 
+>> 2.41.0
+>>
+> 
+> Thanks,
+> drew
 
