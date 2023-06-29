@@ -2,55 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D701974219B
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 10:01:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D417F7421B9
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 10:03:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEmZG-0000i3-9T; Thu, 29 Jun 2023 03:59:54 -0400
+	id 1qEmcF-0002SB-BK; Thu, 29 Jun 2023 04:02:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=1kQ5=CR=kaod.org=clg@ozlabs.org>)
- id 1qEmZ7-0000hm-Hx; Thu, 29 Jun 2023 03:59:45 -0400
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qEmc2-0002Rp-H9
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 04:02:46 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=1kQ5=CR=kaod.org=clg@ozlabs.org>)
- id 1qEmZ5-0003hU-C0; Thu, 29 Jun 2023 03:59:45 -0400
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4Qs9pJ4wYNz4wp1;
- Thu, 29 Jun 2023 17:59:36 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits))
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qEmc0-0004et-Qe
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 04:02:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1688025762;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=13rFAIH10RO17ngNLWtxUYtLWmIbc0QCu3eg9xgI7SI=;
+ b=JVhbCytzKaT1E9fLyH7ODBHmwH5PpZ4ENuBwBNyL2uhOep6UMxYxNVl/Ml6fWAP/WPEx2Q
+ aiF2z6MLZQ1Bcc18K8nEpNO8XKDUi99Ont65WoeOZXKF+nY8/z6uUN/kHEkV/tcUjWQN+n
+ +rccCyjAgUhzY79fl/xF2k9gExjILkc=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-327-AZwNcXEdNDSzpqUiiYSXjw-1; Thu, 29 Jun 2023 04:02:39 -0400
+X-MC-Unique: AZwNcXEdNDSzpqUiiYSXjw-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Qs9pF6XGyz4wgk;
- Thu, 29 Jun 2023 17:59:33 +1000 (AEST)
-Message-ID: <611104ef-3060-ff25-def6-a0d9046814dd@kaod.org>
-Date: Thu, 29 Jun 2023 09:59:31 +0200
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3AF93185A78F;
+ Thu, 29 Jun 2023 08:02:39 +0000 (UTC)
+Received: from thuth.com (dhcp-192-205.str.redhat.com [10.33.192.205])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id B0A3AC09A07;
+ Thu, 29 Jun 2023 08:02:36 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: Paolo Bonzini <pbonzini@redhat.com>,
+	qemu-devel@nongnu.org
+Cc: Michael Tokarev <mjt@tls.msk.ru>
+Subject: [qemu-web PATCH] Fix installation instructions for Debian/Ubuntu
+Date: Thu, 29 Jun 2023 10:02:34 +0200
+Message-Id: <20230629080234.179687-1-thuth@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [RFC PATCH 0/3] ppc/pnv: SMT support for powernv
-Content-Language: en-US
-To: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org, Daniel Henrique Barboza <danielhb413@gmail.com>,
- David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>
-References: <20230629021633.328916-1-npiggin@gmail.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20230629021633.328916-1-npiggin@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
- envelope-from=SRS0=1kQ5=CR=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -40
-X-Spam_score: -4.1
-X-Spam_bar: ----
-X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, NICE_REPLY_A=-0.089,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -67,62 +74,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/29/23 04:16, Nicholas Piggin wrote:
-> These patches implement enough to boot a SMT powernv machine to Linux
-> and boot a SMP KVM guest inside that.
-> 
-> There are a few more SPRs that need to be done, and per-LPAR SPRs are
-> mostly not annotated yet so it can't run in 1LPAR mode. But it is
-> enough to run skiboot/Linux with SMT so I'll just post the minimal
-> patches for RFC because the concept isn't really different to add
-> more SPRs and things.
-> 
-> Thanks,
-> Nick
+There is no package called "qemu" here - thus use the two meta-packages
+"qemu-system" and "qemu-user" instead.
 
-QEMU could boot a 2 sockets x 2 cores x 4 threads machine with MTTCG
-in less than a minute. Very nice :)
+Resolves: https://gitlab.com/qemu-project/qemu-web/-/issues/8
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+---
+ _download/linux.md | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Thanks,
-
-C.
-
-root@jammy:~# lscpu
-Architecture:          ppc64le
-   Byte Order:          Little Endian
-CPU(s):                16
-   On-line CPU(s) list: 0-15
-Model name:            POWER9, altivec supported
-   Model:               2.2 (pvr 004e 1202)
-   Thread(s) per core:  4
-   Core(s) per socket:  2
-   Socket(s):           2
-Caches (sum of all):
-   L1d:                 128 KiB (4 instances)
-   L1i:                 128 KiB (4 instances)
-NUMA:
-   NUMA node(s):        2
-   NUMA node0 CPU(s):   0-7
-   NUMA node1 CPU(s):   8-15
-
-
-
-
-> Nicholas Piggin (3):
->    target/ppc: Add LPAR-per-core vs per-thread mode flag
->    target/ppc: SMT support for the HID SPR
->    ppc/pnv: SMT support for powernv
-> 
->   hw/ppc/pnv.c             | 12 ++++++++++++
->   hw/ppc/pnv_core.c        | 13 +++++--------
->   hw/ppc/spapr_cpu_core.c  |  2 ++
->   target/ppc/cpu.h         |  3 +++
->   target/ppc/cpu_init.c    | 14 +++++++++++++-
->   target/ppc/helper.h      |  1 +
->   target/ppc/misc_helper.c | 21 +++++++++++++++++++++
->   target/ppc/spr_common.h  |  1 +
->   target/ppc/translate.c   | 32 +++++++++++++++++++++++++++++---
->   9 files changed, 87 insertions(+), 12 deletions(-)
-> 
+diff --git a/_download/linux.md b/_download/linux.md
+index 11ed695..bb76425 100644
+--- a/_download/linux.md
++++ b/_download/linux.md
+@@ -2,7 +2,7 @@ QEMU is packaged by most Linux distributions:
+ 
+ * <strong>Arch:</strong> `pacman -S qemu`
+ 
+-* <strong>Debian/Ubuntu:</strong> `apt-get install qemu`
++* <strong>Debian/Ubuntu:</strong> `apt-get install qemu-system qemu-user`
+ 
+ * <strong>Fedora:</strong> `dnf install @virtualization`
+ 
+-- 
+2.39.3
 
 
