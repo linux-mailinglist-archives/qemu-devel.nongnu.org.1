@@ -2,67 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7B0574224D
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 10:39:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3D307422BE
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 10:54:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEnAU-0006gl-GU; Thu, 29 Jun 2023 04:38:22 -0400
+	id 1qEnPO-0002J7-IT; Thu, 29 Jun 2023 04:53:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ivan.klokov@syntacore.com>)
- id 1qEnAT-0006gX-AH; Thu, 29 Jun 2023 04:38:21 -0400
-Received: from mta-04.yadro.com ([89.207.88.248])
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1qEnPK-0002Hw-Pb
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 04:53:42 -0400
+Received: from mga04.intel.com ([192.55.52.120])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ivan.klokov@syntacore.com>)
- id 1qEnAQ-0007bY-O8; Thu, 29 Jun 2023 04:38:21 -0400
-DKIM-Filter: OpenDKIM Filter v2.11.0 mta-04.yadro.com 0A0F0C0005
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=syntacore.com;
- s=mta-04; t=1688027894;
- bh=2mzI2p4R5dozVorYVrP/PIC44+joSs1dHC1DPzmtPwE=;
- h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
- b=cmIXInh80duPx+mRkw9Pb15/uJA7ITi/udII+7haa1UuOLkqM9mpK3rUpyuMaZ9kW
- 6ZRb5qHOA5zxRMnnbLMbCnmP/ATZ1oBgcDgZvcP2UIj0p6nF4yeO5cFbsPWjGPHZmC
- JLM1vI8zuEWb1r4uZGXmjrZp2Odw/RwnULB/0ykM5goRkq2fj0poo/8EmDJTyxVHLY
- 10M6/2rttfYo8+1IEQyNTpNyuXziRxq/i8Wcq+2A7iAhW14S6eFPj6unYiJz8v41oe
- 5MuqJtdgBi9Jmeuf8IB8Sbx9qVr7VhIsym8cGGVglBd4ALDPWui7VYIgMwkPTDGv7d
- Hus1AQN7BUkRA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=syntacore.com;
- s=mta-03; t=1688027894;
- bh=2mzI2p4R5dozVorYVrP/PIC44+joSs1dHC1DPzmtPwE=;
- h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
- b=Ly6zGlq4UT0REmyjKi1S8Lpbg9eWzaQ5IW1FiJJQW62X23T20rPNfexCOeZQtzl+Q
- ByLIjBGnSmLVox58Nvqvbxgrae26g24dIVW4JufGuDU2gYuoz66LJvJvibvQfBXPTk
- ss/xlU75Y0xJtsAOfKTsKgomhzWDkkbZDnGWhu459W/NUilNAbkEhBP89lmafPDaEt
- /4i/eD6PEALtZlcPCWUbS7SsOZ7d5yAjnGnuufgrn2Jo04e6uw0zufrnc4FHJGkl63
- fzby2Pmwx3CgbZOEGddlPNvT9iaG7dHVjHsrcyJv1klo0Be/LbN4IEL+yYe9NbdAKl
- yO9xZLawZwWQg==
-From: Ivan Klokov <ivan.klokov@syntacore.com>
-To: <qemu-devel@nongnu.org>
-CC: <qemu-riscv@nongnu.org>, <richard.henderson@linaro.org>,
- <pbonzini@redhat.com>, <eduardo@habkost.net>, <marcel.apfelbaum@gmail.com>,
- <philmd@linaro.org>, <wangyanan55@huawei.com>, <palmer@dabbelt.com>,
- <alistair.francis@wdc.com>, <bin.meng@windriver.com>, <liweiwei@iscas.ac.cn>, 
- <dbarboza@ventanamicro.com>, <zhiwei_liu@linux.alibaba.com>, Ivan Klokov
- <ivan.klokov@syntacore.com>
-Subject: [PATCH v5 1/1] target/riscv: Add RVV registers to log
-Date: Thu, 29 Jun 2023 11:37:30 +0300
-Message-ID: <20230629083730.386604-1-ivan.klokov@syntacore.com>
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1qEnPI-0003dF-2Q
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 04:53:42 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1688028820; x=1719564820;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=ugogzwgcI9tCsqD5nYumKaiIyFOsPXS6z3mrHkSKZio=;
+ b=S0w6ON5GSoY8VK3uocs2Jln8+WFYSC3lj8CplpCjbvdO1tnyl/RWJYe1
+ kNbM8pWSIbd31VGnVftNpbcSxCeRvY4EDT2bOODx5M+fOKO/9eYn9X4vN
+ 3Ppj44/Bv2UlpD2Zi4KWloQX4OKypLO+IysmAEsJHAYNWAHYvh6AoZjCw
+ EGf0y1JpNKQSzdZNws/y16OamhwSoRKYHCWiKH0kKsJs5o30atpPyPCky
+ 7gc6jRSAtG5tSaIgs01SuFJdJ0jjQkamjTkIOiCoROnlpAuOAbB0krQt3
+ gh8r/OYZCfYRaG9A84aU8Y+hs0h/OGjx+vnZBbdNq49HMvMCHSGOSjugR w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10755"; a="360908842"
+X-IronPort-AV: E=Sophos;i="6.01,168,1684825200"; d="scan'208";a="360908842"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+ by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Jun 2023 01:53:37 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10755"; a="720494288"
+X-IronPort-AV: E=Sophos;i="6.01,168,1684825200"; d="scan'208";a="720494288"
+Received: from duan-server-s2600bt.bj.intel.com ([10.240.192.147])
+ by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Jun 2023 01:53:35 -0700
+From: Zhenzhong Duan <zhenzhong.duan@intel.com>
+To: qemu-devel@nongnu.org
+Cc: alex.williamson@redhat.com, clg@redhat.com, joao.m.martins@oracle.com,
+ avihaih@nvidia.com, chao.p.peng@intel.com
+Subject: [PATCH v4 0/5] VFIO migration related refactor and bug fix
+Date: Thu, 29 Jun 2023 16:40:37 +0800
+Message-Id: <20230629084042.86502-1-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: T-EXCH-08.corp.yadro.com (172.17.11.58) To
- S-Exch-01.corp.yadro.com (10.78.5.241)
-Received-SPF: permerror client-ip=89.207.88.248;
- envelope-from=ivan.klokov@syntacore.com; helo=mta-04.yadro.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_PERMERROR=0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=192.55.52.120;
+ envelope-from=zhenzhong.duan@intel.com; helo=mga04.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,105 +75,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Print RvV extension register to log if VPU option is enabled.
+Hello,
 
-Signed-off-by: Ivan Klokov <ivan.klokov@syntacore.com>
----
-v5:
-   - Fix typo, move macros out of function, direct access to cfg.vlen field. 
----
- target/riscv/cpu.c | 57 +++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 56 insertions(+), 1 deletion(-)
+PATCH5 refactors the VFIO migration blocker related code based on
+suggestions from Joao and Cedric, so that code is simpler and
+"Migration disabled" printed in right case.
 
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 881bddf393..ff29573b1f 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -55,6 +55,17 @@ struct isa_ext_data {
- #define ISA_EXT_DATA_ENTRY(_name, _min_ver, _prop) \
-     {#_name, _min_ver, offsetof(struct RISCVCPUConfig, _prop)}
- 
-+/*
-+ * From vector_helper.c
-+ * Note that vector data is stored in host-endian 64-bit chunks,
-+ * so addressing bytes needs a host-endian fixup.
-+ */
-+#if HOST_BIG_ENDIAN
-+#define BYTE(x)   ((x) ^ 7)
-+#else
-+#define BYTE(x)   (x)
-+#endif
-+
- /*
-  * Here are the ordering rules of extension naming defined by RISC-V
-  * specification :
-@@ -183,6 +194,14 @@ const char * const riscv_fpr_regnames[] = {
-     "f30/ft10", "f31/ft11"
- };
- 
-+const char * const riscv_rvv_regnames[] = {
-+  "v0",  "v1",  "v2",  "v3",  "v4",  "v5",  "v6",
-+  "v7",  "v8",  "v9",  "v10", "v11", "v12", "v13",
-+  "v14", "v15", "v16", "v17", "v18", "v19", "v20",
-+  "v21", "v22", "v23", "v24", "v25", "v26", "v27",
-+  "v28", "v29", "v30", "v31"
-+};
-+
- static const char * const riscv_excp_names[] = {
-     "misaligned_fetch",
-     "fault_fetch",
-@@ -608,7 +627,8 @@ static void riscv_cpu_dump_state(CPUState *cs, FILE *f, int flags)
- {
-     RISCVCPU *cpu = RISCV_CPU(cs);
-     CPURISCVState *env = &cpu->env;
--    int i;
-+    int i, j;
-+    uint8_t *p;
- 
- #if !defined(CONFIG_USER_ONLY)
-     if (riscv_has_ext(env, RVH)) {
-@@ -692,6 +712,41 @@ static void riscv_cpu_dump_state(CPUState *cs, FILE *f, int flags)
-             }
-         }
-     }
-+    if (riscv_has_ext(env, RVV) && (flags & CPU_DUMP_VPU)) {
-+        static const int dump_rvv_csrs[] = {
-+                    CSR_VSTART,
-+                    CSR_VXSAT,
-+                    CSR_VXRM,
-+                    CSR_VCSR,
-+                    CSR_VL,
-+                    CSR_VTYPE,
-+                    CSR_VLENB,
-+                };
-+        for (int i = 0; i < ARRAY_SIZE(dump_rvv_csrs); ++i) {
-+            int csrno = dump_rvv_csrs[i];
-+            target_ulong val = 0;
-+            RISCVException res = riscv_csrrw_debug(env, csrno, &val, 0, 0);
-+
-+            /*
-+             * Rely on the smode, hmode, etc, predicates within csr.c
-+             * to do the filtering of the registers that are present.
-+             */
-+            if (res == RISCV_EXCP_NONE) {
-+                qemu_fprintf(f, " %-8s " TARGET_FMT_lx "\n",
-+                             csr_ops[csrno].name, val);
-+            }
-+        }
-+        uint16_t vlenb = cpu->cfg.vlen >> 3;
-+
-+        for (i = 0; i < 32; i++) {
-+            qemu_fprintf(f, " %-8s ", riscv_rvv_regnames[i]);
-+            p = (uint8_t *)env->vreg;
-+            for (j = vlenb - 1 ; j >= 0; j--) {
-+                qemu_fprintf(f, "%02x", *(p + i * vlenb + BYTE(j)));
-+            }
-+            qemu_fprintf(f, "\n");
-+        }
-+    }
- }
- 
- static void riscv_cpu_set_pc(CPUState *cs, vaddr value)
+But before that works, also found some hotplug bugs when testing
+blocker adding failed case. PATCH1-4 fix them.
+
+See patch description for details.
+
+v4: Rebased on [1] which contains Avihai's patchset [2]
+    Add more patches to fix resource leak issue, split based on
+    different fix TAG per Joao
+    Change to not print "Migration disabled" with explicit
+    enable-migration=off per Avihai
+    Rename vfio_block_giommu_migration to vfio_viommu_preset per Joao
+
+v3: Add PATCH1,2 to fix hotplug bug
+    Fix bugs in PATCH3 Avihai and Joao pointed out
+
+Tested vfio hotplug/unplug with vfio migration supported and unsupported cases,
+and different param of enable-migration=[on/off/auto] and -only-migratable.
+
+[1] https://github.com/legoater/qemu/tree/vfio-next
+[2] https://lists.nongnu.org/archive/html/qemu-devel/2023-06/msg06117.html
+
+Thanks
+
+Zhenzhong Duan (5):
+  vfio/pci: Fix a segfault in vfio_realize
+  vfio/pci: Free leaked timer in vfio_realize error path
+  vfio/pci: Disable INTx in vfio_realize error path
+  vfio/pci: Free resources when vfio_migration_realize fails
+  vfio/migration: Refactor and fix print of "Migration disabled"
+
+ hw/vfio/common.c              | 66 +++++++----------------------------
+ hw/vfio/migration.c           | 30 +++++++++-------
+ hw/vfio/pci.c                 | 18 +++++++---
+ include/hw/vfio/vfio-common.h |  7 ++--
+ 4 files changed, 48 insertions(+), 73 deletions(-)
+
 -- 
 2.34.1
 
