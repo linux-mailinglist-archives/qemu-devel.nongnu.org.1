@@ -2,52 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D47EB7422B7
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FB357422B6
 	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 10:54:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEnPS-0002Ja-1A; Thu, 29 Jun 2023 04:53:50 -0400
+	id 1qEnPU-0002K5-EU; Thu, 29 Jun 2023 04:53:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1qEnPO-0002JO-H1
- for qemu-devel@nongnu.org; Thu, 29 Jun 2023 04:53:46 -0400
+ id 1qEnPQ-0002Jb-72
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 04:53:48 -0400
 Received: from mga04.intel.com ([192.55.52.120])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1qEnPM-0003gN-Uf
- for qemu-devel@nongnu.org; Thu, 29 Jun 2023 04:53:46 -0400
+ id 1qEnPO-0003fe-Fh
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 04:53:47 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1688028824; x=1719564824;
+ t=1688028826; x=1719564826;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=auMMZ44FpdF9pO57M72BIAIa9/kWifdFwydoJYidDdk=;
- b=lCmpDxxiqA3j5Av2pkajhAEyD53mViXP1XMrBtFTw7cyQbl8Brp7gl2F
- VkFnDtjknEyKNvriTJuHRoC5Nfp6xdsXYPIWYtes1D0MJ9RyzA3BO0fhv
- wgvBSEoqePRPNntQo5nqJIJNk8XaklY/8pF/d+eW1aUfvt0GffcQFIVhD
- N90EdQbEPtGGl4lIPPxXQYeJ4HjFUABVIxKBiZOCI57BXy5nfft/jvzZw
- 6+bJEp6Ku7oCilOL1DdGadElLpfXnRqbo4INXR71M0+Mx/HaUq3iFgIxL
- Hr1ZaJEoF5ztfByob2ovNArCbT59iZqH8tmKJy1LLHpFAGfyjF8yFtO+o w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10755"; a="360908865"
-X-IronPort-AV: E=Sophos;i="6.01,168,1684825200"; d="scan'208";a="360908865"
+ bh=G5HFVlLCJ61xkjz00WCRqTvVJSqyMqfJRHBOqW6i9Z0=;
+ b=a+ERvJf+7k8HZtqWKH6yln1qaTYbuZfdzurCGwSX0xhh6JQNR9dreyPC
+ 0O8QAXlxN0DsMhMHHoXHx9/i827O9NiV79qoPBW/JBGKSQdEyfcUjWeDt
+ 4HgEf9Gar9TWgxcxIc2ZaGkzYbRrt8TZWhVeA3RtkJBFq+sCB5/vV9opR
+ Xozu4ET1vCLwyz2+nRt/wEEhlDyiYZTbWp3pHt90Bor6YxrqgtuaQjr//
+ gwEyxhplT80g7ECDIkL7PY20FWUaEcJ6nO0tLx6/bQ/KhTxwwQapUmo1L
+ UtutA3xRWdtUVJcawFSk6qoV/ROSUhsN0Jpwgyl6zHwTcC1yLSEYCn1bw Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10755"; a="360908873"
+X-IronPort-AV: E=Sophos;i="6.01,168,1684825200"; d="scan'208";a="360908873"
 Received: from fmsmga007.fm.intel.com ([10.253.24.52])
  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jun 2023 01:53:43 -0700
+ 29 Jun 2023 01:53:45 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10755"; a="720494349"
-X-IronPort-AV: E=Sophos;i="6.01,168,1684825200"; d="scan'208";a="720494349"
+X-IronPort-AV: E=McAfee;i="6600,9927,10755"; a="720494362"
+X-IronPort-AV: E=Sophos;i="6.01,168,1684825200"; d="scan'208";a="720494362"
 Received: from duan-server-s2600bt.bj.intel.com ([10.240.192.147])
  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jun 2023 01:53:41 -0700
+ 29 Jun 2023 01:53:43 -0700
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, joao.m.martins@oracle.com,
  avihaih@nvidia.com, chao.p.peng@intel.com
-Subject: [PATCH v4 3/5] vfio/pci: Disable INTx in vfio_realize error path
-Date: Thu, 29 Jun 2023 16:40:40 +0800
-Message-Id: <20230629084042.86502-4-zhenzhong.duan@intel.com>
+Subject: [PATCH v4 4/5] vfio/pci: Free resources when vfio_migration_realize
+ fails
+Date: Thu, 29 Jun 2023 16:40:41 +0800
+Message-Id: <20230629084042.86502-5-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230629084042.86502-1-zhenzhong.duan@intel.com>
 References: <20230629084042.86502-1-zhenzhong.duan@intel.com>
@@ -77,41 +78,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When vfio realize fails, INTx isn't disabled if it has been enabled.
-This may confuse host side with unhandled interrupt report.
+When vfio_realize() succeeds, hot unplug will call vfio_exitfn()
+to free resources allocated in vfio_realize(); when vfio_realize()
+fails, vfio_exitfn() is never called and we need to free resources
+in vfio_realize().
 
-Add a new label to be used for vfio_intx_enable() failed case.
+In the case that vfio_migration_realize() fails,
+e.g: with -only-migratable & enable-migration=off, we see below:
 
-Fixes: a9994687cb9b ("vfio/display: core & wireup")
-Fixes: b290659fc3dd ("hw/vfio/display: add ramfb support")
-Fixes: c62a0c7ce34e ("vfio/display: add xres + yres properties")
+(qemu) device_add vfio-pci,host=81:11.1,id=vfio1,bus=root1,enable-migration=off
+0000:81:11.1: Migration disabled
+Error: disallowing migration blocker (--only-migratable) for: 0000:81:11.1: Migration is disabled for VFIO device
+
+If we hotplug again we should see same log as above, but we see:
+(qemu) device_add vfio-pci,host=81:11.1,id=vfio1,bus=root1,enable-migration=off
+Error: vfio 0000:81:11.1: device is already attached
+
+That's because some references to VFIO device isn't released,
+we should check return value of vfio_migration_realize() and
+release the references, then VFIO device will be truely
+released when hotplug fails.
+
+Fixes: a22651053b59 ("vfio: Make vfio-pci device migration capable")
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 ---
- hw/vfio/pci.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ hw/vfio/pci.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-index ab6645ba60af..54a8179d1c64 100644
+index 54a8179d1c64..dc69d3031b24 100644
 --- a/hw/vfio/pci.c
 +++ b/hw/vfio/pci.c
-@@ -3167,7 +3167,7 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
-         kvm_irqchip_add_change_notifier(&vdev->irqchip_change_notifier);
-         ret = vfio_intx_enable(vdev, errp);
+@@ -3210,6 +3210,7 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
+         ret = vfio_migration_realize(vbasedev, errp);
          if (ret) {
--            goto out_deregister;
-+            goto out_intx_disable;
+             error_report("%s: Migration disabled", vbasedev->name);
++            goto out_vfio_migration;
          }
      }
  
-@@ -3220,6 +3220,8 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
+@@ -3219,6 +3220,8 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
+ 
      return;
  
++out_vfio_migration:
++    vfio_migration_exit(vbasedev);
  out_deregister:
-+    vfio_disable_interrupts(vdev);
-+out_intx_disable:
-     pci_device_set_intx_routing_notifier(&vdev->pdev, NULL);
-     if (vdev->irqchip_change_notifier.notify) {
-         kvm_irqchip_remove_change_notifier(&vdev->irqchip_change_notifier);
+     vfio_disable_interrupts(vdev);
+ out_intx_disable:
 -- 
 2.34.1
 
