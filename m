@@ -2,83 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89E9574229D
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 10:51:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 866447422B8
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 10:54:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEnLf-00016F-OA; Thu, 29 Jun 2023 04:49:55 -0400
+	id 1qEnPc-0002Mc-2C; Thu, 29 Jun 2023 04:54:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qEnLd-00015z-AP
- for qemu-devel@nongnu.org; Thu, 29 Jun 2023 04:49:53 -0400
-Received: from mail-ot1-x32c.google.com ([2607:f8b0:4864:20::32c])
+ id 1qEnPX-0002MP-3U
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 04:53:55 -0400
+Received: from mail-oi1-x236.google.com ([2607:f8b0:4864:20::236])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qEnLb-0002Vw-9z
- for qemu-devel@nongnu.org; Thu, 29 Jun 2023 04:49:53 -0400
-Received: by mail-ot1-x32c.google.com with SMTP id
- 46e09a7af769-6b74faaac3bso372010a34.1
- for <qemu-devel@nongnu.org>; Thu, 29 Jun 2023 01:49:50 -0700 (PDT)
+ id 1qEnPV-0003ks-1J
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 04:53:54 -0400
+Received: by mail-oi1-x236.google.com with SMTP id
+ 5614622812f47-39ea511930eso322790b6e.1
+ for <qemu-devel@nongnu.org>; Thu, 29 Jun 2023 01:53:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1688028590; x=1690620590;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1688028832; x=1690620832;
+ h=content-transfer-encoding:in-reply-to:from:to:references:cc
+ :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=I2GZNBLrSB7/oNKqW+3GxQWiaJdjUTm/jQXBpuEczVo=;
- b=zbidCj8VTaPYTurhbfo6Udrizh5G3xZcM5cFkfkfD/SJq68YtLe4W08yUBnaBrYrvU
- QBhatVphkTdeZKTMWPhYe+zodGlrcF+Er9dEt9CWszL3bvyLtq3rB8l59XVqbt8ge/Wv
- xNfOOBMC5s0R/csYlX6VDtqB+ttnFt4Xr7GSwqqYd5hciPqLBx5M7bCNFhul6C6qtjY3
- fHbIfa9fIhFqri3Rq0PTsN4fwKznqiYF92UpTAK8EiLaSo5ktMTrgJUfgA5yFwLN2X2f
- t/jOjGDs4gzduEReHTO4AqjMoLg3cnYfrd5F4fUylSBxYoaw6IfGI6dB4TYOH7TmQryV
- GW6A==
+ bh=9L0EMRHptAm3yVZe2epeeB+QiWPNAwd0Ma9fAhF0KX0=;
+ b=Yc1ojRmLo2F9jqXgvUb7rBNg9ayecv0AYhZcgIRuud4elF+kltR3p/yQ8+3do31Ie8
+ xrOO79ASNgz1w6jBBG5lfjy6PQkqRBp4Yk3E0nJECz4G+f9Ex4xOnbvkkGusdGXHLYTl
+ rTCgPu9O/0mj/Z5VLWq2b1on7mIEiNsSV90tLs6p2cj/so9kOEFnuLPAg0Gj7cNRbrLR
+ F2ASB/ioKM9GOQAEkyuib717rw6M0yWPTDjHrbIew/8728ZvtqhSiCnRsedCy3RPiyD+
+ YeppibVeovSQqUvS3N1TQzxzNf0kAKeV4p616eV0Tgm+TyXBbbkWtkiGRIO3LkGUGmuB
+ Tmeg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688028590; x=1690620590;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20221208; t=1688028832; x=1690620832;
+ h=content-transfer-encoding:in-reply-to:from:to:references:cc
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=I2GZNBLrSB7/oNKqW+3GxQWiaJdjUTm/jQXBpuEczVo=;
- b=ECY/FjD9XWkK+fqq6EqX/0WkY/FcspEkLCmem4veDNOtQ2u9Mscr9rbnGPuLq2pmdW
- 8jyInbH3dVennr0Mvc6dgzs7xc/dJ5yXmQDlaoQZccTS2n0yjTAavzLhuanHMiP8/FM1
- tCzEeOBGY6c95JelHfY4smCZtNhyJRlhb3zTyzHHwlaqWBJounT/T4KhQVQnVf61iP0V
- KxRcIboRSs5vIlyo98w1JP+ixCyXGArwijJa6afOqJmxv2I87GbQziIJ0pAGaiNrP2Hq
- qX2L0GHqINNj+KhXtkQqTOlI5Rk2AXR7Cxa+mdiN3d/WXi+X1YyuFZec52QojJHlkkSQ
- dLAw==
-X-Gm-Message-State: AC+VfDy1nbI9CU9Jcj5LPWKaX/YWHkaMElLvbIEfGd5cT3mLNRNLcVYI
- 0GXkBoYvfBzwo3qjuGbFZ54LYA==
-X-Google-Smtp-Source: ACHHUZ4HUy9X/T+NSZGxFAY4zuUOx11gcA7g7nCSHac/zbO7wVBbtNYrK8G1hA/0fZsiukKhmampRw==
-X-Received: by 2002:a05:6808:f92:b0:3a3:7505:7038 with SMTP id
- o18-20020a0568080f9200b003a375057038mr1625320oiw.45.1688028589756; 
- Thu, 29 Jun 2023 01:49:49 -0700 (PDT)
+ bh=9L0EMRHptAm3yVZe2epeeB+QiWPNAwd0Ma9fAhF0KX0=;
+ b=P9rtcGypQRsR3yHWKelyTsYBPLGrMYFdBjyPNeBsQBgm1J9epCcA2hXEAaMSTkpP+I
+ bWMd1upbDBLXuLbCn9e1dy5ozBaJavK+KSCUW+b1dcOtsb+1ycRGwNJvAcpSvGEU2o4J
+ 5Y+nIMGNk5PvRg2c6rCpwP4kfBAM/gnyEKRlnh+XSmf1FIibN/TZGI2jmN+8el2YjOGb
+ jfs7aOAoSISULGLQk07FjT5zxrMvAE4KlguZDzzOJnauN6jd2+SjAT+/Dg8EQN15DyaE
+ mAEWy3zUKI1u6/tMsbweMb2sgZDxWtpvff55LoAUywKM3qU6SRO5xQNPptRlC9c1LHhz
+ NG3w==
+X-Gm-Message-State: AC+VfDx6JzAhW5Ch1C/suR2RTYc+bDDYwHOt9TejWOtVrwdjqEs0D2ih
+ 9A0gKoj3vYu6c/p/t7sl8VvEvQ==
+X-Google-Smtp-Source: ACHHUZ71v4YA2NHhuDxlFf/GTrCUwFIjibjjNwXTIpSsRDLc/Ow27yiLOcNTIuNQSehnNCcWpfkAGA==
+X-Received: by 2002:a05:6808:120c:b0:3a0:3f7f:2329 with SMTP id
+ a12-20020a056808120c00b003a03f7f2329mr31848941oil.54.1688028831783; 
+ Thu, 29 Jun 2023 01:53:51 -0700 (PDT)
 Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
  ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
  by smtp.gmail.com with ESMTPSA id
- d26-20020aa7869a000000b0063d2dae6247sm6126350pfo.77.2023.06.29.01.49.47
+ k7-20020a17090a658700b00262eccfa29fsm6676133pjj.33.2023.06.29.01.53.49
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 29 Jun 2023 01:49:49 -0700 (PDT)
-Message-ID: <8868044c-f61b-7bbb-8cc8-34a14c1490d6@daynix.com>
-Date: Thu, 29 Jun 2023 17:49:46 +0900
+ Thu, 29 Jun 2023 01:53:51 -0700 (PDT)
+Message-ID: <c3c571aa-d882-09ea-15d8-4cb119feae4e@daynix.com>
+Date: Thu, 29 Jun 2023 17:53:48 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
-Subject: Re: [PATCH v6 5/5] hw/pci: ensure PCIE devices are plugged into only
- slot 0 of PCIE port
-To: Ani Sinha <anisinha@redhat.com>
-Cc: qemu-devel <qemu-devel@nongnu.org>, "Michael S. Tsirkin"
- <mst@redhat.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Julia Suvorova <jusual@redhat.com>, Igor Mammedov <imammedo@redhat.com>
-References: <20230629040707.115656-1-anisinha@redhat.com>
- <20230629040707.115656-6-anisinha@redhat.com>
- <8d382e8b-088b-f0af-eec4-a85ee513b4ae@daynix.com>
- <CAK3XEhNOJkm13+vxJO9-Adhwq8NJ3TQ1gaOXj8Dn3NtixF_=jQ@mail.gmail.com>
+Subject: Re: [PATCH] e1000e: Add ICR clearing by corresponding IMS bit
 Content-Language: en-US
+Cc: intel-wired-lan@lists.osuosl.org, qemu-devel@nongnu.org,
+ alexander.duyck@gmail.com, Dmitry Fleytman <dmitry.fleytman@gmail.com>,
+ Andrew Melnychenko <andrew@daynix.com>
+References: <20230602072516.42502-1-akihiko.odaki@daynix.com>
+To: Jason Wang <jasowang@redhat.com>
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <CAK3XEhNOJkm13+vxJO9-Adhwq8NJ3TQ1gaOXj8Dn3NtixF_=jQ@mail.gmail.com>
+In-Reply-To: <20230602072516.42502-1-akihiko.odaki@daynix.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::32c;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-ot1-x32c.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::236;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-oi1-x236.google.com
 X-Spam_score_int: -19
 X-Spam_score: -2.0
 X-Spam_bar: --
@@ -101,102 +97,103 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/06/29 17:05, Ani Sinha wrote:
+On 2023/06/02 16:25, Akihiko Odaki wrote:
+> The datasheet does not say what happens when interrupt was asserted
+> (ICR.INT_ASSERT=1) and auto mask is *not* active.
+> However, section of 13.3.27 the PCIe* GbE Controllers Open Source
+> Software Developer’s Manual, which were written for older devices,
+> namely 631xESB/632xESB, 82563EB/82564EB, 82571EB/82572EI &
+> 82573E/82573V/82573L, does say:
+>> If IMS = 0b, then the ICR register is always clear-on-read. If IMS is
+>> not 0b, but some ICR bit is set where the corresponding IMS bit is not
+>> set, then a read does not clear the ICR register. For example, if
+>> IMS = 10101010b and ICR = 01010101b, then a read to the ICR register
+>> does not clear it. If IMS = 10101010b and ICR = 0101011b, then a read
+>> to the ICR register clears it entirely (ICR.INT_ASSERTED = 1b).
 > 
+> Linux does no longer activate auto mask since commit
+> 0a8047ac68e50e4ccbadcfc6b6b070805b976885 and the real hardware clears
+> ICR even in such a case so we also should do so.
 > 
-> On Thu, 29 Jun, 2023, 12:17 pm Akihiko Odaki, <akihiko.odaki@daynix.com 
-> <mailto:akihiko.odaki@daynix.com>> wrote:
+> Buglink: https://bugzilla.redhat.com/show_bug.cgi?id=1707441
+> Signed-off-by: Andrew Melnychenko <andrew@daynix.com>
+> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+> ---
+> Supersedes: <20201203133236.222207-1-andrew@daynix.com>
+> ("[PATCH v2] e1000e: Added ICR clearing by corresponding IMS bit.")
 > 
->     On 2023/06/29 13:07, Ani Sinha wrote:
->      > PCI Express ports only have one slot, so PCI Express devices can
->     only be
->      > plugged into slot 0 on a PCIE port. Enforce it.
->      >
->      > The change has been tested to not break ARI by instantiating
->     seven vfs on an
->      > emulated igb device (the maximum number of vfs the linux igb
->     driver supports).
->      > The vfs are seen to have non-zero device/slot numbers in the
->     conventional
->      > PCI BDF representation.
->      >
->      > CC: jusual@redhat.com <mailto:jusual@redhat.com>
->      > CC: imammedo@redhat.com <mailto:imammedo@redhat.com>
->      > CC: akihiko.odaki@daynix.com <mailto:akihiko.odaki@daynix.com>
->      >
->      > Resolves: https://bugzilla.redhat.com/show_bug.cgi?id=2128929
->     <https://bugzilla.redhat.com/show_bug.cgi?id=2128929>
->      > Signed-off-by: Ani Sinha <anisinha@redhat.com
->     <mailto:anisinha@redhat.com>>
->      > Reviewed-by: Julia Suvorova <jusual@redhat.com
->     <mailto:jusual@redhat.com>>
->      > ---
->      >   hw/pci/pci.c | 15 +++++++++++++++
->      >   1 file changed, 15 insertions(+)
->      >
->      > diff --git a/hw/pci/pci.c b/hw/pci/pci.c
->      > index e2eb4c3b4a..0320ac2bb3 100644
->      > --- a/hw/pci/pci.c
->      > +++ b/hw/pci/pci.c
->      > @@ -65,6 +65,7 @@ bool pci_available = true;
->      >   static char *pcibus_get_dev_path(DeviceState *dev);
->      >   static char *pcibus_get_fw_dev_path(DeviceState *dev);
->      >   static void pcibus_reset(BusState *qbus);
->      > +static bool pcie_has_upstream_port(PCIDevice *dev);
->      >
->      >   static Property pci_props[] = {
->      >       DEFINE_PROP_PCI_DEVFN("addr", PCIDevice, devfn, -1),
->      > @@ -1190,6 +1191,20 @@ static PCIDevice
->     *do_pci_register_device(PCIDevice *pci_dev,
->      >                      name);
->      >
->      >          return NULL;
->      > +    } /*
->      > +       * With SRIOV and ARI, vfs can have non-zero slot in the
->     conventional
->      > +       * PCI interpretation as all five bits reserved for slot
->     addresses are
->      > +       * also used for function bits for the various vfs. Ignore
->     that case.
->      > +       * It is too early here to check for ARI capabilities in
->     the PCI config
->      > +       * space. Hence, we check for a vf device instead.
->      > +       */
+>   hw/net/e1000e_core.c | 38 ++++++++++++++++++++++++++++++++------
+>   hw/net/trace-events  |  1 +
+>   2 files changed, 33 insertions(+), 6 deletions(-)
 > 
->     Why don't just perform this check after the capabilities are set?
-> 
-> 
-> We don't want to allocate resources for wrong device parameters. We want 
-> to error out early. Other checks also are performed at the same place .
+> diff --git a/hw/net/e1000e_core.c b/hw/net/e1000e_core.c
+> index 9785ef279c..338bbbf4f4 100644
+> --- a/hw/net/e1000e_core.c
+> +++ b/hw/net/e1000e_core.c
+> @@ -2607,12 +2607,38 @@ e1000e_mac_icr_read(E1000ECore *core, int index)
+>           e1000e_lower_interrupts(core, ICR, 0xffffffff);
+>       }
+>   
+> -    if ((core->mac[ICR] & E1000_ICR_ASSERTED) &&
+> -        (core->mac[CTRL_EXT] & E1000_CTRL_EXT_IAME)) {
+> -        trace_e1000e_irq_icr_clear_iame();
+> -        e1000e_lower_interrupts(core, ICR, 0xffffffff);
+> -        trace_e1000e_irq_icr_process_iame();
+> -        e1000e_lower_interrupts(core, IMS, core->mac[IAM]);
+> +    if (core->mac[ICR] & E1000_ICR_ASSERTED) {
+> +        if (core->mac[CTRL_EXT] & E1000_CTRL_EXT_IAME) {
+> +            trace_e1000e_irq_icr_clear_iame();
+> +            e1000e_lower_interrupts(core, ICR, 0xffffffff);
+> +            trace_e1000e_irq_icr_process_iame();
+> +            e1000e_lower_interrupts(core, IMS, core->mac[IAM]);
+> +        }
+> +
+> +        /*
+> +         * The datasheet does not say what happens when interrupt was asserted
+> +         * (ICR.INT_ASSERT=1) and auto mask is *not* active.
+> +         * However, section of 13.3.27 the PCIe* GbE Controllers Open Source
+> +         * Software Developer’s Manual, which were written for older devices,
+> +         * namely 631xESB/632xESB, 82563EB/82564EB, 82571EB/82572EI &
+> +         * 82573E/82573V/82573L, does say:
+> +         * > If IMS = 0b, then the ICR register is always clear-on-read. If IMS
+> +         * > is not 0b, but some ICR bit is set where the corresponding IMS bit
+> +         * > is not set, then a read does not clear the ICR register. For
+> +         * > example, if IMS = 10101010b and ICR = 01010101b, then a read to the
+> +         * > ICR register does not clear it. If IMS = 10101010b and
+> +         * > ICR = 0101011b, then a read to the ICR register clears it entirely
+> +         * > (ICR.INT_ASSERTED = 1b).
+> +         *
+> +         * Linux does no longer activate auto mask since commit
+> +         * 0a8047ac68e50e4ccbadcfc6b6b070805b976885 and the real hardware
+> +         * clears ICR even in such a case so we also should do so.
+> +         */
+> +        if (core->mac[ICR] & core->mac[IMS]) {
+> +            trace_e1000e_irq_icr_clear_icr_bit_ims(core->mac[ICR],
+> +                                                   core->mac[IMS]);
+> +            e1000e_lower_interrupts(core, ICR, 0xffffffff);
+> +        }
+>       }
+>   
+>       return ret;
+> diff --git a/hw/net/trace-events b/hw/net/trace-events
+> index e97e9dc17b..9103488e17 100644
+> --- a/hw/net/trace-events
+> +++ b/hw/net/trace-events
+> @@ -217,6 +217,7 @@ e1000e_irq_read_ims(uint32_t ims) "Current IMS: 0x%x"
+>   e1000e_irq_icr_clear_nonmsix_icr_read(void) "Clearing ICR on read due to non MSI-X int"
+>   e1000e_irq_icr_clear_zero_ims(void) "Clearing ICR on read due to zero IMS"
+>   e1000e_irq_icr_clear_iame(void) "Clearing ICR on read due to IAME"
+> +e1000e_irq_icr_clear_icr_bit_ims(uint32_t icr, uint32_t ims) "Clearing ICR on read due corresponding IMS bit: 0x%x & 0x%x"
+>   e1000e_irq_iam_clear_eiame(uint32_t iam, uint32_t cause) "Clearing IMS due to EIAME, IAM: 0x%X, cause: 0x%X"
+>   e1000e_irq_icr_clear_eiac(uint32_t icr, uint32_t eiac) "Clearing ICR bits due to EIAC, ICR: 0x%X, EIAC: 0x%X"
+>   e1000e_irq_ims_clear_set_imc(uint32_t val) "Clearing IMS bits due to IMC write 0x%x"
 
-It is indeed better to raise an error as early as possible so that we 
-can avoid allocation and other operations that will be reverted and may 
-go wrong due to the invalid condition. That should be the reason why 
-other checks for the address are performed here.
+Hi Jason,
 
-However, in this particular case, we cannot confidently perform the 
-check here because it is unknown if the ARI capability will be 
-advertised until the device realization code runs. This can justify 
-delaying the check after the device realization, unlike the other checks.
+Can you have a look at this patch and
+"[PATCH] igb: Remove obsolete workaround for Windows":
+https://patchew.org/QEMU/20230529023704.9387-1-akihiko.odaki@daynix.com/
 
-> Show quoted text
-> 
-> 
-> 
-> 
->     Regards,
->     Akihiko Odaki
-> 
->      > +    else if (!pci_is_vf(pci_dev) &&
->      > +             pcie_has_upstream_port(pci_dev) &&
->      > +             PCI_SLOT(devfn)) {
->      > +        error_setg(errp, "PCI: slot %d is not valid for %s,"
->      > +                   " parent device only allows plugging into
->     slot 0.",
->      > +                   PCI_SLOT(devfn), name);
->      > +        return NULL;
->      >       }
->      >
->      >       pci_dev->devfn = devfn;
-> 
+Regards,
+Akihiko Odaki
 
