@@ -2,67 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17651742218
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 10:26:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1475742226
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 10:30:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEmyJ-0000zO-VO; Thu, 29 Jun 2023 04:25:47 -0400
+	id 1qEn2K-00037E-J9; Thu, 29 Jun 2023 04:29:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qEmyF-0000sR-1W
- for qemu-devel@nongnu.org; Thu, 29 Jun 2023 04:25:43 -0400
+ id 1qEn2I-00036Y-7H; Thu, 29 Jun 2023 04:29:54 -0400
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qEmyC-0003yL-MI
- for qemu-devel@nongnu.org; Thu, 29 Jun 2023 04:25:41 -0400
+ id 1qEn2G-0004XB-8w; Thu, 29 Jun 2023 04:29:53 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
- References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
- Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
- Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
- List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=z+1BEUmavoQO3HcH1kz8zqVdVEFpYdR3gpplJlnyaGk=; b=aEEfl3PCyu73Pfc1jSlJzgaIMg
- VLzdzV3Zt0MkMoX8Sv8pwPpjZW/ZFlUpqM8Hoy+O7zTYeppfrbqU7MqDgbyJNRm71VckdY80WWI8J
- hkn4ceOFEVHtUf5xYICXhrpayUqU4c9MM5iORa6Qsl7QgxNNXEEawKyyrTWyEr8Qf6uD1IMRQLEj3
- 9EZizUABTrZ7HL3NxWgkse5rAPAusOhcMaY+oFkNulN7lWyyb21p5FxD3k98wV/zJroxmy3HIYLH0
- fEEBVL6Yu3A5vS3Cnb7b6Nw9+/khk/e9P0Nv8W2/s+ODjjYYoizbVg2zaNxC97QZepVXHqObvnn5m
- bRpCayBZOQRH9EgCVkxgqMXNtVdkv7bGVYm96It6xdVOT+GRd2a7jGP7uFT1pARRZEXVG7qyDfSRX
- +m7+1HyEUDgFBNa6gwrv7/DjyOdVD8pC8sAflwfbUTxsp+1bmiHSVSuv33dTx+csTRbMTF0dHQ1mU
- Sp6cFnkxcnnF5noNAKKLHcgMvb+nUPlcop3+9DrDy+8gaMSalAVcYxWP+jCqqh9ECCEJOlX4TLTzE
- ZxhQqYWJNnz15IKg9ueR5PsAyYXg57s5rFgO218e1I6uWO34K+OGzI4leC/u13CEvbtQI9EDi65rp
- s5yvobpuCcrisURfQQiNcMSlUNrdUQXCGgBMz55mc=;
+ d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
+ In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
+ Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+ :Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+ List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=biDuv5j9mBW9ubk4T2rAMURItEC7soXYAGxIOyPrt6g=; b=Ruc1LRO4COUCP7XU1H5jKJp0iH
+ Gw6LGfXADARBPBiujFs3c9ALaUuOHl7FfnhaeOi/oylGt34LXdUTHhXUV911o3LmvvHcxAIaI9DoT
+ h5PDMbJtZ76sUwgPT2buQRa+n/jyICN9e9TRHm02hK2JGOvlCe30GUyOlV3/RlWQNqGR9JdgBVfLK
+ DVM8nnKNHAyAdzBb2QgjULESxSYOC8yKK7E7XBvL5UnifSBLOq/Ipk/mDEF1Bthk5AT1L+qNEtm49
+ 9LlVWzgRD15/8Mz5A3b9ilJp6427lEmHOoiiN/3uLcvnfJEUOCCYUeXpvDhqLQ1OEY26pkmTNreR9
+ PBQNz+uM07QkYq4NqGhsDOFRG7Q1GgQis80XcbYlTY3ipj6l5EmpwHk9Vw37L9p3evK6fwBOrqIJt
+ nwERDqd+xjeKNVB4dqDH4NVhd5yjPc1gPrADpDnUBkRTNuOuJ0IOP96Sh1cPpAjYKU1ABiqEYvY4n
+ SA6HJ4JU5FYsUAWhQ1uNKzpL+fH+P9fXh+zZ7zD/vXBA4HxyqWiCQk3oeRqzrj/8nFQuHIvpDFS1U
+ IxuhSifc0kNWTaJHQuG7jrnG9NWaf7d3MGVfuw8Azh4kXckcwfFfjwdaEMgPQJA8Ljoyd6Kk6zTfj
+ rXTILm9QBkLlwUI0le02zjGCgU5EjkK+oB6Ud5hOM=;
 Received: from host86-130-37-216.range86-130.btcentralplus.com
- ([86.130.37.216] helo=kentang.home)
- by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ ([86.130.37.216] helo=[10.8.0.6])
+ by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qEmxx-000AaV-8k; Thu, 29 Jun 2023 09:25:29 +0100
-From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-To: richard.henderson@linaro.org, clegoate@redhat.com, hsp.cat7@gmail.com,
- qemu-devel@nongnu.org
-Date: Thu, 29 Jun 2023 09:25:22 +0100
-Message-Id: <20230629082522.606219-3-mark.cave-ayland@ilande.co.uk>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20230629082522.606219-1-mark.cave-ayland@ilande.co.uk>
-References: <20230629082522.606219-1-mark.cave-ayland@ilande.co.uk>
+ id 1qEn1z-000AdA-D7; Thu, 29 Jun 2023 09:29:39 +0100
+Message-ID: <bfbfafe6-1a28-8514-a3bb-cf289c7b7200@ilande.co.uk>
+Date: Thu, 29 Jun 2023 09:29:40 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clegoate@redhat.com>,
+ =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
+ Howard Spoelstra <hsp.cat7@gmail.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
+ qemu-devel@nongnu.org, Christophe Leroy <christophe.leroy@csgroup.eu>,
+ BALATON Zoltan <balaton@eik.bme.hu>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
+ Frederic Barrat <frederic.barrat@fr.ibm.com>,
+ Richard Henderson <richard.henderson@linaro.org>
+References: <20230623081953.290875-1-npiggin@gmail.com>
+ <CAFEAcA_Brf-R12t+DKNAoygqgC-qjKJ3Wiz4ULjGHOo8_vPovw@mail.gmail.com>
+ <47197a73-b106-47d5-9502-393a6bdc9945@redhat.com>
+ <966b3fce-512d-f122-e76e-efded0db9731@kaod.org>
+ <cefdeb3f-3442-ede4-3e5d-6a4a99b38293@ilande.co.uk>
+ <CABLmASF92ux10=D5MJ4Ax3FbCi4digWJajHy4VE1fNUL9bOJxA@mail.gmail.com>
+ <8e3010d8-9ca7-c834-3348-e11060c53f8a@ilande.co.uk>
+ <CABLmASFsWK9Bg_bo=kC9C_8EnLpoVJKtqg0ca8gv1YdrffQSAw@mail.gmail.com>
+ <d9b7499f-f462-79b3-e9e8-25a14a3b538d@redhat.com>
+ <840c34e7-0f5c-89fa-2dfa-f8de3da4d643@ilande.co.uk>
+ <7e596b48-c631-34d5-2b63-0aac1922de93@kaod.org>
+ <2bc2ca94-c1ba-a9de-0b81-6f9d3d4ad333@redhat.com>
+Content-Language: en-US
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+In-Reply-To: <2bc2ca94-c1ba-a9de-0b81-6f9d3d4ad333@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 86.130.37.216
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH 2/2] accel/tcg: add assert() check in
- tb_invalidate_phys_page_range__locked()
+Subject: Re: [PATCH 0/4] target/ppc: Catch invalid real address accesses
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
  envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.089,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,32 +100,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add an assert() check in tb_invalidate_phys_page_range__locked() to ensure that
-both the start and last addresses are within the same target page. Note that
-due to performance concerns the check is only enabled when QEMU is configured
-with --enable-debug-tcg.
+On 28/06/2023 08:17, Cédric Le Goater wrote:
 
-Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
----
- accel/tcg/tb-maint.c | 4 ++++
- 1 file changed, 4 insertions(+)
+>>>>> qemu-system-ppc.exe -M mac99,via=pmu -cdrom C:\mac-iso\9.2.2.iso -boot d -L pc-bios
+>>>>> crashes Mac OS with an address error. (with unpatched and patched builds).
+>>>>
+>>>> Same on Linux. I get an invalid opcode. QEMU 7.2 work fine though.
+>>>>
+>>>> C.
+>>>
+>>> That certainly shouldn't happen, and if it worked in 7.2 then there's definitely a 
+>>> regression which has crept in there somewhere. I'll try and bisect this at some 
+>>> point soon, but feel free to try and beat me ;)
+>>
+>> bisect points to :
+>>
+>> commit e506ad6a05c806bbef460a7d014a184ff8d707a6
+>> Author: Richard Henderson <richard.henderson@linaro.org>
+>> Date:   Mon Mar 6 04:30:11 2023 +0300
+>>
+>>      accel/tcg: Pass last not end to tb_invalidate_phys_range
+>>      Pass the address of the last byte to be changed, rather than
+>>      the first address past the last byte.  This avoids overflow
+>>      when the last page of the address space is involved.
+>>      Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>>      Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+>>
+>>   include/exec/exec-all.h   |  2 +-
+>>   accel/tcg/tb-maint.c      | 31 ++++++++++++++++---------------
+>>   accel/tcg/translate-all.c |  2 +-
+>>   accel/tcg/user-exec.c     |  2 +-
+>>   softmmu/physmem.c         |  2 +-
+>>   5 files changed, 20 insertions(+), 19 deletions(-)
+>>
+>>
+>> I think the instruction is fnmadds. Needs more digging.
+> 
+> the invalid opcode is just a symptom of something bad happening.
+> 
+> C.
 
-diff --git a/accel/tcg/tb-maint.c b/accel/tcg/tb-maint.c
-index 33ea1aadd1..8cd730dcb0 100644
---- a/accel/tcg/tb-maint.c
-+++ b/accel/tcg/tb-maint.c
-@@ -1092,6 +1092,10 @@ tb_invalidate_phys_page_range__locked(struct page_collection *pages,
-     TranslationBlock *current_tb = retaddr ? tcg_tb_lookup(retaddr) : NULL;
- #endif /* TARGET_HAS_PRECISE_SMC */
- 
-+#ifdef CONFIG_DEBUG_TCG
-+    assert((last & TARGET_PAGE_MASK) == (start & TARGET_PAGE_MASK));
-+#endif
-+
-     /*
-      * We remove all the TBs in the range [start, last].
-      * XXX: see if in some cases it could be faster to invalidate all the code
--- 
-2.30.2
+Indeed, it appears to be a copy/paste error within that commit. I've just posted a 
+proposed fix for this: 
+https://lore.kernel.org/qemu-devel/20230629082522.606219-1-mark.cave-ayland@ilande.co.uk/T/.
+
+Nick: you may wish to try your series again with this fix applied to see if there are 
+still problems with the CPUs used in the Mac machines.
+
+
+ATB,
+
+Mark.
 
 
