@@ -2,188 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3F40742AD1
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 18:49:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 960EC742B3C
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 19:31:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEuoo-0001mB-VA; Thu, 29 Jun 2023 12:48:30 -0400
+	id 1qEvSh-0000m2-C3; Thu, 29 Jun 2023 13:29:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dongwon.kim@intel.com>)
- id 1qEuok-0001lq-4Y
- for qemu-devel@nongnu.org; Thu, 29 Jun 2023 12:48:26 -0400
-Received: from mga11.intel.com ([192.55.52.93])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dongwon.kim@intel.com>)
- id 1qEuof-0001S2-BC
- for qemu-devel@nongnu.org; Thu, 29 Jun 2023 12:48:25 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1688057301; x=1719593301;
- h=message-id:date:subject:to:cc:references:from:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=GBh+Sv/amPAsxBcRSJeMklTMNhqeaL5uZpm84YynRHM=;
- b=iprs7en2AwZqTsJYaDrfeI6EAuUX7ZbPcUXXUlE+0CUj6GW7cdb9sgTg
- b2n73wtW3AsxXaCa5fW2ZjUrn2khslE3Algsj9gYFXlXF31Xw12VRZt/l
- BGJFO+ZaTX4yHLc+6SfRp2eg5U2nf4TBzJV3lIyD8J8ZzVoSFR267x69y
- /EtxAf+RnEKmI0grjoZLSd9EfY7FeB3/3lARmG55l/LtD0Rw851W9d1J/
- G8svK45N4hUy0gGCFGhbq3H0MeG8hqAzub1K4cCVnklZVF1SPhrPc9pLz
- K+Pvn1fiGBhzkY/cNky4MV1Ihy5JiAZDdRAJ/vQ6MGDJ9hNeXYzddwyJQ g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10756"; a="359646266"
-X-IronPort-AV: E=Sophos;i="6.01,168,1684825200"; d="scan'208";a="359646266"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
- by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jun 2023 09:48:10 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10756"; a="1047857834"
-X-IronPort-AV: E=Sophos;i="6.01,168,1684825200"; d="scan'208";a="1047857834"
-Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
- by fmsmga005.fm.intel.com with ESMTP; 29 Jun 2023 09:48:09 -0700
-Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
- ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Thu, 29 Jun 2023 09:48:08 -0700
-Received: from orsmsx612.amr.corp.intel.com (10.22.229.25) by
- ORSMSX610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Thu, 29 Jun 2023 09:48:08 -0700
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- orsmsx612.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27 via Frontend Transport; Thu, 29 Jun 2023 09:48:08 -0700
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (104.47.66.49) by
- edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.27; Thu, 29 Jun 2023 09:48:07 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=H8edgAVvHxvSbvnz5/zEwsqt/EoBOpdEQRacO2GixX+kjIGwV7lTLxRbOZIT7yBKcXqoOUBxVXRKO/lgSaDwbMypzniHHNud8CzWpUVQACWZmu+QPaFzxMF8PBlbhALp2gZyLmxcgHUjLYltgzgP2yjOsxKwBfGhOCM/GujQgDsRd2RKBkrh+Jt+36kCh3/a9wvF936K4ahje7w/kbHP05RZMHTO1lq2eMQOUq0BpL14fSXYMtF32rwAEuosyAdqTcvcwkDYOLKJWDtFLIJatB7UIhe+uz01w4anzmmloLtgRe4BmfQEJJtFdVGhfgIYy1BjLuSYRH6Hl6hld4LeFQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=obaEIbrZyVFCMlpZnXrItx5UZtL53gws9Zj7nTlNfDM=;
- b=VrTu2gxKVnjSGAVcp2q4Xgh4iF2P5iHZ4wZkJqQawvDXB5Sc+8XYfaoNz7t8gA88TtrPa/WQ6NOxpw3JA32zBi4O4ZY9aJwfYGRIpMo+EtjEI5Xp8aeES8EPTgP96jXLkoVYGohu8Yn32iEAtOT1T04eJkbaF4xXIp67+lvlUvIrq6whNxMwssjEI1dPgT4gd43rNuIjFRhfpg5a3TQlsDhsjynulPz3AD73oop+g1GUTga0BScG7ZNQAB4DKZksoyZ1UKkMyoLHi6xPEg/oOm4WXGahbiDjLlx9GjE0Z9iNRICoCx9bTNQLaTZfaR4DGfQH9LanVUk8lMy+1V+YHw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH8PR11MB6879.namprd11.prod.outlook.com (2603:10b6:510:229::22)
- by CH3PR11MB7249.namprd11.prod.outlook.com (2603:10b6:610:146::20)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6521.23; Thu, 29 Jun
- 2023 16:48:04 +0000
-Received: from PH8PR11MB6879.namprd11.prod.outlook.com
- ([fe80::b33c:de68:eacf:e9c4]) by PH8PR11MB6879.namprd11.prod.outlook.com
- ([fe80::b33c:de68:eacf:e9c4%3]) with mapi id 15.20.6500.036; Thu, 29 Jun 2023
- 16:48:04 +0000
-Message-ID: <2401c7ba-6eed-f2b2-cbe3-d0ebccc7bc26@intel.com>
-Date: Thu, 29 Jun 2023 09:48:01 -0700
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [QEMU PATCH 1/1] virtgpu: do not destroy resources when guest
- suspend
-Content-Language: en-US
-To: Robert Beckett <bob.beckett@collabora.com>, Gerd Hoffmann
- <kraxel@redhat.com>
-CC: "Chen, Jiqian" <Jiqian.Chen@amd.com>, =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?=
- <marcandre.lureau@gmail.com>, Damien Hedde <damien.hedde@greensocs.com>,
- "Michael S . Tsirkin" <mst@redhat.com>, Stefano Stabellini
- <sstabellini@kernel.org>, Anthony PERARD <anthony.perard@citrix.com>,
- =?UTF-8?Q?Roger_Pau_Monn=c3=a9?= <roger.pau@citrix.com>, Jan Beulich
- <jbeulich@suse.com>, "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>, "Deucher,
- Alexander" <Alexander.Deucher@amd.com>, "Koenig, Christian"
- <Christian.Koenig@amd.com>, "Hildebrand, Stewart"
- <Stewart.Hildebrand@amd.com>, Xenia Ragiadakou <burzalodowa@gmail.com>,
- "Huang, Honglei1" <Honglei1.Huang@amd.com>, "Zhang, Julia"
- <Julia.Zhang@amd.com>, "Huang, Ray" <Ray.Huang@amd.com>
-References: <20230608025655.1674357-1-Jiqian.Chen@amd.com>
- <20230608025655.1674357-2-Jiqian.Chen@amd.com>
- <CAJ+F1CKjTW7zycr2xAW0x+d_7CEy+LxWur2Tqp2dvsb=PoJ5Dw@mail.gmail.com>
- <q2rpqbg5b4bqxb7oayclzgbf5fplofm3dmxgmpmskjf4mcfzpn@peeiuxwkqxbb>
- <BL1PR12MB58491E2E13F959365AA3F594E75CA@BL1PR12MB5849.namprd12.prod.outlook.com>
- <lgan3p6wqmxht5fpduh5nvg3f5m5n636k7zrrealnu2lilghhh@qlbvgu3l4apw>
- <2164ff79-aa09-d959-cc61-c7a2a21db5e3@collabora.com>
- <2s33vb2tfogntkyk5laxzcmgexf42mhkpwr2gh3gjvpitav6ez@h5zbmuklzmv5>
- <e9e10508-c26c-cf2a-6407-8e26a1342370@collabora.com>
-From: "Kim, Dongwon" <dongwon.kim@intel.com>
-In-Reply-To: <e9e10508-c26c-cf2a-6407-8e26a1342370@collabora.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SJ0PR03CA0127.namprd03.prod.outlook.com
- (2603:10b6:a03:33c::12) To PH8PR11MB6879.namprd11.prod.outlook.com
- (2603:10b6:510:229::22)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qEvSb-0000ey-7Y
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 13:29:37 -0400
+Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qEvSZ-0004fO-CM
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 13:29:36 -0400
+Received: by mail-ed1-x52d.google.com with SMTP id
+ 4fb4d7f45d1cf-51de841a727so389281a12.3
+ for <qemu-devel@nongnu.org>; Thu, 29 Jun 2023 10:29:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1688059772; x=1690651772;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Y02j66XW2Y2W8+CcWMOe3qMsTx1mOLC3LD5RrAIqE2A=;
+ b=bvrnDLoc93SWrU4SOrIM8oL9RJV6UTMBeyHplSIpoF/hGdBuA9kmUYwu2zQBj8ztij
+ rRkYQNk5K/LarpZD1hypoaTS3nP+YNGZ3y4BmSzDtf898XzH5WwhekXoV5dE61ymZaVJ
+ Tli3EXvXIpqKFBRJRd2uD16q7TMALYFXyUSIPhh7SSOgTOoI55fq3RNchjwshyqbBmOy
+ W4gP5iqNxeXymTu0GGW9u09xU13ILpQYnOVojnlS/hAE77TEyJ/sG/5F419V2IdjHim6
+ YiamUgk0KBBD79QdMOMPZbsFHxN7J6z+Vn7fbq8fPtyINTliAr0yXhNWIajH417xOcua
+ pUmA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1688059772; x=1690651772;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Y02j66XW2Y2W8+CcWMOe3qMsTx1mOLC3LD5RrAIqE2A=;
+ b=VQlUPc8HaLFjOllqx3obdLcq3lTzCn96tILF6iRLHDopH/GI0B0s4J0s0azQ/QKnqL
+ duzRmSm+qvLM30RRotCqPjoaRCBdmnCKZL4wdJAgJGbT/uYtXoJAX/EQDhi5yFbssPUH
+ DVYqIUbXL4BhX+4ZCUoelewbyo/WPQF2cjZrNpqxR5+72E5Tgr5R0lI+BmDGbUADC51n
+ 9jptV+R25hgysurGfQYSKcDutnm2Q0EBc3kxi0J4bddv/O/NhzUqdGSCnpqKUCJKTBVN
+ 8ovrX1v5exaRts5eQWMReuCZJSZHXaEZnlhiMxUd8/6ESzptLQ67fInReVK9NZ3MZTJc
+ B7IQ==
+X-Gm-Message-State: AC+VfDyMSo7PZOq8GhBY5gQQGiICJzWOO2kJVdNzQK0Eol3LLTr0jqTw
+ c6nWjIzzKKorvWcs7HjHkyA=
+X-Google-Smtp-Source: ACHHUZ5LxJ9X11120u+SxZ+lNjnuYr+Ukgm8v+9oSM80l5gHPve4mgI8WpRAuuv1Ke3ZZhLOYj88VA==
+X-Received: by 2002:aa7:c50b:0:b0:51d:91cc:32e8 with SMTP id
+ o11-20020aa7c50b000000b0051d91cc32e8mr10233646edq.29.1688059772171; 
+ Thu, 29 Jun 2023 10:29:32 -0700 (PDT)
+Received: from [127.0.0.1] (dynamic-077-011-043-218.77.11.pool.telefonica.de.
+ [77.11.43.218]) by smtp.gmail.com with ESMTPSA id
+ c4-20020aa7d604000000b0051a4a1abdbbsm5960098edr.49.2023.06.29.10.29.30
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 29 Jun 2023 10:29:31 -0700 (PDT)
+Date: Thu, 29 Jun 2023 16:52:01 +0000
+From: Bernhard Beschow <shentey@gmail.com>
+To: =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+CC: Eduardo Habkost <eduardo@habkost.net>,
+ "Michael S. Tsirkin" <mst@redhat.com>, 
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH v2 14/16] hw/pci-host/i440fx: Resolve i440fx_init()
+In-Reply-To: <60562e53-7b90-7b92-5978-729ee95e5d54@linaro.org>
+References: <20230628195204.1241-1-shentey@gmail.com>
+ <20230628195204.1241-15-shentey@gmail.com>
+ <60562e53-7b90-7b92-5978-729ee95e5d54@linaro.org>
+Message-ID: <C5FDA555-BD6F-4862-8937-51B1A45FF845@gmail.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR11MB6879:EE_|CH3PR11MB7249:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5c3b9f96-6043-4b81-cad1-08db78c09baf
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: ireVCXVjeUULo/PGrFgABEpuQ57NNy88oL/4KjuePAfZRsU0QZ4lwHvfKV5LW+Af5v6WZG03hLrw6CJw4hmD9YpwlTme4QS0hbfT1AZxnrBTiXZjQkXrYgTEeeJD/Zwa6J/2bhTsGa1MY6CkD5tSOz6VhuVn+fAsxSPkbyvvatBB5ib5QzNu9rHQrE+g1rGQ+yO0lqC3bnVLDYb40yFA9UH/UCmXQOsy6Wgsemm9ki8wA3nP0kPPnjAtfUryJQ2y3DvAK5A+t90v2qEzu3cUmwvfNsvQYbxkX+CtIzs0AUEUwB/heTBTpk2t/Bqa4MSWBhA6Cm1s4J3MyWzjtl6IxmLFl0SykjYcVDwV8HYwcga943+kM5JoRoFtLf+yKPdjXwVW6Zu7KY5QJFFYwYeu/a0TdZt5Pet7ikTeeZ7iKoSvdqKcmnMvrez5KyReoIK9sGfs+K/O/2Yc8U7E2bKYFdTBwbaneRaTs+/2zlYxOT2Z5ucvvziG/uvcsZnueNPQFEE17T1SZLiI8ERqx3ghbZ0jwhKT28icOHGPMj5OfZKbPgYC2RnCpbFM4OmHi8hMFGY8FcmHvKoi4ZkvB1JSiRxo2vE/5zu7BbIYsen5w8ACIAIEKzWGlftkr1B306uBXlAYOaj8SPIYpadW0e2+Yw==
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:PH8PR11MB6879.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230028)(366004)(376002)(136003)(396003)(346002)(39860400002)(451199021)(83380400001)(66476007)(316002)(66946007)(8676002)(66556008)(8936002)(6512007)(186003)(6486002)(53546011)(6506007)(26005)(4326008)(966005)(6666004)(2616005)(110136005)(54906003)(41300700001)(7416002)(5660300002)(2906002)(478600001)(15650500001)(38100700002)(82960400001)(31696002)(86362001)(31686004)(36756003)(43740500002)(45980500001);
- DIR:OUT; SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?QlpQQVl2eUxpaHZrMUpwbkNlalppc2E4RHFkTjUra08zbExoNFNrN0pwS2NP?=
- =?utf-8?B?a21hcTVvMTdEejU3M0FENlEzdjNBQmtIT3llUWtTUENPSWZ1SnB1bmVjd25H?=
- =?utf-8?B?MTNZMGExZHE5ay9qbHpjQW83MUVoWnBVWUFGY015emhmeXU3aGRQcWx0dHlv?=
- =?utf-8?B?RU4zaGxJS3ByZE5aalVReUxRSXFjNThCZEI4a0R1eFFSV2JtMlVwdGluNW5n?=
- =?utf-8?B?NGl2eFBoaWppNnQxY1RZSk44VjgzK3FzOTY4RGNxQjEzSExUaGRnZDRjNVI4?=
- =?utf-8?B?RDVuOTVrUFJJYkhXeWIwbjdySUFNa1p3UUJBV3VwM2wvclBIMFJtbXpQazFy?=
- =?utf-8?B?NjBxaEV6OUdVWjJhT3RSUVk0aXFjMGxsNTBJZndqZGxIdnFYREl0Q3Riek1K?=
- =?utf-8?B?NHU3K1NCdE5pdVBSSjZVRG1zRk5yV3Zjckc1UXR1elJqcXh0dkdXVkJZYVZT?=
- =?utf-8?B?b0pMREVSbzRvNm9pY2l3bXNsRzltVFhKTHQvd25xZGl5UkNUQkF2blFUSFVP?=
- =?utf-8?B?VjdYQUF6S2VjQ2UyNzZybkgrbVFOeXIzU0xKNTRNSE45VXp2ci9kZGZRS0Zr?=
- =?utf-8?B?WVhpRE5INzd5KzZNK3lpb1N6UWVRV0RWSnV2QnhHQ0hBaEpBSmhiWS9qZGlx?=
- =?utf-8?B?RDFwckdFVnZmZzMxRmxmRHR4cmdXSXk0L0VuRkxxRnQ5SXpIRXFRZEVtbEJJ?=
- =?utf-8?B?ZmlDUzUzZUxmUWpNRHRNOExkU2xjNXRKWWRvMG9ScmxPS0dNTWErYlFJQUNl?=
- =?utf-8?B?Vld3Q3IxRnN6OStZVmNmcVZLWWkxUE1Ld2dIcGdpUHNZbzIzU3BBaTN4UlZK?=
- =?utf-8?B?Rm9FSFlKWWVVQUp1Y0UrMnNFd2RGRG1ybzJOVUtVM0ViNm8yT1RoeExDdW81?=
- =?utf-8?B?ZHBudjFUOVlvQU1GQTRPV005UFRqeDdobmp0b09kalVXbW5SeXZsdDZ3TTVQ?=
- =?utf-8?B?U29MQThXRmtCeDdxeExYUTdkejdmZTRMYU1KMzhxa3JKSmRyVFlpQjZWY0FT?=
- =?utf-8?B?ZG9jQmNFa3hkdnI1TFdoY2RrZm1DZUl6SURwQmQ2N0ZUK3BVa3JpTFNXY1I3?=
- =?utf-8?B?cjdLV3JXZjB2S0JCU0JPR2wzWHdCN2NML3VkRTVaUm9DbXBtUllUTXAyTVRw?=
- =?utf-8?B?TnFCblBDNk9sc2s2bk94UEI1RUtqMWJEWHVYd0JJdEd5dlNscjBETElBSExy?=
- =?utf-8?B?TWY1QlMvaWhTbUJqNVQ0WS9TZStmZzh5QkZvd1pPc2dFZlIveW85bEpIVk02?=
- =?utf-8?B?cVhwelAySm1RaG5MYzJiamgwcnYvM1hHUDN5ZTJxYUh1c0UxZUEzQTNUYlZs?=
- =?utf-8?B?UExRdUlHWmJBZEF0TW5nZ05hN0kzdlREUk5mRFp1NXlUc2RJNjRtd0tKRElz?=
- =?utf-8?B?bWZxN3ZqUGZxSHJrek5YZmtjaGxkdzAvUUM4ck5ReVNlTzAveU11cGI0azV3?=
- =?utf-8?B?MmhySnoxcUVUaEFsZjhhZGhRS0lzVi9OWGZWNjVnNFVXeXhJbnMyQy93YWk3?=
- =?utf-8?B?TTVWQUZXeWUrTWpTVFIvcGxFVFE2bkNUVlBKWVA2N3JGd2tFQVdmUGJlZUVC?=
- =?utf-8?B?QnNIM3lyOTRYWm01Rk1YaWVoMGxYRGErcEdnc3VZamxVWXBlSFozaFI3NmEz?=
- =?utf-8?B?V0JLWGJyaXRXNTFrdHJTVlZTZFZyK0JoRzVvbFp4dHkzY3YyM0c0c1lha0Y1?=
- =?utf-8?B?eTU2V2RjRkw4SUREWkpDRGlyR280aHNCM3VZZmpkQW5lM3Y4NE1GQVVaWFdG?=
- =?utf-8?B?ODV2aVltZHZvTXRXUDVEOHNXOGtXSDI5a0d5czZvQ1M4ZWMzK052S09nZFh5?=
- =?utf-8?B?MUExUkdBMVd1M3NBUjFLbHNjSFlqL0VNMWxxTVNBbWVrMzk0Q3pZRmduZjAz?=
- =?utf-8?B?VEF4K3ZSRU1YdTRndDdobzY2TEY4YkRwU2t1NlpYSEg5dWNsY0RpZTdQRjZm?=
- =?utf-8?B?K0F1VWh0ZzFNZjRRNUtrbGNKd0JQMWNCY1pGSXlYVlEwZ3dYR0lBYlBVMXhN?=
- =?utf-8?B?TTZqc3hFSWFzRjJ3NnU1VGlvbUFSQkY4MHM0NUZFd05YMlYrSnVDaURyeFQx?=
- =?utf-8?B?REdhUE4zUEs1b3drclFvSDBRTWFJZkxoZlFTSFh5eHdrcmoyNFM5WEhORlNo?=
- =?utf-8?Q?xjcB5/IxjaqABRR2MsnUkJSoW?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5c3b9f96-6043-4b81-cad1-08db78c09baf
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB6879.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jun 2023 16:48:04.6022 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 0U1QJPdTd9mkrKw7BOzU/TMlu/ekw7A/t9U2IwwYuCzPDCp2SpPghJ+M1CTfj2fbieHPKL+hP8ji8wG1ZWUr5Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR11MB7249
-X-OriginatorOrg: intel.com
-Received-SPF: pass client-ip=192.55.52.93; envelope-from=dongwon.kim@intel.com;
- helo=mga11.intel.com
-X-Spam_score_int: -44
-X-Spam_score: -4.5
-X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.093, RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
+ envelope-from=shentey@gmail.com; helo=mail-ed1-x52d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -200,87 +98,195 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
-On 6/21/2023 4:14 AM, Robert Beckett wrote:
->
-> On 21/06/2023 09:39, Gerd Hoffmann wrote:
->> On Tue, Jun 20, 2023 at 01:26:15PM +0100, Robert Beckett wrote:
->>> On 20/06/2023 10:41, Gerd Hoffmann wrote:
->>>>     Hi,
->>>>
->>>>>> The guest driver should be able to restore resources after resume.
->>>>> Thank you for your suggestion!
->>>>> As far as I know, resources are created on host side and guest has 
->>>>> no backup, if resources are destroyed, guest can't restore them.
->>>>> Or do you mean guest driver need to send commands to re-create 
->>>>> resources after resume?
->>>> The later.  The guest driver knows which resources it has created,
->>>> it can restore them after suspend.
->>> Are you sure that this is viable?
->>>
->>> How would you propose that a guest kernel could reproduce a resource,
->>> including pixel data upload during a resume?
->>>
->>> The kernel would not have any of the pixel data to transfer to host.
->> Depends on the of resource type.  For resources which are created by
->> uploading pixel data (using VIRTIO_GPU_CMD_TRANSFER_TO_HOST_*) a guest
->> mirror exists which can be used for re-upload.
->
-> unfortunately this is not always the case.
->
-> https://gitlab.freedesktop.org/mesa/mesa/-/blob/main/src/gallium/drivers/virgl/virgl_resource.c#L668 
->
->
-> Often mesa will decide that it won't need to access a resource again 
-> after initial upload (textures etc). In this case, if it is able to 
-> copy back from host if needed, it will not maintain the guest shadow 
-> copy. Instead it will create a single page proxy object. The transfer 
-> to host will then over fill it to the correct size.
->
-> I think this was a fairly huge optimization for them.
->
-I have been only focused on scanout blob so didn't think too much about 
-all virgl objects but aren't all the virtio-gpu-object will be 
-maintained until they are removed by the driver regardless of the type 
-of data they contain? Does Mesa (virgl) remove those objects after they 
-are uploaded to the host?
 
->>
->> For resources filled by gl rendering ops this is indeed not the case.
->>
->>> Could you explain how you anticipate the guest being able to 
->>> reproduce the
->>> resources please?
->> Same you do on physical hardware?  Suspend can poweroff your PCI
->> devices, so there must be some standard way to handle that situation
->> for resources stored in gpu device memory, which is very similar to
->> the problem we have here.
+Am 29=2E Juni 2023 07:50:10 UTC schrieb "Philippe Mathieu-Daud=C3=A9" <phi=
+lmd@linaro=2Eorg>:
+>Hi Bernhard,
+
+Hi Phil,
+
 >
-> In traditional PCI gfx card setups, TTM is used as the memory manager 
-> in the kernel. This is used to migrate the buffers back from VRAM to 
-> system pages during a suspend.
+>On 28/6/23 21:52, Bernhard Beschow wrote:
+>> i440fx_init() is a legacy init function=2E The previous patches worked =
+towards
+>> TYPE_I440FX_PCI_HOST_BRIDGE to be instantiated the QOM way=2E Do this n=
+ow by
+>> transforming the parameters passed to i440fx_init() into property assig=
+nments=2E
+>>=20
+>> Signed-off-by: Bernhard Beschow <shentey@gmail=2Ecom>
+>> ---
+>>   include/hw/pci-host/i440fx=2Eh | 10 ----------
+>>   hw/i386/pc_piix=2Ec            | 30 +++++++++++++++++++++---------
+>>   hw/pci-host/i440fx=2Ec         | 34 +++++----------------------------=
+-
+>>   3 files changed, 26 insertions(+), 48 deletions(-)
+>>=20
+>> diff --git a/include/hw/pci-host/i440fx=2Eh b/include/hw/pci-host/i440f=
+x=2Eh
+>> index 2d7bae5a45=2E=2Ec988f70890 100644
+>> --- a/include/hw/pci-host/i440fx=2Eh
+>> +++ b/include/hw/pci-host/i440fx=2Eh
+>> @@ -34,14 +34,4 @@ struct PCII440FXState {
+>>     #define TYPE_IGD_PASSTHROUGH_I440FX_PCI_DEVICE "igd-passthrough-i44=
+0FX"
+>>   -PCIBus *i440fx_init(const char *pci_type,
+>> -                    DeviceState *dev,
+>> -                    MemoryRegion *address_space_mem,
+>> -                    MemoryRegion *address_space_io,
+>> -                    ram_addr_t below_4g_mem_size,
+>> -                    ram_addr_t above_4g_mem_size,
+>> -                    MemoryRegion *pci_memory,
+>> -                    MemoryRegion *ram_memory);
+>> -
+>> -
+>>   #endif
+>> diff --git a/hw/i386/pc_piix=2Ec b/hw/i386/pc_piix=2Ec
+>> index 87bee368fc=2E=2E1df309b8e2 100644
+>> --- a/hw/i386/pc_piix=2Ec
+>> +++ b/hw/i386/pc_piix=2Ec
+>> @@ -126,7 +126,7 @@ static void pc_init1(MachineState *machine,
+>>       MemoryRegion *rom_memory;
+>>       ram_addr_t lowmem;
+>>       uint64_t hole64_size;
+>> -    DeviceState *i440fx_host;
+>> +    Object *i440fx_host;
+>>         /*
+>>        * Calculate ram split, for memory below and above 4G=2E  It's a =
+bit
+>> @@ -201,8 +201,8 @@ static void pc_init1(MachineState *machine,
+>>           pci_memory =3D g_new(MemoryRegion, 1);
+>>           memory_region_init(pci_memory, NULL, "pci", UINT64_MAX);
+>>           rom_memory =3D pci_memory;
+>> -        i440fx_host =3D qdev_new(host_type);
+>> -        hole64_size =3D object_property_get_uint(OBJECT(i440fx_host),
+>> +        i440fx_host =3D OBJECT(qdev_new(host_type));
 >
-> This would be suitable for use to track host blob buffers that get 
-> mapped to guest via the PCI BAR, though would be a significant 
-> re-architecting of virtio gpu driver.
+>[*]
 >
-> It would not help with the previously mentioned proxied resources. 
-> Though in theory the driver could read the resources back from host to 
-> guest pages during suspend, this would then be potentially complicated 
-> by suspend time alloc failures etc.
+>> +        hole64_size =3D object_property_get_uint(i440fx_host,
+>>                                                  PCI_HOST_PROP_PCI_HOLE=
+64_SIZE,
+>>                                                  &error_abort);
+>>       } else {
+>> @@ -243,12 +243,24 @@ static void pc_init1(MachineState *machine,
+>>           PIIX3State *piix3;
+>>           PCIDevice *pci_dev;
+>>   -        pci_bus =3D i440fx_init(pci_type,
+>> -                              i440fx_host,
+>> -                              system_memory, system_io,
+>> -                              x86ms->below_4g_mem_size,
+>> -                              x86ms->above_4g_mem_size,
+>> -                              pci_memory, ram_memory);
+>> +        object_property_add_child(OBJECT(machine), "i440fx", i440fx_ho=
+st);
 >
+>I'd keep the object_property_add_child() close to qdev_new() in [*]=2E
+>Matter of taste=2E=2E=2E
+
+Okay=2E I'd add a dedicated patch before this one since it has value in it=
+s own (removal of qdev_get_machine() usage *and* doing what you propose)=2E
+
+Best regards,
+Bernhard
+
 >
-> As virtio drivers are by design paravirt drivers ,I think it is 
-> reasonable to accept some knowledge with and cooperation with the host 
-> to manage suspend/resume.
+>> +        object_property_set_link(i440fx_host, PCI_HOST_PROP_RAM_MEM,
+>> +                                 OBJECT(ram_memory), &error_fatal);
+>> +        object_property_set_link(i440fx_host, PCI_HOST_PROP_PCI_MEM,
+>> +                                 OBJECT(pci_memory), &error_fatal);
+>> +        object_property_set_link(i440fx_host, PCI_HOST_PROP_SYSTEM_MEM=
+,
+>> +                                 OBJECT(system_memory), &error_fatal);
+>> +        object_property_set_link(i440fx_host, PCI_HOST_PROP_IO_MEM,
+>> +                                 OBJECT(system_io), &error_fatal);
+>> +        object_property_set_uint(i440fx_host, PCI_HOST_BELOW_4G_MEM_SI=
+ZE,
+>> +                                 x86ms->below_4g_mem_size, &error_fata=
+l);
+>> +        object_property_set_uint(i440fx_host, PCI_HOST_ABOVE_4G_MEM_SI=
+ZE,
+>> +                                 x86ms->above_4g_mem_size, &error_fata=
+l);
+>> +        object_property_set_str(i440fx_host, I440FX_HOST_PROP_PCI_TYPE=
+,
+>> +                                pci_type, &error_fatal);
+>> +        sysbus_realize_and_unref(SYS_BUS_DEVICE(i440fx_host), &error_f=
+atal);
+>> +
+>> +        pci_bus =3D PCI_BUS(qdev_get_child_bus(DEVICE(i440fx_host), "p=
+ci=2E0"));
+>>           pci_bus_map_irqs(pci_bus,
+>>                            xen_enabled() ? xen_pci_slot_get_pirq
+>>                                          : pc_pci_slot_get_pirq);
+>> diff --git a/hw/pci-host/i440fx=2Ec b/hw/pci-host/i440fx=2Ec
+>> index e8e66afc11=2E=2E62d6287681 100644
+>> --- a/hw/pci-host/i440fx=2Ec
+>> +++ b/hw/pci-host/i440fx=2Ec
+>> @@ -249,9 +249,14 @@ static void i440fx_pcihost_initfn(Object *obj)
+>>     static void i440fx_pcihost_realize(DeviceState *dev, Error **errp)
+>>   {
+>> +    ERRP_GUARD();
 >
-> It seems to me like a lot of effort and long term maintenance to add 
-> support for transparent suspend/resume that would otherwise be unneeded.
+>Unrelated change?
 >
-> Perhaps others have alternative designs for this?
+>Otherwise:
+>Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro=2Eorg>
 >
->>
->> take care,
->>    Gerd
->>
+>>       I440FXState *s =3D I440FX_PCI_HOST_BRIDGE(dev);
+>>       PCIHostState *phb =3D PCI_HOST_BRIDGE(dev);
+>>       SysBusDevice *sbd =3D SYS_BUS_DEVICE(dev);
+>> +    PCIBus *b;
+>> +    PCIDevice *d;
+>> +    PCII440FXState *f;
+>> +    unsigned i;
+>>         memory_region_add_subregion(s->io_memory, 0xcf8, &phb->conf_mem=
+);
+>>       sysbus_init_ioports(sbd, 0xcf8, 4);
+>> @@ -262,37 +267,10 @@ static void i440fx_pcihost_realize(DeviceState *d=
+ev, Error **errp)
+>>       /* register i440fx 0xcf8 port as coalesced pio */
+>>       memory_region_set_flush_coalesced(&phb->data_mem);
+>>       memory_region_add_coalescing(&phb->conf_mem, 0, 4);
+>> -}
+>> -
+>> -PCIBus *i440fx_init(const char *pci_type,
+>> -                    DeviceState *dev,
+>> -                    MemoryRegion *address_space_mem,
+>> -                    MemoryRegion *address_space_io,
+>> -                    ram_addr_t below_4g_mem_size,
+>> -                    ram_addr_t above_4g_mem_size,
+>> -                    MemoryRegion *pci_address_space,
+>> -                    MemoryRegion *ram_memory)
+>> -{
+>> -    I440FXState *s =3D I440FX_PCI_HOST_BRIDGE(dev);
+>> -    PCIHostState *phb =3D PCI_HOST_BRIDGE(dev);
+>> -    PCIBus *b;
+>> -    PCIDevice *d;
+>> -    PCII440FXState *f;
+>> -    unsigned i;
+>> -
+>> -    s->system_memory =3D address_space_mem;
+>> -    s->io_memory =3D address_space_io;
+>> -    s->pci_address_space =3D pci_address_space;
+>> -    s->ram_memory =3D ram_memory;
+>> -    s->below_4g_mem_size =3D below_4g_mem_size;
+>> -    s->above_4g_mem_size =3D above_4g_mem_size;
+>> -    s->pci_type =3D (char *)pci_type;
+>>         b =3D pci_root_bus_new(dev, NULL, s->pci_address_space,
+>>                            s->io_memory, 0, TYPE_PCI_BUS);
+>>       phb->bus =3D b;
+>> -    object_property_add_child(qdev_get_machine(), "i440fx", OBJECT(dev=
+));
+>> -    sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
+>>         d =3D pci_create_simple(b, 0, s->pci_type);
+>>       f =3D I440FX_PCI_DEVICE(d);
+>> @@ -336,8 +314,6 @@ PCIBus *i440fx_init(const char *pci_type,
+>>       d->config[I440FX_COREBOOT_RAM_SIZE] =3D ram_size;
+>>         i440fx_update_memory_mappings(f);
+>> -
+>> -    return b;
+>>   }
+>>     static void i440fx_class_init(ObjectClass *klass, void *data)
 >
 
