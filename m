@@ -2,57 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6240874256A
+	by mail.lfdr.de (Postfix) with ESMTPS id 645EB74256B
 	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 14:12:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEqUS-0005ok-2b; Thu, 29 Jun 2023 08:11:12 -0400
+	id 1qEqUY-0005pu-Ko; Thu, 29 Jun 2023 08:11:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qEqUQ-0005oZ-GF
- for qemu-devel@nongnu.org; Thu, 29 Jun 2023 08:11:10 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qEqUX-0005pW-98
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 08:11:17 -0400
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qEqUP-00009k-2h
- for qemu-devel@nongnu.org; Thu, 29 Jun 2023 08:11:10 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-3fba8e2aa52so5970985e9.1
- for <qemu-devel@nongnu.org>; Thu, 29 Jun 2023 05:11:08 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qEqUU-0000Ai-OO
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 08:11:17 -0400
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-313f3cd6bb4so561173f8f.3
+ for <qemu-devel@nongnu.org>; Thu, 29 Jun 2023 05:11:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688040667; x=1690632667;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=crVt0PUYaWefUp4ycq3idc+nQ4l4Rcdpxjf5x3ai73Q=;
- b=sC+6e+eLn4lpngTFneI7nXuDTHPgCw2uYH4qwwSbunP5JybT0ZLKUKcONsePMfd+qH
- sbCBTX1IUce/wUXfmxHRXv9H9bHj4y5JwOUrD4pDEosmmpDm/+YLNKN0FU3jIiAGx8fb
- 32fsHJUjTUCgMG2hLlwe+lISsreEXCPKE7BrxU4SVNsarwTA6ZSeNFCbeMX8dEbYWvfo
- tMfhQpzpajbG1VSKWuRdY/u7SRkNpRWIGvFQNAHyrcS+dWD2n+7tpeDZMox+J95XdCAf
- RMFwapf8GHDw8Rzqcw15pOHLtLs5me9YMvRtosSVaZsDqj70Adhc3tkzhajh2NkbTl7/
- ibiA==
+ d=linaro.org; s=google; t=1688040673; x=1690632673;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=s6YYX1dWztzELlCI3XT5PMGW/yG6v7BZW/N8+vfbi8Y=;
+ b=dgqw1EbKpIXDe+Ln7FcLJoUI4Bx6KvOQi9fMMl4LkwWNvPlz4uc5mH+LQTGRWVGmMV
+ stNfmAH5KXMEOkMkQyhRYl6SVmvcJJPK/4x0W+gKru5SX+L4pwa5TpRdSokrMivH/2Og
+ JfZldQ1dKoS1THLmBl5RNTHTD3bwoK1BREdLRKGi+fXDBmAkGbvhzEXp6qWT9YFyMXEh
+ JkW4Cl5GrG1tHo69jKf2LO/RNIuTNVOm8j3iakF9IzEtcGJoizgCBxYphNqC02lP93Po
+ 6BFp270OK95FCjbBIH0yJH4xUFQZIwg63HS1FmSWxWJqqS+kiv0RfYeniWJboX990EtU
+ ooXw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688040667; x=1690632667;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=crVt0PUYaWefUp4ycq3idc+nQ4l4Rcdpxjf5x3ai73Q=;
- b=ePkAHAu4LaC1ch5DUJnvkqKA4p1C7EsJXX47aFw4Ihk7gdDuDr179RAIq73BiNkHy+
- CKYhuhE4jpaPIB/FIL7HCDJXfBiZUBxD3/PMGb/WsZupwRyWjdSILqO7AiAonUZb03WW
- lCSqrdySatZnWz9rW8jDl1tYTEz3RNd23I31w8vKOmj5bU7ad8PgxhGojwvs0GKVMmTX
- +nMm8K1K9fxzpDjrXGxoHEpfhsPt8IHeGurBIqqA8rHLA4brjyHan5A3DLk/WRNzooJ1
- VjT3V+IJ5g7uPQ3/QDA5hrzaI5dD3tfVzW6lXiw/uGlvrQFhvqRNG7QTAUwAHlsUsoo8
- Bcpw==
-X-Gm-Message-State: AC+VfDxH085grQ42CANCbcjiXdJHvS4MEFgkkhimuJrU87+p5cfKLBEX
- Q0mgh0vkCr1+Lt/hhiI/Q2/ZmXg2yRwj2evEH6U=
-X-Google-Smtp-Source: ACHHUZ54OJ006myM+UTc9PK+F53fyO8rEC2DUGalkNGm+/29rqP+dsyzycaE72XW3yrXBzr9iDK9+w==
-X-Received: by 2002:a7b:ce94:0:b0:3fa:99d6:4798 with SMTP id
- q20-20020a7bce94000000b003fa99d64798mr8601752wmj.37.1688040666824; 
- Thu, 29 Jun 2023 05:11:06 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1688040673; x=1690632673;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=s6YYX1dWztzELlCI3XT5PMGW/yG6v7BZW/N8+vfbi8Y=;
+ b=k4LbBYOIpnXRzhp/jIbPADLN0G0oOaYCM6Tv1cj3sgMh5HP/vf/DWjkkrxEN0pvV8c
+ xPLV9GxIF7nWonAYTzEFGTBFVYyzy4NSknUjUuWX9PNqzJuXMU/NBuuHGLrTkolQW+ka
+ p92yi0U7MTfIbxWJffVsWVdEkr+BHgnuo8h+Z/H2xmeM5Jg2hRbf/SMniBPizUvmxsx6
+ RtDWWqxFp/y+x1xLx6IQHi1meiPwJ6hWP3OzIRmqPlECzbPMHRbM6YTOIsitvfFJNnaH
+ 71LJv7a+BRa27ZoZ0bERo6Ma3Y09/8mwXUhFKRVg7rURn5+yRp0TMB+THgsJJeaOHdBH
+ LyHg==
+X-Gm-Message-State: ABy/qLZyTS6zo5JorF0z5zpKjls1i9Uwl+xHZWcGUL035AM/8u3MQ0HS
+ 9lnTsUL3lu+p5SiTMxBsgizqHNvSdt1R2m4GReA=
+X-Google-Smtp-Source: APBJJlETgFANpG9InpSSMwhYBjwsU7sbZa/lV1Mt3gGIr+w7KDJqxP9A+bHwS6hq5RHi/SwcqBdEwg==
+X-Received: by 2002:adf:fa4b:0:b0:314:1bb7:8a19 with SMTP id
+ y11-20020adffa4b000000b003141bb78a19mr774490wrr.35.1688040673142; 
+ Thu, 29 Jun 2023 05:11:13 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.166.242])
  by smtp.gmail.com with ESMTPSA id
- p4-20020a7bcc84000000b003f9c8c6bf53sm16308043wma.13.2023.06.29.05.11.05
+ i6-20020adffc06000000b00313e421c620sm14872185wrr.54.2023.06.29.05.11.11
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 29 Jun 2023 05:11:06 -0700 (PDT)
+ Thu, 29 Jun 2023 05:11:12 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Bin Meng <bin.meng@windriver.com>,
@@ -62,15 +63,17 @@ Cc: Bin Meng <bin.meng@windriver.com>,
  Weiwei Li <liweiwei@iscas.ac.cn>,
  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 0/2] hw/riscv/virt: Restrict ACLINT to TCG
-Date: Thu, 29 Jun 2023 14:11:01 +0200
-Message-Id: <20230629121103.87733-1-philmd@linaro.org>
+Subject: [PATCH 1/2] hw/riscv/virt: Fix 'controller' typo
+Date: Thu, 29 Jun 2023 14:11:02 +0200
+Message-Id: <20230629121103.87733-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.38.1
+In-Reply-To: <20230629121103.87733-1-philmd@linaro.org>
+References: <20230629121103.87733-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,16 +96,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Do not assume !KVM == TCG, restrict ACLINT to TCG.
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ hw/riscv/virt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Philippe Mathieu-Daudé (2):
-  hw/riscv/virt: Fix 'controller' typo
-  hw/riscv/virt: Restrict ACLINT to TCG
-
- docs/system/riscv/virt.rst |  1 +
- hw/riscv/virt.c            | 20 +++++++++++---------
- 2 files changed, 12 insertions(+), 9 deletions(-)
-
+diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
+index ed4c27487e..68ccd0bde1 100644
+--- a/hw/riscv/virt.c
++++ b/hw/riscv/virt.c
+@@ -1692,7 +1692,7 @@ static void virt_machine_class_init(ObjectClass *oc, void *data)
+                                   virt_set_aia);
+     object_class_property_set_description(oc, "aia",
+                                           "Set type of AIA interrupt "
+-                                          "conttoller. Valid values are "
++                                          "controller. Valid values are "
+                                           "none, aplic, and aplic-imsic.");
+ 
+     object_class_property_add_str(oc, "aia-guests",
 -- 
 2.38.1
 
