@@ -2,87 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00DBF7427B0
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 15:49:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EFEC57427AF
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 15:49:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEs04-0004Mv-8q; Thu, 29 Jun 2023 09:47:56 -0400
+	id 1qEs05-0004Ok-M4; Thu, 29 Jun 2023 09:47:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qErzz-0004J5-0y
- for qemu-devel@nongnu.org; Thu, 29 Jun 2023 09:47:51 -0400
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qEs01-0004Mu-25
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 09:47:53 -0400
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qErzw-00053H-Ao
- for qemu-devel@nongnu.org; Thu, 29 Jun 2023 09:47:50 -0400
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-314118623d5so770001f8f.0
- for <qemu-devel@nongnu.org>; Thu, 29 Jun 2023 06:47:47 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qErzz-00054w-Bg
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 09:47:52 -0400
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-31114b46d62so753510f8f.3
+ for <qemu-devel@nongnu.org>; Thu, 29 Jun 2023 06:47:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688046466; x=1690638466;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=RgHBCTOZO+tsQXHbUlw+ekEZk3CFfzrY/uYx6B7yJU0=;
- b=Ec3Rz2e0oPGqq/UnhOvufLDcBMRkaU3HAaUPmP5Uoyx8JejiROvn3003XTEccuT17K
- BaUUTNNiyAs9mn80/CVBeJx3+pOIfp2EYDPC/25xGBoVSybUMrre6QOwzTBBlI+rJM8Q
- 0PJxckD0t2cYPu5Na5HlG/co2gF54NUHSgOX/SPrJjABKJWZux3sJcacuMSbUKoLocha
- afCs7cp0tCK5Je9hzz8LWbKmcrzfISMAeH4Nlt/vOpZZ6TL3SiPuyZobEjOye55K/tCa
- R0z2BEQLJFR+NsrTNmCdXX3DdS9eiff97657rYg9xv0YzW9lkmAUHBCCYVmiHfBbRMAs
- FGFg==
+ d=linaro.org; s=google; t=1688046470; x=1690638470;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=k61Leyz8RH0uXCD+zz9MjsAGcVT6FxV7QMv15itxANw=;
+ b=F3Ffwhm9lCHGfLFPF051JSmAVZ3n5p9y5kZZenbWgkZVOME+UraX+vkLaLyx1ybzeY
+ JgYTDowIUUptaUDiWc6+z79cNY5uPaiRCE1cJnmEvqdMkc0LUScsYrKs/tryzRlRIr9f
+ XXIkPLDaK7cAuRCNNfLVymG+E8iteaqLuUlx7MmwefDe/ZJ/85OM+RgFfpQhs4hIPQ5G
+ AWbZvLKGxmlZGAh0e8ZvcYzoLxqC02Z65iIHSl/m0VAhXdCBadgDtULuCikQI5SGo+Bm
+ 1u5MqBFGvbuiSfA5VGjvXURWrSaxQDukeCAovZYoke+w6JO9R79tvzwzTU7PBJ3z7SQV
+ kpmQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688046466; x=1690638466;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=RgHBCTOZO+tsQXHbUlw+ekEZk3CFfzrY/uYx6B7yJU0=;
- b=lPt9AO12abeKA+LEmyemdZ1UMJvLXa7nM0R4yHi8UwSU4RpsO/4nAoLQPvYvxuhFmv
- rNLaTQGiCc7GPvco/QLrUjA6sr7y8sfIH7JQQVcFUH6VfGFgcYSKaJhTDYNLHvvMoFCw
- sw34tBOU8Vwe3++dxO0vCcedTncOQLYhJ6r/tjjQGo8s+zBUt+ze78L3TRJG0vVl/LtP
- OvM0Sy1iZXvZUZChdbCs6PY9HZRu5JQB3Y0dnR/+OWZst4dtThbXPbyJAQrjYMQXGKwA
- WRpPALBs25meOyLkTfu15hdO/d2WaSwpUGXuLLnu7mL41ThGLXBbzMhekScZ0uhGrVhy
- qAVA==
-X-Gm-Message-State: AC+VfDzGltpQlN9N0oisUio3uLzE7YedyJRniaONm2TpoZLXcTt+loxW
- +XVbu2lbjO9PDEK0lzRWRqbuTQ==
-X-Google-Smtp-Source: ACHHUZ4n2wreHUXBGq0DbojpgB5EXbH+jIpS9bIRKWs4AI8Gd/mG9m6YL+rWqJ3KO0CbFXOG4N6fJg==
-X-Received: by 2002:adf:eb51:0:b0:30f:b341:79ef with SMTP id
- u17-20020adfeb51000000b0030fb34179efmr28624827wrn.71.1688046466523; 
- Thu, 29 Jun 2023 06:47:46 -0700 (PDT)
-Received: from [192.168.69.115] ([176.176.166.242])
+ d=1e100.net; s=20221208; t=1688046470; x=1690638470;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=k61Leyz8RH0uXCD+zz9MjsAGcVT6FxV7QMv15itxANw=;
+ b=IGDrONyUyszNPuu/s1p3gBX3Rh9gHR047+lz5sQEOgfyNlNVqnqPCD7NvJ0fnFOe13
+ 5LqW9PuUzECTnbaP1Rt6dtqLkU+iUE5IjOxsrCGxO0I8eKyXvzRtutxlWlwKZGXvHmxO
+ NuZZrOepfx19upZvjEf5RmSA3YfWGSUVpqNbEhGsI7DTUOfsFwLLPuqQCHtSaTCVpF/k
+ YAF1hW4yLzEuFXyxWLo6jkUDo/z7nEV4tygnhUKaJ0q5Qt/sKq1HkV0QaXIU1VtUU7yR
+ dXTS8tEa8vtPvArpYRQXuRlHjOeRsnkLC89jifLluhp4ccM1EQH3f0z8lBqMfw8lssl1
+ gmZA==
+X-Gm-Message-State: ABy/qLZNsMnjfPSVoI00Gupv9XNq04YGH2sumhP4kBXUPshLozRIpceY
+ QODnWh2BTXYhE2qnWNGNFVVKHw==
+X-Google-Smtp-Source: APBJJlFgeiT+zUr8daonrdphk5P9MqBoNy0+Id4b4kOU2Yj1Jl38s0k391tP6UiMZPF9vkb2WU45SA==
+X-Received: by 2002:adf:e910:0:b0:314:10fe:2024 with SMTP id
+ f16-20020adfe910000000b0031410fe2024mr3147957wrm.70.1688046469858; 
+ Thu, 29 Jun 2023 06:47:49 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- j4-20020adfea44000000b0030fa3567541sm16014393wrn.48.2023.06.29.06.47.44
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 29 Jun 2023 06:47:46 -0700 (PDT)
-Message-ID: <dc6a61da-73d0-d0ae-fc62-3a04ccea5417@linaro.org>
-Date: Thu, 29 Jun 2023 15:47:43 +0200
+ c13-20020adfe74d000000b0030ae499da59sm903980wrn.111.2023.06.29.06.47.49
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 29 Jun 2023 06:47:49 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id DB4341FFBB;
+ Thu, 29 Jun 2023 14:47:48 +0100 (BST)
+References: <20230627160943.2956928-1-alex.bennee@linaro.org>
+ <20230627160943.2956928-16-alex.bennee@linaro.org>
+ <fd860df5-f8d0-77ef-f99f-629f1631d577@linaro.org>
+User-agent: mu4e 1.11.7; emacs 29.0.92
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, Wainer dos Santos Moschetta
+ <wainersm@redhat.com>, Juan Quintela <quintela@redhat.com>, Thomas Huth
+ <thuth@redhat.com>, Cleber Rosa <crosa@redhat.com>, Leonardo Bras
+ <leobras@redhat.com>, Beraldo Leal <bleal@redhat.com>, Peter Maydell
+ <peter.maydell@linaro.org>, Bin Meng <bmeng.cn@gmail.com>, Yanan Wang
+ <wangyanan55@huawei.com>, Darren Kenny <darren.kenny@oracle.com>,
+ Alexander Bulekov <alxndr@bu.edu>, Marcel Apfelbaum
+ <marcel.apfelbaum@gmail.com>, Peter Xu <peterx@redhat.com>, Radoslaw
+ Biernacki <rad@semihalf.com>, Laurent Vivier <laurent@vivier.eu>, Paolo
+ Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ qemu-arm@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>, Bandan Das
+ <bsd@redhat.com>, Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, =?utf-8?Q?Daniel_P=2E_Berrang=C3=A9?=
+ <berrange@redhat.com>, Alexandre Iooss <erdnaxe@crans.org>,
+ Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>, Leif Lindholm
+ <quic_llindhol@quicinc.com>, Laurent Vivier <lvivier@redhat.com>, Qiuhao
+ Li <Qiuhao.Li@outlook.com>, Mahmoud Mandour <ma.mandourr@gmail.com>, Riku
+ Voipio <riku.voipio@iki.fi>
+Subject: Re: [PATCH v3 15/36] tests/docker: convert riscv64-cross to lcitool
+Date: Thu, 29 Jun 2023 14:47:44 +0100
+In-reply-to: <fd860df5-f8d0-77ef-f99f-629f1631d577@linaro.org>
+Message-ID: <87o7kyxtvf.fsf@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.12.0
-Subject: Re: [PATCH] hw: Simplify calls to pci_nic_init_nofail()
-Content-Language: en-US
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
- Jason Wang <jasowang@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>
-Cc: qemu-trivial@nongnu.org, qemu-arm@nongnu.org,
- Radoslaw Biernacki <rad@semihalf.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Leif Lindholm <quic_llindhol@quicinc.com>,
- Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
- Xiaojuan Yang <yangxiaojuan@loongson.cn>, Song Gao <gaosong@loongson.cn>,
- Huacai Chen <chenhuacai@kernel.org>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Max Filippov <jcmvbkbc@gmail.com>
-References: <20230629125449.234945-1-thuth@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230629125449.234945-1-thuth@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42d.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.093,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -100,407 +114,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Thomas,
 
-On 29/6/23 14:54, Thomas Huth wrote:
-> pci_nic_init_nofail() calls qemu_find_nic_model(), and this function
-> sets nd->model = g_strdup(default_model) if it has not been initialized
-> yet. So we don't have to set nd->model to the default_nic in the
-> calling sites.
-> 
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
-> ---
->   hw/arm/sbsa-ref.c        | 8 +-------
->   hw/arm/virt.c            | 8 +-------
->   hw/loongarch/virt.c      | 8 +-------
->   hw/mips/loongson3_virt.c | 8 +-------
->   hw/xtensa/virt.c         | 8 +-------
->   5 files changed, 5 insertions(+), 35 deletions(-)
-> 
-> diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
-> index b774d80291..d8e13ddbfe 100644
-> --- a/hw/arm/sbsa-ref.c
-> +++ b/hw/arm/sbsa-ref.c
-> @@ -683,13 +683,7 @@ static void create_pcie(SBSAMachineState *sms)
->       pci = PCI_HOST_BRIDGE(dev);
->       if (pci->bus) {
->           for (i = 0; i < nb_nics; i++) {
-> -            NICInfo *nd = &nd_table[i];
-> -
-> -            if (!nd->model) {
-> -                nd->model = g_strdup(mc->default_nic);
-> -            }
-> -
-> -            pci_nic_init_nofail(nd, pci->bus, nd->model, NULL);
-> +            pci_nic_init_nofail(&nd_table[i], pci->bus, mc->default_nic, NULL);
->           }
->       }
->   
-> diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-> index 3937e30477..b660119bce 100644
-> --- a/hw/arm/virt.c
-> +++ b/hw/arm/virt.c
-> @@ -1477,13 +1477,7 @@ static void create_pcie(VirtMachineState *vms)
->       vms->bus = pci->bus;
->       if (vms->bus) {
->           for (i = 0; i < nb_nics; i++) {
-> -            NICInfo *nd = &nd_table[i];
-> -
-> -            if (!nd->model) {
-> -                nd->model = g_strdup(mc->default_nic);
-> -            }
-> -
-> -            pci_nic_init_nofail(nd, pci->bus, nd->model, NULL);
-> +            pci_nic_init_nofail(&nd_table[i], pci->bus, mc->default_nic, NULL);
->           }
->       }
->   
-> diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
-> index ca8824b6ef..51a453fa9a 100644
-> --- a/hw/loongarch/virt.c
-> +++ b/hw/loongarch/virt.c
-> @@ -547,13 +547,7 @@ static void loongarch_devices_init(DeviceState *pch_pic, LoongArchMachineState *
->   
->       /* Network init */
->       for (i = 0; i < nb_nics; i++) {
-> -        NICInfo *nd = &nd_table[i];
-> -
-> -        if (!nd->model) {
-> -            nd->model = g_strdup(mc->default_nic);
-> -        }
-> -
-> -        pci_nic_init_nofail(nd, pci_bus, nd->model, NULL);
-> +        pci_nic_init_nofail(&nd_table[i], pci_bus, mc->default_nic, NULL);
->       }
->   
->       /*
-> diff --git a/hw/mips/loongson3_virt.c b/hw/mips/loongson3_virt.c
-> index 216812f660..3dd91da7a6 100644
-> --- a/hw/mips/loongson3_virt.c
-> +++ b/hw/mips/loongson3_virt.c
-> @@ -454,13 +454,7 @@ static inline void loongson3_virt_devices_init(MachineState *machine,
->       }
->   
->       for (i = 0; i < nb_nics; i++) {
-> -        NICInfo *nd = &nd_table[i];
-> -
-> -        if (!nd->model) {
-> -            nd->model = g_strdup(mc->default_nic);
-> -        }
-> -
-> -        pci_nic_init_nofail(nd, pci_bus, nd->model, NULL);
-> +        pci_nic_init_nofail(&nd_table[i], pci_bus, mc->default_nic, NULL);
->       }
->   }
->   
-> diff --git a/hw/xtensa/virt.c b/hw/xtensa/virt.c
-> index b87f842e74..a6cf646e99 100644
-> --- a/hw/xtensa/virt.c
-> +++ b/hw/xtensa/virt.c
-> @@ -103,13 +103,7 @@ static void create_pcie(MachineState *ms, CPUXtensaState *env, int irq_base,
->       pci = PCI_HOST_BRIDGE(dev);
->       if (pci->bus) {
->           for (i = 0; i < nb_nics; i++) {
-> -            NICInfo *nd = &nd_table[i];
-> -
-> -            if (!nd->model) {
-> -                nd->model = g_strdup(mc->default_nic);
-> -            }
-> -
-> -            pci_nic_init_nofail(nd, pci->bus, nd->model, NULL);
-> +            pci_nic_init_nofail(&nd_table[i], pci->bus, mc->default_nic, NULL);
->           }
->       }
->   }
+Richard Henderson <richard.henderson@linaro.org> writes:
 
-This remind me of a branch from end of April with this
-unfinished patch, did we already discuss this together?
+> On 6/27/23 18:09, Alex Benn=C3=A9e wrote:
+>> --- a/tests/lcitool/projects/qemu-minimal.yml
+>> +++ b/tests/lcitool/projects/qemu-minimal.yml
+>> @@ -4,6 +4,8 @@ packages:
+>>    - bash
+>>    - bc
+>>    - bison
+>> + - ccache
+>> + - findutils
+>>    - flex
+>>    - g++
+>>    - gcc
+>> @@ -21,3 +23,5 @@ packages:
+>>    - pkg-config
+>>    - python3
+>>    - python3-venv
+>> + - sed
+>> + - tar
+>
+> Same comment as against v2: Why not squash this patch with previous,
+> which adds qemu-minimal.yml.  Especially since you're changing it here
+> in the next patch.
 
--- >8 --
-diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
-index e6d0574a29..6bb02dc64f 100644
---- a/include/hw/pci/pci.h
-+++ b/include/hw/pci/pci.h
-@@ -317,6 +317,9 @@ void pci_device_reset(PCIDevice *dev);
-  PCIDevice *pci_nic_init_nofail(NICInfo *nd, PCIBus *rootbus,
-                                 const char *default_model,
-                                 const char *default_devaddr);
-+PCIDevice *pci_nic_init_default(NICInfo *nd, PCIBus *rootbus,
-+                               const char *default_model,
-+                               const char *default_devaddr);
+Done.
 
-  PCIDevice *pci_vga_init(PCIBus *bus);
-
-diff --git a/hw/alpha/dp264.c b/hw/alpha/dp264.c
-index 03495e1e60..23e5c307a4 100644
---- a/hw/alpha/dp264.c
-+++ b/hw/alpha/dp264.c
-@@ -125,7 +125,7 @@ static void clipper_init(MachineState *machine)
-
-      /* Network setup.  e1000 is good enough, failing Tulip support.  */
-      for (i = 0; i < nb_nics; i++) {
--        pci_nic_init_nofail(&nd_table[i], pci_bus, mc->default_nic, NULL);
-+        pci_nic_init_default(&nd_table[i], pci_bus, mc->default_nic, NULL);
-      }
-
-      /* Super I/O */
-diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
-index 792371fdce..a59e74a81d 100644
---- a/hw/arm/sbsa-ref.c
-+++ b/hw/arm/sbsa-ref.c
-@@ -638,13 +638,7 @@ static void create_pcie(SBSAMachineState *sms)
-      pci = PCI_HOST_BRIDGE(dev);
-      if (pci->bus) {
-          for (i = 0; i < nb_nics; i++) {
--            NICInfo *nd = &nd_table[i];
--
--            if (!nd->model) {
--                nd->model = g_strdup("e1000e");
--            }
--
--            pci_nic_init_nofail(nd, pci->bus, nd->model, NULL);
-+            pci_nic_init_default(nd, pci->bus, "e1000e", NULL);
-          }
-      }
-
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index 9b9f7d9c68..6418bd2fa9 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -1477,13 +1477,7 @@ static void create_pcie(VirtMachineState *vms)
-      vms->bus = pci->bus;
-      if (vms->bus) {
-          for (i = 0; i < nb_nics; i++) {
--            NICInfo *nd = &nd_table[i];
--
--            if (!nd->model) {
--                nd->model = g_strdup(mc->default_nic);
--            }
--
--            pci_nic_init_nofail(nd, pci->bus, nd->model, NULL);
-+            pci_nic_init_default(&nd_table[i], pci->bus, 
-mc->default_nic, NULL);
-          }
-      }
-
-diff --git a/hw/hppa/machine.c b/hw/hppa/machine.c
-index b00a91ecfe..e6316d76d1 100644
---- a/hw/hppa/machine.c
-+++ b/hw/hppa/machine.c
-@@ -273,7 +273,7 @@ static void machine_hppa_init(MachineState *machine)
-
-      for (i = 0; i < nb_nics; i++) {
-          if (!enable_lasi_lan()) {
--            pci_nic_init_nofail(&nd_table[i], pci_bus, mc->default_nic, 
-NULL);
-+            pci_nic_init_default(&nd_table[i], pci_bus, 
-mc->default_nic, NULL);
-          }
-      }
-
-diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index bb62c994fa..59ad1ef9f9 100644
---- a/hw/i386/pc.c
-+++ b/hw/i386/pc.c
-@@ -1370,12 +1370,10 @@ void pc_nic_init(PCMachineClass *pcmc, ISABus 
-*isa_bus, PCIBus *pci_bus)
-      rom_set_order_override(FW_CFG_ORDER_OVERRIDE_NIC);
-      for (i = 0; i < nb_nics; i++) {
-          NICInfo *nd = &nd_table[i];
--        const char *model = nd->model ? nd->model : mc->default_nic;
--
--        if (g_str_equal(model, "ne2k_isa")) {
-+        if (nd->model && g_str_equal(nd->model, "ne2k_isa")) {
-              pc_init_ne2k_isa(isa_bus, nd);
-          } else {
--            pci_nic_init_nofail(nd, pci_bus, model, NULL);
-+            pci_nic_init_default(nd, pci_bus, mc->default_nic, NULL);
-          }
-      }
-      rom_reset_order_override();
-diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
-index ceddec1b23..1c6824921b 100644
---- a/hw/loongarch/virt.c
-+++ b/hw/loongarch/virt.c
-@@ -526,13 +526,7 @@ static void loongarch_devices_init(DeviceState 
-*pch_pic, LoongArchMachineState *
-
-      /* Network init */
-      for (i = 0; i < nb_nics; i++) {
--        NICInfo *nd = &nd_table[i];
--
--        if (!nd->model) {
--            nd->model = g_strdup(mc->default_nic);
--        }
--
--        pci_nic_init_nofail(nd, pci_bus, nd->model, NULL);
-+        pci_nic_init_default(&nd_table[i], pci_bus, mc->default_nic, NULL);
-      }
-
-      /*
-diff --git a/hw/mips/loongson3_virt.c b/hw/mips/loongson3_virt.c
-index 216812f660..8fef3fc49c 100644
---- a/hw/mips/loongson3_virt.c
-+++ b/hw/mips/loongson3_virt.c
-@@ -454,13 +454,7 @@ static inline void 
-loongson3_virt_devices_init(MachineState *machine,
-      }
-
-      for (i = 0; i < nb_nics; i++) {
--        NICInfo *nd = &nd_table[i];
--
--        if (!nd->model) {
--            nd->model = g_strdup(mc->default_nic);
--        }
--
--        pci_nic_init_nofail(nd, pci_bus, nd->model, NULL);
-+        pci_nic_init_default(&nd_table[i], pci_bus, mc->default_nic, NULL);
-      }
-  }
-
-diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-index 1cc7c89036..e5a2aaee87 100644
---- a/hw/pci/pci.c
-+++ b/hw/pci/pci.c
-@@ -1867,6 +1867,7 @@ PCIDevice *pci_nic_init_nofail(NICInfo *nd, PCIBus 
-*rootbus,
-      unsigned slot;
-
-      if (nd->model && !strcmp(nd->model, "virtio")) {
-+        // DEPRECATE
-          g_free(nd->model);
-          nd->model = g_strdup("virtio-net-pci");
-      }
-@@ -1923,6 +1924,19 @@ PCIDevice *pci_nic_init_nofail(NICInfo *nd, 
-PCIBus *rootbus,
-      return pci_dev;
-  }
-
-+PCIDevice *pci_nic_init_nofail(NICInfo *nd, PCIBus *rootbus,
-+                               const char *default_model,
-+                               const char *default_devaddr);
-+PCIDevice *pci_nic_init_default(NICInfo *nd, PCIBus *rootbus,
-+                               const char *default_model,
-+                               const char *default_devaddr)
-+{
-+    if (!nd->model) {
-+        nd->model = g_strdup(default_model);
-+    }
-+    return pci_nic_init_nofail(nd, rootbus, nd->model, default_devaddr);
-+}
-+
-  PCIDevice *pci_vga_init(PCIBus *bus)
-  {
-      vga_interface_created = true;
-diff --git a/hw/ppc/e500.c b/hw/ppc/e500.c
-index b6eb599751..a53420506b 100644
---- a/hw/ppc/e500.c
-+++ b/hw/ppc/e500.c
-@@ -1074,7 +1074,7 @@ void ppce500_init(MachineState *machine)
-      if (pci_bus) {
-          /* Register network interfaces. */
-          for (i = 0; i < nb_nics; i++) {
--            pci_nic_init_nofail(&nd_table[i], pci_bus, mc->default_nic, 
-NULL);
-+            pci_nic_init_default(&nd_table[i], pci_bus, 
-mc->default_nic, NULL);
-          }
-      }
-
-diff --git a/hw/ppc/mac_newworld.c b/hw/ppc/mac_newworld.c
-index 535710314a..7c86e51997 100644
---- a/hw/ppc/mac_newworld.c
-+++ b/hw/ppc/mac_newworld.c
-@@ -445,7 +445,7 @@ static void ppc_core99_init(MachineState *machine)
-      }
-
-      for (i = 0; i < nb_nics; i++) {
--        pci_nic_init_nofail(&nd_table[i], pci_bus, mc->default_nic, NULL);
-+        pci_nic_init_default(&nd_table[i], pci_bus, mc->default_nic, NULL);
-      }
-
-      /* The NewWorld NVRAM is not located in the MacIO device */
-diff --git a/hw/ppc/mac_oldworld.c b/hw/ppc/mac_oldworld.c
-index 510ff0eaaf..8d42e14909 100644
---- a/hw/ppc/mac_oldworld.c
-+++ b/hw/ppc/mac_oldworld.c
-@@ -277,7 +277,7 @@ static void ppc_heathrow_init(MachineState *machine)
-      pci_vga_init(pci_bus);
-
-      for (i = 0; i < nb_nics; i++) {
--        pci_nic_init_nofail(&nd_table[i], pci_bus, mc->default_nic, NULL);
-+        pci_nic_init_default(&nd_table[i], pci_bus, mc->default_nic, NULL);
-      }
-
-      /* MacIO IDE */
-diff --git a/hw/ppc/ppc440_bamboo.c b/hw/ppc/ppc440_bamboo.c
-index f969fa3c29..d58a8952f6 100644
---- a/hw/ppc/ppc440_bamboo.c
-+++ b/hw/ppc/ppc440_bamboo.c
-@@ -247,7 +247,7 @@ static void bamboo_init(MachineState *machine)
-               * There are no PCI NICs on the Bamboo board, but there are
-               * PCI slots, so we can pick whatever default model we want.
-               */
--            pci_nic_init_nofail(&nd_table[i], pcibus, mc->default_nic, 
-NULL);
-+            pci_nic_init_default(&nd_table[i], pcibus, mc->default_nic, 
-NULL);
-          }
-      }
-
-diff --git a/hw/ppc/prep.c b/hw/ppc/prep.c
-index 4610abddbd..e50b3b6230 100644
---- a/hw/ppc/prep.c
-+++ b/hw/ppc/prep.c
-@@ -324,8 +324,8 @@ static void ibm_40p_init(MachineState *machine)
-          pci_vga_init(pci_bus);
-
-          for (i = 0; i < nb_nics; i++) {
--            pci_nic_init_nofail(&nd_table[i], pci_bus, mc->default_nic,
--                                i == 0 ? "3" : NULL);
-+            pci_nic_init_default(&nd_table[i], pci_bus, mc->default_nic,
-+                                 i == 0 ? "3" : NULL);
-          }
-      }
-
-diff --git a/hw/sh4/r2d.c b/hw/sh4/r2d.c
-index 4944994e9c..0b82dc0032 100644
---- a/hw/sh4/r2d.c
-+++ b/hw/sh4/r2d.c
-@@ -309,9 +309,10 @@ static void r2d_init(MachineState *machine)
-                            0x555, 0x2aa, 0);
-
-      /* NIC: rtl8139 on-board, and 2 slots. */
--    for (i = 0; i < nb_nics; i++)
--        pci_nic_init_nofail(&nd_table[i], pci_bus,
--                            mc->default_nic, i == 0 ? "2" : NULL);
-+    for (i = 0; i < nb_nics; i++) {
-+        pci_nic_init_default(&nd_table[i], pci_bus,
-+                             mc->default_nic, i == 0 ? "2" : NULL);
-+    }
-
-      /* USB keyboard */
-      usb_create_simple(usb_bus_find(-1), "usb-kbd");
-diff --git a/hw/xtensa/virt.c b/hw/xtensa/virt.c
-index b87f842e74..39e63b57cf 100644
---- a/hw/xtensa/virt.c
-+++ b/hw/xtensa/virt.c
-@@ -103,13 +103,7 @@ static void create_pcie(MachineState *ms, 
-CPUXtensaState *env, int irq_base,
-      pci = PCI_HOST_BRIDGE(dev);
-      if (pci->bus) {
-          for (i = 0; i < nb_nics; i++) {
--            NICInfo *nd = &nd_table[i];
--
--            if (!nd->model) {
--                nd->model = g_strdup(mc->default_nic);
--            }
--
--            pci_nic_init_nofail(nd, pci->bus, nd->model, NULL);
-+            pci_nic_init_default(&nd_table[i], pci->bus, 
-mc->default_nic, NULL);
-          }
-      }
-  }
----
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
