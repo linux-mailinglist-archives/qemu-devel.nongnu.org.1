@@ -2,92 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E6DE742F58
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 23:14:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2A72742F5B
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 23:16:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEywn-0002WI-Ml; Thu, 29 Jun 2023 17:13:01 -0400
+	id 1qEyz7-0003VJ-MR; Thu, 29 Jun 2023 17:15:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qEywk-0002Vd-V5
- for qemu-devel@nongnu.org; Thu, 29 Jun 2023 17:12:58 -0400
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qEyz5-0003Ul-5n
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 17:15:23 -0400
+Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qEywe-00025l-Vc
- for qemu-devel@nongnu.org; Thu, 29 Jun 2023 17:12:55 -0400
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-313f1085ac2so1243752f8f.1
- for <qemu-devel@nongnu.org>; Thu, 29 Jun 2023 14:12:52 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qEyz3-0002vt-Ef
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 17:15:22 -0400
+Received: by mail-ej1-x629.google.com with SMTP id
+ a640c23a62f3a-992ca792065so56117766b.2
+ for <qemu-devel@nongnu.org>; Thu, 29 Jun 2023 14:15:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688073171; x=1690665171;
+ d=linaro.org; s=google; t=1688073319; x=1690665319;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=dhA4NY7VP3GoGiF0wjEjSZcOW8uKYG1/e7LeOqhgOuA=;
- b=F6bWpaAYvmLtek5FmUTicKOaATUbWrvXeYfV1t5WW539+UukXYiEnTY9f7Z9L42Ge3
- bG/yKlDLDd0jibV1RVAL34SznmKJQIBB+SZ/UbVBAHFQs3lpKxEIT4rXNWVxfEoNzN4f
- 6f+sLj/ruGpBHlVgYQWXd3gGVdvJAAiQRux3z8aeu3dzJu9t9lj6k614n7FQPe2/0PQt
- RTTmIsHUMYxRAdAniUUqIp29L8PPeIQVhm+vhkeFr4TakJfBRG5vtgpViSbxGO4CCjuP
- AztUh8FAohcXKu0EHWvocxQJzzfMyRM5PQoSCHzwaurV2onWono6ykNlHnMY5MKGeHNx
- caow==
+ bh=i5hl8/DLL5YNUM7HSBZF/Hckt2vUVlDH6lpGnyFgMEk=;
+ b=swvwJlbA2YRWP3QK+J/HMC0Z7Dp0y2gMrUXRHdh1bOnUdpbzR94HDbFx5yYceLv8vy
+ xfddEG5am/8Mh+e9mc+TXF4ihotLQKSvUVp0IM2UDxdIw4S5kD+qUgiDiW1ZKRauvP17
+ VOaynJEAqlj58OtsXwW+N+C1KalKq5PY4Rp4vHnrLF/KxXmnTjYtMoU4UR23SRlY31Xj
+ 0Jjueum+1JGaf9N7/jRh3FmcyUdtFiKX8KKeNMQtzarxHKWDsXrrBl7bKOBOVU1wdvWD
+ nXQvuLGWEiGWgzVRz42VrSfo7mGZWTHYqczkDD7r0N5eO3jLhMcWwKSmxUaxihU/gPAM
+ fVmQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688073171; x=1690665171;
+ d=1e100.net; s=20221208; t=1688073319; x=1690665319;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=dhA4NY7VP3GoGiF0wjEjSZcOW8uKYG1/e7LeOqhgOuA=;
- b=fzuA9IgdanYSybvnHXN/mpXuXxtFQqAc0+Et5GRoHbMlCvRYZz+ZP756gJ3TxoNkTW
- 3rgi/Lbh48q0ju34s6JUiaTfNyrTvni6jWycovXW1CYj9P4+yqlh0LE/CQeHdQNw09KT
- 1/Xzc76xVCoBktii5RTLGexHs62e46rNfJhehotXqhp9c9A7/vJaB3gt3t6f6PLUuUFC
- t93dnhDlUUZiwiG4Wtb2K9Pf884edRyuafJPX97tW99V+ss8dhmo2QKZfUdoba3MXGX0
- oI545+o0CPHxmHqREJnaZ5osrDtYP1NvB1cscP+8N7UABdW7SLSCH0Lts920cgpDD31r
- evrQ==
-X-Gm-Message-State: ABy/qLbVkhTOkzSaDdRAoPM5kYGgX9fc1mnpbrAdxbgezcWu0FnOvGDq
- z+2kwZ+4vTIRS6EkVAjV88I4WA==
-X-Google-Smtp-Source: APBJJlHouLoDACv2LRX/UAmxNnf0c79KiWx4q0cJh4SKbK+f2y/ZaCgpsgnHdGzgw/iFdXlqsQSk2g==
-X-Received: by 2002:adf:cf07:0:b0:313:f4ff:30e9 with SMTP id
- o7-20020adfcf07000000b00313f4ff30e9mr552254wrj.53.1688073170880; 
- Thu, 29 Jun 2023 14:12:50 -0700 (PDT)
+ bh=i5hl8/DLL5YNUM7HSBZF/Hckt2vUVlDH6lpGnyFgMEk=;
+ b=PbiBb8gaF88f/9Hq2BgMdNCxKumBzOsk+g3gjPmW+Oo/gic30DkJa4hUzEtiJWy63q
+ cGAR9aU50Tom4h9fH8J/7pneCmIN8dv6ywG24Ark07hE/7DjHBtPawFCZPpYJwTNOtNN
+ jiXjuYSf79htqeisPoBcxXSOLXvhhE/kGCU47moztMEGj4pnYcv+L3qlVENe4r/mm9pC
+ wRHtR7CYQBIpZezwidyCxoUHqR2NoX/41mn/DLIPIGPmdWj/tj++P0ObZcI8wVZwy/xh
+ 5W7tgZAkNI9mTx1nrjn6nCBtcVAKVqkr0FCbRj6CmBxXqZNsU2V+/piuezTUjX+1jFiy
+ LtgA==
+X-Gm-Message-State: ABy/qLbSqnRBfsXBZNdg7HhqNY3eVRUhH7WMcO/yrB30IzTXBJ3RUfG4
+ 8BLT5uW3DGyvzHw3sPAIgO3hQA==
+X-Google-Smtp-Source: APBJJlHnyAn3DnwZBE3+Ezo+YJpQm7orYL9N+7nrIOPFi1bjXiHWYzBtEA1V9vjkDT98AxGlL2KjnA==
+X-Received: by 2002:a17:907:1742:b0:991:c67d:87a2 with SMTP id
+ lf2-20020a170907174200b00991c67d87a2mr418667ejc.28.1688073319512; 
+ Thu, 29 Jun 2023 14:15:19 -0700 (PDT)
 Received: from [192.168.69.115] ([176.176.166.242])
  by smtp.gmail.com with ESMTPSA id
- u12-20020adfdd4c000000b0030903d44dbcsm16754477wrm.33.2023.06.29.14.12.49
+ a2-20020a1709065f8200b0098768661505sm7250478eju.117.2023.06.29.14.15.17
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 29 Jun 2023 14:12:50 -0700 (PDT)
-Message-ID: <44e89224-ff2e-2c6d-b8d1-2e9e18d67aca@linaro.org>
-Date: Thu, 29 Jun 2023 23:12:47 +0200
+ Thu, 29 Jun 2023 14:15:19 -0700 (PDT)
+Message-ID: <06397069-f1bb-fe79-1ffc-7f13e3fc7e5e@linaro.org>
+Date: Thu, 29 Jun 2023 23:15:16 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.12.0
-Subject: Re: [PATCH 1/2] target/riscv: Check for CF_PARALLEL instead of
- qemu_tcg_mttcg_enabled
+Subject: Re: [PATCH] hw: Simplify calls to pci_nic_init_nofail()
 Content-Language: en-US
-To: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- qemu-riscv@nongnu.org, Bin Meng <bin.meng@windriver.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
- Palmer Dabbelt <palmer@dabbelt.com>, Eduardo Habkost <eduardo@habkost.net>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- =?UTF-8?B?RnLDqWTDqXJpYyBQw6l0cm90?= <frederic.petrot@univ-grenoble-alpes.fr>
-References: <20230629120255.85581-1-philmd@linaro.org>
- <20230629120255.85581-2-philmd@linaro.org> <87jzvmxmfh.fsf@linaro.org>
+To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
+ Jason Wang <jasowang@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>
+Cc: qemu-trivial@nongnu.org, qemu-arm@nongnu.org,
+ Radoslaw Biernacki <rad@semihalf.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Leif Lindholm <quic_llindhol@quicinc.com>,
+ Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
+ Xiaojuan Yang <yangxiaojuan@loongson.cn>, Song Gao <gaosong@loongson.cn>,
+ Huacai Chen <chenhuacai@kernel.org>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Max Filippov <jcmvbkbc@gmail.com>
+References: <20230629125449.234945-1-thuth@redhat.com>
+ <dc6a61da-73d0-d0ae-fc62-3a04ccea5417@linaro.org>
+ <509ddf59-b401-41c5-099a-0acbf2c94f11@redhat.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <87jzvmxmfh.fsf@linaro.org>
+In-Reply-To: <509ddf59-b401-41c5-099a-0acbf2c94f11@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x432.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::629;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x629.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.093,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,50 +102,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 29/6/23 18:26, Alex Bennée wrote:
-> 
-> Philippe Mathieu-Daudé <philmd@linaro.org> writes:
-> 
->> A CPU knows whether MTTCG is enabled or not because it is
->> reflected in its TCG flags via the CF_PARALLEL bit.
+On 29/6/23 16:58, Thomas Huth wrote:
+> On 29/06/2023 15.47, Philippe Mathieu-Daudé wrote:
+>> Hi Thomas,
 >>
->> Suggested-by: Alex Bennée <alex.bennee@linaro.org>
->> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->> ---
->>   target/riscv/cpu.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
->> index 4035fe0e62..4dfa64af6a 100644
->> --- a/target/riscv/cpu.c
->> +++ b/target/riscv/cpu.c
->> @@ -473,7 +473,7 @@ static void rv64_veyron_v1_cpu_init(Object *obj)
->>   
->>   static void rv128_base_cpu_init(Object *obj)
->>   {
->> -    if (qemu_tcg_mttcg_enabled()) {
->> +    if (CPU(obj)->tcg_cflags & CF_PARALLEL) {
+>> On 29/6/23 14:54, Thomas Huth wrote:
+>>> pci_nic_init_nofail() calls qemu_find_nic_model(), and this function
+>>> sets nd->model = g_strdup(default_model) if it has not been initialized
+>>> yet. So we don't have to set nd->model to the default_nic in the
+>>> calling sites.
+>>>
+>>> Signed-off-by: Thomas Huth <thuth@redhat.com>
+>>> ---
+>>>   hw/arm/sbsa-ref.c        | 8 +-------
+>>>   hw/arm/virt.c            | 8 +-------
+>>>   hw/loongarch/virt.c      | 8 +-------
+>>>   hw/mips/loongson3_virt.c | 8 +-------
+>>>   hw/xtensa/virt.c         | 8 +-------
+>>>   5 files changed, 5 insertions(+), 35 deletions(-)
+> ...
+>> This remind me of a branch from end of April with this
+>> unfinished patch, did we already discuss this together?
 > 
-> Hmm have you checked that tcg_cpu_init_cflags() has executed by this point?
+> No, I haven't seen your patch yet, neither we talked about it. I came up 
+> with the idea for my patch on my own after looking at certain spots in 
+> the code. But I guess you could easily rebase your patch on top of mine 
+> in case you want to finish it ;-)
 
-$arch_cpu_realize
-  -> qemu_init_vcpu
-      -> mttcg_start_vcpu_thread
-        -> tcg_cpu_init_cflags
+Yeah sure, I was just wondering :)
 
-I'll document in the commit description.
-
->>           /* Missing 128-bit aligned atomics */
->>           error_report("128-bit RISC-V currently does not work with Multi "
->>                        "Threaded TCG. Please use: -accel tcg,thread=single");
-> 
-> Not that we can do anything about it but in linux-user we start with
-> CF_PARALLEL unset and only set it at the point we spawn a new thread.
-
-Hmm I'll give it more thinking then.
-
-Thanks,
-
-Phil.
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
