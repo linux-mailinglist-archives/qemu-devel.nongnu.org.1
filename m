@@ -2,57 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64AFE742540
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 14:04:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BBDC574253E
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 14:04:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEqMZ-0002LJ-Ms; Thu, 29 Jun 2023 08:03:03 -0400
+	id 1qEqMi-0002NB-Bi; Thu, 29 Jun 2023 08:03:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qEqMY-0002Kl-6r
- for qemu-devel@nongnu.org; Thu, 29 Jun 2023 08:03:02 -0400
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qEqMf-0002MM-GR
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 08:03:09 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qEqMW-0005FK-JV
- for qemu-devel@nongnu.org; Thu, 29 Jun 2023 08:03:01 -0400
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-311394406d0so556703f8f.2
- for <qemu-devel@nongnu.org>; Thu, 29 Jun 2023 05:03:00 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qEqMc-0005Gy-Sw
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 08:03:09 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-3fba545d743so6535085e9.0
+ for <qemu-devel@nongnu.org>; Thu, 29 Jun 2023 05:03:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688040178; x=1690632178;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=rtqq+hD2yz2b0nLytSPEROIxhKxIpnYBcjnLBP197u4=;
- b=bdMgOZ46UsRRCYKPKEupFJ8Qlv7XLB8/ZPw6FPBHm4Q7B+KEjr9boECzlUK5s3dAUA
- gpgkpgKmBKNCJyVw274T1ZoEfgTQ+spY9Rqbadh5D4qNufyfVa5P4pMH/Pz/EK8WbUfl
- DLntgBij/byAOn8TJru/R51Zg9SAg1CV/gasQn5FQoEjuuwD+/k0O0GBybUL8dx6BBbu
- qMpOTnjArA1sqhqpuSG3ualrQLEppNcFYk+0QJt1/0mDlgTCXxttFpsHbkSbjDHNpI9O
- uxpxDgidfqV9aZIFDxP4Ru+JDm8HJrR8TcVGw9RECKINSpn5vsM2IqBRRLvBhAlToY+I
- cybg==
+ d=linaro.org; s=google; t=1688040185; x=1690632185;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=z4l1J8enWAobibO9WsPypgJKzhJVu5hQ9JLx6ngTgp4=;
+ b=koniqtd7SYoVw2kQ/UzeNmfGub4mnhpycYG0PglTSTIJL/724C15kLS0UUoZb8IDf9
+ Ds2GPsYW4g6yzpMHvVBZVmsheYGUTp5cLOkz/Qlfk/RJnZjhRnjLHdDBnTvVpEaac184
+ 9wAFOPJh46B1q1LOFwcva91yZUMvdgAqydXhM5pfyPISnfJbBdZKo4EH27IegYddLsWp
+ lsl5AJeXeo8e3/i6eQFZGi7NCJQBiEO+avfbGqiwQzdDllFsY654HPKbsrg/6XlZcva/
+ 7OlMoGslc0G3PPUuh7OZ3tbs7tP6bZ2wu2ccWPCfojk/NwHrBJ8+xZJISC1hIgWOBbBv
+ YmYw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688040178; x=1690632178;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=rtqq+hD2yz2b0nLytSPEROIxhKxIpnYBcjnLBP197u4=;
- b=aY43sStB9CVMBXv/eGTvQrDij3bYuOKPYeP7Pjc8mB73E6BivnKmcomDiaisRny34Z
- WqgM0ggHC3i5nX4YAbInXfPcgZ2+AeRkC762xvO2K/QYUeQQvr4Si/gbapMd2rJNSjRq
- okKWgjmivxrdyujeCx+RIy1KYD6zj+9AX7C+59IBg1b8MnHQzSKr8M6U1T7mNWJiAoMp
- gPcAoSoa3NGQhfTes+PX5gaztmOOpi2kPzS5RTWfCcRumyyFsYpQfhFmRksyPS2zhcSK
- T4YVil46TydVfShgOA98tryVGxgwanLUn2Hu+chL1+dKK53/ozZSx3GpfBrf3xcqRROX
- 0mMA==
-X-Gm-Message-State: AC+VfDwYyJEye7ZQ0eWRIJGN6vhGzT2hhZUlzrLQLvflO3m0f+u1QDSJ
- O7WNkYT3Bq8xH6P1aPCC8d3pz03cHKdHlEpWlNo=
-X-Google-Smtp-Source: ACHHUZ4pNJs1sHotE5LPL1332jgUjS9dZAE9K5EV450ITiaDxwt5CUtP8lJOQ5az7Oofzw4k0GFBVg==
-X-Received: by 2002:a5d:500e:0:b0:314:f8c:a06f with SMTP id
- e14-20020a5d500e000000b003140f8ca06fmr3244011wrt.57.1688040178635; 
- Thu, 29 Jun 2023 05:02:58 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1688040185; x=1690632185;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=z4l1J8enWAobibO9WsPypgJKzhJVu5hQ9JLx6ngTgp4=;
+ b=C6O+Z6ZMo/1ss2cBnN95KYloQDyChfdw5SFMhtxV/wunt2WdYLzizeVQtPTyo04Ba6
+ NJuLpvOVDlSgWlPdeh/ONR3Sonz0+2iak2zRZNEVzMFj6ts0UauextVgOhfSiGMpRSoE
+ sYN4qkLRAiNN92M1E8XHfi37O5VGkcU+Bpuy+94nXpKW8MymEqhJVCz4ke+KpzMqMSQt
+ yMBZnSKyC1HASi7uJEN9WYPoH9WOl3OTIcfH4VvfmnfTSBXmZEdiGMuZJFuc91kmEHfK
+ dkFkNZQiM4TINkEiTTKiGfC80SdxGuyFmMKpdv4MdDmLf2IVO4AhKTX3HYEY7y4dmMUc
+ InGg==
+X-Gm-Message-State: AC+VfDzTP/XwSSyOMZVDxK476w4VwZrF9vfmbGHJPN175TZ0rzFFyNwg
+ cQO5MxfM7p2PrMAF1U4Ksh7MaVtnI9IRMWyp1Yw=
+X-Google-Smtp-Source: ACHHUZ7lyScE7kcYIO1HuAamPgcwqw8Ny6mb2HkXd6vxF3uQM1MptSMiYAHpCC4fBorbBQG/qesVCg==
+X-Received: by 2002:a7b:c041:0:b0:3f9:b748:ff3f with SMTP id
+ u1-20020a7bc041000000b003f9b748ff3fmr24245529wmc.1.1688040185160; 
+ Thu, 29 Jun 2023 05:03:05 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.166.242])
  by smtp.gmail.com with ESMTPSA id
- o10-20020a5d58ca000000b0031128382ed0sm15680406wrf.83.2023.06.29.05.02.56
+ l6-20020a7bc446000000b003fba137857esm7709810wmi.14.2023.06.29.05.03.03
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 29 Jun 2023 05:02:58 -0700 (PDT)
+ Thu, 29 Jun 2023 05:03:04 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, qemu-riscv@nongnu.org,
@@ -65,23 +66,27 @@ Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, qemu-riscv@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Weiwei Li <liweiwei@iscas.ac.cn>, Palmer Dabbelt <palmer@dabbelt.com>,
  Eduardo Habkost <eduardo@habkost.net>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
-Subject: [PATCH 0/2] accel/tcg: Remove qemu_tcg_mttcg_enabled()
-Date: Thu, 29 Jun 2023 14:02:53 +0200
-Message-Id: <20230629120255.85581-1-philmd@linaro.org>
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PATCH 1/2] target/riscv: Check for CF_PARALLEL instead of
+ qemu_tcg_mttcg_enabled
+Date: Thu, 29 Jun 2023 14:02:54 +0200
+Message-Id: <20230629120255.85581-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.38.1
+In-Reply-To: <20230629120255.85581-1-philmd@linaro.org>
+References: <20230629120255.85581-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,21 +102,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Remove qemu_tcg_mttcg_enabled():
-- check for CF_PARALLEL in riscv cpu_init(),
-- directly check 'mttcg_enabled' in TCG code.
+A CPU knows whether MTTCG is enabled or not because it is
+reflected in its TCG flags via the CF_PARALLEL bit.
 
-Philippe Mathieu-Daudé (2):
-  target/riscv: Check for CF_PARALLEL instead of qemu_tcg_mttcg_enabled
-  accel/tcg: Replace qemu_tcg_mttcg_enabled() by mttcg_enabled
+Suggested-by: Alex Bennée <alex.bennee@linaro.org>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ target/riscv/cpu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- accel/tcg/tcg-accel-ops-mttcg.h | 8 ++++++++
- include/hw/core/cpu.h           | 9 ---------
- accel/tcg/tcg-accel-ops.c       | 2 +-
- target/riscv/cpu.c              | 2 +-
- tcg/region.c                    | 3 ++-
- 5 files changed, 12 insertions(+), 12 deletions(-)
-
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index 4035fe0e62..4dfa64af6a 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -473,7 +473,7 @@ static void rv64_veyron_v1_cpu_init(Object *obj)
+ 
+ static void rv128_base_cpu_init(Object *obj)
+ {
+-    if (qemu_tcg_mttcg_enabled()) {
++    if (CPU(obj)->tcg_cflags & CF_PARALLEL) {
+         /* Missing 128-bit aligned atomics */
+         error_report("128-bit RISC-V currently does not work with Multi "
+                      "Threaded TCG. Please use: -accel tcg,thread=single");
 -- 
 2.38.1
 
