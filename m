@@ -2,52 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BF1D74243A
+	by mail.lfdr.de (Postfix) with ESMTPS id 630A7742439
 	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 12:49:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEpCg-0002Tc-3J; Thu, 29 Jun 2023 06:48:46 -0400
+	id 1qEpCi-0002UM-0B; Thu, 29 Jun 2023 06:48:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qEpCe-0002Rn-4X
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qEpCe-0002SH-8e
  for qemu-devel@nongnu.org; Thu, 29 Jun 2023 06:48:44 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qEpCb-00046R-6r
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qEpCc-000471-4g
  for qemu-devel@nongnu.org; Thu, 29 Jun 2023 06:48:43 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688035720;
+ s=mimecast20190719; t=1688035721;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=DxQ0n3eh0/Q1sYObo5LimvfOSNbL4kAytqATgyJCOC4=;
- b=KElasAndDXCYiZXShiOZnjm9p/PGS8qdF+EWMq4OjmEHgOmL3b6l8uFFLIovZXkv3wl48J
- 6ltMfIII0RWV9settnKkPEdLLMp7YrxWFO6e39WPT35N2osZUstLsM64uFJOZ64mcInDxP
- R6E4DOzILqFL0HXxPWUXC27fZTxJI1s=
+ bh=5+0qiiAnL0MXOpNHbR7TIl0yAcFqnmvzhcBmDoVDT/w=;
+ b=djnU46Yav3pOZqtWb8/AJ9V7hKLw3YPyx5dqLPXXczQpP69WBvbJmwAij/dj4FHxwO+Zs4
+ +juquMr2UmVAjYPip/mJQLWwe8z74dUgTbjJz0OGFnG/593yRwu2aCgLeNZv0arc5Rru0d
+ qFuaHUyxobKPcpfOq/rVlXXlv40UkAA=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-655-rN2Fs5lFO4mE4Vqt36noZw-1; Thu, 29 Jun 2023 06:48:38 -0400
-X-MC-Unique: rN2Fs5lFO4mE4Vqt36noZw-1
+ us-mta-357--ZymdlYNPPKveN9pVV3_aA-1; Thu, 29 Jun 2023 06:48:38 -0400
+X-MC-Unique: -ZymdlYNPPKveN9pVV3_aA-1
 Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
  [10.11.54.2])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3920218A64F5;
- Thu, 29 Jun 2023 10:48:29 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 268EE8017C3;
+ Thu, 29 Jun 2023 10:48:30 +0000 (UTC)
 Received: from thuth.com (dhcp-192-205.str.redhat.com [10.33.192.205])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 7B85E4067A00;
- Thu, 29 Jun 2023 10:48:28 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 6951440C6F5A;
+ Thu, 29 Jun 2023 10:48:29 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-s390x@nongnu.org, Christian Borntraeger <borntraeger@linux.ibm.com>,
  Eric Farman <farman@linux.ibm.com>,
  Claudio Imbrenda <imbrenda@linux.ibm.com>
-Subject: [PATCH v3 6/7] pc-bios/s390-ccw: Move the stack array into start.S
-Date: Thu, 29 Jun 2023 12:48:20 +0200
-Message-Id: <20230629104821.194859-7-thuth@redhat.com>
+Subject: [PATCH v3 7/7] pc-bios/s390-ccw: Don't use __bss_start with the
+ "larl" instruction
+Date: Thu, 29 Jun 2023 12:48:21 +0200
+Message-Id: <20230629104821.194859-8-thuth@redhat.com>
 In-Reply-To: <20230629104821.194859-1-thuth@redhat.com>
 References: <20230629104821.194859-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -62,7 +63,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,101 +79,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The stack array is only referenced from the start-up code (which is
-shared between the s390-ccw.img and the s390-netboot.img), but it is
-currently declared twice, once in main.c and once in netmain.c.
-It makes more sense to declare this in start.S instead - which will
-also be helpful in the next patch, since we need to mention the .bss
-section in start.S in that patch.
+start.S currently cannot be compiled with Clang 16 and binutils 2.40:
 
-While we're at it, let's also drop the huge alignment of the stack,
-since there is no technical requirement for aligning it to page
-boundaries.
+ ld: start.o(.text+0x8): misaligned symbol `__bss_start' (0xc1e5) for
+     relocation R_390_PC32DBL
 
-Message-Id: <20230627074703.99608-4-thuth@redhat.com>
-Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Reviewed-by: Eric Farman <farman@linux.ibm.com>
+According to the built-in linker script of ld, the symbol __bss_start
+can actually point *before* the .bss section and does not need to have
+any alignment, so in certain situations (like when using the internal
+assembler of Clang), the __bss_start symbol can indeed be unaligned
+and thus it is not suitable for being used with the "larl" instruction
+that needs an address that is at least aligned to halfwords.
+The problem went unnoticed so far since binutils <= 2.39 did not
+check the alignment, but starting with binutils 2.40, such unaligned
+addresses are now refused.
+
+Fix it by loading the address indirectly instead.
+
+Buglink: https://bugzilla.redhat.com/show_bug.cgi?id=2216662
+Reported-by: Miroslav Rezanina <mrezanin@redhat.com>
+Suggested-by:  Andreas Krebbel <andreas.krebbel@de.ibm.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- pc-bios/s390-ccw/s390-ccw.h | 1 -
- pc-bios/s390-ccw/main.c     | 1 -
- pc-bios/s390-ccw/netmain.c  | 1 -
- pc-bios/s390-ccw/start.S    | 6 ++++++
- tests/tcg/s390x/head64.S    | 7 ++-----
- 5 files changed, 8 insertions(+), 8 deletions(-)
+ pc-bios/s390-ccw/start.S | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/pc-bios/s390-ccw/s390-ccw.h b/pc-bios/s390-ccw/s390-ccw.h
-index f68a832718..c977a52b50 100644
---- a/pc-bios/s390-ccw/s390-ccw.h
-+++ b/pc-bios/s390-ccw/s390-ccw.h
-@@ -50,7 +50,6 @@ void consume_io_int(void);
- /* main.c */
- void write_subsystem_identification(void);
- void write_iplb_location(void);
--extern char stack[PAGE_SIZE * 8] __attribute__((__aligned__(PAGE_SIZE)));
- unsigned int get_loadparm_index(void);
- void main(void);
- 
-diff --git a/pc-bios/s390-ccw/main.c b/pc-bios/s390-ccw/main.c
-index a2def83e82..5506798098 100644
---- a/pc-bios/s390-ccw/main.c
-+++ b/pc-bios/s390-ccw/main.c
-@@ -17,7 +17,6 @@
- #include "virtio-scsi.h"
- #include "dasd-ipl.h"
- 
--char stack[PAGE_SIZE * 8] __attribute__((__aligned__(PAGE_SIZE)));
- static SubChannelId blk_schid = { .one = 1 };
- static char loadparm_str[LOADPARM_LEN + 1];
- QemuIplParameters qipl;
-diff --git a/pc-bios/s390-ccw/netmain.c b/pc-bios/s390-ccw/netmain.c
-index 056e93a818..5cd619b2d6 100644
---- a/pc-bios/s390-ccw/netmain.c
-+++ b/pc-bios/s390-ccw/netmain.c
-@@ -50,7 +50,6 @@ void write_iplb_location(void) {}
- /* STSI 3.2.2 offset of first vmdb + offset of uuid inside vmdb */
- #define STSI322_VMDB_UUID_OFFSET ((8 + 12) * 4)
- 
--char stack[PAGE_SIZE * 8] __attribute__((aligned(PAGE_SIZE)));
- IplParameterBlock iplb __attribute__((aligned(PAGE_SIZE)));
- static char cfgbuf[2048];
- 
 diff --git a/pc-bios/s390-ccw/start.S b/pc-bios/s390-ccw/start.S
-index abd6fe6639..429a2b30a1 100644
+index 429a2b30a1..061b06591c 100644
 --- a/pc-bios/s390-ccw/start.S
 +++ b/pc-bios/s390-ccw/start.S
-@@ -121,3 +121,9 @@ external_new_mask:
-     .quad   0x0000000180000000
- io_new_mask:
-     .quad   0x0000000180000000
-+
-+.bss
-+    .align  8
-+stack:
-+    .space  STACK_SIZE
-+    .size   stack,STACK_SIZE
-diff --git a/tests/tcg/s390x/head64.S b/tests/tcg/s390x/head64.S
-index c6f36dfea4..4fe288388a 100644
---- a/tests/tcg/s390x/head64.S
-+++ b/tests/tcg/s390x/head64.S
-@@ -8,6 +8,8 @@
- #include "../../../pc-bios/s390-ccw/start.S"
- #undef main
+@@ -19,7 +19,8 @@ _start:
+     larl    %r15,stack + STACK_SIZE - STACK_FRAME_SIZE   /* Set up stack */
  
-+.text
-+
- main_pre:
-     aghi %r15,-160                     /* reserve stack for C code */
-     brasl %r14,sclp_setup
-@@ -24,8 +26,3 @@ success_psw:
-     .quad 0x2000180000000,0xfff        /* see is_special_wait_psw() */
- failure_psw:
-     .quad 0x2000180000000,0            /* disabled wait */
+     /* clear bss */
+-    larl    %r2,__bss_start
++    larl    %r2,bss_start_literal   /* __bss_start might be unaligned ... */
++    lg      %r2,0(%r2)              /* ... so load it indirectly */
+     larl    %r3,_end
+     slgr    %r3,%r2    /* get sizeof bss */
+     ltgr    %r3,%r3    /* bss empty? */
+@@ -45,7 +46,6 @@ done:
+ memsetxc:
+     xc      0(1,%r1),0(%r1)
+ 
 -
--    .section .bss
--    .align 0x1000
--stack:
--    .skip 0x8000
+ /*
+  * void disabled_wait(void)
+  *
+@@ -113,6 +113,8 @@ io_new_code:
+     br      %r14
+ 
+     .align  8
++bss_start_literal:
++    .quad   __bss_start
+ disabled_wait_psw:
+     .quad   0x0002000180000000,0x0000000000000000
+ enabled_wait_psw:
 -- 
 2.39.3
 
