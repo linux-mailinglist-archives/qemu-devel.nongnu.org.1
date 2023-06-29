@@ -2,49 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20A1A742248
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 10:37:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7B0574224D
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 10:39:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEn95-0005nx-0k; Thu, 29 Jun 2023 04:36:55 -0400
+	id 1qEnAU-0006gl-GU; Thu, 29 Jun 2023 04:38:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qEn8q-0005mm-AA; Thu, 29 Jun 2023 04:36:40 -0400
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ (Exim 4.90_1) (envelope-from <ivan.klokov@syntacore.com>)
+ id 1qEnAT-0006gX-AH; Thu, 29 Jun 2023 04:38:21 -0400
+Received: from mta-04.yadro.com ([89.207.88.248])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qEn8m-0007Od-5E; Thu, 29 Jun 2023 04:36:39 -0400
-Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id E7F05746361;
- Thu, 29 Jun 2023 10:36:08 +0200 (CEST)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id B3E7774632B; Thu, 29 Jun 2023 10:36:08 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id B1392745720;
- Thu, 29 Jun 2023 10:36:08 +0200 (CEST)
-Date: Thu, 29 Jun 2023 10:36:08 +0200 (CEST)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: qemu-devel@nongnu.org, qemu-ppc@nongnu.org
-cc: Daniel Henrique Barboza <danielhb413@gmail.com>, 
- =?ISO-8859-15?Q?C=E9dric_Le_Goater?= <clg@kaod.org>
-Subject: Re: [PATCH] mv64361: Add dummy gigabit ethernet PHY access registers
-In-Reply-To: <c1bcb719-bede-45d0-c8ca-7362be78bce6@eik.bme.hu>
-Message-ID: <2182bdfb-785d-88c0-51ff-e4c0a9eb4de6@eik.bme.hu>
-References: <20230605215145.29458746335@zero.eik.bme.hu>
- <a56d91b8-696f-a56e-904d-cda8a2ec3a16@eik.bme.hu>
- <c1bcb719-bede-45d0-c8ca-7362be78bce6@eik.bme.hu>
+ (Exim 4.90_1) (envelope-from <ivan.klokov@syntacore.com>)
+ id 1qEnAQ-0007bY-O8; Thu, 29 Jun 2023 04:38:21 -0400
+DKIM-Filter: OpenDKIM Filter v2.11.0 mta-04.yadro.com 0A0F0C0005
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=syntacore.com;
+ s=mta-04; t=1688027894;
+ bh=2mzI2p4R5dozVorYVrP/PIC44+joSs1dHC1DPzmtPwE=;
+ h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
+ b=cmIXInh80duPx+mRkw9Pb15/uJA7ITi/udII+7haa1UuOLkqM9mpK3rUpyuMaZ9kW
+ 6ZRb5qHOA5zxRMnnbLMbCnmP/ATZ1oBgcDgZvcP2UIj0p6nF4yeO5cFbsPWjGPHZmC
+ JLM1vI8zuEWb1r4uZGXmjrZp2Odw/RwnULB/0ykM5goRkq2fj0poo/8EmDJTyxVHLY
+ 10M6/2rttfYo8+1IEQyNTpNyuXziRxq/i8Wcq+2A7iAhW14S6eFPj6unYiJz8v41oe
+ 5MuqJtdgBi9Jmeuf8IB8Sbx9qVr7VhIsym8cGGVglBd4ALDPWui7VYIgMwkPTDGv7d
+ Hus1AQN7BUkRA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=syntacore.com;
+ s=mta-03; t=1688027894;
+ bh=2mzI2p4R5dozVorYVrP/PIC44+joSs1dHC1DPzmtPwE=;
+ h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
+ b=Ly6zGlq4UT0REmyjKi1S8Lpbg9eWzaQ5IW1FiJJQW62X23T20rPNfexCOeZQtzl+Q
+ ByLIjBGnSmLVox58Nvqvbxgrae26g24dIVW4JufGuDU2gYuoz66LJvJvibvQfBXPTk
+ ss/xlU75Y0xJtsAOfKTsKgomhzWDkkbZDnGWhu459W/NUilNAbkEhBP89lmafPDaEt
+ /4i/eD6PEALtZlcPCWUbS7SsOZ7d5yAjnGnuufgrn2Jo04e6uw0zufrnc4FHJGkl63
+ fzby2Pmwx3CgbZOEGddlPNvT9iaG7dHVjHsrcyJv1klo0Be/LbN4IEL+yYe9NbdAKl
+ yO9xZLawZwWQg==
+From: Ivan Klokov <ivan.klokov@syntacore.com>
+To: <qemu-devel@nongnu.org>
+CC: <qemu-riscv@nongnu.org>, <richard.henderson@linaro.org>,
+ <pbonzini@redhat.com>, <eduardo@habkost.net>, <marcel.apfelbaum@gmail.com>,
+ <philmd@linaro.org>, <wangyanan55@huawei.com>, <palmer@dabbelt.com>,
+ <alistair.francis@wdc.com>, <bin.meng@windriver.com>, <liweiwei@iscas.ac.cn>, 
+ <dbarboza@ventanamicro.com>, <zhiwei_liu@linux.alibaba.com>, Ivan Klokov
+ <ivan.klokov@syntacore.com>
+Subject: [PATCH v5 1/1] target/riscv: Add RVV registers to log
+Date: Thu, 29 Jun 2023 11:37:30 +0300
+Message-ID: <20230629083730.386604-1-ivan.klokov@syntacore.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-X-Spam-Probability: 9%
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: T-EXCH-08.corp.yadro.com (172.17.11.58) To
+ S-Exch-01.corp.yadro.com (10.78.5.241)
+Received-SPF: permerror client-ip=89.207.88.248;
+ envelope-from=ivan.klokov@syntacore.com; helo=mta-04.yadro.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_PERMERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -60,72 +78,106 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 21 Jun 2023, BALATON Zoltan wrote:
-> On Wed, 14 Jun 2023, BALATON Zoltan wrote:
->> On Mon, 5 Jun 2023, BALATON Zoltan wrote:
->>> We don't emulate the gigabit ethernet part of the chip but the MorphOS
->>> driver accesses these and expects to get some valid looking result
->>> otherwise it hangs. Add some minimal dummy implementation to avoid rhis.
->>> 
->>> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
->>> ---
->>> This is only used by MorphOS on pegasos2 so most likely could go via
->>> the ppc queue.
->> 
->> Ping?
->
-> Ping?
+Print RvV extension register to log if VPU option is enabled.
 
-Ping?
-https://patchew.org/QEMU/20230605215145.29458746335@zero.eik.bme.hu/
-It's unlikely this will get a review so can you please just merge it? It's 
-my code so if I break it I'll fix it but this was tested a bit and no 
-problem reported so far.
+Signed-off-by: Ivan Klokov <ivan.klokov@syntacore.com>
+---
+v5:
+   - Fix typo, move macros out of function, direct access to cfg.vlen field. 
+---
+ target/riscv/cpu.c | 57 +++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 56 insertions(+), 1 deletion(-)
 
-Regards,
-BALATON Zoltan
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index 881bddf393..ff29573b1f 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -55,6 +55,17 @@ struct isa_ext_data {
+ #define ISA_EXT_DATA_ENTRY(_name, _min_ver, _prop) \
+     {#_name, _min_ver, offsetof(struct RISCVCPUConfig, _prop)}
+ 
++/*
++ * From vector_helper.c
++ * Note that vector data is stored in host-endian 64-bit chunks,
++ * so addressing bytes needs a host-endian fixup.
++ */
++#if HOST_BIG_ENDIAN
++#define BYTE(x)   ((x) ^ 7)
++#else
++#define BYTE(x)   (x)
++#endif
++
+ /*
+  * Here are the ordering rules of extension naming defined by RISC-V
+  * specification :
+@@ -183,6 +194,14 @@ const char * const riscv_fpr_regnames[] = {
+     "f30/ft10", "f31/ft11"
+ };
+ 
++const char * const riscv_rvv_regnames[] = {
++  "v0",  "v1",  "v2",  "v3",  "v4",  "v5",  "v6",
++  "v7",  "v8",  "v9",  "v10", "v11", "v12", "v13",
++  "v14", "v15", "v16", "v17", "v18", "v19", "v20",
++  "v21", "v22", "v23", "v24", "v25", "v26", "v27",
++  "v28", "v29", "v30", "v31"
++};
++
+ static const char * const riscv_excp_names[] = {
+     "misaligned_fetch",
+     "fault_fetch",
+@@ -608,7 +627,8 @@ static void riscv_cpu_dump_state(CPUState *cs, FILE *f, int flags)
+ {
+     RISCVCPU *cpu = RISCV_CPU(cs);
+     CPURISCVState *env = &cpu->env;
+-    int i;
++    int i, j;
++    uint8_t *p;
+ 
+ #if !defined(CONFIG_USER_ONLY)
+     if (riscv_has_ext(env, RVH)) {
+@@ -692,6 +712,41 @@ static void riscv_cpu_dump_state(CPUState *cs, FILE *f, int flags)
+             }
+         }
+     }
++    if (riscv_has_ext(env, RVV) && (flags & CPU_DUMP_VPU)) {
++        static const int dump_rvv_csrs[] = {
++                    CSR_VSTART,
++                    CSR_VXSAT,
++                    CSR_VXRM,
++                    CSR_VCSR,
++                    CSR_VL,
++                    CSR_VTYPE,
++                    CSR_VLENB,
++                };
++        for (int i = 0; i < ARRAY_SIZE(dump_rvv_csrs); ++i) {
++            int csrno = dump_rvv_csrs[i];
++            target_ulong val = 0;
++            RISCVException res = riscv_csrrw_debug(env, csrno, &val, 0, 0);
++
++            /*
++             * Rely on the smode, hmode, etc, predicates within csr.c
++             * to do the filtering of the registers that are present.
++             */
++            if (res == RISCV_EXCP_NONE) {
++                qemu_fprintf(f, " %-8s " TARGET_FMT_lx "\n",
++                             csr_ops[csrno].name, val);
++            }
++        }
++        uint16_t vlenb = cpu->cfg.vlen >> 3;
++
++        for (i = 0; i < 32; i++) {
++            qemu_fprintf(f, " %-8s ", riscv_rvv_regnames[i]);
++            p = (uint8_t *)env->vreg;
++            for (j = vlenb - 1 ; j >= 0; j--) {
++                qemu_fprintf(f, "%02x", *(p + i * vlenb + BYTE(j)));
++            }
++            qemu_fprintf(f, "\n");
++        }
++    }
+ }
+ 
+ static void riscv_cpu_set_pc(CPUState *cs, vaddr value)
+-- 
+2.34.1
 
->>> hw/pci-host/mv64361.c | 6 ++++++
->>> hw/pci-host/mv643xx.h | 3 +++
->>> 2 files changed, 9 insertions(+)
->>> 
->>> diff --git a/hw/pci-host/mv64361.c b/hw/pci-host/mv64361.c
->>> index 19e8031a3f..01bd8c887f 100644
->>> --- a/hw/pci-host/mv64361.c
->>> +++ b/hw/pci-host/mv64361.c
->>> @@ -541,6 +541,12 @@ static uint64_t mv64361_read(void *opaque, hwaddr 
->>> addr, unsigned int size)
->>>             }
->>>         }
->>>         break;
->>> +    case MV64340_ETH_PHY_ADDR:
->>> +        ret = 0x98;
->>> +        break;
->>> +    case MV64340_ETH_SMI:
->>> +        ret = BIT(27);
->>> +        break;
->>>     case MV64340_CUNIT_ARBITER_CONTROL_REG:
->>>         ret = 0x11ff0000 | (s->gpp_int_level << 10);
->>>         break;
->>> diff --git a/hw/pci-host/mv643xx.h b/hw/pci-host/mv643xx.h
->>> index cd26a43f18..f2e1baea88 100644
->>> --- a/hw/pci-host/mv643xx.h
->>> +++ b/hw/pci-host/mv643xx.h
->>> @@ -656,6 +656,9 @@
->>> /*        Ethernet Unit Registers       */
->>> /****************************************/
->>> 
->>> +#define MV64340_ETH_PHY_ADDR 
->>> 0x2000
->>> +#define MV64340_ETH_SMI 
->>> 0x2004
->>> +
->>> /*******************************************/
->>> /*          CUNIT  Registers               */
->>> /*******************************************/
->>> 
->> 
->> 
->
->
 
