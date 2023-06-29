@@ -2,81 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 836F47422CC
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 10:59:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B99097422E4
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 11:07:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEnUq-0007XG-8l; Thu, 29 Jun 2023 04:59:24 -0400
+	id 1qEnbH-0001Vp-2A; Thu, 29 Jun 2023 05:06:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1qEnUo-0007X5-3G
- for qemu-devel@nongnu.org; Thu, 29 Jun 2023 04:59:22 -0400
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1qEnUm-0006EH-3S
- for qemu-devel@nongnu.org; Thu, 29 Jun 2023 04:59:21 -0400
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-307d58b3efbso439838f8f.0
- for <qemu-devel@nongnu.org>; Thu, 29 Jun 2023 01:59:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1688029158; x=1690621158;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=GYNH7wVD1iufSkkb4dmjVCoFr+UFGYKz9CU923WLGVI=;
- b=GFhefHVFsJY1opTmPAcKNjUNjEKjBoOZHnVCfg49n8b4fLsRoGAoKf15Jwwjxv13EG
- /rPHKKqs9sBLbDvgeLsXSVIMU3Ah+ZXRXKZnUgXhtCCv0bLQqIKc65vRE3L5tb4Evse9
- t85Sv6XlrDs7r8On9/HAwM12LuCtEneGKIG/bP8SLT7vP5amPDDrxfv0kAPU/TSTaEp4
- SFBrWhU9lOivKY77DahAj1Y2ijixfIEtghjDwh9ojI3e4exIA1oUcSV4HRegGwEGrYJo
- nusOxfNV0daqUS6G/S0EdpuXwTFi7FSmDSQ/bmN+IwijaL9Wo4Q7TA79W1uoRKJf0xzm
- aK+w==
+ (Exim 4.90_1) (envelope-from <leobras@redhat.com>)
+ id 1qEnax-0001UQ-Dn
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 05:05:44 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <leobras@redhat.com>)
+ id 1qEnav-0008DN-4e
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 05:05:43 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1688029538;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=2BbTb2xGbwESqNIDiitibi6zq2wnpkSjq033P0Qmxt0=;
+ b=GAKiRyxIwq/j32d/0UAhCnYjsOKh3oBFAFb3pEL1rymMPL3VpIfhqPqmFVgZptrbVdbLu2
+ dF+nVBJ7pTgADjPGqXrgzd2x7fohfWJn1bcw4UDQjlapaCpPoXuyOYhP28kqGVUaB3aR8d
+ IK/up1FpFvMgvUc5V157gbs05Ds3ZeI=
+Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
+ [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-412-r82UdDuEOJuN2PRJGx7uqg-1; Thu, 29 Jun 2023 05:05:36 -0400
+X-MC-Unique: r82UdDuEOJuN2PRJGx7uqg-1
+Received: by mail-qt1-f199.google.com with SMTP id
+ d75a77b69052e-3fde2d7a589so4814071cf.1
+ for <qemu-devel@nongnu.org>; Thu, 29 Jun 2023 02:05:36 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688029158; x=1690621158;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=GYNH7wVD1iufSkkb4dmjVCoFr+UFGYKz9CU923WLGVI=;
- b=IbUwaxAzsuzotn6HiLWhrC4ppM+J7qLyjrMD6uboy+kdM5AwtNpGU958LewMIM0TYV
- LSRlXDvI44aVJUH6Kp2N9Z+Q/qXdIqLkcflptfi3jDv7oGRgoP5SIIIP6XnCEOurcdbK
- aPND8sLSW8jzdBIzSNhx7kCu0auuQo7EuxxWLhgSLyoacnvbCPee+BXlthwxyel0HJdH
- 5l40fuHJDpcc3ot6E25NUqe8T9u5ddzpzeDHvFpdrmi4Fd8zrVcCKjMvHjwUvhijlTEd
- d667sntrhEtnYoVxGVIxDuRRwrzLQvBOdc6xNEiRaodKanyNlCKR418VQWh5hVac0dT1
- HIbg==
-X-Gm-Message-State: AC+VfDzeUiEjjYdiVqN+6GRXC3nEJO9lSYpG5MJ1UHTvSuL2Pmbz3x2a
- lZBEG5dCaHFynu+AM5JhODm/pA==
-X-Google-Smtp-Source: ACHHUZ7RAVYKXyWi8v9wiukXTl0S7qhPt0NAun7Joi0FP83DSK2vVfX/2VfFdK0JVVgQn567CACt/w==
-X-Received: by 2002:a5d:6385:0:b0:314:12c:6f2d with SMTP id
- p5-20020a5d6385000000b00314012c6f2dmr5291903wru.51.1688029158288; 
- Thu, 29 Jun 2023 01:59:18 -0700 (PDT)
-Received: from localhost (cst2-173-16.cust.vodafone.cz. [31.30.173.16])
+ d=1e100.net; s=20221208; t=1688029536; x=1690621536;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=2BbTb2xGbwESqNIDiitibi6zq2wnpkSjq033P0Qmxt0=;
+ b=XeonNztQDxAcx1a2J+CSBTZ0PS9nFtihUV5QTKDx/fA4m8tflXa0F64Tc+XxyCifiT
+ 0ZLC5ip7hgK4tZIgMhSMANKBpI4oKwlP3NSl2kitWSFLWXE4itaRNYLvB/174kUcWq1l
+ zJ9A08LxRAgNttFrDLibJ8maxA7R3jmbbNepg22YFc3lUe59usyz6vO1lZkdTaygXALr
+ ewQLe5eeVLwQkG5wce4itC1VX6wX0SofrsOjwiktYtOeCZaYLmYvizSpE8cVS95jZQSi
+ W+qhh5NxTmBO9VRIHZUptY3RkCniLhPDj4DNkPJ+EQCw0UhGFMAQQDWWPA/zs3Sm3fYX
+ PKbg==
+X-Gm-Message-State: AC+VfDyiMlEAJEijER4QYEcAMq0BTBg1BwFsyovd7qXl0oIQqpRtSVuY
+ dSD3Oye09KI9E4P9f+cenOSFfsqPJotAhN+HIFXtxeAmPUETdK71CbeShVOz3N56HNKPQvBwLyl
+ ysxMzBDdAh2mPnMU=
+X-Received: by 2002:ac8:7dc5:0:b0:3f5:3851:873f with SMTP id
+ c5-20020ac87dc5000000b003f53851873fmr46732219qte.8.1688029536441; 
+ Thu, 29 Jun 2023 02:05:36 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6GUqZcN+Kl0cvvipEBjqkRXYirEJGTfUvqIKzfsdRpbIkYhSKGj8wtWytgBx4y7BfBg3MzfA==
+X-Received: by 2002:ac8:7dc5:0:b0:3f5:3851:873f with SMTP id
+ c5-20020ac87dc5000000b003f53851873fmr46732207qte.8.1688029536192; 
+ Thu, 29 Jun 2023 02:05:36 -0700 (PDT)
+Received: from LeoBras.redhat.com ([2804:1b3:a800:b9f8:e18f:c10f:b98a:c822])
  by smtp.gmail.com with ESMTPSA id
- p2-20020adfe602000000b00307c8d6b4a0sm15283561wrm.26.2023.06.29.01.59.17
+ e4-20020ac84904000000b003f7f66d5a0esm6999586qtq.44.2023.06.29.02.05.34
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 29 Jun 2023 01:59:17 -0700 (PDT)
-Date: Thu, 29 Jun 2023 10:59:16 +0200
-From: Andrew Jones <ajones@ventanamicro.com>
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
- bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
- palmer@rivosinc.com, philmd@linaro.org
-Subject: Re: [PATCH v6 11/20] target/riscv/cpu: add misa_ext_info_arr[]
-Message-ID: <20230629-6a932f8d5f71fefc9afbd974@orel>
-References: <20230628213033.170315-1-dbarboza@ventanamicro.com>
- <20230628213033.170315-12-dbarboza@ventanamicro.com>
+ Thu, 29 Jun 2023 02:05:35 -0700 (PDT)
+From: Leonardo Bras <leobras@redhat.com>
+To: "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Peter Xu <peterx@redhat.com>, Juan Quintela <quintela@redhat.com>
+Cc: Leonardo Bras <leobras@redhat.com>,
+	qemu-devel@nongnu.org
+Subject: [PATCH 1/1] pcie: Add hotplug detect state register to w1cmask
+Date: Thu, 29 Jun 2023 06:05:00 -0300
+Message-ID: <20230629090500.438976-2-leobras@redhat.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230628213033.170315-12-dbarboza@ventanamicro.com>
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=ajones@ventanamicro.com; helo=mail-wr1-x429.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=leobras@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -93,180 +99,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jun 28, 2023 at 06:30:24PM -0300, Daniel Henrique Barboza wrote:
-> Next patch will add KVM specific user properties for both MISA and
-> multi-letter extensions. For MISA extensions we want to make use of what
-> is already available in misa_ext_cfgs[] to avoid code repetition.
-> 
-> misa_ext_info_arr[] array will hold name and description for each MISA
-> extension that misa_ext_cfgs[] is declaring. We'll then use this new
-> array in KVM code to avoid duplicating strings.
-> 
-> There's nothing holding us back from doing the same with multi-letter
-> extensions. For now doing just with MISA extensions is enough.
-> 
-> Suggested-by: Andrew Jones <ajones@ventanamicro.com>
-> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-> ---
->  target/riscv/cpu.c | 83 ++++++++++++++++++++++++++++++----------------
->  target/riscv/cpu.h |  7 +++-
->  2 files changed, 61 insertions(+), 29 deletions(-)
-> 
-> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-> index 2485e820f8..90dd2078ae 100644
-> --- a/target/riscv/cpu.c
-> +++ b/target/riscv/cpu.c
-> @@ -1558,33 +1558,57 @@ static void cpu_get_misa_ext_cfg(Object *obj, Visitor *v, const char *name,
->      visit_type_bool(v, name, &value, errp);
->  }
->  
-> -static const RISCVCPUMisaExtConfig misa_ext_cfgs[] = {
-> -    {.name = "a", .description = "Atomic instructions",
-> -     .misa_bit = RVA, .enabled = true},
-> -    {.name = "c", .description = "Compressed instructions",
-> -     .misa_bit = RVC, .enabled = true},
-> -    {.name = "d", .description = "Double-precision float point",
-> -     .misa_bit = RVD, .enabled = true},
-> -    {.name = "f", .description = "Single-precision float point",
-> -     .misa_bit = RVF, .enabled = true},
-> -    {.name = "i", .description = "Base integer instruction set",
-> -     .misa_bit = RVI, .enabled = true},
-> -    {.name = "e", .description = "Base integer instruction set (embedded)",
-> -     .misa_bit = RVE, .enabled = false},
-> -    {.name = "m", .description = "Integer multiplication and division",
-> -     .misa_bit = RVM, .enabled = true},
-> -    {.name = "s", .description = "Supervisor-level instructions",
-> -     .misa_bit = RVS, .enabled = true},
-> -    {.name = "u", .description = "User-level instructions",
-> -     .misa_bit = RVU, .enabled = true},
-> -    {.name = "h", .description = "Hypervisor",
-> -     .misa_bit = RVH, .enabled = true},
-> -    {.name = "x-j", .description = "Dynamic translated languages",
-> -     .misa_bit = RVJ, .enabled = false},
-> -    {.name = "v", .description = "Vector operations",
-> -     .misa_bit = RVV, .enabled = false},
-> -    {.name = "g", .description = "General purpose (IMAFD_Zicsr_Zifencei)",
-> -     .misa_bit = RVG, .enabled = false},
-> +typedef struct misa_ext_info {
-> +    const char *name;
-> +    const char *description;
-> +} MISAExtInfo;
-> +
-> +#define MISA_EXT_INFO(_idx, _propname, _descr) \
-> +    [(_idx - 'A')] = {.name = _propname, .description = _descr}
+When trying to migrate a machine type pc-q35-6.0 or lower, with this
+cmdline options:
 
-We don't have to give up on passing RV* to this macro. Directly
-using __builtin_ctz() with a constant should work, i.e.
+-device driver=pcie-root-port,port=18,chassis=19,id=pcie-root-port18,bus=pcie.0,addr=0x12 \
+-device driver=nec-usb-xhci,p2=4,p3=4,id=nex-usb-xhci0,bus=pcie-root-port18,addr=0x12.0x1
 
- #define MISA_EXT_INFO(_bit, _propname, _descr) \
-     [__builtin_ctz(_bit)] = {.name = _propname, .description = _descr}
+the following bug happens after all ram pages were sent:
 
-and then
+qemu-kvm: get_pci_config_device: Bad config data: i=0x6e read: 0 device: 40 cmask: ff wmask: 0 w1cmask:19
+qemu-kvm: Failed to load PCIDevice:config
+qemu-kvm: Failed to load pcie-root-port:parent_obj.parent_obj.parent_obj
+qemu-kvm: error while loading state for instance 0x0 of device '0000:00:12.0/pcie-root-port'
+qemu-kvm: load of migration failed: Invalid argument
 
- MISA_EXT_INFO(RVA, "a", "Atomic instructions"),
- MISA_EXT_INFO(RVD, "d", "Double-precision float point"),
- ...
+This happens on pc-q35-6.0 or lower because of:
+{ "ICH9-LPC", ACPI_PM_PROP_ACPI_PCIHP_BRIDGE, "off" }
 
-(We don't need the ctz32() wrapper since we know we'll never input zero to
-__builtin_ctz().)
+In this scenario, hotplug_handler_plug() calls pcie_cap_slot_plug_cb(),
+which sets the bus dev->config byte 0x6e with bit PCI_EXP_SLTSTA_PDS to 
+signal PCI hotplug for the guest. After a while the guest will deal with
+this hotplug and qemu will clear the above bit.
 
-> +
-> +static const MISAExtInfo misa_ext_info_arr[] = {
-> +    MISA_EXT_INFO('A', "a", "Atomic instructions"),
-> +    MISA_EXT_INFO('C', "c", "Compressed instructions"),
-> +    MISA_EXT_INFO('D', "d", "Double-precision float point"),
-> +    MISA_EXT_INFO('F', "f", "Single-precision float point"),
-> +    MISA_EXT_INFO('I', "i", "Base integer instruction set"),
-> +    MISA_EXT_INFO('E', "e", "Base integer instruction set (embedded)"),
-> +    MISA_EXT_INFO('M', "m", "Integer multiplication and division"),
-> +    MISA_EXT_INFO('S', "s", "Supervisor-level instructions"),
-> +    MISA_EXT_INFO('U', "u", "User-level instructions"),
-> +    MISA_EXT_INFO('H', "h", "Hypervisor"),
-> +    MISA_EXT_INFO('J', "x-j", "Dynamic translated languages"),
-> +    MISA_EXT_INFO('V', "v", "Vector operations"),
-> +    MISA_EXT_INFO('G', "g", "General purpose (IMAFD_Zicsr_Zifencei)"),
-> +};
-> +
-> +const char *riscv_get_misa_ext_name(uint32_t bit)
-> +{
-> +    return misa_ext_info_arr[ctz32(bit)].name;
-> +}
-> +
-> +const char *riscv_get_misa_ext_descr(uint32_t bit)
+Then, during migration, get_pci_config_device() will compare the
+configs of both the freshly created device and the one that is being
+received via migration, which will differ due to the PCI_EXP_SLTSTA_PDS bit
+and cause the bug to reproduce.
 
-nit: I'd prefer riscv_get_misa_ext_description() for the name.
+To avoid this fake incompatibility, there are two fields in PCIDevice that
+can help:
 
-> +{
-> +    return misa_ext_info_arr[ctz32(bit)].description;
-> +}
-> +
-> +#define MISA_CFG(_bit, _enabled) \
-> +    {.misa_bit = _bit, .enabled = _enabled}
-> +
-> +static RISCVCPUMisaExtConfig misa_ext_cfgs[] = {
-> +    MISA_CFG(RVA, true),
-> +    MISA_CFG(RVC, true),
-> +    MISA_CFG(RVD, true),
-> +    MISA_CFG(RVF, true),
-> +    MISA_CFG(RVI, true),
-> +    MISA_CFG(RVE, false),
-> +    MISA_CFG(RVM, true),
-> +    MISA_CFG(RVS, true),
-> +    MISA_CFG(RVU, true),
-> +    MISA_CFG(RVH, true),
-> +    MISA_CFG(RVJ, false),
-> +    MISA_CFG(RVV, false),
-> +    MISA_CFG(RVG, false),
->  };
->  
->  static void riscv_cpu_add_misa_properties(Object *cpu_obj)
-> @@ -1592,7 +1616,10 @@ static void riscv_cpu_add_misa_properties(Object *cpu_obj)
->      int i;
->  
->      for (i = 0; i < ARRAY_SIZE(misa_ext_cfgs); i++) {
-> -        const RISCVCPUMisaExtConfig *misa_cfg = &misa_ext_cfgs[i];
-> +        RISCVCPUMisaExtConfig *misa_cfg = &misa_ext_cfgs[i];
-> +
-> +        misa_cfg->name = riscv_get_misa_ext_name(misa_cfg->misa_bit);
-> +        misa_cfg->description = riscv_get_misa_ext_descr(misa_cfg->misa_bit);
+.wmask: Used to implement R/W bytes, and
+.w1cmask: Used to implement RW1C(Write 1 to Clear) bytes
 
-This might be necessary for the KVM side, but we should be able to avoid
-this runtime setting here where the compiler can be certain everything is
-a constant. We just need the old MISA_CFG() back, slightly tweaked to use
-__builtin_ctz().
+According to pcie_cap_slot_init() the slot status register
+(PCI_EXP_SLTSTA), in which PCI_EXP_SLTSTA_PDS is a flag, seems to fall
+under w1cmask field, with makes sense due to the way signaling the hotplug
+works.
 
->  
->          object_property_add(cpu_obj, misa_cfg->name, "bool",
->                              cpu_get_misa_ext_cfg,
-> diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-> index cc20ee25a7..acae118b9b 100644
-> --- a/target/riscv/cpu.h
-> +++ b/target/riscv/cpu.h
-> @@ -41,7 +41,10 @@
->  
->  #define RV(x) ((target_ulong)1 << (x - 'A'))
->  
-> -/* Consider updating misa_ext_cfgs[] when adding new MISA bits here */
-> +/*
-> + * Consider updating misa_ext_info_arr[] and misa_ext_cfgs[]
-> + * when adding new MISA bits here.
-> + */
->  #define RVI RV('I')
->  #define RVE RV('E') /* E and I are mutually exclusive */
->  #define RVM RV('M')
-> @@ -56,6 +59,8 @@
->  #define RVJ RV('J')
->  #define RVG RV('G')
->  
-> +const char *riscv_get_misa_ext_name(uint32_t bit);
-> +const char *riscv_get_misa_ext_descr(uint32_t bit);
->  
->  /* Privileged specification version */
->  enum {
-> -- 
-> 2.41.0
->
+So, add PCI_EXP_SLTSTA_PDS bit to w1cmask, so the fake incompatibility on
+get_pci_config_device() does not abort the migration.
 
-Thanks,
-drew
+Buglink: https://bugzilla.redhat.com/show_bug.cgi?id=2215819
+Signed-off-by: Leonardo Bras <leobras@redhat.com>
+---
+ hw/pci/pcie.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hw/pci/pcie.c b/hw/pci/pcie.c
+index b8c24cf45f..2def1765a5 100644
+--- a/hw/pci/pcie.c
++++ b/hw/pci/pcie.c
+@@ -657,7 +657,7 @@ void pcie_cap_slot_init(PCIDevice *dev, PCIESlot *s)
+                                PCI_EXP_SLTCTL_EIC);
+ 
+     pci_word_test_and_set_mask(dev->w1cmask + pos + PCI_EXP_SLTSTA,
+-                               PCI_EXP_HP_EV_SUPPORTED);
++                               PCI_EXP_HP_EV_SUPPORTED | PCI_EXP_SLTSTA_PDS);
+ 
+     dev->exp.hpev_notified = false;
+ 
+-- 
+2.41.0
+
 
