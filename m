@@ -2,83 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 885347422EB
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 11:08:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E8307422EC
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 11:08:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEndR-0003kQ-1Q; Thu, 29 Jun 2023 05:08:17 -0400
+	id 1qEndi-0003m7-OD; Thu, 29 Jun 2023 05:08:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qEndP-0003kD-3K
- for qemu-devel@nongnu.org; Thu, 29 Jun 2023 05:08:15 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qEndN-0000vb-G1
- for qemu-devel@nongnu.org; Thu, 29 Jun 2023 05:08:14 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-3fba5a8af2cso3807485e9.3
- for <qemu-devel@nongnu.org>; Thu, 29 Jun 2023 02:08:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688029692; x=1690621692;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=daGxRlj/3oFLJVGe6XEP61e2rRDHRHFCqBEXYiOZJQM=;
- b=TrJrVZ0MuHipn5iELmPDAR0oVn1laJl9f5gRkayRmad/FqH3+BukB1WhTs7Yu2etbc
- LZvzpCZNJ4B8ivADWFAtTl5JW0L/b3X7WOTWrtkAR5QFiLHDPuuvxsevkhspry0sRu61
- gTwsdnG9OyG4SoUL3lNriS/WiNRomU1UJZwAgpYv2UuBMkUxVWSRra2oW7LHEJu/9l5E
- vb/msk2PaCxYEZj7qAXx88A1H82bVy/aoP/CnthbPiMjzs9fkwUIA4TWebCy5Pg+OoBW
- tBR41Twamhj0dv15Ad7MivGJSg+XtxtVweyY83OQ20eEOFMGNobJfx6ToRx8B2m3gFUB
- kqbg==
+ (Exim 4.90_1) (envelope-from <clegoate@redhat.com>)
+ id 1qEndg-0003lj-OM
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 05:08:32 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <clegoate@redhat.com>)
+ id 1qEndf-00014x-2c
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 05:08:32 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1688029710;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=dgFJ7Te5p4TvQXUHUP2S/a4Q7UpLjbrVUKLDNsvFzdE=;
+ b=VJO5ZA1cLlAg6iuaKIlbm1XVPzgKTp/KlGevglSmtDclyVBpBNObt+l7VQZS/uiA2weHWb
+ 1A4v0DxYPjl/UlyVH93HAHkTC2CaDrkCcBSnNOkYLxhdL2AAD7d5ImdytHTjn+bnrx79Jn
+ pQjeTFyIfNmoEofzkW5Gg3fIN0JMBw4=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-158-pm5JYTc2PvGpJSxtj1HdNA-1; Thu, 29 Jun 2023 05:08:27 -0400
+X-MC-Unique: pm5JYTc2PvGpJSxtj1HdNA-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-3f5fa06debcso2758915e9.0
+ for <qemu-devel@nongnu.org>; Thu, 29 Jun 2023 02:08:27 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688029692; x=1690621692;
+ d=1e100.net; s=20221208; t=1688029706; x=1690621706;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=daGxRlj/3oFLJVGe6XEP61e2rRDHRHFCqBEXYiOZJQM=;
- b=hwJfVoCmB38d9uwFvdw65SciJjFiwGyJIrlrGWtP1MtdSTk6N86d79tq452w8RFiTm
- fpoe7ppLCSrXCZcVtRwl330BaZ1ssMVNkYseZhcziEWM2VY1ZYeo5W+V3duItA9kD4gG
- pyUSIRu263ywBc5NLVP3/kl8WbOJUAwYK5BYuiBRIR8WmuOLJi36qjxoIqqvrm3X1oY/
- tgeL3JQ0MdAEXxP2oahwmGWyotOTgyCtwZYX2hbsOMgxYa7C+yVTcZ89QAmgloB1ZgVH
- lB5/M4lFctWDCE54KoqDBuVbi/bZE8PiyXPvnYXxXEs9eIe2oZ4u/4reISTBFX8x1H8L
- SCZQ==
-X-Gm-Message-State: AC+VfDyEydPhmwC+jJQ+qpjwMbfWdhmwgIqkgCHQFnZNMtHv+E3MtFye
- 06fe0RxQoUjmfOlcSiWXnp7QgQ==
-X-Google-Smtp-Source: ACHHUZ5oAhKIWmlsOTm6bvhW8GejnX3wePcYNymyS4F1Gc9Rz0G8izQA0Iq9iNel1mH3Hw8JXvnjaw==
-X-Received: by 2002:a1c:cc15:0:b0:3f9:bf0f:1cf5 with SMTP id
- h21-20020a1ccc15000000b003f9bf0f1cf5mr16687896wmb.20.1688029691881; 
- Thu, 29 Jun 2023 02:08:11 -0700 (PDT)
-Received: from [192.168.69.115] ([176.176.166.242])
+ bh=dgFJ7Te5p4TvQXUHUP2S/a4Q7UpLjbrVUKLDNsvFzdE=;
+ b=MMAzXzDIYmJaolou1gjQoVKKnW2vjOX60cnYKluI4mF8dPfRiPBzM9Oq03rtJddsFq
+ Z9vEtF83bYPdoAYOTPc4444+RNUhfnrHWiDErZk3akn9dcaBeSgSpR6q4dnov2H/n8/v
+ iKgI8XlsmQEP/uK+8Bt1DnU0gGCBsPztiMGFzmmHnCR4cUjOwBf/r+pL5HW1j8hDNXkl
+ 3aRjGzsWQ3zCeXhzTZDXUxL1kFqHWZSpGvwOVkth00LovkHekQCPUKvGCrRwOx9JpQP7
+ AKL8EMQfRAqlny42JNB/9Ytzj+/H7N1Ll1Tj+RX3rkO2woWwfJJdzaNEaIQwovjcdiSA
+ UD6g==
+X-Gm-Message-State: AC+VfDwEfK8XT99ilGK46a3ZFc+NtZ0eGm7v4Be425AIznYkW5ej1Mi+
+ MHEx2xMGlVnE9CqaJ0iHzq5XIxvjwX7RACemrmpAzvni8kv1Yyklo5Ss9cdPF80WjIB4ixfYWgm
+ ufnxpL/HFVQNPoF0=
+X-Received: by 2002:a7b:cc15:0:b0:3f9:846:d892 with SMTP id
+ f21-20020a7bcc15000000b003f90846d892mr29240220wmh.9.1688029706324; 
+ Thu, 29 Jun 2023 02:08:26 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5AUet4+A6QZ8Ju2uqvhQ/33KcCLFV7obxiSvcVG7L/b2dkLm1Ihy8FGVnQGdT4ifSjS/TCtQ==
+X-Received: by 2002:a7b:cc15:0:b0:3f9:846:d892 with SMTP id
+ f21-20020a7bcc15000000b003f90846d892mr29240207wmh.9.1688029706011; 
+ Thu, 29 Jun 2023 02:08:26 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:280:24f0:576b:abc6:6396:ed4a?
+ ([2a01:e0a:280:24f0:576b:abc6:6396:ed4a])
  by smtp.gmail.com with ESMTPSA id
- e3-20020a05600c218300b003f9a6f3f240sm18740201wme.14.2023.06.29.02.08.10
+ q20-20020a1cf314000000b003f90b9b2c31sm19129997wmq.28.2023.06.29.02.08.25
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 29 Jun 2023 02:08:11 -0700 (PDT)
-Message-ID: <1f0f8b0a-1f38-29f5-5363-13a88af2ba91@linaro.org>
-Date: Thu, 29 Jun 2023 11:08:09 +0200
+ Thu, 29 Jun 2023 02:08:25 -0700 (PDT)
+Message-ID: <e0897f0c-f1a2-9e11-09a6-06f0c076985e@redhat.com>
+Date: Thu, 29 Jun 2023 11:08:24 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.12.0
-Subject: Re: [PATCH 2/2] accel/tcg: add assert() check in
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH 1/2] accel/tcg: fix start page passed to
  tb_invalidate_phys_page_range__locked()
 Content-Language: en-US
 To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- richard.henderson@linaro.org, clegoate@redhat.com, hsp.cat7@gmail.com,
- qemu-devel@nongnu.org
+ richard.henderson@linaro.org, hsp.cat7@gmail.com, qemu-devel@nongnu.org
 References: <20230629082522.606219-1-mark.cave-ayland@ilande.co.uk>
- <20230629082522.606219-3-mark.cave-ayland@ilande.co.uk>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230629082522.606219-3-mark.cave-ayland@ilande.co.uk>
+ <20230629082522.606219-2-mark.cave-ayland@ilande.co.uk>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clegoate@redhat.com>
+In-Reply-To: <20230629082522.606219-2-mark.cave-ayland@ilande.co.uk>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clegoate@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.089,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.089, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -95,17 +105,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 29/6/23 10:25, Mark Cave-Ayland wrote:
-> Add an assert() check in tb_invalidate_phys_page_range__locked() to ensure that
-> both the start and last addresses are within the same target page. Note that
-> due to performance concerns the check is only enabled when QEMU is configured
-> with --enable-debug-tcg.
+On 6/29/23 10:25, Mark Cave-Ayland wrote:
+> Due to a copy-paste error in tb_invalidate_phys_range() the start address of the
+> invalidation range was being passed to tb_invalidate_phys_page_range__locked()
+> instead of the start address of the current page.
 > 
 > Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-> ---
->   accel/tcg/tb-maint.c | 4 ++++
->   1 file changed, 4 insertions(+)
+> Fixes: e506ad6a05 ("accel/tcg: Pass last not end to tb_invalidate_phys_range")
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
+Cc: qemu-stable@nongnu.org
+
+> ---
+>   accel/tcg/tb-maint.c | 10 ++++++----
+>   1 file changed, 6 insertions(+), 4 deletions(-)
+> 
+> diff --git a/accel/tcg/tb-maint.c b/accel/tcg/tb-maint.c
+> index 3541419845..33ea1aadd1 100644
+> --- a/accel/tcg/tb-maint.c
+> +++ b/accel/tcg/tb-maint.c
+> @@ -1182,15 +1182,17 @@ void tb_invalidate_phys_range(tb_page_addr_t start, tb_page_addr_t last)
+>       index_last = last >> TARGET_PAGE_BITS;
+>       for (index = start >> TARGET_PAGE_BITS; index <= index_last; index++) {
+>           PageDesc *pd = page_find(index);
+> -        tb_page_addr_t bound;
+> +        tb_page_addr_t page_start, page_last;
+>   
+>           if (pd == NULL) {
+>               continue;
+>           }
+>           assert_page_locked(pd);
+> -        bound = (index << TARGET_PAGE_BITS) | ~TARGET_PAGE_MASK;
+> -        bound = MIN(bound, last);
+> -        tb_invalidate_phys_page_range__locked(pages, pd, start, bound, 0);
+> +        page_start = index << TARGET_PAGE_BITS;
+> +        page_last = page_start | ~TARGET_PAGE_MASK;
+> +        page_last = MIN(page_last, last);
+> +        tb_invalidate_phys_page_range__locked(pages, pd,
+> +                                              page_start, page_last, 0);
+>       }
+>       page_collection_unlock(pages);
+>   }
 
 
