@@ -2,71 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F07F7426CC
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 14:55:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95FE57426D0
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 14:59:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qErB8-0001bB-7N; Thu, 29 Jun 2023 08:55:18 -0400
+	id 1qErEq-0003GK-HD; Thu, 29 Jun 2023 08:59:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qErAt-0001aC-4L
- for qemu-devel@nongnu.org; Thu, 29 Jun 2023 08:55:05 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qErAq-0007AF-Iw
- for qemu-devel@nongnu.org; Thu, 29 Jun 2023 08:55:02 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688043299;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=+k+EZiPsbqU979sALNTepkIWmx3NZEF8XVlueEy6VNo=;
- b=WhNlice14iVZj9kC0/14pkWnfrVxRLKbH8UPFTbbDD1GoPXF0rEsXvvpN5f26/+6c4cGcS
- kuAWeFEGfiI3ZgJgCvKt7J84+LfpuN6PGooRxryDHzbqmgQ5fhyhv/CGky5mjamfirHbMa
- NmqF4UIcwE7rm2v72isIU7GIeftfq0s=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-609-otZ0DLfkNn6EC3MG7UDMBg-1; Thu, 29 Jun 2023 08:54:54 -0400
-X-MC-Unique: otZ0DLfkNn6EC3MG7UDMBg-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A5DE31C09048;
- Thu, 29 Jun 2023 12:54:53 +0000 (UTC)
-Received: from thuth.com (dhcp-192-205.str.redhat.com [10.33.192.205])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 956402166B27;
- Thu, 29 Jun 2023 12:54:51 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
-To: qemu-devel@nongnu.org, Jason Wang <jasowang@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>
-Cc: qemu-trivial@nongnu.org, qemu-arm@nongnu.org,
- Radoslaw Biernacki <rad@semihalf.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Leif Lindholm <quic_llindhol@quicinc.com>,
- Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
- Xiaojuan Yang <yangxiaojuan@loongson.cn>, Song Gao <gaosong@loongson.cn>,
- Huacai Chen <chenhuacai@kernel.org>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Max Filippov <jcmvbkbc@gmail.com>
-Subject: [PATCH] hw: Simplify calls to pci_nic_init_nofail()
-Date: Thu, 29 Jun 2023 14:54:49 +0200
-Message-Id: <20230629125449.234945-1-thuth@redhat.com>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qErEp-0003GB-1w
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 08:59:07 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qErEn-0000L9-Dy
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 08:59:06 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-3fa8ce2307dso8232155e9.2
+ for <qemu-devel@nongnu.org>; Thu, 29 Jun 2023 05:59:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1688043543; x=1690635543;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=KlZbAFopa+j9KDopCXGXvNCrxxYE6RiV+LyZJ7viX68=;
+ b=Fmo/RFZLUhhh251XLhM3ibxX/nY6M2ntleTqsMaMiLPOYAQzjjhLgOBxBZoLJUCLbn
+ Millcn/mtMmcUmc+ynKdYAOv85xqcU8P+KuzPa/6H3QWnZ70VxNgLgDWlyY5yY5GBt30
+ qWParOnD6WNDfLjEj10YNXdrMCBP8MeCYpme51QH3mZRM8KNp84c7adTBf0AgCpw3K/3
+ aHTcl4qzqr8++h5+H1fUQ6oX+Qu1kd6zDBOX1GaYGFTMNTFAoBLd/LH4/2j5RLv1F7yh
+ /aB+xwWwE+lxVbZiNR6g43lid5gjmEJKoHGb66LiCQmeXoaB+OtiX6hezEEv2Yn720TW
+ fEig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1688043543; x=1690635543;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=KlZbAFopa+j9KDopCXGXvNCrxxYE6RiV+LyZJ7viX68=;
+ b=bG6Ipd/QXYsOvOWpdZXy1t1/mkI8vcOW6o6pCzar+hHGq/1MzKZMwaXdlZeT5E326e
+ M/t3SMXzJE6PJ/GVpOuuHOJwD3lw7DG+bfxuHT95Pef7YqqsIBWna8PIB96kRvUuYf1b
+ 8C6uf/zzNL7ODlKh9Z2EkPepvP0XZVMtvS9JQ/FaJfWcRvYbfsygwPkk3bS7HesseY68
+ RwAt9QyU2J0hNMzpLFoorrYE1fLkh/1axf858ZiOLp+cP4Jh3vM00OM46sm9KVYmH1kA
+ recwzgXKVOP0QHEoi1TRdB74izYfk8zeN45iQlJYBPsZW05iovftYLKsF24mE1n9LquF
+ kiJQ==
+X-Gm-Message-State: AC+VfDzxxRdpNm88xUFDGxwXjP3fivygDFltcFvR0Pjtxd19OkDzG3QH
+ 79ipEcbl537XSSQvfgbff1wM0w==
+X-Google-Smtp-Source: ACHHUZ57RhXNFpd445dgAzTyz38CfwAJ9thr0DapT6ay6TX1e1AhU5hUFDFKl3UOUgmKyAhxU5X37Q==
+X-Received: by 2002:a7b:cb97:0:b0:3fb:bc6d:41f7 with SMTP id
+ m23-20020a7bcb97000000b003fbbc6d41f7mr1669978wmi.27.1688043543091; 
+ Thu, 29 Jun 2023 05:59:03 -0700 (PDT)
+Received: from [192.168.1.208] ([139.47.41.96])
+ by smtp.gmail.com with ESMTPSA id
+ g14-20020a7bc4ce000000b003fbaf9abf2fsm4787561wmk.23.2023.06.29.05.59.02
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 29 Jun 2023 05:59:02 -0700 (PDT)
+Message-ID: <e122d115-0d0f-59d2-b593-2210ca1118df@linaro.org>
+Date: Thu, 29 Jun 2023 14:59:00 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PULL 3/5] tcg: add perfmap and jitdump
+Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: peter.maydell@linaro.org, Ilya Leoshkevich <iii@linux.ibm.com>,
+ "Vanderson M . do Rosario" <vandersonmr2@gmail.com>,
+ =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>
+References: <20230116223637.3512814-1-richard.henderson@linaro.org>
+ <20230116223637.3512814-4-richard.henderson@linaro.org>
+ <e1112615-0e6c-e0ea-aa60-1d94d1da26ea@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <e1112615-0e6c-e0ea-aa60-1d94d1da26ea@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x32c.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.093,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,116 +99,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-pci_nic_init_nofail() calls qemu_find_nic_model(), and this function
-sets nd->model = g_strdup(default_model) if it has not been initialized
-yet. So we don't have to set nd->model to the default_nic in the
-calling sites.
+On 6/29/23 13:31, Philippe Mathieu-Daudé wrote:
+>> diff --git a/tcg/tcg.c b/tcg/tcg.c
+>> index da91779890..9b7df71e7a 100644
+>> --- a/tcg/tcg.c
+>> +++ b/tcg/tcg.c
+>> @@ -61,6 +61,7 @@
+>>   #include "exec/log.h"
+>>   #include "tcg/tcg-ldst.h"
+>>   #include "tcg-internal.h"
+>> +#include "accel/tcg/perf.h"
+> 
+> Is it OK to include an header from QEMU's accel/tcg/ here?
+> I thought we wanted to keep tcg/ kinda independant (or maybe
+> this is already too late and this isn't a concern anymore).
 
-Signed-off-by: Thomas Huth <thuth@redhat.com>
----
- hw/arm/sbsa-ref.c        | 8 +-------
- hw/arm/virt.c            | 8 +-------
- hw/loongarch/virt.c      | 8 +-------
- hw/mips/loongson3_virt.c | 8 +-------
- hw/xtensa/virt.c         | 8 +-------
- 5 files changed, 5 insertions(+), 35 deletions(-)
+It's not ideal, no.  Perf really should live in tcg/.
 
-diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
-index b774d80291..d8e13ddbfe 100644
---- a/hw/arm/sbsa-ref.c
-+++ b/hw/arm/sbsa-ref.c
-@@ -683,13 +683,7 @@ static void create_pcie(SBSAMachineState *sms)
-     pci = PCI_HOST_BRIDGE(dev);
-     if (pci->bus) {
-         for (i = 0; i < nb_nics; i++) {
--            NICInfo *nd = &nd_table[i];
--
--            if (!nd->model) {
--                nd->model = g_strdup(mc->default_nic);
--            }
--
--            pci_nic_init_nofail(nd, pci->bus, nd->model, NULL);
-+            pci_nic_init_nofail(&nd_table[i], pci->bus, mc->default_nic, NULL);
-         }
-     }
- 
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index 3937e30477..b660119bce 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -1477,13 +1477,7 @@ static void create_pcie(VirtMachineState *vms)
-     vms->bus = pci->bus;
-     if (vms->bus) {
-         for (i = 0; i < nb_nics; i++) {
--            NICInfo *nd = &nd_table[i];
--
--            if (!nd->model) {
--                nd->model = g_strdup(mc->default_nic);
--            }
--
--            pci_nic_init_nofail(nd, pci->bus, nd->model, NULL);
-+            pci_nic_init_nofail(&nd_table[i], pci->bus, mc->default_nic, NULL);
-         }
-     }
- 
-diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
-index ca8824b6ef..51a453fa9a 100644
---- a/hw/loongarch/virt.c
-+++ b/hw/loongarch/virt.c
-@@ -547,13 +547,7 @@ static void loongarch_devices_init(DeviceState *pch_pic, LoongArchMachineState *
- 
-     /* Network init */
-     for (i = 0; i < nb_nics; i++) {
--        NICInfo *nd = &nd_table[i];
--
--        if (!nd->model) {
--            nd->model = g_strdup(mc->default_nic);
--        }
--
--        pci_nic_init_nofail(nd, pci_bus, nd->model, NULL);
-+        pci_nic_init_nofail(&nd_table[i], pci_bus, mc->default_nic, NULL);
-     }
- 
-     /*
-diff --git a/hw/mips/loongson3_virt.c b/hw/mips/loongson3_virt.c
-index 216812f660..3dd91da7a6 100644
---- a/hw/mips/loongson3_virt.c
-+++ b/hw/mips/loongson3_virt.c
-@@ -454,13 +454,7 @@ static inline void loongson3_virt_devices_init(MachineState *machine,
-     }
- 
-     for (i = 0; i < nb_nics; i++) {
--        NICInfo *nd = &nd_table[i];
--
--        if (!nd->model) {
--            nd->model = g_strdup(mc->default_nic);
--        }
--
--        pci_nic_init_nofail(nd, pci_bus, nd->model, NULL);
-+        pci_nic_init_nofail(&nd_table[i], pci_bus, mc->default_nic, NULL);
-     }
- }
- 
-diff --git a/hw/xtensa/virt.c b/hw/xtensa/virt.c
-index b87f842e74..a6cf646e99 100644
---- a/hw/xtensa/virt.c
-+++ b/hw/xtensa/virt.c
-@@ -103,13 +103,7 @@ static void create_pcie(MachineState *ms, CPUXtensaState *env, int irq_base,
-     pci = PCI_HOST_BRIDGE(dev);
-     if (pci->bus) {
-         for (i = 0; i < nb_nics; i++) {
--            NICInfo *nd = &nd_table[i];
--
--            if (!nd->model) {
--                nd->model = g_strdup(mc->default_nic);
--            }
--
--            pci_nic_init_nofail(nd, pci->bus, nd->model, NULL);
-+            pci_nic_init_nofail(&nd_table[i], pci->bus, mc->default_nic, NULL);
-         }
-     }
- }
--- 
-2.39.3
 
+r~
 
