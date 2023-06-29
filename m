@@ -2,56 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DED87428D1
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 16:48:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 51BAC7428FF
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 17:00:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEsvM-0006vF-PD; Thu, 29 Jun 2023 10:47:08 -0400
+	id 1qEt6K-0000s9-Sm; Thu, 29 Jun 2023 10:58:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=1kQ5=CR=kaod.org=clg@ozlabs.org>)
- id 1qEsvK-0006uV-73; Thu, 29 Jun 2023 10:47:06 -0400
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qEt6I-0000r9-5n
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 10:58:26 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=1kQ5=CR=kaod.org=clg@ozlabs.org>)
- id 1qEsvH-00036i-1C; Thu, 29 Jun 2023 10:47:05 -0400
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4QsLrH6vjHz4wp1;
- Fri, 30 Jun 2023 00:46:55 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4QsLrF5Wl6z4wZy;
- Fri, 30 Jun 2023 00:46:53 +1000 (AEST)
-Message-ID: <c446b3ee-9a77-7a22-842a-c8c5292a65fa@kaod.org>
-Date: Thu, 29 Jun 2023 16:46:49 +0200
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qEt6E-00076Q-Mm
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 10:58:24 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1688050701;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Dpf4SJHgWwROyUacCORRSpJuSmOpwbMA9DPWbcP4mTA=;
+ b=PQiEe56mmUYNREYpJklgOvD6LIm9L4anzXMnjCu9SgcVpm99B/Am6OohEXO7vWgz4hKf2H
+ TpOPAr3cyLxG18dywa9An2SojJOIwVmw5ujeT3Oa+nUGhb/fW4ZdKdYr3nz7jDNsBrdeFx
+ DSZVDSrKyqNLFnaGa5pXBJ7DHb4KMHI=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-596-nvKjz45zPXGVutpIAxa1WQ-1; Thu, 29 Jun 2023 10:58:20 -0400
+X-MC-Unique: nvKjz45zPXGVutpIAxa1WQ-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-3fa979d0c32so3758855e9.2
+ for <qemu-devel@nongnu.org>; Thu, 29 Jun 2023 07:58:20 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1688050699; x=1690642699;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Dpf4SJHgWwROyUacCORRSpJuSmOpwbMA9DPWbcP4mTA=;
+ b=RGLGaYt6q9uRwV8bwVKucakjb8ONp12Jz42t1Tq+vCDpwIFkUM03BUd1C8WEAVc8V9
+ wHup82UXZ8DPFrasrjFMBIiaCncdwcnxRA1Y2NEDkBvuEbE8UVa09z0lsPMfwap3Y1J3
+ ICWzKG4aCvRVptDguCasqMGEqnNSPPy1stkdoe2yaYtrkXZTvZb83of+XAhSSSnDhJUZ
+ 0dbNW2x4K4DotQwqobNN6JqOTQ4EYZiOAFhmpsIUfZ8w/TJRxif/XJIyHU66ey4C8RRg
+ AQ/R7IasvhXGVh9yXSj+eP0PxjScNxYhb+0PqC7a9Tw0CmBDGENYiOSglM4GojFQ/689
+ 8kaw==
+X-Gm-Message-State: AC+VfDw6/UpSOQd0IOccEI3lXthUTW/8DsbvkPghoTRx45bX3pxJNc/8
+ +C0Q9o0Wz+qTqNCOtYPwJ03duz5QRWpdh7BHWRQL0B6HAyOgwU1WPOerSLGqjxZxnLWspO6Pu9S
+ rNx8qyEcUmZnmQ44=
+X-Received: by 2002:a7b:c8d8:0:b0:3fb:b1bf:7df3 with SMTP id
+ f24-20020a7bc8d8000000b003fbb1bf7df3mr4060809wml.16.1688050699276; 
+ Thu, 29 Jun 2023 07:58:19 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6zdjLiJBM8xSkXYa9Olo6ZnoPBMZVIPmQnWD5/v4TnCbB75yBAC9qgf2L45A50Xxhsz0vTCA==
+X-Received: by 2002:a7b:c8d8:0:b0:3fb:b1bf:7df3 with SMTP id
+ f24-20020a7bc8d8000000b003fbb1bf7df3mr4060794wml.16.1688050699018; 
+ Thu, 29 Jun 2023 07:58:19 -0700 (PDT)
+Received: from [192.168.8.100] (tmo-067-34.customers.d1-online.com.
+ [80.187.67.34]) by smtp.gmail.com with ESMTPSA id
+ n9-20020a1c7209000000b003fbacc853ccsm5422266wmc.18.2023.06.29.07.58.17
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 29 Jun 2023 07:58:18 -0700 (PDT)
+Message-ID: <509ddf59-b401-41c5-099a-0acbf2c94f11@redhat.com>
+Date: Thu, 29 Jun 2023 16:58:16 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH v2 06/12] aspeed/smc: Wire CS lines at reset
+ Thunderbird/102.11.0
+Subject: Re: [PATCH] hw: Simplify calls to pci_nic_init_nofail()
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org, Jason Wang <jasowang@redhat.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>
+Cc: qemu-trivial@nongnu.org, qemu-arm@nongnu.org,
+ Radoslaw Biernacki <rad@semihalf.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Leif Lindholm <quic_llindhol@quicinc.com>,
+ Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
+ Xiaojuan Yang <yangxiaojuan@loongson.cn>, Song Gao <gaosong@loongson.cn>,
+ Huacai Chen <chenhuacai@kernel.org>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Max Filippov <jcmvbkbc@gmail.com>
+References: <20230629125449.234945-1-thuth@redhat.com>
+ <dc6a61da-73d0-d0ae-fc62-3a04ccea5417@linaro.org>
 Content-Language: en-US
-To: qemu-arm@nongnu.org
-Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- Joel Stanley <joel@jms.id.au>, Andrew Jeffery <andrew@aj.id.au>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-References: <20230607043943.1837186-1-clg@kaod.org>
- <20230607043943.1837186-7-clg@kaod.org>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20230607043943.1837186-7-clg@kaod.org>
+From: Thomas Huth <thuth@redhat.com>
+In-Reply-To: <dc6a61da-73d0-d0ae-fc62-3a04ccea5417@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
- envelope-from=SRS0=1kQ5=CR=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -40
-X-Spam_score: -4.1
-X-Spam_bar: ----
-X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, NICE_REPLY_A=-0.093,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.093, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -68,127 +110,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/7/23 06:39, Cédric Le Goater wrote:
-> Currently, a set of default flash devices is created at machine init
-> and drives defined on the QEMU command line are associated to the FMC
-> and SPI controllers in sequence :
+On 29/06/2023 15.47, Philippe Mathieu-Daudé wrote:
+> Hi Thomas,
 > 
->     -drive file<file>,format=raw,if=mtd
->     -drive file<file1>,format=raw,if=mtd
-> 
-> The CS lines are wired in the same creation loop. This makes a strong
-> assumption on the ordering and is not very flexible since only a
-> limited set of flash devices can be defined : 1 FMC + 1 or 2 SPI,
-> which is less than what the SoC really supports.
-> 
-> A better alternative would be to define the flash devices on the
-> command line using a blockdev attached to a CS line of a SSI bus :
-> 
->      -blockdev node-name=fmc0,driver=file,filename=./flash.img
->      -device mx66u51235f,addr=0x0,bus=ssi.0,drive=fmc0
-> 
-> However, user created flash devices are not correctly wired to their
-> SPI controller and consequently can not be used by the machine. Fix
-> that and wire the CS lines of all available devices when the SSI bus
-> is reset.
-> 
-> Signed-off-by: Cédric Le Goater <clg@kaod.org>
-> ---
->   hw/arm/aspeed.c     | 5 +----
->   hw/ssi/aspeed_smc.c | 8 ++++++++
->   2 files changed, 9 insertions(+), 4 deletions(-)
-> 
-> diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
-> index 76a1e7303de1..e5a49bb0b1a7 100644
-> --- a/hw/arm/aspeed.c
-> +++ b/hw/arm/aspeed.c
-> @@ -299,17 +299,14 @@ void aspeed_board_init_flashes(AspeedSMCState *s, const char *flashtype,
->   
->       for (i = 0; i < count; ++i) {
->           DriveInfo *dinfo = drive_get(IF_MTD, 0, unit0 + i);
-> -        qemu_irq cs_line;
->           DeviceState *dev;
->   
->           dev = qdev_new(flashtype);
->           if (dinfo) {
->               qdev_prop_set_drive(dev, "drive", blk_by_legacy_dinfo(dinfo));
->           }
-> +        qdev_prop_set_uint8(dev, "addr", i);
->           qdev_realize_and_unref(dev, BUS(s->spi), &error_fatal);
-> -
-> -        cs_line = qdev_get_gpio_in_named(dev, SSI_GPIO_CS, 0);
-> -        qdev_connect_gpio_out_named(DEVICE(s), "cs", i, cs_line);
->       }
->   }
->   
-> diff --git a/hw/ssi/aspeed_smc.c b/hw/ssi/aspeed_smc.c
-> index 72811693224d..2a4001b774a2 100644
-> --- a/hw/ssi/aspeed_smc.c
-> +++ b/hw/ssi/aspeed_smc.c
-> @@ -692,6 +692,14 @@ static void aspeed_smc_reset(DeviceState *d)
->           memset(s->regs, 0, sizeof s->regs);
->       }
->   
-> +    for (i = 0; i < asc->cs_num_max; i++) {
-> +        DeviceState *dev = ssi_get_cs(s->spi, i);
-> +        if (dev) {
-> +            qemu_irq cs_line = qdev_get_gpio_in_named(dev, SSI_GPIO_CS, 0);
-> +            qdev_connect_gpio_out_named(DEVICE(s), "cs", i, cs_line);
-> +        }
-> +    }
-> +
->       /* Unselect all peripherals */
->       for (i = 0; i < asc->cs_num_max; ++i) {
->           s->regs[s->r_ctrl0 + i] |= CTRL_CE_STOP_ACTIVE;
+> On 29/6/23 14:54, Thomas Huth wrote:
+>> pci_nic_init_nofail() calls qemu_find_nic_model(), and this function
+>> sets nd->model = g_strdup(default_model) if it has not been initialized
+>> yet. So we don't have to set nd->model to the default_nic in the
+>> calling sites.
+>>
+>> Signed-off-by: Thomas Huth <thuth@redhat.com>
+>> ---
+>>   hw/arm/sbsa-ref.c        | 8 +-------
+>>   hw/arm/virt.c            | 8 +-------
+>>   hw/loongarch/virt.c      | 8 +-------
+>>   hw/mips/loongson3_virt.c | 8 +-------
+>>   hw/xtensa/virt.c         | 8 +-------
+>>   5 files changed, 5 insertions(+), 35 deletions(-)
+...
+> This remind me of a branch from end of April with this
+> unfinished patch, did we already discuss this together?
 
+No, I haven't seen your patch yet, neither we talked about it. I came up 
+with the idea for my patch on my own after looking at certain spots in the 
+code. But I guess you could easily rebase your patch on top of mine in case 
+you want to finish it ;-)
 
-An alternative for the wiring would be to connect the GPIO lines in the
-m25p80 realize routine. See below for a draft. Assumption is made on the
-availability of the CS lines at the bus parent level, which should be
-the controller.
-  
-Thanks,
-
-C.
-
-
-diff --git a/hw/ssi/ssi.c b/hw/ssi/ssi.c
-index aa0bfa57bb26..ae39a1a24b1b 100644
---- a/hw/ssi/ssi.c
-+++ b/hw/ssi/ssi.c
-@@ -154,6 +154,18 @@ SSIBus *ssi_create_bus(DeviceState *parent, const char *name)
-      return SSI_BUS(bus);
-  }
-  
-+void ssi_attach(SSIPeripheral *s)
-+{
-+    BusState *bus = BUS(qdev_get_parent_bus(DEVICE(s)));
-+    qemu_irq cs_line = qdev_get_gpio_in_named(DEVICE(s), SSI_GPIO_CS, 0);
-+
-+    /*
-+     * TODO: Will abort if "cs" GPIOs are not defined at the
-+     * controller level
-+     */
-+    qdev_connect_gpio_out_named(DEVICE(bus->parent), "cs", s->addr, cs_line);
-+}
-+
-  uint32_t ssi_transfer(SSIBus *bus, uint32_t val)
-  {
-      BusState *b = BUS(bus);
-
-
-diff --git a/hw/block/m25p80.c b/hw/block/m25p80.c
-index afc3fdf4d60b..89add100aefd 100644
---- a/hw/block/m25p80.c
-+++ b/hw/block/m25p80.c
-@@ -1628,6 +1628,8 @@ static void m25p80_realize(SSIPeripheral *ss, Error **errp)
-  
-      qdev_init_gpio_in_named(DEVICE(s),
-                              m25p80_write_protect_pin_irq_handler, "WP#", 1);
-+
-+    ssi_attach(ss);
-  }
-  
-  static void m25p80_reset(DeviceState *d)
+  Thomas
 
 
