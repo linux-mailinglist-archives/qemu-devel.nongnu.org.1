@@ -2,175 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE246742ADD
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 18:54:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DDBA742AFF
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 19:03:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEutU-0003B6-Pb; Thu, 29 Jun 2023 12:53:20 -0400
+	id 1qEv25-0004nA-84; Thu, 29 Jun 2023 13:02:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dongwon.kim@intel.com>)
- id 1qEutS-0003AW-9L
- for qemu-devel@nongnu.org; Thu, 29 Jun 2023 12:53:18 -0400
-Received: from mga03.intel.com ([134.134.136.65])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qEv1u-0004lh-MJ
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 13:02:02 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dongwon.kim@intel.com>)
- id 1qEutP-0002KC-BJ
- for qemu-devel@nongnu.org; Thu, 29 Jun 2023 12:53:18 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1688057595; x=1719593595;
- h=message-id:date:subject:to:cc:references:from:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=VQKM/nYZDs4SYwysuoM/QoQJyADBTBIL1GudZFRG944=;
- b=WwEoMuj8IxiHXhdDGA/u07t8tRYqT2QKRJCdCNLQAwiucPEc/0X8vq8/
- 51se/90ffkUPN+kW3q80bBj4yb0WDzxQRVqcqYekU3MjQZTUvAV+UySQM
- 19ADNcNgGg7cTxGSAehXkX8JKEcZy75beAUdGLieaqut12eW5Rufonggc
- i0EBqY6w7s+4ktZ37sRv+2oJl+201k6n/lPnY12fQFhGE1uHfK33MTdr0
- +wvvvrKN44Z26ksoClEacFqQu1KHptjwhg37EREUqSUyvIDVquJR2a5g5
- a5qlEudIpU1Cb03h9g5bryYapXYlNvW94PvzOGxrDqx3UthGUv7a10whJ Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10756"; a="365652888"
-X-IronPort-AV: E=Sophos;i="6.01,168,1684825200"; d="scan'208";a="365652888"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
- by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jun 2023 09:53:12 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10756"; a="782726363"
-X-IronPort-AV: E=Sophos;i="6.01,168,1684825200"; d="scan'208";a="782726363"
-Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
- by fmsmga008.fm.intel.com with ESMTP; 29 Jun 2023 09:53:08 -0700
-Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
- ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Thu, 29 Jun 2023 09:53:07 -0700
-Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
- orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27 via Frontend Transport; Thu, 29 Jun 2023 09:53:07 -0700
-Received: from NAM04-DM6-obe.outbound.protection.outlook.com (104.47.73.43) by
- edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.27; Thu, 29 Jun 2023 09:53:06 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Xi39+qk3Wh2aTlPqGZzOwqPcWAKi3jbNj4mU/KEA5fmbaHBrIomhh0jsOE0+iNpPAWea+BirjgtARSNPSkyjMSP0tK6A01SP4FaeH4PAnUNvaZMorSLz7ywevadxTH0va+7ngma5YLNgAubmNG6GRorkZ8QlsdRSyjl+6UrX7EbQknvMCNkK/00aKRpINFCuxbQFoq6Fm5hjFEzfS/K2mjQ2R87QbmnpFanU9/y6ynB3OIKjuxsmxaZ3xxWMrFQWg2Mmgexklp57VREOiLczXvKkWB+LksGhOUTYR3hvJJe/G9ZkgY8VKrk/o4fOoe1Vl6EDMc74Gjl4w4IdmQPCeA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6aiQenFB6Mfpa+cMt7y6DybXh0zO20v4EdElpu6s0t0=;
- b=Rd1U1mxzSlEG7vBj1dJ0KeLlCzlH6wfrFVgULjgciUd0szTlbgXrbOSTrBxXry/rX6m2bs6yZ5eRTTd66WPi7sAFfEvRUQ5EPROIDUpYXKVcyNxAOWwEJtUGvn/y93KjBYgaJ0oEkmYG2AIyzras2HqFo2Nr/KriD0Ciu5RQ2tmy6PrnGHmGlRoa/Wu7LMVH5MUFLiM4U+zb+oASo/Mj0Kwi+jyc46ec50Pun5+Y97bqlUFnjE9AZJNmauujQLHlY0lD/8HGVhpZUfTOK9YcVuKLelfnqVLgVsdGHfbcvU6mjUdDpHQXCdTr8zIRbeew6a1swnmP6LQL/aoOA09SsA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH8PR11MB6879.namprd11.prod.outlook.com (2603:10b6:510:229::22)
- by CH0PR11MB5281.namprd11.prod.outlook.com (2603:10b6:610:bc::21)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6544.15; Thu, 29 Jun
- 2023 16:53:03 +0000
-Received: from PH8PR11MB6879.namprd11.prod.outlook.com
- ([fe80::b33c:de68:eacf:e9c4]) by PH8PR11MB6879.namprd11.prod.outlook.com
- ([fe80::b33c:de68:eacf:e9c4%3]) with mapi id 15.20.6500.036; Thu, 29 Jun 2023
- 16:53:03 +0000
-Message-ID: <980355eb-0241-2690-8ba4-3f136dd8555a@intel.com>
-Date: Thu, 29 Jun 2023 09:53:00 -0700
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [QEMU PATCH 1/1] virtgpu: do not destroy resources when guest
- suspend
-Content-Language: en-US
-To: Jiqian Chen <Jiqian.Chen@amd.com>, Gerd Hoffmann <kraxel@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>, Stefano Stabellini
- <sstabellini@kernel.org>, Anthony PERARD <anthony.perard@citrix.com>,
- =?UTF-8?Q?Roger_Pau_Monn=c3=a9?= <roger.pau@citrix.com>, Jan Beulich
- <jbeulich@suse.com>, Antonio Caggiano <antonio.caggiano@collabora.com>, "Dr .
- David Alan Gilbert" <dgilbert@redhat.com>, Robert Beckett
- <bob.beckett@collabora.com>, <qemu-devel@nongnu.org>,
- <xen-devel@lists.xenproject.org>
-CC: Alex Deucher <Alexander.Deucher@amd.com>, Christian Koenig
- <Christian.Koenig@amd.com>, Stewart Hildebrand <Stewart.Hildebrand@amd.com>,
- Xenia Ragiadakou <burzalodowa@gmail.com>, Honglei Huang
- <Honglei1.Huang@amd.com>, Julia Zhang <Julia.Zhang@amd.com>, Huang Rui
- <Ray.Huang@amd.com>
-References: <20230608025655.1674357-1-Jiqian.Chen@amd.com>
- <20230608025655.1674357-2-Jiqian.Chen@amd.com>
-From: "Kim, Dongwon" <dongwon.kim@intel.com>
-In-Reply-To: <20230608025655.1674357-2-Jiqian.Chen@amd.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BY3PR05CA0004.namprd05.prod.outlook.com
- (2603:10b6:a03:254::9) To PH8PR11MB6879.namprd11.prod.outlook.com
- (2603:10b6:510:229::22)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qEv1s-0005TN-Rl
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 13:02:02 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1688058119;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=C+3xRKS8CjELBG1aFSop6p/7715kxVctvTPZ+W8JSJY=;
+ b=S0zciEsSvT29YC0S+N6GEf/KcypEAk6fKkVdd2tl5osoDYJn50GH766bYhRNuPCC/2P9Q2
+ cqVfKybNz9I2m+UNOKMPebErX/NQwm3af91Md97E5RA90CsPalAuVklO5OrCEvYrkaK47X
+ zg+s/t5R1t4awUsjLqltdXRp8aDt06k=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-650-KmQ8sY1VOpKLE_1GcV15MQ-1; Thu, 29 Jun 2023 13:01:58 -0400
+X-MC-Unique: KmQ8sY1VOpKLE_1GcV15MQ-1
+Received: by mail-qk1-f197.google.com with SMTP id
+ af79cd13be357-7673887b2cfso16871285a.1
+ for <qemu-devel@nongnu.org>; Thu, 29 Jun 2023 10:01:57 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1688058117; x=1690650117;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=C+3xRKS8CjELBG1aFSop6p/7715kxVctvTPZ+W8JSJY=;
+ b=GrB+9eHEnzLn20brnX+Aqd6mUM/6RHKNtE4Y2PUrNc9yYRqtx5sQVFfWzH5JB5h3Pg
+ nCBFeqsjGH0mi80Aw3QsV22gXpOzt7Jo+3X2JP1NLLLwqYGIEwZx9/gjgba1mfrYwgiK
+ //rve+awJdRKEsVEXvvhUUFYULOqYDCFGUAg985G691ICO8io7jvnJG/IlTiv1p+efhU
+ AlpmTVSdQ3nanNNe4sZjxtLyGVhoPehLFuDAQ4Urbzv7vrIFaH/5NPcomhelCIVtaGGm
+ RaT2zjiN2wanqAQZ43ZflXJcJhvsM+bV6u0otN/9lPGTIoBNAdT0q+R6wApcQ8zaKM1U
+ BbbQ==
+X-Gm-Message-State: AC+VfDz11UiGd5FWFvO7h2+JnYjimi2nyCXrROfXTtTSswgccQsMEnnN
+ 6Hnc/EA6a3/0xxOc60DgXpecON37TusvodHLxusRIpzFCLXCth0bgxo6QZ0UiOfwZ1VmT6a6T/s
+ DHb+cXecF2tHrbnw=
+X-Received: by 2002:a05:620a:44d4:b0:766:f972:73da with SMTP id
+ y20-20020a05620a44d400b00766f97273damr14854371qkp.1.1688058117466; 
+ Thu, 29 Jun 2023 10:01:57 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4laFr2VULrmmrfH3qcIQxhAj2KmisjBxBV6TjdHmVk2jTrDHgV00YT6W9+u0KrGiDEd/hOIA==
+X-Received: by 2002:a05:620a:44d4:b0:766:f972:73da with SMTP id
+ y20-20020a05620a44d400b00766f97273damr14854339qkp.1.1688058117079; 
+ Thu, 29 Jun 2023 10:01:57 -0700 (PDT)
+Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
+ [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
+ pe34-20020a05620a852200b00765a71e399bsm4803926qkn.55.2023.06.29.10.01.56
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 29 Jun 2023 10:01:56 -0700 (PDT)
+Date: Thu, 29 Jun 2023 13:01:53 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Leonardo Bras <leobras@redhat.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Juan Quintela <quintela@redhat.com>, qemu-devel@nongnu.org,
+ Julia Suvorova <jusual@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ David Gibson <david@gibson.dropbear.id.au>
+Subject: Re: [PATCH 1/1] pcie: Add hotplug detect state register to w1cmask
+Message-ID: <ZJ25AdfN7AqYkB6z@x1n>
+References: <20230629090500.438976-2-leobras@redhat.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR11MB6879:EE_|CH0PR11MB5281:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6ec3f4ad-69b8-4833-9bfb-08db78c14daa
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: SNI4as7Iap0aXqProiUu8y99Vb9W3OcluI+WFGIEE0NSJqlXa4/EXtVo67hCDVEmC7swlWZ5PGDK/B1ZgqL0iLcmT4bEglOYQkAOn/MuWQEGdLsFxVV0KzW6Tg+6a2YJQtmOaB5M8wjzJqw1Cltj3ecPnPDyu/qV+b9UwmfcZ2SLAaD6N+K24MW7rk0egNpXuA57LOf12iQDv3PzqqTx209NDQ5DNggQ6a+2K85xYPJMBfTkQTndOPxAeszkdNQGPFJ47wtT7SVZTbTa0yIStfjv5C0UbqPOUyHvRBrArss+4RWKquIz11hJl7jtIylr8c5xTRSHCGGYr9/3WDXMzrKAqLrAUNkRwtHbz2PiruFJ0q7dx4t1nQj1xlqKXL0eK5CNqHZ3Nuexw6DRZAo4GHueofo5B/rc3bXfuObkTT5SBUM1TkH7zhhl49UXDhw0EO07FdtEW/dDgSThJudMDW83OLocdpY1RY52VAP5HAA6i1BjDTzmpmwJOD0xr0bibd5Oole526DLeRGFkAHwYCckcK4e4ZPS+5LBaGX5ler1D3FcnED+TWkoPtPaVHNciyh8QDKgi3sy+d5ouOzNLDfy2UCIU+GZqGvPo9eq9d87s6waWa0JHoRQ4f5eUdLkboncbWpL3AAVGeDbJUstfQ==
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:PH8PR11MB6879.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230028)(346002)(136003)(366004)(39860400002)(396003)(376002)(451199021)(6486002)(38100700002)(53546011)(2616005)(82960400001)(83380400001)(6506007)(26005)(186003)(921005)(6512007)(54906003)(41300700001)(31696002)(110136005)(86362001)(316002)(2906002)(36756003)(66556008)(66476007)(66946007)(31686004)(4326008)(5660300002)(7416002)(8676002)(8936002)(478600001)(15650500001)(43740500002)(45980500001);
- DIR:OUT; SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Wms4SXFLeUhwU0RmMGl6YXgrN3pBUXY0bUdjRW1PczFyckgyT3lKNzl4bERN?=
- =?utf-8?B?K0QzK1VwekN5WnpCV1VibDQ2OE1MWm9wUjNkUGNCR0gxbzVZYXN1eFpocm5N?=
- =?utf-8?B?dks2ekJTVzFXbmdsMEJ1dFArNXFxWDZ0Sk1aOU5tNUUwTCtEYzBPbjR6Y1VV?=
- =?utf-8?B?TUZBNndBNEFRZmVKY1hPbW5hdTB0c3NNYXoxQ05BZ0hKbTdoY0d6UnZYemVE?=
- =?utf-8?B?b29jYUl3VFY5czFiQi92ZFMzODE0L3QyZkVNSThjVDZlQlBITkNPUzNocng2?=
- =?utf-8?B?RVpnZ2hFMmpQM214RTM5ZXJib0J4V2lUbnU3eFN0YmtJQlE2a3VSN1k0ZGFQ?=
- =?utf-8?B?Q3NHY2J1YTRhVzE3ci83SGhlY0p3OHlXNE5MWDduWkJMcjR0M1NpZVgxdndu?=
- =?utf-8?B?SG5VK00rY2c5OCtIenJxb1FDUXFwY3FVWGF1SkRLeG5tYjBOR283ZU13THpN?=
- =?utf-8?B?WlFvZGJISC85a0Y1RlZSWEVuam9WaUFyVjdpN0g4OWFYb3pHU0t3K3h5WGpT?=
- =?utf-8?B?VFF2T2hKYTB2NURlUkgvc1FNL0JnT3hiRnZ6aVp0QkJBNk50S01LT2JRZHNj?=
- =?utf-8?B?NlhaR2J3b3BaMXErNUw4dFdEZ05xWVQvNHV4b2p2Tzhodm1CQW5ldmJjS2dy?=
- =?utf-8?B?KzlEQmFnTWduUjNjKzRaZVpUaCt0bklRZFRYajZGZEpha0Q1ODZyL0h4TUFk?=
- =?utf-8?B?aWt0VDRWcGpwd1RzVzRRWEhyTHBJRFI3d25NYzBRT1RvUE90cjRkczhKT3Nz?=
- =?utf-8?B?Yi9yVFhTTVpCTUJXSit4dmtweml1RUJlamtKNEZrbkpaanpEMEtOQXlDR3Za?=
- =?utf-8?B?M2dMNVFUZzdYL1RzcU80MlF4MUVJZG9lTGZTM0IyYTU4OXdNdlRSRi94UmtK?=
- =?utf-8?B?NDBoanozajE3TGR0eUdsdFhJM3FqQXE4RHVCc0JUeCtqZUZ5c0orSVNMczhi?=
- =?utf-8?B?UkZYQVd6VmpjTTVzM01VYVhpc2twNk1nMDBFS0NzenoyOW95Q3Yrc05xNGho?=
- =?utf-8?B?RUN1ZlVZWkVxNzRZRC9PVENsZnhCeFF2bUVQalBhMml1MWlWb3pMczd0RlFa?=
- =?utf-8?B?KzNsUjUwMGN6N0lBUzJkeGN5b0pjOG4yRHRKQ21Qc0RmUnlnMzN6YUhqVWtC?=
- =?utf-8?B?SDg2Q0FyWWY4aTQzblY5OHpPMTN6R1lVbTQ1YUV6V0hmUmM0TTFYNkpHeWdn?=
- =?utf-8?B?WGlFcnIzSDh4UnJ1UEhka2E2ekpCNkphV1BwUnVSRk5YNWdINk15K1Exc0hD?=
- =?utf-8?B?aE5udC9sUjRrb0p4WjlWNS9XcW9RYW1kZG1TZzZmQXkwMjBwcENJcUE0Q1Vi?=
- =?utf-8?B?Tjljb2g5REZpbURrLzg0amZyVzZlUzNRMVd3V200K09rRjZIY0J2NG9JZjJv?=
- =?utf-8?B?U01BbVZid2xDOEUwUnlUcVFSU0RhYTBTc2s5ZWpWckk3bjdnYWNwQ1pkcWRG?=
- =?utf-8?B?S3J4RGh3a0F3SkRKSThMN25DYjVSK3YrZmsxY01IVFNjRnViRmNpK1d4Ynpx?=
- =?utf-8?B?Z05ZRjJCcnVEL0MxRk9nUDd4RFFBdTRIOVlpaTdaREJ2L2IzMmYwdW5rZWR1?=
- =?utf-8?B?MGFFZ1Y0cWVjaFNKUzAycUM2bWpUeXNHc0FWU0RyNlBmbGhTaEhyaTdML0gy?=
- =?utf-8?B?V3hLZXVaWVlXbGoxSUErclpFellzbzBrcmVTOW8wTXdkYVZTQUdtZjU2MEky?=
- =?utf-8?B?OXlzNmw0UXU1V0VLSVYveDF0cmJUMkhQOFNDTkNXOG0zMldOZkdXN211Q1ZJ?=
- =?utf-8?B?aHFrc25vUFgxU2NjWU1JRHhoM1orRUJkRzNqeXphZ29iNUFRblRQcVRtd0hH?=
- =?utf-8?B?NTcrZ01rUUV5UG1GZFYydjd3VW9oMXlZMDNHK3B2MmlOTUk1czZRVEpkb1BF?=
- =?utf-8?B?RWM4b2hQeDM0bm00bmZnZ2x2ZDR3by85MG1VTXpkRnFORll6SHArcTF5eENE?=
- =?utf-8?B?a0xxVzBJNTZPeVJWNDRwR3hTdlBRUnRGYUkzMEpCWXNyWDhKbDNabURaanhV?=
- =?utf-8?B?SC9xcU45NTVKZDJqeDJ4dW5RSWprZzh4cnkvKzg5R0xPYUlTZWZDOWc1SjlX?=
- =?utf-8?B?bkZmV01lK1F6bmRKWkZXRmF1Ky9tZ0k0UFEycVU1M0VySUJrWXFkbGk3VC9E?=
- =?utf-8?Q?lC8el4fyRJ3z2RAY2HtjQZoor?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6ec3f4ad-69b8-4833-9bfb-08db78c14daa
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB6879.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jun 2023 16:53:03.1708 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 1g63au96kgeyCRtBqhmz/qcYtpCdaJZsdTBdeeT38+7nR5mxSjMJMrHdjC07Fh+Sp9gqMgjIQrBq9NITVFTYbw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR11MB5281
-X-OriginatorOrg: intel.com
-Received-SPF: pass client-ip=134.134.136.65;
- envelope-from=dongwon.kim@intel.com; helo=mga03.intel.com
-X-Spam_score_int: -44
-X-Spam_score: -4.5
-X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230629090500.438976-2-leobras@redhat.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.093, RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -186,181 +100,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This method - letting QEMU not remove resources would work on S3 case 
-but with S4, the QEMU would lose all the resources anyway as the process 
-will be terminated. So objects restoring was only option for us as
+Hi, Leo,
 
-in [RFC PATCH 2/2] drm/virtio: restore virtio_gpu_objects upon suspend 
-and resume (lists.freedesktop.org) 
-<https://lists.freedesktop.org/archives/dri-devel/2022-September/373894.html>
+Thanks for figuring this out.  Let me copy a few more potential reviewers
+from commit 17858a1695 ("hw/acpi/ich9: Set ACPI PCI hot-plug as default on
+Q35").
 
-But I only considered and tested cases with scanout blob resources, so 
-this may not cover other resource types...
+On Thu, Jun 29, 2023 at 06:05:00AM -0300, Leonardo Bras wrote:
+> When trying to migrate a machine type pc-q35-6.0 or lower, with this
+> cmdline options:
+> 
+> -device driver=pcie-root-port,port=18,chassis=19,id=pcie-root-port18,bus=pcie.0,addr=0x12 \
+> -device driver=nec-usb-xhci,p2=4,p3=4,id=nex-usb-xhci0,bus=pcie-root-port18,addr=0x12.0x1
+> 
+> the following bug happens after all ram pages were sent:
+> 
+> qemu-kvm: get_pci_config_device: Bad config data: i=0x6e read: 0 device: 40 cmask: ff wmask: 0 w1cmask:19
+> qemu-kvm: Failed to load PCIDevice:config
+> qemu-kvm: Failed to load pcie-root-port:parent_obj.parent_obj.parent_obj
+> qemu-kvm: error while loading state for instance 0x0 of device '0000:00:12.0/pcie-root-port'
+> qemu-kvm: load of migration failed: Invalid argument
+> 
+> This happens on pc-q35-6.0 or lower because of:
+> { "ICH9-LPC", ACPI_PM_PROP_ACPI_PCIHP_BRIDGE, "off" }
+> 
+> In this scenario, hotplug_handler_plug() calls pcie_cap_slot_plug_cb(),
+> which sets the bus dev->config byte 0x6e with bit PCI_EXP_SLTSTA_PDS to 
+> signal PCI hotplug for the guest. After a while the guest will deal with
+> this hotplug and qemu will clear the above bit.
+> 
+> Then, during migration, get_pci_config_device() will compare the
+> configs of both the freshly created device and the one that is being
+> received via migration, which will differ due to the PCI_EXP_SLTSTA_PDS bit
+> and cause the bug to reproduce.
+> 
+> To avoid this fake incompatibility, there are two fields in PCIDevice that
+> can help:
+> 
+> .wmask: Used to implement R/W bytes, and
+> .w1cmask: Used to implement RW1C(Write 1 to Clear) bytes
 
-On 6/7/2023 7:56 PM, Jiqian Chen wrote:
-> After suspending and resuming guest VM, you will get
-> a black screen, and the display can't come back.
->
-> This is because when guest did suspending, it called
-> into qemu to call virtio_gpu_gl_reset. In function
-> virtio_gpu_gl_reset, it destroyed resources and reset
-> renderer, which were used for display. As a result,
-> guest's screen can't come back to the time when it was
-> suspended and only showed black.
->
-> So, this patch adds a new ctrl message
-> VIRTIO_GPU_CMD_STATUS_FREEZING to get notification from
-> guest. If guest is during suspending, it sets freezing
-> status of virtgpu to true, this will prevent destroying
-> resources and resetting renderer when guest calls into
-> virtio_gpu_gl_reset. If guest is during resuming, it sets
-> freezing to false, and then virtio_gpu_gl_reset will keep
-> its origin actions and has no other impaction.
->
-> Signed-off-by: Jiqian Chen <Jiqian.Chen@amd.com>
+Is there one more option to clear the bit in cmask?
+
+IIUC w1cmask means the guest can now write to this bit, but afaiu from the
+pcie spec it's RO.
+
+> 
+> According to pcie_cap_slot_init() the slot status register
+> (PCI_EXP_SLTSTA), in which PCI_EXP_SLTSTA_PDS is a flag, seems to fall
+> under w1cmask field, with makes sense due to the way signaling the hotplug
+> works.
+> 
+> So, add PCI_EXP_SLTSTA_PDS bit to w1cmask, so the fake incompatibility on
+> get_pci_config_device() does not abort the migration.
+> 
+> Buglink: https://bugzilla.redhat.com/show_bug.cgi?id=2215819
+> Signed-off-by: Leonardo Bras <leobras@redhat.com>
+
+Do we need a Fixes: and also the need to copy stable?
+
 > ---
->   hw/display/virtio-gpu-gl.c                  |  9 ++++++-
->   hw/display/virtio-gpu-virgl.c               |  3 +++
->   hw/display/virtio-gpu.c                     | 26 +++++++++++++++++++--
->   include/hw/virtio/virtio-gpu.h              |  3 +++
->   include/standard-headers/linux/virtio_gpu.h |  9 +++++++
->   5 files changed, 47 insertions(+), 3 deletions(-)
->
-> diff --git a/hw/display/virtio-gpu-gl.c b/hw/display/virtio-gpu-gl.c
-> index e06be60dfb..e11ad233eb 100644
-> --- a/hw/display/virtio-gpu-gl.c
-> +++ b/hw/display/virtio-gpu-gl.c
-> @@ -100,7 +100,14 @@ static void virtio_gpu_gl_reset(VirtIODevice *vdev)
->        */
->       if (gl->renderer_inited && !gl->renderer_reset) {
->           virtio_gpu_virgl_reset_scanout(g);
-> -        gl->renderer_reset = true;
-> +        /*
-> +         * If guest is suspending, we shouldn't reset renderer,
-> +         * otherwise, the display can't come back to the time when
-> +         * it was suspended after guest resumed.
-> +         */
-> +        if (!g->freezing) {
-> +            gl->renderer_reset = true;
-> +        }
->       }
->   }
->   
-> diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c
-> index 73cb92c8d5..183ec92d53 100644
-> --- a/hw/display/virtio-gpu-virgl.c
-> +++ b/hw/display/virtio-gpu-virgl.c
-> @@ -464,6 +464,9 @@ void virtio_gpu_virgl_process_cmd(VirtIOGPU *g,
->       case VIRTIO_GPU_CMD_GET_EDID:
->           virtio_gpu_get_edid(g, cmd);
->           break;
-> +    case VIRTIO_GPU_CMD_STATUS_FREEZING:
-> +        virtio_gpu_cmd_status_freezing(g, cmd);
-> +        break;
->       default:
->           cmd->error = VIRTIO_GPU_RESP_ERR_UNSPEC;
->           break;
-> diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
-> index 5e15c79b94..8f235d7848 100644
-> --- a/hw/display/virtio-gpu.c
-> +++ b/hw/display/virtio-gpu.c
-> @@ -373,6 +373,16 @@ static void virtio_gpu_resource_create_blob(VirtIOGPU *g,
->       QTAILQ_INSERT_HEAD(&g->reslist, res, next);
->   }
->   
-> +void virtio_gpu_cmd_status_freezing(VirtIOGPU *g,
-> +                         struct virtio_gpu_ctrl_command *cmd)
-> +{
-> +    struct virtio_gpu_status_freezing sf;
-> +
-> +    VIRTIO_GPU_FILL_CMD(sf);
-> +    virtio_gpu_bswap_32(&sf, sizeof(sf));
-> +    g->freezing = sf.freezing;
-> +}
-> +
->   static void virtio_gpu_disable_scanout(VirtIOGPU *g, int scanout_id)
->   {
->       struct virtio_gpu_scanout *scanout = &g->parent_obj.scanout[scanout_id];
-> @@ -986,6 +996,9 @@ void virtio_gpu_simple_process_cmd(VirtIOGPU *g,
->       case VIRTIO_GPU_CMD_RESOURCE_DETACH_BACKING:
->           virtio_gpu_resource_detach_backing(g, cmd);
->           break;
-> +    case VIRTIO_GPU_CMD_STATUS_FREEZING:
-> +        virtio_gpu_cmd_status_freezing(g, cmd);
-> +        break;
->       default:
->           cmd->error = VIRTIO_GPU_RESP_ERR_UNSPEC;
->           break;
-> @@ -1344,6 +1357,8 @@ void virtio_gpu_device_realize(DeviceState *qdev, Error **errp)
->       QTAILQ_INIT(&g->reslist);
->       QTAILQ_INIT(&g->cmdq);
->       QTAILQ_INIT(&g->fenceq);
-> +
-> +    g->freezing = false;
->   }
->   
->   void virtio_gpu_reset(VirtIODevice *vdev)
-> @@ -1352,8 +1367,15 @@ void virtio_gpu_reset(VirtIODevice *vdev)
->       struct virtio_gpu_simple_resource *res, *tmp;
->       struct virtio_gpu_ctrl_command *cmd;
->   
-> -    QTAILQ_FOREACH_SAFE(res, &g->reslist, next, tmp) {
-> -        virtio_gpu_resource_destroy(g, res);
-> +    /*
-> +     * If guest is suspending, we shouldn't destroy resources,
-> +     * otherwise, the display can't come back to the time when
-> +     * it was suspended after guest resumed.
-> +     */
-> +    if (!g->freezing) {
-> +        QTAILQ_FOREACH_SAFE(res, &g->reslist, next, tmp) {
-> +            virtio_gpu_resource_destroy(g, res);
-> +        }
->       }
->   
->       while (!QTAILQ_EMPTY(&g->cmdq)) {
-> diff --git a/include/hw/virtio/virtio-gpu.h b/include/hw/virtio/virtio-gpu.h
-> index 2e28507efe..c21c2990fb 100644
-> --- a/include/hw/virtio/virtio-gpu.h
-> +++ b/include/hw/virtio/virtio-gpu.h
-> @@ -173,6 +173,7 @@ struct VirtIOGPU {
->   
->       uint64_t hostmem;
->   
-> +    bool freezing;
->       bool processing_cmdq;
->       QEMUTimer *fence_poll;
->       QEMUTimer *print_stats;
-> @@ -284,5 +285,7 @@ void virtio_gpu_virgl_reset_scanout(VirtIOGPU *g);
->   void virtio_gpu_virgl_reset(VirtIOGPU *g);
->   int virtio_gpu_virgl_init(VirtIOGPU *g);
->   int virtio_gpu_virgl_get_num_capsets(VirtIOGPU *g);
-> +void virtio_gpu_cmd_status_freezing(VirtIOGPU *g,
-> +                         struct virtio_gpu_ctrl_command *cmd);
->   
->   #endif
-> diff --git a/include/standard-headers/linux/virtio_gpu.h b/include/standard-headers/linux/virtio_gpu.h
-> index 2da48d3d4c..aefffbd751 100644
-> --- a/include/standard-headers/linux/virtio_gpu.h
-> +++ b/include/standard-headers/linux/virtio_gpu.h
-> @@ -116,6 +116,9 @@ enum virtio_gpu_ctrl_type {
->   	VIRTIO_GPU_RESP_ERR_INVALID_RESOURCE_ID,
->   	VIRTIO_GPU_RESP_ERR_INVALID_CONTEXT_ID,
->   	VIRTIO_GPU_RESP_ERR_INVALID_PARAMETER,
-> +
-> +	/* status */
-> +	VIRTIO_GPU_CMD_STATUS_FREEZING = 0x1300,
->   };
->   
->   enum virtio_gpu_shm_id {
-> @@ -453,4 +456,10 @@ struct virtio_gpu_resource_unmap_blob {
->   	uint32_t padding;
->   };
->   
-> +/* VIRTIO_GPU_CMD_STATUS_FREEZING */
-> +struct virtio_gpu_status_freezing {
-> +	struct virtio_gpu_ctrl_hdr hdr;
-> +	__u32 freezing;
-> +};
-> +
->   #endif
+>  hw/pci/pcie.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/hw/pci/pcie.c b/hw/pci/pcie.c
+> index b8c24cf45f..2def1765a5 100644
+> --- a/hw/pci/pcie.c
+> +++ b/hw/pci/pcie.c
+> @@ -657,7 +657,7 @@ void pcie_cap_slot_init(PCIDevice *dev, PCIESlot *s)
+>                                 PCI_EXP_SLTCTL_EIC);
+>  
+>      pci_word_test_and_set_mask(dev->w1cmask + pos + PCI_EXP_SLTSTA,
+> -                               PCI_EXP_HP_EV_SUPPORTED);
+> +                               PCI_EXP_HP_EV_SUPPORTED | PCI_EXP_SLTSTA_PDS);
+>  
+>      dev->exp.hpev_notified = false;
+>  
+> -- 
+> 2.41.0
+> 
+
+-- 
+Peter Xu
+
 
