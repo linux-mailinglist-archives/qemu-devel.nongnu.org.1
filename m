@@ -2,56 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E481742216
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 10:25:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FF41742217
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 10:26:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEmyH-0000sX-94; Thu, 29 Jun 2023 04:25:45 -0400
+	id 1qEmyG-0000ra-Sx; Thu, 29 Jun 2023 04:25:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qEmy9-0000p0-Cf
+ id 1qEmyB-0000pi-Aq
  for qemu-devel@nongnu.org; Thu, 29 Jun 2023 04:25:39 -0400
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qEmy7-0003rj-3K
- for qemu-devel@nongnu.org; Thu, 29 Jun 2023 04:25:36 -0400
+ id 1qEmy9-0003uV-4S
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 04:25:38 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
- MIME-Version:Message-Id:Date:To:From:Sender:Reply-To:Cc:Content-ID:
- Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
- :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
- List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=RNcZkPa/rKhmBl8lqIGxrWEqpXBOTKDxE9CIQX80Ino=; b=VQi6RxqGv6HkPJlfdYobZTD++Z
- UZjvCvEDiXgr6soYq0PueGoDKapEWuHGA9OXcY3I1NKlwaYq9f+AHHZLXwaI/zRPxCEphRKhuiF7H
- pQfWTsrMmZuHnTKiPS7tO5omMRzLuRNj7o1iYyxoP5RGYYUBqGOoD/B5x5UxE54Dnt8pVaZ7JJd0z
- dZb7MHHkqeqxiQLA3SlFNKSpF/H94NsFlN1uKtnlMEWJh06Xi/x54dfFMmoExoAEMyFmbK1RmPfqz
- pBPovEUMkT4/x478gFvhd7drrVx/+djt2WVbHieaybrx5vbAiDitw2LCeXAyaE7GO9F0MmJ65q6b7
- Ifa8E1XLn0tAcPIE2tJj9MUFZWRjMzuzCTBJdsQuzX8E/HV1ksjfyg+1IOQMpmnRq70tDYL77sanM
- MTb5OpKyaC1k/yWJyFvOT8m7EPqJRrHCs4MA9oW6Xui6yAa3PlNR1b9W70wZEQ6LS0JJ/qK4VJk7o
- CYUYs0hG4/VzDDiNssMfJUhVpO3jWsw7jtCmCLL6e0poTQ9HZb5TFpeydFl+YIbkU/9jP4OEO1D0W
- OPiGH1X/BuYjUSmRysYyS67gmiLCBBA2wV3NfFNoy86HfVi05r74jSywEr29ARarBOEpCFy0NJe4p
- ziveRfwLCEUhTsqutjoqzwY/1znWizb68f095onps=;
+ d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
+ References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
+ Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+ Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+ List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=+PBx1IM+VwAvSsI6vsBRb75BGq9VK9/Wqng6jChjVOA=; b=d29lo1f7Z58WgvdrbzQr29dw3I
+ DmekJkEzcpdCpSySYs8dlAoljIYh1ptYFdvPqtQbRbbeWPRbzdYulCewkVAgb4of+yf3yvP99yJo9
+ Skhu0VsJIdLOJ2PG66F4ZNRaFEJjzkqnDK9pjQAOjZEklEs3iXltoU/VEoUXRbc5WUgwcw7/iligV
+ GdZQUMGp2IE01JVohpl2P2/m2MysPG/MKRfNZONm2nzrwlryEOFSuN0C2EwM+dZ7XtQJc1HShM9Nr
+ BzqRUxr97Qu3JXiQLToLOCi3ZkBGFMoHOLYt/nyz2uS3Bh9KQvLExW5OHgDUdDnpIsczjs56p8rX3
+ w5ZtxBk+sS/akiG8WpU9mU5i0DSsqIKSLvkt/j2PX4ht0efShy/9hdQEwOqcKiihy2zKLUpdzwOZA
+ +FJG2CuQjkX2FilDDxaWd39qNzsVGhICdYr/WfbRdOhhi83bBdTgPZ47vMsG0YEh1y2BMw4uWsPha
+ tGm7CCoKEGgCqf7j5NhQ3MePbBasaKYh0ntE0ruLcMYQSlJaFhJ7dFSnxathC1y6xT9qSetwsuoHq
+ P3WurQVzZcUzBjo5IUn+iOMP33deGo6nEkMwzicgljOFtjZA5JeJ3aLpnbXBl2s75kfdgK0V5GOgM
+ LddepUYZTFtAqD471YvL0IrnnNFlV/1LSs0gcvvt4=;
 Received: from host86-130-37-216.range86-130.btcentralplus.com
  ([86.130.37.216] helo=kentang.home)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qEmxo-000AaV-Lb; Thu, 29 Jun 2023 09:25:20 +0100
+ id 1qEmxs-000AaV-WE; Thu, 29 Jun 2023 09:25:25 +0100
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: richard.henderson@linaro.org, clegoate@redhat.com, hsp.cat7@gmail.com,
  qemu-devel@nongnu.org
-Date: Thu, 29 Jun 2023 09:25:20 +0100
-Message-Id: <20230629082522.606219-1-mark.cave-ayland@ilande.co.uk>
+Date: Thu, 29 Jun 2023 09:25:21 +0100
+Message-Id: <20230629082522.606219-2-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20230629082522.606219-1-mark.cave-ayland@ilande.co.uk>
+References: <20230629082522.606219-1-mark.cave-ayland@ilande.co.uk>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 86.130.37.216
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH 0/2] accel/tcg: fix page invalidation in
- tb_invalidate_phys_range()
+Subject: [PATCH 1/2] accel/tcg: fix start page passed to
+ tb_invalidate_phys_page_range__locked()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -77,31 +78,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series contains 2 patches: the first is a fix for page invalidation in
-tb_invalidate_phys_range() which resolves the crash reported by Howard and
-Cédric when booting MacOS 9 under qemu-system-ppc -M mac99,via=pmu.
-
-The second patch adds an assert() to tb_invalidate_phys_page_range__locked()
-which is enabled by --enable-debug-tcg to ensure that both the start and last
-addresses are within the same target page.
-
-I've confirmed that this assert() is first triggered by the commit that
-initially introduced the bug e506ad6a05 ("accel/tcg: Pass last not end to
-tb_invalidate_phys_range") when building QEMU with --enable-debug and
-doesn't trigger after the series is applied.
+Due to a copy-paste error in tb_invalidate_phys_range() the start address of the
+invalidation range was being passed to tb_invalidate_phys_page_range__locked()
+instead of the start address of the current page.
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Fixes: e506ad6a05 ("accel/tcg: Pass last not end to tb_invalidate_phys_range")
+---
+ accel/tcg/tb-maint.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-
-Mark Cave-Ayland (2):
-  accel/tcg: fix start page passed to
-    tb_invalidate_phys_page_range__locked()
-  accel/tcg: add assert() check in
-    tb_invalidate_phys_page_range__locked()
-
- accel/tcg/tb-maint.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
-
+diff --git a/accel/tcg/tb-maint.c b/accel/tcg/tb-maint.c
+index 3541419845..33ea1aadd1 100644
+--- a/accel/tcg/tb-maint.c
++++ b/accel/tcg/tb-maint.c
+@@ -1182,15 +1182,17 @@ void tb_invalidate_phys_range(tb_page_addr_t start, tb_page_addr_t last)
+     index_last = last >> TARGET_PAGE_BITS;
+     for (index = start >> TARGET_PAGE_BITS; index <= index_last; index++) {
+         PageDesc *pd = page_find(index);
+-        tb_page_addr_t bound;
++        tb_page_addr_t page_start, page_last;
+ 
+         if (pd == NULL) {
+             continue;
+         }
+         assert_page_locked(pd);
+-        bound = (index << TARGET_PAGE_BITS) | ~TARGET_PAGE_MASK;
+-        bound = MIN(bound, last);
+-        tb_invalidate_phys_page_range__locked(pages, pd, start, bound, 0);
++        page_start = index << TARGET_PAGE_BITS;
++        page_last = page_start | ~TARGET_PAGE_MASK;
++        page_last = MIN(page_last, last);
++        tb_invalidate_phys_page_range__locked(pages, pd,
++                                              page_start, page_last, 0);
+     }
+     page_collection_unlock(pages);
+ }
 -- 
 2.30.2
 
