@@ -2,86 +2,175 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 960EC742B3C
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 19:31:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE246742ADD
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 18:54:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEvSh-0000m2-C3; Thu, 29 Jun 2023 13:29:43 -0400
+	id 1qEutU-0003B6-Pb; Thu, 29 Jun 2023 12:53:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qEvSb-0000ey-7Y
- for qemu-devel@nongnu.org; Thu, 29 Jun 2023 13:29:37 -0400
-Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qEvSZ-0004fO-CM
- for qemu-devel@nongnu.org; Thu, 29 Jun 2023 13:29:36 -0400
-Received: by mail-ed1-x52d.google.com with SMTP id
- 4fb4d7f45d1cf-51de841a727so389281a12.3
- for <qemu-devel@nongnu.org>; Thu, 29 Jun 2023 10:29:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688059772; x=1690651772;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Y02j66XW2Y2W8+CcWMOe3qMsTx1mOLC3LD5RrAIqE2A=;
- b=bvrnDLoc93SWrU4SOrIM8oL9RJV6UTMBeyHplSIpoF/hGdBuA9kmUYwu2zQBj8ztij
- rRkYQNk5K/LarpZD1hypoaTS3nP+YNGZ3y4BmSzDtf898XzH5WwhekXoV5dE61ymZaVJ
- Tli3EXvXIpqKFBRJRd2uD16q7TMALYFXyUSIPhh7SSOgTOoI55fq3RNchjwshyqbBmOy
- W4gP5iqNxeXymTu0GGW9u09xU13ILpQYnOVojnlS/hAE77TEyJ/sG/5F419V2IdjHim6
- YiamUgk0KBBD79QdMOMPZbsFHxN7J6z+Vn7fbq8fPtyINTliAr0yXhNWIajH417xOcua
- pUmA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688059772; x=1690651772;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Y02j66XW2Y2W8+CcWMOe3qMsTx1mOLC3LD5RrAIqE2A=;
- b=VQlUPc8HaLFjOllqx3obdLcq3lTzCn96tILF6iRLHDopH/GI0B0s4J0s0azQ/QKnqL
- duzRmSm+qvLM30RRotCqPjoaRCBdmnCKZL4wdJAgJGbT/uYtXoJAX/EQDhi5yFbssPUH
- DVYqIUbXL4BhX+4ZCUoelewbyo/WPQF2cjZrNpqxR5+72E5Tgr5R0lI+BmDGbUADC51n
- 9jptV+R25hgysurGfQYSKcDutnm2Q0EBc3kxi0J4bddv/O/NhzUqdGSCnpqKUCJKTBVN
- 8ovrX1v5exaRts5eQWMReuCZJSZHXaEZnlhiMxUd8/6ESzptLQ67fInReVK9NZ3MZTJc
- B7IQ==
-X-Gm-Message-State: AC+VfDyMSo7PZOq8GhBY5gQQGiICJzWOO2kJVdNzQK0Eol3LLTr0jqTw
- c6nWjIzzKKorvWcs7HjHkyA=
-X-Google-Smtp-Source: ACHHUZ5LxJ9X11120u+SxZ+lNjnuYr+Ukgm8v+9oSM80l5gHPve4mgI8WpRAuuv1Ke3ZZhLOYj88VA==
-X-Received: by 2002:aa7:c50b:0:b0:51d:91cc:32e8 with SMTP id
- o11-20020aa7c50b000000b0051d91cc32e8mr10233646edq.29.1688059772171; 
- Thu, 29 Jun 2023 10:29:32 -0700 (PDT)
-Received: from [127.0.0.1] (dynamic-077-011-043-218.77.11.pool.telefonica.de.
- [77.11.43.218]) by smtp.gmail.com with ESMTPSA id
- c4-20020aa7d604000000b0051a4a1abdbbsm5960098edr.49.2023.06.29.10.29.30
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 29 Jun 2023 10:29:31 -0700 (PDT)
-Date: Thu, 29 Jun 2023 16:52:01 +0000
-From: Bernhard Beschow <shentey@gmail.com>
-To: =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-CC: Eduardo Habkost <eduardo@habkost.net>,
- "Michael S. Tsirkin" <mst@redhat.com>, 
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH v2 14/16] hw/pci-host/i440fx: Resolve i440fx_init()
-In-Reply-To: <60562e53-7b90-7b92-5978-729ee95e5d54@linaro.org>
-References: <20230628195204.1241-1-shentey@gmail.com>
- <20230628195204.1241-15-shentey@gmail.com>
- <60562e53-7b90-7b92-5978-729ee95e5d54@linaro.org>
-Message-ID: <C5FDA555-BD6F-4862-8937-51B1A45FF845@gmail.com>
+ (Exim 4.90_1) (envelope-from <dongwon.kim@intel.com>)
+ id 1qEutS-0003AW-9L
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 12:53:18 -0400
+Received: from mga03.intel.com ([134.134.136.65])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <dongwon.kim@intel.com>)
+ id 1qEutP-0002KC-BJ
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 12:53:18 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1688057595; x=1719593595;
+ h=message-id:date:subject:to:cc:references:from:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=VQKM/nYZDs4SYwysuoM/QoQJyADBTBIL1GudZFRG944=;
+ b=WwEoMuj8IxiHXhdDGA/u07t8tRYqT2QKRJCdCNLQAwiucPEc/0X8vq8/
+ 51se/90ffkUPN+kW3q80bBj4yb0WDzxQRVqcqYekU3MjQZTUvAV+UySQM
+ 19ADNcNgGg7cTxGSAehXkX8JKEcZy75beAUdGLieaqut12eW5Rufonggc
+ i0EBqY6w7s+4ktZ37sRv+2oJl+201k6n/lPnY12fQFhGE1uHfK33MTdr0
+ +wvvvrKN44Z26ksoClEacFqQu1KHptjwhg37EREUqSUyvIDVquJR2a5g5
+ a5qlEudIpU1Cb03h9g5bryYapXYlNvW94PvzOGxrDqx3UthGUv7a10whJ Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10756"; a="365652888"
+X-IronPort-AV: E=Sophos;i="6.01,168,1684825200"; d="scan'208";a="365652888"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+ by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Jun 2023 09:53:12 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10756"; a="782726363"
+X-IronPort-AV: E=Sophos;i="6.01,168,1684825200"; d="scan'208";a="782726363"
+Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
+ by fmsmga008.fm.intel.com with ESMTP; 29 Jun 2023 09:53:08 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27; Thu, 29 Jun 2023 09:53:07 -0700
+Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
+ orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27 via Frontend Transport; Thu, 29 Jun 2023 09:53:07 -0700
+Received: from NAM04-DM6-obe.outbound.protection.outlook.com (104.47.73.43) by
+ edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.27; Thu, 29 Jun 2023 09:53:06 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Xi39+qk3Wh2aTlPqGZzOwqPcWAKi3jbNj4mU/KEA5fmbaHBrIomhh0jsOE0+iNpPAWea+BirjgtARSNPSkyjMSP0tK6A01SP4FaeH4PAnUNvaZMorSLz7ywevadxTH0va+7ngma5YLNgAubmNG6GRorkZ8QlsdRSyjl+6UrX7EbQknvMCNkK/00aKRpINFCuxbQFoq6Fm5hjFEzfS/K2mjQ2R87QbmnpFanU9/y6ynB3OIKjuxsmxaZ3xxWMrFQWg2Mmgexklp57VREOiLczXvKkWB+LksGhOUTYR3hvJJe/G9ZkgY8VKrk/o4fOoe1Vl6EDMc74Gjl4w4IdmQPCeA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=6aiQenFB6Mfpa+cMt7y6DybXh0zO20v4EdElpu6s0t0=;
+ b=Rd1U1mxzSlEG7vBj1dJ0KeLlCzlH6wfrFVgULjgciUd0szTlbgXrbOSTrBxXry/rX6m2bs6yZ5eRTTd66WPi7sAFfEvRUQ5EPROIDUpYXKVcyNxAOWwEJtUGvn/y93KjBYgaJ0oEkmYG2AIyzras2HqFo2Nr/KriD0Ciu5RQ2tmy6PrnGHmGlRoa/Wu7LMVH5MUFLiM4U+zb+oASo/Mj0Kwi+jyc46ec50Pun5+Y97bqlUFnjE9AZJNmauujQLHlY0lD/8HGVhpZUfTOK9YcVuKLelfnqVLgVsdGHfbcvU6mjUdDpHQXCdTr8zIRbeew6a1swnmP6LQL/aoOA09SsA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH8PR11MB6879.namprd11.prod.outlook.com (2603:10b6:510:229::22)
+ by CH0PR11MB5281.namprd11.prod.outlook.com (2603:10b6:610:bc::21)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6544.15; Thu, 29 Jun
+ 2023 16:53:03 +0000
+Received: from PH8PR11MB6879.namprd11.prod.outlook.com
+ ([fe80::b33c:de68:eacf:e9c4]) by PH8PR11MB6879.namprd11.prod.outlook.com
+ ([fe80::b33c:de68:eacf:e9c4%3]) with mapi id 15.20.6500.036; Thu, 29 Jun 2023
+ 16:53:03 +0000
+Message-ID: <980355eb-0241-2690-8ba4-3f136dd8555a@intel.com>
+Date: Thu, 29 Jun 2023 09:53:00 -0700
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [QEMU PATCH 1/1] virtgpu: do not destroy resources when guest
+ suspend
+Content-Language: en-US
+To: Jiqian Chen <Jiqian.Chen@amd.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>, Stefano Stabellini
+ <sstabellini@kernel.org>, Anthony PERARD <anthony.perard@citrix.com>,
+ =?UTF-8?Q?Roger_Pau_Monn=c3=a9?= <roger.pau@citrix.com>, Jan Beulich
+ <jbeulich@suse.com>, Antonio Caggiano <antonio.caggiano@collabora.com>, "Dr .
+ David Alan Gilbert" <dgilbert@redhat.com>, Robert Beckett
+ <bob.beckett@collabora.com>, <qemu-devel@nongnu.org>,
+ <xen-devel@lists.xenproject.org>
+CC: Alex Deucher <Alexander.Deucher@amd.com>, Christian Koenig
+ <Christian.Koenig@amd.com>, Stewart Hildebrand <Stewart.Hildebrand@amd.com>,
+ Xenia Ragiadakou <burzalodowa@gmail.com>, Honglei Huang
+ <Honglei1.Huang@amd.com>, Julia Zhang <Julia.Zhang@amd.com>, Huang Rui
+ <Ray.Huang@amd.com>
+References: <20230608025655.1674357-1-Jiqian.Chen@amd.com>
+ <20230608025655.1674357-2-Jiqian.Chen@amd.com>
+From: "Kim, Dongwon" <dongwon.kim@intel.com>
+In-Reply-To: <20230608025655.1674357-2-Jiqian.Chen@amd.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BY3PR05CA0004.namprd05.prod.outlook.com
+ (2603:10b6:a03:254::9) To PH8PR11MB6879.namprd11.prod.outlook.com
+ (2603:10b6:510:229::22)
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
- envelope-from=shentey@gmail.com; helo=mail-ed1-x52d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR11MB6879:EE_|CH0PR11MB5281:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6ec3f4ad-69b8-4833-9bfb-08db78c14daa
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: SNI4as7Iap0aXqProiUu8y99Vb9W3OcluI+WFGIEE0NSJqlXa4/EXtVo67hCDVEmC7swlWZ5PGDK/B1ZgqL0iLcmT4bEglOYQkAOn/MuWQEGdLsFxVV0KzW6Tg+6a2YJQtmOaB5M8wjzJqw1Cltj3ecPnPDyu/qV+b9UwmfcZ2SLAaD6N+K24MW7rk0egNpXuA57LOf12iQDv3PzqqTx209NDQ5DNggQ6a+2K85xYPJMBfTkQTndOPxAeszkdNQGPFJ47wtT7SVZTbTa0yIStfjv5C0UbqPOUyHvRBrArss+4RWKquIz11hJl7jtIylr8c5xTRSHCGGYr9/3WDXMzrKAqLrAUNkRwtHbz2PiruFJ0q7dx4t1nQj1xlqKXL0eK5CNqHZ3Nuexw6DRZAo4GHueofo5B/rc3bXfuObkTT5SBUM1TkH7zhhl49UXDhw0EO07FdtEW/dDgSThJudMDW83OLocdpY1RY52VAP5HAA6i1BjDTzmpmwJOD0xr0bibd5Oole526DLeRGFkAHwYCckcK4e4ZPS+5LBaGX5ler1D3FcnED+TWkoPtPaVHNciyh8QDKgi3sy+d5ouOzNLDfy2UCIU+GZqGvPo9eq9d87s6waWa0JHoRQ4f5eUdLkboncbWpL3AAVGeDbJUstfQ==
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:PH8PR11MB6879.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230028)(346002)(136003)(366004)(39860400002)(396003)(376002)(451199021)(6486002)(38100700002)(53546011)(2616005)(82960400001)(83380400001)(6506007)(26005)(186003)(921005)(6512007)(54906003)(41300700001)(31696002)(110136005)(86362001)(316002)(2906002)(36756003)(66556008)(66476007)(66946007)(31686004)(4326008)(5660300002)(7416002)(8676002)(8936002)(478600001)(15650500001)(43740500002)(45980500001);
+ DIR:OUT; SFP:1102; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Wms4SXFLeUhwU0RmMGl6YXgrN3pBUXY0bUdjRW1PczFyckgyT3lKNzl4bERN?=
+ =?utf-8?B?K0QzK1VwekN5WnpCV1VibDQ2OE1MWm9wUjNkUGNCR0gxbzVZYXN1eFpocm5N?=
+ =?utf-8?B?dks2ekJTVzFXbmdsMEJ1dFArNXFxWDZ0Sk1aOU5tNUUwTCtEYzBPbjR6Y1VV?=
+ =?utf-8?B?TUZBNndBNEFRZmVKY1hPbW5hdTB0c3NNYXoxQ05BZ0hKbTdoY0d6UnZYemVE?=
+ =?utf-8?B?b29jYUl3VFY5czFiQi92ZFMzODE0L3QyZkVNSThjVDZlQlBITkNPUzNocng2?=
+ =?utf-8?B?RVpnZ2hFMmpQM214RTM5ZXJib0J4V2lUbnU3eFN0YmtJQlE2a3VSN1k0ZGFQ?=
+ =?utf-8?B?Q3NHY2J1YTRhVzE3ci83SGhlY0p3OHlXNE5MWDduWkJMcjR0M1NpZVgxdndu?=
+ =?utf-8?B?SG5VK00rY2c5OCtIenJxb1FDUXFwY3FVWGF1SkRLeG5tYjBOR283ZU13THpN?=
+ =?utf-8?B?WlFvZGJISC85a0Y1RlZSWEVuam9WaUFyVjdpN0g4OWFYb3pHU0t3K3h5WGpT?=
+ =?utf-8?B?VFF2T2hKYTB2NURlUkgvc1FNL0JnT3hiRnZ6aVp0QkJBNk50S01LT2JRZHNj?=
+ =?utf-8?B?NlhaR2J3b3BaMXErNUw4dFdEZ05xWVQvNHV4b2p2Tzhodm1CQW5ldmJjS2dy?=
+ =?utf-8?B?KzlEQmFnTWduUjNjKzRaZVpUaCt0bklRZFRYajZGZEpha0Q1ODZyL0h4TUFk?=
+ =?utf-8?B?aWt0VDRWcGpwd1RzVzRRWEhyTHBJRFI3d25NYzBRT1RvUE90cjRkczhKT3Nz?=
+ =?utf-8?B?Yi9yVFhTTVpCTUJXSit4dmtweml1RUJlamtKNEZrbkpaanpEMEtOQXlDR3Za?=
+ =?utf-8?B?M2dMNVFUZzdYL1RzcU80MlF4MUVJZG9lTGZTM0IyYTU4OXdNdlRSRi94UmtK?=
+ =?utf-8?B?NDBoanozajE3TGR0eUdsdFhJM3FqQXE4RHVCc0JUeCtqZUZ5c0orSVNMczhi?=
+ =?utf-8?B?UkZYQVd6VmpjTTVzM01VYVhpc2twNk1nMDBFS0NzenoyOW95Q3Yrc05xNGho?=
+ =?utf-8?B?RUN1ZlVZWkVxNzRZRC9PVENsZnhCeFF2bUVQalBhMml1MWlWb3pMczd0RlFa?=
+ =?utf-8?B?KzNsUjUwMGN6N0lBUzJkeGN5b0pjOG4yRHRKQ21Qc0RmUnlnMzN6YUhqVWtC?=
+ =?utf-8?B?SDg2Q0FyWWY4aTQzblY5OHpPMTN6R1lVbTQ1YUV6V0hmUmM0TTFYNkpHeWdn?=
+ =?utf-8?B?WGlFcnIzSDh4UnJ1UEhka2E2ekpCNkphV1BwUnVSRk5YNWdINk15K1Exc0hD?=
+ =?utf-8?B?aE5udC9sUjRrb0p4WjlWNS9XcW9RYW1kZG1TZzZmQXkwMjBwcENJcUE0Q1Vi?=
+ =?utf-8?B?Tjljb2g5REZpbURrLzg0amZyVzZlUzNRMVd3V200K09rRjZIY0J2NG9JZjJv?=
+ =?utf-8?B?U01BbVZid2xDOEUwUnlUcVFSU0RhYTBTc2s5ZWpWckk3bjdnYWNwQ1pkcWRG?=
+ =?utf-8?B?S3J4RGh3a0F3SkRKSThMN25DYjVSK3YrZmsxY01IVFNjRnViRmNpK1d4Ynpx?=
+ =?utf-8?B?Z05ZRjJCcnVEL0MxRk9nUDd4RFFBdTRIOVlpaTdaREJ2L2IzMmYwdW5rZWR1?=
+ =?utf-8?B?MGFFZ1Y0cWVjaFNKUzAycUM2bWpUeXNHc0FWU0RyNlBmbGhTaEhyaTdML0gy?=
+ =?utf-8?B?V3hLZXVaWVlXbGoxSUErclpFellzbzBrcmVTOW8wTXdkYVZTQUdtZjU2MEky?=
+ =?utf-8?B?OXlzNmw0UXU1V0VLSVYveDF0cmJUMkhQOFNDTkNXOG0zMldOZkdXN211Q1ZJ?=
+ =?utf-8?B?aHFrc25vUFgxU2NjWU1JRHhoM1orRUJkRzNqeXphZ29iNUFRblRQcVRtd0hH?=
+ =?utf-8?B?NTcrZ01rUUV5UG1GZFYydjd3VW9oMXlZMDNHK3B2MmlOTUk1czZRVEpkb1BF?=
+ =?utf-8?B?RWM4b2hQeDM0bm00bmZnZ2x2ZDR3by85MG1VTXpkRnFORll6SHArcTF5eENE?=
+ =?utf-8?B?a0xxVzBJNTZPeVJWNDRwR3hTdlBRUnRGYUkzMEpCWXNyWDhKbDNabURaanhV?=
+ =?utf-8?B?SC9xcU45NTVKZDJqeDJ4dW5RSWprZzh4cnkvKzg5R0xPYUlTZWZDOWc1SjlX?=
+ =?utf-8?B?bkZmV01lK1F6bmRKWkZXRmF1Ky9tZ0k0UFEycVU1M0VySUJrWXFkbGk3VC9E?=
+ =?utf-8?Q?lC8el4fyRJ3z2RAY2HtjQZoor?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6ec3f4ad-69b8-4833-9bfb-08db78c14daa
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB6879.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jun 2023 16:53:03.1708 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 1g63au96kgeyCRtBqhmz/qcYtpCdaJZsdTBdeeT38+7nR5mxSjMJMrHdjC07Fh+Sp9gqMgjIQrBq9NITVFTYbw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR11MB5281
+X-OriginatorOrg: intel.com
+Received-SPF: pass client-ip=134.134.136.65;
+ envelope-from=dongwon.kim@intel.com; helo=mga03.intel.com
+X-Spam_score_int: -44
+X-Spam_score: -4.5
+X-Spam_bar: ----
+X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.093, RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,196 +186,181 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+This method - letting QEMU not remove resources would work on S3 case 
+but with S4, the QEMU would lose all the resources anyway as the process 
+will be terminated. So objects restoring was only option for us as
 
+in [RFC PATCH 2/2] drm/virtio: restore virtio_gpu_objects upon suspend 
+and resume (lists.freedesktop.org) 
+<https://lists.freedesktop.org/archives/dri-devel/2022-September/373894.html>
 
-Am 29=2E Juni 2023 07:50:10 UTC schrieb "Philippe Mathieu-Daud=C3=A9" <phi=
-lmd@linaro=2Eorg>:
->Hi Bernhard,
+But I only considered and tested cases with scanout blob resources, so 
+this may not cover other resource types...
 
-Hi Phil,
-
+On 6/7/2023 7:56 PM, Jiqian Chen wrote:
+> After suspending and resuming guest VM, you will get
+> a black screen, and the display can't come back.
 >
->On 28/6/23 21:52, Bernhard Beschow wrote:
->> i440fx_init() is a legacy init function=2E The previous patches worked =
-towards
->> TYPE_I440FX_PCI_HOST_BRIDGE to be instantiated the QOM way=2E Do this n=
-ow by
->> transforming the parameters passed to i440fx_init() into property assig=
-nments=2E
->>=20
->> Signed-off-by: Bernhard Beschow <shentey@gmail=2Ecom>
->> ---
->>   include/hw/pci-host/i440fx=2Eh | 10 ----------
->>   hw/i386/pc_piix=2Ec            | 30 +++++++++++++++++++++---------
->>   hw/pci-host/i440fx=2Ec         | 34 +++++----------------------------=
--
->>   3 files changed, 26 insertions(+), 48 deletions(-)
->>=20
->> diff --git a/include/hw/pci-host/i440fx=2Eh b/include/hw/pci-host/i440f=
-x=2Eh
->> index 2d7bae5a45=2E=2Ec988f70890 100644
->> --- a/include/hw/pci-host/i440fx=2Eh
->> +++ b/include/hw/pci-host/i440fx=2Eh
->> @@ -34,14 +34,4 @@ struct PCII440FXState {
->>     #define TYPE_IGD_PASSTHROUGH_I440FX_PCI_DEVICE "igd-passthrough-i44=
-0FX"
->>   -PCIBus *i440fx_init(const char *pci_type,
->> -                    DeviceState *dev,
->> -                    MemoryRegion *address_space_mem,
->> -                    MemoryRegion *address_space_io,
->> -                    ram_addr_t below_4g_mem_size,
->> -                    ram_addr_t above_4g_mem_size,
->> -                    MemoryRegion *pci_memory,
->> -                    MemoryRegion *ram_memory);
->> -
->> -
->>   #endif
->> diff --git a/hw/i386/pc_piix=2Ec b/hw/i386/pc_piix=2Ec
->> index 87bee368fc=2E=2E1df309b8e2 100644
->> --- a/hw/i386/pc_piix=2Ec
->> +++ b/hw/i386/pc_piix=2Ec
->> @@ -126,7 +126,7 @@ static void pc_init1(MachineState *machine,
->>       MemoryRegion *rom_memory;
->>       ram_addr_t lowmem;
->>       uint64_t hole64_size;
->> -    DeviceState *i440fx_host;
->> +    Object *i440fx_host;
->>         /*
->>        * Calculate ram split, for memory below and above 4G=2E  It's a =
-bit
->> @@ -201,8 +201,8 @@ static void pc_init1(MachineState *machine,
->>           pci_memory =3D g_new(MemoryRegion, 1);
->>           memory_region_init(pci_memory, NULL, "pci", UINT64_MAX);
->>           rom_memory =3D pci_memory;
->> -        i440fx_host =3D qdev_new(host_type);
->> -        hole64_size =3D object_property_get_uint(OBJECT(i440fx_host),
->> +        i440fx_host =3D OBJECT(qdev_new(host_type));
+> This is because when guest did suspending, it called
+> into qemu to call virtio_gpu_gl_reset. In function
+> virtio_gpu_gl_reset, it destroyed resources and reset
+> renderer, which were used for display. As a result,
+> guest's screen can't come back to the time when it was
+> suspended and only showed black.
 >
->[*]
+> So, this patch adds a new ctrl message
+> VIRTIO_GPU_CMD_STATUS_FREEZING to get notification from
+> guest. If guest is during suspending, it sets freezing
+> status of virtgpu to true, this will prevent destroying
+> resources and resetting renderer when guest calls into
+> virtio_gpu_gl_reset. If guest is during resuming, it sets
+> freezing to false, and then virtio_gpu_gl_reset will keep
+> its origin actions and has no other impaction.
 >
->> +        hole64_size =3D object_property_get_uint(i440fx_host,
->>                                                  PCI_HOST_PROP_PCI_HOLE=
-64_SIZE,
->>                                                  &error_abort);
->>       } else {
->> @@ -243,12 +243,24 @@ static void pc_init1(MachineState *machine,
->>           PIIX3State *piix3;
->>           PCIDevice *pci_dev;
->>   -        pci_bus =3D i440fx_init(pci_type,
->> -                              i440fx_host,
->> -                              system_memory, system_io,
->> -                              x86ms->below_4g_mem_size,
->> -                              x86ms->above_4g_mem_size,
->> -                              pci_memory, ram_memory);
->> +        object_property_add_child(OBJECT(machine), "i440fx", i440fx_ho=
-st);
+> Signed-off-by: Jiqian Chen <Jiqian.Chen@amd.com>
+> ---
+>   hw/display/virtio-gpu-gl.c                  |  9 ++++++-
+>   hw/display/virtio-gpu-virgl.c               |  3 +++
+>   hw/display/virtio-gpu.c                     | 26 +++++++++++++++++++--
+>   include/hw/virtio/virtio-gpu.h              |  3 +++
+>   include/standard-headers/linux/virtio_gpu.h |  9 +++++++
+>   5 files changed, 47 insertions(+), 3 deletions(-)
 >
->I'd keep the object_property_add_child() close to qdev_new() in [*]=2E
->Matter of taste=2E=2E=2E
-
-Okay=2E I'd add a dedicated patch before this one since it has value in it=
-s own (removal of qdev_get_machine() usage *and* doing what you propose)=2E
-
-Best regards,
-Bernhard
-
->
->> +        object_property_set_link(i440fx_host, PCI_HOST_PROP_RAM_MEM,
->> +                                 OBJECT(ram_memory), &error_fatal);
->> +        object_property_set_link(i440fx_host, PCI_HOST_PROP_PCI_MEM,
->> +                                 OBJECT(pci_memory), &error_fatal);
->> +        object_property_set_link(i440fx_host, PCI_HOST_PROP_SYSTEM_MEM=
-,
->> +                                 OBJECT(system_memory), &error_fatal);
->> +        object_property_set_link(i440fx_host, PCI_HOST_PROP_IO_MEM,
->> +                                 OBJECT(system_io), &error_fatal);
->> +        object_property_set_uint(i440fx_host, PCI_HOST_BELOW_4G_MEM_SI=
-ZE,
->> +                                 x86ms->below_4g_mem_size, &error_fata=
-l);
->> +        object_property_set_uint(i440fx_host, PCI_HOST_ABOVE_4G_MEM_SI=
-ZE,
->> +                                 x86ms->above_4g_mem_size, &error_fata=
-l);
->> +        object_property_set_str(i440fx_host, I440FX_HOST_PROP_PCI_TYPE=
-,
->> +                                pci_type, &error_fatal);
->> +        sysbus_realize_and_unref(SYS_BUS_DEVICE(i440fx_host), &error_f=
-atal);
->> +
->> +        pci_bus =3D PCI_BUS(qdev_get_child_bus(DEVICE(i440fx_host), "p=
-ci=2E0"));
->>           pci_bus_map_irqs(pci_bus,
->>                            xen_enabled() ? xen_pci_slot_get_pirq
->>                                          : pc_pci_slot_get_pirq);
->> diff --git a/hw/pci-host/i440fx=2Ec b/hw/pci-host/i440fx=2Ec
->> index e8e66afc11=2E=2E62d6287681 100644
->> --- a/hw/pci-host/i440fx=2Ec
->> +++ b/hw/pci-host/i440fx=2Ec
->> @@ -249,9 +249,14 @@ static void i440fx_pcihost_initfn(Object *obj)
->>     static void i440fx_pcihost_realize(DeviceState *dev, Error **errp)
->>   {
->> +    ERRP_GUARD();
->
->Unrelated change?
->
->Otherwise:
->Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro=2Eorg>
->
->>       I440FXState *s =3D I440FX_PCI_HOST_BRIDGE(dev);
->>       PCIHostState *phb =3D PCI_HOST_BRIDGE(dev);
->>       SysBusDevice *sbd =3D SYS_BUS_DEVICE(dev);
->> +    PCIBus *b;
->> +    PCIDevice *d;
->> +    PCII440FXState *f;
->> +    unsigned i;
->>         memory_region_add_subregion(s->io_memory, 0xcf8, &phb->conf_mem=
-);
->>       sysbus_init_ioports(sbd, 0xcf8, 4);
->> @@ -262,37 +267,10 @@ static void i440fx_pcihost_realize(DeviceState *d=
-ev, Error **errp)
->>       /* register i440fx 0xcf8 port as coalesced pio */
->>       memory_region_set_flush_coalesced(&phb->data_mem);
->>       memory_region_add_coalescing(&phb->conf_mem, 0, 4);
->> -}
->> -
->> -PCIBus *i440fx_init(const char *pci_type,
->> -                    DeviceState *dev,
->> -                    MemoryRegion *address_space_mem,
->> -                    MemoryRegion *address_space_io,
->> -                    ram_addr_t below_4g_mem_size,
->> -                    ram_addr_t above_4g_mem_size,
->> -                    MemoryRegion *pci_address_space,
->> -                    MemoryRegion *ram_memory)
->> -{
->> -    I440FXState *s =3D I440FX_PCI_HOST_BRIDGE(dev);
->> -    PCIHostState *phb =3D PCI_HOST_BRIDGE(dev);
->> -    PCIBus *b;
->> -    PCIDevice *d;
->> -    PCII440FXState *f;
->> -    unsigned i;
->> -
->> -    s->system_memory =3D address_space_mem;
->> -    s->io_memory =3D address_space_io;
->> -    s->pci_address_space =3D pci_address_space;
->> -    s->ram_memory =3D ram_memory;
->> -    s->below_4g_mem_size =3D below_4g_mem_size;
->> -    s->above_4g_mem_size =3D above_4g_mem_size;
->> -    s->pci_type =3D (char *)pci_type;
->>         b =3D pci_root_bus_new(dev, NULL, s->pci_address_space,
->>                            s->io_memory, 0, TYPE_PCI_BUS);
->>       phb->bus =3D b;
->> -    object_property_add_child(qdev_get_machine(), "i440fx", OBJECT(dev=
-));
->> -    sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
->>         d =3D pci_create_simple(b, 0, s->pci_type);
->>       f =3D I440FX_PCI_DEVICE(d);
->> @@ -336,8 +314,6 @@ PCIBus *i440fx_init(const char *pci_type,
->>       d->config[I440FX_COREBOOT_RAM_SIZE] =3D ram_size;
->>         i440fx_update_memory_mappings(f);
->> -
->> -    return b;
->>   }
->>     static void i440fx_class_init(ObjectClass *klass, void *data)
->
+> diff --git a/hw/display/virtio-gpu-gl.c b/hw/display/virtio-gpu-gl.c
+> index e06be60dfb..e11ad233eb 100644
+> --- a/hw/display/virtio-gpu-gl.c
+> +++ b/hw/display/virtio-gpu-gl.c
+> @@ -100,7 +100,14 @@ static void virtio_gpu_gl_reset(VirtIODevice *vdev)
+>        */
+>       if (gl->renderer_inited && !gl->renderer_reset) {
+>           virtio_gpu_virgl_reset_scanout(g);
+> -        gl->renderer_reset = true;
+> +        /*
+> +         * If guest is suspending, we shouldn't reset renderer,
+> +         * otherwise, the display can't come back to the time when
+> +         * it was suspended after guest resumed.
+> +         */
+> +        if (!g->freezing) {
+> +            gl->renderer_reset = true;
+> +        }
+>       }
+>   }
+>   
+> diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c
+> index 73cb92c8d5..183ec92d53 100644
+> --- a/hw/display/virtio-gpu-virgl.c
+> +++ b/hw/display/virtio-gpu-virgl.c
+> @@ -464,6 +464,9 @@ void virtio_gpu_virgl_process_cmd(VirtIOGPU *g,
+>       case VIRTIO_GPU_CMD_GET_EDID:
+>           virtio_gpu_get_edid(g, cmd);
+>           break;
+> +    case VIRTIO_GPU_CMD_STATUS_FREEZING:
+> +        virtio_gpu_cmd_status_freezing(g, cmd);
+> +        break;
+>       default:
+>           cmd->error = VIRTIO_GPU_RESP_ERR_UNSPEC;
+>           break;
+> diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
+> index 5e15c79b94..8f235d7848 100644
+> --- a/hw/display/virtio-gpu.c
+> +++ b/hw/display/virtio-gpu.c
+> @@ -373,6 +373,16 @@ static void virtio_gpu_resource_create_blob(VirtIOGPU *g,
+>       QTAILQ_INSERT_HEAD(&g->reslist, res, next);
+>   }
+>   
+> +void virtio_gpu_cmd_status_freezing(VirtIOGPU *g,
+> +                         struct virtio_gpu_ctrl_command *cmd)
+> +{
+> +    struct virtio_gpu_status_freezing sf;
+> +
+> +    VIRTIO_GPU_FILL_CMD(sf);
+> +    virtio_gpu_bswap_32(&sf, sizeof(sf));
+> +    g->freezing = sf.freezing;
+> +}
+> +
+>   static void virtio_gpu_disable_scanout(VirtIOGPU *g, int scanout_id)
+>   {
+>       struct virtio_gpu_scanout *scanout = &g->parent_obj.scanout[scanout_id];
+> @@ -986,6 +996,9 @@ void virtio_gpu_simple_process_cmd(VirtIOGPU *g,
+>       case VIRTIO_GPU_CMD_RESOURCE_DETACH_BACKING:
+>           virtio_gpu_resource_detach_backing(g, cmd);
+>           break;
+> +    case VIRTIO_GPU_CMD_STATUS_FREEZING:
+> +        virtio_gpu_cmd_status_freezing(g, cmd);
+> +        break;
+>       default:
+>           cmd->error = VIRTIO_GPU_RESP_ERR_UNSPEC;
+>           break;
+> @@ -1344,6 +1357,8 @@ void virtio_gpu_device_realize(DeviceState *qdev, Error **errp)
+>       QTAILQ_INIT(&g->reslist);
+>       QTAILQ_INIT(&g->cmdq);
+>       QTAILQ_INIT(&g->fenceq);
+> +
+> +    g->freezing = false;
+>   }
+>   
+>   void virtio_gpu_reset(VirtIODevice *vdev)
+> @@ -1352,8 +1367,15 @@ void virtio_gpu_reset(VirtIODevice *vdev)
+>       struct virtio_gpu_simple_resource *res, *tmp;
+>       struct virtio_gpu_ctrl_command *cmd;
+>   
+> -    QTAILQ_FOREACH_SAFE(res, &g->reslist, next, tmp) {
+> -        virtio_gpu_resource_destroy(g, res);
+> +    /*
+> +     * If guest is suspending, we shouldn't destroy resources,
+> +     * otherwise, the display can't come back to the time when
+> +     * it was suspended after guest resumed.
+> +     */
+> +    if (!g->freezing) {
+> +        QTAILQ_FOREACH_SAFE(res, &g->reslist, next, tmp) {
+> +            virtio_gpu_resource_destroy(g, res);
+> +        }
+>       }
+>   
+>       while (!QTAILQ_EMPTY(&g->cmdq)) {
+> diff --git a/include/hw/virtio/virtio-gpu.h b/include/hw/virtio/virtio-gpu.h
+> index 2e28507efe..c21c2990fb 100644
+> --- a/include/hw/virtio/virtio-gpu.h
+> +++ b/include/hw/virtio/virtio-gpu.h
+> @@ -173,6 +173,7 @@ struct VirtIOGPU {
+>   
+>       uint64_t hostmem;
+>   
+> +    bool freezing;
+>       bool processing_cmdq;
+>       QEMUTimer *fence_poll;
+>       QEMUTimer *print_stats;
+> @@ -284,5 +285,7 @@ void virtio_gpu_virgl_reset_scanout(VirtIOGPU *g);
+>   void virtio_gpu_virgl_reset(VirtIOGPU *g);
+>   int virtio_gpu_virgl_init(VirtIOGPU *g);
+>   int virtio_gpu_virgl_get_num_capsets(VirtIOGPU *g);
+> +void virtio_gpu_cmd_status_freezing(VirtIOGPU *g,
+> +                         struct virtio_gpu_ctrl_command *cmd);
+>   
+>   #endif
+> diff --git a/include/standard-headers/linux/virtio_gpu.h b/include/standard-headers/linux/virtio_gpu.h
+> index 2da48d3d4c..aefffbd751 100644
+> --- a/include/standard-headers/linux/virtio_gpu.h
+> +++ b/include/standard-headers/linux/virtio_gpu.h
+> @@ -116,6 +116,9 @@ enum virtio_gpu_ctrl_type {
+>   	VIRTIO_GPU_RESP_ERR_INVALID_RESOURCE_ID,
+>   	VIRTIO_GPU_RESP_ERR_INVALID_CONTEXT_ID,
+>   	VIRTIO_GPU_RESP_ERR_INVALID_PARAMETER,
+> +
+> +	/* status */
+> +	VIRTIO_GPU_CMD_STATUS_FREEZING = 0x1300,
+>   };
+>   
+>   enum virtio_gpu_shm_id {
+> @@ -453,4 +456,10 @@ struct virtio_gpu_resource_unmap_blob {
+>   	uint32_t padding;
+>   };
+>   
+> +/* VIRTIO_GPU_CMD_STATUS_FREEZING */
+> +struct virtio_gpu_status_freezing {
+> +	struct virtio_gpu_ctrl_hdr hdr;
+> +	__u32 freezing;
+> +};
+> +
+>   #endif
 
