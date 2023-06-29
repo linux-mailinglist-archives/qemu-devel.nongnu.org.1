@@ -2,72 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87CAC7423E4
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 12:22:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C521374243E
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 12:49:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEomQ-0004W3-SF; Thu, 29 Jun 2023 06:21:38 -0400
+	id 1qEpCY-0001zz-Jt; Thu, 29 Jun 2023 06:48:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ardb@kernel.org>)
- id 1qEomO-0004V8-SV; Thu, 29 Jun 2023 06:21:36 -0400
-Received: from dfw.source.kernel.org ([2604:1380:4641:c500::1])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qEpCS-0001zB-3y
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 06:48:32 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ardb@kernel.org>)
- id 1qEomN-0006Ol-6Z; Thu, 29 Jun 2023 06:21:36 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qEpCQ-00044E-9N
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 06:48:31 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1688035709;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=0nXh9iMLANuzLwhbHImdirjx/XSnDv8FW/srERisBeY=;
+ b=FsZCE2QW7fzOJFoLk5TbYXo/Lad1+uAifCelHSFqZPasTdWsu/0wC1ZsD5+nDpquZDefoV
+ ekM/AltpOOO4YJv0kfKFxHGxHXHPqdLW4NwigJaqPqs/OmbRAe04dI3z56YEMDGChbBs0/
+ tO02XnHTF7KvgmJvRJ73LJM74e3SIyY=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-673-TPnhXnYCPX-wdfF1XRPdfQ-1; Thu, 29 Jun 2023 06:48:24 -0400
+X-MC-Unique: TPnhXnYCPX-wdfF1XRPdfQ-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id 23D0061506;
- Thu, 29 Jun 2023 10:21:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D14EC433C8;
- Thu, 29 Jun 2023 10:21:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1688034083;
- bh=26X0wWq+9KqrfqXu/Z+vH+/l90zYEKnyYvOsKiRdzKE=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=biMNwu58JhpCG8gJB8SliP0AtvD1dm4Byr5ngD9JtJq3EkQPRASM2atXj9cnQ2kC6
- ABi/p2g/Zowc8Vh5mTSqkkObAvk06ArIRQkLEmfjg6JPSm449iIHaMSTv7bXUIv6yi
- vA5wRGY3zLFv/byNkRl6EJmebT5y8mNHAsEgHn5ErZPU+ji55XSl4RPFGpBvcI57qg
- /999W82SDJMrY8AtJnesScL/M4RPXoVfF0ofMf3l1MkkVB1yZVpgszNxlB5M+I1dyg
- sK1j2jPXqxJMyk+BO5EW+SaECDLznQ7HOe/DARC4bLIBNEWc85cvbq+4KPv/zcsTTi
- jwiZ0sAIplm7A==
-Received: by mail-lf1-f47.google.com with SMTP id
- 2adb3069b0e04-4f9fdb0ef35so798564e87.0; 
- Thu, 29 Jun 2023 03:21:23 -0700 (PDT)
-X-Gm-Message-State: AC+VfDzyjcpWsjI76306tww6vTZ0V0SfR7OI11RiA7sRWskXx8ib4wqh
- pBMXmCqoxzm33UyieD50sIFhdLU4YUM77bSRi24=
-X-Google-Smtp-Source: ACHHUZ6CMgGckNqoYrAsVyX0A/Absc5pxPxp9gj0E/IrHqGnrJ1jPmvq/eN4Fu/At1IKM+yiffqJVFz+evwB9fYG48o=
-X-Received: by 2002:a05:6512:224c:b0:4fa:f79f:85a with SMTP id
- i12-20020a056512224c00b004faf79f085amr9525226lfu.69.1688034081556; Thu, 29
- Jun 2023 03:21:21 -0700 (PDT)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A21701C3D7C5;
+ Thu, 29 Jun 2023 10:48:23 +0000 (UTC)
+Received: from thuth.com (dhcp-192-205.str.redhat.com [10.33.192.205])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id E225C4067A00;
+ Thu, 29 Jun 2023 10:48:22 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-s390x@nongnu.org, Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Eric Farman <farman@linux.ibm.com>,
+ Claudio Imbrenda <imbrenda@linux.ibm.com>
+Subject: [PATCH v3 0/7] pc-bios/s390-ccw: Fixes and improvements for start.S
+ (and other files)
+Date: Thu, 29 Jun 2023 12:48:14 +0200
+Message-Id: <20230629104821.194859-1-thuth@redhat.com>
 MIME-Version: 1.0
-References: <20230609022401.684157-1-richard.henderson@linaro.org>
- <20230609022401.684157-6-richard.henderson@linaro.org>
-In-Reply-To: <20230609022401.684157-6-richard.henderson@linaro.org>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Thu, 29 Jun 2023 12:21:10 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXFWDMijy6eTCBwCbygJHyBpS6PqaU=1d5OeE6h_v4=-zg@mail.gmail.com>
-Message-ID: <CAMj1kXFWDMijy6eTCBwCbygJHyBpS6PqaU=1d5OeE6h_v4=-zg@mail.gmail.com>
-Subject: Re: [PATCH v2 05/38] crypto/aes: Add constants for ShiftRows,
- InvShiftRows
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, berrange@redhat.com, qemu-ppc@nongnu.org, 
- qemu-arm@nongnu.org, qemu-riscv@nongnu.org, pbonzini@redhat.com, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2604:1380:4641:c500::1;
- envelope-from=ardb@kernel.org; helo=dfw.source.kernel.org
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,90 +77,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 9 Jun 2023 at 04:24, Richard Henderson
-<richard.henderson@linaro.org> wrote:
->
-> These symbols will avoid the indirection through memory
-> when fully unrolling some new primitives.
->
-> Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->  crypto/aes.c | 50 ++++++++++++++++++++++++++++++++++++++++++++++++--
->  1 file changed, 48 insertions(+), 2 deletions(-)
->
-> diff --git a/crypto/aes.c b/crypto/aes.c
-> index 67bb74b8e3..cdf937883d 100644
-> --- a/crypto/aes.c
-> +++ b/crypto/aes.c
-> @@ -108,12 +108,58 @@ const uint8_t AES_isbox[256] =3D {
->      0xE1, 0x69, 0x14, 0x63, 0x55, 0x21, 0x0C, 0x7D,
->  };
->
-> +/* AES ShiftRows, for complete unrolling. */
-> +enum {
-> +    AES_SH_0 =3D 0x0,
-> +    AES_SH_1 =3D 0x5,
-> +    AES_SH_2 =3D 0xa,
-> +    AES_SH_3 =3D 0xf,
-> +    AES_SH_4 =3D 0x4,
-> +    AES_SH_5 =3D 0x9,
-> +    AES_SH_6 =3D 0xe,
-> +    AES_SH_7 =3D 0x3,
-> +    AES_SH_8 =3D 0x8,
-> +    AES_SH_9 =3D 0xd,
-> +    AES_SH_A =3D 0x2,
-> +    AES_SH_B =3D 0x7,
-> +    AES_SH_C =3D 0xc,
-> +    AES_SH_D =3D 0x1,
-> +    AES_SH_E =3D 0x6,
-> +    AES_SH_F =3D 0xb,
-> +};
-> +
+tl;dr: Please review the final patch - it's the only one that really changed.
 
-We might simplify this further by doing
+This is a respin of the currently pending s390-ccw bios patches. Compared
+to v2, I've included other pending patches for the s390-ccw bios this time,
+so the series grew a little bit.
 
-#define AES_SH(n)  (((n) * 5) % 16)
-#define AES_ISH(n)  (((n) * 13) % 16)
+The only real code change compared to the previous version is in the
+final patch: Instead of using ".bss" as start address of the area that
+should be cleared, it now loads __bss_start indirectly instead. That
+way we should be safe in case there will be another segment between
+__bss_start and .bss one day (like .sbss on other architectures). See
+The comments in https://bugzilla.redhat.com/show_bug.cgi?id=2216662
+for more information.
 
->  const uint8_t AES_shifts[16] =3D {
-> -    0, 5, 10, 15, 4, 9, 14, 3, 8, 13, 2, 7, 12, 1, 6, 11
-> +    AES_SH_0, AES_SH_1, AES_SH_2, AES_SH_3,
-> +    AES_SH_4, AES_SH_5, AES_SH_6, AES_SH_7,
-> +    AES_SH_8, AES_SH_9, AES_SH_A, AES_SH_B,
-> +    AES_SH_C, AES_SH_D, AES_SH_E, AES_SH_F,
-> +};
-> +
-> +/* AES InvShiftRows, for complete unrolling. */
-> +enum {
-> +    AES_ISH_0 =3D 0x0,
-> +    AES_ISH_1 =3D 0xd,
-> +    AES_ISH_2 =3D 0xa,
-> +    AES_ISH_3 =3D 0x7,
-> +    AES_ISH_4 =3D 0x4,
-> +    AES_ISH_5 =3D 0x1,
-> +    AES_ISH_6 =3D 0xe,
-> +    AES_ISH_7 =3D 0xb,
-> +    AES_ISH_8 =3D 0x8,
-> +    AES_ISH_9 =3D 0x5,
-> +    AES_ISH_A =3D 0x2,
-> +    AES_ISH_B =3D 0xf,
-> +    AES_ISH_C =3D 0xc,
-> +    AES_ISH_D =3D 0x9,
-> +    AES_ISH_E =3D 0x6,
-> +    AES_ISH_F =3D 0x3,
->  };
->
->  const uint8_t AES_ishifts[16] =3D {
-> -    0, 13, 10, 7, 4, 1, 14, 11, 8, 5, 2, 15, 12, 9, 6, 3
-> +    AES_ISH_0, AES_ISH_1, AES_ISH_2, AES_ISH_3,
-> +    AES_ISH_4, AES_ISH_5, AES_ISH_6, AES_ISH_7,
-> +    AES_ISH_8, AES_ISH_9, AES_ISH_A, AES_ISH_B,
-> +    AES_ISH_C, AES_ISH_D, AES_ISH_E, AES_ISH_F,
->  };
->
->  /*
-> --
-> 2.34.1
->
+Old cover letter follows:
+
+------------------------------- 8< ------------------------------------
+
+Main motivation of this series was a bug that showed up when compiling
+with Clang 16 and binutils 2.40 (which has been reported in Fedora ELN, see
+https://bugzilla.redhat.com/show_bug.cgi?id=2216662). This is fixed in
+the final patch. I checked with "objdump" that the change is fine, indeed.
+
+While working on this issue, I came accross some other issues which I
+address in the other patches patches:
+
+- Juan recently noticed unnecessary types in the s390-ccw bios (patch 1)
+  which I continued to improve in patch 2
+- Recent binutils complain about executable stack - fixed in patch 3
+- Indentation is a mixture between tabs and spaces in start.S (patch 4)
+- We do not set up a stack frame for the main() function, which could
+  cause memory corruption (patch 5)
+- The stack is declared in multiple places, though it's only needed
+  in start.S (patch 6)
+
+v3:
+- Included other pending s390-ccw bios patches
+- Changed the commit message of the "__u*" clean-up patch
+- Changed the final patch to load __bss_start indirectly instead
+
+v2:
+- Use ".space" instead of ".lcomm" in the third patch to make sure
+  that the alignment is really taken into consideration (thanks Richard)
+- Alignment of 8 should be enough in the third patch (thank Christian)
+- Added Reviewed-bys from v1
+
+Juan Quintela (1):
+  s390-ccw: Getting rid of ulong
+
+Thomas Huth (6):
+  pc-bios/s390-ccw: Get rid of the the __u* types
+  pc-bios/s390-ccw/Makefile: Use -z noexecstack to silence linker
+    warning
+  pc-bios/s390-ccw: Fix indentation in start.S
+  pc-bios/s390-ccw: Provide space for initial stack frame in start.S
+  pc-bios/s390-ccw: Move the stack array into start.S
+  pc-bios/s390-ccw: Don't use __bss_start with the "larl" instruction
+
+ pc-bios/s390-ccw/cio.h           | 232 +++++++++++++++----------------
+ pc-bios/s390-ccw/helper.h        |   2 +-
+ pc-bios/s390-ccw/s390-ccw.h      |  12 +-
+ pc-bios/s390-ccw/virtio-scsi.h   |   2 +-
+ pc-bios/s390-ccw/virtio.h        |   4 +-
+ pc-bios/s390-ccw/main.c          |   1 -
+ pc-bios/s390-ccw/netmain.c       |   1 -
+ pc-bios/s390-ccw/virtio-blkdev.c |  12 +-
+ pc-bios/s390-ccw/virtio-scsi.c   |   4 +-
+ pc-bios/s390-ccw/virtio.c        |  12 +-
+ pc-bios/s390-ccw/Makefile        |   2 +-
+ pc-bios/s390-ccw/start.S         | 149 +++++++++++---------
+ tests/tcg/s390x/head64.S         |   7 +-
+ 13 files changed, 220 insertions(+), 220 deletions(-)
+
+-- 
+2.39.3
+
 
