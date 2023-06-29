@@ -2,58 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76E5A74243B
+	by mail.lfdr.de (Postfix) with ESMTPS id 76F2F74243C
 	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 12:49:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEpCb-0002HL-TK; Thu, 29 Jun 2023 06:48:41 -0400
+	id 1qEpCb-0002Fn-Kg; Thu, 29 Jun 2023 06:48:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qEpCV-00022t-JN
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qEpCV-000234-Kq
  for qemu-devel@nongnu.org; Thu, 29 Jun 2023 06:48:36 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qEpCQ-00044L-Iz
- for qemu-devel@nongnu.org; Thu, 29 Jun 2023 06:48:33 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qEpCT-000453-EE
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 06:48:34 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688035709;
+ s=mimecast20190719; t=1688035712;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=AIINR20cLuFy5TfvBjAXL66DCu1Ia2Ayx+1ab1RltGA=;
- b=DevXf0yBzfesCJw3tmsxLz9Ma7xc8nCKiqJEBaoeR7Ns5UpLK0TxV2n2BK9/7fYU6IcJPn
- ko4A1tQzvkxdU5cBIfK2CLHeGFJFJQxdfR2Pb4yK4SPo9w7jgqzcIDF9Z1jiY5kgXJSD/A
- 0pqiDjA8+yggHlpGXLmqvqdcVgzcs2w=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Rjk8OjVMk9etjc5atmQILqE580kWp/fVcMfLA09FUlQ=;
+ b=i1K9Gs6IzNm1vGkk2oTR+n7YQb9bBUFK8da6X8rK0zfkKx+M7R1JnKgUyNs3+5rbaHnojQ
+ clMqR2Iky0JidQO/Dc50v/G2y/tmm+zXwNG+1PW8ErRd+cDoJ1dlMsBRJNmwASDfS5YUTx
+ 5J0ZaSDZDj14fAsb1CsAgBvP8m0qDNE=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-19-03cv09y7NayK9HyKP27Ksw-1; Thu, 29 Jun 2023 06:48:26 -0400
-X-MC-Unique: 03cv09y7NayK9HyKP27Ksw-1
+ us-mta-344-18ra2m4gOkqvOzF5VgfmIQ-1; Thu, 29 Jun 2023 06:48:26 -0400
+X-MC-Unique: 18ra2m4gOkqvOzF5VgfmIQ-1
 Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
  [10.11.54.2])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 813E61C3D7C6;
- Thu, 29 Jun 2023 10:48:25 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6F1338E468B;
+ Thu, 29 Jun 2023 10:48:26 +0000 (UTC)
 Received: from thuth.com (dhcp-192-205.str.redhat.com [10.33.192.205])
- by smtp.corp.redhat.com (Postfix) with ESMTP id C304C4067A00;
- Thu, 29 Jun 2023 10:48:24 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id B172F4067A00;
+ Thu, 29 Jun 2023 10:48:25 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-s390x@nongnu.org, Christian Borntraeger <borntraeger@linux.ibm.com>,
  Eric Farman <farman@linux.ibm.com>,
  Claudio Imbrenda <imbrenda@linux.ibm.com>
-Subject: [PATCH v3 2/7] pc-bios/s390-ccw: Get rid of the the __u* types
-Date: Thu, 29 Jun 2023 12:48:16 +0200
-Message-Id: <20230629104821.194859-3-thuth@redhat.com>
+Subject: [PATCH v3 3/7] pc-bios/s390-ccw/Makefile: Use -z noexecstack to
+ silence linker warning
+Date: Thu, 29 Jun 2023 12:48:17 +0200
+Message-Id: <20230629104821.194859-4-thuth@redhat.com>
 In-Reply-To: <20230629104821.194859-1-thuth@redhat.com>
 References: <20230629104821.194859-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -78,355 +79,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The types starting with double underscores have likely been
-introduced into the s390-ccw bios to be able to re-use structs
-from the Linux kernel in the past, but the corresponding structs
-in cio.h have been changed there a long time ago already to not
-use the variants with the double underscores anymore:
+Recent versions of ld complain when linking the s390-ccw bios:
 
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/diff/drivers/s390/cio/cio.h?id=cd6b4f27b9bb2a
+ /usr/bin/ld: warning: start.o: missing .note.GNU-stack section implies
+              executable stack
+ /usr/bin/ld: NOTE: This behaviour is deprecated and will be removed in
+              a future version of the linker
 
-So it would be good to replace these in the s390-ccw bios now, too.
+We can silence the warning by telling the linker to mark the stack
+as not executable.
 
-Message-Id: <20230627114101.122231-1-thuth@redhat.com>
-Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Reviewed-by: Eric Farman <farman@linux.ibm.com>
-Reviewed-by: Juan Quintela <quintela@redhat.com>
+Message-Id: <20230622130822.396793-1-thuth@redhat.com>
+Acked-by: Christian Borntraeger <borntraeger@linux.ibm.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- pc-bios/s390-ccw/cio.h      | 232 ++++++++++++++++++------------------
- pc-bios/s390-ccw/s390-ccw.h |   4 -
- 2 files changed, 116 insertions(+), 120 deletions(-)
+ pc-bios/s390-ccw/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/pc-bios/s390-ccw/cio.h b/pc-bios/s390-ccw/cio.h
-index 88a88adfd2..8b18153deb 100644
---- a/pc-bios/s390-ccw/cio.h
-+++ b/pc-bios/s390-ccw/cio.h
-@@ -17,32 +17,32 @@
-  * path management control word
-  */
- struct pmcw {
--    __u32 intparm;      /* interruption parameter */
--    __u32 qf:1;         /* qdio facility */
--    __u32 w:1;
--    __u32 isc:3;        /* interruption subclass */
--    __u32 res5:3;       /* reserved zeros */
--    __u32 ena:1;        /* enabled */
--    __u32 lm:2;         /* limit mode */
--    __u32 mme:2;        /* measurement-mode enable */
--    __u32 mp:1;         /* multipath mode */
--    __u32 tf:1;         /* timing facility */
--    __u32 dnv:1;        /* device number valid */
--    __u32 dev:16;       /* device number */
--    __u8  lpm;          /* logical path mask */
--    __u8  pnom;         /* path not operational mask */
--    __u8  lpum;         /* last path used mask */
--    __u8  pim;          /* path installed mask */
--    __u16 mbi;          /* measurement-block index */
--    __u8  pom;          /* path operational mask */
--    __u8  pam;          /* path available mask */
--    __u8  chpid[8];     /* CHPID 0-7 (if available) */
--    __u32 unused1:8;    /* reserved zeros */
--    __u32 st:3;         /* subchannel type */
--    __u32 unused2:18;   /* reserved zeros */
--    __u32 mbfc:1;       /* measurement block format control */
--    __u32 xmwme:1;      /* extended measurement word mode enable */
--    __u32 csense:1;     /* concurrent sense; can be enabled ...*/
-+    u32 intparm;        /* interruption parameter */
-+    u32 qf:1;           /* qdio facility */
-+    u32 w:1;
-+    u32 isc:3;          /* interruption subclass */
-+    u32 res5:3;         /* reserved zeros */
-+    u32 ena:1;          /* enabled */
-+    u32 lm:2;           /* limit mode */
-+    u32 mme:2;          /* measurement-mode enable */
-+    u32 mp:1;           /* multipath mode */
-+    u32 tf:1;           /* timing facility */
-+    u32 dnv:1;          /* device number valid */
-+    u32 dev:16;         /* device number */
-+    u8  lpm;            /* logical path mask */
-+    u8  pnom;           /* path not operational mask */
-+    u8  lpum;           /* last path used mask */
-+    u8  pim;            /* path installed mask */
-+    u16 mbi;            /* measurement-block index */
-+    u8  pom;            /* path operational mask */
-+    u8  pam;            /* path available mask */
-+    u8  chpid[8];       /* CHPID 0-7 (if available) */
-+    u32 unused1:8;      /* reserved zeros */
-+    u32 st:3;           /* subchannel type */
-+    u32 unused2:18;     /* reserved zeros */
-+    u32 mbfc:1;         /* measurement block format control */
-+    u32 xmwme:1;        /* extended measurement word mode enable */
-+    u32 csense:1;       /* concurrent sense; can be enabled ...*/
-                         /*  ... per MSCH, however, if facility */
-                         /*  ... is not installed, this results */
-                         /*  ... in an operand exception.       */
-@@ -50,24 +50,24 @@ struct pmcw {
+diff --git a/pc-bios/s390-ccw/Makefile b/pc-bios/s390-ccw/Makefile
+index 2e8cc015aa..acfcd1e71a 100644
+--- a/pc-bios/s390-ccw/Makefile
++++ b/pc-bios/s390-ccw/Makefile
+@@ -55,7 +55,7 @@ config-cc.mak: Makefile
+ 	    $(call cc-option,-march=z900,-march=z10)) 3> config-cc.mak
+ -include config-cc.mak
  
- /* Target SCHIB configuration. */
- struct schib_config {
--    __u64 mba;
--    __u32 intparm;
--    __u16 mbi;
--    __u32 isc:3;
--    __u32 ena:1;
--    __u32 mme:2;
--    __u32 mp:1;
--    __u32 csense:1;
--    __u32 mbfc:1;
-+    u64 mba;
-+    u32 intparm;
-+    u16 mbi;
-+    u32 isc:3;
-+    u32 ena:1;
-+    u32 mme:2;
-+    u32 mp:1;
-+    u32 csense:1;
-+    u32 mbfc:1;
- } __attribute__ ((packed));
+-LDFLAGS += -Wl,-pie -nostdlib
++LDFLAGS += -Wl,-pie -nostdlib -z noexecstack
  
- struct scsw {
--    __u16 flags;
--    __u16 ctrl;
--    __u32 cpa;
--    __u8 dstat;
--    __u8 cstat;
--    __u16 count;
-+    u16 flags;
-+    u16 ctrl;
-+    u32 cpa;
-+    u8 dstat;
-+    u8 cstat;
-+    u16 count;
- } __attribute__ ((packed));
+ build-all: s390-ccw.img s390-netboot.img
  
- /* Function Control */
-@@ -117,42 +117,42 @@ struct scsw {
- typedef struct schib {
-     struct pmcw pmcw;     /* path management control word */
-     struct scsw scsw;     /* subchannel status word */
--    __u64 mba;            /* measurement block address */
--    __u8 mda[4];          /* model dependent area */
-+    u64 mba;              /* measurement block address */
-+    u8 mda[4];            /* model dependent area */
- } __attribute__ ((packed, aligned(4))) Schib;
- 
- typedef struct subchannel_id {
-     union {
-         struct {
--            __u16 cssid:8;
--            __u16 reserved:4;
--            __u16 m:1;
--            __u16 ssid:2;
--            __u16 one:1;
-+            u16 cssid:8;
-+            u16 reserved:4;
-+            u16 m:1;
-+            u16 ssid:2;
-+            u16 one:1;
-         };
--        __u16 sch_id;
-+        u16 sch_id;
-     };
--    __u16 sch_no;
-+    u16 sch_no;
- } __attribute__ ((packed, aligned(4))) SubChannelId;
- 
- struct chsc_header {
--    __u16 length;
--    __u16 code;
-+    u16 length;
-+    u16 code;
- } __attribute__((packed));
- 
- typedef struct chsc_area_sda {
-     struct chsc_header request;
--    __u8 reserved1:4;
--    __u8 format:4;
--    __u8 reserved2;
--    __u16 operation_code;
--    __u32 reserved3;
--    __u32 reserved4;
--    __u32 operation_data_area[252];
-+    u8 reserved1:4;
-+    u8 format:4;
-+    u8 reserved2;
-+    u16 operation_code;
-+    u32 reserved3;
-+    u32 reserved4;
-+    u32 operation_data_area[252];
-     struct chsc_header response;
--    __u32 reserved5:4;
--    __u32 format2:4;
--    __u32 reserved6:24;
-+    u32 reserved5:4;
-+    u32 format2:4;
-+    u32 reserved6:24;
- } __attribute__((packed)) ChscAreaSda;
- 
- /*
-@@ -160,37 +160,37 @@ typedef struct chsc_area_sda {
-  */
- struct tpi_info {
-     struct subchannel_id schid;
--    __u32 intparm;      /* interruption parameter */
--    __u32 adapter_IO:1;
--    __u32 reserved2:1;
--    __u32 isc:3;
--    __u32 reserved3:12;
--    __u32 int_type:3;
--    __u32 reserved4:12;
-+    u32 intparm;      /* interruption parameter */
-+    u32 adapter_IO:1;
-+    u32 reserved2:1;
-+    u32 isc:3;
-+    u32 reserved3:12;
-+    u32 int_type:3;
-+    u32 reserved4:12;
- } __attribute__ ((packed, aligned(4)));
- 
- /* channel command word (format 0) */
- typedef struct ccw0 {
--    __u8 cmd_code;
--    __u32 cda:24;
--    __u32 chainData:1;
--    __u32 chain:1;
--    __u32 sli:1;
--    __u32 skip:1;
--    __u32 pci:1;
--    __u32 ida:1;
--    __u32 suspend:1;
--    __u32 mida:1;
--    __u8 reserved;
--    __u16 count;
-+    u8 cmd_code;
-+    u32 cda:24;
-+    u32 chainData:1;
-+    u32 chain:1;
-+    u32 sli:1;
-+    u32 skip:1;
-+    u32 pci:1;
-+    u32 ida:1;
-+    u32 suspend:1;
-+    u32 mida:1;
-+    u8 reserved;
-+    u16 count;
- } __attribute__ ((packed, aligned(8))) Ccw0;
- 
- /* channel command word (format 1) */
- typedef struct ccw1 {
--    __u8 cmd_code;
--    __u8 flags;
--    __u16 count;
--    __u32 cda;
-+    u8 cmd_code;
-+    u8 flags;
-+    u16 count;
-+    u32 cda;
- } __attribute__ ((packed, aligned(8))) Ccw1;
- 
- /* do_cio() CCW formats */
-@@ -234,31 +234,31 @@ typedef struct ccw1 {
-  * Command-mode operation request block
-  */
- typedef struct cmd_orb {
--    __u32 intparm;    /* interruption parameter */
--    __u32 key:4;      /* flags, like key, suspend control, etc. */
--    __u32 spnd:1;     /* suspend control */
--    __u32 res1:1;     /* reserved */
--    __u32 mod:1;      /* modification control */
--    __u32 sync:1;     /* synchronize control */
--    __u32 fmt:1;      /* format control */
--    __u32 pfch:1;     /* prefetch control */
--    __u32 isic:1;     /* initial-status-interruption control */
--    __u32 alcc:1;     /* address-limit-checking control */
--    __u32 ssic:1;     /* suppress-suspended-interr. control */
--    __u32 res2:1;     /* reserved */
--    __u32 c64:1;      /* IDAW/QDIO 64 bit control  */
--    __u32 i2k:1;      /* IDAW 2/4kB block size control */
--    __u32 lpm:8;      /* logical path mask */
--    __u32 ils:1;      /* incorrect length */
--    __u32 zero:6;     /* reserved zeros */
--    __u32 orbx:1;     /* ORB extension control */
--    __u32 cpa;    /* channel program address */
-+    u32 intparm;    /* interruption parameter */
-+    u32 key:4;      /* flags, like key, suspend control, etc. */
-+    u32 spnd:1;     /* suspend control */
-+    u32 res1:1;     /* reserved */
-+    u32 mod:1;      /* modification control */
-+    u32 sync:1;     /* synchronize control */
-+    u32 fmt:1;      /* format control */
-+    u32 pfch:1;     /* prefetch control */
-+    u32 isic:1;     /* initial-status-interruption control */
-+    u32 alcc:1;     /* address-limit-checking control */
-+    u32 ssic:1;     /* suppress-suspended-interr. control */
-+    u32 res2:1;     /* reserved */
-+    u32 c64:1;      /* IDAW/QDIO 64 bit control  */
-+    u32 i2k:1;      /* IDAW 2/4kB block size control */
-+    u32 lpm:8;      /* logical path mask */
-+    u32 ils:1;      /* incorrect length */
-+    u32 zero:6;     /* reserved zeros */
-+    u32 orbx:1;     /* ORB extension control */
-+    u32 cpa;        /* channel program address */
- }  __attribute__ ((packed, aligned(4))) CmdOrb;
- 
- struct ciw {
--    __u8 type;
--    __u8 command;
--    __u16 count;
-+    u8 type;
-+    u8 command;
-+    u16 count;
- };
- 
- #define CU_TYPE_UNKNOWN         0x0000
-@@ -271,12 +271,12 @@ struct ciw {
-  */
- typedef struct senseid {
-     /* common part */
--    __u8  reserved;   /* always 0x'FF' */
--    __u16 cu_type;    /* control unit type */
--    __u8  cu_model;   /* control unit model */
--    __u16 dev_type;   /* device type */
--    __u8  dev_model;  /* device model */
--    __u8  unused;     /* padding byte */
-+    u8  reserved;   /* always 0x'FF' */
-+    u16 cu_type;    /* control unit type */
-+    u8  cu_model;   /* control unit model */
-+    u16 dev_type;   /* device type */
-+    u8  dev_model;  /* device model */
-+    u8  unused;     /* padding byte */
-     /* extended part */
-     struct ciw ciw[62];
- }  __attribute__ ((packed, aligned(4))) SenseId;
-@@ -342,9 +342,9 @@ typedef struct SenseDataEckdDasd {
- /* interruption response block */
- typedef struct irb {
-     struct scsw scsw;
--    __u32 esw[5];
--    __u32 ecw[8];
--    __u32 emw[8];
-+    u32 esw[5];
-+    u32 ecw[8];
-+    u32 emw[8];
- }  __attribute__ ((packed, aligned(4))) Irb;
- 
- /* Used for SEEK ccw commands */
-diff --git a/pc-bios/s390-ccw/s390-ccw.h b/pc-bios/s390-ccw/s390-ccw.h
-index f849fba74b..f68a832718 100644
---- a/pc-bios/s390-ccw/s390-ccw.h
-+++ b/pc-bios/s390-ccw/s390-ccw.h
-@@ -17,10 +17,6 @@ typedef unsigned char      u8;
- typedef unsigned short     u16;
- typedef unsigned int       u32;
- typedef unsigned long long u64;
--typedef unsigned char      __u8;
--typedef unsigned short     __u16;
--typedef unsigned int       __u32;
--typedef unsigned long long __u64;
- 
- #define true 1
- #define false 0
 -- 
 2.39.3
 
