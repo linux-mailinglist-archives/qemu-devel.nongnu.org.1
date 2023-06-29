@@ -2,52 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08A657422BF
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 10:55:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 677E87422BD
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 10:54:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEnPN-0002IS-Ef; Thu, 29 Jun 2023 04:53:45 -0400
+	id 1qEnPO-0002JL-V8; Thu, 29 Jun 2023 04:53:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1qEnPK-0002Hv-NI
- for qemu-devel@nongnu.org; Thu, 29 Jun 2023 04:53:42 -0400
+ id 1qEnPM-0002Il-P1
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 04:53:44 -0400
 Received: from mga04.intel.com ([192.55.52.120])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1qEnPI-0003dp-KB
- for qemu-devel@nongnu.org; Thu, 29 Jun 2023 04:53:42 -0400
+ id 1qEnPL-0003fe-3M
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 04:53:44 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1688028820; x=1719564820;
+ t=1688028823; x=1719564823;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=cJIPVP01AA7xsD3iUU2rztqJwjACTSIZKHRcfCmA+tw=;
- b=CSabYyBtWiPASluonNN4ZB2d4Y+XuP8Yp3qJAfBsVDP3Za9AcT5ygn0D
- E+CJD0FwjMaQDTcM3P+2azc1rguR1mTk62tns5UDG4ebO74UhPKCJ6mSY
- yYeboas++W4hdMC6iwFwJM8xWLzOrDYehmoKoVr6SMz6zxJSNBeVM/Z4u
- +kr37ymG5t36kkPbktagTDGN6BGf295Osm0m6AJWMkT1uM9Fi0wAHqYed
- yy1fhjJ6jJKH5nqbuKUKjyL6SKAzWbbm3FARdQC0I/R6qgjh4PxzJKUxK
- IIA0lz3VsIwDwy3KHLJMGoLQM0NvFaoCuCceq0hwTbv3+m4kP+qGqCAwV g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10755"; a="360908850"
-X-IronPort-AV: E=Sophos;i="6.01,168,1684825200"; d="scan'208";a="360908850"
+ bh=M9sOthnyrGqoEEYhYVxWzaWHTpau5NyEbkjO3zdN17c=;
+ b=co7LqUfuzEyo5NO/tIUIhtWYN+YVnXyvbkSCBrV3DM3WodXSUyKgLMg+
+ twzYALzQGmiR1w6/3+fGfPO0cH0xehLhNt7b5bv1HrIgVugaFpTVBPxci
+ Mf/OG4Fo1M0OVkggkTAgJG43sxkX09GGQJrTZkNQT6QC/7rCXBcOuwCf0
+ V5A+ReitBNEMdED5Kyy64J/A7D8TLJ2g5tRgSxc3a4FNJpX7qe+E/GQfc
+ 2AnfRaQ9SAyq0HyENzd3EnsRoz/sJdasOobxIVMt5eTUuyS5LEKhpevOM
+ Ug6z8iyYIAEa0QZr/0yUEdo4mYUqc3n0P5jkei7P/6Sh//4SCpNYT8ZI5 w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10755"; a="360908856"
+X-IronPort-AV: E=Sophos;i="6.01,168,1684825200"; d="scan'208";a="360908856"
 Received: from fmsmga007.fm.intel.com ([10.253.24.52])
  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jun 2023 01:53:39 -0700
+ 29 Jun 2023 01:53:41 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10755"; a="720494306"
-X-IronPort-AV: E=Sophos;i="6.01,168,1684825200"; d="scan'208";a="720494306"
+X-IronPort-AV: E=McAfee;i="6600,9927,10755"; a="720494337"
+X-IronPort-AV: E=Sophos;i="6.01,168,1684825200"; d="scan'208";a="720494337"
 Received: from duan-server-s2600bt.bj.intel.com ([10.240.192.147])
  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jun 2023 01:53:37 -0700
+ 29 Jun 2023 01:53:39 -0700
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, joao.m.martins@oracle.com,
  avihaih@nvidia.com, chao.p.peng@intel.com
-Subject: [PATCH v4 1/5] vfio/pci: Fix a segfault in vfio_realize
-Date: Thu, 29 Jun 2023 16:40:38 +0800
-Message-Id: <20230629084042.86502-2-zhenzhong.duan@intel.com>
+Subject: [PATCH v4 2/5] vfio/pci: Free leaked timer in vfio_realize error path
+Date: Thu, 29 Jun 2023 16:40:39 +0800
+Message-Id: <20230629084042.86502-3-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230629084042.86502-1-zhenzhong.duan@intel.com>
 References: <20230629084042.86502-1-zhenzhong.duan@intel.com>
@@ -77,38 +77,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The kvm irqchip notifier is only registered if the device supports
-INTx, however it's unconditionally removed in vfio realize error
-path. If the assigned device does not support INTx, this will cause
-QEMU to crash when vfio realize fails. Change it to conditionally
-remove the notifier only if the notify hook is setup.
+When vfio_realize fails, the mmap_timer used for INTx optimization
+isn't freed. As this timer isn't activated yet, the potential impact
+is just a piece of leaked memory.
 
-Before fix:
-(qemu) device_add vfio-pci,host=81:11.1,id=vfio1,bus=root1,xres=1
-Connection closed by foreign host.
-
-After fix:
-(qemu) device_add vfio-pci,host=81:11.1,id=vfio1,bus=root1,xres=1
-Error: vfio 0000:81:11.1: xres and yres properties require display=on
-(qemu)
-
-Fixes: c5478fea27ac ("vfio/pci: Respond to KVM irqchip change notifier")
+Fixes: ea486926b07d ("vfio-pci: Update slow path INTx algorithm timer related")
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 ---
- hw/vfio/pci.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ hw/vfio/pci.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-index 73e19a04b2bf..48df517f79ee 100644
+index 48df517f79ee..ab6645ba60af 100644
 --- a/hw/vfio/pci.c
 +++ b/hw/vfio/pci.c
-@@ -3221,7 +3221,9 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
- 
- out_deregister:
-     pci_device_set_intx_routing_notifier(&vdev->pdev, NULL);
--    kvm_irqchip_remove_change_notifier(&vdev->irqchip_change_notifier);
-+    if (vdev->irqchip_change_notifier.notify) {
-+        kvm_irqchip_remove_change_notifier(&vdev->irqchip_change_notifier);
+@@ -3224,6 +3224,9 @@ out_deregister:
+     if (vdev->irqchip_change_notifier.notify) {
+         kvm_irqchip_remove_change_notifier(&vdev->irqchip_change_notifier);
+     }
++    if (vdev->intx.mmap_timer) {
++        timer_free(vdev->intx.mmap_timer);
 +    }
  out_teardown:
      vfio_teardown_msi(vdev);
