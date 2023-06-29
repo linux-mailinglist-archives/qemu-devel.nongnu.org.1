@@ -2,92 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50E0F74292A
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 17:11:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CEF7742936
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 17:15:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEtHo-0004o4-5W; Thu, 29 Jun 2023 11:10:20 -0400
+	id 1qEtLj-0006Zz-OW; Thu, 29 Jun 2023 11:14:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
- id 1qEtHl-0004nN-Pk
- for qemu-devel@nongnu.org; Thu, 29 Jun 2023 11:10:17 -0400
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
- id 1qEtHj-0002qT-0b
- for qemu-devel@nongnu.org; Thu, 29 Jun 2023 11:10:17 -0400
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-1b7fdc66e30so4741995ad.2
- for <qemu-devel@nongnu.org>; Thu, 29 Jun 2023 08:10:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1688051413; x=1690643413;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=URH1FQfpEtFFX7bBzsE6B0pgqJL9drexvdS8FCvkrF0=;
- b=MgPfsTeeFeOd6GFlq3HofaE3b3u0uKLwEJJjC+tzEYq6iboYlSkEsw7HXyuHtx7gn9
- Lxs1s/lplGtqFtd3DURoSsojxLso2wgENuLPHB9UBKpl16bRD4rlo4iGwXUbU+jWYenU
- zCT38VJ4LgfgeODV9ej/LKyo8purkA8o/dOqm+b1j/Srj+momCJwXfDRuwEhVJHOYYPC
- vZkAAmjyqwKn2tFymyw1pNt0kL4I5y0SY3f+uMppPqMClGHqBDAaEVit5of8MYE/u0xb
- rzO6FSCKyWZqfnkCE39PRGSlQ9MpMCganJHuvJGtmbRke75+lpc3KE2gNA4BIxhMdG7K
- mM3Q==
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qEtLU-0006Y4-GH
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 11:14:08 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qEtLP-0003zr-7b
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 11:14:05 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1688051639;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=FQAGqFOeNUnpnFBv4J6jPJY0M06+gyrB70lE1rOOIsg=;
+ b=iU/2k4PUYQaSGaNm3TJ+Jq9ZcYnJNY4Jb4IRf6GRmM2BIRZH3QFx7vxNWlqaEsvlHyNM8+
+ hO0Nlm6GDbxN1HKpnDbRrpsuiPmdJwmutLUz51nOPm64AGd6YQtciyAllOSfgazwKPaLEu
+ spBFPof4Bny7OtPUiXln10ZD2b8zxS4=
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
+ [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-329-WzZyu04tP-ueR8pg9GAXsg-1; Thu, 29 Jun 2023 11:13:41 -0400
+X-MC-Unique: WzZyu04tP-ueR8pg9GAXsg-1
+Received: by mail-qv1-f71.google.com with SMTP id
+ 6a1803df08f44-635984f84a9so9957776d6.0
+ for <qemu-devel@nongnu.org>; Thu, 29 Jun 2023 08:13:37 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688051413; x=1690643413;
+ d=1e100.net; s=20221208; t=1688051616; x=1690643616;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=URH1FQfpEtFFX7bBzsE6B0pgqJL9drexvdS8FCvkrF0=;
- b=ORwhHlnH+AhNfwVQk3vP7wZsmeURJ1t3BSnFhlH8354AZf5+r+QBou2znMYoOMLJyk
- UtZ0K4mreBIlxBT019q9DbKm6f+xg7IiiuE69bvkHs+h83fjt3yW2HIL255xyleA4SYZ
- kRhpqZcEMURm3/cG1/rm9OgsS+IZBmpfioU0CQ93M/aQxgKE2gA6VepvjNi9LqnMv/jT
- qVG9sLm0mS6IOGeoHdCX2HN1p/bT7QRaRatRVZ+WHq2K4s7pNyzDfnWXi+tHtWRQW/0N
- crcHh2t0KR0d+nQGwf4qGCr/FPvrA3A3YjR7xGmjfPjRgX70CAcsNcxozwH3h2koGyz3
- 3eAQ==
-X-Gm-Message-State: ABy/qLbh1okLGg7xHgPv4+8WPQAdJ+lLaEffwfVVh1umDr3L8zUNzMKG
- nwFRMZREDnuMSKiLda7h+ASf0g==
-X-Google-Smtp-Source: APBJJlFXZd70M1oT4oa3uQ5pgpx82HB6PFS5RpR/WeMqwlNttzOlKQTpG95XC0+lcCI8VjTJkC+2tg==
-X-Received: by 2002:a17:902:cec5:b0:1b8:5a29:7702 with SMTP id
- d5-20020a170902cec500b001b85a297702mr1434141plg.47.1688051412900; 
- Thu, 29 Jun 2023 08:10:12 -0700 (PDT)
-Received: from [10.11.0.74] (125-228-20-175.hinet-ip.hinet.net.
- [125.228.20.175]) by smtp.gmail.com with ESMTPSA id
- d1-20020a170902854100b001ae365072ccsm9196717plo.122.2023.06.29.08.10.10
+ bh=FQAGqFOeNUnpnFBv4J6jPJY0M06+gyrB70lE1rOOIsg=;
+ b=DZIkPXKP+DRifzn9lujEViTcrXKAFfUA+sO+TO8iRKXnvFoTrh2K+VI6mbUOKEBQLO
+ fgItAKK7B0+rzoAG4JSBNWPw6vmyp+T9hxfffN4Z5jdfUNHIRbBtb9IyqhCh98MNwIAl
+ g8Xklm69O0dGmioM2aVFdsHdSNuywTOZkhf/KnXIPMsuCgZdd/q7rMHWrQzqwpC5qa63
+ MfFXgrH+dCnGJ8vV9XV7wDYo0me/LBJYtubF5kq8NU6gkd0TBPVW71uoe5/ekmWVUgMB
+ J1DQyPW5XxnuWQFWIxpzzH70EiPt7vtF3IFabbfP2Au9pch+6fhuIPBgBN3UJZal6NPe
+ aP7g==
+X-Gm-Message-State: AC+VfDxmIyHfwh+p9TUtFguBhPaYy8X3ueK/ltk8aAIQXHgw7A/51SOH
+ BxnNK0DifkEkWkSFlEcm3qwLROYnd5Q6066duGJ0wM97XAASP4/5zI0DQRbAHt7/jVMspO7En0z
+ O5Tqdp0dO3miPZB4=
+X-Received: by 2002:ad4:5aee:0:b0:62f:1f41:c6f0 with SMTP id
+ c14-20020ad45aee000000b0062f1f41c6f0mr46315098qvh.42.1688051616638; 
+ Thu, 29 Jun 2023 08:13:36 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5WOTQmvWp7GSadfooXYx8S5sLz1TBBCjkvG0vO23UJ6DWJPE25imOtq59DgUYvLmm3uAz/jA==
+X-Received: by 2002:ad4:5aee:0:b0:62f:1f41:c6f0 with SMTP id
+ c14-20020ad45aee000000b0062f1f41c6f0mr46315083qvh.42.1688051616328; 
+ Thu, 29 Jun 2023 08:13:36 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:280:24f0:576b:abc6:6396:ed4a?
+ ([2a01:e0a:280:24f0:576b:abc6:6396:ed4a])
+ by smtp.gmail.com with ESMTPSA id
+ ec17-20020ad44e71000000b00632191a70a2sm6999289qvb.103.2023.06.29.08.13.34
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 29 Jun 2023 08:10:12 -0700 (PDT)
-Message-ID: <c7860d59-2166-292b-4689-0d25ff7b7469@sifive.com>
-Date: Thu, 29 Jun 2023 23:10:09 +0800
+ Thu, 29 Jun 2023 08:13:35 -0700 (PDT)
+Message-ID: <393d930c-da04-4c86-0f77-615c511df77b@redhat.com>
+Date: Thu, 29 Jun 2023 17:13:33 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.12.0
-Subject: Re: [PATCH v6 09/15] target/riscv: Add Zvkned ISA extension support
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH v4 3/5] vfio/pci: Disable INTx in vfio_realize error path
 Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org,
- qemu-riscv@nongnu.org
-Cc: dbarboza@ventanamicro.com, Nazar Kazakov <nazar.kazakov@codethink.co.uk>, 
- Lawrence Hunter <lawrence.hunter@codethink.co.uk>,
- William Salmon <will.salmon@codethink.co.uk>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Kiran Ostrolenk <kiran.ostrolenk@codethink.co.uk>
-References: <20230627174551.65498-1-max.chou@sifive.com>
- <20230627174551.65498-10-max.chou@sifive.com>
- <af36c183-aad0-6e66-62e0-0f97b04eb4cc@linaro.org>
-From: Max Chou <max.chou@sifive.com>
-In-Reply-To: <af36c183-aad0-6e66-62e0-0f97b04eb4cc@linaro.org>
+To: Joao Martins <joao.m.martins@oracle.com>,
+ Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
+Cc: alex.williamson@redhat.com, avihaih@nvidia.com, chao.p.peng@intel.com
+References: <20230629084042.86502-1-zhenzhong.duan@intel.com>
+ <20230629084042.86502-4-zhenzhong.duan@intel.com>
+ <29b6ecd3-d0a1-c914-9bba-cb99d95acd8d@oracle.com>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>
+In-Reply-To: <29b6ecd3-d0a1-c914-9bba-cb99d95acd8d@oracle.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=max.chou@sifive.com; helo=mail-pl1-x630.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.093,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.093, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -104,210 +104,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/6/28 5:07 PM, Richard Henderson wrote:
+On 6/29/23 13:24, Joao Martins wrote:
+> On 29/06/2023 09:40, Zhenzhong Duan wrote:
+>> When vfio realize fails, INTx isn't disabled if it has been enabled.
+>> This may confuse host side with unhandled interrupt report.
+>>
+>> Add a new label to be used for vfio_intx_enable() failed case.
+>>
+>> Fixes: a9994687cb9b ("vfio/display: core & wireup")
+>> Fixes: b290659fc3dd ("hw/vfio/display: add ramfb support")
+>> Fixes: c62a0c7ce34e ("vfio/display: add xres + yres properties")
+> 
+> Sounds to me the correct Fixes tag is the same as first patch i.e.:
+> 
+> Fixes: c5478fea27ac ("vfio/pci: Respond to KVM irqchip change notifier")
+> 
+>> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+> 
+> Looks good, but see some clarifications below.
+> 
+>> ---
+>>   hw/vfio/pci.c | 4 +++-
+>>   1 file changed, 3 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+>> index ab6645ba60af..54a8179d1c64 100644
+>> --- a/hw/vfio/pci.c
+>> +++ b/hw/vfio/pci.c
+>> @@ -3167,7 +3167,7 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
+>>           kvm_irqchip_add_change_notifier(&vdev->irqchip_change_notifier);
+>>           ret = vfio_intx_enable(vdev, errp);
+>>           if (ret) {
+>> -            goto out_deregister;
+>> +            goto out_intx_disable;
+>>           }
+>>       }
+>>   
+>> @@ -3220,6 +3220,8 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
+>>       return;
+>>   
+>>   out_deregister:
+>> +    vfio_disable_interrupts(vdev);
+> 
+> You are calling vfio_disable_interrupts() when what you want is
+> vfio_intx_disable() ? But I guess your thinking was to call
+> vfio_disable_interrupt() which eventually calls vfio_intx_disable() in case INTx
+> was really setup, thus saving the duplicated check. The MSIx/MSI in realize() I
+> don't think they will be enabled at this point. Let me know if I misunderstood.
+> 
+>> +out_intx_disable:
+> 
+> Maybe 'out_intx_teardown' or 'out_intx_deregister' because you are not really
+> disabling INTx.
 
-> On 6/27/23 19:45, Max Chou wrote:
->> +#define GEN_V_UNMASKED_TRANS(NAME, CHECK, 
->> EGS)                                \
->> +    static bool trans_##NAME(DisasContext *s, arg_##NAME 
->> *a)                  \
->> + { \
->> +        if (CHECK(s, a)) 
->> {                                                    \
->> +            TCGv_ptr rd_v, 
->> rs2_v;                                             \
->> +            TCGv_i32 
->> desc;                                                    \
->> +            uint32_t data = 
->> 0;                                                \
->> +            TCGLabel *over = 
->> gen_new_label();                                 \
->> +            TCGLabel *vl_ok = 
->> gen_new_label();                                \
->> +            TCGLabel *vstart_ok = 
->> gen_new_label();                            \
->> +            TCGv_i32 tmp = 
->> tcg_temp_new_i32();                                \
->> + \
->> +            /* save opcode for unwinding in case we throw an 
->> exception */     \
->> + decode_save_opc(s); \
->> + \
->> +            /* check (vl % EGS == 0) assuming it's power of 2 
->> */              \
->> +            tcg_gen_trunc_tl_i32(tmp, 
->> cpu_vl);                                \
->> +            tcg_gen_andi_i32(tmp, tmp, EGS - 
->> 1);                              \
->> +            tcg_gen_brcondi_i32(TCG_COND_EQ, tmp, 0, 
->> vl_ok);                  \
->> + gen_helper_restore_cpu_and_raise_exception( \
->> +                cpu_env, 
->> tcg_constant_i32(RISCV_EXCP_ILLEGAL_INST));          \
->> + gen_set_label(vl_ok); \
->> + \
->> +            /* check (vstart % EGS == 0) assuming it's power of 2 
->> */          \
->> +            tcg_gen_trunc_tl_i32(tmp, 
->> cpu_vstart);                            \
->> +            tcg_gen_andi_i32(tmp, tmp, EGS - 
->> 1);                              \
->> +            tcg_gen_brcondi_i32(TCG_COND_EQ, tmp, 0, 
->> vstart_ok);              \
->> + gen_helper_restore_cpu_and_raise_exception( \
->> +                cpu_env, 
->> tcg_constant_i32(RISCV_EXCP_ILLEGAL_INST));          \
->> + gen_set_label(vstart_ok); \
->> + \
->> +            tcg_gen_brcond_tl(TCG_COND_GEU, cpu_vstart, cpu_vl, 
->> over);        \
->
-> This kind of massive macro is bad style.
-> Much better to have a helper function and pass in gen_helper_foo as a 
-> parameter.
->
-> You can eliminate the vstart % EGS test, and the vstart < vl test, 
-> when VSTART_EQ_ZERO.
-> You can eliminate the vl % EGS test when VL_EQ_VLMAX.
->
-> You could move all of these tests out of line, into a helper_foo_chk() 
-> function which performs the checks and then calls helper_foo().
-Hi Richard
+or simply extract from vfio_disable_interrupts() :
+  
+     if (vdev->interrupt == VFIO_INT_INTx) {
+         vfio_intx_disable(vdev);
+     }
 
-Thank you for the suggestion.
-I'll provide the v7 patch set with this suggestion.
+and add the above code before cleaning up the intx routing
+notifier without any new goto labels.
 
-But I have an question about the vstart < vl test.
-I think that we can't eliminate the vstart < vl test when both the 
-vstart and vl are equal to zero.
-Although this situation means that the instructions will do nothing.
->
->> +#define GEN_ZVKNED_HELPER_VV(NAME, 
->> ...)                                   \
->> +    void HELPER(NAME)(void *vd_vptr, void *vs2_vptr, CPURISCVState 
->> *env,  \
->> +                      uint32_t 
->> desc)                                      \
->> + { \
->> +        uint64_t *vd = 
->> vd_vptr;                                           \
->> +        uint64_t *vs2 = 
->> vs2_vptr;                                         \
->> +        uint32_t vl = 
->> env->vl;                                            \
->> +        uint32_t total_elems = vext_get_total_elems(env, desc, 
->> 4);        \
->> +        uint32_t vta = 
->> vext_vta(desc);                                    \
->> + \
->> +        for (uint32_t i = env->vstart / 4; i < env->vl / 4; i++) 
->> {        \
->> +            AESState 
->> round_key;                                           \
->> +            round_key.d[HOST_BIG_ENDIAN] = cpu_to_le64(vs2[i * 2 + 
->> 0]);   \
->> +            round_key.d[!HOST_BIG_ENDIAN] = cpu_to_le64(vs2[i * 2 + 
->> 1]);  \
->> +            AESState 
->> round_state;                                         \
->> +            cpu_to_le64s(vd + i * 2 + 
->> 0);                                 \
->> +            cpu_to_le64s(vd + i * 2 + 
->> 1);                                 \
->> +            for (int j = 0; j < 16; j++) 
->> {                                \
->> +                round_state.b[j] = ((uint8_t *)(vd + i * 
->> 2))[j];          \
->> + }                                                             \
->
-> I think all of this byte swapping is wrong.
-> With this last loop particularly being particularly silly.
->
-> You want to present the 16 bytes in *host* endian order.
-> Because the words are always in little-endian order (see H1 et al),
-> we only need to swap the words on big-endian hosts.
->
-> See 
-> https://lore.kernel.org/qemu-devel/20230620110758.787479-21-richard.henderson@linaro.org/
-> where I do exactly the same thing for ARM:
->
-> +        AESState *ad = (AESState *)(vd + i);
-> +        AESState *st = (AESState *)(vm + i);
-> +        AESState t;
-> +
-> +        /* Our uint64_t are in the wrong order for big-endian. */
-> +        if (HOST_BIG_ENDIAN) {
-> +            t.d[0] = st->d[1];
-> +            t.d[1] = st->d[0];
-> +            aesdec_IMC(&t, &t, false);
-> +            ad->d[0] = t.d[1];
-> +            ad->d[1] = t.d[0];
-> +        } else {
-> +            aesdec_IMC(ad, st, false);
-> +        }
->
->> +void HELPER(vaeskf1_vi)(void *vd_vptr, void *vs2_vptr, uint32_t uimm,
->> +                        CPURISCVState *env, uint32_t desc)
->> +{
->> +    uint32_t *vd = vd_vptr;
->> +    uint32_t *vs2 = vs2_vptr;
->> +    uint32_t vl = env->vl;
->> +    uint32_t total_elems = vext_get_total_elems(env, desc, 4);
->> +    uint32_t vta = vext_vta(desc);
->> +
->> +    uimm &= 0b1111;
->> +    if (uimm > 10 || uimm == 0) {
->> +        uimm ^= 0b1000;
->> +    }
->> +
->> +    for (uint32_t i = env->vstart / 4; i < env->vl / 4; i++) {
->> +        uint32_t rk[8];
->> +        static const uint32_t rcon[] = {
->> +            0x01000000, 0x02000000, 0x04000000, 0x08000000, 0x10000000,
->> +            0x20000000, 0x40000000, 0x80000000, 0x1B000000, 0x36000000,
->> +        };
->> +
->> +        rk[0] = bswap32(vs2[i * 4 + H4(0)]);
->> +        rk[1] = bswap32(vs2[i * 4 + H4(1)]);
->> +        rk[2] = bswap32(vs2[i * 4 + H4(2)]);
->> +        rk[3] = bswap32(vs2[i * 4 + H4(3)]);
->> +
->> +        rk[4] = rk[0] ^ (((uint32_t)AES_sbox[(rk[3] >> 16) & 0xff] 
->> << 24) |
->> +                         ((uint32_t)AES_sbox[(rk[3] >> 8) & 0xff] << 
->> 16) |
->> +                         ((uint32_t)AES_sbox[(rk[3] >> 0) & 0xff] << 
->> 8) |
->> +                         ((uint32_t)AES_sbox[(rk[3] >> 24) & 0xff] 
->> << 0))
->> +                      ^ rcon[uimm - 1];
->> +        rk[5] = rk[1] ^ rk[4];
->> +        rk[6] = rk[2] ^ rk[5];
->> +        rk[7] = rk[3] ^ rk[6];
->> +
->> +        vd[i * 4 + H4(0)] = bswap32(rk[4]);
->> +        vd[i * 4 + H4(1)] = bswap32(rk[5]);
->> +        vd[i * 4 + H4(2)] = bswap32(rk[6]);
->> +        vd[i * 4 + H4(3)] = bswap32(rk[7]);
->> +    }
->> +    env->vstart = 0;
->> +    /* set tail elements to 1s */
->> +    vext_set_elems_1s(vd, vta, vl * 4, total_elems * 4);
->> +}
->
-> All of this byte swapping is going to be wrong for a big-endian host.
-> It is also a little bit silly to do for a little-endian host.
->
-> You're byte swapping uint32_t words, then extracting bytes from those 
-> words.  Just extract the exact byte you require from the original 
-> input, using the H1() macro, and now you have correct code for both 
-> big- and little-endian hosts.
->
->
-> r~
->
-I'll fix these byte swapping issues in the v7 patch set.
+Thanks,
 
-Thank you :)
-Max
+C.
+
+
+> 
+>>       pci_device_set_intx_routing_notifier(&vdev->pdev, NULL);
+>>       if (vdev->irqchip_change_notifier.notify) {
+>>           kvm_irqchip_remove_change_notifier(&vdev->irqchip_change_notifier);
+> 
+
 
