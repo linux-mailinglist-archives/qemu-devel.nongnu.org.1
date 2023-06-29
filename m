@@ -2,88 +2,172 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FF037429B7
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 17:33:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6F2C7429BE
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 17:34:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEtdQ-0005UE-EV; Thu, 29 Jun 2023 11:32:40 -0400
+	id 1qEteZ-00067a-TY; Thu, 29 Jun 2023 11:33:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qEtdO-0005Tm-14
- for qemu-devel@nongnu.org; Thu, 29 Jun 2023 11:32:38 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <joao.m.martins@oracle.com>)
+ id 1qEteX-00067S-O3
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 11:33:49 -0400
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qEtdM-00017x-8o
- for qemu-devel@nongnu.org; Thu, 29 Jun 2023 11:32:37 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688052754;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=6z5aApi7TquddGvlZlUt2BDjL7Wzt4iAyn9wHAWlKqU=;
- b=OQg9MrLfrIMMFMMj3cBm5hatjMVht6VMajaDir5+yQpASp5+j+c5RzKWY/fziUtrygyfBC
- PJi1IiwQ8FCiSEe7r4+x7Iu+ItTUQJSAh4CNeSGFXPycF84I+bcS/KSF8PmiHbGt4tEaON
- 7VBnJ5r1xprGkTA4FrfRuM/NoFa2VhE=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-549-hGaGpur6MWCKa2rfdqPDaA-1; Thu, 29 Jun 2023 11:32:33 -0400
-X-MC-Unique: hGaGpur6MWCKa2rfdqPDaA-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-3fa8f8fb7b3so11676165e9.2
- for <qemu-devel@nongnu.org>; Thu, 29 Jun 2023 08:32:33 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688052752; x=1690644752;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=6z5aApi7TquddGvlZlUt2BDjL7Wzt4iAyn9wHAWlKqU=;
- b=bwwWQ1yzRcwPB7xfm5aX4ItAmkbzfXtEyaqwei4wuACeZ4B8+K3ZcqoKcAcqONRMyL
- ZjNMfWX+6m55YC21tueG2GIJy9/WvCHJjMVR72YSRH66p4aa4iBhHIeiNRnTHY9mYG3B
- GtJPuk93693qHdctUrrBcKZmGhi/0whAhaPYhCdZoKsxq04khnaQ2bQHylcznybkjxJ9
- GufgwfbFj+RnOjJTaY1hoXJOOyOrd3i7xxAIEOczW2hL7rZiabHeTEA1sxXEaS71w4le
- 0EBRwmy846NfKoXCw0SV3jNmZU7SocmfsdIix53j9wyjA8klvbpRWKVuBoGLjpIS4nLO
- VQFQ==
-X-Gm-Message-State: AC+VfDyKVD342jKYE+wszWG9qVJOswSjhtBgObFFFQXCcm9Llb3a5bkx
- ruFSmlLEkJpB1U1jCwqiFsDRgWpDr1ijn3inOL/aOB/Fkp9/6S6ghTtvHAaqp9lpoulJJ4wb6n+
- PFBKCi0S0pS7B2HU=
-X-Received: by 2002:a1c:790c:0:b0:3fb:a100:2581 with SMTP id
- l12-20020a1c790c000000b003fba1002581mr9254706wme.14.1688052752505; 
- Thu, 29 Jun 2023 08:32:32 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ4W49ydeQjvqDgYwLNndU4IL3GiPKljY7ljd4FRpyJhBF/R5bJiBSR3X/gSUcpwNpyF8RMqZw==
-X-Received: by 2002:a1c:790c:0:b0:3fb:a100:2581 with SMTP id
- l12-20020a1c790c000000b003fba1002581mr9254687wme.14.1688052752150; 
- Thu, 29 Jun 2023 08:32:32 -0700 (PDT)
-Received: from redhat.com ([2.52.154.169]) by smtp.gmail.com with ESMTPSA id
- i7-20020a05600c290700b003fbb346279dsm4060367wmd.38.2023.06.29.08.32.30
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 29 Jun 2023 08:32:31 -0700 (PDT)
-Date: Thu, 29 Jun 2023 11:32:28 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Ani Sinha <anisinha@redhat.com>
-Cc: qemu-devel <qemu-devel@nongnu.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, jusual@redhat.com,
- imammedo@redhat.com, akihiko.odaki@daynix.com
-Subject: Re: [PATCH v6 5/5] hw/pci: ensure PCIE devices are plugged into only
- slot 0 of PCIE port
-Message-ID: <20230629113141-mutt-send-email-mst@kernel.org>
-References: <20230629040707.115656-1-anisinha@redhat.com>
- <20230629040707.115656-6-anisinha@redhat.com>
- <20230629102421-mutt-send-email-mst@kernel.org>
- <A398CFAA-12F6-447D-A03D-F2DAC79AB1B7@redhat.com>
+ (Exim 4.90_1) (envelope-from <joao.m.martins@oracle.com>)
+ id 1qEteU-0001JA-L1
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 11:33:49 -0400
+Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 35TE7nXU008923; Thu, 29 Jun 2023 15:33:39 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ h=message-id : date :
+ subject : to : cc : references : from : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=corp-2023-03-30;
+ bh=PzUVStL0Cda1SWiIa5Hwq/SXMXMxPDy2YrFgumGrCnI=;
+ b=NQne/U0qNRjox6kEaLjz2SRLQkClH5Fh4do8dRtPp+fUPFWAgwLcVR2ZkRtwzZ/A9UJ7
+ ERL4l8WUrRxwgZpQKa3Lt62yXnkquDExQ3BYYZxmzcPOX9mRzeUm0IN+FtcP5mypeENx
+ Eh+lwPWZfu4eUNJcCVVF6wqkzoGAzr9hzWyKP5fJVezq1SenOlLLNXgQnpLGOB0/2HtK
+ jCJF0NhnuMNfJdYhJlWkQP1osyork9cPVRExtXkz/Jr65aKLRruE9CrTPz9EZoJ2XqUw
+ U+okMXWT8s+5yq7YcLiKAeps1QqcsKkbyGBCFJs3+b+bJxDQbEC7u3CU0KRyZT8nYhWm pA== 
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
+ (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3rds1ucrf0-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 29 Jun 2023 15:33:39 +0000
+Received: from pps.filterd
+ (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+ by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
+ with ESMTP id 35TEeIPP013088; Thu, 29 Jun 2023 15:33:38 GMT
+Received: from nam12-bn8-obe.outbound.protection.outlook.com
+ (mail-bn8nam12lp2174.outbound.protection.outlook.com [104.47.55.174])
+ by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
+ 3rdpx7srjs-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 29 Jun 2023 15:33:36 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=VxsJUHv/zq50uY1gHncNSRogpmGc4GGlL2kFkpA1QambEXb/2WVcOXBvOJmSuKyin6ssKjpfWfJ6g9e+Ap1csgERFZHB0+OYm8ybNW8793YaJkr8Mbi5eLOSrlmGjqgpYj+zHlJovpyE6hAFglJviGTLhJlpJxP3KjcfLQkwMqfJrJS7zWy4qmMc8R6zF8D3r5/ktQK1+yaD2Ck36pjyaq8X3UCN/svzTF8YpR9rp8D3udhqD3E0YWZ4cTAzYPDaZ6MNNPujz/JP06U2JAg2UpmjrKWdgbDCg390Tz3qXrirMMe9dCMIgQ0KLmaJlyYQiLZ4chTjfRUXjr8uxQwokg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=PzUVStL0Cda1SWiIa5Hwq/SXMXMxPDy2YrFgumGrCnI=;
+ b=KWJYXt0OUNWYMQq/AB3Qw5l8dvEt9IPCXt7HPCkzgcltGvqzLnDHzQWv7GCUOUKmP62Vt2O8S7x+PkgwVbHdyGm87mAJnsM+aBg/qVyH1biK3dl08YwHFFoudpP/xh1gxN55EsCMM8BWmU3lpKfAkvLa8k0+xc4fOAHZamRbMhcLf+Pxs4ZxmiIlmPiYUl0xl5oWe55Gz6SOhZga8jCA5Jsi2ovrcJNpPgF8j06f0uU7XA7tQ6zP0FK6/1J22rsJti1FGTtu+eaaBEMxP35zxNqV+HNJ8y9w57fxj+zd/dbC76zQH69ULnG1QybUQO3ReYZfyEXn3Nv9WxUMbA8G7Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=PzUVStL0Cda1SWiIa5Hwq/SXMXMxPDy2YrFgumGrCnI=;
+ b=JKW3nJKA/UYSXmpwBltmKqWIrjKMSd9mk45Sra7KozRqnsFeqBvz6hIVSuRj866DKjbwh+gmsCSIPxHrF1ktLvrLW3EUsDqyx7ngqcLgF3yQ/JBi3Ydvqx8Ho4C5Xu0i/idrVCEF0yhRgi6SGmQwYJiweCHx27ZSGtMPPXUKoaA=
+Received: from BLAPR10MB4835.namprd10.prod.outlook.com (2603:10b6:208:331::11)
+ by CY5PR10MB6071.namprd10.prod.outlook.com (2603:10b6:930:39::12)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6521.24; Thu, 29 Jun
+ 2023 15:33:26 +0000
+Received: from BLAPR10MB4835.namprd10.prod.outlook.com
+ ([fe80::f7ba:4a04:3f37:6d0f]) by BLAPR10MB4835.namprd10.prod.outlook.com
+ ([fe80::f7ba:4a04:3f37:6d0f%5]) with mapi id 15.20.6521.026; Thu, 29 Jun 2023
+ 15:33:26 +0000
+Message-ID: <c32ef5f7-4c42-403c-22b6-734432c01e19@oracle.com>
+Date: Thu, 29 Jun 2023 16:33:20 +0100
+Subject: Re: [PATCH v4 3/5] vfio/pci: Disable INTx in vfio_realize error path
+Content-Language: en-US
+To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>,
+ Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
+Cc: alex.williamson@redhat.com, avihaih@nvidia.com, chao.p.peng@intel.com
+References: <20230629084042.86502-1-zhenzhong.duan@intel.com>
+ <20230629084042.86502-4-zhenzhong.duan@intel.com>
+ <29b6ecd3-d0a1-c914-9bba-cb99d95acd8d@oracle.com>
+ <393d930c-da04-4c86-0f77-615c511df77b@redhat.com>
+From: Joao Martins <joao.m.martins@oracle.com>
+In-Reply-To: <393d930c-da04-4c86-0f77-615c511df77b@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: LO4P123CA0126.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:192::23) To BLAPR10MB4835.namprd10.prod.outlook.com
+ (2603:10b6:208:331::11)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <A398CFAA-12F6-447D-A03D-F2DAC79AB1B7@redhat.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BLAPR10MB4835:EE_|CY5PR10MB6071:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6639d7df-63ca-43dd-8c36-08db78b62e78
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: TGEY57G9f975G8epFdF6lev5zPwBvO69Zs7oMSwp6vs1YBC/x1NnPEwK4yUxF+9iovpHNIZWsO2v0f0a+hqXeX/shp0a3X6cbqEzjVhQUL5iMD7titdGc7vXEi9nw1QIgcUAjqVNr1rtPIo1cMooAJGcky46e36rhFy9uxvbTLC9oYblbI25XQKh/2uoDvXC4oxVZLMkmK805hniGifvFp7UwF54Y6/krwTyoRmws030FaU7ZefAdLU1zlwFmPJmy5AX78dFIPDbnfc/ronq1p8hpPMt/jJji1ceRwPpCDH8XwxtHbXl3kayWokbuxZMchm8cyZnM42MQHxLg5opB2uEXoS4CTExyFk/COPUBDrlMgA44QCWgO1e99tmner5OQ3OuwYy4LsgNG86rxh3uPpR5BAAaZr8zNY79Q8l3K0rXfBfJJnutQ0z2WuyiFskKSFbBYVlQXbMcP6T0lqrruRypKSY6YzcMvCQCxztsg8GvR+sb1HPhswAtd8wYG2ej3uqpNmphN/ZjkwOJjBEA+vOzhBHxe0YUXFbjMOJYu0I3EQtCFXIuNFBhIw2bdag5Z6xmiAUg5nasVF1b5EW+YfSZO/qf+X5ZJFqhj3Sg138u8bsvqfk2q7jLRKoV9GW
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:BLAPR10MB4835.namprd10.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230028)(376002)(346002)(366004)(39860400002)(136003)(396003)(451199021)(6512007)(6666004)(66574015)(2906002)(186003)(6486002)(83380400001)(38100700002)(2616005)(6506007)(53546011)(26005)(86362001)(110136005)(41300700001)(31696002)(478600001)(316002)(36756003)(66556008)(4326008)(31686004)(66946007)(66476007)(5660300002)(8676002)(8936002)(45980500001);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Q3h4b2U3Rlo2c0VKY2VKcGxmTU5KdnVVcE9mOHY5ZWZLWk5vbDlPTk9KSENB?=
+ =?utf-8?B?SE9YL2pMR1EyN1BNdzJZa3NZNDhaalNkR1RnU0xqK1NPNDJ1c2s5TGVLV09R?=
+ =?utf-8?B?bWdwMktOSzcrMm1XVGp4eHA5cWFPSUlwd0d6Z05qVS8rQW5QUE02akhVUGNX?=
+ =?utf-8?B?UldXUDU4bmg0dStnTm9WM3lnUzJnSXBnaThEc3c0T3AwZkVDVlVIaVdoaU1s?=
+ =?utf-8?B?azBsM1FWMTllZTE5b284RGtMQm1NTWMzb3J1VnB6MkdndUNISmVtZzYxdC9U?=
+ =?utf-8?B?Sjg3TGV6RmswelJhamx3eXJKUVE2SHJIQmZhL243NHYra2Q5YzZVVHNvN01Q?=
+ =?utf-8?B?SmYrQ1diZjNzYklsMGgrRlRtQmRBWTRZNkhXcHcrbkZ2a0NGRFJ1dDlTM1RE?=
+ =?utf-8?B?TnBPbkQzL0o4NlpLOGduVHVBZmdROGZJQWFLMjdjeXpuYXo5ZEVLV3BUMzVp?=
+ =?utf-8?B?RExiY3cva0t3TGVZRXc0N05DODI1Z1dYNE4waTZVZERSTzRXWi9sRWYramYz?=
+ =?utf-8?B?b0FoaVFrNmZCS0QvbXZxbnF2ZUkyY1VleE9lZGRwcThGTzdacFhvb0JBcXd0?=
+ =?utf-8?B?QzdkWCtJK0pOM1JESDlWRVAyZE5GaFZJNVRIamZvTDZOZkFYcDNkbU9POUpU?=
+ =?utf-8?B?dlNyZDFULzYwWDZrYjByQVpKYVdqREFYbURwUUxOZjdzUXZadkFFQi9teUZB?=
+ =?utf-8?B?WkV5TERVYmpYdDRKbDEzVVlFVlEyU3EycDNBdDBJdDRZWUEwaG8vaWFTeEtv?=
+ =?utf-8?B?dm5OYm9rK0E5VUFwcXo3N2gwanhjREd6OUJCaGw2TTJ1RkpWVGNhZk1WbGRj?=
+ =?utf-8?B?cUE2L0JGbjJTZEdWWU9ldWwwcWJWaHZ4c1hOQmpZenFDbW0vaDNWMlI5Y202?=
+ =?utf-8?B?QXJWb0t2eXRzc3VaTnVWUXBaNkZCeFBkZXZXUmNrWlpjd3ZReVNBWVFCKzFH?=
+ =?utf-8?B?TmNFaHQvc01lRTBwUCtPV2RkQ3hDeWdrdDFrTnJxaTBKcTFDc1pEa2NoUVJi?=
+ =?utf-8?B?Y0dGbkg4bGl0OHVHR09HbEd6cksxdW50aWczRVg2OHJKb2cwQVIwVEMxem9s?=
+ =?utf-8?B?REdFWGduZ1pGQkNmOVZLdTlaeUdFZzJid0dLcWIyRHZtVmg2WFEyN0ZpNFBw?=
+ =?utf-8?B?M0xUMFUxRzAySW41Wi9PQmtGbGZNbU1FSnZ3U2s3ZGVhUysvUzd3T1ovODJM?=
+ =?utf-8?B?a3pUb0tqZWJhdE1uVE5GLzhzVnY1OXh2NW5FT0lrZXBMdTUzOGUvZWwzQ2V2?=
+ =?utf-8?B?SS9KTmEvTnJLQXZRRGs4blUzKzFicmE5YU9hOU9YeGUrUFRYRGpWdzRPSGlH?=
+ =?utf-8?B?eEllbjlVVkFjQVVoQUM5cG9lK1d3cVlZeG9WZHpMTllINncyNE83eHM0NFRp?=
+ =?utf-8?B?VklQaVZCb2tqSy9rd3VRd1dMRzJxRnQ2eGdDNko2Ujh4L1R0alQzUUE0LzFL?=
+ =?utf-8?B?MFplU0d3a2pEVEtNbmZNeVVqQ0lQMXRxTVIxWGdidUtITzBuWjNuRGZPTXFN?=
+ =?utf-8?B?bjlYaHBhcE1MeG5VRW9SWmJXZVo2UG1mRjNMOUEyQ0tYTXhObVVBVll1VVJr?=
+ =?utf-8?B?Y3NHREV3VWtVVDgzTll4RHlOdVlBaUtOMEMvZnJTYldkYjM4OUpqMkIrZUtL?=
+ =?utf-8?B?SkpRbmdLeThIaHlWUlJYZlE2cmtod20zdm95NHhRWGhidHVvamR5SFIyY3hE?=
+ =?utf-8?B?NFNwMzdLTTlVVEVRWUNmUjAzaEtmS1gxamNFRjk4TkY4aDNCWE1TTXl6RFMx?=
+ =?utf-8?B?S2V3Mm9vd1JzSXEwV0dUaFdMVkVKTm5zWDZsbk53eHU1Sk9LYTBnQTZJY3lR?=
+ =?utf-8?B?OTlmYTlibVZDQXd4d2o0d1pwWVE2SHNzTW4zeW5yRmViQWsyWnhXV2RIREI2?=
+ =?utf-8?B?c1BqNTdrU2kyT1VpQUlnc3RBMnhXeXpUZWdrSnQya3p2b0lrdHZQUndYdFND?=
+ =?utf-8?B?T3dVOHVKRmlyZ29JY2tDWXVjUUthLy9mV3BtcktvQmFQeitmcmZMdEhrNG1X?=
+ =?utf-8?B?cTI1V0Y1NExhY0V5cWR2VUpSNERzZCtnWmlpRzFjT1MyZThYR3JTTnBTeWpZ?=
+ =?utf-8?B?K0lMR0ZlYzVLUkZmVDdBSitQVm94WklpM2ZyQXlseE5MbjlRUkkrNGRpbVNt?=
+ =?utf-8?B?UGVpeWsrdlJ3a1BnaWtpTHNRTWJaU0xWRU5zZitERmF6bnBGYnAyY05YK0Ez?=
+ =?utf-8?B?aGc9PQ==?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: lHBfSDnwMQXhc9rg7V/xZC6jAwYRLwLESCphtizwffygTLcKAyIH+YP/yaN3BIbnFhqWLyRn0eHmhPMfzVxAuUGDOJuxVDDhQIcG52IQyIkqcfi1lT9st+kSeGRPRlqt0GgDUF6pyjm7VxAXSLA0VP25qID7uu+8INgZUqwuMkmiJqkkIRgzXZ8hl8tvDjg8R6dbDIERc74l3zYeEqpvwAxC30g8YPoW4r4TGG6S4cW0bCVPI+5vVE0GeT6PtaUethmfGIUbiUpRLJ8OlIE3W2wkB7uemlq7XsV/nqhaJvPdlfJNxFi0CThj+T31ZBONrOTunJT1od7eE7QibM2ngZFuhs/n/dFLnYwmT84WaMpbU/Xy1WMopobFV5KZTtwI57XWILHP4bgYtYXWaE1j9/zdkokLB7ZXdL17S2Xf8qfL3SyG0Zsti29JSuX2yeH93inpWSOoOZ8MApYOkx3+Msk33ZRQZoAZSMAfLZWN+dBoXY19uWM1b1TxXvQs5pUD/MJ1ZHuSRhdO1imrum+r1YMzYuFfeDaP71ppJpiuz1Xv7knbvL8HKOZ++8aGzG9hUf5d8cO6YxmB1LG6pFaAPQNeW6fSYm5+0eQQhZx9ioUZ6JBJpgHW+Y2kvK5YzKHMMP1XOMt6b7HS3hDTs/h/cNrcPqwrD5S1lxDxYhSdq5x5w/9vPNPMMaGFqmtfnwDV65HQqWBOiyWDAf2THNgQ+kwsBvdwFzX4m99IyjgyKoCHgfxGGYvU1USuvJ4+JzQQVaryBVsMBpQFd+VgAP5jmiqqq1O4g1ZNT9qiczhFbH5Uh93F7BXNBPiBzW+OD6TTJfA9h/+6yZ4SKc0Z9BoSvA==
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6639d7df-63ca-43dd-8c36-08db78b62e78
+X-MS-Exchange-CrossTenant-AuthSource: BLAPR10MB4835.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jun 2023 15:33:26.4708 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 4kuWvoa87VZ6X+p/HKkp5MFUJB/4OYsDkHGYRTT2vI4tM5spp5E5QsEZgDaSJYdM0R9IsBSd2u3JINbxvVOJtJNiY7G5251AbTfqkVl9xio=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR10MB6071
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-06-29_03,2023-06-27_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
+ adultscore=0 bulkscore=0
+ suspectscore=0 mlxscore=0 phishscore=0 malwarescore=0 mlxlogscore=729
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2305260000
+ definitions=main-2306290141
+X-Proofpoint-GUID: uACx8PycGnJdBqEvcZQnHcFXleqjju6i
+X-Proofpoint-ORIG-GUID: uACx8PycGnJdBqEvcZQnHcFXleqjju6i
+Received-SPF: pass client-ip=205.220.165.32;
+ envelope-from=joao.m.martins@oracle.com; helo=mx0a-00069f02.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -101,76 +185,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jun 29, 2023 at 08:07:57PM +0530, Ani Sinha wrote:
-> 
-> 
-> > On 29-Jun-2023, at 7:54 PM, Michael S. Tsirkin <mst@redhat.com> wrote:
-> > 
-> > On Thu, Jun 29, 2023 at 09:37:07AM +0530, Ani Sinha wrote:
-> >> PCI Express ports only have one slot, so PCI Express devices can only be
-> >> plugged into slot 0 on a PCIE port. Enforce it.
-> >> 
-> >> The change has been tested to not break ARI by instantiating seven vfs on an
-> >> emulated igb device (the maximum number of vfs the linux igb driver supports).
-> > 
-> > I guess we need to test with some other device then? 7 VFs is same
-> > slot so hardly a good test.
-> 
-> No its not the same slot. Its using different slots/device numbers. I checked that.
-> The same patch was failing without the vf check.
 
-Ah, playing with VF stride? Could you show the command line please?
 
-> > 
-> >> The vfs are seen to have non-zero device/slot numbers in the conventional
-> >> PCI BDF representation.
-> >> 
-> >> CC: jusual@redhat.com
-> >> CC: imammedo@redhat.com
-> >> CC: akihiko.odaki@daynix.com
-> >> 
-> >> Resolves: https://bugzilla.redhat.com/show_bug.cgi?id=2128929
-> >> Signed-off-by: Ani Sinha <anisinha@redhat.com>
-> >> Reviewed-by: Julia Suvorova <jusual@redhat.com>
-> >> ---
-> >> hw/pci/pci.c | 15 +++++++++++++++
-> >> 1 file changed, 15 insertions(+)
-> >> 
-> >> diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-> >> index e2eb4c3b4a..0320ac2bb3 100644
-> >> --- a/hw/pci/pci.c
-> >> +++ b/hw/pci/pci.c
-> >> @@ -65,6 +65,7 @@ bool pci_available = true;
-> >> static char *pcibus_get_dev_path(DeviceState *dev);
-> >> static char *pcibus_get_fw_dev_path(DeviceState *dev);
-> >> static void pcibus_reset(BusState *qbus);
-> >> +static bool pcie_has_upstream_port(PCIDevice *dev);
-> >> 
-> >> static Property pci_props[] = {
-> >>     DEFINE_PROP_PCI_DEVFN("addr", PCIDevice, devfn, -1),
-> >> @@ -1190,6 +1191,20 @@ static PCIDevice *do_pci_register_device(PCIDevice *pci_dev,
-> >>                    name);
-> >> 
-> >>        return NULL;
-> >> +    } /*
-> >> +       * With SRIOV and ARI, vfs can have non-zero slot in the conventional
-> >> +       * PCI interpretation as all five bits reserved for slot addresses are
-> >> +       * also used for function bits for the various vfs. Ignore that case.
-> >> +       * It is too early here to check for ARI capabilities in the PCI config
-> >> +       * space. Hence, we check for a vf device instead.
-> >> +       */
-> >> +    else if (!pci_is_vf(pci_dev) &&
-> >> +             pcie_has_upstream_port(pci_dev) &&
-> >> +             PCI_SLOT(devfn)) {
-> >> +        error_setg(errp, "PCI: slot %d is not valid for %s,"
-> >> +                   " parent device only allows plugging into slot 0.",
-> >> +                   PCI_SLOT(devfn), name);
-> >> +        return NULL;
-> >>     }
-> >> 
-> >>     pci_dev->devfn = devfn;
-> >> -- 
-> >> 2.39.1
-> > 
-
+On 29/06/2023 16:13, Cédric Le Goater wrote:
+> On 6/29/23 13:24, Joao Martins wrote:
+>> On 29/06/2023 09:40, Zhenzhong Duan wrote:
+>>> When vfio realize fails, INTx isn't disabled if it has been enabled.
+>>> This may confuse host side with unhandled interrupt report.
+>>>
+>>> Add a new label to be used for vfio_intx_enable() failed case.
+>>>
+>>> Fixes: a9994687cb9b ("vfio/display: core & wireup")
+>>> Fixes: b290659fc3dd ("hw/vfio/display: add ramfb support")
+>>> Fixes: c62a0c7ce34e ("vfio/display: add xres + yres properties")
+>>
+>> Sounds to me the correct Fixes tag is the same as first patch i.e.:
+>>
+>> Fixes: c5478fea27ac ("vfio/pci: Respond to KVM irqchip change notifier")
+>>
+>>> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+>>
+>> Looks good, but see some clarifications below.
+>>
+>>> ---
+>>>   hw/vfio/pci.c | 4 +++-
+>>>   1 file changed, 3 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+>>> index ab6645ba60af..54a8179d1c64 100644
+>>> --- a/hw/vfio/pci.c
+>>> +++ b/hw/vfio/pci.c
+>>> @@ -3167,7 +3167,7 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
+>>>           kvm_irqchip_add_change_notifier(&vdev->irqchip_change_notifier);
+>>>           ret = vfio_intx_enable(vdev, errp);
+>>>           if (ret) {
+>>> -            goto out_deregister;
+>>> +            goto out_intx_disable;
+>>>           }
+>>>       }
+>>>   @@ -3220,6 +3220,8 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
+>>>       return;
+>>>     out_deregister:
+>>> +    vfio_disable_interrupts(vdev);
+>>
+>> You are calling vfio_disable_interrupts() when what you want is
+>> vfio_intx_disable() ? But I guess your thinking was to call
+>> vfio_disable_interrupt() which eventually calls vfio_intx_disable() in case INTx
+>> was really setup, thus saving the duplicated check. The MSIx/MSI in realize() I
+>> don't think they will be enabled at this point. Let me know if I misunderstood.
+>>
+>>> +out_intx_disable:
+>>
+>> Maybe 'out_intx_teardown' or 'out_intx_deregister' because you are not really
+>> disabling INTx.
+> 
+> or simply extract from vfio_disable_interrupts() :
+>  
+>     if (vdev->interrupt == VFIO_INT_INTx) {
+>         vfio_intx_disable(vdev);
+>     }
+> 
+> and add the above code before cleaning up the intx routing
+> notifier without any new goto labels.
+> 
+An even better option indeed.
 
