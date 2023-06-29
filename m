@@ -2,89 +2,172 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 327BC74251D
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 13:44:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 52A52742520
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 13:47:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEq4G-0004Lz-Ej; Thu, 29 Jun 2023 07:44:09 -0400
+	id 1qEq6M-0005eW-4s; Thu, 29 Jun 2023 07:46:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qEq49-0004Kd-6n
- for qemu-devel@nongnu.org; Thu, 29 Jun 2023 07:44:02 -0400
-Received: from mail-ot1-x32e.google.com ([2607:f8b0:4864:20::32e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qEq45-0006Md-9D
- for qemu-devel@nongnu.org; Thu, 29 Jun 2023 07:43:59 -0400
-Received: by mail-ot1-x32e.google.com with SMTP id
- 46e09a7af769-6b7279544edso488475a34.0
- for <qemu-devel@nongnu.org>; Thu, 29 Jun 2023 04:43:56 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <joao.m.martins@oracle.com>)
+ id 1qEq6H-0005eJ-RQ
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 07:46:14 -0400
+Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <joao.m.martins@oracle.com>)
+ id 1qEq6F-00079O-Ky
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 07:46:13 -0400
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 35TAoaVL023536; Thu, 29 Jun 2023 11:46:07 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ h=message-id : date :
+ subject : to : cc : references : from : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=corp-2023-03-30;
+ bh=V7xea8I3CZLIcakZyBSu3RThU4wH7WSmGZQlsriOtKE=;
+ b=DYOzsnmai+GGldRf7r/AZJvVZIQ+L+s38DV1YwMxIsJKcU1POJ0PwTjuoTqNB/TaMZIp
+ oNAXGV9j4sa0biVFZ2uXjBLBThCWZAtw72GRs1atDTS8KntviAGV+/JhLU8y75IB+5MP
+ kBofv0DPQgH+xL7DjLs0xyT4QHWIeRCqXD9F7TqSnGo7XQO95pB5QyfMNCZNeHBhEtd1
+ fmVdutvUXPfs9gM3JAhaXsyaPRKxdbasZzIsDq+LNdlgjuKauOXQ59TBP0vMXAetkoAx
+ Eda0PuoGnLtxLbGEgA4g/C1JR8vWdKTcwRyJDZe44gTjS/AqK1ExslhBgDgwrJiAFI1F xQ== 
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
+ (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3rdpwdkr92-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 29 Jun 2023 11:46:07 +0000
+Received: from pps.filterd
+ (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+ by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
+ with ESMTP id 35TAKOpn029607; Thu, 29 Jun 2023 11:46:06 GMT
+Received: from nam11-bn8-obe.outbound.protection.outlook.com
+ (mail-bn8nam11lp2168.outbound.protection.outlook.com [104.47.58.168])
+ by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
+ 3rdpx79e4u-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 29 Jun 2023 11:46:06 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=dpf7QRTgUYuzZnFf3rsTqn6gdwwnV34V5rhk6Pf82UYhtt0+2SH2Qzbj2okinT58jl40w+hhoDXb2DYhDpgx/1HTFLFYQaX7ZY4SNxPmbn0OhIryAGlKiotLuPZCVH67dlN91gFcKtBye49/PIVkfVf1wVdWQfTUV/v2V3Js9mVY8gKJw+3jr68YQghatcC6Y1a2VUdMzibkR+1kI6KuXzoyUodVTa10IkT+ODU+TBydbHOgfSc7+gXAajwWtlFxPetjAmBN1GVjJMf8F1h8z5xj+PUzgcTz7zQAXLqr5Xt3TD7L7WQ2aLHgS0PsWhaPHhKJiaVl9f11Cjz8dq/ufw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=V7xea8I3CZLIcakZyBSu3RThU4wH7WSmGZQlsriOtKE=;
+ b=IZyPU4AyhNlX8UAiwhYYAncYrYqjY7dsCsh4opl6dV+iuBYDG1uf3VhQP65SetccxUzirAtnriD8sHQclsDSooJ2QBUK39EAuPtxGD86Efc67nDVTifZZet9362nATiFygJg1F65EDXuxQVTwyE1onR66JxnW7DZa0OyIHQCNPrrKfIB85kUwKjvWVm0nAOFiUbGzAtDywYC0Xow/6LUiAj1CBStdGcUYKmUL69sx2gZ9wd74qz04Q+Jti7iYlqfl0UHD+WlRhwQkGycXbBuqcg3UJ2VJQGQbuIhNdSxfIEejrgWid4oy2Prux6I0l9Xk4IyJllsVkRrApAMawk0Ew==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1688039035; x=1690631035;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=BzJ4onS5qWK8tOLGFk2qneVAUPyHwIXqCYkytit7om0=;
- b=W4MaHGaBz6taubP05CAwQdFSn0QWFnVbVKY+kZaLyXhdRhDiA8t+SRQV9bKpCwiSM/
- A0ufGny/bb+IFXSC+HCBBPanGj5dWtRUHrYNSoThFuYaNKAyuve4QA7lt2sbR4ATJZkg
- NzdmW+Z47gvfm+zDtnycuyitJKlAXsl1zrsaPHwb+QDEAlFtCt02KCnOWsW7TpuWiE5X
- teGiB9vuf9Z+GnmIn/pl2D+lRUZw3ovljL6w58tdX7xLRxkun0WxatRbFXNWW01p3nES
- MdOv2KsagV/jEGvxDO3bR5uNdQ+d2J/q+Ssz4swaYIJ9b3Gfz9Y70AWKqx0CeiQnZOLx
- n7ig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688039035; x=1690631035;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=BzJ4onS5qWK8tOLGFk2qneVAUPyHwIXqCYkytit7om0=;
- b=HkBwa6q9aK6w0qIcFHLSAI2e0XJ9h9YsXlrrwa1ZhCJTLiDBY2YW4MgU4xZP8ykRki
- wSG0h6fXnSKC3vDvwJ8F9JEQjs86ZHlGEQiezdghQ0hKkrBLirhiOO6d+CL2YZi6xdrk
- KYb6B/ZBNeKi9a27ZJ95r1/mYDqEVT6ozasSNOD3foZp4FhnHq/VKEhdjfJ5/APP8Nyc
- V6ZTqBh1qGVSDB0TtYQB/pPn+iTWiBiPHAmVnHOge6XxrQz2V5Gjn0WaDgYNhU/3vzy7
- YbNrAxhNMZuiDy8PfqsJFx5WX3Doa9Y3LlqLj+fb2rwPsan6fJPjckstq1PxrsgusbFd
- pt3A==
-X-Gm-Message-State: AC+VfDyAXdd6T+AK4Lel9VM9o0DJmBg3m5Q5ll4UFdoL+Z+hHFdEL8eA
- b6pMB64tUyfvdjh2TL62BcoeCw==
-X-Google-Smtp-Source: ACHHUZ6VVxE9wcVIL1ZDoHQiT15ovUonSYsUF8urTNNhTDJb0TTQrNm+uoPW0vUvuANr8vvb7ZkFgg==
-X-Received: by 2002:a05:6830:3:b0:6b8:85c4:2390 with SMTP id
- c3-20020a056830000300b006b885c42390mr3278742otp.25.1688039035526; 
- Thu, 29 Jun 2023 04:43:55 -0700 (PDT)
-Received: from ?IPV6:2804:7f0:bcc0:bdf2:b7ba:a476:c0e3:fb59?
- ([2804:7f0:bcc0:bdf2:b7ba:a476:c0e3:fb59])
- by smtp.gmail.com with ESMTPSA id
- f23-20020a9d6c17000000b006b74bea76c0sm4024248otq.47.2023.06.29.04.43.52
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 29 Jun 2023 04:43:54 -0700 (PDT)
-Message-ID: <c6a4c7d6-881e-50a2-0eb8-3b6b411c4a91@ventanamicro.com>
-Date: Thu, 29 Jun 2023 08:43:50 -0300
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH v6 11/20] target/riscv/cpu: add misa_ext_info_arr[]
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=V7xea8I3CZLIcakZyBSu3RThU4wH7WSmGZQlsriOtKE=;
+ b=GenDjgYwh9HKOaoZFCasprBYQeSEQotrMtLJXWtSTtGUHJ+c5fmbmyt+NDpU7qNGGKyUnuLjjfFIY4H+cJPiQCfLFVxmUKyCbwPGwJ0kJ+2bNziAeDjZ7OpZJfUxIDwd16bQUfN+2LrdAU0sZiYv8WxCP3AxdwBTd5tQRl2eglo=
+Received: from BLAPR10MB4835.namprd10.prod.outlook.com (2603:10b6:208:331::11)
+ by SN7PR10MB6306.namprd10.prod.outlook.com (2603:10b6:806:272::15)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6521.23; Thu, 29 Jun
+ 2023 11:46:04 +0000
+Received: from BLAPR10MB4835.namprd10.prod.outlook.com
+ ([fe80::f7ba:4a04:3f37:6d0f]) by BLAPR10MB4835.namprd10.prod.outlook.com
+ ([fe80::f7ba:4a04:3f37:6d0f%5]) with mapi id 15.20.6521.026; Thu, 29 Jun 2023
+ 11:46:04 +0000
+Message-ID: <346b1c73-0efb-e339-dbbf-c4ae41e85861@oracle.com>
+Date: Thu, 29 Jun 2023 12:45:58 +0100
+Subject: Re: [PATCH v4 4/5] vfio/pci: Free resources when
+ vfio_migration_realize fails
 Content-Language: en-US
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
- liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
- ajones@ventanamicro.com
-References: <20230628213033.170315-1-dbarboza@ventanamicro.com>
- <20230628213033.170315-12-dbarboza@ventanamicro.com>
- <053d4c93-6501-257c-5473-3de78d5635b5@linaro.org>
- <ff4ccd13-2dfe-ce52-3528-d302578e1fed@ventanamicro.com>
-In-Reply-To: <ff4ccd13-2dfe-ce52-3528-d302578e1fed@ventanamicro.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::32e;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-ot1-x32e.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
+Cc: alex.williamson@redhat.com, clg@redhat.com, avihaih@nvidia.com,
+ chao.p.peng@intel.com
+References: <20230629084042.86502-1-zhenzhong.duan@intel.com>
+ <20230629084042.86502-5-zhenzhong.duan@intel.com>
+From: Joao Martins <joao.m.martins@oracle.com>
+In-Reply-To: <20230629084042.86502-5-zhenzhong.duan@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: LO2P265CA0280.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:a1::28) To BLAPR10MB4835.namprd10.prod.outlook.com
+ (2603:10b6:208:331::11)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BLAPR10MB4835:EE_|SN7PR10MB6306:EE_
+X-MS-Office365-Filtering-Correlation-Id: 21da7b97-f3d2-45b4-2ba1-08db78966af7
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: d6Z4NKhtf2PBwAkrtuRkZN1qTV21THHjLLSQ6BbI2Nq5bds27tksKbTUrBn9BDssW5ftdBBqkKQmzaSNWGbDeXxjU8uBjkreQIGIQ5/b/5CxXZPsLdY9DGruKi/SqvJFpX6BIbDqwE8Mtytvzj+Gyh0P6k5WSqQbXpYkX7oVud1FIPoeIY/BY192SSylkwKTDGfi9QCyvxflgEAcvwmzD5dkHhyE6ku/o5vCuHwEL1PjEFSO0nmJHFWFbnXHvOlZoFsnLGdK5K23CjFGPwVqeNYhFy+XiZ5vhPzvBKl/6Ca9y9GobFaU9+5rENAKYoBy7mnistiCTU2BHc/mUhyqMLk4m30DVKqSl8IfPGJM1Mf9wspHr8DkTh+3MkJVXBuiMnepj3x11c3eDQahUW4dyC3rL5XCcC65YghCGIMdkZmulqDIH1jEQ7Kaf6K7oJHJEvEJqwCtEIy3FSfG+ENQJWfmLOjvGMcN95lLWdC53Y3Dikzg1rUpZI3p/8WsDrCqpPuJLdDJgT1U4Nxmv38iIkeF6pHxlUgT7rdquG6MhpjKYCjxgsFKYIVBzn/z+wKIzdxOqvUh90WBoxrY5llDQd6FzNtGku0ebXF6MRKJWENGwQO9eKP9t9/dZvkuoHLS
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:BLAPR10MB4835.namprd10.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230028)(376002)(136003)(366004)(39860400002)(396003)(346002)(451199021)(66476007)(8676002)(41300700001)(66556008)(316002)(8936002)(66946007)(6506007)(26005)(186003)(6512007)(53546011)(478600001)(6666004)(4326008)(2616005)(6486002)(2906002)(5660300002)(38100700002)(36756003)(31696002)(31686004)(86362001)(83380400001)(45980500001);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?SnFiOUk0TkVKQndFbkhROEdCSW1KYVlvZEZPS1pZYXhyUEpucVVxZHhpdHpi?=
+ =?utf-8?B?ZGtOTmVRRTBobldOWkY2eGVzajdFZHpDYnZ2bU5CYStDSUgwRFpOOTlhcjZP?=
+ =?utf-8?B?VEpieitwdDZicThOY1FvODdaQ2tPM2RxNldJa09ydmN3NTRkOU8wUVBxTDg4?=
+ =?utf-8?B?YzRydVp4NjczVW4xWEI0bG9KbHM5bjAxMGYwQ0NkVER1Qjg4ZkJ1YllucGEx?=
+ =?utf-8?B?R2gyMjdxUWMwZjN4aW5HWklqeDF0WnNidUZ4VDNGSUpnZjRBK3hhMVUrc1lS?=
+ =?utf-8?B?dzJ3ZDlpY3pzMHlTL242UStSYTBObko2dTlJcm4wZ0VoQVgwN055STkyS0NM?=
+ =?utf-8?B?WnBqNFpvQSsvR0RLRXBJM0dKN3BHWERIS3A5d2RmZ1RiYy9XYWhCQ0xTV1kw?=
+ =?utf-8?B?QUVrdWFpeWNrcG5vMzZXajgyaStmY082UzAvZzJ3cUFmL001UUdOdExac3g0?=
+ =?utf-8?B?ZG92YXlxWFJkaGRKOXYxVDNLN3BBSnJHaldQQnIxOCt1RXM3UFNGQWNVeW9w?=
+ =?utf-8?B?THI2S0JHMWNHcUtwemRRZWlleXJFT2VLeTF4RjZrWWt6UXBsSXh2UXB6bFhk?=
+ =?utf-8?B?eHRDTForUTZwdXBWanZ4Tkhidmo1SU15VVlDa3ZLTUdrM0JSWC9VeXUvRnN6?=
+ =?utf-8?B?WEVhMGFJY0hpV2dDSEtUTnRXTm9DalFlcm9JSzZXVUdFakdyZWZJTkdYck5x?=
+ =?utf-8?B?RWJveitTUmhGVERrZ2dLYUhxZXlwbG05V2VIcnBRUHIxOVcxTkFyZmFWS2do?=
+ =?utf-8?B?RGc4T2VDTm5wK2d3MExtekJWVW1oS1RGU1pydU40Q0l1SG1oSUlwR1plQ1VS?=
+ =?utf-8?B?bTlyaFAwWUwzcEhBK01DdmUxcGtUMEpGUGxzam8xVTFMaEV2bG8wRXJMRlhL?=
+ =?utf-8?B?cHdnU1BFNmRhMm5BSkZoNGdQRmRsUHNDMEZqMElOVHl0ZExUVDU5UzJmVG43?=
+ =?utf-8?B?dmtIU0NTTnNFWXErTVVrUi8rbjFHNUU3Y0pKemJQYlJoSXdhSHRZdEtoR045?=
+ =?utf-8?B?dkJYeVdLd0ltcGU0ZTZSNXhyT3dUQTM1bHNPcTBJUXc3STgzOUJoeXdsU014?=
+ =?utf-8?B?N0NNcitPaDArY2JYd2Yvd2ZPZ1FZZGNQLzE1eFZyWHBRZUZlN2ZvYnN1eXlt?=
+ =?utf-8?B?RlBncU1Jb3I3TzJrL0F4QmRDRnNTaTRqcWlTLyt6dFNaTmlKeC9FV3E5R1A0?=
+ =?utf-8?B?TmRueFNJbmFackZLU3FzNVYyZGxzeXk1Z1Z2NWd0MmRBT09WcnF1SEZwRGR6?=
+ =?utf-8?B?Ynd4U29uZWhZa3ZFZ0dFcXd3dHNjeHl6V0M0REUyYzdHSlV0MkM0UXFYNWVZ?=
+ =?utf-8?B?VERocjlTSEx4ajdKRHdNa0I3M1NPMThPNHp0b1grM056dmlGV3E1Y014ZjR6?=
+ =?utf-8?B?K0ZGakI5VmNQbmU4MHNEMlpPeE9NUTZpT2lMYUpNcmRXRkZaRDU1bEpFbDdR?=
+ =?utf-8?B?enpFZ1hRam04dFdNdVA4VkVFVlZYY1M4OWpVaXhjalZyOWViaUI5cGROSnhK?=
+ =?utf-8?B?SU9jWmFucHFWcUlnWkJ4OGdlOEFXRWxoeFVQWEQvNXFxbnNmd0lDNklySkx0?=
+ =?utf-8?B?eHFKTFQ0UzJkUVdpQWlXVXJMWEJxMHBVTDc1bDVtR0IrcmJ3emdyTlhCSkVr?=
+ =?utf-8?B?ZW80WnYrdloxSHZOa3dQWXhHYkdWSHhkOGdadlBwcExaZnJNOWlYWXNOcHpO?=
+ =?utf-8?B?NmJ3NFdNODhqYmQ2a1g0TGFXMFJYN3hyNDRvL1d5SUZHOHpWNFd5ajcwZFBD?=
+ =?utf-8?B?cGQ4dGl2QTFPalBleTNmd1R4Y1ZJV1dLQTZkUzRjb3YyNmliZTJ1SE9uMjdL?=
+ =?utf-8?B?NFcwOTlVcFlPYU9KQW9sL2xkTlZlVEFhWW8vNmJRb0tldktaM1IwN3QyTGFu?=
+ =?utf-8?B?V2ZYeUg4WktHWE9vYVYrelA3SHdLT0FodDJFb01HeXpnT3JKd2J1YWZXWFNZ?=
+ =?utf-8?B?Y3JCeE05TUU0Y05iMkozMVFYUWFPUWtjMVVhNDU1K3ZzYkgrUWNmdTNBaWJ4?=
+ =?utf-8?B?Vks5bjBqbDB3dk9kZVhCVzdHWnQzVG5YSkREaUZlRjBVUXVWOEcrTmNPTk5q?=
+ =?utf-8?B?VGFyYVZwdThaUG1GZ0UwOThLWmZCZDBta3hzd21Ya2M2dXl6amtudXFWS3VJ?=
+ =?utf-8?B?ZUNvM0xRN1A0cmdmTWx0Zk9DUEhuTGJGY0RaaWIvZWVRb25NdDBRS2JqVTk0?=
+ =?utf-8?B?aHc9PQ==?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: jQGhk/hiUGAS97d08dBBfei+WyYoFrPgZ/59xTs1AsPlmfSe8VLPEq1abe6b0HFDfJSHPsVFumBTfuz8CapwSF06MpM60OBkHyLbxsTMEPIOAt/9qPJPbfDZxEQKuHP/WuLdqHEIAZH5EmElY+ygfIQIJugNUWjStogDpNVDIACMdGYThXc30Z5+gbzEK7+YGGWKjttXl4wUrR2KjGQtYi+RlKxOrTEWADtCq+kbhJT9wHjlkc2qQizJNE4iYhfY1c5hJyEbqhB3GFit6kECNJI4ihpcs9TT1ds695RVWWPkFD1jgTJZfXSkRhTbO29awEFyhqg0eFm+VhRQ1vk0ay4Uvw2IWFWuoNrjh4EBCsXOmvSvF6M4A+sf4tJBWc9Q/J8/MTcUCYzJ1rYj/3YPUed6vDM/w4QMYd+Fm807BHYjPZ9tEPG4imeSPGw+XV+HeiRbPNsNVBj8wygioFK4BGTqPMrjmgmhRtroi6BdQ5eS8fn6XIyYHg24Ba11eBpSva/CflI0MHvd9G5VKihyF+MkdA4G5PIBlsr4TZK2piL2puzxF/LhLzlo8D5QUoa9AWnbEwQOQOxi/TM2WAgK1qAI13f5VktReiTHloYhXlVohsT+mRAqh+/rirCxZ6U8iTeenBAJevA6OQ1z4jbGhL6ZNTRiASz+ALUGRzdvmNtK3pwc+WVOkYXlUpccI68mFfRq4YmYSraaFuIsB+4wZTeKyri/ZQVTv1uS7ZQ9ZuwlKft9QuJFlWYQw5q3qUxwQpnLtHgnsD0rXAf9eQ3KDwfWaIsHyvzP90pxaLtBxIKONslTStpw9VQGQCXWixqbfG/J/AfwZFJysikqt08y7A==
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 21da7b97-f3d2-45b4-2ba1-08db78966af7
+X-MS-Exchange-CrossTenant-AuthSource: BLAPR10MB4835.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jun 2023 11:46:03.9616 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: FHnH08zqxN1pCXv9gHRT178Pp82v1yyjBoCaim3Kuf/7RH62uqE8xQ8oVFntiwPEeQ2ej7IA0MPZF0NbROgESbS6gz9bmlut3wPRXGuTzzE=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR10MB6306
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-06-29_03,2023-06-27_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
+ suspectscore=0
+ malwarescore=0 adultscore=0 mlxlogscore=999 phishscore=0 bulkscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2305260000 definitions=main-2306290105
+X-Proofpoint-GUID: YrXndKdj9bDVcYAXczZuKKRwa7wo7Bg0
+X-Proofpoint-ORIG-GUID: YrXndKdj9bDVcYAXczZuKKRwa7wo7Bg0
+Received-SPF: pass client-ip=205.220.177.32;
+ envelope-from=joao.m.martins@oracle.com; helo=mx0b-00069f02.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.093,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -101,160 +184,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-On 6/29/23 08:36, Daniel Henrique Barboza wrote:
+On 29/06/2023 09:40, Zhenzhong Duan wrote:
+> When vfio_realize() succeeds, hot unplug will call vfio_exitfn()
+> to free resources allocated in vfio_realize(); when vfio_realize()
+> fails, vfio_exitfn() is never called and we need to free resources
+> in vfio_realize().
 > 
+> In the case that vfio_migration_realize() fails,
+> e.g: with -only-migratable & enable-migration=off, we see below:
 > 
-> On 6/29/23 04:26, Philippe Mathieu-Daudé wrote:
->> On 28/6/23 23:30, Daniel Henrique Barboza wrote:
->>> Next patch will add KVM specific user properties for both MISA and
->>> multi-letter extensions. For MISA extensions we want to make use of what
->>> is already available in misa_ext_cfgs[] to avoid code repetition.
->>>
->>> misa_ext_info_arr[] array will hold name and description for each MISA
->>> extension that misa_ext_cfgs[] is declaring. We'll then use this new
->>> array in KVM code to avoid duplicating strings.
->>>
->>> There's nothing holding us back from doing the same with multi-letter
->>> extensions. For now doing just with MISA extensions is enough.
->>>
->>> Suggested-by: Andrew Jones <ajones@ventanamicro.com>
->>> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
->>> ---
->>>   target/riscv/cpu.c | 83 ++++++++++++++++++++++++++++++----------------
->>>   target/riscv/cpu.h |  7 +++-
->>>   2 files changed, 61 insertions(+), 29 deletions(-)
->>>
->>> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
->>> index 2485e820f8..90dd2078ae 100644
->>> --- a/target/riscv/cpu.c
->>> +++ b/target/riscv/cpu.c
->>> @@ -1558,33 +1558,57 @@ static void cpu_get_misa_ext_cfg(Object *obj, Visitor *v, const char *name,
->>>       visit_type_bool(v, name, &value, errp);
->>>   }
->>> -static const RISCVCPUMisaExtConfig misa_ext_cfgs[] = {
->>> -    {.name = "a", .description = "Atomic instructions",
->>> -     .misa_bit = RVA, .enabled = true},
->>> -    {.name = "c", .description = "Compressed instructions",
->>> -     .misa_bit = RVC, .enabled = true},
->>> -    {.name = "d", .description = "Double-precision float point",
->>> -     .misa_bit = RVD, .enabled = true},
->>> -    {.name = "f", .description = "Single-precision float point",
->>> -     .misa_bit = RVF, .enabled = true},
->>> -    {.name = "i", .description = "Base integer instruction set",
->>> -     .misa_bit = RVI, .enabled = true},
->>> -    {.name = "e", .description = "Base integer instruction set (embedded)",
->>> -     .misa_bit = RVE, .enabled = false},
->>> -    {.name = "m", .description = "Integer multiplication and division",
->>> -     .misa_bit = RVM, .enabled = true},
->>> -    {.name = "s", .description = "Supervisor-level instructions",
->>> -     .misa_bit = RVS, .enabled = true},
->>> -    {.name = "u", .description = "User-level instructions",
->>> -     .misa_bit = RVU, .enabled = true},
->>> -    {.name = "h", .description = "Hypervisor",
->>> -     .misa_bit = RVH, .enabled = true},
->>> -    {.name = "x-j", .description = "Dynamic translated languages",
->>> -     .misa_bit = RVJ, .enabled = false},
->>> -    {.name = "v", .description = "Vector operations",
->>> -     .misa_bit = RVV, .enabled = false},
->>> -    {.name = "g", .description = "General purpose (IMAFD_Zicsr_Zifencei)",
->>> -     .misa_bit = RVG, .enabled = false},
->>> +typedef struct misa_ext_info {
->>> +    const char *name;
->>> +    const char *description;
->>> +} MISAExtInfo;
->>> +
->>> +#define MISA_EXT_INFO(_idx, _propname, _descr) \
->>> +    [(_idx - 'A')] = {.name = _propname, .description = _descr}
->>> +
->>> +static const MISAExtInfo misa_ext_info_arr[] = {
->>> +    MISA_EXT_INFO('A', "a", "Atomic instructions"),
->>> +    MISA_EXT_INFO('C', "c", "Compressed instructions"),
->>> +    MISA_EXT_INFO('D', "d", "Double-precision float point"),
->>> +    MISA_EXT_INFO('F', "f", "Single-precision float point"),
->>> +    MISA_EXT_INFO('I', "i", "Base integer instruction set"),
->>> +    MISA_EXT_INFO('E', "e", "Base integer instruction set (embedded)"),
->>> +    MISA_EXT_INFO('M', "m", "Integer multiplication and division"),
->>> +    MISA_EXT_INFO('S', "s", "Supervisor-level instructions"),
->>> +    MISA_EXT_INFO('U', "u", "User-level instructions"),
->>> +    MISA_EXT_INFO('H', "h", "Hypervisor"),
->>> +    MISA_EXT_INFO('J', "x-j", "Dynamic translated languages"),
->>> +    MISA_EXT_INFO('V', "v", "Vector operations"),
->>> +    MISA_EXT_INFO('G', "g", "General purpose (IMAFD_Zicsr_Zifencei)"),
->>> +};
->>> +
->>> +const char *riscv_get_misa_ext_name(uint32_t bit)
->>> +{
->>
->> Is that OK to return NULL, or should we assert for
->> unimplemented bit/feature?
-
-It's easier to assert out if name or description is NULL (meaning that we don't
-implement the bit).
-
-
->>
->>> +    return misa_ext_info_arr[ctz32(bit)].name;
->>> +}
->>> +
->>> +const char *riscv_get_misa_ext_descr(uint32_t bit)
->>> +{
->>> +    return misa_ext_info_arr[ctz32(bit)].description;
->>
->> Ditto.
->>
->>> +}
->>> +
->>> +#define MISA_CFG(_bit, _enabled) \
->>> +    {.misa_bit = _bit, .enabled = _enabled}
->>> +
->>> +static RISCVCPUMisaExtConfig misa_ext_cfgs[] = {
->>
->> 'const'
+> (qemu) device_add vfio-pci,host=81:11.1,id=vfio1,bus=root1,enable-migration=off
+> 0000:81:11.1: Migration disabled
+> Error: disallowing migration blocker (--only-migratable) for: 0000:81:11.1: Migration is disabled for VFIO device
 > 
-> Not sure why I got rid of 'const' here. I'll reintroduce it.
-
-Just remembered why. 'name' and 'description' are being initialized during runtime, so
-the array can't be 'const'.
-
-If we managed to init everything in the macro like Drew suggested we can keep it 'const'.
-
-
-Daniel
-
+> If we hotplug again we should see same log as above, but we see:
+> (qemu) device_add vfio-pci,host=81:11.1,id=vfio1,bus=root1,enable-migration=off
+> Error: vfio 0000:81:11.1: device is already attached
 > 
+> That's because some references to VFIO device isn't released,
+> we should check return value of vfio_migration_realize() and
+> release the references, then VFIO device will be truely
+> released when hotplug fails.
 > 
-> Daniel
+> Fixes: a22651053b59 ("vfio: Make vfio-pci device migration capable")
+> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+> ---
+>  hw/vfio/pci.c | 3 +++
+>  1 file changed, 3 insertions(+)
 > 
->>
->>> +    MISA_CFG(RVA, true),
->>> +    MISA_CFG(RVC, true),
->>> +    MISA_CFG(RVD, true),
->>> +    MISA_CFG(RVF, true),
->>> +    MISA_CFG(RVI, true),
->>> +    MISA_CFG(RVE, false),
->>> +    MISA_CFG(RVM, true),
->>> +    MISA_CFG(RVS, true),
->>> +    MISA_CFG(RVU, true),
->>> +    MISA_CFG(RVH, true),
->>> +    MISA_CFG(RVJ, false),
->>> +    MISA_CFG(RVV, false),
->>> +    MISA_CFG(RVG, false),
->>>   };
->>>   static void riscv_cpu_add_misa_properties(Object *cpu_obj)
->>> @@ -1592,7 +1616,10 @@ static void riscv_cpu_add_misa_properties(Object *cpu_obj)
->>>       int i;
->>>       for (i = 0; i < ARRAY_SIZE(misa_ext_cfgs); i++) {
->>> -        const RISCVCPUMisaExtConfig *misa_cfg = &misa_ext_cfgs[i];
->>> +        RISCVCPUMisaExtConfig *misa_cfg = &misa_ext_cfgs[i];
->>
->> const
->>
->>> +
->>> +        misa_cfg->name = riscv_get_misa_ext_name(misa_cfg->misa_bit);
->>> +        misa_cfg->description = riscv_get_misa_ext_descr(misa_cfg->misa_bit);
->>
->> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->>
+> diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+> index 54a8179d1c64..dc69d3031b24 100644
+> --- a/hw/vfio/pci.c
+> +++ b/hw/vfio/pci.c
+> @@ -3210,6 +3210,7 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
+>          ret = vfio_migration_realize(vbasedev, errp);
+>          if (ret) {
+>              error_report("%s: Migration disabled", vbasedev->name);
+> +            goto out_vfio_migration;
+>          }
+>      }
+>  
+> @@ -3219,6 +3220,8 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
+>  
+>      return;
+>  
+> +out_vfio_migration:
+> +    vfio_migration_exit(vbasedev);
+>  out_deregister:
+>      vfio_disable_interrupts(vdev);
+>  out_intx_disable:
+
+I agree with the general sentiment behind the change.
+Clearly vfio::migration and vfio::migration_blocker are leaking from inside the
+migration_realize() function.
+
+But it is kinda awkward semantic that vfio_migration_realize() (or any realize)
+failures need to be accompanied with a vfio_migration_exit() that tears down
+state *leaked* by its realize() failure.
+
+It sounds to me that this should be inside the vfio_migration_realize() not on
+the caller? Unless QEMU ::realize() is expected to do this.
 
