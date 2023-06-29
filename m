@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7E347423DC
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 12:20:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E232D7423DF
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 12:20:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEokK-0000Bf-KE; Thu, 29 Jun 2023 06:19:28 -0400
+	id 1qEokL-0000DM-7D; Thu, 29 Jun 2023 06:19:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qEokI-0000AC-DB
- for qemu-devel@nongnu.org; Thu, 29 Jun 2023 06:19:26 -0400
+ id 1qEokJ-0000B6-PV
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 06:19:27 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qEokG-0005md-WD
- for qemu-devel@nongnu.org; Thu, 29 Jun 2023 06:19:26 -0400
+ id 1qEokI-0005mq-DL
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 06:19:27 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688033964;
+ s=mimecast20190719; t=1688033965;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=2c2zkm/eZJfTbSTlhRHnPmwWrHu8YrErxYEAgI8Iwts=;
- b=hTSa4SpcE2czCGVGqLnsUOH/VbcXfk3ffJUHYPs6KhEucqteBnQEwMLkHIxjwT2moNGvHF
- uTK6St35DNJj/qm/+IvKU2qe5LBuP+htVhpWpdKECCkqbVoEIN2LUn1kdwbe+XhhatXiMR
- QCGhc6WZDNJ32aI2UC/4coVX+rr3BoU=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=r6eYcQOpdQGaBIAyIqv467VGeA30T2RXy/LIF4+Ra8w=;
+ b=ER7/xR/mf2puunsjDW52w2zNnYRFcJLl3i6jd5I4ZYCld9wj189jM4hr0ls9uXlgvLSONu
+ myNgNW9J+i9qZFpznFtVklDZVjXJdZvf664YFtITbGcRoB4l3syE8rGBK9Tm7isK9MOjVf
+ JXwk08PjtfNrvWAAPA8A/SJ25Li/J98=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-97-p6YomXHOMQWy5foapAK7oA-1; Thu, 29 Jun 2023 06:19:23 -0400
-X-MC-Unique: p6YomXHOMQWy5foapAK7oA-1
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-9874fbf5c95so65372566b.1
- for <qemu-devel@nongnu.org>; Thu, 29 Jun 2023 03:19:23 -0700 (PDT)
+ us-mta-65-0d4rw4wPNsGrDO2Wllt1Kw-1; Thu, 29 Jun 2023 06:19:24 -0400
+X-MC-Unique: 0d4rw4wPNsGrDO2Wllt1Kw-1
+Received: by mail-ed1-f71.google.com with SMTP id
+ 4fb4d7f45d1cf-51dd16f823bso402123a12.0
+ for <qemu-devel@nongnu.org>; Thu, 29 Jun 2023 03:19:24 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688033961; x=1690625961;
+ d=1e100.net; s=20221208; t=1688033963; x=1690625963;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=2c2zkm/eZJfTbSTlhRHnPmwWrHu8YrErxYEAgI8Iwts=;
- b=A9ubyHnxngeVFdReQYa0TEhAVZ7JS2XnUSQoq+sMYAQI2c5KfQSK9e94Bnr3XXuBU8
- qP8mFBrjKbxxsanF8nmLtgifkUodL6UtiLqkEh7lKNlfZ5+hIU6hv7debJzZ8NoIfUcW
- 6Dy+BPBsTyl8OR/tCyfq9ZxyT+xfH0JsrWS05JSMwVhO4XaWDRafe3/99bRtaO83+R5L
- FHYeN82GXPs36mgXGdcHmZZmtqAdy5mqkUOqcRhqLk23Fgam6rCe+b/wGaOWXcXYby0/
- 3sEToRVDge3ybtHMByYrSMwfWccKJVY4qoJ21tVo/YsPIVWUlyEu13JI7N/RCMI+k7L0
- xBhQ==
-X-Gm-Message-State: AC+VfDwB7X8uSBRla7NgmvCkGCCZmIH1zXQqUEUsTz75XS3/9K6Ckorp
- oKaXBACIj+hS5uwYjp7QkiNMN1b8bHOg/n0VhDdZCzkm2TgVg9I0RQlvuvGOQaBaIu5+ry+AdnV
- touZpFIXU7vuLsKbR6Yw0FQBTs9JBDqUmxA2Re5HCv6HYyoYooFKWaGzsxfxDxRsbgyAtqj/X4k
- o=
-X-Received: by 2002:a17:906:64d4:b0:992:4723:fc81 with SMTP id
- p20-20020a17090664d400b009924723fc81mr3064595ejn.17.1688033961760; 
- Thu, 29 Jun 2023 03:19:21 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5xRgDrcmxiu7iQD6dnksXvUgQkYHzQuqLUHQx5kkIVfOAql90UEwyVgc8GEllUQN/MrvnfYQ==
-X-Received: by 2002:a17:906:64d4:b0:992:4723:fc81 with SMTP id
- p20-20020a17090664d400b009924723fc81mr3064582ejn.17.1688033961402; 
- Thu, 29 Jun 2023 03:19:21 -0700 (PDT)
+ bh=r6eYcQOpdQGaBIAyIqv467VGeA30T2RXy/LIF4+Ra8w=;
+ b=lZuaB+25lK/t866g5ST3Tzd2VKqjZQghnD1LHfNczQYLF2Uwc/UsDiM+TWWBKOJzBR
+ VjcpDbfYIGBO2WPRPEQGy1mEZRYksLRiZ7S3s0EwOeXmfJ3GRbPRL2ywTIGpqSXXXDgo
+ R3YTLICIOhFDwuCK8X6ARkuyiiucb/wuor7dfgJq4gTsCJQdLk8EBJBxXEk370jbfGHH
+ rhe/QFu9Hjin2PbtZkXGrLpa97h5jGMiycfQGLUNEI1x2f4VPL1Mr6kZwEcHFCQRxiQT
+ vUC2fjoKzbsUMahux4aFjYaJXMS+QVy0T6Y8mril+1MUgDvzaStecKplTA2G+Y9c9fBX
+ ybTA==
+X-Gm-Message-State: ABy/qLZxEeuwwQ2qIX5hQ/q2LNJthnS/tWho2Xc6gVgJQKzaS596QTAm
+ QQMNix5+73tOCvz44CyfOQEhurKWtIjzUHlmIoycxljrccgUtjFxoJ/u3Szfo1Tnu/0klPnjrVT
+ dbjvk9IAVPAtQHzB07klMaMQbvEakN8DQKUSIFojSf43fod6eo2xGU2L5l82X7iGrFnZC0POqoT
+ U=
+X-Received: by 2002:aa7:d902:0:b0:51d:e3d2:f5eb with SMTP id
+ a2-20020aa7d902000000b0051de3d2f5ebmr608571edr.5.1688033963283; 
+ Thu, 29 Jun 2023 03:19:23 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlEpbzJFajmdv8EKasE/kuDoXoxLquFQeAuhy41XrQvfaPBYCb81wwrVi5bu+Eonhs+d1TV70A==
+X-Received: by 2002:aa7:d902:0:b0:51d:e3d2:f5eb with SMTP id
+ a2-20020aa7d902000000b0051de3d2f5ebmr608558edr.5.1688033962856; 
+ Thu, 29 Jun 2023 03:19:22 -0700 (PDT)
 Received: from [192.168.10.81] ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
  by smtp.gmail.com with ESMTPSA id
- z15-20020a17090655cf00b00992099223a0sm3099122ejp.103.2023.06.29.03.19.20
+ r16-20020aa7da10000000b0051d2968b26asm5668333eds.77.2023.06.29.03.19.21
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 29 Jun 2023 03:19:20 -0700 (PDT)
+ Thu, 29 Jun 2023 03:19:22 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Nicholas Piggin <npiggin@gmail.com>,
-	qemu-stable@nongnu.org
-Subject: [PULL 1/5] icount: don't adjust virtual time backwards after warp
-Date: Thu, 29 Jun 2023 12:19:14 +0200
-Message-ID: <20230629101918.9800-2-pbonzini@redhat.com>
+Cc: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Subject: [PULL 2/5] target/i386: Export MSR_ARCH_CAPABILITIES bits to guests
+Date: Thu, 29 Jun 2023 12:19:15 +0200
+Message-ID: <20230629101918.9800-3-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230629101918.9800-1-pbonzini@redhat.com>
 References: <20230629101918.9800-1-pbonzini@redhat.com>
@@ -102,46 +101,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Nicholas Piggin <npiggin@gmail.com>
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 
-The icount-based QEMU_CLOCK_VIRTUAL runs ahead of the RT clock at times.
-When warping, it is possible it is still ahead at the end of the warp,
-which causes icount adaptive mode to adjust it backward. This can result
-in the machine observing time going backwards.
+On Intel CPUs there are certain bits in MSR_ARCH_CAPABILITIES that
+indicates if the CPU is not affected by a vulnerability. Without these
+bits guests may try to deploy the mitigation even if the CPU is not
+affected.
 
-Prevent this by clamping adaptive adjustment to 0 at minimum.
+Export the bits to guests that indicate immunity to hardware
+vulnerabilities.
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-Message-ID: <20230627061406.241847-1-npiggin@gmail.com>
-Cc: qemu-stable@nongnu.org
+Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Message-ID: <63d85cc76d4cdc51e6c732478b81d8f13be11e5a.1687551881.git.pawan.kumar.gupta@linux.intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- softmmu/icount.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ target/i386/cpu.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/softmmu/icount.c b/softmmu/icount.c
-index 4504433e168..a5cef9c60a7 100644
---- a/softmmu/icount.c
-+++ b/softmmu/icount.c
-@@ -259,11 +259,16 @@ static void icount_warp_rt(void)
-         warp_delta = clock - timers_state.vm_clock_warp_start;
-         if (icount_enabled() == 2) {
-             /*
--             * In adaptive mode, do not let QEMU_CLOCK_VIRTUAL run too
--             * far ahead of real time.
-+             * In adaptive mode, do not let QEMU_CLOCK_VIRTUAL run too far
-+             * ahead of real time (it might already be ahead so careful not
-+             * to go backwards).
-              */
-             int64_t cur_icount = icount_get_locked();
-             int64_t delta = clock - cur_icount;
-+
-+            if (delta < 0) {
-+                delta = 0;
-+            }
-             warp_delta = MIN(warp_delta, delta);
-         }
-         qatomic_set_i64(&timers_state.qemu_icount_bias,
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index c0fb6b3ad92..b96a609d966 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -1060,10 +1060,10 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
+             "rdctl-no", "ibrs-all", "rsba", "skip-l1dfl-vmentry",
+             "ssb-no", "mds-no", "pschange-mc-no", "tsx-ctrl",
+             "taa-no", NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
++            NULL, "sbdr-ssdp-no", "fbsdp-no", "psdp-no",
+             NULL, "fb-clear", NULL, NULL,
+             NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
++            "pbrsb-no", NULL, NULL, NULL,
+             NULL, NULL, NULL, NULL,
+         },
+         .msr = {
 -- 
 2.41.0
 
