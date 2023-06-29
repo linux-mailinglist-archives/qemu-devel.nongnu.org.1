@@ -2,106 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01E0F7424F1
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 13:26:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 90531742502
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 13:32:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEpmu-0007dW-Me; Thu, 29 Jun 2023 07:26:14 -0400
+	id 1qEpsV-0000Lu-Is; Thu, 29 Jun 2023 07:31:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imbrenda@linux.ibm.com>)
- id 1qEpmp-0007cm-QG; Thu, 29 Jun 2023 07:26:07 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imbrenda@linux.ibm.com>)
- id 1qEpmn-0000PA-GH; Thu, 29 Jun 2023 07:26:07 -0400
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 35TBH61o018252; Thu, 29 Jun 2023 11:26:03 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=date : from : to : cc :
- subject : message-id : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=xNdyPHkh+eztG3S4AeVluT1wXK8sG0XxoU9BuaKlgvw=;
- b=aSEIjGH1Ya/j76gh6NRlHO21F1K2jqnXAaiodoPt30Rhe+BM9SlTLe5YnQhX0i12FAAT
- HHoc72spH0yqTdhhPOK2F1rKaLLDX06MmcgXW0ZxzKQrcyTakR92EvpqyGZ7/vXDAWyX
- rccZxOwT9NqfFePMKrho+Bu8Evtt2YLbLUdULoQ2oweuZm+AvddKrtjq6Ez2BaUX8qes
- 8N6PAWKiEqCutgnZEv4cOPNZmj9IaF2XXrYxdmx/FX87P7awZkvGk5dcs4Lfr83l/wyC
- iQ4LaY+B7sClr3bLtzxgonqHfQXoaN7y+4bOhGmI8XwZVV39K9p84rCr8K9DATqbIlzR hQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rh8xs85pd-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 29 Jun 2023 11:26:01 +0000
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 35TBHwOU020537;
- Thu, 29 Jun 2023 11:26:01 GMT
-Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.71])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rh8xs85nj-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 29 Jun 2023 11:26:00 +0000
-Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
- by ppma02fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 35T5rNf7016157;
- Thu, 29 Jun 2023 11:25:59 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
- by ppma02fra.de.ibm.com (PPS) with ESMTPS id 3rdr452f81-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 29 Jun 2023 11:25:59 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
- [10.20.54.105])
- by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 35TBPtTJ43123230
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 29 Jun 2023 11:25:55 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 52D3B2004D;
- Thu, 29 Jun 2023 11:25:55 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0D29120049;
- Thu, 29 Jun 2023 11:25:55 +0000 (GMT)
-Received: from p-imbrenda (unknown [9.152.224.66])
- by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 29 Jun 2023 11:25:54 +0000 (GMT)
-Date: Thu, 29 Jun 2023 13:25:53 +0200
-From: Claudio Imbrenda <imbrenda@linux.ibm.com>
-To: Thomas Huth <thuth@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-s390x@nongnu.org, Christian Borntraeger
- <borntraeger@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>
-Subject: Re: [PATCH v3 7/7] pc-bios/s390-ccw: Don't use __bss_start with the
- "larl" instruction
-Message-ID: <20230629132553.74fb709d@p-imbrenda>
-In-Reply-To: <8bee7886-9b63-c7e9-6bc4-3ad8f6ce037a@redhat.com>
-References: <20230629104821.194859-1-thuth@redhat.com>
- <20230629104821.194859-8-thuth@redhat.com>
- <20230629125818.09ec8ad6@p-imbrenda>
- <8bee7886-9b63-c7e9-6bc4-3ad8f6ce037a@redhat.com>
-Organization: IBM
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
-Content-Type: text/plain; charset=US-ASCII
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: CtngKWqBM3fkUeMRblbHpKaJQsXR9hWt
-X-Proofpoint-GUID: bRZQ1KtT0_0S3XAniL3wdtg_W6Ebd9LI
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qEpsT-0000K5-Jk
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 07:31:57 -0400
+Received: from mail-lf1-x132.google.com ([2a00:1450:4864:20::132])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qEpsO-0001qb-SG
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 07:31:57 -0400
+Received: by mail-lf1-x132.google.com with SMTP id
+ 2adb3069b0e04-4f8775126d3so866964e87.1
+ for <qemu-devel@nongnu.org>; Thu, 29 Jun 2023 04:31:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1688038308; x=1690630308;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Eeo1udysV6TKzkozFk/jusIghIPeMulROTzmbHX3KuI=;
+ b=gE68SRRp6188v4XVLaVygYTTol6yQur2dQU9+C0POieh4tRcoUOkHQsHZyJDThV03t
+ /LiEtANP/UGmmVNyMMg6EpRmdFSGPke3yImQjbXsyp7KwdBUufVRAzEBpuSeDjNwVBc9
+ TmyuIpIxAEn3COeHGo4rN6Ii811L0/G7FN5goOvvPn92wgNc9lCXD8pSnjpK/CKdvCUB
+ BcQfhU10J0ORXC1N1pXQI9eNfAGRnKzkkoPOKiWwmsAJHHxXEs9/v0KJFNo0muMIoBBu
+ HySa1U9koPukgWx+vM8TjLW9NwTc432ATgkWJC1QdmuRQT95xmIZFZmuNdII939fnqvm
+ yYHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1688038308; x=1690630308;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Eeo1udysV6TKzkozFk/jusIghIPeMulROTzmbHX3KuI=;
+ b=OhmRFfto/YFJ1Yf5Se8vuzee/rhkuJnLPuFSEYKApRYEamv5bihpcYPw+14WPpsx2+
+ MGwrDd4TW4ac8O33YlDWI/9b9bggzhkUe8oyJ96JkAojOGVdKGTm37Bx67De/SFd63bb
+ QKxA4SwRgTu8dmBFMYOFCMcj7mAV8Z/2PbZsd7EA7o9WkyHJ8pnXkDcgd2iGwGbvrUB6
+ aBu+Nr7b4zf1inKAexll49tjKtZ3EPz14idFW0oxOXDVZrm105+HUQMMHoVR2v4xp1Ly
+ YkJ5Sib1v6JubF5vuS5TJHobwVW1i5oPi80k6nzIr1S+XyhB8rOgRu3V+/vuJr4k9OLr
+ oEcQ==
+X-Gm-Message-State: AC+VfDwAd0R2qLDCdFo6ADZZnC34cvxr+iCVAm3uTdGAkQvz+OQmYMWy
+ z2XOHMg4KzA/OERbKaiF0TQevQ==
+X-Google-Smtp-Source: ACHHUZ72kY9RFqzNS+c32tCXZqg1mbisqwZajU4G7FMIu3UwBfeJLXZrXm/fvigqKxzNzSSWze9zHg==
+X-Received: by 2002:a05:6512:2512:b0:4fb:52f1:9aab with SMTP id
+ be18-20020a056512251200b004fb52f19aabmr10608995lfb.66.1688038308420; 
+ Thu, 29 Jun 2023 04:31:48 -0700 (PDT)
+Received: from [192.168.69.115] ([176.176.166.242])
+ by smtp.gmail.com with ESMTPSA id
+ k26-20020a7bc41a000000b003fbb1a9586esm4105739wmi.15.2023.06.29.04.31.47
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 29 Jun 2023 04:31:47 -0700 (PDT)
+Message-ID: <e1112615-0e6c-e0ea-aa60-1d94d1da26ea@linaro.org>
+Date: Thu, 29 Jun 2023 13:31:46 +0200
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-06-29_02,2023-06-27_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 adultscore=0
- spamscore=0 mlxlogscore=971 lowpriorityscore=0 clxscore=1015
- impostorscore=0 priorityscore=1501 phishscore=0 mlxscore=0 malwarescore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2305260000 definitions=main-2306290099
-Received-SPF: pass client-ip=148.163.158.5;
- envelope-from=imbrenda@linux.ibm.com; helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.12.0
+Subject: Re: [PULL 3/5] tcg: add perfmap and jitdump
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: peter.maydell@linaro.org, Ilya Leoshkevich <iii@linux.ibm.com>,
+ "Vanderson M . do Rosario" <vandersonmr2@gmail.com>,
+ =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>
+References: <20230116223637.3512814-1-richard.henderson@linaro.org>
+ <20230116223637.3512814-4-richard.henderson@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230116223637.3512814-4-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::132;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x132.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H5=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.093,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -118,49 +95,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 29 Jun 2023 13:12:26 +0200
-Thomas Huth <thuth@redhat.com> wrote:
+Hi Richard, Alex,
 
-> On 29/06/2023 12.58, Claudio Imbrenda wrote:
-> > On Thu, 29 Jun 2023 12:48:21 +0200
-> > Thomas Huth <thuth@redhat.com> wrote:
-> >   
-> >> start.S currently cannot be compiled with Clang 16 and binutils 2.40:
-> >>
-> >>   ld: start.o(.text+0x8): misaligned symbol `__bss_start' (0xc1e5) for
-> >>       relocation R_390_PC32DBL
-> >>
-> >> According to the built-in linker script of ld, the symbol __bss_start
-> >> can actually point *before* the .bss section and does not need to have
-> >> any alignment, so in certain situations (like when using the internal
-> >> assembler of Clang), the __bss_start symbol can indeed be unaligned
-> >> and thus it is not suitable for being used with the "larl" instruction
-> >> that needs an address that is at least aligned to halfwords.
-> >> The problem went unnoticed so far since binutils <= 2.39 did not
-> >> check the alignment, but starting with binutils 2.40, such unaligned
-> >> addresses are now refused.
-> >>
-> >> Fix it by loading the address indirectly instead.  
-> > 
-> > what are the advantages of this solution compared to your previous one
-> > (i.e. align .bss) ?  
+On 16/1/23 23:36, Richard Henderson wrote:
+> From: Ilya Leoshkevich <iii@linux.ibm.com>
 > 
-> __bss_start is supposed to point to an address that is before all bss-like 
-> segments. There are also segments like .sbss and .bss.plt on other 
-> architectures, see https://bugzilla.redhat.com/show_bug.cgi?id=2216662#c11 .
-> Seems like we don't have them on s390x yet, so currently my previous patch 
-> is fine, too. But in case there will ever be an extension to the s390x ABI 
-> that introduces such additional segments, we have to switch back to 
-> __bss_start again. So it sounds slightly more future-proof to me to keep 
-> __bss_start here, even if we need a slightly more complex startup code here now.
+> Add ability to dump /tmp/perf-<pid>.map and jit-<pid>.dump.
+> The first one allows the perf tool to map samples to each individual
+> translation block. The second one adds the ability to resolve symbol
+> names, line numbers and inspect JITed code.
+> 
+> Example of use:
+> 
+>      perf record qemu-x86_64 -perfmap ./a.out
+>      perf report
+> 
+> or
+> 
+>      perf record -k 1 qemu-x86_64 -jitdump ./a.out
+>      DEBUGINFOD_URLS= perf inject -j -i perf.data -o perf.data.jitted
+>      perf report -i perf.data.jitted
+> 
+> Co-developed-by: Vanderson M. do Rosario <vandersonmr2@gmail.com>
+> Co-developed-by: Alex Bennée <alex.bennee@linaro.org>
+> Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+> Message-Id: <20230112152013.125680-4-iii@linux.ibm.com>
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>   docs/devel/tcg.rst        |  23 +++
+>   accel/tcg/perf.h          |  49 +++++
+>   accel/tcg/perf.c          | 375 ++++++++++++++++++++++++++++++++++++++
+>   accel/tcg/translate-all.c |   7 +
+>   linux-user/exit.c         |   2 +
+>   linux-user/main.c         |  15 ++
+>   softmmu/vl.c              |  11 ++
+>   tcg/tcg.c                 |   2 +
+>   accel/tcg/meson.build     |   1 +
+>   qemu-options.hx           |  20 ++
+>   10 files changed, 505 insertions(+)
+>   create mode 100644 accel/tcg/perf.h
+>   create mode 100644 accel/tcg/perf.c
 
-fair enough
 
-Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+> diff --git a/tcg/tcg.c b/tcg/tcg.c
+> index da91779890..9b7df71e7a 100644
+> --- a/tcg/tcg.c
+> +++ b/tcg/tcg.c
+> @@ -61,6 +61,7 @@
+>   #include "exec/log.h"
+>   #include "tcg/tcg-ldst.h"
+>   #include "tcg-internal.h"
+> +#include "accel/tcg/perf.h"
 
-> 
->   Thomas
-> 
-> 
+Is it OK to include an header from QEMU's accel/tcg/ here?
+I thought we wanted to keep tcg/ kinda independant (or maybe
+this is already too late and this isn't a concern anymore).
+
+>   /* Forward declarations for functions declared in tcg-target.c.inc and
+>      used here. */
+> @@ -913,6 +914,7 @@ void tcg_prologue_init(TCGContext *s)
+>   #endif
+>   
+>       prologue_size = tcg_current_code_size(s);
+> +    perf_report_prologue(s->code_gen_ptr, prologue_size);
 
 
