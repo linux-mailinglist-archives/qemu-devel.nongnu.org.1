@@ -2,84 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1F3D7429DE
-	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 17:46:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96181742A22
+	for <lists+qemu-devel@lfdr.de>; Thu, 29 Jun 2023 17:58:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qEtpm-0002Yi-LZ; Thu, 29 Jun 2023 11:45:26 -0400
+	id 1qEu1I-0006hn-9n; Thu, 29 Jun 2023 11:57:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
- id 1qEtpU-0002R3-GT
- for qemu-devel@nongnu.org; Thu, 29 Jun 2023 11:45:09 -0400
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
- id 1qEtpS-0005ax-M2
- for qemu-devel@nongnu.org; Thu, 29 Jun 2023 11:45:08 -0400
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-1b7ef3e74edso5184485ad.0
- for <qemu-devel@nongnu.org>; Thu, 29 Jun 2023 08:45:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1688053505; x=1690645505;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=LALWh4Y1VVifjAGs/krRnq2qH2nbx4alOQ4RpbmVsrg=;
- b=RRhNXvDV+bHXqUMe+yGWueo9Y+S55u+3y56NfG5QS94M/1i7HLuiS5+AgnugcP/x0f
- 4lJo2msnTv1osp21PmcNdvOvzf9SQi2V+UHj+lS0amII32s7hj66OVn9y2REl7a6tE3K
- 4WztKcJaQTR46UFSMlshJULP23256B+ZSZdebbGA2TSafQfS9W+7Q3GvvdVv4HPm5Y+C
- 0S/DYNvklvtWh445WLw4Lh1oPJuHp4eTLoQYZKIstl+9kzgr+Eh1VbRem3VsZfBZ2X2M
- CC5pUBbD39nxMJkGmD5FNcT7+of2tt3t3U2UeZBbOeSfh+GT1REUGiRcfi3KzAPM4V8p
- Ipmg==
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1qEu1G-0006bR-7u
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 11:57:18 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1qEu1D-0000L6-Ue
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 11:57:17 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1688054233;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=oNLZlmSDbtqgyJT+Zx9o7EaD+JHTX9E8tq50Tw6MR90=;
+ b=VNOaKIWEybVPcU6plHYL7jUMaC44HmDngMnpU1kfDNcZ3q98n0V8ScesGWH0JZBLx3fgPU
+ cIV+TOM0qOUr387RskJLQ3BA9QyI/V8hgdbvR4XLih75RbtUP3IAIEnNhVQlQuBLxLlC2W
+ ypnMU4ijbXxLhi2fsHS9hPSjpYcXz20=
+Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com
+ [209.85.215.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-272-Qu-j7thpOFaVfd-_UNcquw-1; Thu, 29 Jun 2023 11:57:06 -0400
+X-MC-Unique: Qu-j7thpOFaVfd-_UNcquw-1
+Received: by mail-pg1-f198.google.com with SMTP id
+ 41be03b00d2f7-55afcc54d55so497940a12.0
+ for <qemu-devel@nongnu.org>; Thu, 29 Jun 2023 08:57:06 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688053505; x=1690645505;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=LALWh4Y1VVifjAGs/krRnq2qH2nbx4alOQ4RpbmVsrg=;
- b=BbegPdKAQb438RLD6ZxAcvpyU+7uASvukV48cXtFsTLXd9R3ZsUDZBNeFhjDpseHea
- DtSgE5708vrkefmXcn9o22E29xjSq2AiTMj+ZwYdd3FeMBJBpgbPAw9Xua4QHwFxfvYY
- cblS4BdorHFTOrIgPwXyLJNcHgb74QS0qDiSik7D2b89GNKvqpKR0pNltMr/oyLcQ6mu
- ZAMl19Hav2BpsIA/QNIGh6qA8GX1xqzKyFUdkZf+oQbozbSlNlIZUCapei4xGCE+j+9O
- FHl/AcMVMsKwxEspD/gUBYb4TJ+eDjPFwrk7DNIfhH/RmvqUj3voKKcAe31h2Pwcwfke
- HnZw==
-X-Gm-Message-State: AC+VfDx6+vBCiZj0Q8F4Xa+5+uBDINUslN7HbFA0Dkzo42e20X64lLyR
- UHLmtTkYE8BlsuuXn5bstjpFdA==
-X-Google-Smtp-Source: ACHHUZ7OA5HTLkqrhKgis0eZ8MP2tZYiPLLk/LGhRRgZO1w3/jNGDEMm38KQrWzgwsrY7sNC8sN5jw==
-X-Received: by 2002:a17:902:dace:b0:1b3:c7c1:8ded with SMTP id
- q14-20020a170902dace00b001b3c7c18dedmr13433215plx.27.1688053504932; 
- Thu, 29 Jun 2023 08:45:04 -0700 (PDT)
-Received: from [10.11.0.74] (125-228-20-175.hinet-ip.hinet.net.
- [125.228.20.175]) by smtp.gmail.com with ESMTPSA id
- 2-20020a170902c20200b001b03a7a40e7sm3650793pll.19.2023.06.29.08.45.03
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 29 Jun 2023 08:45:04 -0700 (PDT)
-Message-ID: <a2173165-9bd9-fd1e-a778-07bdf6379659@sifive.com>
-Date: Thu, 29 Jun 2023 23:45:02 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.12.0
-Subject: Re: [PATCH v3 05/37] crypto: Add aesenc_SB_SR_AK
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: berrange@redhat.com, qemu-ppc@nongnu.org, qemu-arm@nongnu.org,
- qemu-riscv@nongnu.org
-References: <20230620110758.787479-1-richard.henderson@linaro.org>
- <20230620110758.787479-6-richard.henderson@linaro.org>
-From: Max Chou <max.chou@sifive.com>
-In-Reply-To: <20230620110758.787479-6-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
- envelope-from=max.chou@sifive.com; helo=mail-pl1-x62d.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+ d=1e100.net; s=20221208; t=1688054225; x=1690646225;
+ h=to:references:message-id:content-transfer-encoding:cc:date
+ :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=oNLZlmSDbtqgyJT+Zx9o7EaD+JHTX9E8tq50Tw6MR90=;
+ b=ajXTekGmT/Q45lqRH6jX7pUDXblJXln1MFxypbJHSdkRcFe6ZfWSTPjFhhUwq3gO2E
+ uXEvteX0FeuBNCo+tWOjT1psG922swCVv4kO48pw6DSv9wykpmDnVqRZjbLtLa1fuDEo
+ NQR3M5rxU+KURpMaXs4Ww9Na/MNr7P7g9IOJQ7ObG29HkoSLJLOT0ah5K9vv53zdse4W
+ C4Y6zGJG/LnBHLKenhlsD2Qg1/ox/tM0/brD+CCj2kT9GtIRYgln1tqjdyAwSYVH0ra8
+ 5c4SRrL2ois11rs7oKaM/OwdQgx11J5ekIl4YgoL1pbs8gMQkRUYT+zYRyLWz1ggbiq8
+ oc7A==
+X-Gm-Message-State: AC+VfDwQZPnoLUsWL8ZdUAfp0PHVyNX8xAjfMb7kp3DxpvmrQ424Ufgg
+ YSMXpBk4jmeOk4L9rw77W6fI1diR5g8uzENRsM7oSWlVj8mSho3fBK4Cm6tUdVEGIyd8ssYCO25
+ gLrKspiiepxkRcp4=
+X-Received: by 2002:a05:6a20:8f0e:b0:126:5daa:a964 with SMTP id
+ b14-20020a056a208f0e00b001265daaa964mr5677954pzk.23.1688054225644; 
+ Thu, 29 Jun 2023 08:57:05 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5VoY3lbryoeNjqpJNJwjzSPkWTjft+cTLTcUXy61UCx9tBbzFgKpBwv6RVUMK9uo/+NhxKOg==
+X-Received: by 2002:a05:6a20:8f0e:b0:126:5daa:a964 with SMTP id
+ b14-20020a056a208f0e00b001265daaa964mr5677939pzk.23.1688054225319; 
+ Thu, 29 Jun 2023 08:57:05 -0700 (PDT)
+Received: from smtpclient.apple ([203.163.234.183])
+ by smtp.gmail.com with ESMTPSA id
+ 14-20020a630b0e000000b0054fb537ca5dsm8814756pgl.92.2023.06.29.08.57.02
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Thu, 29 Jun 2023 08:57:04 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.3\))
+Subject: Re: [PATCH v6 5/5] hw/pci: ensure PCIE devices are plugged into only
+ slot 0 of PCIE port
+From: Ani Sinha <anisinha@redhat.com>
+In-Reply-To: <20230629113141-mutt-send-email-mst@kernel.org>
+Date: Thu, 29 Jun 2023 21:27:00 +0530
+Cc: qemu-devel <qemu-devel@nongnu.org>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Julia Suvorova <jusual@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ akihiko.odaki@daynix.com
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <A9837DAD-AEF3-4567-8172-EC1BAF2AEA3F@redhat.com>
+References: <20230629040707.115656-1-anisinha@redhat.com>
+ <20230629040707.115656-6-anisinha@redhat.com>
+ <20230629102421-mutt-send-email-mst@kernel.org>
+ <A398CFAA-12F6-447D-A03D-F2DAC79AB1B7@redhat.com>
+ <20230629113141-mutt-send-email-mst@kernel.org>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+X-Mailer: Apple Mail (2.3696.120.41.1.3)
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.093,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,35 +109,119 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/6/20 7:07 PM, Richard Henderson wrote:
 
-> diff --git a/include/crypto/aes-round.h b/include/crypto/aes-round.h
-> new file mode 100644
-> index 0000000000..d675d2468f
-> --- /dev/null
-> +++ b/include/crypto/aes-round.h
-> @@ -0,0 +1,44 @@
-> +/*
-> + * AES round fragments, generic version
-> + * SPDX-License-Identifier: GPL-2.0-or-later
-> + *
-> + * Copyright (C) 2023 Linaro, Ltd.
-> + */
-> +
-> +#ifndef CRYPTO_AES_ROUND_H
-> +#define CRYPTO_AES_ROUND_H
-> +
-> +/* Hosts with acceleration will usually need a 16-byte vector type. */
-> +typedef uint8_t AESStateVec __attribute__((vector_size(16)));
-> +
-> +typedef union {
-> +    uint8_t b[16];
-> +    uint32_t w[4];
-> +    uint64_t d[4];
-> +    AESStateVec v;
-> +} AESState;
-Should we change the length of d from 4 to 2 ?
 
-With regards,
-Max
+> On 29-Jun-2023, at 9:02 PM, Michael S. Tsirkin <mst@redhat.com> wrote:
+>=20
+> On Thu, Jun 29, 2023 at 08:07:57PM +0530, Ani Sinha wrote:
+>>=20
+>>=20
+>>> On 29-Jun-2023, at 7:54 PM, Michael S. Tsirkin <mst@redhat.com> =
+wrote:
+>>>=20
+>>> On Thu, Jun 29, 2023 at 09:37:07AM +0530, Ani Sinha wrote:
+>>>> PCI Express ports only have one slot, so PCI Express devices can =
+only be
+>>>> plugged into slot 0 on a PCIE port. Enforce it.
+>>>>=20
+>>>> The change has been tested to not break ARI by instantiating seven =
+vfs on an
+>>>> emulated igb device (the maximum number of vfs the linux igb driver =
+supports).
+>>>=20
+>>> I guess we need to test with some other device then? 7 VFs is same
+>>> slot so hardly a good test.
+>>=20
+>> No its not the same slot. Its using different slots/device numbers. I =
+checked that.
+>> The same patch was failing without the vf check.
+>=20
+> Ah, playing with VF stride? Could you show the command line please?
+
+Akhido mentioned this in the other thread. Basically For QEMU:
+
+-device pcie-root-port,id=3Dp -device igb,bus=3Dp
+
+Then from within the guest (in my case RHEL 9.2):
+
+$ echo 7 > /sys/bus/pci/devices/0000\:01\:00.0/sriov_numvfs
+
+You=E2=80=99ll find that if you use something more than 7 there will be =
+ERANGE from the guest kernel because the driver can create maximum 7 =
+vfs.
+This above command line will fail if we do not check for !vfs in the =
+patch with the following error from QEMU:
+
+(qemu) qemu-system-x86_64: PCI: slot 16 is not valid for igbvf, parent =
+device only allows plugging into slot 0.
+
+and an IO error on the write from the guest kernel.
+
+In the current version of the patch with the vf check, you will find the =
+vfs created with the addresses:
+
+01:10.{2,4,6,8} and 01.11.{2,4,6} , that is bus 1 for the root port, =
+devices 10 and 11, functions 2,4,6,8 etc.
+
+There would be no error from QEMU.
+
+>=20
+>>>=20
+>>>> The vfs are seen to have non-zero device/slot numbers in the =
+conventional
+>>>> PCI BDF representation.
+>>>>=20
+>>>> CC: jusual@redhat.com
+>>>> CC: imammedo@redhat.com
+>>>> CC: akihiko.odaki@daynix.com
+>>>>=20
+>>>> Resolves: https://bugzilla.redhat.com/show_bug.cgi?id=3D2128929
+>>>> Signed-off-by: Ani Sinha <anisinha@redhat.com>
+>>>> Reviewed-by: Julia Suvorova <jusual@redhat.com>
+>>>> ---
+>>>> hw/pci/pci.c | 15 +++++++++++++++
+>>>> 1 file changed, 15 insertions(+)
+>>>>=20
+>>>> diff --git a/hw/pci/pci.c b/hw/pci/pci.c
+>>>> index e2eb4c3b4a..0320ac2bb3 100644
+>>>> --- a/hw/pci/pci.c
+>>>> +++ b/hw/pci/pci.c
+>>>> @@ -65,6 +65,7 @@ bool pci_available =3D true;
+>>>> static char *pcibus_get_dev_path(DeviceState *dev);
+>>>> static char *pcibus_get_fw_dev_path(DeviceState *dev);
+>>>> static void pcibus_reset(BusState *qbus);
+>>>> +static bool pcie_has_upstream_port(PCIDevice *dev);
+>>>>=20
+>>>> static Property pci_props[] =3D {
+>>>>    DEFINE_PROP_PCI_DEVFN("addr", PCIDevice, devfn, -1),
+>>>> @@ -1190,6 +1191,20 @@ static PCIDevice =
+*do_pci_register_device(PCIDevice *pci_dev,
+>>>>                   name);
+>>>>=20
+>>>>       return NULL;
+>>>> +    } /*
+>>>> +       * With SRIOV and ARI, vfs can have non-zero slot in the =
+conventional
+>>>> +       * PCI interpretation as all five bits reserved for slot =
+addresses are
+>>>> +       * also used for function bits for the various vfs. Ignore =
+that case.
+>>>> +       * It is too early here to check for ARI capabilities in the =
+PCI config
+>>>> +       * space. Hence, we check for a vf device instead.
+>>>> +       */
+>>>> +    else if (!pci_is_vf(pci_dev) &&
+>>>> +             pcie_has_upstream_port(pci_dev) &&
+>>>> +             PCI_SLOT(devfn)) {
+>>>> +        error_setg(errp, "PCI: slot %d is not valid for %s,"
+>>>> +                   " parent device only allows plugging into slot =
+0.",
+>>>> +                   PCI_SLOT(devfn), name);
+>>>> +        return NULL;
+>>>>    }
+>>>>=20
+>>>>    pci_dev->devfn =3D devfn;
+>>>> --=20
+>>>> 2.39.1
+
 
