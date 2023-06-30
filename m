@@ -2,72 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB84D7435E0
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 09:36:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B6767435E2
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 09:36:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qF8fc-0000aw-KJ; Fri, 30 Jun 2023 03:35:56 -0400
+	id 1qF8fx-0000gm-DU; Fri, 30 Jun 2023 03:36:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
- id 1qF8fZ-0000aF-Le; Fri, 30 Jun 2023 03:35:53 -0400
-Received: from mail-lj1-x234.google.com ([2a00:1450:4864:20::234])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
- id 1qF8fX-0005Cx-7A; Fri, 30 Jun 2023 03:35:53 -0400
-Received: by mail-lj1-x234.google.com with SMTP id
- 38308e7fff4ca-2b6a5fd1f46so22952461fa.1; 
- Fri, 30 Jun 2023 00:35:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=jms.id.au; s=google; t=1688110549; x=1690702549;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=Otot1Hy4zwvIBVC+PaePShvhd8A0ROZEWpoqH/YHjVA=;
- b=U3KbwE7sjQL/zXR6rZl3++1CrT5CnGFOoWUxDdN7+mbSeNEE6Aew1UyAsISy5mtWtx
- ylQymmz/D8Q8p8ciOwqaYL6e9io8K0Wwt1zxBiWu8nNsbHwZXRk5t7AwG2xyBpKiRJD5
- V6HdYRpJ7sAB6bN9+lqEtT8/HELNHZiM0bGv4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688110549; x=1690702549;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=Otot1Hy4zwvIBVC+PaePShvhd8A0ROZEWpoqH/YHjVA=;
- b=QgXMLI5v/MXpNm2OdI3M8153+e1xKeQUYGlcmveOOwRfQf76P9ZmRkqcuHpKunJ4Wz
- 02GKUcxUb92Elh7O37dvs02ED/fiqp+xGHMAqCjNUjOpmWQuN7FbW1ASJ+T6CC7GrWa6
- pqzvMHpykZGjcsbgRRa2CmBQZWboFL7yUe6bJa1GCSdU79lfeKN/qVqj3eUfr7fOPJn5
- ULMCPDMqapVY9mqjsV+CauSiO8h4IL2vm9ubdkXZn1lBgbEKnnV2wrCjcKpQBEQv2EbQ
- cdjP6Y2X5ntD8OmpO6vqExlgNwWWr3EXvoxZLVG8n8YwMt6+i4s7laI8N2UwuZOCZtfD
- UmTA==
-X-Gm-Message-State: ABy/qLYSvcmruCRv1tR/Zsoah/aozSBgPvw1+LguhIjk4WBv3GZKfl+p
- cIZQZ76ZPVNgRQ2lRt5dU3/SpeLTlQJU89fmkrY=
-X-Google-Smtp-Source: APBJJlHRmuCqL5SvCzD1DtrI6eeiqoKSUoQSnGqOPHRh1WFxpM/w59+4PrdIRu1CHjr2Iq0dP9AHiULIUa27duVzg7Q=
-X-Received: by 2002:a2e:8686:0:b0:2b5:813e:1c3a with SMTP id
- l6-20020a2e8686000000b002b5813e1c3amr1723889lji.13.1688110548323; Fri, 30 Jun
- 2023 00:35:48 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1qF8ft-0000g7-4E; Fri, 30 Jun 2023 03:36:13 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1qF8fp-0005En-OK; Fri, 30 Jun 2023 03:36:12 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 31128103FB;
+ Fri, 30 Jun 2023 10:36:05 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 9C569109CA;
+ Fri, 30 Jun 2023 10:36:04 +0300 (MSK)
+Message-ID: <9821ba97-5028-bcdf-10f8-b6e1b2fd813d@tls.msk.ru>
+Date: Fri, 30 Jun 2023 10:36:04 +0300
 MIME-Version: 1.0
-References: <20230630035547.80329-1-joel@jms.id.au>
- <20230630035547.80329-4-joel@jms.id.au>
- <da80494b-0626-62f5-65b7-1e4b0901ee27@linux.ibm.com>
-In-Reply-To: <da80494b-0626-62f5-65b7-1e4b0901ee27@linux.ibm.com>
-From: Joel Stanley <joel@jms.id.au>
-Date: Fri, 30 Jun 2023 07:35:36 +0000
-Message-ID: <CACPK8Xdyp_buQ4A=h8aJB1A_Q2kUpAGRHY1mm0Gn3jB3vk9a3Q@mail.gmail.com>
-Subject: Re: [PATCH 3/4] ppc/pnv: Add P10 quad ops
-To: Frederic Barrat <fbarrat@linux.ibm.com>
-Cc: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, 
- Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org, qemu-ppc@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::234;
- envelope-from=joel.stan@gmail.com; helo=mail-lj1-x234.google.com
-X-Spam_score_int: -14
-X-Spam_score: -1.5
-X-Spam_bar: -
-X-Spam_report: (-1.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, FREEMAIL_FORGED_FROMDOMAIN=0.249,
- FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.25,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH v6 02/20] hw/riscv/virt.c: skip 'mmu-type' FDT if satp
+ mode not set
+Content-Language: en-US
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>, qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
+ liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
+ ajones@ventanamicro.com, philmd@linaro.org
+References: <20230628213033.170315-1-dbarboza@ventanamicro.com>
+ <20230628213033.170315-3-dbarboza@ventanamicro.com>
+From: Michael Tokarev <mjt@tls.msk.ru>
+In-Reply-To: <20230628213033.170315-3-dbarboza@ventanamicro.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -69
+X-Spam_score: -7.0
+X-Spam_bar: -------
+X-Spam_report: (-7.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.093,
+ RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,28 +63,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 30 Jun 2023 at 07:30, Frederic Barrat <fbarrat@linux.ibm.com> wrote:
->
->
->
-> On 30/06/2023 05:55, Joel Stanley wrote:
-> > diff --git a/hw/ppc/pnv_core.c b/hw/ppc/pnv_core.c
-> > index b9a57463aec4..7fff2fd9e298 100644
-> > --- a/hw/ppc/pnv_core.c
-> > +++ b/hw/ppc/pnv_core.c
->
-> > +static uint64_t pnv_quad_power10_xscom_read(void *opaque, hwaddr addr,
-> ...
-> > +        qemu_log_mask(LOG_UNIMP, "%s: writing @0x%08x\n", __func__,
->
->                                           ^^^ reading
->
-> I'm guessing we'll need to flush out that function pretty soon, so not
-> worth resending.
+29.06.2023 00:30, Daniel Henrique Barboza wrote:
+> The absence of a satp mode in riscv_host_cpu_init() is causing the
+> following error:
+> 
+> $ sudo ./qemu/build/qemu-system-riscv64  -machine virt,accel=kvm \
+>      -m 2G -smp 1  -nographic -snapshot \
+>      -kernel ./guest_imgs/Image \
+>      -initrd ./guest_imgs/rootfs_kvm_riscv64.img \
+>      -append "earlycon=sbi root=/dev/ram rw" \
+>      -cpu host
+> **
+> ERROR:../target/riscv/cpu.c:320:satp_mode_str: code should not be
+> reached
+> Bail out! ERROR:../target/riscv/cpu.c:320:satp_mode_str: code should
+> not be reached
+> Aborted
 
-Thanks, good catch. It's incorrect in the p9 callback too.
+Hi!
 
-I had it fixed locally along with a re-wording to make it clear the
-message was for unimplemented operations, but decided not to send
-that.
+Not a review/comment for the change itself, but a question about your
+work environment.
+
+Why do you run qemu with sudo?  Is it just because your user lacks access
+to /dev/kvm device node (which is fixed by adding it to kvm group) ?
+
+I find it a bit worrying to see people run development as root and the
+recipes to run it as root ens up in even in commit messages.  I think
+it's not good practice to do it like this, but more important is to
+teach users to do it this way. And this is more serious than one might
+think.
+
+Thanks,
+
+/mjt
 
