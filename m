@@ -2,75 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE56F7436DD
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 10:18:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6E5C7436EE
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 10:22:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qF9KE-0001Tn-Dz; Fri, 30 Jun 2023 04:17:55 -0400
+	id 1qF9Nc-00030d-VQ; Fri, 30 Jun 2023 04:21:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
- id 1qF9K0-0001SV-Ob; Fri, 30 Jun 2023 04:17:42 -0400
-Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
- id 1qF9Jy-0006Od-3P; Fri, 30 Jun 2023 04:17:40 -0400
-Received: by mail-ej1-x62e.google.com with SMTP id
- a640c23a62f3a-98e011f45ffso171466566b.3; 
- Fri, 30 Jun 2023 01:17:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=jms.id.au; s=google; t=1688113055; x=1690705055;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=b9FN69gRwTqTPyS5Ekny/wk+9eJ/SvBx2FfF63yuMg0=;
- b=eB6r9cNGtJdJJLmK0x1s3SLsDVMR7sY+i7HJlWPOeuRHQVCDkqTUP/Iv8yAlpTj8Xb
- 7epKY9JUctu5SoGMqjn3AyLAWGzkUgyh4WWZ0SM1Ibc5/hAlUMKM0/LrJKXR9PHUos3X
- VeaUXpkElf+o+FedPYyaVrVNoRRQ7cdwXwJwo=
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1qF9Na-00030A-0w
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 04:21:22 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1qF9NY-000202-0m
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 04:21:21 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1688113278;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=y2P2yPcsJA9sRXWE+8SLPKKzCY/t1iQxHtX7E/v/gtY=;
+ b=UuS7vnaGg+HeLGP7b2wRyfDg8G74T85dUeojcdmovWpxbFsvbjAIwFY91MppwU7m3zp3D1
+ EG0UWxAq9jQUknabiexOCJzyDJNAWADVUud6mMeub7fVkAK9JDikjxavUlhuXpsVk18uF/
+ XVONJ59YU+cxBCGDcqD4kmiA0kT83es=
+Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
+ [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-570-g9QSryF9MzG7xSsgp--1Qg-1; Fri, 30 Jun 2023 04:21:15 -0400
+X-MC-Unique: g9QSryF9MzG7xSsgp--1Qg-1
+Received: by mail-lj1-f197.google.com with SMTP id
+ 38308e7fff4ca-2b69c1614a9so16029311fa.1
+ for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 01:21:15 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688113055; x=1690705055;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=b9FN69gRwTqTPyS5Ekny/wk+9eJ/SvBx2FfF63yuMg0=;
- b=c1IUOvXzxzbjJgDJa8zilrM7Jj5sjEdvFwYW385rL6exT/2MITSO2ujx6N9kvhIhzI
- Q6Qc/Sqo7z0crk1nDLyFedVOv2Lqzl2p8nNp6QLag+dKjoZaeHkzzzeXAeb4IYzIf07F
- wo2YpUPlsgmXEjycUXrZltIkbU3nzF5ywPxXurs8Yhk7LmVHRNPIQEGwa8D1rjxivoJv
- aK9W3VQt5OeKOcm8gXtgea1SC9iKtO+ElveuogoN+gBPQHS7H5ObxIqsgEa30EupuaTK
- AXa19AJHpxmcpK/b7mGCZeZ0TgbedOFvDM/MeuhJ04x851RPpFHZN316FMBcIzIqquf1
- x/0w==
-X-Gm-Message-State: ABy/qLYlqcfUwjNnsKLURKYugADqqVWtKsZIenK6d89mozPFAtDlE2Hi
- ayA4Qqf2YvgvwrafVCdhdiTirNd4iJ9+BpHJroj373kNuYo=
-X-Google-Smtp-Source: APBJJlFfV6ydFyP+n88xET4AtK4A8J0BZ2/u1a4vpQl6R4lIGpO+cdLj9LgvTDS4J9MLypOU9lquxXGiqcg/pxTVl5k=
-X-Received: by 2002:a17:906:fa12:b0:991:e458:d04 with SMTP id
- lo18-20020a170906fa1200b00991e4580d04mr1094567ejb.51.1688113055037; Fri, 30
- Jun 2023 01:17:35 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1688113274; x=1690705274;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=y2P2yPcsJA9sRXWE+8SLPKKzCY/t1iQxHtX7E/v/gtY=;
+ b=XEOU80s2H2L3bFizAWZ+i5it4Ja4he2acu/2JRpDEVSuqrkvgLQ8GhDVK8U8yFqzpK
+ Lq1zx8kdVTuRh6yvVEyYZDFrEyWD/CMnmxObscmvv9J26VF8ZCKHye8YeC6AmnWt0By+
+ l3LQHt3g5UQo4dVXaoxmLeRzarw6IyELZU10m38DrsJ5KJr3j8IaaLMSVeg3PyQVJi7y
+ O9f+n7m5jiVcU3CNaJMuxsmh9O9ocZS3eBILxSLDz9XkUh7f9ROlRCoT6+WutmExD5l2
+ Z9/hi8IR21NDmRLP+U1YkfyWb2k3pBarClz/8WNIZBHvWZ4ScZx4K0UZKWAR8wHxuMh/
+ YVhQ==
+X-Gm-Message-State: ABy/qLZgUUcZqEers155BV0xKdNkJqzZE/BBDXVd5zWcZT530G4zoo40
+ q2tWM0p2cREBj8ZZ3UsvcLKrLFejulb/Dkn6uTIku4kgo+A596Bp/MHN8nOHDt5aWdkNuVie1j1
+ bTjGX/pbPWEoz0/Bd9m70KdvHQ8oXUDE=
+X-Received: by 2002:a2e:8893:0:b0:2b6:a7a7:3607 with SMTP id
+ k19-20020a2e8893000000b002b6a7a73607mr1572736lji.49.1688113274192; 
+ Fri, 30 Jun 2023 01:21:14 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlFB0012bEFNIakYfK8DVy//iKazHnLxTW+0UPoyXrH7szERo7xGWw+ehWOh8PGRaSEn8ddfrmRy8Gh3ZJLA7Ig=
+X-Received: by 2002:a2e:8893:0:b0:2b6:a7a7:3607 with SMTP id
+ k19-20020a2e8893000000b002b6a7a73607mr1572724lji.49.1688113273895; Fri, 30
+ Jun 2023 01:21:13 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230629021633.328916-1-npiggin@gmail.com>
- <20230629021633.328916-2-npiggin@gmail.com>
-In-Reply-To: <20230629021633.328916-2-npiggin@gmail.com>
-From: Joel Stanley <joel@jms.id.au>
-Date: Fri, 30 Jun 2023 08:17:23 +0000
-Message-ID: <CACPK8XcB7sFoUqn9Lw=Nw51qCKpUxX5Wm8p-hP5JoTo1iMwECw@mail.gmail.com>
-Subject: Re: [RFC PATCH 1/3] target/ppc: Add LPAR-per-core vs per-thread mode
- flag
-To: Nicholas Piggin <npiggin@gmail.com>
-Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, 
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, 
- David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>, 
- Harsh Prateek Bora <harshpb@linux.ibm.com>
+References: <20230614221026.56950-1-andrew@daynix.com>
+ <CACGkMEsDw8sUeJB340f8cdqEFnQRXccDxq6pe+87KDzOBMHZpg@mail.gmail.com>
+ <ZJ6MfLs+yLx/yQyV@redhat.com>
+In-Reply-To: <ZJ6MfLs+yLx/yQyV@redhat.com>
+From: Jason Wang <jasowang@redhat.com>
+Date: Fri, 30 Jun 2023 16:21:02 +0800
+Message-ID: <CACGkMEsmKH=U7zYt6wtznjW6tcr=VvCkGfZJrfuUxWg1Ces31Q@mail.gmail.com>
+Subject: Re: [PATCH v3 0/6] eBPF RSS through QMP support.
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: Andrew Melnychenko <andrew@daynix.com>, mst@redhat.com, armbru@redhat.com,
+ eblake@redhat.com, 
+ qemu-devel@nongnu.org, yuri.benditovich@daynix.com, yan@daynix.com
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
- envelope-from=joel.stan@gmail.com; helo=mail-ej1-x62e.google.com
-X-Spam_score_int: -14
-X-Spam_score: -1.5
-X-Spam_bar: -
-X-Spam_report: (-1.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, FREEMAIL_FORGED_FROMDOMAIN=0.249,
- FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.25,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jasowang@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,159 +98,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 29 Jun 2023 at 02:17, Nicholas Piggin <npiggin@gmail.com> wrote:
+On Fri, Jun 30, 2023 at 4:04=E2=80=AFPM Daniel P. Berrang=C3=A9 <berrange@r=
+edhat.com> wrote:
 >
-> The Power ISA has the concept of sub-processors:
+> On Fri, Jun 30, 2023 at 01:06:22PM +0800, Jason Wang wrote:
+> > On Thu, Jun 15, 2023 at 6:29=E2=80=AFAM Andrew Melnychenko <andrew@dayn=
+ix.com> wrote:
+> > >
+> > > This series of patches provides the ability to retrieve eBPF program
+> > > through qmp, so management application may load bpf blob with proper =
+capabilities.
+> > > Now, virtio-net devices can accept eBPF programs and maps through pro=
+perties
+> > > as external file descriptors. Access to the eBPF map is direct throug=
+h mmap()
+> > > call, so it should not require additional capabilities to bpf* calls.
+> > > eBPF file descriptors can be passed to QEMU from parent process or by=
+ unix
+> > > socket with sendfd() qmp command.
+> > >
+> > > Possible solution for libvirt may look like this: https://github.com/=
+daynix/libvirt/tree/RSS_eBPF (WIP)
+> > >
+> > > Changes since v2:
+> > >  * moved/refactored QMP command
+> > >  * refactored virtio-net
+> >
+> > I've queued this series, but a question left:
+> >
+> > mmap() support for eBPF maps is not supported from day0, should we
+> > fallback to syscall for the OS that doesn't support that?
 >
->   Hardware is allowed to sub-divide a multi-threaded processor into
->   "sub-processors" that appear to privileged programs as multi-threaded
->   processors with fewer threads.
->
-> POWER9 and POWER10 have two modes, either every thread is a
-> sub-processor or all threads appear as one multi-threaded processor.
-> In the user manuals these are known as "LPAR-per-thread" and "LPAR
-> per core" (or "1LPAR"), respectively.
->
-> The practical difference is in LPAR-per-thread mode, non-hypervisor SPRs
-> are not shared between threads and msgsndp can not be used to message
-> siblings. In 1LPAR mode some SPRs are shared and msgsndp is usable. LPPT
-> allows multiple partitions to run concurrently on the same core,
-> and is a requirement for KVM to run on POWER9/10.
->
-> Traditionally, SMT in PAPR environments including PowerVM and the
-> pseries machine with KVM acceleration beahves as in 1LPAR mode. In
+> How recent is mmap() support ?
 
-behaves
+I don't check.
 
-> OPAL systems, LPAR-per-thread is used. When adding SMT to the powernv
-> machine, it is preferable to emulate OPAL LPAR-per-thread, so to
-> account for this difference a flag is added and SPRs may become either
-> per-thread, per-core shared, or per-LPAR shared. Per-LPAR registers
-> become either per-thread or per-core shared depending on the mode.
->
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> Is it difficult to do a fallback ?
 
-Nice description.
+Nope, but it requires privilege if we go with a syscall.
 
-Reviewed-by: Joel Stanley <joel@jms.id.au>
+>
+> As since is a new feature,
 
-As we make the emulation more accurate, we will want the 1LPAR state
-to be reflected in the xscoms too.
+But it modifies the old rss loading code, no?
 
-> ---
->  hw/ppc/spapr_cpu_core.c |  2 ++
->  target/ppc/cpu.h        |  3 +++
->  target/ppc/cpu_init.c   | 12 ++++++++++++
->  target/ppc/translate.c  | 16 +++++++++++++---
->  4 files changed, 30 insertions(+), 3 deletions(-)
+-    for (; i < len; ++i) {
+-        if (bpf_map_update_elem(ctx->map_indirections_table, &i,
+-                                indirections_table + i, 0) < 0) {
+-            return false;
+-        }
+-    }
++    memcpy(ctx->mmap_indirections_table, indirections_table,
++            sizeof(*indirections_table) * len);
+
+> there's no inherant expectation of support
+> for arbitrary old platforms. So only worth investing in a fallback if
+> it is easy, or there's a very compelling reason to support certain
+> old platforms.
+
+The reason is that we support eBPF RSS with syscall based map updating
+in the past if Qemu was running with privilege. With this series, it
+won't work if the kernel doesn't support mmap.
+
+Thanks
+
 >
-> diff --git a/hw/ppc/spapr_cpu_core.c b/hw/ppc/spapr_cpu_core.c
-> index a4e3c2fadd..b482d9754a 100644
-> --- a/hw/ppc/spapr_cpu_core.c
-> +++ b/hw/ppc/spapr_cpu_core.c
-> @@ -270,6 +270,8 @@ static bool spapr_realize_vcpu(PowerPCCPU *cpu, SpaprMachineState *spapr,
->      env->spr_cb[SPR_PIR].default_value = cs->cpu_index;
->      env->spr_cb[SPR_TIR].default_value = thread_index;
 >
-> +    cpu_ppc_set_1lpar(cpu);
-> +
->      /* Set time-base frequency to 512 MHz. vhyp must be set first. */
->      cpu_ppc_tb_init(env, SPAPR_TIMEBASE_FREQ);
->
-> diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
-> index 94497aa115..beddc5db5b 100644
-> --- a/target/ppc/cpu.h
-> +++ b/target/ppc/cpu.h
-> @@ -674,6 +674,8 @@ enum {
->      POWERPC_FLAG_SCV      = 0x00200000,
->      /* Has >1 thread per core                                                */
->      POWERPC_FLAG_SMT      = 0x00400000,
-> +    /* Using "LPAR per core" mode  (as opposed to per-thread)                */
-> +    POWERPC_FLAG_1LPAR    = 0x00800000,
->  };
->
->  /*
-> @@ -1435,6 +1437,7 @@ void store_booke_tsr(CPUPPCState *env, target_ulong val);
->  void ppc_tlb_invalidate_all(CPUPPCState *env);
->  void ppc_tlb_invalidate_one(CPUPPCState *env, target_ulong addr);
->  void cpu_ppc_set_vhyp(PowerPCCPU *cpu, PPCVirtualHypervisor *vhyp);
-> +void cpu_ppc_set_1lpar(PowerPCCPU *cpu);
->  int ppcmas_tlb_check(CPUPPCState *env, ppcmas_tlb_t *tlb, hwaddr *raddrp,
->                       target_ulong address, uint32_t pid);
->  int ppcemb_tlb_search(CPUPPCState *env, target_ulong address, uint32_t pid);
-> diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
-> index aeff71d063..dc3a65a575 100644
-> --- a/target/ppc/cpu_init.c
-> +++ b/target/ppc/cpu_init.c
-> @@ -6601,6 +6601,18 @@ void cpu_ppc_set_vhyp(PowerPCCPU *cpu, PPCVirtualHypervisor *vhyp)
->      env->msr_mask &= ~MSR_HVB;
->  }
->
-> +void cpu_ppc_set_1lpar(PowerPCCPU *cpu)
-> +{
-> +    CPUPPCState *env = &cpu->env;
-> +
-> +    /*
-> +     * pseries SMT means "LPAR per core" mode, e.g., msgsndp is usable
-> +     * between threads.
-> +     */
-> +    if (env->flags & POWERPC_FLAG_SMT) {
-> +        env->flags |= POWERPC_FLAG_1LPAR;
-> +    }
-> +}
->  #endif /* !defined(CONFIG_USER_ONLY) */
->
->  #endif /* defined(TARGET_PPC64) */
-> diff --git a/target/ppc/translate.c b/target/ppc/translate.c
-> index 372ee600b2..ef186396b4 100644
-> --- a/target/ppc/translate.c
-> +++ b/target/ppc/translate.c
-> @@ -256,6 +256,16 @@ static inline bool gen_serialize_core(DisasContext *ctx)
->  }
->  #endif
->
-> +static inline bool gen_serialize_core_lpar(DisasContext *ctx)
-> +{
-> +    /* 1LPAR implies SMT */
-> +    if (ctx->flags & POWERPC_FLAG_1LPAR) {
-> +        return gen_serialize(ctx);
-> +    }
-> +
-> +    return true;
-> +}
-> +
->  /* SPR load/store helpers */
->  static inline void gen_load_spr(TCGv t, int reg)
->  {
-> @@ -451,7 +461,7 @@ static void spr_write_CTRL_ST(DisasContext *ctx, int sprn, int gprn)
->
->  void spr_write_CTRL(DisasContext *ctx, int sprn, int gprn)
->  {
-> -    if (!(ctx->flags & POWERPC_FLAG_SMT)) {
-> +    if (!(ctx->flags & POWERPC_FLAG_1LPAR)) {
->          spr_write_CTRL_ST(ctx, sprn, gprn);
->          goto out;
->      }
-> @@ -815,7 +825,7 @@ void spr_write_pcr(DisasContext *ctx, int sprn, int gprn)
->  /* DPDES */
->  void spr_read_dpdes(DisasContext *ctx, int gprn, int sprn)
->  {
-> -    if (!gen_serialize_core(ctx)) {
-> +    if (!gen_serialize_core_lpar(ctx)) {
->          return;
->      }
->
-> @@ -824,7 +834,7 @@ void spr_read_dpdes(DisasContext *ctx, int gprn, int sprn)
->
->  void spr_write_dpdes(DisasContext *ctx, int sprn, int gprn)
->  {
-> -    if (!gen_serialize_core(ctx)) {
-> +    if (!gen_serialize_core_lpar(ctx)) {
->          return;
->      }
->
+> With regards,
+> Daniel
 > --
-> 2.40.1
+> |: https://berrange.com      -o-    https://www.flickr.com/photos/dberran=
+ge :|
+> |: https://libvirt.org         -o-            https://fstop138.berrange.c=
+om :|
+> |: https://entangle-photo.org    -o-    https://www.instagram.com/dberran=
+ge :|
 >
->
+
 
