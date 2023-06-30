@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C6A074434C
+	by mail.lfdr.de (Postfix) with ESMTPS id 3166474434B
 	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 22:38:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFKsB-0008Rj-01; Fri, 30 Jun 2023 16:37:43 -0400
+	id 1qFKsC-0008S0-Nd; Fri, 30 Jun 2023 16:37:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1qFKs4-0008Qr-Vh
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 16:37:38 -0400
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1qFKs9-0008RT-5P
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 16:37:41 -0400
 Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1qFKs3-0006Je-HV
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 16:37:36 -0400
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1qFKs7-0006K8-1s
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 16:37:40 -0400
 Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 35UKGEnp032731; Fri, 30 Jun 2023 20:37:34 GMT
+ 35UKGFem032741; Fri, 30 Jun 2023 20:37:37 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=j/LsTh9U/GX7cYt3E4+35NtnX6ZqVqzrfDfGQCUrX5E=;
- b=Xy/9hE13HfV8ejOBL1pE+F4tRc/TykiOp3PQcOU58kRlfdMfrZIBT3z+1uB9STSW4+Nx
- e8fX6TMpr6xrZ09DpeLA0BrqwihD2neGkUB/b2hFdSDWmzzNEYU54Qm837tzlRAbxrjp
- Ei5ip6NqG9Av0MEOJkMIJfp35rCO9hqnUkhNRFqjdO0+FgidwqeAfdUyXUWMT3QXWNzp
- XjdcKaCV+kc0lnVKC8pCdSgIeoSbHd4A3TXCh1R+CDdgQX7a3ydrts+C57fHfR7gmI/h
- BAe0aJpzHrYWYW5CEjeBPBbBxVoqcTUL8xWHG4Yq5jFb6Fot19FLikeMXbL96IJY0lvH 2g== 
+ : date : message-id : in-reply-to : references : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=34+aVeyEn69PEMdUZcBdwpxOwEAR6dGjVHWvLTAHTCI=;
+ b=Sjc2Gt8dR/1eyy9yzVGNuLoJieYNqbRYj8U7TArPG7g49Q4NOubnuc4bEQuBaNcMunke
+ Pooqwq55ZavwegIHx7hQ/wRdds7hvJnI0mt/UupTaXT9zxVrLtvls60/s9dgXIyxaPtR
+ nT1InFuWZ5RmpIWh8VpFhXBT2XoG3/KAe9nFlE+uBVScamV5N5Xk1zV9R9n/zMSAl19n
+ ST36Igva9GohoqJkDTzXyJWxD0ooWLjotbtL73qnnq3TVbrN2GjQWLi60X63p4u1K3NC
+ P1Zw1AdReNSvyip3yb1GJqdDntcmMCwM9hZFJ6gpns+Q3Ma48snjqtP4v9bOcKek1Gb1 +Q== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rj5xggh52-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rj5xggh6n-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 30 Jun 2023 20:37:33 +0000
+ Fri, 30 Jun 2023 20:37:37 +0000
 Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 35UKGNLU001078;
- Fri, 30 Jun 2023 20:37:33 GMT
-Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.72])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rj5xggh4c-1
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 35UKVcJZ019632;
+ Fri, 30 Jun 2023 20:37:37 GMT
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.99])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rj5xggh5s-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 30 Jun 2023 20:37:33 +0000
-Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
- by ppma06fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 35UJ6TVX024518;
- Fri, 30 Jun 2023 20:37:31 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
- by ppma06fra.de.ibm.com (PPS) with ESMTPS id 3rdqre38ey-1
+ Fri, 30 Jun 2023 20:37:36 +0000
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+ by ppma04ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 35UJGwna024857;
+ Fri, 30 Jun 2023 20:37:35 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+ by ppma04ams.nl.ibm.com (PPS) with ESMTPS id 3rdr454dkk-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 30 Jun 2023 20:37:31 +0000
+ Fri, 30 Jun 2023 20:37:34 +0000
 Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com
  [10.20.54.103])
- by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 35UKbTPH53412332
+ by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 35UKbWck62194138
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 30 Jun 2023 20:37:29 GMT
+ Fri, 30 Jun 2023 20:37:32 GMT
 Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5505320043;
- Fri, 30 Jun 2023 20:37:29 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id A0B5C20043;
+ Fri, 30 Jun 2023 20:37:32 +0000 (GMT)
 Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id AB3F220040;
- Fri, 30 Jun 2023 20:37:28 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 0F42820040;
+ Fri, 30 Jun 2023 20:37:32 +0000 (GMT)
 Received: from heavy.boeblingen.de.ibm.com (unknown [9.179.8.31])
  by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Fri, 30 Jun 2023 20:37:28 +0000 (GMT)
+ Fri, 30 Jun 2023 20:37:31 +0000 (GMT)
 From: Ilya Leoshkevich <iii@linux.ibm.com>
 To: Richard Henderson <richard.henderson@linaro.org>,
  Laurent Vivier <laurent@vivier.eu>
@@ -70,17 +70,19 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
  David Hildenbrand <david@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH 3/4] accel/tcg: Remove #ifdef TARGET_I386 from perf.c
-Date: Fri, 30 Jun 2023 22:36:40 +0200
-Message-ID: <20230630203720.528552-4-iii@linux.ibm.com>
+Subject: [PATCH 4/4] accel/tcg: Move perf and debuginfo support to tcg
+Date: Fri, 30 Jun 2023 22:36:41 +0200
+Message-ID: <20230630203720.528552-5-iii@linux.ibm.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230630203720.528552-1-iii@linux.ibm.com>
 References: <20230630203720.528552-1-iii@linux.ibm.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=UTF-8
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: eJmVDBsDr4nfbWHTYG7hdjO15nROpegx
-X-Proofpoint-ORIG-GUID: UK1CZ2eJjziBQbu0WWx0Qxuek8gQCk_Z
+X-Proofpoint-GUID: ToG0MLzO1JYZP47uucTq_Bre_lKD_Mdj
+X-Proofpoint-ORIG-GUID: cTG2MCpLmgjWuD0Zrqv8AIpXb7vr_7Lt
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
  definitions=2023-06-30_12,2023-06-30_01,2023-05-22_02
@@ -114,32 +116,216 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Preparation for moving perf.c to tcg/.
+tcg/ should not depend on accel/tcg/, but perf and debuginfo
+support provided by the latter are being used by tcg/tcg.c.
 
-This affects only profiling guest code, which has code in a non-0 based
-segment, e.g., 16-bit code, which is not particularly important.
+Since that's the only user, move both to tcg/.
 
-Suggested-by: Richard Henderson <richard.henderson@linaro.org>
+Suggested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
 ---
- accel/tcg/perf.c | 4 ----
- 1 file changed, 4 deletions(-)
+ accel/tcg/meson.build          | 2 --
+ accel/tcg/translate-all.c      | 2 +-
+ hw/core/loader.c               | 2 +-
+ linux-user/elfload.c           | 2 +-
+ linux-user/exit.c              | 2 +-
+ linux-user/main.c              | 2 +-
+ softmmu/vl.c                   | 2 +-
+ {accel/tcg => tcg}/debuginfo.c | 0
+ {accel/tcg => tcg}/debuginfo.h | 4 ++--
+ tcg/meson.build                | 3 +++
+ {accel/tcg => tcg}/perf.c      | 4 ++--
+ {accel/tcg => tcg}/perf.h      | 4 ++--
+ tcg/tcg.c                      | 2 +-
+ 13 files changed, 16 insertions(+), 15 deletions(-)
+ rename {accel/tcg => tcg}/debuginfo.c (100%)
+ rename {accel/tcg => tcg}/debuginfo.h (96%)
+ rename {accel/tcg => tcg}/perf.c (98%)
+ rename {accel/tcg => tcg}/perf.h (95%)
 
-diff --git a/accel/tcg/perf.c b/accel/tcg/perf.c
-index cd1aa99a7ee..e2813e11806 100644
+diff --git a/accel/tcg/meson.build b/accel/tcg/meson.build
+index 166bef173b8..083c9058391 100644
+--- a/accel/tcg/meson.build
++++ b/accel/tcg/meson.build
+@@ -12,8 +12,6 @@ tcg_ss.add(files(
+ tcg_ss.add(when: 'CONFIG_USER_ONLY', if_true: files('user-exec.c'))
+ tcg_ss.add(when: 'CONFIG_SYSTEM_ONLY', if_false: files('user-exec-stub.c'))
+ tcg_ss.add(when: 'CONFIG_PLUGIN', if_true: [files('plugin-gen.c')])
+-tcg_ss.add(when: libdw, if_true: files('debuginfo.c'))
+-tcg_ss.add(when: 'CONFIG_LINUX', if_true: files('perf.c'))
+ specific_ss.add_all(when: 'CONFIG_TCG', if_true: tcg_ss)
+ 
+ specific_ss.add(when: ['CONFIG_SYSTEM_ONLY', 'CONFIG_TCG'], if_true: files(
+diff --git a/accel/tcg/translate-all.c b/accel/tcg/translate-all.c
+index d3d4fbc1a41..58d9bd5a69e 100644
+--- a/accel/tcg/translate-all.c
++++ b/accel/tcg/translate-all.c
+@@ -62,7 +62,7 @@
+ #include "tb-hash.h"
+ #include "tb-context.h"
+ #include "internal.h"
+-#include "perf.h"
++#include "tcg/perf.h"
+ #include "tcg/insn-start-words.h"
+ 
+ TBContext tb_ctx;
+diff --git a/hw/core/loader.c b/hw/core/loader.c
+index 8b7fd9e9e55..ad8d00440a7 100644
+--- a/hw/core/loader.c
++++ b/hw/core/loader.c
+@@ -62,7 +62,7 @@
+ #include "hw/boards.h"
+ #include "qemu/cutils.h"
+ #include "sysemu/runstate.h"
+-#include "accel/tcg/debuginfo.h"
++#include "tcg/debuginfo.h"
+ 
+ #include <zlib.h>
+ 
+diff --git a/linux-user/elfload.c b/linux-user/elfload.c
+index 9a2ec568b09..6900974c373 100644
+--- a/linux-user/elfload.c
++++ b/linux-user/elfload.c
+@@ -21,7 +21,7 @@
+ #include "qapi/error.h"
+ #include "qemu/error-report.h"
+ #include "target_signal.h"
+-#include "accel/tcg/debuginfo.h"
++#include "tcg/debuginfo.h"
+ 
+ #ifdef _ARCH_PPC64
+ #undef ARCH_DLINFO
+diff --git a/linux-user/exit.c b/linux-user/exit.c
+index 3017d28a3c3..122b9d904f1 100644
+--- a/linux-user/exit.c
++++ b/linux-user/exit.c
+@@ -17,7 +17,7 @@
+  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
+  */
+ #include "qemu/osdep.h"
+-#include "accel/tcg/perf.h"
++#include "tcg/perf.h"
+ #include "gdbstub/syscalls.h"
+ #include "qemu.h"
+ #include "user-internals.h"
+diff --git a/linux-user/main.c b/linux-user/main.c
+index dba67ffa362..3f65ca49db8 100644
+--- a/linux-user/main.c
++++ b/linux-user/main.c
+@@ -54,7 +54,7 @@
+ #include "signal-common.h"
+ #include "loader.h"
+ #include "user-mmap.h"
+-#include "accel/tcg/perf.h"
++#include "tcg/perf.h"
+ 
+ #ifdef CONFIG_SEMIHOSTING
+ #include "semihosting/semihost.h"
+diff --git a/softmmu/vl.c b/softmmu/vl.c
+index b0b96f67fac..92922377210 100644
+--- a/softmmu/vl.c
++++ b/softmmu/vl.c
+@@ -97,7 +97,7 @@
+ #endif
+ #include "sysemu/qtest.h"
+ #ifdef CONFIG_TCG
+-#include "accel/tcg/perf.h"
++#include "tcg/perf.h"
+ #endif
+ 
+ #include "disas/disas.h"
+diff --git a/accel/tcg/debuginfo.c b/tcg/debuginfo.c
+similarity index 100%
+rename from accel/tcg/debuginfo.c
+rename to tcg/debuginfo.c
+diff --git a/accel/tcg/debuginfo.h b/tcg/debuginfo.h
+similarity index 96%
+rename from accel/tcg/debuginfo.h
+rename to tcg/debuginfo.h
+index f064e1c144b..858535b5da5 100644
+--- a/accel/tcg/debuginfo.h
++++ b/tcg/debuginfo.h
+@@ -4,8 +4,8 @@
+  * SPDX-License-Identifier: GPL-2.0-or-later
+  */
+ 
+-#ifndef ACCEL_TCG_DEBUGINFO_H
+-#define ACCEL_TCG_DEBUGINFO_H
++#ifndef TCG_DEBUGINFO_H
++#define TCG_DEBUGINFO_H
+ 
+ #include "qemu/bitops.h"
+ 
+diff --git a/tcg/meson.build b/tcg/meson.build
+index c0252c41988..0800e1faae8 100644
+--- a/tcg/meson.build
++++ b/tcg/meson.build
+@@ -22,6 +22,9 @@ if get_option('tcg_interpreter')
+   tcg_ss.add(files('tci.c'))
+ endif
+ 
++tcg_ss.add(when: libdw, if_true: files('debuginfo.c'))
++tcg_ss.add(when: 'CONFIG_LINUX', if_true: files('perf.c'))
++
+ tcg_ss = tcg_ss.apply(config_host, strict: false)
+ 
+ libtcg_user = static_library('tcg_user',
+diff --git a/accel/tcg/perf.c b/tcg/perf.c
+similarity index 98%
+rename from accel/tcg/perf.c
+rename to tcg/perf.c
+index e2813e11806..4a08fd9d259 100644
 --- a/accel/tcg/perf.c
-+++ b/accel/tcg/perf.c
-@@ -336,10 +336,6 @@ void perf_report_code(uint64_t guest_pc, TranslationBlock *tb,
++++ b/tcg/perf.c
+@@ -10,7 +10,7 @@
+ 
+ #include "qemu/osdep.h"
+ #include "elf.h"
+-#include "exec/exec-all.h"
++#include "exec/translation-block.h"
+ #include "qemu/timer.h"
+ #include "tcg/tcg.h"
+ 
+@@ -335,7 +335,7 @@ void perf_report_code(uint64_t guest_pc, TranslationBlock *tb,
+         /* FIXME: This replicates the restore_state_to_opc() logic. */
          q[insn].address = gen_insn_data[insn * start_words + 0];
          if (tb_cflags(tb) & CF_PCREL) {
-             q[insn].address |= (guest_pc & TARGET_PAGE_MASK);
--        } else {
--#if defined(TARGET_I386)
--            q[insn].address -= tb->cs_base;
--#endif
+-            q[insn].address |= (guest_pc & TARGET_PAGE_MASK);
++            q[insn].address |= (guest_pc & qemu_target_page_mask());
          }
          q[insn].flags = DEBUGINFO_SYMBOL | (jitdump ? DEBUGINFO_LINE : 0);
      }
+diff --git a/accel/tcg/perf.h b/tcg/perf.h
+similarity index 95%
+rename from accel/tcg/perf.h
+rename to tcg/perf.h
+index f92dd52c699..c96b5920a3f 100644
+--- a/accel/tcg/perf.h
++++ b/tcg/perf.h
+@@ -4,8 +4,8 @@
+  * SPDX-License-Identifier: GPL-2.0-or-later
+  */
+ 
+-#ifndef ACCEL_TCG_PERF_H
+-#define ACCEL_TCG_PERF_H
++#ifndef TCG_PERF_H
++#define TCG_PERF_H
+ 
+ #if defined(CONFIG_TCG) && defined(CONFIG_LINUX)
+ /* Start writing perf-<pid>.map. */
+diff --git a/tcg/tcg.c b/tcg/tcg.c
+index a0628fe4249..2afc5f2d0f7 100644
+--- a/tcg/tcg.c
++++ b/tcg/tcg.c
+@@ -54,7 +54,7 @@
+ #include "tcg/tcg-ldst.h"
+ #include "tcg/tcg-temp-internal.h"
+ #include "tcg-internal.h"
+-#include "accel/tcg/perf.h"
++#include "tcg/perf.h"
+ #ifdef CONFIG_USER_ONLY
+ #include "exec/user/guest-base.h"
+ #endif
 -- 
 2.41.0
 
