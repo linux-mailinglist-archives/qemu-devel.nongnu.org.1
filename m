@@ -2,82 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D779743E56
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 17:13:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0FB8743E9F
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 17:21:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFFn6-0002Wo-41; Fri, 30 Jun 2023 11:12:08 -0400
+	id 1qFFw7-0005r5-1a; Fri, 30 Jun 2023 11:21:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <christoph.muellner@vrull.eu>)
- id 1qFFn2-0002WS-Dd
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 11:12:04 -0400
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <christoph.muellner@vrull.eu>)
- id 1qFFmx-0008Hm-GZ
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 11:12:03 -0400
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-3141c8a6f30so1918772f8f.1
- for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 08:11:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=vrull.eu; s=google; t=1688137917; x=1690729917;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=5tbRcyg8cNGouviW+Ll+q5hjfS+M0jFMgKKLKhtNu9c=;
- b=RgpZsA9OaM/HumdL1S8HNdaWqbGUxox5/29oBt2SILZHU0e8m/CyIQCYJtxCGleIoM
- pB1tDrVPCwgLWdHGZxxZ/Q2VCZK11/OfC4jF9+yxLPpivOIkvwkW3Sc0sjUHboY9baY6
- vc7FQ6HS55Qu3g91vBkCFUPSvLOdqIM15kj6Xo9lFQSeWKhuUWkrjwvuyWW2P0DC71dI
- dQPPeu+q044MHjTQ1dtZCpVlRkLdtMV9BzqLpz5N3mzBHUusNtagTSVohBw4ghrVPEZS
- yYyAURRnSSHesdl6Dv3BxGbZBbMH7Hz+z22CWKdhiwDYLzWNFdGfvrAToAMH7+EeuC2B
- dzkg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688137917; x=1690729917;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=5tbRcyg8cNGouviW+Ll+q5hjfS+M0jFMgKKLKhtNu9c=;
- b=h5WOu38cint94e7m12J/hThs2bGATMVk2lguhpW6A56B+P6i315JnZlItpbpQVWJgG
- C5MKRgk2BEMBqZRNQFesVLmUbZ7/JPO8a9MPTKku2J+RLYaC9ZrN5CfzXMTWOUBL+gsQ
- eiRgd5V7C3ZKFN27SxhMoMqjAV8pHPE4DXU/PzNdY41Q2Q2oscPkxbxCn8FX5B6ATC9T
- mSkN6d2mTTx9W84EpB4KQ4jcSxINpgKMxZeg+50BaQFuAwcpZBCJttQ1gf1jGeX33gDu
- F8fKeBVr1xD9acgXKfiO5+3qEojzozDL0HNjZhhbY0r+X8Ktv2zc2UkmaWsjeNbOB6dL
- FkzQ==
-X-Gm-Message-State: ABy/qLaI+wUl11HJeX6bNRw13R0itqZzcYIq9C0aDa6bw9h9on9Cf+7S
- ysTDhtuoLoj/Hdc17PP+kypsg6sfIn6RPY3HAGpwYQ==
-X-Google-Smtp-Source: APBJJlGH6ZWJFx+RKZrGMyd73o+fmkBpx1gzEXYYgfz/uDrTIYUnEgxPy9crqNi0iK7XfVlRYncQ4zmBd0OhB8XsW2s=
-X-Received: by 2002:adf:f049:0:b0:309:1532:8287 with SMTP id
- t9-20020adff049000000b0030915328287mr2609760wro.19.1688137917317; Fri, 30 Jun
- 2023 08:11:57 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <imbrenda@linux.ibm.com>)
+ id 1qFFw0-0005nU-25
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 11:21:23 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <imbrenda@linux.ibm.com>)
+ id 1qFFvx-0006IJ-N7
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 11:21:19 -0400
+Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 35UFH9LA020930
+ for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 15:21:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=date : from : to : cc :
+ subject : message-id : in-reply-to : references : mime-version :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=d3loUdWREi3zcILsGjItQg1cfqSvOKpQy+fVS66pVMU=;
+ b=kNK4dHqPItCU18MNyCED2ojjaw5X9wxw5ZgqAd2g1FzSXIHN007ABOpbH0kcX/Ve8cGA
+ fcGM2sdm4b4EXp0MPUVSY4mDsjBFdTkdpbxzexKiQE2ddVaVH1tSoj2eOT9TqrHI4jmB
+ IyZdTlf0ppEN2lPgKLQKV2ILjeDOjjhVgcMaAJPxEqFmVVrp5XEtX/bDo7cBE2l92wAO
+ NaZu95P+nKWu5CQwc21/jWxULffug0qv336msSi5ncBRpegwOI9qLreUw/4H8O3goJ3N
+ +4VwSpiNHdz+3OpfU3dhexoZuKtU2y3GKueQ2NoU3LThBh03lzLaUYpklSwYhlsSRGXY 9w== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rj1j802t7-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 15:21:14 +0000
+Received: from m0353726.ppops.net (m0353726.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 35UFJEp2029067
+ for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 15:21:14 GMT
+Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.107])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rj1j802qp-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 30 Jun 2023 15:21:14 +0000
+Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
+ by ppma03fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 35UCMcWq012730;
+ Fri, 30 Jun 2023 15:21:10 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+ by ppma03fra.de.ibm.com (PPS) with ESMTPS id 3rdr453458-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 30 Jun 2023 15:21:10 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com
+ [10.20.54.103])
+ by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 35UFL7Sd3277442
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 30 Jun 2023 15:21:07 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id AE19920043;
+ Fri, 30 Jun 2023 15:21:07 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 71DFB20040;
+ Fri, 30 Jun 2023 15:21:07 +0000 (GMT)
+Received: from p-imbrenda (unknown [9.152.224.66])
+ by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Fri, 30 Jun 2023 15:21:07 +0000 (GMT)
+Date: Fri, 30 Jun 2023 17:18:41 +0200
+From: Claudio Imbrenda <imbrenda@linux.ibm.com>
+To: Thomas Huth <thuth@redhat.com>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ libvir-list@redhat.com, Markus Armbruster <armbru@redhat.com>
+Subject: Re: [PATCH] os-posix: Allow 'chroot' via '-run-with' and deprecate
+ the old '-chroot' option
+Message-ID: <20230630171841.2deb7591@p-imbrenda>
+In-Reply-To: <20230630150112.435874-1-thuth@redhat.com>
+References: <20230630150112.435874-1-thuth@redhat.com>
+Organization: IBM
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-References: <20230630115239.1920012-1-christoph.muellner@vrull.eu>
- <55279432-e4fe-7309-ac6f-5e2a4b86f47c@linaro.org>
-In-Reply-To: <55279432-e4fe-7309-ac6f-5e2a4b86f47c@linaro.org>
-From: =?UTF-8?Q?Christoph_M=C3=BCllner?= <christoph.muellner@vrull.eu>
-Date: Fri, 30 Jun 2023 17:11:43 +0200
-Message-ID: <CAEg0e7gsUNj=PmvvVDNTH+jc63sqrRBK_UiT0AEHMWGpYOjGfw@mail.gmail.com>
-Subject: Re: [PATCH v5] riscv: Add support for the Zfa extension
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org, 
- Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bin.meng@windriver.com>,
- Philipp Tomsich <philipp.tomsich@vrull.eu>, Palmer Dabbelt <palmer@dabbelt.com>,
- Jeff Law <jeffreyalaw@gmail.com>, Tsukasa OI <research_trasio@irq.a4lg.com>, 
- liweiwei@iscas.ac.cn, Daniel Henrique Barboza <dbarboza@ventanamicro.com>, 
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Rob Bradford <rbradford@rivosinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=christoph.muellner@vrull.eu; helo=mail-wr1-x432.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: NOKx-ocVRlZRucy-3ACB-AFSq8Yw7BXP
+X-Proofpoint-GUID: _6ZqNHZ6QDTbTWtO836BKaX54TcsnxJ2
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-06-30_05,2023-06-30_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0
+ suspectscore=0 malwarescore=0 spamscore=0 bulkscore=0 clxscore=1015
+ adultscore=0 mlxscore=0 lowpriorityscore=0 mlxlogscore=999 phishscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2305260000 definitions=main-2306300127
+Received-SPF: pass client-ip=148.163.156.1;
+ envelope-from=imbrenda@linux.ibm.com; helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,50 +117,203 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Jun 30, 2023 at 4:03=E2=80=AFPM Richard Henderson
-<richard.henderson@linaro.org> wrote:
->
-> On 6/30/23 13:52, Christoph Muellner wrote:
-> > +bool trans_fmvh_x_d(DisasContext *ctx, arg_fmvh_x_d *a)
-> > +{
-> > +    REQUIRE_FPU;
-> > +    REQUIRE_ZFA(ctx);
-> > +    REQUIRE_EXT(ctx, RVD);
-> > +    REQUIRE_32BIT(ctx);
-> > +
-> > +    TCGv dst =3D dest_gpr(ctx, a->rd);
-> > +    TCGv_i64 t1 =3D tcg_temp_new_i64();
-> > +
-> > +    tcg_gen_extract_i64(t1, cpu_fpr[a->rs1], 32, 32);
-> > +    tcg_gen_trunc_i64_tl(dst, t1);
-> > +    gen_set_gpr(ctx, a->rd, dst);
->
-> I think you would prefer
->
->    tcg_gen_srai_tl(t1, cpu_fpr[rs1], 32);
+On Fri, 30 Jun 2023 17:01:12 +0200
+Thomas Huth <thuth@redhat.com> wrote:
 
-sari_tl() will not work, because cpu_fpr[a->rs1] is a TCGv_i64.
-So I need to use sari_i64() and keep the trunc_i64_tl():
+> We recently introduced "-run-with" for options that influence the
+> runtime behavior of QEMU. This option has the big advantage that it
+> can group related options (so that it is easier for the users to spot
+> them) and that the options become introspectable via QMP this way.
+> So let's start moving more switches into this option group, starting
+> with "-chroot" now.
+> 
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
 
-    TCGv dst =3D dest_gpr(ctx, a->rd);
-    TCGv_i64 t1 =3D tcg_temp_new_i64();
-    tcg_gen_sari_i64(dst, cpu_fpr[a->rs1], 32);
-    tcg_gen_trunc_i64_tl(dst, t1);
-    gen_set_gpr(ctx, a->rd, dst);
+Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
 
-Thanks,
-Christoph
+> ---
+>  docs/about/deprecated.rst |  5 +++++
+>  os-posix.c                | 35 ++++++++++++++++++++++++++++++++++-
+>  util/async-teardown.c     | 21 ---------------------
+>  qemu-options.hx           | 18 +++++++++++++-----
+>  4 files changed, 52 insertions(+), 27 deletions(-)
+> 
+> diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+> index 0743459862..1cf53b86ce 100644
+> --- a/docs/about/deprecated.rst
+> +++ b/docs/about/deprecated.rst
+> @@ -116,6 +116,11 @@ Use "whpx" (on Windows) or "hvf" (on macOS) instead.
+>  
+>  Use ``-run-with async-teardown=on`` instead.
+>  
+> +``-chroot`` (since 8.1)
+> +'''''''''''''''''''''''
+> +
+> +Use ``-run-with chroot=dir`` instead.
+> +
+>  ``-singlestep`` (since 8.1)
+>  '''''''''''''''''''''''''''
+>  
+> diff --git a/os-posix.c b/os-posix.c
+> index 90ea71725f..0ae1fb2347 100644
+> --- a/os-posix.c
+> +++ b/os-posix.c
+> @@ -38,6 +38,7 @@
+>  #include "qemu/cutils.h"
+>  #include "qemu/config-file.h"
+>  #include "qemu/option.h"
+> +#include "qemu/module.h"
+>  
+>  #ifdef CONFIG_LINUX
+>  #include <sys/prctl.h>
+> @@ -148,6 +149,7 @@ int os_parse_cmd_args(int index, const char *optarg)
+>          }
+>          break;
+>      case QEMU_OPTION_chroot:
+> +        warn_report("option is deprecated, use '-run-with chroot=...' instead");
+>          chroot_dir = optarg;
+>          break;
+>      case QEMU_OPTION_daemonize:
+> @@ -158,18 +160,25 @@ int os_parse_cmd_args(int index, const char *optarg)
+>      case QEMU_OPTION_asyncteardown:
+>          init_async_teardown();
+>          break;
+> +#endif
+>      case QEMU_OPTION_run_with: {
+> +        const char *str;
+>          QemuOpts *opts = qemu_opts_parse_noisily(qemu_find_opts("run-with"),
+>                                                   optarg, false);
+>          if (!opts) {
+>              exit(1);
+>          }
+> +#if defined(CONFIG_LINUX)
+>          if (qemu_opt_get_bool(opts, "async-teardown", false)) {
+>              init_async_teardown();
+>          }
+> +#endif
+> +        str = qemu_opt_get(opts, "chroot");
+> +        if (str) {
+> +            chroot_dir = str;
+> +        }
+>          break;
+>      }
+> -#endif
+>      default:
+>          return -1;
+>      }
+> @@ -348,3 +357,27 @@ int os_mlock(void)
+>      return -ENOSYS;
+>  #endif
+>  }
+> +
+> +static QemuOptsList qemu_run_with_opts = {
+> +    .name = "run-with",
+> +    .head = QTAILQ_HEAD_INITIALIZER(qemu_run_with_opts.head),
+> +    .desc = {
+> +#if defined(CONFIG_LINUX)
+> +        {
+> +            .name = "async-teardown",
+> +            .type = QEMU_OPT_BOOL,
+> +        },
+> +#endif
+> +        {
+> +            .name = "chroot",
+> +            .type = QEMU_OPT_STRING,
+> +        },
+> +        { /* end of list */ }
+> +    },
+> +};
+> +
+> +static void register_teardown(void)
+> +{
+> +    qemu_add_opts(&qemu_run_with_opts);
+> +}
+> +opts_init(register_teardown);
+> diff --git a/util/async-teardown.c b/util/async-teardown.c
+> index 3ab19c8740..62cdeb0f20 100644
+> --- a/util/async-teardown.c
+> +++ b/util/async-teardown.c
+> @@ -12,9 +12,6 @@
+>   */
+>  
+>  #include "qemu/osdep.h"
+> -#include "qemu/config-file.h"
+> -#include "qemu/option.h"
+> -#include "qemu/module.h"
+>  #include <dirent.h>
+>  #include <sys/prctl.h>
+>  #include <sched.h>
+> @@ -147,21 +144,3 @@ void init_async_teardown(void)
+>      clone(async_teardown_fn, new_stack_for_clone(), CLONE_VM, NULL);
+>      sigprocmask(SIG_SETMASK, &old_signals, NULL);
+>  }
+> -
+> -static QemuOptsList qemu_run_with_opts = {
+> -    .name = "run-with",
+> -    .head = QTAILQ_HEAD_INITIALIZER(qemu_run_with_opts.head),
+> -    .desc = {
+> -        {
+> -            .name = "async-teardown",
+> -            .type = QEMU_OPT_BOOL,
+> -        },
+> -        { /* end of list */ }
+> -    },
+> -};
+> -
+> -static void register_teardown(void)
+> -{
+> -    qemu_add_opts(&qemu_run_with_opts);
+> -}
+> -opts_init(register_teardown);
+> diff --git a/qemu-options.hx b/qemu-options.hx
+> index b57489d7ca..f49d4c0e3c 100644
+> --- a/qemu-options.hx
+> +++ b/qemu-options.hx
+> @@ -4670,11 +4670,12 @@ ERST
+>  
+>  #ifndef _WIN32
+>  DEF("chroot", HAS_ARG, QEMU_OPTION_chroot, \
+> -    "-chroot dir     chroot to dir just before starting the VM\n",
+> +    "-chroot dir     chroot to dir just before starting the VM (deprecated)\n",
+>      QEMU_ARCH_ALL)
+>  #endif
+>  SRST
+>  ``-chroot dir``
+> +    Deprecated, use '-run-with chroot=...' instead.
+>      Immediately before starting guest execution, chroot to the specified
+>      directory. Especially useful in combination with -runas.
+>  ERST
+> @@ -4861,13 +4862,16 @@ SRST
+>      This option is deprecated and should no longer be used. The new option
+>      ``-run-with async-teardown=on`` is a replacement.
+>  ERST
+> +#endif
+> +#ifdef CONFIG_POSIX
+>  DEF("run-with", HAS_ARG, QEMU_OPTION_run_with,
+> -    "-run-with async-teardown[=on|off]\n"
+> -    "                misc QEMU process lifecycle options\n"
+> -    "                async-teardown=on enables asynchronous teardown\n",
+> +    "-run-with [async-teardown=on|off][,chroot=dir]\n"
+> +    "                Set miscellaneous QEMU process lifecycle options:\n"
+> +    "                async-teardown=on enables asynchronous teardown (Linux only)\n"
+> +    "                chroot=dir chroot to dir just before starting the VM\n",
+>      QEMU_ARCH_ALL)
+>  SRST
+> -``-run-with``
+> +``-run-with [async-teardown=on|off][,chroot=dir]``
+>      Set QEMU process lifecycle options.
+>  
+>      ``async-teardown=on`` enables asynchronous teardown. A new process called
+> @@ -4880,6 +4884,10 @@ SRST
+>      performed correctly. This only works if the cleanup process is not
+>      forcefully killed with SIGKILL before the main QEMU process has
+>      terminated completely.
+> +
+> +    ``chroot=dir`` can be used for doing a chroot to the specified directory
+> +    immediately before starting the guest execution. This is especially useful
+> +    in combination with -runas.
+>  ERST
+>  #endif
+>  
 
->
-> so that dst is sign-extended to begin, instead of zero-extended.  You don=
-'t see an error
-> because gen_set_gpr, for MXL_RV32, sign-extends the stored value.
->
-> However, the tcg optimizer would elide the second sign-extend if it can s=
-ee that the value
-> is already sign-extended.  So this could reduce to 1 operation instead of=
- 2.
->
->
-> r~
 
