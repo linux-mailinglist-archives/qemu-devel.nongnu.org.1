@@ -2,85 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F11D37433F6
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 07:08:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1388B743417
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 07:24:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qF6LE-0004jI-Vx; Fri, 30 Jun 2023 01:06:45 -0400
+	id 1qF6bG-0008Bi-Hw; Fri, 30 Jun 2023 01:23:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1qF6LC-0004j3-Jv
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 01:06:42 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1)
+ (envelope-from <SRS0=mf8A=CS=redhat.com=clg@ozlabs.org>)
+ id 1qF6av-0008A9-ND
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 01:22:57 -0400
+Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1qF6L8-0004oH-7Z
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 01:06:42 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688101596;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=1Ts0DwntxAspfmpPEOslhMOuUve65c0EWM89/wed8vA=;
- b=TQkDBGJz/T+ICWSri6shjdwR8Tvw9Lk7u7XFsNoj/gNsMemUUYWYaokcbNd9SZs3F17nzb
- VM/kveAAH52vJD1oPk0JusmdOEvjXNCkvf124hjkhcZVg1hStLgqhbuYuom8HKJDTpVpQ4
- QQsvm6UUFcTWNUUBkbJ0ETn3lALLaWU=
-Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
- [209.85.208.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-460-_r1URSyRPY6tDMXsp1rsww-1; Fri, 30 Jun 2023 01:06:35 -0400
-X-MC-Unique: _r1URSyRPY6tDMXsp1rsww-1
-Received: by mail-lj1-f198.google.com with SMTP id
- 38308e7fff4ca-2b6b98ac356so13234641fa.1
- for <qemu-devel@nongnu.org>; Thu, 29 Jun 2023 22:06:34 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688101593; x=1690693593;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=1Ts0DwntxAspfmpPEOslhMOuUve65c0EWM89/wed8vA=;
- b=RcoduGibt3pcUP4tDMp5ULV5fCIKtkB0t3Q64Gr2EGvl43NTg81uOfy+Y3evO4cBuS
- MJfH/Zk/cnQNEnGogqTtFcQPhZzCpA4sf9ygMOypSQF7gNmPb9rL1+kp4GHNqGRC58UP
- MRGgjWqkPDRWN6WHtk+fgBI245YDR/dckeY6T5Wx/9YvUsWYeZuO83tuxMw1yQAtWYZf
- iyH7YampCOLNMp9w+2yIO9o85LMj+ARCrO5ToslCVEnQhC6N8usaftxm0rOij4YQiGiC
- v+hT99Ue4O81Zo7HISIAZ2E/tF2Xeh1o4tnC9IMCB/XwUuUgkHLg/FgKnae5U5MxbLDH
- 1JPQ==
-X-Gm-Message-State: ABy/qLZvznPSIV3wW4ZzZVG3tGHuQPNPr0jx156NnCh4wBlylWAiUuH/
- ro2VrMOdr0c96WUWifzU8MxajhiUxtD7gtALozbPoQeq4n9p0IJ5vpxMBVIcQFxBoi+ESQzyOe+
- eWhyIKvhcCGYPvEJacMTWITP0QVOtW3k=
-X-Received: by 2002:a2e:998e:0:b0:2b6:cd2d:388c with SMTP id
- w14-20020a2e998e000000b002b6cd2d388cmr1139092lji.22.1688101593508; 
- Thu, 29 Jun 2023 22:06:33 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlFZxd8gwwfyKhe+YR/GwakOAZ0nQhEQCkOnXDa7vtdJGsEKyozhXnuoqv+6yXb7RSCAvWhugKlgTVm7tOtRfl0=
-X-Received: by 2002:a2e:998e:0:b0:2b6:cd2d:388c with SMTP id
- w14-20020a2e998e000000b002b6cd2d388cmr1139080lji.22.1688101593240; Thu, 29
- Jun 2023 22:06:33 -0700 (PDT)
+ (Exim 4.90_1)
+ (envelope-from <SRS0=mf8A=CS=redhat.com=clg@ozlabs.org>)
+ id 1qF6at-0003B2-FL
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 01:22:57 -0400
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4QskGq3YW9z4wbg;
+ Fri, 30 Jun 2023 15:22:43 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4QskGn3qZ3z4wZy;
+ Fri, 30 Jun 2023 15:22:41 +1000 (AEST)
+From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PULL 00/16] vfio queue
+Date: Fri, 30 Jun 2023 07:22:19 +0200
+Message-ID: <20230630052235.1934154-1-clg@redhat.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-References: <20230614221026.56950-1-andrew@daynix.com>
-In-Reply-To: <20230614221026.56950-1-andrew@daynix.com>
-From: Jason Wang <jasowang@redhat.com>
-Date: Fri, 30 Jun 2023 13:06:22 +0800
-Message-ID: <CACGkMEsDw8sUeJB340f8cdqEFnQRXccDxq6pe+87KDzOBMHZpg@mail.gmail.com>
-Subject: Re: [PATCH v3 0/6] eBPF RSS through QMP support.
-To: Andrew Melnychenko <andrew@daynix.com>
-Cc: mst@redhat.com, armbru@redhat.com, eblake@redhat.com, 
- qemu-devel@nongnu.org, berrange@redhat.com, yuri.benditovich@daynix.com, 
- yan@daynix.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jasowang@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=SRS0=mf8A=CS=redhat.com=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,69 +64,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jun 15, 2023 at 6:29=E2=80=AFAM Andrew Melnychenko <andrew@daynix.c=
-om> wrote:
->
-> This series of patches provides the ability to retrieve eBPF program
-> through qmp, so management application may load bpf blob with proper capa=
-bilities.
-> Now, virtio-net devices can accept eBPF programs and maps through propert=
-ies
-> as external file descriptors. Access to the eBPF map is direct through mm=
-ap()
-> call, so it should not require additional capabilities to bpf* calls.
-> eBPF file descriptors can be passed to QEMU from parent process or by uni=
-x
-> socket with sendfd() qmp command.
->
-> Possible solution for libvirt may look like this: https://github.com/dayn=
-ix/libvirt/tree/RSS_eBPF (WIP)
->
-> Changes since v2:
->  * moved/refactored QMP command
->  * refactored virtio-net
+The following changes since commit 4d541f63e90c81112c298cbb35ed53e9c79deb00:
 
-I've queued this series, but a question left:
+  Merge tag 'for-upstream' of https://gitlab.com/bonzini/qemu into staging (2023-06-29 13:16:06 +0200)
 
-mmap() support for eBPF maps is not supported from day0, should we
-fallback to syscall for the OS that doesn't support that?
+are available in the Git repository at:
 
-Thanks
+  https://github.com/legoater/qemu/ tags/pull-vfio-20230630
 
->
-> Changes since v1:
->  * refactored virtio-net
->  * moved hunks for ebpf mmap()
->  * added qmp enum for eBPF id.
->
-> Andrew Melnychenko (6):
->   ebpf: Added eBPF map update through mmap.
->   ebpf: Added eBPF initialization by fds.
->   virtio-net: Added property to load eBPF RSS with fds.
->   ebpf: Added declaration/initialization routines.
->   qmp: Added new command to retrieve eBPF blob.
->   ebpf: Updated eBPF program and skeleton.
->
->  ebpf/ebpf.c                    |   70 ++
->  ebpf/ebpf.h                    |   31 +
->  ebpf/ebpf_rss-stub.c           |    6 +
->  ebpf/ebpf_rss.c                |  150 +++-
->  ebpf/ebpf_rss.h                |   10 +
->  ebpf/meson.build               |    2 +-
->  ebpf/rss.bpf.skeleton.h        | 1469 ++++++++++++++++----------------
->  hw/net/virtio-net.c            |   55 +-
->  include/hw/virtio/virtio-net.h |    1 +
->  qapi/ebpf.json                 |   55 ++
->  qapi/meson.build               |    1 +
->  qapi/qapi-schema.json          |    1 +
->  tools/ebpf/rss.bpf.c           |    2 +-
->  13 files changed, 1093 insertions(+), 760 deletions(-)
->  create mode 100644 ebpf/ebpf.c
->  create mode 100644 ebpf/ebpf.h
->  create mode 100644 qapi/ebpf.json
->
-> --
-> 2.39.1
->
+for you to fetch changes up to 0cc889c8826cefa5b80110d31a62273b56aa1832:
 
+  vfio/pci: Free leaked timer in vfio_realize error path (2023-06-30 06:02:51 +0200)
+
+----------------------------------------------------------------
+vfio queue:
+
+* migration: New switchover ack to reduce downtime
+* VFIO migration pre-copy support
+* Removal of the VFIO migration experimental flag
+* Alternate offset for GPUDirect Cliques
+* Misc fixes
+
+----------------------------------------------------------------
+Alex Williamson (3):
+      vfio: Implement a common device info helper
+      hw/vfio/pci-quirks: Support alternate offset for GPUDirect Cliques
+      MAINTAINERS: Promote Cédric to VFIO co-maintainer
+
+Avihai Horon (10):
+      migration: Add switchover ack capability
+      migration: Implement switchover ack logic
+      migration: Enable switchover ack capability
+      tests: Add migration switchover ack capability test
+      vfio/migration: Refactor vfio_save_block() to return saved data size
+      vfio/migration: Store VFIO migration flags in VFIOMigration
+      vfio/migration: Add VFIO migration pre-copy support
+      vfio/migration: Add support for switchover ack capability
+      vfio/migration: Reset bytes_transferred properly
+      vfio/migration: Make VFIO migration non-experimental
+
+Shameer Kolothum (1):
+      vfio/pci: Call vfio_prepare_kvm_msi_virq_batch() in MSI retry path
+
+Zhenzhong Duan (2):
+      vfio/pci: Fix a segfault in vfio_realize
+      vfio/pci: Free leaked timer in vfio_realize error path
+
+ MAINTAINERS                   |   2 +-
+ docs/devel/vfio-migration.rst |  45 +++++--
+ qapi/migration.json           |  12 +-
+ include/hw/vfio/vfio-common.h |  12 +-
+ include/migration/register.h  |   2 +
+ migration/migration.h         |  15 +++
+ migration/options.h           |   1 +
+ migration/savevm.h            |   1 +
+ hw/s390x/s390-pci-vfio.c      |  37 +----
+ hw/vfio/common.c              |  68 +++++++---
+ hw/vfio/migration.c           | 305 ++++++++++++++++++++++++++++++++++++------
+ hw/vfio/pci-quirks.c          |  41 +++++-
+ hw/vfio/pci.c                 |  15 ++-
+ migration/migration.c         |  33 ++++-
+ migration/options.c           |  17 +++
+ migration/savevm.c            |  55 ++++++++
+ migration/target.c            |  17 ++-
+ tests/qtest/migration-test.c  |  31 +++++
+ hw/vfio/trace-events          |   6 +-
+ migration/trace-events        |   3 +
+ 20 files changed, 600 insertions(+), 118 deletions(-)
 
