@@ -2,91 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F029A743833
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 11:22:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD19A743838
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 11:23:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFAKc-0007lw-UN; Fri, 30 Jun 2023 05:22:22 -0400
+	id 1qFALL-0000HI-L5; Fri, 30 Jun 2023 05:23:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qFAKa-0007ki-HI
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 05:22:20 -0400
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qFAKY-0006AC-2k
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 05:22:20 -0400
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-3090d3e9c92so1983175f8f.2
- for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 02:22:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688116936; x=1690708936;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=NmckWYY4DImTm7/X39mu6H10aMzd/4akBzdZC6emEBk=;
- b=K9fB443uQ28zYwCbjV2uQ1gTYc+PtFWgWwpnAtFj/YE0pbMZ/KfO/VnSvY71E9/DwB
- gg8OgfyIjuvYfpVg2EXlu1+xgy9akh9wBCUwgsVT2YfY+lJjM+C3IhngsrwnVNx9RdDx
- JeK5+kA29iuSaVPYcyCOhETWboyft4Iqj1yAeRcj+aOs8iWhpFW7QtKZXEZTRYjMEHNA
- QsSjVM9ryRb8AFuZX4qZaG4lI0ECkVqSSQSM0Z3EGhuqmXXcO2k0zL3ymAgDFRhHCS/j
- zWSIgOSIIEOPC/7VykP+qdGX8UzMHKPz3DKNQj0kOYjvN7GU4vfofJDphTlwzey5bFIg
- FyRg==
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1qFALH-0000G3-55
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 05:23:03 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1qFALF-0006Wb-4f
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 05:23:02 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1688116979;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=exv0le3cmuxNNRJQKrP6yV10sPvtWy6rwCWtA2HL3Ww=;
+ b=fGYN2LS7NgJXPFyZ1DPh7FdXcv5oIdYLYAPUPqPbBlR783isSALl5s0xWwpjqA5SouKU0d
+ 8xAswhQXsYDlR3O6JAnTbPPGo9oIT81E5Tx/cyJ7agmF5YPOR6k0QZcl9hCGb6rAyV4a6q
+ KqpWVnkapHld9nzHZU8Z6/DEj7nw5Hk=
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
+ [209.85.216.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-605-UANW4ZT_P-GD1ug9ifa8vg-1; Fri, 30 Jun 2023 05:22:58 -0400
+X-MC-Unique: UANW4ZT_P-GD1ug9ifa8vg-1
+Received: by mail-pj1-f69.google.com with SMTP id
+ 98e67ed59e1d1-262c488c1d3so1106840a91.3
+ for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 02:22:58 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688116936; x=1690708936;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=NmckWYY4DImTm7/X39mu6H10aMzd/4akBzdZC6emEBk=;
- b=Rouq+CyGOG5TWHBaysZUvx1gVIcz9GKh/dKqN81gxztQ/JmaCduDKZbjNMjOw6GYjD
- jurcRAjshMD4ICEI3MhxzTPZfMXc8veSq566zhin1M2AgSpnaP3LUVorBfK7Nknhaxne
- wiI+/ycoseT6XH/koN9pTVL0ysk+ZKP9I8bTHSKWcH6oUCU7cxLXDBapWszQWQD/XwxF
- fwL8Y8fsYOncS8VFoPU1mxOQ4wa5+2X4Tpgw4m2ZrG/5aA/bTHsRa3vi0QwBigp8gGZt
- ZLy2Q97LoyPBtdZ3X3uxVUH58tYMTdHyqpgZD3LmiuMBf6GRgftrn4umUUmIYvph/JHB
- dCXg==
-X-Gm-Message-State: ABy/qLaf17ToIXD3CkHo6g6iRMCoKfDpDF1GeUU7mo73Fyn74l0ME1VF
- 9XfBgf41JdKRGC4CNeZ6pg63GQ==
-X-Google-Smtp-Source: APBJJlGX9vj35jt25BoQ57X5SHTZV8A05tNucfwWfniUP9b4GHjhYwqQ1Br95vF1rdJLAMXg9+M/6Q==
-X-Received: by 2002:a05:6000:1087:b0:313:f551:b037 with SMTP id
- y7-20020a056000108700b00313f551b037mr1807980wrw.68.1688116936295; 
- Fri, 30 Jun 2023 02:22:16 -0700 (PDT)
-Received: from [192.168.1.208] ([139.47.41.96])
+ d=1e100.net; s=20221208; t=1688116977; x=1690708977;
+ h=to:references:message-id:content-transfer-encoding:cc:date
+ :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=exv0le3cmuxNNRJQKrP6yV10sPvtWy6rwCWtA2HL3Ww=;
+ b=DuqXNVX29fS2DzlwLuw9jD+l6IqSIzwooLWNBJTKdC+Y1l8/hTrb10zHIuF59eI1h+
+ apRZEpR5s5BOt24lXDyoVkWhH3+VKaYTJItNXyGNgS+6llIWVOscWuUAxJ68AkpeB3qy
+ p9oKlyVUz6BMTAqnAzCJ1EolaTHA1vSvwUNXQIbLDU+oIJaro3pH3DqMO7IUQ6spL6WD
+ ugQdGCfbEYMLU1FhlJJJV/o3EXVY/+z1WLGi/WBygy//TT+Fya9l6NR4tBY/vJrRT0wU
+ gVQY43BDEERgALUF5rU5mbs9m6stnB5kGGQb6F6rBgXOq513ypNYQoQLkEnBSdT0jVUV
+ LQ6w==
+X-Gm-Message-State: ABy/qLacUhgcVmNpw1YWLiBstIcgP7rEHelKgEUFtyzRa5yOYljj30tZ
+ c/tkqkoFUcWuXyNWDxO5Y5D0whQCaIyy92Ep1Rj+cVd61XGcxSIwlnGrvr9czlFQ5PuBiejMpqj
+ vkzW6FsocGSy0F4A=
+X-Received: by 2002:a17:90a:1a13:b0:263:53be:5120 with SMTP id
+ 19-20020a17090a1a1300b0026353be5120mr1344463pjk.36.1688116977289; 
+ Fri, 30 Jun 2023 02:22:57 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlES1n3UjSmU64uvFYYUmwzOc0xmqqsxcHi8m8dSmTXYmn2lAVD/Y8bBu5lst9notmdSAVUD6g==
+X-Received: by 2002:a17:90a:1a13:b0:263:53be:5120 with SMTP id
+ 19-20020a17090a1a1300b0026353be5120mr1344453pjk.36.1688116976982; 
+ Fri, 30 Jun 2023 02:22:56 -0700 (PDT)
+Received: from smtpclient.apple ([115.96.128.249])
  by smtp.gmail.com with ESMTPSA id
- z3-20020a5d4c83000000b0030497b3224bsm17760110wrs.64.2023.06.30.02.22.15
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 30 Jun 2023 02:22:16 -0700 (PDT)
-Message-ID: <599e9042-4e58-d468-940c-f8a8ee1edf5d@linaro.org>
-Date: Fri, 30 Jun 2023 11:22:13 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH v4 2/3] target/riscv: Use float64_to_int64_modulo for
- fcvtmod.w.d
-Content-Language: en-US
-To: Christoph Muellner <christoph.muellner@vrull.eu>, qemu-riscv@nongnu.org,
- qemu-devel@nongnu.org, Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, Philipp Tomsich
- <philipp.tomsich@vrull.eu>, Palmer Dabbelt <palmer@dabbelt.com>,
- Jeff Law <jeffreyalaw@gmail.com>, Tsukasa OI <research_trasio@irq.a4lg.com>,
- liweiwei@iscas.ac.cn, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Rob Bradford <rbradford@rivosinc.com>
-References: <20230630091303.1676486-1-christoph.muellner@vrull.eu>
- <20230630091303.1676486-3-christoph.muellner@vrull.eu>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230630091303.1676486-3-christoph.muellner@vrull.eu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x436.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+ 14-20020a17090a098e00b0025c2c398d33sm5545415pjo.39.2023.06.30.02.22.54
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Fri, 30 Jun 2023 02:22:56 -0700 (PDT)
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.3\))
+Subject: Re: [PATCH v6 5/5] hw/pci: ensure PCIE devices are plugged into only
+ slot 0 of PCIE port
+From: Ani Sinha <anisinha@redhat.com>
+In-Reply-To: <20230630043734-mutt-send-email-mst@kernel.org>
+Date: Fri, 30 Jun 2023 14:52:52 +0530
+Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,
+ qemu-devel <qemu-devel@nongnu.org>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Julia Suvorova <jusual@redhat.com>, Igor Mammedov <imammedo@redhat.com>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <49B901C6-4819-4A00-8225-39FAA6678F3E@redhat.com>
+References: <20230629040707.115656-1-anisinha@redhat.com>
+ <20230629040707.115656-6-anisinha@redhat.com>
+ <8d382e8b-088b-f0af-eec4-a85ee513b4ae@daynix.com>
+ <CAK3XEhNOJkm13+vxJO9-Adhwq8NJ3TQ1gaOXj8Dn3NtixF_=jQ@mail.gmail.com>
+ <8868044c-f61b-7bbb-8cc8-34a14c1490d6@daynix.com>
+ <9DDBE75A-C72C-4238-9166-3CBDBEA68188@redhat.com>
+ <167eea06-b917-8783-5cd6-8fda56e41331@daynix.com>
+ <A50CA177-0E7E-4828-A036-70EB532FE2B8@redhat.com>
+ <20230630041937-mutt-send-email-mst@kernel.org>
+ <4618EAD1-2862-4288-A881-CA860D04ADB0@redhat.com>
+ <20230630043734-mutt-send-email-mst@kernel.org>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+X-Mailer: Apple Mail (2.3696.120.41.1.3)
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=anisinha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.093,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,74 +115,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/30/23 11:13, Christoph Muellner wrote:
-> From: Christoph Müllner <christoph.muellner@vrull.eu>
-> 
-> For the most part we can use the new generic routine,
-> though exceptions need some post-processing.
-> 
-> Signed-off-by: Christoph Müllner <christoph.muellner@vrull.eu>
-> ---
->   target/riscv/fpu_helper.c | 78 ++++++++++++++-------------------------
->   1 file changed, 27 insertions(+), 51 deletions(-)
-> 
-> diff --git a/target/riscv/fpu_helper.c b/target/riscv/fpu_helper.c
-> index 289b3bbea5..0f897cf072 100644
-> --- a/target/riscv/fpu_helper.c
-> +++ b/target/riscv/fpu_helper.c
-> @@ -482,70 +482,46 @@ target_ulong helper_fcvt_w_d(CPURISCVState *env, uint64_t frs1)
->       return float64_to_int32(frs1, &env->fp_status);
->   }
->   
-> +/* T floating (double) */
-> +static inline float64 t_to_float64(uint64_t a)
-> +{
-> +    /* Memory format is the same as float64 */
-> +    CPU_DoubleU r;
-> +    r.ll = a;
-> +    return r.d;
-> +}
-
-You don't need this.  Nor does Alpha anymore, come to that.
-float64 is uint64_t now, always.
-
-> +    int64_t ret;
-> +    int32_t ret32;
-> +    uint32_t e_old, e_new;
-> +    float64 fvalue;
-> +
-> +    e_old = get_float_exception_flags(status);
-> +    set_float_exception_flags(0, status);
-> +    fvalue = t_to_float64(value);
-> +    ret = float64_to_int32_modulo(fvalue, float_round_to_zero, status);
-> +    e_new = get_float_exception_flags(status);
-> +
-> +    /* Map the flags to the specified ones. */
-> +    if (e_new & float_flag_inexact) {
-> +        e_new = float_flag_inexact;
-> +    } else if (e_new) {
-> +        e_new = float_flag_invalid;
->       }
-
-Why?  Generic code will not set both inexact and invalid.
-So this is a nop.
-
-Removing that, all of your fp flags handling can go away.
 
 
->       /* Truncate to 32-bits. */
-> -    int32_t ret32 = (int32_t)ret;
-> +    ret32 = (int32_t)ret;
->   
->       /* If the truncation drops bits then raise NV. */
->       if ((uint64_t)ret32 != ret)
+> On 30-Jun-2023, at 2:13 PM, Michael S. Tsirkin <mst@redhat.com> wrote:
+>=20
+> On Fri, Jun 30, 2023 at 02:06:59PM +0530, Ani Sinha wrote:
+>>=20
+>>=20
+>>> On 30-Jun-2023, at 2:02 PM, Michael S. Tsirkin <mst@redhat.com> =
+wrote:
+>>>=20
+>>> On Fri, Jun 30, 2023 at 01:11:33PM +0530, Ani Sinha wrote:
+>>>>>=20
+>>>>> Thus the check for unoccupied function 0 needs to use pci_is_vf() =
+instead of checking ARI capability, and that can happen in =
+do_pci_register_device().
+>>>>>=20
+>>>>>> Also where do you propose we move the check?
+>>>>>=20
+>>>>> In pci_qdev_realize(), somewhere after pc->realize() and before =
+option ROM loading.
+>>>>=20
+>>>> Hmm, I tried this. The issue here is something like this would be =
+now allowed since the PF has ARI capability:
+>>>>=20
+>>>> -device pcie-root-port,id=3Dp -device igb,bus=3Dp,addr=3D0x2.0x0
+>>>>=20
+>>>> The above should not be allowed and when used, we do not see the =
+igb ethernet device from the guest OS.
+>>>=20
+>>> I think it's allowed because it expects you to hotplug function 0 =
+later,
+>>=20
+>> This is about the igb device being plugged into the non-zero slot of =
+the pci-root-port. The guest OS ignores it.
+>=20
+> yes but if you later add a device with ARI and with next field =
+pointing
+> slot 2 guest will suddently find both.
 
-This will never fail, because you used float64_to_int32_modulo, which already returns int32_t.
+Hmm, I tried this:
 
-But we have already raised invalid for overflow, so this can go away as well.
+-device pcie-root-port,id=3Dp \
+-device igb,bus=3Dp,addr=3D0x2.0x0 \
+-device igb,bus=3Dp,addr=3D0x0.0x0 \
 
-Finally, this patch must be merged with the previous, which introduced this function.
+The guest only found the second igb device not the first. You can try =
+too.
 
+>=20
+>>> no?
+>>>=20
+>>> I am quite worried about all this work going into blocking
+>>> what we think is disallowed configurations. We should have
+>>> maybe blocked them originally, but now that we didn't
+>>> there's a non zero chance of regressions,
+>>=20
+>> Sigh,
+>=20
+> There's value in patches 1-4 I think - the last patch helped you find
+> these. so there's value in this work.
+>=20
+>> no medals here for being brave :-)
+>=20
+> Try removing support for a 3.5mm jack next. Oh wait ...
 
-r~
+Indeed. Everyone uses bluetooth these days. I for one is happy that the =
+jack is gone (and they were bold enough to do it while Samsung and =
+others still carry the useless port ) :-)
+=20
+>=20
+>>> and the benefit
+>>> is not guaranteed.
+>>>=20
+>>> --=20
+>>> MST
+
 
