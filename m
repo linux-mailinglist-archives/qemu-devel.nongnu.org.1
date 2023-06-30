@@ -2,77 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C87D6744187
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 19:46:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1579B74418B
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 19:48:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFIBm-0000mD-99; Fri, 30 Jun 2023 13:45:46 -0400
+	id 1qFIDN-00020t-F7; Fri, 30 Jun 2023 13:47:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qFIBj-0000c0-41
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 13:45:43 -0400
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ id 1qFIDL-00020c-LQ
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 13:47:23 -0400
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qFIBh-0000B6-J9
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 13:45:42 -0400
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-3fbc6ab5ff5so11073535e9.1
- for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 10:45:40 -0700 (PDT)
+ id 1qFIDK-0000YZ-5d
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 13:47:23 -0400
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-3fbc63c307fso11155065e9.1
+ for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 10:47:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688147139; x=1690739139;
+ d=linaro.org; s=google; t=1688147240; x=1690739240;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=lPGfh6riNwi8WNNxkBTyS9Jw55+rs4bn4wHR2BQGVhM=;
- b=YiJcanjK8kP0xOcrKQNfwmEqHs9L0mnGTe9whLpzJ1WTHuLT69wzhhf6r6QMk5WHkK
- QNpeP+R/8bP09oeDcOVv1qaegFA5wI9uCflUn0TlXiKdN+/ePxsQlQe3JnGWauAX3cGT
- SbADY9Cob0KHdUO5VQx2wupHswB4KjqI+bnAH+TW476HXAhLLFEaLwF6P8SwujKKrtKU
- YTGSa/lDpZ2ih/nvD+AjXmcmIauXrG80akk1DMTMocyd/CRquMntuXuwyUF+BIbN2Idk
- GsA4rG1WPiVtwjyE3+9lW1BmDsm7gM4oG7NTcGcduLVXJ7TYwXz5vKSA2lr3Wfz4F6U5
- KRGQ==
+ bh=JGsGkrqGNod1BNO9+owPNQEe9xA6x1Nqn0qBUwHGoEA=;
+ b=fd8ZS0u4IzG/jcfW04fzdmRSRZhTAJg5xKhd1WPhkGHdv+2oruVJuWIhZ2bCONeVaB
+ E3jmuqomMn56A7KuU1dPAaZpM/8IvJi4LGmEnyak/7a65CpIWfgRHSTpKzIMFFba2gB5
+ ljEtBIE611WMXketY3mw1aHB6jwm5TFvpCUm5AZEtwa7nH0Xjhx6yY9RgJNZErhjPC6i
+ cPUzYGEmH4Hq69b6XQr0IMRYxJ72nBA0Wi0MYeMVRI5Eb7xeu0R84uxxO2w/SfenIOgx
+ nZ6mYG5z9x47BYCTD61nsVegtCnbVmA/lifjZC77EABnjoaGriEueE8ImaMRdp5TIUAp
+ ui5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688147139; x=1690739139;
+ d=1e100.net; s=20221208; t=1688147240; x=1690739240;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=lPGfh6riNwi8WNNxkBTyS9Jw55+rs4bn4wHR2BQGVhM=;
- b=Zr2spj5uAVIhfCNIWCRW+kYhu4eZNXURh/VOTX+SQnFqhZSvn0z6EoARj44d4L6Aei
- n/xlOkyApxMJc5wFwpNxYJZUyoRhqemO2yQMkJc+VtjZOw+mjYqGkTfskYEzLXpB8rdE
- HaW7PcG6BNMVJ4MP2C2HOvT4LGA/AnYXcoyPJ4iPpSNo8nR20PiQigQ9aldoQbxYNh6N
- d7eUflTTqx6FxdGMaKNiubhGwIerACjVOSxN0B9Df88laLi5SWKQXmaMV/lGcQU/abAr
- pjKXaD4L6J6WQolJhSxQbWfwe9YyDzuEQiVB2G0ThGyH3Yd1vldBAHDGAsEAZ8tiScQe
- zp4Q==
-X-Gm-Message-State: AC+VfDyYh5Ads0Sw4+CCXXeTVo2OjaKLdgMwsNnnxfNW7wPRTXKpGhVz
- lXqJxx5Q3LpsSGuLkj8CBGvyOg==
-X-Google-Smtp-Source: ACHHUZ5cHWikbp+ocHabzsVv010UrKVZ9E0q8DvunQXkoZQ2bvqeXYfeWxVPrnTz+PMfEkLW+Ja5/A==
-X-Received: by 2002:a05:600c:b52:b0:3fb:afc0:56c5 with SMTP id
- k18-20020a05600c0b5200b003fbafc056c5mr2649785wmr.12.1688147139442; 
- Fri, 30 Jun 2023 10:45:39 -0700 (PDT)
+ bh=JGsGkrqGNod1BNO9+owPNQEe9xA6x1Nqn0qBUwHGoEA=;
+ b=JZGrCJNQmlBMYDHHzeny/4qVyhCGW0Lqb52zzRocLukWGvG9TDt2k8gbyT7Rx5l1Ji
+ JU+O/eUVw2sWcdDmdE+LxMAfSM7ympUImTc34NSlIh0bUZ3LuM0KK4nmY3piIkbQphCc
+ uhwk86YFiKuDXAWNy8S+SDzsLAgsdActmf7BQR2sKQqkDpK6/zkF2e+akNr+zUZpuCKg
+ rQNeOmO8x5oHDqMH/Qkpm53f/dbFd+cflAOUw7uGmBJ5LZRUPK06l0B8NfqMY4rfYtci
+ Wem3i36BKqs2R6ap8CCTqRnNlbEig1I6cN+odYRwF+DZ8gIzUwETjBI0kLJ3CUGI6DCr
+ ubAQ==
+X-Gm-Message-State: AC+VfDyO1Cq5eJA56NLF6LJZu+IMWkUsBr9d+LdEhg4UTRZUQc5taseJ
+ Ce2HNlcw+Nb3f8suM4tTgEMXJg==
+X-Google-Smtp-Source: ACHHUZ5yCVsaYhqOycOtQultnkyF8oArD1UeUeLMwNqdBWykGjqTqJbAhS5B56JcADJq0gT/1wIaEA==
+X-Received: by 2002:a1c:4c12:0:b0:3fb:b1af:a455 with SMTP id
+ z18-20020a1c4c12000000b003fbb1afa455mr2646201wmf.5.1688147240633; 
+ Fri, 30 Jun 2023 10:47:20 -0700 (PDT)
 Received: from [192.168.1.208] ([139.47.41.96])
  by smtp.gmail.com with ESMTPSA id
- f10-20020a7bc8ca000000b003fbad1b4904sm8321194wml.0.2023.06.30.10.45.38
+ j4-20020a05600c1c0400b003fbb1ce274fsm9008266wms.0.2023.06.30.10.47.19
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 30 Jun 2023 10:45:39 -0700 (PDT)
-Message-ID: <c8ea83fc-f62c-04a5-8b47-3685ed595187@linaro.org>
-Date: Fri, 30 Jun 2023 19:45:36 +0200
+ Fri, 30 Jun 2023 10:47:20 -0700 (PDT)
+Message-ID: <affadf63-7080-14ec-1b53-f7373cf06a68@linaro.org>
+Date: Fri, 30 Jun 2023 19:47:17 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [RFC PATCH] tcg: Reduce tcg_assert_listed_vecop() scope
+Subject: Re: [PATCH v5] riscv: Add support for the Zfa extension
 Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-References: <20230629091107.74384-1-philmd@linaro.org>
+To: =?UTF-8?Q?Christoph_M=c3=bcllner?= <christoph.muellner@vrull.eu>
+Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Bin Meng <bin.meng@windriver.com>, Philipp Tomsich
+ <philipp.tomsich@vrull.eu>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Jeff Law <jeffreyalaw@gmail.com>, Tsukasa OI <research_trasio@irq.a4lg.com>,
+ liweiwei@iscas.ac.cn, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Rob Bradford <rbradford@rivosinc.com>
+References: <20230630115239.1920012-1-christoph.muellner@vrull.eu>
+ <55279432-e4fe-7309-ac6f-5e2a4b86f47c@linaro.org>
+ <CAEg0e7gsUNj=PmvvVDNTH+jc63sqrRBK_UiT0AEHMWGpYOjGfw@mail.gmail.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230629091107.74384-1-philmd@linaro.org>
+In-Reply-To: <CAEg0e7gsUNj=PmvvVDNTH+jc63sqrRBK_UiT0AEHMWGpYOjGfw@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x32f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -95,18 +103,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/29/23 11:11, Philippe Mathieu-Daudé wrote:
-> tcg_assert_listed_vecop() is only used in tcg-op-vec.c.
+On 6/30/23 17:11, Christoph Müllner wrote:
+> On Fri, Jun 30, 2023 at 4:03 PM Richard Henderson
+> <richard.henderson@linaro.org> wrote:
+>>
+>> On 6/30/23 13:52, Christoph Muellner wrote:
+>>> +bool trans_fmvh_x_d(DisasContext *ctx, arg_fmvh_x_d *a)
+>>> +{
+>>> +    REQUIRE_FPU;
+>>> +    REQUIRE_ZFA(ctx);
+>>> +    REQUIRE_EXT(ctx, RVD);
+>>> +    REQUIRE_32BIT(ctx);
+>>> +
+>>> +    TCGv dst = dest_gpr(ctx, a->rd);
+>>> +    TCGv_i64 t1 = tcg_temp_new_i64();
+>>> +
+>>> +    tcg_gen_extract_i64(t1, cpu_fpr[a->rs1], 32, 32);
+>>> +    tcg_gen_trunc_i64_tl(dst, t1);
+>>> +    gen_set_gpr(ctx, a->rd, dst);
+>>
+>> I think you would prefer
+>>
+>>     tcg_gen_srai_tl(t1, cpu_fpr[rs1], 32);
 > 
-> Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org>
-> ---
-> RFC: Maybe we plan to use it in tcg-op-gvec.c?
+> sari_tl() will not work, because cpu_fpr[a->rs1] is a TCGv_i64.
+> So I need to use sari_i64() and keep the trunc_i64_tl():
+> 
+>      TCGv dst = dest_gpr(ctx, a->rd);
+>      TCGv_i64 t1 = tcg_temp_new_i64();
+>      tcg_gen_sari_i64(dst, cpu_fpr[a->rs1], 32);
+>      tcg_gen_trunc_i64_tl(dst, t1);
+>      gen_set_gpr(ctx, a->rd, dst);
 
-Whatever any future reference, it doesn't need to be in tcg/tcg.h.
-
-Queued to tcg-next.
+I beg your pardon, typo.  You have grasped my intent, thanks.
 
 
 r~
-
 
