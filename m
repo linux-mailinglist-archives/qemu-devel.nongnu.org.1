@@ -2,163 +2,163 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB1F2743AA5
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 13:18:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9E7F743AAF
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 13:21:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFC7x-0002Nx-QC; Fri, 30 Jun 2023 07:17:26 -0400
+	id 1qFCB5-0003lc-3n; Fri, 30 Jun 2023 07:20:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <joao.m.martins@oracle.com>)
- id 1qFC7v-0002Mz-7R
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 07:17:23 -0400
+ id 1qFCB2-0003lM-Mi
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 07:20:36 -0400
 Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <joao.m.martins@oracle.com>)
- id 1qFC7s-0007kS-G3
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 07:17:22 -0400
-Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
+ id 1qFCB1-0001SQ-2L
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 07:20:36 -0400
+Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
  by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 35U6FQdR028296; Fri, 30 Jun 2023 11:17:15 GMT
+ 35UAegs1004737; Fri, 30 Jun 2023 11:20:29 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
  h=message-id : date :
  subject : to : cc : references : from : in-reply-to : content-type :
  content-transfer-encoding : mime-version; s=corp-2023-03-30;
- bh=azagHk7GM43Z9Sh77HlBX7iUrHNM0A02fVNbJIWY5GA=;
- b=23vIVjHZ/yvSPp2G7BPEwPDe5ATgs1Bqw2JOhZHFQ7TxXWQXWgKagQM5453CH5zlDc9V
- Avbk26hcMvRZNv7DXzwGTNo4aNluR0xzOtZu1F+Cu+Vric2T8XUwW7FkpfHR5afb+tsh
- ppxFTLFSwxNOXw4ofXOfwxOCVXGoTyPRnRu5QBDKMDIOmLk24399Iwif+X0THLdMD7CV
- uL91fK92Xf05O0YN5XfD7OkuylpKN2LaXMyHnvwePa4F8Z32oTJ7/rh07crZvfAQnFx6
- H5R4STNI67+3aFAjbGu1nk49P291OOiQTJnO93SOmzQSb5BGNxGCVl96uWWKarv4Wqmd 7g== 
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
- (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3rdrcag2q8-1
+ bh=80h5lYs6nwht1IvGJEhp9mExcoDo9ecwKOPGfzk8hDw=;
+ b=e2np6n5NwyRD08tE+hse+g3nP6qyfQHfAGitl5IjMSeU5ZFu05Y3klI1V9SS0qdhoz0k
+ dH39xFEsc/gsSBC6FYLByacrlM8yYRkn7My5i2A/W9r2VyO99QZfmq05zH+bgC0UdQ1S
+ iTGqfEoSrhZTqLtxA4A+urwr6CNLsKA1N7T8vNvDGvatum62GNVmKpuiosHRirPs/9sT
+ BuWJnkQiq5oRvV0vrB1g6/mJO28FwTfjiRYHI7svZrg2QQTGmH0Qmr8gb0e42zG10urC
+ 5+wZC0PtnkdCbrkPXODP81w9UTBAozZHSNWs1pPPIKxzknNYCzP+ISyky4WRvFzxkzYm rQ== 
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3rds1ughqj-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 30 Jun 2023 11:17:15 +0000
+ Fri, 30 Jun 2023 11:20:28 +0000
 Received: from pps.filterd
- (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 35UA5E5F029728; Fri, 30 Jun 2023 11:17:15 GMT
-Received: from nam11-dm6-obe.outbound.protection.outlook.com
- (mail-dm6nam11lp2173.outbound.protection.outlook.com [104.47.57.173])
- by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 3rdpx8pyrw-1
+ (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
+ with ESMTP id 35UAuXJC004083; Fri, 30 Jun 2023 11:20:27 GMT
+Received: from nam10-bn7-obe.outbound.protection.outlook.com
+ (mail-bn7nam10lp2108.outbound.protection.outlook.com [104.47.70.108])
+ by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
+ 3rdpxerd48-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 30 Jun 2023 11:17:14 +0000
+ Fri, 30 Jun 2023 11:20:27 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=XTpbkdScOH87e8CWxRLrdHsk7VWnvrekAy0DtZWW28I/f60yQQo+DbyYvfm7SCqWrMGu/TvEqxP2JcKg1QJKceXAg2x3SXQEYUfDQLl5317zKEcIB7xsVf3e8W7vnRs+giugdBguJKpOs2O1bdQ7nQi0hLqu/XXA73iXF3uCukW2UsxRjXgeuABYLqARExbQv/qcw6gmDGh4FJHeicu0/274uoAOLGvbbuZfG4XJT7l1ruXfbdkWqZxCuPRoJOlMTMnI8dtJxPgzal5qKs9RcEGMyE2loDi39yYZ9NvIrufhebkK0xEUyLmu6Z9pSHH46pFSQg0tot/boY8wGriwqQ==
+ b=M7YhqBLJclEpdi0D+TrO47Ip43RcfqagDl5mk5wVbt7R6n1Up8bFCeuk/S3aai9R5WneLkptED1pTbju7joYjJMRlrz2szGMY740Crh6ceB4YqP1E4HoWJ6qej0c6VzJzj6AboWdIBc0lUBzT3WVXfEXDq9TAMMiR2nOo9wmiTK9vFdeTuYvVQiVNkpfiPvD1Yj0+FFB/C+tejqp8Cq+islIIYfStDRAvk+aZxs4oj2EVIi2nvXGceclHSaqYH/xYKNcb4I5dZhXcLU2Wn0EOCVsvXgNQtypJbQh8tt9f2Bu9ilTVr/i1jEcMF+pPq9VDN/lNZgZYepAvL8qbTSHng==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=azagHk7GM43Z9Sh77HlBX7iUrHNM0A02fVNbJIWY5GA=;
- b=YmaC250ZZbzAcumllWVnFy0S4M+fb5j0BybqgZV5sFV7yFEK7FDVeA7OMjSVk1nixVUu1oWygCmHLho+TSxBQ21I4chSATA/YVIkh2lCCDzyNzSW2IYJp9+245+eKgomYWO/n42h0DW7xbBoEzJjA4Qm30piVIKwz6YtID7alFIlc7LFTeqxKIpDOHXyevoNr2ECZbxfMUiu73rt/NlzSwZCLaDaegAu86EQn4Ww4MwfQPOLyCbr8ngz14QHHpzmvx5hhA977SOayhbIZRmkqqSHSzhelpiE2nrRVzgXJdXzS75oKWPzFWQScllcmhbkcP5zqmkZ5W4w2RyHP1UAYg==
+ bh=80h5lYs6nwht1IvGJEhp9mExcoDo9ecwKOPGfzk8hDw=;
+ b=CqH9nOeE5wOpx+SuBp6UqgBQMpVkz3swDnA0Mqenl3upK8LJSeM66lTkwpjaPsAPfUEGIgoM2xiCcEt4KUsXsj1ll5/v/CYHVniQUvxtt464A6fH7vsN/oqryHFRcQs2eXOZRcg1K8pTgj+qyjUvyArXnXpnX8XGT2JIV000H7D++thmg4xBN4HWBmIcnMclLyWlpXMwwWlerehkdu6dpLT8hHBBTtKsgKS84bgJCabKKsL8p8td9ccUsersy5plDG5EQ0SgTbi5WmI7i3PaChz5Kn99mO1Wpye2q/L9bM4UMtCgWt6TTvO04cwMCsitvL8Bf/aUsCirQlcuq5TpjQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
  dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=azagHk7GM43Z9Sh77HlBX7iUrHNM0A02fVNbJIWY5GA=;
- b=yAnTr8fh/xn8xcQSa6clUfWOGyW/OtxUNF7aYANRn47KCtAQHLAuDg6jIFBD/JhgaNqP14UOpL7QnN3OGw7tysocVCoPqJOb2OjZSSm5BcIH6NSh5N3cxU2lPOZyM6RJuWSe2rSAqw4nu/y04St7bgvuI6D6eWQzg1QCMpNoz6E=
+ bh=80h5lYs6nwht1IvGJEhp9mExcoDo9ecwKOPGfzk8hDw=;
+ b=qpV+bxNDo2zwYT/Rx9K500Sa4igCUmifHhr55UfZ/UtByKwJklvQCxJlqLHbEzmD0QczdWpJ/SMyuc6+JvD/WXjpxpY7ch8e8/dGZ9p5jo77yXSDzgoQRESUq+/mTyn4kMexDqGbwhXg7tRcuikPGPq0VN/xH6XwppR9B1KPyaI=
 Received: from BLAPR10MB4835.namprd10.prod.outlook.com (2603:10b6:208:331::11)
- by PH0PR10MB6434.namprd10.prod.outlook.com (2603:10b6:510:21c::6)
+ by LV3PR10MB7820.namprd10.prod.outlook.com (2603:10b6:408:1b4::15)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6521.26; Fri, 30 Jun
- 2023 11:17:07 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6544.19; Fri, 30 Jun
+ 2023 11:20:26 +0000
 Received: from BLAPR10MB4835.namprd10.prod.outlook.com
  ([fe80::f7ba:4a04:3f37:6d0f]) by BLAPR10MB4835.namprd10.prod.outlook.com
  ([fe80::f7ba:4a04:3f37:6d0f%5]) with mapi id 15.20.6544.019; Fri, 30 Jun 2023
- 11:17:07 +0000
-Message-ID: <f203dcf3-5af5-07ff-a1d1-59c70a31a8a7@oracle.com>
-Date: Fri, 30 Jun 2023 12:17:01 +0100
-Subject: Re: [PATCH v5 5/7] vfio/migration: Change vIOMMU blocker from global
- to per device
+ 11:20:26 +0000
+Message-ID: <24c5a6a8-5422-ad96-61ca-006ed6887265@oracle.com>
+Date: Fri, 30 Jun 2023 12:20:13 +0100
+Subject: Re: [PATCH v5 7/7] vfio/migration: Remove print of "Migration
+ disabled"
 Content-Language: en-US
 To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, avihaih@nvidia.com,
  chao.p.peng@intel.com
 References: <20230630073637.124234-1-zhenzhong.duan@intel.com>
- <20230630073637.124234-4-zhenzhong.duan@intel.com>
+ <20230630073637.124234-6-zhenzhong.duan@intel.com>
 From: Joao Martins <joao.m.martins@oracle.com>
-In-Reply-To: <20230630073637.124234-4-zhenzhong.duan@intel.com>
+In-Reply-To: <20230630073637.124234-6-zhenzhong.duan@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO4P123CA0220.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:1a6::9) To BLAPR10MB4835.namprd10.prod.outlook.com
+X-ClientProxiedBy: SI2PR02CA0049.apcprd02.prod.outlook.com
+ (2603:1096:4:196::7) To BLAPR10MB4835.namprd10.prod.outlook.com
  (2603:10b6:208:331::11)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BLAPR10MB4835:EE_|PH0PR10MB6434:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1db4b738-83f1-460c-5257-08db795b8a2c
+X-MS-TrafficTypeDiagnostic: BLAPR10MB4835:EE_|LV3PR10MB7820:EE_
+X-MS-Office365-Filtering-Correlation-Id: cdae9e2b-f1d8-4384-f446-08db795c00a2
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: RaKOZgOCk+kNEm5JiFcd3G3OAkqD9d6xWu7wSj9AEEpoH8AyRYKSM/+NA3f8EycU4DYiGcQhuXXmJC99tjqAkN0P/YtSIPdwDQucPziKzpsItNYuPnN36s8HvnocqtcqGTwAitZYLt8GI8xMSqiWXOve8IlVJ+lDUeBkGK41mD2r/0edd8gXVKlUT8FL0QxMTRVlhMB5ut2ct40RNYEJOKIM1nl47mh/7rCYdc/raHJqkA19/CBi3eV2aYD9OH6fLyokF/ndAgizpeTZdOn3RFivqGJvL48/UXCKj8223PQ2UHoKycYsCtet4HOvexkelW1FfvJCZ9v/5Y/Vmsa7nZIIMEShAP1aay4TUIk8i5qkYnIaQzDegJgJFsdcsnFOk/rb60dNVhqN8mCPy0QbJeYJYPnHrUlJJ0sM/HtofSyC5aAyWaRw63LznIVKUen5fYdpb28upSo8ABlC+XKzjaMaJWpRu66VzsHLygS3l0/YN6st88YCB05Cg6OPk0nNzR4X9wN80Jz9vjHMpSuNnm+8+/Snjx9HXQKGyAluZ7nFkrDV4y6tJ4kzLcKYdQ2s/zWRcCdZND5xJQevKlvzmaXoRsx4Lwb6sp1l+z5Ifw1yPMjrezBFCZTCH1bsaYUM
+X-Microsoft-Antispam-Message-Info: a6L6UX7/Rp0l6v9Cq2m9CQXCFmMONmZut0X4udvsu8vHNr6EFm8qMgQe6YLxlUZDt0LFQeCZ2s2403IgLPW/v7+7pdUFGznNH83UGS5gS5inDB/9p/Kro5B0XduJxtG0qqbht+MBchVeiIthTp8HdnmflsxNSwv5WqyJbqpUrlfRaCT+pe0IbAR66u+cNXmz2epswaPxjNSYetQ7q8tAqGyMnLwWGfZ3mNqyJqb2XRz9XJm7SZryigH1Eu4B4Y0aPkBSbMpRStYBgBF7cGjqAtCQJsCU4ZhrWik5C8uzAr5o0krkR09rBKfEPJFlnG9hY7HrPwF0wyi6bctPjb7Ab9H9Vu3URuqojX7Sy2VZ7vYequhMe16iD7lv9STJ9/UZYPB6hwA4AmyeJ3sa/znJaw9L+tHbMoS8xesTftXDSmlYJGHP4nUlK7UsF7LurQCY00F0e0Mr/24pZyinl3y5In49uplkerzQQ5rK225j3C1ziADDFGjbQht2OoSe9cG3cpzSs5DoqCNiHOnGYfQ/1D5va7nURT4IWdex0ytO75n9OqRJN449gSBj+eREDdJsp6r0vVqR4zbS1Fath3+hNVYBEJdztHosmTu2gFV3aggDoc23J7de+TRpHZNRVM2l
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:BLAPR10MB4835.namprd10.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230028)(346002)(39860400002)(136003)(366004)(396003)(376002)(451199021)(38100700002)(36756003)(83380400001)(31696002)(86362001)(31686004)(8936002)(6486002)(66556008)(6666004)(41300700001)(66946007)(66476007)(8676002)(316002)(53546011)(26005)(4326008)(6512007)(6506007)(186003)(2616005)(478600001)(5660300002)(2906002)(45980500001);
+ SFS:(13230028)(39860400002)(346002)(136003)(376002)(366004)(396003)(451199021)(6486002)(6666004)(31696002)(8936002)(8676002)(31686004)(478600001)(5660300002)(86362001)(41300700001)(316002)(4326008)(66556008)(66476007)(66946007)(2906002)(53546011)(186003)(26005)(6512007)(6506007)(2616005)(38100700002)(83380400001)(36756003)(45980500001);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?RzczNE5kVG9yM3ZBR0ZhWFh5L3QvcFBVclMybVhjQjRsVjJaQmZmamliWlZW?=
- =?utf-8?B?ajJPRFRYckRYMHQwV015Q0VZN2dXaXpDZ1JmZFBPZ1dvOEx1ZlB3SzRHVUZJ?=
- =?utf-8?B?TmZ3cWdKQ1dmV1BuWlZaRFp2Z2FuTzlOSEFrNEsyQTR1Z1FVQW5HLy90Zm9I?=
- =?utf-8?B?NmZnVTByYjJLbjVNY1RYV0x3NFE5b2lKSWc0N2hENHBSeThwZkVDUHkrM1F1?=
- =?utf-8?B?Y2QrR1Bvc2JLVFNHU1BOUlFxdUdyWVZSYlhieVV1M21QYzZFQXE4aE1VVTVV?=
- =?utf-8?B?UnErbFh0ZjhvZDJzcjRvS1RuWXJGTnB5UTQ5TThua0lkUUdhOEJ0NzBKK2dF?=
- =?utf-8?B?aXV0TDh0bnJoRGp5M2k4c3hiWXRGRW1CaVNhSXFjcC9IaDB2a0xSOVVyTWNy?=
- =?utf-8?B?eUJ6Q1l3Z2R1b3ExY2xzYS8veUpaR0tJeGFlVGZrWll4V0ZFUTA2cHg1SUtV?=
- =?utf-8?B?azNKQ1M4OGgxVFNWS0RURjA0b21rckN3cFREcm0vTy9QMTRaZzRXNXZIR01V?=
- =?utf-8?B?TVExZzIvQ04rUkF4K0tvM1Nyd3BGMU9hQnpUN0w3WEw3SVlZOFhZL3dId3dJ?=
- =?utf-8?B?dmRtdXdaaW1Qenlvc2tRU2xQWWZ1VkNBSkhVaksvQkpPR0VOdEl3bFVIbVZZ?=
- =?utf-8?B?MFZpd0Q4TWN4RE9HVmhtR0tpZnUwbGRmdGl0emJsMFg1dGdNVVhmNnI4MHFi?=
- =?utf-8?B?MnFnNU1jSHFVVFRSVGNNV01SZVJuUUZKMWQ4VnV6YzhWQTZORXJoang4SUgr?=
- =?utf-8?B?MDJ3RVZRMi9CdXRLUlU2NmRHRWl2Sm5UUklqM3ZaQUowVjAxc2owZUtaUnZh?=
- =?utf-8?B?VzdhajR4dFBWRWdjVWxlc0tKdnkzaFpiYlJHUUFJTjZFeGExVnFLOWdPVlVT?=
- =?utf-8?B?RkY0VzdBTml4QXcvSDVjeUVPSWYyQUNHR3NEdXBKbEhEZlY0TFRwamFSeXVY?=
- =?utf-8?B?Qko4ZUVWOGxWaU44dlhKc1dPRGRHTk1tOXhteS9Jd2lHOStUVFRiMHNuZ1Zm?=
- =?utf-8?B?bFZzb21wYVh4RkxzeHlzU1Y0VzZkd01ObTMwL29yN2pVTW4xUzBtTk5DNFNW?=
- =?utf-8?B?WWVPbk54a3VESHZQNkNqK3drRGlLZ0dnOWlXYUZUendQRlRxakNwUGQxeVVD?=
- =?utf-8?B?R0JsV3AzcTlKK1o5UWdwdnhQQU41MFFQR013VlJVTDF5cmxyYVc5U3BjMFFz?=
- =?utf-8?B?RHNPVE45cFZ3dDliVFV0dXI2S1NjZHpUczErTDZhVFpyV3QzYkJqUU9pdzk2?=
- =?utf-8?B?cjE4SGFlMDVaSTZyN2tiYXdxQVY0TFUydUNFeERBYkdvbmc5bHdMOU1IU2pH?=
- =?utf-8?B?MmJUNEJleWl0dzVHRFROMTVFaWRkYmxDbWNEUXJqOW1XUjBENmJoR1U5KzZ0?=
- =?utf-8?B?OVY3cVpxR3hmVU1NRm9ybHZrcTF2bU1RQmhCZ29Fei80M05zc09VZXBCQjlh?=
- =?utf-8?B?TVlueFNIY0tjcTc4VFRESUJWTGhMdXNVOW14MGtFTnpWNnNjeFhuMHloZUg1?=
- =?utf-8?B?MVcwYnU4a1gvRE1rOE13NVFRdlludEpDbjVFRmdNS2xrYmlVRk95c1dOKzY4?=
- =?utf-8?B?K0VzZHNrazBTQjI4UjUrVkRBM2dIV3NadkZiWHhtK3F4Q2FiU3pBMm4vdURk?=
- =?utf-8?B?R3NIeitMZjhPV2UyMjNYaFlNeXdOMnhFSWxKendtckpnVG4zK1ZKSUxDOWR0?=
- =?utf-8?B?TmE5K09KQkJMS0xsV1VibDJoenV3ZTJrR3dkOVJsOTZyUWNCM1l1c05sdUNN?=
- =?utf-8?B?OGg4MVJpWElwa2luQko1VHFweVR0Wlo1ZFpUTmZPUVhkQzhlMWpzaWw0aThv?=
- =?utf-8?B?dkNId3FuR1lYS1Y1Wlh2KzUvSHRGTVlXWjgxSVY3RlB0K3ZXSEhkZ0prTDkw?=
- =?utf-8?B?TjhRd0RhQmU5aHhBUkJ2Q05IU0Rqd3BUNTdwQmgxN05aQlFyQ2xHOW1ZSjJI?=
- =?utf-8?B?VHpIUno1NUF3MHlMZlRHOEF6S3JBYmxmcTFNMFBEKzB0N1Z5QkdqcG93SCtK?=
- =?utf-8?B?ZldkUDJqY3F0bEo4RmEwT0VKYVNnejEyWWhzUm9SY3FCRHhvbUhPK0FPamRK?=
- =?utf-8?B?ZStNdWQrSmRMSTI3UzlGU28xRkFxenpjcWNXYUE3WElzZlIvM2wybktFKzFh?=
- =?utf-8?B?MGpsWWxQZGwvOTZTcUs2ekh5V2JuN0xwUGVGc2NLc0Zzbzk3b2JGSTFOVEdS?=
- =?utf-8?B?NEE9PQ==?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?M1k3NFYrckt4YzcxMWUyQUYycldlZGw0MFFyaTdSbVJZeHJUN1dyMFJROWNZ?=
+ =?utf-8?B?SVRBc3QvT3FoVW9DMWhRMnVhUnhhci85dno3cktGTXBaWlRrL0xySno1Tkxa?=
+ =?utf-8?B?WlJMaXBKeTkxcEJXM3UrNkpyQmhMZTlqY2tCcGRwUWlSd3NWMjcrUXFIMUFv?=
+ =?utf-8?B?cEpqdlRBWlhVZVM0ZmFlZWs4VFNJZktsUFNFbHZQYVpybFB6bDRwa1F0bHJJ?=
+ =?utf-8?B?RmpwNjVNMkhHWXFyQktJSnZGYXFiRFNaK0RuUkVRRVkrMm9BZXJvNG1Xb3k5?=
+ =?utf-8?B?emJFUXBJRWNIMkV5WlBzdXhQUi9PUEh3SHBIaFJ2bjJXbHh0NWxqOVZzelZv?=
+ =?utf-8?B?QzEwNzdzWUtDOTRnY21jNnJlMHAvTVZ1T1FTWFhrc3ZDMWZlbUh4VHdueElJ?=
+ =?utf-8?B?MlJOOVNwZ3pGckNMZFhZa0N4SlNIZC8yYmxqUVN1ZUZTYXFuRDIvalB4UTk5?=
+ =?utf-8?B?MGsycEI1ZnN2T0hKTGtobTFGbFIvM09sY25Oa3hXUWpNRndoeDdHVDNNVVBW?=
+ =?utf-8?B?dnBwcEYrcTE5N09tUm5WQWZmSlYrbVJuUFp3a2Y0U1BUamVyYTE0allRU082?=
+ =?utf-8?B?T2ZSdy9UMDJ6YU5LOHd6aGVWVHBKdDgxZHFJTVdiU0s5Q1pnNVU4TGR2ZzhN?=
+ =?utf-8?B?ZHNJaGc5NUR6bVI4ZjJKc05ibDZwRWFFNG51b0lHLzhFc3V2T0Vrb2l6aXhC?=
+ =?utf-8?B?U0lNbmJLRW5yb0VjK25iWUpEays3VW1vTmttV1lTMjNiM3RLVkNFMXRTQlVz?=
+ =?utf-8?B?TkJIS3FYTzNCV1RyaHl3NlhqVGRpRTk1TXRaanpHdlp3TkVvMlQzYi94TnVC?=
+ =?utf-8?B?anpDeGpRVnZ4STVtdTlNZ1k2aHh5WVY2VDA5ZkJmNCtFdEFiRXFqV3psa29W?=
+ =?utf-8?B?S2lQQmNkU0VvWHFKQ2FwSUY1amtyZlBSUm9yR1J4dW9GZ0k2cUNKQ1pUYm9u?=
+ =?utf-8?B?NVhPNE0yN2g2aG9KbHZvam5reFNsTUdVWVg0aE85eEJOYXlwQVFNMTdFMi9m?=
+ =?utf-8?B?dXg5OVVKQjUvZ2tpRmFqMHppbHhhWXp1a3c4d1FBUHN6ODBIZmt4SXJuWU1M?=
+ =?utf-8?B?ZG1FZkZHZ293Sjc0bHVYcjR2K0dRQ3laSjQrVk43VzlabGdZWWEzdzJiUWto?=
+ =?utf-8?B?U0RjeGRDaDRHQmFLekYyaUw3VitFVFAyT3Ziak5uZlJXN09LekFJUWh6VFpH?=
+ =?utf-8?B?bHV2K1lQRzBRSjRlR2ZqUGxhN0dKNk91K0VkUDZhYWdwd0w2OG1qRWVWYW9m?=
+ =?utf-8?B?TmdPcU9zTWVTbHBTaGVPaHVQeURUYnlwK3F6bTR1RlI2a3hiNGdxaUNNOEJ5?=
+ =?utf-8?B?Ky9yQ0t3aUNYUFRHbTN5WUpWTlA0aUpYWlp5Y2txaEdoM1ZyOHgyQWdYcWVD?=
+ =?utf-8?B?cHNic0VNaTVWVUtzSXhFTzRkMUFqZ1pqUHV6MEw5TE1TTnRWWFJpb0grUmpB?=
+ =?utf-8?B?Q2xhT3dsMFNLQVJjNkJvL3VmUzI3dzVDaWdWd2U3cVJtcGh5Y0NZMXU4ZWx6?=
+ =?utf-8?B?WnJlT2pBTHVVRWkxY29QR2FzQU05TFRQVGV2dTQyL1NYNy9LdnhyN3V0NGha?=
+ =?utf-8?B?R3BZV3dZdXgzOXNKd2hmVDkyNmFFWUhZQ0t3L1NDUTdRMGlKeDBUcXZNRzcv?=
+ =?utf-8?B?WmZFYjR4MDBzTmdSNjNUT0xyUHNRbnNuMmtYRDVaMGdnM3d2T013YitKeVE5?=
+ =?utf-8?B?MXZNdmFGU3hFMW9veXhvK294V2UwMVVpVCtMamZZbE5sTHFqcEVkamM1Sjk4?=
+ =?utf-8?B?K095TDFzVVBTZXpXUjNJR2FmQXJKRVRsdE1IV1YrajJOTThPaDFUK1dHK05Q?=
+ =?utf-8?B?akZISithQXo3Uk81R05hWE84ZWVaL0pReTMyRUQyQWRkV09IVU12RXNYc3A5?=
+ =?utf-8?B?MDFkYThlcENoc2grNXZWU0xUWkhjWnFkeUp2ejBCU0h1Z0tKajJqOWtJcmIy?=
+ =?utf-8?B?L0UrblJPYmZqTDIybjkrTUV3RkN5WS82b2NNWHpndUF3WHI5OUE3YTI1dmFr?=
+ =?utf-8?B?L0FSVW1QVDB5ZlJWa0pxV1RzMlh6OStpV3oxbE5qTEx3dzF1amR4OFZHdldU?=
+ =?utf-8?B?bmV5b2F0K2tOMk9vblUvemxZOWQwUzZzM1Z6cnBnNnpXOHY5M0RHR3Z1VGRi?=
+ =?utf-8?B?NHFSanZkUElvRi9pWCs0Q0NhZVR5M2kyQ0NETTBOdGoxTWRWQ0gyNUxHTFBZ?=
+ =?utf-8?B?S3c9PQ==?=
 X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: 5QcuGeS6tDz4PkfUoizsRwYRr16EfkNc0giwPYRiCpEyzriXdiwIVQhL4GdtbKV3lCp5EFH5Ugs4YXXSix6vLxAv3olxhDR81/QskrsmQ0urfQ4FS4XQqBeoWgqSlbzLmgVQGfLE6L+k2Go5GklvRZ0KILZ3uokZNSmPyYbKxNcnl0aKIQDpykLsFyS05oUueNBr4JGDhk/7pQCfyogS9b2T/MCchCnEnK9M6n+uk2NuB5lQuESn+1ORZoSfX6qN7Th+W2seoOG7hxQxmHqSUJQKJ0tcB4cy4HWTpyI7wbND6uzttQu4WXHQMn8nzb1396ULjRL2Q3DzHWY8YTiRO9fIctNZHb0+q/ECehyABU9hPwwEwi5/dsUjsvcdwIeI9hD5Q/gS+sAvXHIinle33h6Qj2rrePsoZOCBUdoZakOo+hVmFR6DVlyNgiA2lcGduZSbHs4tH/fLjZMOc7gufBkB3K4EuJUbZZnCiE+ttugPzfM9ze333a/pN9fi3t1VJA2gKT27k2IcEoGMeI8R1en5IhtKN6BecnRG7F7d4OGcUjp42/Ky1Us2YWXAdw0QeTAny/muA169FNVNP6Q9gnsGBiXmCnDGr8tSf8pX+0/i08u1ycwm04S4kSzJuUlJBd22zhr9m7283I7bP517/UmrV+qzl7MOYu+51RxrKmeFEZLh1nKxXA4OHSPfHOCSPkFuJA3zR3M+DpTeNrKw47ShqXfc+6ZXqq9TpAXZFRaeDZ57zJ17kw9pKdMGIkp+HugDntM2R/Cukwz5thAFuiNSrbqfE7zJF8n71oSs3KJ6Gf+4mO+IFttiW9CK7cs9/LHIwMfQt66Mlj4oA5tzvQ==
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: pytttgzJjVTFxviwCO1nzGhZ+kAyPIbjQneYpZC2b91eNspKcSQxc/wojEcWfaIkfMp+15IIdyTBbrs0Ho/k9RRiSwv5XJ3EBv3EqzbtiHy4J+RKKjjWKfs6r+fQj7kE+nDuhBALufNnpms53dbKLVMRtOjo78aVf6R8cUByEkDjRp00CniBLEkWKtJ7EZDf0qgSTBwJzXuGBn+sOuJQYBa7I8Qa9OXXOAq2tIwolXzOmQCAQ+h9KC/7IOV18pFko9Q1nWxsuYxuNxyuLfuUsoxML+OxGjmCjGmitb4YI4MCwYNs+s++kbgC9IZ4VyIUdazKJln1XhmPh2MA7HuDw2FCBzkKlUH4vRE72+TOoPVuVIkgqD7VyMDEisZ5eRvG75nYFltWm/qBQOKT5Kd8zjk5/4nMETRnfCFhXH6z9p7r11LQevHz9nwl5p6+ssb+zOK9XBsSm5lXyN5p/oksdkYOP5xqiqQRTYh6FzqILFDq7I6ZN2OLEbI02eIqGF9fvi1H+Oh+q3TxLfHYouoj+1u2EIfHkhyml1Zd/EFmRLGuNHqEXoPpUfk49NNZ+sg2oG/m+eguoiy5BLGeOMnBG0QdhF7t6K0jRb0Y5XHCos3eEXJtIkODNneP6iHJMlbeqPxSI1e7Ve5i8RJQ1So6OkC6JDRmkUs00lZbVNet0O8e8masB7nH62ec6xVGpwqOUDWvZyzhkrKrywETq6HyVVP47S2qRbk/5tsYnZT+q93AZN6JU+0sKvVXRMrToU2HXGQqBc2iv1sTbxfGCeM23E1J5hOoL5C4M+HnGUf8Lyh1bmgElECyhYPybxrTmrxrKc+1c+OHQsSZZq0gkBJU8Q==
 X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1db4b738-83f1-460c-5257-08db795b8a2c
+X-MS-Exchange-CrossTenant-Network-Message-Id: cdae9e2b-f1d8-4384-f446-08db795c00a2
 X-MS-Exchange-CrossTenant-AuthSource: BLAPR10MB4835.namprd10.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jun 2023 11:17:07.1667 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jun 2023 11:20:26.0929 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: WsgBlRDT7yb+uH3ARouHCSHeXz/uCMSbWMFQBvUUzzN/Ofy0it26/B6R2DSrVrsW8BEPKVVrBhhCKDjU1oRCyS0Y50WBooAyew9qrPS/PAY=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR10MB6434
+X-MS-Exchange-CrossTenant-UserPrincipalName: Mq65KOhyflnVNQP6u4HRo3rQIEeRSTHlZB0t0AjV0CZ9KY8sLi4BrBN5surCcGGaZZKrugwS5NWF7osXjxI2gzWTutMDLVYLhtnuxejV6ys=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR10MB7820
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
  definitions=2023-06-30_05,2023-06-30_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
- suspectscore=0
- malwarescore=0 adultscore=0 mlxlogscore=834 phishscore=0 bulkscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2305260000 definitions=main-2306300096
-X-Proofpoint-ORIG-GUID: 48SCPGbHjuOFmOxvivJJRv0-lx92IycK
-X-Proofpoint-GUID: 48SCPGbHjuOFmOxvivJJRv0-lx92IycK
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
+ malwarescore=0 mlxscore=0
+ mlxlogscore=962 bulkscore=0 spamscore=0 phishscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2305260000
+ definitions=main-2306300096
+X-Proofpoint-GUID: Zz_2tW-ssE6kmLAq2kmqa6EB_YEpYet6
+X-Proofpoint-ORIG-GUID: Zz_2tW-ssE6kmLAq2kmqa6EB_YEpYet6
 Received-SPF: pass client-ip=205.220.165.32;
  envelope-from=joao.m.martins@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -27
@@ -184,157 +184,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+
+
 On 30/06/2023 08:36, Zhenzhong Duan wrote:
-> vIOMMU migration blocker can be consolidated to per device default
-> blocker, then some vIOMMU global blocker related functions and data
-> could be removed.
+> Property enable_migration supports [on/off/auto].
+> In ON mode, error pointer is passed to errp and logged.
+> In OFF mode, we doesn't need to log "Migration disabled" as it's intentional.
+> In AUTO mode, we should only ever see errors or warnings if the device
+> supports migration and an error or incompatibility occurs while further
+> probing or configuring it. Lack of support for migration shoundn't
+> generate an error or warning.
 > 
-Perhaps expand to something like below on the why it justifies the consolidation:
-
-Contrary to multiple device blocker which needs to consider already-attached
-devices to unblock/block dynamically, the vIOMMU migration blocker is a device
-specific config. Meaning it only needs to know whether the device is bypassing
-or not the vIOMMU (via machine property, or per pxb-pcie::bypass_iommu), and
-does not need the state of currently present devices. For this reason, the
-vIOMMU global migration blocker can be consolidated into the per-device
-migration blocker, allowing us to remove some unnecessary code.
-
-> This change also makes vfio_mig_active() more accurate as it doesn't
-> check for global blocker.
-> 
-Cool callout.
-
 > Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-
-With above adjustment:
 
 Reviewed-by: Joao Martins <joao.m.martins@oracle.com>
 
 > ---
->  hw/vfio/common.c              | 51 ++---------------------------------
->  hw/vfio/migration.c           |  7 ++---
->  hw/vfio/pci.c                 |  1 -
->  include/hw/vfio/vfio-common.h |  3 +--
->  4 files changed, 7 insertions(+), 55 deletions(-)
+>  hw/vfio/pci.c | 1 -
+>  1 file changed, 1 deletion(-)
 > 
-> diff --git a/hw/vfio/common.c b/hw/vfio/common.c
-> index 00fef5aa08be..a8439447b990 100644
-> --- a/hw/vfio/common.c
-> +++ b/hw/vfio/common.c
-> @@ -362,7 +362,6 @@ bool vfio_mig_active(void)
->  }
->  
->  static Error *multiple_devices_migration_blocker;
-> -static Error *giommu_migration_blocker;
->  
->  static unsigned int vfio_migratable_device_num(void)
->  {
-> @@ -420,55 +419,9 @@ void vfio_unblock_multiple_devices_migration(void)
->      multiple_devices_migration_blocker = NULL;
->  }
->  
-> -static bool vfio_viommu_preset(void)
-> +bool vfio_viommu_preset(VFIODevice *vbasedev)
->  {
-> -    VFIOAddressSpace *space;
-> -
-> -    QLIST_FOREACH(space, &vfio_address_spaces, list) {
-> -        if (space->as != &address_space_memory) {
-> -            return true;
-> -        }
-> -    }
-> -
-> -    return false;
-> -}
-> -
-> -bool vfio_block_giommu_migration(VFIODevice *vbasedev, Error **errp)
-> -{
-> -    int ret;
-> -
-> -    if (giommu_migration_blocker ||
-> -        !vfio_viommu_preset()) {
-> -        return true;
-> -    }
-> -
-> -    if (vbasedev->enable_migration == ON_OFF_AUTO_ON) {
-> -        error_setg(errp,
-> -                   "Migration is currently not supported with vIOMMU enabled");
-> -        return false;
-> -    }
-> -
-> -    error_setg(&giommu_migration_blocker,
-> -               "Migration is currently not supported with vIOMMU enabled");
-> -    ret = migrate_add_blocker(giommu_migration_blocker, errp);
-> -    if (ret < 0) {
-> -        error_free(giommu_migration_blocker);
-> -        giommu_migration_blocker = NULL;
-> -    }
-> -
-> -    return !ret;
-> -}
-> -
-> -void vfio_migration_finalize(void)
-> -{
-> -    if (!giommu_migration_blocker ||
-> -        vfio_viommu_preset()) {
-> -        return;
-> -    }
-> -
-> -    migrate_del_blocker(giommu_migration_blocker);
-> -    error_free(giommu_migration_blocker);
-> -    giommu_migration_blocker = NULL;
-> +    return vbasedev->group->container->space->as != &address_space_memory;
->  }
->  
->  static void vfio_set_migration_error(int err)
-> diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
-> index 09fa4714a085..80509958f0d3 100644
-> --- a/hw/vfio/migration.c
-> +++ b/hw/vfio/migration.c
-> @@ -883,9 +883,10 @@ bool vfio_migration_realize(VFIODevice *vbasedev, Error **errp)
->          return ret;
->      }
->  
-> -    ret = vfio_block_giommu_migration(vbasedev, errp);
-> -    if (!ret) {
-> -        return ret;
-> +    if (vfio_viommu_preset(vbasedev)) {
-> +        error_setg(&err, "%s: Migration is currently not supported "
-> +                   "with vIOMMU enabled", vbasedev->name);
-> +        return vfio_block_migration(vbasedev, err, errp);
->      }
->  
->      trace_vfio_migration_realize(vbasedev->name);
 > diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-> index 31c4ab250fbe..c2cf7454ece6 100644
+> index 9cf70c1965d3..1c969fccc543 100644
 > --- a/hw/vfio/pci.c
 > +++ b/hw/vfio/pci.c
-> @@ -3255,7 +3255,6 @@ static void vfio_instance_finalize(Object *obj)
->       */
->      vfio_put_device(vdev);
->      vfio_put_group(group);
-> -    vfio_migration_finalize();
->  }
->  
->  static void vfio_exitfn(PCIDevice *pdev)
-> diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
-> index b3014ece2edf..3c18572322fc 100644
-> --- a/include/hw/vfio/vfio-common.h
-> +++ b/include/hw/vfio/vfio-common.h
-> @@ -227,7 +227,7 @@ extern VFIOGroupList vfio_group_list;
->  bool vfio_mig_active(void);
->  bool vfio_block_multiple_devices_migration(VFIODevice *vbasedev, Error **errp);
->  void vfio_unblock_multiple_devices_migration(void);
-> -bool vfio_block_giommu_migration(VFIODevice *vbasedev, Error **errp);
-> +bool vfio_viommu_preset(VFIODevice *vbasedev);
->  int64_t vfio_mig_bytes_transferred(void);
->  void vfio_reset_bytes_transferred(void);
->  
-> @@ -254,6 +254,5 @@ int vfio_spapr_remove_window(VFIOContainer *container,
->  
->  bool vfio_migration_realize(VFIODevice *vbasedev, Error **errp);
->  void vfio_migration_exit(VFIODevice *vbasedev);
-> -void vfio_migration_finalize(void);
->  
->  #endif /* HW_VFIO_VFIO_COMMON_H */
+> @@ -3209,7 +3209,6 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
+>      if (!pdev->failover_pair_id) {
+>          ret = vfio_migration_realize(vbasedev, errp);
+>          if (!ret) {
+> -            error_report("%s: Migration disabled", vbasedev->name);
+>              goto out_deregister;
+>          }
+>      }
 
