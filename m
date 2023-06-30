@@ -2,82 +2,103 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30799743AD9
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 13:30:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 75CAC743AE2
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 13:33:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFCJd-0007dN-34; Fri, 30 Jun 2023 07:29:29 -0400
+	id 1qFCNE-0001Vn-P6; Fri, 30 Jun 2023 07:33:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1qFCJa-0007cq-Fs
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 07:29:26 -0400
-Received: from mail-lj1-x235.google.com ([2a00:1450:4864:20::235])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1qFCJY-0004t8-Hn
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 07:29:26 -0400
-Received: by mail-lj1-x235.google.com with SMTP id
- 38308e7fff4ca-2b6a1fe5845so27138311fa.3
- for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 04:29:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1688124559; x=1690716559;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=MomjNPoOuPdkOjy8DVMbSFbR0M7QqJ6+EOtDnnqanNM=;
- b=GuP2Cwg0CA60Hk+aVVEIRNpXaBcCfo94MhO7zDOIZAcAfkG20edAT7p7/ev2kkB0xC
- l0Kk39aRu4fjyl11bD/OE07MXdcdx8Ka5tsFqD2rFiIq99uPO7NwHd6SMZMaRUWfsreL
- 4nXxRzLQgvVJtogQqAZkaBzYVEesTg1MK9MQIA9sPHXdYNWB076IDlQjrKMHwdsaZ5cS
- kUh/uwNApqw7sH0WH50R9/6M+o6hM5DEgx4HCRkZtGR4WCKTpLs/lygt6uJip6DIonR+
- m3mx5iKJX63xqsypFTRpvCz13BvSDVIYZonbf43Iy4UYd3jVEGmcirWIzSj04wFMTiO5
- EWqQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688124559; x=1690716559;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=MomjNPoOuPdkOjy8DVMbSFbR0M7QqJ6+EOtDnnqanNM=;
- b=WxVqX0v6BNmZLZvcPDegWmlOiqWQQW2XjKtrozCc8KU6ZSjcL2Xg+9HK/FzWDMaC5l
- OeNHd+r8REyfUTPzoolATWHswQj7w2OYtsrwgBDTzZSyvG9ldCoaL9Yy00cDuh67v8cE
- YQ2HfxMvBwJe519H+LxEl9+lfgJnVBjA2DBXgg+4C+/L++nJbvJ2E/CcngPiIP+jJhad
- d0FEgbeADZJACgtxEmsoHvjAqL1yOaKEEAhE+B/ZgNzpaRWOFXSqgPx6Yf+4rwtlGU/U
- SxEOLmXem98KS7EW/lsoAuoTASyfKB7ICF55TpyJoV0ycENrqlFylgiE7QRFNwb3z5c1
- dENg==
-X-Gm-Message-State: ABy/qLaxJo+W/BVI9WRymqyqLGAaZAjySPq7vpQuC5BBjkucakOKVNiR
- Qr1c8Xhd8xY0ToMzWC2/88vBBfooeH0fDW2v55k=
-X-Google-Smtp-Source: APBJJlHmK7HHoCrEC2fAFtT0sZuOa6OHT99kkMRWxaZBEyTl2kXvplZ8Jdly9VVGIJWgvuY7li2aBg==
-X-Received: by 2002:a2e:300d:0:b0:2b6:9afe:191c with SMTP id
- w13-20020a2e300d000000b002b69afe191cmr1945602ljw.7.1688124559286; 
- Fri, 30 Jun 2023 04:29:19 -0700 (PDT)
-Received: from localhost (2001-1ae9-1c2-4c00-20f-c6b4-1e57-7965.ip6.tmcz.cz.
- [2001:1ae9:1c2:4c00:20f:c6b4:1e57:7965])
- by smtp.gmail.com with ESMTPSA id
- y27-20020a1709063a9b00b00992a9bd70dasm1998782ejd.10.2023.06.30.04.29.18
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 30 Jun 2023 04:29:18 -0700 (PDT)
-Date: Fri, 30 Jun 2023 13:29:17 +0200
-From: Andrew Jones <ajones@ventanamicro.com>
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
- bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
- palmer@rivosinc.com, philmd@linaro.org
-Subject: Re: [PATCH v7 12/20] target/riscv: add KVM specific MISA properties
-Message-ID: <20230630-fa37857599d39173e76752e5@orel>
-References: <20230630100811.287315-1-dbarboza@ventanamicro.com>
- <20230630100811.287315-13-dbarboza@ventanamicro.com>
+ (Exim 4.90_1) (envelope-from <olaf@aepfle.de>) id 1qFCNC-0001VT-19
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 07:33:10 -0400
+Received: from mo4-p00-ob.smtp.rzone.de ([81.169.146.219])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <olaf@aepfle.de>) id 1qFCNA-00084g-0A
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 07:33:09 -0400
+ARC-Seal: i=1; a=rsa-sha256; t=1688124771; cv=none;
+ d=strato.com; s=strato-dkim-0002;
+ b=cRcjtAI/VOG4+GoSH9C6eYFR+KTj/0suAWOkzfHgw1F7QpXsrqGMdD/SpNzFmO5wso
+ mvWJRlxXMDh9Ae09lMsj1cDB3o3R9pXdC06gQPl8IwfVmrA1pKTe8wrMuUfiRpagfBSG
+ euMRvIw4YfxaWcJkRnqSlLzs365RGN8mD3k71YLEyAplZKe7GNxCmDwQJDwKbwrn9N4f
+ AjAN6Zu8qUOcGF07MmpZ4swbZTMIkp33cVHLP2xUS6Y+gJCvgqsjzqrSgw9ArLDViyX7
+ ga9xDpIYqhBhAlFEfPQvNom0Uflmt6ZaIhGSl7uftKn2QBWS2sGEImb81CTBcN1hvXhH
+ Vmlw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1688124771;
+ s=strato-dkim-0002; d=strato.com;
+ h=References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
+ From:Subject:Sender;
+ bh=/gk7lMpgzNECZCi+/gCLLwKmUN3PQkb6jMH9TC2m/MQ=;
+ b=a7+sFiEgWoGvMgdiSq+qGYdiqYp2/RLHA6/cJM/4muZ5zWLijBe8ASnOPp4ii2uIjV
+ sayusVaiYLrdFOb4P+mmzOJmO0MvC+iNHhY3pMbMuHnNpryw+cvDBFlb2OWVEj+WThCQ
+ m7mwTaWKc/0gQYZ4o62NXUI477OnhE+7KlsV/t4m/CN9NTOnok33avX6P6OoWdQE/JgT
+ 6rdHmZ2zgbSnszNBQziljCN4k1o1/+tKeO+eNkAVaKmMgc2PlJ4qpqn+yvvBxxlj89UY
+ 0XxNoFJfoZ1XvWuYFlmaNn9GI8OkiSfKzNyzlmuc7Hdi30xKhH1eaM/UhgsPNJMeUGmY
+ 0L+A==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo00
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1688124771;
+ s=strato-dkim-0002; d=aepfle.de;
+ h=References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
+ From:Subject:Sender;
+ bh=/gk7lMpgzNECZCi+/gCLLwKmUN3PQkb6jMH9TC2m/MQ=;
+ b=fYBN01q30vZeqh2Frh9iN/k7steP4RJ2Az4vC1H/ZAFrn6NrnnpBDKy1UY8IQYYAZ3
+ z6YbnP5TsXsS+MujV478r/Dj6D7LXM+zikAjmQnWM+fReZCXHKVo0Rg2hFuS+wUD/fnw
+ KjoEB9WSj9NgNgnCr9ryWbm8oRoZI0yv85nooLUwOqmmm/+x3DAyGmwcnhomgiYzDbli
+ wksRGExpHZTv2ld5iDbVYukb0+Yja40kBzp/uzJtxQKt0RdtSD5d1EeGe4MYq12skQlQ
+ AdVLvNap7x9Zc9C22KzzjTmEbprXUyNWE3CdjX+1Vh5MWuqimfUSY2g1fDFoUQg8UR/Q
+ gc+A==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1688124771;
+ s=strato-dkim-0003; d=aepfle.de;
+ h=References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
+ From:Subject:Sender;
+ bh=/gk7lMpgzNECZCi+/gCLLwKmUN3PQkb6jMH9TC2m/MQ=;
+ b=hEf6aYcS9lS1cIrxjvszx8GUI7WptFij09TxonfrZJm/Xt6yRBByhoEi2TfJpIKat5
+ 3LgbSlsr96ERdDYZbbDA==
+X-RZG-AUTH: ":P2EQZWCpfu+qG7CngxMFH1J+3q8wa/QLpd5ylWvMDX3y/OuD5rXVisR4VReIOE3s+xIC8HZ8TOtjelmE6SkKgUS6xMby0Q=="
+Received: from sender by smtp.strato.de (RZmta 49.6.0 AUTH)
+ with ESMTPSA id y5401az5UBWpyNP
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+ (Client did not present a certificate);
+ Fri, 30 Jun 2023 13:32:51 +0200 (CEST)
+Date: Fri, 30 Jun 2023 13:32:42 +0200
+From: Olaf Hering <olaf@aepfle.de>
+To: Bernhard Beschow <shentey@gmail.com>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, John Snow
+ <jsnow@redhat.com>, xen-devel@lists.xenproject.org, Stefano Stabellini
+ <sstabellini@kernel.org>
+Subject: Re: [PATCH v2] piix: fix regression during unplug in Xen HVM domUs
+Message-ID: <20230630133242.58e6d9ed.olaf@aepfle.de>
+In-Reply-To: <367317C5-DB65-40EF-B45B-97E0E802A994@gmail.com>
+References: <20210317070046.17860-1-olaf@aepfle.de>
+ <4441d32f-bd52-9408-cabc-146b59f0e4dc@redhat.com>
+ <20210325121219.7b5daf76.olaf@aepfle.de>
+ <dae251e1-f808-708e-902c-05cfcbbea9cf@redhat.com>
+ <20230509225818.GA16290@aepfle.de>
+ <20230626231901.5b5d11c1.olaf@aepfle.de>
+ <c939b695-2b68-085a-0f19-108ecdcc1a05@redhat.com>
+ <5DB37FA5-41DF-4ED6-8C8A-CDDD6F276F42@gmail.com>
+ <20230627140740.2736f6e8.olaf@aepfle.de>
+ <4F5609FD-4A89-4450-89E2-3311CC5A9317@gmail.com>
+ <20230630092921.392b302d.olaf@aepfle.de>
+ <367317C5-DB65-40EF-B45B-97E0E802A994@gmail.com>
+X-Mailer: Claws Mail 20230601T090920.68bc28c0 hat ein Softwareproblem,
+ kann man nichts machen.
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230630100811.287315-13-dbarboza@ventanamicro.com>
-Received-SPF: pass client-ip=2a00:1450:4864:20::235;
- envelope-from=ajones@ventanamicro.com; helo=mail-lj1-x235.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: multipart/signed; boundary="Sig_/WOYyKbs1pq2/gEoXAojnkkq";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
+Content-Transfer-Encoding: 7bit
+Received-SPF: none client-ip=81.169.146.219; envelope-from=olaf@aepfle.de;
+ helo=mo4-p00-ob.smtp.rzone.de
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_PASS=-0.001, SPF_NONE=0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,179 +115,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Jun 30, 2023 at 07:08:03AM -0300, Daniel Henrique Barboza wrote:
-> Using all TCG user properties in KVM is tricky. First because KVM
-> supports only a small subset of what TCG provides, so most of the
-> cpu->cfg flags do nothing for KVM.
-> 
-> Second, and more important, we don't have a way of telling if any given
-> value is an user input or not. For TCG this has a small impact since we
-> just validating everything and error out if needed. But for KVM it would
-> be good to know if a given value was set by the user or if it's a value
-> already provided by KVM. Otherwise we don't know how to handle failed
-> kvm_set_one_regs() when writing the configurations back.
-> 
-> These characteristics make it overly complicated to use the same user
-> facing flags for both KVM and TCG. A simpler approach is to create KVM
-> specific properties that have specialized logic, forking KVM and TCG use
-> cases for those cases only. Fully separating KVM/TCG properties is
-> unneeded at this point - in fact we want the user experience to be as
-> equal as possible, regardless of the acceleration chosen.
-> 
-> We'll start this fork with the MISA properties, adding the MISA bits
-> that the KVM driver currently supports. A new KVMCPUConfig type is
-> introduced. It'll hold general information about an extension. For MISA
-> extensions we're going to use the newly created getters of
-> misa_ext_infos[] to populate their name and description. 'offset' holds
-> the MISA bit (RVA, RVC, ...). We're calling it 'offset' instead of
-> 'misa_bit' because this same KVMCPUConfig struct will be used to
-> multi-letter extensions later on.
-> 
-> This new type also holds a 'user_set' flag. This flag will be set when
-> the user set an option that's different than what is already configured
-> in the host, requiring KVM intervention to write the regs back during
-> kvm_arch_init_vcpu(). Similar mechanics will be implemented for
-> multi-letter extensions as well.
-> 
-> There is no need to duplicate more code than necessary, so we're going
-> to use the existing kvm_riscv_init_user_properties() to add the KVM
-> specific properties. Any code that is adding a TCG user prop is then
-> changed slightly to verify first if there's a KVM prop with the same
-> name already added.
-> 
-> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-> ---
->  target/riscv/cpu.c |  5 +++
->  target/riscv/kvm.c | 78 ++++++++++++++++++++++++++++++++++++++++++++++
->  2 files changed, 83 insertions(+)
-> 
-> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-> index c1693d5e9c..a9df61c9b4 100644
-> --- a/target/riscv/cpu.c
-> +++ b/target/riscv/cpu.c
-> @@ -1648,6 +1648,11 @@ static void riscv_cpu_add_misa_properties(Object *cpu_obj)
->          misa_cfg->name = riscv_get_misa_ext_name(bit);
->          misa_cfg->description = riscv_get_misa_ext_description(bit);
->  
-> +        /* Check if KVM already created the property */
-> +        if (object_property_find(cpu_obj, misa_cfg->name)) {
-> +            continue;
-> +        }
-> +
->          object_property_add(cpu_obj, misa_cfg->name, "bool",
->                              cpu_get_misa_ext_cfg,
->                              cpu_set_misa_ext_cfg,
-> diff --git a/target/riscv/kvm.c b/target/riscv/kvm.c
-> index 4d0808cb9a..c55d0ec7ab 100644
-> --- a/target/riscv/kvm.c
-> +++ b/target/riscv/kvm.c
-> @@ -22,8 +22,10 @@
->  #include <linux/kvm.h>
->  
->  #include "qemu/timer.h"
-> +#include "qapi/error.h"
->  #include "qemu/error-report.h"
->  #include "qemu/main-loop.h"
-> +#include "qapi/visitor.h"
->  #include "sysemu/sysemu.h"
->  #include "sysemu/kvm.h"
->  #include "sysemu/kvm_int.h"
-> @@ -105,6 +107,81 @@ static uint64_t kvm_riscv_reg_id(CPURISCVState *env, uint64_t type,
->          } \
->      } while (0)
->  
-> +typedef struct KVMCPUConfig {
-> +    const char *name;
-> +    const char *description;
-> +    target_ulong offset;
-> +    int kvm_reg_id;
-> +    bool user_set;
-> +} KVMCPUConfig;
-> +
-> +#define KVM_MISA_CFG(_bit, _reg_id) \
-> +    {.offset = _bit, .kvm_reg_id = _reg_id}
-> +
-> +/* KVM ISA extensions */
-> +static KVMCPUConfig kvm_misa_ext_cfgs[] = {
-> +    KVM_MISA_CFG(RVA, KVM_RISCV_ISA_EXT_A),
-> +    KVM_MISA_CFG(RVC, KVM_RISCV_ISA_EXT_C),
-> +    KVM_MISA_CFG(RVD, KVM_RISCV_ISA_EXT_D),
-> +    KVM_MISA_CFG(RVF, KVM_RISCV_ISA_EXT_F),
-> +    KVM_MISA_CFG(RVH, KVM_RISCV_ISA_EXT_H),
-> +    KVM_MISA_CFG(RVI, KVM_RISCV_ISA_EXT_I),
-> +    KVM_MISA_CFG(RVM, KVM_RISCV_ISA_EXT_M),
-> +};
-> +
-> +static void kvm_cpu_set_misa_ext_cfg(Object *obj, Visitor *v,
-> +                                     const char *name,
-> +                                     void *opaque, Error **errp)
-> +{
-> +    KVMCPUConfig *misa_ext_cfg = opaque;
-> +    target_ulong misa_bit = misa_ext_cfg->offset;
-> +    RISCVCPU *cpu = RISCV_CPU(obj);
-> +    CPURISCVState *env = &cpu->env;
-> +    bool value, host_bit;
-> +
-> +    if (!visit_type_bool(v, name, &value, errp)) {
-> +        return;
-> +    }
-> +
-> +    host_bit = env->misa_ext_mask & misa_bit;
-> +
-> +    if (value == host_bit) {
-> +        return;
-> +    }
-> +
-> +    if (!value) {
-> +        misa_ext_cfg->user_set = true;
-> +        return;
-> +    }
-> +
-> +    /*
-> +     * Forbid users to enable extensions that aren't
-> +     * available in the hart.
-> +     */
-> +    error_setg(errp, "Enabling MISA bit '%s' is not allowed: it's not "
-> +               "enabled in the host", misa_ext_cfg->name);
-> +}
-> +
-> +static void kvm_riscv_add_cpu_user_properties(Object *cpu_obj)
-> +{
-> +    int i;
-> +
-> +    for (i = 0; i < ARRAY_SIZE(kvm_misa_ext_cfgs); i++) {
-> +        KVMCPUConfig *misa_cfg = &kvm_misa_ext_cfgs[i];
-> +        int bit = misa_cfg->offset;
-> +
-> +        misa_cfg->name = riscv_get_misa_ext_name(bit);
-> +        misa_cfg->description = riscv_get_misa_ext_description(bit);
-> +
-> +        object_property_add(cpu_obj, misa_cfg->name, "bool",
-> +                            NULL,
-> +                            kvm_cpu_set_misa_ext_cfg,
-> +                            NULL, misa_cfg);
-> +        object_property_set_description(cpu_obj, misa_cfg->name,
-> +                                        misa_cfg->description);
-> +    }
-> +}
-> +
->  static int kvm_riscv_get_regs_core(CPUState *cs)
->  {
->      int ret = 0;
-> @@ -427,6 +504,7 @@ void kvm_riscv_init_user_properties(Object *cpu_obj)
->          return;
->      }
->  
-> +    kvm_riscv_add_cpu_user_properties(cpu_obj);
->      kvm_riscv_init_machine_ids(cpu, &kvmcpu);
->      kvm_riscv_init_misa_ext_mask(cpu, &kvmcpu);
->  
-> -- 
-> 2.41.0
->
+--Sig_/WOYyKbs1pq2/gEoXAojnkkq
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Fri, 30 Jun 2023 08:05:29 +0000 Bernhard Beschow <shentey@gmail.com>:
 
-Thanks,
-drew
+> Yes. Have a look for piix3/piix4 here: https://www.intel.com/design/archi=
+ves/chipsets/440/index.htm
+
+This is hidden behind a login or whatever.
+
+I should be able to come up with a commit message without hardware specs be=
+ing available.
+
+
+Olaf
+
+--Sig_/WOYyKbs1pq2/gEoXAojnkkq
+Content-Type: application/pgp-signature
+Content-Description: Digitale Signatur von OpenPGP
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEE97o7Um30LT3B+5b/86SN7mm1DoAFAmSevVoACgkQ86SN7mm1
+DoAoiA/+Nac1y4FAslYKcs5MbXKeAht0YipykhnZnjEs5GFr1xmFi8cKvrPrzyaB
+EYjjXoosax8+YJJM/GDKaXyHx68piIf5YdMvA8Zdkp4mQ+HuAZIQa0zit9ONA+gS
+WHs154Zf/RqcQMVDjf74GcptgPP2YOmc/MPbZ6UV3GhXD+irdu8bqBnBeNqOV69q
+w/irUkAV/tBym8DHacToeoD0KB7c/aGq/6SJHlDSCYcWJElG0midU5E5dMPzNEGz
++w97vAZ6LHcM0NVfa/lwUiXEntM6rDpPNwTyCP2todWEfUZsT+Jn8s8q+H8R6r/O
+5FIXltIRH/fl5TEIJsYYEyWYWM4cMxhcVGuTJSeNI0mjxMgqg1OMrg25YgZUNKFK
+qmALpYbLZkcLPzIG9YMFwEwAUTdU3zVCinTmuhfTUQc/SStu1I6j7UfVSmSZaScx
+sOEWkXzRlr5MbUt/HZ8NTjI2FA+WW3CF428nNFdz1Un+l7Ftq61wkDzsfJ6G6Rqj
+xQPe9W98WmaORotynCq+itxUHEzJVFXgG92Lf6/zihB4bqGZes/LXT7NiLRUUUq0
+73EOEMZ4fQuxHhsuC0M/S3UeF9I43ONbgAwksZSBOQZY8q6hnTGH5vSvzf8igd0Q
+swEhq8zVVLlvihWAHLqx2Ck8LZO8CIFRzBz/0hAHHzCJBC0QQYU=
+=8PAh
+-----END PGP SIGNATURE-----
+
+--Sig_/WOYyKbs1pq2/gEoXAojnkkq--
 
