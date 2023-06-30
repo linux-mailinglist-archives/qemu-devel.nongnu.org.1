@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09AF97441F0
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 20:15:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 993E974420D
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 20:18:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFIdD-0005uS-Nf; Fri, 30 Jun 2023 14:14:07 -0400
+	id 1qFIch-0005NX-3x; Fri, 30 Jun 2023 14:13:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qFIco-0005b5-K9
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 14:13:47 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ id 1qFIcf-0005MN-4O
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 14:13:33 -0400
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qFIci-0003Yu-Sm
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 14:13:41 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-3fbc244d3a8so16980445e9.2
- for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 11:13:36 -0700 (PDT)
+ id 1qFIcb-0003VP-ME
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 14:13:32 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-3fbc244d384so16348515e9.0
+ for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 11:13:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688148815; x=1690740815;
+ d=linaro.org; s=google; t=1688148808; x=1690740808;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=eCS1WP/4CzEo+1xOyZvf30/WwlM8X9DNuki85IAdOWI=;
- b=Xy6k6gp6X142Qw/n69wK7eYUqHoFX1HR8YZmYN/71bNAjKsJ/4QHSR9j63Fm2eeGl7
- 3JPZy+avHNgPqFAWwCUqjcfH731JIxleq5duRSlPtoAyi+hK0g6EsMFIGbQd5/0vS3/7
- 98D/A/1uD5qAfStaAdTh28BtTqb0yBaI0qKyeVBGJAJ7OrN7bCQkhqnNOCmjlrmdAvfQ
- vTMHtkW/OhtPjhtvCRqzja6K2TmDhLrj0+fR9W+3F7IyFcBBZcuNLTXRYU0DzUBqf5zd
- nSBds3gSTkyU1coi145RQe4CM8TlVSmERk5sNAMWoM3FdI8VbiaJkjctsJuvRumtThpk
- 5GdQ==
+ bh=u8VqszCYj9oqwHFxWVNQZUykN/PvSJ3ab7nReTpSKM8=;
+ b=VavoppwcK7F8QbOXizPkeLrt8cOBceNhpfRKa4jwnasgfzOthsTM2SDmLZ6XG5xQzC
+ oKNnfK2GUqRPSx61xRtddY2mhMXdlj9OfJtEYLMGnt59Q5jB5WCCt9yP+sU3drHv9PJI
+ mUZ3yin+xzi4gS1Ik0Iah8h5TDa98t4WkFWycL1/HADbcPaIg/+u9m3ea1y/TC+aB6fk
+ 8yqppZndxIrbNv9TFwanENbpbfPFauHyK/BBGT39b9MZrR+/0GUW+wg+Gd40Mx2RabVm
+ v1uEHIit4gekd5njgE8Ac0jd2pE3cCETQovUTQZXyFATZi7thXMoTZZ0zNvJeDh8wY06
+ BQ/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688148815; x=1690740815;
+ d=1e100.net; s=20221208; t=1688148808; x=1690740808;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=eCS1WP/4CzEo+1xOyZvf30/WwlM8X9DNuki85IAdOWI=;
- b=ZoV8wg3gcU17SXOXe/90OJwewvz0/kzWbcAsAf/zj9xVkJbNxAOrKscrs9ypDg7ZU6
- s/370xlyq6jl9HImS4j4TbwhpmzS5H5h+2cPrXUb50NdPZEIr0MtOnGuJkJ+9LCFxyre
- X1O6cUv9uvEDCNjzCW7p5zs34Vzdbbpdb2I5OwEtrKHaatOdo52rMO75HPglFSlI7LlR
- 9RY/DzKlyWg1zrvS3L0lLco9psldUTDlta7p5+odYexMsYG4PxAAKG7Y0S9eTsQcotI3
- uB5Fcu9dl9oOGvtsWNFFyOYUDuswWIJIrmm2oAoRIXYcVk8p2zOKyENam6jC8nzT8F/k
- tJqQ==
-X-Gm-Message-State: AC+VfDwqq68eXLreEiPujd8v8HDEmCvi9OBa8KbmoExV8BEXN7qmL6nI
- guDYXefe9U0pfdjbhhO0Zre1lw==
-X-Google-Smtp-Source: ACHHUZ71wt6iLItu+9HKUkS6QbcIkQADIdXUBp7xkdOy4xEOjpRxNexFhabZP+AW9Uulv1sDBbeeTg==
-X-Received: by 2002:a7b:c409:0:b0:3fb:41b5:52eb with SMTP id
- k9-20020a7bc409000000b003fb41b552ebmr2561476wmi.26.1688148815185; 
- Fri, 30 Jun 2023 11:13:35 -0700 (PDT)
+ bh=u8VqszCYj9oqwHFxWVNQZUykN/PvSJ3ab7nReTpSKM8=;
+ b=NdiiOIEE9ro/kgcJBMCm44Cpfdf1tyzHYi2Gj0FIeBt2J4cnLvcIVzF3+aKWR1PXyK
+ 43ZGlZ4Fix+W1s5nKwsMluiacc1y+7IeJfa+StY9kiIYiPpT1Ts5s+ZF5nut/TJb6S8Y
+ vXg3bG0frQQO5LAokY9PRnKEiWRSJ3KHBUjiaFHCCriaHtOmmpdkKGlRrv86jsdwnobA
+ 3KgNaEc25Ve5vOiFdIph3pZCLP5r2Yk15576qpJ6TI3/IITTtJw6revbkde6/Tt2WKs+
+ 71OeVPtRHp8k430bInidT2npNd/8FYECiBu8UyN28m/meekyxcg9IPKwzuhlaVAKyZ3t
+ xMTw==
+X-Gm-Message-State: AC+VfDwKEbG5W1WYyA/CMEZsbf3Nyn9nT/lQeyBOCOVACj4NWPurPl64
+ apeoFOY2cZt8eX/wa1V7dO+79g==
+X-Google-Smtp-Source: ACHHUZ677Fan4wnz4Di9mhoPJoTLFNcdaqmIQQkv9MS0mwxv87b5xJL7Nk0buvoSwciL/pKpV7v7BA==
+X-Received: by 2002:a05:600c:215:b0:3fa:97ad:2ba5 with SMTP id
+ 21-20020a05600c021500b003fa97ad2ba5mr2626436wmi.31.1688148808167; 
+ Fri, 30 Jun 2023 11:13:28 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- c5-20020a5d4145000000b00314145e6d61sm4959242wrq.6.2023.06.30.11.13.30
+ q9-20020a1ce909000000b003fbc90e030csm1682204wmc.37.2023.06.30.11.13.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 30 Jun 2023 11:13:33 -0700 (PDT)
+ Fri, 30 Jun 2023 11:13:27 -0700 (PDT)
 Received: from zen.lan (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 849EF1FFD6;
+ by zen.linaroharston (Postfix) with ESMTP id 9EDD21FFD7;
  Fri, 30 Jun 2023 19:04:27 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -83,18 +83,17 @@ Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>, qemu-arm@nongnu.org,
  Darren Kenny <darren.kenny@oracle.com>, Alexander Bulekov <alxndr@bu.edu>,
  Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH v4 31/38] linux-user: Expose do_guest_openat() and
- do_guest_readlink()
-Date: Fri, 30 Jun 2023 19:04:16 +0100
-Message-Id: <20230630180423.558337-32-alex.bennee@linaro.org>
+Subject: [PATCH v4 32/38] linux-user: Add "safe" parameter to do_guest_openat()
+Date: Fri, 30 Jun 2023 19:04:17 +0100
+Message-Id: <20230630180423.558337-33-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230630180423.558337-1-alex.bennee@linaro.org>
 References: <20230630180423.558337-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -119,126 +118,90 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Ilya Leoshkevich <iii@linux.ibm.com>
 
-These functions will be required by the GDB stub in order to provide
-the guest view of /proc to GDB.
+gdbstub cannot meaningfully handle QEMU_ERESTARTSYS, and it doesn't
+need to. Add a parameter to do_guest_openat() that makes it use
+openat() instead of safe_openat(), so that it becomes usable from
+gdbstub.
 
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20230621203627.1808446-2-iii@linux.ibm.com>
+Message-Id: <20230621203627.1808446-3-iii@linux.ibm.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- linux-user/qemu.h    |  3 +++
- linux-user/syscall.c | 54 ++++++++++++++++++++++++++++----------------
- 2 files changed, 38 insertions(+), 19 deletions(-)
+ linux-user/qemu.h    |  2 +-
+ linux-user/syscall.c | 18 +++++++++++++-----
+ 2 files changed, 14 insertions(+), 6 deletions(-)
 
 diff --git a/linux-user/qemu.h b/linux-user/qemu.h
-index 92f9f5af41..a5830ec239 100644
+index a5830ec239..9b8e0860d7 100644
 --- a/linux-user/qemu.h
 +++ b/linux-user/qemu.h
-@@ -165,6 +165,9 @@ typedef struct TaskState {
- } TaskState;
+@@ -166,7 +166,7 @@ typedef struct TaskState {
  
  abi_long do_brk(abi_ulong new_brk);
-+int do_guest_openat(CPUArchState *cpu_env, int dirfd, const char *pathname,
-+                    int flags, mode_t mode);
-+ssize_t do_guest_readlink(const char *pathname, char *buf, size_t bufsiz);
+ int do_guest_openat(CPUArchState *cpu_env, int dirfd, const char *pathname,
+-                    int flags, mode_t mode);
++                    int flags, mode_t mode, bool safe);
+ ssize_t do_guest_readlink(const char *pathname, char *buf, size_t bufsiz);
  
  /* user access */
- 
 diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index f2cb101d83..fa83737192 100644
+index fa83737192..ecd9f5e23d 100644
 --- a/linux-user/syscall.c
 +++ b/linux-user/syscall.c
-@@ -8448,7 +8448,8 @@ static int open_hardware(CPUArchState *cpu_env, int fd)
- }
+@@ -8449,7 +8449,7 @@ static int open_hardware(CPUArchState *cpu_env, int fd)
  #endif
  
--static int do_openat(CPUArchState *cpu_env, int dirfd, const char *pathname, int flags, mode_t mode)
-+int do_guest_openat(CPUArchState *cpu_env, int dirfd, const char *pathname,
-+                    int flags, mode_t mode)
+ int do_guest_openat(CPUArchState *cpu_env, int dirfd, const char *pathname,
+-                    int flags, mode_t mode)
++                    int flags, mode_t mode, bool safe)
  {
      struct fake_open {
          const char *filename;
-@@ -8520,6 +8521,36 @@ static int do_openat(CPUArchState *cpu_env, int dirfd, const char *pathname, int
-     return safe_openat(dirfd, path(pathname), flags, mode);
+@@ -8476,7 +8476,11 @@ int do_guest_openat(CPUArchState *cpu_env, int dirfd, const char *pathname,
+     };
+ 
+     if (is_proc_myself(pathname, "exe")) {
+-        return safe_openat(dirfd, exec_path, flags, mode);
++        if (safe) {
++            return safe_openat(dirfd, exec_path, flags, mode);
++        } else {
++            return openat(dirfd, exec_path, flags, mode);
++        }
+     }
+ 
+     for (fake_open = fakes; fake_open->filename; fake_open++) {
+@@ -8518,7 +8522,11 @@ int do_guest_openat(CPUArchState *cpu_env, int dirfd, const char *pathname,
+         return fd;
+     }
+ 
+-    return safe_openat(dirfd, path(pathname), flags, mode);
++    if (safe) {
++        return safe_openat(dirfd, path(pathname), flags, mode);
++    } else {
++        return openat(dirfd, path(pathname), flags, mode);
++    }
  }
  
-+ssize_t do_guest_readlink(const char *pathname, char *buf, size_t bufsiz)
-+{
-+    ssize_t ret;
-+
-+    if (!pathname || !buf) {
-+        errno = EFAULT;
-+        return -1;
-+    }
-+
-+    if (!bufsiz) {
-+        /* Short circuit this for the magic exe check. */
-+        errno = EINVAL;
-+        return -1;
-+    }
-+
-+    if (is_proc_myself((const char *)pathname, "exe")) {
-+        /*
-+         * Don't worry about sign mismatch as earlier mapping
-+         * logic would have thrown a bad address error.
-+         */
-+        ret = MIN(strlen(exec_path), bufsiz);
-+        /* We cannot NUL terminate the string. */
-+        memcpy(buf, exec_path, ret);
-+    } else {
-+        ret = readlink(path(pathname), buf, bufsiz);
-+    }
-+
-+    return ret;
-+}
-+
- static int do_execveat(CPUArchState *cpu_env, int dirfd,
-                        abi_long pathname, abi_long guest_argp,
-                        abi_long guest_envp, int flags)
-@@ -8994,7 +9025,7 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
-     case TARGET_NR_open:
-         if (!(p = lock_user_string(arg1)))
+ ssize_t do_guest_readlink(const char *pathname, char *buf, size_t bufsiz)
+@@ -9027,7 +9035,7 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
              return -TARGET_EFAULT;
--        ret = get_errno(do_openat(cpu_env, AT_FDCWD, p,
-+        ret = get_errno(do_guest_openat(cpu_env, AT_FDCWD, p,
+         ret = get_errno(do_guest_openat(cpu_env, AT_FDCWD, p,
                                    target_to_host_bitmask(arg2, fcntl_flags_tbl),
-                                   arg3));
+-                                  arg3));
++                                  arg3, true));
          fd_trans_unregister(ret);
-@@ -9004,7 +9035,7 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
-     case TARGET_NR_openat:
-         if (!(p = lock_user_string(arg2)))
+         unlock_user(p, arg1, 0);
+         return ret;
+@@ -9037,7 +9045,7 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
              return -TARGET_EFAULT;
--        ret = get_errno(do_openat(cpu_env, arg1, p,
-+        ret = get_errno(do_guest_openat(cpu_env, arg1, p,
+         ret = get_errno(do_guest_openat(cpu_env, arg1, p,
                                    target_to_host_bitmask(arg3, fcntl_flags_tbl),
-                                   arg4));
+-                                  arg4));
++                                  arg4, true));
          fd_trans_unregister(ret);
-@@ -10229,22 +10260,7 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
-             void *p2;
-             p = lock_user_string(arg1);
-             p2 = lock_user(VERIFY_WRITE, arg2, arg3, 0);
--            if (!p || !p2) {
--                ret = -TARGET_EFAULT;
--            } else if (!arg3) {
--                /* Short circuit this for the magic exe check. */
--                ret = -TARGET_EINVAL;
--            } else if (is_proc_myself((const char *)p, "exe")) {
--                /*
--                 * Don't worry about sign mismatch as earlier mapping
--                 * logic would have thrown a bad address error.
--                 */
--                ret = MIN(strlen(exec_path), arg3);
--                /* We cannot NUL terminate the string. */
--                memcpy(p2, exec_path, ret);
--            } else {
--                ret = get_errno(readlink(path(p), p2, arg3));
--            }
-+            ret = get_errno(do_guest_readlink(p, p2, arg3));
-             unlock_user(p2, arg2, ret);
-             unlock_user(p, arg1, 0);
-         }
+         unlock_user(p, arg2, 0);
+         return ret;
 -- 
 2.39.2
 
