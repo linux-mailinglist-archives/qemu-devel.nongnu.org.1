@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61A97743BD4
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 14:27:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D011B743BDB
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 14:28:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFDDe-0007rJ-6n; Fri, 30 Jun 2023 08:27:22 -0400
+	id 1qFDDg-0008Eg-5L; Fri, 30 Jun 2023 08:27:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1qFDCU-0007gm-75
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1qFDCV-0007h8-RZ
  for qemu-devel@nongnu.org; Fri, 30 Jun 2023 08:26:11 -0400
 Received: from rev.ng ([5.9.113.41])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1qFDCR-0007nm-ST
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 08:26:09 -0400
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1qFDCT-0007o0-1I
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 08:26:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
  s=dkim; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
  Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive;
- bh=5UiQBsLcq7OOik+VH0EC9Ewy2tKMDq/XqQGTeRNa8jE=; b=ZkGMikSoGf27sX2qKaji3k58po
- FpEhXKP7mQXkGhJnbhR6Qx38/N1zrXhhxJrzCHlsZoFjLFvokAC5MkMTZKnDLQUAWBAfSGaUZmLCo
- JqlKzu5Ze+MO8iXApr4x5Ovza9PljMC33v6axCfgD6RTb5khLWny+rVt9wAFNfSCAlJQ=;
+ bh=Y67geBb1lJLvblotNia/7q3c5euFb9gmKUzLtc5us6Q=; b=rucdkmc9j9upnmikoe6UMRJwT4
+ C0SAM2/RQiOGPmivfzmVfOLl24frt9P3uO3w/pcazCLdaVPURKaHSbJyrSrOmd5nEXrosatAf3oCn
+ KcghAaGNhcsDyJD09zK4iXA5fwOaYZzm4gUdWNyZrcK2PW2i25BJFJgoc3OioR8vDWlU=;
 To: qemu-devel@nongnu.org
 Cc: ale@rev.ng, richard.henderson@linaro.org, pbonzini@redhat.com,
  eduardo@habkost.net, philmd@linaro.org, marcel.apfelbaum@gmail.com,
  peter.maydell@linaro.org, wangyanan55@huawei.com
-Subject: [PATCH 1/9] target/arm: Replace TARGET_PAGE_ENTRY_EXTRA
-Date: Fri, 30 Jun 2023 14:25:43 +0200
-Message-ID: <20230630122551.21766-2-anjo@rev.ng>
+Subject: [PATCH 2/9] include: Move MMUAccessType to tlb-common.h
+Date: Fri, 30 Jun 2023 14:25:44 +0200
+Message-ID: <20230630122551.21766-3-anjo@rev.ng>
 In-Reply-To: <20230630122551.21766-1-anjo@rev.ng>
 References: <20230630122551.21766-1-anjo@rev.ng>
 MIME-Version: 1.0
@@ -60,154 +60,62 @@ From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Anton Johansson <97antjoh@gmail.com>
-
-TARGET_PAGE_ENTRY_EXTRA is a macro that allows guests to specify additional
-fields for caching with the full TLB entry.  This macro is replaced with
-a union in CPUTLBEntryFull, thus making CPUTLB target-agnostic at the
-cost of slightly inflated CPUTLBEntryFull for non-arm guests.
-
-(arm is the only guest actually making use of this feature.)
+This commit sets up and avoids circular inclusion in following commits.
+CPUTLB and friends will be moved from cpu-defs.h to tlb-common.h and
+depends on MMU_ACCESS_COUNT defined in hw/core/cpu.h, and hw/core/cpu.h
+will in turn need to include tlb-common.h once the CPUTLB field has been
+moved to CPUState.
 
 Signed-off-by: Anton Johansson <anjo@rev.ng>
 ---
- include/exec/cpu-defs.h        | 18 +++++++++++++++---
- target/arm/cpu-param.h         | 12 ------------
- target/arm/ptw.c               |  4 ++--
- target/arm/tcg/mte_helper.c    |  2 +-
- target/arm/tcg/sve_helper.c    |  2 +-
- target/arm/tcg/tlb_helper.c    |  4 ++--
- target/arm/tcg/translate-a64.c |  2 +-
- 7 files changed, 22 insertions(+), 22 deletions(-)
+ include/exec/tlb-common.h | 7 ++++++-
+ include/hw/core/cpu.h     | 8 +-------
+ 2 files changed, 7 insertions(+), 8 deletions(-)
 
-diff --git a/include/exec/cpu-defs.h b/include/exec/cpu-defs.h
-index fb4c8d480f..0a600a312b 100644
---- a/include/exec/cpu-defs.h
-+++ b/include/exec/cpu-defs.h
-@@ -135,9 +135,21 @@ typedef struct CPUTLBEntryFull {
-      * This may be used to cache items from the guest cpu
-      * page tables for later use by the implementation.
-      */
--#ifdef TARGET_PAGE_ENTRY_EXTRA
--    TARGET_PAGE_ENTRY_EXTRA
--#endif
-+    union {
-+        /*
-+         * Cache the attrs and shareability fields from the page table entry.
-+         *
-+         * For ARMMMUIdx_Stage2*, pte_attrs is the S2 descriptor bits [5:2].
-+         * Otherwise, pte_attrs is the same as the MAIR_EL1 8-bit format.
-+         * For shareability and guarded, as in the SH and GP fields respectively
-+         * of the VMSAv8-64 PTEs.
-+         */
-+        struct {
-+            uint8_t pte_attrs;
-+            uint8_t shareability;
-+            bool guarded;
-+        } arm;
-+    } extra;
- } CPUTLBEntryFull;
- #endif /* CONFIG_SOFTMMU */
+diff --git a/include/exec/tlb-common.h b/include/exec/tlb-common.h
+index dc5a5faa0b..d1203354b4 100644
+--- a/include/exec/tlb-common.h
++++ b/include/exec/tlb-common.h
+@@ -19,7 +19,12 @@
+ #ifndef EXEC_TLB_COMMON_H
+ #define EXEC_TLB_COMMON_H 1
  
-diff --git a/target/arm/cpu-param.h b/target/arm/cpu-param.h
-index b3b35f7aa1..f9b462a98f 100644
---- a/target/arm/cpu-param.h
-+++ b/target/arm/cpu-param.h
-@@ -31,18 +31,6 @@
- # define TARGET_PAGE_BITS_VARY
- # define TARGET_PAGE_BITS_MIN  10
+-#define CPU_TLB_ENTRY_BITS 5
++typedef enum MMUAccessType {
++    MMU_DATA_LOAD  = 0,
++    MMU_DATA_STORE = 1,
++    MMU_INST_FETCH = 2
++#define MMU_ACCESS_COUNT 3
++} MMUAccessType;
  
--/*
-- * Cache the attrs and shareability fields from the page table entry.
-- *
-- * For ARMMMUIdx_Stage2*, pte_attrs is the S2 descriptor bits [5:2].
-- * Otherwise, pte_attrs is the same as the MAIR_EL1 8-bit format.
-- * For shareability and guarded, as in the SH and GP fields respectively
-- * of the VMSAv8-64 PTEs.
-- */
--# define TARGET_PAGE_ENTRY_EXTRA  \
--    uint8_t pte_attrs;            \
--    uint8_t shareability;         \
--    bool guarded;
- #endif
+ /* Minimalized TLB entry for use by TCG fast path. */
+ typedef union CPUTLBEntry {
+diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
+index b08f8b7079..c226d7263c 100644
+--- a/include/hw/core/cpu.h
++++ b/include/hw/core/cpu.h
+@@ -25,6 +25,7 @@
+ #include "exec/cpu-common.h"
+ #include "exec/hwaddr.h"
+ #include "exec/memattrs.h"
++#include "exec/tlb-common.h"
+ #include "qapi/qapi-types-run-state.h"
+ #include "qemu/bitmap.h"
+ #include "qemu/rcu_queue.h"
+@@ -80,13 +81,6 @@ DECLARE_CLASS_CHECKERS(CPUClass, CPU,
+     typedef struct ArchCPU CpuInstanceType; \
+     OBJECT_DECLARE_TYPE(ArchCPU, CpuClassType, CPU_MODULE_OBJ_NAME);
  
- #endif
-diff --git a/target/arm/ptw.c b/target/arm/ptw.c
-index 6015121b99..22e02579cb 100644
---- a/target/arm/ptw.c
-+++ b/target/arm/ptw.c
-@@ -499,7 +499,7 @@ static bool S1_ptw_translate(CPUARMState *env, S1Translate *ptw,
-         }
-         ptw->out_phys = full->phys_addr | (addr & ~TARGET_PAGE_MASK);
-         ptw->out_rw = full->prot & PAGE_WRITE;
--        pte_attrs = full->pte_attrs;
-+        pte_attrs = full->extra.arm.pte_attrs;
-         ptw->out_secure = full->attrs.secure;
-         ptw->out_space = full->attrs.space;
- #else
-@@ -1933,7 +1933,7 @@ static bool get_phys_addr_lpae(CPUARMState *env, S1Translate *ptw,
+-typedef enum MMUAccessType {
+-    MMU_DATA_LOAD  = 0,
+-    MMU_DATA_STORE = 1,
+-    MMU_INST_FETCH = 2
+-#define MMU_ACCESS_COUNT 3
+-} MMUAccessType;
+-
+ typedef struct CPUWatchpoint CPUWatchpoint;
  
-         /* When in aarch64 mode, and BTI is enabled, remember GP in the TLB. */
-         if (aarch64 && cpu_isar_feature(aa64_bti, cpu)) {
--            result->f.guarded = extract64(attrs, 50, 1); /* GP */
-+            result->f.extra.arm.guarded = extract64(attrs, 50, 1); /* GP */
-         }
-     }
- 
-diff --git a/target/arm/tcg/mte_helper.c b/target/arm/tcg/mte_helper.c
-index 9c64def081..be30c2bb51 100644
---- a/target/arm/tcg/mte_helper.c
-+++ b/target/arm/tcg/mte_helper.c
-@@ -124,7 +124,7 @@ static uint8_t *allocation_tag_mem(CPUARMState *env, int ptr_mmu_idx,
-     assert(!(flags & TLB_INVALID_MASK));
- 
-     /* If the virtual page MemAttr != Tagged, access unchecked. */
--    if (full->pte_attrs != 0xf0) {
-+    if (full->extra.arm.pte_attrs != 0xf0) {
-         return NULL;
-     }
- 
-diff --git a/target/arm/tcg/sve_helper.c b/target/arm/tcg/sve_helper.c
-index 0097522470..996c04d3d9 100644
---- a/target/arm/tcg/sve_helper.c
-+++ b/target/arm/tcg/sve_helper.c
-@@ -5373,7 +5373,7 @@ bool sve_probe_page(SVEHostPage *info, bool nofault, CPUARMState *env,
-     info->tagged = (flags & PAGE_ANON) && (flags & PAGE_MTE);
- #else
-     info->attrs = full->attrs;
--    info->tagged = full->pte_attrs == 0xf0;
-+    info->tagged = full->extra.arm.pte_attrs == 0xf0;
- #endif
- 
-     /* Ensure that info->host[] is relative to addr, not addr + mem_off. */
-diff --git a/target/arm/tcg/tlb_helper.c b/target/arm/tcg/tlb_helper.c
-index b22b2a4c6e..59bff8b452 100644
---- a/target/arm/tcg/tlb_helper.c
-+++ b/target/arm/tcg/tlb_helper.c
-@@ -334,8 +334,8 @@ bool arm_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
-             address &= TARGET_PAGE_MASK;
-         }
- 
--        res.f.pte_attrs = res.cacheattrs.attrs;
--        res.f.shareability = res.cacheattrs.shareability;
-+        res.f.extra.arm.pte_attrs = res.cacheattrs.attrs;
-+        res.f.extra.arm.shareability = res.cacheattrs.shareability;
- 
-         tlb_set_page_full(cs, mmu_idx, address, &res.f);
-         return true;
-diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index 3baab6aa60..0c5e275ac8 100644
---- a/target/arm/tcg/translate-a64.c
-+++ b/target/arm/tcg/translate-a64.c
-@@ -13763,7 +13763,7 @@ static bool is_guarded_page(CPUARMState *env, DisasContext *s)
-                               false, &host, &full, 0);
-     assert(!(flags & TLB_INVALID_MASK));
- 
--    return full->guarded;
-+    return full->extra.arm.guarded;
- #endif
- }
- 
+ /* see tcg-cpu-ops.h */
 -- 
 2.41.0
 
