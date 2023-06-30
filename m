@@ -2,41 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E072D743697
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 10:09:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E156743691
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 10:09:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qF92I-00087Q-Ga; Fri, 30 Jun 2023 03:59:22 -0400
+	id 1qF92G-00085Z-D5; Fri, 30 Jun 2023 03:59:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1qF92F-00085b-Vh
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 03:59:19 -0400
+ id 1qF92E-00084A-KB
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 03:59:18 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1qF92D-0007uw-RV
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 03:59:19 -0400
+ (envelope-from <gaosong@loongson.cn>) id 1qF92B-0007v9-35
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 03:59:18 -0400
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8Bx28ZOi55kXjQEAA--.6781S3;
- Fri, 30 Jun 2023 15:59:10 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8CxpMRPi55kYzQEAA--.6898S3;
+ Fri, 30 Jun 2023 15:59:11 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
  by localhost.localdomain (Coremail) with SMTP id
- AQAAf8AxjiNIi55kExQTAA--.24469S5; 
- Fri, 30 Jun 2023 15:59:09 +0800 (CST)
+ AQAAf8AxjiNIi55kExQTAA--.24469S7; 
+ Fri, 30 Jun 2023 15:59:11 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org
-Subject: [PATCH v2 03/46] target/loongarch: Add CHECK_ASXE maccro for check
- LASX enable
-Date: Fri, 30 Jun 2023 15:58:21 +0800
-Message-Id: <20230630075904.45940-4-gaosong@loongson.cn>
+Subject: [PATCH v2 05/46] target/loongarch: Implement xvreplgr2vr
+Date: Fri, 30 Jun 2023 15:58:23 +0800
+Message-Id: <20230630075904.45940-6-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20230630075904.45940-1-gaosong@loongson.cn>
 References: <20230630075904.45940-1-gaosong@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8AxjiNIi55kExQTAA--.24469S5
+X-CM-TRANSID: AQAAf8AxjiNIi55kExQTAA--.24469S7
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -63,72 +62,100 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+This patch includes:
+- XVREPLGR2VR.{B/H/W/D}.
+
 Signed-off-by: Song Gao <gaosong@loongson.cn>
 ---
- target/loongarch/cpu.c                       |  2 ++
- target/loongarch/cpu.h                       |  2 ++
- target/loongarch/insn_trans/trans_lasx.c.inc | 10 ++++++++++
- 3 files changed, 14 insertions(+)
+ target/loongarch/disas.c                     | 10 ++++++++++
+ target/loongarch/insn_trans/trans_lasx.c.inc |  5 +++++
+ target/loongarch/insn_trans/trans_lsx.c.inc  | 13 +++++++------
+ target/loongarch/insns.decode                |  5 +++++
+ 4 files changed, 27 insertions(+), 6 deletions(-)
 
-diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
-index 5037cfc02c..c9f9cbb19d 100644
---- a/target/loongarch/cpu.c
-+++ b/target/loongarch/cpu.c
-@@ -54,6 +54,7 @@ static const char * const excp_names[] = {
-     [EXCCODE_DBP] = "Debug breakpoint",
-     [EXCCODE_BCE] = "Bound Check Exception",
-     [EXCCODE_SXD] = "128 bit vector instructions Disable exception",
-+    [EXCCODE_ASXD] = "256 bit vector instructions Disable exception",
- };
- 
- const char *loongarch_exception_name(int32_t exception)
-@@ -189,6 +190,7 @@ static void loongarch_cpu_do_interrupt(CPUState *cs)
-     case EXCCODE_FPD:
-     case EXCCODE_FPE:
-     case EXCCODE_SXD:
-+    case EXCCODE_ASXD:
-         env->CSR_BADV = env->pc;
-         QEMU_FALLTHROUGH;
-     case EXCCODE_BCE:
-diff --git a/target/loongarch/cpu.h b/target/loongarch/cpu.h
-index c39c261bc4..1137d6cb58 100644
---- a/target/loongarch/cpu.h
-+++ b/target/loongarch/cpu.h
-@@ -428,6 +428,7 @@ static inline int cpu_mmu_index(CPULoongArchState *env, bool ifetch)
- #define HW_FLAGS_CRMD_PG    R_CSR_CRMD_PG_MASK   /* 0x10 */
- #define HW_FLAGS_EUEN_FPE   0x04
- #define HW_FLAGS_EUEN_SXE   0x08
-+#define HW_FLAGS_EUEN_ASXE  0x10
- 
- static inline void cpu_get_tb_cpu_state(CPULoongArchState *env, vaddr *pc,
-                                         uint64_t *cs_base, uint32_t *flags)
-@@ -437,6 +438,7 @@ static inline void cpu_get_tb_cpu_state(CPULoongArchState *env, vaddr *pc,
-     *flags = env->CSR_CRMD & (R_CSR_CRMD_PLV_MASK | R_CSR_CRMD_PG_MASK);
-     *flags |= FIELD_EX64(env->CSR_EUEN, CSR_EUEN, FPE) * HW_FLAGS_EUEN_FPE;
-     *flags |= FIELD_EX64(env->CSR_EUEN, CSR_EUEN, SXE) * HW_FLAGS_EUEN_SXE;
-+    *flags |= FIELD_EX64(env->CSR_EUEN, CSR_EUEN, ASXE) * HW_FLAGS_EUEN_ASXE;
+diff --git a/target/loongarch/disas.c b/target/loongarch/disas.c
+index d8b62ba532..c47f455ed0 100644
+--- a/target/loongarch/disas.c
++++ b/target/loongarch/disas.c
+@@ -1708,6 +1708,11 @@ static void output_vvv_x(DisasContext *ctx, arg_vvv * a, const char *mnemonic)
+     output(ctx, mnemonic, "x%d, x%d, x%d", a->vd, a->vj, a->vk);
  }
  
- void loongarch_cpu_list(void);
++static void output_vr_x(DisasContext *ctx, arg_vr *a, const char *mnemonic)
++{
++    output(ctx, mnemonic, "x%d, r%d", a->vd, a->rj);
++}
++
+ INSN_LASX(xvadd_b,           vvv)
+ INSN_LASX(xvadd_h,           vvv)
+ INSN_LASX(xvadd_w,           vvv)
+@@ -1718,3 +1723,8 @@ INSN_LASX(xvsub_h,           vvv)
+ INSN_LASX(xvsub_w,           vvv)
+ INSN_LASX(xvsub_d,           vvv)
+ INSN_LASX(xvsub_q,           vvv)
++
++INSN_LASX(xvreplgr2vr_b,     vr)
++INSN_LASX(xvreplgr2vr_h,     vr)
++INSN_LASX(xvreplgr2vr_w,     vr)
++INSN_LASX(xvreplgr2vr_d,     vr)
 diff --git a/target/loongarch/insn_trans/trans_lasx.c.inc b/target/loongarch/insn_trans/trans_lasx.c.inc
-index 56a9839255..75a77f5dce 100644
+index 86ba296a73..9bbf6c48ec 100644
 --- a/target/loongarch/insn_trans/trans_lasx.c.inc
 +++ b/target/loongarch/insn_trans/trans_lasx.c.inc
-@@ -4,3 +4,13 @@
-  * Copyright (c) 2023 Loongson Technology Corporation Limited
-  */
+@@ -46,3 +46,8 @@ TRANS(xvsub_b, gvec_vvv, 32, MO_8, tcg_gen_gvec_sub)
+ TRANS(xvsub_h, gvec_vvv, 32, MO_16, tcg_gen_gvec_sub)
+ TRANS(xvsub_w, gvec_vvv, 32, MO_32, tcg_gen_gvec_sub)
+ TRANS(xvsub_d, gvec_vvv, 32, MO_64, tcg_gen_gvec_sub)
++
++TRANS(xvreplgr2vr_b, gvec_dup, 32, MO_8)
++TRANS(xvreplgr2vr_h, gvec_dup, 32, MO_16)
++TRANS(xvreplgr2vr_w, gvec_dup, 32, MO_32)
++TRANS(xvreplgr2vr_d, gvec_dup, 32, MO_64)
+diff --git a/target/loongarch/insn_trans/trans_lsx.c.inc b/target/loongarch/insn_trans/trans_lsx.c.inc
+index 63061bd4a1..4667dba4b4 100644
+--- a/target/loongarch/insn_trans/trans_lsx.c.inc
++++ b/target/loongarch/insn_trans/trans_lsx.c.inc
+@@ -4058,20 +4058,21 @@ static bool trans_vpickve2gr_du(DisasContext *ctx, arg_rv_i *a)
+     return true;
+ }
  
-+#ifndef CONFIG_USER_ONLY
-+#define CHECK_ASXE do { \
-+    if ((ctx->base.tb->flags & HW_FLAGS_EUEN_ASXE) == 0) { \
-+        generate_exception(ctx, EXCCODE_ASXD); \
-+        return true; \
-+    } \
-+} while (0)
-+#else
-+#define CHECK_ASXE
-+#endif
+-static bool gvec_dup(DisasContext *ctx, arg_vr *a, MemOp mop)
++static bool gvec_dup(DisasContext *ctx, arg_vr *a, uint32_t oprsz, MemOp mop)
+ {
+     TCGv src = gpr_src(ctx, a->rj, EXT_NONE);
++
+     CHECK_VEC;
+ 
+     tcg_gen_gvec_dup_i64(mop, vec_full_offset(a->vd),
+-                         16, ctx->vl/8, src);
++                         oprsz, ctx->vl / 8, src);
+     return true;
+ }
+ 
+-TRANS(vreplgr2vr_b, gvec_dup, MO_8)
+-TRANS(vreplgr2vr_h, gvec_dup, MO_16)
+-TRANS(vreplgr2vr_w, gvec_dup, MO_32)
+-TRANS(vreplgr2vr_d, gvec_dup, MO_64)
++TRANS(vreplgr2vr_b, gvec_dup, 16, MO_8)
++TRANS(vreplgr2vr_h, gvec_dup, 16, MO_16)
++TRANS(vreplgr2vr_w, gvec_dup, 16, MO_32)
++TRANS(vreplgr2vr_d, gvec_dup, 16, MO_64)
+ 
+ static bool trans_vreplvei_b(DisasContext *ctx, arg_vv_i *a)
+ {
+diff --git a/target/loongarch/insns.decode b/target/loongarch/insns.decode
+index bcc18fb6c5..04bd238995 100644
+--- a/target/loongarch/insns.decode
++++ b/target/loongarch/insns.decode
+@@ -1310,3 +1310,8 @@ xvsub_h          0111 01000000 11001 ..... ..... .....    @vvv
+ xvsub_w          0111 01000000 11010 ..... ..... .....    @vvv
+ xvsub_d          0111 01000000 11011 ..... ..... .....    @vvv
+ xvsub_q          0111 01010010 11011 ..... ..... .....    @vvv
++
++xvreplgr2vr_b    0111 01101001 11110 00000 ..... .....    @vr
++xvreplgr2vr_h    0111 01101001 11110 00001 ..... .....    @vr
++xvreplgr2vr_w    0111 01101001 11110 00010 ..... .....    @vr
++xvreplgr2vr_d    0111 01101001 11110 00011 ..... .....    @vr
 -- 
 2.39.1
 
