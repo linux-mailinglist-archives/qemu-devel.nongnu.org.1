@@ -2,97 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDFDE7438D8
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 12:01:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 659367438D9
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 12:01:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFAvh-0002pu-Mw; Fri, 30 Jun 2023 06:00:41 -0400
+	id 1qFAvv-0002rW-41; Fri, 30 Jun 2023 06:00:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qFAve-0002pQ-HS
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 06:00:38 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qFAvc-0007H0-Ou
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 06:00:38 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688119235;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=iSsTXsLzfXoFmwlGJx797LXWxIGQJchjCkQpMDKCUCw=;
- b=e7B9Jc8UZfNskgKLU2sWByffD5VinnAzAFPoeHFW2JkVQ9nhXSH6Hn81hj6mVdc37E6xbm
- Xk5TLPCz/lLEe/d7xq5YMsWtZOm7d5omDIaVbpnVeEk6XQN+tekYeYHQUVsL+h4uYQRSJO
- LmFaWNZyjdYT+ftpAsq9WT+mFLd1J88=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-329-jtH1jAv5MkSXOTuPKGSBvw-1; Fri, 30 Jun 2023 06:00:31 -0400
-X-MC-Unique: jtH1jAv5MkSXOTuPKGSBvw-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-3fb416d7731so8681005e9.2
- for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 03:00:31 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qFAvt-0002qS-0S
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 06:00:53 -0400
+Received: from mail-ot1-x32a.google.com ([2607:f8b0:4864:20::32a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qFAvq-0007I4-EU
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 06:00:52 -0400
+Received: by mail-ot1-x32a.google.com with SMTP id
+ 46e09a7af769-6b867acbf6dso1011357a34.0
+ for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 03:00:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1688119249; x=1690711249;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Q8MtiHwkLZ3I4tvyMVayNgX+OarZrg4wOjLBqNFijog=;
+ b=cmKMWLL35pIbNRkfAPVqHU2HsAO0GNp3RQurrr/52rTgI3mv+6NNVb/8ZlUCM5UePs
+ /eWV+/Tdao41b9/P3yIk+PRnzpfXaxpJY98YihqFfwVrMQOOxc2c7HEt7ARZ/4MpHFG3
+ 24LYJwGeRR1uEMBBJnrs5qODPS7b0icocbVTklJhXjmbBwaPRNK0JMahWmrwwwp928uc
+ bNexFbGnAPfsrYV0AL0o46mHYsCRFTgNv4ginw4udipk1j/04zwbQQCu7SGrgNgH3tkD
+ +ZUhVf4mQFdoTFOj46JZspY7fWzbu+VgdNYXHpmUR6Kv2XJrCEdl90AK0Gsn0HCagA0j
+ 9Htw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688119230; x=1690711230;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=iSsTXsLzfXoFmwlGJx797LXWxIGQJchjCkQpMDKCUCw=;
- b=Nw4Z1I2RM3OFNYksxDkAlcxOBjEHSjTBZA7Izj1EZ6JauO0FmXjrbFiJvgf/AZSIYB
- +fPjWIFbTct3EoB8ZyeTQVoRW4VIPVWfmkXzX1Rz0zRVGbl+aHdiB0Pz2rpBAHozBal4
- yrePRNBQGrG7/TMYfR7i3ots9IhP7lIX77Heeq03OmH2dFmPloQX65FXXqqwBMVYIJJn
- IZJgZ0WoMfyewvQAdwCV/mV2RT88xTD4WyXPzBvHt0kw/YlJ3rd4FiFzBEXNXXueNGzg
- E0OuEl0mEeJUxx4JsjRszWejIHTkZXuvYQeOT9VSSYGO77xYIwRnvU2NddjKlUNtbbIJ
- FQyw==
-X-Gm-Message-State: AC+VfDyt/dvaoTdWrk6kw2wEIyyCMpLwt0IonCgr2Q3nXNKYne6NNF0R
- db2jGSq0jVlPKTQGlhGrGiLoGhXwokhWw+jkjnpDxDcd3Z9eqHshJQtKKZwNDUeEPqZN3MpYoJh
- Sc1MMtd9zhrfEqcU=
-X-Received: by 2002:a05:600c:cf:b0:3fb:a102:6d7a with SMTP id
- u15-20020a05600c00cf00b003fba1026d7amr1389333wmm.28.1688119230494; 
- Fri, 30 Jun 2023 03:00:30 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6PgIG0ZQi+wt46n1iIA0AqAZLd0R7arJFE0GLVVaWWGCbQZVsnfZd0cyalEdk4+RWVSs8s1Q==
-X-Received: by 2002:a05:600c:cf:b0:3fb:a102:6d7a with SMTP id
- u15-20020a05600c00cf00b003fba1026d7amr1389318wmm.28.1688119230116; 
- Fri, 30 Jun 2023 03:00:30 -0700 (PDT)
-Received: from redhat.com ([2.52.154.169]) by smtp.gmail.com with ESMTPSA id
- y5-20020a05600c364500b003fbc9d178a8sm140875wmq.4.2023.06.30.03.00.28
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 30 Jun 2023 03:00:29 -0700 (PDT)
-Date: Fri, 30 Jun 2023 06:00:26 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Ani Sinha <anisinha@redhat.com>
-Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,
- qemu-devel <qemu-devel@nongnu.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Julia Suvorova <jusual@redhat.com>, Igor Mammedov <imammedo@redhat.com>
-Subject: Re: [PATCH v6 5/5] hw/pci: ensure PCIE devices are plugged into only
- slot 0 of PCIE port
-Message-ID: <20230630055717-mutt-send-email-mst@kernel.org>
-References: <8d382e8b-088b-f0af-eec4-a85ee513b4ae@daynix.com>
- <CAK3XEhNOJkm13+vxJO9-Adhwq8NJ3TQ1gaOXj8Dn3NtixF_=jQ@mail.gmail.com>
- <8868044c-f61b-7bbb-8cc8-34a14c1490d6@daynix.com>
- <9DDBE75A-C72C-4238-9166-3CBDBEA68188@redhat.com>
- <167eea06-b917-8783-5cd6-8fda56e41331@daynix.com>
- <A50CA177-0E7E-4828-A036-70EB532FE2B8@redhat.com>
- <20230630041937-mutt-send-email-mst@kernel.org>
- <4618EAD1-2862-4288-A881-CA860D04ADB0@redhat.com>
- <20230630043734-mutt-send-email-mst@kernel.org>
- <49B901C6-4819-4A00-8225-39FAA6678F3E@redhat.com>
+ d=1e100.net; s=20221208; t=1688119249; x=1690711249;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Q8MtiHwkLZ3I4tvyMVayNgX+OarZrg4wOjLBqNFijog=;
+ b=ZAhH1u7NaifJQI9qSme2DT7c2d2E2wm7a+dkH2cjNAZhCPzY3t6QrJgvUUBP8/jlYA
+ 5yRwItZ74QLculrb987o4jG3ZpGYNN3eLoSYZaWFaQWdtb5fCFxwPkQblaKrbEQr75S7
+ d64STSk2eeGxbsQUw+Ud5vF4Dgn2xqcWYEkkKvnF8APl3zVVCeu2EN1cGoefVjw/BzHK
+ uSdq3yyEUlj9ogL4fgBfoN1eg4qRGTWYJLAQBb6/PKZg9oNumiBdMycftsELJNg63Cm1
+ hnNTM3/2CafsfQWIjEHJva9OfGU/j0LBSe9jZV4CKd3gUyWAHfQ0ta9gepQkYW+PfxEF
+ VrNw==
+X-Gm-Message-State: AC+VfDy7/aTWGXfpGocncJBJ7/A0DpyLCyZACOkJNIh46W5yMpCiPSwn
+ dfQGrUum6Xiy27VXxBD2O7wsuw==
+X-Google-Smtp-Source: ACHHUZ4bqGtbHre6KmqgAt9Z3F+2Hi6WOkaAcDDEdExlDpa59ik67J1oVf6IMQrslV44kqI21foXkA==
+X-Received: by 2002:a05:6808:23c9:b0:3a0:3ee2:87c2 with SMTP id
+ bq9-20020a05680823c900b003a03ee287c2mr1366422oib.20.1688119248976; 
+ Fri, 30 Jun 2023 03:00:48 -0700 (PDT)
+Received: from [192.168.68.107] (201-69-66-110.dial-up.telesp.net.br.
+ [201.69.66.110]) by smtp.gmail.com with ESMTPSA id
+ j14-20020a056808034e00b003a0697dce2csm6465043oie.35.2023.06.30.03.00.44
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 30 Jun 2023 03:00:48 -0700 (PDT)
+Message-ID: <e21ea550-20f6-257b-549d-75b1d5efe0a1@ventanamicro.com>
+Date: Fri, 30 Jun 2023 07:00:43 -0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <49B901C6-4819-4A00-8225-39FAA6678F3E@redhat.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH v4 1/6] update-linux-headers: sync-up header with Linux
+ for KVM AIA support placeholder
+Content-Language: en-US
+To: Yong-Xuan Wang <yongxuan.wang@sifive.com>, qemu-devel@nongnu.org,
+ qemu-riscv@nongnu.org
+Cc: rkanwal@rivosinc.com, anup@brainfault.org, atishp@atishpatra.org,
+ vincent.chen@sifive.com, greentime.hu@sifive.com, frank.chang@sifive.com,
+ jim.shu@sifive.com, "Michael S. Tsirkin" <mst@redhat.com>,
+ Cornelia Huck <cohuck@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Juan Quintela <quintela@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Peter Xu <peterx@redhat.com>, kvm@vger.kernel.org
+References: <20230621145500.25624-1-yongxuan.wang@sifive.com>
+ <20230621145500.25624-2-yongxuan.wang@sifive.com>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <20230621145500.25624-2-yongxuan.wang@sifive.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32a;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-ot1-x32a.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.093,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,72 +102,234 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Jun 30, 2023 at 02:52:52PM +0530, Ani Sinha wrote:
-> 
-> 
-> > On 30-Jun-2023, at 2:13 PM, Michael S. Tsirkin <mst@redhat.com> wrote:
-> > 
-> > On Fri, Jun 30, 2023 at 02:06:59PM +0530, Ani Sinha wrote:
-> >> 
-> >> 
-> >>> On 30-Jun-2023, at 2:02 PM, Michael S. Tsirkin <mst@redhat.com> wrote:
-> >>> 
-> >>> On Fri, Jun 30, 2023 at 01:11:33PM +0530, Ani Sinha wrote:
-> >>>>> 
-> >>>>> Thus the check for unoccupied function 0 needs to use pci_is_vf() instead of checking ARI capability, and that can happen in do_pci_register_device().
-> >>>>> 
-> >>>>>> Also where do you propose we move the check?
-> >>>>> 
-> >>>>> In pci_qdev_realize(), somewhere after pc->realize() and before option ROM loading.
-> >>>> 
-> >>>> Hmm, I tried this. The issue here is something like this would be now allowed since the PF has ARI capability:
-> >>>> 
-> >>>> -device pcie-root-port,id=p -device igb,bus=p,addr=0x2.0x0
-> >>>> 
-> >>>> The above should not be allowed and when used, we do not see the igb ethernet device from the guest OS.
-> >>> 
-> >>> I think it's allowed because it expects you to hotplug function 0 later,
-> >> 
-> >> This is about the igb device being plugged into the non-zero slot of the pci-root-port. The guest OS ignores it.
-> > 
-> > yes but if you later add a device with ARI and with next field pointing
-> > slot 2 guest will suddently find both.
-> 
-> Hmm, I tried this:
-> 
-> -device pcie-root-port,id=p \
-> -device igb,bus=p,addr=0x2.0x0 \
-> -device igb,bus=p,addr=0x0.0x0 \
-> 
-> The guest only found the second igb device not the first. You can try too.
-
-Because next parameter in pcie_ari_init does not match.
 
 
-> > 
-> >>> no?
-> >>> 
-> >>> I am quite worried about all this work going into blocking
-> >>> what we think is disallowed configurations. We should have
-> >>> maybe blocked them originally, but now that we didn't
-> >>> there's a non zero chance of regressions,
-> >> 
-> >> Sigh,
-> > 
-> > There's value in patches 1-4 I think - the last patch helped you find
-> > these. so there's value in this work.
-> > 
-> >> no medals here for being brave :-)
-> > 
-> > Try removing support for a 3.5mm jack next. Oh wait ...
+On 6/21/23 11:54, Yong-Xuan Wang wrote:
+> Sync-up Linux header to get latest KVM RISC-V headers having AIA support.
 > 
-> Indeed. Everyone uses bluetooth these days. I for one is happy that the jack is gone (and they were bold enough to do it while Samsung and others still carry the useless port ) :-)
->  
-> > 
-> >>> and the benefit
-> >>> is not guaranteed.
-> >>> 
-> >>> -- 
-> >>> MST
+> Note: This is a placeholder commit and could be replaced when all referenced Linux patchsets are mainlined.
+> 
+> The linux-headers changes are from 2 different patchsets.
+> [1] https://lore.kernel.org/lkml/20230404153452.2405681-1-apatel@ventanamicro.com/
+> [2] https://www.spinics.net/lists/kernel/msg4791872.html
 
+
+It looks like Anup sent a PR for [2] for Linux 6.5. IIUC this would be then a 6.5
+linux-header update.
+
+In this case I'm not sure whether we can pick this up for QEMU 8.1 (code freeze is
+July 10th) since we can't keep a 6.5 placeholder header. I'll let Alistair comment
+on that.
+
+
+Thanks,
+
+Daniel
+
+> 
+> Currently, patchset 1 is already merged into mainline kernel in v6.4-rc1 and patchset 2 is not.
+> 
+> Signed-off-by: Yong-Xuan Wang <yongxuan.wang@sifive.com>
+> Reviewed-by: Jim Shu <jim.shu@sifive.com>
+> ---
+>   linux-headers/asm-riscv/kvm.h | 123 +++++++++++++++++++++++++++++++++-
+>   linux-headers/linux/kvm.h     |   2 +
+>   2 files changed, 124 insertions(+), 1 deletion(-)
+> 
+> diff --git a/linux-headers/asm-riscv/kvm.h b/linux-headers/asm-riscv/kvm.h
+> index 92af6f3f05..a16ca62419 100644
+> --- a/linux-headers/asm-riscv/kvm.h
+> +++ b/linux-headers/asm-riscv/kvm.h
+> @@ -12,8 +12,10 @@
+>   #ifndef __ASSEMBLY__
+>   
+>   #include <linux/types.h>
+> +#include <asm/bitsperlong.h>
+>   #include <asm/ptrace.h>
+>   
+> +#define __KVM_HAVE_IRQ_LINE
+>   #define __KVM_HAVE_READONLY_MEM
+>   
+>   #define KVM_COALESCED_MMIO_PAGE_OFFSET 1
+> @@ -64,7 +66,7 @@ struct kvm_riscv_core {
+>   #define KVM_RISCV_MODE_S	1
+>   #define KVM_RISCV_MODE_U	0
+>   
+> -/* CSR registers for KVM_GET_ONE_REG and KVM_SET_ONE_REG */
+> +/* General CSR registers for KVM_GET_ONE_REG and KVM_SET_ONE_REG */
+>   struct kvm_riscv_csr {
+>   	unsigned long sstatus;
+>   	unsigned long sie;
+> @@ -78,6 +80,17 @@ struct kvm_riscv_csr {
+>   	unsigned long scounteren;
+>   };
+>   
+> +/* AIA CSR registers for KVM_GET_ONE_REG and KVM_SET_ONE_REG */
+> +struct kvm_riscv_aia_csr {
+> +	unsigned long siselect;
+> +	unsigned long iprio1;
+> +	unsigned long iprio2;
+> +	unsigned long sieh;
+> +	unsigned long siph;
+> +	unsigned long iprio1h;
+> +	unsigned long iprio2h;
+> +};
+> +
+>   /* TIMER registers for KVM_GET_ONE_REG and KVM_SET_ONE_REG */
+>   struct kvm_riscv_timer {
+>   	__u64 frequency;
+> @@ -105,9 +118,28 @@ enum KVM_RISCV_ISA_EXT_ID {
+>   	KVM_RISCV_ISA_EXT_SVINVAL,
+>   	KVM_RISCV_ISA_EXT_ZIHINTPAUSE,
+>   	KVM_RISCV_ISA_EXT_ZICBOM,
+> +	KVM_RISCV_ISA_EXT_ZBB,
+> +	KVM_RISCV_ISA_EXT_SSAIA,
+>   	KVM_RISCV_ISA_EXT_MAX,
+>   };
+>   
+> +/*
+> + * SBI extension IDs specific to KVM. This is not the same as the SBI
+> + * extension IDs defined by the RISC-V SBI specification.
+> + */
+> +enum KVM_RISCV_SBI_EXT_ID {
+> +	KVM_RISCV_SBI_EXT_V01 = 0,
+> +	KVM_RISCV_SBI_EXT_TIME,
+> +	KVM_RISCV_SBI_EXT_IPI,
+> +	KVM_RISCV_SBI_EXT_RFENCE,
+> +	KVM_RISCV_SBI_EXT_SRST,
+> +	KVM_RISCV_SBI_EXT_HSM,
+> +	KVM_RISCV_SBI_EXT_PMU,
+> +	KVM_RISCV_SBI_EXT_EXPERIMENTAL,
+> +	KVM_RISCV_SBI_EXT_VENDOR,
+> +	KVM_RISCV_SBI_EXT_MAX,
+> +};
+> +
+>   /* Possible states for kvm_riscv_timer */
+>   #define KVM_RISCV_TIMER_STATE_OFF	0
+>   #define KVM_RISCV_TIMER_STATE_ON	1
+> @@ -118,6 +150,8 @@ enum KVM_RISCV_ISA_EXT_ID {
+>   /* If you need to interpret the index values, here is the key: */
+>   #define KVM_REG_RISCV_TYPE_MASK		0x00000000FF000000
+>   #define KVM_REG_RISCV_TYPE_SHIFT	24
+> +#define KVM_REG_RISCV_SUBTYPE_MASK	0x0000000000FF0000
+> +#define KVM_REG_RISCV_SUBTYPE_SHIFT	16
+>   
+>   /* Config registers are mapped as type 1 */
+>   #define KVM_REG_RISCV_CONFIG		(0x01 << KVM_REG_RISCV_TYPE_SHIFT)
+> @@ -131,8 +165,12 @@ enum KVM_RISCV_ISA_EXT_ID {
+>   
+>   /* Control and status registers are mapped as type 3 */
+>   #define KVM_REG_RISCV_CSR		(0x03 << KVM_REG_RISCV_TYPE_SHIFT)
+> +#define KVM_REG_RISCV_CSR_GENERAL	(0x0 << KVM_REG_RISCV_SUBTYPE_SHIFT)
+> +#define KVM_REG_RISCV_CSR_AIA		(0x1 << KVM_REG_RISCV_SUBTYPE_SHIFT)
+>   #define KVM_REG_RISCV_CSR_REG(name)	\
+>   		(offsetof(struct kvm_riscv_csr, name) / sizeof(unsigned long))
+> +#define KVM_REG_RISCV_CSR_AIA_REG(name)	\
+> +	(offsetof(struct kvm_riscv_aia_csr, name) / sizeof(unsigned long))
+>   
+>   /* Timer registers are mapped as type 4 */
+>   #define KVM_REG_RISCV_TIMER		(0x04 << KVM_REG_RISCV_TYPE_SHIFT)
+> @@ -152,6 +190,89 @@ enum KVM_RISCV_ISA_EXT_ID {
+>   /* ISA Extension registers are mapped as type 7 */
+>   #define KVM_REG_RISCV_ISA_EXT		(0x07 << KVM_REG_RISCV_TYPE_SHIFT)
+>   
+> +/* SBI extension registers are mapped as type 8 */
+> +#define KVM_REG_RISCV_SBI_EXT		(0x08 << KVM_REG_RISCV_TYPE_SHIFT)
+> +#define KVM_REG_RISCV_SBI_SINGLE	(0x0 << KVM_REG_RISCV_SUBTYPE_SHIFT)
+> +#define KVM_REG_RISCV_SBI_MULTI_EN	(0x1 << KVM_REG_RISCV_SUBTYPE_SHIFT)
+> +#define KVM_REG_RISCV_SBI_MULTI_DIS	(0x2 << KVM_REG_RISCV_SUBTYPE_SHIFT)
+> +#define KVM_REG_RISCV_SBI_MULTI_REG(__ext_id)	\
+> +		((__ext_id) / __BITS_PER_LONG)
+> +#define KVM_REG_RISCV_SBI_MULTI_MASK(__ext_id)	\
+> +		(1UL << ((__ext_id) % __BITS_PER_LONG))
+> +#define KVM_REG_RISCV_SBI_MULTI_REG_LAST	\
+> +		KVM_REG_RISCV_SBI_MULTI_REG(KVM_RISCV_SBI_EXT_MAX - 1)
+> +
+> +/* Device Control API: RISC-V AIA */
+> +#define KVM_DEV_RISCV_APLIC_ALIGN		0x1000
+> +#define KVM_DEV_RISCV_APLIC_SIZE		0x4000
+> +#define KVM_DEV_RISCV_APLIC_MAX_HARTS		0x4000
+> +#define KVM_DEV_RISCV_IMSIC_ALIGN		0x1000
+> +#define KVM_DEV_RISCV_IMSIC_SIZE		0x1000
+> +
+> +#define KVM_DEV_RISCV_AIA_GRP_CONFIG		0
+> +#define KVM_DEV_RISCV_AIA_CONFIG_MODE		0
+> +#define KVM_DEV_RISCV_AIA_CONFIG_IDS		1
+> +#define KVM_DEV_RISCV_AIA_CONFIG_SRCS		2
+> +#define KVM_DEV_RISCV_AIA_CONFIG_GROUP_BITS	3
+> +#define KVM_DEV_RISCV_AIA_CONFIG_GROUP_SHIFT	4
+> +#define KVM_DEV_RISCV_AIA_CONFIG_HART_BITS	5
+> +#define KVM_DEV_RISCV_AIA_CONFIG_GUEST_BITS	6
+> +
+> +/*
+> + * Modes of RISC-V AIA device:
+> + * 1) EMUL (aka Emulation): Trap-n-emulate IMSIC
+> + * 2) HWACCEL (aka HW Acceleration): Virtualize IMSIC using IMSIC guest files
+> + * 3) AUTO (aka Automatic): Virtualize IMSIC using IMSIC guest files whenever
+> + *    available otherwise fallback to trap-n-emulation
+> + */
+> +#define KVM_DEV_RISCV_AIA_MODE_EMUL		0
+> +#define KVM_DEV_RISCV_AIA_MODE_HWACCEL		1
+> +#define KVM_DEV_RISCV_AIA_MODE_AUTO		2
+> +
+> +#define KVM_DEV_RISCV_AIA_IDS_MIN		63
+> +#define KVM_DEV_RISCV_AIA_IDS_MAX		2048
+> +#define KVM_DEV_RISCV_AIA_SRCS_MAX		1024
+> +#define KVM_DEV_RISCV_AIA_GROUP_BITS_MAX	8
+> +#define KVM_DEV_RISCV_AIA_GROUP_SHIFT_MIN	24
+> +#define KVM_DEV_RISCV_AIA_GROUP_SHIFT_MAX	56
+> +#define KVM_DEV_RISCV_AIA_HART_BITS_MAX		16
+> +#define KVM_DEV_RISCV_AIA_GUEST_BITS_MAX	8
+> +
+> +#define KVM_DEV_RISCV_AIA_GRP_ADDR		1
+> +#define KVM_DEV_RISCV_AIA_ADDR_APLIC		0
+> +#define KVM_DEV_RISCV_AIA_ADDR_IMSIC(__vcpu)	(1 + (__vcpu))
+> +#define KVM_DEV_RISCV_AIA_ADDR_MAX		\
+> +		(1 + KVM_DEV_RISCV_APLIC_MAX_HARTS)
+> +
+> +#define KVM_DEV_RISCV_AIA_GRP_CTRL		2
+> +#define KVM_DEV_RISCV_AIA_CTRL_INIT		0
+> +
+> +/*
+> + * The device attribute type contains the memory mapped offset of the
+> + * APLIC register (range 0x0000-0x3FFF) and it must be 4-byte aligned.
+> + */
+> +#define KVM_DEV_RISCV_AIA_GRP_APLIC		3
+> +
+> +/*
+> + * The lower 12-bits of the device attribute type contains the iselect
+> + * value of the IMSIC register (range 0x70-0xFF) whereas the higher order
+> + * bits contains the VCPU id.
+> + */
+> +#define KVM_DEV_RISCV_AIA_GRP_IMSIC		4
+> +#define KVM_DEV_RISCV_AIA_IMSIC_ISEL_BITS	12
+> +#define KVM_DEV_RISCV_AIA_IMSIC_ISEL_MASK	\
+> +		((1U << KVM_DEV_RISCV_AIA_IMSIC_ISEL_BITS) - 1)
+> +#define KVM_DEV_RISCV_AIA_IMSIC_MKATTR(__vcpu, __isel)	\
+> +		(((__vcpu) << KVM_DEV_RISCV_AIA_IMSIC_ISEL_BITS) | \
+> +		 ((__isel) & KVM_DEV_RISCV_AIA_IMSIC_ISEL_MASK))
+> +#define KVM_DEV_RISCV_AIA_IMSIC_GET_ISEL(__attr)	\
+> +		((__attr) & KVM_DEV_RISCV_AIA_IMSIC_ISEL_MASK)
+> +#define KVM_DEV_RISCV_AIA_IMSIC_GET_VCPU(__attr)	\
+> +		((__attr) >> KVM_DEV_RISCV_AIA_IMSIC_ISEL_BITS)
+> +
+> +/* One single KVM irqchip, ie. the AIA */
+> +#define KVM_NR_IRQCHIPS			1
+> +
+>   #endif
+>   
+>   #endif /* __LINUX_KVM_RISCV_H */
+> diff --git a/linux-headers/linux/kvm.h b/linux-headers/linux/kvm.h
+> index 599de3c6e3..a9a4f5791d 100644
+> --- a/linux-headers/linux/kvm.h
+> +++ b/linux-headers/linux/kvm.h
+> @@ -1434,6 +1434,8 @@ enum kvm_device_type {
+>   #define KVM_DEV_TYPE_XIVE		KVM_DEV_TYPE_XIVE
+>   	KVM_DEV_TYPE_ARM_PV_TIME,
+>   #define KVM_DEV_TYPE_ARM_PV_TIME	KVM_DEV_TYPE_ARM_PV_TIME
+> +	KVM_DEV_TYPE_RISCV_AIA,
+> +#define KVM_DEV_TYPE_RISCV_AIA		KVM_DEV_TYPE_RISCV_AIA
+>   	KVM_DEV_TYPE_MAX,
+>   };
+>   
 
