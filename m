@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7655F7441F6
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 20:16:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58389744204
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 20:17:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFId4-0005UD-Tv; Fri, 30 Jun 2023 14:13:58 -0400
+	id 1qFId8-0005ki-NS; Fri, 30 Jun 2023 14:14:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qFIcg-0005Nu-WA
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 14:13:35 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ id 1qFIcl-0005T1-4f
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 14:13:39 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qFIcd-0003Vy-P5
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 14:13:34 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-3fbc244d3a8so16979615e9.2
- for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 11:13:31 -0700 (PDT)
+ id 1qFIcg-0003XY-LP
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 14:13:38 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-3fb4146e8ceso24686915e9.0
+ for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 11:13:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688148810; x=1690740810;
+ d=linaro.org; s=google; t=1688148813; x=1690740813;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=FGpbXodwi7eOtwTW0EyiBhg0MRqzyOGDQJmw/dX1YZQ=;
- b=qbpC3mhDVEt4vOC/cNCfXQ7ApVvxwz2j4QDN9+L08kRZB1MAVF36ZMa2vz+RgFQOmc
- jQr1F9ew6n8s1hpS/1IvW14Lq6A50crqjZ8J9fZ/HQbk7zAI6zDHHewvo0KGqrOcbf7M
- U+rMtmSBT9pvCedeXNXwwZBhC9G9tQFg5de/PuaniMCXNDV4qyX1auqVbZVN4J0pyS80
- FZZGPcp/5tRZVpR6u8bajJ+w+MzRaXU96n2onSkusGFACAt+aOsFysxlvP7sMj+MB6Xs
- rkqVhhhjiQfuRn55ZdVmNs61mg6+0mqVoQwSikptmJLvPjAjAPlfQbn3YIeRYkvmokD6
- BB+Q==
+ bh=tV6uJjNfKxjFHFViquI0SJu1Ss2OiTFYxgVHQ5LvQag=;
+ b=OoJv59s6DKWXwTqzOtPlJEpShOSxoQvzfmw/Q7NevrMIOxHOBPj5glmCOJaetH9Fml
+ TAjkFFeaz6J4xW94nYXWNFN3YtlQPtIiBZOzZunzagKMmO4T9JjhumgvtNivnJr4bdoz
+ 6pA96NB4/uc30H1ff2QVp5p6DGYjxO8Xgh3XhbWUj7UFzuIynyR7+R1NdJqobn1fyK1O
+ PKUMiC4nR8f4lhDRGRK4epEosjIASKDcS9gUmSSc2j6ISNkUF08gfpIzTqoWnShQqbLH
+ 4RP4Gir1WeR36WZJs3JjS6VWA+vy2ddNHUU3aoNL0QPYsyJw2j6RdcCUrgO9H5fXKZXc
+ Z6oA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688148810; x=1690740810;
+ d=1e100.net; s=20221208; t=1688148813; x=1690740813;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=FGpbXodwi7eOtwTW0EyiBhg0MRqzyOGDQJmw/dX1YZQ=;
- b=BeiIdNd6pycDSET/fLWf6t/QLXlFUrd4Vs/PdRnDIY0P79f3RH4DbE9g7mcYJRS5Wg
- NbHCpKdYwph856kMoGyh0sIXCJQ8wD9PkkpRamKyO4ptvCJHo0Ti2GsUoqBBfz2q5ylK
- JeLiUZaBad6BmWtyCUxJ4nSzizhOryFtyt661temtRiY4413WgS52q042bCcn+ncoNfq
- jdtTwn4C27btrNSBnKSEW/neTKVwKSkzXwvzX4yNmdjzToxSQdVGo+T2v+v1P6P0fmxa
- BVwEddMxpCAtLMNTSc8jSAJJcgm1+C0+IHHdVTUtTeLvM8wLRzaLw8FlJR2cjDln9uF9
- s25w==
-X-Gm-Message-State: AC+VfDy/QhiT1uLo5arpqsWH1yP3BS4KOHc1ofIhFwKC9aEQ+OwNDYR8
- eCtCty+PqhAPLcN1rgB11lArAQ==
-X-Google-Smtp-Source: ACHHUZ5pgDNwLAxzlMTdGbpPPV7vp7TPZhfyGZY0tg7Z4QT6WooxjgY/DHKJqwK3WOQFPNXGZjNNOg==
-X-Received: by 2002:a05:600c:286:b0:3fb:b6f3:e528 with SMTP id
- 6-20020a05600c028600b003fbb6f3e528mr2747867wmk.25.1688148810147; 
- Fri, 30 Jun 2023 11:13:30 -0700 (PDT)
+ bh=tV6uJjNfKxjFHFViquI0SJu1Ss2OiTFYxgVHQ5LvQag=;
+ b=gtCkyGuD1z5fDzgtcPqICD9k+CXSgqa/A23XM6rVwgm2TQ4k+0adL7lPGRXd8zClWL
+ i26xyNsvpZrSFJLafuSJjbmhj6JpdspF5VkkbV8YXRAyb+U1NicSCti0QIbNrJL3TRpi
+ RaFnfa8G7LHXT1QrBxevSAyF31Ml/7wmUdfwS4cX/Ignokkz2xoKIhgFQYs5DxH45EGd
+ FxuGINgys2E6sDdgY7lIhZiTi+d2L56vJMdZtaq01XM0Kakf/5M6CfSUb6zrElUcj+cf
+ AijrxlnbDsIKvdaWwO6F6uyMCguRyyUOVCix8Qv9EtYtOxTRTzoZ+OZPrq/x8oXb+pMF
+ uXpw==
+X-Gm-Message-State: AC+VfDzx0vfvOCNnk7VlariqOY3qtOBxThKAsrMJ/XN0O3Cju7x0bReF
+ KRC1wISFMkEFLKb8EWQIE++AQw==
+X-Google-Smtp-Source: ACHHUZ4W1hWCmtbfdg+muYwsbuPF0LM+oj1MSFmhzzIu3hi5OGh9eWzrf+k2nh8vJWZEjM0vf/6WdQ==
+X-Received: by 2002:a05:600c:22d4:b0:3fa:9850:8b12 with SMTP id
+ 20-20020a05600c22d400b003fa98508b12mr2554049wmg.21.1688148813030; 
+ Fri, 30 Jun 2023 11:13:33 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- s25-20020a7bc399000000b003fa96fe2bebsm14598535wmj.41.2023.06.30.11.13.28
+ 25-20020a05600c029900b003f42158288dsm22573094wmk.20.2023.06.30.11.13.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 30 Jun 2023 11:13:28 -0700 (PDT)
+ Fri, 30 Jun 2023 11:13:30 -0700 (PDT)
 Received: from zen.lan (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 3742A1FFD1;
+ by zen.linaroharston (Postfix) with ESMTP id 4FF8A1FFD3;
  Fri, 30 Jun 2023 19:04:27 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -81,19 +81,22 @@ Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Leif Lindholm <quic_llindhol@quicinc.com>,
  Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>, qemu-arm@nongnu.org,
- Darren Kenny <darren.kenny@oracle.com>, Alexander Bulekov <alxndr@bu.edu>
-Subject: [PATCH v4 28/38] gdbstub: lightly refactor connection to avoid
- snprintf
-Date: Fri, 30 Jun 2023 19:04:13 +0100
-Message-Id: <20230630180423.558337-29-alex.bennee@linaro.org>
+ Darren Kenny <darren.kenny@oracle.com>, Alexander Bulekov <alxndr@bu.edu>,
+ Nicholas Piggin <npiggin@gmail.com>, qemu-stable@nongnu.org,
+ Matheus Tavares Bernardino <quic_mathbern@quicinc.com>,
+ Taylor Simpson <tsimpson@quicinc.com>
+Subject: [PATCH v4 29/38] gdbstub: Permit reverse step/break to provide stop
+ response
+Date: Fri, 30 Jun 2023 19:04:14 +0100
+Message-Id: <20230630180423.558337-30-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230630180423.558337-1-alex.bennee@linaro.org>
 References: <20230630180423.558337-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -116,67 +119,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This may be a bit too much to avoid an snprintf and the slightly dodgy
-assign to a const variable. But hopefully not.
+From: Nicholas Piggin <npiggin@gmail.com>
 
+The final part of the reverse step and break handling is to bring
+the machine back to a debug stop state. gdb expects a response.
+
+A gdb 'rsi' command hangs forever because the gdbstub filters out
+the response (also observable with reverse_debugging.py avocado
+tests).
+
+Fix by setting allow_stop_reply for the gdb backward packets.
+
+Fixes: 758370052fb ("gdbstub: only send stop-reply packets when allowed to")
+Cc: qemu-stable@nongnu.org
+Cc: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
+Cc: Alex Bennée <alex.bennee@linaro.org>
+Cc: Taylor Simpson <tsimpson@quicinc.com>
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Acked-by: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
+Message-Id: <20230623035304.279833-1-npiggin@gmail.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-
 ---
-v2
-  - fix checkpatch warning
----
- gdbstub/softmmu.c | 19 +++++++++----------
- 1 file changed, 9 insertions(+), 10 deletions(-)
+ gdbstub/gdbstub.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/gdbstub/softmmu.c b/gdbstub/softmmu.c
-index 99d994e6bf..f509b7285d 100644
---- a/gdbstub/softmmu.c
-+++ b/gdbstub/softmmu.c
-@@ -332,11 +332,9 @@ static void create_processes(GDBState *s)
- 
- int gdbserver_start(const char *device)
- {
--    trace_gdbstub_op_start(device);
--
--    char gdbstub_device_name[128];
-     Chardev *chr = NULL;
-     Chardev *mon_chr;
-+    g_autoptr(GString) cs = g_string_new(device);
- 
-     if (!first_cpu) {
-         error_report("gdbstub: meaningless to attach gdb to a "
-@@ -350,15 +348,16 @@ int gdbserver_start(const char *device)
-         return -1;
-     }
- 
--    if (!device) {
-+    if (cs->len == 0) {
-         return -1;
-     }
--    if (strcmp(device, "none") != 0) {
--        if (strstart(device, "tcp:", NULL)) {
-+
-+    trace_gdbstub_op_start(cs->str);
-+
-+    if (g_strcmp0(cs->str, "none") != 0) {
-+        if (g_str_has_prefix(cs->str, "tcp:")) {
-             /* enforce required TCP attributes */
--            snprintf(gdbstub_device_name, sizeof(gdbstub_device_name),
--                     "%s,wait=off,nodelay=on,server=on", device);
--            device = gdbstub_device_name;
-+            g_string_append_printf(cs, ",wait=off,nodelay=on,server=on");
-         }
- #ifndef _WIN32
-         else if (strcmp(device, "stdio") == 0) {
-@@ -373,7 +372,7 @@ int gdbserver_start(const char *device)
-          * FIXME: it's a bit weird to allow using a mux chardev here
-          * and implicitly setup a monitor. We may want to break this.
-          */
--        chr = qemu_chr_new_noreplay("gdb", device, true, NULL);
-+        chr = qemu_chr_new_noreplay("gdb", cs->str, true, NULL);
-         if (!chr) {
-             return -1;
-         }
+diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
+index be18568d0a..9496d7b175 100644
+--- a/gdbstub/gdbstub.c
++++ b/gdbstub/gdbstub.c
+@@ -1814,6 +1814,7 @@ static int gdb_handle_packet(const char *line_buf)
+                 .handler = handle_backward,
+                 .cmd = "b",
+                 .cmd_startswith = 1,
++                .allow_stop_reply = true,
+                 .schema = "o0"
+             };
+             cmd_parser = &backward_cmd_desc;
 -- 
 2.39.2
 
