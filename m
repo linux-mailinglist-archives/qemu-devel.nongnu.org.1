@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B6A87442C8
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 21:40:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93D4A7442CD
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 21:40:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFJxp-0005Gb-LK; Fri, 30 Jun 2023 15:39:29 -0400
+	id 1qFJyA-0005cg-PZ; Fri, 30 Jun 2023 15:39:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qFJxn-0005AQ-9B; Fri, 30 Jun 2023 15:39:27 -0400
-Received: from mail-oa1-x2a.google.com ([2001:4860:4864:20::2a])
+ id 1qFJy8-0005bG-LL; Fri, 30 Jun 2023 15:39:48 -0400
+Received: from mail-oa1-x2c.google.com ([2001:4860:4864:20::2c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qFJxl-0007ti-Ea; Fri, 30 Jun 2023 15:39:26 -0400
-Received: by mail-oa1-x2a.google.com with SMTP id
- 586e51a60fabf-1b01b43577fso1975136fac.0; 
- Fri, 30 Jun 2023 12:39:23 -0700 (PDT)
+ id 1qFJy6-0007xF-Rl; Fri, 30 Jun 2023 15:39:48 -0400
+Received: by mail-oa1-x2c.google.com with SMTP id
+ 586e51a60fabf-1b09276ed49so2105455fac.1; 
+ Fri, 30 Jun 2023 12:39:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688153962; x=1690745962;
+ d=gmail.com; s=20221208; t=1688153985; x=1690745985;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=awus4a1Ei6NAbQhnWhVtMayrT1TgnjN/T/6ql3XaUdU=;
- b=D/UcoZgF3vBmK08DqZYdjScjKh94mW4254Ii63TMuDDjCD4Pt/qKpzz1CXaJjmzqGD
- dF6GH7qZnFMpxWeNPUxJ0KW8egpOwc7Yuqsbs00WRqBkqdKi6kc7DimOhQoa4mRjN+Fw
- BCOoX4OitzUxYc0fVhluZUFGbJuXf1bC62iw83u+XJxRjI/Sw8MqTeirOrVmbYRyBMt1
- 0Zo/go7QUlkaNJfmeNLzxfZBInJlYg1rONHNq5CS7TIgRE5/98SpOPN0SHUs+MPHCUjR
- 3jnFLkW15IugzOdjhOBRnX4MAcAypTC967oFHQtkUklEQd0vBg3BXYqieLuQGIK1MUDR
- cEfg==
+ bh=2QnK9uXG7gSxzChHGhP+74LWTkyab8Q8+NkTca9KBXs=;
+ b=XwdoLNlhdykOs77CrS6+cY4DOszUzN1tBmIhWrJ0Nkl11GiXWOQSnJ32E+7QAfGRRT
+ QSQm/aPycfhXC4eoz+xyYSL9VSLOJZqr8CizfNQQSsE7wN28YJ4tWFLVOQfFXdjFYIw+
+ gCosRxcYiQ3MYE8BdZYlIk5f5BjsXf+4/u98U7nTs4B7B8wjvjSp16lzRRkuxhyYMadU
+ /BAL/kyw7ZgaC0fw6asrZssMbgNku2jAJNAkjHucPmAm8fha8jVFh4/YTL1U6ErUoeUb
+ vXhdVWxOxDQO+yJA3QcCGRisqlDHb6PNUKB6j7yaEAt2QpRJSrvGcpvw12IoQrXB2cAI
+ LvCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688153962; x=1690745962;
+ d=1e100.net; s=20221208; t=1688153985; x=1690745985;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=awus4a1Ei6NAbQhnWhVtMayrT1TgnjN/T/6ql3XaUdU=;
- b=fF444s95JvvoUxqfDLT+3uwzx7ORaVRjf9M5VO8b3po3zpp4ZAeIgWqJ+Sm9pgnbjw
- sp5FYWOtutZm0JCJhLH6U2KlW2GoRsPC5KNDIvSBEAsFmBWmj5AYuQNFSpPOIMepkUhW
- /nsYZj4WibzU+5oqBCyDFBoUtzH5zixwF6qnXgwwg1BPbYeN5FYDZZIxUPzLmuaiFB60
- LE+ZZ34MAP6NHZl2WSknG12ZA66bzB3P+aQs3mclTAWEdUSJzNYHfM9KrYXusnOrCM/m
- 3hHU/ZNwy2s17qDpD82yFP+RTEEePb81d8jDNf+7/6MnQDKSBtn501DXmCQVxthSLg/a
- FJKw==
-X-Gm-Message-State: ABy/qLZ4TQN90TWCOH5uk9G+O/o2niFY1j9PlgpmBbxRVFFQ7aIE/N/9
- dE49E72xEITvBBeHgBKXt5I=
-X-Google-Smtp-Source: APBJJlEwGXOTL7uB2zzQ9WtsX+b4Y+oK74OSttL2nwat9JB6b4m5zq+AIhpiljXAdtDtE7hyJcMAOA==
-X-Received: by 2002:a05:6870:b246:b0:1b0:56d3:5cdb with SMTP id
- b6-20020a056870b24600b001b056d35cdbmr4425712oam.53.1688153962657; 
- Fri, 30 Jun 2023 12:39:22 -0700 (PDT)
+ bh=2QnK9uXG7gSxzChHGhP+74LWTkyab8Q8+NkTca9KBXs=;
+ b=YvjI30XjH5wk1HP8lDe2FaBDGYqKpy5BH8NatrMxHGsBPnI6Rpf8cvZw6Rf3ZHbg+9
+ t7kZpRziMHWN2jeW+vjGqGXLoDEb91OdQho8pAsUBlGdg+tZTbPflwhMt6fFTKgmL6ZU
+ yB0lauKLCbot6XW9Md/uG4GMPcUZjqS9UE6oMwlNUjY2ET2U/fphe+zId19CnU0XCN45
+ +K2LNdnjQYTpkkF7gsIXRR6nenFIIysD7AlrPgFrUGrKZ/Zt1nvSG3JaokYOki7y3gK/
+ pu5Go5NAz1FBcK/9ZjpCEKchj9l1KnpRuSkIPMpR2x+ig8rCkl+o4kcMdsHDoM5bCvfu
+ txww==
+X-Gm-Message-State: AC+VfDw/ZbJT93rddCZvIzb6wohI491viWDAvgJR0wftwDUbMQm0hJh3
+ cZmV1Rhf+xyawFKSSCjJ9Ng=
+X-Google-Smtp-Source: ACHHUZ5QmtvUPY1N/6t9mm9VBmDEeB9R0s0lGq5FCWl2yMD+Pgd/y4M+VlRJtVB0y+u18GfVp4JZfQ==
+X-Received: by 2002:a05:6870:fba8:b0:1b0:e939:8ab1 with SMTP id
+ kv40-20020a056870fba800b001b0e9398ab1mr4918816oab.15.1688153984819; 
+ Fri, 30 Jun 2023 12:39:44 -0700 (PDT)
 Received: from [192.168.68.107] (201-69-66-110.dial-up.telesp.net.br.
  [201.69.66.110]) by smtp.gmail.com with ESMTPSA id
- gu17-20020a056870ab1100b001a3093ec23fsm9326151oab.32.2023.06.30.12.39.20
+ j5-20020a4adf45000000b0056351d2841asm4643862oou.20.2023.06.30.12.39.43
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 30 Jun 2023 12:39:22 -0700 (PDT)
-Message-ID: <34f18b91-c4fd-35f7-680c-7c6473640f10@gmail.com>
-Date: Fri, 30 Jun 2023 16:39:19 -0300
+ Fri, 30 Jun 2023 12:39:44 -0700 (PDT)
+Message-ID: <136c1e78-89f5-499a-7299-593b2cac3fbe@gmail.com>
+Date: Fri, 30 Jun 2023 16:39:41 -0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
-Subject: Re: [PATCH 1/2] target/ppc: Fix icount access for some hypervisor
- instructions
+Subject: Re: [PATCH] pnv/xive2: Allow indirect TIMA accesses of all sizes
 Content-Language: en-US
-To: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org, =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>
-References: <20230625103700.8992-1-npiggin@gmail.com>
+To: Frederic Barrat <fbarrat@linux.ibm.com>, clg@kaod.org,
+ qemu-ppc@nongnu.org, qemu-devel@nongnu.org
+Cc: npiggin@gmail.com
+References: <20230626094057.1192473-1-fbarrat@linux.ibm.com>
 From: Daniel Henrique Barboza <danielhb413@gmail.com>
-In-Reply-To: <20230625103700.8992-1-npiggin@gmail.com>
+In-Reply-To: <20230626094057.1192473-1-fbarrat@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2001:4860:4864:20::2a;
- envelope-from=danielhb413@gmail.com; helo=mail-oa1-x2a.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::2c;
+ envelope-from=danielhb413@gmail.com; helo=mail-oa1-x2c.google.com
 X-Spam_score_int: -19
 X-Spam_score: -2.0
 X-Spam_bar: --
@@ -95,81 +94,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-On 6/25/23 07:36, Nicholas Piggin wrote:
-> Several instructions and register access require icount reads and are
-> missing translator_io_start().
-> 
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
-
 Queued in gitlab.com/danielhb/qemu/tree/ppc-next. Thanks,
 
 
 Daniel
 
->   target/ppc/translate.c | 7 +++++++
->   1 file changed, 7 insertions(+)
+On 6/26/23 06:40, Frederic Barrat wrote:
+> Booting linux on the powernv10 machine logs a few errors like:
 > 
-> diff --git a/target/ppc/translate.c b/target/ppc/translate.c
-> index eb278c2683..c1c3cd8767 100644
-> --- a/target/ppc/translate.c
-> +++ b/target/ppc/translate.c
-> @@ -1177,6 +1177,7 @@ void spr_write_hmer(DisasContext *ctx, int sprn, int gprn)
->   
->   void spr_write_lpcr(DisasContext *ctx, int sprn, int gprn)
->   {
-> +    translator_io_start(&ctx->base);
->       gen_helper_store_lpcr(cpu_env, cpu_gpr[gprn]);
->   }
->   #endif /* !defined(CONFIG_USER_ONLY) */
-> @@ -4002,6 +4003,7 @@ static void gen_doze(DisasContext *ctx)
->       TCGv_i32 t;
->   
->       CHK_HV(ctx);
-> +    translator_io_start(&ctx->base);
->       t = tcg_constant_i32(PPC_PM_DOZE);
->       gen_helper_pminsn(cpu_env, t);
->       /* Stop translation, as the CPU is supposed to sleep from now */
-> @@ -4017,6 +4019,7 @@ static void gen_nap(DisasContext *ctx)
->       TCGv_i32 t;
->   
->       CHK_HV(ctx);
-> +    translator_io_start(&ctx->base);
->       t = tcg_constant_i32(PPC_PM_NAP);
->       gen_helper_pminsn(cpu_env, t);
->       /* Stop translation, as the CPU is supposed to sleep from now */
-> @@ -4032,6 +4035,7 @@ static void gen_stop(DisasContext *ctx)
->       TCGv_i32 t;
->   
->       CHK_HV(ctx);
-> +    translator_io_start(&ctx->base);
->       t = tcg_constant_i32(PPC_PM_STOP);
->       gen_helper_pminsn(cpu_env, t);
->       /* Stop translation, as the CPU is supposed to sleep from now */
-> @@ -4047,6 +4051,7 @@ static void gen_sleep(DisasContext *ctx)
->       TCGv_i32 t;
->   
->       CHK_HV(ctx);
-> +    translator_io_start(&ctx->base);
->       t = tcg_constant_i32(PPC_PM_SLEEP);
->       gen_helper_pminsn(cpu_env, t);
->       /* Stop translation, as the CPU is supposed to sleep from now */
-> @@ -4062,6 +4067,7 @@ static void gen_rvwinkle(DisasContext *ctx)
->       TCGv_i32 t;
->   
->       CHK_HV(ctx);
-> +    translator_io_start(&ctx->base);
->       t = tcg_constant_i32(PPC_PM_RVWINKLE);
->       gen_helper_pminsn(cpu_env, t);
->       /* Stop translation, as the CPU is supposed to sleep from now */
-> @@ -4458,6 +4464,7 @@ static void gen_hrfid(DisasContext *ctx)
->   #else
->       /* Restore CPU state */
->       CHK_HV(ctx);
-> +    translator_io_start(&ctx->base);
->       gen_helper_hrfid(cpu_env);
->       ctx->base.is_jmp = DISAS_EXIT;
->   #endif
+> Invalid read at addr 0x38, size 1, region 'xive-ic-tm-indirect', reason: invalid size (min:8 max:8)
+> Invalid write at addr 0x38, size 1, region 'xive-ic-tm-indirect', reason: invalid size (min:8 max:8)
+> Invalid read at addr 0x38, size 1, region 'xive-ic-tm-indirect', reason: invalid size (min:8 max:8)
+> 
+> Those errors happen when linux is resetting XIVE. We're trying to
+> read/write the enablement bit for the hardware context and qemu
+> doesn't allow indirect TIMA accesses of less than 8 bytes. Direct TIMA
+> access can go through though, as well as indirect TIMA accesses on P9.
+> So even though there are some restrictions regarding the address/size
+> combinations for TIMA access, the example above is perfectly valid.
+> 
+> This patch lets indirect TIMA accesses of all sizes go through. The
+> special operations will be intercepted and the default "raw" handlers
+> will pick up all other requests and complain about invalid sizes as
+> appropriate.
+> 
+> Tested-by: Nicholas Piggin <npiggin@gmail.com>
+> Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
+> ---
+>   hw/intc/pnv_xive2.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/hw/intc/pnv_xive2.c b/hw/intc/pnv_xive2.c
+> index ed438a20ed..e8ab176de6 100644
+> --- a/hw/intc/pnv_xive2.c
+> +++ b/hw/intc/pnv_xive2.c
+> @@ -1644,11 +1644,11 @@ static const MemoryRegionOps pnv_xive2_ic_tm_indirect_ops = {
+>       .write = pnv_xive2_ic_tm_indirect_write,
+>       .endianness = DEVICE_BIG_ENDIAN,
+>       .valid = {
+> -        .min_access_size = 8,
+> +        .min_access_size = 1,
+>           .max_access_size = 8,
+>       },
+>       .impl = {
+> -        .min_access_size = 8,
+> +        .min_access_size = 1,
+>           .max_access_size = 8,
+>       },
+>   };
 
