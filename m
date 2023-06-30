@@ -2,64 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83590743E2C
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 17:02:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8368743E27
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 17:01:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFFdA-0000AH-Fy; Fri, 30 Jun 2023 11:01:52 -0400
+	id 1qFFcR-0007eF-Qx; Fri, 30 Jun 2023 11:01:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qFFd8-0000A7-0y
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 11:01:50 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <i.maximets@ovn.org>)
+ id 1qFFc2-0007ap-1p
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 11:00:52 -0400
+Received: from relay8-d.mail.gandi.net ([2001:4b98:dc4:8::228])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qFFd6-0004h8-AY
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 11:01:49 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688137304;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=293+caOO7e5fwn6C7K3hNwCowRJjBQyN68cLugxco4k=;
- b=bTfiMOYtH4RJsUCjSaE749aYAZLuh5qridBJQc0uHOg5FG0Z9GOW3ZWLhHS52aO5BhT74l
- CBEB554KgVawj3SKdz5teP6drsQ5HKekHiZO7d/Nn2Qt9G3iPchY958n3jtHuyW61n4l7P
- ezCpD7GtzN6dgvvMLpHfFOW95OW0+yU=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-507-yc4Ha6coMV-M4t7W03TiIg-1; Fri, 30 Jun 2023 11:01:40 -0400
-X-MC-Unique: yc4Ha6coMV-M4t7W03TiIg-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id ADDC588CC49;
- Fri, 30 Jun 2023 15:01:39 +0000 (UTC)
-Received: from thuth.com (unknown [10.39.192.37])
- by smtp.corp.redhat.com (Postfix) with ESMTP id A1CA6492C13;
- Fri, 30 Jun 2023 15:01:38 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
-To: qemu-devel@nongnu.org,
-	Paolo Bonzini <pbonzini@redhat.com>
-Cc: libvir-list@redhat.com, Claudio Imbrenda <imbrenda@linux.ibm.com>,
- Markus Armbruster <armbru@redhat.com>
-Subject: [PATCH] os-posix: Allow 'chroot' via '-run-with' and deprecate the
- old '-chroot' option
-Date: Fri, 30 Jun 2023 17:01:12 +0200
-Message-Id: <20230630150112.435874-1-thuth@redhat.com>
+ (Exim 4.90_1) (envelope-from <i.maximets@ovn.org>)
+ id 1qFFby-0004Jg-J5
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 11:00:40 -0400
+X-GND-Sasl: i.maximets@ovn.org
+X-GND-Sasl: i.maximets@ovn.org
+X-GND-Sasl: i.maximets@ovn.org
+X-GND-Sasl: i.maximets@ovn.org
+X-GND-Sasl: i.maximets@ovn.org
+X-GND-Sasl: i.maximets@ovn.org
+Received: by mail.gandi.net (Postfix) with ESMTPSA id B3E2E1BF208;
+ Fri, 30 Jun 2023 15:00:32 +0000 (UTC)
+Message-ID: <460144ee-bf89-728f-f57f-4a4ec2be33d0@ovn.org>
+Date: Fri, 30 Jun 2023 17:01:21 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Cc: i.maximets@ovn.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Eric Blake <eblake@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
+ qemu-devel@nongnu.org
+Content-Language: en-US
+To: Jason Wang <jasowang@redhat.com>
+References: <20230622215824.2173343-1-i.maximets@ovn.org>
+ <CACGkMEsXOb8wiYo9ktgqh8MqD971=ARJ_etL7MBF-uyo6qt1eA@mail.gmail.com>
+ <CACGkMEuyq+5_cqx4T03fcaLOGUCrKLZn51sZxNSXyZq8CqLXTg@mail.gmail.com>
+ <93a056c4-b6d3-5491-0c1f-7f58e9f9d1ad@ovn.org>
+ <CACGkMEuaUTGeCYfH-MbtX_79scN-CkBmFMcY0fwKo4vO_9cn4w@mail.gmail.com>
+ <26c03cd4-5582-489c-9f4c-aeaf8e157b42@ovn.org>
+ <CACGkMEsE6_91mOhCP5ezT96zz-Tb-bLXQr9ktrLg6zG0TZC3Lg@mail.gmail.com>
+ <df817423-9b06-0649-6d82-b8308b64bdc5@ovn.org>
+ <CACGkMEtQumn9p13Li0DKr2AV-5O0VFvfe2FZdaLzETo+LKL9sQ@mail.gmail.com>
+From: Ilya Maximets <i.maximets@ovn.org>
+Subject: Re: [PATCH] net: add initial support for AF_XDP network backend
+In-Reply-To: <CACGkMEtQumn9p13Li0DKr2AV-5O0VFvfe2FZdaLzETo+LKL9sQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Received-SPF: neutral client-ip=2001:4b98:dc4:8::228;
+ envelope-from=i.maximets@ovn.org; helo=relay8-d.mail.gandi.net
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.095,
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_PASS=-0.001, SPF_NEUTRAL=0.779,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -76,199 +73,225 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We recently introduced "-run-with" for options that influence the
-runtime behavior of QEMU. This option has the big advantage that it
-can group related options (so that it is easier for the users to spot
-them) and that the options become introspectable via QMP this way.
-So let's start moving more switches into this option group, starting
-with "-chroot" now.
+On 6/30/23 09:44, Jason Wang wrote:
+> On Wed, Jun 28, 2023 at 7:14 PM Ilya Maximets <i.maximets@ovn.org> wrote:
+>>
+>> On 6/28/23 05:27, Jason Wang wrote:
+>>> On Wed, Jun 28, 2023 at 6:45 AM Ilya Maximets <i.maximets@ovn.org> wrote:
+>>>>
+>>>> On 6/27/23 04:54, Jason Wang wrote:
+>>>>> On Mon, Jun 26, 2023 at 9:17 PM Ilya Maximets <i.maximets@ovn.org> wrote:
+>>>>>>
+>>>>>> On 6/26/23 08:32, Jason Wang wrote:
+>>>>>>> On Sun, Jun 25, 2023 at 3:06 PM Jason Wang <jasowang@redhat.com> wrote:
+>>>>>>>>
+>>>>>>>> On Fri, Jun 23, 2023 at 5:58 AM Ilya Maximets <i.maximets@ovn.org> wrote:
+>>>>>>>>>
+>>>>>>>>> AF_XDP is a network socket family that allows communication directly
+>>>>>>>>> with the network device driver in the kernel, bypassing most or all
+>>>>>>>>> of the kernel networking stack.  In the essence, the technology is
+>>>>>>>>> pretty similar to netmap.  But, unlike netmap, AF_XDP is Linux-native
+>>>>>>>>> and works with any network interfaces without driver modifications.
+>>>>>>>>> Unlike vhost-based backends (kernel, user, vdpa), AF_XDP doesn't
+>>>>>>>>> require access to character devices or unix sockets.  Only access to
+>>>>>>>>> the network interface itself is necessary.
+>>>>>>>>>
+>>>>>>>>> This patch implements a network backend that communicates with the
+>>>>>>>>> kernel by creating an AF_XDP socket.  A chunk of userspace memory
+>>>>>>>>> is shared between QEMU and the host kernel.  4 ring buffers (Tx, Rx,
+>>>>>>>>> Fill and Completion) are placed in that memory along with a pool of
+>>>>>>>>> memory buffers for the packet data.  Data transmission is done by
+>>>>>>>>> allocating one of the buffers, copying packet data into it and
+>>>>>>>>> placing the pointer into Tx ring.  After transmission, device will
+>>>>>>>>> return the buffer via Completion ring.  On Rx, device will take
+>>>>>>>>> a buffer form a pre-populated Fill ring, write the packet data into
+>>>>>>>>> it and place the buffer into Rx ring.
+>>>>>>>>>
+>>>>>>>>> AF_XDP network backend takes on the communication with the host
+>>>>>>>>> kernel and the network interface and forwards packets to/from the
+>>>>>>>>> peer device in QEMU.
+>>>>>>>>>
+>>>>>>>>> Usage example:
+>>>>>>>>>
+>>>>>>>>>   -device virtio-net-pci,netdev=guest1,mac=00:16:35:AF:AA:5C
+>>>>>>>>>   -netdev af-xdp,ifname=ens6f1np1,id=guest1,mode=native,queues=1
+>>>>>>>>>
+>>>>>>>>> XDP program bridges the socket with a network interface.  It can be
+>>>>>>>>> attached to the interface in 2 different modes:
+>>>>>>>>>
+>>>>>>>>> 1. skb - this mode should work for any interface and doesn't require
+>>>>>>>>>          driver support.  With a caveat of lower performance.
+>>>>>>>>>
+>>>>>>>>> 2. native - this does require support from the driver and allows to
+>>>>>>>>>             bypass skb allocation in the kernel and potentially use
+>>>>>>>>>             zero-copy while getting packets in/out userspace.
+>>>>>>>>>
+>>>>>>>>> By default, QEMU will try to use native mode and fall back to skb.
+>>>>>>>>> Mode can be forced via 'mode' option.  To force 'copy' even in native
+>>>>>>>>> mode, use 'force-copy=on' option.  This might be useful if there is
+>>>>>>>>> some issue with the driver.
+>>>>>>>>>
+>>>>>>>>> Option 'queues=N' allows to specify how many device queues should
+>>>>>>>>> be open.  Note that all the queues that are not open are still
+>>>>>>>>> functional and can receive traffic, but it will not be delivered to
+>>>>>>>>> QEMU.  So, the number of device queues should generally match the
+>>>>>>>>> QEMU configuration, unless the device is shared with something
+>>>>>>>>> else and the traffic re-direction to appropriate queues is correctly
+>>>>>>>>> configured on a device level (e.g. with ethtool -N).
+>>>>>>>>> 'start-queue=M' option can be used to specify from which queue id
+>>>>>>>>> QEMU should start configuring 'N' queues.  It might also be necessary
+>>>>>>>>> to use this option with certain NICs, e.g. MLX5 NICs.  See the docs
+>>>>>>>>> for examples.
+>>>>>>>>>
+>>>>>>>>> In a general case QEMU will need CAP_NET_ADMIN and CAP_SYS_ADMIN
+>>>>>>>>> capabilities in order to load default XSK/XDP programs to the
+>>>>>>>>> network interface and configure BTF maps.
+>>>>>>>>
+>>>>>>>> I think you mean "BPF" actually?
+>>>>>>
+>>>>>> "BPF Type Format maps" kind of makes some sense, but yes. :)
+>>>>>>
+>>>>>>>>
+>>>>>>>>>  It is possible, however,
+>>>>>>>>> to run only with CAP_NET_RAW.
+>>>>>>>>
+>>>>>>>> Qemu often runs without any privileges, so we need to fix it.
+>>>>>>>>
+>>>>>>>> I think adding support for SCM_RIGHTS via monitor would be a way to go.
+>>>>>>
+>>>>>> I looked through the code and it seems like we can run completely
+>>>>>> non-privileged as far as kernel concerned.  We'll need an API
+>>>>>> modification in libxdp though.
+>>>>>>
+>>>>>> The thing is, IIUC, the only syscall that requires CAP_NET_RAW is
+>>>>>> a base socket creation.  Binding and other configuration doesn't
+>>>>>> require any privileges.  So, we could create a socket externally
+>>>>>> and pass it to QEMU.
+>>>>>
+>>>>> That's the way TAP works for example.
+>>>>>
+>>>>>>  Should work, unless it's an oversight from
+>>>>>> the kernel side that needs to be patched. :)  libxdp doesn't have
+>>>>>> a way to specify externally created socket today, so we'll need
+>>>>>> to change that.  Should be easy to do though.  I can explore.
+>>>>>
+>>>>> Please do that.
+>>>>
+>>>> I have a prototype:
+>>>>   https://github.com/igsilya/xdp-tools/commit/db73e90945e3aa5e451ac88c42c83cb9389642d3
+>>>>
+>>>> Need to test it out and then submit PR to xdp-tools project.
 
-Signed-off-by: Thomas Huth <thuth@redhat.com>
----
- docs/about/deprecated.rst |  5 +++++
- os-posix.c                | 35 ++++++++++++++++++++++++++++++++++-
- util/async-teardown.c     | 21 ---------------------
- qemu-options.hx           | 18 +++++++++++++-----
- 4 files changed, 52 insertions(+), 27 deletions(-)
+The change is now accepted:
+  https://github.com/xdp-project/xdp-tools/commit/740c839806a02517da5bce7bd0ccaba908b3f675
 
-diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-index 0743459862..1cf53b86ce 100644
---- a/docs/about/deprecated.rst
-+++ b/docs/about/deprecated.rst
-@@ -116,6 +116,11 @@ Use "whpx" (on Windows) or "hvf" (on macOS) instead.
- 
- Use ``-run-with async-teardown=on`` instead.
- 
-+``-chroot`` (since 8.1)
-+'''''''''''''''''''''''
-+
-+Use ``-run-with chroot=dir`` instead.
-+
- ``-singlestep`` (since 8.1)
- '''''''''''''''''''''''''''
- 
-diff --git a/os-posix.c b/os-posix.c
-index 90ea71725f..0ae1fb2347 100644
---- a/os-posix.c
-+++ b/os-posix.c
-@@ -38,6 +38,7 @@
- #include "qemu/cutils.h"
- #include "qemu/config-file.h"
- #include "qemu/option.h"
-+#include "qemu/module.h"
- 
- #ifdef CONFIG_LINUX
- #include <sys/prctl.h>
-@@ -148,6 +149,7 @@ int os_parse_cmd_args(int index, const char *optarg)
-         }
-         break;
-     case QEMU_OPTION_chroot:
-+        warn_report("option is deprecated, use '-run-with chroot=...' instead");
-         chroot_dir = optarg;
-         break;
-     case QEMU_OPTION_daemonize:
-@@ -158,18 +160,25 @@ int os_parse_cmd_args(int index, const char *optarg)
-     case QEMU_OPTION_asyncteardown:
-         init_async_teardown();
-         break;
-+#endif
-     case QEMU_OPTION_run_with: {
-+        const char *str;
-         QemuOpts *opts = qemu_opts_parse_noisily(qemu_find_opts("run-with"),
-                                                  optarg, false);
-         if (!opts) {
-             exit(1);
-         }
-+#if defined(CONFIG_LINUX)
-         if (qemu_opt_get_bool(opts, "async-teardown", false)) {
-             init_async_teardown();
-         }
-+#endif
-+        str = qemu_opt_get(opts, "chroot");
-+        if (str) {
-+            chroot_dir = str;
-+        }
-         break;
-     }
--#endif
-     default:
-         return -1;
-     }
-@@ -348,3 +357,27 @@ int os_mlock(void)
-     return -ENOSYS;
- #endif
- }
-+
-+static QemuOptsList qemu_run_with_opts = {
-+    .name = "run-with",
-+    .head = QTAILQ_HEAD_INITIALIZER(qemu_run_with_opts.head),
-+    .desc = {
-+#if defined(CONFIG_LINUX)
-+        {
-+            .name = "async-teardown",
-+            .type = QEMU_OPT_BOOL,
-+        },
-+#endif
-+        {
-+            .name = "chroot",
-+            .type = QEMU_OPT_STRING,
-+        },
-+        { /* end of list */ }
-+    },
-+};
-+
-+static void register_teardown(void)
-+{
-+    qemu_add_opts(&qemu_run_with_opts);
-+}
-+opts_init(register_teardown);
-diff --git a/util/async-teardown.c b/util/async-teardown.c
-index 3ab19c8740..62cdeb0f20 100644
---- a/util/async-teardown.c
-+++ b/util/async-teardown.c
-@@ -12,9 +12,6 @@
-  */
- 
- #include "qemu/osdep.h"
--#include "qemu/config-file.h"
--#include "qemu/option.h"
--#include "qemu/module.h"
- #include <dirent.h>
- #include <sys/prctl.h>
- #include <sched.h>
-@@ -147,21 +144,3 @@ void init_async_teardown(void)
-     clone(async_teardown_fn, new_stack_for_clone(), CLONE_VM, NULL);
-     sigprocmask(SIG_SETMASK, &old_signals, NULL);
- }
--
--static QemuOptsList qemu_run_with_opts = {
--    .name = "run-with",
--    .head = QTAILQ_HEAD_INITIALIZER(qemu_run_with_opts.head),
--    .desc = {
--        {
--            .name = "async-teardown",
--            .type = QEMU_OPT_BOOL,
--        },
--        { /* end of list */ }
--    },
--};
--
--static void register_teardown(void)
--{
--    qemu_add_opts(&qemu_run_with_opts);
--}
--opts_init(register_teardown);
-diff --git a/qemu-options.hx b/qemu-options.hx
-index b57489d7ca..f49d4c0e3c 100644
---- a/qemu-options.hx
-+++ b/qemu-options.hx
-@@ -4670,11 +4670,12 @@ ERST
- 
- #ifndef _WIN32
- DEF("chroot", HAS_ARG, QEMU_OPTION_chroot, \
--    "-chroot dir     chroot to dir just before starting the VM\n",
-+    "-chroot dir     chroot to dir just before starting the VM (deprecated)\n",
-     QEMU_ARCH_ALL)
- #endif
- SRST
- ``-chroot dir``
-+    Deprecated, use '-run-with chroot=...' instead.
-     Immediately before starting guest execution, chroot to the specified
-     directory. Especially useful in combination with -runas.
- ERST
-@@ -4861,13 +4862,16 @@ SRST
-     This option is deprecated and should no longer be used. The new option
-     ``-run-with async-teardown=on`` is a replacement.
- ERST
-+#endif
-+#ifdef CONFIG_POSIX
- DEF("run-with", HAS_ARG, QEMU_OPTION_run_with,
--    "-run-with async-teardown[=on|off]\n"
--    "                misc QEMU process lifecycle options\n"
--    "                async-teardown=on enables asynchronous teardown\n",
-+    "-run-with [async-teardown=on|off][,chroot=dir]\n"
-+    "                Set miscellaneous QEMU process lifecycle options:\n"
-+    "                async-teardown=on enables asynchronous teardown (Linux only)\n"
-+    "                chroot=dir chroot to dir just before starting the VM\n",
-     QEMU_ARCH_ALL)
- SRST
--``-run-with``
-+``-run-with [async-teardown=on|off][,chroot=dir]``
-     Set QEMU process lifecycle options.
- 
-     ``async-teardown=on`` enables asynchronous teardown. A new process called
-@@ -4880,6 +4884,10 @@ SRST
-     performed correctly. This only works if the cleanup process is not
-     forcefully killed with SIGKILL before the main QEMU process has
-     terminated completely.
-+
-+    ``chroot=dir`` can be used for doing a chroot to the specified directory
-+    immediately before starting the guest execution. This is especially useful
-+    in combination with -runas.
- ERST
- #endif
- 
--- 
-2.39.3
+I can update the QEMU patch with support for passing socket fds.  It may
+look like this:
+
+ -netved af-xdp,eth0,queues=2,inhibit=on,sock-fds=fd1,fd2
+
+We'll need an fd per queue.  And we may require these fds to be already
+added to the xsks map, so QEMU doesn't need xsks-map-fd.
+
+I'd say we'll need to compile support for that conditionally based on
+availability of xsk_umem__create_with_fd() as it may not be available
+in distributions for some time.
+Alternative is to require libxdp >= 1.4.0, which is not released yet.
+
+The last restriction will be that QEMU will need 32 MB of RLIMIT_MEMLOCK
+per queue for umem registration, but that should not be a huge deal, right?
+Alternative is to have CAP_IPC_LOCK.
+
+
+And I'd keep the xsks-map-fd parameter for setups that do not have latest
+libxdp and can allow CAP_NET_RAW.  So, they could still do:
+
+ -netdev af-xdp,eth0,queues=2,inhibit=on,xsks-map-fd=fd
+
+What do you think?
+
+
+>>>>
+>>>>>
+>>>>>>
+>>>>>> In case the bind syscall will actually need CAP_NET_RAW for some
+>>>>>> reason, we could change the kernel and allow non-privileged bind
+>>>>>> by utilizing, e.g. SO_BINDTODEVICE.  i.e., let the privileged
+>>>>>> process bind the socket to a particular device, so QEMU can't
+>>>>>> bind it to a random one.  Might be a good use case to allow even
+>>>>>> if not strictly necessary.
+>>>>>
+>>>>> Yes.
+>>>>
+>>>> Will propose something for a kernel as well.  We might want something
+>>>> more granular though, e.g. bind to a queue instead of a device.  In
+>>>> case we want better control in the device sharing scenario.
+>>>
+>>> I may miss something but the bind is already done at dev plus queue
+>>> right now, isn't it?
+>>
+>>
+>> Yes, the bind() syscall will bind socket to the dev+queue.  I was talking
+>> about SO_BINDTODEVICE that only ties the socket to a particular device,
+>> but not a queue.
+>>
+>> Assuming SO_BINDTODEVICE is implemented for AF_XDP sockets and
+>> assuming a privileged process does:
+>>
+>>   fd = socket(AF_XDP, ...);
+>>   setsockopt(fd, SOL_SOCKET, SO_BINDTODEVICE, <device>);
+>>
+>> And sends fd to a non-privileged process.  That non-privileged process
+>> will be able to call:
+>>
+>>   bind(fd, <device>, <random queue>);
+>>
+>> It will have to use the same device, but can choose any queue, if that
+>> queue is not already busy with another socket.
+>>
+>> So, I was thinking maybe implementing something like XDP_BINDTOQID option.
+>> This way the privileged process may call:
+>>
+>>   setsockopt(fd, SOL_XDP, XDP_BINDTOQID, <device>, <queue>);
+>>
+>> And later kernel will be able to refuse bind() for any other queue for
+>> this particular socket.
+> 
+> Not sure, if file descriptor passing works, we probably don't need another way.
+> 
+>>
+>> Not sure if that is necessary though.
+>> Since we're allocating the socket in the privileged process, that process
+>> may add the socket to the BPF map on the correct queue id.  This way the
+>> non-privileged process will not be able to receive any packets from any
+>> other queue on this socket, even if bound to it.  And no other AF_XDP
+>> socket will be able to be bound to that other queue as well.
+> 
+> I think that's by design, or anything wrong with this model?
+
+No, should be fine.  I'll posted a simple SO_BINDTODEVICE change to bpf-next
+as an RFC for now since the tree is closed:
+  https://lore.kernel.org/netdev/20230630145831.2988845-1-i.maximets@ovn.org/
+
+Will re-send a non-RFC once it is open (after 10th of July, IIRC).
+
+> 
+>> So, the
+>> rogue QEMU will be able to hog one extra queue, but it will not be able
+>> to intercept traffic any from it, AFAICT.  May not be a huge problem
+>> after all.
+>>
+>> SO_BINDTODEVICE would still be nice to have.  Especially for cases where
+>> we give the whole device to one VM.
+> 
+> Then we need to use AF_XDP in the guest which seems to be a different
+> topic. Alibaba is working on the AF_XDP support for virtio-net.
+> 
+> Thanks
+> 
+>>
+>> Best regards, Ilya Maximets.
+>>
+> 
 
 
