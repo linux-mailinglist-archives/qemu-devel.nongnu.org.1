@@ -2,144 +2,145 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD83E743BC5
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 14:18:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31734743BC6
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 14:18:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFD3r-0000uK-VV; Fri, 30 Jun 2023 08:17:16 -0400
+	id 1qFD3u-0000yL-JI; Fri, 30 Jun 2023 08:17:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <raphael.norwitz@nutanix.com>)
- id 1qFD3Q-0000li-Rl
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 08:16:49 -0400
-Received: from mx0b-002c1b01.pphosted.com ([148.163.155.12])
+ id 1qFD3k-0000pH-EO
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 08:17:08 -0400
+Received: from mx0a-002c1b01.pphosted.com ([148.163.151.68])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <raphael.norwitz@nutanix.com>)
- id 1qFD3C-0002SD-QR
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 08:16:37 -0400
-Received: from pps.filterd (m0127843.ppops.net [127.0.0.1])
- by mx0b-002c1b01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 35UB94va007361; Fri, 30 Jun 2023 05:16:01 -0700
+ id 1qFD3f-0002XS-Ky
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 08:17:07 -0400
+Received: from pps.filterd (m0127839.ppops.net [127.0.0.1])
+ by mx0a-002c1b01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 35U5nGnj026221; Fri, 30 Jun 2023 05:16:48 -0700
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
  h=from : to : cc :
  subject : date : message-id : references : in-reply-to : content-type :
  content-id : content-transfer-encoding : mime-version;
- s=proofpoint20171006; bh=45aHc52ZeuIVlF/MbPAnc1qWdfW90KHzJoRyYETg35s=;
- b=by/pzHmahTHMO+QUjr1zg0FNE05WyrUIxdLnsKG7tIASn9nvzuI+yTsyrdDFMr3hE69i
- OC4uK+Ldqs8SWJfNisJZBP15Xhj574xQzsgRgZKn14Yw+/2IqmsKXyFEXIDWHWk3UfpT
- FFe/gwQPLDBcShb4vr5aSQyFnniKK/wnBQUvxb8nEYOyqXZT7iagtA0fnT9h08wWbTxe
- ygb0pA/a5//gCrBlljzRp6uiATa0UFlfLbxRh7m6VwFnOUDACd1uaBEiUDdHqyrN6Hu/
- h1FOFGvrlC4MaCf+gT+h9ki/k7U6jBLIzP1so3I63/RN3T/8bMFu6EP/6e7vxwBVXyEk SA== 
-Received: from nam11-co1-obe.outbound.protection.outlook.com
- (mail-co1nam11lp2174.outbound.protection.outlook.com [104.47.56.174])
- by mx0b-002c1b01.pphosted.com (PPS) with ESMTPS id 3rhfs91fca-1
+ s=proofpoint20171006; bh=O5v54+fD8zW/qh4K5hz85auY7CVf6Btz7ZNGEL2HLI8=;
+ b=yG76XbbJWXI5npH/+20xSYc5fw6TOWXbd+U3vH3HyXQ1J5XQxTqlvjUyFTNq3CX4Syb5
+ l2xPfGRSFruR6DtJuQrg9YPY8a1hCHXFX75k8XWr8eMoX/w/5f792AlNpdns6Ii7mbKY
+ 7I+SlRpiYkpt1+Fwt/24LB2uYBnG4JfSEBVzNXneIzOb4Di1qbG/1+bk0L4PnCC4r9vI
+ wp8fYHH9M3NW2orNbJAxM6XoxP6eCOfgPWzKgkhvVUrtSRqsn9q6UT8rxY81drC66BBC
+ VUKR+lEIgu94wpjL+e30hMBml/Vd2x32LPkmaP8e7+MByXxVu9yzZ1Jrgttz7o3mMnyc bA== 
+Received: from nam10-mw2-obe.outbound.protection.outlook.com
+ (mail-mw2nam10lp2109.outbound.protection.outlook.com [104.47.55.109])
+ by mx0a-002c1b01.pphosted.com (PPS) with ESMTPS id 3rdyjem2p0-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 30 Jun 2023 05:16:01 -0700
+ Fri, 30 Jun 2023 05:16:48 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Wf4wvKgRPdfjbxJAdWdxkpNNTaaGSvrUOcposcO3I2vx7QSOFVoZIzWnKFS2JyJHv3S7TvI6ZVy0Vrjw8hzUUx6wmGUZSE3Gbu7MFhuL3IUUSjrsij8pDcBbgPfC5mQz4Rch6gGltGHmJIk78VEDEoxfjard9hjnziaFz0mqyT7DBmQYnR4WJ6wufwVhbfT9+CWW5+NYNjKQBn/jDQoLSnFWfr4TbC9qI1sftogI426h7d3UnD5VEyoqhZSjoAGH5rPMBAte3mzkpbFJOApRQIJMmtdTcYYVOynfvVuEWwE7nhLdyUg+FiQXWmHC8489Og+0MuvznDG5YA6Hg+DG2g==
+ b=oNl7x0CVVqe/DR25PRROVKC10x4/CQjkP+CEtaY8+sGkv805RczuwdL88UKilfGxMsYgCK97mY4HBmXODdlf9NZOrcMzZCGLWQesB92Qdl7p4GoDijFkvlbPIAGprYmlrFRUhWkOHLr9SCLe6gWjs7irNCK9Z+DjOitPKMyiBFka1gLcdsTpSUGbk6pZKmHOg5Shx0aUdpxk5qLZSzDrSLkJA+sKulYK1OBsYZa1hxIzKFW0L40aDYCjSvECzaHzrxv/sdIxfInraRfp5FvIAYrYpFnneESzhPYHh6WJ83fLxcJMRDDL+83V5/ktbZe9rF8ftk9v5EDDxJQI2lyjrQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=45aHc52ZeuIVlF/MbPAnc1qWdfW90KHzJoRyYETg35s=;
- b=nTpBy8mkjHvzXOgIpNxS2lBF9WOcJPSFWH5R4Pau56wbF9dYzALWQEJigPAI5AN83mGznLVPJ+YzmqeMqLWW4kurX5JlMjrhz3Bw/0dqpRwiIxf9WEakXarNvdrPGHWa2KcLY8BFWPvLJORFhynU91C7gPoT/xdhTs3eBK9PtFGiPk29FZTZ4f5OzdH5RuW3vjL3zE5zx1VBcmfzp3ap09zP1x7m4bWrJKdVDNdoL2Mp1bGMpnTdQbTNz4ADr8lGU0bhABOgv8STSghL6bAQz8buEdLdykCKkGmi8bGWDeZkAXU1F1XOzS5RRn6JmYAypB7/QfmZ/kG3gfOSLv+rcw==
+ bh=O5v54+fD8zW/qh4K5hz85auY7CVf6Btz7ZNGEL2HLI8=;
+ b=Lfvlu+fXNV6xXMFfoIwGjtRw4Clv6w7u4cDYQfqXjvrGTnixdVlzFGRqpot+LeUchRgyQIhoML9exSiM/talUu3/6+H0QWfO7+rA/Q+onvLjcVnIfzGJkrNAQXsaYwdA6zy9aJXRT+3mhLRIYT82EBW+JiReXehlCUr3/4YLoOxyP9txHOoHWFrB9PO6zsURSQa/yyOqUAg3cEYPtiIkWwMwV2z6tP3hNkyV7T0tJ0V1l4rAs4kWpTugRaRFNwceyK618BPZXKKpZGlFxCBhH3CIpHyTWidaBGewD9UZiP/kyLUAe8sgLOfZr/6Zw3VwLARRuv7B6MjAEbAIVfkxBw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nutanix.com; dmarc=pass action=none header.from=nutanix.com;
  dkim=pass header.d=nutanix.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=45aHc52ZeuIVlF/MbPAnc1qWdfW90KHzJoRyYETg35s=;
- b=APDN7gPLdZjX3a8jm/5sQKjToWAP/JHycE+J0eVF94NAl/dWyNyG0SZy16be0FeNn040UH8v33WpjWGcjTr6DjEwQD2M1nff3I9Xpnv+B6X5AvMfOCWBY0vDAB7vg39+tzkPrXcw2c101H2Rvaf1tE0bWhDZvSXBeCZvjydVCL6OZtKxiH2P+8DkLomfHfyxMaXU2V5IGis1ifbAlAR+YJep9LGlBhRL+eswsU4dkqeLw2iEjmP4e2yu2hR6qpOUwk18ZC/VuNCq3g42c/vE7mICoIvckOimD46DrAx//BrwEa57zWTR47UyzxR0qXXZq85C06h5jGbeinLPBVHQZw==
+ bh=O5v54+fD8zW/qh4K5hz85auY7CVf6Btz7ZNGEL2HLI8=;
+ b=HdA18TkJCyupI7TpYU7DkqywCgZoXmcBuLHqmTFxs6544uH22Au/UDiqskdo3mSr15HQc8H43iHFFdx0IVnu1vunvidPzhYHLy2cJ5X0/LzPTwuaO4u7kQJje3V9e3scjPFgjg2aZ9R+Y4HCARsLktCXdFU+Jr4MbLnM9OlT+S62/hKiP2XCClNT6s6A8xkw4cA1Lfvv1RYa3AmLmaZGT8Rfp+My/TEgvASpT2V39n1Fm44OxcB8qfIAvs3AaNXu6xbTWuesWAEFB3cBI687RBYhz8Ve4aS2XR9KPGNNqxnGFQt32KTU+Yl1ERn3C6oukU0TYp31YZACJLQsiLy77w==
 Received: from BL3PR02MB7938.namprd02.prod.outlook.com (2603:10b6:208:355::20)
- by PH0PR02MB9383.namprd02.prod.outlook.com (2603:10b6:510:289::11)
+ by CO1PR02MB8604.namprd02.prod.outlook.com (2603:10b6:303:15f::16)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6544.11; Fri, 30 Jun
- 2023 12:15:56 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6544.15; Fri, 30 Jun
+ 2023 12:16:43 +0000
 Received: from BL3PR02MB7938.namprd02.prod.outlook.com
  ([fe80::a769:9be9:a331:6d6d]) by BL3PR02MB7938.namprd02.prod.outlook.com
  ([fe80::a769:9be9:a331:6d6d%4]) with mapi id 15.20.6565.007; Fri, 30 Jun 2023
- 12:15:56 +0000
+ 12:16:42 +0000
 From: Raphael Norwitz <raphael.norwitz@nutanix.com>
 To: Tom Lonergan <tom.lonergan@nutanix.com>
-CC: "Michael S. Tsirkin" <mst@redhat.com>, "qemu-devel@nongnu.org"
- <qemu-devel@nongnu.org>, Minghao Yuan <yuanmh12@chinatelecom.cn>
-Subject: Re: [PATCH 1/2] vhost-user: Change one_time to per_device request
-Thread-Topic: [PATCH 1/2] vhost-user: Change one_time to per_device request
-Thread-Index: AQHZqd8lGH2I8yhdUUOg9chHSkn6Kq+jRX6A
-Date: Fri, 30 Jun 2023 12:15:56 +0000
-Message-ID: <47890F87-A752-4B72-88EE-676FFE52904E@nutanix.com>
+CC: "mst@redhat.com" <mst@redhat.com>, "qemu-devel@nongnu.org"
+ <qemu-devel@nongnu.org>, "yuanmh12@chinatelecom.cn"
+ <yuanmh12@chinatelecom.cn>
+Subject: Re: [PATCH 2/2] vhost-user: Make RESET_DEVICE a per device message
+Thread-Topic: [PATCH 2/2] vhost-user: Make RESET_DEVICE a per device message
+Thread-Index: AQHZqd8l8NmOXkL9qUuMYUUlh1uLOK+jRbYA
+Date: Fri, 30 Jun 2023 12:16:42 +0000
+Message-ID: <67F41DC0-31E9-4A54-AFE0-8D425DDC90CB@nutanix.com>
 References: <20230628163927.108171-1-tom.lonergan@nutanix.com>
- <20230628163927.108171-2-tom.lonergan@nutanix.com>
-In-Reply-To: <20230628163927.108171-2-tom.lonergan@nutanix.com>
+ <20230628163927.108171-3-tom.lonergan@nutanix.com>
+In-Reply-To: <20230628163927.108171-3-tom.lonergan@nutanix.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
 x-mailer: Apple Mail (2.3696.120.41.1.1)
 x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: BL3PR02MB7938:EE_|PH0PR02MB9383:EE_
-x-ms-office365-filtering-correlation-id: 646cd403-7d70-402c-1d16-08db7963c1b7
+x-ms-traffictypediagnostic: BL3PR02MB7938:EE_|CO1PR02MB8604:EE_
+x-ms-office365-filtering-correlation-id: 5c8d0b58-f402-476f-c685-08db7963dd9c
 x-proofpoint-crosstenant: true
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: DGTOZeSwnTsq0w//kESliTxStgslSW1Kw0Ft/2w6Vyh9g1S5GVOKk52liGscgjLk2rPnHQGMEQ2jTj0ZvibYYcOtroctiN5j38P5mTLcslpDgHpFc2n1R/uM1dQbrVT+nBQY7HByfasIqXqBXfhZYsighYGz3YvBSuf3M1ONzwd/McEoa1EHTQQAUksEYdvKh8s//kUjv1QPEst6Nb5dAX6z5LNo1bVCOJeUkA7OxABsy9iXI4gHBF152W0EJ6WYPsxtBAKe/y0Hpk/A5JPHO02ycRH7kKncpr7m33vvegJAk9jFZ/1Kb2D9kPbDo/C2l2ocgup5UDSKrOy2Z92VnliBhuoHMH/n4wYEl04ihdePC/YgnsWriXkRN5YBPAcgLoabHEf4iwAK72TC2RxcE9G+8exZcCqEMy3ih3VAot73mGcwaFSs6WZVfzpPPZNGwdX5L7SxqnHGUwe60vuqGy6btZsCgCRb7sBOjQn8EpoY0kmvRlo9Zvaj2xu2mcf9htomk6V78yjoc7ljivFidVK5j1JKc4Fc5K0qv6lWz9MfHDh2VbPIH878tnZCJaimiGD1HjtR42aQmXzVDqzUhUUCE66WRr5hT0LH2Iv0lSNJ1vHyBiqX1gf5xX7WDJTsXttuMb9GGydFrcsQc2DeDqdHy4iyemeoZdhHfNFE+E4=
+x-microsoft-antispam-message-info: Qhw8o0ZYUSsEzdUI94UWDccYWiETeMP2gjsnKP5rz669vrXo93SIa+XV9gRhptTFH9dOFKZd3cdYjkYiTQUJIU+mn3DrAm0NVGblkftnB15AMC9gO+2Pc2G2Jg79J/Cr+wp/rjOWM0BKveC+E+c/8PeBaffk+81S8IE6Evtu3o4jk+e5EEWu1lSFbGmeS7c4RUJEc/tpGaWTp53kcTr8MGjRhSPySEyogc0XcsPOK5ZANV1SInbR6fllbD/gMIWFZQWgubM9TngscIMZ6GOj4x3z6lox/F9LZPFyuQ/+WAaQM6QPuMv6Hip6O3kcnxxcvYxkXm831HDaF9uzkl6Gq9G26WE9JVE6vjSfVrjzMbo5ssbZli/J7/hLnf7w8RslHG5CMai8G3pe4sTlAt4f6PQ02AeAiDLYuu/M94/i6y7+pDZ0F4H5T9FrE7Tkt+aOvK5Ia45bN9NeUQr7rVmNNsNIfVxzQEXuq6fLbdaKS17BM6KONY9vpnZjYaCZxnLwz/LtH3NkFVig774Z1SY/NYPw6VotejGstGgy7BIZJ8YyI15c1NfdHBeDkDozUJibWxs8zdxRN2lmH96rFKb+q3ww6HdJED/Bycwkwo4mtW7cCcT4Og9KNEuThvW24AP6A9Yq0RTbzKMYTO5jwyRY+w==
 x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:BL3PR02MB7938.namprd02.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230028)(136003)(39860400002)(366004)(376002)(346002)(396003)(451199021)(8936002)(8676002)(41300700001)(6862004)(5660300002)(44832011)(2906002)(66446008)(66476007)(64756008)(6636002)(66556008)(76116006)(4326008)(91956017)(66946007)(478600001)(37006003)(316002)(54906003)(966005)(83380400001)(71200400001)(122000001)(26005)(6506007)(186003)(6486002)(6512007)(53546011)(36756003)(33656002)(38070700005)(2616005)(38100700002)(86362001)(4444003)(45980500001);
+ SFS:(13230028)(366004)(376002)(346002)(136003)(396003)(39860400002)(451199021)(2906002)(4744005)(6486002)(53546011)(2616005)(71200400001)(122000001)(83380400001)(38100700002)(186003)(6512007)(38070700005)(41300700001)(6506007)(37006003)(86362001)(54906003)(26005)(66556008)(316002)(478600001)(36756003)(6636002)(66946007)(64756008)(66476007)(66446008)(4326008)(76116006)(33656002)(44832011)(5660300002)(91956017)(15650500001)(6862004)(8676002)(8936002)(45980500001);
  DIR:OUT; SFP:1102; 
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?l2xK32ZVwGhU0rocK3CYjdPBG8nKaz+WN+9syPX4rMiXHlnLELc8xuZaV0w7?=
- =?us-ascii?Q?cjQr/8ehQ6ju/ZJbYI5pqaYfljsw19RGb48aa1BdmYGE8o4AhEiq7OsV9NWC?=
- =?us-ascii?Q?oZ1F/NPhtoFXotYHQD7Vdf41TUmU6EnNJp7DVnlyQ7eb4J1rMQOZ5ddnOyLA?=
- =?us-ascii?Q?o4+/uVUoQYtJPmBAl6QmvgP3VIiXBWkIL6tiL5MX10nmgOsRIAoH+YZSeCRE?=
- =?us-ascii?Q?UwrrSxmsxin7WFpiwCXC7CulXVNVF2HbcuTBlrMyF8TmzQCusJbjGqvkEnkb?=
- =?us-ascii?Q?iW+FsnHf1OJQl2h6bIahiD8IstSk+KKYrk8QJ8zwNxcQrZwAAOgrUF6lZ09Q?=
- =?us-ascii?Q?yZNzTQWDk3k6uWu/t+gYxsnn6884+TSLz6G3BUqdjJo8BUws3506NY0+m1dB?=
- =?us-ascii?Q?2PmYGV/ThH3Z4xXULryenLv0721oJNUB/qKiTJowPNkc4j2i1BF9/gq8Pfmh?=
- =?us-ascii?Q?gOJ0+oHNowq9rdQ6jronX9wR51VSfcTdQxzc9u8j1qKZPMCSPZyS1T/N+Nyo?=
- =?us-ascii?Q?BOWM/HoAPAC9CaZj/w6QQCRmrLxl6UkO7V6gF9x/XNF6SRoiRuB1p5/wWn0O?=
- =?us-ascii?Q?sRdumTpIyFF36m9BHyiLat9M9OIRlhnlsfUc5Toc2YLipx/pJhFoa8aYzxlR?=
- =?us-ascii?Q?XgCslGCx+zbkujpM8fLLGq3JKKRrZsQ7grV/fCVH4+IhReAZ8t4wfrRVQ43Q?=
- =?us-ascii?Q?uhLUKOQj4gzWrfMTA9MEurjvZT01QJv2jLfvyJOKZxVSQFjv0dkg+t5n7DsV?=
- =?us-ascii?Q?f4qE8Y+qJEGT31QxS89cUkb0RLZD180pDDfYrs5vVJFShp2mKX5/wJyDVWAK?=
- =?us-ascii?Q?2T8J/q4rihm95FLtcpiErno/zn6z87RZqW4Q/TeIrqE1xS6+mXNqqMoyuKyt?=
- =?us-ascii?Q?Uggtx2M5nHbJgi3/hdcCVM5uUOCG6a//d8QcLPh29mrgaEAVW2MX91bdliZ8?=
- =?us-ascii?Q?Lxo4miUMh2oPl+PO4oerZOaYmW56g/QjrIc+H7LoAN+7cEo6f/NHYpVdRirp?=
- =?us-ascii?Q?SrXFc5GF2WM7ggLtawgzfro1VAVWgGy6oUVZXZZ6GCxSERs/wGQAlPtr3wfP?=
- =?us-ascii?Q?XeVF4tazA9e4404f25H92kbxKcSQVkRkuFzLPrxMif5KDWNhShADmt8l26um?=
- =?us-ascii?Q?rQUK+ty3jPK8gIxLm4nan9I2fRMebbv6YwBk+qpHNKL2oP9KB6D9yGVEVpeR?=
- =?us-ascii?Q?BV1jcJ9MluJSU3WXIyOAAA4yDf6xgiIiTzY/djN/zd+1Y5aHxNnyXFgi8mtq?=
- =?us-ascii?Q?G8yr/7Vv0MI6bo6zsGCTGyt213Pfz0qShVLP+8jrsRU1IuywCbQBpnDgv7TC?=
- =?us-ascii?Q?fJv9jglPiLqly4ObGxRFDKk+AVrI4fHRqdpGSaTejpp9fvOuaMW7HjIvsZBl?=
- =?us-ascii?Q?rYR7mAXoUaKmkCvnnq5NbAcwS7wyNFRg+OMuX1uQCQVx20lcUGIISxaRx3oK?=
- =?us-ascii?Q?EHemFYOx5pZ8VFgWVv0d9fjuaEGQMm+7KQ/oq4m0J0d7sZvkJXKbC/pCnbtm?=
- =?us-ascii?Q?rYTo4yTNIwdnJpd9nu1W/3jbna7m1iLbKz7COQFJLBL0Lo9ondpP25QQ6yR2?=
- =?us-ascii?Q?K9E4h9TY9oGvq3eDhNJknT1WaURyh/AHxh6+H/m9qSCQ79kCNzbB05hy/RHv?=
- =?us-ascii?Q?Bg=3D=3D?=
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?9o/BYhisM801AQx9cFE8UgZFkX4QTtNceNL1PmXrew0qwNHV3WmJayIN20ag?=
+ =?us-ascii?Q?1TLo69Vn1tF5iBxJgoNsoHL8wCNlPlpLJLP2dw6/jWsaf+GaCTqYEu3XqW3o?=
+ =?us-ascii?Q?EMVZnqo/dVx7Vyo/CrMCvfXg1E9i8ePK4g1WSu1T8InP0Bx1lOZDPiolXdCu?=
+ =?us-ascii?Q?hI+QHktJa5w4l5de3g0jIw1bYHeyDEeCYZE5qo7KqISoUF6nCOXTXRrI3FVw?=
+ =?us-ascii?Q?72+6Ih1An2Pkt/EkKKusI9Pw0pdVXkqbuNdiExQ4hXXbAmNXnnyM4Tik8uHg?=
+ =?us-ascii?Q?M2HcsI8N9WDpLL6WaVQU98YlTzr8n2dEUl7pUX+GOyZfHIaQj7UB4daHrqH8?=
+ =?us-ascii?Q?iZikfx0WUHjbYTPY8X3MqevKDk/CcC09wRJ7NEEuQO7SsMvPA9Ek6Jul8GC5?=
+ =?us-ascii?Q?ARGa9QY6ihPNqbxz+WiHNg9fo0n/5S10PVq2kYFDyZ2KJt3C8CVbL9BMEoKv?=
+ =?us-ascii?Q?GBwQgC1dXREZL9U1rMFhfyVTIndz/W7pRBtwSXTrf9O9M0dZ4OVR5H/Qsmer?=
+ =?us-ascii?Q?1HQU7WGfoApOqtZzL12TA172NGfQV/xPM5AjwT8mJL7Vaa/xy6q9JRIgOcaY?=
+ =?us-ascii?Q?R4vKvkpuzB4Dloj0n/SXFJNuWEQw1D942R6YbTKtTQOe/w1eWpwk3dkegA92?=
+ =?us-ascii?Q?6Iu84UPGB3yOH2A8ijoAfLBIvEZ22S8n4wdt4YbzAbXUQgGyhgWaItDEwDku?=
+ =?us-ascii?Q?QN5Fk7yxB0jK7qto234huQ0KuxYMeBn4tKHBVgLojrdHZOqUrn3bPDqkMdZ3?=
+ =?us-ascii?Q?yj04q9cIpRkR1IEN5PhOoC9ebDk9nLD9B1Mk6eQ08JSnp+FyCubRmH86zI39?=
+ =?us-ascii?Q?iZiltuVb8JXR3WE1sHTgKru/mI8v94rPJr8dsvkdXHABlFvqJ/ovHWqBkLO8?=
+ =?us-ascii?Q?3y3luElH1UVZsuio99qDcigDIsfJRa3lNOFj6EG2/yp4QP63o8Dvomqcd07F?=
+ =?us-ascii?Q?14Db9qAZq6xaZ2gz5Zxub6SsfULWzlfMcsLic06BCnY6+/an9jay8sII/EXU?=
+ =?us-ascii?Q?TTY+1c9jUjqaVVaST3+7Jf4nBPGNcxAqtpGul0+9NuBCL+/8Uw7HG3Vf0e27?=
+ =?us-ascii?Q?VUVERmlhDb5/yGsaLWtOVvkY+sguUspKypD6VP/zdFc3CFHWn/yterRqzwv7?=
+ =?us-ascii?Q?G6WrdXsJSJSxiQT2NldGKtGVued720ME1Go3UwzIrS4DtTAgI8bjClPwnZI2?=
+ =?us-ascii?Q?acKfbucPRZzIHvGZXgk59Lia1iviURl4MTNGuma2dBHRf2psEHLkt6/Zd3Bp?=
+ =?us-ascii?Q?m8UIuJ7lUTlikAm+0LqSBZA/HjNfs2cr+YrYEkwhmtLoomVH6vbRJ5UT9S4T?=
+ =?us-ascii?Q?jUnKMVRLVcuJbmbqZqjiQJaOvCCQ/CpxYPLxtj8GLOZ3R7PEYXsY+x9/fSnP?=
+ =?us-ascii?Q?O5GBF4F1181HUb6n8N5dGyTdbsh+K1GFJZSZQm0PTx7oQ7juMSVqvymlTkid?=
+ =?us-ascii?Q?1jr5Ca3HKwqK+2OcxMQcCmexGSP/5i3N+Dda6pxJ0HMf/ZARPcp2F7YtUbwm?=
+ =?us-ascii?Q?C+rU8G/d+N+jfzkB0nq4DjPGNI+yA/PjrNJmDEG2tPTkoyM0ITlaIYPkRTfx?=
+ =?us-ascii?Q?YUw2drxl+eZXW+Z+W405jX9nYizkfdmhmmz5EQzZzoTPMoExLjxmiYw9znbQ?=
+ =?us-ascii?Q?Eg=3D=3D?=
 Content-Type: text/plain; charset="us-ascii"
-Content-ID: <98ED1891BD47784785C6A2EEDAA1BA55@namprd02.prod.outlook.com>
+Content-ID: <3291F80989D62D4DB93D66F19D6C2AE7@namprd02.prod.outlook.com>
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-OriginatorOrg: nutanix.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: BL3PR02MB7938.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 646cd403-7d70-402c-1d16-08db7963c1b7
-X-MS-Exchange-CrossTenant-originalarrivaltime: 30 Jun 2023 12:15:56.1762 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5c8d0b58-f402-476f-c685-08db7963dd9c
+X-MS-Exchange-CrossTenant-originalarrivaltime: 30 Jun 2023 12:16:42.9459 (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: bb047546-786f-4de1-bd75-24e5b6f79043
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: tnU9oc61yKHiRpHKzRlhuhJJfyi88hAUKdXNZRdOeKhwedL4+BjnxWg1PXyJjPD3QjIz521xq/srFVou06hEa+GSVMEQevIKt/XV/5mStms=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR02MB9383
-X-Proofpoint-ORIG-GUID: PCtmtJ-jfuSVHjlmX28NDe92JIlDADty
-X-Proofpoint-GUID: PCtmtJ-jfuSVHjlmX28NDe92JIlDADty
+X-MS-Exchange-CrossTenant-userprincipalname: fMLzgnSRCuHcuJaggKuljzPi1tcfjex1wfm9oNpbxi4X6woZwipQLGiVeqFWoukv2QLE/aOYH/VuOpySCBB0x1iNtxWOOPBTBmV+bPG9v1k=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR02MB8604
+X-Proofpoint-GUID: L7QUVazW_3PCAeABHCG9h6_e9F69Iswi
+X-Proofpoint-ORIG-GUID: L7QUVazW_3PCAeABHCG9h6_e9F69Iswi
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
  definitions=2023-06-30_05,2023-06-30_01,2023-05-22_02
 X-Proofpoint-Spam-Reason: safe
-Received-SPF: pass client-ip=148.163.155.12;
- envelope-from=raphael.norwitz@nutanix.com; helo=mx0b-002c1b01.pphosted.com
+Received-SPF: pass client-ip=148.163.151.68;
+ envelope-from=raphael.norwitz@nutanix.com; helo=mx0a-002c1b01.pphosted.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -166,81 +167,34 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 > On Jun 28, 2023, at 5:39 PM, Tom Lonergan <tom.lonergan@nutanix.com> wrot=
 e:
 >=20
-> Some devices, like virtio-scsi, consist of one vhost_dev, while others, l=
-ike
-> virtio-net, contain multiple vhost_devs. The QEMU vhost-user code has a
-> concept of one-time messages which is misleading. One-time messages are s=
-ent
-> once per operation on the device, not once for the lifetime of the device=
-.
-> Therefore, as discussed in [1], vhost_user_one_time_request should be
-> renamed to vhost_user_per_device_request and the relevant comments update=
-d
-> to match the real functionality.
->=20
-> [1] https://lore.kernel.org/qemu-devel/20230127083027-mutt-send-email-mst=
-@kernel.org/
+> A device reset is issued per device, not per VQ. The legacy device reset
+> message, VHOST_USER_RESET_OWNER, is already a per device message. Therefo=
+re,
+> this change adds the proper message, VHOST_USER_RESET_DEVICE, to per devi=
+ce
+> messages.
 >=20
 
 Reviewed-by: Raphael Norwitz <raphael.norwitz@nutanix.com>
 
 > Signed-off-by: Tom Lonergan <tom.lonergan@nutanix.com>
 > ---
-> hw/virtio/vhost-user.c | 18 ++++++++++++------
-> 1 file changed, 12 insertions(+), 6 deletions(-)
+> hw/virtio/vhost-user.c | 1 +
+> 1 file changed, 1 insertion(+)
 >=20
 > diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
-> index c4e0cbd702..65d6299343 100644
+> index 65d6299343..8dcf049d42 100644
 > --- a/hw/virtio/vhost-user.c
 > +++ b/hw/virtio/vhost-user.c
-> @@ -367,7 +367,7 @@ static int process_message_reply(struct vhost_dev *de=
-v,
->     return msg_reply.payload.u64 ? -EIO : 0;
-> }
->=20
-> -static bool vhost_user_one_time_request(VhostUserRequest request)
-> +static bool vhost_user_per_device_request(VhostUserRequest request)
-> {
->     switch (request) {
->     case VHOST_USER_SET_OWNER:
-> @@ -392,11 +392,17 @@ static int vhost_user_write(struct vhost_dev *dev, =
-VhostUserMsg *msg,
->     int ret, size =3D VHOST_USER_HDR_SIZE + msg->hdr.size;
->=20
->     /*
-> -     * For non-vring specific requests, like VHOST_USER_SET_MEM_TABLE,
-> -     * we just need send it once in the first time. For later such
-> -     * request, we just ignore it.
-> +     * Some devices, like virtio-scsi, are implemented as a single vhost=
-_dev,
-> +     * while others, like virtio-net, contain multiple vhost_devs. For
-> +     * operations such as configuring device memory mappings or issuing =
-device
-> +     * resets, which affect the whole device instead of individual VQs,
-> +     * vhost-user messages should only be sent once.
-> +     *=20
-> +     * Devices with multiple vhost_devs are given an associated dev->vq_=
-index
-> +     * so per_device requests are only sent if vq_index is 0.
->      */
-> -    if (vhost_user_one_time_request(msg->hdr.request) && dev->vq_index !=
-=3D 0) {
-> +    if (vhost_user_per_device_request(msg->hdr.request)
-> +        && dev->vq_index !=3D 0) {
->         msg->hdr.flags &=3D ~VHOST_USER_NEED_REPLY_MASK;
->         return 0;
->     }
-> @@ -1256,7 +1262,7 @@ static int vhost_user_get_u64(struct vhost_dev *dev=
-, int request, uint64_t *u64)
->         .hdr.flags =3D VHOST_USER_VERSION,
->     };
->=20
-> -    if (vhost_user_one_time_request(request) && dev->vq_index !=3D 0) {
-> +    if (vhost_user_per_device_request(request) && dev->vq_index !=3D 0) =
-{
->         return 0;
->     }
->=20
+> @@ -375,6 +375,7 @@ static bool vhost_user_per_device_request(VhostUserRe=
+quest request)
+>     case VHOST_USER_SET_MEM_TABLE:
+>     case VHOST_USER_GET_QUEUE_NUM:
+>     case VHOST_USER_NET_SET_MTU:
+> +    case VHOST_USER_RESET_DEVICE:
+>     case VHOST_USER_ADD_MEM_REG:
+>     case VHOST_USER_REM_MEM_REG:
+>         return true;
 > --=20
 > 2.22.3
 >=20
