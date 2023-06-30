@@ -2,75 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC786743E11
+	by mail.lfdr.de (Postfix) with ESMTPS id A5FB0743E0D
 	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 16:58:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFFZQ-0005HQ-3R; Fri, 30 Jun 2023 10:58:00 -0400
+	id 1qFFZw-0005QE-43; Fri, 30 Jun 2023 10:58:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qFFZL-0005Gy-8v
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 10:57:55 -0400
-Received: from smtp-out2.suse.de ([195.135.220.29])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qFFZJ-0003d4-Pp
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 10:57:55 -0400
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (Exim 4.90_1) (envelope-from <SRS0=Okcj=CS=kaod.org=clg@ozlabs.org>)
+ id 1qFFZl-0005J0-Mc; Fri, 30 Jun 2023 10:58:21 -0400
+Received: from gandalf.ozlabs.org ([150.107.74.76])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <SRS0=Okcj=CS=kaod.org=clg@ozlabs.org>)
+ id 1qFFZj-0003eu-IA; Fri, 30 Jun 2023 10:58:21 -0400
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4Qsz2s4CM7z4wb5;
+ Sat,  1 Jul 2023 00:58:13 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits))
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 9B8471F854;
- Fri, 30 Jun 2023 14:57:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1688137072; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=AdOc+lF7f776xjtCjYQfpxcD5d8ygrZ39pm6rYfcFvM=;
- b=Lbc4hTz0DKZcEBf4knNr7ytiArrsm99GC+2RpORoOhs6Ks9NBvQqf58r+awyDpnVpI5vmV
- kF2x9WLw0hmXtCsQU0GJCheqMb9zEdbuFQXWQGFqFIHvGl8NhMkZ5SC3UYkm6dKwVYcc9z
- emDClVfvaLhP6lCD1PNUAx2TcpDsS2s=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1688137072;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=AdOc+lF7f776xjtCjYQfpxcD5d8ygrZ39pm6rYfcFvM=;
- b=OvoehqJspF7VpFXrOtGAoyFXEHxtqQvzNYwHyGw4TuEzz39mqyS8fPrGfFUgGYcVAg8HBJ
- WaGMht860bm1htBQ==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 2ACD013915;
- Fri, 30 Jun 2023 14:57:51 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id Tb1vOW/tnmTaDwAAMHmgww
- (envelope-from <farosas@suse.de>); Fri, 30 Jun 2023 14:57:51 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>, Steve
- Sistare <steven.sistare@oracle.com>, =?utf-8?Q?Daniel_P_=2E_Berrang=C3=A9?=
- <berrange@redhat.com>, Thomas Huth <thuth@redhat.com>, Laurent Vivier
- <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH 3/6] tests/qtest: migration: Add migrate_incoming_qmp
- helper
-In-Reply-To: <ZJ30tJ+3umGH2Xto@x1n>
-References: <20230628165542.17214-1-farosas@suse.de>
- <20230628165542.17214-4-farosas@suse.de> <ZJ30tJ+3umGH2Xto@x1n>
-Date: Fri, 30 Jun 2023 11:57:49 -0300
-Message-ID: <877crlq9oy.fsf@suse.de>
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Qsz2q63Bqz4wZn;
+ Sat,  1 Jul 2023 00:58:11 +1000 (AEST)
+Message-ID: <73d642db-7bb8-d2a7-95d0-6f5642809038@kaod.org>
+Date: Fri, 30 Jun 2023 16:58:09 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=195.135.220.29; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH 1/2] pnv/xive: Add property on xive sources to define PQ
+ state on reset
+Content-Language: en-US
+To: Frederic Barrat <fbarrat@linux.ibm.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>, qemu-ppc@nongnu.org,
+ qemu-devel@nongnu.org
+References: <20230630144243.214976-1-fbarrat@linux.ibm.com>
+ <20230630144243.214976-2-fbarrat@linux.ibm.com>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <20230630144243.214976-2-fbarrat@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=SRS0=Okcj=CS=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, NICE_REPLY_A=-0.095, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,52 +66,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Xu <peterx@redhat.com> writes:
+On 6/30/23 16:42, Frederic Barrat wrote:
+> The PQ state of a xive interrupt is always initialized to Q=1, which
+> means the interrupt is disabled. Since a xive source can be embedded
+> in many objects, this patch adds a property to allow that behavior to
+> be refined if needed.
+> 
+> Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
 
-> On Wed, Jun 28, 2023 at 01:55:39PM -0300, Fabiano Rosas wrote:
->> file-based migration requires the target to initiate its migration after
->> the source has finished writing out the data in the file. Currently
->> there's no easy way to initiate 'migrate-incoming', allow this by
->> introducing migrate_incoming_qmp helper, similarly to migrate_qmp.
->> 
->> Also make sure migration events are enabled and wait for the incoming
->> migration to start before returning. This avoid a race when querying
->> the migration status too soon after issuing the command.
->> 
->> Signed-off-by: Fabiano Rosas <farosas@suse.de>
->> ---
->>  tests/qtest/migration-helpers.c | 28 ++++++++++++++++++++++++++++
->>  tests/qtest/migration-helpers.h |  4 ++++
->>  2 files changed, 32 insertions(+)
->> 
->> diff --git a/tests/qtest/migration-helpers.c b/tests/qtest/migration-helpers.c
->> index 2df198c99e..bc54b29184 100644
->> --- a/tests/qtest/migration-helpers.c
->> +++ b/tests/qtest/migration-helpers.c
->> @@ -81,6 +81,34 @@ void migrate_set_capability(QTestState *who, const char *capability,
->>                               capability, value);
->>  }
->>  
->> +void migrate_incoming_qmp(QTestState *to, const char *uri, const char *fmt, ...)
->> +{
->> +    va_list ap;
->> +    QDict *args, *rsp, *data;
->> +
->> +    va_start(ap, fmt);
->> +    args = qdict_from_vjsonf_nofail(fmt, ap);
->> +    va_end(ap);
->> +
->> +    g_assert(!qdict_haskey(args, "uri"));
->> +    qdict_put_str(args, "uri", uri);
->> +
->> +    migrate_set_capability(to, "events", true);
->> +
->> +    rsp = qtest_qmp(to, "{ 'execute': 'migrate-incoming', 'arguments': %p}",
->> +                    args);
->> +    g_assert(qdict_haskey(rsp, "return"));
->
-> rsp leaked?
->
+Looks good but I would rather call the property "reset-pq" and the
+attribute reset_pq. Makes more sense since it is a "reset" value.
 
-Good catch. I'll fix it.
+Thanks,
+
+C.
+
+
+> ---
+>   hw/intc/xive.c        | 8 ++++++--
+>   include/hw/ppc/xive.h | 1 +
+>   2 files changed, 7 insertions(+), 2 deletions(-)
+> 
+> diff --git a/hw/intc/xive.c b/hw/intc/xive.c
+> index 84c079b034..c553b32638 100644
+> --- a/hw/intc/xive.c
+> +++ b/hw/intc/xive.c
+> @@ -1232,8 +1232,7 @@ static void xive_source_reset(void *dev)
+>   
+>       /* Do not clear the LSI bitmap */
+>   
+> -    /* PQs are initialized to 0b01 (Q=1) which corresponds to "ints off" */
+> -    memset(xsrc->status, XIVE_ESB_OFF, xsrc->nr_irqs);
+> +    memset(xsrc->status, xsrc->pq_init, xsrc->nr_irqs);
+>   }
+>   
+>   static void xive_source_realize(DeviceState *dev, Error **errp)
+> @@ -1287,6 +1286,11 @@ static Property xive_source_properties[] = {
+>       DEFINE_PROP_UINT64("flags", XiveSource, esb_flags, 0),
+>       DEFINE_PROP_UINT32("nr-irqs", XiveSource, nr_irqs, 0),
+>       DEFINE_PROP_UINT32("shift", XiveSource, esb_shift, XIVE_ESB_64K_2PAGE),
+> +    /*
+> +     * By default, PQs are initialized to 0b01 (Q=1) which corresponds
+> +     * to "ints off"
+> +     */
+> +    DEFINE_PROP_UINT8("pq-init", XiveSource, pq_init, XIVE_ESB_OFF),
+>       DEFINE_PROP_LINK("xive", XiveSource, xive, TYPE_XIVE_NOTIFIER,
+>                        XiveNotifier *),
+>       DEFINE_PROP_END_OF_LIST(),
+> diff --git a/include/hw/ppc/xive.h b/include/hw/ppc/xive.h
+> index 3dfb06e002..7969f06bcf 100644
+> --- a/include/hw/ppc/xive.h
+> +++ b/include/hw/ppc/xive.h
+> @@ -187,6 +187,7 @@ struct XiveSource {
+>   
+>       /* PQ bits and LSI assertion bit */
+>       uint8_t         *status;
+> +    uint8_t         pq_init; /* PQ state on reset */
+>   
+>       /* ESB memory region */
+>       uint64_t        esb_flags;
+
 
