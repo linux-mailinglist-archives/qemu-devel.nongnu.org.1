@@ -2,90 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF2327437F4
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 11:13:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B68FC743818
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 11:19:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFABu-00075q-5D; Fri, 30 Jun 2023 05:13:22 -0400
+	id 1qFAGf-0002CQ-KI; Fri, 30 Jun 2023 05:18:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <christoph.muellner@vrull.eu>)
- id 1qFABp-00073v-42
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 05:13:17 -0400
-Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <christoph.muellner@vrull.eu>)
- id 1qFABm-0000Ag-LL
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 05:13:16 -0400
-Received: by mail-ed1-x52d.google.com with SMTP id
- 4fb4d7f45d1cf-51d9865b8a2so1709077a12.3
- for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 02:13:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=vrull.eu; s=google; t=1688116392; x=1690708392;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=427hG0VZLBAHC0MKH9qijIzaZ3qYnVMMsCFX2foNeKg=;
- b=hQlp5dU31jnGajW1E3kJv7IitGXmtEUIOzW1kn+8qOBaxnNzSo5dtDLIo4k1KTB0vy
- AiHvmZM+zVY4P/5ekHupfOd6lVS9IWUqr5juIPZS+LAyigOKmwVodSABTy56nvyiRWmp
- dIvM5MVYLPQUaIBQiUwcIGeS0/3xGuu9FnXiFU0eXKAsRrgl7AHHI+T3gjvyAqQTpGER
- FBT/NkZG6GvUvRIqNQwJqobCbG/9uQh4/6Zn5oO5wp0fY/fTlUqpnI0Qm/NfVVWGil+q
- ASE7TxVncEXUrRnsp8AZXYk090faXBUO9R7xPBIS4U1O9d+l3II0UD5+Efrw3e05fgYR
- pzyA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688116392; x=1690708392;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=427hG0VZLBAHC0MKH9qijIzaZ3qYnVMMsCFX2foNeKg=;
- b=YK0ux7Ju46Cx39789pDg6y3/vlY79n1ALauf3j09ZRrXIkrFUiHWB5hTcT+gLwitRJ
- w6EYsATtQLl4NgUcb7FtwMXdstJaE7iZsQic6ys7Wc7gTErttIUZ3GxqniiVhFui6DxG
- 4gnTnMIn/LfV00tB3uFiSz0EbdTiBlFfreu8/Xfa7risXI0uFhOIhuUFhAnQXg4lFrW9
- 3lJtd9+H/GsOokkqNuL2I256ZVbbjkn7GEHb3aIbZOSBTbyc73czDpjK0TVymzb3verU
- ayYMAtZDZrcd7BVKZ4bhIZPAnWUYfkvSLxA3+M2iQxkYo3FAVA4+6AzJcqfYBKMJVYe0
- 0mXQ==
-X-Gm-Message-State: ABy/qLZsdoW+OeLSbs5egCbi4jHZyTdC6HSLhJxxjVUtrdNURDaLkoql
- u2tg4Ge4SuXquCasM90BG35zCw==
-X-Google-Smtp-Source: APBJJlGfoCrjhY0Q908NQOP7qVm7zR7qzmpnSc8auUaPWZX66O8tXr+OHqWjOGZu2N//LkuQSSWaJQ==
-X-Received: by 2002:aa7:c253:0:b0:51d:a237:d45b with SMTP id
- y19-20020aa7c253000000b0051da237d45bmr1244097edo.36.1688116391763; 
- Fri, 30 Jun 2023 02:13:11 -0700 (PDT)
-Received: from beast.fritz.box (62-178-148-172.cable.dynamic.surfer.at.
- [62.178.148.172]) by smtp.gmail.com with ESMTPSA id
- lc1-20020a170906f90100b00988e953a586sm7869892ejb.61.2023.06.30.02.13.10
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 30 Jun 2023 02:13:11 -0700 (PDT)
-From: Christoph Muellner <christoph.muellner@vrull.eu>
-To: qemu-riscv@nongnu.org, qemu-devel@nongnu.org,
- Richard Henderson <richard.henderson@linaro.org>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>,
- Philipp Tomsich <philipp.tomsich@vrull.eu>,
- Palmer Dabbelt <palmer@dabbelt.com>, Jeff Law <jeffreyalaw@gmail.com>,
- Tsukasa OI <research_trasio@irq.a4lg.com>, liweiwei@iscas.ac.cn,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Rob Bradford <rbradford@rivosinc.com>
-Cc: =?UTF-8?q?Christoph=20M=C3=BCllner?= <christoph.muellner@vrull.eu>
-Subject: [PATCH v4 3/3] DO NOT MERGE: tests/tcg/riscv64: Add test for
- fcvtmod.w.d
-Date: Fri, 30 Jun 2023 11:13:03 +0200
-Message-ID: <20230630091303.1676486-4-christoph.muellner@vrull.eu>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230630091303.1676486-1-christoph.muellner@vrull.eu>
-References: <20230630091303.1676486-1-christoph.muellner@vrull.eu>
+ (Exim 4.90_1) (envelope-from <pmorel@linux.ibm.com>)
+ id 1qFAGd-0002C5-9t; Fri, 30 Jun 2023 05:18:15 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pmorel@linux.ibm.com>)
+ id 1qFAGZ-0001dv-RJ; Fri, 30 Jun 2023 05:18:15 -0400
+Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 35U9HRPc029579; Fri, 30 Jun 2023 09:18:04 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=3NWofwlNKtvMmm1/f2CrB5ZDrskg7USBUXVrU2Fmngo=;
+ b=iifoVmZFoq/fLuzrh5LxPDpdvbunvtLxV/Wg4Vfb+ng5sMirh46SHBllZSBOXkua6ZVO
+ 6xZM9r+COZkJAimjLzOUu33T83lrypJWwX1xuUamEMuwLqk1/8yREdCEYvKDrGcsoETR
+ f9IrNZhiufxrmu20zEBbmWHkEnGetbthnaLnumHpeWq9x7EKQSnPQOdk2qzNBRq+JISH
+ mlIgh7g/OK6L19I52BnZ+YztxyTwpnxUIT0M9OB+MAj+aNamy53h8OBM/Xjq6W7z8HzQ
+ 30nyqpkwghyC1QK0csuG1Y1mOf4D8S9N0s7peBZQZjtbZMqghqx6gex96xYaurR5AYqy iA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rhv9jr0hw-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 30 Jun 2023 09:18:03 +0000
+Received: from m0353726.ppops.net (m0353726.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 35U9I3pQ031884;
+ Fri, 30 Jun 2023 09:18:03 GMT
+Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.72])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rhv9jr0g9-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 30 Jun 2023 09:18:03 +0000
+Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
+ by ppma06fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 35U3gTFX028493;
+ Fri, 30 Jun 2023 09:18:00 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+ by ppma06fra.de.ibm.com (PPS) with ESMTPS id 3rdqre3092-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 30 Jun 2023 09:18:00 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com
+ [10.20.54.104])
+ by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 35U9HsCx42271456
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 30 Jun 2023 09:17:54 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 96A542004D;
+ Fri, 30 Jun 2023 09:17:54 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3D1F62004B;
+ Fri, 30 Jun 2023 09:17:53 +0000 (GMT)
+Received: from li-c6ac47cc-293c-11b2-a85c-d421c8e4747b.ibm.com.com (unknown
+ [9.171.38.86]) by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Fri, 30 Jun 2023 09:17:53 +0000 (GMT)
+From: Pierre Morel <pmorel@linux.ibm.com>
+To: qemu-s390x@nongnu.org
+Cc: qemu-devel@nongnu.org, borntraeger@de.ibm.com, pasic@linux.ibm.com,
+ richard.henderson@linaro.org, david@redhat.com, thuth@redhat.com,
+ cohuck@redhat.com, mst@redhat.com, pbonzini@redhat.com,
+ kvm@vger.kernel.org, ehabkost@redhat.com, marcel.apfelbaum@gmail.com,
+ eblake@redhat.com, armbru@redhat.com, seiden@linux.ibm.com,
+ nrb@linux.ibm.com, nsg@linux.ibm.com, frankja@linux.ibm.com,
+ berrange@redhat.com, clg@kaod.org
+Subject: [PATCH v21 00/20] s390x: CPU Topology
+Date: Fri, 30 Jun 2023 11:17:32 +0200
+Message-Id: <20230630091752.67190-1-pmorel@linux.ibm.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
- envelope-from=christoph.muellner@vrull.eu; helo=mail-ed1-x52d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: etLHSOj8Efn5U2TupPQPju_djdf0AiKh
+X-Proofpoint-GUID: WwHjY5sjzmIdf1B9YTcsexU3Dn2xY4J2
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-06-30_05,2023-06-30_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ phishscore=0 mlxscore=0 clxscore=1015 impostorscore=0 malwarescore=0
+ bulkscore=0 lowpriorityscore=0 adultscore=0 spamscore=0 mlxlogscore=999
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2305260000 definitions=main-2306300076
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=pmorel@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -102,402 +113,479 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Christoph Müllner <christoph.muellner@vrull.eu>
+Hi,
 
-This patch introduces a test for Zfa's fcvtmod.w.d instruction.
-The test cases test for correct results and flag behaviour.
-Note, that the Zfa specification requires fcvtmod's flag behaviour
-to be identical to a fcvt with the same operands (which is also
-tested).
+What is new:
 
-DO NOT MERGE!!!
-Although this test works just fine, it requires a toolchain
-that supports the Zfa extension. Unless this is available
-this patch cannot be merged.
-DO NOT MERGE!!!
+- changed name of target/s390/kvm/cpu_topology to
+  target/s390/kvm/stsi-topology
+- moved the TLE list head from a global to a local in
+  insert_stsi_15_1_x()
+- cleaning and merging some of the avocado tests
+- modification patch "query-cpu-fast" due to upstream modifications
+  I removed the RB but the changes are minimal.
 
-Signed-off-by: Christoph Müllner <christoph.muellner@vrull.eu>
----
- tests/tcg/riscv64/Makefile.target |   6 +
- tests/tcg/riscv64/test-fcvtmod.c  | 354 ++++++++++++++++++++++++++++++
- 2 files changed, 360 insertions(+)
- create mode 100644 tests/tcg/riscv64/test-fcvtmod.c
+Implementation discussions
+==========================
 
-diff --git a/tests/tcg/riscv64/Makefile.target b/tests/tcg/riscv64/Makefile.target
-index 9973ba3b5f..54c3d83458 100644
---- a/tests/tcg/riscv64/Makefile.target
-+++ b/tests/tcg/riscv64/Makefile.target
-@@ -9,3 +9,9 @@ TESTS += noexec
- TESTS += test-noc
- test-noc: LDFLAGS = -nostdlib -static
- run-test-noc: QEMU_OPTS += -cpu rv64,c=false
-+
-+# Test for fcvtmod
-+TESTS += test-fcvtmod
-+test-fcvtmod: CFLAGS += -march=rv64imafdc_zfa
-+test-fcvtmod: LDFLAGS = -nostdlib -static
-+run-test-fcvtmod: QEMU_OPTS += -cpu rv64,d=true,Zfa=true
-diff --git a/tests/tcg/riscv64/test-fcvtmod.c b/tests/tcg/riscv64/test-fcvtmod.c
-new file mode 100644
-index 0000000000..c124459314
---- /dev/null
-+++ b/tests/tcg/riscv64/test-fcvtmod.c
-@@ -0,0 +1,354 @@
-+#include <stdio.h>
-+#include <stddef.h>
-+#include <stdint.h>
-+
-+#define FFLAG_NX_POS 0 /* inexact */
-+#define FFLAG_UF_POS 1 /* underflow */
-+#define FFLAG_OF_POS 2 /* overflow */
-+#define FFLAG_DZ_POS 3 /* divide by zero */
-+#define FFLAG_NV_POS 4 /* invalid operation */
-+#define FFLAG_DN_POS 5 /* input denormal (not defined for RISC-V) */
-+
-+#define FFLAG_NV (1<<FFLAG_NV_POS)
-+#define FFLAG_DZ (1<<FFLAG_DZ_POS)
-+#define FFLAG_OF (1<<FFLAG_OF_POS)
-+#define FFLAG_UF (1<<FFLAG_UF_POS)
-+#define FFLAG_NX (1<<FFLAG_NX_POS)
-+#define FFLAG_DN (1<<FFLAG_DN_POS)
-+
-+typedef struct fp64_fcvt_fcvtmod_testcase {
-+    const char* name;
-+    union {
-+        uint64_t inp_lu;
-+        double inp_lf;
-+    };
-+    uint64_t exp_fcvt;
-+    uint8_t exp_fcvt_fflags;
-+    uint64_t exp_fcvtmod;
-+    uint8_t exp_fcvtmod_fflags;
-+} fp64_fcvt_fcvtmod_testcase_t;
-+
-+void print_fflags(uint8_t fflags)
-+{
-+    int set = 0;
-+
-+    if (fflags == 0) {
-+        printf("-");
-+        return;
-+    }
-+
-+    if (fflags & FFLAG_NV) {
-+        printf("%sFFLAG_NV", set ? " | " : "");
-+        set = 1;
-+    }
-+    if (fflags & FFLAG_DZ) {
-+        printf("%sFFLAG_DZ", set ? " | " : "");
-+        set = 1;
-+    }
-+    if (fflags & FFLAG_OF) {
-+        printf("%sFFLAG_OF", set ? " | " : "");
-+        set = 1;
-+    }
-+    if (fflags & FFLAG_UF) {
-+        printf("%sFFLAG_UF", set ? " | " : "");
-+        set = 1;
-+    }
-+    if (fflags & FFLAG_NX) {
-+        printf("%sFFLAG_NX", set ? " | " : "");
-+        set = 1;
-+    }
-+    if (fflags & FFLAG_DN) {
-+        printf("%sFFLAG_DN", set ? " | " : "");
-+        set = 1;
-+    }
-+}
-+
-+/* Clear all FP flags. */
-+static inline void clear_fflags()
-+{
-+    __asm__ __volatile__("fsflags zero");
-+}
-+
-+/* Read all FP flags. */
-+static inline uint8_t get_fflags()
-+{
-+    uint64_t v;
-+    __asm__ __volatile__("frflags %0" : "=r"(v));
-+    return (uint8_t)v;
-+}
-+
-+/* Move input value (without conversations) into an FP register. */
-+static inline double do_fmv_d_x(uint64_t inp)
-+{
-+    double fpr;
-+    __asm__ __volatile__("fmv.d.x %0, %1" : "=fp"(fpr) : "r"(inp));
-+    return fpr;
-+}
-+
-+static inline uint64_t do_fcvt_w_d(uint64_t inp, uint8_t *fflags)
-+{
-+    double fpr = do_fmv_d_x(inp);
-+
-+    clear_fflags();
-+
-+    uint64_t ret;
-+    __asm__ __volatile__("fcvt.w.d %0, %1, rtz"
-+                         : "=r"(ret) : "fp"(fpr));
-+
-+    *fflags = get_fflags();
-+
-+    return ret;
-+}
-+
-+static inline uint64_t do_fcvtmod_w_d(uint64_t inp, uint8_t *fflags)
-+{
-+    double fpr = do_fmv_d_x(inp);
-+
-+    clear_fflags();
-+
-+    uint64_t ret;
-+    __asm__ __volatile__("fcvtmod.w.d %0, %1, rtz"
-+                         : "=r"(ret) : "fp"(fpr));
-+
-+    *fflags = get_fflags();
-+
-+    return ret;
-+}
-+
-+static const fp64_fcvt_fcvtmod_testcase_t tests[] = {
-+    /* Zero (exp=0, frac=0) */
-+    { .name = "+0.0",
-+      .inp_lf = 0x0p0,
-+      .exp_fcvt = 0x0000000000000000,
-+      .exp_fcvt_fflags = 0,
-+      .exp_fcvtmod = 0x0000000000000000,
-+      .exp_fcvtmod_fflags = 0 },
-+    { .name = "-0.0",
-+      .inp_lf = -0x0p0,
-+      .exp_fcvt = 0x0000000000000000,
-+      .exp_fcvt_fflags = 0,
-+      .exp_fcvtmod = 0x0000000000000000,
-+      .exp_fcvtmod_fflags = 0 },
-+
-+    /* Subnormal: exp=0 frac!=0 */
-+    { .name = "Subnormal frac=1",
-+      .inp_lu = 0x0000000000000001,
-+      .exp_fcvt = 0x0000000000000000,
-+      .exp_fcvt_fflags = FFLAG_NX,
-+      .exp_fcvtmod = 0,
-+      .exp_fcvtmod_fflags = FFLAG_NX },
-+    { .name = "Subnormal frac=0xf..f",
-+      .inp_lu = 0x0000ffffffffffff,
-+      .exp_fcvt = 0x0000000000000000,
-+      .exp_fcvt_fflags = FFLAG_NX,
-+      .exp_fcvtmod = 0,
-+      .exp_fcvtmod_fflags = FFLAG_NX },
-+    { .name = "Neg subnormal frac=1",
-+      .inp_lu = 0x0000000000000001,
-+      .exp_fcvt = 0x0000000000000000,
-+      .exp_fcvt_fflags = FFLAG_NX,
-+      .exp_fcvtmod = 0,
-+      .exp_fcvtmod_fflags = FFLAG_NX },
-+    { .name = "Neg subnormal frac=0xf..f",
-+      .inp_lu = 0x8000ffffffffffff,
-+      .exp_fcvt = 0x0000000000000000,
-+      .exp_fcvt_fflags = FFLAG_NX,
-+      .exp_fcvtmod = 0,
-+      .exp_fcvtmod_fflags = FFLAG_NX },
-+
-+    /* Infinity: exp=0x7ff, frac=0 */
-+    { .name = "+INF",
-+      .inp_lu = 0x7ff0000000000000,
-+      .exp_fcvt = 0x000000007fffffff, /* int32 max */
-+      .exp_fcvt_fflags = FFLAG_NV,
-+      .exp_fcvtmod = 0,
-+      .exp_fcvtmod_fflags = FFLAG_NV },
-+    { .name = "-INF",
-+      .inp_lu = 0xfff0000000000000,
-+      .exp_fcvt = 0xffffffff80000000, /* int32 min */
-+      .exp_fcvt_fflags = FFLAG_NV,
-+      .exp_fcvtmod = 0,
-+      .exp_fcvtmod_fflags = FFLAG_NV },
-+
-+    /* NaN: exp=7ff, frac!=0 */
-+    { .name = "canonical NaN",
-+      .inp_lu = 0x7ff8000000000000,
-+      .exp_fcvt = 0x000000007fffffff, /* int32 max */
-+      .exp_fcvt_fflags = FFLAG_NV,
-+      .exp_fcvtmod = 0,
-+      .exp_fcvtmod_fflags = FFLAG_NV },
-+    { .name = "non-canonical NaN",
-+      .inp_lu = 0x7ff8000000100000,
-+      .exp_fcvt = 0x000000007fffffff, /* int32 min */
-+      .exp_fcvt_fflags = FFLAG_NV,
-+      .exp_fcvtmod = 0,
-+      .exp_fcvtmod_fflags = FFLAG_NV },
-+
-+    /* Normal numbers: exp!=0, exp!=7ff */
-+    { .name = "+smallest normal value",
-+      .inp_lu = 0x0010000000000000,
-+      .exp_fcvt = 0,
-+      .exp_fcvt_fflags = FFLAG_NX,
-+      .exp_fcvtmod = 0,
-+      .exp_fcvtmod_fflags = FFLAG_NX },
-+    { .name = "-smallest normal value",
-+      .inp_lu = 0x8010000000000000,
-+      .exp_fcvt = 0,
-+      .exp_fcvt_fflags = FFLAG_NX,
-+      .exp_fcvtmod = 0,
-+      .exp_fcvtmod_fflags = FFLAG_NX },
-+
-+    { .name = "+0.5",
-+      .inp_lf = 0x1p-1,
-+      .exp_fcvt = 0,
-+      .exp_fcvt_fflags = FFLAG_NX,
-+      .exp_fcvtmod = 0,
-+      .exp_fcvtmod_fflags = FFLAG_NX },
-+    { .name = "-0.5",
-+      .inp_lf = -0x1p-1,
-+      .exp_fcvt = 0,
-+      .exp_fcvt_fflags = FFLAG_NX,
-+      .exp_fcvtmod = 0,
-+      .exp_fcvtmod_fflags = FFLAG_NX },
-+
-+    { .name = "+value just below 1.0",
-+      .inp_lu = 0x3fefffffffffffff,
-+      .exp_fcvt = 0,
-+      .exp_fcvt_fflags = FFLAG_NX,
-+      .exp_fcvtmod = 0,
-+      .exp_fcvtmod_fflags = FFLAG_NX },
-+    { .name = "-value just above -1.0",
-+      .inp_lu = 0xbfefffffffffffff,
-+      .exp_fcvt = 0,
-+      .exp_fcvt_fflags = FFLAG_NX,
-+      .exp_fcvtmod = 0,
-+      .exp_fcvtmod_fflags = FFLAG_NX },
-+
-+    { .name = "+1.0",
-+      .inp_lf = 0x1p0,
-+      .exp_fcvt = 0x0000000000000001,
-+      .exp_fcvt_fflags = 0,
-+      .exp_fcvtmod = 0x0000000000000001,
-+      .exp_fcvtmod_fflags = 0 },
-+    { .name = "-1.0",
-+      .inp_lf = -0x1p0,
-+      .exp_fcvt = 0xffffffffffffffff,
-+      .exp_fcvt_fflags = 0,
-+      .exp_fcvtmod = 0xffffffffffffffff,
-+      .exp_fcvtmod_fflags = 0 },
-+
-+    { .name = "+1.5",
-+      .inp_lu = 0x3ff8000000000000,
-+      .exp_fcvt = 1,
-+      .exp_fcvt_fflags = FFLAG_NX,
-+      .exp_fcvtmod = 1,
-+      .exp_fcvtmod_fflags = FFLAG_NX },
-+    { .name = "-1.5",
-+      .inp_lu = 0xbff8000000000000,
-+      .exp_fcvt = 0xffffffffffffffff,
-+      .exp_fcvt_fflags = FFLAG_NX,
-+      .exp_fcvtmod = 0xffffffffffffffff,
-+      .exp_fcvtmod_fflags = FFLAG_NX },
-+
-+    { .name = "+max int32 (2147483647)",
-+      .inp_lu = 0x41dfffffffc00000,
-+      .exp_fcvt = 0x000000007fffffff,
-+      .exp_fcvt_fflags = 0,
-+      .exp_fcvtmod = 0x000000007fffffff,
-+      .exp_fcvtmod_fflags = 0 },
-+    { .name = "+max int32 +1 (2147483648)",
-+      .inp_lf = 0x1p31,
-+      .exp_fcvt = 0x000000007fffffff,
-+      .exp_fcvt_fflags = FFLAG_NV,
-+      .exp_fcvtmod = (uint64_t)-2147483648l, /* int32 min */
-+      .exp_fcvtmod_fflags = FFLAG_NV },
-+    { .name = "+max int32 +2 (2147483649)",
-+      .inp_lu = 0x41e0000000200000,
-+      .exp_fcvt = 0x000000007fffffff,
-+      .exp_fcvt_fflags = FFLAG_NV,
-+      .exp_fcvtmod = (uint64_t)-2147483647l, /* int32 min +1 */
-+      .exp_fcvtmod_fflags = FFLAG_NV },
-+
-+    { .name = "-max int32 (-2147483648)",
-+      .inp_lf = -0x1p31,
-+      .exp_fcvt = 0xffffffff80000000,
-+      .exp_fcvt_fflags = 0,
-+      .exp_fcvtmod = 0xffffffff80000000,
-+      .exp_fcvtmod_fflags = 0 },
-+    { .name = "-max int32 -1 (-2147483649)",
-+      .inp_lf = -0x1.00000002p+31,
-+      .exp_fcvt = 0xffffffff80000000,
-+      .exp_fcvt_fflags = FFLAG_NV,
-+      .exp_fcvtmod = 2147483647, /* int32 max */
-+      .exp_fcvtmod_fflags = FFLAG_NV },
-+    { .name = "-max int32 -2 (-2147483650)",
-+      .inp_lf = -0x1.00000004p+31,
-+      .exp_fcvt = 0xffffffff80000000,
-+      .exp_fcvt_fflags = FFLAG_NV,
-+      .exp_fcvtmod = 2147483646, /* int32 max -1 */
-+      .exp_fcvtmod_fflags = FFLAG_NV },
-+};
-+
-+int run_fcvtmod_tests()
-+{
-+    uint64_t act_fcvt;
-+    uint8_t act_fcvt_fflags;
-+    uint64_t act_fcvtmod;
-+    uint8_t act_fcvtmod_fflags;
-+
-+    for (size_t i = 0; i < sizeof(tests)/sizeof(tests[0]); i++) {
-+        const fp64_fcvt_fcvtmod_testcase_t *t = &tests[i];
-+	//printf("Test %zu (%s): ", i, t->name);
-+
-+        act_fcvt = do_fcvt_w_d(t->inp_lu, &act_fcvt_fflags);
-+        int fcvt_correct = act_fcvt == t->exp_fcvt &&
-+                    act_fcvt_fflags == t->exp_fcvt_fflags;
-+        act_fcvtmod = do_fcvtmod_w_d(t->inp_lu, &act_fcvtmod_fflags);
-+        int fcvtmod_correct = act_fcvtmod == t->exp_fcvtmod &&
-+                       act_fcvtmod_fflags == t->exp_fcvtmod_fflags;
-+
-+        if (fcvt_correct && fcvtmod_correct) {
-+            //printf("pass\n");
-+            continue;
-+        }
-+
-+        printf("FAIL\n");
-+
-+        double fpr = do_fmv_d_x(t->inp_lu);
-+        printf("inp_lu: 0x%016lx == %lf\n", t->inp_lu, fpr);
-+        printf("inp_lf: %lf\n", t->inp_lf);
-+
-+        uint32_t sign = (t->inp_lu >> 63);
-+        uint32_t exp = (uint32_t)(t->inp_lu >> 52) & 0x7ff;
-+        uint64_t frac = t->inp_lu & 0xfffffffffffffull; /* significand */
-+        int true_exp = exp - 1023;
-+        int shift = true_exp - 52;
-+        uint64_t true_frac = frac | 1ull << 52;
-+
-+        printf("sign=%d, exp=0x%03x, frac=0x%012lx\n", sign, exp, frac);
-+        printf("true_exp=%d, shift=%d, true_frac=0x%016lx\n", true_exp, shift, true_frac);
-+
-+        if (!fcvt_correct) {
-+            printf("act_fcvt: 0x%016lx == %li\n", act_fcvt, act_fcvt);
-+            printf("exp_fcvt: 0x%016lx == %li\n", t->exp_fcvt, t->exp_fcvt);
-+            printf("act_fcvt_fflags: "); print_fflags(act_fcvt_fflags); printf("\n");
-+            printf("exp_fcvt_fflags: "); print_fflags(t->exp_fcvt_fflags); printf("\n");
-+        }
-+
-+        if (!fcvtmod_correct) {
-+            printf("act_fcvtmod: 0x%016lx == %li\n", act_fcvtmod, act_fcvtmod);
-+            printf("exp_fcvtmod: 0x%016lx == %li\n", t->exp_fcvtmod, t->exp_fcvtmod);
-+            printf("act_fcvtmod_fflags: "); print_fflags(act_fcvtmod_fflags); printf("\n");
-+            printf("exp_fcvtmod_fflags: "); print_fflags(t->exp_fcvtmod_fflags); printf("\n");
-+        }
-+
-+        return 1;
-+    }
-+
-+    return 0;
-+}
-+
-+int main()
-+{
-+    return run_fcvtmod_tests();
-+}
+CPU models
+----------
+
+Since the facility 11, S390_FEAT_CONFIGURATION_TOPOLOGY is already
+in the CPU model for old QEMU we could not activate it as usual from
+KVM but needed a KVM capability: KVM_CAP_S390_CPU_TOPOLOGY.
+Checking and enabling this capability enables facility 11,
+S390_FEAT_CONFIGURATION_TOPOLOGY.
+
+It is the responsibility of the admin to ensure the same CPU
+model for source and target host in a migration.
+
+Migration
+---------
+
+When the target guest is started, the Multi-processor Topology Change
+Report (MTCR) bit is set during the creation of the vCPU by KVM.
+We do not need to migrate its state, in the worst case, the target
+guest will see the MTCR and actualize its view of the topology
+without necessity, but this will be done only one time.
+
+Reset
+-----
+
+Reseting the topology is done during subsystem reset, the
+polarization is reset to horizontal polarization.
+
+Topology attributes
+-------------------
+
+The topology attributes are carried by the CPU object and defined
+on object creation.
+In the case the new attributes, socket, book, drawer, dedicated,
+entitlement are not provided QEMU provides defaults values.
+
+- Geometry defaults
+  The geometry default are based on the core-id of the core to 
+  fill the geometry in a monotone way starting with drawer 0,
+  book 0, and filling socket 0 with the number of cores per socket,
+  then filling socket 1, socket 2 ... etc until the book is complete
+  and all books until the first drawer is complete before starting with
+  the next drawer.
+
+  This allows to keep existing start scripts and Libvirt existing
+  interface until it is extended.
+
+- Modifiers defaults
+  Default entitlement is medium
+  Default dedication is not dedicated.
+
+- Machine polarization default to horizontal
+
+Dynamic topology modification
+-----------------------------
+
+QAPI interface is extended with:
+- a command: 'set-cpu-topology'
+- a query: 'query-cpu-polarization'
+- a query: extension of qmp 'query-cpus-fast'
+- a query: extension of hmp 'hotpluggable-cpus'
+- an event: 'CPU_POLARITY_CHANGE'
+
+New command and interface are specified as unstable.
+
+The admin may use query-cpus-fast to verify the topology provided
+to the guest and set-cpu-topology to modify it.
+
+The event CPU_POLARITY_CHANGE is sent when the guest successfuly 
+uses the PTF(2) instruction to request a polarization change.
+In that case, the admin is supposed to modify the CPU provisioning
+accordingly.
+
+Testing
+=======
+
+To use the QEMU patches, you will need Linux V6-rc1 or newer,
+or use the following Linux mainline patches:
+
+f5ecfee94493 2022-07-20 KVM: s390: resetting the Topology-Change-Report    
+24fe0195bc19 2022-07-20 KVM: s390: guest support for topology function     
+0130337ec45b 2022-07-20 KVM: s390: Cleanup ipte lock access and SIIF fac.. 
+
+Currently this code is for KVM only, I have no idea if it is interesting
+to provide a TCG patch. If ever it will be done in another series.
+
+This series provide 12 avocado tests using Fedora-35 kernel and initrd
+image.
+
+Documentation
+=============
+
+To have a better understanding of the S390x CPU Topology and its
+implementation in QEMU you can have a look at the documentation in the
+last patch of this series.
+
+The admin will want to match the host and the guest topology, taking
+into account that the guest does not recognize multithreading.
+Consequently, two vCPU assigned to threads of the same real CPU should
+preferably be assigned to the same socket of the guest machine.
+
+
+Regards,
+Pierre
+
+Pierre Morel (20):
+  s390x/cpu topology: add s390 specifics to CPU topology
+  s390x/cpu topology: add topology entries on CPU hotplug
+  target/s390x/cpu topology: handle STSI(15) and build the SYSIB
+  s390x/sclp: reporting the maximum nested topology entries
+  s390x/cpu topology: resetting the Topology-Change-Report
+  s390x/cpu topology: interception of PTF instruction
+  target/s390x/cpu topology: activate CPU topology
+  qapi/s390x/cpu topology: set-cpu-topology qmp command
+  machine: adding s390 topology to query-cpu-fast
+  machine: adding s390 topology to info hotpluggable-cpus
+  qapi/s390x/cpu topology: CPU_POLARIZATION_CHANGE qapi event
+  qapi/s390x/cpu topology: query-cpu-polarization qmp command
+  docs/s390x/cpu topology: document s390x cpu topology
+  tests/avocado: s390x cpu topology core
+  tests/avocado: s390x cpu topology polarisation
+  tests/avocado: s390x cpu topology entitlement tests
+  tests/avocado: s390x cpu topology test dedicated CPU
+  tests/avocado: s390x cpu topology test socket full
+  tests/avocado: s390x cpu topology dedicated errors
+  tests/avocado: s390x cpu topology bad move
+
+ MAINTAINERS                         |  10 +
+ docs/devel/index-internals.rst      |   1 +
+ docs/devel/s390-cpu-topology.rst    | 170 ++++++++++
+ docs/system/s390x/cpu-topology.rst  | 240 ++++++++++++++
+ docs/system/target-s390x.rst        |   1 +
+ qapi/machine-common.json            |  22 ++
+ qapi/machine-target.json            | 113 +++++++
+ qapi/machine.json                   |  30 +-
+ include/hw/boards.h                 |  10 +-
+ include/hw/qdev-properties-system.h |   4 +
+ include/hw/s390x/cpu-topology.h     |  80 +++++
+ include/hw/s390x/s390-virtio-ccw.h  |   6 +
+ include/hw/s390x/sclp.h             |   4 +-
+ target/s390x/cpu.h                  |  83 +++++
+ target/s390x/kvm/kvm_s390x.h        |   1 +
+ hw/core/machine-hmp-cmds.c          |   6 +
+ hw/core/machine-smp.c               |  48 ++-
+ hw/core/machine.c                   |   4 +
+ hw/core/qdev-properties-system.c    |  13 +
+ hw/s390x/cpu-topology.c             | 475 ++++++++++++++++++++++++++++
+ hw/s390x/s390-virtio-ccw.c          |  27 +-
+ hw/s390x/sclp.c                     |   5 +
+ softmmu/vl.c                        |   6 +
+ target/s390x/cpu-sysemu.c           |  13 +
+ target/s390x/cpu.c                  |  11 +
+ target/s390x/cpu_models.c           |   1 +
+ target/s390x/kvm/kvm.c              |  42 ++-
+ target/s390x/kvm/stsi-topology.c    | 310 ++++++++++++++++++
+ hw/s390x/meson.build                |   1 +
+ qapi/meson.build                    |   1 +
+ qemu-options.hx                     |   7 +-
+ target/s390x/kvm/meson.build        |   3 +-
+ tests/avocado/s390_topology.py      | 415 ++++++++++++++++++++++++
+ 33 files changed, 2143 insertions(+), 20 deletions(-)
+ create mode 100644 docs/devel/s390-cpu-topology.rst
+ create mode 100644 docs/system/s390x/cpu-topology.rst
+ create mode 100644 qapi/machine-common.json
+ create mode 100644 include/hw/s390x/cpu-topology.h
+ create mode 100644 hw/s390x/cpu-topology.c
+ create mode 100644 target/s390x/kvm/stsi-topology.c
+ create mode 100644 tests/avocado/s390_topology.py
+
 -- 
-2.41.0
+2.31.1
+
+Since v20:
+
+- changed name of target/s390/kvm/cpu_topology to
+  target/s390/kvm/stsi-topology
+  (Thomas, Cedric)
+
+- moved the TLE list head from a global to a local in
+  insert_stsi_15_1_x()
+  (Nina)
+
+- cleaning and merging some of the avocado tests
+  (Nina)
+
+- Several cleanings
+  (Cedric, Thomas, Nina)
+
+- moved setting of entitlement and dedicated from disapeared
+  cpustate_to_cpuinfo_s390() to new s390_query_cpu_fast()
+
+- small changes to documentation to reflect last changes using
+  enum instead of int for polarization.
+  0 -> horizontal and 1 -> vertical
+
+Since v19:
+
+- use enum to specify the entitlement
+  (Nina)
+
+- Change default entitlement to "auto"
+
+- suppress skip_basis in avocado tests
+  (after comment from Cedric)
+
+- Correction of the documentation
+  (Cedric)
+
+- better code organization for s390_topology_add_core_to_socket
+  and s390_socket_nb
+  (Cedric)
+
+- Changed Copyright to respect IBM policy
+  (Nina)
+
+- set vertical_polarization back into s390_topology
+  (Nina)
+
+Since v18:
+
+- Changed default entitlement to S390_CPU_ENTITLEMENT__MAX
+  because no default can be correct.
+
+- added polarization entry to the S390CcwMachineState
+  which allow to suppress shadow entitlement
+
+- Suppress shadow entitlement
+  (Nina)
+
+- Added query-cpu-polarization
+
+- Added more avocado tests
+
+- modified cpu_hierarchy_to_string to look better
+  (Nina)
+
+Since v17:
+
+- bug correction in handling PTF
+
+- added avocado tests
+  (Thomas)
+
+- Change comments on QEMU machine to 8.1
+
+Since v16:
+
+- documentation, split, bug correction and rephrasing
+  (Nina, Thomas)
+
+- create machine-common.json
+
+- use of entitlement_shadow to keep track of the entitlement
+
+- adding drawers and books to query-hotpluggable-cpus
+
+- keep hmp interface for set-cpu-topology for a future series
+
+Since v15:
+
+- Use Enum for polarity and entitlement
+  (Nina)
+
+- move kvm_vm_enable_cap(KVM_CAP_S390_CPU_TOPOLOGY) to
+  kvm_arch_init()
+  (Thomas)
+
+- Make all CPU attributes optional for set-cpu-topology monitor
+  command
+  (Thomas, Nina)
+
+- Change use of the prefix "x-" to the use of feature unstable
+  to declare set-cpu-topology as unstable.
+  (Nina)
+
+- Make CPU_POLARITY_CHANGE even as unstable
+  (Nina)
+
+- Documentation update
+  (Thomas, Nina)
+
+Since v14:
+
+- move the ordering of TLE to just before filling the SYSIB,
+  optimize TLE ordering to be done on need only.
+  (Cedric in previous series)
+
+- remove 'query-topology' and instead extend 'query-cpus-fast'
+  (Daniel)
+
+- rename POLARITY_CHANGE to CPU_POLARITY_CHANGE
+  (Thomas)
+
+- Divers bugs correction and doc changes
+  (Thomas, Nina)
+
+- Separate topology and entitlement, simplify pft handling
+  (Nina)
+
+- add the resetting of all CPU to horizontal polarity
+  once implementing PTF interpretation
+
+Since v13:
+
+- Suppress the topology device to simplify the code
+  (Cedric)
+
+- moved reset of MTCR from device reset into subsystem
+  reset and removed previous reviewed-by from Nico and
+  Janis
+
+- No need for Migration
+
+- No need for machine dependencies
+  (Christian, Thomas)
+
+- Adding all features, drawer/book and dynamic
+  (Cedric)
+
+
+- since v12
+
+- suppress new CPU flag "disable-topology" just use ctop
+
+- no use of special fields in CCW machine or in CPU
+
+- modifications in documentation
+
+- insert documentation in tree
+  (Cedric)
+
+- moved cpu-topology.c from target/s390 to target/s390/kvm
+  to compile smoothly (without topology) for TCG
+  (Cedric)
+
+- since v11
+
+- new CPU flag "disable-topology"
+  I would have take "topology" if I was able to have
+  it false on default.
+  (Christian, Thomas)
+
+- Build the topology during the interception of the
+  STSI instruction.
+  (Cedric)
+
+- return CC3 in case the calculated SYSIB length is
+  greater than 4096.
+  (Janis)
+
+- minor corections on documentation
+
+- since v10
+
+- change machine attribute "topology-disable" to "topology"
+  (Cedric)
+- Add preliminary patch for machine properties
+  (Cedric)
+- Use next machine as 7.2
+  (Cedric / Connie)
+- Remove unecessary mutex
+  (Thomas)
+- use ENOTSUP return value for kvm_s390_topology_set_mtcr()
+  (Cedric)
+- Add explanation on container and cpu TLEs
+  (Thomas)
+- use again cpu and socket count in topology structure
+  (Cedric)
+- Suppress the S390TopoTLE structure and integrate
+  the TLE masks to the socket structure.
+  (-)
+- the STSI instruction now finds the topology from the machine
+  (Cedric)
+
+- since v9
+
+- remove books and drawers
+
+- remove thread denying and replace with a merge
+  of cores * threads to specify the CPUs available
+  to the guest
+
+- add a class option to avoid topology on older
+  machines
+  (Cedric)
+
+- Allocate a SYSIB buffer of the maximal length to
+  avoid overflow.
+  (Nico, Janis)
+
+- suppress redundancy of smp parameters in topology
+  and use directly the machine smp structure
+
+- Early check for topology support
+  (Cedric)
+
+- since v8
+
+- Linux patches are now mainline
+
+- simplification of the implementation
+  (Janis)
+
+- Migration, new machine definition
+  (Thomas)
+
+- Documentation
+
+- since v7
+
+- Coherence with the Linux patch series changes for MTCR get
+  (Pierre)
+
+- check return values during new CPU creation
+  (Thomas)
+
+- Improving codding style and argument usages
+  (Thomas)
+
+- since v6
+
+- Changes on smp args in qemu-options
+  (Daniel)
+  
+- changed comments in machine.jason
+  (Daniel)
+ 
+- Added reset
+  (Janosch)
+
+- since v5
+
+- rebasing on newer QEMU version
+
+- reworked most lines above 80 characters.
+
+- since v4
+
+- Added drawer and books to topology
+
+- Added numa topology
+
+- Added documentation
+
+- since v3
+
+- Added migration
+  (Thomas)
+
+- Separated STSI instruction from KVM to prepare TCG
+  (Thomas)
+
+- Take care of endianess to prepare TCG
+  (Thomas)
+
+- Added comments on STSI CPU container and PFT instruction
+  (Thomas)
+
+- Moved enabling the instructions as the last patch
+  (Thomas)
 
 
