@@ -2,50 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3516374369D
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 10:11:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2250C7436A9
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 10:11:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qF98f-0003Yn-M1; Fri, 30 Jun 2023 04:05:58 -0400
+	id 1qF98s-00044u-SU; Fri, 30 Jun 2023 04:06:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qF97r-0002kV-S2
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 04:05:09 -0400
-Received: from isrv.corpit.ru ([86.62.121.231])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qF97p-0000va-86
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 04:05:07 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 3E6941043C;
- Fri, 30 Jun 2023 11:05:02 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id B5889109D8;
- Fri, 30 Jun 2023 11:05:01 +0300 (MSK)
-Message-ID: <8a4605f1-fb1e-2243-5dff-bf1c33e11360@tls.msk.ru>
-Date: Fri, 30 Jun 2023 11:05:01 +0300
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qF98h-0003bR-8e
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 04:05:59 -0400
+Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qF98R-0001Dd-DA
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 04:05:45 -0400
+Received: by mail-ej1-x634.google.com with SMTP id
+ a640c23a62f3a-9891c73e0fbso274281066b.1
+ for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 01:05:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1688112341; x=1690704341;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=W548W94gIUu0+BCL3qmZZRt6kia8R4D6w9rTpVoB54E=;
+ b=rDoRNA8g9LkDkME65XMOtgtbGNa18T3HmmYdeksI4bBRo1zfZV2OBZoKtq708q+FBx
+ ioeVq1H/JglA9rCllshVJDnHLvANy/rzN3zOtJxfM/q9tqKGzF98A7CV4G5Xq1j1+fnK
+ relzBY8LJC+hiyCApuzJagYVTRQ0VbE5uUf4NhPB66Ly+W10TURpFff08gWiz6y2qdpP
+ Glk58ipWgXOx5fsmQLT2zCp4IcsZ/HLj/IcE7DXC1hzBus/YTYod5KX/BZ2jaJvaQXk+
+ +whryVEn3Sz8lJZUeOF7yOBp9+LWnRkn6jCqjSLw9qck60ZhouCXhIRgsPad0M0Zr9tW
+ mQ5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1688112341; x=1690704341;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=W548W94gIUu0+BCL3qmZZRt6kia8R4D6w9rTpVoB54E=;
+ b=g/KCLS18/glIBiFXZyMYpOLKRCtcl3G0639XRxaTL4BVOYWbpaLfyubNghMnjkXOgP
+ 7naZ8E2A+B94KtS0Xy+gu+vvos1DfBITbyaOmWKqTWTV6aNCsU+LymtBqfrGChF1sy2a
+ Xe2i0OO4Q7U7Icfsc+OkZdF02C+klcO0CDR174CU/kqZCu8Ew/af6Rxpd6gI9SDvuEq+
+ vwTJUIlWHWp3PxkBY0YOk7q4l7SSROv95+ZRUqMZR3xQBO8zUnng6LIrokHTfJQTRKfi
+ 95I1az5JDJtT1KvOTWpKgSTPG8KaGA18fnBIVFxa+5EFA9SaX1wMd3+b74DzKqMoA8oj
+ tngA==
+X-Gm-Message-State: ABy/qLZ3dy5QXxFUFjuWknA4HeXW0B9lnBgCDdynUirJ6JLCGApVKSY3
+ NT2GsnWsYicVyav0EmehsQw=
+X-Google-Smtp-Source: APBJJlGQgvHJJleDfcXmbEhxCodIf5NF+jBIVZef5dv1E0voP2B1/gg4F/Ep9yW9haB1kJRVUkSrwQ==
+X-Received: by 2002:a17:906:7fc5:b0:991:7874:e882 with SMTP id
+ r5-20020a1709067fc500b009917874e882mr1955534ejs.3.1688112340774; 
+ Fri, 30 Jun 2023 01:05:40 -0700 (PDT)
+Received: from [127.0.0.1] (dynamic-089-012-131-254.89.12.pool.telefonica.de.
+ [89.12.131.254]) by smtp.gmail.com with ESMTPSA id
+ e23-20020a170906045700b00992c92af6f4sm983307eja.144.2023.06.30.01.05.40
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 30 Jun 2023 01:05:40 -0700 (PDT)
+Date: Fri, 30 Jun 2023 08:05:29 +0000
+From: Bernhard Beschow <shentey@gmail.com>
+To: Olaf Hering <olaf@aepfle.de>
+CC: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ John Snow <jsnow@redhat.com>, xen-devel@lists.xenproject.org,
+ Stefano Stabellini <sstabellini@kernel.org>
+Subject: Re: [PATCH v2] piix: fix regression during unplug in Xen HVM domUs
+In-Reply-To: <20230630092921.392b302d.olaf@aepfle.de>
+References: <20210317070046.17860-1-olaf@aepfle.de>
+ <4441d32f-bd52-9408-cabc-146b59f0e4dc@redhat.com>
+ <20210325121219.7b5daf76.olaf@aepfle.de>
+ <dae251e1-f808-708e-902c-05cfcbbea9cf@redhat.com>
+ <20230509225818.GA16290@aepfle.de> <20230626231901.5b5d11c1.olaf@aepfle.de>
+ <c939b695-2b68-085a-0f19-108ecdcc1a05@redhat.com>
+ <5DB37FA5-41DF-4ED6-8C8A-CDDD6F276F42@gmail.com>
+ <20230627140740.2736f6e8.olaf@aepfle.de>
+ <4F5609FD-4A89-4450-89E2-3311CC5A9317@gmail.com>
+ <20230630092921.392b302d.olaf@aepfle.de>
+Message-ID: <367317C5-DB65-40EF-B45B-97E0E802A994@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH 2/2] accel/tcg: add assert() check in
- tb_invalidate_phys_page_range__locked()
-Content-Language: en-US
-To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- richard.henderson@linaro.org, clegoate@redhat.com, hsp.cat7@gmail.com,
- qemu-devel@nongnu.org
-References: <20230629082522.606219-1-mark.cave-ayland@ilande.co.uk>
- <20230629082522.606219-3-mark.cave-ayland@ilande.co.uk>
-From: Michael Tokarev <mjt@tls.msk.ru>
-In-Reply-To: <20230629082522.606219-3-mark.cave-ayland@ilande.co.uk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -69
-X-Spam_score: -7.0
-X-Spam_bar: -------
-X-Spam_report: (-7.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.093,
- RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::634;
+ envelope-from=shentey@gmail.com; helo=mail-ej1-x634.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -62,40 +101,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-29.06.2023 11:25, Mark Cave-Ayland wrote:
-> Add an assert() check in tb_invalidate_phys_page_range__locked() to ensure that
-> both the start and last addresses are within the same target page. Note that
-> due to performance concerns the check is only enabled when QEMU is configured
-> with --enable-debug-tcg.
 
-Performance concerns? That's two ANDs and on compare, - is it really that performance
-critical?
 
-I'm just asking, I dunno.
+Am 30=2E Juni 2023 07:29:21 UTC schrieb Olaf Hering <olaf@aepfle=2Ede>:
+>Wed, 28 Jun 2023 09:27:16 +0000 Bernhard Beschow <shentey@gmail=2Ecom>:
+>
+>> Would you mind sending a patch fixing the BMIBA register to be reset as=
+ 32 bit?
+>
+>Will do so next week=2E
 
-Thanks,
+Great! Perhaps it could then be picked up by maintainers together with my =
+other IDE changes=2E
 
-/mjt
+>
+>Are the specs for this chipset available,
 
-> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-> ---
->   accel/tcg/tb-maint.c | 4 ++++
->   1 file changed, 4 insertions(+)
-> 
-> diff --git a/accel/tcg/tb-maint.c b/accel/tcg/tb-maint.c
-> index 33ea1aadd1..8cd730dcb0 100644
-> --- a/accel/tcg/tb-maint.c
-> +++ b/accel/tcg/tb-maint.c
-> @@ -1092,6 +1092,10 @@ tb_invalidate_phys_page_range__locked(struct page_collection *pages,
->       TranslationBlock *current_tb = retaddr ? tcg_tb_lookup(retaddr) : NULL;
->   #endif /* TARGET_HAS_PRECISE_SMC */
->   
-> +#ifdef CONFIG_DEBUG_TCG
-> +    assert((last & TARGET_PAGE_MASK) == (start & TARGET_PAGE_MASK));
-> +#endif
-> +
->       /*
->        * We remove all the TBs in the range [start, last].
->        * XXX: see if in some cases it could be faster to invalidate all the code
+Yes=2E Have a look for piix3/piix4 here: https://www=2Eintel=2Ecom/design/=
+archives/chipsets/440/index=2Ehtm
 
+> does this address really need
+>to be accessed in quantities of u32, or is perhaps u16 required? I guess
+>for this specific bug pci_set_word may work as well=2E
+>
+>Either way, commit e6a71ae327a388723182a504bb253777ec36869b was wrong=2E
+>Does the comment added in this commit mean, the quantity is really u32?
+
+As per the datasheet (and per the comment in the source code) the BMIBA re=
+gister is 32 bit=2E Search the datasheet for the register name and you'll a=
+lso find its default value which it holds after reset=2E
+
+Best regards,
+Bernhard
+
+>
+>
+>Olaf
 
