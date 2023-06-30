@@ -2,76 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AA477435E8
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 09:38:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F7D67435EB
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 09:38:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qF8hP-00023o-1C; Fri, 30 Jun 2023 03:37:48 -0400
+	id 1qF8hO-00023q-6K; Fri, 30 Jun 2023 03:37:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qF8hE-00022c-8P
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 03:37:36 -0400
-Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qF8hF-000232-Co
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 03:37:38 -0400
+Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qF8hC-0005PN-FP
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 03:37:35 -0400
-Received: by mail-ej1-x636.google.com with SMTP id
- a640c23a62f3a-991f956fb5aso168596866b.0
- for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 00:37:34 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qF8hD-0005Pe-LJ
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 03:37:37 -0400
+Received: by mail-ej1-x62e.google.com with SMTP id
+ a640c23a62f3a-98df6bc0048so182946966b.1
+ for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 00:37:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688110652; x=1690702652;
+ d=gmail.com; s=20221208; t=1688110653; x=1690702653;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=3zxuFy1nKO4CI4FNaygwtRvNzJbOGIkhIVlB0FND1xI=;
- b=Xr3EPxkfgc/aI13yvkPkvJj7vcrFYNIYfIX92iYccNiEANusSUOZj2q3jRVz+VjPwV
- AJaTgzsOy9151Tglz16uFwMUB1u2irpGB2w39R0aL4a6tBqdetr8WM2JhbeCppkOrQbD
- Of1Yk8vQNZo329ZCvRTMBscj+2PU1i/NeaCY3k0hgl0eTnnK6gW/yJ8IWwzQuIWQKX5u
- ihf2nMXDWJghKrebEL+7uJlCpRXSHWraxD4WewDYFbKXZGLVEs6LnNdxNI3I9/CY7QiJ
- lutBEZrAckARU44+aAzA2subsba+PkfGd5JAe2E0d44VphsMZwuh2yp1XDWV1iXR8vvO
- Cevg==
+ bh=rtJ3y6eIvCQ3GWIbAZbSOrnzKk4wFNnFByJB8omAiJU=;
+ b=BYXhWi7zJJ1U515ad4My5PHxjy5vmdg4AfJZS7xKk9IIU4NC3ngdxOSBkIa3FCAr7R
+ sMEl/FBlnRa1WEL5DjTZyZBLct3xEB2kdjBIN3KPbfxou4dso0oOCHB+whMGHS/Q/iBJ
+ U1cpLrmnZFVtngS11egm59hKRpQGoEXgVDZkTEkTT/DWU11rSJD53MWyVo8mQEzkugW7
+ tU5iQd535wbWKklIMHGAjDExfIY6cqK0PUVA+3vid1LfFdn2gld1+5WiwKCc110slgsB
+ wGKuK1aXU/1LINDZTt6qkjGiTVId7qkfNb+ye8DMh8L+DSDK+f1o+WaEH4kOkCU70a6V
+ 4fqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688110652; x=1690702652;
+ d=1e100.net; s=20221208; t=1688110653; x=1690702653;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=3zxuFy1nKO4CI4FNaygwtRvNzJbOGIkhIVlB0FND1xI=;
- b=DzUCGoSb7gBxkI8F+JmgDgskP6Jp5Mg27OYSy6cTGB43oJItA3UyVPlBu9oJOKjgcb
- McQHp3JbbgUY+48xjIsTMKFdQQf4v83yxQQax5MLUq92yi/BAuicgc/myMGDVF8vKZCi
- z+tAriv58CEQtjIY4V5d7wrICvRpR4IPFAzZt7xKF6nkyunS3zIRUR5bM/9WWOFjBKgl
- nHJCLA+3yunP368YJ5c1wO1mgB6DxOZ51mXjpd7XeRHP3j1oyNkWG32lGU+oF1a/jEV+
- RjuE5GxLZMlMTGmpckapJ2tESfDa/pVDg2SBRem/R6nECx3gYdAu7F0vcqo3wD77evpl
- TfdA==
-X-Gm-Message-State: ABy/qLZhdIrqK6SGOjqrOhoWra1QOLc7kD7qd2raNjFiNK8NcX9TwpCx
- QQGBWPuFNHe49Q+5KE3ZP2JluyBmXH0=
-X-Google-Smtp-Source: APBJJlGZpb7VEK94oJSk+fOZrzfelapHmja8xwo2Qg7UU9vcKxtLN832ZNePWCqah7O/Mi80Pwxtmg==
-X-Received: by 2002:a17:906:fa89:b0:988:7d1:f5a5 with SMTP id
- lt9-20020a170906fa8900b0098807d1f5a5mr1231593ejb.28.1688110652512; 
- Fri, 30 Jun 2023 00:37:32 -0700 (PDT)
+ bh=rtJ3y6eIvCQ3GWIbAZbSOrnzKk4wFNnFByJB8omAiJU=;
+ b=mBbW/BCN1OHDvEN6hvW2mHI2Fc6FnTRFdkvcb0AAqDhbpC6F68UGnd0/S9rFbpJ0Ko
+ EaXQV42KzAy+8jT5q8udWPmUc9Ha4a+HF+9yB3kICg11hIW0z0mae68ALsydhh6NtN6I
+ N0OSf3jmbrXNadx0vpH7HDOPVmPawIoNuV3WiApoFP/Y6I230sLCwBq5N2CIKI+TEiSw
+ 4mxsAR1NwjGZ1AAuqwzxr04T0WJQ3qe7xBcLQRhh4XBlUgVpeLekrvwlQfGezvnGulkN
+ V2scSb7d7nMugkyNoAwvmtqMOVDiwvUgZvVgONZrEUixG1yBxDcV9w7ghrkv2wWOcWb8
+ 61aw==
+X-Gm-Message-State: ABy/qLYaM+TKtZV+w4vyssegurjP3Eg0J/SPk6/x8OglqKCbiyMTz0NA
+ Uh++ny1Ej2K6p2i6KY3L1L7Q/H4QV30=
+X-Google-Smtp-Source: APBJJlEZVfoFTQ9m3q/vjUKcc93qZdylhN3nPdm9tbphub81EuTbE72vI8qSevpgd9GEcMometMjZA==
+X-Received: by 2002:a17:906:16c9:b0:991:e12e:9855 with SMTP id
+ t9-20020a17090616c900b00991e12e9855mr1213591ejd.12.1688110653503; 
+ Fri, 30 Jun 2023 00:37:33 -0700 (PDT)
 Received: from archlinux.. (dynamic-089-012-131-254.89.12.pool.telefonica.de.
  [89.12.131.254]) by smtp.gmail.com with ESMTPSA id
- k19-20020a1709061c1300b00988b32160dfsm7625578ejg.222.2023.06.30.00.37.31
+ k19-20020a1709061c1300b00988b32160dfsm7625578ejg.222.2023.06.30.00.37.32
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 30 Jun 2023 00:37:32 -0700 (PDT)
+ Fri, 30 Jun 2023 00:37:33 -0700 (PDT)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Eduardo Habkost <eduardo@habkost.net>, Paolo Bonzini <pbonzini@redhat.com>,
  "Michael S. Tsirkin" <mst@redhat.com>,
- Bernhard Beschow <shentey@gmail.com>, Igor Mammedov <imammedo@redhat.com>
-Subject: [PATCH v3 04/17] hw/pci/pci_host: Introduce PCI_HOST_BYPASS_IOMMU
- macro
-Date: Fri, 30 Jun 2023 09:37:07 +0200
-Message-ID: <20230630073720.21297-5-shentey@gmail.com>
+ Bernhard Beschow <shentey@gmail.com>, Igor Mammedov <imammedo@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v3 05/17] hw/pci-host/q35: Initialize PCI_HOST_BYPASS_IOMMU
+ property from board code
+Date: Fri, 30 Jun 2023 09:37:08 +0200
+Message-ID: <20230630073720.21297-6-shentey@gmail.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230630073720.21297-1-shentey@gmail.com>
 References: <20230630073720.21297-1-shentey@gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::636;
- envelope-from=shentey@gmail.com; helo=mail-ej1-x636.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
+ envelope-from=shentey@gmail.com; helo=mail-ej1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,42 +96,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Introduce a macro to avoid copy and pasting strings which can easily
-cause typos.
+The Q35 PCI host already has a PCI_HOST_BYPASS_IOMMU property. However, the
+host initializes this property itself by accessing global machine state,
+thereby assuming it to be a PC machine. Avoid this by having board code
+set this property.
 
-Suggested-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 Reviewed-by: Igor Mammedov <imammedo@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/pci/pci_host.h | 2 ++
- hw/pci/pci_host.c         | 2 +-
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ hw/i386/pc_q35.c  | 2 ++
+ hw/pci-host/q35.c | 3 +--
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/include/hw/pci/pci_host.h b/include/hw/pci/pci_host.h
-index c6f4eb4585..e52d8ec2cd 100644
---- a/include/hw/pci/pci_host.h
-+++ b/include/hw/pci/pci_host.h
-@@ -31,6 +31,8 @@
- #include "hw/sysbus.h"
- #include "qom/object.h"
+diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
+index 4edc0b35f4..852250e8cb 100644
+--- a/hw/i386/pc_q35.c
++++ b/hw/i386/pc_q35.c
+@@ -230,6 +230,8 @@ static void pc_q35_init(MachineState *machine)
+                             x86ms->below_4g_mem_size, NULL);
+     object_property_set_int(phb, PCI_HOST_ABOVE_4G_MEM_SIZE,
+                             x86ms->above_4g_mem_size, NULL);
++    object_property_set_bool(phb, PCI_HOST_BYPASS_IOMMU,
++                             pcms->default_bus_bypass_iommu, NULL);
+     sysbus_realize_and_unref(SYS_BUS_DEVICE(phb), &error_fatal);
  
-+#define PCI_HOST_BYPASS_IOMMU "bypass-iommu"
+     /* pci */
+diff --git a/hw/pci-host/q35.c b/hw/pci-host/q35.c
+index 0604464074..d2830cee34 100644
+--- a/hw/pci-host/q35.c
++++ b/hw/pci-host/q35.c
+@@ -66,8 +66,7 @@ static void q35_host_realize(DeviceState *dev, Error **errp)
+                                 s->mch.pci_address_space,
+                                 s->mch.address_space_io,
+                                 0, TYPE_PCIE_BUS);
+-    pci->bypass_iommu =
+-        PC_MACHINE(qdev_get_machine())->default_bus_bypass_iommu;
 +
- #define TYPE_PCI_HOST_BRIDGE "pci-host-bridge"
- OBJECT_DECLARE_TYPE(PCIHostState, PCIHostBridgeClass, PCI_HOST_BRIDGE)
- 
-diff --git a/hw/pci/pci_host.c b/hw/pci/pci_host.c
-index dfd185bbb4..7af8afdcbe 100644
---- a/hw/pci/pci_host.c
-+++ b/hw/pci/pci_host.c
-@@ -232,7 +232,7 @@ const VMStateDescription vmstate_pcihost = {
- static Property pci_host_properties_common[] = {
-     DEFINE_PROP_BOOL("x-config-reg-migration-enabled", PCIHostState,
-                      mig_enabled, true),
--    DEFINE_PROP_BOOL("bypass-iommu", PCIHostState, bypass_iommu, false),
-+    DEFINE_PROP_BOOL(PCI_HOST_BYPASS_IOMMU, PCIHostState, bypass_iommu, false),
-     DEFINE_PROP_END_OF_LIST(),
- };
+     qdev_realize(DEVICE(&s->mch), BUS(pci->bus), &error_fatal);
+ }
  
 -- 
 2.41.0
