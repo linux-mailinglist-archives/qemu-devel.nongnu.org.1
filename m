@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93D4A7442CD
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 21:40:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ABE147442D1
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 21:41:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFJyA-0005cg-PZ; Fri, 30 Jun 2023 15:39:50 -0400
+	id 1qFJzE-00071X-Jv; Fri, 30 Jun 2023 15:40:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qFJy8-0005bG-LL; Fri, 30 Jun 2023 15:39:48 -0400
-Received: from mail-oa1-x2c.google.com ([2001:4860:4864:20::2c])
+ id 1qFJyw-0006jH-13; Fri, 30 Jun 2023 15:40:39 -0400
+Received: from mail-oo1-xc2f.google.com ([2607:f8b0:4864:20::c2f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qFJy6-0007xF-Rl; Fri, 30 Jun 2023 15:39:48 -0400
-Received: by mail-oa1-x2c.google.com with SMTP id
- 586e51a60fabf-1b09276ed49so2105455fac.1; 
- Fri, 30 Jun 2023 12:39:46 -0700 (PDT)
+ id 1qFJyr-0008F1-H9; Fri, 30 Jun 2023 15:40:36 -0400
+Received: by mail-oo1-xc2f.google.com with SMTP id
+ 006d021491bc7-560b56b638eso1435548eaf.0; 
+ Fri, 30 Jun 2023 12:40:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688153985; x=1690745985;
+ d=gmail.com; s=20221208; t=1688154009; x=1690746009;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=2QnK9uXG7gSxzChHGhP+74LWTkyab8Q8+NkTca9KBXs=;
- b=XwdoLNlhdykOs77CrS6+cY4DOszUzN1tBmIhWrJ0Nkl11GiXWOQSnJ32E+7QAfGRRT
- QSQm/aPycfhXC4eoz+xyYSL9VSLOJZqr8CizfNQQSsE7wN28YJ4tWFLVOQfFXdjFYIw+
- gCosRxcYiQ3MYE8BdZYlIk5f5BjsXf+4/u98U7nTs4B7B8wjvjSp16lzRRkuxhyYMadU
- /BAL/kyw7ZgaC0fw6asrZssMbgNku2jAJNAkjHucPmAm8fha8jVFh4/YTL1U6ErUoeUb
- vXhdVWxOxDQO+yJA3QcCGRisqlDHb6PNUKB6j7yaEAt2QpRJSrvGcpvw12IoQrXB2cAI
- LvCQ==
+ bh=DREDO8oZuPwjKzt+3AECgEVTh3edrujUdZacXoV5Vfc=;
+ b=Ik/e7qbwT/+sDwbA7aq1jtBCOTBBGEMy6nW561VwHMK8wFz1NJrj869eD6+8lZAVcu
+ vcEjpECMiUSNy7aF3/ov0k4duwslodrTgZzhg8udNLa3YLi5mnCbjFefCk/ErDm4eftu
+ NuhJWTsm7ncCoUrNsod8Qa0VzGQhJQQ5z9U3VJ9mh8q9ekIi24o6LUb0guTh4gkIHli6
+ D88bTkgDuHnXsEuSARL6vksz2V9QnjE48SjtofAd9pCY0CvYMiCAD+QnQeRWoUmRIs+n
+ RDF5IhUIM1skBmlRIiaqRSPIyXrQH5ZJ5viqmt+zaecWblOS/IoRXjJVQ6OVUignNv+F
+ XesA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688153985; x=1690745985;
+ d=1e100.net; s=20221208; t=1688154009; x=1690746009;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=2QnK9uXG7gSxzChHGhP+74LWTkyab8Q8+NkTca9KBXs=;
- b=YvjI30XjH5wk1HP8lDe2FaBDGYqKpy5BH8NatrMxHGsBPnI6Rpf8cvZw6Rf3ZHbg+9
- t7kZpRziMHWN2jeW+vjGqGXLoDEb91OdQho8pAsUBlGdg+tZTbPflwhMt6fFTKgmL6ZU
- yB0lauKLCbot6XW9Md/uG4GMPcUZjqS9UE6oMwlNUjY2ET2U/fphe+zId19CnU0XCN45
- +K2LNdnjQYTpkkF7gsIXRR6nenFIIysD7AlrPgFrUGrKZ/Zt1nvSG3JaokYOki7y3gK/
- pu5Go5NAz1FBcK/9ZjpCEKchj9l1KnpRuSkIPMpR2x+ig8rCkl+o4kcMdsHDoM5bCvfu
- txww==
-X-Gm-Message-State: AC+VfDw/ZbJT93rddCZvIzb6wohI491viWDAvgJR0wftwDUbMQm0hJh3
- cZmV1Rhf+xyawFKSSCjJ9Ng=
-X-Google-Smtp-Source: ACHHUZ5QmtvUPY1N/6t9mm9VBmDEeB9R0s0lGq5FCWl2yMD+Pgd/y4M+VlRJtVB0y+u18GfVp4JZfQ==
-X-Received: by 2002:a05:6870:fba8:b0:1b0:e939:8ab1 with SMTP id
- kv40-20020a056870fba800b001b0e9398ab1mr4918816oab.15.1688153984819; 
- Fri, 30 Jun 2023 12:39:44 -0700 (PDT)
+ bh=DREDO8oZuPwjKzt+3AECgEVTh3edrujUdZacXoV5Vfc=;
+ b=S9P9KXwFjUJHguiW7ccjKV3ZAzJY1UD30UPKyU+XKSsr4t6CWsigF/j/iqBHxbD1/+
+ sQZOS6eFMuUQ/TVxle6Z70JQ8jcGOCSTU0RbvGkP7QapJAhJdLW2QP5esIyBQtW6oJXw
+ 1h18gZF3A+8btypju/EGpITTCCmIqSNSnDcWtNXRaFO3prVsau/SsI7TiyXDm6ygEvE3
+ bMy/Ii6SA1up+4uyavn1pb4Pqzo7cl/WGzg3U7cMeu2O1OTu3K1lQKL997jz16PJQmK+
+ RSCoNu7XwslGhDXOOdWOWjrsbsMk1RK0vdTylt2dXH8nOXQX8TyNSin+duXrd0BcA4sI
+ WplQ==
+X-Gm-Message-State: AC+VfDwb5wcR/m8B80QeFDm1L1veqVxUaKTVuZnSre3NVIejCK0JK4Yy
+ o9rorkE8HsA5wsbddQxKNOA=
+X-Google-Smtp-Source: ACHHUZ6y6c/ZzwH6mwFOIgsfRYJcIEyGng3XajDstQVN4nQKI6oQq6qVN4VLf7IPXn5KkP4MG8vYEA==
+X-Received: by 2002:a05:6820:218:b0:560:bc01:24e2 with SMTP id
+ bw24-20020a056820021800b00560bc0124e2mr5056442oob.4.1688154009420; 
+ Fri, 30 Jun 2023 12:40:09 -0700 (PDT)
 Received: from [192.168.68.107] (201-69-66-110.dial-up.telesp.net.br.
  [201.69.66.110]) by smtp.gmail.com with ESMTPSA id
- j5-20020a4adf45000000b0056351d2841asm4643862oou.20.2023.06.30.12.39.43
+ m19-20020a4ae3d3000000b0056520f122eesm3626460oov.44.2023.06.30.12.40.07
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 30 Jun 2023 12:39:44 -0700 (PDT)
-Message-ID: <136c1e78-89f5-499a-7299-593b2cac3fbe@gmail.com>
-Date: Fri, 30 Jun 2023 16:39:41 -0300
+ Fri, 30 Jun 2023 12:40:09 -0700 (PDT)
+Message-ID: <917b0537-10da-f6c7-c756-523382b31872@gmail.com>
+Date: Fri, 30 Jun 2023 16:40:06 -0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
-Subject: Re: [PATCH] pnv/xive2: Allow indirect TIMA accesses of all sizes
+Subject: Re: [PATCH] sungem: Add WOL MMIO
 Content-Language: en-US
-To: Frederic Barrat <fbarrat@linux.ibm.com>, clg@kaod.org,
- qemu-ppc@nongnu.org, qemu-devel@nongnu.org
-Cc: npiggin@gmail.com
-References: <20230626094057.1192473-1-fbarrat@linux.ibm.com>
+To: Nicholas Piggin <npiggin@gmail.com>, Jason Wang <jasowang@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
+ =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+References: <20230625201628.65231-1-npiggin@gmail.com>
 From: Daniel Henrique Barboza <danielhb413@gmail.com>
-In-Reply-To: <20230626094057.1192473-1-fbarrat@linux.ibm.com>
+In-Reply-To: <20230625201628.65231-1-npiggin@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2001:4860:4864:20::2c;
- envelope-from=danielhb413@gmail.com; helo=mail-oa1-x2c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c2f;
+ envelope-from=danielhb413@gmail.com; helo=mail-oo1-xc2f.google.com
 X-Spam_score_int: -19
 X-Spam_score: -2.0
 X-Spam_bar: --
@@ -94,52 +94,134 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+
+
+On 6/25/23 17:16, Nicholas Piggin wrote:
+> Apple sungem devices are expected to have WOL MMIO registers.
+> Add a region to prevent transaction failures, and implement the
+> WOL-disable CSR write because the Linux driver reset writes
+> this.
+> 
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+
 Queued in gitlab.com/danielhb/qemu/tree/ppc-next. Thanks,
 
 
 Daniel
 
-On 6/26/23 06:40, Frederic Barrat wrote:
-> Booting linux on the powernv10 machine logs a few errors like:
+> This fixes the failed MMIO error in the Linux sungem driver reset
+> when it clears the WOL CSR.
 > 
-> Invalid read at addr 0x38, size 1, region 'xive-ic-tm-indirect', reason: invalid size (min:8 max:8)
-> Invalid write at addr 0x38, size 1, region 'xive-ic-tm-indirect', reason: invalid size (min:8 max:8)
-> Invalid read at addr 0x38, size 1, region 'xive-ic-tm-indirect', reason: invalid size (min:8 max:8)
+> Thanks,
+> Nick
 > 
-> Those errors happen when linux is resetting XIVE. We're trying to
-> read/write the enablement bit for the hardware context and qemu
-> doesn't allow indirect TIMA accesses of less than 8 bytes. Direct TIMA
-> access can go through though, as well as indirect TIMA accesses on P9.
-> So even though there are some restrictions regarding the address/size
-> combinations for TIMA access, the example above is perfectly valid.
+>   hw/net/sungem.c     | 52 +++++++++++++++++++++++++++++++++++++++++++++
+>   hw/net/trace-events |  2 ++
+>   2 files changed, 54 insertions(+)
 > 
-> This patch lets indirect TIMA accesses of all sizes go through. The
-> special operations will be intercepted and the default "raw" handlers
-> will pick up all other requests and complain about invalid sizes as
-> appropriate.
-> 
-> Tested-by: Nicholas Piggin <npiggin@gmail.com>
-> Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
-> ---
->   hw/intc/pnv_xive2.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/hw/intc/pnv_xive2.c b/hw/intc/pnv_xive2.c
-> index ed438a20ed..e8ab176de6 100644
-> --- a/hw/intc/pnv_xive2.c
-> +++ b/hw/intc/pnv_xive2.c
-> @@ -1644,11 +1644,11 @@ static const MemoryRegionOps pnv_xive2_ic_tm_indirect_ops = {
->       .write = pnv_xive2_ic_tm_indirect_write,
->       .endianness = DEVICE_BIG_ENDIAN,
->       .valid = {
-> -        .min_access_size = 8,
-> +        .min_access_size = 1,
->           .max_access_size = 8,
->       },
->       .impl = {
-> -        .min_access_size = 8,
-> +        .min_access_size = 1,
->           .max_access_size = 8,
+> diff --git a/hw/net/sungem.c b/hw/net/sungem.c
+> index eb01520790..e0e8e5ae41 100644
+> --- a/hw/net/sungem.c
+> +++ b/hw/net/sungem.c
+> @@ -107,6 +107,15 @@ OBJECT_DECLARE_SIMPLE_TYPE(SunGEMState, SUNGEM)
+>   #define RXDMA_FTAG        0x0110UL    /* RX FIFO Tag */
+>   #define RXDMA_FSZ         0x0120UL    /* RX FIFO Size */
+>   
+> +/* WOL Registers */
+> +#define SUNGEM_MMIO_WOL_SIZE   0x14
+> +
+> +#define WOL_MATCH0        0x0000UL
+> +#define WOL_MATCH1        0x0004UL
+> +#define WOL_MATCH2        0x0008UL
+> +#define WOL_MCOUNT        0x000CUL
+> +#define WOL_WAKECSR       0x0010UL
+> +
+>   /* MAC Registers */
+>   #define SUNGEM_MMIO_MAC_SIZE   0x200
+>   
+> @@ -168,6 +177,7 @@ OBJECT_DECLARE_SIMPLE_TYPE(SunGEMState, SUNGEM)
+>   #define SUNGEM_MMIO_PCS_SIZE   0x60
+>   #define PCS_MIISTAT       0x0004UL    /* PCS MII Status Register */
+>   #define PCS_ISTAT         0x0018UL    /* PCS Interrupt Status Reg */
+> +
+>   #define PCS_SSTATE        0x005CUL    /* Serialink State Register */
+>   
+>   /* Descriptors */
+> @@ -200,6 +210,7 @@ struct SunGEMState {
+>       MemoryRegion greg;
+>       MemoryRegion txdma;
+>       MemoryRegion rxdma;
+> +    MemoryRegion wol;
+>       MemoryRegion mac;
+>       MemoryRegion mif;
+>       MemoryRegion pcs;
+> @@ -1076,6 +1087,43 @@ static const MemoryRegionOps sungem_mmio_rxdma_ops = {
 >       },
 >   };
+>   
+> +static void sungem_mmio_wol_write(void *opaque, hwaddr addr, uint64_t val,
+> +                                    unsigned size)
+> +{
+> +    trace_sungem_mmio_wol_write(addr, val);
+> +
+> +    switch (addr) {
+> +    case WOL_WAKECSR:
+> +        if (val != 0) {
+> +            qemu_log_mask(LOG_UNIMP, "sungem: WOL not supported\n");
+> +        }
+> +        break;
+> +    default:
+> +        qemu_log_mask(LOG_UNIMP, "sungem: WOL not supported\n");
+> +    }
+> +}
+> +
+> +static uint64_t sungem_mmio_wol_read(void *opaque, hwaddr addr, unsigned size)
+> +{
+> +    uint32_t val = -1;
+> +
+> +    qemu_log_mask(LOG_UNIMP, "sungem: WOL not supported\n");
+> +
+> +    trace_sungem_mmio_wol_read(addr, val);
+> +
+> +    return val;
+> +}
+> +
+> +static const MemoryRegionOps sungem_mmio_wol_ops = {
+> +    .read = sungem_mmio_wol_read,
+> +    .write = sungem_mmio_wol_write,
+> +    .endianness = DEVICE_LITTLE_ENDIAN,
+> +    .impl = {
+> +        .min_access_size = 4,
+> +        .max_access_size = 4,
+> +    },
+> +};
+> +
+>   static void sungem_mmio_mac_write(void *opaque, hwaddr addr, uint64_t val,
+>                                     unsigned size)
+>   {
+> @@ -1344,6 +1392,10 @@ static void sungem_realize(PCIDevice *pci_dev, Error **errp)
+>                             "sungem.rxdma", SUNGEM_MMIO_RXDMA_SIZE);
+>       memory_region_add_subregion(&s->sungem, 0x4000, &s->rxdma);
+>   
+> +    memory_region_init_io(&s->wol, OBJECT(s), &sungem_mmio_wol_ops, s,
+> +                          "sungem.wol", SUNGEM_MMIO_WOL_SIZE);
+> +    memory_region_add_subregion(&s->sungem, 0x3000, &s->wol);
+> +
+>       memory_region_init_io(&s->mac, OBJECT(s), &sungem_mmio_mac_ops, s,
+>                             "sungem.mac", SUNGEM_MMIO_MAC_SIZE);
+>       memory_region_add_subregion(&s->sungem, 0x6000, &s->mac);
+> diff --git a/hw/net/trace-events b/hw/net/trace-events
+> index e4a98b2c7d..930e5b4293 100644
+> --- a/hw/net/trace-events
+> +++ b/hw/net/trace-events
+> @@ -350,6 +350,8 @@ sungem_mmio_txdma_write(uint64_t addr, uint64_t val) "MMIO txdma write to 0x%"PR
+>   sungem_mmio_txdma_read(uint64_t addr, uint64_t val) "MMIO txdma read from 0x%"PRIx64" val=0x%"PRIx64
+>   sungem_mmio_rxdma_write(uint64_t addr, uint64_t val) "MMIO rxdma write to 0x%"PRIx64" val=0x%"PRIx64
+>   sungem_mmio_rxdma_read(uint64_t addr, uint64_t val) "MMIO rxdma read from 0x%"PRIx64" val=0x%"PRIx64
+> +sungem_mmio_wol_write(uint64_t addr, uint64_t val) "MMIO wol write to 0x%"PRIx64" val=0x%"PRIx64
+> +sungem_mmio_wol_read(uint64_t addr, uint64_t val) "MMIO wol read from 0x%"PRIx64" val=0x%"PRIx64
+>   sungem_mmio_mac_write(uint64_t addr, uint64_t val) "MMIO mac write to 0x%"PRIx64" val=0x%"PRIx64
+>   sungem_mmio_mac_read(uint64_t addr, uint64_t val) "MMIO mac read from 0x%"PRIx64" val=0x%"PRIx64
+>   sungem_mmio_mif_write(uint64_t addr, uint64_t val) "MMIO mif write to 0x%"PRIx64" val=0x%"PRIx64
 
