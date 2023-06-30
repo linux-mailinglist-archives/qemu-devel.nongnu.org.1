@@ -2,83 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56D9F7438C0
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 11:55:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 223A47438C5
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 11:56:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFAqc-0006zp-6G; Fri, 30 Jun 2023 05:55:26 -0400
+	id 1qFArZ-00088V-CZ; Fri, 30 Jun 2023 05:56:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qFAqY-0006zc-OZ
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 05:55:22 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ (Exim 4.90_1) (envelope-from <christoph.muellner@vrull.eu>)
+ id 1qFArN-0007vn-6H
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 05:56:14 -0400
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qFAqW-0004BS-LU
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 05:55:21 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-313f18f5295so1979006f8f.3
- for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 02:55:20 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <christoph.muellner@vrull.eu>)
+ id 1qFArH-0004L3-Ac
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 05:56:11 -0400
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-3fbc244d386so11429215e9.2
+ for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 02:56:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688118919; x=1690710919;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=tRtGYnhM1vvs0oyIoDpwmXbh/di+/7Tdd8TMBOuQXEQ=;
- b=hfKaWN5xNkWQc4XAMJbCTEp1i58tSg5oOGQqmkVIzNZiJYnGj6MmSmJf4EihtmupzV
- 9thxWOiwAIjcX7/dwlFsNRbsFa+RSUOtut3Yj9t1tUrgNaSrEYnNcozWDqdzDXg29Jzc
- eEcXBYvZVHFmFBPPTHEdYSQEXdB8WcViZKftrPkuu66bcOM1QxQ29AH3RyHVFB6ighzf
- 0mAthoop3iTKAUR8iMehyfg2bp7KeoH4STX0qrcbDagOx7E5SP90nqFT5WwdWKOQCwLd
- 0NAjUCKLb5Q0ewuCWamOQL5RRJ7SyTjhI6dOMS8BT1xTCU+pBPx6k4cRo9Og8wurI2wy
- yUnw==
+ d=vrull.eu; s=google; t=1688118964; x=1690710964;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=tvV1xbzdJ1qrB8VSQ3beecMlFs7an2DDX2DOuueZ974=;
+ b=sfZTLCJx7HQjm/MErluQfHVrznItAjiFvcll+3hkrEZJsexQgbkbnoYUUtjl1Q9RMy
+ D1RY93cvuEI9G/h5+r6TfNs4siCVpGevbr2QNMI02IeLFcqisVFCb6pBclafYz1YSpaA
+ mVQSRJAwP803T8r4Uv0LAO2xC3FW3lU8v/8JA9xoDFSm9gAyBuadBQwBgqYyq3kaWVus
+ 5bh8q1hVaBhOOPQTz7K8UtCFrgF0xqZAXXzLrTYw8KXG+tDmaS516b+LsWx0dJnfw25P
+ rXqOC4LwY5bdSC3W4k0x7oOodpA27qZovfKhNzaXT1pQbyr+qD3Fx7FguBGnMZ3yXpiE
+ 7cjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688118919; x=1690710919;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=tRtGYnhM1vvs0oyIoDpwmXbh/di+/7Tdd8TMBOuQXEQ=;
- b=FBZoIUB+cJmpeUCodL3iQZDfQR8Q1iTCJs27h+WWKTw+5P0tWUauoFnl6PlQcjy+Ie
- XQuebBUJRGfgqXbodlMoKx1NqFFf9dcyvx95R0YtdbiqBiocJRWv4/48i+2aCJI/MEth
- DqcBC5a9PcWZMTR5fZGS/OUKs18/KQiznxIN+YvtCQzzpV8zjfZ2WO8xVY+qCl6dDyIL
- t+NCyusiGkg1daCYxIxAFC+E6vkuh6Pgx4q9yawpbnzJcgg2guSnBr4Q4BdHdK/YV3s7
- dxp5k+t9o//rB5S/MWRdWTOR+ck/YphPE0fYUBgUPZP+R4lM/9Bf3qIpuN3LS0Vc2z02
- 6zow==
-X-Gm-Message-State: ABy/qLbOi4QRSBy6OzH8YfAlQsUkmTJBxTuy1IPYlklNKTw51yBQLEci
- LR3J+OoB2Li4Re2XW9JSxW6vpQ==
-X-Google-Smtp-Source: APBJJlG4kxSil4GuXSR7htY4b4L2JslJXlYdE5+XFfepG2nlgONqYBaMKnWpw0sErt9YHtjKKsoGMA==
-X-Received: by 2002:adf:f84f:0:b0:313:f371:aede with SMTP id
- d15-20020adff84f000000b00313f371aedemr1773478wrq.1.1688118919129; 
- Fri, 30 Jun 2023 02:55:19 -0700 (PDT)
-Received: from [192.168.1.208] ([139.47.41.96])
- by smtp.gmail.com with ESMTPSA id
- m9-20020adff389000000b00313f551b032sm12124457wro.53.2023.06.30.02.55.18
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 30 Jun 2023 02:55:18 -0700 (PDT)
-Message-ID: <a5927706-4ab1-c633-9489-5c8eaf9973d3@linaro.org>
-Date: Fri, 30 Jun 2023 11:55:17 +0200
+ d=1e100.net; s=20221208; t=1688118964; x=1690710964;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=tvV1xbzdJ1qrB8VSQ3beecMlFs7an2DDX2DOuueZ974=;
+ b=WIjRpq8Rm3ZxMB6IIHXAAiB7VcxZcHz2Y8BKHabNxvmG0EzFNR4u3onjNIeL93eqJ3
+ hThm9X5KEWfFYX4gE9W1icy/Br0qYc+DBck3VneU747f/Dgzbp33nCnFzruu3xuoYN++
+ 6ab5WbS91pEBD05PFldsNMTyF0NiNc5qq5qQ12YKaJCueBZqxaIUHGlf+wLDexpE5Glx
+ vwzq+/7+8N1zVXOe3iqmmy6b/OjuCNmgQ4bahtkXHKT1VrKHoVo66IvqQYzQMAnjKSg4
+ 0sEW2wI7yS46vExOA8YyHnc7e2pea0oOFCFMtCYuKEbBo4goYXfd3ZxFIZmRRo9cHHi4
+ Ry6g==
+X-Gm-Message-State: ABy/qLaNkFBdDACY4J6WgC0aMLWh+6zmj0oehVkOzW+ZTc+krm51nB/0
+ vvCanOZ3579zN3LcremE3wRvWqM/Sk4MTMdRtZ2F0w==
+X-Google-Smtp-Source: APBJJlEYb+0M0xHbM0J0tFDrD0+cD5nFicDie80WQsIjg/IHH2h7sM2nAEIyPKtV3m+oYeRZfRuvtEGAEaugKf10zdU=
+X-Received: by 2002:adf:fec3:0:b0:314:1318:18b7 with SMTP id
+ q3-20020adffec3000000b00314131818b7mr1348020wrs.19.1688118964430; Fri, 30 Jun
+ 2023 02:56:04 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PULL 00/16] vfio queue
-Content-Language: en-US
-To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>, qemu-devel@nongnu.org
-Cc: Alex Williamson <alex.williamson@redhat.com>
-References: <20230630052235.1934154-1-clg@redhat.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230630052235.1934154-1-clg@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x431.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+References: <20230630091303.1676486-1-christoph.muellner@vrull.eu>
+ <20230630091303.1676486-3-christoph.muellner@vrull.eu>
+ <599e9042-4e58-d468-940c-f8a8ee1edf5d@linaro.org>
+In-Reply-To: <599e9042-4e58-d468-940c-f8a8ee1edf5d@linaro.org>
+From: =?UTF-8?Q?Christoph_M=C3=BCllner?= <christoph.muellner@vrull.eu>
+Date: Fri, 30 Jun 2023 11:55:51 +0200
+Message-ID: <CAEg0e7gYqFy5PjH9=HL6GTnyMTy4mzRHdeEU1AsvsR2a__XVcA@mail.gmail.com>
+Subject: Re: [PATCH v4 2/3] target/riscv: Use float64_to_int64_modulo for
+ fcvtmod.w.d
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org, 
+ Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bin.meng@windriver.com>,
+ Philipp Tomsich <philipp.tomsich@vrull.eu>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Jeff Law <jeffreyalaw@gmail.com>, Tsukasa OI <research_trasio@irq.a4lg.com>, 
+ liweiwei@iscas.ac.cn, Daniel Henrique Barboza <dbarboza@ventanamicro.com>, 
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Rob Bradford <rbradford@rivosinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=christoph.muellner@vrull.eu; helo=mail-wm1-x336.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.093,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,31 +95,100 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/30/23 07:22, Cédric Le Goater wrote:
-> The following changes since commit 4d541f63e90c81112c298cbb35ed53e9c79deb00:
-> 
->    Merge tag 'for-upstream' ofhttps://gitlab.com/bonzini/qemu  into staging (2023-06-29 13:16:06 +0200)
-> 
-> are available in the Git repository at:
-> 
->    https://github.com/legoater/qemu/  tags/pull-vfio-20230630
-> 
-> for you to fetch changes up to 0cc889c8826cefa5b80110d31a62273b56aa1832:
-> 
->    vfio/pci: Free leaked timer in vfio_realize error path (2023-06-30 06:02:51 +0200)
-> 
-> ----------------------------------------------------------------
-> vfio queue:
-> 
-> * migration: New switchover ack to reduce downtime
-> * VFIO migration pre-copy support
-> * Removal of the VFIO migration experimental flag
-> * Alternate offset for GPUDirect Cliques
-> * Misc fixes
+On Fri, Jun 30, 2023 at 11:22=E2=80=AFAM Richard Henderson
+<richard.henderson@linaro.org> wrote:
+>
+> On 6/30/23 11:13, Christoph Muellner wrote:
+> > From: Christoph M=C3=BCllner <christoph.muellner@vrull.eu>
+> >
+> > For the most part we can use the new generic routine,
+> > though exceptions need some post-processing.
+> >
+> > Signed-off-by: Christoph M=C3=BCllner <christoph.muellner@vrull.eu>
+> > ---
+> >   target/riscv/fpu_helper.c | 78 ++++++++++++++------------------------=
+-
+> >   1 file changed, 27 insertions(+), 51 deletions(-)
+> >
+> > diff --git a/target/riscv/fpu_helper.c b/target/riscv/fpu_helper.c
+> > index 289b3bbea5..0f897cf072 100644
+> > --- a/target/riscv/fpu_helper.c
+> > +++ b/target/riscv/fpu_helper.c
+> > @@ -482,70 +482,46 @@ target_ulong helper_fcvt_w_d(CPURISCVState *env, =
+uint64_t frs1)
+> >       return float64_to_int32(frs1, &env->fp_status);
+> >   }
+> >
+> > +/* T floating (double) */
+> > +static inline float64 t_to_float64(uint64_t a)
+> > +{
+> > +    /* Memory format is the same as float64 */
+> > +    CPU_DoubleU r;
+> > +    r.ll =3D a;
+> > +    return r.d;
+> > +}
+>
+> You don't need this.  Nor does Alpha anymore, come to that.
+> float64 is uint64_t now, always.
 
-Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/8.1 as appropriate.
+Ok.
 
+>
+> > +    int64_t ret;
+> > +    int32_t ret32;
+> > +    uint32_t e_old, e_new;
+> > +    float64 fvalue;
+> > +
+> > +    e_old =3D get_float_exception_flags(status);
+> > +    set_float_exception_flags(0, status);
+> > +    fvalue =3D t_to_float64(value);
+> > +    ret =3D float64_to_int32_modulo(fvalue, float_round_to_zero, statu=
+s);
+> > +    e_new =3D get_float_exception_flags(status);
+> > +
+> > +    /* Map the flags to the specified ones. */
+> > +    if (e_new & float_flag_inexact) {
+> > +        e_new =3D float_flag_inexact;
+> > +    } else if (e_new) {
+> > +        e_new =3D float_flag_invalid;
+> >       }
+>
+> Why?  Generic code will not set both inexact and invalid.
+> So this is a nop.
+>
+> Removing that, all of your fp flags handling can go away.
 
-r~
+I added that because float64_to_int32_modulo() might also set
+float_flag_invalid_cvti. I just realized that it is not needed,
+because riscv_cpu_get_fflags() takes care to not expose
+flags that are not defined for RISC-V.
 
+>
+>
+> >       /* Truncate to 32-bits. */
+> > -    int32_t ret32 =3D (int32_t)ret;
+> > +    ret32 =3D (int32_t)ret;
+> >
+> >       /* If the truncation drops bits then raise NV. */
+> >       if ((uint64_t)ret32 !=3D ret)
+>
+> This will never fail, because you used float64_to_int32_modulo, which alr=
+eady returns int32_t.
+>
+> But we have already raised invalid for overflow, so this can go away as w=
+ell.
+
+Understood.
+
+>
+> Finally, this patch must be merged with the previous, which introduced th=
+is function.
+
+Ok.
+
+Thanks!
+
+>
+>
+> r~
 
