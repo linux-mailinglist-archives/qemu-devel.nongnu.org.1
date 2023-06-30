@@ -2,103 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75CAC743AE2
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 13:33:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B5A6F743AEE
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 13:37:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFCNE-0001Vn-P6; Fri, 30 Jun 2023 07:33:12 -0400
+	id 1qFCQj-0003LW-Tm; Fri, 30 Jun 2023 07:36:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <olaf@aepfle.de>) id 1qFCNC-0001VT-19
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 07:33:10 -0400
-Received: from mo4-p00-ob.smtp.rzone.de ([81.169.146.219])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <olaf@aepfle.de>) id 1qFCNA-00084g-0A
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 07:33:09 -0400
-ARC-Seal: i=1; a=rsa-sha256; t=1688124771; cv=none;
- d=strato.com; s=strato-dkim-0002;
- b=cRcjtAI/VOG4+GoSH9C6eYFR+KTj/0suAWOkzfHgw1F7QpXsrqGMdD/SpNzFmO5wso
- mvWJRlxXMDh9Ae09lMsj1cDB3o3R9pXdC06gQPl8IwfVmrA1pKTe8wrMuUfiRpagfBSG
- euMRvIw4YfxaWcJkRnqSlLzs365RGN8mD3k71YLEyAplZKe7GNxCmDwQJDwKbwrn9N4f
- AjAN6Zu8qUOcGF07MmpZ4swbZTMIkp33cVHLP2xUS6Y+gJCvgqsjzqrSgw9ArLDViyX7
- ga9xDpIYqhBhAlFEfPQvNom0Uflmt6ZaIhGSl7uftKn2QBWS2sGEImb81CTBcN1hvXhH
- Vmlw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1688124771;
- s=strato-dkim-0002; d=strato.com;
- h=References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
- From:Subject:Sender;
- bh=/gk7lMpgzNECZCi+/gCLLwKmUN3PQkb6jMH9TC2m/MQ=;
- b=a7+sFiEgWoGvMgdiSq+qGYdiqYp2/RLHA6/cJM/4muZ5zWLijBe8ASnOPp4ii2uIjV
- sayusVaiYLrdFOb4P+mmzOJmO0MvC+iNHhY3pMbMuHnNpryw+cvDBFlb2OWVEj+WThCQ
- m7mwTaWKc/0gQYZ4o62NXUI477OnhE+7KlsV/t4m/CN9NTOnok33avX6P6OoWdQE/JgT
- 6rdHmZ2zgbSnszNBQziljCN4k1o1/+tKeO+eNkAVaKmMgc2PlJ4qpqn+yvvBxxlj89UY
- 0XxNoFJfoZ1XvWuYFlmaNn9GI8OkiSfKzNyzlmuc7Hdi30xKhH1eaM/UhgsPNJMeUGmY
- 0L+A==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo00
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1688124771;
- s=strato-dkim-0002; d=aepfle.de;
- h=References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
- From:Subject:Sender;
- bh=/gk7lMpgzNECZCi+/gCLLwKmUN3PQkb6jMH9TC2m/MQ=;
- b=fYBN01q30vZeqh2Frh9iN/k7steP4RJ2Az4vC1H/ZAFrn6NrnnpBDKy1UY8IQYYAZ3
- z6YbnP5TsXsS+MujV478r/Dj6D7LXM+zikAjmQnWM+fReZCXHKVo0Rg2hFuS+wUD/fnw
- KjoEB9WSj9NgNgnCr9ryWbm8oRoZI0yv85nooLUwOqmmm/+x3DAyGmwcnhomgiYzDbli
- wksRGExpHZTv2ld5iDbVYukb0+Yja40kBzp/uzJtxQKt0RdtSD5d1EeGe4MYq12skQlQ
- AdVLvNap7x9Zc9C22KzzjTmEbprXUyNWE3CdjX+1Vh5MWuqimfUSY2g1fDFoUQg8UR/Q
- gc+A==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1688124771;
- s=strato-dkim-0003; d=aepfle.de;
- h=References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
- From:Subject:Sender;
- bh=/gk7lMpgzNECZCi+/gCLLwKmUN3PQkb6jMH9TC2m/MQ=;
- b=hEf6aYcS9lS1cIrxjvszx8GUI7WptFij09TxonfrZJm/Xt6yRBByhoEi2TfJpIKat5
- 3LgbSlsr96ERdDYZbbDA==
-X-RZG-AUTH: ":P2EQZWCpfu+qG7CngxMFH1J+3q8wa/QLpd5ylWvMDX3y/OuD5rXVisR4VReIOE3s+xIC8HZ8TOtjelmE6SkKgUS6xMby0Q=="
-Received: from sender by smtp.strato.de (RZmta 49.6.0 AUTH)
- with ESMTPSA id y5401az5UBWpyNP
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
- (Client did not present a certificate);
- Fri, 30 Jun 2023 13:32:51 +0200 (CEST)
-Date: Fri, 30 Jun 2023 13:32:42 +0200
-From: Olaf Hering <olaf@aepfle.de>
-To: Bernhard Beschow <shentey@gmail.com>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, John Snow
- <jsnow@redhat.com>, xen-devel@lists.xenproject.org, Stefano Stabellini
- <sstabellini@kernel.org>
-Subject: Re: [PATCH v2] piix: fix regression during unplug in Xen HVM domUs
-Message-ID: <20230630133242.58e6d9ed.olaf@aepfle.de>
-In-Reply-To: <367317C5-DB65-40EF-B45B-97E0E802A994@gmail.com>
-References: <20210317070046.17860-1-olaf@aepfle.de>
- <4441d32f-bd52-9408-cabc-146b59f0e4dc@redhat.com>
- <20210325121219.7b5daf76.olaf@aepfle.de>
- <dae251e1-f808-708e-902c-05cfcbbea9cf@redhat.com>
- <20230509225818.GA16290@aepfle.de>
- <20230626231901.5b5d11c1.olaf@aepfle.de>
- <c939b695-2b68-085a-0f19-108ecdcc1a05@redhat.com>
- <5DB37FA5-41DF-4ED6-8C8A-CDDD6F276F42@gmail.com>
- <20230627140740.2736f6e8.olaf@aepfle.de>
- <4F5609FD-4A89-4450-89E2-3311CC5A9317@gmail.com>
- <20230630092921.392b302d.olaf@aepfle.de>
- <367317C5-DB65-40EF-B45B-97E0E802A994@gmail.com>
-X-Mailer: Claws Mail 20230601T090920.68bc28c0 hat ein Softwareproblem,
- kann man nichts machen.
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qFCQg-0003LC-IL
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 07:36:46 -0400
+Received: from mail-pg1-x534.google.com ([2607:f8b0:4864:20::534])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qFCQe-0001Aq-NM
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 07:36:46 -0400
+Received: by mail-pg1-x534.google.com with SMTP id
+ 41be03b00d2f7-55ae51a45deso1034266a12.3
+ for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 04:36:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1688125002; x=1690717002;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=xSY7O1OugaRaZMr8Rb80FrR91/MDWjjWKeybca58yiw=;
+ b=xrdHOHDmKMB94S+tg8UiUziKZiWPu0dPfd2nRQuT1y62yOzab1RE7hnBDOieL/HLNl
+ +SxuzJKnQ60G4cLJu113B2t9T1sTTHfOYlPLf9SF/DYRuH5pIK4GdJmTk015ykMaIh+4
+ JS4vIefcVEFzk67d+e3UznPIaFEyiQUtRHT0u9cqwFnR+V9HrxLooKBCnsxkOhj0vSf4
+ fL+cf2orwANZUHL6ZIpu6J4rFLgYN0kQdW8vjQcnVNeIUT3Fr975cN8qOF/GhGANtKFP
+ XG75upUELTzDvN0mw7gLel+1CB2etOu9s9UrV/w/Zs4IgcPEauGDop888sF4P0r2uLlT
+ V6yQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1688125002; x=1690717002;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=xSY7O1OugaRaZMr8Rb80FrR91/MDWjjWKeybca58yiw=;
+ b=KgrRh/MhHpAuhrb0BNA1P1xOsYdKBn2AsNgpVvX0xjjSLfCrbjn3Xpj0K5VeKbWnM8
+ gICjF3bsFLBRSnkL/5wFpARSvaGMzAwXed2olnga4NYMJp7RiXd8KcEykueWQgs5CG3G
+ sBu/kurgWju7KSGNWd6Pl9ZoLb4UdJ2+JxG/jfmQ1Vn52E2aug5s3qFcgUTMme7ofWf7
+ hzZdSfvRrA3k3FokUIdC61eJG6n2lBRJFzfkO7YHsujk+loQ3gStUlvPTQDC7gPJGMyq
+ Ly97vp7XmJWyCn3oQ9RlG+tPmirw4phKw/1Sl3yKkKAQQaD0kdYO0l0wBHb4sv1+78aw
+ 5/Iw==
+X-Gm-Message-State: AC+VfDwTjaYL4ZTAtTtlxCp0Hng0DY3o3x4+QBt9JZA8PMtHz/90DGyr
+ xQDu7VDP84oSqf6r8MFpIdijrg==
+X-Google-Smtp-Source: ACHHUZ6FXvt10H/6r0AOXrecnIbR8iloEYQlkTfaZl4uYrVugKrU4GAldZzkcWQirR4qrqZip4cxOQ==
+X-Received: by 2002:a05:6a20:7b26:b0:11c:d2af:70a6 with SMTP id
+ s38-20020a056a207b2600b0011cd2af70a6mr1381379pzh.28.1688125001828; 
+ Fri, 30 Jun 2023 04:36:41 -0700 (PDT)
+Received: from [157.82.204.253] ([157.82.204.253])
+ by smtp.gmail.com with ESMTPSA id
+ i7-20020a170902c94700b001b8707b70d1sm1014114pla.214.2023.06.30.04.36.39
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 30 Jun 2023 04:36:41 -0700 (PDT)
+Message-ID: <a38e0336-58e5-e796-bd29-0dfc5d1d0e46@daynix.com>
+Date: Fri, 30 Jun 2023 20:36:38 +0900
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/WOYyKbs1pq2/gEoXAojnkkq";
- protocol="application/pgp-signature"; micalg=pgp-sha256
-Content-Transfer-Encoding: 7bit
-Received-SPF: none client-ip=81.169.146.219; envelope-from=olaf@aepfle.de;
- helo=mo4-p00-ob.smtp.rzone.de
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH v6 5/5] hw/pci: ensure PCIE devices are plugged into only
+ slot 0 of PCIE port
+Content-Language: en-US
+To: Ani Sinha <anisinha@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>
+Cc: qemu-devel <qemu-devel@nongnu.org>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Julia Suvorova <jusual@redhat.com>, Igor Mammedov <imammedo@redhat.com>
+References: <8d382e8b-088b-f0af-eec4-a85ee513b4ae@daynix.com>
+ <CAK3XEhNOJkm13+vxJO9-Adhwq8NJ3TQ1gaOXj8Dn3NtixF_=jQ@mail.gmail.com>
+ <8868044c-f61b-7bbb-8cc8-34a14c1490d6@daynix.com>
+ <9DDBE75A-C72C-4238-9166-3CBDBEA68188@redhat.com>
+ <167eea06-b917-8783-5cd6-8fda56e41331@daynix.com>
+ <A50CA177-0E7E-4828-A036-70EB532FE2B8@redhat.com>
+ <20230630041937-mutt-send-email-mst@kernel.org>
+ <4618EAD1-2862-4288-A881-CA860D04ADB0@redhat.com>
+ <20230630043734-mutt-send-email-mst@kernel.org>
+ <49B901C6-4819-4A00-8225-39FAA6678F3E@redhat.com>
+ <20230630055717-mutt-send-email-mst@kernel.org>
+ <FB764864-ADD3-4017-8313-ED40A833A81B@redhat.com>
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <FB764864-ADD3-4017-8313-ED40A833A81B@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::534;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x534.google.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_PASS=-0.001, SPF_NONE=0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, NICE_REPLY_A=-0.095, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -115,43 +108,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---Sig_/WOYyKbs1pq2/gEoXAojnkkq
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+On 2023/06/30 19:37, Ani Sinha wrote:
+> 
+> 
+>> On 30-Jun-2023, at 3:30 PM, Michael S. Tsirkin <mst@redhat.com> wrote:
+>>
+>> On Fri, Jun 30, 2023 at 02:52:52PM +0530, Ani Sinha wrote:
+>>>
+>>>
+>>>> On 30-Jun-2023, at 2:13 PM, Michael S. Tsirkin <mst@redhat.com> wrote:
+>>>>
+>>>> On Fri, Jun 30, 2023 at 02:06:59PM +0530, Ani Sinha wrote:
+>>>>>
+>>>>>
+>>>>>> On 30-Jun-2023, at 2:02 PM, Michael S. Tsirkin <mst@redhat.com> wrote:
+>>>>>>
+>>>>>> On Fri, Jun 30, 2023 at 01:11:33PM +0530, Ani Sinha wrote:
+>>>>>>>>
+>>>>>>>> Thus the check for unoccupied function 0 needs to use pci_is_vf() instead of checking ARI capability, and that can happen in do_pci_register_device().
+>>>>>>>>
+>>>>>>>>> Also where do you propose we move the check?
+>>>>>>>>
+>>>>>>>> In pci_qdev_realize(), somewhere after pc->realize() and before option ROM loading.
+>>>>>>>
+>>>>>>> Hmm, I tried this. The issue here is something like this would be now allowed since the PF has ARI capability:
+>>>>>>>
+>>>>>>> -device pcie-root-port,id=p -device igb,bus=p,addr=0x2.0x0
+>>>>>>>
+>>>>>>> The above should not be allowed and when used, we do not see the igb ethernet device from the guest OS.
+>>>>>>
+>>>>>> I think it's allowed because it expects you to hotplug function 0 later,
+>>>>>
+>>>>> This is about the igb device being plugged into the non-zero slot of the pci-root-port. The guest OS ignores it.
+>>>>
+>>>> yes but if you later add a device with ARI and with next field pointing
+>>>> slot 2 guest will suddently find both.
+>>>
+>>> Hmm, I tried this:
+>>>
+>>> -device pcie-root-port,id=p \
+>>> -device igb,bus=p,addr=0x2.0x0 \
+>>> -device igb,bus=p,addr=0x0.0x0 \
+>>>
+>>> The guest only found the second igb device not the first. You can try too.
+>>
+>> Because next parameter in pcie_ari_init does not match.
+> 
+> OK send me a command line that I can test it with. I can’t come up with a case that actually works in practice.
 
-Fri, 30 Jun 2023 08:05:29 +0000 Bernhard Beschow <shentey@gmail.com>:
+I don't think there is one because the code for PCI multifunction does 
+not care ARI. In my opinion, we need yet another check to make 
+non-SR-IOV multifunction and ARI capability mutually exclusive; if a 
+function has the ARI capability and it is not a VF, an attempt to assign 
+non-zero function number for it should fail.
 
-> Yes. Have a look for piix3/piix4 here: https://www.intel.com/design/archi=
-ves/chipsets/440/index.htm
+But it should be a distinct check as it will need to check the function 
+number bits.
 
-This is hidden behind a login or whatever.
+> 
+>>
+>>
+>>>>
+>>>>>> no?
+>>>>>>
+>>>>>> I am quite worried about all this work going into blocking
+>>>>>> what we think is disallowed configurations. We should have
+>>>>>> maybe blocked them originally, but now that we didn't
+>>>>>> there's a non zero chance of regressions,
+>>>>>
+>>>>> Sigh,
+>>>>
+>>>> There's value in patches 1-4 I think - the last patch helped you find
+>>>> these. so there's value in this work.
+>>>>
+>>>>> no medals here for being brave :-)
+>>>>
+>>>> Try removing support for a 3.5mm jack next. Oh wait ...
+>>>
+>>> Indeed. Everyone uses bluetooth these days. I for one is happy that the jack is gone (and they were bold enough to do it while Samsung and others still carry the useless port ) :-)
 
-I should be able to come up with a commit message without hardware specs be=
-ing available.
+Hello from a guy using a shiny M2 Macbook Air carrying the legacy jack 
+with a 100-yen earphone. Even people who ported Linux to this machine 
+spent efforts to get the jack to work on Linux ;)
 
-
-Olaf
-
---Sig_/WOYyKbs1pq2/gEoXAojnkkq
-Content-Type: application/pgp-signature
-Content-Description: Digitale Signatur von OpenPGP
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEE97o7Um30LT3B+5b/86SN7mm1DoAFAmSevVoACgkQ86SN7mm1
-DoAoiA/+Nac1y4FAslYKcs5MbXKeAht0YipykhnZnjEs5GFr1xmFi8cKvrPrzyaB
-EYjjXoosax8+YJJM/GDKaXyHx68piIf5YdMvA8Zdkp4mQ+HuAZIQa0zit9ONA+gS
-WHs154Zf/RqcQMVDjf74GcptgPP2YOmc/MPbZ6UV3GhXD+irdu8bqBnBeNqOV69q
-w/irUkAV/tBym8DHacToeoD0KB7c/aGq/6SJHlDSCYcWJElG0midU5E5dMPzNEGz
-+w97vAZ6LHcM0NVfa/lwUiXEntM6rDpPNwTyCP2todWEfUZsT+Jn8s8q+H8R6r/O
-5FIXltIRH/fl5TEIJsYYEyWYWM4cMxhcVGuTJSeNI0mjxMgqg1OMrg25YgZUNKFK
-qmALpYbLZkcLPzIG9YMFwEwAUTdU3zVCinTmuhfTUQc/SStu1I6j7UfVSmSZaScx
-sOEWkXzRlr5MbUt/HZ8NTjI2FA+WW3CF428nNFdz1Un+l7Ftq61wkDzsfJ6G6Rqj
-xQPe9W98WmaORotynCq+itxUHEzJVFXgG92Lf6/zihB4bqGZes/LXT7NiLRUUUq0
-73EOEMZ4fQuxHhsuC0M/S3UeF9I43ONbgAwksZSBOQZY8q6hnTGH5vSvzf8igd0Q
-swEhq8zVVLlvihWAHLqx2Ck8LZO8CIFRzBz/0hAHHzCJBC0QQYU=
-=8PAh
------END PGP SIGNATURE-----
-
---Sig_/WOYyKbs1pq2/gEoXAojnkkq--
+>>>
+>>>>
+>>>>>> and the benefit
+>>>>>> is not guaranteed.
+>>>>>>
+>>>>>> -- 
+>>>>>> MST
+> 
 
