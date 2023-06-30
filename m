@@ -2,40 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 514797436B3
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 10:12:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C6077436AE
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 10:12:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qF94Z-00041Z-E4; Fri, 30 Jun 2023 04:01:43 -0400
+	id 1qF92Z-0008Au-5h; Fri, 30 Jun 2023 03:59:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1qF94A-0003lq-0S
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 04:01:18 -0400
+ id 1qF92S-0008A4-0Z
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 03:59:32 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1qF946-00007D-NC
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 04:01:17 -0400
+ (envelope-from <gaosong@loongson.cn>) id 1qF92P-0007yF-JC
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 03:59:31 -0400
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8AxiMVTi55kcTQEAA--.6786S3;
- Fri, 30 Jun 2023 15:59:15 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8Axy8ZUi55kdzQEAA--.6796S3;
+ Fri, 30 Jun 2023 15:59:16 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
  by localhost.localdomain (Coremail) with SMTP id
- AQAAf8AxjiNIi55kExQTAA--.24469S13; 
- Fri, 30 Jun 2023 15:59:14 +0800 (CST)
+ AQAAf8AxjiNIi55kExQTAA--.24469S16; 
+ Fri, 30 Jun 2023 15:59:15 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org
-Subject: [PATCH v2 11/46] target/loongarch: Implement xavg/xvagr
-Date: Fri, 30 Jun 2023 15:58:29 +0800
-Message-Id: <20230630075904.45940-12-gaosong@loongson.cn>
+Subject: [PATCH v2 14/46] target/loongarch: Implement xvmax/xvmin
+Date: Fri, 30 Jun 2023 15:58:32 +0800
+Message-Id: <20230630075904.45940-15-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20230630075904.45940-1-gaosong@loongson.cn>
 References: <20230630075904.45940-1-gaosong@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8AxjiNIi55kExQTAA--.24469S13
+X-CM-TRANSID: AQAAf8AxjiNIi55kExQTAA--.24469S16
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -63,139 +63,194 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 This patch includes:
-- XVAVG.{B/H/W/D/}[U];
-- XVAVGR.{B/H/W/D}[U].
+- XVMAX[I].{B/H/W/D}[U];
+- XVMIN[I].{B/H/W/D}[U].
 
 Signed-off-by: Song Gao <gaosong@loongson.cn>
 ---
- target/loongarch/disas.c                     | 17 +++++++++++++++++
- target/loongarch/insn_trans/trans_lasx.c.inc | 17 +++++++++++++++++
- target/loongarch/insns.decode                | 17 +++++++++++++++++
- target/loongarch/vec.h                       |  3 +++
- target/loongarch/vec_helper.c                |  9 ++++-----
- 5 files changed, 58 insertions(+), 5 deletions(-)
+ target/loongarch/disas.c                     | 34 ++++++++++++++++++
+ target/loongarch/insn_trans/trans_lasx.c.inc | 36 ++++++++++++++++++++
+ target/loongarch/insns.decode                | 36 ++++++++++++++++++++
+ target/loongarch/vec.h                       |  3 ++
+ target/loongarch/vec_helper.c                |  8 ++---
+ 5 files changed, 112 insertions(+), 5 deletions(-)
 
 diff --git a/target/loongarch/disas.c b/target/loongarch/disas.c
-index 6972e33833..8296aafa98 100644
+index b48822e431..63c1dc757f 100644
 --- a/target/loongarch/disas.c
 +++ b/target/loongarch/disas.c
-@@ -1825,6 +1825,23 @@ INSN_LASX(xvaddwod_w_hu_h,   vvv)
- INSN_LASX(xvaddwod_d_wu_w,   vvv)
- INSN_LASX(xvaddwod_q_du_d,   vvv)
+@@ -1856,6 +1856,40 @@ INSN_LASX(xvadda_h,          vvv)
+ INSN_LASX(xvadda_w,          vvv)
+ INSN_LASX(xvadda_d,          vvv)
  
-+INSN_LASX(xvavg_b,           vvv)
-+INSN_LASX(xvavg_h,           vvv)
-+INSN_LASX(xvavg_w,           vvv)
-+INSN_LASX(xvavg_d,           vvv)
-+INSN_LASX(xvavg_bu,          vvv)
-+INSN_LASX(xvavg_hu,          vvv)
-+INSN_LASX(xvavg_wu,          vvv)
-+INSN_LASX(xvavg_du,          vvv)
-+INSN_LASX(xvavgr_b,          vvv)
-+INSN_LASX(xvavgr_h,          vvv)
-+INSN_LASX(xvavgr_w,          vvv)
-+INSN_LASX(xvavgr_d,          vvv)
-+INSN_LASX(xvavgr_bu,         vvv)
-+INSN_LASX(xvavgr_hu,         vvv)
-+INSN_LASX(xvavgr_wu,         vvv)
-+INSN_LASX(xvavgr_du,         vvv)
++INSN_LASX(xvmax_b,           vvv)
++INSN_LASX(xvmax_h,           vvv)
++INSN_LASX(xvmax_w,           vvv)
++INSN_LASX(xvmax_d,           vvv)
++INSN_LASX(xvmin_b,           vvv)
++INSN_LASX(xvmin_h,           vvv)
++INSN_LASX(xvmin_w,           vvv)
++INSN_LASX(xvmin_d,           vvv)
++INSN_LASX(xvmax_bu,          vvv)
++INSN_LASX(xvmax_hu,          vvv)
++INSN_LASX(xvmax_wu,          vvv)
++INSN_LASX(xvmax_du,          vvv)
++INSN_LASX(xvmin_bu,          vvv)
++INSN_LASX(xvmin_hu,          vvv)
++INSN_LASX(xvmin_wu,          vvv)
++INSN_LASX(xvmin_du,          vvv)
++
++INSN_LASX(xvmaxi_b,          vv_i)
++INSN_LASX(xvmaxi_h,          vv_i)
++INSN_LASX(xvmaxi_w,          vv_i)
++INSN_LASX(xvmaxi_d,          vv_i)
++INSN_LASX(xvmini_b,          vv_i)
++INSN_LASX(xvmini_h,          vv_i)
++INSN_LASX(xvmini_w,          vv_i)
++INSN_LASX(xvmini_d,          vv_i)
++INSN_LASX(xvmaxi_bu,         vv_i)
++INSN_LASX(xvmaxi_hu,         vv_i)
++INSN_LASX(xvmaxi_wu,         vv_i)
++INSN_LASX(xvmaxi_du,         vv_i)
++INSN_LASX(xvmini_bu,         vv_i)
++INSN_LASX(xvmini_hu,         vv_i)
++INSN_LASX(xvmini_wu,         vv_i)
++INSN_LASX(xvmini_du,         vv_i)
 +
  INSN_LASX(xvreplgr2vr_b,     vr)
  INSN_LASX(xvreplgr2vr_h,     vr)
  INSN_LASX(xvreplgr2vr_w,     vr)
 diff --git a/target/loongarch/insn_trans/trans_lasx.c.inc b/target/loongarch/insn_trans/trans_lasx.c.inc
-index d8230cba9f..ac4cade845 100644
+index 30cb286cb9..107c75f1b6 100644
 --- a/target/loongarch/insn_trans/trans_lasx.c.inc
 +++ b/target/loongarch/insn_trans/trans_lasx.c.inc
-@@ -140,6 +140,23 @@ TRANS(xvaddwod_w_hu_h, gvec_vvv, 32, MO_16, do_vaddwod_u_s)
- TRANS(xvaddwod_d_wu_w, gvec_vvv, 32, MO_32, do_vaddwod_u_s)
- TRANS(xvaddwod_q_du_d, gvec_vvv, 32, MO_64, do_vaddwod_u_s)
+@@ -171,6 +171,42 @@ TRANS(xvadda_h, gvec_vvv, 32, MO_16, do_vadda)
+ TRANS(xvadda_w, gvec_vvv, 32, MO_32, do_vadda)
+ TRANS(xvadda_d, gvec_vvv, 32, MO_64, do_vadda)
  
-+TRANS(xvavg_b, gvec_vvv, 32, MO_8, do_vavg_s)
-+TRANS(xvavg_h, gvec_vvv, 32, MO_16, do_vavg_s)
-+TRANS(xvavg_w, gvec_vvv, 32, MO_32, do_vavg_s)
-+TRANS(xvavg_d, gvec_vvv, 32, MO_64, do_vavg_s)
-+TRANS(xvavg_bu, gvec_vvv, 32, MO_8, do_vavg_u)
-+TRANS(xvavg_hu, gvec_vvv, 32, MO_16, do_vavg_u)
-+TRANS(xvavg_wu, gvec_vvv, 32, MO_32, do_vavg_u)
-+TRANS(xvavg_du, gvec_vvv, 32, MO_64, do_vavg_u)
-+TRANS(xvavgr_b, gvec_vvv, 32, MO_8, do_vavgr_s)
-+TRANS(xvavgr_h, gvec_vvv, 32, MO_16, do_vavgr_s)
-+TRANS(xvavgr_w, gvec_vvv, 32, MO_32, do_vavgr_s)
-+TRANS(xvavgr_d, gvec_vvv, 32, MO_64, do_vavgr_s)
-+TRANS(xvavgr_bu, gvec_vvv, 32, MO_8, do_vavgr_u)
-+TRANS(xvavgr_hu, gvec_vvv, 32, MO_16, do_vavgr_u)
-+TRANS(xvavgr_wu, gvec_vvv, 32, MO_32, do_vavgr_u)
-+TRANS(xvavgr_du, gvec_vvv, 32, MO_64, do_vavgr_u)
++TRANS(xvmax_b, gvec_vvv, 32, MO_8, tcg_gen_gvec_smax)
++TRANS(xvmax_h, gvec_vvv, 32, MO_16, tcg_gen_gvec_smax)
++TRANS(xvmax_w, gvec_vvv, 32, MO_32, tcg_gen_gvec_smax)
++TRANS(xvmax_d, gvec_vvv, 32, MO_64, tcg_gen_gvec_smax)
++TRANS(xvmax_bu, gvec_vvv, 32, MO_8, tcg_gen_gvec_umax)
++TRANS(xvmax_hu, gvec_vvv, 32, MO_16, tcg_gen_gvec_umax)
++TRANS(xvmax_wu, gvec_vvv, 32, MO_32, tcg_gen_gvec_umax)
++TRANS(xvmax_du, gvec_vvv, 32, MO_64, tcg_gen_gvec_umax)
++
++TRANS(xvmin_b, gvec_vvv, 32, MO_8, tcg_gen_gvec_smin)
++TRANS(xvmin_h, gvec_vvv, 32, MO_16, tcg_gen_gvec_smin)
++TRANS(xvmin_w, gvec_vvv, 32, MO_32, tcg_gen_gvec_smin)
++TRANS(xvmin_d, gvec_vvv, 32, MO_64, tcg_gen_gvec_smin)
++TRANS(xvmin_bu, gvec_vvv, 32, MO_8, tcg_gen_gvec_umin)
++TRANS(xvmin_hu, gvec_vvv, 32, MO_16, tcg_gen_gvec_umin)
++TRANS(xvmin_wu, gvec_vvv, 32, MO_32, tcg_gen_gvec_umin)
++TRANS(xvmin_du, gvec_vvv, 32, MO_64, tcg_gen_gvec_umin)
++
++TRANS(xvmini_b, gvec_vv_i, 32, MO_8, do_vmini_s)
++TRANS(xvmini_h, gvec_vv_i, 32, MO_16, do_vmini_s)
++TRANS(xvmini_w, gvec_vv_i, 32, MO_32, do_vmini_s)
++TRANS(xvmini_d, gvec_vv_i, 32, MO_64, do_vmini_s)
++TRANS(xvmini_bu, gvec_vv_i, 32, MO_8, do_vmini_u)
++TRANS(xvmini_hu, gvec_vv_i, 32, MO_16, do_vmini_u)
++TRANS(xvmini_wu, gvec_vv_i, 32, MO_32, do_vmini_u)
++TRANS(xvmini_du, gvec_vv_i, 32, MO_64, do_vmini_u)
++
++TRANS(xvmaxi_b, gvec_vv_i, 32, MO_8, do_vmaxi_s)
++TRANS(xvmaxi_h, gvec_vv_i, 32, MO_16, do_vmaxi_s)
++TRANS(xvmaxi_w, gvec_vv_i, 32, MO_32, do_vmaxi_s)
++TRANS(xvmaxi_d, gvec_vv_i, 32, MO_64, do_vmaxi_s)
++TRANS(xvmaxi_bu, gvec_vv_i, 32, MO_8, do_vmaxi_u)
++TRANS(xvmaxi_hu, gvec_vv_i, 32, MO_16, do_vmaxi_u)
++TRANS(xvmaxi_wu, gvec_vv_i, 32, MO_32, do_vmaxi_u)
++TRANS(xvmaxi_du, gvec_vv_i, 32, MO_64, do_vmaxi_u)
 +
  TRANS(xvreplgr2vr_b, gvec_dup, 32, MO_8)
  TRANS(xvreplgr2vr_h, gvec_dup, 32, MO_16)
  TRANS(xvreplgr2vr_w, gvec_dup, 32, MO_32)
 diff --git a/target/loongarch/insns.decode b/target/loongarch/insns.decode
-index e1d8b30179..a2cb39750d 100644
+index f3722e3aa7..99aefcb651 100644
 --- a/target/loongarch/insns.decode
 +++ b/target/loongarch/insns.decode
-@@ -1406,6 +1406,23 @@ xvaddwod_w_hu_h  0111 01000100 00001 ..... ..... .....    @vvv
- xvaddwod_d_wu_w  0111 01000100 00010 ..... ..... .....    @vvv
- xvaddwod_q_du_d  0111 01000100 00011 ..... ..... .....    @vvv
+@@ -1437,6 +1437,42 @@ xvadda_h         0111 01000101 11001 ..... ..... .....    @vvv
+ xvadda_w         0111 01000101 11010 ..... ..... .....    @vvv
+ xvadda_d         0111 01000101 11011 ..... ..... .....    @vvv
  
-+xvavg_b          0111 01000110 01000 ..... ..... .....    @vvv
-+xvavg_h          0111 01000110 01001 ..... ..... .....    @vvv
-+xvavg_w          0111 01000110 01010 ..... ..... .....    @vvv
-+xvavg_d          0111 01000110 01011 ..... ..... .....    @vvv
-+xvavg_bu         0111 01000110 01100 ..... ..... .....    @vvv
-+xvavg_hu         0111 01000110 01101 ..... ..... .....    @vvv
-+xvavg_wu         0111 01000110 01110 ..... ..... .....    @vvv
-+xvavg_du         0111 01000110 01111 ..... ..... .....    @vvv
-+xvavgr_b         0111 01000110 10000 ..... ..... .....    @vvv
-+xvavgr_h         0111 01000110 10001 ..... ..... .....    @vvv
-+xvavgr_w         0111 01000110 10010 ..... ..... .....    @vvv
-+xvavgr_d         0111 01000110 10011 ..... ..... .....    @vvv
-+xvavgr_bu        0111 01000110 10100 ..... ..... .....    @vvv
-+xvavgr_hu        0111 01000110 10101 ..... ..... .....    @vvv
-+xvavgr_wu        0111 01000110 10110 ..... ..... .....    @vvv
-+xvavgr_du        0111 01000110 10111 ..... ..... .....    @vvv
++xvmax_b          0111 01000111 00000 ..... ..... .....    @vvv
++xvmax_h          0111 01000111 00001 ..... ..... .....    @vvv
++xvmax_w          0111 01000111 00010 ..... ..... .....    @vvv
++xvmax_d          0111 01000111 00011 ..... ..... .....    @vvv
++xvmax_bu         0111 01000111 01000 ..... ..... .....    @vvv
++xvmax_hu         0111 01000111 01001 ..... ..... .....    @vvv
++xvmax_wu         0111 01000111 01010 ..... ..... .....    @vvv
++xvmax_du         0111 01000111 01011 ..... ..... .....    @vvv
++
++xvmaxi_b         0111 01101001 00000 ..... ..... .....    @vv_i5
++xvmaxi_h         0111 01101001 00001 ..... ..... .....    @vv_i5
++xvmaxi_w         0111 01101001 00010 ..... ..... .....    @vv_i5
++xvmaxi_d         0111 01101001 00011 ..... ..... .....    @vv_i5
++xvmaxi_bu        0111 01101001 01000 ..... ..... .....    @vv_ui5
++xvmaxi_hu        0111 01101001 01001 ..... ..... .....    @vv_ui5
++xvmaxi_wu        0111 01101001 01010 ..... ..... .....    @vv_ui5
++xvmaxi_du        0111 01101001 01011 ..... ..... .....    @vv_ui5
++
++xvmin_b          0111 01000111 00100 ..... ..... .....    @vvv
++xvmin_h          0111 01000111 00101 ..... ..... .....    @vvv
++xvmin_w          0111 01000111 00110 ..... ..... .....    @vvv
++xvmin_d          0111 01000111 00111 ..... ..... .....    @vvv
++xvmin_bu         0111 01000111 01100 ..... ..... .....    @vvv
++xvmin_hu         0111 01000111 01101 ..... ..... .....    @vvv
++xvmin_wu         0111 01000111 01110 ..... ..... .....    @vvv
++xvmin_du         0111 01000111 01111 ..... ..... .....    @vvv
++
++xvmini_b         0111 01101001 00100 ..... ..... .....    @vv_i5
++xvmini_h         0111 01101001 00101 ..... ..... .....    @vv_i5
++xvmini_w         0111 01101001 00110 ..... ..... .....    @vv_i5
++xvmini_d         0111 01101001 00111 ..... ..... .....    @vv_i5
++xvmini_bu        0111 01101001 01100 ..... ..... .....    @vv_ui5
++xvmini_hu        0111 01101001 01101 ..... ..... .....    @vv_ui5
++xvmini_wu        0111 01101001 01110 ..... ..... .....    @vv_ui5
++xvmini_du        0111 01101001 01111 ..... ..... .....    @vv_ui5
 +
  xvreplgr2vr_b    0111 01101001 11110 00000 ..... .....    @vr
  xvreplgr2vr_h    0111 01101001 11110 00001 ..... .....    @vr
  xvreplgr2vr_w    0111 01101001 11110 00010 ..... .....    @vr
 diff --git a/target/loongarch/vec.h b/target/loongarch/vec.h
-index 6ff89ebda8..361bf87896 100644
+index 30f1a7775f..a053ffc624 100644
 --- a/target/loongarch/vec.h
 +++ b/target/loongarch/vec.h
-@@ -50,4 +50,7 @@
- #define DO_ADD(a, b)  (a + b)
- #define DO_SUB(a, b)  (a - b)
+@@ -57,4 +57,7 @@
  
-+#define DO_VAVG(a, b)  ((a >> 1) + (b >> 1) + (a & b & 1))
-+#define DO_VAVGR(a, b) ((a >> 1) + (b >> 1) + ((a | b) & 1))
+ #define DO_VABS(a)      ((a < 0) ? (-a) : (a))
+ 
++#define DO_MIN(a, b)    (a < b ? a : b)
++#define DO_MAX(a, b)    (a > b ? a : b)
 +
  #endif /* LOONGARCH_VEC_H */
 diff --git a/target/loongarch/vec_helper.c b/target/loongarch/vec_helper.c
-index 411d94780d..56997455de 100644
+index 343aef696e..a3348872c9 100644
 --- a/target/loongarch/vec_helper.c
 +++ b/target/loongarch/vec_helper.c
-@@ -341,17 +341,16 @@ DO_ODD_U_S(vaddwod_h_bu_b, 16, H, UH, B, UB, DO_ADD)
- DO_ODD_U_S(vaddwod_w_hu_h, 32, W, UW, H, UH, DO_ADD)
- DO_ODD_U_S(vaddwod_d_wu_w, 64, D, UD, W, UW, DO_ADD)
+@@ -400,18 +400,16 @@ DO_VADDA(vadda_h, 16, H, DO_VABS)
+ DO_VADDA(vadda_w, 32, W, DO_VABS)
+ DO_VADDA(vadda_d, 64, D, DO_VABS)
  
--#define DO_VAVG(a, b)  ((a >> 1) + (b >> 1) + (a & b & 1))
--#define DO_VAVGR(a, b) ((a >> 1) + (b >> 1) + ((a | b) & 1))
+-#define DO_MIN(a, b) (a < b ? a : b)
+-#define DO_MAX(a, b) (a > b ? a : b)
 -
- #define DO_3OP(NAME, BIT, E, DO_OP)                         \
- void HELPER(NAME)(void *vd, void *vj, void *vk, uint32_t v) \
- {                                                           \
--    int i;                                                  \
-+    int i, len;                                             \
-     VReg *Vd = (VReg *)vd;                                  \
-     VReg *Vj = (VReg *)vj;                                  \
-     VReg *Vk = (VReg *)vk;                                  \
--    for (i = 0; i < LSX_LEN/BIT; i++) {                     \
-+                                                            \
-+    len = (simd_oprsz(v) == 16) ? LSX_LEN : LASX_LEN;       \
-+    for (i = 0; i < len / BIT; i++) {                       \
-         Vd->E(i) = DO_OP(Vj->E(i), Vk->E(i));               \
-     }                                                       \
+ #define VMINMAXI(NAME, BIT, E, DO_OP)                           \
+ void HELPER(NAME)(void *vd, void *vj, uint64_t imm, uint32_t v) \
+ {                                                               \
+-    int i;                                                      \
++    int i, len;                                                 \
+     VReg *Vd = (VReg *)vd;                                      \
+     VReg *Vj = (VReg *)vj;                                      \
+     typedef __typeof(Vd->E(0)) TD;                              \
+                                                                 \
+-    for (i = 0; i < LSX_LEN/BIT; i++) {                         \
++    len = (simd_oprsz(v) == 16) ? LSX_LEN : LASX_LEN;           \
++    for (i = 0; i < len / BIT; i++) {                           \
+         Vd->E(i) = DO_OP(Vj->E(i), (TD)imm);                    \
+     }                                                           \
  }
 -- 
 2.39.1
