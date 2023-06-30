@@ -2,43 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CD39743F49
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 17:58:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F0DB6743F64
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 18:03:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFGUR-0000kg-Ks; Fri, 30 Jun 2023 11:56:55 -0400
+	id 1qFGXK-0001Zv-E3; Fri, 30 Jun 2023 11:59:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qFGUO-0000j1-Jz
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 11:56:52 -0400
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qFGXG-0001ZW-78
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 11:59:50 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qFGUM-0006Qj-Ii
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 11:56:52 -0400
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qFGXE-0007lD-Mh
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 11:59:49 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id D8B8410679;
- Fri, 30 Jun 2023 18:56:37 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 1FA431067E;
+ Fri, 30 Jun 2023 18:59:47 +0300 (MSK)
 Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id C4A2A10D8E;
- Fri, 30 Jun 2023 18:56:36 +0300 (MSK)
-Message-ID: <258917a6-62a3-8d5d-c651-4a11942801c4@tls.msk.ru>
-Date: Fri, 30 Jun 2023 18:56:36 +0300
+ by tsrv.corpit.ru (Postfix) with ESMTP id BF90E10D99;
+ Fri, 30 Jun 2023 18:59:46 +0300 (MSK)
+Message-ID: <2c8a43f8-74f9-6759-2303-ca5c164e6bc7@tls.msk.ru>
+Date: Fri, 30 Jun 2023 18:59:46 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
-Subject: Re: [PATCH] os-posix: Allow 'chroot' via '-run-with' and deprecate
- the old '-chroot' option
+Subject: Re: [PULL 11/16] vfio/pci: Call vfio_prepare_kvm_msi_virq_batch() in
+ MSI retry path
 Content-Language: en-US
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>
-Cc: libvir-list@redhat.com, Claudio Imbrenda <imbrenda@linux.ibm.com>,
- Markus Armbruster <armbru@redhat.com>
-References: <20230630150112.435874-1-thuth@redhat.com>
+To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>, qemu-devel@nongnu.org
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
+ Longpeng <longpeng2@huawei.com>
+References: <20230630052235.1934154-1-clg@redhat.com>
+ <20230630052235.1934154-12-clg@redhat.com>
 From: Michael Tokarev <mjt@tls.msk.ru>
-In-Reply-To: <20230630150112.435874-1-thuth@redhat.com>
+In-Reply-To: <20230630052235.1934154-12-clg@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
 X-Spam_score_int: -69
@@ -62,43 +64,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-30.06.2023 18:01, Thomas Huth wrote:
-> We recently introduced "-run-with" for options that influence the
-> runtime behavior of QEMU. This option has the big advantage that it
-> can group related options (so that it is easier for the users to spot
-> them) and that the options become introspectable via QMP this way.
-> So let's start moving more switches into this option group, starting
-> with "-chroot" now.
-...
-> +static QemuOptsList qemu_run_with_opts = {
-> +    .name = "run-with",
-> +    .head = QTAILQ_HEAD_INITIALIZER(qemu_run_with_opts.head),
-> +    .desc = {
-> +#if defined(CONFIG_LINUX)
-> +        {
-> +            .name = "async-teardown",
-> +            .type = QEMU_OPT_BOOL,
-> +        },
-> +#endif
-> +        {
-> +            .name = "chroot",
-> +            .type = QEMU_OPT_STRING,
-> +        },
-> +        { /* end of list */ }
-> +    },
-> +};
-> +
-> +static void register_teardown(void)
-> +{
-> +    qemu_add_opts(&qemu_run_with_opts);
-> +}
-> +opts_init(register_teardown);
+30.06.2023 08:22, Cédric Le Goater wrote:
+> From: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
+> 
+> When vfio_enable_vectors() returns with less than requested nr_vectors
+> we retry with what kernel reported back. But the retry path doesn't
+> call vfio_prepare_kvm_msi_virq_batch() and this results in,
+> 
+> qemu-system-aarch64: vfio: Error: Failed to enable 4 MSI vectors, retry with 1
+> qemu-system-aarch64: ../hw/vfio/pci.c:602: vfio_commit_kvm_msi_virq_batch: Assertion `vdev->defer_kvm_irq_routing' failed
+> 
+> Fixes: dc580d51f7dd ("vfio: defer to commit kvm irq routing when enable msi/msix")
 
-Hmm.. Is it still register_teardown? :)
+Is it -stable material?
 
-Other than that,
-
-Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
+Thanks,
 
 /mjt
 
