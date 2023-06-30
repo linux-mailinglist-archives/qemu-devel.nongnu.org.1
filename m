@@ -2,89 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B95C74419B
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 19:49:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD6EA74419E
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 19:52:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFIFE-0003K6-2I; Fri, 30 Jun 2023 13:49:20 -0400
+	id 1qFIHe-0004fz-SZ; Fri, 30 Jun 2023 13:51:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qFIFB-0003Jg-WE
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 13:49:18 -0400
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ id 1qFIHd-0004fj-Dp
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 13:51:49 -0400
+Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qFIFA-0000rh-7X
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 13:49:17 -0400
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-3fa8cd4a113so22621155e9.2
- for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 10:49:15 -0700 (PDT)
+ id 1qFIHb-0001Pg-K0
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 13:51:49 -0400
+Received: by mail-lf1-x12b.google.com with SMTP id
+ 2adb3069b0e04-4f9fdb0ef35so3596938e87.0
+ for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 10:51:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688147354; x=1690739354;
- h=content-transfer-encoding:in-reply-to:from:references:to
+ d=linaro.org; s=google; t=1688147506; x=1690739506;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=Gt1/zkp1UjpZSVzPEFTelDhjkSv6strgB6PbHIhgVpQ=;
- b=G7SEETT1IV2/xcbpNy8+ZWC0bpASsjToWnLg2glN9XlVfqr6+SmTDmGCnKjA7OcH3J
- 1zdhutTSrOAlDR6kNoK1kZUUkxcQwRZabo6Q/wQaWSLTajbErLbUkNIyP6XeBc8gaTt8
- Xa0hRM6M+al3pJO3QWZHXV3eHDlrQ9CJNLhRpfoXGGcKZLzK0F0HOgHwiU5+LCP9xrEu
- lr4NuSINZRQhq67Lw8Qalv8rTJNJM3dSPG9P6EulzWsUPoLFgsEl/e2eJ1JpSgi1CHH6
- nvP8RwfwZEWP2ynEhowo2WuyQTPPZJwdt6FnyXkaxHJBVS5W+eJ/sBRfUTnPh4cG3tdB
- qX4A==
+ bh=BMniqV8Qa24ce3aH/nfEq1ieh79OKRsSEbO0YUUdqc4=;
+ b=fIF+UPmWasW2PfmGGUXn42ROcmwATgvJy90h3W0/BWfVvnfLWjBlOluXWCbBuUNwOk
+ hsYIvuqCYlS5LCJBEuT/ueymBZoR4bnriSbEK2KDRwJgYOmLdh8B+jXG0r4TGRCRulqk
+ 9rORyDm97Hxio9vRmJWy6uuYIDXki69UuyCvsLpOxo+iydZV27WoA/nJxfu7PLvuCKu8
+ s/paX3oDkgaZ4RIMYaZCaZ92CzHR6jXM8qdA5jBS+4+MqMT1lCg2X1exY7tOIeRpv6MC
+ 5NPqswzptQKNAEvA2LcySWRrKDDC9o1aoitsfp21bfkgV/6qeanzAVmy3SCVhGo7HDAt
+ 5v/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688147354; x=1690739354;
- h=content-transfer-encoding:in-reply-to:from:references:to
+ d=1e100.net; s=20221208; t=1688147506; x=1690739506;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Gt1/zkp1UjpZSVzPEFTelDhjkSv6strgB6PbHIhgVpQ=;
- b=IlS98ixON0SqWcrkUoy6wLiQEKSqe2tfwIq2odaUQKOyQ2lfK5GmsIzQO7wY9XuvaT
- 81yeKfPC0J5d2HThD5gXUqZC9Xf9BFped7W/6IuRvWlQ1GzT68gCET2B+i5W0pa0SF4o
- HJSyrMJQ/wgUwQgjedwgHYFmk0p9jBybPVcKsb+QYtJih2My2XtonSvyE71ZDcDklMrF
- u+aFJ0Ini8CFk/h0oWuw9H0XdUght3sALRvroybh8Rfm0Tyg2tADnbh9wFmIwoW8FZxb
- O4LGQNBL4CGPIPN91h2EKzTP5AsQSHDGm8xwBZ+aWhBr/z0u0gmot+6MzoSO8kW4yv9h
- CTjA==
-X-Gm-Message-State: ABy/qLaPBjIja0M9RQrKbQF0qs8wV5eSnR84dd9Y32bKMojE5lvJ3UzQ
- SKblW/8AX1ypuY795yRzrqLLgg==
-X-Google-Smtp-Source: APBJJlHkNQr0i6tII4qvtDgVD8VQOo+ZNP9GPsMHmML+KpyRygo1G6E1/82YSVlWiIM0OgwZABoLWw==
-X-Received: by 2002:adf:e685:0:b0:313:e96e:98f2 with SMTP id
- r5-20020adfe685000000b00313e96e98f2mr2924117wrm.6.1688147354279; 
- Fri, 30 Jun 2023 10:49:14 -0700 (PDT)
+ bh=BMniqV8Qa24ce3aH/nfEq1ieh79OKRsSEbO0YUUdqc4=;
+ b=b4KUdi957kfqG+Kb8WNVCSdBmaXND55nR1kGH7Os1CL48yYfGqiesIuG+RPyFGV+xR
+ Lu46CS014GNOZ3sF5uPQEJ/arGkZy3UtdmJT4cYhd7hVwt0jm8kzOUtpO5MBn78Ml87j
+ OxpLBrRyuNO1Ye10G80cGtSnLhHz5Fvj+9DChhJSTm5AkgVKSL4nChzDPnY2hl+Ga7qQ
+ /O+fLS4okcLP2YuOOGbFmbiEpeVwmc6n8ECgJ1IDcT9SFwfW0KN5WnBheupZobWzzXF/
+ bBCkfYEI3A2f7ZYNcX2srctnX+qMmjBbJpxregsDbbDOaQjv3tPJEZbxvWUQGicSeFR/
+ 2UmQ==
+X-Gm-Message-State: ABy/qLZrdcVuukXhfvkg7jOxCy0XQiSAb2kAdA2F9USM7eO5Dm6ci9wT
+ GvhWxnvb5ESJls4LeB6Dpa92hQ==
+X-Google-Smtp-Source: APBJJlESa29bUtSPxqS248gMCmZETvtNnWupWDfKc+G1dpQMFgKHsMqEzcsLw16ZpXGSlQ8LrxtygA==
+X-Received: by 2002:a05:6512:3c98:b0:4f8:7614:48a5 with SMTP id
+ h24-20020a0565123c9800b004f8761448a5mr3210195lfv.66.1688147505772; 
+ Fri, 30 Jun 2023 10:51:45 -0700 (PDT)
 Received: from [192.168.1.208] ([139.47.41.96])
  by smtp.gmail.com with ESMTPSA id
- f12-20020a7bc8cc000000b003fbbe41fd78sm4251726wml.10.2023.06.30.10.49.13
+ u20-20020a05600c211400b003fbb618f7adsm5479822wml.15.2023.06.30.10.51.45
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 30 Jun 2023 10:49:14 -0700 (PDT)
-Message-ID: <50c87d7b-a5b0-9a33-e527-a76811aa18c7@linaro.org>
-Date: Fri, 30 Jun 2023 19:49:11 +0200
+ Fri, 30 Jun 2023 10:51:45 -0700 (PDT)
+Message-ID: <e4997bdf-502e-5e45-f0a6-63f6fed0cef7@linaro.org>
+Date: Fri, 30 Jun 2023 19:51:42 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PATCH v6] riscv: Add support for the Zfa extension
+Subject: Re: [PATCH v3 1/8] target/arm: Add ID_AA64ISAR2_EL1
 Content-Language: en-US
-To: Christoph Muellner <christoph.muellner@vrull.eu>, qemu-riscv@nongnu.org,
- qemu-devel@nongnu.org, Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, Philipp Tomsich
- <philipp.tomsich@vrull.eu>, Palmer Dabbelt <palmer@dabbelt.com>,
- Jeff Law <jeffreyalaw@gmail.com>, Tsukasa OI <research_trasio@irq.a4lg.com>,
- liweiwei@iscas.ac.cn, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Rob Bradford <rbradford@rivosinc.com>
-References: <20230630170230.1043454-1-christoph.muellner@vrull.eu>
+To: Peter Maydell <peter.maydell@linaro.org>,
+ Aaron Lindsay <aaron@os.amperecomputing.com>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org,
+ Vincent Dehors <vincent.dehors@smile.fr>,
+ =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>
+References: <20230609172324.982888-1-aaron@os.amperecomputing.com>
+ <20230609172324.982888-2-aaron@os.amperecomputing.com>
+ <a8db353d-b258-c856-d5ce-1236b0893a53@linaro.org>
+ <ZIcbF8zShOr1N2Sl@strawberry.localdomain>
+ <CAFEAcA8pjgXXnUcLxcnm-9mcakps4KcXKOvHQxzj7n_CzY2zSA@mail.gmail.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230630170230.1043454-1-christoph.muellner@vrull.eu>
+In-Reply-To: <CAFEAcA8pjgXXnUcLxcnm-9mcakps4KcXKOvHQxzj7n_CzY2zSA@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x32f.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::12b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-lf1-x12b.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.095,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,92 +101,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/30/23 19:02, Christoph Muellner wrote:
-> From: Christoph Müllner <christoph.muellner@vrull.eu>
+On 6/19/23 12:51, Peter Maydell wrote:
+> On Mon, 12 Jun 2023 at 14:18, Aaron Lindsay
+> <aaron@os.amperecomputing.com> wrote:
+>>
+>> On Jun 09 13:49, Richard Henderson wrote:
+>>> On 6/9/23 10:23, Aaron Lindsay wrote:
+>>>> --- a/target/arm/hvf/hvf.c
+>>>> +++ b/target/arm/hvf/hvf.c
+>>>> @@ -847,6 +847,7 @@ static bool hvf_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
+>>>>            { HV_SYS_REG_ID_AA64DFR1_EL1, &host_isar.id_aa64dfr1 },
+>>>>            { HV_SYS_REG_ID_AA64ISAR0_EL1, &host_isar.id_aa64isar0 },
+>>>>            { HV_SYS_REG_ID_AA64ISAR1_EL1, &host_isar.id_aa64isar1 },
+>>>> +        { HV_SYS_REG_ID_AA64ISAR2_EL1, &host_isar.id_aa64isar2 },
+>>>
+>>> Sadly not defined for MacOSX13.1.sdk, and it's an enum so you can't #ifdef it either.
+>>>
+>>> You'll need a meson probe for it.
+>>
+>> I'm not very familiar with HVF or meson - I am not sure I understand
+>> what you're suggesting here (and a few attempts to grep around for an
+>> example didn't turn up anything that looked helpful). Are you suggesting
+>> some sort of build-time auto-detection, a "dumb" configuration switch
+>> that a user could use to manually enable this, or something else? And/or
+>> is there an example you could point me to of what you're thinking?
 > 
-> This patch introduces the RISC-V Zfa extension, which introduces
-> additional floating-point instructions:
-> * fli (load-immediate) with pre-defined immediates
-> * fminm/fmaxm (like fmin/fmax but with different NaN behaviour)
-> * fround/froundmx (round to integer)
-> * fcvtmod.w.d (Modular Convert-to-Integer)
-> * fmv* to access high bits of float register bigger than XLEN
-> * Quiet comparison instructions (fleq/fltq)
+> So the first thing here is: where is HV_SYS_REG_ID_AA64ISAR2_EL1
+> defined in the first place?
+> https://developer.apple.com/documentation/hypervisor/hv_sys_reg_t
+> does not list it.
 > 
-> Zfa defines its instructions in combination with the following extensions:
-> * single-precision floating-point (F)
-> * double-precision floating-point (D)
-> * quad-precision floating-point (Q)
-> * half-precision floating-point (Zfh)
+> If this is really the right name for the value, then:
 > 
-> Since QEMU does not support the RISC-V quad-precision floating-point
-> ISA extension (Q), this patch does not include the instructions that
-> depend on this extension. All other instructions are included in this
-> patch.
+> We do our build-time detection of stuff that might or might
+> not be present using meson's facilities or that kind of
+> thing. These are all in meson.build. In this case I think
+> that what you want to use is has_header_symbol(), which
+> checks for presence of some symbol in a given header. There's
+> examples in meson.build, you want something like
 > 
-> The Zfa specification can be found here:
->    https://github.com/riscv/riscv-isa-manual/blob/master/src/zfa.tex
-> The Zfa specifciation is frozen and is in public review since May 3, 2023:
->    https://groups.google.com/a/groups.riscv.org/g/isa-dev/c/SED4ntBkabg
+> config_host_data.set('HAVE_HV_SYS_REG_ID_AA64ISAR2_EL1',
+>                       cc.has_header_symbol('whatever.h',
+> 'HV_SYS_REG_ID_AA64ISAR2_EL1'))
 > 
-> The patch also includes a TCG test for the fcvtmod.w.d instruction.
-> The test cases test for correct results and flag behaviour.
-> Note, that the Zfa specification requires fcvtmod's flag behaviour
-> to be identical to a fcvt with the same operands (which is also
-> tested).
+> which tells meson "if this header has this symbol then define
+> this preprocessor value HAVE_...". Then you can #ifdef on that.
+> (We're inconsistent about whether we use CONFIG_FOO or HAVE_FOO
+> for this sort of test.)
 > 
-> Signed-off-by: Christoph Müllner <christoph.muellner@vrull.eu>
-> 
-> ---
-> 
-> This patch depends on float64_to_int64_modulo(), which is provided
-> by a patchset from Richard Henderson:
->    https://lists.nongnu.org/archive/html/qemu-devel/2023-05/msg07022.html
-> 
-> Changes in v6:
-> * Address issues in trans_fmvp_d_x() and trans_fmvh_x_d()
-> 
-> Changes in v5:
-> * Merge all three commits
-> * Address issues reported by Richard
-> 
-> Changes in v4:
-> * Rebase and resolve conflicts
-> * Fix whitespace issue (thanks Rob)
-> * Add patch to implemnt fcvtmod.w.d using float64_to_int64_modulo()
-> * Add (demo) test for fcvtmod.w.d
-> 
-> Changes in v3:
-> * Add disassembler support
-> * Enable Zfa by default
-> * Remove forgotten comments in the decoder
-> * Fix fli translation code (use movi instead of ld)
-> * Tested against SPEC CPU2017 fprate
-> * Use floatN_[min|max] for f[min|max]m.* instructions
-> 
-> Changes in v2:
-> * Remove calls to mark_fs_dirty() in comparison trans functions
-> * Rewrite fround(nx) using float*_round_to_int()
-> * Move fli* to translation unit and fix NaN-boxing of NaN values
-> * Reimplement FCVTMOD.W.D
-> * Add use of second register in trans_fmvp_d_x()
-> 
->   disas/riscv.c                             | 151 +++++++
->   target/riscv/cpu.c                        |   8 +
->   target/riscv/cpu_cfg.h                    |   1 +
->   target/riscv/fpu_helper.c                 | 154 +++++++
->   target/riscv/helper.h                     |  19 +
->   target/riscv/insn32.decode                |  26 ++
->   target/riscv/insn_trans/trans_rvzfa.c.inc | 521 ++++++++++++++++++++++
->   target/riscv/translate.c                  |   1 +
->   tests/tcg/riscv64/Makefile.target         |   6 +
->   tests/tcg/riscv64/test-fcvtmod.c          | 345 ++++++++++++++
->   10 files changed, 1232 insertions(+)
->   create mode 100644 target/riscv/insn_trans/trans_rvzfa.c.inc
->   create mode 100644 tests/tcg/riscv64/test-fcvtmod.c
+> Or alternatively, since this is macos specific and Apple are
+> quite careful about API versioning, it may be simpler to use
+> macos's own version macros to ifdef things so we only try to
+> use the enum value when building for a macos version that knows
+> about it. Grepping for 'MAC_OS_VERSION' brings up examples of
+> that approach.
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+AFAICS, there is no macos version that contains this register, because there is no Apple 
+cpu that contains it.  I think we should be fine, for now, in omitting any HVF change, 
+letting the register default to 0.
 
 
 r~
+
 
