@@ -2,81 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E7E074377D
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 10:37:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B9E47437AC
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 10:44:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qF9cu-0007db-S1; Fri, 30 Jun 2023 04:37:12 -0400
+	id 1qF9iw-0001em-QQ; Fri, 30 Jun 2023 04:43:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qF9ct-0007dQ-0M
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 04:37:11 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qF9iu-0001eR-Qo
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 04:43:24 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qF9cr-0000M0-B6
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 04:37:10 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qF9is-0004kJ-Q4
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 04:43:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688114228;
+ s=mimecast20190719; t=1688114601;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=YLGKb/+xVJwAhtuWbuREX2S6YaRmEZY1D/+Y3vRnCek=;
- b=LXaq2uWtmRPGIYq6uXKIy3X0GkqnE5Sn2tHgKav+X18chN86W5MgBEfRc6tF8WsBEogcGF
- nG6vobwrm0HPSkGmvWDxScl8IZ9RpfW+u4j4N0l1mZbstDRW06+oRh3Pzl/v2x7V/ih8I+
- W8M+6eS4ho+W3FtBAz8KrgA7FV453c0=
-Received: from mail-ot1-f71.google.com (mail-ot1-f71.google.com
- [209.85.210.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=z4Tf49fJmoRRxXMtU38LEp/wNgGOw/diK9DtFxsO7Ug=;
+ b=PYdF13MROLQGbqKLHwdtfqtX/3mFAlqnnzDvzoRPP7yNt8DIM31xtLLVfJ2KU17bRQvOEN
+ +G0GoEOjOE7ISf5DaZvakuvX8Uugjcgu+M0tYJDrSmwziuh88gcYMUOWKSnrpgnk05OLKB
+ t6bT2PbghaaoH/B5axJ5SV5a+kkYPfg=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-357-QKx8yCZoPk26_u8eWHWVfA-1; Fri, 30 Jun 2023 04:37:05 -0400
-X-MC-Unique: QKx8yCZoPk26_u8eWHWVfA-1
-Received: by mail-ot1-f71.google.com with SMTP id
- 46e09a7af769-6b792b78e53so2055586a34.3
- for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 01:37:05 -0700 (PDT)
+ us-mta-146-KNLenCSbN2mE6um77JamHA-1; Fri, 30 Jun 2023 04:43:20 -0400
+X-MC-Unique: KNLenCSbN2mE6um77JamHA-1
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-3128319d532so1036838f8f.2
+ for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 01:43:19 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688114225; x=1690706225;
- h=to:references:message-id:content-transfer-encoding:cc:date
- :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=YLGKb/+xVJwAhtuWbuREX2S6YaRmEZY1D/+Y3vRnCek=;
- b=a7h6UPeHPyr4Er9VbXVHSOzJEzNtx+RsIBIaBXPY0TU1k2ktMcbqQKjwFwn7jRztaA
- yefSHLP1H+wS2f5VFyyhIw/DCK2RyY92E6Dp0QdGh6qANvdJjAihjjH/C3WHomm9rKIa
- bbZUZiS5uk4uPS4daQrxwDZMVHOhjFsOdHByQyFoDsdA8jP1rQBn0zO5VXyz4mrk37H2
- rTyb9BkKjXZ3zhXwMNG+UpPdxT1xPkS07LAeU85l/zIuksLshmsOupW3Ue+pYkjQ6ASn
- Lytfup1Z4BW2PAAPaPiJexNPxWrzkg+PspW9TVDucG8jQjWp+YUiW8WMtvygX/fXW+Nk
- eX3A==
-X-Gm-Message-State: AC+VfDwg8fayFPo/cP1DuN2JGtxN+8Xis//vgORJYpAkNdB18MEssme/
- Q1UDsbgSW+7CBDDpnMRSeZnJjqIbR/oX5FBbXB0m+//4sORZC2yvkAKShNhVwUdYvx2iXkik3i4
- avWVtnbAW+UnfDLE=
-X-Received: by 2002:a9d:6646:0:b0:6b8:778f:d67 with SMTP id
- q6-20020a9d6646000000b006b8778f0d67mr2347920otm.27.1688114225106; 
- Fri, 30 Jun 2023 01:37:05 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5hgObzYD1s7YJd01Mlqm3gsQNFxck4I8GuuSoEkX3w0l1kAqFMM5IyTakSvrGinWzb9+BavQ==
-X-Received: by 2002:a9d:6646:0:b0:6b8:778f:d67 with SMTP id
- q6-20020a9d6646000000b006b8778f0d67mr2347909otm.27.1688114224852; 
- Fri, 30 Jun 2023 01:37:04 -0700 (PDT)
-Received: from smtpclient.apple ([115.96.128.249])
- by smtp.gmail.com with ESMTPSA id
- q10-20020a65684a000000b0053f06d09725sm9085839pgt.32.2023.06.30.01.37.01
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Fri, 30 Jun 2023 01:37:04 -0700 (PDT)
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.3\))
-Subject: Re: [PATCH v6 5/5] hw/pci: ensure PCIE devices are plugged into only
- slot 0 of PCIE port
-From: Ani Sinha <anisinha@redhat.com>
-In-Reply-To: <20230630041937-mutt-send-email-mst@kernel.org>
-Date: Fri, 30 Jun 2023 14:06:59 +0530
+ d=1e100.net; s=20221208; t=1688114599; x=1690706599;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=z4Tf49fJmoRRxXMtU38LEp/wNgGOw/diK9DtFxsO7Ug=;
+ b=M01ST8J4veGBTfMGMtB8kqgK07AlESS78WivQSx6CyfaLClKaQoUNSUxRNXKS7zX/i
+ 4P69FIY4SyP6khvokNQPpjwSJRRCl2HjM6R2eRXp+6HvUyVKvXEajtPT+PmTIC+R47Y1
+ gJYoObeXlWQtEd+l+qUm1E1FIOml0CTCRhcZ4Kmmf6hYdlX87UidfpKZJEYYu66nIfKQ
+ n5Yoo8eFTyHILFxnGildTZyqH0X4SeiogWLaKeWKJWp8BA1qUKGAwoXhzypQDCgcTUfX
+ N1mn9SGL/OpUHSkKb/cOaxSqoj9/AWVmjRojnkheTGrS5d/u6Zf+YLg5KnwAURsagek9
+ c/CQ==
+X-Gm-Message-State: AC+VfDx+xnBzBHKuhAclMUpA3650wyIc+r+k3KO6Ex/p6NKFQ8kKkzfA
+ oBxABAbpSh10Ng7JFBds2IpE5gSlTZsxNxn8gjHdQNTgrmR+6H6aOusuAHfNV56F2W1VHJVQ9G4
+ ZrodlasyOBwXPQw4=
+X-Received: by 2002:a05:600c:cf:b0:3fa:95c7:e891 with SMTP id
+ u15-20020a05600c00cf00b003fa95c7e891mr1546574wmm.35.1688114598907; 
+ Fri, 30 Jun 2023 01:43:18 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6q5vLjzkbRkhOI/gaUaXxWkn153sX9g1z8RHw2l21EOU0DY6GoRp1Do1LKPsAum+GQfcpYsw==
+X-Received: by 2002:a05:600c:cf:b0:3fa:95c7:e891 with SMTP id
+ u15-20020a05600c00cf00b003fa95c7e891mr1546558wmm.35.1688114598544; 
+ Fri, 30 Jun 2023 01:43:18 -0700 (PDT)
+Received: from redhat.com ([2.52.154.169]) by smtp.gmail.com with ESMTPSA id
+ 7-20020a05600c230700b003fa968e9c27sm13645300wmo.9.2023.06.30.01.43.16
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 30 Jun 2023 01:43:18 -0700 (PDT)
+Date: Fri, 30 Jun 2023 04:43:14 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Ani Sinha <anisinha@redhat.com>
 Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,
  qemu-devel <qemu-devel@nongnu.org>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Julia Suvorova <jusual@redhat.com>, Igor Mammedov <imammedo@redhat.com>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <4618EAD1-2862-4288-A881-CA860D04ADB0@redhat.com>
+Subject: Re: [PATCH v6 5/5] hw/pci: ensure PCIE devices are plugged into only
+ slot 0 of PCIE port
+Message-ID: <20230630043734-mutt-send-email-mst@kernel.org>
 References: <20230629040707.115656-1-anisinha@redhat.com>
  <20230629040707.115656-6-anisinha@redhat.com>
  <8d382e8b-088b-f0af-eec4-a85ee513b4ae@daynix.com>
@@ -86,9 +78,12 @@ References: <20230629040707.115656-1-anisinha@redhat.com>
  <167eea06-b917-8783-5cd6-8fda56e41331@daynix.com>
  <A50CA177-0E7E-4828-A036-70EB532FE2B8@redhat.com>
  <20230630041937-mutt-send-email-mst@kernel.org>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-X-Mailer: Apple Mail (2.3696.120.41.1.3)
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=anisinha@redhat.com;
+ <4618EAD1-2862-4288-A881-CA860D04ADB0@redhat.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4618EAD1-2862-4288-A881-CA860D04ADB0@redhat.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -113,49 +108,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Fri, Jun 30, 2023 at 02:06:59PM +0530, Ani Sinha wrote:
+> 
+> 
+> > On 30-Jun-2023, at 2:02 PM, Michael S. Tsirkin <mst@redhat.com> wrote:
+> > 
+> > On Fri, Jun 30, 2023 at 01:11:33PM +0530, Ani Sinha wrote:
+> >>> 
+> >>> Thus the check for unoccupied function 0 needs to use pci_is_vf() instead of checking ARI capability, and that can happen in do_pci_register_device().
+> >>> 
+> >>>> Also where do you propose we move the check?
+> >>> 
+> >>> In pci_qdev_realize(), somewhere after pc->realize() and before option ROM loading.
+> >> 
+> >> Hmm, I tried this. The issue here is something like this would be now allowed since the PF has ARI capability:
+> >> 
+> >> -device pcie-root-port,id=p -device igb,bus=p,addr=0x2.0x0
+> >> 
+> >> The above should not be allowed and when used, we do not see the igb ethernet device from the guest OS.
+> > 
+> > I think it's allowed because it expects you to hotplug function 0 later,
+> 
+> This is about the igb device being plugged into the non-zero slot of the pci-root-port. The guest OS ignores it.
 
+yes but if you later add a device with ARI and with next field pointing
+slot 2 guest will suddently find both.
 
-> On 30-Jun-2023, at 2:02 PM, Michael S. Tsirkin <mst@redhat.com> wrote:
->=20
-> On Fri, Jun 30, 2023 at 01:11:33PM +0530, Ani Sinha wrote:
->>>=20
->>> Thus the check for unoccupied function 0 needs to use pci_is_vf() =
-instead of checking ARI capability, and that can happen in =
-do_pci_register_device().
->>>=20
->>>> Also where do you propose we move the check?
->>>=20
->>> In pci_qdev_realize(), somewhere after pc->realize() and before =
-option ROM loading.
->>=20
->> Hmm, I tried this. The issue here is something like this would be now =
-allowed since the PF has ARI capability:
->>=20
->> -device pcie-root-port,id=3Dp -device igb,bus=3Dp,addr=3D0x2.0x0
->>=20
->> The above should not be allowed and when used, we do not see the igb =
-ethernet device from the guest OS.
->=20
-> I think it's allowed because it expects you to hotplug function 0 =
-later,
+> > no?
+> > 
+> > I am quite worried about all this work going into blocking
+> > what we think is disallowed configurations. We should have
+> > maybe blocked them originally, but now that we didn't
+> > there's a non zero chance of regressions,
+> 
+> Sigh,
 
-This is about the igb device being plugged into the non-zero slot of the =
-pci-root-port. The guest OS ignores it.
+There's value in patches 1-4 I think - the last patch helped you find
+these. so there's value in this work.
 
-> no?
->=20
-> I am quite worried about all this work going into blocking
-> what we think is disallowed configurations. We should have
-> maybe blocked them originally, but now that we didn't
-> there's a non zero chance of regressions,
+> no medals here for being brave :-)
 
-Sigh, no medals here for being brave :-)
+Try removing support for a 3.5mm jack next. Oh wait ...
 
-> and the benefit
-> is not guaranteed.
->=20
-> --=20
-> MST
->=20
+> > and the benefit
+> > is not guaranteed.
+> > 
+> > -- 
+> > MST
+> > 
 
 
