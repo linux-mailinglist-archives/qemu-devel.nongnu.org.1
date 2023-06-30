@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 431F274363B
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 09:51:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4284743636
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 09:50:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qF8tK-0001tw-J8; Fri, 30 Jun 2023 03:50:06 -0400
+	id 1qF8tM-0001uQ-9N; Fri, 30 Jun 2023 03:50:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1qF8tI-0001ti-5q
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 03:50:04 -0400
+ id 1qF8tK-0001u9-J8
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 03:50:06 -0400
 Received: from mga03.intel.com ([134.134.136.65])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1qF8tG-0002bq-8H
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 03:50:03 -0400
+ id 1qF8tI-0002cC-EN
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 03:50:06 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1688111402; x=1719647402;
+ t=1688111404; x=1719647404;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=dX0W6Lwgs02fXVLOQjBdVVT7wZQlUQbNlFD/jzw8V5s=;
- b=GX0MWGJiNvB9QOMVECK9xMgMJY6I25ipcq5N7LAg3MBVUuIxlfsYC+64
- Ytyf5dy6jzRmY35/GgAQC6ud6bXPX0rXaDaWlb4rqGjdHlrYFqH9xQq4/
- swOuBigDX0BE8tnPoFw4CnydJe/9PjdIDedMihTd1wqaSuA6a+PW5N+U7
- huvW6rvVMMD+/i/a2yyZ20jQObfFFVzjij37/zyUP9WVeNqdIyq0x45fR
- 3OAHcDv6HM8H3brawcdfdOttdq+IccZERe7aoSrIXcDymSMEKcn0amuqC
- EnPtfCwaz1Job8SQqnHhZLDZNMMH3hFgzno+OKcgXKNc3WKq1e49XGheh g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10756"; a="365824475"
-X-IronPort-AV: E=Sophos;i="6.01,170,1684825200"; d="scan'208";a="365824475"
+ bh=0ow06bSHCmm8G35/UJT+C3SMQ0vZMLKNuD9EGNXd0l0=;
+ b=Al0haCXCbkjRJGa8VFJ/8ePCj2rotB2/X0MzaURtNd5AJ1QwXHt9Z20i
+ R9TAXaxRCikyAl7717c6gSgsJ6ZzvMezoa7nw9SOUp5Od3ymM8R+atxWU
+ nhof5w9c01RI0xl0gJtOItKqekspHPpsNXsrxAvf/0yh2ImQIoi/OdLZI
+ orBtAqI6Ix6uLof/GykK2TyVudMq23SkaMASJFbLM/dm6IHxWM13YiZYK
+ lLQJexoq9qmKqtKqFKQVqAs5Ym6izBjunILf/+dmDhQ+ixCpDPPW3KnMr
+ KGSQldKfEwWGaWKfwokxSgcYPCWIEt89PueBoOr9eveu1O1q4G+xkPc5z Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10756"; a="365824484"
+X-IronPort-AV: E=Sophos;i="6.01,170,1684825200"; d="scan'208";a="365824484"
 Received: from orsmga004.jf.intel.com ([10.7.209.38])
  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jun 2023 00:50:01 -0700
+ 30 Jun 2023 00:50:03 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10756"; a="841770807"
-X-IronPort-AV: E=Sophos;i="6.01,170,1684825200"; d="scan'208";a="841770807"
+X-IronPort-AV: E=McAfee;i="6600,9927,10756"; a="841770826"
+X-IronPort-AV: E=Sophos;i="6.01,170,1684825200"; d="scan'208";a="841770826"
 Received: from duan-server-s2600bt.bj.intel.com ([10.240.192.147])
  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jun 2023 00:49:58 -0700
+ 30 Jun 2023 00:50:01 -0700
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, joao.m.martins@oracle.com,
  avihaih@nvidia.com, chao.p.peng@intel.com
-Subject: [PATCH v5 5/7] vfio/migration: Change vIOMMU blocker from global to
- per device
-Date: Fri, 30 Jun 2023 15:36:35 +0800
-Message-Id: <20230630073637.124234-4-zhenzhong.duan@intel.com>
+Subject: [PATCH v5 6/7] vfio/migration: Free resources when
+ vfio_migration_realize fails
+Date: Fri, 30 Jun 2023 15:36:36 +0800
+Message-Id: <20230630073637.124234-5-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230630073637.124234-1-zhenzhong.duan@intel.com>
 References: <20230630073637.124234-1-zhenzhong.duan@intel.com>
@@ -78,141 +78,124 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-vIOMMU migration blocker can be consolidated to per device default
-blocker, then some vIOMMU global blocker related functions and data
-could be removed.
+When vfio_realize() succeeds, hot unplug will call vfio_exitfn()
+to free resources allocated in vfio_realize(); when vfio_realize()
+fails, vfio_exitfn() is never called and we need to free resources
+in vfio_realize().
 
-This change also makes vfio_mig_active() more accurate as it doesn't
-check for global blocker.
+In the case that vfio_migration_realize() fails,
+e.g: with -only-migratable & enable-migration=off, we see below:
+
+(qemu) device_add vfio-pci,host=81:11.1,id=vfio1,bus=root1,enable-migration=off
+0000:81:11.1: Migration disabled
+Error: disallowing migration blocker (--only-migratable) for: 0000:81:11.1: Migration is disabled for VFIO device
+
+If we hotplug again we should see same log as above, but we see:
+(qemu) device_add vfio-pci,host=81:11.1,id=vfio1,bus=root1,enable-migration=off
+Error: vfio 0000:81:11.1: device is already attached
+
+That's because some references to VFIO device isn't released.
+For resources allocated in vfio_migration_realize(), free them by
+jumping to out_deinit path with calling a new function
+vfio_migration_deinit(). For resources allocated in vfio_realize(),
+free them by jumping to de-register path in vfio_realize().
 
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 ---
- hw/vfio/common.c              | 51 ++---------------------------------
- hw/vfio/migration.c           |  7 ++---
- hw/vfio/pci.c                 |  1 -
- include/hw/vfio/vfio-common.h |  3 +--
- 4 files changed, 7 insertions(+), 55 deletions(-)
+ hw/vfio/migration.c | 37 +++++++++++++++++++++++++------------
+ hw/vfio/pci.c       |  3 ++-
+ 2 files changed, 27 insertions(+), 13 deletions(-)
 
-diff --git a/hw/vfio/common.c b/hw/vfio/common.c
-index 00fef5aa08be..a8439447b990 100644
---- a/hw/vfio/common.c
-+++ b/hw/vfio/common.c
-@@ -362,7 +362,6 @@ bool vfio_mig_active(void)
- }
- 
- static Error *multiple_devices_migration_blocker;
--static Error *giommu_migration_blocker;
- 
- static unsigned int vfio_migratable_device_num(void)
- {
-@@ -420,55 +419,9 @@ void vfio_unblock_multiple_devices_migration(void)
-     multiple_devices_migration_blocker = NULL;
- }
- 
--static bool vfio_viommu_preset(void)
-+bool vfio_viommu_preset(VFIODevice *vbasedev)
- {
--    VFIOAddressSpace *space;
--
--    QLIST_FOREACH(space, &vfio_address_spaces, list) {
--        if (space->as != &address_space_memory) {
--            return true;
--        }
--    }
--
--    return false;
--}
--
--bool vfio_block_giommu_migration(VFIODevice *vbasedev, Error **errp)
--{
--    int ret;
--
--    if (giommu_migration_blocker ||
--        !vfio_viommu_preset()) {
--        return true;
--    }
--
--    if (vbasedev->enable_migration == ON_OFF_AUTO_ON) {
--        error_setg(errp,
--                   "Migration is currently not supported with vIOMMU enabled");
--        return false;
--    }
--
--    error_setg(&giommu_migration_blocker,
--               "Migration is currently not supported with vIOMMU enabled");
--    ret = migrate_add_blocker(giommu_migration_blocker, errp);
--    if (ret < 0) {
--        error_free(giommu_migration_blocker);
--        giommu_migration_blocker = NULL;
--    }
--
--    return !ret;
--}
--
--void vfio_migration_finalize(void)
--{
--    if (!giommu_migration_blocker ||
--        vfio_viommu_preset()) {
--        return;
--    }
--
--    migrate_del_blocker(giommu_migration_blocker);
--    error_free(giommu_migration_blocker);
--    giommu_migration_blocker = NULL;
-+    return vbasedev->group->container->space->as != &address_space_memory;
- }
- 
- static void vfio_set_migration_error(int err)
 diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
-index 09fa4714a085..80509958f0d3 100644
+index 80509958f0d3..2110c4dc21e2 100644
 --- a/hw/vfio/migration.c
 +++ b/hw/vfio/migration.c
-@@ -883,9 +883,10 @@ bool vfio_migration_realize(VFIODevice *vbasedev, Error **errp)
-         return ret;
+@@ -802,6 +802,19 @@ static int vfio_migration_init(VFIODevice *vbasedev)
+     return 0;
+ }
+ 
++static void vfio_migration_deinit(VFIODevice *vbasedev)
++{
++    if (vbasedev->migration) {
++        VFIOMigration *migration = vbasedev->migration;
++
++        remove_migration_state_change_notifier(&migration->migration_state);
++        qemu_del_vm_change_state_handler(migration->vm_state);
++        unregister_savevm(VMSTATE_IF(vbasedev->dev), "vfio", vbasedev);
++        vfio_migration_free(vbasedev);
++        vfio_unblock_multiple_devices_migration();
++    }
++}
++
+ static bool vfio_block_migration(VFIODevice *vbasedev, Error *err, Error **errp)
+ {
+     int ret;
+@@ -871,7 +884,7 @@ bool vfio_migration_realize(VFIODevice *vbasedev, Error **errp)
+             error_setg(&err,
+                        "%s: VFIO device doesn't support device dirty tracking",
+                        vbasedev->name);
+-            return vfio_block_migration(vbasedev, err, errp);
++            goto add_blocker;
+         }
+ 
+         warn_report("%s: VFIO device doesn't support device dirty tracking",
+@@ -880,30 +893,30 @@ bool vfio_migration_realize(VFIODevice *vbasedev, Error **errp)
+ 
+     ret = vfio_block_multiple_devices_migration(vbasedev, errp);
+     if (!ret) {
+-        return ret;
++        goto out_deinit;
      }
  
--    ret = vfio_block_giommu_migration(vbasedev, errp);
--    if (!ret) {
--        return ret;
-+    if (vfio_viommu_preset(vbasedev)) {
-+        error_setg(&err, "%s: Migration is currently not supported "
-+                   "with vIOMMU enabled", vbasedev->name);
-+        return vfio_block_migration(vbasedev, err, errp);
+     if (vfio_viommu_preset(vbasedev)) {
+         error_setg(&err, "%s: Migration is currently not supported "
+                    "with vIOMMU enabled", vbasedev->name);
+-        return vfio_block_migration(vbasedev, err, errp);
++        goto add_blocker;
      }
  
      trace_vfio_migration_realize(vbasedev->name);
-diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-index 31c4ab250fbe..c2cf7454ece6 100644
---- a/hw/vfio/pci.c
-+++ b/hw/vfio/pci.c
-@@ -3255,7 +3255,6 @@ static void vfio_instance_finalize(Object *obj)
-      */
-     vfio_put_device(vdev);
-     vfio_put_group(group);
--    vfio_migration_finalize();
+     return true;
++
++add_blocker:
++    ret = vfio_block_migration(vbasedev, err, errp);
++out_deinit:
++    if (!ret) {
++        vfio_migration_deinit(vbasedev);
++    }
++    return ret;
  }
  
- static void vfio_exitfn(PCIDevice *pdev)
-diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
-index b3014ece2edf..3c18572322fc 100644
---- a/include/hw/vfio/vfio-common.h
-+++ b/include/hw/vfio/vfio-common.h
-@@ -227,7 +227,7 @@ extern VFIOGroupList vfio_group_list;
- bool vfio_mig_active(void);
- bool vfio_block_multiple_devices_migration(VFIODevice *vbasedev, Error **errp);
- void vfio_unblock_multiple_devices_migration(void);
--bool vfio_block_giommu_migration(VFIODevice *vbasedev, Error **errp);
-+bool vfio_viommu_preset(VFIODevice *vbasedev);
- int64_t vfio_mig_bytes_transferred(void);
- void vfio_reset_bytes_transferred(void);
+ void vfio_migration_exit(VFIODevice *vbasedev)
+ {
+-    if (vbasedev->migration) {
+-        VFIOMigration *migration = vbasedev->migration;
+-
+-        remove_migration_state_change_notifier(&migration->migration_state);
+-        qemu_del_vm_change_state_handler(migration->vm_state);
+-        unregister_savevm(VMSTATE_IF(vbasedev->dev), "vfio", vbasedev);
+-        vfio_migration_free(vbasedev);
+-        vfio_unblock_multiple_devices_migration();
+-    }
++    vfio_migration_deinit(vbasedev);
  
-@@ -254,6 +254,5 @@ int vfio_spapr_remove_window(VFIOContainer *container,
+     if (vbasedev->migration_blocker) {
+         migrate_del_blocker(vbasedev->migration_blocker);
+diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+index c2cf7454ece6..9cf70c1965d3 100644
+--- a/hw/vfio/pci.c
++++ b/hw/vfio/pci.c
+@@ -3208,8 +3208,9 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
  
- bool vfio_migration_realize(VFIODevice *vbasedev, Error **errp);
- void vfio_migration_exit(VFIODevice *vbasedev);
--void vfio_migration_finalize(void);
+     if (!pdev->failover_pair_id) {
+         ret = vfio_migration_realize(vbasedev, errp);
+-        if (ret) {
++        if (!ret) {
+             error_report("%s: Migration disabled", vbasedev->name);
++            goto out_deregister;
+         }
+     }
  
- #endif /* HW_VFIO_VFIO_COMMON_H */
 -- 
 2.34.1
 
