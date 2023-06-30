@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D57074455F
-	for <lists+qemu-devel@lfdr.de>; Sat,  1 Jul 2023 01:44:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0FC674455D
+	for <lists+qemu-devel@lfdr.de>; Sat,  1 Jul 2023 01:43:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFNlI-0008EF-E2; Fri, 30 Jun 2023 19:42:48 -0400
+	id 1qFNlL-0008Et-2j; Fri, 30 Jun 2023 19:42:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1qFNlF-0008Dy-SM
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 19:42:46 -0400
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1qFNlH-0008EA-7K
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 19:42:47 -0400
 Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1qFNlD-0006hQ-TO
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 19:42:45 -0400
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1qFNlF-0006hd-A3
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 19:42:46 -0400
 Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 35UNburU025602; Fri, 30 Jun 2023 23:42:41 GMT
+ 35UNbs7f025573; Fri, 30 Jun 2023 23:42:43 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=N1f81vTAGdQ+xQzJx6Y2oqYSZDYwGudfqc/bY/V/JEE=;
- b=HdM9R85LL0LQ8zHfvpyqxJ5V9A2DvTWR+k9V3a7VZLO+lzoJHAMojIGt0k2GzOEHjwds
- kDLbE/21rBXDI87G3swKLQNYrRGZQAmRHzmEOG/RSvbfCe51+NuOp/6z62rX12QopvFW
- 4XnMFk2WCtjxUlp/wTesAl5iqGn6in0fBTamPUBMrwgiqvBRT5d11bS+0fA/4HBYttuU
- oMIosZ2I8GSLCRHDAdxZ7ag3/gBRDV2WgzkUvRBfoRoaWSad/at8DYBXIyxYm90sMBDx
- xC+YColo8cs+ehW7VifwvN/90qZJZ9IhIdyDZ+soUrNbV7P1oGQ3fuY8ZeYZjWb6mbN8 tA== 
+ content-type : content-transfer-encoding; s=pp1;
+ bh=3OgIV6Ya7ykKoddyTHgEpovHX2KIUSabGEnxCxUqJ1I=;
+ b=Bi6UagzeTfUTaRIL3vL4J6c1gDVheOSzhy7ltVEHfmWF1if5TsE5vaKBKtx2F+7ozoa2
+ ytj4VJfjxhJ/zpTkEnEfbPBPlRrtX/qKcBahDD/BsI0wmCAjzIBU/H/op/rfYL/ouoOf
+ Gmi21x4w3sfIlWJMqMU0wGE8GVQOT14rDfVMxUtQSpkpTqdRuV+yfzJhuv9MDJxGaSwJ
+ SUbSka4W5dD1u+RWjXimKDYRvWOPgO0Lt4VCaoErZ/Kg4fvwaQZxIxmAMLR+7nIGGbHC
+ tIjOwzUPvUmxcM4VYmrUN45sehVr6lFjxf/VT6AuI5h6eNwzPh/vKjFTOT54dKQ45Yqm JA== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rj8k58cfp-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rj8k58cg6-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 30 Jun 2023 23:42:40 +0000
+ Fri, 30 Jun 2023 23:42:42 +0000
 Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 35UNcPif027074;
- Fri, 30 Jun 2023 23:42:40 GMT
-Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.106])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rj8k58cey-1
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 35UNfNFt002779;
+ Fri, 30 Jun 2023 23:42:42 GMT
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.99])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rj8k58cfj-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 30 Jun 2023 23:42:40 +0000
-Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
- by ppma04fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 35UJPOxt009577;
- Fri, 30 Jun 2023 23:42:37 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
- by ppma04fra.de.ibm.com (PPS) with ESMTPS id 3rdr4538x1-1
+ Fri, 30 Jun 2023 23:42:41 +0000
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+ by ppma04ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 35UNDw5d016643;
+ Fri, 30 Jun 2023 23:42:39 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+ by ppma04ams.nl.ibm.com (PPS) with ESMTPS id 3rdr454f66-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 30 Jun 2023 23:42:37 +0000
+ Fri, 30 Jun 2023 23:42:39 +0000
 Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com
  [10.20.54.100])
- by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 35UNgZrD40239794
+ by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 35UNgb6I22544906
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 30 Jun 2023 23:42:35 GMT
+ Fri, 30 Jun 2023 23:42:37 GMT
 Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1A0E320043;
- Fri, 30 Jun 2023 23:42:35 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 472982004B;
+ Fri, 30 Jun 2023 23:42:37 +0000 (GMT)
 Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 63D8620040;
- Fri, 30 Jun 2023 23:42:34 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id A6FBB20043;
+ Fri, 30 Jun 2023 23:42:36 +0000 (GMT)
 Received: from heavy.boeblingen.de.ibm.com (unknown [9.179.8.31])
  by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Fri, 30 Jun 2023 23:42:34 +0000 (GMT)
+ Fri, 30 Jun 2023 23:42:36 +0000 (GMT)
 From: Ilya Leoshkevich <iii@linux.ibm.com>
 To: Richard Henderson <richard.henderson@linaro.org>,
  Laurent Vivier <laurent@vivier.eu>
@@ -70,18 +70,18 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
  David Hildenbrand <david@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH v2 1/4] target: Make qemu_target_page_mask() available for
- *-user
-Date: Sat,  1 Jul 2023 01:40:54 +0200
-Message-ID: <20230630234230.596193-2-iii@linux.ibm.com>
+Subject: [PATCH v2 2/4] tcg: Make tb_cflags() usable from target-agnostic code
+Date: Sat,  1 Jul 2023 01:40:55 +0200
+Message-ID: <20230630234230.596193-3-iii@linux.ibm.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230630234230.596193-1-iii@linux.ibm.com>
 References: <20230630234230.596193-1-iii@linux.ibm.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: bXTlLqS2nkdrsKsMiXVDpfQuE6xBHGE6
-X-Proofpoint-ORIG-GUID: rLgSxvKsBD8dq7_-AC8-eaBbMYBO50Ox
+X-Proofpoint-GUID: TJ-v8Ag-_zGQYYR6g8ndW_22Mdrj4c2u
+X-Proofpoint-ORIG-GUID: _0nr1Y_yDVtOFFsd2-6loEo3n-6a2OmG
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
  definitions=2023-06-30_13,2023-06-30_01,2023-05-22_02
@@ -115,74 +115,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently qemu_target_page_mask() is usable only from the softmmu
-code. Make it possible to use it from the *-user code as well.
+Currently tb_cflags() is defined in exec-all.h, which is not usable
+from target-agnostic code. Move it to translation-block.h, which is.
 
-Make use of it in perf.c.
-
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
 ---
- accel/tcg/perf.c       | 2 +-
- softmmu/physmem.c      | 5 -----
- target/meson.build     | 2 ++
- target/target-common.c | 9 +++++++++
- 4 files changed, 12 insertions(+), 6 deletions(-)
- create mode 100644 target/target-common.c
+ include/exec/exec-all.h          | 6 ------
+ include/exec/translation-block.h | 6 ++++++
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/accel/tcg/perf.c b/accel/tcg/perf.c
-index cd1aa99a7ee..b42742c4c0d 100644
---- a/accel/tcg/perf.c
-+++ b/accel/tcg/perf.c
-@@ -335,7 +335,7 @@ void perf_report_code(uint64_t guest_pc, TranslationBlock *tb,
-         /* FIXME: This replicates the restore_state_to_opc() logic. */
-         q[insn].address = gen_insn_data[insn * start_words + 0];
-         if (tb_cflags(tb) & CF_PCREL) {
--            q[insn].address |= (guest_pc & TARGET_PAGE_MASK);
-+            q[insn].address |= (guest_pc & qemu_target_page_mask());
-         } else {
- #if defined(TARGET_I386)
-             q[insn].address -= tb->cs_base;
-diff --git a/softmmu/physmem.c b/softmmu/physmem.c
-index bda475a719d..6bdd944fe88 100644
---- a/softmmu/physmem.c
-+++ b/softmmu/physmem.c
-@@ -3359,11 +3359,6 @@ size_t qemu_target_page_size(void)
-     return TARGET_PAGE_SIZE;
- }
+diff --git a/include/exec/exec-all.h b/include/exec/exec-all.h
+index 200c27eadfe..652fb9dc126 100644
+--- a/include/exec/exec-all.h
++++ b/include/exec/exec-all.h
+@@ -466,12 +466,6 @@ int probe_access_full(CPUArchState *env, vaddr addr, int size,
+                       CPUTLBEntryFull **pfull, uintptr_t retaddr);
+ #endif
  
--int qemu_target_page_mask(void)
+-/* Hide the qatomic_read to make code a little easier on the eyes */
+-static inline uint32_t tb_cflags(const TranslationBlock *tb)
 -{
--    return TARGET_PAGE_MASK;
+-    return qatomic_read(&tb->cflags);
 -}
 -
- int qemu_target_page_bits(void)
+ static inline tb_page_addr_t tb_page_addr0(const TranslationBlock *tb)
  {
-     return TARGET_PAGE_BITS;
-diff --git a/target/meson.build b/target/meson.build
-index a53a60486fc..dee2ac47e02 100644
---- a/target/meson.build
-+++ b/target/meson.build
-@@ -19,3 +19,5 @@ subdir('sh4')
- subdir('sparc')
- subdir('tricore')
- subdir('xtensa')
-+
-+specific_ss.add(files('target-common.c'))
-diff --git a/target/target-common.c b/target/target-common.c
-new file mode 100644
-index 00000000000..6868a1f490f
---- /dev/null
-+++ b/target/target-common.c
-@@ -0,0 +1,9 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+#include "qemu/osdep.h"
-+
-+#include "exec/exec-all.h"
-+
-+int qemu_target_page_mask(void)
+ #ifdef CONFIG_USER_ONLY
+diff --git a/include/exec/translation-block.h b/include/exec/translation-block.h
+index 5119924927e..7a7190bb30d 100644
+--- a/include/exec/translation-block.h
++++ b/include/exec/translation-block.h
+@@ -146,4 +146,10 @@ struct TranslationBlock {
+ /* The alignment given to TranslationBlock during allocation. */
+ #define CODE_GEN_ALIGN  16
+ 
++/* Hide the qatomic_read to make code a little easier on the eyes */
++static inline uint32_t tb_cflags(const TranslationBlock *tb)
 +{
-+    return TARGET_PAGE_MASK;
++    return qatomic_read(&tb->cflags);
 +}
++
+ #endif /* EXEC_TRANSLATION_BLOCK_H */
 -- 
 2.41.0
 
