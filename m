@@ -2,97 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B9E47437AC
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 10:44:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F25037437B2
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 10:46:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qF9iw-0001em-QQ; Fri, 30 Jun 2023 04:43:26 -0400
+	id 1qF9lE-0004AY-0t; Fri, 30 Jun 2023 04:45:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qF9iu-0001eR-Qo
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 04:43:24 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qF9is-0004kJ-Q4
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 04:43:24 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688114601;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=z4Tf49fJmoRRxXMtU38LEp/wNgGOw/diK9DtFxsO7Ug=;
- b=PYdF13MROLQGbqKLHwdtfqtX/3mFAlqnnzDvzoRPP7yNt8DIM31xtLLVfJ2KU17bRQvOEN
- +G0GoEOjOE7ISf5DaZvakuvX8Uugjcgu+M0tYJDrSmwziuh88gcYMUOWKSnrpgnk05OLKB
- t6bT2PbghaaoH/B5axJ5SV5a+kkYPfg=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-146-KNLenCSbN2mE6um77JamHA-1; Fri, 30 Jun 2023 04:43:20 -0400
-X-MC-Unique: KNLenCSbN2mE6um77JamHA-1
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-3128319d532so1036838f8f.2
- for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 01:43:19 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688114599; x=1690706599;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=z4Tf49fJmoRRxXMtU38LEp/wNgGOw/diK9DtFxsO7Ug=;
- b=M01ST8J4veGBTfMGMtB8kqgK07AlESS78WivQSx6CyfaLClKaQoUNSUxRNXKS7zX/i
- 4P69FIY4SyP6khvokNQPpjwSJRRCl2HjM6R2eRXp+6HvUyVKvXEajtPT+PmTIC+R47Y1
- gJYoObeXlWQtEd+l+qUm1E1FIOml0CTCRhcZ4Kmmf6hYdlX87UidfpKZJEYYu66nIfKQ
- n5Yoo8eFTyHILFxnGildTZyqH0X4SeiogWLaKeWKJWp8BA1qUKGAwoXhzypQDCgcTUfX
- N1mn9SGL/OpUHSkKb/cOaxSqoj9/AWVmjRojnkheTGrS5d/u6Zf+YLg5KnwAURsagek9
- c/CQ==
-X-Gm-Message-State: AC+VfDx+xnBzBHKuhAclMUpA3650wyIc+r+k3KO6Ex/p6NKFQ8kKkzfA
- oBxABAbpSh10Ng7JFBds2IpE5gSlTZsxNxn8gjHdQNTgrmR+6H6aOusuAHfNV56F2W1VHJVQ9G4
- ZrodlasyOBwXPQw4=
-X-Received: by 2002:a05:600c:cf:b0:3fa:95c7:e891 with SMTP id
- u15-20020a05600c00cf00b003fa95c7e891mr1546574wmm.35.1688114598907; 
- Fri, 30 Jun 2023 01:43:18 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6q5vLjzkbRkhOI/gaUaXxWkn153sX9g1z8RHw2l21EOU0DY6GoRp1Do1LKPsAum+GQfcpYsw==
-X-Received: by 2002:a05:600c:cf:b0:3fa:95c7:e891 with SMTP id
- u15-20020a05600c00cf00b003fa95c7e891mr1546558wmm.35.1688114598544; 
- Fri, 30 Jun 2023 01:43:18 -0700 (PDT)
-Received: from redhat.com ([2.52.154.169]) by smtp.gmail.com with ESMTPSA id
- 7-20020a05600c230700b003fa968e9c27sm13645300wmo.9.2023.06.30.01.43.16
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 30 Jun 2023 01:43:18 -0700 (PDT)
-Date: Fri, 30 Jun 2023 04:43:14 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Ani Sinha <anisinha@redhat.com>
-Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,
- qemu-devel <qemu-devel@nongnu.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Julia Suvorova <jusual@redhat.com>, Igor Mammedov <imammedo@redhat.com>
-Subject: Re: [PATCH v6 5/5] hw/pci: ensure PCIE devices are plugged into only
- slot 0 of PCIE port
-Message-ID: <20230630043734-mutt-send-email-mst@kernel.org>
-References: <20230629040707.115656-1-anisinha@redhat.com>
- <20230629040707.115656-6-anisinha@redhat.com>
- <8d382e8b-088b-f0af-eec4-a85ee513b4ae@daynix.com>
- <CAK3XEhNOJkm13+vxJO9-Adhwq8NJ3TQ1gaOXj8Dn3NtixF_=jQ@mail.gmail.com>
- <8868044c-f61b-7bbb-8cc8-34a14c1490d6@daynix.com>
- <9DDBE75A-C72C-4238-9166-3CBDBEA68188@redhat.com>
- <167eea06-b917-8783-5cd6-8fda56e41331@daynix.com>
- <A50CA177-0E7E-4828-A036-70EB532FE2B8@redhat.com>
- <20230630041937-mutt-send-email-mst@kernel.org>
- <4618EAD1-2862-4288-A881-CA860D04ADB0@redhat.com>
+ (Exim 4.90_1) (envelope-from <qianfanguijin@163.com>)
+ id 1qF9l5-0004AK-5g
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 04:45:39 -0400
+Received: from m12.mail.163.com ([220.181.12.199])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <qianfanguijin@163.com>) id 1qF9kz-0005Ee-RC
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 04:45:38 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+ s=s110527; h=Message-ID:Date:MIME-Version:Subject:From:
+ Content-Type; bh=KhnzPWZK7I9Uzd8AGDscVG44H5aPT9pNm2+NvWEQUOY=;
+ b=lgQHdoaU43o5iixwBTVeEsnRGmRnxzoRJLYgdvYGIFPpEEVIzHhw6POqQl8bAQ
+ bkpDs/MMnuLMmiD3ERynNIn8dzXOZEszLxD8Fw4Nly1YyDihUzLFg0wOrxaOLE5J
+ JgXR9H4/QuOMvBiy+Xa+fGoiLKe2QRoIjpocBhKQG7fM8=
+Received: from [172.21.25.67] (unknown [218.201.129.20])
+ by zwqz-smtp-mta-g5-0 (Coremail) with SMTP id _____wCHNfIilp5kGKfbBA--.61421S2;
+ Fri, 30 Jun 2023 16:45:23 +0800 (CST)
+Message-ID: <f7d5a8eb-cd7f-e0f5-91cc-4b3840b5de2c@163.com>
+Date: Fri, 30 Jun 2023 16:45:23 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4618EAD1-2862-4288-A881-CA860D04ADB0@redhat.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PULL 18/42] tests: avocado: boot_linux_console: Add test case
+ for bpim2u
+To: Thomas Huth <thuth@redhat.com>, Peter Maydell <peter.maydell@linaro.org>, 
+ qemu-devel@nongnu.org
+Cc: Niek Linnenbank <nieklinnenbank@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+References: <20230606094814.3581397-1-peter.maydell@linaro.org>
+ <20230606094814.3581397-19-peter.maydell@linaro.org>
+ <280c57d2-9648-36ea-74e9-6ffc7f3b4388@redhat.com>
+ <b954eaad-508c-2341-eaeb-8ec4111de664@163.com>
+ <4f749512-a395-40e4-c20e-ed4928c2cb87@redhat.com>
+Content-Language: en-US
+From: qianfan <qianfanguijin@163.com>
+In-Reply-To: <4f749512-a395-40e4-c20e-ed4928c2cb87@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: _____wCHNfIilp5kGKfbBA--.61421S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW3Gr17ZF1rCw1DAF1kZryUAwb_yoW3GF1xpr
+ WUJF1jkFW8JF15Jr1Sga4jqr9xtw10ka43Wr9rCr1ruF4qy3s3JF4Ikr4F9rykZws2kas5
+ ZFZ0qa4xWw45A3DanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+ 9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UKJPiUUUUU=
+X-Originating-IP: [218.201.129.20]
+X-CM-SenderInfo: htld0w5dqj3xxmlqqiywtou0bp/1tbiQgSe7VaEF1HOogAAsN
+Received-SPF: pass client-ip=220.181.12.199;
+ envelope-from=qianfanguijin@163.com; helo=m12.mail.163.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ NICE_REPLY_A=-0.093, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,53 +79,215 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Jun 30, 2023 at 02:06:59PM +0530, Ani Sinha wrote:
-> 
-> 
-> > On 30-Jun-2023, at 2:02 PM, Michael S. Tsirkin <mst@redhat.com> wrote:
-> > 
-> > On Fri, Jun 30, 2023 at 01:11:33PM +0530, Ani Sinha wrote:
-> >>> 
-> >>> Thus the check for unoccupied function 0 needs to use pci_is_vf() instead of checking ARI capability, and that can happen in do_pci_register_device().
-> >>> 
-> >>>> Also where do you propose we move the check?
-> >>> 
-> >>> In pci_qdev_realize(), somewhere after pc->realize() and before option ROM loading.
-> >> 
-> >> Hmm, I tried this. The issue here is something like this would be now allowed since the PF has ARI capability:
-> >> 
-> >> -device pcie-root-port,id=p -device igb,bus=p,addr=0x2.0x0
-> >> 
-> >> The above should not be allowed and when used, we do not see the igb ethernet device from the guest OS.
-> > 
-> > I think it's allowed because it expects you to hotplug function 0 later,
-> 
-> This is about the igb device being plugged into the non-zero slot of the pci-root-port. The guest OS ignores it.
 
-yes but if you later add a device with ARI and with next field pointing
-slot 2 guest will suddently find both.
 
-> > no?
-> > 
-> > I am quite worried about all this work going into blocking
-> > what we think is disallowed configurations. We should have
-> > maybe blocked them originally, but now that we didn't
-> > there's a non zero chance of regressions,
-> 
-> Sigh,
+在 2023/6/30 15:27, Thomas Huth 写道:
+> On 30/06/2023 08.15, qianfan wrote:
+>>
+>>
+>> 在 2023/6/29 19:35, Thomas Huth 写道:
+>>> On 06/06/2023 11.47, Peter Maydell wrote:
+>>>> From: qianfan Zhao <qianfanguijin@163.com>
+>>>>
+>>>> Add test case for booting from initrd and sd card.
+>>>>
+>>>> Signed-off-by: qianfan Zhao <qianfanguijin@163.com>
+>>>> Reviewed-by: Niek Linnenbank <nieklinnenbank@gmail.com>
+>>>> Tested-by: Niek Linnenbank <nieklinnenbank@gmail.com>
+>>>> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+>>>> ---
+>>>>   tests/avocado/boot_linux_console.py | 176 
+>>>> ++++++++++++++++++++++++++++
+>>>>   1 file changed, 176 insertions(+)
+>>> ...
+>>>> +    def test_arm_bpim2u_gmac(self):
+>>>> +        """
+>>>> +        :avocado: tags=arch:arm
+>>>> +        :avocado: tags=accel:tcg
+>>>> +        :avocado: tags=machine:bpim2u
+>>>> +        :avocado: tags=device:sd
+>>>> +        """
+>>>> +        self.require_netdev('user')
+>>>> +
+>>>> +        deb_url = 
+>>>> ('https://apt.armbian.com/pool/main/l/linux-5.10.16-sunxi/'
+>>>> + 'linux-image-current-sunxi_21.02.2_armhf.deb')
+>>>> +        deb_hash = '9fa84beda245cabf0b4fa84cf6eaa7738ead1da0'
+>>>> +        deb_path = self.fetch_asset(deb_url, asset_hash=deb_hash)
+>>>> +        kernel_path = self.extract_from_deb(deb_path,
+>>>> + '/boot/vmlinuz-5.10.16-sunxi')
+>>>> +        dtb_path = ('/usr/lib/linux-image-current-sunxi/'
+>>>> +                    'sun8i-r40-bananapi-m2-ultra.dtb')
+>>>> +        dtb_path = self.extract_from_deb(deb_path, dtb_path)
+>>>> +        rootfs_url = 
+>>>> ('http://storage.kernelci.org/images/rootfs/buildroot/'
+>>>> + 'buildroot-baseline/20221116.0/armel/rootfs.ext2.xz')
+>>>> +        rootfs_hash = 'fae32f337c7b87547b10f42599acf109da8b6d9a'
+>>>> +        rootfs_path_xz = self.fetch_asset(rootfs_url, 
+>>>> asset_hash=rootfs_hash)
+>>>> +        rootfs_path = os.path.join(self.workdir, 'rootfs.cpio')
+>>>> +        archive.lzma_uncompress(rootfs_path_xz, rootfs_path)
+>>>> +        image_pow2ceil_expand(rootfs_path)
+>>>> +
+>>>> +        self.vm.set_console()
+>>>> +        kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE +
+>>>> +                               'console=ttyS0,115200 '
+>>>> +                               'root=/dev/mmcblk0 rootwait rw '
+>>>> +                               'panic=-1 noreboot')
+>>>> +        self.vm.add_args('-kernel', kernel_path,
+>>>> +                         '-dtb', dtb_path,
+>>>> +                         '-drive', 'file=' + rootfs_path + 
+>>>> ',if=sd,format=raw',
+>>>> +                         '-net', 'nic,model=gmac,netdev=host_gmac',
+>>>> +                         '-netdev', 'user,id=host_gmac',
+>>>> +                         '-append', kernel_command_line,
+>>>> +                         '-no-reboot')
+>>>> +        self.vm.launch()
+>>>> +        shell_ready = "/bin/sh: can't access tty; job control 
+>>>> turned off"
+>>>> +        self.wait_for_console_pattern(shell_ready)
+>>>> +
+>>>> +        exec_command_and_wait_for_pattern(self, 'cat /proc/cpuinfo',
+>>>> +                                                'Allwinner sun8i 
+>>>> Family')
+>>>> +        exec_command_and_wait_for_pattern(self, 'cat 
+>>>> /proc/partitions',
+>>>> +                                                'mmcblk0')
+>>>> +        exec_command_and_wait_for_pattern(self, 'ifconfig eth0 up',
+>>>> +                                                 'eth0: Link is Up')
+>>>> +        exec_command_and_wait_for_pattern(self, 'udhcpc eth0',
+>>>> +            'udhcpc: lease of 10.0.2.15 obtained')
+>>>> +        exec_command_and_wait_for_pattern(self, 'ping -c 3 10.0.2.2',
+>>>> +            '3 packets transmitted, 3 packets received, 0% packet 
+>>>> loss')
+>>>> +        exec_command_and_wait_for_pattern(self, 'reboot',
+>>>> +                                                'reboot: 
+>>>> Restarting system')
+>>>> +        # Wait for VM to shut down gracefully
+>>>> +        self.vm.wait()
+>>>
+>>> FYI, the test_arm_bpim2u_gmac test just failed during one of my CI 
+>>> runs:
+>>>
+>>> https://gitlab.com/thuth/qemu/-/jobs/4565108610#L300
+>>>
+>>> Looking at the debug.log in the artifacts, it looks like the kernel 
+>>> was hanging during boot:
+>>>
+>>> 10:53:56 DEBUG| of_cfs_init
+>>> 10:53:56 DEBUG| of_cfs_init: OK
+>>> 10:53:56 DEBUG| ALSA device list:
+>>> 10:53:56 DEBUG| No soundcards found.
+>>> 10:53:56 DEBUG| Waiting for root device /dev/mmcblk0...
+>>> 10:54:26 DEBUG| dcdc4: disabling
+>>> 10:54:26 DEBUG| dc5ldo: disabling
+>>> 10:54:26 DEBUG| vcc5v0: disabling
+>>> 10:55:15 ERROR|
+>>> ...
+>>> 10:55:15 ERROR| RuntimeError: Test interrupted by SIGTERM
+>>>
+>>> I can reproduce the problem locally on my laptop when running the 
+>>> test repeatedly, e.g. with:
+>>>
+>>>  make check-venv
+>>>  for ((x=0;x<10;x++)); do \
+>>>   ./tests/venv/bin/avocado run \
+>>>     tests/avocado/boot_linux_console.py:test_arm_bpim2u_gmac ; \
+>>>  done
+>>>
+>>> 1 out of 10 runs were failing.
+>>>
+>>> Any ideas what could be wrong in those failing cases?
+>> Hi:
+>>
+>> I can reproduce this issue based on master 
+>> code(v8.0.0-rc1-2442-g4d541f63e9) with your's
+>> test scripts, and I have tested 50 times only failed once.
+>>
+>> Copy liunx boot logs and make a diff:
+>>
+>> $ diff ~/a/qemu_bpi_good.txt ~/a/qemu_bpi_bad.txt
+> ...
+>> 288a289,291
+>>  > mmc1: host does not support reading read-only switch, assuming 
+>> write-enable
+>>  > mmc1: new high speed SD card at address 4567
+>>  > mmcblk1: mmc1:4567 QEMU! 64.0 MiB
+>> 296,298d298
+>> < mmc0: host does not support reading read-only switch, assuming 
+>> write-enable
+>> < mmc0: new high speed SD card at address 4567
+>> < mmcblk0: mmc0:4567 QEMU! 64.0 MiB
+>> 322,331c322,325
+>> < EXT4-fs (mmcblk0): mounting ext2 file system using the ext4 subsystem
+>> < EXT4-fs (mmcblk0): mounted filesystem without journal. Opts: (null)
+>> < VFS: Mounted root (ext2 filesystem) on device 179:0.
+>> < devtmpfs: mounted
+>> < Freeing unused kernel memory: 1024K
+>> < Run /sbin/init as init process
+>> < EXT4-fs (mmcblk0): re-mounted. Opts: (null)
+>> < Starting syslogd: OK
+>> < Starting klogd: OK
+>> < Running sysctl: OK
+>> \ No newline at end of file
+>> ---
+>>  > Waiting for root device /dev/mmcblk0...
+>>  > dcdc4: disabling
+>>  > dc5ldo: disabling
+>>  > vcc5v0: disabling
+>> \ No newline at end of file
+>>
+>> The first mmc device should be mmc0, but the linux kernel named it as 
+>> mmcblk1.
+>> So it always 'Waiting for root device /dev/mmcblk0...', that make the 
+>> rootfs
+>> can not mounted.
+>>
+>> I'm not make sure where the problem came from.
+>
+> Oh, that's ugly, I think the problem is likely that the numbering
+> of device names that are directly in /dev/ is never guaranteed by
+> the Linux kernel.
+>
+> Could you please try whether this work more reliably for you
+> instead:
+>
+> diff a/tests/avocado/boot_linux_console.py 
+> b/tests/avocado/boot_linux_console.py
+> --- a/tests/avocado/boot_linux_console.py
+> +++ b/tests/avocado/boot_linux_console.py
+> @@ -869,7 +869,7 @@ def test_arm_bpim2u_gmac(self):
+>          self.vm.set_console()
+>          kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE +
+>                                 'console=ttyS0,115200 '
+> -                               'root=/dev/mmcblk0 rootwait rw '
+> +                               'root=b300 rootwait rw '
+>                                 'panic=-1 noreboot')
+>          self.vm.add_args('-kernel', kernel_path,
+>                           '-dtb', dtb_path,
+>
+> ?
+Yes, this patch is useful.
 
-There's value in patches 1-4 I think - the last patch helped you find
-these. so there's value in this work.
+The rootfs can mount successful even if the mmc block enumed as mmcblk1, 
+next is the
+kernel logs:
 
-> no medals here for being brave :-)
+mmc1: new high speed SD card at address 4567
+mmcblk1: mmc1:4567 QEMU! 64.0 MiB
+EXT4-fs (mmcblk1): mounting ext2 file system using the ext4 subsystem
+EXT4-fs (mmcblk1): mounted filesystem without journal. Opts: (null)
+VFS: Mounted root (ext2 filesystem) on device 179:0.
 
-Try removing support for a 3.5mm jack next. Oh wait ...
+But the test scripts still fail due to it always waiting mmc0blk:
 
-> > and the benefit
-> > is not guaranteed.
-> > 
-> > -- 
-> > MST
-> > 
+     exec_command_and_wait_for_pattern(self, 'cat /proc/partitions', 
+'mmcblk0')
+
+Could you please explain where is the "b300" come from?
+
+Thanks.
+>
+>  Thomas
 
 
