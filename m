@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DDB9743426
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 07:25:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C1827434AE
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 08:01:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qF6cu-0002tb-U0; Fri, 30 Jun 2023 01:25:00 -0400
+	id 1qF7Ak-0001rU-4y; Fri, 30 Jun 2023 01:59:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=Okcj=CS=kaod.org=clg@ozlabs.org>)
- id 1qF6cr-0002TU-Em; Fri, 30 Jun 2023 01:24:57 -0400
+ id 1qF7Af-0001r8-E6; Fri, 30 Jun 2023 01:59:53 -0400
 Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
  helo=gandalf.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=Okcj=CS=kaod.org=clg@ozlabs.org>)
- id 1qF6cp-0006Cm-Lb; Fri, 30 Jun 2023 01:24:57 -0400
+ id 1qF7Ad-0005uq-DB; Fri, 30 Jun 2023 01:59:53 -0400
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4QskKJ6ydgz4wpc;
- Fri, 30 Jun 2023 15:24:52 +1000 (AEST)
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4Qsl5Y25fRz4whk;
+ Fri, 30 Jun 2023 15:59:45 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits))
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4QskKH2Cjwz4wZy;
- Fri, 30 Jun 2023 15:24:51 +1000 (AEST)
-Message-ID: <5eb72aa6-ea82-a760-776d-b9456a2475b5@kaod.org>
-Date: Fri, 30 Jun 2023 07:24:49 +0200
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Qsl5V3lgvz4wgk;
+ Fri, 30 Jun 2023 15:59:42 +1000 (AEST)
+Message-ID: <75f44d56-df94-1e0f-3e91-ea5b2d911dcb@kaod.org>
+Date: Fri, 30 Jun 2023 07:59:40 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
-Subject: Re: [PATCH 4/4] ppc/pnv: Return zero for core thread state xscom
+Subject: Re: [PATCH] ppc: spapr: Fix device tree entries in absence of XIVE
+ native mode
 Content-Language: en-US
-To: Joel Stanley <joel@jms.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?= <fbarrat@linux.ibm.com>
-Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org
-References: <20230630035547.80329-1-joel@jms.id.au>
- <20230630035547.80329-5-joel@jms.id.au>
+To: Gautam Menghani <gautam@linux.ibm.com>, danielhb413@gmail.com,
+ harshpb@linux.ibm.com, david@gibson.dropbear.id.au, groug@kaod.org
+Cc: qemu-ppc@nongnu.org, qemu-devel@nongnu.org, fbarrat@linux.ibm.com
+References: <20230630053056.14933-1-gautam@linux.ibm.com>
 From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20230630035547.80329-5-joel@jms.id.au>
+In-Reply-To: <20230630053056.14933-1-gautam@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
  envelope-from=SRS0=Okcj=CS=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
 X-Spam_score_int: -40
@@ -66,64 +66,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/30/23 05:55, Joel Stanley wrote:
-> Firmware now warns if booting in LPAR per core mode (PPC bit 62). So
-> this warning doesn't trigger report the core thread state is 0.
+On 6/30/23 07:30, Gautam Menghani wrote:
+> Currently, XIVE native exploitation mode is not supported in nested
+> guests. When we boot up a nested guest on PowerNV platform, we observe
+> the following entries in the device tree of nested guest:
 > 
-> Signed-off-by: Joel Stanley <joel@jms.id.au>
+> ```
+> device_type = "power-ivpe";
+> compatible = "ibm,power-ivpe";
+> ```
+> 
+> But as per LoPAR section B.5.9[1], these entries should only be present
+> when XIVE native exploitation mode is being used. Presently, there is no
+> support for nested virtualization in the context of XIVE, and hence, DT
+> shouldn't advertise support for XIVE interrupt controller to a nested guest.
+> 
+> Also, according to the present behaviour, when we boot a nested KVM
+> guest, the following QEMU warnings are reported	:
+> ```
+> Calling ibm,client-architecture-support...qemu-system-ppc64: warning:
+> kernel_irqchip allowed but unavailable: IRQ_XIVE capability must be present
+> for KVM
+> Falling back to kernel-irqchip=off
 
+Yes. A QEMU/KVM principle is to be closest as possible to HW using
+emulation if necessary, this to be compatible with a platform which
+would have the required HW feature. The reason behind is migration.
 
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
+This is the case on L1s running on Boston systems which have an
+old FW not supporting XIVE migration. pseries machines runs with
+and emulated XIVE IC. It allowed to migrate such a guest from a
+Boston to a Witherspoon where XIVE HW was supported in guests.
+KVM-on-pseries is just another platform where XIVE can not use
+the KVM backend and needs to run under partially emulation.
+
+I see no reason to change.
 
 Thanks,
 
 C.
-
-> ---
->   hw/ppc/pnv_core.c | 10 ++++++++++
->   1 file changed, 10 insertions(+)
-> 
-> diff --git a/hw/ppc/pnv_core.c b/hw/ppc/pnv_core.c
-> index 7fff2fd9e298..98356d7f6538 100644
-> --- a/hw/ppc/pnv_core.c
-> +++ b/hw/ppc/pnv_core.c
-> @@ -116,6 +116,8 @@ static const MemoryRegionOps pnv_core_power8_xscom_ops = {
->   #define PNV9_XSCOM_EC_PPM_SPECIAL_WKUP_HYP 0xf010d
->   #define PNV9_XSCOM_EC_PPM_SPECIAL_WKUP_OTR 0xf010a
->   
-> +#define PNV9_XSCOM_EC_CORE_THREAD_STATE    0x10ab3
-> +
->   static uint64_t pnv_core_power9_xscom_read(void *opaque, hwaddr addr,
->                                              unsigned int width)
->   {
-> @@ -134,6 +136,9 @@ static uint64_t pnv_core_power9_xscom_read(void *opaque, hwaddr addr,
->       case PNV9_XSCOM_EC_PPM_SPECIAL_WKUP_OTR:
->           val = 0x0;
->           break;
-> +    case PNV9_XSCOM_EC_CORE_THREAD_STATE:
-> +        val = 0;
-> +        break;
->       default:
->           qemu_log_mask(LOG_UNIMP, "Warning: reading reg=0x%" HWADDR_PRIx "\n",
->                     addr);
-> @@ -408,6 +413,8 @@ static const MemoryRegionOps pnv_quad_power9_xscom_ops = {
->    * POWER10 Quads
->    */
->   
-> +#define PNV10_XSCOM_EC_PC_PMC_CORE_THREAD_STATE 0x28412
-> +
->   static uint64_t pnv_quad_power10_xscom_read(void *opaque, hwaddr addr,
->                                               unsigned int width)
->   {
-> @@ -415,6 +422,9 @@ static uint64_t pnv_quad_power10_xscom_read(void *opaque, hwaddr addr,
->       uint64_t val = -1;
->   
->       switch (offset) {
-> +    case PNV10_XSCOM_EC_PC_PMC_CORE_THREAD_STATE:
-> +        val = 0;
-> +        break;
->       default:
->           qemu_log_mask(LOG_UNIMP, "%s: writing @0x%08x\n", __func__,
->                         offset);
-
 
