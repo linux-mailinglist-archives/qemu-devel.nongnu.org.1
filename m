@@ -2,70 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA36F7442D7
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 21:44:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70AA67442F8
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 21:53:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFK24-0001t1-QD; Fri, 30 Jun 2023 15:43:52 -0400
+	id 1qFKAM-00058f-JM; Fri, 30 Jun 2023 15:52:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qFK22-0001sr-LT
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 15:43:50 -0400
-Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qFK21-0001fm-1u
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 15:43:50 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
- In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
- Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
- :Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
- List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=odkRXlSgICw7DggbiqP+vAK1cE6XTBq+39k39qFH4wk=; b=yr/n61v5/DXvsILBR4PIJMZb1k
- snkCOjYJ0Yxkfe36tOgbf5AQ0c18cR4OJuvtpfxW0OF+OlRWGRoxuA/9gL5QLT9+uCVbvUzir3T1U
- mFiRfgw8jfUfDhLVcJXwBBjRFOOoAYFn5kJ0V5Zam/f5dkjDZ1kJv4mQ2IGxuapEJyropfN9xsA+A
- zZh8/VMjOk+W0KF2BCQEv0cdERaonuEeda2a7ujpgvhqmNrFDcs1TpuCCSAWxrIbXGoAukckmOsQC
- Ce6Rw4gAbQA5ANlSFQ3dUlcL9EOyZDWL76KUBdZUAF6I4ZUh9+VbQEGCYfDby5h84JErmM9HtQ0p+
- HQGuPfHOjyK0G8fUo8VxLwsHsPHuJI1FPi3aRVz/rT8NIqyWYlOdHCv6//xz5KKSsPJ343p++iBNq
- bX/rnIYfvrhv/gOqHlSMc0YSaMBor9kIrcuhIAIVpQSCelQaJWQ9Zf+ICM8m4/iy25aJW8R1bTmvz
- G1rX64VeGRSjxupJP4TTEaUUS+aKYRuEKcEu5AB5Piyizv9BgAQwYI4Oj8NHHhcsDD8pE8L1k3ss5
- Jg1WHIMj12c0GeNpWaFsyrJe+Hd/pNrGiJg2m+fmgzkI/vsKJ3lATiWoJw0N9VEwoayQ3S9qr2TPG
- RCtqJwbiBhjgkJ3VfOtHq6MbsPtrbFmbUa3O3EqHM=;
-Received: from [2a00:23c4:8bad:df00:f732:dd76:7417:d15b]
- by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qFK1g-000B3f-K3; Fri, 30 Jun 2023 20:43:35 +0100
-Message-ID: <0de296b5-e310-5119-65f0-30805b7ad19d@ilande.co.uk>
-Date: Fri, 30 Jun 2023 20:43:32 +0100
+ (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
+ id 1qFKAK-00057w-Dq; Fri, 30 Jun 2023 15:52:24 -0400
+Received: from mail-oo1-xc32.google.com ([2607:f8b0:4864:20::c32])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
+ id 1qFKAI-0004oL-Ll; Fri, 30 Jun 2023 15:52:24 -0400
+Received: by mail-oo1-xc32.google.com with SMTP id
+ 006d021491bc7-56347da4a50so1503428eaf.2; 
+ Fri, 30 Jun 2023 12:52:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1688154741; x=1690746741;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=vU+0ru5ZA9rjC66UurAC56J5Gt0lL+/hcBbnl05z5wo=;
+ b=E9RTBg5U7X4HCg/634ZGx8rQX2Adxac8WVGtcJDhpwbSxUnwO0naWAxQsraXT3LV2Z
+ 6E2g/Gq/rzwuNQB/IU3RybVq3w0xYAOgX8JRUPdQP+uMlTywo3ceUc74u+U/OlvrQljY
+ bPJ5zCHSR2FWURThcHuem2ojl5bubnqaJ15L1bK3JZ+UUOGQW6CAb3QyuUNyL4cTKt29
+ RprQEyXll+89p634XpzCfoCkzw0ZOg6GVajv//9oCmStQUCzBIk5SpZJr/HkFvgTs/s6
+ jwc2XixLsO2aM4mt8EnGPIGokt0ljkf7OECXWDAANTOGS+t7pGt+Gq9DL4xcmrGnXmBT
+ FT+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1688154741; x=1690746741;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=vU+0ru5ZA9rjC66UurAC56J5Gt0lL+/hcBbnl05z5wo=;
+ b=CEbxIaxZ2WSjvO1ziv5xBs8OGyFA6qpX9+sKMwsQmZOedNvVtifX+WmUIcJNEAqTQI
+ CSad+1jCcpntqPhQmrBUsRWciFjwzXLy1VkZXcRkzfCUfJwQ7jl6QbNzqkZAUpWNf8f5
+ ykXV64w13L65u37YV5OTm8YxJvKtIeQo78ma1m5axLfVjjZ2M09QhfqL+B0vSoWVddCP
+ ATTEXLQ9kRCIIF2Fc9/50x8V4zVy742gTYnmupaLd2TlwdRklZ9Oc87tani2Rz2WUEpK
+ Ze1wF/GlAjvWfgcq+u8y1eoXTuPeJ7HtKl8Fi3gkz9slwYwfthFa8ISQ2KaehFxY7Mpz
+ n0tQ==
+X-Gm-Message-State: AC+VfDwzy6Hjy8ppD+IWkt1FSJb8ge5kzBz6qsdL0EWCveOf+jfTrcGj
+ zYEdkXg1iRxqYub1N5kyIRfZdM6+d+I=
+X-Google-Smtp-Source: ACHHUZ6Mt/3zLHbmyjEfrW5id4Egxl1XZLbGhK6zVkAjdFkDYxveJacS4Z2LUVUbv11+gz8aCzDC+w==
+X-Received: by 2002:a05:6808:1884:b0:3a1:e200:fdfd with SMTP id
+ bi4-20020a056808188400b003a1e200fdfdmr4270906oib.46.1688154741232; 
+ Fri, 30 Jun 2023 12:52:21 -0700 (PDT)
+Received: from [192.168.68.107] (201-69-66-110.dial-up.telesp.net.br.
+ [201.69.66.110]) by smtp.gmail.com with ESMTPSA id
+ e17-20020a056808149100b003a392bd501csm155159oiw.20.2023.06.30.12.52.18
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 30 Jun 2023 12:52:20 -0700 (PDT)
+Message-ID: <92e3591e-cce7-c3e7-7d73-a0bd24de8c2c@gmail.com>
+Date: Fri, 30 Jun 2023 16:52:17 -0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: atar4qemu@gmail.com
-References: <20230620164040.912490-1-richard.henderson@linaro.org>
- <2044463e-24eb-722e-9cc1-a5a90c3f7ea3@ilande.co.uk>
- <1266753f-b973-2600-f5f5-b9576bb53f98@linaro.org>
+ Thunderbird/102.12.0
+Subject: Re: [PATCH v3 00/14] Misc clean ups to target/ppc exception handling
 Content-Language: en-US
-From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-In-Reply-To: <1266753f-b973-2600-f5f5-b9576bb53f98@linaro.org>
+To: BALATON Zoltan <balaton@eik.bme.hu>, qemu-devel@nongnu.org,
+ qemu-ppc@nongnu.org
+Cc: clg@kaod.org, Greg Kurz <groug@kaod.org>,
+ Nicholas Piggin <npiggin@gmail.com>
+References: <cover.1686868895.git.balaton@eik.bme.hu>
+From: Daniel Henrique Barboza <danielhb413@gmail.com>
+In-Reply-To: <cover.1686868895.git.balaton@eik.bme.hu>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a00:23c4:8bad:df00:f732:dd76:7417:d15b
-X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: Re: [PATCH 0/2] target/sparc: Enable MTTCG
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
-Received-SPF: pass client-ip=2001:41c9:1:41f::167;
- envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c32;
+ envelope-from=danielhb413@gmail.com; helo=mail-oo1-xc32.google.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.095,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, NICE_REPLY_A=-0.095,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -82,34 +95,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 30/06/2023 19:05, Richard Henderson wrote:
+Zoltan,
 
-> On 6/22/23 16:36, Mark Cave-Ayland wrote:
->> On 20/06/2023 17:40, Richard Henderson wrote:
->>
->>> With the addition of TCG_GUEST_DEFAULT_MO, there's nothing in
->>> the cpu emulation preventing this from working.  There is some
->>> board model work to be done for sparc64, where max_cpus = 1.
->>
->> I've tried testing this with the Advent Calendar image at 
->> https://qemu-advent-calendar.org/2018/download/day11.tar.xz and even without these 
->> patches applied I'm seeing hangs with -smp 2. When applied on top of the other 
->> "target/sparc: Use tcg_gen_lookup_and_goto_ptr" series I get assert() after a 
->> minute or two:
+
+Patches 1, 2, 3, 5, 7 and 11 are queued.
+
+If you would be so kind to get the remaining patches, rebase them
+on top of my ppc-next and resend, I believe there's more stuff
+to be queued.
+
+
+
+Thanks,
+
+
+Daniel
+
+On 6/15/23 20:03, BALATON Zoltan wrote:
+> These are some small clean ups for target/ppc/excp_helper.c trying to
+> make this code a bit simpler. No functional change is intended.
 > 
-> Would you try again, now that we've solved the issues with lookup_and_goto_ptr?
-
-The wording above is a bit clumsy on my part, but I was still seeing the hangs on git 
-master with -smp 2, but with the older tcg_gen_lookup_and_goto_ptr series not only 
-would I see the hangs but I would hit the assert() within a couple of minutes.
-
-My notes on the wiki at https://wiki.qemu.org/Documentation/Platforms/SPARC#Timeline 
-suggest that it was working on QEMU 6.2, so I'll need to find a moment to bisect it 
-down to see where things broke.
-
-
-ATB,
-
-Mark.
-
+> v2: Patch 3 changes according to review, added tags
+> v3: Address more review comments: don't change cpu_interrupt_exittb()
+> parameter, add back lev, add scv patch from Nick + add some more
+> patches to clean up #ifdefs
+> 
+> Regards,
+> BALATON Zoltan
+> 
+> BALATON Zoltan (13):
+>    target/ppc: Remove some superfluous parentheses
+>    target/ppc: Remove unneeded parameter from powerpc_reset_wakeup()
+>    target/ppc: Move common check in exception handlers to a function
+>    target/ppc: Use env_cpu for cpu_abort in excp_helper
+>    target/ppc: Remove some more local CPUState variables only used once
+>    target/ppc: Readability improvements in exception handlers
+>    target/ppd: Remove unused define
+>    target/ppc: Fix gen_sc to use correct nip
+>    target/ppc: Simplify syscall exception handlers
+>    target/ppc: Get CPUState in one step
+>    target/ppc: Clean up ifdefs in excp_helper.c, part 1
+>    target/ppc: Clean up ifdefs in excp_helper.c, part 2
+>    target/ppc: Clean up ifdefs in excp_helper.c, part 3
+> 
+> Nicholas Piggin (1):
+>    target/ppc: Move patching nip from exception handler to helper_scv
+> 
+>   target/ppc/cpu.h         |   1 +
+>   target/ppc/excp_helper.c | 570 ++++++++++++---------------------------
+>   target/ppc/translate.c   |  15 +-
+>   3 files changed, 178 insertions(+), 408 deletions(-)
+> 
 
