@@ -2,168 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42CCB74324D
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 03:41:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 663DD7432D5
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 04:44:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qF37Z-0004dA-2U; Thu, 29 Jun 2023 21:40:25 -0400
+	id 1qF46X-0003n5-IE; Thu, 29 Jun 2023 22:43:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1qF37W-0004cu-VF
- for qemu-devel@nongnu.org; Thu, 29 Jun 2023 21:40:23 -0400
-Received: from mga07.intel.com ([134.134.136.100])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1qF37U-0005UG-PI
- for qemu-devel@nongnu.org; Thu, 29 Jun 2023 21:40:22 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1688089220; x=1719625220;
- h=from:to:cc:subject:date:message-id:references:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=qc5kk/GxdhkwAA/jTp84Z9t6TOSaN0tJ5k0hV2M2gOU=;
- b=iRM45X3MnfAID8rAwFdJtgX1GrOT5cn84/eWRIVPJctCK2FrPfBSXfBF
- +IvtXW50YaaoPoUPhN62XaoF8OWkhrIiOMHEWM3NULJxVcy1oT/hZHGyM
- Nn9jmPWJZMEgL5tcWzSlXBZXi1E+x6p7nQC/rdSCro+b5nTanqozVZwtM
- onvZmO6wvIPaIjTH0Td9Ht70sn5qlimdWAeCD7ihMWue41Lpu+TzFNNfn
- HsFlRoSZ2T+yG7KkkxL0n/9xc0tW1KjcaOxFINcZ2f7Bv94T3FXp9flGs
- fqiHbuDSqib+b5bIipCpzAJe3YhTFiuo8/shu5QxT7sBXj7CzqbzVlP0C Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10756"; a="428322516"
-X-IronPort-AV: E=Sophos;i="6.01,169,1684825200"; d="scan'208";a="428322516"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
- by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jun 2023 18:40:17 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10756"; a="891604670"
-X-IronPort-AV: E=Sophos;i="6.01,169,1684825200"; d="scan'208";a="891604670"
-Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
- by orsmga005.jf.intel.com with ESMTP; 29 Jun 2023 18:40:17 -0700
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Thu, 29 Jun 2023 18:40:16 -0700
-Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27 via Frontend Transport; Thu, 29 Jun 2023 18:40:16 -0700
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (104.47.56.174)
- by edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.27; Thu, 29 Jun 2023 18:40:16 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=FO1nZhxRbmAxqLaMQhEBYEPkJDcaQvuaoaNuMANHjaxJq3itHdAJ0x2n8SZ4zEQ3AXOahMlOgl3x9qGfDoOLHgH2P6PbKsGLrNkHhb/ccnLZfiRVrBMLUTX1ftQkNl3w9UuHeHMbHXofIW6yJZJ1PYGWPOGuBaSVyiuZPXFr783wloyeA6zW3/TB/6wkScshHWxbuf+pSSci3rYuS3YXEp1z3f2w3QZhSdGduR8rcUwNz6NDaMYr+tSZsaRlROACSlA7UX+K/sYCq9+iMyfqCV3mLg9bp8IkJfQV1hnzA30MXR1ASgs3Fbi3Bclk9UmfYz4nfcxDzcrQbBP420RuQw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=qc5kk/GxdhkwAA/jTp84Z9t6TOSaN0tJ5k0hV2M2gOU=;
- b=a5DnHOrtONvtqaU+tIUB/n+r+EFHaTTywFCsAWRkL42RFelKmloG80TSZtyZU5LsXVJn+4dsMaXarGayr76CV/1Uq4/5pbeKYrWpYn0orZhbFi+JYm/lTzdbeaKm8uPyE8fZMaF7QPwZWZdv5++493M47pn3Xh2/UuBW6PhMWHVKbsPeozXBduaEVqQJSsTYF9T1zCwUPGB2q1qsVp+qLxZEkkWZWaAf9pJEWQ/lSLuoDgS4kTM0ADVtynV+yz6+Vrxt4FaBgj81s0PtinE4EAyDp5pxfEE8ylMFbHHD1fuQB7mXdJOOyxRpwANb9REjsbAES2M7ba5xj0zZzwdVEw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from SJ0PR11MB6744.namprd11.prod.outlook.com (2603:10b6:a03:47d::10)
- by DM4PR11MB5485.namprd11.prod.outlook.com (2603:10b6:5:388::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6544.15; Fri, 30 Jun
- 2023 01:40:13 +0000
-Received: from SJ0PR11MB6744.namprd11.prod.outlook.com
- ([fe80::da0a:8aab:d75b:55f1]) by SJ0PR11MB6744.namprd11.prod.outlook.com
- ([fe80::da0a:8aab:d75b:55f1%6]) with mapi id 15.20.6521.024; Fri, 30 Jun 2023
- 01:40:13 +0000
-From: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>
-To: =?utf-8?B?Q8OpZHJpYyBMZSBHb2F0ZXI=?= <clg@redhat.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-CC: "alex.williamson@redhat.com" <alex.williamson@redhat.com>, "Martins, Joao"
- <joao.m.martins@oracle.com>, "avihaih@nvidia.com" <avihaih@nvidia.com>,
- "Peng, Chao P" <chao.p.peng@intel.com>
-Subject: RE: [PATCH v4 5/5] vfio/migration: Refactor and fix print of
- "Migration disabled"
-Thread-Topic: [PATCH v4 5/5] vfio/migration: Refactor and fix print of
- "Migration disabled"
-Thread-Index: AQHZqmc8HYoHMjMQv0uJrkNymTGr86+h++QAgACWnLA=
-Date: Fri, 30 Jun 2023 01:40:13 +0000
-Message-ID: <SJ0PR11MB6744A00C8090DD6B95FF692A922AA@SJ0PR11MB6744.namprd11.prod.outlook.com>
-References: <20230629084042.86502-1-zhenzhong.duan@intel.com>
- <20230629084042.86502-6-zhenzhong.duan@intel.com>
- <fa97ab02-1b53-758d-9b2e-0d277b5e4e3f@redhat.com>
-In-Reply-To: <fa97ab02-1b53-758d-9b2e-0d277b5e4e3f@redhat.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SJ0PR11MB6744:EE_|DM4PR11MB5485:EE_
-x-ms-office365-filtering-correlation-id: 528a14ca-abeb-4c62-75be-08db790af31b
-x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: i42+5aqy7bE3FheaJcdO5BNseOix1o0fOgBtUcMgzvDWRXrFzpyzxnGXSD6SeKFBfFwovWxej2LEXwRhlq32znE/QE78YzJfb4khLl9yNpeR1o3LBu1feOVmsatRn4R3cAwyweEskxthLrBFzyK7cLqmbZNxjUlrSs4jUZcACobv3g9t7ZoD1l2uunnzT7mr9xWp0bdPJq7BoM66y18iG3yZLuEmSv9LUzNIOrl6PxbGA9PxHswAjC4NYupbFa7rdE2wMkjh6WlRjCJlm5+JarRSTnHzU8tFCT9tdsNE+PPSDXIGYThJzbrOfmeTvniacsM4aqFMPHOYbbukQ9URTvxP8EY7rD7hp7CUXFXkAFJ8KByCGSfzIIVs5zH9VZVR5ignymGDe1uZ2f8IyLy17ggDyqGpRwl4x10gwbKhM00usPFqRU2rGHc6SVLYC0LpbpBftA+pwAPiTccVNkl84/UdekAcLKSTYJL6kLJqcPVMBpJFK3TrZZBb475OY/FRqnWe/ukP/ma1KIGkcpYhr4uzJ+wDmGvtOmAB1RFbZJ13NABtYERVFK11SPx6sl9lc4K2a1z1ir252pOulFZSRfM62ztPi/DLQcIhFhrha1VCPVBVFD+sFkYbYh1xME6I
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SJ0PR11MB6744.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230028)(136003)(346002)(376002)(39860400002)(366004)(396003)(451199021)(38070700005)(82960400001)(38100700002)(122000001)(33656002)(86362001)(55016003)(66946007)(52536014)(41300700001)(8676002)(478600001)(26005)(8936002)(6506007)(5660300002)(9686003)(107886003)(186003)(83380400001)(2906002)(66476007)(54906003)(110136005)(66556008)(64756008)(76116006)(4326008)(71200400001)(66574015)(316002)(7696005)(66446008);
- DIR:OUT; SFP:1102; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?RC8rK1pGZEZiS2tqcnVpMjBpTUZtSytqQWNaa2lpOVVLZTZhQ0UyUE0xNmRp?=
- =?utf-8?B?WGZaZTEySzhGcWZCbHFTUHFvVUVPNzVnTlNNanUxOU5acUdCNTF2ZkpzVkFy?=
- =?utf-8?B?enJZOUpva2VxV0VMcnhybG5Fc3lCMldqWEhyTnJIeWxiYlpOcXk0RHVxRmRE?=
- =?utf-8?B?NEwvNmMzR1pmdko0T3VLODhzNHBsL2xpQW5KWTdoemQ1aFJQRVZyZ3FLQkJD?=
- =?utf-8?B?V1BLZXloRm9aQmRvNGJEdzdYeElvbW4rUmJvUGMrOHlwb2l0N0ZEL1FqbkJx?=
- =?utf-8?B?aERFOUkzM2FDaTMweW1PQytsck11djhoTTBERnprcGJ4N2JSWE1jT01QTHhM?=
- =?utf-8?B?T1NTZWt5Y3k5b1QxS3hyTVZHcnJTU2pQYnNqWVJaSW8xeDhPbzYzRXVQdURl?=
- =?utf-8?B?bFMycHR5R1NySmprZCs4b3IrL1V6UTJzMDh0dlMwNW1YNnk1TlhHdFVraUxK?=
- =?utf-8?B?b1ZIbnN6VXRrZjVQa1QrWGdkaVhidWZ4Zko1NlFwSlNRQ051V212TEpwZjZM?=
- =?utf-8?B?ZzJLUU8yMWs0U08zcWJIU29WY3RWb1gzQkFLRUMrTE9MWmRMYkI5TDRtY3RR?=
- =?utf-8?B?cTEySTZKaWJtSTY3TkM3Ukg3b3hXcUY2YkZ1NnNxQzFTemNHY0dpVWdjUFpG?=
- =?utf-8?B?eVVLNnUyZXhpSjhGNzJRb3BVQVpreHhLTnhyUW5LZE1Lci93cFMzWHV2NjZv?=
- =?utf-8?B?blFLUWNSME9xczdYbnYxM1VBVmlRdnhEWGFKcStWd0o3TjNpbEhsd080SEFz?=
- =?utf-8?B?Q0lZN0pZTU9EZnZXdW5VQnh4aEkxeUo0STlQVTFoVDBSRUZKR2JTZG9pNERI?=
- =?utf-8?B?SXlJZDM0ZDgvTnk0U0JMaEJQQXY1Vm9tZ3RiYkdDZ3RlbUhuTWFPeFNNMEFE?=
- =?utf-8?B?QXNnckh5ckxkNlhyank2UFBua3J3a0ZnZkZ5cHNDbGttK0Z1VUJPdmM2QmNF?=
- =?utf-8?B?M3FVbTdudUxxeE9uT0wvRzZmcDExOXpFem43Y0pwWnIwNXZoNFU3ODEwL0VM?=
- =?utf-8?B?STl3TW9hNzZmNXp4aiticC9pTVV1dzJkT1NHajhFUUZjWUxDYmlDR1RiY0xs?=
- =?utf-8?B?SVJ5NDdkZ2tudVNwcnpTT0dqdVlVYnZQVnZOdlpxV3FMcEVSMldhQkR3WVRD?=
- =?utf-8?B?VGQwU3lSVVh1YkhYRmluR09QUldQc1ZqSGZzVG9GSXUycSt1c0haL09tQlFV?=
- =?utf-8?B?UHBHRG95Rm1CTmNMMTJ3M1lnVDZGVk5lMVhXbmJlVGhMNjlVQnk3NUViUkhw?=
- =?utf-8?B?dFVVVnNmZkdRcFdFMlRkL2dVbDc2Sk9NS3JPS1dOUmZXTlVhWEY5d2dhbWJh?=
- =?utf-8?B?TUFXYXdyRUxMT09nSDlnUVdNdHh1ZVlDNmNHVFlpTG1iSGlDRGkxVWRnankx?=
- =?utf-8?B?QjhuMllMVjlCc1Nxdlgrbys0VHZFZ2xOKzh5c0N0VUlrTjRKOEY4bkhxQ25C?=
- =?utf-8?B?LzhRbm5jbkgwbTZVb3RRRURGL1lyWE1udGk5NXhURGt1eGsxK3RXMmRYOUtv?=
- =?utf-8?B?SGpYTWxlZ1hXNXlWcVo3Nnp3TjdKcTRNUzZuR1NqdnNWZ1VQRFEzZFdvMGhK?=
- =?utf-8?B?dG5vWHlLZ0pqaEwvSUpFTjhzNVQwOFkzS1ozY2tNVTlQN3RJOVkyWmhuKzRk?=
- =?utf-8?B?OExVSGxWR3lwZFNtVmVWeHhJSVUvZTFIT1Jyc3dYbWdiRGRaQTRaME5nWUQz?=
- =?utf-8?B?OTIxK3diZEgwUVc5WkthZE5MZjRqS3E1WW5Ic3Q5aWR2bWdZLzZwQkNhVVlJ?=
- =?utf-8?B?emFzZERXeEVveEJKZnBrVHBGYXZ4Z0FzMFNhVGNsTUxHRHh4WkJIaWVObXJz?=
- =?utf-8?B?ZEVKZmdpbnczRDdBZkNXb1VHV0R5QVl5WER6RzUxVDFSS2JWSFRQV2YzcmtQ?=
- =?utf-8?B?dHRMS09nU3pYVnVzYlo3WlFLVFN5RlhoaDY0ZjB6VWpqZjZPMXdSeWxJbjFN?=
- =?utf-8?B?NmNUbUYxckNQMUZ2bGNOcmZlRzVTVWVyQkxySlRhSXlxOWZ3OWhWNE96S2RL?=
- =?utf-8?B?TnhxSStnMDUzUTVlRGNiS2tQb3ZQUm5zTnArTTREajlaVkQ3TTdoU2RBUUo5?=
- =?utf-8?B?VVdQMlZTQlg4c3IwUWIway9OZHRrMVVmUU1UdGhrbGs0SnpIc0k0R1dkV2J4?=
- =?utf-8?Q?HCbfDeFHaEVR9iKqRqHIscHgs?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qF46U-0003mi-Ul
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 22:43:22 -0400
+Received: from mail-pg1-x52d.google.com ([2607:f8b0:4864:20::52d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qF46S-0000n2-Rb
+ for qemu-devel@nongnu.org; Thu, 29 Jun 2023 22:43:22 -0400
+Received: by mail-pg1-x52d.google.com with SMTP id
+ 41be03b00d2f7-553a998bca3so964339a12.2
+ for <qemu-devel@nongnu.org>; Thu, 29 Jun 2023 19:43:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1688092999; x=1690684999;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=EIZdwJmh1pY1qvNqP7cCqGMZ657OwGYurtYcv2hphu8=;
+ b=YYf+eE7QDGCBNnGt1e9C+SRmpOXQJ0q7z37ddp2/uUNPj8QHcrJ+yQvGg7U2pGHBM0
+ Q/PqfPqxtqw0rg+bcDFaVMx0aaFdAJd4i6BbyAO0DPXKqSi8v5RbCGp/Xj6G4T55xDSH
+ UI3cPV9jEywvTb76m0lFk7fxQoPBzbAiUM2orgZKPU7Lg3gBymdalb5aTdXitFwKuy8y
+ yx1QJohRBkpOykXEXrsjV768A+f8tEypbS+7HZKPQTdaGdUXx84XUhxE/Ge4hZ0Eo1dh
+ HUFTticpdSJr29/5goE9B/KSnFVvqQhBmzNo58NCQlMPCjDzorBl1HVfwleAMQ2sFCbs
+ tTLA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1688092999; x=1690684999;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=EIZdwJmh1pY1qvNqP7cCqGMZ657OwGYurtYcv2hphu8=;
+ b=QFgTQOt7+/NUDMT9hHsqiS8yytZ7GFFPegpPvi7mTdypccj588cXJMcP+0/jFsUND/
+ CwnUoFyK3eiJ0pPoLH2gCbA9dp0mASfT4+URCNgcQbw0uPgsSEeaokFbDLHXz9UQ+Ble
+ iCxpOkOPBBh8GTEG2h/tEnubbbNcD0SWvJipBDu4uXJpbw+Hlr46Z5D2HqmEIJyWimOp
+ mfn0WaVbeZAVsL8N/KW1zcOLN9kI++m2iFZnMeq7vyw7oBlAxSqi/VKgshbfLlt7LYB1
+ jgXThcTcU6TLYvRTaZZcy0rkbWIg4NYF5p5D2l/w1IQ/+enWW6MtQwGVOKpK/5IhkqYp
+ +MoA==
+X-Gm-Message-State: AC+VfDxQmfxaP/JQDOG55aGFexD8HE+R22HT/toayuye0kH9rlJ69Tto
+ 7A+jn5lh5dfK0KBbeq/O55dOjg==
+X-Google-Smtp-Source: ACHHUZ6O/jLOX37w8WoiJ40SqngclXcbFE6vXY0poR5kUXEIxx6QaZ0dDiVge8aC/taDmBmgSv0p/g==
+X-Received: by 2002:a05:6a20:1d0:b0:12c:5ea0:4fd6 with SMTP id
+ 16-20020a056a2001d000b0012c5ea04fd6mr1246763pzz.24.1688092998791; 
+ Thu, 29 Jun 2023 19:43:18 -0700 (PDT)
+Received: from [157.82.204.253] ([157.82.204.253])
+ by smtp.gmail.com with ESMTPSA id
+ jn20-20020a170903051400b001b6717deb2esm4890768plb.233.2023.06.29.19.43.16
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 29 Jun 2023 19:43:18 -0700 (PDT)
+Message-ID: <167eea06-b917-8783-5cd6-8fda56e41331@daynix.com>
+Date: Fri, 30 Jun 2023 11:43:15 +0900
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB6744.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 528a14ca-abeb-4c62-75be-08db790af31b
-X-MS-Exchange-CrossTenant-originalarrivaltime: 30 Jun 2023 01:40:13.7995 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: pWrlKDj2A4+s+ZVIa0vLkpyLZKEfbLbYvA+NDOZBgspaqCB+R9DfgmtEE6Xk6/ZN/Gy4MagUh8XOwwNa1s4vAcFj/Y7oqs0sSGigxjSiL6g=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB5485
-X-OriginatorOrg: intel.com
-Received-SPF: pass client-ip=134.134.136.100;
- envelope-from=zhenzhong.duan@intel.com; helo=mga07.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH v6 5/5] hw/pci: ensure PCIE devices are plugged into only
+ slot 0 of PCIE port
+To: Ani Sinha <anisinha@redhat.com>
+Cc: qemu-devel <qemu-devel@nongnu.org>, "Michael S. Tsirkin"
+ <mst@redhat.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Julia Suvorova <jusual@redhat.com>, Igor Mammedov <imammedo@redhat.com>
+References: <20230629040707.115656-1-anisinha@redhat.com>
+ <20230629040707.115656-6-anisinha@redhat.com>
+ <8d382e8b-088b-f0af-eec4-a85ee513b4ae@daynix.com>
+ <CAK3XEhNOJkm13+vxJO9-Adhwq8NJ3TQ1gaOXj8Dn3NtixF_=jQ@mail.gmail.com>
+ <8868044c-f61b-7bbb-8cc8-34a14c1490d6@daynix.com>
+ <9DDBE75A-C72C-4238-9166-3CBDBEA68188@redhat.com>
+Content-Language: en-US
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <9DDBE75A-C72C-4238-9166-3CBDBEA68188@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::52d;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x52d.google.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, NICE_REPLY_A=-0.093, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -180,29 +102,108 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Pi0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+RnJvbTogQ8OpZHJpYyBMZSBHb2F0ZXIgPGNs
-Z0ByZWRoYXQuY29tPg0KPlNlbnQ6IEZyaWRheSwgSnVuZSAzMCwgMjAyMyAxMjo0MCBBTQ0KPlN1
-YmplY3Q6IFJlOiBbUEFUQ0ggdjQgNS81XSB2ZmlvL21pZ3JhdGlvbjogUmVmYWN0b3IgYW5kIGZp
-eCBwcmludCBvZiAiTWlncmF0aW9uDQo+ZGlzYWJsZWQiDQo+DQo+SGVsbG8gWmhlbnpob25nLA0K
-Pg0KPk9uIDYvMjkvMjMgMTA6NDAsIFpoZW56aG9uZyBEdWFuIHdyb3RlOg0KPj4gVGhpcyBwYXRj
-aCByZWZhY3RvcnMgdmZpb19taWdyYXRpb25fcmVhbGl6ZSgpIGFuZCBpdHMgZGVwZW5kZW5kIGNv
-ZGUNCj4+IGFzIGZvbGxvd3M6DQo+Pg0KPj4gMS4gSXQncyByZWR1bmRhbnQgaW4gdmZpb19taWdy
-YXRpb25fcmVhbGl6ZSgpIHRvIHJlZ2lzdGVycyBtdWx0aXBsZSBibG9ja2VycywNCj4+ICAgICBl
-Lmc6IHZJT01NVSBibG9ja2VyIGNhbiBiZSByZWZhY3RvcmVkIGFzIHBlciBkZXZpY2UgYmxvY2tl
-ci4NCj4+IDIuIENoYW5nZSB2ZmlvX3Zpb21tdV9wcmVzZXQoKSB0byBiZSBvbmx5IGEgcGVyIGRl
-dmljZSBjaGVja2VyLg0KPj4gMy4gUmVtb3ZlIGdsb2JhbCB2SU9NTVUgYmxvY2tlciByZWxhdGVk
-IHN0dWZmLCBlLmc6DQo+PiAgICAgZ2lvbW11X21pZ3JhdGlvbl9ibG9ja2VyLCB2ZmlvX1tibG9j
-a3x1bmJsb2NrXV9naW9tbXVfbWlncmF0aW9uKCkNCj4+ICAgICBhbmQgdmZpb19taWdyYXRpb25f
-ZmluYWxpemUoKQ0KPj4gNC4gQ2hhbmdlIHZmaW9fbWlncmF0aW9uX3JlYWxpemUoKSwgdmZpb19i
-bG9ja19tdWx0aXBsZV9kZXZpY2VzX21pZ3JhdGlvbigpDQo+PiAgICAgdmZpb19ibG9ja19taWdy
-YXRpb24oKSBhbmQgdmZpb192aW9tbXVfcHJlc2V0KCkgdG8gcmV0dXJuIGJvb2wgdHlwZS4NCj4+
-IDUuIFByaW50ICJNaWdyYXRpb24gZGlzYWJsZWQiIGRlcGVuZGluZyBvbiBlbmFibGVfbWlncmF0
-aW9uIHByb3BlcnR5DQo+PiAgICAgYW5kIHByaW50IGl0IGFzIHdhcm5pbmcgaW5zdGVhZCBvZiBl
-cnJvciB3aGljaCBpcyBvdmVya2lsbC4NCj4NCj4NCj5XZSBhcmUgY2xvc2UgdG8gc29mdCBmcmVl
-emUgYW5kIHRoZXNlIGNvbWJvIHBhdGNoZXMgYWRkaW5nIHZhcmlvdXMgZml4ZXMgYWxsDQo+YXQg
-b25jZSBhcmUgZGlmZmljdWx0IHRvIGV2YWx1YXRlLg0KPg0KPlBsZWFzZSBzcGxpdCB0aGlzIHBh
-dGNoIGluIG11bHRpcGxlIG9uZXMgdG8gZWFzZSB0aGUgcmV2aWV3LiAgTWF5IGJlIHN0YXJ0IHdp
-dGgNCj50aGUgIGludCAtPiBib29sIGNvbnZlcnNpb24gb2YgdGhlIHJldHVybiB2YWx1ZXMuIEl0
-IHNob3VsZCByZW1vdmUgc29tZSBub2lzZS4NCkdvb2Qgc3VnZ2VzdGlvbiEgV2lsbCBkby4NCg0K
-VGhhbmtzDQpaaGVuemhvbmcNCg==
+On 2023/06/29 23:18, Ani Sinha wrote:
+> 
+> 
+>> On 29-Jun-2023, at 2:19 PM, Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
+>>
+>> On 2023/06/29 17:05, Ani Sinha wrote:
+>>> On Thu, 29 Jun, 2023, 12:17 pm Akihiko Odaki, <akihiko.odaki@daynix.com <mailto:akihiko.odaki@daynix.com>> wrote:
+>>>     On 2023/06/29 13:07, Ani Sinha wrote:
+>>>      > PCI Express ports only have one slot, so PCI Express devices can
+>>>     only be
+>>>      > plugged into slot 0 on a PCIE port. Enforce it.
+>>>      >
+>>>      > The change has been tested to not break ARI by instantiating
+>>>     seven vfs on an
+>>>      > emulated igb device (the maximum number of vfs the linux igb
+>>>     driver supports).
+>>>      > The vfs are seen to have non-zero device/slot numbers in the
+>>>     conventional
+>>>      > PCI BDF representation.
+>>>      >
+>>>      > CC: jusual@redhat.com <mailto:jusual@redhat.com>
+>>>      > CC: imammedo@redhat.com <mailto:imammedo@redhat.com>
+>>>      > CC: akihiko.odaki@daynix.com <mailto:akihiko.odaki@daynix.com>
+>>>      >
+>>>      > Resolves: https://bugzilla.redhat.com/show_bug.cgi?id=2128929
+>>>     <https://bugzilla.redhat.com/show_bug.cgi?id=2128929>
+>>>      > Signed-off-by: Ani Sinha <anisinha@redhat.com
+>>>     <mailto:anisinha@redhat.com>>
+>>>      > Reviewed-by: Julia Suvorova <jusual@redhat.com
+>>>     <mailto:jusual@redhat.com>>
+>>>      > ---
+>>>      >   hw/pci/pci.c | 15 +++++++++++++++
+>>>      >   1 file changed, 15 insertions(+)
+>>>      >
+>>>      > diff --git a/hw/pci/pci.c b/hw/pci/pci.c
+>>>      > index e2eb4c3b4a..0320ac2bb3 100644
+>>>      > --- a/hw/pci/pci.c
+>>>      > +++ b/hw/pci/pci.c
+>>>      > @@ -65,6 +65,7 @@ bool pci_available = true;
+>>>      >   static char *pcibus_get_dev_path(DeviceState *dev);
+>>>      >   static char *pcibus_get_fw_dev_path(DeviceState *dev);
+>>>      >   static void pcibus_reset(BusState *qbus);
+>>>      > +static bool pcie_has_upstream_port(PCIDevice *dev);
+>>>      >
+>>>      >   static Property pci_props[] = {
+>>>      >       DEFINE_PROP_PCI_DEVFN("addr", PCIDevice, devfn, -1),
+>>>      > @@ -1190,6 +1191,20 @@ static PCIDevice
+>>>     *do_pci_register_device(PCIDevice *pci_dev,
+>>>      >                      name);
+>>>      >
+>>>      >          return NULL;
+>>>      > +    } /*
+>>>      > +       * With SRIOV and ARI, vfs can have non-zero slot in the
+>>>     conventional
+>>>      > +       * PCI interpretation as all five bits reserved for slot
+>>>     addresses are
+>>>      > +       * also used for function bits for the various vfs. Ignore
+>>>     that case.
+>>>      > +       * It is too early here to check for ARI capabilities in
+>>>     the PCI config
+>>>      > +       * space. Hence, we check for a vf device instead.
+>>>      > +       */
+>>>     Why don't just perform this check after the capabilities are set?
+>>> We don't want to allocate resources for wrong device parameters. We want to error out early. Other checks also are performed at the same place .
+>>
+>> It is indeed better to raise an error as early as possible so that we can avoid allocation and other operations that will be reverted and may go wrong due to the invalid condition. That should be the reason why other checks for the address are performed here.
+>>
+>> However, in this particular case, we cannot confidently perform the check here because it is unknown if the ARI capability will be advertised until the device realization code runs. This can justify delaying the check after the device realization, unlike the other checks.
+> 
+> Ok so are you proposing that the check we have right before (the check for unoccupied function 0) be also moved? It also uses the same vf approximation for seemingly to support ARI.
+
+No, I don't think the check for function 0 is required to be disabled 
+because of the change of addressing caused by ARI, but it is required 
+because SR-IOV VF can be added and removed while the PF (function 0) 
+remains. I think this check should be performed also when SR-IOV is 
+disabled and ARI is enabled.
+
+Thus the check for unoccupied function 0 needs to use pci_is_vf() 
+instead of checking ARI capability, and that can happen in 
+do_pci_register_device().
+
+> Also where do you propose we move the check?
+
+In pci_qdev_realize(), somewhere after pc->realize() and before option 
+ROM loading. See the check for failover pair as an example. I guess it's 
+also placed in this region because it needs capability information.
+
+> 
+>>
+>>> Show quoted text
+>>>     Regards,
+>>>     Akihiko Odaki
+>>>      > +    else if (!pci_is_vf(pci_dev) &&
+>>>      > +             pcie_has_upstream_port(pci_dev) &&
+>>>      > +             PCI_SLOT(devfn)) {
+>>>      > +        error_setg(errp, "PCI: slot %d is not valid for %s,"
+>>>      > +                   " parent device only allows plugging into
+>>>     slot 0.",
+>>>      > +                   PCI_SLOT(devfn), name);
+>>>      > +        return NULL;
+>>>      >       }
+>>>      >
+>>>      >       pci_dev->devfn = devfn;
+> 
 
