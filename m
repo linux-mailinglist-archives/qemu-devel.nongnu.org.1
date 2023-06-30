@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21BDC743CAB
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 15:23:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 150E6743C9F
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 15:23:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFE4h-0007ba-8f; Fri, 30 Jun 2023 09:22:11 -0400
+	id 1qFE4i-0007cv-LW; Fri, 30 Jun 2023 09:22:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qFE4d-0007ah-Nn
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 09:22:08 -0400
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ id 1qFE4f-0007ay-3A
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 09:22:09 -0400
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qFE4a-0003MQ-UM
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 09:22:07 -0400
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-313e1c27476so1646851f8f.1
- for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 06:22:04 -0700 (PDT)
+ id 1qFE4c-0003Md-6q
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 09:22:08 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-3fbc12181b6so16369065e9.2
+ for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 06:22:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688131323; x=1690723323;
+ d=linaro.org; s=google; t=1688131324; x=1690723324;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=m/lN5cy8mvBZHCXHBxQGLZc7gXDGj90XuXQ2MKd1eIg=;
- b=NJcD9Z3Vx0DORqxD5zGnNTJuAnjz7S5I2l3ygdXCuFi0bXb6K5jePa4Xc+d77yqce9
- ZIN2cJAJ+5C+Ejeyuh/zz5FH1ugVVQuAJ5JThk6cS/C4rIwcSAGJoSvRkVCce0PzzmYQ
- 5ZHvaS51ZIIEcFAzdqh8UfkI/I0xvTsQkG1pYyeuQwZBezVrLfosLxZb+wTz9rvcdAZh
- BwJNSyKFb2sIXfQAEBcE0m/LXp1/GLdN0TSLXPGraRMB311OlV4DfKZEe+OzAc9xlN8S
- OcSWt1zbnINy5NSi+E1/EVecucQ/QDgipETsafpmUMeVsrYEfOV2+kR+dgmkLQt1CGef
- ttig==
+ bh=jnC1m2Ccr4orbb1SmAUD1+fjjb4uAtVXL1WfDqQvv0g=;
+ b=FDDxmgLROUkga4fGVhRr6AaKxQHZGsT7wX/vG58ujanEk0MpsTn+t5b53kiJnUdogY
+ YIX2+r765G4DMAMQSnIs54BdRs6rmJwnf72dBA1RqzDtDXUharcaGgq1diaq0/AVF8Qu
+ f7yT8xZ4NrBC5ZcRw/MACMOeO0WM0wlSKsx80D5xc2ol5Un/QhkUkrHZXwcMwsEvfscw
+ 98GFUECdHf5YZDsY7aJFgkWJw8ySszMuhsAfF5s6aWjMoH0Yuw/JA5PaHM6jT+GnezFy
+ ZpVB5C6lY8SJB1U8Mn7/XwcAZjJ0NkWaWK9WgNShcL8CmWcawPLi6ClYiQRjLJ0SEpbu
+ cOeA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688131323; x=1690723323;
+ d=1e100.net; s=20221208; t=1688131324; x=1690723324;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=m/lN5cy8mvBZHCXHBxQGLZc7gXDGj90XuXQ2MKd1eIg=;
- b=jLu8SYQuy7WyjRsBVffWeV7g93qX7e+tcIKlr6VyrtyBKYpOTSJg935aEwwaCCc5yZ
- HGJzNStF15qgri70V8v53n256NSQ/2waKAwUHa2A7ht2Yzghu+7Do+13uHBH+RRqIFwg
- ZPyB+Zp8FB63I1PAu5Vkc9otO+192bSF0PfCHtRe8+W4qZbgPVCernSxLrWnKZrwSDTJ
- 8k04Bcgm6F76+ze7zGDLZFudRAFR5su12uc67Jd2amoJWy0avqdZHiKVWwIeouOHgx9E
- 4z9wCAQVhBdEHy5bpNIozIbrMcgpCFM3rXzEujIxEDqgxNPfDo6Mtmbc+xQTLJL20oVr
- c50g==
-X-Gm-Message-State: AC+VfDx6p09B5HQvohf8Da+L2+D0+LzYXuMSEKBAI1Wszo+U4aPVCYh4
- R6WLsmORfcCL4ew2/94VMjY3D7EIP0t5jHiWXw1xvw==
-X-Google-Smtp-Source: ACHHUZ6X6twbIGyw57WHjYNFfmlU2BWcEzM0AcF5EkTet1/w43dHmSfflOafG4klxEe1fRtUlDbiHA==
-X-Received: by 2002:a5d:548e:0:b0:311:360e:ea3a with SMTP id
- h14-20020a5d548e000000b00311360eea3amr6855682wrv.34.1688131323486; 
- Fri, 30 Jun 2023 06:22:03 -0700 (PDT)
+ bh=jnC1m2Ccr4orbb1SmAUD1+fjjb4uAtVXL1WfDqQvv0g=;
+ b=hNQhtIlO5c3kRIAhcJsM8kUGpcPQLabDApPlJgY3NZHW+FHeR3PZtDUVlJ51sOaao3
+ SkCJ2BNpVoTlylcB4wOgNkOBOxa5a0qrjwMNh2a6W4jhdYhaYqu52FdElgxQU4gMjcQs
+ HV2MLqNF3UJ0n6M/BYliJ+b7ZujhqaWDjiCmQaRIAfn5HZNuEuabdKTXSvWgCemI7Km9
+ 0UAi/+CE8fcCH0TPz+4m+D2xmj6ayHRaJ3ztnuJc+wtnHhkBsDlR/jqjzhpZoxScQkVR
+ 5g6wIKNcMl1prTMdQmj/n8fFxJ/r/iLsx7gwXb8E8C59JQmTqjnk9Ij1ncm1Sr+PHLuD
+ xhtQ==
+X-Gm-Message-State: ABy/qLb9crwdf0QJ9cr+6lG16RiovzAxpjOn/Hv7rn7AidAFLvqwHrYN
+ uMs4DgDFIWz9Glw8A3f5Kn3VDeOB6C/HA5D+htnHpw==
+X-Google-Smtp-Source: APBJJlEqU4egZvoebWbdeu4Rjs3T/qCEZq9iDkDJ9rYzWAYQopumSH+EMztYz9YoWq6z3AYq1tUUBA==
+X-Received: by 2002:a5d:630a:0:b0:314:1021:cd43 with SMTP id
+ i10-20020a5d630a000000b003141021cd43mr2158455wru.37.1688131324246; 
+ Fri, 30 Jun 2023 06:22:04 -0700 (PDT)
 Received: from localhost.localdomain ([139.47.41.96])
  by smtp.gmail.com with ESMTPSA id
- a16-20020adfdd10000000b00313ef2150dcsm14571092wrm.45.2023.06.30.06.22.02
+ a16-20020adfdd10000000b00313ef2150dcsm14571092wrm.45.2023.06.30.06.22.03
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Fri, 30 Jun 2023 06:22:03 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: mjt@tls.msk.ru,
 	laurent@vivier.eu
-Subject: [PATCH 03/24] linux-user/strace: Expand struct flags to hold a mask
-Date: Fri, 30 Jun 2023 15:21:38 +0200
-Message-Id: <20230630132159.376995-4-richard.henderson@linaro.org>
+Subject: [PATCH 04/24] linux-user: Split TARGET_MAP_* out of syscall_defs.h
+Date: Fri, 30 Jun 2023 15:21:39 +0200
+Message-Id: <20230630132159.376995-5-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230630132159.376995-1-richard.henderson@linaro.org>
 References: <20230630132159.376995-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x42d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,133 +92,287 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-A zero bit value does not make sense -- it must relate to
-some field in some way.
-
-Define FLAG_BASIC with a build-time sanity check.
-Adjust FLAG_GENERIC and FLAG_TARGET to use it.
-Add FLAG_GENERIC_MASK and FLAG_TARGET_MASK.
-
-Fix up the existing flag definitions for build errors.
+Move the values into the per-target target_mman.h headers
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/strace.c | 40 ++++++++++++++++++++++------------------
- 1 file changed, 22 insertions(+), 18 deletions(-)
+ linux-user/alpha/target_mman.h   | 13 +++++
+ linux-user/generic/target_mman.h | 54 ++++++++++++++++++++
+ linux-user/hppa/target_mman.h    | 10 ++++
+ linux-user/mips/target_mman.h    | 11 +++++
+ linux-user/mips64/target_mman.h  |  2 +-
+ linux-user/ppc/target_mman.h     |  3 ++
+ linux-user/sparc/target_mman.h   |  4 ++
+ linux-user/syscall_defs.h        | 85 +-------------------------------
+ linux-user/xtensa/target_mman.h  | 11 +++++
+ 9 files changed, 108 insertions(+), 85 deletions(-)
 
-diff --git a/linux-user/strace.c b/linux-user/strace.c
-index aad2b62ca4..566396d051 100644
---- a/linux-user/strace.c
-+++ b/linux-user/strace.c
-@@ -46,15 +46,21 @@ struct syscallname {
-  */
- struct flags {
-     abi_long    f_value;  /* flag */
-+    abi_long    f_mask;   /* mask */
-     const char  *f_string; /* stringified flag */
- };
+diff --git a/linux-user/alpha/target_mman.h b/linux-user/alpha/target_mman.h
+index 051544f5ab..6bb03e7336 100644
+--- a/linux-user/alpha/target_mman.h
++++ b/linux-user/alpha/target_mman.h
+@@ -1,6 +1,19 @@
+ #ifndef ALPHA_TARGET_MMAN_H
+ #define ALPHA_TARGET_MMAN_H
  
-+/* No 'struct flags' element should have a zero mask. */
-+#define FLAG_BASIC(V, M, N)      { V, M | QEMU_BUILD_BUG_ON_ZERO(!(M)), N }
++#define TARGET_MAP_ANONYMOUS            0x10
++#define TARGET_MAP_FIXED                0x100
++#define TARGET_MAP_GROWSDOWN            0x01000
++#define TARGET_MAP_DENYWRITE            0x02000
++#define TARGET_MAP_EXECUTABLE           0x04000
++#define TARGET_MAP_LOCKED               0x08000
++#define TARGET_MAP_NORESERVE            0x10000
++#define TARGET_MAP_POPULATE             0x20000
++#define TARGET_MAP_NONBLOCK             0x40000
++#define TARGET_MAP_STACK                0x80000
++#define TARGET_MAP_HUGETLB              0x100000
++#define TARGET_MAP_FIXED_NOREPLACE      0x200000
 +
- /* common flags for all architectures */
--#define FLAG_GENERIC(name) { name, #name }
-+#define FLAG_GENERIC_MASK(V, M)  FLAG_BASIC(V, M, #V)
-+#define FLAG_GENERIC(V)          FLAG_BASIC(V, V, #V)
- /* target specific flags (syscall_defs.h has TARGET_<flag>) */
--#define FLAG_TARGET(name)  { TARGET_ ## name, #name }
-+#define FLAG_TARGET_MASK(V, M)   FLAG_BASIC(TARGET_##V, TARGET_##M, #V)
-+#define FLAG_TARGET(V)           FLAG_BASIC(TARGET_##V, TARGET_##V, #V)
- /* end of flags array */
--#define FLAG_END           { 0, NULL }
-+#define FLAG_END           { 0, 0, NULL }
+ #define TARGET_MADV_DONTNEED 6
  
- /* Structure used to translate enumerated values into strings */
- struct enums {
-@@ -963,7 +969,7 @@ print_syscall_ret_ioctl(CPUArchState *cpu_env, const struct syscallname *name,
- #endif
+ #define TARGET_MS_ASYNC 1
+diff --git a/linux-user/generic/target_mman.h b/linux-user/generic/target_mman.h
+index 32bf1a52d0..7b888fb7f8 100644
+--- a/linux-user/generic/target_mman.h
++++ b/linux-user/generic/target_mman.h
+@@ -1,6 +1,60 @@
+ #ifndef LINUX_USER_TARGET_MMAN_H
+ #define LINUX_USER_TARGET_MMAN_H
  
- UNUSED static const struct flags access_flags[] = {
--    FLAG_GENERIC(F_OK),
-+    FLAG_GENERIC_MASK(F_OK, R_OK | W_OK | X_OK),
-     FLAG_GENERIC(R_OK),
-     FLAG_GENERIC(W_OK),
-     FLAG_GENERIC(X_OK),
-@@ -999,9 +1005,9 @@ UNUSED static const struct flags mode_flags[] = {
- };
- 
- UNUSED static const struct flags open_access_flags[] = {
--    FLAG_TARGET(O_RDONLY),
--    FLAG_TARGET(O_WRONLY),
--    FLAG_TARGET(O_RDWR),
-+    FLAG_TARGET_MASK(O_RDONLY, O_ACCMODE),
-+    FLAG_TARGET_MASK(O_WRONLY, O_ACCMODE),
-+    FLAG_TARGET_MASK(O_RDWR, O_ACCMODE),
-     FLAG_END,
- };
- 
-@@ -1010,7 +1016,9 @@ UNUSED static const struct flags open_flags[] = {
-     FLAG_TARGET(O_CREAT),
-     FLAG_TARGET(O_DIRECTORY),
-     FLAG_TARGET(O_EXCL),
-+#if TARGET_O_LARGEFILE != 0
-     FLAG_TARGET(O_LARGEFILE),
++/* These are defined in linux/mmap.h */
++#define TARGET_MAP_SHARED               0x01
++#define TARGET_MAP_PRIVATE              0x02
++#define TARGET_MAP_SHARED_VALIDATE      0x03
++
++/* 0x0100 - 0x4000 flags are defined in asm-generic/mman.h */
++#ifndef TARGET_MAP_GROWSDOWN
++#define TARGET_MAP_GROWSDOWN            0x0100
 +#endif
-     FLAG_TARGET(O_NOCTTY),
-     FLAG_TARGET(O_NOFOLLOW),
-     FLAG_TARGET(O_NONBLOCK),      /* also O_NDELAY */
-@@ -1075,7 +1083,7 @@ UNUSED static const struct flags umount2_flags[] = {
- };
++#ifndef TARGET_MAP_DENYWRITE
++#define TARGET_MAP_DENYWRITE            0x0800
++#endif
++#ifndef TARGET_MAP_EXECUTABLE
++#define TARGET_MAP_EXECUTABLE           0x1000
++#endif
++#ifndef TARGET_MAP_LOCKED
++#define TARGET_MAP_LOCKED               0x2000
++#endif
++#ifndef TARGET_MAP_NORESERVE
++#define TARGET_MAP_NORESERVE            0x4000
++#endif
++
++/* Other MAP flags are defined in asm-generic/mman-common.h */
++#ifndef TARGET_MAP_TYPE
++#define TARGET_MAP_TYPE                 0x0f
++#endif
++#ifndef TARGET_MAP_FIXED
++#define TARGET_MAP_FIXED                0x10
++#endif
++#ifndef TARGET_MAP_ANONYMOUS
++#define TARGET_MAP_ANONYMOUS            0x20
++#endif
++#ifndef TARGET_MAP_POPULATE
++#define TARGET_MAP_POPULATE             0x008000
++#endif
++#ifndef TARGET_MAP_NONBLOCK
++#define TARGET_MAP_NONBLOCK             0x010000
++#endif
++#ifndef TARGET_MAP_STACK
++#define TARGET_MAP_STACK                0x020000
++#endif
++#ifndef TARGET_MAP_HUGETLB
++#define TARGET_MAP_HUGETLB              0x040000
++#endif
++#ifndef TARGET_MAP_SYNC
++#define TARGET_MAP_SYNC                 0x080000
++#endif
++#ifndef TARGET_MAP_FIXED_NOREPLACE
++#define TARGET_MAP_FIXED_NOREPLACE      0x100000
++#endif
++#ifndef TARGET_MAP_UNINITIALIZED
++#define TARGET_MAP_UNINITIALIZED        0x4000000
++#endif
++
+ #ifndef TARGET_MADV_NORMAL
+ #define TARGET_MADV_NORMAL 0
+ #endif
+diff --git a/linux-user/hppa/target_mman.h b/linux-user/hppa/target_mman.h
+index f9b6b97032..97f87d042a 100644
+--- a/linux-user/hppa/target_mman.h
++++ b/linux-user/hppa/target_mman.h
+@@ -1,6 +1,16 @@
+ #ifndef HPPA_TARGET_MMAN_H
+ #define HPPA_TARGET_MMAN_H
  
- UNUSED static const struct flags mmap_prot_flags[] = {
--    FLAG_GENERIC(PROT_NONE),
-+    FLAG_GENERIC_MASK(PROT_NONE, PROT_READ | PROT_WRITE | PROT_EXEC),
-     FLAG_GENERIC(PROT_EXEC),
-     FLAG_GENERIC(PROT_READ),
-     FLAG_GENERIC(PROT_WRITE),
-@@ -1103,7 +1111,7 @@ UNUSED static const struct flags mmap_flags[] = {
- #ifdef MAP_POPULATE
-     FLAG_TARGET(MAP_POPULATE),
++#define TARGET_MAP_TYPE                 0x2b
++#define TARGET_MAP_FIXED                0x04
++#define TARGET_MAP_ANONYMOUS            0x10
++#define TARGET_MAP_GROWSDOWN            0x8000
++#define TARGET_MAP_POPULATE             0x10000
++#define TARGET_MAP_NONBLOCK             0x20000
++#define TARGET_MAP_STACK                0x40000
++#define TARGET_MAP_HUGETLB              0x80000
++#define TARGET_MAP_UNINITIALIZED        0
++
+ #define TARGET_MADV_MERGEABLE 65
+ #define TARGET_MADV_UNMERGEABLE 66
+ #define TARGET_MADV_HUGEPAGE 67
+diff --git a/linux-user/mips/target_mman.h b/linux-user/mips/target_mman.h
+index e7ba6070fe..d1d96decf5 100644
+--- a/linux-user/mips/target_mman.h
++++ b/linux-user/mips/target_mman.h
+@@ -1 +1,12 @@
++#define TARGET_MAP_NORESERVE            0x0400
++#define TARGET_MAP_ANONYMOUS            0x0800
++#define TARGET_MAP_GROWSDOWN            0x1000
++#define TARGET_MAP_DENYWRITE            0x2000
++#define TARGET_MAP_EXECUTABLE           0x4000
++#define TARGET_MAP_LOCKED               0x8000
++#define TARGET_MAP_POPULATE             0x10000
++#define TARGET_MAP_NONBLOCK             0x20000
++#define TARGET_MAP_STACK                0x40000
++#define TARGET_MAP_HUGETLB              0x80000
++
+ #include "../generic/target_mman.h"
+diff --git a/linux-user/mips64/target_mman.h b/linux-user/mips64/target_mman.h
+index e7ba6070fe..7bdc47d902 100644
+--- a/linux-user/mips64/target_mman.h
++++ b/linux-user/mips64/target_mman.h
+@@ -1 +1 @@
+-#include "../generic/target_mman.h"
++#include "../mips/target_mman.h"
+diff --git a/linux-user/ppc/target_mman.h b/linux-user/ppc/target_mman.h
+index e7ba6070fe..c90be347f6 100644
+--- a/linux-user/ppc/target_mman.h
++++ b/linux-user/ppc/target_mman.h
+@@ -1 +1,4 @@
++#define TARGET_MAP_NORESERVE            0x40
++#define TARGET_MAP_LOCKED               0x80
++
+ #include "../generic/target_mman.h"
+diff --git a/linux-user/sparc/target_mman.h b/linux-user/sparc/target_mman.h
+index e7ba6070fe..3fdee19d8a 100644
+--- a/linux-user/sparc/target_mman.h
++++ b/linux-user/sparc/target_mman.h
+@@ -1 +1,5 @@
++#define TARGET_MAP_NORESERVE           0x40
++#define TARGET_MAP_LOCKED              0x100
++#define TARGET_MAP_GROWSDOWN           0x0200
++
+ #include "../generic/target_mman.h"
+diff --git a/linux-user/syscall_defs.h b/linux-user/syscall_defs.h
+index cc37054cb5..118a8ac7da 100644
+--- a/linux-user/syscall_defs.h
++++ b/linux-user/syscall_defs.h
+@@ -1262,90 +1262,7 @@ struct target_winsize {
+ #define TARGET_PROT_MTE         0x20
  #endif
--#ifdef TARGET_MAP_UNINITIALIZED
-+#if defined(TARGET_MAP_UNINITIALIZED) && TARGET_MAP_UNINITIALIZED != 0
-     FLAG_TARGET(MAP_UNINITIALIZED),
- #endif
-     FLAG_TARGET(MAP_HUGETLB),
-@@ -1201,13 +1209,13 @@ UNUSED static const struct flags statx_flags[] = {
-     FLAG_GENERIC(AT_SYMLINK_NOFOLLOW),
- #endif
- #ifdef AT_STATX_SYNC_AS_STAT
--    FLAG_GENERIC(AT_STATX_SYNC_AS_STAT),
-+    FLAG_GENERIC_MASK(AT_STATX_SYNC_AS_STAT, AT_STATX_SYNC_TYPE),
- #endif
- #ifdef AT_STATX_FORCE_SYNC
--    FLAG_GENERIC(AT_STATX_FORCE_SYNC),
-+    FLAG_GENERIC_MASK(AT_STATX_FORCE_SYNC, AT_STATX_SYNC_TYPE),
- #endif
- #ifdef AT_STATX_DONT_SYNC
--    FLAG_GENERIC(AT_STATX_DONT_SYNC),
-+    FLAG_GENERIC_MASK(AT_STATX_DONT_SYNC, AT_STATX_SYNC_TYPE),
- #endif
-     FLAG_END,
- };
-@@ -1481,14 +1489,10 @@ print_flags(const struct flags *f, abi_long flags, int last)
-     const char *sep = "";
-     int n;
  
--    if ((flags == 0) && (f->f_value == 0)) {
--        qemu_log("%s%s", f->f_string, get_comma(last));
--        return;
--    }
-     for (n = 0; f->f_string != NULL; f++) {
--        if ((f->f_value != 0) && ((flags & f->f_value) == f->f_value)) {
-+        if ((flags & f->f_mask) == f->f_value) {
-             qemu_log("%s%s", sep, f->f_string);
--            flags &= ~f->f_value;
-+            flags &= ~f->f_mask;
-             sep = "|";
-             n++;
-         }
+-/* Common */
+-#define TARGET_MAP_SHARED	0x01		/* Share changes */
+-#define TARGET_MAP_PRIVATE	0x02		/* Changes are private */
+-#if defined(TARGET_HPPA)
+-#define TARGET_MAP_TYPE         0x03		/* Mask for type of mapping */
+-#else
+-#define TARGET_MAP_TYPE         0x0f		/* Mask for type of mapping */
+-#endif
+-
+-/* Target specific */
+-#if defined(TARGET_MIPS)
+-#define TARGET_MAP_FIXED	0x10		/* Interpret addr exactly */
+-#define TARGET_MAP_ANONYMOUS	0x0800		/* don't use a file */
+-#define TARGET_MAP_GROWSDOWN	0x1000		/* stack-like segment */
+-#define TARGET_MAP_DENYWRITE	0x2000		/* ETXTBSY */
+-#define TARGET_MAP_EXECUTABLE	0x4000		/* mark it as an executable */
+-#define TARGET_MAP_LOCKED	0x8000		/* pages are locked */
+-#define TARGET_MAP_NORESERVE	0x0400		/* don't check for reservations */
+-#define TARGET_MAP_POPULATE	0x10000		/* populate (prefault) pagetables */
+-#define TARGET_MAP_NONBLOCK	0x20000		/* do not block on IO */
+-#define TARGET_MAP_STACK        0x40000         /* ignored */
+-#define TARGET_MAP_HUGETLB      0x80000         /* create a huge page mapping */
+-#elif defined(TARGET_PPC)
+-#define TARGET_MAP_FIXED	0x10		/* Interpret addr exactly */
+-#define TARGET_MAP_ANONYMOUS	0x20		/* don't use a file */
+-#define TARGET_MAP_GROWSDOWN	0x0100		/* stack-like segment */
+-#define TARGET_MAP_DENYWRITE	0x0800		/* ETXTBSY */
+-#define TARGET_MAP_EXECUTABLE	0x1000		/* mark it as an executable */
+-#define TARGET_MAP_LOCKED	0x0080		/* pages are locked */
+-#define TARGET_MAP_NORESERVE	0x0040		/* don't check for reservations */
+-#define TARGET_MAP_POPULATE	0x8000		/* populate (prefault) pagetables */
+-#define TARGET_MAP_NONBLOCK	0x10000		/* do not block on IO */
+-#define TARGET_MAP_STACK        0x20000         /* ignored */
+-#define TARGET_MAP_HUGETLB      0x40000         /* create a huge page mapping */
+-#elif defined(TARGET_ALPHA)
+-#define TARGET_MAP_ANONYMOUS	0x10		/* don't use a file */
+-#define TARGET_MAP_FIXED	0x100		/* Interpret addr exactly */
+-#define TARGET_MAP_GROWSDOWN	0x01000		/* stack-like segment */
+-#define TARGET_MAP_DENYWRITE	0x02000		/* ETXTBSY */
+-#define TARGET_MAP_EXECUTABLE	0x04000		/* mark it as an executable */
+-#define TARGET_MAP_LOCKED	0x08000		/* lock the mapping */
+-#define TARGET_MAP_NORESERVE	0x10000		/* no check for reservations */
+-#define TARGET_MAP_POPULATE	0x20000		/* pop (prefault) pagetables */
+-#define TARGET_MAP_NONBLOCK	0x40000		/* do not block on IO */
+-#define TARGET_MAP_STACK        0x80000         /* ignored */
+-#define TARGET_MAP_HUGETLB      0x100000        /* create a huge page mapping */
+-#elif defined(TARGET_HPPA)
+-#define TARGET_MAP_ANONYMOUS	0x10		/* don't use a file */
+-#define TARGET_MAP_FIXED	0x04		/* Interpret addr exactly */
+-#define TARGET_MAP_GROWSDOWN	0x08000		/* stack-like segment */
+-#define TARGET_MAP_DENYWRITE	0x00800		/* ETXTBSY */
+-#define TARGET_MAP_EXECUTABLE	0x01000		/* mark it as an executable */
+-#define TARGET_MAP_LOCKED	0x02000		/* lock the mapping */
+-#define TARGET_MAP_NORESERVE	0x04000		/* no check for reservations */
+-#define TARGET_MAP_POPULATE	0x10000		/* pop (prefault) pagetables */
+-#define TARGET_MAP_NONBLOCK	0x20000		/* do not block on IO */
+-#define TARGET_MAP_STACK        0x40000         /* ignored */
+-#define TARGET_MAP_HUGETLB      0x80000         /* create a huge page mapping */
+-#elif defined(TARGET_XTENSA)
+-#define TARGET_MAP_FIXED	0x10		/* Interpret addr exactly */
+-#define TARGET_MAP_ANONYMOUS	0x0800		/* don't use a file */
+-#define TARGET_MAP_GROWSDOWN	0x1000		/* stack-like segment */
+-#define TARGET_MAP_DENYWRITE	0x2000		/* ETXTBSY */
+-#define TARGET_MAP_EXECUTABLE	0x4000		/* mark it as an executable */
+-#define TARGET_MAP_LOCKED	0x8000		/* pages are locked */
+-#define TARGET_MAP_NORESERVE	0x0400		/* don't check for reservations */
+-#define TARGET_MAP_POPULATE	0x10000		/* populate (prefault) pagetables */
+-#define TARGET_MAP_NONBLOCK	0x20000		/* do not block on IO */
+-#define TARGET_MAP_STACK	0x40000
+-#define TARGET_MAP_HUGETLB  0x80000         /* create a huge page mapping */
+-#else
+-#define TARGET_MAP_FIXED	0x10		/* Interpret addr exactly */
+-#define TARGET_MAP_ANONYMOUS	0x20		/* don't use a file */
+-#define TARGET_MAP_GROWSDOWN	0x0100		/* stack-like segment */
+-#define TARGET_MAP_DENYWRITE	0x0800		/* ETXTBSY */
+-#define TARGET_MAP_EXECUTABLE	0x1000		/* mark it as an executable */
+-#define TARGET_MAP_LOCKED	0x2000		/* pages are locked */
+-#define TARGET_MAP_NORESERVE	0x4000		/* don't check for reservations */
+-#define TARGET_MAP_POPULATE	0x8000		/* populate (prefault) pagetables */
+-#define TARGET_MAP_NONBLOCK	0x10000		/* do not block on IO */
+-#define TARGET_MAP_STACK        0x20000         /* ignored */
+-#define TARGET_MAP_HUGETLB      0x40000         /* create a huge page mapping */
+-#define TARGET_MAP_UNINITIALIZED 0x4000000	/* for anonymous mmap, memory could be uninitialized */
+-#endif
++#include "target_mman.h"
+ 
+ #if (defined(TARGET_I386) && defined(TARGET_ABI32)) \
+     || (defined(TARGET_ARM) && defined(TARGET_ABI32)) \
+diff --git a/linux-user/xtensa/target_mman.h b/linux-user/xtensa/target_mman.h
+index e7ba6070fe..d1d96decf5 100644
+--- a/linux-user/xtensa/target_mman.h
++++ b/linux-user/xtensa/target_mman.h
+@@ -1 +1,12 @@
++#define TARGET_MAP_NORESERVE            0x0400
++#define TARGET_MAP_ANONYMOUS            0x0800
++#define TARGET_MAP_GROWSDOWN            0x1000
++#define TARGET_MAP_DENYWRITE            0x2000
++#define TARGET_MAP_EXECUTABLE           0x4000
++#define TARGET_MAP_LOCKED               0x8000
++#define TARGET_MAP_POPULATE             0x10000
++#define TARGET_MAP_NONBLOCK             0x20000
++#define TARGET_MAP_STACK                0x40000
++#define TARGET_MAP_HUGETLB              0x80000
++
+ #include "../generic/target_mman.h"
 -- 
 2.34.1
 
