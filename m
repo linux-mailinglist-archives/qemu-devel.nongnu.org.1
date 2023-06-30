@@ -2,85 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFD107437CC
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 10:55:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ECC47437CD
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 10:56:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qF9u8-00075Y-73; Fri, 30 Jun 2023 04:55:00 -0400
+	id 1qF9v9-0000jZ-NV; Fri, 30 Jun 2023 04:56:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
- id 1qF9tw-0006xF-PR
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 04:54:50 -0400
-Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
- id 1qF9tv-0007ns-6M
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 04:54:48 -0400
-Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-6726d5d92afso1001514b3a.1
- for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 01:54:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688115286; x=1690707286;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=G/vyj3NRZa1WG7OO1XkwYenz6SSrmEcJIYzbyS3qPZ8=;
- b=M3bKKw8CPFCcm6oY7dhCingKOUURtT7tfdpeGUL/yDiiPrGE+IVowQySG2ezfmVWvf
- wFDB9IE+aXetzlDKC5ONH4HRogAtuTjcLg5a88flQectF5gTL9xMYyWfQlbVbN6Fn5WX
- g/s69z/97ca1/yTDpdUZftwSUnvjHrWC0C58JNu4fSNoa9vkBFrGzLKv2VHQibH18Mhh
- eQxHGRtRghYuWYT+pItQcPFDTL9AkVPHyFCF1SZZl06avspwK5D/s2ndgBqtdOcSAvrM
- RDRF/6xcC0Lkau4gzlVfHWCMk6OdPydMD1f4hZnkIT0jB2vsyNQ4sd7yuHZsxoa6se+5
- tq9g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688115286; x=1690707286;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=G/vyj3NRZa1WG7OO1XkwYenz6SSrmEcJIYzbyS3qPZ8=;
- b=LflR0OqVLtwkGw81Eq+ZQ1E5S1Noq7/S4UhVxW4LfnLPfms3h2n2eGPhMgVnjo68Vt
- YO/ABC8j1Bc8/5Kwhxe/IEOtxPGuidQE2vg81cQHzDAODwgZrdTUwC40EhM9+2/AbWdo
- j28QSHld3NgHfhX1z724TbA0NFREYAZ+NBmE7n01dGKuD7lxvKdpfFc41to5xbBzx7St
- cIG8wpPSwlDNYd6ljyRZyqGIpZkUREKSzmpVritpvKE1Qi1mcCA0XJP3IgRnWUs0QxIt
- fp7Nn0YyLPj1/e3mFMoghZDPWHNAGBVWANpyQ+qFtofhLJFg4Grip6lPVCroj0MADZV6
- rBsQ==
-X-Gm-Message-State: AC+VfDzlqWumXZNBdHj+PAvYKHqTuyLxYbC0/LBMTamxjjEzrUIoL/aJ
- ekDz81VgCK/ja7woCwTNo+g=
-X-Google-Smtp-Source: ACHHUZ6Sf/wUd5eHPHVBOxxDwZNsGKikA+7YGv9x9zq4tm2cRvYnbBkZ3bTzS7yGo5sVwXqZhaR/Cg==
-X-Received: by 2002:a05:6a00:2d8d:b0:67f:6d90:8fb with SMTP id
- fb13-20020a056a002d8d00b0067f6d9008fbmr11061494pfb.13.1688115285650; 
- Fri, 30 Jun 2023 01:54:45 -0700 (PDT)
-Received: from localhost ([159.226.94.115]) by smtp.gmail.com with ESMTPSA id
- g6-20020aa78746000000b006749c22d079sm8188303pfo.167.2023.06.30.01.54.44
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 30 Jun 2023 01:54:45 -0700 (PDT)
-From: Hawkins Jiawei <yin31149@gmail.com>
-To: jasowang@redhat.com,
-	mst@redhat.com,
-	eperezma@redhat.com
-Cc: qemu-devel@nongnu.org,
-	yin31149@gmail.com,
-	18801353760@163.com
-Subject: [PATCH v2 2/2] vdpa: order vdpa_feature_bits array
-Date: Fri, 30 Jun 2023 16:54:36 +0800
-Message-Id: <b31f0bce96ad1b66fabeace182cddb41fede9683.1688112025.git.yin31149@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <cover.1688112025.git.yin31149@gmail.com>
-References: <cover.1688112025.git.yin31149@gmail.com>
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qF9ul-0000ax-Rr
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 04:55:39 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qF9uj-00084z-U9
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 04:55:39 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1688115334;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=I20yfpdgPrJV6ncT6ieio57VBiJASe6TRQOjwntGlOI=;
+ b=CwLmvmqEe2dZr7Ln943q2AwLTUYoqvQmOnBOI1vF9kCqIj9bhkg7okWHxg3/c4/j1YnsxJ
+ vkzFTgZC7P/4JZt3ELpt6YYuR53Y+EHD+sZbSFSspg+8NlUIiieiqD2jGAyo36dp1nyWhg
+ +gjMB0Eh2X9T/yTK1DPkdqh1dYYN6Nc=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-462-lMuh6Wg9NBqkdLf94wdFDg-1; Fri, 30 Jun 2023 04:55:29 -0400
+X-MC-Unique: lMuh6Wg9NBqkdLf94wdFDg-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8729B185A78B;
+ Fri, 30 Jun 2023 08:55:29 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.73])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 7F5E92166B2D;
+ Fri, 30 Jun 2023 08:55:28 +0000 (UTC)
+Date: Fri, 30 Jun 2023 09:55:26 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Jason Wang <jasowang@redhat.com>
+Cc: Andrew Melnychenko <andrew@daynix.com>, mst@redhat.com,
+ armbru@redhat.com, eblake@redhat.com, qemu-devel@nongnu.org,
+ yuri.benditovich@daynix.com, yan@daynix.com
+Subject: Re: [PATCH v3 0/6] eBPF RSS through QMP support.
+Message-ID: <ZJ6Yfu1pDBT6zaoL@redhat.com>
+References: <20230614221026.56950-1-andrew@daynix.com>
+ <CACGkMEsDw8sUeJB340f8cdqEFnQRXccDxq6pe+87KDzOBMHZpg@mail.gmail.com>
+ <ZJ6MfLs+yLx/yQyV@redhat.com>
+ <CACGkMEsmKH=U7zYt6wtznjW6tcr=VvCkGfZJrfuUxWg1Ces31Q@mail.gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
- envelope-from=yin31149@gmail.com; helo=mail-pf1-x435.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01,
- UPPERCASE_50_75=0.008 autolearn=no autolearn_force=no
+In-Reply-To: <CACGkMEsmKH=U7zYt6wtznjW6tcr=VvCkGfZJrfuUxWg1Ces31Q@mail.gmail.com>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,76 +84,74 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch reorganizes the vdpa_feature_bits array
-in ascending order based on its value to avoid future duplicates.
+On Fri, Jun 30, 2023 at 04:21:02PM +0800, Jason Wang wrote:
+> On Fri, Jun 30, 2023 at 4:04 PM Daniel P. Berrangé <berrange@redhat.com> wrote:
+> >
+> > On Fri, Jun 30, 2023 at 01:06:22PM +0800, Jason Wang wrote:
+> > > On Thu, Jun 15, 2023 at 6:29 AM Andrew Melnychenko <andrew@daynix.com> wrote:
+> > > >
+> > > > This series of patches provides the ability to retrieve eBPF program
+> > > > through qmp, so management application may load bpf blob with proper capabilities.
+> > > > Now, virtio-net devices can accept eBPF programs and maps through properties
+> > > > as external file descriptors. Access to the eBPF map is direct through mmap()
+> > > > call, so it should not require additional capabilities to bpf* calls.
+> > > > eBPF file descriptors can be passed to QEMU from parent process or by unix
+> > > > socket with sendfd() qmp command.
+> > > >
+> > > > Possible solution for libvirt may look like this: https://github.com/daynix/libvirt/tree/RSS_eBPF (WIP)
+> > > >
+> > > > Changes since v2:
+> > > >  * moved/refactored QMP command
+> > > >  * refactored virtio-net
+> > >
+> > > I've queued this series, but a question left:
+> > >
+> > > mmap() support for eBPF maps is not supported from day0, should we
+> > > fallback to syscall for the OS that doesn't support that?
+> >
+> > How recent is mmap() support ?
+> 
+> I don't check.
+> 
+> > Is it difficult to do a fallback ?
+> 
+> Nope, but it requires privilege if we go with a syscall.
+> 
+> >
+> > As since is a new feature,
+> 
+> But it modifies the old rss loading code, no?
+> 
+> -    for (; i < len; ++i) {
+> -        if (bpf_map_update_elem(ctx->map_indirections_table, &i,
+> -                                indirections_table + i, 0) < 0) {
+> -            return false;
+> -        }
+> -    }
+> +    memcpy(ctx->mmap_indirections_table, indirections_table,
+> +            sizeof(*indirections_table) * len);
+> 
+> > there's no inherant expectation of support
+> > for arbitrary old platforms. So only worth investing in a fallback if
+> > it is easy, or there's a very compelling reason to support certain
+> > old platforms.
+> 
+> The reason is that we support eBPF RSS with syscall based map updating
+> in the past if Qemu was running with privilege. With this series, it
+> won't work if the kernel doesn't support mmap.
 
-Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
----
-v2:
-  - resolve conflicts with the master branch
+Oh right, yes, I missed that aspect. So yeah, we do need fallback.
 
-v1: https://lists.nongnu.org/archive/html/qemu-devel/2023-06/msg01585.html
 
- net/vhost-vdpa.c | 24 +++++++++++++-----------
- 1 file changed, 13 insertions(+), 11 deletions(-)
-
-diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-index 0479988a79..db7f1241af 100644
---- a/net/vhost-vdpa.c
-+++ b/net/vhost-vdpa.c
-@@ -50,15 +50,12 @@ typedef struct VhostVDPAState {
-     bool started;
- } VhostVDPAState;
- 
-+/* The array is sorted in ascending order based on its value */
- const int vdpa_feature_bits[] = {
--    VIRTIO_F_NOTIFY_ON_EMPTY,
--    VIRTIO_RING_F_INDIRECT_DESC,
--    VIRTIO_RING_F_EVENT_IDX,
--    VIRTIO_F_ANY_LAYOUT,
--    VIRTIO_F_VERSION_1,
-     VIRTIO_NET_F_CSUM,
-     VIRTIO_NET_F_GUEST_CSUM,
-     VIRTIO_NET_F_CTRL_GUEST_OFFLOADS,
-+    VIRTIO_NET_F_MTU,
-     VIRTIO_NET_F_GSO,
-     VIRTIO_NET_F_GUEST_TSO4,
-     VIRTIO_NET_F_GUEST_TSO6,
-@@ -69,19 +66,24 @@ const int vdpa_feature_bits[] = {
-     VIRTIO_NET_F_HOST_ECN,
-     VIRTIO_NET_F_HOST_UFO,
-     VIRTIO_NET_F_MRG_RXBUF,
--    VIRTIO_NET_F_MTU,
-+    VIRTIO_NET_F_STATUS,
-+    VIRTIO_NET_F_CTRL_VQ,
-     VIRTIO_NET_F_CTRL_RX,
--    VIRTIO_NET_F_CTRL_RX_EXTRA,
-     VIRTIO_NET_F_CTRL_VLAN,
--    VIRTIO_NET_F_CTRL_MAC_ADDR,
-+    VIRTIO_NET_F_CTRL_RX_EXTRA,
-     VIRTIO_NET_F_MQ,
--    VIRTIO_NET_F_CTRL_VQ,
-+    VIRTIO_NET_F_CTRL_MAC_ADDR,
-+    VIRTIO_F_NOTIFY_ON_EMPTY,
-+    VIRTIO_F_ANY_LAYOUT,
-+    VIRTIO_RING_F_INDIRECT_DESC,
-+    VIRTIO_RING_F_EVENT_IDX,
-+    VIRTIO_F_VERSION_1,
-     VIRTIO_F_IOMMU_PLATFORM,
-     VIRTIO_F_RING_PACKED,
-     VIRTIO_F_RING_RESET,
--    VIRTIO_NET_F_RSS,
-     VIRTIO_NET_F_HASH_REPORT,
--    VIRTIO_NET_F_STATUS,
-+    VIRTIO_NET_F_RSS,
-+    /* VHOST_INVALID_FEATURE_BIT should always be the last entry */
-     VHOST_INVALID_FEATURE_BIT
- };
- 
+With regards,
+Daniel
 -- 
-2.25.1
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
