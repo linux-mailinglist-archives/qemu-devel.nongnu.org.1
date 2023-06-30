@@ -2,102 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2CFA743ADB
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 13:31:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39B2D743906
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 12:10:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFCL5-0000BV-0T; Fri, 30 Jun 2023 07:30:59 -0400
+	id 1qFB3C-00051O-2y; Fri, 30 Jun 2023 06:08:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gautam@linux.ibm.com>)
- id 1qF6j0-0005Yj-Sc; Fri, 30 Jun 2023 01:31:19 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gautam@linux.ibm.com>)
- id 1qF6iy-00023N-Fw; Fri, 30 Jun 2023 01:31:18 -0400
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 35U5HnBG022562; Fri, 30 Jun 2023 05:31:07 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : content-transfer-encoding : mime-version; s=pp1;
- bh=S7vmJprrJuMrBTYBHNlsQP+sn2x9kSuY9Z0VzLL0Kqs=;
- b=Uf0oYxAnnUs8eUGlrWqh1VQsMwe7ILasY1KZUT1hYXWPdjc+nfxdB2ssrRdXiqsJ0ej7
- RHjwjgVVN1460ziplM3JcPDKziX9rVeyBIbnWoawY3oOPDHhy/A59au4HkAl3AgnjCgG
- c/ox47P3dCBVQPx30fnnfa/+WgW05jrMfAnKav1tZMWooZOaLf6edanTxYhiA3HDkpN4
- LhVfL0AjRjbAekcqYsBhSp7/1HvR0qnU74iaqB4AvaWptNT6e2nkc5h/vVRlpafvoAIe
- 8/d4ywmqKWObrDBog3zzH+jLcWIZyeH+uG3rQYjJrRyrgCc/2KpKVzSxN0MszlFzFZGV xA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rhrs5g99x-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 30 Jun 2023 05:31:06 +0000
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 35U5OQCs025398;
- Fri, 30 Jun 2023 05:31:06 GMT
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.99])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rhrs5g995-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 30 Jun 2023 05:31:06 +0000
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
- by ppma04ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 35U4FHfP008362;
- Fri, 30 Jun 2023 05:31:04 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
- by ppma04ams.nl.ibm.com (PPS) with ESMTPS id 3rdr453y6p-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 30 Jun 2023 05:31:04 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com
- [10.20.54.106])
- by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 35U5V1a442205642
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 30 Jun 2023 05:31:01 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DCDC620040;
- Fri, 30 Jun 2023 05:31:00 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 42F0220043;
- Fri, 30 Jun 2023 05:30:59 +0000 (GMT)
-Received: from li-c6426e4c-27cf-11b2-a85c-95d65bc0de0e.in.ibm.com (unknown
- [9.204.206.66]) by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Fri, 30 Jun 2023 05:30:59 +0000 (GMT)
-From: Gautam Menghani <gautam@linux.ibm.com>
-To: danielhb413@gmail.com, harshpb@linux.ibm.com, clg@kaod.org,
- david@gibson.dropbear.id.au, groug@kaod.org
-Cc: Gautam Menghani <gautam@linux.ibm.com>, qemu-ppc@nongnu.org,
- qemu-devel@nongnu.org, fbarrat@linux.ibm.com
-Subject: [PATCH] ppc: spapr: Fix device tree entries in absence of XIVE native
- mode
-Date: Fri, 30 Jun 2023 11:00:56 +0530
-Message-Id: <20230630053056.14933-1-gautam@linux.ibm.com>
-X-Mailer: git-send-email 2.39.3
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: udAhJjZZL2RHz8_vZwCDjlZYRYUpfFj3
-X-Proofpoint-GUID: 6ph-a2avHxyoPIVU4rgaT_JHDpRxXuwT
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qFB39-00050x-Mo
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 06:08:23 -0400
+Received: from mail-oa1-x2d.google.com ([2001:4860:4864:20::2d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qFB37-0000iO-Kr
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 06:08:23 -0400
+Received: by mail-oa1-x2d.google.com with SMTP id
+ 586e51a60fabf-1b078b34df5so1529084fac.2
+ for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 03:08:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1688119699; x=1690711699;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=rS14vjWJcYSPfeLT5geB+8LgzHhJx3nAgLr7frBsGYY=;
+ b=lqiIOTEBP0B1KtN5ONtxJi2x77YIYyp7My4a6eq5o5LRi3KHYleyW6VXvu5T/gmwvI
+ WJ9fM1mbRXocu9ThJ0HzNFc691dhJ88VvOT7q6lmRBxdAPTApYWkFhkkHbF34DdN43o6
+ h0I4mwlj4vPcW9kXfCm30Fcw1q/vAJNTWExHAAuBrr73zhGPHu2VbPR3X1hg0Qq8exAB
+ KP1LH3DzfDI7vX7YBuoyZgLQvC96FGRJFujUFjD05YqRz3Kik9I7/v4XTLoKEe4xuVDG
+ AA09nvOfQwPl+JX2tPnoURgCqkTFeek1E1t03f8ySTfPs9ofDiHfdGM0m07AY/FgoKsC
+ a/aQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1688119699; x=1690711699;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=rS14vjWJcYSPfeLT5geB+8LgzHhJx3nAgLr7frBsGYY=;
+ b=GdwhZR38PYMEShHWaLm9FkReXK6dCHUfXHHXJods6HAJHgY7VPkckCOOYE3fA9Nr2j
+ VvQbaiDoMDC7kKOG0wMuOSgviNLOgf+/nzfDQzcx7vwmMVyhsR4cv3yMN775xzMhVg+a
+ to2lm1fO1ARW1k3ag4Bay4It/XhxfSigS0HLduv9vMGPRYCX1eVJ1X/JeuuoCWTmG9Sd
+ KfnkMBk/dz7bIX4Fjynx7XLmrnzKuhk7+nYWTiJYDw7dSfLbs4C9QuAz4XdhhrtaMF/3
+ uuNC4oEH9/TU13XipCehxq0agjZS60sEdv0MdF1F0hJmz21Wy9T0oKdbI+SQ1zsg8DMF
+ YpjQ==
+X-Gm-Message-State: ABy/qLZcoWTrgBGHeFZZIlzoCyWhrD+H5A20R76U5XEAXnihsDRy/B3F
+ B3UEdcnmi8NnBSJkGYmqmPck0cr7jmZnzS34Et8=
+X-Google-Smtp-Source: APBJJlFJgwNBTZALBDFYLi3pMDl22lKXCsXPp38q5bzIdCQlWbNgqs+dKWkPbdPAH2IdvbJUnVQ21A==
+X-Received: by 2002:a05:6870:be0a:b0:1b0:3821:f09a with SMTP id
+ ny10-20020a056870be0a00b001b03821f09amr3127471oab.14.1688119699261; 
+ Fri, 30 Jun 2023 03:08:19 -0700 (PDT)
+Received: from grind.. (201-69-66-110.dial-up.telesp.net.br. [201.69.66.110])
+ by smtp.gmail.com with ESMTPSA id
+ eh18-20020a056870f59200b001a663e49523sm8707467oab.36.2023.06.30.03.08.16
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 30 Jun 2023 03:08:18 -0700 (PDT)
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
+ liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
+ ajones@ventanamicro.com, philmd@linaro.org,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Subject: [PATCH v7 00/20] target/riscv, KVM: fixes and enhancements 
+Date: Fri, 30 Jun 2023 07:07:51 -0300
+Message-ID: <20230630100811.287315-1-dbarboza@ventanamicro.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-06-30_02,2023-06-27_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 malwarescore=0
- bulkscore=0 phishscore=0 mlxscore=0 suspectscore=0 priorityscore=1501
- clxscore=1011 adultscore=0 impostorscore=0 lowpriorityscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2305260000 definitions=main-2306300043
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=gautam@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2001:4860:4864:20::2d;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-oa1-x2d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H5=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Fri, 30 Jun 2023 07:30:47 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -112,127 +92,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently, XIVE native exploitation mode is not supported in nested
-guests. When we boot up a nested guest on PowerNV platform, we observe 
-the following entries in the device tree of nested guest:
+Hi,
 
-```
-device_type = "power-ivpe";
-compatible = "ibm,power-ivpe";
-```
+This version includes most of the fixes and changes suggested in the v6
+review [1].
 
-But as per LoPAR section B.5.9[1], these entries should only be present
-when XIVE native exploitation mode is being used. Presently, there is no 
-support for nested virtualization in the context of XIVE, and hence, DT 
-shouldn't advertise support for XIVE interrupt controller to a nested guest. 
+Unfortunately we weren't able to proceed with Drew's suggestion to avoid
+assigning 'name' and 'description' during runtime in patch 11 because
+some Gitlab runners (clang-user and tsan-build) complained about
+misa_ext_info_arr[] not being a compiler-time constant. I documented
+this 'clang' situation in patch 11 commit msg.
 
-Also, according to the present behaviour, when we boot a nested KVM
-guest, the following QEMU warnings are reported	:
-```
-Calling ibm,client-architecture-support...qemu-system-ppc64: warning: 
-kernel_irqchip allowed but unavailable: IRQ_XIVE capability must be present 
-for KVM
-Falling back to kernel-irqchip=off
-.
-.
-.
-[    0.000000][    T0] xive: Using IRQ range [0-0]
-[    0.000000][    T0] xive: Interrupt handling initialized with spapr backend
-[    0.000000][    T0] xive: Using priority 6 for all interrupts
-[    0.000000][    T0] xive: Using 64kB queues
-```
+The change to use __builtin_ctz() instead of ctz32() was kept because
+it's clearer to use the MISA bits (RVA, RVC ...) as input for
+MISA_EXT_INFO() than doing a calculation with (letter - 'A').
 
-With this patch, the above warnings are no longer observed in nested guest's 
-dmesg and also the device tree contains the following entries:
-```
-device_type = "PowerPC-External-Interrupt-Presentation";
-compatible = "IBM,ppc-xicp";
-```
+All other suggestions from both Drew and Phil were implemented. 'sudo'
+references from commit msgs were removed from patches 1 and 2 as
+suggested by Michael (R-bs were kept).
 
-Also add an additional check to handle the scenarios where
-ic-mode=<mode> is explicitly specified by user - make the code error out
-when XIVE native capability is not there and user specifies
-ic-mode=xive.
+Series based on top of Alistair's riscv-to-apply.next.
 
-Testing:
-1. This patch has been tested on a P9 PowerNV machine by spinning up both a
-KVM guest and nested KVM guest. The guest can use XIVE native mode just fine 
-with correct DT entries and for nested guest, interrupt emulation is being used 
-and the DT contains correct entries.
+Patches missing review: 11, 12
 
-2. This patch also has been tested on KVM on PowerVM platform. In this
-scenario, we can boot up a KVM guest on top of a Power Hypervisor guest.
-Kernel patches - lore.kernel.org/linuxppc-dev/20230605064848.12319-1-jpn@linux.vnet.ibm.com
-QEMU tree to test - github.com/mikey/qemu/tree/kvm-papr
+Changes from v6:
+- patches 1 and 2: removed 'sudo' references from commit msgs
+- patch 11:
+  - use __builtin_ctz() instead of ctz32() in MISA_EXT_INFO
+  - renamed getter to riscv_get_misa_ext_description()
+  - do input/output validation in both getters
+- patch 12:
+  - use object_property_find() to skip the property if it already exists
+- v6 link: https://lists.gnu.org/archive/html/qemu-devel/2023-06/msg06353.html
 
-[1] : https://files.openpower.foundation/s/ZmtZyCGiJ2oJHim
+[1] https://lists.gnu.org/archive/html/qemu-devel/2023-06/msg06353.html
 
-Signed-off-by: Gautam Menghani <gautam@linux.ibm.com>
----
- hw/ppc/spapr.c     |  2 +-
- hw/ppc/spapr_irq.c | 14 +++++++++++++-
- 2 files changed, 14 insertions(+), 2 deletions(-)
+Daniel Henrique Barboza (20):
+  target/riscv: skip features setup for KVM CPUs
+  hw/riscv/virt.c: skip 'mmu-type' FDT if satp mode not set
+  target/riscv/cpu.c: restrict 'mvendorid' value
+  target/riscv/cpu.c: restrict 'mimpid' value
+  target/riscv/cpu.c: restrict 'marchid' value
+  target/riscv: use KVM scratch CPUs to init KVM properties
+  target/riscv: read marchid/mimpid in kvm_riscv_init_machine_ids()
+  target/riscv: handle mvendorid/marchid/mimpid for KVM CPUs
+  linux-headers: Update to v6.4-rc1
+  target/riscv/kvm.c: init 'misa_ext_mask' with scratch CPU
+  target/riscv/cpu: add misa_ext_info_arr[]
+  target/riscv: add KVM specific MISA properties
+  target/riscv/kvm.c: update KVM MISA bits
+  target/riscv/kvm.c: add multi-letter extension KVM properties
+  target/riscv/cpu.c: add satp_mode properties earlier
+  target/riscv/cpu.c: remove priv_ver check from riscv_isa_string_ext()
+  target/riscv/cpu.c: create KVM mock properties
+  target/riscv: update multi-letter extension KVM properties
+  target/riscv/kvm.c: add kvmconfig_get_cfg_addr() helper
+  target/riscv/kvm.c: read/write (cbom|cboz)_blocksize in KVM
 
-diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-index 54dbfd7fe9..6434742369 100644
---- a/hw/ppc/spapr.c
-+++ b/hw/ppc/spapr.c
-@@ -2840,7 +2840,7 @@ static void spapr_machine_init(MachineState *machine)
-     spapr_ovec_set(spapr->ov5, OV5_DRMEM_V2);
- 
-     /* advertise XIVE on POWER9 machines */
--    if (spapr->irq->xive) {
-+    if (kvmppc_has_cap_xive() && spapr->irq->xive) {
-         spapr_ovec_set(spapr->ov5, OV5_XIVE_EXPLOIT);
-     }
- 
-diff --git a/hw/ppc/spapr_irq.c b/hw/ppc/spapr_irq.c
-index a0d1e1298e..856bba042a 100644
---- a/hw/ppc/spapr_irq.c
-+++ b/hw/ppc/spapr_irq.c
-@@ -20,6 +20,7 @@
- #include "hw/qdev-properties.h"
- #include "cpu-models.h"
- #include "sysemu/kvm.h"
-+#include "kvm_ppc.h"
- 
- #include "trace.h"
- 
-@@ -294,6 +295,7 @@ uint32_t spapr_irq_nr_msis(SpaprMachineState *spapr)
- void spapr_irq_init(SpaprMachineState *spapr, Error **errp)
- {
-     SpaprMachineClass *smc = SPAPR_MACHINE_GET_CLASS(spapr);
-+    bool cap_xive = kvmppc_has_cap_xive();
- 
-     if (kvm_enabled() && kvm_kernel_irqchip_split()) {
-         error_setg(errp, "kernel_irqchip split mode not supported on pseries");
-@@ -304,6 +306,16 @@ void spapr_irq_init(SpaprMachineState *spapr, Error **errp)
-         return;
-     }
- 
-+    /*
-+     * Check for valid ic-mode - XIVE native won't work if hypervisor doesn't
-+     * have support
-+     */
-+    if (!cap_xive && !spapr->irq->xics) {
-+        error_setg(errp,
-+            "XIVE native mode not available, don't use ic-mode=xive");
-+        return;
-+    }
-+
-     /* Initialize the MSI IRQ allocator. */
-     spapr_irq_msi_init(spapr);
- 
-@@ -323,7 +335,7 @@ void spapr_irq_init(SpaprMachineState *spapr, Error **errp)
-         spapr->ics = ICS_SPAPR(obj);
-     }
- 
--    if (spapr->irq->xive) {
-+    if (cap_xive && spapr->irq->xive) {
-         uint32_t nr_servers = spapr_max_server_number(spapr);
-         DeviceState *dev;
-         int i;
+ hw/riscv/virt.c                               |  14 +-
+ include/standard-headers/linux/const.h        |   2 +-
+ include/standard-headers/linux/virtio_blk.h   |  18 +-
+ .../standard-headers/linux/virtio_config.h    |   6 +
+ include/standard-headers/linux/virtio_net.h   |   1 +
+ linux-headers/asm-arm64/kvm.h                 |  33 ++
+ linux-headers/asm-riscv/kvm.h                 |  53 +-
+ linux-headers/asm-riscv/unistd.h              |   9 +
+ linux-headers/asm-s390/unistd_32.h            |   1 +
+ linux-headers/asm-s390/unistd_64.h            |   1 +
+ linux-headers/asm-x86/kvm.h                   |   3 +
+ linux-headers/linux/const.h                   |   2 +-
+ linux-headers/linux/kvm.h                     |  12 +-
+ linux-headers/linux/psp-sev.h                 |   7 +
+ linux-headers/linux/userfaultfd.h             |  17 +-
+ target/riscv/cpu.c                            | 341 ++++++++++--
+ target/riscv/cpu.h                            |   7 +-
+ target/riscv/kvm.c                            | 499 +++++++++++++++++-
+ target/riscv/kvm_riscv.h                      |   1 +
+ 19 files changed, 940 insertions(+), 87 deletions(-)
+
 -- 
-2.39.3
+2.41.0
 
 
