@@ -2,54 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17B6E74363C
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 09:51:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6A0C743655
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 10:02:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qF8uQ-0003IQ-Tr; Fri, 30 Jun 2023 03:51:15 -0400
+	id 1qF92G-00084J-6m; Fri, 30 Jun 2023 03:59:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qF8uN-00033D-Ia; Fri, 30 Jun 2023 03:51:11 -0400
-Received: from isrv.corpit.ru ([86.62.121.231])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qF8uJ-0002yq-If; Fri, 30 Jun 2023 03:51:11 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id C476510421;
- Fri, 30 Jun 2023 10:51:02 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 406BC109D1;
- Fri, 30 Jun 2023 10:51:02 +0300 (MSK)
-Message-ID: <53804000-64e0-d124-14cd-4fbf05be78ee@tls.msk.ru>
-Date: Fri, 30 Jun 2023 10:51:02 +0300
+ (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
+ id 1qF92D-00082t-9C
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 03:59:17 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <gaosong@loongson.cn>) id 1qF929-0007ub-7s
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 03:59:16 -0400
+Received: from loongson.cn (unknown [10.2.5.185])
+ by gateway (Coremail) with SMTP id _____8AxR8VJi55kVzQEAA--.6843S3;
+ Fri, 30 Jun 2023 15:59:05 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.185])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8AxjiNIi55kExQTAA--.24469S2; 
+ Fri, 30 Jun 2023 15:59:04 +0800 (CST)
+From: Song Gao <gaosong@loongson.cn>
+To: qemu-devel@nongnu.org
+Cc: richard.henderson@linaro.org
+Subject: [PATCH v2 00/46] Add LoongArch LASX instructions
+Date: Fri, 30 Jun 2023 15:58:18 +0800
+Message-Id: <20230630075904.45940-1-gaosong@loongson.cn>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH v6 02/20] hw/riscv/virt.c: skip 'mmu-type' FDT if satp
- mode not set
-Content-Language: en-US
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>, qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
- liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
- ajones@ventanamicro.com, philmd@linaro.org
-References: <20230628213033.170315-1-dbarboza@ventanamicro.com>
- <20230628213033.170315-3-dbarboza@ventanamicro.com>
- <9821ba97-5028-bcdf-10f8-b6e1b2fd813d@tls.msk.ru>
- <20394a80-57d5-7fa1-6320-8f087d4ebe69@ventanamicro.com>
-From: Michael Tokarev <mjt@tls.msk.ru>
-In-Reply-To: <20394a80-57d5-7fa1-6320-8f087d4ebe69@ventanamicro.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -69
-X-Spam_score: -7.0
-X-Spam_bar: -------
-X-Spam_report: (-7.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.093,
- RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-CM-TRANSID: AQAAf8AxjiNIi55kExQTAA--.24469S2
+X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+ ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+ nUUI43ZEXa7xR_UUUUUUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -65,19 +60,94 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-30.06.2023 10:46, Daniel Henrique Barboza wrote:
+Hi, 
 
-> On 6/30/23 04:36, Michael Tokarev wrote:
-..
->> I find it a bit worrying to see people run development as root and the
->> recipes to run it as root ens up in even in commit messages.  I think
->> it's not good practice to do it like this, but more important is to
->> teach users to do it this way. And this is more serious than one might
->> think.
-> 
-> Just removed all 'sudo' references from commit msgs for the next version.
+This series adds LoongArch LASX instructions.
 
-Thank you Daniel!
+About test:
+We use RISU test the LoongArch LASX instructions.
 
-/mjt
+QEMU:
+    https://github.com/loongson/qemu/tree/tcg-old-abi-support-lasx
+RISU:
+    https://github.com/loongson/risu/tree/loongarch-suport-lasx
+
+Please review, Thanks.
+
+Changes for v2:
+- Expand the definition of VReg to be 256 bits.
+- Use more LSX functions.
+- R-b.
+
+Song Gao (46):
+  target/loongarch: Add LASX data support
+  target/loongarch: meson.build support build LASX
+  target/loongarch: Add CHECK_ASXE maccro for check LASX enable
+  target/loongarch: Implement xvadd/xvsub
+  target/loongarch: Implement xvreplgr2vr
+  target/loongarch: Implement xvaddi/xvsubi
+  target/loongarch: Implement xvneg
+  target/loongarch: Implement xvsadd/xvssub
+  target/loongarch: Implement xvhaddw/xvhsubw
+  target/loongarch: Implement xvaddw/xvsubw
+  target/loongarch: Implement xavg/xvagr
+  target/loongarch: Implement xvabsd
+  target/loongarch: Implement xvadda
+  target/loongarch: Implement xvmax/xvmin
+  target/loongarch: Implement xvmul/xvmuh/xvmulw{ev/od}
+  target/loongarch: Implement xvmadd/xvmsub/xvmaddw{ev/od}
+  target/loongarch; Implement xvdiv/xvmod
+  target/loongarch: Implement xvsat
+  target/loongarch: Implement xvexth
+  target/loongarch: Implement vext2xv
+  target/loongarch: Implement xvsigncov
+  target/loongarch: Implement xvmskltz/xvmskgez/xvmsknz
+  target/loognarch: Implement xvldi
+  target/loongarch: Implement LASX logic instructions
+  target/loongarch: Implement xvsll xvsrl xvsra xvrotr
+  target/loongarch: Implement xvsllwil xvextl
+  target/loongarch: Implement xvsrlr xvsrar
+  target/loongarch: Implement xvsrln xvsran
+  target/loongarch: Implement xvsrlrn xvsrarn
+  target/loongarch: Implement xvssrln xvssran
+  target/loongarch: Implement xvssrlrn xvssrarn
+  target/loongarch: Implement xvclo xvclz
+  target/loongarch: Implement xvpcnt
+  target/loongarch: Implement xvbitclr xvbitset xvbitrev
+  target/loongarch: Implement xvfrstp
+  target/loongarch: Implement LASX fpu arith instructions
+  target/loongarch: Implement LASX fpu fcvt instructions
+  target/loongarch: Implement xvseq xvsle xvslt
+  target/loongarch: Implement xvfcmp
+  target/loongarch: Implement xvbitsel xvset
+  target/loongarch: Implement xvinsgr2vr xvpickve2gr
+  target/loongarch: Implement xvreplve xvinsve0 xvpickve xvb{sll/srl}v
+  target/loongarch: Implement xvpack xvpick xvilv{l/h}
+  target/loongarch: Implement xvshuf xvperm{i} xvshuf4i xvextrins
+  target/loongarch: Implement xvld xvst
+  target/loongarch: CPUCFG support LASX
+
+ linux-user/loongarch64/signal.c               |    1 +
+ target/loongarch/cpu.c                        |    4 +
+ target/loongarch/cpu.h                        |   26 +-
+ target/loongarch/disas.c                      |  925 ++++++
+ target/loongarch/gdbstub.c                    |    1 +
+ target/loongarch/helper.h                     |  694 ++--
+ target/loongarch/insn_trans/trans_lasx.c.inc  | 1034 ++++++
+ target/loongarch/insn_trans/trans_lsx.c.inc   | 1867 ++++++-----
+ target/loongarch/insns.decode                 |  782 +++++
+ target/loongarch/internals.h                  |   22 -
+ target/loongarch/machine.c                    |   40 +-
+ target/loongarch/meson.build                  |    2 +-
+ target/loongarch/translate.c                  |    6 +
+ target/loongarch/vec.h                        |   98 +
+ .../loongarch/{lsx_helper.c => vec_helper.c}  | 2923 ++++++++++-------
+ 15 files changed, 6009 insertions(+), 2416 deletions(-)
+ create mode 100644 target/loongarch/insn_trans/trans_lasx.c.inc
+ create mode 100644 target/loongarch/vec.h
+ rename target/loongarch/{lsx_helper.c => vec_helper.c} (50%)
+
+-- 
+2.39.1
+
 
