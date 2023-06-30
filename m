@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B8397435EE
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D5957435EF
 	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 09:39:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qF8hZ-0002BV-RB; Fri, 30 Jun 2023 03:37:59 -0400
+	id 1qF8hl-0002YV-SP; Fri, 30 Jun 2023 03:38:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qF8hJ-00023v-QR
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 03:37:42 -0400
-Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qF8hL-00024b-EA
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 03:37:44 -0400
+Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qF8hH-0005QL-Qf
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 03:37:41 -0400
-Received: by mail-ej1-x62a.google.com with SMTP id
- a640c23a62f3a-991ef0b464cso272013766b.0
- for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 00:37:39 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qF8hJ-0005QW-IM
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 03:37:43 -0400
+Received: by mail-ej1-x62b.google.com with SMTP id
+ a640c23a62f3a-98e39784a85so269555266b.1
+ for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 00:37:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688110658; x=1690702658;
+ d=gmail.com; s=20221208; t=1688110659; x=1690702659;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=K6dApJ7J8Z4QMs7bQhU3KSg7TWWxyrT4m6TvmkjO1Y8=;
- b=hygtFbNm9AFpvmsvBoXOm7U1ibViRW4nhS4YWMP7PRhXKY42EdmXDl+Oeqt/xBrpgG
- VcvEG8LFCt9qN7J5H4s1Zypzy3E7XZdI4iFogNin96lB/AaxD3s4QQpRGmgUN1agE7Is
- 4ifANY4uibg9Itk6VERLL57WR+VYM7WSN40ZnuaPCaRTSmKTsqmq0Ca8pok1FWSzQOFF
- G2DtzY+D8znyweNfG8niKNQJSIgcmd8cWTabknwy3/G6YarpeNEQPIhkHeCP1CKZcYF/
- ZzYVWqP6YsKFKyU+X0sGJdiyZ0KsKtiUkssBsNSImnTKq/HyMJfTj8DxedSBLg9s/KnD
- hbjg==
+ bh=ELMLBs1OW9Di44cgpdfhOSCdcVBvjTZJizwS8W5LbOQ=;
+ b=np4CIWaaMZb8vaoNdfRlOr12Bxwqa3yb7XDZZv7Xop6QwS0fByO5iBiqKFu/wfIy0A
+ gdIDVuSfjOtCAu4dWyJBlt/lc0Nf0oMT0rtbB0YR4kSNNQTKFlev2ZZePquRYQ3EbRbv
+ c39IrCund+r/ZROX/Geh2W8Ni6wEWfQwlNbzf3VP4cb9Fxj1mIid+cru64MTVHn3cbZ1
+ WnNjVVMCBuomOyFAolNnL9nJ+mk5lCVoIqj2+XWq41sGiC2yNjeDkRlOx16xrPuR+C6D
+ iADJ3FvZikGuwp7WbPmrOSajxNsEtuYMuuogxAKKXoQkNDMBR13xazae/IDpezPDpB/K
+ +L0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688110658; x=1690702658;
+ d=1e100.net; s=20221208; t=1688110659; x=1690702659;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=K6dApJ7J8Z4QMs7bQhU3KSg7TWWxyrT4m6TvmkjO1Y8=;
- b=HdvBQjde30rvz8sG4lsTBaFniAqOu2Pe8lgJl/uP16DtZ2kgNOhQnZGH/Zv0E6D/AW
- W6d/QCZJtMXpO7eirbyDsvPnK6n7/jVmMXuZki+SxC1fdNG4v027lSe5INSJjTgj0Jua
- 77bfXH+T84JD80GxRA9fGLu5jbb2VjnmtEOQWsvg6d5dLCwn5XjqHu595JSC5clFrhMg
- GXvA5tx3eyCeTVGgHxW4JFzOzQbhQvvXQIk+URR4CFtMi6+HH+RbyNbTAyMtfdcMcESY
- Hcxk7yft/jpISbSFOigo+fS2IO24qMvKoi8+BSyWn42a/vmYnAFTl/7bYmqWy3jSmCpN
- YG9w==
-X-Gm-Message-State: ABy/qLYJre8QwFD0R41UszA45FoGVklf4ps9EZjf3a69MXyp/31Onu3B
- xSrcopacNrWDyIS3D6OXeu6Sv6HyTx8=
-X-Google-Smtp-Source: APBJJlE63SFsOLGy112X/s8Z8l9Mwq0c53py6g2UROe3d4fDzPlYd9ovfboUurq8QPIouiRMOeo7mg==
-X-Received: by 2002:a17:906:224a:b0:992:1653:3402 with SMTP id
- 10-20020a170906224a00b0099216533402mr2786264ejr.25.1688110658263; 
- Fri, 30 Jun 2023 00:37:38 -0700 (PDT)
+ bh=ELMLBs1OW9Di44cgpdfhOSCdcVBvjTZJizwS8W5LbOQ=;
+ b=cBI0FoecsaKquw0zQUTzkuw+WeKV7kNVua0l8QP0hhiToXv49VLQM9+1oodxdujrnc
+ GkEM0AaSI7/Mlfdue1Z1Kfd+lWBX9/D2Bgr45omjqZc2vot0KCcpROB0mRGDeCRTWnDZ
+ Pieb4hiSWEmNol2vNPU/McMqY90urXkavpjxerjmvG6S4cPQQPE8dnNOPD4FAoA8Y+Ep
+ f8VL5TN0zvgts7eGwRqQ0ehGNursYAfr0mWPSW+F9xlhxAE0UIwN5V4R7TWjdYnzsPOX
+ eP191PQGNuJEnE+W//LcwuIdEZzFOm1eQAly2aPRxakY5cszM8AbdW7YxIcFHJTuUFbj
+ kmqA==
+X-Gm-Message-State: ABy/qLaPJIVrKulJABb6LNeOzMumZfwgNOxp15v1grrjqmY4bBNnGEFI
+ tVsF73XTOa7zfJpB0r6Nw49YnQrsi4g=
+X-Google-Smtp-Source: APBJJlHd+O+EjTWgHqGX/+x7Q/xZKzVCoB/VcqYW2/IhCsfiZCyRoxd1WpQI7l0ejs75YZpNtw+qXA==
+X-Received: by 2002:a17:906:3453:b0:98f:8481:24b3 with SMTP id
+ d19-20020a170906345300b0098f848124b3mr1876765ejb.37.1688110659250; 
+ Fri, 30 Jun 2023 00:37:39 -0700 (PDT)
 Received: from archlinux.. (dynamic-089-012-131-254.89.12.pool.telefonica.de.
  [89.12.131.254]) by smtp.gmail.com with ESMTPSA id
- k19-20020a1709061c1300b00988b32160dfsm7625578ejg.222.2023.06.30.00.37.36
+ k19-20020a1709061c1300b00988b32160dfsm7625578ejg.222.2023.06.30.00.37.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 30 Jun 2023 00:37:37 -0700 (PDT)
+ Fri, 30 Jun 2023 00:37:38 -0700 (PDT)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Eduardo Habkost <eduardo@habkost.net>, Paolo Bonzini <pbonzini@redhat.com>,
  "Michael S. Tsirkin" <mst@redhat.com>,
- Bernhard Beschow <shentey@gmail.com>, Igor Mammedov <imammedo@redhat.com>,
+ Bernhard Beschow <shentey@gmail.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v3 09/17] hw/pci-host/i440fx: Replace magic values by existing
- constants
-Date: Fri, 30 Jun 2023 09:37:12 +0200
-Message-ID: <20230630073720.21297-10-shentey@gmail.com>
+Subject: [PATCH v3 10/17] hw/pci-host/i440fx: Have common names for some local
+ variables
+Date: Fri, 30 Jun 2023 09:37:13 +0200
+Message-ID: <20230630073720.21297-11-shentey@gmail.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230630073720.21297-1-shentey@gmail.com>
 References: <20230630073720.21297-1-shentey@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
- envelope-from=shentey@gmail.com; helo=mail-ej1-x62a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
+ envelope-from=shentey@gmail.com; helo=mail-ej1-x62b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,40 +96,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+`PCIHostState` is often referred to as `phb`, own device state usually as `s`.
+
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
-Reviewed-by: Igor Mammedov <imammedo@redhat.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/pci-host/i440fx.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ hw/pci-host/i440fx.c | 26 ++++++++++++--------------
+ 1 file changed, 12 insertions(+), 14 deletions(-)
 
 diff --git a/hw/pci-host/i440fx.c b/hw/pci-host/i440fx.c
-index d95d9229d3..b7c24a4e1d 100644
+index b7c24a4e1d..0b76fe71af 100644
 --- a/hw/pci-host/i440fx.c
 +++ b/hw/pci-host/i440fx.c
-@@ -276,8 +276,8 @@ PCIBus *i440fx_init(const char *pci_type,
+@@ -205,28 +205,28 @@ static void i440fx_pcihost_get_pci_hole64_end(Object *obj, Visitor *v,
  
-     /* if *disabled* show SMRAM to all CPUs */
-     memory_region_init_alias(&f->smram_region, OBJECT(d), "smram-region",
--                             f->pci_address_space, 0xa0000, 0x20000);
--    memory_region_add_subregion_overlap(f->system_memory, 0xa0000,
-+                             f->pci_address_space, SMRAM_C_BASE, SMRAM_C_SIZE);
-+    memory_region_add_subregion_overlap(f->system_memory, SMRAM_C_BASE,
-                                         &f->smram_region, 1);
-     memory_region_set_enabled(&f->smram_region, true);
+ static void i440fx_pcihost_initfn(Object *obj)
+ {
+-    PCIHostState *s = PCI_HOST_BRIDGE(obj);
++    PCIHostState *phb = PCI_HOST_BRIDGE(obj);
  
-@@ -285,9 +285,9 @@ PCIBus *i440fx_init(const char *pci_type,
-     memory_region_init(&f->smram, OBJECT(d), "smram", 4 * GiB);
-     memory_region_set_enabled(&f->smram, true);
-     memory_region_init_alias(&f->low_smram, OBJECT(d), "smram-low",
--                             f->ram_memory, 0xa0000, 0x20000);
-+                             f->ram_memory, SMRAM_C_BASE, SMRAM_C_SIZE);
-     memory_region_set_enabled(&f->low_smram, true);
--    memory_region_add_subregion(&f->smram, 0xa0000, &f->low_smram);
-+    memory_region_add_subregion(&f->smram, SMRAM_C_BASE, &f->low_smram);
-     object_property_add_const_link(qdev_get_machine(), "smram",
-                                    OBJECT(&f->smram));
+-    memory_region_init_io(&s->conf_mem, obj, &pci_host_conf_le_ops, s,
++    memory_region_init_io(&phb->conf_mem, obj, &pci_host_conf_le_ops, phb,
+                           "pci-conf-idx", 4);
+-    memory_region_init_io(&s->data_mem, obj, &pci_host_data_le_ops, s,
++    memory_region_init_io(&phb->data_mem, obj, &pci_host_data_le_ops, phb,
+                           "pci-conf-data", 4);
+ }
  
+ static void i440fx_pcihost_realize(DeviceState *dev, Error **errp)
+ {
+-    PCIHostState *s = PCI_HOST_BRIDGE(dev);
++    PCIHostState *phb = PCI_HOST_BRIDGE(dev);
+     SysBusDevice *sbd = SYS_BUS_DEVICE(dev);
+ 
+-    memory_region_add_subregion(s->bus->address_space_io, 0xcf8, &s->conf_mem);
++    memory_region_add_subregion(phb->bus->address_space_io, 0xcf8, &phb->conf_mem);
+     sysbus_init_ioports(sbd, 0xcf8, 4);
+ 
+-    memory_region_add_subregion(s->bus->address_space_io, 0xcfc, &s->data_mem);
++    memory_region_add_subregion(phb->bus->address_space_io, 0xcfc, &phb->data_mem);
+     sysbus_init_ioports(sbd, 0xcfc, 4);
+ 
+     /* register i440fx 0xcf8 port as coalesced pio */
+-    memory_region_set_flush_coalesced(&s->data_mem);
+-    memory_region_add_coalescing(&s->conf_mem, 0, 4);
++    memory_region_set_flush_coalesced(&phb->data_mem);
++    memory_region_add_coalescing(&phb->conf_mem, 0, 4);
+ }
+ 
+ static void i440fx_realize(PCIDevice *dev, Error **errp)
+@@ -248,17 +248,16 @@ PCIBus *i440fx_init(const char *pci_type,
+                     MemoryRegion *pci_address_space,
+                     MemoryRegion *ram_memory)
+ {
++    I440FXState *s = I440FX_PCI_HOST_BRIDGE(dev);
++    PCIHostState *phb = PCI_HOST_BRIDGE(dev);
+     PCIBus *b;
+     PCIDevice *d;
+-    PCIHostState *s;
+     PCII440FXState *f;
+     unsigned i;
+-    I440FXState *i440fx;
+ 
+-    s = PCI_HOST_BRIDGE(dev);
+     b = pci_root_bus_new(dev, NULL, pci_address_space,
+                          address_space_io, 0, TYPE_PCI_BUS);
+-    s->bus = b;
++    phb->bus = b;
+     sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
+ 
+     d = pci_create_simple(b, 0, pci_type);
+@@ -267,8 +266,7 @@ PCIBus *i440fx_init(const char *pci_type,
+     f->pci_address_space = pci_address_space;
+     f->ram_memory = ram_memory;
+ 
+-    i440fx = I440FX_PCI_HOST_BRIDGE(dev);
+-    range_set_bounds(&i440fx->pci_hole, below_4g_mem_size,
++    range_set_bounds(&s->pci_hole, below_4g_mem_size,
+                      IO_APIC_DEFAULT_ADDRESS - 1);
+ 
+     /* setup pci memory mapping */
 -- 
 2.41.0
 
