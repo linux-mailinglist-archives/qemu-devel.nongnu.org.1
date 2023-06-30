@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7AC9743CA4
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 15:23:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5730F743CAC
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 15:23:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFE4i-0007cY-EP; Fri, 30 Jun 2023 09:22:12 -0400
+	id 1qFE4j-0007eU-BY; Fri, 30 Jun 2023 09:22:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qFE4g-0007bZ-9S
+ id 1qFE4g-0007bY-9L
  for qemu-devel@nongnu.org; Fri, 30 Jun 2023 09:22:10 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qFE4e-0003N3-HN
+ id 1qFE4e-0003Nc-P5
  for qemu-devel@nongnu.org; Fri, 30 Jun 2023 09:22:10 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-3fbc0981756so15774345e9.0
- for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 06:22:07 -0700 (PDT)
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-313e23d0a28so2234244f8f.3
+ for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 06:22:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688131326; x=1690723326;
+ d=linaro.org; s=google; t=1688131327; x=1690723327;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=lUkCksRepDyJ8GSSdRoBq8cm8bf7/10tPEy1hDkGHcA=;
- b=ovDjW/I62QwH9YT8eIZnAFSsRNPFYn3voVOh4biYZxPk4jfjdfHVUa/BbHgsR0425w
- 1zH4yxitjLx78dmngkoF7gq3i1FJ8DLhtxvY9ONXjCrrp3kdCmS+u5mQG2rAWiAWJrxA
- B8efsqj+ciwpNdyZPYRA+cTeHdqnVLP/c7s/dF46ZcSiZV75KGLJu6QzGP9XZV/4zGdE
- 1NshZmcYk1LwqX4GPvGGNhmxRH9TLbfB2uujuGN7UnCpT8w+X8qQbccqjNbKkzZojHQv
- V7kWFuGQr9GFYeD5r5WEpeDPnaNYioXO+u6xvq1FGyv4nKquyk66QrqRr6dGdM7iPqk6
- q2MA==
+ bh=QWcGYI7xB8LlKTPPYJbQ3MPkeMAscTRkJ+piG/iDAy8=;
+ b=Eaiz4QxrUIqwQUx8aBwkhmeEGe9yFNAjkcHRj7+xD/3npjI0yOXBIAcM9SGKhFFHcv
+ dvN3eypvv1Nix/IqPG8fZI7uVuGqWkFO06CkgKKwAk9J/pUGFGWgrObeDeGA0FJVrI4e
+ 1fkM8IV2vBaMP2hHx6ApBrZKS/pvzjAr4CXSeAsoa55S+uIZf1ex+BpxTMpCVD4zBJCp
+ If96eas36X6IFthmOn/S/kFknGlIgWitOhiMYXfs2XK+PWC6sXlnU36l8KSrNWssGHFY
+ IQpYaaSNeqndcHHmgSlbeGwqdRI0ZprUmKK3PArQp5eKGStqSzGml8XqhrOuC0DjQxaR
+ ovpQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688131326; x=1690723326;
+ d=1e100.net; s=20221208; t=1688131327; x=1690723327;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=lUkCksRepDyJ8GSSdRoBq8cm8bf7/10tPEy1hDkGHcA=;
- b=aMYkywIiI++CXwOad83EnrKUQ8hl4a8WJaQbRYmIUh2DGjEvsATljn2fz7hEszAUIe
- GShP1eZx3v+Tw6rn2hAwTdXEazlBNBWLfnfZ43SUdj2Np3aWY4jHaNkmUfOdP0HIeq5J
- UinvKzaLJP76Hzi4nwXLu68LjC0XNzuvA1sfkQzbdc/DSphnktdHF90VDi8FAl7zXDnb
- D/4GAycjzbq0VMgqTOFa/v7Z1UVlr6qR+7U/d3pNQ0ggJKXWeX6vhXEH9AK6ZyQkOtqP
- lRNEvmdMip/6yQxH2csP3aL0aHemTwNvGF7Om5FevcOFvxXffBOYYWXl5z0rGIteZ+Bo
- bxKg==
-X-Gm-Message-State: AC+VfDwE/dBHg9cTQkWT+oAAkYQIwfJ76jtreSBR5ZrTe0GzTXWzoEFr
- xbOm5feN5JE8HnijD6MiRBLN/HvIVCWNhVhIqWcOYw==
-X-Google-Smtp-Source: ACHHUZ6R/92PCLmBUR/NC+RYaHmZ7asCN3tyXVb9uk/1Wt4rLF511nTjtueerhjUb8iPoEvrhzmeDQ==
-X-Received: by 2002:a7b:c393:0:b0:3fb:403d:90c0 with SMTP id
- s19-20020a7bc393000000b003fb403d90c0mr1792388wmj.39.1688131326194; 
- Fri, 30 Jun 2023 06:22:06 -0700 (PDT)
+ bh=QWcGYI7xB8LlKTPPYJbQ3MPkeMAscTRkJ+piG/iDAy8=;
+ b=aGxC2by/JxSYIE2TUgLBups/gX2Jp3r4k+mK35bMw2Gg0+fgX2/1bRlbvvFFO7l7l+
+ HmRsUj/Msp/EDyIfo4EhLvOIqunRR+9IoL0NwC9mGlYxAfMSqIyxt9CyvSZIhJCMTcQn
+ 17n+Q1HY1dS5kOzVq9EQ/4aW3MaPAAw7oAv3D5t7QxYU8POuZVpIM9sUWnjUnBaguvi0
+ 6ONi6XYA5m79ookXmyQvcAQQAQ7K1Awez8D55+hdMNM9LSVhdqw9T0CKHpSXltBH8UgX
+ Z55BZPXk45iq9wp6rIMDEZyVBi1uPBqbrpQ9KWPH8BImPBK4gHBDTIVzDA0A0DCbFLBf
+ N7qg==
+X-Gm-Message-State: ABy/qLar+RFqp8saQJlWUfIR9UA/wyJwsOapO1u1NrbLlpfRxG/nYS84
+ JfcldNzoMl8V1TolQeR/N7gzmBgUY3Hf9xMGqhGN7g==
+X-Google-Smtp-Source: APBJJlENe65VyDrBIMCp5UBfARxP1HmeRkmezQnKOXv5bh5ywjpVM3FmE+ihV10Fgda9FDbRttW5Zw==
+X-Received: by 2002:a5d:525c:0:b0:313:f61c:42bd with SMTP id
+ k28-20020a5d525c000000b00313f61c42bdmr2728223wrc.59.1688131327039; 
+ Fri, 30 Jun 2023 06:22:07 -0700 (PDT)
 Received: from localhost.localdomain ([139.47.41.96])
  by smtp.gmail.com with ESMTPSA id
- a16-20020adfdd10000000b00313ef2150dcsm14571092wrm.45.2023.06.30.06.22.05
+ a16-20020adfdd10000000b00313ef2150dcsm14571092wrm.45.2023.06.30.06.22.06
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 30 Jun 2023 06:22:05 -0700 (PDT)
+ Fri, 30 Jun 2023 06:22:06 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: mjt@tls.msk.ru,
-	laurent@vivier.eu
-Subject: [PATCH 07/24] accel/tcg: Introduce page_check_range_empty
-Date: Fri, 30 Jun 2023 15:21:42 +0200
-Message-Id: <20230630132159.376995-8-richard.henderson@linaro.org>
+Cc: mjt@tls.msk.ru, laurent@vivier.eu, Warner Losh <imp@bsdimp.com>,
+ Kyle Evans <kevans@freebsd.org>
+Subject: [PATCH 08/24] bsd-user: Use page_check_range_empty for MAP_EXCL
+Date: Fri, 30 Jun 2023 15:21:43 +0200
+Message-Id: <20230630132159.376995-9-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230630132159.376995-1-richard.henderson@linaro.org>
 References: <20230630132159.376995-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,55 +92,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Examine the interval tree to validate that a region
-has no existing mappings.
+The previous check returned -1 when any page within
+[start, start+len) is unmapped, not when all are unmapped.
 
+Cc: Warner Losh <imp@bsdimp.com>
+Cc: Kyle Evans <kevans@freebsd.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/exec/cpu-all.h | 11 +++++++++++
- accel/tcg/user-exec.c  |  7 +++++++
- 2 files changed, 18 insertions(+)
+ bsd-user/mmap.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/exec/cpu-all.h b/include/exec/cpu-all.h
-index 8018ce783e..5b2c230d52 100644
---- a/include/exec/cpu-all.h
-+++ b/include/exec/cpu-all.h
-@@ -224,6 +224,17 @@ void page_set_flags(target_ulong start, target_ulong last, int flags);
- void page_reset_target_data(target_ulong start, target_ulong last);
- int page_check_range(target_ulong start, target_ulong len, int flags);
+diff --git a/bsd-user/mmap.c b/bsd-user/mmap.c
+index 565b9f97ed..07b5b8055e 100644
+--- a/bsd-user/mmap.c
++++ b/bsd-user/mmap.c
+@@ -609,7 +609,7 @@ abi_long target_mmap(abi_ulong start, abi_ulong len, int prot,
+         }
  
-+/**
-+ * page_check_range_empty:
-+ * @start: first byte of range
-+ * @last: last byte of range
-+ *
-+ * Return true if the entire range [@start, @last] is unmapped.
-+ * The memory lock must be held, as the caller will want to ensure
-+ * the result stays true until a new mapping can be installed.
-+ */
-+bool page_check_range_empty(target_ulong start, target_ulong last);
-+
- /**
-  * page_get_target_data(address)
-  * @address: guest virtual address
-diff --git a/accel/tcg/user-exec.c b/accel/tcg/user-exec.c
-index 8fbcbf9771..25c605dc1b 100644
---- a/accel/tcg/user-exec.c
-+++ b/accel/tcg/user-exec.c
-@@ -598,6 +598,13 @@ int page_check_range(target_ulong start, target_ulong len, int flags)
-     return ret;
- }
- 
-+bool page_check_range_empty(target_ulong start, target_ulong last)
-+{
-+    assert(last >= start);
-+    assert_memory_lock();
-+    return pageflags_find(start, last) == NULL;
-+}
-+
- void page_protect(tb_page_addr_t address)
- {
-     PageFlagsNode *p;
+         /* Reject the mapping if any page within the range is mapped */
+-        if ((flags & MAP_EXCL) && page_check_range(start, len, 0) < 0) {
++        if ((flags & MAP_EXCL) && !page_check_range_empty(start, end - 1)) {
+             errno = EINVAL;
+             goto fail;
+         }
 -- 
 2.34.1
 
