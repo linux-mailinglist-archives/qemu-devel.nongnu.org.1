@@ -2,76 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CC7D744020
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 18:52:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54439744021
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 18:52:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFHLM-0002wF-2V; Fri, 30 Jun 2023 12:51:36 -0400
+	id 1qFHLm-000359-PG; Fri, 30 Jun 2023 12:52:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qFHLK-0002w2-JR; Fri, 30 Jun 2023 12:51:34 -0400
-Received: from mail-ot1-x329.google.com ([2607:f8b0:4864:20::329])
+ id 1qFHLk-00033p-BP; Fri, 30 Jun 2023 12:52:00 -0400
+Received: from mail-ot1-x32b.google.com ([2607:f8b0:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qFHLI-0002s6-UG; Fri, 30 Jun 2023 12:51:34 -0400
-Received: by mail-ot1-x329.google.com with SMTP id
- 46e09a7af769-6b71ee710edso1770337a34.2; 
- Fri, 30 Jun 2023 09:51:32 -0700 (PDT)
+ id 1qFHLi-0002wL-PT; Fri, 30 Jun 2023 12:52:00 -0400
+Received: by mail-ot1-x32b.google.com with SMTP id
+ 46e09a7af769-6b87d505e28so1792864a34.2; 
+ Fri, 30 Jun 2023 09:51:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688143891; x=1690735891;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=gmail.com; s=20221208; t=1688143917; x=1690735917;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=3ZwaSX8sXIsuPasXw7dCwD69GQObsr+dSR3PceIodPo=;
- b=rqcjKDqobfyqeXJUuhKcVK94A9jv5qJw+0YALQF8gp6CVNXvyMknuROOwNdzC9sIfh
- TdWP/4YNUS8OquD1qMHTCnnOZ7GaA6E3a7p9Cq3OzrdT3g327VP6emC1+Lo+roAb71vz
- 1JN7FZpwnrPcA5RAO1JIKjdoEQoIrtBuNBCRMTqqunmDFZ+GHqlFvGVyHyorGzgyhXxH
- 6Hez64oGa5NvtmT+7cgKhOPVeySp4nRwU3fOqTMjXk3FpFBhriV7ebzKG7M3gn7PxRb0
- mB/odha+KCJ4UEk8UhsSwhqhNA0TCWuVZe+rRMWGJlTU279NfyozbpHFgzvsnauXl1zp
- MYWA==
+ bh=YO8u5hLkU+PdcJaFlebChGnNseDzZTsI0KRkeTMChCc=;
+ b=q83ZCGz7wLypJgeKxAmJpz2shTlnf/wzzc7fUu9Fc9YyjzGcDaWfNQeYfG5SGmkvXs
+ 8+0XwG1FdbX7hfJYDUlt+kBP9BbUCdOZXCnPXA3evSXsOAu9RvqqjWvRmmweXtd6yuX7
+ uV9EU7c+CxOv7WnIVX2hBmmFyNv1mNaUow2V2SPMJzRmNWnLYhoveb/6wZS1aYjo7qki
+ 2Av7dl1ukn4KoMJHE0QNR1vL+BG5r7XUoBqOpg0XK1K4s6yPostvBmov5C85z2qTjfLo
+ fgaFzfri34UVkupLFvGXKOEJ1yfsG3yMWZT/Sn4rmRokzSSt0MZOpA5nc7RDG6QJsJCj
+ jtqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688143891; x=1690735891;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=1e100.net; s=20221208; t=1688143917; x=1690735917;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=3ZwaSX8sXIsuPasXw7dCwD69GQObsr+dSR3PceIodPo=;
- b=Y/nkFpdiEyLLUiz2mvGurpfnoTKNItSw2LTNXP9j3nwFNhUomjnYjGItPOiWcf4vdy
- HKJSMP2FXBwq8Eake5MogfXHExU4ap5XgsfnVoHZKAY15Zfwv9EmUtbhpZgRt9vx/pMV
- 86vBf8N7UL4y+K75EVtmjx5oOA97VXaAyOWyBpjxc6F4++WBrgUCpei7ZSFs7ttjtuka
- QW6gv7eO+smudWcIl6fV2d8fjDay2XzX4anCIsZFTKPQXgbc4XUjfc56pZ183lpbRHSP
- OTnmGBNA77willnMbRzuceGjSg1RRWI3vgsQivTrBwZy8n6uZRYEeviNEYGuiZKQGu5V
- 8t4A==
-X-Gm-Message-State: ABy/qLaqfwbaOitHWU+ErZNoKjDwxuR6CVzT7DuVM66ilOURF32l34MA
- qYIyQI3e1TX/Zj2l/tGwBKp/YNylw5w=
-X-Google-Smtp-Source: APBJJlGMIREJ0+h5/RzG5AnrpHz30kPyUANBYTpAxRSuZ3LLKA/HrqRHXXRheNupnyvR551PmzD1Zg==
-X-Received: by 2002:a05:6870:9125:b0:19c:b5bc:e868 with SMTP id
- o37-20020a056870912500b0019cb5bce868mr3783185oae.58.1688143891179; 
- Fri, 30 Jun 2023 09:51:31 -0700 (PDT)
+ bh=YO8u5hLkU+PdcJaFlebChGnNseDzZTsI0KRkeTMChCc=;
+ b=NGM99cfmn7cdMVd4eKcTk7TgZr94Vo/BTleawkUbHp57dnyrAnw7rwXTk2jYrGF6v3
+ iqQvx8e/WGDYnOtTS0YRfPGOCNR/nJn5LSBO2tF9/rerGCafEo56dggzxEqffzedxHJL
+ 05Vjfb4NuYdl63DGYchjsUztSXHp3r/XloWrEYY+s2UiT3DJwUzZYJv0MQmb0zqVTyUO
+ KR6NbsuI8T4QzE/62SAZ0FiffE2Cfg3E3xwLGdGKbrCMU20hQlBt+4E52V7bQUTUKekc
+ 4qiDwkC+4KAL9Sc/e70kvGfPK+fYiw4hUAGVqw3okCmRD2pJ+epG3KyMyPyedIA+Ov1+
+ 1mEA==
+X-Gm-Message-State: AC+VfDxKahzs/X+WppPinr2sBFRKHffuhoq9zLNZearXu4dvGJxovWd+
+ LxOMVylywjUX0DMdWHZfTts=
+X-Google-Smtp-Source: ACHHUZ5kWBxof7kIEraaKbHXKt99a2SfOjoZT49We3y4zBfe3hGWevHOX8nu27BjkI072zGaPAhinA==
+X-Received: by 2002:a05:6808:1445:b0:39c:93ba:cb92 with SMTP id
+ x5-20020a056808144500b0039c93bacb92mr4196400oiv.8.1688143917192; 
+ Fri, 30 Jun 2023 09:51:57 -0700 (PDT)
 Received: from [192.168.68.107] (201-69-66-110.dial-up.telesp.net.br.
  [201.69.66.110]) by smtp.gmail.com with ESMTPSA id
- t39-20020a05687063a700b001b04434d934sm6594807oap.34.2023.06.30.09.51.29
+ r5-20020a056808210500b003a020d24d7dsm1488213oiw.56.2023.06.30.09.51.55
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 30 Jun 2023 09:51:30 -0700 (PDT)
-Message-ID: <61f8892b-37cf-0b52-b76e-0f5c0d2560af@gmail.com>
-Date: Fri, 30 Jun 2023 13:51:27 -0300
+ Fri, 30 Jun 2023 09:51:56 -0700 (PDT)
+Message-ID: <2d049db0-48ac-14a2-13f3-644e42cd0716@gmail.com>
+Date: Fri, 30 Jun 2023 13:51:54 -0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
-Subject: Re: [PATCH] target/ppc: Make HDECR underflow edge triggered
+Subject: Re: [PATCH] pnv/psi: Allow access to PSI registers through xscom
 Content-Language: en-US
-To: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org, =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
- David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>
-References: <20230625122045.15544-1-npiggin@gmail.com>
+To: Frederic Barrat <fbarrat@linux.ibm.com>, clg@kaod.org, joel@jms.id.au,
+ qemu-ppc@nongnu.org, qemu-devel@nongnu.org
+References: <20230630102609.193214-1-fbarrat@linux.ibm.com>
 From: Daniel Henrique Barboza <danielhb413@gmail.com>
-In-Reply-To: <20230625122045.15544-1-npiggin@gmail.com>
+In-Reply-To: <20230630102609.193214-1-fbarrat@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::329;
- envelope-from=danielhb413@gmail.com; helo=mail-ot1-x329.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32b;
+ envelope-from=danielhb413@gmail.com; helo=mail-ot1-x32b.google.com
 X-Spam_score_int: -19
 X-Spam_score: -2.0
 X-Spam_bar: --
@@ -97,14 +95,14 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 
-On 6/25/23 09:20, Nicholas Piggin wrote:
-> HDEC interrupts are edge-triggered on HDECR underflow (notably different
-> from DEC which is level-triggered).
+On 6/30/23 07:26, Frederic Barrat wrote:
+> skiboot only uses mmio to access the PSI registers (once the BAR is
+> set) but we don't have any reason to block the accesses through
+> xscom. This patch enables xscom access to the PSI registers. It
+> converts the xscom addresses to mmio addresses, which requires a bit
+> of care for the PSIHB, then reuse the existing mmio ops.
 > 
-> HDEC interrupts already clear the irq on delivery so that does not need
-> to be changed.
-> 
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
 > ---
 
 Queued in gitlab.com/danielhb/qemu/tree/ppc-next. Thanks,
@@ -112,63 +110,66 @@ Queued in gitlab.com/danielhb/qemu/tree/ppc-next. Thanks,
 
 Daniel
 
->   hw/ppc/ppc.c | 16 +++++++++-------
->   1 file changed, 9 insertions(+), 7 deletions(-)
+>   hw/ppc/pnv_psi.c | 31 +++++++++++++++++++++----------
+>   1 file changed, 21 insertions(+), 10 deletions(-)
 > 
-> diff --git a/hw/ppc/ppc.c b/hw/ppc/ppc.c
-> index 7b7db30f95..f4fe1767d6 100644
-> --- a/hw/ppc/ppc.c
-> +++ b/hw/ppc/ppc.c
-> @@ -789,8 +789,8 @@ static void __cpu_ppc_store_decr(PowerPCCPU *cpu, uint64_t *nextp,
->                                    QEMUTimer *timer,
->                                    void (*raise_excp)(void *),
->                                    void (*lower_excp)(PowerPCCPU *),
-> -                                 target_ulong decr, target_ulong value,
-> -                                 int nr_bits)
-> +                                 uint32_t flags, target_ulong decr,
-> +                                 target_ulong value, int nr_bits)
+> diff --git a/hw/ppc/pnv_psi.c b/hw/ppc/pnv_psi.c
+> index 8aa09ab26b..46da58dff8 100644
+> --- a/hw/ppc/pnv_psi.c
+> +++ b/hw/ppc/pnv_psi.c
+> @@ -121,8 +121,12 @@
+>   #define PSIHB9_BAR_MASK                 0x00fffffffff00000ull
+>   #define PSIHB9_FSPBAR_MASK              0x00ffffff00000000ull
+>   
+> +/* mmio address to xscom address */
+>   #define PSIHB_REG(addr) (((addr) >> 3) + PSIHB_XSCOM_BAR)
+>   
+> +/* xscom address to mmio address */
+> +#define PSIHB_MMIO(reg) ((reg - PSIHB_XSCOM_BAR) << 3)
+> +
+>   static void pnv_psi_set_bar(PnvPsi *psi, uint64_t bar)
 >   {
->       CPUPPCState *env = &cpu->env;
->       ppc_tb_t *tb_env = env->tb_env;
-> @@ -820,15 +820,15 @@ static void __cpu_ppc_store_decr(PowerPCCPU *cpu, uint64_t *nextp,
->        * On MSB edge based DEC implementations the MSB going from 0 -> 1 triggers
->        * an edge interrupt, so raise it here too.
->        */
-> -    if (((tb_env->flags & PPC_DECR_UNDERFLOW_LEVEL) && signed_value < 0) ||
-> -        ((tb_env->flags & PPC_DECR_UNDERFLOW_TRIGGERED) && signed_value < 0
-> +    if (((flags & PPC_DECR_UNDERFLOW_LEVEL) && signed_value < 0) ||
-> +        ((flags & PPC_DECR_UNDERFLOW_TRIGGERED) && signed_value < 0
->             && signed_decr >= 0)) {
->           (*raise_excp)(cpu);
->           return;
->       }
+>       PnvPsiClass *ppc = PNV_PSI_GET_CLASS(psi);
+> @@ -769,24 +773,31 @@ static const MemoryRegionOps pnv_psi_p9_mmio_ops = {
 >   
->       /* On MSB level based systems a 0 for the MSB stops interrupt delivery */
-> -    if (signed_value >= 0 && (tb_env->flags & PPC_DECR_UNDERFLOW_LEVEL)) {
-> +    if (signed_value >= 0 && (flags & PPC_DECR_UNDERFLOW_LEVEL)) {
->           (*lower_excp)(cpu);
->       }
->   
-> @@ -847,8 +847,8 @@ static inline void _cpu_ppc_store_decr(PowerPCCPU *cpu, target_ulong decr,
->       ppc_tb_t *tb_env = cpu->env.tb_env;
->   
->       __cpu_ppc_store_decr(cpu, &tb_env->decr_next, tb_env->decr_timer,
-> -                         tb_env->decr_timer->cb, &cpu_ppc_decr_lower, decr,
-> -                         value, nr_bits);
-> +                         tb_env->decr_timer->cb, &cpu_ppc_decr_lower,
-> +                         tb_env->flags, decr, value, nr_bits);
+>   static uint64_t pnv_psi_p9_xscom_read(void *opaque, hwaddr addr, unsigned size)
+>   {
+> -    /* No read are expected */
+> -    qemu_log_mask(LOG_GUEST_ERROR, "PSI: xscom read at 0x%" PRIx64 "\n", addr);
+> -    return -1;
+> +    uint32_t reg = addr >> 3;
+> +    uint64_t val = -1;
+> +
+> +    if (reg < PSIHB_XSCOM_BAR) {
+> +        /* FIR, not modeled */
+> +        qemu_log_mask(LOG_UNIMP, "PSI: xscom read at 0x%08x\n", reg);
+> +    } else {
+> +        val = pnv_psi_p9_mmio_read(opaque, PSIHB_MMIO(reg), size);
+> +    }
+> +    return val;
 >   }
 >   
->   void cpu_ppc_store_decr(CPUPPCState *env, target_ulong value)
-> @@ -877,8 +877,10 @@ static inline void _cpu_ppc_store_hdecr(PowerPCCPU *cpu, target_ulong hdecr,
->       ppc_tb_t *tb_env = cpu->env.tb_env;
+>   static void pnv_psi_p9_xscom_write(void *opaque, hwaddr addr,
+>                                   uint64_t val, unsigned size)
+>   {
+>       PnvPsi *psi = PNV_PSI(opaque);
+> +    uint32_t reg = addr >> 3;
 >   
->       if (tb_env->hdecr_timer != NULL) {
-> +        /* HDECR (Book3S 64bit) is edge-based, not level like DECR */
->           __cpu_ppc_store_decr(cpu, &tb_env->hdecr_next, tb_env->hdecr_timer,
->                                tb_env->hdecr_timer->cb, &cpu_ppc_hdecr_lower,
-> +                             PPC_DECR_UNDERFLOW_TRIGGERED,
->                                hdecr, value, nr_bits);
+> -    /* XSCOM is only used to set the PSIHB MMIO region */
+> -    switch (addr >> 3) {
+> -    case PSIHB_XSCOM_BAR:
+> +    if (reg < PSIHB_XSCOM_BAR) {
+> +        /* FIR, not modeled */
+> +        qemu_log_mask(LOG_UNIMP, "PSI: xscom write at 0x%08x\n", reg);
+> +    } else if (reg == PSIHB_XSCOM_BAR) {
+>           pnv_psi_set_bar(psi, val);
+> -        break;
+> -    default:
+> -        qemu_log_mask(LOG_GUEST_ERROR, "PSI: xscom write at 0x%" PRIx64 "\n",
+> -                      addr);
+> +    } else {
+> +        pnv_psi_p9_mmio_write(opaque, PSIHB_MMIO(reg), val, size);
 >       }
 >   }
+>   
 
