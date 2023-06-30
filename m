@@ -2,45 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0DB6743F64
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 18:03:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C46AD743F74
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 18:07:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFGXK-0001Zv-E3; Fri, 30 Jun 2023 11:59:54 -0400
+	id 1qFGdv-0005Ld-64; Fri, 30 Jun 2023 12:06:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qFGXG-0001ZW-78
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 11:59:50 -0400
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1qFGdr-0005L4-Nm; Fri, 30 Jun 2023 12:06:39 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qFGXE-0007lD-Mh
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 11:59:49 -0400
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1qFGdp-000243-92; Fri, 30 Jun 2023 12:06:39 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 1FA431067E;
- Fri, 30 Jun 2023 18:59:47 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id BC8BB10682;
+ Fri, 30 Jun 2023 19:06:33 +0300 (MSK)
 Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id BF90E10D99;
- Fri, 30 Jun 2023 18:59:46 +0300 (MSK)
-Message-ID: <2c8a43f8-74f9-6759-2303-ca5c164e6bc7@tls.msk.ru>
-Date: Fri, 30 Jun 2023 18:59:46 +0300
+ by tsrv.corpit.ru (Postfix) with ESMTP id 6DA8B10D9C;
+ Fri, 30 Jun 2023 19:06:33 +0300 (MSK)
+Message-ID: <48a6d541-4edf-4738-1ca9-34cab29a8bdc@tls.msk.ru>
+Date: Fri, 30 Jun 2023 19:06:33 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
-Subject: Re: [PULL 11/16] vfio/pci: Call vfio_prepare_kvm_msi_virq_batch() in
- MSI retry path
+Subject: Re: [PATCH] linux-user: Avoid mmap of the last byte of the reserved_va
 Content-Language: en-US
-To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>, qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- Alex Williamson <alex.williamson@redhat.com>,
- Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
- Longpeng <longpeng2@huawei.com>
-References: <20230630052235.1934154-1-clg@redhat.com>
- <20230630052235.1934154-12-clg@redhat.com>
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: qemu-stable@nongnu.org
+References: <20230629080835.71371-1-richard.henderson@linaro.org>
 From: Michael Tokarev <mjt@tls.msk.ru>
-In-Reply-To: <20230630052235.1934154-12-clg@redhat.com>
+In-Reply-To: <20230629080835.71371-1-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
 X-Spam_score_int: -69
@@ -64,21 +59,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-30.06.2023 08:22, Cédric Le Goater wrote:
-> From: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
-> 
-> When vfio_enable_vectors() returns with less than requested nr_vectors
-> we retry with what kernel reported back. But the retry path doesn't
-> call vfio_prepare_kvm_msi_virq_batch() and this results in,
-> 
-> qemu-system-aarch64: vfio: Error: Failed to enable 4 MSI vectors, retry with 1
-> qemu-system-aarch64: ../hw/vfio/pci.c:602: vfio_commit_kvm_msi_virq_batch: Assertion `vdev->defer_kvm_irq_routing' failed
-> 
-> Fixes: dc580d51f7dd ("vfio: defer to commit kvm irq routing when enable msi/msix")
+29.06.2023 11:08, Richard Henderson wrote:
+> There is an overflow problem in mmap_find_vma_reserved:
+> when reserved_va == UINT32_MAX, end may overflow to 0.
+> Rather than a larger rewrite at this time, simply avoid
+> the final byte of the VA, which avoids searching the
+> final page, which avoids the overflow.
 
-Is it -stable material?
+This hack appears to fix known issues and apparently does not
+introduce regressions.
 
-Thanks,
+Can it be applied to master and picked up from there, since
+master is also broken?  You can revert it in the subsequent
+patchset like the one you posted today.
+
+You can add my:
+
+Tested-by: Michael Tokarev <mjt@tls.msk.ru>
+Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
+
+Thanks!
 
 /mjt
 
