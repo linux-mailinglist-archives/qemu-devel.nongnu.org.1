@@ -2,40 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D466743660
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 10:02:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 725C874368E
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 10:09:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qF92q-0008O1-6X; Fri, 30 Jun 2023 03:59:56 -0400
+	id 1qF92G-00084B-MA; Fri, 30 Jun 2023 03:59:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1qF92l-0008KO-8G
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 03:59:51 -0400
+ id 1qF92C-00082o-UN
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 03:59:17 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1qF92h-000853-KO
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 03:59:51 -0400
+ (envelope-from <gaosong@loongson.cn>) id 1qF929-0007uW-9s
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 03:59:16 -0400
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8Dxfcdni55ktzQEAA--.6879S3;
- Fri, 30 Jun 2023 15:59:35 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8CxbcdKi55kWzQEAA--.6842S3;
+ Fri, 30 Jun 2023 15:59:06 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
  by localhost.localdomain (Coremail) with SMTP id
- AQAAf8AxjiNIi55kExQTAA--.24469S48; 
- Fri, 30 Jun 2023 15:59:34 +0800 (CST)
+ AQAAf8AxjiNIi55kExQTAA--.24469S4; 
+ Fri, 30 Jun 2023 15:59:05 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org
-Subject: [PATCH v2 46/46] target/loongarch: CPUCFG support LASX
-Date: Fri, 30 Jun 2023 15:59:04 +0800
-Message-Id: <20230630075904.45940-47-gaosong@loongson.cn>
+Subject: [PATCH v2 02/46] target/loongarch: meson.build support build LASX
+Date: Fri, 30 Jun 2023 15:58:20 +0800
+Message-Id: <20230630075904.45940-3-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20230630075904.45940-1-gaosong@loongson.cn>
 References: <20230630075904.45940-1-gaosong@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8AxjiNIi55kExQTAA--.24469S48
+X-CM-TRANSID: AQAAf8AxjiNIi55kExQTAA--.24469S4
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -64,21 +64,35 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Song Gao <gaosong@loongson.cn>
 ---
- target/loongarch/cpu.c | 1 +
- 1 file changed, 1 insertion(+)
+ target/loongarch/insn_trans/trans_lasx.c.inc | 6 ++++++
+ target/loongarch/translate.c                 | 1 +
+ 2 files changed, 7 insertions(+)
+ create mode 100644 target/loongarch/insn_trans/trans_lasx.c.inc
 
-diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
-index c9f9cbb19d..aeccbb42e6 100644
---- a/target/loongarch/cpu.c
-+++ b/target/loongarch/cpu.c
-@@ -392,6 +392,7 @@ static void loongarch_la464_initfn(Object *obj)
-     data = FIELD_DP32(data, CPUCFG2, FP_DP, 1);
-     data = FIELD_DP32(data, CPUCFG2, FP_VER, 1);
-     data = FIELD_DP32(data, CPUCFG2, LSX, 1),
-+    data = FIELD_DP32(data, CPUCFG2, LASX, 1),
-     data = FIELD_DP32(data, CPUCFG2, LLFTP, 1);
-     data = FIELD_DP32(data, CPUCFG2, LLFTP_VER, 1);
-     data = FIELD_DP32(data, CPUCFG2, LAM, 1);
+diff --git a/target/loongarch/insn_trans/trans_lasx.c.inc b/target/loongarch/insn_trans/trans_lasx.c.inc
+new file mode 100644
+index 0000000000..56a9839255
+--- /dev/null
++++ b/target/loongarch/insn_trans/trans_lasx.c.inc
+@@ -0,0 +1,6 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++/*
++ * LASX translate functions
++ * Copyright (c) 2023 Loongson Technology Corporation Limited
++ */
++
+diff --git a/target/loongarch/translate.c b/target/loongarch/translate.c
+index 3146a2d4ac..6bf2d726d6 100644
+--- a/target/loongarch/translate.c
++++ b/target/loongarch/translate.c
+@@ -220,6 +220,7 @@ static void set_fpr(int reg_num, TCGv val)
+ #include "insn_trans/trans_branch.c.inc"
+ #include "insn_trans/trans_privileged.c.inc"
+ #include "insn_trans/trans_lsx.c.inc"
++#include "insn_trans/trans_lasx.c.inc"
+ 
+ static void loongarch_tr_translate_insn(DisasContextBase *dcbase, CPUState *cs)
+ {
 -- 
 2.39.1
 
