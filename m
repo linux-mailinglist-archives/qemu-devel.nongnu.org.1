@@ -2,96 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 926DC743C9B
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 15:22:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A670743CAF
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 15:24:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFE4E-0007Vi-9N; Fri, 30 Jun 2023 09:21:44 -0400
+	id 1qFE4g-0007bX-NG; Fri, 30 Jun 2023 09:22:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fbarrat@linux.ibm.com>)
- id 1qFE48-0007V9-Pw; Fri, 30 Jun 2023 09:21:37 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fbarrat@linux.ibm.com>)
- id 1qFE45-000373-08; Fri, 30 Jun 2023 09:21:35 -0400
-Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 35UDFjRh009649; Fri, 30 Jun 2023 13:21:21 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : subject :
- date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=+1IHT0rw4VFaWlGosbyrYDrV60xddrBrVTGRBZKsW3E=;
- b=tNDzLlB1bJQf7a3dIAYGg10FD8/K8Bj63LAk4JR7yCeWeJgBH7HJHHR5FGi5epKyD/aD
- c8/Wrb+47X69I7MWMO8zN/O5lOTndMFkEsvR6coXpHf5g4vEg7gUC8ECSlWFNBb8Kklz
- /8RduInGKt7/TZwiAbXdWbOOlYA8l9fNcgMK9QIYRFwfdqgCR8N0vczATIQzRnHXppXp
- SK24vbGYwl1TXeawpEnCjFHIkmEzrEt+WXJ+axiNher2A+OFOnov0HVh1RSKWE2mTIjP
- XcRiPtftT8vwdxR7kjrbzHw8HuSiImhWmLimB4hmcatclA+fMHeVTALgJnLrq53ygO/L pg== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rhysdr752-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 30 Jun 2023 13:21:21 +0000
-Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 35UDGSLb012766;
- Fri, 30 Jun 2023 13:21:20 GMT
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.102])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rhysdr71m-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 30 Jun 2023 13:21:20 +0000
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
- by ppma06ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 35U2QPaI032436;
- Fri, 30 Jun 2023 13:20:18 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
- by ppma06ams.nl.ibm.com (PPS) with ESMTPS id 3rdqre45x8-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 30 Jun 2023 13:20:18 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com
- [10.20.54.104])
- by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 35UDKG5B58065244
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 30 Jun 2023 13:20:16 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2DF7A20043;
- Fri, 30 Jun 2023 13:20:16 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C762120040;
- Fri, 30 Jun 2023 13:20:15 +0000 (GMT)
-Received: from borneo.ibmuc.com (unknown [9.171.74.60])
- by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Fri, 30 Jun 2023 13:20:15 +0000 (GMT)
-From: Frederic Barrat <fbarrat@linux.ibm.com>
-To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- Daniel Henrique Barboza <danielhb413@gmail.com>, qemu-ppc@nongnu.org,
- qemu-devel@nongnu.org
-Subject: [PATCH] pnv/xive2: Fix TIMA offset for indirect access
-Date: Fri, 30 Jun 2023 15:20:15 +0200
-Message-ID: <20230630132015.204825-1-fbarrat@linux.ibm.com>
-X-Mailer: git-send-email 2.41.0
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qFE4c-0007aL-Ek
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 09:22:06 -0400
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qFE4Z-0003JL-P0
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 09:22:06 -0400
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-3112f5ab0b1so2061079f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 06:22:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1688131321; x=1690723321;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=a+Bi6ZomvekyWwQBC9VpThRHcbVdvWAoc703NTG3BqE=;
+ b=AUIVIdlBt8MZ/WQXX6ZQOyarcBYBVx9uKyqV5jGlKbQaBE/v7p+dUqCVp6x9fnMfKo
+ meGnKg6L7hgNa+YSN6sfD1KwjtT4GJAgp4CE/RfIGPvfsFSLfeuYinbKTOe/yHPN81so
+ 3sHw+0+lRvkh4PlgD7wWTUGGLPHaPgtnHxtv134RovS1jY2UIJt/1Zc67ghP09hVdS0m
+ OboD2p8/6DDZMpSZQZ7/cqnCh2YNuq1f6Q/t9QX9LgB4PK/6oArZ6EFADgvY3Mk1baLi
+ J79ZNGdlQaHEW/p2o4LfqkkIbLYf4LFPTj90BAa4xY9pH6arrJP8WWBjnoNrzK5eEvp1
+ PWsw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1688131321; x=1690723321;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=a+Bi6ZomvekyWwQBC9VpThRHcbVdvWAoc703NTG3BqE=;
+ b=BXbjhi96M7gd522PlIRWAwsEMNY4aI4qdkjRdjAnXksMoA5hcdQ+GoVHOVVV+93mBS
+ 3HfYgEtRv6tdYmZpeLOIgWmmMuYJ8+fePuMl1bQMTFMrC7/0juWsPj15yLtuW2XQES2x
+ oJYgg7opi79vY3uvo+WtSSexn26dr4pgc9n4AeWPdF8mf+JVuQu8kdosGIM8SgO3uw7V
+ ntHzFaq5l9rwNN8AlLm116gtnZVxQmT5VBkfY7ebGPwpnuBz7pdnRR8K1g4b2HfWod4d
+ Av7OonZPqsc2EzbkCgpZFCo5w0xwLZmTpR2FfyMZ10Q4ZqXsNvGHwuAUdq6blI3WmJOC
+ SQwA==
+X-Gm-Message-State: ABy/qLY8FNKavbSp8Fo8G0z5IAvHX5o6XhAvYfjjeZiXkYF0GGcL86/j
+ yb5ds0rd51xAHpipceWNJQSl+iK75dKijnTbRb6e+g==
+X-Google-Smtp-Source: APBJJlGLUoGphVtU6zHOL8bqsV/NWteHgde9FLw2BfwNA0JR9FJpcIptlNRKl+Yh2LDu6A0IA6+O7w==
+X-Received: by 2002:adf:fd43:0:b0:313:f5f8:a331 with SMTP id
+ h3-20020adffd43000000b00313f5f8a331mr2553362wrs.34.1688131321379; 
+ Fri, 30 Jun 2023 06:22:01 -0700 (PDT)
+Received: from localhost.localdomain ([139.47.41.96])
+ by smtp.gmail.com with ESMTPSA id
+ a16-20020adfdd10000000b00313ef2150dcsm14571092wrm.45.2023.06.30.06.22.00
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 30 Jun 2023 06:22:01 -0700 (PDT)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: mjt@tls.msk.ru,
+	laurent@vivier.eu
+Subject: [PATCH for-8.1? 00/24] linux-user: mmap range fixes
+Date: Fri, 30 Jun 2023 15:21:35 +0200
+Message-Id: <20230630132159.376995-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 29O2bXxHPhPqEeoTf9ON4kMJFnVGUzib
-X-Proofpoint-ORIG-GUID: p3YaDEZwGb_LpluOdeOXWZ9IiHz4clQU
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-06-30_05,2023-06-30_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0
- impostorscore=0 lowpriorityscore=0 spamscore=0 clxscore=1015 mlxscore=0
- phishscore=0 adultscore=0 priorityscore=1501 bulkscore=0 mlxlogscore=999
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2305260000 definitions=main-2306300111
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=fbarrat@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x42d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H5=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -108,92 +89,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Direct TIMA operations can be done through 4 pages, each with a
-different privilege level dictating what fields can be accessed. On
-the other hand, indirect TIMA accesses on P10 are done through a
-single page, which is the equivalent of the most privileged page of
-direct TIMA accesses.
+Supercedes: 20230629080835.71371-1-richard.henderson@linaro.org
 
-The offset in the IC bar of an indirect access specifies what hw
-thread is targeted (page shift bits) and the offset in the
-TIMA being accessed (the page offset bits). When the indirect
-access is calling the underlying direct access functions, it is
-therefore important to clearly separate the 2, as the direct functions
-assume any page shift bits define the privilege ring level. For
-indirect accesses, those bits must be 0. This patch fixes the offset
-passed to direct TIMA functions.
+While the above should make its way back into 8.0.N, we can do better
+than simply avoiding the last page for automatically placed pages.
+After this patch set, nothing in linux-user/mmap.c uses "end".
 
-It didn't matter for SMT1, as the 2 least significant bits of the page
-shift are part of the hw thread ID and always 0, so the direct TIMA
-functions were accessing the privilege ring 0 page. With SMT4/8, it is
-no longer true.
+In the process, this fixes a couple of inefficiencies, where we
+were probing pages one by one instead of walking the interval tree.
 
-The fix is specific to P10, as indirect TIMA access on P9 was handled
-differently.
+This also passes MJT's hppa fenics-basix test case.
 
-Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
----
- hw/intc/pnv_xive2.c | 19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
 
-diff --git a/hw/intc/pnv_xive2.c b/hw/intc/pnv_xive2.c
-index ed438a20ed..0618e6b0da 100644
---- a/hw/intc/pnv_xive2.c
-+++ b/hw/intc/pnv_xive2.c
-@@ -1590,6 +1590,17 @@ static uint32_t pnv_xive2_ic_tm_get_pir(PnvXive2 *xive, hwaddr offset)
-     return xive->chip->chip_id << 8 | offset >> xive->ic_shift;
- }
- 
-+static uint32_t pnv_xive2_ic_tm_get_offset(PnvXive2 *xive, hwaddr offset)
-+{
-+    /*
-+     * Indirect TIMA accesses are similar to direct accesses for
-+     * privilege ring 0. So remove any traces of the hw thread ID from
-+     * the offset in the IC BAR as it could be interpreted as the ring
-+     * privilege when calling the underlying direct access functions.
-+     */
-+    return offset & ((1 << xive->ic_shift) - 1);
-+}
-+
- static XiveTCTX *pnv_xive2_get_indirect_tctx(PnvXive2 *xive, uint32_t pir)
- {
-     PnvChip *chip = xive->chip;
-@@ -1612,14 +1623,16 @@ static uint64_t pnv_xive2_ic_tm_indirect_read(void *opaque, hwaddr offset,
-                                               unsigned size)
- {
-     PnvXive2 *xive = PNV_XIVE2(opaque);
-+    hwaddr tima_offset;
-     uint32_t pir;
-     XiveTCTX *tctx;
-     uint64_t val = -1;
- 
-     pir = pnv_xive2_ic_tm_get_pir(xive, offset);
-+    tima_offset = pnv_xive2_ic_tm_get_offset(xive, offset);
-     tctx = pnv_xive2_get_indirect_tctx(xive, pir);
-     if (tctx) {
--        val = xive_tctx_tm_read(NULL, tctx, offset, size);
-+        val = xive_tctx_tm_read(NULL, tctx, tima_offset, size);
-     }
- 
-     return val;
-@@ -1629,13 +1642,15 @@ static void pnv_xive2_ic_tm_indirect_write(void *opaque, hwaddr offset,
-                                            uint64_t val, unsigned size)
- {
-     PnvXive2 *xive = PNV_XIVE2(opaque);
-+    hwaddr tima_offset;
-     uint32_t pir;
-     XiveTCTX *tctx;
- 
-     pir = pnv_xive2_ic_tm_get_pir(xive, offset);
-+    tima_offset = pnv_xive2_ic_tm_get_offset(xive, offset);
-     tctx = pnv_xive2_get_indirect_tctx(xive, pir);
-     if (tctx) {
--        xive_tctx_tm_write(NULL, tctx, offset, val, size);
-+        xive_tctx_tm_write(NULL, tctx, tima_offset, val, size);
-     }
- }
- 
+r~
+
+
+Richard Henderson (24):
+  linux-user: Use assert in mmap_fork_start
+  linux-user: Fix formatting of mmap.c
+  linux-user/strace: Expand struct flags to hold a mask
+  linux-user: Split TARGET_MAP_* out of syscall_defs.h
+  linux-user: Split TARGET_PROT_* out of syscall_defs.h
+  linux-user: Populate more bits in mmap_flags_tbl
+  accel/tcg: Introduce page_check_range_empty
+  bsd-user: Use page_check_range_empty for MAP_EXCL
+  linux-user: Implement MAP_FIXED_NOREPLACE
+  linux-user: Split out target_to_host_prot
+  linux-user: Widen target_mmap offset argument to off_t
+  linux-user: Rewrite target_mprotect
+  linux-user: Rewrite mmap_frag
+  accel/tcg: Introduce page_find_range_empty
+  bsd-user: Use page_find_range_empty for mmap_find_vma_reserved
+  linux-user: Use page_find_range_empty for mmap_find_vma_reserved
+  linux-user: Use 'last' instead of 'end' in target_mmap
+  linux-user: Rewrite mmap_reserve
+  linux-user: Rename mmap_reserve to mmap_reserve_or_unmap
+  linux-user: Simplify target_munmap
+  accel/tcg: Accept more page flags in page_check_range
+  accel/tcg: Return bool from page_check_range
+  linux-user: Remove can_passthrough_madvise
+  linux-user: Simplify target_madvise
+
+ bsd-user/qemu.h                  |   2 +-
+ include/exec/cpu-all.h           |  39 +-
+ linux-user/aarch64/target_mman.h |   3 +
+ linux-user/alpha/target_mman.h   |  13 +
+ linux-user/generic/target_mman.h |  58 +++
+ linux-user/hppa/target_mman.h    |  10 +
+ linux-user/mips/target_mman.h    |  13 +
+ linux-user/mips64/target_mman.h  |   2 +-
+ linux-user/ppc/target_mman.h     |   3 +
+ linux-user/qemu.h                |   2 +-
+ linux-user/sparc/target_mman.h   |   4 +
+ linux-user/syscall_defs.h        |  96 +----
+ linux-user/user-mmap.h           |   2 +-
+ linux-user/xtensa/target_mman.h  |  13 +
+ accel/tcg/user-exec.c            |  72 +++-
+ bsd-user/mmap.c                  |  49 +--
+ linux-user/mmap.c                | 702 ++++++++++++++++---------------
+ linux-user/strace.c              |  61 +--
+ linux-user/syscall.c             |  22 +-
+ target/hppa/op_helper.c          |   2 +-
+ target/riscv/vector_helper.c     |   2 +-
+ target/sparc/ldst_helper.c       |   2 +-
+ accel/tcg/ldst_atomicity.c.inc   |   4 +-
+ 23 files changed, 638 insertions(+), 538 deletions(-)
+
 -- 
-2.41.0
+2.34.1
 
 
