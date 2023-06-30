@@ -2,83 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEADF7434BF
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 08:10:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73E637434D9
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 08:16:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qF7KT-0006vd-ON; Fri, 30 Jun 2023 02:10:01 -0400
+	id 1qF7QF-0001YH-86; Fri, 30 Jun 2023 02:15:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qF7KR-0006vF-3Z
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 02:09:59 -0400
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qF7KP-0003KZ-82
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 02:09:58 -0400
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-3fbc77e76aaso2254145e9.3
- for <qemu-devel@nongnu.org>; Thu, 29 Jun 2023 23:09:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688105395; x=1690697395;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=lZKlzJ4ffFV7iEmBcslgp3jfMAQPxklQ3uo9LCDweiU=;
- b=ToBXrS7IxEX0jGf84sNNaKH9ShcRLCyfkmceeCow3YMn0aZ6rBJhOrqZvc9P54yKjO
- PVuauC5SfrBKq/P/qA0xVH4ephtZaTCD+rgCy3Y6o1w8rurS3vJoghvtXzHwzC6BVphz
- OJ/g0A4fRay/UYHjmeD+ACm2O1bnEKq0470EGrLP7nSLbv+L85hhdHlke5RhpOa6SKG9
- FsUGZA0dVpuv2y1zwNBEwfj+FpB0BbxbmJAfuVq9Yq5KSoL/NGLk1eYpl33+I2iaPvFt
- +50rX0K9Q4FzVDp8V3r5dNbZT0SXM/el58BryiauqwLfznhBVEk+fpm4d1q1bgvQcOdR
- o4NQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688105395; x=1690697395;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=lZKlzJ4ffFV7iEmBcslgp3jfMAQPxklQ3uo9LCDweiU=;
- b=gurXehf0+iemXg1KcZP2vTgLRYTpin6iv8nSjAm3yjPs8Am4JYdc8lP2+9y16TN/RY
- 5RWzmJ5CbpGz6QYoEQ6GojB5dUFUIF+DznDU+/7eE2AGsbnGDwJPJhQ1eB7lCRoMMS5l
- CGE9R4BnUVyBMo4iTJBD3TwRaoYMhpMReNNmgZ7fbY+Jrv9NrWBk5L4Hhno4BIav+xZ0
- gbyE20ahsKpzd8/iwu5IX+TKaiiCWjX7IyFZzsPelmpg1dqGu+gx7Sz6YTPneaBfL9T8
- K62zmz9XrarPiFZ84hqNhdfyoB+3kG+YPI8mNt1MloiGFyrQNByPbkpSGCCR719ZxPxu
- 3fRQ==
-X-Gm-Message-State: AC+VfDwVTVvrcwJwKBlU/bLFx35WcStxhdIALn2fikPivyrvcsI/iN0m
- Lhcb3uYkkkbNAmvIXBEhA1WSiQ==
-X-Google-Smtp-Source: ACHHUZ79hI4vBUI0rl2RxziGtiGA0ag8cNaNlfb12ZHhE/DrqZLhszEJ5ephJIi+OKvNUULJ0+RXQA==
-X-Received: by 2002:a05:600c:2253:b0:3fb:a5b3:4f02 with SMTP id
- a19-20020a05600c225300b003fba5b34f02mr1088319wmm.36.1688105395564; 
- Thu, 29 Jun 2023 23:09:55 -0700 (PDT)
-Received: from [192.168.1.208] ([139.47.41.96])
- by smtp.gmail.com with ESMTPSA id
- c25-20020a7bc019000000b003f819faff24sm21070184wmb.40.2023.06.29.23.09.54
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 29 Jun 2023 23:09:55 -0700 (PDT)
-Message-ID: <d66e6001-63d1-7307-66a8-4c48e11741ce@linaro.org>
-Date: Fri, 30 Jun 2023 08:09:52 +0200
+ (Exim 4.90_1) (envelope-from <qianfanguijin@163.com>)
+ id 1qF7QB-0001XS-LF
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 02:15:55 -0400
+Received: from m12.mail.163.com ([220.181.12.214])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <qianfanguijin@163.com>) id 1qF7Q6-0005YD-Uy
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 02:15:55 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+ s=s110527; h=Message-ID:Date:MIME-Version:Subject:From:
+ Content-Type; bh=hibxjK3IhaSBLBqhoqsjW5w9Ms6VARmlCJ7QzMYMh+E=;
+ b=pIxSMmZzUFnijtrQARwUM/JIOGdZL20HuPuRb4MDxfbftoaq29kSiL3hQI1kFk
+ OumxKPkr1BXjAh0Kx91+Z8wRbWY664xC32Yo0M21ouvjW3mpz4F5bvHL59iiuY03
+ r4vLBTKqil8MKrX+wS7+LHnw8nI36jkIm4McDr6XBZCD8=
+Received: from [172.21.25.67] (unknown [218.201.129.20])
+ by zwqz-smtp-mta-g1-3 (Coremail) with SMTP id _____wDX31vtcp5kBiEzBQ--.35565S2;
+ Fri, 30 Jun 2023 14:15:11 +0800 (CST)
+Message-ID: <b954eaad-508c-2341-eaeb-8ec4111de664@163.com>
+Date: Fri, 30 Jun 2023 14:15:10 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH] gitlab: Disable plugins for cross-i386-tci
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
-Cc: alex.bennee@linaro.org
-References: <20230629130844.151453-1-richard.henderson@linaro.org>
- <d09e7410-6bf9-e15b-5759-e111f60e9f19@redhat.com>
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PULL 18/42] tests: avocado: boot_linux_console: Add test case
+ for bpim2u
+To: Thomas Huth <thuth@redhat.com>, Peter Maydell <peter.maydell@linaro.org>, 
+ qemu-devel@nongnu.org
+Cc: Niek Linnenbank <nieklinnenbank@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+References: <20230606094814.3581397-1-peter.maydell@linaro.org>
+ <20230606094814.3581397-19-peter.maydell@linaro.org>
+ <280c57d2-9648-36ea-74e9-6ffc7f3b4388@redhat.com>
 Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <d09e7410-6bf9-e15b-5759-e111f60e9f19@redhat.com>
+From: qianfan <qianfanguijin@163.com>
+In-Reply-To: <280c57d2-9648-36ea-74e9-6ffc7f3b4388@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x32c.google.com
+X-CM-TRANSID: _____wDX31vtcp5kBiEzBQ--.35565S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxKrW8GFyUZryxJw13ZF1xuFg_yoW3tr43pF
+ WUKF1fKFWUJF43Jas3tFyagryrJw4vkay7GryUWr9Y9F4kC3s3Xr42yF4F9a43ZanYya90
+ q395Xa4UWw18t37anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+ 9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UnZ2-UUUUU=
+X-Originating-IP: [218.201.129.20]
+X-CM-SenderInfo: htld0w5dqj3xxmlqqiywtou0bp/1tbiXA+e7VXl7GG+awABsJ
+Received-SPF: pass client-ip=220.181.12.214;
+ envelope-from=qianfanguijin@163.com; helo=m12.mail.163.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.093,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ NICE_REPLY_A=-0.093, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_BL=0.001,
+ RCVD_IN_MSPIKE_L3=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -95,62 +78,238 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/29/23 17:06, Thomas Huth wrote:
-> On 29/06/2023 15.08, Richard Henderson wrote:
->> There are timeouts in the cross-i386-tci job that are related to plugins.
->> Restrict this job to basic TCI testing.
+
+
+在 2023/6/29 19:35, Thomas Huth 写道:
+> On 06/06/2023 11.47, Peter Maydell wrote:
+>> From: qianfan Zhao <qianfanguijin@163.com>
 >>
->> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+>> Add test case for booting from initrd and sd card.
+>>
+>> Signed-off-by: qianfan Zhao <qianfanguijin@163.com>
+>> Reviewed-by: Niek Linnenbank <nieklinnenbank@gmail.com>
+>> Tested-by: Niek Linnenbank <nieklinnenbank@gmail.com>
+>> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 >> ---
->>
->> E.g. most recent failure(s),
->>
->> https://gitlab.com/qemu-project/qemu/-/jobs/4565517825
->> 4488: make[1]: *** [Makefile:189: run-plugin-memory-with-libbb.so] Error 124
->> 4497: make[1]: *** [Makefile:189: run-plugin-memory-with-libempty.so] Error 124
->> 4506: make[1]: *** [Makefile:189: run-plugin-memory-with-libinsn.so] Error 124
->> 4550: make[1]: *** [Makefile:189: run-plugin-memory-with-libmem.so] Error 124
->> 4558: make[1]: *** [Makefile:189: run-plugin-memory-with-libsyscall.so] Error 124
->>
->> We do tci+plugin testing with an x86_64 job, so I don't think it's
->> important that we cover plugins here.  Mostly we want to make sure
->> that TCI *builds* on a 32-bit host.
->>
->> Anyway, here's a pass with shared infrastructure,
->> https://gitlab.com/rth7680/qemu/-/jobs/4565547513
->>
->> There might well be different timings on the project k8s hosts.
->>
->>
->> r~
->>
->> ---
->>   .gitlab-ci.d/crossbuilds.yml | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/.gitlab-ci.d/crossbuilds.yml b/.gitlab-ci.d/crossbuilds.yml
->> index 1e0e6c7f2c..b6ec99ecd1 100644
->> --- a/.gitlab-ci.d/crossbuilds.yml
->> +++ b/.gitlab-ci.d/crossbuilds.yml
->> @@ -57,7 +57,7 @@ cross-i386-tci:
->>     variables:
->>       IMAGE: fedora-i386-cross
->>       ACCEL: tcg-interpreter
->> -    EXTRA_CONFIGURE_OPTS: 
->> --target-list=i386-softmmu,i386-linux-user,aarch64-softmmu,aarch64-linux-user,ppc-softmmu,ppc-linux-user
->> +    EXTRA_CONFIGURE_OPTS: 
->> --target-list=i386-softmmu,i386-linux-user,aarch64-softmmu,aarch64-linux-user,ppc-softmmu,ppc-linux-user --disable-plugins
->>       MAKE_CHECK_ARGS: check check-tcg
->>   cross-mipsel-system:
-> 
-> FWIW,
-> Acked-by: Thomas Huth <thuth@redhat.com>
-> 
-> I assume you'll apply this directly as a CI fix?
+>>   tests/avocado/boot_linux_console.py | 176 ++++++++++++++++++++++++++++
+>>   1 file changed, 176 insertions(+)
+> ...
+>> +    def test_arm_bpim2u_gmac(self):
+>> +        """
+>> +        :avocado: tags=arch:arm
+>> +        :avocado: tags=accel:tcg
+>> +        :avocado: tags=machine:bpim2u
+>> +        :avocado: tags=device:sd
+>> +        """
+>> +        self.require_netdev('user')
+>> +
+>> +        deb_url = 
+>> ('https://apt.armbian.com/pool/main/l/linux-5.10.16-sunxi/'
+>> + 'linux-image-current-sunxi_21.02.2_armhf.deb')
+>> +        deb_hash = '9fa84beda245cabf0b4fa84cf6eaa7738ead1da0'
+>> +        deb_path = self.fetch_asset(deb_url, asset_hash=deb_hash)
+>> +        kernel_path = self.extract_from_deb(deb_path,
+>> + '/boot/vmlinuz-5.10.16-sunxi')
+>> +        dtb_path = ('/usr/lib/linux-image-current-sunxi/'
+>> +                    'sun8i-r40-bananapi-m2-ultra.dtb')
+>> +        dtb_path = self.extract_from_deb(deb_path, dtb_path)
+>> +        rootfs_url = 
+>> ('http://storage.kernelci.org/images/rootfs/buildroot/'
+>> + 'buildroot-baseline/20221116.0/armel/rootfs.ext2.xz')
+>> +        rootfs_hash = 'fae32f337c7b87547b10f42599acf109da8b6d9a'
+>> +        rootfs_path_xz = self.fetch_asset(rootfs_url, 
+>> asset_hash=rootfs_hash)
+>> +        rootfs_path = os.path.join(self.workdir, 'rootfs.cpio')
+>> +        archive.lzma_uncompress(rootfs_path_xz, rootfs_path)
+>> +        image_pow2ceil_expand(rootfs_path)
+>> +
+>> +        self.vm.set_console()
+>> +        kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE +
+>> +                               'console=ttyS0,115200 '
+>> +                               'root=/dev/mmcblk0 rootwait rw '
+>> +                               'panic=-1 noreboot')
+>> +        self.vm.add_args('-kernel', kernel_path,
+>> +                         '-dtb', dtb_path,
+>> +                         '-drive', 'file=' + rootfs_path + 
+>> ',if=sd,format=raw',
+>> +                         '-net', 'nic,model=gmac,netdev=host_gmac',
+>> +                         '-netdev', 'user,id=host_gmac',
+>> +                         '-append', kernel_command_line,
+>> +                         '-no-reboot')
+>> +        self.vm.launch()
+>> +        shell_ready = "/bin/sh: can't access tty; job control turned 
+>> off"
+>> +        self.wait_for_console_pattern(shell_ready)
+>> +
+>> +        exec_command_and_wait_for_pattern(self, 'cat /proc/cpuinfo',
+>> +                                                'Allwinner sun8i 
+>> Family')
+>> +        exec_command_and_wait_for_pattern(self, 'cat /proc/partitions',
+>> +                                                'mmcblk0')
+>> +        exec_command_and_wait_for_pattern(self, 'ifconfig eth0 up',
+>> +                                                 'eth0: Link is Up')
+>> +        exec_command_and_wait_for_pattern(self, 'udhcpc eth0',
+>> +            'udhcpc: lease of 10.0.2.15 obtained')
+>> +        exec_command_and_wait_for_pattern(self, 'ping -c 3 10.0.2.2',
+>> +            '3 packets transmitted, 3 packets received, 0% packet 
+>> loss')
+>> +        exec_command_and_wait_for_pattern(self, 'reboot',
+>> +                                                'reboot: Restarting 
+>> system')
+>> +        # Wait for VM to shut down gracefully
+>> +        self.vm.wait()
+>
+> FYI, the test_arm_bpim2u_gmac test just failed during one of my CI runs:
+>
+> https://gitlab.com/thuth/qemu/-/jobs/4565108610#L300
+>
+> Looking at the debug.log in the artifacts, it looks like the kernel 
+> was hanging during boot:
+>
+> 10:53:56 DEBUG| of_cfs_init
+> 10:53:56 DEBUG| of_cfs_init: OK
+> 10:53:56 DEBUG| ALSA device list:
+> 10:53:56 DEBUG| No soundcards found.
+> 10:53:56 DEBUG| Waiting for root device /dev/mmcblk0...
+> 10:54:26 DEBUG| dcdc4: disabling
+> 10:54:26 DEBUG| dc5ldo: disabling
+> 10:54:26 DEBUG| vcc5v0: disabling
+> 10:55:15 ERROR|
+> ...
+> 10:55:15 ERROR| RuntimeError: Test interrupted by SIGTERM
+>
+> I can reproduce the problem locally on my laptop when running the test 
+> repeatedly, e.g. with:
+>
+>  make check-venv
+>  for ((x=0;x<10;x++)); do \
+>   ./tests/venv/bin/avocado run \
+>     tests/avocado/boot_linux_console.py:test_arm_bpim2u_gmac ; \
+>  done
+>
+> 1 out of 10 runs were failing.
+>
+> Any ideas what could be wrong in those failing cases?
+Hi:
 
-Yes.  Now done.
+I can reproduce this issue based on master 
+code(v8.0.0-rc1-2442-g4d541f63e9) with your's
+test scripts, and I have tested 50 times only failed once.
 
+Copy liunx boot logs and make a diff:
 
-r~
+$ diff ~/a/qemu_bpi_good.txt ~/a/qemu_bpi_bad.txt
+3c3
+< Linux version 5.10.16-sunxi (root@beast) (arm-linux-gnueabihf-gcc (GNU 
+Toolchain for the A-profile Architecture 8.3-2019.03 (arm-rel-8.36)) 
+8.3.0, GNU ld (GNU Toolchain for the A-profile Architecture 8.3-2019.03 
+(arm-rel-8.36)) 2.32.0.20190321) #21.02.2 SMP Sun Feb 14 21:12:17 CET 2021
+---
+ > Linux version 5.10.16-sunxi (root@beast) (arm-linux-gnueabihf-gcc 
+(GNU Toolchain for the A-profile Architecture 8.3-2019.03 (arm-
+28c28
+< Memory: 890856K/1048576K available (9216K kernel code, 1457K rwdata, 
+3216K rodata, 1024K init, 331K bss, 26648K reserved, 131072K 
+cma-reserved, 131072K highmem)
+---
+ > Memory: 890856K/1048576K available (9216K kernel code, 1457K rwdata, 
+3216K rodata, 1024K init, 331K bss, 26648K reserved, 131072K
+74c74
+< audit: type=2000 audit(0.156:1): state=initialized audit_enabled=0 res=1
+---
+ > audit: type=2000 audit(0.152:1): state=initialized audit_enabled=0 res=1
+83,93c83,93
+< raid6: neonx8   gen()  1684 MB/s
+< raid6: neonx8   xor()   630 MB/s
+< raid6: neonx4   gen()  1103 MB/s
+< raid6: neonx4   xor()   939 MB/s
+< raid6: neonx2   gen()  1966 MB/s
+< raid6: neonx2   xor()   928 MB/s
+< raid6: neonx1   gen()  1471 MB/s
+< raid6: neonx1   xor()   403 MB/s
+< raid6: int32x8  gen()   464 MB/s
+< raid6: int32x8  xor()   273 MB/s
+< raid6: int32x4  gen()   449 MB/s
+---
+ > raid6: neonx8   gen()  1677 MB/s
+ > raid6: neonx8   xor()   646 MB/s
+ > raid6: neonx4   gen()  1111 MB/s
+ > raid6: neonx4   xor()   924 MB/s
+ > raid6: neonx2   gen()  1973 MB/s
+ > raid6: neonx2   xor()   929 MB/s
+ > raid6: neonx1   gen()  1505 MB/s
+ > raid6: neonx1   xor()   407 MB/s
+ > raid6: int32x8  gen()   457 MB/s
+ > raid6: int32x8  xor()   275 MB/s
+ > raid6: int32x4  gen()   444 MB/s
+95,100c95,100
+< raid6: int32x2  gen()  1029 MB/s
+< raid6: int32x2  xor()   557 MB/s
+< raid6: int32x1  gen()   840 MB/s
+< raid6: int32x1  xor()   452 MB/s
+< raid6: using algorithm neonx2 gen() 1966 MB/s
+< raid6: .... xor() 928 MB/s, rmw enabled
+---
+ > raid6: int32x2  gen()  1018 MB/s
+ > raid6: int32x2  xor()   553 MB/s
+ > raid6: int32x1  gen()   837 MB/s
+ > raid6: int32x1  xor()   446 MB/s
+ > raid6: using algorithm neonx2 gen() 1973 MB/s
+ > raid6: .... xor() 929 MB/s, rmw enabled
+138,142c138,142
+< arm4regs        :  1530 MB/sec
+< 8regs           :  1764 MB/sec
+< 32regs          :  1508 MB/sec
+< neon            :  1761 MB/sec
+< xor: using function: 8regs (1764 MB/sec)
+---
+ > arm4regs        :  1526 MB/sec
+ > 8regs           :  1765 MB/sec
+ > 32regs          :  1587 MB/sec
+ > neon            :  1768 MB/sec
+ > xor: using function: neon (1768 MB/sec)
+194c194
+< bridge: filtering via arp/ip/ip6tables is no longer available by 
+default. Update your scripts to load br_netfilter if you need this.
+---
+ > bridge: filtering via arp/ip/ip6tables is no longer available by 
+default. Update your scripts to load br_netfilter if you need th
+288a289,291
+ > mmc1: host does not support reading read-only switch, assuming 
+write-enable
+ > mmc1: new high speed SD card at address 4567
+ > mmcblk1: mmc1:4567 QEMU! 64.0 MiB
+296,298d298
+< mmc0: host does not support reading read-only switch, assuming 
+write-enable
+< mmc0: new high speed SD card at address 4567
+< mmcblk0: mmc0:4567 QEMU! 64.0 MiB
+322,331c322,325
+< EXT4-fs (mmcblk0): mounting ext2 file system using the ext4 subsystem
+< EXT4-fs (mmcblk0): mounted filesystem without journal. Opts: (null)
+< VFS: Mounted root (ext2 filesystem) on device 179:0.
+< devtmpfs: mounted
+< Freeing unused kernel memory: 1024K
+< Run /sbin/init as init process
+< EXT4-fs (mmcblk0): re-mounted. Opts: (null)
+< Starting syslogd: OK
+< Starting klogd: OK
+< Running sysctl: OK
+\ No newline at end of file
+---
+ > Waiting for root device /dev/mmcblk0...
+ > dcdc4: disabling
+ > dc5ldo: disabling
+ > vcc5v0: disabling
+\ No newline at end of file
+
+The first mmc device should be mmc0, but the linux kernel named it as 
+mmcblk1.
+So it always 'Waiting for root device /dev/mmcblk0...', that make the rootfs
+can not mounted.
+
+I'm not make sure where the problem came from.
+>
+>  Thomas
 
 
