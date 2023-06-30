@@ -2,87 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE8C9743D2D
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 16:07:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EFFE7743D3F
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 16:11:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFEls-00047t-J4; Fri, 30 Jun 2023 10:06:48 -0400
+	id 1qFEpf-0006Iq-Pl; Fri, 30 Jun 2023 10:10:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qFElq-00047a-Ca; Fri, 30 Jun 2023 10:06:46 -0400
-Received: from mail-ot1-x330.google.com ([2607:f8b0:4864:20::330])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qFElo-00070p-Nq; Fri, 30 Jun 2023 10:06:46 -0400
-Received: by mail-ot1-x330.google.com with SMTP id
- 46e09a7af769-6b5d7e60015so1590552a34.0; 
- Fri, 30 Jun 2023 07:06:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688134003; x=1690726003;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=j9IR4FIVUbAv+x8yfcnJjVElayhZLnA0Y9DaA2XuSX8=;
- b=m2zg4DDXilmM+V9jm8lzd/ncoAbMWPPCHrerUtMptn5iTh4Smci08XG7uluUw6oTmW
- kGB3iHVE6h1iJIChk95u0I1Eb28hfbkI2zFjRMPJ7XljMY4cqlACaset8IfIgOKh2+XT
- 78LuEWlcRlY4mORC/6Vkx0ivaId5PbN3vindW96Qp3XsItMPOZbjBsgf/vkh88rOWWEP
- wkx/dwCG+yJt0BV4HnH/MLiEIdXaPGizIIOsPwZSCnait25lMOS8Q4IcfLQJScEkJw2v
- MGK0jYxp7c8BiDjVsbUUwGrUuTdB7hodi0UTGsr4YTG8uCJJZmSL3HKHQ3QcJ9W6nqph
- PsBA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688134003; x=1690726003;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=j9IR4FIVUbAv+x8yfcnJjVElayhZLnA0Y9DaA2XuSX8=;
- b=YOcrXuINFbHAHcmQALwgEZiE77jCww+5RjJ9kHFSp2CPG+qxj9lpzjhrvohGZ5Xmty
- 9aLmmYSvxNkreMtuDDskGE3/+TIVaPzEUEaL4c8InqKwvHD/+NeFKx1lb6GQAE1+++rL
- WEnzbV+H/oa4PlqfM79te26QuFcbOBm8K0UXNom1kMGPI3y7U+qXMNoWzENrqxp0uAPw
- uxGPCsseFG1YOOkcK8+fI5+Cm4wBAryqQvI3bnwrbEPgZLTxgJvhNZsvOXiHyygUhpc/
- l5jggaeJQo7evCi13hUqjKl3ORRiJXVoMty5xPJnivHy31bLIkyTZpT9tVVsKypBeQHZ
- RTXg==
-X-Gm-Message-State: AC+VfDzSlQwjwJPs7+ZO56djBHvx9BLz6ur0j6zUFvMRcd41FnWaUWve
- 0yRzomWoCEiuu0Ngk58YTHk=
-X-Google-Smtp-Source: ACHHUZ5otIPUORl1HFPr4bENxruL3BKBpdJEsf8c5fp9mYGeqKNtR22Y1X5M7uapsmfFx33MCjeFBg==
-X-Received: by 2002:a05:6830:1be6:b0:6b7:38c0:7420 with SMTP id
- k6-20020a0568301be600b006b738c07420mr3110506otb.9.1688134002500; 
- Fri, 30 Jun 2023 07:06:42 -0700 (PDT)
-Received: from [192.168.68.107] (201-69-66-110.dial-up.telesp.net.br.
- [201.69.66.110]) by smtp.gmail.com with ESMTPSA id
- y1-20020a056830108100b006b71d22be29sm1061386oto.18.2023.06.30.07.06.39
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 30 Jun 2023 07:06:42 -0700 (PDT)
-Message-ID: <c8fbc10e-0fd7-eeb7-973c-4526201ee7a9@gmail.com>
-Date: Fri, 30 Jun 2023 11:06:38 -0300
+ (Exim 4.90_1) (envelope-from <SRS0=Okcj=CS=kaod.org=clg@ozlabs.org>)
+ id 1qFEpY-0006IN-S2; Fri, 30 Jun 2023 10:10:38 -0400
+Received: from gandalf.ozlabs.org ([150.107.74.76])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <SRS0=Okcj=CS=kaod.org=clg@ozlabs.org>)
+ id 1qFEpU-0008I5-QX; Fri, 30 Jun 2023 10:10:35 -0400
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4Qsxzh6yDgz4wZp;
+ Sat,  1 Jul 2023 00:10:24 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Qsxzg3wvmz4wb5;
+ Sat,  1 Jul 2023 00:10:23 +1000 (AEST)
+Message-ID: <f8c6fb87-03e9-3831-2650-0c178522f2fb@kaod.org>
+Date: Fri, 30 Jun 2023 16:10:19 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
-Subject: Re: [PATCH v3 3/6] target/ppc: Move CPU QOM definitions to cpu-qom.h
+Subject: Re: [PATCH] pnv/xive2: Fix TIMA offset for indirect access
 Content-Language: en-US
-To: Greg Kurz <groug@kaod.org>, =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?=
- <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, David Gibson <david@gibson.dropbear.id.au>,
- =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>, qemu-ppc@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
- Nicholas Piggin <npiggin@gmail.com>
-References: <20230627115124.19632-1-philmd@linaro.org>
- <20230627115124.19632-4-philmd@linaro.org> <20230628170531.09d2e648@bahia>
-From: Daniel Henrique Barboza <danielhb413@gmail.com>
-In-Reply-To: <20230628170531.09d2e648@bahia>
+To: Frederic Barrat <fbarrat@linux.ibm.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>, qemu-ppc@nongnu.org,
+ qemu-devel@nongnu.org
+References: <20230630132015.204825-1-fbarrat@linux.ibm.com>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <20230630132015.204825-1-fbarrat@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::330;
- envelope-from=danielhb413@gmail.com; helo=mail-ot1-x330.google.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, NICE_REPLY_A=-0.095,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=SRS0=Okcj=CS=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, NICE_REPLY_A=-0.095, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,101 +63,129 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Phil,
+On 6/30/23 15:20, Frederic Barrat wrote:
+> Direct TIMA operations can be done through 4 pages, each with a
+> different privilege level dictating what fields can be accessed. On
+> the other hand, indirect TIMA accesses on P10 are done through a
+> single page, which is the equivalent of the most privileged page of
+> direct TIMA accesses.
+> 
+> The offset in the IC bar of an indirect access specifies what hw
+> thread is targeted (page shift bits) 
 
-On 6/28/23 12:05, Greg Kurz wrote:
-> On Tue, 27 Jun 2023 13:51:21 +0200
-> Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
-> 
->> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->> ---
->>   target/ppc/cpu-qom.h | 5 +++++
->>   target/ppc/cpu.h     | 6 ------
->>   2 files changed, 5 insertions(+), 6 deletions(-)
->>
->> diff --git a/target/ppc/cpu-qom.h b/target/ppc/cpu-qom.h
->> index 9666f54f65..c2bff349cc 100644
->> --- a/target/ppc/cpu-qom.h
->> +++ b/target/ppc/cpu-qom.h
->> @@ -31,6 +31,11 @@
->>   
->>   OBJECT_DECLARE_CPU_TYPE(PowerPCCPU, PowerPCCPUClass, POWERPC_CPU)
->>   
->> +#define POWERPC_CPU_TYPE_SUFFIX "-" TYPE_POWERPC_CPU
->> +#define POWERPC_CPU_TYPE_NAME(model) model POWERPC_CPU_TYPE_SUFFIX
->> +#define CPU_RESOLVING_TYPE TYPE_POWERPC_CPU
->> +#define cpu_list ppc_cpu_list
->> +
->>   ObjectClass *ppc_cpu_class_by_name(const char *name);
->>   
->>   typedef struct CPUArchState CPUPPCState;
->> diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
->> index af12c93ebc..e91e1774e5 100644
->> --- a/target/ppc/cpu.h
->> +++ b/target/ppc/cpu.h
->> @@ -1468,12 +1468,6 @@ static inline uint64_t ppc_dump_gpr(CPUPPCState *env, int gprn)
->>   int ppc_dcr_read(ppc_dcr_t *dcr_env, int dcrn, uint32_t *valp);
->>   int ppc_dcr_write(ppc_dcr_t *dcr_env, int dcrn, uint32_t val);
->>   
->> -#define POWERPC_CPU_TYPE_SUFFIX "-" TYPE_POWERPC_CPU
->> -#define POWERPC_CPU_TYPE_NAME(model) model POWERPC_CPU_TYPE_SUFFIX
->> -#define CPU_RESOLVING_TYPE TYPE_POWERPC_CPU
->> -
-> 
-> These seem appropriate to be moved to "cpu-qom.h".
-> 
->> -#define cpu_list ppc_cpu_list
-> 
-> This one is much older according to git blame :
-> 
-> c913706581460 target/ppc/cpu.h (Igor Mammedov                 2017-08-30 1469) #define POWERPC_CPU_TYPE_SUFFIX "-" TYPE_POWERPC_CPU
-> c913706581460 target/ppc/cpu.h (Igor Mammedov                 2017-08-30 1470) #define POWERPC_CPU_TYPE_NAME(model) model POWERPC_CPU_TYPE_SUFFIX
-> 0dacec874fa3b target/ppc/cpu.h (Igor Mammedov                 2018-02-07 1471) #define CPU_RESOLVING_TYPE TYPE_POWERPC_CPU
-> c913706581460 target/ppc/cpu.h (Igor Mammedov                 2017-08-30 1472)
-> c732abe222795 target-ppc/cpu.h (Jocelyn Mayer                 2007-10-12 1473) #define cpu_list ppc_cpu_list
-> 
-> It is some plumbing used for `-cpu help`, not exactly QOM stuff.
-> Maybe keep it in "cpu.h" as all other targets do ?
+yes. Max is 128 threads.
 
-Greg has a point:
+> and the offset in the TIMA being accessed (the page offset bits). 
 
-$ git grep '#define cpu_list'
-target/alpha/cpu.h:#define cpu_list alpha_cpu_list
-target/arm/cpu.h:#define cpu_list arm_cpu_list
-target/avr/cpu.h:#define cpu_list avr_cpu_list
-target/cris/cpu.h:#define cpu_list cris_cpu_list
-target/hexagon/cpu.h:#define cpu_list hexagon_cpu_list
-target/i386/cpu.h:#define cpu_list x86_cpu_list
-target/loongarch/cpu.h:#define cpu_list loongarch_cpu_list
-target/m68k/cpu.h:#define cpu_list m68k_cpu_list
-target/mips/cpu.h:#define cpu_list mips_cpu_list
-target/openrisc/cpu.h:#define cpu_list cpu_openrisc_list
-target/ppc/cpu.h:#define cpu_list ppc_cpu_list
-target/riscv/cpu.h:#define cpu_list riscv_cpu_list
-target/rx/cpu.h:#define cpu_list rx_cpu_list
-target/s390x/cpu.h:#define cpu_list s390_cpu_list
-target/sh4/cpu.h:#define cpu_list sh4_cpu_list
-target/sparc/cpu.h:#define cpu_list sparc_cpu_list
-target/tricore/cpu.h:#define cpu_list tricore_cpu_list
-target/xtensa/cpu.h:#define cpu_list xtensa_cpu_list
+a part of the sentence seems to be missing ?
 
-I'm not against moving this define to cpu-qom.h per se but I believe that, for the sake
-of consistency, this change should be done in a single swoop across all archs.
 
-For now, if you agree with keeping the 'cpu_list' define in cpu.h, I'll queue this up
-and amend it in-tree.
+> When the indirect
+> access is calling the underlying direct access functions, it is
+> therefore important to clearly separate the 2, as the direct functions
+> assume any page shift bits define the privilege ring level. For
+> indirect accesses, those bits must be 0. This patch fixes the offset
+> passed to direct TIMA functions.
+> 
+> It didn't matter for SMT1, as the 2 least significant bits of the page
+> shift are part of the hw thread ID and always 0, so the direct TIMA
+> functions were accessing the privilege ring 0 page. With SMT4/8, it is
+> no longer true.
+
+ah yes  !
+
+> The fix is specific to P10, as indirect TIMA access on P9 was handled
+> differently.
+> 
+> Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
+> ---
+>   hw/intc/pnv_xive2.c | 19 +++++++++++++++++--
+>   1 file changed, 17 insertions(+), 2 deletions(-)
+> 
+> diff --git a/hw/intc/pnv_xive2.c b/hw/intc/pnv_xive2.c
+> index ed438a20ed..0618e6b0da 100644
+> --- a/hw/intc/pnv_xive2.c
+> +++ b/hw/intc/pnv_xive2.c
+> @@ -1590,6 +1590,17 @@ static uint32_t pnv_xive2_ic_tm_get_pir(PnvXive2 *xive, hwaddr offset)
+>       return xive->chip->chip_id << 8 | offset >> xive->ic_shift;
+>   }
+>   
+> +static uint32_t pnv_xive2_ic_tm_get_offset(PnvXive2 *xive, hwaddr offset)
+> +{
+> +    /*
+> +     * Indirect TIMA accesses are similar to direct accesses for
+> +     * privilege ring 0. So remove any traces of the hw thread ID from
+> +     * the offset in the IC BAR as it could be interpreted as the ring
+> +     * privilege when calling the underlying direct access functions.
+> +     */
+> +    return offset & ((1 << xive->ic_shift) - 1);
+
+1ull << ...
+
+This is correct but we should be more explicit in the naming. See below.
+
+> +}
+> +
+>   static XiveTCTX *pnv_xive2_get_indirect_tctx(PnvXive2 *xive, uint32_t pir)
+>   {
+>       PnvChip *chip = xive->chip;
+> @@ -1612,14 +1623,16 @@ static uint64_t pnv_xive2_ic_tm_indirect_read(void *opaque, hwaddr offset,
+>                                                 unsigned size)
+>   {
+>       PnvXive2 *xive = PNV_XIVE2(opaque);
+> +    hwaddr tima_offset;
+
+a 'tima_' prefix is not precise enough. 'hw_' or 'hw_page_' maybe.
+
+I would prefer 'hw_page_' since it relates to the XIVE_TM_HW_PAGE index
+in the XIVE TM definitions.
+
+
+>       uint32_t pir;
+>       XiveTCTX *tctx;
+>       uint64_t val = -1;
+>   
+>       pir = pnv_xive2_ic_tm_get_pir(xive, offset);
+> +    tima_offset = pnv_xive2_ic_tm_get_offset(xive, offset);
+
+This is extracting the register offset from XIVE_TM_HW_PAGE. Here are
+suggestions to be more explicit :
+
+   hw_page_offset = offset & pnv_xive2_ic_page_offset_mask(xive);
+
+or
+
+   hw_page_offset = pnv_xive2_ic_tm_hw_page_offset(xive, offset);
 
 
 Thanks,
 
-Daniel
+C.
 
-> 
->> -
->>   /* MMU modes definitions */
->>   #define MMU_USER_IDX 0
->>   static inline int cpu_mmu_index(CPUPPCState *env, bool ifetch)
-> 
-> 
-> 
+
+>       tctx = pnv_xive2_get_indirect_tctx(xive, pir);
+>       if (tctx) {
+> -        val = xive_tctx_tm_read(NULL, tctx, offset, size);
+> +        val = xive_tctx_tm_read(NULL, tctx, tima_offset, size);
+>       }
+>   
+>       return val;
+> @@ -1629,13 +1642,15 @@ static void pnv_xive2_ic_tm_indirect_write(void *opaque, hwaddr offset,
+>                                              uint64_t val, unsigned size)
+>   {
+>       PnvXive2 *xive = PNV_XIVE2(opaque);
+> +    hwaddr tima_offset;
+>       uint32_t pir;
+>       XiveTCTX *tctx;
+>   
+>       pir = pnv_xive2_ic_tm_get_pir(xive, offset);
+> +    tima_offset = pnv_xive2_ic_tm_get_offset(xive, offset);
+>       tctx = pnv_xive2_get_indirect_tctx(xive, pir);
+>       if (tctx) {
+> -        xive_tctx_tm_write(NULL, tctx, offset, val, size);
+> +        xive_tctx_tm_write(NULL, tctx, tima_offset, val, size);
+>       }
+>   }
+>   
+
 
