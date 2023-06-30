@@ -2,40 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39973743696
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 10:09:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 668367436A1
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 10:11:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qF92k-0008J6-4W; Fri, 30 Jun 2023 03:59:50 -0400
+	id 1qF92n-0008Kr-7I; Fri, 30 Jun 2023 03:59:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1qF92X-0008Bo-I2
+ id 1qF92X-0008Bp-I7
  for qemu-devel@nongnu.org; Fri, 30 Jun 2023 03:59:38 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1qF92U-00080G-4O
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 03:59:36 -0400
+ (envelope-from <gaosong@loongson.cn>) id 1qF92U-000803-6q
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 03:59:35 -0400
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8AxiMVYi55kgzQEAA--.6788S3;
- Fri, 30 Jun 2023 15:59:20 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8BxmMVZi55khDQEAA--.6776S3;
+ Fri, 30 Jun 2023 15:59:21 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
  by localhost.localdomain (Coremail) with SMTP id
- AQAAf8AxjiNIi55kExQTAA--.24469S22; 
- Fri, 30 Jun 2023 15:59:19 +0800 (CST)
+ AQAAf8AxjiNIi55kExQTAA--.24469S23; 
+ Fri, 30 Jun 2023 15:59:20 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org
-Subject: [PATCH v2 20/46] target/loongarch: Implement vext2xv
-Date: Fri, 30 Jun 2023 15:58:38 +0800
-Message-Id: <20230630075904.45940-21-gaosong@loongson.cn>
+Subject: [PATCH v2 21/46] target/loongarch: Implement xvsigncov
+Date: Fri, 30 Jun 2023 15:58:39 +0800
+Message-Id: <20230630075904.45940-22-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20230630075904.45940-1-gaosong@loongson.cn>
 References: <20230630075904.45940-1-gaosong@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8AxjiNIi55kExQTAA--.24469S22
+X-CM-TRANSID: AQAAf8AxjiNIi55kExQTAA--.24469S23
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -63,154 +63,89 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 This patch includes:
-- VEXT2XV.{H/W/D}.B, VEXT2XV.{HU/WU/DU}.BU;
-- VEXT2XV.{W/D}.B, VEXT2XV.{WU/DU}.HU;
-- VEXT2XV.D.W, VEXT2XV.DU.WU.
+- XVSIGNCOV.{B/H/W/D}.
 
 Signed-off-by: Song Gao <gaosong@loongson.cn>
 ---
- target/loongarch/disas.c                     | 13 +++++++++
- target/loongarch/helper.h                    | 13 +++++++++
- target/loongarch/insn_trans/trans_lasx.c.inc | 13 +++++++++
- target/loongarch/insns.decode                | 13 +++++++++
- target/loongarch/vec_helper.c                | 28 ++++++++++++++++++++
- 5 files changed, 80 insertions(+)
+ target/loongarch/disas.c                     | 5 +++++
+ target/loongarch/insn_trans/trans_lasx.c.inc | 5 +++++
+ target/loongarch/insns.decode                | 5 +++++
+ target/loongarch/vec.h                       | 2 ++
+ target/loongarch/vec_helper.c                | 2 --
+ 5 files changed, 17 insertions(+), 2 deletions(-)
 
 diff --git a/target/loongarch/disas.c b/target/loongarch/disas.c
-index 6ca545956d..975ea018da 100644
+index 975ea018da..85e0cb7c8d 100644
 --- a/target/loongarch/disas.c
 +++ b/target/loongarch/disas.c
-@@ -1997,6 +1997,19 @@ INSN_LASX(xvexth_wu_hu,      vv)
- INSN_LASX(xvexth_du_wu,      vv)
- INSN_LASX(xvexth_qu_du,      vv)
+@@ -2010,6 +2010,11 @@ INSN_LASX(vext2xv_wu_hu,     vv)
+ INSN_LASX(vext2xv_du_hu,     vv)
+ INSN_LASX(vext2xv_du_wu,     vv)
  
-+INSN_LASX(vext2xv_h_b,       vv)
-+INSN_LASX(vext2xv_w_b,       vv)
-+INSN_LASX(vext2xv_d_b,       vv)
-+INSN_LASX(vext2xv_w_h,       vv)
-+INSN_LASX(vext2xv_d_h,       vv)
-+INSN_LASX(vext2xv_d_w,       vv)
-+INSN_LASX(vext2xv_hu_bu,     vv)
-+INSN_LASX(vext2xv_wu_bu,     vv)
-+INSN_LASX(vext2xv_du_bu,     vv)
-+INSN_LASX(vext2xv_wu_hu,     vv)
-+INSN_LASX(vext2xv_du_hu,     vv)
-+INSN_LASX(vext2xv_du_wu,     vv)
++INSN_LASX(xvsigncov_b,       vvv)
++INSN_LASX(xvsigncov_h,       vvv)
++INSN_LASX(xvsigncov_w,       vvv)
++INSN_LASX(xvsigncov_d,       vvv)
 +
  INSN_LASX(xvreplgr2vr_b,     vr)
  INSN_LASX(xvreplgr2vr_h,     vr)
  INSN_LASX(xvreplgr2vr_w,     vr)
-diff --git a/target/loongarch/helper.h b/target/loongarch/helper.h
-index b7eece8d43..81d0f06cc0 100644
---- a/target/loongarch/helper.h
-+++ b/target/loongarch/helper.h
-@@ -339,6 +339,19 @@ DEF_HELPER_4(vexth_wu_hu, void, env, i32, i32, i32)
- DEF_HELPER_4(vexth_du_wu, void, env, i32, i32, i32)
- DEF_HELPER_4(vexth_qu_du, void, env, i32, i32, i32)
- 
-+DEF_HELPER_4(vext2xv_h_b, void, env, i32, i32, i32)
-+DEF_HELPER_4(vext2xv_w_b, void, env, i32, i32, i32)
-+DEF_HELPER_4(vext2xv_d_b, void, env, i32, i32, i32)
-+DEF_HELPER_4(vext2xv_w_h, void, env, i32, i32, i32)
-+DEF_HELPER_4(vext2xv_d_h, void, env, i32, i32, i32)
-+DEF_HELPER_4(vext2xv_d_w, void, env, i32, i32, i32)
-+DEF_HELPER_4(vext2xv_hu_bu, void, env, i32, i32, i32)
-+DEF_HELPER_4(vext2xv_wu_bu, void, env, i32, i32, i32)
-+DEF_HELPER_4(vext2xv_du_bu, void, env, i32, i32, i32)
-+DEF_HELPER_4(vext2xv_wu_hu, void, env, i32, i32, i32)
-+DEF_HELPER_4(vext2xv_du_hu, void, env, i32, i32, i32)
-+DEF_HELPER_4(vext2xv_du_wu, void, env, i32, i32, i32)
-+
- DEF_HELPER_FLAGS_4(vsigncov_b, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
- DEF_HELPER_FLAGS_4(vsigncov_h, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
- DEF_HELPER_FLAGS_4(vsigncov_w, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
 diff --git a/target/loongarch/insn_trans/trans_lasx.c.inc b/target/loongarch/insn_trans/trans_lasx.c.inc
-index f100a4a27c..096f7856c4 100644
+index 096f7856c4..6bb6b215cf 100644
 --- a/target/loongarch/insn_trans/trans_lasx.c.inc
 +++ b/target/loongarch/insn_trans/trans_lasx.c.inc
-@@ -379,6 +379,19 @@ TRANS(xvexth_wu_hu, gen_vv, 32, gen_helper_vexth_wu_hu)
- TRANS(xvexth_du_wu, gen_vv, 32, gen_helper_vexth_du_wu)
- TRANS(xvexth_qu_du, gen_vv, 32, gen_helper_vexth_qu_du)
+@@ -392,6 +392,11 @@ TRANS(vext2xv_wu_hu, gen_vv, 32, gen_helper_vext2xv_wu_hu)
+ TRANS(vext2xv_du_hu, gen_vv, 32, gen_helper_vext2xv_du_hu)
+ TRANS(vext2xv_du_wu, gen_vv, 32, gen_helper_vext2xv_du_wu)
  
-+TRANS(vext2xv_h_b, gen_vv, 32, gen_helper_vext2xv_h_b)
-+TRANS(vext2xv_w_b, gen_vv, 32, gen_helper_vext2xv_w_b)
-+TRANS(vext2xv_d_b, gen_vv, 32, gen_helper_vext2xv_d_b)
-+TRANS(vext2xv_w_h, gen_vv, 32, gen_helper_vext2xv_w_h)
-+TRANS(vext2xv_d_h, gen_vv, 32, gen_helper_vext2xv_d_h)
-+TRANS(vext2xv_d_w, gen_vv, 32, gen_helper_vext2xv_d_w)
-+TRANS(vext2xv_hu_bu, gen_vv, 32, gen_helper_vext2xv_hu_bu)
-+TRANS(vext2xv_wu_bu, gen_vv, 32, gen_helper_vext2xv_wu_bu)
-+TRANS(vext2xv_du_bu, gen_vv, 32, gen_helper_vext2xv_du_bu)
-+TRANS(vext2xv_wu_hu, gen_vv, 32, gen_helper_vext2xv_wu_hu)
-+TRANS(vext2xv_du_hu, gen_vv, 32, gen_helper_vext2xv_du_hu)
-+TRANS(vext2xv_du_wu, gen_vv, 32, gen_helper_vext2xv_du_wu)
++TRANS(xvsigncov_b, gvec_vvv, 32, MO_8, do_vsigncov)
++TRANS(xvsigncov_h, gvec_vvv, 32, MO_16, do_vsigncov)
++TRANS(xvsigncov_w, gvec_vvv, 32, MO_32, do_vsigncov)
++TRANS(xvsigncov_d, gvec_vvv, 32, MO_64, do_vsigncov)
 +
  TRANS(xvreplgr2vr_b, gvec_dup, 32, MO_8)
  TRANS(xvreplgr2vr_h, gvec_dup, 32, MO_16)
  TRANS(xvreplgr2vr_w, gvec_dup, 32, MO_32)
 diff --git a/target/loongarch/insns.decode b/target/loongarch/insns.decode
-index 7491f295a5..db1a6689f0 100644
+index db1a6689f0..7bbda1a142 100644
 --- a/target/loongarch/insns.decode
 +++ b/target/loongarch/insns.decode
-@@ -1580,6 +1580,19 @@ xvexth_wu_hu     0111 01101001 11101 11101 ..... .....    @vv
- xvexth_du_wu     0111 01101001 11101 11110 ..... .....    @vv
- xvexth_qu_du     0111 01101001 11101 11111 ..... .....    @vv
+@@ -1593,6 +1593,11 @@ vext2xv_wu_hu    0111 01101001 11110 01101 ..... .....    @vv
+ vext2xv_du_hu    0111 01101001 11110 01110 ..... .....    @vv
+ vext2xv_du_wu    0111 01101001 11110 01111 ..... .....    @vv
  
-+vext2xv_h_b      0111 01101001 11110 00100 ..... .....    @vv
-+vext2xv_w_b      0111 01101001 11110 00101 ..... .....    @vv
-+vext2xv_d_b      0111 01101001 11110 00110 ..... .....    @vv
-+vext2xv_w_h      0111 01101001 11110 00111 ..... .....    @vv
-+vext2xv_d_h      0111 01101001 11110 01000 ..... .....    @vv
-+vext2xv_d_w      0111 01101001 11110 01001 ..... .....    @vv
-+vext2xv_hu_bu    0111 01101001 11110 01010 ..... .....    @vv
-+vext2xv_wu_bu    0111 01101001 11110 01011 ..... .....    @vv
-+vext2xv_du_bu    0111 01101001 11110 01100 ..... .....    @vv
-+vext2xv_wu_hu    0111 01101001 11110 01101 ..... .....    @vv
-+vext2xv_du_hu    0111 01101001 11110 01110 ..... .....    @vv
-+vext2xv_du_wu    0111 01101001 11110 01111 ..... .....    @vv
++xvsigncov_b      0111 01010010 11100 ..... ..... .....    @vvv
++xvsigncov_h      0111 01010010 11101 ..... ..... .....    @vvv
++xvsigncov_w      0111 01010010 11110 ..... ..... .....    @vvv
++xvsigncov_d      0111 01010010 11111 ..... ..... .....    @vvv
 +
  xvreplgr2vr_b    0111 01101001 11110 00000 ..... .....    @vr
  xvreplgr2vr_h    0111 01101001 11110 00001 ..... .....    @vr
  xvreplgr2vr_w    0111 01101001 11110 00010 ..... .....    @vr
+diff --git a/target/loongarch/vec.h b/target/loongarch/vec.h
+index c2d08a8e87..a0a664cde5 100644
+--- a/target/loongarch/vec.h
++++ b/target/loongarch/vec.h
+@@ -72,4 +72,6 @@
+ #define DO_REM(N, M)  (unlikely(M == 0) ? 0 :\
+         unlikely((N == -N) && (M == (__typeof(N))(-1))) ? 0 : N % M)
+ 
++#define DO_SIGNCOV(a, b)  (a == 0 ? 0 : a < 0 ? -b : b)
++
+ #endif /* LOONGARCH_VEC_H */
 diff --git a/target/loongarch/vec_helper.c b/target/loongarch/vec_helper.c
-index 76c8cda563..3fa689bd94 100644
+index 3fa689bd94..49d114f5ac 100644
 --- a/target/loongarch/vec_helper.c
 +++ b/target/loongarch/vec_helper.c
-@@ -737,6 +737,34 @@ VEXTH(vexth_hu_bu, 16, UH, UB)
- VEXTH(vexth_wu_hu, 32, UW, UH)
- VEXTH(vexth_du_wu, 64, UD, UW)
+@@ -765,8 +765,6 @@ VEXT2XV(vext2xv_wu_hu, 32, UW, UH)
+ VEXT2XV(vext2xv_du_hu, 64, UD, UH)
+ VEXT2XV(vext2xv_du_wu, 64, UD, UW)
  
-+#define VEXT2XV(NAME, BIT, E1, E2)                        \
-+void HELPER(NAME)(CPULoongArchState *env, uint32_t oprsz, \
-+                  uint32_t vd, uint32_t vj)               \
-+{                                                         \
-+    int i;                                                \
-+    VReg *Vd = &(env->fpr[vd].vreg);                      \
-+    VReg *Vj = &(env->fpr[vj].vreg);                      \
-+    VReg temp;                                            \
-+                                                          \
-+    for (i = 0; i < LASX_LEN / BIT; i++) {                \
-+        temp.E1(i) = Vj->E2(i);                           \
-+    }                                                     \
-+    *Vd = temp;                                           \
-+}
-+
-+VEXT2XV(vext2xv_h_b, 16, H, B)
-+VEXT2XV(vext2xv_w_b, 32, W, B)
-+VEXT2XV(vext2xv_d_b, 64, D, B)
-+VEXT2XV(vext2xv_w_h, 32, W, H)
-+VEXT2XV(vext2xv_d_h, 64, D, H)
-+VEXT2XV(vext2xv_d_w, 64, D, W)
-+VEXT2XV(vext2xv_hu_bu, 16, UH, UB)
-+VEXT2XV(vext2xv_wu_bu, 32, UW, UB)
-+VEXT2XV(vext2xv_du_bu, 64, UD, UB)
-+VEXT2XV(vext2xv_wu_hu, 32, UW, UH)
-+VEXT2XV(vext2xv_du_hu, 64, UD, UH)
-+VEXT2XV(vext2xv_du_wu, 64, UD, UW)
-+
- #define DO_SIGNCOV(a, b)  (a == 0 ? 0 : a < 0 ? -b : b)
- 
+-#define DO_SIGNCOV(a, b)  (a == 0 ? 0 : a < 0 ? -b : b)
+-
  DO_3OP(vsigncov_b, 8, B, DO_SIGNCOV)
+ DO_3OP(vsigncov_h, 16, H, DO_SIGNCOV)
+ DO_3OP(vsigncov_w, 32, W, DO_SIGNCOV)
 -- 
 2.39.1
 
