@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA8757438C1
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 11:56:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56D9F7438C0
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 11:55:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFAqT-0006zD-AW; Fri, 30 Jun 2023 05:55:17 -0400
+	id 1qFAqc-0006zp-6G; Fri, 30 Jun 2023 05:55:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qFAqR-0006yo-0B
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 05:55:15 -0400
-Received: from mail-lj1-x22f.google.com ([2a00:1450:4864:20::22f])
+ id 1qFAqY-0006zc-OZ
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 05:55:22 -0400
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qFAqP-00049s-Ct
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 05:55:14 -0400
-Received: by mail-lj1-x22f.google.com with SMTP id
- 38308e7fff4ca-2b69e6cce7dso25658871fa.2
- for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 02:55:12 -0700 (PDT)
+ id 1qFAqW-0004BS-LU
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 05:55:21 -0400
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-313f18f5295so1979006f8f.3
+ for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 02:55:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688118911; x=1690710911;
- h=content-transfer-encoding:in-reply-to:from:references:to
+ d=linaro.org; s=google; t=1688118919; x=1690710919;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=3NI1W9jnsoiyjiUD/WIcQ6YQo4/JPNx/MTqRqtx4Ni8=;
- b=J1mZfAnC2LDxM4QwLi/RgaIv43re57pkF1ZBMUF+VWukqUQk2S4r7TWL5qZvIjDAFm
- qlIXgtlKI1j+HUkDGA1E/+Wdv4WkNPLRootcvq+OpI+vmP4MdI8wQiLkmtU5S+PkhXRJ
- zHqyHEhcgtiOuEFLyudyGD74dUpNpeHwEIrqLdCuG+qtwJ3y6tEl2aVFC6fLHXa45OuZ
- gjo6D1gJtbVa59pJR3EFjlmpwSFfsLyzChcpeXa36C/eaTbXIYV+JvxAZBBsmFDQuy9D
- oVaYwK9V1UpoJADrOUxRcI4dORrSYW3+DRULH3deVYigq0rdKD2DzkKn9mWU8B3FAowi
- A18A==
+ bh=tRtGYnhM1vvs0oyIoDpwmXbh/di+/7Tdd8TMBOuQXEQ=;
+ b=hfKaWN5xNkWQc4XAMJbCTEp1i58tSg5oOGQqmkVIzNZiJYnGj6MmSmJf4EihtmupzV
+ 9thxWOiwAIjcX7/dwlFsNRbsFa+RSUOtut3Yj9t1tUrgNaSrEYnNcozWDqdzDXg29Jzc
+ eEcXBYvZVHFmFBPPTHEdYSQEXdB8WcViZKftrPkuu66bcOM1QxQ29AH3RyHVFB6ighzf
+ 0mAthoop3iTKAUR8iMehyfg2bp7KeoH4STX0qrcbDagOx7E5SP90nqFT5WwdWKOQCwLd
+ 0NAjUCKLb5Q0ewuCWamOQL5RRJ7SyTjhI6dOMS8BT1xTCU+pBPx6k4cRo9Og8wurI2wy
+ yUnw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688118911; x=1690710911;
- h=content-transfer-encoding:in-reply-to:from:references:to
+ d=1e100.net; s=20221208; t=1688118919; x=1690710919;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=3NI1W9jnsoiyjiUD/WIcQ6YQo4/JPNx/MTqRqtx4Ni8=;
- b=cEUDSLiWI0pX6Dq2X+vai5WK9mwOjcq5ZU2NBnbaKcE8/zg9TKraVpmEAJEpzDdTZ5
- BK2Wh00YxZyit5JRgf8ES7lDueF8TS2BmKcOspp137kuJpaeCIWRrwYgSer/QsE4si/D
- zLw7olrZ+qxbWUvSPVtfcF9EDCIpnCxFfy1PUPHK28EFB9y+ZQfXpWaxzubWyV2+itiQ
- LmMTFYMM+dgn3DLzqzyWzCr4HJD8YuyB2W75j5NZ0ZR5P7PoH32Se4EyWxQiWwp96aHw
- b9HURCelkLdoy5mnrDtIf6taUE0WYSQ4eIKbO8CL+xKbA436w0UCHTPrta0UAUgnHOVR
- MbOQ==
-X-Gm-Message-State: ABy/qLa5kEfQWvaeKCA9b6z1BE5PvLDEvcxDFuaqf9v9fmy/HEBcI/cn
- /9daSuQxBe7xdtZkgrY1nzGQlNpbMFMct8ffVJIugg==
-X-Google-Smtp-Source: APBJJlHgD8Gfj4TxE1pVaWkDt3Zk+qgvz/M2BveySHp59ZyQTSD983M5MSjBqZ4px5jF6wuc1ipkkg==
-X-Received: by 2002:a05:6512:2211:b0:4fb:8948:2b2b with SMTP id
- h17-20020a056512221100b004fb89482b2bmr2557629lfu.48.1688118911075; 
- Fri, 30 Jun 2023 02:55:11 -0700 (PDT)
+ bh=tRtGYnhM1vvs0oyIoDpwmXbh/di+/7Tdd8TMBOuQXEQ=;
+ b=FBZoIUB+cJmpeUCodL3iQZDfQR8Q1iTCJs27h+WWKTw+5P0tWUauoFnl6PlQcjy+Ie
+ XQuebBUJRGfgqXbodlMoKx1NqFFf9dcyvx95R0YtdbiqBiocJRWv4/48i+2aCJI/MEth
+ DqcBC5a9PcWZMTR5fZGS/OUKs18/KQiznxIN+YvtCQzzpV8zjfZ2WO8xVY+qCl6dDyIL
+ t+NCyusiGkg1daCYxIxAFC+E6vkuh6Pgx4q9yawpbnzJcgg2guSnBr4Q4BdHdK/YV3s7
+ dxp5k+t9o//rB5S/MWRdWTOR+ck/YphPE0fYUBgUPZP+R4lM/9Bf3qIpuN3LS0Vc2z02
+ 6zow==
+X-Gm-Message-State: ABy/qLbOi4QRSBy6OzH8YfAlQsUkmTJBxTuy1IPYlklNKTw51yBQLEci
+ LR3J+OoB2Li4Re2XW9JSxW6vpQ==
+X-Google-Smtp-Source: APBJJlG4kxSil4GuXSR7htY4b4L2JslJXlYdE5+XFfepG2nlgONqYBaMKnWpw0sErt9YHtjKKsoGMA==
+X-Received: by 2002:adf:f84f:0:b0:313:f371:aede with SMTP id
+ d15-20020adff84f000000b00313f371aedemr1773478wrq.1.1688118919129; 
+ Fri, 30 Jun 2023 02:55:19 -0700 (PDT)
 Received: from [192.168.1.208] ([139.47.41.96])
  by smtp.gmail.com with ESMTPSA id
- c1-20020a05600c0ac100b003fba6a0c881sm9347769wmr.43.2023.06.30.02.55.10
+ m9-20020adff389000000b00313f551b032sm12124457wro.53.2023.06.30.02.55.18
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 30 Jun 2023 02:55:10 -0700 (PDT)
-Message-ID: <f54d81cb-4967-e1f9-86a6-7b892ef9982c@linaro.org>
-Date: Fri, 30 Jun 2023 11:55:09 +0200
+ Fri, 30 Jun 2023 02:55:18 -0700 (PDT)
+Message-ID: <a5927706-4ab1-c633-9489-5c8eaf9973d3@linaro.org>
+Date: Fri, 30 Jun 2023 11:55:17 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PULL 0/8] s390-ccw bios updates
+Subject: Re: [PULL 00/16] vfio queue
 Content-Language: en-US
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
-References: <20230629190310.337850-1-thuth@redhat.com>
+To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>, qemu-devel@nongnu.org
+Cc: Alex Williamson <alex.williamson@redhat.com>
+References: <20230630052235.1934154-1-clg@redhat.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230629190310.337850-1-thuth@redhat.com>
+In-Reply-To: <20230630052235.1934154-1-clg@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::22f;
- envelope-from=richard.henderson@linaro.org; helo=mail-lj1-x22f.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x431.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -93,25 +94,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/29/23 21:03, Thomas Huth wrote:
->   Hi Richard!
+On 6/30/23 07:22, Cédric Le Goater wrote:
+> The following changes since commit 4d541f63e90c81112c298cbb35ed53e9c79deb00:
 > 
-> The following changes since commit 0eb8f90edebc11022a42abb211b026fac2e276f5:
-> 
->    Merge tag 'for-upstream' ofhttps://repo.or.cz/qemu/kevin  into staging (2023-06-28 17:29:53 +0200)
+>    Merge tag 'for-upstream' ofhttps://gitlab.com/bonzini/qemu  into staging (2023-06-29 13:16:06 +0200)
 > 
 > are available in the Git repository at:
 > 
->    https://gitlab.com/thuth/qemu.git  tags/pull-request-2023-06-29
+>    https://github.com/legoater/qemu/  tags/pull-vfio-20230630
 > 
-> for you to fetch changes up to b806bc8d9cc16172f0cf2c9e42ca1d75b72f6555:
+> for you to fetch changes up to 0cc889c8826cefa5b80110d31a62273b56aa1832:
 > 
->    pc-bios: Update the s390 bios images with the recent changes (2023-06-29 20:47:45 +0200)
+>    vfio/pci: Free leaked timer in vfio_realize error path (2023-06-30 06:02:51 +0200)
 > 
 > ----------------------------------------------------------------
-> * Fix a compilation issue in the s390-ccw bios with Clang + binutils 2.40
-> * Create an initial stack frame for the main() function of the s390-ccw bios
-> * Clean up type definitions in the s390-ccw bios
+> vfio queue:
+> 
+> * migration: New switchover ack to reduce downtime
+> * VFIO migration pre-copy support
+> * Removal of the VFIO migration experimental flag
+> * Alternate offset for GPUDirect Cliques
+> * Misc fixes
 
 Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/8.1 as appropriate.
 
