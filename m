@@ -2,73 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 862BE74391E
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 12:13:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3218C743928
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 12:16:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFB73-0002vG-IA; Fri, 30 Jun 2023 06:12:25 -0400
+	id 1qFBAO-0004rQ-Fn; Fri, 30 Jun 2023 06:15:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1qFB6w-0002hX-JP
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 06:12:20 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1qFB6u-0001PK-M9
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 06:12:18 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688119935;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=GJnG5qQNzK5f1dQ5KBCwnGhfQBb6PVZfr3fE+pEYwUw=;
- b=etusAHFHZ2jF7NqqO9mxNc7SWEiGG50ffxsuR7o7OGQl8ADRklVGGKQwYuH620b8zOr4VM
- IsNRfLELN+ImYOSeUVY5pDOr0o0h4J73EpUPyo/KBr2sfr2RWBJHWkRhmC9/W9Yzo+QK4v
- zfsFmCDxa1aSZOA9FzUvVsF+tAPhQ0I=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-457-HV3rX0wFOKqO0FPwqzWaiQ-1; Fri, 30 Jun 2023 06:12:11 -0400
-X-MC-Unique: HV3rX0wFOKqO0FPwqzWaiQ-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id F1769185A792;
- Fri, 30 Jun 2023 10:12:10 +0000 (UTC)
-Received: from localhost (unknown [10.39.193.108])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 5DB9F200A3AD;
- Fri, 30 Jun 2023 10:12:10 +0000 (UTC)
-From: Cornelia Huck <cohuck@redhat.com>
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>, Yong-Xuan Wang
- <yongxuan.wang@sifive.com>, qemu-devel@nongnu.org, qemu-riscv@nongnu.org
-Cc: rkanwal@rivosinc.com, anup@brainfault.org, atishp@atishpatra.org,
- vincent.chen@sifive.com, greentime.hu@sifive.com, frank.chang@sifive.com,
- jim.shu@sifive.com, "Michael S. Tsirkin" <mst@redhat.com>, Paolo Bonzini
- <pbonzini@redhat.com>, Juan Quintela <quintela@redhat.com>, Thomas Huth
- <thuth@redhat.com>, Peter Xu <peterx@redhat.com>, kvm@vger.kernel.org
-Subject: Re: [PATCH v4 1/6] update-linux-headers: sync-up header with Linux
- for KVM AIA support placeholder
-In-Reply-To: <e21ea550-20f6-257b-549d-75b1d5efe0a1@ventanamicro.com>
-Organization: Red Hat GmbH
-References: <20230621145500.25624-1-yongxuan.wang@sifive.com>
- <20230621145500.25624-2-yongxuan.wang@sifive.com>
- <e21ea550-20f6-257b-549d-75b1d5efe0a1@ventanamicro.com>
-User-Agent: Notmuch/0.37 (https://notmuchmail.org)
-Date: Fri, 30 Jun 2023 12:11:57 +0200
-Message-ID: <874jmp45ua.fsf@redhat.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qFBAM-0004pd-J1
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 06:15:50 -0400
+Received: from mail-lj1-x22c.google.com ([2a00:1450:4864:20::22c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qFBAK-0002h7-BE
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 06:15:50 -0400
+Received: by mail-lj1-x22c.google.com with SMTP id
+ 38308e7fff4ca-2b6a16254a4so26236301fa.0
+ for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 03:15:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1688120146; x=1690712146;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=urdJ868+VMnBHLWaVveKOF+PV3LzYkhhHU9YE6dM3+s=;
+ b=bf8esDKOXqdOkju73X+8I3cx+eeAjZAyul1kEfyhDg16B4LVAovtz0SFBx/cm2k0kp
+ P7LyCeoofMpvwi6y6TCUlP4lsfvsMXAunLuTxXbvVSJI+60jWoHTpROdaeDkkI1U0W+h
+ l4cOOCMjfRlyNtth2hztpjFVWIdanWm9TStrv3bX7c9KcgckPq9sV717mGdAfgASull5
+ lvFYLifjWOtvyY9AdcCfnc8t+6eUHOsqlvVyBkliV9hLSuxsW7c2htD0QvE4k/LTz0Bm
+ kShmOJ8DtH5ZR/KfRer1UaLUvT0DSpuIxBJQPS64B8lGOGYS+Vor0DgJEa/sC2FKqA36
+ XzDg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1688120146; x=1690712146;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=urdJ868+VMnBHLWaVveKOF+PV3LzYkhhHU9YE6dM3+s=;
+ b=RTTTGIbJ71RleSQ1GOLubLgNVzqKycdruT3kp1SCENwpAC79hRgdASpEtpbxn7rH5R
+ OnTcu9E7o1qKW2HAJU5QOHKvvF62NlHjzd0AvY4Mbn7UOjrPgq3VPUnJPMyvxNJb56sB
+ 5G6Cbq8YgPfs7T+gjEbtOOkDNgRAwjDaoY/Dq2+A3FHYwkYFLcaNB2dzPgpRknlxSqVz
+ Q64sdY8qGJoJj2OcgeZCNXPIhRQuqNmSNFQxG3nYqVUYeZDrXGsDYHbs2iwYPzzjJS/A
+ l5dGiZx5r/ibYY4A02xmaW7Y2KGUNnauhWulhLY3mnEcZKB8XEyK5XcQvx9oBe0EiTYL
+ Mx3g==
+X-Gm-Message-State: ABy/qLaytqAH4z+pH06YYlmji5t07+dE+TPrCtX9OkSr0D/+ts+cRzas
+ lGOaz/RjUqlzf96di0w6Z7ujFQ==
+X-Google-Smtp-Source: APBJJlFlrjHiQePgTYCaeeCwpQ/TAYXEQJxGt9t1tDP1bfAK3oHYysREVzGOe13lgMnB3ajCLY0rug==
+X-Received: by 2002:a2e:9252:0:b0:2b3:4ea3:d020 with SMTP id
+ v18-20020a2e9252000000b002b34ea3d020mr1731174ljg.17.1688120145504; 
+ Fri, 30 Jun 2023 03:15:45 -0700 (PDT)
+Received: from [192.168.69.115] ([176.187.211.104])
+ by smtp.gmail.com with ESMTPSA id
+ p2-20020a056402044200b0051beb873d98sm6500940edw.27.2023.06.30.03.15.44
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 30 Jun 2023 03:15:45 -0700 (PDT)
+Message-ID: <d1367b5b-c432-5939-6af1-c279617fa4b9@linaro.org>
+Date: Fri, 30 Jun 2023 12:15:42 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=cohuck@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.12.0
+Subject: Re: [PATCH v7 11/20] target/riscv/cpu: add misa_ext_info_arr[]
+Content-Language: en-US
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>, qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
+ liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
+ ajones@ventanamicro.com
+References: <20230630100811.287315-1-dbarboza@ventanamicro.com>
+ <20230630100811.287315-12-dbarboza@ventanamicro.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230630100811.287315-12-dbarboza@ventanamicro.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::22c;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x22c.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.093,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -85,28 +95,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Jun 30 2023, Daniel Henrique Barboza <dbarboza@ventanamicro.com> wrote:
+On 30/6/23 12:08, Daniel Henrique Barboza wrote:
+> Next patch will add KVM specific user properties for both MISA and
+> multi-letter extensions. For MISA extensions we want to make use of what
+> is already available in misa_ext_cfgs[] to avoid code repetition.
+> 
+> misa_ext_info_arr[] array will hold name and description for each MISA
+> extension that misa_ext_cfgs[] is declaring. We'll then use this new
+> array in KVM code to avoid duplicating strings. Two getters were added
+> to allow KVM to retrieve the 'name' and 'description' for each MISA
+> property.
+> 
+> There's nothing holding us back from doing the same with multi-letter
+> extensions. For now doing just with MISA extensions is enough.
+> 
+> It is worth documenting that even using the __bultin_ctz() directive to
+> populate the misa_ext_info_arr[] we are forced to assign 'name' and
+> 'description' during runtime in riscv_cpu_add_misa_properties(). The
+> reason is that some Gitlab runners ('clang-user' and 'tsan-build') will
+> throw errors like this if we fetch 'name' and 'description' from the
+> array in the MISA_CFG() macro:
+> 
+> ../target/riscv/cpu.c:1624:5: error: initializer element is not a
+>                                compile-time constant
+>      MISA_CFG(RVA, true),
+>      ^~~~~~~~~~~~~~~~~~~
+> ../target/riscv/cpu.c:1619:53: note: expanded from macro 'MISA_CFG'
+>      {.name = misa_ext_info_arr[MISA_INFO_IDX(_bit)].name, \
+>               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~
+> 
+> gcc and others compilers/builders were fine with that change. We can't
+> ignore failures in the Gitlab pipeline though, so code was changed to
+> make every runner happy.
+> 
+> As a side effect, misa_ext_cfg[] is no longer a 'const' array because
+> it must be set during runtime.
+> 
+> Suggested-by: Andrew Jones <ajones@ventanamicro.com>
+> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+> ---
+>   target/riscv/cpu.c | 110 +++++++++++++++++++++++++++++++++------------
+>   target/riscv/cpu.h |   7 ++-
+>   2 files changed, 88 insertions(+), 29 deletions(-)
 
-> On 6/21/23 11:54, Yong-Xuan Wang wrote:
->> Sync-up Linux header to get latest KVM RISC-V headers having AIA support.
->> 
->> Note: This is a placeholder commit and could be replaced when all referenced Linux patchsets are mainlined.
->> 
->> The linux-headers changes are from 2 different patchsets.
->> [1] https://lore.kernel.org/lkml/20230404153452.2405681-1-apatel@ventanamicro.com/
->> [2] https://www.spinics.net/lists/kernel/msg4791872.html
->
->
-> It looks like Anup sent a PR for [2] for Linux 6.5. IIUC this would be then a 6.5
-> linux-header update.
->
-> In this case I'm not sure whether we can pick this up for QEMU 8.1 (code freeze is
-> July 10th) since we can't keep a 6.5 placeholder header. I'll let Alistair comment
-> on that.
-
-My crystal ball says that we'll have Linux 6.5-rc1 on July 9th, which
-is... probably too late, given the need for a repost with a proper
-headers update etc. (I'd generally prefer not to do the headers update
-on a random middle-of-the-merge-window commit...)
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
