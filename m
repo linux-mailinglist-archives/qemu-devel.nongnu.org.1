@@ -2,85 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 628BD7442D2
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 21:41:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA36F7442D7
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 21:44:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFJzI-0007SH-PW; Fri, 30 Jun 2023 15:41:00 -0400
+	id 1qFK24-0001t1-QD; Fri, 30 Jun 2023 15:43:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qFJzG-0007Ng-R0
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 15:40:58 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qFJzF-0008VN-2I
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 15:40:58 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-3fbc0981756so20114455e9.0
- for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 12:40:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688154055; x=1690746055;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=/ET0t9ocInYE5lPcMDCA+Xip7b7793CQYxXRvJWVVB0=;
- b=evNInPKarI+ti7Uvkw1slob5r2gCqrSHj1Ik+tLjXBk5Hmu3p3INm+GHcHj0/G9Ukv
- fUPX9OBS33P8sHd675csLMk+cfdHOsTiDVUS3AtDssiOqDeyXYebtrE+M0E3SMPvMeaF
- BQtfdJ6RaO7Vvy7fPsmdxQzFyUNMaf4eoYd9V3iVQROoCrZ71XkXGtPxLO5FaPY1gQYA
- uu7WAkvME3jU+fSmPnogsCmMCskQyOJZJ/lykUYmYsK67D+K0S6ylEn7HsZzjHmse8p/
- fIvDcPoSHbA+YTrI5DsWWUSt7ZOe2qJmJfruSmPeDtc+mZv9f1wlGazbAz9Ej8lXi135
- RGbg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688154055; x=1690746055;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=/ET0t9ocInYE5lPcMDCA+Xip7b7793CQYxXRvJWVVB0=;
- b=OB9ZC+9nQMLeuwTQKUKKB/CtnJys0DNQ0CLP3AMazLTnjHD/t7qDSrUn3aLMbMlu1E
- EF+YjVmHn/2v5Ve5WZNo16HzESo3+fb/Pke9JV5yphqoFwYLJDWPJRcJD1BZJpfp5mnU
- aRGkSYT7RcGi0NN3wr+2dFvD8iJ/HGrJH9RuqqwlJSC6NaNMpmS84Hd3cpPKIr4xpSgJ
- ci5XKYJw5mzxaH+suczActuQv/QJ5cgLdfrorj7DOxMQrraMHEaeSsb+Ws04xZgT0Iuk
- qTchQxL5WtrJJUfHYhh4bf+EintQ7hH2G22df5SN8cPFh1NEl5dc0zlDeb9hXtyI6gUc
- uUHg==
-X-Gm-Message-State: AC+VfDxSwZP4yWDE1PG3QmZxIThQUrgyxuuLIw9FICLnl3YgACxu8mYo
- TpHASsdR4hOwPePxnGsVyfvKGg==
-X-Google-Smtp-Source: ACHHUZ6y8nFoo1gEi0OSkeCRQTNOxLhj6Sb1tjfV+25lQ4bzeXrLXCa6PWC0LoXI6W1Z19wdsrFPVQ==
-X-Received: by 2002:a7b:c353:0:b0:3fb:b70f:fc21 with SMTP id
- l19-20020a7bc353000000b003fbb70ffc21mr2849907wmj.35.1688154055064; 
- Fri, 30 Jun 2023 12:40:55 -0700 (PDT)
-Received: from [192.168.1.208] ([139.47.41.96])
- by smtp.gmail.com with ESMTPSA id
- z12-20020a1c4c0c000000b003fa9554fb30sm15313544wmf.44.2023.06.30.12.40.54
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 30 Jun 2023 12:40:54 -0700 (PDT)
-Message-ID: <07f8c33c-8652-7913-8710-008f491cb3b8@linaro.org>
-Date: Fri, 30 Jun 2023 21:40:52 +0200
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1qFK22-0001sr-LT
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 15:43:50 -0400
+Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1qFK21-0001fm-1u
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 15:43:50 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
+ In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
+ Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+ :Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+ List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=odkRXlSgICw7DggbiqP+vAK1cE6XTBq+39k39qFH4wk=; b=yr/n61v5/DXvsILBR4PIJMZb1k
+ snkCOjYJ0Yxkfe36tOgbf5AQ0c18cR4OJuvtpfxW0OF+OlRWGRoxuA/9gL5QLT9+uCVbvUzir3T1U
+ mFiRfgw8jfUfDhLVcJXwBBjRFOOoAYFn5kJ0V5Zam/f5dkjDZ1kJv4mQ2IGxuapEJyropfN9xsA+A
+ zZh8/VMjOk+W0KF2BCQEv0cdERaonuEeda2a7ujpgvhqmNrFDcs1TpuCCSAWxrIbXGoAukckmOsQC
+ Ce6Rw4gAbQA5ANlSFQ3dUlcL9EOyZDWL76KUBdZUAF6I4ZUh9+VbQEGCYfDby5h84JErmM9HtQ0p+
+ HQGuPfHOjyK0G8fUo8VxLwsHsPHuJI1FPi3aRVz/rT8NIqyWYlOdHCv6//xz5KKSsPJ343p++iBNq
+ bX/rnIYfvrhv/gOqHlSMc0YSaMBor9kIrcuhIAIVpQSCelQaJWQ9Zf+ICM8m4/iy25aJW8R1bTmvz
+ G1rX64VeGRSjxupJP4TTEaUUS+aKYRuEKcEu5AB5Piyizv9BgAQwYI4Oj8NHHhcsDD8pE8L1k3ss5
+ Jg1WHIMj12c0GeNpWaFsyrJe+Hd/pNrGiJg2m+fmgzkI/vsKJ3lATiWoJw0N9VEwoayQ3S9qr2TPG
+ RCtqJwbiBhjgkJ3VfOtHq6MbsPtrbFmbUa3O3EqHM=;
+Received: from [2a00:23c4:8bad:df00:f732:dd76:7417:d15b]
+ by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1qFK1g-000B3f-K3; Fri, 30 Jun 2023 20:43:35 +0100
+Message-ID: <0de296b5-e310-5119-65f0-30805b7ad19d@ilande.co.uk>
+Date: Fri, 30 Jun 2023 20:43:32 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH 08/24] bsd-user: Use page_check_range_empty for MAP_EXCL
+ Thunderbird/102.10.0
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: atar4qemu@gmail.com
+References: <20230620164040.912490-1-richard.henderson@linaro.org>
+ <2044463e-24eb-722e-9cc1-a5a90c3f7ea3@ilande.co.uk>
+ <1266753f-b973-2600-f5f5-b9576bb53f98@linaro.org>
 Content-Language: en-US
-To: Warner Losh <imp@bsdimp.com>
-Cc: qemu-devel@nongnu.org, mjt@tls.msk.ru, laurent@vivier.eu,
- Kyle Evans <kevans@freebsd.org>
-References: <20230630132159.376995-1-richard.henderson@linaro.org>
- <20230630132159.376995-9-richard.henderson@linaro.org>
- <CANCZdfqreYmDeAtZv=y2kke1H7xdU3Pi6jKKNKCE+i6WkAfq2w@mail.gmail.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <CANCZdfqreYmDeAtZv=y2kke1H7xdU3Pi6jKKNKCE+i6WkAfq2w@mail.gmail.com>
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+In-Reply-To: <1266753f-b973-2600-f5f5-b9576bb53f98@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x332.google.com
+X-SA-Exim-Connect-IP: 2a00:23c4:8bad:df00:f732:dd76:7417:d15b
+X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
+Subject: Re: [PATCH 0/2] target/sparc: Enable MTTCG
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
+Received-SPF: pass client-ip=2001:41c9:1:41f::167;
+ envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.095,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -97,45 +82,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/30/23 20:46, Warner Losh wrote:
-> 
-> 
-> On Fri, Jun 30, 2023 at 7:22 AM Richard Henderson <richard.henderson@linaro.org 
-> <mailto:richard.henderson@linaro.org>> wrote:
-> 
->     The previous check returned -1 when any page within
->     [start, start+len) is unmapped, not when all are unmapped.
-> 
->     Cc: Warner Losh <imp@bsdimp.com <mailto:imp@bsdimp.com>>
->     Cc: Kyle Evans <kevans@freebsd.org <mailto:kevans@freebsd.org>>
->     Signed-off-by: Richard Henderson <richard.henderson@linaro.org
->     <mailto:richard.henderson@linaro.org>>
->     ---
->       bsd-user/mmap.c | 2 +-
->       1 file changed, 1 insertion(+), 1 deletion(-)
-> 
->     diff --git a/bsd-user/mmap.c b/bsd-user/mmap.c
->     index 565b9f97ed..07b5b8055e 100644
->     --- a/bsd-user/mmap.c
->     +++ b/bsd-user/mmap.c
->     @@ -609,7 +609,7 @@ abi_long target_mmap(abi_ulong start, abi_ulong len, int prot,
->               }
-> 
->               /* Reject the mapping if any page within the range is mapped */
->     -        if ((flags & MAP_EXCL) && page_check_range(start, len, 0) < 0) {
->     +        if ((flags & MAP_EXCL) && !page_check_range_empty(start, end - 1)) {
-> 
-> 
-> Won't computing end overflow if start is 1<<32 - len? Then subtracting one here would be 
-> too late.
+On 30/06/2023 19:05, Richard Henderson wrote:
 
--fwrapv, so fully twos-compliment.
+> On 6/22/23 16:36, Mark Cave-Ayland wrote:
+>> On 20/06/2023 17:40, Richard Henderson wrote:
+>>
+>>> With the addition of TCG_GUEST_DEFAULT_MO, there's nothing in
+>>> the cpu emulation preventing this from working.  There is some
+>>> board model work to be done for sparc64, where max_cpus = 1.
+>>
+>> I've tried testing this with the Advent Calendar image at 
+>> https://qemu-advent-calendar.org/2018/download/day11.tar.xz and even without these 
+>> patches applied I'm seeing hangs with -smp 2. When applied on top of the other 
+>> "target/sparc: Use tcg_gen_lookup_and_goto_ptr" series I get assert() after a 
+>> minute or two:
+> 
+> Would you try again, now that we've solved the issues with lookup_and_goto_ptr?
 
-So start per above, end == 0, end - 1 == UINT32_MAX.
+The wording above is a bit clumsy on my part, but I was still seeing the hangs on git 
+master with -smp 2, but with the older tcg_gen_lookup_and_goto_ptr series not only 
+would I see the hangs but I would hit the assert() within a couple of minutes.
 
-See also the rest of the linux-user code, wherein I work with "last == end - 1".
-Which has the advantage of preserving comparison order: start < last.
+My notes on the wiki at https://wiki.qemu.org/Documentation/Platforms/SPARC#Timeline 
+suggest that it was working on QEMU 6.2, so I'll need to find a moment to bisect it 
+down to see where things broke.
 
 
-r~
+ATB,
+
+Mark.
+
 
