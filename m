@@ -2,90 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2459B7438BA
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 11:54:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA8757438C1
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 11:56:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFAok-0006CQ-9k; Fri, 30 Jun 2023 05:53:30 -0400
+	id 1qFAqT-0006zD-AW; Fri, 30 Jun 2023 05:55:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qFAof-0006C7-9x
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 05:53:25 -0400
-Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
+ id 1qFAqR-0006yo-0B
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 05:55:15 -0400
+Received: from mail-lj1-x22f.google.com ([2a00:1450:4864:20::22f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qFAod-00031G-Rq
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 05:53:25 -0400
-Received: by mail-lf1-x12b.google.com with SMTP id
- 2adb3069b0e04-4fb41682472so2738605e87.2
- for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 02:53:23 -0700 (PDT)
+ id 1qFAqP-00049s-Ct
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 05:55:14 -0400
+Received: by mail-lj1-x22f.google.com with SMTP id
+ 38308e7fff4ca-2b69e6cce7dso25658871fa.2
+ for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 02:55:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688118801; x=1690710801;
+ d=linaro.org; s=google; t=1688118911; x=1690710911;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=ciXx/obEGczeDCUtZozDj2KptWgGW6aCzwQpIySY3EE=;
- b=fTqF196p3h3WOu0bvX50TA391Qkll+s5MYdkP9sJfedDovSmbkdsg+DpjonGjQRPB0
- lTbgN+4iWPkJueLG7qdT/IexjP5AcDM9QHeRApIe6pAjjWLPumvPBXeCYwBwmJpnKvaW
- eRj4dzu4sSw7x0fmkcnTMI0gB77LdkKQgQ5AAKxJFg/V2DAFgfkjjvjENhBXp57/wCMJ
- rJ39xEztqpeK5Q/APb2HR3vnf7WRi+j4BZnGWYoCwOZ2j5pFdR9odG/Ex/jPkpYdtFZK
- VyJ1wDmMLpO1cBNDvKdFqh1+sUsYRQZmXoDVODS32gw5OUYobRTIRlIaG9VbnMNKVFCn
- Ru9g==
+ bh=3NI1W9jnsoiyjiUD/WIcQ6YQo4/JPNx/MTqRqtx4Ni8=;
+ b=J1mZfAnC2LDxM4QwLi/RgaIv43re57pkF1ZBMUF+VWukqUQk2S4r7TWL5qZvIjDAFm
+ qlIXgtlKI1j+HUkDGA1E/+Wdv4WkNPLRootcvq+OpI+vmP4MdI8wQiLkmtU5S+PkhXRJ
+ zHqyHEhcgtiOuEFLyudyGD74dUpNpeHwEIrqLdCuG+qtwJ3y6tEl2aVFC6fLHXa45OuZ
+ gjo6D1gJtbVa59pJR3EFjlmpwSFfsLyzChcpeXa36C/eaTbXIYV+JvxAZBBsmFDQuy9D
+ oVaYwK9V1UpoJADrOUxRcI4dORrSYW3+DRULH3deVYigq0rdKD2DzkKn9mWU8B3FAowi
+ A18A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688118801; x=1690710801;
+ d=1e100.net; s=20221208; t=1688118911; x=1690710911;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ciXx/obEGczeDCUtZozDj2KptWgGW6aCzwQpIySY3EE=;
- b=TECdo97ol9Hi8ii9rFpYYZe+scKfE8JzQj2m3QTwmbRM8vpEPw7CfjQ7+dLevxB0zS
- or6tSNxacbJfu2bdUmwHKSJiDEAqn8LocvyoBzMOCShDdR5BYgGDTT+kC/0HdKr8O4lb
- yqKbzvMuAulChpeD1V8DBMeKnWBJHrR+h4UDcELXnoCuqpLgzBgZyXpndBhtPrxMRRMv
- lMLODO6N5PUUzvdVmTjhRrCJkAy6Tzzts5ZLTuJXBm9Hm4thL+Z7bOxZKNW2qTuPqYHT
- IYCZUBpV3GIdBmOFjAqgo+mujSE/PmyACAXRUuepEL31VWnqZ1nQ+982dxbhzCAxjKAa
- g37Q==
-X-Gm-Message-State: ABy/qLb9DIfhdJEU6RgroIvgPBnBj1TR8ynfLbqhfYVw9ZPMrt2tIxXJ
- 4BJNkUW7qoKiia0r4X5Md8iF+Q==
-X-Google-Smtp-Source: APBJJlEVj9IDlVUcjUd/4lc1SJZk2EYlF6dvy/VJvgB8oOtyd4XJldlfVD6pnOSRmUIyOvFBsx6hGw==
-X-Received: by 2002:a05:6512:3c90:b0:4f8:58d3:b7ab with SMTP id
- h16-20020a0565123c9000b004f858d3b7abmr2651273lfv.4.1688118801449; 
- Fri, 30 Jun 2023 02:53:21 -0700 (PDT)
+ bh=3NI1W9jnsoiyjiUD/WIcQ6YQo4/JPNx/MTqRqtx4Ni8=;
+ b=cEUDSLiWI0pX6Dq2X+vai5WK9mwOjcq5ZU2NBnbaKcE8/zg9TKraVpmEAJEpzDdTZ5
+ BK2Wh00YxZyit5JRgf8ES7lDueF8TS2BmKcOspp137kuJpaeCIWRrwYgSer/QsE4si/D
+ zLw7olrZ+qxbWUvSPVtfcF9EDCIpnCxFfy1PUPHK28EFB9y+ZQfXpWaxzubWyV2+itiQ
+ LmMTFYMM+dgn3DLzqzyWzCr4HJD8YuyB2W75j5NZ0ZR5P7PoH32Se4EyWxQiWwp96aHw
+ b9HURCelkLdoy5mnrDtIf6taUE0WYSQ4eIKbO8CL+xKbA436w0UCHTPrta0UAUgnHOVR
+ MbOQ==
+X-Gm-Message-State: ABy/qLa5kEfQWvaeKCA9b6z1BE5PvLDEvcxDFuaqf9v9fmy/HEBcI/cn
+ /9daSuQxBe7xdtZkgrY1nzGQlNpbMFMct8ffVJIugg==
+X-Google-Smtp-Source: APBJJlHgD8Gfj4TxE1pVaWkDt3Zk+qgvz/M2BveySHp59ZyQTSD983M5MSjBqZ4px5jF6wuc1ipkkg==
+X-Received: by 2002:a05:6512:2211:b0:4fb:8948:2b2b with SMTP id
+ h17-20020a056512221100b004fb89482b2bmr2557629lfu.48.1688118911075; 
+ Fri, 30 Jun 2023 02:55:11 -0700 (PDT)
 Received: from [192.168.1.208] ([139.47.41.96])
  by smtp.gmail.com with ESMTPSA id
- s2-20020adff802000000b00313de682eb3sm17864367wrp.65.2023.06.30.02.53.20
+ c1-20020a05600c0ac100b003fba6a0c881sm9347769wmr.43.2023.06.30.02.55.10
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 30 Jun 2023 02:53:21 -0700 (PDT)
-Message-ID: <1c8f3c84-60ba-abd8-f1c0-2bb85ed47399@linaro.org>
-Date: Fri, 30 Jun 2023 11:53:19 +0200
+ Fri, 30 Jun 2023 02:55:10 -0700 (PDT)
+Message-ID: <f54d81cb-4967-e1f9-86a6-7b892ef9982c@linaro.org>
+Date: Fri, 30 Jun 2023 11:55:09 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PATCH v4 1/3] riscv: Add support for the Zfa extension
+Subject: Re: [PULL 0/8] s390-ccw bios updates
 Content-Language: en-US
-To: Christoph Muellner <christoph.muellner@vrull.eu>, qemu-riscv@nongnu.org,
- qemu-devel@nongnu.org, Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, Philipp Tomsich
- <philipp.tomsich@vrull.eu>, Palmer Dabbelt <palmer@dabbelt.com>,
- Jeff Law <jeffreyalaw@gmail.com>, Tsukasa OI <research_trasio@irq.a4lg.com>,
- liweiwei@iscas.ac.cn, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Rob Bradford <rbradford@rivosinc.com>
-References: <20230630091303.1676486-1-christoph.muellner@vrull.eu>
- <20230630091303.1676486-2-christoph.muellner@vrull.eu>
+To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
+References: <20230629190310.337850-1-thuth@redhat.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230630091303.1676486-2-christoph.muellner@vrull.eu>
+In-Reply-To: <20230629190310.337850-1-thuth@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12b;
- envelope-from=richard.henderson@linaro.org; helo=mail-lf1-x12b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::22f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-lj1-x22f.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.093,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,18 +93,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/30/23 11:13, Christoph Muellner wrote:
-> +static bool trans_fli_h(DisasContext *ctx, arg_fli_h *a)
-> +{
-> +    REQUIRE_FPU;
-> +    REQUIRE_ZFA(ctx);
-> +    REQUIRE_ZFH(ctx);
-> +
-> +    /* Values below are NaN-boxed to avoid a gen_nanbox_h(). */
-> +    const uint64_t fli_h_table[] = {
+On 6/29/23 21:03, Thomas Huth wrote:
+>   Hi Richard!
+> 
+> The following changes since commit 0eb8f90edebc11022a42abb211b026fac2e276f5:
+> 
+>    Merge tag 'for-upstream' ofhttps://repo.or.cz/qemu/kevin  into staging (2023-06-28 17:29:53 +0200)
+> 
+> are available in the Git repository at:
+> 
+>    https://gitlab.com/thuth/qemu.git  tags/pull-request-2023-06-29
+> 
+> for you to fetch changes up to b806bc8d9cc16172f0cf2c9e42ca1d75b72f6555:
+> 
+>    pc-bios: Update the s390 bios images with the recent changes (2023-06-29 20:47:45 +0200)
+> 
+> ----------------------------------------------------------------
+> * Fix a compilation issue in the s390-ccw bios with Clang + binutils 2.40
+> * Create an initial stack frame for the main() function of the s390-ccw bios
+> * Clean up type definitions in the s390-ccw bios
 
-static const.
+Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/8.1 as appropriate.
 
 
 r~
+
 
