@@ -2,81 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCD45743359
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 05:57:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1D727433C5
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 06:54:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qF5F4-0008K8-NG; Thu, 29 Jun 2023 23:56:18 -0400
+	id 1qF67X-0000oS-7F; Fri, 30 Jun 2023 00:52:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
- id 1qF5F2-0008Ia-Ci; Thu, 29 Jun 2023 23:56:16 -0400
-Received: from mail-ot1-x32e.google.com ([2607:f8b0:4864:20::32e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
- id 1qF5F0-0002CF-Ph; Thu, 29 Jun 2023 23:56:16 -0400
-Received: by mail-ot1-x32e.google.com with SMTP id
- 46e09a7af769-6b711c3ad1fso1254384a34.0; 
- Thu, 29 Jun 2023 20:56:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688097373; x=1690689373;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:sender:from:to:cc:subject:date
- :message-id:reply-to;
- bh=f0KT/8N4hyWU3xN4MlL2wP6UCF5bIyh9M+oLmJhD3eo=;
- b=MyxoonBPPL57JfMoDgoV4NFfD6b5/PSlQbmQ8Txn1DW+u4QG6pciw4kvHtoYOdTFCI
- pBgHXuAJ69Ol9KMg9hJzD7hAH342qGpF27si8eG3J03gmBxCTOItk1kVjDzqzQyQD6BY
- o1PBYXiqAXoD9+OZGpWELRXyK3sxzpAxcblT3+R9PDhJeCMxwX9waBWUPR6sn5wMh0o+
- K52p8ip/SvaVMzR4QSyGwUUipBHcMzBGszBmHqkoA0BKtxvPheoeRAEupZsWuvYb2GYt
- TB2LUJcUvdMAaWuf6MApuvMi87/XKf6fOE0PMewPWPCy/DPAS0B0FsLHtFR3n0LvMcE5
- V1FQ==
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1qF67U-0000o7-Vh
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 00:52:32 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1qF67T-0005XW-3F
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 00:52:32 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1688100749;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=LxfsUcSD7c3FFnuk7BufI9QDxF8LZu0znMXP0FGbkQM=;
+ b=EHLNQZFOlHF/xtYSkx2jeh7U8FKOY3pcFcJjtoo0I8lqw+CcaYpdC7+jRpYlOyiiwKzvjU
+ kA8hIwX3SJy6kF5w8oYk+/NqnpF0uyiOlW9GE2Pb9A6iAP1n7M3jLawbrMvvap+1eeu6FE
+ gC18RW2gD9LO/5R21qE97n8pq546+oY=
+Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
+ [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-448-4wAFsDzFOnmObp6TyzDSTg-1; Fri, 30 Jun 2023 00:52:27 -0400
+X-MC-Unique: 4wAFsDzFOnmObp6TyzDSTg-1
+Received: by mail-lj1-f197.google.com with SMTP id
+ 38308e7fff4ca-2b69dcf0d73so16192001fa.2
+ for <qemu-devel@nongnu.org>; Thu, 29 Jun 2023 21:52:27 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688097373; x=1690689373;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:sender:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=f0KT/8N4hyWU3xN4MlL2wP6UCF5bIyh9M+oLmJhD3eo=;
- b=gKOdVhYOQtU0kprShy3nctZVicHp5qNIObBjjHBDTQRYzu8E0BVyUJKH4HlIkn7TUq
- tbYbDSV3BlZO19CMEdDAhQ3qB4FLDELEcAoEmu+R/50CQTAhs+xTTcX/8LoO/WIEB9Lb
- qqaEY8rCMKGks9Iv5kBoWbqE1GYYgVky8KtAH28ZbTuqRtucDoFG+C0d8nBF8xpMZKs9
- qDivsu+87QHYdZwL84T3RyromzROX/Q9TtikDKakS+BV0voiUukH2F7JbDgAzrmjj2D/
- /PvfBcDochwGdj6aeWPHKUtmunkn7OkpZtV1AHN87ePNi7NvmTkgPy5JKeQyWtMAR8bR
- 3FDA==
-X-Gm-Message-State: AC+VfDx2gJdJsj3HnCv5MZ0UcjpAQqVERjG4d0lOrt6+2ljLNjsnyq2o
- Oaqgp1DaGZ1cm9K2TE/4yZM=
-X-Google-Smtp-Source: ACHHUZ4yX6Umobp4JlDJQ5IncSougBZ66au6stGAQ91KDoXgsjc2l0QRJNDj0UiG3hsb6BYproVg9g==
-X-Received: by 2002:a9d:7ad5:0:b0:6b8:969f:df31 with SMTP id
- m21-20020a9d7ad5000000b006b8969fdf31mr1804815otn.9.1688097373085; 
- Thu, 29 Jun 2023 20:56:13 -0700 (PDT)
-Received: from voyager.lan ([45.124.203.15]) by smtp.gmail.com with ESMTPSA id
- 29-20020a17090a195d00b0025ef39c0f87sm10639290pjh.0.2023.06.29.20.56.10
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 29 Jun 2023 20:56:12 -0700 (PDT)
-From: Joel Stanley <joel@jms.id.au>
-To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- Nicholas Piggin <npiggin@gmail.com>,
- =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Barrat?= <fbarrat@linux.ibm.com>
-Cc: qemu-devel@nongnu.org,
-	qemu-ppc@nongnu.org
-Subject: [PATCH 4/4] ppc/pnv: Return zero for core thread state xscom
-Date: Fri, 30 Jun 2023 13:25:47 +0930
-Message-Id: <20230630035547.80329-5-joel@jms.id.au>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230630035547.80329-1-joel@jms.id.au>
-References: <20230630035547.80329-1-joel@jms.id.au>
+ d=1e100.net; s=20221208; t=1688100746; x=1690692746;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=LxfsUcSD7c3FFnuk7BufI9QDxF8LZu0znMXP0FGbkQM=;
+ b=Axan9mg32Hp8Ywt5JrkkFJBHTkTvCzvhfCng59fu6sNaX3BQ/GfTW7IbmV6LIa+ZBE
+ 0LMXzYT9IYNeFtMdH3uqvdqYgDeYtL6KO7vqe+nADv/YbdiDPVpvlYjkyjeai0yFSl8C
+ 0qe8oml0Pb53FF2jgIX0KfUGZMwOGuKQczMVQyVmeRR0RNrFpLubPCA6CZ4wvyBiNhdn
+ NfBddpklxXoNlKzaBsNmHgHdWurhTZtER3QSNdu8eDWVPxw93q3btzM1bUqV3qSBa+J/
+ 2fcD9wuFVJHaN9+A7/Rqer2Sc6dp0Z5/+yLQCpBRlR3ZQDpVhYpmkB/VV+Zhr7oMXhlP
+ lWRg==
+X-Gm-Message-State: ABy/qLaNnNWMM8m1hxxvJddTRi1maiqqM+zwmOEdT54dVi2V+ejhGFef
+ 1l8DIvEjdlWo2clTVVlvqrhT3+6UfG95X03ysqp9C20Zyk3dcpX61s8cMPxUoJKx2Fm+R42p/hz
+ O6cGAQvHzC6QMxlDvK3SvGGJw482dF/Y=
+X-Received: by 2002:a2e:3315:0:b0:2b4:70c1:b484 with SMTP id
+ d21-20020a2e3315000000b002b470c1b484mr1102047ljc.38.1688100746113; 
+ Thu, 29 Jun 2023 21:52:26 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlGPG/opP9obYpqKSZc/0BfkxJ5nLo5rFVIp2jyrT/m+PDqP2vmi4oEFZdVzv4nmiTeqCm/5hQw+p0pttX7WTtA=
+X-Received: by 2002:a2e:3315:0:b0:2b4:70c1:b484 with SMTP id
+ d21-20020a2e3315000000b002b470c1b484mr1102040ljc.38.1688100745749; Thu, 29
+ Jun 2023 21:52:25 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::32e;
- envelope-from=joel.stan@gmail.com; helo=mail-ot1-x32e.google.com
-X-Spam_score_int: -14
-X-Spam_score: -1.5
-X-Spam_bar: -
-X-Spam_report: (-1.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FORGED_FROMDOMAIN=0.249,
- FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.25,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+References: <20230628152726.110295-1-bmeng@tinylab.org>
+ <20230628152726.110295-7-bmeng@tinylab.org>
+In-Reply-To: <20230628152726.110295-7-bmeng@tinylab.org>
+From: Jason Wang <jasowang@redhat.com>
+Date: Fri, 30 Jun 2023 12:52:14 +0800
+Message-ID: <CACGkMEu_h4-DMMOY+=wmL0LeTWAELeQPiBjucEEG=ud4EtuLSw@mail.gmail.com>
+Subject: Re: [PATCH v4 6/6] net: tap: Use qemu_close_range() to close fds
+To: Bin Meng <bmeng@tinylab.org>
+Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>, 
+ Zhangjin Wu <falcon@tinylab.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jasowang@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,57 +96,106 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Firmware now warns if booting in LPAR per core mode (PPC bit 62). So
-this warning doesn't trigger report the core thread state is 0.
+On Wed, Jun 28, 2023 at 11:29=E2=80=AFPM Bin Meng <bmeng@tinylab.org> wrote=
+:
+>
+> From: Zhangjin Wu <falcon@tinylab.org>
+>
+> Current codes using a brute-force traversal of all file descriptors
+> do not scale on a system where the maximum number of file descriptors
+> is set to a very large value (e.g.: in a Docker container of Manjaro
+> distribution it is set to 1073741816). QEMU just looks frozen during
+> start-up.
+>
+> The close-on-exec flag (O_CLOEXEC) was introduced since Linux kernel
+> 2.6.23, FreeBSD 8.3, OpenBSD 5.0, Solaris 11. While it's true QEMU
+> doesn't need to manually close the fds for child process as the proper
+> O_CLOEXEC flag should have been set properly on files with its own
+> codes, QEMU uses a huge number of 3rd party libraries and we don't
+> trust them to reliably be using O_CLOEXEC on everything they open.
+>
+> Modern Linux and BSDs have the close_range() call we can use to do the
+> job, and on Linux we have one more way to walk through /proc/self/fd
+> to complete the task efficiently, which is what qemu_close_range() does.
+>
+> Reported-by: Zhangjin Wu <falcon@tinylab.org>
+> Co-developed-by: Bin Meng <bmeng@tinylab.org>
+> Signed-off-by: Zhangjin Wu <falcon@tinylab.org>
+> Signed-off-by: Bin Meng <bmeng@tinylab.org>
+> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-Signed-off-by: Joel Stanley <joel@jms.id.au>
----
- hw/ppc/pnv_core.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+Patch looks good but I'm not sure using helper scripts is good for the
+production environment since it increases attack surfaces. Passing TAP
+fd should be a better way.
 
-diff --git a/hw/ppc/pnv_core.c b/hw/ppc/pnv_core.c
-index 7fff2fd9e298..98356d7f6538 100644
---- a/hw/ppc/pnv_core.c
-+++ b/hw/ppc/pnv_core.c
-@@ -116,6 +116,8 @@ static const MemoryRegionOps pnv_core_power8_xscom_ops = {
- #define PNV9_XSCOM_EC_PPM_SPECIAL_WKUP_HYP 0xf010d
- #define PNV9_XSCOM_EC_PPM_SPECIAL_WKUP_OTR 0xf010a
- 
-+#define PNV9_XSCOM_EC_CORE_THREAD_STATE    0x10ab3
-+
- static uint64_t pnv_core_power9_xscom_read(void *opaque, hwaddr addr,
-                                            unsigned int width)
- {
-@@ -134,6 +136,9 @@ static uint64_t pnv_core_power9_xscom_read(void *opaque, hwaddr addr,
-     case PNV9_XSCOM_EC_PPM_SPECIAL_WKUP_OTR:
-         val = 0x0;
-         break;
-+    case PNV9_XSCOM_EC_CORE_THREAD_STATE:
-+        val = 0;
-+        break;
-     default:
-         qemu_log_mask(LOG_UNIMP, "Warning: reading reg=0x%" HWADDR_PRIx "\n",
-                   addr);
-@@ -408,6 +413,8 @@ static const MemoryRegionOps pnv_quad_power9_xscom_ops = {
-  * POWER10 Quads
-  */
- 
-+#define PNV10_XSCOM_EC_PC_PMC_CORE_THREAD_STATE 0x28412
-+
- static uint64_t pnv_quad_power10_xscom_read(void *opaque, hwaddr addr,
-                                             unsigned int width)
- {
-@@ -415,6 +422,9 @@ static uint64_t pnv_quad_power10_xscom_read(void *opaque, hwaddr addr,
-     uint64_t val = -1;
- 
-     switch (offset) {
-+    case PNV10_XSCOM_EC_PC_PMC_CORE_THREAD_STATE:
-+        val = 0;
-+        break;
-     default:
-         qemu_log_mask(LOG_UNIMP, "%s: writing @0x%08x\n", __func__,
-                       offset);
--- 
-2.40.1
+Thanks
+
+>
+> ---
+>
+> Changes in v4:
+> - put fd on its own line
+>
+> Changes in v2:
+> - Change to use qemu_close_range() to close fds for child process efficie=
+ntly
+> - v1 link: https://lore.kernel.org/qemu-devel/20230406112041.798585-1-bme=
+ng@tinylab.org/
+>
+>  net/tap.c | 24 ++++++++++++------------
+>  1 file changed, 12 insertions(+), 12 deletions(-)
+>
+> diff --git a/net/tap.c b/net/tap.c
+> index 1bf085d422..9f080215f0 100644
+> --- a/net/tap.c
+> +++ b/net/tap.c
+> @@ -446,13 +446,13 @@ static void launch_script(const char *setup_script,=
+ const char *ifname,
+>          return;
+>      }
+>      if (pid =3D=3D 0) {
+> -        int open_max =3D sysconf(_SC_OPEN_MAX), i;
+> +        unsigned int last_fd =3D sysconf(_SC_OPEN_MAX) - 1;
+> +
+> +        /* skip stdin, stdout and stderr */
+> +        qemu_close_range(3, fd - 1);
+> +        /* skip the currently used fd */
+> +        qemu_close_range(fd + 1, last_fd);
+>
+> -        for (i =3D 3; i < open_max; i++) {
+> -            if (i !=3D fd) {
+> -                close(i);
+> -            }
+> -        }
+>          parg =3D args;
+>          *parg++ =3D (char *)setup_script;
+>          *parg++ =3D (char *)ifname;
+> @@ -536,16 +536,16 @@ static int net_bridge_run_helper(const char *helper=
+, const char *bridge,
+>          return -1;
+>      }
+>      if (pid =3D=3D 0) {
+> -        int open_max =3D sysconf(_SC_OPEN_MAX), i;
+> +        unsigned int last_fd =3D sysconf(_SC_OPEN_MAX) - 1;
+> +        unsigned int fd =3D sv[1];
+>          char *fd_buf =3D NULL;
+>          char *br_buf =3D NULL;
+>          char *helper_cmd =3D NULL;
+>
+> -        for (i =3D 3; i < open_max; i++) {
+> -            if (i !=3D sv[1]) {
+> -                close(i);
+> -            }
+> -        }
+> +        /* skip stdin, stdout and stderr */
+> +        qemu_close_range(3, fd - 1);
+> +        /* skip the currently used fd */
+> +        qemu_close_range(fd + 1, last_fd);
+>
+>          fd_buf =3D g_strdup_printf("%s%d", "--fd=3D", sv[1]);
+>
+> --
+> 2.34.1
+>
 
 
