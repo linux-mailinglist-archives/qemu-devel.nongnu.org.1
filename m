@@ -2,104 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1DD17437CE
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 10:58:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95EB87437E5
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 11:06:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qF9xH-000285-WF; Fri, 30 Jun 2023 04:58:16 -0400
+	id 1qFA3V-00043G-1m; Fri, 30 Jun 2023 05:04:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qF9xD-00027Q-9z
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 04:58:11 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qF9xB-0008OK-A0
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 04:58:11 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688115484;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=jfPH+LwjZ/9LcomB7J5C36lR3ZpS1499ng2WD0IUbbU=;
- b=hvIeJ8nJ0WGyH8pVIQu2llYSCe4cBhZaI7DxM5njTMoJqVyKnwdC4BpyFqbX0Qjsr2fHiO
- qh0BO0+0BTch2GHkmbeLw5ptQU9fQQ1NXmozqRMqasqP+HgodEqB5LJonoxsYlMHaNheQd
- yd/jLYHKpSR0/gMxnXBpsAiVpe1zflM=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-264-HyyWRI-LN1iYH_z_MQZ-bA-1; Fri, 30 Jun 2023 04:58:00 -0400
-X-MC-Unique: HyyWRI-LN1iYH_z_MQZ-bA-1
-Received: by mail-qk1-f200.google.com with SMTP id
- af79cd13be357-7659cb9c3b3so164967085a.1
- for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 01:58:00 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688115480; x=1690707480;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=jfPH+LwjZ/9LcomB7J5C36lR3ZpS1499ng2WD0IUbbU=;
- b=ZdtrzHNpn1lws3nRpbd7TYiWjoZDUY1M0v8mA/MxrbrExOLAwvqXjIL9lyFQ1iRUhd
- O/9u/HMIl1IwUFqJxkK1Mnp1E397OU9rhchUNcMvmFIzNIuR8PJRPZ3w/dWO+Q6BmjHq
- 0hy/BTlKizepC+CvNki7WyNqh7TdSAX8sVRtI1gMkTV5mKWQY2PCgG4uVJV40nLFprmd
- VU7sCMmvHI2fF7YT5eWxP7LWHYKrJ/B/+3/6jL6nXmwNFdfA1JCtmkHR2qPVOjDP1MUs
- 0gEGVGeLFEupXtE+8C1THTtDq2Jcew9Q6h0cXZyEGAVrrQILUtdv2ajokvzpRHclK8BN
- 0EWg==
-X-Gm-Message-State: AC+VfDy8qzamjq3jCl5dRs34SndHDvBovxAIMvjR6+1KrMj8KWshzDhj
- dllET0JK710OFH6NJv6qNbojSmALWzqUGBI0z4qIWjWRWYFDz/FJpk/C88sw/evl54Yx9uWeGoA
- XUhPwkiseMwHfY6IAr7SZojVEVrUgG1c=
-X-Received: by 2002:a05:620a:4727:b0:767:3771:f770 with SMTP id
- bs39-20020a05620a472700b007673771f770mr1901032qkb.40.1688115479974; 
- Fri, 30 Jun 2023 01:57:59 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6gqoIq8CFUQkqIrKVGJC5XI9y+I2vsqc12pUFSWGk2qAB410tOkt0iSBtFgdwDMjs1W89BusWOiK4OwxRZduU=
-X-Received: by 2002:a05:620a:4727:b0:767:3771:f770 with SMTP id
- bs39-20020a05620a472700b007673771f770mr1901024qkb.40.1688115479747; Fri, 30
- Jun 2023 01:57:59 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <qianfanguijin@163.com>)
+ id 1qFA3P-000436-8Q
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 05:04:35 -0400
+Received: from m12.mail.163.com ([220.181.12.196])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <qianfanguijin@163.com>) id 1qFA3I-0002ey-Gj
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 05:04:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+ s=s110527; h=Message-ID:Date:MIME-Version:Subject:From:
+ Content-Type; bh=IguZ+VZoJ6ZoOVlRp0M4lRpT7A0WyaBfc11iFukekCQ=;
+ b=DftNGYBrxDEmEFTQ3wPWbN9K6iGLXaPrJ9eQ977C+Y7w19bMCuVA03RC6PTf8Y
+ GIze5veP1FEArB/KuKOMy0sFs5FIqYYyyIoDxIuGkFT4qbCr0g4XxhdkCFR+3gGp
+ X0nov0Tocyd9a1teuSMAhkuJI2/k9DfnhWVwWuz4rVnsc=
+Received: from [172.21.25.67] (unknown [218.201.129.20])
+ by zwqz-smtp-mta-g1-3 (Coremail) with SMTP id _____wB3Ww2Kmp5kQoQ+BQ--.39072S2;
+ Fri, 30 Jun 2023 17:04:11 +0800 (CST)
+Message-ID: <77ef230f-b896-9f18-e7b1-d9821a664e0a@163.com>
+Date: Fri, 30 Jun 2023 17:04:11 +0800
 MIME-Version: 1.0
-References: <20230627160943.2956928-1-alex.bennee@linaro.org>
- <20230627160943.2956928-26-alex.bennee@linaro.org>
- <b08189c8-38c2-adbf-7bb3-0304f4845fc0@linaro.org>
-In-Reply-To: <b08189c8-38c2-adbf-7bb3-0304f4845fc0@linaro.org>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Fri, 30 Jun 2023 10:57:48 +0200
-Message-ID: <CABgObfa=pWNa17jKiLz3FnRk=qCyTsQ1jv1hk9ZoLZj0JV1Mng@mail.gmail.com>
-Subject: Re: [PATCH v3 25/36] docs/devel: introduce some key concepts for QOM
- development
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- qemu-devel <qemu-devel@nongnu.org>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>, 
- Juan Quintela <quintela@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Cleber Rosa <crosa@redhat.com>, 
- Leonardo Bras <leobras@redhat.com>, Beraldo Leal <bleal@redhat.com>, 
- Peter Maydell <peter.maydell@linaro.org>, Bin Meng <bmeng.cn@gmail.com>, 
- Yanan Wang <wangyanan55@huawei.com>, Darren Kenny <darren.kenny@oracle.com>, 
- Alexander Bulekov <alxndr@bu.edu>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Peter Xu <peterx@redhat.com>, 
- Radoslaw Biernacki <rad@semihalf.com>, Laurent Vivier <laurent@vivier.eu>, 
- Eduardo Habkost <eduardo@habkost.net>, qemu-arm <qemu-arm@nongnu.org>, 
- Stefan Hajnoczi <stefanha@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>, 
- Bandan Das <bsd@redhat.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- Alexandre Iooss <erdnaxe@crans.org>,
- Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>, 
- Leif Lindholm <quic_llindhol@quicinc.com>, Laurent Vivier <lvivier@redhat.com>,
- Qiuhao Li <Qiuhao.Li@outlook.com>, Mahmoud Mandour <ma.mandourr@gmail.com>, 
- Riku Voipio <riku.voipio@iki.fi>
-Content-Type: multipart/alternative; boundary="00000000000082b4c705ff5503fb"
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PULL 18/42] tests: avocado: boot_linux_console: Add test case
+ for bpim2u
+Content-Language: en-US
+To: Thomas Huth <thuth@redhat.com>, Peter Maydell <peter.maydell@linaro.org>, 
+ qemu-devel@nongnu.org
+Cc: Niek Linnenbank <nieklinnenbank@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+References: <20230606094814.3581397-1-peter.maydell@linaro.org>
+ <20230606094814.3581397-19-peter.maydell@linaro.org>
+ <280c57d2-9648-36ea-74e9-6ffc7f3b4388@redhat.com>
+ <b954eaad-508c-2341-eaeb-8ec4111de664@163.com>
+ <4f749512-a395-40e4-c20e-ed4928c2cb87@redhat.com>
+ <f7d5a8eb-cd7f-e0f5-91cc-4b3840b5de2c@163.com>
+ <be0b195b-101b-692c-672c-f16e41522853@redhat.com>
+From: qianfan <qianfanguijin@163.com>
+In-Reply-To: <be0b195b-101b-692c-672c-f16e41522853@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: _____wB3Ww2Kmp5kQoQ+BQ--.39072S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW3GF18XF1UuFW7XF4kKw1rWFg_yoWfXF17pr
+ WUJF1UKrW8JF15tr1Sg34UXry5tw10kFy3WryDCr1ruF1qyFn7JF42yr4rury8Zr4vya4F
+ vrW5Xa43Wr15ArJanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+ 9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07ULa9fUUUUU=
+X-Originating-IP: [218.201.129.20]
+X-CM-SenderInfo: htld0w5dqj3xxmlqqiywtou0bp/xtbBzgye7WI0ZsI2JwAAsS
+Received-SPF: pass client-ip=220.181.12.196;
+ envelope-from=qianfanguijin@163.com; helo=m12.mail.163.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ NICE_REPLY_A=-0.093, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_BL=0.001,
+ RCVD_IN_MSPIKE_L4=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -115,158 +82,247 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---00000000000082b4c705ff5503fb
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Il gio 29 giu 2023, 15:41 Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> h=
-a
-scritto:
 
-> > +The TYPE_DEVICE class is the parent class for all modern devices
-> > +implemented in QEMU and adds some specific methods to handle QEMU
-> > +device model. This includes managing the lifetime of devices from
-> > +creation through to when they become visible to the guest and
-> > +eventually unrealized.
+在 2023/6/30 16:53, Thomas Huth 写道:
+> On 30/06/2023 10.45, qianfan wrote:
+>>
+>>
+>> 在 2023/6/30 15:27, Thomas Huth 写道:
+>>> On 30/06/2023 08.15, qianfan wrote:
+>>>>
+>>>>
+>>>> 在 2023/6/29 19:35, Thomas Huth 写道:
+>>>>> On 06/06/2023 11.47, Peter Maydell wrote:
+>>>>>> From: qianfan Zhao <qianfanguijin@163.com>
+>>>>>>
+>>>>>> Add test case for booting from initrd and sd card.
+>>>>>>
+>>>>>> Signed-off-by: qianfan Zhao <qianfanguijin@163.com>
+>>>>>> Reviewed-by: Niek Linnenbank <nieklinnenbank@gmail.com>
+>>>>>> Tested-by: Niek Linnenbank <nieklinnenbank@gmail.com>
+>>>>>> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+>>>>>> ---
+>>>>>>   tests/avocado/boot_linux_console.py | 176 
+>>>>>> ++++++++++++++++++++++++++++
+>>>>>>   1 file changed, 176 insertions(+)
+>>>>> ...
+>>>>>> +    def test_arm_bpim2u_gmac(self):
+>>>>>> +        """
+>>>>>> +        :avocado: tags=arch:arm
+>>>>>> +        :avocado: tags=accel:tcg
+>>>>>> +        :avocado: tags=machine:bpim2u
+>>>>>> +        :avocado: tags=device:sd
+>>>>>> +        """
+>>>>>> +        self.require_netdev('user')
+>>>>>> +
+>>>>>> +        deb_url = 
+>>>>>> ('https://apt.armbian.com/pool/main/l/linux-5.10.16-sunxi/'
+>>>>>> + 'linux-image-current-sunxi_21.02.2_armhf.deb')
+>>>>>> +        deb_hash = '9fa84beda245cabf0b4fa84cf6eaa7738ead1da0'
+>>>>>> +        deb_path = self.fetch_asset(deb_url, asset_hash=deb_hash)
+>>>>>> +        kernel_path = self.extract_from_deb(deb_path,
+>>>>>> + '/boot/vmlinuz-5.10.16-sunxi')
+>>>>>> +        dtb_path = ('/usr/lib/linux-image-current-sunxi/'
+>>>>>> +                    'sun8i-r40-bananapi-m2-ultra.dtb')
+>>>>>> +        dtb_path = self.extract_from_deb(deb_path, dtb_path)
+>>>>>> +        rootfs_url = 
+>>>>>> ('http://storage.kernelci.org/images/rootfs/buildroot/'
+>>>>>> + 'buildroot-baseline/20221116.0/armel/rootfs.ext2.xz')
+>>>>>> +        rootfs_hash = 'fae32f337c7b87547b10f42599acf109da8b6d9a'
+>>>>>> +        rootfs_path_xz = self.fetch_asset(rootfs_url, 
+>>>>>> asset_hash=rootfs_hash)
+>>>>>> +        rootfs_path = os.path.join(self.workdir, 'rootfs.cpio')
+>>>>>> +        archive.lzma_uncompress(rootfs_path_xz, rootfs_path)
+>>>>>> +        image_pow2ceil_expand(rootfs_path)
+>>>>>> +
+>>>>>> +        self.vm.set_console()
+>>>>>> +        kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE +
+>>>>>> +                               'console=ttyS0,115200 '
+>>>>>> +                               'root=/dev/mmcblk0 rootwait rw '
+>>>>>> +                               'panic=-1 noreboot')
+>>>>>> +        self.vm.add_args('-kernel', kernel_path,
+>>>>>> +                         '-dtb', dtb_path,
+>>>>>> +                         '-drive', 'file=' + rootfs_path + 
+>>>>>> ',if=sd,format=raw',
+>>>>>> +                         '-net', 'nic,model=gmac,netdev=host_gmac',
+>>>>>> +                         '-netdev', 'user,id=host_gmac',
+>>>>>> +                         '-append', kernel_command_line,
+>>>>>> +                         '-no-reboot')
+>>>>>> +        self.vm.launch()
+>>>>>> +        shell_ready = "/bin/sh: can't access tty; job control 
+>>>>>> turned off"
+>>>>>> +        self.wait_for_console_pattern(shell_ready)
+>>>>>> +
+>>>>>> +        exec_command_and_wait_for_pattern(self, 'cat 
+>>>>>> /proc/cpuinfo',
+>>>>>> + 'Allwinner sun8i Family')
+>>>>>> +        exec_command_and_wait_for_pattern(self, 'cat 
+>>>>>> /proc/partitions',
+>>>>>> + 'mmcblk0')
+>>>>>> +        exec_command_and_wait_for_pattern(self, 'ifconfig eth0 up',
+>>>>>> +                                                 'eth0: Link is 
+>>>>>> Up')
+>>>>>> +        exec_command_and_wait_for_pattern(self, 'udhcpc eth0',
+>>>>>> +            'udhcpc: lease of 10.0.2.15 obtained')
+>>>>>> +        exec_command_and_wait_for_pattern(self, 'ping -c 3 
+>>>>>> 10.0.2.2',
+>>>>>> +            '3 packets transmitted, 3 packets received, 0% 
+>>>>>> packet loss')
+>>>>>> +        exec_command_and_wait_for_pattern(self, 'reboot',
+>>>>>> + 'reboot: Restarting system')
+>>>>>> +        # Wait for VM to shut down gracefully
+>>>>>> +        self.vm.wait()
+>>>>>
+>>>>> FYI, the test_arm_bpim2u_gmac test just failed during one of my CI 
+>>>>> runs:
+>>>>>
+>>>>> https://gitlab.com/thuth/qemu/-/jobs/4565108610#L300
+>>>>>
+>>>>> Looking at the debug.log in the artifacts, it looks like the 
+>>>>> kernel was hanging during boot:
+>>>>>
+>>>>> 10:53:56 DEBUG| of_cfs_init
+>>>>> 10:53:56 DEBUG| of_cfs_init: OK
+>>>>> 10:53:56 DEBUG| ALSA device list:
+>>>>> 10:53:56 DEBUG| No soundcards found.
+>>>>> 10:53:56 DEBUG| Waiting for root device /dev/mmcblk0...
+>>>>> 10:54:26 DEBUG| dcdc4: disabling
+>>>>> 10:54:26 DEBUG| dc5ldo: disabling
+>>>>> 10:54:26 DEBUG| vcc5v0: disabling
+>>>>> 10:55:15 ERROR|
+>>>>> ...
+>>>>> 10:55:15 ERROR| RuntimeError: Test interrupted by SIGTERM
+>>>>>
+>>>>> I can reproduce the problem locally on my laptop when running the 
+>>>>> test repeatedly, e.g. with:
+>>>>>
+>>>>>  make check-venv
+>>>>>  for ((x=0;x<10;x++)); do \
+>>>>>   ./tests/venv/bin/avocado run \
+>>>>> tests/avocado/boot_linux_console.py:test_arm_bpim2u_gmac ; \
+>>>>>  done
+>>>>>
+>>>>> 1 out of 10 runs were failing.
+>>>>>
+>>>>> Any ideas what could be wrong in those failing cases?
+>>>> Hi:
+>>>>
+>>>> I can reproduce this issue based on master 
+>>>> code(v8.0.0-rc1-2442-g4d541f63e9) with your's
+>>>> test scripts, and I have tested 50 times only failed once.
+>>>>
+>>>> Copy liunx boot logs and make a diff:
+>>>>
+>>>> $ diff ~/a/qemu_bpi_good.txt ~/a/qemu_bpi_bad.txt
+>>> ...
+>>>> 288a289,291
+>>>>  > mmc1: host does not support reading read-only switch, assuming 
+>>>> write-enable
+>>>>  > mmc1: new high speed SD card at address 4567
+>>>>  > mmcblk1: mmc1:4567 QEMU! 64.0 MiB
+>>>> 296,298d298
+>>>> < mmc0: host does not support reading read-only switch, assuming 
+>>>> write-enable
+>>>> < mmc0: new high speed SD card at address 4567
+>>>> < mmcblk0: mmc0:4567 QEMU! 64.0 MiB
+>>>> 322,331c322,325
+>>>> < EXT4-fs (mmcblk0): mounting ext2 file system using the ext4 
+>>>> subsystem
+>>>> < EXT4-fs (mmcblk0): mounted filesystem without journal. Opts: (null)
+>>>> < VFS: Mounted root (ext2 filesystem) on device 179:0.
+>>>> < devtmpfs: mounted
+>>>> < Freeing unused kernel memory: 1024K
+>>>> < Run /sbin/init as init process
+>>>> < EXT4-fs (mmcblk0): re-mounted. Opts: (null)
+>>>> < Starting syslogd: OK
+>>>> < Starting klogd: OK
+>>>> < Running sysctl: OK
+>>>> \ No newline at end of file
+>>>> ---
+>>>>  > Waiting for root device /dev/mmcblk0...
+>>>>  > dcdc4: disabling
+>>>>  > dc5ldo: disabling
+>>>>  > vcc5v0: disabling
+>>>> \ No newline at end of file
+>>>>
+>>>> The first mmc device should be mmc0, but the linux kernel named it 
+>>>> as mmcblk1.
+>>>> So it always 'Waiting for root device /dev/mmcblk0...', that make 
+>>>> the rootfs
+>>>> can not mounted.
+>>>>
+>>>> I'm not make sure where the problem came from.
+>>>
+>>> Oh, that's ugly, I think the problem is likely that the numbering
+>>> of device names that are directly in /dev/ is never guaranteed by
+>>> the Linux kernel.
+>>>
+>>> Could you please try whether this work more reliably for you
+>>> instead:
+>>>
+>>> diff a/tests/avocado/boot_linux_console.py 
+>>> b/tests/avocado/boot_linux_console.py
+>>> --- a/tests/avocado/boot_linux_console.py
+>>> +++ b/tests/avocado/boot_linux_console.py
+>>> @@ -869,7 +869,7 @@ def test_arm_bpim2u_gmac(self):
+>>>          self.vm.set_console()
+>>>          kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE +
+>>>                                 'console=ttyS0,115200 '
+>>> -                               'root=/dev/mmcblk0 rootwait rw '
+>>> +                               'root=b300 rootwait rw '
+>>>                                 'panic=-1 noreboot')
+>>>          self.vm.add_args('-kernel', kernel_path,
+>>>                           '-dtb', dtb_path,
+>>>
+>>> ?
+>> Yes, this patch is useful.
+>>
+>> The rootfs can mount successful even if the mmc block enumed as 
+>> mmcblk1, next is the
+>> kernel logs:
+>>
+>> mmc1: new high speed SD card at address 4567
+>> mmcblk1: mmc1:4567 QEMU! 64.0 MiB
+>> EXT4-fs (mmcblk1): mounting ext2 file system using the ext4 subsystem
+>> EXT4-fs (mmcblk1): mounted filesystem without journal. Opts: (null)
+>> VFS: Mounted root (ext2 filesystem) on device 179:0.
 >
-> Good enough but we are mixing QOM vs QDev...
+> Great!
 >
-
-TYPE_DEVICE is mentioned here because it appears in the code (the part that
-is not changing and thus is not included in the diff). It's not mixing QOM
-with qdev.
-
-Paolo
-
->   Alternatively several static types could be registered using helper
-> macro
-> >   DEFINE_TYPES()
+>> But the test scripts still fail due to it always waiting mmc0blk:
+>>
+>>      exec_command_and_wait_for_pattern(self, 'cat /proc/partitions', 
+>> 'mmcblk0')
 >
+> Ok, so the "0" likely got to be dropped here?
 >
-> > +.. _device-life-cycle:
-> > +
-> > +Device Life-cycle
-> > +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > +
-> > +As class initialisation cannot fail devices have an two additional
-> > +methods to handle the creation of dynamic devices. The ``realize``
-> > +function is called with ``Error **`` pointer which should be set if
-> > +the device cannot complete its setup. Otherwise on successful
-> > +completion of the ``realize`` method the device object is added to the
-> > +QOM tree and made visible to the guest.
-> > +
-> > +The reverse function is ``unrealize`` and should be were clean-up
-> > +code lives to tidy up after the system is done with the device.
+>> Could you please explain where is the "b300" come from?
 >
-> Worth mentioning hotplug devices must implement it?
+> I ran the kernel once without the "root=/dev/mmcblk0 rootwait"
+> part in its command line. Then it prints out something like this:
 >
-> > +All devices can be instantiated by C code, however only some can
-> > +created dynamically via the command line or monitor.
-> >
-> > +Likewise only some can be unplugged after creation and need an
-> > +explicit ``unrealize`` implementation.
+>  VFS: Cannot open root device "(null)" or unknown-block(0,0): error -6
+>  Please append a correct "root=" boot option; here are the available 
+> partitions:
+>  0100            4096 ram0
+>  (driver?)
+>  0101            4096 ram1
+>  (driver?)
+>  0102            4096 ram2
+>  (driver?)
+>  0103            4096 ram3
+>  (driver?)
+>  b300           65536 mmcblk0
+>  driver: mmcblk
+>  Kernel panic - not syncing: VFS: Unable to mount root fs on 
+> unknown-block(0,0)
 >
-> Ah, here we go.
+> Seems like the "b300" is stable here, no matter whether
+> its mmcblk0 or mmcblk1.
+This way is really hack. And who case this issue, linux kernel or qemu? 
+I can't make sure.
 >
-> > This is determined by the
-> > +``user_creatable`` variable in the root ``DeviceClass`` structure.
-> > +Devices can only be unplugged if their ``parent_bus`` has a registered
-> > +``HotplugHandler``.
->
-> TODO on top, mentions the reset() handlers are called after realize(),
-> and can be called multiple times.
->
-> >   API Reference
-> > --------------
-> > +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> >
-> >   See the :ref:`QOM API<qom-api>` and :ref:`QDEV API<qdev-api>`
-> >   documents for the complete API description.
->
-> Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
->
->
-
---00000000000082b4c705ff5503fb
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote"><div dir=3D"ltr" =
-class=3D"gmail_attr">Il gio 29 giu 2023, 15:41 Philippe Mathieu-Daud=C3=A9 =
-&lt;<a href=3D"mailto:philmd@linaro.org">philmd@linaro.org</a>&gt; ha scrit=
-to:</div><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;borde=
-r-left:1px #ccc solid;padding-left:1ex">
-&gt; +The TYPE_DEVICE class is the parent class for all modern devices<br>
-&gt; +implemented in QEMU and adds some specific methods to handle QEMU<br>
-&gt; +device model. This includes managing the lifetime of devices from<br>
-&gt; +creation through to when they become visible to the guest and<br>
-&gt; +eventually unrealized.<br>
-<br>
-Good enough but we are mixing QOM vs QDev...<br></blockquote></div></div><d=
-iv dir=3D"auto"><br></div><div dir=3D"auto">TYPE_DEVICE is mentioned here b=
-ecause it appears in the code (the part that is not changing and thus is no=
-t included in the diff). It&#39;s not mixing QOM with qdev.</div><div dir=
-=3D"auto"><br></div><div dir=3D"auto">Paolo</div><div dir=3D"auto"><br></di=
-v><div dir=3D"auto"><div class=3D"gmail_quote"><blockquote class=3D"gmail_q=
-uote" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1e=
-x">
-&gt;=C2=A0 =C2=A0Alternatively several static types could be registered usi=
-ng helper macro<br>
-&gt;=C2=A0 =C2=A0DEFINE_TYPES()<br>
-<br>
-<br>
-&gt; +.. _device-life-cycle:<br>
-&gt; +<br>
-&gt; +Device Life-cycle<br>
-&gt; +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D<br>
-&gt; +<br>
-&gt; +As class initialisation cannot fail devices have an two additional<br=
->
-&gt; +methods to handle the creation of dynamic devices. The ``realize``<br=
->
-&gt; +function is called with ``Error **`` pointer which should be set if<b=
-r>
-&gt; +the device cannot complete its setup. Otherwise on successful<br>
-&gt; +completion of the ``realize`` method the device object is added to th=
-e<br>
-&gt; +QOM tree and made visible to the guest.<br>
-&gt; +<br>
-&gt; +The reverse function is ``unrealize`` and should be were clean-up<br>
-&gt; +code lives to tidy up after the system is done with the device.<br>
-<br>
-Worth mentioning hotplug devices must implement it?<br>
-<br>
-&gt; +All devices can be instantiated by C code, however only some can<br>
-&gt; +created dynamically via the command line or monitor.<br>
-&gt;=C2=A0 =C2=A0<br>
-&gt; +Likewise only some can be unplugged after creation and need an<br>
-&gt; +explicit ``unrealize`` implementation.<br>
-<br>
-Ah, here we go.<br>
-<br>
-&gt; This is determined by the<br>
-&gt; +``user_creatable`` variable in the root ``DeviceClass`` structure.<br=
->
-&gt; +Devices can only be unplugged if their ``parent_bus`` has a registere=
-d<br>
-&gt; +``HotplugHandler``.<br>
-<br>
-TODO on top, mentions the reset() handlers are called after realize(),<br>
-and can be called multiple times.<br>
-<br>
-&gt;=C2=A0 =C2=A0API Reference<br>
-&gt; --------------<br>
-&gt; +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D<br>
-&gt;=C2=A0 =C2=A0<br>
-&gt;=C2=A0 =C2=A0See the :ref:`QOM API&lt;qom-api&gt;` and :ref:`QDEV API&l=
-t;qdev-api&gt;`<br>
-&gt;=C2=A0 =C2=A0documents for the complete API description.<br>
-<br>
-Reviewed-by: Philippe Mathieu-Daud=C3=A9 &lt;<a href=3D"mailto:philmd@linar=
-o.org" target=3D"_blank" rel=3D"noreferrer">philmd@linaro.org</a>&gt;<br>
-<br>
-</blockquote></div></div></div>
-
---00000000000082b4c705ff5503fb--
+>  Thomas
 
 
