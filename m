@@ -2,54 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D651743BCC
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 14:24:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA002743BD2
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 14:27:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFD9X-0006Bb-49; Fri, 30 Jun 2023 08:23:07 -0400
+	id 1qFDCt-0007iS-DT; Fri, 30 Jun 2023 08:26:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=Okcj=CS=kaod.org=clg@ozlabs.org>)
- id 1qFD9T-0006B1-53; Fri, 30 Jun 2023 08:23:05 -0400
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1qFDCU-0007gs-Hf
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 08:26:11 -0400
+Received: from rev.ng ([5.9.113.41])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=Okcj=CS=kaod.org=clg@ozlabs.org>)
- id 1qFD9Q-0006jI-K5; Fri, 30 Jun 2023 08:23:02 -0400
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4Qsvbf45W4z4whk;
- Fri, 30 Jun 2023 22:22:54 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Qsvbc5rPRz4wb5;
- Fri, 30 Jun 2023 22:22:52 +1000 (AEST)
-Message-ID: <f32ab985-c513-aa7e-f6b4-440dfa6dd0c5@kaod.org>
-Date: Fri, 30 Jun 2023 14:22:45 +0200
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1qFDCR-0007na-SL
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 08:26:10 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
+ s=dkim; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:Cc:
+ To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+ Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+ In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+ List-Post:List-Owner:List-Archive;
+ bh=PMhNF7ppwNFu01VBNI3z+n18+DAqV2M5EE9KvV2kG+o=; b=dwJqGpSNcTSCq2fkzz0WGilBoE
+ /4QIPKs3jkAcULSw5u/NI5DUWVrabDlwz0Xj3SP1cHx5Cx/0gRqmroLtKfKyoVW5P7lZY7vMdF/FO
+ jTeCqCArchuBmF3rtRVUD26FoxdHrr8Uh7YVgdWuMzhk+o4rJG9yaVHpZ0p6cqVJY+iE=;
+To: qemu-devel@nongnu.org
+Cc: ale@rev.ng, richard.henderson@linaro.org, pbonzini@redhat.com,
+ eduardo@habkost.net, philmd@linaro.org, marcel.apfelbaum@gmail.com,
+ peter.maydell@linaro.org, wangyanan55@huawei.com
+Subject: [PATCH 0/9] Collapse CPUNegativeOffsetState into CPUState
+Date: Fri, 30 Jun 2023 14:25:42 +0200
+Message-ID: <20230630122551.21766-1-anjo@rev.ng>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH] pnv/psi: Allow access to PSI registers through xscom
-Content-Language: en-US
-To: Frederic Barrat <fbarrat@linux.ibm.com>, danielhb413@gmail.com,
- joel@jms.id.au, qemu-ppc@nongnu.org, qemu-devel@nongnu.org
-References: <20230630102609.193214-1-fbarrat@linux.ibm.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20230630102609.193214-1-fbarrat@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
- envelope-from=SRS0=Okcj=CS=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -40
-X-Spam_score: -4.1
-X-Spam_bar: ----
-X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, NICE_REPLY_A=-0.095,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=5.9.113.41; envelope-from=anjo@rev.ng; helo=rev.ng
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -62,91 +53,89 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Anton Johansson <anjo@rev.ng>
+From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/30/23 12:26, Frederic Barrat wrote:
-> skiboot only uses mmio to access the PSI registers (once the BAR is
-> set) but we don't have any reason to block the accesses through
-> xscom. This patch enables xscom access to the PSI registers. It
-> converts the xscom addresses to mmio addresses, which requires a bit
-> of care for the PSIHB, then reuse the existing mmio ops.
-> 
-> Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
+CPUNegativeOffsetState is a struct placed immediately before
+CPUArchState in the ArchCPU struct.  Its purpose is to ensure that
+certain fields (CPUTLBDescFast, IcountDecr) lay within a small negative
+offset of CPUArchState in memory.  This is desired for better
+code-generation on arm[32|64] and riscv hosts which has addressing
+modes with 12- and 11 bits of displacement respectively.
 
-Looks good.
+This patchset removes CPUNegativeOffsetState, moves its fields to
+CPUState, and statically asserts that the offset to the fields above
+is expressable in 11 bits of displacement ( >= -(1 << 11) ). In order
+to achieve this the TARGET_PAGE_ENTRY_EXTRA macro in CPUTLBEntryFull
+had to be replaced with a union to make CPUTLB target independent.
 
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
+The motivation for this patchset is twofold:
 
-Thanks,
+    1. Parts of the codebase that previously depended on CPUArchState
+       to access either CPUTLB or IcountDecr now only depend on the
+       target-agnostic CPUState.  This is a step towards building
+       accel/ once for system- and once for user-mode.
 
-C.
+    2. Targets no longer have to define a CPUNegativeOffsetState
+       member of ArchCPU, and QEMU will fail to compile if CPUTLB
+       and IcountDecr drift too far from CPUArchState.
 
+Patches will follow that convert accel/tcg/cputlb.c and
+accel/tcg/user-exec.c away from CPUArchState.
 
+Anton Johansson (9):
+  target/arm: Replace TARGET_PAGE_ENTRY_EXTRA
+  include: Move MMUAccessType to tlb-common.h
+  include/exec: Move CPUTLB and friends to tlb-common.h
+  include/hw: introduce CPU_MAX_NEGATIVE_ENV_OFFSET
+  accel: Move CPUTLB to CPUState and assert offset
+  Move IcountDecr to CPUState and assert offset
+  include/exec: Remove [cpu|env]_neg() functions
+  target: Remove CPUNegativeOffsetState field from ArchCPU
+  include/exec: Remove CPUNegativeOffsetState
 
+ include/exec/cpu-all.h           |  28 +-----
+ include/exec/cpu-defs.h          | 141 ----------------------------
+ include/exec/exec-all.h          |   2 +-
+ include/exec/tlb-common.h        | 153 +++++++++++++++++++++++++++++++
+ include/hw/core/cpu.h            |  27 ++++--
+ target/alpha/cpu.h               |   1 -
+ target/arm/cpu-param.h           |  12 ---
+ target/arm/cpu.h                 |   1 -
+ target/avr/cpu.h                 |   1 -
+ target/cris/cpu.h                |   1 -
+ target/hexagon/cpu.h             |   1 -
+ target/hppa/cpu.h                |   1 -
+ target/i386/cpu.h                |   1 -
+ target/loongarch/cpu.h           |   1 -
+ target/m68k/cpu.h                |   1 -
+ target/microblaze/cpu.h          |   1 -
+ target/mips/cpu.h                |   3 +-
+ target/nios2/cpu.h               |   1 -
+ target/openrisc/cpu.h            |   1 -
+ target/ppc/cpu.h                 |   1 -
+ target/riscv/cpu.h               |   1 -
+ target/rx/cpu.h                  |   1 -
+ target/s390x/cpu.h               |   1 -
+ target/sh4/cpu.h                 |   1 -
+ target/sparc/cpu.h               |   1 -
+ target/tricore/cpu.h             |   1 -
+ target/xtensa/cpu.h              |   3 +-
+ accel/tcg/cpu-exec.c             |  14 +--
+ accel/tcg/tcg-accel-ops-icount.c |   6 +-
+ accel/tcg/tcg-accel-ops.c        |   2 +-
+ accel/tcg/translate-all.c        |  19 +++-
+ accel/tcg/translator.c           |  15 ++-
+ softmmu/icount.c                 |   2 +-
+ target/arm/ptw.c                 |   4 +-
+ target/arm/tcg/mte_helper.c      |   2 +-
+ target/arm/tcg/sve_helper.c      |   2 +-
+ target/arm/tcg/tlb_helper.c      |   4 +-
+ target/arm/tcg/translate-a64.c   |   2 +-
+ 38 files changed, 222 insertions(+), 238 deletions(-)
 
-> ---
->   hw/ppc/pnv_psi.c | 31 +++++++++++++++++++++----------
->   1 file changed, 21 insertions(+), 10 deletions(-)
-> 
-> diff --git a/hw/ppc/pnv_psi.c b/hw/ppc/pnv_psi.c
-> index 8aa09ab26b..46da58dff8 100644
-> --- a/hw/ppc/pnv_psi.c
-> +++ b/hw/ppc/pnv_psi.c
-> @@ -121,8 +121,12 @@
->   #define PSIHB9_BAR_MASK                 0x00fffffffff00000ull
->   #define PSIHB9_FSPBAR_MASK              0x00ffffff00000000ull
->   
-> +/* mmio address to xscom address */
->   #define PSIHB_REG(addr) (((addr) >> 3) + PSIHB_XSCOM_BAR)
->   
-> +/* xscom address to mmio address */
-> +#define PSIHB_MMIO(reg) ((reg - PSIHB_XSCOM_BAR) << 3)
-> +
->   static void pnv_psi_set_bar(PnvPsi *psi, uint64_t bar)
->   {
->       PnvPsiClass *ppc = PNV_PSI_GET_CLASS(psi);
-> @@ -769,24 +773,31 @@ static const MemoryRegionOps pnv_psi_p9_mmio_ops = {
->   
->   static uint64_t pnv_psi_p9_xscom_read(void *opaque, hwaddr addr, unsigned size)
->   {
-> -    /* No read are expected */
-> -    qemu_log_mask(LOG_GUEST_ERROR, "PSI: xscom read at 0x%" PRIx64 "\n", addr);
-> -    return -1;
-> +    uint32_t reg = addr >> 3;
-> +    uint64_t val = -1;
-> +
-> +    if (reg < PSIHB_XSCOM_BAR) {
-> +        /* FIR, not modeled */
-> +        qemu_log_mask(LOG_UNIMP, "PSI: xscom read at 0x%08x\n", reg);
-> +    } else {
-> +        val = pnv_psi_p9_mmio_read(opaque, PSIHB_MMIO(reg), size);
-> +    }
-> +    return val;
->   }
->   
->   static void pnv_psi_p9_xscom_write(void *opaque, hwaddr addr,
->                                   uint64_t val, unsigned size)
->   {
->       PnvPsi *psi = PNV_PSI(opaque);
-> +    uint32_t reg = addr >> 3;
->   
-> -    /* XSCOM is only used to set the PSIHB MMIO region */
-> -    switch (addr >> 3) {
-> -    case PSIHB_XSCOM_BAR:
-> +    if (reg < PSIHB_XSCOM_BAR) {
-> +        /* FIR, not modeled */
-> +        qemu_log_mask(LOG_UNIMP, "PSI: xscom write at 0x%08x\n", reg);
-> +    } else if (reg == PSIHB_XSCOM_BAR) {
->           pnv_psi_set_bar(psi, val);
-> -        break;
-> -    default:
-> -        qemu_log_mask(LOG_GUEST_ERROR, "PSI: xscom write at 0x%" PRIx64 "\n",
-> -                      addr);
-> +    } else {
-> +        pnv_psi_p9_mmio_write(opaque, PSIHB_MMIO(reg), val, size);
->       }
->   }
->   
-
+--
+2.41.0
 
