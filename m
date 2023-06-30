@@ -2,104 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 985D974455B
-	for <lists+qemu-devel@lfdr.de>; Sat,  1 Jul 2023 01:43:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87116744561
+	for <lists+qemu-devel@lfdr.de>; Sat,  1 Jul 2023 01:49:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFNlQ-0008GC-0v; Fri, 30 Jun 2023 19:42:56 -0400
+	id 1qFNrK-0003oQ-Ed; Fri, 30 Jun 2023 19:49:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1qFNlM-0008FR-8T
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 19:42:52 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1qFNlJ-0006js-Vu
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 19:42:52 -0400
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 35UNcBds008622; Fri, 30 Jun 2023 23:42:47 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=cDkKInRLoMYMRaK+Z+S7+xesWG2Mtx2xXGlkPt8TPVw=;
- b=TWDAF/DGCxdeKrqYoJZB1MRaL7miHylvZG8NQtWm88+wdUXVswm/sevJRFXwK+1OzbWT
- 3/830NoShr/Ci/t2tMR7sZE93Yh3hhtxyTQJRUcFesgVVCITR9NnhBVLSdAaJ5TG4p1N
- DfrkVj7KeStebDVFb2w6c+cwSGN5xnXkQzACxSW4+YIMWyQVn+eTDcg7PuVN7B5Of2bz
- 4q2QV+OcE6jMRTqV/GL315Xe8IBJr37Q4az+7gWLyvcf+6xtIjyXWMVUipqd0FnIU8R6
- wahapphu0QI54bmCAqDnqlylnYGvKzAuwJ1aMAXUS/fBC3FUX61yYYndDozpRhA4lHLm NA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rj8k7rcmu-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 30 Jun 2023 23:42:47 +0000
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 35UNdjHV011583;
- Fri, 30 Jun 2023 23:42:46 GMT
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.102])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rj8k7rcmc-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 30 Jun 2023 23:42:46 +0000
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
- by ppma06ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 35UNGGET014019;
- Fri, 30 Jun 2023 23:42:43 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
- by ppma06ams.nl.ibm.com (PPS) with ESMTPS id 3rdqre4fs6-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 30 Jun 2023 23:42:43 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com
- [10.20.54.100])
- by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 35UNgfWs24576720
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 30 Jun 2023 23:42:41 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 57CC92004B;
- Fri, 30 Jun 2023 23:42:41 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B63E120040;
- Fri, 30 Jun 2023 23:42:40 +0000 (GMT)
-Received: from heavy.boeblingen.de.ibm.com (unknown [9.179.8.31])
- by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Fri, 30 Jun 2023 23:42:40 +0000 (GMT)
-From: Ilya Leoshkevich <iii@linux.ibm.com>
-To: Richard Henderson <richard.henderson@linaro.org>,
- Laurent Vivier <laurent@vivier.eu>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
- David Hildenbrand <david@redhat.com>,
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qFNr6-0003mz-WA
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 19:48:49 -0400
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qFNr3-00011A-GU
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 19:48:48 -0400
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-3fbc656873eso16206755e9.1
+ for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 16:48:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1688168923; x=1690760923;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=lQFrS7Ghz3cV6Cm75wEKGdAk0LVI4QwFlhuNPN5Qtm8=;
+ b=hIsHFxGvy5jLrfGRwSJCl4b2HyBNOP2n2/sspevLTHFC+f8XfefNT4o9isON4L8ly3
+ UQMA79rSE5YKgmg00CQhcxU2HGM8OdqTXmTywqBpz62xpo/tzmN0ip3eFl+XpQI7I8YQ
+ mwhCzZk8vv8iAseIX+nb7KZSwn0YlXHg0SvDleSeRVgMNu32sA8C1GQqvTdQBCPnJGNF
+ b/nO4Zl4YUVeXVc2jxpFBaDA32SPnsUrM27lX5rGwPyEQQeY5uwWbT/m9PJ3qPl9Yjn6
+ bJXqpicuVccgVuUeUq/Mrz9f3mxPAXbjTNvbdy+WObxnhqags4F4lBz2q6Z0hUL9U00B
+ Ccmw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1688168923; x=1690760923;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=lQFrS7Ghz3cV6Cm75wEKGdAk0LVI4QwFlhuNPN5Qtm8=;
+ b=g305QiWmNudEAnBUS3J00IzgoiGbHUJu6HR/5sMIpgwCsKLNXdt1r3Doi6lW/01Fhj
+ oBsV00JOYg3aP7Z7oI55EjyQoyJ34vcbqg26tSIVZ/mCmCViMgauGRP5r5Kj/BBYHNiD
+ AFDIb2ZXU0QbR0J4JpXEcLU4zX93tAxO0ocW0xVVY5LWa+nIPMj5tv2RZz2fuH0H+7Os
+ qPVOpUcvWhcddKhfwiTbdC2XRB6+go+mUJzjK2Z0eOnb/Jtt8Cr+k75qkcPJ14t8HisD
+ yh/zmTetEtz2a2evAiPft3nNFhDDijLO5xUpQhdAY3wIyH3ZH3oX1Lo9a385tKMfVXo3
+ UETA==
+X-Gm-Message-State: AC+VfDzrOuXhybb6meJv4ODzReqntI9xEMK5BGAg06AGBYQjGrcM+r8s
+ uKX8mMsBywZDSQ2HCQbLBbHaMGrc0vmiUccTwg8=
+X-Google-Smtp-Source: ACHHUZ7KPHLu9FXz5acTe8MOCiaCzYawKv2bQ0dDwRjbl8RVXkZjzsyMvEcJCz7BHqdz6exdHj0BLg==
+X-Received: by 2002:a7b:cd13:0:b0:3fb:4053:a9d5 with SMTP id
+ f19-20020a7bcd13000000b003fb4053a9d5mr3926502wmj.25.1688168922780; 
+ Fri, 30 Jun 2023 16:48:42 -0700 (PDT)
+Received: from m1x-phil.lan ([176.187.211.104])
+ by smtp.gmail.com with ESMTPSA id
+ n2-20020a05600c294200b003fa78d1055esm20175544wmd.21.2023.06.30.16.48.41
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Fri, 30 Jun 2023 16:48:42 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ BALATON Zoltan <balaton@eik.bme.hu>, Gerd Hoffmann <kraxel@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH v2 4/4] accel/tcg: Move perf and debuginfo support to tcg
-Date: Sat,  1 Jul 2023 01:40:57 +0200
-Message-ID: <20230630234230.596193-5-iii@linux.ibm.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230630234230.596193-1-iii@linux.ibm.com>
-References: <20230630234230.596193-1-iii@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: fL4GuLse3Ihuc0wxLYL9XE-hSmVyRtOW
-X-Proofpoint-GUID: NpG-9p11yxV0evY6FUOicTsssxC494Xo
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+ Frederic Bezies <fredbezies@gmail.com>
+Subject: [PATCH] ui: Link dbus-display with pixman again
+Date: Sat,  1 Jul 2023 01:48:39 +0200
+Message-Id: <20230630234839.14716-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-06-30_13,2023-06-30_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 adultscore=0
- mlxscore=0 clxscore=1015 mlxlogscore=999 malwarescore=0 impostorscore=0
- priorityscore=1501 phishscore=0 lowpriorityscore=0 spamscore=0 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2305260000
- definitions=main-2306300206
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H5=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -116,208 +91,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-tcg/ should not depend on accel/tcg/, but perf and debuginfo
-support provided by the latter are being used by tcg/tcg.c.
+Since its introduction in commit 142ca628a7 ("ui: add a D-Bus
+display backend"), dbus_display1 depends on pixman.
+Unfortunatly the refactor commit 1222070e77 ("meson: ensure
+dbus-display generated code is built before other units")
+dropped that dependency. Recently commit 6cc5a6159a ("ui/dbus:
+win32 support") expose this problem:
 
-Since that's the only user, move both to tcg/.
+  In file included from include/ui/console.h:4,
+                   from ui/dbus.h:31,
+                   from ../audio/dbusaudio.c:36:
+  include/ui/qemu-pixman.h:12:10: fatal error: pixman.h: No such file or directory
+     12 | #include <pixman.h>
+        |          ^~~~~~~~~~
 
-Suggested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Restore the missing dependency on pixman.
+
+Reported-by: Frederic Bezies <fredbezies@gmail.com>
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1739
+Fixes: 1222070e77 ("meson: ensure dbus-display generated code is built before other units")
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- accel/tcg/meson.build          | 2 --
- accel/tcg/translate-all.c      | 2 +-
- hw/core/loader.c               | 2 +-
- linux-user/elfload.c           | 2 +-
- linux-user/exit.c              | 2 +-
- linux-user/main.c              | 2 +-
- softmmu/vl.c                   | 2 +-
- {accel/tcg => tcg}/debuginfo.c | 0
- {accel/tcg => tcg}/debuginfo.h | 4 ++--
- tcg/meson.build                | 3 +++
- {accel/tcg => tcg}/perf.c      | 2 +-
- {accel/tcg => tcg}/perf.h      | 4 ++--
- tcg/tcg.c                      | 2 +-
- 13 files changed, 15 insertions(+), 14 deletions(-)
- rename {accel/tcg => tcg}/debuginfo.c (100%)
- rename {accel/tcg => tcg}/debuginfo.h (96%)
- rename {accel/tcg => tcg}/perf.c (99%)
- rename {accel/tcg => tcg}/perf.h (95%)
+ ui/meson.build | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/accel/tcg/meson.build b/accel/tcg/meson.build
-index 166bef173b8..083c9058391 100644
---- a/accel/tcg/meson.build
-+++ b/accel/tcg/meson.build
-@@ -12,8 +12,6 @@ tcg_ss.add(files(
- tcg_ss.add(when: 'CONFIG_USER_ONLY', if_true: files('user-exec.c'))
- tcg_ss.add(when: 'CONFIG_SYSTEM_ONLY', if_false: files('user-exec-stub.c'))
- tcg_ss.add(when: 'CONFIG_PLUGIN', if_true: [files('plugin-gen.c')])
--tcg_ss.add(when: libdw, if_true: files('debuginfo.c'))
--tcg_ss.add(when: 'CONFIG_LINUX', if_true: files('perf.c'))
- specific_ss.add_all(when: 'CONFIG_TCG', if_true: tcg_ss)
- 
- specific_ss.add(when: ['CONFIG_SYSTEM_ONLY', 'CONFIG_TCG'], if_true: files(
-diff --git a/accel/tcg/translate-all.c b/accel/tcg/translate-all.c
-index d3d4fbc1a41..58d9bd5a69e 100644
---- a/accel/tcg/translate-all.c
-+++ b/accel/tcg/translate-all.c
-@@ -62,7 +62,7 @@
- #include "tb-hash.h"
- #include "tb-context.h"
- #include "internal.h"
--#include "perf.h"
-+#include "tcg/perf.h"
- #include "tcg/insn-start-words.h"
- 
- TBContext tb_ctx;
-diff --git a/hw/core/loader.c b/hw/core/loader.c
-index 8b7fd9e9e55..ad8d00440a7 100644
---- a/hw/core/loader.c
-+++ b/hw/core/loader.c
-@@ -62,7 +62,7 @@
- #include "hw/boards.h"
- #include "qemu/cutils.h"
- #include "sysemu/runstate.h"
--#include "accel/tcg/debuginfo.h"
-+#include "tcg/debuginfo.h"
- 
- #include <zlib.h>
- 
-diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index 9a2ec568b09..6900974c373 100644
---- a/linux-user/elfload.c
-+++ b/linux-user/elfload.c
-@@ -21,7 +21,7 @@
- #include "qapi/error.h"
- #include "qemu/error-report.h"
- #include "target_signal.h"
--#include "accel/tcg/debuginfo.h"
-+#include "tcg/debuginfo.h"
- 
- #ifdef _ARCH_PPC64
- #undef ARCH_DLINFO
-diff --git a/linux-user/exit.c b/linux-user/exit.c
-index 3017d28a3c3..122b9d904f1 100644
---- a/linux-user/exit.c
-+++ b/linux-user/exit.c
-@@ -17,7 +17,7 @@
-  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
-  */
- #include "qemu/osdep.h"
--#include "accel/tcg/perf.h"
-+#include "tcg/perf.h"
- #include "gdbstub/syscalls.h"
- #include "qemu.h"
- #include "user-internals.h"
-diff --git a/linux-user/main.c b/linux-user/main.c
-index dba67ffa362..3f65ca49db8 100644
---- a/linux-user/main.c
-+++ b/linux-user/main.c
-@@ -54,7 +54,7 @@
- #include "signal-common.h"
- #include "loader.h"
- #include "user-mmap.h"
--#include "accel/tcg/perf.h"
-+#include "tcg/perf.h"
- 
- #ifdef CONFIG_SEMIHOSTING
- #include "semihosting/semihost.h"
-diff --git a/softmmu/vl.c b/softmmu/vl.c
-index b0b96f67fac..92922377210 100644
---- a/softmmu/vl.c
-+++ b/softmmu/vl.c
-@@ -97,7 +97,7 @@
- #endif
- #include "sysemu/qtest.h"
- #ifdef CONFIG_TCG
--#include "accel/tcg/perf.h"
-+#include "tcg/perf.h"
- #endif
- 
- #include "disas/disas.h"
-diff --git a/accel/tcg/debuginfo.c b/tcg/debuginfo.c
-similarity index 100%
-rename from accel/tcg/debuginfo.c
-rename to tcg/debuginfo.c
-diff --git a/accel/tcg/debuginfo.h b/tcg/debuginfo.h
-similarity index 96%
-rename from accel/tcg/debuginfo.h
-rename to tcg/debuginfo.h
-index f064e1c144b..858535b5da5 100644
---- a/accel/tcg/debuginfo.h
-+++ b/tcg/debuginfo.h
-@@ -4,8 +4,8 @@
-  * SPDX-License-Identifier: GPL-2.0-or-later
-  */
- 
--#ifndef ACCEL_TCG_DEBUGINFO_H
--#define ACCEL_TCG_DEBUGINFO_H
-+#ifndef TCG_DEBUGINFO_H
-+#define TCG_DEBUGINFO_H
- 
- #include "qemu/bitops.h"
- 
-diff --git a/tcg/meson.build b/tcg/meson.build
-index c0252c41988..0800e1faae8 100644
---- a/tcg/meson.build
-+++ b/tcg/meson.build
-@@ -22,6 +22,9 @@ if get_option('tcg_interpreter')
-   tcg_ss.add(files('tci.c'))
- endif
- 
-+tcg_ss.add(when: libdw, if_true: files('debuginfo.c'))
-+tcg_ss.add(when: 'CONFIG_LINUX', if_true: files('perf.c'))
-+
- tcg_ss = tcg_ss.apply(config_host, strict: false)
- 
- libtcg_user = static_library('tcg_user',
-diff --git a/accel/tcg/perf.c b/tcg/perf.c
-similarity index 99%
-rename from accel/tcg/perf.c
-rename to tcg/perf.c
-index 87583e9d8f2..4a08fd9d259 100644
---- a/accel/tcg/perf.c
-+++ b/tcg/perf.c
-@@ -10,7 +10,7 @@
- 
- #include "qemu/osdep.h"
- #include "elf.h"
--#include "exec/exec-all.h"
-+#include "exec/translation-block.h"
- #include "qemu/timer.h"
- #include "tcg/tcg.h"
- 
-diff --git a/accel/tcg/perf.h b/tcg/perf.h
-similarity index 95%
-rename from accel/tcg/perf.h
-rename to tcg/perf.h
-index f92dd52c699..c96b5920a3f 100644
---- a/accel/tcg/perf.h
-+++ b/tcg/perf.h
-@@ -4,8 +4,8 @@
-  * SPDX-License-Identifier: GPL-2.0-or-later
-  */
- 
--#ifndef ACCEL_TCG_PERF_H
--#define ACCEL_TCG_PERF_H
-+#ifndef TCG_PERF_H
-+#define TCG_PERF_H
- 
- #if defined(CONFIG_TCG) && defined(CONFIG_LINUX)
- /* Start writing perf-<pid>.map. */
-diff --git a/tcg/tcg.c b/tcg/tcg.c
-index a0628fe4249..2afc5f2d0f7 100644
---- a/tcg/tcg.c
-+++ b/tcg/tcg.c
-@@ -54,7 +54,7 @@
- #include "tcg/tcg-ldst.h"
- #include "tcg/tcg-temp-internal.h"
- #include "tcg-internal.h"
--#include "accel/tcg/perf.h"
-+#include "tcg/perf.h"
- #ifdef CONFIG_USER_ONLY
- #include "exec/user/guest-base.h"
- #endif
+diff --git a/ui/meson.build b/ui/meson.build
+index d81609fb0e..cb178dd095 100644
+--- a/ui/meson.build
++++ b/ui/meson.build
+@@ -90,7 +90,7 @@ if dbus_display
+                                           '--interface-prefix', 'org.qemu.',
+                                           '--c-namespace', 'QemuDBus',
+                                           '--generate-c-code', '@BASENAME@'])
+-  dbus_display1_lib = static_library('dbus-display1', dbus_display1, dependencies: gio)
++  dbus_display1_lib = static_library('dbus-display1', dbus_display1, dependencies: [gio, pixman])
+   dbus_display1_dep = declare_dependency(link_with: dbus_display1_lib, include_directories: include_directories('.'))
+   dbus_ss.add(when: [gio, pixman, dbus_display1_dep],
+               if_true: [files(
 -- 
-2.41.0
+2.38.1
 
 
