@@ -2,83 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3EA3743D87
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 16:32:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C45D5743DC5
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 16:44:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFF9V-0004RS-Af; Fri, 30 Jun 2023 10:31:13 -0400
+	id 1qFFL2-0006RH-6s; Fri, 30 Jun 2023 10:43:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qFF9O-0004RB-Ss
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 10:31:06 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qFF9M-0000OI-2W
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 10:31:06 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-3fbc0981743so17907795e9.0
- for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 07:31:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688135462; x=1690727462;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=vggJ6tb3SSnV3/liiWzvtu8opHNbtqX7WLrmXfkgQ3o=;
- b=SAfuGMRRAVJ+JStP1pe1ROHs7ykyqZFMfUNKRv/00/7fvKxxkphsto+BlH1AeY9hzO
- kt1a/+3XSnyoDU2PuVMHt84W96POcdkHmpD+m0LGAdwt+nHt/7Kbx9aQCXpIWPh+oxj9
- HP+VNUWUqAyr2Mw/LQ4wx6LPnWRv+JnJW/cWl1oqL+LZmgkTRV7sRRAgrPe2vwTxjKf2
- rS2oC9c87e3cjDXgzcQ+UCIL4IyqxepHerfboh4IWqAteHvpgJ8cB8t0QAR0wEDXVQWx
- M7Asc0ag5EqsHA+INxXLrip5XoM4/epl5W3zU2tCTP4wFWd30gvElqOdhNbYxmOEuFLg
- tskg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688135462; x=1690727462;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=vggJ6tb3SSnV3/liiWzvtu8opHNbtqX7WLrmXfkgQ3o=;
- b=lOydkenX53ji1JQk+Av8bax9Ej5/ZR2tyC0/VCpw5M5/jdZU29hK7KlotmFGVbxGK6
- JFD7s+bjEUvh8LBSHa+nBOc+G0vu9jVoy5Z/fRsIn8zkUZ4uxhLzlbfNdZ9DgHG9NJ2h
- 8VZWQJJcsxIrbn7TMv/qpTp4Ej226VIOZSrWeo8TEFDH7+pLDsoVV3x9Dqa+LTNXq4OF
- ymk1343TQxsyAuaVCofO2QDiK4T0JI0c7gba+Maw9mAoUNlzRXLAEi/F7y6VDxOcoMJX
- iWJafFfbGiKPlCSjvSU1s3rH6qO491OiggRKdo/6M9YTBKbcYt9AWbFMNP3vg3BSByR2
- li1w==
-X-Gm-Message-State: AC+VfDwgNNVx/ydKMBQFX2NzC/id60t2dvMgNzN12p8sdCzhOb50qMO3
- wUsFcO5ZVB/lwfu6trHwbozNR+/lt4KOxnkemxtE3Q==
-X-Google-Smtp-Source: ACHHUZ6fKDGQdZ+buAcPpAr06Zxq95L4X0y3UReas148tPGLbYEs/C1nwp4kzW5Xy69AZtPFpI2EeQ==
-X-Received: by 2002:a05:600c:2484:b0:3f9:b79d:a5fa with SMTP id
- 4-20020a05600c248400b003f9b79da5famr2128859wms.16.1688135462299; 
- Fri, 30 Jun 2023 07:31:02 -0700 (PDT)
-Received: from [192.168.1.208] ([139.47.41.96])
- by smtp.gmail.com with ESMTPSA id
- 12-20020a05600c020c00b003f90ab2fff9sm19048305wmi.9.2023.06.30.07.31.01
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 30 Jun 2023 07:31:02 -0700 (PDT)
-Message-ID: <66b37cc9-4f48-3ba5-8f3e-39f7e715970e@linaro.org>
-Date: Fri, 30 Jun 2023 16:31:00 +0200
+ (Exim 4.90_1) (envelope-from <fbarrat@linux.ibm.com>)
+ id 1qFFKv-0006Q5-3t; Fri, 30 Jun 2023 10:43:01 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <fbarrat@linux.ibm.com>)
+ id 1qFFKt-0005dS-FE; Fri, 30 Jun 2023 10:43:00 -0400
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 35UEgcSq006735; Fri, 30 Jun 2023 14:42:49 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : subject :
+ date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=U20OiFQtGpBS7VmPYar1hY7C64YdtjgfcI/09+0CJgo=;
+ b=kHfr1Ac0/6A/efLdqPbj/bRRgl2fj2RIU+dTB2/KTdTkV6OrKsjqS06TFP0GWtbsdY54
+ BGu2tyehdqbM3TIIwJ6+p4YgEC6nm+m+4XR95nqyoYwjnt50ct24rpWc3QznnplmfcmL
+ MMb/82uFhDs9awwuPGF0D5xKwROPjkJlnpaVBjSywKVw6QIPjAFEDx+sfPl6Hoxb5MWv
+ s4AZP/mivOov/Pztrf0pikMwkRZDFDXvoJXSFHnHVbjSkIOrp/SI8+8bu3zl9wu8PuGq
+ 3btChy/kDGpQp4SKZ7xkqQqXporRHEFNF/QElJ8L4yTgpnegfVeu16pVkgyus3ZGgoMR Iw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rj11y80ac-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 30 Jun 2023 14:42:49 +0000
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 35UEgmmB007414;
+ Fri, 30 Jun 2023 14:42:48 GMT
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.99])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rj11y809d-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 30 Jun 2023 14:42:48 +0000
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+ by ppma04ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 35U10X0O004620;
+ Fri, 30 Jun 2023 14:42:46 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+ by ppma04ams.nl.ibm.com (PPS) with ESMTPS id 3rdr4546gq-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 30 Jun 2023 14:42:46 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com
+ [10.20.54.102])
+ by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 35UEghHj18809590
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 30 Jun 2023 14:42:43 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id BD1F82004B;
+ Fri, 30 Jun 2023 14:42:43 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 56A3E20040;
+ Fri, 30 Jun 2023 14:42:43 +0000 (GMT)
+Received: from borneo.ibmuc.com (unknown [9.171.74.60])
+ by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Fri, 30 Jun 2023 14:42:43 +0000 (GMT)
+From: Frederic Barrat <fbarrat@linux.ibm.com>
+To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>, qemu-ppc@nongnu.org,
+ qemu-devel@nongnu.org
+Subject: [PATCH 0/2] Fix PSIHB interrupts init PQ state
+Date: Fri, 30 Jun 2023 16:42:40 +0200
+Message-ID: <20230630144243.214976-1-fbarrat@linux.ibm.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: Unused variables in dbus_call_update_gl
-Content-Language: en-US
-To: BALATON Zoltan <balaton@eik.bme.hu>, qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>
-References: <156d2af2-5e64-39f1-fdbd-54f6c299515a@eik.bme.hu>
- <336f7697-bcfa-1f5f-e411-6859815aa26c@eik.bme.hu>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <336f7697-bcfa-1f5f-e411-6859815aa26c@eik.bme.hu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x333.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: V398xFCRR3M7_fP_zqS7WadoXJiX9Wkc
+X-Proofpoint-GUID: 1i3QVOumm4ISbJsHPL4VU-kXMZM2h6aW
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-06-30_05,2023-06-30_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 phishscore=0
+ bulkscore=0 malwarescore=0 mlxscore=0 mlxlogscore=644 adultscore=0
+ priorityscore=1501 clxscore=1015 spamscore=0 suspectscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2305260000 definitions=main-2306300123
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=fbarrat@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.095,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -95,66 +108,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/29/23 15:15, BALATON Zoltan wrote:
-> On Thu, 29 Jun 2023, BALATON Zoltan wrote:
->> Hello,
->>
->> After recent commits I'm now getting:
->>
->> ../ui/dbus-listener.c: In function ‘dbus_call_update_gl’:
->> ../ui/dbus-listener.c:210:26: error: unused variable ‘ddl’
->> [-Werror=unused-variable]
->>   210 |     DBusDisplayListener *ddl = container_of(dcl, DBusDisplayListener,
->> dcl);
->>       |                          ^~~
->> At top level:
->> ../ui/dbus-listener.c:180:13: error: ‘dbus_update_gl_cb’ defined but not used
->> [-Werror=unused-function]
->>   180 | static void dbus_update_gl_cb(GObject *source_object,
->>       |             ^~~~~~~~~~~~~~~~~
->> cc1: all warnings being treated as errors
->>
->> when compiling on Linux with gcc.
-> 
-> The patch below seems to fix compilation for me but not sure what else
-> would it break.
-> 
-> Regards,
-> BALATON Zoltan
-> 
-> diff --git a/ui/dbus-listener.c b/ui/dbus-listener.c
-> index e10162b279..601c134e09 100644
-> --- a/ui/dbus-listener.c
-> +++ b/ui/dbus-listener.c
-> @@ -177,6 +177,7 @@ fail:
->   }
->   #endif /* WIN32 */
-> 
-> +#if defined (CONFIG_GBM) || defined (WIN32)
->   static void dbus_update_gl_cb(GObject *source_object,
->                                 GAsyncResult *res,
->                                 gpointer user_data)
-> @@ -203,12 +204,14 @@ static void dbus_update_gl_cb(GObject *source_object,
->       graphic_hw_gl_block(ddl->dcl.con, false);
->       g_object_unref(ddl);
->   }
-> +#endif
-> 
->   static void dbus_call_update_gl(DisplayChangeListener *dcl,
->                                   int x, int y, int w, int h)
->   {
-> +#if defined (CONFIG_GBM) || defined (WIN32)
->       DBusDisplayListener *ddl = container_of(dcl, DBusDisplayListener, dcl);
-> -
-> +#endif
->       trace_dbus_update_gl(x, y, w, h);
-> 
->       glFlush();
+On P9 and 10, the real hardware defines the PQ state of the PSIHB
+interrupts to be 0b00. Qemu defaults to 0b01.
 
-I'm going to commit this later today unless Marc can immediately suggest something better, 
-to un-break the tree.  I really should have done more thorough testing earlier, and not 
-allowed the merge to proceed...  Ho hum.
+It doesn't matter to skiboot, which doesn't rely on it and explicitly
+masks the interrupts during intialization. But this patch fixes it,
+just in case some other hypervisor checks it.
 
 
-r~
+Frederic Barrat (2):
+  pnv/xive: Add property on xive sources to define PQ state on reset
+  pnv/psi: Initialize the PSIHB interrupts to match hardware
+
+ hw/intc/xive.c        | 8 ++++++--
+ hw/ppc/pnv_psi.c      | 2 ++
+ include/hw/ppc/xive.h | 1 +
+ 3 files changed, 9 insertions(+), 2 deletions(-)
+
+-- 
+2.41.0
+
 
