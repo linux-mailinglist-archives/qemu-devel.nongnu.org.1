@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D747C74341D
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 07:24:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A89D5743433
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 07:28:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qF6bV-0008Iz-5a; Fri, 30 Jun 2023 01:23:33 -0400
+	id 1qF6bW-0008JG-GM; Fri, 30 Jun 2023 01:23:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <SRS0=mf8A=CS=redhat.com=clg@ozlabs.org>)
- id 1qF6bG-0008Du-Jc
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 01:23:18 -0400
+ id 1qF6bI-0008Ee-0J
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 01:23:20 -0400
 Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
  helo=gandalf.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <SRS0=mf8A=CS=redhat.com=clg@ozlabs.org>)
- id 1qF6bD-0004LM-AQ
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 01:23:18 -0400
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4QskHN0wbSz4wpJ;
- Fri, 30 Jun 2023 15:23:12 +1000 (AEST)
+ id 1qF6bE-0004SY-PI
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 01:23:19 -0400
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4QskHQ2nwSz4wpM;
+ Fri, 30 Jun 2023 15:23:14 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4QskHJ6hLPz4wZy;
- Fri, 30 Jun 2023 15:23:08 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4QskHN4wXrz4wZy;
+ Fri, 30 Jun 2023 15:23:12 +1000 (AEST)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  Alex Williamson <alex.williamson@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- Robin Voetter <robin@streamhpc.com>
-Subject: [PULL 09/16] vfio: Implement a common device info helper
-Date: Fri, 30 Jun 2023 07:22:28 +0200
-Message-ID: <20230630052235.1934154-10-clg@redhat.com>
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PULL 10/16] hw/vfio/pci-quirks: Support alternate offset for
+ GPUDirect Cliques
+Date: Fri, 30 Jun 2023 07:22:29 +0200
+Message-ID: <20230630052235.1934154-11-clg@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230630052235.1934154-1-clg@redhat.com>
 References: <20230630052235.1934154-1-clg@redhat.com>
@@ -72,174 +72,87 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Alex Williamson <alex.williamson@redhat.com>
 
-A common helper implementing the realloc algorithm for handling
-capabilities.
+NVIDIA Turing and newer GPUs implement the MSI-X capability at the offset
+previously reserved for use by hypervisors to implement the GPUDirect
+Cliques capability.  A revised specification provides an alternate
+location.  Add a config space walk to the quirk to check for conflicts,
+allowing us to fall back to the new location or generate an error at the
+quirk setup rather than when the real conflicting capability is added
+should there be no available location.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
-Reviewed-by: Robin Voetter <robin@streamhpc.com>
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- include/hw/vfio/vfio-common.h |  1 +
- hw/s390x/s390-pci-vfio.c      | 37 ++++------------------------
- hw/vfio/common.c              | 46 ++++++++++++++++++++++++++---------
- 3 files changed, 41 insertions(+), 43 deletions(-)
+ hw/vfio/pci-quirks.c | 41 ++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 40 insertions(+), 1 deletion(-)
 
-diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
-index 3dc5f2104c86..6d1b8487c374 100644
---- a/include/hw/vfio/vfio-common.h
-+++ b/include/hw/vfio/vfio-common.h
-@@ -216,6 +216,7 @@ void vfio_region_finalize(VFIORegion *region);
- void vfio_reset_handler(void *opaque);
- VFIOGroup *vfio_get_group(int groupid, AddressSpace *as, Error **errp);
- void vfio_put_group(VFIOGroup *group);
-+struct vfio_device_info *vfio_get_device_info(int fd);
- int vfio_get_device(VFIOGroup *group, const char *name,
-                     VFIODevice *vbasedev, Error **errp);
- 
-diff --git a/hw/s390x/s390-pci-vfio.c b/hw/s390x/s390-pci-vfio.c
-index f51190d4662f..59a2e03873bd 100644
---- a/hw/s390x/s390-pci-vfio.c
-+++ b/hw/s390x/s390-pci-vfio.c
-@@ -289,38 +289,11 @@ static void s390_pci_read_pfip(S390PCIBusDevice *pbdev,
-     memcpy(pbdev->zpci_fn.pfip, cap->pfip, CLP_PFIP_NR_SEGMENTS);
- }
- 
--static struct vfio_device_info *get_device_info(S390PCIBusDevice *pbdev,
--                                                uint32_t argsz)
-+static struct vfio_device_info *get_device_info(S390PCIBusDevice *pbdev)
+diff --git a/hw/vfio/pci-quirks.c b/hw/vfio/pci-quirks.c
+index f0147a050aaa..0ed2fcd53152 100644
+--- a/hw/vfio/pci-quirks.c
++++ b/hw/vfio/pci-quirks.c
+@@ -1490,6 +1490,9 @@ void vfio_setup_resetfn_quirk(VFIOPCIDevice *vdev)
+  * +---------------------------------+---------------------------------+
+  *
+  * https://lists.gnu.org/archive/html/qemu-devel/2017-08/pdfUda5iEpgOS.pdf
++ *
++ * Specification for Turning and later GPU architectures:
++ * https://lists.gnu.org/archive/html/qemu-devel/2023-06/pdf142OR4O4c2.pdf
+  */
+ static void get_nv_gpudirect_clique_id(Object *obj, Visitor *v,
+                                        const char *name, void *opaque,
+@@ -1530,7 +1533,9 @@ const PropertyInfo qdev_prop_nv_gpudirect_clique = {
+ static int vfio_add_nv_gpudirect_cap(VFIOPCIDevice *vdev, Error **errp)
  {
--    struct vfio_device_info *info = g_malloc0(argsz);
--    VFIOPCIDevice *vfio_pci;
--    int fd;
-+    VFIOPCIDevice *vfio_pci = container_of(pbdev->pdev, VFIOPCIDevice, pdev);
+     PCIDevice *pdev = &vdev->pdev;
+-    int ret, pos = 0xC8;
++    int ret, pos;
++    bool c8_conflict = false, d4_conflict = false;
++    uint8_t tmp;
  
--    vfio_pci = container_of(pbdev->pdev, VFIOPCIDevice, pdev);
--    fd = vfio_pci->vbasedev.fd;
--
--    /*
--     * If the specified argsz is not large enough to contain all capabilities
--     * it will be updated upon return from the ioctl.  Retry until we have
--     * a big enough buffer to hold the entire capability chain.  On error,
--     * just exit and rely on CLP defaults.
--     */
--retry:
--    info->argsz = argsz;
--
--    if (ioctl(fd, VFIO_DEVICE_GET_INFO, info)) {
--        trace_s390_pci_clp_dev_info(vfio_pci->vbasedev.name);
--        g_free(info);
--        return NULL;
--    }
--
--    if (info->argsz > argsz) {
--        argsz = info->argsz;
--        info = g_realloc(info, argsz);
--        goto retry;
--    }
--
--    return info;
-+    return vfio_get_device_info(vfio_pci->vbasedev.fd);
- }
- 
- /*
-@@ -335,7 +308,7 @@ bool s390_pci_get_host_fh(S390PCIBusDevice *pbdev, uint32_t *fh)
- 
-     assert(fh);
- 
--    info = get_device_info(pbdev, sizeof(*info));
-+    info = get_device_info(pbdev);
-     if (!info) {
-         return false;
+     if (vdev->nv_gpudirect_clique == 0xFF) {
+         return 0;
+@@ -1547,6 +1552,40 @@ static int vfio_add_nv_gpudirect_cap(VFIOPCIDevice *vdev, Error **errp)
+         return -EINVAL;
      }
-@@ -356,7 +329,7 @@ void s390_pci_get_clp_info(S390PCIBusDevice *pbdev)
- {
-     g_autofree struct vfio_device_info *info = NULL;
  
--    info = get_device_info(pbdev, sizeof(*info));
-+    info = get_device_info(pbdev);
-     if (!info) {
-         return;
-     }
-diff --git a/hw/vfio/common.c b/hw/vfio/common.c
-index 25801de173c4..28ec9e999c09 100644
---- a/hw/vfio/common.c
-+++ b/hw/vfio/common.c
-@@ -2846,11 +2846,35 @@ void vfio_put_group(VFIOGroup *group)
-     }
- }
- 
-+struct vfio_device_info *vfio_get_device_info(int fd)
-+{
-+    struct vfio_device_info *info;
-+    uint32_t argsz = sizeof(*info);
-+
-+    info = g_malloc0(argsz);
-+
-+retry:
-+    info->argsz = argsz;
-+
-+    if (ioctl(fd, VFIO_DEVICE_GET_INFO, info)) {
-+        g_free(info);
-+        return NULL;
++    /*
++     * Per the updated specification above, it's recommended to use offset
++     * D4h for Turing and later GPU architectures due to a conflict of the
++     * MSI-X capability at C8h.  We don't know how to determine the GPU
++     * architecture, instead we walk the capability chain to mark conflicts
++     * and choose one or error based on the result.
++     *
++     * NB. Cap list head in pdev->config is already cleared, read from device.
++     */
++    ret = pread(vdev->vbasedev.fd, &tmp, 1,
++                vdev->config_offset + PCI_CAPABILITY_LIST);
++    if (ret != 1 || !tmp) {
++        error_setg(errp, "NVIDIA GPUDirect Clique ID: error getting cap list");
++        return -EINVAL;
 +    }
 +
-+    if (info->argsz > argsz) {
-+        argsz = info->argsz;
-+        info = g_realloc(info, argsz);
-+        goto retry;
++    do {
++        if (tmp == 0xC8) {
++            c8_conflict = true;
++        } else if (tmp == 0xD4) {
++            d4_conflict = true;
++        }
++        tmp = pdev->config[tmp + PCI_CAP_LIST_NEXT];
++    } while (tmp);
++
++    if (!c8_conflict) {
++        pos = 0xC8;
++    } else if (!d4_conflict) {
++        pos = 0xD4;
++    } else {
++        error_setg(errp, "NVIDIA GPUDirect Clique ID: invalid config space");
++        return -EINVAL;
 +    }
 +
-+    return info;
-+}
-+
- int vfio_get_device(VFIOGroup *group, const char *name,
-                     VFIODevice *vbasedev, Error **errp)
- {
--    struct vfio_device_info dev_info = { .argsz = sizeof(dev_info) };
--    int ret, fd;
-+    g_autofree struct vfio_device_info *info = NULL;
-+    int fd;
- 
-     fd = ioctl(group->fd, VFIO_GROUP_GET_DEVICE_FD, name);
-     if (fd < 0) {
-@@ -2862,11 +2886,11 @@ int vfio_get_device(VFIOGroup *group, const char *name,
-         return fd;
-     }
- 
--    ret = ioctl(fd, VFIO_DEVICE_GET_INFO, &dev_info);
--    if (ret) {
-+    info = vfio_get_device_info(fd);
-+    if (!info) {
-         error_setg_errno(errp, errno, "error getting device info");
-         close(fd);
--        return ret;
-+        return -1;
-     }
- 
-     /*
-@@ -2894,14 +2918,14 @@ int vfio_get_device(VFIOGroup *group, const char *name,
-     vbasedev->group = group;
-     QLIST_INSERT_HEAD(&group->device_list, vbasedev, next);
- 
--    vbasedev->num_irqs = dev_info.num_irqs;
--    vbasedev->num_regions = dev_info.num_regions;
--    vbasedev->flags = dev_info.flags;
-+    vbasedev->num_irqs = info->num_irqs;
-+    vbasedev->num_regions = info->num_regions;
-+    vbasedev->flags = info->flags;
-+
-+    trace_vfio_get_device(name, info->flags, info->num_regions, info->num_irqs);
- 
--    trace_vfio_get_device(name, dev_info.flags, dev_info.num_regions,
--                          dev_info.num_irqs);
-+    vbasedev->reset_works = !!(info->flags & VFIO_DEVICE_FLAGS_RESET);
- 
--    vbasedev->reset_works = !!(dev_info.flags & VFIO_DEVICE_FLAGS_RESET);
-     return 0;
- }
- 
+     ret = pci_add_capability(pdev, PCI_CAP_ID_VNDR, pos, 8, errp);
+     if (ret < 0) {
+         error_prepend(errp, "Failed to add NVIDIA GPUDirect cap: ");
 -- 
 2.41.0
 
