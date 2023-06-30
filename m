@@ -2,76 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D08E7435C5
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 09:29:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E51E17435C6
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 09:30:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qF8YM-0005Y4-As; Fri, 30 Jun 2023 03:28:26 -0400
+	id 1qF8Zh-00070U-Gy; Fri, 30 Jun 2023 03:29:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcin.nowakowski@fungible.com>)
- id 1qF8YK-0005Xq-M1
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 03:28:24 -0400
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcin.nowakowski@fungible.com>)
- id 1qF8YJ-0000KE-0e
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 03:28:24 -0400
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-1b8303cd32aso12530915ad.2
- for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 00:28:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=fungible.com; s=google; t=1688110101; x=1690702101;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=7NIXm3S2ofFeqF888HBnrL1QNbDutjXr9HIiL252Hzs=;
- b=RvR4tSBqartgDm1lg2wyg3JTS6rWyxOVOrpBH5gIcznBEsy7A0gP6o3nvna8erZThL
- /CAZ8h/P5MqlPl1AQyQgVQ3vsa1YEjgtTp6eZ7db1jT+DtIta2SxcOQME3K+wZ4v6oAj
- 0C7+oRvQcg8w4JgyDJZz8otU773p+42746P1M=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688110101; x=1690702101;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=7NIXm3S2ofFeqF888HBnrL1QNbDutjXr9HIiL252Hzs=;
- b=NC9MRG/z50dv2PvrxUt7n6hJBRdJocTepEjnZTVRpiDFzaTEkTSBXQIHf7abWfgpEL
- /QGRwz4cNB7ENUbpuJ9KrtgWWILjMHDpGAr61+bzF87l/yFrrY9mMw3LVca68NBpgv/G
- 1+9ha7im5CvNNWC6cMmCZWuqPGNQ4trPNFIHmt7/hrwySEXt/IhVr4NhkEUGKOhlfXoT
- /NF3K1xFsQxc1+98Zeq2xL0WgH199yxijr8xTF5P4J/Fft3QjkKeFDZKWX/ebC5oyhxL
- 0E9AO9rQoOwpA9lPK51IOJw4+XwenGHSDT+v88yz/ULsDwD1cEl/0zoeMZ04pYtrsB8N
- XZ2g==
-X-Gm-Message-State: ABy/qLYBH83jU+W8drI979jZJC+OXZ5iB/GNtGCm2SLs3CIBJYIo/VIk
- fgYGzrX/ANONHshXSxUrTe4JAw==
-X-Google-Smtp-Source: APBJJlFynGo/KSCYKqPo9LlvlFMzYtuKeAZxu9P66vhSlfXmfWQnHs6sd6P7YFQmciqRmKNX4CLqAg==
-X-Received: by 2002:a17:903:481:b0:1b8:36a8:faf9 with SMTP id
- jj1-20020a170903048100b001b836a8faf9mr1143030plb.38.1688110100871; 
- Fri, 30 Jun 2023 00:28:20 -0700 (PDT)
-Received: from WR-NOWAKOWSKI.fungible.local
- (dynamic-78-8-247-128.ssp.dialog.net.pl. [78.8.247.128])
- by smtp.gmail.com with ESMTPSA id
- jw19-20020a170903279300b001b7ed16c7ffsm9381416plb.306.2023.06.30.00.28.14
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 30 Jun 2023 00:28:16 -0700 (PDT)
-From: Marcin Nowakowski <marcin.nowakowski@fungible.com>
-To: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Aurelien Jarno <aurelien@aurel32.net>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
- qemu-devel@nongnu.org (open list:All patches CC here)
-Subject: [PATCH] target/mips: enable GINVx support for I6400 and I6500
-Date: Fri, 30 Jun 2023 09:28:06 +0200
-Message-Id: <20230630072806.3093704-1-marcin.nowakowski@fungible.com>
-X-Mailer: git-send-email 2.25.1
+ (Exim 4.90_1) (envelope-from <olaf@aepfle.de>) id 1qF8Zd-0006zu-IV
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 03:29:45 -0400
+Received: from mo4-p01-ob.smtp.rzone.de ([81.169.146.167])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <olaf@aepfle.de>) id 1qF8Zb-0000X5-EB
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 03:29:45 -0400
+ARC-Seal: i=1; a=rsa-sha256; t=1688110164; cv=none;
+ d=strato.com; s=strato-dkim-0002;
+ b=Gu8Bi3ERzgErl5CIxwZj9d+pFxVMRa5swwyCIoniKJ/yaLfJy/Ao27iDKRE0Qvb6cK
+ hGfLakMGWgySPEVEV7LlInl3NiJlSFZj3vMWk1cSPmc642baxMZ9DCEsmuUBGpQpJNF/
+ 4psrzxdE9jNGgKkN9LKC3HvPOGPntlr+6jlnD/QGOaulrVrMWe7LnXiazbo7y015ok2I
+ 3wcoo2Ry6hJ4NYMQo/8uNFefqob+CtkSelNrxsKkv/xFpgdNhA2LNoVR6vXqnhwgideg
+ amX9nMPxl2jMuazy2jPhpjdK/8gfP1WlJRoCUT3FR8YyjzC5VTrD14QZGdTmn+x0tHaq
+ XuMw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1688110164;
+ s=strato-dkim-0002; d=strato.com;
+ h=References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
+ From:Subject:Sender;
+ bh=SbrWWD8/bSxrp1AiIlQ8m9gLXWJfqf48i1MGfG4Pems=;
+ b=WWoZxFlgXeI2qVE0i4jTGEa35VJ37LB9M0euaNabdwLLeR5lUB9D1rJdOq0Z6i9Mja
+ 3N5FNqP9IOPZYwQByc2d6DS+qMSa+ZLgT6Ce34OTkSW61wptEZ4XK9AFIj4bKTjjxj4o
+ N9ZX9+fR7+VD4isUlaIMFMeUFGdBPpkWV0u5QW8Dgz6k/2gtJhFa5x+13gqEvF+ugLcj
+ mdxihfmoO17d2C268jr1Ph0AWQsR6EGfWS3EK8ccNy0Ggna/PQQuLvqPFVGygxJsQ3oR
+ R6GWFcpRNJ6dIYBbopZDCLoinbEHaCFDsei+z/GQgPOocKfQP9rOQdrbEjT24xaPTgiy
+ IvWQ==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo01
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1688110164;
+ s=strato-dkim-0002; d=aepfle.de;
+ h=References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
+ From:Subject:Sender;
+ bh=SbrWWD8/bSxrp1AiIlQ8m9gLXWJfqf48i1MGfG4Pems=;
+ b=JCbb3yVKpkntRc6Rxtb20t3e2+oX00vK//Lx4s27CTuXm+fPo7KGeWN+A8/8UxD0+t
+ UkLa7i73Y5Buw5tb9rmhOkP845X2gyzrPKEaq9Jz+MUR/a4P8PYWTm3Z5rS9Jh18fybp
+ lXmel6TGrcxGRLQ6nITdJtkJf8nQ0HHmXzBo5961RxVApGfQN445mN7tBK5rzExo121j
+ 0Qpg5GgZWoqewrU6q+VLACXzBeTyU3JQ6YM7tVse/gZnqapAES6Yp8m1gs/22sIpleS6
+ 5WwSdkOuCY5ghCMhOaEuT/3Vbn3BHRLgYUNbyau2UcbVJvk+zEgss3i8MijVONDFfGEe
+ xhZw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1688110164;
+ s=strato-dkim-0003; d=aepfle.de;
+ h=References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
+ From:Subject:Sender;
+ bh=SbrWWD8/bSxrp1AiIlQ8m9gLXWJfqf48i1MGfG4Pems=;
+ b=oP9xFqEZ7LmsltzPogNWnsdJ7Ll5YyTRl9m6DYBBgwohFe6R3RotJK//dBcnwbE/op
+ rVkAOAdmYPov8wrg+KCw==
+X-RZG-AUTH: ":P2EQZWCpfu+qG7CngxMFH1J+3q8wa/QLpd5ylWvMDX3y/OuD5rXWiuRyeUQh3GC6w0BTiV2X9kN/WAr0rdTE7oY1qJzPNA=="
+Received: from sender by smtp.strato.de (RZmta 49.6.0 AUTH)
+ with ESMTPSA id y5401az5U7TNwzD
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+ (Client did not present a certificate);
+ Fri, 30 Jun 2023 09:29:23 +0200 (CEST)
+Date: Fri, 30 Jun 2023 09:29:21 +0200
+From: Olaf Hering <olaf@aepfle.de>
+To: Bernhard Beschow <shentey@gmail.com>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, John Snow
+ <jsnow@redhat.com>, xen-devel@lists.xenproject.org, Stefano Stabellini
+ <sstabellini@kernel.org>
+Subject: Re: [PATCH v2] piix: fix regression during unplug in Xen HVM domUs
+Message-ID: <20230630092921.392b302d.olaf@aepfle.de>
+In-Reply-To: <4F5609FD-4A89-4450-89E2-3311CC5A9317@gmail.com>
+References: <20210317070046.17860-1-olaf@aepfle.de>
+ <4441d32f-bd52-9408-cabc-146b59f0e4dc@redhat.com>
+ <20210325121219.7b5daf76.olaf@aepfle.de>
+ <dae251e1-f808-708e-902c-05cfcbbea9cf@redhat.com>
+ <20230509225818.GA16290@aepfle.de>
+ <20230626231901.5b5d11c1.olaf@aepfle.de>
+ <c939b695-2b68-085a-0f19-108ecdcc1a05@redhat.com>
+ <5DB37FA5-41DF-4ED6-8C8A-CDDD6F276F42@gmail.com>
+ <20230627140740.2736f6e8.olaf@aepfle.de>
+ <4F5609FD-4A89-4450-89E2-3311CC5A9317@gmail.com>
+X-Mailer: Claws Mail 20230601T090920.68bc28c0 hat ein Softwareproblem,
+ kann man nichts machen.
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=marcin.nowakowski@fungible.com; helo=mail-pl1-x630.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: multipart/signed; boundary="Sig_/lmjCe4VHwkOw+v56guoEpxw";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
+Content-Transfer-Encoding: 7bit
+Received-SPF: none client-ip=81.169.146.167; envelope-from=olaf@aepfle.de;
+ helo=mo4-p01-ob.smtp.rzone.de
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_PASS=-0.001, SPF_NONE=0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -88,37 +113,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-GINVI and GINVT operations are supported on MIPS I6400 and I6500 cores,
-so indicate that properly in CP0.Config5 register bits [16:15].
+--Sig_/lmjCe4VHwkOw+v56guoEpxw
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Marcin Nowakowski <marcin.nowakowski@fungible.com>
----
- target/mips/cpu-defs.c.inc | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Wed, 28 Jun 2023 09:27:16 +0000 Bernhard Beschow <shentey@gmail.com>:
 
-diff --git a/target/mips/cpu-defs.c.inc b/target/mips/cpu-defs.c.inc
-index d45f245a67..da122e72d7 100644
---- a/target/mips/cpu-defs.c.inc
-+++ b/target/mips/cpu-defs.c.inc
-@@ -709,7 +709,7 @@ const mips_def_t mips_defs[] =
-         .CP0_Config4 = MIPS_CONFIG4 | (1U << CP0C4_M) | (3 << CP0C4_IE) |
-                        (1 << CP0C4_AE) | (0xfc << CP0C4_KScrExist),
-         .CP0_Config5 = MIPS_CONFIG5 | (1 << CP0C5_XNP) | (1 << CP0C5_VP) |
--                       (1 << CP0C5_LLB) | (1 << CP0C5_MRP),
-+                       (1 << CP0C5_LLB) | (1 << CP0C5_MRP) | (3 << CP0C5_GI),
-         .CP0_Config5_rw_bitmask = (1 << CP0C5_MSAEn) | (1 << CP0C5_SBRI) |
-                                   (1 << CP0C5_FRE) | (1 << CP0C5_UFE),
-         .CP0_LLAddr_rw_bitmask = 0,
-@@ -749,7 +749,7 @@ const mips_def_t mips_defs[] =
-         .CP0_Config4 = MIPS_CONFIG4 | (1U << CP0C4_M) | (3 << CP0C4_IE) |
-                        (1 << CP0C4_AE) | (0xfc << CP0C4_KScrExist),
-         .CP0_Config5 = MIPS_CONFIG5 | (1 << CP0C5_XNP) | (1 << CP0C5_VP) |
--                       (1 << CP0C5_LLB) | (1 << CP0C5_MRP),
-+                       (1 << CP0C5_LLB) | (1 << CP0C5_MRP) | (3 << CP0C5_GI),
-         .CP0_Config5_rw_bitmask = (1 << CP0C5_MSAEn) | (1 << CP0C5_SBRI) |
-                                   (1 << CP0C5_FRE) | (1 << CP0C5_UFE),
-         .CP0_LLAddr_rw_bitmask = 0,
--- 
-2.25.1
+> Would you mind sending a patch fixing the BMIBA register to be reset as 3=
+2 bit?
 
+Will do so next week.
+
+Are the specs for this chipset available, does this address really need
+to be accessed in quantities of u32, or is perhaps u16 required? I guess
+for this specific bug pci_set_word may work as well.
+
+Either way, commit e6a71ae327a388723182a504bb253777ec36869b was wrong.
+Does the comment added in this commit mean, the quantity is really u32?
+
+
+Olaf
+
+--Sig_/lmjCe4VHwkOw+v56guoEpxw
+Content-Type: application/pgp-signature
+Content-Description: Digitale Signatur von OpenPGP
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEE97o7Um30LT3B+5b/86SN7mm1DoAFAmSehFEACgkQ86SN7mm1
+DoCf0Q/+PAzoc0MsFKTaoPSLnN5nLei3muaIWh8tFlvsvcEIuAr0TK35+NMCwRKg
+carcbr5ImHOTemPQg7hFEqdujUOVKO6GbqBN3B4awq7nCCKJKbWg5qU4u3Zw45KQ
+NO16omwctt7p5FLhJIIX1Um8QNUPiZqjrbOgIo+ZLgxrdT8r5mMitBY2E4jpSdp7
+wyzbXN3h3CiEf8D9jVx/dHorAadvRMI5hEPpRGErIkptwezUohF8h5rg4LGL1/HS
+EtMa7Tj0PFkSHYMy6UkOok5IeMH5lP1fw+1M/0ZsKK/z4WtTvNz2/03vL9WG20E7
+H/2LrX2CTDRUCotUABR+GyaYoTnqYlgkLhql4JfOah1ASkOwXNyaZLrQXKhqxVUc
+TFa79mFelfB3fo5npaD9DaIR6y1v73PaSXJ6yEb1GL+prZfRVSnBeo7rh5Q/KPh+
+VGncAwj1flxKLpgj+LmQjsjU7C3rENbvA0qVxIspWqKnRcAHwWndDnimrj2H7Jwq
+/bksP3Xehmdhe7w385496aD794c9zZTIqWHwyGfzNkGefExXfFuuZt6hHQs61AIv
+YdUwCm6Q2m2FpnuZnNhmXZoDd/274ucoN5TAMB57WeQr+MR0ATtXOMifhhRbYuvK
+N0yGPQC5i7MrOTUsuc0CIw7k6oSaePRMWFdVQ45iyJw8u4cqp4U=
+=teFy
+-----END PGP SIGNATURE-----
+
+--Sig_/lmjCe4VHwkOw+v56guoEpxw--
 
