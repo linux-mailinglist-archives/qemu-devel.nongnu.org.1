@@ -2,90 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAC7F74388B
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 11:43:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B79827438A0
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 11:47:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFAem-0001ZP-H0; Fri, 30 Jun 2023 05:43:12 -0400
+	id 1qFAi5-0003Ux-T3; Fri, 30 Jun 2023 05:46:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qFAek-0001Z7-LZ
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 05:43:10 -0400
-Received: from mail-oa1-x2f.google.com ([2001:4860:4864:20::2f])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qFAi4-0003UA-2R
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 05:46:36 -0400
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qFAei-00075d-NY
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 05:43:10 -0400
-Received: by mail-oa1-x2f.google.com with SMTP id
- 586e51a60fabf-1b012c3ce43so1438720fac.3
- for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 02:43:08 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qFAi1-0001dA-9k
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 05:46:35 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-3fb4146e8ceso18452505e9.0
+ for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 02:46:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1688118187; x=1690710187;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=linaro.org; s=google; t=1688118391; x=1690710391;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=ehq2g/ST4egm2GGP6qmdKt28iHPh6jVGSaflPce0t5Y=;
- b=dCuWwQrFwkCW2IjJ2m50Rw36xc3gn9W8hX+7tlgu8MOvFuVGV5SjjrqN2D26opWmMt
- XqH5s+3n7V/9UtY4Lc3VQb5o+4zYybmrf971q1DVmroiK5l2uB3+IAFIYGHepsVQddVY
- JPi9B5/wRb+7hW6H9FJt5tiN84+tvCof8vuUqmKEz4pDqJ9RhZ3/nEpCxbeeIG0L120p
- MfODnG+DEyFkMzWPB12XQodFQlcvPUMCsfEhaIs2giyhAAAWH/GiU5oGhyJb4r6beEcP
- BGZMFNP/cHoXgUd3z3Ng9tFaZdlW6ZJsetYsKQlfNFM7QQj4Svz4XwiEZpq7jZ27NRoO
- 4Wuw==
+ bh=jqrk00x0V4ig0mQBvovnGth9baJqCnkMFwxtTKTNwN0=;
+ b=INav9GGtM0W+MNLN+uiZ/8bt0s23NAvr3aEov2zxNm7jk8qWaQJw5lORr/TEbmcRh3
+ DwNZ7SGWURQfx+ki8obbvSpc+95YiooB4cBsStgaaqrw/2lCHUG+9p/5SardJdS78k6c
+ 86/hfdSstaPZlImqvOV5PzsSttjAtbxGBcDTWy0DH3Le9RldcW57EHt01sEc4enCMi3q
+ SNLNAsZ+iF3mJ67/imrNPuOg1INQQ0xLi1einSLaBcfArygH9dANYHZbbo0X+f6kx0Zl
+ Xoo0AqLIGHZVhaDYA3UVWDhuRt9dvN/CT0b3Ae8rKZqSafmlcKJdUm0FTDe6qT2kHEsG
+ OAPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688118187; x=1690710187;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=1e100.net; s=20221208; t=1688118391; x=1690710391;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ehq2g/ST4egm2GGP6qmdKt28iHPh6jVGSaflPce0t5Y=;
- b=RvDfWaRwLPM97OeGglIQ88a4pPESyNa8f2g4CMApH0u/p8Xoi2i2Wip2jx96nqhaCG
- anc3Yjizxibf4+UEEodHfoDZN+TUAZLL1v98ZeqiW1Tm4aYfu+OBV1qgapBw3AqwtkBM
- 9OI9VhSktdavZmcDuJ/rF5hi4rjn8VvoVIyX1e37YXbQ1HZYvHwm4F+fpOZavNJ3XlAh
- ZcJLZakiegObs0bH/Bi4rrFb3fxVrFuvAeGQ+cUwSOpBMbLWfBq14xb6Y2cFDm/FcUQr
- T7qKCMHsMkFnCm4zzLP+TYsp7lDsNlcEKKKDkIhIn+pwe2LUpaHC8chOUZrjksB4d7i4
- amPA==
-X-Gm-Message-State: ABy/qLbjIHrO0lhmkmhu3pDq6An55I2YQHzMm+JSz6/H4yy5cxHYypYw
- bA4FQn5dOG15O/UwbH3p6WDORQ==
-X-Google-Smtp-Source: ACHHUZ5Myzp68Zu2IFyC7/DqmLfVS9RUyOki0/A/GprkqnjuUH3ilQtkOE+y6auys6nszPS65OiWUw==
-X-Received: by 2002:a05:6871:28d:b0:1ac:de6c:5534 with SMTP id
- i13-20020a056871028d00b001acde6c5534mr3120732oae.54.1688118187374; 
- Fri, 30 Jun 2023 02:43:07 -0700 (PDT)
-Received: from [192.168.68.107] (201-69-66-110.dial-up.telesp.net.br.
- [201.69.66.110]) by smtp.gmail.com with ESMTPSA id
- q38-20020a05687082a600b001b036059b69sm6763648oae.29.2023.06.30.02.43.03
+ bh=jqrk00x0V4ig0mQBvovnGth9baJqCnkMFwxtTKTNwN0=;
+ b=SZaht7fxymeuwWQZAmMEzEplmwZlvETyGfGcIXcL8Mbwe6L2s7230ZvKP5klWbpn9J
+ AoTatONt6OwCt2taYKeoehkwvzc5T6vl0pO4pStpFpBBjcDz2a6GhO6A7ToGphlMuCYG
+ nBXBE0stVj/gpkv8dZQ92drAaHHnivlv9oC6pWjcpvn854n0HSXefZ2KAQreIBLN7VKz
+ fNHIdA+EGFR/lY5iE8FViROk+BLz51uCHUDysrcOqzhZRrT+q9KW2omTJ2Z7rbC/ZEMq
+ Xbt4kzrS5ljsNlSsJZHzXex2Hl4sEwtucx1Mf2/aUzhW4osFHcUoyOgGagAWdyGGfE7w
+ ibRw==
+X-Gm-Message-State: AC+VfDykgxmYm5zIrfaeNQx5F5RsQrjfOYnqjflIXyv87u+Qt0hKjfYr
+ za5ESGA+blkMZXxPVAO2LosMnA==
+X-Google-Smtp-Source: ACHHUZ6E0Lps4JFkeZVhCh60wlWXPgpPajAuKxWowOB8S5DcZwsmweBQ0HoL4Xo58T/Tjzuqw40RPw==
+X-Received: by 2002:a7b:cc15:0:b0:3fb:abd0:2b52 with SMTP id
+ f21-20020a7bcc15000000b003fbabd02b52mr1504224wmh.13.1688118391438; 
+ Fri, 30 Jun 2023 02:46:31 -0700 (PDT)
+Received: from [192.168.1.208] ([139.47.41.96])
+ by smtp.gmail.com with ESMTPSA id
+ n20-20020a7bcbd4000000b003fb739d27aesm10423683wmi.35.2023.06.30.02.46.30
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 30 Jun 2023 02:43:07 -0700 (PDT)
-Message-ID: <278f93d9-117b-c235-2c13-1f83a79c1637@ventanamicro.com>
-Date: Fri, 30 Jun 2023 06:43:01 -0300
+ Fri, 30 Jun 2023 02:46:31 -0700 (PDT)
+Message-ID: <69901e50-52e8-f937-a848-53b8042c2eeb@linaro.org>
+Date: Fri, 30 Jun 2023 11:46:28 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH v4 6/6] target/riscv: select KVM AIA in riscv virt machine
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v4 3/3] DO NOT MERGE: tests/tcg/riscv64: Add test for
+ fcvtmod.w.d
 Content-Language: en-US
-To: Yong-Xuan Wang <yongxuan.wang@sifive.com>, qemu-devel@nongnu.org,
- qemu-riscv@nongnu.org
-Cc: rkanwal@rivosinc.com, anup@brainfault.org, atishp@atishpatra.org,
- vincent.chen@sifive.com, greentime.hu@sifive.com, frank.chang@sifive.com,
- jim.shu@sifive.com, Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
-References: <20230621145500.25624-1-yongxuan.wang@sifive.com>
- <20230621145500.25624-7-yongxuan.wang@sifive.com>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20230621145500.25624-7-yongxuan.wang@sifive.com>
+To: Christoph Muellner <christoph.muellner@vrull.eu>, qemu-riscv@nongnu.org,
+ qemu-devel@nongnu.org, Alistair Francis <alistair.francis@wdc.com>,
+ Bin Meng <bin.meng@windriver.com>, Philipp Tomsich
+ <philipp.tomsich@vrull.eu>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Jeff Law <jeffreyalaw@gmail.com>, Tsukasa OI <research_trasio@irq.a4lg.com>,
+ liweiwei@iscas.ac.cn, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Rob Bradford <rbradford@rivosinc.com>
+References: <20230630091303.1676486-1-christoph.muellner@vrull.eu>
+ <20230630091303.1676486-4-christoph.muellner@vrull.eu>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230630091303.1676486-4-christoph.muellner@vrull.eu>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2001:4860:4864:20::2f;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-oa1-x2f.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.093,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,209 +102,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-On 6/21/23 11:54, Yong-Xuan Wang wrote:
-> Select KVM AIA when the host kernel has in-kernel AIA chip support.
-> Since KVM AIA only has one APLIC instance, we map the QEMU APLIC
-> devices to KVM APLIC.
-> We also extend virt machine to specify the KVM AIA mode. The "kvm-aia"
-> parameter is passed along with machine name in QEMU command-line.
-> 1) "kvm-aia=emul": IMSIC is emulated by hypervisor
-> 2) "kvm-aia=hwaccel": use hardware guest IMSIC
-> 3) "kvm-aia=auto": use the hardware guest IMSICs whenever available
->                     otherwise we fallback to software emulation.
+On 6/30/23 11:13, Christoph Muellner wrote:
+> From: Christoph Müllner<christoph.muellner@vrull.eu>
 > 
-> Signed-off-by: Yong-Xuan Wang <yongxuan.wang@sifive.com>
-> Reviewed-by: Jim Shu <jim.shu@sifive.com>
-> ---
-
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-
->   hw/riscv/virt.c         | 92 ++++++++++++++++++++++++++++++++++-------
->   include/hw/riscv/virt.h |  1 +
->   2 files changed, 79 insertions(+), 14 deletions(-)
+> This patch introduces a test for Zfa's fcvtmod.w.d instruction.
+> The test cases test for correct results and flag behaviour.
+> Note, that the Zfa specification requires fcvtmod's flag behaviour
+> to be identical to a fcvt with the same operands (which is also
+> tested).
 > 
-> diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
-> index 4a1d29a741..efa176a184 100644
-> --- a/hw/riscv/virt.c
-> +++ b/hw/riscv/virt.c
-> @@ -35,6 +35,7 @@
->   #include "hw/riscv/virt.h"
->   #include "hw/riscv/boot.h"
->   #include "hw/riscv/numa.h"
-> +#include "kvm_riscv.h"
->   #include "hw/intc/riscv_aclint.h"
->   #include "hw/intc/riscv_aplic.h"
->   #include "hw/intc/riscv_imsic.h"
-> @@ -74,6 +75,12 @@
->   #error "Can't accomodate all IMSIC groups in address space"
->   #endif
->   
-> +/* KVM AIA only supports APLIC.m. APLIC.w is always emulated by QEMU. */
-> +static bool virt_use_kvm_aia(RISCVVirtState *s)
-> +{
-> +    return kvm_irqchip_in_kernel() && s->aia_type == VIRT_AIA_TYPE_APLIC_IMSIC;
-> +}
-> +
->   static const MemMapEntry virt_memmap[] = {
->       [VIRT_DEBUG] =        {        0x0,         0x100 },
->       [VIRT_MROM] =         {     0x1000,        0xf000 },
-> @@ -642,7 +649,8 @@ static void create_fdt_socket_aplic(RISCVVirtState *s,
->                                       uint32_t msi_s_phandle,
->                                       uint32_t *phandle,
->                                       uint32_t *intc_phandles,
-> -                                    uint32_t *aplic_phandles)
-> +                                    uint32_t *aplic_phandles,
-> +                                    int num_harts)
->   {
->       int cpu;
->       char *aplic_name;
-> @@ -653,11 +661,11 @@ static void create_fdt_socket_aplic(RISCVVirtState *s,
->   
->       aplic_m_phandle = (*phandle)++;
->       aplic_s_phandle = (*phandle)++;
-> -    aplic_cells = g_new0(uint32_t, s->soc[socket].num_harts * 2);
-> +    aplic_cells = g_new0(uint32_t, num_harts * 2);
->   
->       if (!kvm_enabled()) {
->           /* M-level APLIC node */
-> -        for (cpu = 0; cpu < s->soc[socket].num_harts; cpu++) {
-> +        for (cpu = 0; cpu < num_harts; cpu++) {
->               aplic_cells[cpu * 2 + 0] = cpu_to_be32(intc_phandles[cpu]);
->               aplic_cells[cpu * 2 + 1] = cpu_to_be32(IRQ_M_EXT);
->           }
-> @@ -691,7 +699,7 @@ static void create_fdt_socket_aplic(RISCVVirtState *s,
->       }
->   
->       /* S-level APLIC node */
-> -    for (cpu = 0; cpu < s->soc[socket].num_harts; cpu++) {
-> +    for (cpu = 0; cpu < num_harts; cpu++) {
->           aplic_cells[cpu * 2 + 0] = cpu_to_be32(intc_phandles[cpu]);
->           aplic_cells[cpu * 2 + 1] = cpu_to_be32(IRQ_S_EXT);
->       }
-> @@ -798,17 +806,25 @@ static void create_fdt_sockets(RISCVVirtState *s, const MemMapEntry *memmap,
->           *msi_pcie_phandle = msi_s_phandle;
->       }
->   
-> -    phandle_pos = ms->smp.cpus;
-> -    for (socket = (socket_count - 1); socket >= 0; socket--) {
-> -        phandle_pos -= s->soc[socket].num_harts;
-> +    /* KVM AIA only has one APLIC instance */
-> +    if (virt_use_kvm_aia(s)) {
-> +        create_fdt_socket_aplic(s, memmap, 0,
-> +            msi_m_phandle, msi_s_phandle, phandle,
-> +            &intc_phandles[0], xplic_phandles, ms->smp.cpus);
-> +    } else {
-> +        phandle_pos = ms->smp.cpus;
-> +        for (socket = (socket_count - 1); socket >= 0; socket--) {
-> +            phandle_pos -= s->soc[socket].num_harts;
->   
-> -        if (s->aia_type == VIRT_AIA_TYPE_NONE) {
-> -            create_fdt_socket_plic(s, memmap, socket, phandle,
-> -                &intc_phandles[phandle_pos], xplic_phandles);
-> -        } else {
-> -            create_fdt_socket_aplic(s, memmap, socket,
-> -                msi_m_phandle, msi_s_phandle, phandle,
-> -                &intc_phandles[phandle_pos], xplic_phandles);
-> +            if (s->aia_type == VIRT_AIA_TYPE_NONE) {
-> +                create_fdt_socket_plic(s, memmap, socket, phandle,
-> +                    &intc_phandles[phandle_pos], xplic_phandles);
-> +            } else {
-> +                create_fdt_socket_aplic(s, memmap, socket,
-> +                    msi_m_phandle, msi_s_phandle, phandle,
-> +                    &intc_phandles[phandle_pos], xplic_phandles,
-> +                    s->soc[socket].num_harts);
-> +            }
->           }
->       }
->   
-> @@ -819,6 +835,9 @@ static void create_fdt_sockets(RISCVVirtState *s, const MemMapEntry *memmap,
->               *irq_mmio_phandle = xplic_phandles[socket];
->               *irq_virtio_phandle = xplic_phandles[socket];
->               *irq_pcie_phandle = xplic_phandles[socket];
-> +
-> +            if (virt_use_kvm_aia(s))
-> +                break;
->           }
->           if (socket == 1) {
->               *irq_virtio_phandle = xplic_phandles[socket];
-> @@ -1454,6 +1473,14 @@ static void virt_machine_init(MachineState *machine)
->           }
->       }
->   
-> +    if (virt_use_kvm_aia(s)) {
-> +        kvm_riscv_aia_create(
-> +            machine, s->kvm_aia_mode, IMSIC_MMIO_GROUP_MIN_SHIFT,
-> +            VIRT_IRQCHIP_NUM_SOURCES, VIRT_IRQCHIP_NUM_MSIS,
-> +            memmap[VIRT_APLIC_S].base, memmap[VIRT_IMSIC_S].base,
-> +            s->aia_guests);
-> +    }
-> +
->       if (riscv_is_32bit(&s->soc[0])) {
->   #if HOST_LONG_BITS == 64
->           /* limit RAM size in a 32-bit system */
-> @@ -1610,6 +1637,31 @@ static void virt_set_aia(Object *obj, const char *val, Error **errp)
->       }
->   }
->   
-> +#if defined(CONFIG_KVM)
-> +static char *virt_get_kvm_aia(Object *obj, Error **errp)
-> +{
-> +    RISCVVirtState *s = RISCV_VIRT_MACHINE(obj);
-> +
-> +    return kvm_aia_mode_str(s->kvm_aia_mode);
-> +}
-> +
-> +static void virt_set_kvm_aia(Object *obj, const char *val, Error **errp)
-> +{
-> +    RISCVVirtState *s = RISCV_VIRT_MACHINE(obj);
-> +
-> +    if (!strcmp(val, "emul")) {
-> +        s->kvm_aia_mode = KVM_DEV_RISCV_AIA_MODE_EMUL;
-> +    } else if (!strcmp(val, "hwaccel")) {
-> +        s->kvm_aia_mode = KVM_DEV_RISCV_AIA_MODE_HWACCEL;
-> +    } else if (!strcmp(val, "auto")) {
-> +        s->kvm_aia_mode = KVM_DEV_RISCV_AIA_MODE_AUTO;
-> +    } else {
-> +        error_setg(errp, "Invalid KVM AIA mode");
-> +        error_append_hint(errp, "Valid values are emul, hwaccel, and auto.\n");
-> +    }
-> +}
-> +#endif
-> +
->   static bool virt_get_aclint(Object *obj, Error **errp)
->   {
->       RISCVVirtState *s = RISCV_VIRT_MACHINE(obj);
-> @@ -1717,6 +1769,18 @@ static void virt_machine_class_init(ObjectClass *oc, void *data)
->       sprintf(str, "Set number of guest MMIO pages for AIA IMSIC. Valid value "
->                    "should be between 0 and %d.", VIRT_IRQCHIP_MAX_GUESTS);
->       object_class_property_set_description(oc, "aia-guests", str);
-> +
-> +#if defined(CONFIG_KVM)
-> +    object_class_property_add_str(oc, "kvm-aia", virt_get_kvm_aia,
-> +                                  virt_set_kvm_aia);
-> +    object_class_property_set_description(oc, "kvm-aia",
-> +                                          "Set KVM AIA mode. Valid values are "
-> +                                          "emul, hwaccel, and auto. Default "
-> +                                          "is auto.");
-> +    object_property_set_default_str(object_class_property_find(oc, "kvm-aia"),
-> +                                    "auto");
-> +
-> +#endif
->       object_class_property_add(oc, "acpi", "OnOffAuto",
->                                 virt_get_acpi, virt_set_acpi,
->                                 NULL, NULL);
-> diff --git a/include/hw/riscv/virt.h b/include/hw/riscv/virt.h
-> index e5c474b26e..d0140feeff 100644
-> --- a/include/hw/riscv/virt.h
-> +++ b/include/hw/riscv/virt.h
-> @@ -56,6 +56,7 @@ struct RISCVVirtState {
->       bool have_aclint;
->       RISCVVirtAIAType aia_type;
->       int aia_guests;
-> +    uint64_t kvm_aia_mode;
->       char *oem_id;
->       char *oem_table_id;
->       OnOffAuto acpi;
+> DO NOT MERGE!!!
+> Although this test works just fine, it requires a toolchain
+> that supports the Zfa extension. Unless this is available
+> this patch cannot be merged.
+> DO NOT MERGE!!!
+
+That's what
+
+   /* fcvtmod.w.d rd, rs1, rtz = 1100001 01000 rs1 001 rd 1010011 */
+   asm(".insn r, 0x53, 0x1, 0x61, %0, %1, f8" : "=r"(ret) : "f"(fpr));
+
+is for.
+
+> +    __asm__ __volatile__("fmv.d.x %0, %1" : "=fp"(fpr) : "r"(inp));
+
+Always "f" not "fp".  "fp" is *two* constraints, "f" and "p", and the second is incorrect.
+
+
+r~
 
