@@ -2,84 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B7AC743CB7
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 15:26:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54D5E743CBD
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 15:27:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFE6g-0006qL-A5; Fri, 30 Jun 2023 09:24:14 -0400
+	id 1qFE9T-0003rJ-Rv; Fri, 30 Jun 2023 09:27:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qFE6c-0006fR-3e
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 09:24:10 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ id 1qFE9F-0003lW-7J
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 09:26:54 -0400
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qFE6a-0003r1-AH
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 09:24:09 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-3fba5a8af2cso18772235e9.3
- for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 06:24:07 -0700 (PDT)
+ id 1qFE8z-0004b1-Ay
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 09:26:52 -0400
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-3128fcd58f3so2113889f8f.1
+ for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 06:26:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688131447; x=1690723447;
+ d=linaro.org; s=google; t=1688131595; x=1690723595;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=XcrqOs7jhyg4WP0KzDf5XnM+cYYEbHQBa1mTd/EFauU=;
- b=ty0V331LgCQQMQFkp+1ceSMIzL68K0PhW00nVs3D1bZ1YdOOr7dCZ6godQPZSIt8Cf
- o2nBZE/h9PZmWi3U1qdzpGdX9l3VjMJZc8XRazSTOVMORhO/IgvAzVkyfTNJ5LzSSlT2
- GMCm49LvK8eXUZyqab8lrk+Gi84JspUyAB7OrrtG9S6gSFmruUwXjBzLKJPJucQE6Yk4
- KFveYba8RPnNDe24a07sj0t8bGGuwDrYrrZA8BqxY5ZqLgnD+9EdC9KzI+mm94UyjHat
- hXlMxfRm8IJYd+g1l3tBcX9cykKQqQiOSIVMqm3dbhsIxd7pliej8aHhDxpKxKSaxDeX
- IjGg==
+ bh=zO+MiD0vvqFvSc9RbHUTYL1g23zi99p73Vc40SoL74Y=;
+ b=lFmLVpfNejeN1TMQgO0v6ao70ZgPOcxocb8wXd0lkRdulSo3d8mj8fEYUIoaMfO3yA
+ syuLh8LDOmKZHwqDVKrvcN5J386dRHHq5mWksDhKo3Z843moYCszYWGVIWQs7D69kilr
+ 1lqL6P9m12MHrI33HQsGa8EHFKqmztRk7jgZJCOGLgcBa0DuQrICm+08M100RqhfdK1y
+ yzzKPwMTxDnNMjECMc0pKdFSpcPjqlBqj8mg3jV1cZHHWSXsdQ/JzWzAg2p6neSnDeqZ
+ ppSGB61uWPbcUOZrD0Dt/kZ8p/nFTEeSLJZBzOzm8FtjPPmBJ2oprUwPO8M1blTAsRx8
+ V8cA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688131447; x=1690723447;
+ d=1e100.net; s=20221208; t=1688131595; x=1690723595;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=XcrqOs7jhyg4WP0KzDf5XnM+cYYEbHQBa1mTd/EFauU=;
- b=LJMrSHtw6/6Iv8WKHAku4TgaIpPSPRq2S4ntHScFoNthCe6+J/4RCfi4mrUVsf8Dhk
- noe5egCVrDA4PQbqorczEnGf72bZOZkQzchopjh2ExcpQxzd2hFiUeBHaw7+DpneqIC0
- KNN4lBFsfab2X+ksb5Jt9bOhgEAo4FToDr8HDG0zHpn/VZcxni4YxZ++Z8mpXZk42x4S
- gh+nZnpp4tFSsi/djR4S2KoBEcbS1YGrqHnxfAh8+BUf46nBUacPT9c2rZakfqsBt1Hs
- 8KNJCI6alTAA4L6zGuiDS6YxTy/tXtoc6pJLYjV39+ftYaTuQkKnOecGxzna3cSvjjUT
- /P+g==
-X-Gm-Message-State: AC+VfDxzkbw681XEhgciqH2mdHXo9mOtNqbHi5E3YMkDNW6Z0nnKTEc+
- 7Y0CGkytD2nyXtXns5oWcmfMYH9WpBU4XDMckzyl/Q==
-X-Google-Smtp-Source: ACHHUZ7cf9w1LEow5YCcAdJsjjeyuPPSMyaQk+kyQTh8mPJ6UBMcVsDvdL/VCib1CHC16V6pXB9NPQ==
-X-Received: by 2002:a05:600c:cf:b0:3fb:a102:6d7a with SMTP id
- u15-20020a05600c00cf00b003fba1026d7amr1803736wmm.28.1688131446680; 
- Fri, 30 Jun 2023 06:24:06 -0700 (PDT)
+ bh=zO+MiD0vvqFvSc9RbHUTYL1g23zi99p73Vc40SoL74Y=;
+ b=OQnGO2FlDnnXhqHSEjDwzTcOz5c6/nlrGm6b0U23JHm9FnesACnx+gm4y/La/gCpmp
+ C8r2FcjmyTQqN5FRgJKdDjNeDF3R7JmPsz4Lgfryjf57owclKDa8CDiMM+m/hXOcOHzl
+ iqfhVJOne4hAbsz4yAw7StvlXHtFqtYF3Q2ZQ+8oIC4pZ2jG9WuhamUtjf8O7AzatDnb
+ 5vueM3Airix4G5YR+h9UGAnIWUW/9dWdwMLIMuy7CB6Kv23zvK0I3V1E0dndYEG51IB+
+ g0ttGVh83nSlG43++iKIDnT9A8BfUbiR3iLOZQm9ZGoY8vCKna+RGRlBsUtcrmcOtcRD
+ Y73A==
+X-Gm-Message-State: ABy/qLZeRzQ+7I0Ac6EW/vV896GdsYgliKoIgn85E2npHyvVRt9q0/Uk
+ 3+ZcjySRzFg2frT5QFQtGdcD298t+lTorJ4qBxZoFg==
+X-Google-Smtp-Source: APBJJlECowUQ31uVuXZ5NC3ox0oWtgd4OOwEGXHqRAG82Yzhfv5lXaXLS8TM7GsnJy+qYK6WorF65g==
+X-Received: by 2002:a5d:4f11:0:b0:313:df08:7b7e with SMTP id
+ c17-20020a5d4f11000000b00313df087b7emr2192727wru.14.1688131595355; 
+ Fri, 30 Jun 2023 06:26:35 -0700 (PDT)
 Received: from [192.168.1.208] ([139.47.41.96])
  by smtp.gmail.com with ESMTPSA id
- v14-20020a1cf70e000000b003f9b2c602c0sm22037595wmh.37.2023.06.30.06.24.05
+ h10-20020a5d504a000000b00313e8dc7facsm16569370wrt.116.2023.06.30.06.26.34
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 30 Jun 2023 06:24:06 -0700 (PDT)
-Message-ID: <018c47b2-6cbe-8aca-2b6d-86541b05194f@linaro.org>
-Date: Fri, 30 Jun 2023 15:24:04 +0200
+ Fri, 30 Jun 2023 06:26:34 -0700 (PDT)
+Message-ID: <9ee9c3fc-47cd-25de-f876-7edbd874862a@linaro.org>
+Date: Fri, 30 Jun 2023 15:26:33 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PULL 3/5] tcg: add perfmap and jitdump
+Subject: Re: [RFC PATCH] target/arm: make arm_casq_ptw CONFIG_TCG only
 Content-Language: en-US
-To: Ilya Leoshkevich <iii@linux.ibm.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+To: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
  qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org,
- "Vanderson M . do Rosario" <vandersonmr2@gmail.com>,
- =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>
-References: <20230116223637.3512814-1-richard.henderson@linaro.org>
- <20230116223637.3512814-4-richard.henderson@linaro.org>
- <e1112615-0e6c-e0ea-aa60-1d94d1da26ea@linaro.org>
- <e122d115-0d0f-59d2-b593-2210ca1118df@linaro.org>
- <9d6b93c20340059f1a2fbea4a7a531e2e35ba34d.camel@linux.ibm.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ "open list:ARM TCG CPUs" <qemu-arm@nongnu.org>
+References: <20230630110757.417758-1-alex.bennee@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <9d6b93c20340059f1a2fbea4a7a531e2e35ba34d.camel@linux.ibm.com>
+In-Reply-To: <20230630110757.417758-1-alex.bennee@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x434.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -102,38 +96,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/30/23 14:39, Ilya Leoshkevich wrote:
-> On Thu, 2023-06-29 at 14:59 +0200, Richard Henderson wrote:
->> On 6/29/23 13:31, Philippe Mathieu-Daudé wrote:
->>>> diff --git a/tcg/tcg.c b/tcg/tcg.c
->>>> index da91779890..9b7df71e7a 100644
->>>> --- a/tcg/tcg.c
->>>> +++ b/tcg/tcg.c
->>>> @@ -61,6 +61,7 @@
->>>>    #include "exec/log.h"
->>>>    #include "tcg/tcg-ldst.h"
->>>>    #include "tcg-internal.h"
->>>> +#include "accel/tcg/perf.h"
->>>
->>> Is it OK to include an header from QEMU's accel/tcg/ here?
->>> I thought we wanted to keep tcg/ kinda independant (or maybe
->>> this is already too late and this isn't a concern anymore).
->>
->> It's not ideal, no.  Perf really should live in tcg/.
->>
->>
->> r~
+On 6/30/23 13:07, Alex Bennée wrote:
+> The ptw code is accessed by non-TCG code (specifically arm_pamax and
+> arm_cpu_get_phys_page_attrs_debug) but most of it is really only for
+> TCG emulation. Seeing as we already assert for a non TARGET_AARCH64
+> build lets extend the test rather than further messing with the ifdef
+> ladder.
 > 
-> This would require to somehow get rid of this:
+> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 > 
-> #if defined(TARGET_I386)
->              q[insn].address -= tb->cs_base;
-> #endif
+> ---
+> NB: I need this because I'm about to change the probe action is calls
+> and probes are very definitely TCG only operations through cputlb.c.
+> ---
+>   target/arm/ptw.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> I'll try to come up with a patch.
+> diff --git a/target/arm/ptw.c b/target/arm/ptw.c
+> index 422bf7e3b1..8cac685aa6 100644
+> --- a/target/arm/ptw.c
+> +++ b/target/arm/ptw.c
+> @@ -628,7 +628,7 @@ static uint64_t arm_casq_ptw(CPUARMState *env, uint64_t old_val,
+>                                uint64_t new_val, S1Translate *ptw,
+>                                ARMMMUFaultInfo *fi)
+>   {
+> -#ifdef TARGET_AARCH64
+> +#if defined(TARGET_AARCH64) && defined(CONFIG_TCG)
+>       uint64_t cur_val;
+>       void *host = ptw->out_host;
+>   
+> @@ -708,7 +708,7 @@ static uint64_t arm_casq_ptw(CPUARMState *env, uint64_t old_val,
+>   
+>       return cur_val;
+>   #else
+> -    /* AArch32 does not have FEAT_HADFS. */
+> +    /* AArch32 and non TCG guests do not have FEAT_HADFS. */
+Better as
 
-Just drop it?  Did you really want EIP instead of the full virtual address?
-It only makes a difference for 16-bit mode anyway.
+   AArch32 does not have FEAT_HADFS; non-TCG guests only use debug-mode.
+
+Otherwise,
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
 
 r~
