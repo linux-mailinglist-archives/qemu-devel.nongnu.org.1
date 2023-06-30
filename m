@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C845F743CBA
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 15:27:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89AD8743CC6
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 15:29:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFE4u-0007nN-9K; Fri, 30 Jun 2023 09:22:24 -0400
+	id 1qFE4u-0007nb-WF; Fri, 30 Jun 2023 09:22:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qFE4s-0007mD-1O
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 09:22:22 -0400
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+ id 1qFE4t-0007mw-7m
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 09:22:23 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qFE4q-0003TO-EF
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 09:22:21 -0400
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-3112f5ab0b1so2061328f8f.0
- for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 06:22:20 -0700 (PDT)
+ id 1qFE4r-0003Tg-LS
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 09:22:22 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-3fbc0981756so15777065e9.0
+ for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 06:22:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688131339; x=1690723339;
+ d=linaro.org; s=google; t=1688131340; x=1690723340;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=s3pB3AzQ33HXE3XP6riFkr6cxMvSqstuDeeeDRipPQQ=;
- b=IQc/4aLOMArBLv54JuARcDL8HB95+V5k+cLwQXmCpW8vNZAfMqs8sCcpu0ZXEBAyqI
- RIgrEYYbtbeY6CP4A4Lvtju/DYCIsu2fqY3cZjwYUvZMzE/0+H2Pwe+dBrXCyPxEucHr
- 3oSqtBiz6Z2U7UvpGQpGDjSlQ5+0K86nMQsgP7hw3D4meFEj56VOxcs33XUduhflP5Hf
- xMLiFk335BKzFIXCVv5jSPqk46lpBDvMnUwV+HGFPEfdmnhT19ERsHdGrw2GLeTO6b9Y
- 6/+g1sVt1Gte9BFsv+8N0bX/YmxvpBRUDq49xi1KUSsYalaz6LZeEz+z0EygaRUW/+ry
- ZU8w==
+ bh=Z4tz1Qg7924YrzRDQ0nhW1mfYwrF0UAZkf+8N9yiaRs=;
+ b=aPWJJYTDVb+bOYKUampNV2/ZoJuhbiy0/+zrnbUuZVeVLBBWiI08WYiIu/vXpFXxV9
+ TLe8S/z0bXnZMA3vcRfu9vblijiTkezFSYQPfkpJlL1duThX15SzXGygnF4YXB2ZZVXO
+ kTRfX2cQo9NhqCnrYqCRDCMtnF+V+4epJhgfwZTX++uFcqXVz6XRse5zF9Te67iY9YTR
+ rug90C9Oh2O1/S7GI7ADv7+AMLRXtNZUJAxWsBgfJm8hIKjwyDPz6QDQexFlSRjRbBZY
+ nOQX3d4ks7fJtJUAtxBMVIRO07FbScfwhp2ZL6rkRal++NOwFDMCF632F1A06xNSZz8Q
+ +RFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688131339; x=1690723339;
+ d=1e100.net; s=20221208; t=1688131340; x=1690723340;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=s3pB3AzQ33HXE3XP6riFkr6cxMvSqstuDeeeDRipPQQ=;
- b=lLqtORaxEzs9SDx/hXOo3bK5z+etjCV0IPj9vgMMTetdlTBJ/RA5PUXKSnd+bq4DKP
- ZG5vSgWK/xAXr2esUP2jirrZJ8E12ho6q8aqGS3H8wes5Ehibq/YaREzMemGimqhOxBI
- 2JYJB92PuceTDb9sbgZMw5rt/VjM0N6/6fY8fPxXRFWdcvuq8YhAggqJO0HrytLHQFF+
- xRKhP2P+6J6Gq/sU7YqBPE6X8J2BudpmPqtEwwDVUf3hZyOZoeYvCCTS6rDUq/uzBCT4
- cy88/j5uZyYrcjjkXLhn0ilmFEyOwK0W4vYRyulwyojp+UHWgECaTDWz2bKtlteN6IB+
- Sn3w==
-X-Gm-Message-State: ABy/qLYQNmw2+blV1i+9WGvhjKy2XGPwEnF6e7GxXypsgJ16K6wyPW5C
- s1n8urNmKBE76jFsItwNkDlIgp0HYnxUze2KScE8DQ==
-X-Google-Smtp-Source: APBJJlEXwZacrEmeINGS2CqMKlmZ6CY5KnogZpNsd06av+bJve8G7/D60YatxRh0GjlHHC4I6DN9mA==
-X-Received: by 2002:adf:cf07:0:b0:313:f4ff:30e9 with SMTP id
- o7-20020adfcf07000000b00313f4ff30e9mr2451156wrj.53.1688131339131; 
+ bh=Z4tz1Qg7924YrzRDQ0nhW1mfYwrF0UAZkf+8N9yiaRs=;
+ b=JhvYzbVD+JnFKwWspmHwfrMMrqnOJvcS5MdOjHrmSohUWIziF3KvZCteKRTq+2WWl/
+ +tpDLUG2exoEOPY0PvKIQhNbKGZ7zaTKWYw0BIlq8ccIKGcMRs7aBqF2i69NOvyp8Boj
+ 0xnzKqvcCZX3GxanlpmCznf9mS6z4+HyeUxTHtMqN3SnlUI7LP8TMpRQxOcxFywQskvf
+ NJBauK0VPFq2r1NCigNIQhj1CT5oub5WTu7c/rhSlnv5DLHgUp/719LshJr2L9vKxdlM
+ sWYAGrFhUvX8I5cDKaH2u6aYi4R/dlbjMC6/DQILfjV0GGueRnK1rEKOCwt8Qc6uFquw
+ 4fzA==
+X-Gm-Message-State: ABy/qLaTvTk0K7f5Q1WCgekKhvc/xZweaZ3qsSClSbkeRotBe8sGV9qg
+ utEuSZNufJZLg6cioatPUY70uOQbWB8XaP8CydBN3w==
+X-Google-Smtp-Source: APBJJlGdgin/EOO9orcN1AVCGi8n2MWJJjeH10nj70/9S1C4ywS0BGdzekVqzPBj+PZaYC9em7Wxcg==
+X-Received: by 2002:adf:f14a:0:b0:314:96f:bb81 with SMTP id
+ y10-20020adff14a000000b00314096fbb81mr2040446wro.22.1688131339825; 
  Fri, 30 Jun 2023 06:22:19 -0700 (PDT)
 Received: from localhost.localdomain ([139.47.41.96])
  by smtp.gmail.com with ESMTPSA id
- a16-20020adfdd10000000b00313ef2150dcsm14571092wrm.45.2023.06.30.06.22.18
+ a16-20020adfdd10000000b00313ef2150dcsm14571092wrm.45.2023.06.30.06.22.19
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 30 Jun 2023 06:22:18 -0700 (PDT)
+ Fri, 30 Jun 2023 06:22:19 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: mjt@tls.msk.ru,
 	laurent@vivier.eu
-Subject: [PATCH 23/24] linux-user: Remove can_passthrough_madvise
-Date: Fri, 30 Jun 2023 15:21:58 +0200
-Message-Id: <20230630132159.376995-24-richard.henderson@linaro.org>
+Subject: [PATCH 24/24] linux-user: Simplify target_madvise
+Date: Fri, 30 Jun 2023 15:21:59 +0200
+Message-Id: <20230630132159.376995-25-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230630132159.376995-1-richard.henderson@linaro.org>
 References: <20230630132159.376995-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x435.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,63 +92,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use page_check_range instead, which uses the interval tree
-instead of checking each page individually.
+The trivial length 0 check can be moved up, simplifying some
+of the other cases.  The end < start test is handled by
+guest_range_valid_untagged.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/mmap.c | 24 +++---------------------
- 1 file changed, 3 insertions(+), 21 deletions(-)
+ linux-user/mmap.c | 19 ++++---------------
+ 1 file changed, 4 insertions(+), 15 deletions(-)
 
 diff --git a/linux-user/mmap.c b/linux-user/mmap.c
-index e6463ecd8d..a2bef1ebe6 100644
+index a2bef1ebe6..48b83ca8bf 100644
 --- a/linux-user/mmap.c
 +++ b/linux-user/mmap.c
-@@ -898,23 +898,6 @@ abi_long target_mremap(abi_ulong old_addr, abi_ulong old_size,
-     return new_addr;
- }
+@@ -900,28 +900,17 @@ abi_long target_mremap(abi_ulong old_addr, abi_ulong old_size,
  
--static bool can_passthrough_madvise(abi_ulong start, abi_ulong end)
--{
--    ulong addr;
--
--    if ((start | end) & ~qemu_host_page_mask) {
--        return false;
--    }
--
--    for (addr = start; addr < end; addr += TARGET_PAGE_SIZE) {
--        if (!(page_get_flags(addr) & PAGE_PASSTHROUGH)) {
--            return false;
--        }
--    }
--
--    return true;
--}
--
  abi_long target_madvise(abi_ulong start, abi_ulong len_in, int advice)
  {
-     abi_ulong len, end;
-@@ -964,9 +947,8 @@ abi_long target_madvise(abi_ulong start, abi_ulong len_in, int advice)
-      *
-      * A straight passthrough for those may not be safe because qemu sometimes
-      * turns private file-backed mappings into anonymous mappings.
--     * can_passthrough_madvise() helps to check if a passthrough is possible by
--     * comparing mappings that are known to have the same semantics in the host
--     * and the guest. In this case passthrough is safe.
-+     * If all guest pages have PAGE_PASSTHROUGH set, mappings have the
-+     * same semantics for the host as for the guest.
-      *
-      * We pass through MADV_WIPEONFORK and MADV_KEEPONFORK if possible and
-      * return failure if not.
-@@ -984,7 +966,7 @@ abi_long target_madvise(abi_ulong start, abi_ulong len_in, int advice)
-         ret = -EINVAL;
-         /* fall through */
-     case MADV_DONTNEED:
--        if (can_passthrough_madvise(start, end)) {
-+        if (page_check_range(start, len, PAGE_PASSTHROUGH)) {
-             ret = get_errno(madvise(g2h_untagged(start), len, advice));
-             if ((advice == MADV_DONTNEED) && (ret == 0)) {
-                 page_reset_target_data(start, start + len - 1);
+-    abi_ulong len, end;
++    abi_ulong len;
+     int ret = 0;
+ 
+     if (start & ~TARGET_PAGE_MASK) {
+         return -TARGET_EINVAL;
+     }
+-    len = TARGET_PAGE_ALIGN(len_in);
+-
+-    if (len_in && !len) {
+-        return -TARGET_EINVAL;
+-    }
+-
+-    end = start + len;
+-    if (end < start) {
+-        return -TARGET_EINVAL;
+-    }
+-
+-    if (end == start) {
++    if (len_in == 0) {
+         return 0;
+     }
+-
+-    if (!guest_range_valid_untagged(start, len)) {
++    len = TARGET_PAGE_ALIGN(len_in);
++    if (len == 0 || !guest_range_valid_untagged(start, len)) {
+         return -TARGET_EINVAL;
+     }
+ 
 -- 
 2.34.1
 
