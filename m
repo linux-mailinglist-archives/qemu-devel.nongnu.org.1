@@ -2,70 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D332F7435E7
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 09:38:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BAC8B7435E5
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 09:38:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qF8hD-000228-Up; Fri, 30 Jun 2023 03:37:36 -0400
+	id 1qF8hF-00022Z-BN; Fri, 30 Jun 2023 03:37:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qF8hA-00021f-Cq
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 03:37:32 -0400
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qF8hB-00021p-A2
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 03:37:33 -0400
 Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qF8h8-0005Ov-FF
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 03:37:31 -0400
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qF8h9-0005Oy-MA
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 03:37:33 -0400
 Received: by mail-ej1-x635.google.com with SMTP id
- a640c23a62f3a-992f6d7c7fbso7509166b.3
+ a640c23a62f3a-98e0c1d5289so179347166b.2
  for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 00:37:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688110648; x=1690702648;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=Gx+NjmcFBvSAtRPV3rw42EgP3SfyA5VZE1XABQlh2QY=;
- b=kSFWqNraloBBDcupbq+eO4ser1ZXEJfsHbNmY0cFSF+TkOypou66knaamtBo8Qnm0o
- uPnUsNSVE79zEcnuTZPkDjB8KPkjh/opi7fg4U17porinhhFMYWQ1Fmo1OvhgbDbHlsP
- 1txQPuOUskpr0z5mqX5TfJcPulLWzhqYrgjtw/AKC4Nufa+JK3pAdPr7izhxzzOY1RQl
- F+J7pWvN14eIlhlPy7ME0UtEL0hlXXm6bAmomeXh67MZ5bsyiYPa9olHBf297VpmUgMa
- aHbj2YVEP6h4zQkU/Efh6XX4AP7NhF4nGo++x3kmjnjfyi9XstH9L0MdZjNtpDHzHoHp
- Qk3Q==
+ d=gmail.com; s=20221208; t=1688110649; x=1690702649;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=scUO39qFpFyGdXPS7MAJnaZv6OMhNhlBVyg/wILuYRw=;
+ b=Ewh8dJWz70BaKtNgEmV637gkQGL0ml6xjF5ndgqI8bMJIgfWN5wVOByhGPbUyYw8XZ
+ Ktnq7DRFGobZ0RtSUEDzLEZ3tTooXSRyVHECPQFHbdWCpXjxnrWdsenhx4/XwwTNc4bI
+ eSU/yvwNDL7usCQFnWk4qj7Iu4kUgGCbJ1MOpzpNBGNP2lBGbONeavfwYnZ4M5cDWG3q
+ YyL1dCiHfUBCDWLi2II/vzgayM9JZ8HC3/KJ3AT0iY/B6wFrmM0mbI73ouC2AOzoMGlf
+ zijkBCBraEQHwzv9CMh/RNGpKAjLeo5XqWFLvtKLTiJ8NzkauxObn9vOV2cnl1128NcR
+ akqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688110648; x=1690702648;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=Gx+NjmcFBvSAtRPV3rw42EgP3SfyA5VZE1XABQlh2QY=;
- b=jwk+cW3pI/JNwEsGnSc3POJk4b/n/WZ7u8FjzD6IgCgaLiGq3+9SHzpcMfRxIfh+Nh
- E0l8DKfC3XZi88gnZn5rw9MiWfcxUI1gHg6UjtJxsY4XVUNOCaklPom1UNoyGaZlILMz
- +pcJycHEt+Ws9QkY2c0VdjnTJ4otULYY0vuq1t9bIn5nIlRiwJzG174c9TxXic27IASM
- 5WrReb+DA6LwhQBY3NWoQfiJSgvCFohfqwoXNAPXBncmY8SujYnzzBoQnplTj4fZNXSK
- GdL28GS+8VH7GsNYobTH0LoN0QSvQKlqNkAfG9DGylQ7hbpNlQstFJb7EEHk4I01T88J
- vo0w==
-X-Gm-Message-State: ABy/qLZwMKruSldmohORYw/KppfUYD/UxbASeT2LrwzpMOs7VcZgm/d5
- RlKKJD5w+StQTTw6edmbILgIxD7tjX4=
-X-Google-Smtp-Source: APBJJlHSKS/Cd79AE16vYzlYeD9Pex9oTqxTfnQikgZ5szsXPTnxb8BNfZovuZK20J1baeK7b40QOw==
-X-Received: by 2002:a17:906:f884:b0:988:9621:d85f with SMTP id
- lg4-20020a170906f88400b009889621d85fmr1190132ejb.58.1688110648228; 
- Fri, 30 Jun 2023 00:37:28 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1688110649; x=1690702649;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=scUO39qFpFyGdXPS7MAJnaZv6OMhNhlBVyg/wILuYRw=;
+ b=OSxvLBLHDvtebt6AfPqAFh4iIJ4gicDluLujYBXvmMCjOu9VsKZ3+zysL3zb3DCPHf
+ XnBOrPmh0zG/PGKMUYVzSOAs9nKERZTq646+chnZsNR6i/vS3+ee8JdiLrRZGwunz2+q
+ RnRWZ/E0ELv4s6VVwkgcjXvkiiBn79v4lzqox53qSbBW4JGqrt+M0uVLUgwd4JKdDPBg
+ i8POLnyQ9nZXLt+CApbwR0Kv6U7LD/ifjH3BHhzEGOpDrz0Kto6aiXzWnql323dtpfUT
+ GB6W/hEbzuvTVTyF9pdXUyhUbv+DXVXpPgJm3PS63yFNzzgSoluknCQc/L6M4ujq/odF
+ +KVQ==
+X-Gm-Message-State: ABy/qLaaVcjfjK0SxrcJ8lXjsRBE0PXpPptoSecmFGQinSuJyP9q4c8P
+ 90NwQPymr+WH7NJBq7h5/scDDW1PwD0=
+X-Google-Smtp-Source: ACHHUZ7dnjB6lA4TJE7J8VSehqhdQPuddttF5UyiJglqx49BVBvz0cdz/xTivvgU1XqNz4it63/Tsw==
+X-Received: by 2002:a17:906:81d8:b0:96f:afe9:25c7 with SMTP id
+ e24-20020a17090681d800b0096fafe925c7mr1219175ejx.10.1688110649245; 
+ Fri, 30 Jun 2023 00:37:29 -0700 (PDT)
 Received: from archlinux.. (dynamic-089-012-131-254.89.12.pool.telefonica.de.
  [89.12.131.254]) by smtp.gmail.com with ESMTPSA id
- k19-20020a1709061c1300b00988b32160dfsm7625578ejg.222.2023.06.30.00.37.27
+ k19-20020a1709061c1300b00988b32160dfsm7625578ejg.222.2023.06.30.00.37.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 30 Jun 2023 00:37:27 -0700 (PDT)
+ Fri, 30 Jun 2023 00:37:28 -0700 (PDT)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Eduardo Habkost <eduardo@habkost.net>, Paolo Bonzini <pbonzini@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Bernhard Beschow <shentey@gmail.com>
-Subject: [PATCH v3 00/17] Q35 and I440FX host bridge QOM cleanup
-Date: Fri, 30 Jun 2023 09:37:03 +0200
-Message-ID: <20230630073720.21297-1-shentey@gmail.com>
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Bernhard Beschow <shentey@gmail.com>, Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v3 01/17] hw/i386/pc_q35: Resolve redundant q35_host variable
+Date: Fri, 30 Jun 2023 09:37:04 +0200
+Message-ID: <20230630073720.21297-2-shentey@gmail.com>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20230630073720.21297-1-shentey@gmail.com>
+References: <20230630073720.21297-1-shentey@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2a00:1450:4864:20::635;
  envelope-from=shentey@gmail.com; helo=mail-ej1-x635.google.com
 X-Spam_score_int: -20
@@ -90,94 +95,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series resolves the legacy i440fx_init() function and instantiates the=
-=0D
-I440FX host bridge the QOM way. As a preparation the Q35 host bridge receiv=
-es=0D
-some cleanup as well.=0D
-=0D
-Most of the Q35 patches have been submitted under [1] before. This series=0D
-incorporates only the changes making the two device models consistent with=
-=0D
-each other.=0D
-=0D
-The original plan of [1] was to clean up Q35 first and then submit a separa=
-te=0D
-follow-up I440FX QOM'ification series. This series takes a more direct appr=
-oach=0D
-by cutting down on the changes in both device models while still allowing b=
-oth=0D
-device models to be instantiated the same way. The remaining patches in [1]=
-=0D
-would still be doable.=0D
-=0D
-The series is structured as follows: The first 5 patches clean up Q35, the =
-next=0D
-patch massages Q35 to share its property names with I440FX. The rest of the=
-=0D
-series resolves i440fx_init().=0D
-=0D
-Tesging done:=0D
-* `make check`=0D
-* `make check-avocado`=0D
-* Run `xl create` under Xen with the following config:=0D
-    name =3D "Manjaro"=0D
-    type =3D 'hvm'=0D
-    memory =3D 1536=0D
-    apic =3D 1=0D
-    usb =3D 1=0D
-    disk =3D [ "file:manjaro-kde-21.2.6-220416-linux515.iso,hdc:cdrom,r" ]=
-=0D
-    device_model_override =3D "/usr/bin/qemu-system-x86_64"=0D
-    vga =3D "stdvga"=0D
-    sdl =3D 1=0D
-=0D
-v3:=0D
-* Establish i440fx' parent-child relation earlier (Phil)=0D
-* Rename i440fx_host -> phb earlier to avoid some churn in last patch=0D
-=0D
-v2:=0D
-* Rename `address_space_io` to `io_memory` (Phil)=0D
-* Eliminate one else branch in pc_piix (Igor)=0D
-* Make Q35's blackhole_ops DEVICE_LITTLE_ENDIAN again (Igor)=0D
-* Possibly ongoing discussion regarding bringing together i440fx new and re=
-alize=0D
-=0D
-[1] https://patchew.org/QEMU/20230304152648.103749-1-shentey@gmail.com/=0D
-=0D
-Bernhard Beschow (17):=0D
-  hw/i386/pc_q35: Resolve redundant q35_host variable=0D
-  hw/pci-host/q35: Fix double, contradicting .endianness assignment=0D
-  hw/pci-host/q35: Initialize PCMachineState::bus in board code=0D
-  hw/pci/pci_host: Introduce PCI_HOST_BYPASS_IOMMU macro=0D
-  hw/pci-host/q35: Initialize PCI_HOST_BYPASS_IOMMU property from board=0D
-    code=0D
-  hw/pci-host/q35: Make some property name macros reusable by i440fx=0D
-  hw/i386/pc_piix: Turn some local variables into initializers=0D
-  hw/pci-host/i440fx: Add "i440fx" child property in board code=0D
-  hw/pci-host/i440fx: Replace magic values by existing constants=0D
-  hw/pci-host/i440fx: Have common names for some local variables=0D
-  hw/pci-host/i440fx: Move i440fx_realize() into PCII440FXState section=0D
-  hw/pci-host/i440fx: Make MemoryRegion pointers accessible as=0D
-    properties=0D
-  hw/pci-host/i440fx: Add PCI_HOST_PROP_IO_MEM property=0D
-  hw/pci-host/i440fx: Add PCI_HOST_{ABOVE, BELOW}_4G_MEM_SIZE properties=0D
-  hw/pci-host/i440fx: Add I440FX_HOST_PROP_PCI_TYPE property=0D
-  hw/pci-host/i440fx: Resolve i440fx_init()=0D
-  hw/i386/pc_piix: Move i440fx' realize near its qdev_new()=0D
-=0D
- include/hw/i386/pc.h         |   4 ++=0D
- include/hw/pci-host/i440fx.h |  16 +----=0D
- include/hw/pci-host/q35.h    |   5 --=0D
- include/hw/pci/pci_host.h    |   2 +=0D
- hw/i386/pc_piix.c            |  59 +++++++++-------=0D
- hw/i386/pc_q35.c             |  31 +++++----=0D
- hw/pci-host/i440fx.c         | 128 +++++++++++++++++++----------------=0D
- hw/pci-host/q35.c            |  13 ++--=0D
- hw/pci/pci_host.c            |   2 +-=0D
- 9 files changed, 135 insertions(+), 125 deletions(-)=0D
-=0D
--- =0D
-2.41.0=0D
-=0D
+The variable is redundant to "phb" and is never used by its real type.
+
+Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ hw/i386/pc_q35.c | 27 +++++++++++++--------------
+ 1 file changed, 13 insertions(+), 14 deletions(-)
+
+diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
+index 11a7084ea1..d9f3764184 100644
+--- a/hw/i386/pc_q35.c
++++ b/hw/i386/pc_q35.c
+@@ -120,8 +120,7 @@ static void pc_q35_init(MachineState *machine)
+     PCMachineState *pcms = PC_MACHINE(machine);
+     PCMachineClass *pcmc = PC_MACHINE_GET_CLASS(pcms);
+     X86MachineState *x86ms = X86_MACHINE(machine);
+-    Q35PCIHost *q35_host;
+-    PCIHostState *phb;
++    Object *phb;
+     PCIBus *host_bus;
+     PCIDevice *lpc;
+     DeviceState *lpc_dev;
+@@ -207,10 +206,10 @@ static void pc_q35_init(MachineState *machine)
+     }
+ 
+     /* create pci host bus */
+-    q35_host = Q35_HOST_DEVICE(qdev_new(TYPE_Q35_HOST_DEVICE));
++    phb = OBJECT(qdev_new(TYPE_Q35_HOST_DEVICE));
+ 
+     if (pcmc->pci_enabled) {
+-        pci_hole64_size = object_property_get_uint(OBJECT(q35_host),
++        pci_hole64_size = object_property_get_uint(phb,
+                                                    PCI_HOST_PROP_PCI_HOLE64_SIZE,
+                                                    &error_abort);
+     }
+@@ -218,23 +217,23 @@ static void pc_q35_init(MachineState *machine)
+     /* allocate ram and load rom/bios */
+     pc_memory_init(pcms, system_memory, rom_memory, pci_hole64_size);
+ 
+-    object_property_add_child(OBJECT(machine), "q35", OBJECT(q35_host));
+-    object_property_set_link(OBJECT(q35_host), MCH_HOST_PROP_RAM_MEM,
++    object_property_add_child(OBJECT(machine), "q35", phb);
++    object_property_set_link(phb, MCH_HOST_PROP_RAM_MEM,
+                              OBJECT(machine->ram), NULL);
+-    object_property_set_link(OBJECT(q35_host), MCH_HOST_PROP_PCI_MEM,
++    object_property_set_link(phb, MCH_HOST_PROP_PCI_MEM,
+                              OBJECT(pci_memory), NULL);
+-    object_property_set_link(OBJECT(q35_host), MCH_HOST_PROP_SYSTEM_MEM,
++    object_property_set_link(phb, MCH_HOST_PROP_SYSTEM_MEM,
+                              OBJECT(system_memory), NULL);
+-    object_property_set_link(OBJECT(q35_host), MCH_HOST_PROP_IO_MEM,
++    object_property_set_link(phb, MCH_HOST_PROP_IO_MEM,
+                              OBJECT(system_io), NULL);
+-    object_property_set_int(OBJECT(q35_host), PCI_HOST_BELOW_4G_MEM_SIZE,
++    object_property_set_int(phb, PCI_HOST_BELOW_4G_MEM_SIZE,
+                             x86ms->below_4g_mem_size, NULL);
+-    object_property_set_int(OBJECT(q35_host), PCI_HOST_ABOVE_4G_MEM_SIZE,
++    object_property_set_int(phb, PCI_HOST_ABOVE_4G_MEM_SIZE,
+                             x86ms->above_4g_mem_size, NULL);
++
+     /* pci */
+-    sysbus_realize_and_unref(SYS_BUS_DEVICE(q35_host), &error_fatal);
+-    phb = PCI_HOST_BRIDGE(q35_host);
+-    host_bus = phb->bus;
++    sysbus_realize_and_unref(SYS_BUS_DEVICE(phb), &error_fatal);
++    host_bus = PCI_BUS(qdev_get_child_bus(DEVICE(phb), "pcie.0"));
+     /* create ISA bus */
+     lpc = pci_new_multifunction(PCI_DEVFN(ICH9_LPC_DEV, ICH9_LPC_FUNC), true,
+                                 TYPE_ICH9_LPC_DEVICE);
+-- 
+2.41.0
+
 
