@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CB6C743C9D
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 15:23:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AD01743CA7
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 15:23:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFE4l-0007gV-72; Fri, 30 Jun 2023 09:22:15 -0400
+	id 1qFE4l-0007hM-Qe; Fri, 30 Jun 2023 09:22:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qFE4i-0007e3-N4
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 09:22:12 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ id 1qFE4j-0007gA-Rj
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 09:22:13 -0400
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qFE4g-0003QI-Lb
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 09:22:12 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-3fb4146e8deso23133705e9.0
- for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 06:22:10 -0700 (PDT)
+ id 1qFE4h-0003Qb-LC
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 09:22:13 -0400
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-307d58b3efbso2095724f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 06:22:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688131329; x=1690723329;
+ d=linaro.org; s=google; t=1688131330; x=1690723330;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=OUAuwo10Yq9+V7BF7q6x9M7fE+x9XcbokQqcquvrZKI=;
- b=eAC6/hdTA7Sv2mmgrlVtc6HyUyPZfJ5unK1MCQ6VAcuz8B7W6IQ3UuZvjCWtIh0GPB
- LyafnR4HqDn/cvNKrbsCRBw8b7QnDpmwbPLg9DtpRx0e7RV830nhx3cDKyYRlwa88Hau
- hXg+tV2vmNJS5GkVmJS4Axdwf707B8c5T0qp+5UxXobIwlnp2OA4OaA3a19DW+McRxm9
- AbZA0RGCbLFKM3GDisBgeuI3UJAToDPesLg31cKn0s5Jnq/MOUMkIxF/l5LaMXj9yPRi
- ElVXBKxchgFimnrgcR59ShZt9CRMtxEKxZjveUvRzNt8lrvzok7OSCuto9P8+jhA0SCG
- 3OCw==
+ bh=Aj62CrXurYGS6qldiW3QI3IQ8iB1Fmrh8m1XANRmtvM=;
+ b=ONhGhKdTbnT9axHBqRu8dFWgdD/hkHc8DvqCugeUMxW2FInraUeq7xyNj0asJnyTnw
+ wEIZlx0i9WOfMvJpFdd4c6ZWxrqVjvs8sz2I93xSChmVNFq+4ezM4BI5FB9TgMsGxesE
+ rnHzNudl23A/37o308FwcZ7jP4nqHh+iIuhn/iz+D0A79gfGzwQ8wgS23mYcFWK7Af/u
+ ZWI2tE9Zu+DuzULTCYIV0CWlAd1NJ7krjb4JvuxoVpdLL6X7FjEGMFQr4MOrT/rGdxjM
+ ZvapdL6r+g0KfgVJSTZVfpVJx2bBMld+I7voJiCCoXnOTBMdVft4siYPtm0j17eueFsp
+ JXZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688131329; x=1690723329;
+ d=1e100.net; s=20221208; t=1688131330; x=1690723330;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=OUAuwo10Yq9+V7BF7q6x9M7fE+x9XcbokQqcquvrZKI=;
- b=gD2oAtiU2SfHiGGVl+36XmDMDAjWB3+Rcm23trnzbp10Tv4/DzT1JJ3KBBfKNnA9gg
- heVN0+6UEzmodaSKu6DlfFVWQKgxjKgzi2CT24OWvWqp9iJQ6e1Q9YYHlmueKqPklCsd
- LV9Enrp8aOOaJ2Z5qkB7A0L4gaKaAq1kMbPI049wlXsezRF5W6u3hRPatn8pXZK3moaZ
- x6Zek9m0thQKiisXIbD5vOXLbCVTuAnhtGCza4N+f3ZbFZgAJrhP6GBuByKo/OxjCkdb
- VJiIE6jGNgJFykVvE0WhyAcTqxmoRnzm1kFZ+Ak9lx1wpQ+BvGOO0ADh428Zth2f2vYY
- iysA==
-X-Gm-Message-State: ABy/qLZaYYD15orH+ou6lgfsDqfGca4VOEp1KXr6mtDuXbGx+tqeZ+6U
- fM8FIO10OY2D6FMaM5rMTFIo8P/Zx4FNmswGLVYmuQ==
-X-Google-Smtp-Source: APBJJlHaZSEdt+HtlnTFNQX7oj0n2aaJqxSeT559mxU5B9qVAbAXnZJhxFysnwbX8q3/T3g+xVYNoQ==
-X-Received: by 2002:a5d:4f08:0:b0:313:dfa3:4f7b with SMTP id
- c8-20020a5d4f08000000b00313dfa34f7bmr2714153wru.20.1688131329301; 
- Fri, 30 Jun 2023 06:22:09 -0700 (PDT)
+ bh=Aj62CrXurYGS6qldiW3QI3IQ8iB1Fmrh8m1XANRmtvM=;
+ b=mCssGx6r4mfClNgyyR3MZScxXWN3bKx4dOm421qsokIavWvGqvpm2OC0FSWc5amMk4
+ aXSJK1yl8RrvP7YZwAvBpM5Q9bv2NdJTBYx3OEJ1o2Hg8+/NH0Zt1m6djc/e5z4OoxP9
+ A5uy1Ck6sjjAYrVaLJZVxkOFvGTs7cVz9pbEl5N9Aecj1ZJAbYSucUG52FjTkgNkhb1o
+ rySTlO31L1MKdQ3zbvOHn/YQHMcmuhGk3Vpr9GKMV+rZSfs917BwnDSVub9zY9Se6UaD
+ W6gAPimloMCMSqRjcEk/rmiUbV+vXEBG2gI7X1t0leGafxnikREo8zfwNnJwaXtkFdyq
+ qymA==
+X-Gm-Message-State: ABy/qLZDdYO+CicAtwrCDKYIuWZxleTku6IgkFgByVpnnDW6NKbQafkd
+ CnJY2/7QVJult0qYjzbnVsrwEWq52y80MAKctP2eiQ==
+X-Google-Smtp-Source: APBJJlHDOxT+uU2kDPlJ7oQZMnMZ4Jph3AqPaXLwkrBG87Tb+VNB8IE6MGO4vMyqnewjCf0J2I3DZg==
+X-Received: by 2002:a5d:698f:0:b0:314:114d:3300 with SMTP id
+ g15-20020a5d698f000000b00314114d3300mr1964171wru.57.1688131330175; 
+ Fri, 30 Jun 2023 06:22:10 -0700 (PDT)
 Received: from localhost.localdomain ([139.47.41.96])
  by smtp.gmail.com with ESMTPSA id
- a16-20020adfdd10000000b00313ef2150dcsm14571092wrm.45.2023.06.30.06.22.08
+ a16-20020adfdd10000000b00313ef2150dcsm14571092wrm.45.2023.06.30.06.22.09
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Fri, 30 Jun 2023 06:22:09 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: mjt@tls.msk.ru,
 	laurent@vivier.eu
-Subject: [PATCH 11/24] linux-user: Widen target_mmap offset argument to off_t
-Date: Fri, 30 Jun 2023 15:21:46 +0200
-Message-Id: <20230630132159.376995-12-richard.henderson@linaro.org>
+Subject: [PATCH 12/24] linux-user: Rewrite target_mprotect
+Date: Fri, 30 Jun 2023 15:21:47 +0200
+Message-Id: <20230630132159.376995-13-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230630132159.376995-1-richard.henderson@linaro.org>
 References: <20230630132159.376995-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,99 +92,160 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We build with _FILE_OFFSET_BITS=64, so off_t = off64_t = uint64_t.
-With an extra cast, this fixes emulation of mmap2, which could
-overflow the computation of the full value of offset.
+Use 'last' variables instead of 'end' variables.
+When host page size > guest page size, detect when
+adjacent host pages have the same protection and
+merge that expanded host range into fewer syscalls.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/user-mmap.h |  2 +-
- linux-user/mmap.c      | 14 ++++++++------
- linux-user/syscall.c   |  2 +-
- 3 files changed, 10 insertions(+), 8 deletions(-)
+ linux-user/mmap.c | 106 +++++++++++++++++++++++++++++-----------------
+ 1 file changed, 67 insertions(+), 39 deletions(-)
 
-diff --git a/linux-user/user-mmap.h b/linux-user/user-mmap.h
-index 480ce1c114..3fc986f92f 100644
---- a/linux-user/user-mmap.h
-+++ b/linux-user/user-mmap.h
-@@ -20,7 +20,7 @@
- 
- int target_mprotect(abi_ulong start, abi_ulong len, int prot);
- abi_long target_mmap(abi_ulong start, abi_ulong len, int prot,
--                     int flags, int fd, abi_ulong offset);
-+                     int flags, int fd, off_t offset);
- int target_munmap(abi_ulong start, abi_ulong len);
- abi_long target_mremap(abi_ulong old_addr, abi_ulong old_size,
-                        abi_ulong new_size, unsigned long flags,
 diff --git a/linux-user/mmap.c b/linux-user/mmap.c
-index 26d409cb60..98be739b5b 100644
+index 98be739b5b..c9bd72d3f9 100644
 --- a/linux-user/mmap.c
 +++ b/linux-user/mmap.c
-@@ -195,7 +195,7 @@ error:
- /* map an incomplete host page */
- static int mmap_frag(abi_ulong real_start,
-                      abi_ulong start, abi_ulong end,
--                     int prot, int flags, int fd, abi_ulong offset)
-+                     int prot, int flags, int fd, off_t offset)
+@@ -119,8 +119,11 @@ static int target_to_host_prot(int prot)
+ /* NOTE: all the constants are the HOST ones, but addresses are target. */
+ int target_mprotect(abi_ulong start, abi_ulong len, int target_prot)
  {
-     abi_ulong real_end, addr;
-     void *host_start;
-@@ -456,11 +456,12 @@ abi_ulong mmap_find_vma(abi_ulong start, abi_ulong size, abi_ulong align)
+-    abi_ulong end, host_start, host_end, addr;
+-    int prot1, ret, page_flags;
++    abi_ulong starts[3];
++    abi_ulong lens[3];
++    int prots[3];
++    abi_ulong host_start, host_last, last;
++    int prot1, ret, page_flags, nranges;
  
- /* NOTE: all the constants are the HOST ones */
- abi_long target_mmap(abi_ulong start, abi_ulong len, int target_prot,
--                     int flags, int fd, abi_ulong offset)
-+                     int flags, int fd, off_t offset)
- {
--    abi_ulong ret, end, real_start, real_end, retaddr, host_offset, host_len,
-+    abi_ulong ret, end, real_start, real_end, retaddr, host_len,
-               passthrough_start = -1, passthrough_end = -1;
-     int page_flags;
-+    off_t host_offset;
+     trace_target_mprotect(start, len, target_prot);
+ 
+@@ -131,63 +134,88 @@ int target_mprotect(abi_ulong start, abi_ulong len, int target_prot)
+     if (!page_flags) {
+         return -TARGET_EINVAL;
+     }
+-    len = TARGET_PAGE_ALIGN(len);
+-    end = start + len;
+-    if (!guest_range_valid_untagged(start, len)) {
+-        return -TARGET_ENOMEM;
+-    }
+     if (len == 0) {
+         return 0;
+     }
++    len = TARGET_PAGE_ALIGN(len);
++    if (!guest_range_valid_untagged(start, len)) {
++        return -TARGET_ENOMEM;
++    }
++
++    last = start + len - 1;
++    host_start = start & qemu_host_page_mask;
++    host_last = HOST_PAGE_ALIGN(last) - 1;
++    nranges = 0;
  
      mmap_lock();
-     trace_target_mmap(start, len, target_prot, flags, fd, offset);
-@@ -552,7 +553,7 @@ abi_long target_mmap(abi_ulong start, abi_ulong len, int target_prot,
+-    host_start = start & qemu_host_page_mask;
+-    host_end = HOST_PAGE_ALIGN(end);
+-    if (start > host_start) {
+-        /* handle host page containing start */
++
++    if (host_last - host_start < qemu_host_page_size) {
++        /* Single host page contains all guest pages: sum the prot. */
+         prot1 = target_prot;
+-        for (addr = host_start; addr < start; addr += TARGET_PAGE_SIZE) {
+-            prot1 |= page_get_flags(addr);
++        for (abi_ulong a = host_start; a < start; a += TARGET_PAGE_SIZE) {
++            prot1 |= page_get_flags(a);
+         }
+-        if (host_end == host_start + qemu_host_page_size) {
+-            for (addr = end; addr < host_end; addr += TARGET_PAGE_SIZE) {
+-                prot1 |= page_get_flags(addr);
++        for (abi_ulong a = last; a < host_last; a += TARGET_PAGE_SIZE) {
++            prot1 |= page_get_flags(a + 1);
++        }
++        starts[nranges] = host_start;
++        lens[nranges] = qemu_host_page_size;
++        prots[nranges] = prot1;
++        nranges++;
++    } else {
++        if (host_start < start) {
++            /* Host page contains more than one guest page: sum the prot. */
++            prot1 = target_prot;
++            for (abi_ulong a = host_start; a < start; a += TARGET_PAGE_SIZE) {
++                prot1 |= page_get_flags(a);
++            }
++            /* If the resulting sum differs, create a new range. */
++            if (prot1 != target_prot) {
++                starts[nranges] = host_start;
++                lens[nranges] = qemu_host_page_size;
++                prots[nranges] = prot1;
++                nranges++;
++                host_start += qemu_host_page_size;
+             }
+-            end = host_end;
+         }
+-        ret = mprotect(g2h_untagged(host_start), qemu_host_page_size,
+-                       target_to_host_prot(prot1));
+-        if (ret != 0) {
+-            goto error;
++
++        if (last < host_last) {
++            /* Host page contains more than one guest page: sum the prot. */
++            prot1 = target_prot;
++            for (abi_ulong a = last; a < host_last; a += TARGET_PAGE_SIZE) {
++                prot1 |= page_get_flags(a + 1);
++            }
++            /* If the resulting sum differs, create a new range. */
++            if (prot1 != target_prot) {
++                host_last -= qemu_host_page_size;
++                starts[nranges] = host_last + 1;
++                lens[nranges] = qemu_host_page_size;
++                prots[nranges] = prot1;
++                nranges++;
++            }
+         }
+-        host_start += qemu_host_page_size;
+-    }
+-    if (end < host_end) {
+-        prot1 = target_prot;
+-        for (addr = end; addr < host_end; addr += TARGET_PAGE_SIZE) {
+-            prot1 |= page_get_flags(addr);
++
++        /* Create a range for the middle, if any remains. */
++        if (host_start < host_last) {
++            starts[nranges] = host_start;
++            lens[nranges] = host_last - host_start + 1;
++            prots[nranges] = target_prot;
++            nranges++;
+         }
+-        ret = mprotect(g2h_untagged(host_end - qemu_host_page_size),
+-                       qemu_host_page_size, target_to_host_prot(prot1));
+-        if (ret != 0) {
+-            goto error;
+-        }
+-        host_end -= qemu_host_page_size;
      }
  
-     if (!(flags & (MAP_FIXED | MAP_FIXED_NOREPLACE))) {
--        unsigned long host_start;
-+        uintptr_t host_start;
-         int host_prot;
-         void *p;
- 
-@@ -571,7 +572,7 @@ abi_long target_mmap(abi_ulong start, abi_ulong len, int target_prot,
-             goto fail;
+-    /* handle the pages in the middle */
+-    if (host_start < host_end) {
+-        ret = mprotect(g2h_untagged(host_start), host_end - host_start,
+-                       target_to_host_prot(target_prot));
++    for (int i = 0; i < nranges; ++i) {
++        ret = mprotect(g2h_untagged(starts[i]), lens[i],
++                       target_to_host_prot(prots[i]));
+         if (ret != 0) {
+             goto error;
          }
-         /* update start so that it points to the file position at 'offset' */
--        host_start = (unsigned long)p;
-+        host_start = (uintptr_t)p;
-         if (!(flags & MAP_ANONYMOUS)) {
-             p = mmap(g2h_untagged(start), len, host_prot,
-                      flags | MAP_FIXED, fd, host_offset);
-@@ -675,7 +676,8 @@ abi_long target_mmap(abi_ulong start, abi_ulong len, int target_prot,
-         /* map the middle (easier) */
-         if (real_start < real_end) {
-             void *p;
--            unsigned long offset1;
-+            off_t offset1;
-+
-             if (flags & MAP_ANONYMOUS) {
-                 offset1 = 0;
-             } else {
-diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index 459a2d8bc7..94cb4ad8fb 100644
---- a/linux-user/syscall.c
-+++ b/linux-user/syscall.c
-@@ -10350,7 +10350,7 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
- #endif
-         ret = target_mmap(arg1, arg2, arg3,
-                           target_to_host_bitmask(arg4, mmap_flags_tbl),
--                          arg5, arg6 << MMAP_SHIFT);
-+                          arg5, (off_t)(abi_ulong)arg6 << MMAP_SHIFT);
-         return get_errno(ret);
- #endif
-     case TARGET_NR_munmap:
+     }
+ 
+-    page_set_flags(start, start + len - 1, page_flags);
++    page_set_flags(start, last, page_flags);
+     ret = 0;
+ 
+-error:
++ error:
+     mmap_unlock();
+     return ret;
+ }
 -- 
 2.34.1
 
