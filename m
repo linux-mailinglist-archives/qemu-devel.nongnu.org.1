@@ -2,89 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C2D7743605
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A1F2743604
 	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 09:42:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qF8lB-0004a3-Tt; Fri, 30 Jun 2023 03:41:41 -0400
+	id 1qF8lI-0004cm-KC; Fri, 30 Jun 2023 03:41:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1qF8lA-0004Zt-3C
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 03:41:40 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1qF8lG-0004cU-Gb
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 03:41:46 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1qF8l7-0006DG-Ui
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 03:41:39 -0400
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1qF8lE-0006Do-Ks
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 03:41:46 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688110896;
+ s=mimecast20190719; t=1688110903;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=fl2h//qTb6kufArg6CpLc7lkq/Woqx5v0BcU4p3wplM=;
- b=gCwWT0puCBgDr799mK5WW6C1YqLbDbT5jRuNCrzE8hm1AGv2HR1zIVqg3GY0uYfW4mOTr9
- 7IgcXKJxgajCHIhKOkyWoffXZnwK5jbLp0oj+mbKze30BmC41tZuEGUGApv1fa9g6BvOpu
- 2T6uHKEl3AB+oMy1Jfwe88i4uXqn9fk=
-Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
- [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=DA9nISXhj/Fy+ktgqjFgh+r3oZV3+K39R+0e9eSQFSM=;
+ b=OS2uRTHn9NsJufhVlKHQmGl3xnARd0A/sR3GGxquNeoq6DKuN9fWV74xg0lxDBAbfn2JpI
+ gixJ0nsZtsVf3YWY0uc6YwFr3XEn+5SeFiAQyg615OTva8h/hYfBdcBNqUCW79Niqiyplt
+ JGSS03kU4UVUwavX+wtV/rnCXwRb8zE=
+Received: from mail-oo1-f71.google.com (mail-oo1-f71.google.com
+ [209.85.161.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-119-SomnZnKCPeidt0mVhY-OrA-1; Fri, 30 Jun 2023 03:41:18 -0400
-X-MC-Unique: SomnZnKCPeidt0mVhY-OrA-1
-Received: by mail-lj1-f199.google.com with SMTP id
- 38308e7fff4ca-2b69de8fb27so14348461fa.3
- for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 00:41:18 -0700 (PDT)
+ us-mta-88-pdSJERTgNemdq-OKtsWjPw-1; Fri, 30 Jun 2023 03:41:42 -0400
+X-MC-Unique: pdSJERTgNemdq-OKtsWjPw-1
+Received: by mail-oo1-f71.google.com with SMTP id
+ 006d021491bc7-563afee3369so1436521eaf.3
+ for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 00:41:42 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688110877; x=1690702877;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20221208; t=1688110901; x=1690702901;
+ h=to:references:message-id:content-transfer-encoding:cc:date
+ :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=fl2h//qTb6kufArg6CpLc7lkq/Woqx5v0BcU4p3wplM=;
- b=DYocDjjLDKUZmN8ShN0ddzjJDYEFFdHUSt62E3Ap4dTfBqXtXD3DQ6x5Qti/BNf27h
- v3RyDy/gvB/UTyhApVh8eFUAalurA115wmtDejHwzZgsYU9ettl14eH2Xk6c3MsjFtpk
- UhBfY9yLl5S1KHou5V0i728o9a4po0YA8PNl7NzIDl7bZyFDmmjl7OYn7H0D3ey7DwPf
- E47jcrDuc62WlOBc8BqJmTGw8M56isJ0nMxlQZZGvr7ou7TxuqoSUbl3KaLmyO5LVlIR
- CkPsEiHQ335DtfzFcXaC+gYjz0BmSQ246ro9NqDplyL8dJJRLNEDEXliWODqE7H5rRnS
- DUmA==
-X-Gm-Message-State: ABy/qLYjUYcv/b1xZS09Nza4PELapdfkh2i85Ao1XCSSOd+EN0nxBZ3U
- M89VM1qZWg7T0k8kGA/VPcUfiZrdz/A8epFJa36tO9EbO4daCeQWJLzTfUFeMBbNOYiI4UNASse
- n3a32qt0esbwNi6jgPYcz8V6DuETLlO8=
-X-Received: by 2002:a2e:350e:0:b0:2b6:c619:c5c4 with SMTP id
- z14-20020a2e350e000000b002b6c619c5c4mr1347353ljz.35.1688110877219; 
- Fri, 30 Jun 2023 00:41:17 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlF0LL3NEdMlIfcwZY9pPOtJy5lwQKMzBSAbMoS1nyuIyF106b/TtYujNYik1U+Txr2NJ8kNyPk3NCAiPeer9AQ=
-X-Received: by 2002:a2e:350e:0:b0:2b6:c619:c5c4 with SMTP id
- z14-20020a2e350e000000b002b6c619c5c4mr1347333ljz.35.1688110876880; Fri, 30
- Jun 2023 00:41:16 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230622215824.2173343-1-i.maximets@ovn.org>
- <CACGkMEsXOb8wiYo9ktgqh8MqD971=ARJ_etL7MBF-uyo6qt1eA@mail.gmail.com>
- <CACGkMEuyq+5_cqx4T03fcaLOGUCrKLZn51sZxNSXyZq8CqLXTg@mail.gmail.com>
- <93a056c4-b6d3-5491-0c1f-7f58e9f9d1ad@ovn.org>
- <CACGkMEuaUTGeCYfH-MbtX_79scN-CkBmFMcY0fwKo4vO_9cn4w@mail.gmail.com>
- <26c03cd4-5582-489c-9f4c-aeaf8e157b42@ovn.org>
- <CACGkMEsE6_91mOhCP5ezT96zz-Tb-bLXQr9ktrLg6zG0TZC3Lg@mail.gmail.com>
- <CAJSP0QXPiNK2rH6_8bB7sjMpdQjT--oX0u4FkdaTj7Ew3qs8CA@mail.gmail.com>
- <CACGkMEuN_PeXZhqaN4EJP8rKRVK=wftpkH3--y267j9+7smCOw@mail.gmail.com>
- <CAJSP0QVg-mmtnMXZpxRKutbdgpdNeawJT45iQSp4cf=MRedZAQ@mail.gmail.com>
- <CACGkMEtdk-Qi+5M+pEa9v=S_ehRs=m7Ux4=Sf6aqk0EqNzyQ5g@mail.gmail.com>
- <CAJSP0QW22f18V0pXTO-w4BXONJ3wLCbczMjKSKCRnxiF+7W=eg@mail.gmail.com>
- <CACGkMEvCV6JcQ3LOQvCx=9KXKqE_SAQwzxFXe1c+PdSMH_KbDg@mail.gmail.com>
- <CAJSP0QUtCnE49YWA6PmVSExMaFf2VZi3St1Wysk9ruDS37ALHg@mail.gmail.com>
-In-Reply-To: <CAJSP0QUtCnE49YWA6PmVSExMaFf2VZi3St1Wysk9ruDS37ALHg@mail.gmail.com>
-From: Jason Wang <jasowang@redhat.com>
-Date: Fri, 30 Jun 2023 15:41:05 +0800
-Message-ID: <CACGkMEu1V4HBdP3JFYV-+Uec1s6f0U3fj5f9tV0FApQ+U8rbrw@mail.gmail.com>
-Subject: Re: [PATCH] net: add initial support for AF_XDP network backend
-To: Stefan Hajnoczi <stefanha@gmail.com>
-Cc: Ilya Maximets <i.maximets@ovn.org>, Paolo Bonzini <pbonzini@redhat.com>, 
- Eric Blake <eblake@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
- qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
+ bh=DA9nISXhj/Fy+ktgqjFgh+r3oZV3+K39R+0e9eSQFSM=;
+ b=Sn5qKUm42IARx3iTmHQ9sa4vU6UDQA0xzLBesE+XESorsh2/5SCifp/7HU0U3u7gy5
+ 5x1dWv8J6vW9Mq4jJmheBQdXBj6uyNnQndYrpEUKu16YPzQ3mOHQ6zofKAZLa1rAmxEc
+ yK1jycO6QA5lVksRvV1OVT0RdJ7uLBP0Jrvh4yz4Jc/Re2KbuYmfcWsRZZsI4Ypu8dA7
+ J72t3254LXXdPweUYC8FhnCKRhbVcvKwz4OKdGUdxPH5+WTgFBYYt/q0NJS2zYKry8+0
+ nJgwhd+aQaHPiAikVE43VrJ6kgLJ6GCLuHrLOOJwIBoGp4onOip9Hubw0uhgngbNPgeC
+ 4uUg==
+X-Gm-Message-State: ABy/qLZyXhN6RGq2VPKYaAfKruZn+uxiKkwxG0OX7aUgv24HAqbqmc18
+ Y1B8Py8VNPPzaAfKNi7F9Kl5NmHoA0OUnYZIU5oIhUDY6JaNTPe/1yR6izysPi43/jL+YZfWW0b
+ kpQtRSwGoe+nioqc=
+X-Received: by 2002:a05:6358:f1a:b0:134:d806:69df with SMTP id
+ b26-20020a0563580f1a00b00134d80669dfmr739256rwj.18.1688110901527; 
+ Fri, 30 Jun 2023 00:41:41 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlFklEosimwIhtXkb8WITtxA1DN1JjCnSl4j5akvFv6nZrhVMmYCongj16SIRlXLADYyNGuuvw==
+X-Received: by 2002:a05:6358:f1a:b0:134:d806:69df with SMTP id
+ b26-20020a0563580f1a00b00134d80669dfmr739251rwj.18.1688110901175; 
+ Fri, 30 Jun 2023 00:41:41 -0700 (PDT)
+Received: from smtpclient.apple ([115.96.128.249])
+ by smtp.gmail.com with ESMTPSA id
+ n189-20020a6327c6000000b0055387ffef10sm10087599pgn.24.2023.06.30.00.41.38
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Fri, 30 Jun 2023 00:41:40 -0700 (PDT)
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.3\))
+Subject: Re: [PATCH v6 5/5] hw/pci: ensure PCIE devices are plugged into only
+ slot 0 of PCIE port
+From: Ani Sinha <anisinha@redhat.com>
+In-Reply-To: <167eea06-b917-8783-5cd6-8fda56e41331@daynix.com>
+Date: Fri, 30 Jun 2023 13:11:33 +0530
+Cc: qemu-devel <qemu-devel@nongnu.org>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Julia Suvorova <jusual@redhat.com>, Igor Mammedov <imammedo@redhat.com>
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jasowang@redhat.com;
+Message-Id: <A50CA177-0E7E-4828-A036-70EB532FE2B8@redhat.com>
+References: <20230629040707.115656-1-anisinha@redhat.com>
+ <20230629040707.115656-6-anisinha@redhat.com>
+ <8d382e8b-088b-f0af-eec4-a85ee513b4ae@daynix.com>
+ <CAK3XEhNOJkm13+vxJO9-Adhwq8NJ3TQ1gaOXj8Dn3NtixF_=jQ@mail.gmail.com>
+ <8868044c-f61b-7bbb-8cc8-34a14c1490d6@daynix.com>
+ <9DDBE75A-C72C-4238-9166-3CBDBEA68188@redhat.com>
+ <167eea06-b917-8783-5cd6-8fda56e41331@daynix.com>
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+X-Mailer: Apple Mail (2.3696.120.41.1.3)
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -109,224 +110,148 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jun 29, 2023 at 8:36=E2=80=AFPM Stefan Hajnoczi <stefanha@gmail.com=
-> wrote:
->
-> On Thu, 29 Jun 2023 at 07:26, Jason Wang <jasowang@redhat.com> wrote:
-> >
-> > On Wed, Jun 28, 2023 at 4:25=E2=80=AFPM Stefan Hajnoczi <stefanha@gmail=
-.com> wrote:
-> > >
-> > > On Wed, 28 Jun 2023 at 10:19, Jason Wang <jasowang@redhat.com> wrote:
-> > > >
-> > > > On Wed, Jun 28, 2023 at 4:15=E2=80=AFPM Stefan Hajnoczi <stefanha@g=
-mail.com> wrote:
-> > > > >
-> > > > > On Wed, 28 Jun 2023 at 09:59, Jason Wang <jasowang@redhat.com> wr=
-ote:
-> > > > > >
-> > > > > > On Wed, Jun 28, 2023 at 3:46=E2=80=AFPM Stefan Hajnoczi <stefan=
-ha@gmail.com> wrote:
-> > > > > > >
-> > > > > > > On Wed, 28 Jun 2023 at 05:28, Jason Wang <jasowang@redhat.com=
-> wrote:
-> > > > > > > >
-> > > > > > > > On Wed, Jun 28, 2023 at 6:45=E2=80=AFAM Ilya Maximets <i.ma=
-ximets@ovn.org> wrote:
-> > > > > > > > >
-> > > > > > > > > On 6/27/23 04:54, Jason Wang wrote:
-> > > > > > > > > > On Mon, Jun 26, 2023 at 9:17=E2=80=AFPM Ilya Maximets <=
-i.maximets@ovn.org> wrote:
-> > > > > > > > > >>
-> > > > > > > > > >> On 6/26/23 08:32, Jason Wang wrote:
-> > > > > > > > > >>> On Sun, Jun 25, 2023 at 3:06=E2=80=AFPM Jason Wang <j=
-asowang@redhat.com> wrote:
-> > > > > > > > > >>>>
-> > > > > > > > > >>>> On Fri, Jun 23, 2023 at 5:58=E2=80=AFAM Ilya Maximet=
-s <i.maximets@ovn.org> wrote:
-> > > > > > > > > >> It is noticeably more performant than a tap with vhost=
-=3Don in terms of PPS.
-> > > > > > > > > >> So, that might be one case.  Taking into account that =
-just rcu lock and
-> > > > > > > > > >> unlock in virtio-net code takes more time than a packe=
-t copy, some batching
-> > > > > > > > > >> on QEMU side should improve performance significantly.=
-  And it shouldn't be
-> > > > > > > > > >> too hard to implement.
-> > > > > > > > > >>
-> > > > > > > > > >> Performance over virtual interfaces may potentially be=
- improved by creating
-> > > > > > > > > >> a kernel thread for async Tx.  Similarly to what io_ur=
-ing allows.  Currently
-> > > > > > > > > >> Tx on non-zero-copy interfaces is synchronous, and tha=
-t doesn't allow to
-> > > > > > > > > >> scale well.
-> > > > > > > > > >
-> > > > > > > > > > Interestingly, actually, there are a lot of "duplicatio=
-n" between
-> > > > > > > > > > io_uring and AF_XDP:
-> > > > > > > > > >
-> > > > > > > > > > 1) both have similar memory model (user register)
-> > > > > > > > > > 2) both use ring for communication
-> > > > > > > > > >
-> > > > > > > > > > I wonder if we can let io_uring talks directly to AF_XD=
-P.
-> > > > > > > > >
-> > > > > > > > > Well, if we submit poll() in QEMU main loop via io_uring,=
- then we can
-> > > > > > > > > avoid cost of the synchronous Tx for non-zero-copy modes,=
- i.e. for
-> > > > > > > > > virtual interfaces.  io_uring thread in the kernel will b=
-e able to
-> > > > > > > > > perform transmission for us.
-> > > > > > > >
-> > > > > > > > It would be nice if we can use iothread/vhost other than th=
-e main loop
-> > > > > > > > even if io_uring can use kthreads. We can avoid the memory =
-translation
-> > > > > > > > cost.
-> > > > > > >
-> > > > > > > The QEMU event loop (AioContext) has io_uring code
-> > > > > > > (utils/fdmon-io_uring.c) but it's disabled at the moment. I'm=
- working
-> > > > > > > on patches to re-enable it and will probably send them in Jul=
-y. The
-> > > > > > > patches also add an API to submit arbitrary io_uring operatio=
-ns so
-> > > > > > > that you can do stuff besides file descriptor monitoring. Bot=
-h the
-> > > > > > > main loop and IOThreads will be able to use io_uring on Linux=
- hosts.
-> > > > > >
-> > > > > > Just to make sure I understand. If we still need a copy from gu=
-est to
-> > > > > > io_uring buffer, we still need to go via memory API for GPA whi=
-ch
-> > > > > > seems expensive.
-> > > > > >
-> > > > > > Vhost seems to be a shortcut for this.
-> > > > >
-> > > > > I'm not sure how exactly you're thinking of using io_uring.
-> > > > >
-> > > > > Simply using io_uring for the event loop (file descriptor monitor=
-ing)
-> > > > > doesn't involve an extra buffer, but the packet payload still nee=
-ds to
-> > > > > reside in AF_XDP umem, so there is a copy between guest memory an=
-d
-> > > > > umem.
-> > > >
-> > > > So there would be a translation from GPA to HVA (unless io_uring
-> > > > support 2 stages) which needs to go via qemu memory core. And this
-> > > > part seems to be very expensive according to my test in the past.
-> > >
-> > > Yes, but in the current approach where AF_XDP is implemented as a QEM=
-U
-> > > netdev, there is already QEMU device emulation (e.g. virtio-net)
-> > > happening. So the GPA to HVA translation will happen anyway in device
-> > > emulation.
-> >
-> > Just to make sure we're on the same page.
-> >
-> > I meant, AF_XDP can do more than e.g 10Mpps. So if we still use the
-> > QEMU netdev, it would be very hard to achieve that if we stick to
-> > using the Qemu memory core translations which need to take care about
-> > too much extra stuff. That's why I suggest using vhost in io threads
-> > which only cares about ram so the translation could be very fast.
->
-> What does using "vhost in io threads" mean?
 
-It means a vhost userspace dataplane that is implemented via io threads.
 
-> Is that a vhost kernel
-> approach where userspace dedicates threads (the stuff that Mike
-> Christie has been working on)? I haven't looked at how Mike's recent
-> patches work, but I wouldn't call that approach QEMU IOThreads,
-> because the threads probably don't run the AioContext event loop and
-> instead execute vhost kernel code the entire time.
->
-> But despite these questions, I think I'm beginning to understand that
-> you're proposing a vhost_net.ko AF_XDP implementation instead of a
-> userspace QEMU AF_XDP netdev implementation.
+> On 30-Jun-2023, at 8:13 AM, Akihiko Odaki <akihiko.odaki@daynix.com> =
+wrote:
+>=20
+> On 2023/06/29 23:18, Ani Sinha wrote:
+>>> On 29-Jun-2023, at 2:19 PM, Akihiko Odaki <akihiko.odaki@daynix.com> =
+wrote:
+>>>=20
+>>> On 2023/06/29 17:05, Ani Sinha wrote:
+>>>> On Thu, 29 Jun, 2023, 12:17 pm Akihiko Odaki, =
+<akihiko.odaki@daynix.com <mailto:akihiko.odaki@daynix.com>> wrote:
+>>>>    On 2023/06/29 13:07, Ani Sinha wrote:
+>>>>     > PCI Express ports only have one slot, so PCI Express devices =
+can
+>>>>    only be
+>>>>     > plugged into slot 0 on a PCIE port. Enforce it.
+>>>>     >
+>>>>     > The change has been tested to not break ARI by instantiating
+>>>>    seven vfs on an
+>>>>     > emulated igb device (the maximum number of vfs the linux igb
+>>>>    driver supports).
+>>>>     > The vfs are seen to have non-zero device/slot numbers in the
+>>>>    conventional
+>>>>     > PCI BDF representation.
+>>>>     >
+>>>>     > CC: jusual@redhat.com <mailto:jusual@redhat.com>
+>>>>     > CC: imammedo@redhat.com <mailto:imammedo@redhat.com>
+>>>>     > CC: akihiko.odaki@daynix.com =
+<mailto:akihiko.odaki@daynix.com>
+>>>>     >
+>>>>     > Resolves: https://bugzilla.redhat.com/show_bug.cgi?id=3D2128929=
 
-Sorry for being unclear, but I'm not proposing that.
+>>>>    <https://bugzilla.redhat.com/show_bug.cgi?id=3D2128929>
+>>>>     > Signed-off-by: Ani Sinha <anisinha@redhat.com
+>>>>    <mailto:anisinha@redhat.com>>
+>>>>     > Reviewed-by: Julia Suvorova <jusual@redhat.com
+>>>>    <mailto:jusual@redhat.com>>
+>>>>     > ---
+>>>>     >   hw/pci/pci.c | 15 +++++++++++++++
+>>>>     >   1 file changed, 15 insertions(+)
+>>>>     >
+>>>>     > diff --git a/hw/pci/pci.c b/hw/pci/pci.c
+>>>>     > index e2eb4c3b4a..0320ac2bb3 100644
+>>>>     > --- a/hw/pci/pci.c
+>>>>     > +++ b/hw/pci/pci.c
+>>>>     > @@ -65,6 +65,7 @@ bool pci_available =3D true;
+>>>>     >   static char *pcibus_get_dev_path(DeviceState *dev);
+>>>>     >   static char *pcibus_get_fw_dev_path(DeviceState *dev);
+>>>>     >   static void pcibus_reset(BusState *qbus);
+>>>>     > +static bool pcie_has_upstream_port(PCIDevice *dev);
+>>>>     >
+>>>>     >   static Property pci_props[] =3D {
+>>>>     >       DEFINE_PROP_PCI_DEVFN("addr", PCIDevice, devfn, -1),
+>>>>     > @@ -1190,6 +1191,20 @@ static PCIDevice
+>>>>    *do_pci_register_device(PCIDevice *pci_dev,
+>>>>     >                      name);
+>>>>     >
+>>>>     >          return NULL;
+>>>>     > +    } /*
+>>>>     > +       * With SRIOV and ARI, vfs can have non-zero slot in =
+the
+>>>>    conventional
+>>>>     > +       * PCI interpretation as all five bits reserved for =
+slot
+>>>>    addresses are
+>>>>     > +       * also used for function bits for the various vfs. =
+Ignore
+>>>>    that case.
+>>>>     > +       * It is too early here to check for ARI capabilities =
+in
+>>>>    the PCI config
+>>>>     > +       * space. Hence, we check for a vf device instead.
+>>>>     > +       */
+>>>>    Why don't just perform this check after the capabilities are =
+set?
+>>>> We don't want to allocate resources for wrong device parameters. We =
+want to error out early. Other checks also are performed at the same =
+place .
+>>>=20
+>>> It is indeed better to raise an error as early as possible so that =
+we can avoid allocation and other operations that will be reverted and =
+may go wrong due to the invalid condition. That should be the reason why =
+other checks for the address are performed here.
+>>>=20
+>>> However, in this particular case, we cannot confidently perform the =
+check here because it is unknown if the ARI capability will be =
+advertised until the device realization code runs. This can justify =
+delaying the check after the device realization, unlike the other =
+checks.
+>> Ok so are you proposing that the check we have right before (the =
+check for unoccupied function 0) be also moved? It also uses the same vf =
+approximation for seemingly to support ARI.
+>=20
+> No, I don't think the check for function 0 is required to be disabled =
+because of the change of addressing caused by ARI, but it is required =
+because SR-IOV VF can be added and removed while the PF (function 0) =
+remains. I think this check should be performed also when SR-IOV is =
+disabled and ARI is enabled.
 
-> I wonder if any
-> optimizations can be made when the AF_XDP user is kernel code instead
-> of userspace code.
+OK I am a little confused with your explanation here. I understand the =
+non-ARI case - to detect the PF we need to have function 0 available. =
+Looking at the comment in pci_init_multifunction() it seems in ARI case, =
+we can simply have a vf in function 0 (conventional interpretation) as =
+well. Hence we need to ignore vfs both in ARI and non-ARI cases. This is =
+what I understood.
 
-The only possible way to go is to adapt AF_XDP umem memory model to
-vhost which I'm not sure of anything we can gain.
+>=20
+> Thus the check for unoccupied function 0 needs to use pci_is_vf() =
+instead of checking ARI capability, and that can happen in =
+do_pci_register_device().
+>=20
+>> Also where do you propose we move the check?
+>=20
+> In pci_qdev_realize(), somewhere after pc->realize() and before option =
+ROM loading.
 
->
-> > >
-> > > Are you thinking about AF_XDP passthrough where the guest directly
-> > > interacts with AF_XDP?
-> >
-> > This could be another way to solve, since it won't use Qemu's memory
-> > core to do the translation.
-> >
-> > >
-> > > > > If umem encompasses guest memory,
-> > > >
-> > > > It requires you to pin the whole guest memory and a GPA to HVA
-> > > > translation is still required.
-> > >
-> > > Ilya mentioned that umem uses relative offsets instead of absolute
-> > > memory addresses. In the AF_XDP passthrough case this means no addres=
-s
-> > > translation needs to be added to AF_XDP.
-> >
-> > I don't see how it can avoid the translations as it works at the level
-> > of HVA. But what guests submit is PA or even IOVA.
->
-> In a passthrough scenario the guest is doing AF_XDP, so it writes
-> relative umem offsets, thereby eliminating address translation
-> concerns (the addresses are not PAs or IOVAs). However, this approach
-> probably won't work well with memory hotplug - or at least it will end
-> up becoming a memory translation mechanism in order to support memory
-> hotplug.
+Hmm, I tried this. The issue here is something like this would be now =
+allowed since the PF has ARI capability:
 
-Ok.
+-device pcie-root-port,id=3Dp -device igb,bus=3Dp,addr=3D0x2.0x0
 
->
-> >
-> > What's more, guest memory could be backed by different memory
-> > backends, this means a single umem may not even work.
->
-> Maybe. I don't know the nature of umem. If there can be multiple vmas
-> in the umem range, then there should be no issue mixing different
-> memory backends.
+The above should not be allowed and when used, we do not see the igb =
+ethernet device from the guest OS.
 
-If I understand correctly, a single umem requires contiguous VA at least.
-
->
-> >
-> > >
-> > > Regarding pinning - I wonder if that's something that can be refined
-> > > in the kernel by adding an AF_XDP flag that enables on-demand pinning
-> > > of umem. That way only rx and tx buffers that are currently in use
-> > > will be pinned. The disadvantage is the runtime overhead to pin/unpin
-> > > pages. I'm not sure whether it's possible to implement this, I haven'=
-t
-> > > checked the kernel code.
-> >
-> > It requires the device to do page faults which is not commonly
-> > supported nowadays.
->
-> I don't understand this comment. AF_XDP processes each rx/tx
-> descriptor. At that point it can getuserpages() or similar in order to
-> pin the page. When the memory is no longer needed, it can put those
-> pages. No fault mechanism is needed. What am I missing?
-
-Ok, I think I kind of get you, you mean doing pinning while processing
-rx/tx buffers? It's not easy since GUP itself is not very fast, it may
-hit PPS for sure.
-
-Thanks
-
->
-> Stefan
->
+> See the check for failover pair as an example. I guess it's also =
+placed in this region because it needs capability information.
+>=20
+>>>=20
+>>>> Show quoted text
+>>>>    Regards,
+>>>>    Akihiko Odaki
+>>>>     > +    else if (!pci_is_vf(pci_dev) &&
+>>>>     > +             pcie_has_upstream_port(pci_dev) &&
+>>>>     > +             PCI_SLOT(devfn)) {
+>>>>     > +        error_setg(errp, "PCI: slot %d is not valid for %s,"
+>>>>     > +                   " parent device only allows plugging into
+>>>>    slot 0.",
+>>>>     > +                   PCI_SLOT(devfn), name);
+>>>>     > +        return NULL;
+>>>>     >       }
+>>>>     >
+>>>>     >       pci_dev->devfn =3D devfn;
 
 
