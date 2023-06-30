@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1D727433C5
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 06:54:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F11D37433F6
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 07:08:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qF67X-0000oS-7F; Fri, 30 Jun 2023 00:52:35 -0400
+	id 1qF6LE-0004jI-Vx; Fri, 30 Jun 2023 01:06:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1qF67U-0000o7-Vh
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 00:52:32 -0400
+ id 1qF6LC-0004j3-Jv
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 01:06:42 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1qF67T-0005XW-3F
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 00:52:32 -0400
+ id 1qF6L8-0004oH-7Z
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 01:06:42 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688100749;
+ s=mimecast20190719; t=1688101596;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=LxfsUcSD7c3FFnuk7BufI9QDxF8LZu0znMXP0FGbkQM=;
- b=EHLNQZFOlHF/xtYSkx2jeh7U8FKOY3pcFcJjtoo0I8lqw+CcaYpdC7+jRpYlOyiiwKzvjU
- kA8hIwX3SJy6kF5w8oYk+/NqnpF0uyiOlW9GE2Pb9A6iAP1n7M3jLawbrMvvap+1eeu6FE
- gC18RW2gD9LO/5R21qE97n8pq546+oY=
-Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
- [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=1Ts0DwntxAspfmpPEOslhMOuUve65c0EWM89/wed8vA=;
+ b=TQkDBGJz/T+ICWSri6shjdwR8Tvw9Lk7u7XFsNoj/gNsMemUUYWYaokcbNd9SZs3F17nzb
+ VM/kveAAH52vJD1oPk0JusmdOEvjXNCkvf124hjkhcZVg1hStLgqhbuYuom8HKJDTpVpQ4
+ QQsvm6UUFcTWNUUBkbJ0ETn3lALLaWU=
+Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
+ [209.85.208.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-448-4wAFsDzFOnmObp6TyzDSTg-1; Fri, 30 Jun 2023 00:52:27 -0400
-X-MC-Unique: 4wAFsDzFOnmObp6TyzDSTg-1
-Received: by mail-lj1-f197.google.com with SMTP id
- 38308e7fff4ca-2b69dcf0d73so16192001fa.2
- for <qemu-devel@nongnu.org>; Thu, 29 Jun 2023 21:52:27 -0700 (PDT)
+ us-mta-460-_r1URSyRPY6tDMXsp1rsww-1; Fri, 30 Jun 2023 01:06:35 -0400
+X-MC-Unique: _r1URSyRPY6tDMXsp1rsww-1
+Received: by mail-lj1-f198.google.com with SMTP id
+ 38308e7fff4ca-2b6b98ac356so13234641fa.1
+ for <qemu-devel@nongnu.org>; Thu, 29 Jun 2023 22:06:34 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688100746; x=1690692746;
+ d=1e100.net; s=20221208; t=1688101593; x=1690693593;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=LxfsUcSD7c3FFnuk7BufI9QDxF8LZu0znMXP0FGbkQM=;
- b=Axan9mg32Hp8Ywt5JrkkFJBHTkTvCzvhfCng59fu6sNaX3BQ/GfTW7IbmV6LIa+ZBE
- 0LMXzYT9IYNeFtMdH3uqvdqYgDeYtL6KO7vqe+nADv/YbdiDPVpvlYjkyjeai0yFSl8C
- 0qe8oml0Pb53FF2jgIX0KfUGZMwOGuKQczMVQyVmeRR0RNrFpLubPCA6CZ4wvyBiNhdn
- NfBddpklxXoNlKzaBsNmHgHdWurhTZtER3QSNdu8eDWVPxw93q3btzM1bUqV3qSBa+J/
- 2fcD9wuFVJHaN9+A7/Rqer2Sc6dp0Z5/+yLQCpBRlR3ZQDpVhYpmkB/VV+Zhr7oMXhlP
- lWRg==
-X-Gm-Message-State: ABy/qLaNnNWMM8m1hxxvJddTRi1maiqqM+zwmOEdT54dVi2V+ejhGFef
- 1l8DIvEjdlWo2clTVVlvqrhT3+6UfG95X03ysqp9C20Zyk3dcpX61s8cMPxUoJKx2Fm+R42p/hz
- O6cGAQvHzC6QMxlDvK3SvGGJw482dF/Y=
-X-Received: by 2002:a2e:3315:0:b0:2b4:70c1:b484 with SMTP id
- d21-20020a2e3315000000b002b470c1b484mr1102047ljc.38.1688100746113; 
- Thu, 29 Jun 2023 21:52:26 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlGPG/opP9obYpqKSZc/0BfkxJ5nLo5rFVIp2jyrT/m+PDqP2vmi4oEFZdVzv4nmiTeqCm/5hQw+p0pttX7WTtA=
-X-Received: by 2002:a2e:3315:0:b0:2b4:70c1:b484 with SMTP id
- d21-20020a2e3315000000b002b470c1b484mr1102040ljc.38.1688100745749; Thu, 29
- Jun 2023 21:52:25 -0700 (PDT)
+ bh=1Ts0DwntxAspfmpPEOslhMOuUve65c0EWM89/wed8vA=;
+ b=RcoduGibt3pcUP4tDMp5ULV5fCIKtkB0t3Q64Gr2EGvl43NTg81uOfy+Y3evO4cBuS
+ MJfH/Zk/cnQNEnGogqTtFcQPhZzCpA4sf9ygMOypSQF7gNmPb9rL1+kp4GHNqGRC58UP
+ MRGgjWqkPDRWN6WHtk+fgBI245YDR/dckeY6T5Wx/9YvUsWYeZuO83tuxMw1yQAtWYZf
+ iyH7YampCOLNMp9w+2yIO9o85LMj+ARCrO5ToslCVEnQhC6N8usaftxm0rOij4YQiGiC
+ v+hT99Ue4O81Zo7HISIAZ2E/tF2Xeh1o4tnC9IMCB/XwUuUgkHLg/FgKnae5U5MxbLDH
+ 1JPQ==
+X-Gm-Message-State: ABy/qLZvznPSIV3wW4ZzZVG3tGHuQPNPr0jx156NnCh4wBlylWAiUuH/
+ ro2VrMOdr0c96WUWifzU8MxajhiUxtD7gtALozbPoQeq4n9p0IJ5vpxMBVIcQFxBoi+ESQzyOe+
+ eWhyIKvhcCGYPvEJacMTWITP0QVOtW3k=
+X-Received: by 2002:a2e:998e:0:b0:2b6:cd2d:388c with SMTP id
+ w14-20020a2e998e000000b002b6cd2d388cmr1139092lji.22.1688101593508; 
+ Thu, 29 Jun 2023 22:06:33 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlFZxd8gwwfyKhe+YR/GwakOAZ0nQhEQCkOnXDa7vtdJGsEKyozhXnuoqv+6yXb7RSCAvWhugKlgTVm7tOtRfl0=
+X-Received: by 2002:a2e:998e:0:b0:2b6:cd2d:388c with SMTP id
+ w14-20020a2e998e000000b002b6cd2d388cmr1139080lji.22.1688101593240; Thu, 29
+ Jun 2023 22:06:33 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230628152726.110295-1-bmeng@tinylab.org>
- <20230628152726.110295-7-bmeng@tinylab.org>
-In-Reply-To: <20230628152726.110295-7-bmeng@tinylab.org>
+References: <20230614221026.56950-1-andrew@daynix.com>
+In-Reply-To: <20230614221026.56950-1-andrew@daynix.com>
 From: Jason Wang <jasowang@redhat.com>
-Date: Fri, 30 Jun 2023 12:52:14 +0800
-Message-ID: <CACGkMEu_h4-DMMOY+=wmL0LeTWAELeQPiBjucEEG=ud4EtuLSw@mail.gmail.com>
-Subject: Re: [PATCH v4 6/6] net: tap: Use qemu_close_range() to close fds
-To: Bin Meng <bmeng@tinylab.org>
-Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>, 
- Zhangjin Wu <falcon@tinylab.org>
+Date: Fri, 30 Jun 2023 13:06:22 +0800
+Message-ID: <CACGkMEsDw8sUeJB340f8cdqEFnQRXccDxq6pe+87KDzOBMHZpg@mail.gmail.com>
+Subject: Re: [PATCH v3 0/6] eBPF RSS through QMP support.
+To: Andrew Melnychenko <andrew@daynix.com>
+Cc: mst@redhat.com, armbru@redhat.com, eblake@redhat.com, 
+ qemu-devel@nongnu.org, berrange@redhat.com, yuri.benditovich@daynix.com, 
+ yan@daynix.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=jasowang@redhat.com;
@@ -96,106 +96,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jun 28, 2023 at 11:29=E2=80=AFPM Bin Meng <bmeng@tinylab.org> wrote=
-:
+On Thu, Jun 15, 2023 at 6:29=E2=80=AFAM Andrew Melnychenko <andrew@daynix.c=
+om> wrote:
 >
-> From: Zhangjin Wu <falcon@tinylab.org>
+> This series of patches provides the ability to retrieve eBPF program
+> through qmp, so management application may load bpf blob with proper capa=
+bilities.
+> Now, virtio-net devices can accept eBPF programs and maps through propert=
+ies
+> as external file descriptors. Access to the eBPF map is direct through mm=
+ap()
+> call, so it should not require additional capabilities to bpf* calls.
+> eBPF file descriptors can be passed to QEMU from parent process or by uni=
+x
+> socket with sendfd() qmp command.
 >
-> Current codes using a brute-force traversal of all file descriptors
-> do not scale on a system where the maximum number of file descriptors
-> is set to a very large value (e.g.: in a Docker container of Manjaro
-> distribution it is set to 1073741816). QEMU just looks frozen during
-> start-up.
+> Possible solution for libvirt may look like this: https://github.com/dayn=
+ix/libvirt/tree/RSS_eBPF (WIP)
 >
-> The close-on-exec flag (O_CLOEXEC) was introduced since Linux kernel
-> 2.6.23, FreeBSD 8.3, OpenBSD 5.0, Solaris 11. While it's true QEMU
-> doesn't need to manually close the fds for child process as the proper
-> O_CLOEXEC flag should have been set properly on files with its own
-> codes, QEMU uses a huge number of 3rd party libraries and we don't
-> trust them to reliably be using O_CLOEXEC on everything they open.
->
-> Modern Linux and BSDs have the close_range() call we can use to do the
-> job, and on Linux we have one more way to walk through /proc/self/fd
-> to complete the task efficiently, which is what qemu_close_range() does.
->
-> Reported-by: Zhangjin Wu <falcon@tinylab.org>
-> Co-developed-by: Bin Meng <bmeng@tinylab.org>
-> Signed-off-by: Zhangjin Wu <falcon@tinylab.org>
-> Signed-off-by: Bin Meng <bmeng@tinylab.org>
-> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+> Changes since v2:
+>  * moved/refactored QMP command
+>  * refactored virtio-net
 
-Patch looks good but I'm not sure using helper scripts is good for the
-production environment since it increases attack surfaces. Passing TAP
-fd should be a better way.
+I've queued this series, but a question left:
+
+mmap() support for eBPF maps is not supported from day0, should we
+fallback to syscall for the OS that doesn't support that?
 
 Thanks
 
 >
-> ---
+> Changes since v1:
+>  * refactored virtio-net
+>  * moved hunks for ebpf mmap()
+>  * added qmp enum for eBPF id.
 >
-> Changes in v4:
-> - put fd on its own line
+> Andrew Melnychenko (6):
+>   ebpf: Added eBPF map update through mmap.
+>   ebpf: Added eBPF initialization by fds.
+>   virtio-net: Added property to load eBPF RSS with fds.
+>   ebpf: Added declaration/initialization routines.
+>   qmp: Added new command to retrieve eBPF blob.
+>   ebpf: Updated eBPF program and skeleton.
 >
-> Changes in v2:
-> - Change to use qemu_close_range() to close fds for child process efficie=
-ntly
-> - v1 link: https://lore.kernel.org/qemu-devel/20230406112041.798585-1-bme=
-ng@tinylab.org/
->
->  net/tap.c | 24 ++++++++++++------------
->  1 file changed, 12 insertions(+), 12 deletions(-)
->
-> diff --git a/net/tap.c b/net/tap.c
-> index 1bf085d422..9f080215f0 100644
-> --- a/net/tap.c
-> +++ b/net/tap.c
-> @@ -446,13 +446,13 @@ static void launch_script(const char *setup_script,=
- const char *ifname,
->          return;
->      }
->      if (pid =3D=3D 0) {
-> -        int open_max =3D sysconf(_SC_OPEN_MAX), i;
-> +        unsigned int last_fd =3D sysconf(_SC_OPEN_MAX) - 1;
-> +
-> +        /* skip stdin, stdout and stderr */
-> +        qemu_close_range(3, fd - 1);
-> +        /* skip the currently used fd */
-> +        qemu_close_range(fd + 1, last_fd);
->
-> -        for (i =3D 3; i < open_max; i++) {
-> -            if (i !=3D fd) {
-> -                close(i);
-> -            }
-> -        }
->          parg =3D args;
->          *parg++ =3D (char *)setup_script;
->          *parg++ =3D (char *)ifname;
-> @@ -536,16 +536,16 @@ static int net_bridge_run_helper(const char *helper=
-, const char *bridge,
->          return -1;
->      }
->      if (pid =3D=3D 0) {
-> -        int open_max =3D sysconf(_SC_OPEN_MAX), i;
-> +        unsigned int last_fd =3D sysconf(_SC_OPEN_MAX) - 1;
-> +        unsigned int fd =3D sv[1];
->          char *fd_buf =3D NULL;
->          char *br_buf =3D NULL;
->          char *helper_cmd =3D NULL;
->
-> -        for (i =3D 3; i < open_max; i++) {
-> -            if (i !=3D sv[1]) {
-> -                close(i);
-> -            }
-> -        }
-> +        /* skip stdin, stdout and stderr */
-> +        qemu_close_range(3, fd - 1);
-> +        /* skip the currently used fd */
-> +        qemu_close_range(fd + 1, last_fd);
->
->          fd_buf =3D g_strdup_printf("%s%d", "--fd=3D", sv[1]);
+>  ebpf/ebpf.c                    |   70 ++
+>  ebpf/ebpf.h                    |   31 +
+>  ebpf/ebpf_rss-stub.c           |    6 +
+>  ebpf/ebpf_rss.c                |  150 +++-
+>  ebpf/ebpf_rss.h                |   10 +
+>  ebpf/meson.build               |    2 +-
+>  ebpf/rss.bpf.skeleton.h        | 1469 ++++++++++++++++----------------
+>  hw/net/virtio-net.c            |   55 +-
+>  include/hw/virtio/virtio-net.h |    1 +
+>  qapi/ebpf.json                 |   55 ++
+>  qapi/meson.build               |    1 +
+>  qapi/qapi-schema.json          |    1 +
+>  tools/ebpf/rss.bpf.c           |    2 +-
+>  13 files changed, 1093 insertions(+), 760 deletions(-)
+>  create mode 100644 ebpf/ebpf.c
+>  create mode 100644 ebpf/ebpf.h
+>  create mode 100644 qapi/ebpf.json
 >
 > --
-> 2.34.1
+> 2.39.1
 >
 
 
