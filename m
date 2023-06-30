@@ -2,89 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59997743D27
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 16:04:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE8C9743D2D
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 16:07:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFEia-00027y-PJ; Fri, 30 Jun 2023 10:03:24 -0400
+	id 1qFEls-00047t-J4; Fri, 30 Jun 2023 10:06:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qFEiY-00027N-6i
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 10:03:22 -0400
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
+ id 1qFElq-00047a-Ca; Fri, 30 Jun 2023 10:06:46 -0400
+Received: from mail-ot1-x330.google.com ([2607:f8b0:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qFEiV-0004ZO-SK
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 10:03:21 -0400
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-313e1c27476so1692125f8f.1
- for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 07:03:18 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
+ id 1qFElo-00070p-Nq; Fri, 30 Jun 2023 10:06:46 -0400
+Received: by mail-ot1-x330.google.com with SMTP id
+ 46e09a7af769-6b5d7e60015so1590552a34.0; 
+ Fri, 30 Jun 2023 07:06:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688133798; x=1690725798;
- h=content-transfer-encoding:in-reply-to:from:references:to
+ d=gmail.com; s=20221208; t=1688134003; x=1690726003;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=JjOovlwcCV2yDttkbGy8I5PveRSxsCy1Ojfp3YMRiVA=;
- b=tLQJmH2k0lVeETIzcsDrYttzf4XASVEVWqhBjPQLQaKk1fCqyGdvwRcZX0SzhrN+Jc
- BUnAxPAV6rDulyxObcq4xMKwkMznUrcIJnKWF9vl1/wfa9OhIzptb4UFeGzu3cbPU8pZ
- dhzosIw+5HmB2nMfnxdKJ4UB4r3tFkw6aNWXRIbz/+EkJY3Ub7j0oEJCfPcdbN3N9Zz2
- npjsyKZoShGcegkt4Z/bYW5btmuFi+w1IIhPTZaaetRrMRzvJV+gnejXBPs5VDZV4Pyc
- NOBQcKlo5vaF9iIYSHlpeyM9f6Wa+/KDXt5XFZOgy3SVhtZup72N9EgmOBSD3ccVjkSO
- kTWw==
+ bh=j9IR4FIVUbAv+x8yfcnJjVElayhZLnA0Y9DaA2XuSX8=;
+ b=m2zg4DDXilmM+V9jm8lzd/ncoAbMWPPCHrerUtMptn5iTh4Smci08XG7uluUw6oTmW
+ kGB3iHVE6h1iJIChk95u0I1Eb28hfbkI2zFjRMPJ7XljMY4cqlACaset8IfIgOKh2+XT
+ 78LuEWlcRlY4mORC/6Vkx0ivaId5PbN3vindW96Qp3XsItMPOZbjBsgf/vkh88rOWWEP
+ wkx/dwCG+yJt0BV4HnH/MLiEIdXaPGizIIOsPwZSCnait25lMOS8Q4IcfLQJScEkJw2v
+ MGK0jYxp7c8BiDjVsbUUwGrUuTdB7hodi0UTGsr4YTG8uCJJZmSL3HKHQ3QcJ9W6nqph
+ PsBA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688133798; x=1690725798;
- h=content-transfer-encoding:in-reply-to:from:references:to
+ d=1e100.net; s=20221208; t=1688134003; x=1690726003;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=JjOovlwcCV2yDttkbGy8I5PveRSxsCy1Ojfp3YMRiVA=;
- b=liWcV6eEeQjwkvFXB60TMS7SQx7zeAMvTdykRn5MwqiyAbZObxxJlf9lmZcwYYIi/A
- WNcnlZ7esOam5Yr3aIFCNt6+eJNlQhx+Fn6jgq6JfQMFM0NMWGMYACLsX97gy7ar1+3d
- hwHDNPmsa41Jij8y636HqWUIJ5iIZLVfegNRUTy6x+QbaDCH3Do559J5Juqsxd0/LGCt
- Th9RuEDt2lvx+KqEbYOf2TL/84kQLD/HRaeRNzbeDMrlx3NjocEry6/AkeoV19szeGaW
- qRyn4sGc8Rc0vaCuQMpQgDIBrCSavHcbxYomrzEKnNNSW7uMhJNJacYIf7KemQlyUhzu
- XjXw==
-X-Gm-Message-State: AC+VfDzdjHYU5KfbMJmbGF54b2QbzSNUSpfPAKBYTLabIjBAinutuU3g
- S3EL5JGEJhuKaGiqqZvgQfsNwg==
-X-Google-Smtp-Source: ACHHUZ50wubOxQyS5QSJUqIzDI4+3w5Js/aBTg/vjXgZfenzA/ULFLbOOIYgWXMbzb8NBE/bIB3M2A==
-X-Received: by 2002:a5d:4244:0:b0:313:e88d:e6d3 with SMTP id
- s4-20020a5d4244000000b00313e88de6d3mr7147840wrr.14.1688133797704; 
- Fri, 30 Jun 2023 07:03:17 -0700 (PDT)
-Received: from [192.168.1.208] ([139.47.41.96])
- by smtp.gmail.com with ESMTPSA id
- h10-20020a5d504a000000b00313e8dc7facsm16639964wrt.116.2023.06.30.07.03.16
+ bh=j9IR4FIVUbAv+x8yfcnJjVElayhZLnA0Y9DaA2XuSX8=;
+ b=YOcrXuINFbHAHcmQALwgEZiE77jCww+5RjJ9kHFSp2CPG+qxj9lpzjhrvohGZ5Xmty
+ 9aLmmYSvxNkreMtuDDskGE3/+TIVaPzEUEaL4c8InqKwvHD/+NeFKx1lb6GQAE1+++rL
+ WEnzbV+H/oa4PlqfM79te26QuFcbOBm8K0UXNom1kMGPI3y7U+qXMNoWzENrqxp0uAPw
+ uxGPCsseFG1YOOkcK8+fI5+Cm4wBAryqQvI3bnwrbEPgZLTxgJvhNZsvOXiHyygUhpc/
+ l5jggaeJQo7evCi13hUqjKl3ORRiJXVoMty5xPJnivHy31bLIkyTZpT9tVVsKypBeQHZ
+ RTXg==
+X-Gm-Message-State: AC+VfDzSlQwjwJPs7+ZO56djBHvx9BLz6ur0j6zUFvMRcd41FnWaUWve
+ 0yRzomWoCEiuu0Ngk58YTHk=
+X-Google-Smtp-Source: ACHHUZ5otIPUORl1HFPr4bENxruL3BKBpdJEsf8c5fp9mYGeqKNtR22Y1X5M7uapsmfFx33MCjeFBg==
+X-Received: by 2002:a05:6830:1be6:b0:6b7:38c0:7420 with SMTP id
+ k6-20020a0568301be600b006b738c07420mr3110506otb.9.1688134002500; 
+ Fri, 30 Jun 2023 07:06:42 -0700 (PDT)
+Received: from [192.168.68.107] (201-69-66-110.dial-up.telesp.net.br.
+ [201.69.66.110]) by smtp.gmail.com with ESMTPSA id
+ y1-20020a056830108100b006b71d22be29sm1061386oto.18.2023.06.30.07.06.39
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 30 Jun 2023 07:03:17 -0700 (PDT)
-Message-ID: <55279432-e4fe-7309-ac6f-5e2a4b86f47c@linaro.org>
-Date: Fri, 30 Jun 2023 16:03:14 +0200
+ Fri, 30 Jun 2023 07:06:42 -0700 (PDT)
+Message-ID: <c8fbc10e-0fd7-eeb7-973c-4526201ee7a9@gmail.com>
+Date: Fri, 30 Jun 2023 11:06:38 -0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH v5] riscv: Add support for the Zfa extension
+ Thunderbird/102.12.0
+Subject: Re: [PATCH v3 3/6] target/ppc: Move CPU QOM definitions to cpu-qom.h
 Content-Language: en-US
-To: Christoph Muellner <christoph.muellner@vrull.eu>, qemu-riscv@nongnu.org,
- qemu-devel@nongnu.org, Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, Philipp Tomsich
- <philipp.tomsich@vrull.eu>, Palmer Dabbelt <palmer@dabbelt.com>,
- Jeff Law <jeffreyalaw@gmail.com>, Tsukasa OI <research_trasio@irq.a4lg.com>,
- liweiwei@iscas.ac.cn, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Rob Bradford <rbradford@rivosinc.com>
-References: <20230630115239.1920012-1-christoph.muellner@vrull.eu>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230630115239.1920012-1-christoph.muellner@vrull.eu>
+To: Greg Kurz <groug@kaod.org>, =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?=
+ <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, David Gibson <david@gibson.dropbear.id.au>,
+ =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>, qemu-ppc@nongnu.org,
+ Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
+ Nicholas Piggin <npiggin@gmail.com>
+References: <20230627115124.19632-1-philmd@linaro.org>
+ <20230627115124.19632-4-philmd@linaro.org> <20230628170531.09d2e648@bahia>
+From: Daniel Henrique Barboza <danielhb413@gmail.com>
+In-Reply-To: <20230628170531.09d2e648@bahia>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x433.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::330;
+ envelope-from=danielhb413@gmail.com; helo=mail-ot1-x330.google.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.095,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, NICE_REPLY_A=-0.095,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,31 +98,101 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/30/23 13:52, Christoph Muellner wrote:
-> +bool trans_fmvh_x_d(DisasContext *ctx, arg_fmvh_x_d *a)
-> +{
-> +    REQUIRE_FPU;
-> +    REQUIRE_ZFA(ctx);
-> +    REQUIRE_EXT(ctx, RVD);
-> +    REQUIRE_32BIT(ctx);
-> +
-> +    TCGv dst = dest_gpr(ctx, a->rd);
-> +    TCGv_i64 t1 = tcg_temp_new_i64();
-> +
-> +    tcg_gen_extract_i64(t1, cpu_fpr[a->rs1], 32, 32);
-> +    tcg_gen_trunc_i64_tl(dst, t1);
-> +    gen_set_gpr(ctx, a->rd, dst);
+Phil,
 
-I think you would prefer
+On 6/28/23 12:05, Greg Kurz wrote:
+> On Tue, 27 Jun 2023 13:51:21 +0200
+> Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
+> 
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> ---
+>>   target/ppc/cpu-qom.h | 5 +++++
+>>   target/ppc/cpu.h     | 6 ------
+>>   2 files changed, 5 insertions(+), 6 deletions(-)
+>>
+>> diff --git a/target/ppc/cpu-qom.h b/target/ppc/cpu-qom.h
+>> index 9666f54f65..c2bff349cc 100644
+>> --- a/target/ppc/cpu-qom.h
+>> +++ b/target/ppc/cpu-qom.h
+>> @@ -31,6 +31,11 @@
+>>   
+>>   OBJECT_DECLARE_CPU_TYPE(PowerPCCPU, PowerPCCPUClass, POWERPC_CPU)
+>>   
+>> +#define POWERPC_CPU_TYPE_SUFFIX "-" TYPE_POWERPC_CPU
+>> +#define POWERPC_CPU_TYPE_NAME(model) model POWERPC_CPU_TYPE_SUFFIX
+>> +#define CPU_RESOLVING_TYPE TYPE_POWERPC_CPU
+>> +#define cpu_list ppc_cpu_list
+>> +
+>>   ObjectClass *ppc_cpu_class_by_name(const char *name);
+>>   
+>>   typedef struct CPUArchState CPUPPCState;
+>> diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
+>> index af12c93ebc..e91e1774e5 100644
+>> --- a/target/ppc/cpu.h
+>> +++ b/target/ppc/cpu.h
+>> @@ -1468,12 +1468,6 @@ static inline uint64_t ppc_dump_gpr(CPUPPCState *env, int gprn)
+>>   int ppc_dcr_read(ppc_dcr_t *dcr_env, int dcrn, uint32_t *valp);
+>>   int ppc_dcr_write(ppc_dcr_t *dcr_env, int dcrn, uint32_t val);
+>>   
+>> -#define POWERPC_CPU_TYPE_SUFFIX "-" TYPE_POWERPC_CPU
+>> -#define POWERPC_CPU_TYPE_NAME(model) model POWERPC_CPU_TYPE_SUFFIX
+>> -#define CPU_RESOLVING_TYPE TYPE_POWERPC_CPU
+>> -
+> 
+> These seem appropriate to be moved to "cpu-qom.h".
+> 
+>> -#define cpu_list ppc_cpu_list
+> 
+> This one is much older according to git blame :
+> 
+> c913706581460 target/ppc/cpu.h (Igor Mammedov                 2017-08-30 1469) #define POWERPC_CPU_TYPE_SUFFIX "-" TYPE_POWERPC_CPU
+> c913706581460 target/ppc/cpu.h (Igor Mammedov                 2017-08-30 1470) #define POWERPC_CPU_TYPE_NAME(model) model POWERPC_CPU_TYPE_SUFFIX
+> 0dacec874fa3b target/ppc/cpu.h (Igor Mammedov                 2018-02-07 1471) #define CPU_RESOLVING_TYPE TYPE_POWERPC_CPU
+> c913706581460 target/ppc/cpu.h (Igor Mammedov                 2017-08-30 1472)
+> c732abe222795 target-ppc/cpu.h (Jocelyn Mayer                 2007-10-12 1473) #define cpu_list ppc_cpu_list
+> 
+> It is some plumbing used for `-cpu help`, not exactly QOM stuff.
+> Maybe keep it in "cpu.h" as all other targets do ?
 
-   tcg_gen_srai_tl(t1, cpu_fpr[rs1], 32);
+Greg has a point:
 
-so that dst is sign-extended to begin, instead of zero-extended.  You don't see an error 
-because gen_set_gpr, for MXL_RV32, sign-extends the stored value.
+$ git grep '#define cpu_list'
+target/alpha/cpu.h:#define cpu_list alpha_cpu_list
+target/arm/cpu.h:#define cpu_list arm_cpu_list
+target/avr/cpu.h:#define cpu_list avr_cpu_list
+target/cris/cpu.h:#define cpu_list cris_cpu_list
+target/hexagon/cpu.h:#define cpu_list hexagon_cpu_list
+target/i386/cpu.h:#define cpu_list x86_cpu_list
+target/loongarch/cpu.h:#define cpu_list loongarch_cpu_list
+target/m68k/cpu.h:#define cpu_list m68k_cpu_list
+target/mips/cpu.h:#define cpu_list mips_cpu_list
+target/openrisc/cpu.h:#define cpu_list cpu_openrisc_list
+target/ppc/cpu.h:#define cpu_list ppc_cpu_list
+target/riscv/cpu.h:#define cpu_list riscv_cpu_list
+target/rx/cpu.h:#define cpu_list rx_cpu_list
+target/s390x/cpu.h:#define cpu_list s390_cpu_list
+target/sh4/cpu.h:#define cpu_list sh4_cpu_list
+target/sparc/cpu.h:#define cpu_list sparc_cpu_list
+target/tricore/cpu.h:#define cpu_list tricore_cpu_list
+target/xtensa/cpu.h:#define cpu_list xtensa_cpu_list
 
-However, the tcg optimizer would elide the second sign-extend if it can see that the value 
-is already sign-extended.  So this could reduce to 1 operation instead of 2.
+I'm not against moving this define to cpu-qom.h per se but I believe that, for the sake
+of consistency, this change should be done in a single swoop across all archs.
+
+For now, if you agree with keeping the 'cpu_list' define in cpu.h, I'll queue this up
+and amend it in-tree.
 
 
-r~
+Thanks,
+
+Daniel
+
+> 
+>> -
+>>   /* MMU modes definitions */
+>>   #define MMU_USER_IDX 0
+>>   static inline int cpu_mmu_index(CPUPPCState *env, bool ifetch)
+> 
+> 
+> 
 
