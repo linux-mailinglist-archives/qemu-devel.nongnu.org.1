@@ -2,83 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 840A6743CAE
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 15:24:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C807F743CAA
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 15:23:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFE5P-00006R-38; Fri, 30 Jun 2023 09:22:55 -0400
+	id 1qFE4o-0007j6-3a; Fri, 30 Jun 2023 09:22:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
- id 1qFE5H-0008Jd-F0
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 09:22:49 -0400
-Received: from mail-pg1-x52e.google.com ([2607:f8b0:4864:20::52e])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qFE4k-0007gU-Jp
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 09:22:14 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
- id 1qFE5F-0003YE-Ou
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 09:22:47 -0400
-Received: by mail-pg1-x52e.google.com with SMTP id
- 41be03b00d2f7-55b12286476so1095977a12.1
- for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 06:22:45 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qFE4i-0003Qo-Oi
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 09:22:14 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-3fbab0d0b88so16304665e9.0
+ for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 06:22:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688131364; x=1690723364;
+ d=linaro.org; s=google; t=1688131331; x=1690723331;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Y+10pK3jsTYW1WCPIup4C/1EWfB9z1pijxAEzc/XV9s=;
- b=nGmxeZW68Ll+wdcQDaJ0qFAtBWkC4GlWB2uYbY/UgiyxzLAkT9IGFeRK6ztJ8rSf77
- Z6uyHSbDl8SEsEtLXpdxrfNbEirqq7Z/JJIZiP0+kwOJUojyAaMILw/ETXfW0Q6HloxF
- 7d9AHapaic0b9PVQSh0G8XR0f0/9J298Zem+eI7W4AT9oYX2WNoqF7PGlZn2j34tZ5Ww
- RhV2yeG30t4A4WxbTyoJxSrCxwQcgcdRO7t16Bx2X/y1HtIU7Ptn66/NApRTEPo4DaSj
- FovjjJ6W98iV6upT59Lwu6j1m7vInWOJFRRIn76N6lYS5l/XHF6jFTIrGHdon4vi4ASI
- /yIQ==
+ bh=ATo4xPCpqlJo0OX4/YmZKCOaCJgLjpigwZg6oDzTrO0=;
+ b=ncxr59OwCTfb75YLVAliXNB93/aaCR+D5anQBig7mwD6jPea6bolwmBK+l1ai8EE/E
+ mIZwGtI4yjQvo50itb3mUnv/s2fVilvYLBm2hlaqJSZZ5I6AOwHgmbueUIt0h9k3ZtzK
+ LiqNaUE6gWz7RWDFlyLRy5dMVKUdPsVIpgHYFXbNbnymxVh7pVHgYT0TtUJ8N+lPvW4e
+ s3wuEgst8UMDJyRy9p/kQt0E6aP4y17PCcC0eQ+6eT0INH2T2p75uCtdJYFRrSBDEswy
+ RKP+9G3zq7GRA5rNOge5YJnjpWxZmU703jnAuWOsjhwuRHOn9iTKVfMu+0SMKBO6BcFb
+ GWWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688131364; x=1690723364;
+ d=1e100.net; s=20221208; t=1688131331; x=1690723331;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Y+10pK3jsTYW1WCPIup4C/1EWfB9z1pijxAEzc/XV9s=;
- b=WZt90oQ2aJ7NWnDEubsosnER0JLvSauFRsuKrtGzxQCVygH1GSnguM+q60uOLlZWyk
- lW/Ef0XJFhnmDmT2JrlM8sCZitgXzGGxoawXofUwNSNHtCZz3YGeYMdvDN6WQuahA5dL
- jMEeTyMghC+zV0SpcyyWTDh5i2JDsz/gC9BeAGzBBvNxCzlV1H7ZLJ0gZ8HMtjv7d2Lk
- xL8xHp/EMsNm6eQ/xlChkLxiWnJU2L42HDUZRVRpAouKttzF/2KtU+Bd4oBVCizKH8TL
- LNvA7xeP3t6mobCwBIWWrQW1EMBJbhbqyJ1xB1H0z9KTXNdkF100rzn4UlVB8/ThqPbj
- xqHg==
-X-Gm-Message-State: ABy/qLbtWUpyHsiNOQzePj1rtQ8rCvhuSVzC3YglEIHnWFVSUhRIr51Y
- aPSs/z9Cu8dHTx5LW109fWo=
-X-Google-Smtp-Source: APBJJlF4TF7BeOEv4sWYEtV3+p76C3hTnzirHA3470DQx9OFWPdmHy5rLuTF18SFuq2KstuT5ba70g==
-X-Received: by 2002:a17:90a:e60f:b0:262:e742:f40a with SMTP id
- j15-20020a17090ae60f00b00262e742f40amr1657184pjy.44.1688131363931; 
- Fri, 30 Jun 2023 06:22:43 -0700 (PDT)
-Received: from localhost ([159.226.94.115]) by smtp.gmail.com with ESMTPSA id
- j15-20020a17090a3e0f00b002638e5d2986sm282963pjc.17.2023.06.30.06.22.43
+ bh=ATo4xPCpqlJo0OX4/YmZKCOaCJgLjpigwZg6oDzTrO0=;
+ b=F/ktImeNVJjRrEYUo3YXmba4CMamAFtC9KH24eWFb0hIMdVp+/34Xudk7m4qAR8Gnk
+ c+pxg354mQTiVNl1ureJxm6qXBHLPjUB1tTd6bMzoL9WaRoYn58zGd5w0JtniQpgU0hU
+ 2oXH+8JV9SG/Ol6Sex8x8jl4pbW7WDGPlnjjHK3oYTIOWX1EW+5Z2HL3sCO8WGb0qf5S
+ X94S89CQ9BO/1RLLZDqPZ/fUbADoNaOlso3KpN8lemi9+ND/N6JKWxPoL+pMDIQy64W2
+ EsfWZuXPvgrtE11OLV5wO8tYmrnIhAyig798hYNprRbnhjXNcv+DmlyeIteqVx+xddFH
+ aupw==
+X-Gm-Message-State: ABy/qLbuXaXkbtubVydJ/6Sd9gjRWq1s8EiKOnLWO7APxRVYlfjFj6a7
+ vtGMPPpW2VCzXwiWH9lvOuIzXtgdox6YWsXahV2zJg==
+X-Google-Smtp-Source: APBJJlF+//sk6+IkNUm0qHHsYMX70sw5av+XvNevJQam9AKRv12sZ6AOFu9tN5qDoayBs+HQFeBKPg==
+X-Received: by 2002:a5d:61d1:0:b0:313:f3a2:e5d9 with SMTP id
+ q17-20020a5d61d1000000b00313f3a2e5d9mr2620690wrv.3.1688131330987; 
+ Fri, 30 Jun 2023 06:22:10 -0700 (PDT)
+Received: from localhost.localdomain ([139.47.41.96])
+ by smtp.gmail.com with ESMTPSA id
+ a16-20020adfdd10000000b00313ef2150dcsm14571092wrm.45.2023.06.30.06.22.10
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 30 Jun 2023 06:22:43 -0700 (PDT)
-From: Hawkins Jiawei <yin31149@gmail.com>
-To: jasowang@redhat.com, mst@redhat.com, eperezma@redhat.com, philmd@linaro.org
-Cc: qemu-devel@nongnu.org,
-	yin31149@gmail.com,
-	18801353760@163.com
-Subject: [PATCH v3 2/2] vdpa: Sort vdpa_feature_bits array alphabetically
-Date: Fri, 30 Jun 2023 21:21:48 +0800
-Message-Id: <07632fb387d8eafb7ad76dd07e321658e0f40842.1688130570.git.yin31149@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <cover.1688130570.git.yin31149@gmail.com>
-References: <cover.1688130570.git.yin31149@gmail.com>
+ Fri, 30 Jun 2023 06:22:10 -0700 (PDT)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: mjt@tls.msk.ru,
+	laurent@vivier.eu
+Subject: [PATCH 13/24] linux-user: Rewrite mmap_frag
+Date: Fri, 30 Jun 2023 15:21:48 +0200
+Message-Id: <20230630132159.376995-14-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230630132159.376995-1-richard.henderson@linaro.org>
+References: <20230630132159.376995-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52e;
- envelope-from=yin31149@gmail.com; helo=mail-pg1-x52e.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x335.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01,
- UPPERCASE_50_75=0.008 autolearn=no autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,89 +92,185 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch sorts the vdpa_feature_bits array
-alphabetically in ascending order to avoid future duplicates.
+Use 'last' variables instead of 'end' variables.
+Always zero MAP_ANONYMOUS fragments, which we previously
+failed to do if they were not writable; early exit in case
+we allocate a new page from the kernel, known zeros.
 
-Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
-v3:
-  - sort array alphabetically suggested by Philippe
+ linux-user/mmap.c | 123 +++++++++++++++++++++++-----------------------
+ 1 file changed, 62 insertions(+), 61 deletions(-)
 
-v2: https://lists.nongnu.org/archive/html/qemu-devel/2023-06/msg06766.html
-   - resolve conflicts with the master branch
-
-v1: https://lists.nongnu.org/archive/html/qemu-devel/2023-06/msg01585.html
-
- net/vhost-vdpa.c | 39 +++++++++++++++++++++++----------------
- 1 file changed, 23 insertions(+), 16 deletions(-)
-
-diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-index 0479988a79..c0e93ce568 100644
---- a/net/vhost-vdpa.c
-+++ b/net/vhost-vdpa.c
-@@ -50,38 +50,45 @@ typedef struct VhostVDPAState {
-     bool started;
- } VhostVDPAState;
+diff --git a/linux-user/mmap.c b/linux-user/mmap.c
+index c9bd72d3f9..e332555dd2 100644
+--- a/linux-user/mmap.c
++++ b/linux-user/mmap.c
+@@ -221,73 +221,76 @@ int target_mprotect(abi_ulong start, abi_ulong len, int target_prot)
+ }
  
-+/*
-+ * The array is sorted alphabetically in ascending order,
-+ * with the exception of VHOST_INVALID_FEATURE_BIT,
-+ * which should always be the last entry.
-+ */
- const int vdpa_feature_bits[] = {
--    VIRTIO_F_NOTIFY_ON_EMPTY,
--    VIRTIO_RING_F_INDIRECT_DESC,
--    VIRTIO_RING_F_EVENT_IDX,
-     VIRTIO_F_ANY_LAYOUT,
-+    VIRTIO_F_IOMMU_PLATFORM,
-+    VIRTIO_F_NOTIFY_ON_EMPTY,
-+    VIRTIO_F_RING_PACKED,
-+    VIRTIO_F_RING_RESET,
-     VIRTIO_F_VERSION_1,
-     VIRTIO_NET_F_CSUM,
--    VIRTIO_NET_F_GUEST_CSUM,
-     VIRTIO_NET_F_CTRL_GUEST_OFFLOADS,
-+    VIRTIO_NET_F_CTRL_MAC_ADDR,
-+    VIRTIO_NET_F_CTRL_RX,
-+    VIRTIO_NET_F_CTRL_RX_EXTRA,
-+    VIRTIO_NET_F_CTRL_VLAN,
-+    VIRTIO_NET_F_CTRL_VQ,
-     VIRTIO_NET_F_GSO,
-+    VIRTIO_NET_F_GUEST_CSUM,
-+    VIRTIO_NET_F_GUEST_ECN,
-     VIRTIO_NET_F_GUEST_TSO4,
-     VIRTIO_NET_F_GUEST_TSO6,
--    VIRTIO_NET_F_GUEST_ECN,
-     VIRTIO_NET_F_GUEST_UFO,
-+    VIRTIO_NET_F_HASH_REPORT,
-+    VIRTIO_NET_F_HOST_ECN,
-     VIRTIO_NET_F_HOST_TSO4,
-     VIRTIO_NET_F_HOST_TSO6,
--    VIRTIO_NET_F_HOST_ECN,
-     VIRTIO_NET_F_HOST_UFO,
-+    VIRTIO_NET_F_MQ,
-     VIRTIO_NET_F_MRG_RXBUF,
-     VIRTIO_NET_F_MTU,
--    VIRTIO_NET_F_CTRL_RX,
--    VIRTIO_NET_F_CTRL_RX_EXTRA,
--    VIRTIO_NET_F_CTRL_VLAN,
--    VIRTIO_NET_F_CTRL_MAC_ADDR,
--    VIRTIO_NET_F_MQ,
--    VIRTIO_NET_F_CTRL_VQ,
--    VIRTIO_F_IOMMU_PLATFORM,
--    VIRTIO_F_RING_PACKED,
--    VIRTIO_F_RING_RESET,
-     VIRTIO_NET_F_RSS,
--    VIRTIO_NET_F_HASH_REPORT,
-     VIRTIO_NET_F_STATUS,
-+    VIRTIO_RING_F_EVENT_IDX,
-+    VIRTIO_RING_F_INDIRECT_DESC,
+ /* map an incomplete host page */
+-static int mmap_frag(abi_ulong real_start,
+-                     abi_ulong start, abi_ulong end,
+-                     int prot, int flags, int fd, off_t offset)
++static bool mmap_frag(abi_ulong real_start, abi_ulong start, abi_ulong last,
++                      int prot, int flags, int fd, off_t offset)
+ {
+-    abi_ulong real_end, addr;
++    abi_ulong real_last;
+     void *host_start;
+-    int prot1, prot_new;
++    int prot_old, prot_new;
++    int host_prot_old, host_prot_new;
+ 
+-    real_end = real_start + qemu_host_page_size;
+-    host_start = g2h_untagged(real_start);
+-
+-    /* get the protection of the target pages outside the mapping */
+-    prot1 = 0;
+-    for (addr = real_start; addr < real_end; addr++) {
+-        if (addr < start || addr >= end) {
+-            prot1 |= page_get_flags(addr);
+-        }
++    if (!(flags & MAP_ANONYMOUS)
++        && (flags & MAP_TYPE) == MAP_SHARED
++        && (prot & PROT_WRITE)) {
++        /*
++         * msync() won't work with the partial page, so we return an
++         * error if write is possible while it is a shared mapping.
++         */
++        errno = EINVAL;
++        return false;
+     }
+ 
+-    if (prot1 == 0) {
+-        /* no page was there, so we allocate one */
++    real_last = real_start + qemu_host_page_size - 1;
++    host_start = g2h_untagged(real_start);
 +
-+    /* VHOST_INVALID_FEATURE_BIT should always be the last entry */
-     VHOST_INVALID_FEATURE_BIT
- };
++    /* Get the protection of the target pages outside the mapping. */
++    prot_old = 0;
++    for (abi_ulong a = real_start; a < start; a += TARGET_PAGE_SIZE) {
++        prot_old |= page_get_flags(a);
++    }
++    for (abi_ulong a = real_last; a > last; a -= TARGET_PAGE_SIZE) {
++        prot_old |= page_get_flags(a);
++    }
++
++    if (prot_old == 0) {
++        /*
++         * Since !(prot_old & PAGE_VALID), there were no guest pages
++         * outside of the fragment we need to map.  Allocate a new host
++         * page to cover, discarding whatever else may have been present.
++         */
+         void *p = mmap(host_start, qemu_host_page_size,
+                        target_to_host_prot(prot),
+                        flags | MAP_ANONYMOUS, -1, 0);
+         if (p == MAP_FAILED) {
+-            return -1;
++            return false;
+         }
+-        prot1 = prot;
++        prot_old = prot;
+     }
+-    prot1 &= PAGE_BITS;
++    prot_new = prot | prot_old;
  
+-    prot_new = prot | prot1;
+-    if (!(flags & MAP_ANONYMOUS)) {
+-        /*
+-         * msync() won't work here, so we return an error if write is
+-         * possible while it is a shared mapping.
+-         */
+-        if ((flags & MAP_TYPE) == MAP_SHARED && (prot & PROT_WRITE)) {
+-            return -1;
+-        }
++    host_prot_old = target_to_host_prot(prot_old);
++    host_prot_new = target_to_host_prot(prot_new);
+ 
+-        /* adjust protection to be able to read */
+-        if (!(prot1 & PROT_WRITE)) {
+-            mprotect(host_start, qemu_host_page_size,
+-                     target_to_host_prot(prot1) | PROT_WRITE);
+-        }
++    /* Adjust protection to be able to write. */
++    if (!(host_prot_old & PROT_WRITE)) {
++        host_prot_old |= PROT_WRITE;
++        mprotect(host_start, qemu_host_page_size, host_prot_old);
++    }
+ 
+-        /* read the corresponding file data */
+-        if (pread(fd, g2h_untagged(start), end - start, offset) == -1) {
+-            return -1;
+-        }
+-
+-        /* put final protection */
+-        if (prot_new != (prot1 | PROT_WRITE)) {
+-            mprotect(host_start, qemu_host_page_size,
+-                     target_to_host_prot(prot_new));
+-        }
++    /* Read or zero the new guest pages. */
++    if (flags & MAP_ANONYMOUS) {
++        memset(g2h_untagged(start), 0, last - start + 1);
+     } else {
+-        if (prot_new != prot1) {
+-            mprotect(host_start, qemu_host_page_size,
+-                     target_to_host_prot(prot_new));
+-        }
+-        if (prot_new & PROT_WRITE) {
+-            memset(g2h_untagged(start), 0, end - start);
++        if (pread(fd, g2h_untagged(start), last - start + 1, offset) == -1) {
++            return false;
+         }
+     }
+-    return 0;
++
++    /* Put final protection */
++    if (host_prot_new != host_prot_old) {
++        mprotect(host_start, qemu_host_page_size, host_prot_new);
++    }
++    return true;
+ }
+ 
+ #if HOST_LONG_BITS == 64 && TARGET_ABI_BITS == 64
+@@ -675,27 +678,25 @@ abi_long target_mmap(abi_ulong start, abi_ulong len, int target_prot,
+         if (start > real_start) {
+             if (real_end == real_start + qemu_host_page_size) {
+                 /* one single host page */
+-                ret = mmap_frag(real_start, start, end,
+-                                target_prot, flags, fd, offset);
+-                if (ret == -1) {
++                if (!mmap_frag(real_start, start, end - 1,
++                               target_prot, flags, fd, offset)) {
+                     goto fail;
+                 }
+                 goto the_end1;
+             }
+-            ret = mmap_frag(real_start, start, real_start + qemu_host_page_size,
+-                            target_prot, flags, fd, offset);
+-            if (ret == -1) {
++            if (!mmap_frag(real_start, start,
++                           real_start + qemu_host_page_size - 1,
++                           target_prot, flags, fd, offset)) {
+                 goto fail;
+             }
+             real_start += qemu_host_page_size;
+         }
+         /* handle the end of the mapping */
+         if (end < real_end) {
+-            ret = mmap_frag(real_end - qemu_host_page_size,
+-                            real_end - qemu_host_page_size, end,
+-                            target_prot, flags, fd,
+-                            offset + real_end - qemu_host_page_size - start);
+-            if (ret == -1) {
++            if (!mmap_frag(real_end - qemu_host_page_size,
++                           real_end - qemu_host_page_size, end - 1,
++                           target_prot, flags, fd,
++                           offset + real_end - qemu_host_page_size - start)) {
+                 goto fail;
+             }
+             real_end -= qemu_host_page_size;
 -- 
-2.25.1
+2.34.1
 
 
