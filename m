@@ -2,83 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70AA67442F8
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 21:53:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E37374434D
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 22:38:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFKAM-00058f-JM; Fri, 30 Jun 2023 15:52:26 -0400
+	id 1qFKs8-0008QY-Cw; Fri, 30 Jun 2023 16:37:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qFKAK-00057w-Dq; Fri, 30 Jun 2023 15:52:24 -0400
-Received: from mail-oo1-xc32.google.com ([2607:f8b0:4864:20::c32])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qFKAI-0004oL-Ll; Fri, 30 Jun 2023 15:52:24 -0400
-Received: by mail-oo1-xc32.google.com with SMTP id
- 006d021491bc7-56347da4a50so1503428eaf.2; 
- Fri, 30 Jun 2023 12:52:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688154741; x=1690746741;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=vU+0ru5ZA9rjC66UurAC56J5Gt0lL+/hcBbnl05z5wo=;
- b=E9RTBg5U7X4HCg/634ZGx8rQX2Adxac8WVGtcJDhpwbSxUnwO0naWAxQsraXT3LV2Z
- 6E2g/Gq/rzwuNQB/IU3RybVq3w0xYAOgX8JRUPdQP+uMlTywo3ceUc74u+U/OlvrQljY
- bPJ5zCHSR2FWURThcHuem2ojl5bubnqaJ15L1bK3JZ+UUOGQW6CAb3QyuUNyL4cTKt29
- RprQEyXll+89p634XpzCfoCkzw0ZOg6GVajv//9oCmStQUCzBIk5SpZJr/HkFvgTs/s6
- jwc2XixLsO2aM4mt8EnGPIGokt0ljkf7OECXWDAANTOGS+t7pGt+Gq9DL4xcmrGnXmBT
- FT+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688154741; x=1690746741;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=vU+0ru5ZA9rjC66UurAC56J5Gt0lL+/hcBbnl05z5wo=;
- b=CEbxIaxZ2WSjvO1ziv5xBs8OGyFA6qpX9+sKMwsQmZOedNvVtifX+WmUIcJNEAqTQI
- CSad+1jCcpntqPhQmrBUsRWciFjwzXLy1VkZXcRkzfCUfJwQ7jl6QbNzqkZAUpWNf8f5
- ykXV64w13L65u37YV5OTm8YxJvKtIeQo78ma1m5axLfVjjZ2M09QhfqL+B0vSoWVddCP
- ATTEXLQ9kRCIIF2Fc9/50x8V4zVy742gTYnmupaLd2TlwdRklZ9Oc87tani2Rz2WUEpK
- Ze1wF/GlAjvWfgcq+u8y1eoXTuPeJ7HtKl8Fi3gkz9slwYwfthFa8ISQ2KaehFxY7Mpz
- n0tQ==
-X-Gm-Message-State: AC+VfDwzy6Hjy8ppD+IWkt1FSJb8ge5kzBz6qsdL0EWCveOf+jfTrcGj
- zYEdkXg1iRxqYub1N5kyIRfZdM6+d+I=
-X-Google-Smtp-Source: ACHHUZ6Mt/3zLHbmyjEfrW5id4Egxl1XZLbGhK6zVkAjdFkDYxveJacS4Z2LUVUbv11+gz8aCzDC+w==
-X-Received: by 2002:a05:6808:1884:b0:3a1:e200:fdfd with SMTP id
- bi4-20020a056808188400b003a1e200fdfdmr4270906oib.46.1688154741232; 
- Fri, 30 Jun 2023 12:52:21 -0700 (PDT)
-Received: from [192.168.68.107] (201-69-66-110.dial-up.telesp.net.br.
- [201.69.66.110]) by smtp.gmail.com with ESMTPSA id
- e17-20020a056808149100b003a392bd501csm155159oiw.20.2023.06.30.12.52.18
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 30 Jun 2023 12:52:20 -0700 (PDT)
-Message-ID: <92e3591e-cce7-c3e7-7d73-a0bd24de8c2c@gmail.com>
-Date: Fri, 30 Jun 2023 16:52:17 -0300
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1qFKs1-0008Q1-QR
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 16:37:33 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1qFKry-0006Ic-WF
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 16:37:33 -0400
+Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 35UKWnRa022961; Fri, 30 Jun 2023 20:37:28 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : content-type : content-transfer-encoding :
+ mime-version; s=pp1; bh=wSPDq/twQE2m0MatPmsZ213haO3+C3O5HznHq5PHxL8=;
+ b=Tu/nQHFVp9W8FMuOptU5s0OXdznXAB5RF1S/lhyrgtA+6BhojGSgTqX32FmdEX544kwk
+ YddhLY/WE0cq5l665lVxGxovy+ITLJHJVIuWOa3YXN7d/ir8MRQh1H/wpteam6NMnlOq
+ 8mA04Yo9B2oOl6X6cc3U7XVz5sTNuO2hQGPl6KMIiWyNQCJlgO1LHmd9IXwxYzvfBMcs
+ zZ4IpLtfME5kW6nwaMCcV6y5d/qfD3cJ8VA+WY1WTovi3rJByH/j9mEtP2cSZ/GmseEY
+ DE+Ge9EFGWhFaV4t9Hy0DU2j/41L/l/pGOed8822+69lq01siNQ63WuF7HZ7ITdP1jvZ Uw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rj66b83hf-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 30 Jun 2023 20:37:28 +0000
+Received: from m0353723.ppops.net (m0353723.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 35UKXT3o023678;
+ Fri, 30 Jun 2023 20:37:27 GMT
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.99])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rj66b83h0-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 30 Jun 2023 20:37:27 +0000
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+ by ppma04ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 35UJmob5017280;
+ Fri, 30 Jun 2023 20:37:25 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+ by ppma04ams.nl.ibm.com (PPS) with ESMTPS id 3rdr454dke-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 30 Jun 2023 20:37:25 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com
+ [10.20.54.103])
+ by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 35UKbNas45744682
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 30 Jun 2023 20:37:23 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0A10F20043;
+ Fri, 30 Jun 2023 20:37:23 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6A57220040;
+ Fri, 30 Jun 2023 20:37:22 +0000 (GMT)
+Received: from heavy.boeblingen.de.ibm.com (unknown [9.179.8.31])
+ by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Fri, 30 Jun 2023 20:37:22 +0000 (GMT)
+From: Ilya Leoshkevich <iii@linux.ibm.com>
+To: Richard Henderson <richard.henderson@linaro.org>,
+ Laurent Vivier <laurent@vivier.eu>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
+ David Hildenbrand <david@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>
+Subject: [PATCH 0/4] accel/tcg: Move perf and debuginfo support to tcg
+Date: Fri, 30 Jun 2023 22:36:37 +0200
+Message-ID: <20230630203720.528552-1-iii@linux.ibm.com>
+X-Mailer: git-send-email 2.41.0
+Content-Type: text/plain; charset=UTF-8
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: suF8P3cvxcz4YylXyif8FroU_D2NqhIC
+X-Proofpoint-ORIG-GUID: B0b50yPBAN5B7JNAHH-8NUQuJWgCX-pw
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH v3 00/14] Misc clean ups to target/ppc exception handling
-Content-Language: en-US
-To: BALATON Zoltan <balaton@eik.bme.hu>, qemu-devel@nongnu.org,
- qemu-ppc@nongnu.org
-Cc: clg@kaod.org, Greg Kurz <groug@kaod.org>,
- Nicholas Piggin <npiggin@gmail.com>
-References: <cover.1686868895.git.balaton@eik.bme.hu>
-From: Daniel Henrique Barboza <danielhb413@gmail.com>
-In-Reply-To: <cover.1686868895.git.balaton@eik.bme.hu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c32;
- envelope-from=danielhb413@gmail.com; helo=mail-oo1-xc32.google.com
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-06-30_12,2023-06-30_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 clxscore=1015
+ priorityscore=1501 mlxlogscore=959 malwarescore=0 spamscore=0
+ suspectscore=0 mlxscore=0 bulkscore=0 lowpriorityscore=0 impostorscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2305260000 definitions=main-2306300179
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
 X-Spam_score_int: -19
 X-Spam_score: -2.0
 X-Spam_bar: --
 X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, NICE_REPLY_A=-0.095,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -95,55 +113,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Zoltan,
+Hi,
 
+This series is a follow-up to discussion in [1]; the goal is to build
+perf and debuginfo support only one time.
 
-Patches 1, 2, 3, 5, 7 and 11 are queued.
+I had to move tb_cflags() and qemu_target_page_mask(), and I'm not sure
+if my choices there are perfect. Please let me know if there are better
+locations for them.
 
-If you would be so kind to get the remaining patches, rebase them
-on top of my ppc-next and resend, I believe there's more stuff
-to be queued.
+Best regards,
+Ilya
 
+[1] https://lists.gnu.org/archive/html/qemu-devel/2023-06/msg06510.html
 
+Ilya Leoshkevich (4):
+  target: Make qemu_softmmu_page_mask() available for *-user
+  tcg: Make tb_cflags() usable from target-agnostic code
+  accel/tcg: Remove #ifdef TARGET_I386 from perf.c
+  accel/tcg: Move perf and debuginfo support to tcg
 
-Thanks,
+ accel/tcg/meson.build            | 2 --
+ accel/tcg/translate-all.c        | 2 +-
+ hw/core/loader.c                 | 2 +-
+ include/exec/exec-all.h          | 6 ------
+ include/exec/translation-block.h | 6 ++++++
+ linux-user/elfload.c             | 2 +-
+ linux-user/exit.c                | 2 +-
+ linux-user/main.c                | 2 +-
+ softmmu/physmem.c                | 5 -----
+ softmmu/vl.c                     | 2 +-
+ target/meson.build               | 2 ++
+ target/target-common.c           | 9 +++++++++
+ {accel/tcg => tcg}/debuginfo.c   | 0
+ {accel/tcg => tcg}/debuginfo.h   | 4 ++--
+ tcg/meson.build                  | 3 +++
+ {accel/tcg => tcg}/perf.c        | 8 ++------
+ {accel/tcg => tcg}/perf.h        | 4 ++--
+ tcg/tcg.c                        | 2 +-
+ 18 files changed, 33 insertions(+), 30 deletions(-)
+ create mode 100644 target/target-common.c
+ rename {accel/tcg => tcg}/debuginfo.c (100%)
+ rename {accel/tcg => tcg}/debuginfo.h (96%)
+ rename {accel/tcg => tcg}/perf.c (98%)
+ rename {accel/tcg => tcg}/perf.h (95%)
 
+-- 
+2.41.0
 
-Daniel
-
-On 6/15/23 20:03, BALATON Zoltan wrote:
-> These are some small clean ups for target/ppc/excp_helper.c trying to
-> make this code a bit simpler. No functional change is intended.
-> 
-> v2: Patch 3 changes according to review, added tags
-> v3: Address more review comments: don't change cpu_interrupt_exittb()
-> parameter, add back lev, add scv patch from Nick + add some more
-> patches to clean up #ifdefs
-> 
-> Regards,
-> BALATON Zoltan
-> 
-> BALATON Zoltan (13):
->    target/ppc: Remove some superfluous parentheses
->    target/ppc: Remove unneeded parameter from powerpc_reset_wakeup()
->    target/ppc: Move common check in exception handlers to a function
->    target/ppc: Use env_cpu for cpu_abort in excp_helper
->    target/ppc: Remove some more local CPUState variables only used once
->    target/ppc: Readability improvements in exception handlers
->    target/ppd: Remove unused define
->    target/ppc: Fix gen_sc to use correct nip
->    target/ppc: Simplify syscall exception handlers
->    target/ppc: Get CPUState in one step
->    target/ppc: Clean up ifdefs in excp_helper.c, part 1
->    target/ppc: Clean up ifdefs in excp_helper.c, part 2
->    target/ppc: Clean up ifdefs in excp_helper.c, part 3
-> 
-> Nicholas Piggin (1):
->    target/ppc: Move patching nip from exception handler to helper_scv
-> 
->   target/ppc/cpu.h         |   1 +
->   target/ppc/excp_helper.c | 570 ++++++++++++---------------------------
->   target/ppc/translate.c   |  15 +-
->   3 files changed, 178 insertions(+), 408 deletions(-)
-> 
 
