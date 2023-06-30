@@ -2,81 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABE147442D1
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 21:41:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 628BD7442D2
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 21:41:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFJzE-00071X-Jv; Fri, 30 Jun 2023 15:40:56 -0400
+	id 1qFJzI-0007SH-PW; Fri, 30 Jun 2023 15:41:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qFJyw-0006jH-13; Fri, 30 Jun 2023 15:40:39 -0400
-Received: from mail-oo1-xc2f.google.com ([2607:f8b0:4864:20::c2f])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qFJzG-0007Ng-R0
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 15:40:58 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qFJyr-0008F1-H9; Fri, 30 Jun 2023 15:40:36 -0400
-Received: by mail-oo1-xc2f.google.com with SMTP id
- 006d021491bc7-560b56b638eso1435548eaf.0; 
- Fri, 30 Jun 2023 12:40:10 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qFJzF-0008VN-2I
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 15:40:58 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-3fbc0981756so20114455e9.0
+ for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 12:40:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688154009; x=1690746009;
+ d=linaro.org; s=google; t=1688154055; x=1690746055;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=DREDO8oZuPwjKzt+3AECgEVTh3edrujUdZacXoV5Vfc=;
- b=Ik/e7qbwT/+sDwbA7aq1jtBCOTBBGEMy6nW561VwHMK8wFz1NJrj869eD6+8lZAVcu
- vcEjpECMiUSNy7aF3/ov0k4duwslodrTgZzhg8udNLa3YLi5mnCbjFefCk/ErDm4eftu
- NuhJWTsm7ncCoUrNsod8Qa0VzGQhJQQ5z9U3VJ9mh8q9ekIi24o6LUb0guTh4gkIHli6
- D88bTkgDuHnXsEuSARL6vksz2V9QnjE48SjtofAd9pCY0CvYMiCAD+QnQeRWoUmRIs+n
- RDF5IhUIM1skBmlRIiaqRSPIyXrQH5ZJ5viqmt+zaecWblOS/IoRXjJVQ6OVUignNv+F
- XesA==
+ bh=/ET0t9ocInYE5lPcMDCA+Xip7b7793CQYxXRvJWVVB0=;
+ b=evNInPKarI+ti7Uvkw1slob5r2gCqrSHj1Ik+tLjXBk5Hmu3p3INm+GHcHj0/G9Ukv
+ fUPX9OBS33P8sHd675csLMk+cfdHOsTiDVUS3AtDssiOqDeyXYebtrE+M0E3SMPvMeaF
+ BQtfdJ6RaO7Vvy7fPsmdxQzFyUNMaf4eoYd9V3iVQROoCrZ71XkXGtPxLO5FaPY1gQYA
+ uu7WAkvME3jU+fSmPnogsCmMCskQyOJZJ/lykUYmYsK67D+K0S6ylEn7HsZzjHmse8p/
+ fIvDcPoSHbA+YTrI5DsWWUSt7ZOe2qJmJfruSmPeDtc+mZv9f1wlGazbAz9Ej8lXi135
+ RGbg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688154009; x=1690746009;
+ d=1e100.net; s=20221208; t=1688154055; x=1690746055;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=DREDO8oZuPwjKzt+3AECgEVTh3edrujUdZacXoV5Vfc=;
- b=S9P9KXwFjUJHguiW7ccjKV3ZAzJY1UD30UPKyU+XKSsr4t6CWsigF/j/iqBHxbD1/+
- sQZOS6eFMuUQ/TVxle6Z70JQ8jcGOCSTU0RbvGkP7QapJAhJdLW2QP5esIyBQtW6oJXw
- 1h18gZF3A+8btypju/EGpITTCCmIqSNSnDcWtNXRaFO3prVsau/SsI7TiyXDm6ygEvE3
- bMy/Ii6SA1up+4uyavn1pb4Pqzo7cl/WGzg3U7cMeu2O1OTu3K1lQKL997jz16PJQmK+
- RSCoNu7XwslGhDXOOdWOWjrsbsMk1RK0vdTylt2dXH8nOXQX8TyNSin+duXrd0BcA4sI
- WplQ==
-X-Gm-Message-State: AC+VfDwb5wcR/m8B80QeFDm1L1veqVxUaKTVuZnSre3NVIejCK0JK4Yy
- o9rorkE8HsA5wsbddQxKNOA=
-X-Google-Smtp-Source: ACHHUZ6y6c/ZzwH6mwFOIgsfRYJcIEyGng3XajDstQVN4nQKI6oQq6qVN4VLf7IPXn5KkP4MG8vYEA==
-X-Received: by 2002:a05:6820:218:b0:560:bc01:24e2 with SMTP id
- bw24-20020a056820021800b00560bc0124e2mr5056442oob.4.1688154009420; 
- Fri, 30 Jun 2023 12:40:09 -0700 (PDT)
-Received: from [192.168.68.107] (201-69-66-110.dial-up.telesp.net.br.
- [201.69.66.110]) by smtp.gmail.com with ESMTPSA id
- m19-20020a4ae3d3000000b0056520f122eesm3626460oov.44.2023.06.30.12.40.07
+ bh=/ET0t9ocInYE5lPcMDCA+Xip7b7793CQYxXRvJWVVB0=;
+ b=OB9ZC+9nQMLeuwTQKUKKB/CtnJys0DNQ0CLP3AMazLTnjHD/t7qDSrUn3aLMbMlu1E
+ EF+YjVmHn/2v5Ve5WZNo16HzESo3+fb/Pke9JV5yphqoFwYLJDWPJRcJD1BZJpfp5mnU
+ aRGkSYT7RcGi0NN3wr+2dFvD8iJ/HGrJH9RuqqwlJSC6NaNMpmS84Hd3cpPKIr4xpSgJ
+ ci5XKYJw5mzxaH+suczActuQv/QJ5cgLdfrorj7DOxMQrraMHEaeSsb+Ws04xZgT0Iuk
+ qTchQxL5WtrJJUfHYhh4bf+EintQ7hH2G22df5SN8cPFh1NEl5dc0zlDeb9hXtyI6gUc
+ uUHg==
+X-Gm-Message-State: AC+VfDxSwZP4yWDE1PG3QmZxIThQUrgyxuuLIw9FICLnl3YgACxu8mYo
+ TpHASsdR4hOwPePxnGsVyfvKGg==
+X-Google-Smtp-Source: ACHHUZ6y8nFoo1gEi0OSkeCRQTNOxLhj6Sb1tjfV+25lQ4bzeXrLXCa6PWC0LoXI6W1Z19wdsrFPVQ==
+X-Received: by 2002:a7b:c353:0:b0:3fb:b70f:fc21 with SMTP id
+ l19-20020a7bc353000000b003fbb70ffc21mr2849907wmj.35.1688154055064; 
+ Fri, 30 Jun 2023 12:40:55 -0700 (PDT)
+Received: from [192.168.1.208] ([139.47.41.96])
+ by smtp.gmail.com with ESMTPSA id
+ z12-20020a1c4c0c000000b003fa9554fb30sm15313544wmf.44.2023.06.30.12.40.54
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 30 Jun 2023 12:40:09 -0700 (PDT)
-Message-ID: <917b0537-10da-f6c7-c756-523382b31872@gmail.com>
-Date: Fri, 30 Jun 2023 16:40:06 -0300
+ Fri, 30 Jun 2023 12:40:54 -0700 (PDT)
+Message-ID: <07f8c33c-8652-7913-8710-008f491cb3b8@linaro.org>
+Date: Fri, 30 Jun 2023 21:40:52 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH] sungem: Add WOL MMIO
+ Thunderbird/102.11.0
+Subject: Re: [PATCH 08/24] bsd-user: Use page_check_range_empty for MAP_EXCL
 Content-Language: en-US
-To: Nicholas Piggin <npiggin@gmail.com>, Jason Wang <jasowang@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
- =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-References: <20230625201628.65231-1-npiggin@gmail.com>
-From: Daniel Henrique Barboza <danielhb413@gmail.com>
-In-Reply-To: <20230625201628.65231-1-npiggin@gmail.com>
+To: Warner Losh <imp@bsdimp.com>
+Cc: qemu-devel@nongnu.org, mjt@tls.msk.ru, laurent@vivier.eu,
+ Kyle Evans <kevans@freebsd.org>
+References: <20230630132159.376995-1-richard.henderson@linaro.org>
+ <20230630132159.376995-9-richard.henderson@linaro.org>
+ <CANCZdfqreYmDeAtZv=y2kke1H7xdU3Pi6jKKNKCE+i6WkAfq2w@mail.gmail.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <CANCZdfqreYmDeAtZv=y2kke1H7xdU3Pi6jKKNKCE+i6WkAfq2w@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c2f;
- envelope-from=danielhb413@gmail.com; helo=mail-oo1-xc2f.google.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x332.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, NICE_REPLY_A=-0.095,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.095,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -94,134 +97,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-On 6/25/23 17:16, Nicholas Piggin wrote:
-> Apple sungem devices are expected to have WOL MMIO registers.
-> Add a region to prevent transaction failures, and implement the
-> WOL-disable CSR write because the Linux driver reset writes
-> this.
+On 6/30/23 20:46, Warner Losh wrote:
 > 
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
-
-Queued in gitlab.com/danielhb/qemu/tree/ppc-next. Thanks,
-
-
-Daniel
-
-> This fixes the failed MMIO error in the Linux sungem driver reset
-> when it clears the WOL CSR.
 > 
-> Thanks,
-> Nick
+> On Fri, Jun 30, 2023 at 7:22 AM Richard Henderson <richard.henderson@linaro.org 
+> <mailto:richard.henderson@linaro.org>> wrote:
 > 
->   hw/net/sungem.c     | 52 +++++++++++++++++++++++++++++++++++++++++++++
->   hw/net/trace-events |  2 ++
->   2 files changed, 54 insertions(+)
+>     The previous check returned -1 when any page within
+>     [start, start+len) is unmapped, not when all are unmapped.
 > 
-> diff --git a/hw/net/sungem.c b/hw/net/sungem.c
-> index eb01520790..e0e8e5ae41 100644
-> --- a/hw/net/sungem.c
-> +++ b/hw/net/sungem.c
-> @@ -107,6 +107,15 @@ OBJECT_DECLARE_SIMPLE_TYPE(SunGEMState, SUNGEM)
->   #define RXDMA_FTAG        0x0110UL    /* RX FIFO Tag */
->   #define RXDMA_FSZ         0x0120UL    /* RX FIFO Size */
->   
-> +/* WOL Registers */
-> +#define SUNGEM_MMIO_WOL_SIZE   0x14
-> +
-> +#define WOL_MATCH0        0x0000UL
-> +#define WOL_MATCH1        0x0004UL
-> +#define WOL_MATCH2        0x0008UL
-> +#define WOL_MCOUNT        0x000CUL
-> +#define WOL_WAKECSR       0x0010UL
-> +
->   /* MAC Registers */
->   #define SUNGEM_MMIO_MAC_SIZE   0x200
->   
-> @@ -168,6 +177,7 @@ OBJECT_DECLARE_SIMPLE_TYPE(SunGEMState, SUNGEM)
->   #define SUNGEM_MMIO_PCS_SIZE   0x60
->   #define PCS_MIISTAT       0x0004UL    /* PCS MII Status Register */
->   #define PCS_ISTAT         0x0018UL    /* PCS Interrupt Status Reg */
-> +
->   #define PCS_SSTATE        0x005CUL    /* Serialink State Register */
->   
->   /* Descriptors */
-> @@ -200,6 +210,7 @@ struct SunGEMState {
->       MemoryRegion greg;
->       MemoryRegion txdma;
->       MemoryRegion rxdma;
-> +    MemoryRegion wol;
->       MemoryRegion mac;
->       MemoryRegion mif;
->       MemoryRegion pcs;
-> @@ -1076,6 +1087,43 @@ static const MemoryRegionOps sungem_mmio_rxdma_ops = {
->       },
->   };
->   
-> +static void sungem_mmio_wol_write(void *opaque, hwaddr addr, uint64_t val,
-> +                                    unsigned size)
-> +{
-> +    trace_sungem_mmio_wol_write(addr, val);
-> +
-> +    switch (addr) {
-> +    case WOL_WAKECSR:
-> +        if (val != 0) {
-> +            qemu_log_mask(LOG_UNIMP, "sungem: WOL not supported\n");
-> +        }
-> +        break;
-> +    default:
-> +        qemu_log_mask(LOG_UNIMP, "sungem: WOL not supported\n");
-> +    }
-> +}
-> +
-> +static uint64_t sungem_mmio_wol_read(void *opaque, hwaddr addr, unsigned size)
-> +{
-> +    uint32_t val = -1;
-> +
-> +    qemu_log_mask(LOG_UNIMP, "sungem: WOL not supported\n");
-> +
-> +    trace_sungem_mmio_wol_read(addr, val);
-> +
-> +    return val;
-> +}
-> +
-> +static const MemoryRegionOps sungem_mmio_wol_ops = {
-> +    .read = sungem_mmio_wol_read,
-> +    .write = sungem_mmio_wol_write,
-> +    .endianness = DEVICE_LITTLE_ENDIAN,
-> +    .impl = {
-> +        .min_access_size = 4,
-> +        .max_access_size = 4,
-> +    },
-> +};
-> +
->   static void sungem_mmio_mac_write(void *opaque, hwaddr addr, uint64_t val,
->                                     unsigned size)
->   {
-> @@ -1344,6 +1392,10 @@ static void sungem_realize(PCIDevice *pci_dev, Error **errp)
->                             "sungem.rxdma", SUNGEM_MMIO_RXDMA_SIZE);
->       memory_region_add_subregion(&s->sungem, 0x4000, &s->rxdma);
->   
-> +    memory_region_init_io(&s->wol, OBJECT(s), &sungem_mmio_wol_ops, s,
-> +                          "sungem.wol", SUNGEM_MMIO_WOL_SIZE);
-> +    memory_region_add_subregion(&s->sungem, 0x3000, &s->wol);
-> +
->       memory_region_init_io(&s->mac, OBJECT(s), &sungem_mmio_mac_ops, s,
->                             "sungem.mac", SUNGEM_MMIO_MAC_SIZE);
->       memory_region_add_subregion(&s->sungem, 0x6000, &s->mac);
-> diff --git a/hw/net/trace-events b/hw/net/trace-events
-> index e4a98b2c7d..930e5b4293 100644
-> --- a/hw/net/trace-events
-> +++ b/hw/net/trace-events
-> @@ -350,6 +350,8 @@ sungem_mmio_txdma_write(uint64_t addr, uint64_t val) "MMIO txdma write to 0x%"PR
->   sungem_mmio_txdma_read(uint64_t addr, uint64_t val) "MMIO txdma read from 0x%"PRIx64" val=0x%"PRIx64
->   sungem_mmio_rxdma_write(uint64_t addr, uint64_t val) "MMIO rxdma write to 0x%"PRIx64" val=0x%"PRIx64
->   sungem_mmio_rxdma_read(uint64_t addr, uint64_t val) "MMIO rxdma read from 0x%"PRIx64" val=0x%"PRIx64
-> +sungem_mmio_wol_write(uint64_t addr, uint64_t val) "MMIO wol write to 0x%"PRIx64" val=0x%"PRIx64
-> +sungem_mmio_wol_read(uint64_t addr, uint64_t val) "MMIO wol read from 0x%"PRIx64" val=0x%"PRIx64
->   sungem_mmio_mac_write(uint64_t addr, uint64_t val) "MMIO mac write to 0x%"PRIx64" val=0x%"PRIx64
->   sungem_mmio_mac_read(uint64_t addr, uint64_t val) "MMIO mac read from 0x%"PRIx64" val=0x%"PRIx64
->   sungem_mmio_mif_write(uint64_t addr, uint64_t val) "MMIO mif write to 0x%"PRIx64" val=0x%"PRIx64
+>     Cc: Warner Losh <imp@bsdimp.com <mailto:imp@bsdimp.com>>
+>     Cc: Kyle Evans <kevans@freebsd.org <mailto:kevans@freebsd.org>>
+>     Signed-off-by: Richard Henderson <richard.henderson@linaro.org
+>     <mailto:richard.henderson@linaro.org>>
+>     ---
+>       bsd-user/mmap.c | 2 +-
+>       1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+>     diff --git a/bsd-user/mmap.c b/bsd-user/mmap.c
+>     index 565b9f97ed..07b5b8055e 100644
+>     --- a/bsd-user/mmap.c
+>     +++ b/bsd-user/mmap.c
+>     @@ -609,7 +609,7 @@ abi_long target_mmap(abi_ulong start, abi_ulong len, int prot,
+>               }
+> 
+>               /* Reject the mapping if any page within the range is mapped */
+>     -        if ((flags & MAP_EXCL) && page_check_range(start, len, 0) < 0) {
+>     +        if ((flags & MAP_EXCL) && !page_check_range_empty(start, end - 1)) {
+> 
+> 
+> Won't computing end overflow if start is 1<<32 - len? Then subtracting one here would be 
+> too late.
+
+-fwrapv, so fully twos-compliment.
+
+So start per above, end == 0, end - 1 == UINT32_MAX.
+
+See also the rest of the linux-user code, wherein I work with "last == end - 1".
+Which has the advantage of preserving comparison order: start < last.
+
+
+r~
 
