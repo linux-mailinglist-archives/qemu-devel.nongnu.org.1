@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF8D47439D1
-	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 12:46:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 273977439DB
+	for <lists+qemu-devel@lfdr.de>; Fri, 30 Jun 2023 12:50:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFBdU-0008HC-8X; Fri, 30 Jun 2023 06:45:56 -0400
+	id 1qFBgu-0001Sp-Cc; Fri, 30 Jun 2023 06:49:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qFBdR-0008Go-Ce
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 06:45:53 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1qFBgs-0001SX-6j
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 06:49:26 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qFBdP-0000OT-J9
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 06:45:53 -0400
+ id 1qFBgq-0000tI-EF
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 06:49:25 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688121950;
+ s=mimecast20190719; t=1688122163;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=BCjJ/3HVWCJE1nYaNZaE4QdPgEFIKn0AEg+JchUakM8=;
- b=RakH6Klp50cKVs6j1BLPToCiVpNNbmKkcLljlkATtlIUv1gJihSw3tLBwo61WOR+CFRkIt
- wfYG2m3NP5oUanJ1VuMmeK+wUCmKn3qp1B2Lqb6MT/D9PBWsq4mF5vL37HO4oGmEeEB+TQ
- l/P5rc86TzJdCnMmVk6sygJANWMw3cg=
-Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com
- [209.85.210.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=lDPeXaGw0DTdEmz255HhZzol4+KUePHrpet9Wl74Kew=;
+ b=OrkPR1xHZNgOTdTtyn2tfnP+iPcYtMU4kukIQchwlKkg71KXeDxlEbvtlktAOHIp/FkVc3
+ rXtPryqNAJZTufrzu+StsFwe5oSbZ6GZoMwvD+ofKqzsL+C272h0Qf9JhS0eOy3ZvtCbun
+ Xn8JAnO3nsFXZE0XD0wSC0PnfcJxHTg=
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com
+ [209.85.216.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-494-0oqS5K8kPRy0rVT1BlSRSA-1; Fri, 30 Jun 2023 06:45:47 -0400
-X-MC-Unique: 0oqS5K8kPRy0rVT1BlSRSA-1
-Received: by mail-pf1-f199.google.com with SMTP id
- d2e1a72fcca58-666e87eff0eso1674284b3a.3
- for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 03:45:47 -0700 (PDT)
+ us-mta-53-lKAvhb-KOk2KwV-3trZg-g-1; Fri, 30 Jun 2023 06:49:21 -0400
+X-MC-Unique: lKAvhb-KOk2KwV-3trZg-g-1
+Received: by mail-pj1-f71.google.com with SMTP id
+ 98e67ed59e1d1-262e0c70e8eso1143624a91.2
+ for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 03:49:21 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688121947; x=1690713947;
+ d=1e100.net; s=20221208; t=1688122161; x=1690714161;
  h=to:references:message-id:content-transfer-encoding:cc:date
  :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=BCjJ/3HVWCJE1nYaNZaE4QdPgEFIKn0AEg+JchUakM8=;
- b=jiuz3YAOfP/h46ghtzyDAp7S8gX5yGmHYE1x680SwNkKi5E/odiXPXeNvt8ciIwk4P
- J2/ki1W+IVuV8hbVZQvluLIZ+eLvwJV2cCuvXrDTPFQn1vH2dBpr9nFrYrzqlLedBolr
- OA6WXTLwAF3SmG2512xCH5jI/0mwywxGm05eIZ8dbCqggIaj3lnrolNfjNilp1EPyBVN
- l3UtnJz/U9N3rdJ1k2dPzEAhtxui+x2phO+lgfxfX9mAFwUnkhF8ucxEFAWvIyVCS8UR
- PKYGXxuHQINsJLr4Vdu/BiPjSaXHSK3de8Hkm/GG/AB5JxiknQKjqE9Tnn0ZH/KB0Zpu
- I6Xg==
-X-Gm-Message-State: ABy/qLa3LPr1YJ0Gua8iSup8YcKl8BoQFw2A5msKWkhwBMOcGjNcPuJY
- uZBksBIKvu71KqSuMy0ZWMKzFtAXzT6peNMlFa82BKTb0jyGD3lCHCPHv19+qr9w7BTZktL4K/W
- 1wE4FTpkg7ifpWUY=
-X-Received: by 2002:a05:6a00:843:b0:67c:5c21:b430 with SMTP id
- q3-20020a056a00084300b0067c5c21b430mr2985974pfk.33.1688121946850; 
- Fri, 30 Jun 2023 03:45:46 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlGNCSc/vnwZnLJ6jLSMpde1PtBw+coE97HJVVWZUppGaebz/KDzg7j6jE62OYed2AtPzvCd1A==
-X-Received: by 2002:a05:6a00:843:b0:67c:5c21:b430 with SMTP id
- q3-20020a056a00084300b0067c5c21b430mr2985962pfk.33.1688121946543; 
- Fri, 30 Jun 2023 03:45:46 -0700 (PDT)
+ bh=lDPeXaGw0DTdEmz255HhZzol4+KUePHrpet9Wl74Kew=;
+ b=bdFR5rBBgWFEjpWw6UsBaAJlyCCtBAc3Qed1ourO5SWLbacPpL1g2+2T06Oionrm9s
+ M5UO/J4bun9evPCT8mIt54ZX7XX19p+cFuuRrDRURCrHQ/XNIFHQP0vE2CqmGNUbmeSg
+ uThX+F09OJiRRWQQvLwmVWZpLVmqP0ZCVLkogybJ/Lh+SH277PoRhEa1uDc5/EYIn4z8
+ rOkEslAJUZitfn24INnSmkh9zQvmfqM3IPg7cYS55wM0QxzY2con1YwWBfNv42AAwXw3
+ wAk8Yk0A1W6lHKHz9zf1NP6mWCpLlbX8Q18tgcbl360OL05PVX5+Ctw62j4v+s/PJj/m
+ wG9w==
+X-Gm-Message-State: ABy/qLY2oh3/ZNoADQBrNnhcFQVvzEIiZC/j8TxikLU+bvnFas6kiNGS
+ yFrsi7oUK3gWodxwGWPzeUD4JOJyzhUic6bKinvvFtEMeIZZ+447SedqUH7VeFEtA6poSpDBpH+
+ Rrvv1CEnE4GTUs4o=
+X-Received: by 2002:a17:90a:d317:b0:263:2184:b4e5 with SMTP id
+ p23-20020a17090ad31700b002632184b4e5mr1446610pju.13.1688122160928; 
+ Fri, 30 Jun 2023 03:49:20 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlFOfX5AefteqMkcfjqDQlW2xb0SLvKMnv/IPbLFl2Z303F4KC/E1V5I/g0bLWFIxW24Bw5mTA==
+X-Received: by 2002:a17:90a:d317:b0:263:2184:b4e5 with SMTP id
+ p23-20020a17090ad31700b002632184b4e5mr1446598pju.13.1688122160590; 
+ Fri, 30 Jun 2023 03:49:20 -0700 (PDT)
 Received: from smtpclient.apple ([115.96.128.249])
  by smtp.gmail.com with ESMTPSA id
- f4-20020aa78b04000000b0064fd4a6b306sm9725776pfd.76.2023.06.30.03.45.44
+ d19-20020a17090ab31300b002630c9d78aasm6208127pjr.5.2023.06.30.03.49.18
  (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Fri, 30 Jun 2023 03:45:46 -0700 (PDT)
+ Fri, 30 Jun 2023 03:49:20 -0700 (PDT)
 Content-Type: text/plain;
 	charset=utf-8
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.3\))
@@ -70,13 +70,13 @@ Subject: Re: [PATCH v6 5/5] hw/pci: ensure PCIE devices are plugged into only
  slot 0 of PCIE port
 From: Ani Sinha <anisinha@redhat.com>
 In-Reply-To: <20230630063914-mutt-send-email-mst@kernel.org>
-Date: Fri, 30 Jun 2023 16:15:42 +0530
+Date: Fri, 30 Jun 2023 16:19:16 +0530
 Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,
  qemu-devel <qemu-devel@nongnu.org>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Julia Suvorova <jusual@redhat.com>, Igor Mammedov <imammedo@redhat.com>
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <4A725A09-B341-4711-B190-D8C6B07C4538@redhat.com>
+Message-Id: <CDE45E6D-DC72-4343-B489-0E1E9DBB16CA@redhat.com>
 References: <8868044c-f61b-7bbb-8cc8-34a14c1490d6@daynix.com>
  <9DDBE75A-C72C-4238-9166-3CBDBEA68188@redhat.com>
  <167eea06-b917-8783-5cd6-8fda56e41331@daynix.com>
@@ -90,7 +90,7 @@ References: <8868044c-f61b-7bbb-8cc8-34a14c1490d6@daynix.com>
  <20230630063914-mutt-send-email-mst@kernel.org>
 To: "Michael S. Tsirkin" <mst@redhat.com>
 X-Mailer: Apple Mail (2.3696.120.41.1.3)
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=anisinha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -182,16 +182,16 @@ come up with a case that actually works in practice.
 >=20
 >=20
 > you need to patch igb to pass 2 as next parameter.
-> maybe add a property to make it easier to play with.
 
-Yes but without patching, could I not change the device parameters like
+OK I tried this too along with
 
 -device pcie-root-port,id=3Dp \
--device igb,bus=3Dp,addr=3D0x1.0x0 \
+-device igb,bus=3Dp,addr=3D0x2.0x0 \
 -device igb,bus=3Dp,addr=3D0x0.0x0 \
 
-I tried the above and it did not work.
+Still same result. The guest only detects the last one.
 
+> maybe add a property to make it easier to play with.
 >=20
 >>>=20
 >>>=20
