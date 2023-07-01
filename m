@@ -2,74 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 722AF744775
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EDBF744773
 	for <lists+qemu-devel@lfdr.de>; Sat,  1 Jul 2023 08:56:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFUVs-0007Uf-6l; Sat, 01 Jul 2023 02:55:20 -0400
+	id 1qFUVs-0007Ui-Eu; Sat, 01 Jul 2023 02:55:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qFUVq-0007U0-Fz
- for qemu-devel@nongnu.org; Sat, 01 Jul 2023 02:55:18 -0400
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ id 1qFUVr-0007UV-1d
+ for qemu-devel@nongnu.org; Sat, 01 Jul 2023 02:55:19 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qFUVo-0007Er-EY
+ id 1qFUVp-0007Ex-7H
  for qemu-devel@nongnu.org; Sat, 01 Jul 2023 02:55:18 -0400
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-3fbc77e769cso16615065e9.0
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-3fbc59de009so20388975e9.3
  for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 23:55:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1688194515; x=1690786515;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Fh8ll0z1/lWAw6IZ8VRZwP3jq46crriqiBekj/aaK3E=;
- b=mj4XliJDtCbPwsixJcrD1aSt+HPFMNM0RFuIozXeQY4jMjZvypXS7Pm6yP2CSTRNlA
- xC1ZgJjbpaRnrhV5AShZVKwx5V2aF3CNsjAXr+S9izLjDq0nSv0K3B0RbkJISA82qx75
- o9tPqpAsAaVID/MDw8u+Q75u6Zo433saZxDlU4wBHbKpmbEx5hFve2rAuhXNfwfvXuGQ
- xW24JxXDBT+soQY0cDVmWkMwhad9obEL6WnM6b9d7/vaIdpSg9j6IBtd1xTkevdLpfRs
- IcbRXHQpn2cKGEshgYrZ7iu3PU4oK4gaqD7cD/S0arRKVHIh79scW0i0QUe0/PeDX1Zy
- TXKQ==
+ bh=guLrkyvnxpE2Di61jdSFFK1pil20iWnpknoQn5xGxP4=;
+ b=FvKPMtkac/boNy3/r1tm2aIAobRFpgPHT93iGO6YkmhwpTzvNcxwpgt/C+IRhHaiK/
+ rB2t91xQ/8TeCfxDbd6MBXVwQNPa2C5Inj0WQj8h5LfCWwR40HSWGKy9wwuidUC6Oxv4
+ ANcHuxOzRNZ0f3l++bsBL4sfWhto+NfD5PimOR9fC9orcjxabdZlB0ZMD1q66QNOxt31
+ h1apDS/MfveZwLkdY2tht2EAU3m1UhtajodRNhewRCDuuN5gmFIYxc74RIXbtWfUlK0e
+ cYQqCRZcFPea/KrN4VPRDtp2GqdZUkrmNK5SbbboXDPS6bid8qQRJNvukYGqBGmapti3
+ /GfQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20221208; t=1688194515; x=1690786515;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Fh8ll0z1/lWAw6IZ8VRZwP3jq46crriqiBekj/aaK3E=;
- b=hDbmPS0GEjGF641LXeWDnbmajxK7fQ0Gjg7WuKsAx4Y5KLjuYLwLboxtrmcWUS+mBm
- 8VrrsrV21sL2k9Sd6hx8vHquNfSLmTD5GvGxxmYvl2FXTrHWN28TSEBK2AJ0Sw2XGm4j
- kJ71KmRP29fbIw17iQywTOCLmanD/5rwOSLKOSITR0y6bJa3KcTzQt6YRxrycasiVMaQ
- B7Uerbq2W+GDlIktqsdA6PkmCtAI4EOLp1en0aH+/jSjFG04HXiGTzaw7A6oEPCNMUhZ
- 38q0+MjVUAWxe9aIatrtDyemftYaYKpfGcGiyjHVPqOsqNb7C4GzdsRPk0/S60HNCsvd
- iAzQ==
-X-Gm-Message-State: AC+VfDybDUBYrH2AgljoYhUwEf5HBeavAlyuHvccfr7UlXmJ7G/fvYWR
- 5s69l8EUG0vHkLG5XRbNx5mtcc5tx3b//Bcw1n4dOA==
-X-Google-Smtp-Source: ACHHUZ7CkO76rEwP90+j1bWONfgKWRAr10ttJQPBZCiXeyTbRze3TdgAAmZnhyoh2OLuy1HNbc1hrA==
-X-Received: by 2002:a1c:f702:0:b0:3fa:8866:14af with SMTP id
- v2-20020a1cf702000000b003fa886614afmr3822303wmh.14.1688194514617; 
- Fri, 30 Jun 2023 23:55:14 -0700 (PDT)
+ bh=guLrkyvnxpE2Di61jdSFFK1pil20iWnpknoQn5xGxP4=;
+ b=UOu4QsZHR+B9x9GuBAeU3LuhHwZdByID3wVH4M0EDtO2Lcxiql1BMrB4TjFybk4+/K
+ XxiH8iOUcreegVMqLRr7Gd8omz768/pYV8LOH6z790Cd3S811dYqcflhyc6zenLT1w0S
+ SRXd9Py2DXkAuMeHK6wV2wDaxfM96+Nvcx2TtpgMLZL3Utm90l12MS0CVeim9+wXc/No
+ sfWNZDOIOjn4j6Gy8NFBKKT90G5HkNxqWq+VQpPVN2HOtFvG6avn/eqfv/peQAH+hQUf
+ TQhLiBrpqCFpKkvQM1YeKThJAFFmKGeD41b1xtU5W9Tq+ryrdFgMMhDs/Fgx3s+hKusF
+ u3eA==
+X-Gm-Message-State: AC+VfDxLoEb+oIO0yMadkjeNk+K3xuo/8ybBJKY545IpxOmSSDAgQeoc
+ qysMdsEYZV4ln9HWtqokNOoZW9sIgHjFCnxMmwnjMg==
+X-Google-Smtp-Source: ACHHUZ6Ygn64FVhTDwcL/YGjYGDQiMxYVjM3AhTyzgi121WJl7tbxMlANHTKtlUzG4IiNVs/JkffNA==
+X-Received: by 2002:a05:600c:2292:b0:3f8:fc2a:c7eb with SMTP id
+ 18-20020a05600c229200b003f8fc2ac7ebmr3381081wmf.5.1688194515409; 
+ Fri, 30 Jun 2023 23:55:15 -0700 (PDT)
 Received: from localhost.localdomain ([139.47.41.96])
  by smtp.gmail.com with ESMTPSA id
  w10-20020a1cf60a000000b003f9bd9e3226sm20874918wmc.7.2023.06.30.23.55.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 30 Jun 2023 23:55:14 -0700 (PDT)
+ Fri, 30 Jun 2023 23:55:15 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Subject: [PULL 03/11] accel/tcg: Fix start page passed to
+Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 04/11] accel/tcg: Assert one page in
  tb_invalidate_phys_page_range__locked
-Date: Sat,  1 Jul 2023 08:55:02 +0200
-Message-Id: <20230701065510.514743-4-richard.henderson@linaro.org>
+Date: Sat,  1 Jul 2023 08:55:03 +0200
+Message-Id: <20230701065510.514743-5-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230701065510.514743-1-richard.henderson@linaro.org>
 References: <20230701065510.514743-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,44 +96,32 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 
-Due to a copy-paste error in tb_invalidate_phys_range, the wrong
-start address was passed to tb_invalidate_phys_page_range__locked.
-Correct is to use the start of each page in turn.
+Ensure that that both the start and last addresses are within
+the same guest page.
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Fixes: e506ad6a05 ("accel/tcg: Pass last not end to tb_invalidate_phys_range")
-Message-Id: <20230629082522.606219-2-mark.cave-ayland@ilande.co.uk>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-Id: <20230629082522.606219-3-mark.cave-ayland@ilande.co.uk>
+[rth: Use tcg_debug_assert, simplify the expression]
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- accel/tcg/tb-maint.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ accel/tcg/tb-maint.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/accel/tcg/tb-maint.c b/accel/tcg/tb-maint.c
-index 3541419845..33ea1aadd1 100644
+index 33ea1aadd1..9566224d18 100644
 --- a/accel/tcg/tb-maint.c
 +++ b/accel/tcg/tb-maint.c
-@@ -1182,15 +1182,17 @@ void tb_invalidate_phys_range(tb_page_addr_t start, tb_page_addr_t last)
-     index_last = last >> TARGET_PAGE_BITS;
-     for (index = start >> TARGET_PAGE_BITS; index <= index_last; index++) {
-         PageDesc *pd = page_find(index);
--        tb_page_addr_t bound;
-+        tb_page_addr_t page_start, page_last;
+@@ -1092,6 +1092,9 @@ tb_invalidate_phys_page_range__locked(struct page_collection *pages,
+     TranslationBlock *current_tb = retaddr ? tcg_tb_lookup(retaddr) : NULL;
+ #endif /* TARGET_HAS_PRECISE_SMC */
  
-         if (pd == NULL) {
-             continue;
-         }
-         assert_page_locked(pd);
--        bound = (index << TARGET_PAGE_BITS) | ~TARGET_PAGE_MASK;
--        bound = MIN(bound, last);
--        tb_invalidate_phys_page_range__locked(pages, pd, start, bound, 0);
-+        page_start = index << TARGET_PAGE_BITS;
-+        page_last = page_start | ~TARGET_PAGE_MASK;
-+        page_last = MIN(page_last, last);
-+        tb_invalidate_phys_page_range__locked(pages, pd,
-+                                              page_start, page_last, 0);
-     }
-     page_collection_unlock(pages);
- }
++    /* Range may not cross a page. */
++    tcg_debug_assert(((start ^ last) & TARGET_PAGE_MASK) == 0);
++
+     /*
+      * We remove all the TBs in the range [start, last].
+      * XXX: see if in some cases it could be faster to invalidate all the code
 -- 
 2.34.1
 
