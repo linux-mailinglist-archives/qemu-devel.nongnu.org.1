@@ -2,78 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 019E97447F5
-	for <lists+qemu-devel@lfdr.de>; Sat,  1 Jul 2023 10:11:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D048744815
+	for <lists+qemu-devel@lfdr.de>; Sat,  1 Jul 2023 10:39:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFVgu-0006AZ-PW; Sat, 01 Jul 2023 04:10:48 -0400
+	id 1qFW7u-0003I2-Aa; Sat, 01 Jul 2023 04:38:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qFVgs-0006AH-Hz
- for qemu-devel@nongnu.org; Sat, 01 Jul 2023 04:10:46 -0400
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1qFW7q-0003Hq-H7; Sat, 01 Jul 2023 04:38:38 -0400
+Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qFVgq-0000Fa-K6
- for qemu-devel@nongnu.org; Sat, 01 Jul 2023 04:10:46 -0400
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-313f18f5295so3303985f8f.3
- for <qemu-devel@nongnu.org>; Sat, 01 Jul 2023 01:10:43 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1qFW7k-0001rT-2f; Sat, 01 Jul 2023 04:38:34 -0400
+Received: by mail-pf1-x42b.google.com with SMTP id
+ d2e1a72fcca58-66c729f5618so2280660b3a.1; 
+ Sat, 01 Jul 2023 01:38:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688199042; x=1690791042;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=01a8o/tk/c4y8WOvDy3ECVJWZtxpD5Zy1/Q88ekbRvo=;
- b=ivPMo+Sg6d1QbqHMHJhifx6la6hZq+oVK4ADXYIG8e08wqbB4PCrK9BCIZY6+vxJ1y
- HXvBZu2fkW0ymuAjbYERA9iJwpBpg1v5/xPnj3/G2x4yanX5XfOIp2o3WsIivvtYrLyY
- jeuKZ7jSThmPXLEAwN1tDJbbDoB1ZQVaWFZ6GWdZE4h3haufhXLz0s/TBxLshpVm+tra
- jk9BWMFfhoEtAR6LX85YgJioDf/bWSzOZtbnJC++9lXw2Z//aL6Ytb7RxM3tQhbcBwgN
- fAZvbWmhKtREEL+nIY7LT1g7DYb8PmzcG6wSdt+cqe3aLRLg5uawLzhLEnksZq83XDm4
- BJdw==
+ d=gmail.com; s=20221208; t=1688200707; x=1690792707;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=nMZGrLrWB0GCB1W9JleqQok60Bd9lVqU9ke1F/wQpbg=;
+ b=R1dru4zDcRPfvN0tpEwDLWehqQPCCvJ1mrIkwQwzxuXKPgafrkq5PY7xX1l4PZuGr7
+ n/Mg5hUQ0EiZu0LKsFD0gtsKyYYAjNVCkejbIGPZB38MxCv8Dnxeit7cZpy+tQX7Whhn
+ LzGCwLTHKvoQ0IagBJd03g/bkrZAzV17lNuS9mLFm7i3saawXkdalDV7VjC6wFh1SRFV
+ gSn3E0ubtEiszCvStH/90RdRSNCH1lyuzSOc+3NQWa++QHkYLHmMXgwSs6A9SUsFNCjb
+ F3Ip6tiENdlKKTljytbo8p8ndBjFUf4bsarJ3C7KKQh7/S3egLRrWYHKkF9xcVAYyY9F
+ akKw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688199042; x=1690791042;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=01a8o/tk/c4y8WOvDy3ECVJWZtxpD5Zy1/Q88ekbRvo=;
- b=fLXCSP4f5siYP6hccguCWse3EPYuv9cRYYF/jIb2iKLWiMZrU+okwsPSapNyxMFSAd
- mRS/YL15i2qh64OdvxW6CH7dKwBi7jdoXnEcOAtLuNnS70UUksK8TsHYvWNobyAS7Hcu
- Q86F1dKNDl4PiMGun6JxJZIXqcfoyD/LuzxhFcMukmvINDjAphnqoluXkPHYGhfUhLpo
- czN6x2kM1f6bOBJEot3+TiMuYwDRNwubePPICuSdf7NIPunXQ45X10GcxNIv33wuGewn
- X7nbShRQGWRm41sM1Bxgr/rL9wLf/RPuGsuKPyj89Q0IC/DOn8FTFJW1jGQzKzUNWLDl
- VHLg==
-X-Gm-Message-State: ABy/qLaFC0vSJY/e84I7Bq0yd39ipaY9VGBQ0nL3M1UsL5B2jcsczys6
- zWR370bZEuPLZGTibAtdur0ncOPOeNPMr6AOaq0=
-X-Google-Smtp-Source: APBJJlEzoWTReqjzD3cW5NBSYjpIJqoS3f495W+m2Hs6lCcvZPzNSUFuz0oE+tOfRSmePY5h37vrPg==
-X-Received: by 2002:adf:dc84:0:b0:313:e591:94ec with SMTP id
- r4-20020adfdc84000000b00313e59194ecmr3658158wrj.67.1688199042560; 
- Sat, 01 Jul 2023 01:10:42 -0700 (PDT)
-Received: from [192.168.69.115] ([176.176.169.251])
+ d=1e100.net; s=20221208; t=1688200707; x=1690792707;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=nMZGrLrWB0GCB1W9JleqQok60Bd9lVqU9ke1F/wQpbg=;
+ b=DaR3LUJXD6JfUp2/tB4QwSg5MGO15ZkJYcU7gT0U0IcSd8TZc1m5/V1+N911Krypkj
+ XtTaP9mOqk9RCt/Fawv9V7yBuDH/3os44zgMoie4sOqGEMPnmIkMzid8YR1sAbk+mGMB
+ 44gVMDJkMfGXnqD/ZxNoDXf2vMjpfUy3N1gFsTwsz4h1pYiX9GIBrOcBw4FxJI97Jxid
+ GM82ayQRlDDeX1U/k6KaRXHzAQJDGaUulZtW5bqpcKb4Eu5DN9XKX0uxi4V5RueMPEuq
+ N42hoiWskghsNIyWJUXAj9yA2Eg5qjBG5KhzcrIScZe8PLx9ZgIVy+GsCRYk+RgSCmlX
+ 8VxA==
+X-Gm-Message-State: ABy/qLYfCoNDn57NFcP2N8ANosLdnPCjx6gqcgnInGs2SOXHmcl3anyl
+ ZVO59faf/L7/bvndDI+z+/c=
+X-Google-Smtp-Source: APBJJlGCUU0OSE7r9eJt/vB1Bqo5Lmy5sQgOtGOEJhSfCryDUvMCCcDpVcprpyzdkaf0L8QrnJzcJQ==
+X-Received: by 2002:a05:6a00:1ace:b0:682:4e4c:48bc with SMTP id
+ f14-20020a056a001ace00b006824e4c48bcmr6460397pfv.21.1688200706846; 
+ Sat, 01 Jul 2023 01:38:26 -0700 (PDT)
+Received: from localhost (220-244-154-206.tpgi.com.au. [220.244.154.206])
  by smtp.gmail.com with ESMTPSA id
- f4-20020a1c6a04000000b003fba2734f1esm12298086wmc.1.2023.07.01.01.10.41
+ x48-20020a056a000bf000b0062cf75a9e6bsm37509pfu.131.2023.07.01.01.38.23
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 01 Jul 2023 01:10:42 -0700 (PDT)
-Message-ID: <5c405ffd-eda2-9a85-264b-38acf24a6ef3@linaro.org>
-Date: Sat, 1 Jul 2023 10:10:39 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.12.0
-Subject: Re: [PULL 00/11] tcg and misc patch queue
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-References: <20230701065510.514743-1-richard.henderson@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230701065510.514743-1-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+ Sat, 01 Jul 2023 01:38:26 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sat, 01 Jul 2023 18:38:21 +1000
+Message-Id: <CTQP7BKWD8W3.MP8NCILJUWDQ@wheely>
+Cc: <qemu-ppc@nongnu.org>, "Harsh Prateek Bora" <harshpb@linux.ibm.com>
+Subject: Re: [PATCH 0/2] target/ppc: Easy parts of the POWER chiptod series
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "Daniel Henrique Barboza" <danielhb413@gmail.com>,
+ =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, <qemu-devel@nongnu.org>
+X-Mailer: aerc 0.15.2
+References: <20230625120317.13877-1-npiggin@gmail.com>
+ <3f70738c-f30a-99a6-6e06-e53b8f93f830@kaod.org>
+ <9989efc7-5ad9-0c31-e0af-b8a735dce353@gmail.com>
+In-Reply-To: <9989efc7-5ad9-0c31-e0af-b8a735dce353@gmail.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x42b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.095,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -91,72 +93,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/7/23 08:54, Richard Henderson wrote:
-> The following changes since commit 408015a97dbe48a9dde8c0d2526c9312691952e7:
-> 
->    Merge tag 'pull-vfio-20230630' of https://github.com/legoater/qemu into staging (2023-06-30 08:11:08 +0200)
-> 
-> are available in the Git repository at:
-> 
->    https://gitlab.com/rth7680/qemu.git tags/pull-tcg-20230701
-> 
-> for you to fetch changes up to 605a8b5491a119a2a6efbf61e5a38f9374645990:
-> 
->    linux-user: Avoid mmap of the last byte of the reserved_va (2023-07-01 08:33:08 +0200)
-> 
-> ----------------------------------------------------------------
-> dbus: Two hot fixes, per request of Marc-André Lureau
+On Sat Jul 1, 2023 at 5:38 AM AEST, Daniel Henrique Barboza wrote:
+>
+>
+> On 6/29/23 01:58, C=C3=A9dric Le Goater wrote:
+> > On 6/25/23 14:03, Nicholas Piggin wrote:
+> >> Cedric kindly reviewed these already so I think they should be
+> >> good to go now. This is just a rebase and slight rewording the
+> >> changelog. Still haven't completed the main chiptod device yet.
+> >>
+> >> Thanks,
+> >> Nick
+> >>
+> >> Nicholas Piggin (2):
+> >> =C2=A0=C2=A0 target/ppc: Tidy POWER book4 SPR registration
+> >> =C2=A0=C2=A0 target/ppc: Add TFMR SPR implementation with read and wri=
+te helpers
+> >>
+> >> =C2=A0 target/ppc/cpu_init.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+ | 82 ++++++++++++++++++++++++------------
+> >> =C2=A0 target/ppc/helper.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0 |=C2=A0 2 +
+> >> =C2=A0 target/ppc/spr_common.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 2=
+ +
+> >> =C2=A0 target/ppc/timebase_helper.c | 13 ++++++
+> >> =C2=A0 target/ppc/translate.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 10=
+ +++++
+> >> =C2=A0 5 files changed, 82 insertions(+), 27 deletions(-)
+> >>
+> >=20
+> >=20
+> > Daniel,
+> >=20
+> > When you start building the next PPC PR, I think you can also take
+> > this patch :
+> >=20
+> >  =C2=A0 [4/4] target/ppc: Implement core timebase state machine and TFM=
+R
+> >  =C2=A0 https://patchwork.ozlabs.org/project/qemu-ppc/patch/20230603233=
+612.125879-5-npiggin@gmail.com/
+> >=20
+> > It belongs to the same series.
+>
+> That doesn't apply cleanly with these 2 patches and it didn't look trivia=
+l to
+> me. As if there were some code missing.
 
-Mentioning here again in case you missed in the other thread,
-I believe the proper fix is:
-https://lore.kernel.org/qemu-devel/20230630234839.14716-1-philmd@linaro.org/
-Anyhow since this patch happens to fix the build, mine can
-get merged later on top.
+Yeah, it actually uses some signals from the nest chiptod patch.
 
-> accel/tcg: Fix tb_invalidate_phys_range iteration
-> fpu: Add float64_to_int{32,64}_modulo
-> tcg: Reduce scope of tcg_assert_listed_vecop
-> target/nios2: Explicitly ask for target-endian loads
-> linux-user: Avoid mmap of the last byte of the reserved_va
-> 
-> ----------------------------------------------------------------
-> Marc-André Lureau (1):
->        audio: dbus requires pixman
-> 
-> Mark Cave-Ayland (2):
->        accel/tcg: Fix start page passed to tb_invalidate_phys_page_range__locked
->        accel/tcg: Assert one page in tb_invalidate_phys_page_range__locked
-> 
-> Peter Maydell (1):
->        target/nios2 : Explicitly ask for target-endian loads and stores
-> 
-> Philippe Mathieu-Daudé (1):
->        tcg: Reduce tcg_assert_listed_vecop() scope
-> 
-> Richard Henderson (6):
->        ui/dbus: fix build errors in dbus_update_gl_cb and dbus_call_update_gl
->        fpu: Add float64_to_int{32,64}_modulo
->        tests/tcg/alpha: Add test for cvttq
->        target/alpha: Use float64_to_int64_modulo for CVTTQ
->        target/arm: Use float64_to_int32_modulo for FJCVTZS
->        linux-user: Avoid mmap of the last byte of the reserved_va
-> 
->   include/fpu/softfloat.h         |  3 ++
->   include/tcg/tcg.h               |  6 ---
->   accel/tcg/tb-maint.c            | 13 +++++--
->   fpu/softfloat.c                 | 31 +++++++++++++++
->   linux-user/mmap.c               | 14 +++++--
->   target/alpha/fpu_helper.c       | 85 +++++++++--------------------------------
->   target/arm/vfp_helper.c         | 71 ++++++----------------------------
->   target/nios2/translate.c        | 20 +++++-----
->   tcg/tcg-op-vec.c                |  6 +--
->   tests/tcg/alpha/test-cvttq.c    | 78 +++++++++++++++++++++++++++++++++++++
->   ui/dbus-listener.c              |  4 ++
->   fpu/softfloat-parts.c.inc       | 78 +++++++++++++++++++++++++++++++++++++
->   audio/meson.build               |  2 +-
->   tests/tcg/alpha/Makefile.target |  2 +-
->   14 files changed, 258 insertions(+), 155 deletions(-)
->   create mode 100644 tests/tcg/alpha/test-cvttq.c
-> 
+> If Nick re-send it rebased on top of ppc-next I can queue it. Since it's =
+a
+> rebase you can keep the r-b. Thanks,
 
+I'll see how it goes, it may have to wait for next merge. SMT for
+powernv is a little more important since it's more user-facing and it
+would be nice to introduce SMT for both pseries and powernv together.
+
+Chiptod for doesn't really do much except step through skiboot init
+code, and getting more useful things wired up like TB fault / HMI
+injection won't be ready before freeze.
+
+Thanks,
+Nick
 
