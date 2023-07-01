@@ -2,81 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D048744815
-	for <lists+qemu-devel@lfdr.de>; Sat,  1 Jul 2023 10:39:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DFE98744821
+	for <lists+qemu-devel@lfdr.de>; Sat,  1 Jul 2023 11:07:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFW7u-0003I2-Aa; Sat, 01 Jul 2023 04:38:43 -0400
+	id 1qFWWQ-0000yj-DP; Sat, 01 Jul 2023 05:04:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qFW7q-0003Hq-H7; Sat, 01 Jul 2023 04:38:38 -0400
-Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qFW7k-0001rT-2f; Sat, 01 Jul 2023 04:38:34 -0400
-Received: by mail-pf1-x42b.google.com with SMTP id
- d2e1a72fcca58-66c729f5618so2280660b3a.1; 
- Sat, 01 Jul 2023 01:38:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688200707; x=1690792707;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=nMZGrLrWB0GCB1W9JleqQok60Bd9lVqU9ke1F/wQpbg=;
- b=R1dru4zDcRPfvN0tpEwDLWehqQPCCvJ1mrIkwQwzxuXKPgafrkq5PY7xX1l4PZuGr7
- n/Mg5hUQ0EiZu0LKsFD0gtsKyYYAjNVCkejbIGPZB38MxCv8Dnxeit7cZpy+tQX7Whhn
- LzGCwLTHKvoQ0IagBJd03g/bkrZAzV17lNuS9mLFm7i3saawXkdalDV7VjC6wFh1SRFV
- gSn3E0ubtEiszCvStH/90RdRSNCH1lyuzSOc+3NQWa++QHkYLHmMXgwSs6A9SUsFNCjb
- F3Ip6tiENdlKKTljytbo8p8ndBjFUf4bsarJ3C7KKQh7/S3egLRrWYHKkF9xcVAYyY9F
- akKw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688200707; x=1690792707;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=nMZGrLrWB0GCB1W9JleqQok60Bd9lVqU9ke1F/wQpbg=;
- b=DaR3LUJXD6JfUp2/tB4QwSg5MGO15ZkJYcU7gT0U0IcSd8TZc1m5/V1+N911Krypkj
- XtTaP9mOqk9RCt/Fawv9V7yBuDH/3os44zgMoie4sOqGEMPnmIkMzid8YR1sAbk+mGMB
- 44gVMDJkMfGXnqD/ZxNoDXf2vMjpfUy3N1gFsTwsz4h1pYiX9GIBrOcBw4FxJI97Jxid
- GM82ayQRlDDeX1U/k6KaRXHzAQJDGaUulZtW5bqpcKb4Eu5DN9XKX0uxi4V5RueMPEuq
- N42hoiWskghsNIyWJUXAj9yA2Eg5qjBG5KhzcrIScZe8PLx9ZgIVy+GsCRYk+RgSCmlX
- 8VxA==
-X-Gm-Message-State: ABy/qLYfCoNDn57NFcP2N8ANosLdnPCjx6gqcgnInGs2SOXHmcl3anyl
- ZVO59faf/L7/bvndDI+z+/c=
-X-Google-Smtp-Source: APBJJlGCUU0OSE7r9eJt/vB1Bqo5Lmy5sQgOtGOEJhSfCryDUvMCCcDpVcprpyzdkaf0L8QrnJzcJQ==
-X-Received: by 2002:a05:6a00:1ace:b0:682:4e4c:48bc with SMTP id
- f14-20020a056a001ace00b006824e4c48bcmr6460397pfv.21.1688200706846; 
- Sat, 01 Jul 2023 01:38:26 -0700 (PDT)
-Received: from localhost (220-244-154-206.tpgi.com.au. [220.244.154.206])
- by smtp.gmail.com with ESMTPSA id
- x48-20020a056a000bf000b0062cf75a9e6bsm37509pfu.131.2023.07.01.01.38.23
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 01 Jul 2023 01:38:26 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 01 Jul 2023 18:38:21 +1000
-Message-Id: <CTQP7BKWD8W3.MP8NCILJUWDQ@wheely>
-Cc: <qemu-ppc@nongnu.org>, "Harsh Prateek Bora" <harshpb@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <SRS0=A2x2=CT=kaod.org=clg@ozlabs.org>)
+ id 1qFWW0-0000id-9X; Sat, 01 Jul 2023 05:03:38 -0400
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
+ helo=gandalf.ozlabs.org)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <SRS0=A2x2=CT=kaod.org=clg@ozlabs.org>)
+ id 1qFWVy-0001MV-CM; Sat, 01 Jul 2023 05:03:36 -0400
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4QtR6y38Zgz4wxN;
+ Sat,  1 Jul 2023 19:03:22 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4QtR6w1wwDz4wb5;
+ Sat,  1 Jul 2023 19:03:19 +1000 (AEST)
+Message-ID: <1b9c4cb9-7bbb-cf2a-6fa7-5867d9c4031a@kaod.org>
+Date: Sat, 1 Jul 2023 11:03:15 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
 Subject: Re: [PATCH 0/2] target/ppc: Easy parts of the POWER chiptod series
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Daniel Henrique Barboza" <danielhb413@gmail.com>,
- =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, <qemu-devel@nongnu.org>
-X-Mailer: aerc 0.15.2
+To: Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>, qemu-devel@nongnu.org
+Cc: qemu-ppc@nongnu.org, Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Frederic Barrat <fbarrat@linux.ibm.com>
 References: <20230625120317.13877-1-npiggin@gmail.com>
  <3f70738c-f30a-99a6-6e06-e53b8f93f830@kaod.org>
  <9989efc7-5ad9-0c31-e0af-b8a735dce353@gmail.com>
-In-Reply-To: <9989efc7-5ad9-0c31-e0af-b8a735dce353@gmail.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x42b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ <CTQP7BKWD8W3.MP8NCILJUWDQ@wheely>
+Content-Language: en-US
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <CTQP7BKWD8W3.MP8NCILJUWDQ@wheely>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+ envelope-from=SRS0=A2x2=CT=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -40
+X-Spam_score: -4.1
+X-Spam_bar: ----
+X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, NICE_REPLY_A=-0.095,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -93,66 +69,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat Jul 1, 2023 at 5:38 AM AEST, Daniel Henrique Barboza wrote:
->
->
-> On 6/29/23 01:58, C=C3=A9dric Le Goater wrote:
-> > On 6/25/23 14:03, Nicholas Piggin wrote:
-> >> Cedric kindly reviewed these already so I think they should be
-> >> good to go now. This is just a rebase and slight rewording the
-> >> changelog. Still haven't completed the main chiptod device yet.
-> >>
-> >> Thanks,
-> >> Nick
-> >>
-> >> Nicholas Piggin (2):
-> >> =C2=A0=C2=A0 target/ppc: Tidy POWER book4 SPR registration
-> >> =C2=A0=C2=A0 target/ppc: Add TFMR SPR implementation with read and wri=
-te helpers
-> >>
-> >> =C2=A0 target/ppc/cpu_init.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
- | 82 ++++++++++++++++++++++++------------
-> >> =C2=A0 target/ppc/helper.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0 |=C2=A0 2 +
-> >> =C2=A0 target/ppc/spr_common.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 2=
- +
-> >> =C2=A0 target/ppc/timebase_helper.c | 13 ++++++
-> >> =C2=A0 target/ppc/translate.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 10=
- +++++
-> >> =C2=A0 5 files changed, 82 insertions(+), 27 deletions(-)
-> >>
-> >=20
-> >=20
-> > Daniel,
-> >=20
-> > When you start building the next PPC PR, I think you can also take
-> > this patch :
-> >=20
-> >  =C2=A0 [4/4] target/ppc: Implement core timebase state machine and TFM=
-R
-> >  =C2=A0 https://patchwork.ozlabs.org/project/qemu-ppc/patch/20230603233=
-612.125879-5-npiggin@gmail.com/
-> >=20
-> > It belongs to the same series.
->
-> That doesn't apply cleanly with these 2 patches and it didn't look trivia=
-l to
-> me. As if there were some code missing.
+>>> When you start building the next PPC PR, I think you can also take
+>>> this patch :
+>>>
+>>>     [4/4] target/ppc: Implement core timebase state machine and TFMR
+>>>     https://patchwork.ozlabs.org/project/qemu-ppc/patch/20230603233612.125879-5-npiggin@gmail.com/
+>>>
+>>> It belongs to the same series.
+>>
+>> That doesn't apply cleanly with these 2 patches and it didn't look trivial to
+>> me. As if there were some code missing.
+> 
+> Yeah, it actually uses some signals from the nest chiptod patch.
+> 
+>> If Nick re-send it rebased on top of ppc-next I can queue it. Since it's a
+>> rebase you can keep the r-b. Thanks,
+> 
+> I'll see how it goes, it may have to wait for next merge. SMT for
+> powernv is a little more important since it's more user-facing and it
+> would be nice to introduce SMT for both pseries and powernv together.
 
-Yeah, it actually uses some signals from the nest chiptod patch.
+Yes. Please resend.
 
-> If Nick re-send it rebased on top of ppc-next I can queue it. Since it's =
-a
-> rebase you can keep the r-b. Thanks,
+I gave the series a good try with an install of 23.04 on a powernv9
+machine with 2*2*4 CPUs and running KVM SMP guests with libvirt.
+It was performing quite well with MTTCG on a 32 CPU ryzen box. No
+hangs, no crash. This is a great addition. Thanks for it.
 
-I'll see how it goes, it may have to wait for next merge. SMT for
-powernv is a little more important since it's more user-facing and it
-would be nice to introduce SMT for both pseries and powernv together.
+I'll try VFIO after merge.
 
-Chiptod for doesn't really do much except step through skiboot init
-code, and getting more useful things wired up like TB fault / HMI
-injection won't be ready before freeze.
+Cheers,
 
-Thanks,
-Nick
+C.
+
+
+
+  
+> Chiptod for doesn't really do much except step through skiboot init
+> code, and getting more useful things wired up like TB fault / HMI
+> injection won't be ready before freeze.
+> 
+> Thanks,
+> Nick
+
 
