@@ -2,81 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C9EF7446EA
-	for <lists+qemu-devel@lfdr.de>; Sat,  1 Jul 2023 08:29:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CCC7744702
+	for <lists+qemu-devel@lfdr.de>; Sat,  1 Jul 2023 08:41:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFU6B-0002dh-Nf; Sat, 01 Jul 2023 02:28:47 -0400
+	id 1qFUH0-0004dn-HT; Sat, 01 Jul 2023 02:39:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qFU69-0002dI-3c
- for qemu-devel@nongnu.org; Sat, 01 Jul 2023 02:28:45 -0400
-Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+ (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
+ id 1qFUGy-0004dW-7n; Sat, 01 Jul 2023 02:39:56 -0400
+Received: from mail-oa1-x33.google.com ([2001:4860:4864:20::33])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qFU66-0004B7-U0
- for qemu-devel@nongnu.org; Sat, 01 Jul 2023 02:28:44 -0400
-Received: by mail-wr1-x42b.google.com with SMTP id
- ffacd0b85a97d-3113dabc549so3317363f8f.1
- for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 23:28:42 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
+ id 1qFUGw-0001JM-Bq; Sat, 01 Jul 2023 02:39:55 -0400
+Received: by mail-oa1-x33.google.com with SMTP id
+ 586e51a60fabf-1b0748bc78dso1675492fac.0; 
+ Fri, 30 Jun 2023 23:39:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688192921; x=1690784921;
+ d=gmail.com; s=20221208; t=1688193592; x=1690785592;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=XHAeWuvwbInnyDvoFeHtnsBxEwlbXX8RBv2pA/viWVM=;
- b=wF6j3GM+iZem5M9DHlAXkf3CamWqRgpiZw5/SRdEM2bETne/oUJCFQx679w7g0SJi4
- sRaBIivbinC1rE5Bs5hjTIDTt5+K71sbmIYh+O6IMaEaUEVEFh2QWbd6vlEEPTql7/JQ
- LfkdYRwlR2PXPAn8Ac2MUXyu+SrLSBHGuXzSw2tV75/mMx6/vajHO/7gPVibooBe+9PC
- qAdd2nK8vinitAhHcE7gLkDdgfzp6ISjkd6S7+qamwKHZbw3T4OgBUqq66FTozhwTasx
- HMEUFW7c5KNUVVBuKEDv6RE1WiFiUQlblkuWW1Eh9UPm1VLHcRQW753bKBaqEK4z/nAX
- 2twg==
+ bh=8cA55PiZF8Hdq6XyIvRHB4iehf3DlV+NvehQgt8nVdI=;
+ b=ZW9NuAXo5ccv9MkrynQKTi309tzBU+j/r49hqREBWbIal4oERJ0GeSRAiebNc2KXrc
+ oh+DngrOG5QemuoNETD36j/oIkE7fc31GJaGXaD4UCuMZPreUA/9o2ug4OIKtVuKotDS
+ Wel0BZxlJ0l0tjYt7i+c2255Zsx2GQGcgzj+LF4SX8hUBzSrDtTLt6vB6LSrDOvmPFyL
+ ukxRT3QQ+md0HQW/Xan+buR5tUjiP6g7gn+sAQX3V+yJffvxpz5Vk5blKOhuIUncscwY
+ Hphb19/YSsFGETdITWQQJvEzfwN5Ks97NoPmg6XAjrxJpNqnmgrKvf2RM96lPCmMNZl0
+ Xziw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688192921; x=1690784921;
+ d=1e100.net; s=20221208; t=1688193592; x=1690785592;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=XHAeWuvwbInnyDvoFeHtnsBxEwlbXX8RBv2pA/viWVM=;
- b=jSGiqV4yB3BUlZ4u81dPBxCkMLjJhHVTHN8hx6M+4krZddgFx5DwwAtckMHOvbpP3+
- kkVmPKQokuTFVg5Q+SJznr5GMzEH+gXG//IH/eI4xtof1x0KtAvoI9VBWz7W0aqOEQGA
- E1vDxn6i+zPhhGPoX7zV2NXkzSCPdmCN6YdtjcpkQxhYa/WC1XlSqcrcNcGT897PLQTZ
- DozmB3eC1cDJig9PVlLPBAyXq49luUp8rwrlzEitCVyWXl1oalYqtr0zwAZfHqd3jqHM
- YSOFGR0sSty5eHb4A+r7AKAf8t40qRe3ItemcLFGJviTKchmStfLrvVpnHkm+YV0pbXx
- nC3g==
-X-Gm-Message-State: ABy/qLZRjoljPSSEaAZ5xPBGEj6/YZb+4EuhqZwwxffe99AAAlN54CGY
- AEDlf+OZXDzu7/AYVRwQOWUERw==
-X-Google-Smtp-Source: APBJJlHw3L6DeHysP7ztFSXtbd36UmFihsP4M5dycT8+UOn2GAiuWXkEurPjPt98dzoNZMEl/anYBQ==
-X-Received: by 2002:a5d:550d:0:b0:311:1a9c:5e03 with SMTP id
- b13-20020a5d550d000000b003111a9c5e03mr4796856wrv.51.1688192920785; 
- Fri, 30 Jun 2023 23:28:40 -0700 (PDT)
-Received: from [192.168.1.208] ([139.47.41.96])
- by smtp.gmail.com with ESMTPSA id
- u18-20020adfeb52000000b003113943bb66sm20041472wrn.110.2023.06.30.23.28.40
+ bh=8cA55PiZF8Hdq6XyIvRHB4iehf3DlV+NvehQgt8nVdI=;
+ b=NYdd/Ov+rBoEwHfdSm1tbkQrH1xi8nDn0nIOqrvMrBm0hLzPjcfxj63POaVwQ4724c
+ HrNdMQ6n5jQ8GYvwvhqyc478OzFD3ezYIAMZJRa+EuKMSykoDaKRBCV2+YZQE/80lC4o
+ Ot6MiZS50dgRg2meYFKhrRhIqSjVsdeZYkLpzS4TrBMvA/KEpHTbLLCu386YA/FxTSs7
+ dfvHp9Qmf8jsmrYvtC1iDN/CF/slIq9MS4KtxiIE+8aPbxD4gLzgmg4bJosPsk0pCVFQ
+ il8IGnO9+LAkPynNUhCtf2a8Eb5Hiw389+90ydzKOZkJ7WI8Z1EeoMLof+GPgrIXkENQ
+ 2aRw==
+X-Gm-Message-State: AC+VfDwG1uNcxch55ondBIB8uTHE0mZ9h+RM5PXYlQVRlaW2NI1hz6VU
+ pQluEaYqBUcEv76KL/byGnE=
+X-Google-Smtp-Source: ACHHUZ402gCJsAP12NlD8wv5DktSRUhdgo/6Ji3n9nxl6lf5LyLjeqhBTm60uOq6PwmVKxDU4HOY1A==
+X-Received: by 2002:a05:6870:a909:b0:1ad:1637:ee30 with SMTP id
+ eq9-20020a056870a90900b001ad1637ee30mr4838124oab.19.1688193591941; 
+ Fri, 30 Jun 2023 23:39:51 -0700 (PDT)
+Received: from [192.168.68.107] (201-69-66-110.dial-up.telesp.net.br.
+ [201.69.66.110]) by smtp.gmail.com with ESMTPSA id
+ v41-20020a056870b52900b001b053e47bb3sm6472577oap.43.2023.06.30.23.39.49
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 30 Jun 2023 23:28:40 -0700 (PDT)
-Message-ID: <efd6705a-893d-7c6d-c3eb-264928b055b3@linaro.org>
-Date: Sat, 1 Jul 2023 08:28:38 +0200
+ Fri, 30 Jun 2023 23:39:51 -0700 (PDT)
+Message-ID: <03e0c0c0-d3e5-bc4c-6c07-db642d2e6f52@gmail.com>
+Date: Sat, 1 Jul 2023 03:39:47 -0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH] audio: dbus requires pixman
+ Thunderbird/102.12.0
+Subject: Re: [PATCH v3 00/14] Misc clean ups to target/ppc exception handling
 Content-Language: en-US
-To: marcandre.lureau@redhat.com, qemu-devel@nongnu.org
-Cc: Gerd Hoffmann <kraxel@redhat.com>
-References: <20230630214156.2181558-1-marcandre.lureau@redhat.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230630214156.2181558-1-marcandre.lureau@redhat.com>
+To: BALATON Zoltan <balaton@eik.bme.hu>
+Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, clg@kaod.org,
+ Greg Kurz <groug@kaod.org>, Nicholas Piggin <npiggin@gmail.com>
+References: <cover.1686868895.git.balaton@eik.bme.hu>
+ <92e3591e-cce7-c3e7-7d73-a0bd24de8c2c@gmail.com>
+ <1726bfcd-0e6e-0a72-bc97-be7a79f95340@eik.bme.hu>
+From: Daniel Henrique Barboza <danielhb413@gmail.com>
+In-Reply-To: <1726bfcd-0e6e-0a72-bc97-be7a79f95340@eik.bme.hu>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
- envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x42b.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Received-SPF: pass client-ip=2001:4860:4864:20::33;
+ envelope-from=danielhb413@gmail.com; helo=mail-oa1-x33.google.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.095,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, NICE_REPLY_A=-0.095,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -94,21 +96,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/30/23 23:41, marcandre.lureau@redhat.com wrote:
-> From: Marc-André Lureau<marcandre.lureau@redhat.com>
-> 
-> Commit commit 6cc5a615 ("ui/dbus: win32 support") has broken audio/dbus
-> compilation when pixman is not included.
-> 
-> Fixes:https://gitlab.com/qemu-project/qemu/-/issues/1739
-> 
-> Signed-off-by: Marc-André Lureau<marcandre.lureau@redhat.com>
-> ---
->   audio/meson.build | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-
-Queued to tcg-next, per request.
 
 
-r~
+On 6/30/23 19:57, BALATON Zoltan wrote:
+> On Fri, 30 Jun 2023, Daniel Henrique Barboza wrote:
+>> Patches 1, 2, 3, 5, 7 and 11 are queued.
+>>
+>> If you would be so kind to get the remaining patches, rebase them
+>> on top of my ppc-next and resend, I believe there's more stuff
+>> to be queued.
+> 
+> Thanks for taking care of these. I'll do the rebase of remaining patches once the current queue is merged, they aren't urgent so I can come back to those later. I'm working on some sam460ex patches but don't know yet when can I send it so don't wait for me now.
+
+Got it. Just bear in mind the current release schedule. Code freeze is July 11th:
+
+https://wiki.qemu.org/Planning/8.1
+
+I'll send one last PR before freeze (probably on July 10th) and then it'll be only
+bug fixes until end of August.
+
+
+Thanks,
+
+Daniel
+
+> 
+> Regards,
+> BALATON Zoltan
+> 
+>>
+>>
+>> Thanks,
+>>
+>>
+>> Daniel
+>>
+>> On 6/15/23 20:03, BALATON Zoltan wrote:
+>>> These are some small clean ups for target/ppc/excp_helper.c trying to
+>>> make this code a bit simpler. No functional change is intended.
+>>>
+>>> v2: Patch 3 changes according to review, added tags
+>>> v3: Address more review comments: don't change cpu_interrupt_exittb()
+>>> parameter, add back lev, add scv patch from Nick + add some more
+>>> patches to clean up #ifdefs
+>>>
+>>> Regards,
+>>> BALATON Zoltan
+>>>
+>>> BALATON Zoltan (13):
+>>>    target/ppc: Remove some superfluous parentheses
+>>>    target/ppc: Remove unneeded parameter from powerpc_reset_wakeup()
+>>>    target/ppc: Move common check in exception handlers to a function
+>>>    target/ppc: Use env_cpu for cpu_abort in excp_helper
+>>>    target/ppc: Remove some more local CPUState variables only used once
+>>>    target/ppc: Readability improvements in exception handlers
+>>>    target/ppd: Remove unused define
+>>>    target/ppc: Fix gen_sc to use correct nip
+>>>    target/ppc: Simplify syscall exception handlers
+>>>    target/ppc: Get CPUState in one step
+>>>    target/ppc: Clean up ifdefs in excp_helper.c, part 1
+>>>    target/ppc: Clean up ifdefs in excp_helper.c, part 2
+>>>    target/ppc: Clean up ifdefs in excp_helper.c, part 3
+>>>
+>>> Nicholas Piggin (1):
+>>>    target/ppc: Move patching nip from exception handler to helper_scv
+>>>
+>>>   target/ppc/cpu.h         |   1 +
+>>>   target/ppc/excp_helper.c | 570 ++++++++++++---------------------------
+>>>   target/ppc/translate.c   |  15 +-
+>>>   3 files changed, 178 insertions(+), 408 deletions(-)
+>>>
+>>
+>>
 
