@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64975744784
+	by mail.lfdr.de (Postfix) with ESMTPS id 626A7744783
 	for <lists+qemu-devel@lfdr.de>; Sat,  1 Jul 2023 09:02:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFUcP-0007Xa-9w; Sat, 01 Jul 2023 03:02:05 -0400
+	id 1qFUcS-0007b9-BE; Sat, 01 Jul 2023 03:02:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qFUcN-0007X3-Ae
- for qemu-devel@nongnu.org; Sat, 01 Jul 2023 03:02:03 -0400
-Received: from mail-ot1-x329.google.com ([2607:f8b0:4864:20::329])
+ id 1qFUcQ-0007ZQ-8l
+ for qemu-devel@nongnu.org; Sat, 01 Jul 2023 03:02:06 -0400
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qFUcL-0000l0-LI
- for qemu-devel@nongnu.org; Sat, 01 Jul 2023 03:02:03 -0400
-Received: by mail-ot1-x329.google.com with SMTP id
- 46e09a7af769-6b7541d885cso2313089a34.3
- for <qemu-devel@nongnu.org>; Sat, 01 Jul 2023 00:02:01 -0700 (PDT)
+ id 1qFUcO-0000li-Od
+ for qemu-devel@nongnu.org; Sat, 01 Jul 2023 03:02:05 -0400
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-1b801e6ce85so16866125ad.1
+ for <qemu-devel@nongnu.org>; Sat, 01 Jul 2023 00:02:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1688194920; x=1690786920;
+ d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1688194923; x=1690786923;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=4RgH91GA1gaWvFQByNsH0yzA9IIim4f6UGgM6Gv3rCI=;
- b=0QjaeIMVAWgnc4u9M8lhJJHwlcaDLyD+iCct15Iz7nKtsynsFn+FKvnVVUud668Kfe
- gsvM3eULY+wE5PPpFHF0pz3Wl6BqPBvqFODZ3VWQT7vSbrM5W/GaghSGLhHSb+JHArss
- mN8KILguVREIT9MSabcuXxojNG78qkYfIWmgBdQrIWP/xPw80LhjsAegerCoYqTARKgx
- KnjE0IPnPyxI7tWo9JOCRM4k3ykHRANEr2/D2ODOpZrNSAg6i/SJaCRF4Sq3arko+fMe
- b4tKlpYWHTBQKtB5NPv6zgaOW8EfOQELyYWgnK/htpWko5kzZXeM+LiJNT1Zppp4YR+v
- lFhA==
+ bh=S2mzoJtKETatATbk1+/Lk4f6WvlDPSXraYC64PqRpAQ=;
+ b=0qP14O4/qof6fYZsfI8PXvNOjFolOAPo1Z5XU5N17C1TzKravC80JFzf+NmQBl+jwH
+ jM3c/q3pF1LVkySB2USIK64Oa2Doga3Dbe/30qIj7ylYH+ufJkVIdzPtyc1Ya37rvzps
+ k/Gf+qXlKUkaKMbBcYxDFrvrwBkuMef6O2/nARsDwilM5dGR2tVRkwOUIHkylX4SRASV
+ hWUczWH1JiKCUOQPfy7tmzx3UA5fjsCn5B6rO6SaIjh90O7CVyd0BxfnXy5r7BT8H0on
+ J6VmHgssADYwaIl8jZ9GhcWbhljZYPOR54aHj/zy3F1rQkOvpLPUj9K0zwMxst9TjJp6
+ dMtw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688194920; x=1690786920;
+ d=1e100.net; s=20221208; t=1688194923; x=1690786923;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=4RgH91GA1gaWvFQByNsH0yzA9IIim4f6UGgM6Gv3rCI=;
- b=TwiWMHiikhYCnBXpqLG9oY/wKBeWiClUHBSIJDbO/MaG+tjY8Rv76L5HygLZQEYZAZ
- Nu/G1EyG748tfNoLg2PyQXqlzSJMG35iSRlLjOastbRLE5FM0QKS7LmMyy1BJrF1risx
- VDcUAZER7BZhKaeEDfsalfNIC7R3U19RK/QHdb9yI1wbS22EKDkMcsL7KJjJ5++PKwQK
- 1eXq2iJdpOYxk6AB4k6EmFtKx7gizdRz7PIvOP/SqnlqOq+JjO2YrTRo04sBfe71Ib/s
- k62bV0BhLlT8GBRZomF8A+U4hTTf0L3yMRhjVO+c8yXdskS0SwtBUYuLwclqCDwo9VVh
- KzMQ==
-X-Gm-Message-State: AC+VfDxZ7/mx3klWTUNZM4hYvz3/lm5VuPyxk4woHYdOeb0oObsWqpmc
- 4gIrt3MFUr/HdloVzjvCfY4lpM86lE/q9btZbi8=
-X-Google-Smtp-Source: ACHHUZ4XDsw5p0b9L3kABCaZFDbZ8/2Ed6cLnRs6NnotJ513K9paBSE5K9mUBLrjLGzWh9S/G1MZlQ==
-X-Received: by 2002:a05:6830:c4:b0:6b7:470c:931f with SMTP id
- x4-20020a05683000c400b006b7470c931fmr5682561oto.1.1688194920587; 
- Sat, 01 Jul 2023 00:02:00 -0700 (PDT)
+ bh=S2mzoJtKETatATbk1+/Lk4f6WvlDPSXraYC64PqRpAQ=;
+ b=ZNJ6U4NEoYisxNgOMBqcotq3AUlUAtCYloLzv1lDtESiVgBuaj5UYZzFGZh4LlHMHB
+ EnBgTyO7wF6hNQ9Qs13I+c5e6kZOCyFqwRLec6ftY5Vxwxj9ncg9dVVx2uWSra+kCcrp
+ Zloethq7pIooDNd+eGhoJN/rB3O2vvMZjwpLYkx3cY6/qlF/NEyKPr69Kqnk7SwIxrrM
+ Lc/s5/ExFXU3sfegCP4Z9GOlPjZNSDtkNqx7CcfMfJZwtCzVppIRmExvFueDyNUIkilt
+ P0uMLx32R/upOvN8hGQqkFu8HJdU+45KJjtVziPP6JZwjkxA2B1DX3MOrGlAKm8Oscmo
+ Wl6Q==
+X-Gm-Message-State: ABy/qLY1b1S1U0bc19mTmLCw7gJbSLffFHh83AdCkaEJqy6V6B8aR/dO
+ o4c0j4Yhnu/xpTsY7ZI+kZnRqK07yrQkbdVMEEU=
+X-Google-Smtp-Source: APBJJlFNPvXGJgruhXipND3fFTGyw7GUw7v/Ke0TKlh7VaT2/WrnOA2z8IewwW2+SsMefhYqOY3llg==
+X-Received: by 2002:a17:902:d4ca:b0:1b8:656f:76e7 with SMTP id
+ o10-20020a170902d4ca00b001b8656f76e7mr7173201plg.23.1688194923158; 
+ Sat, 01 Jul 2023 00:02:03 -0700 (PDT)
 Received: from alarm.. ([157.82.204.253]) by smtp.gmail.com with ESMTPSA id
- jd4-20020a170903260400b001b1920cffdasm5592452plb.204.2023.07.01.00.01.58
+ jd4-20020a170903260400b001b1920cffdasm5592452plb.204.2023.07.01.00.02.00
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 01 Jul 2023 00:02:00 -0700 (PDT)
+ Sat, 01 Jul 2023 00:02:02 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 To: 
 Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org,
@@ -63,23 +63,22 @@ Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org,
  Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
  Jason Wang <jasowang@redhat.com>, Keith Busch <kbusch@kernel.org>,
  Klaus Jensen <its@irrelevant.dk>, Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH 3/4] igb: Fix ARI next function numbers
-Date: Sat,  1 Jul 2023 16:01:21 +0900
-Message-ID: <20230701070133.24877-4-akihiko.odaki@daynix.com>
+Subject: [PATCH 4/4] pci: Compare function number and ARI next function number
+Date: Sat,  1 Jul 2023 16:01:22 +0900
+Message-ID: <20230701070133.24877-5-akihiko.odaki@daynix.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230701070133.24877-1-akihiko.odaki@daynix.com>
 References: <20230701070133.24877-1-akihiko.odaki@daynix.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::329;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-ot1-x329.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62d.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,76 +94,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The next function numbers are expected to form a linked list ending with
-0.
+The function number must be lower than the next function number
+advertised with ARI.
 
-Fixes: 3a977deebe ("Intrdocue igb device emulation")
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- hw/net/igb_core.h | 3 +++
- hw/net/igb.c      | 4 +---
- hw/net/igbvf.c    | 5 ++++-
- 3 files changed, 8 insertions(+), 4 deletions(-)
+ hw/pci/pci.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/hw/net/igb_core.h b/hw/net/igb_core.h
-index 9cbbfd516b..e1dab76995 100644
---- a/hw/net/igb_core.h
-+++ b/hw/net/igb_core.h
-@@ -49,6 +49,9 @@
- #define IGB_NUM_QUEUES          (16)
- #define IGB_NUM_VM_POOLS        (8)
+diff --git a/hw/pci/pci.c b/hw/pci/pci.c
+index e2eb4c3b4a..568665ee42 100644
+--- a/hw/pci/pci.c
++++ b/hw/pci/pci.c
+@@ -2059,6 +2059,8 @@ static void pci_qdev_realize(DeviceState *qdev, Error **errp)
+     Error *local_err = NULL;
+     bool is_default_rom;
+     uint16_t class_id;
++    uint16_t ari;
++    uint16_t nextfn;
  
-+#define IGB_VF_OFFSET           (0x80)
-+#define IGB_VF_STRIDE           (2)
+     /*
+      * capped by systemd (see: udev-builtin-net_id.c)
+@@ -2121,6 +2123,19 @@ static void pci_qdev_realize(DeviceState *qdev, Error **errp)
+         }
+     }
+ 
++    if (pci_is_express(pci_dev)) {
++        ari = pcie_find_capability(pci_dev, PCI_EXT_CAP_ID_ARI);
++        if (ari) {
++            nextfn = (pci_get_long(pci_dev->config + ari + PCI_ARI_CAP) >> 8) & 0xff;
++            if (nextfn && (pci_dev->devfn & 0xff) >= nextfn) {
++                error_setg(errp, "PCI: function number %u is not lower than ARI next function number %u",
++                           pci_dev->devfn & 0xff, nextfn);
++                pci_qdev_unrealize(DEVICE(pci_dev));
++                return;
++            }
++        }
++    }
 +
- typedef struct IGBCore IGBCore;
- 
- enum { PHY_R = BIT(0),
-diff --git a/hw/net/igb.c b/hw/net/igb.c
-index 1c989d7677..543ca0114a 100644
---- a/hw/net/igb.c
-+++ b/hw/net/igb.c
-@@ -81,8 +81,6 @@ struct IGBState {
- };
- 
- #define IGB_CAP_SRIOV_OFFSET    (0x160)
--#define IGB_VF_OFFSET           (0x80)
--#define IGB_VF_STRIDE           (2)
- 
- #define E1000E_MMIO_IDX     0
- #define E1000E_FLASH_IDX    1
-@@ -431,7 +429,7 @@ static void igb_pci_realize(PCIDevice *pci_dev, Error **errp)
-         hw_error("Failed to initialize AER capability");
-     }
- 
--    pcie_ari_init(pci_dev, 0x150, 1);
-+    pcie_ari_init(pci_dev, 0x150, IGB_VF_OFFSET);
- 
-     pcie_sriov_pf_init(pci_dev, IGB_CAP_SRIOV_OFFSET, TYPE_IGBVF,
-         IGB_82576_VF_DEV_ID, IGB_MAX_VF_FUNCTIONS, IGB_MAX_VF_FUNCTIONS,
-diff --git a/hw/net/igbvf.c b/hw/net/igbvf.c
-index 284ea61184..bf2f237ab5 100644
---- a/hw/net/igbvf.c
-+++ b/hw/net/igbvf.c
-@@ -240,6 +240,9 @@ static const MemoryRegionOps mmio_ops = {
- static void igbvf_pci_realize(PCIDevice *dev, Error **errp)
- {
-     IgbVfState *s = IGBVF(dev);
-+    uint16_t nextvfn = pcie_sriov_vf_number(dev) + 1;
-+    uint16_t nextfn = nextvfn < IGB_MAX_VF_FUNCTIONS ?
-+                      IGB_VF_OFFSET + nextvfn * IGB_VF_STRIDE : 0;
-     int ret;
-     int i;
- 
-@@ -270,7 +273,7 @@ static void igbvf_pci_realize(PCIDevice *dev, Error **errp)
-         hw_error("Failed to initialize AER capability");
-     }
- 
--    pcie_ari_init(dev, 0x150, 1);
-+    pcie_ari_init(dev, 0x150, nextfn);
- }
- 
- static void igbvf_pci_uninit(PCIDevice *dev)
+     if (pci_dev->failover_pair_id) {
+         if (!pci_bus_is_express(pci_get_bus(pci_dev))) {
+             error_setg(errp, "failover primary device must be on "
 -- 
 2.41.0
 
