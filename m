@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3F82744780
-	for <lists+qemu-devel@lfdr.de>; Sat,  1 Jul 2023 08:57:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A74C274477D
+	for <lists+qemu-devel@lfdr.de>; Sat,  1 Jul 2023 08:57:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFUVv-0007WD-6n; Sat, 01 Jul 2023 02:55:23 -0400
+	id 1qFUVv-0007WX-Tq; Sat, 01 Jul 2023 02:55:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qFUVs-0007VI-UP
- for qemu-devel@nongnu.org; Sat, 01 Jul 2023 02:55:20 -0400
+ id 1qFUVt-0007VQ-C6
+ for qemu-devel@nongnu.org; Sat, 01 Jul 2023 02:55:21 -0400
 Received: from mail-lf1-x12a.google.com ([2a00:1450:4864:20::12a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qFUVr-0007FT-4p
- for qemu-devel@nongnu.org; Sat, 01 Jul 2023 02:55:20 -0400
+ id 1qFUVr-0007Fi-OS
+ for qemu-devel@nongnu.org; Sat, 01 Jul 2023 02:55:21 -0400
 Received: by mail-lf1-x12a.google.com with SMTP id
- 2adb3069b0e04-4f875b267d9so4333266e87.1
- for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 23:55:18 -0700 (PDT)
+ 2adb3069b0e04-4f76a0a19d4so4286838e87.2
+ for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 23:55:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688194517; x=1690786517;
+ d=linaro.org; s=google; t=1688194518; x=1690786518;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Zw6bQp1/aPCTHVB9O6SX0clKjc4ibzsmP+nMY0H68OE=;
- b=B46m4tOq3vehnqsffCn+XtiAB44MrpLtdxBEZAvVhNW3xzh0GcojTw7OVb8yFW2c7Q
- IuAgaNfTAU7hl2OQfRnFenu0Adf7UO7EDI8tinVZn8PEXnIOcX+xXNpSaKAKgg+wT6Xt
- fYwbSgnWvPTn8a28RTEhL16Wbcjldu5t4sI5I2LjOT78QK/i3JRr5LbLBC4/nbMo6hso
- wEfB1hgunEvvvWg9OKrDgGXYMxa2gCQi4Q5FqxWlqZ5JKot6Bk8gN5d7N1WK1eP46F7H
- Wjxnw0ofcsVB7ClZVYcwqisg2NT0XN0Y9EqjWv+h+i1gIhn2Vt8S9TXrjQCfAAv+9L2c
- p9Og==
+ bh=vWBYX+czO68YBn+sruZR19OlwAnKUpeq8kLfDlKJ0tE=;
+ b=XrH4ZjkZoWwK8x81L0/zS9Zwp4O3YrdCQKevSJtyHlxKpEOOSDdi18JMqm0I80YDoK
+ mvphU9oIRoWrGMc/Fh+glo3cAg0DTJqsnTgtNP7HHu68c4QUdnHcDQYOTcqexmnIkRHp
+ LumIOqQbJT87faMzZl4/JttzyeE1DOH+YFFlWP4ndS5PVZgADgJW4aeyHtluUvC0ctbZ
+ qKqkw6SGIr9nM8gVVw5qEiOFROx2O14JIHs2/7Rp15jQsTUdp1yTPTbqxwJf7JmukdUp
+ 8nLrZZ63HZw9IIO+1p24dJ0xIsTT1hJETydQy5h38zq/AdpocxDSKtzbfE5b7rEYvnxT
+ MfGw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688194517; x=1690786517;
+ d=1e100.net; s=20221208; t=1688194518; x=1690786518;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Zw6bQp1/aPCTHVB9O6SX0clKjc4ibzsmP+nMY0H68OE=;
- b=AkPlzvwMdC1Cukdljpb8LXehh3nW9xZ3jUZ3Eo2eR787BWHH7Z9XPKNc+HK5DMYERd
- SR7vTU9LJnOB0B7uJvnD+o3TDIWuB8bVTskIp+5V/N63Mm/laPZDG9kCdLwyLPBQfycR
- kPmhmXERKnHHli9DPDZ6ztdMhRaHtbWFvbS3FUlV3WM09A3YXH77gGpr13pRnz7upLJi
- Pk0cOSI6xQQwOkoBv9wD58YcPbcgXF+oCNUzCpa7zjjDZr19SOcdQLVtYas4ImyVqE+6
- F6lVY0YsPaJPgDat8pmll3+9QBr381yksO8B7v+3nDhIbXTHDdq4PRJC6HzSJB2oJ0se
- ecQQ==
-X-Gm-Message-State: ABy/qLa3KvyOGkYWdBYSFlAiQqYxEHqqD2oBRUeelWR0M6H0vhQ2/dpK
- WJSpXA8McRbUxXVHnLyZqbm+y/edH3/BhB4re9fczQ==
-X-Google-Smtp-Source: APBJJlGJ7B4eKjV10mbKKPD2M+c1GxyOriCmCCq0rjBzEmaA/WxBpW8n5ewp4lwvny+3qDWaKXpktQ==
-X-Received: by 2002:a05:6512:368b:b0:4f7:6453:f3f1 with SMTP id
- d11-20020a056512368b00b004f76453f3f1mr3228476lfs.15.1688194517537; 
- Fri, 30 Jun 2023 23:55:17 -0700 (PDT)
+ bh=vWBYX+czO68YBn+sruZR19OlwAnKUpeq8kLfDlKJ0tE=;
+ b=ZA4SUmky4d2aI3flVDCwrcJ/eWlkllQWDSEdRymHEDgJcWxNBnoXto0Py6dip7eglg
+ VLyiXDd969KmhDiLKHJn2Hb8gdhyVFwkl0kA6jjXVMAdlw3At4ARd+uw4eFQJBo5zu0m
+ qw3g9DLf/5hxdF2vpDnc4UlmBvRNJTwBRk34hDH3PXWNyUm/76YMaChuMkuMP6nYLWYI
+ rO67LkvR+Cbf5RHAYTwH6EdZh/iqrXB0KOXxGiK4DjCHRCfkrs3Y7mIlCu8iNTktYke8
+ AElSUvqmFGRPxQvIIY7U9W3jQj06j9IwkgVDE1gxnzk4L87f8brzr98b3hNYIeM49f0g
+ 5WVw==
+X-Gm-Message-State: ABy/qLaEA55QNOds2K/n+oI+xL2u7EEOADRNM/unoyjeZlgGBDx3oHv7
+ 8Y8Dsmr8ejvZPQRsj7NrE8RkbwYBFFGbBEIl5uQalg==
+X-Google-Smtp-Source: APBJJlF7VAlWOwuqKptLfiCxl/kYNsbbWs5q1az77BClaZHS2vXxwqsgmVPfL2dJduRtpS5iTTJ+2w==
+X-Received: by 2002:a05:6512:1112:b0:4f8:7503:2041 with SMTP id
+ l18-20020a056512111200b004f875032041mr4320265lfg.37.1688194518190; 
+ Fri, 30 Jun 2023 23:55:18 -0700 (PDT)
 Received: from localhost.localdomain ([139.47.41.96])
  by smtp.gmail.com with ESMTPSA id
- w10-20020a1cf60a000000b003f9bd9e3226sm20874918wmc.7.2023.06.30.23.55.16
+ w10-20020a1cf60a000000b003f9bd9e3226sm20874918wmc.7.2023.06.30.23.55.17
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Fri, 30 Jun 2023 23:55:17 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 07/11] target/alpha: Use float64_to_int64_modulo for CVTTQ
-Date: Sat,  1 Jul 2023 08:55:06 +0200
-Message-Id: <20230701065510.514743-8-richard.henderson@linaro.org>
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PULL 08/11] target/arm: Use float64_to_int32_modulo for FJCVTZS
+Date: Sat,  1 Jul 2023 08:55:07 +0200
+Message-Id: <20230701065510.514743-9-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230701065510.514743-1-richard.henderson@linaro.org>
 References: <20230701065510.514743-1-richard.henderson@linaro.org>
@@ -92,118 +92,101 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For the most part we can use the new generic routine,
-though exceptions need some post-processing to sort
-invalid from integer overflow.
+The standard floating point results are provided by the generic routine.
+We only need handle the extra Z flag result afterward.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <20230527141910.1885950-4-richard.henderson@linaro.org>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Message-Id: <20230527141910.1885950-5-richard.henderson@linaro.org>
 ---
- target/alpha/fpu_helper.c | 85 +++++++++------------------------------
- 1 file changed, 18 insertions(+), 67 deletions(-)
+ target/arm/vfp_helper.c | 71 +++++++----------------------------------
+ 1 file changed, 12 insertions(+), 59 deletions(-)
 
-diff --git a/target/alpha/fpu_helper.c b/target/alpha/fpu_helper.c
-index 3ff8bb456d..63d9e9ce39 100644
---- a/target/alpha/fpu_helper.c
-+++ b/target/alpha/fpu_helper.c
-@@ -453,78 +453,29 @@ uint64_t helper_cvtqs(CPUAlphaState *env, uint64_t a)
- 
- static uint64_t do_cvttq(CPUAlphaState *env, uint64_t a, int roundmode)
+diff --git a/target/arm/vfp_helper.c b/target/arm/vfp_helper.c
+index 36906db8e0..789bba36cc 100644
+--- a/target/arm/vfp_helper.c
++++ b/target/arm/vfp_helper.c
+@@ -1120,68 +1120,21 @@ const FloatRoundMode arm_rmode_to_sf_map[] = {
+ uint64_t HELPER(fjcvtzs)(float64 value, void *vstatus)
  {
--    uint64_t frac, ret = 0;
--    uint32_t exp, sign, exc = 0;
--    int shift;
-+    float64 fa;
-+    int64_t ret;
-+    uint32_t exc;
+     float_status *status = vstatus;
+-    uint32_t exp, sign;
+-    uint64_t frac;
+-    uint32_t inexact = 1; /* !Z */
++    uint32_t inexact, frac;
++    uint32_t e_old, e_new;
  
--    sign = (a >> 63);
--    exp = (uint32_t)(a >> 52) & 0x7ff;
--    frac = a & 0xfffffffffffffull;
-+    fa = t_to_float64(a);
-+    ret = float64_to_int64_modulo(fa, roundmode, &FP_STATUS);
+-    sign = extract64(value, 63, 1);
+-    exp = extract64(value, 52, 11);
+-    frac = extract64(value, 0, 52);
++    e_old = get_float_exception_flags(status);
++    set_float_exception_flags(0, status);
++    frac = float64_to_int32_modulo(value, float_round_to_zero, status);
++    e_new = get_float_exception_flags(status);
++    set_float_exception_flags(e_old | e_new, status);
  
 -    if (exp == 0) {
--        if (unlikely(frac != 0) && !env->fp_status.flush_inputs_to_zero) {
--            goto do_underflow;
--        }
--    } else if (exp == 0x7ff) {
--        exc = FPCR_INV;
--    } else {
--        /* Restore implicit bit.  */
--        frac |= 0x10000000000000ull;
-+    exc = get_float_exception_flags(&FP_STATUS);
-+    if (unlikely(exc)) {
-+        set_float_exception_flags(0, &FP_STATUS);
- 
--        shift = exp - 1023 - 52;
--        if (shift >= 0) {
--            /* In this case the number is so large that we must shift
--               the fraction left.  There is no rounding to do.  */
--            if (shift < 64) {
--                ret = frac << shift;
--            }
--            /* Check for overflow.  Note the special case of -0x1p63.  */
--            if (shift >= 11 && a != 0xC3E0000000000000ull) {
-+        /* We need to massage the resulting exceptions. */
-+        if (exc & float_flag_invalid_cvti) {
-+            /* Overflow, either normal or infinity. */
-+            if (float64_is_infinity(fa)) {
-+                exc = FPCR_INV;
-+            } else {
-                 exc = FPCR_IOV | FPCR_INE;
-             }
--        } else {
--            uint64_t round;
--
--            /* In this case the number is smaller than the fraction as
--               represented by the 52 bit number.  Here we must think
--               about rounding the result.  Handle this by shifting the
--               fractional part of the number into the high bits of ROUND.
--               This will let us efficiently handle round-to-nearest.  */
--            shift = -shift;
--            if (shift < 63) {
--                ret = frac >> shift;
--                round = frac << (64 - shift);
+-        /* While not inexact for IEEE FP, -0.0 is inexact for JavaScript.  */
+-        inexact = sign;
+-        if (frac != 0) {
+-            if (status->flush_inputs_to_zero) {
+-                float_raise(float_flag_input_denormal, status);
 -            } else {
--                /* The exponent is so small we shift out everything.
--                   Leave a sticky bit for proper rounding below.  */
--            do_underflow:
--                round = 1;
--            }
--
--            if (round) {
--                exc = FPCR_INE;
--                switch (roundmode) {
--                case float_round_nearest_even:
--                    if (round == (1ull << 63)) {
--                        /* Fraction is exactly 0.5; round to even.  */
--                        ret += (ret & 1);
--                    } else if (round > (1ull << 63)) {
--                        ret += 1;
--                    }
--                    break;
--                case float_round_to_zero:
--                    break;
--                case float_round_up:
--                    ret += 1 - sign;
--                    break;
--                case float_round_down:
--                    ret += sign;
--                    break;
--                }
+-                float_raise(float_flag_inexact, status);
+-                inexact = 1;
 -            }
 -        }
+-        frac = 0;
+-    } else if (exp == 0x7ff) {
+-        /* This operation raises Invalid for both NaN and overflow (Inf).  */
+-        float_raise(float_flag_invalid, status);
+-        frac = 0;
++    if (value == float64_chs(float64_zero)) {
++        /* While not inexact for IEEE FP, -0.0 is inexact for JavaScript. */
++        inexact = 1;
+     } else {
+-        int true_exp = exp - 1023;
+-        int shift = true_exp - 52;
+-
+-        /* Restore implicit bit.  */
+-        frac |= 1ull << 52;
+-
+-        /* Shift the fraction into place.  */
+-        if (shift >= 0) {
+-            /* The number is so large we must shift the fraction left.  */
+-            if (shift >= 64) {
+-                /* The fraction is shifted out entirely.  */
+-                frac = 0;
+-            } else {
+-                frac <<= shift;
+-            }
+-        } else if (shift > -64) {
+-            /* Normal case -- shift right and notice if bits shift out.  */
+-            inexact = (frac << (64 + shift)) != 0;
+-            frac >>= -shift;
+-        } else {
+-            /* The fraction is shifted out entirely.  */
+-            frac = 0;
+-        }
+-
+-        /* Notice overflow or inexact exceptions.  */
+-        if (true_exp > 31 || frac > (sign ? 0x80000000ull : 0x7fffffff)) {
+-            /* Overflow, for which this operation raises invalid.  */
+-            float_raise(float_flag_invalid, status);
+-            inexact = 1;
+-        } else if (inexact) {
+-            float_raise(float_flag_inexact, status);
+-        }
+-
+-        /* Honor the sign.  */
 -        if (sign) {
--            ret = -ret;
-+        } else if (exc & float_flag_invalid) {
-+            exc = FPCR_INV;
-+        } else if (exc & float_flag_inexact) {
-+            exc = FPCR_INE;
-         }
+-            frac = -frac;
+-        }
++        /* Normal inexact or overflow or NaN */
++        inexact = e_new & (float_flag_inexact | float_flag_invalid);
      }
-     env->error_code = exc;
+ 
+     /* Pack the result and the env->ZF representation of Z together.  */
 -- 
 2.34.1
 
