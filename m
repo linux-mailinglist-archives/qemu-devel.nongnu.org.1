@@ -2,82 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB0FA744777
-	for <lists+qemu-devel@lfdr.de>; Sat,  1 Jul 2023 08:56:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5951744781
+	for <lists+qemu-devel@lfdr.de>; Sat,  1 Jul 2023 08:59:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFUVx-0007YD-Q6; Sat, 01 Jul 2023 02:55:25 -0400
+	id 1qFUZu-0006eW-QQ; Sat, 01 Jul 2023 02:59:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qFUVv-0007Wa-Dm
- for qemu-devel@nongnu.org; Sat, 01 Jul 2023 02:55:23 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ id 1qFUZs-0006di-6o
+ for qemu-devel@nongnu.org; Sat, 01 Jul 2023 02:59:28 -0400
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qFUVt-0007GD-Hb
- for qemu-devel@nongnu.org; Sat, 01 Jul 2023 02:55:23 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-3fbc0981756so24377305e9.0
- for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 23:55:21 -0700 (PDT)
+ id 1qFUZh-0008EY-Ni
+ for qemu-devel@nongnu.org; Sat, 01 Jul 2023 02:59:27 -0400
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-3142860734aso597943f8f.1
+ for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 23:59:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688194520; x=1690786520;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=H+qtKArYQsrn/b+NQpVzVpVv88M5134YWuGW3InQxAY=;
- b=cAZnbS3BQNJwY0a1ELCkEpvhj8/hYssPgwQk1GF1cuHbY1XVNqKzy0H6kO7ZyaGDRs
- tY8le5Ov4apcusKs9G4349GneSyuJ4h7spledhwUMujROPtQI/HQXTN3n0Zk+8THyRlD
- 5JiPbPK3+btqICAnxTKCt5kUpLUvooJ64G2sPvluAF+gIeWhIhDBZDo5HGunGXbxEylV
- P0Z8Ti9x6lfbW8eticMphotCT7CP9wHMkfLDfPgpD9MRod7yuQzFg5G8H1Q4012fZk3P
- du6o0oSPD4+NOo//PvN8z0PiGVQTYjXMVHmS9kp90ZH8ckGO63iT2kGRjqZqwZGh8pUL
- i1cA==
+ d=linaro.org; s=google; t=1688194756; x=1690786756;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=RITFnRrDrO6I338+of5HFzJT359Eu9SWXrbeWUUD5eU=;
+ b=YtYPRT8onSjUOTXsFCTZIIjf4v4vttzBiBG/1i67sb46zEHqHZryV0qHph+fJz9XIt
+ qwby5DZ58hbH3ZBXdpWsUqGMknktZl0b5BUG33+jvUfgW7NvhFYDrVaA515z0wX2EcSu
+ G5ee9TuQ4F5LIXuSRQvkyD4nIddggKpnse+Z2HxQd6P8qdovVuS984/i25R9lN75bdz4
+ J/EztVymI+4/0hnpyr5P49hGfTGpEtF4kDGb6kvJvIOy19QTtNY1zjMwpBS726dbYgom
+ 95WeRBuGZ1ObGisi4XAmVsycUIup8jEmk1J0SiALEQukK6i0a7mgfmCminwAzhVD/Z2R
+ /Xhg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688194520; x=1690786520;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=H+qtKArYQsrn/b+NQpVzVpVv88M5134YWuGW3InQxAY=;
- b=Diq47pCWTDzuK7NNpQIPbUn9ML+AozOB83H5z/yA7QrvzaLGTLZJVUrvIUcrPsVBT2
- XsbhwTeLTR206qLlB7iV3OXXObz5+wRL28Wjay53U4CeSsioVj9vOuQu49gcWiax3ANB
- jsu2Wxbx+35QA5cTx5QxMHWTajZlPq6DkpTlSQI/mXpNgTAwaUrQsDxwRL/WbyV7u4Uy
- SiFYjDDPaPP0n5OIwmcjvibv/09zrdD/aeV3AlzXsl/qZLUm3qJ1fIJSXaueL7AUaL8I
- nZpRL6kGL8xjXg4QZdoPVCNp++4UWA1nqD4Q4aZOiLWww3M0453XYfBbN4laAiOxxfcO
- pwJQ==
-X-Gm-Message-State: AC+VfDwZgz5h8mpL+LJPGPk5Qn1BaoWKWMrUVcNguaJAa4UE1PZ1J+aW
- gbN2Ova6oetr7+42IJ3ecDeMVSxDTXxN4voG7EI1tg==
-X-Google-Smtp-Source: ACHHUZ6tLHYBTi0aeTx4soXS//fxIqkikatLPTS9jaYnAN+YS14GXa+UGVZaFMIUHNXAJyDDYGf6ZQ==
-X-Received: by 2002:a1c:7908:0:b0:3f8:fb7c:6793 with SMTP id
- l8-20020a1c7908000000b003f8fb7c6793mr3248980wme.24.1688194520279; 
- Fri, 30 Jun 2023 23:55:20 -0700 (PDT)
-Received: from localhost.localdomain ([139.47.41.96])
+ d=1e100.net; s=20221208; t=1688194756; x=1690786756;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=RITFnRrDrO6I338+of5HFzJT359Eu9SWXrbeWUUD5eU=;
+ b=KFc6I4RVKD8bTAuysY5eimskoov7Vma3JW9uTPGXVI6OpZPZXGdbj2QoHlRJS3/RM8
+ KbZM8saOYIkUZo8GzWUJ0p9obicoQwkDjy9QuiyX8M5l6UDeQTUWLn5e5W+c7+qSZyvU
+ 8XemkCYp2KgFQ5tgGF9f8jeTUagkgWWKRC1L+No3ClpMX18xf31slZu1L7s0KlwV0hqV
+ Gr6fthT7wc2L8tcsmBZBU21caZ8rmM3S8CRwi5fogEqj0bJeyoAbHU534nBWTWlfFpkI
+ C+yVImPDgaKgswfiBrrWq6VVUtQdR26FWjlvah4FYJw0Spsd05+oSTinuZkiVOW1pkEE
+ MeOw==
+X-Gm-Message-State: AC+VfDwdT3drOSsHAf6g/PYDJBAIscrLbZgSikYjjvc0srSDV5qkCHg6
+ rxS1XsCYKU8DNJhz1e/AzuKV+g==
+X-Google-Smtp-Source: ACHHUZ57cOKzV9h6yd/sSYDEjCQ6ARfH+b7hLic+4ohxd5mVvkBKIV9dtMXi4Ht+KnicxjLBzOZc8g==
+X-Received: by 2002:a5d:4586:0:b0:314:3f1:cebf with SMTP id
+ p6-20020a5d4586000000b0031403f1cebfmr9659371wrq.28.1688194756021; 
+ Fri, 30 Jun 2023 23:59:16 -0700 (PDT)
+Received: from [192.168.1.208] ([139.47.41.96])
  by smtp.gmail.com with ESMTPSA id
- w10-20020a1cf60a000000b003f9bd9e3226sm20874918wmc.7.2023.06.30.23.55.19
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 30 Jun 2023 23:55:20 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
-	Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 11/11] linux-user: Avoid mmap of the last byte of the
- reserved_va
-Date: Sat,  1 Jul 2023 08:55:10 +0200
-Message-Id: <20230701065510.514743-12-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230701065510.514743-1-richard.henderson@linaro.org>
-References: <20230701065510.514743-1-richard.henderson@linaro.org>
+ m3-20020a056000180300b003141e9e2f81sm4254636wrh.4.2023.06.30.23.59.15
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 30 Jun 2023 23:59:15 -0700 (PDT)
+Message-ID: <a0f19d7b-789c-cd97-6b5c-9b9630b62cff@linaro.org>
+Date: Sat, 1 Jul 2023 08:59:13 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH] linux-user: Avoid mmap of the last byte of the reserved_va
+Content-Language: en-US
+To: Michael Tokarev <mjt@tls.msk.ru>, qemu-devel@nongnu.org
+Cc: qemu-stable@nongnu.org
+References: <20230629080835.71371-1-richard.henderson@linaro.org>
+ <48a6d541-4edf-4738-1ca9-34cab29a8bdc@tls.msk.ru>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <48a6d541-4edf-4738-1ca9-34cab29a8bdc@tls.msk.ru>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x32e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x430.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.095,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,57 +95,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-There is an overflow problem in mmap_find_vma_reserved:
-when reserved_va == UINT32_MAX, end may overflow to 0.
-Rather than a larger rewrite at this time, simply avoid
-the final byte of the VA, which avoids searching the
-final page, which avoids the overflow.
+On 6/30/23 18:06, Michael Tokarev wrote:
+> 29.06.2023 11:08, Richard Henderson wrote:
+>> There is an overflow problem in mmap_find_vma_reserved:
+>> when reserved_va == UINT32_MAX, end may overflow to 0.
+>> Rather than a larger rewrite at this time, simply avoid
+>> the final byte of the VA, which avoids searching the
+>> final page, which avoids the overflow.
+> 
+> This hack appears to fix known issues and apparently does not
+> introduce regressions.
+> 
+> Can it be applied to master and picked up from there, since
+> master is also broken?  You can revert it in the subsequent
+> patchset like the one you posted today.
+> 
+> You can add my:
+> 
+> Tested-by: Michael Tokarev <mjt@tls.msk.ru>
+> Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
 
-Cc: qemu-stable@nongnu.org
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1741
-Fixes: 95059f9c ("include/exec: Change reserved_va semantics to last byte")
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Tested-by: Michael Tokarev <mjt@tls.msk.ru>
-Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
-Message-Id: <20230629080835.71371-1-richard.henderson@linaro.org>
----
- linux-user/mmap.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+Yes, that's a good idea.  Queued to tcg-next.
 
-diff --git a/linux-user/mmap.c b/linux-user/mmap.c
-index 0aa8ae7356..2692936773 100644
---- a/linux-user/mmap.c
-+++ b/linux-user/mmap.c
-@@ -281,9 +281,15 @@ static abi_ulong mmap_find_vma_reserved(abi_ulong start, abi_ulong size,
-     /* Note that start and size have already been aligned by mmap_find_vma. */
- 
-     end_addr = start + size;
-+    /*
-+     * Start at the top of the address space, ignoring the last page.
-+     * If reserved_va == UINT32_MAX, then end_addr wraps to 0,
-+     * throwing the rest of the calculations off.
-+     * TODO: rewrite using last_addr instead.
-+     * TODO: use the interval tree instead of probing every page.
-+     */
-     if (start > reserved_va - size) {
--        /* Start at the top of the address space.  */
--        end_addr = ((reserved_va + 1 - size) & -align) + size;
-+        end_addr = ((reserved_va - size) & -align) + size;
-         looped = true;
-     }
- 
-@@ -296,8 +302,8 @@ static abi_ulong mmap_find_vma_reserved(abi_ulong start, abi_ulong size,
-                 /* Failure.  The entire address space has been searched.  */
-                 return (abi_ulong)-1;
-             }
--            /* Re-start at the top of the address space.  */
--            addr = end_addr = ((reserved_va + 1 - size) & -align) + size;
-+            /* Re-start at the top of the address space (see above). */
-+            addr = end_addr = ((reserved_va - size) & -align) + size;
-             looped = true;
-         } else {
-             prot = page_get_flags(addr);
--- 
-2.34.1
+
+r~
 
 
