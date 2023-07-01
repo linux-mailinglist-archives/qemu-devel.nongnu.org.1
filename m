@@ -2,85 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C81D47448C9
-	for <lists+qemu-devel@lfdr.de>; Sat,  1 Jul 2023 14:07:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A033A7448E2
+	for <lists+qemu-devel@lfdr.de>; Sat,  1 Jul 2023 14:22:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFZN1-0007Fs-9g; Sat, 01 Jul 2023 08:06:31 -0400
+	id 1qFZbP-0001du-SE; Sat, 01 Jul 2023 08:21:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qFZMz-0007FU-8x
- for qemu-devel@nongnu.org; Sat, 01 Jul 2023 08:06:29 -0400
-Received: from mail-ot1-x32d.google.com ([2607:f8b0:4864:20::32d])
+ id 1qFZbN-0001cQ-Jp
+ for qemu-devel@nongnu.org; Sat, 01 Jul 2023 08:21:22 -0400
+Received: from mail-oo1-xc2e.google.com ([2607:f8b0:4864:20::c2e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qFZMx-0004IQ-Oh
- for qemu-devel@nongnu.org; Sat, 01 Jul 2023 08:06:29 -0400
-Received: by mail-ot1-x32d.google.com with SMTP id
- 46e09a7af769-6b71cdb47e1so2472270a34.2
- for <qemu-devel@nongnu.org>; Sat, 01 Jul 2023 05:06:27 -0700 (PDT)
+ id 1qFZbL-0000Uw-Fk
+ for qemu-devel@nongnu.org; Sat, 01 Jul 2023 08:21:21 -0400
+Received: by mail-oo1-xc2e.google.com with SMTP id
+ 006d021491bc7-560b56b638eso1821828eaf.0
+ for <qemu-devel@nongnu.org>; Sat, 01 Jul 2023 05:21:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1688213186; x=1690805186;
- h=content-transfer-encoding:in-reply-to:from:references:to
+ d=ventanamicro.com; s=google; t=1688214078; x=1690806078;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=/1H45VmIvMku10dk4lDT69pGQe4+i/UvfEGCxr7c/GA=;
- b=jdhW7m7WlnsGHmEd8NF6n0WyMIMB867hSaQ6sbqEXstlP4+c69Xd2/DdLwgbbna4gc
- LHw/6FRqPyWZIvvLzI/tlLKSifHzLs0yR7+OpOiy/6lzkNqQwoab3FgfEps2h7knZ6VB
- iusO+m7XulF73/Y9+t4HjUbNJPuIEK4vrp2GgdsKE4rirExtPyiUG7T+KvI0HvTrwL0u
- IyTsJajxD66hukRt8K9Knj8ZGMmseQ0G2Ch/87B1/ptm0olIH9ccHCWzpJvsKowlWTB6
- Vjw/7qSk/xWS69QYBUEX7BixD1Bka9mHFrPp1kCRe71CM8nuXSYzUXgEPaYPKkrUW99+
- OGbg==
+ bh=ltR6+btn7qx3Uz8ohgVMmphmZWsSINbZLSIpu3GrlVc=;
+ b=QKtIujCZYmi2UWcXOUykOT9zudoXzwAXxiTNzdQzAcstV+GATdu1zF2eiVsQkTiuQB
+ xl6vVVKEoBB4up9kUnm+K6lm1Hdua3wB+DhomxGvRQQbs1/3EoHR6Jf+jcFlQfRbpcW2
+ AhEmlGN4RxKqaHMxxexaTopEuQTcmIaP0PDIhnLffPL5BQl158o5LvjXNqytpR3J3Ju+
+ OkzgwiuIIaU/lh1cp47AbWqeEAHlZvOLZ8YvfkNPvoQHwcj0hAggIX9HxYvGaiXvrnVp
+ Tc0x2strjZ4y5D2JuxO9IJO/msmizR6J+Q5567kNP6fqX3tR5ofgaPE5EU1ZQ4SrrgYa
+ cQ4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688213186; x=1690805186;
- h=content-transfer-encoding:in-reply-to:from:references:to
+ d=1e100.net; s=20221208; t=1688214078; x=1690806078;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=/1H45VmIvMku10dk4lDT69pGQe4+i/UvfEGCxr7c/GA=;
- b=Dr0vlxiJ9Uj+axjP/fYjpYu9bBSw1tRFcNapHT9ARjxHLnQEnGANh4ls1GpCRtaKdW
- wh2DwCmdNaQ6NMfkjwlr0LH0OnsYvmSVcY8V2KuuUfglc9AddZEHnu6DW2KGm/L9dz0N
- 1aO+HRh3MvzN79Aa8Mkz87ivZQw8HG+dG6+h/hkGst2VTZG/7sRvXeyYDuTZZZ403j3+
- sR9PMb5/DY/GzkIhSt8HZSLxUyDHXrUq7Ad7hTSKudPcAie7sHjqjDe3uLYbU2CnmhET
- oMoQlXwQfE1Jvf3sCX9B8nuVxj3c6GgcY+ZxmZYAhnamN/nVuci7KoSxm5KNxr/eo20r
- tJtA==
-X-Gm-Message-State: AC+VfDzRzTQfqdWiY1ooB/8NR28PCZJt7k5bm7raIZ5e8sQMIYPph4AW
- SQPPlwKEZnAOMmnmWNKWGL6b3abnpbmSp6/k5zg=
-X-Google-Smtp-Source: ACHHUZ4gHTRuO67g1HhgpKPa4vgcX4fszt7IY/ObRRjdbUrOZPJzNAR+K/+3CZcaWEmfb2zE/NrpOA==
-X-Received: by 2002:a05:6830:3:b0:6b1:604f:3f22 with SMTP id
- c3-20020a056830000300b006b1604f3f22mr6809660otp.2.1688213186476; 
- Sat, 01 Jul 2023 05:06:26 -0700 (PDT)
+ bh=ltR6+btn7qx3Uz8ohgVMmphmZWsSINbZLSIpu3GrlVc=;
+ b=FV9ZopGel4s4SJ9xs7pUM3hqPH+0Q0/y1hzS16OtwcWzGXdrXpOATUEkw+/v+sqP31
+ Z9p0QlWTGoNMougGf8HD4tvaCCOM+r3y8GtyCNi7LNi8KB8p9pIhR7DvK5OhodVlOrRM
+ +UcNEa9UDxHIW50vs/3/qVdsBO7YoF48SEA60G2JkVQpQrv0zK7FrK1X0iwpZ17BZBGa
+ Wbt4bNMRKpwbn5ocNkw5wpzeTDVid9niDWCuIpDFfnWByFwQ/28wJX+JkghHmwKsgynA
+ MsFYELX+Hx2ZmjpT+G7cNsxxKo4NtTLwLs4Crut8MQXH7OQMg1t1V+iIYESwfZ1kKkjq
+ bMsw==
+X-Gm-Message-State: AC+VfDzAjOnl5sXGcz49+4ECbH4K6s4gv7ELvzlbDAa50IIkzCbX+JVv
+ aSLSl7hQAu37FW1a7xlisYFXvQ==
+X-Google-Smtp-Source: ACHHUZ7MXqbQRymr5DpGuBv90qduhgdCoWPqbCfvIS6sGI0gR5pMQrlGaJHzNyVg0C+KVY7kXNGOew==
+X-Received: by 2002:a4a:52cc:0:b0:563:350a:e099 with SMTP id
+ d195-20020a4a52cc000000b00563350ae099mr3277585oob.1.1688214077870; 
+ Sat, 01 Jul 2023 05:21:17 -0700 (PDT)
 Received: from [192.168.68.107] (201-69-66-110.dial-up.telesp.net.br.
  [201.69.66.110]) by smtp.gmail.com with ESMTPSA id
- h17-20020a9d6411000000b006b720475c38sm7552893otl.45.2023.07.01.05.06.24
+ c7-20020a4ad8c7000000b00562f3936c01sm3450951oov.45.2023.07.01.05.21.15
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 01 Jul 2023 05:06:26 -0700 (PDT)
-Message-ID: <f0cb1662-f186-a9bb-8913-d92ee319d0df@ventanamicro.com>
-Date: Sat, 1 Jul 2023 09:06:23 -0300
+ Sat, 01 Jul 2023 05:21:17 -0700 (PDT)
+Message-ID: <92f481fa-fbe7-ac66-6a4c-89abc0457792@ventanamicro.com>
+Date: Sat, 1 Jul 2023 09:21:14 -0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
-Subject: Re: [PATCH 2/2] tests/avocado: riscv: Enable 32-bit Spike OpenSBI
- boot testing
+Subject: Re: [RFC PATCH] target/riscv: Add Zihintntl extension ISA string to
+ DTS
 Content-Language: en-US
-To: Bin Meng <bmeng@tinylab.org>, Alistair Francis
- <alistair.francis@wdc.com>, qemu-devel@nongnu.org
-References: <20230630160717.843044-1-bmeng@tinylab.org>
- <20230630160717.843044-2-bmeng@tinylab.org>
+To: Jason Chien <jason.chien@sifive.com>, qemu-devel@nongnu.org,
+ qemu-riscv@nongnu.org
+Cc: Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
+References: <20230627092631.22286-1-jason.chien@sifive.com>
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20230630160717.843044-2-bmeng@tinylab.org>
+In-Reply-To: <20230627092631.22286-1-jason.chien@sifive.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::32d;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-ot1-x32d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c2e;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-oo1-xc2e.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.093,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,44 +101,76 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 
-On 6/30/23 13:07, Bin Meng wrote:
-> The 32-bit Spike boot issue has been fixed in the OpenSBI v1.3.
-> Let's enable the 32-bit Spike OpenSBI boot testing.
+On 6/27/23 06:26, Jason Chien wrote:
+> RVA23 Profiles states:
+> The RVA23 profiles are intended to be used for 64-bit application
+> processors that will run rich OS stacks from standard binary OS
+> distributions and with a substantial number of third-party binary user
+> applications that will be supported over a considerable length of time
+> in the field.
 > 
-> Signed-off-by: Bin Meng <bmeng@tinylab.org>
+> The chapter 4 of the unprivileged spec introduces the Zihintntl extension
+> and Zihintntl is a mandatory extension presented in RVA23 Profiles, whose
+> targeting software stacks includes Linux. Thus the DTS should contain
+> the Zihintntl ISA string in order to pass to Linux.
+> 
+> The unprivileged spec states:
+> Like any HINTs, these instructions may be freely ignored. Hence, although
+> they are described in terms of cache-based memory hierarchies, they do not
+> mandate the provision of caches.
+> 
+> These instructions are encoded with used opcode, which QEMU already
+> supports, and QEMU does not emulate cache, therefore we just need to add
+> a new property for the extension.
+> 
+> Signed-off-by: Jason Chien <jason.chien@sifive.com>
 > ---
-
-
-(03/17) tests/avocado/riscv_opensbi.py:RiscvOpenSBI.test_riscv32_spike: PASS (0.10 s)
-
-Nice!
-
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-
-
-
+>   target/riscv/cpu.c     | 2 ++
+>   target/riscv/cpu_cfg.h | 1 +
+>   2 files changed, 3 insertions(+)
 > 
->   tests/avocado/riscv_opensbi.py | 2 --
->   1 file changed, 2 deletions(-)
-> 
-> diff --git a/tests/avocado/riscv_opensbi.py b/tests/avocado/riscv_opensbi.py
-> index e02f0d404a..bfff9cc3c3 100644
-> --- a/tests/avocado/riscv_opensbi.py
-> +++ b/tests/avocado/riscv_opensbi.py
-> @@ -6,7 +6,6 @@
->   # later.  See the COPYING file in the top-level directory.
->   
->   from avocado_qemu import QemuSystemTest
-> -from avocado import skip
->   from avocado_qemu import wait_for_console_pattern
->   
->   class RiscvOpenSBI(QemuSystemTest):
-> @@ -21,7 +20,6 @@ def boot_opensbi(self):
->           wait_for_console_pattern(self, 'Platform Name')
->           wait_for_console_pattern(self, 'Boot HART MEDELEG')
->   
-> -    @skip("requires OpenSBI fix to work")
->       def test_riscv32_spike(self):
->           """
->           :avocado: tags=arch:riscv32
+> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> index 881bddf393..aa99781f17 100644
+> --- a/target/riscv/cpu.c
+> +++ b/target/riscv/cpu.c
+> @@ -81,6 +81,7 @@ static const struct isa_ext_data isa_edata_arr[] = {
+>       ISA_EXT_DATA_ENTRY(zicond, PRIV_VERSION_1_12_0, ext_zicond),
+>       ISA_EXT_DATA_ENTRY(zicsr, PRIV_VERSION_1_10_0, ext_icsr),
+>       ISA_EXT_DATA_ENTRY(zifencei, PRIV_VERSION_1_10_0, ext_ifencei),
+> +    ISA_EXT_DATA_ENTRY(zihintntl, PRIV_VERSION_1_10_0, ext_zihintntl),
+>       ISA_EXT_DATA_ENTRY(zihintpause, PRIV_VERSION_1_10_0, ext_zihintpause),
+>       ISA_EXT_DATA_ENTRY(zawrs, PRIV_VERSION_1_12_0, ext_zawrs),
+>       ISA_EXT_DATA_ENTRY(zfh, PRIV_VERSION_1_11_0, ext_zfh),
+> @@ -1598,6 +1599,7 @@ static Property riscv_cpu_extensions[] = {
+>       DEFINE_PROP_BOOL("sscofpmf", RISCVCPU, cfg.ext_sscofpmf, false),
+>       DEFINE_PROP_BOOL("Zifencei", RISCVCPU, cfg.ext_ifencei, true),
+>       DEFINE_PROP_BOOL("Zicsr", RISCVCPU, cfg.ext_icsr, true),
+> +    DEFINE_PROP_BOOL("Zihintntl", RISCVCPU, cfg.ext_zihintntl, false),
+
+IIUC we want to add the possibility of enabling zihintntl (and add it to riscv,isa
+DT) because it's mandatory for RVA23. And zihintntl can be considered a no-op (i.e.
+can be enabled at will) because (1) we don't emulate cache and (2) applications
+
+If that's the case, I'd say to make it default to 'true' then. It would be one less
+extension to worry about to enable the RVA23 profile in QEMU. Thanks,
+
+
+Daniel
+
+
+>       DEFINE_PROP_BOOL("Zihintpause", RISCVCPU, cfg.ext_zihintpause, true),
+>       DEFINE_PROP_BOOL("Zawrs", RISCVCPU, cfg.ext_zawrs, true),
+>       DEFINE_PROP_BOOL("Zfh", RISCVCPU, cfg.ext_zfh, false),
+> diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
+> index c4a627d335..c7da2facef 100644
+> --- a/target/riscv/cpu_cfg.h
+> +++ b/target/riscv/cpu_cfg.h
+> @@ -66,6 +66,7 @@ struct RISCVCPUConfig {
+>       bool ext_icbom;
+>       bool ext_icboz;
+>       bool ext_zicond;
+> +    bool ext_zihintntl;
+>       bool ext_zihintpause;
+>       bool ext_smstateen;
+>       bool ext_sstc;
 
