@@ -2,86 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D166B7446E4
-	for <lists+qemu-devel@lfdr.de>; Sat,  1 Jul 2023 08:21:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C9EF7446EA
+	for <lists+qemu-devel@lfdr.de>; Sat,  1 Jul 2023 08:29:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFTxn-00011R-OO; Sat, 01 Jul 2023 02:20:07 -0400
+	id 1qFU6B-0002dh-Nf; Sat, 01 Jul 2023 02:28:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qFTxl-000118-A7
- for qemu-devel@nongnu.org; Sat, 01 Jul 2023 02:20:05 -0400
-Received: from mail-oi1-x236.google.com ([2607:f8b0:4864:20::236])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qFU69-0002dI-3c
+ for qemu-devel@nongnu.org; Sat, 01 Jul 2023 02:28:45 -0400
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qFTxj-0002Ol-K3
- for qemu-devel@nongnu.org; Sat, 01 Jul 2023 02:20:05 -0400
-Received: by mail-oi1-x236.google.com with SMTP id
- 5614622812f47-39eab4bbe8aso1885726b6e.1
- for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 23:20:01 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qFU66-0004B7-U0
+ for qemu-devel@nongnu.org; Sat, 01 Jul 2023 02:28:44 -0400
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-3113dabc549so3317363f8f.1
+ for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 23:28:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1688192401; x=1690784401;
+ d=linaro.org; s=google; t=1688192921; x=1690784921;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=ctc0nmsg6FHkQzZjhBAEQ1qBflBk2llm39BliDq1a8w=;
- b=xKLq9D+vwUmg3LpTOCVs1ttuPhNyWpL5t5rqcyw1oVZgPlhoFM3P/2a/jufCeSCKuk
- xX8s0x7C72Klvh07/zOEge8sFGPKZ19WaKIopSNgrA1LJzRTB//ykt+7maSzbd78BEkg
- Q89YY5kJtHGkdXfs+INtuhgJubhJuO7vvAZRTutBXTiTQGBFbwyVbsbTO+cra+Qob6qB
- IUmHkKKnHYKdgU+FNtqZINP+0LJ4fO4BxE5uIqsNslxG2f0Rj5Xb99QkGD4HAOJqCWYV
- 4PpuiPRIhAUA90DhhyBWOuFtX1XqwWcdunjYXgzTFTRyWWyYZRPPPOKAPdAiEYfY68NF
- kGeA==
+ bh=XHAeWuvwbInnyDvoFeHtnsBxEwlbXX8RBv2pA/viWVM=;
+ b=wF6j3GM+iZem5M9DHlAXkf3CamWqRgpiZw5/SRdEM2bETne/oUJCFQx679w7g0SJi4
+ sRaBIivbinC1rE5Bs5hjTIDTt5+K71sbmIYh+O6IMaEaUEVEFh2QWbd6vlEEPTql7/JQ
+ LfkdYRwlR2PXPAn8Ac2MUXyu+SrLSBHGuXzSw2tV75/mMx6/vajHO/7gPVibooBe+9PC
+ qAdd2nK8vinitAhHcE7gLkDdgfzp6ISjkd6S7+qamwKHZbw3T4OgBUqq66FTozhwTasx
+ HMEUFW7c5KNUVVBuKEDv6RE1WiFiUQlblkuWW1Eh9UPm1VLHcRQW753bKBaqEK4z/nAX
+ 2twg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688192401; x=1690784401;
+ d=1e100.net; s=20221208; t=1688192921; x=1690784921;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ctc0nmsg6FHkQzZjhBAEQ1qBflBk2llm39BliDq1a8w=;
- b=WgmVPdUsEZhwkQXlnm0daHbBCCgtvcBRvmKLDaAyx8tpJXVnvN1UrECAZaBd1l22ai
- ZjZPp/fnkecuBXuB0rv0hfV2Xng0J0aLvHkZnr0vn5n2/ZpsXhcZEAzEriuyR2A9ywCd
- KVgSLdxzc9Zh/COUKCVkWKZsAQJnayuGKdyu13PqCphSR5dheJj14nLX/32oXzoCK3WR
- /OEQVLchFGoxKLet2rs9eUpGlhCa9gmbmfPiDowU35asDgHVBP+m+FupxKZakrJ2+ple
- u3PEkgpx2hXjcBKfsb/6NL+nIfA4vyZwoGRNDsP+lY/YsuCKwqCrOkZfvtDVjNPlTSHE
- E2/Q==
-X-Gm-Message-State: ABy/qLbqVBcDFgY0bvBgb+0S2bf9wnvVXlzX0xfUIL7/S5YtSML71w6W
- hXRwVPLl/2oBJPFeZ2QzmPIFxQ==
-X-Google-Smtp-Source: APBJJlGik8YipesTKImruKUJSYZCwigsjAbqq3Z9ZCuUpJtSYgHiAoMUdISD+zZ3Gdf1LdrPBLPuxw==
-X-Received: by 2002:a05:6358:e99:b0:134:d19a:b89e with SMTP id
- 25-20020a0563580e9900b00134d19ab89emr4444172rwg.1.1688192400960; 
- Fri, 30 Jun 2023 23:20:00 -0700 (PDT)
-Received: from [157.82.204.253] ([157.82.204.253])
+ bh=XHAeWuvwbInnyDvoFeHtnsBxEwlbXX8RBv2pA/viWVM=;
+ b=jSGiqV4yB3BUlZ4u81dPBxCkMLjJhHVTHN8hx6M+4krZddgFx5DwwAtckMHOvbpP3+
+ kkVmPKQokuTFVg5Q+SJznr5GMzEH+gXG//IH/eI4xtof1x0KtAvoI9VBWz7W0aqOEQGA
+ E1vDxn6i+zPhhGPoX7zV2NXkzSCPdmCN6YdtjcpkQxhYa/WC1XlSqcrcNcGT897PLQTZ
+ DozmB3eC1cDJig9PVlLPBAyXq49luUp8rwrlzEitCVyWXl1oalYqtr0zwAZfHqd3jqHM
+ YSOFGR0sSty5eHb4A+r7AKAf8t40qRe3ItemcLFGJviTKchmStfLrvVpnHkm+YV0pbXx
+ nC3g==
+X-Gm-Message-State: ABy/qLZRjoljPSSEaAZ5xPBGEj6/YZb+4EuhqZwwxffe99AAAlN54CGY
+ AEDlf+OZXDzu7/AYVRwQOWUERw==
+X-Google-Smtp-Source: APBJJlHw3L6DeHysP7ztFSXtbd36UmFihsP4M5dycT8+UOn2GAiuWXkEurPjPt98dzoNZMEl/anYBQ==
+X-Received: by 2002:a5d:550d:0:b0:311:1a9c:5e03 with SMTP id
+ b13-20020a5d550d000000b003111a9c5e03mr4796856wrv.51.1688192920785; 
+ Fri, 30 Jun 2023 23:28:40 -0700 (PDT)
+Received: from [192.168.1.208] ([139.47.41.96])
  by smtp.gmail.com with ESMTPSA id
- jl16-20020a170903135000b001b87d3e845bsm723330plb.149.2023.06.30.23.19.59
+ u18-20020adfeb52000000b003113943bb66sm20041472wrn.110.2023.06.30.23.28.40
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 30 Jun 2023 23:20:00 -0700 (PDT)
-Message-ID: <3c544bc4-0257-8973-e2d6-7be8d686a08c@daynix.com>
-Date: Sat, 1 Jul 2023 15:19:58 +0900
+ Fri, 30 Jun 2023 23:28:40 -0700 (PDT)
+Message-ID: <efd6705a-893d-7c6d-c3eb-264928b055b3@linaro.org>
+Date: Sat, 1 Jul 2023 08:28:38 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH] pcie: Release references of virtual functions
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH] audio: dbus requires pixman
 Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, qemu-devel@nongnu.org,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-References: <20230411090408.48366-1-akihiko.odaki@daynix.com>
- <44853d32-38cc-eec0-c96f-31c898104e7d@linaro.org>
- <20230421040908-mutt-send-email-mst@kernel.org>
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <20230421040908-mutt-send-email-mst@kernel.org>
+To: marcandre.lureau@redhat.com, qemu-devel@nongnu.org
+Cc: Gerd Hoffmann <kraxel@redhat.com>
+References: <20230630214156.2181558-1-marcandre.lureau@redhat.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230630214156.2181558-1-marcandre.lureau@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::236;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-oi1-x236.google.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x42b.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, NICE_REPLY_A=-0.095, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.095,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -98,61 +94,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/04/21 17:09, Michael S. Tsirkin wrote:
-> On Tue, Apr 11, 2023 at 12:11:30PM +0200, Philippe Mathieu-Daudé wrote:
->> On 11/4/23 11:04, Akihiko Odaki wrote:
->>> pci_new() automatically retains a reference to a virtual function when
->>> registering it so we need to release the reference when unregistering.
->>>
->>> Fixes: 7c0fa8dff8 ("pcie: Add support for Single Root I/O Virtualization (SR/IOV)")
->>> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
->>> ---
->>>    hw/pci/pcie_sriov.c | 1 +
->>>    1 file changed, 1 insertion(+)
->>>
->>> diff --git a/hw/pci/pcie_sriov.c b/hw/pci/pcie_sriov.c
->>> index aa5a757b11..76a3b6917e 100644
->>> --- a/hw/pci/pcie_sriov.c
->>> +++ b/hw/pci/pcie_sriov.c
->>> @@ -211,6 +211,7 @@ static void unregister_vfs(PCIDevice *dev)
->>>                error_free(local_err);
->>>            }
->>>            object_unparent(OBJECT(vf));
->>> +        object_unref(OBJECT(vf));
->>>        }
->>>        g_free(dev->exp.sriov_pf.vf);
->>>        dev->exp.sriov_pf.vf = NULL;
->>
->> It feels the issue is at the device creation.
->>
->> [/me looking at the code]
->>
->> What about:
->>
->> -- >8 --
->> diff --git a/hw/pci/pcie_sriov.c b/hw/pci/pcie_sriov.c
->> index aa5a757b11..fca3bf6e72 100644
->> --- a/hw/pci/pcie_sriov.c
->> +++ b/hw/pci/pcie_sriov.c
->> @@ -150,7 +150,7 @@ static PCIDevice *register_vf(PCIDevice *pf, int devfn,
->> const char *name,
->>       PCIBus *bus = pci_get_bus(pf);
->>       Error *local_err = NULL;
->>
->> -    qdev_realize(&dev->qdev, &bus->qbus, &local_err);
->> +    pci_realize_and_unref(dev, bus, &local_err);
->>       if (local_err) {
->>           error_report_err(local_err);
->>           return NULL;
+On 6/30/23 23:41, marcandre.lureau@redhat.com wrote:
+> From: Marc-André Lureau<marcandre.lureau@redhat.com>
 > 
-> ok you want to repost this or Akihiko convinced you?
+> Commit commit 6cc5a615 ("ui/dbus: win32 support") has broken audio/dbus
+> compilation when pixman is not included.
 > 
+> Fixes:https://gitlab.com/qemu-project/qemu/-/issues/1739
 > 
->> ---
-> 
+> Signed-off-by: Marc-André Lureau<marcandre.lureau@redhat.com>
+> ---
+>   audio/meson.build | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 
-Can you reply to this?
+Queued to tcg-next, per request.
 
-Regards,
-Akihiko Odaki
+
+r~
 
