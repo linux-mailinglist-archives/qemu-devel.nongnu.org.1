@@ -2,81 +2,121 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D5D3744865
-	for <lists+qemu-devel@lfdr.de>; Sat,  1 Jul 2023 12:11:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D02D0744866
+	for <lists+qemu-devel@lfdr.de>; Sat,  1 Jul 2023 12:12:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFXZG-0007yl-B8; Sat, 01 Jul 2023 06:11:02 -0400
+	id 1qFXZp-0000FZ-ID; Sat, 01 Jul 2023 06:11:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qFXZD-0007xO-WD; Sat, 01 Jul 2023 06:11:00 -0400
-Received: from mail-il1-x136.google.com ([2607:f8b0:4864:20::136])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qFXZB-0007mH-VA; Sat, 01 Jul 2023 06:10:59 -0400
-Received: by mail-il1-x136.google.com with SMTP id
- e9e14a558f8ab-3456fda4ed1so13106695ab.0; 
- Sat, 01 Jul 2023 03:10:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688206256; x=1690798256;
- h=in-reply-to:references:cc:to:from:subject:message-id:date
- :content-transfer-encoding:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=uv9EPkTuwkw/ofplV8Yr7/QP/w7XdI0ael8JiBSfQRA=;
- b=iqey0fIIMpScHacf/McnKGP+Vz7qD8Pqf04qnxrqR1/162LxvoCc2e/9MybsKADMM8
- mwmUUhM5u5fMk1gGtlIlXMvb/hAWZv8h472eNlP0RKZVyDBmVHgv9h/eqlfwP5iaHR1o
- TcGKzsG0hUAv0vTgi6ZaA2eZLDj1PTfMGLj3h8/hZL+9TLGqk0QEiO61ouxlyLSd0/We
- au2xEiHKfjozExUZnh1HkjK93sA1OYcaWZVXeTWvCfip/HxqM5DqKG5iqC8/cjZrEDAH
- s+qzQw9Y9NHDZoxnK960+RCRpd9ytpsmpvWKfDFSwQBpNEQj2NfEb2FXLJzVJxZ24ksn
- caqw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688206256; x=1690798256;
- h=in-reply-to:references:cc:to:from:subject:message-id:date
- :content-transfer-encoding:mime-version:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=uv9EPkTuwkw/ofplV8Yr7/QP/w7XdI0ael8JiBSfQRA=;
- b=hQmIX0puU7ksaK+kbuHppzjpX9ouD5gO/NzfH4SZE8OXytAIC0nuP7/3fFsHvYhG52
- Nlpge5gO5vJs2azFpNyP2JqSA+zCVVitSVj+buw1RvpSu7t3b32kVzbHQTgD7/6Soj11
- 4B7KYGKTGSeNsdsLFSkcyb5saIosqDlY3Y/98y0bQy+uob1w0dsiVFRyYv9fAIOy3o1t
- RAZ9/2x2pUYwhHtUxXOK0+4zrBFw4RN914nkkGAEPMxzh1LLbGpRjcDp7Y2KT2ZNBrnw
- lkoKiOlE05Q25Cr+cQHyKsStnf5BbcjG/5UTW8PyT+F2/pX3BjrQ27G+rAmJL6CkZ4l5
- S88A==
-X-Gm-Message-State: ABy/qLYUjRvpAUG06lGmyEfSCC59uKZ9UrOTxDq4x7hfzp+RbMN8utly
- 6FMdVc/vqv1NRQTEpcYbPr8=
-X-Google-Smtp-Source: APBJJlFX60PXCf95vMf1JSiTz+sSuwWG/RlvoyoEXfcTRoaRf8OMCeoTQ7ngO3iXFzN/PahSml4n3g==
-X-Received: by 2002:a92:d48e:0:b0:345:aba5:3777 with SMTP id
- p14-20020a92d48e000000b00345aba53777mr4958285ilg.25.1688206256279; 
- Sat, 01 Jul 2023 03:10:56 -0700 (PDT)
-Received: from localhost (220-244-154-206.tpgi.com.au. [220.244.154.206])
- by smtp.gmail.com with ESMTPSA id
- g7-20020a63e607000000b004fab4455748sm11832416pgh.75.2023.07.01.03.10.53
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 01 Jul 2023 03:10:55 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 01 Jul 2023 20:10:51 +1000
-Message-Id: <CTQR655TPDZR.1BIPQKV0ERXJR@wheely>
-Subject: Re: [PATCH 0/4] ppc/pnv: Extend "quad" model for p10
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Joel Stanley" <joel@jms.id.au>, =?utf-8?q?C=C3=A9dric_Le_Goater?=
- <clg@kaod.org>, =?utf-8?q?Fr=C3=A9d=C3=A9ric_Barrat?=
- <fbarrat@linux.ibm.com>
-Cc: <qemu-devel@nongnu.org>, <qemu-ppc@nongnu.org>
-X-Mailer: aerc 0.15.2
-References: <20230630035547.80329-1-joel@jms.id.au>
-In-Reply-To: <20230630035547.80329-1-joel@jms.id.au>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::136;
- envelope-from=npiggin@gmail.com; helo=mail-il1-x136.google.com
+ (Exim 4.90_1) (envelope-from <alexander.ivanov@virtuozzo.com>)
+ id 1qFXZn-0000EY-QE; Sat, 01 Jul 2023 06:11:36 -0400
+Received: from mail-db5eur02on20724.outbound.protection.outlook.com
+ ([2a01:111:f400:fe12::724]
+ helo=EUR02-DB5-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <alexander.ivanov@virtuozzo.com>)
+ id 1qFXZm-0007vY-91; Sat, 01 Jul 2023 06:11:35 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=VYCO6IZjFn0TFlWZu/UvveGPUaI19XWzydMjKGw8sjbOMdDMqs6ipmipUmYTDETeg1Ga4Uwm4Q55QX3kjIVwCHVqNOVF1tGTWCRqpnXzQHZlXwewT0wyPgnk9yGxNlugyqFb+Ir6zm8neDlAaPenLq4XhsHl5GFC+wMDybmCbsyy8fHy5mR2YlzzcAPdyuFT7+4INuH8SQGEyI8bI0nU++/ngo6CCNWSlsdDdAqxTFq0+TnhG9Mb078UFBDooU0ls9Ko65q6xnsqnzJ2QMYjj6MpGN+w4MRMRUerVe1Oj1VfliO/5bJqs2CgjBfV2eXYpZfOXxDt+7cGMYN8nfyU+Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=blR1eHx9sU3ZZdpvPsXWTJgPPhGQOsLq7LBxGRBHKc8=;
+ b=lZ0qOMQ2/O0YirKvPQr5mNdeTHh3FE+xtfilX2K466kMalV67SfCCrGwMPwXSFFMv2pB4b7zWVmcECk7bHz/ouNONVDE6NPeO1UMnfrf7ybC+47Zy0E6M845m8AHbPGTY3gjTBjKcEH2+T9T6pTfRETQlcXP9Ci7pRUbMVKSbD2aHGP85m2L8k4+jfBDCofgnZPz4s8RW2uBCy3JpHdhK3wT/pbe5cld0h0hlGboBO1//oxeZWHYAsN7WisJvPdJeh+fgxTKURrzelFDovTuigTptzBt7m7bfuv/RTmztMfn3H9cOLRBhlzUGLKSGovt4DWqzrw1B3i/30vNE2ni/Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
+ header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=blR1eHx9sU3ZZdpvPsXWTJgPPhGQOsLq7LBxGRBHKc8=;
+ b=RA08sRJGndxKGn02yf5mFyxq8Uupae+jXD9fz/+yXsrZcodSIMw7Wgob0wBvvMgg+McfWmIkQuoEU9qlFDR2YMcSp19ZbEnFZvDb9e65GkI5d6HgHvKKOMsZxs/uRma2xcKA+ny60YVZy3qOzzutuWiWhZjB8WBexfxsWO/bSvRgWFgfBhuse3teLovDMTZEAlxAmSUoa1w0sg8pVfayRiapq/RTaCPAQpsiB57ZZS1xuzdCkYIy7QPkWHf0A5OFVjCRbIKlSgOVQwOFH9GXWAOT5owByvBmBMJ9OTdgXwovs6Sx3Xtnn2tmsRtBI9FTBdg0FU1jmXbWUkcWz2dmPg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=virtuozzo.com;
+Received: from AS8PR08MB7095.eurprd08.prod.outlook.com (2603:10a6:20b:402::11)
+ by AS2PR08MB8832.eurprd08.prod.outlook.com (2603:10a6:20b:5e6::9)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6544.24; Sat, 1 Jul
+ 2023 10:11:30 +0000
+Received: from AS8PR08MB7095.eurprd08.prod.outlook.com
+ ([fe80::ea9f:354c:ea46:3243]) by AS8PR08MB7095.eurprd08.prod.outlook.com
+ ([fe80::ea9f:354c:ea46:3243%7]) with mapi id 15.20.6544.024; Sat, 1 Jul 2023
+ 10:11:30 +0000
+From: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-block@nongnu.org, den@virtuozzo.com, stefanha@redhat.com,
+ vsementsov@yandex-team.ru, kwolf@redhat.com, hreitz@redhat.com
+Subject: [PATCH v2 0/7] iotests/parallels: Add new tests and fix old
+Date: Sat,  1 Jul 2023 12:11:16 +0200
+Message-Id: <20230701101123.261104-1-alexander.ivanov@virtuozzo.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: VI1PR0202CA0005.eurprd02.prod.outlook.com
+ (2603:10a6:803:14::18) To AS8PR08MB7095.eurprd08.prod.outlook.com
+ (2603:10a6:20b:402::11)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS8PR08MB7095:EE_|AS2PR08MB8832:EE_
+X-MS-Office365-Filtering-Correlation-Id: 498cb5af-65af-4d6a-97ee-08db7a1b8a3e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: LzmOXVkqyVf8K6FygRZxpFxi22usF5T9b9uiaDkYCULkQLZiNaTXgDUAHrtSB5lvgXavWzNRxzKsZjBky3t7VnaXQvgtp2pnGI7RUWFY0Ca+UwaJFP1YNh8yyBXa4Du/0xsguhvevcbEuqg3SEUCzOKWawhRRs2AzLupeTN/ez/GCx0TP6ZlEJE+XLKHxj1EszIMFRcJsgzZ13DbURfxhPlfJk3rI4i/r+qb/sV8dta6ojO1FFCwKpx2RQ2cMjNKqpE+JpUTVmqTINU71y0lOs+q9LPeKC0e07cPcR4CuuMZbTNjl0f2zxfWuKrYAOzJk54Rm+yw/kwzmbXjY+fbfndllUK9V5cTJUZLVDAaKqtVYNb0gKwDDIB6kn6/tv2t1dmAN/OtvR0aimTcrjDp2ij31GFOq7MMZ2oSMS4htobZ5Egz+sUxEWTeFCTXm6uQEE6dUlTfkU7Y2h8swpKMP3vXQwK8g/lJ8UTWLzWdxl8ThE5NZCHotONvSJ4qDL+tYJi2gSNL4uAzTfRdAJlQRJ90mY/dCqOIyb5pvVatLKjqrfQkprpz7+FwoeW1+mW3HMPqKDMSU0EU7wJd5WkjkK3qEvlAZJ6blvSBf0gWr1xbdKD5IeIIAGvr+HUqOPlB
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:AS8PR08MB7095.eurprd08.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230028)(4636009)(136003)(346002)(376002)(39850400004)(396003)(366004)(451199021)(26005)(478600001)(1076003)(6666004)(6506007)(6512007)(86362001)(2616005)(186003)(38350700002)(38100700002)(6916009)(66556008)(66946007)(4326008)(66476007)(83380400001)(52116002)(6486002)(316002)(5660300002)(8676002)(8936002)(44832011)(41300700001)(2906002)(36756003);
+ DIR:OUT; SFP:1102; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?wjAHDzCHY7j1GAdy8NJNRKd4CrVzdJOGF+LZarwxNGmCTyK7uwnadUpVEESY?=
+ =?us-ascii?Q?sm0l6std7QBS39nDTWiNc8IDY8ALJlyah7FDEXju51PIeDvKhHEZePs3wl7s?=
+ =?us-ascii?Q?2qyzmdbuXayM6F85RkbRM65w0hgLhS6cjyeOtrMykhU+lAUM+aSYYqs4Tbmq?=
+ =?us-ascii?Q?MtEsgf001saG4G1LSjPG8TlqDkiLXlTXkmc66hTfFa920newrWobIfCdsHag?=
+ =?us-ascii?Q?tC/f545a3huXz9xwpbhg4mDQDQATAq1xqnildvRmTeZ3wXPWBj72BFuIVdGa?=
+ =?us-ascii?Q?iwGPjwGfXD/O4Vc7Zeoxo7AqXSG2bVQ1tEeTpGQpBwb4Pmt9zlYAl2blebzT?=
+ =?us-ascii?Q?bEJoj9URyxYNUAVjzfm4woCT1EhY+XTmH9jQ2CMA7LL5ZMPxRdvZVo1HD43B?=
+ =?us-ascii?Q?ZCJwFf3PMlSx4UhE1wdwpLcpNVk7To/R9t18R6t36d2SQcFzBN/E4W0aWFIL?=
+ =?us-ascii?Q?6sC6DlNyPNS1Hy/AjvY5qHjUgWsJOSrbttKvaJChhbzHRlF4GHMBqOv4wn35?=
+ =?us-ascii?Q?Cn/BXRZoIYanXVMtnxjj+1k5FZqV8/Jt1crgH74WLk/LnSDghdG/QXZnYk31?=
+ =?us-ascii?Q?414Ry/nnM2ZxBRkFN7C7w4bOAK8zFpaW6VHohkGKp9TxoPRjN8VexLE3MInV?=
+ =?us-ascii?Q?sE70Esmc/Zf7s21qhy0eWD2hVXgg60ym+QxWlDwGaGV3p2udUQh7HYPoWNWc?=
+ =?us-ascii?Q?tpdl/CGdjreQ3THJT0jnvcF02BNtR+c84irwBMc9qSVjzvoVNUl+EFa8FQoj?=
+ =?us-ascii?Q?7+tLOENQwAHgzlJQphVNlyqZNNerWRMRaP8qFiKfTvx4eadPGREx7V4wWee3?=
+ =?us-ascii?Q?IZYxWnjYK3dMJweHvUPMMg2WWDR3d1y47guDHzL3sFqP1bp4Jyb27kgvFLNj?=
+ =?us-ascii?Q?3YgoZyDX5TjjE6OAm/cvaD92bY96XExTeRV54JFx1c83Bf11fE0gOsT/FTaV?=
+ =?us-ascii?Q?xkal5+E/lpZYteRC7AnUDJbsSs7GO9A+dOpVlMVZUsUwXlrZ2NktqdphvHXA?=
+ =?us-ascii?Q?FcOWGs6KFD8zGjD4FEnO4XZR4aLl3+kav1L4DiecixHNdwfubiiQU+IC0+Ci?=
+ =?us-ascii?Q?7sI6q2E1qhBapT35itfwHLyBL9ZJsvd9i3isnq7EpYd9s5H4IaHfz+6F0G28?=
+ =?us-ascii?Q?f6NNaGnpkn7c7Hgs7d7TmJgSGdXKKJthpCbBSz94jmpru1z3YFoKlZ058v0P?=
+ =?us-ascii?Q?iTrEa889pNU6M6KnxF4NHm66abqmo/P+n7+ryIfPh3tnuLJiMQBnzpsf3ru5?=
+ =?us-ascii?Q?9TRalban+GaIKXuog1hBDrm/Ke0ZJehgVkafbyRI5QlfrdFYYOB1F1Ps7MuJ?=
+ =?us-ascii?Q?iCdN73rVSWeuSuCFbIdZf7wr4WkcJzytoilaQKay7gRgUgo/KmF91tZrNUQE?=
+ =?us-ascii?Q?OAQw8GubzD3O3I/OiePh5HiaCj2fFV5hhE3i90c4DIZ/zxTCkQEfZzu4EgZ9?=
+ =?us-ascii?Q?/5x3WhOXgZXXJcGg5uM0xXY6IyQdXb1yGjJ7jN1WDBK/zySypbJtGfggDQqN?=
+ =?us-ascii?Q?McKsdElDNrAmZ51I9OpVdrxK2xHHS9sG72b9mq+tDhIUXkrKj1SizXzBTZrY?=
+ =?us-ascii?Q?rdNqg5lB1shj8vIS8SvQpKKQ+e8I85kIPIXoAY0vLyVqDpyAUv+LEstta0dG?=
+ =?us-ascii?Q?MYM//VhZ+H52jCJnVqZ8y+4=3D?=
+X-OriginatorOrg: virtuozzo.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 498cb5af-65af-4d6a-97ee-08db7a1b8a3e
+X-MS-Exchange-CrossTenant-AuthSource: AS8PR08MB7095.eurprd08.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Jul 2023 10:11:30.6501 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: +NxXrYFhO8LOqU8yJTecaHywC8+CQkmEKC0/9a8d+0ycr92ZAqo1YvKRnjHh2aUQ98z4TH8Qvp9+UIw4fHyX9Y4+I2m7c0ZzQ7a/oDb3i/k=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS2PR08MB8832
+Received-SPF: pass client-ip=2a01:111:f400:fe12::724;
+ envelope-from=alexander.ivanov@virtuozzo.com;
+ helo=EUR02-DB5-obe.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,66 +132,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri Jun 30, 2023 at 1:55 PM AEST, Joel Stanley wrote:
-> The quad model implements the EC xscoms for the p9 machine, reusing the
-> same model for p10 which isn't quite correct. This series adds a PnvQuad
-> class and subclasses it for P9 and P10. Implement the core thread state
-> xscom as an example. I expect more function to be implemented in future
-> patches.
->
-> There's one outstanding question. Skiboot has this for the p10 scom:
->
->  #define P10_EC_CORE_THREAD_STATE        0x412
->
-> However the read that comes is for 0x28412. I suspect the upper 0x28000
-> are addressing bits, so we're really reporting the core thread state for
-> the given core. Should the model instead wired so one is created for
-> each chiplet? Or should we report the value for all possible cores, like
-> the P9 code does for P9X_EX_NCU_SPEC_BAR?
->
->     switch (offset) {
->     case P9X_EX_NCU_SPEC_BAR:
->     case P9X_EX_NCU_SPEC_BAR + 0x400: /* Second EX */
+This patchset should be applied on top of [PATCH v7 0/8] parallels: Add
+duplication check, repair at open, fix bugs
 
-Yes you're right, 0x28000 is addressing within the quad. The 0x2 selects
-core/cache/NCU/etc and the 8 is a one-hot encoding to select the core.
+Add out-of-image, leak and BAT entries duplication checks tests.
 
-So this access should actually be redirected to the pnv core scoms. I
-think to make that work, those regions have to be a subregion of the
-quad, right now they seem to overlap (the sizes are a bit wrong too,
-they end up overlapping).
+Old parallels images check test (131):  Refactor, fix cluster size and fix
+after repairing was added to parallels_open().
 
-0x412 is then a register in a particular core's "PC" unit. I assume PC
-is probably 0x800 or 0x1000 in size.
+v2:
+5: Fix a typo.
+7: Add a test for data_off check.
 
-The quad itself has a QME engine, so you might address that with the
-quad registers.
+Alexander Ivanov (7):
+  iotests: Add out-of-image check test for parallels format
+  iotests: Add leak check test for parallels format
+  iotests: Add test for BAT entries duplication check
+  iotests: Refactor tests of parallels images checks (131)
+  iotests: Fix cluster size in parallels images tests (131)
+  iotests: Fix test 131 after repair was added to parallels_open()
+  iotests: Add test for data_off check
 
-IIRC the actual topology is something like
+ tests/qemu-iotests/131                        |  36 +++--
+ tests/qemu-iotests/131.out                    |  59 +++----
+ tests/qemu-iotests/tests/parallels-checks     | 145 ++++++++++++++++++
+ tests/qemu-iotests/tests/parallels-checks.out |  75 +++++++++
+ 4 files changed, 264 insertions(+), 51 deletions(-)
+ create mode 100755 tests/qemu-iotests/tests/parallels-checks
+ create mode 100644 tests/qemu-iotests/tests/parallels-checks.out
 
-EQ +--- EX +--- ECL2 +--- EC
-   |       +--- L3   +--- L2=20
-   +--- QME          +--- NCU
-   +--- maybe some scom and sensor stuff
-
-No point modeling all that of course, just per-core and per-quad regions
-like it already has for now. But if for example we wanted to model some
-registers in the L2, it would not be contiguous with the core addresses
-so we'd have to add it.
-
-Thanks,
-Nick
-
->
-> Joel Stanley (4):
->   ppc/pnv: quad xscom callbacks are P9 specific
->   ppc/pnv: Subclass quad xscom callbacks
->   ppc/pnv: Add P10 quad ops
->   ppc/pnv: Return zero for core thread state xscom
->
->  include/hw/ppc/pnv_core.h |  12 +++-
->  hw/ppc/pnv.c              |  11 ++--
->  hw/ppc/pnv_core.c         | 114 +++++++++++++++++++++++++++++++-------
->  3 files changed, 113 insertions(+), 24 deletions(-)
+-- 
+2.34.1
 
 
