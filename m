@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A74C274477D
-	for <lists+qemu-devel@lfdr.de>; Sat,  1 Jul 2023 08:57:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33108744779
+	for <lists+qemu-devel@lfdr.de>; Sat,  1 Jul 2023 08:57:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFUVv-0007WX-Tq; Sat, 01 Jul 2023 02:55:23 -0400
+	id 1qFUVx-0007Xz-6t; Sat, 01 Jul 2023 02:55:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qFUVt-0007VQ-C6
+ id 1qFUVt-0007VY-M5
  for qemu-devel@nongnu.org; Sat, 01 Jul 2023 02:55:21 -0400
-Received: from mail-lf1-x12a.google.com ([2a00:1450:4864:20::12a])
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qFUVr-0007Fi-OS
+ id 1qFUVs-0007Fq-3E
  for qemu-devel@nongnu.org; Sat, 01 Jul 2023 02:55:21 -0400
-Received: by mail-lf1-x12a.google.com with SMTP id
- 2adb3069b0e04-4f76a0a19d4so4286838e87.2
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-3fa8cd4a113so28375235e9.2
  for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 23:55:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688194518; x=1690786518;
+ d=linaro.org; s=google; t=1688194519; x=1690786519;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=vWBYX+czO68YBn+sruZR19OlwAnKUpeq8kLfDlKJ0tE=;
- b=XrH4ZjkZoWwK8x81L0/zS9Zwp4O3YrdCQKevSJtyHlxKpEOOSDdi18JMqm0I80YDoK
- mvphU9oIRoWrGMc/Fh+glo3cAg0DTJqsnTgtNP7HHu68c4QUdnHcDQYOTcqexmnIkRHp
- LumIOqQbJT87faMzZl4/JttzyeE1DOH+YFFlWP4ndS5PVZgADgJW4aeyHtluUvC0ctbZ
- qKqkw6SGIr9nM8gVVw5qEiOFROx2O14JIHs2/7Rp15jQsTUdp1yTPTbqxwJf7JmukdUp
- 8nLrZZ63HZw9IIO+1p24dJ0xIsTT1hJETydQy5h38zq/AdpocxDSKtzbfE5b7rEYvnxT
- MfGw==
+ bh=/ebwpgVZtFJocO+oyA17J6u/jt74rZXaJP0shDH6azA=;
+ b=FofdKOAmr4bQD6X7PS92YgE+Xlh0cnUbS4S2sE3Wx2rg3fK2OjBS6L7Glj6LS2KGGX
+ ri1g3DbT/PorsDbBoeVDUsBEOT8/hVNL66q2JyzwLJFgkyCs8xZlKCRAeD1pvoZbKpYD
+ JnVERKhPQfote0OfOVudSy5OWKVop+o+jyjybR8rbFvVq5isBPS9XLoB2/eiDk08nzmB
+ lml6D8fT+eN5K9u1YsERfKl+ysjBzn5fVdNDAcbX+rPbz8R0qBZ3Tn/Fkwlf6CLRrGSm
+ hXMCL8C6gvOjU5uUS/bMRcuCse6XD4QTolOTQHcpJbGdpskSA3iw7/ziGJIGC2Rr1H4w
+ JqAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688194518; x=1690786518;
+ d=1e100.net; s=20221208; t=1688194519; x=1690786519;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=vWBYX+czO68YBn+sruZR19OlwAnKUpeq8kLfDlKJ0tE=;
- b=ZA4SUmky4d2aI3flVDCwrcJ/eWlkllQWDSEdRymHEDgJcWxNBnoXto0Py6dip7eglg
- VLyiXDd969KmhDiLKHJn2Hb8gdhyVFwkl0kA6jjXVMAdlw3At4ARd+uw4eFQJBo5zu0m
- qw3g9DLf/5hxdF2vpDnc4UlmBvRNJTwBRk34hDH3PXWNyUm/76YMaChuMkuMP6nYLWYI
- rO67LkvR+Cbf5RHAYTwH6EdZh/iqrXB0KOXxGiK4DjCHRCfkrs3Y7mIlCu8iNTktYke8
- AElSUvqmFGRPxQvIIY7U9W3jQj06j9IwkgVDE1gxnzk4L87f8brzr98b3hNYIeM49f0g
- 5WVw==
-X-Gm-Message-State: ABy/qLaEA55QNOds2K/n+oI+xL2u7EEOADRNM/unoyjeZlgGBDx3oHv7
- 8Y8Dsmr8ejvZPQRsj7NrE8RkbwYBFFGbBEIl5uQalg==
-X-Google-Smtp-Source: APBJJlF7VAlWOwuqKptLfiCxl/kYNsbbWs5q1az77BClaZHS2vXxwqsgmVPfL2dJduRtpS5iTTJ+2w==
-X-Received: by 2002:a05:6512:1112:b0:4f8:7503:2041 with SMTP id
- l18-20020a056512111200b004f875032041mr4320265lfg.37.1688194518190; 
+ bh=/ebwpgVZtFJocO+oyA17J6u/jt74rZXaJP0shDH6azA=;
+ b=Werk9VyLGZv5q1bla/y3awcpNQpo4uExH7iqittbL7xLMtzVanwrFdPHXwVmDu8w0C
+ nFEcKhi3U4aVL/+RkPJgx6XluxS28e5JFq5Dg1ryWCyAPFYeJ8/OTVGgYMR/TD2D4RiB
+ ZfK4I04VPkLuu3QEy/EH8sGyrm+vHYP4GTaRx79uE0TdhQSTDAtBu0zVuCckPIubmJc0
+ 1MQpZkeV01U11AUbzPzoxeZ6M40jEwXrjuEgoiXXJDAIYtJCpgRkDfg5rn8X00me/irT
+ BSS6jWG6XOL/g5HBeyMKbKJ8SSmmobZaHb/LX1bFZGIhPPIYR5nQCFRnT6PzPFqn6aL8
+ k8CQ==
+X-Gm-Message-State: AC+VfDyRjgn8u0KaeG931xItbfjDzzkdC7MWZJOAvfeZRb2tLJxqBusz
+ 8/0m9tgoFiSa3QhFFd192YtC3BSgt7Ceeco+t+n2/Q==
+X-Google-Smtp-Source: ACHHUZ7tMRycPOHGU9NjX+/lC/hGY1yF2D4zhfpNJaxAtNTPsk5Krr7WFm1sqkfMxy+8e1gO4Aaplg==
+X-Received: by 2002:a1c:7908:0:b0:3fa:99ae:3a9a with SMTP id
+ l8-20020a1c7908000000b003fa99ae3a9amr3579806wme.2.1688194518872; 
  Fri, 30 Jun 2023 23:55:18 -0700 (PDT)
 Received: from localhost.localdomain ([139.47.41.96])
  by smtp.gmail.com with ESMTPSA id
- w10-20020a1cf60a000000b003f9bd9e3226sm20874918wmc.7.2023.06.30.23.55.17
+ w10-20020a1cf60a000000b003f9bd9e3226sm20874918wmc.7.2023.06.30.23.55.18
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 30 Jun 2023 23:55:17 -0700 (PDT)
+ Fri, 30 Jun 2023 23:55:18 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PULL 08/11] target/arm: Use float64_to_int32_modulo for FJCVTZS
-Date: Sat,  1 Jul 2023 08:55:07 +0200
-Message-Id: <20230701065510.514743-9-richard.henderson@linaro.org>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 09/11] tcg: Reduce tcg_assert_listed_vecop() scope
+Date: Sat,  1 Jul 2023 08:55:08 +0200
+Message-Id: <20230701065510.514743-10-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230701065510.514743-1-richard.henderson@linaro.org>
 References: <20230701065510.514743-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12a;
- envelope-from=richard.henderson@linaro.org; helo=mail-lf1-x12a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,101 +92,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The standard floating point results are provided by the generic routine.
-We only need handle the extra Z flag result afterward.
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
+tcg_assert_listed_vecop() is only used in tcg-op-vec.c.
+
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-Id: <20230629091107.74384-1-philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20230527141910.1885950-5-richard.henderson@linaro.org>
 ---
- target/arm/vfp_helper.c | 71 +++++++----------------------------------
- 1 file changed, 12 insertions(+), 59 deletions(-)
+ include/tcg/tcg.h | 6 ------
+ tcg/tcg-op-vec.c  | 6 +++---
+ 2 files changed, 3 insertions(+), 9 deletions(-)
 
-diff --git a/target/arm/vfp_helper.c b/target/arm/vfp_helper.c
-index 36906db8e0..789bba36cc 100644
---- a/target/arm/vfp_helper.c
-+++ b/target/arm/vfp_helper.c
-@@ -1120,68 +1120,21 @@ const FloatRoundMode arm_rmode_to_sf_map[] = {
- uint64_t HELPER(fjcvtzs)(float64 value, void *vstatus)
+diff --git a/include/tcg/tcg.h b/include/tcg/tcg.h
+index 95541e9474..0875971719 100644
+--- a/include/tcg/tcg.h
++++ b/include/tcg/tcg.h
+@@ -1135,12 +1135,6 @@ uint64_t dup_const(unsigned vece, uint64_t c);
+         : (qemu_build_not_reached_always(), 0))                    \
+      : dup_const(VECE, C))
+ 
+-#ifdef CONFIG_DEBUG_TCG
+-void tcg_assert_listed_vecop(TCGOpcode);
+-#else
+-static inline void tcg_assert_listed_vecop(TCGOpcode op) { }
+-#endif
+-
+ static inline const TCGOpcode *tcg_swap_vecop_list(const TCGOpcode *n)
  {
-     float_status *status = vstatus;
--    uint32_t exp, sign;
--    uint64_t frac;
--    uint32_t inexact = 1; /* !Z */
-+    uint32_t inexact, frac;
-+    uint32_t e_old, e_new;
- 
--    sign = extract64(value, 63, 1);
--    exp = extract64(value, 52, 11);
--    frac = extract64(value, 0, 52);
-+    e_old = get_float_exception_flags(status);
-+    set_float_exception_flags(0, status);
-+    frac = float64_to_int32_modulo(value, float_round_to_zero, status);
-+    e_new = get_float_exception_flags(status);
-+    set_float_exception_flags(e_old | e_new, status);
- 
--    if (exp == 0) {
--        /* While not inexact for IEEE FP, -0.0 is inexact for JavaScript.  */
--        inexact = sign;
--        if (frac != 0) {
--            if (status->flush_inputs_to_zero) {
--                float_raise(float_flag_input_denormal, status);
--            } else {
--                float_raise(float_flag_inexact, status);
--                inexact = 1;
--            }
--        }
--        frac = 0;
--    } else if (exp == 0x7ff) {
--        /* This operation raises Invalid for both NaN and overflow (Inf).  */
--        float_raise(float_flag_invalid, status);
--        frac = 0;
-+    if (value == float64_chs(float64_zero)) {
-+        /* While not inexact for IEEE FP, -0.0 is inexact for JavaScript. */
-+        inexact = 1;
-     } else {
--        int true_exp = exp - 1023;
--        int shift = true_exp - 52;
--
--        /* Restore implicit bit.  */
--        frac |= 1ull << 52;
--
--        /* Shift the fraction into place.  */
--        if (shift >= 0) {
--            /* The number is so large we must shift the fraction left.  */
--            if (shift >= 64) {
--                /* The fraction is shifted out entirely.  */
--                frac = 0;
--            } else {
--                frac <<= shift;
--            }
--        } else if (shift > -64) {
--            /* Normal case -- shift right and notice if bits shift out.  */
--            inexact = (frac << (64 + shift)) != 0;
--            frac >>= -shift;
--        } else {
--            /* The fraction is shifted out entirely.  */
--            frac = 0;
--        }
--
--        /* Notice overflow or inexact exceptions.  */
--        if (true_exp > 31 || frac > (sign ? 0x80000000ull : 0x7fffffff)) {
--            /* Overflow, for which this operation raises invalid.  */
--            float_raise(float_flag_invalid, status);
--            inexact = 1;
--        } else if (inexact) {
--            float_raise(float_flag_inexact, status);
--        }
--
--        /* Honor the sign.  */
--        if (sign) {
--            frac = -frac;
--        }
-+        /* Normal inexact or overflow or NaN */
-+        inexact = e_new & (float_flag_inexact | float_flag_invalid);
+ #ifdef CONFIG_DEBUG_TCG
+diff --git a/tcg/tcg-op-vec.c b/tcg/tcg-op-vec.c
+index 64bc8a2156..ad8ee08a7e 100644
+--- a/tcg/tcg-op-vec.c
++++ b/tcg/tcg-op-vec.c
+@@ -42,9 +42,9 @@
+  * tcg_ctx->vec_opt_opc is non-NULL, the tcg_gen_*_vec expanders
+  * will validate that their opcode is present in the list.
+  */
+-#ifdef CONFIG_DEBUG_TCG
+-void tcg_assert_listed_vecop(TCGOpcode op)
++static void tcg_assert_listed_vecop(TCGOpcode op)
+ {
++#ifdef CONFIG_DEBUG_TCG
+     const TCGOpcode *p = tcg_ctx->vecop_list;
+     if (p) {
+         for (; *p; ++p) {
+@@ -54,8 +54,8 @@ void tcg_assert_listed_vecop(TCGOpcode op)
+         }
+         g_assert_not_reached();
      }
+-}
+ #endif
++}
  
-     /* Pack the result and the env->ZF representation of Z together.  */
+ bool tcg_can_emit_vecop_list(const TCGOpcode *list,
+                              TCGType type, unsigned vece)
 -- 
 2.34.1
 
