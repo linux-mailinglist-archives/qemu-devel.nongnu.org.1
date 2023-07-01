@@ -2,89 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C37CD744850
-	for <lists+qemu-devel@lfdr.de>; Sat,  1 Jul 2023 11:54:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EBAF74485A
+	for <lists+qemu-devel@lfdr.de>; Sat,  1 Jul 2023 12:01:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFXIG-0005OS-Jy; Sat, 01 Jul 2023 05:53:28 -0400
+	id 1qFXOP-0007I8-Ck; Sat, 01 Jul 2023 05:59:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qFXIE-0005OD-Ae
- for qemu-devel@nongnu.org; Sat, 01 Jul 2023 05:53:26 -0400
-Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
+ (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
+ id 1qFXON-0007H5-8S; Sat, 01 Jul 2023 05:59:47 -0400
+Received: from mail-ot1-x32b.google.com ([2607:f8b0:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qFXIC-0001ix-RD
- for qemu-devel@nongnu.org; Sat, 01 Jul 2023 05:53:26 -0400
-Received: by mail-ej1-x632.google.com with SMTP id
- a640c23a62f3a-98df3dea907so323186266b.3
- for <qemu-devel@nongnu.org>; Sat, 01 Jul 2023 02:53:24 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
+ id 1qFXOL-0003f3-HV; Sat, 01 Jul 2023 05:59:47 -0400
+Received: by mail-ot1-x32b.google.com with SMTP id
+ 46e09a7af769-6b73c2b6dcfso1903697a34.2; 
+ Sat, 01 Jul 2023 02:59:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688205203; x=1690797203;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
- :message-id:reply-to;
- bh=U6qzh5zT5TRYd5Sip4g9abjelR/5v1OLZh8dWj8GBAE=;
- b=g1lntXpKHUXhdYIGb1g2NFGLAg9i2q1sGxEt/vbVZeLtWuht/fvm9vwV1MLjKUwjkU
- oBauakppnvcoYODDuxCIFDW27tsbkAmV97KExEJ+esKI9lF0NATFWtezMBCCNDDlwLLS
- uxWFI19OAoe8qiLMwJeTqSnkpi8JvTrAXTtN5Wez5YTPfIArk8mIm/F1S4SngQLnG2DU
- HBThsEgZCVfXdPnf00KvUAYFQG2kX0p/T5O+vC1t3jjiSjsDhLEKKZ4hFnwrUOhhaH8b
- O2AZns8c6R5KXJIvqnEfC5tTTupGkpy8hJ1iWkxzQ//Y/RuyaV+JheQxKwn+2WL1126u
- 9yoQ==
+ d=gmail.com; s=20221208; t=1688205584; x=1690797584;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=8T9b7BEML1LMS2mHqbhMhxWDB5WWBOG/ARqvuQNjbOI=;
+ b=Kvxm5HgxxSMQLQ6eJtLT63y31WbxTolfOCbgOtr5yl8O2yctcxU4EyNJORAENhSeZe
+ USOfKaAUNc7DzSHzlbvvSaIRIwmbe/cETDIgdf+czBKPwxXdo43oprUUCwzMdCEFfmQK
+ N0B1uOKV6YxOx23jUOZUsBhcChUKBQNKlYKh15IU+fIH5kb6zBD32qUhu5IwyE4fax7e
+ GOPWhgY9dAqPHRQoOWnwg/R/xTSaluHO8/P3wP/4ZakEWXXIFrZxVwB1AX2Dfw5gv1aJ
+ hEURtofaK2NY2UO78i+cVkHokwK4WvPmC7Finjw5qeOU/9xvC1uYpjO0JtTuxvaFcQGS
+ RUSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688205203; x=1690797203;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=U6qzh5zT5TRYd5Sip4g9abjelR/5v1OLZh8dWj8GBAE=;
- b=fCVI4eEiQLFFs2JrOG9GBYEcjhm43BsgC3YEwNSuv9n7yaPZOEIAvpAfdMPF4L/sm7
- YXpVpFI+sswzCEBQoStnaK5L0QSxldEcbfMDYeuHAWaUHioTZZhro0ZLtW3DzXE3MnP7
- su4x3F2BLKxDY1Wg15LLz2toeYpF7aoIBTlM+X4hdU42igaWyMj9IFTmBW4G3LkSaRDi
- hJxP2Ccwe69NLu2/dy2GlPgU51JFFllxk6Mo0ljyuNnALxMctXnWO2dJUHfdPZLgRFeV
- na5NdH+2xJeoiBtkHsDamwbG7DYQRaqSl/Q8CFTcSqHKXKMaIWwahRFgDknoKhuVzxhI
- LLcQ==
-X-Gm-Message-State: AC+VfDwJg8EbQVO7TBh+T/7ERRFf7/gvBtV8waoLzBT6VQKQuuH8X7uS
- XSXB9tL8d2k69U7eHemI+Lw=
-X-Google-Smtp-Source: APBJJlHaXRaHawJGh8EcQEbPNbdz3SpEWVXwBe9z3waKnvOCHY7coyJ32yStWcR97XEgIaTVX5NGgQ==
-X-Received: by 2002:a17:906:b7c8:b0:984:bd75:6a3 with SMTP id
- fy8-20020a170906b7c800b00984bd7506a3mr3527933ejb.58.1688205202474; 
- Sat, 01 Jul 2023 02:53:22 -0700 (PDT)
-Received: from [127.0.0.1] (dynamic-089-012-173-083.89.12.pool.telefonica.de.
- [89.12.173.83]) by smtp.gmail.com with ESMTPSA id
- v9-20020aa7cd49000000b005187a42b44fsm7606875edw.58.2023.07.01.02.53.21
+ d=1e100.net; s=20221208; t=1688205584; x=1690797584;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=8T9b7BEML1LMS2mHqbhMhxWDB5WWBOG/ARqvuQNjbOI=;
+ b=Rgjme62rlCvGT4VVN7O84Rm+WOSChqh3Kweh8NV4EtRTgAG4YowoD9GCkN5Tq7WRue
+ tO/K8gtzWRY/LHNqLmmRKpTP4OLW04TcL+riiAaOGJVKbo92s1BFNeG+iAOrn4UYzQJT
+ LhjMAuhcXH5MQxnWmcJq0PBGCRsNbh5XQjH3HwXVXE/AadmfnQABWCp5s5aR6P+CGuMd
+ LxEruKHy/3gprEfp887irv+71oYipeNJ4Cr0fHCpWd+dvHmRUIFghR9nWozq6TW1vhgD
+ 719WiRJ2/qjZab9MbT54oeBpcguNmUAgvtVOQ7FDVOOcxH8BIWwLEIoyFpCZ+SQYHApf
+ e+EQ==
+X-Gm-Message-State: AC+VfDwm82O74cF86rzHzUH+x0O5+LGMTkMFsXJvefesApvLkKV+ew6h
+ Mo/SYtavOlPuzGDXvGmh22I=
+X-Google-Smtp-Source: ACHHUZ4ow15BlIlLTcs1jQGZv7DoZmH5vURsz45Ihf5O8gvc5PTKSORm2U426N+XkwGi4fx3hi11rQ==
+X-Received: by 2002:a05:6830:450:b0:6b7:296d:3d4e with SMTP id
+ d16-20020a056830045000b006b7296d3d4emr4816264otc.30.1688205583954; 
+ Sat, 01 Jul 2023 02:59:43 -0700 (PDT)
+Received: from [192.168.68.107] (201-69-66-110.dial-up.telesp.net.br.
+ [201.69.66.110]) by smtp.gmail.com with ESMTPSA id
+ z6-20020a9d7a46000000b006b8ad42654csm915338otm.0.2023.07.01.02.59.42
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 01 Jul 2023 02:53:22 -0700 (PDT)
-Date: Sat, 01 Jul 2023 09:53:12 +0000
-From: Bernhard Beschow <shentey@gmail.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-CC: Olaf Hering <olaf@aepfle.de>, qemu-devel <qemu-devel@nongnu.org>,
- John Snow <jsnow@redhat.com>,
- "open list:X86" <xen-devel@lists.xenproject.org>,
- Stefano Stabellini <sstabellini@kernel.org>
-Subject: Re: [PATCH v2] piix: fix regression during unplug in Xen HVM domUs
-In-Reply-To: <CABgObfamZEHv0W3B6kPXGTiT1f2G__S=Bi1-_PYeSomsiVFaFg@mail.gmail.com>
-References: <20210317070046.17860-1-olaf@aepfle.de>
- <4441d32f-bd52-9408-cabc-146b59f0e4dc@redhat.com>
- <20210325121219.7b5daf76.olaf@aepfle.de>
- <dae251e1-f808-708e-902c-05cfcbbea9cf@redhat.com>
- <20230509225818.GA16290@aepfle.de> <20230626231901.5b5d11c1.olaf@aepfle.de>
- <c939b695-2b68-085a-0f19-108ecdcc1a05@redhat.com>
- <5DB37FA5-41DF-4ED6-8C8A-CDDD6F276F42@gmail.com>
- <20230627140740.2736f6e8.olaf@aepfle.de>
- <4F5609FD-4A89-4450-89E2-3311CC5A9317@gmail.com>
- <CABgObfamZEHv0W3B6kPXGTiT1f2G__S=Bi1-_PYeSomsiVFaFg@mail.gmail.com>
-Message-ID: <3987B0DB-46F2-49F1-AEA5-B88BC61A633F@gmail.com>
+ Sat, 01 Jul 2023 02:59:43 -0700 (PDT)
+Message-ID: <a314ebf0-fede-2646-a255-59ee9ebf33d6@gmail.com>
+Date: Sat, 1 Jul 2023 06:59:40 -0300
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::632;
- envelope-from=shentey@gmail.com; helo=mail-ej1-x632.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH v3 00/14] Misc clean ups to target/ppc exception handling
+Content-Language: en-US
+To: BALATON Zoltan <balaton@eik.bme.hu>
+Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, clg@kaod.org,
+ Greg Kurz <groug@kaod.org>, Nicholas Piggin <npiggin@gmail.com>
+References: <cover.1686868895.git.balaton@eik.bme.hu>
+ <92e3591e-cce7-c3e7-7d73-a0bd24de8c2c@gmail.com>
+ <1726bfcd-0e6e-0a72-bc97-be7a79f95340@eik.bme.hu>
+ <03e0c0c0-d3e5-bc4c-6c07-db642d2e6f52@gmail.com>
+ <275e9cc3-8cb5-052a-7683-7abf4ea78522@eik.bme.hu>
+From: Daniel Henrique Barboza <danielhb413@gmail.com>
+In-Reply-To: <275e9cc3-8cb5-052a-7683-7abf4ea78522@eik.bme.hu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32b;
+ envelope-from=danielhb413@gmail.com; helo=mail-ot1-x32b.google.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, NICE_REPLY_A=-0.095,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -104,52 +100,37 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 
-Am 30=2E Juni 2023 08:48:02 UTC schrieb Paolo Bonzini <pbonzini@redhat=2Ec=
-om>:
->Il mer 28 giu 2023, 13:28 Bernhard Beschow <shentey@gmail=2Ecom> ha scrit=
-to:
->
+On 7/1/23 06:39, BALATON Zoltan wrote:
+> On Sat, 1 Jul 2023, Daniel Henrique Barboza wrote:
+>> On 6/30/23 19:57, BALATON Zoltan wrote:
+>>> On Fri, 30 Jun 2023, Daniel Henrique Barboza wrote:
+>>>> Patches 1, 2, 3, 5, 7 and 11 are queued.
+>>>>
+>>>> If you would be so kind to get the remaining patches, rebase them
+>>>> on top of my ppc-next and resend, I believe there's more stuff
+>>>> to be queued.
+>>>
+>>> Thanks for taking care of these. I'll do the rebase of remaining patches once the current queue is merged, they aren't urgent so I can come back to those later. I'm working on some sam460ex patches but don't know yet when can I send it so don't wait for me now.
 >>
+>> Got it. Just bear in mind the current release schedule. Code freeze is July 11th:
 >>
->> Am 27=2E Juni 2023 12:07:40 UTC schrieb Olaf Hering <olaf@aepfle=2Ede>:
->> >Tue, 27 Jun 2023 10:12:50 +0000 Bernhard Beschow <shentey@gmail=2Ecom>=
-:
->> >
->> >> The BAR is a 32 bit register whose default value is 0x00000001=2E I =
-think
->> what's supposed to happen here is a pci_set_long() rather than a
->> pci_set_byte()=2E
->> >
->> >Indeed, the u32 at that address changes from c121 to c101 with the
->> current code=2E
+>> https://wiki.qemu.org/Planning/8.1
 >>
->> Neat! Would you mind sending a patch fixing the BMIBA register to be re=
-set
->> as 32 bit?
->>
->
->I think we should also check why writing the command register is not
->disabling the BAR as well=2E
+>> I'll send one last PR before freeze (probably on July 10th) and then it'll be only bug fixes until end of August.
+> 
+> Do you mean one more last PR after merging the current queue or the current queue will only be in that last PR? I hoped there would be a PR now on which I can rebase the outstanding patches for the last PR so I don't have to rebase on next but if the only PR you plan is the last on 10th then I may need to move to ppc-next now.
 
-So IIUC the BMIBA register is managed internally by QEMU's PCI code and we=
- shouldn't have to mess with the register at all=2E We should actually remo=
-ve the explicit reset of BMIBA, correct?
+Just use ppc-next right now.
 
-I've tried debugging the PCI code when working on the VIA IDE controller t=
-o understand it better=2E But despite QEMU being compiled with --enable-deb=
-ug it seemd to be compiled with -O2 still, making debugging quite hard=2E I=
-'m not sure if any compile flags leak into my build environment though=2E
+Even if I send a PR today with what we have, Peter/Richard has no obligation of
+merging it quickly on Monday (there's an US holiday July 4th, and some people will
+also skip July 3rd). If you wait for such PR to merge upstream, then start rebasing
+your stuff, you'll have less time to work with.
 
-Best regards,
-Bernhard=20
->
->Paolo
->
->
->> Best regards,
->> Bernhard
->> >
->> >Olaf
->>
->>
+
+Daniel
+
+> 
+> Regards,
+> BALATON Zoltan
 
