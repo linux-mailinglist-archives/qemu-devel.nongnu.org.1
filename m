@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C695744786
-	for <lists+qemu-devel@lfdr.de>; Sat,  1 Jul 2023 09:03:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC67E744785
+	for <lists+qemu-devel@lfdr.de>; Sat,  1 Jul 2023 09:03:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFUcL-0007VX-Ls; Sat, 01 Jul 2023 03:02:01 -0400
+	id 1qFUcM-0007WC-GQ; Sat, 01 Jul 2023 03:02:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qFUcJ-0007Uy-6Y
- for qemu-devel@nongnu.org; Sat, 01 Jul 2023 03:01:59 -0400
-Received: from mail-pg1-x534.google.com ([2607:f8b0:4864:20::534])
+ id 1qFUcL-0007Vf-26
+ for qemu-devel@nongnu.org; Sat, 01 Jul 2023 03:02:01 -0400
+Received: from mail-il1-x131.google.com ([2607:f8b0:4864:20::131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qFUcG-0000jz-Vp
- for qemu-devel@nongnu.org; Sat, 01 Jul 2023 03:01:58 -0400
-Received: by mail-pg1-x534.google.com with SMTP id
- 41be03b00d2f7-5440e98616cso1587215a12.0
- for <qemu-devel@nongnu.org>; Sat, 01 Jul 2023 00:01:56 -0700 (PDT)
+ id 1qFUcJ-0000kR-KE
+ for qemu-devel@nongnu.org; Sat, 01 Jul 2023 03:02:00 -0400
+Received: by mail-il1-x131.google.com with SMTP id
+ e9e14a558f8ab-34574014304so12596585ab.2
+ for <qemu-devel@nongnu.org>; Sat, 01 Jul 2023 00:01:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1688194915; x=1690786915;
+ d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1688194918; x=1690786918;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=uzSXskDD/v1lHw+o43R3dD1EMa38NVV+qos1D4KGb28=;
- b=tmf+3ZX1n4IsswZCdO5pgd83VKy2DfGPbjscSf4CvjggaqBVYZfyHeOEVBx0fw8P/s
- qw7+1k13xRcabwjeL+y3K7wm4KHDgk7f19T/rW0ZRzgSOo56jB62gh/lfQCw64Gmo26H
- hd5Oy6i9KhtHd86PLB8VtLXy/dtHdL1JPOG0He3nZAtJ3ok2ny58j6+HHDsctn41u6Dl
- 9XhGahPgUEtF+5N9E6CnFyfVdd8JBjgzY2tNbdn/nHWqjwLRa8pbRxrZFn/OGecvmAC8
- E5A/1xszqXRg5X5vLDzbgT3AFAiJEq6xRrRwvE1v080YnnFKkFpEc6MGx4/ND6q5giw3
- XgOA==
+ bh=Zsb2EYoYtxi+hLo7fouc8vYS/YOxaACOuCfNLuemkEQ=;
+ b=iZY7kq6aeR/PgC7qI3f7TcEMIxZR2ybdEGv4MOhRUBV0XemoJnimyY3ogg9DfK9VRv
+ GLPSVvh7AwEyvJqx7zZjsa2+298ennzbJoJzfQyKaciCUwMrjiKF4TNcpeRqCbnPyebk
+ m8hTndB49lxkL60HEIUnF0kWgBGe1Y1LLNRyENJx2Yro4w6keU/UBlO5TllwFjhxQmz1
+ IApSs7Ms/w4kOVQLuKs09wEZmj7pXVZoauk08mFRLUVioUMgz8VCxW//ZW28ouZ0rn1w
+ V02qzQLC67wpkIulB2bWPkX1HsxRFXX4PyQDVRy9DQs4gPTlv5DypC4ZPzY9ZDk8YUgt
+ S4PQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688194915; x=1690786915;
+ d=1e100.net; s=20221208; t=1688194918; x=1690786918;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=uzSXskDD/v1lHw+o43R3dD1EMa38NVV+qos1D4KGb28=;
- b=DyH2iRitzVeXfgh9ESD8mxcuhOBE9A04wNqR1bnM+94UcwdmozAQ1xfD237vGVcm9n
- BWlWzLciAxWaylO+nCjHwUmoeXwku6Eca0E2eDD0jr+We5/M/ADNel1reO7PEmi9ZhXl
- wWdxUCZabMekRG5dP7IXK8gJjJzP4guSrAWqlJZZlTEFr+kVT0Tz2TuMaLsXmF0tIvnM
- VN4OWOXddnlcTtvAnNReZYSNkSazYHAwl5wqDC7RR8EZk0zMJCa24HJLcE0cCti+u/md
- D4JeuVAN6pqLFzebOKJm59aFsWCgjqqAalpc3PzILiYHJSfh3PGt+8zlZqEC2+FPb4cE
- Xkng==
-X-Gm-Message-State: ABy/qLYXIoU4ym5hqOagtfw64ueeveKYsMnMQIdNfE1DKTzgbr5ewZfB
- 4SLeq6hFRakqeZz5B0XFDSroplvAtjrbUF17GeQ=
-X-Google-Smtp-Source: APBJJlEmVllYlwT+VxwsvPobpenmx898PoKEa9nQTpLzQKkppsAMMxBrilcjPRPGAswx8PAIcxPAPg==
-X-Received: by 2002:a17:902:e743:b0:1af:e302:123 with SMTP id
- p3-20020a170902e74300b001afe3020123mr8110555plf.3.1688194915460; 
- Sat, 01 Jul 2023 00:01:55 -0700 (PDT)
+ bh=Zsb2EYoYtxi+hLo7fouc8vYS/YOxaACOuCfNLuemkEQ=;
+ b=UixAb9Cmde/rO5+6I7QCOkITRunP5v68tUxLhoW/STwQePu6wQj4hwW+sCa6+k98SI
+ 64CoyOt9NhiPzn1WqXsRrn0biRIySD7f786uDGepZAsxX2AXLUAYNH1lRdQ25zx0yiKU
+ bVEZgdMIthlLQ+b46pss9AZoMcjs0NHL5UqfifITHekO8UaLxowpM/15j56KThQNkiPF
+ WysUd8n6ex0ZoR74ulJW6YYKMOTUoREm5D7jLbkD47uarCpMi2cSR9kzUzUZE73DoUt3
+ 9IpSkYnjxFJZBpXLgvMMI1pohlpkOPVzvPhEUHg/KmFtdNfqjDHHwUEH0iQH2DdO4J9R
+ a7aQ==
+X-Gm-Message-State: ABy/qLb5dp21sjXw1m7ptQvcgkUqF9VuOKw5OtQpObVyWSGf7MmzCPYQ
+ U+Ur2ue98UGyHglyEUujlrOBC9VC0PJRkkHozN0=
+X-Google-Smtp-Source: APBJJlFlZ35B0rIZQzKfg3jTelGySVWGLopojw53KLoqCITw5ZsL2UZZX0SuJOz+DVy5uNgawZdFdg==
+X-Received: by 2002:a05:6e02:5d0:b0:345:b97e:6ba5 with SMTP id
+ l16-20020a056e0205d000b00345b97e6ba5mr4380053ils.4.1688194918067; 
+ Sat, 01 Jul 2023 00:01:58 -0700 (PDT)
 Received: from alarm.. ([157.82.204.253]) by smtp.gmail.com with ESMTPSA id
- jd4-20020a170903260400b001b1920cffdasm5592452plb.204.2023.07.01.00.01.52
+ jd4-20020a170903260400b001b1920cffdasm5592452plb.204.2023.07.01.00.01.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 01 Jul 2023 00:01:55 -0700 (PDT)
+ Sat, 01 Jul 2023 00:01:57 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 To: 
 Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org,
@@ -63,16 +63,16 @@ Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org,
  Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
  Jason Wang <jasowang@redhat.com>, Keith Busch <kbusch@kernel.org>,
  Klaus Jensen <its@irrelevant.dk>, Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH 1/4] docs: Fix next function numbers in SR/IOV documentation
-Date: Sat,  1 Jul 2023 16:01:19 +0900
-Message-ID: <20230701070133.24877-2-akihiko.odaki@daynix.com>
+Subject: [PATCH 2/4] hw/nvme: Fix ARI next function numbers
+Date: Sat,  1 Jul 2023 16:01:20 +0900
+Message-ID: <20230701070133.24877-3-akihiko.odaki@daynix.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230701070133.24877-1-akihiko.odaki@daynix.com>
 References: <20230701070133.24877-1-akihiko.odaki@daynix.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::534;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x534.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::131;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-il1-x131.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -98,37 +98,30 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 The next function numbers are expected to form a linked list ending with
 0.
 
-Fixes: 2503461691 ("pcie: Add some SR/IOV API documentation in docs/pcie_sriov.txt")
+Fixes: 44c2c09488 ("hw/nvme: Add support for SR-IOV")
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- docs/pcie_sriov.txt | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ hw/nvme/ctrl.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/docs/pcie_sriov.txt b/docs/pcie_sriov.txt
-index 7eff7f2703..cc4232e49a 100644
---- a/docs/pcie_sriov.txt
-+++ b/docs/pcie_sriov.txt
-@@ -48,7 +48,7 @@ setting up a BAR for a VF.
-       ...
-       int ret = pcie_endpoint_cap_init(d, 0x70);
-       ...
--      pcie_ari_init(d, 0x100, 1);
-+      pcie_ari_init(d, 0x100, fun_offset);
-       ...
+diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
+index fd917fcda1..12500dc80b 100644
+--- a/hw/nvme/ctrl.c
++++ b/hw/nvme/ctrl.c
+@@ -8088,7 +8088,12 @@ static bool nvme_init_pci(NvmeCtrl *n, PCIDevice *pci_dev, Error **errp)
+     pcie_endpoint_cap_init(pci_dev, 0x80);
+     pcie_cap_flr_init(pci_dev);
+     if (n->params.sriov_max_vfs) {
+-        pcie_ari_init(pci_dev, 0x100, 1);
++        uint16_t nextvfn = pci_is_vf(pci_dev) ?
++                           pcie_sriov_vf_number(pci_dev) + 1 : 0;
++        uint16_t nextfn = nextvfn < n->params.sriov_max_vfs ?
++                          NVME_VF_OFFSET + nextvfn * NVME_VF_STRIDE : 0;
++
++        pcie_ari_init(pci_dev, 0x100, nextfn);
+     }
  
-       /* Add and initialize the SR/IOV capability */
-@@ -76,9 +76,10 @@ setting up a BAR for a VF.
-    pci_your_vf_dev_realize( ... )
-    {
-       ...
-+      uint16_t nextvfn = pcie_sriov_vf_number(dev) + 1;
-       int ret = pcie_endpoint_cap_init(d, 0x60);
-       ...
--      pcie_ari_init(d, 0x100, 1);
-+      pcie_ari_init(d, 0x100, nextvfn < total_vfs ? fun_offset + nextvfn * stride : 0);
-       ...
-       memory_region_init(mr, ... )
-       pcie_sriov_vf_register_bar(d, bar_nr, mr);
+     /* add one to max_ioqpairs to account for the admin queue pair */
 -- 
 2.41.0
 
