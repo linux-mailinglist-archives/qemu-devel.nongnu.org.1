@@ -2,70 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1037D74477E
-	for <lists+qemu-devel@lfdr.de>; Sat,  1 Jul 2023 08:57:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 41D97744774
+	for <lists+qemu-devel@lfdr.de>; Sat,  1 Jul 2023 08:56:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFUVv-0007WW-Sp; Sat, 01 Jul 2023 02:55:23 -0400
+	id 1qFUVr-0007UI-Gv; Sat, 01 Jul 2023 02:55:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qFUVp-0007Tr-H3
+ id 1qFUVp-0007Tk-4P
  for qemu-devel@nongnu.org; Sat, 01 Jul 2023 02:55:17 -0400
-Received: from mail-lf1-x132.google.com ([2a00:1450:4864:20::132])
+Received: from mail-lf1-x12c.google.com ([2a00:1450:4864:20::12c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qFUVn-0007EZ-03
- for qemu-devel@nongnu.org; Sat, 01 Jul 2023 02:55:17 -0400
-Received: by mail-lf1-x132.google.com with SMTP id
- 2adb3069b0e04-4fba8f2197bso1070639e87.3
+ id 1qFUVn-0007Ed-Ae
+ for qemu-devel@nongnu.org; Sat, 01 Jul 2023 02:55:16 -0400
+Received: by mail-lf1-x12c.google.com with SMTP id
+ 2adb3069b0e04-4f766777605so4300595e87.1
  for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 23:55:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1688194513; x=1690786513;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=DQAIpWnde8XmaUaSLH8gsoP+vMyKst8btXPNXLq8KfE=;
- b=z0w0WLDLpYihwuE1IfBTmCrPGYLJ3NX81Lub0bsLLbqFnfJ3PUG0ERu+EJY7KQS+2I
- F/Z9NHVPRKTf7eAZAen2cpXFS8UwQDlJSPQoGMbZwYxSan9O3k6niVG98fUWpc6qs3Ia
- qC9nOPNKo7PI40jOud7nfO4UovDPd0ZJUf+X5TEbmjNNSFNWEj9oTlrAh8RHbLBx7FCU
- VrpZScVS433Jb6SIpZwYngqJqUqYKVDqLreCAH3Nuo237fdlf13F7ziSHERoJ8Y25Qy4
- z7XtHoQHpSclecbYKGTrbgFuxZEC8a9ZWUyaCPlF1ztzE/8m745OXZ4kS+/rEhPiwD2d
- twVg==
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=R6W2wZouwSAQes85QIyt+CMmBwG3afd8TW13hztwuFc=;
+ b=FUVbFDLBybRye6pzlItxbV0rtborrjKewfnQqcCsFdk2Q7D+wvBXouE6vkAj7zLwMj
+ 3XLGMViIh5QnLgIPLushqE8Tl9ls3Bqngm1oyAaqe+03L6B+wlLxn/YHkl/AwpcdA/yb
+ r8ZP+Lcto4lAznfsJO6wQCm18JdlG4LKzr41vSCN+H1OvPrkL4rmQIuq+Fs1D0HW4s9Q
+ ksHJEEjt290Sdt8HFZv3Flfw/gz5FBb54phnzMGQPSvGcvjScR7q/Gx+PciRB/0EX/c3
+ oPBXUIUQoe8Gl4D6x1htgLPO0DEMc6RM+WgrM8LXQX2id0+xf0w/WuN0B/aAgnarNpkn
+ Q7HA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20221208; t=1688194513; x=1690786513;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=DQAIpWnde8XmaUaSLH8gsoP+vMyKst8btXPNXLq8KfE=;
- b=gRdZupJmdkqqRuawBeUxvEuZe1FpwlCzYKi/KAXJOyBUU5f8ICZzVp+854OUrd8Chs
- hzqwvWvbLut+GpaA2EgnR3NOthJSCL1MbKqostVuvCGM4QuUy7WDg9CB+EJXUYMi+VFR
- +jgFflRgeVRTgLJnDHqlqOcZlbCNZ+yFtwptmZukL5Eju5Ait2Qmk/IJUgPoLKYzyuiq
- KsF+5mBzaLdZ8hVV5BDnR5cjk4+FXP8+LkkZSGYgg+SOOuYG+sXeLemAGSbWb/SkQqaJ
- dTDMCg6MUJRDWHuerGGzW7kmDGA/ocWhfuRExnhmVap8c2PNTMNJ3go/UtqqjQluUTRF
- 1XTg==
-X-Gm-Message-State: ABy/qLaVnHfYKtlPXWL+d5xThugohmI9VNhToMSEwKy/HMrM3JaUHATv
- dMJgu+q/eE12FIFfZTuPDy90gbI00dTR4LZtgTSU5A==
-X-Google-Smtp-Source: APBJJlFgDQpYm9BnQbKh5ec8Ynb3YkuBgluUlnIAQDLGLMXhKbUYqcYkp7mycyxvvV+iyewR8gyxtQ==
-X-Received: by 2002:ac2:5e2c:0:b0:4fb:81f2:4228 with SMTP id
- o12-20020ac25e2c000000b004fb81f24228mr3251631lfg.31.1688194512722; 
- Fri, 30 Jun 2023 23:55:12 -0700 (PDT)
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=R6W2wZouwSAQes85QIyt+CMmBwG3afd8TW13hztwuFc=;
+ b=N2Z9gjE6Bzbr2nHDgvZb8U9EhJbVCu7cYgCU4+oqLNHNNFRzBMG2uGmISox2mpBA+2
+ OJ8L8STD83Nd14BWwhmvfJk8W/c6bAXehQEDvtEDb5deV7JGvdaSv1U3DXokHZHOyzu6
+ c/98O7F+p7mXgM7k8PDPP8gg4rt1FsgtyaPLFsbsp15DaS69LmmTtbTSTFQIEr8hY94x
+ /6Rh/SPDeWE2RF6QVFB72ZRSkTokKcYhAS/Qo98nzxaMefBuu8LbsI3tzSqqdBGisZPM
+ RR8sONR3QfXn60xwNRCzWE3h9XuWoRMtlFB6Kp+jhArIUKWtOsf9GWf0jCjD4L/H9kW9
+ rt6w==
+X-Gm-Message-State: ABy/qLZ8BjFGTyRpzfH7FZZlmmu9e2OtQVl10zVpbX1U2YibQu/bzQZM
+ /ZJcQjXEpfXV8FRp3J8dyxgeJU6WAcKwoeneyOaBvA==
+X-Google-Smtp-Source: APBJJlEHz2B56xpkbysoeIwGebj9CbytYBnFPPLR1GWQsbtq1Ppv5j52oqFXkbwwIl/izIQQSybSpg==
+X-Received: by 2002:ac2:4ed4:0:b0:4fb:52f1:9ab4 with SMTP id
+ p20-20020ac24ed4000000b004fb52f19ab4mr3082622lfr.50.1688194513426; 
+ Fri, 30 Jun 2023 23:55:13 -0700 (PDT)
 Received: from localhost.localdomain ([139.47.41.96])
  by smtp.gmail.com with ESMTPSA id
- w10-20020a1cf60a000000b003f9bd9e3226sm20874918wmc.7.2023.06.30.23.55.11
- for <qemu-devel@nongnu.org>
+ w10-20020a1cf60a000000b003f9bd9e3226sm20874918wmc.7.2023.06.30.23.55.12
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 30 Jun 2023 23:55:12 -0700 (PDT)
+ Fri, 30 Jun 2023 23:55:13 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 00/11] tcg and misc patch queue
-Date: Sat,  1 Jul 2023 08:54:59 +0200
-Message-Id: <20230701065510.514743-1-richard.henderson@linaro.org>
+Cc: BALATON Zoltan <balaton@eik.bme.hu>
+Subject: [PULL 01/11] ui/dbus: fix build errors in dbus_update_gl_cb and
+ dbus_call_update_gl
+Date: Sat,  1 Jul 2023 08:55:00 +0200
+Message-Id: <20230701065510.514743-2-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230701065510.514743-1-richard.henderson@linaro.org>
+References: <20230701065510.514743-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::132;
- envelope-from=richard.henderson@linaro.org; helo=mail-lf1-x132.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::12c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-lf1-x12c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -88,62 +92,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 408015a97dbe48a9dde8c0d2526c9312691952e7:
+Add some ifdefs to avoid an unused function and unused variable.
 
-  Merge tag 'pull-vfio-20230630' of https://github.com/legoater/qemu into staging (2023-06-30 08:11:08 +0200)
+Fixes: de1f8ce0abb8 ("ui/dbus: use shared D3D11 Texture2D when possible")
+Co-developed-by: BALATON Zoltan <balaton@eik.bme.hu>
+Message-Id: <336f7697-bcfa-1f5f-e411-6859815aa26c@eik.bme.hu>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ ui/dbus-listener.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-are available in the Git repository at:
+diff --git a/ui/dbus-listener.c b/ui/dbus-listener.c
+index e10162b279..0240c39510 100644
+--- a/ui/dbus-listener.c
++++ b/ui/dbus-listener.c
+@@ -177,6 +177,7 @@ fail:
+ }
+ #endif /* WIN32 */
+ 
++#if defined(CONFIG_GBM) || defined(WIN32)
+ static void dbus_update_gl_cb(GObject *source_object,
+                               GAsyncResult *res,
+                               gpointer user_data)
+@@ -203,11 +204,14 @@ static void dbus_update_gl_cb(GObject *source_object,
+     graphic_hw_gl_block(ddl->dcl.con, false);
+     g_object_unref(ddl);
+ }
++#endif
+ 
+ static void dbus_call_update_gl(DisplayChangeListener *dcl,
+                                 int x, int y, int w, int h)
+ {
++#if defined(CONFIG_GBM) || defined(WIN32)
+     DBusDisplayListener *ddl = container_of(dcl, DBusDisplayListener, dcl);
++#endif
+ 
+     trace_dbus_update_gl(x, y, w, h);
+ 
+-- 
+2.34.1
 
-  https://gitlab.com/rth7680/qemu.git tags/pull-tcg-20230701
-
-for you to fetch changes up to 605a8b5491a119a2a6efbf61e5a38f9374645990:
-
-  linux-user: Avoid mmap of the last byte of the reserved_va (2023-07-01 08:33:08 +0200)
-
-----------------------------------------------------------------
-dbus: Two hot fixes, per request of Marc-André Lureau
-accel/tcg: Fix tb_invalidate_phys_range iteration
-fpu: Add float64_to_int{32,64}_modulo
-tcg: Reduce scope of tcg_assert_listed_vecop
-target/nios2: Explicitly ask for target-endian loads
-linux-user: Avoid mmap of the last byte of the reserved_va
-
-----------------------------------------------------------------
-Marc-André Lureau (1):
-      audio: dbus requires pixman
-
-Mark Cave-Ayland (2):
-      accel/tcg: Fix start page passed to tb_invalidate_phys_page_range__locked
-      accel/tcg: Assert one page in tb_invalidate_phys_page_range__locked
-
-Peter Maydell (1):
-      target/nios2 : Explicitly ask for target-endian loads and stores
-
-Philippe Mathieu-Daudé (1):
-      tcg: Reduce tcg_assert_listed_vecop() scope
-
-Richard Henderson (6):
-      ui/dbus: fix build errors in dbus_update_gl_cb and dbus_call_update_gl
-      fpu: Add float64_to_int{32,64}_modulo
-      tests/tcg/alpha: Add test for cvttq
-      target/alpha: Use float64_to_int64_modulo for CVTTQ
-      target/arm: Use float64_to_int32_modulo for FJCVTZS
-      linux-user: Avoid mmap of the last byte of the reserved_va
-
- include/fpu/softfloat.h         |  3 ++
- include/tcg/tcg.h               |  6 ---
- accel/tcg/tb-maint.c            | 13 +++++--
- fpu/softfloat.c                 | 31 +++++++++++++++
- linux-user/mmap.c               | 14 +++++--
- target/alpha/fpu_helper.c       | 85 +++++++++--------------------------------
- target/arm/vfp_helper.c         | 71 ++++++----------------------------
- target/nios2/translate.c        | 20 +++++-----
- tcg/tcg-op-vec.c                |  6 +--
- tests/tcg/alpha/test-cvttq.c    | 78 +++++++++++++++++++++++++++++++++++++
- ui/dbus-listener.c              |  4 ++
- fpu/softfloat-parts.c.inc       | 78 +++++++++++++++++++++++++++++++++++++
- audio/meson.build               |  2 +-
- tests/tcg/alpha/Makefile.target |  2 +-
- 14 files changed, 258 insertions(+), 155 deletions(-)
- create mode 100644 tests/tcg/alpha/test-cvttq.c
 
