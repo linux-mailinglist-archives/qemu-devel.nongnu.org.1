@@ -2,85 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10D6F744AC0
-	for <lists+qemu-devel@lfdr.de>; Sat,  1 Jul 2023 19:47:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D303E744AC1
+	for <lists+qemu-devel@lfdr.de>; Sat,  1 Jul 2023 19:47:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFefI-0004za-TM; Sat, 01 Jul 2023 13:45:44 -0400
+	id 1qFegh-0005gp-Np; Sat, 01 Jul 2023 13:47:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <olaf@aepfle.de>)
- id 1qFefG-0004z1-9x; Sat, 01 Jul 2023 13:45:42 -0400
+ id 1qFegf-0005g8-3X; Sat, 01 Jul 2023 13:47:09 -0400
 Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.54])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <olaf@aepfle.de>)
- id 1qFefE-0003Vj-2J; Sat, 01 Jul 2023 13:45:42 -0400
-ARC-Seal: i=1; a=rsa-sha256; t=1688233533; cv=none;
+ id 1qFegd-0004K7-Cr; Sat, 01 Jul 2023 13:47:08 -0400
+ARC-Seal: i=1; a=rsa-sha256; t=1688233625; cv=none;
  d=strato.com; s=strato-dkim-0002;
- b=QnyjJDzdLS4gf14b51gZL9LObxISRFO1WXnkhZ+mrTdvkbHbEYZIFE0qCBRYwKG0uG
- Iv8cXfGCMeQXcCHdcpJz46uuVOknRfwprmJfAoQ08RhkrM29PtOiQCvtBjFIQjPzhZ95
- hgVsEV1d3h0B8/sMUGqqQhitbNxMtKVqLHr4zTmWrGEojxVrXdDCJmZCWY0TopDK0iac
- 2KHyavH0X2NHbj/OhA+JFG10T8/yXqI9Qfjj0Gy0PMUt3p+fcMTG1lQB5RnxnLKC3IKJ
- Zf/9JESZzkhPxZDVPM/oJ/KUkzFLk02rfyG/ti/gtkFS+QRyn+1OiMB0t3UPfMKbvapB
- baLg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1688233533;
+ b=lB6poC13LurVBH0pewPpMp+RRZkJjUNPc/Ci36soo4Mp8Et1MN5fLvaC8yWXhRFY4H
+ aSn+FmjNVR+XuhfU6bYYjXVvfG5P90s9E8Rspt6okP2/+h72VVBQaRwEhgGno5bJqFfq
+ 0mk7tMLLrv0p7Y80a0Emey+Qw9AGnWeRYkozbQHh8F+/P1sE0P3iSkM6XZ+fFZDDVc8I
+ rSCXDOnU+fG6ZL0jKUfRgRUDW2T1JGFD7lbClRv802YH8V4YmTXg9lMj1XQWLBR5+lq7
+ 04eyEy4KJR3tJFj5H/thtj2QVGwV8gNGQE4b010buoQSsExE1duE6nAJ4GFrsZOp5QAI
+ zV6Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1688233625;
  s=strato-dkim-0002; d=strato.com;
- h=References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
- From:Subject:Sender;
- bh=36MiBxuvoKB0YuD/WXyv9OcOmPg68QApYwxHYJQxyF0=;
- b=BYiAVfPo+l/BZCBP79Jfstb9QkJVSu1jKcIYSlyNXrOj0Axgs0vtgxasSWdiV2g10o
- BtTvF8h7AOvB/nJa8v8luQHLWTHzb3zqj5lRt9cRGgP8KMHEEDQa3NVDL8+z5o4VHU4f
- UrjfnRXNMR5oMzI9TUeQdY/QvRd9+drUtlPqvnb3cY+M06sfC5c1TXoryiKIjIcGAXG0
- CibwJWgnFVbxu3642ZwlRdaDFLFmFNyftq6XvcaXwdIS8AqCy0x/WJLwoDZfw0SWC2TB
- aB1+PwLdgU+6nRtvB0nGsHbF0q8WmT8gN88DLigZyWwXeLMQkJ6j5TqbzH4a6LJTj1su
- Z98Q==
+ h=Message-Id:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
+ bh=xTvtMyLd8dhPFXKAVn5Rzsq2FBSYl+/GTXk/3+HxJSQ=;
+ b=fqyFAuxMPzsAW6Rcms2lcAI2albJBo4W9ZhRDbcGg2CWQ1D6CryfJuWN1NJcBQnDYb
+ 6T2x3RiPjCJZFyPqU4o86ScDXs7B8z+eIsPmiCfcYeOpv2ndCcUYhrV1z5gkemRV9bwh
+ +oHO0qgNerhr10r6C27Sx2m+HwJxm0UuazRoZBBft1bRP6OoVFn17Bzt2L3xpvTR/aQ6
+ v43rz5WwbvicPaihP9L5HZgybcBgdKVqvWHkJhX2DSa2jmuduAhzCxmivo8kzJ0nKxeC
+ WpmgVY54VONhj60nbQJevtSGdix8RYQX5Aoyk84WAxfOKeLS/km9DGR9xZrw0keSTCO5
+ ydfQ==
 ARC-Authentication-Results: i=1; strato.com;
     arc=none;
     dkim=none
 X-RZG-CLASS-ID: mo01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1688233533;
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1688233625;
  s=strato-dkim-0002; d=aepfle.de;
- h=References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
- From:Subject:Sender;
- bh=36MiBxuvoKB0YuD/WXyv9OcOmPg68QApYwxHYJQxyF0=;
- b=MfoSKs+kK6aWC4KSMrWWHcj/m+cUMFNOy6BC2NuwF4exp1g6Bky4W/uIGdSkZu+kqZ
- 7zWSyNISA0eI28SzAYtYE6wcEDDVdueDrJ1HOO/TWvrGCwL2ac+rmHkgNUI12NamXcMU
- FA41ZTtVh2eKvUurZ8VE9kmNC80Rmf7PPWAF8ezlojtxntzKttJ0gV6yoMIqOKh9tOO1
- u6Sfk8iqImw/4hmvazNjf3xxH3bTsM9Exf9qon6csSeJqxZ3HaauLqmKwGq9fZEKaUUK
- psFpKNGvI+YlZFigbAitGk1p8KYKcoZmciMW8NZP+M3DTrqbtAlMIwvDODWfqo9nSmXd
- yBAw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1688233533;
+ h=Message-Id:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
+ bh=xTvtMyLd8dhPFXKAVn5Rzsq2FBSYl+/GTXk/3+HxJSQ=;
+ b=fz9nnCrIjWLIJvxn9zx8y2eOKsq0yvFJTDbTND03Ju7WOv7yLm4MQ36cWzpfexdJqp
+ irePTCrs8HODgjIoh0QmYM9X2uXpF/vqKekAxqYtVsFLNr5fQfXeQG97Nxvqiz6Yr04L
+ /Uwuh2DJJGFiHwzEdw5m7uSuUJ7c2nCglErxorv5JmyblNw251fDqVcgi0nqp1pMEI6c
+ cZfVXI2Vb1Tw4izmyBBpYimraQ2tnkEOXnAePY5YVSX9v8ttyesnVOiqwJxJtTHeYsEI
+ 0bfCxry+wwkzQ/L6pfqvM9i1vHWT/SvDeX7ZvCFKXotY7/hD4POc+aP9VcQeZvvb53RV
+ FQHw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1688233625;
  s=strato-dkim-0003; d=aepfle.de;
- h=References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
- From:Subject:Sender;
- bh=36MiBxuvoKB0YuD/WXyv9OcOmPg68QApYwxHYJQxyF0=;
- b=M39Y9Y/v1ncZRRNE1fW/Sj/nTSndMuz5zWV966Oabhj6fWsSvWq6SqmZ4C+ecbm9mY
- PqjAQhilMUfJDunKiNBQ==
-X-RZG-AUTH: ":P2EQZWCpfu+qG7CngxMFH1J+3q8wa/QLpd5ylWvMDX3y/OuD5rXVisR4VReIOE3s+xIC8HZ8TOtjelmE6SkKgUS6xMby0Q=="
+ h=Message-Id:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
+ bh=xTvtMyLd8dhPFXKAVn5Rzsq2FBSYl+/GTXk/3+HxJSQ=;
+ b=I90m1GF2Pxxxx9qfcB0nL2WGT83EKEPnSmMW+lgeO0b1yrCyF9mkgQGkj18xq7OSzM
+ SZQpa7l2H2IU71565JCg==
+X-RZG-AUTH: ":P2EQZWCpfu+qG7CngxMFH1J+3q8wa/QXkBR9MXjAuzpIG0mv9coXAg4x+1/7Qcst+v+6egNSCv2nSejLpXdlt4RWwKmQOQ=="
 Received: from sender by smtp.strato.de (RZmta 49.6.0 AUTH)
- with ESMTPSA id y5401az61HjX1ie
+ with ESMTPSA id y5401az61Hl51ih
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
  (Client did not present a certificate);
- Sat, 1 Jul 2023 19:45:33 +0200 (CEST)
-Date: Sat, 1 Jul 2023 19:45:25 +0200
+ Sat, 1 Jul 2023 19:47:05 +0200 (CEST)
 From: Olaf Hering <olaf@aepfle.de>
-To: BALATON Zoltan <balaton@eik.bme.hu>
-Cc: Philippe =?UTF-8?B?TWF0aGlldS1EYXVkw6k=?= <philmd@linaro.org>, Richard
- Henderson <richard.henderson@linaro.org>, Lev Kujawski
- <lkujaw@member.fsf.org>, Bernhard Beschow <shentey@gmail.com>,
- qemu-block@nongnu.org, qemu-devel@nongnu.org, John Snow <jsnow@redhat.com>
-Subject: Re: [PATCH v1] hw/ide/piix: properly initialize the BMIBA register
-Message-ID: <20230701194525.4d6a3c5f.olaf@aepfle.de>
-In-Reply-To: <alpine.LMD.2.03.2307011532500.25684@eik.bme.hu>
-References: <20230701111341.25500-1-olaf@aepfle.de>
- <alpine.LMD.2.03.2307011532500.25684@eik.bme.hu>
-X-Mailer: Claws Mail 20230601T090920.68bc28c0 hat ein Softwareproblem,
- kann man nichts machen.
+To: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Kevin Wolf <kwolf@redhat.com>, Lev Kujawski <lkujaw@member.fsf.org>,
+ qemu-block@nongnu.org, qemu-devel@nongnu.org
+Cc: John Snow <jsnow@redhat.com>
+Subject: [PATCH v2] hw/ide/piix: properly initialize the BMIBA register
+Date: Sat,  1 Jul 2023 19:46:59 +0200
+Message-Id: <20230701174659.10246-1-olaf@aepfle.de>
+X-Mailer: git-send-email 2.35.3
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/oKaQWu3G5Eeuzc/SUBR6wuz";
- protocol="application/pgp-signature"; micalg=pgp-sha256
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Received-SPF: none client-ip=85.215.255.54; envelope-from=olaf@aepfle.de;
  helo=mo4-p01-ob.smtp.rzone.de
 X-Spam_score_int: -20
@@ -105,40 +97,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---Sig_/oKaQWu3G5Eeuzc/SUBR6wuz
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+According to the 82371FB documentation (82371FB.pdf, 2.3.9. BMIBA—BUS
+MASTER INTERFACE BASE ADDRESS REGISTER, April 1997), the register is
+32bit wide. To properly reset it to default values, all 32bit need to be
+cleared. Bit #0 "Resource Type Indicator (RTE)" needs to be enabled.
 
-Sat, 1 Jul 2023 15:34:40 +0200 (CEST) BALATON Zoltan <balaton@eik.bme.hu>:
+The initial change wrote just the lower 8 bit, leaving parts of the "Bus
+Master Interface Base Address" address at bit 15:4 unchanged.
 
-> If all 32 bits should be writtern does this need pci_set_long instead of =
-pci_set_word?
+This bug went unnoticed until commit ee358e919e38 ("hw/ide/piix: Convert
+reset handler to DeviceReset"). After this change, piix_ide_reset is
+exercised after the "unplug" command from a Xen HVM domU, which was not
+the case prior that commit. This function resets the command register.
+As a result the ata_piix driver inside the domU will see a disabled PCI
+device. The generic PCI code will reenable the PCI device. On the qemu
+side, this runs pci_default_write_config/pci_update_mappings. Here a
+changed address is returned by pci_bar_address, this is the address
+which was truncated in piix_ide_reset. In case of a Xen HVM domU, the
+address changes from 0xc120 to 0xc100.
 
-Thanks for spotting. After a number of experiments I used the wrong variant.
+While the unplug is supposed to hide the IDE disks, the changed BMIBA
+address breaks the UHCI device. In case the domU has an USB tablet
+configured, to recive absolute pointer coordinates for the GUI, it will
+cause a hang during device discovery of the partly discovered USB hid
+device. Reading the USBSTS word size register will fail. The access ends
+up in the QEMU piix-bmdma device, instead of the expected uhci device.
+Here a byte size request is expected, and a value of ~0 is returned. As
+a result the UCHI driver sees an error state in the register, and turns
+off the UHCI controller.
 
+Fixes: e6a71ae327 ("Add support for 82371FB (Step A1) and Improved support for 82371SB (Function 1)")
 
-Olaf
+Signed-off-by: Olaf Hering <olaf@aepfle.de>
+---
+ hw/ide/piix.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---Sig_/oKaQWu3G5Eeuzc/SUBR6wuz
-Content-Type: application/pgp-signature
-Content-Description: Digitale Signatur von OpenPGP
+diff --git a/hw/ide/piix.c b/hw/ide/piix.c
+index 41d60921e3..1e346b1b1d 100644
+--- a/hw/ide/piix.c
++++ b/hw/ide/piix.c
+@@ -118,7 +118,7 @@ static void piix_ide_reset(DeviceState *dev)
+     pci_set_word(pci_conf + PCI_COMMAND, 0x0000);
+     pci_set_word(pci_conf + PCI_STATUS,
+                  PCI_STATUS_DEVSEL_MEDIUM | PCI_STATUS_FAST_BACK);
+-    pci_set_byte(pci_conf + 0x20, 0x01);  /* BMIBA: 20-23h */
++    pci_set_long(pci_conf + 0x20, 0x01);  /* BMIBA: 20-23h */
+ }
+ 
+ static bool pci_piix_init_bus(PCIIDEState *d, unsigned i, Error **errp)
 
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEE97o7Um30LT3B+5b/86SN7mm1DoAFAmSgZjYACgkQ86SN7mm1
-DoBpJQ/9Ea8n0Ydto9ziKSa1JNnozbStxCTKjtZ9hFybe5oDRVv9zIRlh6tk+TLH
-8tmcO3npxwFVPXUSu4lPZXu4TOQOLSSkqcfhCO6cA/kRie6X2vTKI2e98XiSE4O5
-4sSWas7rQmy9nAEMmgmTBN0gkm61KKnYI4LLJDQLmA7NwAH/19oEI8aKlaKRoLT1
-ZQ+IRi0fUyCQkobT6aD/Wtfl6IjB8tB1PwY7FX9mfBLWHBpb7KhJFN2YwqwQ/YT1
-Qf7U9dOJ8ulfbt8hHXk374okDEsf9ao4w1JzK71mflzsApHdKa13oWpXa6ofC6mZ
-vqVjb1hfnjpt63xO5Ea6CbgpgfMLOSkodTlS8S9mQxjuxILH8wFOLAt/IcjGgHYo
-K1NEa7crXajZv3GvIVnMBmR3X21FvRxRx+9vRpZdDv2JiIbo0wazrfzy8l4BK0+w
-9IaAXas6KTQL4s/1tk0dA2hWx9LmFE6xA9H+DC1AyRMOcjxoMN6g6Yr3fA5e9m/L
-aBW1oLjl+EedHaCGcfjlow4IuQOy8pbkLSj1yS0ANUks/GWCvFSQfO51tj49ay5j
-L0I43V56vzX64/W5ISymi9O7C2qKSnzCFCdZUk/BcMIbENrZvYudDPH6FNv+hR5E
-02VrTErmStr1Vo/kA+X+b0uOYlAd+zrZ+NjTGrnwiVmUeusm92Y=
-=pBm3
------END PGP SIGNATURE-----
-
---Sig_/oKaQWu3G5Eeuzc/SUBR6wuz--
+base-commit: d145c0da22cde391d8c6672d33146ce306e8bf75
 
