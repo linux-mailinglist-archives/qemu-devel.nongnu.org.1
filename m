@@ -2,87 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A033A7448E2
-	for <lists+qemu-devel@lfdr.de>; Sat,  1 Jul 2023 14:22:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 583E7744934
+	for <lists+qemu-devel@lfdr.de>; Sat,  1 Jul 2023 15:36:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFZbP-0001du-SE; Sat, 01 Jul 2023 08:21:23 -0400
+	id 1qFakf-0005lJ-S6; Sat, 01 Jul 2023 09:35:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qFZbN-0001cQ-Jp
- for qemu-devel@nongnu.org; Sat, 01 Jul 2023 08:21:22 -0400
-Received: from mail-oo1-xc2e.google.com ([2607:f8b0:4864:20::c2e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qFZbL-0000Uw-Fk
- for qemu-devel@nongnu.org; Sat, 01 Jul 2023 08:21:21 -0400
-Received: by mail-oo1-xc2e.google.com with SMTP id
- 006d021491bc7-560b56b638eso1821828eaf.0
- for <qemu-devel@nongnu.org>; Sat, 01 Jul 2023 05:21:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1688214078; x=1690806078;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=ltR6+btn7qx3Uz8ohgVMmphmZWsSINbZLSIpu3GrlVc=;
- b=QKtIujCZYmi2UWcXOUykOT9zudoXzwAXxiTNzdQzAcstV+GATdu1zF2eiVsQkTiuQB
- xl6vVVKEoBB4up9kUnm+K6lm1Hdua3wB+DhomxGvRQQbs1/3EoHR6Jf+jcFlQfRbpcW2
- AhEmlGN4RxKqaHMxxexaTopEuQTcmIaP0PDIhnLffPL5BQl158o5LvjXNqytpR3J3Ju+
- OkzgwiuIIaU/lh1cp47AbWqeEAHlZvOLZ8YvfkNPvoQHwcj0hAggIX9HxYvGaiXvrnVp
- Tc0x2strjZ4y5D2JuxO9IJO/msmizR6J+Q5567kNP6fqX3tR5ofgaPE5EU1ZQ4SrrgYa
- cQ4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688214078; x=1690806078;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ltR6+btn7qx3Uz8ohgVMmphmZWsSINbZLSIpu3GrlVc=;
- b=FV9ZopGel4s4SJ9xs7pUM3hqPH+0Q0/y1hzS16OtwcWzGXdrXpOATUEkw+/v+sqP31
- Z9p0QlWTGoNMougGf8HD4tvaCCOM+r3y8GtyCNi7LNi8KB8p9pIhR7DvK5OhodVlOrRM
- +UcNEa9UDxHIW50vs/3/qVdsBO7YoF48SEA60G2JkVQpQrv0zK7FrK1X0iwpZ17BZBGa
- Wbt4bNMRKpwbn5ocNkw5wpzeTDVid9niDWCuIpDFfnWByFwQ/28wJX+JkghHmwKsgynA
- MsFYELX+Hx2ZmjpT+G7cNsxxKo4NtTLwLs4Crut8MQXH7OQMg1t1V+iIYESwfZ1kKkjq
- bMsw==
-X-Gm-Message-State: AC+VfDzAjOnl5sXGcz49+4ECbH4K6s4gv7ELvzlbDAa50IIkzCbX+JVv
- aSLSl7hQAu37FW1a7xlisYFXvQ==
-X-Google-Smtp-Source: ACHHUZ7MXqbQRymr5DpGuBv90qduhgdCoWPqbCfvIS6sGI0gR5pMQrlGaJHzNyVg0C+KVY7kXNGOew==
-X-Received: by 2002:a4a:52cc:0:b0:563:350a:e099 with SMTP id
- d195-20020a4a52cc000000b00563350ae099mr3277585oob.1.1688214077870; 
- Sat, 01 Jul 2023 05:21:17 -0700 (PDT)
-Received: from [192.168.68.107] (201-69-66-110.dial-up.telesp.net.br.
- [201.69.66.110]) by smtp.gmail.com with ESMTPSA id
- c7-20020a4ad8c7000000b00562f3936c01sm3450951oov.45.2023.07.01.05.21.15
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 01 Jul 2023 05:21:17 -0700 (PDT)
-Message-ID: <92f481fa-fbe7-ac66-6a4c-89abc0457792@ventanamicro.com>
-Date: Sat, 1 Jul 2023 09:21:14 -0300
+ (Exim 4.90_1) (envelope-from <balaton@jedlik.phy.bme.hu>)
+ id 1qFakd-0005l1-Nn; Sat, 01 Jul 2023 09:34:59 -0400
+Received: from jedlik.phy.bme.hu ([152.66.102.83])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <balaton@jedlik.phy.bme.hu>)
+ id 1qFakY-0007rL-Ta; Sat, 01 Jul 2023 09:34:58 -0400
+Received: by jedlik.phy.bme.hu (Postfix, from userid 1000)
+ id 6CBE0A00F2; Sat,  1 Jul 2023 15:34:40 +0200 (CEST)
+Date: Sat, 1 Jul 2023 15:34:40 +0200 (CEST)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: Olaf Hering <olaf@aepfle.de>
+cc: =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>, 
+ Richard Henderson <richard.henderson@linaro.org>, 
+ Lev Kujawski <lkujaw@member.fsf.org>, Bernhard Beschow <shentey@gmail.com>, 
+ qemu-block@nongnu.org, qemu-devel@nongnu.org, John Snow <jsnow@redhat.com>
+Subject: Re: [PATCH v1] hw/ide/piix: properly initialize the BMIBA register
+In-Reply-To: <20230701111341.25500-1-olaf@aepfle.de>
+Message-ID: <alpine.LMD.2.03.2307011532500.25684@eik.bme.hu>
+References: <20230701111341.25500-1-olaf@aepfle.de>
+User-Agent: Alpine 2.03 (LMD 1266 2009-07-14)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [RFC PATCH] target/riscv: Add Zihintntl extension ISA string to
- DTS
-Content-Language: en-US
-To: Jason Chien <jason.chien@sifive.com>, qemu-devel@nongnu.org,
- qemu-riscv@nongnu.org
-Cc: Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
-References: <20230627092631.22286-1-jason.chien@sifive.com>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20230627092631.22286-1-jason.chien@sifive.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c2e;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-oo1-xc2e.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.093,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: MULTIPART/MIXED;
+ BOUNDARY="1117279078-530943996-1688218480=:25684"
+Received-SPF: none client-ip=152.66.102.83;
+ envelope-from=balaton@jedlik.phy.bme.hu; helo=jedlik.phy.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -99,78 +56,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
+--1117279078-530943996-1688218480=:25684
+Content-Type: TEXT/PLAIN; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: QUOTED-PRINTABLE
 
-On 6/27/23 06:26, Jason Chien wrote:
-> RVA23 Profiles states:
-> The RVA23 profiles are intended to be used for 64-bit application
-> processors that will run rich OS stacks from standard binary OS
-> distributions and with a substantial number of third-party binary user
-> applications that will be supported over a considerable length of time
-> in the field.
-> 
-> The chapter 4 of the unprivileged spec introduces the Zihintntl extension
-> and Zihintntl is a mandatory extension presented in RVA23 Profiles, whose
-> targeting software stacks includes Linux. Thus the DTS should contain
-> the Zihintntl ISA string in order to pass to Linux.
-> 
-> The unprivileged spec states:
-> Like any HINTs, these instructions may be freely ignored. Hence, although
-> they are described in terms of cache-based memory hierarchies, they do not
-> mandate the provision of caches.
-> 
-> These instructions are encoded with used opcode, which QEMU already
-> supports, and QEMU does not emulate cache, therefore we just need to add
-> a new property for the extension.
-> 
-> Signed-off-by: Jason Chien <jason.chien@sifive.com>
+On Sat, 1 Jul 2023, Olaf Hering wrote:
+> According to the 82371FB documentation (82371FB.pdf, 2.3.9. BMIBA=E2=80=
+=94BUS
+> MASTER INTERFACE BASE ADDRESS REGISTER, April 1997), the register is
+> 32bit wide. To properly reset it to default values, all 32bit need to be
+> cleared. Bit #1 "Resource Type Indicator (RTE)" needs to be enabled.
+>
+> The initial change wrote just the lower 8 bit, leaving parts of the "Bus
+> Master Interface Base Address" address at bit 15:4 unchanged.
+>
+> This bug went unnoticed until commit ee358e919e38 ("hw/ide/piix: Convert
+> reset handler to DeviceReset"). After this change, piix_ide_reset is
+> exercised after the "unplug" command from a Xen HVM domU, which was not
+> the case prior that commit. This function resets the command register.
+> As a result the ata_piix driver inside the domU will see a disabled PCI
+> device. The generic PCI code will reenable the PCI device. On the qemu
+> side, this runs pci_default_write_config/pci_update_mappings. Here a
+> changed address is returned by pci_bar_address, this is the address
+> which was truncated in piix_ide_reset. In case of a Xen HVM domU, the
+> address changes from 0xc120 to 0xc100.
+>
+> While the unplug is supposed to hide the IDE disks, the changed BMIBA
+> address breaks the UHCI device. In case the domU has an USB tablet
+> configured, to recive absolute pointer coordinates for the GUI, it will
+> cause a hang during device discovery of the partly discovered USB hid
+> device. Reading the USBSTS word size register will fail. The access ends
+> up in the QEMU piix-bmdma device, instead of the expected uhci device.
+> Here a byte size request is expected, and a value of ~0 is returned. As
+> a result the UCHI driver sees an error state in the register, and turns
+> off the UHCI controller.
+>
+> Fixes: e6a71ae327 ("Add support for 82371FB (Step A1) and Improved suppor=
+t for 82371SB (Function 1)")
+>
+> Signed-off-by: Olaf Hering <olaf@aepfle.de>
 > ---
->   target/riscv/cpu.c     | 2 ++
->   target/riscv/cpu_cfg.h | 1 +
->   2 files changed, 3 insertions(+)
-> 
-> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-> index 881bddf393..aa99781f17 100644
-> --- a/target/riscv/cpu.c
-> +++ b/target/riscv/cpu.c
-> @@ -81,6 +81,7 @@ static const struct isa_ext_data isa_edata_arr[] = {
->       ISA_EXT_DATA_ENTRY(zicond, PRIV_VERSION_1_12_0, ext_zicond),
->       ISA_EXT_DATA_ENTRY(zicsr, PRIV_VERSION_1_10_0, ext_icsr),
->       ISA_EXT_DATA_ENTRY(zifencei, PRIV_VERSION_1_10_0, ext_ifencei),
-> +    ISA_EXT_DATA_ENTRY(zihintntl, PRIV_VERSION_1_10_0, ext_zihintntl),
->       ISA_EXT_DATA_ENTRY(zihintpause, PRIV_VERSION_1_10_0, ext_zihintpause),
->       ISA_EXT_DATA_ENTRY(zawrs, PRIV_VERSION_1_12_0, ext_zawrs),
->       ISA_EXT_DATA_ENTRY(zfh, PRIV_VERSION_1_11_0, ext_zfh),
-> @@ -1598,6 +1599,7 @@ static Property riscv_cpu_extensions[] = {
->       DEFINE_PROP_BOOL("sscofpmf", RISCVCPU, cfg.ext_sscofpmf, false),
->       DEFINE_PROP_BOOL("Zifencei", RISCVCPU, cfg.ext_ifencei, true),
->       DEFINE_PROP_BOOL("Zicsr", RISCVCPU, cfg.ext_icsr, true),
-> +    DEFINE_PROP_BOOL("Zihintntl", RISCVCPU, cfg.ext_zihintntl, false),
+> hw/ide/piix.c | 2 +-
+> 1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/hw/ide/piix.c b/hw/ide/piix.c
+> index 41d60921e3..6449ba8b6b 100644
+> --- a/hw/ide/piix.c
+> +++ b/hw/ide/piix.c
+> @@ -118,7 +118,7 @@ static void piix_ide_reset(DeviceState *dev)
+>     pci_set_word(pci_conf + PCI_COMMAND, 0x0000);
+>     pci_set_word(pci_conf + PCI_STATUS,
+>                  PCI_STATUS_DEVSEL_MEDIUM | PCI_STATUS_FAST_BACK);
+> -    pci_set_byte(pci_conf + 0x20, 0x01);  /* BMIBA: 20-23h */
+> +    pci_set_word(pci_conf + 0x20, 0x01);  /* BMIBA: 20-23h */
 
-IIUC we want to add the possibility of enabling zihintntl (and add it to riscv,isa
-DT) because it's mandatory for RVA23. And zihintntl can be considered a no-op (i.e.
-can be enabled at will) because (1) we don't emulate cache and (2) applications
+Commit message is way longer than the patch itself and very detailed but I=
+=20
+may have lost in the details. If all 32 bits should be writtern does this=
+=20
+need pci_set_long instead of pci_set_word?
 
-If that's the case, I'd say to make it default to 'true' then. It would be one less
-extension to worry about to enable the RVA23 profile in QEMU. Thanks,
+Regards,
+BALATON Zoltan
 
-
-Daniel
-
-
->       DEFINE_PROP_BOOL("Zihintpause", RISCVCPU, cfg.ext_zihintpause, true),
->       DEFINE_PROP_BOOL("Zawrs", RISCVCPU, cfg.ext_zawrs, true),
->       DEFINE_PROP_BOOL("Zfh", RISCVCPU, cfg.ext_zfh, false),
-> diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
-> index c4a627d335..c7da2facef 100644
-> --- a/target/riscv/cpu_cfg.h
-> +++ b/target/riscv/cpu_cfg.h
-> @@ -66,6 +66,7 @@ struct RISCVCPUConfig {
->       bool ext_icbom;
->       bool ext_icboz;
->       bool ext_zicond;
-> +    bool ext_zihintntl;
->       bool ext_zihintpause;
->       bool ext_smstateen;
->       bool ext_sstc;
+> }
+>
+> static bool pci_piix_init_bus(PCIIDEState *d, unsigned i, Error **errp)
+>
+> base-commit: d145c0da22cde391d8c6672d33146ce306e8bf75
+>
+>
+--1117279078-530943996-1688218480=:25684--
 
