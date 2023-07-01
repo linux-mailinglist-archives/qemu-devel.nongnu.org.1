@@ -2,83 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DA34744571
-	for <lists+qemu-devel@lfdr.de>; Sat,  1 Jul 2023 02:08:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D166B7446E4
+	for <lists+qemu-devel@lfdr.de>; Sat,  1 Jul 2023 08:21:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFO8c-0000MC-2y; Fri, 30 Jun 2023 20:06:54 -0400
+	id 1qFTxn-00011R-OO; Sat, 01 Jul 2023 02:20:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qFO8Z-0000Ls-2M
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 20:06:51 -0400
-Received: from mail-lj1-x231.google.com ([2a00:1450:4864:20::231])
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qFTxl-000118-A7
+ for qemu-devel@nongnu.org; Sat, 01 Jul 2023 02:20:05 -0400
+Received: from mail-oi1-x236.google.com ([2607:f8b0:4864:20::236])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qFO8W-0000Da-BE
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 20:06:50 -0400
-Received: by mail-lj1-x231.google.com with SMTP id
- 38308e7fff4ca-2b6a6f224a1so40483391fa.1
- for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 17:06:47 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qFTxj-0002Ol-K3
+ for qemu-devel@nongnu.org; Sat, 01 Jul 2023 02:20:05 -0400
+Received: by mail-oi1-x236.google.com with SMTP id
+ 5614622812f47-39eab4bbe8aso1885726b6e.1
+ for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 23:20:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688170006; x=1690762006;
+ d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1688192401; x=1690784401;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=IOg1J/H8X1Wpm7EzrWRDtG3RrM6cVwaF6EfVkJyLO+g=;
- b=W0VXiUGzvkH3H6yIHqE2VszUFhtJ/cml7o3mQCucISVcjsN5dSveHFid7mlGHEvP8r
- QOcZTYGNah3tD15YZSu0Jfg4WUUAjjpE663NOkKxU5Nwws7TGEMTsUsZzjK+YA5If8Zl
- Om0qchYqDPEQMBnuuQ4k5w841kuIk4bQf60M/CC2RCUS9w1J4tT+FbJ+26HcDDHSnRdb
- QJu6dNtmVsPejTTBCDe1xAHbIHy44MLsfZM3QDuE9veUvqKJrtTBVIPtYfG835OOQ3vz
- qFmYIzGUf7iWs0RXHjjLNIrTIvzGvNW4Y4LXY1kIhsWq2iMnUl8+Untjz4Nih6UKkmwH
- T1xQ==
+ bh=ctc0nmsg6FHkQzZjhBAEQ1qBflBk2llm39BliDq1a8w=;
+ b=xKLq9D+vwUmg3LpTOCVs1ttuPhNyWpL5t5rqcyw1oVZgPlhoFM3P/2a/jufCeSCKuk
+ xX8s0x7C72Klvh07/zOEge8sFGPKZ19WaKIopSNgrA1LJzRTB//ykt+7maSzbd78BEkg
+ Q89YY5kJtHGkdXfs+INtuhgJubhJuO7vvAZRTutBXTiTQGBFbwyVbsbTO+cra+Qob6qB
+ IUmHkKKnHYKdgU+FNtqZINP+0LJ4fO4BxE5uIqsNslxG2f0Rj5Xb99QkGD4HAOJqCWYV
+ 4PpuiPRIhAUA90DhhyBWOuFtX1XqwWcdunjYXgzTFTRyWWyYZRPPPOKAPdAiEYfY68NF
+ kGeA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688170006; x=1690762006;
+ d=1e100.net; s=20221208; t=1688192401; x=1690784401;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=IOg1J/H8X1Wpm7EzrWRDtG3RrM6cVwaF6EfVkJyLO+g=;
- b=CHqwbO3Ic7gs77h3gNH64ALHISHTAJg/cPIkJzvOpN4nos6NjimYxEWBBVisMGZYCE
- 3pS4DM99KRBRI+xMh9AiGXGnYOsUQ3HPcSuRdYIzPDyKhKlMzQAIgBNXp4jfUNobIr7v
- EUggzFNOikW/WBBTU6eA9iDl1EhVlP2ydkwxGQKv6MUlrQ4wFMAdl5LepsFuRsvyNV8+
- 4RFvpUl7bE7f08slBbxEmm0gxnO4qEBu9BVXfZn/iC1FbpwSTnw2JjTfdJeeX5c1zjVc
- HM9QTY2t3AHbzME7oZ0Lyim+PosCxBIX5PSI2tr8duyPGlAGaUaC+uObf0YnyVbJUVYQ
- 9WXA==
-X-Gm-Message-State: ABy/qLb02H/k4ShkVgDdqRbW8jmukd2DahO3QESC7ZArQkfqluZkcTYw
- 6aeHiOT34mA2sOXaxAhZW8eLwA==
-X-Google-Smtp-Source: APBJJlHujPT1aYYI4HN3XqovF5c1wj5b/xJ9AC4KCi3JSlJXuZU9qyy01ZVWQa3Pql3J6j3MdF7RVw==
-X-Received: by 2002:a05:6512:1112:b0:4f8:7503:2041 with SMTP id
- l18-20020a056512111200b004f875032041mr3820524lfg.37.1688170006187; 
- Fri, 30 Jun 2023 17:06:46 -0700 (PDT)
-Received: from [192.168.69.115] ([176.187.211.104])
+ bh=ctc0nmsg6FHkQzZjhBAEQ1qBflBk2llm39BliDq1a8w=;
+ b=WgmVPdUsEZhwkQXlnm0daHbBCCgtvcBRvmKLDaAyx8tpJXVnvN1UrECAZaBd1l22ai
+ ZjZPp/fnkecuBXuB0rv0hfV2Xng0J0aLvHkZnr0vn5n2/ZpsXhcZEAzEriuyR2A9ywCd
+ KVgSLdxzc9Zh/COUKCVkWKZsAQJnayuGKdyu13PqCphSR5dheJj14nLX/32oXzoCK3WR
+ /OEQVLchFGoxKLet2rs9eUpGlhCa9gmbmfPiDowU35asDgHVBP+m+FupxKZakrJ2+ple
+ u3PEkgpx2hXjcBKfsb/6NL+nIfA4vyZwoGRNDsP+lY/YsuCKwqCrOkZfvtDVjNPlTSHE
+ E2/Q==
+X-Gm-Message-State: ABy/qLbqVBcDFgY0bvBgb+0S2bf9wnvVXlzX0xfUIL7/S5YtSML71w6W
+ hXRwVPLl/2oBJPFeZ2QzmPIFxQ==
+X-Google-Smtp-Source: APBJJlGik8YipesTKImruKUJSYZCwigsjAbqq3Z9ZCuUpJtSYgHiAoMUdISD+zZ3Gdf1LdrPBLPuxw==
+X-Received: by 2002:a05:6358:e99:b0:134:d19a:b89e with SMTP id
+ 25-20020a0563580e9900b00134d19ab89emr4444172rwg.1.1688192400960; 
+ Fri, 30 Jun 2023 23:20:00 -0700 (PDT)
+Received: from [157.82.204.253] ([157.82.204.253])
  by smtp.gmail.com with ESMTPSA id
- f6-20020aa7d846000000b0051df5eefa20sm799045eds.76.2023.06.30.17.06.45
+ jl16-20020a170903135000b001b87d3e845bsm723330plb.149.2023.06.30.23.19.59
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 30 Jun 2023 17:06:45 -0700 (PDT)
-Message-ID: <953f3b4b-fe51-ca57-9aad-b08b1af09170@linaro.org>
-Date: Sat, 1 Jul 2023 02:06:44 +0200
+ Fri, 30 Jun 2023 23:20:00 -0700 (PDT)
+Message-ID: <3c544bc4-0257-8973-e2d6-7be8d686a08c@daynix.com>
+Date: Sat, 1 Jul 2023 15:19:58 +0900
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.12.0
-Subject: Re: [PATCH] pnv/xive2: Allow indirect TIMA accesses of all sizes
+User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH] pcie: Release references of virtual functions
 Content-Language: en-US
-To: Frederic Barrat <fbarrat@linux.ibm.com>, clg@kaod.org,
- danielhb413@gmail.com, qemu-ppc@nongnu.org, qemu-devel@nongnu.org
-Cc: npiggin@gmail.com
-References: <20230626094057.1192473-1-fbarrat@linux.ibm.com>
- <b7a68894-c992-3845-754c-1fdf655ad3fe@linaro.org>
- <e808c49d-2ea0-6773-a524-1b5939fec90a@linux.ibm.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <e808c49d-2ea0-6773-a524-1b5939fec90a@linux.ibm.com>
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, qemu-devel@nongnu.org,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+References: <20230411090408.48366-1-akihiko.odaki@daynix.com>
+ <44853d32-38cc-eec0-c96f-31c898104e7d@linaro.org>
+ <20230421040908-mutt-send-email-mst@kernel.org>
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <20230421040908-mutt-send-email-mst@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::231;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x231.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Received-SPF: none client-ip=2607:f8b0:4864:20::236;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-oi1-x236.google.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.095,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, NICE_REPLY_A=-0.095, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -95,90 +98,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Frederic,
-
-On 26/6/23 13:25, Frederic Barrat wrote:
-> On 26/06/2023 11:48, Philippe Mathieu-Daudé wrote:
->> On 26/6/23 11:40, Frederic Barrat wrote:
->>> Booting linux on the powernv10 machine logs a few errors like:
+On 2023/04/21 17:09, Michael S. Tsirkin wrote:
+> On Tue, Apr 11, 2023 at 12:11:30PM +0200, Philippe Mathieu-Daudé wrote:
+>> On 11/4/23 11:04, Akihiko Odaki wrote:
+>>> pci_new() automatically retains a reference to a virtual function when
+>>> registering it so we need to release the reference when unregistering.
 >>>
->>> Invalid read at addr 0x38, size 1, region 'xive-ic-tm-indirect', 
->>> reason: invalid size (min:8 max:8)
->>> Invalid write at addr 0x38, size 1, region 'xive-ic-tm-indirect', 
->>> reason: invalid size (min:8 max:8)
->>> Invalid read at addr 0x38, size 1, region 'xive-ic-tm-indirect', 
->>> reason: invalid size (min:8 max:8)
->>>
->>> Those errors happen when linux is resetting XIVE. We're trying to
->>> read/write the enablement bit for the hardware context and qemu
->>> doesn't allow indirect TIMA accesses of less than 8 bytes. Direct TIMA
->>> access can go through though, as well as indirect TIMA accesses on P9.
->>> So even though there are some restrictions regarding the address/size
->>> combinations for TIMA access, the example above is perfectly valid.
->>>
->>> This patch lets indirect TIMA accesses of all sizes go through. The
->>> special operations will be intercepted and the default "raw" handlers
->>> will pick up all other requests and complain about invalid sizes as
->>> appropriate.
->>>
->>> Tested-by: Nicholas Piggin <npiggin@gmail.com>
->>> Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
+>>> Fixes: 7c0fa8dff8 ("pcie: Add support for Single Root I/O Virtualization (SR/IOV)")
+>>> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 >>> ---
->>>   hw/intc/pnv_xive2.c | 4 ++--
->>>   1 file changed, 2 insertions(+), 2 deletions(-)
+>>>    hw/pci/pcie_sriov.c | 1 +
+>>>    1 file changed, 1 insertion(+)
 >>>
->>> diff --git a/hw/intc/pnv_xive2.c b/hw/intc/pnv_xive2.c
->>> index ed438a20ed..e8ab176de6 100644
->>> --- a/hw/intc/pnv_xive2.c
->>> +++ b/hw/intc/pnv_xive2.c
->>> @@ -1644,11 +1644,11 @@ static const MemoryRegionOps 
->>> pnv_xive2_ic_tm_indirect_ops = {
->>>       .write = pnv_xive2_ic_tm_indirect_write,
->>>       .endianness = DEVICE_BIG_ENDIAN,
->>>       .valid = {
->>> -        .min_access_size = 8,
->>> +        .min_access_size = 1,
+>>> diff --git a/hw/pci/pcie_sriov.c b/hw/pci/pcie_sriov.c
+>>> index aa5a757b11..76a3b6917e 100644
+>>> --- a/hw/pci/pcie_sriov.c
+>>> +++ b/hw/pci/pcie_sriov.c
+>>> @@ -211,6 +211,7 @@ static void unregister_vfs(PCIDevice *dev)
+>>>                error_free(local_err);
+>>>            }
+>>>            object_unparent(OBJECT(vf));
+>>> +        object_unref(OBJECT(vf));
+>>>        }
+>>>        g_free(dev->exp.sriov_pf.vf);
+>>>        dev->exp.sriov_pf.vf = NULL;
 >>
->> Maybe. Is there a bus involved in between?
+>> It feels the issue is at the device creation.
 >>
->> What about other I/O regions?
-> 
-> 
-> XIVE is attached to the main system bus and the CPU can trigger 1, 2, 4 
-> and 8-byte accesses. The TIMA is a part of XIVE which supports various 
-> size of mmio operations, all the way down to byte operations. It 
-> actually relies on it.
-> 
-> There are 2 memory regions where we want to allow byte-access. One, 
-> known as TIMA direct access, already allows access with min size = 1. 
-> I'm just aligning the other one, known as TIMA indirect access, to do 
-> the same, since it's what the hardware allows.
-> This is similar to what we had on P9 and both regions are already 
-> defined with min size = 1 there. So it really looks like what I'm 
-> changing here was just an oversight.
-
-OK.
-
-> 
->>>           .max_access_size = 8,
->>>       },
->>>       .impl = {
->>> -        .min_access_size = 8,
->>> +        .min_access_size = 1,
+>> [/me looking at the code]
 >>
->> Unlikely. This is for the handler implementation, not related to HW.
+>> What about:
+>>
+>> -- >8 --
+>> diff --git a/hw/pci/pcie_sriov.c b/hw/pci/pcie_sriov.c
+>> index aa5a757b11..fca3bf6e72 100644
+>> --- a/hw/pci/pcie_sriov.c
+>> +++ b/hw/pci/pcie_sriov.c
+>> @@ -150,7 +150,7 @@ static PCIDevice *register_vf(PCIDevice *pf, int devfn,
+>> const char *name,
+>>       PCIBus *bus = pci_get_bus(pf);
+>>       Error *local_err = NULL;
+>>
+>> -    qdev_realize(&dev->qdev, &bus->qbus, &local_err);
+>> +    pci_realize_and_unref(dev, bus, &local_err);
+>>       if (local_err) {
+>>           error_report_err(local_err);
+>>           return NULL;
+> 
+> ok you want to repost this or Akihiko convinced you?
 > 
 > 
-> The handlers for the TIMA regions are aware of the size of the access, 
-> and behave differently based on it (see xive_tm_find_op() for example). 
-> So I think this is correct. Let me know if I'm missing something here.
+>> ---
+> 
 
-I guess I got confused by the "Only 4 or 8 bytes loads are allowed"
-comment in xive_tm_raw_read/write(), so I was somehow expecting
-min_access_size = 4. I don't object to this patch however.
+Can you reply to this?
 
-Thanks,
-
-Phil.
-
+Regards,
+Akihiko Odaki
 
