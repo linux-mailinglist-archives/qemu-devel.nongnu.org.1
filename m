@@ -2,78 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 215A1744568
-	for <lists+qemu-devel@lfdr.de>; Sat,  1 Jul 2023 01:54:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DA34744571
+	for <lists+qemu-devel@lfdr.de>; Sat,  1 Jul 2023 02:08:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFNw0-0006yP-11; Fri, 30 Jun 2023 19:53:52 -0400
+	id 1qFO8c-0000MC-2y; Fri, 30 Jun 2023 20:06:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qFNvx-0006yE-1P
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 19:53:49 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qFO8Z-0000Ls-2M
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 20:06:51 -0400
+Received: from mail-lj1-x231.google.com ([2a00:1450:4864:20::231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qFNvv-0002ad-Ag
- for qemu-devel@nongnu.org; Fri, 30 Jun 2023 19:53:48 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-3fbc5d5742bso16957775e9.2
- for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 16:53:46 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qFO8W-0000Da-BE
+ for qemu-devel@nongnu.org; Fri, 30 Jun 2023 20:06:50 -0400
+Received: by mail-lj1-x231.google.com with SMTP id
+ 38308e7fff4ca-2b6a6f224a1so40483391fa.1
+ for <qemu-devel@nongnu.org>; Fri, 30 Jun 2023 17:06:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688169226; x=1690761226;
+ d=linaro.org; s=google; t=1688170006; x=1690762006;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=pXhLLHXQ1KVup8GB+XtnBbPqxEi+XkaHagDKifWpWnA=;
- b=cadCUbqSMSi7yS9wKwWsZUgcyhHqKslgpgJ7JV9yYIzvT0QQX6CO+JIdTQIrmaGhGt
- hmXHSyrDXGG+zZxCspjTsw94HuAsXSq8pgKCuA9/8NKZcgVBex+XjfKHcuk/QRZAUDJk
- /NjoA3yEwEl9t6K++fpzAvj5K4JqjuFsP/kJAplnL6Fm5yfCAYN7b+imzDyyiII6GQ0V
- rlg5q9lo4p3oupT7/CmB+hCgtr+msgHgHeG6kvsL2si2qxH9sqfIz3/Xy9aMO5Bl1Kci
- zk5FVPe+GP+VHGUiANoKLjHnn6CkMEP0XoYB6GYqYN9CKbQWyjsDX+QRlt8TZLawhzQ/
- O28g==
+ bh=IOg1J/H8X1Wpm7EzrWRDtG3RrM6cVwaF6EfVkJyLO+g=;
+ b=W0VXiUGzvkH3H6yIHqE2VszUFhtJ/cml7o3mQCucISVcjsN5dSveHFid7mlGHEvP8r
+ QOcZTYGNah3tD15YZSu0Jfg4WUUAjjpE663NOkKxU5Nwws7TGEMTsUsZzjK+YA5If8Zl
+ Om0qchYqDPEQMBnuuQ4k5w841kuIk4bQf60M/CC2RCUS9w1J4tT+FbJ+26HcDDHSnRdb
+ QJu6dNtmVsPejTTBCDe1xAHbIHy44MLsfZM3QDuE9veUvqKJrtTBVIPtYfG835OOQ3vz
+ qFmYIzGUf7iWs0RXHjjLNIrTIvzGvNW4Y4LXY1kIhsWq2iMnUl8+Untjz4Nih6UKkmwH
+ T1xQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688169226; x=1690761226;
+ d=1e100.net; s=20221208; t=1688170006; x=1690762006;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=pXhLLHXQ1KVup8GB+XtnBbPqxEi+XkaHagDKifWpWnA=;
- b=Vck+Nl/jtSsYKklYF1BF+ErXKX0zExN3snxY5d4/ia7wDr+taSmyBOADDXM+AGr1jH
- yNHqEGIyg4MCcHW13byEG2lYrEvav/V8VQM1ediqLn1/13pt3Bcc6cYACQ7DtyzYNxDY
- yJwGMeIw9p/HyKnUII9hHG9N/GB/RmR46p73jSECI+l7Ar9ZSzQl7942nyZQQyk9/Wjd
- ISfImwmvmmnke6X08BgXw6osPZUCgT0TPqc9cTAwbH2pPVowaKo+ofHXwxVDO1BKNAAU
- IAXSmiUewlSSYjvpjc3W1+lgiQXDRESQwlpCQUvBM39G2/Ck5aDrEJEt1XKnSMExtVg9
- siiw==
-X-Gm-Message-State: ABy/qLbrMCFt3XHSPgE1luLVi9DuJ3GddamuwJWtLG7mhoJEi5+XjVcw
- xHJNryXZ6uNS3pbU7kh1/l1DkA==
-X-Google-Smtp-Source: APBJJlHMb9z0Vjrkt0b06FctvLpBegVO9rt/9nDLqC04M3FPLasZCoTM15GxdcCq2qaCn/EnbXAPZw==
-X-Received: by 2002:a5d:5549:0:b0:314:db7:d132 with SMTP id
- g9-20020a5d5549000000b003140db7d132mr3240459wrw.61.1688169225968; 
- Fri, 30 Jun 2023 16:53:45 -0700 (PDT)
+ bh=IOg1J/H8X1Wpm7EzrWRDtG3RrM6cVwaF6EfVkJyLO+g=;
+ b=CHqwbO3Ic7gs77h3gNH64ALHISHTAJg/cPIkJzvOpN4nos6NjimYxEWBBVisMGZYCE
+ 3pS4DM99KRBRI+xMh9AiGXGnYOsUQ3HPcSuRdYIzPDyKhKlMzQAIgBNXp4jfUNobIr7v
+ EUggzFNOikW/WBBTU6eA9iDl1EhVlP2ydkwxGQKv6MUlrQ4wFMAdl5LepsFuRsvyNV8+
+ 4RFvpUl7bE7f08slBbxEmm0gxnO4qEBu9BVXfZn/iC1FbpwSTnw2JjTfdJeeX5c1zjVc
+ HM9QTY2t3AHbzME7oZ0Lyim+PosCxBIX5PSI2tr8duyPGlAGaUaC+uObf0YnyVbJUVYQ
+ 9WXA==
+X-Gm-Message-State: ABy/qLb02H/k4ShkVgDdqRbW8jmukd2DahO3QESC7ZArQkfqluZkcTYw
+ 6aeHiOT34mA2sOXaxAhZW8eLwA==
+X-Google-Smtp-Source: APBJJlHujPT1aYYI4HN3XqovF5c1wj5b/xJ9AC4KCi3JSlJXuZU9qyy01ZVWQa3Pql3J6j3MdF7RVw==
+X-Received: by 2002:a05:6512:1112:b0:4f8:7503:2041 with SMTP id
+ l18-20020a056512111200b004f875032041mr3820524lfg.37.1688170006187; 
+ Fri, 30 Jun 2023 17:06:46 -0700 (PDT)
 Received: from [192.168.69.115] ([176.187.211.104])
  by smtp.gmail.com with ESMTPSA id
- c5-20020a5d4145000000b00314145e6d61sm5567855wrq.6.2023.06.30.16.53.44
+ f6-20020aa7d846000000b0051df5eefa20sm799045eds.76.2023.06.30.17.06.45
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 30 Jun 2023 16:53:45 -0700 (PDT)
-Message-ID: <bf6e3ba0-7625-9a12-b0a9-ee6bb1d1e247@linaro.org>
-Date: Sat, 1 Jul 2023 01:53:44 +0200
+ Fri, 30 Jun 2023 17:06:45 -0700 (PDT)
+Message-ID: <953f3b4b-fe51-ca57-9aad-b08b1af09170@linaro.org>
+Date: Sat, 1 Jul 2023 02:06:44 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.12.0
-Subject: Re: [PATCH v2 4/4] accel/tcg: Move perf and debuginfo support to tcg
+Subject: Re: [PATCH] pnv/xive2: Allow indirect TIMA accesses of all sizes
 Content-Language: en-US
-To: Ilya Leoshkevich <iii@linux.ibm.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Laurent Vivier <laurent@vivier.eu>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
- David Hildenbrand <david@redhat.com>, qemu-devel@nongnu.org
-References: <20230630234230.596193-1-iii@linux.ibm.com>
- <20230630234230.596193-5-iii@linux.ibm.com>
+To: Frederic Barrat <fbarrat@linux.ibm.com>, clg@kaod.org,
+ danielhb413@gmail.com, qemu-ppc@nongnu.org, qemu-devel@nongnu.org
+Cc: npiggin@gmail.com
+References: <20230626094057.1192473-1-fbarrat@linux.ibm.com>
+ <b7a68894-c992-3845-754c-1fdf655ad3fe@linaro.org>
+ <e808c49d-2ea0-6773-a524-1b5939fec90a@linux.ibm.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230630234230.596193-5-iii@linux.ibm.com>
+In-Reply-To: <e808c49d-2ea0-6773-a524-1b5939fec90a@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::231;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x231.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -96,36 +95,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/7/23 01:40, Ilya Leoshkevich wrote:
-> tcg/ should not depend on accel/tcg/, but perf and debuginfo
-> support provided by the latter are being used by tcg/tcg.c.
-> 
-> Since that's the only user, move both to tcg/.
-> 
-> Suggested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-> ---
->   accel/tcg/meson.build          | 2 --
->   accel/tcg/translate-all.c      | 2 +-
->   hw/core/loader.c               | 2 +-
->   linux-user/elfload.c           | 2 +-
->   linux-user/exit.c              | 2 +-
->   linux-user/main.c              | 2 +-
->   softmmu/vl.c                   | 2 +-
->   {accel/tcg => tcg}/debuginfo.c | 0
->   {accel/tcg => tcg}/debuginfo.h | 4 ++--
->   tcg/meson.build                | 3 +++
->   {accel/tcg => tcg}/perf.c      | 2 +-
->   {accel/tcg => tcg}/perf.h      | 4 ++--
->   tcg/tcg.c                      | 2 +-
->   13 files changed, 15 insertions(+), 14 deletions(-)
->   rename {accel/tcg => tcg}/debuginfo.c (100%)
->   rename {accel/tcg => tcg}/debuginfo.h (96%)
->   rename {accel/tcg => tcg}/perf.c (99%)
->   rename {accel/tcg => tcg}/perf.h (95%)
+Hi Frederic,
 
-Easier that what I thought, thanks!
+On 26/6/23 13:25, Frederic Barrat wrote:
+> On 26/06/2023 11:48, Philippe Mathieu-Daudé wrote:
+>> On 26/6/23 11:40, Frederic Barrat wrote:
+>>> Booting linux on the powernv10 machine logs a few errors like:
+>>>
+>>> Invalid read at addr 0x38, size 1, region 'xive-ic-tm-indirect', 
+>>> reason: invalid size (min:8 max:8)
+>>> Invalid write at addr 0x38, size 1, region 'xive-ic-tm-indirect', 
+>>> reason: invalid size (min:8 max:8)
+>>> Invalid read at addr 0x38, size 1, region 'xive-ic-tm-indirect', 
+>>> reason: invalid size (min:8 max:8)
+>>>
+>>> Those errors happen when linux is resetting XIVE. We're trying to
+>>> read/write the enablement bit for the hardware context and qemu
+>>> doesn't allow indirect TIMA accesses of less than 8 bytes. Direct TIMA
+>>> access can go through though, as well as indirect TIMA accesses on P9.
+>>> So even though there are some restrictions regarding the address/size
+>>> combinations for TIMA access, the example above is perfectly valid.
+>>>
+>>> This patch lets indirect TIMA accesses of all sizes go through. The
+>>> special operations will be intercepted and the default "raw" handlers
+>>> will pick up all other requests and complain about invalid sizes as
+>>> appropriate.
+>>>
+>>> Tested-by: Nicholas Piggin <npiggin@gmail.com>
+>>> Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
+>>> ---
+>>>   hw/intc/pnv_xive2.c | 4 ++--
+>>>   1 file changed, 2 insertions(+), 2 deletions(-)
+>>>
+>>> diff --git a/hw/intc/pnv_xive2.c b/hw/intc/pnv_xive2.c
+>>> index ed438a20ed..e8ab176de6 100644
+>>> --- a/hw/intc/pnv_xive2.c
+>>> +++ b/hw/intc/pnv_xive2.c
+>>> @@ -1644,11 +1644,11 @@ static const MemoryRegionOps 
+>>> pnv_xive2_ic_tm_indirect_ops = {
+>>>       .write = pnv_xive2_ic_tm_indirect_write,
+>>>       .endianness = DEVICE_BIG_ENDIAN,
+>>>       .valid = {
+>>> -        .min_access_size = 8,
+>>> +        .min_access_size = 1,
+>>
+>> Maybe. Is there a bus involved in between?
+>>
+>> What about other I/O regions?
+> 
+> 
+> XIVE is attached to the main system bus and the CPU can trigger 1, 2, 4 
+> and 8-byte accesses. The TIMA is a part of XIVE which supports various 
+> size of mmio operations, all the way down to byte operations. It 
+> actually relies on it.
+> 
+> There are 2 memory regions where we want to allow byte-access. One, 
+> known as TIMA direct access, already allows access with min size = 1. 
+> I'm just aligning the other one, known as TIMA indirect access, to do 
+> the same, since it's what the hardware allows.
+> This is similar to what we had on P9 and both regions are already 
+> defined with min size = 1 there. So it really looks like what I'm 
+> changing here was just an oversight.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+OK.
+
+> 
+>>>           .max_access_size = 8,
+>>>       },
+>>>       .impl = {
+>>> -        .min_access_size = 8,
+>>> +        .min_access_size = 1,
+>>
+>> Unlikely. This is for the handler implementation, not related to HW.
+> 
+> 
+> The handlers for the TIMA regions are aware of the size of the access, 
+> and behave differently based on it (see xive_tm_find_op() for example). 
+> So I think this is correct. Let me know if I'm missing something here.
+
+I guess I got confused by the "Only 4 or 8 bytes loads are allowed"
+comment in xive_tm_raw_read/write(), so I was somehow expecting
+min_access_size = 4. I don't object to this patch however.
+
+Thanks,
+
+Phil.
 
 
