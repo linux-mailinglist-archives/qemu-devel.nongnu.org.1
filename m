@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55B46744876
-	for <lists+qemu-devel@lfdr.de>; Sat,  1 Jul 2023 12:24:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 53BC574487A
+	for <lists+qemu-devel@lfdr.de>; Sat,  1 Jul 2023 12:27:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFXkY-0000BA-VW; Sat, 01 Jul 2023 06:22:42 -0400
+	id 1qFXoL-0001xG-K6; Sat, 01 Jul 2023 06:26:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qFXkS-0000AR-E1; Sat, 01 Jul 2023 06:22:36 -0400
-Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
+ id 1qFXoI-0001ww-BI; Sat, 01 Jul 2023 06:26:34 -0400
+Received: from mail-ot1-x332.google.com ([2607:f8b0:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qFXkQ-0003a8-Rq; Sat, 01 Jul 2023 06:22:36 -0400
-Received: by mail-pf1-x436.google.com with SMTP id
- d2e1a72fcca58-66f3fc56ef4so1681350b3a.0; 
- Sat, 01 Jul 2023 03:22:34 -0700 (PDT)
+ id 1qFXoG-0004Xl-MJ; Sat, 01 Jul 2023 06:26:34 -0400
+Received: by mail-ot1-x332.google.com with SMTP id
+ 46e09a7af769-6b71ee710edso2420574a34.2; 
+ Sat, 01 Jul 2023 03:26:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688206953; x=1690798953;
+ d=gmail.com; s=20221208; t=1688207191; x=1690799191;
  h=in-reply-to:references:to:from:subject:cc:message-id:date
  :content-transfer-encoding:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=+O72PscZFPNVARDC8/PyHf4xoQ94VFMAFmGSe9LC0mQ=;
- b=E+dsDVwbQ8R9GPtEiCNrLdHxUjXK0fH9ovbg2eml1AmLBuIrs3+0J3PsXDUPE3zopg
- SwYJWV4gBeFCuGGngGAvtgbS4Tg1gQZCbtjKxNGCw8Nrs1M/PPm0rkQO49iZPFgIvvqx
- PsyT6E5h6IZc8eWnzKWWCsB9urTseRaSgo7SbqpIwDQt5tMpe9hLBLN0l/Zvl6DbFfcS
- G6J/Nd4SUCinWUzAbpuYkDf0q1FfGDJShxw8HFSOLmEsAEKjkJjg0UBT3rPccolOLFIi
- 2s2rOHZcfNQuEwKwDKFjQRSgE5G4b7t4mnAcvh2A16aEz8Hy+W8j8c0XwJoLXsIEtaHD
- mI8Q==
+ bh=SbGMm5bPF8+Vir4MEnRbwMqq2h86ALmnibsZEyfCwjI=;
+ b=b8AHUJiiq71eczF4HCPeRDoiB1tTBL0dI9B8bZ4beuDD9cDo7uxpJAPA9wXrG64tos
+ JJLcU1bMw7zNbW+AsZTBcaPvlnPFNxEagMaG2o6qxFSvyODdCsz8ebAnNrgAx69bHIOi
+ +FCc50b8aGcsouPWGGHw9+6lk8l7LZl1JyUz48W3tV34X4fR1W/mdY1UoSFAhIt0Xdye
+ irmEZ3inr2BUk5fehKJMZK2ckDydH7XrHCgm4ZXLPyyLaFyF0+YdjW0QmEtfs4O/MCne
+ tc+oRQFHceHMosVdK8m98DjinPy9E4UlYyBaePhFPbrJzCVP6A9maeFtXgXuH+Oz0kKl
+ gjwQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688206953; x=1690798953;
+ d=1e100.net; s=20221208; t=1688207191; x=1690799191;
  h=in-reply-to:references:to:from:subject:cc:message-id:date
  :content-transfer-encoding:mime-version:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=+O72PscZFPNVARDC8/PyHf4xoQ94VFMAFmGSe9LC0mQ=;
- b=IhUK+KSgEBmflLxy7+s+yR1HpIKZ0h48n2fZ3IzYJPMZj8/rzCdu8sQMpU5Y00GRZB
- WDIezDVGcvH83tI8eXQUk8QZtj2coPahWcLfsX1+rny0Bq1U5aa0KhxUaUnU6XqDqZhW
- U3eJxS/LAKXVFypG3JJxxt87eswa4XZSZO8aaT4pzdy9DzQeoZ2MkKKR/Fl6TShdcxPl
- 94Rt9vpLjmPke90XcEWYlAs/YS+pWH/Rpb2ue0mNncsLcheA84MwyBAWpBemnwssR7lo
- TdEm9ug7tZPMkWsg3BSBDUQIaDoWUR4VqhiXfh/7NGlYzeu6Kxh/FTXVRUim+ldCLwGH
- 7+fA==
-X-Gm-Message-State: AC+VfDwEk99X12pvQ5eHujTEyr40pGgzgwJXieKuw+0Lo0EI/G936F8r
- wj2bh8xcUXI9sVmVJMAYidg=
-X-Google-Smtp-Source: ACHHUZ5WSovuwuBNvWripQyD7XnS4xSOoUOVWGvS/yZqrtxDraYn2wbv1/hBtHpBBzU0Gq7gXzShPQ==
-X-Received: by 2002:a05:6a00:1d0a:b0:678:7744:31fd with SMTP id
- a10-20020a056a001d0a00b00678774431fdmr11977685pfx.0.1688206952663; 
- Sat, 01 Jul 2023 03:22:32 -0700 (PDT)
+ bh=SbGMm5bPF8+Vir4MEnRbwMqq2h86ALmnibsZEyfCwjI=;
+ b=ZO1V6TqDMyw5zrC+cjTMEjyNrLmBA4nJvYWm96VC2c81x5Zq+88W0MVw8wIMVWA0Y/
+ CxzXUyK4PXlYrxh+C17YJ/QiLmy9C9ASqY4TzdQPtBQA3UoAGqk7WG7/yhz7FIurtNwo
+ Hnnl6G76bnmOd0XWiBv5l161mz9jUcpxhbmMvHJtPWuJC0Tu6r3MRiCwoDwrpTlcIgoL
+ AfXqnT6QaZcgMg9UUdY5jtpI6DvLPg5aTVqLb+0myq7XY6QT8wP+fKIX4+B12ZnwDkIL
+ RglxSrIKt2wuHk5imFpT1lkL42k4S454uwn1hYHb8GRXT8cMZio0umuDq/kAqoPzcMXe
+ lmVw==
+X-Gm-Message-State: ABy/qLZA7FHZBsSj+WQ989m8GNBQfhEBJSkN1uAwmFBvpkkzEVyqq0pR
+ EiRbxtQeWrdWbmgxAhU6hEE=
+X-Google-Smtp-Source: APBJJlF1mq+wdDQbCZGJsAGDKkKaZhVItP/LzDrunXK1IZ5m/YfaZdvlGbM0XWWccqMZSog4spYZoQ==
+X-Received: by 2002:a05:6358:7059:b0:134:c984:ab85 with SMTP id
+ 25-20020a056358705900b00134c984ab85mr3878086rwp.2.1688207190687; 
+ Sat, 01 Jul 2023 03:26:30 -0700 (PDT)
 Received: from localhost (220-244-154-206.tpgi.com.au. [220.244.154.206])
  by smtp.gmail.com with ESMTPSA id
- q25-20020a62ae19000000b0067a50223e44sm8249401pff.74.2023.07.01.03.22.29
+ y1-20020a1709027c8100b001b025aba9edsm6781977pll.220.2023.07.01.03.26.25
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 01 Jul 2023 03:22:32 -0700 (PDT)
+ Sat, 01 Jul 2023 03:26:30 -0700 (PDT)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Sat, 01 Jul 2023 20:22:27 +1000
-Message-Id: <CTQRF129NSME.300WPYT84MANM@wheely>
-Cc: <qemu-devel@nongnu.org>, <qemu-ppc@nongnu.org>
-Subject: Re: [PATCH 4/4] ppc/pnv: Return zero for core thread state xscom
+Date: Sat, 01 Jul 2023 20:26:22 +1000
+Message-Id: <CTQRI13GTLA2.NWLI671Q3DJ3@wheely>
+Cc: <qemu-ppc@nongnu.org>, <qemu-devel@nongnu.org>, <farosas@suse.de>,
+ <npiggin@linux.ibm.com>, <vaibhav@linux.ibm.com>, <harshpb@linux.ibm.com>,
+ <sbhat@linux.ibm.com>
+Subject: Re: [PATCH v4] target: ppc: Use MSR_HVB bit to get the target
+ endianness for memory dump
 From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Joel Stanley" <joel@jms.id.au>, =?utf-8?q?C=C3=A9dric_Le_Goater?=
- <clg@kaod.org>, =?utf-8?q?Fr=C3=A9d=C3=A9ric_Barrat?=
- <fbarrat@linux.ibm.com>
+To: "Narayana Murty N" <nnmlinux@linux.ibm.com>, <danielhb413@gmail.com>,
+ <clg@kaod.org>, <david@gibson.dropbear.id.au>, <groug@kaod.org>
 X-Mailer: aerc 0.15.2
-References: <20230630035547.80329-1-joel@jms.id.au>
- <20230630035547.80329-5-joel@jms.id.au>
-In-Reply-To: <20230630035547.80329-5-joel@jms.id.au>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x436.google.com
+References: <20230623072506.34713-1-nnmlinux@linux.ibm.com>
+In-Reply-To: <20230623072506.34713-1-nnmlinux@linux.ibm.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::332;
+ envelope-from=npiggin@gmail.com; helo=mail-ot1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,69 +94,96 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri Jun 30, 2023 at 1:55 PM AEST, Joel Stanley wrote:
-> Firmware now warns if booting in LPAR per core mode (PPC bit 62). So
-> this warning doesn't trigger report the core thread state is 0.
+On Fri Jun 23, 2023 at 5:25 PM AEST, Narayana Murty N wrote:
+> Currently on PPC64 qemu always dumps the guest memory in
+> Big Endian (BE) format even though the guest running in Little Endian
+> (LE) mode. So crash tool fails to load the dump as illustrated below:
 >
-> Signed-off-by: Joel Stanley <joel@jms.id.au>
-> ---
->  hw/ppc/pnv_core.c | 10 ++++++++++
->  1 file changed, 10 insertions(+)
+> Log :
+> $ virsh dump DOMAIN --memory-only dump.file
 >
-> diff --git a/hw/ppc/pnv_core.c b/hw/ppc/pnv_core.c
-> index 7fff2fd9e298..98356d7f6538 100644
-> --- a/hw/ppc/pnv_core.c
-> +++ b/hw/ppc/pnv_core.c
-> @@ -116,6 +116,8 @@ static const MemoryRegionOps pnv_core_power8_xscom_op=
-s =3D {
->  #define PNV9_XSCOM_EC_PPM_SPECIAL_WKUP_HYP 0xf010d
->  #define PNV9_XSCOM_EC_PPM_SPECIAL_WKUP_OTR 0xf010a
-> =20
-> +#define PNV9_XSCOM_EC_CORE_THREAD_STATE    0x10ab3
-> +
->  static uint64_t pnv_core_power9_xscom_read(void *opaque, hwaddr addr,
->                                             unsigned int width)
->  {
-> @@ -134,6 +136,9 @@ static uint64_t pnv_core_power9_xscom_read(void *opaq=
-ue, hwaddr addr,
->      case PNV9_XSCOM_EC_PPM_SPECIAL_WKUP_OTR:
->          val =3D 0x0;
->          break;
-> +    case PNV9_XSCOM_EC_CORE_THREAD_STATE:
-> +        val =3D 0;
-> +        break;
->      default:
->          qemu_log_mask(LOG_UNIMP, "Warning: reading reg=3D0x%" HWADDR_PRI=
-x "\n",
->                    addr);
-> @@ -408,6 +413,8 @@ static const MemoryRegionOps pnv_quad_power9_xscom_op=
-s =3D {
->   * POWER10 Quads
->   */
-> =20
-> +#define PNV10_XSCOM_EC_PC_PMC_CORE_THREAD_STATE 0x28412
-> +
->  static uint64_t pnv_quad_power10_xscom_read(void *opaque, hwaddr addr,
->                                              unsigned int width)
->  {
-> @@ -415,6 +422,9 @@ static uint64_t pnv_quad_power10_xscom_read(void *opa=
-que, hwaddr addr,
->      uint64_t val =3D -1;
-> =20
->      switch (offset) {
-> +    case PNV10_XSCOM_EC_PC_PMC_CORE_THREAD_STATE:
-> +        val =3D 0;
-> +        break;
->      default:
->          qemu_log_mask(LOG_UNIMP, "%s: writing @0x%08x\n", __func__,
->                        offset);
+> Domain 'DOMAIN' dumped to dump.file
+>
+> $ crash vmlinux dump.file
+>
+> <snip>
+> crash 8.0.2-1.el9
+>
+> WARNING: endian mismatch:
+>           crash utility: little-endian
+>           dump.file: big-endian
+>
+> WARNING: machine type mismatch:
+>           crash utility: PPC64
+>           dump.file: (unknown)
+>
+> crash: dump.file: not a supported file format
+> <snip>
+>
+> This happens because cpu_get_dump_info() passes cpu->env->has_hv_mode
+> to function ppc_interrupts_little_endian(), the cpu->env->has_hv_mode
+> always set for powerNV even though the guest is not running in hv mode.
+> The hv mode should be taken from msr_mask MSR_HVB bit
+> (cpu->env.msr_mask & MSR_HVB). This patch fixes the issue by passing
+> MSR_HVB value to ppc_interrupts_little_endian() in order to determine
+> the guest endianness.
+>
+> The crash tool also expects guest kernel endianness should match the
+> endianness of the dump.
+>
+> The patch was tested on POWER9 box booted with Linux as host in
+> following cases:
+>
+> Host-Endianess Qemu-Target-Machine                Qemu-Generated-Guest
+>                                                   Memory-Dump-Format
+> BE             powernv(OPAL/PowerNV)                   LE
+> BE             powernv(OPAL/PowerNV)                   BE
+> LE             powernv(OPAL/PowerNV)                   LE
+> LE             powernv(OPAL/PowerNV)                   BE
+> LE             pseries(OPAL/PowerNV/pSeries) KVMHV     LE
+> LE             pseries TCG                             LE
+>
+> Fixes: 5609400a4228 ("target/ppc: Set the correct endianness for powernv =
+memory
+> dumps")
+> Signed-off-by: Narayana Murty N <nnmlinux@linux.ibm.com>
 
-Yeah this is the problem, this is just addressing one core in the quad.
-AFAIKS P9 may have the same problem though so I don't blame the
-confusion.
+Did I forget to send RB? It looks good to me now, thanks for clearing
+up my confusion.
 
-The other patches seem good because we'll want a P10 quad too I think.
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 
 Thanks,
 Nick
+
+> ---
+> Changes since V3:
+> commit message modified as per feedback from Greg Kurz, C=C3=A9dric Le
+> Goater and Nicholas Piggin.
+> Changes since V2:
+> commit message modified as per feedback from Nicholas Piggin.
+> Changes since V1:
+> https://lore.kernel.org/qemu-devel/20230420145055.10196-1-nnmlinux@linux.=
+ibm.com/
+> The approach to solve the issue was changed based on feedback from
+> Fabiano Rosas on patch V1.
+> ---
+>  target/ppc/arch_dump.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/target/ppc/arch_dump.c b/target/ppc/arch_dump.c
+> index f58e6359d5..a8315659d9 100644
+> --- a/target/ppc/arch_dump.c
+> +++ b/target/ppc/arch_dump.c
+> @@ -237,7 +237,7 @@ int cpu_get_dump_info(ArchDumpInfo *info,
+>      info->d_machine =3D PPC_ELF_MACHINE;
+>      info->d_class =3D ELFCLASS;
+> =20
+> -    if (ppc_interrupts_little_endian(cpu, cpu->env.has_hv_mode)) {
+> +    if (ppc_interrupts_little_endian(cpu, !!(cpu->env.msr_mask & MSR_HVB=
+))) {
+>          info->d_endian =3D ELFDATA2LSB;
+>      } else {
+>          info->d_endian =3D ELFDATA2MSB;
+
 
