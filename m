@@ -2,47 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03372744C3D
-	for <lists+qemu-devel@lfdr.de>; Sun,  2 Jul 2023 06:40:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 224D2744C4A
+	for <lists+qemu-devel@lfdr.de>; Sun,  2 Jul 2023 07:00:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFos2-0007sV-Qj; Sun, 02 Jul 2023 00:39:34 -0400
+	id 1qFpB0-00082Z-QR; Sun, 02 Jul 2023 00:59:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qFos0-0007rw-Gb; Sun, 02 Jul 2023 00:39:32 -0400
-Received: from isrv.corpit.ru ([86.62.121.231])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qFpAq-000822-N6
+ for qemu-devel@nongnu.org; Sun, 02 Jul 2023 00:59:00 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qFory-0002W3-Ap; Sun, 02 Jul 2023 00:39:32 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 70ECC10D1E;
- Sun,  2 Jul 2023 07:39:09 +0300 (MSK)
-Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id B6186110AD;
- Sun,  2 Jul 2023 07:39:08 +0300 (MSK)
-Received: (nullmailer pid 2090178 invoked by uid 1000);
- Sun, 02 Jul 2023 04:39:07 -0000
-From: Michael Tokarev <mjt@tls.msk.ru>
-To: qemu-devel@nongnu.org, qemu-stable@nongnu.org
-Cc: Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.4 00/43] Patch Round-up for stable 7.2.4,
- freeze on 2023-07-06
-Date: Sun,  2 Jul 2023 07:38:50 +0300
-Message-Id: <qemu-stable-7.2.4-20230702073703@cover.tls.msk.ru>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <qemu-stable-7.2.4-20230702073703@cover.tls.msk.ru>
-References: <qemu-stable-7.2.4-20230702073703@cover.tls.msk.ru>
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qFpAo-0006iN-Dm
+ for qemu-devel@nongnu.org; Sun, 02 Jul 2023 00:58:59 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1688273936;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=XsYHgq3ddk3/mgd8ff7aJpudF1DCykUcCbckNri2rME=;
+ b=IW6GaRWcp3qGK5pqt6s1Cn605dL4Eu4ut8Fbeti3+2FlO/QYyC4LMHHoC8Vrii/7qhu5dM
+ A/ykGGhjWNsxaUVg63CxZCa+KQHpGD22m21YqAxJLIX5SewSPtAah+iMYcY1c42wvgI4ET
+ JjdgqFp/nLxUWDOo/FoUN76ms0xjlLQ=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-607-sCbNLBtoO66YwRmSelLCmw-1; Sun, 02 Jul 2023 00:58:55 -0400
+X-MC-Unique: sCbNLBtoO66YwRmSelLCmw-1
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-98e40d91fdfso221305166b.3
+ for <qemu-devel@nongnu.org>; Sat, 01 Jul 2023 21:58:55 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1688273934; x=1690865934;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=XsYHgq3ddk3/mgd8ff7aJpudF1DCykUcCbckNri2rME=;
+ b=DdonES99NYmZoCCWW+pRSQmeQ3oQ+58Xi/v6BSKElMgPd6jkyJk+JKTIsYsaXnNHTm
+ Dcb17gxH5/U9Idk1QvapkyPUmGnVQ17MfRejcgiZSuHKuNZIflDTcoMkpqnj5DEMXIIW
+ bbUdMl8tYlae1xCqNBJlhyDBLOkoh2wuW8RYdKaCExdmOjF75p3qITLLYfqpZmy9/wBp
+ 4L/4KlbUOGRPzJVZdjD0vQNDkJvQ6rNwGslNZ8fsnFkPz0iHGaDK61sxMyhlxjvcGNkM
+ swoe1jSAJ3/ZTSHsF9btVudmD++bVTAlRK6TF3aHtjLxF3IYcDnTkvsEyaqB11IIhx7g
+ aumQ==
+X-Gm-Message-State: AC+VfDz6hkXFBv9in9GRSYY0VE65XiCcPrpMo9WVXFnoAU2i3wI0lFpM
+ 87tW38N/QSkBtTBN5im84pn2hR9u2X2b0+6T3dzlzsy7xz5paL1j0oWWtVvzh7Uw21bY3OhJvkK
+ prFuYIMNlnaE/xZs=
+X-Received: by 2002:a17:906:138c:b0:98e:26ae:9b14 with SMTP id
+ f12-20020a170906138c00b0098e26ae9b14mr4884732ejc.7.1688273934288; 
+ Sat, 01 Jul 2023 21:58:54 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlEORHGI/CZBvNDXwrGvVNKHthQ2tx+AtR2CQQ9eM5jt+FbcC4gC18INZZmdGbzPUyzk3tUPOA==
+X-Received: by 2002:a17:906:138c:b0:98e:26ae:9b14 with SMTP id
+ f12-20020a170906138c00b0098e26ae9b14mr4884717ejc.7.1688273933910; 
+ Sat, 01 Jul 2023 21:58:53 -0700 (PDT)
+Received: from redhat.com ([2.52.134.224]) by smtp.gmail.com with ESMTPSA id
+ kd9-20020a17090798c900b00992d70cc8acsm3039481ejc.112.2023.07.01.21.58.51
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sat, 01 Jul 2023 21:58:53 -0700 (PDT)
+Date: Sun, 2 Jul 2023 00:58:49 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org,
+ Ani Sinha <anisinha@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
+ Jason Wang <jasowang@redhat.com>, Keith Busch <kbusch@kernel.org>,
+ Klaus Jensen <its@irrelevant.dk>
+Subject: Re: [PATCH 4/4] pci: Compare function number and ARI next function
+ number
+Message-ID: <20230702004344-mutt-send-email-mst@kernel.org>
+References: <20230701070133.24877-1-akihiko.odaki@daynix.com>
+ <20230701070133.24877-5-akihiko.odaki@daynix.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+In-Reply-To: <20230701070133.24877-5-akihiko.odaki@daynix.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -60,125 +104,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following patches are queued for QEMU stable v7.2.4:
+On Sat, Jul 01, 2023 at 04:01:22PM +0900, Akihiko Odaki wrote:
+> The function number must be lower than the next function number
+> advertised with ARI.
+> 
+> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-  https://gitlab.com/qemu-project/qemu/-/commits/staging-7.2
+I don't get this logic at all - where is the limitation coming from?
 
-Patch freeze is 2023-07-06, and the release is planned for 2023-07-08:
+All I see in the spec is:
+	Next Function Number - With non-VFs, this field indicates the Function Number of the next higher
+	numbered Function in the Device, or 00h if there are no higher numbered Functions. Function 0 starts
+	this linked list of Functions.
+	The presence of Shadow Functions does not affect this field.
+	For VFs, this field is undefined since VFs are located using First VF Offset (see § Section 9.3.3.9 ) and VF
+	Stride (see § Section 9.3.3.10 ).
 
-  https://wiki.qemu.org/Planning/7.2
+and
 
-Please respond here or CC qemu-stable@nongnu.org on any additional patches
-you think should (or shouldn't) be included in the release.
+	 To improve the enumeration performance and create a more deterministic solution, software can
+	enumerate Functions through a linked list of Function Numbers. The next linked list element is
+	communicated through each Function’s ARI Capability Register.
+	i. Function 0 acts as the head of a linked list of Function Numbers. Software detects a
+	non-Zero Next Function Number field within the ARI Capability Register as the next
+	Function within the linked list. Software issues a configuration probe using the Bus Number
+	captured by the Device and the Function Number derived from the ARI Capability Register
+	to locate the next associated Function’s configuration space.
+	ii. Function Numbers may be sparse and non-sequential in their consumption by an ARI
+	Device.
 
-The changes which are staging for inclusion, with the original commit hash
-from master branch, are given below the bottom line.
 
-Thanks!
 
-/mjt
 
---------------------------------------
-01* 4d3bd91b26a6 Thomas Huth:
-   gitlab-ci: Avoid to re-run "configure" in the device-crash-test jobs
-02* 8b869aa59109 Thomas Huth:
-   scripts/device-crash-test: Add a parameter to run with TCG only
-03* 2237af5e60ad Bernhard Beschow:
-   hw/ppc/prep: Fix wiring of PIC -> CPU interrupt
-04* 94400fa53f81 Erico Nunes:
-   ui/gtk: fix passing y0_top parameter to scanout
-05* 2f31663ed4b5 Erico Nunes:
-   ui/gtk: use widget size for cursor motion event
-06* f8a951bb9511 Erico Nunes:
-   ui/gtk-egl: fix scaling for cursor position in scanout mode
-07* b3a654d82ecf Marc-André Lureau:
-   ui/sdl2: fix surface_gl_update_texture: Assertion 'gls' failed
-08* efc00a37090e Bernhard Beschow:
-   ui/sdl2: Grab Alt+Tab also in fullscreen mode
-09* 083db9db44c8 Bernhard Beschow:
-   ui/sdl2: Grab Alt+F4 also under Windows
-10* 1dfea3f212e4 Volker Rümelin:
-   ui/sdl2: disable SDL_HINT_GRAB_KEYBOARD on Windows
-11* 31afe04586ef Tommy Wu:
-   hw/dma/xilinx_axidma: Check DMASR.HALTED to prevent infinite loop.
-12* c9ba1c9f02cf Clément Chigot:
-   hw/arm/xlnx-zynqmp: fix unsigned error when checking the RPUs number
-13* d7fe699be54b Peter Maydell:
-   target/arm: Explicitly select short-format FSR for M-profile
-14* 079181b9bc60 Ilya Leoshkevich:
-   target/s390x: Fix LCBB overwriting the top 32 bits
-15* 05d000fb4dca Ilya Leoshkevich:
-   tests/tcg/s390x: Test LCBB
-16* 3180b1736210 Ilya Leoshkevich:
-   target/s390x: Fix LOCFHR taking the wrong half of R2
-17* 230976232f4f Ilya Leoshkevich:
-   tests/tcg/s390x: Test LOCFHR
-18* 01b9990a3fb8 Ilya Leoshkevich:
-   linux-user/s390x: Fix single-stepping SVC
-19* be4a4cb42961 Ilya Leoshkevich:
-   tests/tcg/s390x: Test single-stepping SVC
-20* 71b11cbe1c34 Ilya Leoshkevich:
-   s390x/tcg: Fix CPU address returned by STIDP
-21* 7771e8b86335 Jagannathan Raman:
-   docs: fix multi-process QEMU documentation
-22* 86dcb6ab9b60 Mark Somerville:
-   qga: Fix suspend on Linux guests without systemd
-23* f6b0de53fb87 Christian Schoenebeck:
-   9pfs: prevent opening special files (CVE-2023-2861)
-24* 5fb9e8295531 Mattias Nissler:
-   hw/remote: Fix vfu_cfg trace offset format
-25* bdfca8a22f41 Anastasia Belova:
-   vnc: move assert in vnc_worker_thread_loop
-26* e025e8f5a8a7 Nicholas Piggin:
-   target/ppc: Fix lqarx to set cpu_reserve
-27* 6c242e79b876 Nicholas Piggin:
-   target/ppc: Fix nested-hv HEAI delivery
-28* 6494d2c1fd4e Nicholas Piggin:
-   target/ppc: Fix PMU hflags calculation
-29* b9cedbf19cb4 Yin Wang:
-   hw/riscv: qemu crash when NUMA nodes exceed available CPUs
-30* c8f48b120b31 Cédric Le Goater:
-   aspeed/hace: Initialize g_autofree pointer
-31* 243705aa6ea3 Peter Maydell:
-   target/arm: Fix return value from LDSMIN/LDSMAX 8/16 bit atomics
-32* 7e2788471f9e Peter Maydell:
-   target/arm: Return correct result for LDG when ATA=0
-33* f837b468cdaa Peter Maydell:
-   hw/intc/allwinner-a10-pic: Handle IRQ levels other than 0 or 1
-34* d2f9a79a8cf6 Peter Maydell:
-   hw/timer/nrf51_timer: Don't lose time when timer is queried in tight loop
-35* b0438861efe1 Peter Maydell:
-   host-utils: Avoid using __builtin_subcll on buggy versions of Apple Clang
-36* 497fad38979c Peter Maydell:
-   pc-bios/keymaps: Use the official xkb name for Arabic layout, not the 
-   legacy synonym
-37* 50ba97e928b4 Helge Deller:
-   target/hppa: Fix OS reboot issues
-38* 069d29666944 Helge Deller:
-   target/hppa: Provide qemu version via fw_cfg to firmware
-39* bb9c998ca934 Helge Deller:
-   target/hppa: New SeaBIOS-hppa version 7
-40* 34ec3aea5436 Helge Deller:
-   target/hppa: Update to SeaBIOS-hppa version 8
-41* 1e3ffb34f764 Prasad Pandit:
-   vhost: release memory_listener object in error path
-42* d45243bcfc61 Eugenio Pérez:
-   vdpa: fix not using CVQ buffer in case of error
-43* a0d7215e339b Ani Sinha:
-   vhost-vdpa: do not cleanup the vdpa/vhost-net structures if peer nic is 
-   present
-44 34e29d85a773 Vivek Kasireddy:
-   virtio-gpu: Make non-gl display updates work again when blob=true
-45 67f85346ca93 Nicholas Piggin:
-   icount: don't adjust virtual time backwards after warp
-46 51e84244a779 Eugenio Pérez:
-   vdpa: mask _F_CTRL_GUEST_OFFLOADS for vhost vdpa devices
-47 09d2db9f46e3 Nicholas Piggin:
-   target/ppc: Fix decrementer time underflow and infinite timer loop
-48 357bd7932a13 Zhenzhong Duan:
-   vfio/pci: Fix a segfault in vfio_realize
-49 c17408892319 Shameer Kolothum:
-   vfio/pci: Call vfio_prepare_kvm_msi_virq_batch() in MSI retry path
 
-(commit(s) marked with * were in previous series and are not resent)
+> ---
+>  hw/pci/pci.c | 15 +++++++++++++++
+>  1 file changed, 15 insertions(+)
+> 
+> diff --git a/hw/pci/pci.c b/hw/pci/pci.c
+> index e2eb4c3b4a..568665ee42 100644
+> --- a/hw/pci/pci.c
+> +++ b/hw/pci/pci.c
+> @@ -2059,6 +2059,8 @@ static void pci_qdev_realize(DeviceState *qdev, Error **errp)
+>      Error *local_err = NULL;
+>      bool is_default_rom;
+>      uint16_t class_id;
+> +    uint16_t ari;
+> +    uint16_t nextfn;
+>  
+>      /*
+>       * capped by systemd (see: udev-builtin-net_id.c)
+> @@ -2121,6 +2123,19 @@ static void pci_qdev_realize(DeviceState *qdev, Error **errp)
+>          }
+>      }
+>  
+> +    if (pci_is_express(pci_dev)) {
+> +        ari = pcie_find_capability(pci_dev, PCI_EXT_CAP_ID_ARI);
+> +        if (ari) {
+> +            nextfn = (pci_get_long(pci_dev->config + ari + PCI_ARI_CAP) >> 8) & 0xff;
+> +            if (nextfn && (pci_dev->devfn & 0xff) >= nextfn) {
+> +                error_setg(errp, "PCI: function number %u is not lower than ARI next function number %u",
+> +                           pci_dev->devfn & 0xff, nextfn);
+> +                pci_qdev_unrealize(DEVICE(pci_dev));
+> +                return;
+> +            }
+> +        }
+> +    }
+> +
+>      if (pci_dev->failover_pair_id) {
+>          if (!pci_bus_is_express(pci_get_bus(pci_dev))) {
+>              error_setg(errp, "failover primary device must be on "
+> -- 
+> 2.41.0
+
 
