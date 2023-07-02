@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95FA3744E6A
-	for <lists+qemu-devel@lfdr.de>; Sun,  2 Jul 2023 17:50:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BAF86744E76
+	for <lists+qemu-devel@lfdr.de>; Sun,  2 Jul 2023 17:52:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFzKw-0006CV-VP; Sun, 02 Jul 2023 11:50:07 -0400
+	id 1qFzL2-0006YW-Kz; Sun, 02 Jul 2023 11:50:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qFzKt-0005yF-7r
- for qemu-devel@nongnu.org; Sun, 02 Jul 2023 11:50:03 -0400
+ id 1qFzKx-0006Mh-Ud
+ for qemu-devel@nongnu.org; Sun, 02 Jul 2023 11:50:08 -0400
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qFzKq-0007UO-Tx
- for qemu-devel@nongnu.org; Sun, 02 Jul 2023 11:50:02 -0400
+ id 1qFzKv-0007Uo-59
+ for qemu-devel@nongnu.org; Sun, 02 Jul 2023 11:50:07 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=Z1MwgEclRZQzlxYjqy2P0QF4yLhomVsHfbat/Y44MjE=; b=q+syu6AwytVps80wAva5xKlzI5
- j6rEi5EgzgOtXwzkK1lyctrhuNS7zDy7oq6X5sylbK6sFWH2T1Mg1ENEzR43j4XQg+tuaMMyp7gWm
- mDHmKVuNUSxfJjdkmHIbKGmcr1cFR4WkiHmgxJYRuiCYuP9BPIBrm6uZBwzWdmdcVyOiemj4Nt01s
- iAJIC1LlF/+EuTdslG9mHYjhQcUV7eYP4jbs/48AmKAk+kPP4xmHmAPjKipW3jdNhVe0noA3CXoNJ
- GsHfMqiUCHD5GIhbbniodMkiF1NdlNgLeGjRGnHeYISUlmE8Qftji1WE/SCQYwnYqxJ+cAZwg8V4p
- laYXa3svSCRgMoBXHe9W20xPaB5ffWWeRcFWPQDETcaZXaQQaAYMu1kiyP9OmcaIbRsTCXpQzGCFV
- 9UinQquUt5FZkd6/tVgeqtcXfYgNqHx7cMusOdDnIlnYbcIRfe3a7Z6qgl7JrJH1s31f5b1gTom0t
- S8s6ejaID786iusb7QRnmuNVt/7WvOlpWALxiPCuIc2in2gtaUisHUtirIE779PCXyBrEFoUhArqc
- Ji0/EHjhLY/k0vmhmPpvMIHdNkv4R88V8vabKRjbowK1grjY3zeLOllXfjiVbxJvVbhuJcnygOQGd
- VgncSpoRe+/aTPPLXS8PGK9DvxdLFDU4Jt24SGLZU=;
+ bh=MnrJjOSAMpRtEVTxfxfWu0FbVCn90teB3EdLJBeVP7A=; b=R+JZ5STuJkWUZSJRmb+5T9sSKz
+ xiJEOOKjwVVhGA9B1b6hgPlYTZL90v+s3h7TunVC+vJTHmLV0Gw7J1tSPfZHOr/faktsCuiWbfUZD
+ yMLU6mifQxT6lHw0AUzp3Il2V6m+MtDbZ++k6V3I4yJJZ7LJzzRtmGYUPj3Q+kO1w4PZR2t1emXTo
+ eyscM2vXjtPwP8RINvW4b3OTBlilRzBqoMNjCXbBlN1/SDXtaaNue9wXj/ijx5wrv2rZP2zQki7Or
+ zsNDdV9E3oV1W6v7pdsZ0W3F1wWhZJpwU2u0VjJKwV2wctHpV/GBTXAFPBAADmh6FHoJi4wKHYR0n
+ /quDivE59gPeVSo3EjTKlTohBekpCZ/ZOHtSJiP1S2NxFBupiwlUeJtGqdCZPglOK00LaxGoXOXSZ
+ w3JaiSpXOMRV/mKnnXemZRJi9ya+2uQNoOQM65mDm3kzzqpUqJxOTusKmeYpr7OV29K2Fg9cdNDUd
+ 25fuIVksbf3/dVmSIbarw+ne8o7YiblHrOO/awX9LynzXGq0ojAHB0OvYnlA0VUL/p8GXdZaM8cJ+
+ x0k4vg4piRnRKiLWgyUfiqslK6zohtLNrctclpuYkoBcPRsl8ZBPQX8KTfATNOVPF8Bxjv7IYPbbR
+ aeP4/WaCtqCg2nXiCl4lReMH/ApEt1PoctJRVhzkc=;
 Received: from [2a00:23c4:8bad:df00:f732:dd76:7417:d15b] (helo=kentang.home)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qFzKR-0001Ji-Jd; Sun, 02 Jul 2023 16:49:39 +0100
+ id 1qFzKV-0001Ji-Pq; Sun, 02 Jul 2023 16:49:43 +0100
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: laurent@vivier.eu,
 	qemu-devel@nongnu.org
-Date: Sun,  2 Jul 2023 16:48:34 +0100
-Message-Id: <20230702154838.722809-18-mark.cave-ayland@ilande.co.uk>
+Date: Sun,  2 Jul 2023 16:48:35 +0100
+Message-Id: <20230702154838.722809-19-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20230702154838.722809-1-mark.cave-ayland@ilande.co.uk>
 References: <20230702154838.722809-1-mark.cave-ayland@ilande.co.uk>
@@ -50,8 +50,7 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a00:23c4:8bad:df00:f732:dd76:7417:d15b
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH 17/21] mac_via: always clear ADB interrupt when switching to
- A/UX mode
+Subject: [PATCH 18/21] q800: add ESCC alias at 0xc000
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -77,40 +76,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When the NetBSD kernel initialises it can leave the ADB interrupt asserted
-depending upon where in the ADB poll cycle the MacOS ADB interrupt handler
-is when the NetBSD kernel disables interrupts.
+Tests on real Q800 hardware show that the ESCC is addressable at multiple locations
+within the ESCC memory region - at least 0xc000, 0xc020 (as expected by the MacOS
+toolbox ROM) and 0xc040.
 
-The NetBSD ADB driver uses the ADB interrupt state to determine if the ADB
-is busy and refuses to send ADB commands unless it is clear. To ensure that
-this doesn't happen, always clear the ADB interrupt when switching to A/UX
-mode to ensure that the bus enumeration always occurs.
+All released NetBSD kernels before 10 use the 0xc000 address which causes a fatal
+error when running the MacOS booter. Add a single memory region alias at 0xc000
+to enable NetBSD kernels to start booting under QEMU.
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 ---
- hw/misc/mac_via.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ hw/m68k/q800.c         | 6 ++++++
+ include/hw/m68k/q800.h | 1 +
+ 2 files changed, 7 insertions(+)
 
-diff --git a/hw/misc/mac_via.c b/hw/misc/mac_via.c
-index 398e8d1967..5d1adf5863 100644
---- a/hw/misc/mac_via.c
-+++ b/hw/misc/mac_via.c
-@@ -875,6 +875,15 @@ static void via1_auxmode_update(MOS6522Q800VIA1State *v1s)
-     if (irq != oldirq) {
-         trace_via1_auxmode(irq);
-         qemu_set_irq(v1s->auxmode_irq, irq);
-+
-+        /*
-+         * Clear the ADB interrupt. MacOS can leave VIA1B_vADBInt asserted
-+         * (low) if a poll sequence doesn't complete before NetBSD disables
-+         * interrupts upon boot. Fortunately NetBSD switches to the so-called
-+         * "A/UX" interrupt mode after it initialises, so we can use this as
-+         * a convenient place to clear the ADB interrupt for now.
-+         */
-+        s->b |= VIA1B_vADBInt;
-     }
- }
+diff --git a/hw/m68k/q800.c b/hw/m68k/q800.c
+index 5ae7c37760..b5b2cabc33 100644
+--- a/hw/m68k/q800.c
++++ b/hw/m68k/q800.c
+@@ -451,6 +451,12 @@ static void q800_machine_init(MachineState *machine)
+     memory_region_add_subregion(&m->macio, SCC_BASE - IO_BASE,
+                                 sysbus_mmio_get_region(sysbus, 0));
  
++    /* Create alias for NetBSD */
++    memory_region_init_alias(&m->escc_alias, OBJECT(machine), "escc-alias",
++                             sysbus_mmio_get_region(sysbus, 0), 0, 0x8);
++    memory_region_add_subregion(&m->macio, SCC_BASE - IO_BASE - 0x20,
++                                &m->escc_alias);
++
+     /* SCSI */
+ 
+     object_initialize_child(OBJECT(machine), "esp", &m->esp,
+diff --git a/include/hw/m68k/q800.h b/include/hw/m68k/q800.h
+index fbaacd88bd..348eaf4703 100644
+--- a/include/hw/m68k/q800.h
++++ b/include/hw/m68k/q800.h
+@@ -67,6 +67,7 @@ struct Q800MachineState {
+     MemoryRegion macio;
+     MemoryRegion macio_alias;
+     MemoryRegion machine_id;
++    MemoryRegion escc_alias;
+ };
+ 
+ #define TYPE_Q800_MACHINE MACHINE_TYPE_NAME("q800")
 -- 
 2.30.2
 
