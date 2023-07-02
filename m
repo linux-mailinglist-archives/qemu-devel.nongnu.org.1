@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12A65744D11
-	for <lists+qemu-devel@lfdr.de>; Sun,  2 Jul 2023 11:48:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C05DF744D0D
+	for <lists+qemu-devel@lfdr.de>; Sun,  2 Jul 2023 11:48:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFtfT-0003mY-GI; Sun, 02 Jul 2023 05:46:55 -0400
+	id 1qFtfU-0003oE-Js; Sun, 02 Jul 2023 05:46:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qFtfK-0003m9-G1
- for qemu-devel@nongnu.org; Sun, 02 Jul 2023 05:46:46 -0400
-Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
+ id 1qFtfN-0003mc-2b
+ for qemu-devel@nongnu.org; Sun, 02 Jul 2023 05:46:54 -0400
+Received: from mail-pg1-x533.google.com ([2607:f8b0:4864:20::533])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qFtfI-0007hC-WB
- for qemu-devel@nongnu.org; Sun, 02 Jul 2023 05:46:46 -0400
-Received: by mail-pf1-x42e.google.com with SMTP id
- d2e1a72fcca58-666e5f0d60bso1753171b3a.3
- for <qemu-devel@nongnu.org>; Sun, 02 Jul 2023 02:46:44 -0700 (PDT)
+ id 1qFtfL-0007j1-KP
+ for qemu-devel@nongnu.org; Sun, 02 Jul 2023 05:46:48 -0400
+Received: by mail-pg1-x533.google.com with SMTP id
+ 41be03b00d2f7-55b1238a013so2411218a12.3
+ for <qemu-devel@nongnu.org>; Sun, 02 Jul 2023 02:46:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1688291203; x=1690883203;
+ d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1688291206; x=1690883206;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=rynjAUP6lxRQ+wMlciGvKUU8H/YrNM/NmVpo+UCvFLI=;
- b=B612EM/a3WVZrH9RXFziPekzNdgf+ikv0zlJdQfb52yMHVV84Dwom/ODLgUnwqJtYu
- bIx7IhMP56WJaeSAjtxGQF47FyyfU9u/LCQwT6VBM3o9ZUgk8oVBr87xJqUArbxFEwWg
- UMyaMiC+g+wENgLN7hDZSs/JaKtwCw9ukfCmzXeQC6z2fA9LWvrWfsOWcv/bvWNGb/BD
- 6GWMHkf1esw627Tr4Z8aY3JANRy7hHn4+k4VBaGnGxuJlivvD4CJPxoF5o3wtKpF1otL
- fCy+/PUUWkKW+GLuozaZrXz+2cHwvqgtQVUWCd7LPvibUaH+wZ2y3RWT6MYJEihS4v/7
- Q4mA==
+ bh=P46Fz3KmMMoBs0YAqCjAY4+LmuCjaIetWje4x1NrkhE=;
+ b=d3qQdDjR8S0Hnhn36eoNzp93CZjdAIkIMuphKMSAXl3JTy14soC+hQjE2cbrdDUf2h
+ 70bG6mDciTkSA3ZEz1u2bzYZvukBnhWESUC9Wmz2Pw+mXw4cSYbk6GAM71a+LRwk9xCp
+ InYFpCciyr3iEbjjENn37HLBreRvTTJcgRn9QH9eG69Q0NY7Q9WDV4VrhBQuzS1G7YWs
+ n8gkBYWAwQNqi09yPlxrx7RKm9l4312WZP3Yod4pwo/90ms8Q6DtlAJcFqtPF9vYY4M3
+ hf8Z62vKskoNcTKtSveZQ5DIR7WUluadxh5aQZVpQVO/gCJ9iHP8n6UX3tUaCQ6DXty6
+ 3tvA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688291203; x=1690883203;
+ d=1e100.net; s=20221208; t=1688291206; x=1690883206;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=rynjAUP6lxRQ+wMlciGvKUU8H/YrNM/NmVpo+UCvFLI=;
- b=TN331p0we2S7g9iaF7jJW8QjsEktLpKqI7FcaLOkboKDrTCMQ+Dn5CzUWIQ/Nlru2c
- E0C4HUpY5lMgeqIrcspYg61ooGHM21Pl+0tisDC4z2RX1R+nqwfAVBYn8QIw1I6bMDC8
- zvjr1a9sUtiJVMCNUGm2ekF2aWfUoZTGXdKMKQ6Y7s73mR6xpbJfKimTkt1V6lFHEbZX
- mm8e/VK5rMSsmPuQVrlXZqQkjroe3sCs/ER+5J46gEUzm7c6Zhq8CfP3EqkvQ227HFcN
- Yn+v3lCDhVQlBNOD9kXMRe6uNhP48v8abQt97YfEyAUakQCswuAe3K884yoY8+mbrKb6
- NzZw==
-X-Gm-Message-State: ABy/qLaKH5EAfFCeYHKXd5z4FB5bwvShYBrv4XsqpsPfbbyghcYR4xOH
- XhQPYHVuVP/6WFhU/qsWTZnGwK6RGbTVkrsvM8Y=
-X-Google-Smtp-Source: APBJJlGYx0zHr5rAT4MElCApMVKMqDnTweJ5MkKsuQDp8ASdjoFtmYdlueFoS9hV/AuFE2B4gF142w==
-X-Received: by 2002:a05:6a20:3ca7:b0:12d:7555:a62d with SMTP id
- b39-20020a056a203ca700b0012d7555a62dmr6175250pzj.33.1688291203687; 
- Sun, 02 Jul 2023 02:46:43 -0700 (PDT)
+ bh=P46Fz3KmMMoBs0YAqCjAY4+LmuCjaIetWje4x1NrkhE=;
+ b=dJBBzdzy0fEi1ZawLEbAJQL7F65PzoKo55d0+lPnC4kd9WlPlTJ3WoTOhFN1FAeOvh
+ dKbJN6RSslvT8igbxuobofLiDrTEJuXeau+EfFB1zC9zv1EP53HYYZ3r/i5Ou/Mq8BA+
+ B1FlohaGbzc5527t9mSEx3fKBL7K8xSJZ853bUKDefmKG4MLD85P9JHme+9nR7GfKo7Z
+ OpdH8fcr/qIwcTSbhupBkaf9WiUYzKHdt/VtCrqPFQrwINprY4EIgcwWW+MnvybI75C9
+ Jz8HzWjhO3mYQEFB1WiWstuBZcSSm4EgLpaTVvWDSZi/vSBo0/3TLe1RVvUBRoZ2XX2+
+ QX8w==
+X-Gm-Message-State: AC+VfDxUJMMrpClc1XBrSQXMEjp17ilw8bdJY8ysUcn2m5SjtTpDNidl
+ XZaJcKuK0Cp7f2KSDEVEIO7KJTlJXlkV5JWio8w=
+X-Google-Smtp-Source: ACHHUZ6Uf++OHPCnA2v76oL/AeCODLF+njIckP51dz9vHvgXneBO9bezUbEi0NrGrWUmTFA0VmTaQw==
+X-Received: by 2002:a05:6a20:8f07:b0:122:a808:dbbe with SMTP id
+ b7-20020a056a208f0700b00122a808dbbemr10254632pzk.29.1688291206198; 
+ Sun, 02 Jul 2023 02:46:46 -0700 (PDT)
 Received: from alarm.. ([157.82.204.253]) by smtp.gmail.com with ESMTPSA id
- i1-20020a635841000000b005348af1b84csm12934067pgm.74.2023.07.02.02.46.41
+ i1-20020a635841000000b005348af1b84csm12934067pgm.74.2023.07.02.02.46.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 02 Jul 2023 02:46:43 -0700 (PDT)
+ Sun, 02 Jul 2023 02:46:45 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 To: 
 Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org,
@@ -63,22 +63,23 @@ Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org,
  Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
  Jason Wang <jasowang@redhat.com>, Keith Busch <kbusch@kernel.org>,
  Klaus Jensen <its@irrelevant.dk>, Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH v2 2/4] hw/nvme: Fix ARI next function numbers
-Date: Sun,  2 Jul 2023 18:46:26 +0900
-Message-ID: <20230702094631.39111-3-akihiko.odaki@daynix.com>
+Subject: [PATCH v2 3/4] igb: Fix ARI next function numbers
+Date: Sun,  2 Jul 2023 18:46:27 +0900
+Message-ID: <20230702094631.39111-4-akihiko.odaki@daynix.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230702094631.39111-1-akihiko.odaki@daynix.com>
 References: <20230702094631.39111-1-akihiko.odaki@daynix.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::42e;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x42e.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::533;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x533.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ SPF_NONE=0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,59 +95,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The ARI next function number field is undefined for VF. The PF should
+The ARI next function number field is undefined for VF so the PF should
 end the linked list formed with the field by specifying 0.
 
-Fixes: 44c2c09488 ("hw/nvme: Add support for SR-IOV")
+Fixes: 3a977deebe ("Intrdocue igb device emulation")
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- hw/nvme/nvme.h    | 1 +
- hw/core/machine.c | 1 +
- hw/nvme/ctrl.c    | 3 ++-
- 3 files changed, 4 insertions(+), 1 deletion(-)
+ hw/core/machine.c | 3 ++-
+ hw/net/igb.c      | 5 ++++-
+ 2 files changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/hw/nvme/nvme.h b/hw/nvme/nvme.h
-index 209e8f5b4c..c2ba6755ab 100644
---- a/hw/nvme/nvme.h
-+++ b/hw/nvme/nvme.h
-@@ -515,6 +515,7 @@ typedef struct NvmeParams {
-     uint16_t sriov_vi_flexible;
-     uint8_t  sriov_max_vq_per_vf;
-     uint8_t  sriov_max_vi_per_vf;
-+    bool     ari_nextfn_1;
- } NvmeParams;
- 
- typedef struct NvmeCtrl {
 diff --git a/hw/core/machine.c b/hw/core/machine.c
-index 46f8f9a2b0..f984a767a2 100644
+index f984a767a2..1f5aacd1dc 100644
 --- a/hw/core/machine.c
 +++ b/hw/core/machine.c
-@@ -41,6 +41,7 @@
+@@ -41,7 +41,8 @@
  
  GlobalProperty hw_compat_8_0[] = {
      { "migration", "multifd-flush-after-each-section", "on"},
-+    { "nvme", "ari-nextfn-1", "on"},
+-    { "nvme", "ari-nextfn-1", "on"},
++    { "igb", "ari-nextfn-1", "on" },
++    { "nvme", "ari-nextfn-1", "on" },
  };
  const size_t hw_compat_8_0_len = G_N_ELEMENTS(hw_compat_8_0);
  
-diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
-index fd917fcda1..4bbafc66b5 100644
---- a/hw/nvme/ctrl.c
-+++ b/hw/nvme/ctrl.c
-@@ -8088,7 +8088,7 @@ static bool nvme_init_pci(NvmeCtrl *n, PCIDevice *pci_dev, Error **errp)
-     pcie_endpoint_cap_init(pci_dev, 0x80);
-     pcie_cap_flr_init(pci_dev);
-     if (n->params.sriov_max_vfs) {
--        pcie_ari_init(pci_dev, 0x100, 1);
-+        pcie_ari_init(pci_dev, 0x100, n->params.ari_nextfn_1 ? 1 : 0);
+diff --git a/hw/net/igb.c b/hw/net/igb.c
+index 1c989d7677..d37d43c155 100644
+--- a/hw/net/igb.c
++++ b/hw/net/igb.c
+@@ -78,6 +78,8 @@ struct IGBState {
+     uint32_t ioaddr;
+ 
+     IGBCore core;
++
++    bool ari_nextfn_1;
+ };
+ 
+ #define IGB_CAP_SRIOV_OFFSET    (0x160)
+@@ -431,7 +433,7 @@ static void igb_pci_realize(PCIDevice *pci_dev, Error **errp)
+         hw_error("Failed to initialize AER capability");
      }
  
-     /* add one to max_ioqpairs to account for the admin queue pair */
-@@ -8406,6 +8406,7 @@ static Property nvme_props[] = {
-                       params.sriov_max_vi_per_vf, 0),
-     DEFINE_PROP_UINT8("sriov_max_vq_per_vf", NvmeCtrl,
-                       params.sriov_max_vq_per_vf, 0),
-+    DEFINE_PROP_BOOL("ari-nextfn-1", NvmeCtrl, params.ari_nextfn_1, false),
+-    pcie_ari_init(pci_dev, 0x150, 1);
++    pcie_ari_init(pci_dev, 0x150, s->ari_nextfn_1 ? 1 : 0);
+ 
+     pcie_sriov_pf_init(pci_dev, IGB_CAP_SRIOV_OFFSET, TYPE_IGBVF,
+         IGB_82576_VF_DEV_ID, IGB_MAX_VF_FUNCTIONS, IGB_MAX_VF_FUNCTIONS,
+@@ -582,6 +584,7 @@ static const VMStateDescription igb_vmstate = {
+ 
+ static Property igb_properties[] = {
+     DEFINE_NIC_PROPERTIES(IGBState, conf),
++    DEFINE_PROP_BOOL("ari-nextfn-1", IGBState, ari_nextfn_1, false),
      DEFINE_PROP_END_OF_LIST(),
  };
  
