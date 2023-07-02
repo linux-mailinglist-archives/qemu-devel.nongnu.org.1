@@ -2,89 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F070744CD5
-	for <lists+qemu-devel@lfdr.de>; Sun,  2 Jul 2023 11:00:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02E29744D0F
+	for <lists+qemu-devel@lfdr.de>; Sun,  2 Jul 2023 11:48:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFswJ-0002EI-96; Sun, 02 Jul 2023 05:00:15 -0400
+	id 1qFtfH-0003jF-Ed; Sun, 02 Jul 2023 05:46:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qFswH-0002Du-EW
- for qemu-devel@nongnu.org; Sun, 02 Jul 2023 05:00:13 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qFswD-0007bb-1G
- for qemu-devel@nongnu.org; Sun, 02 Jul 2023 05:00:11 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688288408;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=wC6IAWWfPZ1lNxjtYt2vDaasL6gHy4yA2lrkaJqtxoU=;
- b=e26+CiDe68q14vpDlzGH8CvCZq/wtGNw4at7aCBCMvHXPphIVUM+UwFtD/VPzxdjcb2zt1
- 9M2hdLgdniZPasetWIkAfL1ZHECAMGp4JK5AGWgE0J0xAQLPcOA64ilnOCF5K4yFlgfHyv
- vQQRHzeg6zJQXWjUs2k6a+Y5qrVL3PM=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-571-AsohXqBqNViM00k18ccE_g-1; Sun, 02 Jul 2023 05:00:06 -0400
-X-MC-Unique: AsohXqBqNViM00k18ccE_g-1
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-987a0365f77so189349466b.1
- for <qemu-devel@nongnu.org>; Sun, 02 Jul 2023 02:00:06 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qFtfG-0003j7-9q
+ for qemu-devel@nongnu.org; Sun, 02 Jul 2023 05:46:42 -0400
+Received: from mail-pg1-x52e.google.com ([2607:f8b0:4864:20::52e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qFtfE-0007gH-5v
+ for qemu-devel@nongnu.org; Sun, 02 Jul 2023 05:46:42 -0400
+Received: by mail-pg1-x52e.google.com with SMTP id
+ 41be03b00d2f7-55b1238a024so2773912a12.0
+ for <qemu-devel@nongnu.org>; Sun, 02 Jul 2023 02:46:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1688291198; x=1690883198;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=FrvGzOrPb5QZre060LHjoJFUhojDSLsxExvyHpt6mC8=;
+ b=rxOcUHcSGsXHQe8AGmixZwnY4mdeL7AGloRmWkRL00gxZc/uXiQ0i3gyC8yGvkw46x
+ Ib3YEUaOpDUxvtUDH2tc1krad4QuGqoQJmplJHrkR+Jv7bCIjV5zolJqvA3QlAHivDJT
+ Tr+n8yERC0QHHrXoSSrbj6bLrKQpkigJ6NR5bflQpIQEewLZ/UwIU+ei0WOadn/r2kVv
+ fLRtUAtgLknH+O+caUx6jgh9bGaCUNLMYSo6CA8ZrJVyyPHJRzZNHWrtrONG0RBO0Y+a
+ uI3zTo6j6bxmAxcScBDc61dK7jGmBdWOVtXM301tcZX6LZI066D1NAmxX1gra9q51Gvp
+ iECQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688288405; x=1690880405;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=wC6IAWWfPZ1lNxjtYt2vDaasL6gHy4yA2lrkaJqtxoU=;
- b=btidxqcMwxOPCONAYnLPjRjSqaEGYvvORBx08HSpfhyKTYqYiITNCa2OVo7lX5uXQd
- 6b/j/mLABD9IOEvhFzLmsuT6iYJGzXQCr/sCUQ6CespolXPE8rWmjkmzwGz5OkN8LrmQ
- OFC/folGiwTipY3av1RuVzoKuKo0ZYa2fAq0tYrNCXI2cM6K6OVRq3/+s0tRgGptKT1v
- tCq28RuPMTJrOPVCjjq8JYBNXDrCCr9sqCsvQV4a9YttTKEh1UAgbH3TAgmaLv2P4dAh
- cLzC93rAz0YRiJjKlQA+NQ7VIIav03h9lqGZxUdLi5cCtoRZM6kxNLkjqQ+yJUrW9twz
- hH5w==
-X-Gm-Message-State: ABy/qLZIrT6aSx6Mhd4OvSAwvjE/TkrKzZLv896vWaVp/btzmmMZk8jw
- mJpjU5RRstiWjImdixthFzkLScNB79uPQogl7hhHZznCmRyzmKr3/czy7KG6+QiXH8UzoyH5FOi
- v4dAXaNM/FnmnU4LCV2X0NFbZ2g==
-X-Received: by 2002:a17:906:480d:b0:974:20bd:6e15 with SMTP id
- w13-20020a170906480d00b0097420bd6e15mr4793394ejq.4.1688288405259; 
- Sun, 02 Jul 2023 02:00:05 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlFMGwPcoaHCeXJW6xoHdLiNyKOXAHedWEyuQhIv7KvxNdVrY4jS+Hv9KhAVY09T6R+it11ohg==
-X-Received: by 2002:a17:906:480d:b0:974:20bd:6e15 with SMTP id
- w13-20020a170906480d00b0097420bd6e15mr4793380ejq.4.1688288404964; 
- Sun, 02 Jul 2023 02:00:04 -0700 (PDT)
-Received: from redhat.com ([2.52.134.224]) by smtp.gmail.com with ESMTPSA id
- ci8-20020a170906c34800b00982d0563b11sm10248612ejb.197.2023.07.02.02.00.02
+ d=1e100.net; s=20221208; t=1688291198; x=1690883198;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=FrvGzOrPb5QZre060LHjoJFUhojDSLsxExvyHpt6mC8=;
+ b=jey9plUbkLHngGZsjrB1TX4KD+pmY098HtC01LoXilIg4a6oKr9+i9pjVzATYk3zgI
+ WPDfypCWPtTL0lj47SDna1DLJ8uRSuV6gJNEkmwqjW7Ej1juEyHomhqlq+Ncx8YUfmQm
+ JUxp2BKpjTxWFWSxsfeaPmzY9vrzK7R7M6W99k59ptFvzMacCRw3lqJ3oDfc9CswU2wR
+ UN46W12/801bdR2aXb+9PJre5Pkrhd0ip4CGOJ3xrFet1Pyr8vRrU7lfraNNHe6/cIJD
+ OdbS7+cftm2ndN+5GCIOAK0Zc7L4mteXBb/0orLJgFJRvOiR6jKwb/PRNXT11wZCGp6U
+ TDbg==
+X-Gm-Message-State: ABy/qLYG+qMtY6LdR3GZZXljBxS8GqB0IaHJJw1I2wOFJOrA/ewJj3eR
+ RJ+U2vCNznxdsAMG7XBrvqOf2xJNm4Y5t8HKUAE=
+X-Google-Smtp-Source: APBJJlE5FRV0THHINzrVucPCsCVKB/bJVkddB2pL11876wkAmWkO0Uy+Z/woxMDYPMCzxXVcv4kwEw==
+X-Received: by 2002:a05:6a21:3381:b0:12d:10b6:98f9 with SMTP id
+ yy1-20020a056a21338100b0012d10b698f9mr9428380pzb.56.1688291198585; 
+ Sun, 02 Jul 2023 02:46:38 -0700 (PDT)
+Received: from alarm.. ([157.82.204.253]) by smtp.gmail.com with ESMTPSA id
+ i1-20020a635841000000b005348af1b84csm12934067pgm.74.2023.07.02.02.46.36
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 02 Jul 2023 02:00:04 -0700 (PDT)
-Date: Sun, 2 Jul 2023 05:00:00 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
+ Sun, 02 Jul 2023 02:46:38 -0700 (PDT)
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+To: 
 Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org,
- Ani Sinha <anisinha@redhat.com>,
+ Ani Sinha <anisinha@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
  Jason Wang <jasowang@redhat.com>, Keith Busch <kbusch@kernel.org>,
- Klaus Jensen <its@irrelevant.dk>
-Subject: Re: [PATCH 3/3] igb: Fix ARI next function numbers
-Message-ID: <20230702045815-mutt-send-email-mst@kernel.org>
-References: <20230702083357.13517-1-akihiko.odaki@daynix.com>
- <20230702083357.13517-4-akihiko.odaki@daynix.com>
+ Klaus Jensen <its@irrelevant.dk>, Akihiko Odaki <akihiko.odaki@daynix.com>
+Subject: [PATCH v2 0/4] pcie: Fix ARI next function numbers
+Date: Sun,  2 Jul 2023 18:46:24 +0900
+Message-ID: <20230702094631.39111-1-akihiko.odaki@daynix.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230702083357.13517-4-akihiko.odaki@daynix.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Transfer-Encoding: 8bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::52e;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x52e.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -101,39 +92,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sun, Jul 02, 2023 at 05:33:56PM +0900, Akihiko Odaki wrote:
-> The ARI next function number field is undefined for VF so the PF should
-> end the linked list formed with the field by specifying 0.
-> 
-> Fixes: 3a977deebe ("Intrdocue igb device emulation")
-> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+The ARI next function number field is undefined for VF. The PF should
+end the linked list formed with the field by specifying 0.
 
+Supersedes: <20230701070133.24877-1-akihiko.odaki@daynix.com>
+("[PATCH 0/4] pci: Compare function number and ARI next function number")
 
-I would also change it for the VF just so people don't wonder
-what's the magic value. Do document in commit log though.
+V1 -> V2:
+  Fixed migration. (Michael S. Tsirkin)
+  Added a caveat comment. (Michael S. Tsirkin)
 
-Maybe just drop this parameter from pcie_ari_init completely
-for now?
+Akihiko Odaki (4):
+  docs: Fix next function numbers in SR/IOV documentation
+  hw/nvme: Fix ARI next function numbers
+  igb: Fix ARI next function numbers
+  pcie: Note a caveat regarding ARI next function number
 
+ docs/pcie_sriov.txt   | 4 ++--
+ hw/nvme/nvme.h        | 1 +
+ include/hw/pci/pcie.h | 7 +++++++
+ hw/core/machine.c     | 2 ++
+ hw/net/igb.c          | 5 ++++-
+ hw/nvme/ctrl.c        | 3 ++-
+ 6 files changed, 18 insertions(+), 4 deletions(-)
 
-> ---
->  hw/net/igb.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/hw/net/igb.c b/hw/net/igb.c
-> index 1c989d7677..897386fc09 100644
-> --- a/hw/net/igb.c
-> +++ b/hw/net/igb.c
-> @@ -431,7 +431,7 @@ static void igb_pci_realize(PCIDevice *pci_dev, Error **errp)
->          hw_error("Failed to initialize AER capability");
->      }
->  
-> -    pcie_ari_init(pci_dev, 0x150, 1);
-> +    pcie_ari_init(pci_dev, 0x150, 0);
->  
->      pcie_sriov_pf_init(pci_dev, IGB_CAP_SRIOV_OFFSET, TYPE_IGBVF,
->          IGB_82576_VF_DEV_ID, IGB_MAX_VF_FUNCTIONS, IGB_MAX_VF_FUNCTIONS,
-> -- 
-> 2.41.0
+-- 
+2.41.0
 
 
