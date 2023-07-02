@@ -2,84 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D32DF744D0E
-	for <lists+qemu-devel@lfdr.de>; Sun,  2 Jul 2023 11:48:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3323F744D14
+	for <lists+qemu-devel@lfdr.de>; Sun,  2 Jul 2023 11:50:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFtfV-0003og-IG; Sun, 02 Jul 2023 05:46:57 -0400
+	id 1qFtiV-0007Hh-48; Sun, 02 Jul 2023 05:50:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qFtfT-0003n1-1V
- for qemu-devel@nongnu.org; Sun, 02 Jul 2023 05:46:55 -0400
-Received: from mail-ot1-x32b.google.com ([2607:f8b0:4864:20::32b])
+ id 1qFtiP-0007HO-Q3
+ for qemu-devel@nongnu.org; Sun, 02 Jul 2023 05:49:57 -0400
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qFtfO-0007jT-QO
- for qemu-devel@nongnu.org; Sun, 02 Jul 2023 05:46:53 -0400
-Received: by mail-ot1-x32b.google.com with SMTP id
- 46e09a7af769-6b87d505e28so2977919a34.2
- for <qemu-devel@nongnu.org>; Sun, 02 Jul 2023 02:46:49 -0700 (PDT)
+ id 1qFtiO-000898-AU
+ for qemu-devel@nongnu.org; Sun, 02 Jul 2023 05:49:57 -0400
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-666ed230c81so2969943b3a.0
+ for <qemu-devel@nongnu.org>; Sun, 02 Jul 2023 02:49:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1688291209; x=1690883209;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=viqv5Rw5CshESJTyQPgOsxciBoe2+ZUBIm03boeiAVY=;
- b=ZyPCwZ9c/sOP95jqAEWMRMj2S4CmzWswcD9HPWN/zggISrnmt6E/9qDitkWb3X9HX2
- 2eUfWYIbQS6cgrKbLyBvo9bslqsyIPwMBp0nHzDOfIVYFZEwJUvegrWPkgBz4J1D6fdO
- 0qj7A+H/8vWyvIqZg3wCFZkL6eHBgU9pvD5I54nbMrYkIQ3Nfp4W0g80Mfo6PePPmR3G
- BFHww7Lqoj27t0tdf/N+fDQ7NzuhNOmq96H88VAToWaWvrHxEqiVYQI/1IRVual5w5ow
- TJb7EAFbUOFXFhshM5GXQJQhbf+9acvfYJPo6U6kQ9fpsu/4q+hI+YTZ69IMku+Ha/yN
- gNPA==
+ d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1688291393; x=1690883393;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=YE3wnDw5foKp/WZylnf46yeOa5vkfZ7gdKr2zRxuWrg=;
+ b=LCzMMuBQ20ZuNxFCt3OvbZDqs6XtgBcG5fxl1AiXPLlkrGIOhetebGDmuZqEoquHDs
+ IaU2ol6vl9653s8X88T6SgrmtMSHTKQyVnEu0uTUYjkRQRct1VoBVBKMdO1hMc9gRp9M
+ Gtx7pt7fECOpnw1E1xZUm58L4cPFU6H4Ncdctn3JwMywBJ6l8E3JjXsTJlxUfBnpwjOq
+ LfaM0MTT7t+RGeyakevntXThPiDvflhGl1a34jNus+JKpyd+HpaAlZApuV6RlkQjh+LZ
+ lFKbzO7uiq88CanMbeQmod7MEi5sWuIiMe7TZouWS2uE2hsM55pXZu6MzfsgeIMBcate
+ nQlg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688291209; x=1690883209;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=viqv5Rw5CshESJTyQPgOsxciBoe2+ZUBIm03boeiAVY=;
- b=aDeVIqEMpXD8zarX9vG7t6YxF8e5kMvOQHKjyULbIojLkzvcwIdqbJl4Y2+HQ8KNK+
- NNCU9pJc8RTbZqy7L7aQUhozSty4QvhDekdMcHftDgfz7sTtPaPcGLnMtc5s0gtsIt11
- qZOQZaGHsqcNCUL9Q9y0nXZkEs0L2Vr15hL4vAUAIe+ux+PGaTPoBV8VPajuVQLn3Ois
- rx9K+n0A32m2LNQx8DC4z3NBH1rrTRD/8tkq4PJAYVsYqewhML9B+OWSOgVsl7jv2D4U
- hdS4lwTp0uAI8w35eEst24JtLKTrzUsvnphp3rf0PpVCONb+dgeWSZ8GYdgOX5OWzFAS
- 6Bdg==
-X-Gm-Message-State: AC+VfDyGh82V53+rRhiU4d5ZLxVygENNW8BdKpIcqVL98m5f/87fmZI+
- ymxy5a578YLH8p5dHmIrk1okQO0aga8pWKOkW9A=
-X-Google-Smtp-Source: ACHHUZ7UK8af6Znd9yRF4FNpy1/pBcz6dGZfz3EKFABp7uPG/anYgSv2CjB3YIvEfuYMlNAJagf53g==
-X-Received: by 2002:a9d:7ad5:0:b0:6b8:969f:df31 with SMTP id
- m21-20020a9d7ad5000000b006b8969fdf31mr8959079otn.9.1688291208760; 
- Sun, 02 Jul 2023 02:46:48 -0700 (PDT)
-Received: from alarm.. ([157.82.204.253]) by smtp.gmail.com with ESMTPSA id
- i1-20020a635841000000b005348af1b84csm12934067pgm.74.2023.07.02.02.46.46
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 02 Jul 2023 02:46:48 -0700 (PDT)
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-To: 
+ d=1e100.net; s=20221208; t=1688291393; x=1690883393;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=YE3wnDw5foKp/WZylnf46yeOa5vkfZ7gdKr2zRxuWrg=;
+ b=QaCppaB9tFHcS1zuwN9EzbB8xnkEjsz0SwRT4p/PiCigsHJ1xN5oGs6PD//Y4aN8ZG
+ +GzwUipbIIN4KCkVZmPBzP4Ocs9Mxkgr8DFtgvLl5yzAjZa6YbcAUWrfUCVyTnYaNKMe
+ kZzMFD6IXQRB0TscghLqcEnPhqSauYWXDU0Mw0NjX+OnzrpfHBA1WWBoACW2lhqObtY3
+ Hn1g7A2EP1u+3c1UYVKPj5YPmDn17q6GfYnUtr++G+bZ2nGpigPAa9OrTUPDc5A1OBgc
+ KRtgtk96Q3DN0PD4XLWMzgrHKrUV/AIKE+XKiGSHKnnoJmid6ZF0ZA11eEKRkQUz+X8z
+ mfVw==
+X-Gm-Message-State: ABy/qLaoCPDA2Itn6l4G+9IvUqvNcyMuospjeGdivVNjdhbkZ7Ljrt0X
+ 5GQPQo8s9zDvr/EdfIPGyu3Kzw==
+X-Google-Smtp-Source: APBJJlHIMMimoI2yBM0aIgGQbRGGZycjkmx8nD/ZHGemFig5Rlk74yfLIm2A4y6sxkUcuQXtQ66vdg==
+X-Received: by 2002:a05:6a00:138d:b0:680:2b80:8479 with SMTP id
+ t13-20020a056a00138d00b006802b808479mr9759495pfg.19.1688291393717; 
+ Sun, 02 Jul 2023 02:49:53 -0700 (PDT)
+Received: from [157.82.204.253] ([157.82.204.253])
+ by smtp.gmail.com with ESMTPSA id
+ q17-20020a62ae11000000b00679dc747738sm10035140pff.10.2023.07.02.02.49.51
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 02 Jul 2023 02:49:53 -0700 (PDT)
+Message-ID: <d0769c54-62f7-6aa8-01b1-0e40cc46e02a@daynix.com>
+Date: Sun, 2 Jul 2023 18:49:50 +0900
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH 3/3] igb: Fix ARI next function numbers
+Content-Language: en-US
+To: "Michael S. Tsirkin" <mst@redhat.com>
 Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org,
- Ani Sinha <anisinha@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
+ Ani Sinha <anisinha@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
  Jason Wang <jasowang@redhat.com>, Keith Busch <kbusch@kernel.org>,
- Klaus Jensen <its@irrelevant.dk>, Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH v2 4/4] pcie: Note a caveat regarding ARI next function number
-Date: Sun,  2 Jul 2023 18:46:28 +0900
-Message-ID: <20230702094631.39111-5-akihiko.odaki@daynix.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230702094631.39111-1-akihiko.odaki@daynix.com>
-References: <20230702094631.39111-1-akihiko.odaki@daynix.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::32b;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-ot1-x32b.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ Klaus Jensen <its@irrelevant.dk>
+References: <20230702083357.13517-1-akihiko.odaki@daynix.com>
+ <20230702083357.13517-4-akihiko.odaki@daynix.com>
+ <20230702045815-mutt-send-email-mst@kernel.org>
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <20230702045815-mutt-send-email-mst@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::431;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x431.google.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, NICE_REPLY_A=-0.093, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,32 +101,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Suggested-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
----
- include/hw/pci/pcie.h | 7 +++++++
- 1 file changed, 7 insertions(+)
+On 2023/07/02 18:00, Michael S. Tsirkin wrote:
+> On Sun, Jul 02, 2023 at 05:33:56PM +0900, Akihiko Odaki wrote:
+>> The ARI next function number field is undefined for VF so the PF should
+>> end the linked list formed with the field by specifying 0.
+>>
+>> Fixes: 3a977deebe ("Intrdocue igb device emulation")
+>> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+> 
+> 
+> I would also change it for the VF just so people don't wonder
+> what's the magic value. Do document in commit log though.
+> 
+> Maybe just drop this parameter from pcie_ari_init completely
+> for now?
 
-diff --git a/include/hw/pci/pcie.h b/include/hw/pci/pcie.h
-index 3cc2b15957..16860e2216 100644
---- a/include/hw/pci/pcie.h
-+++ b/include/hw/pci/pcie.h
-@@ -134,7 +134,14 @@ void pcie_sync_bridge_lnk(PCIDevice *dev);
- void pcie_acs_init(PCIDevice *dev, uint16_t offset);
- void pcie_acs_reset(PCIDevice *dev);
- 
-+/*
-+ * Note: for non-VFs, nextfn must be the Function Number of the next higher
-+ * numbered Function in the Device, or 00h if there are no higher numbered
-+ * Functions.
-+ * TODO: validate this.
-+ */
- void pcie_ari_init(PCIDevice *dev, uint16_t offset, uint16_t nextfn);
-+
- void pcie_dev_ser_num_init(PCIDevice *dev, uint16_t offset, uint64_t ser_num);
- void pcie_ats_init(PCIDevice *dev, uint16_t offset, bool aligned);
- 
--- 
-2.41.0
+I sent v2, but it doesn't change the field for VFs either to save code 
+for migration. The parameter for pcie_ari_init() also remains to migrate 
+from older versions.
 
+> 
+> 
+>> ---
+>>   hw/net/igb.c | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/hw/net/igb.c b/hw/net/igb.c
+>> index 1c989d7677..897386fc09 100644
+>> --- a/hw/net/igb.c
+>> +++ b/hw/net/igb.c
+>> @@ -431,7 +431,7 @@ static void igb_pci_realize(PCIDevice *pci_dev, Error **errp)
+>>           hw_error("Failed to initialize AER capability");
+>>       }
+>>   
+>> -    pcie_ari_init(pci_dev, 0x150, 1);
+>> +    pcie_ari_init(pci_dev, 0x150, 0);
+>>   
+>>       pcie_sriov_pf_init(pci_dev, IGB_CAP_SRIOV_OFFSET, TYPE_IGBVF,
+>>           IGB_82576_VF_DEV_ID, IGB_MAX_VF_FUNCTIONS, IGB_MAX_VF_FUNCTIONS,
+>> -- 
+>> 2.41.0
+> 
 
