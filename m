@@ -2,83 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3698F744C6B
-	for <lists+qemu-devel@lfdr.de>; Sun,  2 Jul 2023 08:13:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D07D6744CC0
+	for <lists+qemu-devel@lfdr.de>; Sun,  2 Jul 2023 10:35:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFqJS-00025L-VY; Sun, 02 Jul 2023 02:11:59 -0400
+	id 1qFsXH-00087D-FZ; Sun, 02 Jul 2023 04:34:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qFqJQ-00025D-QS
- for qemu-devel@nongnu.org; Sun, 02 Jul 2023 02:11:56 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qFsXF-00086r-JI
+ for qemu-devel@nongnu.org; Sun, 02 Jul 2023 04:34:21 -0400
+Received: from mail-pj1-x102b.google.com ([2607:f8b0:4864:20::102b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qFqJP-0004af-2b
- for qemu-devel@nongnu.org; Sun, 02 Jul 2023 02:11:56 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-3fbab0d0b88so27196075e9.0
- for <qemu-devel@nongnu.org>; Sat, 01 Jul 2023 23:11:54 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qFsXD-0003CY-09
+ for qemu-devel@nongnu.org; Sun, 02 Jul 2023 04:34:20 -0400
+Received: by mail-pj1-x102b.google.com with SMTP id
+ 98e67ed59e1d1-26304be177fso1567253a91.1
+ for <qemu-devel@nongnu.org>; Sun, 02 Jul 2023 01:34:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688278312; x=1690870312;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=CrYWJHPWwT1D2stiXXy4saxLqIvQivug7B/RJ9s8HQ4=;
- b=ufdp9szN+mb5jBBNbTGEdddZxFLMqW/fqGgWzs7CEtyumvK7+eig9kWl6XXlgE0Vvs
- 0idTz7ypOv7YXKKcFIUqRQh5Hw9688KrtHVN/t5/r5oohVnS/Bk+e3SRw8ECtcz/xQzk
- EQDlom+yUKRcGZu6qIybYSgUgdOTclHnIyURlvhr7zDpY5SoOTM/cKNldF3bIrln9ieC
- yUzcmEIV3yyyGont9Qs+e6ZJz/MUeSQ5JQ4Y+N8/PKKSOw+rquXv1YqVr2+vPAx9ebRV
- wQ9wyU62CmE411xGcK+8bc1TyA5NTuhMDXKimhHss+e4lFMReRh9YVzSOaDqO5SEcvhD
- 2fCg==
+ d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1688286857; x=1690878857;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=4qT5iuEHNM9nGlAhrdukAwM7s3uG3WS5mSSZ33AOXrM=;
+ b=Z3VOyY5SV+0yhm0fqof/kDnfCOCgsg2Pbt6pfsytdtZfbBpW+BfqvA4OT7GNm+TPmK
+ SNiiOe3O6D08+Sun62GzWp+NC9qEpJ+x9G/FPX3RSdR2Oi09dlMZ3I1jl13vLXTwZ0dq
+ 34eMH8J26a0B1xv4Bi8EppwfuoQYnvCt03kBoUKPIkshcxphglB5bveeRVT/4Y9joVMH
+ EBqQGrvC/59FKx60Oxrt9oi9RSDzKrg1Z99dOTsLjyAkmhG5/hVay+Dkg7heuF3iEHLn
+ yGL10354K9Hwh88vv5tqEE+Ue4rilAhxO15hOgsa6TboRfRxXw3ieKu4PJsowyiLAjVK
+ HYZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688278312; x=1690870312;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=CrYWJHPWwT1D2stiXXy4saxLqIvQivug7B/RJ9s8HQ4=;
- b=F/b5JDZFzKke0UnpG/0OvarQjcCG2AQNsrOUrhcSt0K9sv41p8Kjlx5KGZYSxk09c0
- FrkGiknKZHQItThciQ1wEDHIJXPQ2xzAmeljd8qyvdvhhMrcdu7v7NZAMtpTsi4HtKHf
- Ae6I5eLjY/B/267WA9WzT8wl7b7T+7soWHo46Sl3DBhw4u6RzvCCeZY0lUWFktorK+4L
- 9DpobK3O1ph2WZf3T/ILDgEfDJzYZAh3M/r/wx6Sp3D015+WeEvITQOwczc9rXxNGnA9
- g+PUlj35IkOOtVwovHi0oDgA7fdQFNj7as1pB786F8VQuo3b5EbL2ENfPJYDg6fxN3Up
- qnjg==
-X-Gm-Message-State: AC+VfDyyVtjB0dfEuqhUlbQkc8tfrow8FxTyTvKimFN0DzigqUurC55l
- RAj6rc7SP/2epQAGHRZCS0MFXepP2orCcODmlW/iwA==
-X-Google-Smtp-Source: ACHHUZ5n5MmaOL4W6KCfOHpbFZVwmtkyeGkNWHezux9oTQdEn8LbSgcq1ewPGQbAKXPThGkGM3Nlqg==
-X-Received: by 2002:a05:600c:84c7:b0:3f9:c9f4:acf1 with SMTP id
- er7-20020a05600c84c700b003f9c9f4acf1mr10207003wmb.7.1688278312175; 
- Sat, 01 Jul 2023 23:11:52 -0700 (PDT)
-Received: from [192.168.1.25] (91.232.79.188.dynamic.jazztel.es.
- [188.79.232.91]) by smtp.gmail.com with ESMTPSA id
- n19-20020a7bc5d3000000b003fbd04ecdc6sm3232139wmk.5.2023.07.01.23.11.51
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 01 Jul 2023 23:11:51 -0700 (PDT)
-Message-ID: <5eb0a8b4-d5ff-7fdf-f509-bd7aaf05a8c9@linaro.org>
-Date: Sun, 2 Jul 2023 08:11:50 +0200
+ d=1e100.net; s=20221208; t=1688286857; x=1690878857;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=4qT5iuEHNM9nGlAhrdukAwM7s3uG3WS5mSSZ33AOXrM=;
+ b=J69NrFbZ0TsYqnST5rCGgCO6Yhn5THW7NIyvtLO0HodztvAdzmFi0i6BXwK8SR5MJa
+ MIIX+GF21nx7UAQo/jpuDSJnJUZa1gAjc+UJHF/Dgc+YTPdT1viuxZOXn2PllcXbNfNk
+ NZdCp1+Xq9wJ3l8bS9rfFGmgYX7H+iir4E8io/6WyFzt939dM74WRvuXLrB3T0IE3iJO
+ 03Rd5/wH1ePihKqgcU5ly1bK/HOSpyFf0yhY1Aq6kJSLrGJMEgRhWWuE4PkDndK08NbC
+ Gxf6yx/LdG+SuvTKDzddBYCHQPcuwweA6sz5ft3VgESLBE3IrQgnHicFv2SMJeLplwdM
+ /kyw==
+X-Gm-Message-State: ABy/qLZUXpfw7b9Zm1CaZ5Y2Rue5Qh8gMKgxTx6XwBMONrmeYTBRcxyZ
+ MFs/0OJ3IeEMLk103Kq2TtPjwBC4NrrkvvN991Y=
+X-Google-Smtp-Source: APBJJlGPldO/O0MHLaNxG6Q1sb4O9Q6vzCzfHCLdqtoobVpENl093dGpCK32KZxRRnRtUYXji+KMDA==
+X-Received: by 2002:a17:90a:194e:b0:263:c247:28bd with SMTP id
+ 14-20020a17090a194e00b00263c24728bdmr163876pjh.29.1688286857058; 
+ Sun, 02 Jul 2023 01:34:17 -0700 (PDT)
+Received: from alarm.. ([157.82.204.253]) by smtp.gmail.com with ESMTPSA id
+ 18-20020a17090a199200b0024df6bbf5d8sm7563069pji.30.2023.07.02.01.34.14
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 02 Jul 2023 01:34:16 -0700 (PDT)
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+To: 
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org,
+ Ani Sinha <anisinha@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
+ Jason Wang <jasowang@redhat.com>, Keith Busch <kbusch@kernel.org>,
+ Klaus Jensen <its@irrelevant.dk>, Akihiko Odaki <akihiko.odaki@daynix.com>
+Subject: [PATCH 0/3] pci: Fix ARI next function numbers
+Date: Sun,  2 Jul 2023 17:33:53 +0900
+Message-ID: <20230702083357.13517-1-akihiko.odaki@daynix.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH v2 09/46] target/loongarch: Implement xvhaddw/xvhsubw
-Content-Language: en-US
-To: Song Gao <gaosong@loongson.cn>, qemu-devel@nongnu.org
-References: <20230630075904.45940-1-gaosong@loongson.cn>
- <20230630075904.45940-10-gaosong@loongson.cn>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230630075904.45940-10-gaosong@loongson.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x329.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.093,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::102b;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pj1-x102b.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,61 +91,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/30/23 09:58, Song Gao wrote:
-> --- a/target/loongarch/lsx_helper.c
-> +++ b/target/loongarch/vec_helper.c
-> @@ -14,20 +14,18 @@
->   #include "tcg/tcg.h"
->   #include "vec.h"
->   
-> -#define DO_ADD(a, b)  (a + b)
-> -#define DO_SUB(a, b)  (a - b)
-> -
->   #define DO_ODD_EVEN(NAME, BIT, E1, E2, DO_OP)                        \
-> -void HELPER(NAME)(CPULoongArchState *env,                            \
-> +void HELPER(NAME)(CPULoongArchState *env, uint32_t oprsz,            \
->                     uint32_t vd, uint32_t vj, uint32_t vk)             \
->   {                                                                    \
-> -    int i;                                                           \
-> +    int i, len;                                                      \
->       VReg *Vd = &(env->fpr[vd].vreg);                                 \
->       VReg *Vj = &(env->fpr[vj].vreg);                                 \
->       VReg *Vk = &(env->fpr[vk].vreg);                                 \
->       typedef __typeof(Vd->E1(0)) TD;                                  \
->                                                                        \
-> -    for (i = 0; i < LSX_LEN/BIT; i++) {                              \
-> +    len = (oprsz == 16) ? LSX_LEN : LASX_LEN;                        \
-> +    for (i = 0; i < len / BIT ; i++) {                               \
->           Vd->E1(i) = DO_OP((TD)Vj->E2(2 * i + 1), (TD)Vk->E2(2 * i)); \
->       }                                                                \
->   }
+The ARI next function number field is undefined for VF. The PF should
+end the linked list formed with the field by specifying 0.
 
-It would be better to use the gen_helper_gvec_3 function signature:
+Supersedes: <20230701070133.24877-1-akihiko.odaki@daynix.com>
+("[PATCH 0/4] pci: Compare function number and ARI next function number")
 
-void HELPER(name)(void *vd, void *vj, void *vk, uint32_t desc)
-{
-     VReg *Vd = vd, ...;
-     int oprsz = simd_oprsz(desc);
+Akihiko Odaki (3):
+  docs: Fix next function numbers in SR/IOV documentation
+  hw/nvme: Fix ARI next function numbers
+  igb: Fix ARI next function numbers
 
-     for (i = 0; i < oprsz / (BIT / 8); i++) {
-         ...
-     }
-}
+ docs/pcie_sriov.txt | 4 ++--
+ hw/net/igb.c        | 2 +-
+ hw/nvme/ctrl.c      | 2 +-
+ 3 files changed, 4 insertions(+), 4 deletions(-)
 
-You should do the file rename and the conversion of the existing LSX operations in a 
-separate patch.
+-- 
+2.41.0
 
-> @@ -44,13 +42,17 @@ void HELPER(vhaddw_q_d)(CPULoongArchState *env,
->       VReg *Vk = &(env->fpr[vk].vreg);
->   
->       Vd->Q(0) = int128_add(int128_makes64(Vj->D(1)), int128_makes64(Vk->D(0)));
-> +    if (oprsz == 32) {
-> +        Vd->Q(1) = int128_add(int128_makes64(Vj->D(3)),
-> +                              int128_makes64(Vk->D(2)));
-> +    }
-
-Better as a loop, and all the rest.
-
-
-r~
 
