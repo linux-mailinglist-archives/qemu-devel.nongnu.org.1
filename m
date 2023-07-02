@@ -2,41 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3BEE744C3B
+	by mail.lfdr.de (Postfix) with ESMTPS id D2313744C3A
 	for <lists+qemu-devel@lfdr.de>; Sun,  2 Jul 2023 06:40:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFory-0007qH-6E; Sun, 02 Jul 2023 00:39:30 -0400
+	id 1qFos0-0007r5-1B; Sun, 02 Jul 2023 00:39:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qForu-0007pi-Uj; Sun, 02 Jul 2023 00:39:26 -0400
+ id 1qForw-0007qI-Vd; Sun, 02 Jul 2023 00:39:28 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qFort-0002Tc-7y; Sun, 02 Jul 2023 00:39:26 -0400
+ id 1qForv-0002U7-4L; Sun, 02 Jul 2023 00:39:28 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id E5A9C10D1B;
- Sun,  2 Jul 2023 07:39:08 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 1818A10D1C;
+ Sun,  2 Jul 2023 07:39:09 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 365E2110AA;
+ by tsrv.corpit.ru (Postfix) with SMTP id 60FA4110AB;
  Sun,  2 Jul 2023 07:39:08 +0300 (MSK)
-Received: (nullmailer pid 2090169 invoked by uid 1000);
+Received: (nullmailer pid 2090172 invoked by uid 1000);
  Sun, 02 Jul 2023 04:39:07 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org, qemu-stable@nongnu.org
-Cc: Nicholas Piggin <npiggin@gmail.com>, sdicaro@DDCI.com,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.4 47/49] target/ppc: Fix decrementer time underflow and
- infinite timer loop
-Date: Sun,  2 Jul 2023 07:38:47 +0300
-Message-Id: <20230702043850.2090131-4-mjt@tls.msk.ru>
+Cc: Zhenzhong Duan <zhenzhong.duan@intel.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ Joao Martins <joao.m.martins@oracle.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.4 48/49] vfio/pci: Fix a segfault in vfio_realize
+Date: Sun,  2 Jul 2023 07:38:48 +0300
+Message-Id: <20230702043850.2090131-5-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.4-20230702073703@cover.tls.msk.ru>
 References: <qemu-stable-7.2.4-20230702073703@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -61,44 +61,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Nicholas Piggin <npiggin@gmail.com>
+From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 
-It is possible to store a very large value to the decrementer that it
-does not raise the decrementer exception so the timer is scheduled, but
-the next time value wraps and is treated as in the past.
+The kvm irqchip notifier is only registered if the device supports
+INTx, however it's unconditionally removed in vfio realize error
+path. If the assigned device does not support INTx, this will cause
+QEMU to crash when vfio realize fails. Change it to conditionally
+remove the notifier only if the notify hook is setup.
 
-This can occur if (u64)-1 is stored on a zero-triggered exception, or
-(u64)-1 is stored twice on an underflow-triggered exception, for
-example.
+Before fix:
+(qemu) device_add vfio-pci,host=81:11.1,id=vfio1,bus=root1,xres=1
+Connection closed by foreign host.
 
-If such a value is set in DECAR, it gets stored to the decrementer by
-the timer function, which then immediately causes another timer, which
-hangs QEMU.
+After fix:
+(qemu) device_add vfio-pci,host=81:11.1,id=vfio1,bus=root1,xres=1
+Error: vfio 0000:81:11.1: xres and yres properties require display=on
+(qemu)
 
-Clamp the decrementer to the implemented width, and use that as the
-value for the timer calculation, effectively preventing this overflow.
-
-Reported-by: sdicaro@DDCI.com
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-Reviewed-by: Daniel Henrique Barboza <danielhb413@gmail.com>
-Message-Id: <20230530131214.373524-1-npiggin@gmail.com>
-Signed-off-by: Daniel Henrique Barboza <danielhb413@gmail.com>
-(cherry picked from commit 09d2db9f46e38e2da990df8ad914d735d764251a)
+Fixes: c5478fea27ac ("vfio/pci: Respond to KVM irqchip change notifier")
+Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Reviewed-by: Joao Martins <joao.m.martins@oracle.com>
+Signed-off-by: Cédric Le Goater <clg@redhat.com>
+(cherry picked from commit 357bd7932a136613d700ee8bc83e9165f059d1f7)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/ppc/ppc.c b/hw/ppc/ppc.c
-index dc86c1c7db..fbdc48911e 100644
---- a/hw/ppc/ppc.c
-+++ b/hw/ppc/ppc.c
-@@ -806,6 +806,8 @@ static void __cpu_ppc_store_decr(PowerPCCPU *cpu, uint64_t *nextp,
-     int64_t signed_decr;
+diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+index 939dcc3d4a..63eda94af7 100644
+--- a/hw/vfio/pci.c
++++ b/hw/vfio/pci.c
+@@ -3159,7 +3159,9 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
  
-     /* Truncate value to decr_width and sign extend for simplicity */
-+    value = extract64(value, 0, nr_bits);
-+    decr = extract64(decr, 0, nr_bits);
-     signed_value = sextract64(value, 0, nr_bits);
-     signed_decr = sextract64(decr, 0, nr_bits);
- 
+ out_deregister:
+     pci_device_set_intx_routing_notifier(&vdev->pdev, NULL);
+-    kvm_irqchip_remove_change_notifier(&vdev->irqchip_change_notifier);
++    if (vdev->irqchip_change_notifier.notify) {
++        kvm_irqchip_remove_change_notifier(&vdev->irqchip_change_notifier);
++    }
+ out_teardown:
+     vfio_teardown_msi(vdev);
+     vfio_bars_exit(vdev);
 -- 
 2.39.2
 
