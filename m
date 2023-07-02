@@ -2,37 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6E9B744F94
+	by mail.lfdr.de (Postfix) with ESMTPS id B068E744F93
 	for <lists+qemu-devel@lfdr.de>; Sun,  2 Jul 2023 20:06:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qG1S3-0000bW-Md; Sun, 02 Jul 2023 14:05:35 -0400
+	id 1qG1Rt-0000a7-6A; Sun, 02 Jul 2023 14:05:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qG1RX-0000a6-Hi; Sun, 02 Jul 2023 14:05:03 -0400
+ id 1qG1RV-0000Zn-K1; Sun, 02 Jul 2023 14:05:01 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qG1RT-00053a-Rs; Sun, 02 Jul 2023 14:05:02 -0400
+ id 1qG1RR-00053b-PZ; Sun, 02 Jul 2023 14:05:00 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 5D7CA10DEA;
+ by isrv.corpit.ru (Postfix) with ESMTP id 95CD310DEB;
  Sun,  2 Jul 2023 21:04:53 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 93BA4111FE;
+ by tsrv.corpit.ru (Postfix) with SMTP id B55D3111FF;
  Sun,  2 Jul 2023 21:04:51 +0300 (MSK)
-Received: (nullmailer pid 2122353 invoked by uid 1000);
+Received: (nullmailer pid 2122357 invoked by uid 1000);
  Sun, 02 Jul 2023 18:04:51 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org, qemu-stable@nongnu.org
-Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.0.3 55/65] ui: return NULL when getting cursor without a
- console
-Date: Sun,  2 Jul 2023 21:04:28 +0300
-Message-Id: <20230702180439.2122316-1-mjt@tls.msk.ru>
+Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>,
+ Gerd Hoffmann <kraxel@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Dongwon Kim <dongwon.kim@intel.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.0.3 56/65] virtio-gpu: Make non-gl display updates work
+ again when blob=true
+Date: Sun,  2 Jul 2023 21:04:29 +0300
+Message-Id: <20230702180439.2122316-2-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.0.3-20230702210422@cover.tls.msk.ru>
 References: <qemu-stable-8.0.3-20230702210422@cover.tls.msk.ru>
@@ -62,34 +63,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Marc-André Lureau <marcandre.lureau@redhat.com>
+From: Vivek Kasireddy <vivek.kasireddy@intel.com>
 
-VNC may try to get the current cursor even when there are no consoles
-and crashes. Simple reproducer is qemu with -nodefaults.
+In the case where the console does not have gl capability, and
+if blob is set to true, make sure that the display updates still
+work. Commit e86a93f55463 accidentally broke this by misplacing
+the return statement (in resource_flush) causing the updates to
+be silently ignored.
 
-Fixes: (again)
-https://gitlab.com/qemu-project/qemu/-/issues/1548
-
-Fixes: commit 385ac97f8 ("ui: keep current cursor with QemuConsole")
-Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <20230428154807.2143652-1-marcandre.lureau@redhat.com>
-(cherry picked from commit 333e7599a0d723801235f675719008ce43db93e3)
+Fixes: e86a93f55463 ("virtio-gpu: splitting one extended mode guest fb into n-scanouts")
+Cc: Gerd Hoffmann <kraxel@redhat.com>
+Cc: Marc-André Lureau <marcandre.lureau@redhat.com>
+Cc: Dongwon Kim <dongwon.kim@intel.com>
+Signed-off-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
+Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Message-ID: <20230623060454.3749910-1-vivek.kasireddy@intel.com>
+(cherry picked from commit 34e29d85a7734802317c4cac9ad52b10d461c1dc)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/ui/console.c b/ui/console.c
-index e173731e20..7461446e71 100644
---- a/ui/console.c
-+++ b/ui/console.c
-@@ -2306,7 +2306,7 @@ QEMUCursor *qemu_console_get_cursor(QemuConsole *con)
-     if (con == NULL) {
-         con = active_console;
-     }
--    return con->cursor;
-+    return con ? con->cursor : NULL;
- }
+diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
+index 5e15c79b94..4e2e0dd53a 100644
+--- a/hw/display/virtio-gpu.c
++++ b/hw/display/virtio-gpu.c
+@@ -498,6 +498,8 @@ static void virtio_gpu_resource_flush(VirtIOGPU *g,
+     struct virtio_gpu_resource_flush rf;
+     struct virtio_gpu_scanout *scanout;
+     pixman_region16_t flush_region;
++    bool within_bounds = false;
++    bool update_submitted = false;
+     int i;
  
- bool qemu_console_is_visible(QemuConsole *con)
+     VIRTIO_GPU_FILL_CMD(rf);
+@@ -518,13 +520,28 @@ static void virtio_gpu_resource_flush(VirtIOGPU *g,
+                 rf.r.x < scanout->x + scanout->width &&
+                 rf.r.x + rf.r.width >= scanout->x &&
+                 rf.r.y < scanout->y + scanout->height &&
+-                rf.r.y + rf.r.height >= scanout->y &&
+-                console_has_gl(scanout->con)) {
+-                dpy_gl_update(scanout->con, 0, 0, scanout->width,
+-                              scanout->height);
++                rf.r.y + rf.r.height >= scanout->y) {
++                within_bounds = true;
++
++                if (console_has_gl(scanout->con)) {
++                    dpy_gl_update(scanout->con, 0, 0, scanout->width,
++                                  scanout->height);
++                    update_submitted = true;
++                }
+             }
+         }
+-        return;
++
++        if (update_submitted) {
++            return;
++        }
++        if (!within_bounds) {
++            qemu_log_mask(LOG_GUEST_ERROR, "%s: flush bounds outside scanouts"
++                          " bounds for flush %d: %d %d %d %d\n",
++                          __func__, rf.resource_id, rf.r.x, rf.r.y,
++                          rf.r.width, rf.r.height);
++            cmd->error = VIRTIO_GPU_RESP_ERR_INVALID_PARAMETER;
++            return;
++        }
+     }
+ 
+     if (!res->blob &&
 -- 
 2.39.2
 
