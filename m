@@ -2,43 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3882F744C40
-	for <lists+qemu-devel@lfdr.de>; Sun,  2 Jul 2023 06:41:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 85BA3744C3F
+	for <lists+qemu-devel@lfdr.de>; Sun,  2 Jul 2023 06:40:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFort-0007mu-OJ; Sun, 02 Jul 2023 00:39:25 -0400
+	id 1qForv-0007pL-7S; Sun, 02 Jul 2023 00:39:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qForq-0007mC-QQ; Sun, 02 Jul 2023 00:39:22 -0400
+ id 1qForq-0007mB-LE; Sun, 02 Jul 2023 00:39:22 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qForo-0002SQ-Op; Sun, 02 Jul 2023 00:39:22 -0400
+ id 1qForo-0002SP-NM; Sun, 02 Jul 2023 00:39:22 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 5C50310D18;
+ by isrv.corpit.ru (Postfix) with ESMTP id 8B05710D19;
  Sun,  2 Jul 2023 07:39:08 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 971D3110A7;
+ by tsrv.corpit.ru (Postfix) with SMTP id C0C95110A8;
  Sun,  2 Jul 2023 07:39:07 +0300 (MSK)
-Received: (nullmailer pid 2090159 invoked by uid 1000);
+Received: (nullmailer pid 2090163 invoked by uid 1000);
  Sun, 02 Jul 2023 04:39:07 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org, qemu-stable@nongnu.org
-Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>,
- Gerd Hoffmann <kraxel@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Dongwon Kim <dongwon.kim@intel.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.4 44/49] virtio-gpu: Make non-gl display updates work
- again when blob=true
-Date: Sun,  2 Jul 2023 07:38:44 +0300
-Message-Id: <20230702043850.2090131-1-mjt@tls.msk.ru>
+Cc: Nicholas Piggin <npiggin@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.4 45/49] icount: don't adjust virtual time backwards
+ after warp
+Date: Sun,  2 Jul 2023 07:38:45 +0300
+Message-Id: <20230702043850.2090131-2-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.4-20230702073703@cover.tls.msk.ru>
 References: <qemu-stable-7.2.4-20230702073703@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -63,71 +60,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Vivek Kasireddy <vivek.kasireddy@intel.com>
+From: Nicholas Piggin <npiggin@gmail.com>
 
-In the case where the console does not have gl capability, and
-if blob is set to true, make sure that the display updates still
-work. Commit e86a93f55463 accidentally broke this by misplacing
-the return statement (in resource_flush) causing the updates to
-be silently ignored.
+The icount-based QEMU_CLOCK_VIRTUAL runs ahead of the RT clock at times.
+When warping, it is possible it is still ahead at the end of the warp,
+which causes icount adaptive mode to adjust it backward. This can result
+in the machine observing time going backwards.
 
-Fixes: e86a93f55463 ("virtio-gpu: splitting one extended mode guest fb into n-scanouts")
-Cc: Gerd Hoffmann <kraxel@redhat.com>
-Cc: Marc-André Lureau <marcandre.lureau@redhat.com>
-Cc: Dongwon Kim <dongwon.kim@intel.com>
-Signed-off-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
-Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Message-ID: <20230623060454.3749910-1-vivek.kasireddy@intel.com>
-(cherry picked from commit 34e29d85a7734802317c4cac9ad52b10d461c1dc)
+Prevent this by clamping adaptive adjustment to 0 at minimum.
+
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Message-ID: <20230627061406.241847-1-npiggin@gmail.com>
+Cc: qemu-stable@nongnu.org
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+(cherry picked from commit 67f85346ca9305d9fb3254ceff735ceaadeb0911)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
-index 5e15c79b94..4e2e0dd53a 100644
---- a/hw/display/virtio-gpu.c
-+++ b/hw/display/virtio-gpu.c
-@@ -498,6 +498,8 @@ static void virtio_gpu_resource_flush(VirtIOGPU *g,
-     struct virtio_gpu_resource_flush rf;
-     struct virtio_gpu_scanout *scanout;
-     pixman_region16_t flush_region;
-+    bool within_bounds = false;
-+    bool update_submitted = false;
-     int i;
- 
-     VIRTIO_GPU_FILL_CMD(rf);
-@@ -518,13 +520,28 @@ static void virtio_gpu_resource_flush(VirtIOGPU *g,
-                 rf.r.x < scanout->x + scanout->width &&
-                 rf.r.x + rf.r.width >= scanout->x &&
-                 rf.r.y < scanout->y + scanout->height &&
--                rf.r.y + rf.r.height >= scanout->y &&
--                console_has_gl(scanout->con)) {
--                dpy_gl_update(scanout->con, 0, 0, scanout->width,
--                              scanout->height);
-+                rf.r.y + rf.r.height >= scanout->y) {
-+                within_bounds = true;
+diff --git a/softmmu/icount.c b/softmmu/icount.c
+index 4504433e16..a5cef9c60a 100644
+--- a/softmmu/icount.c
++++ b/softmmu/icount.c
+@@ -259,11 +259,16 @@ static void icount_warp_rt(void)
+         warp_delta = clock - timers_state.vm_clock_warp_start;
+         if (icount_enabled() == 2) {
+             /*
+-             * In adaptive mode, do not let QEMU_CLOCK_VIRTUAL run too
+-             * far ahead of real time.
++             * In adaptive mode, do not let QEMU_CLOCK_VIRTUAL run too far
++             * ahead of real time (it might already be ahead so careful not
++             * to go backwards).
+              */
+             int64_t cur_icount = icount_get_locked();
+             int64_t delta = clock - cur_icount;
 +
-+                if (console_has_gl(scanout->con)) {
-+                    dpy_gl_update(scanout->con, 0, 0, scanout->width,
-+                                  scanout->height);
-+                    update_submitted = true;
-+                }
-             }
++            if (delta < 0) {
++                delta = 0;
++            }
+             warp_delta = MIN(warp_delta, delta);
          }
--        return;
-+
-+        if (update_submitted) {
-+            return;
-+        }
-+        if (!within_bounds) {
-+            qemu_log_mask(LOG_GUEST_ERROR, "%s: flush bounds outside scanouts"
-+                          " bounds for flush %d: %d %d %d %d\n",
-+                          __func__, rf.resource_id, rf.r.x, rf.r.y,
-+                          rf.r.width, rf.r.height);
-+            cmd->error = VIRTIO_GPU_RESP_ERR_INVALID_PARAMETER;
-+            return;
-+        }
-     }
- 
-     if (!res->blob &&
+         qatomic_set_i64(&timers_state.qemu_icount_bias,
 -- 
 2.39.2
 
