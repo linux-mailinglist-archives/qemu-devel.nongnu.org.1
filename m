@@ -2,38 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B068E744F93
-	for <lists+qemu-devel@lfdr.de>; Sun,  2 Jul 2023 20:06:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 426D7744F99
+	for <lists+qemu-devel@lfdr.de>; Sun,  2 Jul 2023 20:07:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qG1Rt-0000a7-6A; Sun, 02 Jul 2023 14:05:27 -0400
+	id 1qG1SD-0000dR-J9; Sun, 02 Jul 2023 14:05:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qG1RV-0000Zn-K1; Sun, 02 Jul 2023 14:05:01 -0400
+ id 1qG1Rb-0000aO-RL; Sun, 02 Jul 2023 14:05:09 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qG1RR-00053b-PZ; Sun, 02 Jul 2023 14:05:00 -0400
+ id 1qG1RX-000563-KT; Sun, 02 Jul 2023 14:05:06 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 95CD310DEB;
+ by isrv.corpit.ru (Postfix) with ESMTP id CA40210DEC;
  Sun,  2 Jul 2023 21:04:53 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id B55D3111FF;
+ by tsrv.corpit.ru (Postfix) with SMTP id EDD7B11200;
  Sun,  2 Jul 2023 21:04:51 +0300 (MSK)
-Received: (nullmailer pid 2122357 invoked by uid 1000);
+Received: (nullmailer pid 2122360 invoked by uid 1000);
  Sun, 02 Jul 2023 18:04:51 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org, qemu-stable@nongnu.org
-Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>,
- Gerd Hoffmann <kraxel@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Dongwon Kim <dongwon.kim@intel.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.0.3 56/65] virtio-gpu: Make non-gl display updates work
- again when blob=true
-Date: Sun,  2 Jul 2023 21:04:29 +0300
-Message-Id: <20230702180439.2122316-2-mjt@tls.msk.ru>
+Cc: Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?q?Jakub=20Jerm=C3=A1=C5=99?= <jakub@jermar.eu>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.0.3 57/65] Revert "hw/sparc64/niagara: Use blk_name()
+ instead of open-coding it"
+Date: Sun,  2 Jul 2023 21:04:30 +0300
+Message-Id: <20230702180439.2122316-3-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.0.3-20230702210422@cover.tls.msk.ru>
 References: <qemu-stable-8.0.3-20230702210422@cover.tls.msk.ru>
@@ -63,71 +64,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Vivek Kasireddy <vivek.kasireddy@intel.com>
+From: Markus Armbruster <armbru@redhat.com>
 
-In the case where the console does not have gl capability, and
-if blob is set to true, make sure that the display updates still
-work. Commit e86a93f55463 accidentally broke this by misplacing
-the return statement (in resource_flush) causing the updates to
-be silently ignored.
+This reverts commit 1881f336a33a8a99cb17ab1c57ed953682e8e107.
 
-Fixes: e86a93f55463 ("virtio-gpu: splitting one extended mode guest fb into n-scanouts")
-Cc: Gerd Hoffmann <kraxel@redhat.com>
-Cc: Marc-André Lureau <marcandre.lureau@redhat.com>
-Cc: Dongwon Kim <dongwon.kim@intel.com>
-Signed-off-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
-Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Message-ID: <20230623060454.3749910-1-vivek.kasireddy@intel.com>
-(cherry picked from commit 34e29d85a7734802317c4cac9ad52b10d461c1dc)
+This commit breaks "-drive if=pflash,readonly=on,file=image.iso".  It
+claims to merely replace an open-coded version of blk_name() by a
+call, but that's not the case.  Sorry for the inconvenience!
+
+Reported-by: Jakub Jermář <jakub@jermar.eu>
+Cc: qemu-stable@nongnu.org
+Signed-off-by: Markus Armbruster <armbru@redhat.com>
+Message-Id: <20230515151104.1350155-1-armbru@redhat.com>
+Acked-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+(cherry picked from commit ac5e8c1dec246950d73e22dceab5cb36e82aac0b)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
-index 5e15c79b94..4e2e0dd53a 100644
---- a/hw/display/virtio-gpu.c
-+++ b/hw/display/virtio-gpu.c
-@@ -498,6 +498,8 @@ static void virtio_gpu_resource_flush(VirtIOGPU *g,
-     struct virtio_gpu_resource_flush rf;
-     struct virtio_gpu_scanout *scanout;
-     pixman_region16_t flush_region;
-+    bool within_bounds = false;
-+    bool update_submitted = false;
-     int i;
+diff --git a/hw/sparc64/niagara.c b/hw/sparc64/niagara.c
+index 6725cc61fd..ab3c4ec346 100644
+--- a/hw/sparc64/niagara.c
++++ b/hw/sparc64/niagara.c
+@@ -23,6 +23,7 @@
+  */
  
-     VIRTIO_GPU_FILL_CMD(rf);
-@@ -518,13 +520,28 @@ static void virtio_gpu_resource_flush(VirtIOGPU *g,
-                 rf.r.x < scanout->x + scanout->width &&
-                 rf.r.x + rf.r.width >= scanout->x &&
-                 rf.r.y < scanout->y + scanout->height &&
--                rf.r.y + rf.r.height >= scanout->y &&
--                console_has_gl(scanout->con)) {
--                dpy_gl_update(scanout->con, 0, 0, scanout->width,
--                              scanout->height);
-+                rf.r.y + rf.r.height >= scanout->y) {
-+                within_bounds = true;
-+
-+                if (console_has_gl(scanout->con)) {
-+                    dpy_gl_update(scanout->con, 0, 0, scanout->width,
-+                                  scanout->height);
-+                    update_submitted = true;
-+                }
-             }
+ #include "qemu/osdep.h"
++#include "block/block_int-common.h"
+ #include "qemu/units.h"
+ #include "cpu.h"
+ #include "hw/boards.h"
+@@ -143,9 +144,10 @@ static void niagara_init(MachineState *machine)
+             memory_region_add_subregion(get_system_memory(),
+                                         NIAGARA_VDISK_BASE, &s->vdisk_ram);
+             dinfo->is_default = 1;
+-            rom_add_file_fixed(blk_name(blk), NIAGARA_VDISK_BASE, -1);
++            rom_add_file_fixed(blk_bs(blk)->filename, NIAGARA_VDISK_BASE, -1);
+         } else {
+-            error_report("could not load ram disk '%s'", blk_name(blk));
++            error_report("could not load ram disk '%s'",
++                         blk_bs(blk)->filename);
+             exit(1);
          }
--        return;
-+
-+        if (update_submitted) {
-+            return;
-+        }
-+        if (!within_bounds) {
-+            qemu_log_mask(LOG_GUEST_ERROR, "%s: flush bounds outside scanouts"
-+                          " bounds for flush %d: %d %d %d %d\n",
-+                          __func__, rf.resource_id, rf.r.x, rf.r.y,
-+                          rf.r.width, rf.r.height);
-+            cmd->error = VIRTIO_GPU_RESP_ERR_INVALID_PARAMETER;
-+            return;
-+        }
      }
- 
-     if (!res->blob &&
 -- 
 2.39.2
 
