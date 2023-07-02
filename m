@@ -2,90 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1737744C4E
-	for <lists+qemu-devel@lfdr.de>; Sun,  2 Jul 2023 07:10:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B628C744C5D
+	for <lists+qemu-devel@lfdr.de>; Sun,  2 Jul 2023 07:52:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFpLr-0003WN-M1; Sun, 02 Jul 2023 01:10:23 -0400
+	id 1qFpzV-0002ez-9m; Sun, 02 Jul 2023 01:51:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qFpLj-0003R0-EM
- for qemu-devel@nongnu.org; Sun, 02 Jul 2023 01:10:15 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qFpLh-0001HE-4R
- for qemu-devel@nongnu.org; Sun, 02 Jul 2023 01:10:14 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688274612;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=XYXEomIT88wKVu+yPUmwrshmpggd4TyAOLCQI9fe+6o=;
- b=ClpDSYAIagv/qbodJIPzrbJkRtDpcHlyriNSjiLsZK7empuCR98LwLmy7xaMOhAOgTPZxW
- otp2ra3hJnrg8uG3nmiFYQOo4a9bFSo+grlw5VbS3bWquKjxIMBCFOXXbiiyeCf3QyoPwd
- k9zxosNI0ZsqBLuTz3enq9F9MlEwJ0s=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-463-y-NvfnMaN92Ucua3alswtQ-1; Sun, 02 Jul 2023 01:10:10 -0400
-X-MC-Unique: y-NvfnMaN92Ucua3alswtQ-1
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-2f2981b8364so1743371f8f.1
- for <qemu-devel@nongnu.org>; Sat, 01 Jul 2023 22:10:10 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qFpzT-0002er-Hi
+ for qemu-devel@nongnu.org; Sun, 02 Jul 2023 01:51:19 -0400
+Received: from mail-lf1-x132.google.com ([2a00:1450:4864:20::132])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qFpzR-0000j6-QF
+ for qemu-devel@nongnu.org; Sun, 02 Jul 2023 01:51:19 -0400
+Received: by mail-lf1-x132.google.com with SMTP id
+ 2adb3069b0e04-4fb9ae4cef6so5271614e87.3
+ for <qemu-devel@nongnu.org>; Sat, 01 Jul 2023 22:51:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1688277074; x=1690869074;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=Oo9t0yMjBv98AVIrhEgF6Uo+X34qQZVU8aAewTKr5rg=;
+ b=YWPByFmlwtVeQ9Z27P/lWh8GpVtF4Pg329JfsXFukrvBjG3lEuMUcAvQcuPjSLguFT
+ Ggu9bMHTvKJh/2ZV0tXC+w1tktnEycgWAK0FUCPHQOJOga6c/c7dlJCdaSLtll7n9rwL
+ Fc9uzbwtvxxE1/SxU3/1JpnhDI4a3kYaDh5KdQKjFFL6/9OItujKo8US/MN0Fsc4oStm
+ N8J/uZfNblwjlMrSSY73dSeUlbtUy7Hf0kFuZebv/oAQHVYSjcpvcF4Ww8u1zhSKM7Sr
+ FL3gmRUQjevoYcu/bVq/bscdhRz7YXXV0N4kDKOoHTukIlSBTSYlu5psvu4BEnhAPwO7
+ h3Hg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688274609; x=1690866609;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=XYXEomIT88wKVu+yPUmwrshmpggd4TyAOLCQI9fe+6o=;
- b=QhKyDCtCCA9nBG2gN7PHNHGuh4ajJM0Bwo1tJYOnY4J85p2MGt2xEAFJ6BQsH0qmKb
- qUX2ToXV+0T4sbCNoXx0Haz180lTZR5FixlzxJANIpxctyoEihqqUSYCifS3vXH5oIWy
- fPdIUYvBR72a9zSKwLA5BAwoh9b9uXmXZCocckADd3gK+SIFa4sph2DobWJaSDVs7zis
- CYGCs1rDAgmqx9QfBMEJIoQXIlMmPENY0Nm1EjfnJF5G/thfvrjDV6etd3rZDSxf9w1V
- qPuXTaRHx23653SpEM2yLkww35pUL/y/txhcXNTrOafnydF53jjfyOZca/0r+zR0yXEM
- DOLw==
-X-Gm-Message-State: ABy/qLZ+8Zvr829DcQpZSm+5GeU2jgbdpzK6b0h7oda+pSnb5OOkL9JW
- t7RGR1BSzX867cSGmpVEGqlb3gIrWYZu2E4BYhReMqpEn0I8BhXG+W5id2OxDoPiY7mrRnSlwXS
- 51dSJVt/Cyc9UtSE=
-X-Received: by 2002:a05:6000:12c1:b0:314:1c96:7f3c with SMTP id
- l1-20020a05600012c100b003141c967f3cmr4438641wrx.7.1688274609576; 
- Sat, 01 Jul 2023 22:10:09 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlE2400FljIo6WbI36LE1QjFw70pV5DN0NEiuHsPVOJR/QoyXdbStoEsU5kI2VBsrsdBW1zyaA==
-X-Received: by 2002:a05:6000:12c1:b0:314:1c96:7f3c with SMTP id
- l1-20020a05600012c100b003141c967f3cmr4438631wrx.7.1688274609255; 
- Sat, 01 Jul 2023 22:10:09 -0700 (PDT)
-Received: from redhat.com ([2.52.134.224]) by smtp.gmail.com with ESMTPSA id
- x18-20020adff0d2000000b003141e86e751sm6416216wro.5.2023.07.01.22.10.07
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 01 Jul 2023 22:10:08 -0700 (PDT)
-Date: Sun, 2 Jul 2023 01:10:05 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org,
- Ani Sinha <anisinha@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
- Jason Wang <jasowang@redhat.com>, Keith Busch <kbusch@kernel.org>,
- Klaus Jensen <its@irrelevant.dk>
-Subject: Re: [PATCH 0/4] pci: Compare function number and ARI next function
- number
-Message-ID: <20230702010655-mutt-send-email-mst@kernel.org>
-References: <20230701070133.24877-1-akihiko.odaki@daynix.com>
+ d=1e100.net; s=20221208; t=1688277074; x=1690869074;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Oo9t0yMjBv98AVIrhEgF6Uo+X34qQZVU8aAewTKr5rg=;
+ b=fq8yBnJuQP+XO/c83ULG+Rkpymh97dJPH9ruyuc2Z69YNn5gPNvMPccnqXsM4cFq5R
+ 9GJlITuNMsLwHk8UMjsOiVGfLAwuCbL1QrIiNWRsn/1G+QWXVK+rFwN06pTcw4D0EAXg
+ gg336CuDwSZJ5Xl5LQIMGguVXtnxTu5ubEYIAokvpY4Kxvcu/fWVjQYw3qpwYMu2D3IA
+ GFYdiNuyK2R/2doDbqZNMkbPKdMBKitJcpbPRxnwNX1qdroYjABezZ/njXfu0UnQTC9O
+ HinTV6OMQ470QGTDEi3bztLkvOdBxGWaxRHncxT4zT6T9j2vFSBJO6ltKxIMg+pKkdNf
+ Zarw==
+X-Gm-Message-State: ABy/qLaD1fooIwf00x3K4YtdLrPbHzYsiWmNLVH6qZhexM5fx851WwOJ
+ MSrktAK1qUiJmMiU8sIUCmQNxg==
+X-Google-Smtp-Source: APBJJlGuM5v+DR5xjFx1zU2TuUi8HC662w91bDLgTnmYcbWbnx50mY0Ey86frOTwF96sYLZjYnvwow==
+X-Received: by 2002:a05:6512:2211:b0:4fb:8948:2b2b with SMTP id
+ h17-20020a056512221100b004fb89482b2bmr6366035lfu.48.1688277074371; 
+ Sat, 01 Jul 2023 22:51:14 -0700 (PDT)
+Received: from [192.168.1.25] (91.232.79.188.dynamic.jazztel.es.
+ [188.79.232.91]) by smtp.gmail.com with ESMTPSA id
+ c25-20020a7bc019000000b003f819faff24sm26351815wmb.40.2023.07.01.22.51.13
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sat, 01 Jul 2023 22:51:13 -0700 (PDT)
+Message-ID: <d2656da4-b4e1-276d-f1ae-1afde928898c@linaro.org>
+Date: Sun, 2 Jul 2023 07:51:11 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230701070133.24877-1-akihiko.odaki@daynix.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v2 01/46] target/loongarch: Add LASX data support
+To: Song Gao <gaosong@loongson.cn>, qemu-devel@nongnu.org
+References: <20230630075904.45940-1-gaosong@loongson.cn>
+ <20230630075904.45940-2-gaosong@loongson.cn>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230630075904.45940-2-gaosong@loongson.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::132;
+ envelope-from=richard.henderson@linaro.org; helo=mail-lf1-x132.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.093,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,38 +94,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, Jul 01, 2023 at 04:01:18PM +0900, Akihiko Odaki wrote:
-> The function number must be lower than the next function number
-> advertised with ARI. Add a check to enforce this.
-> 
-> I suggested this change at:
-> https://lore.kernel.org/qemu-devel/bf351f8b-1c8a-8a7a-7f44-17c9ba18f179@daynix.com/
-> 
-> Implementing this change, I found the devices implementing ARI do not set the
-> correct next function numbers, which is also fixed in this series.
+On 6/30/23 09:58, Song Gao wrote:
+> +#if HOST_BIG_ENDIAN
+> +#define B(x)  B[(x) ^ 15]
+> +#define H(x)  H[(x) ^ 7]
+> +#define W(x)  W[(x) ^ 3]
+> +#define D(x)  D[(x) ^ 2]
+> +#define UB(x) UB[(x) ^ 15]
+> +#define UH(x) UH[(x) ^ 7]
+> +#define UW(x) UW[(x) ^ 3]
+> +#define UD(x) UD[(x) ^ 2]
+> +#define Q(x)  Q[(x) ^ 1]
 
-This isn't going to be merged with more in the way of motivation.
+D/UD use ^ 1, Q does not change.
 
-Analysis of at least linux guest behavious, documentation about testing,
-addressing migration concerns are all not there either.
+> @@ -92,8 +125,8 @@ const VMStateDescription vmstate_tlb = {
+>  /* LoongArch CPU state */
+>  const VMStateDescription vmstate_loongarch_cpu = {
+>      .name = "cpu",
+> -    .version_id = 1,
+> -    .minimum_version_id = 1,
+> +    .version_id = 2,
+> +    .minimum_version_id = 2,
+>      .fields = (VMStateField[]) {
+>          VMSTATE_UINTTL_ARRAY(env.gpr, LoongArchCPU, 32),
+>          VMSTATE_UINTTL(env.pc, LoongArchCPU),
+> @@ -163,6 +196,7 @@ const VMStateDescription vmstate_loongarch_cpu = {
+>      .subsections = (const VMStateDescription*[]) {
+>          &vmstate_fpu,
+>          &vmstate_lsx,
+> +        &vmstate_lasx,
 
+You actually don't need to bump the revision for a new subsection.
 
-
-> Akihiko Odaki (4):
->   docs: Fix next function numbers in SR/IOV documentation
->   hw/nvme: Fix ARI next function numbers
->   igb: Fix ARI next function numbers
->   pci: Compare function number and ARI next function number
-> 
->  docs/pcie_sriov.txt |  5 +++--
->  hw/net/igb_core.h   |  3 +++
->  hw/net/igb.c        |  4 +---
->  hw/net/igbvf.c      |  5 ++++-
->  hw/nvme/ctrl.c      |  7 ++++++-
->  hw/pci/pci.c        | 15 +++++++++++++++
->  6 files changed, 32 insertions(+), 7 deletions(-)
-> 
-> -- 
-> 2.41.0
-
+Otherwise,
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
