@@ -2,43 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B203744F9B
-	for <lists+qemu-devel@lfdr.de>; Sun,  2 Jul 2023 20:07:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25A03744F91
+	for <lists+qemu-devel@lfdr.de>; Sun,  2 Jul 2023 20:06:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qG1SE-0000gC-Aw; Sun, 02 Jul 2023 14:05:46 -0400
+	id 1qG1SJ-0000l4-Hk; Sun, 02 Jul 2023 14:05:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qG1Rl-0000bJ-CG; Sun, 02 Jul 2023 14:05:22 -0400
+ id 1qG1Ro-0000bZ-A0; Sun, 02 Jul 2023 14:05:23 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qG1Rf-0005HU-M0; Sun, 02 Jul 2023 14:05:15 -0400
+ id 1qG1Rl-0005Hz-DL; Sun, 02 Jul 2023 14:05:19 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 490C810DEF;
+ by isrv.corpit.ru (Postfix) with ESMTP id 75B2110DF0;
  Sun,  2 Jul 2023 21:04:54 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 73AC411203;
+ by tsrv.corpit.ru (Postfix) with SMTP id A8CC211204;
  Sun,  2 Jul 2023 21:04:52 +0300 (MSK)
-Received: (nullmailer pid 2122369 invoked by uid 1000);
+Received: (nullmailer pid 2122372 invoked by uid 1000);
  Sun, 02 Jul 2023 18:04:51 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org, qemu-stable@nongnu.org
-Cc: Laurent Vivier <lvivier@redhat.com>, longpeng2@huawei.com,
- "Michael S . Tsirkin" <mst@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+Cc: Nicholas Piggin <npiggin@gmail.com>, sdicaro@DDCI.com,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.0.3 60/65] vhost: fix vhost_dev_enable_notifiers() error
- case
-Date: Sun,  2 Jul 2023 21:04:33 +0300
-Message-Id: <20230702180439.2122316-6-mjt@tls.msk.ru>
+Subject: [Stable-8.0.3 61/65] target/ppc: Fix decrementer time underflow and
+ infinite timer loop
+Date: Sun,  2 Jul 2023 21:04:34 +0300
+Message-Id: <20230702180439.2122316-7-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.0.3-20230702210422@cover.tls.msk.ru>
 References: <qemu-stable-8.0.3-20230702210422@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -63,122 +61,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Laurent Vivier <lvivier@redhat.com>
+From: Nicholas Piggin <npiggin@gmail.com>
 
-in vhost_dev_enable_notifiers(), if virtio_bus_set_host_notifier(true)
-fails, we call vhost_dev_disable_notifiers() that executes
-virtio_bus_set_host_notifier(false) on all queues, even on queues that
-have failed to be initialized.
+It is possible to store a very large value to the decrementer that it
+does not raise the decrementer exception so the timer is scheduled, but
+the next time value wraps and is treated as in the past.
 
-This triggers a core dump in memory_region_del_eventfd():
+This can occur if (u64)-1 is stored on a zero-triggered exception, or
+(u64)-1 is stored twice on an underflow-triggered exception, for
+example.
 
- virtio_bus_set_host_notifier: unable to init event notifier: Too many open files (-24)
- vhost VQ 1 notifier binding failed: 24
- .../softmmu/memory.c:2611: memory_region_del_eventfd: Assertion `i != mr->ioeventfd_nb' failed.
+If such a value is set in DECAR, it gets stored to the decrementer by
+the timer function, which then immediately causes another timer, which
+hangs QEMU.
 
-Fix the problem by providing to vhost_dev_disable_notifiers() the
-number of queues to disable.
+Clamp the decrementer to the implemented width, and use that as the
+value for the timer calculation, effectively preventing this overflow.
 
-Fixes: 8771589b6f81 ("vhost: simplify vhost_dev_enable_notifiers")
-Cc: longpeng2@huawei.com
-Signed-off-by: Laurent Vivier <lvivier@redhat.com>
-Message-Id: <20230602162735.3670785-1-lvivier@redhat.com>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-(cherry picked from commit 92099aa4e9a3bb6856c290afaf41c76f9e3dd9fd)
+Reported-by: sdicaro@DDCI.com
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Reviewed-by: Daniel Henrique Barboza <danielhb413@gmail.com>
+Message-Id: <20230530131214.373524-1-npiggin@gmail.com>
+Signed-off-by: Daniel Henrique Barboza <danielhb413@gmail.com>
+(cherry picked from commit 09d2db9f46e38e2da990df8ad914d735d764251a)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
-index 58bd9ab82a..69a7b5592a 100644
---- a/hw/virtio/vhost.c
-+++ b/hw/virtio/vhost.c
-@@ -1545,6 +1545,40 @@ void vhost_dev_cleanup(struct vhost_dev *hdev)
-     memset(hdev, 0, sizeof(struct vhost_dev));
- }
+diff --git a/hw/ppc/ppc.c b/hw/ppc/ppc.c
+index 4e816c68c7..d80b0adc6c 100644
+--- a/hw/ppc/ppc.c
++++ b/hw/ppc/ppc.c
+@@ -798,6 +798,8 @@ static void __cpu_ppc_store_decr(PowerPCCPU *cpu, uint64_t *nextp,
+     int64_t signed_decr;
  
-+static void vhost_dev_disable_notifiers_nvqs(struct vhost_dev *hdev,
-+                                             VirtIODevice *vdev,
-+                                             unsigned int nvqs)
-+{
-+    BusState *qbus = BUS(qdev_get_parent_bus(DEVICE(vdev)));
-+    int i, r;
-+
-+    /*
-+     * Batch all the host notifiers in a single transaction to avoid
-+     * quadratic time complexity in address_space_update_ioeventfds().
-+     */
-+    memory_region_transaction_begin();
-+
-+    for (i = 0; i < nvqs; ++i) {
-+        r = virtio_bus_set_host_notifier(VIRTIO_BUS(qbus), hdev->vq_index + i,
-+                                         false);
-+        if (r < 0) {
-+            error_report("vhost VQ %d notifier cleanup failed: %d", i, -r);
-+        }
-+        assert(r >= 0);
-+    }
-+
-+    /*
-+     * The transaction expects the ioeventfds to be open when it
-+     * commits. Do it now, before the cleanup loop.
-+     */
-+    memory_region_transaction_commit();
-+
-+    for (i = 0; i < nvqs; ++i) {
-+        virtio_bus_cleanup_host_notifier(VIRTIO_BUS(qbus), hdev->vq_index + i);
-+    }
-+    virtio_device_release_ioeventfd(vdev);
-+}
-+
- /* Stop processing guest IO notifications in qemu.
-  * Start processing them in vhost in kernel.
-  */
-@@ -1574,7 +1608,7 @@ int vhost_dev_enable_notifiers(struct vhost_dev *hdev, VirtIODevice *vdev)
-         if (r < 0) {
-             error_report("vhost VQ %d notifier binding failed: %d", i, -r);
-             memory_region_transaction_commit();
--            vhost_dev_disable_notifiers(hdev, vdev);
-+            vhost_dev_disable_notifiers_nvqs(hdev, vdev, i);
-             return r;
-         }
-     }
-@@ -1591,34 +1625,7 @@ int vhost_dev_enable_notifiers(struct vhost_dev *hdev, VirtIODevice *vdev)
-  */
- void vhost_dev_disable_notifiers(struct vhost_dev *hdev, VirtIODevice *vdev)
- {
--    BusState *qbus = BUS(qdev_get_parent_bus(DEVICE(vdev)));
--    int i, r;
--
--    /*
--     * Batch all the host notifiers in a single transaction to avoid
--     * quadratic time complexity in address_space_update_ioeventfds().
--     */
--    memory_region_transaction_begin();
--
--    for (i = 0; i < hdev->nvqs; ++i) {
--        r = virtio_bus_set_host_notifier(VIRTIO_BUS(qbus), hdev->vq_index + i,
--                                         false);
--        if (r < 0) {
--            error_report("vhost VQ %d notifier cleanup failed: %d", i, -r);
--        }
--        assert (r >= 0);
--    }
--
--    /*
--     * The transaction expects the ioeventfds to be open when it
--     * commits. Do it now, before the cleanup loop.
--     */
--    memory_region_transaction_commit();
--
--    for (i = 0; i < hdev->nvqs; ++i) {
--        virtio_bus_cleanup_host_notifier(VIRTIO_BUS(qbus), hdev->vq_index + i);
--    }
--    virtio_device_release_ioeventfd(vdev);
-+    vhost_dev_disable_notifiers_nvqs(hdev, vdev, hdev->nvqs);
- }
+     /* Truncate value to decr_width and sign extend for simplicity */
++    value = extract64(value, 0, nr_bits);
++    decr = extract64(decr, 0, nr_bits);
+     signed_value = sextract64(value, 0, nr_bits);
+     signed_decr = sextract64(decr, 0, nr_bits);
  
- /* Test and clear event pending status.
 -- 
 2.39.2
 
