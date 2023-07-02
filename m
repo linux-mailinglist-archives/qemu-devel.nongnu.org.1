@@ -2,91 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA3ED744C25
-	for <lists+qemu-devel@lfdr.de>; Sun,  2 Jul 2023 05:53:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3882F744C40
+	for <lists+qemu-devel@lfdr.de>; Sun,  2 Jul 2023 06:41:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFo88-0001xz-Jo; Sat, 01 Jul 2023 23:52:08 -0400
+	id 1qFort-0007mu-OJ; Sun, 02 Jul 2023 00:39:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qFo86-0001xa-SN
- for qemu-devel@nongnu.org; Sat, 01 Jul 2023 23:52:06 -0400
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qFo7y-0001DY-An
- for qemu-devel@nongnu.org; Sat, 01 Jul 2023 23:52:06 -0400
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-1b7fef01fe4so18733905ad.0
- for <qemu-devel@nongnu.org>; Sat, 01 Jul 2023 20:51:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1688269913; x=1690861913;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=D5XubCbqbcRQcOAMDiVKiDMMgVHc2JFM6oQ+N4uvb40=;
- b=d/IkwCZwZxAwMTTaD5802LS8+Qhd/27XyUynb0+Y88tcWlAiQAzzRPqLieoKLBf0oF
- Vqano5Q8jPGQGgLOmvNIjH1tQ5hy1+bdj5bj909cAO6ZQEQJTKUSOjE5gtEmhcVon1iW
- FS8B9WasErg8i8pkKd+lz6LiuJZQmy7d58fvkq0zyHofA12YL+C9Txi/XlPqOBe4fKKR
- sok/La4KTAyPFE8tpPfFZACWkFunvvstVM8gphIzk5lFThKOZk72yXGBEAyUBH1lLuVP
- JRV0uh7/I7UXGpUvrif/PtYPtGOQ8YSHNcKbRdqSJTpYhNoBUS1+wxGk5EDq3LPsrWfb
- v4oQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688269913; x=1690861913;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=D5XubCbqbcRQcOAMDiVKiDMMgVHc2JFM6oQ+N4uvb40=;
- b=P8J3qzTws65nwTNME89WUBeaGDLS7aS2Y8UW7Kq5uoxRaW05Yqn+ZIxAgmqffMca6a
- wHDP96kNZEN1GMDEgIYJphghic764Cxplmty+qZ0rU1HgbrWyjpBUb7yUi+b5rY6M7ky
- ORFENU+qlJ4hG0xE7Xo9bCsXi5ivyi5KdhPN7U3F1oNVyXqnp5pogdS0hb4VDZIaoF2r
- f3yDBSymN8cptFqPYGJUyXvS3tnUbUyNDpJtrqJGiX3B/QrDjIH475HrYVKtRwnGCSdq
- l+cYW+ZpYTzHO7gMQYjNay1eN/0RTmUom8NnbTKh/964jEMILdqZhUc3ecLL4+W4S+IL
- Mw9w==
-X-Gm-Message-State: ABy/qLa0ljUKMqs58yA1S0WgC1TpZbnCv6Wql+mVp3D4kJWY8A6GuXmj
- 2rBPniUbE/wjOqZgLTmYtw3djA==
-X-Google-Smtp-Source: APBJJlHdwm8mYu9kjbAKLQw6EMhp5CEzu0MhahHCUMe5NMxqwPEY+ui+G0uBN9EaFMQRJ2uV0hHuyw==
-X-Received: by 2002:a05:6a00:24d1:b0:666:81ae:fec0 with SMTP id
- d17-20020a056a0024d100b0066681aefec0mr5649083pfv.25.1688269913197; 
- Sat, 01 Jul 2023 20:51:53 -0700 (PDT)
-Received: from [157.82.204.253] ([157.82.204.253])
- by smtp.gmail.com with ESMTPSA id
- s4-20020aa78284000000b0063b8ddf77f7sm12008968pfm.211.2023.07.01.20.51.50
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 01 Jul 2023 20:51:52 -0700 (PDT)
-Message-ID: <354b2e91-a92b-0886-cbd6-7175a9461fbf@daynix.com>
-Date: Sun, 2 Jul 2023 12:51:49 +0900
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1qForq-0007mC-QQ; Sun, 02 Jul 2023 00:39:22 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1qForo-0002SQ-Op; Sun, 02 Jul 2023 00:39:22 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 5C50310D18;
+ Sun,  2 Jul 2023 07:39:08 +0300 (MSK)
+Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with SMTP id 971D3110A7;
+ Sun,  2 Jul 2023 07:39:07 +0300 (MSK)
+Received: (nullmailer pid 2090159 invoked by uid 1000);
+ Sun, 02 Jul 2023 04:39:07 -0000
+From: Michael Tokarev <mjt@tls.msk.ru>
+To: qemu-devel@nongnu.org, qemu-stable@nongnu.org
+Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>,
+ Gerd Hoffmann <kraxel@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Dongwon Kim <dongwon.kim@intel.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.4 44/49] virtio-gpu: Make non-gl display updates work
+ again when blob=true
+Date: Sun,  2 Jul 2023 07:38:44 +0300
+Message-Id: <20230702043850.2090131-1-mjt@tls.msk.ru>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <qemu-stable-7.2.4-20230702073703@cover.tls.msk.ru>
+References: <qemu-stable-7.2.4-20230702073703@cover.tls.msk.ru>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH 1/4] docs: Fix next function numbers in SR/IOV
- documentation
-To: Ani Sinha <anisinha@redhat.com>
-Cc: qemu-devel <qemu-devel@nongnu.org>, qemu-block@nongnu.org,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
- Jason Wang <jasowang@redhat.com>, Keith Busch <kbusch@kernel.org>,
- Klaus Jensen <its@irrelevant.dk>
-References: <20230701070133.24877-1-akihiko.odaki@daynix.com>
- <20230701070133.24877-2-akihiko.odaki@daynix.com>
- <F9B87AA5-617E-4AD7-A2F8-92C54819F875@redhat.com>
-Content-Language: en-US
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <F9B87AA5-617E-4AD7-A2F8-92C54819F875@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::633;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x633.google.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, NICE_REPLY_A=-0.093, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,54 +63,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/07/01 23:31, Ani Sinha wrote:
-> 
-> 
->> On 01-Jul-2023, at 12:31 PM, Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
->>
->> The next function numbers are expected to form a linked list ending with
->> 0.
->>
->> Fixes: 2503461691 ("pcie: Add some SR/IOV API documentation in docs/pcie_sriov.txt")
->> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
->> ---
->> docs/pcie_sriov.txt | 5 +++--
->> 1 file changed, 3 insertions(+), 2 deletions(-)
->>
->> diff --git a/docs/pcie_sriov.txt b/docs/pcie_sriov.txt
->> index 7eff7f2703..cc4232e49a 100644
->> --- a/docs/pcie_sriov.txt
->> +++ b/docs/pcie_sriov.txt
->> @@ -48,7 +48,7 @@ setting up a BAR for a VF.
->>        ...
->>        int ret = pcie_endpoint_cap_init(d, 0x70);
->>        ...
->> -      pcie_ari_init(d, 0x100, 1);
->> +      pcie_ari_init(d, 0x100, fun_offset);
->>        ...
->>
->>        /* Add and initialize the SR/IOV capability */
->> @@ -76,9 +76,10 @@ setting up a BAR for a VF.
->>     pci_your_vf_dev_realize( ... )
->>     {
->>        ...
->> +      uint16_t nextvfn = pcie_sriov_vf_number(dev) + 1;
->>        int ret = pcie_endpoint_cap_init(d, 0x60);
->>        ...
->> -      pcie_ari_init(d, 0x100, 1);
->> +      pcie_ari_init(d, 0x100, nextvfn < total_vfs ? fun_offset + nextvfn * stride : 0);
->                                                                                                                                                      ^^^^
-> I think this will be fun_offset and not just 0
-> Same with the other patches ..
+From: Vivek Kasireddy <vivek.kasireddy@intel.com>
 
-It is intended to point to the PF. fun_offset points to the first VF.
+In the case where the console does not have gl capability, and
+if blob is set to true, make sure that the display updates still
+work. Commit e86a93f55463 accidentally broke this by misplacing
+the return statement (in resource_flush) causing the updates to
+be silently ignored.
 
-> 
->>        ...
->>        memory_region_init(mr, ... )
->>        pcie_sriov_vf_register_bar(d, bar_nr, mr);
->> -- 
->> 2.41.0
->>
-> 
+Fixes: e86a93f55463 ("virtio-gpu: splitting one extended mode guest fb into n-scanouts")
+Cc: Gerd Hoffmann <kraxel@redhat.com>
+Cc: Marc-André Lureau <marcandre.lureau@redhat.com>
+Cc: Dongwon Kim <dongwon.kim@intel.com>
+Signed-off-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
+Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Message-ID: <20230623060454.3749910-1-vivek.kasireddy@intel.com>
+(cherry picked from commit 34e29d85a7734802317c4cac9ad52b10d461c1dc)
+Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+
+diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
+index 5e15c79b94..4e2e0dd53a 100644
+--- a/hw/display/virtio-gpu.c
++++ b/hw/display/virtio-gpu.c
+@@ -498,6 +498,8 @@ static void virtio_gpu_resource_flush(VirtIOGPU *g,
+     struct virtio_gpu_resource_flush rf;
+     struct virtio_gpu_scanout *scanout;
+     pixman_region16_t flush_region;
++    bool within_bounds = false;
++    bool update_submitted = false;
+     int i;
+ 
+     VIRTIO_GPU_FILL_CMD(rf);
+@@ -518,13 +520,28 @@ static void virtio_gpu_resource_flush(VirtIOGPU *g,
+                 rf.r.x < scanout->x + scanout->width &&
+                 rf.r.x + rf.r.width >= scanout->x &&
+                 rf.r.y < scanout->y + scanout->height &&
+-                rf.r.y + rf.r.height >= scanout->y &&
+-                console_has_gl(scanout->con)) {
+-                dpy_gl_update(scanout->con, 0, 0, scanout->width,
+-                              scanout->height);
++                rf.r.y + rf.r.height >= scanout->y) {
++                within_bounds = true;
++
++                if (console_has_gl(scanout->con)) {
++                    dpy_gl_update(scanout->con, 0, 0, scanout->width,
++                                  scanout->height);
++                    update_submitted = true;
++                }
+             }
+         }
+-        return;
++
++        if (update_submitted) {
++            return;
++        }
++        if (!within_bounds) {
++            qemu_log_mask(LOG_GUEST_ERROR, "%s: flush bounds outside scanouts"
++                          " bounds for flush %d: %d %d %d %d\n",
++                          __func__, rf.resource_id, rf.r.x, rf.r.y,
++                          rf.r.width, rf.r.height);
++            cmd->error = VIRTIO_GPU_RESP_ERR_INVALID_PARAMETER;
++            return;
++        }
+     }
+ 
+     if (!res->blob &&
+-- 
+2.39.2
+
 
