@@ -2,54 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2406D744E64
-	for <lists+qemu-devel@lfdr.de>; Sun,  2 Jul 2023 17:50:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20670744E72
+	for <lists+qemu-devel@lfdr.de>; Sun,  2 Jul 2023 17:51:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFzJn-0004KW-BO; Sun, 02 Jul 2023 11:48:55 -0400
+	id 1qFzJn-0004KK-Cq; Sun, 02 Jul 2023 11:48:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qFzJl-0004Jn-5p
+ id 1qFzJl-0004Jo-6b
  for qemu-devel@nongnu.org; Sun, 02 Jul 2023 11:48:53 -0400
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qFzJj-0007Lp-74
+ id 1qFzJj-0007Nb-O9
  for qemu-devel@nongnu.org; Sun, 02 Jul 2023 11:48:52 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
- MIME-Version:Message-Id:Date:To:From:Sender:Reply-To:Cc:Content-ID:
- Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
- :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
- List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=PPMj66S4AR+zQNZH7Pwp4zOeuubmZYuCpDvcWz4FrSw=; b=ehV/y37B8/1NHo+xZ9IMOY8Ffy
- Pqu/ji98L2JQ2IPd7zcbMJPdFT+ASJIFr0mPI+NHZBm9l9Vj7CjTOe6fTNrmT7cA0FAqoGYKt4JlI
- BbaMd/hqMohxKxc83L9lF3acDfA9/UEPO82tbrgbuv/pkG/2ppOl5x0SmJBy8oKVOxWqJp9brTMFR
- YdDzOw6cerdiANi9Va1Zv99j+74JWxnG3Tia70jDTFz4lTkz2qmicBs1USmSu+xWcL+dd0Sjk+pa4
- ml8Ify/G9Rp/1CQyyzSEanEsnG5FnlNfRNi+53zO54Fsx9ysEiBzVNDFqGwKSsozIr3xps7voLWXG
- FDX82w6hZ1XGQWco0LtEE77MCXCS/fy0gbq0u0/Xrjun+3Qaxw55qOsuFgT7jXK2XV8Rrvq6PCouj
- pBrcRBnzxltd46CQ1LZolsSAJIjWkL4CPstOnAxiQmby2lzgC0rta4IMPmRPjWaMiu9gYpsPQtKY0
- bEIYwCUCnvLURneWjOCMosZoTONvjoE8XJJSO9aIn7PxwSrRW55xX6TF+ff89hdPJg+dB9TB48S9s
- odR+Y8tb+8yoH90bVR4yx4kjNsrTXQ3eRhuOuVF0DOL1WRW7zW56G0sO1mr0WTVXVKjttnC5chYlu
- qctz6iPJtLg+EyVwNHxrCJFX9CwgU6eFpmI17kMZI=;
+ d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
+ References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
+ Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+ Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+ List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=1PcuAptvkeB5YClylwv8vyT5N5x0JldzQusZF4870+c=; b=mAfWapXYRzdZ+qqzkcz1ylY7MU
+ Xo1DM+J/x8pD89mI0/m/e2iC1yS1wyLUgi20n9LW0/mrmUVEonqvgTxWDRM4hMKJ/FHXVaR9CuvZQ
+ wOvKlFeI/FDEfxyu8W9MM3hU8cJ2jcQh5Sl0fDi380Go7peTHVEJZg/oT0G14oCmp3OB6LdyKm159
+ 4eFdv5+i+tr1bZe5Qy7URQ70edfzCQoUGrPrr/BBTnHNqsDi2GPqazmCuUcbscwOH+ErUVqgOf/9N
+ 40XCrTrAW8MGvA6a7/YvJg7LzVI9qKkeW119TP4v7o9LXTgyEwfxTeqPjABTuaWjUbKQ/XwXoLE2F
+ 8H7D4n3VrQNVpKVimFQK3mCwjs6WuXpTQ6gxNbaOBovTcPoBVKtc6zp+RJ0brLSMbpuf4atOpIuFb
+ SUmgLRwnmIRPjnHmpw/cYSZCrllRP/9lzKViHbtm/tKxczdelV/4bfHlx4orxdi6Jnyd78FVKXTDx
+ h16XxdwgqgjeoVFvZHamXgGcggGzfcte2nAWegYOsT7ixudQ/eB63qTBmbdUy9Wbrrlbk2Rc/DhaJ
+ sKeZBlC1hOzSUow+E9GZf4lIiBb+MgORZF7WNzUim2xCdHnzsTlzztPVzIPl1XsUWfB2Qcvi/RRks
+ 8Ip9FSVaQ7U8iYkFK30fqsnw+cjVWOlHj8YoH1y6c=;
 Received: from [2a00:23c4:8bad:df00:f732:dd76:7417:d15b] (helo=kentang.home)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qFzJQ-0001Ji-19; Sun, 02 Jul 2023 16:48:36 +0100
+ id 1qFzJU-0001Ji-7p; Sun, 02 Jul 2023 16:48:40 +0100
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: laurent@vivier.eu,
 	qemu-devel@nongnu.org
-Date: Sun,  2 Jul 2023 16:48:17 +0100
-Message-Id: <20230702154838.722809-1-mark.cave-ayland@ilande.co.uk>
+Date: Sun,  2 Jul 2023 16:48:18 +0100
+Message-Id: <20230702154838.722809-2-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20230702154838.722809-1-mark.cave-ayland@ilande.co.uk>
+References: <20230702154838.722809-1-mark.cave-ayland@ilande.co.uk>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a00:23c4:8bad:df00:f732:dd76:7417:d15b
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH 00/21] q800: add support for booting MacOS Classic - part 2
+Subject: [PATCH 01/21] q800-glue.c: convert to Resettable interface
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -75,112 +76,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-[MCA: the original series has now been split into 2 separate parts. Here is
-the second and final series of patches. As there are a number of differences
-from the original series, I've left off any previous review tags.]
-
-This series contains the remaining patches needed to allow QEMU's q800
-machine to boot MacOS Classic when used in conjunction with a real
-Quadra 800 ROM image. In fact with this series applied it is possible
-to boot all of the following OSs:
-
-  - MacOS 7.1 - 8.1, with or without virtual memory enabled
-  - A/UX 3.0.1
-  - NetBSD 9.3
-  - Linux (via EMILE)
-
-If you are ready to experience some 90s nostalgia then all you need is
-to grab yourself a copy of the Quadra 800 ROM (checksum 0xf1acad13) and a
-suitable install ISO as follows:
-
-  # Prepare a PRAM image
-  $ qemu-img create -f raw pram.img 256b
-
-  # Launch QEMU with blank disk and install CDROM
-  $ ./qemu-system-m68k \
-      -M q800 \
-      -m 128 \
-      -bios Quadra800.rom \
-      -drive file=pram.img,format=raw,if=mtd \
-      -drive file=disk.img,media=disk,format=raw,if=none,id=hd \
-      -device scsi-hd,scsi-id=0,drive=hd \
-      -drive file=cdrom.iso,media=cdrom,if=none,id=cd \
-      -device scsi-cd,scsi-id=3,drive=cd
-
-And off you go! For more in-depth information about the installation process
-I highly recommend the installation guide over at emaculation.com [1].
-Compatibility is generally very good, and I'm pleased to report it is possible
-to run one of the most popular productivity apps from the 90s [2].
-
-I'd like to add a big thank you to all the people who have helped me work on
-this series, including testing on real hardware, answering questions about
-MacOS Classic internals and helping to diagnose and fix bugs in the 68k
-emulation. In particular thanks go to Laurent Vivier, Finn Thain, Howard
-Spoelstra, Volker Rümelin, Richard Henderson, Martin Husemann, Rin Okuyama,
-Elliot Nunn, and SolraBizna.
+Convert the GLUE device to 3-phase reset. The legacy method
+doesn't do anything that's invalid in the hold phase, so the
+conversion is simple and not a behaviour change.
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+---
+ hw/m68k/q800-glue.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-[1] https://www.emaculation.com/doku.php/qemu
-[2] https://www.youtube.com/watch?v=yI21gURQ1Ew
-
-
-Mark Cave-Ayland (21):
-  q800-glue.c: convert to Resettable interface
-  q800: add djMEMC memory controller
-  q800: add machine id register
-  q800: implement additional machine id bits on VIA1 port A
-  q800: add IOSB subsystem
-  q800: allow accesses to RAM area even if less memory is available
-  audio: add Apple Sound Chip (ASC) emulation
-  asc: generate silence if FIFO empty but engine still running
-  q800: add Apple Sound Chip (ASC) audio to machine
-  q800: add easc bool machine class property to switch between ASC and
-    EASC
-  swim: add trace events for IWM and ISM registers
-  swim: split into separate IWM and ISM register blocks
-  swim: update IWM/ISM register block decoding
-  mac_via: work around underflow in TimeDBRA timing loop in SETUPTIMEK
-  mac_via: workaround NetBSD ADB bus enumeration issue
-  mac_via: implement ADB_STATE_IDLE state if shift register in input
-    mode
-  mac_via: always clear ADB interrupt when switching to A/UX mode
-  q800: add ESCC alias at 0xc000
-  q800: add alias for MacOS toolbox ROM at 0x40000000
-  mac_via: allow unaligned access to VIA1 registers
-  mac_via: extend timer calibration hack to work with A/UX
-
- MAINTAINERS                 |   6 +
- hw/audio/Kconfig            |   3 +
- hw/audio/asc.c              | 708 ++++++++++++++++++++++++++++++++++++
- hw/audio/meson.build        |   1 +
- hw/audio/trace-events       |  10 +
- hw/block/swim.c             | 261 ++++++++-----
- hw/block/trace-events       |   8 +
- hw/m68k/Kconfig             |   3 +
- hw/m68k/q800-glue.c         |  18 +-
- hw/m68k/q800.c              | 136 ++++++-
- hw/misc/Kconfig             |   6 +
- hw/misc/djmemc.c            | 135 +++++++
- hw/misc/iosb.c              | 137 +++++++
- hw/misc/mac_via.c           | 268 +++++++++++++-
- hw/misc/meson.build         |   2 +
- hw/misc/trace-events        |  12 +
- include/hw/audio/asc.h      |  80 ++++
- include/hw/block/swim.h     |  21 +-
- include/hw/m68k/q800-glue.h |   4 +-
- include/hw/m68k/q800.h      |  11 +
- include/hw/misc/djmemc.h    |  30 ++
- include/hw/misc/iosb.h      |  25 ++
- include/hw/misc/mac_via.h   |   3 +
- 23 files changed, 1770 insertions(+), 118 deletions(-)
- create mode 100644 hw/audio/asc.c
- create mode 100644 hw/misc/djmemc.c
- create mode 100644 hw/misc/iosb.c
- create mode 100644 include/hw/audio/asc.h
- create mode 100644 include/hw/misc/djmemc.h
- create mode 100644 include/hw/misc/iosb.h
-
+diff --git a/hw/m68k/q800-glue.c b/hw/m68k/q800-glue.c
+index 34c4f0e987..710a5c331e 100644
+--- a/hw/m68k/q800-glue.c
++++ b/hw/m68k/q800-glue.c
+@@ -166,9 +166,9 @@ static void glue_nmi_release(void *opaque)
+     GLUE_set_irq(s, GLUE_IRQ_IN_NMI, 0);
+ }
+ 
+-static void glue_reset(DeviceState *dev)
++static void glue_reset_hold(Object *obj)
+ {
+-    GLUEState *s = GLUE(dev);
++    GLUEState *s = GLUE(obj);
+ 
+     s->ipr = 0;
+     s->auxmode = 0;
+@@ -223,11 +223,12 @@ static void glue_init(Object *obj)
+ static void glue_class_init(ObjectClass *klass, void *data)
+ {
+     DeviceClass *dc = DEVICE_CLASS(klass);
++    ResettableClass *rc = RESETTABLE_CLASS(klass);
+     NMIClass *nc = NMI_CLASS(klass);
+ 
+     dc->vmsd = &vmstate_glue;
+-    dc->reset = glue_reset;
+     device_class_set_props(dc, glue_properties);
++    rc->phases.hold = glue_reset_hold;
+     nc->nmi_monitor_handler = glue_nmi;
+ }
+ 
 -- 
 2.30.2
 
