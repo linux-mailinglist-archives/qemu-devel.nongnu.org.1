@@ -2,80 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC12D744C00
-	for <lists+qemu-devel@lfdr.de>; Sun,  2 Jul 2023 03:37:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA3ED744C25
+	for <lists+qemu-devel@lfdr.de>; Sun,  2 Jul 2023 05:53:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFm0A-0001Je-Fe; Sat, 01 Jul 2023 21:35:46 -0400
+	id 1qFo88-0001xz-Jo; Sat, 01 Jul 2023 23:52:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <bmeng.cn@gmail.com>)
- id 1qFm08-0001Hv-2j; Sat, 01 Jul 2023 21:35:44 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qFo86-0001xa-SN
+ for qemu-devel@nongnu.org; Sat, 01 Jul 2023 23:52:06 -0400
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <bmeng.cn@gmail.com>)
- id 1qFm05-0007fY-Gc; Sat, 01 Jul 2023 21:35:43 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-3fbc244d307so32768425e9.1; 
- Sat, 01 Jul 2023 18:35:33 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qFo7y-0001DY-An
+ for qemu-devel@nongnu.org; Sat, 01 Jul 2023 23:52:06 -0400
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-1b7fef01fe4so18733905ad.0
+ for <qemu-devel@nongnu.org>; Sat, 01 Jul 2023 20:51:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688261732; x=1690853732;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=5j0ylvlbGyI2o543n1+Hlev2yR/lbdvBfoJ89tLrDBU=;
- b=kUlmuVb298DiS/8NqG1XMgkdQY+KnESkwbVtFR6RaOyeAXaCGiIMsVJfHc6ipDPeoF
- CykiaxFV52/HM1oLtW/ESvQYl5XjcfK0c2O+j+Poq403vsILbcM8CyPuBjsmMfbfYQNz
- ZW1e0wGMB7/knGs8SjKYw8Ri7iNh5dMxarlGhbJRHTv7tF+DNKg5pAX3bWYpuY8Mo8AR
- WEsEsr6R0r25w0rOuwAIIgH9Znq8gxnShOd1UjSrrTQtFGvTD+GRZLC9+TmXvoa+38ZD
- AIKZiVzX3EuK7tZvmXPWyrL9G1CR3z7cxrCzsBlVdAVxu2DKJ4NfF50WnkJ98zh1B0sO
- ca6g==
+ d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1688269913; x=1690861913;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=D5XubCbqbcRQcOAMDiVKiDMMgVHc2JFM6oQ+N4uvb40=;
+ b=d/IkwCZwZxAwMTTaD5802LS8+Qhd/27XyUynb0+Y88tcWlAiQAzzRPqLieoKLBf0oF
+ Vqano5Q8jPGQGgLOmvNIjH1tQ5hy1+bdj5bj909cAO6ZQEQJTKUSOjE5gtEmhcVon1iW
+ FS8B9WasErg8i8pkKd+lz6LiuJZQmy7d58fvkq0zyHofA12YL+C9Txi/XlPqOBe4fKKR
+ sok/La4KTAyPFE8tpPfFZACWkFunvvstVM8gphIzk5lFThKOZk72yXGBEAyUBH1lLuVP
+ JRV0uh7/I7UXGpUvrif/PtYPtGOQ8YSHNcKbRdqSJTpYhNoBUS1+wxGk5EDq3LPsrWfb
+ v4oQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688261732; x=1690853732;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=5j0ylvlbGyI2o543n1+Hlev2yR/lbdvBfoJ89tLrDBU=;
- b=YYHlU1dD7b4QHrY5iKJh+EumEczgNpnGHZ6plJFK1lxP6vNXf8bHaQw07dnZwtj/Ea
- 80MjIWxhg1mkEPzf6qPiyPD/yPMH3+fGEOUuuoBBYV3JNLvT+ADBDsG0+fhB6lLSRkhz
- OwuIUan2dCBMlZpgRQ32wyN2ZxXJzwVWoAf3XBZaS3XDJa2G3d4H6O9K/td32rLMh4Jc
- Cp1VyC/37br6fx5S/pImWdfBgPdhVUdu+/C7YWzcfKsf4Zno9EXc3peP8qnDYsX7vkfe
- StxnQt+FRVVbqUbEstsySmJq2lRB9NULSKerr4tTnrrB2wycipn40LaSJUx0+SthMQ/y
- WSig==
-X-Gm-Message-State: AC+VfDzQSHL+L8hx4+DdFhZLSUOY58PW7LiKR0FV47XRoo3GRgniWAKw
- YjT95OoylVdNjyDWeux1bUnvWwbtVtvz+DlF+JA=
-X-Google-Smtp-Source: ACHHUZ6RVIoJiRGvO+UFE6c5hvfOhonPYIF9yfI16wLqbFoqULZRXa9XXASbGKcBOhgJW3wWQnEB+KQ1UG5P+UmnavI=
-X-Received: by 2002:a05:600c:b54:b0:3f9:846:d892 with SMTP id
- k20-20020a05600c0b5400b003f90846d892mr5564867wmr.9.1688261731941; Sat, 01 Jul
- 2023 18:35:31 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1688269913; x=1690861913;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=D5XubCbqbcRQcOAMDiVKiDMMgVHc2JFM6oQ+N4uvb40=;
+ b=P8J3qzTws65nwTNME89WUBeaGDLS7aS2Y8UW7Kq5uoxRaW05Yqn+ZIxAgmqffMca6a
+ wHDP96kNZEN1GMDEgIYJphghic764Cxplmty+qZ0rU1HgbrWyjpBUb7yUi+b5rY6M7ky
+ ORFENU+qlJ4hG0xE7Xo9bCsXi5ivyi5KdhPN7U3F1oNVyXqnp5pogdS0hb4VDZIaoF2r
+ f3yDBSymN8cptFqPYGJUyXvS3tnUbUyNDpJtrqJGiX3B/QrDjIH475HrYVKtRwnGCSdq
+ l+cYW+ZpYTzHO7gMQYjNay1eN/0RTmUom8NnbTKh/964jEMILdqZhUc3ecLL4+W4S+IL
+ Mw9w==
+X-Gm-Message-State: ABy/qLa0ljUKMqs58yA1S0WgC1TpZbnCv6Wql+mVp3D4kJWY8A6GuXmj
+ 2rBPniUbE/wjOqZgLTmYtw3djA==
+X-Google-Smtp-Source: APBJJlHdwm8mYu9kjbAKLQw6EMhp5CEzu0MhahHCUMe5NMxqwPEY+ui+G0uBN9EaFMQRJ2uV0hHuyw==
+X-Received: by 2002:a05:6a00:24d1:b0:666:81ae:fec0 with SMTP id
+ d17-20020a056a0024d100b0066681aefec0mr5649083pfv.25.1688269913197; 
+ Sat, 01 Jul 2023 20:51:53 -0700 (PDT)
+Received: from [157.82.204.253] ([157.82.204.253])
+ by smtp.gmail.com with ESMTPSA id
+ s4-20020aa78284000000b0063b8ddf77f7sm12008968pfm.211.2023.07.01.20.51.50
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sat, 01 Jul 2023 20:51:52 -0700 (PDT)
+Message-ID: <354b2e91-a92b-0886-cbd6-7175a9461fbf@daynix.com>
+Date: Sun, 2 Jul 2023 12:51:49 +0900
 MIME-Version: 1.0
-References: <20230625015321.77987-1-bmeng@tinylab.org>
-In-Reply-To: <20230625015321.77987-1-bmeng@tinylab.org>
-From: Bin Meng <bmeng.cn@gmail.com>
-Date: Sun, 2 Jul 2023 09:35:19 +0800
-Message-ID: <CAEUhbmXVL8YLEDgPhj9zxhAt70nMF5=TXn491-tCOxoHaF=+QA@mail.gmail.com>
-Subject: Re: [PATCH v7 0/9] net: Pad short frames for network backends
-To: Bin Meng <bmeng@tinylab.org>
-Cc: Jason Wang <jasowang@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@redhat.com>, 
- Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org, 
- Andrew Jeffery <andrew@aj.id.au>,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, 
- Dmitry Fleytman <dmitry.fleytman@gmail.com>, Helge Deller <deller@gmx.de>,
- Joel Stanley <joel@jms.id.au>, 
- Richard Henderson <richard.henderson@linaro.org>, qemu-arm@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=bmeng.cn@gmail.com; helo=mail-wm1-x329.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH 1/4] docs: Fix next function numbers in SR/IOV
+ documentation
+To: Ani Sinha <anisinha@redhat.com>
+Cc: qemu-devel <qemu-devel@nongnu.org>, qemu-block@nongnu.org,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
+ Jason Wang <jasowang@redhat.com>, Keith Busch <kbusch@kernel.org>,
+ Klaus Jensen <its@irrelevant.dk>
+References: <20230701070133.24877-1-akihiko.odaki@daynix.com>
+ <20230701070133.24877-2-akihiko.odaki@daynix.com>
+ <F9B87AA5-617E-4AD7-A2F8-92C54819F875@redhat.com>
+Content-Language: en-US
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <F9B87AA5-617E-4AD7-A2F8-92C54819F875@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::633;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x633.google.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, NICE_REPLY_A=-0.093, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,54 +102,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sun, Jun 25, 2023 at 9:59=E2=80=AFAM Bin Meng <bmeng@tinylab.org> wrote:
->
-> The minimum Ethernet frame length is 60 bytes. For short frames with
-> smaller length like ARP packets (only 42 bytes), on a real world NIC
-> it can choose either padding its length to the minimum required 60
-> bytes, or sending it out directly to the wire. Such behavior can be
-> hardcoded or controled by a register bit. Similarly on the receive
-> path, NICs can choose either dropping such short frames directly or
-> handing them over to software to handle.
->
-> On the other hand, for the network backends like SLiRP/TAP, they
-> don't expose a way to control the short frame behavior. As of today
-> they just send/receive data from/to the other end connected to them,
-> which means any sized packet is acceptable. So they can send and
-> receive short frames without any problem. It is observed that ARP
-> packets sent from SLiRP/TAP are 42 bytes, and SLiRP/TAP just send
-> these ARP packets to the other end which might be a NIC model that
-> does not allow short frames to pass through.
->
-> To provide better compatibility, for packets sent from QEMU network
-> backends like SLiRP/TAP, we change to pad short frames before sending
-> it out to the other end, if the other end does not forbid it via the
-> nc->do_not_pad flag. This ensures a backend as an Ethernet sender
-> does not violate the spec. But with this change, the behavior of
-> dropping short frames from SLiRP/TAP interfaces in the NIC model
-> cannot be emulated because it always receives a packet that is spec
-> complaint. The capability of sending short frames from NIC models is
-> still supported and short frames can still pass through SLiRP/TAP.
->
-> This series should be able to fix the issue as reported with some
-> NIC models before, that ARP requests get dropped, preventing the
-> guest from becoming visible on the network. It was workarounded in
-> these NIC models on the receive path, that when a short frame is
-> received, it is padded up to 60 bytes.
->
-> Only the first 4 patches of the v5 series [1] were applied in QEMU 6.0,
-> and the reset was said to be queued for 6.1 but for some reason they
-> never landed in QEMU mainline.
->
-> Hopefully this series will make it for QEMU 8.1.
->
-> [1] https://lore.kernel.org/qemu-devel/859cd26a-feb2-ed62-98d5-764841a468=
-cf@redhat.com/
->
-> Changes in v7:
-> - new patch: "hw/net: ftgmac100: Drop the small packet check in the recei=
-ve path"
->
+On 2023/07/01 23:31, Ani Sinha wrote:
+> 
+> 
+>> On 01-Jul-2023, at 12:31 PM, Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
+>>
+>> The next function numbers are expected to form a linked list ending with
+>> 0.
+>>
+>> Fixes: 2503461691 ("pcie: Add some SR/IOV API documentation in docs/pcie_sriov.txt")
+>> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+>> ---
+>> docs/pcie_sriov.txt | 5 +++--
+>> 1 file changed, 3 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/docs/pcie_sriov.txt b/docs/pcie_sriov.txt
+>> index 7eff7f2703..cc4232e49a 100644
+>> --- a/docs/pcie_sriov.txt
+>> +++ b/docs/pcie_sriov.txt
+>> @@ -48,7 +48,7 @@ setting up a BAR for a VF.
+>>        ...
+>>        int ret = pcie_endpoint_cap_init(d, 0x70);
+>>        ...
+>> -      pcie_ari_init(d, 0x100, 1);
+>> +      pcie_ari_init(d, 0x100, fun_offset);
+>>        ...
+>>
+>>        /* Add and initialize the SR/IOV capability */
+>> @@ -76,9 +76,10 @@ setting up a BAR for a VF.
+>>     pci_your_vf_dev_realize( ... )
+>>     {
+>>        ...
+>> +      uint16_t nextvfn = pcie_sriov_vf_number(dev) + 1;
+>>        int ret = pcie_endpoint_cap_init(d, 0x60);
+>>        ...
+>> -      pcie_ari_init(d, 0x100, 1);
+>> +      pcie_ari_init(d, 0x100, nextvfn < total_vfs ? fun_offset + nextvfn * stride : 0);
+>                                                                                                                                                      ^^^^
+> I think this will be fun_offset and not just 0
+> Same with the other patches ..
 
-Ping?
+It is intended to point to the PF. fun_offset points to the first VF.
+
+> 
+>>        ...
+>>        memory_region_init(mr, ... )
+>>        pcie_sriov_vf_register_bar(d, bar_nr, mr);
+>> -- 
+>> 2.41.0
+>>
+> 
 
