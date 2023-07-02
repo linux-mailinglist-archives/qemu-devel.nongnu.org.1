@@ -2,49 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E49F6744F67
-	for <lists+qemu-devel@lfdr.de>; Sun,  2 Jul 2023 19:55:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6E9B744F94
+	for <lists+qemu-devel@lfdr.de>; Sun,  2 Jul 2023 20:06:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qG1Go-0007QQ-Iq; Sun, 02 Jul 2023 13:53:58 -0400
+	id 1qG1S3-0000bW-Md; Sun, 02 Jul 2023 14:05:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qG1Gl-0007Pw-Mz; Sun, 02 Jul 2023 13:53:55 -0400
+ id 1qG1RX-0000a6-Hi; Sun, 02 Jul 2023 14:05:03 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qG1Gj-0003FB-Hi; Sun, 02 Jul 2023 13:53:55 -0400
+ id 1qG1RT-00053a-Rs; Sun, 02 Jul 2023 14:05:02 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 9EBA410DE7;
- Sun,  2 Jul 2023 20:53:49 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 1BD7E111FD;
- Sun,  2 Jul 2023 20:53:47 +0300 (MSK)
-Message-ID: <2bf22a3c-bd41-7d32-3543-196be206bc67@tls.msk.ru>
-Date: Sun, 2 Jul 2023 20:53:46 +0300
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH v3 0/2] vdpa: Refactor vdpa_feature_bits array
-Content-Language: en-US
-To: Hawkins Jiawei <yin31149@gmail.com>, jasowang@redhat.com, mst@redhat.com, 
- eperezma@redhat.com, philmd@linaro.org
-Cc: qemu-devel@nongnu.org, 18801353760@163.com,
- QEMU Trivial <qemu-trivial@nongnu.org>
-References: <cover.1688130570.git.yin31149@gmail.com>
+ by isrv.corpit.ru (Postfix) with ESMTP id 5D7CA10DEA;
+ Sun,  2 Jul 2023 21:04:53 +0300 (MSK)
+Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with SMTP id 93BA4111FE;
+ Sun,  2 Jul 2023 21:04:51 +0300 (MSK)
+Received: (nullmailer pid 2122353 invoked by uid 1000);
+ Sun, 02 Jul 2023 18:04:51 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
-In-Reply-To: <cover.1688130570.git.yin31149@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+To: qemu-devel@nongnu.org, qemu-stable@nongnu.org
+Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.0.3 55/65] ui: return NULL when getting cursor without a
+ console
+Date: Sun,  2 Jul 2023 21:04:28 +0300
+Message-Id: <20230702180439.2122316-1-mjt@tls.msk.ru>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <qemu-stable-8.0.3-20230702210422@cover.tls.msk.ru>
+References: <qemu-stable-8.0.3-20230702210422@cover.tls.msk.ru>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
-X-Spam_score_int: -69
-X-Spam_score: -7.0
-X-Spam_bar: -------
-X-Spam_report: (-7.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.09,
- RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -61,30 +62,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-30.06.2023 16:21, Hawkins Jiawei wrote:
-> This patchset removes the duplicated VIRTIO_NET_F_RSS entry
-> in vdpa_feature_bits array and sorts the vdpa_feature_bits array
-> alphabetically in ascending order to avoid future duplicates.
-> 
-> Changelog
-> =========
-> v3:
->    - sort array alphabetically suggested by Philippe
-> 
-> v2: https://lists.nongnu.org/archive/html/qemu-devel/2023-06/msg06764.html
->    - resolve conflicts with the master branch
-> 
-> v1: https://lists.nongnu.org/archive/html/qemu-devel/2023-06/msg01583.html
-> 
-> Hawkins Jiawei (2):
->    vdpa: Delete duplicated VIRTIO_NET_F_RSS in vdpa_feature_bits
->    vdpa: Sort vdpa_feature_bits array alphabetically
-> 
->   net/vhost-vdpa.c | 40 +++++++++++++++++++++++-----------------
->   1 file changed, 23 insertions(+), 17 deletions(-)
+From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-Applied both to my trivial-patches tree, thank you!
+VNC may try to get the current cursor even when there are no consoles
+and crashes. Simple reproducer is qemu with -nodefaults.
 
-/mjt
+Fixes: (again)
+https://gitlab.com/qemu-project/qemu/-/issues/1548
+
+Fixes: commit 385ac97f8 ("ui: keep current cursor with QemuConsole")
+Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-Id: <20230428154807.2143652-1-marcandre.lureau@redhat.com>
+(cherry picked from commit 333e7599a0d723801235f675719008ce43db93e3)
+Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+
+diff --git a/ui/console.c b/ui/console.c
+index e173731e20..7461446e71 100644
+--- a/ui/console.c
++++ b/ui/console.c
+@@ -2306,7 +2306,7 @@ QEMUCursor *qemu_console_get_cursor(QemuConsole *con)
+     if (con == NULL) {
+         con = active_console;
+     }
+-    return con->cursor;
++    return con ? con->cursor : NULL;
+ }
+ 
+ bool qemu_console_is_visible(QemuConsole *con)
+-- 
+2.39.2
 
 
