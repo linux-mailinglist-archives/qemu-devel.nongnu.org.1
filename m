@@ -2,89 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3323F744D14
-	for <lists+qemu-devel@lfdr.de>; Sun,  2 Jul 2023 11:50:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 591EE744D4D
+	for <lists+qemu-devel@lfdr.de>; Sun,  2 Jul 2023 12:35:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFtiV-0007Hh-48; Sun, 02 Jul 2023 05:50:03 -0400
+	id 1qFuP1-0005rH-Bc; Sun, 02 Jul 2023 06:33:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qFtiP-0007HO-Q3
- for qemu-devel@nongnu.org; Sun, 02 Jul 2023 05:49:57 -0400
-Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qFtiO-000898-AU
- for qemu-devel@nongnu.org; Sun, 02 Jul 2023 05:49:57 -0400
-Received: by mail-pf1-x431.google.com with SMTP id
- d2e1a72fcca58-666ed230c81so2969943b3a.0
- for <qemu-devel@nongnu.org>; Sun, 02 Jul 2023 02:49:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1688291393; x=1690883393;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=YE3wnDw5foKp/WZylnf46yeOa5vkfZ7gdKr2zRxuWrg=;
- b=LCzMMuBQ20ZuNxFCt3OvbZDqs6XtgBcG5fxl1AiXPLlkrGIOhetebGDmuZqEoquHDs
- IaU2ol6vl9653s8X88T6SgrmtMSHTKQyVnEu0uTUYjkRQRct1VoBVBKMdO1hMc9gRp9M
- Gtx7pt7fECOpnw1E1xZUm58L4cPFU6H4Ncdctn3JwMywBJ6l8E3JjXsTJlxUfBnpwjOq
- LfaM0MTT7t+RGeyakevntXThPiDvflhGl1a34jNus+JKpyd+HpaAlZApuV6RlkQjh+LZ
- lFKbzO7uiq88CanMbeQmod7MEi5sWuIiMe7TZouWS2uE2hsM55pXZu6MzfsgeIMBcate
- nQlg==
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qFuOy-0005ql-Nv
+ for qemu-devel@nongnu.org; Sun, 02 Jul 2023 06:33:56 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qFuOx-0000T1-3Z
+ for qemu-devel@nongnu.org; Sun, 02 Jul 2023 06:33:56 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1688294033;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=RlnahdG8z+DTT0VrC+GZF88bKnRdtBvepFnCM+RiWK8=;
+ b=G96TJMcHTPhCDQJWmHYHXC8mbNcgyVL/vqcfGEG4HiUudQtiUTDWyVuoC9kDmdZf1bIl46
+ Ed+GFT7rTY55K/AECiC2bIDEmF2ZiW7DZvxMStC7itNgiQj3JK+fO9Ms2cETMlMGkeb4Jf
+ MVr7YxV9DXEdNVYQLjJEx9WNYhivkCQ=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-290-fkDBfRjuPOS3pRBnJu3pVg-1; Sun, 02 Jul 2023 06:33:52 -0400
+X-MC-Unique: fkDBfRjuPOS3pRBnJu3pVg-1
+Received: by mail-ed1-f71.google.com with SMTP id
+ 4fb4d7f45d1cf-51d8823eb01so1882701a12.1
+ for <qemu-devel@nongnu.org>; Sun, 02 Jul 2023 03:33:51 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688291393; x=1690883393;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=YE3wnDw5foKp/WZylnf46yeOa5vkfZ7gdKr2zRxuWrg=;
- b=QaCppaB9tFHcS1zuwN9EzbB8xnkEjsz0SwRT4p/PiCigsHJ1xN5oGs6PD//Y4aN8ZG
- +GzwUipbIIN4KCkVZmPBzP4Ocs9Mxkgr8DFtgvLl5yzAjZa6YbcAUWrfUCVyTnYaNKMe
- kZzMFD6IXQRB0TscghLqcEnPhqSauYWXDU0Mw0NjX+OnzrpfHBA1WWBoACW2lhqObtY3
- Hn1g7A2EP1u+3c1UYVKPj5YPmDn17q6GfYnUtr++G+bZ2nGpigPAa9OrTUPDc5A1OBgc
- KRtgtk96Q3DN0PD4XLWMzgrHKrUV/AIKE+XKiGSHKnnoJmid6ZF0ZA11eEKRkQUz+X8z
- mfVw==
-X-Gm-Message-State: ABy/qLaoCPDA2Itn6l4G+9IvUqvNcyMuospjeGdivVNjdhbkZ7Ljrt0X
- 5GQPQo8s9zDvr/EdfIPGyu3Kzw==
-X-Google-Smtp-Source: APBJJlHIMMimoI2yBM0aIgGQbRGGZycjkmx8nD/ZHGemFig5Rlk74yfLIm2A4y6sxkUcuQXtQ66vdg==
-X-Received: by 2002:a05:6a00:138d:b0:680:2b80:8479 with SMTP id
- t13-20020a056a00138d00b006802b808479mr9759495pfg.19.1688291393717; 
- Sun, 02 Jul 2023 02:49:53 -0700 (PDT)
-Received: from [157.82.204.253] ([157.82.204.253])
- by smtp.gmail.com with ESMTPSA id
- q17-20020a62ae11000000b00679dc747738sm10035140pff.10.2023.07.02.02.49.51
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 02 Jul 2023 02:49:53 -0700 (PDT)
-Message-ID: <d0769c54-62f7-6aa8-01b1-0e40cc46e02a@daynix.com>
-Date: Sun, 2 Jul 2023 18:49:50 +0900
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH 3/3] igb: Fix ARI next function numbers
-Content-Language: en-US
-To: "Michael S. Tsirkin" <mst@redhat.com>
+ d=1e100.net; s=20221208; t=1688294031; x=1690886031;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=RlnahdG8z+DTT0VrC+GZF88bKnRdtBvepFnCM+RiWK8=;
+ b=RUFwzs/kulTWnXeXwxYodTQ8lqpnrs7n36URnsVslHJafq2NS8BYFKZ/TDy6+4F264
+ EKOfwwF6Cdh5f6u+Z/pFB3EJLLZ4KA4+LgosgEFP/txfGesgQCq5sh0G0+inu12MfWl6
+ qvuwyOw3EVDvXbdUibTXUYukuwRt0vEClC6u/WzqNCLSfQP3bE8TFaIdVH9flyZ4hXBi
+ O76UN31X2xsWI/5olP1a028ll7bxUzT1l8LQUH+vPZIpyBFbfhEq/VmCAFPgKLmcXI3L
+ 722SQOIjMqE8/eTycc/pg68Ut1alLe2VIQ5nzUNlSBQ43xlusQvOf4qQSfrO7cxkV2IW
+ oo+Q==
+X-Gm-Message-State: ABy/qLZEK7qUjhCj7MDDsHm42Yf+SxUzYM47TS5eMPALBJ0K+BvV9Obb
+ QzFENEoReeB+6tmxSoi7K+jfQrjPbF5yceJjH2nXga9+dpQoz4fk1LhJnTGbltwe46MN5JrZpHE
+ ph+JIlNZPRQeuF/0=
+X-Received: by 2002:aa7:c609:0:b0:514:af52:e49a with SMTP id
+ h9-20020aa7c609000000b00514af52e49amr4944144edq.25.1688294031086; 
+ Sun, 02 Jul 2023 03:33:51 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlFRN61stYeTIOU0JMtFhJY37ysiOxYYyEvyaTlOBi4Xq7nxiK2eZ97Kk5hwbT/hlc63lR3kfA==
+X-Received: by 2002:aa7:c609:0:b0:514:af52:e49a with SMTP id
+ h9-20020aa7c609000000b00514af52e49amr4944131edq.25.1688294030813; 
+ Sun, 02 Jul 2023 03:33:50 -0700 (PDT)
+Received: from redhat.com ([2.52.134.224]) by smtp.gmail.com with ESMTPSA id
+ m3-20020a170906720300b009926928d486sm5576353ejk.35.2023.07.02.03.33.48
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 02 Jul 2023 03:33:49 -0700 (PDT)
+Date: Sun, 2 Jul 2023 06:33:45 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
 Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org,
  Ani Sinha <anisinha@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
  Jason Wang <jasowang@redhat.com>, Keith Busch <kbusch@kernel.org>,
  Klaus Jensen <its@irrelevant.dk>
-References: <20230702083357.13517-1-akihiko.odaki@daynix.com>
- <20230702083357.13517-4-akihiko.odaki@daynix.com>
- <20230702045815-mutt-send-email-mst@kernel.org>
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <20230702045815-mutt-send-email-mst@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::431;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x431.google.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Subject: Re: [PATCH v2 3/4] igb: Fix ARI next function numbers
+Message-ID: <20230702063136-mutt-send-email-mst@kernel.org>
+References: <20230702094631.39111-1-akihiko.odaki@daynix.com>
+ <20230702094631.39111-4-akihiko.odaki@daynix.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230702094631.39111-4-akihiko.odaki@daynix.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, NICE_REPLY_A=-0.093, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -101,45 +101,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/07/02 18:00, Michael S. Tsirkin wrote:
-> On Sun, Jul 02, 2023 at 05:33:56PM +0900, Akihiko Odaki wrote:
->> The ARI next function number field is undefined for VF so the PF should
->> end the linked list formed with the field by specifying 0.
->>
->> Fixes: 3a977deebe ("Intrdocue igb device emulation")
->> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+On Sun, Jul 02, 2023 at 06:46:27PM +0900, Akihiko Odaki wrote:
+> The ARI next function number field is undefined for VF so the PF should
+> end the linked list formed with the field by specifying 0.
 > 
+> Fixes: 3a977deebe ("Intrdocue igb device emulation")
+> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+> ---
+>  hw/core/machine.c | 3 ++-
+>  hw/net/igb.c      | 5 ++++-
+>  2 files changed, 6 insertions(+), 2 deletions(-)
 > 
-> I would also change it for the VF just so people don't wonder
-> what's the magic value. Do document in commit log though.
-> 
-> Maybe just drop this parameter from pcie_ari_init completely
-> for now?
+> diff --git a/hw/core/machine.c b/hw/core/machine.c
+> index f984a767a2..1f5aacd1dc 100644
+> --- a/hw/core/machine.c
+> +++ b/hw/core/machine.c
+> @@ -41,7 +41,8 @@
+>  
+>  GlobalProperty hw_compat_8_0[] = {
+>      { "migration", "multifd-flush-after-each-section", "on"},
+> -    { "nvme", "ari-nextfn-1", "on"},
+> +    { "igb", "ari-nextfn-1", "on" },
+> +    { "nvme", "ari-nextfn-1", "on" },
+>  };
+>  const size_t hw_compat_8_0_len = G_N_ELEMENTS(hw_compat_8_0);
+>  
+> diff --git a/hw/net/igb.c b/hw/net/igb.c
+> index 1c989d7677..d37d43c155 100644
+> --- a/hw/net/igb.c
+> +++ b/hw/net/igb.c
+> @@ -78,6 +78,8 @@ struct IGBState {
+>      uint32_t ioaddr;
+>  
+>      IGBCore core;
+> +
+> +    bool ari_nextfn_1;
 
-I sent v2, but it doesn't change the field for VFs either to save code 
-for migration. The parameter for pcie_ari_init() also remains to migrate 
-from older versions.
+Document this field please, explaining why it's there.
 
-> 
-> 
->> ---
->>   hw/net/igb.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/hw/net/igb.c b/hw/net/igb.c
->> index 1c989d7677..897386fc09 100644
->> --- a/hw/net/igb.c
->> +++ b/hw/net/igb.c
->> @@ -431,7 +431,7 @@ static void igb_pci_realize(PCIDevice *pci_dev, Error **errp)
->>           hw_error("Failed to initialize AER capability");
->>       }
->>   
->> -    pcie_ari_init(pci_dev, 0x150, 1);
->> +    pcie_ari_init(pci_dev, 0x150, 0);
->>   
->>       pcie_sriov_pf_init(pci_dev, IGB_CAP_SRIOV_OFFSET, TYPE_IGBVF,
->>           IGB_82576_VF_DEV_ID, IGB_MAX_VF_FUNCTIONS, IGB_MAX_VF_FUNCTIONS,
->> -- 
->> 2.41.0
-> 
+>  };
+>  
+>  #define IGB_CAP_SRIOV_OFFSET    (0x160)
+> @@ -431,7 +433,7 @@ static void igb_pci_realize(PCIDevice *pci_dev, Error **errp)
+>          hw_error("Failed to initialize AER capability");
+>      }
+>  
+> -    pcie_ari_init(pci_dev, 0x150, 1);
+> +    pcie_ari_init(pci_dev, 0x150, s->ari_nextfn_1 ? 1 : 0);
+
+Why don't we move the logic to pci core, and drop code duplication
+completely?
+
+>  
+>      pcie_sriov_pf_init(pci_dev, IGB_CAP_SRIOV_OFFSET, TYPE_IGBVF,
+>          IGB_82576_VF_DEV_ID, IGB_MAX_VF_FUNCTIONS, IGB_MAX_VF_FUNCTIONS,
+> @@ -582,6 +584,7 @@ static const VMStateDescription igb_vmstate = {
+>  
+>  static Property igb_properties[] = {
+>      DEFINE_NIC_PROPERTIES(IGBState, conf),
+> +    DEFINE_PROP_BOOL("ari-nextfn-1", IGBState, ari_nextfn_1, false),
+>      DEFINE_PROP_END_OF_LIST(),
+>  };
+
+This really needs to be a non stable property (prefix with "x-").
+
+
+
+> -- 
+> 2.41.0
+
 
