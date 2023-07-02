@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4C3F744E67
+	by mail.lfdr.de (Postfix) with ESMTPS id C95AE744E66
 	for <lists+qemu-devel@lfdr.de>; Sun,  2 Jul 2023 17:50:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFzKG-0004Qx-37; Sun, 02 Jul 2023 11:49:24 -0400
+	id 1qFzKL-0004Rf-GR; Sun, 02 Jul 2023 11:49:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qFzKF-0004Qo-1y
- for qemu-devel@nongnu.org; Sun, 02 Jul 2023 11:49:23 -0400
+ id 1qFzKJ-0004RJ-4O
+ for qemu-devel@nongnu.org; Sun, 02 Jul 2023 11:49:27 -0400
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qFzKD-0007Rx-ER
- for qemu-devel@nongnu.org; Sun, 02 Jul 2023 11:49:22 -0400
+ id 1qFzKH-0007SK-H0
+ for qemu-devel@nongnu.org; Sun, 02 Jul 2023 11:49:26 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=Z1AJRwxt+2g/RjyKM+q/yhnYY3uDv0LXDALeobAIG8I=; b=bj6pnhyqi9/S/pfL3l9XjZ1B+l
- WQSXLLHsWMYPORRXE+0vE2D9S2+LOV3MuytYsH8n4zSgCkOxcplagnO/LkSrLkD/4pb09yQO5D0+D
- fLVNQKQ/k3AdG8EwpcZvEiXM1WOrAES6YdxeGwCZDTQNrgFRf9T1579us5YjLYvYiTqKRRKgHY5VW
- 112xlsJJ5w+kGj2cxQPS8m/6BTx8SJfOnwfrVmaDlnv/FuGn2r8RV44zt5Z832N7zKNKldfrjvFqH
- A02YZmVJhuKUmEIsqkXvVIdDVgkbe7Js6s6ItQyL0KtYBqsZSSTPeibkyEFAy4s1ZfKH/aPukDvc8
- 3j68jYKLrp0DkLM6YWzYyIqQJN3qnN+5bdcvE57UFenNy9vQLA86CvnF4cBzZNegJ5fVWF9JiAoO/
- 2xyG/Nu3NrbY+ze1smdHutIZ95xoA0AxxpBeg4LmbnJB7UObn35lh3pmdZGaROo+Xq9vGgZGLmrXJ
- eQc96QLsKKRk+88fQAU2FhxYGZidmdAcY7NpQJjDf65TWg66Juk876gFasP3hGkVe2MjC9vzJpPwt
- mVyeaaz/a9B6p8rdJzwQm+vHwX4yq4bEkqW/aIhVYZGkIrNytwl5QVNUKadKvGhbWIlPKSFnpI9qy
- eT8eIiw/m4HoVittF7SaVH2RMiot1YAY3h8GCDw1E=;
+ bh=EMVpZkewzdBU5s5V36FPZUP8gSfxVj3WxFjnNF32FeQ=; b=EDOTQZ6db4XYgTP3Ex2dOuYhys
+ mqBw8AcSWhcIychmZdzwoqiK4UbPZePWRABQSPX0wfMQS7X7Ylf387++WXVs8+7/RMLewO/AzTunF
+ kPnsYFOX5TNfLVeHyf5yOtyf5yApqgoStYgRkQiqYCwc314g387hkgNFAE0basBuwCgQrpYzMFOq8
+ QQv3C+KwJ9t+Fi1uKY5EAUvfyrQv59mxu+VwDqudoJ+WZ6IRANElLjTEYo1ic0GI/5UCw+uK4iQgu
+ 9Pqk1LQmUQ38iMyhpnm69y7L1K7Ia438ZxdJ6cegf60T4l3zkV27+6AajFrMWF0e5C/uXZ4pfRjfr
+ Zebe1zjML7yueCmKSJH4btL8FFXbK563pcGcmy+RPBqXytC/1vyCIQUkv8fs5QPnnFfCGRYbagY5K
+ zA56HsfICoBI7FNr7m8q+pmkT3mX11HGqsvqjhaLEd17UyHeOyJt/is3h7mPbuPDDF3f9SgZZyVzA
+ B4ERJ+QK9QJhbbmYa4c2RhFwt/K/Rrpf9AEoufbvISKovWn6o5bMeiuID29ebWJce14EdYc87VuWv
+ EuYwBHewxBFWvRLAkUM+iDj/IRzwgKqxHz+QEGU2dwLSixzc2WSd1GjI8Q5PJ+n0SB86vz1K2hR30
+ W4es3uLadElN68JVKjk7/TrHQu+L7HET8nf9gjUuk=;
 Received: from [2a00:23c4:8bad:df00:f732:dd76:7417:d15b] (helo=kentang.home)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qFzJx-0001Ji-L5; Sun, 02 Jul 2023 16:49:10 +0100
+ id 1qFzK2-0001Ji-3V; Sun, 02 Jul 2023 16:49:14 +0100
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: laurent@vivier.eu,
 	qemu-devel@nongnu.org
-Date: Sun,  2 Jul 2023 16:48:26 +0100
-Message-Id: <20230702154838.722809-10-mark.cave-ayland@ilande.co.uk>
+Date: Sun,  2 Jul 2023 16:48:27 +0100
+Message-Id: <20230702154838.722809-11-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20230702154838.722809-1-mark.cave-ayland@ilande.co.uk>
 References: <20230702154838.722809-1-mark.cave-ayland@ilande.co.uk>
@@ -50,7 +50,8 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a00:23c4:8bad:df00:f732:dd76:7417:d15b
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH 09/21] q800: add Apple Sound Chip (ASC) audio to machine
+Subject: [PATCH 10/21] q800: add easc bool machine class property to switch
+ between ASC and EASC
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -76,133 +77,91 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The Quadra 800 has the enhanced ASC (EASC) audio chip which supports both the
-legacy IRQ routing through VIA2 and also "A/UX" mode routing direct to the
-CPU.
+This determines whether the Apple Sound Chip (ASC) is set to enhanced mode
+(default) or to original mode. The real Q800 hardware used an EASC chip however
+a lot of older software only works with the older ASC chip.
 
-Co-developed-by: Laurent Vivier <laurent@vivier.eu>
+Adding this as a machine parameter allows QEMU to be used as an developer aid
+for testing and migrating code from ASC to EASC.
+
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 ---
- hw/m68k/q800-glue.c         | 11 ++++++++++-
- hw/m68k/q800.c              | 17 +++++++++++++++++
- include/hw/m68k/q800-glue.h |  4 +++-
- include/hw/m68k/q800.h      |  2 ++
- 4 files changed, 32 insertions(+), 2 deletions(-)
+ hw/m68k/q800.c         | 30 +++++++++++++++++++++++++++++-
+ include/hw/m68k/q800.h |  1 +
+ 2 files changed, 30 insertions(+), 1 deletion(-)
 
-diff --git a/hw/m68k/q800-glue.c b/hw/m68k/q800-glue.c
-index 710a5c331e..f413b1599a 100644
---- a/hw/m68k/q800-glue.c
-+++ b/hw/m68k/q800-glue.c
-@@ -97,6 +97,11 @@ static void GLUE_set_irq(void *opaque, int irq, int level)
-             irq = 6;
-             break;
- 
-+        case GLUE_IRQ_IN_ASC:
-+            /* Route to VIA2 instead, negative edge-triggered */
-+            qemu_set_irq(s->irqs[GLUE_IRQ_ASC], !level);
-+            return;
-+
-         default:
-             g_assert_not_reached();
-         }
-@@ -123,6 +128,10 @@ static void GLUE_set_irq(void *opaque, int irq, int level)
-             irq = 6;
-             break;
- 
-+        case GLUE_IRQ_IN_ASC:
-+            irq = 4;
-+            break;
-+
-         default:
-             g_assert_not_reached();
-         }
-@@ -214,7 +223,7 @@ static void glue_init(Object *obj)
-     qdev_init_gpio_in(dev, GLUE_set_irq, 8);
-     qdev_init_gpio_in_named(dev, glue_auxmode_set_irq, "auxmode", 1);
- 
--    qdev_init_gpio_out(dev, s->irqs, 1);
-+    qdev_init_gpio_out(dev, s->irqs, 2);
- 
-     /* NMI release timer */
-     s->nmi_release = timer_new_ms(QEMU_CLOCK_VIRTUAL, glue_nmi_release, s);
 diff --git a/hw/m68k/q800.c b/hw/m68k/q800.c
-index 3209309173..ae07aa20ff 100644
+index ae07aa20ff..5ae7c37760 100644
 --- a/hw/m68k/q800.c
 +++ b/hw/m68k/q800.c
-@@ -43,6 +43,7 @@
- #include "hw/misc/djmemc.h"
- #include "hw/misc/iosb.h"
- #include "hw/input/adb.h"
-+#include "hw/audio/asc.h"
- #include "hw/nubus/mac-nubus-bridge.h"
- #include "hw/display/macfb.h"
- #include "hw/block/swim.h"
-@@ -480,6 +481,22 @@ static void q800_machine_init(MachineState *machine)
+@@ -484,7 +484,8 @@ static void q800_machine_init(MachineState *machine)
+     /* Apple Sound Chip */
  
-     scsi_bus_legacy_handle_cmdline(&esp->bus);
+     object_initialize_child(OBJECT(machine), "asc", &m->asc, TYPE_ASC);
+-    qdev_prop_set_uint8(DEVICE(&m->asc), "asctype", ASC_TYPE_EASC);
++    qdev_prop_set_uint8(DEVICE(&m->asc), "asctype", m->easc ? ASC_TYPE_EASC
++                                                            : ASC_TYPE_ASC);
+     sysbus = SYS_BUS_DEVICE(&m->asc);
+     sysbus_realize_and_unref(sysbus, &error_fatal);
+     memory_region_add_subregion(&m->macio, ASC_BASE - IO_BASE,
+@@ -674,6 +675,28 @@ static void q800_machine_init(MachineState *machine)
+     }
+ }
  
-+    /* Apple Sound Chip */
++static bool q800_get_easc(Object *obj, Error **errp)
++{
++    Q800MachineState *ms = Q800_MACHINE(obj);
 +
-+    object_initialize_child(OBJECT(machine), "asc", &m->asc, TYPE_ASC);
-+    qdev_prop_set_uint8(DEVICE(&m->asc), "asctype", ASC_TYPE_EASC);
-+    sysbus = SYS_BUS_DEVICE(&m->asc);
-+    sysbus_realize_and_unref(sysbus, &error_fatal);
-+    memory_region_add_subregion(&m->macio, ASC_BASE - IO_BASE,
-+                                sysbus_mmio_get_region(sysbus, 0));
-+    sysbus_connect_irq(sysbus, 0, qdev_get_gpio_in(DEVICE(&m->glue),
-+                                                   GLUE_IRQ_IN_ASC));
++    return ms->easc;
++}
 +
-+    /* Wire ASC IRQ via GLUE for use in classic mode */
-+    qdev_connect_gpio_out(DEVICE(&m->glue), GLUE_IRQ_ASC,
-+                          qdev_get_gpio_in(DEVICE(&m->via2),
-+                                           VIA2_IRQ_ASC_BIT));
++static void q800_set_easc(Object *obj, bool value, Error **errp)
++{
++    Q800MachineState *ms = Q800_MACHINE(obj);
 +
-     /* SWIM floppy controller */
++    ms->easc = value;
++}
++
++static void q800_init(Object *obj)
++{
++    Q800MachineState *ms = Q800_MACHINE(obj);
++
++    /* Default to EASC */
++    ms->easc = true;
++}
++
+ static GlobalProperty hw_compat_q800[] = {
+     { "scsi-hd", "quirk_mode_page_vendor_specific_apple", "on" },
+     { "scsi-hd", "vendor", " SEAGATE" },
+@@ -706,11 +729,16 @@ static void q800_machine_class_init(ObjectClass *oc, void *data)
+     mc->block_default_type = IF_SCSI;
+     mc->default_ram_id = "m68k_mac.ram";
+     compat_props_add(mc->compat_props, hw_compat_q800, hw_compat_q800_len);
++
++    object_class_property_add_bool(oc, "easc", q800_get_easc, q800_set_easc);
++    object_class_property_set_description(oc, "easc",
++        "Set to off to use ASC rather than EASC");
+ }
  
-     object_initialize_child(OBJECT(machine), "swim", &m->swim,
-diff --git a/include/hw/m68k/q800-glue.h b/include/hw/m68k/q800-glue.h
-index a35efc1c53..ceb916d16c 100644
---- a/include/hw/m68k/q800-glue.h
-+++ b/include/hw/m68k/q800-glue.h
-@@ -35,7 +35,7 @@ struct GLUEState {
-     M68kCPU *cpu;
-     uint8_t ipr;
-     uint8_t auxmode;
--    qemu_irq irqs[1];
-+    qemu_irq irqs[2];
-     QEMUTimer *nmi_release;
+ static const TypeInfo q800_machine_typeinfo = {
+     .name       = MACHINE_TYPE_NAME("q800"),
+     .parent     = TYPE_MACHINE,
++    .instance_init = q800_init,
+     .instance_size = sizeof(Q800MachineState),
+     .class_init = q800_machine_class_init,
  };
- 
-@@ -44,7 +44,9 @@ struct GLUEState {
- #define GLUE_IRQ_IN_SONIC      2
- #define GLUE_IRQ_IN_ESCC       3
- #define GLUE_IRQ_IN_NMI        4
-+#define GLUE_IRQ_IN_ASC        5
- 
- #define GLUE_IRQ_NUBUS_9       0
-+#define GLUE_IRQ_ASC           1
- 
- #endif
 diff --git a/include/hw/m68k/q800.h b/include/hw/m68k/q800.h
-index 04e4e0bce3..790cf433f3 100644
+index 790cf433f3..fbaacd88bd 100644
 --- a/include/hw/m68k/q800.h
 +++ b/include/hw/m68k/q800.h
-@@ -38,6 +38,7 @@
- #include "hw/display/macfb.h"
- #include "hw/misc/djmemc.h"
- #include "hw/misc/iosb.h"
-+#include "hw/audio/asc.h"
+@@ -47,6 +47,7 @@
+ struct Q800MachineState {
+     MachineState parent_obj;
  
- /*
-  * The main Q800 machine
-@@ -60,6 +61,7 @@ struct Q800MachineState {
-     MacfbNubusState macfb;
-     DJMEMCState djmemc;
-     IOSBState iosb;
-+    ASCState asc;
-     MemoryRegion ramio;
-     MemoryRegion macio;
-     MemoryRegion macio_alias;
++    bool easc;
+     M68kCPU cpu;
+     MemoryRegion rom;
+     GLUEState glue;
 -- 
 2.30.2
 
