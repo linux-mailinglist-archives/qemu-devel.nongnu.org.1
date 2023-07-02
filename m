@@ -2,52 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FD4C744D9B
-	for <lists+qemu-devel@lfdr.de>; Sun,  2 Jul 2023 14:38:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00E67744DA2
+	for <lists+qemu-devel@lfdr.de>; Sun,  2 Jul 2023 14:44:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qFwJy-0000hy-MF; Sun, 02 Jul 2023 08:36:54 -0400
+	id 1qFwQS-0002RV-Du; Sun, 02 Jul 2023 08:43:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qFwJv-0000hV-NW; Sun, 02 Jul 2023 08:36:51 -0400
-Received: from zero.eik.bme.hu ([152.66.115.2])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qFwQO-0002QY-O6
+ for qemu-devel@nongnu.org; Sun, 02 Jul 2023 08:43:32 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qFwJt-00040J-7B; Sun, 02 Jul 2023 08:36:51 -0400
-Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id D5B5874645F;
- Sun,  2 Jul 2023 14:36:28 +0200 (CEST)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 9E4D274632B; Sun,  2 Jul 2023 14:36:28 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 9AE10746369;
- Sun,  2 Jul 2023 14:36:28 +0200 (CEST)
-Date: Sun, 2 Jul 2023 14:36:28 +0200 (CEST)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Daniel Henrique Barboza <danielhb413@gmail.com>
-cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, clg@kaod.org, 
- Greg Kurz <groug@kaod.org>, Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v3 00/14] Misc clean ups to target/ppc exception handling
-In-Reply-To: <a314ebf0-fede-2646-a255-59ee9ebf33d6@gmail.com>
-Message-ID: <a7502abc-8186-134f-6019-771c1afc27fc@eik.bme.hu>
-References: <cover.1686868895.git.balaton@eik.bme.hu>
- <92e3591e-cce7-c3e7-7d73-a0bd24de8c2c@gmail.com>
- <1726bfcd-0e6e-0a72-bc97-be7a79f95340@eik.bme.hu>
- <03e0c0c0-d3e5-bc4c-6c07-db642d2e6f52@gmail.com>
- <275e9cc3-8cb5-052a-7683-7abf4ea78522@eik.bme.hu>
- <a314ebf0-fede-2646-a255-59ee9ebf33d6@gmail.com>
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qFwQN-000641-8t
+ for qemu-devel@nongnu.org; Sun, 02 Jul 2023 08:43:32 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1688301810;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=HTruH8z8mVnt+uJIEUxNX1yo4B7p96vvYy4M4kNWLqY=;
+ b=G12Znu89dmBxliDE10uved3KnWv+W8Nx3MlG6fHa4ZNXmtQNeadZu8vdIijSwuXHGWDEAJ
+ deTFzXW2UXxzPPV6roEuJKlzAA08//y2C8mVQa+fTgkO2MGRai30M85GrUiTK00LMWbr2+
+ g6Jp6qcG4m4H/JaMlCdPxU5vFfVEaQ0=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-167-cF5BlTmJNiSjk9d6k9xiew-1; Sun, 02 Jul 2023 08:43:28 -0400
+X-MC-Unique: cF5BlTmJNiSjk9d6k9xiew-1
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-9932bf9a1e8so67263666b.0
+ for <qemu-devel@nongnu.org>; Sun, 02 Jul 2023 05:43:28 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1688301807; x=1690893807;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=HTruH8z8mVnt+uJIEUxNX1yo4B7p96vvYy4M4kNWLqY=;
+ b=HJeS5mh0zTOuwApTotwD7PftBpK6IreO4ANMuQRT2NwHJg192zX/LKwHC1kY9YEB56
+ AjoNDnlit2HxUFCEhEzOSChRh6iMenQFYvaMGrsvO6p5kd+Mmuxj8CUp5dYmYFnRdpcT
+ 5xaH2HXaCwQuqnL6uSLqQrCtj3rVwpG3wsl9mW8CnqehpKhxQ+/+cwF0Srk02IH6rhsZ
+ vdX5bROp9eL3SUKfGQfLUTk7yuAvoJKcpX2k8ugG2o8Hw7CU9+92ATXy3Jkw96X5zs5j
+ vgSoaHoGZb/6wu2oC4Cl2SQTVTGGzczeH6t1onh/qwHnxeA+sti+9t2ZsMeRjn98GPsY
+ NIxg==
+X-Gm-Message-State: AC+VfDw9Lraka8+cwvOf296kgytjqwL8Va1xA28MZ+nKqp0i+qGtIYLL
+ Kls0Hr+lFjFi9rD5DQVtVmQ4k4lEpYbyfC6Rr6xFYjHK+5tWGF8XsizNqO0OOapmO9k+I3inOua
+ dL8RANp3v6whYCvk=
+X-Received: by 2002:a17:906:7e0b:b0:992:c5ad:18bc with SMTP id
+ e11-20020a1709067e0b00b00992c5ad18bcmr5145999ejr.70.1688301807655; 
+ Sun, 02 Jul 2023 05:43:27 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlEXXNCQLM+K6Yl8Buv3eb9GpsUy2a2ULde/IY17gmPzEw06TB5+xw+ZU0UeP1JXRh4yTUBlGw==
+X-Received: by 2002:a17:906:7e0b:b0:992:c5ad:18bc with SMTP id
+ e11-20020a1709067e0b00b00992c5ad18bcmr5145987ejr.70.1688301807398; 
+ Sun, 02 Jul 2023 05:43:27 -0700 (PDT)
+Received: from redhat.com ([2.52.134.224]) by smtp.gmail.com with ESMTPSA id
+ a10-20020a17090640ca00b0098e025cda3bsm10386293ejk.141.2023.07.02.05.43.25
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 02 Jul 2023 05:43:26 -0700 (PDT)
+Date: Sun, 2 Jul 2023 08:43:23 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org,
+ Ani Sinha <anisinha@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
+ Jason Wang <jasowang@redhat.com>, Keith Busch <kbusch@kernel.org>,
+ Klaus Jensen <its@irrelevant.dk>
+Subject: Re: [PATCH v3 0/2] pcie: Fix ARI next function numbers
+Message-ID: <20230702084251-mutt-send-email-mst@kernel.org>
+References: <20230702120229.66978-1-akihiko.odaki@daynix.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-X-Spam-Probability: 9%
-Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
- helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230702120229.66978-1-akihiko.odaki@daynix.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -63,54 +100,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, 1 Jul 2023, Daniel Henrique Barboza wrote:
-> On 7/1/23 06:39, BALATON Zoltan wrote:
->> On Sat, 1 Jul 2023, Daniel Henrique Barboza wrote:
->>> On 6/30/23 19:57, BALATON Zoltan wrote:
->>>> On Fri, 30 Jun 2023, Daniel Henrique Barboza wrote:
->>>>> Patches 1, 2, 3, 5, 7 and 11 are queued.
->>>>> 
->>>>> If you would be so kind to get the remaining patches, rebase them
->>>>> on top of my ppc-next and resend, I believe there's more stuff
->>>>> to be queued.
->>>> 
->>>> Thanks for taking care of these. I'll do the rebase of remaining patches 
->>>> once the current queue is merged, they aren't urgent so I can come back 
->>>> to those later. I'm working on some sam460ex patches but don't know yet 
->>>> when can I send it so don't wait for me now.
->>> 
->>> Got it. Just bear in mind the current release schedule. Code freeze is 
->>> July 11th:
->>> 
->>> https://wiki.qemu.org/Planning/8.1
->>> 
->>> I'll send one last PR before freeze (probably on July 10th) and then it'll 
->>> be only bug fixes until end of August.
->> 
->> Do you mean one more last PR after merging the current queue or the current 
->> queue will only be in that last PR? I hoped there would be a PR now on 
->> which I can rebase the outstanding patches for the last PR so I don't have 
->> to rebase on next but if the only PR you plan is the last on 10th then I 
->> may need to move to ppc-next now.
->
-> Just use ppc-next right now.
->
-> Even if I send a PR today with what we have, Peter/Richard has no 
-> obligation of merging it quickly on Monday (there's an US holiday July 
-> 4th, and some people will also skip July 3rd). If you wait for such PR 
-> to merge upstream, then start rebasing your stuff, you'll have less time 
-> to work with.
+On Sun, Jul 02, 2023 at 09:02:25PM +0900, Akihiko Odaki wrote:
+> The ARI next function number field is undefined for VF. The PF should
+> end the linked list formed with the field by specifying 0.
+> 
+> Supersedes: <20230701070133.24877-1-akihiko.odaki@daynix.com>
+> ("[PATCH 0/4] pci: Compare function number and ARI next function number")
 
-They may not be in the US though. Anyway, I've tried to rebase the 
-remaining patches on your ppc-next branch and they applied without changes 
-so not sure what you need from me now. I think Nick had alternative 
-versions of the checkstop and sc patches that may cause a rebase when then 
-go in first. Do you want me to merge them and submit that as a series with 
-my patches? I don't have much time for now and these are just clean ups so 
-I can live with these missing the next release and can come back to it 
-later. I may try to do some sam460ex clean ups instead that should not 
-clash with anything else.
+Thanks! How was this patch tested?
 
-Regards,
-BALATON Zoltan
+
+> V2 -> V3:
+>   Moved the logic to PCI common infrastucture (Michael S. Tsirkin)
+> 
+> V1 -> V2:
+>   Fixed migration. (Michael S. Tsirkin)
+>   Added a caveat comment. (Michael S. Tsirkin)
+> 
+> Akihiko Odaki (2):
+>   pcie: Use common ARI next function number
+>   pcie: Specify 0 for ARI next function numbers
+> 
+>  docs/pcie_sriov.txt   | 4 ++--
+>  include/hw/pci/pci.h  | 2 ++
+>  include/hw/pci/pcie.h | 2 +-
+>  hw/core/machine.c     | 1 +
+>  hw/net/igb.c          | 2 +-
+>  hw/net/igbvf.c        | 2 +-
+>  hw/nvme/ctrl.c        | 2 +-
+>  hw/pci/pci.c          | 2 ++
+>  hw/pci/pcie.c         | 4 +++-
+>  9 files changed, 14 insertions(+), 7 deletions(-)
+> 
+> -- 
+> 2.41.0
+
 
