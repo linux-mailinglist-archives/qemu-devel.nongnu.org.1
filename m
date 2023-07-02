@@ -2,40 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2691744F9C
-	for <lists+qemu-devel@lfdr.de>; Sun,  2 Jul 2023 20:07:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B0B0A744F97
+	for <lists+qemu-devel@lfdr.de>; Sun,  2 Jul 2023 20:07:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qG1SI-0000kQ-AO; Sun, 02 Jul 2023 14:05:50 -0400
+	id 1qG1SN-0000mq-H4; Sun, 02 Jul 2023 14:05:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qG1Rt-0000dQ-E0; Sun, 02 Jul 2023 14:05:27 -0400
+ id 1qG1Rv-0000dr-IU; Sun, 02 Jul 2023 14:05:29 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qG1Rr-0005JX-5i; Sun, 02 Jul 2023 14:05:24 -0400
+ id 1qG1Rt-0005N3-DP; Sun, 02 Jul 2023 14:05:27 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id EBBE310DF3;
- Sun,  2 Jul 2023 21:04:54 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 2028510DF4;
+ Sun,  2 Jul 2023 21:04:55 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 308BE11207;
+ by tsrv.corpit.ru (Postfix) with SMTP id 576D111208;
  Sun,  2 Jul 2023 21:04:53 +0300 (MSK)
-Received: (nullmailer pid 2122381 invoked by uid 1000);
+Received: (nullmailer pid 2122384 invoked by uid 1000);
  Sun, 02 Jul 2023 18:04:51 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org, qemu-stable@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.0.3 64/65] linux-user: Avoid mmap of the last byte of the
- reserved_va
-Date: Sun,  2 Jul 2023 21:04:37 +0300
-Message-Id: <20230702180439.2122316-10-mjt@tls.msk.ru>
+Cc: Dongwon Kim <dongwon.kim@intel.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Vivek Kasireddy <vivek.kasireddy@intel.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.0.3 65/65] ui/gtk: set the area of the scanout texture
+ correctly
+Date: Sun,  2 Jul 2023 21:04:38 +0300
+Message-Id: <20230702180439.2122316-11-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.0.3-20230702210422@cover.tls.msk.ru>
 References: <qemu-stable-8.0.3-20230702210422@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -60,57 +62,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Richard Henderson <richard.henderson@linaro.org>
+From: Dongwon Kim <dongwon.kim@intel.com>
 
-There is an overflow problem in mmap_find_vma_reserved:
-when reserved_va == UINT32_MAX, end may overflow to 0.
-Rather than a larger rewrite at this time, simply avoid
-the final byte of the VA, which avoids searching the
-final page, which avoids the overflow.
+x and y offsets and width and height of the scanout texture
+is not correctly configured in case guest scanout frame is
+dmabuf.
 
-Cc: qemu-stable@nongnu.org
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1741
-Fixes: 95059f9c ("include/exec: Change reserved_va semantics to last byte")
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Tested-by: Michael Tokarev <mjt@tls.msk.ru>
-Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
-Message-Id: <20230629080835.71371-1-richard.henderson@linaro.org>
-(cherry picked from commit 605a8b5491a119a2a6efbf61e5a38f9374645990)
+Cc: Gerd Hoffmann <kraxel@redhat.com>
+Cc: Marc-André Lureau <marcandre.lureau@redhat.com>
+Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>
+Signed-off-by: Dongwon Kim <dongwon.kim@intel.com>
+Message-ID: <20230621213150.29573-1-dongwon.kim@intel.com>
+(cherry picked from commit 37802a24eb4e535d96d6fe0273505d2b5c6528c2)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/linux-user/mmap.c b/linux-user/mmap.c
-index 0aa8ae7356..2692936773 100644
---- a/linux-user/mmap.c
-+++ b/linux-user/mmap.c
-@@ -281,9 +281,15 @@ static abi_ulong mmap_find_vma_reserved(abi_ulong start, abi_ulong size,
-     /* Note that start and size have already been aligned by mmap_find_vma. */
+diff --git a/ui/gtk-egl.c b/ui/gtk-egl.c
+index 19130041bc..e99e3b0d8c 100644
+--- a/ui/gtk-egl.c
++++ b/ui/gtk-egl.c
+@@ -257,7 +257,8 @@ void gd_egl_scanout_dmabuf(DisplayChangeListener *dcl,
  
-     end_addr = start + size;
-+    /*
-+     * Start at the top of the address space, ignoring the last page.
-+     * If reserved_va == UINT32_MAX, then end_addr wraps to 0,
-+     * throwing the rest of the calculations off.
-+     * TODO: rewrite using last_addr instead.
-+     * TODO: use the interval tree instead of probing every page.
-+     */
-     if (start > reserved_va - size) {
--        /* Start at the top of the address space.  */
--        end_addr = ((reserved_va + 1 - size) & -align) + size;
-+        end_addr = ((reserved_va - size) & -align) + size;
-         looped = true;
-     }
+     gd_egl_scanout_texture(dcl, dmabuf->texture,
+                            dmabuf->y0_top, dmabuf->width, dmabuf->height,
+-                           0, 0, dmabuf->width, dmabuf->height);
++                           dmabuf->x, dmabuf->y, dmabuf->scanout_width,
++                           dmabuf->scanout_height);
  
-@@ -296,8 +302,8 @@ static abi_ulong mmap_find_vma_reserved(abi_ulong start, abi_ulong size,
-                 /* Failure.  The entire address space has been searched.  */
-                 return (abi_ulong)-1;
-             }
--            /* Re-start at the top of the address space.  */
--            addr = end_addr = ((reserved_va + 1 - size) & -align) + size;
-+            /* Re-start at the top of the address space (see above). */
-+            addr = end_addr = ((reserved_va - size) & -align) + size;
-             looped = true;
-         } else {
-             prot = page_get_flags(addr);
+     if (dmabuf->allow_fences) {
+         vc->gfx.guest_fb.dmabuf = dmabuf;
+diff --git a/ui/gtk-gl-area.c b/ui/gtk-gl-area.c
+index c384a1516b..1605818bd1 100644
+--- a/ui/gtk-gl-area.c
++++ b/ui/gtk-gl-area.c
+@@ -299,7 +299,8 @@ void gd_gl_area_scanout_dmabuf(DisplayChangeListener *dcl,
+ 
+     gd_gl_area_scanout_texture(dcl, dmabuf->texture,
+                                dmabuf->y0_top, dmabuf->width, dmabuf->height,
+-                               0, 0, dmabuf->width, dmabuf->height);
++                               dmabuf->x, dmabuf->y, dmabuf->scanout_width,
++                               dmabuf->scanout_height);
+ 
+     if (dmabuf->allow_fences) {
+         vc->gfx.guest_fb.dmabuf = dmabuf;
 -- 
 2.39.2
 
