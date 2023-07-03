@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B23E6745DED
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 15:54:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A65A9745DFB
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 15:56:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGJzg-0000TY-NK; Mon, 03 Jul 2023 09:53:32 -0400
+	id 1qGK01-0000r7-8A; Mon, 03 Jul 2023 09:53:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qGJzf-0000T6-7O
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 09:53:31 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ id 1qGJzj-0000YG-HY
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 09:53:35 -0400
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qGJzd-00081U-DM
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 09:53:30 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-3fbc1218262so54673825e9.3
- for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 06:53:29 -0700 (PDT)
+ id 1qGJzh-00083P-PJ
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 09:53:35 -0400
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-3110ab7110aso5171568f8f.3
+ for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 06:53:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688392408; x=1690984408;
+ d=linaro.org; s=google; t=1688392412; x=1690984412;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=w6WYXW4Y2CRXzJldZHFZiOGa1GgkyQ7N7MNmvXCUxfM=;
- b=yZ9K7324qeFp4nFloVx8dob12Bc1ydtmXPOANDeAunnpBTm3/jaW/8K4faEQxjNCkK
- jFLQdve+mN4MmXPx25tsorihiHYl6kGCR3pbmwwayQKWG+tXVm5pBLVozZnmOHPie521
- g5sWwDUGMaY8/H8dB8dc4ZUyzlWTepTMxPyzrhXpoOg1mzgsn6+0bp+bb0WwHeA4eH76
- FSpSYIbs+jbJr23rEs9JWAL3kxbHuDlBD8xfjO3ZNj8IJ1KZH5KeLQ3oJ24jP6xrXVK4
- aUXVpUvrOEg4KCzWmiEFiXiZU0EBgoiGbG9RLsDMfxx/WlWmkjrcFD3wVrDltzyjhoyP
- 7G3A==
+ bh=Sa+wfZu+Nea0/Jly4iHaBSQb1C7qOF4WA65LCb+E1bE=;
+ b=H6+sjVpMtyJgDkrpuWBa8TZDL8eqFuD3F0QZwLyApRSmCMwf8vYPtM+56oxmLAYOky
+ zOUiqsu/obBJYrM4OhKl4BnxOfWCp3/mqQtUlfSfUFxq3DtwlB5rywBJOuWXlPEWkliu
+ KKquyfA3biRf/j0oZ8GOapyU1VsBRJ92Obcsp3xO2vcwpQvSsnqkdb7g8VQBNH6YQ0nW
+ utt0Be4LcpQGoEf7K8C1IMuH6nBuIWyexi+mSsPBQdkVhe+XwK3Y8RSn1Mo1Iv8cAr0j
+ u9ak4XkFS83RaXmjcD4LfnnEo2dtKcARWSa35QrYeRbexnwDwvA5FRATVp1kwisEB37d
+ T1KQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688392408; x=1690984408;
+ d=1e100.net; s=20221208; t=1688392412; x=1690984412;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=w6WYXW4Y2CRXzJldZHFZiOGa1GgkyQ7N7MNmvXCUxfM=;
- b=DVH7EDMV9PxL4IYeWeAu0qoHtXWOi5qfMpPKwSFkKIBBKc4UYNHIigLDvpbMxY2HpG
- V5WoB/r/oOUsnLfFcOB/po0n5pUiVyi4sb/o02+A/bAXijJvTdSXghp8aGmJMBctgRH8
- yLBk6TOdqvaksTz/ZAL5Sq13MKp3SF0Bo7rzl1xgISlkiIdNdJ3kGYlfrvbHzBsRRPVY
- 5tb+T/DGxrO6CDyQw01WAA9pNzb9hDxeXbmTGSfDybt3gq7Oq2Lp2u/2jTszITPpVEua
- fJ1ZESOQmDby1XOOo0kU+tZDbrocaQHJmpjmcGZtlWhZmtrZyEYbd6iEcUu7CvSdlXuY
- KtDg==
-X-Gm-Message-State: ABy/qLYtzEsz3sc8PO8elj3wH+t/ISyiv/9kn1i/OQ4Ok9RnkQqwn6Wh
- Nr/lne2TY/6fINd5mS/LcxX/Mg==
-X-Google-Smtp-Source: APBJJlEwI+tG4ka4X2WNFrHru0XlOSGB9dLQ9eXnOSSpFsQHBJt+RN/8bIpmrn6QnYGuNMPgmd4O8A==
-X-Received: by 2002:a7b:cb94:0:b0:3fb:dbd0:a7e7 with SMTP id
- m20-20020a7bcb94000000b003fbdbd0a7e7mr1704581wmi.39.1688392407875; 
- Mon, 03 Jul 2023 06:53:27 -0700 (PDT)
+ bh=Sa+wfZu+Nea0/Jly4iHaBSQb1C7qOF4WA65LCb+E1bE=;
+ b=XCpc1n5RpB40U5vzuQUO8Jwe/2fhGoVX8oG+3wXRTTb+8rLf4teOAAsdRNZk6uBnuR
+ myqjhr5jpwNhuvG+JfXOp3d+9u422oXBBGWLWOojJAJbIDDywS24HeIOfVBz99Wh+omz
+ skgvxOBugkjdmByskiW6YL8vAohbo8rTPqHmxNphWFvwk6iJNLhqeT/5OBVYHLkKT2DL
+ 75V/C/dNYxItelrd89NeF0mdWQJsdk4Ja1SbWXPpuZ3o/y7EMFu0NtlL1pZTrAzuycil
+ Pz4Fz6RkA9EEuNSBecx/nOY97mKgd4qeca+to9FSXqHAUIDkP123Xf+kngCFHw4Cibz4
+ x4Yg==
+X-Gm-Message-State: ABy/qLZbH0CfOJgiq6oAml+ijoD+y7uze0n0tf/+19xXhWVw+5pyZy7R
+ UeGf6p5FZJ6whTJ5AhDRwFZ1uQ==
+X-Google-Smtp-Source: APBJJlGaR7W1Y0I+l++kxgWd/Nut2Fv4fGcybvp/ptVolf1Cg2GXfwLoJPs3n0a+UPTyBUr17VJPpQ==
+X-Received: by 2002:a05:6000:1250:b0:313:e526:f6dc with SMTP id
+ j16-20020a056000125000b00313e526f6dcmr8256973wrx.48.1688392412482; 
+ Mon, 03 Jul 2023 06:53:32 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- n9-20020a1c7209000000b003fbacc853ccsm15777974wmc.18.2023.07.03.06.53.27
+ a11-20020a056000050b00b003110dc7f408sm25801998wrf.41.2023.07.03.06.53.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 03 Jul 2023 06:53:27 -0700 (PDT)
+ Mon, 03 Jul 2023 06:53:31 -0700 (PDT)
 Received: from zen.lan (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 972C81FFD7;
+ by zen.linaroharston (Postfix) with ESMTP id B22551FFD9;
  Mon,  3 Jul 2023 14:44:31 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org, Ilya Leoshkevich <iii@linux.ibm.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Laurent Vivier <laurent@vivier.eu>
-Subject: [PULL 33/38] linux-user: Emulate /proc/self/smaps
-Date: Mon,  3 Jul 2023 14:44:22 +0100
-Message-Id: <20230703134427.1389440-34-alex.bennee@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 34/38] gdbstub: Expose gdb_get_process() and
+ gdb_get_first_cpu_in_process()
+Date: Mon,  3 Jul 2023 14:44:23 +0100
+Message-Id: <20230703134427.1389440-35-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230703134427.1389440-1-alex.bennee@linaro.org>
 References: <20230703134427.1389440-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,119 +100,104 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Ilya Leoshkevich <iii@linux.ibm.com>
 
-/proc/self/smaps is an extension of /proc/self/maps: it provides the
-same lines, plus additional information about each range.
+These functions will be needed by user-target.c in order to retrieve
+the name of the executable.
 
-GDB uses /proc/self/smaps when available, which means that
-generate-core-file tries it first before falling back to
-/proc/self/maps. This, in turn, causes it to dump the host mappings,
-since /proc/self/smaps is not emulated and is just passed through.
-
-Fix by emulating /proc/self/smaps. Provide true values only for
-Size, KernelPageSize, MMUPageSize and VmFlags. Leave all other values
-at 0, which is a valid conservative estimate.
-
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20230621203627.1808446-4-iii@linux.ibm.com>
+Message-Id: <20230621203627.1808446-5-iii@linux.ibm.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20230630180423.558337-34-alex.bennee@linaro.org>
+Message-Id: <20230630180423.558337-35-alex.bennee@linaro.org>
 
-diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index ecd9f5e23d..08162cc966 100644
---- a/linux-user/syscall.c
-+++ b/linux-user/syscall.c
-@@ -8042,7 +8042,36 @@ static int open_self_cmdline(CPUArchState *cpu_env, int fd)
-     return 0;
+diff --git a/gdbstub/internals.h b/gdbstub/internals.h
+index 33d21d6488..25e4d5eeaa 100644
+--- a/gdbstub/internals.h
++++ b/gdbstub/internals.h
+@@ -129,6 +129,8 @@ void gdb_read_byte(uint8_t ch);
+  */
+ bool gdb_got_immediate_ack(void);
+ /* utility helpers */
++GDBProcess *gdb_get_process(uint32_t pid);
++CPUState *gdb_get_first_cpu_in_process(GDBProcess *process);
+ CPUState *gdb_first_attached_cpu(void);
+ void gdb_append_thread_id(CPUState *cpu, GString *buf);
+ int gdb_get_cpu_index(CPUState *cpu);
+diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
+index 49143c7d83..ce3e4a2671 100644
+--- a/gdbstub/gdbstub.c
++++ b/gdbstub/gdbstub.c
+@@ -211,7 +211,7 @@ static uint32_t gdb_get_cpu_pid(CPUState *cpu)
+     return cpu->cluster_index + 1;
  }
  
--static int open_self_maps(CPUArchState *cpu_env, int fd)
-+static void show_smaps(int fd, unsigned long size)
-+{
-+    unsigned long page_size_kb = TARGET_PAGE_SIZE >> 10;
-+    unsigned long size_kb = size >> 10;
-+
-+    dprintf(fd, "Size:                  %lu kB\n"
-+                "KernelPageSize:        %lu kB\n"
-+                "MMUPageSize:           %lu kB\n"
-+                "Rss:                   0 kB\n"
-+                "Pss:                   0 kB\n"
-+                "Pss_Dirty:             0 kB\n"
-+                "Shared_Clean:          0 kB\n"
-+                "Shared_Dirty:          0 kB\n"
-+                "Private_Clean:         0 kB\n"
-+                "Private_Dirty:         0 kB\n"
-+                "Referenced:            0 kB\n"
-+                "Anonymous:             0 kB\n"
-+                "LazyFree:              0 kB\n"
-+                "AnonHugePages:         0 kB\n"
-+                "ShmemPmdMapped:        0 kB\n"
-+                "FilePmdMapped:         0 kB\n"
-+                "Shared_Hugetlb:        0 kB\n"
-+                "Private_Hugetlb:       0 kB\n"
-+                "Swap:                  0 kB\n"
-+                "SwapPss:               0 kB\n"
-+                "Locked:                0 kB\n"
-+                "THPeligible:    0\n", size_kb, page_size_kb, page_size_kb);
-+}
-+
-+static int open_self_maps_1(CPUArchState *cpu_env, int fd, bool smaps)
+-static GDBProcess *gdb_get_process(uint32_t pid)
++GDBProcess *gdb_get_process(uint32_t pid)
  {
-     CPUState *cpu = env_cpu(cpu_env);
-     TaskState *ts = cpu->opaque;
-@@ -8089,6 +8118,18 @@ static int open_self_maps(CPUArchState *cpu_env, int fd)
-             } else {
-                 dprintf(fd, "\n");
-             }
-+            if (smaps) {
-+                show_smaps(fd, max - min);
-+                dprintf(fd, "VmFlags:%s%s%s%s%s%s%s%s\n",
-+                        (flags & PAGE_READ) ? " rd" : "",
-+                        (flags & PAGE_WRITE_ORG) ? " wr" : "",
-+                        (flags & PAGE_EXEC) ? " ex" : "",
-+                        e->is_priv ? "" : " sh",
-+                        (flags & PAGE_READ) ? " mr" : "",
-+                        (flags & PAGE_WRITE_ORG) ? " mw" : "",
-+                        (flags & PAGE_EXEC) ? " me" : "",
-+                        e->is_priv ? "" : " ms");
-+            }
+     int i;
+ 
+@@ -247,7 +247,7 @@ static CPUState *find_cpu(uint32_t thread_id)
+     return NULL;
+ }
+ 
+-static CPUState *get_first_cpu_in_process(GDBProcess *process)
++CPUState *gdb_get_first_cpu_in_process(GDBProcess *process)
+ {
+     CPUState *cpu;
+ 
+@@ -325,7 +325,7 @@ static CPUState *gdb_get_cpu(uint32_t pid, uint32_t tid)
+             return NULL;
          }
+ 
+-        return get_first_cpu_in_process(process);
++        return gdb_get_first_cpu_in_process(process);
+     } else {
+         /* a specific thread */
+         cpu = find_cpu(tid);
+@@ -354,7 +354,7 @@ static const char *get_feature_xml(const char *p, const char **newp,
+     size_t len;
+     int i;
+     const char *name;
+-    CPUState *cpu = get_first_cpu_in_process(process);
++    CPUState *cpu = gdb_get_first_cpu_in_process(process);
+     CPUClass *cc = CPU_GET_CLASS(cpu);
+ 
+     len = 0;
+@@ -490,7 +490,7 @@ void gdb_register_coprocessor(CPUState *cpu,
+ 
+ static void gdb_process_breakpoint_remove_all(GDBProcess *p)
+ {
+-    CPUState *cpu = get_first_cpu_in_process(p);
++    CPUState *cpu = gdb_get_first_cpu_in_process(p);
+ 
+     while (cpu) {
+         gdb_breakpoint_remove_all(cpu);
+@@ -647,7 +647,7 @@ static int gdb_handle_vcont(const char *p)
+                 return -EINVAL;
+             }
+ 
+-            cpu = get_first_cpu_in_process(process);
++            cpu = gdb_get_first_cpu_in_process(process);
+             while (cpu) {
+                 if (newstates[cpu->cpu_index] == 1) {
+                     newstates[cpu->cpu_index] = cur_action;
+@@ -1270,7 +1270,7 @@ static void handle_v_attach(GArray *params, void *user_ctx)
+         goto cleanup;
      }
  
-@@ -8103,11 +8144,25 @@ static int open_self_maps(CPUArchState *cpu_env, int fd)
-                     " --xp 00000000 00:00 0",
-                     TARGET_VSYSCALL_PAGE, TARGET_VSYSCALL_PAGE + TARGET_PAGE_SIZE);
-     dprintf(fd, "%*s%s\n", 73 - count, "",  "[vsyscall]");
-+    if (smaps) {
-+        show_smaps(fd, TARGET_PAGE_SIZE);
-+        dprintf(fd, "VmFlags: ex\n");
-+    }
- #endif
- 
-     return 0;
- }
- 
-+static int open_self_maps(CPUArchState *cpu_env, int fd)
-+{
-+    return open_self_maps_1(cpu_env, fd, false);
-+}
-+
-+static int open_self_smaps(CPUArchState *cpu_env, int fd)
-+{
-+    return open_self_maps_1(cpu_env, fd, true);
-+}
-+
- static int open_self_stat(CPUArchState *cpu_env, int fd)
- {
-     CPUState *cpu = env_cpu(cpu_env);
-@@ -8459,6 +8514,7 @@ int do_guest_openat(CPUArchState *cpu_env, int dirfd, const char *pathname,
-     const struct fake_open *fake_open;
-     static const struct fake_open fakes[] = {
-         { "maps", open_self_maps, is_proc_myself },
-+        { "smaps", open_self_smaps, is_proc_myself },
-         { "stat", open_self_stat, is_proc_myself },
-         { "auxv", open_self_auxv, is_proc_myself },
-         { "cmdline", open_self_cmdline, is_proc_myself },
+-    cpu = get_first_cpu_in_process(process);
++    cpu = gdb_get_first_cpu_in_process(process);
+     if (!cpu) {
+         goto cleanup;
+     }
+@@ -1393,7 +1393,7 @@ static void handle_query_curr_tid(GArray *params, void *user_ctx)
+      * first thread).
+      */
+     process = gdb_get_cpu_process(gdbserver_state.g_cpu);
+-    cpu = get_first_cpu_in_process(process);
++    cpu = gdb_get_first_cpu_in_process(process);
+     g_string_assign(gdbserver_state.str_buf, "QC");
+     gdb_append_thread_id(cpu, gdbserver_state.str_buf);
+     gdb_put_strbuf();
 -- 
 2.39.2
 
