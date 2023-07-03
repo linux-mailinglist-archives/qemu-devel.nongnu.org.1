@@ -2,81 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDE77745665
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 09:50:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC746745670
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 09:53:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGEK8-0007J1-2w; Mon, 03 Jul 2023 03:50:16 -0400
+	id 1qGEMV-0008Qb-VB; Mon, 03 Jul 2023 03:52:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qGEK5-0007Ic-Bq
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 03:50:14 -0400
-Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
+ (Exim 4.90_1) (envelope-from <schwab@suse.de>)
+ id 1qGEMT-0008QN-Du; Mon, 03 Jul 2023 03:52:41 -0400
+Received: from smtp-out1.suse.de ([2001:67c:2178:6::1c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qGEK3-0008Lu-H8
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 03:50:13 -0400
-Received: by mail-ej1-x62f.google.com with SMTP id
- a640c23a62f3a-99364ae9596so99941766b.1
- for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 00:50:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688370609; x=1690962609;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=149K1InlJpzNKUIw2KcSnQF/UGq7hBqdJOZiL31Xjjc=;
- b=rGBzo47GUgReh0FEyuL6Ls1SQD/KQCTrGEHDkkeemRZQ9rxcMl8qSQ2IxjozXWM2vr
- eK8auJvmBToOSLHBKxpD4+A4jeSaGIHvPibf2tLM+AsUe6Jwblw5H2ban5TOwkIEIjLf
- wLjsxEOw32g34ndVLMRfBR202RXT1zouCgTk2e5uW+kes+ajA/jcIfrmB7zZDwkB3jC4
- x4ez1bpFv2YmUXgn+z/EHjtguIvR72rqUYfQ+is8Lx5JfrjO5TkCIqLhWMOUibMwQHeh
- k7MKnVa+kgarTKSJ/rR5xpAvYpz8cQY4yN9eaIMZNAYIN4K2vsBz84PX/keGAQTfpsW7
- pLRA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688370609; x=1690962609;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=149K1InlJpzNKUIw2KcSnQF/UGq7hBqdJOZiL31Xjjc=;
- b=PNj74MaikS7L/XW3EQ0ikfzEKvpDRThVimSyt/cohUhSuSP3ihtXYJDS3n0PFWgaCD
- 6Rd98u7uc4U6WcRXPu70hXlCcqnkrAiYCyZaifxIp6/tdrbk0zTJLIpVHl0tIAkgOQiw
- ewgkTm5mwpQELmsT9ByoPJkN1r/VPSbohNzDKBKfHPfdT08LSVP/4DEjCQ01G7H0VgqW
- L2/kN7jTYCh0RwLxYd4mlgmsltznGIU6b1qSbTpWiZuyjazO0areaM9k1RLSoFjqZh2X
- tlnPLDdyHCpzlS68vCBWpFqcTpj1ZzsKMFjStAtRUeSNizKkoNlZ9NV+V+xbBzW2K6sD
- g2mw==
-X-Gm-Message-State: ABy/qLYZpgturh71pBCEZ3QDPA634RqzZLs2o+cdoD12/y7p/MAf79FB
- le2ZI7O/FhBeUJcLoSOsTM3jww==
-X-Google-Smtp-Source: APBJJlG4lHOBJaT5em8fXC6Rko+6RmiECgxF6LSZIudrrP2Th90a4Q5iJsU/nIGT7Zi0PchXDnh6gg==
-X-Received: by 2002:a17:906:ae51:b0:966:471c:2565 with SMTP id
- lf17-20020a170906ae5100b00966471c2565mr6285736ejb.48.1688370608903; 
- Mon, 03 Jul 2023 00:50:08 -0700 (PDT)
-Received: from [192.168.69.115] ([176.176.178.91])
- by smtp.gmail.com with ESMTPSA id
- qx22-20020a170906fcd600b009931baa0d44sm3184596ejb.140.2023.07.03.00.50.08
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 03 Jul 2023 00:50:08 -0700 (PDT)
-Message-ID: <b01c1b87-83bf-cbc6-f223-149ca41520d0@linaro.org>
-Date: Mon, 3 Jul 2023 09:50:07 +0200
+ (Exim 4.90_1) (envelope-from <schwab@suse.de>)
+ id 1qGEMR-0000GN-Pl; Mon, 03 Jul 2023 03:52:41 -0400
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+ by smtp-out1.suse.de (Postfix) with ESMTP id F3CB2218EC;
+ Mon,  3 Jul 2023 07:52:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1688370752; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type;
+ bh=sw5FC1Dpxo+IiL7mbUi0X6dy4I2O5iA3I4wl6RbGaTM=;
+ b=LO0VZe/aKhm3Vnqs30huaHVCwDDtmjKghapV5V0PZALl4YXqjlenJCI85U3oIvRjQlzsjr
+ beo+cdpSbM0tlSg1aiITV4k8ITEz0M7mjGFVu87L2S4nptBc+5KouWrfuMyAEva39TJJzl
+ sQsZH8OxWj0fPT4bGfDW+Fo1KGk/fyo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1688370752;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type;
+ bh=sw5FC1Dpxo+IiL7mbUi0X6dy4I2O5iA3I4wl6RbGaTM=;
+ b=RYvhmaLqXnE5YUr9eAB4IdOo7lOhLfWWJqj7bvFVEC+IgVwBH509/g0eviRhQ+lLNjw+46
+ ey2RBxUPbStmQMBQ==
+Received: from hawking.nue2.suse.org (unknown [10.168.4.11])
+ by relay2.suse.de (Postfix) with ESMTP id 924F22C141;
+ Mon,  3 Jul 2023 07:52:31 +0000 (UTC)
+Received: by hawking.nue2.suse.org (Postfix, from userid 17005)
+ id 7D8AE4A04CB; Mon,  3 Jul 2023 09:52:31 +0200 (CEST)
+From: Andreas Schwab <schwab@suse.de>
+To: Palmer Dabbelt <palmer@dabbelt.com>, Alistair Francis
+ <alistair.francis@wdc.com>, Bin Meng <bin.meng@windriver.com>
+Subject: [RISC-V] ERROR:../accel/tcg/cpu-exec.c:1028:cpu_exec_setjmp:
+ assertion failed: (cpu == current_cpu)
+CC: qemu-devel@nongnu.org, qemu-riscv@nongnu.org
+X-Yow: How do you explain Wayne Newton's POWER over millions?
+ It's th' MOUSTACHE...  Have you ever noticed th' way it radiates
+ SINCERITY, HONESTY & WARMTH?  It's a MOUSTACHE you want to take
+ HOME and introduce to NANCY SINATRA!
+Date: Mon, 03 Jul 2023 09:52:31 +0200
+Message-ID: <mvmmt0dtosg.fsf@suse.de>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.12.0
-Subject: Re: [PATCH 03/21] q800: add machine id register
-Content-Language: en-US
-To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, laurent@vivier.eu,
- qemu-devel@nongnu.org
-References: <20230702154838.722809-1-mark.cave-ayland@ilande.co.uk>
- <20230702154838.722809-4-mark.cave-ayland@ilande.co.uk>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230702154838.722809-4-mark.cave-ayland@ilande.co.uk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62f.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain
+Received-SPF: pass client-ip=2001:67c:2178:6::1c; envelope-from=schwab@suse.de;
+ helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -93,33 +77,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2/7/23 17:48, Mark Cave-Ayland wrote:
-> MacOS reads this address to identify the hardware.
-> 
-> This is a basic implementation returning the ID of Quadra 800.
-> 
-> Details:
-> 
->    http://mess.redump.net/mess/driver_info/mac_technical_notes
-> 
-> "There are 3 ID schemes [...]
->   The third and most scalable is a machine ID register at 0x5ffffffc.
->   The top word must be 0xa55a to be valid. Then bits 15-11 are 0 for
->   consumer Macs, 1 for portables, 2 for high-end 68k, and 3 for high-end
->   PowerPC. Bit 10 is 1 if additional ID bits appear elsewhere (e.g. in VIA1).
->   The rest of the bits are a per-model identifier.
-> 
->   Model                          Lower 16 bits of ID
-> ...
->   Quadra/Centris 610/650/800     0x2BAD"
-> 
-> Co-developed-by: Laurent Vivier <laurent@vivier.eu>
-> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-> ---
->   hw/m68k/q800.c         | 29 +++++++++++++++++++++++++++++
->   include/hw/m68k/q800.h |  1 +
->   2 files changed, 30 insertions(+)
+This is a regression in 8.0.  It causes the testsuite of mold to fail:
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+https://build.opensuse.org/package/live_build_log/openSUSE:Factory:RISCV/mold/standard/riscv64
 
++ out/test/elf/riscv64/section-start/exe2
+**
+ERROR:../accel/tcg/cpu-exec.c:1028:cpu_exec_setjmp: assertion failed: (cpu == current_cpu)
+**
+ERROR:../accel/tcg/cpu-exec.c:1028:cpu_exec_setjmp: assertion failed: (cpu == current_cpu)
+
+
+-- 
+Andreas Schwab, SUSE Labs, schwab@suse.de
+GPG Key fingerprint = 0196 BAD8 1CE9 1970 F4BE  1748 E4D4 88E3 0EEA B9D7
+"And now for something completely different."
 
