@@ -2,32 +2,33 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F722745D3C
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 15:27:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ECAA7745D33
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 15:26:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGJZf-0001wy-6F; Mon, 03 Jul 2023 09:26:39 -0400
+	id 1qGJZg-00024z-I4; Mon, 03 Jul 2023 09:26:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=mKPa=CV=kaod.org=clg@ozlabs.org>)
- id 1qGJZX-0001JN-QL
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 09:26:31 -0400
+ id 1qGJZc-0001kw-Jn
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 09:26:36 -0400
 Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
  helo=gandalf.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=mKPa=CV=kaod.org=clg@ozlabs.org>)
- id 1qGJZW-0000sw-2C
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 09:26:31 -0400
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4Qvmsd1rw8z4wxS;
- Mon,  3 Jul 2023 23:26:29 +1000 (AEST)
+ id 1qGJZa-0000v5-O9
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 09:26:36 -0400
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4Qvmsh1gFmz4wqZ;
+ Mon,  3 Jul 2023 23:26:32 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4QvmsZ5qPbz4wxn;
- Mon,  3 Jul 2023 23:26:26 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Qvmsd5gdHz4wb1;
+ Mon,  3 Jul 2023 23:26:29 +1000 (AEST)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
@@ -36,9 +37,9 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Lucien Murray-Pitts <lucienmp.qemu@gmail.com>,
  Joel Stanley <joel@jms.id.au>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-Subject: [PATCH 24/32] hw/sd: Subtract bootarea size from blk
-Date: Mon,  3 Jul 2023 15:25:01 +0200
-Message-ID: <20230703132509.2474225-25-clg@kaod.org>
+Subject: [PATCH 25/32] hw/sd: Add boot config support
+Date: Mon,  3 Jul 2023 15:25:02 +0200
+Message-ID: <20230703132509.2474225-26-clg@kaod.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230703132509.2474225-1-clg@kaod.org>
 References: <20230703132509.2474225-1-clg@kaod.org>
@@ -71,38 +72,62 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Joel Stanley <joel@jms.id.au>
 
-The userdata size is derived from the file the user passes on the
-command line, but we must take into account the boot areas.
+Introduced "boot-config" property to set CSD 179, the boot config
+register.
+
+With this correctly set we can use the enable bit to detect if partition
+support is enabled.
 
 Signed-off-by: Joel Stanley <joel@jms.id.au>
 Signed-off-by: Cédric Le Goater <clg@kaod.org>
 ---
- hw/sd/sd.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ hw/sd/sd.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
 diff --git a/hw/sd/sd.c b/hw/sd/sd.c
-index 6da17a8d0972..1df7c7ac9dae 100644
+index 1df7c7ac9dae..c4c9e9ee7999 100644
 --- a/hw/sd/sd.c
 +++ b/hw/sd/sd.c
-@@ -674,6 +674,7 @@ static unsigned sd_boot_capacity_bytes(SDState *sd)
- static void sd_reset(DeviceState *dev)
+@@ -115,6 +115,7 @@ struct SDState {
+ 
+     uint8_t spec_version;
+     BlockBackend *blk;
++    uint8_t boot_config;
+ 
+     /* Runtime changeables */
+ 
+@@ -459,6 +460,8 @@ static void mmc_set_ext_csd(SDState *sd, uint64_t size)
+     sd->ext_csd[159] = 0x00; /* Max enhanced area size */
+     sd->ext_csd[158] = 0x00; /* ... */
+     sd->ext_csd[157] = 0xEC; /* ... */
++
++    sd->ext_csd[EXT_CSD_PART_CONFIG] = sd->boot_config;
+ }
+ 
+ static void sd_emmc_set_csd(SDState *sd, uint64_t size)
+@@ -883,8 +886,14 @@ static uint32_t sd_emmc_bootpart_offset(SDState *sd)
  {
-     SDState *sd = SD_CARD(dev);
-+    SDCardClass *sc = SD_CARD_GET_CLASS(sd);
-     uint64_t size;
-     uint64_t sect;
+     unsigned int access = sd->ext_csd[EXT_CSD_PART_CONFIG] &
+         EXT_CSD_PART_CONFIG_ACC_MASK;
++    unsigned int enable = sd->ext_csd[EXT_CSD_PART_CONFIG] &
++         EXT_CSD_PART_CONFIG_EN_MASK;
+     unsigned int boot_capacity = sd_boot_capacity_bytes(sd);
  
-@@ -685,6 +686,10 @@ static void sd_reset(DeviceState *dev)
-     }
-     size = sect << 9;
- 
-+    if (sc->bootpart_offset) {
-+        size -= sd_boot_capacity_bytes(sd) * 2;
++    if (!enable) {
++        return 0;
 +    }
 +
-     sect = sd_addr_to_wpnum(size) + 1;
+     switch (access) {
+     case EXT_CSD_PART_CONFIG_ACC_DEFAULT:
+         return boot_capacity * 2;
+@@ -2559,6 +2568,7 @@ static Property sd_properties[] = {
+      * whether card should be in SSI or MMC/SD mode.  It is also up to the
+      * board to ensure that ssi transfers only occur when the chip select
+      * is asserted.  */
++    DEFINE_PROP_UINT8("boot-config", SDState, boot_config, 0x0),
+     DEFINE_PROP_END_OF_LIST()
+ };
  
-     sd->state = sd_idle_state;
 -- 
 2.41.0
 
