@@ -2,80 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE4DB745DC1
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D3E1745DC0
 	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 15:51:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGJrC-0007f5-JO; Mon, 03 Jul 2023 09:44:46 -0400
+	id 1qGJrL-0007qt-7X; Mon, 03 Jul 2023 09:44:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qGJr2-0007TG-T1
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 09:44:38 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ id 1qGJr5-0007Te-Sc
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 09:44:40 -0400
+Received: from mail-lf1-x12e.google.com ([2a00:1450:4864:20::12e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qGJqy-0005gJ-Re
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 09:44:34 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-3fbc12181b6so49639635e9.2
- for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 06:44:32 -0700 (PDT)
+ id 1qGJr2-0005gs-Q3
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 09:44:39 -0400
+Received: by mail-lf1-x12e.google.com with SMTP id
+ 2adb3069b0e04-4fba74870abso4370983e87.0
+ for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 06:44:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1688391871; x=1690983871;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Fbp/Zw9eE5uqY/m4aZkgwxvYT/8MMMAgvc/DfnALRqM=;
- b=kOc5lwjDXSZXbSVA4d/hKjBWUIE95aGT/ECqqJ+ApG6I4OXbn+YTNpTYAH0HHXQVRP
- ZOOApXAEcUxxT1bQV/MxGQonWYqACm3H54qsAYmzeDXuQnSZ1IQ+a7JTgPUGSHMLxmkB
- dmATo651J7hFQ3dJ/OvSu4fd5EnAUjZxO4jD1U+FRlf0YD/cuQjQzg+1c8cuXa9sqxtU
- Z8DgrOnqlpQTNuy+7tfmhn06ub3CqZVyMSYRVo2tYAWth+AxTkyorTbKQjghSqZ3KsBh
- mBCv8yunUtiXjK7lo8nvYC9clmnlSTp2wup6R9QvII/1K7dLreZrpdsXPk2BSpQuK04S
- fioQ==
+ bh=FeBR8GZv3DfL2Dr3RQS42VRWnzI9QYt8QP9XGBKiFno=;
+ b=vBhGM3LDh0qLDyoo3KAZQBLhM8IIL12ObF4VI/Mh4kkw50DVCgumZlC12xvyw86No+
+ IQAHG7FsH+XuwFUgyMCRZ8hom3oVemicGeUIfRZMKOLgj4c4noPlRxfz2BlMQe5udcNs
+ cSZ/YKUVUqWMI6N4LYDmmO1XikwVUnPEQGklHHH+whJg2ES+JA8SulPumJaRu39RY2sc
+ n8hsaJuU7xdU6mtQJFXo8JZw8sAFzNjRvtSUMqWaEG+KTzBYVGUXq763mi5itNHg+jnR
+ tWmS5A2hV659APMMauYm6MYqnK/c3hUHayCxfRDdywJAxyEse4dY5SQZarMs4KQSwLbJ
+ Dtgg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20221208; t=1688391871; x=1690983871;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Fbp/Zw9eE5uqY/m4aZkgwxvYT/8MMMAgvc/DfnALRqM=;
- b=BQVZSQ1VsQd0JCNEvJQlfzlPMdnjQbksi59Y1Ia21G1bMZ7bZXkmEdNCJCJnz4Khxa
- ShkGW/S48bvKC6J9M6MONbQuzZQ6UxPxnXkRptRun9Qv3o/rb89gwS0zTzy9aLBhQlkk
- krvMqMDkVGbZhzPtgWf6wb8g7NsxOnHxnB+nQrZ8kRv6Q1PE6ZLeNk8cza3O8mrvLqZy
- VUjkjAPClye2Dq5bSsc9vZc8fFMiFeA8cUE9hxE3GO9W3dN+YjYImsIRCJSvO+5pEeP1
- 8ouwvfnAPXlb0AQ9hEuOzNiIWALlam0JugvM/JpD/tCgSLHf3a7j9uHy21D+zh0yxhPh
- wD6Q==
-X-Gm-Message-State: AC+VfDwVHdR2jeRx/N4+44Z9Y0fiizsWlCe6aWQmUXwKNKacSKaxchN9
- QgSmc4VxNQp87bIM7gMiYM/2xw==
-X-Google-Smtp-Source: ACHHUZ7i/mGf2oW0ScX2ML0nYmVY6L9AVbTvOJO2vyPnnGYuHU+2pZMshbgps1Uim9ldvkOz2hA3rg==
-X-Received: by 2002:a05:600c:364f:b0:3f9:ba2:5d19 with SMTP id
- y15-20020a05600c364f00b003f90ba25d19mr8842130wmq.33.1688391871164; 
+ bh=FeBR8GZv3DfL2Dr3RQS42VRWnzI9QYt8QP9XGBKiFno=;
+ b=YJqpYr4bLQRbnKLsIb2h1EIOgR07q5HTnk15duxLYW6N70wHEUsc+4EcvwBL9qHmq3
+ QhDFGxODOuS0e6vHv5M8NReZ/X9+iTlKAKdWnBDR0OJHKb/IQkLk963ukBGjomh2HEeN
+ P+a3viDtZBx07iwah03zBBDjP1/eFkRCaHx/0Bdvq6M1YRUQRrDrMNDKDZdwVKPQ+hlX
+ VcyY0kadsKy3N9S92XNDb1G7GmWSY9JoCBQAb8bDqXR3F1bmhmiJKAMjjcg12HPRtCrb
+ 5CrCd2K/YZbxYdsmrbAB6qSUDxMZ4PnPKRD/o1W2ruwIywQMjhtBnqwOj9SXOhFOLxOj
+ fABA==
+X-Gm-Message-State: ABy/qLZIthBe/WmIANn0WCuYLd5PE4CxBfIOlL9iIH39kmlQgBqTbVj2
+ C0nClGDRSNX8XgGUvOSzDHSNww==
+X-Google-Smtp-Source: APBJJlEmPlZUBMbbZobnayJLhxoLMovPHCicGNFCXwUkIYxzGF9Q46n3jE5jl3l+CI3QFLciWl0Ipw==
+X-Received: by 2002:ac2:5f9a:0:b0:4f8:5717:e41b with SMTP id
+ r26-20020ac25f9a000000b004f85717e41bmr6062949lfe.41.1688391871359; 
  Mon, 03 Jul 2023 06:44:31 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- t24-20020a1c7718000000b003fba9db141esm16768715wmi.38.2023.07.03.06.44.28
+ b17-20020a056000055100b0031434cebcd8sm3760582wrf.33.2023.07.03.06.44.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Mon, 03 Jul 2023 06:44:30 -0700 (PDT)
 Received: from zen.lan (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 7664C1FFC1;
+ by zen.linaroharston (Postfix) with ESMTP id 8D4CA1FFC2;
  Mon,  3 Jul 2023 14:44:28 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Juan Quintela <quintela@redhat.com>
-Subject: [PULL 06/38] qemu-keymap: properly check return from
- xkb_keymap_mod_get_index
-Date: Mon,  3 Jul 2023 14:43:55 +0100
-Message-Id: <20230703134427.1389440-7-alex.bennee@linaro.org>
+ Alexander Bulekov <alxndr@bu.edu>, Paolo Bonzini <pbonzini@redhat.com>,
+ Bandan Das <bsd@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Darren Kenny <darren.kenny@oracle.com>,
+ Qiuhao Li <Qiuhao.Li@outlook.com>
+Subject: [PULL 07/38] scripts/oss-fuzz: add a suppression for keymap
+Date: Mon,  3 Jul 2023 14:43:56 +0100
+Message-Id: <20230703134427.1389440-8-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230703134427.1389440-1-alex.bennee@linaro.org>
 References: <20230703134427.1389440-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::12e;
+ envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x12e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,57 +100,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We can return XKB_MOD_INVALID for AltGr which rightly gets flagged by
-sanitisers as an overly wide shift attempt. Properly check the return
-type and leave the bitmap as zero in that case. Tested output before
-and after is unchanged with the gb and ara keymaps.
+When updating to the latest fedora the santizer found more leaks
+inside xkbmap:
 
-Reviewed-by: Juan Quintela <quintela@redhat.com>
+  FAILED: pc-bios/keymaps/ar
+  /builds/stsquad/qemu/build-oss-fuzz/qemu-keymap -f pc-bios/keymaps/ar -l ara
+  =================================================================
+  ==3604==ERROR: LeakSanitizer: detected memory leaks
+  Direct leak of 1424 byte(s) in 1 object(s) allocated from:
+      #0 0x56316418ebec in __interceptor_calloc (/builds/stsquad/qemu/build-oss-fuzz/qemu-keymap+0x127bec) (BuildId: a2ad9da3190962acaa010fa8f44a9269f9081e1c)
+      #1 0x7f60d4dc067e  (/lib64/libxkbcommon.so.0+0x1c67e) (BuildId: b243a34e4e58e6a30b93771c256268b114d34b80)
+      #2 0x7f60d4dc2137 in xkb_keymap_new_from_names (/lib64/libxkbcommon.so.0+0x1e137) (BuildId: b243a34e4e58e6a30b93771c256268b114d34b80)
+      #3 0x5631641ca50f in main /builds/stsquad/qemu/build-oss-fuzz/../qemu-keymap.c:215:11
+
+and many more. As we can't do anything about the library add a
+suppression to keep the CI going with what its meant to be doing.
+
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20230630180423.558337-7-alex.bennee@linaro.org>
+Message-Id: <20230630180423.558337-8-alex.bennee@linaro.org>
 
-diff --git a/qemu-keymap.c b/qemu-keymap.c
-index 229866e004..8c80f7a4ed 100644
---- a/qemu-keymap.c
-+++ b/qemu-keymap.c
-@@ -140,6 +140,18 @@ static void usage(FILE *out)
-             names.options ?: "-");
- }
- 
-+static xkb_mod_mask_t get_mod(struct xkb_keymap *map, const char *name)
-+{
-+    xkb_mod_index_t mod;
-+    xkb_mod_mask_t mask = 0;
+diff --git a/scripts/oss-fuzz/lsan_suppressions.txt b/scripts/oss-fuzz/lsan_suppressions.txt
+index 02ec0a6ed5..7d90c280d0 100644
+--- a/scripts/oss-fuzz/lsan_suppressions.txt
++++ b/scripts/oss-fuzz/lsan_suppressions.txt
+@@ -1,2 +1,5 @@
+ # The tcmalloc on Fedora37 confuses things
+ leak:/lib64/libtcmalloc_minimal.so.4
 +
-+    mod = xkb_keymap_mod_get_index(map, name);
-+    if (mod != XKB_MOD_INVALID) {
-+        mask = (1 << mod);
-+    }
-+    return mask;
-+}
-+
- int main(int argc, char *argv[])
- {
-     struct xkb_context *ctx;
-@@ -215,14 +227,10 @@ int main(int argc, char *argv[])
-                 mod, xkb_keymap_mod_get_name(map, mod));
-     }
- 
--    mod = xkb_keymap_mod_get_index(map, "Shift");
--    shift = (1 << mod);
--    mod = xkb_keymap_mod_get_index(map, "Control");
--    ctrl = (1 << mod);
--    mod = xkb_keymap_mod_get_index(map, "AltGr");
--    altgr = (1 << mod);
--    mod = xkb_keymap_mod_get_index(map, "NumLock");
--    numlock = (1 << mod);
-+    shift = get_mod(map, "Shift");
-+    ctrl = get_mod(map, "Control");
-+    altgr = get_mod(map, "AltGr");
-+    numlock = get_mod(map, "NumLock");
- 
-     state = xkb_state_new(map);
-     xkb_keymap_key_for_each(map, walk_map, state);
++# libxkbcommon also leaks in qemu-keymap
++leak:/lib64/libxkbcommon.so.0
 -- 
 2.39.2
 
