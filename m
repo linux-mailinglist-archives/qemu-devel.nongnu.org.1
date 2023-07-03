@@ -2,81 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AD34745DC3
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 15:51:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6BEE745DFC
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 15:56:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGJxG-0000Bc-7z; Mon, 03 Jul 2023 09:51:02 -0400
+	id 1qGK1r-0006YX-Fm; Mon, 03 Jul 2023 09:55:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qGJxD-00006D-7n; Mon, 03 Jul 2023 09:50:59 -0400
-Received: from mail-oa1-x2d.google.com ([2001:4860:4864:20::2d])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>)
+ id 1qGK1n-00060z-NF; Mon, 03 Jul 2023 09:55:43 -0400
+Received: from smtp-out2.suse.de ([195.135.220.29])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qGJxB-0007RJ-JC; Mon, 03 Jul 2023 09:50:58 -0400
-Received: by mail-oa1-x2d.google.com with SMTP id
- 586e51a60fabf-1b07d97180dso4569987fac.3; 
- Mon, 03 Jul 2023 06:50:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688392256; x=1690984256;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=8amCMfw5SGjdr3k2RdJI/hp3IA5DiZIXm7nlnkGLAlE=;
- b=qKCRm2Aldq/qJ0TqCFDvx9NR24CUIow2lpOZdhR0YMPEsuXh4LX6Wh22pym+dioF2o
- iXYwD0hxMTO/2+kBNVT0Q6Yf433tzgraRr8NfHyiEY3Q02626Huwjwr/SFwY/JKXGqCg
- Zd1PV771h4KoRulEDVAJRNz6BjyTOuVssNqEu3vFz8Mv0pZmUM+BsmJ87D1TWBjYn4Ak
- BY84qYMIAGH8wmmuKyQSg88vQ98fMa7eJfeFgHoVVpN4CFS1nzER9S7Q7ZTFIz3GEQRA
- vW9x/0A9zLMpQiZPQOriQbgZ7FSCB8WPLNe3g6LG7x2F8KOrSBpC7jqNWxZ18Sh8BMIc
- eB3g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688392256; x=1690984256;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=8amCMfw5SGjdr3k2RdJI/hp3IA5DiZIXm7nlnkGLAlE=;
- b=S56Igpd8cgFLmp2SAblusVJU1ixRMfA9jAfNltLCIMHzgVtktaR7DBIlfD+LzvbuRe
- lKtnuWi5YxM4hBltkVegMkoE9bmyofl68fHddazQA7BZt3ATd51RdkjfX2Uj5j4n5Xns
- tfDa4QKZsenj1O1hwpjPIBn5ulpD/q4lFOZk3TJUw8b9JVxmJlcFHmuXWOxJrZEEORHQ
- eEEKjdTWIFcPLDYxuxJzctbikZZqRU99t+boXF+bCsOMi1GE4iOO1viz+k8k7q9TXGRV
- KJta7F3AXGyI3/yH/KVI05fFP4qWuG3DhvqZ7dRpav9zXi1AeDFhRzNySE1/QFw9rrQV
- Rhjg==
-X-Gm-Message-State: ABy/qLa5HV958orol4balUvaUoFArQ3JUhHU7IfegaMKcXfcOYJ8c2jr
- MbTKCapoPO/q1n8bXNuyUBM=
-X-Google-Smtp-Source: APBJJlFOeVuDy/I1sGuxLfR+gBmSDD1aeSrsrSaTzUlyXigSI4u/WA/4xvNQZJaJn7AOtAiHXPWUjA==
-X-Received: by 2002:a05:6870:3d9b:b0:19f:1df3:ffce with SMTP id
- lm27-20020a0568703d9b00b0019f1df3ffcemr11972794oab.53.1688392255709; 
- Mon, 03 Jul 2023 06:50:55 -0700 (PDT)
-Received: from [192.168.68.107] (201-69-66-110.dial-up.telesp.net.br.
- [201.69.66.110]) by smtp.gmail.com with ESMTPSA id
- ek14-20020a056870f60e00b001807f020a39sm12290537oab.12.2023.07.03.06.50.54
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 03 Jul 2023 06:50:55 -0700 (PDT)
-Message-ID: <aff81ef5-5be8-2ad6-d35e-f7cf4775cce4@gmail.com>
-Date: Mon, 3 Jul 2023 10:50:51 -0300
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>)
+ id 1qGK1l-0000Ts-MI; Mon, 03 Jul 2023 09:55:43 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 400A91FE8C;
+ Mon,  3 Jul 2023 13:55:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1688392538; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=6qvOw4Hgat/+2oj0L3Woup6clmTBUDZjBq5SYxuP7qU=;
+ b=CW/0vB8WQn9A2DXsizj0WSi1L+D0w42pzr+0AeGTp3+p3bl08JYSr5bJSoviZRGGFy1Bz1
+ zo67sZsA/nffA2p/AB+HPcRTefwizBSHnB+JFKZfnWM19IH0EjUzWig+5pR766dkfpg77E
+ ny40XbugO4DLbuygRICeH4H2g3Ep+14=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1688392538;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=6qvOw4Hgat/+2oj0L3Woup6clmTBUDZjBq5SYxuP7qU=;
+ b=zWXcVfWISuTE8T3vPiWEVYMVEWBPj5tIl/3u067lGtk5AIgaSuGXxsjjW9sm6NR11VDllO
+ +8AKmW/qXTkbEYAw==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id BC8DB13276;
+ Mon,  3 Jul 2023 13:55:37 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id XQN/IVnTomShKwAAMHmgww
+ (envelope-from <farosas@suse.de>); Mon, 03 Jul 2023 13:55:37 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: qemu-devel@nongnu.org
+Cc: qemu-block@nongnu.org, Kevin Wolf <kwolf@redhat.com>, Hanna Reitz
+ <hreitz@redhat.com>, Markus Armbruster <armbru@redhat.com>, =?utf-8?Q?Jo?=
+ =?utf-8?Q?=C3=A3o?= Silva
+ <jsilva@suse.de>, Lin Ma <lma@suse.com>, Claudio Fontana
+ <cfontana@suse.de>, Dario Faggioli <dfaggioli@suse.com>, Eric Blake
+ <eblake@redhat.com>
+Subject: Re: [PATCH v2 00/10] block: Make raw_co_get_allocated_file_size
+ asynchronous
+In-Reply-To: <20230609201910.12100-1-farosas@suse.de>
+References: <20230609201910.12100-1-farosas@suse.de>
+Date: Mon, 03 Jul 2023 10:55:34 -0300
+Message-ID: <87wmzhp0a1.fsf@suse.de>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH v2 0/2] Fix PSIHB interrupts init PQ state
-Content-Language: en-US
-To: Frederic Barrat <fbarrat@linux.ibm.com>, =?UTF-8?Q?C=c3=a9dric_Le_Goater?=
- <clg@kaod.org>, qemu-ppc@nongnu.org, qemu-devel@nongnu.org
-References: <20230703081215.55252-1-fbarrat@linux.ibm.com>
-From: Daniel Henrique Barboza <danielhb413@gmail.com>
-In-Reply-To: <20230703081215.55252-1-fbarrat@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2001:4860:4864:20::2d;
- envelope-from=danielhb413@gmail.com; helo=mail-oa1-x2d.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Type: text/plain
+Received-SPF: pass client-ip=195.135.220.29; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, NICE_REPLY_A=-0.09,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -93,31 +87,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Queued in gitlab.com/danielhb/qemu/tree/ppc-next. Thanks,
+Fabiano Rosas <farosas@suse.de> writes:
 
+> Hi,
+>
+> The major change from the last version is that this time I'm moving
+> all of the callers of bdrv_get_allocated_file_size() into
+> coroutines. I had to make some temporary changes to avoid asserts
+> while not all the callers were converted.
+>
+> I tried my best to explain why I think the changes are safe. To avoid
+> changing too much of the code I added a change that removes the
+> dependency of qmp_query_block from hmp_nbd_server_start, that way I
+> don't need to move all of the nbd code into a coroutine as well.
+>
+> Based on:
+>  [PATCH v2 00/11] block: Re-enable the graph lock
+>  https://lore.kernel.org/r/20230605085711.21261-1-kwolf@redhat.com
+>
+> changes:
+>
+>   - fixed duplicated commit message [Lin]
+>   - clarified why we need to convert info-block [Claudio]
+>   - added my rationale of why the changes are safe [Eric]
+>   - converted all callers to coroutines [Kevin]
+>   - made hmp_nbd_server_start don't depend on qmp_query_block
+>
+> CI run: https://gitlab.com/farosas/qemu/-/pipelines/895525156
 
-Daniel
-
-On 7/3/23 05:12, Frederic Barrat wrote:
-> On P9 and 10, the real hardware defines the PQ state of the PSIHB
-> interrupts to be 0b00. Qemu defaults to 0b01.
-> 
-> It doesn't matter to skiboot, which doesn't rely on it and explicitly
-> masks the interrupts during intialization. But this patch fixes it,
-> just in case some other hypervisor checks it.
-> 
-> Changelog:
-> v2: rename property/struct member
->      rebase to Daniel's ppc-next branch
-> 
-> 
-> Frederic Barrat (2):
->    pnv/xive: Add property on xive sources to define PQ state on reset
->    pnv/psi: Initialize the PSIHB interrupts to match hardware
-> 
->   hw/intc/xive.c        | 8 ++++++--
->   hw/ppc/pnv_psi.c      | 2 ++
->   include/hw/ppc/xive.h | 1 +
->   3 files changed, 9 insertions(+), 2 deletions(-)
-> 
+Ping, this seems to have fallen through the cracks.
 
