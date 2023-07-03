@@ -2,80 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B50A74595E
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 11:51:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2C2474596D
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 11:57:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGGCK-0005QG-8N; Mon, 03 Jul 2023 05:50:20 -0400
+	id 1qGGHi-0007vl-57; Mon, 03 Jul 2023 05:55:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qGGC7-0005Pm-41
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 05:50:07 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qGGHa-0007v6-Fh
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 05:55:48 -0400
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qGGC5-0002Xr-Cl
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 05:50:06 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-3fbd33a57dcso19291905e9.0
- for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 02:50:04 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qGGHX-00040P-R5
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 05:55:45 -0400
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-3142860734aso1784370f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 02:55:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688377803; x=1690969803;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=hnMlDW76eTu1dIg94Bnl1QoKXxkFgeGjODFn772MHKo=;
- b=rHUdqNfcUfjcK/He0b36qG8rUESJU+YPk2pDbJMc9JB9US+7NkSSdV3IMaorV3K1nm
- Kc3bfpmZoObmYpxjo7Z7lUpAVD/UCOq3VhLlJ9qdk4WfwqFmk6g1/u7a0qGHc1AMsKXt
- 2gsjdDKSiJcB6GQ9Uzzj6CsnvyCfHvhOLTU9Kiv4H83OVCekMNEmsM1G+hX6vUbDlIad
- qmGMhXZa85GfmNjSchzJ5a8/oR0rAqJpgQdy5dehUzPtQPnuPPcEF0uZs8ilIJ4l1HSx
- JVhtF82+MnxxeGRJ3m/do0sceaqVXzYjHduyZW7/gIanw7CX6U7/8vKAamdwNyvyEUTN
- vbUA==
+ d=linaro.org; s=google; t=1688378142; x=1690970142;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=ALiKFl34QkCz7Npw8R/TtgqXSoNQEa7uED4rrPX+4/Q=;
+ b=ZvDR6NCbwGKbfd6iABCxhdpioMmJA1YaUTjSELSfm/v7hwmhxBNSG2NyMmpLXr4r24
+ Eozg98st3D4AAo5ORybC3+xwYKMUDta61VttX+4A5vCJ5yqUNquaNHF1M0fQOdsIZfKW
+ OHQ5xjmQppER5v8EFCIbomc4Fh3BfclSJPeKkpDP/dfkpPzQOkaoi2IZsuFHLUIPyGM+
+ 5fjB0noeGLCMpuaeyO7y6LWbaQIMvGvBxYXJ8rkOqod/Pr4UNIPl+k5WVwI8ZOs15Nnu
+ pHOibI8SUb8SOyhAufijF5jMcCFPrRkbalz1P/4VA2gRDlzXj+kGYKltX+mTvAx3twxm
+ daZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688377803; x=1690969803;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=hnMlDW76eTu1dIg94Bnl1QoKXxkFgeGjODFn772MHKo=;
- b=ZGCcnjrUyUlRaqSEdZSVS+5CqkH8idNAfZxprC0gDfjrdQ/pNmw+269jgL0WwjZc4A
- /+QgbtOTlougx5SDXUmJ/HiCMjSGKlT57nZyxlyOv/3Dn3VbOnm5TPsS/f4hWRqraVGX
- Jh8pzf597zrDqV08t0u59Lnmiu9Vyf2AdBcw5AqS4etttrNdA/mk/36FmcEoeCuOHQQI
- 3FKTqqzxbojDyYjqcjFXMAvaGfzPkMitQPeOlL1QTBpbe90/htQv/1Pc+rvSwciUYl7q
- P5A5glWNHqvoStYTt5hL8lNg9xrcEnAORSKUtS8P2y6yXA3o79nEzAnfFeCvcK7PAPut
- YL4A==
-X-Gm-Message-State: AC+VfDxhywKZJIe4FjAet3Zd1sgxQSDgCMndngCfxfCrRsq80JdodwaY
- E0hetJBL4YnMyheiNgo6XgxQwA==
-X-Google-Smtp-Source: ACHHUZ6hD3S9glo50HhFZYtL4P+juakaDxZr/B8kZ5dHt+b7+YaNjmICMxNQ6yG4rxmo/bAwOgahfw==
-X-Received: by 2002:a1c:7705:0:b0:3fb:a9e1:8bf0 with SMTP id
- t5-20020a1c7705000000b003fba9e18bf0mr8093720wmi.39.1688377803284; 
- Mon, 03 Jul 2023 02:50:03 -0700 (PDT)
-Received: from [192.168.29.175] (48.red-88-29-180.dynamicip.rima-tde.net.
- [88.29.180.48]) by smtp.gmail.com with ESMTPSA id
- x5-20020a1c7c05000000b003fbcf032c55sm6629224wmc.7.2023.07.03.02.50.02
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 03 Jul 2023 02:50:02 -0700 (PDT)
-Message-ID: <0ae58883-9c39-6756-ac56-c77eb52ca7e0@linaro.org>
-Date: Mon, 3 Jul 2023 11:50:00 +0200
+ d=1e100.net; s=20221208; t=1688378142; x=1690970142;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=ALiKFl34QkCz7Npw8R/TtgqXSoNQEa7uED4rrPX+4/Q=;
+ b=jomKcY4zna71XZnyWocSe4JOUSytYCftJ7n+1CRZ0Y3LcChJCND4ob4VwGTEVe0fXs
+ sZYDYTM8pO6gOyLWGID+h7S+b7+jbR0mPZg9vbpCvWsOO0Lcp3JpOWITG4ihiT5laOtx
+ SF9FuQOTqluKXYWyCAa6fwPUbRF9LW3WESY402zueA8X+3McFu9MGeeQWzZju6N45yTP
+ mDCJ4BYwDtKv74d/y7+2bmsFCzaVubRfiKwGzPyu+fJ/3Q4RLNHAxP+xNy1BlmWvbjuG
+ UFEtaicdY8XBrUzNSOV7d/rXw/NznYxvzlBcUCZgcrGM4bOfYmbvhd4hvHVeU79jLUHm
+ IxkA==
+X-Gm-Message-State: ABy/qLZA/7DA0QQtF/DThb/B8W5fWlf44On0jNVSfo3HN91HSHstgQqF
+ XYN29RDntILlXGBd8U/VEt4JQw==
+X-Google-Smtp-Source: APBJJlFrwPLuicfmis9azksI6s7h8CeKUWoP56JzGmYDOKuDY8hlKnPyEX61zEw+reykZyBe2xPERA==
+X-Received: by 2002:a5d:66c8:0:b0:314:1096:6437 with SMTP id
+ k8-20020a5d66c8000000b0031410966437mr9200729wrw.19.1688378141974; 
+ Mon, 03 Jul 2023 02:55:41 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
+ by smtp.gmail.com with ESMTPSA id
+ f2-20020a5d5682000000b00313ec7dd652sm22226287wrv.44.2023.07.03.02.55.41
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 03 Jul 2023 02:55:41 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id 37DB41FFBB;
+ Mon,  3 Jul 2023 10:55:41 +0100 (BST)
+References: <20230630132159.376995-1-richard.henderson@linaro.org>
+ <20230630132159.376995-10-richard.henderson@linaro.org>
+User-agent: mu4e 1.11.8; emacs 29.0.92
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: mjt@tls.msk.ru, laurent@vivier.eu, qemu-devel@nongnu.org
+Subject: Re: [PATCH 09/24] linux-user: Implement MAP_FIXED_NOREPLACE
+Date: Mon, 03 Jul 2023 10:51:51 +0100
+In-reply-to: <20230630132159.376995-10-richard.henderson@linaro.org>
+Message-ID: <87y1jxiajm.fsf@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.12.0
-Subject: Re: [PATCH v2 0/2] Fix PSIHB interrupts init PQ state
-Content-Language: en-US
-To: Frederic Barrat <fbarrat@linux.ibm.com>, =?UTF-8?Q?C=c3=a9dric_Le_Goater?=
- <clg@kaod.org>, Daniel Henrique Barboza <danielhb413@gmail.com>,
- qemu-ppc@nongnu.org, qemu-devel@nongnu.org
-References: <20230703081215.55252-1-fbarrat@linux.ibm.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230703081215.55252-1-fbarrat@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x431.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -93,13 +96,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3/7/23 10:12, Frederic Barrat wrote:
 
-> Frederic Barrat (2):
->    pnv/xive: Add property on xive sources to define PQ state on reset
->    pnv/psi: Initialize the PSIHB interrupts to match hardware
+Richard Henderson <richard.henderson@linaro.org> writes:
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>  linux-user/mmap.c | 14 +++++++++++---
+>  1 file changed, 11 insertions(+), 3 deletions(-)
+>
+> diff --git a/linux-user/mmap.c b/linux-user/mmap.c
+> index cb5369d2d1..41c2f09fd5 100644
+> --- a/linux-user/mmap.c
+> +++ b/linux-user/mmap.c
+> @@ -502,7 +502,7 @@ abi_long target_mmap(abi_ulong start, abi_ulong len, =
+int target_prot,
+>       * If the user is asking for the kernel to find a location, do that
+>       * before we truncate the length for mapping files below.
+>       */
+> -    if (!(flags & MAP_FIXED)) {
+> +    if (!(flags & (MAP_FIXED | MAP_FIXED_NOREPLACE))) {
+>          host_len =3D len + offset - host_offset;
+>          host_len =3D HOST_PAGE_ALIGN(host_len);
+>          start =3D mmap_find_vma(real_start, host_len, TARGET_PAGE_SIZE);
+> @@ -544,7 +544,7 @@ abi_long target_mmap(abi_ulong start, abi_ulong len, =
+int target_prot,
+>          }
+>      }
+>=20=20
+> -    if (!(flags & MAP_FIXED)) {
+> +    if (!(flags & (MAP_FIXED | MAP_FIXED_NOREPLACE))) {
+>          unsigned long host_start;
+>          void *p;
+>=20=20
+> @@ -593,6 +593,13 @@ abi_long target_mmap(abi_ulong start, abi_ulong len,=
+ int target_prot,
+>              goto fail;
+>          }
+>=20=20
+> +        /* Validate that the chosen range is empty. */
+> +        if ((flags & MAP_FIXED_NOREPLACE)
+> +            && !page_check_range_empty(start, end - 1)) {
+> +            errno =3D EEXIST;
+> +            goto fail;
+> +        }
+> +
+>          /*
+>           * worst case: we cannot map the file because the offset is not
+>           * aligned, so we read it
+> @@ -608,7 +615,8 @@ abi_long target_mmap(abi_ulong start, abi_ulong len, =
+int target_prot,
+>                  goto fail;
+>              }
+>              retaddr =3D target_mmap(start, len, target_prot | PROT_WRITE,
+> -                                  MAP_FIXED | MAP_PRIVATE | MAP_ANONYMOU=
+S,
+> +                                  (flags & (MAP_FIXED | MAP_FIXED_NOREPL=
+ACE))
+> +                                  | MAP_PRIVATE | MAP_ANONYMOUS,
+
+I thought we always MAP_FIXED because we've already jumped the hoops to
+work out where in the memory space this allocation is going. Now if the
+guest doesn't specify MAP_FIXED the kernel might decide to put the
+memory somewhere else, potentially out of reach of the guest addressing?
+
+IOW I thought the MAP_FIXED here was an internal QEMU implementation
+details rather than reflecting the guests wishes.
+
+>                                    -1, 0);
+>              if (retaddr =3D=3D -1) {
+>                  goto fail;
 
 
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
