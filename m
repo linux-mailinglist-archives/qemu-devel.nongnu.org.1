@@ -2,88 +2,103 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A92BC74554B
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 08:08:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5563C74554D
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 08:09:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGCii-00080a-IV; Mon, 03 Jul 2023 02:07:32 -0400
+	id 1qGCkC-0000s4-4d; Mon, 03 Jul 2023 02:09:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qGCib-0007zl-3I
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 02:07:25 -0400
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1qGCkA-0000rv-Qr
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 02:09:02 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qGCiY-0006l5-PK
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 02:07:24 -0400
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1qGCk9-0006sy-FE
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 02:09:02 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688364441;
+ s=mimecast20190719; t=1688364540;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=5d16N22TnuSiljQRkN78YE3j3rF2frxsbSVFZkXmrSY=;
- b=aHDJ9DHqBkMk86BhdzR4PPycRO2pAUtF8I727hWIASQWvflCiQI6DOxOMt7oJfCL+4fklt
- OGRYqvULOPlwRK+L8jPzCoIcmAcES55aLNFN8hkzSxvfclvadK88Vh30af9wWMDtcM6yfo
- nVvbfEgWzLi0fY9LrpRq4bkTpES1x34=
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
- [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=1VA5mUwWt01msFPuB0WddeWe8wcOyuYVYkSbIMrokfU=;
+ b=DGsA4KjwJfjYeDDlRDrohyplGNzwckEWwbqWvr+VfQwaiHQ+mYlAfqAfxmCTfZGrFxMAkL
+ TPHDbSoMfT7WGfSOYKncCvmd1oJZ46EXeHVSwIPEujXB0bmJpBLEVHeKXBF6wJeQttQD+F
+ 7EloojuLh8em2m49Hh0yLFuyJ0gLbJI=
+Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com
+ [209.85.215.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-620-HGkN7ZcYPZWSUTjY5MHmhw-1; Mon, 03 Jul 2023 02:07:20 -0400
-X-MC-Unique: HGkN7ZcYPZWSUTjY5MHmhw-1
-Received: by mail-qk1-f198.google.com with SMTP id
- af79cd13be357-7656a0f8565so208300185a.1
- for <qemu-devel@nongnu.org>; Sun, 02 Jul 2023 23:07:20 -0700 (PDT)
+ us-mta-344-D6mdeNZpMUquHvYCWHMANg-1; Mon, 03 Jul 2023 02:08:59 -0400
+X-MC-Unique: D6mdeNZpMUquHvYCWHMANg-1
+Received: by mail-pg1-f199.google.com with SMTP id
+ 41be03b00d2f7-553d42a7069so5556489a12.1
+ for <qemu-devel@nongnu.org>; Sun, 02 Jul 2023 23:08:58 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688364439; x=1690956439;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=5d16N22TnuSiljQRkN78YE3j3rF2frxsbSVFZkXmrSY=;
- b=NXpWr0fEjPt9/UWHgO5iZdTbxSeeMm2KLHkYufUPijfH3/ISggpdSaNnGvu486fQyN
- njA44rA5y0Y+u5LJWbVEAMx01PxKiKKyeaulVffpmxdqMa4b4yePpDldwJqaZoK4+zdQ
- TKaLmpdDKhblZksfzX1MvxoPCwWcgwL0Q3u2OckOE7c8h9H0x56SZ7rzr0S5qdM0fkit
- NabVOFRJna62Zn2LNdcE6aNCBJfMDQyJv8ekT6fastFSXzZ6EiNZQcK4XuUfZ2JCC80Q
- dva21CcBALPcP7YhRzjkL5QAPn0UBoeQd6Y+WQEBeTJUwBaRX4lr9GV79e1mEJoVAFz1
- lOEw==
-X-Gm-Message-State: AC+VfDxuqPqxvTQJEkxl/Mrs+BOnv//dBSNxH9jlpOgfCGNlgyV8DqIW
- BXgbckAfDOtcm4QR1n8w7duszHAflTJukY0IDyTmBD/nwCx02bTf2ijPx3rL+5DM5RYJ+13kazn
- 40jSC9DCquJsyJhY5qeaehmk=
-X-Received: by 2002:ad4:5aa8:0:b0:62d:edb1:89e6 with SMTP id
- u8-20020ad45aa8000000b0062dedb189e6mr18126787qvg.31.1688364439599; 
- Sun, 02 Jul 2023 23:07:19 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5AhYTOg+FJ/uQDzQw7Y8DLQamrpF8S9BJju4bnlBfngHAWzIPlH2G9CAztQ4sodsSB5ZRMpQ==
-X-Received: by 2002:ad4:5aa8:0:b0:62d:edb1:89e6 with SMTP id
- u8-20020ad45aa8000000b0062dedb189e6mr18126782qvg.31.1688364439383; 
- Sun, 02 Jul 2023 23:07:19 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:280:24f0:576b:abc6:6396:ed4a?
- ([2a01:e0a:280:24f0:576b:abc6:6396:ed4a])
+ d=1e100.net; s=20221208; t=1688364538; x=1690956538;
+ h=to:references:message-id:content-transfer-encoding:cc:date
+ :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=1VA5mUwWt01msFPuB0WddeWe8wcOyuYVYkSbIMrokfU=;
+ b=QGH5UZDza0QG2O9L+CvgWJaFSe2sn/HdkYXqHLA5EwyArO+bIx3mMLw3er2rfiQS63
+ GtqbiVeRGEBXPMJxwx6i0u9ePtcd4h9MWWXZCPgvN2+LqV+2xIi2TjTOcBfi03i0VJ/V
+ dRokR/qSfph/9CTlbA4D1BOEIb/xWaD1wUZl5Kw8Vb0ktbLlg+V8g02HM6oI5Rx4zezI
+ 8zzvPkI7jmCb9hOylyiwsWp2TfTj4LdKE8wZG9KP+0OuT1J4qUvmpFakCPukilWuIxPY
+ AIouqepG/1Oygq/uxxv52YP5cKgTsmXxkC+Q1iuc0JCnFZUeOYh1bG4jdBoG9I2SAgsW
+ JGAA==
+X-Gm-Message-State: ABy/qLYeQiUv3qdUhwh6FuLfOxtrCvuv3zYkEIvt0lSQhEZrNPKx4Eko
+ 0Nra8I6ARJ60EQHUADFOlk72VwFgB6COdcyQoAna5TQCVEfwkfDI/lJUKFCtoG+AqRzADZsWeO5
+ OdRImE23FOvaQPPw=
+X-Received: by 2002:a05:6a20:3c87:b0:12e:b2e6:5782 with SMTP id
+ b7-20020a056a203c8700b0012eb2e65782mr1546011pzj.53.1688364538030; 
+ Sun, 02 Jul 2023 23:08:58 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlExZh8ZBPYn4hiEgkO6z9RCZ0aEFrHBw6Y2J0kaiMp415zY98KaMKeFgBMvKwTq1PkxGDH0JQ==
+X-Received: by 2002:a05:6a20:3c87:b0:12e:b2e6:5782 with SMTP id
+ b7-20020a056a203c8700b0012eb2e65782mr1545982pzj.53.1688364537576; 
+ Sun, 02 Jul 2023 23:08:57 -0700 (PDT)
+Received: from smtpclient.apple ([203.212.242.239])
  by smtp.gmail.com with ESMTPSA id
- y11-20020ad457cb000000b00631eb444e6esm10983239qvx.51.2023.07.02.23.07.18
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 02 Jul 2023 23:07:19 -0700 (PDT)
-Message-ID: <a09bb627-ba8e-a7e4-3969-9933a89e30cc@redhat.com>
-Date: Mon, 3 Jul 2023 08:07:16 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH] hw/vfio/pci-quirks: Sanitize capability pointer
-Content-Language: en-US
-To: Alex Williamson <alex.williamson@redhat.com>, qemu-devel@nongnu.org
-References: <20230630223608.650555-1-alex.williamson@redhat.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <20230630223608.650555-1-alex.williamson@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+ g23-20020a62e317000000b00679b7d2bd57sm10664021pfh.192.2023.07.02.23.08.54
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Sun, 02 Jul 2023 23:08:56 -0700 (PDT)
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.3\))
+Subject: Re: [PATCH v6 5/5] hw/pci: ensure PCIE devices are plugged into only
+ slot 0 of PCIE port
+From: Ani Sinha <anisinha@redhat.com>
+In-Reply-To: <20230702005916-mutt-send-email-mst@kernel.org>
+Date: Mon, 3 Jul 2023 11:38:47 +0530
+Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,
+ qemu-devel <qemu-devel@nongnu.org>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Julia Suvorova <jusual@redhat.com>, Igor Mammedov <imammedo@redhat.com>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <63B46F8F-A52C-4BFC-BAFD-06ACAF2AA6E1@redhat.com>
+References: <20230630041937-mutt-send-email-mst@kernel.org>
+ <4618EAD1-2862-4288-A881-CA860D04ADB0@redhat.com>
+ <20230630043734-mutt-send-email-mst@kernel.org>
+ <49B901C6-4819-4A00-8225-39FAA6678F3E@redhat.com>
+ <20230630055717-mutt-send-email-mst@kernel.org>
+ <FB764864-ADD3-4017-8313-ED40A833A81B@redhat.com>
+ <a38e0336-58e5-e796-bd29-0dfc5d1d0e46@daynix.com>
+ <bf351f8b-1c8a-8a7a-7f44-17c9ba18f179@daynix.com>
+ <DFB3B0B7-1F61-4779-9833-2AF1BA3BDFA6@redhat.com>
+ <2ffee496-ec63-ad04-a90b-8c2fadbf3657@daynix.com>
+ <20230702005916-mutt-send-email-mst@kernel.org>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+X-Mailer: Apple Mail (2.3696.120.41.1.3)
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01,
- RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -100,64 +115,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/1/23 00:36, Alex Williamson wrote:
-> Coverity reports a tained scalar when traversing the capabilities
-> chain (CID 1516589).  In practice I've never seen a device with a
-> chain so broken as to cause an issue, but it's also pretty easy to
-> sanitize.
-> 
-> Fixes: f6b30c1984f7 ("hw/vfio/pci-quirks: Support alternate offset for GPUDirect Cliques")
-> Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
 
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
 
-Nice. I was just looking at the coverity report ! You beat me at it.
+> On 02-Jul-2023, at 10:29 AM, Michael S. Tsirkin <mst@redhat.com> =
+wrote:
+>=20
+> On Sat, Jul 01, 2023 at 04:09:31PM +0900, Akihiko Odaki wrote:
+>> Yes, I want the slot number restriction to be enforced. If it worries =
+you
+>> too much for regressions, you may implement it as a warning first and =
+then
+>> turn it a hard error when the next development phase starts.
+>=20
+> That's not a bad idea.
 
-is_valid_std_cap_offset() could be reused in other places where QEMU
-scans the PCI capabilities I think.
-
-Thanks,
-
-C.
-
-> ---
->   hw/vfio/pci-quirks.c | 10 ++++++++--
->   1 file changed, 8 insertions(+), 2 deletions(-)
-> 
-> diff --git a/hw/vfio/pci-quirks.c b/hw/vfio/pci-quirks.c
-> index 0ed2fcd53152..f4ff83680572 100644
-> --- a/hw/vfio/pci-quirks.c
-> +++ b/hw/vfio/pci-quirks.c
-> @@ -1530,6 +1530,12 @@ const PropertyInfo qdev_prop_nv_gpudirect_clique = {
->       .set = set_nv_gpudirect_clique_id,
->   };
->   
-> +static bool is_valid_std_cap_offset(uint8_t pos)
-> +{
-> +    return (pos >= PCI_STD_HEADER_SIZEOF &&
-> +            pos <= (PCI_CFG_SPACE_SIZE - PCI_CAP_SIZEOF));
-> +}
-> +
->   static int vfio_add_nv_gpudirect_cap(VFIOPCIDevice *vdev, Error **errp)
->   {
->       PCIDevice *pdev = &vdev->pdev;
-> @@ -1563,7 +1569,7 @@ static int vfio_add_nv_gpudirect_cap(VFIOPCIDevice *vdev, Error **errp)
->        */
->       ret = pread(vdev->vbasedev.fd, &tmp, 1,
->                   vdev->config_offset + PCI_CAPABILITY_LIST);
-> -    if (ret != 1 || !tmp) {
-> +    if (ret != 1 || !is_valid_std_cap_offset(tmp)) {
->           error_setg(errp, "NVIDIA GPUDirect Clique ID: error getting cap list");
->           return -EINVAL;
->       }
-> @@ -1575,7 +1581,7 @@ static int vfio_add_nv_gpudirect_cap(VFIOPCIDevice *vdev, Error **errp)
->               d4_conflict = true;
->           }
->           tmp = pdev->config[tmp + PCI_CAP_LIST_NEXT];
-> -    } while (tmp);
-> +    } while (is_valid_std_cap_offset(tmp));
->   
->       if (!c8_conflict) {
->           pos = 0xC8;
+If we had not enforced the check strongly, the tests that we fixed would =
+not get noticed.=
 
 
