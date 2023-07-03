@@ -2,86 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2ACFA7460E1
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 18:39:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 315267460E2
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 18:40:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGMa8-00051K-NM; Mon, 03 Jul 2023 12:39:20 -0400
+	id 1qGMap-0005ol-Ge; Mon, 03 Jul 2023 12:40:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1qGMa6-00050O-2I
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 12:39:18 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1qGMa4-0007jF-85
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 12:39:17 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688402355;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=pl5VMnTqwkp2uuPTnxbNUQaJCfcNYVAdeSDF0YOVY9Q=;
- b=LNHtH9cdlVF1BoYrpVI6XN0/F1yyZfCncyQLDbJ679KTrR45oVO8kublR+0BXICKOy4H5O
- gH/UhZ292S3D8j8cAwt16TlJ12SGCBbCrq76CGcA+2LCandeJ3jGpz++ifnFV9qayz+EN6
- LeqqrCmF0AvGXoV5gkU1g2yN6TEoQM0=
-Received: from mail-yb1-f198.google.com (mail-yb1-f198.google.com
- [209.85.219.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-657-RuYro63GOCu8PWG4YOnDYQ-1; Mon, 03 Jul 2023 12:39:13 -0400
-X-MC-Unique: RuYro63GOCu8PWG4YOnDYQ-1
-Received: by mail-yb1-f198.google.com with SMTP id
- 3f1490d57ef6-bf34588085bso5010636276.0
- for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 09:39:13 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qGMak-0005oT-U9
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 12:39:59 -0400
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qGMaj-0007nR-5V
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 12:39:58 -0400
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-3fbab0d0b88so38681235e9.0
+ for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 09:39:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1688402395; x=1690994395;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=PiZheLpwNmDSPb4knFjoSaP+cF3qjrBpVM/dKhWdaNY=;
+ b=CaTmuV43b1rt3ggD2KLBT4sgcnlIHaDyCMzuR7d1afuyL2KoP9h5QPMHT0JF9ELpfO
+ uPJq8hrrYGRf2rdyh3rG1OfFMHHzfMtYx/UF+9v8JzHJamD1TFF+LFwpSC2nQhrkx6y7
+ 6UlbbrdwC9O3GLOdfxFxf6qHJQ+v1oUtgyO/kFeMD05E55Zc/tU3O9+geMQo5AKlZxAy
+ Fk2HmTU5D2JacWwvy2fS6p32ZUveSsBQDCkv3qylVoDBJKjp95dh8D9FFKD9KXGT4mW3
+ MMY/O1ZVJA6e5oGETU4+KPB32Q74dNYDetFp7MrRW6YcED1W235VExBnXI51mgW4Lszt
+ xB5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688402353; x=1690994353;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=pl5VMnTqwkp2uuPTnxbNUQaJCfcNYVAdeSDF0YOVY9Q=;
- b=TDqCPbmKE7pZbx3b83ilD+zSxfucC/A5BqHIMZ/q3AkDziQL6n8a9WuDq9hhfA9+vt
- uUvCc+I47r5/nVzUykrJIYEWl4RrS9KSaR1MdHHHrzTFWBg3FqCtRCF1rBmi6AMBWTeh
- NpAL7Qy9d647oqkzWQebAjkN7vPfflQBg47Y0T+a8KhrUG5uPVQGW8zf554PBU2Yp8Vx
- CJs5ZUNIeSA8zfvo8PeKNb8CgpDI47ftvGIblVa8Xjy9U1vL4SXShOLCzGFxOlyhYlO2
- v/03vFUO5SK7W9nTK9Kgvz186ys9sGUH455mo0hWoVrObDXX+6wGfXAOyCuTNQ6BR0Me
- Kc6Q==
-X-Gm-Message-State: ABy/qLbObZVFPeI20VBcttrpI5M3aCrvmpC4H6wIVoqdlQQtoNYxHFCC
- YJlTNR/FlsoNOVBmLIJktuVhgdhShYRZOaJ+4Lzc1WkZedDiH/tgt6jVo0x8GqlZUdvn51vrsTg
- mV8A5sriCovmvv9bs9ZGC5ALonvfdTE4=
-X-Received: by 2002:a25:16c1:0:b0:bc9:1019:543 with SMTP id
- 184-20020a2516c1000000b00bc910190543mr8677645ybw.58.1688402353406; 
- Mon, 03 Jul 2023 09:39:13 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlEPNVjHSxN63WVY0voLYGp5Z7Z7fYHxvJ3/vQ0qzLwM9VtSZjOJBDDytaKKJSiGK9TVUN2SmITZFE/6+6Lyna8=
-X-Received: by 2002:a25:16c1:0:b0:bc9:1019:543 with SMTP id
- 184-20020a2516c1000000b00bc910190543mr8677633ybw.58.1688402353185; Mon, 03
- Jul 2023 09:39:13 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1688402395; x=1690994395;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=PiZheLpwNmDSPb4knFjoSaP+cF3qjrBpVM/dKhWdaNY=;
+ b=MPM0lKFkkIx7Jd6knxr1dXL89IhQEmzSsrRUaE2WYT05zoKzVGMGdZg1EuwtzRVxKJ
+ tTbYxPCsw3eyjzDxoGtWeXlp9VwwrpX542EJ8AG/8XZDuOiUXXafiIcmd9aCcBCt+xX3
+ oEaY1hpATJ2Lyj8YavnxKVlU4RYS4IyD2TxFzFbEXyF8IEVNK0de76iEb/FhrV3D6ZJy
+ 5DG/NrR424Qj8UIP5+VnaHcHoKZ1g1c5SMPEvgx12kA5lK2YDV30IbSy9rdSKpXukdB6
+ Nh8EKfQFN92WW7QRKMYV2T4wxunumZzFb/JHEke+/XJInR1g9Pn4bMJnJ7SZTqhpdDoS
+ czVg==
+X-Gm-Message-State: AC+VfDyv8NKyJJDP1INpA7Jdua7/Mo4HXxdXDBrEv/qz6gLLpD+57wKZ
+ ZQvHnnpcHNtD21fTVBjXrDBbX86ytnJl5ci2Ruc=
+X-Google-Smtp-Source: ACHHUZ7SCnM72YagSYV1fWbd5kkrbcn4TIzWFBDsejHUfl1/TJhX6VynniC/rcX1sXNwR0A2v6IXYg==
+X-Received: by 2002:a05:600c:4196:b0:3fa:ef97:1fa5 with SMTP id
+ p22-20020a05600c419600b003faef971fa5mr14704699wmh.6.1688402395478; 
+ Mon, 03 Jul 2023 09:39:55 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
+ by smtp.gmail.com with ESMTPSA id
+ v14-20020a05600c214e00b003f605566610sm14800258wml.13.2023.07.03.09.39.54
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 03 Jul 2023 09:39:55 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id 896391FFBB;
+ Mon,  3 Jul 2023 17:39:54 +0100 (BST)
+References: <20230625212707.1078951-1-fufuyqqqqqq@gmail.com>
+ <20230625212707.1078951-5-fufuyqqqqqq@gmail.com>
+User-agent: mu4e 1.11.8; emacs 29.0.92
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Yeqi Fu <fufuyqqqqqq@gmail.com>
+Cc: richard.henderson@linaro.org, qemu-devel@nongnu.org
+Subject: Re: [RFC v3 04/10] linux-user: Implement envlist_appendenv
+Date: Mon, 03 Jul 2023 17:38:55 +0100
+In-reply-to: <20230625212707.1078951-5-fufuyqqqqqq@gmail.com>
+Message-ID: <87ilb1gd9h.fsf@linaro.org>
 MIME-Version: 1.0
-References: <cover.1686746406.git.yin31149@gmail.com>
- <07a1133d6c989394b342e35d8202257771e76769.1686746406.git.yin31149@gmail.com>
-In-Reply-To: <07a1133d6c989394b342e35d8202257771e76769.1686746406.git.yin31149@gmail.com>
-From: Eugenio Perez Martin <eperezma@redhat.com>
-Date: Mon, 3 Jul 2023 18:38:37 +0200
-Message-ID: <CAJaqyWeM9GmmRLtK50Z-UphWRv0u9OJkoJ3Dcvrz1BSiPNznew@mail.gmail.com>
-Subject: Re: [PATCH RFC 1/1] vdpa: Return -EINVAL if device's ack is
- VIRTIO_NET_ERR
-To: Hawkins Jiawei <yin31149@gmail.com>
-Cc: jasowang@redhat.com, mst@redhat.com, qemu-devel@nongnu.org, 
- qemu-stable@nongnu.org, 18801353760@163.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=eperezma@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,77 +96,112 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jun 14, 2023 at 3:02=E2=80=AFPM Hawkins Jiawei <yin31149@gmail.com>=
- wrote:
->
-> According to VirtIO standard, "The class, command and
-> command-specific-data are set by the driver,
-> and the device sets the ack byte.
-> There is little it can do except issue a diagnostic
-> if ack is not VIRTIO_NET_OK."
->
-> Therefore, QEMU should stop sending the queued SVQ commands and
-> cancel the device startup if the device's ack is not VIRTIO_NET_OK.
->
-> Yet the problem is that, vhost_vdpa_net_load_x() returns 1 based on
-> `*s->status !=3D VIRTIO_NET_OK` when the device's ack is VIRTIO_NET_ERR.
-> As a result, net->nc->info->load() also returns 1, this makes
-> vhost_net_start_one() incorrectly assume the device state is
-> successfully loaded by vhost_vdpa_net_load() and return 0, instead of
-> goto `fail` label to cancel the device startup, as vhost_net_start_one()
-> only cancels the device startup when net->nc->info->load() returns a
-> negative value.
->
-> This patch fixes this problem by returning -EINVAL when the device's
-> ack is not VIRTIO_NET_OK.
->
-> Fixes: f73c0c43ac ("vdpa: extract vhost_vdpa_net_load_mac from vhost_vdpa=
-_net_load")
-> Fixes: f64c7cda69 ("vdpa: Add vhost_vdpa_net_load_mq")
-> Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
 
-Maybe we could split the fixes? Either way:
+Yeqi Fu <fufuyqqqqqq@gmail.com> writes:
 
-Acked-by: Eugenio P=C3=A9rez <eperezma@redhat.com>
-
-Thanks!
-
+> Signed-off-by: Yeqi Fu <fufuyqqqqqq@gmail.com>
 > ---
->  net/vhost-vdpa.c | 10 +++++++---
->  1 file changed, 7 insertions(+), 3 deletions(-)
+>  include/qemu/envlist.h |  1 +
+>  util/envlist.c         | 61 ++++++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 62 insertions(+)
 >
-> diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-> index 37cdc84562..630c9bf71e 100644
-> --- a/net/vhost-vdpa.c
-> +++ b/net/vhost-vdpa.c
-> @@ -651,8 +651,9 @@ static int vhost_vdpa_net_load_mac(VhostVDPAState *s,=
- const VirtIONet *n)
->          if (unlikely(dev_written < 0)) {
->              return dev_written;
->          }
-> -
-> -        return *s->status !=3D VIRTIO_NET_OK;
-> +        if (*s->status !=3D VIRTIO_NET_OK) {
-> +            return -EINVAL;
-> +        }
->      }
->
->      return 0;
-> @@ -676,8 +677,11 @@ static int vhost_vdpa_net_load_mq(VhostVDPAState *s,
->      if (unlikely(dev_written < 0)) {
->          return dev_written;
->      }
-> +    if (*s->status !=3D VIRTIO_NET_OK) {
-> +        return -EINVAL;
-> +    }
->
-> -    return *s->status !=3D VIRTIO_NET_OK;
-> +    return 0;
+> diff --git a/include/qemu/envlist.h b/include/qemu/envlist.h
+> index 6006dfae44..865eb18e17 100644
+> --- a/include/qemu/envlist.h
+> +++ b/include/qemu/envlist.h
+> @@ -7,6 +7,7 @@ envlist_t *envlist_create(void);
+>  void envlist_free(envlist_t *);
+>  int envlist_setenv(envlist_t *, const char *);
+>  int envlist_unsetenv(envlist_t *, const char *);
+> +int envlist_appendenv(envlist_t *, const char *, const char *);
+>  int envlist_parse_set(envlist_t *, const char *);
+>  int envlist_parse_unset(envlist_t *, const char *);
+>  char **envlist_to_environ(const envlist_t *, size_t *);
+> diff --git a/util/envlist.c b/util/envlist.c
+> index db937c0427..635c9c4fab 100644
+> --- a/util/envlist.c
+> +++ b/util/envlist.c
+> @@ -201,6 +201,67 @@ envlist_unsetenv(envlist_t *envlist, const char *env)
+>      return (0);
 >  }
->
->  static int vhost_vdpa_net_load(NetClientState *nc)
-> --
-> 2.25.1
->
+>=20=20
+> +/*
+> + * Appends environment value to envlist. If the environment
+> + * variable already exists, the new value is appended to the
+> + * existing one.
+> + *
+> + * Returns 0 in success, errno otherwise.
+> + */
+> +int
+> +envlist_appendenv(envlist_t *envlist, const char *env, const char *separ=
+ator)
+> +{
+> +    struct envlist_entry *entry =3D NULL;
+> +    const char *eq_sign;
+> +    size_t envname_len;
+> +
+> +    if ((envlist =3D=3D NULL) || (env =3D=3D NULL) || (separator =3D=3D =
+NULL)) {
+> +        return (EINVAL);
 
+No () around the EINVAL needed here.
+
+> +    }
+> +
+> +    /* find out first equals sign in given env */
+> +    eq_sign =3D strchr(env, '=3D');
+> +    if (eq_sign =3D=3D NULL) {
+> +        return (EINVAL);
+> +    }
+> +
+> +    if (strchr(eq_sign + 1, '=3D') !=3D NULL) {
+> +        return (EINVAL);
+> +    }
+> +
+> +    envname_len =3D eq_sign - env + 1;
+> +
+> +    /*
+> +     * If there already exists variable with given name,
+> +     * we append the new value to the existing one.
+> +     */
+> +    for (entry =3D envlist->el_entries.lh_first; entry !=3D NULL;
+> +        entry =3D entry->ev_link.le_next) {
+> +        if (strncmp(entry->ev_var, env, envname_len) =3D=3D 0) {
+> +            break;
+> +        }
+> +    }
+> +
+> +    if (entry !=3D NULL) {
+> +        char *new_env_value =3D NULL;
+> +        size_t new_env_len =3D strlen(entry->ev_var) + strlen(eq_sign)
+> +            + strlen(separator) + 1;
+> +        new_env_value =3D g_malloc(new_env_len);
+> +        strcpy(new_env_value, entry->ev_var);
+> +        strcat(new_env_value, separator);
+> +        strcat(new_env_value, eq_sign + 1);
+> +        g_free((char *)entry->ev_var);
+> +        entry->ev_var =3D new_env_value;
+> +    } else {
+> +        envlist->el_count++;
+> +        entry =3D g_malloc(sizeof(*entry));
+> +        entry->ev_var =3D g_strdup(env);
+> +        QLIST_INSERT_HEAD(&envlist->el_entries, entry, ev_link);
+> +    }
+> +
+> +    return (0);
+> +}
+> +
+
+We really should add something to tests/unit/test-env to check the
+various operations work as expected.
+
+
+>  /*
+>   * Returns given envlist as array of strings (in same form that
+>   * global variable environ is).  Caller must free returned memory
+
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
