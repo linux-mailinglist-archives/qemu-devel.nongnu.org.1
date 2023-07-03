@@ -2,90 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42F05746041
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 18:00:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D0007746043
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 18:00:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGLwW-0002YL-Qx; Mon, 03 Jul 2023 11:58:24 -0400
+	id 1qGLwW-0002Y5-P7; Mon, 03 Jul 2023 11:58:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1qGLwT-0002Md-8l; Mon, 03 Jul 2023 11:58:21 -0400
+ id 1qGLwU-0002RD-E9; Mon, 03 Jul 2023 11:58:22 -0400
 Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1qGLwQ-0004fb-Pi; Mon, 03 Jul 2023 11:58:21 -0400
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+ id 1qGLwS-0004fy-20; Mon, 03 Jul 2023 11:58:22 -0400
+Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 363Fkt4O007873; Mon, 3 Jul 2023 15:58:13 GMT
+ 363Fls28002373; Mon, 3 Jul 2023 15:58:15 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=5HuMpvKKMcZAdA4WPLtUYxSHaraoH0U4uyrdFjzJJIo=;
- b=FqFwEINleI6mEmwRtIhCfhLY2TZawWYLqQBIzy9WlizizhemgoZ9nCalIk/tg3G5JyEm
- 63GJ+wDbxXC8W2XZx7zm6/Us3PK5zpI/myOC8xbj1HwxceGTzJe5hszbJJJO7xyIrD4f
- UNj2l6WWn38tWsmU2ktw8lDYRu0PR3aG0ujVXeB+o2GiKn4zhs48s/Pv+UWzAEHtoeQj
- H8zLEkTP/koojaZJynMTM2aUNQ6Us97h/XRJ0EjdgUP/Sirq3AkCU1hJNeMxCnbglite
- U+G2fSA5YsgGuOqdGoYcgq529j8qI7GOb9nBl8tC0GN4A9mrtt1lskRtnTGjwrNWZusO KA== 
+ : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=pp1;
+ bh=wqbcFyWY4s6bMrIEtEgh3SrUQl21bVa3fTDkhglOS3s=;
+ b=HQSrC6H6EqX1yMiDV1ZjR30A/WgWnhiCQFJT3hlkq+i0nv46ufM2rTZlsGBbrrg+NQcD
+ fia1c73hUfaXmyqDdNLRX9SCMwV9QGsUEoS3rnxb8hOfcsCjfdATHmovaPrtWNDFq6Oh
+ s9XvCoHpaaaQaCL1gcdQCwzEU5dACL+aw5ctBl66pAvq0e0Kb35Re0g9DIuS+5ijPKeA
+ 1kyXR5jgHF0WWS91TsiJbWzEh/+rRAqBghoRxlzdAAe+qujFBXNSvysnpEJaJjaGSqvZ
+ CzjIfD4nWgNwo25zP5NicHxkIWTKAp01BEuORFe76S8IKYhkjbeErj+A5yGql9fC1FO+ 1Q== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rm19b8873-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rm19p06nq-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 03 Jul 2023 15:58:13 +0000
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 363Fl4Ev008368;
- Mon, 3 Jul 2023 15:58:13 GMT
-Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.72])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rm19b886f-1
+ Mon, 03 Jul 2023 15:58:15 +0000
+Received: from m0353728.ppops.net (m0353728.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 363FooZY008393;
+ Mon, 3 Jul 2023 15:58:14 GMT
+Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.106])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rm19p06n3-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 03 Jul 2023 15:58:14 +0000
+Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
+ by ppma04fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 363DWsgX000309;
+ Mon, 3 Jul 2023 15:58:12 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+ by ppma04fra.de.ibm.com (PPS) with ESMTPS id 3rjbs511r5-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Mon, 03 Jul 2023 15:58:12 +0000
-Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
- by ppma06fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3632peea030302;
- Mon, 3 Jul 2023 15:58:10 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
- by ppma06fra.de.ibm.com (PPS) with ESMTPS id 3rjbdds1qc-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 03 Jul 2023 15:58:10 +0000
 Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com
  [10.20.54.102])
- by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 363Fw8tF21758516
+ by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 363Fw9hT9634508
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 3 Jul 2023 15:58:08 GMT
+ Mon, 3 Jul 2023 15:58:09 GMT
 Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0E72120043;
- Mon,  3 Jul 2023 15:58:08 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id A388B20043;
+ Mon,  3 Jul 2023 15:58:09 +0000 (GMT)
 Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D943720040;
- Mon,  3 Jul 2023 15:58:07 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 7221520040;
+ Mon,  3 Jul 2023 15:58:09 +0000 (GMT)
 Received: from heavy.boeblingen.de.ibm.com (unknown [9.155.200.166])
  by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Mon,  3 Jul 2023 15:58:07 +0000 (GMT)
+ Mon,  3 Jul 2023 15:58:09 +0000 (GMT)
 From: Ilya Leoshkevich <iii@linux.ibm.com>
 To: Laurent Vivier <laurent@vivier.eu>,
  Richard Henderson <richard.henderson@linaro.org>,
  David Hildenbrand <david@redhat.com>
 Cc: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
  qemu-s390x@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH 00/12] target/s390x: Miscellaneous TCG fixes
-Date: Mon,  3 Jul 2023 17:50:26 +0200
-Message-ID: <20230703155801.179167-1-iii@linux.ibm.com>
+Subject: [PATCH 01/12] linux-user: elfload: Add more initial s390x PSW bits
+Date: Mon,  3 Jul 2023 17:50:27 +0200
+Message-ID: <20230703155801.179167-2-iii@linux.ibm.com>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20230703155801.179167-1-iii@linux.ibm.com>
+References: <20230703155801.179167-1-iii@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: XV_r34_rkzRBcdXglWtjX6C6BcFSnQJs
-X-Proofpoint-ORIG-GUID: XEfVfOREIrV1KPvLUHFm6gVA_3Fqtt92
+X-Proofpoint-GUID: 3kz4LTYAjsUO8ZSMc4FFN1B_HgYCPXSJ
+X-Proofpoint-ORIG-GUID: SReZKMNWj5nyJTBBM7KSk9M5afeyuPJF
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
  definitions=2023-07-03_11,2023-06-30_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 impostorscore=0
- spamscore=0 bulkscore=0 lowpriorityscore=0 suspectscore=0 adultscore=0
- mlxscore=0 mlxlogscore=910 malwarescore=0 priorityscore=1501 clxscore=1015
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2305260000
- definitions=main-2307030141
+ clxscore=1015 mlxscore=0
+ lowpriorityscore=0 impostorscore=0 malwarescore=0 adultscore=0
+ suspectscore=0 phishscore=0 spamscore=0 priorityscore=1501 bulkscore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2305260000 definitions=main-2307030141
 Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
  helo=mx0a-001b2d01.pphosted.com
 X-Spam_score_int: -19
@@ -110,52 +113,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+Make the PSW look more similar to the real s390x userspace PSW.
+Except for being there, the newly added bits should not affect the
+userspace code execution.
 
-Randomized testing found a number of issues in the s390x emulation.
-This series fixes 6 of them (patches 2-7) and adds tests (patches
-8-12); patch 1 is a cosmetic improvement needed for the EPSW test.
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+---
+ linux-user/elfload.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-There are more issues, but I thought it would be better to send this
-batch now.
-
-Best regards,
-Ilya
-
-Ilya Leoshkevich (12):
-  linux-user: elfload: Add more initial s390x PSW bits
-  target/s390x: Fix EPSW CC reporting
-  target/s390x: Fix MDEB and MDEBR
-  target/s390x: Fix MVCRL with a large value in R0
-  target/s390x: Fix LRA overwriting the top 32 bits on DAT error
-  target/s390x: Fix LRA when DAT is off
-  target/s390x: Fix relative long instructions with large offsets
-  tests/tcg/s390x: Test EPSW
-  tests/tcg/s390x: Test LARL with a large offset
-  tests/tcg/s390x: Test LRA
-  tests/tcg/s390x: Test MDEB and MDEBR
-  tests/tcg/s390x: Test MVCRL with a large value in R0
-
- linux-user/elfload.c                    |  4 ++-
- target/s390x/helper.h                   |  2 +-
- target/s390x/mmu_helper.c               |  2 +-
- target/s390x/tcg/fpu_helper.c           |  3 +-
- target/s390x/tcg/insn-data.h.inc        |  4 +--
- target/s390x/tcg/mem_helper.c           |  5 +--
- target/s390x/tcg/translate.c            |  8 +++--
- tests/tcg/s390x/Makefile.softmmu-target |  1 +
- tests/tcg/s390x/Makefile.target         |  3 ++
- tests/tcg/s390x/epsw.c                  | 23 +++++++++++++
- tests/tcg/s390x/larl.c                  | 17 +++++++++
- tests/tcg/s390x/lra.S                   | 19 ++++++++++
- tests/tcg/s390x/mdeb.c                  | 30 ++++++++++++++++
- tests/tcg/s390x/mie3-mvcrl.c            | 46 +++++++++++++++++++------
- 14 files changed, 147 insertions(+), 20 deletions(-)
- create mode 100644 tests/tcg/s390x/epsw.c
- create mode 100644 tests/tcg/s390x/larl.c
- create mode 100644 tests/tcg/s390x/lra.S
- create mode 100644 tests/tcg/s390x/mdeb.c
-
+diff --git a/linux-user/elfload.c b/linux-user/elfload.c
+index 6900974c373..7935110bff4 100644
+--- a/linux-user/elfload.c
++++ b/linux-user/elfload.c
+@@ -1635,7 +1635,9 @@ const char *elf_hwcap_str(uint32_t bit)
+ static inline void init_thread(struct target_pt_regs *regs, struct image_info *infop)
+ {
+     regs->psw.addr = infop->entry;
+-    regs->psw.mask = PSW_MASK_64 | PSW_MASK_32;
++    regs->psw.mask = PSW_MASK_DAT | PSW_MASK_IO | PSW_MASK_EXT | \
++                     PSW_MASK_MCHECK | PSW_MASK_PSTATE | PSW_MASK_64 | \
++                     PSW_MASK_32;
+     regs->gprs[15] = infop->start_stack;
+ }
+ 
 -- 
 2.41.0
 
