@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FEB4745DC5
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 15:51:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 814FD745DE5
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 15:53:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGJrK-0007n9-27; Mon, 03 Jul 2023 09:44:54 -0400
+	id 1qGJzj-0000YC-UO; Mon, 03 Jul 2023 09:53:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qGJr7-0007Y1-HT
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 09:44:44 -0400
-Received: from mail-lf1-x133.google.com ([2a00:1450:4864:20::133])
+ id 1qGJzg-0000Tj-P1
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 09:53:32 -0400
+Received: from mail-lf1-x129.google.com ([2a00:1450:4864:20::129])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qGJr2-0005hd-QJ
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 09:44:41 -0400
-Received: by mail-lf1-x133.google.com with SMTP id
- 2adb3069b0e04-4fb7b2e3dacso6905681e87.0
- for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 06:44:34 -0700 (PDT)
+ id 1qGJze-00081a-1K
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 09:53:32 -0400
+Received: by mail-lf1-x129.google.com with SMTP id
+ 2adb3069b0e04-4fb761efa7aso6914715e87.0
+ for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 06:53:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688391873; x=1690983873;
+ d=linaro.org; s=google; t=1688392408; x=1690984408;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=/s2hAOhMVhGFCPzbYe/mdoQHVg5UiqmQFlUH/WTBHa4=;
- b=fDblIy0nKI9sTCPytEjJdKrggDpkQoL3T/hnyV0gCmiZ3rimSimcBOQgP+qCMr8+FP
- ywllZzmfEdJWaQRj7AaEJSnL34SD7NVcuy94vE8js9cDU7DmxWgM5dMSOEdoDYUO3S33
- odBUpclt0Z+uzHk1N5obHNEfJ1jdN+XFga/4ijNYY+lqOjd0EBDwmCYYXKZaN5WMlksB
- ogRunD8P8uEJSEXWFRuRATntkeOHmzSEk1xwiZIat6maHTlWzdNrB6AbLgQvqe0UGTSH
- 5oNDtw/iCKZuXku+ufe4Tfa7uTJohweqvOHAVlQ8II72dNJg7VBKdAGrS0q7n/dqbFhy
- 7fQQ==
+ bh=3g1ZdS6tVQBEMQ0D/vXzVLJC2cdpbVKGouDWEpjqWrs=;
+ b=BqNSa4sGy0jqk0Ng/If3hEBucc+vnYEzH3ZaGo1qowR+ht25Rog9GosjNLNCS26cDc
+ qE7i7zn6idyWklVB9VBlVtYjYRMPn5SZb1Zd/8xSmoatv2STQ0gaNW5ODAZXYdZY0TJe
+ jsvY9OWQAVwPt/+i9/K5tDaHQm4Rt2JR2RFhpv5wh14mgwKuTfsjRmLboP90LCulCa14
+ +i5jkjtbKS1B9nyN3LNbUmKw/UHtMbHGH3yo94Gtkh6/lj9cb75TCOgh5A+8XI11iR5n
+ jUtcJUhA0mFqH4beqiB4bxbz+8sT5KHwJ08B2w/yP23cRV2zEBAF1cObGQGQqHQLuCR5
+ 9R2w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688391873; x=1690983873;
+ d=1e100.net; s=20221208; t=1688392408; x=1690984408;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=/s2hAOhMVhGFCPzbYe/mdoQHVg5UiqmQFlUH/WTBHa4=;
- b=Nfgidqkzu5krWmMO27E4lO/6Ec6Rw8fcwACaori+O9T6bCTdvhuO2Rv7yvkRY/wOsw
- 3VDZppbk63oOgw8KmYSY/n3nytuMupWWb22cr0/Yy11wQWelSg+x5K3l8d8pPFI80IMe
- tue443M6HyIRfC9BQkK+pQ8HPqDcs2KIcB0kBNQJrmTS9dvmST5EKEXyjnhKLZxF4aVo
- JRs6L8klRvQqZN8iyRAFGJv+hw5/9HKnpKSmCvbBIijdckXp/Z09nPMtCGSgWAN2zGQF
- r40Xh2TJ9R4R2pcIFmHmUDMjkN9DPlF0F21Lx3Ekl6aYvxpAA2asl0VhYfhLkQmw1IQd
- /y0g==
-X-Gm-Message-State: ABy/qLaJkhOFEOpporhrv0DEUk1csHOFDRDJdw8g7vufrAnPRhPGLIx7
- Df3XLL2PUQ1OIF86hglapKoc+A==
-X-Google-Smtp-Source: APBJJlHiFt5Xq/FCQVMi5pMjLc6AZ3jyTK/2g7ykD73xGv788sgqxK0P2ym7LD1s6q1LCqh/RWi3Bg==
-X-Received: by 2002:a05:6512:3d0f:b0:4f9:586b:dba1 with SMTP id
- d15-20020a0565123d0f00b004f9586bdba1mr7872346lfv.4.1688391873244; 
- Mon, 03 Jul 2023 06:44:33 -0700 (PDT)
+ bh=3g1ZdS6tVQBEMQ0D/vXzVLJC2cdpbVKGouDWEpjqWrs=;
+ b=YDK+ljMrFntFulAgZijXW5h/J1tkPazV4nu1tTDB0kGqDdKpzrtyQ1WntOsQn0Fd3C
+ Pm1ESh47mdj5wrODnW6rArGVhPVoyhVjZBCyWk5s+LcJFRv2nCoJHjtDNiPqmGlEN/kB
+ 04kX7fdS2kekXATVAqzeEgmDNediSqhI2tZeN1mePBK+NSCAuMmobqtfHtTaKk6J6nH2
+ NsOZV+ZetEORz4SoTGzp7aBBDRz9La9iG1UlzNP8e7oACQQdP0aBRG926YJLbTNEOcYw
+ qiU5ixSQlzcToNEYdcnwVVnWnf0hPqWpj9305sxzO5EzUPS02qw3Ai0ytqkRz5MVV2Vp
+ SJnQ==
+X-Gm-Message-State: ABy/qLZheIVTw5xEO+Zc1TbqbpYNhCW95SSYhh0doAL556ZP0nP51O9O
+ vMCklcJKpS/Z1ggpq8EZdsjUTA==
+X-Google-Smtp-Source: APBJJlFYOChk+Y5gCp5q7eVR23Xaiy+busrbhNoFMfd6wL50EV7OBP+My2xi+q/lsic3y88HO/mraA==
+X-Received: by 2002:a05:6512:2811:b0:4fb:92df:a27b with SMTP id
+ cf17-20020a056512281100b004fb92dfa27bmr8358926lfb.39.1688392408299; 
+ Mon, 03 Jul 2023 06:53:28 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- l25-20020a1c7919000000b003fbb25da65bsm14778967wme.30.2023.07.03.06.44.30
+ f10-20020a7bcd0a000000b003fa99969e61sm21413074wmj.45.2023.07.03.06.53.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 03 Jul 2023 06:44:30 -0700 (PDT)
+ Mon, 03 Jul 2023 06:53:27 -0700 (PDT)
 Received: from zen.lan (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 2485C1FFBD;
+ by zen.linaroharston (Postfix) with ESMTP id 595C01FFC5;
  Mon,  3 Jul 2023 14:44:29 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org, Erik Skultety <eskultet@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+Cc: richard.henderson@linaro.org,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Thomas Huth <thuth@redhat.com>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Beraldo Leal <bleal@redhat.com>
-Subject: [PULL 12/38] tests/lcitool: Bump fedora container versions
-Date: Mon,  3 Jul 2023 14:44:01 +0100
-Message-Id: <20230703134427.1389440-13-alex.bennee@linaro.org>
+Subject: [PULL 13/38] tests/lcitool: add an explicit gcc-native package
+Date: Mon,  3 Jul 2023 14:44:02 +0100
+Message-Id: <20230703134427.1389440-14-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230703134427.1389440-1-alex.bennee@linaro.org>
 References: <20230703134427.1389440-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::133;
- envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x133.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::129;
+ envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x129.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,97 +100,150 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Erik Skultety <eskultet@redhat.com>
+We need a native compiler to build the hexagon codegen tools. In our
+current images we already have a gcc as a side effect of a broken
+dependency between gcovr and lcov but this will be fixed when we move
+to bookworm. See
+https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=987818 for details.
 
-Fedora 37 -> 38
+Update the packages while we are at it.
 
-Signed-off-by: Erik Skultety <eskultet@redhat.com>
 Acked-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <c9b00e573a7a80fc6ce5c68595382f5c916a9195.1685528076.git.eskultet@redhat.com>
-[AJB: Dropped alpine (in prev commit), reflow commit msg]
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20230630180423.558337-13-alex.bennee@linaro.org>
+Message-Id: <20230630180423.558337-14-alex.bennee@linaro.org>
 
+diff --git a/tests/docker/dockerfiles/debian-amd64-cross.docker b/tests/docker/dockerfiles/debian-amd64-cross.docker
+index 40a2b6acc4..016c2321f1 100644
+--- a/tests/docker/dockerfiles/debian-amd64-cross.docker
++++ b/tests/docker/dockerfiles/debian-amd64-cross.docker
+@@ -24,6 +24,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       exuberant-ctags \
+                       findutils \
+                       flex \
++                      gcc \
+                       gcovr \
+                       gettext \
+                       git \
+diff --git a/tests/docker/dockerfiles/debian-arm64-cross.docker b/tests/docker/dockerfiles/debian-arm64-cross.docker
+index c99300bbfa..3c114efa11 100644
+--- a/tests/docker/dockerfiles/debian-arm64-cross.docker
++++ b/tests/docker/dockerfiles/debian-arm64-cross.docker
+@@ -24,6 +24,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       exuberant-ctags \
+                       findutils \
+                       flex \
++                      gcc \
+                       gcovr \
+                       gettext \
+                       git \
+diff --git a/tests/docker/dockerfiles/debian-armel-cross.docker b/tests/docker/dockerfiles/debian-armel-cross.docker
+index 5db5c78b31..dfbd47db89 100644
+--- a/tests/docker/dockerfiles/debian-armel-cross.docker
++++ b/tests/docker/dockerfiles/debian-armel-cross.docker
+@@ -24,6 +24,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       exuberant-ctags \
+                       findutils \
+                       flex \
++                      gcc \
+                       gcovr \
+                       gettext \
+                       git \
+diff --git a/tests/docker/dockerfiles/debian-armhf-cross.docker b/tests/docker/dockerfiles/debian-armhf-cross.docker
+index ae6600b25f..4e0084e896 100644
+--- a/tests/docker/dockerfiles/debian-armhf-cross.docker
++++ b/tests/docker/dockerfiles/debian-armhf-cross.docker
+@@ -24,6 +24,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       exuberant-ctags \
+                       findutils \
+                       flex \
++                      gcc \
+                       gcovr \
+                       gettext \
+                       git \
+diff --git a/tests/docker/dockerfiles/debian-mips64el-cross.docker b/tests/docker/dockerfiles/debian-mips64el-cross.docker
+index daa2d48e36..88adf333e9 100644
+--- a/tests/docker/dockerfiles/debian-mips64el-cross.docker
++++ b/tests/docker/dockerfiles/debian-mips64el-cross.docker
+@@ -24,6 +24,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       exuberant-ctags \
+                       findutils \
+                       flex \
++                      gcc \
+                       gcovr \
+                       gettext \
+                       git \
+diff --git a/tests/docker/dockerfiles/debian-mipsel-cross.docker b/tests/docker/dockerfiles/debian-mipsel-cross.docker
+index 5af04e2054..256e8b5dfe 100644
+--- a/tests/docker/dockerfiles/debian-mipsel-cross.docker
++++ b/tests/docker/dockerfiles/debian-mipsel-cross.docker
+@@ -24,6 +24,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       exuberant-ctags \
+                       findutils \
+                       flex \
++                      gcc \
+                       gcovr \
+                       gettext \
+                       git \
+diff --git a/tests/docker/dockerfiles/debian-ppc64el-cross.docker b/tests/docker/dockerfiles/debian-ppc64el-cross.docker
+index 1eeba7fcab..4d19cd2bd7 100644
+--- a/tests/docker/dockerfiles/debian-ppc64el-cross.docker
++++ b/tests/docker/dockerfiles/debian-ppc64el-cross.docker
+@@ -24,6 +24,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       exuberant-ctags \
+                       findutils \
+                       flex \
++                      gcc \
+                       gcovr \
+                       gettext \
+                       git \
+diff --git a/tests/docker/dockerfiles/debian-s390x-cross.docker b/tests/docker/dockerfiles/debian-s390x-cross.docker
+index 52e89a6dab..642bbde3d1 100644
+--- a/tests/docker/dockerfiles/debian-s390x-cross.docker
++++ b/tests/docker/dockerfiles/debian-s390x-cross.docker
+@@ -24,6 +24,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       exuberant-ctags \
+                       findutils \
+                       flex \
++                      gcc \
+                       gcovr \
+                       gettext \
+                       git \
 diff --git a/tests/docker/dockerfiles/fedora-win32-cross.docker b/tests/docker/dockerfiles/fedora-win32-cross.docker
-index dc72ae9cc9..a0a3cd9e5b 100644
+index a0a3cd9e5b..e3dfd68bed 100644
 --- a/tests/docker/dockerfiles/fedora-win32-cross.docker
 +++ b/tests/docker/dockerfiles/fedora-win32-cross.docker
-@@ -1,10 +1,10 @@
- # THIS FILE WAS AUTO-GENERATED
- #
--#  $ lcitool dockerfile --layers all --cross mingw32 fedora-37 qemu
-+#  $ lcitool dockerfile --layers all --cross mingw32 fedora-38 qemu
- #
- # https://gitlab.com/libvirt/libvirt-ci
- 
--FROM registry.fedoraproject.org/fedora:37
-+FROM registry.fedoraproject.org/fedora:38
- 
- RUN dnf install -y nosync && \
-     printf '#!/bin/sh\n\
+@@ -29,6 +29,7 @@ exec "$@"\n' > /usr/bin/nosync && \
+                diffutils \
+                findutils \
+                flex \
++               gcc \
+                gcovr \
+                git \
+                glib2-devel \
 diff --git a/tests/docker/dockerfiles/fedora-win64-cross.docker b/tests/docker/dockerfiles/fedora-win64-cross.docker
-index 7eb4a5dba2..b6c1a6a339 100644
+index b6c1a6a339..0e15c9643a 100644
 --- a/tests/docker/dockerfiles/fedora-win64-cross.docker
 +++ b/tests/docker/dockerfiles/fedora-win64-cross.docker
-@@ -1,10 +1,10 @@
- # THIS FILE WAS AUTO-GENERATED
- #
--#  $ lcitool dockerfile --layers all --cross mingw64 fedora-37 qemu
-+#  $ lcitool dockerfile --layers all --cross mingw64 fedora-38 qemu
- #
- # https://gitlab.com/libvirt/libvirt-ci
- 
--FROM registry.fedoraproject.org/fedora:37
-+FROM registry.fedoraproject.org/fedora:38
- 
- RUN dnf install -y nosync && \
-     printf '#!/bin/sh\n\
-diff --git a/tests/docker/dockerfiles/fedora.docker b/tests/docker/dockerfiles/fedora.docker
-index 3a69eefdda..8a35a17617 100644
---- a/tests/docker/dockerfiles/fedora.docker
-+++ b/tests/docker/dockerfiles/fedora.docker
-@@ -1,10 +1,10 @@
- # THIS FILE WAS AUTO-GENERATED
- #
--#  $ lcitool dockerfile --layers all fedora-37 qemu
-+#  $ lcitool dockerfile --layers all fedora-38 qemu
- #
- # https://gitlab.com/libvirt/libvirt-ci
- 
--FROM registry.fedoraproject.org/fedora:37
-+FROM registry.fedoraproject.org/fedora:38
- 
- RUN dnf install -y nosync && \
-     printf '#!/bin/sh\n\
-diff --git a/tests/lcitool/refresh b/tests/lcitool/refresh
-index 5d36a62b10..5e06fb2cf5 100755
---- a/tests/lcitool/refresh
-+++ b/tests/lcitool/refresh
-@@ -119,7 +119,7 @@ try:
-     generate_dockerfile("centos8", "centos-stream-8")
-     generate_dockerfile("debian-amd64", "debian-11",
-                         trailer="".join(debian11_extras))
--    generate_dockerfile("fedora", "fedora-37")
-+    generate_dockerfile("fedora", "fedora-38")
-     generate_dockerfile("opensuse-leap", "opensuse-leap-15")
-     generate_dockerfile("ubuntu2004", "ubuntu-2004")
-     generate_dockerfile("ubuntu2204", "ubuntu-2204")
-@@ -169,12 +169,12 @@ try:
-                         trailer=cross_build("s390x-linux-gnu-",
-                                             "s390x-softmmu,s390x-linux-user"))
- 
--    generate_dockerfile("fedora-win32-cross", "fedora-37",
-+    generate_dockerfile("fedora-win32-cross", "fedora-38",
-                         cross="mingw32",
-                         trailer=cross_build("i686-w64-mingw32-",
-                                             "i386-softmmu"))
- 
--    generate_dockerfile("fedora-win64-cross", "fedora-37",
-+    generate_dockerfile("fedora-win64-cross", "fedora-38",
-                         cross="mingw64",
-                         trailer=cross_build("x86_64-w64-mingw32-",
-                                             "x86_64-softmmu"))
+@@ -29,6 +29,7 @@ exec "$@"\n' > /usr/bin/nosync && \
+                diffutils \
+                findutils \
+                flex \
++               gcc \
+                gcovr \
+                git \
+                glib2-devel \
+diff --git a/tests/lcitool/projects/qemu.yml b/tests/lcitool/projects/qemu.yml
+index 566db8313b..21fd3d2cf9 100644
+--- a/tests/lcitool/projects/qemu.yml
++++ b/tests/lcitool/projects/qemu.yml
+@@ -24,6 +24,7 @@ packages:
+  - fuse3
+  - g++
+  - gcc
++ - gcc-native
+  - gcovr
+  - gettext
+  - glib2
 -- 
 2.39.2
 
