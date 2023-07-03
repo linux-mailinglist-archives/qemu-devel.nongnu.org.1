@@ -2,84 +2,116 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 315267460E2
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 18:40:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25BC07460E3
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 18:40:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGMap-0005ol-Ge; Mon, 03 Jul 2023 12:40:03 -0400
+	id 1qGMb6-00064i-Ug; Mon, 03 Jul 2023 12:40:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qGMak-0005oT-U9
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 12:39:59 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qGMaj-0007nR-5V
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 12:39:58 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-3fbab0d0b88so38681235e9.0
- for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 09:39:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688402395; x=1690994395;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
- :message-id:reply-to;
- bh=PiZheLpwNmDSPb4knFjoSaP+cF3qjrBpVM/dKhWdaNY=;
- b=CaTmuV43b1rt3ggD2KLBT4sgcnlIHaDyCMzuR7d1afuyL2KoP9h5QPMHT0JF9ELpfO
- uPJq8hrrYGRf2rdyh3rG1OfFMHHzfMtYx/UF+9v8JzHJamD1TFF+LFwpSC2nQhrkx6y7
- 6UlbbrdwC9O3GLOdfxFxf6qHJQ+v1oUtgyO/kFeMD05E55Zc/tU3O9+geMQo5AKlZxAy
- Fk2HmTU5D2JacWwvy2fS6p32ZUveSsBQDCkv3qylVoDBJKjp95dh8D9FFKD9KXGT4mW3
- MMY/O1ZVJA6e5oGETU4+KPB32Q74dNYDetFp7MrRW6YcED1W235VExBnXI51mgW4Lszt
- xB5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688402395; x=1690994395;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=PiZheLpwNmDSPb4knFjoSaP+cF3qjrBpVM/dKhWdaNY=;
- b=MPM0lKFkkIx7Jd6knxr1dXL89IhQEmzSsrRUaE2WYT05zoKzVGMGdZg1EuwtzRVxKJ
- tTbYxPCsw3eyjzDxoGtWeXlp9VwwrpX542EJ8AG/8XZDuOiUXXafiIcmd9aCcBCt+xX3
- oEaY1hpATJ2Lyj8YavnxKVlU4RYS4IyD2TxFzFbEXyF8IEVNK0de76iEb/FhrV3D6ZJy
- 5DG/NrR424Qj8UIP5+VnaHcHoKZ1g1c5SMPEvgx12kA5lK2YDV30IbSy9rdSKpXukdB6
- Nh8EKfQFN92WW7QRKMYV2T4wxunumZzFb/JHEke+/XJInR1g9Pn4bMJnJ7SZTqhpdDoS
- czVg==
-X-Gm-Message-State: AC+VfDyv8NKyJJDP1INpA7Jdua7/Mo4HXxdXDBrEv/qz6gLLpD+57wKZ
- ZQvHnnpcHNtD21fTVBjXrDBbX86ytnJl5ci2Ruc=
-X-Google-Smtp-Source: ACHHUZ7SCnM72YagSYV1fWbd5kkrbcn4TIzWFBDsejHUfl1/TJhX6VynniC/rcX1sXNwR0A2v6IXYg==
-X-Received: by 2002:a05:600c:4196:b0:3fa:ef97:1fa5 with SMTP id
- p22-20020a05600c419600b003faef971fa5mr14704699wmh.6.1688402395478; 
- Mon, 03 Jul 2023 09:39:55 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
- by smtp.gmail.com with ESMTPSA id
- v14-20020a05600c214e00b003f605566610sm14800258wml.13.2023.07.03.09.39.54
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 03 Jul 2023 09:39:55 -0700 (PDT)
-Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 896391FFBB;
- Mon,  3 Jul 2023 17:39:54 +0100 (BST)
-References: <20230625212707.1078951-1-fufuyqqqqqq@gmail.com>
- <20230625212707.1078951-5-fufuyqqqqqq@gmail.com>
-User-agent: mu4e 1.11.8; emacs 29.0.92
-From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Yeqi Fu <fufuyqqqqqq@gmail.com>
-Cc: richard.henderson@linaro.org, qemu-devel@nongnu.org
-Subject: Re: [RFC v3 04/10] linux-user: Implement envlist_appendenv
-Date: Mon, 03 Jul 2023 17:38:55 +0100
-In-reply-to: <20230625212707.1078951-5-fufuyqqqqqq@gmail.com>
-Message-ID: <87ilb1gd9h.fsf@linaro.org>
+ (Exim 4.90_1) (envelope-from <avihaih@nvidia.com>)
+ id 1qGMay-0005zh-IN
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 12:40:12 -0400
+Received: from mail-mw2nam10on20627.outbound.protection.outlook.com
+ ([2a01:111:f400:7e89::627]
+ helo=NAM10-MW2-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <avihaih@nvidia.com>)
+ id 1qGMaw-00080T-3K
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 12:40:12 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=hFc5vkg2US0CeZfnm/EPYTvZjfajH3jhWgp3jMw5oK1IexOnbo95zpird7HHDDOjleSznTVx4b2cLcSieYoZRiApyXmBP9Zvd6l0r9AtAUh+bwGjgALaCrMu0qb2G4HjmtxGCrcW0dqEF6LD0kEg2CkkpX/o8gr6T7be3MuidExahtD/Qn2C/IpmA/Uyh4AGFpqy366raEVyC9iX0yupW4qoSyGuMmeKs5hq4TMjNv+D/l67sQWkgo9ORzHu3lHiaQy1LZiTPAjLiaY7etpHkSIvGh2zdLqOXOjGkDzH1XXs+o0os0b14DgAWYmEYS3ZmX/FHZu/tzcRZjNPHjri4A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=akBcfr4mUqbx7cr55zCNcpfb3a4NB39xrrOXNz0MnFU=;
+ b=BTXvwRZZiANqQP/B+0FcHXM91ZpBkXxFo0JB36303L/7nGbm/sODG7ABT35G+DR2TJwnV9Iywsh0LR8MB5IDDvWYE+df/KmWuWZ4F4telYhzJIFBCIQq9tHpDxeMNc4bYfkhiMAjyzcXVC0VJ0ogNi/OvLUZftkFQaLPvBKEFmBWrwN7gwQVpOUQwaiag+EYR2eU0HfbI/HpCWAifmgrIRpDZhSwr2QrldzcccH/OKijfxApdrLm52FqHjiefX1eV/GO9UOsrBI+4SYR9N6kwxeOFtQEfrx0fP3DeiPLNwNmGmo7Y/+Hqf4pU7bul0GbflVFb3HnwIyQclYhjGMCsQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=nongnu.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=akBcfr4mUqbx7cr55zCNcpfb3a4NB39xrrOXNz0MnFU=;
+ b=HqQrqkK/QyjcDDDXUqeWwYWVsxLYNIvZXn4VPU4zScElhuS27oTnRgeQyrNWkfxtuxn7CBgpxeF1wt1vJdy0P9M5hAoimfxZc6ncx7lTIlnJSIXhyaXKnAWrL+9w/WVFsQ7vXv6bcgjhQnSYjdTr23ONL2lrHG09hv8HFWG4tBsPc/5Nr4n43oWxSMSyND4drniWgcQBlswuxLmNGFK33QzfK16Cugir25v5EQrLGJHQstHL5bs51SGXLgaWdh6KMsfGqa9Nz5W8yrHOzviEz5Z8NpTW5ntPLmfmIk1E8eOQGEy+O27ThzIoy1Ni7XGQF6G+acyHldGttU+Ws/cYOw==
+Received: from MW4PR04CA0359.namprd04.prod.outlook.com (2603:10b6:303:8a::34)
+ by DS0PR12MB6439.namprd12.prod.outlook.com (2603:10b6:8:c9::7) with
+ Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.6544.24; Mon, 3 Jul 2023 16:40:04 +0000
+Received: from CO1NAM11FT114.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:303:8a:cafe::82) by MW4PR04CA0359.outlook.office365.com
+ (2603:10b6:303:8a::34) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6544.30 via Frontend
+ Transport; Mon, 3 Jul 2023 16:40:04 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com;
+ dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ CO1NAM11FT114.mail.protection.outlook.com (10.13.174.103) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.6500.47 via Frontend Transport; Mon, 3 Jul 2023 16:40:04 +0000
+Received: from rnnvmail203.nvidia.com (10.129.68.9) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.5; Mon, 3 Jul 2023
+ 09:39:55 -0700
+Received: from rnnvmail202.nvidia.com (10.129.68.7) by rnnvmail203.nvidia.com
+ (10.129.68.9) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.37; Mon, 3 Jul 2023
+ 09:39:55 -0700
+Received: from vdi.nvidia.com (10.127.8.9) by mail.nvidia.com (10.129.68.7)
+ with Microsoft SMTP Server id 15.2.986.37 via Frontend Transport; Mon, 3 Jul
+ 2023 09:39:53 -0700
+From: Avihai Horon <avihaih@nvidia.com>
+To: <qemu-devel@nongnu.org>
+CC: Alex Williamson <alex.williamson@redhat.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>, Avihai Horon
+ <avihaih@nvidia.com>
+Subject: [PATCH] vfio: Fix null pointer dereference bug in vfio_bars_finalize()
+Date: Mon, 3 Jul 2023 19:39:53 +0300
+Message-ID: <20230703163953.18526-1-avihaih@nvidia.com>
+X-Mailer: git-send-email 2.21.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x334.google.com
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO1NAM11FT114:EE_|DS0PR12MB6439:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6c414500-985c-480c-a680-08db7be42728
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 3A1LyT2zz3sbZLFllZd9zLv0IQHauK3e3LB9qTYLguZUyJvC5lN5sFbCzxLl5YWacPrR6h0lj3g8EqF2fdwBnUpun30nYcT7VdfKt1SsiIHmDhaVZxSAgh+DQQUunbIOU8Ah9NfKjUG/so7UOt0+K07sHmuyXRqMMc4i17Ef3j8dLwWGbTeHFze9i9D6Ey5BgUN8SX0OeCn5s+rtFcAXBLicM+3AZmgNl0M6Ya0yERxMxmMso8iv59iOIiz3T5AqXxXSEiG9ZS35M/hlQ4nn9ez2+jr+qrP7bVdGr3Z3azuOyUqyd6glMBgkjwE/eX/WAwP672CF0hhDlUezozERaxkvDWlUppmGRJcn+ZHohwuDMBg7PE78rRqyy2DhzCmOupTikA+pW8kuvGQTzJR2dqvemR0vkG40FsfMuzYmSyHpdGe7TxLEaW62Ezo3R5RyniUORWnqwskQ4h2NvNLoBf8wP9OtF6AskcoQ3fUTZXx0TsmAzAmu+uRTSWNL3FUey8ZuEBXeq/WneUjoecL96GL/aDrc4oGmkc2WKZn4njrsDwH2maAp7BFPRn9+Sj05oW3XMFkF/3fUOCmhRGYatmn1RkEWpPZaes4OZ2k12rhEsn1/myUTPa1wtrbR5rlXEnXF2qRldg0q6jjrp6VSjPXXnF0nuXRl1x0RvKEInqi0oHPry4A7H9jtv6D9/oykkSsJaDcFG/xcguyAONJbAXPbOgEtqqH9qzn4ymhdkwWAyZi2hGaFdOOgAO79QK4X
+X-Forefront-Antispam-Report: CIP:216.228.117.160; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:dc6edge1.nvidia.com; CAT:NONE;
+ SFS:(13230028)(4636009)(376002)(39860400002)(346002)(396003)(136003)(451199021)(40470700004)(36840700001)(46966006)(336012)(40460700003)(41300700001)(7696005)(82310400005)(2616005)(7636003)(82740400003)(356005)(83380400001)(107886003)(1076003)(26005)(186003)(47076005)(426003)(36860700001)(40480700001)(54906003)(86362001)(478600001)(316002)(2906002)(36756003)(6916009)(4326008)(70206006)(70586007)(8676002)(8936002)(5660300002);
+ DIR:OUT; SFP:1101; 
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jul 2023 16:40:04.1855 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6c414500-985c-480c-a680-08db7be42728
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.117.160];
+ Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource: CO1NAM11FT114.eop-nam11.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB6439
+Received-SPF: softfail client-ip=2a01:111:f400:7e89::627;
+ envelope-from=avihaih@nvidia.com;
+ helo=NAM10-MW2-obe.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,112 +128,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+vfio_realize() has the following flow:
+1. vfio_bars_prepare() -- sets VFIOBAR->size.
+2. msix_early_setup().
+3. vfio_bars_register() -- allocates VFIOBAR->mr.
 
-Yeqi Fu <fufuyqqqqqq@gmail.com> writes:
+After vfio_bars_prepare() is called msix_early_setup() can fail. If it
+does fail, vfio_bars_register() is never called and VFIOBAR->mr is not
+allocated.
 
-> Signed-off-by: Yeqi Fu <fufuyqqqqqq@gmail.com>
-> ---
->  include/qemu/envlist.h |  1 +
->  util/envlist.c         | 61 ++++++++++++++++++++++++++++++++++++++++++
->  2 files changed, 62 insertions(+)
->
-> diff --git a/include/qemu/envlist.h b/include/qemu/envlist.h
-> index 6006dfae44..865eb18e17 100644
-> --- a/include/qemu/envlist.h
-> +++ b/include/qemu/envlist.h
-> @@ -7,6 +7,7 @@ envlist_t *envlist_create(void);
->  void envlist_free(envlist_t *);
->  int envlist_setenv(envlist_t *, const char *);
->  int envlist_unsetenv(envlist_t *, const char *);
-> +int envlist_appendenv(envlist_t *, const char *, const char *);
->  int envlist_parse_set(envlist_t *, const char *);
->  int envlist_parse_unset(envlist_t *, const char *);
->  char **envlist_to_environ(const envlist_t *, size_t *);
-> diff --git a/util/envlist.c b/util/envlist.c
-> index db937c0427..635c9c4fab 100644
-> --- a/util/envlist.c
-> +++ b/util/envlist.c
-> @@ -201,6 +201,67 @@ envlist_unsetenv(envlist_t *envlist, const char *env)
->      return (0);
->  }
->=20=20
-> +/*
-> + * Appends environment value to envlist. If the environment
-> + * variable already exists, the new value is appended to the
-> + * existing one.
-> + *
-> + * Returns 0 in success, errno otherwise.
-> + */
-> +int
-> +envlist_appendenv(envlist_t *envlist, const char *env, const char *separ=
-ator)
-> +{
-> +    struct envlist_entry *entry =3D NULL;
-> +    const char *eq_sign;
-> +    size_t envname_len;
-> +
-> +    if ((envlist =3D=3D NULL) || (env =3D=3D NULL) || (separator =3D=3D =
-NULL)) {
-> +        return (EINVAL);
+In this case, vfio_bars_finalize() is called as part of the error flow
+to free the bars' resources. However, vfio_bars_finalize() calls
+object_unparent() for VFIOBAR->mr unconditionally and thus we get a null
+pointer dereference.
 
-No () around the EINVAL needed here.
+Fix it by checking VFIOBAR->mr in vfio_bars_finalize().
 
-> +    }
-> +
-> +    /* find out first equals sign in given env */
-> +    eq_sign =3D strchr(env, '=3D');
-> +    if (eq_sign =3D=3D NULL) {
-> +        return (EINVAL);
-> +    }
-> +
-> +    if (strchr(eq_sign + 1, '=3D') !=3D NULL) {
-> +        return (EINVAL);
-> +    }
-> +
-> +    envname_len =3D eq_sign - env + 1;
-> +
-> +    /*
-> +     * If there already exists variable with given name,
-> +     * we append the new value to the existing one.
-> +     */
-> +    for (entry =3D envlist->el_entries.lh_first; entry !=3D NULL;
-> +        entry =3D entry->ev_link.le_next) {
-> +        if (strncmp(entry->ev_var, env, envname_len) =3D=3D 0) {
-> +            break;
-> +        }
-> +    }
-> +
-> +    if (entry !=3D NULL) {
-> +        char *new_env_value =3D NULL;
-> +        size_t new_env_len =3D strlen(entry->ev_var) + strlen(eq_sign)
-> +            + strlen(separator) + 1;
-> +        new_env_value =3D g_malloc(new_env_len);
-> +        strcpy(new_env_value, entry->ev_var);
-> +        strcat(new_env_value, separator);
-> +        strcat(new_env_value, eq_sign + 1);
-> +        g_free((char *)entry->ev_var);
-> +        entry->ev_var =3D new_env_value;
-> +    } else {
-> +        envlist->el_count++;
-> +        entry =3D g_malloc(sizeof(*entry));
-> +        entry->ev_var =3D g_strdup(env);
-> +        QLIST_INSERT_HEAD(&envlist->el_entries, entry, ev_link);
-> +    }
-> +
-> +    return (0);
-> +}
-> +
+Fixes: 89d5202edc50 ("vfio/pci: Allow relocating MSI-X MMIO")
+Signed-off-by: Avihai Horon <avihaih@nvidia.com>
+---
+ hw/vfio/pci.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-We really should add something to tests/unit/test-env to check the
-various operations work as expected.
+diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+index ab6645ba60..95e077082b 100644
+--- a/hw/vfio/pci.c
++++ b/hw/vfio/pci.c
+@@ -1752,7 +1752,7 @@ static void vfio_bars_finalize(VFIOPCIDevice *vdev)
+ 
+         vfio_bar_quirk_finalize(vdev, i);
+         vfio_region_finalize(&bar->region);
+-        if (bar->size) {
++        if (bar->size && bar->mr) {
+             object_unparent(OBJECT(bar->mr));
+             g_free(bar->mr);
+         }
+-- 
+2.26.3
 
-
->  /*
->   * Returns given envlist as array of strings (in same form that
->   * global variable environ is).  Caller must free returned memory
-
-
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
 
