@@ -2,76 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DBDB745699
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 09:59:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61DC074569A
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 09:59:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGESU-0002mE-8c; Mon, 03 Jul 2023 03:58:54 -0400
+	id 1qGESy-0003Av-HD; Mon, 03 Jul 2023 03:59:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qGESS-0002m5-Jw
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 03:58:52 -0400
-Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qGESu-00039e-ST
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 03:59:20 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qGESQ-0001Zv-Sz
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 03:58:52 -0400
-Received: by mail-ej1-x62a.google.com with SMTP id
- a640c23a62f3a-992e22c09edso223221066b.2
- for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 00:58:50 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qGESt-0001ex-4T
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 03:59:20 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-3fbc77e769cso35010705e9.0
+ for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 00:59:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688371129; x=1690963129;
+ d=linaro.org; s=google; t=1688371158; x=1690963158;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=2RTrk9r0npLB6VVfE9gM4aH3g+lEt+BZMii0ZQnaXDs=;
- b=tr8lNFp7t+y1hBddluqrqWhFOhSLCnPAO3VZs8W2FHmuP5RjAR3zh2WV1kpApbK7Mn
- gVMo0eGqQJxs1ZPrftf4A+OONyqypD+yUUrqvqRrKMmWfxE/crSFHVUVgLovG6rmgIEn
- EupVFPDX8XXj5/GrlHniUrbAMRGpnlsMfdazHZtPhhfNh79F6GDbCGmKLESAlB7mpwFl
- mqrgExuaDgeGv/wLjhSGRSVZ0QSnYEKb03v3W57H2TYwhZRjUQFdOq2Xy+KCEqWZPCQ5
- S/carNjnzidbwQjk/I5f4ynZ256oxow53OV03vE4od7YVd1XrQJTJFs89V8AFCx/XHQD
- Djpw==
+ bh=TXEiaSaa+GQK89FjGmp0AriQRpmuQLEedTgz1XcxtzQ=;
+ b=V4vjh26miDf7wHKVd2bfo8kUN8HDOL2lnlzE96VgRy6tTKgY+1rsWBo0PYnviGNFyb
+ N1nuBGI7RvNoacENQhrgn22XVZYm/b4jfvp+MW1KSx/PgdYNb0824FUSR9ifmYAam3Di
+ L9HTom0UNvRK1+UNE/2lCVenVnErD2TFBa53hOME8iMri/nux3SF5lD3KqrmTY9VHXuy
+ NtV8WzdMPiGgUvmgOaaNyBYkwhidYLpJPMPcxMVsqr1mr9p68HLzokU6l+dGifL4Ycec
+ Cz4lNxHLy2cCm/OU+G9yzAhhXGc4f67i72luKjV4wYDKAqwoxv/AEi/+xbVDN7u6rFhM
+ KhzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688371129; x=1690963129;
+ d=1e100.net; s=20221208; t=1688371158; x=1690963158;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=2RTrk9r0npLB6VVfE9gM4aH3g+lEt+BZMii0ZQnaXDs=;
- b=FiP/YRMORbAJ6cGO4qaEEDWXjgodY30XulXgE8C5PmDDIuofSBdnX7c2kK5AdeZbpY
- jddJBvCx1BkOKPUlq6UgXZXtEzJiylxTlFSU93iiE8I9qy+WqHqdZmC0hO1Or8JELUHD
- eAeZnMLYYYR3SqArmRHz+sa9sRR3u1ka2m87wXjvP2yuZCI4QWA5SFKeh/R4zivHxT8N
- PSgEhQTAju5YYpvNYZ7QZKeW1pgHGshakoAEsAji8W0vwjHnKZfJI68TAuuiC57wI1Zv
- /Z3jc48VBQPftwpQKHCe9iyxyROglsRHM7dZcvGOPFDomAhEDY6WUp5I+f/KVa4+Jdmx
- TyHg==
-X-Gm-Message-State: ABy/qLZ+3Gh8XzsJgHVBxX2GIr6EfK2FSg9mwHSvjjwgctphxvnKDFU0
- 4fPj+SeUjL6TnAKW1a4aDq0TMXaRuoV7mDIEA/Q=
-X-Google-Smtp-Source: APBJJlGpHLijESC1znSffi2sTlGY+UvMSZb8lfKuFpO2c3uBIw4+K/+ZxhDslJsa193RlVNq0yj9yQ==
-X-Received: by 2002:a17:906:4093:b0:978:8937:19ba with SMTP id
- u19-20020a170906409300b00978893719bamr5754839ejj.44.1688371129359; 
- Mon, 03 Jul 2023 00:58:49 -0700 (PDT)
-Received: from [192.168.69.115] ([176.176.178.91])
- by smtp.gmail.com with ESMTPSA id
- oz26-20020a170906cd1a00b00992b3ea1ee3sm5282904ejb.159.2023.07.03.00.58.48
+ bh=TXEiaSaa+GQK89FjGmp0AriQRpmuQLEedTgz1XcxtzQ=;
+ b=PaG8HUSrYbY8zyI/D0lL9zW7QMkzWfHiBisgTCV0zPTfpUlMKPYqujFOjqVYcCqXp9
+ 4F62w5XmaGabFf6qTPNpWQ3EJ8YfJpGfg7beaQ5NbKU5CV0JcDUj0rrF3bP9d+gZFO5G
+ zW6Z8bfnQ9Xu2Hh7DQ0OHdjex0hLAP4HWw03C475UVVYRUGiTE6dWiO2WU9pG4cnT6d4
+ uDPVs3v+Ney8bn+QBHqwyrOvr96UN8Tucgc+ufhSwPSWDzQJXqkS417SifvfZqaIPkLV
+ b2x4WqEfUZXyYxlTmEJmF6AHP2xyQv5GFhT/8MrLxJfHwPNys+05GRj12ulA04wQuAv1
+ Eagg==
+X-Gm-Message-State: AC+VfDyojOypYxsMMIIxxyyaryoS+dnB8d7FdIvl4n/Qzx0mat2HGU0f
+ OqRo7878rdEEHyNTMlYtgWZnCzI1lL/wV5HcIiJhEQ==
+X-Google-Smtp-Source: ACHHUZ4GUvCiNlYBlycl+nSd8aap+AQh/q2Es99AJygMh3/kc8wglsn4ByT3ucilfssZ3GH2FMsXdg==
+X-Received: by 2002:a7b:ce87:0:b0:3f7:aad8:4e05 with SMTP id
+ q7-20020a7bce87000000b003f7aad84e05mr8522933wmj.11.1688371157648; 
+ Mon, 03 Jul 2023 00:59:17 -0700 (PDT)
+Received: from [192.168.1.25] (91.232.79.188.dynamic.jazztel.es.
+ [188.79.232.91]) by smtp.gmail.com with ESMTPSA id
+ z3-20020a5d4c83000000b0030497b3224bsm24725891wrs.64.2023.07.03.00.59.17
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 03 Jul 2023 00:58:49 -0700 (PDT)
-Message-ID: <45698914-50e7-6cbf-14c2-28b53022aa16@linaro.org>
-Date: Mon, 3 Jul 2023 09:58:47 +0200
+ Mon, 03 Jul 2023 00:59:17 -0700 (PDT)
+Message-ID: <f4351255-9b33-429b-6c7a-acdec258d5c1@linaro.org>
+Date: Mon, 3 Jul 2023 09:59:15 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.12.0
-Subject: Re: [PATCH 06/21] q800: allow accesses to RAM area even if less
- memory is available
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v4 14/38] tests/lcitool: introduce qemu-minimal
 Content-Language: en-US
-To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, laurent@vivier.eu,
+To: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
  qemu-devel@nongnu.org
-References: <20230702154838.722809-1-mark.cave-ayland@ilande.co.uk>
- <20230702154838.722809-7-mark.cave-ayland@ilande.co.uk>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230702154838.722809-7-mark.cave-ayland@ilande.co.uk>
+References: <20230630180423.558337-1-alex.bennee@linaro.org>
+ <20230630180423.558337-15-alex.bennee@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230630180423.558337-15-alex.bennee@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -94,19 +95,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2/7/23 17:48, Mark Cave-Ayland wrote:
-> MacOS attempts a series of writes and reads over the entire RAM area in order
-> to determine the amount of RAM within the machine. Allow accesses to the
-> entire RAM area ignoring writes and always reading zero for areas where there
-> is no physical RAM installed to allow MacOS to detect the memory size without
-> faulting.
+On 6/30/23 20:03, Alex Bennée wrote:
+> This is a very bare bones set of dependencies for a minimal build of
+> QEMU. This will be useful for minimal cross-compile sanity check based
+> on things like Debian Sid where stuff isn't always in sync.
 > 
-> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+> Message-Id:<20230623122100.1640995-16-alex.bennee@linaro.org>
+> Signed-off-by: Alex Bennée<alex.bennee@linaro.org>
+> 
 > ---
->   hw/m68k/q800.c         | 30 +++++++++++++++++++++++++++++-
->   include/hw/m68k/q800.h |  1 +
->   2 files changed, 30 insertions(+), 1 deletion(-)
+> v2
+>    - minor rewording
+> v3
+>    - shift extra packages from next commit
+> ---
+>   tests/lcitool/projects/qemu-minimal.yml | 27 +++++++++++++++++++++++++
+>   1 file changed, 27 insertions(+)
+>   create mode 100644 tests/lcitool/projects/qemu-minimal.yml
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
+r~
 
