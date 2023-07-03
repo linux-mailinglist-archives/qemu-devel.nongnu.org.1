@@ -2,45 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CE2A74659F
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 00:05:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA4307465C6
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 00:37:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGRdT-0003ld-8u; Mon, 03 Jul 2023 18:03:07 -0400
+	id 1qGS9H-0008Ts-PQ; Mon, 03 Jul 2023 18:35:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qGRdQ-0003jG-TC; Mon, 03 Jul 2023 18:03:04 -0400
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qGRdP-0004Cu-4q; Mon, 03 Jul 2023 18:03:04 -0400
-Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id 46A43748A5E;
- Tue,  4 Jul 2023 00:02:46 +0200 (CEST)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 285F8748A4D; Tue,  4 Jul 2023 00:02:46 +0200 (CEST)
-Message-Id: <19ca518931d704615e801df249f2071c9f74a7dc.1688421085.git.balaton@eik.bme.hu>
-In-Reply-To: <cover.1688421085.git.balaton@eik.bme.hu>
-References: <cover.1688421085.git.balaton@eik.bme.hu>
-From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH 13/13] ppc440_pcix: Stop using system io region for PCI bus
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qGS9G-0008T8-0J
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 18:35:58 -0400
+Received: from mail-oi1-x231.google.com ([2607:f8b0:4864:20::231])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qGS9E-00043J-AI
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 18:35:57 -0400
+Received: by mail-oi1-x231.google.com with SMTP id
+ 5614622812f47-3a3ad1f39ebso902655b6e.1
+ for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 15:35:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1688423755; x=1691015755;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=CMsuXGK8sere5b+TkB5xqAmEaD2T/hwmsz+mMno/k0I=;
+ b=GMxk4UnspfqFWX2hkmdLht0jT8O3tKA6NAsFDCrtQn6IQImKF5bkSJwd4KPhAdqWto
+ 5a2/YVa82RrTXCtXT35Z6zxkqiNuAAYTmnTy2KmEeluOgciw/W0zZKxgdWw56YpeG897
+ AlRFKx3slAHo5aZJ6wJ6XftPmwBy1JDPXmA++r0+iydJkU4dFMg54as2i1EN8nqBHjfs
+ ZBY2TDcfBUcO2JLf/0v8MmrTE2U6ji14Y/jciWVWS7j6PXqn/lviTfkDDZyMPIaWl9Ou
+ nnR/wIoe2wCy8hTIYUuAi492VLGGq8e2SgXQpY2gsKjBtM1MUQCJfC56jJB5lIcVeD4d
+ T/Pw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1688423755; x=1691015755;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=CMsuXGK8sere5b+TkB5xqAmEaD2T/hwmsz+mMno/k0I=;
+ b=lLxEZu6Ucfp9hWjBaYEJ7uW0XT3fY4WD6FkuBdQXrIcvVQKN4oeiNJDNAxXrQYpY2A
+ fkfYcVnHmCLyctCipAV8JJmY6A3uhY+36zkfWaveAHeygdCmuooGgJf8pffKbH8ckB5Q
+ Hy0u04xMT8gjQVBhr0sCbTvXDAjqB1mNDdAf4nosJrpSPPmKu19KRYqR77CEwu2bo1Ie
+ xtJYmom6o4Qn6jiXMBUrJp0M/W1vli32G7/YIe2dfl49Cupb5SsU6zW9rcgYZ6zge8oq
+ 4FAj34+KgTAeRjrVNeKSXZKAGT1TMZma+a0Cwy1WtTQG5zylJpEZkGiOHGbqsZcjMyPj
+ sbNg==
+X-Gm-Message-State: ABy/qLbhh/rKjMbyXwt3ym290abxgBVzek/84E2Ep1u0QkqBjkcL0mPG
+ 6hAcnshFJburTj+v3vXnxlacHA==
+X-Google-Smtp-Source: APBJJlFi3Nb5RnzjEkfTX06QRBxOYPXEwmjlt8vntIkyPIm6kMV1h63/EA6CtRv9JvjT+OEQJzavZw==
+X-Received: by 2002:a05:6808:1a17:b0:3a3:9b4a:3959 with SMTP id
+ bk23-20020a0568081a1700b003a39b4a3959mr3869214oib.17.1688423754768; 
+ Mon, 03 Jul 2023 15:35:54 -0700 (PDT)
+Received: from [192.168.68.107] (201-69-66-110.dial-up.telesp.net.br.
+ [201.69.66.110]) by smtp.gmail.com with ESMTPSA id
+ m10-20020a0568080f0a00b003a390ca26aasm2988751oiw.5.2023.07.03.15.35.52
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 03 Jul 2023 15:35:54 -0700 (PDT)
+Message-ID: <db92935e-fd9a-32e9-09d4-052da4e5e61a@ventanamicro.com>
+Date: Mon, 3 Jul 2023 19:35:50 -0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH] riscv: Generate devicetree only after machine
+ initialization is complete
+Content-Language: en-US
+To: Guenter Roeck <linux@roeck-us.net>, Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-riscv@nongnu.org,
+ qemu-devel@nongnu.org, Alistair Francis <alistair23@gmail.com>
+References: <20230703034614.3909079-1-linux@roeck-us.net>
+ <399a2293-85c2-c709-91ee-8eef1f59a5e4@ventanamicro.com>
+ <48537c03-786a-e85b-7db3-ab69939de7ab@roeck-us.net>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <48537c03-786a-e85b-7db3-ab69939de7ab@roeck-us.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-To: qemu-devel@nongnu.org,
-    qemu-ppc@nongnu.org
-Cc: Daniel Henrique Barboza <danielhb413@gmail.com>
-Date: Tue,  4 Jul 2023 00:02:46 +0200 (CEST)
-X-Spam-Probability: 8%
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::231;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-oi1-x231.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -56,69 +99,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use the iomem region for the PCI io space and map it directly from the
-board without an intermediate alias that is not really needed.
 
-Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
----
- hw/ppc/ppc440_pcix.c | 8 +++++---
- hw/ppc/sam460ex.c    | 6 +-----
- 2 files changed, 6 insertions(+), 8 deletions(-)
 
-diff --git a/hw/ppc/ppc440_pcix.c b/hw/ppc/ppc440_pcix.c
-index ee2dc44f67..cca8a72c72 100644
---- a/hw/ppc/ppc440_pcix.c
-+++ b/hw/ppc/ppc440_pcix.c
-@@ -490,10 +490,11 @@ static void ppc440_pcix_realize(DeviceState *dev, Error **errp)
-     s = PPC440_PCIX_HOST(dev);
- 
-     sysbus_init_irq(sbd, &s->irq);
--    memory_region_init(&s->busmem, OBJECT(dev), "pci bus memory", UINT64_MAX);
-+    memory_region_init(&s->busmem, OBJECT(dev), "pci-mem", UINT64_MAX);
-+    memory_region_init(&s->iomem, OBJECT(dev), "pci-io", 0x10000);
-     h->bus = pci_register_root_bus(dev, NULL, ppc440_pcix_set_irq,
--                         ppc440_pcix_map_irq, &s->irq, &s->busmem,
--                         get_system_io(), PCI_DEVFN(0, 0), 1, TYPE_PCI_BUS);
-+                         ppc440_pcix_map_irq, &s->irq, &s->busmem, &s->iomem,
-+                         PCI_DEVFN(0, 0), 1, TYPE_PCI_BUS);
- 
-     s->dev = pci_create_simple(h->bus, PCI_DEVFN(0, 0),
-                                TYPE_PPC4xx_HOST_BRIDGE);
-@@ -514,6 +515,7 @@ static void ppc440_pcix_realize(DeviceState *dev, Error **errp)
-     memory_region_add_subregion(&s->container, PCIC0_CFGDATA, &h->data_mem);
-     memory_region_add_subregion(&s->container, PPC440_REG_BASE, regs);
-     sysbus_init_mmio(sbd, &s->container);
-+    sysbus_init_mmio(sbd, &s->iomem);
- }
- 
- static void ppc440_pcix_class_init(ObjectClass *klass, void *data)
-diff --git a/hw/ppc/sam460ex.c b/hw/ppc/sam460ex.c
-index 8d0e551d14..1e615b8d35 100644
---- a/hw/ppc/sam460ex.c
-+++ b/hw/ppc/sam460ex.c
-@@ -269,7 +269,6 @@ static void main_cpu_reset(void *opaque)
- 
- static void sam460ex_init(MachineState *machine)
- {
--    MemoryRegion *isa = g_new(MemoryRegion, 1);
-     MemoryRegion *l2cache_ram = g_new(MemoryRegion, 1);
-     DeviceState *uic[4];
-     int i;
-@@ -441,12 +440,9 @@ static void sam460ex_init(MachineState *machine)
-     /* All PCI irqs are connected to the same UIC pin (cf. UBoot source) */
-     dev = sysbus_create_simple(TYPE_PPC440_PCIX_HOST, 0xc0ec00000,
-                                qdev_get_gpio_in(uic[1], 0));
-+    sysbus_mmio_map(SYS_BUS_DEVICE(dev), 1, 0xc08000000);
-     pci_bus = PCI_BUS(qdev_get_child_bus(dev, "pci.0"));
- 
--    memory_region_init_alias(isa, NULL, "isa_mmio", get_system_io(),
--                             0, 0x10000);
--    memory_region_add_subregion(get_system_memory(), 0xc08000000, isa);
--
-     /* PCI devices */
-     pci_create_simple(pci_bus, PCI_DEVFN(6, 0), "sm501");
-     /* SoC has a single SATA port but we don't emulate that yet
--- 
-2.30.9
+On 7/3/23 18:18, Guenter Roeck wrote:
+> On 7/3/23 12:25, Daniel Henrique Barboza wrote:
+>> On 7/3/23 00:46, Guenter Roeck wrote:
+>>> If the devicetree is created before machine initialization is complete,
+>>> it misses dynamic devices. Specifically, the tpm device is not added
+>>> to the devicetree file and is therefore not instantiated in Linux.
+>>> Create devicetree in virt_machine_done() to solve the problem.
+>>>
+>>> Cc: Alistair Francis <alistair23@gmail.com>
+>>> Fixes: 325b7c4e75 hw/riscv: Enable TPM backends
+>>> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+>>> ---
+>>>   hw/riscv/virt.c | 9 ++++++---
+>>>   1 file changed, 6 insertions(+), 3 deletions(-)
+>>>
+>>> diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
+>>> index ed4c27487e..08876284f5 100644
+>>> --- a/hw/riscv/virt.c
+>>> +++ b/hw/riscv/virt.c
+>>> @@ -1248,6 +1248,11 @@ static void virt_machine_done(Notifier *notifier, void *data)
+>>>       uint64_t kernel_entry = 0;
+>>>       BlockBackend *pflash_blk0;
+>>> +    /* create devicetree if not provided */
+>>> +    if (!machine->dtb) {
+>>> +        create_fdt(s, memmap);
+>>> +    }
+>>> +
+>>
+>> I suggest moving the entire load/create DT code from virt_machine_init() to
+>> the start of virt_machine_done():
+>>
+>>      /* load/create device tree */
+>>      if (machine->dtb) {
+>>          machine->fdt = load_device_tree(machine->dtb, &s->fdt_size);
+>>          if (!machine->fdt) {
+>>              error_report("load_device_tree() failed");
+>>              exit(1);
+>>          }
+>>      } else {
+>>          create_fdt(s, memmap);
+>>      }
+>>
+>> This way we don't have to look in to 2 different functions to wonder what happens
+>> in case machine->dtb is NULL.
+>>
+> 
+> I can do that, but I don't know how to test it. Is there a working dtb/machine
+> combination for riscv which would let me test loading a devicetree file ?
 
+I recommend using your own setup with TPM (I'm assuming you're using a TPM setup),
+generate a .dtb from it, and then launch it using '-dtb'.
+
+First you need the patch applied (otherwise there won't be a TPM in the FDT).
+After that, relaunch the same machine again but appending in the end of the
+command line:
+
+-machine dumpdtb=file.dtb
+
+This will create a 'file.dtb' file in the working dir and exit. After that re-launch
+the machine again but now append:
+
+-dtb file.dtb
+
+And you should be able to boot a 'virt' machine with TPM support.
+
+
+Thanks,
+
+Daniel
+
+
+
+> 
+> Guenter
+> 
 
