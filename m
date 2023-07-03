@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CE367454F1
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 07:36:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C55A074550D
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 07:46:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGCDg-0002cZ-9n; Mon, 03 Jul 2023 01:35:28 -0400
+	id 1qGCNn-0004PU-RY; Mon, 03 Jul 2023 01:45:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <noreply@launchpad.net>)
- id 1qGCDd-0002bL-C3
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 01:35:25 -0400
+ id 1qGCNV-0004Om-5Q
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 01:45:39 -0400
 Received: from smtp-relay-services-0.canonical.com ([185.125.188.250])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <noreply@launchpad.net>)
- id 1qGCDa-0000id-Lb
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 01:35:25 -0400
+ id 1qGCNS-0002Ti-9N
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 01:45:35 -0400
 Received: from scripts-1.lp.internal (scripts.lp.internal [10.131.66.196])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by smtp-relay-services-0.canonical.com (Postfix) with ESMTPSA id 6F5453F6DB
- for <qemu-devel@nongnu.org>; Mon,  3 Jul 2023 05:35:10 +0000 (UTC)
+ by smtp-relay-services-0.canonical.com (Postfix) with ESMTPSA id C499C3FA58
+ for <qemu-devel@nongnu.org>; Mon,  3 Jul 2023 05:45:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=launchpad.net;
- s=20210803; t=1688362510;
- bh=U6unwQLmHfiht6CyAOmX+ysxSEhhnpEgLQr4ChSr2+s=;
+ s=20210803; t=1688363128;
+ bh=BDeC7qGK9J00fPHVB4bPkfAwMdSqJr2aQa0PinhdnW0=;
  h=MIME-Version:Content-Type:Date:From:To:Reply-To:References:
  Message-Id:Subject;
- b=FultMdJgwYIYvEmlSL6GvRcSUWCCEg+hoDzOw4nXkp5oBJUip6PMgMR1RdFMKOt7j
- 0SMA4g54vH7utzktWJ3/pzoUlK6Na5TO510oJwJboLaLZR8xkzi7Jk9QWgyPG0UFr5
- GyAbaIfLIOVK8N7yIQ80YIbflGK6CLDPPpMSCKsh+KwgZJCxZ9sJDA/4i/MuWfKBvL
- JeKKy6ExZtIGZ5xx4CwClzFKH/ffc22M63E/TxSSh1j/I1KloHSr75PgBAfIW3jiOc
- 0XOdEI6uBbI1Mo8ULICIapOpWag/oPAEJpGDiFGocsoYo5684pB3jiaJmHfIKcrLpp
- e5/MaxXem6TDw==
+ b=KBUsbpwbTauZ/JUj2OQ6daXEI46LcOFj/PsZQHcozBhMfohgyx6f3FgZ6dSKv42Du
+ RiSV3BxCFPHVZMg2r7I5QyF75As9iAfWOdbQqQ/YYOcMX2f5jVuVrXBYRwdYSOL6Co
+ Y7GE9Z++4of+VzUgD6QVgQYQFxGXHbYonu+UfOk5x3C/dBSEIh7Bp0jZ3TBESjwZQV
+ GAQ16Xm1fmzIcrxxSoMHm4kLXmlaMAXydPPHZ4u6ILjXx3DkaThhAXRSEwMsQVmGN0
+ +bqCjAAQOvDSCeEdy8XjvgkBLFUSExtgcqRnPSRk/a9U90JjRwuR4YpAty3ImfEq15
+ i/pMj3XVsMnDQ==
 Received: from
  juju-4112d9-prod-launchpad-manual-servers-36.openstack.prodstack5.lan
  (localhost [127.0.0.1])
- by scripts-1.lp.internal (Postfix) with ESMTP id 0F6D140496
- for <qemu-devel@nongnu.org>; Mon,  3 Jul 2023 05:35:10 +0000 (UTC)
+ by scripts-1.lp.internal (Postfix) with ESMTP id EE552401A4
+ for <qemu-devel@nongnu.org>; Mon,  3 Jul 2023 05:45:24 +0000 (UTC)
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 03 Jul 2023 05:28:34 -0000
+Date: Mon, 03 Jul 2023 05:36:28 -0000
 From: "ChengEn, Du" <2025586@bugs.launchpad.net>
 To: qemu-devel@nongnu.org
 X-Launchpad-Notification-Type: bug
@@ -54,15 +54,16 @@ X-Launchpad-Bug-Security-Vulnerability: no
 X-Launchpad-Bug-Commenters: chengendu
 X-Launchpad-Bug-Reporter: ChengEn, Du (chengendu)
 X-Launchpad-Bug-Modifier: ChengEn, Du (chengendu)
+X-Launchpad-Bug-Duplicate: 2025591
 References: <168835545588.1156951.10472231677518810487.malonedeb@juju-98d295-prod-launchpad-7>
-Message-Id: <168836211522.1871397.9886482108451875625.launchpad@juju-98d295-prod-launchpad-2>
+Message-Id: <168836258873.1714455.4626035030059070745.launchpad@juju-98d295-prod-launchpad-3>
 Subject: [Bug 2025586] Re: Align the iov length to the logical block size
 X-Launchpad-Message-Rationale: Subscriber (QEMU) @qemu-devel-ml
 X-Launchpad-Message-For: qemu-devel-ml
 Precedence: bulk
 X-Generated-By: Launchpad (canonical.com);
  Revision="0574793d91fb0560c250e5488455be37b7fc4914"; Instance="production"
-X-Launchpad-Hash: a8082d80ea462094ab571e3bef758d263bc1b6d8
+X-Launchpad-Hash: d0271769709f993e2f69c40d0f34cc9ad921b2d9
 Received-SPF: pass client-ip=185.125.188.250;
  envelope-from=noreply@launchpad.net; helo=smtp-relay-services-0.canonical.com
 X-Spam_score_int: -42
@@ -87,8 +88,11 @@ Reply-To: Bug 2025586 <2025586@bugs.launchpad.net>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-** Changed in: qemu
-     Assignee: (unassigned) =3D> ChengEn, Du (chengendu)
+*** This bug is a duplicate of bug 2025591 ***
+    https://bugs.launchpad.net/bugs/2025591
+
+** This bug has been marked a duplicate of bug 2025591
+   Align the iov length to the logical block size
 
 --=20
 You received this bug notification because you are a member of qemu-
