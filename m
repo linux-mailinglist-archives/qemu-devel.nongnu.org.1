@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 133FA7459C6
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 12:11:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C46647459CB
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 12:11:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGGRM-0002gM-3X; Mon, 03 Jul 2023 06:05:52 -0400
+	id 1qGGRK-0002eA-8e; Mon, 03 Jul 2023 06:05:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qGGRF-0002an-E8
+ id 1qGGR9-0002aI-FL
  for qemu-devel@nongnu.org; Mon, 03 Jul 2023 06:05:45 -0400
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qGGR3-0005gc-F2
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 06:05:39 -0400
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-311367a3e12so5737761f8f.2
- for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 03:05:24 -0700 (PDT)
+ id 1qGGR3-0005gv-6T
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 06:05:38 -0400
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-3fb4146e8fcso36047625e9.0
+ for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 03:05:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688378723; x=1690970723;
+ d=linaro.org; s=google; t=1688378725; x=1690970725;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=KMA70dMb1SJ/eTe/2+zO5JW0aBcXeIGHYSkfDyZwFgY=;
- b=aYjtH2H7qkJJalV8IVsFnz2q0v3zBLqYSvccnyC+f5R+UoL5Fbs9fOzEo5b+SMIa9f
- 7uwNk6NJCuXv+Zw7UoTdcJ3Blr+sfWvGynzOImjTnmWCpD9+y2lySoRIErraz5yWJbmk
- 7zSc+xLSoVWQ4z7ROcttwI2LNNctbIn9Ov7iF6LPB+c26zZnVgo1BTXfoU8vPNnWly9H
- O27I8l10OygS25j8+TZI7jx3IEAVaqVLilRAHgXCHSGDR7PV+7z1jwrP841Y6F2odDvN
- v7DJz1FTQI+Rdp9dCvbYr2MxZm+tMZ+CjlyFoJC3V1z2mu0aNVbLL+Z+MeBpIaRQ+v3v
- nGWw==
+ bh=mPmUCjpRZwFOi0fix68D6WvDW8xFOeagc+Ir4MNFYrg=;
+ b=BhSqWarOcSNp5PqbEm3/Xek0TVUNfOSjL7eMV2LLLxBlUN/cGYTC34Rn6g0xzh3JQl
+ rt1XtTsy7Vzfw6HD/m6hHVAmdybFNc5KSsBoHzMtkcQndiGnwUJ6OzVWgSuY4SFCvi8b
+ ajBqK9hotpU8EFV4D1xGxI7i1PNLiYaxR7Ml2fFAKMbU3I4VJ43v8Xa5vw7qmUmxb7vE
+ MFwRxi1Z/SJ1L13WeyXwaksnRHK3P9P/8BREW8bQoWTlQ44Q2aKhijMy33Dit6PBNvmq
+ uNMdIH+Yij1EM6Ne5SsFffQwhz5OdYZ7XFeaaP/YRD9FIDgQj8lzVP4tj3oK4dmiPrkc
+ PZyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688378723; x=1690970723;
+ d=1e100.net; s=20221208; t=1688378725; x=1690970725;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=KMA70dMb1SJ/eTe/2+zO5JW0aBcXeIGHYSkfDyZwFgY=;
- b=leaisbS+ell5nBT3qcRaqogcnMJjgvM9o1bnMy/fV7mtGAclrBuD19u2jUV/O5orYc
- qF4YeivPl6D9mYOGD0osgJZbRwyH+DMhkbetB/prC+f9IZ8GTY/L/i+LQ/ZQVQBUz1yE
- GD3UIOj2NfBSe+BNDj4fKxXdJ/RrSJm5bLxKksKJHdlBqIyiBr89xzmi9kAfAUA0wp08
- uD9qGiDHL3johu/NJs9pHkn12T4doJwzgQSQqUUcoSZ76YAyb1zDskzlHDI/PC+Bw7cY
- 6E8NVe7B0xi8MjiQ8fSEsIoeqvUST6OxLcPZwTVb0Fm8VKDx60AGkl1Nw1ZFpq9EwAzy
- P3TA==
-X-Gm-Message-State: ABy/qLYlogNod+QUwhxz0cL9hdwVhaJoEfLeU7qhbN1CZM1Oig9WeFcl
- /wL+hW6MKPxGoaEORH/MMrO7WktmoPIbfdHpNy6u4w==
-X-Google-Smtp-Source: APBJJlHWclKS9XEdI+syJ3HOK08iwxcg4XxKcynYmJrrOOdOIgOcZ6KS+IIfC/ztCq5PVztSbMr/Dw==
-X-Received: by 2002:adf:f00b:0:b0:314:130f:ce65 with SMTP id
- j11-20020adff00b000000b00314130fce65mr8701501wro.35.1688378723565; 
- Mon, 03 Jul 2023 03:05:23 -0700 (PDT)
+ bh=mPmUCjpRZwFOi0fix68D6WvDW8xFOeagc+Ir4MNFYrg=;
+ b=WJxIXhe0zYMI5etjsZQYUNl4W9laB7nPlGYB7NrDDcqZKSUPSH30h1LlYxd28QiXEs
+ RkETw21Hzfmr5rGT7KKsm69Hx1pE25uzy4SsDhIj2S8yj8+kOjPE7DYqd4UKO/XmV6U7
+ tMGD+iG1RP9Fcp+PISU5+knH4VU5fpzYDHYN/UH+iZoOk8xjsnoq8GFhvQlGHrOQltf0
+ HuY8MNFqyD/11dndIoVfXbIyF1pd6uWMP5P3m8nNp/6rTxvLDddLEt8oWTW5M+glu8t8
+ S6461FcKU+rlWF9XCX2o9ucjQrZ9iHh7kRcRL3jmfz1m2NC/QmZdXcTvYsa2u9LuRL2B
+ J5ZA==
+X-Gm-Message-State: AC+VfDy7vjapM4Z61ZDo1vXechbuQQ/X+ohx8qnkZsLfYNElxES+/Ah5
+ fUPzFPR5reeaQ5WTbgWXrFQ2Sgfbhod9cJB7KFmGtw==
+X-Google-Smtp-Source: ACHHUZ4OihRehnjJpZh8ECKZ5ZcKf4FPa0h9T0gpcz/jdgSbzUBqz4sJJwtOz0xHfIyccYvPoHxG+g==
+X-Received: by 2002:a05:600c:1e0b:b0:3fa:955a:9291 with SMTP id
+ ay11-20020a05600c1e0b00b003fa955a9291mr13191697wmb.9.1688378724650; 
+ Mon, 03 Jul 2023 03:05:24 -0700 (PDT)
 Received: from stoup.home (91.232.79.188.dynamic.jazztel.es. [188.79.232.91])
  by smtp.gmail.com with ESMTPSA id
- t5-20020a05600001c500b00313f7b077fesm18446562wrx.59.2023.07.03.03.05.22
+ t5-20020a05600001c500b00313f7b077fesm18446562wrx.59.2023.07.03.03.05.23
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 03 Jul 2023 03:05:23 -0700 (PDT)
+ Mon, 03 Jul 2023 03:05:24 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, qemu-riscv@nongnu.org, pbonzini@redhat.com,
  eduardo@habkost.net, alistair.francis@wdc.com, danielhb413@gmail.com,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v4 01/37] util: Add cpuinfo-ppc.c
-Date: Mon,  3 Jul 2023 12:04:44 +0200
-Message-Id: <20230703100520.68224-2-richard.henderson@linaro.org>
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PATCH v4 02/37] tests/multiarch: Add test-aes
+Date: Mon,  3 Jul 2023 12:04:45 +0200
+Message-Id: <20230703100520.68224-3-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230703100520.68224-1-richard.henderson@linaro.org>
 References: <20230703100520.68224-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x433.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,235 +94,627 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Move the code from tcg/.  Fix a bug in that PPC_FEATURE2_ARCH_3_10
-is actually spelled PPC_FEATURE2_ARCH_3_1.
+Use a shared driver and backends for i386, aarch64, ppc64, riscv64.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Daniel Henrique Barboza <danielhb413@gmail.com>
+Acked-by: Alex Bennée <alex.bennee@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- host/include/ppc/host/cpuinfo.h   | 29 ++++++++++++++++
- host/include/ppc64/host/cpuinfo.h |  1 +
- tcg/ppc/tcg-target.h              | 16 ++++-----
- util/cpuinfo-ppc.c                | 56 +++++++++++++++++++++++++++++++
- tcg/ppc/tcg-target.c.inc          | 44 +-----------------------
- util/meson.build                  |  2 ++
- 6 files changed, 97 insertions(+), 51 deletions(-)
- create mode 100644 host/include/ppc/host/cpuinfo.h
- create mode 100644 host/include/ppc64/host/cpuinfo.h
- create mode 100644 util/cpuinfo-ppc.c
+ tests/tcg/aarch64/test-aes.c            |  58 ++++++++
+ tests/tcg/i386/test-aes.c               |  68 +++++++++
+ tests/tcg/ppc64/test-aes.c              | 116 +++++++++++++++
+ tests/tcg/riscv64/test-aes.c            |  76 ++++++++++
+ tests/tcg/multiarch/test-aes-main.c.inc | 183 ++++++++++++++++++++++++
+ tests/tcg/aarch64/Makefile.target       |   4 +
+ tests/tcg/i386/Makefile.target          |   4 +
+ tests/tcg/ppc64/Makefile.target         |   1 +
+ tests/tcg/riscv64/Makefile.target       |  13 ++
+ 9 files changed, 523 insertions(+)
+ create mode 100644 tests/tcg/aarch64/test-aes.c
+ create mode 100644 tests/tcg/i386/test-aes.c
+ create mode 100644 tests/tcg/ppc64/test-aes.c
+ create mode 100644 tests/tcg/riscv64/test-aes.c
+ create mode 100644 tests/tcg/multiarch/test-aes-main.c.inc
 
-diff --git a/host/include/ppc/host/cpuinfo.h b/host/include/ppc/host/cpuinfo.h
+diff --git a/tests/tcg/aarch64/test-aes.c b/tests/tcg/aarch64/test-aes.c
 new file mode 100644
-index 0000000000..df11e8d417
+index 0000000000..2cd324f09b
 --- /dev/null
-+++ b/host/include/ppc/host/cpuinfo.h
-@@ -0,0 +1,29 @@
-+/*
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ * Host specific cpu indentification for ppc.
-+ */
++++ b/tests/tcg/aarch64/test-aes.c
+@@ -0,0 +1,58 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
 +
-+#ifndef HOST_CPUINFO_H
-+#define HOST_CPUINFO_H
++#include "../multiarch/test-aes-main.c.inc"
 +
-+/* Digested version of <cpuid.h> */
-+
-+#define CPUINFO_ALWAYS          (1u << 0)  /* so cpuinfo is nonzero */
-+#define CPUINFO_V2_06           (1u << 1)
-+#define CPUINFO_V2_07           (1u << 2)
-+#define CPUINFO_V3_0            (1u << 3)
-+#define CPUINFO_V3_1            (1u << 4)
-+#define CPUINFO_ISEL            (1u << 5)
-+#define CPUINFO_ALTIVEC         (1u << 6)
-+#define CPUINFO_VSX             (1u << 7)
-+
-+/* Initialized with a constructor. */
-+extern unsigned cpuinfo;
-+
-+/*
-+ * We cannot rely on constructor ordering, so other constructors must
-+ * use the function interface rather than the variable above.
-+ */
-+unsigned cpuinfo_init(void);
-+
-+#endif /* HOST_CPUINFO_H */
-diff --git a/host/include/ppc64/host/cpuinfo.h b/host/include/ppc64/host/cpuinfo.h
-new file mode 100644
-index 0000000000..2f036a0627
---- /dev/null
-+++ b/host/include/ppc64/host/cpuinfo.h
-@@ -0,0 +1 @@
-+#include "host/include/ppc/host/cpuinfo.h"
-diff --git a/tcg/ppc/tcg-target.h b/tcg/ppc/tcg-target.h
-index c7552b6391..9a41fab8cc 100644
---- a/tcg/ppc/tcg-target.h
-+++ b/tcg/ppc/tcg-target.h
-@@ -25,6 +25,8 @@
- #ifndef PPC_TCG_TARGET_H
- #define PPC_TCG_TARGET_H
- 
-+#include "host/cpuinfo.h"
-+
- #define MAX_CODE_GEN_BUFFER_SIZE  ((size_t)-1)
- 
- #define TCG_TARGET_NB_REGS 64
-@@ -61,14 +63,12 @@ typedef enum {
-     tcg_isa_3_10,
- } TCGPowerISA;
- 
--extern TCGPowerISA have_isa;
--extern bool have_altivec;
--extern bool have_vsx;
--
--#define have_isa_2_06  (have_isa >= tcg_isa_2_06)
--#define have_isa_2_07  (have_isa >= tcg_isa_2_07)
--#define have_isa_3_00  (have_isa >= tcg_isa_3_00)
--#define have_isa_3_10  (have_isa >= tcg_isa_3_10)
-+#define have_isa_2_06  (cpuinfo & CPUINFO_V2_06)
-+#define have_isa_2_07  (cpuinfo & CPUINFO_V2_07)
-+#define have_isa_3_00  (cpuinfo & CPUINFO_V3_0)
-+#define have_isa_3_10  (cpuinfo & CPUINFO_V3_1)
-+#define have_altivec   (cpuinfo & CPUINFO_ALTIVEC)
-+#define have_vsx       (cpuinfo & CPUINFO_VSX)
- 
- /* optional instructions automatically implemented */
- #define TCG_TARGET_HAS_ext8u_i32        0 /* andi */
-diff --git a/util/cpuinfo-ppc.c b/util/cpuinfo-ppc.c
-new file mode 100644
-index 0000000000..d95adc8ccd
---- /dev/null
-+++ b/util/cpuinfo-ppc.c
-@@ -0,0 +1,56 @@
-+/*
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ * Host specific cpu indentification for ppc.
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "host/cpuinfo.h"
-+
-+#ifdef CONFIG_GETAUXVAL
-+# include <sys/auxv.h>
-+#else
-+# include <asm/cputable.h>
-+# include "elf.h"
-+#endif
-+
-+unsigned cpuinfo;
-+
-+/* Called both as constructor and (possibly) via other constructors. */
-+unsigned __attribute__((constructor)) cpuinfo_init(void)
++bool test_SB_SR(uint8_t *o, const uint8_t *i)
 +{
-+    unsigned info = cpuinfo;
-+    unsigned long hwcap, hwcap2;
++    /* aese also adds round key, so supply zero. */
++    asm("ld1 { v0.16b }, [%1]\n\t"
++        "movi v1.16b, #0\n\t"
++        "aese v0.16b, v1.16b\n\t"
++        "st1 { v0.16b }, [%0]"
++        : : "r"(o), "r"(i) : "v0", "v1", "memory");
++    return true;
++}
 +
-+    if (info) {
-+        return info;
++bool test_MC(uint8_t *o, const uint8_t *i)
++{
++    asm("ld1 { v0.16b }, [%1]\n\t"
++        "aesmc v0.16b, v0.16b\n\t"
++        "st1 { v0.16b }, [%0]"
++        : : "r"(o), "r"(i) : "v0", "memory");
++    return true;
++}
++
++bool test_SB_SR_MC_AK(uint8_t *o, const uint8_t *i, const uint8_t *k)
++{
++    return false;
++}
++
++bool test_ISB_ISR(uint8_t *o, const uint8_t *i)
++{
++    /* aesd also adds round key, so supply zero. */
++    asm("ld1 { v0.16b }, [%1]\n\t"
++        "movi v1.16b, #0\n\t"
++        "aesd v0.16b, v1.16b\n\t"
++        "st1 { v0.16b }, [%0]"
++        : : "r"(o), "r"(i) : "v0", "v1", "memory");
++    return true;
++}
++
++bool test_IMC(uint8_t *o, const uint8_t *i)
++{
++    asm("ld1 { v0.16b }, [%1]\n\t"
++        "aesimc v0.16b, v0.16b\n\t"
++        "st1 { v0.16b }, [%0]"
++        : : "r"(o), "r"(i) : "v0", "memory");
++    return true;
++}
++
++bool test_ISB_ISR_AK_IMC(uint8_t *o, const uint8_t *i, const uint8_t *k)
++{
++    return false;
++}
++
++bool test_ISB_ISR_IMC_AK(uint8_t *o, const uint8_t *i, const uint8_t *k)
++{
++    return false;
++}
+diff --git a/tests/tcg/i386/test-aes.c b/tests/tcg/i386/test-aes.c
+new file mode 100644
+index 0000000000..199395e6cc
+--- /dev/null
++++ b/tests/tcg/i386/test-aes.c
+@@ -0,0 +1,68 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++
++#include "../multiarch/test-aes-main.c.inc"
++#include <immintrin.h>
++
++static bool test_SB_SR(uint8_t *o, const uint8_t *i)
++{
++    __m128i vi = _mm_loadu_si128((const __m128i_u *)i);
++
++    /* aesenclast also adds round key, so supply zero. */
++    vi = _mm_aesenclast_si128(vi, _mm_setzero_si128());
++
++    _mm_storeu_si128((__m128i_u *)o, vi);
++    return true;
++}
++
++static bool test_MC(uint8_t *o, const uint8_t *i)
++{
++    return false;
++}
++
++static bool test_SB_SR_MC_AK(uint8_t *o, const uint8_t *i, const uint8_t *k)
++{
++    __m128i vi = _mm_loadu_si128((const __m128i_u *)i);
++    __m128i vk = _mm_loadu_si128((const __m128i_u *)k);
++
++    vi = _mm_aesenc_si128(vi, vk);
++
++    _mm_storeu_si128((__m128i_u *)o, vi);
++    return true;
++}
++
++static bool test_ISB_ISR(uint8_t *o, const uint8_t *i)
++{
++    __m128i vi = _mm_loadu_si128((const __m128i_u *)i);
++
++    /* aesdeclast also adds round key, so supply zero. */
++    vi = _mm_aesdeclast_si128(vi, _mm_setzero_si128());
++
++    _mm_storeu_si128((__m128i_u *)o, vi);
++    return true;
++}
++
++static bool test_IMC(uint8_t *o, const uint8_t *i)
++{
++    __m128i vi = _mm_loadu_si128((const __m128i_u *)i);
++
++    vi = _mm_aesimc_si128(vi);
++
++    _mm_storeu_si128((__m128i_u *)o, vi);
++    return true;
++}
++
++static bool test_ISB_ISR_AK_IMC(uint8_t *o, const uint8_t *i, const uint8_t *k)
++{
++    return false;
++}
++
++static bool test_ISB_ISR_IMC_AK(uint8_t *o, const uint8_t *i, const uint8_t *k)
++{
++    __m128i vi = _mm_loadu_si128((const __m128i_u *)i);
++    __m128i vk = _mm_loadu_si128((const __m128i_u *)k);
++
++    vi = _mm_aesdec_si128(vi, vk);
++
++    _mm_storeu_si128((__m128i_u *)o, vi);
++    return true;
++}
+diff --git a/tests/tcg/ppc64/test-aes.c b/tests/tcg/ppc64/test-aes.c
+new file mode 100644
+index 0000000000..1d2be488e9
+--- /dev/null
++++ b/tests/tcg/ppc64/test-aes.c
+@@ -0,0 +1,116 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++
++#include "../multiarch/test-aes-main.c.inc"
++
++#undef BIG_ENDIAN
++#define BIG_ENDIAN  (__BYTE_ORDER__ == __ORDER_BIG_ENDIAN__)
++
++static unsigned char bswap_le[16] __attribute__((aligned(16))) = {
++    8,9,10,11,12,13,14,15,
++    0,1,2,3,4,5,6,7
++};
++
++bool test_SB_SR(uint8_t *o, const uint8_t *i)
++{
++    /* vcipherlast also adds round key, so supply zero. */
++    if (BIG_ENDIAN) {
++        asm("lxvd2x 32,0,%1\n\t"
++            "vspltisb 1,0\n\t"
++            "vcipherlast 0,0,1\n\t"
++            "stxvd2x 32,0,%0"
++            : : "r"(o), "r"(i) : "memory", "v0", "v1");
++    } else {
++        asm("lxvd2x 32,0,%1\n\t"
++            "lxvd2x 34,0,%2\n\t"
++            "vspltisb 1,0\n\t"
++            "vperm 0,0,0,2\n\t"
++            "vcipherlast 0,0,1\n\t"
++            "vperm 0,0,0,2\n\t"
++            "stxvd2x 32,0,%0"
++            : : "r"(o), "r"(i), "r"(bswap_le) : "memory", "v0", "v1", "v2");
++    }
++    return true;
++}
++
++bool test_MC(uint8_t *o, const uint8_t *i)
++{
++    return false;
++}
++
++bool test_SB_SR_MC_AK(uint8_t *o, const uint8_t *i, const uint8_t *k)
++{
++    if (BIG_ENDIAN) {
++        asm("lxvd2x 32,0,%1\n\t"
++            "lxvd2x 33,0,%2\n\t"
++            "vcipher 0,0,1\n\t"
++            "stxvd2x 32,0,%0"
++            : : "r"(o), "r"(i), "r"(k) : "memory", "v0", "v1");
++    } else {
++        asm("lxvd2x 32,0,%1\n\t"
++            "lxvd2x 33,0,%2\n\t"
++            "lxvd2x 34,0,%3\n\t"
++            "vperm 0,0,0,2\n\t"
++            "vperm 1,1,1,2\n\t"
++            "vcipher 0,0,1\n\t"
++            "vperm 0,0,0,2\n\t"
++            "stxvd2x 32,0,%0"
++            : : "r"(o), "r"(i), "r"(k), "r"(bswap_le)
++              : "memory", "v0", "v1", "v2");
++    }
++    return true;
++}
++
++bool test_ISB_ISR(uint8_t *o, const uint8_t *i)
++{
++    /* vcipherlast also adds round key, so supply zero. */
++    if (BIG_ENDIAN) {
++        asm("lxvd2x 32,0,%1\n\t"
++            "vspltisb 1,0\n\t"
++            "vncipherlast 0,0,1\n\t"
++            "stxvd2x 32,0,%0"
++            : : "r"(o), "r"(i) : "memory", "v0", "v1");
++    } else {
++        asm("lxvd2x 32,0,%1\n\t"
++            "lxvd2x 34,0,%2\n\t"
++            "vspltisb 1,0\n\t"
++            "vperm 0,0,0,2\n\t"
++            "vncipherlast 0,0,1\n\t"
++            "vperm 0,0,0,2\n\t"
++            "stxvd2x 32,0,%0"
++            : : "r"(o), "r"(i), "r"(bswap_le) : "memory", "v0", "v1", "v2");
++    }
++    return true;
++}
++
++bool test_IMC(uint8_t *o, const uint8_t *i)
++{
++    return false;
++}
++
++bool test_ISB_ISR_AK_IMC(uint8_t *o, const uint8_t *i, const uint8_t *k)
++{
++    if (BIG_ENDIAN) {
++        asm("lxvd2x 32,0,%1\n\t"
++            "lxvd2x 33,0,%2\n\t"
++            "vncipher 0,0,1\n\t"
++            "stxvd2x 32,0,%0"
++            : : "r"(o), "r"(i), "r"(k) : "memory", "v0", "v1");
++    } else {
++        asm("lxvd2x 32,0,%1\n\t"
++            "lxvd2x 33,0,%2\n\t"
++            "lxvd2x 34,0,%3\n\t"
++            "vperm 0,0,0,2\n\t"
++            "vperm 1,1,1,2\n\t"
++            "vncipher 0,0,1\n\t"
++            "vperm 0,0,0,2\n\t"
++            "stxvd2x 32,0,%0"
++            : : "r"(o), "r"(i), "r"(k), "r"(bswap_le)
++              : "memory", "v0", "v1", "v2");
++    }
++    return true;
++}
++
++bool test_ISB_ISR_IMC_AK(uint8_t *o, const uint8_t *i, const uint8_t *k)
++{
++    return false;
++}
+diff --git a/tests/tcg/riscv64/test-aes.c b/tests/tcg/riscv64/test-aes.c
+new file mode 100644
+index 0000000000..3d7ef0e33a
+--- /dev/null
++++ b/tests/tcg/riscv64/test-aes.c
+@@ -0,0 +1,76 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++
++#include "../multiarch/test-aes-main.c.inc"
++
++bool test_SB_SR(uint8_t *o, const uint8_t *i)
++{
++    uint64_t *o8 = (uint64_t *)o;
++    const uint64_t *i8 = (const uint64_t *)i;
++
++    asm("aes64es %0,%2,%3\n\t"
++        "aes64es %1,%3,%2"
++        : "=&r"(o8[0]), "=&r"(o8[1]) : "r"(i8[0]), "r"(i8[1]));
++    return true;
++}
++
++bool test_MC(uint8_t *o, const uint8_t *i)
++{
++    return false;
++}
++
++bool test_SB_SR_MC_AK(uint8_t *o, const uint8_t *i, const uint8_t *k)
++{
++    uint64_t *o8 = (uint64_t *)o;
++    const uint64_t *i8 = (const uint64_t *)i;
++    const uint64_t *k8 = (const uint64_t *)k;
++
++    asm("aes64esm %0,%2,%3\n\t"
++        "aes64esm %1,%3,%2\n\t"
++        "xor %0,%0,%4\n\t"
++        "xor %1,%1,%5"
++        : "=&r"(o8[0]), "=&r"(o8[1])
++        : "r"(i8[0]), "r"(i8[1]), "r"(k8[0]), "r"(k8[1]));
++    return true;
++}
++
++bool test_ISB_ISR(uint8_t *o, const uint8_t *i)
++{
++    uint64_t *o8 = (uint64_t *)o;
++    const uint64_t *i8 = (const uint64_t *)i;
++
++    asm("aes64ds %0,%2,%3\n\t"
++        "aes64ds %1,%3,%2"
++        : "=&r"(o8[0]), "=&r"(o8[1]) : "r"(i8[0]), "r"(i8[1]));
++    return true;
++}
++
++bool test_IMC(uint8_t *o, const uint8_t *i)
++{
++    uint64_t *o8 = (uint64_t *)o;
++    const uint64_t *i8 = (const uint64_t *)i;
++
++    asm("aes64im %0,%0\n\t"
++        "aes64im %1,%1"
++        : "=r"(o8[0]), "=r"(o8[1]) : "0"(i8[0]), "1"(i8[1]));
++    return true;
++}
++
++bool test_ISB_ISR_AK_IMC(uint8_t *o, const uint8_t *i, const uint8_t *k)
++{
++    return false;
++}
++
++bool test_ISB_ISR_IMC_AK(uint8_t *o, const uint8_t *i, const uint8_t *k)
++{
++    uint64_t *o8 = (uint64_t *)o;
++    const uint64_t *i8 = (const uint64_t *)i;
++    const uint64_t *k8 = (const uint64_t *)k;
++
++    asm("aes64dsm %0,%2,%3\n\t"
++        "aes64dsm %1,%3,%2\n\t"
++        "xor %0,%0,%4\n\t"
++        "xor %1,%1,%5"
++        : "=&r"(o8[0]), "=&r"(o8[1])
++        : "r"(i8[0]), "r"(i8[1]), "r"(k8[0]), "r"(k8[1]));
++    return true;
++}
+diff --git a/tests/tcg/multiarch/test-aes-main.c.inc b/tests/tcg/multiarch/test-aes-main.c.inc
+new file mode 100644
+index 0000000000..0039f8ba55
+--- /dev/null
++++ b/tests/tcg/multiarch/test-aes-main.c.inc
+@@ -0,0 +1,183 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++
++#include <stdint.h>
++#include <stdbool.h>
++#include <stdlib.h>
++#include <string.h>
++#include <stdio.h>
++
++static bool test_SB_SR(uint8_t *o, const uint8_t *i);
++static bool test_MC(uint8_t *o, const uint8_t *i);
++static bool test_SB_SR_MC_AK(uint8_t *o, const uint8_t *i, const uint8_t *k);
++
++static bool test_ISB_ISR(uint8_t *o, const uint8_t *i);
++static bool test_IMC(uint8_t *o, const uint8_t *i);
++static bool test_ISB_ISR_AK_IMC(uint8_t *o, const uint8_t *i, const uint8_t *k);
++static bool test_ISB_ISR_IMC_AK(uint8_t *o, const uint8_t *i, const uint8_t *k);
++
++/*
++ * From https://doi.org/10.6028/NIST.FIPS.197-upd1,
++ * Appendix B -- Cipher Example
++ *
++ * Note that the formatting of the 4x4 matrices in the document is
++ * column-major, whereas C is row-major.  Therefore to get the bytes
++ * in the same order as the text, the matrices are transposed.
++ *
++ * Note that we are not going to test SubBytes or ShiftRows separately,
++ * so the "After SubBytes" column is omitted, using only the combined
++ * result "After ShiftRows" column.
++ */
++
++/* Ease the inline assembly by aligning everything. */
++typedef struct {
++    uint8_t b[16] __attribute__((aligned(16)));
++} State;
++
++typedef struct {
++    State start, after_sr, after_mc, round_key;
++} Round;
++
++static const Round rounds[] = {
++    /* Round 1 */
++    { { { 0x19, 0x3d, 0xe3, 0xbe,       /* start */
++          0xa0, 0xf4, 0xe2, 0x2b,
++          0x9a, 0xc6, 0x8d, 0x2a,
++          0xe9, 0xf8, 0x48, 0x08, } },
++
++      { { 0xd4, 0xbf, 0x5d, 0x30,       /* after shiftrows */
++          0xe0, 0xb4, 0x52, 0xae,
++          0xb8, 0x41, 0x11, 0xf1,
++          0x1e, 0x27, 0x98, 0xe5, } },
++
++      { { 0x04, 0x66, 0x81, 0xe5,       /* after mixcolumns */
++          0xe0, 0xcb, 0x19, 0x9a,
++          0x48, 0xf8, 0xd3, 0x7a,
++          0x28, 0x06, 0x26, 0x4c, } },
++
++      { { 0xa0, 0xfa, 0xfe, 0x17,       /* round key */
++          0x88, 0x54, 0x2c, 0xb1,
++          0x23, 0xa3, 0x39, 0x39,
++          0x2a, 0x6c, 0x76, 0x05, } } },
++
++    /* Round 2 */
++    { { { 0xa4, 0x9c, 0x7f, 0xf2,       /* start */
++          0x68, 0x9f, 0x35, 0x2b,
++          0x6b, 0x5b, 0xea, 0x43,
++          0x02, 0x6a, 0x50, 0x49, } },
++
++      { { 0x49, 0xdb, 0x87, 0x3b,       /* after shiftrows */
++          0x45, 0x39, 0x53, 0x89,
++          0x7f, 0x02, 0xd2, 0xf1,
++          0x77, 0xde, 0x96, 0x1a, } },
++
++      { { 0x58, 0x4d, 0xca, 0xf1,       /* after mixcolumns */
++          0x1b, 0x4b, 0x5a, 0xac,
++          0xdb, 0xe7, 0xca, 0xa8,
++          0x1b, 0x6b, 0xb0, 0xe5, } },
++
++      { { 0xf2, 0xc2, 0x95, 0xf2,       /* round key */
++          0x7a, 0x96, 0xb9, 0x43,
++          0x59, 0x35, 0x80, 0x7a,
++          0x73, 0x59, 0xf6, 0x7f, } } },
++
++    /* Round 3 */
++    { { { 0xaa, 0x8f, 0x5f, 0x03,       /* start */
++          0x61, 0xdd, 0xe3, 0xef,
++          0x82, 0xd2, 0x4a, 0xd2,
++          0x68, 0x32, 0x46, 0x9a, } },
++
++      { { 0xac, 0xc1, 0xd6, 0xb8,       /* after shiftrows */
++          0xef, 0xb5, 0x5a, 0x7b,
++          0x13, 0x23, 0xcf, 0xdf,
++          0x45, 0x73, 0x11, 0xb5, } },
++
++      { { 0x75, 0xec, 0x09, 0x93,       /* after mixcolumns */
++          0x20, 0x0b, 0x63, 0x33,
++          0x53, 0xc0, 0xcf, 0x7c,
++          0xbb, 0x25, 0xd0, 0xdc, } },
++
++      { { 0x3d, 0x80, 0x47, 0x7d,       /* round key */
++          0x47, 0x16, 0xfe, 0x3e,
++          0x1e, 0x23, 0x7e, 0x44,
++          0x6d, 0x7a, 0x88, 0x3b, } } },
++};
++
++static void verify_log(const char *prefix, const State *s)
++{
++    printf("%s:", prefix);
++    for (int i = 0; i < sizeof(State); ++i) {
++        printf(" %02x", s->b[i]);
++    }
++    printf("\n");
++}
++
++static void verify(const State *ref, const State *tst, const char *which)
++{
++    if (!memcmp(ref, tst, sizeof(State))) {
++        return;
 +    }
 +
-+    hwcap = qemu_getauxval(AT_HWCAP);
-+    hwcap2 = qemu_getauxval(AT_HWCAP2);
-+    info = CPUINFO_ALWAYS;
++    printf("Mismatch on %s\n", which);
++    verify_log("ref", ref);
++    verify_log("tst", tst);
++    exit(EXIT_FAILURE);
++}
 +
-+    /* Version numbers are monotonic, and so imply all lower versions. */
-+    if (hwcap2 & PPC_FEATURE2_ARCH_3_1) {
-+        info |= CPUINFO_V3_1 | CPUINFO_V3_0 | CPUINFO_V2_07 | CPUINFO_V2_06;
-+    } else if (hwcap2 & PPC_FEATURE2_ARCH_3_00) {
-+        info |= CPUINFO_V3_0 | CPUINFO_V2_07 | CPUINFO_V2_06;
-+    } else if (hwcap2 & PPC_FEATURE2_ARCH_2_07) {
-+        info |= CPUINFO_V2_07 | CPUINFO_V2_06;
-+    } else if (hwcap & PPC_FEATURE_ARCH_2_06) {
-+        info |= CPUINFO_V2_06;
-+    }
++int main()
++{
++    int i, n = sizeof(rounds) / sizeof(Round);
++    State t;
 +
-+    if (hwcap2 & PPC_FEATURE2_HAS_ISEL) {
-+        info |= CPUINFO_ISEL;
-+    }
-+    if (hwcap & PPC_FEATURE_HAS_ALTIVEC) {
-+        info |= CPUINFO_ALTIVEC;
-+        /* We only care about the portion of VSX that overlaps Altivec. */
-+        if (hwcap & PPC_FEATURE_HAS_VSX) {
-+            info |= CPUINFO_VSX;
++    for (i = 0; i < n; ++i) {
++        if (test_SB_SR(t.b, rounds[i].start.b)) {
++            verify(&rounds[i].after_sr, &t, "SB+SR");
 +        }
 +    }
 +
-+    cpuinfo = info;
-+    return info;
++    for (i = 0; i < n; ++i) {
++        if (test_MC(t.b, rounds[i].after_sr.b)) {
++            verify(&rounds[i].after_mc, &t, "MC");
++        }
++    }
++
++    /* The kernel of Cipher(). */
++    for (i = 0; i < n - 1; ++i) {
++        if (test_SB_SR_MC_AK(t.b, rounds[i].start.b, rounds[i].round_key.b)) {
++            verify(&rounds[i + 1].start, &t, "SB+SR+MC+AK");
++        }
++    }
++
++    for (i = 0; i < n; ++i) {
++        if (test_ISB_ISR(t.b, rounds[i].after_sr.b)) {
++            verify(&rounds[i].start, &t, "ISB+ISR");
++        }
++    }
++
++    for (i = 0; i < n; ++i) {
++        if (test_IMC(t.b, rounds[i].after_mc.b)) {
++            verify(&rounds[i].after_sr, &t, "IMC");
++        }
++    }
++
++    /* The kernel of InvCipher(). */
++    for (i = n - 1; i > 0; --i) {
++        if (test_ISB_ISR_AK_IMC(t.b, rounds[i].after_sr.b,
++                                rounds[i - 1].round_key.b)) {
++            verify(&rounds[i - 1].after_sr, &t, "ISB+ISR+AK+IMC");
++        }
++    }
++
++    /*
++     * The kernel of EqInvCipher().  
++     * We must compute a different round key: apply InvMixColumns to
++     * the standard round key, per KeyExpansion vs KeyExpansionEIC.
++     */
++    for (i = 1; i < n; ++i) {
++        if (test_IMC(t.b, rounds[i - 1].round_key.b) &&
++            test_ISB_ISR_IMC_AK(t.b, rounds[i].after_sr.b, t.b)) {
++            verify(&rounds[i - 1].after_sr, &t, "ISB+ISR+IMC+AK");
++        }
++    }
++
++    return EXIT_SUCCESS;
 +}
-diff --git a/tcg/ppc/tcg-target.c.inc b/tcg/ppc/tcg-target.c.inc
-index 5c8378f8f6..c866f2c997 100644
---- a/tcg/ppc/tcg-target.c.inc
-+++ b/tcg/ppc/tcg-target.c.inc
-@@ -101,10 +101,7 @@
- #define ALL_GENERAL_REGS  0xffffffffu
- #define ALL_VECTOR_REGS   0xffffffff00000000ull
+diff --git a/tests/tcg/aarch64/Makefile.target b/tests/tcg/aarch64/Makefile.target
+index 3430fd3cd8..d217474d0d 100644
+--- a/tests/tcg/aarch64/Makefile.target
++++ b/tests/tcg/aarch64/Makefile.target
+@@ -74,6 +74,10 @@ endif
+ AARCH64_TESTS += sve-ioctls
+ sve-ioctls: CFLAGS+=-march=armv8.1-a+sve
  
--TCGPowerISA have_isa;
--static bool have_isel;
--bool have_altivec;
--bool have_vsx;
-+#define have_isel  (cpuinfo & CPUINFO_ISEL)
++AARCH64_TESTS += test-aes
++test-aes: CFLAGS += -O -march=armv8-a+aes
++test-aes: test-aes-main.c.inc
++
+ # Vector SHA1
+ sha1-vector: CFLAGS=-O3
+ sha1-vector: sha1.c
+diff --git a/tests/tcg/i386/Makefile.target b/tests/tcg/i386/Makefile.target
+index f2ee7a4db7..fdf757c6ce 100644
+--- a/tests/tcg/i386/Makefile.target
++++ b/tests/tcg/i386/Makefile.target
+@@ -28,6 +28,10 @@ run-test-i386-bmi2: QEMU_OPTS += -cpu max
+ test-i386-adcox: CFLAGS=-O2
+ run-test-i386-adcox: QEMU_OPTS += -cpu max
  
- #ifndef CONFIG_SOFTMMU
- #define TCG_GUEST_BASE_REG 30
-@@ -3879,45 +3876,6 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
++test-aes: CFLAGS += -O -msse2 -maes
++test-aes: test-aes-main.c.inc
++run-test-aes: QEMU_OPTS += -cpu max
++
+ #
+ # hello-i386 is a barebones app
+ #
+diff --git a/tests/tcg/ppc64/Makefile.target b/tests/tcg/ppc64/Makefile.target
+index b084963b9a..5721c159f2 100644
+--- a/tests/tcg/ppc64/Makefile.target
++++ b/tests/tcg/ppc64/Makefile.target
+@@ -36,5 +36,6 @@ run-vector: QEMU_OPTS += -cpu POWER10
  
- static void tcg_target_init(TCGContext *s)
- {
--    unsigned long hwcap = qemu_getauxval(AT_HWCAP);
--    unsigned long hwcap2 = qemu_getauxval(AT_HWCAP2);
--
--    have_isa = tcg_isa_base;
--    if (hwcap & PPC_FEATURE_ARCH_2_06) {
--        have_isa = tcg_isa_2_06;
--    }
--#ifdef PPC_FEATURE2_ARCH_2_07
--    if (hwcap2 & PPC_FEATURE2_ARCH_2_07) {
--        have_isa = tcg_isa_2_07;
--    }
--#endif
--#ifdef PPC_FEATURE2_ARCH_3_00
--    if (hwcap2 & PPC_FEATURE2_ARCH_3_00) {
--        have_isa = tcg_isa_3_00;
--    }
--#endif
--#ifdef PPC_FEATURE2_ARCH_3_10
--    if (hwcap2 & PPC_FEATURE2_ARCH_3_10) {
--        have_isa = tcg_isa_3_10;
--    }
--#endif
--
--#ifdef PPC_FEATURE2_HAS_ISEL
--    /* Prefer explicit instruction from the kernel. */
--    have_isel = (hwcap2 & PPC_FEATURE2_HAS_ISEL) != 0;
--#else
--    /* Fall back to knowing Power7 (2.06) has ISEL. */
--    have_isel = have_isa_2_06;
--#endif
--
--    if (hwcap & PPC_FEATURE_HAS_ALTIVEC) {
--        have_altivec = true;
--        /* We only care about the portion of VSX that overlaps Altivec. */
--        if (hwcap & PPC_FEATURE_HAS_VSX) {
--            have_vsx = true;
--        }
--    }
--
-     tcg_target_available_regs[TCG_TYPE_I32] = 0xffffffff;
-     tcg_target_available_regs[TCG_TYPE_I64] = 0xffffffff;
-     if (have_altivec) {
-diff --git a/util/meson.build b/util/meson.build
-index 3a93071d27..a375160286 100644
---- a/util/meson.build
-+++ b/util/meson.build
-@@ -113,4 +113,6 @@ if cpu == 'aarch64'
-   util_ss.add(files('cpuinfo-aarch64.c'))
- elif cpu in ['x86', 'x86_64']
-   util_ss.add(files('cpuinfo-i386.c'))
-+elif cpu in ['ppc', 'ppc64']
-+  util_ss.add(files('cpuinfo-ppc.c'))
- endif
+ PPC64_TESTS += signal_save_restore_xer
+ PPC64_TESTS += xxspltw
++PPC64_TESTS += test-aes
+ 
+ TESTS += $(PPC64_TESTS)
+diff --git a/tests/tcg/riscv64/Makefile.target b/tests/tcg/riscv64/Makefile.target
+index 9973ba3b5f..4b14a67f48 100644
+--- a/tests/tcg/riscv64/Makefile.target
++++ b/tests/tcg/riscv64/Makefile.target
+@@ -1,6 +1,13 @@
+ # -*- Mode: makefile -*-
+ # RISC-V specific tweaks
+ 
++config-cc.mak: Makefile
++	$(quiet-@)( \
++	    $(call cc-option,-mrv64g_zk, CROSS_CC_HAS_ZK) \
++	) 3> config-cc.mak
++
++-include config-cc.mak
++
+ VPATH += $(SRC_PATH)/tests/tcg/riscv64
+ TESTS += test-div
+ TESTS += noexec
+@@ -9,3 +16,9 @@ TESTS += noexec
+ TESTS += test-noc
+ test-noc: LDFLAGS = -nostdlib -static
+ run-test-noc: QEMU_OPTS += -cpu rv64,c=false
++
++ifneq ($(CROSS_CC_HAS_ZK),)
++TESTS += test-aes
++test-aes: CFLAGS += -O -march=rv64gzk
++run-test-aes: QEMU_OPTS += -cpu rv64,zk=on
++endif
 -- 
 2.34.1
 
