@@ -2,32 +2,31 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58085745D28
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 15:26:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 26A47745D31
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 15:26:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGJYZ-0008Od-1t; Mon, 03 Jul 2023 09:25:31 -0400
+	id 1qGJYZ-0008PD-TO; Mon, 03 Jul 2023 09:25:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=mKPa=CV=kaod.org=clg@ozlabs.org>)
- id 1qGJYU-0008Nb-Ov
+ id 1qGJYV-0008Np-JH
  for qemu-devel@nongnu.org; Mon, 03 Jul 2023 09:25:27 -0400
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
+Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=mKPa=CV=kaod.org=clg@ozlabs.org>)
- id 1qGJYS-0000ak-MY
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 09:25:26 -0400
+ id 1qGJYT-0000en-Hr
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 09:25:27 -0400
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4QvmrH6RXSz4wZp;
- Mon,  3 Jul 2023 23:25:19 +1000 (AEST)
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4QvmrL6Qscz4wxn;
+ Mon,  3 Jul 2023 23:25:22 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4QvmrF1KnBz4wb1;
- Mon,  3 Jul 2023 23:25:16 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4QvmrJ38lcz4wb1;
+ Mon,  3 Jul 2023 23:25:20 +1000 (AEST)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
@@ -35,27 +34,25 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Peter Maydell <peter.maydell@linaro.org>,
  Lucien Murray-Pitts <lucienmp.qemu@gmail.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <f4bug@amsat.org>,
- Bin Meng <bmeng.cn@gmail.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-Subject: [PATCH 01/32] hw/sd: When card is in wrong state,
- log which state it is
-Date: Mon,  3 Jul 2023 15:24:38 +0200
-Message-ID: <20230703132509.2474225-2-clg@kaod.org>
+Subject: [PATCH 02/32] hw/sd: When card is in wrong state,
+ log which spec version is used
+Date: Mon,  3 Jul 2023 15:24:39 +0200
+Message-ID: <20230703132509.2474225-3-clg@kaod.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230703132509.2474225-1-clg@kaod.org>
 References: <20230703132509.2474225-1-clg@kaod.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+Received-SPF: pass client-ip=150.107.74.76;
  envelope-from=SRS0=mKPa=CV=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -39
-X-Spam_score: -4.0
-X-Spam_bar: ----
-X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -73,51 +70,50 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <f4bug@amsat.org>
 
-We report the card is in an inconsistent state, but don't precise
-in which state it is. Add this information, as it is useful when
-debugging problems.
-
-Since we will reuse this code, extract as sd_invalid_state_for_cmd()
-helper.
+Add the sd_version_str() helper.
 
 Signed-off-by: Philippe Mathieu-Daudé <f4bug@amsat.org>
-Reviewed-by: Bin Meng <bmeng.cn@gmail.com>
-Message-Id: <20210624142209.1193073-2-f4bug@amsat.org>
 Signed-off-by: Cédric Le Goater <clg@kaod.org>
 ---
- hw/sd/sd.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ hw/sd/sd.c | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
 diff --git a/hw/sd/sd.c b/hw/sd/sd.c
-index 0be9ee965ac9..4412559c05be 100644
+index 4412559c05be..20e62aff70b6 100644
 --- a/hw/sd/sd.c
 +++ b/hw/sd/sd.c
-@@ -966,6 +966,14 @@ static bool address_in_range(SDState *sd, const char *desc,
-     return true;
- }
+@@ -145,6 +145,19 @@ struct SDState {
  
-+static sd_rsp_type_t sd_invalid_state_for_cmd(SDState *sd, SDRequest req)
+ static void sd_realize(DeviceState *dev, Error **errp);
+ 
++static const char *sd_version_str(enum SDPhySpecificationVersion version)
 +{
-+    qemu_log_mask(LOG_GUEST_ERROR, "SD: CMD%i in a wrong state: %s\n",
-+                  req.cmd, sd_state_name(sd->state));
-+
-+    return sd_illegal;
++    static const char *sdphy_version[] = {
++        [SD_PHY_SPECv1_10_VERS]     = "v1.10",
++        [SD_PHY_SPECv2_00_VERS]     = "v2.00",
++        [SD_PHY_SPECv3_01_VERS]     = "v3.01",
++    };
++    if (version >= ARRAY_SIZE(sdphy_version)) {
++        return "unsupported version";
++    }
++    return sdphy_version[version];
 +}
 +
- static sd_rsp_type_t sd_normal_command(SDState *sd, SDRequest req)
+ static const char *sd_state_name(enum SDCardStates state)
  {
-     uint32_t rca = 0x0000;
-@@ -1534,9 +1542,7 @@ static sd_rsp_type_t sd_normal_command(SDState *sd, SDRequest req)
-         return sd_illegal;
-     }
+     static const char *state_name[] = {
+@@ -968,8 +981,9 @@ static bool address_in_range(SDState *sd, const char *desc,
  
+ static sd_rsp_type_t sd_invalid_state_for_cmd(SDState *sd, SDRequest req)
+ {
 -    qemu_log_mask(LOG_GUEST_ERROR, "SD: CMD%i in a wrong state: %s\n",
 -                  req.cmd, sd_state_name(sd->state));
--    return sd_illegal;
-+    return sd_invalid_state_for_cmd(sd, req);
- }
++    qemu_log_mask(LOG_GUEST_ERROR, "SD: CMD%i in a wrong state: %s (spec %s)\n",
++                  req.cmd, sd_state_name(sd->state),
++                  sd_version_str(sd->spec_version));
  
- static sd_rsp_type_t sd_app_command(SDState *sd,
+     return sd_illegal;
+ }
 -- 
 2.41.0
 
