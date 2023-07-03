@@ -2,63 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9AC2745690
+	by mail.lfdr.de (Postfix) with ESMTPS id 1813D74568F
 	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 09:57:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGEQx-0001Rr-19; Mon, 03 Jul 2023 03:57:19 -0400
+	id 1qGER1-0001VC-5y; Mon, 03 Jul 2023 03:57:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qGEQY-0001RU-Nk
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 03:56:55 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qGEQX-0001BU-9c
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 03:56:54 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688371012;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=iuXf9Pot7qbYdSTiSonken0CccC9+gy5177FsvzHD2A=;
- b=JBhWtD1ovxXCrGAXha/0lAAk45l8PAT4Mwf+j8T6hVy+P1sSOeqcf4GVnBV7Qtwz6Ozexe
- +jjoB4mXeNDbAs25IFiI4J8tyaVYsH9h8OAisKy+QOe+n82sfTf9jCyl/t046f2sMR37zE
- 7/k8pLnUXRZ1HGL06TOL7Cz9j/tFWfM=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-646-DAsFUQ2XPtyouq1-9Kxx4g-1; Mon, 03 Jul 2023 03:56:50 -0400
-X-MC-Unique: DAsFUQ2XPtyouq1-9Kxx4g-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 24EA338294A2;
- Mon,  3 Jul 2023 07:56:50 +0000 (UTC)
-Received: from thuth.com (unknown [10.39.193.20])
- by smtp.corp.redhat.com (Postfix) with ESMTP id DE6EF4087C6B;
- Mon,  3 Jul 2023 07:56:48 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-trivial@nongnu.org,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Gerd Hoffmann <kraxel@redhat.com>
-Subject: [PATCH] qemu-options.hx: Fix indentation of some option descriptions
-Date: Mon,  3 Jul 2023 09:56:46 +0200
-Message-Id: <20230703075646.18354-1-thuth@redhat.com>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qGEQt-0001UP-2N
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 03:57:18 -0400
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qGEQk-0001Ix-UZ
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 03:57:08 -0400
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-3142ee41fd2so1524557f8f.3
+ for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 00:57:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1688371024; x=1690963024;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=JLN8NIFcAY1L9URc9go6UwB+A7jhlx05ZIEByfUf6jk=;
+ b=eb7RQFDBFrc+78TwElLoYhyvGAqJJg43hW9pC/19hPa1ibn4vLU1apO4U/XiqCxJ1P
+ Ic00g2JNMz6OAdmUwKV22dJ7LBYI9w/Ptl+O4mHLZ+kFWU+TnU0DHkcmvO9N3bX3zyrS
+ Wwq5JVnGluuhaj9aWxi8EMCgzYRv/gSXN5tTWmGmtOqH+DGRLugp6M1R5pWz66byRahd
+ UIRuqS66bV2qCj+uBsKm0g00vq5kcoHbh/HaoASWd3c3fObEhWPxOvWhJYtZ8Cjf/sJf
+ 6BhM5u4ZYAKEMzG7PKwm9sUHNF08+6RnGDrqt6vbeaVYoMjcdoqZCemkAwEl2OWV01ky
+ NurQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1688371024; x=1690963024;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=JLN8NIFcAY1L9URc9go6UwB+A7jhlx05ZIEByfUf6jk=;
+ b=lfEkxp2iLvYibHXk0ykvNtPqJg2gY2nb6JgzBASoFRGb2En8eP0KE+T1allX3vWmvq
+ wcJL2LOH3+tYX+l+sJaNOGxUOjTMewZyLVJz3o1556UCZxHxzVuq9SFodjRgYrjgtLzF
+ FydePjmKRzs6PSzNtboaImfOnWBhKTafjnBX5mdcqwor21IrveNJgE6/qgV0kUSaHKuu
+ 7+l59H3VRwichtctvECbGvnIwQzA9z9WoGPFdkHIZfiCJw6hHRfMIEyfWhru3pS+Tw08
+ s6GPSvvFOF4fxbkQq4YAjU0A0Vsrh1fBFCgTLj8bbd78D7qE8FYHL8944FaflaMheKhi
+ 3pCA==
+X-Gm-Message-State: ABy/qLbNpdfxJAf0p+aS0L25hyAB5mj381BMfKtKzFvffgQ6eDYxr8Xv
+ yaqzmHHPkH4zS9i9QNTe3qGnCA==
+X-Google-Smtp-Source: APBJJlHvCN3/L5+9mTXbkvX4V/6ymjv0EI2diM86PwTrnvlCQ3dCf60A+stdON6+lyP7NFOcpi3qtQ==
+X-Received: by 2002:adf:f781:0:b0:313:e55f:b78c with SMTP id
+ q1-20020adff781000000b00313e55fb78cmr6108331wrp.21.1688371024374; 
+ Mon, 03 Jul 2023 00:57:04 -0700 (PDT)
+Received: from [192.168.1.25] (91.232.79.188.dynamic.jazztel.es.
+ [188.79.232.91]) by smtp.gmail.com with ESMTPSA id
+ b9-20020a5d40c9000000b0031417fd473csm10425340wrq.78.2023.07.03.00.57.03
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 03 Jul 2023 00:57:03 -0700 (PDT)
+Message-ID: <1118dc1e-116b-3103-7eb8-c7087a39e906@linaro.org>
+Date: Mon, 3 Jul 2023 09:57:01 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v4 28/38] gdbstub: lightly refactor connection to avoid
+ snprintf
+To: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
+ qemu-devel@nongnu.org
+References: <20230630180423.558337-1-alex.bennee@linaro.org>
+ <20230630180423.558337-29-alex.bennee@linaro.org>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230630180423.558337-29-alex.bennee@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x42c.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -75,43 +96,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The description of the options starts at column 16, so fix
-this in some runaway lines for a more uniform output.
+On 6/30/23 20:04, Alex Bennée wrote:
+> This may be a bit too much to avoid an snprintf and the slightly dodgy
+> assign to a const variable. But hopefully not.
+> 
+> Signed-off-by: Alex Bennée<alex.bennee@linaro.org>
+> 
+> ---
+> v2
+>    - fix checkpatch warning
+> ---
+>   gdbstub/softmmu.c | 19 +++++++++----------
+>   1 file changed, 9 insertions(+), 10 deletions(-)
 
-While we're at it, replace the capital "NOTE" with "Note"
-since this seems to be the more common capitalization in
-qemu-options.hx.
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-Signed-off-by: Thomas Huth <thuth@redhat.com>
----
- qemu-options.hx | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/qemu-options.hx b/qemu-options.hx
-index f49d4c0e3c..c714b3981a 100644
---- a/qemu-options.hx
-+++ b/qemu-options.hx
-@@ -652,7 +652,7 @@ DEF("m", HAS_ARG, QEMU_OPTION_m,
-     "                size: initial amount of guest memory\n"
-     "                slots: number of hotplug slots (default: none)\n"
-     "                maxmem: maximum amount of guest memory (default: none)\n"
--    "NOTE: Some architectures might enforce a specific granularity\n",
-+    "                Note: Some architectures might enforce a specific granularity\n",
-     QEMU_ARCH_ALL)
- SRST
- ``-m [size=]megs[,slots=n,maxmem=size]``
-@@ -2210,8 +2210,8 @@ DEF("spice", HAS_ARG, QEMU_OPTION_spice,
-     "       [,disable-agent-file-xfer=on|off][,agent-mouse=[on|off]]\n"
-     "       [,playback-compression=[on|off]][,seamless-migration=[on|off]]\n"
-     "       [,gl=[on|off]][,rendernode=<file>]\n"
--    "   enable spice\n"
--    "   at least one of {port, tls-port} is mandatory\n",
-+    "                enable spice\n"
-+    "                at least one of {port, tls-port} is mandatory\n",
-     QEMU_ARCH_ALL)
- #endif
- SRST
--- 
-2.39.3
-
+r~
 
