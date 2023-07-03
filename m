@@ -2,57 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B04F8745617
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 09:29:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3DFA745613
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 09:29:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGDyt-0006CQ-CP; Mon, 03 Jul 2023 03:28:19 -0400
+	id 1qGDyw-0006DA-0X; Mon, 03 Jul 2023 03:28:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1qGDyq-0006Bx-L1
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 03:28:16 -0400
+ id 1qGDys-0006CI-5h
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 03:28:18 -0400
 Received: from mga12.intel.com ([192.55.52.136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1qGDyo-0003we-Qt
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 03:28:16 -0400
+ id 1qGDyq-0003wp-7U
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 03:28:17 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1688369294; x=1719905294;
+ t=1688369296; x=1719905296;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=3Tzb73hY6oDdkY1FyoMeSKY04AeNZkybsLZ2x4i3oAI=;
- b=H9P8xIdGCjhbWhXA5sXVWdf98B8EbOVY9zjij+gdnYzF8vmt/jbXzSah
- CYa/huAqrEi0dCahdIbNwiPqC+J3e9V09WqkRw11xiYqFIIgoLR+5E5DW
- tKy4wvil03NyEP07lJsyiI2SWbGFAd5fBnOZwqyvUwPUkLUiimImH+cja
- PyP05khwzzno+oU3OCTzrTVmyK0Ni1FRxvxab4oQFMtC+CXDWyic32UVg
- Dx7k8r0sEPIJ6F/rCUqWZRGHjMxD11RlNVW14RvOz7uM0OFr6tZO2IKX8
- TCYWUvnbG77IEJmarbJ7t8whLU+zHqiDXDoW2+Iy7t6tEdgs2PwcNhyvk w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10759"; a="342405633"
-X-IronPort-AV: E=Sophos;i="6.01,177,1684825200"; d="scan'208";a="342405633"
+ bh=Addli9nRybH8vvZHhKuJjk8c+EBwFtcNEwWt3YWXIsg=;
+ b=iL9aIGY3KEM09EwuBzJpsbAlPQ4ZcrFlK9NLyIbvH32GUSHhfNKlmyGt
+ OSSPUXGbFdHSKwwwA4y8jSWKS9PDCN5re+jOn+Re2F54ygMJ+yMoOozO+
+ tBsLNapUU8M4pKndJdNzUSXk2lLKh/0D8NNr6wg8V2v25x4JMePmldful
+ A/fUN3E36SUzrcAlfUVsXOQTQ7XINaX97Qvq2z/FrqUO2x0mdFqjYkcYd
+ LxCchcM7ENXrnD5MI+5fou7lTbbFJd/oBxQ2QVv2WyF1dbRBse6PaBtoZ
+ tA7Zq6qUmM9yiKPZ72HoNln6lhjKUk7kPbHFRILpRMCRx0ljhBVl0r+lk g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10759"; a="342405640"
+X-IronPort-AV: E=Sophos;i="6.01,177,1684825200"; d="scan'208";a="342405640"
 Received: from orsmga008.jf.intel.com ([10.7.209.65])
  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Jul 2023 00:28:12 -0700
+ 03 Jul 2023 00:28:14 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10759"; a="748058763"
-X-IronPort-AV: E=Sophos;i="6.01,177,1684825200"; d="scan'208";a="748058763"
+X-IronPort-AV: E=McAfee;i="6600,9927,10759"; a="748058770"
+X-IronPort-AV: E=Sophos;i="6.01,177,1684825200"; d="scan'208";a="748058770"
 Received: from duan-server-s2600bt.bj.intel.com ([10.240.192.147])
  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Jul 2023 00:28:10 -0700
+ 03 Jul 2023 00:28:12 -0700
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, joao.m.martins@oracle.com,
  avihaih@nvidia.com, chao.p.peng@intel.com
-Subject: [PATCH v6 3/7] vfio/pci: Disable INTx in vfio_realize error path
-Date: Mon,  3 Jul 2023 15:15:06 +0800
-Message-Id: <20230703071510.160712-2-zhenzhong.duan@intel.com>
+Subject: [PATCH v6 4/7] vfio/migration: Change vIOMMU blocker from global to
+ per device
+Date: Mon,  3 Jul 2023 15:15:07 +0800
+Message-Id: <20230703071510.160712-3-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230703071510.160712-1-zhenzhong.duan@intel.com>
 References: <20230703071510.160712-1-zhenzhong.duan@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=192.55.52.136;
  envelope-from=zhenzhong.duan@intel.com; helo=mga12.intel.com
@@ -78,31 +78,146 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When vfio realize fails, INTx isn't disabled if it has been enabled.
-This may confuse host side with unhandled interrupt report.
+Contrary to multiple device blocker which needs to consider already-attached
+devices to unblock/block dynamically, the vIOMMU migration blocker is a device
+specific config. Meaning it only needs to know whether the device is bypassing
+or not the vIOMMU (via machine property, or per pxb-pcie::bypass_iommu), and
+does not need the state of currently present devices. For this reason, the
+vIOMMU global migration blocker can be consolidated into the per-device
+migration blocker, allowing us to remove some unnecessary code.
 
-Fixes: c5478fea27ac ("vfio/pci: Respond to KVM irqchip change notifier")
+This change also makes vfio_mig_active() more accurate as it doesn't check for
+global blocker.
+
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 Reviewed-by: Joao Martins <joao.m.martins@oracle.com>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/vfio/pci.c | 3 +++
- 1 file changed, 3 insertions(+)
+ hw/vfio/common.c              | 51 ++---------------------------------
+ hw/vfio/migration.c           |  7 ++---
+ hw/vfio/pci.c                 |  1 -
+ include/hw/vfio/vfio-common.h |  3 +--
+ 4 files changed, 7 insertions(+), 55 deletions(-)
 
+diff --git a/hw/vfio/common.c b/hw/vfio/common.c
+index 77e2ee0e5c6e..9aac21abb76e 100644
+--- a/hw/vfio/common.c
++++ b/hw/vfio/common.c
+@@ -362,7 +362,6 @@ bool vfio_mig_active(void)
+ }
+ 
+ static Error *multiple_devices_migration_blocker;
+-static Error *giommu_migration_blocker;
+ 
+ static unsigned int vfio_migratable_device_num(void)
+ {
+@@ -420,55 +419,9 @@ void vfio_unblock_multiple_devices_migration(void)
+     multiple_devices_migration_blocker = NULL;
+ }
+ 
+-static bool vfio_viommu_preset(void)
++bool vfio_viommu_preset(VFIODevice *vbasedev)
+ {
+-    VFIOAddressSpace *space;
+-
+-    QLIST_FOREACH(space, &vfio_address_spaces, list) {
+-        if (space->as != &address_space_memory) {
+-            return true;
+-        }
+-    }
+-
+-    return false;
+-}
+-
+-int vfio_block_giommu_migration(VFIODevice *vbasedev, Error **errp)
+-{
+-    int ret;
+-
+-    if (giommu_migration_blocker ||
+-        !vfio_viommu_preset()) {
+-        return 0;
+-    }
+-
+-    if (vbasedev->enable_migration == ON_OFF_AUTO_ON) {
+-        error_setg(errp,
+-                   "Migration is currently not supported with vIOMMU enabled");
+-        return -EINVAL;
+-    }
+-
+-    error_setg(&giommu_migration_blocker,
+-               "Migration is currently not supported with vIOMMU enabled");
+-    ret = migrate_add_blocker(giommu_migration_blocker, errp);
+-    if (ret < 0) {
+-        error_free(giommu_migration_blocker);
+-        giommu_migration_blocker = NULL;
+-    }
+-
+-    return ret;
+-}
+-
+-void vfio_migration_finalize(void)
+-{
+-    if (!giommu_migration_blocker ||
+-        vfio_viommu_preset()) {
+-        return;
+-    }
+-
+-    migrate_del_blocker(giommu_migration_blocker);
+-    error_free(giommu_migration_blocker);
+-    giommu_migration_blocker = NULL;
++    return vbasedev->group->container->space->as != &address_space_memory;
+ }
+ 
+ static void vfio_set_migration_error(int err)
+diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
+index 1db7d52ab2c1..e6e5e85f7580 100644
+--- a/hw/vfio/migration.c
++++ b/hw/vfio/migration.c
+@@ -878,9 +878,10 @@ int vfio_migration_realize(VFIODevice *vbasedev, Error **errp)
+         return ret;
+     }
+ 
+-    ret = vfio_block_giommu_migration(vbasedev, errp);
+-    if (ret) {
+-        return ret;
++    if (vfio_viommu_preset(vbasedev)) {
++        error_setg(&err, "%s: Migration is currently not supported "
++                   "with vIOMMU enabled", vbasedev->name);
++        return vfio_block_migration(vbasedev, err, errp);
+     }
+ 
+     trace_vfio_migration_realize(vbasedev->name);
 diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-index ab6645ba60af..31c4ab250fbe 100644
+index 31c4ab250fbe..c2cf7454ece6 100644
 --- a/hw/vfio/pci.c
 +++ b/hw/vfio/pci.c
-@@ -3220,6 +3220,9 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
-     return;
+@@ -3255,7 +3255,6 @@ static void vfio_instance_finalize(Object *obj)
+      */
+     vfio_put_device(vdev);
+     vfio_put_group(group);
+-    vfio_migration_finalize();
+ }
  
- out_deregister:
-+    if (vdev->interrupt == VFIO_INT_INTx) {
-+        vfio_intx_disable(vdev);
-+    }
-     pci_device_set_intx_routing_notifier(&vdev->pdev, NULL);
-     if (vdev->irqchip_change_notifier.notify) {
-         kvm_irqchip_remove_change_notifier(&vdev->irqchip_change_notifier);
+ static void vfio_exitfn(PCIDevice *pdev)
+diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
+index 93429b9abba0..45167c8a8a54 100644
+--- a/include/hw/vfio/vfio-common.h
++++ b/include/hw/vfio/vfio-common.h
+@@ -227,7 +227,7 @@ extern VFIOGroupList vfio_group_list;
+ bool vfio_mig_active(void);
+ int vfio_block_multiple_devices_migration(VFIODevice *vbasedev, Error **errp);
+ void vfio_unblock_multiple_devices_migration(void);
+-int vfio_block_giommu_migration(VFIODevice *vbasedev, Error **errp);
++bool vfio_viommu_preset(VFIODevice *vbasedev);
+ int64_t vfio_mig_bytes_transferred(void);
+ void vfio_reset_bytes_transferred(void);
+ 
+@@ -254,6 +254,5 @@ int vfio_spapr_remove_window(VFIOContainer *container,
+ 
+ int vfio_migration_realize(VFIODevice *vbasedev, Error **errp);
+ void vfio_migration_exit(VFIODevice *vbasedev);
+-void vfio_migration_finalize(void);
+ 
+ #endif /* HW_VFIO_VFIO_COMMON_H */
 -- 
 2.34.1
 
