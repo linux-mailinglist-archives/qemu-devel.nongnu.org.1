@@ -2,89 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FAE77464C9
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 23:19:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CFB58746523
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 23:51:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGQw8-00029R-33; Mon, 03 Jul 2023 17:18:20 -0400
+	id 1qGRQp-00084y-F9; Mon, 03 Jul 2023 17:50:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <groeck7@gmail.com>)
- id 1qGQvy-00028l-Kp; Mon, 03 Jul 2023 17:18:10 -0400
-Received: from mail-yb1-xb30.google.com ([2607:f8b0:4864:20::b30])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <groeck7@gmail.com>)
- id 1qGQvw-0003jq-NT; Mon, 03 Jul 2023 17:18:10 -0400
-Received: by mail-yb1-xb30.google.com with SMTP id
- 3f1490d57ef6-bd77424c886so5629727276.0; 
- Mon, 03 Jul 2023 14:18:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688419087; x=1691011087;
- h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
- :content-language:user-agent:mime-version:date:message-id:sender
- :from:to:cc:subject:date:message-id:reply-to;
- bh=OiGVhNACu6wLZYWtciXM0K64IhZldeEah0ukz/zlWKY=;
- b=BQP0WK0C4FAChbSfa+oNzrGSfz9IMedw2CuNM4m3xLPrthfM6oxTT4mOAdSW8vCrKd
- sC5CFqpBI8WAd7JpojxdkUYF5+vDWCNTYrTRMgx3Wrmdy7/I7+6fbnuqWILoca/uOFvQ
- YWWleDf2as0eUL1ND98+pylGvFKixV6olPmYcnrdyWj2PUopCE71QhxMYnjfzpcRnZNX
- nkZ1LN/nQ8VpB7rULshwqjARLxEum8KLjTc80pM+kMFFInASkSS9T8bOQ6MMHkTIJGl8
- nmh70bvtc3KH0fSQtR/1iD6Eez09uf6QWmMvdjn0xttq9yi2++DixVOejDnJq8Wl89n6
- kQTg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688419087; x=1691011087;
- h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
- :content-language:user-agent:mime-version:date:message-id:sender
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=OiGVhNACu6wLZYWtciXM0K64IhZldeEah0ukz/zlWKY=;
- b=lbWACYsjYIxIzxjztcHkyXOptc6NcIYiRRNXE3WUWK9eIl7AbM+m14tQg+SXKZhUxC
- nDEz5PGy5m6GfsWd/ydQWhgXHnzXGrau0sWsPlXgmFkdmb/mTu6e5h1E3Qu7q66BCmsL
- 3yUPWlwOBkR2PhKm+YakrWit9ok0ymOJVj9EdpJX0ghwgpse/KP8TpxoSCmBWNfn5AR5
- 66OmYrxEq+uc6EVx509c4sQSnZAhrb2H/NjVRMa94TKAZYY1lq0Dyu6o8LWCaXyo7ygV
- mRsSHINeFyu4a6XGy8C3nOsd/v9eQKSiaRnNb4C1dKcFUygHTqeg2RrPca9hh9bywtUz
- 1QuQ==
-X-Gm-Message-State: ABy/qLaDzhU215O9BqKJzmMPMQRGI4pZrh5NDiVnK+sUST0Ghe+L21Nt
- 9n0hg5+FuFGzsdmiEQtreZA=
-X-Google-Smtp-Source: APBJJlHIlae/v/FOIEg4E7kYTflliq5Fdd+xadzvXDC1ebubgBgCgV7SJtow+S0DVlhp+J0kWMmCrw==
-X-Received: by 2002:a25:ab4c:0:b0:c24:4536:1723 with SMTP id
- u70-20020a25ab4c000000b00c2445361723mr12682238ybi.26.1688419087233; 
- Mon, 03 Jul 2023 14:18:07 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c?
- ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
- by smtp.gmail.com with ESMTPSA id
- f32-20020a25b0a0000000b00bc501a1b062sm4629732ybj.42.2023.07.03.14.18.05
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 03 Jul 2023 14:18:06 -0700 (PDT)
-Message-ID: <48537c03-786a-e85b-7db3-ab69939de7ab@roeck-us.net>
-Date: Mon, 3 Jul 2023 14:18:04 -0700
+ (Exim 4.90_1) (envelope-from <mathbern@qualcomm.com>)
+ id 1qGRQn-00083g-6F
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 17:50:01 -0400
+Received: from mx0a-0031df01.pphosted.com ([205.220.168.131])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mathbern@qualcomm.com>)
+ id 1qGRQk-0001XI-Td
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 17:50:00 -0400
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+ by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 363Lnrt7031232; Mon, 3 Jul 2023 21:49:53 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com;
+ h=from : to : cc :
+ subject : date : message-id : mime-version : content-transfer-encoding;
+ s=qcppdkim1; bh=36JR2Stk7m23rdZo/QT+jmR/0lcsmAnqYfZUaL4aOE0=;
+ b=BYpmAQb2jaY/yvl9LNeBF6r/0/VUlYt5aqDcdnK0uhJoAtUpo72Aa5nK/05GTiid4WPa
+ EeamwsTqOE7s72URh82V3NXljV10LSMkJ0gL2q/aKOydG9b9ZQB4HLsJsU0ZwIgUkeAG
+ hdpdCQNeBUSWZu8ePG+Om+t2u7Wy+qYiR1JFvdjcmtJeIxJugC2LLc9ChXXdM+t/tGQb
+ WISh1snwOqh72ccB2llpgf+UxK7FwJHCxiV5AN9set1ZLj5X231cF3X9bXzLoYQxBDie
+ 8nfT+tyb8zg5PKuwuG9GNYkK4beO1veCiIidQdWluK8SsYPd1b5OnWk0Nq8aUx1geRN/ aQ== 
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com
+ [129.46.96.20])
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3rkwyfh251-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 03 Jul 2023 21:49:53 +0000
+Received: from pps.filterd (NALASPPMTA04.qualcomm.com [127.0.0.1])
+ by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTP id 363LnqjW000434; 
+ Mon, 3 Jul 2023 21:49:52 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+ by NALASPPMTA04.qualcomm.com (PPS) with ESMTPS id 3rjd7msvpq-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 03 Jul 2023 21:49:52 +0000
+Received: from NALASPPMTA04.qualcomm.com (NALASPPMTA04.qualcomm.com
+ [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 363LnqH1000426;
+ Mon, 3 Jul 2023 21:49:52 GMT
+Received: from hu-devc-sd-u20-a-1.qualcomm.com (hu-mathbern-lv.qualcomm.com
+ [10.47.235.147])
+ by NALASPPMTA04.qualcomm.com (PPS) with ESMTPS id 363LnqZE000425
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 03 Jul 2023 21:49:52 +0000
+Received: by hu-devc-sd-u20-a-1.qualcomm.com (Postfix, from userid 4229910)
+ id DF13D7775; Mon,  3 Jul 2023 18:49:51 -0300 (-03)
+From: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
+To: qemu-devel@nongnu.org
+Cc: bcain@quicinc.com, quic_mliebel@quicinc.com, ltaylorsimpson@gmail.com
+Subject: [PATCH] Hexagon: move GETPC() calls to top level helpers
+Date: Mon,  3 Jul 2023 18:49:50 -0300
+Message-Id: <d40fabcf9d6e92e4cd8d6a144e9b2a9acf4580dc.1688420966.git.quic_mathbern@quicinc.com>
+X-Mailer: git-send-email 2.37.2
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Content-Language: en-US
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Palmer Dabbelt <palmer@dabbelt.com>
-Cc: Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-riscv@nongnu.org,
- qemu-devel@nongnu.org, Alistair Francis <alistair23@gmail.com>
-References: <20230703034614.3909079-1-linux@roeck-us.net>
- <399a2293-85c2-c709-91ee-8eef1f59a5e4@ventanamicro.com>
-From: Guenter Roeck <linux@roeck-us.net>
-Subject: Re: [PATCH] riscv: Generate devicetree only after machine
- initialization is complete
-In-Reply-To: <399a2293-85c2-c709-91ee-8eef1f59a5e4@ventanamicro.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b30;
- envelope-from=groeck7@gmail.com; helo=mail-yb1-xb30.google.com
-X-Spam_score_int: -12
-X-Spam_score: -1.3
-X-Spam_bar: -
-X-Spam_report: (-1.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_ENVFROM_END_DIGIT=0.25,
- FREEMAIL_FORGED_FROMDOMAIN=0.25, FREEMAIL_FROM=0.001,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, NICE_REPLY_A=-0.09,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+X-QCInternal: smtphost
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
+ signatures=585085
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
+ signatures=585085
+X-Proofpoint-ORIG-GUID: zZ3t9K4zeTSMmI_rrRiXWMvAycYNeLmH
+X-Proofpoint-GUID: zZ3t9K4zeTSMmI_rrRiXWMvAycYNeLmH
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-07-03_15,2023-06-30_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=999
+ lowpriorityscore=0 clxscore=1011 priorityscore=1501 impostorscore=0
+ spamscore=0 phishscore=0 malwarescore=0 mlxscore=0 adultscore=0
+ bulkscore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2305260000 definitions=main-2307030200
+Received-SPF: pass client-ip=205.220.168.131;
+ envelope-from=mathbern@qualcomm.com; helo=mx0a-0031df01.pphosted.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
+X-Spam_bar: --
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, HEADER_FROM_DIFFERENT_DOMAINS=0.25,
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,54 +103,187 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/3/23 12:25, Daniel Henrique Barboza wrote:
-> On 7/3/23 00:46, Guenter Roeck wrote:
->> If the devicetree is created before machine initialization is complete,
->> it misses dynamic devices. Specifically, the tpm device is not added
->> to the devicetree file and is therefore not instantiated in Linux.
->> Create devicetree in virt_machine_done() to solve the problem.
->>
->> Cc: Alistair Francis <alistair23@gmail.com>
->> Fixes: 325b7c4e75 hw/riscv: Enable TPM backends
->> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
->> ---
->>   hw/riscv/virt.c | 9 ++++++---
->>   1 file changed, 6 insertions(+), 3 deletions(-)
->>
->> diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
->> index ed4c27487e..08876284f5 100644
->> --- a/hw/riscv/virt.c
->> +++ b/hw/riscv/virt.c
->> @@ -1248,6 +1248,11 @@ static void virt_machine_done(Notifier *notifier, void *data)
->>       uint64_t kernel_entry = 0;
->>       BlockBackend *pflash_blk0;
->> +    /* create devicetree if not provided */
->> +    if (!machine->dtb) {
->> +        create_fdt(s, memmap);
->> +    }
->> +
-> 
-> I suggest moving the entire load/create DT code from virt_machine_init() to
-> the start of virt_machine_done():
-> 
->      /* load/create device tree */
->      if (machine->dtb) {
->          machine->fdt = load_device_tree(machine->dtb, &s->fdt_size);
->          if (!machine->fdt) {
->              error_report("load_device_tree() failed");
->              exit(1);
->          }
->      } else {
->          create_fdt(s, memmap);
->      }
-> 
-> This way we don't have to look in to 2 different functions to wonder what happens
-> in case machine->dtb is NULL.
-> 
+As docs/devel/loads-stores.rst states:
 
-I can do that, but I don't know how to test it. Is there a working dtb/machine
-combination for riscv which would let me test loading a devicetree file ?
+  ``GETPC()`` should be used with great care: calling
+  it in other functions that are *not* the top level
+  ``HELPER(foo)`` will cause unexpected behavior. Instead, the
+  value of ``GETPC()`` should be read from the helper and passed
+  if needed to the functions that the helper calls.
 
-Guenter
+Let's fix the GETPC() usage in Hexagon, making sure it's always called
+from top level helpers and passed down to the places where it's
+needed. There are two snippets where that is not currently the case:
+
+- probe_store(), which is only called from two helpers, so it's easy to
+  move GETPC() up.
+
+- mem_load*() functions, which are also called directly from helpers,
+  but through the MEM_LOAD*() set of macros. Note that this are only
+  used when compiling with --disable-hexagon-idef-parser.
+
+  In this case, we also take this opportunity to simplify the code,
+  unifying the mem_load*() functions.
+
+Signed-off-by: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
+---
+ target/hexagon/macros.h    | 22 ++++++++++-------
+ target/hexagon/op_helper.h | 11 ++-------
+ target/hexagon/op_helper.c | 49 +++++++-------------------------------
+ 3 files changed, 25 insertions(+), 57 deletions(-)
+
+diff --git a/target/hexagon/macros.h b/target/hexagon/macros.h
+index 5451b061ee..efb8013912 100644
+--- a/target/hexagon/macros.h
++++ b/target/hexagon/macros.h
+@@ -173,14 +173,20 @@
+ #define MEM_STORE8(VA, DATA, SLOT) \
+     MEM_STORE8_FUNC(DATA)(cpu_env, VA, DATA, SLOT)
+ #else
+-#define MEM_LOAD1s(VA) ((int8_t)mem_load1(env, pkt_has_store_s1, slot, VA))
+-#define MEM_LOAD1u(VA) ((uint8_t)mem_load1(env, pkt_has_store_s1, slot, VA))
+-#define MEM_LOAD2s(VA) ((int16_t)mem_load2(env, pkt_has_store_s1, slot, VA))
+-#define MEM_LOAD2u(VA) ((uint16_t)mem_load2(env, pkt_has_store_s1, slot, VA))
+-#define MEM_LOAD4s(VA) ((int32_t)mem_load4(env, pkt_has_store_s1, slot, VA))
+-#define MEM_LOAD4u(VA) ((uint32_t)mem_load4(env, pkt_has_store_s1, slot, VA))
+-#define MEM_LOAD8s(VA) ((int64_t)mem_load8(env, pkt_has_store_s1, slot, VA))
+-#define MEM_LOAD8u(VA) ((uint64_t)mem_load8(env, pkt_has_store_s1, slot, VA))
++
++#define MEM_LOADn(SIZE, VA) ({ \
++    check_noshuf(env, pkt_has_store_s1, slot, VA, SIZE); \
++    cpu_ldub_data_ra(env, VA, GETPC()); \
++})
++
++#define MEM_LOAD1s(VA) ((int8_t)MEM_LOADn(1, VA))
++#define MEM_LOAD1u(VA) ((uint8_t)MEM_LOADn(1, VA))
++#define MEM_LOAD2s(VA) ((int16_t)MEM_LOADn(2, VA))
++#define MEM_LOAD2u(VA) ((uint16_t)MEM_LOADn(2, VA))
++#define MEM_LOAD4s(VA) ((int32_t)MEM_LOADn(4, VA))
++#define MEM_LOAD4u(VA) ((uint32_t)MEM_LOADn(4, VA))
++#define MEM_LOAD8s(VA) ((int64_t)MEM_LOADn(8, VA))
++#define MEM_LOAD8u(VA) ((uint64_t)MEM_LOADn(8, VA))
+ 
+ #define MEM_STORE1(VA, DATA, SLOT) log_store32(env, VA, DATA, 1, SLOT)
+ #define MEM_STORE2(VA, DATA, SLOT) log_store32(env, VA, DATA, 2, SLOT)
+diff --git a/target/hexagon/op_helper.h b/target/hexagon/op_helper.h
+index 8f3764d15e..845c3d197e 100644
+--- a/target/hexagon/op_helper.h
++++ b/target/hexagon/op_helper.h
+@@ -19,15 +19,8 @@
+ #define HEXAGON_OP_HELPER_H
+ 
+ /* Misc functions */
+-uint8_t mem_load1(CPUHexagonState *env, bool pkt_has_store_s1,
+-                  uint32_t slot, target_ulong vaddr);
+-uint16_t mem_load2(CPUHexagonState *env, bool pkt_has_store_s1,
+-                   uint32_t slot, target_ulong vaddr);
+-uint32_t mem_load4(CPUHexagonState *env, bool pkt_has_store_s1,
+-                   uint32_t slot, target_ulong vaddr);
+-uint64_t mem_load8(CPUHexagonState *env, bool pkt_has_store_s1,
+-                   uint32_t slot, target_ulong vaddr);
+-
++void check_noshuf(CPUHexagonState *env, bool pkt_has_store_s1,
++                  uint32_t slot, target_ulong vaddr, int size);
+ void log_store64(CPUHexagonState *env, target_ulong addr,
+                  int64_t val, int width, int slot);
+ void log_store32(CPUHexagonState *env, target_ulong addr,
+diff --git a/target/hexagon/op_helper.c b/target/hexagon/op_helper.c
+index 12967ac21e..1bc9c7fc2e 100644
+--- a/target/hexagon/op_helper.c
++++ b/target/hexagon/op_helper.c
+@@ -467,13 +467,12 @@ int32_t HELPER(cabacdecbin_pred)(int64_t RssV, int64_t RttV)
+ }
+ 
+ static void probe_store(CPUHexagonState *env, int slot, int mmu_idx,
+-                        bool is_predicated)
++                        bool is_predicated, uintptr_t retaddr)
+ {
+     if (!is_predicated || !(env->slot_cancelled & (1 << slot))) {
+         size1u_t width = env->mem_log_stores[slot].width;
+         target_ulong va = env->mem_log_stores[slot].va;
+-        uintptr_t ra = GETPC();
+-        probe_write(env, va, width, mmu_idx, ra);
++        probe_write(env, va, width, mmu_idx, retaddr);
+     }
+ }
+ 
+@@ -494,7 +493,8 @@ void HELPER(probe_pkt_scalar_store_s0)(CPUHexagonState *env, int args)
+     int mmu_idx = FIELD_EX32(args, PROBE_PKT_SCALAR_STORE_S0, MMU_IDX);
+     bool is_predicated =
+         FIELD_EX32(args, PROBE_PKT_SCALAR_STORE_S0, IS_PREDICATED);
+-    probe_store(env, 0, mmu_idx, is_predicated);
++    uintptr_t ra = GETPC();
++    probe_store(env, 0, mmu_idx, is_predicated, ra);
+ }
+ 
+ void HELPER(probe_hvx_stores)(CPUHexagonState *env, int mmu_idx)
+@@ -547,12 +547,13 @@ void HELPER(probe_pkt_scalar_hvx_stores)(CPUHexagonState *env, int mask)
+     bool s0_is_pred = FIELD_EX32(mask, PROBE_PKT_SCALAR_HVX_STORES, S0_IS_PRED);
+     bool s1_is_pred = FIELD_EX32(mask, PROBE_PKT_SCALAR_HVX_STORES, S1_IS_PRED);
+     int mmu_idx = FIELD_EX32(mask, PROBE_PKT_SCALAR_HVX_STORES, MMU_IDX);
++    uintptr_t ra = GETPC();
+ 
+     if (has_st0) {
+-        probe_store(env, 0, mmu_idx, s0_is_pred);
++        probe_store(env, 0, mmu_idx, s0_is_pred, ra);
+     }
+     if (has_st1) {
+-        probe_store(env, 1, mmu_idx, s1_is_pred);
++        probe_store(env, 1, mmu_idx, s1_is_pred, ra);
+     }
+     if (has_hvx_stores) {
+         HELPER(probe_hvx_stores)(env, mmu_idx);
+@@ -566,8 +567,8 @@ void HELPER(probe_pkt_scalar_hvx_stores)(CPUHexagonState *env, int mask)
+  * If the load is in slot 0 and there is a store in slot1 (that
+  * wasn't cancelled), we have to do the store first.
+  */
+-static void check_noshuf(CPUHexagonState *env, bool pkt_has_store_s1,
+-                         uint32_t slot, target_ulong vaddr, int size)
++void check_noshuf(CPUHexagonState *env, bool pkt_has_store_s1,
++                  uint32_t slot, target_ulong vaddr, int size)
+ {
+     if (slot == 0 && pkt_has_store_s1 &&
+         ((env->slot_cancelled & (1 << 1)) == 0)) {
+@@ -576,38 +577,6 @@ static void check_noshuf(CPUHexagonState *env, bool pkt_has_store_s1,
+     }
+ }
+ 
+-uint8_t mem_load1(CPUHexagonState *env, bool pkt_has_store_s1,
+-                  uint32_t slot, target_ulong vaddr)
+-{
+-    uintptr_t ra = GETPC();
+-    check_noshuf(env, pkt_has_store_s1, slot, vaddr, 1);
+-    return cpu_ldub_data_ra(env, vaddr, ra);
+-}
+-
+-uint16_t mem_load2(CPUHexagonState *env, bool pkt_has_store_s1,
+-                   uint32_t slot, target_ulong vaddr)
+-{
+-    uintptr_t ra = GETPC();
+-    check_noshuf(env, pkt_has_store_s1, slot, vaddr, 2);
+-    return cpu_lduw_data_ra(env, vaddr, ra);
+-}
+-
+-uint32_t mem_load4(CPUHexagonState *env, bool pkt_has_store_s1,
+-                   uint32_t slot, target_ulong vaddr)
+-{
+-    uintptr_t ra = GETPC();
+-    check_noshuf(env, pkt_has_store_s1, slot, vaddr, 4);
+-    return cpu_ldl_data_ra(env, vaddr, ra);
+-}
+-
+-uint64_t mem_load8(CPUHexagonState *env, bool pkt_has_store_s1,
+-                   uint32_t slot, target_ulong vaddr)
+-{
+-    uintptr_t ra = GETPC();
+-    check_noshuf(env, pkt_has_store_s1, slot, vaddr, 8);
+-    return cpu_ldq_data_ra(env, vaddr, ra);
+-}
+-
+ /* Floating point */
+ float64 HELPER(conv_sf2df)(CPUHexagonState *env, float32 RsV)
+ {
+-- 
+2.37.2
 
 
