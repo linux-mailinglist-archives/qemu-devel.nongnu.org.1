@@ -2,83 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 122FF74584E
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 11:26:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D46474585C
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 11:29:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGFoi-0006LA-4n; Mon, 03 Jul 2023 05:25:56 -0400
+	id 1qGFrr-0007Kl-8S; Mon, 03 Jul 2023 05:29:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qGFoa-0006Ki-If
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 05:25:48 -0400
-Received: from mail-lj1-x22b.google.com ([2a00:1450:4864:20::22b])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qGFro-0007KF-C1
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 05:29:08 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qGFoY-0005My-Sx
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 05:25:48 -0400
-Received: by mail-lj1-x22b.google.com with SMTP id
- 38308e7fff4ca-2b6a084a34cso61576881fa.1
- for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 02:25:46 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qGFrm-00067I-Mp
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 05:29:08 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-3fbca8935bfso26158695e9.3
+ for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 02:29:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688376345; x=1690968345;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
- :message-id:reply-to;
- bh=FlvNkcT1Fv7otW5oPcjYpSpjdnCtGWLIn/+rhiyiGFA=;
- b=OJ6y9pw/J9bKOLZ317NWMfhQ3r5R8Rjd8HheNk9vL4EOlUU0LnC+Y5qrsob6qwbKVu
- i43lA5JjuqDQL/+xB1d+uepIFrTHtRM9juABZNHD2dycFb/ICrEdwfmuC6gGwIi4a/n4
- srDCgE4NiINrDJ3ycYccOX7xdmb2iEWpOK0Muxzt8bBVsmKvqkgPvnTWXXMd/6S2SX0W
- LAr+3XPlxAzc8P1yrQlGTzqXw/hHbeklztH5DbOc5UYbbktLLZ2sUGdhF88LkFLSRfCH
- CVWOU92nFXmvVuXMF7UACjK5TSCb3zhaHsX2B3qHZFJ71lszdr/XDUBAmMgyAMYQ80zn
- G7nw==
+ d=linaro.org; s=google; t=1688376545; x=1690968545;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=xIR6T4kv1EqY1vkBXopO2ferhPEnbZlPJUE8SmOPw1g=;
+ b=bAgdxJKpmQx9GzBUCPD1Ty+wTbjBAxSYmyVUXMlQ4X1WZdlP2ZjaIX6mHFrVl93kXE
+ j2OnDIcXhc19fnJWBnCoDWpAT0aUkKvtK+UZJEB/UwWpx6evYoTuRIKrQi6Xz2cN8kw0
+ XOAIXEjcdV4rbPz/FP5N8fpdEShJ2R+U/2Ok31vJx7Tk3gCH17FfmPLfVIlSp94yeT/y
+ uxfJzsDm7i6VLINuBSLHqcdb4CH1Ik35pF9nwwcOhPAvN3LteFU9KZrerQwUKlMM8myr
+ B5io6FmNwC1og6WIKVtBttGCBnqM/MIWifwmVzKKe87ybu349JlPVpAxpeOdFQd+YdzT
+ k5tQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688376345; x=1690968345;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=FlvNkcT1Fv7otW5oPcjYpSpjdnCtGWLIn/+rhiyiGFA=;
- b=i+qD459Tj00SHPgcSbsXfOBU40PzFjpKVE9Qrr3hta/Plq6kshP/2J28HwmBb/6M3t
- tQKfZ3aMtpePCwC5Aot+/MGhNXbusoSRqQbLAmmrFxgVTfL+aH7qb5K8w59qhscu9DzG
- tzPNoebDq0c7EOUfu23z5hVUTl6x6b07yFDK7Wj/FF4n4BuGveJPcjLWuwWm23A7jATl
- LkYZYPNlVcbnCVi8l2QZyMLoW7Lfvd8oLFf21LZQiD5w4dOl5sZbUc/uhMSAQMJph0HV
- CUltKpqCS82jQ2jL9DM2IbYP5eNBSCzGXtbfWCULh6ZF6HNgvYclWoV7cHgAuKBsS2iH
- nHPw==
-X-Gm-Message-State: ABy/qLaYvXfij1dcLqxRaEBSmt42u+msjA7Ws4C0omxn2j37h+4Aawj4
- wF6UsfTJF8RB0N4u6F31XF2AubwomI847AhW6m0=
-X-Google-Smtp-Source: APBJJlHFoerghNYXtRe2nAl3QlIYaLCv41UX+gxYcrXweQVmznkhG3n0lU4acmuZu3M6LotmbEALXw==
-X-Received: by 2002:a2e:88ce:0:b0:2b6:bb87:501d with SMTP id
- a14-20020a2e88ce000000b002b6bb87501dmr6245186ljk.3.1688376345221; 
- Mon, 03 Jul 2023 02:25:45 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
- by smtp.gmail.com with ESMTPSA id
- f10-20020a7bcd0a000000b003fa99969e61sm20751219wmj.45.2023.07.03.02.25.44
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 03 Jul 2023 02:25:44 -0700 (PDT)
-Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 990B21FFBB;
- Mon,  3 Jul 2023 10:25:44 +0100 (BST)
-References: <20230630132159.376995-1-richard.henderson@linaro.org>
- <20230630132159.376995-5-richard.henderson@linaro.org>
-User-agent: mu4e 1.11.8; emacs 29.0.92
-From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: mjt@tls.msk.ru, laurent@vivier.eu, qemu-devel@nongnu.org
-Subject: Re: [PATCH 04/24] linux-user: Split TARGET_MAP_* out of syscall_defs.h
-Date: Mon, 03 Jul 2023 10:25:40 +0100
-In-reply-to: <20230630132159.376995-5-richard.henderson@linaro.org>
-Message-ID: <87fs65jqhz.fsf@linaro.org>
+ d=1e100.net; s=20221208; t=1688376545; x=1690968545;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=xIR6T4kv1EqY1vkBXopO2ferhPEnbZlPJUE8SmOPw1g=;
+ b=PO73s1FfPNhoRO3nDl9xMgQ6La4eD555W9EMdIOmRCYYc3w8UfD+rCNOesOslGHjIJ
+ fObI32Mro3sTRG6D+2IweBBjDr5WaArCalcIxhc+tOqpHx7UHXCHYS/NGF4X0vn8KL/h
+ F6+i4K24WcpE3c5WuTI0i58s/mil2pkKIKrDb1ZqsoUAmIEjJ7KC3Y8naCWTZStXPpX3
+ VZQU5JU/9tE7pfA1D+oUQV/b1JQ1OI6wiVNyv+vWHYa8nYxO2efKrdyQtJU9FnhNaacv
+ tF0kYARM2i7ojIQnU/Jg6ZzozYhGMUPgLw5TqLoCYHcXH8pMp+SBEl/kEMV/1JsRAVsZ
+ bBiw==
+X-Gm-Message-State: AC+VfDzAIbrqieULoJJAjjmdiQxZmoPYKYfLEUFKqucE0ro5OuFYoLDy
+ EzMsOboMwfd1A2t+W3TxuBjSnw==
+X-Google-Smtp-Source: ACHHUZ7pyT4VlH8PEyX+cpwbgXSuPRXydX7U2aGi78ieRoQI84GjvRnLNKrI0zW/CGw2C5nHSmjWhg==
+X-Received: by 2002:a7b:cc85:0:b0:3fb:8284:35b0 with SMTP id
+ p5-20020a7bcc85000000b003fb828435b0mr7406404wma.30.1688376545098; 
+ Mon, 03 Jul 2023 02:29:05 -0700 (PDT)
+Received: from [192.168.1.25] (91.232.79.188.dynamic.jazztel.es.
+ [188.79.232.91]) by smtp.gmail.com with ESMTPSA id
+ o23-20020a05600c379700b003fae92e7a8dsm20221869wmr.27.2023.07.03.02.29.04
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 03 Jul 2023 02:29:04 -0700 (PDT)
+Message-ID: <f36e408e-3254-4336-2cee-e0f1a3db0696@linaro.org>
+Date: Mon, 3 Jul 2023 11:29:02 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::22b;
- envelope-from=alex.bennee@linaro.org; helo=mail-lj1-x22b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH] ui: Link dbus-display with pixman again
+Content-Language: en-US
+To: =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@gmail.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, BALATON Zoltan <balaton@eik.bme.hu>,
+ Gerd Hoffmann <kraxel@redhat.com>, Frederic Bezies <fredbezies@gmail.com>
+References: <20230630234839.14716-1-philmd@linaro.org>
+ <CAJ+F1CKfx2i3fcikH_LujYGWmF56gyaECHqwPjwKoZqbHZsw9w@mail.gmail.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <CAJ+F1CKfx2i3fcikH_LujYGWmF56gyaECHqwPjwKoZqbHZsw9w@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x332.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -96,16 +97,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 7/3/23 11:21, Marc-André Lureau wrote:
+> Hi
+> 
+> On Sat, Jul 1, 2023 at 1:49 AM Philippe Mathieu-Daudé <philmd@linaro.org 
+> <mailto:philmd@linaro.org>> wrote:
+> 
+>     Since its introduction in commit 142ca628a7 ("ui: add a D-Bus
+>     display backend"), dbus_display1 depends on pixman.
+>     Unfortunatly the refactor commit 1222070e77 ("meson: ensure
+>     dbus-display generated code is built before other units")
+>     dropped that dependency. Recently commit 6cc5a6159a ("ui/dbus:
+>     win32 support") expose this problem:
+> 
+>        In file included from include/ui/console.h:4,
+>                         from ui/dbus.h:31,
+>                         from ../audio/dbusaudio.c:36:
+>        include/ui/qemu-pixman.h:12:10: fatal error: pixman.h: No such file or directory
+>           12 | #include <pixman.h>
+>              |          ^~~~~~~~~~
+> 
+>     Restore the missing dependency on pixman.
+> 
+> 
+> I fail to understand how this would help.  dbus-display1 unit is pure GIO/GDBus code, no 
+> pixman involved. The derived library dependency is then used to build and link the dbus 
+> ui/ module.
 
-Richard Henderson <richard.henderson@linaro.org> writes:
+meson dependencies
 
-> Move the values into the per-target target_mman.h headers
->
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+>     -  dbus_display1_lib = static_library('dbus-display1', dbus_display1, dependencies: gio)
+>     +  dbus_display1_lib = static_library('dbus-display1', dbus_display1, dependencies:
+>     [gio, pixman])
 
-Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+like so, also include the set of -Iinclude-path-options to use when building the items 
+that use it.  Therefore, for the moment, Phil is correct.
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+While dbus-display1 might not use pixman itself, ui/dbus.h certainly does.
+Perhaps the usage in ui/dbus.h is the greater mistake.
+
+
+r~
 
