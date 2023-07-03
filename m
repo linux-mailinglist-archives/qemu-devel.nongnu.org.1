@@ -2,44 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D72F745747
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 10:24:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CF0174574A
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 10:24:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGEqt-0005at-AE; Mon, 03 Jul 2023 04:24:07 -0400
+	id 1qGEr4-0005yQ-IB; Mon, 03 Jul 2023 04:24:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=mKPa=CV=kaod.org=clg@ozlabs.org>)
- id 1qGEqg-0005Tu-9b; Mon, 03 Jul 2023 04:23:56 -0400
+ id 1qGEr0-0005qA-Q1; Mon, 03 Jul 2023 04:24:15 -0400
 Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=mKPa=CV=kaod.org=clg@ozlabs.org>)
- id 1qGEqe-0006ja-Et; Mon, 03 Jul 2023 04:23:54 -0400
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4Qvf8Q12kqz4wqZ;
- Mon,  3 Jul 2023 18:23:50 +1000 (AEST)
+ id 1qGEqz-0006ml-8d; Mon, 03 Jul 2023 04:24:14 -0400
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4Qvf8p6xLNz4wZp;
+ Mon,  3 Jul 2023 18:24:10 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits))
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Qvf8N4trcz4wZJ;
- Mon,  3 Jul 2023 18:23:48 +1000 (AEST)
-Message-ID: <420852b1-32e9-84b0-7674-c0e0bf98ee71@kaod.org>
-Date: Mon, 3 Jul 2023 10:23:46 +0200
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Qvf8n3vW5z4wZJ;
+ Mon,  3 Jul 2023 18:24:09 +1000 (AEST)
+Message-ID: <25c6a049-040d-a63c-1f9d-484b92aed83c@kaod.org>
+Date: Mon, 3 Jul 2023 10:24:07 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
-Subject: Re: [PATCH v2 1/2] pnv/xive: Add property on xive sources to define
- PQ state on reset
+Subject: Re: [PATCH v2 2/2] pnv/psi: Initialize the PSIHB interrupts to match
+ hardware
 Content-Language: en-US
 To: Frederic Barrat <fbarrat@linux.ibm.com>,
  Daniel Henrique Barboza <danielhb413@gmail.com>, qemu-ppc@nongnu.org,
  qemu-devel@nongnu.org
 References: <20230703081215.55252-1-fbarrat@linux.ibm.com>
- <20230703081215.55252-2-fbarrat@linux.ibm.com>
+ <20230703081215.55252-3-fbarrat@linux.ibm.com>
 From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20230703081215.55252-2-fbarrat@linux.ibm.com>
+In-Reply-To: <20230703081215.55252-3-fbarrat@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=150.107.74.76;
@@ -66,10 +67,11 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 7/3/23 10:12, Frederic Barrat wrote:
-> The PQ state of a xive interrupt is always initialized to Q=1, which
-> means the interrupt is disabled. Since a xive source can be embedded
-> in many objects, this patch adds a property to allow that behavior to
-> be refined if needed.
+> On the powernv9 and powernv10 machines, the PSIHB interrupts are
+> currently initialized with a PQ state of 0b01, i.e. interrupts are
+> disabled. However real hardware initializes them to 0b00 for the
+> PSIHB. This patch updates it, in case an hypervisor is in the mood of
+> checking it.
 > 
 > Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
 
@@ -82,47 +84,21 @@ C.
 
 
 > ---
->   hw/intc/xive.c        | 8 ++++++--
->   include/hw/ppc/xive.h | 1 +
->   2 files changed, 7 insertions(+), 2 deletions(-)
+>   hw/ppc/pnv_psi.c | 2 ++
+>   1 file changed, 2 insertions(+)
 > 
-> diff --git a/hw/intc/xive.c b/hw/intc/xive.c
-> index 84c079b034..f60c878345 100644
-> --- a/hw/intc/xive.c
-> +++ b/hw/intc/xive.c
-> @@ -1232,8 +1232,7 @@ static void xive_source_reset(void *dev)
->   
->       /* Do not clear the LSI bitmap */
->   
-> -    /* PQs are initialized to 0b01 (Q=1) which corresponds to "ints off" */
-> -    memset(xsrc->status, XIVE_ESB_OFF, xsrc->nr_irqs);
-> +    memset(xsrc->status, xsrc->reset_pq, xsrc->nr_irqs);
->   }
->   
->   static void xive_source_realize(DeviceState *dev, Error **errp)
-> @@ -1287,6 +1286,11 @@ static Property xive_source_properties[] = {
->       DEFINE_PROP_UINT64("flags", XiveSource, esb_flags, 0),
->       DEFINE_PROP_UINT32("nr-irqs", XiveSource, nr_irqs, 0),
->       DEFINE_PROP_UINT32("shift", XiveSource, esb_shift, XIVE_ESB_64K_2PAGE),
-> +    /*
-> +     * By default, PQs are initialized to 0b01 (Q=1) which corresponds
-> +     * to "ints off"
-> +     */
-> +    DEFINE_PROP_UINT8("reset-pq", XiveSource, reset_pq, XIVE_ESB_OFF),
->       DEFINE_PROP_LINK("xive", XiveSource, xive, TYPE_XIVE_NOTIFIER,
->                        XiveNotifier *),
->       DEFINE_PROP_END_OF_LIST(),
-> diff --git a/include/hw/ppc/xive.h b/include/hw/ppc/xive.h
-> index 3dfb06e002..9f580a2699 100644
-> --- a/include/hw/ppc/xive.h
-> +++ b/include/hw/ppc/xive.h
-> @@ -187,6 +187,7 @@ struct XiveSource {
->   
->       /* PQ bits and LSI assertion bit */
->       uint8_t         *status;
-> +    uint8_t         reset_pq; /* PQ state on reset */
->   
->       /* ESB memory region */
->       uint64_t        esb_flags;
+> diff --git a/hw/ppc/pnv_psi.c b/hw/ppc/pnv_psi.c
+> index 46da58dff8..daaa2f0575 100644
+> --- a/hw/ppc/pnv_psi.c
+> +++ b/hw/ppc/pnv_psi.c
+> @@ -863,6 +863,8 @@ static void pnv_psi_power9_realize(DeviceState *dev, Error **errp)
+>       object_property_set_int(OBJECT(xsrc), "nr-irqs", PSIHB9_NUM_IRQS,
+>                               &error_fatal);
+>       object_property_set_link(OBJECT(xsrc), "xive", OBJECT(psi), &error_abort);
+> +    object_property_set_int(OBJECT(xsrc), "reset-pq", XIVE_ESB_RESET,
+> +                            &error_abort);
+>       if (!qdev_realize(DEVICE(xsrc), NULL, errp)) {
+>           return;
+>       }
 
 
