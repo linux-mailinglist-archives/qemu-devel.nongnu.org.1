@@ -2,77 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76E36746014
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 17:49:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42F05746041
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 18:00:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGLnP-00062C-5c; Mon, 03 Jul 2023 11:48:59 -0400
+	id 1qGLwW-0002YL-Qx; Mon, 03 Jul 2023 11:58:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1qGLnL-0005zc-Hi
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 11:48:55 -0400
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1qGLnJ-0001un-IQ
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 11:48:55 -0400
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-313f1085ac2so5131939f8f.1
- for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 08:48:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688399331; x=1690991331;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=K6nvw44qQqM9g5knmzRWwl/2devY8jYCycM1edBfsPA=;
- b=xYCGqR8fBLyDSP4nCE3vVLK+nYwIAvJGXqAKyEzKuaoZiwp7exRZFqki8E+7kV5tQd
- zfxrTGXqTE8PX8r8Bv+hGPjF6KjoG8dlv+ka+9M61LYX41dWh5KGmCjC4zsvf7pdXvhf
- 4I38ypnL0ZdrmtK/uBBiFu8iahdzqK1qrzY+fkr7KoiRCCad1aG4Mu+8brairUR1+8mx
- CdfqRRP+i66yMfhs4v07mRiPRd2G+MTdcx5gXdXx9dUZaEz9Xw4u5PabsBZnWogCNI7e
- GGOihEq5I0/GVdJ+3vWFGHp7EpKZxbZ56ZixhWXFa1RVDwcEiETrNW4acg5oR4nM7AvO
- QAoQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688399331; x=1690991331;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=K6nvw44qQqM9g5knmzRWwl/2devY8jYCycM1edBfsPA=;
- b=BrYaWma/k7zUPL/GDWYjYzfr78tu3BJ0qJrvs0sJKzCv6n7siub+WQaviVAtFljHqZ
- 6TmXylaMGx6z4jMhGzT1/QWFxnN0ZVx1mORpbEPCLF1HAyffmshz1LmNeQUatLmjV5Ok
- lKk69iECtHq0Mpr8god+FU4rIKGTaaWx05jhzxyUgEQamg462ZhZClU36nNDO1fOJRVN
- lRY9MJjrfOmgODGICF4Bg93EpB7NUW0PAafQZcPmz7FpAGfkHdYqCiIefxENKg8nfcHL
- K0L9UOU7I55S9NXjR60Zc5BXuM4P+6e9cUwOFgoENu0Ba9ncCNpl6Zjmj/wVFy0r6LSa
- Bepw==
-X-Gm-Message-State: ABy/qLZpYO8LqNbDkxlMFtbOh0ZHcuLY7e88KufeJsxEEb2qIFi1dvc0
- HMV2RUSB0WhkvhwzoRJC/S4hGRL9Y9xEsJ8aVe8=
-X-Google-Smtp-Source: APBJJlGEJrZksWZvjFjtCuQHgLrLRpoxg4swelDn+SdWwua78FtYYbAqcWEx+WNYSqcGmXx8om2gCw==
-X-Received: by 2002:adf:ee51:0:b0:314:2a9:1071 with SMTP id
- w17-20020adfee51000000b0031402a91071mr9711954wro.19.1688399331110; 
- Mon, 03 Jul 2023 08:48:51 -0700 (PDT)
-Received: from localhost.localdomain ([2a01:e0a:5cc:caa0:6d79:3eab:6444:9cd4])
- by smtp.gmail.com with ESMTPSA id
- h15-20020a05600004cf00b0030e52d4c1bcsm26154285wri.71.2023.07.03.08.48.50
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 03 Jul 2023 08:48:50 -0700 (PDT)
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: laurent@vivier.eu, richard.henderson@linaro.org, sir@cmpwn.com,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH] linux-user/syscall: Implement execve without execveat
-Date: Mon,  3 Jul 2023 17:48:31 +0200
-Message-Id: <20230703154831.1136575-1-pierrick.bouvier@linaro.org>
-X-Mailer: git-send-email 2.40.1
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1qGLwT-0002Md-8l; Mon, 03 Jul 2023 11:58:21 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1qGLwQ-0004fb-Pi; Mon, 03 Jul 2023 11:58:21 -0400
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 363Fkt4O007873; Mon, 3 Jul 2023 15:58:13 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=5HuMpvKKMcZAdA4WPLtUYxSHaraoH0U4uyrdFjzJJIo=;
+ b=FqFwEINleI6mEmwRtIhCfhLY2TZawWYLqQBIzy9WlizizhemgoZ9nCalIk/tg3G5JyEm
+ 63GJ+wDbxXC8W2XZx7zm6/Us3PK5zpI/myOC8xbj1HwxceGTzJe5hszbJJJO7xyIrD4f
+ UNj2l6WWn38tWsmU2ktw8lDYRu0PR3aG0ujVXeB+o2GiKn4zhs48s/Pv+UWzAEHtoeQj
+ H8zLEkTP/koojaZJynMTM2aUNQ6Us97h/XRJ0EjdgUP/Sirq3AkCU1hJNeMxCnbglite
+ U+G2fSA5YsgGuOqdGoYcgq529j8qI7GOb9nBl8tC0GN4A9mrtt1lskRtnTGjwrNWZusO KA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rm19b8873-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 03 Jul 2023 15:58:13 +0000
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 363Fl4Ev008368;
+ Mon, 3 Jul 2023 15:58:13 GMT
+Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.72])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rm19b886f-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 03 Jul 2023 15:58:12 +0000
+Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
+ by ppma06fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3632peea030302;
+ Mon, 3 Jul 2023 15:58:10 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+ by ppma06fra.de.ibm.com (PPS) with ESMTPS id 3rjbdds1qc-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 03 Jul 2023 15:58:10 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com
+ [10.20.54.102])
+ by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 363Fw8tF21758516
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 3 Jul 2023 15:58:08 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0E72120043;
+ Mon,  3 Jul 2023 15:58:08 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D943720040;
+ Mon,  3 Jul 2023 15:58:07 +0000 (GMT)
+Received: from heavy.boeblingen.de.ibm.com (unknown [9.155.200.166])
+ by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Mon,  3 Jul 2023 15:58:07 +0000 (GMT)
+From: Ilya Leoshkevich <iii@linux.ibm.com>
+To: Laurent Vivier <laurent@vivier.eu>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ David Hildenbrand <david@redhat.com>
+Cc: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
+ qemu-s390x@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>
+Subject: [PATCH 00/12] target/s390x: Miscellaneous TCG fixes
+Date: Mon,  3 Jul 2023 17:50:26 +0200
+Message-ID: <20230703155801.179167-1-iii@linux.ibm.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-wr1-x434.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: XV_r34_rkzRBcdXglWtjX6C6BcFSnQJs
+X-Proofpoint-ORIG-GUID: XEfVfOREIrV1KPvLUHFm6gVA_3Fqtt92
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-07-03_11,2023-06-30_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 impostorscore=0
+ spamscore=0 bulkscore=0 lowpriorityscore=0 suspectscore=0 adultscore=0
+ mlxscore=0 mlxlogscore=910 malwarescore=0 priorityscore=1501 clxscore=1015
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2305260000
+ definitions=main-2307030141
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -89,128 +110,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Support for execveat syscall was implemented in 55bbe4 and is available
-since QEMU 8.0.0. It relies on host execveat, which is widely available
-on most of Linux kernels today.
+Hi,
 
-However, this change breaks qemu-user self emulation, if "host" qemu
-version is less than 8.0.0. Indeed, it does not implement yet execveat.
-This strange use case happens with most of distribution today having
-binfmt support.
+Randomized testing found a number of issues in the s390x emulation.
+This series fixes 6 of them (patches 2-7) and adds tests (patches
+8-12); patch 1 is a cosmetic improvement needed for the EPSW test.
 
-With a concrete failing example:
-$ qemu-x86_64-7.2 qemu-x86_64-8.0 /bin/bash -c /bin/ls
-/bin/bash: line 1: /bin/ls: Function not implemented
--> not implemented means execve returned ENOSYS
+There are more issues, but I thought it would be better to send this
+batch now.
 
-qemu-user-static 7.2 and 8.0 can be conveniently grabbed from debian
-packages qemu-user-static* [1].
+Best regards,
+Ilya
 
-One usage of this is running wine-arm64 from linux-x64 (details [2]).
-This is by updating qemu embedded in docker image that we ran into this
-issue.
+Ilya Leoshkevich (12):
+  linux-user: elfload: Add more initial s390x PSW bits
+  target/s390x: Fix EPSW CC reporting
+  target/s390x: Fix MDEB and MDEBR
+  target/s390x: Fix MVCRL with a large value in R0
+  target/s390x: Fix LRA overwriting the top 32 bits on DAT error
+  target/s390x: Fix LRA when DAT is off
+  target/s390x: Fix relative long instructions with large offsets
+  tests/tcg/s390x: Test EPSW
+  tests/tcg/s390x: Test LARL with a large offset
+  tests/tcg/s390x: Test LRA
+  tests/tcg/s390x: Test MDEB and MDEBR
+  tests/tcg/s390x: Test MVCRL with a large value in R0
 
-The solution to update host qemu is not always possible. Either it's
-complicated or ask you to recompile it, or simply is not accessible
-(GitLab CI, GitHub Actions). Thus, it could be worth to implement execve
-without relying on execveat, which is the goal of this patch.
+ linux-user/elfload.c                    |  4 ++-
+ target/s390x/helper.h                   |  2 +-
+ target/s390x/mmu_helper.c               |  2 +-
+ target/s390x/tcg/fpu_helper.c           |  3 +-
+ target/s390x/tcg/insn-data.h.inc        |  4 +--
+ target/s390x/tcg/mem_helper.c           |  5 +--
+ target/s390x/tcg/translate.c            |  8 +++--
+ tests/tcg/s390x/Makefile.softmmu-target |  1 +
+ tests/tcg/s390x/Makefile.target         |  3 ++
+ tests/tcg/s390x/epsw.c                  | 23 +++++++++++++
+ tests/tcg/s390x/larl.c                  | 17 +++++++++
+ tests/tcg/s390x/lra.S                   | 19 ++++++++++
+ tests/tcg/s390x/mdeb.c                  | 30 ++++++++++++++++
+ tests/tcg/s390x/mie3-mvcrl.c            | 46 +++++++++++++++++++------
+ 14 files changed, 147 insertions(+), 20 deletions(-)
+ create mode 100644 tests/tcg/s390x/epsw.c
+ create mode 100644 tests/tcg/s390x/larl.c
+ create mode 100644 tests/tcg/s390x/lra.S
+ create mode 100644 tests/tcg/s390x/mdeb.c
 
-This patch was tested with example presented in this commit message.
-
-[1] http://ftp.us.debian.org/debian/pool/main/q/qemu/
-[1] https://www.linaro.org/blog/emulate-windows-on-arm/
-
-Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
----
- linux-user/syscall.c | 45 +++++++++++++++++++++++++++++++++++++-------
- 1 file changed, 38 insertions(+), 7 deletions(-)
-
-diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index f2cb101d83..b64ec3296a 100644
---- a/linux-user/syscall.c
-+++ b/linux-user/syscall.c
-@@ -659,6 +659,7 @@ safe_syscall4(pid_t, wait4, pid_t, pid, int *, status, int, options, \
- #endif
- safe_syscall5(int, waitid, idtype_t, idtype, id_t, id, siginfo_t *, infop, \
-               int, options, struct rusage *, rusage)
-+safe_syscall3(int, execve, const char *, filename, char **, argv, char **, envp)
- safe_syscall5(int, execveat, int, dirfd, const char *, filename,
-               char **, argv, char **, envp, int, flags)
- #if defined(TARGET_NR_select) || defined(TARGET_NR__newselect) || \
-@@ -8520,9 +8521,12 @@ static int do_openat(CPUArchState *cpu_env, int dirfd, const char *pathname, int
-     return safe_openat(dirfd, path(pathname), flags, mode);
- }
- 
--static int do_execveat(CPUArchState *cpu_env, int dirfd,
--                       abi_long pathname, abi_long guest_argp,
--                       abi_long guest_envp, int flags)
-+#define IS_EXECVEAT 0
-+#define IS_EXECVE 1
-+
-+static int do_execv(CPUArchState *cpu_env, int dirfd,
-+                    abi_long pathname, abi_long guest_argp,
-+                    abi_long guest_envp, int flags, bool is_execve)
- {
-     int ret;
-     char **argp, **envp;
-@@ -8601,10 +8605,18 @@ static int do_execveat(CPUArchState *cpu_env, int dirfd,
-         goto execve_efault;
-     }
- 
--    if (is_proc_myself(p, "exe")) {
--        ret = get_errno(safe_execveat(dirfd, exec_path, argp, envp, flags));
-+    if (is_execve == IS_EXECVE) {
-+        if (is_proc_myself(p, "exe")) {
-+            ret = get_errno(safe_execve(exec_path, argp, envp));
-+        } else {
-+            ret = get_errno(safe_execve(p, argp, envp));
-+        }
-     } else {
--        ret = get_errno(safe_execveat(dirfd, p, argp, envp, flags));
-+        if (is_proc_myself(p, "exe")) {
-+            ret = get_errno(safe_execveat(dirfd, exec_path, argp, envp, flags));
-+        } else {
-+            ret = get_errno(safe_execveat(dirfd, p, argp, envp, flags));
-+        }
-     }
- 
-     unlock_user(p, pathname, 0);
-@@ -8633,6 +8645,25 @@ execve_end:
-     return ret;
- }
- 
-+static int do_execveat(CPUArchState *cpu_env, int dirfd,
-+                       abi_long pathname, abi_long guest_argp,
-+                       abi_long guest_envp, int flags)
-+{
-+    return do_execv(cpu_env, dirfd,
-+                    pathname, guest_argp, guest_envp, flags,
-+                    IS_EXECVEAT);
-+}
-+
-+static int do_execve(CPUArchState *cpu_env,
-+                     abi_long pathname, abi_long guest_argp,
-+                     abi_long guest_envp)
-+{
-+    return do_execv(cpu_env, AT_FDCWD,
-+                    pathname, guest_argp, guest_envp, 0,
-+                    IS_EXECVE);
-+}
-+
-+
- #define TIMER_MAGIC 0x0caf0000
- #define TIMER_MAGIC_MASK 0xffff0000
- 
-@@ -9158,7 +9189,7 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
-     case TARGET_NR_execveat:
-         return do_execveat(cpu_env, arg1, arg2, arg3, arg4, arg5);
-     case TARGET_NR_execve:
--        return do_execveat(cpu_env, AT_FDCWD, arg1, arg2, arg3, 0);
-+        return do_execve(cpu_env, arg1, arg2, arg3);
-     case TARGET_NR_chdir:
-         if (!(p = lock_user_string(arg1)))
-             return -TARGET_EFAULT;
 -- 
-2.40.1
+2.41.0
 
 
