@@ -2,75 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6BEE745DFC
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 15:56:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74C37745E1A
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 16:04:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGK1r-0006YX-Fm; Mon, 03 Jul 2023 09:55:47 -0400
+	id 1qGK9R-0005f0-Fx; Mon, 03 Jul 2023 10:03:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>)
- id 1qGK1n-00060z-NF; Mon, 03 Jul 2023 09:55:43 -0400
-Received: from smtp-out2.suse.de ([195.135.220.29])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qGK9P-0005eU-4t
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 10:03:35 -0400
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>)
- id 1qGK1l-0000Ts-MI; Mon, 03 Jul 2023 09:55:43 -0400
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 400A91FE8C;
- Mon,  3 Jul 2023 13:55:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1688392538; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=6qvOw4Hgat/+2oj0L3Woup6clmTBUDZjBq5SYxuP7qU=;
- b=CW/0vB8WQn9A2DXsizj0WSi1L+D0w42pzr+0AeGTp3+p3bl08JYSr5bJSoviZRGGFy1Bz1
- zo67sZsA/nffA2p/AB+HPcRTefwizBSHnB+JFKZfnWM19IH0EjUzWig+5pR766dkfpg77E
- ny40XbugO4DLbuygRICeH4H2g3Ep+14=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1688392538;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=6qvOw4Hgat/+2oj0L3Woup6clmTBUDZjBq5SYxuP7qU=;
- b=zWXcVfWISuTE8T3vPiWEVYMVEWBPj5tIl/3u067lGtk5AIgaSuGXxsjjW9sm6NR11VDllO
- +8AKmW/qXTkbEYAw==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id BC8DB13276;
- Mon,  3 Jul 2023 13:55:37 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id XQN/IVnTomShKwAAMHmgww
- (envelope-from <farosas@suse.de>); Mon, 03 Jul 2023 13:55:37 +0000
-From: Fabiano Rosas <farosas@suse.de>
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qGK9J-000323-Pe
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 10:03:34 -0400
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-313f1085ac2so4988460f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 07:03:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1688393008; x=1690985008;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=cQkmXVVKUzbF6+OR87LtMoCxllrcwffkoSGo6NXeAog=;
+ b=lLSmml+LsUgmELhfHKlmBppLRPcP+ic8+Q0VsAjN/fXF8OMrGnJacgSpSX0Ysfckfk
+ cdOur8Znhv4V0NMMQrnbyE4haN+N9mtNa8aq/2us83TitQe5Ds99Zfvik0uTVIa8OUPO
+ 1sXryrHVoKsHhvpoFbrISNOuE+dLk2ADZRzpWgsfRX/M2fioWynULeK9mIkPle5ogci2
+ fezhuK6rpxTKlTV9CPQtmW/BPQXz+fTNsP+WMne+VRepBb//Y2X+cXrjcc2uQ2PVlugP
+ IgycS4GSov2dqz90qy+wEOsNuSb32ZymiRuvHarBaZEd5QgUvoNCeolHWPowvGsPUwsq
+ 06fg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1688393008; x=1690985008;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=cQkmXVVKUzbF6+OR87LtMoCxllrcwffkoSGo6NXeAog=;
+ b=RpHbb/hQipQJ73PeVK3n4PZgwVTBZaS5NZDTxrS2MXWsUomuJoo3ncLxpRoGHrPnVi
+ LrtfbLcCaKTMSpw3aRBqnrPD8tu2NXthGOtzRehzXzyFztZSZ/vk/9ar81evaLWPbFmh
+ LTVERBqj1AIINkcGowgzcx2whSQ/jWjWjnN6P2Q1YYlAJlx64cX+02aaf1prV83YFA5i
+ Jtj2QNWKuOc2NS9y5CausIGJY/HcStZ7Q1wxhKdkYowTpyUQXu4aKdINiEwy5Qp2WFqy
+ skMhZfgue08r2k+zKKcEvurXwPK2tf6HS5CBspNadvCzZhlokM8G9teJvqQ8HD7NnWmY
+ cdbg==
+X-Gm-Message-State: ABy/qLbdg1CEm9qkQ7nG30igLYtnJjC6mxGtWgtmCKPRND5busIfOTyz
+ ezWf8yroKxSPI5un62GvmfvmLA==
+X-Google-Smtp-Source: APBJJlGEDcddN9hwcOZAY2OT5DnGG82JvPvIJIumoLPHCzApyCP3hOtj3AXNUSsSh25qVnSxpOa1QA==
+X-Received: by 2002:a5d:58d8:0:b0:313:ee2e:dae1 with SMTP id
+ o24-20020a5d58d8000000b00313ee2edae1mr7762605wrf.18.1688393007868; 
+ Mon, 03 Jul 2023 07:03:27 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
+ by smtp.gmail.com with ESMTPSA id
+ c8-20020adfed88000000b0031433443265sm4194573wro.53.2023.07.03.07.03.27
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 03 Jul 2023 07:03:27 -0700 (PDT)
+Received: from zen.lan (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id 8CDEC1FFC0;
+ Mon,  3 Jul 2023 14:44:30 +0100 (BST)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org, Kevin Wolf <kwolf@redhat.com>, Hanna Reitz
- <hreitz@redhat.com>, Markus Armbruster <armbru@redhat.com>, =?utf-8?Q?Jo?=
- =?utf-8?Q?=C3=A3o?= Silva
- <jsilva@suse.de>, Lin Ma <lma@suse.com>, Claudio Fontana
- <cfontana@suse.de>, Dario Faggioli <dfaggioli@suse.com>, Eric Blake
- <eblake@redhat.com>
-Subject: Re: [PATCH v2 00/10] block: Make raw_co_get_allocated_file_size
- asynchronous
-In-Reply-To: <20230609201910.12100-1-farosas@suse.de>
-References: <20230609201910.12100-1-farosas@suse.de>
-Date: Mon, 03 Jul 2023 10:55:34 -0300
-Message-ID: <87wmzhp0a1.fsf@suse.de>
+Cc: richard.henderson@linaro.org,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Juan Quintela <quintela@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Peter Xu <peterx@redhat.com>, Leonardo Bras <leobras@redhat.com>
+Subject: [PULL 23/38] include/migration: mark vmstate_register() as a legacy
+ function
+Date: Mon,  3 Jul 2023 14:44:12 +0100
+Message-Id: <20230703134427.1389440-24-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20230703134427.1389440-1-alex.bennee@linaro.org>
+References: <20230703134427.1389440-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=195.135.220.29; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x435.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -87,33 +100,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fabiano Rosas <farosas@suse.de> writes:
+Mention that QOM-ified devices already have support for registering
+the description.
 
-> Hi,
->
-> The major change from the last version is that this time I'm moving
-> all of the callers of bdrv_get_allocated_file_size() into
-> coroutines. I had to make some temporary changes to avoid asserts
-> while not all the callers were converted.
->
-> I tried my best to explain why I think the changes are safe. To avoid
-> changing too much of the code I added a change that removes the
-> dependency of qmp_query_block from hmp_nbd_server_start, that way I
-> don't need to move all of the nbd code into a coroutine as well.
->
-> Based on:
->  [PATCH v2 00/11] block: Re-enable the graph lock
->  https://lore.kernel.org/r/20230605085711.21261-1-kwolf@redhat.com
->
-> changes:
->
->   - fixed duplicated commit message [Lin]
->   - clarified why we need to convert info-block [Claudio]
->   - added my rationale of why the changes are safe [Eric]
->   - converted all callers to coroutines [Kevin]
->   - made hmp_nbd_server_start don't depend on qmp_query_block
->
-> CI run: https://gitlab.com/farosas/qemu/-/pipelines/895525156
+Reviewed-by: Juan Quintela <quintela@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Acked-by: Peter Xu <peterx@redhat.com>
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+Message-Id: <20230630180423.558337-24-alex.bennee@linaro.org>
 
-Ping, this seems to have fallen through the cracks.
+diff --git a/include/migration/vmstate.h b/include/migration/vmstate.h
+index 084f5e784a..d1b8abe08d 100644
+--- a/include/migration/vmstate.h
++++ b/include/migration/vmstate.h
+@@ -1209,7 +1209,15 @@ int vmstate_register_with_alias_id(VMStateIf *obj, uint32_t instance_id,
+                                    int required_for_version,
+                                    Error **errp);
+ 
+-/* Returns: 0 on success, -1 on failure */
++/**
++ * vmstate_register() - legacy function to register state
++ * serialisation description
++ *
++ * New code shouldn't be using this function as QOM-ified devices have
++ * dc->vmsd to store the serialisation description.
++ *
++ * Returns: 0 on success, -1 on failure
++ */
+ static inline int vmstate_register(VMStateIf *obj, int instance_id,
+                                    const VMStateDescription *vmsd,
+                                    void *opaque)
+-- 
+2.39.2
+
 
