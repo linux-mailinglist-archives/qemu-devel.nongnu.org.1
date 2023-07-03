@@ -2,79 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE90974584C
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 11:25:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 122FF74584E
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 11:26:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGFnm-0005Xz-UY; Mon, 03 Jul 2023 05:24:58 -0400
+	id 1qGFoi-0006LA-4n; Mon, 03 Jul 2023 05:25:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qGFnl-0005Xr-Mc
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 05:24:57 -0400
-Received: from mail-lf1-x12f.google.com ([2a00:1450:4864:20::12f])
+ id 1qGFoa-0006Ki-If
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 05:25:48 -0400
+Received: from mail-lj1-x22b.google.com ([2a00:1450:4864:20::22b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qGFnk-0004zr-5M
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 05:24:57 -0400
-Received: by mail-lf1-x12f.google.com with SMTP id
- 2adb3069b0e04-4fb863edcb6so6723806e87.0
- for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 02:24:55 -0700 (PDT)
+ id 1qGFoY-0005My-Sx
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 05:25:48 -0400
+Received: by mail-lj1-x22b.google.com with SMTP id
+ 38308e7fff4ca-2b6a084a34cso61576881fa.1
+ for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 02:25:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688376294; x=1690968294;
+ d=linaro.org; s=google; t=1688376345; x=1690968345;
  h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
  :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
  :message-id:reply-to;
- bh=apImeO7Yp+sW3Vq8Pq7YXzMRP4hDiet9X46j+VygS/o=;
- b=cSqIBivgi9BXZcStozQCaAR0wnhpA7mgBDh/ImiwRRmbEhYvfHEJ5levCu4fqEStzy
- mLzxJjP1DCH4bHQ9N57TkWdic034GFKcmmUtZMeD4RrszLKPLugFwwcsM/vJWRZzwfYB
- yMx2AENyX5mckwZQBkXMpnLYUF+AOepPrlTl95PRsuSx+Nq+vZByVs7XH7C+TGoW66m+
- HHFqdKaD5/lqneCn2rmCfkbgh7FoRm+iBZoEuitymSJZ1/1NF6taWbEgWpcF0uLz3MzV
- 8LgwaPZ0DN88q854EAbRbzJBPVmVA9QhQW5pfFFfJp96/NyZYF9mJ4VHGcBLqzsfXLbA
- xWpg==
+ bh=FlvNkcT1Fv7otW5oPcjYpSpjdnCtGWLIn/+rhiyiGFA=;
+ b=OJ6y9pw/J9bKOLZ317NWMfhQ3r5R8Rjd8HheNk9vL4EOlUU0LnC+Y5qrsob6qwbKVu
+ i43lA5JjuqDQL/+xB1d+uepIFrTHtRM9juABZNHD2dycFb/ICrEdwfmuC6gGwIi4a/n4
+ srDCgE4NiINrDJ3ycYccOX7xdmb2iEWpOK0Muxzt8bBVsmKvqkgPvnTWXXMd/6S2SX0W
+ LAr+3XPlxAzc8P1yrQlGTzqXw/hHbeklztH5DbOc5UYbbktLLZ2sUGdhF88LkFLSRfCH
+ CVWOU92nFXmvVuXMF7UACjK5TSCb3zhaHsX2B3qHZFJ71lszdr/XDUBAmMgyAMYQ80zn
+ G7nw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688376294; x=1690968294;
+ d=1e100.net; s=20221208; t=1688376345; x=1690968345;
  h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
  :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=apImeO7Yp+sW3Vq8Pq7YXzMRP4hDiet9X46j+VygS/o=;
- b=DclSooHo7csGShY2vOWXjazA8rE8q2w06B7DM4EkL3jc5ytf2rh2Lu6viAybx5SY5v
- PU41KmJcjEvXLFa6kCJDt4iSiUO/Z2Wh3sUPua7Fj6fgooRrWmpyDEYoeEPTcZFb7HFu
- Rh5QZaUI8jcoNyzVJ93DSceFsiMjJwndxh0PJwvJPQck2RDpT7xYNW2M5DpB2CTzG3ex
- dUqwvO5O9OsPd3CEJsYGgDGlaTYDct100GLJV+5JggfOIozFSHwD40ZFfb8UWnVk3EYt
- KX+DtUsXg1LugdpsQbhbbcseu/2DuYW3vrOHRrNzIp89lGL+QCW7Jr1Z1eO6ahtbi7t9
- +ZRg==
-X-Gm-Message-State: ABy/qLZ5n/9WAhtBy8FEp/F2MsiA8eQ+YW18JFdTgHz0hQ+Xax3HMq1h
- X9OA43mC3vSDLgrhIuD8rHuAoA==
-X-Google-Smtp-Source: APBJJlFdoKoVnYLj+Bo6Qawx7Hyx/NrR8wvEoRxixKmuJvj9gahNE8Bl/gNyNzvrWWX76JKei+A/Kg==
-X-Received: by 2002:a05:6512:78c:b0:4f8:5e49:c613 with SMTP id
- x12-20020a056512078c00b004f85e49c613mr5999582lfr.43.1688376293824; 
- Mon, 03 Jul 2023 02:24:53 -0700 (PDT)
+ bh=FlvNkcT1Fv7otW5oPcjYpSpjdnCtGWLIn/+rhiyiGFA=;
+ b=i+qD459Tj00SHPgcSbsXfOBU40PzFjpKVE9Qrr3hta/Plq6kshP/2J28HwmBb/6M3t
+ tQKfZ3aMtpePCwC5Aot+/MGhNXbusoSRqQbLAmmrFxgVTfL+aH7qb5K8w59qhscu9DzG
+ tzPNoebDq0c7EOUfu23z5hVUTl6x6b07yFDK7Wj/FF4n4BuGveJPcjLWuwWm23A7jATl
+ LkYZYPNlVcbnCVi8l2QZyMLoW7Lfvd8oLFf21LZQiD5w4dOl5sZbUc/uhMSAQMJph0HV
+ CUltKpqCS82jQ2jL9DM2IbYP5eNBSCzGXtbfWCULh6ZF6HNgvYclWoV7cHgAuKBsS2iH
+ nHPw==
+X-Gm-Message-State: ABy/qLaYvXfij1dcLqxRaEBSmt42u+msjA7Ws4C0omxn2j37h+4Aawj4
+ wF6UsfTJF8RB0N4u6F31XF2AubwomI847AhW6m0=
+X-Google-Smtp-Source: APBJJlHFoerghNYXtRe2nAl3QlIYaLCv41UX+gxYcrXweQVmznkhG3n0lU4acmuZu3M6LotmbEALXw==
+X-Received: by 2002:a2e:88ce:0:b0:2b6:bb87:501d with SMTP id
+ a14-20020a2e88ce000000b002b6bb87501dmr6245186ljk.3.1688376345221; 
+ Mon, 03 Jul 2023 02:25:45 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- a20-20020a05600c225400b003fbb06af219sm14633688wmm.32.2023.07.03.02.24.53
+ f10-20020a7bcd0a000000b003fa99969e61sm20751219wmj.45.2023.07.03.02.25.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 03 Jul 2023 02:24:53 -0700 (PDT)
+ Mon, 03 Jul 2023 02:25:44 -0700 (PDT)
 Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 105341FFBB;
- Mon,  3 Jul 2023 10:24:53 +0100 (BST)
+ by zen.linaroharston (Postfix) with ESMTP id 990B21FFBB;
+ Mon,  3 Jul 2023 10:25:44 +0100 (BST)
 References: <20230630132159.376995-1-richard.henderson@linaro.org>
- <20230630132159.376995-4-richard.henderson@linaro.org>
+ <20230630132159.376995-5-richard.henderson@linaro.org>
 User-agent: mu4e 1.11.8; emacs 29.0.92
 From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: Richard Henderson <richard.henderson@linaro.org>
 Cc: mjt@tls.msk.ru, laurent@vivier.eu, qemu-devel@nongnu.org
-Subject: Re: [PATCH 03/24] linux-user/strace: Expand struct flags to hold a
- mask
-Date: Mon, 03 Jul 2023 10:24:48 +0100
-In-reply-to: <20230630132159.376995-4-richard.henderson@linaro.org>
-Message-ID: <87jzvhjqje.fsf@linaro.org>
+Subject: Re: [PATCH 04/24] linux-user: Split TARGET_MAP_* out of syscall_defs.h
+Date: Mon, 03 Jul 2023 10:25:40 +0100
+In-reply-to: <20230630132159.376995-5-richard.henderson@linaro.org>
+Message-ID: <87fs65jqhz.fsf@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::12f;
- envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x12f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::22b;
+ envelope-from=alex.bennee@linaro.org; helo=mail-lj1-x22b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,14 +99,7 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Richard Henderson <richard.henderson@linaro.org> writes:
 
-> A zero bit value does not make sense -- it must relate to
-> some field in some way.
->
-> Define FLAG_BASIC with a build-time sanity check.
-> Adjust FLAG_GENERIC and FLAG_TARGET to use it.
-> Add FLAG_GENERIC_MASK and FLAG_TARGET_MASK.
->
-> Fix up the existing flag definitions for build errors.
+> Move the values into the per-target target_mman.h headers
 >
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 
