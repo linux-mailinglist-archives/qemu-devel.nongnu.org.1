@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E322B745DB2
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 15:47:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BC1A745DA5
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 15:45:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGJrU-00080V-FY; Mon, 03 Jul 2023 09:45:06 -0400
+	id 1qGJrP-0007yW-5r; Mon, 03 Jul 2023 09:44:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qGJr7-0007Wi-4y
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 09:44:41 -0400
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ id 1qGJrA-0007a1-Lu
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 09:44:44 -0400
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qGJr2-0005hu-Qa
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 09:44:40 -0400
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-3fbc54cab6fso36477455e9.0
- for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 06:44:34 -0700 (PDT)
+ id 1qGJr2-0005iK-WA
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 09:44:41 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-3fbd33a57dcso22275295e9.0
+ for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 06:44:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688391874; x=1690983874;
+ d=linaro.org; s=google; t=1688391875; x=1690983875;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=3QXiG/9ekTa+RipLUg3DjWaS82wOBRs7qXSyJ9mS8po=;
- b=OX8Lig9jcvKXa/fhr8tRctbnhrcGwT4msuel2EO76pRQzOzi+YGrxVblOK3LFh4uPn
- IazMnh45lmJm4OAL+6b8MWd00oIXtadrjnCHQy8whDFSqkVxdFKnu/C9yHoxrZazQF8m
- 9Twlhhl2sAkolorUj5IoLXhz93X7Iw7XJEEYYXzqhPlkipVpzgisEL8vMtdBEFwJljqd
- nLx5UzzScVxJPk2qeTeZgFss+fs56qRgUxY9dXDhUlWj09oAjdflQZ6ZG9h/33KcuRoS
- jxdkTk1tlRgSbC+lTvWTlOzO/MGPg1G4Wj50TOl2mxNcZLQho8p3kJnDOyQTghcjU/cb
- 9RZg==
+ bh=RSwlfu3OrMD7gLV99s4E7TTeOa5nvAq4Fdof1YBVMJk=;
+ b=BktkRqr0prNHV/CNz2ExVOw9zp6oAMzSDay3IJe4eR1KHkp27ufpCklOk9HogN9ON1
+ e2GhaRZEUV/euPrzAyDUdKT+wupHSGsaxcnpe/lGoBiqjOW3J7ohrLKixlSAOocSDK85
+ AIRuQRA4CxWZsTj8mAgx7e4CVzGPufgCdv9EiHKDnuDOHn60dIuT99IjmvB6jBOaK1hl
+ kZSCJvo+ccEepstaNux67K/QMq1ei5CLqDr9CJXFkWMi/x102DiAuBYmd8thXN81d+9l
+ iAFKX7MVRb383j640MvtICmQx6ZXL/llZFKHDPZk4162uqhBlo3NZn1wNVWKvMH/eQ7a
+ qXnQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688391874; x=1690983874;
+ d=1e100.net; s=20221208; t=1688391875; x=1690983875;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=3QXiG/9ekTa+RipLUg3DjWaS82wOBRs7qXSyJ9mS8po=;
- b=S5JHD+wWb24nZtEyxVRX0H4B4B6HEfuhpNDMDhcisLA1HFtRIJo++ASS4IWNFy/bbd
- qqJ9YQtah9dlVDWRvLQIWoNC3HlnTYU/JCnKNI+GUBHxicauvjJYrCfgmYb8YY5EcLRd
- 09E5fw2Hmf1h7jPkx7kmGQ1MQ2YxVTwdFuE6yEdUZZltCcwXKmJhgGvhK7Bmiws8HtdB
- cihCOfgp7Cl2cEA8wAIg9t/9re30lCWIFULE75muqKkAjKC7g+Iy2ACnF18nZPWM+ha7
- j5F9cC9O+3H6egHHIB+IRLEO2n/Et9upiQlxmKC49B7GeJZpAWm9jgl/u/klU41NiDx9
- Vl0w==
-X-Gm-Message-State: AC+VfDznmQiHt9yZvIdyOCnQSyB2w4cF9Y5yq1gn0FmVYCvT0/9iNuRT
- 8RGy7hM9JUl7bm8HyTsUjGiQS94mxlXrdBUI7k8=
-X-Google-Smtp-Source: ACHHUZ5rNk1fo9IPiKahAtLooApFx7yq8FIwtVmdG5MQL4wbCJECLG7Z9LvoCWyeY5jRsFZLmmM/GQ==
-X-Received: by 2002:a05:600c:230d:b0:3fb:973:fdba with SMTP id
- 13-20020a05600c230d00b003fb0973fdbamr7789331wmo.31.1688391873937; 
- Mon, 03 Jul 2023 06:44:33 -0700 (PDT)
+ bh=RSwlfu3OrMD7gLV99s4E7TTeOa5nvAq4Fdof1YBVMJk=;
+ b=XqI0rJG1GlALrxqw3NdGk3uQQhKD+JQAtowtEaC607Pl1b+grs/c0ju4DAhew7tlju
+ LIHGCtljrP/81qj+r7ufjnUDOlwvlE+/xhrhMhHLk2p/bB4Sey5pN2p9sHHeZKCmq69q
+ oCjHkCL4ySUOMySQFrVDXlcQuTV2gvR+aeoT1VjCJXYmCTkywkTEPCsjxfQxngtd/e7n
+ FwIbXXg3WC3kiTq9C25px9mhqmM36Zn8vprxFvzxX+A2uGmmu2OIc+cNTcaMorpjPU57
+ Qv2ibd+WoxsawORxf8L+7nuIM0do8yQV5QeDVnSAeJAsiL8Opyt09vW81oEdEKYJs+Jd
+ 9CMg==
+X-Gm-Message-State: AC+VfDxn5arxbvsOmBWzJ0uTeFYcN2fI4rYainG/MP3/rYW9RrkHNKUY
+ RGiplHBjTBCfxSqOVwa8GsX29w==
+X-Google-Smtp-Source: ACHHUZ4X1Yn3pLRAC35K1bJgZ76Nk7ZfDd9l6EYua+EdRPqlug/HD1UeFqEtaMm8ZAQm8DCg6cbnOg==
+X-Received: by 2002:a7b:ca57:0:b0:3fb:bc6d:41f1 with SMTP id
+ m23-20020a7bca57000000b003fbbc6d41f1mr8357943wml.17.1688391875201; 
+ Mon, 03 Jul 2023 06:44:35 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- t24-20020a7bc3d8000000b003fba94c9e18sm17097059wmj.4.2023.07.03.06.44.30
+ a10-20020a05600c224a00b003faef96ee78sm20844505wmm.33.2023.07.03.06.44.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 03 Jul 2023 06:44:30 -0700 (PDT)
+ Mon, 03 Jul 2023 06:44:34 -0700 (PDT)
 Received: from zen.lan (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 71A721FFC6;
+ by zen.linaroharston (Postfix) with ESMTP id 8C6501FFC7;
  Mon,  3 Jul 2023 14:44:29 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -67,17 +67,17 @@ Cc: richard.henderson@linaro.org,
  Thomas Huth <thuth@redhat.com>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Beraldo Leal <bleal@redhat.com>
-Subject: [PULL 14/38] tests/lcitool: introduce qemu-minimal
-Date: Mon,  3 Jul 2023 14:44:03 +0100
-Message-Id: <20230703134427.1389440-15-alex.bennee@linaro.org>
+Subject: [PULL 15/38] tests/docker: convert riscv64-cross to lcitool
+Date: Mon,  3 Jul 2023 14:44:04 +0100
+Message-Id: <20230703134427.1389440-16-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230703134427.1389440-1-alex.bennee@linaro.org>
 References: <20230703134427.1389440-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,47 +100,182 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is a very bare bones set of dependencies for a minimal build of
-QEMU. This will be useful for minimal cross-compile sanity check based
-on things like Debian Sid where stuff isn't always in sync.
+We still need to base this on Debian Sid until riscv64 is promoted to
+a release architecture (or another distro provides a full cross
+compile target). We use the new qemu-minimal project description to
+avoid bringing in all the extra dependencies because every extra
+package is another chance for sid to fail.
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20230630180423.558337-15-alex.bennee@linaro.org>
+Message-Id: <20230630180423.558337-16-alex.bennee@linaro.org>
 
-diff --git a/tests/lcitool/projects/qemu-minimal.yml b/tests/lcitool/projects/qemu-minimal.yml
-new file mode 100644
-index 0000000000..d44737dc1d
---- /dev/null
-+++ b/tests/lcitool/projects/qemu-minimal.yml
-@@ -0,0 +1,27 @@
-+# Very minimal set of qemu packages, used for minimal cross-compile sanity checks
-+---
-+packages:
-+ - bash
-+ - bc
-+ - bison
-+ - ccache
-+ - findutils
-+ - flex
-+ - g++
-+ - gcc
-+ - gcc-native
-+ - glib2
-+ - glib2-native
-+ - glib2-static
-+ - libc-static
-+ - libfdt
-+ - libffi
-+ - make
-+ - meson
-+ - ninja
-+ - pixman
-+ - pkg-config
-+ - python3
-+ - python3-venv
-+ - sed
-+ - tar
+diff --git a/tests/docker/dockerfiles/debian-riscv64-cross.docker b/tests/docker/dockerfiles/debian-riscv64-cross.docker
+index 081404e014..a2d879ee1f 100644
+--- a/tests/docker/dockerfiles/debian-riscv64-cross.docker
++++ b/tests/docker/dockerfiles/debian-riscv64-cross.docker
+@@ -1,54 +1,85 @@
++# THIS FILE WAS AUTO-GENERATED
+ #
+-# Docker cross-compiler target for riscv64
++#  $ lcitool dockerfile --layers all --cross riscv64 debian-sid qemu-minimal
+ #
+-# Currently the only distro that gets close to cross compiling riscv64
+-# images is Debian Sid (with unofficial ports). As this is a moving
+-# target we keep the library list minimal and are aiming to migrate
+-# from this hack as soon as we are able.
+-#
+-FROM docker.io/library/debian:sid-slim
++# https://gitlab.com/libvirt/libvirt-ci
+ 
+-# Add ports
+-RUN apt update && \
+-    DEBIAN_FRONTEND=noninteractive apt install -yy eatmydata && \
+-    DEBIAN_FRONTEND=noninteractive eatmydata apt update -yy && \
+-    DEBIAN_FRONTEND=noninteractive eatmydata apt upgrade -yy
+-
+-# Install common build utilities
+-RUN DEBIAN_FRONTEND=noninteractive eatmydata apt install -yy \
+-    bison \
+-    bc \
+-    build-essential \
+-    ca-certificates \
+-    debian-ports-archive-keyring \
+-    dpkg-dev \
+-    flex \
+-    gettext \
+-    git \
+-    libglib2.0-dev \
+-    ninja-build \
+-    pkg-config \
+-    python3 \
+-    python3-venv
++FROM docker.io/library/debian:sid-slim
+ 
+-# Add ports and riscv64 architecture
+-RUN echo "deb http://ftp.ports.debian.org/debian-ports/ sid main" >> /etc/apt/sources.list
+-RUN dpkg --add-architecture riscv64
++RUN export DEBIAN_FRONTEND=noninteractive && \
++    apt-get update && \
++    apt-get install -y eatmydata && \
++    eatmydata apt-get dist-upgrade -y && \
++    eatmydata apt-get install --no-install-recommends -y \
++                      bash \
++                      bc \
++                      bison \
++                      ca-certificates \
++                      ccache \
++                      findutils \
++                      flex \
++                      gcc \
++                      git \
++                      libglib2.0-dev \
++                      locales \
++                      make \
++                      meson \
++                      ninja-build \
++                      pkgconf \
++                      python3 \
++                      python3-venv \
++                      sed \
++                      tar && \
++    eatmydata apt-get autoremove -y && \
++    eatmydata apt-get autoclean -y && \
++    sed -Ei 's,^# (en_US\.UTF-8 .*)$,\1,' /etc/locale.gen && \
++    dpkg-reconfigure locales
+ 
+-# Duplicate deb line as deb-src
+-RUN cat /etc/apt/sources.list | sed "s/^deb\ /deb-src /" >> /etc/apt/sources.list
++ENV CCACHE_WRAPPERSDIR "/usr/libexec/ccache-wrappers"
++ENV LANG "en_US.UTF-8"
++ENV MAKE "/usr/bin/make"
++ENV NINJA "/usr/bin/ninja"
++ENV PYTHON "/usr/bin/python3"
+ 
+-RUN apt update && \
+-    DEBIAN_FRONTEND=noninteractive eatmydata \
+-    apt install -y --no-install-recommends \
+-         gcc-riscv64-linux-gnu \
+-         libc6-dev-riscv64-cross \
+-         libfdt-dev:riscv64 \
+-         libffi-dev:riscv64 \
+-         libglib2.0-dev:riscv64 \
+-         libpixman-1-dev:riscv64
++RUN export DEBIAN_FRONTEND=noninteractive && \
++    dpkg --add-architecture riscv64 && \
++    eatmydata apt-get install debian-ports-archive-keyring && \
++    eatmydata echo 'deb http://ftp.ports.debian.org/debian-ports/ sid main' > /etc/apt/sources.list.d/ports.list && \
++    eatmydata echo 'deb http://ftp.ports.debian.org/debian-ports/ unreleased main' >> /etc/apt/sources.list.d/ports.list && \
++    eatmydata apt-get update && \
++    eatmydata apt-get dist-upgrade -y && \
++    eatmydata apt-get install --no-install-recommends -y dpkg-dev && \
++    eatmydata apt-get install --no-install-recommends -y \
++                      g++-riscv64-linux-gnu \
++                      gcc-riscv64-linux-gnu \
++                      libc6-dev:riscv64 \
++                      libfdt-dev:riscv64 \
++                      libffi-dev:riscv64 \
++                      libglib2.0-dev:riscv64 \
++                      libpixman-1-dev:riscv64 && \
++    eatmydata apt-get autoremove -y && \
++    eatmydata apt-get autoclean -y && \
++    mkdir -p /usr/local/share/meson/cross && \
++    printf "[binaries]\n\
++c = '/usr/bin/riscv64-linux-gnu-gcc'\n\
++ar = '/usr/bin/riscv64-linux-gnu-gcc-ar'\n\
++strip = '/usr/bin/riscv64-linux-gnu-strip'\n\
++pkgconfig = '/usr/bin/riscv64-linux-gnu-pkg-config'\n\
++\n\
++[host_machine]\n\
++system = 'linux'\n\
++cpu_family = 'riscv64'\n\
++cpu = 'riscv64'\n\
++endian = 'little'\n" > /usr/local/share/meson/cross/riscv64-linux-gnu && \
++    dpkg-query --showformat '${Package}_${Version}_${Architecture}\n' --show > /packages.txt && \
++    mkdir -p /usr/libexec/ccache-wrappers && \
++    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/riscv64-linux-gnu-c++ && \
++    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/riscv64-linux-gnu-cc && \
++    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/riscv64-linux-gnu-g++ && \
++    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/riscv64-linux-gnu-gcc
+ 
+-# Specify the cross prefix for this image (see tests/docker/common.rc)
++ENV ABI "riscv64-linux-gnu"
++ENV MESON_OPTS "--cross-file=riscv64-linux-gnu"
+ ENV QEMU_CONFIGURE_OPTS --cross-prefix=riscv64-linux-gnu-
+ ENV DEF_TARGET_LIST riscv64-softmmu,riscv64-linux-user
+ # As a final step configure the user (if env is defined)
+diff --git a/tests/lcitool/refresh b/tests/lcitool/refresh
+index 5e06fb2cf5..b54566edcc 100755
+--- a/tests/lcitool/refresh
++++ b/tests/lcitool/refresh
+@@ -63,12 +63,12 @@ add_user_mapping = [
+     "  id ${USER} 2>/dev/null || useradd -u ${UID} -U ${USER}; fi\n"
+ ]
+ 
+-def generate_dockerfile(host, target, cross=None, trailer=None):
++def generate_dockerfile(host, target, project="qemu", cross=None, trailer=None):
+     filename = Path(src_dir, "tests", "docker", "dockerfiles", host + ".docker")
+     cmd = lcitool_cmd + ["dockerfile"]
+     if cross is not None:
+         cmd.extend(["--cross", cross])
+-    cmd.extend([target, "qemu"])
++    cmd.extend([target, project])
+ 
+     if trailer is not None:
+         trailer += "\n".join(add_user_mapping)
+@@ -164,6 +164,12 @@ try:
+                         trailer=cross_build("powerpc64le-linux-gnu-",
+                                             "ppc64-softmmu,ppc64-linux-user"))
+ 
++    generate_dockerfile("debian-riscv64-cross", "debian-sid",
++                        project="qemu-minimal",
++                        cross="riscv64",
++                        trailer=cross_build("riscv64-linux-gnu-",
++                                            "riscv64-softmmu,riscv64-linux-user"))
++
+     generate_dockerfile("debian-s390x-cross", "debian-11",
+                         cross="s390x",
+                         trailer=cross_build("s390x-linux-gnu-",
 -- 
 2.39.2
 
