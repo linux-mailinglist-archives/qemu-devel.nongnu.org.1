@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA0D7745DFA
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 15:55:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B23E6745DED
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 15:54:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGJzx-0000ec-75; Mon, 03 Jul 2023 09:53:50 -0400
+	id 1qGJzg-0000TY-NK; Mon, 03 Jul 2023 09:53:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qGJzj-0000Ya-Sd
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 09:53:35 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ id 1qGJzf-0000T6-7O
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 09:53:31 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qGJzi-00083g-4E
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 09:53:35 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-3fbc6ab5ff5so40371005e9.1
- for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 06:53:33 -0700 (PDT)
+ id 1qGJzd-00081U-DM
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 09:53:30 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-3fbc1218262so54673825e9.3
+ for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 06:53:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688392413; x=1690984413;
+ d=linaro.org; s=google; t=1688392408; x=1690984408;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=7Mnp8y2sy0S7tTiA16Y+6uh+LPx0EUvTSKKrt0wZYOY=;
- b=qL7nZT0aCCIujUGSsKbP9AuPbtlnvKLalFwg5qxpruA24pzhu8Xw84nglQtw4F/X7N
- Ayx7inBY8OFjh3auk3hN3MilXUYj038wIMO4C6glg77wnw8aVL9Kbbft67f0SB9MFZ0T
- qUfl0yQMEOXlgW+edc+JF7YCRf96CiyBj0+f42NrTK/4EPIGvCvJ7rXfwnOmCD6lzX0C
- BPVbCeFhBNyHsMc3eKWB1cqC9fnrgi+DQzgUSc2++M1OacHGMRNCQLiPjXcQ4AYY0QHy
- 0ONOtrI2pqup453j3WgtrKJR+NI6ekmFgIMGno0eSxTW9rK/LEE8Ywah3TWx1cTvs1r9
- E9Rw==
+ bh=w6WYXW4Y2CRXzJldZHFZiOGa1GgkyQ7N7MNmvXCUxfM=;
+ b=yZ9K7324qeFp4nFloVx8dob12Bc1ydtmXPOANDeAunnpBTm3/jaW/8K4faEQxjNCkK
+ jFLQdve+mN4MmXPx25tsorihiHYl6kGCR3pbmwwayQKWG+tXVm5pBLVozZnmOHPie521
+ g5sWwDUGMaY8/H8dB8dc4ZUyzlWTepTMxPyzrhXpoOg1mzgsn6+0bp+bb0WwHeA4eH76
+ FSpSYIbs+jbJr23rEs9JWAL3kxbHuDlBD8xfjO3ZNj8IJ1KZH5KeLQ3oJ24jP6xrXVK4
+ aUXVpUvrOEg4KCzWmiEFiXiZU0EBgoiGbG9RLsDMfxx/WlWmkjrcFD3wVrDltzyjhoyP
+ 7G3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688392413; x=1690984413;
+ d=1e100.net; s=20221208; t=1688392408; x=1690984408;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=7Mnp8y2sy0S7tTiA16Y+6uh+LPx0EUvTSKKrt0wZYOY=;
- b=a9s7ZrDHwbe9heKaUhuz8nhug1CEqOJDL3ONHimRwkw7i2jXZGi5j7b1K2hYmzu/49
- 2lDBv78m5N58GMnvXOl+wA/VXElKE2TQrXo15EGNvLxwOB0iv9udG/aw3KO66BQP1QCO
- YQzuLgGJ3qmLbXrdthZY/lC5MMKU8YHiNH8G5BR9VewBOVfNHk9tRzWSwO5qubCJ/xzT
- WNoT6YazfMmeRNJ0cH8d09kv4TcXBcuWIRycfu/6t/XmzPVNBakOMLl79ZVBye8WrCmx
- jPdwFPGDKC1hTFqUdimm69WCov/U9VDjrNu566+en++x+r9AiIMOgs7bc55bvZBrPYSb
- g6YA==
-X-Gm-Message-State: ABy/qLZKiMe1V3f7bHb/fW5WZHp6piV0Yf0TGJ5hv7LlSmeTGPyA8tD9
- nL7GtaA5XnBLfzS6FaLuG4hhJA==
-X-Google-Smtp-Source: APBJJlER0lnSS4EVEK3wr2WGTCEQHsZ5M398nu/ODNUbuRibgp/CHXUepZPnXgr2+jHNVHhRGL8Jtg==
-X-Received: by 2002:a5d:494c:0:b0:314:3724:6fcb with SMTP id
- r12-20020a5d494c000000b0031437246fcbmr2801262wrs.50.1688392412875; 
- Mon, 03 Jul 2023 06:53:32 -0700 (PDT)
+ bh=w6WYXW4Y2CRXzJldZHFZiOGa1GgkyQ7N7MNmvXCUxfM=;
+ b=DVH7EDMV9PxL4IYeWeAu0qoHtXWOi5qfMpPKwSFkKIBBKc4UYNHIigLDvpbMxY2HpG
+ V5WoB/r/oOUsnLfFcOB/po0n5pUiVyi4sb/o02+A/bAXijJvTdSXghp8aGmJMBctgRH8
+ yLBk6TOdqvaksTz/ZAL5Sq13MKp3SF0Bo7rzl1xgISlkiIdNdJ3kGYlfrvbHzBsRRPVY
+ 5tb+T/DGxrO6CDyQw01WAA9pNzb9hDxeXbmTGSfDybt3gq7Oq2Lp2u/2jTszITPpVEua
+ fJ1ZESOQmDby1XOOo0kU+tZDbrocaQHJmpjmcGZtlWhZmtrZyEYbd6iEcUu7CvSdlXuY
+ KtDg==
+X-Gm-Message-State: ABy/qLYtzEsz3sc8PO8elj3wH+t/ISyiv/9kn1i/OQ4Ok9RnkQqwn6Wh
+ Nr/lne2TY/6fINd5mS/LcxX/Mg==
+X-Google-Smtp-Source: APBJJlEwI+tG4ka4X2WNFrHru0XlOSGB9dLQ9eXnOSSpFsQHBJt+RN/8bIpmrn6QnYGuNMPgmd4O8A==
+X-Received: by 2002:a7b:cb94:0:b0:3fb:dbd0:a7e7 with SMTP id
+ m20-20020a7bcb94000000b003fbdbd0a7e7mr1704581wmi.39.1688392407875; 
+ Mon, 03 Jul 2023 06:53:27 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- w11-20020a5d680b000000b00313f031876esm21505406wru.43.2023.07.03.06.53.29
+ n9-20020a1c7209000000b003fbacc853ccsm15777974wmc.18.2023.07.03.06.53.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 03 Jul 2023 06:53:32 -0700 (PDT)
+ Mon, 03 Jul 2023 06:53:27 -0700 (PDT)
 Received: from zen.lan (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 7DAD81FFC2;
+ by zen.linaroharston (Postfix) with ESMTP id 972C81FFD7;
  Mon,  3 Jul 2023 14:44:31 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org, Ilya Leoshkevich <iii@linux.ibm.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Laurent Vivier <laurent@vivier.eu>
-Subject: [PULL 32/38] linux-user: Add "safe" parameter to do_guest_openat()
-Date: Mon,  3 Jul 2023 14:44:21 +0100
-Message-Id: <20230703134427.1389440-33-alex.bennee@linaro.org>
+Subject: [PULL 33/38] linux-user: Emulate /proc/self/smaps
+Date: Mon,  3 Jul 2023 14:44:22 +0100
+Message-Id: <20230703134427.1389440-34-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230703134427.1389440-1-alex.bennee@linaro.org>
 References: <20230703134427.1389440-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,87 +99,119 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Ilya Leoshkevich <iii@linux.ibm.com>
 
-gdbstub cannot meaningfully handle QEMU_ERESTARTSYS, and it doesn't
-need to. Add a parameter to do_guest_openat() that makes it use
-openat() instead of safe_openat(), so that it becomes usable from
-gdbstub.
+/proc/self/smaps is an extension of /proc/self/maps: it provides the
+same lines, plus additional information about each range.
+
+GDB uses /proc/self/smaps when available, which means that
+generate-core-file tries it first before falling back to
+/proc/self/maps. This, in turn, causes it to dump the host mappings,
+since /proc/self/smaps is not emulated and is just passed through.
+
+Fix by emulating /proc/self/smaps. Provide true values only for
+Size, KernelPageSize, MMUPageSize and VmFlags. Leave all other values
+at 0, which is a valid conservative estimate.
 
 Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20230621203627.1808446-3-iii@linux.ibm.com>
+Message-Id: <20230621203627.1808446-4-iii@linux.ibm.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20230630180423.558337-33-alex.bennee@linaro.org>
+Message-Id: <20230630180423.558337-34-alex.bennee@linaro.org>
 
-diff --git a/linux-user/qemu.h b/linux-user/qemu.h
-index a5830ec239..9b8e0860d7 100644
---- a/linux-user/qemu.h
-+++ b/linux-user/qemu.h
-@@ -166,7 +166,7 @@ typedef struct TaskState {
- 
- abi_long do_brk(abi_ulong new_brk);
- int do_guest_openat(CPUArchState *cpu_env, int dirfd, const char *pathname,
--                    int flags, mode_t mode);
-+                    int flags, mode_t mode, bool safe);
- ssize_t do_guest_readlink(const char *pathname, char *buf, size_t bufsiz);
- 
- /* user access */
 diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index fa83737192..ecd9f5e23d 100644
+index ecd9f5e23d..08162cc966 100644
 --- a/linux-user/syscall.c
 +++ b/linux-user/syscall.c
-@@ -8449,7 +8449,7 @@ static int open_hardware(CPUArchState *cpu_env, int fd)
- #endif
- 
- int do_guest_openat(CPUArchState *cpu_env, int dirfd, const char *pathname,
--                    int flags, mode_t mode)
-+                    int flags, mode_t mode, bool safe)
- {
-     struct fake_open {
-         const char *filename;
-@@ -8476,7 +8476,11 @@ int do_guest_openat(CPUArchState *cpu_env, int dirfd, const char *pathname,
-     };
- 
-     if (is_proc_myself(pathname, "exe")) {
--        return safe_openat(dirfd, exec_path, flags, mode);
-+        if (safe) {
-+            return safe_openat(dirfd, exec_path, flags, mode);
-+        } else {
-+            return openat(dirfd, exec_path, flags, mode);
-+        }
-     }
- 
-     for (fake_open = fakes; fake_open->filename; fake_open++) {
-@@ -8518,7 +8522,11 @@ int do_guest_openat(CPUArchState *cpu_env, int dirfd, const char *pathname,
-         return fd;
-     }
- 
--    return safe_openat(dirfd, path(pathname), flags, mode);
-+    if (safe) {
-+        return safe_openat(dirfd, path(pathname), flags, mode);
-+    } else {
-+        return openat(dirfd, path(pathname), flags, mode);
-+    }
+@@ -8042,7 +8042,36 @@ static int open_self_cmdline(CPUArchState *cpu_env, int fd)
+     return 0;
  }
  
- ssize_t do_guest_readlink(const char *pathname, char *buf, size_t bufsiz)
-@@ -9027,7 +9035,7 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
-             return -TARGET_EFAULT;
-         ret = get_errno(do_guest_openat(cpu_env, AT_FDCWD, p,
-                                   target_to_host_bitmask(arg2, fcntl_flags_tbl),
--                                  arg3));
-+                                  arg3, true));
-         fd_trans_unregister(ret);
-         unlock_user(p, arg1, 0);
-         return ret;
-@@ -9037,7 +9045,7 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
-             return -TARGET_EFAULT;
-         ret = get_errno(do_guest_openat(cpu_env, arg1, p,
-                                   target_to_host_bitmask(arg3, fcntl_flags_tbl),
--                                  arg4));
-+                                  arg4, true));
-         fd_trans_unregister(ret);
-         unlock_user(p, arg2, 0);
-         return ret;
+-static int open_self_maps(CPUArchState *cpu_env, int fd)
++static void show_smaps(int fd, unsigned long size)
++{
++    unsigned long page_size_kb = TARGET_PAGE_SIZE >> 10;
++    unsigned long size_kb = size >> 10;
++
++    dprintf(fd, "Size:                  %lu kB\n"
++                "KernelPageSize:        %lu kB\n"
++                "MMUPageSize:           %lu kB\n"
++                "Rss:                   0 kB\n"
++                "Pss:                   0 kB\n"
++                "Pss_Dirty:             0 kB\n"
++                "Shared_Clean:          0 kB\n"
++                "Shared_Dirty:          0 kB\n"
++                "Private_Clean:         0 kB\n"
++                "Private_Dirty:         0 kB\n"
++                "Referenced:            0 kB\n"
++                "Anonymous:             0 kB\n"
++                "LazyFree:              0 kB\n"
++                "AnonHugePages:         0 kB\n"
++                "ShmemPmdMapped:        0 kB\n"
++                "FilePmdMapped:         0 kB\n"
++                "Shared_Hugetlb:        0 kB\n"
++                "Private_Hugetlb:       0 kB\n"
++                "Swap:                  0 kB\n"
++                "SwapPss:               0 kB\n"
++                "Locked:                0 kB\n"
++                "THPeligible:    0\n", size_kb, page_size_kb, page_size_kb);
++}
++
++static int open_self_maps_1(CPUArchState *cpu_env, int fd, bool smaps)
+ {
+     CPUState *cpu = env_cpu(cpu_env);
+     TaskState *ts = cpu->opaque;
+@@ -8089,6 +8118,18 @@ static int open_self_maps(CPUArchState *cpu_env, int fd)
+             } else {
+                 dprintf(fd, "\n");
+             }
++            if (smaps) {
++                show_smaps(fd, max - min);
++                dprintf(fd, "VmFlags:%s%s%s%s%s%s%s%s\n",
++                        (flags & PAGE_READ) ? " rd" : "",
++                        (flags & PAGE_WRITE_ORG) ? " wr" : "",
++                        (flags & PAGE_EXEC) ? " ex" : "",
++                        e->is_priv ? "" : " sh",
++                        (flags & PAGE_READ) ? " mr" : "",
++                        (flags & PAGE_WRITE_ORG) ? " mw" : "",
++                        (flags & PAGE_EXEC) ? " me" : "",
++                        e->is_priv ? "" : " ms");
++            }
+         }
+     }
+ 
+@@ -8103,11 +8144,25 @@ static int open_self_maps(CPUArchState *cpu_env, int fd)
+                     " --xp 00000000 00:00 0",
+                     TARGET_VSYSCALL_PAGE, TARGET_VSYSCALL_PAGE + TARGET_PAGE_SIZE);
+     dprintf(fd, "%*s%s\n", 73 - count, "",  "[vsyscall]");
++    if (smaps) {
++        show_smaps(fd, TARGET_PAGE_SIZE);
++        dprintf(fd, "VmFlags: ex\n");
++    }
+ #endif
+ 
+     return 0;
+ }
+ 
++static int open_self_maps(CPUArchState *cpu_env, int fd)
++{
++    return open_self_maps_1(cpu_env, fd, false);
++}
++
++static int open_self_smaps(CPUArchState *cpu_env, int fd)
++{
++    return open_self_maps_1(cpu_env, fd, true);
++}
++
+ static int open_self_stat(CPUArchState *cpu_env, int fd)
+ {
+     CPUState *cpu = env_cpu(cpu_env);
+@@ -8459,6 +8514,7 @@ int do_guest_openat(CPUArchState *cpu_env, int dirfd, const char *pathname,
+     const struct fake_open *fake_open;
+     static const struct fake_open fakes[] = {
+         { "maps", open_self_maps, is_proc_myself },
++        { "smaps", open_self_smaps, is_proc_myself },
+         { "stat", open_self_stat, is_proc_myself },
+         { "auxv", open_self_auxv, is_proc_myself },
+         { "cmdline", open_self_cmdline, is_proc_myself },
 -- 
 2.39.2
 
