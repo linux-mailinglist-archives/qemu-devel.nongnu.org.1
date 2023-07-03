@@ -2,76 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65908745DA6
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 15:45:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 697B7745DC7
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 15:51:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGJrB-0007Zb-Hh; Mon, 03 Jul 2023 09:44:45 -0400
+	id 1qGJr7-0007RF-GX; Mon, 03 Jul 2023 09:44:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qGJqz-0007OL-Cw
+ id 1qGJqy-0007NK-Te
  for qemu-devel@nongnu.org; Mon, 03 Jul 2023 09:44:33 -0400
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qGJqw-0005fP-Lr
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 09:44:33 -0400
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-3113da5260dso4920323f8f.2
- for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 06:44:30 -0700 (PDT)
+ id 1qGJqw-0005fQ-Lw
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 09:44:32 -0400
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-3141140f51bso5996050f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 06:44:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1688391868; x=1690983868;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=lmetaZ2AX9YHOFA/cIbsV+rLW+2EymnYScxuqRuEY5Y=;
- b=tE9yLvYUo9sCVVjwi+8666wJWQfiIb373jrYHh08J5TZ3+yh/COd+NVaqs2yfioNLc
- MVFc3YIWwtiuxhBOPkV/khMA0RHQT10a2hJQhCUQUxrDu//qpT+3pESTxZ6qf4qiDMSV
- nSgtf2E+KZAGR5J5t9flNaxCiaLAsRr10zLHun0MPjIMh7gBH/+3f/MuoZw9NQZmEyYo
- jSksO7NcO1rMKmL+j3Wu30JE7xq3pDn5pKZPaSHNl0fBREGsK8TOXUiT0uPp1oSqyDLl
- C4087I529EpMshp7Pr7OKE1A7COciPexbOyjMy167eXmRUsxhlaQRKPb87dUzp4ec/Bi
- /UVQ==
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=mBABYgdiyToLjyHowniWhIyVXJ273GgxeMYZV8p8dqk=;
+ b=MiOYZnwLRGvy6qN11Asf+2HZQxJxfTYjxsn7Kb+4kqT4fLepYWqyV0E8phtu9/a/Oy
+ zCP53wRT/q2kCQ5kiNR9qZycLTGljf7iOpHjbC3uvb4UEGOo+cK4gXcLuntnAojJO5By
+ R9DGvgs5S/SbMD6udFTrgOtkI5sebjNq6trArJ+nHLKZyyBaFt/figMQVpGEtgszkHqd
+ zbPGFY5dcEku6XoeZtKfpRb1wtQy42B0qgMz0ywMSTvtcZsrbPRJplU5s5pUT4KDANco
+ ViD5k/CqnqXSP6sBdm+NRR47Z/1pleSUdo/F9VAPjATi/xGP2stFu+/xs+/noTm9OksF
+ RpIw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20221208; t=1688391868; x=1690983868;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=lmetaZ2AX9YHOFA/cIbsV+rLW+2EymnYScxuqRuEY5Y=;
- b=dcG6YMMOUzo/sxnbosmN9rGbZmkAYebpCLHqqpVLqP/4Oe8aswJZG6WeIjz3bEzedq
- trdHKj4uTm7tAkIH/9h/l5wHhZzGM/FEMW83mBRE4wLJXCmyTTaqLXdE9zS6JfQonnLD
- TpQodVbXOXIV0X+y/1Um7UHCKhaQn9UKrQJHYEe/CTsUq4es/2bh0BivoKM2SwS4PTxF
- aMNxiZkQ1H5+Kc82WpllhSKaMmtuwoPTi33NjTRtovpl07XYu2Z6NbSJkqZ2XA17oenA
- fiq7S2M9AwxSSi/LDiQ2Q8lXwbS1fCxw7A3232/ibKeUVy1oN+Neq37Y905qa+F6fGKu
- 9vlg==
-X-Gm-Message-State: ABy/qLZo6I6SLlOwlCvOQoWsYMjUajEK/kXz5bGynWWg+1GPhQXgnbqU
- 4mOYrFSkZhVPdGrGAjWfiqz8/vpuMKtDOzBYXO8=
-X-Google-Smtp-Source: APBJJlGzeMVFYZ8Ew5AMGc7Otzh2m/bS5U7Hdwaw00hzbSigI/FfgoQ5CiIWQXoXbrCyBmw9oUhm4A==
-X-Received: by 2002:a5d:5444:0:b0:313:f1ec:f429 with SMTP id
- w4-20020a5d5444000000b00313f1ecf429mr8074567wrv.46.1688391868523; 
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=mBABYgdiyToLjyHowniWhIyVXJ273GgxeMYZV8p8dqk=;
+ b=hM9mLYolrdseQL/XdfL+Ffn+vxW19labjfRgpl+gDZSoV+tfJTHBZCxBeoCxiarGE7
+ ecU2fTUMfap/aIiz9Vy8bX9O9ZMe032IEZM1JgPQwaF6n+hHSqbNxX+2jw06eNr5eM+P
+ BjhQjippsE9JLfaxrYJzwtZ2RC4ZAy+MUc4mLiogIs7l6rM8G3jp0lPBkKRq9Aq2dYXo
+ RW46TG5bLkV4viDwXwtgwFhamdIOx9HxAw48bSmH97SzbIuYJ9mNJ1grrJCJ4yHuaxsH
+ ixuZtIh/8cQqT4NRKL/u8bXFe0+6Zu26FwnJ0wQVgm4LuWUG/LUyxWAtYz3RMleDZgnh
+ CHHg==
+X-Gm-Message-State: ABy/qLYJSNVhzDHP2pXdqPiKgBQOsHVjrgmtd29wcavKJHZWznH4BDC2
+ CJo4qTKkEjlU/X3NMDeHtyawpw==
+X-Google-Smtp-Source: APBJJlERKH2n2OlEPlJESt1HCL2ESaEYOgd8+SU7nICequM4zRd+IlmUG8XOVeEdXuWv20gBWggBjA==
+X-Received: by 2002:a5d:408d:0:b0:313:eb35:570e with SMTP id
+ o13-20020a5d408d000000b00313eb35570emr8531157wrp.68.1688391868759; 
  Mon, 03 Jul 2023 06:44:28 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- n5-20020adfe345000000b0030e5bd253aasm25615416wrj.39.2023.07.03.06.44.28
+ l6-20020adff486000000b00313fd294d6csm17607720wro.7.2023.07.03.06.44.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Mon, 03 Jul 2023 06:44:28 -0700 (PDT)
 Received: from zen.lan (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id D4D151FFBB;
- Mon,  3 Jul 2023 14:44:27 +0100 (BST)
+ by zen.linaroharston (Postfix) with ESMTP id 01FCC1FFBC;
+ Mon,  3 Jul 2023 14:44:28 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PULL 00/38] maintainer updates for 8.1: testing, fuzz, plugins, docs,
- gdbstub
-Date: Mon,  3 Jul 2023 14:43:49 +0100
-Message-Id: <20230703134427.1389440-1-alex.bennee@linaro.org>
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>, Bin Meng <bmeng.cn@gmail.com>
+Subject: [PULL 01/38] gitlab: explicit set artifacts publishing criteria
+Date: Mon,  3 Jul 2023 14:43:50 +0100
+Message-Id: <20230703134427.1389440-2-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20230703134427.1389440-1-alex.bennee@linaro.org>
+References: <20230703134427.1389440-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,177 +101,116 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit d145c0da22cde391d8c6672d33146ce306e8bf75:
+From: Daniel P. Berrangé <berrange@redhat.com>
 
-  Merge tag 'pull-tcg-20230701' of https://gitlab.com/rth7680/qemu into staging (2023-07-01 08:55:37 +0200)
+If not set explicitly, gitlab assumes 'when: on_success" as the
+publishing criteria for artifacts. This is reasonable if the
+artifact is an output deliverable of the job. This is useless
+if the artifact is a log file to be used for debugging job
+failures.
 
-are available in the Git repository at:
+This change makes the desired criteria explicit for every job
+that publishes artifacts.
 
-  https://gitlab.com/stsquad/qemu.git tags/pull-maintainer-ominbus-030723-1
+Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-Id: <20230503145535.91325-2-berrange@redhat.com>
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+Message-Id: <20230630180423.558337-2-alex.bennee@linaro.org>
 
-for you to fetch changes up to a6341482695e1d15f11915f12dba98724efb0697:
-
-  tests/tcg: Add a test for info proc mappings (2023-07-03 12:52:38 +0100)
-
-----------------------------------------------------------------
-maintainer updates: testing, fuzz, plugins, docs, gdbstub
-
- - clean up gitlab artefact handling
- - ensure gitlab publishes artefacts with coverage data
- - reduce testing scope for coverage job
- - mention CI pipeline in developer docs
- - add ability to add plugin args to check-tcg
- - fix some memory leaks and UB in tests
- - suppress xcb leaks from fuzzing output
- - add a test-fuzz to mirror the CI run
- - allow lci-refresh to be run in $SRC
- - update lcitool to latest version
- - add qemu-minimal package set with gcc-native
- - convert riscv64-cross to lcitool
- - update sbsa-ref tests
- - don't include arm_casq_ptw emulation unless TCG
- - convert plugins to use g_memdup2
- - ensure plugins instrument SVE helper mem access
- - improve documentation of QOM/QDEV
- - make gdbstub send stop responses when it should
- - report user-mode pid in gdbstub
- - add support for info proc mappings in gdbstub
-
-----------------------------------------------------------------
-Alex Bennée (22):
-      gitlab: reduce testing scope of check-gcov
-      tests/tcg: add mechanism to handle plugin arguments
-      qemu-keymap: properly check return from xkb_keymap_mod_get_index
-      scripts/oss-fuzz: add a suppression for keymap
-      tests/qtests: clean-up and fix leak in generic_fuzz
-      tests/docker: add test-fuzz
-      Makefile: add lcitool-refresh to UNCHECKED_GOALS
-      tests/lcitool: update to latest version
-      tests/lcitool: add an explicit gcc-native package
-      tests/lcitool: introduce qemu-minimal
-      tests/docker: convert riscv64-cross to lcitool
-      target/arm: make arm_casq_ptw CONFIG_TCG only
-      plugins: force slow path when plugins instrument memory ops
-      plugins: fix memory leak while parsing options
-      plugins: update lockstep to use g_memdup2
-      docs/devel: add some front matter to the devel index
-      include/migration: mark vmstate_register() as a legacy function
-      include/hw/qdev-core: fixup kerneldoc annotations
-      docs/devel: split qom-api reference into new file
-      docs/devel: introduce some key concepts for QOM development
-      gdbstub: lightly refactor connection to avoid snprintf
-      gdbstub: clean-up vcont handling to avoid goto
-
-Ani Sinha (1):
-      docs/devel: remind developers to run CI container pipeline when updating images
-
-Daniel P. Berrangé (2):
-      gitlab: explicit set artifacts publishing criteria
-      gitlab: ensure coverage job also publishes meson log
-
-Erik Skultety (1):
-      tests/lcitool: Bump fedora container versions
-
-Ilya Leoshkevich (8):
-      linux-user: Expose do_guest_openat() and do_guest_readlink()
-      linux-user: Add "safe" parameter to do_guest_openat()
-      linux-user: Emulate /proc/self/smaps
-      gdbstub: Expose gdb_get_process() and gdb_get_first_cpu_in_process()
-      gdbstub: Report the actual qemu-user pid
-      gdbstub: Add support for info proc mappings
-      docs: Document security implications of debugging
-      tests/tcg: Add a test for info proc mappings
-
-Marcin Juszkiewicz (1):
-      tests/avocado: update firmware to enable sbsa-ref/max
-
-Nicholas Piggin (1):
-      gdbstub: Permit reverse step/break to provide stop response
-
-Philippe Mathieu-Daudé (1):
-      docs/devel/qom.rst: Correct code style
-
-Thomas Huth (1):
-      tests/avocado: Make the test_arm_bpim2u_gmac test more reliable
-
- MAINTAINERS                                        |   1 +
- docs/devel/index-api.rst                           |   2 +
- docs/devel/index-process.rst                       |   2 +
- docs/devel/index-tcg.rst                           |   2 +
- docs/devel/index.rst                               |  24 +-
- docs/devel/qdev-api.rst                            |   7 +
- docs/devel/qom-api.rst                             |   9 +
- docs/devel/qom.rst                                 |  65 +++-
- docs/devel/tcg.rst                                 |   2 +
- docs/devel/testing.rst                             |   6 +
- docs/system/gdb.rst                                |  15 +
- Makefile                                           |   2 +-
- gdbstub/internals.h                                |   7 +
- include/exec/cpu-all.h                             |   2 +-
- include/exec/exec-all.h                            |  23 ++
- include/hw/core/cpu.h                              |  17 +
- include/hw/qdev-core.h                             | 368 ++++++++++++++-------
- include/migration/vmstate.h                        |  10 +-
- linux-user/qemu.h                                  |   3 +
- accel/tcg/cputlb.c                                 |  41 ++-
- accel/tcg/user-exec.c                              |   8 +-
- contrib/plugins/cache.c                            |   2 +-
- contrib/plugins/drcov.c                            |   2 +-
- contrib/plugins/execlog.c                          |   2 +-
- contrib/plugins/hotblocks.c                        |   2 +-
- contrib/plugins/hotpages.c                         |   2 +-
- contrib/plugins/howvec.c                           |   2 +-
- contrib/plugins/hwprofile.c                        |   2 +-
- contrib/plugins/lockstep.c                         |   4 +-
- gdbstub/gdbstub.c                                  | 115 ++++---
- gdbstub/softmmu.c                                  |  19 +-
- gdbstub/user-target.c                              | 137 ++++++++
- linux-user/syscall.c                               | 128 +++++--
- qemu-keymap.c                                      |  24 +-
- target/arm/ptw.c                                   |  18 +-
- target/arm/tcg/sve_helper.c                        |   4 -
- tests/plugin/bb.c                                  |   2 +-
- tests/plugin/insn.c                                |   2 +-
- tests/plugin/mem.c                                 |   2 +-
- tests/plugin/syscall.c                             |   2 +-
- tests/qtest/fuzz/generic_fuzz.c                    |  13 +-
- .gitlab-ci.d/buildtest-template.yml                |   4 +-
- .gitlab-ci.d/buildtest.yml                         |   7 +-
- .gitlab-ci.d/crossbuild-template.yml               |   1 +
- .gitlab-ci.d/crossbuilds.yml                       |   2 +
- .gitlab-ci.d/opensbi.yml                           |   1 +
- scripts/oss-fuzz/lsan_suppressions.txt             |   3 +
- tests/avocado/boot_linux_console.py                |   4 +-
- tests/avocado/machine_aarch64_sbsaref.py           |  23 +-
- tests/docker/dockerfiles/alpine.docker             |   4 +-
- tests/docker/dockerfiles/debian-amd64-cross.docker |   1 +
- tests/docker/dockerfiles/debian-arm64-cross.docker |   1 +
- tests/docker/dockerfiles/debian-armel-cross.docker |   1 +
- tests/docker/dockerfiles/debian-armhf-cross.docker |   1 +
- .../dockerfiles/debian-mips64el-cross.docker       |   1 +
- .../docker/dockerfiles/debian-mipsel-cross.docker  |   1 +
- .../docker/dockerfiles/debian-ppc64el-cross.docker |   1 +
- .../docker/dockerfiles/debian-riscv64-cross.docker | 119 ++++---
- tests/docker/dockerfiles/debian-s390x-cross.docker |   1 +
- tests/docker/dockerfiles/fedora-win32-cross.docker |   5 +-
- tests/docker/dockerfiles/fedora-win64-cross.docker |   5 +-
- tests/docker/dockerfiles/fedora.docker             |   4 +-
- tests/docker/test-fuzz                             |  28 ++
- tests/lcitool/libvirt-ci                           |   2 +-
- tests/lcitool/projects/qemu-minimal.yml            |  27 ++
- tests/lcitool/projects/qemu.yml                    |   1 +
- tests/lcitool/refresh                              |  18 +-
- tests/tcg/Makefile.target                          |   8 +-
- tests/tcg/aarch64/Makefile.target                  |   8 +
- tests/tcg/multiarch/Makefile.target                |   9 +-
- tests/tcg/multiarch/gdbstub/test-proc-mappings.py  |  65 ++++
- 71 files changed, 1125 insertions(+), 331 deletions(-)
- create mode 100644 docs/devel/qdev-api.rst
- create mode 100644 docs/devel/qom-api.rst
- create mode 100755 tests/docker/test-fuzz
- create mode 100644 tests/lcitool/projects/qemu-minimal.yml
- create mode 100644 tests/tcg/multiarch/gdbstub/test-proc-mappings.py
-
+diff --git a/.gitlab-ci.d/buildtest-template.yml b/.gitlab-ci.d/buildtest-template.yml
+index 5da61f4277..f3e39b7eb1 100644
+--- a/.gitlab-ci.d/buildtest-template.yml
++++ b/.gitlab-ci.d/buildtest-template.yml
+@@ -25,6 +25,7 @@
+ # rebuilding all the object files we skip in the artifacts
+ .native_build_artifact_template:
+   artifacts:
++    when: on_success
+     expire_in: 2 days
+     paths:
+       - build
+@@ -53,6 +54,7 @@
+   extends: .common_test_job_template
+   artifacts:
+     name: "$CI_JOB_NAME-$CI_COMMIT_REF_SLUG"
++    when: always
+     expire_in: 7 days
+     paths:
+       - build/meson-logs/testlog.txt
+@@ -68,7 +70,7 @@
+     policy: pull-push
+   artifacts:
+     name: "$CI_JOB_NAME-$CI_COMMIT_REF_SLUG"
+-    when: on_failure
++    when: always
+     expire_in: 7 days
+     paths:
+       - build/tests/results/latest/results.xml
+diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
+index aa833b62ca..24bba061cd 100644
+--- a/.gitlab-ci.d/buildtest.yml
++++ b/.gitlab-ci.d/buildtest.yml
+@@ -462,6 +462,7 @@ gcov:
+   coverage: /^\s*lines:\s*\d+.\d+\%/
+   artifacts:
+     name: ${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHA}
++    when: on_success
+     expire_in: 2 days
+     reports:
+       coverage_report:
+@@ -587,6 +588,7 @@ pages:
+     - make -C build install DESTDIR=$(pwd)/temp-install
+     - mv temp-install/usr/local/share/doc/qemu/* public/
+   artifacts:
++    when: on_success
+     paths:
+       - public
+   variables:
+diff --git a/.gitlab-ci.d/crossbuild-template.yml b/.gitlab-ci.d/crossbuild-template.yml
+index 6efb0d2a54..d97611053b 100644
+--- a/.gitlab-ci.d/crossbuild-template.yml
++++ b/.gitlab-ci.d/crossbuild-template.yml
+@@ -55,6 +55,7 @@
+ .cross_test_artifacts:
+   artifacts:
+     name: "$CI_JOB_NAME-$CI_COMMIT_REF_SLUG"
++    when: always
+     expire_in: 7 days
+     paths:
+       - build/meson-logs/testlog.txt
+diff --git a/.gitlab-ci.d/crossbuilds.yml b/.gitlab-ci.d/crossbuilds.yml
+index b6ec99ecd1..84ff2f6d2b 100644
+--- a/.gitlab-ci.d/crossbuilds.yml
++++ b/.gitlab-ci.d/crossbuilds.yml
+@@ -169,6 +169,7 @@ cross-win32-system:
+     CROSS_SKIP_TARGETS: alpha-softmmu avr-softmmu hppa-softmmu m68k-softmmu
+                         microblazeel-softmmu mips64el-softmmu nios2-softmmu
+   artifacts:
++    when: on_success
+     paths:
+       - build/qemu-setup*.exe
+ 
+@@ -184,6 +185,7 @@ cross-win64-system:
+                         or1k-softmmu rx-softmmu sh4eb-softmmu sparc64-softmmu
+                         tricore-softmmu xtensaeb-softmmu
+   artifacts:
++    when: on_success
+     paths:
+       - build/qemu-setup*.exe
+ 
+diff --git a/.gitlab-ci.d/opensbi.yml b/.gitlab-ci.d/opensbi.yml
+index b4d7eef688..fd293e6c31 100644
+--- a/.gitlab-ci.d/opensbi.yml
++++ b/.gitlab-ci.d/opensbi.yml
+@@ -63,6 +63,7 @@ build-opensbi:
+   stage: build
+   needs: ['docker-opensbi']
+   artifacts:
++    when: on_success
+     paths: # 'artifacts.zip' will contains the following files:
+       - pc-bios/opensbi-riscv32-generic-fw_dynamic.bin
+       - pc-bios/opensbi-riscv64-generic-fw_dynamic.bin
 -- 
 2.39.2
 
