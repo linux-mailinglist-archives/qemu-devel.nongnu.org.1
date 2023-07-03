@@ -2,71 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 846D77464AD
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 23:07:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FAE77464C9
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 23:19:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGQkC-0008H3-Kw; Mon, 03 Jul 2023 17:06:00 -0400
+	id 1qGQw8-00029R-33; Mon, 03 Jul 2023 17:18:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qGQkA-0008DB-9o
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 17:05:58 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qGQk7-0001Gr-9z
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 17:05:58 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688418354;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=8hCPYuhpD7fHReInU3/HZRT6E248d9IXMZYDX1Er6NI=;
- b=Y/yfghsMZRYKfy/sETeAv38zhYqFCfxxVG4+9V5hNNC4KRhmox1flUTZwiE2WECc5gr/ZO
- 4Q96mRZfQuoTPiJExuJGAFvojC057ROiGqANtBpLKRABzdWaIIq58R6OmzDUFJBLHgZ68a
- 9LwUOth/Mnn6ZdqTZbKr0JGSYlc2T1Y=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-133-nJ5TL8arPl6n89NyEO-GYw-1; Mon, 03 Jul 2023 17:05:52 -0400
-X-MC-Unique: nJ5TL8arPl6n89NyEO-GYw-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3430C185A791;
- Mon,  3 Jul 2023 21:05:52 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.48])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 34D384087C6B;
- Mon,  3 Jul 2023 21:05:51 +0000 (UTC)
-Date: Mon, 3 Jul 2023 22:05:49 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- laurent@vivier.eu, Florian Weimer <fweimer@redhat.com>,
- Sajan Karumanchi <sajan.karumanchi@amd.com>
-Subject: GLibC AMD CPUID cache reporting regression (was Re: qemu-user self
- emulation broken with default CPU on x86/x64)
-Message-ID: <ZKM4LV5UboN7PGni@redhat.com>
-References: <c0a35ed3-7e4a-aea6-a3bd-9f0e4079f4e0@linaro.org>
+ (Exim 4.90_1) (envelope-from <groeck7@gmail.com>)
+ id 1qGQvy-00028l-Kp; Mon, 03 Jul 2023 17:18:10 -0400
+Received: from mail-yb1-xb30.google.com ([2607:f8b0:4864:20::b30])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <groeck7@gmail.com>)
+ id 1qGQvw-0003jq-NT; Mon, 03 Jul 2023 17:18:10 -0400
+Received: by mail-yb1-xb30.google.com with SMTP id
+ 3f1490d57ef6-bd77424c886so5629727276.0; 
+ Mon, 03 Jul 2023 14:18:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1688419087; x=1691011087;
+ h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+ :content-language:user-agent:mime-version:date:message-id:sender
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=OiGVhNACu6wLZYWtciXM0K64IhZldeEah0ukz/zlWKY=;
+ b=BQP0WK0C4FAChbSfa+oNzrGSfz9IMedw2CuNM4m3xLPrthfM6oxTT4mOAdSW8vCrKd
+ sC5CFqpBI8WAd7JpojxdkUYF5+vDWCNTYrTRMgx3Wrmdy7/I7+6fbnuqWILoca/uOFvQ
+ YWWleDf2as0eUL1ND98+pylGvFKixV6olPmYcnrdyWj2PUopCE71QhxMYnjfzpcRnZNX
+ nkZ1LN/nQ8VpB7rULshwqjARLxEum8KLjTc80pM+kMFFInASkSS9T8bOQ6MMHkTIJGl8
+ nmh70bvtc3KH0fSQtR/1iD6Eez09uf6QWmMvdjn0xttq9yi2++DixVOejDnJq8Wl89n6
+ kQTg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1688419087; x=1691011087;
+ h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+ :content-language:user-agent:mime-version:date:message-id:sender
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=OiGVhNACu6wLZYWtciXM0K64IhZldeEah0ukz/zlWKY=;
+ b=lbWACYsjYIxIzxjztcHkyXOptc6NcIYiRRNXE3WUWK9eIl7AbM+m14tQg+SXKZhUxC
+ nDEz5PGy5m6GfsWd/ydQWhgXHnzXGrau0sWsPlXgmFkdmb/mTu6e5h1E3Qu7q66BCmsL
+ 3yUPWlwOBkR2PhKm+YakrWit9ok0ymOJVj9EdpJX0ghwgpse/KP8TpxoSCmBWNfn5AR5
+ 66OmYrxEq+uc6EVx509c4sQSnZAhrb2H/NjVRMa94TKAZYY1lq0Dyu6o8LWCaXyo7ygV
+ mRsSHINeFyu4a6XGy8C3nOsd/v9eQKSiaRnNb4C1dKcFUygHTqeg2RrPca9hh9bywtUz
+ 1QuQ==
+X-Gm-Message-State: ABy/qLaDzhU215O9BqKJzmMPMQRGI4pZrh5NDiVnK+sUST0Ghe+L21Nt
+ 9n0hg5+FuFGzsdmiEQtreZA=
+X-Google-Smtp-Source: APBJJlHIlae/v/FOIEg4E7kYTflliq5Fdd+xadzvXDC1ebubgBgCgV7SJtow+S0DVlhp+J0kWMmCrw==
+X-Received: by 2002:a25:ab4c:0:b0:c24:4536:1723 with SMTP id
+ u70-20020a25ab4c000000b00c2445361723mr12682238ybi.26.1688419087233; 
+ Mon, 03 Jul 2023 14:18:07 -0700 (PDT)
+Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c?
+ ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+ by smtp.gmail.com with ESMTPSA id
+ f32-20020a25b0a0000000b00bc501a1b062sm4629732ybj.42.2023.07.03.14.18.05
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 03 Jul 2023 14:18:06 -0700 (PDT)
+Message-ID: <48537c03-786a-e85b-7db3-ab69939de7ab@roeck-us.net>
+Date: Mon, 3 Jul 2023 14:18:04 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <c0a35ed3-7e4a-aea6-a3bd-9f0e4079f4e0@linaro.org>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Content-Language: en-US
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-riscv@nongnu.org,
+ qemu-devel@nongnu.org, Alistair Francis <alistair23@gmail.com>
+References: <20230703034614.3909079-1-linux@roeck-us.net>
+ <399a2293-85c2-c709-91ee-8eef1f59a5e4@ventanamicro.com>
+From: Guenter Roeck <linux@roeck-us.net>
+Subject: Re: [PATCH] riscv: Generate devicetree only after machine
+ initialization is complete
+In-Reply-To: <399a2293-85c2-c709-91ee-8eef1f59a5e4@ventanamicro.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b30;
+ envelope-from=groeck7@gmail.com; helo=mail-yb1-xb30.google.com
+X-Spam_score_int: -12
+X-Spam_score: -1.3
+X-Spam_bar: -
+X-Spam_report: (-1.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_ENVFROM_END_DIGIT=0.25,
+ FREEMAIL_FORGED_FROMDOMAIN=0.25, FREEMAIL_FROM=0.001,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, NICE_REPLY_A=-0.09,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,159 +97,57 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jul 03, 2023 at 06:03:08PM +0200, Pierrick Bouvier wrote:
-> Hi everyone,
+On 7/3/23 12:25, Daniel Henrique Barboza wrote:
+> On 7/3/23 00:46, Guenter Roeck wrote:
+>> If the devicetree is created before machine initialization is complete,
+>> it misses dynamic devices. Specifically, the tpm device is not added
+>> to the devicetree file and is therefore not instantiated in Linux.
+>> Create devicetree in virt_machine_done() to solve the problem.
+>>
+>> Cc: Alistair Francis <alistair23@gmail.com>
+>> Fixes: 325b7c4e75 hw/riscv: Enable TPM backends
+>> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+>> ---
+>>   hw/riscv/virt.c | 9 ++++++---
+>>   1 file changed, 6 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
+>> index ed4c27487e..08876284f5 100644
+>> --- a/hw/riscv/virt.c
+>> +++ b/hw/riscv/virt.c
+>> @@ -1248,6 +1248,11 @@ static void virt_machine_done(Notifier *notifier, void *data)
+>>       uint64_t kernel_entry = 0;
+>>       BlockBackend *pflash_blk0;
+>> +    /* create devicetree if not provided */
+>> +    if (!machine->dtb) {
+>> +        create_fdt(s, memmap);
+>> +    }
+>> +
 > 
-> Recently (in d135f781 [1], between v7.0.0 and v8.0.0), qemu-user default cpu
-> was updated to "max" instead of qemu32/qemu64.
+> I suggest moving the entire load/create DT code from virt_machine_init() to
+> the start of virt_machine_done():
 > 
-> This change "broke" qemu self emulation if this new default cpu is used.
+>      /* load/create device tree */
+>      if (machine->dtb) {
+>          machine->fdt = load_device_tree(machine->dtb, &s->fdt_size);
+>          if (!machine->fdt) {
+>              error_report("load_device_tree() failed");
+>              exit(1);
+>          }
+>      } else {
+>          create_fdt(s, memmap);
+>      }
 > 
-> $ ./qemu-x86_64 ./qemu-x86_64 --version
-> qemu-x86_64: ../util/cacheflush.c:212: init_cache_info: Assertion `(isize &
-> (isize - 1)) == 0' failed.
-> qemu: uncaught target signal 6 (Aborted) - core dumped
-> Aborted
+> This way we don't have to look in to 2 different functions to wonder what happens
+> in case machine->dtb is NULL.
 > 
-> By setting cpu back to qemu64, it works again.
-> $ ./qemu-x86_64 -cpu qemu64 ./qemu-x86_64  --version
-> qemu-x86_64 version 8.0.50 (v8.0.0-2317-ge125b08ed6)
-> Copyright (c) 2003-2023 Fabrice Bellard and the QEMU Project developers
-> 
-> Commenting assert does not work, as qemu aligned malloc fail shortly after.
-> 
-> I'm willing to fix it, but I'm not sure what is the issue with "max" cpu
-> exactly. Is it missing CPU cache line, or something else?
 
-I've observed GLibC is issuing CPUID leaf 0x8000_001d
+I can do that, but I don't know how to test it. Is there a working dtb/machine
+combination for riscv which would let me test loading a devicetree file ?
 
-QEMU 'max' CPU model doesn't defnie xlevel, so QEMU makes it default
-to the same as min_xlevel, which is calculated to be 0x8000_000a.
-
-cpu_x86_cpuid() in QEMU sees CPUID leaf 0x8000_001d is above 0x8000_000a,
-and so  considers it an invaild CPUID and thus forces it to report
-0x0000_000d which is supposedly what an invalid CPUID leaf should do.
-
-
-Net result: glibc is asking for 0x8000_001d, but getting back data
-for 0x0000_000d.
-
-This doesn't end happily for obvious reasons, getting garbage for
-the dcache sizes.
-
-
-The 'qemu64' CPU model also gets CPUID leaf 0x8000_001d capped back
-to 0x0000_000d, but crucially qemu64 lacks the 'xsave' feature bit,
-so QEMU returns all-zeroes for CPUID leaf 0x0000_000d. Still not
-good, but this makes glibc report 0 for DCACHE_*, which in turn
-avoids tripping up the nested qemu which queries DCACHE sysconf.
-
-So the problem is thus more widespread than just 'max' CPU model.
-
-Any QEMU CPU model with vendor=AuthenticAMD and the xsave feature,
-and the xlevel unset, will cause glibc to report garbage for the
-L1D cache info
-
-Any QEMU CPU model with vendor=AuthenticAMD and without the xsave
-feature, and the xlevel unset, will cause glibc to report zeroes
-for L1D cache info
-
-Neither is good, but the latter at least doesn't trip up the
-nested QEMU when it queries L1D cache info.
-
-I'm unsure if QEMU's behaviour is correct with calculating the
-default 'xlevel' values for 'max', but I'm assuming the xlevel
-was correct for Opteron_G4/5 since those are explicitly set
-in the code for along time.
-
-Over to the GLibC side, I see there was a recent change:
-
-commit 103a469dc7755fd9e8ccf362f3dd4c55dc761908
-Author: Sajan Karumanchi <sajan.karumanchi@amd.com>
-Date:   Wed Jan 18 18:29:04 2023 +0100
-
-    x86: Cache computation for AMD architecture.
-    
-    All AMD architectures cache details will be computed based on
-    __cpuid__ `0x8000_001D` and the reference to __cpuid__ `0x8000_0006` will be
-    zeroed out for future architectures.
-    
-    Reviewed-by: Premachandra Mallappa <premachandra.mallappa@amd.com>
-
-
-This introduced the use of CPUID leaf 0x8000_001D. Before this point
-glibc would use 0x8000_0000 and 0x8000_0005 to calculate the cache
-size.  QEMU worked correctly with this implementation.
-
-  https://sourceware.org/pipermail/libc-alpha/2023-January/144815.html
-
-The reporter said
-
-   "Though we have done the testing on Zen and pre-Zen architectures,
-    we recommend to carryout the tests from your end too."
-
-it is unclear if their testing would have covered Opteron_G4/Opteron_G5
-architectures, and I not expecting to have had QEMU testing of course ?
-
-I don't have any non-virtual pre-Zen silicon I could verify CPUID
-behaviour on. I've not found historic versions of the AMD architecture
-reference to see when they first documented 0x8000_001d as a valid
-CPUID leaf for getting cache info.
-
-IOW it is still unclear to me whether the root cause bug here is in
-QEMU's emulation of CPUID 0x8000_001d, or whether this was actually
-a real regression introduced in glibc >= 2.37
-
-I'm tending towards glibc regression though.
-
-Copying Florian and the original AMD patch author
-
-Brief summary
-
-With old glibc 2.36, using QEMU's  qemu64/max CPU models:
-
-# qemu-x86_64-static -cpu qemu64 /bin/getconf -a | grep DCACHE
-LEVEL1_DCACHE_SIZE                 65536
-LEVEL1_DCACHE_ASSOC                2
-LEVEL1_DCACHE_LINESIZE             64
-
-# qemu-x86_64-static -cpu Opteron_G4 /bin/getconf -a | grep DCACHE
-LEVEL1_DCACHE_SIZE                 65536
-LEVEL1_DCACHE_ASSOC                2
-LEVEL1_DCACHE_LINESIZE             64
-
-# qemu-x86_64-static -cpu max /bin/getconf -a | grep DCACHE
-LEVEL1_DCACHE_SIZE                 65536
-LEVEL1_DCACHE_ASSOC                2
-LEVEL1_DCACHE_LINESIZE             64
-
-
-With new glibc 2.37:
-
-# qemu-x86_64-static -cpu qemu64 /bin/getconf -a | grep DCACHE
-LEVEL1_DCACHE_SIZE                 0
-LEVEL1_DCACHE_ASSOC                0
-LEVEL1_DCACHE_LINESIZE             0
-
-# qemu-x86_64-static -cpu Opteron_G4 /bin/getconf -a | grep DCACHE
-LEVEL1_DCACHE_SIZE                 693889
-LEVEL1_DCACHE_ASSOC                1
-LEVEL1_DCACHE_LINESIZE             833
-
-# qemu-x86_64-static -cpu max /bin/getconf -a | grep DCACHE
-LEVEL1_DCACHE_SIZE                 7273809
-LEVEL1_DCACHE_ASSOC                1
-LEVEL1_DCACHE_LINESIZE             2697
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+Guenter
 
 
