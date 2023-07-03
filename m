@@ -2,87 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F247A7498EE
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 12:02:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83887749A61
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 13:15:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHLnn-00060c-3W; Thu, 06 Jul 2023 06:01:31 -0400
+	id 1qHMw6-00009o-PL; Thu, 06 Jul 2023 07:14:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qHLnd-0005zs-Qc
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 06:01:26 -0400
-Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qHLnb-0007nJ-Lt
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 06:01:21 -0400
-Received: by mail-ed1-x52c.google.com with SMTP id
- 4fb4d7f45d1cf-51d8fa4dbf9so729496a12.1
- for <qemu-devel@nongnu.org>; Thu, 06 Jul 2023 03:01:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688637678; x=1691229678;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=PmJ9kX2DTGHZqmjdarmdLuh8fHTUVodEfNtmyBD+GRI=;
- b=YBBDg4r9wKCSLz6DHHeATx22MTLh0yTrPFjR/OnqbC4AHIhd30MM3obuH5ne5WZhzW
- tYwcHn0d04FkrdZNozke9S0T3GLWg/dx9LhEz1dkXdXmRTLRpyF3wEyiLNJwo+njJIW/
- oFOWKX+4YN4zu0FA6+25aGXXLa9iMCHCsqKwb/V6tIijTtaiL8A4ZmcjUvQUUSc1tmbH
- osruRaV4HmKWA5h9y/qLVxyWgQTxSoVa2rmjl27UQLtvfMjwInkJfIRI3+j90gNBuvBn
- VYlk8ZSvPDk7vcMkgiju6OFOBg9rH+1S+aO+ifsCF8HvekQ2YT1tT3oofofX3+0hc2U3
- 0I2Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688637678; x=1691229678;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=PmJ9kX2DTGHZqmjdarmdLuh8fHTUVodEfNtmyBD+GRI=;
- b=KWUkOGclrf6AujVnZrR4ReThubUzMWvqSE8GSxuxM5EWmZrBXw1SXtH5UK+MgwwqeR
- M1dAmX6HOfpd+Plcz2Ho01rOt1C1VbhZ4sMaiYksXzV2ORxWJp+y0HPOCrSkI7IuPmSw
- QG4laiUMf9AFQ9Q0lQMtceapDyM6eo4RW3M2icgHzGj+rEtAy4qfBq9g1y7UDoohEfLe
- 46fchHgdmQQdTDfWC2hczq+tLTDY4IneyxikWAbczDurAef77ZF9Lz89VE0Rs6zPPFaq
- Q9RIpiaccT+sikSLfhwNUl5AaSLh1ol/dKXi8dslPseNnKFT1RqBviJ8qDBLtS4qDjl0
- 6GOg==
-X-Gm-Message-State: ABy/qLYPT7piPgvKg9r78CEKfWCzIVEQUuEKcqTXt40m4u0YJPJccR4g
- CkJQ2TOm/86aNYdE3B0FPFY6og==
-X-Google-Smtp-Source: APBJJlGXctsnA2MJ2ukRe2Sr5WWMHL1egbTg+W4Ejpz+0MeFn27vipCINSE8Kjom8PNhF1bun63FBA==
-X-Received: by 2002:a17:906:164b:b0:98e:2b01:ab97 with SMTP id
- n11-20020a170906164b00b0098e2b01ab97mr983415ejd.68.1688637678019; 
- Thu, 06 Jul 2023 03:01:18 -0700 (PDT)
-Received: from [192.168.69.115] ([176.187.199.225])
- by smtp.gmail.com with ESMTPSA id
- br17-20020a170906d15100b009930c61dc0esm600796ejb.92.2023.07.06.03.01.17
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 06 Jul 2023 03:01:17 -0700 (PDT)
-Message-ID: <d5f8bc76-7cd5-a389-338d-53687ad76cdc@linaro.org>
-Date: Thu, 6 Jul 2023 12:01:16 +0200
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qHMvs-0008Sv-Ib; Thu, 06 Jul 2023 07:13:59 -0400
+Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qHMvq-0006BM-4P; Thu, 06 Jul 2023 07:13:56 -0400
+Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
+ by localhost (Postfix) with SMTP id 122F9748A5B;
+ Thu,  6 Jul 2023 13:13:35 +0200 (CEST)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id DAFF0748A59; Thu,  6 Jul 2023 13:13:34 +0200 (CEST)
+Message-Id: <f4ad9af42197a92dd1d0b56c21316dbdad240ee4.1688641673.git.balaton@eik.bme.hu>
+In-Reply-To: <cover.1688641673.git.balaton@eik.bme.hu>
+References: <cover.1688641673.git.balaton@eik.bme.hu>
+From: BALATON Zoltan <balaton@eik.bme.hu>
+Date: Mon, 3 Jul 2023 18:48:47 +0200
+Subject: [PATCH v3 1/4] ppc440_pcix: Stop using system io region for PCI bus
+Date: Thu, 06 Jul 2023 13:07:53 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.12.0
-Subject: Re: [PATCH 1/4] QGA VSS: Add wrapper to send log to debugger and
- stderr
-Content-Language: en-US
-To: Konstantin Kostiuk <kkostiuk@redhat.com>
-Cc: qemu-devel@nongnu.org, =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?=
- <marcandre.lureau@redhat.com>, Michael Roth <michael.roth@amd.com>,
- Yan Vugenfirer <yvugenfi@redhat.com>
-References: <20230705141205.525776-1-kkostiuk@redhat.com>
- <20230705141205.525776-2-kkostiuk@redhat.com>
- <413a30a2-c050-7587-8c0e-a6d89c8b7ab3@linaro.org>
- <CAPMcbCp2Rx4jz3S9R8VbaeRZrkakn4HE7e-GZtubv5b29Km1OA@mail.gmail.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <CAPMcbCp2Rx4jz3S9R8VbaeRZrkakn4HE7e-GZtubv5b29Km1OA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52c.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.089,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+To: qemu-devel@nongnu.org,
+    qemu-ppc@nongnu.org
+Cc: Daniel Henrique Barboza <danielhb413@gmail.com>,
+    philmd@linaro.org
+X-Spam-Probability: 13%
+Received-SPF: pass client-ip=2001:738:2001:2001::2001;
+ envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+X-Spam_score_int: -7
+X-Spam_score: -0.8
+X-Spam_bar: /
+X-Spam_report: (-0.8 / 5.0 requ) BAYES_00=-1.9, INVALID_DATE=1.096,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,59 +59,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/7/23 09:54, Konstantin Kostiuk wrote:
-> Hi Philippe,
-> 
-> On Wed, Jul 5, 2023 at 11:35 PM Philippe Mathieu-Daudé 
-> <philmd@linaro.org <mailto:philmd@linaro.org>> wrote:
-> 
->     Hi Konstantin,
-> 
->     On 5/7/23 16:12, Konstantin Kostiuk wrote:
->      > Signed-off-by: Konstantin Kostiuk <kkostiuk@redhat.com
->     <mailto:kkostiuk@redhat.com>>
->      > ---
->      >   qga/vss-win32/vss-debug.h | 31 +++++++++++++++++++++++++++++++
->      >   1 file changed, 31 insertions(+)
->      >   create mode 100644 qga/vss-win32/vss-debug.h
-> 
-> 
->      > +#define PRINT_DEBUG(fmt, ...) {                                 
->                   \
->      > +    char user_sting[512] = { 0 };                               
->                   \
->      > +    char full_string[640] = { 0 };                             
->                    \
->      > +    snprintf(user_sting, 512, fmt, ## __VA_ARGS__);             
->                   \
->      > +    snprintf(full_string, 640, QGA_PROVIDER_NAME"[%lu]: %s
->     %s\n",             \
->      > +        GetCurrentThreadId(), __func__, user_sting);           
->                    \
->      > +    OutputDebugString(full_string);                             
->                   \
->      > +    fprintf(stderr, "%s", full_string);                         
->                   \
->      > +}
-> 
->     Why not simply use a plain function?
-> 
-> 
-> I am not sure what you mean.
-> 
-> If you mean to call OutputDebugString directly, then we need to 
-> concatenate the proper string
-> for each call.
-> If you mean convert PRINT_DEBUG to function, then we can't use the 
-> __func__ macro in
-> PRINT_DEBUG to get the real function name. We can convert PRINT_DEBUG to 
-> function
-> and a new macro that will call PRINT_DEBUG and pass a proper value of 
-> __fucn__.
-> 
-> What solution is better there?
+Reduce the iomem region to 64K and use it for the PCI io space and map
+it directly from the board without an intermediate alias that is not
+really needed.
 
-   void qga_debug(const char *funcname, const char *fmt, ...);
+Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ hw/ppc/ppc440_pcix.c | 9 ++++++---
+ hw/ppc/sam460ex.c    | 6 +-----
+ 2 files changed, 7 insertions(+), 8 deletions(-)
 
-and g_strdup_vprintf()?
+diff --git a/hw/ppc/ppc440_pcix.c b/hw/ppc/ppc440_pcix.c
+index 899558b055..54286cfef4 100644
+--- a/hw/ppc/ppc440_pcix.c
++++ b/hw/ppc/ppc440_pcix.c
+@@ -23,6 +23,7 @@
+ #include "qemu/error-report.h"
+ #include "qemu/log.h"
+ #include "qemu/module.h"
++#include "qemu/units.h"
+ #include "hw/irq.h"
+ #include "hw/ppc/ppc.h"
+ #include "hw/ppc/ppc4xx.h"
+@@ -491,10 +492,11 @@ static void ppc440_pcix_realize(DeviceState *dev, Error **errp)
+     s = PPC440_PCIX_HOST_BRIDGE(dev);
+ 
+     sysbus_init_irq(sbd, &s->irq);
+-    memory_region_init(&s->busmem, OBJECT(dev), "pci bus memory", UINT64_MAX);
++    memory_region_init(&s->busmem, OBJECT(dev), "pci-mem", UINT64_MAX);
++    memory_region_init(&s->iomem, OBJECT(dev), "pci-io", 64 * KiB);
+     h->bus = pci_register_root_bus(dev, NULL, ppc440_pcix_set_irq,
+-                         ppc440_pcix_map_irq, &s->irq, &s->busmem,
+-                         get_system_io(), PCI_DEVFN(0, 0), 1, TYPE_PCI_BUS);
++                         ppc440_pcix_map_irq, &s->irq, &s->busmem, &s->iomem,
++                         PCI_DEVFN(0, 0), 1, TYPE_PCI_BUS);
+ 
+     s->dev = pci_create_simple(h->bus, PCI_DEVFN(0, 0), "ppc4xx-host-bridge");
+ 
+@@ -514,6 +516,7 @@ static void ppc440_pcix_realize(DeviceState *dev, Error **errp)
+     memory_region_add_subregion(&s->container, PCIC0_CFGDATA, &h->data_mem);
+     memory_region_add_subregion(&s->container, PPC440_REG_BASE, &s->regs);
+     sysbus_init_mmio(sbd, &s->container);
++    sysbus_init_mmio(sbd, &s->iomem);
+ }
+ 
+ static void ppc440_pcix_class_init(ObjectClass *klass, void *data)
+diff --git a/hw/ppc/sam460ex.c b/hw/ppc/sam460ex.c
+index d446cfc37b..7da38bd58e 100644
+--- a/hw/ppc/sam460ex.c
++++ b/hw/ppc/sam460ex.c
+@@ -269,7 +269,6 @@ static void main_cpu_reset(void *opaque)
+ 
+ static void sam460ex_init(MachineState *machine)
+ {
+-    MemoryRegion *isa = g_new(MemoryRegion, 1);
+     MemoryRegion *l2cache_ram = g_new(MemoryRegion, 1);
+     DeviceState *uic[4];
+     int i;
+@@ -441,12 +440,9 @@ static void sam460ex_init(MachineState *machine)
+     /* All PCI irqs are connected to the same UIC pin (cf. UBoot source) */
+     dev = sysbus_create_simple("ppc440-pcix-host", 0xc0ec00000,
+                                qdev_get_gpio_in(uic[1], 0));
++    sysbus_mmio_map(SYS_BUS_DEVICE(dev), 1, 0xc08000000);
+     pci_bus = PCI_BUS(qdev_get_child_bus(dev, "pci.0"));
+ 
+-    memory_region_init_alias(isa, NULL, "isa_mmio", get_system_io(),
+-                             0, 0x10000);
+-    memory_region_add_subregion(get_system_memory(), 0xc08000000, isa);
+-
+     /* PCI devices */
+     pci_create_simple(pci_bus, PCI_DEVFN(6, 0), "sm501");
+     /* SoC has a single SATA port but we don't emulate that yet
+-- 
+2.30.9
+
 
