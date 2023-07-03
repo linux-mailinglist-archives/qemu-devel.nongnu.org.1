@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 505E774602F
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 17:56:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9354A746030
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 17:56:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGLuF-0000j6-Jc; Mon, 03 Jul 2023 11:56:03 -0400
+	id 1qGLuP-0000lE-K7; Mon, 03 Jul 2023 11:56:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qGLuC-0000in-KI
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 11:56:02 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qGLuM-0000kY-UV
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 11:56:10 -0400
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qGLuB-00048s-3v
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 11:56:00 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-3fbc54caad5so40227375e9.2
- for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 08:55:58 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qGLuL-0004Bh-EB
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 11:56:10 -0400
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-313e742a787so3957032f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 08:56:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688399757; x=1690991757;
+ d=linaro.org; s=google; t=1688399768; x=1690991768;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=HWMxDmCOmLiDZMgxX+qO3reRSKgAhl030DyhJw1HlV8=;
- b=gVqSoPx4K3+SGJK6HgKFQKsicDfc0P7PYblLG091hZqMCfFhQM2NqV6OMMCugXJHRZ
- dd4HgR2DzKp25QBSlax5P0lKPGk57VZhkzp9WCKf4ENvVoKQw+F+2rZZ20Ajfl55DjY8
- ObEQ31dGTO1+Yk0Vjw0YDZVsIWL2d8ThhB1bO8dVA/zIfNDmOL+bFXf3nTYSO5qejXd+
- rWKLXmiQ3WazaxUDHcMJsIZtOIs+ZtBrl2PmbrH52Ho5Z//UxZXpYtvbzd90kFKASG9m
- mCC08/uMM+glTCPBA2Jw8wVW+JCp8oLR2B8mUsClkJscwi5EWfB2LnH3Cm7uxCYkZMxJ
- bbew==
+ bh=MCHVcPsnRABFaLdcPD9r/Umhi5dGKil0OQBUC1VcB7Y=;
+ b=DTu871+xyyn759vx//aR4oJ/B/+sFs+6VGS3HyYibFm0uFkPw7BJdzSpxQIdXJXsXu
+ Q146e/GeToOZd+gYSMTSIpwjUYG7oE41QHHoQvHoa09mqDcCuU1whOKo4csEqB+xP0Fp
+ BeH6KBlpoQNUUrLKKTeS/DAQSAynOAtnWN6DDG6zCSTO9KlxTui2ev+rk1+1u6Cln/Co
+ 2di9EwgvXCjU3xpuRabkWerFixMwSPQdkw8c7hyxD12fcfG6YUBmwhKtjO64xBHq+BrX
+ yD/OJR0itvHU1xs0n0PFPPuOD79afVXOKOb2mk4gLlJyYHWN0GQKn2Vpo9DwK9s9au+T
+ n8Qw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688399757; x=1690991757;
+ d=1e100.net; s=20221208; t=1688399768; x=1690991768;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=HWMxDmCOmLiDZMgxX+qO3reRSKgAhl030DyhJw1HlV8=;
- b=OsSw3xMyKeyeBhSjqPb/sRESf+NXQp+4sEQaKihh3u3MPsI5aSWrE4YE9DFB547tJh
- wTcdBu7zbEL6rHqt7njhOczfk+60e3fJfY2YlO7JhZRqZDLBkej1LiyXjgOtmqohsu8g
- GtAqkYsP/UniSqVy28JJprtMGTq4lyOXk2oo/f9htXH2vTes4u8dGcPRA4FA73wsZkPZ
- z9n8wWJjzfEUO+8t/BAoqpdYtgjgLcjXQzU4yH0lPEMUZymKUefx4hwP4BrO3L17meS8
- QWJUFQB56G5meQQaQIWTAtt7YbVKZebnzIYjkTGxZXuKzcICA/bEqFGcDKakQa4iMF0B
- OkMg==
-X-Gm-Message-State: AC+VfDyx9l9VpAZ0O18ldMMSWDvSRFI6ceOnLYy82nubt8RCa2GnOxHX
- arosOe7382xfq5ul07oWC+Sypr78sx1zXdvIUvw2EQ==
-X-Google-Smtp-Source: ACHHUZ57QH7KRfg67aWQJDSkqtC/NFucKMswqb6IBpotixeOMS6IIB3h33twYPsaS19AmMdlFh8Swg==
-X-Received: by 2002:a05:600c:364f:b0:3f9:b1e7:8a4b with SMTP id
- y15-20020a05600c364f00b003f9b1e78a4bmr8352060wmq.21.1688399757576; 
- Mon, 03 Jul 2023 08:55:57 -0700 (PDT)
+ bh=MCHVcPsnRABFaLdcPD9r/Umhi5dGKil0OQBUC1VcB7Y=;
+ b=BLoXFLJ/hJt1ZvIHFjXWPJDnWOFYkcYCDoBLjZPZZCCxKZbpOyAz9ZWiVild6k0egJ
+ mtBkxtz3aktNFGNqR7SxgdHDeY8LlUUBppKVxHL/9zKY88epn3my8DtRnVWaRuoBb8tQ
+ 932yJNCLEivbp43fhN6/kOKRfDFuUKXcBcEUeI12EibVPvPtFMiC2YjBEUUS7Af2FHDi
+ yeunrJRt1th46q9ksqdtpAwj//0lxn1xbM6WsZh9AVk47+/tMPXXJXICMVaJpoZ+wou1
+ Z7EmVhCjG9iT+EvskmCqlOst5dp6n9IHRsAvWupD0dQmx6EA0WNMLd8dyLTvCO0ekaTK
+ NWJQ==
+X-Gm-Message-State: ABy/qLbUuNSS8RL+DuBG4AR6EqZrrCORU4hlDXwU7aJ+hcXQ/nBAf5sB
+ tI+Hhc90eKqjbwShfI2G+kW25A==
+X-Google-Smtp-Source: APBJJlHEaWzc+qz61rpgIxKlRmtUedOEesHx67MMj5K4sNLDDphHo+wuUPOusUovBnt0h/la857ecg==
+X-Received: by 2002:a5d:66c8:0:b0:314:1096:6437 with SMTP id
+ k8-20020a5d66c8000000b0031410966437mr10095110wrw.19.1688399767997; 
+ Mon, 03 Jul 2023 08:56:07 -0700 (PDT)
 Received: from [192.168.69.115] ([176.176.178.91])
  by smtp.gmail.com with ESMTPSA id
- t24-20020a1c7718000000b003fba9db141esm17081850wmi.38.2023.07.03.08.55.56
+ w18-20020a5d6092000000b003143be36d99sm769008wrt.58.2023.07.03.08.56.06
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 03 Jul 2023 08:55:57 -0700 (PDT)
-Message-ID: <4d883f31-93ea-d5c0-3b98-3aa8740d8f7a@linaro.org>
-Date: Mon, 3 Jul 2023 17:55:52 +0200
+ Mon, 03 Jul 2023 08:56:07 -0700 (PDT)
+Message-ID: <4f1499fd-b45a-5210-d2dc-e10b46bf9b98@linaro.org>
+Date: Mon, 3 Jul 2023 17:56:05 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.12.0
-Subject: Re: [PATCH 02/24] linux-user: Fix formatting of mmap.c
+Subject: Re: [PATCH 01/24] linux-user: Use assert in mmap_fork_start
 Content-Language: en-US
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
 Cc: mjt@tls.msk.ru, laurent@vivier.eu
 References: <20230630132159.376995-1-richard.henderson@linaro.org>
- <20230630132159.376995-3-richard.henderson@linaro.org>
+ <20230630132159.376995-2-richard.henderson@linaro.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230630132159.376995-3-richard.henderson@linaro.org>
+In-Reply-To: <20230630132159.376995-2-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -94,12 +94,12 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 30/6/23 15:21, Richard Henderson wrote:
-> Fix all checkpatch.pl errors within mmap.c.
+> Assert is preferred over if+abort for the error message.
 > 
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->   linux-user/mmap.c | 199 ++++++++++++++++++++++++++++------------------
->   1 file changed, 122 insertions(+), 77 deletions(-)
+>   linux-user/mmap.c | 3 +--
+>   1 file changed, 1 insertion(+), 2 deletions(-)
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
