@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1258746283
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 20:34:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E0C074627B
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 20:33:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGOMC-0000C0-9s; Mon, 03 Jul 2023 14:33:04 -0400
+	id 1qGOMJ-0000dx-73; Mon, 03 Jul 2023 14:33:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qGOMA-0000Ak-Rg
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 14:33:02 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qGOMG-0000Ur-RB
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 14:33:08 -0400
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qGOM9-0000P9-7A
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 14:33:02 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-3fbc5d5742eso46193435e9.3
- for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 11:33:00 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qGOMF-0000Pz-8i
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 14:33:08 -0400
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-3fbc244d3a8so49088145e9.2
+ for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 11:33:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688409179; x=1691001179;
+ d=linaro.org; s=google; t=1688409186; x=1691001186;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=PGOxLTBm2WIEW81QoAtA8oraa0bxm4E+o2gYovN2EAE=;
- b=VNo9SdtBUYHnEI/XuIaX3KaxgLQ5BLqTELDREhTWy2r50ZwI+LXJufLwOgXG/V2xvr
- +29KOAwHerGfSAJtKZ+FRjL8//LawCJOnecs7SBZ7WusEt2wyMZPA7k3IgI5G24Usszl
- oDQsT/8s+vUzfU3uxCyJd9VMt8mC2XUxDX/X1lq4Xiq6VtblkDSnwSQ+UrtcJoEoohmM
- KuJxCaPmDnmFygm378PYEK0l2gyoWWPdAppwJxvzY+KTKfnpL8Qy0L3gmdJcGshqZTrK
- q/rEyKXM2hjHwZMlDF/vCgxgi0JSq8arvAa7ur2Ctci+UBh4P2BYnB/w2fLPQ85bpDYY
- Xcxg==
+ bh=YxoVzJhi2n2dGTE2zLar6uJBuHBuoJDv5oC7y/6cp9w=;
+ b=Y+XaAPfyeufkxXFOIiWfxi52RTughpAnKhc71LcwVPTCA8FTatE5LGefW/KS397BnL
+ RJ47XP8hkOQdw2TCXmk+QLXZFQr4r1K7orTEIwOXqJhHrTqHvTeRVeW/v8tMeimxCh6A
+ geBbqxpS6pdQ9hAr0XuCXxg3mruE02cogHRHgvpZ/lY19SCxT+sITiGAyVyEkN9d8ie+
+ NyuPGWfjvqhJetpue9ah+vxb2REJx/Elb4jaYVpqNLwVsVQPzAB+FSyYxQxHfDk4V3IJ
+ ZuwwoKX2ormZu4HpOZrol9Jkk16bsQp2Cr/4L+T7mFJxU8gZFDUK6u1oOXlzyWLwwF9z
+ S8Sw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688409179; x=1691001179;
+ d=1e100.net; s=20221208; t=1688409186; x=1691001186;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=PGOxLTBm2WIEW81QoAtA8oraa0bxm4E+o2gYovN2EAE=;
- b=NAcXspiK3+BIf40DonzH/bQRBOzp5qingwyHH9hcgwCy6/xVguF2YOS/M1G/3z9sLT
- E0u76pcrkvMFvnRZETx6UpP2K+hEdULouglo8H4psqlk6PP7LUaUJ2JOiiaWFtkdIfMk
- /ABWLMzAIoY7oM8c6YuqV4uqZVbyyMg6Cdh8KFxxzmvOSYSvOX4rW74eX7ssUfVGFdSU
- InF5gzRMkcUUCTfu7VmLAEk7OPHLbLZUfWHbh60IUDEWbeRxIJCYLLJhxp42nYm87QjG
- DwwY3UwMawainxFvo9mXkxcylo9ur90IAWAtud0GnctvrQM6pSPCt4mCDsqsbXRMA8em
- w+Dw==
-X-Gm-Message-State: AC+VfDxyPs9gxrx6i+UoQw+kBpX4cPGydhykB/Q1ofuXBsBkbHsNXxb7
- VKeL+uI/gK85zj5+4iZd2KMaXjU6YsY6iitK0gVYLQ==
-X-Google-Smtp-Source: ACHHUZ6SDoc7ppBecA7Qb3Oa5klBjtl2z+XuKyTAqa5pn7Y1jx6lzuVygq2QFLVROUK00It6xG3+lA==
-X-Received: by 2002:a05:600c:224c:b0:3fb:a5a0:6199 with SMTP id
- a12-20020a05600c224c00b003fba5a06199mr9904974wmm.14.1688409179803; 
- Mon, 03 Jul 2023 11:32:59 -0700 (PDT)
+ bh=YxoVzJhi2n2dGTE2zLar6uJBuHBuoJDv5oC7y/6cp9w=;
+ b=O4BYgBSbnJ7dO42mLRtWVs5mCpXAu4+4/dsxF8Jh+cprFmeqz37NPbOBMzmperVzBg
+ 4qeunoSeTLMAKN+S6i3eDLtUytkQ3Ol0EklaPCmwjeinKlQEGQ0QgPbtGmKDAubBURkX
+ 798pDVrxW285mEf9BapS2NGSkdICXHPm9dPFwWtUSwIJXjh0Nr2WYGYwoCqLmbrNcBCW
+ TYE73+1/S6nWOVqBabgE8V42iPuqPGPiJOMX9i51azrEltHmlgvkwTc/AzIHzVwX0k1O
+ QwCN21zZI5Dv2M99O9lpgUmzlMGwY5Q+vOc7S5ww42jKwz9DQKjvrPYRYJ7JU8ElS1L/
+ G1FA==
+X-Gm-Message-State: AC+VfDxOyBc4sUYTePSAkiyqVtKkEmurc36E702Wbpma2yT8pYTJdtgs
+ ykxYsmpUwegzI7k6AIjT8DUUjS+0Z53Rm+49u/i7pg==
+X-Google-Smtp-Source: ACHHUZ4QDzgia0zEAhiOCSiouBOaTQZnM9Rs1nER5K4OlI3cDj8QoWd91vYOugKueaOEbjqHHeNugw==
+X-Received: by 2002:a05:600c:ac8:b0:3f7:e65b:5252 with SMTP id
+ c8-20020a05600c0ac800b003f7e65b5252mr9449372wmr.1.1688409185870; 
+ Mon, 03 Jul 2023 11:33:05 -0700 (PDT)
 Received: from localhost.localdomain ([176.176.178.91])
  by smtp.gmail.com with ESMTPSA id
- t17-20020a5d42d1000000b003143867d2ebsm2688281wrr.63.2023.07.03.11.32.57
+ l1-20020adff481000000b003113ed02080sm26043073wro.95.2023.07.03.11.33.04
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 03 Jul 2023 11:32:59 -0700 (PDT)
+ Mon, 03 Jul 2023 11:33:05 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Palmer Dabbelt <palmer@dabbelt.com>, Paolo Bonzini <pbonzini@redhat.com>,
@@ -65,18 +65,18 @@ Cc: Palmer Dabbelt <palmer@dabbelt.com>, Paolo Bonzini <pbonzini@redhat.com>,
  qemu-riscv@nongnu.org, Bin Meng <bin.meng@windriver.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Weiwei Li <liweiwei@iscas.ac.cn>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
-Subject: [PATCH v2 11/16] target/riscv: Move sysemu-specific debug files to
- target/riscv/sysemu/
-Date: Mon,  3 Jul 2023 20:31:40 +0200
-Message-Id: <20230703183145.24779-12-philmd@linaro.org>
+Subject: [PATCH v2 12/16] target/riscv: Expose riscv_cpu_pending_to_irq() from
+ cpu_helper.c
+Date: Mon,  3 Jul 2023 20:31:41 +0200
+Message-Id: <20230703183145.24779-13-philmd@linaro.org>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230703183145.24779-1-philmd@linaro.org>
 References: <20230703183145.24779-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,78 +99,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+We want to extract TCG/sysemu-specific code from cpu_helper.c,
+but some functions call riscv_cpu_pending_to_irq(). Expose the
+prototype in "internals.h".
+
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/riscv/cpu.h                | 2 +-
- target/riscv/{ => sysemu}/debug.h | 0
- target/riscv/cpu_helper.c         | 2 +-
- target/riscv/{ => sysemu}/debug.c | 0
- target/riscv/meson.build          | 4 ----
- target/riscv/sysemu/meson.build   | 1 +
- 6 files changed, 3 insertions(+), 6 deletions(-)
- rename target/riscv/{ => sysemu}/debug.h (100%)
- rename target/riscv/{ => sysemu}/debug.c (100%)
+ target/riscv/internals.h  | 4 ++++
+ target/riscv/cpu_helper.c | 6 +++---
+ 2 files changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index e6a8087022..f9754013a8 100644
---- a/target/riscv/cpu.h
-+++ b/target/riscv/cpu.h
-@@ -89,7 +89,7 @@ typedef enum {
+diff --git a/target/riscv/internals.h b/target/riscv/internals.h
+index b5f823c7ec..b6881b4815 100644
+--- a/target/riscv/internals.h
++++ b/target/riscv/internals.h
+@@ -72,6 +72,10 @@ target_ulong fclass_d(uint64_t frs1);
  
- #if !defined(CONFIG_USER_ONLY)
- #include "sysemu/pmp.h"
--#include "debug.h"
-+#include "sysemu/debug.h"
+ #ifndef CONFIG_USER_ONLY
+ extern const VMStateDescription vmstate_riscv_cpu;
++
++int riscv_cpu_pending_to_irq(CPURISCVState *env,
++                             int extirq, unsigned int extirq_def_prio,
++                             uint64_t pending, uint8_t *iprio);
  #endif
  
- #define RV_VLEN_MAX 1024
-diff --git a/target/riscv/debug.h b/target/riscv/sysemu/debug.h
-similarity index 100%
-rename from target/riscv/debug.h
-rename to target/riscv/sysemu/debug.h
+ enum {
 diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
-index 6f8778c6d3..6c773000a5 100644
+index 6c773000a5..e73cf56e5c 100644
 --- a/target/riscv/cpu_helper.c
 +++ b/target/riscv/cpu_helper.c
-@@ -32,7 +32,7 @@
- #include "sysemu/cpu-timers.h"
- #endif
- #include "cpu_bits.h"
--#include "debug.h"
-+#include "sysemu/debug.h"
- #include "tcg/oversized-guest.h"
+@@ -256,9 +256,9 @@ uint8_t riscv_cpu_default_priority(int irq)
+     return default_iprio[irq] ? default_iprio[irq] : IPRIO_MMAXIPRIO;
+ };
  
- int riscv_cpu_mmu_index(CPURISCVState *env, bool ifetch)
-diff --git a/target/riscv/debug.c b/target/riscv/sysemu/debug.c
-similarity index 100%
-rename from target/riscv/debug.c
-rename to target/riscv/sysemu/debug.c
-diff --git a/target/riscv/meson.build b/target/riscv/meson.build
-index 8ef47f43f9..49cdcde679 100644
---- a/target/riscv/meson.build
-+++ b/target/riscv/meson.build
-@@ -8,10 +8,6 @@ riscv_ss.add(files(
-   'gdbstub.c',
- ))
- 
--riscv_system_ss.add(files(
--  'debug.c',
--))
--
- subdir('tcg')
- subdir('sysemu')
- 
-diff --git a/target/riscv/sysemu/meson.build b/target/riscv/sysemu/meson.build
-index 64de0256a5..e902ba2dad 100644
---- a/target/riscv/sysemu/meson.build
-+++ b/target/riscv/sysemu/meson.build
-@@ -1,5 +1,6 @@
- riscv_system_ss.add(files(
-   'arch_dump.c',
-+  'debug.c',
-   'machine.c',
-   'monitor.c',
-   'pmp.c',
+-static int riscv_cpu_pending_to_irq(CPURISCVState *env,
+-                                    int extirq, unsigned int extirq_def_prio,
+-                                    uint64_t pending, uint8_t *iprio)
++int riscv_cpu_pending_to_irq(CPURISCVState *env,
++                             int extirq, unsigned int extirq_def_prio,
++                             uint64_t pending, uint8_t *iprio)
+ {
+     int irq, best_irq = RISCV_EXCP_NONE;
+     unsigned int prio, best_prio = UINT_MAX;
 -- 
 2.38.1
 
