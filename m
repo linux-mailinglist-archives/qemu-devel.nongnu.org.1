@@ -2,83 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69563745412
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 05:11:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD7E7745416
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 05:18:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qG9y0-00005i-Qr; Sun, 02 Jul 2023 23:11:08 -0400
+	id 1qGA44-0002Ai-At; Sun, 02 Jul 2023 23:17:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qG9xy-0008W3-Go; Sun, 02 Jul 2023 23:11:06 -0400
-Received: from mail-ua1-x935.google.com ([2607:f8b0:4864:20::935])
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qGA42-0002AO-QA
+ for qemu-devel@nongnu.org; Sun, 02 Jul 2023 23:17:22 -0400
+Received: from mail-oi1-x231.google.com ([2607:f8b0:4864:20::231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qG9xw-0001aN-UI; Sun, 02 Jul 2023 23:11:06 -0400
-Received: by mail-ua1-x935.google.com with SMTP id
- a1e0cc1a2514c-783f17f0a00so1092138241.2; 
- Sun, 02 Jul 2023 20:11:03 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qGA41-0002lP-6Z
+ for qemu-devel@nongnu.org; Sun, 02 Jul 2023 23:17:22 -0400
+Received: by mail-oi1-x231.google.com with SMTP id
+ 5614622812f47-3a04e5baffcso3067821b6e.3
+ for <qemu-devel@nongnu.org>; Sun, 02 Jul 2023 20:17:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688353863; x=1690945863;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=ykgI1ofWRr111JVHkpLtE1AyjguNIBIofNVn2Tu8VPw=;
- b=SdvXsqp59e9q9OTHh6rNKsdUDJwKLmhNSMvasGIZSRhnFP62Fa/hFsE6RrvKffKSi6
- LRqnD2Hk35zBckmMIKoQFGcMTaCMvqB58cusc66Zyp/7ewpG82g8SHlqnyxCytyIh81S
- S6tjC58/VVvuXDU+0QUyE3cKiFQqeoZGGIf0hxI94RR92IAzIOaT5ZJbjzeCKvbasU2q
- Oy/lD/kUtIEPOaD+oiGAARn4mSB+5OfYHC0mxY3rDckKKNZaIUnQVsudP4yhFc28d75U
- 0CsfozqG52CTFE5xEvM7UxsHC8pqtEgrAnq6TUccAT7mUvx6WWEg0RA2eiJnof4+PG7G
- /EZg==
+ d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1688354240; x=1690946240;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=2XZ0RqBcTEPEDEu/Cbyg9EfJb6udItHDAI0I7EzuA7g=;
+ b=ilnnAOeU/2ka00mhxeZl6EKJ0ZjUJK4ZRh0lCNgfEgJWJxXJGurzA7e8xLdoPVjKk9
+ 38mCL2P1iJoXvZI6hSHXUAC7oQCH0FFTusBAuUxNM6V6MPh+5SlayZqDsTIs34hykj1G
+ hIadBGFaBzXjobaZWEaQgveeNPOoA635c8AvKLwdt2SJs8u6zTNo3vORyYSgE4XGp73C
+ XH7f3HrC9F9XukI82PDPd7KWDeKtDxEwrjPN58AlSUvdHR2cfr/f2Y3r3Lrm5q8B4snQ
+ eTGrSm6EhkKveRMPm/aflKQoKIp02M9eouE+GGPA65n4klePMhwkawyTf34BJrlKOhuy
+ xTvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688353863; x=1690945863;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=ykgI1ofWRr111JVHkpLtE1AyjguNIBIofNVn2Tu8VPw=;
- b=apT/O5YuDzkCi+K4VF10jGeT2f54Z7MqkXAjVZpgmb+PrgXHbntQubhUTAVMJu1rqW
- opnqCf0/8WVmhG/ukeyI58KjRA6eW9CGKqk4QO0NfB3WQJt71mFwaI65/b/0Z1hMZPpI
- up6fQhvx5CMW74NT7ZuuwphplprV63SAyJ0hYztLcC2MVcYTZV8wyg9mT8qkQHLOLLna
- TSFtlNbGWbFKg0mrO6C73A7CsYmsYLD16bQA0v3SvYirysgtuw3Nav6UMjPfh8znZz3Z
- 3JH+Z8qTJLoY4NGELpur4secA36v51iMlQqInHKK9lNxlly5/c6PTs4Cn5BWEcXws2P7
- dHbA==
-X-Gm-Message-State: ABy/qLZmwOYKGyCHeLkCQKj7QMFDcs3ojJ63qkSSJhHNoE2P7rPzqYIv
- W9AHs2lImWmmHON3lAvvA9AiHqbBULByn19fp2k=
-X-Google-Smtp-Source: APBJJlHAzzWpYmbDHBcjaOipqHLKiRQfWZ6WmitaW0eOIQshKQ3O9gT8ZKF5LvHkC6VeWtJdN6FDFJf29TwLBLIQXZc=
-X-Received: by 2002:a05:6102:50d:b0:443:6e00:d32 with SMTP id
- l13-20020a056102050d00b004436e000d32mr3611697vsa.8.1688353863038; Sun, 02 Jul
- 2023 20:11:03 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1688354240; x=1690946240;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=2XZ0RqBcTEPEDEu/Cbyg9EfJb6udItHDAI0I7EzuA7g=;
+ b=J4HQANjIO2It2W2dDqUTR4el6ScbY8VSTBPgWLmjM62vY1+Ma2pyHmBpYSEL7Kh16R
+ 6YTgiF/VcGUS+XSoJJnKZaSzPQa0flSrPBdJgDaZPtLKe7xN0nCGPkI4b6PxGUumC8aI
+ dRBOw6Q6QpdV227Kw5xcbxIWphCpLtREa2FABmfkvvz1JISm+K1xXBmFcKQncUrevE/V
+ abKbkFIZMEOhktqmus8hXPTBsMZ0xnZX7LGGZl+1ieRzkNEH2txpLQvyFeSjHTEAQFHZ
+ nJ+/4w9gg9zbW7Asxyz9KPtTmJd/7cpNkiHCl3vlcpe838MrYYU3nGpCKWbEasaANzls
+ rYWw==
+X-Gm-Message-State: AC+VfDzN9z5UC9+vmgiHj5qnpqqAWRVW/d11gMOr4m+tDBjz98Na3GiR
+ bJYJDWEQufiUQ7MZG5zEkRArjA==
+X-Google-Smtp-Source: ACHHUZ5zyK4AWUj11m/y5sMysL9djJVVETmS+mtU8eZpF1P87ODbPbk5NwmGV2BS3VC85m2D/RpdUg==
+X-Received: by 2002:a05:6808:18aa:b0:3a1:d8cb:17d4 with SMTP id
+ bi42-20020a05680818aa00b003a1d8cb17d4mr8918496oib.35.1688354239989; 
+ Sun, 02 Jul 2023 20:17:19 -0700 (PDT)
+Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
+ ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
+ by smtp.gmail.com with ESMTPSA id
+ f4-20020aa78b04000000b0064fd4a6b306sm13047264pfd.76.2023.07.02.20.17.17
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 02 Jul 2023 20:17:19 -0700 (PDT)
+Message-ID: <0a6bd04c-8364-2735-0ee6-060550bea77b@daynix.com>
+Date: Mon, 3 Jul 2023 12:17:16 +0900
 MIME-Version: 1.0
-References: <20220420055248.960491-1-alistair.francis@opensource.wdc.com>
- <20220420055248.960491-7-alistair.francis@opensource.wdc.com>
- <3c07be7c-4af2-4a2b-8b0a-236e2f6a4a62@roeck-us.net>
- <d9007e92-c2d2-4ce6-aaf8-9d8d37b2d119@roeck-us.net>
-In-Reply-To: <d9007e92-c2d2-4ce6-aaf8-9d8d37b2d119@roeck-us.net>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Mon, 3 Jul 2023 13:10:37 +1000
-Message-ID: <CAKmqyKN5e4vf7ZupS5oo0k8YB9yoivMuHs+fsmROBBZabXcOzQ@mail.gmail.com>
-Subject: Re: [PATCH v4 6/6] hw/riscv: Enable TPM backends
-To: Guenter Roeck <linux@roeck-us.net>
-Cc: Alistair Francis <alistair.francis@opensource.wdc.com>,
- qemu-riscv@nongnu.org, 
- qemu-devel@nongnu.org, Palmer Dabbelt <palmer@dabbelt.com>, 
- Alistair Francis <alistair@alistair23.me>, Bin Meng <bin.meng@windriver.com>, 
- Alistair Francis <alistair.francis@wdc.com>, qemu-arm@nongnu.org, 
- Peter Maydell <peter.maydell@linaro.org>, bmeng.cn@gmail.com, 
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::935;
- envelope-from=alistair23@gmail.com; helo=mail-ua1-x935.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH v3 0/2] pcie: Fix ARI next function numbers
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org,
+ Ani Sinha <anisinha@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
+ Jason Wang <jasowang@redhat.com>, Keith Busch <kbusch@kernel.org>,
+ Klaus Jensen <its@irrelevant.dk>
+References: <20230702120229.66978-1-akihiko.odaki@daynix.com>
+ <20230702084251-mutt-send-email-mst@kernel.org>
+Content-Language: en-US
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <20230702084251-mutt-send-email-mst@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::231;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-oi1-x231.google.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,95 +101,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jun 21, 2023 at 4:34=E2=80=AFPM Guenter Roeck <linux@roeck-us.net> =
-wrote:
->
-> On Mon, Jun 19, 2023 at 01:32:34PM -0700, Guenter Roeck wrote:
-> > Hi Alistair,
-> >
-> > On Wed, Apr 20, 2022 at 03:52:48PM +1000, Alistair Francis wrote:
-> > > From: Alistair Francis <alistair.francis@wdc.com>
-> > >
-> > > Imply the TPM sysbus devices. This allows users to add TPM devices to
-> > > the RISC-V virt board.
-> > >
-> > > This was tested by first creating an emulated TPM device:
-> > >
-> > >     swtpm socket --tpm2 -t -d --tpmstate dir=3D/tmp/tpm \
-> > >         --ctrl type=3Dunixio,path=3Dswtpm-sock
-> > >
-> > > Then launching QEMU with:
-> > >
-> > >     -chardev socket,id=3Dchrtpm,path=3Dswtpm-sock \
-> > >     -tpmdev emulator,id=3Dtpm0,chardev=3Dchrtpm \
-> > >     -device tpm-tis-device,tpmdev=3Dtpm0
-> > >
-> > > The TPM device can be seen in the memory tree and the generated devic=
-e
-> > > tree.
-> > >
-> > I tried to get this working with qemu 8.0, but I did not have any succe=
-ss.
-> > I am quite sure I have the above command line correctly, and it does wo=
-rk
-> > with arm64. Any idea what I might be missing ?
-> >
->
-> Answering my own question: Nothing. The problem is that the devicetree
-> is created too early, before the tpm device is instantiated/realized in
-> qemu. The tpm device therefore does not show up in devicetree, and the
-> tom device does not instantiate in Linux. The patch below fixes the probl=
-em
-> for me.
+On 2023/07/02 21:43, Michael S. Tsirkin wrote:
+> On Sun, Jul 02, 2023 at 09:02:25PM +0900, Akihiko Odaki wrote:
+>> The ARI next function number field is undefined for VF. The PF should
+>> end the linked list formed with the field by specifying 0.
+>>
+>> Supersedes: <20230701070133.24877-1-akihiko.odaki@daynix.com>
+>> ("[PATCH 0/4] pci: Compare function number and ARI next function number")
+> 
+> Thanks! How was this patch tested?
 
-Thanks for looking into this!
+I brought VFs up with igb and performed link up for a fresh VM and a VM 
+migrated from 8.0.2.
 
->
-> Any comments / thoughts ? Is that change acceptable, or should it be
-> implemented differently ?
-
-The diff below looks fine to me. Do you mind sending a patch?
-
-Alistair
-
->
-> Thanks,
-> Guenter
->
-> ---
-> diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
-> index 4e3efbee16..ea259d7ade 100644
-> --- a/hw/riscv/virt.c
-> +++ b/hw/riscv/virt.c
-> @@ -1247,6 +1247,11 @@ static void virt_machine_done(Notifier *notifier, =
-void *data)
->      uint32_t fdt_load_addr;
->      uint64_t kernel_entry;
->
-> +    /* create devicetree if not provided */
-> +    if (!machine->dtb) {
-> +        create_fdt(s, memmap);
-> +    }
-> +
->      /*
->       * Only direct boot kernel is currently supported for KVM VM,
->       * so the "-bios" parameter is not supported when KVM is enabled.
-> @@ -1519,15 +1524,13 @@ static void virt_machine_init(MachineState *machi=
-ne)
->      }
->      virt_flash_map(s, system_memory);
->
-> -    /* load/create device tree */
-> +    /* load device tree */
->      if (machine->dtb) {
->          machine->fdt =3D load_device_tree(machine->dtb, &s->fdt_size);
->          if (!machine->fdt) {
->              error_report("load_device_tree() failed");
->              exit(1);
->          }
-> -    } else {
-> -        create_fdt(s, memmap);
->      }
->
->      s->machine_done.notify =3D virt_machine_done;
+> 
+> 
+>> V2 -> V3:
+>>    Moved the logic to PCI common infrastucture (Michael S. Tsirkin)
+>>
+>> V1 -> V2:
+>>    Fixed migration. (Michael S. Tsirkin)
+>>    Added a caveat comment. (Michael S. Tsirkin)
+>>
+>> Akihiko Odaki (2):
+>>    pcie: Use common ARI next function number
+>>    pcie: Specify 0 for ARI next function numbers
+>>
+>>   docs/pcie_sriov.txt   | 4 ++--
+>>   include/hw/pci/pci.h  | 2 ++
+>>   include/hw/pci/pcie.h | 2 +-
+>>   hw/core/machine.c     | 1 +
+>>   hw/net/igb.c          | 2 +-
+>>   hw/net/igbvf.c        | 2 +-
+>>   hw/nvme/ctrl.c        | 2 +-
+>>   hw/pci/pci.c          | 2 ++
+>>   hw/pci/pcie.c         | 4 +++-
+>>   9 files changed, 14 insertions(+), 7 deletions(-)
+>>
+>> -- 
+>> 2.41.0
+> 
 
