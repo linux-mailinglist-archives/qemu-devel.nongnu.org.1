@@ -2,79 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2D4674625C
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 20:28:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 147D7746271
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 20:32:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGOGI-0005Pk-Tw; Mon, 03 Jul 2023 14:26:58 -0400
+	id 1qGOL9-0007aG-Va; Mon, 03 Jul 2023 14:31:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qGOGH-0005PZ-16
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 14:26:57 -0400
-Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qGOL5-0007Z7-Sh
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 14:31:55 -0400
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qGOGF-0007MB-Ad
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 14:26:56 -0400
-Received: by mail-lf1-x136.google.com with SMTP id
- 2adb3069b0e04-4fbb281eec6so2071110e87.1
- for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 11:26:54 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qGOL1-000073-Sk
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 14:31:55 -0400
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-313e742a787so4091617f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 11:31:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688408813; x=1691000813;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
- :message-id:reply-to;
- bh=ma3mia25UJ4wvtLBcluVor33HLoM7mUGPR3M7lrjj5Y=;
- b=Zx6X9BsHvHz6ZvpDp/HNrnHltzp/QIIsIXy51YM54yiRtkVeUvjUaMdP5ePQAm7ESn
- kvacng0gVI5Ry6nCvSNttuPdZyxq0FD8buuge14VYF6sli1r6slJpM8JP0Q0Aivvlf6Z
- C/Qd8UAI/BuC8uTyYxVOB4Tki4UxR3EoxtLc9dV0gIpiwmAYHa4qq4PP8xqlUvG9GYIF
- fNOwsNoteBLQ++MZRGmzSoeW96in4YZ3bQaJMJ614QIrK1JfeXAeNOdDrynBSiQH2PUQ
- 0gS1wFSj4YPMWpPb+d8HSTQ1+l1RbQvhrA9/GRwS8qWVLO8Mw/alv91RtyqF3qPgUqHi
- g/zA==
+ d=linaro.org; s=google; t=1688409109; x=1691001109;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=MnDJGuJyd7hy6IfHuJQpgiX6kirrk5oLgIqP4WgR1ls=;
+ b=gEm4cpDrD3c1t4Nku/wH3DSWqoJYBY8rXsG6uve0H6hqmkTAHZilGfKJR8tLCp98RO
+ W2PfW/L52q9exJkigW9f8M3dXkoHTwH4iiZVbTLi7gaC1r4mXQDF5dbWTzWlEFkFx7xP
+ dI/2v8X8dMzLVCJ8vC2nNon2r+AICrhf9DwTDEElP1I/qBoYtGULXDNtU8RzJ03eCCbv
+ PLMpJZGU5hkNmVg1ffcmTKb8Go8arRbJUYOgKn7a7r++IvgEFmMQ/AJ12Urp0wXCFCYg
+ 2Fs6BPstdIauuoLAeh16rokGJ0CElfOhkHh9MiJv1C64n4ipcTlrAILbWL/wLwfjQyqM
+ //8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688408813; x=1691000813;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=ma3mia25UJ4wvtLBcluVor33HLoM7mUGPR3M7lrjj5Y=;
- b=QPAVQjJMz0FwnsUJNO4XpCGnxcIj8DNiqtxmBeRjiTAaGjAAxy06RP3lDW0oGauNxf
- NvVReNzZTyC9m2KpKb/LpaNY57SK5JSzAC/EGomfcyP2ocY0KC9Gf6VZwR5T9xzq68UA
- 5z2I+zJlSair81vamK/t/KVHMuqVbrep85BKCLniYqiigAy4O2NF5JEPmfZ6c782rRSm
- 2pfdIPT/5GqTAoM1bsOI2NU/B4PaS/VBSWxqPjN8Ya9yqMxrNusYNhlW13xM22M4iTAj
- eNQwiFXH4wVu3vBkKKBrgVxdK+HslVn5goq5jMPq3ieRaBdbBF6jAtw32rvlV/DSBA+2
- ZRhg==
-X-Gm-Message-State: ABy/qLZBCXWe5zuesGejucRukjSURvzQXuZ+rO6yxwITuvQ2hCWxVsGZ
- OD3OXRqn34Fqn5JdF6p48l7fRg==
-X-Google-Smtp-Source: APBJJlFUvy4rkjD1pDsZnOOpu5x2/+mB3lrX0435xF3iTQT8/95sXy5adTjRjbfzSBFZoeQpyZg4ng==
-X-Received: by 2002:a05:6512:20d0:b0:4fb:8ca8:c6e5 with SMTP id
- u16-20020a05651220d000b004fb8ca8c6e5mr6561533lfr.21.1688408813166; 
- Mon, 03 Jul 2023 11:26:53 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
+ d=1e100.net; s=20221208; t=1688409109; x=1691001109;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=MnDJGuJyd7hy6IfHuJQpgiX6kirrk5oLgIqP4WgR1ls=;
+ b=jqs5zc4BvJwRrg8ZRt2iqjlO0mgeW9ZOo1NaTYHVrdhYJDCkSJUihOS5/HG1Ahk+5I
+ svyAc0QntaTvY2giV7G9lAMtmMRL3vmRm29eM+Fz7jiec4XtAm5AgHLjuWnxc5wSgcP5
+ uTrngiDxW4yNbWbHl3CpdGe/qy1wC4ht/HVKtHwD9WKh50LgRY+rABmoQWtvSI4U+zVO
+ pRehXpnEHVMGLLCaiqLhSLNI5AF/7z6H18uAAdgyAuPt3TU7OCL0f89yOUxON7iYyPws
+ Z6BSXNIYGnx2ng9RVJ7UlH+irNyXKQ0D7JKgJb0MlYCP/XYj1ogakgoxN+9JYKSM+6Ke
+ IEcg==
+X-Gm-Message-State: AC+VfDyosslQGBpQe6ED1AKDp4enHeUOhOXMrUg6+lwLHUu+lA0r2XxO
+ I91Tbbva8m7FZhLQMWKyRvasepTVQYitTZKW9ZFfNg==
+X-Google-Smtp-Source: ACHHUZ7YmFH6Jzw1OE18FZ5zHqnPjrQ1t77qrBJiI/Vjn6V6i/AusMhLJViSj8AKo6q+Hhx797kODg==
+X-Received: by 2002:adf:e3c9:0:b0:313:ef28:d3d6 with SMTP id
+ k9-20020adfe3c9000000b00313ef28d3d6mr14384299wrm.6.1688409108711; 
+ Mon, 03 Jul 2023 11:31:48 -0700 (PDT)
+Received: from localhost.localdomain ([176.176.178.91])
  by smtp.gmail.com with ESMTPSA id
- b3-20020adfe303000000b0030fd03e3d25sm26271167wrj.75.2023.07.03.11.26.52
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 03 Jul 2023 11:26:52 -0700 (PDT)
-Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 529BB1FFBB;
- Mon,  3 Jul 2023 19:26:52 +0100 (BST)
-References: <20230625212707.1078951-1-fufuyqqqqqq@gmail.com>
- <20230625212707.1078951-6-fufuyqqqqqq@gmail.com>
-User-agent: mu4e 1.11.8; emacs 29.0.92
-From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Yeqi Fu <fufuyqqqqqq@gmail.com>
-Cc: richard.henderson@linaro.org, qemu-devel@nongnu.org, Laurent Vivier
- <laurent@vivier.eu>
-Subject: Re: [RFC v3 05/10] linux-user: Implement native-bypass option support
-Date: Mon, 03 Jul 2023 19:21:47 +0100
-In-reply-to: <20230625212707.1078951-6-fufuyqqqqqq@gmail.com>
-Message-ID: <87edlohmvn.fsf@linaro.org>
+ y17-20020a1c4b11000000b003f9b24cf881sm30498831wma.16.2023.07.03.11.31.46
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Mon, 03 Jul 2023 11:31:48 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Palmer Dabbelt <palmer@dabbelt.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, Beraldo Leal <bleal@redhat.com>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>, kvm@vger.kernel.org,
+ qemu-riscv@nongnu.org, Bin Meng <bin.meng@windriver.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Weiwei Li <liweiwei@iscas.ac.cn>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
+Subject: [PATCH v2 00/16] target/riscv: Allow building without TCG (KVM-only
+ so far)
+Date: Mon,  3 Jul 2023 20:31:29 +0200
+Message-Id: <20230703183145.24779-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::136;
- envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x136.google.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,127 +96,111 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+v2: Rebased on alistair23/riscv-to-apply.next
 
-Yeqi Fu <fufuyqqqqqq@gmail.com> writes:
+Patch #1-#5 reviewed.
 
-> This commit implements the -native-bypass support in linux-user. The
-> native_calls_enabled() function can be true only when the
-> '-native-bypass' option is given.
->
-> Signed-off-by: Yeqi Fu <fufuyqqqqqq@gmail.com>
-> ---
->  linux-user/main.c | 36 ++++++++++++++++++++++++++++++++++++
->  1 file changed, 36 insertions(+)
->
-> diff --git a/linux-user/main.c b/linux-user/main.c
-> index 5e6b2e1714..98e31c77d5 100644
-> --- a/linux-user/main.c
-> +++ b/linux-user/main.c
-> @@ -60,6 +60,13 @@
->  #include "semihosting/semihost.h"
->  #endif
->=20=20
-> +#if defined(CONFIG_NATIVE_CALL)
-> +#include "native/native-defs.h"
-> +
-> +static const char *native_lib;
-> +bool native_bypass_enabled;
+Philippe Mathieu-Daudé (16):
+  target/riscv: Remove unuseful KVM stubs
+  target/riscv: Remove unused 'instmap.h' header in translate.c
+  target/riscv: Restrict sysemu specific header to user emulation
+  target/riscv: Restrict 'rv128' machine to TCG accelerator
+  target/riscv: Move sysemu-specific files to target/riscv/sysemu/
+  target/riscv: Restrict riscv_cpu_do_interrupt() to sysemu
+  target/riscv: Move TCG-specific files to target/riscv/tcg/
+  target/riscv: Move TCG-specific cpu_get_tb_cpu_state() to tcg/cpu.c
+  target/riscv: Expose some 'trigger' prototypes from debug.c
+  target/riscv: Extract TCG-specific code from debug.c
+  target/riscv: Move sysemu-specific debug files to target/riscv/sysemu/
+  target/riscv: Expose riscv_cpu_pending_to_irq() from cpu_helper.c
+  target/riscv: Move TCG/sysemu-specific code to tcg/sysemu/cpu_helper.c
+  target/riscv: Move sysemu-specific code to sysemu/cpu_helper.c
+  target/riscv: Restrict TCG-specific prototype declarations
+  gitlab-ci.d/crossbuilds: Add KVM riscv64 cross-build jobs
 
-This bool feels redundant if we can check for a non-null native-lib. You
-could certainly expose a function though:
+ target/riscv/cpu.h                            |   27 +-
+ target/riscv/internals.h                      |    4 +
+ target/riscv/{ => sysemu}/debug.h             |    6 +
+ target/riscv/{ => sysemu}/instmap.h           |    0
+ target/riscv/{ => sysemu}/kvm_riscv.h         |    0
+ target/riscv/{ => sysemu}/pmp.h               |    0
+ target/riscv/{ => sysemu}/pmu.h               |    0
+ target/riscv/{ => sysemu}/time_helper.h       |    0
+ target/riscv/{ => tcg}/XVentanaCondOps.decode |    0
+ target/riscv/{ => tcg}/insn16.decode          |    0
+ target/riscv/{ => tcg}/insn32.decode          |    0
+ target/riscv/{ => tcg}/xthead.decode          |    0
+ hw/riscv/virt.c                               |    2 +-
+ target/riscv/cpu.c                            |   33 +-
+ target/riscv/cpu_helper.c                     | 1692 +----------------
+ target/riscv/csr.c                            |    6 +-
+ target/riscv/{ => sysemu}/arch_dump.c         |    0
+ target/riscv/sysemu/cpu_helper.c              |  863 +++++++++
+ target/riscv/{ => sysemu}/debug.c             |  153 +-
+ target/riscv/{ => sysemu}/kvm-stub.c          |    0
+ target/riscv/{ => sysemu}/kvm.c               |    4 +-
+ target/riscv/{ => sysemu}/machine.c           |    0
+ target/riscv/{ => sysemu}/monitor.c           |    0
+ target/riscv/{ => sysemu}/pmp.c               |    0
+ target/riscv/{ => sysemu}/pmu.c               |    0
+ target/riscv/{ => sysemu}/riscv-qmp-cmds.c    |    0
+ target/riscv/{ => sysemu}/time_helper.c       |    0
+ target/riscv/{ => tcg}/bitmanip_helper.c      |    0
+ target/riscv/tcg/cpu.c                        |   98 +
+ target/riscv/{ => tcg}/crypto_helper.c        |    0
+ target/riscv/{ => tcg}/fpu_helper.c           |    0
+ target/riscv/{ => tcg}/m128_helper.c          |    0
+ target/riscv/{ => tcg}/op_helper.c            |    0
+ target/riscv/tcg/sysemu/cpu_helper.c          |  765 ++++++++
+ target/riscv/tcg/sysemu/debug.c               |  165 ++
+ target/riscv/tcg/tcg-stub.c                   |   31 +
+ target/riscv/{ => tcg}/translate.c            |    1 -
+ target/riscv/{ => tcg}/vector_helper.c        |    0
+ target/riscv/{ => tcg}/zce_helper.c           |    0
+ .gitlab-ci.d/crossbuilds.yml                  |    8 +
+ target/riscv/meson.build                      |   33 +-
+ target/riscv/sysemu/meson.build               |   13 +
+ target/riscv/tcg/meson.build                  |   22 +
+ target/riscv/tcg/sysemu/meson.build           |    4 +
+ 44 files changed, 2037 insertions(+), 1893 deletions(-)
+ rename target/riscv/{ => sysemu}/debug.h (96%)
+ rename target/riscv/{ => sysemu}/instmap.h (100%)
+ rename target/riscv/{ => sysemu}/kvm_riscv.h (100%)
+ rename target/riscv/{ => sysemu}/pmp.h (100%)
+ rename target/riscv/{ => sysemu}/pmu.h (100%)
+ rename target/riscv/{ => sysemu}/time_helper.h (100%)
+ rename target/riscv/{ => tcg}/XVentanaCondOps.decode (100%)
+ rename target/riscv/{ => tcg}/insn16.decode (100%)
+ rename target/riscv/{ => tcg}/insn32.decode (100%)
+ rename target/riscv/{ => tcg}/xthead.decode (100%)
+ rename target/riscv/{ => sysemu}/arch_dump.c (100%)
+ create mode 100644 target/riscv/sysemu/cpu_helper.c
+ rename target/riscv/{ => sysemu}/debug.c (83%)
+ rename target/riscv/{ => sysemu}/kvm-stub.c (100%)
+ rename target/riscv/{ => sysemu}/kvm.c (99%)
+ rename target/riscv/{ => sysemu}/machine.c (100%)
+ rename target/riscv/{ => sysemu}/monitor.c (100%)
+ rename target/riscv/{ => sysemu}/pmp.c (100%)
+ rename target/riscv/{ => sysemu}/pmu.c (100%)
+ rename target/riscv/{ => sysemu}/riscv-qmp-cmds.c (100%)
+ rename target/riscv/{ => sysemu}/time_helper.c (100%)
+ rename target/riscv/{ => tcg}/bitmanip_helper.c (100%)
+ create mode 100644 target/riscv/tcg/cpu.c
+ rename target/riscv/{ => tcg}/crypto_helper.c (100%)
+ rename target/riscv/{ => tcg}/fpu_helper.c (100%)
+ rename target/riscv/{ => tcg}/m128_helper.c (100%)
+ rename target/riscv/{ => tcg}/op_helper.c (100%)
+ create mode 100644 target/riscv/tcg/sysemu/cpu_helper.c
+ create mode 100644 target/riscv/tcg/sysemu/debug.c
+ create mode 100644 target/riscv/tcg/tcg-stub.c
+ rename target/riscv/{ => tcg}/translate.c (99%)
+ rename target/riscv/{ => tcg}/vector_helper.c (100%)
+ rename target/riscv/{ => tcg}/zce_helper.c (100%)
+ create mode 100644 target/riscv/sysemu/meson.build
+ create mode 100644 target/riscv/tcg/meson.build
+ create mode 100644 target/riscv/tcg/sysemu/meson.build
 
-bool native_bypass_enabled() {
-     return native_lib ? true : false;
-}
+-- 
+2.38.1
 
-?
-
-> +#endif
-> +
->  #ifndef AT_FLAGS_PRESERVE_ARGV0
->  #define AT_FLAGS_PRESERVE_ARGV0_BIT 0
->  #define AT_FLAGS_PRESERVE_ARGV0 (1 << AT_FLAGS_PRESERVE_ARGV0_BIT)
-> @@ -125,6 +132,7 @@ static void usage(int exitcode);
->  static const char *interp_prefix =3D CONFIG_QEMU_INTERP_PREFIX;
->  const char *qemu_uname_release;
->=20=20
-> +
-
-rm whitespace
-
->  #if !defined(TARGET_DEFAULT_STACK_SIZE)
->  /* XXX: on x86 MAP_GROWSDOWN only works if ESP <=3D address + 32, so
->     we allocate a bigger stack. Need a better solution, for example
-> @@ -293,6 +301,18 @@ static void handle_arg_set_env(const char *arg)
->      free(r);
->  }
->=20=20
-> +#if defined(CONFIG_NATIVE_CALL)
-> +static void handle_arg_native_bypass(const char *arg)
-> +{
-> +    if (access(arg, F_OK) !=3D 0) {
-> +        fprintf(stderr, "native library %s does not exist\n", arg);
-> +        exit(EXIT_FAILURE);
-> +    }
-> +    native_lib =3D arg;
-> +    native_bypass_enabled =3D true;
-> +}
-> +#endif
-> +
->  static void handle_arg_unset_env(const char *arg)
->  {
->      char *r, *p, *token;
-> @@ -522,6 +542,10 @@ static const struct qemu_argument arg_table[] =3D {
->       "",           "Generate a /tmp/perf-${pid}.map file for perf"},
->      {"jitdump",    "QEMU_JITDUMP",     false, handle_arg_jitdump,
->       "",           "Generate a jit-${pid}.dump file for perf"},
-> +#if defined(CONFIG_NATIVE_CALL)
-> +    {"native-bypass", "QEMU_NATIVE_BYPASS", true, handle_arg_native_bypa=
-ss,
-> +     "",           "native bypass for library calls in user mode only."},
-> +#endif
->      {NULL, NULL, false, NULL, NULL, NULL}
->  };
->=20=20
-> @@ -826,6 +850,18 @@ int main(int argc, char **argv, char **envp)
->          }
->      }
->=20=20
-> +#if defined(CONFIG_NATIVE_CALL)
-> +    /* Set the library for native bypass  */
-> +    if (native_bypass_enabled) {
-
-Then this could be:
-
-  if (native_lib && g_file_test(native_lib, G_FILE_TEST_EXITS)) {
-
-Or maybe better:
-
- if (native_lib) {
-    if (g_file_test(native_lib, G_FILE_TEST_EXITS)) {
-       .. setup ..
-    } else {
-       fprintf(stderr, "can't open %s\n", native_lib);
-       exit(EXIT_FAILURE);
-    }
-}
-
-> +        GString *lib =3D g_string_new(native_lib);
-> +        lib =3D g_string_prepend(lib, "LD_PRELOAD=3D");
-> +        if (envlist_appendenv(envlist, g_string_free(lib, false), ":") !=
-=3D 0) {
-> +            fprintf(stderr,
-> +                    "failed to append the native library to environment.=
-\n");
-> +            exit(EXIT_FAILURE);
-> +        }
-> +    }
-> +#endif
->      target_environ =3D envlist_to_environ(envlist, NULL);
->      envlist_free(envlist);
-
-
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
 
