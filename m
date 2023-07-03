@@ -2,94 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 635F7745633
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 09:35:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 52F8974564C
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 09:46:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGE4T-0002Vt-2j; Mon, 03 Jul 2023 03:34:05 -0400
+	id 1qGEF1-0004G3-D8; Mon, 03 Jul 2023 03:44:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qGE4Q-0002VR-Ea
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 03:34:02 -0400
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qGE4N-0005Am-PK
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 03:34:02 -0400
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-3143798f542so678422f8f.2
- for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 00:33:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688369635; x=1690961635;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
- :message-id:reply-to;
- bh=D6SxwcF9nmDbtlXiXRcbpwrNKuD5dIu4EEVbCU3sHh8=;
- b=XC1E/nVEBd9cxfMzA+KBvpLj3KHO8GhjlsS1bNpZp07EvjrnbBwcTJMziitfe+0v14
- N7HwP6v0oJLpJZ/l+8K1TBLJ7M6ryoxiSlZL9SeDvp2SnWm7vZlPhFGeoHx6OU31R6s7
- S0NW6XctFyIayvA/GzC5nfSRpZmxhXR24XytHYNi3zbC0yD1dqhXEnr43ZEwDdRtgQAO
- tSZcW2J6zmZl2Aqkhnj4iORv6OPbovwoBdj3bCVimaAjQqA9nl+Sq1fuM4xX0XXeCt+p
- ytzl88G1QDhQTLlCy1b9rCjefp317nIm47dELNBBwvPR5l8oEI/0t1p9H/aY90q0Wkxt
- popQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688369635; x=1690961635;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=D6SxwcF9nmDbtlXiXRcbpwrNKuD5dIu4EEVbCU3sHh8=;
- b=G5dTV137lMIdsJa2I1rUoZPYZyNjfNzFUm+WUzDFZFUk8W2DyLbxHpVWeUGzgP6ddp
- A1ptno0sH6Q3jVVcfY0yCCvRqELI8tLlxtoEMoyxR+aYhgiLlHliaYoV4fHXRa8kB+9B
- 9b1HdSM6f8+yAKti6YwA9VDnD/w109u7X/7WZv8fTVVqowoBjwsLIX9woehzvIeUvD37
- HHhEa4oW/jmAab2kNTTWMQ3eh0KDiQltQ3lMwbSlSJNsLbeUcu2FB3iufebfuweCAqha
- ktImsyYAefPrcgyn/42y6diW6IvKUq/WptMetceTptIUP8ASikL1mljobThGGvDNOHhc
- f29g==
-X-Gm-Message-State: ABy/qLa411IlYgoHk1d8ZUThV1YRRWiQagI5g1b9IjtM2pM7V5gLx3xz
- k7JAZi5AWKAmKVBSj9RM06yBRQ==
-X-Google-Smtp-Source: APBJJlFYpCu9hqKn5Et4BuABFYdeHiDqqnWSjx7iIYI28yWV4Z5VU9OsQqiKdaa+lMZVU0RzQ/yj9w==
-X-Received: by 2002:a5d:554a:0:b0:314:14ea:e2de with SMTP id
- g10-20020a5d554a000000b0031414eae2demr7855163wrw.0.1688369635486; 
- Mon, 03 Jul 2023 00:33:55 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
- by smtp.gmail.com with ESMTPSA id
- e10-20020a056000194a00b0031134bcdacdsm24873234wry.42.2023.07.03.00.33.54
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 03 Jul 2023 00:33:54 -0700 (PDT)
-Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 4B2771FFBB;
- Mon,  3 Jul 2023 08:33:54 +0100 (BST)
-References: <87wn0obuk6.fsf@linaro.org>
- <SN6PR02MB4205D202EFB6D6A256ECB93FB8489@SN6PR02MB4205.namprd02.prod.outlook.com>
- <87jzwoba78.fsf@linaro.org>
- <CAKmqyKOidBkxXzWCm8rxagTbF0bucmitrQk1kW20wDNdjqUkeA@mail.gmail.com>
- <87fs6ifp5e.fsf@linaro.org>
- <CAKmqyKNHvP4MJOPP8i-Lj5Bu3-DNi00SngEe5X+c8_vA0EGLaQ@mail.gmail.com>
-User-agent: mu4e 1.11.8; emacs 29.0.92
-From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Alistair Francis <alistair23@gmail.com>
-Cc: Brian Cain <bcain@quicinc.com>, =?utf-8?Q?Daniel_P=2EBerrang=C3=A9?=
- <berrange@redhat.com>, qemu-devel <qemu-devel@nongnu.org>, Michael Tokarev
- <mjt@tls.msk.ru>, Erik Skultety <eskultet@redhat.com>, Palmer Dabbelt
- <palmer@dabbelt.com>, Alistair Francis <alistair.francis@wdc.com>, Bin
- Meng <bin.meng@windriver.com>, "Matheus Bernardino (QUIC)"
- <quic_mathbern@quicinc.com>, "Marco Liebel (QUIC)"
- <quic_mliebel@quicinc.com>
-Subject: Re: How do you represent a host gcc and a cross gcc in lcitool?
-Date: Mon, 03 Jul 2023 08:31:58 +0100
-In-reply-to: <CAKmqyKNHvP4MJOPP8i-Lj5Bu3-DNi00SngEe5X+c8_vA0EGLaQ@mail.gmail.com>
-Message-ID: <87h6qlphy5.fsf@linaro.org>
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qGEEy-0004FZ-UG
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 03:44:56 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qGEEw-00076e-TI
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 03:44:56 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1688370293;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=69HuQzXxz5q5aGyaXTLyF80U6CDPNHd63qj8QqsHUmk=;
+ b=UK1y5E+tledMHYPqxwZmVBF+h+W9HRoX/N/+5oZT8m0Q5EB+fu0B+387LzFa3YrkdVdirs
+ ngkXJRxp/ALn5wSrYMhAOLxFt0QyZNCgDh2wdPB0L25cv48OqVL3LE4j6kN2FPG3wFFtTK
+ IJRN958QKybWP2YKw1UzlVjNiPFFXZE=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-318-rAlZHnnsPnO8j78HHg6_jg-1; Mon, 03 Jul 2023 03:44:52 -0400
+X-MC-Unique: rAlZHnnsPnO8j78HHg6_jg-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CEE5329AB3E1;
+ Mon,  3 Jul 2023 07:44:51 +0000 (UTC)
+Received: from thuth.com (unknown [10.39.193.20])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 832AE492B01;
+ Mon,  3 Jul 2023 07:44:49 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: qemu-devel@nongnu.org,
+	Paolo Bonzini <pbonzini@redhat.com>
+Cc: Claudio Imbrenda <imbrenda@linux.ibm.com>,
+ Markus Armbruster <armbru@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [PATCH v2] os-posix: Allow 'chroot' via '-run-with' and deprecate the
+ old '-chroot' option
+Date: Mon,  3 Jul 2023 09:44:47 +0200
+Message-Id: <20230703074447.17044-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x434.google.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -106,155 +77,204 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+We recently introduced "-run-with" for options that influence the
+runtime behavior of QEMU. This option has the big advantage that it
+can group related options (so that it is easier for the users to spot
+them) and that the options become introspectable via QMP this way.
+So let's start moving more switches into this option group, starting
+with "-chroot" now.
 
-Alistair Francis <alistair23@gmail.com> writes:
+Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
+Reviewed-by: Ján Tomko <jtomko@redhat.com>
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+---
+ v2: Renamed "register_teardown" to "register_runwith" (thanks Michael!)
 
-> On Fri, Jun 23, 2023 at 8:29=E2=80=AFPM Alex Benn=C3=A9e <alex.bennee@lin=
-aro.org> wrote:
->>
->>
->> Alistair Francis <alistair23@gmail.com> writes:
->>
->> > On Thu, Jun 1, 2023 at 4:58=E2=80=AFAM Alex Benn=C3=A9e <alex.bennee@l=
-inaro.org> wrote:
->> >>
->> >>
->> >> Brian Cain <bcain@quicinc.com> writes:
->> >>
->> >> >> -----Original Message-----
->> >> >> From: Alex Benn=C3=A9e <alex.bennee@linaro.org>
->> >> >> Sent: Wednesday, May 31, 2023 6:24 AM
->> >> >> To: Daniel P.Berrang=C3=A9 <berrange@redhat.com>
->> >> >> Cc: qemu-devel <qemu-devel@nongnu.org>; Michael Tokarev
->> >> >> <mjt@tls.msk.ru>; Erik Skultety <eskultet@redhat.com>; Brian Cain
->> >> >> <bcain@quicinc.com>; Palmer Dabbelt <palmer@dabbelt.com>; Alistair=
- Francis
->> >> >> <alistair.francis@wdc.com>; Bin Meng <bin.meng@windriver.com>
->> >> >> Subject: How do you represent a host gcc and a cross gcc in lcitoo=
-l?
->> >> >>
->> >> >> WARNING: This email originated from outside of Qualcomm. Please be=
- wary of
->> >> >> any links or attachments, and do not enable macros.
->> >> >>
->> >> >> Hi,
->> >> >>
->> >> >> While trying to convert the debian-riscv64-cross docker container =
-to an
->> >> >> lcitool based one I ran into a problem building QEMU. The configur=
-e step
->> >> >> fails because despite cross compiling we still need a host compile=
-r to
->> >> >> build the hexagon codegen tooling.
->> >> >
->> >> > I thought we'd fixed this container definition so that we only
->> >> > downloaded the hexagon toolchain instead? Do we really need a host
->> >> > compiler for that container build?
->> >> >
->> >> > Or am I misunderstanding and you're referring to features required =
-to
->> >> > support idef parser? Does "hexagon codegen" refer to hexagon's TCG
->> >> > generation or hexagon code itself (required by tests/tcg)?
->> >>
->> >> I think so:
->> >>
->> >> #
->> >> #  Step 1
->> >> #  We use a C program to create semantics_generated.pyinc
->> >> #
->> >> gen_semantics =3D executable(
->> >>     'gen_semantics',
->> >>     'gen_semantics.c',
->> >>     native: true, build_by_default: false)
->> >>
->> >> semantics_generated =3D custom_target(
->> >>     'semantics_generated.pyinc',
->> >>     output: 'semantics_generated.pyinc',
->> >>     command: [gen_semantics, '@OUTPUT@'],
->> >> )
->> >> hexagon_ss.add(semantics_generated)
->> >>
->> >>
->> >> >
->> >> >> After scratching my head for a while I discovered we did have host=
- GCC's
->> >> >> in our cross images despite there being no explicit request for th=
-em in
->> >> >> the docker description. It turned out that the gcovr requirement p=
-ulled
->> >> >> in lcov which itself had a dependency on gcc. However this is a bu=
-g:
->> >> >>
->> >> >>   https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=3D987818
->> >> >>
->> >> >> which has been fixed in bookworm (and of course sid which is the o=
-nly
->> >> >> way we can get a riscv64 build of QEMU at the moment). Hence my ha=
-cky
->> >> >> attempts to get gcc via side effect of another package failed.
->> >> >>
->> >> >> Hence the question in $SUBJECT. I tried to add a mapping to lcitoo=
-l for
->> >> >> a pseudo hostgcc package:
->> >> >>
->> >> >> +  hostgcc:
->> >> >> +    default: gcc
->> >> >> +    pkg:
->> >> >> +    MacOS:
->> >> >> +    cross-policy-default: skip
->> >> >>
->> >> >> however this didn't work. Do we need a new mechanism for this or a=
-m I
->> >> >> missing a way to do this?
->> >> >>
->> >> >> RiscV guys,
->> >> >>
->> >> >> It's clear that relying on Debian Sid for the QEMU cross build for=
- RiscV
->> >> >> is pretty flakey. Are you guys aware of any other distros that bet=
-ter
->> >> >> support cross compiling to a riscv64 target or is Debian still the=
- best
->> >> >> bet? Could you be persuaded to build a binary docker image with the
->> >> >> cross compilers and libraries required for a decent cross build as=
- an
->> >> >> alternative?
->> >
->> > It's probably not very helpful, but I find Arch based distros to be
->> > the best bet for this.
->>
->> I've never tried arch under docker, isn't it just as much of a moving
->> target?
->
-> I haven't really tried Arch under Docker. I agree that it is a fast
-> moving target. I guess it's up for debate if it's too much churn or
-> not
->
-> Would a working Arch image be helpful with lcitool?
->
->>
->> > Are you still looking for a Docker image? I could try and get
->> > something working
->>
->> Yes, although I have converted debian-riscv64-cross to lcitool and had
->> it working sid has since broken. Are there any pushes to have riscv as a
->> first class distro citizen soon or is stuff still in the early ports
->> stage?
->
-> There are pushes. I thought RISC-V was progressing towards first class
-> distro support, but it seems to have stalled recently.
->
-> I actually thought you could cross compile with Debian bullseye, yet
-> alone bookworm, has someone tried? Otherwise I can give it a crack
+ docs/about/deprecated.rst |  5 +++++
+ os-posix.c                | 35 ++++++++++++++++++++++++++++++++++-
+ util/async-teardown.c     | 21 ---------------------
+ qemu-options.hx           | 18 +++++++++++++-----
+ 4 files changed, 52 insertions(+), 27 deletions(-)
 
-No.
+diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+index 0743459862..1cf53b86ce 100644
+--- a/docs/about/deprecated.rst
++++ b/docs/about/deprecated.rst
+@@ -116,6 +116,11 @@ Use "whpx" (on Windows) or "hvf" (on macOS) instead.
+ 
+ Use ``-run-with async-teardown=on`` instead.
+ 
++``-chroot`` (since 8.1)
++'''''''''''''''''''''''
++
++Use ``-run-with chroot=dir`` instead.
++
+ ``-singlestep`` (since 8.1)
+ '''''''''''''''''''''''''''
+ 
+diff --git a/os-posix.c b/os-posix.c
+index 90ea71725f..cfcb96533c 100644
+--- a/os-posix.c
++++ b/os-posix.c
+@@ -38,6 +38,7 @@
+ #include "qemu/cutils.h"
+ #include "qemu/config-file.h"
+ #include "qemu/option.h"
++#include "qemu/module.h"
+ 
+ #ifdef CONFIG_LINUX
+ #include <sys/prctl.h>
+@@ -148,6 +149,7 @@ int os_parse_cmd_args(int index, const char *optarg)
+         }
+         break;
+     case QEMU_OPTION_chroot:
++        warn_report("option is deprecated, use '-run-with chroot=...' instead");
+         chroot_dir = optarg;
+         break;
+     case QEMU_OPTION_daemonize:
+@@ -158,18 +160,25 @@ int os_parse_cmd_args(int index, const char *optarg)
+     case QEMU_OPTION_asyncteardown:
+         init_async_teardown();
+         break;
++#endif
+     case QEMU_OPTION_run_with: {
++        const char *str;
+         QemuOpts *opts = qemu_opts_parse_noisily(qemu_find_opts("run-with"),
+                                                  optarg, false);
+         if (!opts) {
+             exit(1);
+         }
++#if defined(CONFIG_LINUX)
+         if (qemu_opt_get_bool(opts, "async-teardown", false)) {
+             init_async_teardown();
+         }
++#endif
++        str = qemu_opt_get(opts, "chroot");
++        if (str) {
++            chroot_dir = str;
++        }
+         break;
+     }
+-#endif
+     default:
+         return -1;
+     }
+@@ -348,3 +357,27 @@ int os_mlock(void)
+     return -ENOSYS;
+ #endif
+ }
++
++static QemuOptsList qemu_run_with_opts = {
++    .name = "run-with",
++    .head = QTAILQ_HEAD_INITIALIZER(qemu_run_with_opts.head),
++    .desc = {
++#if defined(CONFIG_LINUX)
++        {
++            .name = "async-teardown",
++            .type = QEMU_OPT_BOOL,
++        },
++#endif
++        {
++            .name = "chroot",
++            .type = QEMU_OPT_STRING,
++        },
++        { /* end of list */ }
++    },
++};
++
++static void register_runwith(void)
++{
++    qemu_add_opts(&qemu_run_with_opts);
++}
++opts_init(register_runwith);
+diff --git a/util/async-teardown.c b/util/async-teardown.c
+index 3ab19c8740..62cdeb0f20 100644
+--- a/util/async-teardown.c
++++ b/util/async-teardown.c
+@@ -12,9 +12,6 @@
+  */
+ 
+ #include "qemu/osdep.h"
+-#include "qemu/config-file.h"
+-#include "qemu/option.h"
+-#include "qemu/module.h"
+ #include <dirent.h>
+ #include <sys/prctl.h>
+ #include <sched.h>
+@@ -147,21 +144,3 @@ void init_async_teardown(void)
+     clone(async_teardown_fn, new_stack_for_clone(), CLONE_VM, NULL);
+     sigprocmask(SIG_SETMASK, &old_signals, NULL);
+ }
+-
+-static QemuOptsList qemu_run_with_opts = {
+-    .name = "run-with",
+-    .head = QTAILQ_HEAD_INITIALIZER(qemu_run_with_opts.head),
+-    .desc = {
+-        {
+-            .name = "async-teardown",
+-            .type = QEMU_OPT_BOOL,
+-        },
+-        { /* end of list */ }
+-    },
+-};
+-
+-static void register_teardown(void)
+-{
+-    qemu_add_opts(&qemu_run_with_opts);
+-}
+-opts_init(register_teardown);
+diff --git a/qemu-options.hx b/qemu-options.hx
+index b57489d7ca..f49d4c0e3c 100644
+--- a/qemu-options.hx
++++ b/qemu-options.hx
+@@ -4670,11 +4670,12 @@ ERST
+ 
+ #ifndef _WIN32
+ DEF("chroot", HAS_ARG, QEMU_OPTION_chroot, \
+-    "-chroot dir     chroot to dir just before starting the VM\n",
++    "-chroot dir     chroot to dir just before starting the VM (deprecated)\n",
+     QEMU_ARCH_ALL)
+ #endif
+ SRST
+ ``-chroot dir``
++    Deprecated, use '-run-with chroot=...' instead.
+     Immediately before starting guest execution, chroot to the specified
+     directory. Especially useful in combination with -runas.
+ ERST
+@@ -4861,13 +4862,16 @@ SRST
+     This option is deprecated and should no longer be used. The new option
+     ``-run-with async-teardown=on`` is a replacement.
+ ERST
++#endif
++#ifdef CONFIG_POSIX
+ DEF("run-with", HAS_ARG, QEMU_OPTION_run_with,
+-    "-run-with async-teardown[=on|off]\n"
+-    "                misc QEMU process lifecycle options\n"
+-    "                async-teardown=on enables asynchronous teardown\n",
++    "-run-with [async-teardown=on|off][,chroot=dir]\n"
++    "                Set miscellaneous QEMU process lifecycle options:\n"
++    "                async-teardown=on enables asynchronous teardown (Linux only)\n"
++    "                chroot=dir chroot to dir just before starting the VM\n",
+     QEMU_ARCH_ALL)
+ SRST
+-``-run-with``
++``-run-with [async-teardown=on|off][,chroot=dir]``
+     Set QEMU process lifecycle options.
+ 
+     ``async-teardown=on`` enables asynchronous teardown. A new process called
+@@ -4880,6 +4884,10 @@ SRST
+     performed correctly. This only works if the cleanup process is not
+     forcefully killed with SIGKILL before the main QEMU process has
+     terminated completely.
++
++    ``chroot=dir`` can be used for doing a chroot to the specified directory
++    immediately before starting the guest execution. This is especially useful
++    in combination with -runas.
+ ERST
+ #endif
+ 
+-- 
+2.39.3
 
-There is a riscv64 compiler and libc in bullseye onwards which we use
-for building tests. However to do a full cross compile you need a
-multi-arch setup. As riscv64 is still in ports the only way to achieve
-this is to use sid.
-
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
 
