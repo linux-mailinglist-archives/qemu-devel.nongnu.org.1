@@ -2,91 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AABE674557D
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 08:29:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 301F87455A2
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 08:52:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGD3L-00016X-O5; Mon, 03 Jul 2023 02:28:51 -0400
+	id 1qGDPZ-0004rh-O9; Mon, 03 Jul 2023 02:51:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qGD3J-00016P-H9
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 02:28:49 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qGD3I-0001VI-0g
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 02:28:49 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688365727;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=JjNhtglLSh0i7cAYJ19Chg3JUmXxeWzvK4bXcKQ0IKQ=;
- b=UJ9ZIr5Lt4Df0dD2qtD5dyUkp8M4YBJw7zTR2IheyZM1zTiIIVN55118r0iKu3ZsABpwnD
- pHkSxoMwk09BGnEisODOipzcBnr2Tg4xcew1jw5WwRMIBtqmS18lOFPcsGG4cMLW1FIEnU
- O9owaPzwGiSmY1V/4D9rC/MEN3wZAkk=
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
- [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-618-Hag450s1NNGoZbDNjfDz9g-1; Mon, 03 Jul 2023 02:28:45 -0400
-X-MC-Unique: Hag450s1NNGoZbDNjfDz9g-1
-Received: by mail-qt1-f198.google.com with SMTP id
- d75a77b69052e-401e40e4d48so37378181cf.0
- for <qemu-devel@nongnu.org>; Sun, 02 Jul 2023 23:28:45 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
+ id 1qGDPU-0004qh-FT
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 02:51:45 -0400
+Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
+ id 1qGDPS-0005Q0-PE
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 02:51:44 -0400
+Received: by mail-pf1-x429.google.com with SMTP id
+ d2e1a72fcca58-666eba6f3d6so1889166b3a.3
+ for <qemu-devel@nongnu.org>; Sun, 02 Jul 2023 23:51:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1688367099; x=1690959099;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=e63LUN2MX3UDbXlATSNpXqyFEEGweQfaWJR0WFhGky4=;
+ b=JrGjGNMdkiYhozhVlqO9X4F92NqfsggkNwAyiAw28qnhi+X3zBl6oMW7vWWWQdI3oL
+ 1d+nA99o2ldQUP14514INJ8XPmgCKV/f2wcICk991suSm2Xy59Of4q6NWq+PeztAw12x
+ 3Lm4z1KWtCa73CzHeYZbQyUf+Zqr8GLqXjIwqQJUmy0zARsE+IeBVMTDnzGCUFxXJhte
+ fZ/p68uItpvFwpvCZ1fAHNw1ZSHUkF+CZMipmtBr37dkcaAoAYPprAJOscIk8/Xj10PW
+ kAdL60ls4BlAOOq7H9smHkqRdaWfaKFPgNCYYkljL/nS8EDDw/XzAhskP6YUvd3wn115
+ anjg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688365725; x=1690957725;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=JjNhtglLSh0i7cAYJ19Chg3JUmXxeWzvK4bXcKQ0IKQ=;
- b=Psi8KjVGtle1U1GzPgAZXeqylfKrRwIK1DWtKY5atxGUF97jk+7HgTol6/+Vf/+9eW
- X6UwcBPuchvw523b4aC0noUEHJEEPmeFCwgzR4NzXSa8S/nQKbEI+9JZhylE5j7tNiFh
- 4AomuH+FD43p+SZOi2hHMs+iABCvIysZesNohnk2AYO/gx0UXyNtyRPOAZW0kPAFvY7m
- 11Ochz6XCVh8fgKXZtBxvcUfoo34Wf88sOSgQ7dQkFEcBP8se68qruAtPH5ZSYxwD/Ij
- BeB7p3/1E1/gNIgEBBNuGpL8T0zuHSX6zmAYlknt8Cq0hMP8bb5tmiCWyjGO5fpagwyV
- QYtg==
-X-Gm-Message-State: AC+VfDycNYJa2ISkkyowvjj26LDSgdC7nfJ22yHkGmCnzLkrix0CpNb2
- KvXxlhsCWjhk5mG1v9XOPp9Mkbf6H+ywC7vH8tsqwD/1HeK7A1Oghqv7uEesNw3DgjREF5AxZu4
- GaJ/UkEBu1rwKqtM=
-X-Received: by 2002:a05:622a:507:b0:3ff:4583:5f4f with SMTP id
- l7-20020a05622a050700b003ff45835f4fmr10293907qtx.37.1688365725003; 
- Sun, 02 Jul 2023 23:28:45 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ4mnJvSw1qbJryWyjXkVcX2l2jX4i31vTls89uXNrD8kotFaGMT0In1NgaI4DEXgIVTm42Tvg==
-X-Received: by 2002:a05:622a:507:b0:3ff:4583:5f4f with SMTP id
- l7-20020a05622a050700b003ff45835f4fmr10293898qtx.37.1688365724806; 
- Sun, 02 Jul 2023 23:28:44 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:280:24f0:576b:abc6:6396:ed4a?
- ([2a01:e0a:280:24f0:576b:abc6:6396:ed4a])
- by smtp.gmail.com with ESMTPSA id
- x10-20020ac87eca000000b0040223cef736sm7982944qtj.21.2023.07.02.23.28.43
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 02 Jul 2023 23:28:44 -0700 (PDT)
-Message-ID: <b27f9e74-98a1-aafe-9362-b1ab22ae73d9@redhat.com>
-Date: Mon, 3 Jul 2023 08:28:42 +0200
+ d=1e100.net; s=20221208; t=1688367099; x=1690959099;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=e63LUN2MX3UDbXlATSNpXqyFEEGweQfaWJR0WFhGky4=;
+ b=g+GaJI+By3lIqchvW4rAIahr2uBTXk/VFJZWLGrVo/WBuOBe8Cp5cHVsqH/I7EGZVN
+ HijCjT/d1Lno4cUF7FxlF6eqnSX5WQiXwuXwvSLLm5oS9+/Dpbts/x2HmCj+a0idYtY9
+ nUbpp3d3daRfALMhFUT+CkOdG1r+qk7snlVpsYX7pLsCpTBMiMB5Tpq2SBef756bKbOb
+ a3BJ08Sf4YoGxZ5Bsu0B58hwBnjU2AG609akmZIrw5QAWMidEO+F/6GlcOS2f7UL6ZMl
+ RKeYhwCq4T+7CNOT/ZyCU2hB9tfbr3ZoWQUBScADfzLW8iqCoqKwaQ0pOaouWh9UgRfb
+ VyEw==
+X-Gm-Message-State: ABy/qLbQoUnWCGZJTs9PTUifnP6CCIoJAeKGppEP8cbJi+DewKBzmmMC
+ Ibl1DXGFyPiG97z3QdCmMmg=
+X-Google-Smtp-Source: APBJJlE07H9jBrr34GzB/sOh6Ry9QPJaGiCcYhY8Fi45SRhNz+Omhau7VfuBjggy9vuJaoTO0dqT3Q==
+X-Received: by 2002:a05:6a00:b92:b0:680:fa5f:4ed6 with SMTP id
+ g18-20020a056a000b9200b00680fa5f4ed6mr11061496pfj.27.1688367098884; 
+ Sun, 02 Jul 2023 23:51:38 -0700 (PDT)
+Received: from localhost ([159.226.94.115]) by smtp.gmail.com with ESMTPSA id
+ c26-20020aa78e1a000000b0063f2a5a59d1sm13505710pfr.190.2023.07.02.23.51.37
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 02 Jul 2023 23:51:38 -0700 (PDT)
+From: Hawkins Jiawei <yin31149@gmail.com>
+To: jasowang@redhat.com,
+	mst@redhat.com,
+	eperezma@redhat.com
+Cc: qemu-devel@nongnu.org,
+	yin31149@gmail.com,
+	18801353760@163.com
+Subject: [PATCH RFC v2 0/2] Vhost-vdpa Shadow Virtqueue _F_CTRL_RX_EXTRA
+ commands support
+Date: Mon,  3 Jul 2023 14:50:09 +0800
+Message-Id: <cover.1688365324.git.yin31149@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH v5 3/7] vfio/pci: Disable INTx in vfio_realize error path
-Content-Language: en-US
-To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
-Cc: alex.williamson@redhat.com, joao.m.martins@oracle.com,
- avihaih@nvidia.com, chao.p.peng@intel.com
-References: <20230630073637.124234-1-zhenzhong.duan@intel.com>
- <20230630073637.124234-2-zhenzhong.duan@intel.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <20230630073637.124234-2-zhenzhong.duan@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01,
- RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
+ envelope-from=yin31149@gmail.com; helo=mail-pf1-x429.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -103,37 +94,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/30/23 09:36, Zhenzhong Duan wrote:
-> When vfio realize fails, INTx isn't disabled if it has been enabled.
-> This may confuse host side with unhandled interrupt report.
-> 
-> Fixes: c5478fea27ac ("vfio/pci: Respond to KVM irqchip change notifier")
-> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+This series enables shadowed CVQ to intercept rx commands related to
+VIRTIO_NET_F_CTRL_RX_EXTRA feature through shadowed CVQ, update the virtio
+NIC device model so qemu send it in a migration, and the restore of
+that rx state in the destination.
 
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
+To test this patch series, one should modify the `n->parent_obj.guest_features`
+value in vhost_vdpa_net_load_rx() using gdb, as the linux virtio-net
+driver does not currently support the VIRTIO_NET_F_CTRL_RX_EXTRA
+feature.
 
-Thanks,
+Note that this patch should be based on [1], which has not
+been merged yet. I will submit the new viersion patch after it is merged.
 
-C.
+[1]. https://lists.nongnu.org/archive/html/qemu-devel/2023-06/msg06559.html
 
+Changelog
+=========
+v2:
+  - avoid sending CVQ command in default state suggested by Eugenio
 
-> ---
->   hw/vfio/pci.c | 3 +++
->   1 file changed, 3 insertions(+)
-> 
-> diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-> index ab6645ba60af..31c4ab250fbe 100644
-> --- a/hw/vfio/pci.c
-> +++ b/hw/vfio/pci.c
-> @@ -3220,6 +3220,9 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
->       return;
->   
->   out_deregister:
-> +    if (vdev->interrupt == VFIO_INT_INTx) {
-> +        vfio_intx_disable(vdev);
-> +    }
->       pci_device_set_intx_routing_notifier(&vdev->pdev, NULL);
->       if (vdev->irqchip_change_notifier.notify) {
->           kvm_irqchip_remove_change_notifier(&vdev->irqchip_change_notifier);
+v1: https://lists.nongnu.org/archive/html/qemu-devel/2023-06/msg04956.html
+
+Hawkins Jiawei (2):
+  vdpa: Restore packet receive filtering state relative with
+    _F_CTRL_RX_EXTRA feature
+  vdpa: Allow VIRTIO_NET_F_CTRL_RX_EXTRA in SVQ
+
+ net/vhost-vdpa.c | 83 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 83 insertions(+)
+
+-- 
+2.25.1
 
 
