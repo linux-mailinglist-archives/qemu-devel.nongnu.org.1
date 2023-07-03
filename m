@@ -2,78 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A60EA7453A9
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 03:42:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CF3F7453BC
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 04:05:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qG8Zk-0001p0-NY; Sun, 02 Jul 2023 21:42:00 -0400
+	id 1qG8uc-0004Xr-Aj; Sun, 02 Jul 2023 22:03:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qG8Zj-0001oY-Af; Sun, 02 Jul 2023 21:41:59 -0400
-Received: from mail-vs1-xe2d.google.com ([2607:f8b0:4864:20::e2d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qG8Zh-0007sD-4x; Sun, 02 Jul 2023 21:41:59 -0400
-Received: by mail-vs1-xe2d.google.com with SMTP id
- ada2fe7eead31-44360717659so2841953137.0; 
- Sun, 02 Jul 2023 18:41:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688348515; x=1690940515;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=40f3lmBbMv6Q14NCcehep/Jyx29+4QEf9hxmuSV1T2E=;
- b=cvENE7mDwuuEQFQfh0fX1WOcZS2Nah3wQArIN0QPyLaAyYCPVXptiRkL2RJCiUkbNI
- QlBdwvnIlsnm7Rct8Dh8TDObHjS7NpFOK3Hu7qa6XFaPglgiqla8fmL5yx4w0RoRTjO+
- tDBQknsNfFHo/NnvJI2VGoglMQqQ+jrQmdsXQ5nvWfF5QWaNP76O6Qr99LeLkenqKqnk
- 1LHK8WMyM5yMXzwp9U7kCDtNKRp97FfZtiJrLZaBLJmrYh1yTXLMqtfEUl9bv35kGAgE
- 7YSzoT/m6pviyIEJyJO3WJgRMJnGQuKi7AOQDm+9Y4IKzNxzk7rerhfR4y5Iu+KD0jUY
- x5nw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688348515; x=1690940515;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=40f3lmBbMv6Q14NCcehep/Jyx29+4QEf9hxmuSV1T2E=;
- b=jWHFjRC4ZIsNLlKz2LGXBI2u3LlIZeJ45OXERh3ay/81HUpiciasZlnf7oqNh64yyQ
- NnkzAhy0IuFOF5kK0M60wEF7VZQLMkdZJcZVaK9AKFmrNp8hktdDQSfI87iL+dnAFM3k
- rcP4kcDzi+JCL6xJL9CPhgco0AXGP4tPNW4+dN4DrDfLbJdtqXxpd2YZb0T2mic0fWGH
- k/n8r4ruaWZokwaDyffFdn/VszPb5Tb2l9HPKirvZx3kPpR4ggZeHnTAH9tdGc1bHVzp
- PXyB9ybTC9dM8zyvyBvcYXy51IVaYJPZSnG70/sa6oVdsnioXqSB+kt7exnwGuwzSlVQ
- koBQ==
-X-Gm-Message-State: AC+VfDxlD/IU+xQCMGOxbrn7jRWW6xwSj9vqab3XzwNlDBG23TlV/V/y
- qncYne0ozrjV42OIbJuwO2do4+/LVnWn3M0JgEM=
-X-Google-Smtp-Source: ACHHUZ75dlkodCgqSbo54gQaUVWb7qSX5+vIVzNFzTyBG2T+fSEXJn0igdB07i1PXs8kNNscx1a3S4EoD1Cd3fFXFjw=
-X-Received: by 2002:a05:6102:75b:b0:43b:4f2e:359 with SMTP id
- v27-20020a056102075b00b0043b4f2e0359mr4491248vsg.3.1688348515554; Sun, 02 Jul
- 2023 18:41:55 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1qG8ub-0004Xj-0N
+ for qemu-devel@nongnu.org; Sun, 02 Jul 2023 22:03:33 -0400
+Received: from mga07.intel.com ([134.134.136.100])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1qG8uY-0003sb-7k
+ for qemu-devel@nongnu.org; Sun, 02 Jul 2023 22:03:32 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1688349810; x=1719885810;
+ h=message-id:date:mime-version:subject:from:to:cc:
+ references:in-reply-to:content-transfer-encoding;
+ bh=fBvyhvmtXOZ4Tqf7BaX5W0+CCj+IK/xjZXI+1zrI2YA=;
+ b=VrYznYTehWmEZjD2czwe97q2KglqSyFFTFhm4iGWrISjIec0XJBnrRQ2
+ /5EhhNflv+TpRowIABqqGy8KfWkBiqXDavkoTm6q2WBltKfO9PlEnVgxg
+ tDOLwP+KxbS+l4XzsmnHs+GBrZgX0IcrSqSGe6B5hDYWe0ldvzq+1ZmfY
+ gq2cBbL3CByrfxHQ0c2AaRJTOWpaMLHaVLFC9WH/yL5sj8JHfrkrSk0CN
+ 5i+2V5P/1BMHg21TEZes8DJtFmwnxTkLEv5/C+6yekjTJXQYTGgWUVKdH
+ DmiJZ8xWqrdeT+Kge2u2XdUaqhWjkKPWAs6oiMAYm372UsL+CUr7SFlUH w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10759"; a="428811950"
+X-IronPort-AV: E=Sophos;i="6.01,177,1684825200"; d="scan'208";a="428811950"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+ by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Jul 2023 19:03:13 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10759"; a="831629111"
+X-IronPort-AV: E=Sophos;i="6.01,177,1684825200"; d="scan'208";a="831629111"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.249.168.99])
+ ([10.249.168.99])
+ by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Jul 2023 19:03:08 -0700
+Message-ID: <c953ab83-13f4-88a6-5dea-980707016119@intel.com>
+Date: Mon, 3 Jul 2023 10:03:06 +0800
 MIME-Version: 1.0
-References: <20230624192957.14067-1-philmd@linaro.org>
-In-Reply-To: <20230624192957.14067-1-philmd@linaro.org>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Mon, 3 Jul 2023 11:41:29 +1000
-Message-ID: <CAKmqyKOR_f_Kh2fJ3ArgruS+bgfkBe=m8aMm4-r3z_bDKGwTbw@mail.gmail.com>
-Subject: Re: [PATCH v2] target/riscv: Restrict KVM-specific fields from ArchCPU
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Weiwei Li <liweiwei@iscas.ac.cn>, 
- Richard Henderson <richard.henderson@linaro.org>, 
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>, qemu-riscv@nongnu.org, 
- Alistair Francis <alistair.francis@wdc.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, 
- Palmer Dabbelt <palmer@dabbelt.com>, Bin Meng <bin.meng@windriver.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::e2d;
- envelope-from=alistair23@gmail.com; helo=mail-vs1-xe2d.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Firefox/102.0 Thunderbird/102.12.0
+Subject: Re: [PATCH v4 0/8] i386: Make Intel PT configurable
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>
+Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org,
+ Chenyi Qiang <chenyi.qiang@intel.com>, lei4.wang@intel.com
+References: <20230531084311.3807277-1-xiaoyao.li@intel.com>
+In-Reply-To: <20230531084311.3807277-1-xiaoyao.li@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=134.134.136.100;
+ envelope-from=xiaoyao.li@intel.com; helo=mga07.intel.com
+X-Spam_score_int: -44
+X-Spam_score: -4.5
+X-Spam_bar: ----
+X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.001, NICE_REPLY_A=-0.09,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -90,94 +82,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sun, Jun 25, 2023 at 5:30=E2=80=AFAM Philippe Mathieu-Daud=C3=A9
-<philmd@linaro.org> wrote:
->
-> These fields shouldn't be accessed when KVM is not available.
->
-> Restrict the KVM timer migration state. Rename the KVM timer
-> post_load() handler accordingly, because cpu_post_load() is
-> too generic.
->
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+On 5/31/2023 4:43 PM, Xiaoyao Li wrote:
+> Initial virtualization of Intel PT was added by making it as fixed
+> feature set of ICX's capabilities. However, it breaks the Intel PT exposure
+> on SPR machine because SPR has less PT capabilities of
+> CPUID(0x14,1):EBX[15:0].
+> 
+> This series aims to make Intel PT configurable that named CPU model can
+> define its own PT feature set and "-cpu host/max" can use host pass-through
+> feature set of Intel PT.
+> 
+> At the same time, it also ensures existing named CPU model to generate
+> the same PT CPUID set as before to not break live migration.
 
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+ping for comments.
 
-Alistair
+QEMU maintainers,
 
-> ---
-> Since v1 https://lore.kernel.org/qemu-devel/20230405160454.97436-10-philm=
-d@linaro.org/:
-> - Restrict whole vmstate_kvmtimer (thus drop Daniel's R-b)
-> ---
->  target/riscv/cpu.h     | 2 ++
->  target/riscv/machine.c | 8 ++++++--
->  2 files changed, 8 insertions(+), 2 deletions(-)
->
-> diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-> index e3e08d315f..b1b56aa29e 100644
-> --- a/target/riscv/cpu.h
-> +++ b/target/riscv/cpu.h
-> @@ -363,12 +363,14 @@ struct CPUArchState {
->      hwaddr kernel_addr;
->      hwaddr fdt_addr;
->
-> +#ifdef CONFIG_KVM
->      /* kvm timer */
->      bool kvm_timer_dirty;
->      uint64_t kvm_timer_time;
->      uint64_t kvm_timer_compare;
->      uint64_t kvm_timer_state;
->      uint64_t kvm_timer_frequency;
-> +#endif /* CONFIG_KVM */
->  };
->
->  /*
-> diff --git a/target/riscv/machine.c b/target/riscv/machine.c
-> index 3ce2970785..d27f8a2a3a 100644
-> --- a/target/riscv/machine.c
-> +++ b/target/riscv/machine.c
-> @@ -199,7 +199,8 @@ static bool kvmtimer_needed(void *opaque)
->      return kvm_enabled();
->  }
->
-> -static int cpu_post_load(void *opaque, int version_id)
-> +#ifdef CONFIG_KVM
-> +static int cpu_kvmtimer_post_load(void *opaque, int version_id)
->  {
->      RISCVCPU *cpu =3D opaque;
->      CPURISCVState *env =3D &cpu->env;
-> @@ -213,7 +214,7 @@ static const VMStateDescription vmstate_kvmtimer =3D =
-{
->      .version_id =3D 1,
->      .minimum_version_id =3D 1,
->      .needed =3D kvmtimer_needed,
-> -    .post_load =3D cpu_post_load,
-> +    .post_load =3D cpu_kvmtimer_post_load,
->      .fields =3D (VMStateField[]) {
->          VMSTATE_UINT64(env.kvm_timer_time, RISCVCPU),
->          VMSTATE_UINT64(env.kvm_timer_compare, RISCVCPU),
-> @@ -221,6 +222,7 @@ static const VMStateDescription vmstate_kvmtimer =3D =
-{
->          VMSTATE_END_OF_LIST()
->      }
->  };
-> +#endif
->
->  static bool debug_needed(void *opaque)
->  {
-> @@ -409,7 +411,9 @@ const VMStateDescription vmstate_riscv_cpu =3D {
->          &vmstate_vector,
->          &vmstate_pointermasking,
->          &vmstate_rv128,
-> +#ifdef CONFIG_KVM
->          &vmstate_kvmtimer,
-> +#endif
->          &vmstate_envcfg,
->          &vmstate_debug,
->          &vmstate_smstateen,
-> --
-> 2.38.1
->
->
+It has been nearly two years since the first version. It's very 
+appreciated if any of you can express any thought on it. E.g., the basic 
+question, whether this is an useful fix? or just a vain work?
+
+> Changes in v4:
+> - rebase to 51bdb0b57a2d "Merge tag 'pull-tcg-20230530' of https://gitlab.com/rth7680/qemu into staging"
+> - cleanup Patch 6 by updating the commit message and remove unnecessary
+>    handlng;
+> 
+> v3: https://lore.kernel.org/qemu-devel/20221208062513.2589476-1-xiaoyao.li@intel.com/
+> - rebase to v7.2.0-rc4
+> - Add bit 7 and 8 of FEAT_14_0_EBX in Patch 3
+> 
+> v2: https://lore.kernel.org/qemu-devel/20220808085834.3227541-1-xiaoyao.li@intel.com/
+> Changes in v2:
+> - split out 3 patches (per Eduardo's comment)
+> - determine if the named cpu model uses default Intel PT capabilities (to
+>    be compatible with the old behavior) by condition that all PT feature
+>    leaves are all zero.
+> 
+> v1: https://lore.kernel.org/qemu-devel/20210909144150.1728418-1-xiaoyao.li@intel.com/
+> 
+> 
+> Xiaoyao Li (8):
+>    target/i386: Print CPUID subleaf info for unsupported feature
+>    target/i386/intel-pt: Fix INTEL_PT_ADDR_RANGES_NUM_MASK
+>    target/i386/intel-pt: Introduce FeatureWordInfo for Intel PT CPUID
+>      leaf 0x14
+>    target/i386/intel-pt: print special message for
+>      INTEL_PT_ADDR_RANGES_NUM
+>    target/i386/intel-pt: Rework/rename the default INTEL-PT feature set
+>    target/i386/intel-pt: Enable host pass through of Intel PT
+>    target/i386/intel-pt: Define specific PT feature set for
+>      IceLake-server, Snowridge and SapphireRapids
+>    target/i386/intel-pt: Access MSR_IA32_RTIT_ADDRn based on guest CPUID
+>      configuration
+> 
+>   target/i386/cpu.c     | 293 +++++++++++++++++++++++++++++++-----------
+>   target/i386/cpu.h     |  39 +++++-
+>   target/i386/kvm/kvm.c |   8 +-
+>   3 files changed, 261 insertions(+), 79 deletions(-)
+> 
+
 
