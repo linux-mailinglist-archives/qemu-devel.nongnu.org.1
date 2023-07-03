@@ -2,73 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C68C745BD3
+	by mail.lfdr.de (Postfix) with ESMTPS id 66693745BD2
 	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 14:05:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGIHX-0001cz-Mi; Mon, 03 Jul 2023 08:03:51 -0400
+	id 1qGIHd-0001od-41; Mon, 03 Jul 2023 08:03:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qGIHK-0001Sz-2t; Mon, 03 Jul 2023 08:03:39 -0400
-Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
+ id 1qGIHZ-0001jr-J6; Mon, 03 Jul 2023 08:03:53 -0400
+Received: from mail-ot1-x32c.google.com ([2607:f8b0:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qGIHC-0003QV-5k; Mon, 03 Jul 2023 08:03:36 -0400
-Received: by mail-pf1-x431.google.com with SMTP id
- d2e1a72fcca58-6686c74183cso3415966b3a.1; 
- Mon, 03 Jul 2023 05:03:27 -0700 (PDT)
+ id 1qGIHX-0003YW-PG; Mon, 03 Jul 2023 08:03:53 -0400
+Received: by mail-ot1-x32c.google.com with SMTP id
+ 46e09a7af769-6b7206f106cso3364301a34.1; 
+ Mon, 03 Jul 2023 05:03:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688385806; x=1690977806;
+ d=gmail.com; s=20221208; t=1688385829; x=1690977829;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=KucnPHdlb9n3r1OWsGETlskHo07kJsSKPTHtezK9w5Q=;
- b=SiGX23kMNv9HuN0gWyABqIFzq4LTXEeThlZsidIygtiNjqK9N0Bi5BFVq8lRD0H+lK
- ercqOefMs0b5q2EOdylOc4Ep98f4lOy5oQuEnDDb9GEDcP3fmTb7fa62phmxKqEvEvyp
- /ju7rM5O9vE12++eSlQGG+W38XZQQALr9+6As7QLjE6fyyHgOI9LGK8gOz9a5Lk8MpZz
- z+lomN+1T7xebV93QYJR2hV0zdiPhv17Jz/C/n3GomVGI6Vcd1MUEamZcU8DbA6lu6Og
- LIj9tz6EtficChsr2A5UQMPGxtoAXLcAxSk1jHzOdQN4qrnJfPbDfQozcY7eHEB+jiK7
- cTKw==
+ bh=H5NUNFE+EU3Pgyk+pvL+VmpnC5N+XQRe75iRJQPkSCo=;
+ b=O+eBW6h10njXuKmBBRS+B2Ja2wIpfRccC3qsMXI/wrAm7Z0UyXZMgfTBpHmO9u75w0
+ UzhQ7xUJweCiQHUCTPOzdyF2zA6HRj40uv90hg8WD5jMqBG+QuGJ5KkTjtruBzBQWPad
+ d/IbMXTUt3+N08X4wXVMHvRPliqeXfOu4z4wvUYNpGfl2bJ2w2hYWApCCh417nhIrJlA
+ OVzXzUDonaQDWcNuvJON8V2iv5FPv+/NEG+U+k5BYk5M23O0u9fYIA4/NYjN1jQt+g4R
+ ouQQruU3NLjTblX18VY8dyHTJomzTtqLe2PdmjZojc0o7V1Xo/gRIQMnlEJ8nIEW2QTx
+ +3hA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688385806; x=1690977806;
+ d=1e100.net; s=20221208; t=1688385829; x=1690977829;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=KucnPHdlb9n3r1OWsGETlskHo07kJsSKPTHtezK9w5Q=;
- b=gRCxYhKylcVpp+GAfQHEt9p3JuDTDgQKIaaMAgt8yeFqCO1/9AYeZ0eA5bhFEadE9H
- A/nlYTYVxXlo77ujT+Z9AxDtU+SGqqPa+laZtWIg43ekvNb0xkc3ck71sY3SBf/17PSG
- ZjTdhQreLDhkaJjjh/CGDhvfJ8KV+zqqacJEttLI0ZqVVGWablPOaMcDPYojUf/n7FkK
- eWcsRBbOSkyV7Kjp2DQpciEXis2Quj3xTK2FRVvQH9tiKVFlpyYTf1RA3aGaGilwkstD
- Ko2r2ipGee99QWg9Cd9buBGeVWHmexjIdRls6qKEsj5ZgZ56L7wRjq1P4AmZPq0sh7rn
- i5rg==
-X-Gm-Message-State: ABy/qLa/AXycn/HDXF93h5vcrM37m5iZ0XMbXFU+m43vJlI2dBF79aql
- FqWTpS/OZQ5F8rNGnOKgamj+KaxeYvo=
-X-Google-Smtp-Source: APBJJlGqp9QLzEf/d9Kd1X+JAr1soSxngJLq3dQEsPRwygtTfmmW4hws4LtgScPO53NVgp9tdlc9SQ==
-X-Received: by 2002:a05:6a00:2d1d:b0:67a:a906:9edb with SMTP id
- fa29-20020a056a002d1d00b0067aa9069edbmr12993214pfb.30.1688385806527; 
- Mon, 03 Jul 2023 05:03:26 -0700 (PDT)
+ bh=H5NUNFE+EU3Pgyk+pvL+VmpnC5N+XQRe75iRJQPkSCo=;
+ b=BmvqGzp35VmgL+48vkclsJS61riVprrjbTUukaPr25MFrkJThSo8ABplN+xUwuJAxo
+ nVHddhGZiUPQsVunWiD+vL7nZKXwiWlmZJPt/mwg/dA9eyqTJVlZqSxd+CBmgRU2yBAa
+ L/vq330GK5f6VYUe/5PZ6cmWMu54+xJJ4zSzhCCTJUNqdrIn42T5eeSZTk4mVRA70del
+ 8yG/C/ZdAmg5B7Nf0S6HIphEMeusz2lXnogTvtkBtJoob5W5fNk7lXruefWqzVNyQxR3
+ jHiRjZl7mnPlNFWD9NTXjbuQOykBLbe2RRgbqa4KiN3v0D/quLWS5bgz1Wb9WF/ggx3p
+ 3A3w==
+X-Gm-Message-State: AC+VfDzNYAaffvKAgoWlU9Cp/OA0Abz0rAYrkhfJBlNxJ8cEue3EWQqh
+ SPZptzLXZCmNCW7l7KxiolO5pMs9T9M=
+X-Google-Smtp-Source: ACHHUZ5zhIUR2u35/VgfhapMhpGQTAdPl2zLnSjmZ+BMM9VUgLdIjwQPvBOyyhUAHQBJNSBfrJOxOA==
+X-Received: by 2002:a9d:65d8:0:b0:6b7:206e:edf7 with SMTP id
+ z24-20020a9d65d8000000b006b7206eedf7mr8152804oth.1.1688385829599; 
+ Mon, 03 Jul 2023 05:03:49 -0700 (PDT)
 Received: from wheely.local0.net ([118.210.96.60])
  by smtp.gmail.com with ESMTPSA id
- h7-20020a62b407000000b00682802ca418sm2901372pfn.79.2023.07.03.05.03.22
+ p15-20020a63e64f000000b0051b0e564963sm14891408pgj.49.2023.07.03.05.03.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 03 Jul 2023 05:03:26 -0700 (PDT)
+ Mon, 03 Jul 2023 05:03:49 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>
-Subject: [PATCH v3] target/ppc: Machine check on invalid real address access
- on POWER9/10
-Date: Mon,  3 Jul 2023 22:03:01 +1000
-Message-Id: <20230703120301.45313-1-npiggin@gmail.com>
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ BALATON Zoltan <balaton@eik.bme.hu>
+Subject: [PATCH v3] target/ppc: Make checkstop actually stop the system
+Date: Mon,  3 Jul 2023 22:03:39 +1000
+Message-Id: <20230703120340.45349-1-npiggin@gmail.com>
 X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x431.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32c;
+ envelope-from=npiggin@gmail.com; helo=mail-ot1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,118 +92,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-ppc currently silently accepts invalid real address access. Catch
-these and turn them into machine checks on POWER9/10 machines.
+checkstop state does not halt the system, interrupts continue to be
+serviced, and other CPUs run. Stop the machine with
+qemu_system_guest_panicked.
+
+Change the logging not to print separately to stderr because a
+checkstop is a guest error (or perhaps a simulated machine error)
+rather than a QEMU error. CPU registers are dumped.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
+
 Since v1:
-- Only implement this for POWER9/10. Seems like previous IBM processors
-  may not catch this, trying to get info.
+- Fix loop exit so it stops on the checkstop-causing instruction, rather than
+  after it.
 
 Since v2:
-- Split out from larger series since it is independent.
+- Rebase on ppc-next.
+- Use qemu_system_guest_panicked rather than vm_stop (Richard)
+- Move away from printing to stderr (Zoltan)
+- Reduce changes to log messages.
+- Split out from larger series since it's independent (will skip attn
+  instruction for now).
+---
+ target/ppc/excp_helper.c | 26 ++++++++++++++++++--------
+ 1 file changed, 18 insertions(+), 8 deletions(-)
 
- target/ppc/cpu_init.c    |  1 +
- target/ppc/excp_helper.c | 49 ++++++++++++++++++++++++++++++++++++++++
- target/ppc/internal.h    |  5 ++++
- 3 files changed, 55 insertions(+)
-
-diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
-index 720aad9e05..6ac1765a8d 100644
---- a/target/ppc/cpu_init.c
-+++ b/target/ppc/cpu_init.c
-@@ -7335,6 +7335,7 @@ static const struct TCGCPUOps ppc_tcg_ops = {
-   .cpu_exec_enter = ppc_cpu_exec_enter,
-   .cpu_exec_exit = ppc_cpu_exec_exit,
-   .do_unaligned_access = ppc_cpu_do_unaligned_access,
-+  .do_transaction_failed = ppc_cpu_do_transaction_failed,
- #endif /* !CONFIG_USER_ONLY */
- };
- #endif /* CONFIG_TCG */
 diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
-index 354392668e..e49e13a30d 100644
+index e49e13a30d..a588285ef1 100644
 --- a/target/ppc/excp_helper.c
 +++ b/target/ppc/excp_helper.c
-@@ -1428,7 +1428,9 @@ static void powerpc_excp_books(PowerPCCPU *cpu, int excp)
-         /* machine check exceptions don't have ME set */
-         new_msr &= ~((target_ulong)1 << MSR_ME);
+@@ -19,6 +19,7 @@
+ #include "qemu/osdep.h"
+ #include "qemu/main-loop.h"
+ #include "qemu/log.h"
++#include "sysemu/runstate.h"
+ #include "cpu.h"
+ #include "exec/exec-all.h"
+ #include "internal.h"
+@@ -427,20 +428,29 @@ static void powerpc_set_excp_state(PowerPCCPU *cpu, target_ulong vector,
+ static void powerpc_mcheck_checkstop(CPUPPCState *env)
+ {
+     CPUState *cs = env_cpu(env);
++    FILE *f;
  
-+        msr |= env->error_code;
-         break;
+     if (FIELD_EX64(env->msr, MSR, ME)) {
+         return;
+     }
+ 
+-    /* Machine check exception is not enabled. Enter checkstop state. */
+-    fprintf(stderr, "Machine check while not allowed. "
+-            "Entering checkstop state\n");
+-    if (qemu_log_separate()) {
+-        qemu_log("Machine check while not allowed. "
+-                 "Entering checkstop state\n");
++    /*
++     * This stops the machine and logs CPU state without killing QEMU
++     * (like cpu_abort()) so the machine can still be debugged (because
++     * it is often a guest error).
++     */
 +
-     case POWERPC_EXCP_DSI:       /* Data storage exception                   */
-         trace_ppc_excp_dsi(env->spr[SPR_DSISR], env->spr[SPR_DAR]);
-         break;
-@@ -3184,5 +3186,52 @@ void ppc_cpu_do_unaligned_access(CPUState *cs, vaddr vaddr,
-     env->error_code = insn & 0x03FF0000;
-     cpu_loop_exit(cs);
++    f = qemu_log_trylock();
++    if (f) {
++        fprintf(f, "Machine check while not allowed. "
++                "Entering checkstop state.\n");
++        cpu_dump_state(cs, f, CPU_DUMP_FPU | CPU_DUMP_CCOP);
++        qemu_log_unlock(f);
+     }
+-    cs->halted = 1;
+-    cpu_interrupt_exittb(cs);
++
++    qemu_system_guest_panicked(NULL);
++
++    cpu_loop_exit_noexc(cs);
  }
-+
-+void ppc_cpu_do_transaction_failed(CPUState *cs, hwaddr physaddr,
-+                                   vaddr vaddr, unsigned size,
-+                                   MMUAccessType access_type,
-+                                   int mmu_idx, MemTxAttrs attrs,
-+                                   MemTxResult response, uintptr_t retaddr)
-+{
-+    CPUPPCState *env = cs->env_ptr;
-+
-+    switch (env->excp_model) {
-+#if defined(TARGET_PPC64)
-+    case POWERPC_EXCP_POWER9:
-+    case POWERPC_EXCP_POWER10:
-+        /*
-+         * Machine check codes can be found in processor User Manual or
-+         * Linux or skiboot source.
-+         */
-+        if (access_type == MMU_DATA_LOAD) {
-+            env->spr[SPR_DAR] = vaddr;
-+            env->spr[SPR_DSISR] = PPC_BIT(57);
-+            env->error_code = PPC_BIT(42);
-+
-+        } else if (access_type == MMU_DATA_STORE) {
-+            /*
-+             * MCE for stores in POWER is asynchronous so hardware does
-+             * not set DAR, but QEMU can do better.
-+             */
-+            env->spr[SPR_DAR] = vaddr;
-+            env->error_code = PPC_BIT(36) | PPC_BIT(43) | PPC_BIT(45);
-+            env->error_code |= PPC_BIT(42);
-+
-+        } else { /* Fetch */
-+            env->error_code = PPC_BIT(36) | PPC_BIT(44) | PPC_BIT(45);
-+        }
-+        break;
-+#endif
-+    default:
-+        /*
-+         * TODO: Check behaviour for other CPUs, for now do nothing.
-+         * Could add a basic MCE even if real hardware ignores.
-+         */
-+        return;
-+    }
-+
-+    cs->exception_index = POWERPC_EXCP_MCHECK;
-+    cpu_loop_exit_restore(cs, retaddr);
-+}
- #endif /* CONFIG_TCG */
- #endif /* !CONFIG_USER_ONLY */
-diff --git a/target/ppc/internal.h b/target/ppc/internal.h
-index 901bae6d39..57acb3212c 100644
---- a/target/ppc/internal.h
-+++ b/target/ppc/internal.h
-@@ -296,6 +296,11 @@ bool ppc_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
- G_NORETURN void ppc_cpu_do_unaligned_access(CPUState *cs, vaddr addr,
-                                             MMUAccessType access_type, int mmu_idx,
-                                             uintptr_t retaddr);
-+void ppc_cpu_do_transaction_failed(CPUState *cs, hwaddr physaddr,
-+                                   vaddr addr, unsigned size,
-+                                   MMUAccessType access_type,
-+                                   int mmu_idx, MemTxAttrs attrs,
-+                                   MemTxResult response, uintptr_t retaddr);
- #endif
  
- FIELD(GER_MSK, XMSK, 0, 4)
+ static void powerpc_excp_40x(PowerPCCPU *cpu, int excp)
 -- 
 2.40.1
 
