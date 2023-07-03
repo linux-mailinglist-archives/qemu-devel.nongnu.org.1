@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D3E1745DC0
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 15:51:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 051C5745DB6
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 15:48:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGJrL-0007qt-7X; Mon, 03 Jul 2023 09:44:55 -0400
+	id 1qGJrD-0007hg-NO; Mon, 03 Jul 2023 09:44:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qGJr5-0007Te-Sc
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 09:44:40 -0400
-Received: from mail-lf1-x12e.google.com ([2a00:1450:4864:20::12e])
+ id 1qGJr4-0007TQ-DZ
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 09:44:38 -0400
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qGJr2-0005gs-Q3
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 09:44:39 -0400
-Received: by mail-lf1-x12e.google.com with SMTP id
- 2adb3069b0e04-4fba74870abso4370983e87.0
+ id 1qGJr2-0005gy-JZ
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 09:44:38 -0400
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-313e714342cso5193010f8f.0
  for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 06:44:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688391871; x=1690983871;
+ d=linaro.org; s=google; t=1688391872; x=1690983872;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=FeBR8GZv3DfL2Dr3RQS42VRWnzI9QYt8QP9XGBKiFno=;
- b=vBhGM3LDh0qLDyoo3KAZQBLhM8IIL12ObF4VI/Mh4kkw50DVCgumZlC12xvyw86No+
- IQAHG7FsH+XuwFUgyMCRZ8hom3oVemicGeUIfRZMKOLgj4c4noPlRxfz2BlMQe5udcNs
- cSZ/YKUVUqWMI6N4LYDmmO1XikwVUnPEQGklHHH+whJg2ES+JA8SulPumJaRu39RY2sc
- n8hsaJuU7xdU6mtQJFXo8JZw8sAFzNjRvtSUMqWaEG+KTzBYVGUXq763mi5itNHg+jnR
- tWmS5A2hV659APMMauYm6MYqnK/c3hUHayCxfRDdywJAxyEse4dY5SQZarMs4KQSwLbJ
- Dtgg==
+ bh=pmUCRBf4Xho+2SbSl2R5MUiyr5uXTfWzrS4YFCHSA4g=;
+ b=sQsWG4JnxwwUgg3bfswr/m3hSFosv/XrraHXPWPTT40Lym1JdU56dvqpj9DUg5lwr1
+ qJflW2BG0u/diWZGGTzRvnNF7yhH+XOZZi9fb9Z/l7J6XrBXuB3PZF5/w7Ecz6FhaJv0
+ 21xef3tynnpo76voOhV0/2exPPfbawi8yH3mP6OJ4rovTjQnBWK3RsG1mxUW29dpjH6P
+ mngxaja0dQTO0iMV09xtwX8n4P0dJDy8iBTtrCmQBjxi9oyL+F7FaTlWrUrTnpF10ws0
+ vHv1pydgqrr/hqNrOVIJcsjKZvLKFv/JSnWNwaJp05AyrqSDBzclxWtlpo9SGOMlltdt
+ boYQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688391871; x=1690983871;
+ d=1e100.net; s=20221208; t=1688391872; x=1690983872;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=FeBR8GZv3DfL2Dr3RQS42VRWnzI9QYt8QP9XGBKiFno=;
- b=YJqpYr4bLQRbnKLsIb2h1EIOgR07q5HTnk15duxLYW6N70wHEUsc+4EcvwBL9qHmq3
- QhDFGxODOuS0e6vHv5M8NReZ/X9+iTlKAKdWnBDR0OJHKb/IQkLk963ukBGjomh2HEeN
- P+a3viDtZBx07iwah03zBBDjP1/eFkRCaHx/0Bdvq6M1YRUQRrDrMNDKDZdwVKPQ+hlX
- VcyY0kadsKy3N9S92XNDb1G7GmWSY9JoCBQAb8bDqXR3F1bmhmiJKAMjjcg12HPRtCrb
- 5CrCd2K/YZbxYdsmrbAB6qSUDxMZ4PnPKRD/o1W2ruwIywQMjhtBnqwOj9SXOhFOLxOj
- fABA==
-X-Gm-Message-State: ABy/qLZIthBe/WmIANn0WCuYLd5PE4CxBfIOlL9iIH39kmlQgBqTbVj2
- C0nClGDRSNX8XgGUvOSzDHSNww==
-X-Google-Smtp-Source: APBJJlEmPlZUBMbbZobnayJLhxoLMovPHCicGNFCXwUkIYxzGF9Q46n3jE5jl3l+CI3QFLciWl0Ipw==
-X-Received: by 2002:ac2:5f9a:0:b0:4f8:5717:e41b with SMTP id
- r26-20020ac25f9a000000b004f85717e41bmr6062949lfe.41.1688391871359; 
+ bh=pmUCRBf4Xho+2SbSl2R5MUiyr5uXTfWzrS4YFCHSA4g=;
+ b=YJ5H2uEe2HsJpuR87alFtNVnivSjRnu7yxRPu9PCZANnW87OZ7mNDbdbY0Aq41XzKe
+ ITBzY0WsE0e909YoIcC87HwJa5ZtSO3lWdy82wP9CZT1oKiujIW7k67Sc+pdTurJUb5T
+ 8pGYnSahuRVoK2AUzMQxgDbR6pZ66YYWqXqZFeT05xlfcYiAEySDS2SZDPDD4Ww6jmwN
+ HvT42HD/FT/W1O0DmyhIFvbeVOOkmTKfvIxUKNjUA1whsWr8X+Z1zhWlSS6fXLUpaR76
+ ex/JmeaqpdIJ/FB4G8dd7CC7AZBSMueptexFmUY35HK3ENzVcamjIdwtfEVYfmRIlc7P
+ cYgg==
+X-Gm-Message-State: ABy/qLZx8LJTQETK0Oj7U5vSlDxuStcOhNk/FwCOzjD0Jeub5ZCQxtMQ
+ 9NINEQ+5Qgql6fPL2WHKBI64Pg==
+X-Google-Smtp-Source: APBJJlGUqsC3UU9tPfvlan2VLd3btE5qSBWOosBiObtY78zyGTmeD/Y18QRkE+vuQvW2nvJy6JBI/w==
+X-Received: by 2002:adf:f84a:0:b0:313:e553:b858 with SMTP id
+ d10-20020adff84a000000b00313e553b858mr8226389wrq.33.1688391871864; 
  Mon, 03 Jul 2023 06:44:31 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- b17-20020a056000055100b0031434cebcd8sm3760582wrf.33.2023.07.03.06.44.29
+ l3-20020a1ced03000000b003fbcdba1a63sm7448104wmh.12.2023.07.03.06.44.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Mon, 03 Jul 2023 06:44:30 -0700 (PDT)
 Received: from zen.lan (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 8D4CA1FFC2;
+ by zen.linaroharston (Postfix) with ESMTP id A441B1FFBB;
  Mon,  3 Jul 2023 14:44:28 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -66,18 +66,18 @@ Cc: richard.henderson@linaro.org,
  Alexander Bulekov <alxndr@bu.edu>, Paolo Bonzini <pbonzini@redhat.com>,
  Bandan Das <bsd@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
  Thomas Huth <thuth@redhat.com>, Darren Kenny <darren.kenny@oracle.com>,
- Qiuhao Li <Qiuhao.Li@outlook.com>
-Subject: [PULL 07/38] scripts/oss-fuzz: add a suppression for keymap
-Date: Mon,  3 Jul 2023 14:43:56 +0100
-Message-Id: <20230703134427.1389440-8-alex.bennee@linaro.org>
+ Qiuhao Li <Qiuhao.Li@outlook.com>, Laurent Vivier <lvivier@redhat.com>
+Subject: [PULL 08/38] tests/qtests: clean-up and fix leak in generic_fuzz
+Date: Mon,  3 Jul 2023 14:43:57 +0100
+Message-Id: <20230703134427.1389440-9-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230703134427.1389440-1-alex.bennee@linaro.org>
 References: <20230703134427.1389440-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12e;
- envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x12e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,36 +100,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When updating to the latest fedora the santizer found more leaks
-inside xkbmap:
-
-  FAILED: pc-bios/keymaps/ar
-  /builds/stsquad/qemu/build-oss-fuzz/qemu-keymap -f pc-bios/keymaps/ar -l ara
-  =================================================================
-  ==3604==ERROR: LeakSanitizer: detected memory leaks
-  Direct leak of 1424 byte(s) in 1 object(s) allocated from:
-      #0 0x56316418ebec in __interceptor_calloc (/builds/stsquad/qemu/build-oss-fuzz/qemu-keymap+0x127bec) (BuildId: a2ad9da3190962acaa010fa8f44a9269f9081e1c)
-      #1 0x7f60d4dc067e  (/lib64/libxkbcommon.so.0+0x1c67e) (BuildId: b243a34e4e58e6a30b93771c256268b114d34b80)
-      #2 0x7f60d4dc2137 in xkb_keymap_new_from_names (/lib64/libxkbcommon.so.0+0x1e137) (BuildId: b243a34e4e58e6a30b93771c256268b114d34b80)
-      #3 0x5631641ca50f in main /builds/stsquad/qemu/build-oss-fuzz/../qemu-keymap.c:215:11
-
-and many more. As we can't do anything about the library add a
-suppression to keep the CI going with what its meant to be doing.
+An update to the clang tooling detects more issues with the code
+including a memory leak from the g_string_new() allocation. Clean up
+the code to avoid the allocation and use ARRAY_SIZE while we are at
+it.
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20230630180423.558337-8-alex.bennee@linaro.org>
+Message-Id: <20230630180423.558337-9-alex.bennee@linaro.org>
 
-diff --git a/scripts/oss-fuzz/lsan_suppressions.txt b/scripts/oss-fuzz/lsan_suppressions.txt
-index 02ec0a6ed5..7d90c280d0 100644
---- a/scripts/oss-fuzz/lsan_suppressions.txt
-+++ b/scripts/oss-fuzz/lsan_suppressions.txt
-@@ -1,2 +1,5 @@
- # The tcmalloc on Fedora37 confuses things
- leak:/lib64/libtcmalloc_minimal.so.4
-+
-+# libxkbcommon also leaks in qemu-keymap
-+leak:/lib64/libxkbcommon.so.0
+diff --git a/tests/qtest/fuzz/generic_fuzz.c b/tests/qtest/fuzz/generic_fuzz.c
+index c525d22951..11256abf6c 100644
+--- a/tests/qtest/fuzz/generic_fuzz.c
++++ b/tests/qtest/fuzz/generic_fuzz.c
+@@ -954,17 +954,10 @@ static void register_generic_fuzz_targets(void)
+             .crossover = generic_fuzz_crossover
+     });
+ 
+-    GString *name;
+-    const generic_fuzz_config *config;
+-
+-    for (int i = 0;
+-         i < sizeof(predefined_configs) / sizeof(generic_fuzz_config);
+-         i++) {
+-        config = predefined_configs + i;
+-        name = g_string_new("generic-fuzz");
+-        g_string_append_printf(name, "-%s", config->name);
++    for (int i = 0; i < ARRAY_SIZE(predefined_configs); i++) {
++        const generic_fuzz_config *config = predefined_configs + i;
+         fuzz_add_target(&(FuzzTarget){
+-                .name = name->str,
++                .name = g_strconcat("generic-fuzz-", config->name, NULL),
+                 .description = "Predefined generic-fuzz config.",
+                 .get_init_cmdline = generic_fuzz_predefined_config_cmdline,
+                 .pre_fuzz = generic_pre_fuzz,
 -- 
 2.39.2
 
