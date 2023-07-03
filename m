@@ -2,82 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BCCE746108
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 18:57:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD9DB746176
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 19:31:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGMrA-0004rk-NZ; Mon, 03 Jul 2023 12:56:56 -0400
+	id 1qGNNG-0004jJ-HK; Mon, 03 Jul 2023 13:30:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qGMr9-0004ra-1j
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 12:56:55 -0400
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qGMr7-0003qZ-Al
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 12:56:54 -0400
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-3142970df44so2928549f8f.3
- for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 09:56:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688403411; x=1690995411;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=YP2QdnbyToyzj0+BJcrRqycgw8g8E8EuD8VB+b3hQGw=;
- b=ouohnf/K284tNGRAame2RV3090YG0i3Tw3lLn1dHyqLz2Fn7dJrINogAIghPKM1Mp0
- j/ggQr48PYNCBLxALfqOWrsB0/GXul/fAdZhYPeMPhRBAcSICWELVwkhS/eaH9riYMWp
- Xy7MBU0C+UVctCHGjF5/2m5dyaflfhTGPH1/MViv5r5tMLE+LqcJQb2rGAi0qZDtrPbg
- N+Uk3MvswodiJC9d5e17USneKwt+Lmaql67ET/HTKn6TM6PmHZsfi6h+AwWghVNIDqm6
- toWfax2LB6IlSEkKvw330mgdyHU67MUDFN6fapuoIyPWRvoW8GJCaRzurDVEidWV4Fdk
- 2jKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688403411; x=1690995411;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=YP2QdnbyToyzj0+BJcrRqycgw8g8E8EuD8VB+b3hQGw=;
- b=Nc9eMEkunUA51V2h8eVD3re85e10yjlDu4urH+Ik231PMbQeu/Q4vMZBLCv3vMz9Lm
- eVO1p8IfczMsyI1e9sGZ/TaliB4ddldejE7VN6SwWpwPjMt60lEkNRHwncWGsbJgq4LN
- 2fwHWa7TDu02h8C7+eod1o3OlNTqflJr1HCIw0Yil+HvkDACZsnxD11KPoniR4eLgj+u
- U2OHzNz/2ILO+oFYNi0j3076gQtc0jCYA9VJEAQnzDF0YdU0kgRyXaMjSWLdkE6oP7U7
- 4yHz1CLDyHI9DV3L7UDPGSfOY8Ss0uPSFEFDLr7SuyiMyRhvHP5BK6PtqHZ+8xUTiTfG
- 3FGA==
-X-Gm-Message-State: ABy/qLaWyG5MiBLLU4VV1kvc0CMYCn0foKoGs3iTk5FhNWKl0QFiqJ4Q
- 1EWq94b4sUkONv0w1EtK+I2asg==
-X-Google-Smtp-Source: APBJJlGS7Acl7J8umk1adKI8HcD0nGBbB5q4N/2UvYbdbyTLmSn1IopRCEsd3cOGJ1RtSOnFz+ZKOA==
-X-Received: by 2002:a5d:6b51:0:b0:314:2ff2:b051 with SMTP id
- x17-20020a5d6b51000000b003142ff2b051mr4727456wrw.41.1688403411595; 
- Mon, 03 Jul 2023 09:56:51 -0700 (PDT)
-Received: from [192.168.69.115] ([176.176.178.91])
- by smtp.gmail.com with ESMTPSA id
- x18-20020adff0d2000000b003141e86e751sm10186065wro.5.2023.07.03.09.56.50
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 03 Jul 2023 09:56:51 -0700 (PDT)
-Message-ID: <7c4c2bc7-add6-6e45-c753-af163de3e216@linaro.org>
-Date: Mon, 3 Jul 2023 18:56:48 +0200
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qGNNC-0004ix-W6
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 13:30:03 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qGNNA-0003xs-Gf
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 13:30:02 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id C24D6111BE;
+ Mon,  3 Jul 2023 20:29:56 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id CFBE01162E;
+ Mon,  3 Jul 2023 20:29:55 +0300 (MSK)
+Message-ID: <08f9669f-1022-2b9c-4ca5-2f16bc1a2fda@tls.msk.ru>
+Date: Mon, 3 Jul 2023 20:29:55 +0300
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.12.0
-Subject: Re: [PATCH] vfio: Fix null pointer dereference bug in
- vfio_bars_finalize()
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH] linux-user/syscall: Implement execve without execveat
 Content-Language: en-US
-To: Avihai Horon <avihaih@nvidia.com>, qemu-devel@nongnu.org
-Cc: Alex Williamson <alex.williamson@redhat.com>,
- =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>
-References: <20230703163953.18526-1-avihaih@nvidia.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230703163953.18526-1-avihaih@nvidia.com>
+To: Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-devel@nongnu.org
+Cc: laurent@vivier.eu, richard.henderson@linaro.org, sir@cmpwn.com
+References: <20230703154831.1136575-1-pierrick.bouvier@linaro.org>
+From: Michael Tokarev <mjt@tls.msk.ru>
+In-Reply-To: <20230703154831.1136575-1-pierrick.bouvier@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -69
+X-Spam_score: -7.0
+X-Spam_bar: -------
+X-Spam_report: (-7.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.09,
+ RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,51 +59,154 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3/7/23 18:39, Avihai Horon wrote:
-> vfio_realize() has the following flow:
-> 1. vfio_bars_prepare() -- sets VFIOBAR->size.
-> 2. msix_early_setup().
-> 3. vfio_bars_register() -- allocates VFIOBAR->mr.
+03.07.2023 18:48, Pierrick Bouvier пишет:
+> Support for execveat syscall was implemented in 55bbe4 and is available
+> since QEMU 8.0.0. It relies on host execveat, which is widely available
+> on most of Linux kernels today.
 > 
-> After vfio_bars_prepare() is called msix_early_setup() can fail. If it
-> does fail, vfio_bars_register() is never called and VFIOBAR->mr is not
-> allocated.
+> However, this change breaks qemu-user self emulation, if "host" qemu
+> version is less than 8.0.0. Indeed, it does not implement yet execveat.
+> This strange use case happens with most of distribution today having
+> binfmt support.
 > 
-> In this case, vfio_bars_finalize() is called as part of the error flow
-> to free the bars' resources. However, vfio_bars_finalize() calls
-> object_unparent() for VFIOBAR->mr unconditionally and thus we get a null
-> pointer dereference.
+> With a concrete failing example:
+> $ qemu-x86_64-7.2 qemu-x86_64-8.0 /bin/bash -c /bin/ls
+> /bin/bash: line 1: /bin/ls: Function not implemented
+> -> not implemented means execve returned ENOSYS
 > 
-> Fix it by checking VFIOBAR->mr in vfio_bars_finalize().
+> qemu-user-static 7.2 and 8.0 can be conveniently grabbed from debian
+> packages qemu-user-static* [1].
 > 
-> Fixes: 89d5202edc50 ("vfio/pci: Allow relocating MSI-X MMIO")
-> Signed-off-by: Avihai Horon <avihaih@nvidia.com>
+> One usage of this is running wine-arm64 from linux-x64 (details [2]).
+> This is by updating qemu embedded in docker image that we ran into this
+> issue.
+> 
+> The solution to update host qemu is not always possible. Either it's
+> complicated or ask you to recompile it, or simply is not accessible
+> (GitLab CI, GitHub Actions). Thus, it could be worth to implement execve
+> without relying on execveat, which is the goal of this patch.
+> 
+> This patch was tested with example presented in this commit message.
+> 
+> [1] http://ftp.us.debian.org/debian/pool/main/q/qemu/
+> [1] https://www.linaro.org/blog/emulate-windows-on-arm/
+> 
+> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 > ---
->   hw/vfio/pci.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+>   linux-user/syscall.c | 45 +++++++++++++++++++++++++++++++++++++-------
+>   1 file changed, 38 insertions(+), 7 deletions(-)
 > 
-> diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-> index ab6645ba60..95e077082b 100644
-> --- a/hw/vfio/pci.c
-> +++ b/hw/vfio/pci.c
-> @@ -1752,7 +1752,7 @@ static void vfio_bars_finalize(VFIOPCIDevice *vdev)
+> diff --git a/linux-user/syscall.c b/linux-user/syscall.c
+> index f2cb101d83..b64ec3296a 100644
+> --- a/linux-user/syscall.c
+> +++ b/linux-user/syscall.c
+> @@ -659,6 +659,7 @@ safe_syscall4(pid_t, wait4, pid_t, pid, int *, status, int, options, \
+>   #endif
+>   safe_syscall5(int, waitid, idtype_t, idtype, id_t, id, siginfo_t *, infop, \
+>                 int, options, struct rusage *, rusage)
+> +safe_syscall3(int, execve, const char *, filename, char **, argv, char **, envp)
+>   safe_syscall5(int, execveat, int, dirfd, const char *, filename,
+>                 char **, argv, char **, envp, int, flags)
+>   #if defined(TARGET_NR_select) || defined(TARGET_NR__newselect) || \
+> @@ -8520,9 +8521,12 @@ static int do_openat(CPUArchState *cpu_env, int dirfd, const char *pathname, int
+>       return safe_openat(dirfd, path(pathname), flags, mode);
+>   }
 >   
->           vfio_bar_quirk_finalize(vdev, i);
->           vfio_region_finalize(&bar->region);
-> -        if (bar->size) {
-> +        if (bar->size && bar->mr) {
->               object_unparent(OBJECT(bar->mr));
->               g_free(bar->mr);
->           }
+> -static int do_execveat(CPUArchState *cpu_env, int dirfd,
+> -                       abi_long pathname, abi_long guest_argp,
+> -                       abi_long guest_envp, int flags)
+> +#define IS_EXECVEAT 0
+> +#define IS_EXECVE 1
+> +
+> +static int do_execv(CPUArchState *cpu_env, int dirfd,
+> +                    abi_long pathname, abi_long guest_argp,
+> +                    abi_long guest_envp, int flags, bool is_execve)
+>   {
+>       int ret;
+>       char **argp, **envp;
+> @@ -8601,10 +8605,18 @@ static int do_execveat(CPUArchState *cpu_env, int dirfd,
+>           goto execve_efault;
+>       }
+>   
+> -    if (is_proc_myself(p, "exe")) {
+> -        ret = get_errno(safe_execveat(dirfd, exec_path, argp, envp, flags));
+> +    if (is_execve == IS_EXECVE) {
 
-What about:
+is_execve is either bool or not. I'd use it as bool, and pass true/false.
+Right now it is inconsistent.
 
-             if (bar->mr) {
-                 assert(bar->size);
-                 object_unparent(OBJECT(bar->mr));
-                 g_free(bar->mr);
-                 bar->mr = NULL;
-             }
+> +        if (is_proc_myself(p, "exe")) {
+> +            ret = get_errno(safe_execve(exec_path, argp, envp));
+> +        } else {
+> +            ret = get_errno(safe_execve(p, argp, envp));
+> +        }
+>       } else {
+> -        ret = get_errno(safe_execveat(dirfd, p, argp, envp, flags));
+> +        if (is_proc_myself(p, "exe")) {
+> +            ret = get_errno(safe_execveat(dirfd, exec_path, argp, envp, flags));
+> +        } else {
+> +            ret = get_errno(safe_execveat(dirfd, p, argp, envp, flags));
+> +        }
+>       }
 
-?
+And this can be simplified quite a bit by using a condition on
+is_proc_myself(p, "exe"):
+
+   if (is_proc_myself(p, exe)) {
+      p = exec_path;
+   }
+   ret = is_excveat ?
+     safe_execveat(dirfd, p, argp, envp, flags) :
+     safe_execve(p, argp, envp);
+   ret = get_errno(ret);
+   ...
+
+I dunno which way Laurent might prefer, but to my taste this way it is
+much more readable (give or take the proper coding style to use here, -
+I don't remember how the arithmetic if should be styled).
+
+>   
+>       unlock_user(p, pathname, 0);
+> @@ -8633,6 +8645,25 @@ execve_end:
+>       return ret;
+>   }
+>   
+> +static int do_execveat(CPUArchState *cpu_env, int dirfd,
+> +                       abi_long pathname, abi_long guest_argp,
+> +                       abi_long guest_envp, int flags)
+> +{
+> +    return do_execv(cpu_env, dirfd,
+> +                    pathname, guest_argp, guest_envp, flags,
+> +                    IS_EXECVEAT);
+> +}
+> +
+> +static int do_execve(CPUArchState *cpu_env,
+> +                     abi_long pathname, abi_long guest_argp,
+> +                     abi_long guest_envp)
+> +{
+> +    return do_execv(cpu_env, AT_FDCWD,
+> +                    pathname, guest_argp, guest_envp, 0,
+> +                    IS_EXECVE);
+> +}
+> +
+> +
+>   #define TIMER_MAGIC 0x0caf0000
+>   #define TIMER_MAGIC_MASK 0xffff0000
+>   
+> @@ -9158,7 +9189,7 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
+>       case TARGET_NR_execveat:
+>           return do_execveat(cpu_env, arg1, arg2, arg3, arg4, arg5);
+>       case TARGET_NR_execve:
+> -        return do_execveat(cpu_env, AT_FDCWD, arg1, arg2, arg3, 0);
+> +        return do_execve(cpu_env, arg1, arg2, arg3);
+
+FWIW, there's no need to implement the intermediate wrapper functions,
+it's fine to run do_execv(..., true/false) here directly.
+
+
+Overall, this smells like a -stable material.
+
+Thanks!
+
+/mjt
 
