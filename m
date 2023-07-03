@@ -2,65 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F367E74539C
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 03:34:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FB967453A7
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 03:39:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qG8SB-00082m-5Z; Sun, 02 Jul 2023 21:34:11 -0400
+	id 1qG8Wt-0000s0-7g; Sun, 02 Jul 2023 21:39:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qG8S5-00082a-DC
- for qemu-devel@nongnu.org; Sun, 02 Jul 2023 21:34:06 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qG8S2-0006Mt-FR
- for qemu-devel@nongnu.org; Sun, 02 Jul 2023 21:34:04 -0400
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.200])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4QvSzw3S8yz688Z4;
- Mon,  3 Jul 2023 09:30:52 +0800 (CST)
-Received: from localhost (10.34.206.101) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Mon, 3 Jul
- 2023 02:33:43 +0100
-Date: Mon, 3 Jul 2023 09:33:39 +0800
-To: "nifan@outlook.com" <nifan@outlook.com>
-CC: Fan Ni <fan.ni@samsung.com>, "qemu-devel@nongnu.org"
- <qemu-devel@nongnu.org>, "linux-cxl@vger.kernel.org"
- <linux-cxl@vger.kernel.org>, "gregory.price@memverge.com"
- <gregory.price@memverge.com>, "hchkuo@avery-design.com.tw"
- <hchkuo@avery-design.com.tw>, "cbrowy@avery-design.com"
- <cbrowy@avery-design.com>, "ira.weiny@intel.com" <ira.weiny@intel.com>,
- "dan.j.williams@intel.com" <dan.j.williams@intel.com>, Adam Manzanares
- <a.manzanares@samsung.com>, "dave@stgolabs.net" <dave@stgolabs.net>,
- "nmtadam.samsung@gmail.com" <nmtadam.samsung@gmail.com>
-Subject: Re: [RFC 7/7] hw/mem/cxl_type3: add read/write support to dynamic
- capacity
-Message-ID: <20230703093339.00002fb2@Huawei.com>
-In-Reply-To: <SG2PR06MB33973100A036493C2A644C6BB224A@SG2PR06MB3397.apcprd06.prod.outlook.com>
-References: <20230511175609.2091136-1-fan.ni@samsung.com>
- <CGME20230511175642uscas1p2c037608a1dd26b19cf970f97ce434c6d@uscas1p2.samsung.com>
- <20230511175609.2091136-8-fan.ni@samsung.com>
- <20230515162212.0000275c@Huawei.com>
- <SG2PR06MB33973100A036493C2A644C6BB224A@SG2PR06MB3397.apcprd06.prod.outlook.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qG8Wr-0000rm-KF; Sun, 02 Jul 2023 21:39:01 -0400
+Received: from mail-vs1-xe2b.google.com ([2607:f8b0:4864:20::e2b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qG8Wq-0007Ol-32; Sun, 02 Jul 2023 21:39:01 -0400
+Received: by mail-vs1-xe2b.google.com with SMTP id
+ ada2fe7eead31-44350ef5831so1359608137.2; 
+ Sun, 02 Jul 2023 18:38:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1688348338; x=1690940338;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=kJwLjR30s2qVyS3MNTUdLl2HhrQMf6th/T6GeFpN5ss=;
+ b=lPWbZtFY3tnb66kBB2o/vjtuJ04i6+1iqUFplmR79M/Hs+vg0uxw2JA6T3quLRlUYU
+ Ssc/3Jijt7ekQkiPLtH7ekqbGiilD+nO1TUI0Ku7ZEgrsJyQyquh3j+Kakk5o7qkY6+E
+ p1hATMkcRWBkNXfKLvfrACEjLI4Y3Q6raRXZo+qsK1BoZtv4CSYEYjg9/Ax0KO+69v5l
+ xOK/DPC5IkAjrV92iMTXnJ/D6mZxrQmsA0vXKSUB2ncbnMlLIvGbZyHA0i/jIvieolFE
+ 4dpoMgKyuxPAvzHKLKG9LGjIvHDf692C4IGFBbqXKtPb+hZPcMAg9krVFWkJ74KXWXZt
+ ob1w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1688348338; x=1690940338;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=kJwLjR30s2qVyS3MNTUdLl2HhrQMf6th/T6GeFpN5ss=;
+ b=X9v9DuZ+tLV38jHyqfWq7vfdxnnxhkRaSqtXT5ohiRe0wU18rHiiP33IpoB5imeCt/
+ 0MD6vyL3rv1cvei6KhAZEzJmOt9fp2RqUnUc0FcqpLKEuxumm1URrmNWHHSwvEBs4ZlK
+ OBXZwGvZZ9UBx82rBVmrPA99ObBqaqFU9oIjcA1Ku6Bn2bIBffUeU9Q7zEtuOBZLDKX1
+ zd03auIOaVleDgC3JSkxtCluzoSZ1Xm7/0IdpFhhmllrJR0iS7HLD8TWjvyw6f9wIyEe
+ Li5W8asmmb89YZJxC3qQywWzDIEt4btWDZBsnWpHiKcv3qGC9nEWYujv/FhGpEafux83
+ FIrw==
+X-Gm-Message-State: ABy/qLaSirJTO/JIMNVAOYH6qvm+aRCaIbjQc88Nps0v1ptAvlZCxTO6
+ biu6bi5ON21M3g7v1uRyRniQv7kqAvBF8BUy41Q=
+X-Google-Smtp-Source: APBJJlFa+BUl3FVJ9+JHLrBoGD5DCLaaxH2KR1uZu+HkjVz8LsDd4rfNnf/rTbM9dKaqpNyFHBODj8vHs7c44IIBogA=
+X-Received: by 2002:a1f:ddc4:0:b0:47e:28ee:9d1d with SMTP id
+ u187-20020a1fddc4000000b0047e28ee9d1dmr2252399vkg.4.1688348338510; Sun, 02
+ Jul 2023 18:38:58 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.34.206.101]
-X-ClientProxiedBy: lhrpeml500003.china.huawei.com (7.191.162.67) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+References: <20230627141216.3962299-1-tommy.wu@sifive.com>
+In-Reply-To: <20230627141216.3962299-1-tommy.wu@sifive.com>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Mon, 3 Jul 2023 11:38:32 +1000
+Message-ID: <CAKmqyKO9AyMzgTgbOdsKy1vigh-YSO7Gfaoyxdo4kDJey=bVeQ@mail.gmail.com>
+Subject: Re: [PATCH v6 0/3] Implement the watchdog timer of HiFive 1 rev b.
+To: Tommy Wu <tommy.wu@sifive.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
+ palmer@dabbelt.com, bin.meng@windriver.com, jim.shu@sifive.com, 
+ frank.chang@sifive.com, liweiwei@iscas.ac.cn, philmd@linaro.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::e2b;
+ envelope-from=alistair23@gmail.com; helo=mail-vs1-xe2b.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -74,35 +84,75 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 28 Jun 2023 10:09:47 -0700
-"nifan@outlook.com" <nifan@outlook.com> wrote:
+On Wed, Jun 28, 2023 at 12:13=E2=80=AFAM Tommy Wu <tommy.wu@sifive.com> wro=
+te:
+>
+> The HiFive 1 rev b includes a watchdog module based on a 32-bit
+> counter. The watchdog timer is in the always-on domain device of
+> HiFive 1 rev b, so this patch added the AON device to the sifive_e
+> machine. This patch only implemented the functionality of the
+> watchdog timer, not all the functionality of the AON device.
+>
+> You can test the patchset by the QTest tests/qtest/sifive-e-aon-watchdog-=
+test.c
+>
+> Changes since v1 ( Thank Alistair for the feedback ):
+> - Use the register field macro.
+> - Delete the public create function. The board creates the aon device its=
+elf.
+> - Keep all variable declarations at the top of the code block.
+>
+> Changes since v2 ( Thank Alistair for the feedback ):
+> - Delete the declaration and definition of the create function.
+>
+> Changes since v3 ( Thank Alistair and Thomas for the feedback ):
+> - Use `device_class_set_props()` for the properties in sifive_e_aon devic=
+e.
+> - Add SPDX identifier in QTEST.
+> - Use libqtest.h in QTEST.
+> - Let the statements on one line as long as they still fit into 80 column=
+s.
+>
+> Changes since v4 ( Thank Phil for the feedback ):
+> - Improve code style consistency.
+> - Move the timer create function to the sifive_e_aon_init.
+> - Allocate the sifive_e_aon device state in the SoC.
+>
+> Changes since v5 ( Thank Alistair for the feedback ):
+> - Rebase to the riscv-to-apply.next branch.
+>
+> Tommy Wu (3):
+>   hw/misc: sifive_e_aon: Support the watchdog timer of HiFive 1 rev b.
+>   hw/riscv: sifive_e: Support the watchdog timer of HiFive 1 rev b.
+>   tests/qtest: sifive-e-aon-watchdog-test.c: Add QTest of watchdog of
+>     sifive_e
 
-> The 05/15/2023 16:22, Jonathan Cameron wrote:
-> > On Thu, 11 May 2023 17:56:40 +0000
-> > Fan Ni <fan.ni@samsung.com> wrote:
-> >   
-> > > From: Fan Ni <nifan@outlook.com>
-> > > 
-> > > Before the change, read from or write to dynamic capacity of the memory
-> > > device is not support as 1) no host backed file/memory is provided for
-> > > it; 2) no address space is created for the dynamic capacity.  
-> > 
-> > Ah nice. I should have read ahead.  Probably makes sense to reorder things
-> > so that when we present DCD region it will work.  
-> 
-> We can back dynamic capacity with host memory/file and create address
-> space for dc regions, but until extents can be added we should not expect
-> any read/write can happen to the dynamic capacity, right?
+Thanks!
 
-True.  Seems logically 'unusual' though to set up the routing etc, but
-not plumb the actual memory access i until later.  I guess it all comes
-together in the end and doing it this way lets you handle the extent mapping
-later.  So fine to leave it as you have it.
+Applied to riscv-to-apply.next
 
-Jonathan
+Alistair
+
+>
+>  hw/misc/Kconfig                          |   3 +
+>  hw/misc/meson.build                      |   1 +
+>  hw/misc/sifive_e_aon.c                   | 319 ++++++++++++++++
+>  hw/riscv/Kconfig                         |   1 +
+>  hw/riscv/sifive_e.c                      |  17 +-
+>  include/hw/misc/sifive_e_aon.h           |  60 +++
+>  include/hw/riscv/sifive_e.h              |   9 +-
+>  tests/qtest/meson.build                  |   3 +
+>  tests/qtest/sifive-e-aon-watchdog-test.c | 450 +++++++++++++++++++++++
+>  9 files changed, 858 insertions(+), 5 deletions(-)
+>  create mode 100644 hw/misc/sifive_e_aon.c
+>  create mode 100644 include/hw/misc/sifive_e_aon.h
+>  create mode 100644 tests/qtest/sifive-e-aon-watchdog-test.c
+>
+> --
+> 2.31.1
+>
+>
 
