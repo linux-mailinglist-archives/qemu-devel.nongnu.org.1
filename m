@@ -2,73 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FF3C74574E
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 10:26:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BA2174574F
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 10:27:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGEsV-0007tZ-Ue; Mon, 03 Jul 2023 04:25:48 -0400
+	id 1qGEto-00009D-0q; Mon, 03 Jul 2023 04:27:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <viktor@daynix.com>) id 1qGEsR-0007tF-2s
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 04:25:43 -0400
-Received: from mail-lj1-x231.google.com ([2a00:1450:4864:20::231])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qGEtl-00008r-Eb
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 04:27:05 -0400
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <viktor@daynix.com>) id 1qGEsN-00078D-38
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 04:25:41 -0400
-Received: by mail-lj1-x231.google.com with SMTP id
- 38308e7fff4ca-2b69e6d324aso65201051fa.0
- for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 01:25:38 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qGEtj-0007W2-PO
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 04:27:05 -0400
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-313f1085ac2so4578552f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 01:27:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1688372737; x=1690964737;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=7ifprR0VgQZZO8H8tgbXHfhQcxSVVWpcFS6iQQTmEic=;
- b=kbqzPRB6z73eIxhIaRywm4iFxbECs5XgK8zM3QA76RwCbPMwHHKTcs0Jxj2lt+CH7h
- ZDyig7FuGef/tYw5o9Wr4udIWQ6UcF+gWH7daNzuSz9F4s7/fRyQoAnqjhS4NPdIyz+L
- LfOmsknsLbgUEdAr/Riwg0sJRvn47Sl7/siKsRYhFnM32r/BN/hfsOMDIv0owZljbz3N
- kXretwLoCrVb/k7e445bTAv7HepUoI+HMip4xBv7pOxA6chvF5OcEuW5IkqmsMMKQ8HW
- cLXIS+1uI30guMVW4zHD1p7JD5XZ6Fkv5Q9yFIEAXqJst2TMlq567ViNuDxRD8xW/mC4
- wO2Q==
+ d=linaro.org; s=google; t=1688372822; x=1690964822;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=+g3yvbP4PQ9J1yw+Le3GL4jy81faKVCF59ath6WJBjM=;
+ b=xokzJ5SWrHYWN1XhoTg6yMP0ec1CnjXYIn3VCnrJaruDWjG2QvWdt/ZMld9lh/LmaD
+ 0ctnbldbudG48rs87t5MGhIFTkHPfwq6Awc1DCBjte9F+rv5KOZGoyc7chR8cimCRByG
+ u7vYRBbT8rk/hiOkiiuP2W9mv6JIquB9S+MYGQ3VhUYm2+bADew+j5hEJ8AZPMMkjgrg
+ vi+8rDeJI9Hj5jVXI7xjEcV9nuiSFcdvVYXXd1M2Z2lJSsUWo1dVT1VXqdNQk5nQehhP
+ MCQdktfUD9M223eVqabHKKeBn7tdS8uhIJHMhfF+8LiWin0LKph1ixQ5DUG44LwH7oAS
+ lk9A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688372737; x=1690964737;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=7ifprR0VgQZZO8H8tgbXHfhQcxSVVWpcFS6iQQTmEic=;
- b=kmhH12D0YOUSohrNzFy/JfaZykvtn+bV15E8IqjgSwlTihV1NkPZkgTXv8ojbddHm0
- 4Dv8NBDsRMRDvDneNbD8JpuX6dXcWeyD3NGGmY0mHakDAOJT7pwR8nEsbj+V2kIr7gil
- ioxQVO9KuK93iQAgR48EYm8ysxD0BqkDtqeFyxEboZwE4AIpU5ypP+amo5Ko1XrtqWVH
- OKPBkeI2BemgxnHs8TtfILBKtvE6BjJxEYrYzgCau84feaG4SMuW5UpleWKudKEueL70
- I7znnB2cSFqTNuuCSxPXtvVlkO3z1pdE1cfkJkPMHg9U+tBoR9S6wRlWcF4qJcd6w9gV
- 61hQ==
-X-Gm-Message-State: ABy/qLaAUtw3YoBRm2G7w8FTRV2iEvMDaQrCh4v+in+X/cqG3HpZSqcb
- ocVxLKl3uAInBQ2JAUOQW6QII2vBXzdXwtbB8501/A==
-X-Google-Smtp-Source: APBJJlGIkuGQB8Hl6xZMfMStYof3ipHO+rrJpEMXLLb5wpv3R4M4BHDU1LU+B6Bx2S1bvjfBiSXH3NQIWwTz5IdGOds=
-X-Received: by 2002:a2e:980c:0:b0:2b6:b864:fac6 with SMTP id
- a12-20020a2e980c000000b002b6b864fac6mr5749386ljj.37.1688372736599; Mon, 03
- Jul 2023 01:25:36 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1688372822; x=1690964822;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=+g3yvbP4PQ9J1yw+Le3GL4jy81faKVCF59ath6WJBjM=;
+ b=Yu3sDV/s73IPt2ttEzCj9RXVqbyZPB3OjEHIw5TIWAm9XMdeeJx4kl9vsjq9/EeW5K
+ zzJV5mqZc4a/ZtNWG3EflNA6HxIEyLXd20PrTpKcpa5B2r1ZDcfzrUMnPpZxrIjILIXA
+ V4Vx173zprYRH14enmtB8y0MViDnuTuACil8Q+kM3lqljcGDTtKJjTf0LzkAeWZI7xDS
+ xzJ3Fw7Nuxf+NtTNeW3Io0c8bCAJbFY99bBkZ1f9yooj9bXNqLhPHp/nwnHL57JMICkA
+ 58s7fzRsokHWaOunwlQICpU9QnJ7ATllQGkebBKmthW2rDc/aP5Tdn3fK5OvZLSPVeIY
+ he0g==
+X-Gm-Message-State: ABy/qLYt3Mtfo92ehfRh8zYP5N6uhIfjDQkWiN15Rx8e7NwypVgPrsCf
+ /lgA4DTvc6gczwnIk1Nhj5NTmg==
+X-Google-Smtp-Source: APBJJlFqNrIXN+r+87Hy8t6aDUazduK+S5gp5s0b/YksyltA28nSCDvZuvqSTCblE3NHgENF8qNzaA==
+X-Received: by 2002:a5d:58d8:0:b0:313:ee2e:dae1 with SMTP id
+ o24-20020a5d58d8000000b00313ee2edae1mr7127552wrf.18.1688372822330; 
+ Mon, 03 Jul 2023 01:27:02 -0700 (PDT)
+Received: from [192.168.69.115] ([176.176.178.91])
+ by smtp.gmail.com with ESMTPSA id
+ z16-20020a5d6550000000b00313f4304bcasm19304047wrv.16.2023.07.03.01.27.01
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 03 Jul 2023 01:27:02 -0700 (PDT)
+Message-ID: <575796cd-6460-b9ea-bfcf-8f27fadf0920@linaro.org>
+Date: Mon, 3 Jul 2023 10:26:59 +0200
 MIME-Version: 1.0
-References: <20230626091258.24453-1-viktor@daynix.com>
-In-Reply-To: <20230626091258.24453-1-viktor@daynix.com>
-From: Viktor Prutyanov <viktor@daynix.com>
-Date: Mon, 3 Jul 2023 11:25:25 +0300
-Message-ID: <CAPv0NP5LrA4XzG8xOsQj=7BHJdd=dJf5QMLCf-r6PyWtx4X6hg@mail.gmail.com>
-Subject: Re: [PATCH v5 0/2] vhost: register and change IOMMU flag depending on
- ATS state
-To: mst@redhat.com, jasowang@redhat.com
-Cc: qemu-devel@nongnu.org, yan@daynix.com, yuri.benditovich@daynix.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: none client-ip=2a00:1450:4864:20::231;
- envelope-from=viktor@daynix.com; helo=mail-lj1-x231.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.12.0
+Subject: Re: [PATCH 11/21] swim: add trace events for IWM and ISM registers
+Content-Language: en-US
+To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, laurent@vivier.eu,
+ qemu-devel@nongnu.org
+References: <20230702154838.722809-1-mark.cave-ayland@ilande.co.uk>
+ <20230702154838.722809-12-mark.cave-ayland@ilande.co.uk>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230702154838.722809-12-mark.cave-ayland@ilande.co.uk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,55 +93,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jun 26, 2023 at 12:13=E2=80=AFPM Viktor Prutyanov <viktor@daynix.co=
-m> wrote:
->
-> When IOMMU and vhost are enabled together, QEMU tracks IOTLB or
-> Device-TLB unmap events depending on whether Device-TLB is enabled. But
-> even if Device-TLB and PCI ATS is enabled, the guest can reject to use
-> it. For example, this situation appears when Windows Server 2022 is
-> running with intel-iommu with device-iotlb=3Don and virtio-net-pci with
-> vhost=3Don. The guest implies that no address translation info cached in
-> device IOTLB and doesn't send device IOTLB invalidation commands. So,
-> it leads to irrelevant address translations in vhost-net in the host
-> kernel. Therefore network frames from the guest in host tap interface
-> contains wrong payload data.
->
-> This series adds checking of ATS state for proper unmap flag register
-> (IOMMU_NOTIFIER_UNMAP or IOMMU_NOTIFIER_DEVIOTLB_UNMAP).
->
-> Tested on Windows Server 2022, Windows 11 and Fedora guests with
->  -device virtio-net-pci,bus=3Dpci.3,netdev=3Dnd0,iommu_platform=3Don,ats=
-=3Don
->  -netdev tap,id=3Dnd0,ifname=3Dtap1,script=3Dno,downscript=3Dno,vhost=3Do=
-n
->  -device intel-iommu,intremap=3Don,eim=3Don,device-iotlb=3Don/off
-> Tested on Fedora guest with
->  -device virtio-iommu
->
-> Buglink: https://bugzilla.redhat.com/show_bug.cgi?id=3D2001312
->
-> v5: add vhost_toggle_device_iotlb to vhost-stub
-> v4: call vhost_toggle_device_iotlb regardless of vhost backend,
->     move vhost_started check to generic part
-> v3: call virtio_pci_ats_ctrl_trigger directly, remove
->     IOMMU_NOTIFIER_UNMAP fallbacks
-> v2: remove memory_region_iommu_notify_flags_changed, move trigger to
->     VirtioDeviceClass, use vhost_ops, use device_iotlb name
->
-> Viktor Prutyanov (2):
->   vhost: register and change IOMMU flag depending on Device-TLB state
->   virtio-net: pass Device-TLB enable/disable events to vhost
->
->  hw/net/virtio-net.c       |  1 +
->  hw/virtio/vhost-stub.c    |  4 ++++
->  hw/virtio/vhost.c         | 38 ++++++++++++++++++++++++++------------
->  include/hw/virtio/vhost.h |  1 +
->  4 files changed, 32 insertions(+), 12 deletions(-)
->
-> --
-> 2.21.0
->
+On 2/7/23 17:48, Mark Cave-Ayland wrote:
+> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+> ---
+>   hw/block/swim.c       | 14 ++++++++++++++
+>   hw/block/trace-events |  7 +++++++
+>   2 files changed, 21 insertions(+)
 
-ping
+
+> @@ -267,6 +275,7 @@ static void iwmctrl_write(void *opaque, hwaddr reg, uint64_t value,
+>       reg >>= REG_SHIFT;
+>   
+>       swimctrl->regs[reg >> 1] = reg & 1;
+> +    trace_swim_iwmctrl_write((reg >> 1), size, (reg & 1));
+>   
+>       if (swimctrl->regs[IWM_Q6] &&
+>           swimctrl->regs[IWM_Q7]) {
+> @@ -297,6 +306,7 @@ static void iwmctrl_write(void *opaque, hwaddr reg, uint64_t value,
+>                   if (value == 0x57) {
+>                       swimctrl->mode = SWIM_MODE_SWIM;
+>                       swimctrl->iwm_switch = 0;
+> +                    trace_swim_iwm_switch();
+>                   }
+>                   break;
+>               }
+> @@ -312,6 +322,7 @@ static uint64_t iwmctrl_read(void *opaque, hwaddr reg, unsigned size)
+>   
+>       swimctrl->regs[reg >> 1] = reg & 1;
+>   
+> +    trace_swim_iwmctrl_read((reg >> 1), size, (reg & 1));
+>       return 0;
+>   }
+
+
+> +swim_swimctrl_read(int reg, const char *name, unsigned size, uint64_t value) "reg=%d [%s] size=%u value=0x%"PRIx64
+> +swim_swimctrl_write(int reg, const char *name, unsigned size, uint64_t value) "reg=%d [%s] size=%u value=0x%"PRIx64
+> +swim_iwmctrl_read(int reg, unsigned size, uint64_t value) "reg=%d size=%u value=0x%"PRIx64
+> +swim_iwmctrl_write(int reg, unsigned size, uint64_t value) "reg=%d size=%u value=0x%"PRIx64
+
+For these 2 functions, 'value' is 1 bit so could be 'unsigned' ;)
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
 
