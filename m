@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59C47746275
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 20:33:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1268374628E
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 20:36:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGOLh-0007hY-0G; Mon, 03 Jul 2023 14:32:33 -0400
+	id 1qGOLn-0007li-MV; Mon, 03 Jul 2023 14:32:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qGOLe-0007gs-V5
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 14:32:30 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qGOLl-0007hr-Ow
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 14:32:37 -0400
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qGOLd-0000IF-Ci
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 14:32:30 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-3fbc244d386so50666745e9.2
- for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 11:32:28 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qGOLj-0000JT-SR
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 14:32:37 -0400
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-3fbc54cab6fso39501825e9.0
+ for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 11:32:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688409147; x=1691001147;
+ d=linaro.org; s=google; t=1688409154; x=1691001154;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=mBPwvcRHmcNt4ZOYPtGduaaDj2uEPcahpe0nALIk+GY=;
- b=CTbvpAfs7T0B1iUPQTNfMiYVAvEwYF6IQ/GamTfEZRldAteEYIJPiIuMRrwKaF+b1S
- U6ljCBOAL/uk9Ok0zZlChdgbWCp66Y3R8wWpbjXuzjREhmpxJsxcgkN7ajkqsWlNz24F
- 12sl1otb2sG4yRYO/6GT1Im7X62XfLaQrFWWkmhINjB7HTguvDqxlwDHeIGv77r+2TOz
- B/eXRnSmYWdA8+TFqdjiSSC+mMNSK2xKqPDUDklV5fUwuT32kOmATielucX6/lM2RzhK
- LY7mqeznxJ4vc1oXE6mnadvuk6tjABwgiofyMUBhw4+rdSIS+0tY+InzLEYv4ksg1sKV
- W+iw==
+ bh=a2jBqwLYTVPATDHfEQY0x1Pdqr8EcmmmZ1uz1yNnpOk=;
+ b=KRVWgYdroOLbfrpPlUEnPovRCeX/FnRYQy/HWjU85fZZnVwhhgrGD93/umv5cknqf5
+ Vi6uJtFniwaPdV4SZpUzJNODrc0jLtp5TwHh6BKgwuT2nhCS/5bwjL4SC1LS0R0DMz2R
+ BfTmeccdQtFqSNKl4SfGzURhSiMkf88h6lKDAe6Od1DlEnn0CT41RO5hJv5dg4cAAukO
+ 2kbrS8ToE+/vO5HvUwTMyWW6p0wZpr9L0e3Dvy59+il/cDt6ECVzUyeKTPPYzUGfsBlm
+ z5GRBEA6+nyojYOJ9MDdnqOnFzqDl1moJrBnscfaulNWsBGzG/s3g1f09a1zRHGgyxui
+ BF/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688409147; x=1691001147;
+ d=1e100.net; s=20221208; t=1688409154; x=1691001154;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=mBPwvcRHmcNt4ZOYPtGduaaDj2uEPcahpe0nALIk+GY=;
- b=OQiITxFOqmZnHgh+RvjGMzwU2fEX3ObxuL94c4AaMjwUDXRxT3eRHENWlNy/t9el4d
- wFi3lueox3l/b/FR1skq+bvSdbVD8/5SKL7SWZRDyYQYjQeVl+8CPk6kb4K75DGxxkcs
- qEjDXFM4+duM9lBBJY89GapC1+Yb+gKtknoUYhiRTZ9n4gUtoiC3IqSdWlNilosyLGkf
- 6iPw5OMUMjkXwtJgD7ReLKzrvgQtM7iEmgABwhJdsgJGPadb/hYH+Z8eQso/LfDjM8zP
- q6XhnSaqr6AgayuUqT5Zt8QavnzDfqApHpxHV6emDL78D5Ahq0Otx7P/gt4cVQ0oVysb
- J2GQ==
-X-Gm-Message-State: AC+VfDy32oKnaOjkhxIshxHYVOnz7h0HdN2RkYNXitRTUxoExCiLrJAH
- uKbgDjq7MgWCZZ3sPQs8FxxB90hMbvOcDqt7OwkaBg==
-X-Google-Smtp-Source: ACHHUZ7TITM5DPVN0GyzIpU50pY8ycnkaLx+WOyvPXMEFFaUgCSHgjYISfll4U7OmxKQljw1aGA1dA==
-X-Received: by 2002:a1c:7219:0:b0:3fa:d160:fc6d with SMTP id
- n25-20020a1c7219000000b003fad160fc6dmr8809224wmc.30.1688409147704; 
- Mon, 03 Jul 2023 11:32:27 -0700 (PDT)
+ bh=a2jBqwLYTVPATDHfEQY0x1Pdqr8EcmmmZ1uz1yNnpOk=;
+ b=KH2pS21ioKWvSg1a9cumXFyvh7PgYo88IyLZRLyxX/HiWciXz1621zEBJxRBbdd6Qj
+ 17t4kt1QaU51ImR6wUkdbgpNDSmRb2b2dkOuVIqbQwzjPHqGeRhiobb58qpuXCnsVpzD
+ ELxH0Q1J37kmVjXDtHHHPUnRGlkX3ldSQg+w6GpNKC3hE2FUfW7SMbar/HOnKjwS8aeE
+ ygF03yTEfqyttvV5vMCr8ScZRmnXmOidQVB4ArCM9zstQN3i+HJzLBzjP4FwYnxsw642
+ V8aD1DlX/n9bpkVEu8NoFVz4+5GJ2CyY6l614J7KVDWHqKMJwBkj3nscPa2XrL3POHj8
+ 95bw==
+X-Gm-Message-State: AC+VfDyL64ZlCt/pWV1vlE1FMJoS/VoIiGR17+7sOEGqorc4XjPBLCNa
+ A2PGpfV+RbpoeJjeKHwD9f43byub5niwAUpdpBpYyg==
+X-Google-Smtp-Source: ACHHUZ5zsZoIjEv2zUIgeh7IU0oTrQdTcvHZIhRm+EzuqA+11ODSRm/jzYdF4Mvd9Kiyhesq/x7DQw==
+X-Received: by 2002:a7b:ce16:0:b0:3fb:b1bf:7df3 with SMTP id
+ m22-20020a7bce16000000b003fbb1bf7df3mr8758013wmc.16.1688409154345; 
+ Mon, 03 Jul 2023 11:32:34 -0700 (PDT)
 Received: from localhost.localdomain ([176.176.178.91])
  by smtp.gmail.com with ESMTPSA id
- a20-20020a05600c225400b003fbb06af219sm15928744wmm.32.2023.07.03.11.32.25
+ v4-20020a05600c214400b003fa95890484sm23095216wml.20.2023.07.03.11.32.32
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 03 Jul 2023 11:32:27 -0700 (PDT)
+ Mon, 03 Jul 2023 11:32:34 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Palmer Dabbelt <palmer@dabbelt.com>, Paolo Bonzini <pbonzini@redhat.com>,
@@ -65,18 +65,18 @@ Cc: Palmer Dabbelt <palmer@dabbelt.com>, Paolo Bonzini <pbonzini@redhat.com>,
  qemu-riscv@nongnu.org, Bin Meng <bin.meng@windriver.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Weiwei Li <liweiwei@iscas.ac.cn>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
-Subject: [PATCH v2 06/16] target/riscv: Restrict riscv_cpu_do_interrupt() to
- sysemu
-Date: Mon,  3 Jul 2023 20:31:35 +0200
-Message-Id: <20230703183145.24779-7-philmd@linaro.org>
+Subject: [PATCH v2 07/16] target/riscv: Move TCG-specific files to
+ target/riscv/tcg/
+Date: Mon,  3 Jul 2023 20:31:36 +0200
+Message-Id: <20230703183145.24779-8-philmd@linaro.org>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230703183145.24779-1-philmd@linaro.org>
 References: <20230703183145.24779-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,74 +99,187 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-riscv_cpu_do_interrupt() is not reachable on user emulation.
+Move TCG-specific files to the a new 'tcg' sub-directory. Add
+stubs for riscv_cpu_[get/set]_fflags and riscv_raise_exception().
+Adapt meson rules.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/riscv/cpu.h        | 5 +++--
- target/riscv/cpu_helper.c | 7 ++-----
- 2 files changed, 5 insertions(+), 7 deletions(-)
+ target/riscv/{ => tcg}/XVentanaCondOps.decode |  0
+ target/riscv/{ => tcg}/insn16.decode          |  0
+ target/riscv/{ => tcg}/insn32.decode          |  0
+ target/riscv/{ => tcg}/xthead.decode          |  0
+ target/riscv/{ => tcg}/bitmanip_helper.c      |  0
+ target/riscv/{ => tcg}/crypto_helper.c        |  0
+ target/riscv/{ => tcg}/fpu_helper.c           |  0
+ target/riscv/{ => tcg}/m128_helper.c          |  0
+ target/riscv/{ => tcg}/op_helper.c            |  0
+ target/riscv/tcg/tcg-stub.c                   | 25 +++++++++++++++++++
+ target/riscv/{ => tcg}/translate.c            |  0
+ target/riscv/{ => tcg}/vector_helper.c        |  0
+ target/riscv/{ => tcg}/zce_helper.c           |  0
+ target/riscv/meson.build                      | 18 +------------
+ target/riscv/tcg/meson.build                  | 19 ++++++++++++++
+ 15 files changed, 45 insertions(+), 17 deletions(-)
+ rename target/riscv/{ => tcg}/XVentanaCondOps.decode (100%)
+ rename target/riscv/{ => tcg}/insn16.decode (100%)
+ rename target/riscv/{ => tcg}/insn32.decode (100%)
+ rename target/riscv/{ => tcg}/xthead.decode (100%)
+ rename target/riscv/{ => tcg}/bitmanip_helper.c (100%)
+ rename target/riscv/{ => tcg}/crypto_helper.c (100%)
+ rename target/riscv/{ => tcg}/fpu_helper.c (100%)
+ rename target/riscv/{ => tcg}/m128_helper.c (100%)
+ rename target/riscv/{ => tcg}/op_helper.c (100%)
+ create mode 100644 target/riscv/tcg/tcg-stub.c
+ rename target/riscv/{ => tcg}/translate.c (100%)
+ rename target/riscv/{ => tcg}/vector_helper.c (100%)
+ rename target/riscv/{ => tcg}/zce_helper.c (100%)
+ create mode 100644 target/riscv/tcg/meson.build
 
-diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index 00a4842d84..e6a8087022 100644
---- a/target/riscv/cpu.h
-+++ b/target/riscv/cpu.h
-@@ -411,7 +411,6 @@ extern const char * const riscv_int_regnamesh[];
- extern const char * const riscv_fpr_regnames[];
- 
- const char *riscv_cpu_get_trap_name(target_ulong cause, bool async);
--void riscv_cpu_do_interrupt(CPUState *cpu);
- int riscv_cpu_write_elf64_note(WriteCoreDumpFunction f, CPUState *cs,
-                                int cpuid, DumpState *s);
- int riscv_cpu_write_elf32_note(WriteCoreDumpFunction f, CPUState *cs,
-@@ -444,6 +443,7 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp);
- #define cpu_mmu_index riscv_cpu_mmu_index
- 
- #ifndef CONFIG_USER_ONLY
-+void riscv_cpu_do_interrupt(CPUState *cpu);
- void riscv_cpu_do_transaction_failed(CPUState *cs, hwaddr physaddr,
-                                      vaddr addr, unsigned size,
-                                      MMUAccessType access_type,
-@@ -467,7 +467,8 @@ void riscv_cpu_set_aia_ireg_rmw_fn(CPURISCVState *env, uint32_t priv,
-                                    void *rmw_fn_arg);
- 
- RISCVException smstateen_acc_ok(CPURISCVState *env, int index, uint64_t bit);
--#endif
-+#endif /* !CONFIG_USER_ONLY */
+diff --git a/target/riscv/XVentanaCondOps.decode b/target/riscv/tcg/XVentanaCondOps.decode
+similarity index 100%
+rename from target/riscv/XVentanaCondOps.decode
+rename to target/riscv/tcg/XVentanaCondOps.decode
+diff --git a/target/riscv/insn16.decode b/target/riscv/tcg/insn16.decode
+similarity index 100%
+rename from target/riscv/insn16.decode
+rename to target/riscv/tcg/insn16.decode
+diff --git a/target/riscv/insn32.decode b/target/riscv/tcg/insn32.decode
+similarity index 100%
+rename from target/riscv/insn32.decode
+rename to target/riscv/tcg/insn32.decode
+diff --git a/target/riscv/xthead.decode b/target/riscv/tcg/xthead.decode
+similarity index 100%
+rename from target/riscv/xthead.decode
+rename to target/riscv/tcg/xthead.decode
+diff --git a/target/riscv/bitmanip_helper.c b/target/riscv/tcg/bitmanip_helper.c
+similarity index 100%
+rename from target/riscv/bitmanip_helper.c
+rename to target/riscv/tcg/bitmanip_helper.c
+diff --git a/target/riscv/crypto_helper.c b/target/riscv/tcg/crypto_helper.c
+similarity index 100%
+rename from target/riscv/crypto_helper.c
+rename to target/riscv/tcg/crypto_helper.c
+diff --git a/target/riscv/fpu_helper.c b/target/riscv/tcg/fpu_helper.c
+similarity index 100%
+rename from target/riscv/fpu_helper.c
+rename to target/riscv/tcg/fpu_helper.c
+diff --git a/target/riscv/m128_helper.c b/target/riscv/tcg/m128_helper.c
+similarity index 100%
+rename from target/riscv/m128_helper.c
+rename to target/riscv/tcg/m128_helper.c
+diff --git a/target/riscv/op_helper.c b/target/riscv/tcg/op_helper.c
+similarity index 100%
+rename from target/riscv/op_helper.c
+rename to target/riscv/tcg/op_helper.c
+diff --git a/target/riscv/tcg/tcg-stub.c b/target/riscv/tcg/tcg-stub.c
+new file mode 100644
+index 0000000000..dfe42ae2ac
+--- /dev/null
++++ b/target/riscv/tcg/tcg-stub.c
+@@ -0,0 +1,25 @@
++/*
++ * QEMU RISC-V TCG stubs
++ *
++ * Copyright (c) 2023 Linaro
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++#include "qemu/osdep.h"
++#include "cpu.h"
 +
- void riscv_cpu_set_mode(CPURISCVState *env, target_ulong newpriv);
- 
- void riscv_translate_init(void);
-diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
-index 0adde26321..597c47bc56 100644
---- a/target/riscv/cpu_helper.c
-+++ b/target/riscv/cpu_helper.c
-@@ -1579,7 +1579,6 @@ static target_ulong riscv_transformed_insn(CPURISCVState *env,
- 
-     return xinsn;
- }
--#endif /* !CONFIG_USER_ONLY */
- 
- /*
-  * Handle Traps
-@@ -1589,8 +1588,6 @@ static target_ulong riscv_transformed_insn(CPURISCVState *env,
-  */
- void riscv_cpu_do_interrupt(CPUState *cs)
- {
--#if !defined(CONFIG_USER_ONLY)
++target_ulong riscv_cpu_get_fflags(CPURISCVState *env)
++{
++    g_assert_not_reached();
++}
++
++void riscv_cpu_set_fflags(CPURISCVState *env, target_ulong)
++{
++    g_assert_not_reached();
++}
++
++G_NORETURN void riscv_raise_exception(CPURISCVState *env,
++                                      uint32_t exception, uintptr_t pc)
++{
++    g_assert_not_reached();
++}
+diff --git a/target/riscv/translate.c b/target/riscv/tcg/translate.c
+similarity index 100%
+rename from target/riscv/translate.c
+rename to target/riscv/tcg/translate.c
+diff --git a/target/riscv/vector_helper.c b/target/riscv/tcg/vector_helper.c
+similarity index 100%
+rename from target/riscv/vector_helper.c
+rename to target/riscv/tcg/vector_helper.c
+diff --git a/target/riscv/zce_helper.c b/target/riscv/tcg/zce_helper.c
+similarity index 100%
+rename from target/riscv/zce_helper.c
+rename to target/riscv/tcg/zce_helper.c
+diff --git a/target/riscv/meson.build b/target/riscv/meson.build
+index 8967dfaded..8ef47f43f9 100644
+--- a/target/riscv/meson.build
++++ b/target/riscv/meson.build
+@@ -1,34 +1,18 @@
+-# FIXME extra_args should accept files()
+-gen = [
+-  decodetree.process('insn16.decode', extra_args: ['--static-decode=decode_insn16', '--insnwidth=16']),
+-  decodetree.process('insn32.decode', extra_args: '--static-decode=decode_insn32'),
+-  decodetree.process('xthead.decode', extra_args: '--static-decode=decode_xthead'),
+-  decodetree.process('XVentanaCondOps.decode', extra_args: '--static-decode=decode_XVentanaCodeOps'),
+-]
 -
-     RISCVCPU *cpu = RISCV_CPU(cs);
-     CPURISCVState *env = &cpu->env;
-     bool write_gva = false;
-@@ -1783,6 +1780,6 @@ void riscv_cpu_do_interrupt(CPUState *cs)
+ riscv_ss = ss.source_set()
+ riscv_system_ss = ss.source_set()
  
-     env->two_stage_lookup = false;
-     env->two_stage_indirect_lookup = false;
--#endif
--    cs->exception_index = RISCV_EXCP_NONE; /* mark handled to qemu */
- }
+-riscv_ss.add(gen)
+ riscv_ss.add(files(
+   'cpu.c',
+   'cpu_helper.c',
+   'csr.c',
+-  'fpu_helper.c',
+   'gdbstub.c',
+-  'op_helper.c',
+-  'vector_helper.c',
+-  'bitmanip_helper.c',
+-  'translate.c',
+-  'm128_helper.c',
+-  'crypto_helper.c',
+-  'zce_helper.c'
+ ))
+ 
+ riscv_system_ss.add(files(
+   'debug.c',
+ ))
+ 
++subdir('tcg')
+ subdir('sysemu')
+ 
+ target_arch += {'riscv': riscv_ss}
+diff --git a/target/riscv/tcg/meson.build b/target/riscv/tcg/meson.build
+new file mode 100644
+index 0000000000..65670493b1
+--- /dev/null
++++ b/target/riscv/tcg/meson.build
+@@ -0,0 +1,19 @@
++# FIXME extra_args should accept files()
++gen = [
++  decodetree.process('insn16.decode', extra_args: ['--static-decode=decode_insn16', '--insnwidth=16']),
++  decodetree.process('insn32.decode', extra_args: '--static-decode=decode_insn32'),
++  decodetree.process('xthead.decode', extra_args: '--static-decode=decode_xthead'),
++  decodetree.process('XVentanaCondOps.decode', extra_args: '--static-decode=decode_XVentanaCodeOps'),
++]
++riscv_ss.add(when: 'CONFIG_TCG', if_true: gen)
 +
-+#endif /* !CONFIG_USER_ONLY */
++riscv_ss.add(when: 'CONFIG_TCG', if_true: files(
++  'fpu_helper.c',
++  'op_helper.c',
++  'vector_helper.c',
++  'bitmanip_helper.c',
++  'translate.c',
++  'm128_helper.c',
++  'crypto_helper.c',
++  'zce_helper.c',
++), if_false: files('tcg-stub.c'))
 -- 
 2.38.1
 
