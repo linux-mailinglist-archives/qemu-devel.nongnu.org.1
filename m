@@ -2,83 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C7E0745DF0
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 15:54:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97773745DBE
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 15:51:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGJzj-0000WP-4b; Mon, 03 Jul 2023 09:53:35 -0400
+	id 1qGJre-000873-Vu; Mon, 03 Jul 2023 09:45:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qGJzg-0000Tm-Rb
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 09:53:32 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ id 1qGJrA-0007Zw-Lc
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 09:44:44 -0400
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qGJze-00081o-EJ
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 09:53:32 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-3fbc6ab5ff5so40370165e9.1
- for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 06:53:30 -0700 (PDT)
+ id 1qGJr4-0005jH-1P
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 09:44:43 -0400
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-307d58b3efbso4945943f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 06:44:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688392409; x=1690984409;
+ d=linaro.org; s=google; t=1688391877; x=1690983877;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=A17Yk078G+WbyuMB1//no9fohhpFQD0Go8gJ1S9AAiU=;
- b=eZ5PsvLOgBLv4obSKoIdlRCg5HRhIqIe9eX1WpMgTqDeq62la+3crcuEfmXKPfqV/3
- 0owkz0G5MeXj60UOqXpQyp+nWSthpmWSiFal/hJ3YhpLpL9w2PTsyXG69Tew1oG5cQuC
- TckuUW1FXspwH2v656whuq9vXNKugscEC4CruzVNGg1wzgo8xa45/b2O/yTJLCrhuqgQ
- Qwi91Syes3zUw8/4KdcWFXpG3nOCMsK23t/ps92gbRc7ThGih8TWWkFd8ZQShASPH7Vo
- 4ny9k5fV9h9pk+JnkJEu5XosEgoFS9HxT77zgftBcYpAyEoqiLYmPLas5GHAJ+19yET+
- UU7Q==
+ bh=jmuKSf2VcTxuXRVZK5WsSbiqmIzeKDjZMTTPleVdJHM=;
+ b=nAehpB0dqhFbx05sjTAYP9thSJXd5zlPIIXvFyvfHiLHxGSCczf5SR8aoPgCuqMrH8
+ GDEdIL1lcXW34BAbDPxztcegZ7dI7hziGuUqDKI3MPTcqMZEbUMvNAdlOAwCFLesbMcK
+ rj1NpnVHxRVosPZGJeOaE2HXwv53mMDiNJoyEdGYQ+rTckBXox94+Hqv1EIn4Bimw++g
+ dO2fVjf8R2dPk7G5sZ99+K73okjhMBlwjKFSX0n7/QDcXXl7XUZQaLUOSx5Zq1qms6/r
+ cAs/UOywjGCQZlzaYr/DIEm2NE/90GONr5IQElDEYCgqBjqmmUJUeB6ay+z9PnCJ7dub
+ hb7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688392409; x=1690984409;
+ d=1e100.net; s=20221208; t=1688391877; x=1690983877;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=A17Yk078G+WbyuMB1//no9fohhpFQD0Go8gJ1S9AAiU=;
- b=kweBZXFej/J3vfud4fg1B/syssE2Tu3F+9HAAZJZpPm//cAnlJMMSlA9dlf08RA3U4
- lk0J4PtR3WBMDfPf2DEySlHJCX1jvtmt42QlU627OT93+tKfHqG6N/tF/ilayyljTu+F
- mZQtRLOBLk+x7hIMDAzaE/DTneHaL5kI89AmLKhsn+sJF8C8GhTUvuKyDeSfvpgk9xTf
- HAndN4Wzdf0+46X9HwTDJQM9h2MJ6F+3G0EKFfAqRCOAkgO5Gw+6w+XYrW/gqlnAZUGq
- vsOi1lhgzK2DI1GNmQsX/SpA6+TJu6G0KrD5xHjUCR3yUtXxI0dT/vxtUxahTDGEeT8l
- rTnQ==
-X-Gm-Message-State: AC+VfDy/lVeaGyqDDQyKGKA5bKSNTIUR/54Qv3VdfZ06tOY7Pn1nF4Rh
- j4GGM90ZXyfxUkSw7Sf8tPxKHw==
-X-Google-Smtp-Source: ACHHUZ68hURcB6WrCJEJwX3Bk1hsRuhO+th/xKOQFGULbNLlIr5auds67n06cHkjOLRmqJlrEAoLxg==
-X-Received: by 2002:a1c:7512:0:b0:3f6:58ad:ed85 with SMTP id
- o18-20020a1c7512000000b003f658aded85mr8587791wmc.10.1688392409105; 
- Mon, 03 Jul 2023 06:53:29 -0700 (PDT)
+ bh=jmuKSf2VcTxuXRVZK5WsSbiqmIzeKDjZMTTPleVdJHM=;
+ b=hldMEwUiIN7jvQg+gzItILOEL5xu9hDLYze/mypbOPv6VTSm3h5j1DUum+hbQDZ44v
+ dHHzglIR9LwkThZ2pDvkj7IQ0OIZ+pH3p4SVeS+qY460UqHvPtDgbz6DOSZDsEK6wn2a
+ Sx1tLtBEVzI36GJpZR2Gn5YF6N+75+R0fij/hMG/Z546lQa4rxHDLnX11ay8GwmlyjRY
+ NrquBlHeImNV5kVOtH3qlX1C2NjsryDuqMjHfRUFg3quxtPzL3cJWm71Tz3E/iJO9k4D
+ G9fqL+N8/NUIGE9OfOiz2IA1Gv1hBUTe0bze+NiMPQDAvHEiE0lH8fsWRlfKimHjil6O
+ pntg==
+X-Gm-Message-State: ABy/qLY6LrbkPGabK793yNa+4lUNAL0n9DdsDHNrx3Cwzl4NZtzGL3mJ
+ rWsUgKnzAOKHdIpHtu3/cqB9DQ==
+X-Google-Smtp-Source: APBJJlE/pJ0ZU62cDVFDxAtrv+BkgJBQzKkXHMmSU/tgQPyK0lk6pd8xP8t5cpteZP5bcaHXnMOfiA==
+X-Received: by 2002:a5d:452f:0:b0:314:35c2:c4aa with SMTP id
+ j15-20020a5d452f000000b0031435c2c4aamr3118277wra.8.1688391876848; 
+ Mon, 03 Jul 2023 06:44:36 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- 4-20020a05600c228400b003fbc216b137sm10762158wmf.3.2023.07.03.06.53.28
+ d1-20020a5d6dc1000000b00304adbeeabbsm25621931wrz.99.2023.07.03.06.44.31
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 03 Jul 2023 06:53:28 -0700 (PDT)
+ Mon, 03 Jul 2023 06:44:35 -0700 (PDT)
 Received: from zen.lan (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 02E241FFD1;
+ by zen.linaroharston (Postfix) with ESMTP id 1AA8A1FFD2;
  Mon,  3 Jul 2023 14:44:31 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>
-Subject: [PULL 27/38] docs/devel: introduce some key concepts for QOM
- development
-Date: Mon,  3 Jul 2023 14:44:16 +0100
-Message-Id: <20230703134427.1389440-28-alex.bennee@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 28/38] gdbstub: lightly refactor connection to avoid snprintf
+Date: Mon,  3 Jul 2023 14:44:17 +0100
+Message-Id: <20230703134427.1389440-29-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230703134427.1389440-1-alex.bennee@linaro.org>
 References: <20230703134427.1389440-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,134 +97,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Using QOM correctly is increasingly important to maintaining a modern
-code base. However the current documentation skips some important
-concepts before launching into a simple example. Lets:
+This may be a bit too much to avoid an snprintf and the slightly dodgy
+assign to a const variable. But hopefully not.
 
-  - at least mention properties
-  - mention TYPE_OBJECT and TYPE_DEVICE
-  - talk about why we have realize/unrealize
-  - mention the QOM tree
-  - lightly re-arrange the order we mention things
-
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20230630180423.558337-28-alex.bennee@linaro.org>
+Message-Id: <20230630180423.558337-29-alex.bennee@linaro.org>
 
-diff --git a/docs/devel/qom.rst b/docs/devel/qom.rst
-index c342ce18e3..0b506426d7 100644
---- a/docs/devel/qom.rst
-+++ b/docs/devel/qom.rst
-@@ -13,6 +13,24 @@ features:
- - System for dynamically registering types
- - Support for single-inheritance of types
- - Multiple inheritance of stateless interfaces
-+- Mapping internal members to publicly exposed properties
+diff --git a/gdbstub/softmmu.c b/gdbstub/softmmu.c
+index 99d994e6bf..f509b7285d 100644
+--- a/gdbstub/softmmu.c
++++ b/gdbstub/softmmu.c
+@@ -332,11 +332,9 @@ static void create_processes(GDBState *s)
+ 
+ int gdbserver_start(const char *device)
+ {
+-    trace_gdbstub_op_start(device);
+-
+-    char gdbstub_device_name[128];
+     Chardev *chr = NULL;
+     Chardev *mon_chr;
++    g_autoptr(GString) cs = g_string_new(device);
+ 
+     if (!first_cpu) {
+         error_report("gdbstub: meaningless to attach gdb to a "
+@@ -350,15 +348,16 @@ int gdbserver_start(const char *device)
+         return -1;
+     }
+ 
+-    if (!device) {
++    if (cs->len == 0) {
+         return -1;
+     }
+-    if (strcmp(device, "none") != 0) {
+-        if (strstart(device, "tcp:", NULL)) {
 +
-+The root object class is TYPE_OBJECT which provides for the basic
-+object methods.
++    trace_gdbstub_op_start(cs->str);
 +
-+The QOM tree
-+============
-+
-+The QOM tree is a composition tree which represents all of the objects
-+that make up a QEMU "machine". You can view this tree by running
-+``info qom-tree`` in the :ref:`QEMU monitor`. It will contain both
-+objects created by the machine itself as well those created due to
-+user configuration.
-+
-+Creating a QOM class
-+====================
-+
-+A simple minimal device implementation may look something like bellow:
- 
- .. code-block:: c
-    :caption: Creating a minimal type
-@@ -48,6 +66,12 @@ In the above example, we create a simple type that is described by #TypeInfo.
- #TypeInfo describes information about the type including what it inherits
- from, the instance and class size, and constructor/destructor hooks.
- 
-+The TYPE_DEVICE class is the parent class for all modern devices
-+implemented in QEMU and adds some specific methods to handle QEMU
-+device model. This includes managing the lifetime of devices from
-+creation through to when they become visible to the guest and
-+eventually unrealized.
-+
- Alternatively several static types could be registered using helper macro
- DEFINE_TYPES()
- 
-@@ -98,7 +122,7 @@ when the object is needed.
-    module_obj(TYPE_MY_DEVICE);
- 
- Class Initialization
--====================
-+--------------------
- 
- Before an object is initialized, the class for the object must be
- initialized.  There is only one class object for all instance objects
-@@ -168,7 +192,7 @@ will also have a wrapper function to call it easily:
-    }
- 
- Interfaces
--==========
-+----------
- 
- Interfaces allow a limited form of multiple inheritance.  Instances are
- similar to normal types except for the fact that are only defined by
-@@ -182,7 +206,7 @@ an argument to a method on its corresponding SomethingIfClass, or to
- dynamically cast it to an object that implements the interface.
- 
- Methods
--=======
-+-------
- 
- A *method* is a function within the namespace scope of
- a class. It usually operates on the object instance by passing it as a
-@@ -275,8 +299,8 @@ Alternatively, object_class_by_name() can be used to obtain the class and
- its non-overridden methods for a specific type. This would correspond to
- ``MyClass::method(...)`` in C++.
- 
--The first example of such a QOM method was #CPUClass.reset,
--another example is #DeviceClass.realize.
-+One example of such methods is ``DeviceClass.reset``. More examples
-+can be found at :ref:`device-life-cycle`.
- 
- Standard type declaration and definition macros
- ===============================================
-@@ -382,10 +406,32 @@ OBJECT_DEFINE_ABSTRACT_TYPE() macro can be used instead:
-    OBJECT_DEFINE_ABSTRACT_TYPE(MyDevice, my_device,
-                                MY_DEVICE, DEVICE)
- 
-+.. _device-life-cycle:
-+
-+Device Life-cycle
-+=================
-+
-+As class initialisation cannot fail devices have an two additional
-+methods to handle the creation of dynamic devices. The ``realize``
-+function is called with ``Error **`` pointer which should be set if
-+the device cannot complete its setup. Otherwise on successful
-+completion of the ``realize`` method the device object is added to the
-+QOM tree and made visible to the guest.
-+
-+The reverse function is ``unrealize`` and should be were clean-up
-+code lives to tidy up after the system is done with the device.
-+
-+All devices can be instantiated by C code, however only some can
-+created dynamically via the command line or monitor.
- 
-+Likewise only some can be unplugged after creation and need an
-+explicit ``unrealize`` implementation. This is determined by the
-+``user_creatable`` variable in the root ``DeviceClass`` structure.
-+Devices can only be unplugged if their ``parent_bus`` has a registered
-+``HotplugHandler``.
- 
- API Reference
---------------
-+=============
- 
- See the :ref:`QOM API<qom-api>` and :ref:`QDEV API<qdev-api>`
- documents for the complete API description.
++    if (g_strcmp0(cs->str, "none") != 0) {
++        if (g_str_has_prefix(cs->str, "tcp:")) {
+             /* enforce required TCP attributes */
+-            snprintf(gdbstub_device_name, sizeof(gdbstub_device_name),
+-                     "%s,wait=off,nodelay=on,server=on", device);
+-            device = gdbstub_device_name;
++            g_string_append_printf(cs, ",wait=off,nodelay=on,server=on");
+         }
+ #ifndef _WIN32
+         else if (strcmp(device, "stdio") == 0) {
+@@ -373,7 +372,7 @@ int gdbserver_start(const char *device)
+          * FIXME: it's a bit weird to allow using a mux chardev here
+          * and implicitly setup a monitor. We may want to break this.
+          */
+-        chr = qemu_chr_new_noreplay("gdb", device, true, NULL);
++        chr = qemu_chr_new_noreplay("gdb", cs->str, true, NULL);
+         if (!chr) {
+             return -1;
+         }
 -- 
 2.39.2
 
