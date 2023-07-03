@@ -2,74 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8641F7459FB
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 12:17:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CB717459CA
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 12:11:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGGRZ-0002wh-W4; Mon, 03 Jul 2023 06:06:06 -0400
+	id 1qGGRY-0002pt-Cz; Mon, 03 Jul 2023 06:06:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qGGRK-0002gB-Tv
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 06:05:50 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ id 1qGGRL-0002gb-7k
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 06:05:51 -0400
+Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qGGRF-0005pA-LO
+ id 1qGGRF-0005pg-MB
  for qemu-devel@nongnu.org; Mon, 03 Jul 2023 06:05:50 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-3fbc54cab6fso33964315e9.0
- for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 03:05:38 -0700 (PDT)
+Received: by mail-lf1-x134.google.com with SMTP id
+ 2adb3069b0e04-4fba1288bbdso5163452e87.1
+ for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 03:05:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688378737; x=1690970737;
+ d=linaro.org; s=google; t=1688378738; x=1690970738;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=tquFfTdtw0sVSZbN7ZybV+/6BBhwf96oST0EwHIj8d8=;
- b=owwWZUomaZMItKwgFZNjSF8ClG3c5cEoOgYqiw3UKkmLvZ0ryXEzifBtmKdvbqFIYN
- +ltnJCaRdCER62HwW3UKbvVBokjCJeUwZZNpdr6jdKhVfzzP/XmOPwFhUZSR+zqNFPvS
- GiAr0YSl7PNJ3sEMrG7dUQLhSVKaNn8qe6udXaUgiJgc+79/XCGnBXKUJQHN3tI6I6qm
- TtFvcIj7CelJiHLjD1E4Yac+Sm7DNrJTJk55b08y8K8bysDoYqXKOoUqYhLsTFrizct/
- wuMCdCpPvRSPGTLGzw4ea3IBLJjFqbItz8v2R0drDAe9+xGSGbyDo4U7E9zcxAm14/SR
- H5qw==
+ bh=CXOtR+skbBy3g0n+KA4k0jDRJwr6870/fEeTqXEf6Vk=;
+ b=xrl3cKBGhkcU8TYDD3DWfaDWe7wEh8ettvQtJ5XM31Ict/oAX6jqvRW1g8ra+r9OEM
+ VI+LpZ50jjMTXUGKh8xgvxt2kZEd+VoXFmBgBGLVe8gzFv7ZJGEQdQ2jMSYCdOn4//FF
+ 5JU1NqG32fR11IpbUlHZswa/SFOCYCDXdzqhzy7Pq1XztfEIT1AphtsT4+h0+zitj6eU
+ Y80S2QKh9Xrr6HQh6gvj0+Q0HXCTtHXFQqxg3aCYm8y84ab9pUpdDl11kvP6aCSD+RnK
+ ZFK7hjZPWL0uUDOxOISbI9XTw+5dBbmEBT1uFEBu1um3/cuZbctLZrKRBKP4LGla4zpj
+ dJxA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688378737; x=1690970737;
+ d=1e100.net; s=20221208; t=1688378738; x=1690970738;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=tquFfTdtw0sVSZbN7ZybV+/6BBhwf96oST0EwHIj8d8=;
- b=RSV4CKaMckjXrDbrfq8lJOX8L+vCCMkJqfduzXMYAo7EL2XI5Qp+F0BqMSWDDxg5nx
- OYXpH2AzM94R80W1vppgPuK9ahRe8NB8pMDAiG164TQQvEOFPe0JMIygR7hz3zsXZSs/
- w21p7h9V1a1Wz08fEfwkwtGE3FWldB747FRAekIKtz2FUQr+1v2XTX2/d/hGZ6bMPIyN
- s01deb9acydwa1GNOHgddR0lsJ6Axjp13TNFUWOmB47YgQYB33UYSNPtaxONDbPlQZHr
- P4IGfEKXDgTbEaAPnPLBRskb0tRBa79qCoBkOW3wSSFM4iTkjVfjfKn9RWi7AeDE0G8f
- ObmA==
-X-Gm-Message-State: AC+VfDzYQdQB2gpCQLd8rr10xmYUrL2y8rB6Y85Ncd49d4afwLvQK7DZ
- I7VvUGc3VfqrFGgpfji9sfEUFbdbg99qPSWQDjHONw==
-X-Google-Smtp-Source: ACHHUZ7UY11/Bb4h/Tkd+bnFWKQisjj9u3UD73KiCn5+LacTkFFI+2ozaA/Et13bRNLbxdcx7F0Qhg==
-X-Received: by 2002:a05:600c:2219:b0:3fb:c217:7243 with SMTP id
- z25-20020a05600c221900b003fbc2177243mr7728393wml.18.1688378736847; 
- Mon, 03 Jul 2023 03:05:36 -0700 (PDT)
+ bh=CXOtR+skbBy3g0n+KA4k0jDRJwr6870/fEeTqXEf6Vk=;
+ b=QtiD5gviiNhJQA/Bzb9f78/GDc/vU0WuqT1mkxPoVTFtM4Q1DJhfVCkwn2zwgQr7WK
+ XUCcAlTGnEz+uqZ3TcRH1Qk4EHy4vNmzYkdCVFnhBEjKioF+leVrJQ47OZW2JW6qbH43
+ 5Ic1UvxuCI0Wwmd9/fORtxrE9weVbEp+9CI8MOwu0f8HWNk4A6T+Y47EV1FQ166gnf55
+ v56BbXhPUnxiXZ7Fub0vji3T3oK4HNdcqosFx6Ec7VDBaSioOBZfwUQ7tQr8/XcNEV97
+ DBi0XsK36J4OrYBOFF6E+pUSfeOUXWUR2NPPuV33urjPQ+fGFv9Bdbrg47Ti+n4xdsvG
+ rUjw==
+X-Gm-Message-State: ABy/qLbKCVrW7XLFGARaXmYmrBsgCz7M6f5rEGCe9kaNGXl3tMR5PK73
+ IL1Lz8R/yqnPEWZZUDITvm+ceZa93kRQB/JNXro2gg==
+X-Google-Smtp-Source: APBJJlHTWYFg56o5atNgPfJfgSF9w6MaczUFVkzyZXfs0HQ9FuXC2me4SBULnUbo9EAxRREajwmJnQ==
+X-Received: by 2002:a05:6512:1116:b0:4fb:9d61:db44 with SMTP id
+ l22-20020a056512111600b004fb9d61db44mr8572347lfg.12.1688378737834; 
+ Mon, 03 Jul 2023 03:05:37 -0700 (PDT)
 Received: from stoup.home (91.232.79.188.dynamic.jazztel.es. [188.79.232.91])
  by smtp.gmail.com with ESMTPSA id
  t5-20020a05600001c500b00313f7b077fesm18446562wrx.59.2023.07.03.03.05.36
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 03 Jul 2023 03:05:36 -0700 (PDT)
+ Mon, 03 Jul 2023 03:05:37 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, qemu-riscv@nongnu.org, pbonzini@redhat.com,
- eduardo@habkost.net, alistair.francis@wdc.com, danielhb413@gmail.com
-Subject: [PATCH v4 14/37] host/include/ppc: Implement aes-round.h
-Date: Mon,  3 Jul 2023 12:04:57 +0200
-Message-Id: <20230703100520.68224-15-richard.henderson@linaro.org>
+ eduardo@habkost.net, alistair.francis@wdc.com, danielhb413@gmail.com,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v4 15/37] target/ppc: Use aesenc_SB_SR_AK
+Date: Mon,  3 Jul 2023 12:04:58 +0200
+Message-Id: <20230703100520.68224-16-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230703100520.68224-1-richard.henderson@linaro.org>
 References: <20230703100520.68224-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::134;
+ envelope-from=richard.henderson@linaro.org; helo=mail-lf1-x134.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,245 +94,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Detect CRYPTO in cpuinfo; implement the accel hooks.
+This implements the VCIPHERLAST instruction.
 
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Daniel Henrique Barboza <danielhb413@gmail.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- host/include/ppc/host/cpuinfo.h            |   1 +
- host/include/ppc/host/crypto/aes-round.h   | 182 +++++++++++++++++++++
- host/include/ppc64/host/crypto/aes-round.h |   1 +
- util/cpuinfo-ppc.c                         |   8 +
- 4 files changed, 192 insertions(+)
- create mode 100644 host/include/ppc/host/crypto/aes-round.h
- create mode 100644 host/include/ppc64/host/crypto/aes-round.h
+ target/ppc/int_helper.c | 9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
 
-diff --git a/host/include/ppc/host/cpuinfo.h b/host/include/ppc/host/cpuinfo.h
-index df11e8d417..29ee7f9ef8 100644
---- a/host/include/ppc/host/cpuinfo.h
-+++ b/host/include/ppc/host/cpuinfo.h
-@@ -16,6 +16,7 @@
- #define CPUINFO_ISEL            (1u << 5)
- #define CPUINFO_ALTIVEC         (1u << 6)
- #define CPUINFO_VSX             (1u << 7)
-+#define CPUINFO_CRYPTO          (1u << 8)
+diff --git a/target/ppc/int_helper.c b/target/ppc/int_helper.c
+index d97a7f1f28..34257e9d76 100644
+--- a/target/ppc/int_helper.c
++++ b/target/ppc/int_helper.c
+@@ -25,6 +25,7 @@
+ #include "qemu/log.h"
+ #include "exec/helper-proto.h"
+ #include "crypto/aes.h"
++#include "crypto/aes-round.h"
+ #include "fpu/softfloat.h"
+ #include "qapi/error.h"
+ #include "qemu/guest-random.h"
+@@ -2947,13 +2948,7 @@ void helper_vcipher(ppc_avr_t *r, ppc_avr_t *a, ppc_avr_t *b)
  
- /* Initialized with a constructor. */
- extern unsigned cpuinfo;
-diff --git a/host/include/ppc/host/crypto/aes-round.h b/host/include/ppc/host/crypto/aes-round.h
-new file mode 100644
-index 0000000000..8062d2a537
---- /dev/null
-+++ b/host/include/ppc/host/crypto/aes-round.h
-@@ -0,0 +1,182 @@
-+/*
-+ * Power v2.07 specific aes acceleration.
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+#ifndef PPC_HOST_CRYPTO_AES_ROUND_H
-+#define PPC_HOST_CRYPTO_AES_ROUND_H
-+
-+#ifdef __ALTIVEC__
-+#include "host/cpuinfo.h"
-+
-+#ifdef __CRYPTO__
-+# define HAVE_AES_ACCEL  true
-+#else
-+# define HAVE_AES_ACCEL  likely(cpuinfo & CPUINFO_CRYPTO)
-+#endif
-+#define ATTR_AES_ACCEL
-+
-+/*
-+ * While there is <altivec.h>, both gcc and clang "aid" with the
-+ * endianness issues in different ways. Just use inline asm instead.
-+ */
-+
-+/* Bytes in memory are host-endian; bytes in register are @be. */
-+static inline AESStateVec aes_accel_ld(const AESState *p, bool be)
-+{
-+    AESStateVec r;
-+
-+    if (be) {
-+        asm("lvx %0, 0, %1" : "=v"(r) : "r"(p), "m"(*p));
-+    } else if (HOST_BIG_ENDIAN) {
-+        AESStateVec rev = {
-+            15, 14, 13, 12, 11, 10, 9, 8, 7,  6,  5,  4,  3,  2,  1,  0,
-+        };
-+        asm("lvx %0, 0, %1\n\t"
-+            "vperm %0, %0, %0, %2"
-+            : "=v"(r) : "r"(p), "v"(rev), "m"(*p));
-+    } else {
-+#ifdef __POWER9_VECTOR__
-+        asm("lxvb16x %x0, 0, %1" : "=v"(r) : "r"(p), "m"(*p));
-+#else
-+        asm("lxvd2x %x0, 0, %1\n\t"
-+            "xxpermdi %x0, %x0, %x0, 2"
-+            : "=v"(r) : "r"(p), "m"(*p));
-+#endif
-+    }
-+    return r;
-+}
-+
-+static void aes_accel_st(AESState *p, AESStateVec r, bool be)
-+{
-+    if (be) {
-+        asm("stvx %1, 0, %2" : "=m"(*p) : "v"(r), "r"(p));
-+    } else if (HOST_BIG_ENDIAN) {
-+        AESStateVec rev = {
-+            15, 14, 13, 12, 11, 10, 9, 8, 7,  6,  5,  4,  3,  2,  1,  0,
-+        };
-+        asm("vperm %1, %1, %1, %2\n\t"
-+            "stvx %1, 0, %3"
-+            : "=m"(*p), "+v"(r) : "v"(rev), "r"(p));
-+    } else {
-+#ifdef __POWER9_VECTOR__
-+        asm("stxvb16x %x1, 0, %2" : "=m"(*p) : "v"(r), "r"(p));
-+#else
-+        asm("xxpermdi %x1, %x1, %x1, 2\n\t"
-+            "stxvd2x %x1, 0, %2"
-+            : "=m"(*p), "+v"(r) : "r"(p));
-+#endif
-+    }
-+}
-+
-+static inline AESStateVec aes_accel_vcipher(AESStateVec d, AESStateVec k)
-+{
-+    asm("vcipher %0, %0, %1" : "+v"(d) : "v"(k));
-+    return d;
-+}
-+
-+static inline AESStateVec aes_accel_vncipher(AESStateVec d, AESStateVec k)
-+{
-+    asm("vncipher %0, %0, %1" : "+v"(d) : "v"(k));
-+    return d;
-+}
-+
-+static inline AESStateVec aes_accel_vcipherlast(AESStateVec d, AESStateVec k)
-+{
-+    asm("vcipherlast %0, %0, %1" : "+v"(d) : "v"(k));
-+    return d;
-+}
-+
-+static inline AESStateVec aes_accel_vncipherlast(AESStateVec d, AESStateVec k)
-+{
-+    asm("vncipherlast %0, %0, %1" : "+v"(d) : "v"(k));
-+    return d;
-+}
-+
-+static inline void
-+aesenc_MC_accel(AESState *ret, const AESState *st, bool be)
-+{
-+    AESStateVec t, z = { };
-+
-+    t = aes_accel_ld(st, be);
-+    t = aes_accel_vncipherlast(t, z);
-+    t = aes_accel_vcipher(t, z);
-+    aes_accel_st(ret, t, be);
-+}
-+
-+static inline void
-+aesenc_SB_SR_AK_accel(AESState *ret, const AESState *st,
-+                      const AESState *rk, bool be)
-+{
-+    AESStateVec t, k;
-+
-+    t = aes_accel_ld(st, be);
-+    k = aes_accel_ld(rk, be);
-+    t = aes_accel_vcipherlast(t, k);
-+    aes_accel_st(ret, t, be);
-+}
-+
-+static inline void
-+aesenc_SB_SR_MC_AK_accel(AESState *ret, const AESState *st,
-+                         const AESState *rk, bool be)
-+{
-+    AESStateVec t, k;
-+
-+    t = aes_accel_ld(st, be);
-+    k = aes_accel_ld(rk, be);
-+    t = aes_accel_vcipher(t, k);
-+    aes_accel_st(ret, t, be);
-+}
-+
-+static inline void
-+aesdec_IMC_accel(AESState *ret, const AESState *st, bool be)
-+{
-+    AESStateVec t, z = { };
-+
-+    t = aes_accel_ld(st, be);
-+    t = aes_accel_vcipherlast(t, z);
-+    t = aes_accel_vncipher(t, z);
-+    aes_accel_st(ret, t, be);
-+}
-+
-+static inline void
-+aesdec_ISB_ISR_AK_accel(AESState *ret, const AESState *st,
-+                        const AESState *rk, bool be)
-+{
-+    AESStateVec t, k;
-+
-+    t = aes_accel_ld(st, be);
-+    k = aes_accel_ld(rk, be);
-+    t = aes_accel_vncipherlast(t, k);
-+    aes_accel_st(ret, t, be);
-+}
-+
-+static inline void
-+aesdec_ISB_ISR_AK_IMC_accel(AESState *ret, const AESState *st,
-+                            const AESState *rk, bool be)
-+{
-+    AESStateVec t, k;
-+
-+    t = aes_accel_ld(st, be);
-+    k = aes_accel_ld(rk, be);
-+    t = aes_accel_vncipher(t, k);
-+    aes_accel_st(ret, t, be);
-+}
-+
-+static inline void
-+aesdec_ISB_ISR_IMC_AK_accel(AESState *ret, const AESState *st,
-+                            const AESState *rk, bool be)
-+{
-+    AESStateVec t, k, z = { };
-+
-+    t = aes_accel_ld(st, be);
-+    k = aes_accel_ld(rk, be);
-+    t = aes_accel_vncipher(t, z);
-+    aes_accel_st(ret, t ^ k, be);
-+}
-+#else
-+/* Without ALTIVEC, we can't even write inline assembly. */
-+#include "host/include/generic/host/crypto/aes-round.h"
-+#endif
-+
-+#endif /* PPC_HOST_CRYPTO_AES_ROUND_H */
-diff --git a/host/include/ppc64/host/crypto/aes-round.h b/host/include/ppc64/host/crypto/aes-round.h
-new file mode 100644
-index 0000000000..5eeba6dcb7
---- /dev/null
-+++ b/host/include/ppc64/host/crypto/aes-round.h
-@@ -0,0 +1 @@
-+#include "host/include/ppc/host/crypto/aes-round.h"
-diff --git a/util/cpuinfo-ppc.c b/util/cpuinfo-ppc.c
-index d95adc8ccd..7212afa45d 100644
---- a/util/cpuinfo-ppc.c
-+++ b/util/cpuinfo-ppc.c
-@@ -48,6 +48,14 @@ unsigned __attribute__((constructor)) cpuinfo_init(void)
-         /* We only care about the portion of VSX that overlaps Altivec. */
-         if (hwcap & PPC_FEATURE_HAS_VSX) {
-             info |= CPUINFO_VSX;
-+            /*
-+             * We use VSX especially for little-endian, but we should
-+             * always have both anyway, since VSX came with Power7
-+             * and crypto came with Power8.
-+             */
-+            if (hwcap2 & PPC_FEATURE2_HAS_VEC_CRYPTO) {
-+                info |= CPUINFO_CRYPTO;
-+            }
-         }
-     }
+ void helper_vcipherlast(ppc_avr_t *r, ppc_avr_t *a, ppc_avr_t *b)
+ {
+-    ppc_avr_t result;
+-    int i;
+-
+-    VECTOR_FOR_INORDER_I(i, u8) {
+-        result.VsrB(i) = b->VsrB(i) ^ (AES_sbox[a->VsrB(AES_shifts[i])]);
+-    }
+-    *r = result;
++    aesenc_SB_SR_AK((AESState *)r, (AESState *)a, (AESState *)b, true);
+ }
  
+ void helper_vncipher(ppc_avr_t *r, ppc_avr_t *a, ppc_avr_t *b)
 -- 
 2.34.1
 
