@@ -2,72 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FBAC745C6A
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 14:43:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E8AA745C87
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 14:49:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGIsr-0003Z2-QE; Mon, 03 Jul 2023 08:42:27 -0400
+	id 1qGIyL-0007A0-2m; Mon, 03 Jul 2023 08:48:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <schwab@suse.de>)
- id 1qGIsh-0003YU-UR; Mon, 03 Jul 2023 08:42:17 -0400
-Received: from smtp-out2.suse.de ([2001:67c:2178:6::1d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <schwab@suse.de>)
- id 1qGIsg-00062g-7M; Mon, 03 Jul 2023 08:42:15 -0400
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
- by smtp-out2.suse.de (Postfix) with ESMTP id 8850F1FE15;
- Mon,  3 Jul 2023 12:42:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1688388132; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=DB+LpbSBhOQXoOnxD1apCRG2sZYIV8qKUcIRz2Y16ZQ=;
- b=JYqEd3bb2OETemuZU0iq0gInLynziPZcat5BIlDQ/tamXhC7geV9LY/lI5YobHwOVKCqBJ
- Lxc8t1NJ5b4SYY2Luq+XtqM+M5L1Xc4Gs0iqS1IMkMrpQsOO/7+msr9OAcOPYWhew4CWQI
- x0/e+FjJCEjvlSsX2oWKU5VNUhTp0gI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1688388132;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=DB+LpbSBhOQXoOnxD1apCRG2sZYIV8qKUcIRz2Y16ZQ=;
- b=M8OP4guAJLSzkLuaCoHrk9koS77Dt9zN+t9JxN0MlH58xD6NOIkBCj6yX5X8lGW2cPBlBp
- yo22CzYt+ZLitwAw==
-Received: from hawking.nue2.suse.org (unknown [10.168.4.11])
- by relay2.suse.de (Postfix) with ESMTP id 100712C141;
- Mon,  3 Jul 2023 12:42:12 +0000 (UTC)
-Received: by hawking.nue2.suse.org (Postfix, from userid 17005)
- id ECE8D4A03BD; Mon,  3 Jul 2023 14:42:11 +0200 (CEST)
-From: Andreas Schwab <schwab@suse.de>
-To: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-Cc: Helge Deller <deller@gmx.de>,  Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,  Bin Meng
- <bin.meng@windriver.com>,  qemu-riscv@nongnu.org,  qemu-devel@nongnu.org
-Subject: Re: [RISC-V] ERROR:../accel/tcg/cpu-exec.c:1028:cpu_exec_setjmp:
- assertion failed: (cpu == current_cpu)
-In-Reply-To: <87h6qli4au.fsf@linaro.org> ("Alex =?utf-8?Q?Benn=C3=A9e=22's?=
- message of "Mon, 03 Jul 2023 13:08:02 +0100")
-References: <mvmmt0dtosg.fsf@suse.de> <mvma5wdtdiw.fsf@suse.de>
- <87h6qli4au.fsf@linaro.org>
-X-Yow: Here we are in America...  when do we collect unemployment?
-Date: Mon, 03 Jul 2023 14:42:11 +0200
-Message-ID: <mvm5y71tbdo.fsf@suse.de>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <SRS0=mKPa=CV=kaod.org=clg@ozlabs.org>)
+ id 1qGIyI-00078v-Fi; Mon, 03 Jul 2023 08:48:02 -0400
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
+ helo=gandalf.ozlabs.org)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <SRS0=mKPa=CV=kaod.org=clg@ozlabs.org>)
+ id 1qGIyG-0007mK-Ap; Mon, 03 Jul 2023 08:48:02 -0400
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4Qvm161FkPz4wxR;
+ Mon,  3 Jul 2023 22:47:54 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Qvm134DCLz4wqX;
+ Mon,  3 Jul 2023 22:47:51 +1000 (AEST)
+From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
+To: qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ Joel Stanley <joel@jms.id.au>, Andrew Jeffery <andrew@aj.id.au>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
+Subject: [PATCH] aspeed: Introduce helper for 32-bit hosts limitation
+Date: Mon,  3 Jul 2023 14:47:46 +0200
+Message-ID: <20230703124746.2456684-1-clg@kaod.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:67c:2178:6::1d; envelope-from=schwab@suse.de;
- helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+ envelope-from=SRS0=mKPa=CV=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -39
+X-Spam_score: -4.0
 X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -84,46 +62,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Jul 03 2023, Alex Bennée wrote:
+On 32-bit hosts, RAM has a 2047 MB limit. Use a macro to define the
+default ram size of machines (AST2600 SoC) that can have 2 GB.
 
-> Andreas Schwab <schwab@suse.de> writes:
->
->> On Jul 03 2023, Andreas Schwab wrote:
->>
->>> This is a regression in 8.0.  It causes the testsuite of mold to fail:
->>>
->>> https://build.opensuse.org/package/live_build_log/openSUSE:Factory:RISCV/mold/standard/riscv64
->>>
->>> + out/test/elf/riscv64/section-start/exe2
->>> **
->>> ERROR:../accel/tcg/cpu-exec.c:1028:cpu_exec_setjmp: assertion failed: (cpu == current_cpu)
->>> **
->>> ERROR:../accel/tcg/cpu-exec.c:1028:cpu_exec_setjmp: assertion failed: (cpu == current_cpu)
->>
->> This bisects down to commit 86f04735ac ("linux-user: Fix brk() to
->> release pages").  See the attached test case.
->>
->> $ ./qemu-riscv64 ../exe1
->> **
->> ERROR:../qemu/accel/tcg/cpu-exec.c:1027:cpu_exec_setjmp: assertion failed: (cpu == current_cpu)
->> Bail out! ERROR:../qemu/accel/tcg/cpu-exec.c:1027:cpu_exec_setjmp: assertion failed: (cpu == current_cpu)
->> **
->> ERROR:../qemu/accel/tcg/cpu-exec.c:1027:cpu_exec_setjmp: assertion failed: (cpu == current_cpu)
->> Bail out! ERROR:../qemu/accel/tcg/cpu-exec.c:1027:cpu_exec_setjmp: assertion failed: (cpu == current_cpu)
->
-> I wonder if applying c5ffd16ba4c8fd fixes this?
+Signed-off-by: Cédric Le Goater <clg@kaod.org>
+---
+ hw/arm/aspeed.c | 21 +++++++++------------
+ 1 file changed, 9 insertions(+), 12 deletions(-)
 
-No, the error still happens with current master, and reverting
-86f04735ac on top of it fixes it.
-
-> I tried to double check with the test case but I can't run it as it's a
-> dynamic binary so needs an ld.so.
-
-You can download the glibc package from
-<https://download.opensuse.org/ports/riscv/tumbleweed/repo/oss/>.
-
+diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
+index 6880998484cd..9fca644d920e 100644
+--- a/hw/arm/aspeed.c
++++ b/hw/arm/aspeed.c
+@@ -47,6 +47,13 @@ struct AspeedMachineState {
+     char *spi_model;
+ };
+ 
++/* On 32-bit hosts, lower RAM to 1G because of the 2047 MB limit */
++#if HOST_LONG_BITS == 32
++#define ASPEED_RAM_SIZE(sz) MIN((sz), 1 * GiB)
++#else
++#define ASPEED_RAM_SIZE(sz) (sz)
++#endif
++
+ /* Palmetto hardware value: 0x120CE416 */
+ #define PALMETTO_BMC_HW_STRAP1 (                                        \
+         SCU_AST2400_HW_STRAP_DRAM_SIZE(DRAM_SIZE_256MB) |               \
+@@ -1423,12 +1430,7 @@ static void aspeed_machine_rainier_class_init(ObjectClass *oc, void *data)
+         aspeed_soc_num_cpus(amc->soc_name);
+ };
+ 
+-/* On 32-bit hosts, lower RAM to 1G because of the 2047 MB limit */
+-#if HOST_LONG_BITS == 32
+-#define FUJI_BMC_RAM_SIZE (1 * GiB)
+-#else
+-#define FUJI_BMC_RAM_SIZE (2 * GiB)
+-#endif
++#define FUJI_BMC_RAM_SIZE ASPEED_RAM_SIZE(2 * GiB)
+ 
+ static void aspeed_machine_fuji_class_init(ObjectClass *oc, void *data)
+ {
+@@ -1450,12 +1452,7 @@ static void aspeed_machine_fuji_class_init(ObjectClass *oc, void *data)
+         aspeed_soc_num_cpus(amc->soc_name);
+ };
+ 
+-/* On 32-bit hosts, lower RAM to 1G because of the 2047 MB limit */
+-#if HOST_LONG_BITS == 32
+-#define BLETCHLEY_BMC_RAM_SIZE (1 * GiB)
+-#else
+-#define BLETCHLEY_BMC_RAM_SIZE (2 * GiB)
+-#endif
++#define BLETCHLEY_BMC_RAM_SIZE ASPEED_RAM_SIZE(2 * GiB)
+ 
+ static void aspeed_machine_bletchley_class_init(ObjectClass *oc, void *data)
+ {
 -- 
-Andreas Schwab, SUSE Labs, schwab@suse.de
-GPG Key fingerprint = 0196 BAD8 1CE9 1970 F4BE  1748 E4D4 88E3 0EEA B9D7
-"And now for something completely different."
+2.41.0
+
 
