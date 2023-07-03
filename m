@@ -2,71 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9195B74536A
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 02:57:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66D09745370
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 03:05:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qG7rs-0000bI-Mz; Sun, 02 Jul 2023 20:56:40 -0400
+	id 1qG7ys-0002TO-HP; Sun, 02 Jul 2023 21:03:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qG7rr-0000b8-4C
- for qemu-devel@nongnu.org; Sun, 02 Jul 2023 20:56:39 -0400
-Received: from mail-vk1-xa2b.google.com ([2607:f8b0:4864:20::a2b])
+ id 1qG7yo-0002T7-2e; Sun, 02 Jul 2023 21:03:50 -0400
+Received: from mail-vs1-xe36.google.com ([2607:f8b0:4864:20::e36])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qG7rp-00089t-LQ
- for qemu-devel@nongnu.org; Sun, 02 Jul 2023 20:56:38 -0400
-Received: by mail-vk1-xa2b.google.com with SMTP id
- 71dfb90a1353d-47e43b71bb7so550781e0c.1
- for <qemu-devel@nongnu.org>; Sun, 02 Jul 2023 17:56:37 -0700 (PDT)
+ id 1qG7yl-0000jS-4J; Sun, 02 Jul 2023 21:03:49 -0400
+Received: by mail-vs1-xe36.google.com with SMTP id
+ ada2fe7eead31-44358c019ddso1353993137.1; 
+ Sun, 02 Jul 2023 18:03:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688345796; x=1690937796;
+ d=gmail.com; s=20221208; t=1688346225; x=1690938225;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ebfJdY7KWqoWsxSmNlu13tQRC+C22T9HbH7/LUIy4RY=;
- b=myZLE6cd9xWkhYl2ZMfM5gwrm1wbasAFoY7aAeKkBxw8EeiF1GC54Mo8cXdrOeQ/nM
- 81BcYbdwXFo/Kzljy6jbHdJtsl3in3IjG1HV1D3laAHyjEo7E9L0DpwLndtRtocBpx+s
- x67YV9+DeYgNcyXeZ3YJeapYfhcMky8Y/Xw4wF2tDdEqtpMu94q161UXx06ehiAtk6M0
- 0hdMLNkGaTQpFqnUYVVVe38pGyUKcFqaLmUIGA+iH8OaS8ng0VT3RK6WsEGgtH88sRF1
- 1lZPkw2oEAzVSDqxktFW4EcptevDmNqBr7WjSb5AMVkEBJQhnLcOcHiErdh/JtyS+zUz
- hNZg==
+ bh=kr/csRpj7yRPd+a7XEQy9luDGdTRfuaDwcgbO882Uj8=;
+ b=kOhKlHs+rIVwGNY5dryVgpjloNzsE74uqLEH50SI1+QjWy0EzNZs/z6Szie+6igmog
+ OaWB5piKPLNyMtmpSVGY77Zf4cT5S8rssJAO2ivGBWZEmvkp//5aMZp6TzXYsNN3m3Za
+ iTedvqhwrm0xaf6V6ERCqoGESvdmTcJIiSrdzVL33uYJhHgLKRjzN6WxGVRxUXy2KijT
+ jOI5xDUOIhsiW72ztAr0f/vqtinUztpsGSrK6iFL6dibO6Vq9RRDR+UBz27o5d5Vs0p+
+ hNe7ebF4NCxiRCHpgpzkZtRMX++j37B5sd5D3vN/2mA9JoUctktxc/cIA/hfGT7HL239
+ ETUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688345796; x=1690937796;
+ d=1e100.net; s=20221208; t=1688346225; x=1690938225;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ebfJdY7KWqoWsxSmNlu13tQRC+C22T9HbH7/LUIy4RY=;
- b=KQ+H3OyjVKzkvnjuuQWVpeK3vwv5xBYlfRs9SW0YSBPndt5n9BzQVHKiiJFnop00qb
- 8Xv/K/iaVkOGu1bsjlRAJt9xLxF9U7o8TggWlFkDeS4njRlEAQ3wNLtWd49i1bVxc9h4
- Db35MDH7MnK/IeRNtWZz+ZGCd63hN9tP4M1QIesX4/AKv/sy6icvepubDYWj69UpoUfO
- JaKBCVefJkQL2iLN9V9vpWyODyVcAbs7mWNnB2BMsoVV6IoHvaVchO8VRh6Yqhb8VTnr
- 9/Rrgg8MLxlFWfNHgQHixO2sCthRFsWmKBkjT9M0NPa+1HyiZ9xgfs6I2AlKNjon7bxk
- DG5Q==
-X-Gm-Message-State: ABy/qLa34NiFL8kBYMvr99ire++4xKi+C6xqIvaUDNg2vE0aKzx+VbCU
- TFb1ih6s23RlQYrrgsU9qPYL6f7jJUFmU4ExMFM=
-X-Google-Smtp-Source: APBJJlGI+TdiraCwbuBfmyWFuLgFo4L31+5sy7ec4gj/85RBe1OBRhqErB6cOiqdfSzojpqHW3eQF2yY41yZXuQ0igc=
-X-Received: by 2002:a1f:5c56:0:b0:471:4f65:4f7f with SMTP id
- q83-20020a1f5c56000000b004714f654f7fmr3763667vkb.3.1688345796661; Sun, 02 Jul
- 2023 17:56:36 -0700 (PDT)
+ bh=kr/csRpj7yRPd+a7XEQy9luDGdTRfuaDwcgbO882Uj8=;
+ b=d2hHZcEEvSputSRyDzhxTuM2w2ZYkmBJCwVXW+IkOB4pIcVJNb8x2OVW7mDZJlu6GL
+ cO8FG7OW46gEkUEfrnyqhWptj9g7y7zVKoyxtV9y+5rsB/IROBjlAO/LQxYc73sRAFma
+ 0FNn/VGyXS6yLkzoxZhTMesATxN64dcGZ+BmzcjyhxjPLCl5pfWDsdVosYV3cm4eg++U
+ GzQR9SYCI6wj4JEXuHjcqZY2sdhcOKl3WrRScvoP7fxoSOg5MLDDQxZX/lV+AKazByjq
+ lR8z/IPHoYTQIfp/zGG04t6ARWjoU/wyMEtgTfF3L9R/NfeqkZe+kgz4V8aIq5/Oa5Ev
+ qhLg==
+X-Gm-Message-State: ABy/qLZxhxhT99gn2CqPgcQfTzTqBvnerqcDxi5rAIMbkF7RyWVpQQrv
+ geTUoPVogAQgmpgrBpt/pOQh8dbFeTylZEIYn1c=
+X-Google-Smtp-Source: APBJJlEiA/DJ04JzAYoPetRZd51MbkR1pL12E+h/WqOyzTBsiq/7TvFwrnAP3Qm1BvA19qUXYTGTSNpZoG5Upuv9KcQ=
+X-Received: by 2002:a67:f981:0:b0:443:672c:2d8 with SMTP id
+ b1-20020a67f981000000b00443672c02d8mr4324597vsq.22.1688346224763; Sun, 02 Jul
+ 2023 18:03:44 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230630160717.843044-1-bmeng@tinylab.org>
- <20230630160717.843044-2-bmeng@tinylab.org>
-In-Reply-To: <20230630160717.843044-2-bmeng@tinylab.org>
+References: <20230620081611.88158-1-philmd@linaro.org>
+In-Reply-To: <20230620081611.88158-1-philmd@linaro.org>
 From: Alistair Francis <alistair23@gmail.com>
-Date: Mon, 3 Jul 2023 10:56:10 +1000
-Message-ID: <CAKmqyKNMz5Trg7znqJwbwEsdvkcD=MFs0L3o46kKZ5L-UHSOcA@mail.gmail.com>
-Subject: Re: [PATCH 2/2] tests/avocado: riscv: Enable 32-bit Spike OpenSBI
- boot testing
-To: Bin Meng <bmeng@tinylab.org>
-Cc: Alistair Francis <alistair.francis@wdc.com>, 
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>, qemu-devel@nongnu.org
+Date: Mon, 3 Jul 2023 11:03:18 +1000
+Message-ID: <CAKmqyKObAOYmgT54azCgrYt-aHD8V37c1h6KoNBjshASEdvVwA@mail.gmail.com>
+Subject: Re: [PATCH] target/riscv: Remove unuseful KVM stubs
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Bin Meng <bin.meng@windriver.com>,
+ qemu-riscv@nongnu.org, 
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, kvm@vger.kernel.org, 
+ Palmer Dabbelt <palmer@dabbelt.com>, Weiwei Li <liweiwei@iscas.ac.cn>, 
+ Alistair Francis <alistair.francis@wdc.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::a2b;
- envelope-from=alistair23@gmail.com; helo=mail-vk1-xa2b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::e36;
+ envelope-from=alistair23@gmail.com; helo=mail-vs1-xe36.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -90,47 +90,98 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, Jul 1, 2023 at 2:08=E2=80=AFAM Bin Meng <bmeng@tinylab.org> wrote:
+On Tue, Jun 20, 2023 at 6:17=E2=80=AFPM Philippe Mathieu-Daud=C3=A9
+<philmd@linaro.org> wrote:
 >
-> The 32-bit Spike boot issue has been fixed in the OpenSBI v1.3.
-> Let's enable the 32-bit Spike OpenSBI boot testing.
+> Since we always check whether KVM is enabled before calling
+> kvm_riscv_reset_vcpu() and kvm_riscv_set_irq(), their call
+> is elided by the compiler when KVM is not available.
+> Therefore the stubs are not even linked. Remove them.
 >
-> Signed-off-by: Bin Meng <bmeng@tinylab.org>
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
 
-Thanks!
-
-Applied to riscv-to-apply.next
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 
 Alistair
 
 > ---
+>  target/riscv/kvm-stub.c  | 30 ------------------------------
+>  target/riscv/kvm.c       |  4 +---
+>  target/riscv/meson.build |  2 +-
+>  3 files changed, 2 insertions(+), 34 deletions(-)
+>  delete mode 100644 target/riscv/kvm-stub.c
 >
->  tests/avocado/riscv_opensbi.py | 2 --
->  1 file changed, 2 deletions(-)
+> diff --git a/target/riscv/kvm-stub.c b/target/riscv/kvm-stub.c
+> deleted file mode 100644
+> index 4e8fc31a21..0000000000
+> --- a/target/riscv/kvm-stub.c
+> +++ /dev/null
+> @@ -1,30 +0,0 @@
+> -/*
+> - * QEMU KVM RISC-V specific function stubs
+> - *
+> - * Copyright (c) 2020 Huawei Technologies Co., Ltd
+> - *
+> - * This program is free software; you can redistribute it and/or modify =
+it
+> - * under the terms and conditions of the GNU General Public License,
+> - * version 2 or later, as published by the Free Software Foundation.
+> - *
+> - * This program is distributed in the hope it will be useful, but WITHOU=
+T
+> - * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+> - * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License=
+ for
+> - * more details.
+> - *
+> - * You should have received a copy of the GNU General Public License alo=
+ng with
+> - * this program.  If not, see <http://www.gnu.org/licenses/>.
+> - */
+> -#include "qemu/osdep.h"
+> -#include "cpu.h"
+> -#include "kvm_riscv.h"
+> -
+> -void kvm_riscv_reset_vcpu(RISCVCPU *cpu)
+> -{
+> -    abort();
+> -}
+> -
+> -void kvm_riscv_set_irq(RISCVCPU *cpu, int irq, int level)
+> -{
+> -    abort();
+> -}
+> diff --git a/target/riscv/kvm.c b/target/riscv/kvm.c
+> index 0f932a5b96..52884bbe15 100644
+> --- a/target/riscv/kvm.c
+> +++ b/target/riscv/kvm.c
+> @@ -503,9 +503,7 @@ void kvm_riscv_reset_vcpu(RISCVCPU *cpu)
+>  {
+>      CPURISCVState *env =3D &cpu->env;
 >
-> diff --git a/tests/avocado/riscv_opensbi.py b/tests/avocado/riscv_opensbi=
-.py
-> index e02f0d404a..bfff9cc3c3 100644
-> --- a/tests/avocado/riscv_opensbi.py
-> +++ b/tests/avocado/riscv_opensbi.py
-> @@ -6,7 +6,6 @@
->  # later.  See the COPYING file in the top-level directory.
+> -    if (!kvm_enabled()) {
+> -        return;
+> -    }
+> +    assert(kvm_enabled());
+>      env->pc =3D cpu->env.kernel_addr;
+>      env->gpr[10] =3D kvm_arch_vcpu_id(CPU(cpu)); /* a0 */
+>      env->gpr[11] =3D cpu->env.fdt_addr;          /* a1 */
+> diff --git a/target/riscv/meson.build b/target/riscv/meson.build
+> index e1ff6d9b95..37fc2cf487 100644
+> --- a/target/riscv/meson.build
+> +++ b/target/riscv/meson.build
+> @@ -22,7 +22,7 @@ riscv_ss.add(files(
+>    'crypto_helper.c',
+>    'zce_helper.c'
+>  ))
+> -riscv_ss.add(when: 'CONFIG_KVM', if_true: files('kvm.c'), if_false: file=
+s('kvm-stub.c'))
+> +riscv_ss.add(when: 'CONFIG_KVM', if_true: files('kvm.c'))
 >
->  from avocado_qemu import QemuSystemTest
-> -from avocado import skip
->  from avocado_qemu import wait_for_console_pattern
->
->  class RiscvOpenSBI(QemuSystemTest):
-> @@ -21,7 +20,6 @@ def boot_opensbi(self):
->          wait_for_console_pattern(self, 'Platform Name')
->          wait_for_console_pattern(self, 'Boot HART MEDELEG')
->
-> -    @skip("requires OpenSBI fix to work")
->      def test_riscv32_spike(self):
->          """
->          :avocado: tags=3Darch:riscv32
+>  riscv_softmmu_ss =3D ss.source_set()
+>  riscv_softmmu_ss.add(files(
 > --
-> 2.34.1
+> 2.38.1
 >
 >
 
