@@ -2,83 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A25FB745A74
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 12:40:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 130A8745A94
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 12:49:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGGyK-0004o0-QH; Mon, 03 Jul 2023 06:39:57 -0400
+	id 1qGH6K-00072r-Nm; Mon, 03 Jul 2023 06:48:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qGGyF-0004nV-5I
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 06:39:52 -0400
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qGH6E-000724-Fr
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 06:48:06 -0400
+Received: from mail-lf1-x12e.google.com ([2a00:1450:4864:20::12e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qGGyC-00064C-OG
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 06:39:50 -0400
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-3fbc12181b6so47292275e9.2
- for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 03:39:48 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qGH6C-0008Oh-UH
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 06:48:06 -0400
+Received: by mail-lf1-x12e.google.com with SMTP id
+ 2adb3069b0e04-4fa16c6a85cso6618318e87.3
+ for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 03:48:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688380787; x=1690972787;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=PZo/lR7wmWVemZe2PpxDbZs9pyaBFzVGuifmTW1w/Oo=;
- b=dW1NHCXwtf/4gevXj8tpypAAR+3m7FpbKFHSG6sM4RnW6BvLPh2eLn0uS5wlrZ+0HS
- /fnPW/ayOk3ArJct68MvIgGCvWDlTHW5ReL48pySXhEFxe1aVxMb4Y5utymQzPOaAJNN
- PvsvymtMCOsgEw870vASTiYxbTjMLGyK2uxVUnXcLFa7MjhZZ2Z1EP6djNaQPm1ai3tE
- llfBl6Vo4FR+lCJ8LcuvJ8pf7ONZQvbToUua9hBbIEA+n1FnkA9g4iE47Lvtnko81WSd
- ZRHZ1bFRIkY1V/CwQr823vpNn0s2J1/enEJqikOF8JsujJuYCU0K+orjizNccA3M4/mI
- QT+Q==
+ d=linaro.org; s=google; t=1688381281; x=1690973281;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=6uBlIGnKpJ+UgFKwNAplF3WihVaf6nRKjKgIbA+xtCo=;
+ b=Hq5LOg0zd+InUZkOzKeei9KIKKJTUg2KgY7ZmPD43OVLkJHbwtuZrM2c7izrDOaD5r
+ /x5URvT3JVUtuudSuHYbC2TFEl2cD03+ds+IuJv7gznuJ2XblYNSY4Kh2vVw7XyUQ/+8
+ jsUJuw358D2/vSsLoqnlJ7jESKUdtIqd8h2j+8xSPL3uKYbFm1Dfn75Qygzt3dXVfwT0
+ p3J+6ri1gR3NNj9oDO9pbXVsly/kPvJEEwiRWvSJh97GLrWQb02XG1uyLg6XDZeDQpM3
+ w8HTOLYf4lbyE00FGI5A/zNKe+aR+qMFh3WArW2z09O3J2Wbx56AlOUkniy5eT3x8rTT
+ mR8A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688380787; x=1690972787;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=PZo/lR7wmWVemZe2PpxDbZs9pyaBFzVGuifmTW1w/Oo=;
- b=D5g1uQ7EYUgfJFJ//7I8kc3Dm5/rn5wkP4RFoXWAdd4Ks67toemLYO70hrdoTFJLET
- kfB9dJn2h7/9h+HJWap4UgXEPMzLt3eDvIwgn4ZTUsNArZswkjlsg3bRBe5gvgKD8xf/
- B84uWDCMTf2LElkVPyDsRI0i69PfJnXvaRm/3jgXSmLslJtLm6TxQNzOGaidnJzNOZvc
- NLJ7ICzfCtrt0bDGFr4gG//KC+KRVjpdQl+PAv99wjYRghO7qp9K+mmtxnqODqBv0WzI
- WtRs7yBxa+kxetO4VM3T5eU7C60a1Jn/75OlvIiuWG813Tkk38Bh276CQG39Ew8xa/rc
- B9nw==
-X-Gm-Message-State: AC+VfDwmAtpbNSBbMltliBX2wfC2CUjeJQpfweVUgtlGJJREW7aXMnDz
- pqwoQ73azBbP9n7JuAjp9Fljyw==
-X-Google-Smtp-Source: ACHHUZ4ZHHAz5YlkH+wnptBDHirI9vPu10ufHjbY4FlvfwUXTV9++6/JtkK2B/SrRY0lZnVDYFAdAg==
-X-Received: by 2002:a7b:c8c5:0:b0:3fa:99d6:4798 with SMTP id
- f5-20020a7bc8c5000000b003fa99d64798mr8825057wml.37.1688380786882; 
- Mon, 03 Jul 2023 03:39:46 -0700 (PDT)
-Received: from [192.168.1.25] (91.232.79.188.dynamic.jazztel.es.
- [188.79.232.91]) by smtp.gmail.com with ESMTPSA id
- z11-20020a7bc7cb000000b003fbd2a9e94asm5298921wmk.31.2023.07.03.03.39.46
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 03 Jul 2023 03:39:46 -0700 (PDT)
-Message-ID: <771e8e39-9d49-411c-68e5-81e3b6141fe8@linaro.org>
-Date: Mon, 3 Jul 2023 12:39:44 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH 09/24] linux-user: Implement MAP_FIXED_NOREPLACE
-Content-Language: en-US
-To: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>
-Cc: mjt@tls.msk.ru, laurent@vivier.eu, qemu-devel@nongnu.org
+ d=1e100.net; s=20221208; t=1688381281; x=1690973281;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=6uBlIGnKpJ+UgFKwNAplF3WihVaf6nRKjKgIbA+xtCo=;
+ b=LhEPl5WaB+x7Qm/CFWazH7I6QotDSrSvmxyhmje/pj1b5RgQfIFr5DJu3va0eGwz7p
+ rPd9Vp4w+MnnmFmr/C8Fmrk9sT52tVyqgfnT13r5iihPNieXNyIzM5J87HXiM6h31n7j
+ oBZJa6SkOARMSQqsIn4/2wNoM4rkvv0meNT0i7puCQ3ykoc3A5UzA4+q5cxW7N/6SmEe
+ y32gIbY3If8P+7o0ujMNP6qpsMJfu+Yt6Dpv38GrfdmD9RZf5NDosBYqxx/HaiZc2LFk
+ hR8hyGSBUOOhPEUWt99Eb5kZlH3ugOyU8oFM9CvFpW4Oiw8etcTICvSY5bMf1kfYPJM6
+ PufA==
+X-Gm-Message-State: ABy/qLbYsp9UxxAZkRxC+t8XekUugSfZpY2SW2H+J0ldOTCYU3iHn6kC
+ ni07xvCZOlZaY5uSHaNsTIu01w==
+X-Google-Smtp-Source: APBJJlGlWOgIRyL5zJ551qYdfZtlCoW4CsYQHFC8cVX6fbU8HOfV/aJh79wX7QMsI786RPu+qxxggA==
+X-Received: by 2002:a05:6512:447:b0:4fb:94fd:645f with SMTP id
+ y7-20020a056512044700b004fb94fd645fmr6601668lfk.68.1688381281568; 
+ Mon, 03 Jul 2023 03:48:01 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
+ by smtp.gmail.com with ESMTPSA id
+ n10-20020a05600c3b8a00b003f7f475c3bcsm7699440wms.1.2023.07.03.03.48.01
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 03 Jul 2023 03:48:01 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id C688D1FFBB;
+ Mon,  3 Jul 2023 11:48:00 +0100 (BST)
 References: <20230630132159.376995-1-richard.henderson@linaro.org>
- <20230630132159.376995-10-richard.henderson@linaro.org>
- <87y1jxiajm.fsf@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <87y1jxiajm.fsf@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x32f.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+ <20230630132159.376995-12-richard.henderson@linaro.org>
+User-agent: mu4e 1.11.8; emacs 29.0.92
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: mjt@tls.msk.ru, laurent@vivier.eu, qemu-devel@nongnu.org
+Subject: Re: [PATCH 11/24] linux-user: Widen target_mmap offset argument to
+ off_t
+Date: Mon, 03 Jul 2023 11:47:56 +0100
+In-reply-to: <20230630132159.376995-12-richard.henderson@linaro.org>
+Message-ID: <87pm59i84f.fsf@linaro.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::12e;
+ envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x12e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -96,36 +97,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/3/23 11:51, Alex Bennée wrote:
->> @@ -544,7 +544,7 @@ abi_long target_mmap(abi_ulong start, abi_ulong len, int target_prot,
->>           }
->>       }
->>   
->> -    if (!(flags & MAP_FIXED)) {
->> +    if (!(flags & (MAP_FIXED | MAP_FIXED_NOREPLACE))) {
->>           unsigned long host_start;
->>           void *p;
->>   
-...
->> @@ -608,7 +615,8 @@ abi_long target_mmap(abi_ulong start, abi_ulong len, int target_prot,
->>                   goto fail;
->>               }
->>               retaddr = target_mmap(start, len, target_prot | PROT_WRITE,
->> -                                  MAP_FIXED | MAP_PRIVATE | MAP_ANONYMOUS,
->> +                                  (flags & (MAP_FIXED | MAP_FIXED_NOREPLACE))
->> +                                  | MAP_PRIVATE | MAP_ANONYMOUS,
-> 
-> I thought we always MAP_FIXED because we've already jumped the hoops to
-> work out where in the memory space this allocation is going.
 
-We have not, no.  Not here, anyway.
+Richard Henderson <richard.henderson@linaro.org> writes:
 
-> IOW I thought the MAP_FIXED here was an internal QEMU implementation
-> details rather than reflecting the guests wishes.
+> We build with _FILE_OFFSET_BITS=3D64, so off_t =3D off64_t =3D uint64_t.
+> With an extra cast, this fixes emulation of mmap2, which could
+> overflow the computation of the full value of offset.
+>
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 
-As I read it, MAP_FIXED was here because we'd already checked for it in the IF that I 
-retained above.  But now we're checking for 2 things, and must pass that on to the recursion.
+Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
 
-
-r~
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
