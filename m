@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0686D745F07
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 16:48:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8107745F05
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 16:48:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGKpj-0003EO-Vc; Mon, 03 Jul 2023 10:47:20 -0400
+	id 1qGKpm-0003Ev-9w; Mon, 03 Jul 2023 10:47:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qGKpb-000387-4b
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 10:47:12 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qGKpd-0003BQ-PK
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 10:47:14 -0400
 Received: from smtp-out1.suse.de ([2001:67c:2178:6::1c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qGKpY-0007Dm-VI
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 10:47:10 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qGKpb-0007EC-WB
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 10:47:13 -0400
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id ABC8B21A44;
- Mon,  3 Jul 2023 14:47:07 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id E08F821A52;
+ Mon,  3 Jul 2023 14:47:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1688395627; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1688395630; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=VFnlVPKGcsaYlD+CasZxuR7XddMqs6Qfy/HGR6C0GS4=;
- b=0j6s3VMtfmVMmynaToR7LZfU9izfHSRRScNq5FMdVFYmoMJVRKLp9aHqTs34jV+e374GJV
- y+twJ4Zc5kYsLkRztTO3fy613ve3gjwJof57P6PlLLjIiVKhKPsBFngCCIenRWC2G1EDeJ
- f/e5Ei1UGyDK/xqmyx/u56kiBezR/ZY=
+ bh=k/X/G+tCDpmHClHVHUpKPNEcEbL1TXez51tAfCPEGK8=;
+ b=HryIGPBvMBJt+KsfCCBYZ+CQwRDyVO1uGyVOIEn735cA7CYAoVJ03ahX0OkKvvmNXX3P2S
+ Q68rCE8FoxOasCDb8Mo3FRLEnVfDPhWhWJi6vIDxA132MUnY221sqLgqfS90RyUXy9feBN
+ Yyp9k50qevEf1slOYva7S0gJRo3pvj4=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1688395627;
+ s=susede2_ed25519; t=1688395630;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=VFnlVPKGcsaYlD+CasZxuR7XddMqs6Qfy/HGR6C0GS4=;
- b=Jk8nJqnKG1ULciFFMnrAKZXfblD7prN/cYQrlygSZtLRxwJkC7289iqdBEngBWa/a9GDAu
- royrIDcI46QB8fCA==
+ bh=k/X/G+tCDpmHClHVHUpKPNEcEbL1TXez51tAfCPEGK8=;
+ b=aRH3MuBEIN0j0tQK+/V+xkce/MjmjDXXJzuWpUA1UnlCf/iSY+p4T//vG7QB5mw6gxNCP7
+ rsadldwSQ0Q0E3Cg==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 89F111358E;
- Mon,  3 Jul 2023 14:47:05 +0000 (UTC)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 22CC21358E;
+ Mon,  3 Jul 2023 14:47:07 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id mFwjFWnfomRoSAAAMHmgww
- (envelope-from <farosas@suse.de>); Mon, 03 Jul 2023 14:47:05 +0000
+ by imap2.suse-dmz.suse.de with ESMTPSA id sIJKN2vfomRoSAAAMHmgww
+ (envelope-from <farosas@suse.de>); Mon, 03 Jul 2023 14:47:07 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Juan Quintela <quintela@redhat.com>, Thomas Huth <thuth@redhat.com>,
@@ -56,11 +56,13 @@ Cc: Juan Quintela <quintela@redhat.com>, Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Laurent Vivier <lvivier@redhat.com>
-Subject: [RFC PATCH 1/2] tests/qtest: Add a script to gather migration tests
- list
-Date: Mon,  3 Jul 2023 11:46:59 -0300
-Message-Id: <20230703144700.13536-2-farosas@suse.de>
+ Yonggang Luo <luoyonggang@gmail.com>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>, Laurent Vivier <lvivier@redhat.com>
+Subject: [RFC PATCH 2/2] tests/qtest: Pass migration tests individually to
+ meson
+Date: Mon,  3 Jul 2023 11:47:00 -0300
+Message-Id: <20230703144700.13536-3-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20230703144700.13536-1-farosas@suse.de>
 References: <20230703144700.13536-1-farosas@suse.de>
@@ -90,53 +92,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is a workaround for limitations with meson.
+Having glib tests (qtest) all defined in a single test file makes it
+hard to know which test has failed when running CI. Create a new
+'migration' test suite and move the migration tests individually to
+meson.
 
-We'd like to have each migration (sub)test registered with meson's
-test() function, but since they are all inside the single
-migration-test.c there's no way for meson to see the tests. We need an
-external way to generate the list of tests and pass it to meson.
+For now, use the global migration-test timeout value, but we could set
+a per-subtest timeout in the future.
 
-We cannot call 'migration-test -l' because we'd need to build the
-migration-test binary first and while that is possible, there's no
-subsequent way to get the generated list into a meson variable for
-consumption. None of meson's routines support retrieving an arbitrary
-list of strings from a command at build (vs. configure) time.
+Sample output:
 
-We also cannot use generators to have 'migration-test' write to a file
-because that would happen at build time and meson does not support
-reading from a file in the build directory.
-
-So the only approach left is to either have the list of tests
-committed into the source code or to grep the source code for the
-list. Committing the file would be harder to maintain and the test
-registration in migration-test.c is pretty static, so this patch uses
-the grep approach. But using python because it is more portable.
+$ ../configure --target-list=x86_64-softmmu,aarch64-softmmu ...
+$ make check-migration
+...
+36/469 qemu:migration / /x86_64/migration/precopy/unix/plain                       OK    34.25s   1 subtests passed
+37/469 qemu:migration / /x86_64/migration/multifd/tcp/tls/x509/default-host        OK     7.33s   1 subtests passed
+39/469 qemu:migration / /x86_64/migration/multifd/tcp/tls/x509/allow-anon-client   OK     7.32s   1 subtests passed
+40/469 qemu:migration / /aarch64/migration/postcopy/compress/plain                 SKIP   0.04s
+41/469 qemu:migration / /aarch64/migration/postcopy/recovery/compress/plain        SKIP   0.04s
+42/469 qemu:migration / /aarch64/migration/bad_dest                                OK     0.65s   1 subtests passed
 
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- tests/qtest/gen_migration_tests_list.py | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
- create mode 100644 tests/qtest/gen_migration_tests_list.py
+ .gitlab-ci.d/windows.yml |  2 +-
+ tests/qtest/meson.build  | 40 +++++++++++++++++++++++++++++++---------
+ 2 files changed, 32 insertions(+), 10 deletions(-)
 
-diff --git a/tests/qtest/gen_migration_tests_list.py b/tests/qtest/gen_migration_tests_list.py
-new file mode 100644
-index 0000000000..5127f976fa
---- /dev/null
-+++ b/tests/qtest/gen_migration_tests_list.py
-@@ -0,0 +1,12 @@
-+#!/usr/bin/env python3
+diff --git a/.gitlab-ci.d/windows.yml b/.gitlab-ci.d/windows.yml
+index f889a468b5..04bc74a20e 100644
+--- a/.gitlab-ci.d/windows.yml
++++ b/.gitlab-ci.d/windows.yml
+@@ -84,7 +84,7 @@ msys2-64bit:
+   - ..\msys64\usr\bin\bash -lc 'make'
+   # qTests don't run successfully with "--without-default-devices",
+   # so let's exclude the qtests from CI for now.
+-  - ..\msys64\usr\bin\bash -lc 'make check MTESTARGS=\"--no-suite qtest\" || { cat meson-logs/testlog.txt; exit 1; } ;'
++  - ..\msys64\usr\bin\bash -lc 'make check MTESTARGS=\"--no-suite qtest migration\" || { cat meson-logs/testlog.txt; exit 1; } ;'
+ 
+ msys2-32bit:
+   extends: .shared_msys2_builder
+diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
+index 5fa6833ad7..43c140921c 100644
+--- a/tests/qtest/meson.build
++++ b/tests/qtest/meson.build
+@@ -369,14 +369,36 @@ foreach dir : target_dirs
+         test: executable(test, src, dependencies: deps)
+       }
+     endif
+-    test('qtest-@0@/@1@'.format(target_base, test),
+-         qtest_executables[test],
+-         depends: [test_deps, qtest_emulator, emulator_modules],
+-         env: qtest_env,
+-         args: ['--tap', '-k'],
+-         protocol: 'tap',
+-         timeout: slow_qtests.get(test, 30),
+-         priority: slow_qtests.get(test, 30),
+-         suite: ['qtest', 'qtest-' + target_base])
 +
-+import re
-+import sys
++    migtest = 'migration-test'
++    if test == migtest
++      migtests = run_command(python, files('gen_migration_tests_list.py'),
++                             meson.current_source_dir() / 'migration-test.c',
++                             check: true)
 +
-+file_path = sys.argv[1]
++      foreach item : migtests.stdout().strip().split('\n')
++        testname = '/@0@@1@'.format(target_base, item)
 +
-+with open(file_path, 'r') as f:
-+    for line in f.readlines():
-+        match = re.search('\"(/migration/.*)\"', line)
-+        if match:
-+            print(match.groups()[0])
++        test(testname,
++             qtest_executables['migration-test'],
++             depends: [test_deps, qtest_emulator, emulator_modules],
++             env: qtest_env,
++             args: ['-k', '-p', testname],
++             protocol: 'tap',
++             timeout: slow_qtests.get(migtest),
++             priority: slow_qtests.get(migtest),
++             suite: ['migration'])
++      endforeach
++    else
++      test('qtest-@0@/@1@'.format(target_base, test),
++           qtest_executables[test],
++           depends: [test_deps, qtest_emulator, emulator_modules],
++           env: qtest_env,
++           args: ['--tap', '-k'],
++           protocol: 'tap',
++           timeout: slow_qtests.get(test, 30),
++           priority: slow_qtests.get(test, 30),
++           suite: ['qtest', 'qtest-' + target_base])
++      endif
+   endforeach
+ endforeach
 -- 
 2.35.3
 
