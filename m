@@ -2,88 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C7DC746284
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 20:34:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA91C746333
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 21:12:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGOMu-0002N6-5j; Mon, 03 Jul 2023 14:33:48 -0400
+	id 1qGOx5-0004dR-P2; Mon, 03 Jul 2023 15:11:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qGOMl-00026j-EO
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 14:33:39 -0400
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qGOx3-0004cO-7o
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 15:11:09 -0400
+Received: from mail-ot1-x32c.google.com ([2607:f8b0:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qGOMj-0000Zh-TN
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 14:33:39 -0400
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-3fbd33a57b6so34636315e9.2
- for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 11:33:37 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qGOwz-0001BW-Iv
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 15:11:08 -0400
+Received: by mail-ot1-x32c.google.com with SMTP id
+ 46e09a7af769-6b8baa72c71so1598552a34.2
+ for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 12:11:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688409216; x=1691001216;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Ckg/85qiN6gI5pyiRTX4xzKyUkymMYXNoWwRj2IvYvQ=;
- b=rZq4AVOmPly186wO8fVY9rb7E+75gT1CaBAZ5pLcZ9zFVP9+r7eKj929w0iJRYl1nh
- mK+ZeU4SVogjL/yaq7XXtuTiMTML1e0XLQhEyTSWBtFnzAXK1/7cmsfX4VUomBGzWTz5
- eACMkTC8miiWXovkzrpq9irqj8VqnUF8MxUU+wp/sg39MVfM/Z/nWF8EAyiUW/SNDS1X
- RlBMojFJG2HjwKINFjZUAaNdTLKbuaoKAsQBTVHVbPwzy8Bop8LD5vUf27I39RCaFRnh
- HHvppzM5q17r5amEmiTAQfMNMRV1sOKgXgBp6zM5AptZSygF5lemQENWqzQUSXPkrU4/
- 8LzA==
+ d=ventanamicro.com; s=google; t=1688411464; x=1691003464;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=IG5cNv8G/TvFPnLB5SBj9w4Pnse9trEpvweWpi329fo=;
+ b=DnwWd375ffPvg2hKt5wHxDIs69ExU0iSOWy+8hb9wPPNOVOQXnfzsjKTJKWFIt3jVe
+ d5XOLZBIyeY2DiTU2PD7TFZZETuC8rd4FO8DGb6vhzpvRPckWmtvt/sBdyVF2K6pEEvE
+ pae858m+gFUFTnNemeMDNdbJju7yf8mYSDjqPYKL4BsBYhaqu+siLe7PZ6HtTDFFbrZ9
+ 0MG5vSGiubFPmbOLK3SxpxwT7EIjW1mgn+7bIx9J3ZThUaEfwh3wZLOL25tUadgAdqdO
+ 94xgg0OPQMXm0DUzghgph2zAsf3VTQoSR9TnuDsfcz7f9HINN4sC5cl5oye2oD9NOGUM
+ /6Ow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688409216; x=1691001216;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Ckg/85qiN6gI5pyiRTX4xzKyUkymMYXNoWwRj2IvYvQ=;
- b=lRDZ2sbgA2OlAnkiNJdjujpCbTw7K+RT9Y8jTXnVTUHHxBT6ne5ptrDYymAEkNbLqb
- s406zPrdSzCtKfw59e1wDa17xRluxcLQg5m6h81cEVtSH6bS62OwEhoYOGRMTV8UeIWw
- aCJkkHqQuLcsijUxHWThjN033QS+eo7wFv4yi/Aq3sKHdnq5ushXy/bKlGsmJfNF0Jg5
- 1GDI4cpYm7UUsUfaAWcwLr1tz6Tzl729sr7zXCYugRgGJATAPznH1zSDQQCwMCMGihIi
- pG+5Vj8MXHQObfIezQ7jMKjVL8XR4k6hGShm3MDnaykIt+KzajPeyLSpb4c6bNHiWZbr
- m42A==
-X-Gm-Message-State: AC+VfDzY/6Ps1b0A5tSI7aMmmu/E1Or5ZmWd8H9+1B4Oc2P/duwLvn05
- IViC1PYvTKo7QV0y7L+Y/8WXmp/X5EPepEMjcBC1cg==
-X-Google-Smtp-Source: ACHHUZ73wihO7mepuWylWzji6mQoWD6CbwMkFLZ/C/6C43GThLV/R0+WGKdMwtw9c1hR1bVu3kVc8w==
-X-Received: by 2002:a05:600c:22d4:b0:3fa:fe34:f80 with SMTP id
- 20-20020a05600c22d400b003fafe340f80mr13892838wmg.39.1688409216342; 
- Mon, 03 Jul 2023 11:33:36 -0700 (PDT)
-Received: from localhost.localdomain ([176.176.178.91])
- by smtp.gmail.com with ESMTPSA id
- p23-20020a1c7417000000b003fbdd9c72aasm1201327wmc.21.2023.07.03.11.33.34
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 03 Jul 2023 11:33:36 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Palmer Dabbelt <palmer@dabbelt.com>, Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>, Beraldo Leal <bleal@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>, kvm@vger.kernel.org,
- qemu-riscv@nongnu.org, Bin Meng <bin.meng@windriver.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Weiwei Li <liweiwei@iscas.ac.cn>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
-Subject: [PATCH v2 16/16] gitlab-ci.d/crossbuilds: Add KVM riscv64 cross-build
- jobs
-Date: Mon,  3 Jul 2023 20:31:45 +0200
-Message-Id: <20230703183145.24779-17-philmd@linaro.org>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20230703183145.24779-1-philmd@linaro.org>
-References: <20230703183145.24779-1-philmd@linaro.org>
+ d=1e100.net; s=20221208; t=1688411464; x=1691003464;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=IG5cNv8G/TvFPnLB5SBj9w4Pnse9trEpvweWpi329fo=;
+ b=RWdpFf4LBHDOkj/sRHmncuwzYwvbLNyxPrlSxJEuqyOpLSUXFf6FkTYjs+/wr5r+zv
+ yOArY6NqV0Zd8dnJbWkQDWwZmvl2h+L7tEfCRkU23vYwmT1ZP0M06LeaRAToHPblOAzW
+ 5KDDrcQe2NlgOLaBl0TS6pDCsh7lnbFJoL9yYHhUPftCqZ6RLWASv8XLl6nF26MKjilg
+ 32ZKad02OylJOTegHdQjvW4q8jalxofk9HdsDPDsALU6YFwT6mmlTlgCP8EqcooGcK7Q
+ OAdiBX0VJht7rd3t+x+fyqM0X0TcXh9ttu+1OopD7v69+El4snGa89gOFpP2fxigxU4S
+ 40RA==
+X-Gm-Message-State: ABy/qLZkg0wiOn4WFCY8CZHtTS4J2LvJrlzjT5EUvL9joytrA6ODOCRO
+ 6lTJ4wcwP3QebxPuqceOyxAZIA==
+X-Google-Smtp-Source: ACHHUZ7xgQO+tsk4yATUwLWAKB6XO6UaQpNZUBiP3DJ4TvJFb4SpHwap+JupvhNwcP2fk0iHCuOlwg==
+X-Received: by 2002:a05:6870:a902:b0:1b0:25b4:4b7a with SMTP id
+ eq2-20020a056870a90200b001b025b44b7amr11221345oab.51.1688411463792; 
+ Mon, 03 Jul 2023 12:11:03 -0700 (PDT)
+Received: from [192.168.68.107] (201-69-66-110.dial-up.telesp.net.br.
+ [201.69.66.110]) by smtp.gmail.com with ESMTPSA id
+ w18-20020a056870a2d200b001aa1779d0besm12801395oak.7.2023.07.03.12.10.58
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 03 Jul 2023 12:11:03 -0700 (PDT)
+Message-ID: <fc841e67-0e3f-34ba-011f-c52f142ff32d@ventanamicro.com>
+Date: Mon, 3 Jul 2023 16:10:56 -0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH] riscv: Generate devicetree only after machine
+ initialization is complete
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Guenter Roeck <linux@roeck-us.net>, Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-riscv@nongnu.org,
+ qemu-devel@nongnu.org, Alistair Francis <alistair23@gmail.com>,
+ Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
+ Alistair Francis <Alistair.Francis@wdc.com>, Jia Liu <proljc@gmail.com>,
+ Leif Lindholm <quic_llindhol@quicinc.com>,
+ Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
+ Paul Burton <paulburton@kernel.org>, Peter Maydell
+ <peter.maydell@linaro.org>, Radoslaw Biernacki <rad@semihalf.com>,
+ Song Gao <gaosong@loongson.cn>, Stafford Horne <shorne@gmail.com>,
+ Xiaojuan Yang <yangxiaojuan@loongson.cn>, qemu-arm@nongnu.org,
+ Paolo Bonzini <pbonzini@redhat.com>, Markus Armbruster <armbru@redhat.com>
+References: <20230703034614.3909079-1-linux@roeck-us.net>
+ <e08863cd-f4ac-9ffa-b79b-5f9c594f1db4@linaro.org>
+Content-Language: en-US
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <e08863cd-f4ac-9ffa-b79b-5f9c594f1db4@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32c;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-ot1-x32c.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,34 +108,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a new job to cross-build the riscv64 target without
-the TCG accelerator (IOW: only KVM accelerator enabled).
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- .gitlab-ci.d/crossbuilds.yml | 8 ++++++++
- 1 file changed, 8 insertions(+)
 
-diff --git a/.gitlab-ci.d/crossbuilds.yml b/.gitlab-ci.d/crossbuilds.yml
-index b6ec99ecd1..588ef4ebcb 100644
---- a/.gitlab-ci.d/crossbuilds.yml
-+++ b/.gitlab-ci.d/crossbuilds.yml
-@@ -129,6 +129,14 @@ cross-riscv64-user:
-   variables:
-     IMAGE: debian-riscv64-cross
- 
-+cross-riscv64-kvm-only:
-+  extends: .cross_accel_build_job
-+  needs:
-+    job: riscv64-debian-cross-container
-+  variables:
-+    IMAGE: debian-riscv64-cross
-+    EXTRA_CONFIGURE_OPTS: --disable-tcg --without-default-features
-+
- cross-s390x-system:
-   extends: .cross_system_build_job
-   needs:
--- 
-2.38.1
+On 7/3/23 04:46, Philippe Mathieu-Daudé wrote:
+> On 3/7/23 05:46, Guenter Roeck wrote:
+>> If the devicetree is created before machine initialization is complete,
+>> it misses dynamic devices. Specifically, the tpm device is not added
+>> to the devicetree file and is therefore not instantiated in Linux.
+>> Create devicetree in virt_machine_done() to solve the problem.
+> 
+> This makes sense, but what about the other archs/machines?
+> Shouldn't we fix this generically?
 
+As far as other archs goes I can say that ARM isn't affected by it because
+the fdt creation is done by arm_load_dtb() during virt_machine_done time.
+I'm not aware of how x86 handles TPM. And pseries/ppc64 does a completely
+different thing (per usual).
+
+Inside hw/riscv the only TPM capable board is 'virt'. So I think this patch
+has an adequate scope.
+
+
+Thanks,
+
+
+Daniel
+
+
+> 
+>> Cc: Alistair Francis <alistair23@gmail.com>
+>> Fixes: 325b7c4e75 hw/riscv: Enable TPM backends
+>> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+>> ---
+>>   hw/riscv/virt.c | 9 ++++++---
+>>   1 file changed, 6 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
+>> index ed4c27487e..08876284f5 100644
+>> --- a/hw/riscv/virt.c
+>> +++ b/hw/riscv/virt.c
+>> @@ -1248,6 +1248,11 @@ static void virt_machine_done(Notifier *notifier, void *data)
+>>       uint64_t kernel_entry = 0;
+>>       BlockBackend *pflash_blk0;
+>> +    /* create devicetree if not provided */
+>> +    if (!machine->dtb) {
+>> +        create_fdt(s, memmap);
+>> +    }
+>> +
+>>       /*
+>>        * Only direct boot kernel is currently supported for KVM VM,
+>>        * so the "-bios" parameter is not supported when KVM is enabled.
+>> @@ -1508,15 +1513,13 @@ static void virt_machine_init(MachineState *machine)
+>>       }
+>>       virt_flash_map(s, system_memory);
+>> -    /* load/create device tree */
+>> +    /* load device tree */
+>>       if (machine->dtb) {
+>>           machine->fdt = load_device_tree(machine->dtb, &s->fdt_size);
+>>           if (!machine->fdt) {
+>>               error_report("load_device_tree() failed");
+>>               exit(1);
+>>           }
+>> -    } else {
+>> -        create_fdt(s, memmap);
+>>       }
+>>       s->machine_done.notify = virt_machine_done;
+> 
 
