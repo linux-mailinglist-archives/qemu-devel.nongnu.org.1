@@ -2,85 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 130A8745A94
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 12:49:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 738CD745AA5
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 12:56:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGH6K-00072r-Nm; Mon, 03 Jul 2023 06:48:12 -0400
+	id 1qGHD0-0000UT-UM; Mon, 03 Jul 2023 06:55:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qGH6E-000724-Fr
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 06:48:06 -0400
-Received: from mail-lf1-x12e.google.com ([2a00:1450:4864:20::12e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qGH6C-0008Oh-UH
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 06:48:06 -0400
-Received: by mail-lf1-x12e.google.com with SMTP id
- 2adb3069b0e04-4fa16c6a85cso6618318e87.3
- for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 03:48:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688381281; x=1690973281;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
- :message-id:reply-to;
- bh=6uBlIGnKpJ+UgFKwNAplF3WihVaf6nRKjKgIbA+xtCo=;
- b=Hq5LOg0zd+InUZkOzKeei9KIKKJTUg2KgY7ZmPD43OVLkJHbwtuZrM2c7izrDOaD5r
- /x5URvT3JVUtuudSuHYbC2TFEl2cD03+ds+IuJv7gznuJ2XblYNSY4Kh2vVw7XyUQ/+8
- jsUJuw358D2/vSsLoqnlJ7jESKUdtIqd8h2j+8xSPL3uKYbFm1Dfn75Qygzt3dXVfwT0
- p3J+6ri1gR3NNj9oDO9pbXVsly/kPvJEEwiRWvSJh97GLrWQb02XG1uyLg6XDZeDQpM3
- w8HTOLYf4lbyE00FGI5A/zNKe+aR+qMFh3WArW2z09O3J2Wbx56AlOUkniy5eT3x8rTT
- mR8A==
+ (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
+ id 1qGHCw-0000Ty-VS
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 06:55:03 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
+ id 1qGHCv-0001ZO-2x
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 06:55:02 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1688381699;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=xly8Rhia2C3yPOtnf4kfFezlMJsSE6qIRwkjxwvBd5s=;
+ b=R451zNdcMcJpxxbGMG1Mfmg4fC+nlrEoXszXtz0NoufzdHE1hKrJq4EbhJv00N3pTWoCF3
+ JLzYdzvQ03ynHotzskd5Z47of0YI8P4eQ4xdU7muZjaPF+amv5CNRd43th4ZGFjkIlpvrF
+ u/I7ZB57+fx9t7pTbZaImL55MLoFBDE=
+Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
+ [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-55-XI4R_H78MJOIJckZpY3UyQ-1; Mon, 03 Jul 2023 06:54:57 -0400
+X-MC-Unique: XI4R_H78MJOIJckZpY3UyQ-1
+Received: by mail-qt1-f198.google.com with SMTP id
+ d75a77b69052e-40354eb76a8so10553801cf.3
+ for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 03:54:57 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688381281; x=1690973281;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=6uBlIGnKpJ+UgFKwNAplF3WihVaf6nRKjKgIbA+xtCo=;
- b=LhEPl5WaB+x7Qm/CFWazH7I6QotDSrSvmxyhmje/pj1b5RgQfIFr5DJu3va0eGwz7p
- rPd9Vp4w+MnnmFmr/C8Fmrk9sT52tVyqgfnT13r5iihPNieXNyIzM5J87HXiM6h31n7j
- oBZJa6SkOARMSQqsIn4/2wNoM4rkvv0meNT0i7puCQ3ykoc3A5UzA4+q5cxW7N/6SmEe
- y32gIbY3If8P+7o0ujMNP6qpsMJfu+Yt6Dpv38GrfdmD9RZf5NDosBYqxx/HaiZc2LFk
- hR8hyGSBUOOhPEUWt99Eb5kZlH3ugOyU8oFM9CvFpW4Oiw8etcTICvSY5bMf1kfYPJM6
- PufA==
-X-Gm-Message-State: ABy/qLbYsp9UxxAZkRxC+t8XekUugSfZpY2SW2H+J0ldOTCYU3iHn6kC
- ni07xvCZOlZaY5uSHaNsTIu01w==
-X-Google-Smtp-Source: APBJJlGlWOgIRyL5zJ551qYdfZtlCoW4CsYQHFC8cVX6fbU8HOfV/aJh79wX7QMsI786RPu+qxxggA==
-X-Received: by 2002:a05:6512:447:b0:4fb:94fd:645f with SMTP id
- y7-20020a056512044700b004fb94fd645fmr6601668lfk.68.1688381281568; 
- Mon, 03 Jul 2023 03:48:01 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
- by smtp.gmail.com with ESMTPSA id
- n10-20020a05600c3b8a00b003f7f475c3bcsm7699440wms.1.2023.07.03.03.48.01
+ d=1e100.net; s=20221208; t=1688381697; x=1690973697;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=xly8Rhia2C3yPOtnf4kfFezlMJsSE6qIRwkjxwvBd5s=;
+ b=aDe+VnCYILnpYZjn5INO9NNewmtCJvmOQPFIfZS84aSHFHQdf1SXpAlfR/JtUwBUfl
+ cY+Yk8iscIardoPbQ9tGtpTennguspvQsgaPhJ7+tJA55h/lst/VmmJuxe0TKgpRjUsg
+ 5Y4y0uLAU9CqILEN6+Bb7sItRn9UVbeDCjnllXUJ9GtNNIpBFMDls8+nLHcTTygcmsfS
+ QYjGs0s04KgCNcF4dECeuSCUeeRkRJNsKDVlYdX4YEKrEqhn1kUUGDuzG8yqWWCb2kgw
+ ve2xdvaQARtc4HllpcR6XNteR5tVnEWcu2/Z5ykVucF7LHSIVg7JQ7FT0Z7swFcMhXQn
+ KsJw==
+X-Gm-Message-State: AC+VfDxcuv2tIAsDqSmRLmUAoQ3tW6H42DBAaE8HUiDx2+IH79Lqewsv
+ b5a7+wrtGGbHBQO1MrZ2s6Z2JDPCADMBeCVMpx+IKXqY0z2KYJRJDEkB1prNEHXM5CXKPyGTgDO
+ R8NnSTf9msVPxyW9LVOTIIgg=
+X-Received: by 2002:a05:622a:51:b0:3f6:914f:5934 with SMTP id
+ y17-20020a05622a005100b003f6914f5934mr12794385qtw.58.1688381697100; 
+ Mon, 03 Jul 2023 03:54:57 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6DEiZGKMQ6fGeMd/fcsOyGqkY+LbtNHz+Bd9WkaMMjVEaLlUV7d9pHgWHQ6kTj2pRN3f8WMA==
+X-Received: by 2002:a05:622a:51:b0:3f6:914f:5934 with SMTP id
+ y17-20020a05622a005100b003f6914f5934mr12794368qtw.58.1688381696789; 
+ Mon, 03 Jul 2023 03:54:56 -0700 (PDT)
+Received: from sgarzare-redhat (host-79-46-200-163.retail.telecomitalia.it.
+ [79.46.200.163]) by smtp.gmail.com with ESMTPSA id
+ g28-20020ac8775c000000b003f9aecb599fsm8905891qtu.35.2023.07.03.03.54.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 03 Jul 2023 03:48:01 -0700 (PDT)
-Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id C688D1FFBB;
- Mon,  3 Jul 2023 11:48:00 +0100 (BST)
-References: <20230630132159.376995-1-richard.henderson@linaro.org>
- <20230630132159.376995-12-richard.henderson@linaro.org>
-User-agent: mu4e 1.11.8; emacs 29.0.92
-From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: mjt@tls.msk.ru, laurent@vivier.eu, qemu-devel@nongnu.org
-Subject: Re: [PATCH 11/24] linux-user: Widen target_mmap offset argument to
- off_t
-Date: Mon, 03 Jul 2023 11:47:56 +0100
-In-reply-to: <20230630132159.376995-12-richard.henderson@linaro.org>
-Message-ID: <87pm59i84f.fsf@linaro.org>
+ Mon, 03 Jul 2023 03:54:56 -0700 (PDT)
+Date: Mon, 3 Jul 2023 12:54:50 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, 
+ Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ Qing Wang <qinwang@redhat.com>
+Subject: Re: [PATCH] block/blkio: fix module_block.py parsing
+Message-ID: <cigfftqvsymwwcv7dvfp3lydpymu2hzx7pmpb3tbnfgiqxlaj7@2xhwxfb6nasj>
+References: <20230703103524.162855-1-stefanha@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::12e;
- envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x12e.google.com
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20230703103524.162855-1-stefanha@redhat.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=sgarzare@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -97,18 +100,194 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-Richard Henderson <richard.henderson@linaro.org> writes:
-
-> We build with _FILE_OFFSET_BITS=3D64, so off_t =3D off64_t =3D uint64_t.
-> With an extra cast, this fixes emulation of mmap2, which could
-> overflow the computation of the full value of offset.
+On Mon, Jul 03, 2023 at 12:35:24PM +0200, Stefan Hajnoczi wrote:
+>When QEMU is built with --enable-modules, the module_block.py script
+>parses block/*.c to find block drivers that are built as modules. The
+>script generates a table of block drivers called block_driver_modules[].
+>This table is used for block driver module loading.
 >
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+>The blkio.c driver uses macros to define its BlockDriver structs. This
+>was done to avoid code duplication but the module_block.py script is
+>unable to parse the macro. The result is that libblkio-based block
+>drivers can be built as modules but will not be found at runtime.
+>
+>One fix is to make the module_block.py script or build system fancier so
+>it can parse C macros (e.g. by parsing the preprocessed source code). I
+>chose not to do this because it raises the complexity of the build,
+>making future issues harder to debug.
+>
+>Keep things simple: use the macro to avoid duplicating BlockDriver
+>function pointers but define .format_name and .protocol_name manually
+>for each BlockDriver. This way the module_block.py is able to parse the
+>code.
+>
+>Also get rid of the block driver name macros (e.g. DRIVER_IO_URING)
+>because module_block.py cannot parse them either.
+>
+>Fixes: fd66dbd424f5 ("blkio: add libblkio block driver")
+>Reported-by: Qing Wang <qinwang@redhat.com>
+>Cc: Stefano Garzarella <sgarzare@redhat.com>
+>Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+>---
+> block/blkio.c | 110 ++++++++++++++++++++++++++------------------------
+> 1 file changed, 57 insertions(+), 53 deletions(-)
+>
+>diff --git a/block/blkio.c b/block/blkio.c
+>index 527323d625..589f829a83 100644
+>--- a/block/blkio.c
+>+++ b/block/blkio.c
+>@@ -22,16 +22,6 @@
+>
+> #include "block/block-io.h"
+>
+>-/*
+>- * Keep the QEMU BlockDriver names identical to the libblkio driver names.
+>- * Using macros instead of typing out the string literals avoids typos.
+>- */
+>-#define DRIVER_IO_URING "io_uring"
+>-#define DRIVER_NVME_IO_URING "nvme-io_uring"
+>-#define DRIVER_VIRTIO_BLK_VFIO_PCI "virtio-blk-vfio-pci"
+>-#define DRIVER_VIRTIO_BLK_VHOST_USER "virtio-blk-vhost-user"
+>-#define DRIVER_VIRTIO_BLK_VHOST_VDPA "virtio-blk-vhost-vdpa"
+>-
+> /*
+>  * Allocated bounce buffers are kept in a list sorted by buffer address.
+>  */
+>@@ -744,15 +734,15 @@ static int blkio_file_open(BlockDriverState *bs, QDict *options, int flags,
+>         return ret;
+>     }
+>
+>-    if (strcmp(blkio_driver, DRIVER_IO_URING) == 0) {
+>+    if (strcmp(blkio_driver, "io_uring") == 0) {
+>         ret = blkio_io_uring_open(bs, options, flags, errp);
+>-    } else if (strcmp(blkio_driver, DRIVER_NVME_IO_URING) == 0) {
+>+    } else if (strcmp(blkio_driver, "nvme-io_uring") == 0) {
+>         ret = blkio_nvme_io_uring(bs, options, flags, errp);
+>-    } else if (strcmp(blkio_driver, DRIVER_VIRTIO_BLK_VFIO_PCI) == 0) {
+>+    } else if (strcmp(blkio_driver, "virtio-blk-vfio-pci") == 0) {
+>         ret = blkio_virtio_blk_common_open(bs, options, flags, errp);
+>-    } else if (strcmp(blkio_driver, DRIVER_VIRTIO_BLK_VHOST_USER) == 0) {
+>+    } else if (strcmp(blkio_driver, "virtio-blk-vhost-user") == 0) {
+>         ret = blkio_virtio_blk_common_open(bs, options, flags, errp);
+>-    } else if (strcmp(blkio_driver, DRIVER_VIRTIO_BLK_VHOST_VDPA) == 0) {
+>+    } else if (strcmp(blkio_driver, "virtio-blk-vhost-vdpa") == 0) {
+>         ret = blkio_virtio_blk_common_open(bs, options, flags, errp);
+>     } else {
+>         g_assert_not_reached();
+>@@ -1028,49 +1018,63 @@ static void blkio_refresh_limits(BlockDriverState *bs, Error **errp)
+>  * - truncate
+>  */
+>
+>-#define BLKIO_DRIVER(name, ...) \
+>-    { \
+>-        .format_name             = name, \
+>-        .protocol_name           = name, \
+>-        .instance_size           = sizeof(BDRVBlkioState), \
+>-        .bdrv_file_open          = blkio_file_open, \
+>-        .bdrv_close              = blkio_close, \
+>-        .bdrv_co_getlength       = blkio_co_getlength, \
+>-        .bdrv_co_truncate        = blkio_truncate, \
+>-        .bdrv_co_get_info        = blkio_co_get_info, \
+>-        .bdrv_attach_aio_context = blkio_attach_aio_context, \
+>-        .bdrv_detach_aio_context = blkio_detach_aio_context, \
+>-        .bdrv_co_pdiscard        = blkio_co_pdiscard, \
+>-        .bdrv_co_preadv          = blkio_co_preadv, \
+>-        .bdrv_co_pwritev         = blkio_co_pwritev, \
+>-        .bdrv_co_flush_to_disk   = blkio_co_flush, \
+>-        .bdrv_co_pwrite_zeroes   = blkio_co_pwrite_zeroes, \
+>-        .bdrv_refresh_limits     = blkio_refresh_limits, \
+>-        .bdrv_register_buf       = blkio_register_buf, \
+>-        .bdrv_unregister_buf     = blkio_unregister_buf, \
+>-        __VA_ARGS__ \
+>-    }
+>+/*
+>+ * Do not include .format_name and .protocol_name because module_block.py
+>+ * does not parse macros in the source code.
+>+ */
+>+#define BLKIO_DRIVER_COMMON \
+>+    .instance_size           = sizeof(BDRVBlkioState), \
+>+    .bdrv_file_open          = blkio_file_open, \
+>+    .bdrv_close              = blkio_close, \
+>+    .bdrv_co_getlength       = blkio_co_getlength, \
+>+    .bdrv_co_truncate        = blkio_truncate, \
+>+    .bdrv_co_get_info        = blkio_co_get_info, \
+>+    .bdrv_attach_aio_context = blkio_attach_aio_context, \
+>+    .bdrv_detach_aio_context = blkio_detach_aio_context, \
+>+    .bdrv_co_pdiscard        = blkio_co_pdiscard, \
+>+    .bdrv_co_preadv          = blkio_co_preadv, \
+>+    .bdrv_co_pwritev         = blkio_co_pwritev, \
+>+    .bdrv_co_flush_to_disk   = blkio_co_flush, \
+>+    .bdrv_co_pwrite_zeroes   = blkio_co_pwrite_zeroes, \
+>+    .bdrv_refresh_limits     = blkio_refresh_limits, \
+>+    .bdrv_register_buf       = blkio_register_buf, \
+>+    .bdrv_unregister_buf     = blkio_unregister_buf,
+>
+>-static BlockDriver bdrv_io_uring = BLKIO_DRIVER(
+>-    DRIVER_IO_URING,
+>-    .bdrv_needs_filename = true,
+>-);
+>+/*
+>+ * Use the same .format_name and .protocol_name as the libblkio driver name for
+>+ * consistency.
+>+ */
+>
+>-static BlockDriver bdrv_nvme_io_uring = BLKIO_DRIVER(
+>-    DRIVER_NVME_IO_URING,
+>-);
+>+static BlockDriver bdrv_io_uring = {
+>+    .format_name         = "io_uring", \
 
-Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+Thanks for the fast fix :-)
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+Minor thing: we can remove the backslash here and in the following
+`struct BlockDriver`s fields.
+
+With or without this:
+
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+
+>+    .protocol_name       = "io_uring", \
+>+    .bdrv_needs_filename = true, \
+>+    BLKIO_DRIVER_COMMON
+>+};
+>
+>-static BlockDriver bdrv_virtio_blk_vfio_pci = BLKIO_DRIVER(
+>-    DRIVER_VIRTIO_BLK_VFIO_PCI
+>-);
+>+static BlockDriver bdrv_nvme_io_uring = {
+>+    .format_name         = "nvme-io_uring", \
+>+    .protocol_name       = "nvme-io_uring", \
+>+    BLKIO_DRIVER_COMMON
+>+};
+>
+>-static BlockDriver bdrv_virtio_blk_vhost_user = BLKIO_DRIVER(
+>-    DRIVER_VIRTIO_BLK_VHOST_USER
+>-);
+>+static BlockDriver bdrv_virtio_blk_vfio_pci = {
+>+    .format_name         = "virtio-blk-vfio-pci", \
+>+    .protocol_name       = "virtio-blk-vfio-pci", \
+>+    BLKIO_DRIVER_COMMON
+>+};
+>
+>-static BlockDriver bdrv_virtio_blk_vhost_vdpa = BLKIO_DRIVER(
+>-    DRIVER_VIRTIO_BLK_VHOST_VDPA
+>-);
+>+static BlockDriver bdrv_virtio_blk_vhost_user = {
+>+    .format_name         = "virtio-blk-vhost-user", \
+>+    .protocol_name       = "virtio-blk-vhost-user", \
+>+    BLKIO_DRIVER_COMMON
+>+};
+>+
+>+static BlockDriver bdrv_virtio_blk_vhost_vdpa = {
+>+    .format_name         = "virtio-blk-vhost-vdpa", \
+>+    .protocol_name       = "virtio-blk-vhost-vdpa", \
+>+    BLKIO_DRIVER_COMMON
+>+};
+>
+> static void bdrv_blkio_init(void)
+> {
+>-- 
+>2.40.1
+>
+
 
