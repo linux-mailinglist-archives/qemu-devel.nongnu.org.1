@@ -2,81 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AC817459A8
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 12:07:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 142437459BF
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 12:10:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGGRN-0002jN-N4; Mon, 03 Jul 2023 06:05:53 -0400
+	id 1qGGRb-0002xF-2H; Mon, 03 Jul 2023 06:06:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qGGRI-0002eO-Ni
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 06:05:48 -0400
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+ id 1qGGRO-0002mP-9l
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 06:05:54 -0400
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qGGRF-0005rR-0H
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 06:05:48 -0400
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-3143b70d6easo206569f8f.2
- for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 03:05:41 -0700 (PDT)
+ id 1qGGRG-0005rf-84
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 06:05:53 -0400
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-3141c8a6f30so4372649f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 03:05:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688378741; x=1690970741;
+ d=linaro.org; s=google; t=1688378742; x=1690970742;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=5yB3KjFB+U9E0IGbPxBILX7NHTWOiWyWbVzWyod1A2Y=;
- b=joR4m/ClJeRpoob+t5+QnStkdNFoxeTqfQX2yViVC46KO8kYWovTf89P8V7IYr+Oos
- EvFwMsu2XhPCpfSYyOyj197LvUN+uyCBja2AyU9fy3uoIrlrnS4KRBC0izuUzOzHYgbm
- smVoL85LinnLzkiXD+MISmbYxQWwCe6bjaY81jTj2uBWzQXqHnorTvcc7i4CS7qx5iQx
- OoQ2GqgjtBUrJwRByW8dE1iDFMOBnuZcNz4kaO2RiClgTvzKykzFAEnfgWrJbFR2mg5t
- 12oVanW9YC6tUBLRtS4MOWkZOPJTlweeCB+/D7QSfC/GHQi/rciO8hVKTc0Nx5POIjV4
- JuDQ==
+ bh=NQsBpcgKVgYp7fXYDQVN06TvKGcdOIek7QQgIG6AozQ=;
+ b=mZ/IrUE6/4Sgc7ls67lO5hlJNFTZGJQuyK7rU1pjq5w4o6lmCQ3ZvRKgdkDTa3x8E2
+ zm6IPnPCy7j0qoUidc0jppHp2jbFqqLg53fbc6cCyForMLD1L5PIDqSHUtlwvrvd8YTH
+ p3CF1k2n7cAA51rQMEZS69yxqQIUSq0ck8zNOypaImnrozJ1CDylJ+XOhlWh9LLtgrdX
+ NlVvFiRn/U0GzTKneyOGbBnNw4jzr63IrACpyibMdhdCmpwb/NXdKHtGeHBg1KuRQ4D2
+ KwpXe65bd3x8PL9XHQ+A1Yyi3ioI6cruO19juWirqoUisX9Ub4ADWUWzNIulDxCQFS2O
+ T8bw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688378741; x=1690970741;
+ d=1e100.net; s=20221208; t=1688378742; x=1690970742;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=5yB3KjFB+U9E0IGbPxBILX7NHTWOiWyWbVzWyod1A2Y=;
- b=i1rjH2EwaqaPcx7e14+6dD9Pe4whslcEBvUxHMVb8/JVnP2v2AAoKNGuzHV4/FYu1p
- 8t63HE/GdHslYdDMjFdu/AgEA7orlLHKlLIKO84lrd3PuCt5BIpTgE7myz3oz6PfQrbm
- 88c5u12xuDYt3Vphzo2JWg7UsmlDzIbtakWrASL4ejr6EKgdlrjtm9KrJiKBij5+Rlda
- yivmTeh+CuUU3xLFiEcbazXxH53r+IA1IgqXe+6RXybwo1Sj8XB1SGKfpCAdgzPQczk8
- o4c7BCwvcIpEGNrUDDCAQpBBTYPsSp28AT8reXsk2RH0xWWSjUofBOh3lhhHzFlmfhWm
- OhLA==
-X-Gm-Message-State: ABy/qLZxcO4pKq9W4zC0NCEA2BSNysOdlnTyZfKSz8Z8ry1drg4QCaWS
- 1Y4lNoorpFbt4NTMuivOs3kpyKOjprgbT4wocXTKrg==
-X-Google-Smtp-Source: APBJJlHffpZ/OpXAg7uvfnKlL79jVR66Kr1p0PZ5UUI3MDUX1zaZmuOHzdNIR1rkyMBOUNq+40mtcg==
-X-Received: by 2002:adf:fd43:0:b0:313:f5f8:a331 with SMTP id
- h3-20020adffd43000000b00313f5f8a331mr8284810wrs.34.1688378740035; 
- Mon, 03 Jul 2023 03:05:40 -0700 (PDT)
+ bh=NQsBpcgKVgYp7fXYDQVN06TvKGcdOIek7QQgIG6AozQ=;
+ b=V+N/O1iRLAFhRSnTFvXNFvvr3zFJhmfua+dH+pZFeikW1VNsyAZYSP9tYhmMdUKe3c
+ fr5p7tZ/US5o48kbFo4Hlh1uz9tiFi0Gso3Wb0KSWHGzm9CuR200lYqwE0medcV/skI8
+ cNNok6Wcc18dHcv50VTlbytWjCQvP2GRm2oUdMbqKbHlSDBBeLHOPCFhtHCA7G1Qu+wa
+ zwT3N2j5x66SLmd/UQgS1odaQLA8Na9hSnd/+CKiVWhkWrnbtg7BgefYIA0Y3nuIheJT
+ 6xGGfZnHncn5OuHvHaz52xshXBdCjnp133uC9ZkYDZhGuw9tSBYK/0922omRRxoNlHTi
+ AlHQ==
+X-Gm-Message-State: ABy/qLadYiWQjE/J9RXpouz6Ey8YvDZ81KndL50V5xyZ1mXM5x6fh1o8
+ t0J+rCgs+ajQmFEQnUHonXRmSa8i0rfzsobJQ9hBTg==
+X-Google-Smtp-Source: APBJJlGlYO37mRzpMB7XFRv1JL8DNCTK5e9dO0BjmamwoJjoWBF6pDhE7yy2DpftBSxQOWHFpv6ytQ==
+X-Received: by 2002:adf:f14a:0:b0:314:96f:bb81 with SMTP id
+ y10-20020adff14a000000b00314096fbb81mr7292123wro.22.1688378742155; 
+ Mon, 03 Jul 2023 03:05:42 -0700 (PDT)
 Received: from stoup.home (91.232.79.188.dynamic.jazztel.es. [188.79.232.91])
  by smtp.gmail.com with ESMTPSA id
- t5-20020a05600001c500b00313f7b077fesm18446562wrx.59.2023.07.03.03.05.39
+ t5-20020a05600001c500b00313f7b077fesm18446562wrx.59.2023.07.03.03.05.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 03 Jul 2023 03:05:39 -0700 (PDT)
+ Mon, 03 Jul 2023 03:05:41 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, qemu-riscv@nongnu.org, pbonzini@redhat.com,
- eduardo@habkost.net, alistair.francis@wdc.com, danielhb413@gmail.com
-Subject: [PATCH v4 17/37] target/ppc: Use aesenc_SB_SR_MC_AK
-Date: Mon,  3 Jul 2023 12:05:00 +0200
-Message-Id: <20230703100520.68224-18-richard.henderson@linaro.org>
+ eduardo@habkost.net, alistair.francis@wdc.com, danielhb413@gmail.com,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v4 18/37] target/ppc: Use aesdec_ISB_ISR_AK_IMC
+Date: Mon,  3 Jul 2023 12:05:01 +0200
+Message-Id: <20230703100520.68224-19-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230703100520.68224-1-richard.henderson@linaro.org>
 References: <20230703100520.68224-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x429.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,40 +94,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This implements the VCIPHER instruction.
+This implements the VNCIPHER instruction.
 
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Daniel Henrique Barboza <danielhb413@gmail.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/ppc/int_helper.c | 14 ++++----------
- 1 file changed, 4 insertions(+), 10 deletions(-)
+ target/ppc/int_helper.c | 19 ++++---------------
+ 1 file changed, 4 insertions(+), 15 deletions(-)
 
 diff --git a/target/ppc/int_helper.c b/target/ppc/int_helper.c
-index 15f07fca2b..1e477924b7 100644
+index 1e477924b7..834da80fe3 100644
 --- a/target/ppc/int_helper.c
 +++ b/target/ppc/int_helper.c
-@@ -2933,17 +2933,11 @@ void helper_vsbox(ppc_avr_t *r, ppc_avr_t *a)
+@@ -2947,22 +2947,11 @@ void helper_vcipherlast(ppc_avr_t *r, ppc_avr_t *a, ppc_avr_t *b)
  
- void helper_vcipher(ppc_avr_t *r, ppc_avr_t *a, ppc_avr_t *b)
+ void helper_vncipher(ppc_avr_t *r, ppc_avr_t *a, ppc_avr_t *b)
  {
--    ppc_avr_t result;
+-    /* This differs from what is written in ISA V2.07.  The RTL is */
+-    /* incorrect and will be fixed in V2.07B.                      */
 -    int i;
+-    ppc_avr_t tmp;
 +    AESState *ad = (AESState *)r;
 +    AESState *st = (AESState *)a;
 +    AESState *rk = (AESState *)b;
  
--    VECTOR_FOR_INORDER_I(i, u32) {
--        result.VsrW(i) = b->VsrW(i) ^
--            (AES_Te0[a->VsrB(AES_shifts[4 * i + 0])] ^
--             AES_Te1[a->VsrB(AES_shifts[4 * i + 1])] ^
--             AES_Te2[a->VsrB(AES_shifts[4 * i + 2])] ^
--             AES_Te3[a->VsrB(AES_shifts[4 * i + 3])]);
+-    VECTOR_FOR_INORDER_I(i, u8) {
+-        tmp.VsrB(i) = b->VsrB(i) ^ AES_isbox[a->VsrB(AES_ishifts[i])];
 -    }
--    *r = result;
-+    aesenc_SB_SR_MC_AK(ad, st, rk, true);
+-
+-    VECTOR_FOR_INORDER_I(i, u32) {
+-        r->VsrW(i) =
+-            AES_imc[tmp.VsrB(4 * i + 0)][0] ^
+-            AES_imc[tmp.VsrB(4 * i + 1)][1] ^
+-            AES_imc[tmp.VsrB(4 * i + 2)][2] ^
+-            AES_imc[tmp.VsrB(4 * i + 3)][3];
+-    }
++    aesdec_ISB_ISR_AK_IMC(ad, st, rk, true);
  }
  
- void helper_vcipherlast(ppc_avr_t *r, ppc_avr_t *a, ppc_avr_t *b)
+ void helper_vncipherlast(ppc_avr_t *r, ppc_avr_t *a, ppc_avr_t *b)
 -- 
 2.34.1
 
