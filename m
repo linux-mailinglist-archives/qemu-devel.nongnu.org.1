@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4A39745898
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 11:43:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EA967458B9
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 11:47:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGG4V-0002kB-UT; Mon, 03 Jul 2023 05:42:15 -0400
+	id 1qGG8t-0004R2-PO; Mon, 03 Jul 2023 05:46:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qGG4T-0002jz-KP
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 05:42:13 -0400
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ id 1qGG8l-0004QG-UX
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 05:46:41 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qGG4S-0001AL-2J
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 05:42:13 -0400
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-3112f5ab0b1so4672723f8f.0
- for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 02:42:11 -0700 (PDT)
+ id 1qGG8j-0001yg-7X
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 05:46:38 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-3fbc244d386so44101985e9.2
+ for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 02:46:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688377329; x=1690969329;
+ d=linaro.org; s=google; t=1688377594; x=1690969594;
  h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
  :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
  :message-id:reply-to;
- bh=BbjIYgjf8+mkXwaynZ7FrRorQi1AhSZ73udhd1Tgojk=;
- b=CDhcRwsbwpqV2Z94leu6KTsZCoCCva/6TyxXsQhSHqLPy23HzDVJ4B10sPHTT1PIzB
- gm/I6Y42NEkEQ9bHXgZ6h4Jeeu7r3SUlijxjBP7UYvUacMN/5vdy9oDYnx8q/VbinF16
- GASZI7uWoD1m/7b6BbZ5XVnT8VuI7ZQEr1aC03pfAIuGb3C3pGgPUlKwxbeqe8sm0xXx
- jC7/Jqzv+0c/H25ro9vpy9ECKYvCG+TNzkv3d68eWh12sScrh4b97IBIiILqdB6P0a3T
- 8ug0BekItHNIt5kQaS2fkAizdjV+e96B7o4cVBDNQ89zkJdUcLzydkXOwmbi6J1tHs0f
- DBTg==
+ bh=exyzw2CBVKqr84tDr8YOM5XCxFcJfH9Gd1308tVtnXw=;
+ b=XD7Wc6p8idzEK+xOBa5QIlul+HB4E5izp6rar39IbunDUyvaTAiWa7UthmKr/D7tDZ
+ 0K2h3RVuMZLtlFrfiu9ruhjYINZhF7PkmZ9J+eX4NXZYWUHFkGn278KCN0U1M9MW7SXA
+ 6Cj1vMgTb9K59MuT3YviwHHwI5WHJX1/88/7L8NpH3/GseaMzins+poEyGv+vqZhYILd
+ MeG8C6KRQsF8FXUyKoBPLpuaT+hYUUNBIWq4t7XVzftUaV2sMuKLy7FUbYflwm1xWcyh
+ JPIt2t6MN/uYkdaB8IAD7cQkUg+rL7fMMXkRUFArjEDhpt5To1civULHD+owaT5/DmAA
+ QKvQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688377329; x=1690969329;
+ d=1e100.net; s=20221208; t=1688377594; x=1690969594;
  h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
  :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=BbjIYgjf8+mkXwaynZ7FrRorQi1AhSZ73udhd1Tgojk=;
- b=bkquFWeKIBIMNPaex13pgzzbkXCaQoL7/Ku93jLp9JPDtVn8XdSYl0ZYsiihHVlYcB
- NfSJb6skVjaJVPlxCvXn9HEcVJCB5lQwECV70UKjAqa3evfYDvfcxsgs0y0YDkhO2x0X
- zv5MICqfbHQlFGxd8ZZulmnIbWswRvgrCZggqI2RBCyDoEIszCXsamrNbaPW/Pkr3WPg
- 5BXeP/myInAlJspDXr7gyG8h9Z/nsGUQ+zr3l4TSFX5ketdyMzNqH1oBTlBjSIgCqOp6
- 3tVcX6ZGbbrLmOxIcKletNZL7MbROkgEjQygaVmG0qQTJ0/A7zW1E93rSqYTNV7h5rnN
- E9ig==
-X-Gm-Message-State: ABy/qLbM4GYx1fy0pTLlj970aV+MfdrGfPScOFT7EnfffvFMQJXSrzNT
- 9QFcXJgtFenIlBHugSPgPBldUA==
-X-Google-Smtp-Source: APBJJlGQk6fghZVrK1LxuuaUUsYzhBuBd3GAAbolt1R9/KcN59vBA+iWhUYdrpLbpybc5VZP3bCwIQ==
-X-Received: by 2002:adf:f34f:0:b0:314:12b8:641c with SMTP id
- e15-20020adff34f000000b0031412b8641cmr7176671wrp.70.1688377329451; 
- Mon, 03 Jul 2023 02:42:09 -0700 (PDT)
+ bh=exyzw2CBVKqr84tDr8YOM5XCxFcJfH9Gd1308tVtnXw=;
+ b=B7LlXCw2YHcCrN0r0/+vY83r/tV5h9FllkSuHyy7sVU7uexNipt0RtYl8wUUEqYxVr
+ H8UplD0xI0AOvHV5yEpRJNHb055F0itc1w8ZzFvnfiq0SsB8W2OjSFnNa29OVdhZH+/O
+ cBP8gAKxIMi792W6tiC7x3qMy9wmTSMKVKE/UxybSE5mkUimfiKbAfaM+6X7Hmqi4sRK
+ bq9xlmI1pWLWkGfJ8Yh5mtdohbgnKGqGPScgjjDaUZ+gyLJedyrhT11osDMMzX4asq2/
+ j8EOqgZYS6VZL4hHFahR/yFQBdrMoPBDJY8p7tXk8zHrNmqIQ3IFlznOGWOJFx4Psu+B
+ f4FA==
+X-Gm-Message-State: ABy/qLbaUIrp0C971NKksHldqw8A+sxsP3+qBsvKAUD1M+QdnQeNrh1c
+ ZTkd+WTZfUPfQhbbD4iyhX9TGQ==
+X-Google-Smtp-Source: APBJJlEejyRJLOPdV5AhivGeqqRYlnM3HPL/DGoMlxVvFVNp2qq6azODjCZYHCLmPO7VqFrMWoJP4Q==
+X-Received: by 2002:a05:6000:92e:b0:313:f862:6e3e with SMTP id
+ cx14-20020a056000092e00b00313f8626e3emr8137701wrb.40.1688377594648; 
+ Mon, 03 Jul 2023 02:46:34 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- j4-20020adfea44000000b0030fa3567541sm25201377wrn.48.2023.07.03.02.42.09
+ v11-20020adff68b000000b0031424950a99sm7920315wrp.81.2023.07.03.02.46.34
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 03 Jul 2023 02:42:09 -0700 (PDT)
+ Mon, 03 Jul 2023 02:46:34 -0700 (PDT)
 Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id B4B551FFBB;
- Mon,  3 Jul 2023 10:42:08 +0100 (BST)
+ by zen.linaroharston (Postfix) with ESMTP id D8A511FFBB;
+ Mon,  3 Jul 2023 10:46:33 +0100 (BST)
 References: <20230630132159.376995-1-richard.henderson@linaro.org>
- <20230630132159.376995-7-richard.henderson@linaro.org>
+ <20230630132159.376995-8-richard.henderson@linaro.org>
 User-agent: mu4e 1.11.8; emacs 29.0.92
 From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: Richard Henderson <richard.henderson@linaro.org>
 Cc: mjt@tls.msk.ru, laurent@vivier.eu, qemu-devel@nongnu.org
-Subject: Re: [PATCH 06/24] linux-user: Populate more bits in mmap_flags_tbl
-Date: Mon, 03 Jul 2023 10:42:04 +0100
-In-reply-to: <20230630132159.376995-7-richard.henderson@linaro.org>
-Message-ID: <877crhjpqn.fsf@linaro.org>
+Subject: Re: [PATCH 07/24] accel/tcg: Introduce page_check_range_empty
+Date: Mon, 03 Jul 2023 10:45:06 +0100
+In-reply-to: <20230630132159.376995-8-richard.henderson@linaro.org>
+Message-ID: <873525jpja.fsf@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x433.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,16 +99,35 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Richard Henderson <richard.henderson@linaro.org> writes:
 
-> Fix translation of TARGET_MAP_SHARED and TARGET_MAP_PRIVATE,
-> which are types not single bits.  Add TARGET_MAP_SHARED_VALIDATE,
-> TARGET_MAP_SYNC, TARGET_MAP_NONBLOCK, TARGET_MAP_POPULATE,
-> TARGET_MAP_FIXED_NOREPLACE, and TARGET_MAP_UNINITIALIZED.
->
-> Update strace to match.
+> Examine the interval tree to validate that a region
+> has no existing mappings.
 >
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>  include/exec/cpu-all.h | 11 +++++++++++
+>  accel/tcg/user-exec.c  |  7 +++++++
+>  2 files changed, 18 insertions(+)
+>
+> diff --git a/include/exec/cpu-all.h b/include/exec/cpu-all.h
+> index 8018ce783e..5b2c230d52 100644
+> --- a/include/exec/cpu-all.h
+> +++ b/include/exec/cpu-all.h
+> @@ -224,6 +224,17 @@ void page_set_flags(target_ulong start, target_ulong=
+ last, int flags);
+>  void page_reset_target_data(target_ulong start, target_ulong last);
+>  int page_check_range(target_ulong start, target_ulong len, int flags);
+>=20=20
+> +/**
+> + * page_check_range_empty:
+> + * @start: first byte of range
+> + * @last: last byte of range
+
+* Context: holding mmap lock
+
+Otherwise:
 
 Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+
 
 --=20
 Alex Benn=C3=A9e
