@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F29A5745A23
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 12:28:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34A08745A2F
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 12:29:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGGnD-0007lS-Pt; Mon, 03 Jul 2023 06:28:27 -0400
+	id 1qGGno-0008QI-VR; Mon, 03 Jul 2023 06:29:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berto@igalia.com>)
- id 1qGGnC-0007km-8A; Mon, 03 Jul 2023 06:28:26 -0400
+ id 1qGGni-0008MM-QL; Mon, 03 Jul 2023 06:28:58 -0400
 Received: from fanzine2.igalia.com ([213.97.179.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berto@igalia.com>)
- id 1qGGnA-0003ay-MJ; Mon, 03 Jul 2023 06:28:25 -0400
+ id 1qGGnf-0003dL-Bb; Mon, 03 Jul 2023 06:28:56 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
  s=20170329;
  h=Content-Type:MIME-Version:Message-ID:Date:References:
@@ -23,32 +23,33 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
  Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
  Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
  List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=lxIhcft7DjeeYdpJuo7xmPldHscY4lupYWZ+VXIMa5g=; b=Mz/4nptl1NwxItOq0uFB7OD3k6
- ew1fylyR2rdrOPOusljkRjCwYsw7yJCaZe3b402U/9apbJvZ2U7HiPBcAkofCGTzXywvnm2JtNH7e
- 4y+XSF7Nb+D/7rXNZzI+lA2hodlrcQeg3jdMg/wtOxfXwgO6Fjzo05Qo3yIQoPb3ZuLLhl/viceNx
- eUY3DckLC6QlI0rdvLm7fl1akS9fyvjVcn46EqxPn/Fv63qjyrBERU7yhQcw7RXslA1DqrFlVmmqs
- k0/XF6HUgx6902dkMrdmGohjjMDBimgriImsf/V6FoCwzJR0M4HpzArMZdZsKR5yun4pN9NIszAv4
- aIqDyTKg==;
+ bh=e6SgHnmzx6uEZq4I4nPXal7J0AF7m1lUDyvDLavc+j4=; b=hYqMymMh37D1UACpoRqJRpZPwc
+ hUg17V6ZkfPfWAGRo7mFF2SRC+PbToxT1ooIdUR7Uj6y9tHpRjbb9edZYw4JWY5IHgyNYgQrF1tSP
+ 571bL+xJzrz0DK0L/oMjP7orYY2S0HH+qfcd1EeSxF4vOY5RMzxQcmTgP6QLsrCFiMC6HqVMijBWB
+ zHesimGyHonBQ2I038nPzksdae9CyfOAmFMPW+JkQarJqEdyWdUkF6GxnE5dLLWz3pgBwK59GeHf3
+ 3EYQIs6nFjhnbg0AxCIshjO0CODw4Ar9/iefBVp7TS8dsajctf0BeyCEw4JilvI6JSsdvZzPckDya
+ wTd9p6sg==;
 Received: from maestria.local.igalia.com ([192.168.10.14] helo=mail.igalia.com)
  by fanzine2.igalia.com with esmtps 
  (Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
- id 1qGGn7-007Zug-RF; Mon, 03 Jul 2023 12:28:21 +0200
+ id 1qGGnc-007ZvW-6i; Mon, 03 Jul 2023 12:28:52 +0200
 Received: from gate.service.igalia.com ([192.168.21.52])
  by mail.igalia.com with esmtp (Exim)
- id 1qGGn5-002H6K-ML; Mon, 03 Jul 2023 12:28:21 +0200
+ id 1qGGna-002H7R-2z; Mon, 03 Jul 2023 12:28:52 +0200
 Received: from berto by gate.service.igalia.com with local (Exim 4.94.2)
  (envelope-from <berto@igalia.com>)
- id 1qGGn5-00BG76-3T; Mon, 03 Jul 2023 10:28:19 +0000
+ id 1qGGnZ-00BG7T-GN; Mon, 03 Jul 2023 10:28:49 +0000
 From: Alberto Garcia <berto@igalia.com>
 To: zhenwei pi <pizhenwei@bytedance.com>
 Cc: arei.gonglei@huawei.com, qemu-devel@nongnu.org, qemu-block@nongnu.org,
  berrange@redhat.com, zhenwei pi <pizhenwei@bytedance.com>
-Subject: Re: [PATCH v2 3/5] throttle: support read-only and write-only
-In-Reply-To: <20230627072431.449171-4-pizhenwei@bytedance.com>
+Subject: Re: [PATCH v2 5/5] cryptodev: use NULL throttle timer cb for read
+ direction
+In-Reply-To: <20230627072431.449171-6-pizhenwei@bytedance.com>
 References: <20230627072431.449171-1-pizhenwei@bytedance.com>
- <20230627072431.449171-4-pizhenwei@bytedance.com>
-Date: Mon, 03 Jul 2023 10:28:19 +0000
-Message-ID: <w51wmzh47cs.fsf@igalia.com>
+ <20230627072431.449171-6-pizhenwei@bytedance.com>
+Date: Mon, 03 Jul 2023 10:28:49 +0000
+Message-ID: <w51ttul47by.fsf@igalia.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 Received-SPF: pass client-ip=213.97.179.56; envelope-from=berto@igalia.com;
@@ -74,15 +75,10 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue 27 Jun 2023 03:24:29 PM +08, zhenwei pi wrote:
-> Only one direction is necessary in several scenarios:
-> - a read-only disk
-> - operations on a device are considered as *write* only. For example,
->   encrypt/decrypt/sign/verify operations on a cryptodev use a single
->   *write* timer(read timer callback is defined, but never invoked).
->
-> Allow a single direction in throttle, this reduces memory, and uplayer
-> does not need a dummy callback any more.
+On Tue 27 Jun 2023 03:24:31 PM +08, zhenwei pi wrote:
+> Operations on a crytpodev are considered as *write* only, the callback
+> of read direction is never invoked. Use NULL instead of an unreachable
+> path(cryptodev_backend_throttle_timer_cb on read direction).
 >
 > Signed-off-by: zhenwei pi <pizhenwei@bytedance.com>
 
