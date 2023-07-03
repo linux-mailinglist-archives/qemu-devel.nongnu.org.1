@@ -2,91 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B95D3745807
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 11:05:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2458745848
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 11:22:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGFTO-0007eQ-3P; Mon, 03 Jul 2023 05:03:54 -0400
+	id 1qGFkb-0004bs-70; Mon, 03 Jul 2023 05:21:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1qGFTL-0007eB-UT
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 05:03:52 -0400
-Received: from mail-oo1-xc32.google.com ([2607:f8b0:4864:20::c32])
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1qGFkZ-0004bk-NL
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 05:21:39 -0400
+Received: from mail-qt1-x833.google.com ([2607:f8b0:4864:20::833])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1qGFTK-0006Cw-19
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 05:03:51 -0400
-Received: by mail-oo1-xc32.google.com with SMTP id
- 006d021491bc7-565db4666d7so1859905eaf.0
- for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 02:03:49 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1qGFkX-0004Y5-Np
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 05:21:39 -0400
+Received: by mail-qt1-x833.google.com with SMTP id
+ d75a77b69052e-402532f9721so17268811cf.1
+ for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 02:21:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688375027; x=1690967027;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=yJKu3TI7NEuDtjDEdXHnRJNzjZ8vVeFGshp9lQeJJH4=;
- b=BTOQ2wDReU49bQbiMfBrWLmYV8oBdzD8GDs90P7FoLh/AhrEXd7aIG7ykuwVBz4aPd
- I9PW9w7tHDPOOkbqsJc88iJ33stzFHpgQgIrJbmH+mSdokxLNIW/+DC+/oqs3OXqffZm
- W54DW4TrgTM0uwNvk5yj6xcSFJuDO9yBb3adMOMa24kimsPxDpXieYLbWwiKDlIFjN8M
- jPJLFCOuBVr3jp3ps3GyGun9uZvLVqZU7pHCwN/Fy1SFCEk1hP3Qv3HPbx1Sk0o9HZ+4
- Jii6Yt4x+GysdQNsXZAotv8WgGIecn3PoqsVNDocOpqHXBJ9spr5YhOaiqdCFWZG1Nl+
- BeyQ==
+ d=gmail.com; s=20221208; t=1688376095; x=1690968095;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=W4zuNRPn3zuxYHZkj8G6LwmoEq9e3H1PRLIsBiPI7k8=;
+ b=Rht3lCGY9Rd3CLMhevhPHMT1WWIEQYHi+fkv6kOtjWGnmVklF+8B3SpRNmdnvD4FX7
+ ppO7TrOj++obSdarLrrw1BapVNWcUxH65qwmOaK7PKMGYg05pAwvTzFbTe2NVYrsycUR
+ kzQST53uBAoSdiqaGqylQkGawi0QTUstpY/XQardZKDqrtGNNR5KzJtloHeOb4qzKBDK
+ o/UfdOS8M+Wlj34EtZvX4JSIwwJAXMU0Ok8Bv6nCx4cWtUrEL3xmnEf05WbnMtigiwnZ
+ OXtb25os91YYOnffVkmqfBHw+2ZVWtgc5QiSWWeCf/6Kp2T0O2aW+65Th6BeXPJbmH8Y
+ d8fg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688375027; x=1690967027;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=yJKu3TI7NEuDtjDEdXHnRJNzjZ8vVeFGshp9lQeJJH4=;
- b=L7ikuAjbRdagBCdmkVlcx31dj7aZL5wQey8vSDQDXYG8Ob+Tm6cwtW3LP0UUQ9XLHC
- ueRK4FlwaAtb2TKJegDHyfTP1TpA8W0tPYwvdN/j+tTgdjTegdaQ/+f5o8HoM5Bj1LtD
- Vo/YJjRse3s5EtvusEIyfS89SxtoaGf7bByq1M07DZS1dypzk9cb4EXVLwwBh7ScUcNE
- X+8/rU0HGoZP7LG+NcX44Yks6R4b/XpzbqZXC22BgZbCKuOI95Ncx3LJcy23unGHT0pt
- 0xputFMdIORp6lTAZ5WZRzEyz8x/jaI0+3bH8raEPZ2yXVWAMpfi62f69HXbPrZBQP0b
- U4fg==
-X-Gm-Message-State: AC+VfDxfpi6h33jOn5zkpEp/rgyDergAPo8/OHLu/ZjwYukBB7N0HcAU
- XaF1m6wJKShvMFuSt5pI8R+W4LqOY2tYX+XgE/Q=
-X-Google-Smtp-Source: ACHHUZ7NK8gcd9X1nVp6Tqw1XCwuv2Ay/R/cWNOIWlZWOit+9aBH7/UXiCy6K1U86eav9NBv87t+J4oIsjFRrTJCMwQ=
-X-Received: by 2002:a4a:524f:0:b0:563:5666:5c03 with SMTP id
- d76-20020a4a524f000000b0056356665c03mr6373167oob.5.1688375027342; Mon, 03 Jul
- 2023 02:03:47 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1688376095; x=1690968095;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=W4zuNRPn3zuxYHZkj8G6LwmoEq9e3H1PRLIsBiPI7k8=;
+ b=iptjh5Y8zLOl+F7OqDy2rH7xq+mobXDhVl1sz25/sjEOVU5i1lI1xlUKnwAgChR0Of
+ RB0r4gBxT9NokBKFjhvwWJYWRM7Q+Bw9p6+JNRA1IXm5FaKmTisebZa1JXvP52DbSlv0
+ 1Yc0x4fiSGlkSaxf5wtaf7RLftKgZcztlDLDhIZJp2GqdNVqa3s83DfqcoyUP7sQmPLT
+ X+LHGDbuov4NHLSBwMlWLy60sjweGe4N1+IlWq1ocrGu7p7ydIuqW/6q0u6x0C1Fe+M9
+ l98YEx1zYZEcPHHmJQhJLOeWq20mVNaCfnbJok03Gx/aYnMtGiASWmCYNTqt1TdmUeXX
+ BCvw==
+X-Gm-Message-State: AC+VfDxmpKMuPLuobKJ/dvmVJfcNGQmFuI2beNoO1J3K71QbyAq+dKNU
+ +vFoLCzNh46EClUGAerBop2b35RBe4WeKnuz37M=
+X-Google-Smtp-Source: ACHHUZ6mP3FHNG4UpIlWic7FxyXwmiLbz6gZua6/tjyARRGmdyvTq6jdhfsKE5D1DiAJ4yPu6zgQWnImd+7kpDY1KIE=
+X-Received: by 2002:ac8:574a:0:b0:403:20f4:e1cf with SMTP id
+ 10-20020ac8574a000000b0040320f4e1cfmr17677546qtx.26.1688376095503; Mon, 03
+ Jul 2023 02:21:35 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230622215824.2173343-1-i.maximets@ovn.org>
- <CACGkMEsXOb8wiYo9ktgqh8MqD971=ARJ_etL7MBF-uyo6qt1eA@mail.gmail.com>
- <CACGkMEuyq+5_cqx4T03fcaLOGUCrKLZn51sZxNSXyZq8CqLXTg@mail.gmail.com>
- <93a056c4-b6d3-5491-0c1f-7f58e9f9d1ad@ovn.org>
- <CACGkMEuaUTGeCYfH-MbtX_79scN-CkBmFMcY0fwKo4vO_9cn4w@mail.gmail.com>
- <26c03cd4-5582-489c-9f4c-aeaf8e157b42@ovn.org>
- <CACGkMEsE6_91mOhCP5ezT96zz-Tb-bLXQr9ktrLg6zG0TZC3Lg@mail.gmail.com>
- <CAJSP0QXPiNK2rH6_8bB7sjMpdQjT--oX0u4FkdaTj7Ew3qs8CA@mail.gmail.com>
- <CACGkMEuN_PeXZhqaN4EJP8rKRVK=wftpkH3--y267j9+7smCOw@mail.gmail.com>
- <CAJSP0QVg-mmtnMXZpxRKutbdgpdNeawJT45iQSp4cf=MRedZAQ@mail.gmail.com>
- <CACGkMEtdk-Qi+5M+pEa9v=S_ehRs=m7Ux4=Sf6aqk0EqNzyQ5g@mail.gmail.com>
- <CAJSP0QW22f18V0pXTO-w4BXONJ3wLCbczMjKSKCRnxiF+7W=eg@mail.gmail.com>
- <CACGkMEvCV6JcQ3LOQvCx=9KXKqE_SAQwzxFXe1c+PdSMH_KbDg@mail.gmail.com>
- <CAJSP0QUtCnE49YWA6PmVSExMaFf2VZi3St1Wysk9ruDS37ALHg@mail.gmail.com>
- <CACGkMEu1V4HBdP3JFYV-+Uec1s6f0U3fj5f9tV0FApQ+U8rbrw@mail.gmail.com>
-In-Reply-To: <CACGkMEu1V4HBdP3JFYV-+Uec1s6f0U3fj5f9tV0FApQ+U8rbrw@mail.gmail.com>
-From: Stefan Hajnoczi <stefanha@gmail.com>
-Date: Mon, 3 Jul 2023 11:03:34 +0200
-Message-ID: <CAJSP0QU-p_cKCevxTabKhfq9T2=UShLqcced-OCmfCx3dE+6rQ@mail.gmail.com>
-Subject: Re: [PATCH] net: add initial support for AF_XDP network backend
-To: Jason Wang <jasowang@redhat.com>
-Cc: Ilya Maximets <i.maximets@ovn.org>, Paolo Bonzini <pbonzini@redhat.com>, 
- Eric Blake <eblake@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
- qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c32;
- envelope-from=stefanha@gmail.com; helo=mail-oo1-xc32.google.com
+References: <20230630234839.14716-1-philmd@linaro.org>
+In-Reply-To: <20230630234839.14716-1-philmd@linaro.org>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
+Date: Mon, 3 Jul 2023 11:21:24 +0200
+Message-ID: <CAJ+F1CKfx2i3fcikH_LujYGWmF56gyaECHqwPjwKoZqbHZsw9w@mail.gmail.com>
+Subject: Re: [PATCH] ui: Link dbus-display with pixman again
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, BALATON Zoltan <balaton@eik.bme.hu>, 
+ Gerd Hoffmann <kraxel@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>, 
+ Frederic Bezies <fredbezies@gmail.com>
+Content-Type: multipart/alternative; boundary="0000000000006b795505ff91b1ca"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::833;
+ envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x833.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,187 +87,168 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 30 Jun 2023 at 09:41, Jason Wang <jasowang@redhat.com> wrote:
->
-> On Thu, Jun 29, 2023 at 8:36=E2=80=AFPM Stefan Hajnoczi <stefanha@gmail.c=
-om> wrote:
-> >
-> > On Thu, 29 Jun 2023 at 07:26, Jason Wang <jasowang@redhat.com> wrote:
-> > >
-> > > On Wed, Jun 28, 2023 at 4:25=E2=80=AFPM Stefan Hajnoczi <stefanha@gma=
-il.com> wrote:
-> > > >
-> > > > On Wed, 28 Jun 2023 at 10:19, Jason Wang <jasowang@redhat.com> wrot=
-e:
-> > > > >
-> > > > > On Wed, Jun 28, 2023 at 4:15=E2=80=AFPM Stefan Hajnoczi <stefanha=
-@gmail.com> wrote:
-> > > > > >
-> > > > > > On Wed, 28 Jun 2023 at 09:59, Jason Wang <jasowang@redhat.com> =
+--0000000000006b795505ff91b1ca
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+Hi
+
+On Sat, Jul 1, 2023 at 1:49=E2=80=AFAM Philippe Mathieu-Daud=C3=A9 <philmd@=
+linaro.org>
 wrote:
-> > > > > > >
-> > > > > > > On Wed, Jun 28, 2023 at 3:46=E2=80=AFPM Stefan Hajnoczi <stef=
-anha@gmail.com> wrote:
-> > > > > > > >
-> > > > > > > > On Wed, 28 Jun 2023 at 05:28, Jason Wang <jasowang@redhat.c=
-om> wrote:
-> > > > > > > > >
-> > > > > > > > > On Wed, Jun 28, 2023 at 6:45=E2=80=AFAM Ilya Maximets <i.=
-maximets@ovn.org> wrote:
-> > > > > > > > > >
-> > > > > > > > > > On 6/27/23 04:54, Jason Wang wrote:
-> > > > > > > > > > > On Mon, Jun 26, 2023 at 9:17=E2=80=AFPM Ilya Maximets=
- <i.maximets@ovn.org> wrote:
-> > > > > > > > > > >>
-> > > > > > > > > > >> On 6/26/23 08:32, Jason Wang wrote:
-> > > > > > > > > > >>> On Sun, Jun 25, 2023 at 3:06=E2=80=AFPM Jason Wang =
-<jasowang@redhat.com> wrote:
-> > > > > > > > > > >>>>
-> > > > > > > > > > >>>> On Fri, Jun 23, 2023 at 5:58=E2=80=AFAM Ilya Maxim=
-ets <i.maximets@ovn.org> wrote:
-> > > > > > > > > > >> It is noticeably more performant than a tap with vho=
-st=3Don in terms of PPS.
-> > > > > > > > > > >> So, that might be one case.  Taking into account tha=
-t just rcu lock and
-> > > > > > > > > > >> unlock in virtio-net code takes more time than a pac=
-ket copy, some batching
-> > > > > > > > > > >> on QEMU side should improve performance significantl=
-y.  And it shouldn't be
-> > > > > > > > > > >> too hard to implement.
-> > > > > > > > > > >>
-> > > > > > > > > > >> Performance over virtual interfaces may potentially =
-be improved by creating
-> > > > > > > > > > >> a kernel thread for async Tx.  Similarly to what io_=
-uring allows.  Currently
-> > > > > > > > > > >> Tx on non-zero-copy interfaces is synchronous, and t=
-hat doesn't allow to
-> > > > > > > > > > >> scale well.
-> > > > > > > > > > >
-> > > > > > > > > > > Interestingly, actually, there are a lot of "duplicat=
-ion" between
-> > > > > > > > > > > io_uring and AF_XDP:
-> > > > > > > > > > >
-> > > > > > > > > > > 1) both have similar memory model (user register)
-> > > > > > > > > > > 2) both use ring for communication
-> > > > > > > > > > >
-> > > > > > > > > > > I wonder if we can let io_uring talks directly to AF_=
-XDP.
-> > > > > > > > > >
-> > > > > > > > > > Well, if we submit poll() in QEMU main loop via io_urin=
-g, then we can
-> > > > > > > > > > avoid cost of the synchronous Tx for non-zero-copy mode=
-s, i.e. for
-> > > > > > > > > > virtual interfaces.  io_uring thread in the kernel will=
- be able to
-> > > > > > > > > > perform transmission for us.
-> > > > > > > > >
-> > > > > > > > > It would be nice if we can use iothread/vhost other than =
-the main loop
-> > > > > > > > > even if io_uring can use kthreads. We can avoid the memor=
-y translation
-> > > > > > > > > cost.
-> > > > > > > >
-> > > > > > > > The QEMU event loop (AioContext) has io_uring code
-> > > > > > > > (utils/fdmon-io_uring.c) but it's disabled at the moment. I=
-'m working
-> > > > > > > > on patches to re-enable it and will probably send them in J=
-uly. The
-> > > > > > > > patches also add an API to submit arbitrary io_uring operat=
-ions so
-> > > > > > > > that you can do stuff besides file descriptor monitoring. B=
-oth the
-> > > > > > > > main loop and IOThreads will be able to use io_uring on Lin=
-ux hosts.
-> > > > > > >
-> > > > > > > Just to make sure I understand. If we still need a copy from =
-guest to
-> > > > > > > io_uring buffer, we still need to go via memory API for GPA w=
-hich
-> > > > > > > seems expensive.
-> > > > > > >
-> > > > > > > Vhost seems to be a shortcut for this.
-> > > > > >
-> > > > > > I'm not sure how exactly you're thinking of using io_uring.
-> > > > > >
-> > > > > > Simply using io_uring for the event loop (file descriptor monit=
-oring)
-> > > > > > doesn't involve an extra buffer, but the packet payload still n=
-eeds to
-> > > > > > reside in AF_XDP umem, so there is a copy between guest memory =
-and
-> > > > > > umem.
-> > > > >
-> > > > > So there would be a translation from GPA to HVA (unless io_uring
-> > > > > support 2 stages) which needs to go via qemu memory core. And thi=
-s
-> > > > > part seems to be very expensive according to my test in the past.
-> > > >
-> > > > Yes, but in the current approach where AF_XDP is implemented as a Q=
-EMU
-> > > > netdev, there is already QEMU device emulation (e.g. virtio-net)
-> > > > happening. So the GPA to HVA translation will happen anyway in devi=
-ce
-> > > > emulation.
-> > >
-> > > Just to make sure we're on the same page.
-> > >
-> > > I meant, AF_XDP can do more than e.g 10Mpps. So if we still use the
-> > > QEMU netdev, it would be very hard to achieve that if we stick to
-> > > using the Qemu memory core translations which need to take care about
-> > > too much extra stuff. That's why I suggest using vhost in io threads
-> > > which only cares about ram so the translation could be very fast.
-> >
-> > What does using "vhost in io threads" mean?
+
+> Since its introduction in commit 142ca628a7 ("ui: add a D-Bus
+> display backend"), dbus_display1 depends on pixman.
+> Unfortunatly the refactor commit 1222070e77 ("meson: ensure
+> dbus-display generated code is built before other units")
+> dropped that dependency. Recently commit 6cc5a6159a ("ui/dbus:
+> win32 support") expose this problem:
 >
-> It means a vhost userspace dataplane that is implemented via io threads.
-
-AFAIK this does not exist today. QEMU's built-in devices that use
-IOThreads don't use vhost code. QEMU vhost code is for vhost kernel,
-vhost-user, or vDPA but not built-in devices that use IOThreads. The
-built-in devices implement VirtioDeviceClass callbacks directly and
-use AioContext APIs to run in IOThreads.
-
-Do you have an idea for using vhost code for built-in devices? Maybe
-it's fastest if you explain your idea and its advantages instead of me
-guessing.
-
-> > > > Regarding pinning - I wonder if that's something that can be refine=
-d
-> > > > in the kernel by adding an AF_XDP flag that enables on-demand pinni=
-ng
-> > > > of umem. That way only rx and tx buffers that are currently in use
-> > > > will be pinned. The disadvantage is the runtime overhead to pin/unp=
-in
-> > > > pages. I'm not sure whether it's possible to implement this, I have=
-n't
-> > > > checked the kernel code.
-> > >
-> > > It requires the device to do page faults which is not commonly
-> > > supported nowadays.
-> >
-> > I don't understand this comment. AF_XDP processes each rx/tx
-> > descriptor. At that point it can getuserpages() or similar in order to
-> > pin the page. When the memory is no longer needed, it can put those
-> > pages. No fault mechanism is needed. What am I missing?
+>   In file included from include/ui/console.h:4,
+>                    from ui/dbus.h:31,
+>                    from ../audio/dbusaudio.c:36:
+>   include/ui/qemu-pixman.h:12:10: fatal error: pixman.h: No such file or
+> directory
+>      12 | #include <pixman.h>
+>         |          ^~~~~~~~~~
 >
-> Ok, I think I kind of get you, you mean doing pinning while processing
-> rx/tx buffers? It's not easy since GUP itself is not very fast, it may
-> hit PPS for sure.
+> Restore the missing dependency on pixman.
+>
 
-Yes. It's not as fast as permanently pinning rx/tx buffers, but it
-supports unpinned guest RAM.
+I fail to understand how this would help.  dbus-display1 unit is pure
+GIO/GDBus code, no pixman involved. The derived library dependency is then
+used to build and link the dbus ui/ module.
 
-There are variations on this approach, like keeping a certain amount
-of pages pinned after they have been used so the cost of
-pinning/unpinning can be avoided when the same pages are reused in the
-future, but I don't know how effective that is in practice.
+audio/dbus currently requires pixman because it compiles against units from
+ui/dbus, which introduces some indirect pixman dependency from ui/console.
 
-Is there a more efficient approach without relying on hardware page
-fault support?
+It would be worth working on making pixman optional altogether (
+https://gitlab.com/qemu-project/qemu/-/issues/1172), I will try to look at
+it.
 
-My understanding is that hardware page fault support is not yet
-deployed. We'd be left with pinning guest RAM permanently or using a
-runtime pinning/unpinning approach like I've described.
+thanks
 
-Stefan
+
+> Reported-by: Frederic Bezies <fredbezies@gmail.com>
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1739
+> Fixes: 1222070e77 ("meson: ensure dbus-display generated code is built
+> before other units")
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> ---
+>  ui/meson.build | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/ui/meson.build b/ui/meson.build
+> index d81609fb0e..cb178dd095 100644
+> --- a/ui/meson.build
+> +++ b/ui/meson.build
+> @@ -90,7 +90,7 @@ if dbus_display
+>                                            '--interface-prefix',
+> 'org.qemu.',
+>                                            '--c-namespace', 'QemuDBus',
+>                                            '--generate-c-code', '@BASENAM=
+E@
+> '])
+> -  dbus_display1_lib =3D static_library('dbus-display1', dbus_display1,
+> dependencies: gio)
+> +  dbus_display1_lib =3D static_library('dbus-display1', dbus_display1,
+> dependencies: [gio, pixman])
+>    dbus_display1_dep =3D declare_dependency(link_with: dbus_display1_lib,
+> include_directories: include_directories('.'))
+>    dbus_ss.add(when: [gio, pixman, dbus_display1_dep],
+>                if_true: [files(
+> --
+> 2.38.1
+>
+>
+>
+
+--=20
+Marc-Andr=C3=A9 Lureau
+
+--0000000000006b795505ff91b1ca
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr">Hi<br></div><br><div class=3D"gmail_quote=
+"><div dir=3D"ltr" class=3D"gmail_attr">On Sat, Jul 1, 2023 at 1:49=E2=80=
+=AFAM Philippe Mathieu-Daud=C3=A9 &lt;<a href=3D"mailto:philmd@linaro.org">=
+philmd@linaro.org</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote"=
+ style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);p=
+adding-left:1ex">Since its introduction in commit 142ca628a7 (&quot;ui: add=
+ a D-Bus<br>
+display backend&quot;), dbus_display1 depends on pixman.<br>
+Unfortunatly the refactor commit 1222070e77 (&quot;meson: ensure<br>
+dbus-display generated code is built before other units&quot;)<br>
+dropped that dependency. Recently commit 6cc5a6159a (&quot;ui/dbus:<br>
+win32 support&quot;) expose this problem:<br>
+<br>
+=C2=A0 In file included from include/ui/console.h:4,<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0from u=
+i/dbus.h:31,<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0from .=
+./audio/dbusaudio.c:36:<br>
+=C2=A0 include/ui/qemu-pixman.h:12:10: fatal error: pixman.h: No such file =
+or directory<br>
+=C2=A0 =C2=A0 =C2=A012 | #include &lt;pixman.h&gt;<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 |=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 ^~~~~~~~~~<=
+br>
+<br>
+Restore the missing dependency on pixman.<br></blockquote><div><br></div><d=
+iv>I fail to understand how this would help.=C2=A0 dbus-display1 unit is pu=
+re GIO/GDBus code, no pixman involved. The derived library dependency is th=
+en used to build and link the dbus ui/ module.</div><div><br></div><div>aud=
+io/dbus currently requires pixman because it compiles against units from ui=
+/dbus, which introduces some indirect pixman dependency from ui/console.</d=
+iv><div><br></div><div>It would be worth working on making pixman optional =
+altogether (<a href=3D"https://gitlab.com/qemu-project/qemu/-/issues/1172">=
+https://gitlab.com/qemu-project/qemu/-/issues/1172</a>), I will try to look=
+ at it.<br></div><div><br></div><div>thanks</div><div><br></div><blockquote=
+ class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px so=
+lid rgb(204,204,204);padding-left:1ex">
+<br>
+Reported-by: Frederic Bezies &lt;<a href=3D"mailto:fredbezies@gmail.com" ta=
+rget=3D"_blank">fredbezies@gmail.com</a>&gt;<br>
+Resolves: <a href=3D"https://gitlab.com/qemu-project/qemu/-/issues/1739" re=
+l=3D"noreferrer" target=3D"_blank">https://gitlab.com/qemu-project/qemu/-/i=
+ssues/1739</a><br>
+Fixes: 1222070e77 (&quot;meson: ensure dbus-display generated code is built=
+ before other units&quot;)<br>
+Signed-off-by: Philippe Mathieu-Daud=C3=A9 &lt;<a href=3D"mailto:philmd@lin=
+aro.org" target=3D"_blank">philmd@linaro.org</a>&gt;<br>
+---<br>
+=C2=A0ui/meson.build | 2 +-<br>
+=C2=A01 file changed, 1 insertion(+), 1 deletion(-)<br>
+<br>
+diff --git a/ui/meson.build b/ui/meson.build<br>
+index d81609fb0e..cb178dd095 100644<br>
+--- a/ui/meson.build<br>
++++ b/ui/meson.build<br>
+@@ -90,7 +90,7 @@ if dbus_display<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0&#39;--interface-prefix&#39;, &#39;org.qemu.&#39;,<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0&#39;--c-namespace&#39;, &#39;QemuDBus&#39;,<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0&#39;--generate-c-code&#39;, &#39;@BASENAME@&#39;])<br>
+-=C2=A0 dbus_display1_lib =3D static_library(&#39;dbus-display1&#39;, dbus_=
+display1, dependencies: gio)<br>
++=C2=A0 dbus_display1_lib =3D static_library(&#39;dbus-display1&#39;, dbus_=
+display1, dependencies: [gio, pixman])<br>
+=C2=A0 =C2=A0dbus_display1_dep =3D declare_dependency(link_with: dbus_displ=
+ay1_lib, include_directories: include_directories(&#39;.&#39;))<br>
+=C2=A0 =C2=A0dbus_ss.add(when: [gio, pixman, dbus_display1_dep],<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if_true: [files(<br>
+-- <br>
+2.38.1<br>
+<br>
+<br>
+</blockquote></div><br clear=3D"all"><br><span class=3D"gmail_signature_pre=
+fix">-- </span><br><div dir=3D"ltr" class=3D"gmail_signature">Marc-Andr=C3=
+=A9 Lureau<br></div></div>
+
+--0000000000006b795505ff91b1ca--
 
