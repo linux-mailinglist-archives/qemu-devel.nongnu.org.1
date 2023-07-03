@@ -2,82 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 301F87455A2
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 08:52:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A1447455AA
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 08:55:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGDPZ-0004rh-O9; Mon, 03 Jul 2023 02:51:49 -0400
+	id 1qGDSf-0005l1-7x; Mon, 03 Jul 2023 02:55:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
- id 1qGDPU-0004qh-FT
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 02:51:45 -0400
-Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
- id 1qGDPS-0005Q0-PE
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 02:51:44 -0400
-Received: by mail-pf1-x429.google.com with SMTP id
- d2e1a72fcca58-666eba6f3d6so1889166b3a.3
- for <qemu-devel@nongnu.org>; Sun, 02 Jul 2023 23:51:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688367099; x=1690959099;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=e63LUN2MX3UDbXlATSNpXqyFEEGweQfaWJR0WFhGky4=;
- b=JrGjGNMdkiYhozhVlqO9X4F92NqfsggkNwAyiAw28qnhi+X3zBl6oMW7vWWWQdI3oL
- 1d+nA99o2ldQUP14514INJ8XPmgCKV/f2wcICk991suSm2Xy59Of4q6NWq+PeztAw12x
- 3Lm4z1KWtCa73CzHeYZbQyUf+Zqr8GLqXjIwqQJUmy0zARsE+IeBVMTDnzGCUFxXJhte
- fZ/p68uItpvFwpvCZ1fAHNw1ZSHUkF+CZMipmtBr37dkcaAoAYPprAJOscIk8/Xj10PW
- kAdL60ls4BlAOOq7H9smHkqRdaWfaKFPgNCYYkljL/nS8EDDw/XzAhskP6YUvd3wn115
- anjg==
+ (Exim 4.90_1) (envelope-from <leiyang@redhat.com>)
+ id 1qGDSc-0005i0-2g
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 02:54:58 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <leiyang@redhat.com>)
+ id 1qGDSa-00069z-9Z
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 02:54:57 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1688367294;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=jeEnbjioriKjgNiO6ycPt5nP103ZmZbFBZXuULuCQbc=;
+ b=BBGJtU5i0cLF6Xam893HotQWOEYDB2Ya3kwrZYLP1khQxBtSllkB3ay5FV9+qY3JeLa+JW
+ I2DLQWvOc26slvE9Gx35r5xoZjbT9sOLgVnk0DzcOjgH4RfLEvbou6mNFMu5igOg+prlfL
+ 4UhMJqUkPg5ScQRFJj3vt/pBCQChfMA=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-232--vwlfvXANVaECFwBgJc5BA-1; Mon, 03 Jul 2023 02:54:52 -0400
+X-MC-Unique: -vwlfvXANVaECFwBgJc5BA-1
+Received: by mail-ed1-f71.google.com with SMTP id
+ 4fb4d7f45d1cf-51df43db167so1559036a12.1
+ for <qemu-devel@nongnu.org>; Sun, 02 Jul 2023 23:54:52 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688367099; x=1690959099;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=e63LUN2MX3UDbXlATSNpXqyFEEGweQfaWJR0WFhGky4=;
- b=g+GaJI+By3lIqchvW4rAIahr2uBTXk/VFJZWLGrVo/WBuOBe8Cp5cHVsqH/I7EGZVN
- HijCjT/d1Lno4cUF7FxlF6eqnSX5WQiXwuXwvSLLm5oS9+/Dpbts/x2HmCj+a0idYtY9
- nUbpp3d3daRfALMhFUT+CkOdG1r+qk7snlVpsYX7pLsCpTBMiMB5Tpq2SBef756bKbOb
- a3BJ08Sf4YoGxZ5Bsu0B58hwBnjU2AG609akmZIrw5QAWMidEO+F/6GlcOS2f7UL6ZMl
- RKeYhwCq4T+7CNOT/ZyCU2hB9tfbr3ZoWQUBScADfzLW8iqCoqKwaQ0pOaouWh9UgRfb
- VyEw==
-X-Gm-Message-State: ABy/qLbQoUnWCGZJTs9PTUifnP6CCIoJAeKGppEP8cbJi+DewKBzmmMC
- Ibl1DXGFyPiG97z3QdCmMmg=
-X-Google-Smtp-Source: APBJJlE07H9jBrr34GzB/sOh6Ry9QPJaGiCcYhY8Fi45SRhNz+Omhau7VfuBjggy9vuJaoTO0dqT3Q==
-X-Received: by 2002:a05:6a00:b92:b0:680:fa5f:4ed6 with SMTP id
- g18-20020a056a000b9200b00680fa5f4ed6mr11061496pfj.27.1688367098884; 
- Sun, 02 Jul 2023 23:51:38 -0700 (PDT)
-Received: from localhost ([159.226.94.115]) by smtp.gmail.com with ESMTPSA id
- c26-20020aa78e1a000000b0063f2a5a59d1sm13505710pfr.190.2023.07.02.23.51.37
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 02 Jul 2023 23:51:38 -0700 (PDT)
-From: Hawkins Jiawei <yin31149@gmail.com>
-To: jasowang@redhat.com,
-	mst@redhat.com,
-	eperezma@redhat.com
-Cc: qemu-devel@nongnu.org,
-	yin31149@gmail.com,
-	18801353760@163.com
-Subject: [PATCH RFC v2 0/2] Vhost-vdpa Shadow Virtqueue _F_CTRL_RX_EXTRA
- commands support
-Date: Mon,  3 Jul 2023 14:50:09 +0800
-Message-Id: <cover.1688365324.git.yin31149@gmail.com>
-X-Mailer: git-send-email 2.25.1
+ d=1e100.net; s=20221208; t=1688367291; x=1690959291;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=jeEnbjioriKjgNiO6ycPt5nP103ZmZbFBZXuULuCQbc=;
+ b=H1A2zFx6DBk6po4d2sJvMGfBo82RndCgBVIv3sfXzsQbBsmO3jqQbVn17sXWB+5ds4
+ GLAResFNJhJGt0cD/LcY/pRZdalrKVGkuO8Aova3kbZsc611O92r8bqnOmDgtOuMskbb
+ 3NOrjH9os+CqXymoAEGaXyE8RMoZy7nFOCzpyXEb1kdXCMygpjAXLzKEAOD4QF7CILTw
+ /0ia97NjEpeYRRK74RPBWUxuyRrvHAUqh4167mMBA2ZLiWeUnoFdzhrnyrQHDuT1vzZl
+ k2CnZyYUwTtnsnyxCtdkWVuNR9L6XVn7e9Lt5CFVIDcF+nbF7RK1TiBa+onRGXz4tfdk
+ UNuQ==
+X-Gm-Message-State: ABy/qLYEI7UYSkHE1LblbJ6mj3Rbwqbu1hHqGik2kav5t1Oyd6W0cG0x
+ z2RWHhPNhozuOY7wtpScEe3IfqmxeQGxHNLZRLN9OaFCNOKaHo7o+xglm9+r1c4JxWmm+XazSQn
+ ZRSOsk5kKv7tKJcBlIPMNSOu5qX0T0jQ=
+X-Received: by 2002:aa7:d142:0:b0:51d:d5a1:a7f1 with SMTP id
+ r2-20020aa7d142000000b0051dd5a1a7f1mr6370673edo.38.1688367291783; 
+ Sun, 02 Jul 2023 23:54:51 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlFg2uxN0fnvruJsIFSxmTYL1vIe8fWMiqR1RavqBWyfYQ3zWHy52+d22k2hmAQUKDRo2TODSIUSMiukmUZbShw=
+X-Received: by 2002:aa7:d142:0:b0:51d:d5a1:a7f1 with SMTP id
+ r2-20020aa7d142000000b0051dd5a1a7f1mr6370664edo.38.1688367291518; Sun, 02 Jul
+ 2023 23:54:51 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
- envelope-from=yin31149@gmail.com; helo=mail-pf1-x429.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+References: <cover.1688130570.git.yin31149@gmail.com>
+In-Reply-To: <cover.1688130570.git.yin31149@gmail.com>
+From: Lei Yang <leiyang@redhat.com>
+Date: Mon, 3 Jul 2023 14:54:14 +0800
+Message-ID: <CAPpAL=wLap_4p1NKh7tWse_+iKaCP8aqXrLO1hpzKr85taqGZw@mail.gmail.com>
+Subject: Re: [PATCH v3 0/2] vdpa: Refactor vdpa_feature_bits array
+To: Hawkins Jiawei <yin31149@gmail.com>
+Cc: jasowang@redhat.com, mst@redhat.com, eperezma@redhat.com, 
+ philmd@linaro.org, qemu-devel@nongnu.org, 18801353760@163.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=leiyang@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,37 +95,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series enables shadowed CVQ to intercept rx commands related to
-VIRTIO_NET_F_CTRL_RX_EXTRA feature through shadowed CVQ, update the virtio
-NIC device model so qemu send it in a migration, and the restore of
-that rx state in the destination.
+QE tested this series with regression tests and live migration test on
+the vhost_vdpa device, there are no new problems.
 
-To test this patch series, one should modify the `n->parent_obj.guest_features`
-value in vhost_vdpa_net_load_rx() using gdb, as the linux virtio-net
-driver does not currently support the VIRTIO_NET_F_CTRL_RX_EXTRA
-feature.
+Tested-by: Lei Yang <leiyang@redhat.com>
 
-Note that this patch should be based on [1], which has not
-been merged yet. I will submit the new viersion patch after it is merged.
 
-[1]. https://lists.nongnu.org/archive/html/qemu-devel/2023-06/msg06559.html
-
-Changelog
-=========
-v2:
-  - avoid sending CVQ command in default state suggested by Eugenio
-
-v1: https://lists.nongnu.org/archive/html/qemu-devel/2023-06/msg04956.html
-
-Hawkins Jiawei (2):
-  vdpa: Restore packet receive filtering state relative with
-    _F_CTRL_RX_EXTRA feature
-  vdpa: Allow VIRTIO_NET_F_CTRL_RX_EXTRA in SVQ
-
- net/vhost-vdpa.c | 83 ++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 83 insertions(+)
-
--- 
-2.25.1
+On Fri, Jun 30, 2023 at 9:27=E2=80=AFPM Hawkins Jiawei <yin31149@gmail.com>=
+ wrote:
+>
+> This patchset removes the duplicated VIRTIO_NET_F_RSS entry
+> in vdpa_feature_bits array and sorts the vdpa_feature_bits array
+> alphabetically in ascending order to avoid future duplicates.
+>
+> Changelog
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D
+> v3:
+>   - sort array alphabetically suggested by Philippe
+>
+> v2: https://lists.nongnu.org/archive/html/qemu-devel/2023-06/msg06764.htm=
+l
+>   - resolve conflicts with the master branch
+>
+> v1: https://lists.nongnu.org/archive/html/qemu-devel/2023-06/msg01583.htm=
+l
+>
+> Hawkins Jiawei (2):
+>   vdpa: Delete duplicated VIRTIO_NET_F_RSS in vdpa_feature_bits
+>   vdpa: Sort vdpa_feature_bits array alphabetically
+>
+>  net/vhost-vdpa.c | 40 +++++++++++++++++++++++-----------------
+>  1 file changed, 23 insertions(+), 17 deletions(-)
+>
+> --
+> 2.25.1
+>
+>
 
 
