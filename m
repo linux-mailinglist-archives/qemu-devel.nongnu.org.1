@@ -2,83 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3319745DF9
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 15:55:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50B26745E00
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 15:56:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGJzl-0000ZT-9m; Mon, 03 Jul 2023 09:53:37 -0400
+	id 1qGJzv-0000bX-NZ; Mon, 03 Jul 2023 09:53:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qGJzh-0000UD-5e
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 09:53:33 -0400
-Received: from mail-lf1-x12d.google.com ([2a00:1450:4864:20::12d])
+ id 1qGJzj-0000YA-B8
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 09:53:35 -0400
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qGJzf-00081y-5J
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 09:53:32 -0400
-Received: by mail-lf1-x12d.google.com with SMTP id
- 2adb3069b0e04-4fb7dc16ff0so6924531e87.2
- for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 06:53:30 -0700 (PDT)
+ id 1qGJzh-00082s-38
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 09:53:35 -0400
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-314172bb818so5153877f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 06:53:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688392409; x=1690984409;
+ d=linaro.org; s=google; t=1688392411; x=1690984411;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=26POj3Pp+gIP3un1OHTdCprJFHUE2qyF+wMmQYT3qCc=;
- b=n0XSF8Rck5Et9usUCtaJvF4oZ43rppy52jY2c61oPqRrP3tJtXTeIAfn7bdkVqfPe3
- vMMIRxsYYJlfwqo1MdLldWMzRa1lXVPJvzoKIY/H93Lf3PQSYHhkchTlzRaIvoOcA+cW
- S5x3n4EIyXSPs0E1RszfUAaon/FNCoBF2EJWFzzPTrN9Cm8H07nIGDneM57MxT5fKGA5
- 2btc96bFB6OmS+gMdzdG/samNINXcLikDocFq3dVeUmNmqhlWMZq7LKQimNimtzrn421
- TQTsKbLTh0bTBXPJd3lt04q0AcPKWuwMLvqUFpQqOaVGN2qzf9h5qVZMHPLVzN2riGDl
- 1O9Q==
+ bh=zNMPVNXEa7UqeTcFlr3/SM98KrOm4fYZhU+BaBqT8mY=;
+ b=uV9ZPLS81d0MTVEY2cXnk2V+85sjXaItitw7BNEe0vITv33afOl6HFjqmyV8LC912u
+ 8J4ONws8InNEoZ7jXMdLonNXnd/ledyMXbioCq8y0G5DWrlWheBJJRuu2pK/JS4DJWpm
+ 8jMEHcH9F4ekDUddaTIVCA8o5mZ7xzZg/6hMs2dtAKg/xpqIzMSI/YWAytml6gabZ64L
+ eqhI+rlYq6KFU7fzwMZnRFKewmNijj0IIaivjJQUrqLX1U7EmvzIvtGtd4o68ECNgCR1
+ p4HRyC1ChOiYd1uDWlzBsMGcsbT8ULupwp+Oa/GzaS0VVHcozwwUNyenlDr3p5YGdzZ8
+ YnzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688392409; x=1690984409;
+ d=1e100.net; s=20221208; t=1688392411; x=1690984411;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=26POj3Pp+gIP3un1OHTdCprJFHUE2qyF+wMmQYT3qCc=;
- b=dClu8EVnRdvVZUvCK0EZ4fFUBbbbSeKvXPMLyyGmHJdS39UL4FMH4MJVALRrp14JM/
- ZxfTr5AxJXVcWpRB6jQ/BF52J4NwUvUFvjstZbeb9vJmdAiCf5b3pOfNqJVgHDqoQnxO
- qQ4aCmruSDX4jyN8RKHjkGVJ5ws1rb49zcayRMY0icSrQT73SB5KtwawfGjxT7hPvmHp
- 9mRcdHtX/Y9Zim+ClSnSYcLtSfUOmqhMH/eobO1G+AdIE+0wfhw0hvlPkJlYSWGpWPvC
- 9eHgDQhqKZyYNPSMQIln3Qoha3C941fURoFwIgknfX1z0aPx14FBjUvsO9ZRLPg5hrAl
- EXTA==
-X-Gm-Message-State: ABy/qLb1kCDoWuxzGFtWxXUeU3khcEzwplpf8B0vK9yWr81+hhPbGUd/
- oivXM55WbXgwLRnl1UeJANHKau0Hg9doeYylHQg=
-X-Google-Smtp-Source: APBJJlElOqfeWjkzQsBPWBLtXT0qguqx2dLPL3JRJCHnaWfpe4ghIvao7DdaBbZ/I7PpfibDKZBIYg==
-X-Received: by 2002:a05:6512:2107:b0:4f6:6b:a43b with SMTP id
- q7-20020a056512210700b004f6006ba43bmr6581280lfr.52.1688392409507; 
- Mon, 03 Jul 2023 06:53:29 -0700 (PDT)
+ bh=zNMPVNXEa7UqeTcFlr3/SM98KrOm4fYZhU+BaBqT8mY=;
+ b=h+rHrX64cfAc49CBY3PoEEMqKU7utLxpm0dvz63CRafADD4Kv9a5Lh5FosmkdIQZXT
+ N4xJ75yxAqL9RP0b+E9pH+UdBLbwHAiJBETVkKxGNGXnXNw+D7TSmOzXk/Zb/6gq5Nzw
+ z6XdaqId8n7E0Zs49EAj7shU1dtTF68p3fd+kKOjwmmif4E93jL4m0h/hNDuMz3hGpep
+ mhB/kcDyZ/8zp0cPlFEwCto5lOwwB3Yd3wXKy7ya4R+JUvEREaD2XrEbgsJRxX0X8Cnz
+ kRfJAXe/C3OpVEeEnI8yK4qIfGEjNarorRyXb9ztqP32LVQwRXUyfQtKWHp5yPEuhQBx
+ 5zeA==
+X-Gm-Message-State: ABy/qLaooFA2dQwfdI9KMl6SCHQEKgznEJBNFwwtrmbNXJC6Wi23lRFS
+ PSID28BWL1YLhxBGEwz8huKPIA==
+X-Google-Smtp-Source: APBJJlF1hDSDIHbWsmZ7oSZQR7ecBNg+bE6k6dYf0ghtct1fE4AnPWe2xcUPhSIYeulgnc57ThT5BA==
+X-Received: by 2002:adf:fc08:0:b0:314:824:378c with SMTP id
+ i8-20020adffc08000000b003140824378cmr8597854wrr.20.1688392411749; 
+ Mon, 03 Jul 2023 06:53:31 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- b2-20020adfde02000000b0030c4d8930b1sm25548544wrm.91.2023.07.03.06.53.28
+ w10-20020adfcd0a000000b003141f96ed36sm9420092wrm.0.2023.07.03.06.53.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 03 Jul 2023 06:53:28 -0700 (PDT)
+ Mon, 03 Jul 2023 06:53:29 -0700 (PDT)
 Received: from zen.lan (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 317E61FFD3;
+ by zen.linaroharston (Postfix) with ESMTP id 49DB21FFC1;
  Mon,  3 Jul 2023 14:44:31 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org, Nicholas Piggin <npiggin@gmail.com>,
- qemu-stable@nongnu.org,
- Matheus Tavares Bernardino <quic_mathbern@quicinc.com>,
+Cc: richard.henderson@linaro.org,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Taylor Simpson <tsimpson@quicinc.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 29/38] gdbstub: Permit reverse step/break to provide stop
- response
-Date: Mon,  3 Jul 2023 14:44:18 +0100
-Message-Id: <20230703134427.1389440-30-alex.bennee@linaro.org>
+Subject: [PULL 30/38] gdbstub: clean-up vcont handling to avoid goto
+Date: Mon,  3 Jul 2023 14:44:19 +0100
+Message-Id: <20230703134427.1389440-31-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230703134427.1389440-1-alex.bennee@linaro.org>
 References: <20230703134427.1389440-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12d;
- envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x12d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,40 +97,112 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Nicholas Piggin <npiggin@gmail.com>
+We can handle all the error exit cases by using g_autofree() for the
+one thing that needs cleaning up on the exit.
 
-The final part of the reverse step and break handling is to bring
-the machine back to a debug stop state. gdb expects a response.
-
-A gdb 'rsi' command hangs forever because the gdbstub filters out
-the response (also observable with reverse_debugging.py avocado
-tests).
-
-Fix by setting allow_stop_reply for the gdb backward packets.
-
-Fixes: 758370052fb ("gdbstub: only send stop-reply packets when allowed to")
-Cc: qemu-stable@nongnu.org
-Cc: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
-Cc: Alex Bennée <alex.bennee@linaro.org>
-Cc: Taylor Simpson <tsimpson@quicinc.com>
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-Acked-by: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
-Message-Id: <20230623035304.279833-1-npiggin@gmail.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20230630180423.558337-30-alex.bennee@linaro.org>
+Message-Id: <20230630180423.558337-31-alex.bennee@linaro.org>
 
 diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
-index be18568d0a..9496d7b175 100644
+index 9496d7b175..49143c7d83 100644
 --- a/gdbstub/gdbstub.c
 +++ b/gdbstub/gdbstub.c
-@@ -1814,6 +1814,7 @@ static int gdb_handle_packet(const char *line_buf)
-                 .handler = handle_backward,
-                 .cmd = "b",
-                 .cmd_startswith = 1,
-+                .allow_stop_reply = true,
-                 .schema = "o0"
-             };
-             cmd_parser = &backward_cmd_desc;
+@@ -573,7 +573,6 @@ static int gdb_handle_vcont(const char *p)
+ {
+     int res, signal = 0;
+     char cur_action;
+-    char *newstates;
+     unsigned long tmp;
+     uint32_t pid, tid;
+     GDBProcess *process;
+@@ -581,7 +580,7 @@ static int gdb_handle_vcont(const char *p)
+     GDBThreadIdKind kind;
+     unsigned int max_cpus = gdb_get_max_cpus();
+     /* uninitialised CPUs stay 0 */
+-    newstates = g_new0(char, max_cpus);
++    g_autofree char *newstates = g_new0(char, max_cpus);
+ 
+     /* mark valid CPUs with 1 */
+     CPU_FOREACH(cpu) {
+@@ -597,8 +596,7 @@ static int gdb_handle_vcont(const char *p)
+     res = 0;
+     while (*p) {
+         if (*p++ != ';') {
+-            res = -ENOTSUP;
+-            goto out;
++            return -ENOTSUP;
+         }
+ 
+         cur_action = *p++;
+@@ -606,13 +604,12 @@ static int gdb_handle_vcont(const char *p)
+             cur_action = qemu_tolower(cur_action);
+             res = qemu_strtoul(p, &p, 16, &tmp);
+             if (res) {
+-                goto out;
++                return res;
+             }
+             signal = gdb_signal_to_target(tmp);
+         } else if (cur_action != 'c' && cur_action != 's') {
+             /* unknown/invalid/unsupported command */
+-            res = -ENOTSUP;
+-            goto out;
++            return -ENOTSUP;
+         }
+ 
+         if (*p == '\0' || *p == ';') {
+@@ -625,14 +622,12 @@ static int gdb_handle_vcont(const char *p)
+         } else if (*p++ == ':') {
+             kind = read_thread_id(p, &p, &pid, &tid);
+         } else {
+-            res = -ENOTSUP;
+-            goto out;
++            return -ENOTSUP;
+         }
+ 
+         switch (kind) {
+         case GDB_READ_THREAD_ERR:
+-            res = -EINVAL;
+-            goto out;
++            return -EINVAL;
+ 
+         case GDB_ALL_PROCESSES:
+             cpu = gdb_first_attached_cpu();
+@@ -649,8 +644,7 @@ static int gdb_handle_vcont(const char *p)
+             process = gdb_get_process(pid);
+ 
+             if (!process->attached) {
+-                res = -EINVAL;
+-                goto out;
++                return -EINVAL;
+             }
+ 
+             cpu = get_first_cpu_in_process(process);
+@@ -668,8 +662,7 @@ static int gdb_handle_vcont(const char *p)
+ 
+             /* invalid CPU/thread specified */
+             if (!cpu) {
+-                res = -EINVAL;
+-                goto out;
++                return -EINVAL;
+             }
+ 
+             /* only use if no previous match occourred */
+@@ -679,12 +672,9 @@ static int gdb_handle_vcont(const char *p)
+             break;
+         }
+     }
++
+     gdbserver_state.signal = signal;
+     gdb_continue_partial(newstates);
+-
+-out:
+-    g_free(newstates);
+-
+     return res;
+ }
+ 
 -- 
 2.39.2
 
