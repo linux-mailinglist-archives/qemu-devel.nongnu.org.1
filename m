@@ -2,86 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B323674587A
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 11:35:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CFA3774587E
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 11:36:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGFwh-0000X3-Aa; Mon, 03 Jul 2023 05:34:11 -0400
+	id 1qGFxw-0001HA-BX; Mon, 03 Jul 2023 05:35:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qGFwd-0000Wr-LJ
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 05:34:08 -0400
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qGFwb-0007r3-Hu
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 05:34:07 -0400
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-3fbac8b01b3so33958945e9.1
- for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 02:34:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688376844; x=1690968844;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
- :message-id:reply-to;
- bh=ROQCGlSC6AnDuwaP5/t6ykOjmMWyt+Cj7Kaaz8iJcJ4=;
- b=aqUM5CPwYSj2tIlidQ/RYHrwDLl5zD3y9c5h8bv9e9THdYxkEh+laQc4cOqUuanRoG
- 6GdnUX7LMSDHB69stjYJP7NW/+bNSPEKGhSho2UtpheKS1hOF3larzDQi45ijCV1O82T
- MkrZm1YNzvsydBqn8IM2QJinRdCstpKGVI5OxvzVhxjkiAo5YEHdkkp4OoDl+Kgq6tU5
- 7ZDgov17/CHUdFMV3gy3FZc/9h9hI/S4BQDJLqoH1AmtS/yhFytrYhsGLR7goEJvB+Dy
- AVtIZsHOLO8L/CGC215FPGg6jvxD4Z4rCTKG5EcJqOUw/QicqizKHJpMKsD+dM1EC+VH
- gljQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688376844; x=1690968844;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=ROQCGlSC6AnDuwaP5/t6ykOjmMWyt+Cj7Kaaz8iJcJ4=;
- b=YE7cl2VbciYJ1ccyf9+KHpyCI79St71aMXIXHdnLQNmg/eSUHT+cK6H00RMR/hpBNw
- uYEIvO4awdAFCpNqaHIj5hoJc8uebE9P0+bzHk0GOVHmPUp5HoF8DCKZ37oA6czzXLkw
- Ifw37KhDEtCHjwwLuexSAiFslGek+Z5vSN7G89CPwC43F7KoWj5zx9hL9RRqJKaevQBr
- L+Vt4gVq5HtySMz77zNbXjnwMZYvU3mTgb9UFMEIVktGyywC3p9UEgBUGCuXkJgJWePD
- 9Chwa6O0c7ViAvC4fejpvMFFPMssi1sKo9o5jzo0ActG5XabKaVVaB15loGv4T/Rr1+V
- rmYA==
-X-Gm-Message-State: AC+VfDyn+bVEBPOHiovQnvIKdzmVRtomx0uXek4HY3mDcZQzUMYhlXDx
- G/Ks/sZx7wvitlrnv4xvtJJdag==
-X-Google-Smtp-Source: ACHHUZ46ZZAJulszVqVZCFgrsZZXyUVbMN5I2CmnpcwnBmeL5sBcPu0CJ+SpB0eFtOA36PYPbQrfhQ==
-X-Received: by 2002:a5d:4244:0:b0:313:e88d:e6d3 with SMTP id
- s4-20020a5d4244000000b00313e88de6d3mr12918579wrr.14.1688376843650; 
- Mon, 03 Jul 2023 02:34:03 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
- by smtp.gmail.com with ESMTPSA id
- c5-20020a5d4145000000b00314145e6d61sm11191803wrq.6.2023.07.03.02.34.03
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 03 Jul 2023 02:34:03 -0700 (PDT)
-Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id DC0AA1FFBB;
- Mon,  3 Jul 2023 10:34:02 +0100 (BST)
-References: <20230630132159.376995-1-richard.henderson@linaro.org>
- <20230630132159.376995-6-richard.henderson@linaro.org>
-User-agent: mu4e 1.11.8; emacs 29.0.92
-From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: mjt@tls.msk.ru, laurent@vivier.eu, qemu-devel@nongnu.org
-Subject: Re: [PATCH 05/24] linux-user: Split TARGET_PROT_* out of
- syscall_defs.h
-Date: Mon, 03 Jul 2023 10:32:51 +0100
-In-reply-to: <20230630132159.376995-6-richard.henderson@linaro.org>
-Message-ID: <87bkgtjq45.fsf@linaro.org>
+ (Exim 4.90_1) (envelope-from <groug@kaod.org>) id 1qGFxr-0001Gl-Fi
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 05:35:23 -0400
+Received: from 7.mo548.mail-out.ovh.net ([46.105.33.25])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <groug@kaod.org>) id 1qGFxo-00082S-8T
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 05:35:23 -0400
+Received: from mxplan5.mail.ovh.net (unknown [10.108.4.240])
+ by mo548.mail-out.ovh.net (Postfix) with ESMTPS id 7FC67219CA;
+ Mon,  3 Jul 2023 09:35:10 +0000 (UTC)
+Received: from kaod.org (37.59.142.95) by DAG6EX1.mxp5.local (172.16.2.51)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Mon, 3 Jul
+ 2023 11:35:09 +0200
+Authentication-Results: garm.ovh; auth=pass
+ (GARM-95G0010ebeb8e6-190d-46cd-afc8-1fdd3cbb39d1,
+ 402CDD763E8F3FE895DD118CE8F9FDD198E40389) smtp.auth=groug@kaod.org
+X-OVh-ClientIp: 78.197.208.248
+Date: Mon, 3 Jul 2023 11:35:08 +0200
+From: Greg Kurz <groug@kaod.org>
+To: Narayana Murty N <nnmlinux@linux.ibm.com>
+CC: <danielhb413@gmail.com>, <clg@kaod.org>, <david@gibson.dropbear.id.au>,
+ <npiggin@gmail.com>, <qemu-ppc@nongnu.org>, <qemu-devel@nongnu.org>,
+ <farosas@suse.de>, <npiggin@linux.ibm.com>, <vaibhav@linux.ibm.com>,
+ <harshpb@linux.ibm.com>, <sbhat@linux.ibm.com>
+Subject: Re: [PATCH v4] target: ppc: Use MSR_HVB bit to get the target
+ endianness for memory dump
+Message-ID: <20230703113508.6af48248@bahia>
+In-Reply-To: <20230623072506.34713-1-nnmlinux@linux.ibm.com>
+References: <20230623072506.34713-1-nnmlinux@linux.ibm.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Originating-IP: [37.59.142.95]
+X-ClientProxiedBy: DAG8EX2.mxp5.local (172.16.2.72) To DAG6EX1.mxp5.local
+ (172.16.2.51)
+X-Ovh-Tracer-GUID: 25935476-5ac0-4ea3-a3e9-10415b34ed80
+X-Ovh-Tracer-Id: 10830594156293560824
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: 0
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedviedruddvgdduiecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecunecujfgurhepfffhvfevuffkjghfofggtgfgihesthhqredtredtjeenucfhrhhomhepifhrvghgucfmuhhriicuoehgrhhouhhgsehkrghougdrohhrgheqnecuggftrfgrthhtvghrnheptdefgeduhfegkefhhedtueffgedvhfekheegvdduveevhfeiueetgfevjeeuveeinecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucfkphepuddvjedrtddrtddruddpfeejrdehledrudegvddrleehpdejkedrudeljedrvddtkedrvdegkeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeduvdejrddtrddtrddupdhmrghilhhfrhhomhepoehgrhhouhhgsehkrghougdrohhrgheqpdhnsggprhgtphhtthhopedupdhrtghpthhtohepnhhnmhhlihhnuhigsehlihhnuhigrdhisghmrdgtohhmpdgurghnihgvlhhhsgegudefsehgmhgrihhlrdgtohhmpdgurghvihgusehgihgsshhonhdrughrohhpsggvrghrrdhiugdrrghupdhnphhighhgihhnsehgmhgrihhlrdgtohhmpdhqvghmuhdqphhptgesnhhonhhgnhhurdhorhhgpdhqvghmuhdquggvvhgvlhesnhhonhhgnhhurdhorhhgpdhfrghrohhsrghssehsuhhsvgdruggvpdhnphhighhgihhnsehlihhnuhigrdhisghmrdgtohhmpd
+ hvrghisghhrghvsehlihhnuhigrdhisghmrdgtohhmpdhhrghrshhhphgssehlihhnuhigrdhisghmrdgtohhmpdhssghhrghtsehlihhnuhigrdhisghmrdgtohhmpdgtlhhgsehkrghougdrohhrghdpoffvtefjohhsthepmhhoheegkedpmhhouggvpehsmhhtphhouhht
+Received-SPF: pass client-ip=46.105.33.25; envelope-from=groug@kaod.org;
+ helo=7.mo548.mail-out.ovh.net
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,53 +74,98 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Fri, 23 Jun 2023 03:25:06 -0400
+Narayana Murty N <nnmlinux@linux.ibm.com> wrote:
 
-Richard Henderson <richard.henderson@linaro.org> writes:
-
-> Move the values into the per-target target_mman.h headers
->
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> Currently on PPC64 qemu always dumps the guest memory in
+> Big Endian (BE) format even though the guest running in Little Endian
+> (LE) mode. So crash tool fails to load the dump as illustrated below:
+>=20
+> Log :
+> $ virsh dump DOMAIN --memory-only dump.file
+>=20
+> Domain 'DOMAIN' dumped to dump.file
+>=20
+> $ crash vmlinux dump.file
+>=20
+> <snip>
+> crash 8.0.2-1.el9
+>=20
+> WARNING: endian mismatch:
+>           crash utility: little-endian
+>           dump.file: big-endian
+>=20
+> WARNING: machine type mismatch:
+>           crash utility: PPC64
+>           dump.file: (unknown)
+>=20
+> crash: dump.file: not a supported file format
+> <snip>
+>=20
+> This happens because cpu_get_dump_info() passes cpu->env->has_hv_mode
+> to function ppc_interrupts_little_endian(), the cpu->env->has_hv_mode
+> always set for powerNV even though the guest is not running in hv mode.
+> The hv mode should be taken from msr_mask MSR_HVB bit
+> (cpu->env.msr_mask & MSR_HVB). This patch fixes the issue by passing
+> MSR_HVB value to ppc_interrupts_little_endian() in order to determine
+> the guest endianness.
+>=20
+> The crash tool also expects guest kernel endianness should match the
+> endianness of the dump.
+>=20
+> The patch was tested on POWER9 box booted with Linux as host in
+> following cases:
+>=20
+> Host-Endianess Qemu-Target-Machine                Qemu-Generated-Guest
+>                                                   Memory-Dump-Format
+> BE             powernv(OPAL/PowerNV)                   LE
+> BE             powernv(OPAL/PowerNV)                   BE
+> LE             powernv(OPAL/PowerNV)                   LE
+> LE             powernv(OPAL/PowerNV)                   BE
+> LE             pseries(OPAL/PowerNV/pSeries) KVMHV     LE
+> LE             pseries TCG                             LE
+>=20
+> Fixes: 5609400a4228 ("target/ppc: Set the correct endianness for powernv =
+memory
+> dumps")
+> Signed-off-by: Narayana Murty N <nnmlinux@linux.ibm.com>
 > ---
->  linux-user/aarch64/target_mman.h |  3 +++
->  linux-user/generic/target_mman.h |  4 ++++
->  linux-user/mips/target_mman.h    |  2 ++
->  linux-user/syscall_defs.h        | 11 -----------
->  linux-user/xtensa/target_mman.h  |  2 ++
->  5 files changed, 11 insertions(+), 11 deletions(-)
->
-> diff --git a/linux-user/aarch64/target_mman.h b/linux-user/aarch64/target=
-_mman.h
-> index e7ba6070fe..7f15cab25e 100644
-> --- a/linux-user/aarch64/target_mman.h
-> +++ b/linux-user/aarch64/target_mman.h
-> @@ -1 +1,4 @@
-> +#define TARGET_PROT_BTI         0x10
-> +#define TARGET_PROT_MTE         0x20
-> +
->  #include "../generic/target_mman.h"
-> diff --git a/linux-user/generic/target_mman.h b/linux-user/generic/target=
-_mman.h
-> index 7b888fb7f8..39a650e751 100644
-> --- a/linux-user/generic/target_mman.h
-> +++ b/linux-user/generic/target_mman.h
-> @@ -1,6 +1,10 @@
->  #ifndef LINUX_USER_TARGET_MMAN_H
->  #define LINUX_USER_TARGET_MMAN_H
->=20=20
-> +#ifndef TARGET_PROT_SEM
-> +#define TARGET_PROT_SEM                 0x08
-> +#endif
-> +
 
-I wonder if it is worth adding some commentary at the top that this file
-should only be included from the arch specific target_mman.h as there is
-an implicit ordering requirement for #ifndef to work properly.
+Thanks !
 
-Anyway:
+Reviewed-by: Greg Kurz <groug@kaod.org>
 
-Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+> Changes since V3:
+> commit message modified as per feedback from Greg Kurz, C=C3=A9dric Le
+> Goater and Nicholas Piggin.
+> Changes since V2:
+> commit message modified as per feedback from Nicholas Piggin.
+> Changes since V1:
+> https://lore.kernel.org/qemu-devel/20230420145055.10196-1-nnmlinux@linux.=
+ibm.com/
+> The approach to solve the issue was changed based on feedback from
+> Fabiano Rosas on patch V1.
+> ---
+>  target/ppc/arch_dump.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/target/ppc/arch_dump.c b/target/ppc/arch_dump.c
+> index f58e6359d5..a8315659d9 100644
+> --- a/target/ppc/arch_dump.c
+> +++ b/target/ppc/arch_dump.c
+> @@ -237,7 +237,7 @@ int cpu_get_dump_info(ArchDumpInfo *info,
+>      info->d_machine =3D PPC_ELF_MACHINE;
+>      info->d_class =3D ELFCLASS;
+> =20
+> -    if (ppc_interrupts_little_endian(cpu, cpu->env.has_hv_mode)) {
+> +    if (ppc_interrupts_little_endian(cpu, !!(cpu->env.msr_mask & MSR_HVB=
+))) {
+>          info->d_endian =3D ELFDATA2LSB;
+>      } else {
+>          info->d_endian =3D ELFDATA2MSB;
+
+
 
 --=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+Greg
 
