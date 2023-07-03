@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18897746272
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 20:32:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CAB8746276
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 20:33:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGOLA-0007aM-JN; Mon, 03 Jul 2023 14:32:00 -0400
+	id 1qGOLG-0007c4-6q; Mon, 03 Jul 2023 14:32:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qGOL8-0007Zb-6X
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 14:31:58 -0400
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qGOLE-0007bQ-Bf
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 14:32:04 -0400
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qGOL6-00007y-C5
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 14:31:57 -0400
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-311367a3e12so6315374f8f.2
- for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 11:31:55 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qGOLC-000090-SA
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 14:32:04 -0400
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-3090d3e9c92so6704443f8f.2
+ for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 11:32:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688409115; x=1691001115;
+ d=linaro.org; s=google; t=1688409120; x=1691001120;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=tMsBShz4C7A1YrSDPbppIGD5ps17qyWqJYLBfgbzYNs=;
- b=BC+SB7mnKNlR4pjYmT6LyjDiL3lYJfs2d1mxokhx86DjKVqazk7dx5Xza9vPiq7mei
- o3TzBlYH9DwrvGlDD8qMMno0izkWU9Fio2scqV3u6aF+YaURAfNvYk8cglpAJXiukuOr
- br6xhOGLEQTSdMXjrTm4cYPDHfJxUkrCkDh5dW/ZiDnOA1Z3IkIpjJiIZt0ixl0sJKOH
- 6e61kZud+2TeRQx5cC62d+i0iuoyJ8kZRO8plfMwtyYIU0S1MTg1OH0yKB0hW8kB3z1Y
- pJRIc20NBYxuhMgpdtdIoKrIzuFCjZe+UR96E/7sqZpFCv+Js6prCUgI1LB2h9sOUFzM
- EqzQ==
+ bh=N55U4NP3yl4GvH3dWyOKO0l2DdmIx/ff1ghfMtMlOlU=;
+ b=WitXZlHOET0XeyI0S46Q/K7yteKUZtSFQ+dEETzxJvjTxIoDbA2RxizG6FhquwjEZO
+ 5Z1WWj07NMCsg1VdZbUMSjVm1NB9ZPNTZyWr/KIdl8cUe1zW+cqUeuVntMvGLPcko1dO
+ B9bdTnuKqyJB6EorK//ZFtAClhBMwIQGps2XyWMto/r7nyJ7wDsJ8dIxY9KbQHqoGHVp
+ /wYVnzqUX0hbj72jYRkWySsgUpWcN/t3UIvvuYFRvqHEvW2I2KcSWdZcmZB0kPjuLsK+
+ ZN2xmc3AikkIlyngLtFxwG+M2IkeAp0XGEhOL3WW1Y+ftO0dYz132IfCNalodo+8OpPL
+ QItw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688409115; x=1691001115;
+ d=1e100.net; s=20221208; t=1688409120; x=1691001120;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=tMsBShz4C7A1YrSDPbppIGD5ps17qyWqJYLBfgbzYNs=;
- b=kJlEgbGUYfA0Z+mOf54mVI39BODmjlkf92/NFMdHXzI+nrWd1SRmmQX3cjRXps4hew
- 2YPr/+huRzI90KvEcsF+oFHDPSjvP0CIl7S0f+BDe6ti0AFQt6GTTsFL0+r6jQeuu0pe
- mpJS8hM98S6iHb/nomp+S1MiZoY/BjFxBhVVHv8piNzmpJZmVo1w+k0/L5IsFqXFhRFN
- CTVOTuaueswmTnDBXPsTxfyso6sUIUvrDuD1gFkHMJm1tq7uSJcW4palbWgI4448xs4L
- dmxydGyfCeKQZKnG7SnIqeNqKSm+GjPdJXhd30UX4BCdSj7GsyUorszOsBjzMjz3F7AX
- nE8Q==
-X-Gm-Message-State: ABy/qLYG9qA7EvJpjx15DVWccwj02bmXSrxYjSRQdWdn9fTzq853LKMI
- HpF8m0/jWgzIL2L0rID6lbEuQ3fFSlUXwRTJ3fMLzw==
-X-Google-Smtp-Source: APBJJlE3GwiR2HJVCApX/Q+cUmnurOaqUoNuoEEtQvpP9gspwD3JEwNcbOB2bGBXU5ghTqVD07S7aw==
-X-Received: by 2002:a05:6000:1152:b0:314:2b0a:dac6 with SMTP id
- d18-20020a056000115200b003142b0adac6mr6770036wrx.41.1688409114864; 
- Mon, 03 Jul 2023 11:31:54 -0700 (PDT)
+ bh=N55U4NP3yl4GvH3dWyOKO0l2DdmIx/ff1ghfMtMlOlU=;
+ b=IaX1JV6hCkZSBy9klMrJ44qSdyws+mAMb58aEuKWQJ5icZ+BRobsffcVem9K4ojT/H
+ aRSK1KPa8xom/BVyPkPtKWhTGthEQSewQF4uYDcK/CofzQyFEf6dNdGqpq0/FVCIIKDx
+ uj2TOi1dP3VQAyBoFBbwvv1pgwibBKrC/o+d/6wmwjv7Uz7roSW+vhO/DDn1X/TqFO1R
+ JO6GsXagjvSApDG+MCTk1RCGdBc1O+TacJgfnth+lmKfqtneJJEW/Mp1q5B5RYVA1sc3
+ i2/xAbYy5YG2chboTlebSLCLYHciryEC3quJjrN/AqsqmZVIvkTuO1N00hzhCisTIlZs
+ iRWA==
+X-Gm-Message-State: ABy/qLY8FEDzKFuVAMFSJcD1psK8ZIIGDL7Xtrf/uq31iJFdtoZSA/ZL
+ aVLNkEiI10ry1OmDqx55kD+X4Jv2xm282lv1OYF/8w==
+X-Google-Smtp-Source: APBJJlF6W9TcJobh0g4C5n7RXR5qR3/Fcvv3ZJUkmNWMCWjsCFbrGHQQGW/5pKhjSaVIUc5gsRCnTw==
+X-Received: by 2002:adf:f209:0:b0:314:2bd2:9611 with SMTP id
+ p9-20020adff209000000b003142bd29611mr9405839wro.34.1688409120602; 
+ Mon, 03 Jul 2023 11:32:00 -0700 (PDT)
 Received: from localhost.localdomain ([176.176.178.91])
  by smtp.gmail.com with ESMTPSA id
- u11-20020adfdd4b000000b003143765e207sm3323297wrm.49.2023.07.03.11.31.53
+ z5-20020adfd0c5000000b003143aa0ca8asm1949291wrh.13.2023.07.03.11.31.59
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 03 Jul 2023 11:31:54 -0700 (PDT)
+ Mon, 03 Jul 2023 11:32:00 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Palmer Dabbelt <palmer@dabbelt.com>, Paolo Bonzini <pbonzini@redhat.com>,
@@ -65,17 +65,18 @@ Cc: Palmer Dabbelt <palmer@dabbelt.com>, Paolo Bonzini <pbonzini@redhat.com>,
  qemu-riscv@nongnu.org, Bin Meng <bin.meng@windriver.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Weiwei Li <liweiwei@iscas.ac.cn>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
-Subject: [PATCH v2 01/16] target/riscv: Remove unuseful KVM stubs
-Date: Mon,  3 Jul 2023 20:31:30 +0200
-Message-Id: <20230703183145.24779-2-philmd@linaro.org>
+Subject: [PATCH v2 02/16] target/riscv: Remove unused 'instmap.h' header in
+ translate.c
+Date: Mon,  3 Jul 2023 20:31:31 +0200
+Message-Id: <20230703183145.24779-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230703183145.24779-1-philmd@linaro.org>
 References: <20230703183145.24779-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x432.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,86 +99,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since we always check whether KVM is enabled before calling
-kvm_riscv_reset_vcpu() and kvm_riscv_set_irq(), their call
-is elided by the compiler when KVM is not available.
-Therefore the stubs are not even linked. Remove them.
-
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Tested-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Acked-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/kvm-stub.c  | 30 ------------------------------
- target/riscv/kvm.c       |  4 +---
- target/riscv/meson.build |  2 +-
- 3 files changed, 2 insertions(+), 34 deletions(-)
- delete mode 100644 target/riscv/kvm-stub.c
+ target/riscv/translate.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/target/riscv/kvm-stub.c b/target/riscv/kvm-stub.c
-deleted file mode 100644
-index 4e8fc31a21..0000000000
---- a/target/riscv/kvm-stub.c
-+++ /dev/null
-@@ -1,30 +0,0 @@
--/*
-- * QEMU KVM RISC-V specific function stubs
-- *
-- * Copyright (c) 2020 Huawei Technologies Co., Ltd
-- *
-- * This program is free software; you can redistribute it and/or modify it
-- * under the terms and conditions of the GNU General Public License,
-- * version 2 or later, as published by the Free Software Foundation.
-- *
-- * This program is distributed in the hope it will be useful, but WITHOUT
-- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
-- * more details.
-- *
-- * You should have received a copy of the GNU General Public License along with
-- * this program.  If not, see <http://www.gnu.org/licenses/>.
-- */
--#include "qemu/osdep.h"
--#include "cpu.h"
--#include "kvm_riscv.h"
--
--void kvm_riscv_reset_vcpu(RISCVCPU *cpu)
--{
--    abort();
--}
--
--void kvm_riscv_set_irq(RISCVCPU *cpu, int irq, int level)
--{
--    abort();
--}
-diff --git a/target/riscv/kvm.c b/target/riscv/kvm.c
-index 0f932a5b96..52884bbe15 100644
---- a/target/riscv/kvm.c
-+++ b/target/riscv/kvm.c
-@@ -503,9 +503,7 @@ void kvm_riscv_reset_vcpu(RISCVCPU *cpu)
- {
-     CPURISCVState *env = &cpu->env;
+diff --git a/target/riscv/translate.c b/target/riscv/translate.c
+index 621dd99241..e3a6697cd8 100644
+--- a/target/riscv/translate.c
++++ b/target/riscv/translate.c
+@@ -30,7 +30,6 @@
+ #include "exec/log.h"
+ #include "semihosting/semihost.h"
  
--    if (!kvm_enabled()) {
--        return;
--    }
-+    assert(kvm_enabled());
-     env->pc = cpu->env.kernel_addr;
-     env->gpr[10] = kvm_arch_vcpu_id(CPU(cpu)); /* a0 */
-     env->gpr[11] = cpu->env.fdt_addr;          /* a1 */
-diff --git a/target/riscv/meson.build b/target/riscv/meson.build
-index 7f56c5f88d..e3ab3df4e5 100644
---- a/target/riscv/meson.build
-+++ b/target/riscv/meson.build
-@@ -22,7 +22,7 @@ riscv_ss.add(files(
-   'crypto_helper.c',
-   'zce_helper.c'
- ))
--riscv_ss.add(when: 'CONFIG_KVM', if_true: files('kvm.c'), if_false: files('kvm-stub.c'))
-+riscv_ss.add(when: 'CONFIG_KVM', if_true: files('kvm.c'))
+-#include "instmap.h"
+ #include "internals.h"
  
- riscv_system_ss = ss.source_set()
- riscv_system_ss.add(files(
+ #define HELPER_H "helper.h"
 -- 
 2.38.1
 
