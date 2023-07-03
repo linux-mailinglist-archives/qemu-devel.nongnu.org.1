@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BA2174574F
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 10:27:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F156E745755
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 10:30:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGEto-00009D-0q; Mon, 03 Jul 2023 04:27:08 -0400
+	id 1qGEx1-0001F0-4Z; Mon, 03 Jul 2023 04:30:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qGEtl-00008r-Eb
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 04:27:05 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qGEwy-0001Eg-PQ
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 04:30:24 -0400
+Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qGEtj-0007W2-PO
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 04:27:05 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-313f1085ac2so4578552f8f.1
- for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 01:27:03 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qGEws-0008Jo-IW
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 04:30:24 -0400
+Received: by mail-ej1-x630.google.com with SMTP id
+ a640c23a62f3a-98de21518fbso471980366b.0
+ for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 01:30:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688372822; x=1690964822;
+ d=linaro.org; s=google; t=1688373016; x=1690965016;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=+g3yvbP4PQ9J1yw+Le3GL4jy81faKVCF59ath6WJBjM=;
- b=xokzJ5SWrHYWN1XhoTg6yMP0ec1CnjXYIn3VCnrJaruDWjG2QvWdt/ZMld9lh/LmaD
- 0ctnbldbudG48rs87t5MGhIFTkHPfwq6Awc1DCBjte9F+rv5KOZGoyc7chR8cimCRByG
- u7vYRBbT8rk/hiOkiiuP2W9mv6JIquB9S+MYGQ3VhUYm2+bADew+j5hEJ8AZPMMkjgrg
- vi+8rDeJI9Hj5jVXI7xjEcV9nuiSFcdvVYXXd1M2Z2lJSsUWo1dVT1VXqdNQk5nQehhP
- MCQdktfUD9M223eVqabHKKeBn7tdS8uhIJHMhfF+8LiWin0LKph1ixQ5DUG44LwH7oAS
- lk9A==
+ bh=vpgbUviu618QmLVwAVgqRqxnyhSynTZEc6pbEDidceA=;
+ b=qKDIscCuUtnn342rkCStl8RXW53XFbw2Wd4GQkgO+CY7oZMP7dpoVYjOtfAk2SzBs/
+ n8QpL0OIApXsqmECRYbtwKyzjJwTKsLaknnv/kqekGV1mz1kVZFG/Qj3dFOQTCBFeBf9
+ /oqmT9Sn6jjCvJl4a3k7XLTzTP1FdHbwcU7ID9j/O9tO9c7m2Xel50YN9qrXGya6s1ce
+ LCwKYgYnogOTI50uELdJAmvTtywgVl+3xquY7Kzu6m6QdxYkMuZii0z1RleXMbuMF8mL
+ 2Q9pYneuu/PwzYtv6WXSajeH1ubLOkE41sah96Bu53aRb6uQlyGWvGg/qS/bWYDWaa0/
+ I+kA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688372822; x=1690964822;
+ d=1e100.net; s=20221208; t=1688373016; x=1690965016;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=+g3yvbP4PQ9J1yw+Le3GL4jy81faKVCF59ath6WJBjM=;
- b=Yu3sDV/s73IPt2ttEzCj9RXVqbyZPB3OjEHIw5TIWAm9XMdeeJx4kl9vsjq9/EeW5K
- zzJV5mqZc4a/ZtNWG3EflNA6HxIEyLXd20PrTpKcpa5B2r1ZDcfzrUMnPpZxrIjILIXA
- V4Vx173zprYRH14enmtB8y0MViDnuTuACil8Q+kM3lqljcGDTtKJjTf0LzkAeWZI7xDS
- xzJ3Fw7Nuxf+NtTNeW3Io0c8bCAJbFY99bBkZ1f9yooj9bXNqLhPHp/nwnHL57JMICkA
- 58s7fzRsokHWaOunwlQICpU9QnJ7ATllQGkebBKmthW2rDc/aP5Tdn3fK5OvZLSPVeIY
- he0g==
-X-Gm-Message-State: ABy/qLYt3Mtfo92ehfRh8zYP5N6uhIfjDQkWiN15Rx8e7NwypVgPrsCf
- /lgA4DTvc6gczwnIk1Nhj5NTmg==
-X-Google-Smtp-Source: APBJJlFqNrIXN+r+87Hy8t6aDUazduK+S5gp5s0b/YksyltA28nSCDvZuvqSTCblE3NHgENF8qNzaA==
-X-Received: by 2002:a5d:58d8:0:b0:313:ee2e:dae1 with SMTP id
- o24-20020a5d58d8000000b00313ee2edae1mr7127552wrf.18.1688372822330; 
- Mon, 03 Jul 2023 01:27:02 -0700 (PDT)
+ bh=vpgbUviu618QmLVwAVgqRqxnyhSynTZEc6pbEDidceA=;
+ b=BD79uHdIbT+hSGLhNqNncbQFMz/fA+BTZ5qYlRUIiX6KqLQ3mp2S9kYVrtkbpUPNbG
+ iTWDgtOUIQjYkvIzKRK2g6DqAe/wmk+KtIYFzy5E6B0ePcuaPgwBuaqNK8tRtIbylGuJ
+ aJ13lBvvmRdEa7CwaYkkbUXcTxNKVezZY4xV6yxfj1a0+FTOos2Fo1Ktj6fkPIoBRkhf
+ 03UMKyLnzig83LiV1ew1o5IRsxm8vumrvvjJGSGHHlTPKfs7aPYPRvBJ/VSFL3MbS2uS
+ FTcsWtJ/qRL1sWeDwtKg5MRE59ZMpBo77N4pRrzRsmWha6CCtTxPbLm8CqTMR1PHSba1
+ veEQ==
+X-Gm-Message-State: ABy/qLaQBFbZcCO/+Mbw29E4pfGQJiv0vqtfokmpagh4A/83pwqbqvvD
+ P7mOtE9iLONv/+gFiTsYocg0Tg==
+X-Google-Smtp-Source: APBJJlEhttGwYIWxNGhPsyJ5hAQHLYIV+4VZalpKrn2aQ5LdX9KUEX45fnWP+XgaA+Js/sz6/YKAsg==
+X-Received: by 2002:a17:906:af79:b0:992:4250:5462 with SMTP id
+ os25-20020a170906af7900b0099242505462mr7062095ejb.50.1688373016557; 
+ Mon, 03 Jul 2023 01:30:16 -0700 (PDT)
 Received: from [192.168.69.115] ([176.176.178.91])
  by smtp.gmail.com with ESMTPSA id
- z16-20020a5d6550000000b00313f4304bcasm19304047wrv.16.2023.07.03.01.27.01
+ jo19-20020a170906f6d300b00992d70f8078sm4499472ejb.106.2023.07.03.01.30.15
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 03 Jul 2023 01:27:02 -0700 (PDT)
-Message-ID: <575796cd-6460-b9ea-bfcf-8f27fadf0920@linaro.org>
-Date: Mon, 3 Jul 2023 10:26:59 +0200
+ Mon, 03 Jul 2023 01:30:16 -0700 (PDT)
+Message-ID: <13c93212-0dc4-b7f6-0e29-eb8753f30801@linaro.org>
+Date: Mon, 3 Jul 2023 10:30:14 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.12.0
-Subject: Re: [PATCH 11/21] swim: add trace events for IWM and ISM registers
+Subject: Re: [PATCH 14/21] mac_via: work around underflow in TimeDBRA timing
+ loop in SETUPTIMEK
 Content-Language: en-US
 To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, laurent@vivier.eu,
  qemu-devel@nongnu.org
 References: <20230702154838.722809-1-mark.cave-ayland@ilande.co.uk>
- <20230702154838.722809-12-mark.cave-ayland@ilande.co.uk>
+ <20230702154838.722809-15-mark.cave-ayland@ilande.co.uk>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230702154838.722809-12-mark.cave-ayland@ilande.co.uk>
+In-Reply-To: <20230702154838.722809-15-mark.cave-ayland@ilande.co.uk>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::630;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x630.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -94,45 +95,59 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 2/7/23 17:48, Mark Cave-Ayland wrote:
+> The MacOS toolbox ROM calculates the number of branches that can be executed
+> per millisecond as part of its timer calibration. Since modern hosts are
+> considerably quicker than original hardware, the negative counter reaches zero
+> before the calibration completes leading to division by zero later in
+> CALCULATESLOD.
+> 
+> Instead of trying to fudge the timing loop (which won't work for TimeDBRA/TimeSCCDB
+> anyhow), use the pattern of access to the VIA1 registers to detect when SETUPTIMEK
+> has finished executing and write some well-known good timer values to TimeDBRA
+> and TimeSCCDB taken from real hardware with a suitable scaling factor.
+> 
 > Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 > ---
->   hw/block/swim.c       | 14 ++++++++++++++
->   hw/block/trace-events |  7 +++++++
->   2 files changed, 21 insertions(+)
-
-
-> @@ -267,6 +275,7 @@ static void iwmctrl_write(void *opaque, hwaddr reg, uint64_t value,
->       reg >>= REG_SHIFT;
+>   hw/misc/mac_via.c         | 115 ++++++++++++++++++++++++++++++++++++++
+>   hw/misc/trace-events      |   1 +
+>   include/hw/misc/mac_via.h |   3 +
+>   3 files changed, 119 insertions(+)
+> 
+> diff --git a/hw/misc/mac_via.c b/hw/misc/mac_via.c
+> index baeb73eeb3..766a32a95d 100644
+> --- a/hw/misc/mac_via.c
+> +++ b/hw/misc/mac_via.c
+> @@ -16,6 +16,7 @@
+>    */
 >   
->       swimctrl->regs[reg >> 1] = reg & 1;
-> +    trace_swim_iwmctrl_write((reg >> 1), size, (reg & 1));
->   
->       if (swimctrl->regs[IWM_Q6] &&
->           swimctrl->regs[IWM_Q7]) {
-> @@ -297,6 +306,7 @@ static void iwmctrl_write(void *opaque, hwaddr reg, uint64_t value,
->                   if (value == 0x57) {
->                       swimctrl->mode = SWIM_MODE_SWIM;
->                       swimctrl->iwm_switch = 0;
-> +                    trace_swim_iwm_switch();
->                   }
->                   break;
->               }
-> @@ -312,6 +322,7 @@ static uint64_t iwmctrl_read(void *opaque, hwaddr reg, unsigned size)
->   
->       swimctrl->regs[reg >> 1] = reg & 1;
->   
-> +    trace_swim_iwmctrl_read((reg >> 1), size, (reg & 1));
->       return 0;
->   }
+>   #include "qemu/osdep.h"
+> +#include "exec/address-spaces.h"
+>   #include "migration/vmstate.h"
+>   #include "hw/sysbus.h"
+>   #include "hw/irq.h"
 
 
-> +swim_swimctrl_read(int reg, const char *name, unsigned size, uint64_t value) "reg=%d [%s] size=%u value=0x%"PRIx64
-> +swim_swimctrl_write(int reg, const char *name, unsigned size, uint64_t value) "reg=%d [%s] size=%u value=0x%"PRIx64
-> +swim_iwmctrl_read(int reg, unsigned size, uint64_t value) "reg=%d size=%u value=0x%"PRIx64
-> +swim_iwmctrl_write(int reg, unsigned size, uint64_t value) "reg=%d size=%u value=0x%"PRIx64
+> +/*
+> + * Addresses and real values for TimeDBRA/TimeSCCB to allow timer calibration
+> + * to succeed (NOTE: both values have been multiplied by 3 to cope with the
+> + * speed of QEMU execution on a modern host
+> + */
+> +#define MACOS_TIMEDBRA        0xd00
+> +#define MACOS_TIMESCCB        0xd02
+> +
+> +#define MACOS_TIMEDBRA_VALUE  (0x2a00 * 3)
+> +#define MACOS_TIMESCCB_VALUE  (0x079d * 3)
+> +
+> +static bool via1_is_toolbox_timer_calibrated(void)
+> +{
+> +    /*
+> +     * Indicate whether the MacOS toolbox has been calibrated by checking
+> +     * for the value of our magic constants
+> +     */
+> +    uint16_t timedbra = lduw_be_phys(&address_space_memory, MACOS_TIMEDBRA);
+> +    uint16_t timesccdb = lduw_be_phys(&address_space_memory, MACOS_TIMESCCB);
 
-For these 2 functions, 'value' is 1 bit so could be 'unsigned' ;)
-
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
+Rather than using the global address_space_memory (which we secretly
+try to remove entirely), could we pass a MemoryRegion link property
+to the VIA1 device?
 
