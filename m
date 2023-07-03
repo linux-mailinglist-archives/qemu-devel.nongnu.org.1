@@ -2,79 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66693745BD2
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 14:05:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B8F4745BE4
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 14:11:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGIHd-0001od-41; Mon, 03 Jul 2023 08:03:57 -0400
+	id 1qGIOR-0004xa-Hi; Mon, 03 Jul 2023 08:11:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qGIHZ-0001jr-J6; Mon, 03 Jul 2023 08:03:53 -0400
-Received: from mail-ot1-x32c.google.com ([2607:f8b0:4864:20::32c])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qGIOG-0004ti-4S
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 08:10:49 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qGIHX-0003YW-PG; Mon, 03 Jul 2023 08:03:53 -0400
-Received: by mail-ot1-x32c.google.com with SMTP id
- 46e09a7af769-6b7206f106cso3364301a34.1; 
- Mon, 03 Jul 2023 05:03:50 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qGIO8-0005qT-NT
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 08:10:46 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-3fbc1218262so53265875e9.3
+ for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 05:10:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688385829; x=1690977829;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=H5NUNFE+EU3Pgyk+pvL+VmpnC5N+XQRe75iRJQPkSCo=;
- b=O+eBW6h10njXuKmBBRS+B2Ja2wIpfRccC3qsMXI/wrAm7Z0UyXZMgfTBpHmO9u75w0
- UzhQ7xUJweCiQHUCTPOzdyF2zA6HRj40uv90hg8WD5jMqBG+QuGJ5KkTjtruBzBQWPad
- d/IbMXTUt3+N08X4wXVMHvRPliqeXfOu4z4wvUYNpGfl2bJ2w2hYWApCCh417nhIrJlA
- OVzXzUDonaQDWcNuvJON8V2iv5FPv+/NEG+U+k5BYk5M23O0u9fYIA4/NYjN1jQt+g4R
- ouQQruU3NLjTblX18VY8dyHTJomzTtqLe2PdmjZojc0o7V1Xo/gRIQMnlEJ8nIEW2QTx
- +3hA==
+ d=linaro.org; s=google; t=1688386235; x=1690978235;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=TjWCszWfe513WyppL7zb8v0IrQpKTYicUil+LiuuY8Y=;
+ b=ViRsOoFRUTNO6xLoiFX5S/O/9DgAsXB67SDztdnICiLhIJqhkYA7x6ekwJ2E7YwgRY
+ d/ePNsfqGJjQ8mUyt95187wNCSnzu5wJZoe2fm/zOsGqxm4N1tEy4cKMkoexW5EnlsKS
+ tniLf0UI2ktzd+A4G8xSX2I77BZ8cxkKD6QjhZW0T563yQ2UoNGb2/kPE0tvC3dWpbTF
+ HGIEbGWFYRaue9fbizMiVJScC1du0ikqJEO8haxrliT27ydL2+0izHVoSa0C2efcBsGg
+ 6doltvUrrwiXWOMsbCBucLucBaPqwLUgRttq+3cZg0JOm0o/e05Q3ZGtsfm8fchXmHwY
+ 9Xbg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688385829; x=1690977829;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=H5NUNFE+EU3Pgyk+pvL+VmpnC5N+XQRe75iRJQPkSCo=;
- b=BmvqGzp35VmgL+48vkclsJS61riVprrjbTUukaPr25MFrkJThSo8ABplN+xUwuJAxo
- nVHddhGZiUPQsVunWiD+vL7nZKXwiWlmZJPt/mwg/dA9eyqTJVlZqSxd+CBmgRU2yBAa
- L/vq330GK5f6VYUe/5PZ6cmWMu54+xJJ4zSzhCCTJUNqdrIn42T5eeSZTk4mVRA70del
- 8yG/C/ZdAmg5B7Nf0S6HIphEMeusz2lXnogTvtkBtJoob5W5fNk7lXruefWqzVNyQxR3
- jHiRjZl7mnPlNFWD9NTXjbuQOykBLbe2RRgbqa4KiN3v0D/quLWS5bgz1Wb9WF/ggx3p
- 3A3w==
-X-Gm-Message-State: AC+VfDzNYAaffvKAgoWlU9Cp/OA0Abz0rAYrkhfJBlNxJ8cEue3EWQqh
- SPZptzLXZCmNCW7l7KxiolO5pMs9T9M=
-X-Google-Smtp-Source: ACHHUZ5zhIUR2u35/VgfhapMhpGQTAdPl2zLnSjmZ+BMM9VUgLdIjwQPvBOyyhUAHQBJNSBfrJOxOA==
-X-Received: by 2002:a9d:65d8:0:b0:6b7:206e:edf7 with SMTP id
- z24-20020a9d65d8000000b006b7206eedf7mr8152804oth.1.1688385829599; 
- Mon, 03 Jul 2023 05:03:49 -0700 (PDT)
-Received: from wheely.local0.net ([118.210.96.60])
+ d=1e100.net; s=20221208; t=1688386235; x=1690978235;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=TjWCszWfe513WyppL7zb8v0IrQpKTYicUil+LiuuY8Y=;
+ b=gTYNVrjpDy/TXEvgc+EzwLN/8nhLZuz4IWJbPvg7t5H1WehV+/o31F/akE/af94+h7
+ ijH56jW7KtEunNnQ8JKvnsVcVr3GJsI9dhyRuuq9MznUXhSJV7sWLJfSGIHH5Cf44olq
+ v+66EXjeGQEaeq/eJpcGYK65Lm2QaZ78GoTgTUDmfl9u4oBtRftJvfFAl1dulC40JMeR
+ LqLyKZ2javWagdeWXzCjxUI6Ei1naK2GUCy5PhUs+P6qq3pZqYhB+OehK4bDB3VW8szq
+ x5qw+Keq1FyeF0/NABj/BZ+D9fHvPc4NCqQjrHCW7QOKaVgEvOF5nN+jCJxxGM6XgyTp
+ 7Z3A==
+X-Gm-Message-State: ABy/qLYEQiOlrEFhJ5hYdGaegv1Pn0U1uZHBsQF3N8k+G8A7ycCbYvoa
+ w8bAwgT8Eig63nRMSMI1voJYFg==
+X-Google-Smtp-Source: APBJJlFgr8E5OQdvQ1x3BVq1eyBkbBeFEIhnza0ilSScB6OdIdLwjRimA2eIhomIfyOU+3dFcR9o7Q==
+X-Received: by 2002:a7b:c446:0:b0:3fb:cf8e:c934 with SMTP id
+ l6-20020a7bc446000000b003fbcf8ec934mr6775612wmi.27.1688386234620; 
+ Mon, 03 Jul 2023 05:10:34 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- p15-20020a63e64f000000b0051b0e564963sm14891408pgj.49.2023.07.03.05.03.44
+ f3-20020adff443000000b00314367cf43asm3032754wrp.106.2023.07.03.05.10.34
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 03 Jul 2023 05:03:49 -0700 (PDT)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH v3] target/ppc: Make checkstop actually stop the system
-Date: Mon,  3 Jul 2023 22:03:39 +1000
-Message-Id: <20230703120340.45349-1-npiggin@gmail.com>
-X-Mailer: git-send-email 2.40.1
+ Mon, 03 Jul 2023 05:10:34 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id E3D751FFBB;
+ Mon,  3 Jul 2023 13:10:33 +0100 (BST)
+References: <mvmmt0dtosg.fsf@suse.de> <mvma5wdtdiw.fsf@suse.de>
+User-agent: mu4e 1.11.8; emacs 29.0.92
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Andreas Schwab <schwab@suse.de>
+Cc: Helge Deller <deller@gmx.de>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>, Bin Meng
+ <bin.meng@windriver.com>, qemu-riscv@nongnu.org, qemu-devel@nongnu.org
+Subject: Re: [RISC-V] ERROR:../accel/tcg/cpu-exec.c:1028:cpu_exec_setjmp:
+ assertion failed: (cpu == current_cpu)
+Date: Mon, 03 Jul 2023 13:08:02 +0100
+In-reply-to: <mvma5wdtdiw.fsf@suse.de>
+Message-ID: <87h6qli4au.fsf@linaro.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::32c;
- envelope-from=npiggin@gmail.com; helo=mail-ot1-x32c.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -92,82 +98,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-checkstop state does not halt the system, interrupts continue to be
-serviced, and other CPUs run. Stop the machine with
-qemu_system_guest_panicked.
 
-Change the logging not to print separately to stderr because a
-checkstop is a guest error (or perhaps a simulated machine error)
-rather than a QEMU error. CPU registers are dumped.
+Andreas Schwab <schwab@suse.de> writes:
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> On Jul 03 2023, Andreas Schwab wrote:
+>
+>> This is a regression in 8.0.  It causes the testsuite of mold to fail:
+>>
+>> https://build.opensuse.org/package/live_build_log/openSUSE:Factory:RISCV=
+/mold/standard/riscv64
+>>
+>> + out/test/elf/riscv64/section-start/exe2
+>> **
+>> ERROR:../accel/tcg/cpu-exec.c:1028:cpu_exec_setjmp: assertion failed: (c=
+pu =3D=3D current_cpu)
+>> **
+>> ERROR:../accel/tcg/cpu-exec.c:1028:cpu_exec_setjmp: assertion failed: (c=
+pu =3D=3D current_cpu)
+>
+> This bisects down to commit 86f04735ac ("linux-user: Fix brk() to
+> release pages").  See the attached test case.
+>
+> $ ./qemu-riscv64 ../exe1
+> **
+> ERROR:../qemu/accel/tcg/cpu-exec.c:1027:cpu_exec_setjmp: assertion failed=
+: (cpu =3D=3D current_cpu)
+> Bail out! ERROR:../qemu/accel/tcg/cpu-exec.c:1027:cpu_exec_setjmp: assert=
+ion failed: (cpu =3D=3D current_cpu)
+> **
+> ERROR:../qemu/accel/tcg/cpu-exec.c:1027:cpu_exec_setjmp: assertion failed=
+: (cpu =3D=3D current_cpu)
+> Bail out! ERROR:../qemu/accel/tcg/cpu-exec.c:1027:cpu_exec_setjmp: assert=
+ion failed: (cpu =3D=3D current_cpu)
 
-Since v1:
-- Fix loop exit so it stops on the checkstop-causing instruction, rather than
-  after it.
+I wonder if applying c5ffd16ba4c8fd fixes this?
 
-Since v2:
-- Rebase on ppc-next.
-- Use qemu_system_guest_panicked rather than vm_stop (Richard)
-- Move away from printing to stderr (Zoltan)
-- Reduce changes to log messages.
-- Split out from larger series since it's independent (will skip attn
-  instruction for now).
----
- target/ppc/excp_helper.c | 26 ++++++++++++++++++--------
- 1 file changed, 18 insertions(+), 8 deletions(-)
+I tried to double check with the test case but I can't run it as it's a
+dynamic binary so needs an ld.so.
 
-diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
-index e49e13a30d..a588285ef1 100644
---- a/target/ppc/excp_helper.c
-+++ b/target/ppc/excp_helper.c
-@@ -19,6 +19,7 @@
- #include "qemu/osdep.h"
- #include "qemu/main-loop.h"
- #include "qemu/log.h"
-+#include "sysemu/runstate.h"
- #include "cpu.h"
- #include "exec/exec-all.h"
- #include "internal.h"
-@@ -427,20 +428,29 @@ static void powerpc_set_excp_state(PowerPCCPU *cpu, target_ulong vector,
- static void powerpc_mcheck_checkstop(CPUPPCState *env)
- {
-     CPUState *cs = env_cpu(env);
-+    FILE *f;
- 
-     if (FIELD_EX64(env->msr, MSR, ME)) {
-         return;
-     }
- 
--    /* Machine check exception is not enabled. Enter checkstop state. */
--    fprintf(stderr, "Machine check while not allowed. "
--            "Entering checkstop state\n");
--    if (qemu_log_separate()) {
--        qemu_log("Machine check while not allowed. "
--                 "Entering checkstop state\n");
-+    /*
-+     * This stops the machine and logs CPU state without killing QEMU
-+     * (like cpu_abort()) so the machine can still be debugged (because
-+     * it is often a guest error).
-+     */
-+
-+    f = qemu_log_trylock();
-+    if (f) {
-+        fprintf(f, "Machine check while not allowed. "
-+                "Entering checkstop state.\n");
-+        cpu_dump_state(cs, f, CPU_DUMP_FPU | CPU_DUMP_CCOP);
-+        qemu_log_unlock(f);
-     }
--    cs->halted = 1;
--    cpu_interrupt_exittb(cs);
-+
-+    qemu_system_guest_panicked(NULL);
-+
-+    cpu_loop_exit_noexc(cs);
- }
- 
- static void powerpc_excp_40x(PowerPCCPU *cpu, int excp)
--- 
-2.40.1
-
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
