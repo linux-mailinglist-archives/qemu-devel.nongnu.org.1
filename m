@@ -2,84 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10D817459B4
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 12:09:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E76797459CD
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 12:12:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGGSe-0004L0-6n; Mon, 03 Jul 2023 06:07:12 -0400
+	id 1qGGVU-0003f1-4B; Mon, 03 Jul 2023 06:10:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qGGRp-0003Cn-A9
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 06:06:24 -0400
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
+ id 1qGGVH-0003F1-44; Mon, 03 Jul 2023 06:10:00 -0400
+Received: from mail-oa1-x2b.google.com ([2001:4860:4864:20::2b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qGGRX-00061h-2N
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 06:06:19 -0400
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-313f61890fbso4703589f8f.3
- for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 03:06:01 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
+ id 1qGGVE-0007CJ-SQ; Mon, 03 Jul 2023 06:09:54 -0400
+Received: by mail-oa1-x2b.google.com with SMTP id
+ 586e51a60fabf-1b012c3ce43so3537491fac.3; 
+ Mon, 03 Jul 2023 03:09:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688378761; x=1690970761;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=1F2YVr3IWQtmqpjJeR+MoFqCj9awn2sZVMTfzE1Dbtk=;
- b=QoD9a6Dzn0NYGriFaOR/LWOONhuhrExsniOfuKgpMiFjXddDF6Eile9w/vR55X8jC2
- 5pvwFy97RwqqOOwmvdfWcIEpIG+uHZsqcL2woHpE1aKuo2grAtKYxSi965WCEcr1ux7R
- h25VxkRZJDugys5OXqh/g1l9urofZI29ZwCsyoVyv5YlPWxY55J+0eWP5DaCEk8MIUgV
- /kc4Y8zdG869Wps7J7314pg8Z89SnZRiV5Ox6fIM0DriMX4V2mDE6wosNeJPUjQaeJ9w
- Vhrm/3xY/ZmF28mZK02BSZXDd/y6GsJwBCQ3/F42k0FkSNJuBn4gnW6JZIq5xco2+H5K
- q10w==
+ d=gmail.com; s=20221208; t=1688378990; x=1690970990;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=ZVxIYkDIohU1O071DkHzLo9VU1FHSqQn6IdflZITeUA=;
+ b=C2bmZlcc42qp1zl0HpngJ6idoIoU0NeC0t94kaHj5MZXkq74JqjOKBJheuOs8gyAO1
+ pvvMVv1zpdGG1sbj30ocVf3L+EwYYOPMTLfhI4wkKrD5LLPw60PwGHbjkG6AXqVY/qn1
+ TOhAYbdb65ajlVuDBMSxq02p5fXKKZIcz9onDnCTQvtKQd4EFx4P02tGlfwNYmbjM9gT
+ UfDwV8jxeic1n9o3YXLgThoKaZkJvGAH9+hfTB/VLx0KtHZRVsy7P1rqCVSrGcSGN4sD
+ CemdjCMpYWRF3tLGklTqrqXxXgXuNVRZIG1AioOToXpJmUF8NaXR6CpfcvXkOdofV0wv
+ YnlA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688378761; x=1690970761;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=1F2YVr3IWQtmqpjJeR+MoFqCj9awn2sZVMTfzE1Dbtk=;
- b=gFh7DPr8qEPacsadkUdxXAQQ/n/YQY0nkYYvLhbx66oMlzziGS+TQ7DM9J+UE84gWc
- jb0aRF5hmkfB+HiEt7eYlAGzFG5EKn5T7H5Oc7KApHSVsyiLpsghL604DQ1IeMdVA6Wi
- 8fh6lIQIpQpW3HJ3nX4WucfT97bi8Ydy6OIzdWmRu+qkoJwJwe3OO/tDfuSVQt0kBt5U
- wwzooi+H+S6EHPbmny7N5ZuPMbheytfvOkPQzeHzOb26A9nHzAqg7mygAGwopa0mxKdD
- mDvUsiJsDbBHyPrgiwbT4MNG997pogrjgoAe99qw+Bs4TlGyIbAAzkrMQ0izby0duNSa
- 9d9A==
-X-Gm-Message-State: ABy/qLa0JhPQWgYS5tuEgcr17PLzE+7eSq6pvExdtZvZD3azK78RE1LX
- jTdFbCrqpsa/MqWGFsrtIQAUPu2NCHTy3tadlkQXCg==
-X-Google-Smtp-Source: APBJJlHee7hGakMrOLMy+Uo2aE8/VDwZduspvz6G3rnX8p3f0xk1n3a8q4DH+Se6AqpJ0NAwoYMIdA==
-X-Received: by 2002:adf:fa49:0:b0:314:212f:360b with SMTP id
- y9-20020adffa49000000b00314212f360bmr6528005wrr.17.1688378760778; 
- Mon, 03 Jul 2023 03:06:00 -0700 (PDT)
-Received: from stoup.home (91.232.79.188.dynamic.jazztel.es. [188.79.232.91])
- by smtp.gmail.com with ESMTPSA id
- t5-20020a05600001c500b00313f7b077fesm18446562wrx.59.2023.07.03.03.05.59
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 03 Jul 2023 03:06:00 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, qemu-riscv@nongnu.org, pbonzini@redhat.com,
- eduardo@habkost.net, alistair.francis@wdc.com, danielhb413@gmail.com,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v4 37/37] crypto: Unexport AES_*_rot, AES_TeN, AES_TdN
-Date: Mon,  3 Jul 2023 12:05:20 +0200
-Message-Id: <20230703100520.68224-38-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230703100520.68224-1-richard.henderson@linaro.org>
-References: <20230703100520.68224-1-richard.henderson@linaro.org>
+ d=1e100.net; s=20221208; t=1688378990; x=1690970990;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=ZVxIYkDIohU1O071DkHzLo9VU1FHSqQn6IdflZITeUA=;
+ b=aB1y2HsBbV8CgQCgszHK3Z2sA2V1Nljwr/LiOUerHDJ5eqHsbX6gfWFCZ1Hv7wp4W0
+ pX6lPIUOvZMgPUpSTgM6iNHD4tdCEw3cgFCaeGL16PT2cqqXoTynM3wj8I5y9GnDWSVM
+ Wse1UIO2UWVzw75uzg69iwQWGfQlI23u4U5MQ/emALNLKyts2ptFJfYOKAcLldRf36ec
+ xM67YXug2zN/usfPuSQJ5R7OGqQpWcTVdQ+08XNqZZyWdbuArXL/kTf0ImVRyQQY4IQH
+ tXjf0AouvuYVbNIkB07syMFx+uuubXhCrQW//4qSHlg7bKZ9rCzSTElJIXzVDCG3Pid0
+ SkAg==
+X-Gm-Message-State: ABy/qLZeEO7qXkzYlXUKvv2ZHy0723VsoLOq0PmsM13dH/lCnkBvDCfm
+ KuNLVL0CguGQjSjHNywEIc0=
+X-Google-Smtp-Source: APBJJlF4SVE5NUvPI5L0H1xMJ5m4b2Ee66F5YFgwp75F9Et7vpXvm+2E/JzG62T8XKSYn2AoixCOPg==
+X-Received: by 2002:a05:6870:9d8b:b0:17a:c612:ae0d with SMTP id
+ pv11-20020a0568709d8b00b0017ac612ae0dmr12280715oab.49.1688378990134; 
+ Mon, 03 Jul 2023 03:09:50 -0700 (PDT)
+Received: from [192.168.68.107] (201-69-66-110.dial-up.telesp.net.br.
+ [201.69.66.110]) by smtp.gmail.com with ESMTPSA id
+ f39-20020a056871072700b001a69e7efd13sm12307824oap.5.2023.07.03.03.09.48
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 03 Jul 2023 03:09:49 -0700 (PDT)
+Message-ID: <a1caa536-f625-f071-cfd0-60773fafdb2b@gmail.com>
+Date: Mon, 3 Jul 2023 07:09:46 -0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x42c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH v3 00/14] Misc clean ups to target/ppc exception handling
+Content-Language: en-US
+To: BALATON Zoltan <balaton@eik.bme.hu>
+Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, clg@kaod.org,
+ Greg Kurz <groug@kaod.org>, Nicholas Piggin <npiggin@gmail.com>
+References: <cover.1686868895.git.balaton@eik.bme.hu>
+ <92e3591e-cce7-c3e7-7d73-a0bd24de8c2c@gmail.com>
+ <1726bfcd-0e6e-0a72-bc97-be7a79f95340@eik.bme.hu>
+ <03e0c0c0-d3e5-bc4c-6c07-db642d2e6f52@gmail.com>
+ <275e9cc3-8cb5-052a-7683-7abf4ea78522@eik.bme.hu>
+ <a314ebf0-fede-2646-a255-59ee9ebf33d6@gmail.com>
+ <a7502abc-8186-134f-6019-771c1afc27fc@eik.bme.hu>
+From: Daniel Henrique Barboza <danielhb413@gmail.com>
+In-Reply-To: <a7502abc-8186-134f-6019-771c1afc27fc@eik.bme.hu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2001:4860:4864:20::2b;
+ envelope-from=danielhb413@gmail.com; helo=mail-oa1-x2b.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, NICE_REPLY_A=-0.09,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,180 +100,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These arrays are no longer used outside of aes.c.
 
-Acked-by: Daniel P. Berrangé <berrange@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- include/crypto/aes.h | 25 -------------------------
- crypto/aes.c         | 33 +++++++++++++++++++++------------
- 2 files changed, 21 insertions(+), 37 deletions(-)
 
-diff --git a/include/crypto/aes.h b/include/crypto/aes.h
-index 99209f51b9..709d4d226b 100644
---- a/include/crypto/aes.h
-+++ b/include/crypto/aes.h
-@@ -30,29 +30,4 @@ void AES_decrypt(const unsigned char *in, unsigned char *out,
- extern const uint8_t AES_sbox[256];
- extern const uint8_t AES_isbox[256];
- 
--/* AES MixColumns, for use with rot32. */
--extern const uint32_t AES_mc_rot[256];
--
--/* AES InvMixColumns, for use with rot32. */
--extern const uint32_t AES_imc_rot[256];
--
--/*
--AES_Te0[x] = S [x].[02, 01, 01, 03];
--AES_Te1[x] = S [x].[03, 02, 01, 01];
--AES_Te2[x] = S [x].[01, 03, 02, 01];
--AES_Te3[x] = S [x].[01, 01, 03, 02];
--AES_Te4[x] = S [x].[01, 01, 01, 01];
--
--AES_Td0[x] = Si[x].[0e, 09, 0d, 0b];
--AES_Td1[x] = Si[x].[0b, 0e, 09, 0d];
--AES_Td2[x] = Si[x].[0d, 0b, 0e, 09];
--AES_Td3[x] = Si[x].[09, 0d, 0b, 0e];
--AES_Td4[x] = Si[x].[01, 01, 01, 01];
--*/
--
--extern const uint32_t AES_Te0[256], AES_Te1[256], AES_Te2[256],
--                      AES_Te3[256], AES_Te4[256];
--extern const uint32_t AES_Td0[256], AES_Td1[256], AES_Td2[256],
--                      AES_Td3[256], AES_Td4[256];
--
- #endif
-diff --git a/crypto/aes.c b/crypto/aes.c
-index 685efbd583..836d7d5c0b 100644
---- a/crypto/aes.c
-+++ b/crypto/aes.c
-@@ -120,7 +120,7 @@ const uint8_t AES_isbox[256] = {
- /*
-  * MixColumns lookup table, for use with rot32.
-  */
--const uint32_t AES_mc_rot[256] = {
-+static const uint32_t AES_mc_rot[256] = {
-     0x00000000, 0x03010102, 0x06020204, 0x05030306,
-     0x0c040408, 0x0f05050a, 0x0a06060c, 0x0907070e,
-     0x18080810, 0x1b090912, 0x1e0a0a14, 0x1d0b0b16,
-@@ -190,7 +190,7 @@ const uint32_t AES_mc_rot[256] = {
- /*
-  * Inverse MixColumns lookup table, for use with rot32.
-  */
--const uint32_t AES_imc_rot[256] = {
-+static const uint32_t AES_imc_rot[256] = {
-     0x00000000, 0x0b0d090e, 0x161a121c, 0x1d171b12,
-     0x2c342438, 0x27392d36, 0x3a2e3624, 0x31233f2a,
-     0x58684870, 0x5365417e, 0x4e725a6c, 0x457f5362,
-@@ -272,7 +272,7 @@ AES_Td3[x] = Si[x].[09, 0d, 0b, 0e];
- AES_Td4[x] = Si[x].[01, 01, 01, 01];
- */
- 
--const uint32_t AES_Te0[256] = {
-+static const uint32_t AES_Te0[256] = {
-     0xc66363a5U, 0xf87c7c84U, 0xee777799U, 0xf67b7b8dU,
-     0xfff2f20dU, 0xd66b6bbdU, 0xde6f6fb1U, 0x91c5c554U,
-     0x60303050U, 0x02010103U, 0xce6767a9U, 0x562b2b7dU,
-@@ -338,7 +338,8 @@ const uint32_t AES_Te0[256] = {
-     0x824141c3U, 0x299999b0U, 0x5a2d2d77U, 0x1e0f0f11U,
-     0x7bb0b0cbU, 0xa85454fcU, 0x6dbbbbd6U, 0x2c16163aU,
- };
--const uint32_t AES_Te1[256] = {
-+
-+static const uint32_t AES_Te1[256] = {
-     0xa5c66363U, 0x84f87c7cU, 0x99ee7777U, 0x8df67b7bU,
-     0x0dfff2f2U, 0xbdd66b6bU, 0xb1de6f6fU, 0x5491c5c5U,
-     0x50603030U, 0x03020101U, 0xa9ce6767U, 0x7d562b2bU,
-@@ -404,7 +405,8 @@ const uint32_t AES_Te1[256] = {
-     0xc3824141U, 0xb0299999U, 0x775a2d2dU, 0x111e0f0fU,
-     0xcb7bb0b0U, 0xfca85454U, 0xd66dbbbbU, 0x3a2c1616U,
- };
--const uint32_t AES_Te2[256] = {
-+
-+static const uint32_t AES_Te2[256] = {
-     0x63a5c663U, 0x7c84f87cU, 0x7799ee77U, 0x7b8df67bU,
-     0xf20dfff2U, 0x6bbdd66bU, 0x6fb1de6fU, 0xc55491c5U,
-     0x30506030U, 0x01030201U, 0x67a9ce67U, 0x2b7d562bU,
-@@ -470,8 +472,8 @@ const uint32_t AES_Te2[256] = {
-     0x41c38241U, 0x99b02999U, 0x2d775a2dU, 0x0f111e0fU,
-     0xb0cb7bb0U, 0x54fca854U, 0xbbd66dbbU, 0x163a2c16U,
- };
--const uint32_t AES_Te3[256] = {
- 
-+static const uint32_t AES_Te3[256] = {
-     0x6363a5c6U, 0x7c7c84f8U, 0x777799eeU, 0x7b7b8df6U,
-     0xf2f20dffU, 0x6b6bbdd6U, 0x6f6fb1deU, 0xc5c55491U,
-     0x30305060U, 0x01010302U, 0x6767a9ceU, 0x2b2b7d56U,
-@@ -537,7 +539,8 @@ const uint32_t AES_Te3[256] = {
-     0x4141c382U, 0x9999b029U, 0x2d2d775aU, 0x0f0f111eU,
-     0xb0b0cb7bU, 0x5454fca8U, 0xbbbbd66dU, 0x16163a2cU,
- };
--const uint32_t AES_Te4[256] = {
-+
-+static const uint32_t AES_Te4[256] = {
-     0x63636363U, 0x7c7c7c7cU, 0x77777777U, 0x7b7b7b7bU,
-     0xf2f2f2f2U, 0x6b6b6b6bU, 0x6f6f6f6fU, 0xc5c5c5c5U,
-     0x30303030U, 0x01010101U, 0x67676767U, 0x2b2b2b2bU,
-@@ -603,7 +606,8 @@ const uint32_t AES_Te4[256] = {
-     0x41414141U, 0x99999999U, 0x2d2d2d2dU, 0x0f0f0f0fU,
-     0xb0b0b0b0U, 0x54545454U, 0xbbbbbbbbU, 0x16161616U,
- };
--const uint32_t AES_Td0[256] = {
-+
-+static const uint32_t AES_Td0[256] = {
-     0x51f4a750U, 0x7e416553U, 0x1a17a4c3U, 0x3a275e96U,
-     0x3bab6bcbU, 0x1f9d45f1U, 0xacfa58abU, 0x4be30393U,
-     0x2030fa55U, 0xad766df6U, 0x88cc7691U, 0xf5024c25U,
-@@ -669,7 +673,8 @@ const uint32_t AES_Td0[256] = {
-     0x39a80171U, 0x080cb3deU, 0xd8b4e49cU, 0x6456c190U,
-     0x7bcb8461U, 0xd532b670U, 0x486c5c74U, 0xd0b85742U,
- };
--const uint32_t AES_Td1[256] = {
-+
-+static const uint32_t AES_Td1[256] = {
-     0x5051f4a7U, 0x537e4165U, 0xc31a17a4U, 0x963a275eU,
-     0xcb3bab6bU, 0xf11f9d45U, 0xabacfa58U, 0x934be303U,
-     0x552030faU, 0xf6ad766dU, 0x9188cc76U, 0x25f5024cU,
-@@ -735,7 +740,8 @@ const uint32_t AES_Td1[256] = {
-     0x7139a801U, 0xde080cb3U, 0x9cd8b4e4U, 0x906456c1U,
-     0x617bcb84U, 0x70d532b6U, 0x74486c5cU, 0x42d0b857U,
- };
--const uint32_t AES_Td2[256] = {
-+
-+static const uint32_t AES_Td2[256] = {
-     0xa75051f4U, 0x65537e41U, 0xa4c31a17U, 0x5e963a27U,
-     0x6bcb3babU, 0x45f11f9dU, 0x58abacfaU, 0x03934be3U,
-     0xfa552030U, 0x6df6ad76U, 0x769188ccU, 0x4c25f502U,
-@@ -802,7 +808,8 @@ const uint32_t AES_Td2[256] = {
-     0x017139a8U, 0xb3de080cU, 0xe49cd8b4U, 0xc1906456U,
-     0x84617bcbU, 0xb670d532U, 0x5c74486cU, 0x5742d0b8U,
- };
--const uint32_t AES_Td3[256] = {
-+
-+static const uint32_t AES_Td3[256] = {
-     0xf4a75051U, 0x4165537eU, 0x17a4c31aU, 0x275e963aU,
-     0xab6bcb3bU, 0x9d45f11fU, 0xfa58abacU, 0xe303934bU,
-     0x30fa5520U, 0x766df6adU, 0xcc769188U, 0x024c25f5U,
-@@ -868,7 +875,8 @@ const uint32_t AES_Td3[256] = {
-     0xa8017139U, 0x0cb3de08U, 0xb4e49cd8U, 0x56c19064U,
-     0xcb84617bU, 0x32b670d5U, 0x6c5c7448U, 0xb85742d0U,
- };
--const uint32_t AES_Td4[256] = {
-+
-+static const uint32_t AES_Td4[256] = {
-     0x52525252U, 0x09090909U, 0x6a6a6a6aU, 0xd5d5d5d5U,
-     0x30303030U, 0x36363636U, 0xa5a5a5a5U, 0x38383838U,
-     0xbfbfbfbfU, 0x40404040U, 0xa3a3a3a3U, 0x9e9e9e9eU,
-@@ -934,6 +942,7 @@ const uint32_t AES_Td4[256] = {
-     0xe1e1e1e1U, 0x69696969U, 0x14141414U, 0x63636363U,
-     0x55555555U, 0x21212121U, 0x0c0c0c0cU, 0x7d7d7d7dU,
- };
-+
- static const u32 rcon[] = {
-         0x01000000, 0x02000000, 0x04000000, 0x08000000,
-         0x10000000, 0x20000000, 0x40000000, 0x80000000,
--- 
-2.34.1
+On 7/2/23 09:36, BALATON Zoltan wrote:
+> On Sat, 1 Jul 2023, Daniel Henrique Barboza wrote:
+>> On 7/1/23 06:39, BALATON Zoltan wrote:
+>>> On Sat, 1 Jul 2023, Daniel Henrique Barboza wrote:
+>>>> On 6/30/23 19:57, BALATON Zoltan wrote:
+>>>>> On Fri, 30 Jun 2023, Daniel Henrique Barboza wrote:
+>>>>>> Patches 1, 2, 3, 5, 7 and 11 are queued.
+>>>>>>
+>>>>>> If you would be so kind to get the remaining patches, rebase them
+>>>>>> on top of my ppc-next and resend, I believe there's more stuff
+>>>>>> to be queued.
+>>>>>
+>>>>> Thanks for taking care of these. I'll do the rebase of remaining patches once the current queue is merged, they aren't urgent so I can come back to those later. I'm working on some sam460ex patches but don't know yet when can I send it so don't wait for me now.
+>>>>
+>>>> Got it. Just bear in mind the current release schedule. Code freeze is July 11th:
+>>>>
+>>>> https://wiki.qemu.org/Planning/8.1
+>>>>
+>>>> I'll send one last PR before freeze (probably on July 10th) and then it'll be only bug fixes until end of August.
+>>>
+>>> Do you mean one more last PR after merging the current queue or the current queue will only be in that last PR? I hoped there would be a PR now on which I can rebase the outstanding patches for the last PR so I don't have to rebase on next but if the only PR you plan is the last on 10th then I may need to move to ppc-next now.
+>>
+>> Just use ppc-next right now.
+>>
+>> Even if I send a PR today with what we have, Peter/Richard has no obligation of merging it quickly on Monday (there's an US holiday July 4th, and some people will also skip July 3rd). If you wait for such PR to merge upstream, then start rebasing your stuff, you'll have less time to work with.
+> 
+> They may not be in the US though. Anyway, I've tried to rebase the remaining patches on your ppc-next branch and they applied without changes so not sure what you need from me now. I think Nick had alternative versions of the checkstop and sc patches that may cause a rebase when then go in first. Do you want me to merge them and submit that as a series with my patches? I don't have much time for now and these are just clean ups so I can live with these missing the next release and can come back to it later. I may try to do some sam460ex clean ups instead that should not clash with anything else.
 
+I'm fine with leaving some of these cleanups for the next release. I might review
+some patches by myself and queueing them during this week.
+
+
+Daniel
+
+> 
+> Regards,
+> BALATON Zoltan
 
