@@ -2,83 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23075746051
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 18:04:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3008F74609F
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 18:19:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGM1O-00061R-Rt; Mon, 03 Jul 2023 12:03:27 -0400
+	id 1qGMF1-00049y-QQ; Mon, 03 Jul 2023 12:17:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1qGM1C-00060X-Ji
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 12:03:14 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1qGM1A-0006Ky-On
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 12:03:14 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-3fbc59de0e2so44273615e9.3
- for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 09:03:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688400190; x=1690992190;
- h=content-transfer-encoding:cc:to:subject:content-language:from
- :user-agent:mime-version:date:message-id:from:to:cc:subject:date
- :message-id:reply-to;
- bh=8033MmEtT4zPI0Os0MY45EAKYtlFHfrAGI/JvV9tjVs=;
- b=JLhdAmkz/LNHepvnUJp/nnmrZ+3ZxJiNS0A58aT9i296HgxQhqCVcvj+IRJWWuhDVw
- bn4pB6WwRxc66Sy+Ybttx4YXjD8uQSCtiBW60Kk+cDOhQtEV4gZs2GKg5ZG74A5gSelR
- 7Sk9RjyPfOwiFSJMxXPlgRU7If+J7tdi6RE1LtiYWxsOcIIFWkAl1kg9qmhWbjfRwng/
- UqaX+SGuMRrGcGFp8TWicOEUtZA8lgSHkIiepjv+vcAnlG7ZeaTrTIIUiwwm7zyj7ydG
- q/KB+ZUm3eUm4kqLsVk/HlsT8MVpiblvOPel4usQju9B9hnCEWvzt8jhXywL07Zv85fw
- PcKA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688400190; x=1690992190;
- h=content-transfer-encoding:cc:to:subject:content-language:from
- :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=8033MmEtT4zPI0Os0MY45EAKYtlFHfrAGI/JvV9tjVs=;
- b=Q1iyA/b6pbFEgZh7wPcT09UFdExLoHW2mLsGxSvXAuHJejgFIgS9PxgbffVLwBWXaz
- VmEICs3Rxa3rd+CFdzMZAID6KCL9TJh1erjiT8Pm8BSwONIbMr5AzEFQOVnLVz6Hcfw+
- T7Y1rvLDdlp7yCzRCWcoW8j2n/bBRxywLN5VDVgAmRHTceOz+ZC391PTjwsiU7VgFUt9
- IyiqeiZJsYsOMH/SRpeacZ+Vj6hFrOlvphFA3dlR5xgyWT+201QLyowhb3xDIJ4TDU8b
- uhsUGG1h2bps5BrGgBq1AdOZaypKRXCkv5L101b00sJTjtIc89SF2X4zJqOHFpG/S6YR
- ZEbw==
-X-Gm-Message-State: AC+VfDyBldj8uT+8DF6IN5Jo92up7iigsz+Se2GK+tIBdabp5Uh/nMGt
- sMuhgOQiUiADUmCL1Yym7jU0xvWTEy5ScHURqNU=
-X-Google-Smtp-Source: ACHHUZ620rNqMENZDZk7L1S0P4qG0RwvdGpw508IjDTIpJOCg/tR0yV5hF0GMPvtnFNpKsrxykjXqg==
-X-Received: by 2002:a7b:ce87:0:b0:3f7:aad8:4e05 with SMTP id
- q7-20020a7bce87000000b003f7aad84e05mr9655577wmj.11.1688400190057; 
- Mon, 03 Jul 2023 09:03:10 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:5cc:caa0:6d79:3eab:6444:9cd4?
- ([2a01:e0a:5cc:caa0:6d79:3eab:6444:9cd4])
- by smtp.gmail.com with ESMTPSA id
- c1-20020a05600c0ac100b003fba6a0c881sm18119550wmr.43.2023.07.03.09.03.09
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 03 Jul 2023 09:03:09 -0700 (PDT)
-Message-ID: <c0a35ed3-7e4a-aea6-a3bd-9f0e4079f4e0@linaro.org>
-Date: Mon, 3 Jul 2023 18:03:08 +0200
+ (Exim 4.90_1) (envelope-from <m.tyutin@yadro.com>)
+ id 1qGMEt-00049f-Sc
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 12:17:29 -0400
+Received: from mta-04.yadro.com ([89.207.88.248])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <m.tyutin@yadro.com>)
+ id 1qGMEq-0002TL-Oz
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 12:17:23 -0400
+DKIM-Filter: OpenDKIM Filter v2.11.0 mta-04.yadro.com 17751C0002
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yadro.com; s=mta-04;
+ t=1688401032; bh=XJ2pcR4ZiCVxAjNKvHdeTUYjxJU1n/ZoU/wgyGxAYLE=;
+ h=Message-ID:Date:MIME-Version:From:Subject:To:Content-Type:From;
+ b=I5zy5ZH0hqAXS+QNExB3jfDjRrgKQFFGo41PD5dFguRu5YkxCHkE3uXjH1NqI7mhM
+ LmuvypfOqrnfon/gkzxuyThYmDVMXyLXOqB4klfnjN9HHwlj3L0L/KWap/O4btbcpi
+ Mbui7rKPWh+1JTnHcUFc81uw0tS9wt8droJ3AhDGyHCzH9A3+8y3+qPxVJdS1BSwpa
+ HlseV12y4J7BuJRKmqVV0YB8H96PZV9YZyQsGsFkvOi9d2tvHv3O2gERQnDruqK+mM
+ SKIdtNIVY74lP6xDd92iHsWmaYHZwuRVPtgPzTMUMdtWX6b1rxwVXyq2FAoOHJNhtN
+ CW3Y7WyZmwAxQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yadro.com; s=mta-03;
+ t=1688401032; bh=XJ2pcR4ZiCVxAjNKvHdeTUYjxJU1n/ZoU/wgyGxAYLE=;
+ h=Message-ID:Date:MIME-Version:From:Subject:To:Content-Type:From;
+ b=AMKAygRE1uFY+/dse2AEqkWP9YjsKPn9YqBiarXUwlQ4Zkfg7YzG2G0mMsbtp+tda
+ 29mayfcPDNjhgw8Ema+z/KhxSowis6qjb2Go3qiQYNPzRa2jqe+fUn97WLKzgzszWL
+ 1Y+y/eq6oNOD/KY263/D88zoXIqpRiHFJPhHP6BX88sPxywPkrKVptCOKOKVh34HZZ
+ OqWMFCv1SwlKRnQex/FcMTg03JqkAf9Ky36G/odFqets1ASeqgOQTmXq3FVI6xPXa8
+ MN6f1jwftFfeG6cjJInXdWFMLKPPeR9laCICdbkmMHkg3ZUe68+mHxhcEIl/4Jqh77
+ YetTCs7S0wa/g==
+Message-ID: <ce64bf09-4d62-ee48-c1e1-dbd3641e023d@yadro.com>
+Date: Mon, 3 Jul 2023 19:16:55 +0300
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Content-Language: en-US
-Subject: qemu-user self emulation broken with default CPU on x86/x64
-To: qemu-devel@nongnu.org
-Cc: berrange@redhat.com, Richard Henderson <richard.henderson@linaro.org>,
- laurent@vivier.eu
-Content-Type: text/plain; charset=UTF-8; format=flowed
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.7.2
+From: Mikhail Tyutin <m.tyutin@yadro.com>
+Subject: [PATCH] Fix SEGFAULT on getting physical address of MMIO region.
+To: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+CC: Dmitriy Solovev <d.solovev@yadro.com>, <richard.henderson@linaro.org>,
+ <pbonzini@redhat.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-wm1-x32e.google.com
+X-ClientProxiedBy: T-Exch-05.corp.yadro.com (172.17.10.109) To
+ T-EXCH-08.corp.yadro.com (172.17.11.58)
+Received-SPF: pass client-ip=89.207.88.248; envelope-from=m.tyutin@yadro.com;
+ helo=mta-04.yadro.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,36 +74,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi everyone,
+The fix is to clear TLB_INVALID_MASK bit in tlb_addr, as it happens in 
+other places e.g. load_helper().
 
-Recently (in d135f781 [1], between v7.0.0 and v8.0.0), qemu-user default 
-cpu was updated to "max" instead of qemu32/qemu64.
+Signed-off-by: Dmitriy Solovev <d.solovev@yadro.com>
+Signed-off-by: Mikhail Tyutin <m.tyutin@yadro.com>
+---
+  accel/tcg/cputlb.c | 2 +-
+  1 file changed, 1 insertion(+), 1 deletion(-)
 
-This change "broke" qemu self emulation if this new default cpu is used.
+diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
+index 5b51eff5a4..9045b6330a 100644
+--- a/accel/tcg/cputlb.c
++++ b/accel/tcg/cputlb.c
+@@ -1708,7 +1708,7 @@ bool tlb_plugin_lookup(CPUState *cpu, vaddr addr, 
+int mmu_idx,
+      uintptr_t index = tlb_index(env, mmu_idx, addr);
+      uint64_t tlb_addr = is_store ? tlb_addr_write(tlbe) : tlbe->addr_read;
+  -    if (likely(tlb_hit(tlb_addr, addr))) {
++    if (likely(tlb_hit(tlb_addr & ~TLB_INVALID_MASK, addr))) {
+          /* We must have an iotlb entry for MMIO */
+          if (tlb_addr & TLB_MMIO) {
+              CPUTLBEntryFull *full;
+-- 
+2.34.1
 
-$ ./qemu-x86_64 ./qemu-x86_64 --version
-qemu-x86_64: ../util/cacheflush.c:212: init_cache_info: Assertion 
-`(isize & (isize - 1)) == 0' failed.
-qemu: uncaught target signal 6 (Aborted) - core dumped
-Aborted
-
-By setting cpu back to qemu64, it works again.
-$ ./qemu-x86_64 -cpu qemu64 ./qemu-x86_64  --version
-qemu-x86_64 version 8.0.50 (v8.0.0-2317-ge125b08ed6)
-Copyright (c) 2003-2023 Fabrice Bellard and the QEMU Project developers
-
-Commenting assert does not work, as qemu aligned malloc fail shortly after.
-
-I'm willing to fix it, but I'm not sure what is the issue with "max" cpu 
-exactly. Is it missing CPU cache line, or something else?
-Any guidance would be welcome.
-
-I know it's not the most important problem on earth, but it's still 
-surprising to meet this when you try to use qemu to emulate itself.
-
-Regards,
-Pierrick
-
-[1] 
-https://gitlab.com/qemu-project/qemu/-/commit/d135f781405f7c78153aa65e0327b05a4aa72e50
 
