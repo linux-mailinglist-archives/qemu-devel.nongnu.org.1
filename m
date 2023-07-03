@@ -2,82 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74C37745E1A
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D4A2745E1C
 	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 16:04:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGK9R-0005f0-Fx; Mon, 03 Jul 2023 10:03:37 -0400
+	id 1qGK9S-0005f8-1o; Mon, 03 Jul 2023 10:03:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qGK9P-0005eU-4t
+ id 1qGK9P-0005eb-DI
  for qemu-devel@nongnu.org; Mon, 03 Jul 2023 10:03:35 -0400
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qGK9J-000323-Pe
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 10:03:34 -0400
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-313f1085ac2so4988460f8f.1
+ id 1qGK9J-00032D-Ps
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 10:03:35 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-3fbc63c2e84so41492605e9.3
  for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 07:03:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1688393008; x=1690985008;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=cQkmXVVKUzbF6+OR87LtMoCxllrcwffkoSGo6NXeAog=;
- b=lLSmml+LsUgmELhfHKlmBppLRPcP+ic8+Q0VsAjN/fXF8OMrGnJacgSpSX0Ysfckfk
- cdOur8Znhv4V0NMMQrnbyE4haN+N9mtNa8aq/2us83TitQe5Ds99Zfvik0uTVIa8OUPO
- 1sXryrHVoKsHhvpoFbrISNOuE+dLk2ADZRzpWgsfRX/M2fioWynULeK9mIkPle5ogci2
- fezhuK6rpxTKlTV9CPQtmW/BPQXz+fTNsP+WMne+VRepBb//Y2X+cXrjcc2uQ2PVlugP
- IgycS4GSov2dqz90qy+wEOsNuSb32ZymiRuvHarBaZEd5QgUvoNCeolHWPowvGsPUwsq
- 06fg==
+ bh=L10INYSmGRMwfYRjSmnypN3cJI3i4gGGNLhvyw0OvLw=;
+ b=Q3alv+OLG6ICh/CvIFWfuaIunr1LsU3WJ9fnmjnHe7ImeagwTr3XnphHHPZ04ekts0
+ Es9cWPFDfS+z1i0BC+5GbGa9X1PwA3PGKFdS8QvEydJ475Z9xRfxA2tC8sKJr8moKGw2
+ lhQTNg2xodjYaBkCA03X2Qj3QI9B8Mf+QVnENApYS5S9p0AEfCaGLvOolZ9dSDXpYUEY
+ Cb2e6kJ+sCCYcNBUEZsF8t9LlrMQ/nK8bUtxLaTWFTiEZu0GakUI62RKgtZOZoAsFmHl
+ +cQtDUBXk6cVxpxmYIJ691LumioAcyBPTkNMjJSZEfyTQCChrG9vcMxh5rlG9aMuD3z8
+ nMhQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20221208; t=1688393008; x=1690985008;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=cQkmXVVKUzbF6+OR87LtMoCxllrcwffkoSGo6NXeAog=;
- b=RpHbb/hQipQJ73PeVK3n4PZgwVTBZaS5NZDTxrS2MXWsUomuJoo3ncLxpRoGHrPnVi
- LrtfbLcCaKTMSpw3aRBqnrPD8tu2NXthGOtzRehzXzyFztZSZ/vk/9ar81evaLWPbFmh
- LTVERBqj1AIINkcGowgzcx2whSQ/jWjWjnN6P2Q1YYlAJlx64cX+02aaf1prV83YFA5i
- Jtj2QNWKuOc2NS9y5CausIGJY/HcStZ7Q1wxhKdkYowTpyUQXu4aKdINiEwy5Qp2WFqy
- skMhZfgue08r2k+zKKcEvurXwPK2tf6HS5CBspNadvCzZhlokM8G9teJvqQ8HD7NnWmY
- cdbg==
-X-Gm-Message-State: ABy/qLbdg1CEm9qkQ7nG30igLYtnJjC6mxGtWgtmCKPRND5busIfOTyz
- ezWf8yroKxSPI5un62GvmfvmLA==
-X-Google-Smtp-Source: APBJJlGEDcddN9hwcOZAY2OT5DnGG82JvPvIJIumoLPHCzApyCP3hOtj3AXNUSsSh25qVnSxpOa1QA==
-X-Received: by 2002:a5d:58d8:0:b0:313:ee2e:dae1 with SMTP id
- o24-20020a5d58d8000000b00313ee2edae1mr7762605wrf.18.1688393007868; 
- Mon, 03 Jul 2023 07:03:27 -0700 (PDT)
+ bh=L10INYSmGRMwfYRjSmnypN3cJI3i4gGGNLhvyw0OvLw=;
+ b=LVlHynbmHytnLU/wLRAjmx2hPwIFYwW1JpPiuFo5PWNUq5J9DMni0jqRSWwuc3hAv8
+ pMh5m2ciDkhhyoxbGmarafNBr+g8A6ZjInOaixrRxqDj2Jsm+JUJfPtZ+q+O/qSxBS/h
+ SBB+Eslc76ci04qOBQHjwMzgx2zaLky+O4Wottv07GBVpL3YSZBeR2XeJzp9gf99XBYc
+ zWmXYea5bU0UryUwaAgaE7Rjdy4aubDj4ZudQWLeGI3TdayVnsRTTrY9i2x2GNHSytX4
+ V8MSEPgaRDzW9PqE95vihyS7HJJZhVodmPFnt02P2h6Xwys2Xb/NPd2CT1IEHJY3uXAA
+ e15w==
+X-Gm-Message-State: ABy/qLYeuRGtTaXgrdtdzkZKl5JWqWOEXBc9dLi6s1G3nySOwssOZSWL
+ veG0tiH5Ux6VJRj6ovWy+RF5Qg==
+X-Google-Smtp-Source: APBJJlHn8ZYYnr7wkJtxLulKPxyFdaIbJNVfnJoxo8U0SRhFV5WUw54dG8ivbsOSxTxnPIyydTSYfg==
+X-Received: by 2002:adf:decb:0:b0:314:1e47:8bc2 with SMTP id
+ i11-20020adfdecb000000b003141e478bc2mr8509635wrn.0.1688393008118; 
+ Mon, 03 Jul 2023 07:03:28 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- c8-20020adfed88000000b0031433443265sm4194573wro.53.2023.07.03.07.03.27
+ z11-20020adfe54b000000b0031128382ed0sm6636413wrm.83.2023.07.03.07.03.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Mon, 03 Jul 2023 07:03:27 -0700 (PDT)
 Received: from zen.lan (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 8CDEC1FFC0;
- Mon,  3 Jul 2023 14:44:30 +0100 (BST)
+ by zen.linaroharston (Postfix) with ESMTP id 257671FFE5;
+ Mon,  3 Jul 2023 14:44:32 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org,
+Cc: richard.henderson@linaro.org, Ilya Leoshkevich <iii@linux.ibm.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Juan Quintela <quintela@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peter Xu <peterx@redhat.com>, Leonardo Bras <leobras@redhat.com>
-Subject: [PULL 23/38] include/migration: mark vmstate_register() as a legacy
- function
-Date: Mon,  3 Jul 2023 14:44:12 +0100
-Message-Id: <20230703134427.1389440-24-alex.bennee@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 38/38] tests/tcg: Add a test for info proc mappings
+Date: Mon,  3 Jul 2023 14:44:27 +0100
+Message-Id: <20230703134427.1389440-39-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230703134427.1389440-1-alex.bennee@linaro.org>
 References: <20230703134427.1389440-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x435.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,37 +97,113 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Mention that QOM-ified devices already have support for registering
-the description.
+From: Ilya Leoshkevich <iii@linux.ibm.com>
 
-Reviewed-by: Juan Quintela <quintela@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Acked-by: Peter Xu <peterx@redhat.com>
+Add a small test to prevent regressions.
+
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Message-Id: <20230621203627.1808446-9-iii@linux.ibm.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20230630180423.558337-24-alex.bennee@linaro.org>
+Message-Id: <20230630180423.558337-39-alex.bennee@linaro.org>
 
-diff --git a/include/migration/vmstate.h b/include/migration/vmstate.h
-index 084f5e784a..d1b8abe08d 100644
---- a/include/migration/vmstate.h
-+++ b/include/migration/vmstate.h
-@@ -1209,7 +1209,15 @@ int vmstate_register_with_alias_id(VMStateIf *obj, uint32_t instance_id,
-                                    int required_for_version,
-                                    Error **errp);
+diff --git a/tests/tcg/multiarch/Makefile.target b/tests/tcg/multiarch/Makefile.target
+index 373db69648..43bddeaf21 100644
+--- a/tests/tcg/multiarch/Makefile.target
++++ b/tests/tcg/multiarch/Makefile.target
+@@ -81,6 +81,13 @@ run-gdbstub-qxfer-auxv-read: sha1
+ 		--bin $< --test $(MULTIARCH_SRC)/gdbstub/test-qxfer-auxv-read.py, \
+ 	basic gdbstub qXfer:auxv:read support)
  
--/* Returns: 0 on success, -1 on failure */
-+/**
-+ * vmstate_register() - legacy function to register state
-+ * serialisation description
-+ *
-+ * New code shouldn't be using this function as QOM-ified devices have
-+ * dc->vmsd to store the serialisation description.
-+ *
-+ * Returns: 0 on success, -1 on failure
-+ */
- static inline int vmstate_register(VMStateIf *obj, int instance_id,
-                                    const VMStateDescription *vmsd,
-                                    void *opaque)
++run-gdbstub-proc-mappings: sha1
++	$(call run-test, $@, $(GDB_SCRIPT) \
++		--gdb $(HAVE_GDB_BIN) \
++		--qemu $(QEMU) --qargs "$(QEMU_OPTS)" \
++		--bin $< --test $(MULTIARCH_SRC)/gdbstub/test-proc-mappings.py, \
++	proc mappings support)
++
+ run-gdbstub-thread-breakpoint: testthread
+ 	$(call run-test, $@, $(GDB_SCRIPT) \
+ 		--gdb $(HAVE_GDB_BIN) \
+@@ -97,7 +104,7 @@ run-gdbstub-%:
+ 	$(call skip-test, "gdbstub test $*", "need working gdb")
+ endif
+ EXTRA_RUNS += run-gdbstub-sha1 run-gdbstub-qxfer-auxv-read \
+-	      run-gdbstub-thread-breakpoint
++	      run-gdbstub-proc-mappings run-gdbstub-thread-breakpoint
+ 
+ # ARM Compatible Semi Hosting Tests
+ #
+diff --git a/tests/tcg/multiarch/gdbstub/test-proc-mappings.py b/tests/tcg/multiarch/gdbstub/test-proc-mappings.py
+new file mode 100644
+index 0000000000..7b596ac21b
+--- /dev/null
++++ b/tests/tcg/multiarch/gdbstub/test-proc-mappings.py
+@@ -0,0 +1,65 @@
++"""Test that gdbstub has access to proc mappings.
++
++This runs as a sourced script (via -x, via run-test.py)."""
++from __future__ import print_function
++import gdb
++import sys
++
++
++n_failures = 0
++
++
++def report(cond, msg):
++    """Report success/fail of a test"""
++    if cond:
++        print("PASS: {}".format(msg))
++    else:
++        print("FAIL: {}".format(msg))
++        global n_failures
++        n_failures += 1
++
++
++def run_test():
++    """Run through the tests one by one"""
++    try:
++        mappings = gdb.execute("info proc mappings", False, True)
++    except gdb.error as exc:
++        exc_str = str(exc)
++        if "Not supported on this target." in exc_str:
++            # Detect failures due to an outstanding issue with how GDB handles
++            # the x86_64 QEMU's target.xml, which does not contain the
++            # definition of orig_rax. Skip the test in this case.
++            print("SKIP: {}".format(exc_str))
++            return
++        raise
++    report(isinstance(mappings, str), "Fetched the mappings from the inferior")
++    report("/sha1" in mappings, "Found the test binary name in the mappings")
++
++
++def main():
++    """Prepare the environment and run through the tests"""
++    try:
++        inferior = gdb.selected_inferior()
++        print("ATTACHED: {}".format(inferior.architecture().name()))
++    except (gdb.error, AttributeError):
++        print("SKIPPING (not connected)")
++        exit(0)
++
++    if gdb.parse_and_eval('$pc') == 0:
++        print("SKIP: PC not set")
++        exit(0)
++
++    try:
++        # These are not very useful in scripts
++        gdb.execute("set pagination off")
++        gdb.execute("set confirm off")
++
++        # Run the actual tests
++        run_test()
++    except gdb.error:
++        report(False, "GDB Exception: {}".format(sys.exc_info()[0]))
++    print("All tests complete: %d failures" % n_failures)
++    exit(n_failures)
++
++
++main()
 -- 
 2.39.2
 
