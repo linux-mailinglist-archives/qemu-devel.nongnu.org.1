@@ -2,65 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 291047455D8
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 09:19:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 635F7745633
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 09:35:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGDpc-0002KI-5q; Mon, 03 Jul 2023 03:18:44 -0400
+	id 1qGE4T-0002Vt-2j; Mon, 03 Jul 2023 03:34:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <liweiwei@iscas.ac.cn>)
- id 1qGDpF-0002H0-3J; Mon, 03 Jul 2023 03:18:22 -0400
-Received: from smtp80.cstnet.cn ([159.226.251.80] helo=cstnet.cn)
- by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_CBC_SHA1:256)
- (Exim 4.90_1) (envelope-from <liweiwei@iscas.ac.cn>)
- id 1qGDp9-0001ss-CN; Mon, 03 Jul 2023 03:18:20 -0400
-Received: from localhost.localdomain (unknown [114.95.176.74])
- by APP-01 (Coremail) with SMTP id qwCowABnbgopdqJk8XXZBw--.46071S3;
- Mon, 03 Jul 2023 15:18:03 +0800 (CST)
-From: Weiwei Li <liweiwei@iscas.ac.cn>
-To: qemu-riscv@nongnu.org,
-	qemu-devel@nongnu.org
-Cc: palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com,
- dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com,
- wangjunqiang@iscas.ac.cn, lazyparser@gmail.com,
- Weiwei Li <liweiwei@iscas.ac.cn>
-Subject: [PATCH v3 1/1] target/riscv: Add disas support for BF16 extensions
-Date: Mon,  3 Jul 2023 15:17:59 +0800
-Message-Id: <20230703071759.86775-2-liweiwei@iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230703071759.86775-1-liweiwei@iscas.ac.cn>
-References: <20230703071759.86775-1-liweiwei@iscas.ac.cn>
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qGE4Q-0002VR-Ea
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 03:34:02 -0400
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qGE4N-0005Am-PK
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 03:34:02 -0400
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-3143798f542so678422f8f.2
+ for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 00:33:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1688369635; x=1690961635;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=D6SxwcF9nmDbtlXiXRcbpwrNKuD5dIu4EEVbCU3sHh8=;
+ b=XC1E/nVEBd9cxfMzA+KBvpLj3KHO8GhjlsS1bNpZp07EvjrnbBwcTJMziitfe+0v14
+ N7HwP6v0oJLpJZ/l+8K1TBLJ7M6ryoxiSlZL9SeDvp2SnWm7vZlPhFGeoHx6OU31R6s7
+ S0NW6XctFyIayvA/GzC5nfSRpZmxhXR24XytHYNi3zbC0yD1dqhXEnr43ZEwDdRtgQAO
+ tSZcW2J6zmZl2Aqkhnj4iORv6OPbovwoBdj3bCVimaAjQqA9nl+Sq1fuM4xX0XXeCt+p
+ ytzl88G1QDhQTLlCy1b9rCjefp317nIm47dELNBBwvPR5l8oEI/0t1p9H/aY90q0Wkxt
+ popQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1688369635; x=1690961635;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=D6SxwcF9nmDbtlXiXRcbpwrNKuD5dIu4EEVbCU3sHh8=;
+ b=G5dTV137lMIdsJa2I1rUoZPYZyNjfNzFUm+WUzDFZFUk8W2DyLbxHpVWeUGzgP6ddp
+ A1ptno0sH6Q3jVVcfY0yCCvRqELI8tLlxtoEMoyxR+aYhgiLlHliaYoV4fHXRa8kB+9B
+ 9b1HdSM6f8+yAKti6YwA9VDnD/w109u7X/7WZv8fTVVqowoBjwsLIX9woehzvIeUvD37
+ HHhEa4oW/jmAab2kNTTWMQ3eh0KDiQltQ3lMwbSlSJNsLbeUcu2FB3iufebfuweCAqha
+ ktImsyYAefPrcgyn/42y6diW6IvKUq/WptMetceTptIUP8ASikL1mljobThGGvDNOHhc
+ f29g==
+X-Gm-Message-State: ABy/qLa411IlYgoHk1d8ZUThV1YRRWiQagI5g1b9IjtM2pM7V5gLx3xz
+ k7JAZi5AWKAmKVBSj9RM06yBRQ==
+X-Google-Smtp-Source: APBJJlFYpCu9hqKn5Et4BuABFYdeHiDqqnWSjx7iIYI28yWV4Z5VU9OsQqiKdaa+lMZVU0RzQ/yj9w==
+X-Received: by 2002:a5d:554a:0:b0:314:14ea:e2de with SMTP id
+ g10-20020a5d554a000000b0031414eae2demr7855163wrw.0.1688369635486; 
+ Mon, 03 Jul 2023 00:33:55 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
+ by smtp.gmail.com with ESMTPSA id
+ e10-20020a056000194a00b0031134bcdacdsm24873234wry.42.2023.07.03.00.33.54
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 03 Jul 2023 00:33:54 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id 4B2771FFBB;
+ Mon,  3 Jul 2023 08:33:54 +0100 (BST)
+References: <87wn0obuk6.fsf@linaro.org>
+ <SN6PR02MB4205D202EFB6D6A256ECB93FB8489@SN6PR02MB4205.namprd02.prod.outlook.com>
+ <87jzwoba78.fsf@linaro.org>
+ <CAKmqyKOidBkxXzWCm8rxagTbF0bucmitrQk1kW20wDNdjqUkeA@mail.gmail.com>
+ <87fs6ifp5e.fsf@linaro.org>
+ <CAKmqyKNHvP4MJOPP8i-Lj5Bu3-DNi00SngEe5X+c8_vA0EGLaQ@mail.gmail.com>
+User-agent: mu4e 1.11.8; emacs 29.0.92
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Alistair Francis <alistair23@gmail.com>
+Cc: Brian Cain <bcain@quicinc.com>, =?utf-8?Q?Daniel_P=2EBerrang=C3=A9?=
+ <berrange@redhat.com>, qemu-devel <qemu-devel@nongnu.org>, Michael Tokarev
+ <mjt@tls.msk.ru>, Erik Skultety <eskultet@redhat.com>, Palmer Dabbelt
+ <palmer@dabbelt.com>, Alistair Francis <alistair.francis@wdc.com>, Bin
+ Meng <bin.meng@windriver.com>, "Matheus Bernardino (QUIC)"
+ <quic_mathbern@quicinc.com>, "Marco Liebel (QUIC)"
+ <quic_mliebel@quicinc.com>
+Subject: Re: How do you represent a host gcc and a cross gcc in lcitool?
+Date: Mon, 03 Jul 2023 08:31:58 +0100
+In-reply-to: <CAKmqyKNHvP4MJOPP8i-Lj5Bu3-DNi00SngEe5X+c8_vA0EGLaQ@mail.gmail.com>
+Message-ID: <87h6qlphy5.fsf@linaro.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qwCowABnbgopdqJk8XXZBw--.46071S3
-X-Coremail-Antispam: 1UD129KBjvJXoWxuF47Zw1fWw4DJw4kXF48Xrb_yoW7JFW7pr
- y5Z3y3KrZIkF1xJa1fZF4UAF95try8Jr48Za4Sv3y3X3srWFy5Cr45X343AFy8WFW0yr4x
- Wa1Sg3yYqF1xAa7anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
- 9KBjDU0xBIdaVrnRJUUUPj14x267AKxVW5JVWrJwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
- rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2048vs2IY020E87I2jVAFwI0_Jr4l82xGYIkIc2
- x26xkF7I0E14v26r1I6r4UM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2z4x0
- Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr1j6F4UJw
- A2z4x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE3s1l
- e2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI
- 8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwAC
- jcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka0x
- kIwI1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AK
- xVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrx
- kI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v2
- 6r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8Jw
- CI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfU5SoXUUUU
- U
-X-Originating-IP: [114.95.176.74]
-X-CM-SenderInfo: 5olzvxxzhlqxpvfd2hldfou0/
-Received-SPF: pass client-ip=159.226.251.80; envelope-from=liweiwei@iscas.ac.cn;
- helo=cstnet.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x434.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -76,145 +106,155 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Weiwei Li <liweiwei@iscas.ac.cn>
-Signed-off-by: Junqiang Wang <wangjunqiang@iscas.ac.cn>
----
- disas/riscv.c | 44 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 44 insertions(+)
 
-diff --git a/disas/riscv.c b/disas/riscv.c
-index 94e568a7e9..9f0195be30 100644
---- a/disas/riscv.c
-+++ b/disas/riscv.c
-@@ -819,6 +819,16 @@ typedef enum {
-     rv_op_cm_jalt = 788,
-     rv_op_czero_eqz = 789,
-     rv_op_czero_nez = 790,
-+    rv_op_fcvt_bf16_s = 791,
-+    rv_op_fcvt_s_bf16 = 792,
-+    rv_op_vfncvtbf16_f_f_w = 793,
-+    rv_op_vfwcvtbf16_f_f_v = 794,
-+    rv_op_vfwmaccbf16_vv = 795,
-+    rv_op_vfwmaccbf16_vf = 796,
-+    rv_op_flh = 797,
-+    rv_op_fsh = 798,
-+    rv_op_fmv_h_x = 799,
-+    rv_op_fmv_x_h = 800,
- } rv_op;
- 
- /* register names */
-@@ -1905,6 +1915,16 @@ const rv_opcode_data rvi_opcode_data[] = {
-     { "cm.jalt", rv_codec_zcmt_jt, rv_fmt_zcmt_index, NULL, 0 },
-     { "czero.eqz", rv_codec_r, rv_fmt_rd_rs1_rs2, NULL, 0, 0, 0 },
-     { "czero.nez", rv_codec_r, rv_fmt_rd_rs1_rs2, NULL, 0, 0, 0 },
-+    { "fcvt.bf16.s", rv_codec_r_m, rv_fmt_rm_frd_frs1, NULL, 0, 0, 0 },
-+    { "fcvt.s.bf16", rv_codec_r_m, rv_fmt_rm_frd_frs1, NULL, 0, 0, 0 },
-+    { "vfncvtbf16.f.f.w", rv_codec_v_r, rv_fmt_vd_vs2_vm, NULL, 0, 0, 0 },
-+    { "vfwcvtbf16.f.f.v", rv_codec_v_r, rv_fmt_vd_vs2_vm, NULL, 0, 0, 0 },
-+    { "vfwmaccbf16.vv", rv_codec_v_r, rv_fmt_vd_vs1_vs2_vm, NULL, 0, 0, 0 },
-+    { "vfwmaccbf16.vf", rv_codec_v_r, rv_fmt_vd_fs1_vs2_vm, NULL, 0, 0, 0 },
-+    { "flh", rv_codec_i, rv_fmt_frd_offset_rs1, NULL, 0, 0, 0 },
-+    { "fsh", rv_codec_s, rv_fmt_frs2_offset_rs1, NULL, 0, 0, 0 },
-+    { "fmv.h.x", rv_codec_r, rv_fmt_frd_rs1, NULL, 0, 0, 0 },
-+    { "fmv.x.h", rv_codec_r, rv_fmt_rd_frs1, NULL, 0, 0, 0 },
- };
- 
- /* CSR names */
-@@ -2380,6 +2400,7 @@ static void decode_inst_opcode(rv_decode *dec, rv_isa isa)
-                 case 3: op = rv_op_vloxei8_v; break;
-                 }
-                 break;
-+            case 1: op = rv_op_flh; break;
-             case 2: op = rv_op_flw; break;
-             case 3: op = rv_op_fld; break;
-             case 4: op = rv_op_flq; break;
-@@ -2583,6 +2604,7 @@ static void decode_inst_opcode(rv_decode *dec, rv_isa isa)
-                 case 3: op = rv_op_vsoxei8_v; break;
-                 }
-                 break;
-+            case 1: op = rv_op_fsh; break;
-             case 2: op = rv_op_fsw; break;
-             case 3: op = rv_op_fsd; break;
-             case 4: op = rv_op_fsq; break;
-@@ -2860,6 +2882,7 @@ static void decode_inst_opcode(rv_decode *dec, rv_isa isa)
-                 switch ((inst >> 20) & 0b11111) {
-                 case 1: op = rv_op_fcvt_s_d; break;
-                 case 3: op = rv_op_fcvt_s_q; break;
-+                case 6: op = rv_op_fcvt_s_bf16; break;
-                 }
-                 break;
-             case 33:
-@@ -2868,6 +2891,11 @@ static void decode_inst_opcode(rv_decode *dec, rv_isa isa)
-                 case 3: op = rv_op_fcvt_d_q; break;
-                 }
-                 break;
-+            case 34:
-+                switch (((inst >> 20) & 0b11111)) {
-+                case 8: op = rv_op_fcvt_bf16_s; break;
-+                }
-+                break;
-             case 35:
-                 switch ((inst >> 20) & 0b11111) {
-                 case 0: op = rv_op_fcvt_q_s; break;
-@@ -2972,6 +3000,12 @@ static void decode_inst_opcode(rv_decode *dec, rv_isa isa)
-                 case 1: op = rv_op_fclass_d; break;
-                 }
-                 break;
-+            case 114:
-+                switch (((inst >> 17) & 0b11111000) |
-+                        ((inst >> 12) & 0b00000111)) {
-+                case 0: op = rv_op_fmv_x_h; break;
-+                }
-+                break;
-             case 115:
-                 switch (((inst >> 17) & 0b11111000) |
-                         ((inst >> 12) & 0b00000111)) {
-@@ -2991,6 +3025,12 @@ static void decode_inst_opcode(rv_decode *dec, rv_isa isa)
-                 case 0: op = rv_op_fmv_d_x; break;
-                 }
-                 break;
-+            case 122:
-+                switch (((inst >> 17) & 0b11111000) |
-+                        ((inst >> 12) & 0b00000111)) {
-+                case 0: op = rv_op_fmv_h_x; break;
-+                }
-+                break;
-             case 123:
-                 switch (((inst >> 17) & 0b11111000) |
-                         ((inst >> 12) & 0b00000111)) {
-@@ -3087,6 +3127,7 @@ static void decode_inst_opcode(rv_decode *dec, rv_isa isa)
-                     case 10: op = rv_op_vfwcvt_f_xu_v; break;
-                     case 11: op = rv_op_vfwcvt_f_x_v; break;
-                     case 12: op = rv_op_vfwcvt_f_f_v; break;
-+                    case 13: op = rv_op_vfwcvtbf16_f_f_v; break;
-                     case 14: op = rv_op_vfwcvt_rtz_xu_f_v; break;
-                     case 15: op = rv_op_vfwcvt_rtz_x_f_v; break;
-                     case 16: op = rv_op_vfncvt_xu_f_w; break;
-@@ -3097,6 +3138,7 @@ static void decode_inst_opcode(rv_decode *dec, rv_isa isa)
-                     case 21: op = rv_op_vfncvt_rod_f_f_w; break;
-                     case 22: op = rv_op_vfncvt_rtz_xu_f_w; break;
-                     case 23: op = rv_op_vfncvt_rtz_x_f_w; break;
-+                    case 29: op = rv_op_vfncvtbf16_f_f_w; break;
-                     }
-                     break;
-                 case 19:
-@@ -3128,6 +3170,7 @@ static void decode_inst_opcode(rv_decode *dec, rv_isa isa)
-                 case 52: op = rv_op_vfwadd_wv; break;
-                 case 54: op = rv_op_vfwsub_wv; break;
-                 case 56: op = rv_op_vfwmul_vv; break;
-+                case 59: op = rv_op_vfwmaccbf16_vv; break;
-                 case 60: op = rv_op_vfwmacc_vv; break;
-                 case 61: op = rv_op_vfwnmacc_vv; break;
-                 case 62: op = rv_op_vfwmsac_vv; break;
-@@ -3366,6 +3409,7 @@ static void decode_inst_opcode(rv_decode *dec, rv_isa isa)
-                 case 52: op = rv_op_vfwadd_wf; break;
-                 case 54: op = rv_op_vfwsub_wf; break;
-                 case 56: op = rv_op_vfwmul_vf; break;
-+                case 59: op = rv_op_vfwmaccbf16_vf; break;
-                 case 60: op = rv_op_vfwmacc_vf; break;
-                 case 61: op = rv_op_vfwnmacc_vf; break;
-                 case 62: op = rv_op_vfwmsac_vf; break;
--- 
-2.25.1
+Alistair Francis <alistair23@gmail.com> writes:
 
+> On Fri, Jun 23, 2023 at 8:29=E2=80=AFPM Alex Benn=C3=A9e <alex.bennee@lin=
+aro.org> wrote:
+>>
+>>
+>> Alistair Francis <alistair23@gmail.com> writes:
+>>
+>> > On Thu, Jun 1, 2023 at 4:58=E2=80=AFAM Alex Benn=C3=A9e <alex.bennee@l=
+inaro.org> wrote:
+>> >>
+>> >>
+>> >> Brian Cain <bcain@quicinc.com> writes:
+>> >>
+>> >> >> -----Original Message-----
+>> >> >> From: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+>> >> >> Sent: Wednesday, May 31, 2023 6:24 AM
+>> >> >> To: Daniel P.Berrang=C3=A9 <berrange@redhat.com>
+>> >> >> Cc: qemu-devel <qemu-devel@nongnu.org>; Michael Tokarev
+>> >> >> <mjt@tls.msk.ru>; Erik Skultety <eskultet@redhat.com>; Brian Cain
+>> >> >> <bcain@quicinc.com>; Palmer Dabbelt <palmer@dabbelt.com>; Alistair=
+ Francis
+>> >> >> <alistair.francis@wdc.com>; Bin Meng <bin.meng@windriver.com>
+>> >> >> Subject: How do you represent a host gcc and a cross gcc in lcitoo=
+l?
+>> >> >>
+>> >> >> WARNING: This email originated from outside of Qualcomm. Please be=
+ wary of
+>> >> >> any links or attachments, and do not enable macros.
+>> >> >>
+>> >> >> Hi,
+>> >> >>
+>> >> >> While trying to convert the debian-riscv64-cross docker container =
+to an
+>> >> >> lcitool based one I ran into a problem building QEMU. The configur=
+e step
+>> >> >> fails because despite cross compiling we still need a host compile=
+r to
+>> >> >> build the hexagon codegen tooling.
+>> >> >
+>> >> > I thought we'd fixed this container definition so that we only
+>> >> > downloaded the hexagon toolchain instead? Do we really need a host
+>> >> > compiler for that container build?
+>> >> >
+>> >> > Or am I misunderstanding and you're referring to features required =
+to
+>> >> > support idef parser? Does "hexagon codegen" refer to hexagon's TCG
+>> >> > generation or hexagon code itself (required by tests/tcg)?
+>> >>
+>> >> I think so:
+>> >>
+>> >> #
+>> >> #  Step 1
+>> >> #  We use a C program to create semantics_generated.pyinc
+>> >> #
+>> >> gen_semantics =3D executable(
+>> >>     'gen_semantics',
+>> >>     'gen_semantics.c',
+>> >>     native: true, build_by_default: false)
+>> >>
+>> >> semantics_generated =3D custom_target(
+>> >>     'semantics_generated.pyinc',
+>> >>     output: 'semantics_generated.pyinc',
+>> >>     command: [gen_semantics, '@OUTPUT@'],
+>> >> )
+>> >> hexagon_ss.add(semantics_generated)
+>> >>
+>> >>
+>> >> >
+>> >> >> After scratching my head for a while I discovered we did have host=
+ GCC's
+>> >> >> in our cross images despite there being no explicit request for th=
+em in
+>> >> >> the docker description. It turned out that the gcovr requirement p=
+ulled
+>> >> >> in lcov which itself had a dependency on gcc. However this is a bu=
+g:
+>> >> >>
+>> >> >>   https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=3D987818
+>> >> >>
+>> >> >> which has been fixed in bookworm (and of course sid which is the o=
+nly
+>> >> >> way we can get a riscv64 build of QEMU at the moment). Hence my ha=
+cky
+>> >> >> attempts to get gcc via side effect of another package failed.
+>> >> >>
+>> >> >> Hence the question in $SUBJECT. I tried to add a mapping to lcitoo=
+l for
+>> >> >> a pseudo hostgcc package:
+>> >> >>
+>> >> >> +  hostgcc:
+>> >> >> +    default: gcc
+>> >> >> +    pkg:
+>> >> >> +    MacOS:
+>> >> >> +    cross-policy-default: skip
+>> >> >>
+>> >> >> however this didn't work. Do we need a new mechanism for this or a=
+m I
+>> >> >> missing a way to do this?
+>> >> >>
+>> >> >> RiscV guys,
+>> >> >>
+>> >> >> It's clear that relying on Debian Sid for the QEMU cross build for=
+ RiscV
+>> >> >> is pretty flakey. Are you guys aware of any other distros that bet=
+ter
+>> >> >> support cross compiling to a riscv64 target or is Debian still the=
+ best
+>> >> >> bet? Could you be persuaded to build a binary docker image with the
+>> >> >> cross compilers and libraries required for a decent cross build as=
+ an
+>> >> >> alternative?
+>> >
+>> > It's probably not very helpful, but I find Arch based distros to be
+>> > the best bet for this.
+>>
+>> I've never tried arch under docker, isn't it just as much of a moving
+>> target?
+>
+> I haven't really tried Arch under Docker. I agree that it is a fast
+> moving target. I guess it's up for debate if it's too much churn or
+> not
+>
+> Would a working Arch image be helpful with lcitool?
+>
+>>
+>> > Are you still looking for a Docker image? I could try and get
+>> > something working
+>>
+>> Yes, although I have converted debian-riscv64-cross to lcitool and had
+>> it working sid has since broken. Are there any pushes to have riscv as a
+>> first class distro citizen soon or is stuff still in the early ports
+>> stage?
+>
+> There are pushes. I thought RISC-V was progressing towards first class
+> distro support, but it seems to have stalled recently.
+>
+> I actually thought you could cross compile with Debian bullseye, yet
+> alone bookworm, has someone tried? Otherwise I can give it a crack
+
+No.
+
+There is a riscv64 compiler and libc in bullseye onwards which we use
+for building tests. However to do a full cross compile you need a
+multi-arch setup. As riscv64 is still in ports the only way to achieve
+this is to use sid.
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
