@@ -2,63 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3008F74609F
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 18:19:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04F277460AF
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 18:25:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGMF1-00049y-QQ; Mon, 03 Jul 2023 12:17:31 -0400
+	id 1qGMLI-0007XO-15; Mon, 03 Jul 2023 12:24:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <m.tyutin@yadro.com>)
- id 1qGMEt-00049f-Sc
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 12:17:29 -0400
-Received: from mta-04.yadro.com ([89.207.88.248])
+ (Exim 4.90_1) (envelope-from <clegoate@redhat.com>)
+ id 1qGML6-0007X2-FF
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 12:23:49 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <m.tyutin@yadro.com>)
- id 1qGMEq-0002TL-Oz
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 12:17:23 -0400
-DKIM-Filter: OpenDKIM Filter v2.11.0 mta-04.yadro.com 17751C0002
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yadro.com; s=mta-04;
- t=1688401032; bh=XJ2pcR4ZiCVxAjNKvHdeTUYjxJU1n/ZoU/wgyGxAYLE=;
- h=Message-ID:Date:MIME-Version:From:Subject:To:Content-Type:From;
- b=I5zy5ZH0hqAXS+QNExB3jfDjRrgKQFFGo41PD5dFguRu5YkxCHkE3uXjH1NqI7mhM
- LmuvypfOqrnfon/gkzxuyThYmDVMXyLXOqB4klfnjN9HHwlj3L0L/KWap/O4btbcpi
- Mbui7rKPWh+1JTnHcUFc81uw0tS9wt8droJ3AhDGyHCzH9A3+8y3+qPxVJdS1BSwpa
- HlseV12y4J7BuJRKmqVV0YB8H96PZV9YZyQsGsFkvOi9d2tvHv3O2gERQnDruqK+mM
- SKIdtNIVY74lP6xDd92iHsWmaYHZwuRVPtgPzTMUMdtWX6b1rxwVXyq2FAoOHJNhtN
- CW3Y7WyZmwAxQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yadro.com; s=mta-03;
- t=1688401032; bh=XJ2pcR4ZiCVxAjNKvHdeTUYjxJU1n/ZoU/wgyGxAYLE=;
- h=Message-ID:Date:MIME-Version:From:Subject:To:Content-Type:From;
- b=AMKAygRE1uFY+/dse2AEqkWP9YjsKPn9YqBiarXUwlQ4Zkfg7YzG2G0mMsbtp+tda
- 29mayfcPDNjhgw8Ema+z/KhxSowis6qjb2Go3qiQYNPzRa2jqe+fUn97WLKzgzszWL
- 1Y+y/eq6oNOD/KY263/D88zoXIqpRiHFJPhHP6BX88sPxywPkrKVptCOKOKVh34HZZ
- OqWMFCv1SwlKRnQex/FcMTg03JqkAf9Ky36G/odFqets1ASeqgOQTmXq3FVI6xPXa8
- MN6f1jwftFfeG6cjJInXdWFMLKPPeR9laCICdbkmMHkg3ZUe68+mHxhcEIl/4Jqh77
- YetTCs7S0wa/g==
-Message-ID: <ce64bf09-4d62-ee48-c1e1-dbd3641e023d@yadro.com>
-Date: Mon, 3 Jul 2023 19:16:55 +0300
+ (Exim 4.90_1) (envelope-from <clegoate@redhat.com>)
+ id 1qGML4-0004Fj-RV
+ for qemu-devel@nongnu.org; Mon, 03 Jul 2023 12:23:48 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1688401425;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=P8wvIYhrHHWXcu19EWo/5hYqCsuHjFQ9V/PuFjM3iEk=;
+ b=e8ihZ7D41D1ynMJFtZfRXG28RUKRZFMQlN4sFBCdg9oDHZPGMeurZujel4IHUiBYdKHabS
+ GzN1wdAG+qxWy7SBy1vSZneie31/+/FelJhiM12ztLSXmX4NUOG+jmeX5jYBEVZaOYlXdD
+ ptuEYBldYilUOb7eytOElau9My4esss=
+Received: from mail-ua1-f72.google.com (mail-ua1-f72.google.com
+ [209.85.222.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-613-j_21aEvfO5-Xp0BJMseDhQ-1; Mon, 03 Jul 2023 12:23:44 -0400
+X-MC-Unique: j_21aEvfO5-Xp0BJMseDhQ-1
+Received: by mail-ua1-f72.google.com with SMTP id
+ a1e0cc1a2514c-793fbd392c2so710240241.2
+ for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 09:23:44 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1688401424; x=1690993424;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=P8wvIYhrHHWXcu19EWo/5hYqCsuHjFQ9V/PuFjM3iEk=;
+ b=eYiZ3LVojhnYNa4RO31MGZApLmM1CBUUJp2fo0U9216ZTN198S5ZLwlY3Vl6r1eQRK
+ WN9dlB9M5lcT6pEH372vU92z1BkwZ2evilHY/b+g05WS51fygDVf9VMZrU2k0/UbFoPa
+ hrQrIftvQJsnICkQ01LcBiP+dpBlnrp8fhA68RxEPb9oH9hXY5TL/1SPpqPFZ5Qu2tUb
+ AKSGpeDetBYuEoS9nOZhOihEKoZvlnrtA0taZcHb6aPkZ1OLagminP739uNXPW2wy2eV
+ hw9MUnjr2NTktaheAdJbzPih7GDfKUHqgwhbfCfbA2BF4K3O9puoprrHtreL43Jj1gDg
+ wJ6A==
+X-Gm-Message-State: ABy/qLaTTticsiPDcSqMcyGm4xiuVtFAl0GlYLQxYy4pt/n/7ytoBfI4
+ +DQn8FaoM3HEW7rurALBgwUz0W6LFIlBGnX44zGtT3CfXmnLNa0kW7nDYmlsCIbwBu412zuV+Q6
+ tOTpm19SD1OavkmE=
+X-Received: by 2002:a05:6102:50c:b0:443:5b77:dfc9 with SMTP id
+ l12-20020a056102050c00b004435b77dfc9mr5205229vsa.18.1688401423985; 
+ Mon, 03 Jul 2023 09:23:43 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlF3VnH7/ORY1qiaADP2XW8Cciv/YiIWkCz2f/NTwGhukslC3MSrMgVU6fi6xRI5uYXO2tBQZw==
+X-Received: by 2002:a05:6102:50c:b0:443:5b77:dfc9 with SMTP id
+ l12-20020a056102050c00b004435b77dfc9mr5205217vsa.18.1688401423784; 
+ Mon, 03 Jul 2023 09:23:43 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:280:24f0:576b:abc6:6396:ed4a?
+ ([2a01:e0a:280:24f0:576b:abc6:6396:ed4a])
+ by smtp.gmail.com with ESMTPSA id
+ v9-20020a0cf909000000b00636047c276csm6269716qvn.126.2023.07.03.09.23.42
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 03 Jul 2023 09:23:43 -0700 (PDT)
+Message-ID: <a6f961c2-803d-3979-a767-63d2e1f494c4@redhat.com>
+Date: Mon, 3 Jul 2023 18:23:41 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.2
-From: Mikhail Tyutin <m.tyutin@yadro.com>
-Subject: [PATCH] Fix SEGFAULT on getting physical address of MMIO region.
-To: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-CC: Dmitriy Solovev <d.solovev@yadro.com>, <richard.henderson@linaro.org>,
- <pbonzini@redhat.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [RFC PATCH 1/4] linux-headers: Update for vfio capability
+ reporting AtomicOps
+Content-Language: en-US
+To: Alex Williamson <alex.williamson@redhat.com>, robin@streamhpc.com,
+ mst@redhat.com, marcel.apfelbaum@gmail.com
+Cc: qemu-devel@nongnu.org
+References: <20230519215739.402729-1-alex.williamson@redhat.com>
+ <20230519215739.402729-2-alex.williamson@redhat.com>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clegoate@redhat.com>
+In-Reply-To: <20230519215739.402729-2-alex.williamson@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: T-Exch-05.corp.yadro.com (172.17.10.109) To
- T-EXCH-08.corp.yadro.com (172.17.11.58)
-Received-SPF: pass client-ip=89.207.88.248; envelope-from=m.tyutin@yadro.com;
- helo=mta-04.yadro.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clegoate@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -74,29 +106,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The fix is to clear TLB_INVALID_MASK bit in tlb_addr, as it happens in 
-other places e.g. load_helper().
+On 5/19/23 23:57, Alex Williamson wrote:
+> This is a partial linux-headers update for illustrative and testing
+> purposes only, NOT FOR COMMIT.
+> 
+> Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+> ---
+I am preparing a vfio-next tree including these changes plus a linux-headers
+update. I am just waiting for the 6.5-rc1 tag to be pushed.
 
-Signed-off-by: Dmitriy Solovev <d.solovev@yadro.com>
-Signed-off-by: Mikhail Tyutin <m.tyutin@yadro.com>
----
-  accel/tcg/cputlb.c | 2 +-
-  1 file changed, 1 insertion(+), 1 deletion(-)
+Thanks,
 
-diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
-index 5b51eff5a4..9045b6330a 100644
---- a/accel/tcg/cputlb.c
-+++ b/accel/tcg/cputlb.c
-@@ -1708,7 +1708,7 @@ bool tlb_plugin_lookup(CPUState *cpu, vaddr addr, 
-int mmu_idx,
-      uintptr_t index = tlb_index(env, mmu_idx, addr);
-      uint64_t tlb_addr = is_store ? tlb_addr_write(tlbe) : tlbe->addr_read;
-  -    if (likely(tlb_hit(tlb_addr, addr))) {
-+    if (likely(tlb_hit(tlb_addr & ~TLB_INVALID_MASK, addr))) {
-          /* We must have an iotlb entry for MMIO */
-          if (tlb_addr & TLB_MMIO) {
-              CPUTLBEntryFull *full;
--- 
-2.34.1
+C.
+
+>   linux-headers/linux/vfio.h | 14 ++++++++++++++
+>   1 file changed, 14 insertions(+)
+> 
+> diff --git a/linux-headers/linux/vfio.h b/linux-headers/linux/vfio.h
+> index 4a534edbdcba..443a8851e156 100644
+> --- a/linux-headers/linux/vfio.h
+> +++ b/linux-headers/linux/vfio.h
+> @@ -240,6 +240,20 @@ struct vfio_device_info {
+>   #define VFIO_DEVICE_INFO_CAP_ZPCI_UTIL		3
+>   #define VFIO_DEVICE_INFO_CAP_ZPCI_PFIP		4
+>   
+> +/*
+> + * The following VFIO_DEVICE_INFO capability reports support for PCIe AtomicOp
+> + * completion to the root bus with supported widths provided via flags.
+> + */
+> +#define VFIO_DEVICE_INFO_CAP_PCI_ATOMIC_COMP	5
+> +struct vfio_device_info_cap_pci_atomic_comp {
+> +	struct vfio_info_cap_header header;
+> +	__u32 flags;
+> +#define VFIO_PCI_ATOMIC_COMP32	(1 << 0)
+> +#define VFIO_PCI_ATOMIC_COMP64	(1 << 1)
+> +#define VFIO_PCI_ATOMIC_COMP128	(1 << 2)
+> +	__u32 reserved;
+> +};
+> +
+>   /**
+>    * VFIO_DEVICE_GET_REGION_INFO - _IOWR(VFIO_TYPE, VFIO_BASE + 8,
+>    *				       struct vfio_region_info)
 
 
