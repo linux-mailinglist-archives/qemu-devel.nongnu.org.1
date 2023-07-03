@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 051C5745DB6
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 15:48:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B2B6745DB9
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 15:50:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGJrD-0007hg-NO; Mon, 03 Jul 2023 09:44:48 -0400
+	id 1qGJrC-0007cl-3w; Mon, 03 Jul 2023 09:44:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qGJr4-0007TQ-DZ
+ id 1qGJr4-0007TP-DZ
  for qemu-devel@nongnu.org; Mon, 03 Jul 2023 09:44:38 -0400
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qGJr2-0005gy-JZ
+ id 1qGJr1-0005hE-K5
  for qemu-devel@nongnu.org; Mon, 03 Jul 2023 09:44:38 -0400
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-313e714342cso5193010f8f.0
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-3fbc63c2e84so41218455e9.3
  for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 06:44:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1688391872; x=1690983872;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=pmUCRBf4Xho+2SbSl2R5MUiyr5uXTfWzrS4YFCHSA4g=;
- b=sQsWG4JnxwwUgg3bfswr/m3hSFosv/XrraHXPWPTT40Lym1JdU56dvqpj9DUg5lwr1
- qJflW2BG0u/diWZGGTzRvnNF7yhH+XOZZi9fb9Z/l7J6XrBXuB3PZF5/w7Ecz6FhaJv0
- 21xef3tynnpo76voOhV0/2exPPfbawi8yH3mP6OJ4rovTjQnBWK3RsG1mxUW29dpjH6P
- mngxaja0dQTO0iMV09xtwX8n4P0dJDy8iBTtrCmQBjxi9oyL+F7FaTlWrUrTnpF10ws0
- vHv1pydgqrr/hqNrOVIJcsjKZvLKFv/JSnWNwaJp05AyrqSDBzclxWtlpo9SGOMlltdt
- boYQ==
+ bh=7/2/UjZO5LVZdyjze7eK8CMBEgeqrfQyTKhD3ann+Ss=;
+ b=aL4tMX547vLMqwHdyU2m767D1bE9axJA1AapZmOp64ZNnVPqDmGzZSFvcGL7iA7F2o
+ Nnw1+lSqJfkqU4+3wUdErfCuggOskKnKS6qGyGSEznkgkq2QU6QZ8OW0vOfyiVrpJUHd
+ QZOdjA5+b6+2DhQG/CLIBsFCE5rF3CkXlldCnUE5cRa4jrd5rSWJ1f+RMO08E/C5dbxA
+ X0zh7XDOb/Vz7MwpLu9WUoic20/+dyF4IuhS4KjQzB/HLa+1gfXxA75LeZ5y4I9vclaf
+ /Vw2QevodEcg1nFS5Skfzd1XMX7bpSfVadN4UGY0rzthC6MDtzn9PypDdPmLoUIQRcUY
+ PnhA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20221208; t=1688391872; x=1690983872;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=pmUCRBf4Xho+2SbSl2R5MUiyr5uXTfWzrS4YFCHSA4g=;
- b=YJ5H2uEe2HsJpuR87alFtNVnivSjRnu7yxRPu9PCZANnW87OZ7mNDbdbY0Aq41XzKe
- ITBzY0WsE0e909YoIcC87HwJa5ZtSO3lWdy82wP9CZT1oKiujIW7k67Sc+pdTurJUb5T
- 8pGYnSahuRVoK2AUzMQxgDbR6pZ66YYWqXqZFeT05xlfcYiAEySDS2SZDPDD4Ww6jmwN
- HvT42HD/FT/W1O0DmyhIFvbeVOOkmTKfvIxUKNjUA1whsWr8X+Z1zhWlSS6fXLUpaR76
- ex/JmeaqpdIJ/FB4G8dd7CC7AZBSMueptexFmUY35HK3ENzVcamjIdwtfEVYfmRIlc7P
- cYgg==
-X-Gm-Message-State: ABy/qLZx8LJTQETK0Oj7U5vSlDxuStcOhNk/FwCOzjD0Jeub5ZCQxtMQ
- 9NINEQ+5Qgql6fPL2WHKBI64Pg==
-X-Google-Smtp-Source: APBJJlGUqsC3UU9tPfvlan2VLd3btE5qSBWOosBiObtY78zyGTmeD/Y18QRkE+vuQvW2nvJy6JBI/w==
-X-Received: by 2002:adf:f84a:0:b0:313:e553:b858 with SMTP id
- d10-20020adff84a000000b00313e553b858mr8226389wrq.33.1688391871864; 
- Mon, 03 Jul 2023 06:44:31 -0700 (PDT)
+ bh=7/2/UjZO5LVZdyjze7eK8CMBEgeqrfQyTKhD3ann+Ss=;
+ b=XAbE7rl5Ma+t9dRhpVGXmOSMD4RvGLVhSe2GIbjWvbM0yrOoPt0BgayU7z77JuukRk
+ XtdDcvWMna9HQVeBBVno+nHQpXR8OdRcmUuzuQnLyIolMZR/UEdhkAJLcWDykiH0hCN2
+ 78yH41y3T26C0oIkPRQvoNtu4X/C7I7Oa5oES5I9TrP1we0xQwimQ+tsKkwkDu9JRI3Q
+ IdpKQBH6TdAYkLBDaq4CC9qzbwdo/MAaXUxdi5ZFGaWvRrjyKegHDDbC6ksPzgx6QB+x
+ 9JoB9A5YLCnNBqAWjszoBME1Bzx54d4Pcc/I5H2FI8WBg5K5x0saFwFyCNnKz45P2huY
+ ShSQ==
+X-Gm-Message-State: AC+VfDw4DHWcVVR8Mp2ed9oZ/sLGMWR5Ab17l+R6j68UKzQa6M1inms1
+ NZs/fGdO6avRyIezE4RwBpMV1A==
+X-Google-Smtp-Source: ACHHUZ5JAuMCsDBTPZ//efmJh2gUcB44JuKBgiW28vPBIwVoGGPVH6W0dG3DnfhfhMpOrhIaUxJhLQ==
+X-Received: by 2002:a05:600c:241:b0:3f8:fc96:6bfd with SMTP id
+ 1-20020a05600c024100b003f8fc966bfdmr8033857wmj.17.1688391872299; 
+ Mon, 03 Jul 2023 06:44:32 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- l3-20020a1ced03000000b003fbcdba1a63sm7448104wmh.12.2023.07.03.06.44.29
+ cs7-20020a056000088700b0030ada01ca78sm25629348wrb.10.2023.07.03.06.44.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Mon, 03 Jul 2023 06:44:30 -0700 (PDT)
 Received: from zen.lan (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id A441B1FFBB;
+ by zen.linaroharston (Postfix) with ESMTP id BF49C1FFC3;
  Mon,  3 Jul 2023 14:44:28 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -66,18 +66,21 @@ Cc: richard.henderson@linaro.org,
  Alexander Bulekov <alxndr@bu.edu>, Paolo Bonzini <pbonzini@redhat.com>,
  Bandan Das <bsd@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
  Thomas Huth <thuth@redhat.com>, Darren Kenny <darren.kenny@oracle.com>,
- Qiuhao Li <Qiuhao.Li@outlook.com>, Laurent Vivier <lvivier@redhat.com>
-Subject: [PULL 08/38] tests/qtests: clean-up and fix leak in generic_fuzz
-Date: Mon,  3 Jul 2023 14:43:57 +0100
-Message-Id: <20230703134427.1389440-9-alex.bennee@linaro.org>
+ Qiuhao Li <Qiuhao.Li@outlook.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>
+Subject: [PULL 09/38] tests/docker: add test-fuzz
+Date: Mon,  3 Jul 2023 14:43:58 +0100
+Message-Id: <20230703134427.1389440-10-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230703134427.1389440-1-alex.bennee@linaro.org>
 References: <20230703134427.1389440-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x430.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,40 +103,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-An update to the clang tooling detects more issues with the code
-including a memory leak from the g_string_new() allocation. Clean up
-the code to avoid the allocation and use ARRAY_SIZE while we are at
-it.
+Running the fuzzer requires some hoop jumping and some problems only
+show up in containers. This basically replicates the build-oss-fuzz
+job from our CI so we can run in the same containers we use in CI.
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Alexander Bulekov <alxndr@bu.edu>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20230630180423.558337-9-alex.bennee@linaro.org>
+Message-Id: <20230630180423.558337-10-alex.bennee@linaro.org>
 
-diff --git a/tests/qtest/fuzz/generic_fuzz.c b/tests/qtest/fuzz/generic_fuzz.c
-index c525d22951..11256abf6c 100644
---- a/tests/qtest/fuzz/generic_fuzz.c
-+++ b/tests/qtest/fuzz/generic_fuzz.c
-@@ -954,17 +954,10 @@ static void register_generic_fuzz_targets(void)
-             .crossover = generic_fuzz_crossover
-     });
- 
--    GString *name;
--    const generic_fuzz_config *config;
--
--    for (int i = 0;
--         i < sizeof(predefined_configs) / sizeof(generic_fuzz_config);
--         i++) {
--        config = predefined_configs + i;
--        name = g_string_new("generic-fuzz");
--        g_string_append_printf(name, "-%s", config->name);
-+    for (int i = 0; i < ARRAY_SIZE(predefined_configs); i++) {
-+        const generic_fuzz_config *config = predefined_configs + i;
-         fuzz_add_target(&(FuzzTarget){
--                .name = name->str,
-+                .name = g_strconcat("generic-fuzz-", config->name, NULL),
-                 .description = "Predefined generic-fuzz config.",
-                 .get_init_cmdline = generic_fuzz_predefined_config_cmdline,
-                 .pre_fuzz = generic_pre_fuzz,
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 4feea49a6e..7164cf55a1 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -3106,6 +3106,7 @@ R: Qiuhao Li <Qiuhao.Li@outlook.com>
+ S: Maintained
+ F: tests/qtest/fuzz/
+ F: tests/qtest/fuzz-*test.c
++F: tests/docker/test-fuzz
+ F: scripts/oss-fuzz/
+ F: hw/mem/sparse-mem.c
+ F: docs/devel/fuzzing.rst
+diff --git a/tests/docker/test-fuzz b/tests/docker/test-fuzz
+new file mode 100755
+index 0000000000..7e506ae1f6
+--- /dev/null
++++ b/tests/docker/test-fuzz
+@@ -0,0 +1,28 @@
++#!/bin/bash -e
++#
++# Compile and check with oss-fuzz.
++#
++# Copyright (c) 2023 Linaro Ltd.
++#
++# Authors:
++#  Alex Bennée <alex.bennee@linaro.org>
++#
++# SPDX-License-Identifier: GPL-2.0-or-later
++
++. common.rc
++
++requires_binary clang
++
++# the build script runs out of $src so we need to copy across
++cd "$BUILD_DIR"
++cp -a $QEMU_SRC .
++cd src
++mkdir build-oss-fuzz
++export LSAN_OPTIONS=suppressions=scripts/oss-fuzz/lsan_suppressions.txt
++env CC="clang" CXX="clang++" CFLAGS="-fsanitize=address" ./scripts/oss-fuzz/build.sh
++export ASAN_OPTIONS="fast_unwind_on_malloc=0"
++for fuzzer in $(find ./build-oss-fuzz/DEST_DIR/ -executable -type f | grep -v slirp); do
++        grep "LLVMFuzzerTestOneInput" ${fuzzer} > /dev/null 2>&1 || continue ;
++        echo Testing ${fuzzer} ... ;
++        "${fuzzer}" -runs=1 -seed=1 || exit 1 ;
++done
 -- 
 2.39.2
 
