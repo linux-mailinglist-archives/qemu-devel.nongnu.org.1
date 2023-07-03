@@ -2,37 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18D5A74659C
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 00:05:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3ECA87465A2
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 00:05:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGRdP-0003eC-L9; Mon, 03 Jul 2023 18:03:03 -0400
+	id 1qGRdR-0003ig-8N; Mon, 03 Jul 2023 18:03:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qGRdN-0003bo-P9; Mon, 03 Jul 2023 18:03:01 -0400
+ id 1qGRdP-0003er-7d; Mon, 03 Jul 2023 18:03:03 -0400
 Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qGRdM-0004C4-30; Mon, 03 Jul 2023 18:03:01 -0400
+ id 1qGRdN-0004CK-Fi; Mon, 03 Jul 2023 18:03:02 -0400
 Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id 3CF91748A59;
- Tue,  4 Jul 2023 00:02:43 +0200 (CEST)
+ by localhost (Postfix) with SMTP id 36290748A5D;
+ Tue,  4 Jul 2023 00:02:44 +0200 (CEST)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 0C4E3748A4D; Tue,  4 Jul 2023 00:02:43 +0200 (CEST)
-Message-Id: <eecc7ae1c5f576f74c1b919e8d7f798fc8a7e6ac.1688421085.git.balaton@eik.bme.hu>
+ id 16051748A4D; Tue,  4 Jul 2023 00:02:44 +0200 (CEST)
+Message-Id: <e674bbedc437fa486f7e9690be14f1015bf54e88.1688421085.git.balaton@eik.bme.hu>
 In-Reply-To: <cover.1688421085.git.balaton@eik.bme.hu>
 References: <cover.1688421085.git.balaton@eik.bme.hu>
 From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH 10/13] ppc4xx_pci: Add define for ppc4xx-host-bridge type name
+Subject: [PATCH 11/13] ppc440_pcix: Rename QOM type define abd move it to
+ common header
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 To: qemu-devel@nongnu.org,
     qemu-ppc@nongnu.org
 Cc: Daniel Henrique Barboza <danielhb413@gmail.com>
-Date: Tue,  4 Jul 2023 00:02:43 +0200 (CEST)
+Date: Tue,  4 Jul 2023 00:02:44 +0200 (CEST)
 X-Spam-Probability: 8%
 Received-SPF: pass client-ip=2001:738:2001:2001::2001;
  envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
@@ -56,64 +57,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a QOM type name define for ppc4xx-host-bridge in the common header
-and replace direct use of the string name with the constant.
+Rename TYPE_PPC440_PCIX_HOST_BRIDGE to better match its string value,
+move it to common header and use it also in sam460ex to replace hard
+coded type name.
 
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 ---
- hw/ppc/ppc440_pcix.c    | 3 ++-
- hw/ppc/ppc4xx_pci.c     | 4 ++--
+ hw/ppc/ppc440_pcix.c    | 9 ++++-----
+ hw/ppc/sam460ex.c       | 2 +-
  include/hw/ppc/ppc4xx.h | 1 +
- 3 files changed, 5 insertions(+), 3 deletions(-)
+ 3 files changed, 6 insertions(+), 6 deletions(-)
 
 diff --git a/hw/ppc/ppc440_pcix.c b/hw/ppc/ppc440_pcix.c
-index f10f93c533..dfec25ac83 100644
+index dfec25ac83..adfecf1e76 100644
 --- a/hw/ppc/ppc440_pcix.c
 +++ b/hw/ppc/ppc440_pcix.c
-@@ -495,7 +495,8 @@ static void ppc440_pcix_realize(DeviceState *dev, Error **errp)
-                          ppc440_pcix_map_irq, &s->irq, &s->busmem,
-                          get_system_io(), PCI_DEVFN(0, 0), 1, TYPE_PCI_BUS);
+@@ -44,8 +44,7 @@ struct PLBInMap {
+     MemoryRegion mr;
+ };
  
--    s->dev = pci_create_simple(h->bus, PCI_DEVFN(0, 0), "ppc4xx-host-bridge");
-+    s->dev = pci_create_simple(h->bus, PCI_DEVFN(0, 0),
-+                               TYPE_PPC4xx_HOST_BRIDGE);
+-#define TYPE_PPC440_PCIX_HOST_BRIDGE "ppc440-pcix-host"
+-OBJECT_DECLARE_SIMPLE_TYPE(PPC440PCIXState, PPC440_PCIX_HOST_BRIDGE)
++OBJECT_DECLARE_SIMPLE_TYPE(PPC440PCIXState, PPC440_PCIX_HOST)
  
-     memory_region_init(&s->bm, OBJECT(s), "bm-ppc440-pcix", UINT64_MAX);
-     memory_region_add_subregion(&s->bm, 0x0, &s->busmem);
-diff --git a/hw/ppc/ppc4xx_pci.c b/hw/ppc/ppc4xx_pci.c
-index fbdf8266d8..6652119008 100644
---- a/hw/ppc/ppc4xx_pci.c
-+++ b/hw/ppc/ppc4xx_pci.c
-@@ -333,7 +333,7 @@ static void ppc4xx_pcihost_realize(DeviceState *dev, Error **errp)
-                               TYPE_PCI_BUS);
-     h->bus = b;
+ #define PPC440_PCIX_NR_POMS 3
+ #define PPC440_PCIX_NR_PIMS 3
+@@ -397,7 +396,7 @@ static const MemoryRegionOps pci_reg_ops = {
  
--    pci_create_simple(b, 0, "ppc4xx-host-bridge");
-+    pci_create_simple(b, 0, TYPE_PPC4xx_HOST_BRIDGE);
+ static void ppc440_pcix_reset(DeviceState *dev)
+ {
+-    struct PPC440PCIXState *s = PPC440_PCIX_HOST_BRIDGE(dev);
++    struct PPC440PCIXState *s = PPC440_PCIX_HOST(dev);
+     int i;
  
-     /* XXX split into 2 memory regions, one for config space, one for regs */
-     memory_region_init(&s->container, OBJECT(s), "pci-container", PCI_ALL_SIZE);
-@@ -367,7 +367,7 @@ static void ppc4xx_host_bridge_class_init(ObjectClass *klass, void *data)
+     for (i = 0; i < PPC440_PCIX_NR_POMS; i++) {
+@@ -487,7 +486,7 @@ static void ppc440_pcix_realize(DeviceState *dev, Error **errp)
+     PCIHostState *h;
+ 
+     h = PCI_HOST_BRIDGE(dev);
+-    s = PPC440_PCIX_HOST_BRIDGE(dev);
++    s = PPC440_PCIX_HOST(dev);
+ 
+     sysbus_init_irq(sbd, &s->irq);
+     memory_region_init(&s->busmem, OBJECT(dev), "pci bus memory", UINT64_MAX);
+@@ -525,7 +524,7 @@ static void ppc440_pcix_class_init(ObjectClass *klass, void *data)
  }
  
- static const TypeInfo ppc4xx_host_bridge_info = {
--    .name          = "ppc4xx-host-bridge",
-+    .name          = TYPE_PPC4xx_HOST_BRIDGE,
-     .parent        = TYPE_PCI_DEVICE,
-     .instance_size = sizeof(PCIDevice),
-     .class_init    = ppc4xx_host_bridge_class_init,
+ static const TypeInfo ppc440_pcix_info = {
+-    .name          = TYPE_PPC440_PCIX_HOST_BRIDGE,
++    .name          = TYPE_PPC440_PCIX_HOST,
+     .parent        = TYPE_PCI_HOST_BRIDGE,
+     .instance_size = sizeof(PPC440PCIXState),
+     .class_init    = ppc440_pcix_class_init,
+diff --git a/hw/ppc/sam460ex.c b/hw/ppc/sam460ex.c
+index d446cfc37b..8d0e551d14 100644
+--- a/hw/ppc/sam460ex.c
++++ b/hw/ppc/sam460ex.c
+@@ -439,7 +439,7 @@ static void sam460ex_init(MachineState *machine)
+ 
+     /* PCI bus */
+     /* All PCI irqs are connected to the same UIC pin (cf. UBoot source) */
+-    dev = sysbus_create_simple("ppc440-pcix-host", 0xc0ec00000,
++    dev = sysbus_create_simple(TYPE_PPC440_PCIX_HOST, 0xc0ec00000,
+                                qdev_get_gpio_in(uic[1], 0));
+     pci_bus = PCI_BUS(qdev_get_child_bus(dev, "pci.0"));
+ 
 diff --git a/include/hw/ppc/ppc4xx.h b/include/hw/ppc/ppc4xx.h
-index e053b9751b..766d575e86 100644
+index 766d575e86..ea7740239b 100644
 --- a/include/hw/ppc/ppc4xx.h
 +++ b/include/hw/ppc/ppc4xx.h
-@@ -29,6 +29,7 @@
- #include "exec/memory.h"
- #include "hw/sysbus.h"
+@@ -31,6 +31,7 @@
  
-+#define TYPE_PPC4xx_HOST_BRIDGE "ppc4xx-host-bridge"
+ #define TYPE_PPC4xx_HOST_BRIDGE "ppc4xx-host-bridge"
  #define TYPE_PPC4xx_PCI_HOST "ppc4xx-pci-host"
++#define TYPE_PPC440_PCIX_HOST "ppc440-pcix-host"
  #define TYPE_PPC460EX_PCIE_HOST "ppc460ex-pcie-host"
  
+ /*
 -- 
 2.30.9
 
