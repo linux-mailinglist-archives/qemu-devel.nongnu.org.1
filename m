@@ -2,100 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5F43745746
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 10:24:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80D0F745748
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jul 2023 10:24:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGEpo-00058E-7w; Mon, 03 Jul 2023 04:23:00 -0400
+	id 1qGEqP-0005DQ-Fm; Mon, 03 Jul 2023 04:23:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eskultet@redhat.com>)
- id 1qGEpk-00056J-Ad
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 04:22:56 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <SRS0=mKPa=CV=kaod.org=clg@ozlabs.org>)
+ id 1qGEqN-0005D4-GT; Mon, 03 Jul 2023 04:23:35 -0400
+Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eskultet@redhat.com>)
- id 1qGEpi-0006fA-EP
- for qemu-devel@nongnu.org; Mon, 03 Jul 2023 04:22:56 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688372572;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=yHSDRPty5xB3LeLguf4HG+y4Xs9Ta8oKJ0eZ2VvQjlw=;
- b=AZJKz5vn/wJetUwZ53/kUTl2E1r7dLvZPKYezVAN5onj+ixF5xY2jWCgaKfNMDNY0UJLXZ
- zAzusGL5O2dI0uetgf1CpvmaWJXFjGzvJn71gipJ2kgUYRXrlR7ci4l7klVfAkr9bNgZFk
- Cyukjp6lftJ9bhVpi5q0QmGcj8YSuvs=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-442-Roi5ywcBPuiGadgDwBUjNg-1; Mon, 03 Jul 2023 04:22:51 -0400
-X-MC-Unique: Roi5ywcBPuiGadgDwBUjNg-1
-Received: by mail-ed1-f72.google.com with SMTP id
- 4fb4d7f45d1cf-50daa85e940so2275526a12.0
- for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 01:22:50 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688372570; x=1690964570;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=yHSDRPty5xB3LeLguf4HG+y4Xs9Ta8oKJ0eZ2VvQjlw=;
- b=eezivowCAskuxtTlrWs44xWWFbbfXoXrgM8nBUcXBkyxxyJRSasHwr2E+KybV5Q4mo
- 9GpvCgHa0fPeeMQNIKqQIc2vAz/ziQllAZ5ShiKje1zT0F04E9MyaSpJp73gBpSKYLE1
- VfdpptYTvIlZCz/wzI3sKB1B5FNNXzcL/jXfGUHmRYkDdlOi6Zm7UFuUbqK2PhjYTSn4
- 905nJs0XvHs5E/vhJaq+sjdq7mT49L3nfqMlNBsEXsNqBkzBUTr7wGgcNPe8mlDsH7TJ
- ocZR1w83fF30ujbtrF3I7jVymHlYdOKG68bihB/41bOzqI2aStS39A1OnIBCD6YX0t6c
- VfcQ==
-X-Gm-Message-State: ABy/qLYJUQQglGvMVhC6mWzbJyC/yEBvuCYFKNKpdhT5na4JFQm1Fa3g
- k6+CubuWm5BmTWEVEsqZW1Sp41mfOA8gjhZ9DsQorZPdHNIn5s1ytBbsHm6fPC7Erh1GI7+2Eab
- UGkDVdKLyzmYcd00=
-X-Received: by 2002:aa7:da10:0:b0:51e:c61:1cd6 with SMTP id
- r16-20020aa7da10000000b0051e0c611cd6mr2367953eds.35.1688372569977; 
- Mon, 03 Jul 2023 01:22:49 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlFRuQNRED/+ERrzqQJmgbt4TgcvYAeLq4USlLlJ24ak5LYEKWmmC/drMQdvW1qqq9R8vEEvKA==
-X-Received: by 2002:aa7:da10:0:b0:51e:c61:1cd6 with SMTP id
- r16-20020aa7da10000000b0051e0c611cd6mr2367944eds.35.1688372569735; 
- Mon, 03 Jul 2023 01:22:49 -0700 (PDT)
-Received: from ridgehead.home.lan (cst2-15-35.cust.vodafone.cz. [31.30.15.35])
- by smtp.gmail.com with ESMTPSA id
- r26-20020aa7d15a000000b0051df54c6a27sm3736677edo.56.2023.07.03.01.22.48
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 03 Jul 2023 01:22:49 -0700 (PDT)
-Date: Mon, 3 Jul 2023 10:22:47 +0200
-From: Erik Skultety <eskultet@redhat.com>
-To: Alistair Francis <alistair23@gmail.com>
-Cc: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Brian Cain <bcain@quicinc.com>,
- Daniel =?utf-8?B?UC5CZXJyYW5nw6k=?= <berrange@redhat.com>,
- qemu-devel <qemu-devel@nongnu.org>, Michael Tokarev <mjt@tls.msk.ru>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>,
- "Matheus Bernardino (QUIC)" <quic_mathbern@quicinc.com>,
- "Marco Liebel (QUIC)" <quic_mliebel@quicinc.com>
-Subject: Re: How do you represent a host gcc and a cross gcc in lcitool?
-Message-ID: <ZKKFV2ta438L5oGs@ridgehead.home.lan>
-References: <87wn0obuk6.fsf@linaro.org>
- <SN6PR02MB4205D202EFB6D6A256ECB93FB8489@SN6PR02MB4205.namprd02.prod.outlook.com>
- <87jzwoba78.fsf@linaro.org>
- <CAKmqyKOidBkxXzWCm8rxagTbF0bucmitrQk1kW20wDNdjqUkeA@mail.gmail.com>
- <87fs6ifp5e.fsf@linaro.org>
- <CAKmqyKNHvP4MJOPP8i-Lj5Bu3-DNi00SngEe5X+c8_vA0EGLaQ@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <SRS0=mKPa=CV=kaod.org=clg@ozlabs.org>)
+ id 1qGEqK-0006i3-Vq; Mon, 03 Jul 2023 04:23:35 -0400
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4Qvf7t1lSsz4wZp;
+ Mon,  3 Jul 2023 18:23:22 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Qvf7r697Pz4wZJ;
+ Mon,  3 Jul 2023 18:23:20 +1000 (AEST)
+Message-ID: <797a4272-1c22-9b91-125c-3aaf1bd854b0@kaod.org>
+Date: Mon, 3 Jul 2023 10:23:16 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAKmqyKNHvP4MJOPP8i-Lj5Bu3-DNi00SngEe5X+c8_vA0EGLaQ@mail.gmail.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eskultet@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH v2] pnv/xive2: Fix TIMA offset for indirect access
+Content-Language: en-US
+To: Frederic Barrat <fbarrat@linux.ibm.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>, qemu-ppc@nongnu.org,
+ qemu-devel@nongnu.org
+References: <20230703080858.54060-1-fbarrat@linux.ibm.com>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <20230703080858.54060-1-fbarrat@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=SRS0=mKPa=CV=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, NICE_REPLY_A=-0.09, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -111,37 +64,105 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-[...]
-> > >> >> RiscV guys,
-> > >> >>
-> > >> >> It's clear that relying on Debian Sid for the QEMU cross build for RiscV
-> > >> >> is pretty flakey. Are you guys aware of any other distros that better
-> > >> >> support cross compiling to a riscv64 target or is Debian still the best
-> > >> >> bet? Could you be persuaded to build a binary docker image with the
-> > >> >> cross compilers and libraries required for a decent cross build as an
-> > >> >> alternative?
-> > >
-> > > It's probably not very helpful, but I find Arch based distros to be
-> > > the best bet for this.
-> >
-> > I've never tried arch under docker, isn't it just as much of a moving
-> > target?
+On 7/3/23 10:08, Frederic Barrat wrote:
+> Direct TIMA operations can be done through 4 pages, each with a
+> different privilege level dictating what fields can be accessed. On
+> the other hand, indirect TIMA accesses on P10 are done through a
+> single page, which is the equivalent of the most privileged page of
+> direct TIMA accesses.
 > 
-> I haven't really tried Arch under Docker. I agree that it is a fast
-> moving target. I guess it's up for debate if it's too much churn or
-> not
+> The offset in the IC bar of an indirect access specifies what hw
+> thread is targeted (page shift bits) and the offset in the
+> TIMA being accessed (the page offset bits). When the indirect
+> access is calling the underlying direct access functions, it is
+> therefore important to clearly separate the 2, as the direct functions
+> assume any page shift bits define the privilege ring level. For
+> indirect accesses, those bits must be 0. This patch fixes the offset
+> passed to direct TIMA functions.
 > 
-> Would a working Arch image be helpful with lcitool?
+> It didn't matter for SMT1, as the 2 least significant bits of the page
+> shift are part of the hw thread ID and always 0, so the direct TIMA
+> functions were accessing the privilege ring 0 page. With SMT4/8, it is
+> no longer true.
+> 
+> The fix is specific to P10, as indirect TIMA access on P9 was handled
+> differently.
+> 
+> Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
 
-Not sure from which angle to look at ^this question, so I just add a NB and if
-I missed the point just ignore it - we currently don't support Arch as a target
-in lcitool, but if this is kind of a dealbreaker for cross-arch QEMU CI,I don't
-see a reason why we shouldn't add it. There'd be quite a few steps involved to
-introduce it properly, especially wrt/ VM installation, hence we'd need an
-issue to track all subgoals, but FWIW it's not needed to address all of the
-problems at once if all that is sufficient for you is a working Dockerfile.
 
-Regards,
-Erik
+Reviewed-by: Cédric Le Goater <clg@kaod.org>
+
+Thanks,
+
+C.
+
+
+> ---
+> Changelog:
+> v2: rename function and variable
+>      rebase to Danel's ppc-next
+> 
+> hw/intc/pnv_xive2.c | 20 ++++++++++++++++++--
+>   1 file changed, 18 insertions(+), 2 deletions(-)
+> 
+> diff --git a/hw/intc/pnv_xive2.c b/hw/intc/pnv_xive2.c
+> index e8ab176de6..82fcd3ea22 100644
+> --- a/hw/intc/pnv_xive2.c
+> +++ b/hw/intc/pnv_xive2.c
+> @@ -1590,6 +1590,18 @@ static uint32_t pnv_xive2_ic_tm_get_pir(PnvXive2 *xive, hwaddr offset)
+>       return xive->chip->chip_id << 8 | offset >> xive->ic_shift;
+>   }
+>   
+> +static uint32_t pnv_xive2_ic_tm_get_hw_page_offset(PnvXive2 *xive,
+> +                                                   hwaddr offset)
+> +{
+> +    /*
+> +     * Indirect TIMA accesses are similar to direct accesses for
+> +     * privilege ring 0. So remove any traces of the hw thread ID from
+> +     * the offset in the IC BAR as it could be interpreted as the ring
+> +     * privilege when calling the underlying direct access functions.
+> +     */
+> +    return offset & ((1ull << xive->ic_shift) - 1);
+> +}
+> +
+>   static XiveTCTX *pnv_xive2_get_indirect_tctx(PnvXive2 *xive, uint32_t pir)
+>   {
+>       PnvChip *chip = xive->chip;
+> @@ -1612,14 +1624,16 @@ static uint64_t pnv_xive2_ic_tm_indirect_read(void *opaque, hwaddr offset,
+>                                                 unsigned size)
+>   {
+>       PnvXive2 *xive = PNV_XIVE2(opaque);
+> +    hwaddr hw_page_offset;
+>       uint32_t pir;
+>       XiveTCTX *tctx;
+>       uint64_t val = -1;
+>   
+>       pir = pnv_xive2_ic_tm_get_pir(xive, offset);
+> +    hw_page_offset = pnv_xive2_ic_tm_get_hw_page_offset(xive, offset);
+>       tctx = pnv_xive2_get_indirect_tctx(xive, pir);
+>       if (tctx) {
+> -        val = xive_tctx_tm_read(NULL, tctx, offset, size);
+> +        val = xive_tctx_tm_read(NULL, tctx, hw_page_offset, size);
+>       }
+>   
+>       return val;
+> @@ -1629,13 +1643,15 @@ static void pnv_xive2_ic_tm_indirect_write(void *opaque, hwaddr offset,
+>                                              uint64_t val, unsigned size)
+>   {
+>       PnvXive2 *xive = PNV_XIVE2(opaque);
+> +    hwaddr hw_page_offset;
+>       uint32_t pir;
+>       XiveTCTX *tctx;
+>   
+>       pir = pnv_xive2_ic_tm_get_pir(xive, offset);
+> +    hw_page_offset = pnv_xive2_ic_tm_get_hw_page_offset(xive, offset);
+>       tctx = pnv_xive2_get_indirect_tctx(xive, pir);
+>       if (tctx) {
+> -        xive_tctx_tm_write(NULL, tctx, offset, val, size);
+> +        xive_tctx_tm_write(NULL, tctx, hw_page_offset, val, size);
+>       }
+>   }
+>   
 
 
