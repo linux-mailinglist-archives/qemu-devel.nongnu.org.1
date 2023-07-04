@@ -2,85 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94000747411
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 16:26:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4273574741C
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 16:29:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGgyI-0003Lu-2K; Tue, 04 Jul 2023 10:25:38 -0400
+	id 1qGh1J-0004H6-7q; Tue, 04 Jul 2023 10:28:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qGgyF-0003LB-AM
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 10:25:35 -0400
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qGgyC-00060y-78
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 10:25:35 -0400
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-3143ccb0f75so1418434f8f.0
- for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 07:25:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688480727; x=1691072727;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=GyE3CXPeXedQL5IGhlbGJ9w1KGn4iyl/4Ih2AUEQGDU=;
- b=u6Gt11xQ7odwivWClsNDIy2Tn4hnuxAuoEvKhVxJDUXqYakv1RyFBPz8fLT2d0qhT5
- AwgblWyoZtc3c8jLeJqZCxbm96PwlmjoZmbjQi9TNu3z4KnFA5HpOSL29jQiHcvTPljk
- hdW9zRYfCpN14eiaIsKYDN949y5kHWhILgAeiraU9lNq9QabUofRMZfvximdyNeKx2an
- EMegRm7Y84RDzEBUoayXuGx20yNH3R1/ilN7V0b4BQ6tj0H8hXiiaRhzumlpRW3PO9LW
- 1APqMJkCBSDMiqD1Ame65EkoYSAMsK+VgQXZN2zgIzalpRu5w8WcGH23c3ok9VYdbMdK
- pVzA==
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1qGh1H-0004Gw-Pl
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 10:28:43 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1qGh1F-0006W7-SE
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 10:28:43 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1688480921;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=oUvP0TCI9a2rJzNGFVdPC7XaO3z9eJAGJjXUovMNff0=;
+ b=WyXKnWwNIjlppYtcEdUAhy0BcZuSfCxFf5hnziL8POuC7p8DxDx20AsxNYKK6iQADYsebn
+ KLihZCYBLUy9KpCj/L82MGkwwm2n5g7zkoNpim/HkUbFjnQocaCq8CRTEQjwhLBePcE5lt
+ 7KHyP4MMt7uO1v1zwBGkXkRx7SpNLtY=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-213-9bvShDHhNKuyWcUs5gNtmA-1; Tue, 04 Jul 2023 10:28:39 -0400
+X-MC-Unique: 9bvShDHhNKuyWcUs5gNtmA-1
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-9892495397cso392034266b.2
+ for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 07:28:39 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688480727; x=1691072727;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=GyE3CXPeXedQL5IGhlbGJ9w1KGn4iyl/4Ih2AUEQGDU=;
- b=epLDplQukDfwPxHmjWdb35ExKim6HzS+efa1pTQRqREytGUI4hLo4tph9VD4E+Wgc2
- mEJs6dVunUlNgnSBStj5DCX486peAw5kN+B17Lp+JV9Xa/HsYH8mB52UrKoDXsPlOToc
- SdbFYDeNTPrXoP5/ttWCgRpkkgMEXIaM0GxcJDWrnBU10VpNbwPhR9+B6ZGcoXpjUIcs
- Rjos+2ToqNjsoIDlEw2EUnh/PCLQpAnLxqoNJNn75iks5Jdoc3gfbqZcnkkt9jLUAnmv
- f7Ry51yrQDQnFi1HDk1V92WiPTEUIpddNweu85bSwuwWoaVpGWN0nKAgnoixkyThg2xn
- aJ2Q==
-X-Gm-Message-State: ABy/qLYjhA/dwnHk5lkdYvobP0zr8yyWgfScCJT3VCKRT1IfqL5Us//Q
- /KP0Ch9i3NlIwgfSZfBwJ1VvkA==
-X-Google-Smtp-Source: APBJJlGIyOyJyQR0chuqFyWoaTfT+9xNQQdC1UQyrsB9jhdRmlSM3b083nUv8Y6A/a/AtE4axFVVxA==
-X-Received: by 2002:a5d:5942:0:b0:314:3c8f:d267 with SMTP id
- e2-20020a5d5942000000b003143c8fd267mr3884554wri.45.1688480727420; 
- Tue, 04 Jul 2023 07:25:27 -0700 (PDT)
-Received: from [192.168.1.102] ([176.176.157.122])
- by smtp.gmail.com with ESMTPSA id
- r3-20020adfda43000000b0030ae3a6be4asm28615167wrl.72.2023.07.04.07.25.26
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 04 Jul 2023 07:25:27 -0700 (PDT)
-Message-ID: <36110549-9404-17c8-905e-46a81af4ea82@linaro.org>
-Date: Tue, 4 Jul 2023 16:25:25 +0200
+ d=1e100.net; s=20221208; t=1688480918; x=1691072918;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=oUvP0TCI9a2rJzNGFVdPC7XaO3z9eJAGJjXUovMNff0=;
+ b=huxGwclvZ4GdCYJICvPP/7pe448OZGX8plB58GN79rW+GrE7LZqAeHgOqathz0sSHZ
+ eOZZKPuneWX8Ek4UbBptrfxgUYog/tbBSFhx4VmCTsB/bgMOuFqE/A19ECPFlxdGEq23
+ RKWaqcrUxwZQ5Gae0Tsz4GIcQZZ08rboUcfVTqKaZP65z5JHitaZz2xDjJ5p1ysoN+an
+ drKx6FneofpUel8UILOOeTFT8VGq/5ehGyIF4Vy2GJhP1fGm8HxzTBnuhhMEvO/ElLx+
+ H2Zkhn7a+P3Jh5KQC7GaZTYfnQxYm882SuB6gnyGA3XX1mkhcGIx9DyaX5HjFK9VDDje
+ FH9g==
+X-Gm-Message-State: ABy/qLZOdW07VCRRu0yLmmB836N9xZf/m0nON/CIXUqqRM1DPm2sqVnz
+ Hv0zupH07DPd8iZZBmJ0cWs3oaIJSM4ZKpE0J6CoxyjZG+jdHpHyYdybAMBaOppkVyUlsS1ZWMR
+ jHJsSTzHIDGXWmFg=
+X-Received: by 2002:a17:906:779c:b0:991:b2a2:e424 with SMTP id
+ s28-20020a170906779c00b00991b2a2e424mr12224334ejm.76.1688480918469; 
+ Tue, 04 Jul 2023 07:28:38 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlGGHIx38borSWYkLuGwA5aUFDkx4RRTri/3QVuEwyKEGmhdaoJ+HZFjrp6cktr5jl1Mn6YlDQ==
+X-Received: by 2002:a17:906:779c:b0:991:b2a2:e424 with SMTP id
+ s28-20020a170906779c00b00991b2a2e424mr12224323ejm.76.1688480918225; 
+ Tue, 04 Jul 2023 07:28:38 -0700 (PDT)
+Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
+ [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
+ qx22-20020a170906fcd600b009931baa0d44sm4984991ejb.140.2023.07.04.07.28.36
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 04 Jul 2023 07:28:37 -0700 (PDT)
+Date: Tue, 4 Jul 2023 16:28:36 +0200
+From: Igor Mammedov <imammedo@redhat.com>
+To: Ani Sinha <anisinha@redhat.com>
+Cc: Akihiko Odaki <akihiko.odaki@daynix.com>, qemu-devel
+ <qemu-devel@nongnu.org>, "Michael S. Tsirkin" <mst@redhat.com>, Marcel
+ Apfelbaum <marcel.apfelbaum@gmail.com>, Julia Suvorova <jusual@redhat.com>
+Subject: Re: [PATCH v7 5/6] hw/pci: ensure PCIE devices are plugged into
+ only slot 0 of PCIE port
+Message-ID: <20230704162836.61a08ff9@imammedo.users.ipa.redhat.com>
+In-Reply-To: <EC8A962B-80F5-499F-9EA8-CC53DA160F1D@redhat.com>
+References: <20230704112555.5629-1-anisinha@redhat.com>
+ <20230704112555.5629-6-anisinha@redhat.com>
+ <7356dc51-588c-f2f8-22d9-c8193bae9309@daynix.com>
+ <2C9BF0F4-6CB0-4805-818D-51CABC1EAFDE@redhat.com>
+ <bf793e6b-62a0-0772-0d64-ddb5894ebf53@daynix.com>
+ <20230704144825.181a1629@imammedo.users.ipa.redhat.com>
+ <EC8A962B-80F5-499F-9EA8-CC53DA160F1D@redhat.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.12.0
-Subject: Re: [PATCH 13/15] hw/timer/arm_timer: Fix misuse of SysBus IRQ in
- IcpPitState
-Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>,
- qemu-arm@nongnu.org, Sergey Kambalin <serg.oker@gmail.com>
-References: <20230531203559.29140-1-philmd@linaro.org>
- <20230531203559.29140-14-philmd@linaro.org>
- <CAFEAcA8GTuV0AtHnFHbvii9bgDqYjhAJjsjq0CX3WRHrkkaFvw@mail.gmail.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <CAFEAcA8GTuV0AtHnFHbvii9bgDqYjhAJjsjq0CX3WRHrkkaFvw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x432.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,58 +109,115 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/6/23 17:09, Peter Maydell wrote:
-> On Wed, 31 May 2023 at 21:37, Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
->>
->> SysBus IRQ are *output* IRQs. As some sort of simplification
->> to avoid to forward it, IcpPitState misuses it as ARM timer
->> input IRQ. Fix that by using a simple IRQ forwarder handler.
->>
->> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->> ---
->>   hw/timer/arm_timer.c | 15 ++++++++++++++-
->>   1 file changed, 14 insertions(+), 1 deletion(-)
+On Tue, 4 Jul 2023 19:20:00 +0530
+Ani Sinha <anisinha@redhat.com> wrote:
 
-
->> +static void icp_pit_fwd_irq(void *opaque, int n, int level)
->> +{
->> +    IntegratorPitState *s = opaque;
->> +
->> +    qemu_set_irq(s->irq[n], level);
->> +}
->> +
->>   static void icp_pit_init(Object *obj)
->>   {
->>       static const uint32_t tmr_freq[] = {
->> @@ -402,9 +410,14 @@ static void icp_pit_init(Object *obj)
->>       IntegratorPitState *s = INTEGRATOR_PIT(obj);
->>       SysBusDevice *dev = SYS_BUS_DEVICE(obj);
->>
->> +    qdev_init_gpio_in_named(DEVICE(obj), icp_pit_fwd_irq,
->> +                            "timer-in", ARRAY_SIZE(s->timer));
->> +
->>       for (unsigned i = 0; i < ARRAY_SIZE(s->timer); i++) {
->>           s->timer[i] = arm_timer_new(tmr_freq[i], s->irq_in[i]);
->> -        sysbus_init_irq(dev, &s->irq_in[i]);
->> +        sysbus_init_irq(dev, &s->irq[i]);
->> +        sysbus_connect_irq(dev, i,
->> +                           qdev_get_gpio_in_named(DEVICE(obj), "timer-in", i));
->>       }
+> > On 04-Jul-2023, at 6:18 PM, Igor Mammedov <imammedo@redhat.com> wrote:
+> > 
+> > On Tue, 4 Jul 2023 21:02:09 +0900
+> > Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
+> >   
+> >> On 2023/07/04 20:59, Ani Sinha wrote:  
+> >>> 
+> >>>   
+> >>>> On 04-Jul-2023, at 5:24 PM, Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
+> >>>> 
+> >>>> On 2023/07/04 20:25, Ani Sinha wrote:    
+> >>>>> PCI Express ports only have one slot, so PCI Express devices can only be
+> >>>>> plugged into slot 0 on a PCIE port. Add a warning to let users know when the
+> >>>>> invalid configuration is used. We may enforce this more strongly later on once
+> >>>>> we get more clarity on whether we are introducing a bad regression for users
+> >>>>> currenly using the wrong configuration.
+> >>>>> The change has been tested to not break or alter behaviors of ARI capable
+> >>>>> devices by instantiating seven vfs on an emulated igb device (the maximum
+> >>>>> number of vfs the linux igb driver supports). The vfs instantiated correctly
+> >>>>> and are seen to have non-zero device/slot numbers in the conventional PCI BDF
+> >>>>> representation.
+> >>>>> CC: jusual@redhat.com
+> >>>>> CC: imammedo@redhat.com
+> >>>>> CC: mst@redhat.com
+> >>>>> CC: akihiko.odaki@daynix.com
+> >>>>> Resolves: https://bugzilla.redhat.com/show_bug.cgi?id=2128929
+> >>>>> Signed-off-by: Ani Sinha <anisinha@redhat.com>
+> >>>>> Reviewed-by: Julia Suvorova <jusual@redhat.com>
+> >>>>> ---
+> >>>>>  hw/pci/pci.c | 15 +++++++++++++++
+> >>>>>  1 file changed, 15 insertions(+)
+> >>>>> diff --git a/hw/pci/pci.c b/hw/pci/pci.c
+> >>>>> index e2eb4c3b4a..47517ba3db 100644
+> >>>>> --- a/hw/pci/pci.c
+> >>>>> +++ b/hw/pci/pci.c
+> >>>>> @@ -65,6 +65,7 @@ bool pci_available = true;
+> >>>>>  static char *pcibus_get_dev_path(DeviceState *dev);
+> >>>>>  static char *pcibus_get_fw_dev_path(DeviceState *dev);
+> >>>>>  static void pcibus_reset(BusState *qbus);
+> >>>>> +static bool pcie_has_upstream_port(PCIDevice *dev);
+> >>>>>    static Property pci_props[] = {
+> >>>>>      DEFINE_PROP_PCI_DEVFN("addr", PCIDevice, devfn, -1),
+> >>>>> @@ -2121,6 +2122,20 @@ static void pci_qdev_realize(DeviceState *qdev, Error **errp)
+> >>>>>          }
+> >>>>>      }
+> >>>>>  +    /*
+> >>>>> +     * With SRIOV and ARI, vfs can have non-zero slot in the conventional
+> >>>>> +     * PCI interpretation as all five bits reserved for slot addresses are
+> >>>>> +     * also used for function bits for the various vfs. Ignore that case.    
+> >>>> 
+> >>>> You don't have to mention SR/IOV; it affects all ARI-capable devices. A PF can also have non-zero slot number in the conventional interpretation so you shouldn't call it vf either.    
+> >>> 
+> >>> Can you please help write a comment that explains this properly for all cases - ARI/non-ARI, PFs and VFs? Once everyone agrees that its clear and correct, I will re-spin.    
+> >> 
+> >> Simply, you can say:
+> >> With ARI, the slot number field in the conventional PCI interpretation 
+> >> can have a non-zero value as the field bits are reused to extend the 
+> >> function number bits. Ignore that case.  
+> > 
+> > mentioning 'conventional PCI interpretation' in comment and then immediately
+> > checking 'pci_is_express(pci_dev)' is confusing. Since comment belongs
+> > only to PCIE branch it would be better to talk in only about PCIe stuff
+> > and referring to relevant portions of spec.  
 > 
-> This feels a bit clunky but I think it's what we have to do,
-> since the various _pass_ APIs for forwarding GPIOs and
-> IRQs from a container to an inner device only work with
-> an entire set of IRQs.
+> Ok so how about this?
+> 
+>    * With ARI, devices can have non-zero slot in the traditional BDF                                                                                  
+>      * representation as all five bits reserved for slot addresses are                                                                                  
+>      * also used for function bits. Ignore that case.  
 
-Indeed. sysbus_pass_irq() could resolve the last unused IRQ index
-and amend starting at that index, but this doesn't seem a lot of
-need for a such use (so far). We might consider it if we ever merge
-sysbus IRQ API into qdev.
+you still refer to traditional (which I misread as 'conventional'),
+steal the linux comment and argument it with ARI if necessary,
+something like this (probably needs some more massaging):
 
-> Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
-Thanks!
-
-Phil.
+         /*                                                                       
+         * A PCIe Downstream Port normally leads to a Link with only Device      
+         * 0 on it (PCIe spec r3.1, sec 7.3.1). 
+          However PCI_SLOT() is broken if ARI is enabled, hence work around it
+          by skipping check if the later cap is present.                                  
+         */
+                     
+> 
+> 
+> > (for example see how it's done in kernel code: only_one_child(...)
+> > 
+> > PS:
+> > kernel can be forced  to scan for !0 device numbers, but that's rather
+> > a hack, so we shouldn't really care about that.
+> >   
+> >>   
+> >>>   
+> >>>>   
+> >>>>> +     */
+> >>>>> +    if (pci_is_express(pci_dev) &&
+> >>>>> +        !pcie_find_capability(pci_dev, PCI_EXT_CAP_ID_ARI) &&
+> >>>>> +        pcie_has_upstream_port(pci_dev) &&
+> >>>>> +        PCI_SLOT(pci_dev->devfn)) {
+> >>>>> +        warn_report("PCI: slot %d is not valid for %s,"
+> >>>>> +                    " parent device only allows plugging into slot 0.",
+> >>>>> +                    PCI_SLOT(pci_dev->devfn), pci_dev->name);
+> >>>>> +    }
+> >>>>> +
+> >>>>>      if (pci_dev->failover_pair_id) {
+> >>>>>          if (!pci_bus_is_express(pci_get_bus(pci_dev))) {
+> >>>>>              error_setg(errp, "failover primary device must be on "    
+> 
 
 
