@@ -2,97 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB118746BC2
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 10:21:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A118746C31
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 10:42:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGbHP-0004nu-FM; Tue, 04 Jul 2023 04:20:59 -0400
+	id 1qGbb8-0001No-VZ; Tue, 04 Jul 2023 04:41:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qGbHM-0004nY-AP
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 04:20:56 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qGbHK-0003o9-Hj
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 04:20:55 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688458854;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=SfhWrt0MMjVPIwMsRCtGgtLrTQDdE5dEhiAHt7q5H8g=;
- b=U9+yCEOyWDh7vHFjzNAmkFwzOUsk1AOI+8c8X6NPEpUwaI7q9wnFsPk530lKpHF/Fp0yuh
- sS6GQPj6sq8wVKnUUmQgSXJ/Ug/PLxhoCYMLOJ0fZ7HmAl5W7HlLIpRvNveqqLLChOnE5C
- piM9XrVu6uldQLubDanD5In/bqLxrHc=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-230-90ObNouGNB2y9PK7T--EPw-1; Tue, 04 Jul 2023 04:20:52 -0400
-X-MC-Unique: 90ObNouGNB2y9PK7T--EPw-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-3fb40ec952bso33799765e9.0
- for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 01:20:52 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <jason.chien@sifive.com>)
+ id 1qGbb7-0001NS-Cb
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 04:41:21 -0400
+Received: from mail-pg1-x535.google.com ([2607:f8b0:4864:20::535])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <jason.chien@sifive.com>)
+ id 1qGbb5-00005M-FR
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 04:41:20 -0400
+Received: by mail-pg1-x535.google.com with SMTP id
+ 41be03b00d2f7-55af0a816e4so2721949a12.1
+ for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 01:41:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=sifive.com; s=google; t=1688460078; x=1691052078;
+ h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=AzQwHilUs2+h3+nromIKPNidcbjRoSUxGEzJrfFiXVs=;
+ b=mpcVt1iaFZezX07RMdpb+pWV3H9LWWJOUdgjCLeeObyq8iLnutYz92JzEjPW5SA6tq
+ /bG49B/Yjmh095FCdmTyEv5eltp1PJBBihQg9a3SjuT28wQuh+s55OGffyBHZ+1c8Izb
+ VziXrOmzLag2D94QlMdPEjr5kkmCAcA4GE5kw8hfsx35bVJEzF1B8Kl8yvzzpfcaB3WZ
+ yHxiEL9GF4ApNpsz5A34etcqEz4JweM2X5vTztUoOZ0KfGgDMMUJEwCRfOmpsgChIQan
+ a9ETf36PcPmSiKJLXrbiyqphjgWD0FbpqZuLr6mVm/4DnZ6F3kCd+9Y4mjVDt3ISwlpV
+ dv9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688458851; x=1691050851;
- h=content-transfer-encoding:in-reply-to:organization:from:references
- :cc:to:content-language:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=SfhWrt0MMjVPIwMsRCtGgtLrTQDdE5dEhiAHt7q5H8g=;
- b=bs3iQ4UQHjKk2rwWNGispPL/I6FSca9dOm7/2pmPMU2Umj7U4Usqm0co5NKopZQAK3
- rPAOyOgykA6FwAIxYt5e8P5MIeabQvOgMmxJSsWN66TEmASCDjcuCc8i04nzqq2Beh9c
- Y30xJqOofzCtcpAS/9jX7kJEbJBtSuAes4fNV98G4uN5Zk7cpAiIQ1ZhlAZQ28qSvlG9
- E2nilj8JxDb5GvRuLqQle0F9/8SB6GVm3msiddxWw75pDH4XPDyeZkq3mhNeJNaDIBrb
- vy4DKFctIauTRvh1pIJ2U0eyTO/oARV+TNsvt2TbSyOG+bApjGej9qRMRE1m42IlLDKy
- rHbQ==
-X-Gm-Message-State: AC+VfDxjhVelAckHoaZCPoJpU088gDU27LHF4eLxXE4Qxu7X0AXvMdTF
- qq5zzzDoLd2USsfOMhAMdW4ieA8LM5hHByoKArAUn5dJMNWIZabkW8rvce69yR0HCtMEgcsbo3O
- Hb3EKzaV2iX30IFY=
-X-Received: by 2002:a7b:c5d7:0:b0:3f8:2777:15e with SMTP id
- n23-20020a7bc5d7000000b003f82777015emr10871221wmk.31.1688458851622; 
- Tue, 04 Jul 2023 01:20:51 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ4DZWSDqbr8yd3WT44bwzrWqaFytalh/Fd+2Hyo/r+VmGfs9K/XC50FZzKHwm6qIvnsW3jKmg==
-X-Received: by 2002:a7b:c5d7:0:b0:3f8:2777:15e with SMTP id
- n23-20020a7bc5d7000000b003f82777015emr10871211wmk.31.1688458851281; 
- Tue, 04 Jul 2023 01:20:51 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f30:5a00:b30d:e6bc:74c3:d6f2?
- (p200300d82f305a00b30de6bc74c3d6f2.dip0.t-ipconnect.de.
- [2003:d8:2f30:5a00:b30d:e6bc:74c3:d6f2])
+ d=1e100.net; s=20221208; t=1688460078; x=1691052078;
+ h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=AzQwHilUs2+h3+nromIKPNidcbjRoSUxGEzJrfFiXVs=;
+ b=g0pEpX/q5NDb3HQBsKJUeKH5MA1OFvuE5313LBJHhOGrFpl2dKvPTJcDljMxnVKz/w
+ yK0d/j2Wc7+Nw6CWNxQHOCycxKcvEbw4cYfAYkDYhwk6pUWJdEszmpYNy/j9NF4RxBcD
+ /FtNMSDLl4VyM+zAJlCA3n4wAS9oyVyvKUX5z5qvG8+l1HrWU0EMln0AGXtcCsLgQqlq
+ l+rj8rtPb5J+Y4823yHgcD5r7PdGAQy98jEA7czcWzu7nEtXdVSMrcxhJezhVSv8sB42
+ n6ekGhV29jeVlMTs/gV5M4P7TiXywVXcDVoA6Q7Vd0HcMUH2idrX18QU+Xh6xEyVOsC6
+ yKRw==
+X-Gm-Message-State: AC+VfDz6NDIdaBw0AdqJ6ZILOpdq7BUIOsKEFswb0Rp/i4OaR2nuP5Ej
+ AFLzEM4j/caK4rKTii+0YxHc+jFgvkGUX0Q0kCKUlWfveZiK3XyaJSP92xtkVt+012PwdqqdZ/Z
+ 1U6tpyzn1M+GK7DGB3P+AGITcdNkmtC7PeH2f/MrvzJ5OD5mMW0sew9HhswV1kyKf4O/qKxHdgl
+ 7CGQ==
+X-Google-Smtp-Source: ACHHUZ59u0NA2vfQbDTqTWiGhs2RRDG1P0Npmnmqs1+xE1URZGAdm5RlX3YFj1KJQw/nE7C3HpRf2g==
+X-Received: by 2002:a05:6a20:3212:b0:12c:763b:f098 with SMTP id
+ hl18-20020a056a20321200b0012c763bf098mr8898296pzc.11.1688460077504; 
+ Tue, 04 Jul 2023 01:41:17 -0700 (PDT)
+Received: from hsinchu26.internal.sifive.com
+ (59-124-168-89.hinet-ip.hinet.net. [59.124.168.89])
  by smtp.gmail.com with ESMTPSA id
- s24-20020a7bc398000000b003fb9ebb6b88sm20991926wmj.39.2023.07.04.01.20.50
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 04 Jul 2023 01:20:50 -0700 (PDT)
-Message-ID: <f4e6d2d0-d9e7-8779-8159-7b61546fd210@redhat.com>
-Date: Tue, 4 Jul 2023 10:20:50 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH 0/3] Support message-based DMA in vfio-user server
-Content-Language: en-US
-To: Mattias Nissler <mnissler@rivosinc.com>, qemu-devel@nongnu.org
-Cc: Elena Ufimtseva <elena.ufimtseva@oracle.com>,
- Jagannathan Raman <jag.raman@oracle.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
- stefanha@redhat.com, john.levon@nutanix.com
-References: <20230704080628.852525-1-mnissler@rivosinc.com>
-From: David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-In-Reply-To: <20230704080628.852525-1-mnissler@rivosinc.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+ f1-20020a170902ab8100b001b80b428d4bsm13870188plr.67.2023.07.04.01.41.15
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 04 Jul 2023 01:41:16 -0700 (PDT)
+From: Jason Chien <jason.chien@sifive.com>
+To: qemu-devel@nongnu.org,
+	qemu-riscv@nongnu.org
+Cc: Jason Chien <jason.chien@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
+Subject: [PATCH] target/riscv: Add Zihintntl extension ISA string to DTS
+Date: Tue,  4 Jul 2023 08:40:10 +0000
+Message-Id: <20230704084013.21749-1-jason.chien@sifive.com>
+X-Mailer: git-send-email 2.17.1
+Received-SPF: pass client-ip=2607:f8b0:4864:20::535;
+ envelope-from=jason.chien@sifive.com; helo=mail-pg1-x535.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,54 +93,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 04.07.23 10:06, Mattias Nissler wrote:
-> This series adds basic support for message-based DMA in qemu's vfio-user
-> server. This is useful for cases where the client does not provide file
-> descriptors for accessing system memory via memory mappings. My motivating use
-> case is to hook up device models as PCIe endpoints to a hardware design. This
-> works by bridging the PCIe transaction layer to vfio-user, and the endpoint
-> does not access memory directly, but sends memory requests TLPs to the hardware
-> design in order to perform DMA.
-> 
-> Note that in addition to the 3 commits included, we also need a
-> subprojects/libvfio-user roll to bring in this bugfix:
-> https://github.com/nutanix/libvfio-user/commit/bb308a2e8ee9486a4c8b53d8d773f7c8faaeba08
-> Stefan, can I ask you to kindly update the
-> https://gitlab.com/qemu-project/libvfio-user mirror? I'll be happy to include
-> an update to subprojects/libvfio-user.wrap in this series.
-> 
-> Finally, there is some more work required on top of this series to get
-> message-based DMA to really work well:
-> 
-> * libvfio-user has a long-standing issue where socket communication gets messed
->    up when messages are sent from both ends at the same time. See
->    https://github.com/nutanix/libvfio-user/issues/279 for more details. I've
->    been engaging there and plan to contribute a fix.
-> 
-> * qemu currently breaks down DMA accesses into chunks of size 8 bytes at
->    maximum, each of which will be handled in a separate vfio-user DMA request
->    message. This is quite terrible for large DMA acceses, such as when nvme
->    reads and writes page-sized blocks for example. Thus, I would like to improve
->    qemu to be able to perform larger accesses, at least for indirect memory
->    regions. I have something working locally, but since this will likely result
->    in more involved surgery and discussion, I am leaving this to be addressed in
->    a separate patch.
-> 
+RVA23 Profiles states:
+The RVA23 profiles are intended to be used for 64-bit application
+processors that will run rich OS stacks from standard binary OS
+distributions and with a substantial number of third-party binary user
+applications that will be supported over a considerable length of time
+in the field.
 
-I remember asking Stefan in the past if there wouldn't be a way to avoid 
-that mmap dance (and also handle uffd etc. easier) for vhost-user 
-(especially, virtiofsd) by only making QEMU access guest memory.
+The chapter 4 of the unprivileged spec introduces the Zihintntl extension
+and Zihintntl is a mandatory extension presented in RVA23 Profiles, whose
+purpose is to enable application and operating system portability across
+different implementations. Thus the DTS should contain the Zihintntl ISA
+string in order to pass to software.
 
-That could make memory-backend-ram support something like vhost-user, 
-avoiding shared memory and everything that comes with that (e.g., no 
-KSM, no shared zeropage).
+The unprivileged spec states:
+Like any HINTs, these instructions may be freely ignored. Hence, although
+they are described in terms of cache-based memory hierarchies, they do not
+mandate the provision of caches.
 
-So this series tackles vfio-user, does anybody know what it would take 
-to get something similar running for vhost-user?
+These instructions are encoded with used opcode, e.g. ADD x0, x0, x2, which
+QEMU already supports, and QEMU does not emulate cache. Therefore these
+instructions can be considered as a no-op, and we only need to add a new
+property for the Zihintntl extension.
 
+Signed-off-by: Jason Chien <jason.chien@sifive.com>
+---
+ target/riscv/cpu.c     | 2 ++
+ target/riscv/cpu_cfg.h | 1 +
+ 2 files changed, 3 insertions(+)
+
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index 881bddf393..6fd21466a4 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -81,6 +81,7 @@ static const struct isa_ext_data isa_edata_arr[] = {
+     ISA_EXT_DATA_ENTRY(zicond, PRIV_VERSION_1_12_0, ext_zicond),
+     ISA_EXT_DATA_ENTRY(zicsr, PRIV_VERSION_1_10_0, ext_icsr),
+     ISA_EXT_DATA_ENTRY(zifencei, PRIV_VERSION_1_10_0, ext_ifencei),
++    ISA_EXT_DATA_ENTRY(zihintntl, PRIV_VERSION_1_10_0, ext_zihintntl),
+     ISA_EXT_DATA_ENTRY(zihintpause, PRIV_VERSION_1_10_0, ext_zihintpause),
+     ISA_EXT_DATA_ENTRY(zawrs, PRIV_VERSION_1_12_0, ext_zawrs),
+     ISA_EXT_DATA_ENTRY(zfh, PRIV_VERSION_1_11_0, ext_zfh),
+@@ -1598,6 +1599,7 @@ static Property riscv_cpu_extensions[] = {
+     DEFINE_PROP_BOOL("sscofpmf", RISCVCPU, cfg.ext_sscofpmf, false),
+     DEFINE_PROP_BOOL("Zifencei", RISCVCPU, cfg.ext_ifencei, true),
+     DEFINE_PROP_BOOL("Zicsr", RISCVCPU, cfg.ext_icsr, true),
++    DEFINE_PROP_BOOL("Zihintntl", RISCVCPU, cfg.ext_zihintntl, true),
+     DEFINE_PROP_BOOL("Zihintpause", RISCVCPU, cfg.ext_zihintpause, true),
+     DEFINE_PROP_BOOL("Zawrs", RISCVCPU, cfg.ext_zawrs, true),
+     DEFINE_PROP_BOOL("Zfh", RISCVCPU, cfg.ext_zfh, false),
+diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
+index c4a627d335..c7da2facef 100644
+--- a/target/riscv/cpu_cfg.h
++++ b/target/riscv/cpu_cfg.h
+@@ -66,6 +66,7 @@ struct RISCVCPUConfig {
+     bool ext_icbom;
+     bool ext_icboz;
+     bool ext_zicond;
++    bool ext_zihintntl;
+     bool ext_zihintpause;
+     bool ext_smstateen;
+     bool ext_sstc;
 -- 
-Cheers,
-
-David / dhildenb
+2.17.1
 
 
